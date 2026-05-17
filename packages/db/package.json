@@ -9,9 +9,15 @@
   },
   "scripts": {
     "generate": "prisma generate",
+    "migrate": "dotenv -e ../../.env -- prisma migrate dev",
+    "seed": "dotenv -e ../../.env -- prisma db seed",
+    "reset": "dotenv -e ../../.env -- prisma migrate reset",
     "lint": "eslint src",
     "typecheck": "tsc --noEmit",
     "test": "vitest run --passWithNoTests"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.3.0"
@@ -19,6 +25,7 @@
   "devDependencies": {
     "@types/node": "^22.0.0",
     "prisma": "^6.3.0",
+    "tsx": "^4.19.0",
     "typescript": "^5.8.0",
     "vitest": "^3.0.0"
   }

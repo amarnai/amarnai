@@ -5,11 +5,16 @@
     "dev": "turbo dev",
     "lint": "turbo lint",
     "typecheck": "turbo typecheck",
-    "test": "turbo test"
+    "test": "turbo test",
+    "db:generate": "pnpm --filter @genizor/db generate",
+    "db:migrate": "pnpm --filter @genizor/db migrate",
+    "db:seed": "pnpm --filter @genizor/db seed",
+    "db:reset": "pnpm --filter @genizor/db reset"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^8.0.0",
     "@typescript-eslint/parser": "^8.0.0",
+    "dotenv-cli": "^8.0.0",
     "eslint": "^9.0.0",
     "typescript-eslint": "^8.0.0",
     "turbo": "^2.0.0",
