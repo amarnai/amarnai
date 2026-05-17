@@ -179,7 +179,7 @@ function TaxonomyEdge({
   const label = formatEdgeLabel(sortingQuestion);
   const strokeColor = selected ? "#6366f1" : missing ? "#f59e0b" : "#94a3b8";
   const resolvedMarkerEnd = markerEnd !== undefined
-    ? { ...(markerEnd as object), color: strokeColor }
+    ? ({ ...(markerEnd as unknown as object), color: strokeColor } as unknown as string)
     : undefined;
 
   return (
@@ -217,12 +217,16 @@ function NodeForm({
   node,
   onSubmit,
   onCancel,
+  onDelete,
+  deleteDisabledReason,
   submitting,
   error,
 }: {
   node: TaxonomyNode | null;
   onSubmit: (data: CreateTaxonomyNodeInput) => void;
   onCancel: () => void;
+  onDelete?: () => void;
+  deleteDisabledReason?: string | null;
   submitting: boolean;
   error: string | null;
 }) {
@@ -325,6 +329,29 @@ function NodeForm({
           <button className="btn-ghost" type="button" onClick={onCancel}>
             Cancel
           </button>
+          {node && !node.isRoot && onDelete && (
+            deleteDisabledReason != null ? (
+              <span title={deleteDisabledReason} style={{ display: "inline-block", cursor: "not-allowed" }}>
+                <button
+                  className="btn-danger"
+                  type="button"
+                  disabled
+                  style={{ pointerEvents: "none" }}
+                >
+                  Delete
+                </button>
+              </span>
+            ) : (
+              <button
+                className="btn-danger"
+                type="button"
+                onClick={onDelete}
+                disabled={submitting}
+              >
+                Delete
+              </button>
+            )
+          )}
         </div>
       </form>
     </div>
@@ -338,6 +365,7 @@ function EdgeForm({
   nodes,
   onSubmit,
   onCancel,
+  onDelete,
   submitting,
   error,
 }: {
@@ -345,6 +373,7 @@ function EdgeForm({
   nodes: TaxonomyNode[];
   onSubmit: (data: CreateTaxonomyEdgeInput | UpdateTaxonomyEdgeInput) => void;
   onCancel: () => void;
+  onDelete?: () => void;
   submitting: boolean;
   error: string | null;
 }) {
@@ -518,6 +547,16 @@ function EdgeForm({
           <button className="btn-ghost" type="button" onClick={onCancel}>
             Cancel
           </button>
+          {edge && onDelete && (
+            <button
+              className="btn-danger"
+              type="button"
+              onClick={onDelete}
+              disabled={submitting}
+            >
+              Delete
+            </button>
+          )}
         </div>
       </form>
     </div>
@@ -701,7 +740,45 @@ function TaxonomyCanvasInner({
     }
   }
 
+  async function handleDeleteNode(nodeId: string) {
+    setSubmitting(true);
+    setFormError(null);
+    try {
+      await api.deleteTaxonomyNode(workspaceId, nodeId);
+      await refetch();
+      setPanel({ type: "none" });
+    } catch (err) {
+      setFormError(err instanceof Error ? err.message : "Failed to delete node");
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  async function handleDeleteEdge(edgeId: string) {
+    setSubmitting(true);
+    setFormError(null);
+    try {
+      await api.deleteTaxonomyEdge(workspaceId, edgeId);
+      await refetch();
+      setPanel({ type: "none" });
+    } catch (err) {
+      setFormError(err instanceof Error ? err.message : "Failed to delete edge");
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
   // ─── Render ───────────────────────────────────────────────────────────────
+
+  let nodeDeleteDisabledReason: string | null = null;
+  if (panel.type === "edit-node") {
+    const nodeHasEdges = dbEdges.some(
+      (e) => e.sourceNodeId === panel.node.id || e.targetNodeId === panel.node.id
+    );
+    nodeDeleteDisabledReason = nodeHasEdges
+      ? "Remove connected edges before deleting this node."
+      : null;
+  }
 
   return (
     <div>
@@ -744,6 +821,7 @@ function TaxonomyCanvasInner({
             onEdgeClick={onEdgeClick}
             nodeTypes={nodeTypes}
             edgeTypes={edgeTypes}
+            deleteKeyCode={null}
             fitView
             fitViewOptions={{ padding: 0.3 }}
           >
@@ -770,6 +848,8 @@ function TaxonomyCanvasInner({
                 node={panel.node}
                 onSubmit={(data) => handleUpdateNode(panel.node.id, data)}
                 onCancel={() => setPanel({ type: "none" })}
+                onDelete={() => handleDeleteNode(panel.node.id)}
+                deleteDisabledReason={nodeDeleteDisabledReason}
                 submitting={submitting}
                 error={formError}
               />
@@ -792,6 +872,7 @@ function TaxonomyCanvasInner({
                 nodes={dbNodes}
                 onSubmit={(data) => handleUpdateEdge(panel.edge.id, data)}
                 onCancel={() => setPanel({ type: "none" })}
+                onDelete={() => handleDeleteEdge(panel.edge.id)}
                 submitting={submitting}
                 error={formError}
               />
