@@ -1,0 +1,456 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #111827;
+  background: #f3f4f6;
+  min-height: 100vh;
+}
+
+/* ─── Shell ─────────────────────────────────────────────────────────────── */
+
+.shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 208px;
+  background: #1e1b4b;
+  color: #c7d2fe;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  padding: 24px 0 16px;
+}
+
+.sidebar-brand {
+  font-size: 17px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.3px;
+  padding: 0 20px 28px;
+}
+
+.sidebar-nav {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sidebar-nav a {
+  display: block;
+  padding: 9px 20px;
+  color: #a5b4fc;
+  text-decoration: none;
+  border-left: 3px solid transparent;
+  font-size: 13.5px;
+  transition: color 0.1s, background 0.1s;
+}
+
+.sidebar-nav a:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.sidebar-nav a.active {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  border-left-color: #818cf8;
+}
+
+.main {
+  flex: 1;
+  padding: 32px 36px;
+  overflow: auto;
+  min-width: 0;
+}
+
+/* ─── Typography ─────────────────────────────────────────────────────────── */
+
+h1 {
+  font-size: 21px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: #111827;
+}
+
+h2 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 12px;
+}
+
+/* ─── Dashboard stats ────────────────────────────────────────────────────── */
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.stat-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px 18px;
+  border: 1px solid #e5e7eb;
+}
+
+.stat-label {
+  font-size: 11.5px;
+  color: #6b7280;
+  font-weight: 500;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.stat-value {
+  font-size: 32px;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1;
+}
+
+/* ─── Cards / Lists ──────────────────────────────────────────────────────── */
+
+.card {
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+}
+
+.card-body {
+  padding: 18px;
+}
+
+/* ─── Thread list ────────────────────────────────────────────────────────── */
+
+.thread-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 18px;
+  border-bottom: 1px solid #f3f4f6;
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.1s;
+}
+
+.thread-row:last-child {
+  border-bottom: none;
+}
+
+.thread-row:hover {
+  background: #f9fafb;
+}
+
+.thread-subject {
+  font-weight: 500;
+  margin-bottom: 3px;
+  color: #111827;
+}
+
+.thread-meta {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+/* ─── Badges ─────────────────────────────────────────────────────────────── */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 500;
+  background: #f3f4f6;
+  color: #374151;
+  white-space: nowrap;
+}
+
+.badge-high {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.badge-medium {
+  background: #fef9c3;
+  color: #b45309;
+}
+
+.badge-low {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.badge-none {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+/* ─── Tag chips ──────────────────────────────────────────────────────────── */
+
+.tag-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 9px;
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 500;
+  background: #e0e7ff;
+  color: #3730a3;
+  white-space: nowrap;
+}
+
+.inline-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 6px;
+}
+
+/* ─── Taxonomy tree ──────────────────────────────────────────────────────── */
+
+.tree-node {
+  margin-bottom: 6px;
+}
+
+.tree-children {
+  margin-left: 22px;
+  padding-left: 14px;
+  border-left: 2px solid #e5e7eb;
+  margin-top: 6px;
+}
+
+.node-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 14px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+
+.node-kind {
+  flex-shrink: 0;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  letter-spacing: 0.03em;
+  margin-top: 1px;
+}
+
+.node-kind-category {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.node-kind-rule {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.node-name {
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.node-desc {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 3px;
+}
+
+/* ─── Review items ───────────────────────────────────────────────────────── */
+
+.review-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 16px 18px;
+  margin-bottom: 12px;
+}
+
+.review-title {
+  font-weight: 500;
+  color: #111827;
+  margin-bottom: 2px;
+}
+
+.review-reason {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 4px;
+}
+
+/* ─── Thread detail ──────────────────────────────────────────────────────── */
+
+.meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.meta-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 3px;
+}
+
+.meta-value {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: #111827;
+}
+
+.message-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 16px 18px;
+  margin-bottom: 10px;
+}
+
+.message-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 8px;
+  gap: 12px;
+}
+
+.message-sender {
+  font-weight: 600;
+  color: #111827;
+}
+
+.message-date {
+  font-size: 12px;
+  color: #6b7280;
+  flex-shrink: 0;
+}
+
+.message-snippet {
+  color: #374151;
+  font-size: 13.5px;
+}
+
+/* ─── Tags page ──────────────────────────────────────────────────────────── */
+
+.tags-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.tag-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.tag-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.tag-name {
+  font-weight: 500;
+  color: #111827;
+}
+
+.tag-source {
+  font-size: 11px;
+  color: #9ca3af;
+  margin-top: 1px;
+}
+
+/* ─── States ─────────────────────────────────────────────────────────────── */
+
+.error-box {
+  background: #fee2e2;
+  color: #b91c1c;
+  padding: 14px 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-size: 13.5px;
+}
+
+.warning-box {
+  background: #fffbeb;
+  color: #92400e;
+  padding: 14px 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-size: 13.5px;
+  border: 1px solid #fde68a;
+}
+
+.empty {
+  color: #9ca3af;
+  font-style: italic;
+  padding: 40px 0;
+  text-align: center;
+}
+
+.loading {
+  color: #6b7280;
+  padding: 40px 0;
+  text-align: center;
+}
+
+/* ─── Back link ──────────────────────────────────────────────────────────── */
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #6b7280;
+  text-decoration: none;
+  font-size: 13px;
+  margin-bottom: 18px;
+  transition: color 0.1s;
+}
+
+.back-link:hover {
+  color: #111827;
+}
+
+/* ─── Section label ──────────────────────────────────────────────────────── */
+
+.section-gap {
+  margin-top: 28px;
+}
+
+a {
+  color: #4f46e5;
+}

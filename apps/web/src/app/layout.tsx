@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { Sidebar } from "@/components/Sidebar";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Genizor",
@@ -12,7 +14,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <div className="shell">
+          <Sidebar />
+          <main className="main">{children}</main>
+        </div>
+      </body>
     </html>
   );
 }

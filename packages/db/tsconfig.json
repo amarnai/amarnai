@@ -3,8 +3,10 @@
   "compilerOptions": {
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "rootDir": "src",
-    "noEmit": true
+    "noEmit": true,
+    "lib": ["es2015"],
+    "types": ["node"],
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*", "*.ts", "prisma/**/*"],
+  
 }
