@@ -11,6 +11,7 @@ Gmail-first AI email triage assistant.
 
 ```bash
 pnpm install
+pnpm --filter @genizor/db generate   # generate Prisma client (required before typechecking)
 ```
 
 ## Development

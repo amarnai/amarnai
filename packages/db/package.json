@@ -8,12 +8,17 @@
     ".": "./src/index.ts"
   },
   "scripts": {
+    "generate": "prisma generate",
     "lint": "eslint src",
     "typecheck": "tsc --noEmit",
     "test": "vitest run --passWithNoTests"
   },
+  "dependencies": {
+    "@prisma/client": "^6.3.0"
+  },
   "devDependencies": {
     "@types/node": "^22.0.0",
+    "prisma": "^6.3.0",
     "typescript": "^5.8.0",
     "vitest": "^3.0.0"
   }

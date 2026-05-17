@@ -1,0 +1,422 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Enums ───────────────────────────────────────────────────────────────────
+
+enum WorkspaceRole {
+  OWNER
+  ADMIN
+  MEMBER
+}
+
+enum Provider {
+  GMAIL
+}
+
+enum EmailAddressIdentityKind {
+  PRIMARY
+  ALIAS
+  SEND_AS
+  UNKNOWN
+}
+
+enum SyncStatus {
+  IDLE
+  SYNCING
+  ERROR
+}
+
+enum TaxonomyNodeKind {
+  CATEGORY
+  RULE
+}
+
+enum DraftBehavior {
+  DISABLED
+  MANUAL_REVIEW
+  CREATE_GMAIL_DRAFT
+}
+
+enum TagSource {
+  GENIZOR
+  GMAIL
+}
+
+enum EmailTagSource {
+  USER
+  GMAIL_SYNC
+  AI_SUGGESTED
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum Urgency {
+  NONE
+  SOON
+  TODAY
+  OVERDUE
+  UNKNOWN
+}
+
+enum RiskLevel {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum RequiredAction {
+  NONE
+  REPLY
+  REVIEW
+  APPROVE
+  SCHEDULE
+  PAY
+  DELEGATE
+  ARCHIVE
+  UNKNOWN
+}
+
+enum Sensitivity {
+  NORMAL
+  CONFIDENTIAL
+  PERSONAL_DATA
+  FINANCIAL
+  LEGAL
+  SECURITY
+}
+
+enum SuggestedNextStep {
+  LABEL_ONLY
+  CREATE_DRAFT
+  ASK_USER
+  OPEN_IN_GMAIL
+}
+
+enum ReviewStatus {
+  OPEN
+  RESOLVED
+  DISMISSED
+}
+
+enum DraftStatus {
+  PROPOSED
+  CREATED_IN_GMAIL
+  REJECTED
+  FAILED
+}
+
+enum AuditActorType {
+  USER
+  AI
+  SYSTEM
+}
+
+// ─── Models ──────────────────────────────────────────────────────────────────
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  imageUrl  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  ownedWorkspaces      Workspace[]
+  workspaceMemberships WorkspaceMember[]
+  emailAccounts        EmailAccount[]
+  assignedReviews      ReviewItem[]      @relation("AssignedReviews")
+  resolvedReviews      ReviewItem[]      @relation("ResolvedReviews")
+  auditLogs            AuditLog[]
+}
+
+model Workspace {
+  id          String   @id @default(cuid())
+  name        String
+  ownerUserId String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  owner           User                  @relation(fields: [ownerUserId], references: [id])
+  members         WorkspaceMember[]
+  emailAccounts   EmailAccount[]
+  taxonomyNodes   TaxonomyNode[]
+  emailThreads    EmailThread[]
+  emailMessages   EmailMessage[]
+  tags            Tag[]
+  classifications EmailClassification[]
+  reviewItems     ReviewItem[]
+  drafts          Draft[]
+  auditLogs       AuditLog[]
+}
+
+model WorkspaceMember {
+  id          String        @id @default(cuid())
+  workspaceId String
+  userId      String
+  role        WorkspaceRole
+  createdAt   DateTime      @default(now())
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id])
+  user      User      @relation(fields: [userId], references: [id])
+
+  @@unique([workspaceId, userId])
+}
+
+model EmailAccount {
+  id                    String    @id @default(cuid())
+  workspaceId           String
+  userId                String
+  provider              Provider
+  primaryEmailAddress   String
+  providerAccountId     String
+  accessTokenEncrypted  String
+  refreshTokenEncrypted String
+  tokenExpiresAt        DateTime?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  workspace      Workspace              @relation(fields: [workspaceId], references: [id])
+  user           User                   @relation(fields: [userId], references: [id])
+  emailAddresses EmailAddressIdentity[]
+  syncState      ProviderSyncState?
+  emailThreads   EmailThread[]
+  emailMessages  EmailMessage[]
+
+  @@unique([workspaceId, providerAccountId])
+}
+
+model EmailAddressIdentity {
+  id             String                   @id @default(cuid())
+  emailAccountId String
+  emailAddress   String
+  displayName    String?
+  kind           EmailAddressIdentityKind
+  isPrimary      Boolean                  @default(false)
+  createdAt      DateTime                 @default(now())
+  updatedAt      DateTime                 @updatedAt
+
+  emailAccount EmailAccount @relation(fields: [emailAccountId], references: [id])
+
+  @@unique([emailAccountId, emailAddress])
+}
+
+model ProviderSyncState {
+  id             String     @id @default(cuid())
+  emailAccountId String     @unique
+  provider       Provider
+  historyId      String?
+  lastSyncedAt   DateTime?
+  status         SyncStatus @default(IDLE)
+  errorMessage   String?
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+
+  emailAccount EmailAccount @relation(fields: [emailAccountId], references: [id])
+}
+
+model TaxonomyNode {
+  id                  String           @id @default(cuid())
+  workspaceId         String
+  parentId            String?
+  kind                TaxonomyNodeKind
+  name                String
+  description         String?
+  instructions        String?
+  examples            Json?
+  confidenceThreshold Float?
+  allowedActions      Json?
+  draftBehavior       DraftBehavior    @default(DISABLED)
+  syncToGmail         Boolean          @default(false)
+  gmailLabelId        String?
+  gmailLabelName      String?
+  positionX           Float            @default(0)
+  positionY           Float            @default(0)
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
+
+  workspace       Workspace             @relation(fields: [workspaceId], references: [id])
+  parent          TaxonomyNode?         @relation("NodeChildren", fields: [parentId], references: [id])
+  children        TaxonomyNode[]        @relation("NodeChildren")
+  classifications EmailClassification[]
+}
+
+model EmailThread {
+  id               String    @id @default(cuid())
+  workspaceId      String
+  emailAccountId   String
+  provider         Provider
+  providerThreadId String
+  subject          String?
+  latestMessageAt  DateTime?
+  messageCount     Int       @default(0)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  workspace       Workspace             @relation(fields: [workspaceId], references: [id])
+  emailAccount    EmailAccount          @relation(fields: [emailAccountId], references: [id])
+  messages        EmailMessage[]
+  tags            EmailTag[]
+  classifications EmailClassification[]
+  reviewItems     ReviewItem[]
+  drafts          Draft[]
+
+  @@unique([emailAccountId, providerThreadId])
+}
+
+model EmailMessage {
+  id                String   @id @default(cuid())
+  workspaceId       String
+  emailAccountId    String
+  emailThreadId     String
+  providerMessageId String
+  senderEmail       String
+  senderName        String?
+  toEmails          Json
+  ccEmails          Json
+  bccEmails         Json
+  subject           String?
+  snippet           String?
+  bodyText          String?
+  bodyHash          String?
+  receivedAt        DateTime
+  hasAttachments    Boolean  @default(false)
+  rawMetadata       Json?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  workspace       Workspace             @relation(fields: [workspaceId], references: [id])
+  emailAccount    EmailAccount          @relation(fields: [emailAccountId], references: [id])
+  thread          EmailThread           @relation(fields: [emailThreadId], references: [id])
+  tags            EmailTag[]
+  classifications EmailClassification[]
+  reviewItems     ReviewItem[]
+  drafts          Draft[]
+
+  @@unique([emailAccountId, providerMessageId])
+}
+
+model Tag {
+  id           String    @id @default(cuid())
+  workspaceId  String
+  name         String
+  color        String?
+  source       TagSource
+  gmailLabelId String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  workspace Workspace  @relation(fields: [workspaceId], references: [id])
+  emailTags EmailTag[]
+
+  @@unique([workspaceId, name])
+}
+
+model EmailTag {
+  id             String         @id @default(cuid())
+  emailThreadId  String?
+  emailMessageId String?
+  tagId          String
+  source         EmailTagSource
+  createdAt      DateTime       @default(now())
+
+  emailThread  EmailThread?  @relation(fields: [emailThreadId], references: [id])
+  emailMessage EmailMessage? @relation(fields: [emailMessageId], references: [id])
+  tag          Tag           @relation(fields: [tagId], references: [id])
+}
+
+model EmailClassification {
+  id                String            @id @default(cuid())
+  workspaceId       String
+  emailThreadId     String
+  emailMessageId    String?
+  categoryNodeId    String
+  confidence        Float
+  explanation       String?
+  priority          Priority
+  urgency           Urgency
+  riskLevel         RiskLevel
+  requiredAction    RequiredAction
+  sensitivity       Sensitivity
+  dueAt             DateTime?
+  suggestedNextStep SuggestedNextStep
+  needsHumanReview  Boolean
+  modelProvider     String?
+  modelName         String?
+  promptVersion     String?
+  rawOutput         Json?
+  createdAt         DateTime          @default(now())
+
+  workspace    Workspace    @relation(fields: [workspaceId], references: [id])
+  emailThread  EmailThread  @relation(fields: [emailThreadId], references: [id])
+  emailMessage EmailMessage? @relation(fields: [emailMessageId], references: [id])
+  categoryNode TaxonomyNode @relation(fields: [categoryNodeId], references: [id])
+  reviewItems  ReviewItem[]
+  drafts       Draft[]
+}
+
+model ReviewItem {
+  id               String       @id @default(cuid())
+  workspaceId      String
+  emailThreadId    String
+  emailMessageId   String?
+  classificationId String?
+  status           ReviewStatus @default(OPEN)
+  reason           String
+  assignedToUserId String?
+  resolvedByUserId String?
+  resolvedAt       DateTime?
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+
+  workspace      Workspace             @relation(fields: [workspaceId], references: [id])
+  emailThread    EmailThread           @relation(fields: [emailThreadId], references: [id])
+  emailMessage   EmailMessage?         @relation(fields: [emailMessageId], references: [id])
+  classification EmailClassification?  @relation(fields: [classificationId], references: [id])
+  assignedTo     User?                 @relation("AssignedReviews", fields: [assignedToUserId], references: [id])
+  resolvedBy     User?                 @relation("ResolvedReviews", fields: [resolvedByUserId], references: [id])
+}
+
+model Draft {
+  id               String      @id @default(cuid())
+  workspaceId      String
+  emailThreadId    String
+  emailMessageId   String?
+  classificationId String?
+  providerDraftId  String?
+  subject          String?
+  body             String
+  status           DraftStatus @default(PROPOSED)
+  errorMessage     String?
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+
+  workspace      Workspace             @relation(fields: [workspaceId], references: [id])
+  emailThread    EmailThread           @relation(fields: [emailThreadId], references: [id])
+  emailMessage   EmailMessage?         @relation(fields: [emailMessageId], references: [id])
+  classification EmailClassification?  @relation(fields: [classificationId], references: [id])
+}
+
+model AuditLog {
+  id          String         @id @default(cuid())
+  workspaceId String
+  actorType   AuditActorType
+  actorUserId String?
+  eventType   String
+  entityType  String?
+  entityId    String?
+  metadata    Json?
+  createdAt   DateTime       @default(now())
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id])
+  actor     User?     @relation(fields: [actorUserId], references: [id])
+}
