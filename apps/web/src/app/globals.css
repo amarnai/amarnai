@@ -238,7 +238,7 @@ h2 {
 
 .node-row {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 10px;
   padding: 10px 14px;
   background: #fff;
@@ -253,7 +253,6 @@ h2 {
   padding: 2px 6px;
   border-radius: 4px;
   letter-spacing: 0.03em;
-  margin-top: 1px;
 }
 
 .node-kind-category {
@@ -278,6 +277,285 @@ h2 {
   font-size: 12px;
   color: #6b7280;
   margin-top: 3px;
+}
+
+.node-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+/* ─── Taxonomy node list ─────────────────────────────────────────────────── */
+
+.taxonomy-node-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.node-meta-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 5px;
+}
+
+.node-meta-item {
+  font-size: 11px;
+  color: #9ca3af;
+}
+
+/* ─── Taxonomy edge list ─────────────────────────────────────────────────── */
+
+.taxonomy-edge-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.edge-row {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 10px 14px;
+}
+
+.edge-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 5px;
+}
+
+.edge-source {
+  font-weight: 600;
+  color: #374151;
+}
+
+.edge-arrow {
+  color: #9ca3af;
+  font-size: 13px;
+}
+
+.edge-target {
+  font-weight: 600;
+  color: #374151;
+}
+
+.edge-question {
+  font-size: 13px;
+  color: #6b7280;
+  font-style: italic;
+}
+
+/* ─── Sorting map ────────────────────────────────────────────────────────── */
+
+.sorting-map {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px 18px;
+}
+
+.sorting-map-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sorting-map-source {
+  font-weight: 600;
+  font-size: 13.5px;
+  color: #111827;
+}
+
+.sorting-map-edge {
+  display: flex;
+  gap: 6px;
+  align-items: baseline;
+  padding-left: 16px;
+}
+
+.sorting-map-connector {
+  color: #9ca3af;
+  flex-shrink: 0;
+}
+
+.sorting-map-target {
+  font-weight: 500;
+  color: #374151;
+  flex-shrink: 0;
+}
+
+.sorting-map-sep {
+  color: #9ca3af;
+  flex-shrink: 0;
+}
+
+.sorting-map-question {
+  font-size: 12.5px;
+  color: #6b7280;
+}
+
+/* ─── Taxonomy toolbar ───────────────────────────────────────────────────── */
+
+.taxonomy-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+/* ─── Node form panel ────────────────────────────────────────────────────── */
+
+.node-form-panel {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 20px 22px;
+  margin-bottom: 20px;
+}
+
+.node-form-header {
+  margin-bottom: 16px;
+}
+
+.node-form-header h2 {
+  margin-bottom: 0;
+}
+
+.node-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.form-row {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1;
+}
+
+.form-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.form-label .required {
+  color: #dc2626;
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+  font-family: inherit;
+  font-size: 13.5px;
+  color: #111827;
+  background: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 7px 10px;
+  outline: none;
+  transition: border-color 0.1s;
+  width: 100%;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.15);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding-top: 4px;
+}
+
+/* ─── Buttons ────────────────────────────────────────────────────────────── */
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 16px;
+  background: #4f46e5;
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.1s;
+  white-space: nowrap;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #4338ca;
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  background: transparent;
+  color: #374151;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.1s, color 0.1s;
+  white-space: nowrap;
+}
+
+.btn-ghost:hover {
+  background: #f3f4f6;
+}
+
+.btn-sm {
+  padding: 3px 8px;
+  font-size: 12px;
+  border-radius: 5px;
+}
+
+.btn-danger {
+  color: #dc2626;
+  border-color: #fecaca;
+}
+
+.btn-danger:hover {
+  background: #fee2e2;
+  color: #b91c1c;
 }
 
 /* ─── Review items ───────────────────────────────────────────────────────── */
@@ -453,4 +731,106 @@ h2 {
 
 a {
   color: #4f46e5;
+}
+
+/* ─── Taxonomy canvas ────────────────────────────────────────────────────── */
+
+.taxonomy-canvas-wrap {
+  display: flex;
+  gap: 0;
+  height: calc(100vh - 160px);
+  min-height: 480px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #f9fafb;
+}
+
+.taxonomy-canvas {
+  flex: 1;
+  min-width: 0;
+}
+
+.taxonomy-panel {
+  width: 340px;
+  flex-shrink: 0;
+  border-left: 1px solid #e5e7eb;
+  background: #fff;
+  overflow-y: auto;
+}
+
+.taxonomy-node-card {
+  background: #fff;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 10px 14px;
+  min-width: 160px;
+  max-width: 220px;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+.taxonomy-node-card.selected {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 2px rgba(99,102,241,0.2);
+}
+
+.taxonomy-node-card.unreachable {
+  opacity: 0.45;
+}
+
+.badge-unreachable {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.taxonomy-node-card .node-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 5px;
+}
+
+.taxonomy-node-card .node-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.panel-inner {
+  padding: 16px 18px;
+}
+
+.panel-inner h2 {
+  margin-bottom: 14px;
+}
+
+/* ─── Canvas edge labels ─────────────────────────────────────────────────── */
+
+.edge-label {
+  background: #e0e7ff;
+  color: #3730a3;
+  border: 1px solid #a5b4fc;
+  border-radius: 10px;
+  padding: 3px 10px;
+  font-size: 11px;
+  font-weight: 500;
+  max-width: 180px;
+  text-align: center;
+  word-break: break-word;
+  white-space: normal;
+  line-height: 1.4;
+}
+
+.edge-label-warning {
+  background: #fef9c3;
+  color: #92400e;
+  border-color: #fde68a;
+}
+
+.edge-label-selected {
+  background: #eef2ff;
+  color: #3730a3;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 2px #a5b4fc;
 }

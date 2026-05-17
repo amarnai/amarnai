@@ -56,7 +56,7 @@ reviewItems.get("/workspaces/:workspaceId/review-items", async (c) => {
               confidence: true,
               priority: true,
               urgency: true,
-              categoryNode: {
+              finalNode: {
                 select: { id: true, name: true },
               },
             },

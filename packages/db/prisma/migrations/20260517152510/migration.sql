@@ -11,12 +11,6 @@ CREATE TYPE "EmailAddressIdentityKind" AS ENUM ('PRIMARY', 'ALIAS', 'SEND_AS', '
 CREATE TYPE "SyncStatus" AS ENUM ('IDLE', 'SYNCING', 'ERROR');
 
 -- CreateEnum
-CREATE TYPE "TaxonomyNodeKind" AS ENUM ('CATEGORY', 'RULE');
-
--- CreateEnum
-CREATE TYPE "DraftBehavior" AS ENUM ('DISABLED', 'MANUAL_REVIEW', 'CREATE_GMAIL_DRAFT');
-
--- CreateEnum
 CREATE TYPE "TagSource" AS ENUM ('GENIZOR', 'GMAIL');
 
 -- CreateEnum
@@ -133,24 +127,36 @@ CREATE TABLE "ProviderSyncState" (
 CREATE TABLE "TaxonomyNode" (
     "id" TEXT NOT NULL,
     "workspaceId" TEXT NOT NULL,
-    "parentId" TEXT,
-    "kind" "TaxonomyNodeKind" NOT NULL,
     "name" TEXT NOT NULL,
     "description" TEXT,
     "instructions" TEXT,
-    "examples" JSONB,
-    "confidenceThreshold" DOUBLE PRECISION,
-    "allowedActions" JSONB,
-    "draftBehavior" "DraftBehavior" NOT NULL DEFAULT 'DISABLED',
-    "syncToGmail" BOOLEAN NOT NULL DEFAULT false,
-    "gmailLabelId" TEXT,
-    "gmailLabelName" TEXT,
+    "examples" JSONB NOT NULL DEFAULT '[]',
+    "isRoot" BOOLEAN NOT NULL DEFAULT false,
+    "isVisibleCategory" BOOLEAN NOT NULL DEFAULT true,
+    "canReceiveEmails" BOOLEAN NOT NULL DEFAULT true,
     "positionX" DOUBLE PRECISION NOT NULL DEFAULT 0,
     "positionY" DOUBLE PRECISION NOT NULL DEFAULT 0,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "TaxonomyNode_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "TaxonomyEdge" (
+    "id" TEXT NOT NULL,
+    "workspaceId" TEXT NOT NULL,
+    "sourceNodeId" TEXT NOT NULL,
+    "targetNodeId" TEXT NOT NULL,
+    "sortingQuestion" TEXT NOT NULL,
+    "examples" JSONB NOT NULL DEFAULT '[]',
+    "negativeExamples" JSONB NOT NULL DEFAULT '[]',
+    "priority" INTEGER NOT NULL DEFAULT 0,
+    "confidenceThreshold" DOUBLE PRECISION,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "TaxonomyEdge_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -226,7 +232,8 @@ CREATE TABLE "EmailClassification" (
     "workspaceId" TEXT NOT NULL,
     "emailThreadId" TEXT NOT NULL,
     "emailMessageId" TEXT,
-    "categoryNodeId" TEXT NOT NULL,
+    "finalNodeId" TEXT NOT NULL,
+    "path" JSONB NOT NULL DEFAULT '[]',
     "confidence" DOUBLE PRECISION NOT NULL,
     "explanation" TEXT,
     "priority" "Priority" NOT NULL,
@@ -313,6 +320,9 @@ CREATE UNIQUE INDEX "EmailAddressIdentity_emailAccountId_emailAddress_key" ON "E
 CREATE UNIQUE INDEX "ProviderSyncState_emailAccountId_key" ON "ProviderSyncState"("emailAccountId");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "TaxonomyEdge_workspaceId_sourceNodeId_targetNodeId_key" ON "TaxonomyEdge"("workspaceId", "sourceNodeId", "targetNodeId");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "EmailThread_emailAccountId_providerThreadId_key" ON "EmailThread"("emailAccountId", "providerThreadId");
 
 -- CreateIndex
@@ -346,7 +356,13 @@ ALTER TABLE "ProviderSyncState" ADD CONSTRAINT "ProviderSyncState_emailAccountId
 ALTER TABLE "TaxonomyNode" ADD CONSTRAINT "TaxonomyNode_workspaceId_fkey" FOREIGN KEY ("workspaceId") REFERENCES "Workspace"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "TaxonomyNode" ADD CONSTRAINT "TaxonomyNode_parentId_fkey" FOREIGN KEY ("parentId") REFERENCES "TaxonomyNode"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "TaxonomyEdge" ADD CONSTRAINT "TaxonomyEdge_workspaceId_fkey" FOREIGN KEY ("workspaceId") REFERENCES "Workspace"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TaxonomyEdge" ADD CONSTRAINT "TaxonomyEdge_sourceNodeId_fkey" FOREIGN KEY ("sourceNodeId") REFERENCES "TaxonomyNode"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TaxonomyEdge" ADD CONSTRAINT "TaxonomyEdge_targetNodeId_fkey" FOREIGN KEY ("targetNodeId") REFERENCES "TaxonomyNode"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "EmailThread" ADD CONSTRAINT "EmailThread_workspaceId_fkey" FOREIGN KEY ("workspaceId") REFERENCES "Workspace"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -385,7 +401,7 @@ ALTER TABLE "EmailClassification" ADD CONSTRAINT "EmailClassification_emailThrea
 ALTER TABLE "EmailClassification" ADD CONSTRAINT "EmailClassification_emailMessageId_fkey" FOREIGN KEY ("emailMessageId") REFERENCES "EmailMessage"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "EmailClassification" ADD CONSTRAINT "EmailClassification_categoryNodeId_fkey" FOREIGN KEY ("categoryNodeId") REFERENCES "TaxonomyNode"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "EmailClassification" ADD CONSTRAINT "EmailClassification_finalNodeId_fkey" FOREIGN KEY ("finalNodeId") REFERENCES "TaxonomyNode"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "ReviewItem" ADD CONSTRAINT "ReviewItem_workspaceId_fkey" FOREIGN KEY ("workspaceId") REFERENCES "Workspace"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

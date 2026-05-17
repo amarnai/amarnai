@@ -57,7 +57,7 @@ emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
               priority: true,
               urgency: true,
               confidence: true,
-              categoryNode: {
+              finalNode: {
                 select: { id: true, name: true },
               },
             },
@@ -128,8 +128,8 @@ emailThreads.get(
             suggestedNextStep: true,
             needsHumanReview: true,
             createdAt: true,
-            categoryNode: {
-              select: { id: true, name: true, kind: true },
+            finalNode: {
+              select: { id: true, name: true },
             },
           },
         },

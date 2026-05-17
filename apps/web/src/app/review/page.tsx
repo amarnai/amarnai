@@ -68,7 +68,7 @@ export default async function ReviewPage() {
                   }}
                 >
                   <span className="badge">
-                    {item.classification.categoryNode.name}
+                    {item.classification.finalNode.name}
                   </span>
                   <span
                     className={`badge ${priorityClass(

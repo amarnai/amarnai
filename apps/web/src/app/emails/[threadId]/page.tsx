@@ -98,7 +98,7 @@ export default async function ThreadDetailPage({ params }: Props) {
           <h2>Classification</h2>
           <div className="card card-body">
             <div className="meta-grid">
-              <MetaItem label="Category" value={cls.categoryNode.name} />
+              <MetaItem label="Category" value={cls.finalNode.name} />
               <MetaItem
                 label="Confidence"
                 value={`${Math.round(cls.confidence * 100)}%`}

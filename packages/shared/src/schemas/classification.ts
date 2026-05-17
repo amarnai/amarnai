@@ -7,9 +7,11 @@ import {
   SuggestedNextStepSchema,
   UrgencySchema,
 } from "./email-metadata.js";
+import { ClassificationPathStepSchema } from "./taxonomy.js";
 
 export const ClassificationResultSchema = z.object({
-  categoryNodeId: z.string().min(1),
+  finalNodeId: z.string().min(1),
+  path: z.array(ClassificationPathStepSchema),
   confidence: z.number().min(0).max(1),
   explanation: z.string().optional(),
   priority: PrioritySchema,

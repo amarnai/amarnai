@@ -8,6 +8,25 @@ async function apiFetch<T>(path: string): Promise<T> {
   return res.json() as Promise<T>;
 }
 
+async function apiMutate<T>(
+  path: string,
+  method: "POST" | "PATCH" | "DELETE",
+  body?: unknown
+): Promise<T> {
+  const hasBody = body !== undefined;
+  const res = await fetch(`${API_BASE}${path}`, {
+    method,
+    headers: hasBody ? { "Content-Type": "application/json" } : {},
+    body: hasBody ? JSON.stringify(body) : null,
+    cache: "no-store",
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({})) as { error?: string };
+    throw new Error(err.error ?? `API ${path} returned ${res.status}`);
+  }
+  return res.json() as Promise<T>;
+}
+
 // ─── Shared sub-types ─────────────────────────────────────────────────────────
 
 export type EmailTag = {
@@ -21,7 +40,7 @@ export type ClassificationSummary = {
   priority: string;
   urgency: string;
   confidence: number;
-  categoryNode: { id: string; name: string };
+  finalNode: { id: string; name: string };
 };
 
 // ─── Resource types ───────────────────────────────────────────────────────────
@@ -41,16 +60,60 @@ export type Workspace = {
 
 export type TaxonomyNode = {
   id: string;
-  parentId: string | null;
-  kind: "CATEGORY" | "RULE";
+  workspaceId: string;
   name: string;
   description: string | null;
+  instructions: string | null;
+  examples: string[];
+  isRoot: boolean;
+  isVisibleCategory: boolean;
+  canReceiveEmails: boolean;
   positionX: number;
   positionY: number;
-  syncToGmail: boolean;
   createdAt: string;
   updatedAt: string;
 };
+
+export type CreateTaxonomyNodeInput = {
+  name: string;
+  description?: string | null;
+  instructions?: string | null;
+  examples?: string[];
+  isVisibleCategory?: boolean;
+  canReceiveEmails?: boolean;
+  positionX?: number;
+  positionY?: number;
+};
+
+export type UpdateTaxonomyNodeInput = Partial<CreateTaxonomyNodeInput>;
+
+export type TaxonomyEdge = {
+  id: string;
+  workspaceId: string;
+  sourceNodeId: string;
+  targetNodeId: string;
+  sortingQuestion: string;
+  examples: string[];
+  negativeExamples: string[];
+  priority: number;
+  confidenceThreshold: number | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type CreateTaxonomyEdgeInput = {
+  sourceNodeId: string;
+  targetNodeId: string;
+  sortingQuestion: string;
+  examples?: string[];
+  negativeExamples?: string[];
+  priority?: number;
+  confidenceThreshold?: number | null;
+};
+
+export type UpdateTaxonomyEdgeInput = Partial<
+  Omit<CreateTaxonomyEdgeInput, "sourceNodeId" | "targetNodeId">
+>;
 
 export type Tag = {
   id: string;
@@ -91,7 +154,7 @@ export type Classification = {
   suggestedNextStep: string;
   needsHumanReview: boolean;
   createdAt: string;
-  categoryNode: { id: string; name: string; kind: string };
+  finalNode: { id: string; name: string };
 };
 
 export type EmailThreadDetail = {
@@ -148,6 +211,46 @@ export const api = {
   workspaces: () => apiFetch<Workspace[]>("/workspaces"),
   taxonomyNodes: (workspaceId: string) =>
     apiFetch<TaxonomyNode[]>(`/workspaces/${workspaceId}/taxonomy-nodes`),
+  createTaxonomyNode: (workspaceId: string, input: CreateTaxonomyNodeInput) =>
+    apiMutate<TaxonomyNode>(
+      `/workspaces/${workspaceId}/taxonomy-nodes`,
+      "POST",
+      input
+    ),
+  updateTaxonomyNode: (
+    workspaceId: string,
+    nodeId: string,
+    input: UpdateTaxonomyNodeInput
+  ) =>
+    apiMutate<TaxonomyNode>(
+      `/workspaces/${workspaceId}/taxonomy-nodes/${nodeId}`,
+      "PATCH",
+      input
+    ),
+  deleteTaxonomyNode: (workspaceId: string, nodeId: string) =>
+    apiMutate<{ ok: boolean }>(
+      `/workspaces/${workspaceId}/taxonomy-nodes/${nodeId}`,
+      "DELETE"
+    ),
+  taxonomyEdges: (workspaceId: string) =>
+    apiFetch<TaxonomyEdge[]>(`/workspaces/${workspaceId}/taxonomy-edges`),
+  createTaxonomyEdge: (workspaceId: string, input: CreateTaxonomyEdgeInput) =>
+    apiMutate<TaxonomyEdge>(
+      `/workspaces/${workspaceId}/taxonomy-edges`,
+      "POST",
+      input
+    ),
+  updateTaxonomyEdge: (workspaceId: string, edgeId: string, input: UpdateTaxonomyEdgeInput) =>
+    apiMutate<TaxonomyEdge>(
+      `/workspaces/${workspaceId}/taxonomy-edges/${edgeId}`,
+      "PATCH",
+      input
+    ),
+  deleteTaxonomyEdge: (workspaceId: string, edgeId: string) =>
+    apiMutate<{ ok: boolean }>(
+      `/workspaces/${workspaceId}/taxonomy-edges/${edgeId}`,
+      "DELETE"
+    ),
   tags: (workspaceId: string) =>
     apiFetch<Tag[]>(`/workspaces/${workspaceId}/tags`),
   emailThreads: (workspaceId: string) =>

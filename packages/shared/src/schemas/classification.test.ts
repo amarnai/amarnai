@@ -2,7 +2,8 @@ import { describe, expect, it } from "vitest";
 import { ClassificationResultSchema } from "./classification.js";
 
 const valid = {
-  categoryNodeId: "node_1",
+  finalNodeId: "node_1",
+  path: [],
   confidence: 0.92,
   priority: "HIGH" as const,
   urgency: "TODAY" as const,
@@ -33,6 +34,18 @@ describe("ClassificationResultSchema", () => {
     });
     expect(result.explanation).toBe("Looks urgent");
     expect(result.modelName).toBe("claude-sonnet-4-6");
+  });
+
+  it("parses a result with path steps", () => {
+    const result = ClassificationResultSchema.parse({
+      ...valid,
+      path: [
+        { nodeId: "node_0", nodeName: "Inbox" },
+        { nodeId: "node_1", nodeName: "Clients" },
+      ],
+    });
+    expect(result.path).toHaveLength(2);
+    expect(result.path[0]?.nodeName).toBe("Inbox");
   });
 
   it("rejects confidence outside [0, 1]", () => {
@@ -66,7 +79,7 @@ describe("ClassificationResultSchema", () => {
   });
 
   it("rejects missing required fields", () => {
-    const { categoryNodeId: _omit, ...withoutNodeId } = valid;
+    const { finalNodeId: _omit, ...withoutNodeId } = valid;
     expect(() => ClassificationResultSchema.parse(withoutNodeId)).toThrow();
   });
 

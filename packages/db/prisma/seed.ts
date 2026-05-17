@@ -4,7 +4,6 @@ import {
   WorkspaceRole,
   Provider,
   EmailAddressIdentityKind,
-  TaxonomyNodeKind,
   TagSource,
   EmailTagSource,
   Priority,
@@ -33,7 +32,6 @@ async function main() {
   });
 
   // ── 2. Workspace ──────────────────────────────────────────────────────────
-  // No unique constraint other than id, so find-or-create by name + owner.
   let workspace = await db.workspace.findFirst({
     where: { name: "Demo Workspace", ownerUserId: user.id },
   });
@@ -107,129 +105,173 @@ async function main() {
     });
   }
 
-  // ── 6 & 7. TaxonomyNode tree + rule nodes ─────────────────────────────────
-  // No unique constraint on TaxonomyNode, so find-or-create by name + parent.
+  // ── 6. TaxonomyNodes ──────────────────────────────────────────────────────
   async function findOrCreateNode(params: {
-    parentId: string | null;
-    kind: TaxonomyNodeKind;
     name: string;
     description: string;
+    isRoot?: boolean;
+    isVisibleCategory: boolean;
+    canReceiveEmails: boolean;
     positionX: number;
     positionY: number;
-    confidenceThreshold?: number;
   }) {
     const existing = await db.taxonomyNode.findFirst({
-      where: { workspaceId, name: params.name, parentId: params.parentId },
+      where: { workspaceId, name: params.name },
     });
-    if (existing) return existing;
+    if (existing) {
+      if (params.isRoot && !existing.isRoot) {
+        return db.taxonomyNode.update({
+          where: { id: existing.id },
+          data: { isRoot: true },
+        });
+      }
+      return existing;
+    }
     return db.taxonomyNode.create({
       data: {
         workspaceId,
-        kind: params.kind,
         name: params.name,
         description: params.description,
+        isRoot: params.isRoot ?? false,
+        isVisibleCategory: params.isVisibleCategory,
+        canReceiveEmails: params.canReceiveEmails,
         positionX: params.positionX,
         positionY: params.positionY,
-        ...(params.confidenceThreshold != null
-          ? { confidenceThreshold: params.confidenceThreshold }
-          : {}),
-        ...(params.parentId != null ? { parentId: params.parentId } : {}),
       },
     });
   }
 
   const nodeInbox = await findOrCreateNode({
-    parentId: null,
-    kind: TaxonomyNodeKind.CATEGORY,
     name: "Inbox",
-    description: "Top-level catch-all for all incoming email",
+    description: "Top-level entry point for all incoming email",
+    isRoot: true,
+    isVisibleCategory: false,
+    canReceiveEmails: false,
     positionX: 0,
     positionY: 0,
   });
 
   const nodeClients = await findOrCreateNode({
-    parentId: nodeInbox.id,
-    kind: TaxonomyNodeKind.CATEGORY,
     name: "Clients",
-    description: "Emails from clients or prospects",
-    positionX: 200,
-    positionY: -150,
-  });
-
-  const nodeClientsUrgent = await findOrCreateNode({
-    parentId: nodeClients.id,
-    kind: TaxonomyNodeKind.CATEGORY,
-    name: "Urgent",
-    description: "Urgent client requests that need same-day attention",
-    positionX: 400,
-    positionY: -250,
-    confidenceThreshold: 0.7,
-  });
-
-  const nodeClientsFYI = await findOrCreateNode({
-    parentId: nodeClients.id,
-    kind: TaxonomyNodeKind.CATEGORY,
-    name: "FYI",
-    description: "Client updates that are informational only",
-    positionX: 400,
-    positionY: -100,
-  });
-
-  const nodeFinance = await findOrCreateNode({
-    parentId: nodeInbox.id,
-    kind: TaxonomyNodeKind.CATEGORY,
-    name: "Finance",
-    description: "Invoices, payments, and financial correspondence",
-    positionX: 200,
-    positionY: 50,
-  });
-
-  const nodeInvoices = await findOrCreateNode({
-    parentId: nodeFinance.id,
-    kind: TaxonomyNodeKind.CATEGORY,
-    name: "Invoices",
-    description: "Invoices requiring review or payment approval",
-    positionX: 400,
-    positionY: 100,
-    confidenceThreshold: 0.75,
-  });
-
-  const nodePersonal = await findOrCreateNode({
-    parentId: nodeInbox.id,
-    kind: TaxonomyNodeKind.CATEGORY,
-    name: "Personal",
-    description: "Personal, non-work email",
-    positionX: 200,
-    positionY: 250,
-  });
-
-  // Rule/helper nodes — not folder destinations, no parent
-  await findOrCreateNode({
-    parentId: null,
-    kind: TaxonomyNodeKind.RULE,
-    name: "Needs reply",
-    description: "Flag emails that require a response",
-    positionX: 600,
+    description: "Emails from clients, prospects, or project stakeholders",
+    isVisibleCategory: true,
+    canReceiveEmails: true,
+    positionX: 300,
     positionY: -200,
   });
 
-  await findOrCreateNode({
-    parentId: null,
-    kind: TaxonomyNodeKind.RULE,
-    name: "Requires approval",
-    description:
-      "Flag emails where an action must be approved before proceeding",
+  const nodeUrgent = await findOrCreateNode({
+    name: "Urgent",
+    description: "Emails requiring same-day action, escalation, or unblocking",
+    isVisibleCategory: true,
+    canReceiveEmails: true,
     positionX: 600,
-    positionY: -50,
+    positionY: -300,
   });
 
-  await findOrCreateNode({
-    parentId: null,
-    kind: TaxonomyNodeKind.RULE,
-    name: "Attachment required",
-    description: "Expected attachment may be missing",
-    positionX: 600,
+  const nodeFinance = await findOrCreateNode({
+    name: "Finance",
+    description: "Sorting step for billing, invoices, payments, and financial admin",
+    isVisibleCategory: false,
+    canReceiveEmails: false,
+    positionX: 300,
     positionY: 100,
+  });
+
+  const nodeInvoices = await findOrCreateNode({
+    name: "Invoices",
+    description: "Invoices, receipts, payment requests, and billing documents",
+    isVisibleCategory: true,
+    canReceiveEmails: true,
+    positionX: 600,
+    positionY: 0,
+  });
+
+  const nodeApprovalNeeded = await findOrCreateNode({
+    name: "Approval Needed",
+    description: "Invoices or payment requests that require explicit approval",
+    isVisibleCategory: true,
+    canReceiveEmails: true,
+    positionX: 900,
+    positionY: 50,
+  });
+
+  const nodePersonal = await findOrCreateNode({
+    name: "Personal",
+    description: "Personal or non-work email",
+    isVisibleCategory: true,
+    canReceiveEmails: true,
+    positionX: 300,
+    positionY: 350,
+  });
+
+  // ── 7. TaxonomyEdges ──────────────────────────────────────────────────────
+  async function findOrCreateEdge(params: {
+    sourceNodeId: string;
+    targetNodeId: string;
+    sortingQuestion: string;
+    priority?: number;
+  }) {
+    const existing = await db.taxonomyEdge.findFirst({
+      where: { workspaceId, sourceNodeId: params.sourceNodeId, targetNodeId: params.targetNodeId },
+    });
+    if (existing) return existing;
+    return db.taxonomyEdge.create({
+      data: {
+        workspaceId,
+        sourceNodeId: params.sourceNodeId,
+        targetNodeId: params.targetNodeId,
+        sortingQuestion: params.sortingQuestion,
+        priority: params.priority ?? 0,
+      },
+    });
+  }
+
+  await findOrCreateEdge({
+    sourceNodeId: nodeInbox.id,
+    targetNodeId: nodeClients.id,
+    sortingQuestion:
+      "Is this email from, about, or intended for a client, prospect, or project stakeholder?",
+    priority: 0,
+  });
+
+  await findOrCreateEdge({
+    sourceNodeId: nodeClients.id,
+    targetNodeId: nodeUrgent.id,
+    sortingQuestion:
+      "Does this require same-day action, escalation, or unblock someone?",
+    priority: 0,
+  });
+
+  await findOrCreateEdge({
+    sourceNodeId: nodeInbox.id,
+    targetNodeId: nodeFinance.id,
+    sortingQuestion:
+      "Is this email about billing, invoices, payments, receipts, or financial admin?",
+    priority: 1,
+  });
+
+  await findOrCreateEdge({
+    sourceNodeId: nodeFinance.id,
+    targetNodeId: nodeInvoices.id,
+    sortingQuestion:
+      "Is this specifically an invoice, receipt, payment request, or billing document?",
+    priority: 0,
+  });
+
+  await findOrCreateEdge({
+    sourceNodeId: nodeInvoices.id,
+    targetNodeId: nodeApprovalNeeded.id,
+    sortingQuestion:
+      "Does this invoice or payment request require approval before action?",
+    priority: 0,
+  });
+
+  await findOrCreateEdge({
+    sourceNodeId: nodeInbox.id,
+    targetNodeId: nodePersonal.id,
+    sortingQuestion: "Is this a personal or non-work email?",
+    priority: 2,
   });
 
   // ── 8. Tags ───────────────────────────────────────────────────────────────
@@ -240,7 +282,7 @@ async function main() {
     { name: "Personal", color: "#F59E0B" },
   ] as const;
 
-  const tags: Record<string, string> = {}; // name → id
+  const tags: Record<string, string> = {};
   for (const def of tagDefs) {
     const tag = await db.tag.upsert({
       where: { workspaceId_name: { workspaceId, name: def.name } },
@@ -440,10 +482,13 @@ async function main() {
     });
 
   // ── 10. EmailClassifications ──────────────────────────────────────────────
+  type PathStep = { edgeId?: string; nodeId: string; nodeName: string };
+
   async function findOrCreateClassification(params: {
     emailThreadId: string;
     emailMessageId: string;
-    categoryNodeId: string;
+    finalNodeId: string;
+    path: PathStep[];
     confidence: number;
     explanation: string;
     priority: Priority;
@@ -458,7 +503,7 @@ async function main() {
     const existing = await db.emailClassification.findFirst({
       where: {
         emailThreadId: params.emailThreadId,
-        categoryNodeId: params.categoryNodeId,
+        finalNodeId: params.finalNodeId,
       },
     });
     if (existing) return existing;
@@ -467,7 +512,8 @@ async function main() {
         workspaceId,
         emailThreadId: params.emailThreadId,
         emailMessageId: params.emailMessageId,
-        categoryNodeId: params.categoryNodeId,
+        finalNodeId: params.finalNodeId,
+        path: params.path as Prisma.InputJsonArray,
         confidence: params.confidence,
         explanation: params.explanation,
         priority: params.priority,
@@ -485,10 +531,16 @@ async function main() {
     });
   }
 
+  // Urgent client → routed through Inbox → Clients → Urgent
   const classUrgentClient = await findOrCreateClassification({
     emailThreadId: threadUrgentClient.id,
     emailMessageId: msgUrgentClient.id,
-    categoryNodeId: nodeClientsUrgent.id,
+    finalNodeId: nodeUrgent.id,
+    path: [
+      { nodeId: nodeInbox.id, nodeName: "Inbox" },
+      { nodeId: nodeClients.id, nodeName: "Clients" },
+      { nodeId: nodeUrgent.id, nodeName: "Urgent" },
+    ],
     confidence: 0.94,
     explanation:
       "Known client contact. Subject explicitly states urgency and a same-day deadline. Requires approval to unblock a release.",
@@ -501,10 +553,17 @@ async function main() {
     needsHumanReview: false,
   });
 
+  // Invoice → routed through Inbox → Finance → Invoices → Approval Needed
   const classInvoice = await findOrCreateClassification({
     emailThreadId: threadInvoice.id,
     emailMessageId: msgInvoice.id,
-    categoryNodeId: nodeInvoices.id,
+    finalNodeId: nodeApprovalNeeded.id,
+    path: [
+      { nodeId: nodeInbox.id, nodeName: "Inbox" },
+      { nodeId: nodeFinance.id, nodeName: "Finance" },
+      { nodeId: nodeInvoices.id, nodeName: "Invoices" },
+      { nodeId: nodeApprovalNeeded.id, nodeName: "Approval Needed" },
+    ],
     confidence: 0.97,
     explanation:
       "Supplier invoice with specific amount ($8,400) and due date. Financial document requiring explicit approval before payment.",
@@ -518,10 +577,15 @@ async function main() {
     needsHumanReview: true,
   });
 
+  // Personal → routed through Inbox → Personal
   await findOrCreateClassification({
     emailThreadId: threadPersonal.id,
     emailMessageId: msgPersonal.id,
-    categoryNodeId: nodePersonal.id,
+    finalNodeId: nodePersonal.id,
+    path: [
+      { nodeId: nodeInbox.id, nodeName: "Inbox" },
+      { nodeId: nodePersonal.id, nodeName: "Personal" },
+    ],
     confidence: 0.91,
     explanation:
       "Casual tone, personal Gmail address, social plans. No professional or financial content.",
@@ -534,10 +598,15 @@ async function main() {
     needsHumanReview: false,
   });
 
+  // Vendor FYI → routed through Inbox → Clients
   await findOrCreateClassification({
     emailThreadId: threadVendorFYI.id,
     emailMessageId: msgVendorFYI.id,
-    categoryNodeId: nodeClientsFYI.id,
+    finalNodeId: nodeClients.id,
+    path: [
+      { nodeId: nodeInbox.id, nodeName: "Inbox" },
+      { nodeId: nodeClients.id, nodeName: "Clients" },
+    ],
     confidence: 0.82,
     explanation:
       "Vendor pricing update with no required action. Current plan is unaffected — informational only.",
@@ -550,10 +619,15 @@ async function main() {
     needsHumanReview: false,
   });
 
+  // Ambiguous → routed through Inbox → Clients (low confidence)
   const classAmbiguous = await findOrCreateClassification({
     emailThreadId: threadAmbiguous.id,
     emailMessageId: msgAmbiguous.id,
-    categoryNodeId: nodeClients.id,
+    finalNodeId: nodeClients.id,
+    path: [
+      { nodeId: nodeInbox.id, nodeName: "Inbox" },
+      { nodeId: nodeClients.id, nodeName: "Clients" },
+    ],
     confidence: 0.38,
     explanation:
       "Vague subject and body. Unknown sender. No prior context. Cannot determine topic, urgency, or required action with confidence.",
@@ -645,7 +719,6 @@ async function main() {
   });
 
   // ── 13. AuditLog entries ──────────────────────────────────────────────────
-  // Audit logs are append-only events; guard by entityId + eventType to stay idempotent.
   async function findOrCreateAuditLog(params: {
     actorType: AuditActorType;
     actorUserId?: string;
@@ -678,7 +751,7 @@ async function main() {
     entityId: classUrgentClient.id,
     metadata: {
       confidence: 0.94,
-      categoryName: "Clients > Urgent",
+      finalNodeName: "Urgent",
       needsHumanReview: false,
     },
   });
@@ -690,7 +763,7 @@ async function main() {
     entityId: classInvoice.id,
     metadata: {
       confidence: 0.97,
-      categoryName: "Finance > Invoices",
+      finalNodeName: "Approval Needed",
       needsHumanReview: true,
     },
   });
@@ -713,7 +786,7 @@ async function main() {
     entityId: classAmbiguous.id,
     metadata: {
       confidence: 0.38,
-      categoryName: "Clients",
+      finalNodeName: "Clients",
       needsHumanReview: true,
     },
   });

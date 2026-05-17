@@ -1,29 +1,32 @@
 import { z } from "zod";
 
-export const TaxonomyNodeKindSchema = z.enum(["CATEGORY", "RULE"]);
-export type TaxonomyNodeKind = z.infer<typeof TaxonomyNodeKindSchema>;
+// ─── TaxonomyNode ─────────────────────────────────────────────────────────────
 
-export const DraftBehaviorSchema = z.enum([
-  "DISABLED",
-  "MANUAL_REVIEW",
-  "CREATE_GMAIL_DRAFT",
-]);
-export type DraftBehavior = z.infer<typeof DraftBehaviorSchema>;
+export const TaxonomyNodeSchema = z.object({
+  id: z.string().min(1),
+  workspaceId: z.string().min(1),
+  name: z.string().min(1).max(100),
+  description: z.string().max(500).nullable(),
+  instructions: z.string().max(2000).nullable(),
+  examples: z.array(z.string()),
+  isRoot: z.boolean(),
+  isVisibleCategory: z.boolean(),
+  canReceiveEmails: z.boolean(),
+  positionX: z.number(),
+  positionY: z.number(),
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime(),
+});
+export type TaxonomyNode = z.infer<typeof TaxonomyNodeSchema>;
 
 export const CreateTaxonomyNodeInputSchema = z.object({
   workspaceId: z.string().min(1),
-  parentId: z.string().min(1).optional(),
-  kind: TaxonomyNodeKindSchema,
   name: z.string().min(1).max(100),
   description: z.string().max(500).optional(),
   instructions: z.string().max(2000).optional(),
   examples: z.array(z.string()).optional(),
-  confidenceThreshold: z.number().min(0).max(1).optional(),
-  allowedActions: z.array(z.string()).optional(),
-  draftBehavior: DraftBehaviorSchema.optional(),
-  syncToGmail: z.boolean().optional(),
-  gmailLabelId: z.string().optional(),
-  gmailLabelName: z.string().optional(),
+  isVisibleCategory: z.boolean().optional(),
+  canReceiveEmails: z.boolean().optional(),
   positionX: z.number().optional(),
   positionY: z.number().optional(),
 });
@@ -33,3 +36,40 @@ export const UpdateTaxonomyNodeInputSchema = CreateTaxonomyNodeInputSchema.omit(
   workspaceId: true,
 }).partial();
 export type UpdateTaxonomyNodeInput = z.infer<typeof UpdateTaxonomyNodeInputSchema>;
+
+// ─── TaxonomyEdge ─────────────────────────────────────────────────────────────
+
+export const TaxonomyEdgeSchema = z.object({
+  id: z.string().min(1),
+  workspaceId: z.string().min(1),
+  sourceNodeId: z.string().min(1),
+  targetNodeId: z.string().min(1),
+  sortingQuestion: z.string().min(1).max(160),
+  examples: z.array(z.string()),
+  negativeExamples: z.array(z.string()),
+  priority: z.number().int(),
+  confidenceThreshold: z.number().min(0).max(1).nullable(),
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime(),
+});
+export type TaxonomyEdge = z.infer<typeof TaxonomyEdgeSchema>;
+
+export const CreateTaxonomyEdgeInputSchema = z.object({
+  workspaceId: z.string().min(1),
+  sourceNodeId: z.string().min(1),
+  targetNodeId: z.string().min(1),
+  sortingQuestion: z.string().min(1).max(160),
+  examples: z.array(z.string()).optional(),
+  negativeExamples: z.array(z.string()).optional(),
+  priority: z.number().int().optional(),
+  confidenceThreshold: z.number().min(0).max(1).optional(),
+});
+export type CreateTaxonomyEdgeInput = z.infer<typeof CreateTaxonomyEdgeInputSchema>;
+
+// ─── ClassificationPathStep ───────────────────────────────────────────────────
+
+export const ClassificationPathStepSchema = z.object({
+  nodeId: z.string().min(1),
+  nodeName: z.string().min(1),
+});
+export type ClassificationPathStep = z.infer<typeof ClassificationPathStepSchema>;

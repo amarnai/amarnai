@@ -32,17 +32,6 @@ enum SyncStatus {
   ERROR
 }
 
-enum TaxonomyNodeKind {
-  CATEGORY
-  RULE
-}
-
-enum DraftBehavior {
-  DISABLED
-  MANUAL_REVIEW
-  CREATE_GMAIL_DRAFT
-}
-
 enum TagSource {
   GENIZOR
   GMAIL
@@ -150,6 +139,7 @@ model Workspace {
   members         WorkspaceMember[]
   emailAccounts   EmailAccount[]
   taxonomyNodes   TaxonomyNode[]
+  taxonomyEdges   TaxonomyEdge[]
   emailThreads    EmailThread[]
   emailMessages   EmailMessage[]
   tags            Tag[]
@@ -225,29 +215,44 @@ model ProviderSyncState {
 }
 
 model TaxonomyNode {
-  id                  String           @id @default(cuid())
-  workspaceId         String
-  parentId            String?
-  kind                TaxonomyNodeKind
-  name                String
-  description         String?
-  instructions        String?
-  examples            Json?
-  confidenceThreshold Float?
-  allowedActions      Json?
-  draftBehavior       DraftBehavior    @default(DISABLED)
-  syncToGmail         Boolean          @default(false)
-  gmailLabelId        String?
-  gmailLabelName      String?
-  positionX           Float            @default(0)
-  positionY           Float            @default(0)
-  createdAt           DateTime         @default(now())
-  updatedAt           DateTime         @updatedAt
+  id                String   @id @default(cuid())
+  workspaceId       String
+  name              String
+  description       String?
+  instructions      String?
+  examples          Json     @default("[]")
+  isRoot            Boolean  @default(false)
+  isVisibleCategory Boolean  @default(true)
+  canReceiveEmails  Boolean  @default(true)
+  positionX         Float    @default(0)
+  positionY         Float    @default(0)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 
   workspace       Workspace             @relation(fields: [workspaceId], references: [id])
-  parent          TaxonomyNode?         @relation("NodeChildren", fields: [parentId], references: [id])
-  children        TaxonomyNode[]        @relation("NodeChildren")
+  outgoingEdges   TaxonomyEdge[]        @relation("SourceNode")
+  incomingEdges   TaxonomyEdge[]        @relation("TargetNode")
   classifications EmailClassification[]
+}
+
+model TaxonomyEdge {
+  id                  String   @id @default(cuid())
+  workspaceId         String
+  sourceNodeId        String
+  targetNodeId        String
+  sortingQuestion     String
+  examples            Json     @default("[]")
+  negativeExamples    Json     @default("[]")
+  priority            Int      @default(0)
+  confidenceThreshold Float?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  workspace  Workspace    @relation(fields: [workspaceId], references: [id])
+  sourceNode TaxonomyNode @relation("SourceNode", fields: [sourceNodeId], references: [id])
+  targetNode TaxonomyNode @relation("TargetNode", fields: [targetNodeId], references: [id])
+
+  @@unique([workspaceId, sourceNodeId, targetNodeId])
 }
 
 model EmailThread {
@@ -339,7 +344,8 @@ model EmailClassification {
   workspaceId       String
   emailThreadId     String
   emailMessageId    String?
-  categoryNodeId    String
+  finalNodeId       String
+  path              Json              @default("[]")
   confidence        Float
   explanation       String?
   priority          Priority
@@ -356,10 +362,10 @@ model EmailClassification {
   rawOutput         Json?
   createdAt         DateTime          @default(now())
 
-  workspace    Workspace    @relation(fields: [workspaceId], references: [id])
-  emailThread  EmailThread  @relation(fields: [emailThreadId], references: [id])
+  workspace    Workspace     @relation(fields: [workspaceId], references: [id])
+  emailThread  EmailThread   @relation(fields: [emailThreadId], references: [id])
   emailMessage EmailMessage? @relation(fields: [emailMessageId], references: [id])
-  categoryNode TaxonomyNode @relation(fields: [categoryNodeId], references: [id])
+  finalNode    TaxonomyNode  @relation(fields: [finalNodeId], references: [id])
   reviewItems  ReviewItem[]
   drafts       Draft[]
 }
