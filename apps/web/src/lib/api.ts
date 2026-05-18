@@ -40,6 +40,7 @@ export type ClassificationSummary = {
   priority: string;
   urgency: string;
   confidence: number;
+  needsHumanReview: boolean;
   finalNode: { id: string; name: string };
 };
 
@@ -205,6 +206,47 @@ export type ReviewItem = {
   classification: ClassificationSummary | null;
 };
 
+export type MockInboxEventInput =
+  | {
+      mode: "new_thread";
+      subject?: string | undefined;
+      senderName?: string | undefined;
+      senderEmail: string;
+      bodyText: string;
+    }
+  | {
+      mode: "existing_thread";
+      threadId: string;
+      senderName?: string | undefined;
+      senderEmail: string;
+      bodyText: string;
+    };
+
+export type MockInboxResult = {
+  thread: {
+    id: string;
+    subject: string | null;
+    messageCount: number;
+    isNew: boolean;
+  };
+  classification: {
+    id: string;
+    finalNode: { id: string; name: string };
+    path: Array<{ nodeId: string; nodeName: string }>;
+    confidence: number;
+    explanation: string;
+    priority: string;
+    urgency: string;
+    riskLevel: string;
+    requiredAction: string;
+    sensitivity: string;
+    suggestedNextStep: string;
+    needsHumanReview: boolean;
+  };
+  reviewItemCreated: boolean;
+  reviewItemId: string | null;
+};
+
 // ─── API helpers ──────────────────────────────────────────────────────────────
 
 export const api = {
@@ -261,4 +303,10 @@ export const api = {
     ),
   reviewItems: (workspaceId: string) =>
     apiFetch<ReviewItem[]>(`/workspaces/${workspaceId}/review-items`),
+  mockInboxEvent: (workspaceId: string, input: MockInboxEventInput) =>
+    apiMutate<MockInboxResult>(
+      `/dev/workspaces/${workspaceId}/mock-inbox-event`,
+      "POST",
+      input
+    ),
 };

@@ -1,12 +1,14 @@
 import { api } from "@/lib/api";
+import FoldersSection from "./FoldersSection";
 
 async function loadDashboard() {
   const workspaces = await api.workspaces();
   const ws = workspaces[0];
   if (!ws) throw new Error("No workspace found");
 
-  const [nodes, threads, reviews, tags] = await Promise.all([
+  const [nodes, edges, threads, reviews, tags] = await Promise.all([
     api.taxonomyNodes(ws.id),
+    api.taxonomyEdges(ws.id),
     api.emailThreads(ws.id),
     api.reviewItems(ws.id),
     api.tags(ws.id),
@@ -14,6 +16,9 @@ async function loadDashboard() {
 
   return {
     workspace: ws,
+    nodes,
+    edges,
+    threads,
     nodeCount: nodes.length,
     threadCount: threads.length,
     reviewCount: reviews.length,
@@ -57,6 +62,15 @@ export default async function DashboardPage() {
           <div className="stat-label">Tags</div>
           <div className="stat-value">{data.tagCount}</div>
         </div>
+      </div>
+
+      <div className="section-gap">
+        <h2>Folders</h2>
+        <FoldersSection
+          nodes={data.nodes}
+          edges={data.edges}
+          threads={data.threads}
+        />
       </div>
     </>
   );

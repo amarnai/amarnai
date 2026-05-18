@@ -733,6 +733,136 @@ a {
   color: #4f46e5;
 }
 
+/* ─── Folders section ────────────────────────────────────────────────────── */
+
+.folders-section {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.folders-tree-panel {
+  width: 228px;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.folders-thread-panel {
+  flex: 1;
+  min-width: 0;
+}
+
+.folder-all-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+  padding: 10px 14px;
+  transition: background 0.1s;
+}
+
+.folder-all-btn:hover {
+  background: #f9fafb;
+}
+
+.folder-all-btn.active {
+  background: #eef2ff;
+  color: #4f46e5;
+}
+
+.folders-divider {
+  height: 1px;
+  background: #f3f4f6;
+  margin: 0;
+}
+
+.folder-tree {
+  padding: 4px 0;
+}
+
+
+.folder-row-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: 13px;
+  color: #374151;
+  cursor: pointer;
+  padding: 7px 14px 7px 10px;
+  transition: background 0.1s;
+}
+
+.folder-row-btn:hover {
+  background: #f9fafb;
+}
+
+.folder-row-btn.active {
+  background: #eef2ff;
+  color: #4f46e5;
+  font-weight: 500;
+}
+
+.folder-toggle {
+  flex-shrink: 0;
+  width: 14px;
+  font-size: 10px;
+  color: #9ca3af;
+  user-select: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.folder-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.folder-count {
+  flex-shrink: 0;
+  font-size: 11px;
+  background: #f3f4f6;
+  color: #6b7280;
+  padding: 1px 6px;
+  border-radius: 99px;
+  font-weight: 500;
+  min-width: 20px;
+  text-align: center;
+}
+
+.folder-all-btn.active .folder-count,
+.folder-row-btn.active .folder-count {
+  background: #e0e7ff;
+  color: #4f46e5;
+}
+
+.review-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  background: #ef4444;
+  border-radius: 50%;
+  margin-left: 6px;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
 /* ─── Taxonomy canvas ────────────────────────────────────────────────────── */
 
 .taxonomy-canvas-wrap {

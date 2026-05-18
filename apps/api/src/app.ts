@@ -7,6 +7,7 @@ import { taxonomyEdgesRoute } from "./routes/taxonomy-edges.js";
 import { tagsRoute } from "./routes/tags.js";
 import { emailThreadsRoute } from "./routes/email-threads.js";
 import { reviewItemsRoute } from "./routes/review-items.js";
+import { mockInboxRoute } from "./routes/mock-inbox.js";
 
 const app = new Hono();
 
@@ -19,5 +20,6 @@ app.route("/", taxonomyEdgesRoute);
 app.route("/", tagsRoute);
 app.route("/", emailThreadsRoute);
 app.route("/", reviewItemsRoute);
+app.route("/", mockInboxRoute);
 
 export default app;
