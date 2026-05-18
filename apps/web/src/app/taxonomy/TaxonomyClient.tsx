@@ -34,6 +34,11 @@ import {
   type CreateTaxonomyEdgeInput,
   type UpdateTaxonomyEdgeInput,
 } from "@/lib/api";
+import {
+  isMissingSortingQuestion,
+  computeIgnoredReasons,
+  type IgnoredReason,
+} from "./taxonomyUtils";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -48,36 +53,9 @@ function nodeById(nodes: TaxonomyNode[], id: string): TaxonomyNode | undefined {
   return nodes.find((n) => n.id === id);
 }
 
-const DEFAULT_SORTING_QUESTION = "Describe when emails should follow this path.";
-
-function isMissingSortingQuestion(q: string | null | undefined): boolean {
-  if (!q) return true;
-  const trimmed = q.trim();
-  return trimmed === "" || trimmed === DEFAULT_SORTING_QUESTION;
-}
-
 function formatEdgeLabel(q: string | null | undefined): string {
   if (isMissingSortingQuestion(q)) return "Missing sorting question";
   return q!.trim();
-}
-
-type IgnoredReason = "no-incoming" | "all-invalid" | null;
-
-function computeIgnoredReasons(
-  nodes: TaxonomyNode[],
-  edges: TaxonomyEdge[]
-): Map<string, IgnoredReason> {
-  const result = new Map<string, IgnoredReason>();
-  for (const node of nodes) {
-    if (node.isRoot) continue;
-    const incoming = edges.filter((e) => e.targetNodeId === node.id);
-    if (incoming.length === 0) {
-      result.set(node.id, "no-incoming");
-    } else if (incoming.every((e) => isMissingSortingQuestion(e.sortingQuestion))) {
-      result.set(node.id, "all-invalid");
-    }
-  }
-  return result;
 }
 
 // ─── React Flow node/edge converters ──────────────────────────────────────────
@@ -99,16 +77,23 @@ function toRFNodes(nodes: TaxonomyNode[], edges: TaxonomyEdge[]): RFNode[] {
   return nodes.map((n) => toRFNode(n, ignoredMap.get(n.id) ?? null));
 }
 
-function toRFEdge(e: TaxonomyEdge): Edge {
+function toRFEdge(e: TaxonomyEdge, ignoredReasonsMap: Map<string, IgnoredReason>): Edge {
   const missing = isMissingSortingQuestion(e.sortingQuestion);
+  const targetIgnored = ignoredReasonsMap.has(e.targetNodeId);
+  const isWarning = missing || targetIgnored;
   return {
     id: e.id,
     source: e.sourceNodeId,
     target: e.targetNodeId,
     type: "taxonomy-edge",
-    markerEnd: { type: MarkerType.ArrowClosed, color: missing ? "#f59e0b" : "#94a3b8" },
-    data: { sortingQuestion: e.sortingQuestion },
+    markerEnd: { type: MarkerType.ArrowClosed, color: isWarning ? "#f59e0b" : "#94a3b8" },
+    data: { sortingQuestion: e.sortingQuestion, targetIgnored },
   };
+}
+
+function toRFEdges(edges: TaxonomyEdge[], nodes: TaxonomyNode[]): Edge[] {
+  const ignoredMap = computeIgnoredReasons(nodes, edges);
+  return edges.map((e) => toRFEdge(e, ignoredMap));
 }
 
 // ─── Custom node component ────────────────────────────────────────────────────
@@ -121,6 +106,8 @@ function TaxonomyNodeCard({ data, selected }: NodeProps<RFNode>) {
       ? "This node has no incoming sorting question and will not be used."
       : ignoredReason === "all-invalid"
       ? "All incoming sorting questions are missing or invalid, so this node will not be used."
+      : ignoredReason === "invalid-leaf"
+      ? "Leaf nodes must be visible categories that can receive emails. This node will not be used for sorting."
       : undefined;
   return (
     <div
@@ -155,7 +142,7 @@ const nodeTypes = { taxonomy: TaxonomyNodeCard };
 
 // ─── Custom edge component ────────────────────────────────────────────────────
 
-type RFEdgeData = { sortingQuestion: string };
+type RFEdgeData = { sortingQuestion: string; targetIgnored: boolean };
 
 function TaxonomyEdge({
   id,
@@ -179,9 +166,11 @@ function TaxonomyEdge({
   });
 
   const sortingQuestion = (data as RFEdgeData | undefined)?.sortingQuestion;
+  const targetIgnored = (data as RFEdgeData | undefined)?.targetIgnored ?? false;
   const missing = isMissingSortingQuestion(sortingQuestion);
+  const isWarning = missing || targetIgnored;
   const label = formatEdgeLabel(sortingQuestion);
-  const strokeColor = missing && selected ? "#d97706" : selected ? "#6366f1" : missing ? "#f59e0b" : "#94a3b8";
+  const strokeColor = isWarning && selected ? "#d97706" : selected ? "#6366f1" : isWarning ? "#f59e0b" : "#94a3b8";
   const resolvedMarkerEnd = markerEnd !== undefined
     ? ({ ...(markerEnd as unknown as object), color: strokeColor } as unknown as string)
     : undefined;
@@ -204,7 +193,7 @@ function TaxonomyEdge({
             transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
             pointerEvents: "all",
           }}
-          className={`nodrag nopan edge-label${missing && selected ? " edge-label-selected-warning" : missing ? " edge-label-warning" : selected ? " edge-label-selected" : ""}`}
+          className={`nodrag nopan edge-label${isWarning && selected ? " edge-label-selected-warning" : isWarning ? " edge-label-warning" : selected ? " edge-label-selected" : ""}`}
         >
           {label}
         </div>
@@ -593,7 +582,7 @@ function TaxonomyCanvasInner({
     toRFNodes(initialNodes, initialEdges)
   );
   const [rfEdges, setRfEdges, onEdgesChange] = useEdgesState<Edge>(
-    initialEdges.map(toRFEdge)
+    toRFEdges(initialEdges, initialNodes)
   );
   const [panel, setPanel] = useState<Panel>({ type: "none" });
   const [submitting, setSubmitting] = useState(false);
@@ -608,7 +597,7 @@ function TaxonomyCanvasInner({
     setDbNodes(newNodes);
     setDbEdges(newEdges);
     setRfNodes(toRFNodes(newNodes, newEdges));
-    setRfEdges(newEdges.map(toRFEdge));
+    setRfEdges(toRFEdges(newEdges, newNodes));
   }, [workspaceId, setRfNodes, setRfEdges]);
 
   function openPanel(p: Panel) {
