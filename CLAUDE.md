@@ -68,3 +68,7 @@ Genizor must not auto-send emails or send emails from its own GUI in the MVP.
 - Arbitrary workflow automation
 - Node marketplace
 - Kubernetes
+
+## Branding
+
+Use centralized Genizor design tokens; do not hardcode brand hex values in components.

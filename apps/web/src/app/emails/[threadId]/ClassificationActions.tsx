@@ -49,17 +49,17 @@ export function ClassificationActions({ workspaceId, threadId, modelProvider, mo
           style={{
             padding: "8px 14px",
             borderRadius: "6px",
-            border: "1px solid #d1d5db",
-            background: "#fff",
+            border: "1px solid var(--color-border-input)",
+            background: "var(--color-surface)",
             cursor: loading !== null ? "not-allowed" : "pointer",
             fontSize: "14px",
-            color: "#374151",
+            color: "var(--color-text-secondary)",
           }}
         >
           {loading === "mock" ? "Classifying…" : "Run mock classification"}
         </button>
         {modelProvider && modelName && (
-          <span style={{ fontSize: 12, color: "#9ca3af" }}>
+          <span style={{ fontSize: 12, color: "var(--color-subtle)" }}>
             Last: {modelProvider} / {modelName}
           </span>
         )}

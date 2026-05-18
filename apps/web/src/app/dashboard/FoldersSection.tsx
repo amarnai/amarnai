@@ -196,7 +196,7 @@ export default function FoldersSection({ nodes, edges, threads }: Props) {
         </button>
         <div className="folders-divider" />
         {tree.length === 0 ? (
-          <p style={{ padding: "12px 14px", color: "#9ca3af", fontSize: 13 }}>
+          <p style={{ padding: "12px 14px", color: "var(--color-subtle)", fontSize: 13 }}>
             No folders defined
           </p>
         ) : (

@@ -137,17 +137,17 @@ export default async function ThreadDetailPage({ params }: Props) {
             {cls.explanation && (
               <p
                 style={{
-                  borderTop: "1px solid #f3f4f6",
+                  borderTop: "1px solid var(--color-border-light)",
                   paddingTop: "12px",
                   fontSize: 13,
-                  color: "#374151",
+                  color: "var(--color-text-secondary)",
                 }}
               >
                 {cls.explanation}
               </p>
             )}
             {cls.needsHumanReview && (
-              <p style={{ fontSize: 12, color: "#b45309", marginTop: "8px" }}>
+              <p style={{ fontSize: 12, color: "var(--color-warning-text)", marginTop: "8px" }}>
                 ⚠ Flagged for human review
               </p>
             )}
@@ -179,7 +179,7 @@ export default async function ThreadDetailPage({ params }: Props) {
             <p className="message-snippet">{msg.snippet}</p>
           )}
           {msg.hasAttachments && (
-            <p style={{ marginTop: "8px", fontSize: 12, color: "#6b7280" }}>
+            <p style={{ marginTop: "8px", fontSize: 12, color: "var(--color-muted)" }}>
               📎 Has attachments
             </p>
           )}

@@ -97,7 +97,7 @@ export function MockInboxClient({ workspaceId, threads }: Props) {
               Thread <span className="required">*</span>
             </label>
             {threads.length === 0 ? (
-              <p style={{ fontSize: 13, color: "#9ca3af" }}>No threads available — create one first.</p>
+              <p style={{ fontSize: 13, color: "var(--color-subtle)" }}>No threads available — create one first.</p>
             ) : (
               <select
                 className="form-select"
@@ -190,7 +190,7 @@ export function MockInboxClient({ workspaceId, threads }: Props) {
           {/* Thread link */}
           <p style={{ marginBottom: 16, fontSize: 13 }}>
             <Link href={`/emails/${result.thread.id}`}>View thread →</Link>
-            <span style={{ color: "#9ca3af" }}>
+            <span style={{ color: "var(--color-subtle)" }}>
               {" · "}{result.thread.isNew ? "new thread" : "existing thread"}
               {" · "}{result.thread.messageCount} message{result.thread.messageCount === 1 ? "" : "s"}
             </span>
@@ -238,7 +238,7 @@ export function MockInboxClient({ workspaceId, threads }: Props) {
             <div style={{ display: "flex", gap: 6, flexWrap: "wrap", alignItems: "center" }}>
               {cls.path.map((step, i) => (
                 <span key={step.nodeId} style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                  {i > 0 && <span style={{ color: "#9ca3af" }}>→</span>}
+                  {i > 0 && <span style={{ color: "var(--color-subtle)" }}>→</span>}
                   <span className="badge">{step.nodeName}</span>
                 </span>
               ))}
@@ -247,14 +247,14 @@ export function MockInboxClient({ workspaceId, threads }: Props) {
 
           {/* Provider/model */}
           {(cls.modelProvider ?? cls.modelName) && (
-            <p style={{ fontSize: 12, color: "#9ca3af", marginBottom: 8 }}>
+            <p style={{ fontSize: 12, color: "var(--color-subtle)", marginBottom: 8 }}>
               {[cls.modelProvider, cls.modelName].filter(Boolean).join(" / ")}
             </p>
           )}
 
           {/* Explanation */}
           {cls.explanation && (
-            <p style={{ fontSize: 13, color: "#374151", marginBottom: 12 }}>
+            <p style={{ fontSize: 13, color: "var(--color-text-secondary)", marginBottom: 12 }}>
               {cls.explanation}
             </p>
           )}

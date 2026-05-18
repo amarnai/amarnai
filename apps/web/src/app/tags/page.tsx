@@ -26,7 +26,7 @@ export default async function TagsPage() {
             <div key={tag.id} className="tag-card">
               <div
                 className="tag-dot"
-                style={{ background: tag.color ?? "#818cf8" }}
+                style={{ background: tag.color ?? "var(--ink-tint-border)" }}
               />
               <div>
                 <div className="tag-name">{tag.name}</div>

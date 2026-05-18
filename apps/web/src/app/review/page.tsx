@@ -25,7 +25,7 @@ export default async function ReviewPage() {
       <h1>Review Queue</h1>
       {error && <div className="error-box">{error}</div>}
       {!error && (
-        <p style={{ color: "#6b7280", marginBottom: "20px", fontSize: 13 }}>
+        <p style={{ color: "var(--color-muted)", marginBottom: "20px", fontSize: 13 }}>
           {items.length} open item{items.length !== 1 ? "s" : ""}
         </p>
       )}
@@ -48,7 +48,7 @@ export default async function ReviewPage() {
                   {item.emailThread.subject ?? "(no subject)"}
                 </div>
                 {item.emailMessage && (
-                  <div style={{ fontSize: 12, color: "#6b7280", marginTop: 2 }}>
+                  <div style={{ fontSize: 12, color: "var(--color-muted)", marginTop: 2 }}>
                     From:{" "}
                     {item.emailMessage.senderName ??
                       item.emailMessage.senderEmail}
@@ -93,8 +93,8 @@ export default async function ReviewPage() {
                 style={{
                   marginTop: 10,
                   fontSize: 13,
-                  color: "#374151",
-                  borderTop: "1px solid #f3f4f6",
+                  color: "var(--color-text-secondary)",
+                  borderTop: "1px solid var(--color-border-light)",
                   paddingTop: 10,
                 }}
               >

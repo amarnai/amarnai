@@ -25,6 +25,7 @@ import {
   type NodeMouseHandler,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
+import { tokens } from "@/lib/tokens";
 import {
   api,
   type TaxonomyNode,
@@ -82,7 +83,7 @@ function toRFEdge(e: TaxonomyEdge, ignoredReasonsMap: Map<string, IgnoredReason>
     source: e.sourceNodeId,
     target: e.targetNodeId,
     type: "taxonomy-edge",
-    markerEnd: { type: MarkerType.ArrowClosed, color: isWarning ? "#f59e0b" : "#94a3b8" },
+    markerEnd: { type: MarkerType.ArrowClosed, color: isWarning ? tokens.accent : tokens.edgeDefault },
     data: { sortingQuestion: e.sortingQuestion, targetIgnored },
   };
 }
@@ -188,7 +189,7 @@ function TaxonomyEdge({
   const missing = isMissingSortingQuestion(sortingQuestion);
   const isWarning = missing || targetIgnored;
   const label = formatEdgeLabel(sortingQuestion);
-  const strokeColor = isWarning && selected ? "#d97706" : selected ? "#6366f1" : isWarning ? "#f59e0b" : "#94a3b8";
+  const strokeColor = isWarning && selected ? tokens.accentDim : selected ? tokens.primary : isWarning ? tokens.accent : tokens.edgeDefault;
   const resolvedMarkerEnd = markerEnd !== undefined
     ? ({ ...(markerEnd as unknown as object), color: strokeColor } as unknown as string)
     : undefined;
@@ -461,7 +462,7 @@ function EdgeForm({
           <label className="form-label">
             Sorting question <span className="required">*</span>
           </label>
-          <p style={{ fontSize: 11, color: "#6b7280", marginTop: 1, marginBottom: 4 }}>
+          <p style={{ fontSize: 11, color: "var(--color-muted)", marginTop: 1, marginBottom: 4 }}>
             Short routing questions only. Max 160 characters. Put extra guidance in node descriptions/examples later.
           </p>
           <input
@@ -472,12 +473,12 @@ function EdgeForm({
             maxLength={160}
           />
           <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 2 }}>
-            <span style={{ fontSize: 11, color: sortingQuestion.length >= 160 ? "#dc2626" : "#9ca3af" }}>
+            <span style={{ fontSize: 11, color: sortingQuestion.length >= 160 ? "var(--color-destructive)" : "var(--color-subtle)" }}>
               {sortingQuestion.length}/160
             </span>
           </div>
           {sortingQuestion.length >= 160 && (
-            <p style={{ fontSize: 11, color: "#dc2626", marginTop: 2 }}>
+            <p style={{ fontSize: 11, color: "var(--color-destructive)", marginTop: 2 }}>
               Sorting questions cannot exceed 160 characters.
             </p>
           )}
