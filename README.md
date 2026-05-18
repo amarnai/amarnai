@@ -20,20 +20,42 @@ cp .env.local.example .env.local  # local overrides (optional)
 
 Values in `.env.local` take precedence over `.env`.
 
+
 ### Local Ollama testing
 
+Genizor can use an Ollama instance running on your machine.
+
 ```bash
-# 1. Copy local overrides (sets AI_PROVIDER=ollama)
+# 1. Install Ollama if needed
+# https://ollama.com/download
+
+# 2. Start Ollama
+ollama serve
+
+# 3. Pull the local test model
+ollama pull llama3.1:8b
+
+# 4. Copy local overrides
 cp .env.local.example .env.local
+````
 
-# 2. Start Ollama via Docker
-docker compose --profile local-ai up -d ollama
+Make sure `.env.local` contains:
 
-# 3. Pull the model
-docker exec -it $(docker compose ps -q ollama) ollama pull llama3.1:8b
-
-# 4. Confirm AI_PROVIDER=ollama is set in .env.local
+```env
+AI_PROVIDER=ollama
+OLLAMA_BASE_URL=http://localhost:11434
+OLLAMA_MODEL=llama3.1:8b
+ENABLE_DEV_TOOLS=true
 ```
+
+Check that Ollama is reachable:
+
+```bash
+curl http://localhost:11434/api/tags
+```
+
+If port `11434` is already in use, Ollama is probably already running. In that case, skip `ollama serve` and continue with `ollama pull llama3.1:8b`.
+
 
 ### Production frontier LLM
 
