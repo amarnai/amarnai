@@ -25,7 +25,7 @@ const edgeSelect = {
 const createBodySchema = z.object({
   sourceNodeId: z.string().min(1),
   targetNodeId: z.string().min(1),
-  sortingQuestion: z.string().min(1).max(160),
+  sortingQuestion: z.string().max(160),
   examples: z.array(z.string()).optional(),
   negativeExamples: z.array(z.string()).optional(),
   priority: z.number().int().optional(),

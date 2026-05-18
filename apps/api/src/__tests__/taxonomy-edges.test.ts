@@ -375,14 +375,18 @@ describe("PATCH /workspaces/:workspaceId/taxonomy-edges/:edgeId", () => {
     expect(res.status).toBe(404);
   });
 
-  it("returns 400 when sortingQuestion is empty", async () => {
+  it("allows sortingQuestion to be empty", async () => {
     vi.mocked(db.taxonomyEdge.findUnique).mockResolvedValue(baseEdge as never);
+    vi.mocked(db.taxonomyEdge.update).mockResolvedValue({
+      ...baseEdge,
+      sortingQuestion: "",
+    } as never);
 
     const res = await patch(
       `/workspaces/${WS_ID}/taxonomy-edges/${EDGE_ID}`,
       { sortingQuestion: "" }
     );
-    expect(res.status).toBe(400);
+    expect(res.status).toBe(200);
   });
 
   it("returns 400 when sortingQuestion exceeds 160 characters", async () => {

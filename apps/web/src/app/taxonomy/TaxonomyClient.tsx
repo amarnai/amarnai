@@ -61,45 +61,42 @@ function formatEdgeLabel(q: string | null | undefined): string {
   return q!.trim();
 }
 
-function computeReachableIds(nodes: TaxonomyNode[], edges: TaxonomyEdge[]): Set<string> {
-  const root = nodes.find((n) => n.isRoot);
-  if (!root) return new Set(nodes.map((n) => n.id));
-  const adjacency = new Map<string, string[]>();
-  for (const e of edges) {
-    const targets = adjacency.get(e.sourceNodeId) ?? [];
-    targets.push(e.targetNodeId);
-    adjacency.set(e.sourceNodeId, targets);
-  }
-  const visited = new Set<string>();
-  const queue = [root.id];
-  while (queue.length > 0) {
-    const id = queue.shift()!;
-    if (visited.has(id)) continue;
-    visited.add(id);
-    for (const target of adjacency.get(id) ?? []) {
-      queue.push(target);
+type IgnoredReason = "no-incoming" | "all-invalid" | null;
+
+function computeIgnoredReasons(
+  nodes: TaxonomyNode[],
+  edges: TaxonomyEdge[]
+): Map<string, IgnoredReason> {
+  const result = new Map<string, IgnoredReason>();
+  for (const node of nodes) {
+    if (node.isRoot) continue;
+    const incoming = edges.filter((e) => e.targetNodeId === node.id);
+    if (incoming.length === 0) {
+      result.set(node.id, "no-incoming");
+    } else if (incoming.every((e) => isMissingSortingQuestion(e.sortingQuestion))) {
+      result.set(node.id, "all-invalid");
     }
   }
-  return visited;
+  return result;
 }
 
 // ─── React Flow node/edge converters ──────────────────────────────────────────
 
-type RFNodeData = { node: TaxonomyNode; unreachable: boolean };
+type RFNodeData = { node: TaxonomyNode; ignoredReason: IgnoredReason };
 type RFNode = Node<RFNodeData, "taxonomy">;
 
-function toRFNode(n: TaxonomyNode, unreachable: boolean): RFNode {
+function toRFNode(n: TaxonomyNode, ignoredReason: IgnoredReason): RFNode {
   return {
     id: n.id,
     type: "taxonomy",
     position: { x: n.positionX, y: n.positionY },
-    data: { node: n, unreachable },
+    data: { node: n, ignoredReason },
   };
 }
 
 function toRFNodes(nodes: TaxonomyNode[], edges: TaxonomyEdge[]): RFNode[] {
-  const reachable = computeReachableIds(nodes, edges);
-  return nodes.map((n) => toRFNode(n, !reachable.has(n.id)));
+  const ignoredMap = computeIgnoredReasons(nodes, edges);
+  return nodes.map((n) => toRFNode(n, ignoredMap.get(n.id) ?? null));
 }
 
 function toRFEdge(e: TaxonomyEdge): Edge {
@@ -117,11 +114,18 @@ function toRFEdge(e: TaxonomyEdge): Edge {
 // ─── Custom node component ────────────────────────────────────────────────────
 
 function TaxonomyNodeCard({ data, selected }: NodeProps<RFNode>) {
-  const { node, unreachable } = data;
+  const { node, ignoredReason } = data;
+  const ignored = ignoredReason !== null;
+  const tooltipText =
+    ignoredReason === "no-incoming"
+      ? "This node has no incoming sorting question and will not be used."
+      : ignoredReason === "all-invalid"
+      ? "All incoming sorting questions are missing or invalid, so this node will not be used."
+      : undefined;
   return (
     <div
-      className={`taxonomy-node-card${selected ? " selected" : ""}${unreachable ? " unreachable" : ""}`}
-      title={unreachable ? "This node is not connected to Inbox and will not be used for sorting." : undefined}
+      className={`taxonomy-node-card${selected ? " selected" : ""}${ignored ? " unreachable" : ""}`}
+      title={tooltipText}
     >
       {!node.isRoot && <Handle type="target" position={Position.Left} />}
       <div className="node-name">{node.name}</div>
@@ -138,8 +142,8 @@ function TaxonomyNodeCard({ data, selected }: NodeProps<RFNode>) {
             Receives Emails
           </span>
         )}
-        {unreachable && (
-          <span className="badge badge-unreachable">Unreachable</span>
+        {ignored && (
+          <span className="badge badge-unreachable">Ignored</span>
         )}
       </div>
       <Handle type="source" position={Position.Right} />
@@ -177,7 +181,7 @@ function TaxonomyEdge({
   const sortingQuestion = (data as RFEdgeData | undefined)?.sortingQuestion;
   const missing = isMissingSortingQuestion(sortingQuestion);
   const label = formatEdgeLabel(sortingQuestion);
-  const strokeColor = selected ? "#6366f1" : missing ? "#f59e0b" : "#94a3b8";
+  const strokeColor = missing && selected ? "#d97706" : selected ? "#6366f1" : missing ? "#f59e0b" : "#94a3b8";
   const resolvedMarkerEnd = markerEnd !== undefined
     ? ({ ...(markerEnd as unknown as object), color: strokeColor } as unknown as string)
     : undefined;
@@ -200,7 +204,7 @@ function TaxonomyEdge({
             transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
             pointerEvents: "all",
           }}
-          className={`nodrag nopan edge-label${missing ? " edge-label-warning" : ""}${selected ? " edge-label-selected" : ""}`}
+          className={`nodrag nopan edge-label${missing && selected ? " edge-label-selected-warning" : missing ? " edge-label-warning" : selected ? " edge-label-selected" : ""}`}
         >
           {label}
         </div>
@@ -646,7 +650,7 @@ function TaxonomyCanvasInner({
         await api.createTaxonomyEdge(workspaceId, {
           sourceNodeId: connection.source,
           targetNodeId: connection.target,
-          sortingQuestion: "Describe when emails should follow this path.",
+          sortingQuestion: "",
           examples: [],
           negativeExamples: [],
           priority: 0,
