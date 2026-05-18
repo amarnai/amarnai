@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { api, type EmailThreadDetail } from "@/lib/api";
 import { ClassificationActions } from "./ClassificationActions";
+import { MessageBody } from "./MessageBody";
 
 type Props = { params: Promise<{ threadId: string }> };
 
@@ -175,9 +176,11 @@ export default async function ThreadDetailPage({ params }: Props) {
             </span>
             <span className="message-date">{fmt(msg.receivedAt)}</span>
           </div>
-          {msg.snippet && (
+          {msg.bodyText ? (
+            <MessageBody bodyText={msg.bodyText} />
+          ) : msg.snippet ? (
             <p className="message-snippet">{msg.snippet}</p>
-          )}
+          ) : null}
           {msg.hasAttachments && (
             <p style={{ marginTop: "8px", fontSize: 12, color: "var(--color-muted)" }}>
               📎 Has attachments

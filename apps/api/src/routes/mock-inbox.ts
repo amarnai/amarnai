@@ -121,25 +121,22 @@ mockInbox.post("/dev/workspaces/:workspaceId/mock-inbox-event", async (c) => {
 
   const { classifier } = body.data;
 
-  let edges: import("@genizor/ai").TaxonomyEdgeInput[] = [];
-  if (classifier === "ai") {
-    const rawEdges = await db.taxonomyEdge.findMany({
-      where: { workspaceId },
-      select: {
-        id: true,
-        sourceNodeId: true,
-        targetNodeId: true,
-        sortingQuestion: true,
-        examples: true,
-        negativeExamples: true,
-      },
-    });
-    edges = rawEdges.map((e) => ({
-      ...e,
-      examples: e.examples as string[],
-      negativeExamples: e.negativeExamples as string[],
-    }));
-  }
+  const rawEdges = await db.taxonomyEdge.findMany({
+    where: { workspaceId },
+    select: {
+      id: true,
+      sourceNodeId: true,
+      targetNodeId: true,
+      sortingQuestion: true,
+      examples: true,
+      negativeExamples: true,
+    },
+  });
+  const edges: import("@genizor/ai").TaxonomyEdgeInput[] = rawEdges.map((e) => ({
+    ...e,
+    examples: e.examples as string[],
+    negativeExamples: e.negativeExamples as string[],
+  }));
 
   const now = new Date();
   let threadId: string;
@@ -265,7 +262,7 @@ mockInbox.post("/dev/workspaces/:workspaceId/mock-inbox-event", async (c) => {
       modelName: aiProvider.modelName,
     };
   } else {
-    const mockResult = mockClassify(allMessages, nodes);
+    const mockResult = mockClassify(allMessages, nodes, edges);
     result = {
       finalNodeId: mockResult.finalNodeId,
       finalNodeName: mockResult.finalNodeName,

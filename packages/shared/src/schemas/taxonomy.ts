@@ -69,7 +69,11 @@ export type CreateTaxonomyEdgeInput = z.infer<typeof CreateTaxonomyEdgeInputSche
 // ─── ClassificationPathStep ───────────────────────────────────────────────────
 
 export const ClassificationPathStepSchema = z.object({
-  nodeId: z.string().min(1),
-  nodeName: z.string().min(1),
+  edgeId: z.string().min(1),
+  sourceNodeId: z.string().min(1),
+  targetNodeId: z.string().min(1),
+  sortingQuestion: z.string(),
+  confidence: z.number().min(0).max(1),
+  explanation: z.string(),
 });
 export type ClassificationPathStep = z.infer<typeof ClassificationPathStepSchema>;

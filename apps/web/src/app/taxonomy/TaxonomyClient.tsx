@@ -300,7 +300,10 @@ function NodeForm({
             <input
               type="checkbox"
               checked={isVisibleCategory}
-              onChange={(e) => setIsVisibleCategory(e.target.checked)}
+              onChange={(e) => {
+                setIsVisibleCategory(e.target.checked);
+                if (e.target.checked) setCanReceiveEmails(true);
+              }}
               disabled={isRoot}
             />
             Visible category
@@ -309,12 +312,20 @@ function NodeForm({
             <input
               type="checkbox"
               checked={canReceiveEmails}
-              onChange={(e) => setCanReceiveEmails(e.target.checked)}
+              onChange={(e) => {
+                setCanReceiveEmails(e.target.checked);
+                if (!e.target.checked) setIsVisibleCategory(false);
+              }}
               disabled={isRoot}
             />
             Can receive emails
           </label>
         </div>
+        {!isRoot && isVisibleCategory && (
+          <p style={{ fontSize: 11, color: "var(--color-muted)", marginTop: 2 }}>
+            Visible categories must be able to receive emails.
+          </p>
+        )}
         <div className="form-actions">
           <button className="btn-primary" type="submit" disabled={submitting}>
             {submitting ? "Saving…" : node ? "Save" : "Create"}

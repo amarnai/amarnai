@@ -6,6 +6,7 @@ import {
   RequiredActionSchema,
   SensitivitySchema,
   SuggestedNextStepSchema,
+  type ClassificationPathStep,
 } from "@genizor/shared";
 
 // ─── Input types ───────────────────────────────────────────────────────────────
@@ -46,31 +47,34 @@ export type ClassifyInput = {
 
 // ─── LLM output schema (finalNodeId is nullable) ───────────────────────────────
 
-export const LLMOutputSchema = z.object({
-  finalNodeId: z.string().min(1).nullable(),
-  path: z.array(
-    z.object({
-      nodeId: z.string().min(1),
-      nodeName: z.string().min(1),
-    })
-  ),
+// What the LLM returns for each traversal step (source/target are derived from DB edge)
+const LLMPathStepSchema = z.object({
+  edgeId: z.string().min(1),
   confidence: z.number().min(0).max(1),
   explanation: z.string(),
-  priority: PrioritySchema,
-  urgency: UrgencySchema,
-  riskLevel: RiskLevelSchema,
-  requiredAction: RequiredActionSchema,
-  sensitivity: SensitivitySchema,
-  dueAt: z.string().datetime().nullable().optional(),
-  suggestedNextStep: SuggestedNextStepSchema,
+});
+
+export const LLMOutputSchema = z.object({
+  finalNodeId: z.string().min(1).nullable(),
+  path: z.array(LLMPathStepSchema),
+  confidence: z.number().min(0).max(1),
+  explanation: z.string(),
+  priority: PrioritySchema.catch("MEDIUM"),
+  urgency: UrgencySchema.catch("UNKNOWN"),
+  riskLevel: RiskLevelSchema.catch("LOW"),
+  requiredAction: RequiredActionSchema.catch("REVIEW"),
+  sensitivity: SensitivitySchema.catch("NORMAL"),
+  dueAt: z.string().datetime().nullable().optional().catch(undefined),
+  suggestedNextStep: SuggestedNextStepSchema.catch("ASK_USER"),
   needsHumanReview: z.boolean(),
 });
 
 export type LLMOutput = z.infer<typeof LLMOutputSchema>;
+export type { ClassificationPathStep } from "@genizor/shared";
 
 export type ClassifyOutput = {
   finalNodeId: string | null;
-  path: Array<{ nodeId: string; nodeName: string }>;
+  path: ClassificationPathStep[];
   confidence: number;
   explanation: string;
   priority: "LOW" | "MEDIUM" | "HIGH";

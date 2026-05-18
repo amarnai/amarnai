@@ -1,4 +1,5 @@
 import { LLMOutputSchema, type ClassifyOutput, type TaxonomyEdgeInput, type TaxonomyNodeInput } from "./types.js";
+import type { ClassificationPathStep } from "@genizor/shared";
 
 function reviewNeeded(explanation: string): ClassifyOutput {
   return {
@@ -63,40 +64,110 @@ export function parseAndValidateOutput(
   }
   const output = result.data;
 
-  // 3. Validate finalNodeId
-  if (output.finalNodeId !== null) {
-    const node = nodes.find((n) => n.id === output.finalNodeId);
-    if (!node) {
-      return reviewNeeded(`Unknown finalNodeId: "${output.finalNodeId}"`);
-    }
-    if (!node.isVisibleCategory || !node.canReceiveEmails) {
-      return reviewNeeded(
-        `Node "${output.finalNodeId}" is not a valid email destination (isVisibleCategory=${node.isVisibleCategory}, canReceiveEmails=${node.canReceiveEmails})`
-      );
-    }
-  }
+  // 3. Validate each edgeId and build enriched path
+  const edgeMap = new Map(edges.map((e) => [e.id, e]));
+  const enrichedPath: ClassificationPathStep[] = [];
 
-  // 4. Validate path node IDs
-  const nodeIds = new Set(nodes.map((n) => n.id));
   for (const step of output.path) {
-    if (!nodeIds.has(step.nodeId)) {
-      return reviewNeeded(`Unknown nodeId in path: "${step.nodeId}"`);
+    const edge = edgeMap.get(step.edgeId);
+    if (!edge) {
+      return reviewNeeded(`Unknown edgeId in path: "${step.edgeId}"`);
+    }
+    enrichedPath.push({
+      edgeId: edge.id,
+      sourceNodeId: edge.sourceNodeId,
+      targetNodeId: edge.targetNodeId,
+      sortingQuestion: edge.sortingQuestion,
+      confidence: step.confidence,
+      explanation: step.explanation,
+    });
+  }
+
+  // 4. Validate edge chain connectivity — drop path on disconnection rather than failing,
+  //    since the destination (finalNodeId) is what matters; the path is explanatory metadata.
+  let pathIsConnected = true;
+  for (let i = 0; i < enrichedPath.length - 1; i++) {
+    const curr = enrichedPath[i]!;
+    const next = enrichedPath[i + 1]!;
+    if (curr.targetNodeId !== next.sourceNodeId) {
+      pathIsConnected = false;
+      break;
+    }
+  }
+  let resolvedPath = pathIsConnected ? enrichedPath : [];
+
+  // 5. Validate path starts from root node (if root is defined and path is non-empty)
+  //    Drop the path rather than failing — finalNodeId is validated independently.
+  const rootNode = nodes.find((n) => n.isRoot);
+  if (resolvedPath.length > 0 && rootNode) {
+    const firstEdge = resolvedPath[0]!;
+    if (firstEdge.sourceNodeId !== rootNode.id) {
+      resolvedPath = [];
+      pathIsConnected = false;
     }
   }
 
-  // 5. Validate path edges — consecutive path nodes must be connected by a real edge
-  const edgeSet = new Set(edges.map((e) => `${e.sourceNodeId}\0${e.targetNodeId}`));
-  for (let i = 0; i < output.path.length - 1; i++) {
-    const from = output.path[i]!.nodeId;
-    const to = output.path[i + 1]!.nodeId;
-    if (!edgeSet.has(`${from}\0${to}`)) {
-      return reviewNeeded(`No edge from "${from}" to "${to}" exists in the taxonomy`);
+  // 6. Validate finalNodeId: existence, then consistency with path
+  //    Path-consistency is only enforced when the path was not dropped.
+  if (output.finalNodeId !== null) {
+    let finalNode = nodes.find((n) => n.id === output.finalNodeId);
+    if (!finalNode) {
+      // LLM sometimes returns the node name instead of the node id — resolve by name as fallback
+      const byName = nodes.find(
+        (n) => n.name.toLowerCase() === output.finalNodeId!.toLowerCase()
+      );
+      if (byName) {
+        output.finalNodeId = byName.id;
+        finalNode = byName;
+        resolvedPath = [];
+        pathIsConnected = false;
+      } else {
+        return reviewNeeded(`Unknown finalNodeId: "${output.finalNodeId}"`);
+      }
+    }
+
+    if (pathIsConnected) {
+      const expectedFinalNodeId =
+        resolvedPath.length > 0
+          ? resolvedPath[resolvedPath.length - 1]!.targetNodeId
+          : rootNode?.id ?? null;
+
+      if (expectedFinalNodeId !== null && output.finalNodeId !== expectedFinalNodeId) {
+        resolvedPath = [];
+        pathIsConnected = false;
+      }
+    }
+  }
+
+  // 7. Validate final destination using traversal policy (rules 3-5)
+  if (output.finalNodeId !== null) {
+    const node = nodes.find((n) => n.id === output.finalNodeId)!;
+
+    const hasOutgoingEdges = edges.some((e) => e.sourceNodeId === node.id);
+
+    if (hasOutgoingEdges) {
+      // Rule 4/5: node is intermediate (has outgoing edges).
+      // Rule 4: valid fallback only if visible and can receive emails.
+      // Rule 5: if it cannot receive emails, no valid fallback exists — needs review.
+      if (!node.isVisibleCategory || !node.canReceiveEmails) {
+        return reviewNeeded(
+          `Node "${output.finalNodeId}" has outgoing edges but cannot serve as a fallback destination (isVisibleCategory=${node.isVisibleCategory}, canReceiveEmails=${node.canReceiveEmails})`
+        );
+      }
+      // Rule 4 satisfied: visible + receivable intermediate fallback is allowed.
+    } else {
+      // Rule 3: leaf node — must be visible and able to receive emails.
+      if (!node.isVisibleCategory || !node.canReceiveEmails) {
+        return reviewNeeded(
+          `Node "${output.finalNodeId}" is not a valid email destination (isVisibleCategory=${node.isVisibleCategory}, canReceiveEmails=${node.canReceiveEmails})`
+        );
+      }
     }
   }
 
   return {
     finalNodeId: output.finalNodeId,
-    path: output.path,
+    path: resolvedPath,
     confidence: output.confidence,
     explanation: output.explanation,
     priority: output.priority,

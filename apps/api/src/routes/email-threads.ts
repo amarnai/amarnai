@@ -108,6 +108,7 @@ emailThreads.get(
             senderName: true,
             subject: true,
             snippet: true,
+            bodyText: true,
             receivedAt: true,
             hasAttachments: true,
             toEmails: true,

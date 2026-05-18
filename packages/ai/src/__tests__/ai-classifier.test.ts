@@ -59,12 +59,12 @@ const EDGE: TaxonomyEdgeInput = {
 const ALL_NODES = [ROOT, LEAF, LEAF_HIDDEN, LEAF_NO_RECEIVE];
 const ALL_EDGES = [EDGE];
 
+// Helpers to produce the LLM raw output (edge-ID based path)
 function validOutput(overrides: object = {}): string {
   return JSON.stringify({
     finalNodeId: "node-leaf",
     path: [
-      { nodeId: "node-root", nodeName: "Inbox" },
-      { nodeId: "node-leaf", nodeName: "Clients" },
+      { edgeId: "edge-1", confidence: 0.9, explanation: "Looks like a client email" },
     ],
     confidence: 0.9,
     explanation: "Looks like a client email",
@@ -97,11 +97,24 @@ describe("AIProvider interface", () => {
 // ─── parseAndValidateOutput ────────────────────────────────────────────────────
 
 describe("parseAndValidateOutput", () => {
-  it("accepts valid output", () => {
+  it("accepts valid output and returns enriched path", () => {
     const result = parseAndValidateOutput(validOutput(), ALL_NODES, ALL_EDGES);
     expect(result.finalNodeId).toBe("node-leaf");
     expect(result.needsHumanReview).toBe(false);
     expect(result.confidence).toBe(0.9);
+  });
+
+  it("enriches path with sourceNodeId, targetNodeId, and sortingQuestion", () => {
+    const result = parseAndValidateOutput(validOutput(), ALL_NODES, ALL_EDGES);
+    expect(result.path).toHaveLength(1);
+    expect(result.path[0]).toMatchObject({
+      edgeId: "edge-1",
+      sourceNodeId: "node-root",
+      targetNodeId: "node-leaf",
+      sortingQuestion: "Is this a client email?",
+      confidence: 0.9,
+      explanation: "Looks like a client email",
+    });
   });
 
   it("parses JSON wrapped in markdown code block", () => {
@@ -138,17 +151,49 @@ describe("parseAndValidateOutput", () => {
     expect(result.explanation).toMatch(/Unknown finalNodeId/);
   });
 
+  it("resolves finalNodeId by node name when LLM returns name instead of id", () => {
+    // LEAF.name is "Clients", LEAF.id is "node-leaf"
+    const result = parseAndValidateOutput(
+      validOutput({ finalNodeId: "Clients" }),
+      ALL_NODES,
+      ALL_EDGES
+    );
+    expect(result.finalNodeId).toBe("node-leaf");
+    expect(result.needsHumanReview).toBe(false);
+    expect(result.path).toHaveLength(0); // path dropped since id was substituted
+  });
+
+  it("drops path but keeps finalNodeId when path end and finalNodeId disagree", () => {
+    const LEAF2: TaxonomyNodeInput = {
+      id: "node-leaf2",
+      name: "Other",
+      description: null,
+      instructions: null,
+      examples: [],
+      isRoot: false,
+      isVisibleCategory: true,
+      canReceiveEmails: true,
+    };
+    // edge-1 ends at node-leaf, but finalNodeId points to a different valid node
+    const result = parseAndValidateOutput(
+      validOutput({ finalNodeId: "node-leaf2" }),
+      [...ALL_NODES, LEAF2],
+      ALL_EDGES
+    );
+    expect(result.finalNodeId).toBe("node-leaf2");
+    expect(result.path).toHaveLength(0);
+    expect(result.needsHumanReview).toBe(false);
+  });
+
   it("returns review-needed when final node is not isVisibleCategory", () => {
+    const edgeToHidden: TaxonomyEdgeInput = { ...EDGE, id: "edge-to-hidden", targetNodeId: "node-hidden" };
     const result = parseAndValidateOutput(
       validOutput({
         finalNodeId: "node-hidden",
-        path: [
-          { nodeId: "node-root", nodeName: "Inbox" },
-          { nodeId: "node-hidden", nodeName: "Hidden" },
-        ],
+        path: [{ edgeId: "edge-to-hidden", confidence: 0.9, explanation: "test" }],
       }),
       ALL_NODES,
-      [{ ...EDGE, targetNodeId: "node-hidden" }]
+      [edgeToHidden]
     );
     expect(result.finalNodeId).toBeNull();
     expect(result.needsHumanReview).toBe(true);
@@ -156,52 +201,58 @@ describe("parseAndValidateOutput", () => {
   });
 
   it("returns review-needed when final node cannot receive emails", () => {
+    const edgeToNoRecv: TaxonomyEdgeInput = { ...EDGE, id: "edge-to-no-recv", targetNodeId: "node-no-receive" };
     const result = parseAndValidateOutput(
       validOutput({
         finalNodeId: "node-no-receive",
-        path: [
-          { nodeId: "node-root", nodeName: "Inbox" },
-          { nodeId: "node-no-receive", nodeName: "NoReceive" },
-        ],
+        path: [{ edgeId: "edge-to-no-recv", confidence: 0.9, explanation: "test" }],
       }),
       ALL_NODES,
-      [{ ...EDGE, targetNodeId: "node-no-receive" }]
+      [edgeToNoRecv]
     );
     expect(result.finalNodeId).toBeNull();
     expect(result.needsHumanReview).toBe(true);
     expect(result.explanation).toMatch(/not a valid email destination/);
   });
 
-  it("returns review-needed when path contains unknown nodeId", () => {
+  it("returns review-needed when path contains unknown edgeId", () => {
     const result = parseAndValidateOutput(
       validOutput({
-        path: [
-          { nodeId: "node-ghost", nodeName: "Ghost" },
-          { nodeId: "node-leaf", nodeName: "Clients" },
-        ],
+        path: [{ edgeId: "edge-does-not-exist", confidence: 0.9, explanation: "test" }],
       }),
       ALL_NODES,
       ALL_EDGES
     );
     expect(result.finalNodeId).toBeNull();
     expect(result.needsHumanReview).toBe(true);
-    expect(result.explanation).toMatch(/Unknown nodeId in path/);
+    expect(result.explanation).toMatch(/Unknown edgeId in path/);
   });
 
-  it("returns review-needed when path has a step with no connecting edge", () => {
+  it("drops disconnected path but keeps valid finalNodeId", () => {
+    // edge-1: root → leaf; edge-parallel starts at root (not leaf) — disconnected from edge-1
+    const edgeParallel: TaxonomyEdgeInput = {
+      id: "edge-parallel",
+      sourceNodeId: "node-root",
+      targetNodeId: "node-leaf",
+      sortingQuestion: "Another question",
+      examples: [],
+      negativeExamples: [],
+    };
     const result = parseAndValidateOutput(
       validOutput({
         path: [
-          { nodeId: "node-leaf", nodeName: "Clients" },
-          { nodeId: "node-root", nodeName: "Inbox" },
+          { edgeId: "edge-1", confidence: 0.9, explanation: "test" },
+          { edgeId: "edge-parallel", confidence: 0.5, explanation: "test" },
         ],
+        finalNodeId: "node-leaf",
       }),
       ALL_NODES,
-      ALL_EDGES // edge goes root→leaf, not leaf→root
+      [EDGE, edgeParallel]
     );
-    expect(result.finalNodeId).toBeNull();
-    expect(result.needsHumanReview).toBe(true);
-    expect(result.explanation).toMatch(/No edge from/);
+    // Classification succeeds — destination is valid even though path was broken
+    expect(result.finalNodeId).toBe("node-leaf");
+    expect(result.path).toHaveLength(0); // path dropped due to disconnection
+    expect(result.needsHumanReview).toBe(false);
   });
 
   it("accepts null finalNodeId with needsHumanReview=true", () => {
@@ -212,6 +263,109 @@ describe("parseAndValidateOutput", () => {
     );
     expect(result.finalNodeId).toBeNull();
     expect(result.needsHumanReview).toBe(true);
+  });
+
+  it("accepts intermediate node with outgoing edges as valid fallback (rule 4)", () => {
+    const INTERMEDIATE: TaxonomyNodeInput = {
+      id: "node-intermediate",
+      name: "Work",
+      description: null,
+      instructions: null,
+      examples: [],
+      isRoot: false,
+      isVisibleCategory: true,
+      canReceiveEmails: true,
+    };
+    const edgeToIntermediate: TaxonomyEdgeInput = {
+      id: "edge-to-int",
+      sourceNodeId: "node-root",
+      targetNodeId: "node-intermediate",
+      sortingQuestion: "Is this work?",
+      examples: [],
+      negativeExamples: [],
+    };
+    const edgeFromIntermediate: TaxonomyEdgeInput = {
+      id: "edge-from-int",
+      sourceNodeId: "node-intermediate",
+      targetNodeId: "node-leaf",
+      sortingQuestion: "Is this a client?",
+      examples: [],
+      negativeExamples: [],
+    };
+    const result = parseAndValidateOutput(
+      JSON.stringify({
+        finalNodeId: "node-intermediate",
+        path: [
+          { edgeId: "edge-to-int", confidence: 0.7, explanation: "Work email, no specific child matched" },
+        ],
+        confidence: 0.7,
+        explanation: "Work email, no specific child matched",
+        priority: "MEDIUM",
+        urgency: "NONE",
+        riskLevel: "LOW",
+        requiredAction: "NONE",
+        sensitivity: "NORMAL",
+        dueAt: null,
+        suggestedNextStep: "LABEL_ONLY",
+        needsHumanReview: false,
+      }),
+      [ROOT, LEAF, INTERMEDIATE],
+      [edgeToIntermediate, edgeFromIntermediate]
+    );
+    expect(result.finalNodeId).toBe("node-intermediate");
+    expect(result.needsHumanReview).toBe(false);
+  });
+
+  it("returns review-needed when intermediate node has outgoing edges but cannot receive emails (rule 5)", () => {
+    const INTERMEDIATE_NO_RECV: TaxonomyNodeInput = {
+      id: "node-int-no-recv",
+      name: "Category",
+      description: null,
+      instructions: null,
+      examples: [],
+      isRoot: false,
+      isVisibleCategory: true,
+      canReceiveEmails: false,
+    };
+    const edgeToInt: TaxonomyEdgeInput = {
+      id: "edge-to-int",
+      sourceNodeId: "node-root",
+      targetNodeId: "node-int-no-recv",
+      sortingQuestion: "Is this category?",
+      examples: [],
+      negativeExamples: [],
+    };
+    const edgeFromInt: TaxonomyEdgeInput = {
+      id: "edge-from-int",
+      sourceNodeId: "node-int-no-recv",
+      targetNodeId: "node-leaf",
+      sortingQuestion: "Is this a client?",
+      examples: [],
+      negativeExamples: [],
+    };
+    const result = parseAndValidateOutput(
+      JSON.stringify({
+        finalNodeId: "node-int-no-recv",
+        path: [
+          { edgeId: "edge-to-int", confidence: 0.5, explanation: "Stopped at category, no child matched" },
+        ],
+        confidence: 0.5,
+        explanation: "Stopped at category, no child matched",
+        priority: "MEDIUM",
+        urgency: "NONE",
+        riskLevel: "LOW",
+        requiredAction: "NONE",
+        sensitivity: "NORMAL",
+        dueAt: null,
+        suggestedNextStep: "ASK_USER",
+        needsHumanReview: false,
+      }),
+      [ROOT, LEAF, INTERMEDIATE_NO_RECV],
+      [edgeToInt, edgeFromInt]
+    );
+    expect(result.finalNodeId).toBeNull();
+    expect(result.needsHumanReview).toBe(true);
+    expect(result.explanation).toMatch(/outgoing edges/);
   });
 });
 

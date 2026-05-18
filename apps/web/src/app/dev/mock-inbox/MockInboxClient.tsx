@@ -236,12 +236,19 @@ export function MockInboxClient({ workspaceId, threads }: Props) {
           <div style={{ marginBottom: 12 }}>
             <div className="meta-label" style={{ marginBottom: 6 }}>Path</div>
             <div style={{ display: "flex", gap: 6, flexWrap: "wrap", alignItems: "center" }}>
-              {cls.path.map((step, i) => (
-                <span key={step.nodeId} style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                  {i > 0 && <span style={{ color: "var(--color-subtle)" }}>→</span>}
-                  <span className="badge">{step.nodeName}</span>
-                </span>
-              ))}
+              {cls.path.length === 0 ? (
+                <span style={{ color: "var(--color-subtle)" }}>—</span>
+              ) : (
+                <>
+                  <span className="badge">{cls.path[0]!.sourceNodeId}</span>
+                  {cls.path.map((step) => (
+                    <span key={step.edgeId} style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                      <span style={{ color: "var(--color-subtle)" }}>→</span>
+                      <span className="badge">{step.targetNodeId}</span>
+                    </span>
+                  ))}
+                </>
+              )}
             </div>
           </div>
 

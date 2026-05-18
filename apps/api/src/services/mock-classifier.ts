@@ -9,13 +9,30 @@ type NodeInput = {
   id: string;
   name: string;
   isRoot: boolean;
+  isVisibleCategory: boolean;
   canReceiveEmails: boolean;
+};
+
+type EdgeInput = {
+  id: string;
+  sourceNodeId: string;
+  targetNodeId: string;
+  sortingQuestion: string;
+};
+
+type PathStep = {
+  edgeId: string;
+  sourceNodeId: string;
+  targetNodeId: string;
+  sortingQuestion: string;
+  confidence: number;
+  explanation: string;
 };
 
 export type MockClassificationResult = {
   finalNodeId: string;
   finalNodeName: string;
-  path: Array<{ nodeId: string; nodeName: string }>;
+  path: PathStep[];
   confidence: number;
   explanation: string;
   priority: "LOW" | "MEDIUM" | "HIGH";
@@ -32,9 +49,28 @@ const FINANCIAL_KEYWORDS = ["invoice", "payment", "pay", "bill", "financial", "f
 const PERSONAL_KEYWORDS = ["personal", "weekend", "coffee", "lunch", "family", "friend"];
 const APPROVAL_KEYWORDS = ["approve", "approval", "sign off", "authorize"];
 
+function findEdgePath(fromId: string, toId: string, edges: EdgeInput[]): EdgeInput[] | null {
+  if (fromId === toId) return [];
+  const queue: Array<{ nodeId: string; path: EdgeInput[] }> = [{ nodeId: fromId, path: [] }];
+  const visited = new Set([fromId]);
+  while (queue.length > 0) {
+    const { nodeId, path } = queue.shift()!;
+    for (const edge of edges) {
+      if (edge.sourceNodeId === nodeId && !visited.has(edge.targetNodeId)) {
+        const newPath = [...path, edge];
+        if (edge.targetNodeId === toId) return newPath;
+        visited.add(edge.targetNodeId);
+        queue.push({ nodeId: edge.targetNodeId, path: newPath });
+      }
+    }
+  }
+  return null;
+}
+
 export function mockClassify(
   messages: MessageInput[],
-  nodes: NodeInput[]
+  nodes: NodeInput[],
+  edges: EdgeInput[]
 ): MockClassificationResult {
   if (nodes.length === 0) {
     throw new Error("No taxonomy nodes available for classification");
@@ -50,9 +86,18 @@ export function mockClassify(
   const isPersonal = PERSONAL_KEYWORDS.some((kw) => text.includes(kw));
   const needsApproval = APPROVAL_KEYWORDS.some((kw) => text.includes(kw));
 
-  const leafNodes = nodes.filter((n) => n.canReceiveEmails && !n.isRoot);
   const rootNode = nodes.find((n) => n.isRoot);
-  const pool = leafNodes.length > 0 ? leafNodes : nodes;
+
+  // Rule 3: prefer true leaf nodes (visible, receivable, no outgoing edges)
+  const hasOutgoing = new Set(edges.map((e) => e.sourceNodeId));
+  const leafNodes = nodes.filter(
+    (n) => n.canReceiveEmails && n.isVisibleCategory && !n.isRoot && !hasOutgoing.has(n.id)
+  );
+  // Rule 4: fall back to intermediate nodes (visible, receivable, has outgoing edges)
+  const intermediateNodes = nodes.filter(
+    (n) => n.canReceiveEmails && n.isVisibleCategory && !n.isRoot && hasOutgoing.has(n.id)
+  );
+  const pool = leafNodes.length > 0 ? leafNodes : intermediateNodes.length > 0 ? intermediateNodes : nodes;
 
   let bestNode = pool[0]!;
   let bestScore = -1;
@@ -96,13 +141,18 @@ export function mockClassify(
       ? `Classified as ${bestNode.name} (mock). Detected: ${traits.join(", ")}.`
       : `Classified as ${bestNode.name} (mock). No strong signal detected; confidence is low.`;
 
-  const path =
-    rootNode && rootNode.id !== bestNode.id
-      ? [
-          { nodeId: rootNode.id, nodeName: rootNode.name },
-          { nodeId: bestNode.id, nodeName: bestNode.name },
-        ]
-      : [{ nodeId: bestNode.id, nodeName: bestNode.name }];
+  // Build enriched path from edge traversal (BFS from root to best node)
+  const edgePath = rootNode ? findEdgePath(rootNode.id, bestNode.id, edges) : null;
+  const path: PathStep[] = edgePath
+    ? edgePath.map((edge) => ({
+        edgeId: edge.id,
+        sourceNodeId: edge.sourceNodeId,
+        targetNodeId: edge.targetNodeId,
+        sortingQuestion: edge.sortingQuestion,
+        confidence,
+        explanation,
+      }))
+    : [];
 
   return {
     finalNodeId: bestNode.id,

@@ -2,61 +2,66 @@
 
 When working on Genizor, prioritize readability, safety, and a focused MVP. Avoid clever abstractions and do not add non-MVP features without explicit approval.
 
-## About This Project
+## About
 
-Genizor is a Gmail-first AI email triage assistant. It is not a full email client.
+Genizor is an open-source, self-hostable AI email triage assistant. It is Gmail-first, but not a full email client.
 
-The app helps users define a simple visual email sorting map, classify Gmail emails with AI, add tags/metadata, review decisions, sync approved categories to Gmail labels, and create Gmail drafts.
+Genizor sorts email threads, not individual messages. New messages in existing threads trigger re-sorting of the full thread.
+
+Users define a visual email sorting tree. AI follows sorting questions on edges, chooses one final destination node, adds structured metadata, and sends uncertain/risky results to review.
 
 Genizor must not auto-send emails or send emails from its own GUI in the MVP.
 
-## Monorepo Structure
+## Monorepo
 
 - `apps/web/` - Next.js frontend
 - `apps/api/` - TypeScript API server
 - `apps/worker/` - background jobs
-- `packages/db/` - database schema, migrations, client
-- `packages/shared/` - shared types, constants, validation schemas
-- `packages/ai/` - AI provider abstraction, prompts, output parsing
-- `packages/config/` - shared config
+- `packages/db/` - Prisma schema, migrations, client
+- `packages/shared/` - shared types and Zod schemas
+- `packages/ai/` - AI providers, prompts, output validation
+- `packages/config/` - shared env/config
 
-## Core Concepts
+## Core Model
 
-- Category/folder nodes: email destinations, optionally synced to Gmail labels
-- Rule/helper nodes: influence classification or handling, not folders by default
-- Tags: added to emails regardless of category
-- Metadata: priority, urgency, risk, required action, sensitivity, due date
-- Review queue: where uncertain or sensitive decisions are approved/corrected
-- Policy engine: final authority for safe actions
+- Each workspace has one DB-backed root entry node: `Inbox`.
+- All sorting starts from `Inbox`.
+- `TaxonomyNode` = visual sorting step.
+- A node may be a visible category/folder or a hidden sorting step.
+- Final destination nodes must be visible categories and able to receive emails.
+- `TaxonomyEdge` = sorting question from parent/source node to child/target node.
+- Edges with missing/default sorting questions are invalid and ignored.
+- Tags are user-controlled labels, optionally imported from Gmail later.
+- Metadata is AI-generated: priority, urgency, risk, required action, sensitivity, due date, confidence, explanation, review status.
+- Review queue handles low-confidence, sensitive, invalid, or risky results.
 
-## Standards
+## AI & Policy
 
-- TypeScript strict mode
-- Zod for runtime validation
-- Provider interfaces for Gmail and AI models
-- Background jobs for sync, classification, labeling, and drafts
-- Idempotent, retry-safe jobs
-- Small files with explicit domain names
-- Test policy logic, AI output parsing, provider adapters, and job behavior
+- Treat LLM output as untrusted.
+- Validate structured AI output with Zod.
+- Reject unknown node IDs, invalid paths, and invalid final destinations.
+- Policy code decides final actions, not prompts.
+- Keep mock sorting available for deterministic testing.
+- Support local Ollama for dev and frontier LLMs for production through provider abstraction.
 
 ## Safety & Privacy
 
-- Treat LLM output as untrusted
-- Policy code decides final actions, not prompts
-- Never auto-send email
-- Never send from Genizor GUI in MVP
-- Drafts require user approval
-- Store minimal email data
-- Never log full email bodies
-- Encrypt OAuth tokens and API keys at rest
-- Audit important actions
+- Never auto-send email.
+- Never send from Genizor GUI in MVP.
+- Drafts require user approval.
+- Store minimal email data.
+- Never log full email bodies.
+- Encrypt OAuth tokens and API keys at rest.
+- Audit important actions.
 
-## UI Guidelines
+## Standards
 
-- The canvas is an email sorting map, not an automation builder
-- Keep node configuration simple
-- Prefer tags/metadata over extra system nodes
-- Prefer clear defaults over advanced settings
+- TypeScript strict mode.
+- Zod for runtime validation.
+- Small files with explicit domain names.
+- Idempotent, retry-safe background jobs.
+- Test policy logic, AI output parsing, provider adapters, graph validity, and job behavior.
+- Use centralized Genizor design tokens; do not hardcode brand hex values in components.
 
 ## Non-Goals
 
@@ -68,7 +73,3 @@ Genizor must not auto-send emails or send emails from its own GUI in the MVP.
 - Arbitrary workflow automation
 - Node marketplace
 - Kubernetes
-
-## Branding
-
-Use centralized Genizor design tokens; do not hardcode brand hex values in components.

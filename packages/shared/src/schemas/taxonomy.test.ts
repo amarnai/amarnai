@@ -157,17 +157,32 @@ describe("CreateTaxonomyEdgeInputSchema", () => {
 });
 
 describe("ClassificationPathStepSchema", () => {
+  const validStep = {
+    edgeId: "edge_1",
+    sourceNodeId: "node_0",
+    targetNodeId: "node_1",
+    sortingQuestion: "Is this a client email?",
+    confidence: 0.9,
+    explanation: "Matches client criteria",
+  };
+
   it("parses a valid step", () => {
-    const result = ClassificationPathStepSchema.parse({
-      nodeId: "node_1",
-      nodeName: "Inbox",
-    });
-    expect(result.nodeId).toBe("node_1");
-    expect(result.nodeName).toBe("Inbox");
+    const result = ClassificationPathStepSchema.parse(validStep);
+    expect(result.edgeId).toBe("edge_1");
+    expect(result.sourceNodeId).toBe("node_0");
+    expect(result.targetNodeId).toBe("node_1");
+    expect(result.sortingQuestion).toBe("Is this a client email?");
+    expect(result.confidence).toBe(0.9);
+    expect(result.explanation).toBe("Matches client criteria");
   });
 
-  it("rejects missing fields", () => {
-    expect(() => ClassificationPathStepSchema.parse({ nodeId: "node_1" })).toThrow();
-    expect(() => ClassificationPathStepSchema.parse({ nodeName: "Inbox" })).toThrow();
+  it("rejects missing required fields", () => {
+    expect(() => ClassificationPathStepSchema.parse({ edgeId: "edge_1" })).toThrow();
+    expect(() => ClassificationPathStepSchema.parse({ sourceNodeId: "node_0", targetNodeId: "node_1" })).toThrow();
+  });
+
+  it("rejects confidence outside [0, 1]", () => {
+    expect(() => ClassificationPathStepSchema.parse({ ...validStep, confidence: 1.5 })).toThrow();
+    expect(() => ClassificationPathStepSchema.parse({ ...validStep, confidence: -0.1 })).toThrow();
   });
 });

@@ -222,16 +222,22 @@ classify.post(
       return c.json({ error: "Thread not found" }, 404);
     }
 
-    const nodes = await db.taxonomyNode.findMany({
-      where: { workspaceId },
-      select: { id: true, name: true, isRoot: true, canReceiveEmails: true },
-    });
+    const [nodes, rawMockEdges] = await Promise.all([
+      db.taxonomyNode.findMany({
+        where: { workspaceId },
+        select: { id: true, name: true, isRoot: true, isVisibleCategory: true, canReceiveEmails: true },
+      }),
+      db.taxonomyEdge.findMany({
+        where: { workspaceId },
+        select: { id: true, sourceNodeId: true, targetNodeId: true, sortingQuestion: true },
+      }),
+    ]);
 
     if (nodes.length === 0) {
       return c.json({ error: "No taxonomy nodes found for classification" }, 422);
     }
 
-    const result = mockClassify(thread.messages, nodes);
+    const result = mockClassify(thread.messages, nodes, rawMockEdges);
 
     const classification = await db.emailClassification.create({
       data: {

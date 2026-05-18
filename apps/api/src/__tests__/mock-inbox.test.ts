@@ -320,8 +320,14 @@ describe("ai classifier mode", () => {
   const AI_RESULT = {
     finalNodeId: "node-leaf",
     path: [
-      { nodeId: "node-root", nodeName: "Inbox" },
-      { nodeId: "node-leaf", nodeName: "Clients" },
+      {
+        edgeId: "edge-1",
+        sourceNodeId: "node-root",
+        targetNodeId: "node-leaf",
+        sortingQuestion: "Client email?",
+        confidence: 0.88,
+        explanation: "AI classified as Clients",
+      },
     ],
     confidence: 0.88,
     explanation: "AI classified as Clients",

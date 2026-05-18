@@ -40,12 +40,19 @@ describe("ClassificationResultSchema", () => {
     const result = ClassificationResultSchema.parse({
       ...valid,
       path: [
-        { nodeId: "node_0", nodeName: "Inbox" },
-        { nodeId: "node_1", nodeName: "Clients" },
+        {
+          edgeId: "edge_0",
+          sourceNodeId: "node_0",
+          targetNodeId: "node_1",
+          sortingQuestion: "Is this a client email?",
+          confidence: 0.9,
+          explanation: "Client email",
+        },
       ],
     });
-    expect(result.path).toHaveLength(2);
-    expect(result.path[0]?.nodeName).toBe("Inbox");
+    expect(result.path).toHaveLength(1);
+    expect(result.path[0]?.edgeId).toBe("edge_0");
+    expect(result.path[0]?.targetNodeId).toBe("node_1");
   });
 
   it("rejects confidence outside [0, 1]", () => {

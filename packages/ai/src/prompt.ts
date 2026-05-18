@@ -4,17 +4,20 @@ const SYSTEM_PROMPT = `You are an email classification assistant. Classify an em
 
 Rules:
 - Start from the root node and follow valid edges to a destination node
-- Only follow edges that exist in the taxonomy
-- The final node MUST have isVisibleCategory=true AND canReceiveEmails=true
+- Use only the edge IDs listed in the taxonomy — never invent source/target transitions
+- When a node has outgoing edges, evaluate those child edges before treating it as the final destination
+- Do not stop at a node only because canReceiveEmails=true if it has outgoing edges — prefer the deepest matching node
+- Stop at the current node only when: it has no outgoing edges AND isVisibleCategory=true AND canReceiveEmails=true
+- If a node has outgoing edges but no child edge matches with sufficient confidence, you may fall back to that node only if isVisibleCategory=true AND canReceiveEmails=true
+- If a node has outgoing edges but no child matches and that node cannot receive emails, set finalNodeId to null and needsHumanReview to true
+- Record only the edges actually followed in "path" — do not include rejected or considered-but-not-taken edges
 - Classify the thread as a whole — weight the latest message most heavily
 - If uncertain or no valid destination exists, set finalNodeId to null and needsHumanReview to true
-- Never invent node IDs or edge IDs not present in the taxonomy
-- The path must trace nodes visited from root to final node (inclusive)
 
 Respond with ONLY valid JSON, no markdown:
 {
-  "finalNodeId": "string or null",
-  "path": [{"nodeId": "string", "nodeName": "string"}],
+  "finalNodeId": "the id: value of the destination node (not its name), or null",
+  "path": [{"edgeId": "string", "confidence": 0.0, "explanation": "string"}],
   "confidence": 0.0,
   "explanation": "string",
   "priority": "LOW" | "MEDIUM" | "HIGH",
@@ -27,27 +30,42 @@ Respond with ONLY valid JSON, no markdown:
   "needsHumanReview": false
 }`;
 
-function formatNode(node: TaxonomyNodeInput): string {
-  const lines = [
-    `ID: ${node.id}`,
-    `Name: ${node.name}`,
-    `isVisibleCategory: ${node.isVisibleCategory}, canReceiveEmails: ${node.canReceiveEmails}, isRoot: ${node.isRoot}`,
-  ];
-  if (node.description) lines.push(`Description: ${node.description}`);
-  if (node.instructions) lines.push(`Instructions: ${node.instructions}`);
-  if (node.examples.length > 0) lines.push(`Examples: ${node.examples.join("; ")}`);
-  return lines.map((l) => `  ${l}`).join("\n");
-}
+function renderTaxonomyTree(nodes: TaxonomyNodeInput[], edges: TaxonomyEdgeInput[]): string {
+  const root = nodes.find((n) => n.isRoot);
+  if (!root) return "(no root node defined)";
 
-function formatEdge(edge: TaxonomyEdgeInput): string {
-  const lines = [
-    `Edge ID: ${edge.id}`,
-    `From: ${edge.sourceNodeId} → To: ${edge.targetNodeId}`,
-    `Sorting question: ${edge.sortingQuestion}`,
-  ];
-  if (edge.examples.length > 0) lines.push(`Positive examples: ${edge.examples.join("; ")}`);
-  if (edge.negativeExamples.length > 0) lines.push(`Negative examples: ${edge.negativeExamples.join("; ")}`);
-  return lines.map((l) => `  ${l}`).join("\n");
+  function renderNode(nodeId: string, indent: string, visited: Set<string>): string {
+    if (visited.has(nodeId)) return `${indent}(cycle at ${nodeId})`;
+    const node = nodes.find((n) => n.id === nodeId);
+    if (!node) return `${indent}(unknown node ${nodeId})`;
+
+    const childVisited = new Set(visited);
+    childVisited.add(nodeId);
+
+    const outgoing = edges.filter((e) => e.sourceNodeId === nodeId);
+    const flags: string[] = [];
+    if (node.isRoot) flags.push("ROOT");
+    if (node.isVisibleCategory) flags.push("visible");
+    if (node.canReceiveEmails) flags.push("canReceive");
+    if (outgoing.length === 0) flags.push("LEAF");
+
+    const lines: string[] = [];
+    lines.push(`${indent}${node.name} [${flags.join(", ")}] id:${node.id}`);
+    if (node.description) lines.push(`${indent}  description: ${node.description}`);
+    if (node.instructions) lines.push(`${indent}  instructions: ${node.instructions}`);
+    if (node.examples.length > 0) lines.push(`${indent}  examples: ${node.examples.join("; ")}`);
+
+    for (const edge of outgoing) {
+      lines.push(`${indent}  → "${edge.sortingQuestion}" (edge:${edge.id})`);
+      if (edge.examples.length > 0) lines.push(`${indent}    yes: ${edge.examples.join("; ")}`);
+      if (edge.negativeExamples.length > 0) lines.push(`${indent}    no: ${edge.negativeExamples.join("; ")}`);
+      lines.push(renderNode(edge.targetNodeId, indent + "    ", childVisited));
+    }
+
+    return lines.join("\n");
+  }
+
+  return renderNode(root.id, "", new Set());
 }
 
 function formatMessage(msg: ThreadMessage, index: number): string {
@@ -64,13 +82,7 @@ function formatMessage(msg: ThreadMessage, index: number): string {
 }
 
 export function buildClassificationPrompt(input: ClassifyInput): Array<{ role: "system" | "user"; content: string }> {
-  const root = input.nodes.find((n) => n.isRoot);
-  const rootLine = root ? `Root node: ${root.id} "${root.name}"` : "No root node defined.";
-
-  const nodesSection = input.nodes.map(formatNode).join("\n\n");
-  const edgesSection = input.edges.length > 0
-    ? input.edges.map(formatEdge).join("\n\n")
-    : "  (no edges defined)";
+  const treeSection = renderTaxonomyTree(input.nodes, input.edges);
 
   const sorted = [...input.messages].sort((a, b) => {
     const da = a.receivedAt instanceof Date ? a.receivedAt : new Date(String(a.receivedAt));
@@ -79,15 +91,9 @@ export function buildClassificationPrompt(input: ClassifyInput): Array<{ role: "
   });
   const messagesSection = sorted.map(formatMessage).join("\n\n");
 
-  const user = `## Taxonomy
+  const user = `## Taxonomy (traverse from ROOT to LEAF)
 
-${rootLine}
-
-### Nodes:
-${nodesSection}
-
-### Edges (sourceNodeId → targetNodeId):
-${edgesSection}
+${treeSection}
 
 ## Email thread (oldest first — latest message has highest weight)
 

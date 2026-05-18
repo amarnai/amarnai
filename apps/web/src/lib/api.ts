@@ -173,6 +173,7 @@ export type EmailThreadDetail = {
     senderName: string | null;
     subject: string | null;
     snippet: string | null;
+    bodyText: string | null;
     receivedAt: string;
     hasAttachments: boolean;
     toEmails: unknown;
@@ -236,7 +237,14 @@ export type MockInboxResult = {
   classification: {
     id: string;
     finalNode: { id: string; name: string } | null;
-    path: Array<{ nodeId: string; nodeName: string }>;
+    path: Array<{
+      edgeId: string;
+      sourceNodeId: string;
+      targetNodeId: string;
+      sortingQuestion: string;
+      confidence: number;
+      explanation: string;
+    }>;
     confidence: number;
     explanation: string;
     priority: string;
@@ -257,7 +265,14 @@ export type ClassifyResult = {
   classification: {
     id: string;
     finalNodeId: string | null;
-    path: Array<{ nodeId: string; nodeName: string }>;
+    path: Array<{
+      edgeId: string;
+      sourceNodeId: string;
+      targetNodeId: string;
+      sortingQuestion: string;
+      confidence: number;
+      explanation: string;
+    }>;
     confidence: number;
     explanation: string;
     priority: string;

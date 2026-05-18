@@ -79,8 +79,14 @@ const THREAD = {
 const VALID_AI_RESULT = {
   finalNodeId: "node-leaf",
   path: [
-    { nodeId: "node-root", nodeName: "Inbox" },
-    { nodeId: "node-leaf", nodeName: "Clients" },
+    {
+      edgeId: "edge-1",
+      sourceNodeId: "node-root",
+      targetNodeId: "node-leaf",
+      sortingQuestion: "Client email?",
+      confidence: 0.9,
+      explanation: "Client email",
+    },
   ],
   confidence: 0.9,
   explanation: "Client email",
