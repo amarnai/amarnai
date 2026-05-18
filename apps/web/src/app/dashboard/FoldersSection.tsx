@@ -27,7 +27,7 @@ function buildFolderTree(
 
   const threadCountByNode = new Map<string, number>();
   for (const thread of threads) {
-    const nodeId = thread.latestClassification?.finalNode.id;
+    const nodeId = thread.latestClassification?.finalNode?.id;
     if (nodeId) {
       threadCountByNode.set(nodeId, (threadCountByNode.get(nodeId) ?? 0) + 1);
     }
@@ -167,7 +167,7 @@ export default function FoldersSection({ nodes, edges, threads }: Props) {
   const visibleThreads = useMemo(() => {
     if (selectedId === null) return sortedThreads;
     return threads.filter(
-      (t) => t.latestClassification?.finalNode.id === selectedId
+      (t) => t.latestClassification?.finalNode?.id === selectedId
     );
   }, [selectedId, sortedThreads, threads]);
 

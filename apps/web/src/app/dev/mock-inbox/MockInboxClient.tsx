@@ -10,9 +10,11 @@ type Props = {
 };
 
 type Mode = "new_thread" | "existing_thread";
+type Classifier = "mock" | "ai";
 
 export function MockInboxClient({ workspaceId, threads }: Props) {
   const [mode, setMode] = useState<Mode>("new_thread");
+  const [classifier, setClassifier] = useState<Classifier>("mock");
   const [threadId, setThreadId] = useState<string>(threads[0]?.id ?? "");
   const [subject, setSubject] = useState("");
   const [senderName, setSenderName] = useState("");
@@ -34,6 +36,7 @@ export function MockInboxClient({ workspaceId, threads }: Props) {
         mode === "new_thread"
           ? {
               mode: "new_thread",
+              classifier,
               subject: subject || undefined,
               senderName: senderName || undefined,
               senderEmail,
@@ -41,6 +44,7 @@ export function MockInboxClient({ workspaceId, threads }: Props) {
             }
           : {
               mode: "existing_thread",
+              classifier,
               threadId,
               senderName: senderName || undefined,
               senderEmail,
@@ -70,6 +74,19 @@ export function MockInboxClient({ workspaceId, threads }: Props) {
           >
             <option value="new_thread">New Thread</option>
             <option value="existing_thread">Existing Thread</option>
+          </select>
+        </div>
+
+        {/* Classifier */}
+        <div className="form-group">
+          <label className="form-label">Classifier</label>
+          <select
+            className="form-select"
+            value={classifier}
+            onChange={(e) => setClassifier(e.target.value as Classifier)}
+          >
+            <option value="mock">Mock (default)</option>
+            <option value="ai">AI (uses configured AI_PROVIDER)</option>
           </select>
         </div>
 
@@ -183,7 +200,7 @@ export function MockInboxClient({ workspaceId, threads }: Props) {
           <div className="meta-grid">
             <div>
               <div className="meta-label">Final Node</div>
-              <div className="meta-value">{cls.finalNode.name}</div>
+              <div className="meta-value">{cls.finalNode?.name ?? "Unclassified"}</div>
             </div>
             <div>
               <div className="meta-label">Confidence</div>
@@ -227,6 +244,13 @@ export function MockInboxClient({ workspaceId, threads }: Props) {
               ))}
             </div>
           </div>
+
+          {/* Provider/model */}
+          {(cls.modelProvider ?? cls.modelName) && (
+            <p style={{ fontSize: 12, color: "#9ca3af", marginBottom: 8 }}>
+              {[cls.modelProvider, cls.modelName].filter(Boolean).join(" / ")}
+            </p>
+          )}
 
           {/* Explanation */}
           {cls.explanation && (

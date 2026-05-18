@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { api, type EmailThreadDetail } from "@/lib/api";
+import { ClassificationActions } from "./ClassificationActions";
 
 type Props = { params: Promise<{ threadId: string }> };
 
@@ -32,12 +33,14 @@ export default async function ThreadDetailPage({ params }: Props) {
   const { threadId } = await params;
 
   let thread: EmailThreadDetail | null = null;
+  let workspaceId: string | null = null;
   let error: string | null = null;
 
   try {
     const workspaces = await api.workspaces();
     const ws = workspaces[0];
     if (!ws) throw new Error("No workspace found");
+    workspaceId = ws.id;
     thread = await api.emailThread(ws.id, threadId);
   } catch (err) {
     error = err instanceof Error ? err.message : String(err);
@@ -63,6 +66,16 @@ export default async function ThreadDetailPage({ params }: Props) {
       </Link>
 
       <h1>{thread.subject ?? "(no subject)"}</h1>
+
+      {/* Classification actions */}
+      {workspaceId && (
+        <ClassificationActions
+          workspaceId={workspaceId}
+          threadId={thread.id}
+          modelProvider={thread.latestClassification?.modelProvider ?? null}
+          modelName={thread.latestClassification?.modelName ?? null}
+        />
+      )}
 
       {/* Review notice */}
       {thread.reviewItems.length > 0 && thread.reviewItems[0] && (
@@ -98,7 +111,7 @@ export default async function ThreadDetailPage({ params }: Props) {
           <h2>Classification</h2>
           <div className="card card-body">
             <div className="meta-grid">
-              <MetaItem label="Category" value={cls.finalNode.name} />
+              <MetaItem label="Category" value={cls.finalNode?.name ?? "Unclassified"} />
               <MetaItem
                 label="Confidence"
                 value={`${Math.round(cls.confidence * 100)}%`}

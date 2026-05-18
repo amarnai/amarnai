@@ -1,0 +1,29 @@
+import { FrontierAIProvider } from "./providers/frontier.js";
+import { OllamaAIProvider } from "./providers/ollama.js";
+import type { AIProvider, AIProviderConfig } from "./types.js";
+
+export function createAIProvider(config: AIProviderConfig): AIProvider {
+  switch (config.provider) {
+    case "ollama": {
+      const baseUrl = config.ollama?.baseUrl;
+      const model = config.ollama?.model;
+      if (!baseUrl) throw new Error("OLLAMA_BASE_URL is required for ollama provider");
+      if (!model) throw new Error("OLLAMA_MODEL is required for ollama provider");
+      return new OllamaAIProvider(baseUrl, model);
+    }
+    case "frontier": {
+      const provider = config.frontier?.provider;
+      const apiKey = config.frontier?.apiKey;
+      const model = config.frontier?.model;
+      if (!provider) throw new Error("FRONTIER_LLM_PROVIDER is required for frontier provider");
+      if (!apiKey) throw new Error("FRONTIER_LLM_API_KEY is required for frontier provider");
+      if (!model) throw new Error("FRONTIER_LLM_MODEL is required for frontier provider");
+      const baseUrl = config.frontier?.baseUrl;
+      return new FrontierAIProvider({ provider, apiKey, model, ...(baseUrl ? { baseUrl } : {}) });
+    }
+    case "mock":
+      throw new Error(
+        "AI_PROVIDER is set to 'mock'. Set AI_PROVIDER=ollama or AI_PROVIDER=frontier to use AI classification."
+      );
+  }
+}

@@ -16,7 +16,17 @@ vi.mock("@genizor/db", () => ({
     },
     emailClassification: { create: vi.fn() },
     reviewItem: { create: vi.fn() },
+    taxonomyEdge: { findMany: vi.fn() },
   },
+}));
+
+const mockClassifyThread = vi.fn();
+vi.mock("@genizor/ai", () => ({
+  createAIProvider: vi.fn().mockReturnValue({
+    providerName: "test-provider",
+    modelName: "test-model",
+  }),
+  classifyThread: (...args: unknown[]) => mockClassifyThread(...args),
 }));
 
 import app from "../app.js";
@@ -28,8 +38,26 @@ const MSG_ID = "msg-1";
 const CLS_ID = "cls-1";
 const REVIEW_ID = "review-1";
 const ACCOUNT_ID = "account-1";
-const NODE_ROOT = { id: "node-root", name: "Inbox", isRoot: true, canReceiveEmails: false };
-const NODE_LEAF = { id: "node-leaf", name: "Clients", isRoot: false, canReceiveEmails: true };
+const NODE_ROOT = {
+  id: "node-root",
+  name: "Inbox",
+  description: null,
+  instructions: null,
+  examples: [],
+  isRoot: true,
+  isVisibleCategory: false,
+  canReceiveEmails: false,
+};
+const NODE_LEAF = {
+  id: "node-leaf",
+  name: "Clients",
+  description: null,
+  instructions: null,
+  examples: [],
+  isRoot: false,
+  isVisibleCategory: true,
+  canReceiveEmails: true,
+};
 
 const mockWorkspace = {
   id: WS_ID,
@@ -46,7 +74,7 @@ const mockThread = {
 };
 
 const mockMessages = [
-  { subject: "Hello", senderEmail: "test@example.com", senderName: "Test", bodyText: "Hello world" },
+  { subject: "Hello", senderEmail: "test@example.com", senderName: "Test", bodyText: "Hello world", receivedAt: new Date() },
 ];
 
 function post(path: string, body: unknown) {
@@ -60,8 +88,8 @@ function post(path: string, body: unknown) {
 beforeEach(() => {
   vi.clearAllMocks();
   process.env["ENABLE_DEV_TOOLS"] = "true";
-  // Provide a default mock so routes that call reviewItem.create don't throw.
   vi.mocked(db.reviewItem.create).mockResolvedValue({ id: REVIEW_ID } as never);
+  vi.mocked(db.taxonomyEdge.findMany).mockResolvedValue([] as never);
 });
 
 afterEach(() => {
@@ -92,7 +120,7 @@ describe("dev guard", () => {
     vi.mocked(db.emailMessage.create).mockResolvedValue({ id: MSG_ID } as never);
     // "clients" matches NODE_LEAF name → confidence 0.76 → no review item
     vi.mocked(db.emailMessage.findMany).mockResolvedValue([
-      { subject: null, senderEmail: "test@example.com", senderName: null, bodyText: "Clients meeting" },
+      { subject: null, senderEmail: "test@example.com", senderName: null, bodyText: "Clients meeting", receivedAt: new Date() },
     ] as never);
     vi.mocked(db.emailThread.findUniqueOrThrow).mockResolvedValue(mockThread as never);
     vi.mocked(db.emailClassification.create).mockResolvedValue({ id: CLS_ID } as never);
@@ -116,7 +144,7 @@ describe("new thread mode", () => {
     vi.mocked(db.emailMessage.create).mockResolvedValue({ id: MSG_ID } as never);
     // "clients" matches NODE_LEAF name → confidence 0.76 → needsHumanReview = false
     vi.mocked(db.emailMessage.findMany).mockResolvedValue([
-      { subject: "Clients kickoff", senderEmail: "alice@example.com", senderName: "Alice", bodyText: "Clients project kickoff." },
+      { subject: "Clients kickoff", senderEmail: "alice@example.com", senderName: "Alice", bodyText: "Clients project kickoff.", receivedAt: new Date() },
     ] as never);
     vi.mocked(db.emailThread.findUniqueOrThrow).mockResolvedValue(mockThread as never);
     vi.mocked(db.emailClassification.create).mockResolvedValue({ id: CLS_ID } as never);
@@ -146,7 +174,7 @@ describe("new thread mode", () => {
     vi.mocked(db.emailMessage.create).mockResolvedValue({ id: MSG_ID } as never);
     // No keyword matches → confidence 0.35 → needsHumanReview = true
     vi.mocked(db.emailMessage.findMany).mockResolvedValue([
-      { subject: null, senderEmail: "x@y.com", senderName: null, bodyText: "zzz" },
+      { subject: null, senderEmail: "x@y.com", senderName: null, bodyText: "zzz", receivedAt: new Date() },
     ] as never);
     vi.mocked(db.emailThread.findUniqueOrThrow).mockResolvedValue(mockThread as never);
     vi.mocked(db.emailClassification.create).mockResolvedValue({ id: CLS_ID } as never);
@@ -233,7 +261,7 @@ describe("existing thread mode", () => {
   it("repeated incoming messages each create a new classification row", async () => {
     const twoMessages = [
       ...mockMessages,
-      { subject: null, senderEmail: "bob@example.com", senderName: null, bodyText: "Second message" },
+      { subject: null, senderEmail: "bob@example.com", senderName: null, bodyText: "Second message", receivedAt: new Date() },
     ];
     vi.mocked(db.workspace.findUnique).mockResolvedValue(mockWorkspace as never);
     vi.mocked(db.emailThread.findFirst).mockResolvedValue(
@@ -283,5 +311,92 @@ describe("existing thread mode", () => {
     });
 
     expect(res.status).toBe(400);
+  });
+});
+
+// ─── AI classifier mode ───────────────────────────────────────────────────────
+
+describe("ai classifier mode", () => {
+  const AI_RESULT = {
+    finalNodeId: "node-leaf",
+    path: [
+      { nodeId: "node-root", nodeName: "Inbox" },
+      { nodeId: "node-leaf", nodeName: "Clients" },
+    ],
+    confidence: 0.88,
+    explanation: "AI classified as Clients",
+    priority: "MEDIUM",
+    urgency: "NONE",
+    riskLevel: "LOW",
+    requiredAction: "NONE",
+    sensitivity: "NORMAL",
+    dueAt: null,
+    suggestedNextStep: "LABEL_ONLY",
+    needsHumanReview: false,
+  };
+
+  beforeEach(() => {
+    process.env["AI_PROVIDER"] = "ollama";
+    process.env["OLLAMA_BASE_URL"] = "http://localhost:11434";
+    process.env["OLLAMA_MODEL"] = "llama3.1:8b";
+    mockClassifyThread.mockResolvedValue(AI_RESULT);
+  });
+
+  afterEach(() => {
+    delete process.env["AI_PROVIDER"];
+    delete process.env["OLLAMA_BASE_URL"];
+    delete process.env["OLLAMA_MODEL"];
+  });
+
+  it("uses AI provider when classifier=ai", async () => {
+    vi.mocked(db.workspace.findUnique).mockResolvedValue(mockWorkspace as never);
+    vi.mocked(db.emailThread.create).mockResolvedValue({ id: THREAD_ID } as never);
+    vi.mocked(db.emailMessage.create).mockResolvedValue({ id: MSG_ID } as never);
+    vi.mocked(db.emailMessage.findMany).mockResolvedValue(mockMessages as never);
+    vi.mocked(db.emailThread.findUniqueOrThrow).mockResolvedValue(mockThread as never);
+    vi.mocked(db.emailClassification.create).mockResolvedValue({ id: CLS_ID } as never);
+
+    const res = await post(`/dev/workspaces/${WS_ID}/mock-inbox-event`, {
+      mode: "new_thread",
+      classifier: "ai",
+      senderEmail: "test@example.com",
+      bodyText: "Hello from AI",
+    });
+
+    expect(res.status).toBe(201);
+    expect(mockClassifyThread).toHaveBeenCalledTimes(1);
+    const body = await res.json() as Record<string, unknown>;
+    const cls = body.classification as Record<string, unknown>;
+    expect(cls.modelProvider).toBe("test-provider");
+    expect(cls.modelName).toBe("test-model");
+  });
+
+  it("creates review item when AI returns needsHumanReview=true", async () => {
+    mockClassifyThread.mockResolvedValue({
+      ...AI_RESULT,
+      finalNodeId: null,
+      needsHumanReview: true,
+      explanation: "Cannot classify",
+      suggestedNextStep: "ASK_USER",
+    });
+
+    vi.mocked(db.workspace.findUnique).mockResolvedValue(mockWorkspace as never);
+    vi.mocked(db.emailThread.create).mockResolvedValue({ id: THREAD_ID } as never);
+    vi.mocked(db.emailMessage.create).mockResolvedValue({ id: MSG_ID } as never);
+    vi.mocked(db.emailMessage.findMany).mockResolvedValue(mockMessages as never);
+    vi.mocked(db.emailThread.findUniqueOrThrow).mockResolvedValue(mockThread as never);
+    vi.mocked(db.emailClassification.create).mockResolvedValue({ id: CLS_ID } as never);
+
+    const res = await post(`/dev/workspaces/${WS_ID}/mock-inbox-event`, {
+      mode: "new_thread",
+      classifier: "ai",
+      senderEmail: "test@example.com",
+      bodyText: "Ambiguous email",
+    });
+
+    expect(res.status).toBe(201);
+    const body = await res.json() as Record<string, unknown>;
+    expect(body.reviewItemCreated).toBe(true);
+    expect(db.reviewItem.create).toHaveBeenCalledTimes(1);
   });
 });

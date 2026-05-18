@@ -128,6 +128,8 @@ emailThreads.get(
             dueAt: true,
             suggestedNextStep: true,
             needsHumanReview: true,
+            modelProvider: true,
+            modelName: true,
             createdAt: true,
             finalNode: {
               select: { id: true, name: true },

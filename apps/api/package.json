@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "node --env-file=../../.env --import tsx --watch src/index.ts",
+    "dev": "dotenv -e ../../.env.local -e ../../.env -- node --import tsx --watch src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
     "lint": "eslint src",
@@ -12,6 +12,7 @@
     "test": "vitest run --passWithNoTests"
   },
   "dependencies": {
+    "@genizor/ai": "workspace:*",
     "@genizor/db": "workspace:*",
     "@hono/node-server": "^1.13.0",
     "hono": "^4.7.0",

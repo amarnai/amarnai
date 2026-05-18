@@ -41,7 +41,7 @@ export type ClassificationSummary = {
   urgency: string;
   confidence: number;
   needsHumanReview: boolean;
-  finalNode: { id: string; name: string };
+  finalNode: { id: string; name: string } | null;
 };
 
 // ─── Resource types ───────────────────────────────────────────────────────────
@@ -154,8 +154,10 @@ export type Classification = {
   dueAt: string | null;
   suggestedNextStep: string;
   needsHumanReview: boolean;
+  modelProvider: string | null;
+  modelName: string | null;
   createdAt: string;
-  finalNode: { id: string; name: string };
+  finalNode: { id: string; name: string } | null;
 };
 
 export type EmailThreadDetail = {
@@ -209,6 +211,7 @@ export type ReviewItem = {
 export type MockInboxEventInput =
   | {
       mode: "new_thread";
+      classifier?: "mock" | "ai";
       subject?: string | undefined;
       senderName?: string | undefined;
       senderEmail: string;
@@ -216,6 +219,7 @@ export type MockInboxEventInput =
     }
   | {
       mode: "existing_thread";
+      classifier?: "mock" | "ai";
       threadId: string;
       senderName?: string | undefined;
       senderEmail: string;
@@ -231,7 +235,7 @@ export type MockInboxResult = {
   };
   classification: {
     id: string;
-    finalNode: { id: string; name: string };
+    finalNode: { id: string; name: string } | null;
     path: Array<{ nodeId: string; nodeName: string }>;
     confidence: number;
     explanation: string;
@@ -242,6 +246,30 @@ export type MockInboxResult = {
     sensitivity: string;
     suggestedNextStep: string;
     needsHumanReview: boolean;
+    modelProvider?: string;
+    modelName?: string;
+  };
+  reviewItemCreated: boolean;
+  reviewItemId: string | null;
+};
+
+export type ClassifyResult = {
+  classification: {
+    id: string;
+    finalNodeId: string | null;
+    path: Array<{ nodeId: string; nodeName: string }>;
+    confidence: number;
+    explanation: string;
+    priority: string;
+    urgency: string;
+    riskLevel: string;
+    requiredAction: string;
+    sensitivity: string;
+    dueAt: string | null;
+    suggestedNextStep: string;
+    needsHumanReview: boolean;
+    modelProvider: string;
+    modelName: string;
   };
   reviewItemCreated: boolean;
   reviewItemId: string | null;
@@ -308,5 +336,15 @@ export const api = {
       `/dev/workspaces/${workspaceId}/mock-inbox-event`,
       "POST",
       input
+    ),
+  aiClassify: (workspaceId: string, threadId: string) =>
+    apiMutate<ClassifyResult>(
+      `/workspaces/${workspaceId}/email-threads/${threadId}/ai-classify`,
+      "POST"
+    ),
+  mockClassifyThread: (workspaceId: string, threadId: string) =>
+    apiMutate<ClassifyResult>(
+      `/workspaces/${workspaceId}/email-threads/${threadId}/mock-classify`,
+      "POST"
     ),
 };

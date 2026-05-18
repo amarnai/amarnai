@@ -344,7 +344,7 @@ model EmailClassification {
   workspaceId       String
   emailThreadId     String
   emailMessageId    String?
-  finalNodeId       String
+  finalNodeId       String?
   path              Json              @default("[]")
   confidence        Float
   explanation       String?
@@ -365,7 +365,7 @@ model EmailClassification {
   workspace    Workspace     @relation(fields: [workspaceId], references: [id])
   emailThread  EmailThread   @relation(fields: [emailThreadId], references: [id])
   emailMessage EmailMessage? @relation(fields: [emailMessageId], references: [id])
-  finalNode    TaxonomyNode  @relation(fields: [finalNodeId], references: [id])
+  finalNode    TaxonomyNode? @relation(fields: [finalNodeId], references: [id])
   reviewItems  ReviewItem[]
   drafts       Draft[]
 }

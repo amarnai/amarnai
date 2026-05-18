@@ -10,10 +10,40 @@ Gmail-first AI email triage assistant.
 
 ## Environment
 
-There is a single `.env` at the monorepo root. All apps and database scripts read from it automatically — no per-package env files needed.
+`.env` is the base env file at the monorepo root. All apps read from it automatically.  
+`.env.local` is for local overrides and is never committed.
 
 ```bash
-cp .env.example .env   # then fill in any secrets
+cp .env.example .env              # base config (fill in secrets)
+cp .env.local.example .env.local  # local overrides (optional)
+```
+
+Values in `.env.local` take precedence over `.env`.
+
+### Local Ollama testing
+
+```bash
+# 1. Copy local overrides (sets AI_PROVIDER=ollama)
+cp .env.local.example .env.local
+
+# 2. Start Ollama via Docker
+docker compose --profile local-ai up -d ollama
+
+# 3. Pull the model
+docker exec -it $(docker compose ps -q ollama) ollama pull llama3.1:8b
+
+# 4. Confirm AI_PROVIDER=ollama is set in .env.local
+```
+
+### Production frontier LLM
+
+Set the following in `.env` (or your deployment secrets):
+
+```
+AI_PROVIDER=frontier
+FRONTIER_LLM_PROVIDER=openai
+FRONTIER_LLM_API_KEY=<your key>
+FRONTIER_LLM_MODEL=<model name>
 ```
 
 ## Local development

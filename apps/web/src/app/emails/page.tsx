@@ -66,7 +66,7 @@ export default async function EmailsPage() {
                         </span>
                         {" "}
                         <span className="badge" style={{ fontSize: 10 }}>
-                          {thread.latestClassification.finalNode.name}
+                          {thread.latestClassification.finalNode?.name ?? "—"}
                         </span>
                       </>
                     )}

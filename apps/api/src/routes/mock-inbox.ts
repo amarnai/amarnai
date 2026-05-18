@@ -2,12 +2,43 @@ import { Hono } from "hono";
 import { z } from "zod";
 import { db, Prisma } from "@genizor/db";
 import { mockClassify } from "../services/mock-classifier.js";
+import { createAIProvider, classifyThread } from "@genizor/ai";
+
+function getAIProviderConfig() {
+  const cfg: import("@genizor/ai").AIProviderConfig = {
+    provider: (process.env["AI_PROVIDER"] ?? "mock") as "mock" | "ollama" | "frontier",
+  };
+  const ollamaBase = process.env["OLLAMA_BASE_URL"];
+  const ollamaModel = process.env["OLLAMA_MODEL"];
+  if (ollamaBase ?? ollamaModel) {
+    cfg.ollama = {
+      ...(ollamaBase ? { baseUrl: ollamaBase } : {}),
+      ...(ollamaModel ? { model: ollamaModel } : {}),
+    };
+  }
+  const fProvider = process.env["FRONTIER_LLM_PROVIDER"];
+  const fApiKey = process.env["FRONTIER_LLM_API_KEY"];
+  const fModel = process.env["FRONTIER_LLM_MODEL"];
+  const fBaseUrl = process.env["FRONTIER_LLM_BASE_URL"];
+  if (fProvider ?? fApiKey ?? fModel ?? fBaseUrl) {
+    cfg.frontier = {
+      ...(fProvider ? { provider: fProvider } : {}),
+      ...(fApiKey ? { apiKey: fApiKey } : {}),
+      ...(fModel ? { model: fModel } : {}),
+      ...(fBaseUrl ? { baseUrl: fBaseUrl } : {}),
+    };
+  }
+  return cfg;
+}
 
 const workspaceParam = z.object({ workspaceId: z.string().min(1) });
+
+const classifierSchema = z.enum(["mock", "ai"]).default("mock");
 
 const bodySchema = z.discriminatedUnion("mode", [
   z.object({
     mode: z.literal("new_thread"),
+    classifier: classifierSchema,
     subject: z.string().max(500).optional(),
     senderName: z.string().max(200).optional(),
     senderEmail: z.string().email(),
@@ -15,6 +46,7 @@ const bodySchema = z.discriminatedUnion("mode", [
   }),
   z.object({
     mode: z.literal("existing_thread"),
+    classifier: classifierSchema,
     threadId: z.string().min(1),
     senderName: z.string().max(200).optional(),
     senderEmail: z.string().email(),
@@ -60,7 +92,16 @@ mockInbox.post("/dev/workspaces/:workspaceId/mock-inbox-event", async (c) => {
       id: true,
       emailAccounts: { take: 1, select: { id: true } },
       taxonomyNodes: {
-        select: { id: true, name: true, isRoot: true, canReceiveEmails: true },
+        select: {
+          id: true,
+          name: true,
+          description: true,
+          instructions: true,
+          examples: true,
+          isRoot: true,
+          isVisibleCategory: true,
+          canReceiveEmails: true,
+        },
       },
     },
   });
@@ -76,6 +117,28 @@ mockInbox.post("/dev/workspaces/:workspaceId/mock-inbox-event", async (c) => {
   const nodes = workspace.taxonomyNodes;
   if (nodes.length === 0) {
     return c.json({ error: "No taxonomy nodes found for classification" }, 422);
+  }
+
+  const { classifier } = body.data;
+
+  let edges: import("@genizor/ai").TaxonomyEdgeInput[] = [];
+  if (classifier === "ai") {
+    const rawEdges = await db.taxonomyEdge.findMany({
+      where: { workspaceId },
+      select: {
+        id: true,
+        sourceNodeId: true,
+        targetNodeId: true,
+        sortingQuestion: true,
+        examples: true,
+        negativeExamples: true,
+      },
+    });
+    edges = rawEdges.map((e) => ({
+      ...e,
+      examples: e.examples as string[],
+      negativeExamples: e.negativeExamples as string[],
+    }));
   }
 
   const now = new Date();
@@ -151,7 +214,7 @@ mockInbox.post("/dev/workspaces/:workspaceId/mock-inbox-event", async (c) => {
 
   const allMessages = await db.emailMessage.findMany({
     where: { emailThreadId: threadId },
-    select: { subject: true, senderEmail: true, senderName: true, bodyText: true },
+    select: { subject: true, senderEmail: true, senderName: true, bodyText: true, receivedAt: true },
     orderBy: { receivedAt: "asc" },
   });
 
@@ -160,7 +223,67 @@ mockInbox.post("/dev/workspaces/:workspaceId/mock-inbox-event", async (c) => {
     select: { id: true, subject: true, messageCount: true, latestMessageAt: true },
   });
 
-  const result = mockClassify(allMessages, nodes);
+  // ─── Run classification ──────────────────────────────────────────────────────
+
+  type ClassResult = import("@genizor/ai").ClassifyOutput & {
+    finalNodeName: string | null;
+    modelProvider: string;
+    modelName: string;
+  };
+
+  let result: ClassResult;
+
+  if (classifier === "ai") {
+    let aiProvider: ReturnType<typeof createAIProvider>;
+    try {
+      aiProvider = createAIProvider(getAIProviderConfig());
+    } catch (err) {
+      return c.json({ error: err instanceof Error ? err.message : String(err) }, 400);
+    }
+    const aiNodes: import("@genizor/ai").TaxonomyNodeInput[] = nodes.map((n) => ({
+      ...n,
+      examples: n.examples as string[],
+    }));
+    const aiResult = await classifyThread(aiProvider, { nodes: aiNodes, edges, messages: allMessages });
+    result = {
+      finalNodeId: aiResult.finalNodeId,
+      finalNodeName: aiResult.finalNodeId
+        ? (nodes.find((n) => n.id === aiResult.finalNodeId)?.name ?? null)
+        : null,
+      path: aiResult.path,
+      confidence: aiResult.confidence,
+      explanation: aiResult.explanation,
+      priority: aiResult.priority,
+      urgency: aiResult.urgency,
+      riskLevel: aiResult.riskLevel,
+      requiredAction: aiResult.requiredAction,
+      sensitivity: aiResult.sensitivity,
+      dueAt: aiResult.dueAt,
+      suggestedNextStep: aiResult.suggestedNextStep,
+      needsHumanReview: aiResult.needsHumanReview,
+      modelProvider: aiProvider.providerName,
+      modelName: aiProvider.modelName,
+    };
+  } else {
+    const mockResult = mockClassify(allMessages, nodes);
+    result = {
+      finalNodeId: mockResult.finalNodeId,
+      finalNodeName: mockResult.finalNodeName,
+      path: mockResult.path,
+      confidence: mockResult.confidence,
+      explanation: mockResult.explanation,
+      priority: mockResult.priority,
+      urgency: mockResult.urgency,
+      riskLevel: mockResult.riskLevel,
+      requiredAction: mockResult.requiredAction,
+      sensitivity: mockResult.sensitivity,
+      dueAt: null,
+      suggestedNextStep: mockResult.suggestedNextStep,
+      needsHumanReview: mockResult.needsHumanReview,
+      modelProvider: "mock",
+      modelName: "mock-classifier-v1",
+    };
+  }
 
   const classification = await db.emailClassification.create({
     data: {
@@ -175,11 +298,12 @@ mockInbox.post("/dev/workspaces/:workspaceId/mock-inbox-event", async (c) => {
       riskLevel: result.riskLevel,
       requiredAction: result.requiredAction,
       sensitivity: result.sensitivity,
+      dueAt: result.dueAt ? new Date(result.dueAt) : null,
       suggestedNextStep: result.suggestedNextStep,
       needsHumanReview: result.needsHumanReview,
-      modelProvider: "mock",
-      modelName: "mock-classifier-v1",
-      promptVersion: "1.0.0",
+      modelProvider: result.modelProvider,
+      modelName: result.modelName,
+      ...(classifier === "mock" ? { promptVersion: "1.0.0" } : {}),
     },
     select: { id: true },
   });
@@ -191,7 +315,9 @@ mockInbox.post("/dev/workspaces/:workspaceId/mock-inbox-event", async (c) => {
         workspaceId,
         emailThreadId: threadId,
         classificationId: classification.id,
-        reason: `Low confidence classification (${Math.round(result.confidence * 100)}%). Manual review required.`,
+        reason: result.finalNodeId === null
+          ? `AI classification could not determine a destination: ${result.explanation}`
+          : `Low confidence classification (${Math.round(result.confidence * 100)}%). Manual review required.`,
       },
       select: { id: true },
     });
@@ -208,7 +334,9 @@ mockInbox.post("/dev/workspaces/:workspaceId/mock-inbox-event", async (c) => {
       },
       classification: {
         id: classification.id,
-        finalNode: { id: result.finalNodeId, name: result.finalNodeName },
+        finalNode: result.finalNodeId
+          ? { id: result.finalNodeId, name: result.finalNodeName ?? result.finalNodeId }
+          : null,
         path: result.path,
         confidence: result.confidence,
         explanation: result.explanation,
@@ -219,6 +347,8 @@ mockInbox.post("/dev/workspaces/:workspaceId/mock-inbox-event", async (c) => {
         sensitivity: result.sensitivity,
         suggestedNextStep: result.suggestedNextStep,
         needsHumanReview: result.needsHumanReview,
+        modelProvider: result.modelProvider,
+        modelName: result.modelName,
       },
       reviewItemCreated: reviewItemId !== null,
       reviewItemId,

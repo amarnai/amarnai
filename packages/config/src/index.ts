@@ -1,8 +1,68 @@
+import { z } from 'zod';
+
+const boolStr = z.string().transform((v) => v === 'true').default('false');
+
+const envSchema = z.object({
+  NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
+  API_PORT: z.string().default('3001'),
+  WORKER_PORT: z.string().default('3002'),
+  AI_PROVIDER: z.enum(['mock', 'ollama', 'frontier']).default('mock'),
+  ENABLE_DEV_TOOLS: boolStr,
+  FRONTIER_LLM_PROVIDER: z.string().optional(),
+  FRONTIER_LLM_API_KEY: z.string().optional(),
+  FRONTIER_LLM_MODEL: z.string().optional(),
+  FRONTIER_LLM_BASE_URL: z.string().optional(),
+  OLLAMA_BASE_URL: z.string().optional(),
+  OLLAMA_MODEL: z.string().optional(),
+  ALLOW_LOCAL_AI_IN_PRODUCTION: boolStr,
+});
+
+function validateEnv(raw: NodeJS.ProcessEnv) {
+  const result = envSchema.safeParse(raw);
+  if (!result.success) {
+    throw new Error(`Invalid environment variables:\n${result.error.message}`);
+  }
+  const env = result.data;
+
+  if (env.AI_PROVIDER === 'ollama') {
+    if (!env.OLLAMA_BASE_URL) throw new Error('OLLAMA_BASE_URL is required when AI_PROVIDER=ollama');
+    if (!env.OLLAMA_MODEL) throw new Error('OLLAMA_MODEL is required when AI_PROVIDER=ollama');
+    if (env.NODE_ENV === 'production' && !env.ALLOW_LOCAL_AI_IN_PRODUCTION) {
+      throw new Error('AI_PROVIDER=ollama is not allowed in production unless ALLOW_LOCAL_AI_IN_PRODUCTION=true');
+    }
+  }
+
+  if (env.AI_PROVIDER === 'frontier') {
+    if (!env.FRONTIER_LLM_PROVIDER) throw new Error('FRONTIER_LLM_PROVIDER is required when AI_PROVIDER=frontier');
+    if (!env.FRONTIER_LLM_API_KEY) throw new Error('FRONTIER_LLM_API_KEY is required when AI_PROVIDER=frontier');
+    if (!env.FRONTIER_LLM_MODEL) throw new Error('FRONTIER_LLM_MODEL is required when AI_PROVIDER=frontier');
+  }
+
+  return env;
+}
+
+const env = validateEnv(process.env);
+
 export const config = {
   api: {
-    port: Number(process.env["API_PORT"] ?? 3001),
+    port: Number(env.API_PORT),
   },
   worker: {
-    port: Number(process.env["WORKER_PORT"] ?? 3002),
+    port: Number(env.WORKER_PORT),
   },
-} as const;
+  ai: {
+    provider: env.AI_PROVIDER,
+    enableDevTools: env.ENABLE_DEV_TOOLS,
+    allowLocalAiInProduction: env.ALLOW_LOCAL_AI_IN_PRODUCTION,
+    frontier: {
+      provider: env.FRONTIER_LLM_PROVIDER,
+      apiKey: env.FRONTIER_LLM_API_KEY,
+      model: env.FRONTIER_LLM_MODEL,
+      baseUrl: env.FRONTIER_LLM_BASE_URL,
+    },
+    ollama: {
+      baseUrl: env.OLLAMA_BASE_URL,
+      model: env.OLLAMA_MODEL,
+    },
+  },
+};
