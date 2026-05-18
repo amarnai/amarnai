@@ -37,7 +37,9 @@ import {
 import {
   isMissingSortingQuestion,
   computeIgnoredReasons,
+  computeNodeValidityWarnings,
   type IgnoredReason,
+  type NodeValidityWarning,
 } from "./taxonomyUtils";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -53,21 +55,22 @@ function formatEdgeLabel(q: string | null | undefined): string {
 
 // ─── React Flow node/edge converters ──────────────────────────────────────────
 
-type RFNodeData = { node: TaxonomyNode; ignoredReason: IgnoredReason };
+type RFNodeData = { node: TaxonomyNode; ignoredReason: IgnoredReason; validityWarnings: NodeValidityWarning[] };
 type RFNode = Node<RFNodeData, "taxonomy">;
 
-function toRFNode(n: TaxonomyNode, ignoredReason: IgnoredReason): RFNode {
+function toRFNode(n: TaxonomyNode, ignoredReason: IgnoredReason, validityWarnings: NodeValidityWarning[]): RFNode {
   return {
     id: n.id,
     type: "taxonomy",
     position: { x: n.positionX, y: n.positionY },
-    data: { node: n, ignoredReason },
+    data: { node: n, ignoredReason, validityWarnings },
   };
 }
 
 function toRFNodes(nodes: TaxonomyNode[], edges: TaxonomyEdge[]): RFNode[] {
   const ignoredMap = computeIgnoredReasons(nodes, edges);
-  return nodes.map((n) => toRFNode(n, ignoredMap.get(n.id) ?? null));
+  const warningsMap = computeNodeValidityWarnings(nodes, edges);
+  return nodes.map((n) => toRFNode(n, ignoredMap.get(n.id) ?? null, warningsMap.get(n.id) ?? []));
 }
 
 function toRFEdge(e: TaxonomyEdge, ignoredReasonsMap: Map<string, IgnoredReason>): Edge {
@@ -92,16 +95,28 @@ function toRFEdges(edges: TaxonomyEdge[], nodes: TaxonomyNode[]): Edge[] {
 // ─── Custom node component ────────────────────────────────────────────────────
 
 function TaxonomyNodeCard({ data, selected }: NodeProps<RFNode>) {
-  const { node, ignoredReason } = data;
+  const { node, ignoredReason, validityWarnings } = data;
   const ignored = ignoredReason !== null;
-  const tooltipText =
-    ignoredReason === "no-incoming"
-      ? "This node has no incoming sorting question and will not be used."
-      : ignoredReason === "all-invalid"
-      ? "All incoming sorting questions are missing or invalid, so this node will not be used."
-      : ignoredReason === "invalid-leaf"
-      ? "Leaf nodes must be visible categories that can receive emails. This node will not be used for sorting."
-      : undefined;
+
+  const tooltipParts: string[] = [];
+  if (ignoredReason === "no-incoming") {
+    tooltipParts.push("This node has no incoming sorting question and will not be used.");
+  } else if (ignoredReason === "all-invalid") {
+    tooltipParts.push("All incoming sorting questions are missing or invalid, so this node will not be used.");
+  } else if (ignoredReason === "invalid-leaf") {
+    tooltipParts.push("Leaf nodes must be visible categories that can receive emails.");
+  }
+  if (validityWarnings.includes("dead-end")) {
+    tooltipParts.push("This node cannot receive emails and has no valid outgoing sorting questions.");
+  }
+  if (validityWarnings.includes("visible-not-receivable")) {
+    tooltipParts.push("Visible categories must be able to receive emails.");
+  }
+  if (validityWarnings.includes("hidden-destination")) {
+    tooltipParts.push("Nodes that receive emails should be visible categories in the MVP.");
+  }
+  const tooltipText = tooltipParts.join("\n") || undefined;
+
   return (
     <div
       className={`taxonomy-node-card${selected ? " selected" : ""}${ignored ? " unreachable" : ""}`}
@@ -125,8 +140,15 @@ function TaxonomyNodeCard({ data, selected }: NodeProps<RFNode>) {
             Receives Emails
           </span>
         )}
-        {ignored && (
-          <span className="badge badge-unreachable">Ignored</span>
+        {ignored && <span className="badge badge-unreachable">Ignored</span>}
+        {validityWarnings.includes("dead-end") && (
+          <span className="badge badge-warning">Dead End</span>
+        )}
+        {validityWarnings.includes("visible-not-receivable") && (
+          <span className="badge badge-warning">Invalid Category</span>
+        )}
+        {validityWarnings.includes("hidden-destination") && (
+          <span className="badge badge-warning">Hidden Destination</span>
         )}
       </div>
       <Handle type="source" position={Position.Right} />

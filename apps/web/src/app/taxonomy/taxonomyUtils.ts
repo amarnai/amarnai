@@ -10,6 +10,40 @@ export function isMissingSortingQuestion(q: string | null | undefined): boolean 
 
 export type IgnoredReason = "no-incoming" | "all-invalid" | "invalid-leaf" | null;
 
+export type NodeValidityWarning = "dead-end" | "visible-not-receivable" | "hidden-destination";
+
+export function computeNodeValidityWarnings(
+  nodes: TaxonomyNode[],
+  edges: TaxonomyEdge[]
+): Map<string, NodeValidityWarning[]> {
+  const result = new Map<string, NodeValidityWarning[]>();
+  const outgoingByNode = new Map<string, TaxonomyEdge[]>();
+  for (const edge of edges) {
+    const list = outgoingByNode.get(edge.sourceNodeId) ?? [];
+    list.push(edge);
+    outgoingByNode.set(edge.sourceNodeId, list);
+  }
+  for (const node of nodes) {
+    if (node.isRoot) continue;
+    const warnings: NodeValidityWarning[] = [];
+    const outgoing = outgoingByNode.get(node.id) ?? [];
+    const hasValidOutgoing = outgoing.some((e) => !isMissingSortingQuestion(e.sortingQuestion));
+    if (!node.canReceiveEmails && !hasValidOutgoing) {
+      warnings.push("dead-end");
+    }
+    if (node.isVisibleCategory && !node.canReceiveEmails) {
+      warnings.push("visible-not-receivable");
+    }
+    if (node.canReceiveEmails && !node.isVisibleCategory) {
+      warnings.push("hidden-destination");
+    }
+    if (warnings.length > 0) {
+      result.set(node.id, warnings);
+    }
+  }
+  return result;
+}
+
 export function computeIgnoredReasons(
   nodes: TaxonomyNode[],
   edges: TaxonomyEdge[]
