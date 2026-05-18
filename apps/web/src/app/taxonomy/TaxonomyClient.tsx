@@ -42,13 +42,6 @@ import {
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-function parseLines(s: string): string[] {
-  return s
-    .split("\n")
-    .map((l) => l.trim())
-    .filter(Boolean);
-}
-
 function nodeById(nodes: TaxonomyNode[], id: string): TaxonomyNode | undefined {
   return nodes.find((n) => n.id === id);
 }
@@ -116,6 +109,9 @@ function TaxonomyNodeCard({ data, selected }: NodeProps<RFNode>) {
     >
       {!node.isRoot && <Handle type="target" position={Position.Left} />}
       <div className="node-name">{node.name}</div>
+      {node.description && (
+        <div className="node-description">{node.description}</div>
+      )}
       <div className="node-badges">
         {node.isRoot ? (
           <span className="badge node-kind node-kind-rule">Entry</span>
@@ -227,8 +223,6 @@ function NodeForm({
 
   const [name, setName] = useState(node?.name ?? "");
   const [description, setDescription] = useState(node?.description ?? "");
-  const [instructions, setInstructions] = useState(node?.instructions ?? "");
-  const [examples, setExamples] = useState((node?.examples ?? []).join("\n"));
   const [isVisibleCategory, setIsVisibleCategory] = useState(
     node?.isVisibleCategory ?? true
   );
@@ -241,8 +235,8 @@ function NodeForm({
     onSubmit({
       name,
       description: description || null,
-      instructions: instructions || null,
-      examples: parseLines(examples),
+      instructions: node?.instructions ?? null,
+      examples: node?.examples ?? [],
       isVisibleCategory,
       canReceiveEmails,
     });
@@ -276,23 +270,6 @@ function NodeForm({
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             maxLength={500}
-          />
-        </div>
-        <div className="form-group">
-          <label className="form-label">Instructions</label>
-          <textarea
-            className="form-textarea"
-            value={instructions}
-            onChange={(e) => setInstructions(e.target.value)}
-            maxLength={2000}
-          />
-        </div>
-        <div className="form-group">
-          <label className="form-label">Examples (one per line)</label>
-          <textarea
-            className="form-textarea"
-            value={examples}
-            onChange={(e) => setExamples(e.target.value)}
           />
         </div>
         <div className="form-row" style={{ gap: 20 }}>
@@ -377,36 +354,26 @@ function EdgeForm({
   const [sortingQuestion, setSortingQuestion] = useState(
     edge?.sortingQuestion ?? ""
   );
-  const [examples, setExamples] = useState((edge?.examples ?? []).join("\n"));
-  const [negativeExamples, setNegativeExamples] = useState(
-    (edge?.negativeExamples ?? []).join("\n")
-  );
-  const [priority, setPriority] = useState(edge?.priority ?? 0);
-  const [confidenceThreshold, setConfidenceThreshold] = useState(
-    edge?.confidenceThreshold != null ? String(edge.confidenceThreshold) : ""
-  );
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    const threshold =
-      confidenceThreshold !== "" ? Number(confidenceThreshold) : null;
     if (edge) {
       onSubmit({
         sortingQuestion,
-        examples: parseLines(examples),
-        negativeExamples: parseLines(negativeExamples),
-        priority,
-        confidenceThreshold: threshold,
+        examples: edge.examples ?? [],
+        negativeExamples: edge.negativeExamples ?? [],
+        priority: edge.priority ?? 0,
+        confidenceThreshold: edge.confidenceThreshold ?? null,
       } satisfies UpdateTaxonomyEdgeInput);
     } else {
       onSubmit({
         sourceNodeId,
         targetNodeId,
         sortingQuestion,
-        examples: parseLines(examples),
-        negativeExamples: parseLines(negativeExamples),
-        priority,
-        confidenceThreshold: threshold,
+        examples: [],
+        negativeExamples: [],
+        priority: 0,
+        confidenceThreshold: null,
       } satisfies CreateTaxonomyEdgeInput);
     }
   }
@@ -492,46 +459,6 @@ function EdgeForm({
               Sorting questions cannot exceed 160 characters.
             </p>
           )}
-        </div>
-        <div className="form-group">
-          <label className="form-label">Examples (one per line)</label>
-          <textarea
-            className="form-textarea"
-            value={examples}
-            onChange={(e) => setExamples(e.target.value)}
-          />
-        </div>
-        <div className="form-group">
-          <label className="form-label">Negative examples (one per line)</label>
-          <textarea
-            className="form-textarea"
-            value={negativeExamples}
-            onChange={(e) => setNegativeExamples(e.target.value)}
-          />
-        </div>
-        <div className="form-row">
-          <div className="form-group">
-            <label className="form-label">Priority</label>
-            <input
-              className="form-input"
-              type="number"
-              value={priority}
-              onChange={(e) => setPriority(Number(e.target.value))}
-            />
-          </div>
-          <div className="form-group">
-            <label className="form-label">Confidence (0–1)</label>
-            <input
-              className="form-input"
-              type="number"
-              min="0"
-              max="1"
-              step="0.01"
-              value={confidenceThreshold}
-              onChange={(e) => setConfidenceThreshold(e.target.value)}
-              placeholder="None"
-            />
-          </div>
         </div>
         <div className="form-actions">
           <button className="btn-primary" type="submit" disabled={submitting}>
