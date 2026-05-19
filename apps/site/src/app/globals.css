@@ -1,0 +1,41 @@
+:root {
+  --brand-ink:       #1E3A5F;
+  --brand-gold:      #D4A017;
+  --brand-parchment: #FAF7EF;
+  --brand-carbon:    #111111;
+
+  --color-bg:          var(--brand-parchment);
+  --color-foreground:  var(--brand-carbon);
+  --color-primary:     var(--brand-ink);
+  --color-accent:      var(--brand-gold);
+  --color-muted:       #6b7280;
+  --color-border:      #ddd8cf;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  background-color: var(--color-bg);
+  color: var(--color-foreground);
+  font-family:
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
