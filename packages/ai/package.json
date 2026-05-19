@@ -10,7 +10,8 @@
   "scripts": {
     "lint": "eslint src",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run --passWithNoTests"
+    "test": "vitest run --passWithNoTests",
+    "test:sorting": "vitest run --reporter=verbose src/__tests__/sorting-candidate-paths.test.ts src/__tests__/sorting-llm.test.ts"
   },
   "dependencies": {
     "@genizor/shared": "workspace:*",
