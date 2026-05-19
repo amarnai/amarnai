@@ -27,6 +27,9 @@ vi.mock("@genizor/ai", () => ({
     modelName: "test-model",
   }),
   classifyThread: (...args: unknown[]) => mockClassifyThread(...args),
+  selectCandidatePaths: vi.fn().mockReturnValue({ candidates: [], diagnostics: { queryText: "", matchedProfiles: [], warnings: [] } }),
+  buildCandidatePathPrompt: vi.fn().mockReturnValue([]),
+  validatePathSelection: vi.fn().mockReturnValue({ finalNodeId: null, path: [], confidence: 0, explanation: "mock", needsHumanReview: true }),
 }));
 
 import app from "../app.js";

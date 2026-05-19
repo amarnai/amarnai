@@ -255,9 +255,12 @@ function NodeForm({
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    const trimmedDescription = description.trim();
     onSubmit({
-      name,
-      description: description || null,
+      name: name.trim(),
+      // Only include description if non-empty; omitting it on a root-node edit
+      // leaves the existing DB value unchanged.
+      ...(trimmedDescription ? { description: trimmedDescription } : {}),
       instructions: node?.instructions ?? null,
       examples: node?.examples ?? [],
       isVisibleCategory,
@@ -283,17 +286,27 @@ function NodeForm({
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
-            maxLength={100}
+            minLength={3}
+            maxLength={60}
           />
         </div>
         <div className="form-group">
-          <label className="form-label">Description</label>
+          <label className="form-label">
+            Description{!isRoot && <span className="required"> *</span>}
+          </label>
           <textarea
             className="form-textarea"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            maxLength={500}
+            required={!isRoot}
+            minLength={!isRoot ? 20 : undefined}
+            maxLength={300}
           />
+          {!isRoot && (
+            <p style={{ fontSize: 11, color: "var(--color-muted)", marginTop: 2 }}>
+              Min 20 characters. Descriptions improve AI sorting quality.
+            </p>
+          )}
         </div>
         <div className="form-row" style={{ gap: 20 }}>
           <label style={{ display: "flex", alignItems: "center", gap: 6 }}>

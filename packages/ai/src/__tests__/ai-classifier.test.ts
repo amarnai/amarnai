@@ -369,6 +369,43 @@ describe("parseAndValidateOutput", () => {
   });
 });
 
+// ─── Legacy nodes without descriptions ────────────────────────────────────────
+// Non-root nodes created before description was required must not crash
+// classification. The prompt renderer already handles null descriptions
+// gracefully (skips the description line), so this test documents the invariant.
+
+describe("legacy nodes without descriptions", () => {
+  it("does not crash parseAndValidateOutput when non-root nodes have null description", () => {
+    // ROOT and LEAF both have description: null — they are the canonical legacy fixtures.
+    const result = parseAndValidateOutput(validOutput(), ALL_NODES, ALL_EDGES);
+    expect(result.finalNodeId).toBe("node-leaf");
+    expect(result.needsHumanReview).toBe(false);
+  });
+
+  it("does not crash classifyThread when non-root nodes have null description", async () => {
+    const provider: AIProvider = {
+      providerName: "test",
+      modelName: "test-model",
+      chat: vi.fn().mockResolvedValue(validOutput()),
+    };
+    const result = await classifyThread(provider, {
+      nodes: [ROOT, LEAF],
+      edges: [EDGE],
+      messages: [
+        {
+          subject: "Test",
+          senderEmail: "legacy@example.com",
+          senderName: "Legacy Sender",
+          bodyText: "This is a test email",
+          receivedAt: new Date("2026-01-01"),
+        },
+      ],
+    });
+    expect(result.finalNodeId).toBe("node-leaf");
+    expect(result.needsHumanReview).toBe(false);
+  });
+});
+
 // ─── classifyThread ────────────────────────────────────────────────────────────
 
 describe("classifyThread", () => {

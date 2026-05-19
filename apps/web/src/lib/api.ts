@@ -77,7 +77,7 @@ export type TaxonomyNode = {
 
 export type CreateTaxonomyNodeInput = {
   name: string;
-  description?: string | null;
+  description?: string; // required for non-root nodes; omit rather than pass null
   instructions?: string | null;
   examples?: string[];
   isVisibleCategory?: boolean;
@@ -261,6 +261,70 @@ export type MockInboxResult = {
   reviewItemId: string | null;
 };
 
+export type CandidatePathInput = {
+  emails: Array<{
+    subject?: string;
+    senderEmail?: string;
+    senderName?: string;
+    bodyText?: string;
+  }>;
+  currentNodeId?: string;
+};
+
+export type CandidatePath = {
+  pathId: string;
+  edgeIds: string[];
+  nodeIds: string[];
+  finalNodeId: string;
+  finalNodeName: string;
+  finalNodeDescription: string | null;
+  finalNodeIsVisible: boolean;
+  finalNodeCanReceive: boolean;
+  edgeSteps: Array<{
+    edgeId: string;
+    sourceNodeId: string;
+    targetNodeId: string;
+    sortingQuestion: string;
+  }>;
+  label: string;
+  score: number;
+  reasons: string[];
+};
+
+export type CandidatePathResult = {
+  candidates: CandidatePath[];
+  diagnostics: {
+    queryText: string;
+    matchedProfiles: string[];
+    warnings: string[];
+  };
+};
+
+export type LLMPathSelectionResult = {
+  candidateResult: CandidatePathResult;
+  rawLLMOutput: string | null;
+  result: {
+    finalNodeId: string | null;
+    path: Array<{
+      edgeId: string;
+      sourceNodeId: string;
+      targetNodeId: string;
+      sortingQuestion: string;
+      confidence: number;
+      explanation: string;
+    }>;
+    confidence: number;
+    explanation: string;
+    needsHumanReview: boolean;
+  };
+  debug?: {
+    rawSelectedPathId: string | null;
+    resolvedPathId: string | null;
+    resolvedLabel: string | null;
+    resolvedFinalNodeName: string | null;
+  };
+};
+
 export type ClassifyResult = {
   classification: {
     id: string;
@@ -349,6 +413,18 @@ export const api = {
   mockInboxEvent: (workspaceId: string, input: MockInboxEventInput) =>
     apiMutate<MockInboxResult>(
       `/dev/workspaces/${workspaceId}/mock-inbox-event`,
+      "POST",
+      input
+    ),
+  candidatePaths: (workspaceId: string, input: CandidatePathInput) =>
+    apiMutate<CandidatePathResult>(
+      `/dev/workspaces/${workspaceId}/candidate-paths`,
+      "POST",
+      input
+    ),
+  llmPathSelection: (workspaceId: string, input: CandidatePathInput) =>
+    apiMutate<LLMPathSelectionResult>(
+      `/dev/workspaces/${workspaceId}/llm-path-selection`,
       "POST",
       input
     ),

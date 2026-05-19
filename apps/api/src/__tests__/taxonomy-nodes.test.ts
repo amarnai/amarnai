@@ -20,6 +20,10 @@ import { db } from "@genizor/db";
 const WS_ID = "ws-1";
 const NODE_ID = "node-1";
 
+// A description that meets all constraints: >= 20 chars, <= 300 chars, no HTML,
+// not identical to any test node name.
+const VALID_DESCRIPTION = "A valid description for testing purposes";
+
 const baseNode = {
   id: NODE_ID,
   workspaceId: WS_ID,
@@ -76,6 +80,18 @@ describe("GET /workspaces/:workspaceId/taxonomy-nodes", () => {
     expect(body[0]).toMatchObject({ id: NODE_ID, name: "Inbox", isRoot: true });
   });
 
+  it("returns legacy nodes with null description without error", async () => {
+    vi.mocked(db.workspace.findUnique).mockResolvedValue({
+      taxonomyNodes: [{ ...baseNode, description: null }],
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any);
+
+    const res = await app.request(`/workspaces/${WS_ID}/taxonomy-nodes`);
+    expect(res.status).toBe(200);
+    const body = (await res.json()) as typeof baseNode[];
+    expect(body[0]?.description).toBeNull();
+  });
+
   it("returns 404 when workspace not found", async () => {
     vi.mocked(db.workspace.findUnique).mockResolvedValue(null);
 
@@ -87,21 +103,25 @@ describe("GET /workspaces/:workspaceId/taxonomy-nodes", () => {
 // ─── POST ─────────────────────────────────────────────────────────────────────
 
 describe("POST /workspaces/:workspaceId/taxonomy-nodes", () => {
-  it("creates a node with minimal fields", async () => {
+  it("creates a non-root node with valid name and description", async () => {
+    const created = { ...baseNode, name: "Clients", description: VALID_DESCRIPTION };
     vi.mocked(db.workspace.findUnique).mockResolvedValue({ id: WS_ID } as never);
-    vi.mocked(db.taxonomyNode.create).mockResolvedValue(baseNode as never);
+    vi.mocked(db.taxonomyNode.create).mockResolvedValue(created as never);
 
     const res = await post(`/workspaces/${WS_ID}/taxonomy-nodes`, {
-      name: "Inbox",
+      name: "Clients",
+      description: VALID_DESCRIPTION,
     });
     expect(res.status).toBe(201);
-    const body = await res.json() as typeof baseNode;
-    expect(body).toMatchObject({ id: NODE_ID, name: "Inbox" });
+    const body = await res.json() as typeof created;
+    expect(body).toMatchObject({ id: NODE_ID, name: "Clients", description: VALID_DESCRIPTION });
   });
 
-  it("creates a node with optional fields", async () => {
+  it("creates a node with optional fields alongside required description", async () => {
     const full = {
       ...baseNode,
+      name: "Clients",
+      description: VALID_DESCRIPTION,
       isVisibleCategory: true,
       canReceiveEmails: true,
       examples: ["ex1"],
@@ -111,6 +131,7 @@ describe("POST /workspaces/:workspaceId/taxonomy-nodes", () => {
 
     const res = await post(`/workspaces/${WS_ID}/taxonomy-nodes`, {
       name: "Clients",
+      description: VALID_DESCRIPTION,
       isVisibleCategory: true,
       canReceiveEmails: true,
       examples: ["ex1"],
@@ -121,24 +142,117 @@ describe("POST /workspaces/:workspaceId/taxonomy-nodes", () => {
     expect(body.examples).toEqual(["ex1"]);
   });
 
-  it("returns 400 when name is missing", async () => {
-    const res = await post(`/workspaces/${WS_ID}/taxonomy-nodes`, {});
+  it("trims name and description whitespace before saving", async () => {
+    const created = { ...baseNode, name: "Clients", description: VALID_DESCRIPTION };
+    vi.mocked(db.workspace.findUnique).mockResolvedValue({ id: WS_ID } as never);
+    vi.mocked(db.taxonomyNode.create).mockResolvedValue(created as never);
+
+    const res = await post(`/workspaces/${WS_ID}/taxonomy-nodes`, {
+      name: "  Clients  ",
+      description: `  ${VALID_DESCRIPTION}  `,
+    });
+    expect(res.status).toBe(201);
+    // Confirm the create was called (trimmed values passed schema validation)
+    expect(vi.mocked(db.taxonomyNode.create)).toHaveBeenCalledTimes(1);
+  });
+
+  it("returns 400 when description is missing", async () => {
+    const res = await post(`/workspaces/${WS_ID}/taxonomy-nodes`, {
+      name: "Clients",
+    });
     expect(res.status).toBe(400);
     const body = await res.json() as { error: string };
     expect(body.error).toBe("Validation error");
   });
 
-  it("returns 400 when name is too long", async () => {
+  it("returns 400 when description is under 20 characters", async () => {
     const res = await post(`/workspaces/${WS_ID}/taxonomy-nodes`, {
-      name: "a".repeat(101),
+      name: "Clients",
+      description: "Too short",
     });
     expect(res.status).toBe(400);
+    const body = await res.json() as { error: string; issues: unknown[] };
+    expect(body.error).toBe("Validation error");
+    const issueMessages = (body.issues as Array<{ message: string }>).map((i) => i.message);
+    expect(issueMessages.some((m) => m.toLowerCase().includes("20"))).toBe(true);
+  });
+
+  it("returns 400 when description is over 300 characters", async () => {
+    const res = await post(`/workspaces/${WS_ID}/taxonomy-nodes`, {
+      name: "Clients",
+      description: "x".repeat(301),
+    });
+    expect(res.status).toBe(400);
+  });
+
+  it("returns 400 when description is identical to name (case-insensitive)", async () => {
+    const res = await post(`/workspaces/${WS_ID}/taxonomy-nodes`, {
+      name: "Clients",
+      description: "clients",
+    });
+    expect(res.status).toBe(400);
+    const body = await res.json() as { error: string; issues: unknown[] };
+    const issueMessages = (body.issues as Array<{ message: string }>).map((i) => i.message);
+    expect(issueMessages.some((m) => m.toLowerCase().includes("ai sorting quality"))).toBe(true);
+  });
+
+  it("returns 400 when description contains HTML", async () => {
+    const res = await post(`/workspaces/${WS_ID}/taxonomy-nodes`, {
+      name: "Clients",
+      description: "<b>Emails from clients</b> and stakeholders in active projects",
+    });
+    expect(res.status).toBe(400);
+    const body = await res.json() as { error: string; issues: unknown[] };
+    const issueMessages = (body.issues as Array<{ message: string }>).map((i) => i.message);
+    expect(issueMessages.some((m) => m.toLowerCase().includes("html"))).toBe(true);
+  });
+
+  it("returns 400 when name is missing", async () => {
+    const res = await post(`/workspaces/${WS_ID}/taxonomy-nodes`, {
+      description: VALID_DESCRIPTION,
+    });
+    expect(res.status).toBe(400);
+    const body = await res.json() as { error: string };
+    expect(body.error).toBe("Validation error");
+  });
+
+  it("returns 400 when name is under 3 characters", async () => {
+    const res = await post(`/workspaces/${WS_ID}/taxonomy-nodes`, {
+      name: "AB",
+      description: VALID_DESCRIPTION,
+    });
+    expect(res.status).toBe(400);
+    const body = await res.json() as { error: string; issues: unknown[] };
+    const issueMessages = (body.issues as Array<{ message: string }>).map((i) => i.message);
+    expect(issueMessages.some((m) => m.toLowerCase().includes("3"))).toBe(true);
+  });
+
+  it("returns 400 when name is over 60 characters", async () => {
+    const res = await post(`/workspaces/${WS_ID}/taxonomy-nodes`, {
+      name: "a".repeat(61),
+      description: VALID_DESCRIPTION,
+    });
+    expect(res.status).toBe(400);
+  });
+
+  it("returns 400 when name contains only punctuation or symbols", async () => {
+    const res = await post(`/workspaces/${WS_ID}/taxonomy-nodes`, {
+      name: "!!!",
+      description: VALID_DESCRIPTION,
+    });
+    expect(res.status).toBe(400);
+    const body = await res.json() as { error: string; issues: unknown[] };
+    const issueMessages = (body.issues as Array<{ message: string }>).map((i) => i.message);
+    expect(issueMessages.some((m) => m.toLowerCase().includes("letter or digit"))).toBe(true);
   });
 
   it("returns 404 when workspace does not exist", async () => {
     vi.mocked(db.workspace.findUnique).mockResolvedValue(null);
 
-    const res = await post(`/workspaces/nope/taxonomy-nodes`, { name: "Inbox" });
+    const res = await post(`/workspaces/nope/taxonomy-nodes`, {
+      name: "Clients",
+      description: VALID_DESCRIPTION,
+    });
     expect(res.status).toBe(404);
   });
 });
@@ -174,11 +288,99 @@ describe("PATCH /workspaces/:workspaceId/taxonomy-nodes/:nodeId", () => {
     expect(body.isVisibleCategory).toBe(true);
   });
 
+  it("allows updating a non-root node's description to a valid value", async () => {
+    const updated = { ...baseNode, description: VALID_DESCRIPTION };
+    vi.mocked(db.taxonomyNode.findUnique).mockResolvedValue(baseNode as never);
+    vi.mocked(db.taxonomyNode.update).mockResolvedValue(updated as never);
+
+    const res = await patch(
+      `/workspaces/${WS_ID}/taxonomy-nodes/${NODE_ID}`,
+      { description: VALID_DESCRIPTION }
+    );
+    expect(res.status).toBe(200);
+    const body = await res.json() as typeof updated;
+    expect(body.description).toBe(VALID_DESCRIPTION);
+  });
+
+  it("allows updating a non-root legacy node's name without providing description", async () => {
+    // Legacy nodes with null descriptions must not fail on PATCH when description is omitted.
+    const updated = { ...baseNode, name: "New Name" };
+    vi.mocked(db.taxonomyNode.findUnique).mockResolvedValue(baseNode as never);
+    vi.mocked(db.taxonomyNode.update).mockResolvedValue(updated as never);
+
+    const res = await patch(
+      `/workspaces/${WS_ID}/taxonomy-nodes/${NODE_ID}`,
+      { name: "New Name" }
+    );
+    expect(res.status).toBe(200);
+    const body = await res.json() as typeof updated;
+    expect(body.name).toBe("New Name");
+  });
+
+  it("trims name and description on update", async () => {
+    const updated = { ...baseNode, name: "Renamed", description: VALID_DESCRIPTION };
+    vi.mocked(db.taxonomyNode.findUnique).mockResolvedValue(baseNode as never);
+    vi.mocked(db.taxonomyNode.update).mockResolvedValue(updated as never);
+
+    const res = await patch(
+      `/workspaces/${WS_ID}/taxonomy-nodes/${NODE_ID}`,
+      { name: "  Renamed  ", description: `  ${VALID_DESCRIPTION}  ` }
+    );
+    expect(res.status).toBe(200);
+  });
+
+  it("returns 400 when updated description is under 20 characters", async () => {
+    vi.mocked(db.taxonomyNode.findUnique).mockResolvedValue(baseNode as never);
+
+    const res = await patch(
+      `/workspaces/${WS_ID}/taxonomy-nodes/${NODE_ID}`,
+      { description: "Too short" }
+    );
+    expect(res.status).toBe(400);
+    const body = await res.json() as { error: string };
+    expect(body.error).toBe("Validation error");
+  });
+
+  it("returns 400 when updated description is over 300 characters", async () => {
+    vi.mocked(db.taxonomyNode.findUnique).mockResolvedValue(baseNode as never);
+
+    const res = await patch(
+      `/workspaces/${WS_ID}/taxonomy-nodes/${NODE_ID}`,
+      { description: "x".repeat(301) }
+    );
+    expect(res.status).toBe(400);
+  });
+
+  it("returns 400 when updated description contains HTML", async () => {
+    vi.mocked(db.taxonomyNode.findUnique).mockResolvedValue(baseNode as never);
+
+    const res = await patch(
+      `/workspaces/${WS_ID}/taxonomy-nodes/${NODE_ID}`,
+      { description: "<p>Emails from clients</p> and other stakeholders we track" }
+    );
+    expect(res.status).toBe(400);
+    const body = await res.json() as { error: string; issues: unknown[] };
+    const issueMessages = (body.issues as Array<{ message: string }>).map((i) => i.message);
+    expect(issueMessages.some((m) => m.toLowerCase().includes("html"))).toBe(true);
+  });
+
+  it("returns 400 when updated description is identical to updated name (case-insensitive)", async () => {
+    // Both name and description present in same PATCH — cross-field check applies.
+    const res = await patch(
+      `/workspaces/${WS_ID}/taxonomy-nodes/${NODE_ID}`,
+      { name: "Finance", description: "finance" }
+    );
+    expect(res.status).toBe(400);
+    const body = await res.json() as { error: string; issues: unknown[] };
+    const issueMessages = (body.issues as Array<{ message: string }>).map((i) => i.message);
+    expect(issueMessages.some((m) => m.toLowerCase().includes("ai sorting quality"))).toBe(true);
+  });
+
   it("returns 404 when node does not exist", async () => {
     vi.mocked(db.taxonomyNode.findUnique).mockResolvedValue(null);
 
     const res = await patch(`/workspaces/${WS_ID}/taxonomy-nodes/nope`, {
-      name: "X",
+      name: "New Name",
     });
     expect(res.status).toBe(404);
   });
@@ -190,19 +392,9 @@ describe("PATCH /workspaces/:workspaceId/taxonomy-nodes/:nodeId", () => {
 
     const res = await patch(
       `/workspaces/${WS_ID}/taxonomy-nodes/${NODE_ID}`,
-      { name: "X" }
+      { name: "New Name" }
     );
     expect(res.status).toBe(404);
-  });
-
-  it("returns 400 on invalid body (description too long)", async () => {
-    vi.mocked(db.taxonomyNode.findUnique).mockResolvedValue(baseNode as never);
-
-    const res = await patch(
-      `/workspaces/${WS_ID}/taxonomy-nodes/${NODE_ID}`,
-      { description: "x".repeat(501) }
-    );
-    expect(res.status).toBe(400);
   });
 
   it("returns 400 when body includes isRoot", async () => {
@@ -257,6 +449,21 @@ describe("PATCH /workspaces/:workspaceId/taxonomy-nodes/:nodeId", () => {
     expect(res.status).toBe(200);
     const body = await res.json() as typeof updated;
     expect(body.name).toBe("Renamed Root");
+  });
+
+  it("root Inbox can be patched without providing a description", async () => {
+    // Root node bypasses the "description required" rule.
+    const updated = { ...baseNode, name: "Inbox", isRoot: true };
+    vi.mocked(db.taxonomyNode.findUnique).mockResolvedValue(
+      { ...baseNode, isRoot: true } as never
+    );
+    vi.mocked(db.taxonomyNode.update).mockResolvedValue(updated as never);
+
+    const res = await patch(
+      `/workspaces/${WS_ID}/taxonomy-nodes/${NODE_ID}`,
+      { name: "Inbox" }
+    );
+    expect(res.status).toBe(200);
   });
 });
 

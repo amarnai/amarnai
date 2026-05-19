@@ -2,7 +2,14 @@ import { Hono } from "hono";
 import { z } from "zod";
 import { db, Prisma } from "@genizor/db";
 import { mockClassify } from "../services/mock-classifier.js";
-import { createAIProvider, classifyThread } from "@genizor/ai";
+import {
+  createAIProvider,
+  classifyThread,
+  selectCandidatePaths,
+  buildCandidatePathPrompt,
+  validatePathSelection,
+} from "@genizor/ai";
+import type { EmailInput, PathSelectionContext } from "@genizor/ai";
 
 function getAIProviderConfig() {
   const cfg: import("@genizor/ai").AIProviderConfig = {
@@ -352,6 +359,278 @@ mockInbox.post("/dev/workspaces/:workspaceId/mock-inbox-event", async (c) => {
     },
     201
   );
+});
+
+const candidateBodySchema = z.object({
+  emails: z
+    .array(
+      z.object({
+        subject: z.string().max(500).optional(),
+        senderEmail: z.string().optional(),
+        senderName: z.string().max(200).optional(),
+        bodyText: z.string().max(10000).optional(),
+      })
+    )
+    .min(1)
+    .max(20),
+  currentNodeId: z.string().optional(),
+});
+
+mockInbox.post("/dev/workspaces/:workspaceId/candidate-paths", async (c) => {
+  const isDevEnabled =
+    process.env["NODE_ENV"] === "development" ||
+    process.env["ENABLE_DEV_TOOLS"] === "true";
+
+  if (!isDevEnabled) {
+    return c.json({ error: "Not found" }, 404);
+  }
+
+  const params = workspaceParam.safeParse({
+    workspaceId: c.req.param("workspaceId"),
+  });
+  if (!params.success) {
+    return c.json({ error: "Invalid workspace ID" }, 400);
+  }
+
+  let rawBody: unknown;
+  try {
+    rawBody = await c.req.json();
+  } catch {
+    return c.json({ error: "Invalid JSON body" }, 400);
+  }
+
+  const body = candidateBodySchema.safeParse(rawBody);
+  if (!body.success) {
+    return c.json({ error: "Validation error", issues: body.error.issues }, 400);
+  }
+
+  const { workspaceId } = params.data;
+
+  const workspace = await db.workspace.findUnique({
+    where: { id: workspaceId },
+    select: {
+      id: true,
+      taxonomyNodes: {
+        select: {
+          id: true,
+          name: true,
+          description: true,
+          instructions: true,
+          examples: true,
+          isRoot: true,
+          isVisibleCategory: true,
+          canReceiveEmails: true,
+        },
+      },
+    },
+  });
+  if (!workspace) {
+    return c.json({ error: "Workspace not found" }, 404);
+  }
+
+  const rawEdges = await db.taxonomyEdge.findMany({
+    where: { workspaceId },
+    select: {
+      id: true,
+      sourceNodeId: true,
+      targetNodeId: true,
+      sortingQuestion: true,
+      examples: true,
+      negativeExamples: true,
+    },
+  });
+
+  const nodes: import("@genizor/ai").TaxonomyNodeInput[] = workspace.taxonomyNodes.map((n) => ({
+    ...n,
+    examples: n.examples as string[],
+  }));
+  const aiEdges: import("@genizor/ai").TaxonomyEdgeInput[] = rawEdges.map((e) => ({
+    ...e,
+    examples: e.examples as string[],
+    negativeExamples: e.negativeExamples as string[],
+  }));
+
+  const result = selectCandidatePaths(
+    nodes,
+    aiEdges,
+    body.data.emails as EmailInput[],
+    body.data.currentNodeId
+  );
+
+  return c.json(result);
+});
+
+const llmSelectionBodySchema = z.object({
+  emails: z
+    .array(
+      z.object({
+        subject: z.string().max(500).optional(),
+        senderEmail: z.string().optional(),
+        senderName: z.string().max(200).optional(),
+        bodyText: z.string().max(10000).optional(),
+      })
+    )
+    .min(1)
+    .max(20),
+  currentNodeId: z.string().optional(),
+  context: z
+    .object({
+      timestamp: z.string().optional(),
+      timezone: z.string().optional(),
+    })
+    .optional(),
+});
+
+mockInbox.post("/dev/workspaces/:workspaceId/llm-path-selection", async (c) => {
+  const isDevEnabled =
+    process.env["NODE_ENV"] === "development" ||
+    process.env["ENABLE_DEV_TOOLS"] === "true";
+
+  if (!isDevEnabled) {
+    return c.json({ error: "Not found" }, 404);
+  }
+
+  const params = workspaceParam.safeParse({
+    workspaceId: c.req.param("workspaceId"),
+  });
+  if (!params.success) {
+    return c.json({ error: "Invalid workspace ID" }, 400);
+  }
+
+  let rawBody: unknown;
+  try {
+    rawBody = await c.req.json();
+  } catch {
+    return c.json({ error: "Invalid JSON body" }, 400);
+  }
+
+  const body = llmSelectionBodySchema.safeParse(rawBody);
+  if (!body.success) {
+    return c.json({ error: "Validation error", issues: body.error.issues }, 400);
+  }
+
+  const { workspaceId } = params.data;
+
+  const workspace = await db.workspace.findUnique({
+    where: { id: workspaceId },
+    select: {
+      id: true,
+      taxonomyNodes: {
+        select: {
+          id: true,
+          name: true,
+          description: true,
+          instructions: true,
+          examples: true,
+          isRoot: true,
+          isVisibleCategory: true,
+          canReceiveEmails: true,
+        },
+      },
+    },
+  });
+  if (!workspace) {
+    return c.json({ error: "Workspace not found" }, 404);
+  }
+
+  const rawEdges = await db.taxonomyEdge.findMany({
+    where: { workspaceId },
+    select: {
+      id: true,
+      sourceNodeId: true,
+      targetNodeId: true,
+      sortingQuestion: true,
+      examples: true,
+      negativeExamples: true,
+    },
+  });
+
+  const nodes: import("@genizor/ai").TaxonomyNodeInput[] = workspace.taxonomyNodes.map((n) => ({
+    ...n,
+    examples: n.examples as string[],
+  }));
+  const aiEdges: import("@genizor/ai").TaxonomyEdgeInput[] = rawEdges.map((e) => ({
+    ...e,
+    examples: e.examples as string[],
+    negativeExamples: e.negativeExamples as string[],
+  }));
+
+  const candidateResult = selectCandidatePaths(
+    nodes,
+    aiEdges,
+    body.data.emails as EmailInput[],
+    body.data.currentNodeId
+  );
+
+  if (candidateResult.candidates.length === 0) {
+    return c.json({
+      candidateResult,
+      rawLLMOutput: null,
+      result: {
+        finalNodeId: null,
+        path: [],
+        confidence: 0,
+        explanation: "No candidate paths found — cannot run LLM selection.",
+        needsHumanReview: true,
+      },
+    });
+  }
+
+  let aiProvider: ReturnType<typeof createAIProvider>;
+  try {
+    aiProvider = createAIProvider(getAIProviderConfig());
+  } catch (err) {
+    return c.json({ error: err instanceof Error ? err.message : String(err) }, 400);
+  }
+
+  const rawContext = body.data.context;
+  const context: PathSelectionContext | undefined =
+    rawContext !== undefined
+      ? {
+          ...(rawContext.timestamp !== undefined ? { timestamp: rawContext.timestamp } : {}),
+          ...(rawContext.timezone !== undefined ? { timezone: rawContext.timezone } : {}),
+        }
+      : undefined;
+
+  const messages = buildCandidatePathPrompt(
+    { messages: body.data.emails.map((e) => ({
+      subject: e.subject ?? null,
+      senderEmail: e.senderEmail ?? "",
+      senderName: e.senderName ?? null,
+      bodyText: e.bodyText ?? null,
+      receivedAt: new Date(),
+    })) },
+    candidateResult.candidates,
+    context
+  );
+
+  const rawLLMOutput = await aiProvider.chat(messages);
+  const result = validatePathSelection(rawLLMOutput, candidateResult.candidates);
+
+  // Build debug info for dev: show how selectedPathId resolved
+  let rawSelectedPathId: string | null = null;
+  let resolvedCandidate: import("@genizor/ai").CandidatePath | undefined;
+  try {
+    const parsed = JSON.parse(rawLLMOutput.trim()) as Record<string, unknown>;
+    if (typeof parsed["selectedPathId"] === "string") {
+      rawSelectedPathId = parsed["selectedPathId"];
+      const candidateByPathId = new Map(
+        candidateResult.candidates.map((c, i) => [`candidate_${i}`, c])
+      );
+      resolvedCandidate = candidateByPathId.get(rawSelectedPathId);
+    }
+  } catch {
+    // best-effort; ignore parse failures in debug
+  }
+
+  const debug = {
+    rawSelectedPathId,
+    resolvedPathId: resolvedCandidate?.pathId ?? null,
+    resolvedLabel: resolvedCandidate?.label ?? null,
+    resolvedFinalNodeName: resolvedCandidate?.finalNodeName ?? null,
+  };
+
+  return c.json({ candidateResult, rawLLMOutput, result, debug });
 });
 
 export { mockInbox as mockInboxRoute };

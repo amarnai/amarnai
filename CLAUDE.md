@@ -54,10 +54,13 @@ Genizor must not auto-send emails or send emails from its own GUI in the MVP.
 - Encrypt OAuth tokens and API keys at rest.
 - Audit important actions.
 
+## Workflow
+
+- At the end of large tasks (multi-file changes, feature additions, refactors), provide a brief summary: what was changed, which files were affected, and any caveats or follow-up work.
+
 ## Standards
 
 - TypeScript strict mode.
-- Zod for runtime validation.
 - Small files with explicit domain names.
 - Idempotent, retry-safe background jobs.
 - Test policy logic, AI output parsing, provider adapters, graph validity, and job behavior.
@@ -65,9 +68,6 @@ Genizor must not auto-send emails or send emails from its own GUI in the MVP.
 
 ## Non-Goals
 
-- Full email client
-- Auto-send
-- Sending from Genizor GUI
 - Outlook/IMAP support
 - Team features
 - Arbitrary workflow automation

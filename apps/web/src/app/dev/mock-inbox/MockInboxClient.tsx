@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { api, type EmailThreadSummary, type MockInboxResult } from "@/lib/api";
+import { api, type EmailThreadSummary, type MockInboxResult, type CandidatePathResult, type LLMPathSelectionResult } from "@/lib/api";
 
 type Props = {
   workspaceId: string;
@@ -23,6 +23,12 @@ export function MockInboxClient({ workspaceId, threads }: Props) {
   const [result, setResult] = useState<MockInboxResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [candidatePaths, setCandidatePaths] = useState<CandidatePathResult | null>(null);
+  const [candidatesLoading, setCandidatesLoading] = useState(false);
+  const [candidatesError, setCandidatesError] = useState<string | null>(null);
+  const [llmSelection, setLlmSelection] = useState<LLMPathSelectionResult | null>(null);
+  const [llmSelectionLoading, setLlmSelectionLoading] = useState(false);
+  const [llmSelectionError, setLlmSelectionError] = useState<string | null>(null);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -56,6 +62,54 @@ export function MockInboxClient({ workspaceId, threads }: Props) {
       setError(err instanceof Error ? err.message : String(err));
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function handleLLMSelection() {
+    setLlmSelectionError(null);
+    setLlmSelection(null);
+    setLlmSelectionLoading(true);
+    try {
+      const data = await api.llmPathSelection(workspaceId, {
+        emails: [
+          {
+            ...(subject ? { subject } : {}),
+            ...(senderName ? { senderName } : {}),
+            ...(senderEmail ? { senderEmail } : {}),
+            ...(bodyText ? { bodyText } : {}),
+          },
+        ],
+      });
+      setLlmSelection(data);
+      // Also update candidate paths display from the same result
+      setCandidatePaths(data.candidateResult);
+    } catch (err) {
+      setLlmSelectionError(err instanceof Error ? err.message : String(err));
+    } finally {
+      setLlmSelectionLoading(false);
+    }
+  }
+
+  async function handleSimulateCandidates() {
+    setCandidatesError(null);
+    setCandidatePaths(null);
+    setCandidatesLoading(true);
+    try {
+      const data = await api.candidatePaths(workspaceId, {
+        emails: [
+          {
+            ...(subject ? { subject } : {}),
+            ...(senderName ? { senderName } : {}),
+            ...(senderEmail ? { senderEmail } : {}),
+            ...(bodyText ? { bodyText } : {}),
+          },
+        ],
+      });
+      setCandidatePaths(data);
+    } catch (err) {
+      setCandidatesError(err instanceof Error ? err.message : String(err));
+    } finally {
+      setCandidatesLoading(false);
     }
   }
 
@@ -115,21 +169,6 @@ export function MockInboxClient({ workspaceId, threads }: Props) {
           </div>
         )}
 
-        {/* Subject — new thread only */}
-        {mode === "new_thread" && (
-          <div className="form-group">
-            <label className="form-label">Subject</label>
-            <input
-              className="form-input"
-              type="text"
-              placeholder="e.g. Invoice #INV-2026-0099"
-              value={subject}
-              onChange={(e) => setSubject(e.target.value)}
-              maxLength={500}
-            />
-          </div>
-        )}
-
         {/* Sender name */}
         <div className="form-group">
           <label className="form-label">Sender Name</label>
@@ -158,6 +197,21 @@ export function MockInboxClient({ workspaceId, threads }: Props) {
           />
         </div>
 
+        {/* Subject — new thread only */}
+        {mode === "new_thread" && (
+          <div className="form-group">
+            <label className="form-label">Subject</label>
+            <input
+              className="form-input"
+              type="text"
+              placeholder="e.g. Invoice #INV-2026-0099"
+              value={subject}
+              onChange={(e) => setSubject(e.target.value)}
+              maxLength={500}
+            />
+          </div>
+        )}
+
         {/* Body text */}
         <div className="form-group">
           <label className="form-label">
@@ -180,8 +234,144 @@ export function MockInboxClient({ workspaceId, threads }: Props) {
           <button type="submit" disabled={loading} className="btn-primary">
             {loading ? "Simulating…" : "Simulate Incoming Email"}
           </button>
+          <button
+            type="button"
+            disabled={candidatesLoading || !bodyText.trim()}
+            className="btn-secondary"
+            onClick={handleSimulateCandidates}
+          >
+            {candidatesLoading ? "Analyzing…" : "Simulate Candidate Paths"}
+          </button>
+          <button
+            type="button"
+            disabled={llmSelectionLoading || !bodyText.trim()}
+            className="btn-secondary"
+            onClick={handleLLMSelection}
+          >
+            {llmSelectionLoading ? "Selecting…" : "Simulate LLM Selection"}
+          </button>
         </div>
       </form>
+
+      {candidatesError && (
+        <div className="error-box">{candidatesError}</div>
+      )}
+
+      {candidatePaths && (
+        <div className="card card-body">
+          <h2 style={{ marginTop: 0, marginBottom: 12 }}>Candidate Paths</h2>
+
+          {candidatePaths.diagnostics.queryText && (
+            <p style={{ fontSize: 12, color: "var(--color-subtle)", marginBottom: 10 }}>
+              Query tokens: <code>{candidatePaths.diagnostics.queryText}</code>
+            </p>
+          )}
+
+          {candidatePaths.diagnostics.warnings.length > 0 && (
+            <div className="warning-box" style={{ marginBottom: 12 }}>
+              {candidatePaths.diagnostics.warnings.map((w, i) => (
+                <div key={i}>{w}</div>
+              ))}
+            </div>
+          )}
+
+          {candidatePaths.candidates.length === 0 ? (
+            <p style={{ color: "var(--color-subtle)" }}>No valid candidate paths found.</p>
+          ) : (
+            <ol style={{ margin: 0, paddingLeft: 20, display: "flex", flexDirection: "column", gap: 6 }}>
+              {candidatePaths.candidates.map((c) => (
+                <li key={c.pathId} style={{ fontSize: 13 }}>
+                  <strong>{c.label}</strong>
+                  <span style={{ color: "var(--color-subtle)", marginLeft: 8 }}>
+                    score: {c.score}
+                  </span>
+                  {c.reasons.length > 0 && (
+                    <span style={{ color: "var(--color-subtle)", marginLeft: 8, fontSize: 11 }}>
+                      [{c.reasons.join(", ")}]
+                    </span>
+                  )}
+                </li>
+              ))}
+            </ol>
+          )}
+
+          {candidatePaths.diagnostics.matchedProfiles.length > 0 && (
+            <p style={{ fontSize: 11, color: "var(--color-subtle)", marginTop: 10, marginBottom: 0 }}>
+              Matched profiles: {candidatePaths.diagnostics.matchedProfiles.join(", ")}
+            </p>
+          )}
+        </div>
+      )}
+
+      {llmSelectionError && (
+        <div className="error-box">{llmSelectionError}</div>
+      )}
+
+      {llmSelection && (
+        <div className="card card-body">
+          <h2 style={{ marginTop: 0, marginBottom: 12 }}>LLM Selection</h2>
+
+          {/* Result */}
+          <div className="meta-grid" style={{ marginBottom: 12 }}>
+            <div>
+              <div className="meta-label">Selected Node</div>
+              <div className="meta-value">
+                {llmSelection.result.finalNodeId
+                  ? (llmSelection.candidateResult.candidates.find(
+                      (c) => c.finalNodeId === llmSelection.result.finalNodeId
+                    )?.finalNodeName ?? llmSelection.result.finalNodeId)
+                  : <span style={{ color: "var(--color-warning)" }}>Unclassified</span>
+                }
+              </div>
+            </div>
+            <div>
+              <div className="meta-label">Confidence</div>
+              <div className="meta-value">{Math.round(llmSelection.result.confidence * 100)}%</div>
+            </div>
+            <div>
+              <div className="meta-label">Needs Review</div>
+              <div className="meta-value">{llmSelection.result.needsHumanReview ? "Yes" : "No"}</div>
+            </div>
+          </div>
+
+          {llmSelection.result.explanation && (
+            <p style={{ fontSize: 13, marginBottom: 12 }}>{llmSelection.result.explanation}</p>
+          )}
+
+          {llmSelection.result.needsHumanReview && (
+            <div className="warning-box" style={{ marginBottom: 12 }}>
+              Flagged for human review
+            </div>
+          )}
+
+          {/* Selection debug */}
+          {llmSelection.debug && (
+            <details style={{ marginBottom: 12 }}>
+              <summary style={{ fontSize: 12, color: "var(--color-subtle)", cursor: "pointer", userSelect: "none" }}>
+                Selection debug
+              </summary>
+              <div style={{ fontSize: 11, marginTop: 8, display: "flex", flexDirection: "column", gap: 4 }}>
+                <div><span style={{ color: "var(--color-subtle)" }}>rawSelectedPathId:</span> <code>{llmSelection.debug.rawSelectedPathId ?? "null"}</code></div>
+                <div><span style={{ color: "var(--color-subtle)" }}>resolvedPathId:</span> <code>{llmSelection.debug.resolvedPathId ?? "null"}</code></div>
+                <div><span style={{ color: "var(--color-subtle)" }}>resolvedLabel:</span> <code>{llmSelection.debug.resolvedLabel ?? "null"}</code></div>
+                <div><span style={{ color: "var(--color-subtle)" }}>resolvedFinalNodeName:</span> <code>{llmSelection.debug.resolvedFinalNodeName ?? "null"}</code></div>
+              </div>
+            </details>
+          )}
+
+          {/* Raw LLM output */}
+          {llmSelection.rawLLMOutput && (
+            <details style={{ marginBottom: 0 }}>
+              <summary style={{ fontSize: 12, color: "var(--color-subtle)", cursor: "pointer", userSelect: "none" }}>
+                Raw LLM output
+              </summary>
+              <pre style={{ fontSize: 11, marginTop: 8, padding: 8, background: "var(--color-surface-alt)", borderRadius: 4, overflowX: "auto", whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
+                {llmSelection.rawLLMOutput}
+              </pre>
+            </details>
+          )}
+        </div>
+      )}
 
       {result && cls && (
         <div className="card card-body">

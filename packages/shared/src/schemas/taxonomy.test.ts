@@ -44,17 +44,18 @@ describe("CreateTaxonomyNodeInputSchema", () => {
   const minimal = {
     workspaceId: "ws_1",
     name: "Clients",
+    description: "Emails from clients and project stakeholders",
   };
 
-  it("parses a minimal valid input", () => {
+  it("parses a minimal valid input (name + description)", () => {
     const result = CreateTaxonomyNodeInputSchema.parse(minimal);
     expect(result.name).toBe("Clients");
+    expect(result.description).toBe("Emails from clients and project stakeholders");
   });
 
   it("parses a full valid input", () => {
     const result = CreateTaxonomyNodeInputSchema.parse({
       ...minimal,
-      description: "Emails from clients",
       instructions: "Match emails mentioning client names",
       examples: ["Your project update", "Re: proposal"],
       isVisibleCategory: true,
@@ -68,13 +69,13 @@ describe("CreateTaxonomyNodeInputSchema", () => {
   });
 
   it("rejects missing required fields", () => {
-    expect(() => CreateTaxonomyNodeInputSchema.parse({ name: "X" })).toThrow();
+    expect(() => CreateTaxonomyNodeInputSchema.parse({ name: "Node" })).toThrow();
     expect(() => CreateTaxonomyNodeInputSchema.parse({ workspaceId: "ws_1" })).toThrow();
   });
 
-  it("rejects name that is too long", () => {
+  it("rejects name that is too long (over 60 characters)", () => {
     expect(() =>
-      CreateTaxonomyNodeInputSchema.parse({ ...minimal, name: "a".repeat(101) })
+      CreateTaxonomyNodeInputSchema.parse({ ...minimal, name: "a".repeat(61) })
     ).toThrow();
   });
 });
@@ -91,7 +92,7 @@ describe("UpdateTaxonomyNodeInputSchema", () => {
   });
 
   it("strips workspaceId (not part of update schema)", () => {
-    const result = UpdateTaxonomyNodeInputSchema.safeParse({ workspaceId: "ws_1", name: "x" });
+    const result = UpdateTaxonomyNodeInputSchema.safeParse({ workspaceId: "ws_1", name: "Renamed" });
     expect(result.success).toBe(true);
     if (result.success) {
       expect("workspaceId" in result.data).toBe(false);

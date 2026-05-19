@@ -24,18 +24,81 @@ const nodeSelect = {
   updatedAt: true,
 } as const;
 
-const createBodySchema = z.object({
-  name: z.string().min(1).max(100),
-  description: z.string().max(500).nullable().optional(),
-  instructions: z.string().max(2000).nullable().optional(),
-  examples: z.array(z.string()).optional(),
-  isVisibleCategory: z.boolean().optional(),
-  canReceiveEmails: z.boolean().optional(),
-  positionX: z.number().optional(),
-  positionY: z.number().optional(),
-});
+// ─── Field-level validators (mirror packages/shared nodeNameSchema / nodeDescriptionSchema) ──
 
-const updateBodySchema = createBodySchema.partial();
+const HTML_TAG_RE = /<[a-zA-Z][^>]*>/;
+
+const nameSchema = z
+  .string()
+  .trim()
+  .min(3, "Name must be at least 3 characters")
+  .max(60, "Name must be at most 60 characters")
+  .refine(
+    (v) => /[\p{L}\p{N}]/u.test(v),
+    "Name must contain at least one letter or digit"
+  );
+
+const descriptionSchema = z
+  .string()
+  .trim()
+  .min(
+    20,
+    "Description must be at least 20 characters. Descriptions improve AI sorting quality."
+  )
+  .max(300, "Description must be at most 300 characters")
+  .refine(
+    (v) => !HTML_TAG_RE.test(v),
+    "Description must be plain text (no HTML). Descriptions improve AI sorting quality."
+  );
+
+// description is required for all non-root node creation (POST always sets isRoot: false)
+const createBodySchema = z
+  .object({
+    name: nameSchema,
+    description: descriptionSchema,
+    instructions: z.string().max(2000).nullable().optional(),
+    examples: z.array(z.string()).optional(),
+    isVisibleCategory: z.boolean().optional(),
+    canReceiveEmails: z.boolean().optional(),
+    positionX: z.number().optional(),
+    positionY: z.number().optional(),
+  })
+  .superRefine((data, ctx) => {
+    if (data.description.trim().toLowerCase() === data.name.trim().toLowerCase()) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message:
+          "Description must differ from the node name. Descriptions improve AI sorting quality.",
+        path: ["description"],
+      });
+    }
+  });
+
+const updateBodySchema = z
+  .object({
+    name: nameSchema.optional(),
+    description: descriptionSchema.optional(),
+    instructions: z.string().max(2000).nullable().optional(),
+    examples: z.array(z.string()).optional(),
+    isVisibleCategory: z.boolean().optional(),
+    canReceiveEmails: z.boolean().optional(),
+    positionX: z.number().optional(),
+    positionY: z.number().optional(),
+  })
+  .superRefine((data, ctx) => {
+    if (
+      data.name !== undefined &&
+      data.description !== undefined &&
+      data.description.trim().toLowerCase() === data.name.trim().toLowerCase()
+    ) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message:
+          "Description must differ from the node name. Descriptions improve AI sorting quality.",
+        path: ["description"],
+      });
+    }
+  });
 
 const taxonomyNodes = new Hono();
 
@@ -100,7 +163,7 @@ taxonomyNodes.post("/workspaces/:workspaceId/taxonomy-nodes", async (c) => {
       workspaceId,
       isRoot: false,
       name: d.name,
-      ...(d.description != null ? { description: d.description } : {}),
+      description: d.description,
       ...(d.instructions != null ? { instructions: d.instructions } : {}),
       ...(d.examples !== undefined ? { examples: d.examples } : {}),
       ...(d.isVisibleCategory !== undefined ? { isVisibleCategory: d.isVisibleCategory } : {}),
