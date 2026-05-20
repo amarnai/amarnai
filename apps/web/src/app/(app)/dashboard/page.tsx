@@ -1,35 +1,30 @@
+import { requireUser, getOrCreateDefaultWorkspace } from "@/lib/session";
 import { api } from "@/lib/api";
 import FoldersSection from "./FoldersSection";
 
-async function loadDashboard() {
-  const workspaces = await api.workspaces();
-  const ws = workspaces[0];
-  if (!ws) throw new Error("No workspace found");
-
-  const [nodes, edges, threads, reviews, tags] = await Promise.all([
-    api.taxonomyNodes(ws.id),
-    api.taxonomyEdges(ws.id),
-    api.emailThreads(ws.id),
-    api.reviewItems(ws.id),
-    api.tags(ws.id),
-  ]);
-
-  return {
-    workspace: ws,
-    nodes,
-    edges,
-    threads,
-    nodeCount: nodes.length,
-    threadCount: threads.length,
-    reviewCount: reviews.length,
-    tagCount: tags.length,
-  };
-}
-
 export default async function DashboardPage() {
+  const user = await requireUser();
+  const workspace = await getOrCreateDefaultWorkspace(user.id);
+
   let data;
   try {
-    data = await loadDashboard();
+    const [nodes, edges, threads, reviews, tags] = await Promise.all([
+      api.taxonomyNodes(workspace.id),
+      api.taxonomyEdges(workspace.id),
+      api.emailThreads(workspace.id),
+      api.reviewItems(workspace.id),
+      api.tags(workspace.id),
+    ]);
+    data = {
+      workspace,
+      nodes,
+      edges,
+      threads,
+      nodeCount: nodes.length,
+      threadCount: threads.length,
+      reviewCount: reviews.length,
+      tagCount: tags.length,
+    };
   } catch (err) {
     return (
       <>

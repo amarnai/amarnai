@@ -1,3 +1,4 @@
+import { requireUser, getOrCreateDefaultWorkspace } from "@/lib/session";
 import { api, type ReviewItem } from "@/lib/api";
 
 function priorityClass(priority: string): string {
@@ -8,14 +9,14 @@ function priorityClass(priority: string): string {
 }
 
 export default async function ReviewPage() {
+  const user = await requireUser();
+  const workspace = await getOrCreateDefaultWorkspace(user.id);
+
   let items: ReviewItem[] = [];
   let error: string | null = null;
 
   try {
-    const workspaces = await api.workspaces();
-    const ws = workspaces[0];
-    if (!ws) throw new Error("No workspace found");
-    items = await api.reviewItems(ws.id);
+    items = await api.reviewItems(workspace.id);
   } catch (err) {
     error = err instanceof Error ? err.message : String(err);
   }

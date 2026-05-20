@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 import {
   ReactFlow,
   ReactFlowProvider,
@@ -35,6 +35,14 @@ import {
   type CreateTaxonomyEdgeInput,
   type UpdateTaxonomyEdgeInput,
 } from "@/lib/api";
+import {
+  createTaxonomyNodeAction,
+  updateTaxonomyNodeAction,
+  deleteTaxonomyNodeAction,
+  createTaxonomyEdgeAction,
+  updateTaxonomyEdgeAction,
+  deleteTaxonomyEdgeAction,
+} from "@/actions/taxonomy";
 import {
   isMissingSortingQuestion,
   computeIgnoredReasons,
@@ -585,7 +593,7 @@ function TaxonomyCanvasInner({
   const onNodeDragStop: OnNodeDrag<RFNode> = useCallback(
     async (_event, rfNode) => {
       try {
-        await api.updateTaxonomyNode(workspaceId, rfNode.id, {
+        await updateTaxonomyNodeAction(workspaceId, rfNode.id, {
           positionX: Math.round(rfNode.position.x),
           positionY: Math.round(rfNode.position.y),
         });
@@ -610,7 +618,7 @@ function TaxonomyCanvasInner({
       if (!connection.source || !connection.target) return;
       if (dbNodes.find((n) => n.id === connection.target && n.isRoot)) return;
       try {
-        await api.createTaxonomyEdge(workspaceId, {
+        await createTaxonomyEdgeAction(workspaceId, {
           sourceNodeId: connection.source,
           targetNodeId: connection.target,
           sortingQuestion: "",
@@ -653,7 +661,7 @@ function TaxonomyCanvasInner({
     setSubmitting(true);
     setFormError(null);
     try {
-      await api.createTaxonomyNode(workspaceId, data);
+      await createTaxonomyNodeAction(workspaceId, data);
       await refetch();
       setPanel({ type: "none" });
     } catch (err) {
@@ -667,7 +675,7 @@ function TaxonomyCanvasInner({
     setSubmitting(true);
     setFormError(null);
     try {
-      await api.updateTaxonomyNode(workspaceId, nodeId, data);
+      await updateTaxonomyNodeAction(workspaceId, nodeId, data);
       await refetch();
       setPanel({ type: "none" });
     } catch (err) {
@@ -683,7 +691,7 @@ function TaxonomyCanvasInner({
     setSubmitting(true);
     setFormError(null);
     try {
-      await api.createTaxonomyEdge(workspaceId, data as CreateTaxonomyEdgeInput);
+      await createTaxonomyEdgeAction(workspaceId, data as CreateTaxonomyEdgeInput);
       await refetch();
       setPanel({ type: "none" });
     } catch (err) {
@@ -697,7 +705,7 @@ function TaxonomyCanvasInner({
     setSubmitting(true);
     setFormError(null);
     try {
-      await api.updateTaxonomyEdge(workspaceId, edgeId, data as UpdateTaxonomyEdgeInput);
+      await updateTaxonomyEdgeAction(workspaceId, edgeId, data as UpdateTaxonomyEdgeInput);
       await refetch();
       setPanel({ type: "none" });
     } catch (err) {
@@ -711,7 +719,7 @@ function TaxonomyCanvasInner({
     setSubmitting(true);
     setFormError(null);
     try {
-      await api.deleteTaxonomyNode(workspaceId, nodeId);
+      await deleteTaxonomyNodeAction(workspaceId, nodeId);
       await refetch();
       setPanel({ type: "none" });
     } catch (err) {
@@ -725,7 +733,7 @@ function TaxonomyCanvasInner({
     setSubmitting(true);
     setFormError(null);
     try {
-      await api.deleteTaxonomyEdge(workspaceId, edgeId);
+      await deleteTaxonomyEdgeAction(workspaceId, edgeId);
       await refetch();
       setPanel({ type: "none" });
     } catch (err) {

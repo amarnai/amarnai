@@ -1,4 +1,4 @@
-import type { TaxonomyNode, TaxonomyEdge } from "../../lib/api";
+import type { TaxonomyNode, TaxonomyEdge } from "@/lib/api";
 
 const DEFAULT_SORTING_QUESTION = "Describe when emails should follow this path.";
 

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { requireUser, getOrCreateDefaultWorkspace } from "@/lib/session";
 import { api, type EmailThreadDetail } from "@/lib/api";
 import { ClassificationActions } from "./ClassificationActions";
 import { MessageBody } from "./MessageBody";
@@ -32,17 +33,15 @@ function MetaItem({ label, value }: { label: string; value: string }) {
 
 export default async function ThreadDetailPage({ params }: Props) {
   const { threadId } = await params;
+  const user = await requireUser();
+  const workspace = await getOrCreateDefaultWorkspace(user.id);
+  const workspaceId = workspace.id;
 
   let thread: EmailThreadDetail | null = null;
-  let workspaceId: string | null = null;
   let error: string | null = null;
 
   try {
-    const workspaces = await api.workspaces();
-    const ws = workspaces[0];
-    if (!ws) throw new Error("No workspace found");
-    workspaceId = ws.id;
-    thread = await api.emailThread(ws.id, threadId);
+    thread = await api.emailThread(workspaceId, threadId);
   } catch (err) {
     error = err instanceof Error ? err.message : String(err);
   }

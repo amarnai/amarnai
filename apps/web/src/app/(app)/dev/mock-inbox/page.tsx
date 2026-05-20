@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { requireUser, getOrCreateDefaultWorkspace } from "@/lib/session";
 import { api, type EmailThreadSummary } from "@/lib/api";
 import { MockInboxClient } from "./MockInboxClient";
 
@@ -11,25 +12,23 @@ export default async function MockInboxPage() {
     redirect("/dashboard");
   }
 
-  let workspaceId: string | null = null;
+  const user = await requireUser();
+  const workspace = await getOrCreateDefaultWorkspace(user.id);
+
   let threads: EmailThreadSummary[] = [];
   let error: string | null = null;
 
   try {
-    const workspaces = await api.workspaces();
-    const ws = workspaces[0];
-    if (!ws) throw new Error("No workspace found");
-    workspaceId = ws.id;
-    threads = await api.emailThreads(ws.id);
+    threads = await api.emailThreads(workspace.id);
   } catch (err) {
     error = err instanceof Error ? err.message : String(err);
   }
 
-  if (!workspaceId || error) {
+  if (error) {
     return (
       <>
         <h1>Mock Inbox</h1>
-        <div className="error-box">{error ?? "No workspace found"}</div>
+        <div className="error-box">{error}</div>
       </>
     );
   }
@@ -40,7 +39,7 @@ export default async function MockInboxPage() {
       <p style={{ color: "var(--color-muted)", marginBottom: 24, fontSize: 13 }}>
         Dev tool — simulate incoming email events without Gmail OAuth or real AI calls.
       </p>
-      <MockInboxClient workspaceId={workspaceId} threads={threads} />
+      <MockInboxClient workspaceId={workspace.id} threads={threads} />
     </>
   );
 }

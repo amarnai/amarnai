@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { computeIgnoredReasons, computeNodeValidityWarnings, isMissingSortingQuestion } from "./taxonomyUtils";
-import type { TaxonomyNode, TaxonomyEdge } from "../../lib/api";
+import type { TaxonomyNode, TaxonomyEdge } from "@/lib/api";
 
 function makeNode(overrides: Partial<TaxonomyNode> & { id: string }): TaxonomyNode {
   return {

@@ -23,21 +23,22 @@ async function main() {
 
   // ── 1. User ───────────────────────────────────────────────────────────────
   const user = await db.user.upsert({
-    where: { email: "demo@genizor.local" },
+    where: { email: "dev@genizor.local" },
     update: {},
     create: {
-      email: "demo@genizor.local",
-      name: "Demo User",
+      email: "dev@genizor.local",
+      name: "Genizor Dev User",
+      emailVerified: new Date(),
     },
   });
 
   // ── 2. Workspace ──────────────────────────────────────────────────────────
   let workspace = await db.workspace.findFirst({
-    where: { name: "Demo Workspace", ownerUserId: user.id },
+    where: { name: "Default Workspace", ownerUserId: user.id },
   });
   if (!workspace) {
     workspace = await db.workspace.create({
-      data: { name: "Demo Workspace", ownerUserId: user.id },
+      data: { name: "Default Workspace", ownerUserId: user.id },
     });
   }
   const workspaceId = workspace.id;
@@ -62,7 +63,7 @@ async function main() {
       workspaceId,
       userId: user.id,
       provider: Provider.GMAIL,
-      primaryEmailAddress: "demo@genizor.local",
+      primaryEmailAddress: "dev@genizor.local",
       providerAccountId: "gmail-demo-account-001",
       accessTokenEncrypted: "enc:seed-fake-access-token-aes256",
       refreshTokenEncrypted: "enc:seed-fake-refresh-token-aes256",
@@ -73,8 +74,8 @@ async function main() {
   // ── 5. EmailAddressIdentities ─────────────────────────────────────────────
   const identityDefs = [
     {
-      emailAddress: "demo@genizor.local",
-      displayName: "Demo User",
+      emailAddress: "dev@genizor.local",
+      displayName: "Genizor Dev User",
       kind: EmailAddressIdentityKind.PRIMARY,
       isPrimary: true,
     },

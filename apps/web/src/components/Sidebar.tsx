@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { signOutAction } from "@/actions/auth";
 
 const isDevEnabled =
   process.env.NODE_ENV === "development" ||
@@ -16,7 +17,9 @@ const NAV = [
   ...(isDevEnabled ? [{ href: "/dev/mock-inbox", label: "Mock Inbox" }] : []),
 ];
 
-export function Sidebar() {
+type SidebarUser = { email: string; name: string | null } | null;
+
+export function Sidebar({ user }: { user: SidebarUser }) {
   const pathname = usePathname();
   return (
     <aside className="sidebar">
@@ -35,6 +38,18 @@ export function Sidebar() {
           ))}
         </ul>
       </nav>
+      {user && (
+        <div className="sidebar-user">
+          <div className="sidebar-user-email" title={user.email}>
+            {user.name ?? user.email}
+          </div>
+          <form action={signOutAction}>
+            <button className="btn-ghost sidebar-signout" type="submit">
+              Sign out
+            </button>
+          </form>
+        </div>
+      )}
     </aside>
   );
 }

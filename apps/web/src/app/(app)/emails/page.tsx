@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { requireUser, getOrCreateDefaultWorkspace } from "@/lib/session";
 import { api, type EmailThreadSummary } from "@/lib/api";
 
 function fmt(iso: string | null): string {
@@ -17,14 +18,14 @@ function priorityClass(priority: string): string {
 }
 
 export default async function EmailsPage() {
+  const user = await requireUser();
+  const workspace = await getOrCreateDefaultWorkspace(user.id);
+
   let threads: EmailThreadSummary[] = [];
   let error: string | null = null;
 
   try {
-    const workspaces = await api.workspaces();
-    const ws = workspaces[0];
-    if (!ws) throw new Error("No workspace found");
-    threads = await api.emailThreads(ws.id);
+    threads = await api.emailThreads(workspace.id);
   } catch (err) {
     error = err instanceof Error ? err.message : String(err);
   }

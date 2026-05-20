@@ -1,14 +1,15 @@
+import { requireUser, getOrCreateDefaultWorkspace } from "@/lib/session";
 import { api, type Tag } from "@/lib/api";
 
 export default async function TagsPage() {
+  const user = await requireUser();
+  const workspace = await getOrCreateDefaultWorkspace(user.id);
+
   let tags: Tag[] = [];
   let error: string | null = null;
 
   try {
-    const workspaces = await api.workspaces();
-    const ws = workspaces[0];
-    if (!ws) throw new Error("No workspace found");
-    tags = await api.tags(ws.id);
+    tags = await api.tags(workspace.id);
   } catch (err) {
     error = err instanceof Error ? err.message : String(err);
   }

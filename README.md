@@ -68,28 +68,64 @@ FRONTIER_LLM_API_KEY=<your key>
 FRONTIER_LLM_MODEL=<model name>
 ```
 
+## Authentication setup
+
+Genizor uses Google Sign-In for app identity. Before running locally, create OAuth credentials:
+
+1. Go to [Google Cloud Console](https://console.cloud.google.com/) → APIs & Services → Credentials
+2. Create an OAuth 2.0 Client ID (Web application)
+3. Add `http://localhost:3000` to authorised JavaScript origins
+4. Add `http://localhost:3000/api/auth/callback/google` to authorised redirect URIs
+5. Copy the client ID and secret into `.env`:
+
+```env
+AUTH_GOOGLE_ID=<your client id>
+AUTH_GOOGLE_SECRET=<your client secret>
+```
+
+Also generate random secrets:
+
+```bash
+openssl rand -base64 32   # paste as AUTH_SECRET
+openssl rand -hex 32      # paste as INTERNAL_API_SECRET
+```
+
+## Dev seed account
+
+Running `pnpm db:seed` creates a local dev user and workspace:
+
+| Field | Value |
+|-------|-------|
+| Email | `dev@genizor.local` |
+| Name | Genizor Dev User |
+| Workspace | Default Workspace |
+
+This seed user is attached to the mock taxonomy and sample email threads used for local testing and AI sorting tests. It is **not** created in production signups.
+
 ## Local development
 
 ```bash
 # 1. Copy environment config
 cp .env.example .env
 
-# 2. Start Postgres and Redis
+# 2. Fill in AUTH_SECRET, AUTH_GOOGLE_ID, AUTH_GOOGLE_SECRET, INTERNAL_API_SECRET (see above)
+
+# 3. Start Postgres and Redis
 docker compose up -d postgres redis
 
-# 3. Install dependencies
+# 4. Install dependencies
 pnpm install
 
-# 4. Generate Prisma client
+# 5. Generate Prisma client
 pnpm db:generate
 
-# 5. Run database migrations
+# 6. Run database migrations
 pnpm db:migrate
 
-# 6. Seed the database
+# 7. Seed the database
 pnpm db:seed
 
-# 7. Start all apps
+# 8. Start all apps
 pnpm dev
 ```
 
