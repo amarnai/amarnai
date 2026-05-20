@@ -1,6 +1,6 @@
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
-import { db } from "@genizor/db";
+import { db } from "@amarnai/db";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [
@@ -38,13 +38,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       });
       return true;
     },
-    async jwt({ token }) {
-      if (!token.userId && token.email) {
+    async jwt({ token, trigger }) {
+      const needsLookup = !token.userId || trigger === "signIn" || trigger === "update";
+      if (needsLookup && token.email) {
         const dbUser = await db.user.findUnique({
           where: { email: token.email },
           select: { id: true },
         });
         if (dbUser) token.userId = dbUser.id;
+        else delete token.userId;
       }
       return token;
     },

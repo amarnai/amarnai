@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import { z } from "zod";
-import { db, Prisma } from "@genizor/db";
+import { db, Prisma } from "@amarnai/db";
 import { mockClassify } from "../services/mock-classifier.js";
 import {
   createAIProvider,
@@ -8,11 +8,11 @@ import {
   selectCandidatePaths,
   buildCandidatePathPrompt,
   validatePathSelection,
-} from "@genizor/ai";
-import type { EmailInput, PathSelectionContext } from "@genizor/ai";
+} from "@amarnai/ai";
+import type { EmailInput, PathSelectionContext } from "@amarnai/ai";
 
 function getAIProviderConfig() {
-  const cfg: import("@genizor/ai").AIProviderConfig = {
+  const cfg: import("@amarnai/ai").AIProviderConfig = {
     provider: (process.env["AI_PROVIDER"] ?? "mock") as "mock" | "ollama" | "frontier",
   };
   const ollamaBase = process.env["OLLAMA_BASE_URL"];
@@ -139,7 +139,7 @@ mockInbox.post("/dev/workspaces/:workspaceId/mock-inbox-event", async (c) => {
       negativeExamples: true,
     },
   });
-  const edges: import("@genizor/ai").TaxonomyEdgeInput[] = rawEdges.map((e) => ({
+  const edges: import("@amarnai/ai").TaxonomyEdgeInput[] = rawEdges.map((e) => ({
     ...e,
     examples: e.examples as string[],
     negativeExamples: e.negativeExamples as string[],
@@ -229,7 +229,7 @@ mockInbox.post("/dev/workspaces/:workspaceId/mock-inbox-event", async (c) => {
 
   // ─── Run classification ──────────────────────────────────────────────────────
 
-  type ClassResult = import("@genizor/ai").ClassifyOutput & {
+  type ClassResult = import("@amarnai/ai").ClassifyOutput & {
     finalNodeName: string | null;
     modelProvider: string;
     modelName: string;
@@ -244,7 +244,7 @@ mockInbox.post("/dev/workspaces/:workspaceId/mock-inbox-event", async (c) => {
     } catch (err) {
       return c.json({ error: err instanceof Error ? err.message : String(err) }, 400);
     }
-    const aiNodes: import("@genizor/ai").TaxonomyNodeInput[] = nodes.map((n) => ({
+    const aiNodes: import("@amarnai/ai").TaxonomyNodeInput[] = nodes.map((n) => ({
       ...n,
       examples: n.examples as string[],
     }));
@@ -440,11 +440,11 @@ mockInbox.post("/dev/workspaces/:workspaceId/candidate-paths", async (c) => {
     },
   });
 
-  const nodes: import("@genizor/ai").TaxonomyNodeInput[] = workspace.taxonomyNodes.map((n) => ({
+  const nodes: import("@amarnai/ai").TaxonomyNodeInput[] = workspace.taxonomyNodes.map((n) => ({
     ...n,
     examples: n.examples as string[],
   }));
-  const aiEdges: import("@genizor/ai").TaxonomyEdgeInput[] = rawEdges.map((e) => ({
+  const aiEdges: import("@amarnai/ai").TaxonomyEdgeInput[] = rawEdges.map((e) => ({
     ...e,
     examples: e.examples as string[],
     negativeExamples: e.negativeExamples as string[],
@@ -545,11 +545,11 @@ mockInbox.post("/dev/workspaces/:workspaceId/llm-path-selection", async (c) => {
     },
   });
 
-  const nodes: import("@genizor/ai").TaxonomyNodeInput[] = workspace.taxonomyNodes.map((n) => ({
+  const nodes: import("@amarnai/ai").TaxonomyNodeInput[] = workspace.taxonomyNodes.map((n) => ({
     ...n,
     examples: n.examples as string[],
   }));
-  const aiEdges: import("@genizor/ai").TaxonomyEdgeInput[] = rawEdges.map((e) => ({
+  const aiEdges: import("@amarnai/ai").TaxonomyEdgeInput[] = rawEdges.map((e) => ({
     ...e,
     examples: e.examples as string[],
     negativeExamples: e.negativeExamples as string[],
@@ -609,7 +609,7 @@ mockInbox.post("/dev/workspaces/:workspaceId/llm-path-selection", async (c) => {
 
   // Build debug info for dev: show how selectedPathId resolved
   let rawSelectedPathId: string | null = null;
-  let resolvedCandidate: import("@genizor/ai").CandidatePath | undefined;
+  let resolvedCandidate: import("@amarnai/ai").CandidatePath | undefined;
   try {
     const parsed = JSON.parse(rawLLMOutput.trim()) as Record<string, unknown>;
     if (typeof parsed["selectedPathId"] === "string") {

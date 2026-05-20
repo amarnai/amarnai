@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { db } from "@genizor/db";
+import { db } from "@amarnai/db";
 
 const workspaces = new Hono();
 

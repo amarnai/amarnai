@@ -1,4 +1,4 @@
-# Genizor
+# Amarnai
 
 Gmail-first AI email triage assistant.
 
@@ -23,7 +23,7 @@ Values in `.env.local` take precedence over `.env`.
 
 ### Local Ollama testing
 
-Genizor can use an Ollama instance running on your machine.
+Amarnai can use an Ollama instance running on your machine.
 
 ```bash
 # 1. Install Ollama if needed
@@ -70,7 +70,7 @@ FRONTIER_LLM_MODEL=<model name>
 
 ## Authentication setup
 
-Genizor uses Google Sign-In for app identity. Before running locally, create OAuth credentials:
+Amarnai uses Google Sign-In for app identity. Before running locally, create OAuth credentials:
 
 1. Go to [Google Cloud Console](https://console.cloud.google.com/) → APIs & Services → Credentials
 2. Create an OAuth 2.0 Client ID (Web application)
@@ -95,7 +95,7 @@ openssl rand -hex 32      # paste as GMAIL_TOKEN_ENCRYPTION_KEY
 
 ## Gmail inbox setup
 
-Genizor lets each workspace connect one Gmail inbox for email triage. This is a separate OAuth flow from sign-in and requests only `gmail.readonly` access — it cannot read, send, or modify email.
+Amarnai lets each workspace connect one Gmail inbox for email triage. This is a separate OAuth flow from sign-in and requests only `gmail.readonly` access — it cannot read, send, or modify email.
 
 After signing in, go to **Settings** in the sidebar and click **Connect Gmail**. Google will ask you to grant read-only access to the inbox you want to sort. Once connected, the workspace shows the linked Gmail address and last verification time.
 
@@ -121,8 +121,8 @@ Running `pnpm db:seed` creates a local dev user and workspace:
 
 | Field | Value |
 |-------|-------|
-| Email | `dev@genizor.local` |
-| Name | Genizor Dev User |
+| Email | `dev@amarnai.local` |
+| Name | Amarnai Dev User |
 | Workspace | Default Workspace |
 
 This seed user is attached to the mock taxonomy and sample email threads used for local testing and AI sorting tests. It is **not** created in production signups.

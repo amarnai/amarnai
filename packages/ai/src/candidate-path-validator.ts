@@ -1,6 +1,6 @@
 import { z } from "zod";
 import type { CandidatePath, CandidateEdgeStep } from "./candidate-selector.js";
-import type { ClassificationPathStep } from "@genizor/shared";
+import type { ClassificationPathStep } from "@amarnai/shared";
 
 export const MIN_LLM_PATH_CONFIDENCE = 0.7;
 

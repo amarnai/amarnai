@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { z } from "zod";
-import { db, Prisma } from "@genizor/db";
-import { createAIProvider, classifyThread } from "@genizor/ai";
+import { db, Prisma } from "@amarnai/db";
+import { createAIProvider, classifyThread } from "@amarnai/ai";
 import { mockClassify } from "../services/mock-classifier.js";
 
 const params = z.object({
@@ -10,7 +10,7 @@ const params = z.object({
 });
 
 function getAIProviderConfig() {
-  const cfg: import("@genizor/ai").AIProviderConfig = {
+  const cfg: import("@amarnai/ai").AIProviderConfig = {
     provider: (process.env["AI_PROVIDER"] ?? "mock") as "mock" | "ollama" | "frontier",
   };
   const ollamaBase = process.env["OLLAMA_BASE_URL"];

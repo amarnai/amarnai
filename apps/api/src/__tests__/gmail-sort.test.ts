@@ -1,6 +1,6 @@
 import { vi, describe, it, expect, beforeEach, afterEach } from "vitest";
 
-vi.mock("@genizor/db", () => ({
+vi.mock("@amarnai/db", () => ({
   Prisma: {},
   db: {
     workspace: { findUnique: vi.fn() },
@@ -24,7 +24,7 @@ vi.mock("../services/gmail-client.js", () => ({
 }));
 
 const mockClassifyThread = vi.fn();
-vi.mock("@genizor/ai", () => ({
+vi.mock("@amarnai/ai", () => ({
   createAIProvider: vi.fn().mockReturnValue({
     providerName: "mock",
     modelName: "mock-v1",
@@ -34,7 +34,7 @@ vi.mock("@genizor/ai", () => ({
 }));
 
 import app from "../app.js";
-import { db } from "@genizor/db";
+import { db } from "@amarnai/db";
 import { GmailClient } from "../services/gmail-client.js";
 
 const WS_ID = "ws-1";

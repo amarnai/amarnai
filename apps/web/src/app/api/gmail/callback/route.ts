@@ -6,7 +6,7 @@ import {
   fetchGmailProfile,
 } from "@/lib/gmail-oauth";
 import { encrypt } from "@/lib/encryption";
-import { db } from "@genizor/db";
+import { db } from "@amarnai/db";
 
 const GMAIL_READONLY_SCOPE = "https://www.googleapis.com/auth/gmail.readonly";
 

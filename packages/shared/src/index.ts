@@ -1,4 +1,4 @@
-export const APP_NAME = "Genizor" as const;
+export const APP_NAME = "Amarnai" as const;
 
 export * from "./schemas/email-metadata.js";
 export * from "./schemas/taxonomy.js";

@@ -24,7 +24,7 @@ export function Sidebar({ user }: { user: SidebarUser }) {
   const pathname = usePathname();
   return (
     <aside className="sidebar">
-      <div className="sidebar-brand">Genizor</div>
+      <div className="sidebar-brand">Amarnai</div>
       <nav>
         <ul className="sidebar-nav">
           {NAV.map((item) => (

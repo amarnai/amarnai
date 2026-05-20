@@ -120,7 +120,7 @@ export type Tag = {
   id: string;
   name: string;
   color: string | null;
-  source: "GENIZOR" | "GMAIL";
+  source: "AMARNAI" | "GMAIL";
   createdAt: string;
   updatedAt: string;
 };

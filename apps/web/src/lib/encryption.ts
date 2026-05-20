@@ -6,7 +6,7 @@ function getKey(): Buffer {
     return Buffer.from(hex, "hex");
   }
   // Derive a 32-byte key from AUTH_SECRET when no dedicated key is configured.
-  const secret = process.env["AUTH_SECRET"] ?? "genizor-fallback";
+  const secret = process.env["AUTH_SECRET"] ?? "amarnai-fallback";
   return crypto.createHash("sha256").update("gmail-token:" + secret).digest();
 }
 

@@ -8,7 +8,7 @@ export default function Home() {
         <div className={styles.mark}>
           <Image
             src="/logo.png"
-            alt="Genizor"
+            alt="Amarnai"
             width={80}
             height={80}
             priority
@@ -17,14 +17,14 @@ export default function Home() {
 
         <p className={styles.eyebrow}>Work in progress</p>
 
-        <h1 className={styles.title}>Genizor</h1>
+        <h1 className={styles.title}>Amarnai</h1>
 
         <p className={styles.tagline}>
           Open-source AI email triage, rooted in your own workflow.
         </p>
 
         <p className={styles.body}>
-          Genizor is a self-hostable assistant layer for Gmail that helps sort,
+          Amarnai is a self-hostable assistant layer for Gmail that helps sort,
           draft, and escalate email through a visual workflow. The product is
           currently in development.
         </p>
@@ -32,7 +32,7 @@ export default function Home() {
         <footer className={styles.footer}>
           <a
             className={styles.link}
-            href="https://github.com/genizor"
+            href="https://github.com/amarnai/amarnai"
             target="_blank"
             rel="noopener noreferrer"
           >

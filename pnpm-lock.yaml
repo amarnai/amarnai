@@ -32,10 +32,10 @@ importers:
 
   apps/api:
     dependencies:
-      '@genizor/ai':
+      '@amarnai/ai':
         specifier: workspace:*
         version: link:../../packages/ai
-      '@genizor/db':
+      '@amarnai/db':
         specifier: workspace:*
         version: link:../../packages/db
       '@hono/node-server':
@@ -88,7 +88,7 @@ importers:
 
   apps/web:
     dependencies:
-      '@genizor/db':
+      '@amarnai/db':
         specifier: workspace:*
         version: link:../../packages/db
       '@xyflow/react':
@@ -134,7 +134,7 @@ importers:
 
   packages/ai:
     dependencies:
-      '@genizor/shared':
+      '@amarnai/shared':
         specifier: workspace:*
         version: link:../shared
       openai:

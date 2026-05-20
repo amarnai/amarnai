@@ -1,7 +1,7 @@
 import "server-only";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { db } from "@genizor/db";
+import { db } from "@amarnai/db";
 
 export type AuthUser = {
   id: string;

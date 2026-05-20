@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const TagSourceSchema = z.enum(["GENIZOR", "GMAIL"]);
+export const TagSourceSchema = z.enum(["AMARNAI", "GMAIL"]);
 export type TagSource = z.infer<typeof TagSourceSchema>;
 
 export const CreateTagInputSchema = z.object({

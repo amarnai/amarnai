@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { z } from "zod";
-import { db, Prisma } from "@genizor/db";
-import { createAIProvider, classifyThread, snapshotToThreadMessages } from "@genizor/ai";
+import { db, Prisma } from "@amarnai/db";
+import { createAIProvider, classifyThread, snapshotToThreadMessages } from "@amarnai/ai";
 import { GmailClient } from "../services/gmail-client.js";
 import { normalizeGmailThread } from "../services/gmail-thread-adapter.js";
 
@@ -22,8 +22,8 @@ function isDevEnabled(): boolean {
   );
 }
 
-function getAIProviderConfig(): import("@genizor/ai").AIProviderConfig {
-  const cfg: import("@genizor/ai").AIProviderConfig = {
+function getAIProviderConfig(): import("@amarnai/ai").AIProviderConfig {
+  const cfg: import("@amarnai/ai").AIProviderConfig = {
     provider: (process.env["AI_PROVIDER"] ?? "mock") as "mock" | "ollama" | "frontier",
   };
   const ollamaBase = process.env["OLLAMA_BASE_URL"];
@@ -228,10 +228,10 @@ gmailSort.post("/dev/workspaces/:workspaceId/gmail-sort-thread", async (c) => {
     return c.json({ error: "No taxonomy nodes found for classification" }, 422);
   }
 
-  const nodes: import("@genizor/ai").TaxonomyNodeInput[] = rawNodes.map(
+  const nodes: import("@amarnai/ai").TaxonomyNodeInput[] = rawNodes.map(
     (n: (typeof rawNodes)[number]) => ({ ...n, examples: n.examples as string[] })
   );
-  const edges: import("@genizor/ai").TaxonomyEdgeInput[] = rawEdges.map(
+  const edges: import("@amarnai/ai").TaxonomyEdgeInput[] = rawEdges.map(
     (e: (typeof rawEdges)[number]) => ({
       ...e,
       examples: e.examples as string[],

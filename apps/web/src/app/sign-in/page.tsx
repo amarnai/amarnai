@@ -4,7 +4,7 @@ export default function SignInPage() {
   return (
     <div className="sign-in-page">
       <div className="sign-in-card">
-        <h1 className="sign-in-title">Genizor</h1>
+        <h1 className="sign-in-title">Amarnai</h1>
         <p className="sign-in-subtitle">AI email triage assistant</p>
         <form
           action={async () => {
