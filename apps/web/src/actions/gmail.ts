@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { requireUser, assertWorkspaceOwner } from "@/lib/session";
-import { db } from "@genizor/db";
+import { db } from "@amarnai/db";
 
 export async function disconnectGmailAction(workspaceId: string): Promise<void> {
   const user = await requireUser();

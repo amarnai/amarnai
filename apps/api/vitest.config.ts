@@ -4,7 +4,7 @@ export default defineConfig({
   test: {
     server: {
       deps: {
-        inline: [/^@genizor\//],
+        inline: [/^@amarnai\//],
       },
     },
   },

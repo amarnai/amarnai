@@ -7,7 +7,7 @@ import {
   SensitivitySchema,
   SuggestedNextStepSchema,
   type ClassificationPathStep,
-} from "@genizor/shared";
+} from "@amarnai/shared";
 
 // ─── Input types ───────────────────────────────────────────────────────────────
 
@@ -70,7 +70,7 @@ export const LLMOutputSchema = z.object({
 });
 
 export type LLMOutput = z.infer<typeof LLMOutputSchema>;
-export type { ClassificationPathStep } from "@genizor/shared";
+export type { ClassificationPathStep } from "@amarnai/shared";
 
 export type ClassifyOutput = {
   finalNodeId: string | null;

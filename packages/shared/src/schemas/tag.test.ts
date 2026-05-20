@@ -3,7 +3,7 @@ import { CreateTagInputSchema, TagSourceSchema } from "./tag.js";
 
 describe("TagSourceSchema", () => {
   it("accepts valid sources", () => {
-    expect(TagSourceSchema.parse("GENIZOR")).toBe("GENIZOR");
+    expect(TagSourceSchema.parse("AMARNAI")).toBe("AMARNAI");
     expect(TagSourceSchema.parse("GMAIL")).toBe("GMAIL");
   });
 
@@ -17,13 +17,13 @@ describe("CreateTagInputSchema", () => {
   const minimal = {
     workspaceId: "ws_1",
     name: "Receipts",
-    source: "GENIZOR" as const,
+    source: "AMARNAI" as const,
   };
 
   it("parses a minimal valid input", () => {
     const result = CreateTagInputSchema.parse(minimal);
     expect(result.name).toBe("Receipts");
-    expect(result.source).toBe("GENIZOR");
+    expect(result.source).toBe("AMARNAI");
   });
 
   it("accepts a valid hex color", () => {
@@ -60,7 +60,7 @@ describe("CreateTagInputSchema", () => {
 
   it("rejects missing workspaceId", () => {
     expect(() =>
-      CreateTagInputSchema.parse({ name: "Test", source: "GENIZOR" })
+      CreateTagInputSchema.parse({ name: "Test", source: "AMARNAI" })
     ).toThrow();
   });
 });

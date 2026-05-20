@@ -1,5 +1,5 @@
 import { LLMOutputSchema, type ClassifyOutput, type TaxonomyEdgeInput, type TaxonomyNodeInput } from "./types.js";
-import type { ClassificationPathStep } from "@genizor/shared";
+import type { ClassificationPathStep } from "@amarnai/shared";
 
 function reviewNeeded(explanation: string): ClassifyOutput {
   return {

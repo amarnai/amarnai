@@ -5,7 +5,7 @@ function getKey(): Buffer {
   if (hex.length === 64) {
     return Buffer.from(hex, "hex");
   }
-  const secret = process.env["AUTH_SECRET"] ?? "genizor-fallback";
+  const secret = process.env["AUTH_SECRET"] ?? "amarnai-fallback";
   return crypto.createHash("sha256").update("gmail-token:" + secret).digest();
 }
 

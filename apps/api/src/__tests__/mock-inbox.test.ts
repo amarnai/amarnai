@@ -1,6 +1,6 @@
 import { vi, describe, it, expect, beforeEach, afterEach } from "vitest";
 
-vi.mock("@genizor/db", () => ({
+vi.mock("@amarnai/db", () => ({
   Prisma: {},
   db: {
     workspace: { findUnique: vi.fn() },
@@ -21,7 +21,7 @@ vi.mock("@genizor/db", () => ({
 }));
 
 const mockClassifyThread = vi.fn();
-vi.mock("@genizor/ai", () => ({
+vi.mock("@amarnai/ai", () => ({
   createAIProvider: vi.fn().mockReturnValue({
     providerName: "test-provider",
     modelName: "test-model",
@@ -33,7 +33,7 @@ vi.mock("@genizor/ai", () => ({
 }));
 
 import app from "../app.js";
-import { db } from "@genizor/db";
+import { db } from "@amarnai/db";
 
 const WS_ID = "ws-1";
 const THREAD_ID = "thread-1";

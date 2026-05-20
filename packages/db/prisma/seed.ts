@@ -23,11 +23,11 @@ async function main() {
 
   // ── 1. User ───────────────────────────────────────────────────────────────
   const user = await db.user.upsert({
-    where: { email: "dev@genizor.local" },
+    where: { email: "dev@amarnai.local" },
     update: {},
     create: {
-      email: "dev@genizor.local",
-      name: "Genizor Dev User",
+      email: "dev@amarnai.local",
+      name: "Amarnai Dev User",
       emailVerified: new Date(),
     },
   });
@@ -63,7 +63,7 @@ async function main() {
       workspaceId,
       userId: user.id,
       provider: Provider.GMAIL,
-      primaryEmailAddress: "dev@genizor.local",
+      primaryEmailAddress: "dev@amarnai.local",
       providerAccountId: "gmail-demo-account-001",
       accessTokenEncrypted: "enc:seed-fake-access-token-aes256",
       refreshTokenEncrypted: "enc:seed-fake-refresh-token-aes256",
@@ -74,19 +74,19 @@ async function main() {
   // ── 5. EmailAddressIdentities ─────────────────────────────────────────────
   const identityDefs = [
     {
-      emailAddress: "dev@genizor.local",
-      displayName: "Genizor Dev User",
+      emailAddress: "dev@amarnai.local",
+      displayName: "Amarnai Dev User",
       kind: EmailAddressIdentityKind.PRIMARY,
       isPrimary: true,
     },
     {
-      emailAddress: "billing@genizor.local",
+      emailAddress: "billing@amarnai.local",
       displayName: "Demo Billing",
       kind: EmailAddressIdentityKind.ALIAS,
       isPrimary: false,
     },
     {
-      emailAddress: "clients@genizor.local",
+      emailAddress: "clients@amarnai.local",
       displayName: "Demo Clients",
       kind: EmailAddressIdentityKind.ALIAS,
       isPrimary: false,
@@ -457,7 +457,7 @@ async function main() {
         workspaceId,
         name: def.name,
         color: def.color,
-        source: TagSource.GENIZOR,
+        source: TagSource.AMARNAI,
       },
     });
     tags[def.name] = tag.id;
@@ -545,7 +545,7 @@ async function main() {
         "Marion Lévy",
       ].join("\n"),
       receivedAt: new Date("2026-05-17T10:30:00Z"),
-      toEmails: ["demo@genizor.local"],
+      toEmails: ["demo@amarnai.local"],
     });
 
   // 2. Funeral / memorial request → Funerals
@@ -569,7 +569,7 @@ async function main() {
         "David Cohen",
       ].join("\n"),
       receivedAt: new Date("2026-05-16T08:00:00Z"),
-      toEmails: ["demo@genizor.local"],
+      toEmails: ["demo@amarnai.local"],
     });
 
   // 3. Tenoua article pitch → Editorial / pitches
@@ -593,7 +593,7 @@ async function main() {
         "Sarah Benguigui",
       ].join("\n"),
       receivedAt: new Date("2026-05-15T14:20:00Z"),
-      toEmails: ["demo@genizor.local"],
+      toEmails: ["demo@amarnai.local"],
     });
 
   // 4. Subscription delivery issue → Subscriptions / distribution
@@ -617,7 +617,7 @@ async function main() {
         "Pierre Simon",
       ].join("\n"),
       receivedAt: new Date("2026-05-14T09:45:00Z"),
-      toEmails: ["demo@genizor.local"],
+      toEmails: ["demo@amarnai.local"],
     });
 
   // 5. Radio interview request → Media / interviews
@@ -642,7 +642,7 @@ async function main() {
         "Amélie Rousseau",
       ].join("\n"),
       receivedAt: new Date("2026-05-17T16:00:00Z"),
-      toEmails: ["demo@genizor.local"],
+      toEmails: ["demo@amarnai.local"],
     });
 
   // 6. Vague admin request → Other / needs review (low confidence)
@@ -664,7 +664,7 @@ async function main() {
         "M. Marchand",
       ].join("\n"),
       receivedAt: new Date("2026-05-17T07:30:00Z"),
-      toEmails: ["demo@genizor.local"],
+      toEmails: ["demo@amarnai.local"],
     });
 
   // ── 10. EmailClassifications ──────────────────────────────────────────────

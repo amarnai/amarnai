@@ -1,6 +1,6 @@
 import { vi, describe, it, expect, beforeEach } from "vitest";
 
-vi.mock("@genizor/db", () => ({
+vi.mock("@amarnai/db", () => ({
   db: {
     workspace: {
       findUnique: vi.fn(),
@@ -13,7 +13,7 @@ vi.mock("@genizor/db", () => ({
 }));
 
 import app from "../app.js";
-import { db } from "@genizor/db";
+import { db } from "@amarnai/db";
 
 const WS_ID = "ws-1";
 const OTHER_WS_ID = "ws-other";
