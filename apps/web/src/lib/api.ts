@@ -188,6 +188,17 @@ export type EmailThreadDetail = {
   }>;
 };
 
+export type GmailConnection = {
+  id: string;
+  workspaceId: string;
+  gmailAddress: string;
+  grantedScopes: string[];
+  status: "ACTIVE";
+  lastVerifiedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+} | null;
+
 export type ReviewItem = {
   id: string;
   status: string;
@@ -358,6 +369,8 @@ export type ClassifyResult = {
 
 export const api = {
   workspaces: () => apiFetch<Workspace[]>("/workspaces"),
+  gmailConnection: (workspaceId: string) =>
+    apiFetch<GmailConnection>(`/workspaces/${workspaceId}/gmail-connection`),
   taxonomyNodes: (workspaceId: string) =>
     apiFetch<TaxonomyNode[]>(`/workspaces/${workspaceId}/taxonomy-nodes`),
   createTaxonomyNode: (workspaceId: string, input: CreateTaxonomyNodeInput) =>

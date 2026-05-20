@@ -75,7 +75,9 @@ Genizor uses Google Sign-In for app identity. Before running locally, create OAu
 1. Go to [Google Cloud Console](https://console.cloud.google.com/) → APIs & Services → Credentials
 2. Create an OAuth 2.0 Client ID (Web application)
 3. Add `http://localhost:3000` to authorised JavaScript origins
-4. Add `http://localhost:3000/api/auth/callback/google` to authorised redirect URIs
+4. Add **both** of the following to authorised redirect URIs:
+   - `http://localhost:3000/api/auth/callback/google` — NextAuth sign-in
+   - `http://localhost:3000/api/gmail/callback` — Gmail inbox connection
 5. Copy the client ID and secret into `.env`:
 
 ```env
@@ -88,7 +90,30 @@ Also generate random secrets:
 ```bash
 openssl rand -base64 32   # paste as AUTH_SECRET
 openssl rand -hex 32      # paste as INTERNAL_API_SECRET
+openssl rand -hex 32      # paste as GMAIL_TOKEN_ENCRYPTION_KEY
 ```
+
+## Gmail inbox setup
+
+Genizor lets each workspace connect one Gmail inbox for email triage. This is a separate OAuth flow from sign-in and requests only `gmail.readonly` access — it cannot read, send, or modify email.
+
+After signing in, go to **Settings** in the sidebar and click **Connect Gmail**. Google will ask you to grant read-only access to the inbox you want to sort. Once connected, the workspace shows the linked Gmail address and last verification time.
+
+**Required APIs** — enable these in your Google Cloud project:
+
+- Gmail API (`gmail.googleapis.com`)
+
+**Env vars:**
+
+| Variable | Description |
+|----------|-------------|
+| `GMAIL_OAUTH_CALLBACK_URL` | Redirect URI registered in Google Cloud Console. Default: `http://localhost:3000/api/gmail/callback` |
+| `GMAIL_TOKEN_ENCRYPTION_KEY` | 64-char hex string (32 bytes) used to AES-256-GCM-encrypt stored refresh tokens. Generate with `openssl rand -hex 32`. Falls back to a key derived from `AUTH_SECRET` when unset — always set this explicitly in production. |
+
+**Google Cloud Console checklist for Gmail:**
+
+1. APIs & Services → Library → enable **Gmail API**
+2. APIs & Services → Credentials → open your OAuth client → add `http://localhost:3000/api/gmail/callback` to authorised redirect URIs (in production, add your production URL)
 
 ## Dev seed account
 
@@ -108,7 +133,8 @@ This seed user is attached to the mock taxonomy and sample email threads used fo
 # 1. Copy environment config
 cp .env.example .env
 
-# 2. Fill in AUTH_SECRET, AUTH_GOOGLE_ID, AUTH_GOOGLE_SECRET, INTERNAL_API_SECRET (see above)
+# 2. Fill in secrets (see Authentication setup above):
+#    AUTH_SECRET, AUTH_GOOGLE_ID, AUTH_GOOGLE_SECRET, INTERNAL_API_SECRET, GMAIL_TOKEN_ENCRYPTION_KEY
 
 # 3. Start Postgres and Redis
 docker compose up -d postgres redis

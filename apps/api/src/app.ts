@@ -9,6 +9,7 @@ import { emailThreadsRoute } from "./routes/email-threads.js";
 import { reviewItemsRoute } from "./routes/review-items.js";
 import { mockInboxRoute } from "./routes/mock-inbox.js";
 import { classifyRoute } from "./routes/classify.js";
+import { gmailConnectionRoute } from "./routes/gmail-connection.js";
 
 const app = new Hono();
 
@@ -23,5 +24,6 @@ app.route("/", emailThreadsRoute);
 app.route("/", reviewItemsRoute);
 app.route("/", mockInboxRoute);
 app.route("/", classifyRoute);
+app.route("/", gmailConnectionRoute);
 
 export default app;

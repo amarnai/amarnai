@@ -110,6 +110,10 @@ enum AuditActorType {
   SYSTEM
 }
 
+enum GmailConnectionStatus {
+  ACTIVE
+}
+
 // ─── Models ──────────────────────────────────────────────────────────────────
 
 model User {
@@ -139,6 +143,7 @@ model Workspace {
   owner           User                  @relation(fields: [ownerUserId], references: [id])
   members         WorkspaceMember[]
   emailAccounts   EmailAccount[]
+  gmailConnection GmailConnection?
   taxonomyNodes   TaxonomyNode[]
   taxonomyEdges   TaxonomyEdge[]
   emailThreads    EmailThread[]
@@ -426,4 +431,19 @@ model AuditLog {
 
   workspace Workspace @relation(fields: [workspaceId], references: [id])
   actor     User?     @relation(fields: [actorUserId], references: [id])
+}
+
+model GmailConnection {
+  id                    String                @id @default(cuid())
+  workspaceId           String                @unique
+  googleSubjectId       String?
+  gmailAddress          String
+  encryptedRefreshToken String
+  grantedScopes         String[]
+  status                GmailConnectionStatus @default(ACTIVE)
+  lastVerifiedAt        DateTime?
+  createdAt             DateTime              @default(now())
+  updatedAt             DateTime              @updatedAt
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id])
 }

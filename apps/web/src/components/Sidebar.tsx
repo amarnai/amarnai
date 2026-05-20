@@ -14,6 +14,7 @@ const NAV = [
   { href: "/review", label: "Review Queue" },
   { href: "/emails", label: "Emails" },
   { href: "/tags", label: "Tags" },
+  { href: "/settings", label: "Settings" },
   ...(isDevEnabled ? [{ href: "/dev/mock-inbox", label: "Mock Inbox" }] : []),
 ];
 
