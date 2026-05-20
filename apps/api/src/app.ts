@@ -10,6 +10,7 @@ import { reviewItemsRoute } from "./routes/review-items.js";
 import { mockInboxRoute } from "./routes/mock-inbox.js";
 import { classifyRoute } from "./routes/classify.js";
 import { gmailConnectionRoute } from "./routes/gmail-connection.js";
+import { gmailSortRoute } from "./routes/gmail-sort.js";
 
 const app = new Hono();
 
@@ -25,5 +26,6 @@ app.route("/", reviewItemsRoute);
 app.route("/", mockInboxRoute);
 app.route("/", classifyRoute);
 app.route("/", gmailConnectionRoute);
+app.route("/", gmailSortRoute);
 
 export default app;

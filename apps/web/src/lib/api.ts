@@ -336,6 +336,47 @@ export type LLMPathSelectionResult = {
   };
 };
 
+export type GmailRecentThreadsResult = {
+  threadIds: string[];
+};
+
+export type GmailSortResult = {
+  snapshot: {
+    providerThreadId: string;
+    subject: string | null;
+    messageCount: number;
+    latestMessageAt: string;
+    participants: string[];
+  };
+  classification: {
+    id: string;
+    finalNodeId: string | null;
+    finalNodeName: string | null;
+    path: Array<{
+      edgeId: string;
+      sourceNodeId: string;
+      targetNodeId: string;
+      sortingQuestion: string;
+      confidence: number;
+      explanation: string;
+    }>;
+    confidence: number;
+    explanation: string;
+    priority: string;
+    urgency: string;
+    riskLevel: string;
+    requiredAction: string;
+    sensitivity: string;
+    dueAt: string | null;
+    suggestedNextStep: string;
+    needsHumanReview: boolean;
+    modelProvider: string | null;
+    modelName: string | null;
+  };
+  reviewItemCreated: boolean;
+  reviewItemId: string | null;
+};
+
 export type ClassifyResult = {
   classification: {
     id: string;
@@ -440,6 +481,14 @@ export const api = {
       `/dev/workspaces/${workspaceId}/llm-path-selection`,
       "POST",
       input
+    ),
+  gmailRecentThreads: (workspaceId: string) =>
+    apiFetch<GmailRecentThreadsResult>(`/dev/workspaces/${workspaceId}/gmail-recent-threads`),
+  sortGmailThread: (workspaceId: string, gmailThreadId: string) =>
+    apiMutate<GmailSortResult>(
+      `/dev/workspaces/${workspaceId}/gmail-sort-thread`,
+      "POST",
+      { gmailThreadId }
     ),
   aiClassify: (workspaceId: string, threadId: string) =>
     apiMutate<ClassifyResult>(

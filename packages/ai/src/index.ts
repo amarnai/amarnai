@@ -11,3 +11,5 @@ export type { PathSelectionContext } from "./candidate-path-prompt.js";
 export { validatePathSelection, MIN_LLM_PATH_CONFIDENCE } from "./candidate-path-validator.js";
 export type { PathSelectionResult } from "./candidate-path-validator.js";
 export { selectPathFromCandidates } from "./select-path.js";
+export type { ThreadSnapshot, SnapshotMessage, AttachmentMeta } from "./thread-snapshot.js";
+export { snapshotToThreadMessages } from "./thread-snapshot.js";

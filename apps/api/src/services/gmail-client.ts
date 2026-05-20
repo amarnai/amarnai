@@ -3,6 +3,7 @@ import { decrypt } from "./encryption.js";
 const GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token";
 const GMAIL_PROFILE_URL = "https://gmail.googleapis.com/gmail/v1/users/me/profile";
 const GMAIL_THREADS_URL = "https://gmail.googleapis.com/gmail/v1/users/me/threads";
+const GMAIL_THREAD_URL = "https://gmail.googleapis.com/gmail/v1/users/me/threads";
 
 type TokenResponse = {
   access_token: string;
@@ -56,5 +57,16 @@ export class GmailClient {
     type ThreadList = { threads?: Array<{ id: string }> };
     const data = (await res.json()) as ThreadList;
     return (data.threads ?? []).map((t) => t.id);
+  }
+
+  async getThread(threadId: string): Promise<unknown> {
+    const accessToken = await this.refreshAccessToken();
+    const url = `${GMAIL_THREAD_URL}/${encodeURIComponent(threadId)}?format=full`;
+    const res = await fetch(url, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+    if (res.status === 404) throw new Error(`Gmail thread not found: ${threadId}`);
+    if (!res.ok) throw new Error(`Gmail thread fetch failed: ${res.status}`);
+    return res.json();
   }
 }

@@ -1,6 +1,7 @@
 import { requireUser, getOrCreateDefaultWorkspace } from "@/lib/session";
 import { api } from "@/lib/api";
 import { GmailConnectionSection } from "./GmailConnectionSection";
+import { GmailDebugPanel } from "./GmailDebugPanel";
 
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 
@@ -12,6 +13,8 @@ export default async function SettingsPage({ searchParams }: { searchParams: Sea
   const connectError =
     typeof params["gmail_error"] === "string" ? params["gmail_error"] : null;
   const connectSuccess = params["gmail_connected"] === "1";
+  const debugToolsEnabled =
+    process.env["NEXT_PUBLIC_ENABLE_GMAIL_DEBUG_TOOLS"] === "true";
 
   let connection = null;
   try {
@@ -29,6 +32,9 @@ export default async function SettingsPage({ searchParams }: { searchParams: Sea
         connectError={connectError}
         connectSuccess={connectSuccess}
       />
+      {debugToolsEnabled && connection && (
+        <GmailDebugPanel workspaceId={workspace.id} />
+      )}
     </>
   );
 }
