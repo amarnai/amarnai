@@ -78,6 +78,16 @@ export const CreateTaxonomyNodeInputSchema = z
         path: ["description"],
       });
     }
+    if (
+      data.isVisibleCategory !== undefined &&
+      data.canReceiveEmails !== undefined &&
+      data.isVisibleCategory !== data.canReceiveEmails
+    ) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "isVisibleCategory and canReceiveEmails must have the same value",
+      });
+    }
   });
 export type CreateTaxonomyNodeInput = z.infer<typeof CreateTaxonomyNodeInputSchema>;
 
@@ -105,6 +115,16 @@ export const UpdateTaxonomyNodeInputSchema = z
         message:
           "Description must differ from the node name. Descriptions improve AI sorting quality.",
         path: ["description"],
+      });
+    }
+    if (
+      data.isVisibleCategory !== undefined &&
+      data.canReceiveEmails !== undefined &&
+      data.isVisibleCategory !== data.canReceiveEmails
+    ) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "isVisibleCategory and canReceiveEmails must have the same value",
       });
     }
   });

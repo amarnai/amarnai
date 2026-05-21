@@ -72,6 +72,16 @@ const createBodySchema = z
         path: ["description"],
       });
     }
+    if (
+      data.isVisibleCategory !== undefined &&
+      data.canReceiveEmails !== undefined &&
+      data.isVisibleCategory !== data.canReceiveEmails
+    ) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "isVisibleCategory and canReceiveEmails must have the same value",
+      });
+    }
   });
 
 const updateBodySchema = z
@@ -218,6 +228,18 @@ taxonomyNodes.patch(
     if (existing.isRoot && (d.isVisibleCategory !== undefined || d.canReceiveEmails !== undefined)) {
       return c.json(
         { error: "Cannot change isVisibleCategory or canReceiveEmails on the root node" },
+        422
+      );
+    }
+
+    if (
+      !existing.isRoot &&
+      d.isVisibleCategory !== undefined &&
+      d.canReceiveEmails !== undefined &&
+      d.isVisibleCategory !== d.canReceiveEmails
+    ) {
+      return c.json(
+        { error: "isVisibleCategory and canReceiveEmails must have the same value" },
         422
       );
     }

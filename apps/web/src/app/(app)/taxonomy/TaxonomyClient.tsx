@@ -139,15 +139,10 @@ function TaxonomyNodeCard({ data, selected }: NodeProps<RFNode>) {
       <div className="node-badges">
         {node.isRoot ? (
           <span className="badge node-kind node-kind-rule">Entry</span>
-        ) : node.isVisibleCategory ? (
-          <span className="badge node-kind node-kind-category">Category</span>
+        ) : node.isVisibleCategory && node.canReceiveEmails ? (
+          <span className="badge node-kind node-kind-category">Category Destination</span>
         ) : (
           <span className="badge node-kind node-kind-rule">Sorting Step</span>
-        )}
-        {node.canReceiveEmails && (
-          <span className="badge" style={{ fontSize: 10 }}>
-            Receives Emails
-          </span>
         )}
         {ignored && <span className="badge badge-unreachable">Ignored</span>}
         {validityWarnings.includes("dead-end") && (
@@ -254,11 +249,8 @@ function NodeForm({
 
   const [name, setName] = useState(node?.name ?? "");
   const [description, setDescription] = useState(node?.description ?? "");
-  const [isVisibleCategory, setIsVisibleCategory] = useState(
-    node?.isVisibleCategory ?? true
-  );
-  const [canReceiveEmails, setCanReceiveEmails] = useState(
-    node?.canReceiveEmails ?? true
+  const [isCategoryDestination, setIsCategoryDestination] = useState(
+    (node?.isVisibleCategory ?? false) && (node?.canReceiveEmails ?? false)
   );
 
   function handleSubmit(e: React.FormEvent) {
@@ -271,8 +263,8 @@ function NodeForm({
       ...(trimmedDescription ? { description: trimmedDescription } : {}),
       instructions: node?.instructions ?? null,
       examples: node?.examples ?? [],
-      isVisibleCategory,
-      canReceiveEmails,
+      isVisibleCategory: isCategoryDestination,
+      canReceiveEmails: isCategoryDestination,
     });
   }
 
@@ -316,37 +308,20 @@ function NodeForm({
             </p>
           )}
         </div>
-        <div className="form-row" style={{ gap: 20 }}>
+        <div className="form-group">
           <label style={{ display: "flex", alignItems: "center", gap: 6 }}>
             <input
               type="checkbox"
-              checked={isVisibleCategory}
-              onChange={(e) => {
-                setIsVisibleCategory(e.target.checked);
-                if (e.target.checked) setCanReceiveEmails(true);
-              }}
+              checked={isCategoryDestination}
+              onChange={(e) => setIsCategoryDestination(e.target.checked)}
               disabled={isRoot}
             />
-            Visible category
+            Category destination
           </label>
-          <label style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <input
-              type="checkbox"
-              checked={canReceiveEmails}
-              onChange={(e) => {
-                setCanReceiveEmails(e.target.checked);
-                if (!e.target.checked) setIsVisibleCategory(false);
-              }}
-              disabled={isRoot}
-            />
-            Can receive emails
-          </label>
-        </div>
-        {!isRoot && isVisibleCategory && (
-          <p style={{ fontSize: 11, color: "var(--color-muted)", marginTop: 2 }}>
-            Visible categories must be able to receive emails.
+          <p style={{ fontSize: 11, color: "var(--color-muted)", marginTop: 4 }}>
+            Category destinations appear as folders and can receive sorted threads. Sorting steps only route emails.
           </p>
-        )}
+        </div>
         <div className="form-actions">
           <button className="btn-primary" type="submit" disabled={submitting}>
             {submitting ? "Saving…" : node ? "Save" : "Create"}

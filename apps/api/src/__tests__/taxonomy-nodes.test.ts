@@ -255,6 +255,32 @@ describe("POST /workspaces/:workspaceId/taxonomy-nodes", () => {
     });
     expect(res.status).toBe(404);
   });
+
+  it("returns 400 when isVisibleCategory=true and canReceiveEmails=false", async () => {
+    const res = await post(`/workspaces/${WS_ID}/taxonomy-nodes`, {
+      name: "Clients",
+      description: VALID_DESCRIPTION,
+      isVisibleCategory: true,
+      canReceiveEmails: false,
+    });
+    expect(res.status).toBe(400);
+    const body = await res.json() as { error: string; issues: unknown[] };
+    expect(body.error).toBe("Validation error");
+    const issueMessages = (body.issues as Array<{ message: string }>).map((i) => i.message);
+    expect(issueMessages.some((m) => m.toLowerCase().includes("same value"))).toBe(true);
+  });
+
+  it("returns 400 when isVisibleCategory=false and canReceiveEmails=true", async () => {
+    const res = await post(`/workspaces/${WS_ID}/taxonomy-nodes`, {
+      name: "Clients",
+      description: VALID_DESCRIPTION,
+      isVisibleCategory: false,
+      canReceiveEmails: true,
+    });
+    expect(res.status).toBe(400);
+    const body = await res.json() as { error: string; issues: unknown[] };
+    expect(body.error).toBe("Validation error");
+  });
 });
 
 // ─── PATCH ────────────────────────────────────────────────────────────────────
@@ -449,6 +475,30 @@ describe("PATCH /workspaces/:workspaceId/taxonomy-nodes/:nodeId", () => {
     expect(res.status).toBe(200);
     const body = await res.json() as typeof updated;
     expect(body.name).toBe("Renamed Root");
+  });
+
+  it("returns 422 when isVisibleCategory and canReceiveEmails differ for a non-root node", async () => {
+    vi.mocked(db.taxonomyNode.findUnique).mockResolvedValue(baseNode as never);
+
+    const res = await patch(
+      `/workspaces/${WS_ID}/taxonomy-nodes/${NODE_ID}`,
+      { isVisibleCategory: true, canReceiveEmails: false }
+    );
+    expect(res.status).toBe(422);
+    const body = await res.json() as { error: string };
+    expect(body.error).toMatch(/same value/i);
+  });
+
+  it("returns 422 when isVisibleCategory=false and canReceiveEmails=true for a non-root node", async () => {
+    vi.mocked(db.taxonomyNode.findUnique).mockResolvedValue(baseNode as never);
+
+    const res = await patch(
+      `/workspaces/${WS_ID}/taxonomy-nodes/${NODE_ID}`,
+      { isVisibleCategory: false, canReceiveEmails: true }
+    );
+    expect(res.status).toBe(422);
+    const body = await res.json() as { error: string };
+    expect(body.error).toMatch(/same value/i);
   });
 
   it("root Inbox can be patched without providing a description", async () => {

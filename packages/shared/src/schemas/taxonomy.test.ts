@@ -78,6 +78,35 @@ describe("CreateTaxonomyNodeInputSchema", () => {
       CreateTaxonomyNodeInputSchema.parse({ ...minimal, name: "a".repeat(61) })
     ).toThrow();
   });
+
+  it("rejects when isVisibleCategory and canReceiveEmails have different values", () => {
+    expect(() =>
+      CreateTaxonomyNodeInputSchema.parse({ ...minimal, isVisibleCategory: true, canReceiveEmails: false })
+    ).toThrow();
+    expect(() =>
+      CreateTaxonomyNodeInputSchema.parse({ ...minimal, isVisibleCategory: false, canReceiveEmails: true })
+    ).toThrow();
+  });
+
+  it("accepts when both isVisibleCategory and canReceiveEmails are true", () => {
+    const result = CreateTaxonomyNodeInputSchema.parse({
+      ...minimal,
+      isVisibleCategory: true,
+      canReceiveEmails: true,
+    });
+    expect(result.isVisibleCategory).toBe(true);
+    expect(result.canReceiveEmails).toBe(true);
+  });
+
+  it("accepts when both isVisibleCategory and canReceiveEmails are false", () => {
+    const result = CreateTaxonomyNodeInputSchema.parse({
+      ...minimal,
+      isVisibleCategory: false,
+      canReceiveEmails: false,
+    });
+    expect(result.isVisibleCategory).toBe(false);
+    expect(result.canReceiveEmails).toBe(false);
+  });
 });
 
 describe("UpdateTaxonomyNodeInputSchema", () => {
@@ -89,6 +118,15 @@ describe("UpdateTaxonomyNodeInputSchema", () => {
   it("accepts a partial update", () => {
     const result = UpdateTaxonomyNodeInputSchema.parse({ name: "New name" });
     expect(result.name).toBe("New name");
+  });
+
+  it("rejects when isVisibleCategory and canReceiveEmails have different values", () => {
+    expect(() =>
+      UpdateTaxonomyNodeInputSchema.parse({ isVisibleCategory: true, canReceiveEmails: false })
+    ).toThrow();
+    expect(() =>
+      UpdateTaxonomyNodeInputSchema.parse({ isVisibleCategory: false, canReceiveEmails: true })
+    ).toThrow();
   });
 
   it("strips workspaceId (not part of update schema)", () => {
