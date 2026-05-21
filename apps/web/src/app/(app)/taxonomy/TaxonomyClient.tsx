@@ -640,7 +640,7 @@ function TaxonomyCanvasInner({
   const onNodeClick: NodeMouseHandler<RFNode> = useCallback(
     (_event, rfNode) => {
       const found = dbNodes.find((n) => n.id === rfNode.id);
-      if (found) openPanel({ type: "edit-node", node: found });
+      if (found && !found.isRoot) openPanel({ type: "edit-node", node: found });
     },
     [dbNodes]
   );
