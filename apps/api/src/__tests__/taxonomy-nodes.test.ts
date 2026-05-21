@@ -482,7 +482,7 @@ describe("DELETE /workspaces/:workspaceId/taxonomy-nodes/:nodeId", () => {
     expect(body.ok).toBe(true);
   });
 
-  it("returns 422 when node is the root node", async () => {
+  it("returns 422 when node is the root Inbox node", async () => {
     vi.mocked(db.taxonomyNode.findUnique).mockResolvedValue(
       { ...baseNode, isRoot: true, _count: { outgoingEdges: 0, incomingEdges: 0, classifications: 0 } } as never
     );
@@ -490,7 +490,7 @@ describe("DELETE /workspaces/:workspaceId/taxonomy-nodes/:nodeId", () => {
     const res = await del(`/workspaces/${WS_ID}/taxonomy-nodes/${NODE_ID}`);
     expect(res.status).toBe(422);
     const body = await res.json() as { error: string };
-    expect(body.error).toMatch(/root/i);
+    expect(body.error).toMatch(/inbox/i);
   });
 
   it("returns 422 when node has outgoing edges", async () => {

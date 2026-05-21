@@ -8,6 +8,9 @@ const isDevEnabled =
   process.env.NODE_ENV === "development" ||
   process.env.NEXT_PUBLIC_ENABLE_DEV_TOOLS === "true";
 
+const isGmailDebugEnabled =
+  process.env.NEXT_PUBLIC_ENABLE_GMAIL_DEBUG_TOOLS === "true";
+
 const NAV = [
   { href: "/dashboard", label: "Dashboard" },
   { href: "/taxonomy", label: "Taxonomy" },
@@ -16,6 +19,7 @@ const NAV = [
   { href: "/tags", label: "Tags" },
   { href: "/settings", label: "Settings" },
   ...(isDevEnabled ? [{ href: "/dev/mock-inbox", label: "Mock Inbox" }] : []),
+  ...(isGmailDebugEnabled ? [{ href: "/dev/gmail-sort-tester", label: "Gmail Sort Tester" }] : []),
 ];
 
 type SidebarUser = { email: string; name: string | null } | null;

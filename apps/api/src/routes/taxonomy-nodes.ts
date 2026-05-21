@@ -268,7 +268,7 @@ taxonomyNodes.delete(
     }
 
     if (existing.isRoot) {
-      return c.json({ error: "Cannot delete the root node" }, 422);
+      return c.json({ error: "Cannot delete the Inbox node" }, 422);
     }
 
     if (existing._count.outgoingEdges > 0 || existing._count.incomingEdges > 0) {

@@ -59,6 +59,33 @@ export class GmailClient {
     return (data.threads ?? []).map((t) => t.id);
   }
 
+  async listRecentThreads(maxResults = 10): Promise<Array<{ id: string; subject: string | null }>> {
+    const accessToken = await this.refreshAccessToken();
+    const listParams = new URLSearchParams({ maxResults: String(maxResults) });
+    const listRes = await fetch(`${GMAIL_THREADS_URL}?${listParams}`, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+    if (!listRes.ok) throw new Error(`Gmail threads list failed: ${listRes.status}`);
+    type ThreadList = { threads?: Array<{ id: string }> };
+    const listData = (await listRes.json()) as ThreadList;
+    const ids = (listData.threads ?? []).map((t) => t.id);
+
+    return Promise.all(
+      ids.map(async (id) => {
+        const metaParams = new URLSearchParams({ format: "METADATA", metadataHeaders: "Subject" });
+        const res = await fetch(`${GMAIL_THREAD_URL}/${encodeURIComponent(id)}?${metaParams}`, {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        });
+        if (!res.ok) return { id, subject: null };
+        type ThreadMeta = { messages?: Array<{ payload?: { headers?: Array<{ name: string; value: string }> } }> };
+        const data = (await res.json()) as ThreadMeta;
+        const subject =
+          data.messages?.[0]?.payload?.headers?.find((h) => h.name.toLowerCase() === "subject")?.value ?? null;
+        return { id, subject };
+      })
+    );
+  }
+
   async getThread(threadId: string): Promise<unknown> {
     const accessToken = await this.refreshAccessToken();
     const url = `${GMAIL_THREAD_URL}/${encodeURIComponent(threadId)}?format=full`;

@@ -11,6 +11,7 @@
     "generate": "prisma generate",
     "migrate": "dotenv -e ../../.env -- prisma migrate dev",
     "seed": "dotenv -e ../../.env -- prisma db seed",
+    "backfill-inbox": "dotenv -e ../../.env -- tsx prisma/backfill-inbox.ts",
     "reset": "dotenv -e ../../.env -- prisma migrate reset",
     "lint": "eslint src",
     "typecheck": "tsc --noEmit",

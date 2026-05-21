@@ -357,14 +357,14 @@ gmailSort.get("/dev/workspaces/:workspaceId/gmail-recent-threads", async (c) => 
   }
 
   const client = new GmailClient(connection.encryptedRefreshToken);
-  let threadIds: string[];
+  let threads: Array<{ id: string; subject: string | null }>;
   try {
-    threadIds = await client.listRecentThreadIds(5);
+    threads = await client.listRecentThreads(5);
   } catch {
     return c.json({ error: "Failed to list recent Gmail threads" }, 502);
   }
 
-  return c.json({ threadIds });
+  return c.json({ threads });
 });
 
 export { gmailSort as gmailSortRoute };

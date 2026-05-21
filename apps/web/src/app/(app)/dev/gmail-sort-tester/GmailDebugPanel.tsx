@@ -9,7 +9,7 @@ type Props = {
 
 export function GmailDebugPanel({ workspaceId }: Props) {
   const [threadId, setThreadId] = useState("");
-  const [recentIds, setRecentIds] = useState<string[] | null>(null);
+  const [recentThreads, setRecentThreads] = useState<Array<{ id: string; subject: string | null }> | null>(null);
   const [recentLoading, setRecentLoading] = useState(true);
   const [recentError, setRecentError] = useState<string | null>(null);
   const [sortResult, setSortResult] = useState<GmailSortResult | null>(null);
@@ -23,7 +23,7 @@ export function GmailDebugPanel({ workspaceId }: Props) {
     api
       .gmailRecentThreads(workspaceId)
       .then((data) => {
-        if (!cancelled) setRecentIds(data.threadIds);
+        if (!cancelled) setRecentThreads(data.threads);
       })
       .catch((err: unknown) => {
         if (!cancelled)
@@ -58,27 +58,7 @@ export function GmailDebugPanel({ workspaceId }: Props) {
   const cls = sortResult?.classification;
 
   return (
-    <section className="settings-section" style={{ borderTop: "1px solid var(--color-border)", paddingTop: 24 }}>
-      <h2 style={{ display: "flex", alignItems: "center", gap: 8 }}>
-        Gmail Sort Tester
-        <span
-          style={{
-            fontSize: 11,
-            fontWeight: 500,
-            padding: "2px 6px",
-            borderRadius: 4,
-            background: "var(--color-warning-subtle, #fef3c7)",
-            color: "var(--color-warning, #92400e)",
-          }}
-        >
-          DEV ONLY
-        </span>
-      </h2>
-      <p style={{ fontSize: 13, color: "var(--color-muted)", marginBottom: 16 }}>
-        Fetch a real Gmail thread by ID, run the sorting pipeline, and inspect the result.
-        Results are persisted. Body text is never stored.
-      </p>
-
+    <section className="settings-section">
       {/* Recent thread IDs */}
       <div style={{ marginBottom: 16 }}>
         <div style={{ fontSize: 12, color: "var(--color-subtle)", marginBottom: 6 }}>
@@ -90,20 +70,25 @@ export function GmailDebugPanel({ workspaceId }: Props) {
         {recentError && (
           <span style={{ fontSize: 12, color: "var(--color-danger, #dc2626)" }}>{recentError}</span>
         )}
-        {recentIds && recentIds.length === 0 && (
+        {recentThreads && recentThreads.length === 0 && (
           <span style={{ fontSize: 12, color: "var(--color-subtle)" }}>No threads found.</span>
         )}
-        {recentIds && recentIds.length > 0 && (
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-            {recentIds.map((id) => (
+        {recentThreads && recentThreads.length > 0 && (
+          <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+            {recentThreads.map(({ id, subject }) => (
               <button
                 key={id}
                 type="button"
                 className="btn-secondary"
-                style={{ fontSize: 12, padding: "2px 8px", fontFamily: "monospace" }}
+                style={{ fontSize: 12, padding: "4px 10px", textAlign: "left", display: "flex", gap: 10, alignItems: "baseline" }}
                 onClick={() => setThreadId(id)}
               >
-                {id}
+                <span style={{ fontFamily: "monospace", flexShrink: 0 }}>{id}</span>
+                {subject && (
+                  <span style={{ color: "var(--color-muted)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                    {subject}
+                  </span>
+                )}
               </button>
             ))}
           </div>

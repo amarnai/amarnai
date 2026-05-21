@@ -1,7 +1,7 @@
 import "server-only";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { db } from "@amarnai/db";
+import { db, ensureInboxNode } from "@amarnai/db";
 
 export type AuthUser = {
   id: string;
@@ -41,6 +41,7 @@ export async function getOrCreateDefaultWorkspace(userId: string) {
     },
     select: { id: true, name: true },
   });
+  await ensureInboxNode(created.id);
   return created;
 }
 

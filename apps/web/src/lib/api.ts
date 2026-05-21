@@ -337,7 +337,7 @@ export type LLMPathSelectionResult = {
 };
 
 export type GmailRecentThreadsResult = {
-  threadIds: string[];
+  threads: Array<{ id: string; subject: string | null }>;
 };
 
 export type GmailSortResult = {
