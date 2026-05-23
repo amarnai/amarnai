@@ -230,6 +230,11 @@ model TaxonomyNode {
   isRoot      Boolean  @default(false)
   positionX   Float    @default(0)
   positionY   Float    @default(0)
+  // Embedding cache — recomputed only when embeddingTextHash changes
+  embeddingVector    Float[]
+  embeddingModel     String?
+  embeddingTextHash  String?
+  embeddingUpdatedAt DateTime?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 

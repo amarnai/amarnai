@@ -1,0 +1,494 @@
+import {
+  cosineSimilarity,
+  softmax,
+  buildNodeEmbeddingText,
+  buildThreadEmbeddingText,
+  hashEmbeddingInput,
+  computeSubtreeScores,
+} from "./embedding-math.js";
+import { selectPathFromCandidates } from "./select-path.js";
+import type { EmbeddingProvider, EmbeddableNode, UpdatedNodeEmbedding } from "./embedding-types.js";
+import type { AIProvider, TaxonomyEdgeInput, ThreadMessage } from "./types.js";
+import type { ClassificationPathStep } from "@amarnai/shared";
+import type { CandidatePath, CandidateEdgeStep } from "./candidate-selector.js";
+
+// ─── Constants ────────────────────────────────────────────────────────────────
+
+export const THETA_MIN = 0.25;
+export const LAMBDA_DEPTH_DECAY = 0.95;
+export const SOFTMAX_TEMPERATURE = 0.15;
+export const THETA_SPREAD = 0.25;
+export const DELTA_DESCENT_MARGIN = 0.05;
+export const CROSS_BRANCH_MARGIN = 0.08;
+export const TOP_K_LLM_CANDIDATES = 5;
+
+// ─── Result type ──────────────────────────────────────────────────────────────
+
+export type DecisionSource = "embedding_auto" | "llm" | "inbox_fallback";
+
+export type EmbeddingSortResult = {
+  finalNodeId: string | null;
+  path: ClassificationPathStep[];
+  confidence: number;
+  explanation: string;
+  needsHumanReview: boolean;
+  decisionSource: DecisionSource;
+  /** Raw cosine similarity per non-root node. */
+  rawSimilarities: Record<string, number>;
+  /** Bottom-up subtree score per node. */
+  subtreeScores: Record<string, number>;
+  /** Embeddings recomputed during this call; persist these to avoid redundant work. */
+  updatedNodeEmbeddings: UpdatedNodeEmbedding[];
+};
+
+// ─── Internal helpers ─────────────────────────────────────────────────────────
+
+function makeInboxFallback(
+  explanation: string,
+  rawSimilarities: Record<string, number>,
+  subtreeScores: Record<string, number>,
+  updatedNodeEmbeddings: UpdatedNodeEmbedding[]
+): EmbeddingSortResult {
+  return {
+    finalNodeId: null,
+    path: [],
+    confidence: 0,
+    explanation,
+    needsHumanReview: true,
+    decisionSource: "inbox_fallback",
+    rawSimilarities,
+    subtreeScores,
+    updatedNodeEmbeddings,
+  };
+}
+
+/**
+ * BFS path from `fromId` to `toId`, returning ClassificationPathStep[].
+ * Returns [] if the two nodes are the same or no path exists.
+ */
+function buildClassificationPath(
+  fromId: string,
+  toId: string,
+  edges: ReadonlyArray<TaxonomyEdgeInput>,
+  confidence: number,
+  explanation: string
+): ClassificationPathStep[] {
+  if (fromId === toId) return [];
+
+  const childEdges = new Map<string, TaxonomyEdgeInput[]>();
+  for (const edge of edges) {
+    const list = childEdges.get(edge.sourceNodeId) ?? [];
+    list.push(edge);
+    childEdges.set(edge.sourceNodeId, list);
+  }
+
+  type Entry = { nodeId: string; path: ClassificationPathStep[] };
+  const queue: Entry[] = [{ nodeId: fromId, path: [] }];
+  const visited = new Set<string>([fromId]);
+
+  while (queue.length > 0) {
+    const { nodeId, path } = queue.shift()!;
+    for (const edge of childEdges.get(nodeId) ?? []) {
+      if (visited.has(edge.targetNodeId)) continue;
+      visited.add(edge.targetNodeId);
+      const step: ClassificationPathStep = {
+        edgeId: edge.id,
+        sourceNodeId: edge.sourceNodeId,
+        targetNodeId: edge.targetNodeId,
+        confidence,
+        explanation,
+      };
+      const newPath = [...path, step];
+      if (edge.targetNodeId === toId) return newPath;
+      queue.push({ nodeId: edge.targetNodeId, path: newPath });
+    }
+  }
+  return [];
+}
+
+/** Build CandidatePath objects for the LLM resolver from a list of node IDs. */
+function buildLlmCandidates(
+  nodeIds: string[],
+  nodeMap: Map<string, EmbeddableNode>,
+  edges: ReadonlyArray<TaxonomyEdgeInput>,
+  rootId: string
+): CandidatePath[] {
+  return nodeIds.flatMap((nodeId): CandidatePath[] => {
+    const node = nodeMap.get(nodeId);
+    if (!node) return [];
+
+    const pathSteps = buildClassificationPath(rootId, nodeId, edges, 1, "");
+    const edgeSteps: CandidateEdgeStep[] = pathSteps.map((s) => ({
+      edgeId: s.edgeId,
+      sourceNodeId: s.sourceNodeId,
+      targetNodeId: s.targetNodeId,
+    }));
+    const edgeIds = edgeSteps.map((s) => s.edgeId);
+    const nodeIds2 = [rootId, ...edgeSteps.map((s) => s.targetNodeId)];
+
+    return [
+      {
+        pathId: edgeIds.join("|") || nodeId,
+        edgeIds,
+        nodeIds: nodeIds2,
+        finalNodeId: nodeId,
+        finalNodeName: node.name,
+        finalNodeDescription: node.description,
+        edgeSteps,
+        label: nodeIds2.map((id) => nodeMap.get(id)?.name ?? id).join(" → "),
+        score: 0,
+        reasons: [],
+      },
+    ];
+  });
+}
+
+/** Walk up from `nodeId` to find which direct child of `rootId` it belongs to. */
+function findRootBranch(
+  nodeId: string,
+  rootId: string,
+  edges: ReadonlyArray<TaxonomyEdgeInput>
+): string | null {
+  if (nodeId === rootId) return null;
+  const parentMap = new Map<string, string>();
+  for (const edge of edges) {
+    parentMap.set(edge.targetNodeId, edge.sourceNodeId);
+  }
+  let current = nodeId;
+  while (current !== rootId) {
+    const parent = parentMap.get(current);
+    if (!parent) return null;
+    if (parent === rootId) return current;
+    current = parent;
+  }
+  return null;
+}
+
+// ─── Main algorithm ───────────────────────────────────────────────────────────
+
+export async function sortThreadByEmbedding(
+  embeddingProvider: EmbeddingProvider,
+  llmProvider: AIProvider,
+  nodes: EmbeddableNode[],
+  edges: TaxonomyEdgeInput[],
+  messages: ThreadMessage[],
+  options?: {
+    thetaMin?: number;
+    lambdaDepthDecay?: number;
+    softmaxTemperature?: number;
+    thetaSpread?: number;
+    deltaDescentMargin?: number;
+    crossBranchMargin?: number;
+    topKLlmCandidates?: number;
+  }
+): Promise<EmbeddingSortResult> {
+  const thetaMin = options?.thetaMin ?? THETA_MIN;
+  const lambdaDecay = options?.lambdaDepthDecay ?? LAMBDA_DEPTH_DECAY;
+  const softmaxTemp = options?.softmaxTemperature ?? SOFTMAX_TEMPERATURE;
+  const thetaSpread = options?.thetaSpread ?? THETA_SPREAD;
+  const deltaMargin = options?.deltaDescentMargin ?? DELTA_DESCENT_MARGIN;
+  const crossBranchMargin = options?.crossBranchMargin ?? CROSS_BRANCH_MARGIN;
+  const topKLlm = options?.topKLlmCandidates ?? TOP_K_LLM_CANDIDATES;
+
+  // ── Step 1: Identify root ──────────────────────────────────────────────────
+
+  const rootNode = nodes.find((n) => n.isRoot);
+  if (!rootNode) {
+    return makeInboxFallback("No root node in taxonomy", {}, {}, []);
+  }
+
+  const nonRootNodes = nodes.filter((n) => !n.isRoot && n.description != null);
+  const nodeMap = new Map(nodes.map((n) => [n.id, n]));
+
+  // ── Step 2: Ensure non-root node embeddings are current ────────────────────
+
+  const updatedNodeEmbeddings: UpdatedNodeEmbedding[] = [];
+  const nodeEmbeddings = new Map<string, number[]>();
+
+  const staleNodes: EmbeddableNode[] = [];
+  for (const n of nonRootNodes) {
+    const text = buildNodeEmbeddingText({ name: n.name, description: n.description! });
+    const expectedHash = hashEmbeddingInput(text, embeddingProvider.modelName);
+    const isFresh =
+      n.embeddingVector != null &&
+      n.embeddingVector.length > 0 &&
+      n.embeddingModel === embeddingProvider.modelName &&
+      n.embeddingTextHash === expectedHash;
+
+    if (isFresh) {
+      nodeEmbeddings.set(n.id, n.embeddingVector!);
+    } else {
+      staleNodes.push(n);
+    }
+  }
+
+  if (staleNodes.length > 0) {
+    const texts = staleNodes.map((n) =>
+      buildNodeEmbeddingText({ name: n.name, description: n.description! })
+    );
+    const vectors = await embeddingProvider.embed(texts);
+
+    for (let i = 0; i < staleNodes.length; i++) {
+      const node = staleNodes[i]!;
+      const vector = vectors[i]!;
+      const text = buildNodeEmbeddingText({ name: node.name, description: node.description! });
+      const textHash = hashEmbeddingInput(text, embeddingProvider.modelName);
+      nodeEmbeddings.set(node.id, vector);
+      updatedNodeEmbeddings.push({
+        nodeId: node.id,
+        embeddingVector: vector,
+        embeddingModel: embeddingProvider.modelName,
+        embeddingTextHash: textHash,
+        embeddingUpdatedAt: new Date(),
+      });
+    }
+  }
+
+  // Nodes with no description and no existing embedding get empty vectors
+  for (const n of nodes.filter((n) => !n.isRoot)) {
+    if (!nodeEmbeddings.has(n.id)) {
+      nodeEmbeddings.set(n.id, []);
+    }
+  }
+
+  // ── Step 3: Embed the thread ───────────────────────────────────────────────
+
+  const threadText = buildThreadEmbeddingText(
+    messages.map((m) => ({ subject: m.subject, bodyText: m.bodyText }))
+  );
+  const [threadVector] = await embeddingProvider.embed([threadText]);
+  if (!threadVector || threadVector.length === 0) {
+    return makeInboxFallback("Thread embedding failed", {}, {}, updatedNodeEmbeddings);
+  }
+
+  // ── Step 4: Raw cosine similarities ───────────────────────────────────────
+
+  const rawSims = new Map<string, number>();
+  for (const [nodeId, vector] of nodeEmbeddings) {
+    rawSims.set(nodeId, vector.length > 0 ? cosineSimilarity(threadVector, vector) : 0);
+  }
+  const rawSimsRecord = Object.fromEntries(rawSims);
+
+  // ── Step 5: Quality gate ───────────────────────────────────────────────────
+
+  let maxRawSim = 0;
+  for (const v of rawSims.values()) {
+    if (v > maxRawSim) maxRawSim = v;
+  }
+  if (maxRawSim < thetaMin) {
+    return makeInboxFallback(
+      `Max similarity ${maxRawSim.toFixed(3)} below quality threshold ${thetaMin}`,
+      rawSimsRecord,
+      {},
+      updatedNodeEmbeddings
+    );
+  }
+
+  // ── Step 6: Bottom-up subtree scores ──────────────────────────────────────
+
+  const subtreeScores = computeSubtreeScores(rootNode.id, rawSims, edges, lambdaDecay);
+  const subtreeScoresRecord = Object.fromEntries(subtreeScores);
+
+  // ── Step 7: Build children map for traversal ──────────────────────────────
+
+  const childrenMap = new Map<string, string[]>();
+  for (const edge of edges) {
+    const list = childrenMap.get(edge.sourceNodeId) ?? [];
+    list.push(edge.targetNodeId);
+    childrenMap.set(edge.sourceNodeId, list);
+  }
+
+  // ── Step 8: Cross-branch LLM trigger at Inbox ─────────────────────────────
+  //
+  // Before descending, check whether the top two root-child subtree scores
+  // are close. If so, embeddings alone cannot confidently choose a branch.
+
+  const rootChildren = childrenMap.get(rootNode.id) ?? [];
+  const rootChildrenRanked = rootChildren
+    .map((id) => ({ id, score: subtreeScores.get(id) ?? 0 }))
+    .sort((a, b) => b.score - a.score);
+
+  const crossBranchAmbiguous =
+    rootChildrenRanked.length >= 2 &&
+    rootChildrenRanked[0]!.score - rootChildrenRanked[1]!.score < crossBranchMargin;
+
+  if (crossBranchAmbiguous) {
+    const topIds = rootChildrenRanked.slice(0, topKLlm).map((c) => c.id);
+    const candidates = buildLlmCandidates(topIds, nodeMap, edges, rootNode.id);
+
+    if (candidates.length > 0) {
+      const llmResult = await selectPathFromCandidates(llmProvider, { messages }, candidates);
+
+      if (!llmResult.needsHumanReview && llmResult.finalNodeId) {
+        return {
+          finalNodeId: llmResult.finalNodeId,
+          path: llmResult.path,
+          confidence: llmResult.confidence,
+          explanation: llmResult.explanation,
+          needsHumanReview: false,
+          decisionSource: "llm",
+          rawSimilarities: rawSimsRecord,
+          subtreeScores: subtreeScoresRecord,
+          updatedNodeEmbeddings,
+        };
+      }
+
+      return makeInboxFallback(
+        `LLM could not resolve cross-branch ambiguity: ${llmResult.explanation}`,
+        rawSimsRecord,
+        subtreeScoresRecord,
+        updatedNodeEmbeddings
+      );
+    }
+  }
+
+  // ── Step 9: Top-down traversal ─────────────────────────────────────────────
+
+  let currentNodeId = rootNode.id;
+  const traversalPath: ClassificationPathStep[] = [];
+
+  while (true) {
+    const children = childrenMap.get(currentNodeId) ?? [];
+    if (children.length === 0) break; // reached a leaf
+
+    const childScoreList = children.map((id) => subtreeScores.get(id) ?? 0);
+    const probs = softmax(childScoreList, softmaxTemp);
+
+    // Find best and second-best by probability
+    let bestIdx = 0;
+    let secondBestIdx = -1;
+    for (let i = 1; i < probs.length; i++) {
+      if (probs[i]! > probs[bestIdx]!) {
+        secondBestIdx = bestIdx;
+        bestIdx = i;
+      } else if (secondBestIdx === -1 || probs[i]! > probs[secondBestIdx]!) {
+        secondBestIdx = i;
+      }
+    }
+
+    const bestChildId = children[bestIdx]!;
+    const bestProb = probs[bestIdx]!;
+    const secondBestProb = secondBestIdx >= 0 ? probs[secondBestIdx]! : 0;
+    const spread = bestProb - secondBestProb;
+
+    const bestChildSubtreeScore = subtreeScores.get(bestChildId) ?? 0;
+    const currentRawSim = rawSims.get(currentNodeId) ?? 0;
+
+    const spreadOk = spread > thetaSpread;
+    const marginOk = bestChildSubtreeScore > currentRawSim + deltaMargin;
+
+    if (spreadOk && marginOk) {
+      const edge = edges.find(
+        (e) => e.sourceNodeId === currentNodeId && e.targetNodeId === bestChildId
+      );
+      if (edge) {
+        traversalPath.push({
+          edgeId: edge.id,
+          sourceNodeId: edge.sourceNodeId,
+          targetNodeId: edge.targetNodeId,
+          confidence: bestProb,
+          explanation: `Subtree score ${bestChildSubtreeScore.toFixed(3)}, spread ${spread.toFixed(3)}`,
+        });
+      }
+      currentNodeId = bestChildId;
+    } else {
+      // Stop: cannot confidently descend further.
+      // Special Inbox rule: stopping at root is not a valid destination.
+      if (currentNodeId === rootNode.id) {
+        return makeInboxFallback(
+          `Traversal could not confidently leave Inbox (spread ${spread.toFixed(3)})`,
+          rawSimsRecord,
+          subtreeScoresRecord,
+          updatedNodeEmbeddings
+        );
+      }
+      break;
+    }
+  }
+
+  const finalNodeId = currentNodeId === rootNode.id ? null : currentNodeId;
+  if (!finalNodeId) {
+    return makeInboxFallback(
+      "Traversal ended at root",
+      rawSimsRecord,
+      subtreeScoresRecord,
+      updatedNodeEmbeddings
+    );
+  }
+
+  // ── Step 10: Post-traversal global rival check ─────────────────────────────
+  //
+  // If a node from a different root branch has a subtree score within
+  // CROSS_BRANCH_MARGIN of the chosen destination AND it has strong raw
+  // similarity, embeddings alone are inconclusive — escalate to LLM.
+
+  const finalNodeBranch = findRootBranch(finalNodeId, rootNode.id, edges);
+  const finalSubtreeScore = subtreeScores.get(finalNodeId) ?? 0;
+
+  let rivalId: string | null = null;
+  let rivalScore = -Infinity;
+
+  for (const [id, score] of subtreeScores) {
+    if (id === rootNode.id || id === finalNodeId) continue;
+    const branch = findRootBranch(id, rootNode.id, edges);
+    if (branch === finalNodeBranch) continue; // same branch
+    const rawSim = rawSims.get(id) ?? 0;
+    if (rawSim < thetaMin) continue; // weak candidate
+    if (score > rivalScore) {
+      rivalScore = score;
+      rivalId = id;
+    }
+  }
+
+  if (
+    rivalId !== null &&
+    Math.abs(rivalScore - finalSubtreeScore) < crossBranchMargin &&
+    (rawSims.get(finalNodeId) ?? 0) > thetaMin
+  ) {
+    const topIds = [finalNodeId, rivalId, ...rootChildrenRanked.slice(0, topKLlm - 2).map((c) => c.id)];
+    const deduped = [...new Set(topIds)].slice(0, topKLlm);
+    const candidates = buildLlmCandidates(deduped, nodeMap, edges, rootNode.id);
+
+    if (candidates.length > 0) {
+      const llmResult = await selectPathFromCandidates(llmProvider, { messages }, candidates);
+
+      if (!llmResult.needsHumanReview && llmResult.finalNodeId) {
+        return {
+          finalNodeId: llmResult.finalNodeId,
+          path: llmResult.path,
+          confidence: llmResult.confidence,
+          explanation: llmResult.explanation,
+          needsHumanReview: false,
+          decisionSource: "llm",
+          rawSimilarities: rawSimsRecord,
+          subtreeScores: subtreeScoresRecord,
+          updatedNodeEmbeddings,
+        };
+      }
+
+      return makeInboxFallback(
+        `LLM could not resolve post-traversal cross-branch rival: ${llmResult.explanation}`,
+        rawSimsRecord,
+        subtreeScoresRecord,
+        updatedNodeEmbeddings
+      );
+    }
+  }
+
+  // ── Return embedding-auto result ───────────────────────────────────────────
+
+  const finalRawSim = rawSims.get(finalNodeId) ?? 0;
+  const finalNode = nodeMap.get(finalNodeId);
+
+  return {
+    finalNodeId,
+    path: traversalPath,
+    confidence: Math.max(finalRawSim, 0.5),
+    explanation: `Embedding routing to "${finalNode?.name ?? finalNodeId}" (raw sim ${finalRawSim.toFixed(3)})`,
+    needsHumanReview: false,
+    decisionSource: "embedding_auto",
+    rawSimilarities: rawSimsRecord,
+    subtreeScores: subtreeScoresRecord,
+    updatedNodeEmbeddings,
+  };
+}

@@ -13,3 +13,25 @@ export type { PathSelectionResult } from "./candidate-path-validator.js";
 export { selectPathFromCandidates } from "./select-path.js";
 export type { ThreadSnapshot, SnapshotMessage, AttachmentMeta } from "./thread-snapshot.js";
 export { snapshotToThreadMessages } from "./thread-snapshot.js";
+// ─── Embedding ────────────────────────────────────────────────────────────────
+export type { EmbeddingProvider, EmbeddingProviderConfig, EmbeddableNode, UpdatedNodeEmbedding } from "./embedding-types.js";
+export { createEmbeddingProvider } from "./create-embedding-provider.js";
+export {
+  cosineSimilarity,
+  softmax,
+  buildNodeEmbeddingText,
+  buildThreadEmbeddingText,
+  hashEmbeddingInput,
+  computeSubtreeScores,
+} from "./embedding-math.js";
+export {
+  sortThreadByEmbedding,
+  THETA_MIN,
+  LAMBDA_DEPTH_DECAY,
+  SOFTMAX_TEMPERATURE,
+  THETA_SPREAD,
+  DELTA_DESCENT_MARGIN,
+  CROSS_BRANCH_MARGIN,
+  TOP_K_LLM_CANDIDATES,
+} from "./embedding-sorter.js";
+export type { EmbeddingSortResult, DecisionSource } from "./embedding-sorter.js";
