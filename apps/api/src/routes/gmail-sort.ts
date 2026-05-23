@@ -207,8 +207,6 @@ gmailSort.post("/dev/workspaces/:workspaceId/gmail-sort-thread", async (c) => {
         instructions: true,
         examples: true,
         isRoot: true,
-        isVisibleCategory: true,
-        canReceiveEmails: true,
       },
     }),
     db.taxonomyEdge.findMany({
@@ -217,9 +215,6 @@ gmailSort.post("/dev/workspaces/:workspaceId/gmail-sort-thread", async (c) => {
         id: true,
         sourceNodeId: true,
         targetNodeId: true,
-        sortingQuestion: true,
-        examples: true,
-        negativeExamples: true,
       },
     }),
   ]);
@@ -231,13 +226,7 @@ gmailSort.post("/dev/workspaces/:workspaceId/gmail-sort-thread", async (c) => {
   const nodes: import("@amarnai/ai").TaxonomyNodeInput[] = rawNodes.map(
     (n: (typeof rawNodes)[number]) => ({ ...n, examples: n.examples as string[] })
   );
-  const edges: import("@amarnai/ai").TaxonomyEdgeInput[] = rawEdges.map(
-    (e: (typeof rawEdges)[number]) => ({
-      ...e,
-      examples: e.examples as string[],
-      negativeExamples: e.negativeExamples as string[],
-    })
-  );
+  const edges: import("@amarnai/ai").TaxonomyEdgeInput[] = rawEdges;
 
   // ── 7. Classify ───────────────────────────────────────────────────────────
 
