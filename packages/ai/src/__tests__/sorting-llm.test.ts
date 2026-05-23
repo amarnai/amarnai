@@ -50,10 +50,10 @@ if (!probe.available) {
 
 function toEmailInputs(messages: ThreadMessage[]): EmailInput[] {
   return messages.map((m) => ({
-    subject: m.subject ?? undefined,
+    ...(m.subject != null ? { subject: m.subject } : {}),
     senderEmail: m.senderEmail,
-    senderName: m.senderName ?? undefined,
-    bodyText: m.bodyText ?? undefined,
+    ...(m.senderName != null ? { senderName: m.senderName } : {}),
+    ...(m.bodyText != null ? { bodyText: m.bodyText } : {}),
   }));
 }
 

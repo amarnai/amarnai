@@ -151,7 +151,7 @@ describe("parseAndValidateOutput", () => {
     expect(result.needsHumanReview).toBe(false);
   });
 
-  it("returns review-needed when path contains unknown edgeId", () => {
+  it("drops path but keeps finalNodeId when path contains unknown edgeId", () => {
     const result = parseAndValidateOutput(
       validOutput({
         path: [{ edgeId: "edge-does-not-exist", confidence: 0.9, explanation: "test" }],
@@ -159,9 +159,9 @@ describe("parseAndValidateOutput", () => {
       ALL_NODES,
       ALL_EDGES
     );
-    expect(result.finalNodeId).toBeNull();
-    expect(result.needsHumanReview).toBe(true);
-    expect(result.explanation).toMatch(/Unknown edgeId in path/);
+    expect(result.finalNodeId).toBe("node-leaf");
+    expect(result.path).toHaveLength(0);
+    expect(result.needsHumanReview).toBe(false);
   });
 
   it("drops disconnected path but keeps valid finalNodeId", () => {

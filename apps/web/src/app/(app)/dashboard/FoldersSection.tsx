@@ -36,7 +36,7 @@ function buildFolderTree(
   const nodeById = new Map(nodes.map((n) => [n.id, n]));
   const visited = new Set<string>();
 
-  function getVisibleChildren(nodeId: string): FolderNode[] {
+  function getChildren(nodeId: string): FolderNode[] {
     const childIds = childrenMap.get(nodeId) ?? [];
     const result: FolderNode[] = [];
     for (const childId of childIds) {
@@ -44,16 +44,12 @@ function buildFolderTree(
       visited.add(childId);
       const child = nodeById.get(childId);
       if (!child) continue;
-      if (child.isVisibleCategory) {
-        result.push({
-          id: child.id,
-          name: child.name,
-          threadCount: threadCountByNode.get(child.id) ?? 0,
-          children: getVisibleChildren(child.id),
-        });
-      } else {
-        result.push(...getVisibleChildren(child.id));
-      }
+      result.push({
+        id: child.id,
+        name: child.name,
+        threadCount: threadCountByNode.get(child.id) ?? 0,
+        children: getChildren(child.id),
+      });
     }
     return result;
   }
@@ -61,18 +57,7 @@ function buildFolderTree(
   const root = nodes.find((n) => n.isRoot);
   if (!root) return [];
   visited.add(root.id);
-
-  if (root.isVisibleCategory) {
-    return [
-      {
-        id: root.id,
-        name: root.name,
-        threadCount: threadCountByNode.get(root.id) ?? 0,
-        children: getVisibleChildren(root.id),
-      },
-    ];
-  }
-  return getVisibleChildren(root.id);
+  return getChildren(root.id);
 }
 
 function fmtDate(iso: string | null): string {

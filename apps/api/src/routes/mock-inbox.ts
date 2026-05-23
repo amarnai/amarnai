@@ -106,8 +106,6 @@ mockInbox.post("/dev/workspaces/:workspaceId/mock-inbox-event", async (c) => {
           instructions: true,
           examples: true,
           isRoot: true,
-          isVisibleCategory: true,
-          canReceiveEmails: true,
         },
       },
     },
@@ -121,29 +119,33 @@ mockInbox.post("/dev/workspaces/:workspaceId/mock-inbox-event", async (c) => {
     return c.json({ error: "No email account found for workspace" }, 422);
   }
 
-  const nodes = workspace.taxonomyNodes;
+  const nodes: import("@amarnai/ai").TaxonomyNodeInput[] = (
+    workspace.taxonomyNodes as Array<{
+      id: string;
+      name: string;
+      description: string | null;
+      instructions: string | null;
+      examples: unknown[];
+      isRoot: boolean;
+    }>
+  ).map((n) => ({
+    id: n.id,
+    name: n.name,
+    description: n.description,
+    instructions: n.instructions,
+    examples: n.examples as string[],
+    isRoot: n.isRoot,
+  }));
   if (nodes.length === 0) {
     return c.json({ error: "No taxonomy nodes found for classification" }, 422);
   }
 
   const { classifier } = body.data;
 
-  const rawEdges = await db.taxonomyEdge.findMany({
+  const edges: import("@amarnai/ai").TaxonomyEdgeInput[] = await db.taxonomyEdge.findMany({
     where: { workspaceId },
-    select: {
-      id: true,
-      sourceNodeId: true,
-      targetNodeId: true,
-      sortingQuestion: true,
-      examples: true,
-      negativeExamples: true,
-    },
+    select: { id: true, sourceNodeId: true, targetNodeId: true },
   });
-  const edges: import("@amarnai/ai").TaxonomyEdgeInput[] = rawEdges.map((e) => ({
-    ...e,
-    examples: e.examples as string[],
-    negativeExamples: e.negativeExamples as string[],
-  }));
 
   const now = new Date();
   let threadId: string;
@@ -418,8 +420,6 @@ mockInbox.post("/dev/workspaces/:workspaceId/candidate-paths", async (c) => {
           instructions: true,
           examples: true,
           isRoot: true,
-          isVisibleCategory: true,
-          canReceiveEmails: true,
         },
       },
     },
@@ -428,31 +428,31 @@ mockInbox.post("/dev/workspaces/:workspaceId/candidate-paths", async (c) => {
     return c.json({ error: "Workspace not found" }, 404);
   }
 
-  const rawEdges = await db.taxonomyEdge.findMany({
+  const edges: import("@amarnai/ai").TaxonomyEdgeInput[] = await db.taxonomyEdge.findMany({
     where: { workspaceId },
-    select: {
-      id: true,
-      sourceNodeId: true,
-      targetNodeId: true,
-      sortingQuestion: true,
-      examples: true,
-      negativeExamples: true,
-    },
+    select: { id: true, sourceNodeId: true, targetNodeId: true },
   });
 
-  const nodes: import("@amarnai/ai").TaxonomyNodeInput[] = workspace.taxonomyNodes.map((n) => ({
-    ...n,
+  const nodes: import("@amarnai/ai").TaxonomyNodeInput[] = (
+    workspace.taxonomyNodes as Array<{
+      id: string;
+      name: string;
+      description: string | null;
+      instructions: string | null;
+      examples: unknown[];
+      isRoot: boolean;
+    }>
+  ).map((n) => ({
+    id: n.id,
+    name: n.name,
+    description: n.description,
+    instructions: n.instructions,
     examples: n.examples as string[],
+    isRoot: n.isRoot,
   }));
-  const aiEdges: import("@amarnai/ai").TaxonomyEdgeInput[] = rawEdges.map((e) => ({
-    ...e,
-    examples: e.examples as string[],
-    negativeExamples: e.negativeExamples as string[],
-  }));
-
   const result = selectCandidatePaths(
     nodes,
-    aiEdges,
+    edges,
     body.data.emails as EmailInput[],
     body.data.currentNodeId
   );
@@ -523,8 +523,6 @@ mockInbox.post("/dev/workspaces/:workspaceId/llm-path-selection", async (c) => {
           instructions: true,
           examples: true,
           isRoot: true,
-          isVisibleCategory: true,
-          canReceiveEmails: true,
         },
       },
     },
@@ -533,26 +531,27 @@ mockInbox.post("/dev/workspaces/:workspaceId/llm-path-selection", async (c) => {
     return c.json({ error: "Workspace not found" }, 404);
   }
 
-  const rawEdges = await db.taxonomyEdge.findMany({
+  const aiEdges: import("@amarnai/ai").TaxonomyEdgeInput[] = await db.taxonomyEdge.findMany({
     where: { workspaceId },
-    select: {
-      id: true,
-      sourceNodeId: true,
-      targetNodeId: true,
-      sortingQuestion: true,
-      examples: true,
-      negativeExamples: true,
-    },
+    select: { id: true, sourceNodeId: true, targetNodeId: true },
   });
 
-  const nodes: import("@amarnai/ai").TaxonomyNodeInput[] = workspace.taxonomyNodes.map((n) => ({
-    ...n,
+  const nodes: import("@amarnai/ai").TaxonomyNodeInput[] = (
+    workspace.taxonomyNodes as Array<{
+      id: string;
+      name: string;
+      description: string | null;
+      instructions: string | null;
+      examples: unknown[];
+      isRoot: boolean;
+    }>
+  ).map((n) => ({
+    id: n.id,
+    name: n.name,
+    description: n.description,
+    instructions: n.instructions,
     examples: n.examples as string[],
-  }));
-  const aiEdges: import("@amarnai/ai").TaxonomyEdgeInput[] = rawEdges.map((e) => ({
-    ...e,
-    examples: e.examples as string[],
-    negativeExamples: e.negativeExamples as string[],
+    isRoot: n.isRoot,
   }));
 
   const candidateResult = selectCandidatePaths(

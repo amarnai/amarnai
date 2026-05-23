@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import {
   ReactFlow,
   ReactFlowProvider,
@@ -46,6 +46,11 @@ import {
   computeIgnoredReasons,
   type IgnoredReason,
 } from "./taxonomyUtils";
+import {
+  useTaxonomyHistory,
+  snapshotsEqual,
+  type GraphSnapshot,
+} from "./useTaxonomyHistory";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -408,6 +413,85 @@ type Panel =
   | { type: "create-edge" }
   | { type: "edit-edge"; edge: TaxonomyEdge };
 
+// ─── Snapshot diff applier ────────────────────────────────────────────────────
+
+function nodesIdentical(a: TaxonomyNode, b: TaxonomyNode): boolean {
+  return (
+    a.name === b.name &&
+    a.description === b.description &&
+    a.instructions === b.instructions &&
+    a.positionX === b.positionX &&
+    a.positionY === b.positionY &&
+    JSON.stringify(a.examples) === JSON.stringify(b.examples)
+  );
+}
+
+async function applySnapshotDiff(
+  from: GraphSnapshot,
+  to: GraphSnapshot,
+  workspaceId: string,
+): Promise<void> {
+  if (snapshotsEqual(from, to)) return;
+
+  const fromNodeMap = new Map(from.nodes.map((n) => [n.id, n]));
+  const toNodeMap = new Map(to.nodes.map((n) => [n.id, n]));
+  const fromEdgeMap = new Map(from.edges.map((e) => [e.id, e]));
+  const toEdgeMap = new Map(to.edges.map((e) => [e.id, e]));
+
+  // 1. Delete edges no longer in target (before deleting nodes)
+  for (const id of fromEdgeMap.keys()) {
+    if (!toEdgeMap.has(id)) {
+      await deleteTaxonomyEdgeAction(workspaceId, id);
+    }
+  }
+
+  // 2. Delete nodes no longer in target (root nodes are never deleted)
+  for (const [id, fromNode] of fromNodeMap) {
+    if (!toNodeMap.has(id) && !fromNode.isRoot) {
+      await deleteTaxonomyNodeAction(workspaceId, id);
+    }
+  }
+
+  // 3. Create nodes that exist in target but not in source
+  for (const [id, toNode] of toNodeMap) {
+    if (!fromNodeMap.has(id) && !toNode.isRoot) {
+      await createTaxonomyNodeAction(workspaceId, {
+        name: toNode.name,
+        ...(toNode.description ? { description: toNode.description } : {}),
+        instructions: toNode.instructions,
+        examples: toNode.examples,
+        positionX: toNode.positionX,
+        positionY: toNode.positionY,
+      });
+    }
+  }
+
+  // 4. Create edges that exist in target but not in source
+  for (const [id, toEdge] of toEdgeMap) {
+    if (!fromEdgeMap.has(id)) {
+      await createTaxonomyEdgeAction(workspaceId, {
+        sourceNodeId: toEdge.sourceNodeId,
+        targetNodeId: toEdge.targetNodeId,
+      });
+    }
+  }
+
+  // 5. Update nodes that exist in both but have changed fields
+  for (const [id, toNode] of toNodeMap) {
+    const fromNode = fromNodeMap.get(id);
+    if (fromNode && !nodesIdentical(fromNode, toNode)) {
+      await updateTaxonomyNodeAction(workspaceId, id, {
+        name: toNode.name,
+        ...(toNode.description ? { description: toNode.description } : {}),
+        instructions: toNode.instructions,
+        examples: toNode.examples,
+        positionX: toNode.positionX,
+        positionY: toNode.positionY,
+      });
+    }
+  }
+}
+
 // ─── TaxonomyCanvasInner (must be inside ReactFlowProvider) ───────────────────
 
 function TaxonomyCanvasInner({
@@ -432,6 +516,14 @@ function TaxonomyCanvasInner({
   const [formError, setFormError] = useState<string | null>(null);
   const [apiError, setApiError] = useState<string | null>(null);
 
+  const history = useTaxonomyHistory({ nodes: initialNodes, edges: initialEdges });
+
+  // Reset history when workspace changes (safety guard if component is reused)
+  useEffect(() => {
+    history.reset({ nodes: initialNodes, edges: initialEdges });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [workspaceId]);
+
   const refetch = useCallback(async () => {
     const [newNodes, newEdges] = await Promise.all([
       api.taxonomyNodes(workspaceId),
@@ -441,6 +533,7 @@ function TaxonomyCanvasInner({
     setDbEdges(newEdges);
     setRfNodes(toRFNodes(newNodes, newEdges));
     setRfEdges(toRFEdges(newEdges, newNodes));
+    return { nodes: newNodes, edges: newEdges };
   }, [workspaceId, setRfNodes, setRfEdges]);
 
   function openPanel(p: Panel) {
@@ -458,18 +551,18 @@ function TaxonomyCanvasInner({
           positionX: Math.round(rfNode.position.x),
           positionY: Math.round(rfNode.position.y),
         });
-        setDbNodes((prev) =>
-          prev.map((n) =>
-            n.id === rfNode.id
-              ? { ...n, positionX: rfNode.position.x, positionY: rfNode.position.y }
-              : n
-          )
+        const updatedNodes = dbNodes.map((n) =>
+          n.id === rfNode.id
+            ? { ...n, positionX: rfNode.position.x, positionY: rfNode.position.y }
+            : n
         );
+        setDbNodes(updatedNodes);
+        history.push({ nodes: updatedNodes, edges: dbEdges });
       } catch (err) {
         setApiError(err instanceof Error ? err.message : "Failed to save position");
       }
     },
-    [workspaceId]
+    [workspaceId, dbNodes, dbEdges, history]
   );
 
   // ─── Connect nodes: create edge ───────────────────────────────────────────
@@ -483,12 +576,13 @@ function TaxonomyCanvasInner({
           sourceNodeId: connection.source,
           targetNodeId: connection.target,
         });
-        await refetch();
+        const { nodes, edges } = await refetch();
+        history.push({ nodes, edges });
       } catch (err) {
         setApiError(err instanceof Error ? err.message : "Failed to create edge");
       }
     },
-    [workspaceId, refetch]
+    [workspaceId, refetch, dbNodes, history]
   );
 
   // ─── Click node: open edit panel ──────────────────────────────────────────
@@ -518,7 +612,8 @@ function TaxonomyCanvasInner({
     setFormError(null);
     try {
       await createTaxonomyNodeAction(workspaceId, data);
-      await refetch();
+      const { nodes, edges } = await refetch();
+      history.push({ nodes, edges });
       setPanel({ type: "none" });
     } catch (err) {
       setFormError(err instanceof Error ? err.message : "Failed to create node");
@@ -532,7 +627,8 @@ function TaxonomyCanvasInner({
     setFormError(null);
     try {
       await updateTaxonomyNodeAction(workspaceId, nodeId, data);
-      await refetch();
+      const { nodes, edges } = await refetch();
+      history.push({ nodes, edges });
       setPanel({ type: "none" });
     } catch (err) {
       setFormError(err instanceof Error ? err.message : "Failed to update node");
@@ -548,7 +644,8 @@ function TaxonomyCanvasInner({
     setFormError(null);
     try {
       await createTaxonomyEdgeAction(workspaceId, data as CreateTaxonomyEdgeInput);
-      await refetch();
+      const { nodes, edges } = await refetch();
+      history.push({ nodes, edges });
       setPanel({ type: "none" });
     } catch (err) {
       setFormError(err instanceof Error ? err.message : "Failed to create edge");
@@ -562,7 +659,8 @@ function TaxonomyCanvasInner({
     setFormError(null);
     try {
       await updateTaxonomyEdgeAction(workspaceId, edgeId, data as UpdateTaxonomyEdgeInput);
-      await refetch();
+      const { nodes, edges } = await refetch();
+      history.push({ nodes, edges });
       setPanel({ type: "none" });
     } catch (err) {
       setFormError(err instanceof Error ? err.message : "Failed to update edge");
@@ -576,7 +674,8 @@ function TaxonomyCanvasInner({
     setFormError(null);
     try {
       await deleteTaxonomyNodeAction(workspaceId, nodeId);
-      await refetch();
+      const { nodes, edges } = await refetch();
+      history.push({ nodes, edges });
       setPanel({ type: "none" });
     } catch (err) {
       setFormError(err instanceof Error ? err.message : "Failed to delete node");
@@ -590,10 +689,51 @@ function TaxonomyCanvasInner({
     setFormError(null);
     try {
       await deleteTaxonomyEdgeAction(workspaceId, edgeId);
-      await refetch();
+      const { nodes, edges } = await refetch();
+      history.push({ nodes, edges });
       setPanel({ type: "none" });
     } catch (err) {
       setFormError(err instanceof Error ? err.message : "Failed to delete edge");
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  // ─── Undo / Redo ──────────────────────────────────────────────────────────
+
+  async function handleUndo() {
+    if (!history.canUndo || !history.undoTarget) return;
+    const from = history.present;
+    const to = history.undoTarget;
+    setPanel({ type: "none" });
+    setSubmitting(true);
+    setApiError(null);
+    try {
+      await applySnapshotDiff(from, to, workspaceId);
+      history.undo();
+      const { nodes, edges } = await refetch();
+      history.sync({ nodes, edges });
+    } catch (err) {
+      setApiError(err instanceof Error ? err.message : "Failed to undo");
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  async function handleRedo() {
+    if (!history.canRedo || !history.redoTarget) return;
+    const from = history.present;
+    const to = history.redoTarget;
+    setPanel({ type: "none" });
+    setSubmitting(true);
+    setApiError(null);
+    try {
+      await applySnapshotDiff(from, to, workspaceId);
+      history.redo();
+      const { nodes, edges } = await refetch();
+      history.sync({ nodes, edges });
+    } catch (err) {
+      setApiError(err instanceof Error ? err.message : "Failed to redo");
     } finally {
       setSubmitting(false);
     }
@@ -625,6 +765,22 @@ function TaxonomyCanvasInner({
           onClick={() => openPanel({ type: "create-edge" })}
         >
           + Create Edge
+        </button>
+        <button
+          className="btn-ghost"
+          onClick={handleUndo}
+          disabled={!history.canUndo || submitting}
+          title="Undo"
+        >
+          Undo
+        </button>
+        <button
+          className="btn-ghost"
+          onClick={handleRedo}
+          disabled={!history.canRedo || submitting}
+          title="Redo"
+        >
+          Redo
         </button>
         {panel.type !== "none" && (
           <button className="btn-ghost" onClick={() => setPanel({ type: "none" })}>

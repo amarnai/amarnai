@@ -28,8 +28,6 @@ async function main() {
           workspaceId: ws.id,
           name: "Inbox",
           isRoot: true,
-          isVisibleCategory: false,
-          canReceiveEmails: false,
         },
       });
       created++;

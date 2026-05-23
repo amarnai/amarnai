@@ -130,7 +130,7 @@ async function main() {
       data: {
         workspaceId,
         name: params.name,
-        description: params.description,
+        description: params.description ?? null,
         isRoot: params.isRoot ?? false,
         positionX: params.positionX,
         positionY: params.positionY,
