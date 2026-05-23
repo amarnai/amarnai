@@ -9,22 +9,18 @@ type NodeInput = {
   id: string;
   name: string;
   isRoot: boolean;
-  isVisibleCategory: boolean;
-  canReceiveEmails: boolean;
 };
 
 type EdgeInput = {
   id: string;
   sourceNodeId: string;
   targetNodeId: string;
-  sortingQuestion: string;
 };
 
 type PathStep = {
   edgeId: string;
   sourceNodeId: string;
   targetNodeId: string;
-  sortingQuestion: string;
   confidence: number;
   explanation: string;
 };
@@ -88,16 +84,7 @@ export function mockClassify(
 
   const rootNode = nodes.find((n) => n.isRoot);
 
-  // Rule 3: prefer true leaf nodes (visible, receivable, no outgoing edges)
-  const hasOutgoing = new Set(edges.map((e) => e.sourceNodeId));
-  const leafNodes = nodes.filter(
-    (n) => n.canReceiveEmails && n.isVisibleCategory && !n.isRoot && !hasOutgoing.has(n.id)
-  );
-  // Rule 4: fall back to intermediate nodes (visible, receivable, has outgoing edges)
-  const intermediateNodes = nodes.filter(
-    (n) => n.canReceiveEmails && n.isVisibleCategory && !n.isRoot && hasOutgoing.has(n.id)
-  );
-  const pool = leafNodes.length > 0 ? leafNodes : intermediateNodes.length > 0 ? intermediateNodes : nodes;
+  const pool = nodes.filter((n) => !n.isRoot);
 
   let bestNode = pool[0]!;
   let bestScore = -1;
@@ -148,7 +135,6 @@ export function mockClassify(
         edgeId: edge.id,
         sourceNodeId: edge.sourceNodeId,
         targetNodeId: edge.targetNodeId,
-        sortingQuestion: edge.sortingQuestion,
         confidence,
         explanation,
       }))

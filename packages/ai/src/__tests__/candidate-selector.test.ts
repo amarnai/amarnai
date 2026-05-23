@@ -21,8 +21,6 @@ function makeNode(
     instructions: null,
     examples: [],
     isRoot: false,
-    isVisibleCategory: true,
-    canReceiveEmails: true,
     ...opts,
   };
 }
@@ -31,17 +29,16 @@ function makeEdge(
   id: string,
   sourceNodeId: string,
   targetNodeId: string,
-  sortingQuestion = "Does this apply?"
 ): TaxonomyEdgeInput {
-  return { id, sourceNodeId, targetNodeId, sortingQuestion, examples: [], negativeExamples: [] };
+  return { id, sourceNodeId, targetNodeId };
 }
 
-const ROOT = makeNode("root", "Inbox", { isRoot: true, isVisibleCategory: false, canReceiveEmails: false });
+const ROOT = makeNode("root", "Inbox", { isRoot: true });
 const CLIENTS = makeNode("clients", "Clients", { description: "Emails from external clients and stakeholders" });
 const FINANCE = makeNode("finance", "Finance", { description: "Invoices billing payments receipts" });
 
-const EDGE_ROOT_CLIENTS = makeEdge("e-rc", "root", "clients", "Is this from a client?");
-const EDGE_ROOT_FINANCE = makeEdge("e-rf", "root", "finance", "Is this a financial email?");
+const EDGE_ROOT_CLIENTS = makeEdge("e-rc", "root", "clients");
+const EDGE_ROOT_FINANCE = makeEdge("e-rf", "root", "finance");
 
 const BASE_NODES = [ROOT, CLIENTS, FINANCE];
 const BASE_EDGES = [EDGE_ROOT_CLIENTS, EDGE_ROOT_FINANCE];
@@ -77,33 +74,21 @@ describe("selectCandidatePaths — no root node", () => {
 });
 
 describe("selectCandidatePaths — valid taxonomy", () => {
-  it("returns all valid destination nodes as candidates", () => {
+  it("returns all non-root destination nodes as candidates", () => {
     const result = selectCandidatePaths(BASE_NODES, BASE_EDGES, []);
     const nodeIds = result.candidates.map((c) => c.finalNodeId);
     expect(nodeIds).toContain("clients");
     expect(nodeIds).toContain("finance");
   });
 
-  it("excludes nodes that are not visible categories or cannot receive emails", () => {
-    const hiddenNode = makeNode("hidden", "Hidden", { isVisibleCategory: false, canReceiveEmails: true });
-    const noReceiveNode = makeNode("noreceive", "NoReceive", { isVisibleCategory: true, canReceiveEmails: false });
-    const edges = [
-      ...BASE_EDGES,
-      makeEdge("e-rh", "root", "hidden"),
-      makeEdge("e-rn", "root", "noreceive"),
-    ];
-    const result = selectCandidatePaths(
-      [...BASE_NODES, hiddenNode, noReceiveNode],
-      edges,
-      []
-    );
+  it("does not include the root node as a destination", () => {
+    const result = selectCandidatePaths(BASE_NODES, BASE_EDGES, []);
     const nodeIds = result.candidates.map((c) => c.finalNodeId);
-    expect(nodeIds).not.toContain("hidden");
-    expect(nodeIds).not.toContain("noreceive");
+    expect(nodeIds).not.toContain("root");
   });
 
   it("scores higher when email matches node name (weight 3)", () => {
-    const emails: EmailInput[] = [{ bodyText: "client project update" }];
+    const emails: EmailInput[] = [{ bodyText: "clients project update" }];
     const result = selectCandidatePaths(BASE_NODES, BASE_EDGES, emails);
     const clientsCandidate = result.candidates.find((c) => c.finalNodeId === "clients");
     const financeCandidate = result.candidates.find((c) => c.finalNodeId === "finance");
@@ -126,25 +111,9 @@ describe("selectCandidatePaths — valid taxonomy", () => {
     expect(result.diagnostics.matchedProfiles).toContain("description");
   });
 
-  it("edge question match contributes to score (weight 1.5)", () => {
-    const nodeA = makeNode("a", "Alpha");
-    const nodeB = makeNode("b", "Beta");
-    const nodes = [ROOT, nodeA, nodeB];
-    const edges = [
-      makeEdge("ea", "root", "a", "Is this a billing invoice?"),
-      makeEdge("eb", "root", "b", "Does this apply?"),
-    ];
-    const emails: EmailInput[] = [{ bodyText: "billing question" }];
-    const result = selectCandidatePaths(nodes, edges, emails);
-    const aCandidate = result.candidates.find((c) => c.finalNodeId === "a");
-    const bCandidate = result.candidates.find((c) => c.finalNodeId === "b");
-    expect(aCandidate!.score).toBeGreaterThan(bCandidate!.score);
-    expect(result.diagnostics.matchedProfiles).toContain("edge");
-  });
-
   it("ancestor name match contributes to score (weight 1)", () => {
     // root → work (ancestor) → clients (final)
-    const workNode = makeNode("work", "Work", { isVisibleCategory: false, canReceiveEmails: false });
+    const workNode = makeNode("work", "Work");
     const clientLeaf = makeNode("clientleaf", "Contacts", { description: null });
     const nodes = [ROOT, workNode, clientLeaf];
     const edges = [
@@ -160,9 +129,6 @@ describe("selectCandidatePaths — valid taxonomy", () => {
   });
 
   it("sibling name match contributes with lower weight (0.5 vs 3 for name)", () => {
-    // Both siblings under root: nodeA and nodeB
-    // Email mentions "finance" which is nodeB's name
-    // nodeA gets sibling score (0.5×1), nodeB gets name score (3×1)
     const nodeA = makeNode("a", "Alpha");
     const nodeB = makeNode("b", "Finance");
     const nodes = [ROOT, nodeA, nodeB];
@@ -182,7 +148,6 @@ describe("selectCandidatePaths — valid taxonomy", () => {
   });
 
   it("handles cycles in edges without hanging", () => {
-    // root → A → B → A (cycle)
     const nodeA = makeNode("a", "Alpha");
     const nodeB = makeNode("b", "Beta");
     const nodes = [ROOT, nodeA, nodeB];
@@ -192,12 +157,10 @@ describe("selectCandidatePaths — valid taxonomy", () => {
       makeEdge("e3", "b", "a"), // cycle
     ];
     const result = selectCandidatePaths(nodes, edges, []);
-    // Must complete and not loop; both A and B should be reachable
     expect(result.candidates.length).toBeGreaterThanOrEqual(1);
   });
 
   it("caps results at MAX_CANDIDATE_PATHS", () => {
-    // Create 20 valid leaf nodes
     const leafNodes: TaxonomyNodeInput[] = [];
     const leafEdges: TaxonomyEdgeInput[] = [];
     for (let i = 0; i < 20; i++) {
@@ -211,12 +174,10 @@ describe("selectCandidatePaths — valid taxonomy", () => {
   });
 
   it("promotes a fallback-named node to the last slot when it would be cut off", () => {
-    // Create MAX_CANDIDATE_PATHS high-scoring nodes + 1 fallback node "Other" with no match
     const highNodes: TaxonomyNodeInput[] = [];
     const highEdges: TaxonomyEdgeInput[] = [];
     for (let i = 0; i < MAX_CANDIDATE_PATHS; i++) {
       const id = `high${i}`;
-      // Include "matching" in the name so they all score > 0
       highNodes.push(makeNode(id, `Matching Category ${i}`));
       highEdges.push(makeEdge(`eh${i}`, "root", id));
     }

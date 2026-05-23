@@ -30,8 +30,6 @@ describe("ensureInboxNode", () => {
         workspaceId: WS_ID,
         name: "Inbox",
         isRoot: true,
-        isVisibleCategory: false,
-        canReceiveEmails: false,
       },
     });
   });

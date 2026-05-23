@@ -4,7 +4,6 @@ import { z } from "zod";
 
 const HTML_TAG_RE = /<[a-zA-Z][^>]*>/;
 
-// Exported so API routes and other packages can share the same field rules.
 export const nodeNameSchema = z
   .string()
   .trim()
@@ -16,16 +15,15 @@ export const nodeNameSchema = z
   );
 
 // Required for all non-root nodes. Provides semantic context for AI candidate
-// path selection: future retrieval uses node name, description, ancestor path,
-// edge question, and sibling context.
+// path selection via description embeddings.
 export const nodeDescriptionSchema = z
   .string()
   .trim()
-  .min(
-    20,
-    "Description must be at least 20 characters. Descriptions improve AI sorting quality."
-  )
   .max(300, "Description must be at most 300 characters")
+  .refine(
+    (v) => v.replace(/\s/g, "").length >= 30,
+    "Description must have at least 30 non-whitespace characters. Descriptions improve AI sorting quality."
+  )
   .refine(
     (v) => !HTML_TAG_RE.test(v),
     "Description must be plain text (no HTML). Descriptions improve AI sorting quality."
@@ -43,8 +41,6 @@ export const TaxonomyNodeSchema = z.object({
   instructions: z.string().max(2000).nullable(),
   examples: z.array(z.string()),
   isRoot: z.boolean(),
-  isVisibleCategory: z.boolean(),
-  canReceiveEmails: z.boolean(),
   positionX: z.number(),
   positionY: z.number(),
   createdAt: z.string().datetime(),
@@ -61,8 +57,6 @@ export const CreateTaxonomyNodeInputSchema = z
     description: nodeDescriptionSchema,
     instructions: z.string().max(2000).optional(),
     examples: z.array(z.string()).optional(),
-    isVisibleCategory: z.boolean().optional(),
-    canReceiveEmails: z.boolean().optional(),
     positionX: z.number().optional(),
     positionY: z.number().optional(),
   })
@@ -78,16 +72,6 @@ export const CreateTaxonomyNodeInputSchema = z
         path: ["description"],
       });
     }
-    if (
-      data.isVisibleCategory !== undefined &&
-      data.canReceiveEmails !== undefined &&
-      data.isVisibleCategory !== data.canReceiveEmails
-    ) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "isVisibleCategory and canReceiveEmails must have the same value",
-      });
-    }
   });
 export type CreateTaxonomyNodeInput = z.infer<typeof CreateTaxonomyNodeInputSchema>;
 
@@ -99,8 +83,6 @@ export const UpdateTaxonomyNodeInputSchema = z
     description: nodeDescriptionSchema.optional(),
     instructions: z.string().max(2000).optional(),
     examples: z.array(z.string()).optional(),
-    isVisibleCategory: z.boolean().optional(),
-    canReceiveEmails: z.boolean().optional(),
     positionX: z.number().optional(),
     positionY: z.number().optional(),
   })
@@ -117,16 +99,6 @@ export const UpdateTaxonomyNodeInputSchema = z
         path: ["description"],
       });
     }
-    if (
-      data.isVisibleCategory !== undefined &&
-      data.canReceiveEmails !== undefined &&
-      data.isVisibleCategory !== data.canReceiveEmails
-    ) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "isVisibleCategory and canReceiveEmails must have the same value",
-      });
-    }
   });
 export type UpdateTaxonomyNodeInput = z.infer<typeof UpdateTaxonomyNodeInputSchema>;
 
@@ -137,11 +109,6 @@ export const TaxonomyEdgeSchema = z.object({
   workspaceId: z.string().min(1),
   sourceNodeId: z.string().min(1),
   targetNodeId: z.string().min(1),
-  sortingQuestion: z.string().max(160),
-  examples: z.array(z.string()),
-  negativeExamples: z.array(z.string()),
-  priority: z.number().int(),
-  confidenceThreshold: z.number().min(0).max(1).nullable(),
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
 });
@@ -151,11 +118,6 @@ export const CreateTaxonomyEdgeInputSchema = z.object({
   workspaceId: z.string().min(1),
   sourceNodeId: z.string().min(1),
   targetNodeId: z.string().min(1),
-  sortingQuestion: z.string().max(160),
-  examples: z.array(z.string()).optional(),
-  negativeExamples: z.array(z.string()).optional(),
-  priority: z.number().int().optional(),
-  confidenceThreshold: z.number().min(0).max(1).optional(),
 });
 export type CreateTaxonomyEdgeInput = z.infer<typeof CreateTaxonomyEdgeInputSchema>;
 
@@ -165,7 +127,6 @@ export const ClassificationPathStepSchema = z.object({
   edgeId: z.string().min(1),
   sourceNodeId: z.string().min(1),
   targetNodeId: z.string().min(1),
-  sortingQuestion: z.string(),
   confidence: z.number().min(0).max(1),
   explanation: z.string(),
 });

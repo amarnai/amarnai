@@ -109,10 +109,8 @@ async function main() {
   // ── 6. TaxonomyNodes ──────────────────────────────────────────────────────
   async function findOrCreateNode(params: {
     name: string;
-    description: string;
+    description?: string;
     isRoot?: boolean;
-    isVisibleCategory: boolean;
-    canReceiveEmails: boolean;
     positionX: number;
     positionY: number;
   }) {
@@ -134,8 +132,6 @@ async function main() {
         name: params.name,
         description: params.description,
         isRoot: params.isRoot ?? false,
-        isVisibleCategory: params.isVisibleCategory,
-        canReceiveEmails: params.canReceiveEmails,
         positionX: params.positionX,
         positionY: params.positionY,
       },
@@ -145,150 +141,85 @@ async function main() {
   // Root
   const nodeInbox = await findOrCreateNode({
     name: "Inbox",
-    description: "Top-level entry point for all incoming email",
     isRoot: true,
-    isVisibleCategory: false,
-    canReceiveEmails: false,
     positionX: 0,
     positionY: 0,
   });
 
   // ── Tenoua magazine branch ────────────────────────────────────────────────
 
-  // Hidden intermediate: routes all Tenoua magazine email before sub-categorising.
-  const nodeTenouaRouting = await findOrCreateNode({
-    name: "Tenoua routing",
-    description:
-      "Hidden sorting step that routes Tenoua magazine email to the correct sub-category: editorial, subscriptions, contributors, or partnerships.",
-    isVisibleCategory: false,
-    canReceiveEmails: false,
-    positionX: -400,
-    positionY: -200,
-  });
-
   const nodeEditorial = await findOrCreateNode({
     name: "Editorial / pitches",
     description:
       "Article proposals, editorial submissions, content pitches, and writing queries addressed to the Tenoua editorial team.",
-    isVisibleCategory: true,
-    canReceiveEmails: true,
-    positionX: -800,
-    positionY: -400,
+    positionX: -750,
+    positionY: -300,
   });
 
   const nodeSubscriptions = await findOrCreateNode({
     name: "Subscriptions / distribution",
     description:
       "Reader subscription requests, renewals, delivery issues, and distribution logistics for Tenoua magazine.",
-    isVisibleCategory: true,
-    canReceiveEmails: true,
-    positionX: -550,
-    positionY: -400,
+    positionX: -500,
+    positionY: -300,
   });
 
   const nodeContributors = await findOrCreateNode({
     name: "Contributors",
     description:
       "Correspondence with current or prospective Tenoua contributors, authors, illustrators, and translators.",
-    isVisibleCategory: true,
-    canReceiveEmails: true,
-    positionX: -300,
-    positionY: -400,
+    positionX: -250,
+    positionY: -300,
   });
 
   const nodePartnerships = await findOrCreateNode({
     name: "Partnerships / press",
     description:
       "Institutional partnership offers, press inquiries, advertising proposals, and media relations for Tenoua magazine.",
-    isVisibleCategory: true,
-    canReceiveEmails: true,
-    positionX: -50,
-    positionY: -400,
+    positionX: 0,
+    positionY: -300,
   });
 
   // ── Delphine Horvilleur secretariat branch ────────────────────────────────
-
-  // Hidden intermediate: first triage gate for all secretariat requests.
-  const nodeSecretariatTriage = await findOrCreateNode({
-    name: "Secretariat request triage",
-    description:
-      "Hidden sorting step that routes secretariat requests for Delphine Horvilleur to the correct sub-category: ceremonies, bookings, media, or general admin.",
-    isVisibleCategory: false,
-    canReceiveEmails: false,
-    positionX: 400,
-    positionY: -200,
-  });
-
-  // Hidden intermediate: distinguishes weddings from funerals/memorials.
-  const nodeCeremonyTriage = await findOrCreateNode({
-    name: "Lifecycle ceremony triage",
-    description:
-      "Hidden sorting step for lifecycle ceremony requests — distinguishes wedding ceremony requests from funeral or memorial service requests.",
-    isVisibleCategory: false,
-    canReceiveEmails: false,
-    positionX: 200,
-    positionY: -400,
-  });
 
   const nodeWeddings = await findOrCreateNode({
     name: "Weddings",
     description:
       "Wedding ceremony requests, officiation inquiries, and marriage-related correspondence addressed to Delphine Horvilleur.",
-    isVisibleCategory: true,
-    canReceiveEmails: true,
-    positionX: 100,
-    positionY: -600,
+    positionX: 250,
+    positionY: -300,
   });
 
   const nodeFunerals = await findOrCreateNode({
     name: "Funerals",
     description:
       "Funeral service requests, memorial ceremony inquiries, and mourning-related correspondence addressed to Delphine Horvilleur.",
-    isVisibleCategory: true,
-    canReceiveEmails: true,
-    positionX: 300,
-    positionY: -600,
-  });
-
-  // Hidden intermediate: separates conference/speaking bookings from media requests.
-  const nodeBookingQualification = await findOrCreateNode({
-    name: "Booking qualification",
-    description:
-      "Hidden sorting step for external engagements — routes speaking invitations and conference bookings away from media and press interview requests.",
-    isVisibleCategory: false,
-    canReceiveEmails: false,
-    positionX: 600,
-    positionY: -400,
+    positionX: 500,
+    positionY: -300,
   });
 
   const nodeConferences = await findOrCreateNode({
     name: "Conferences / invitations",
     description:
       "Speaking engagement invitations, conference participation requests, panel invitations, and event booking requests for Delphine Horvilleur.",
-    isVisibleCategory: true,
-    canReceiveEmails: true,
-    positionX: 500,
-    positionY: -600,
+    positionX: 750,
+    positionY: -300,
   });
 
   const nodeMediaInterviews = await findOrCreateNode({
     name: "Media / interviews",
     description:
       "Journalist interview requests, radio and TV appearance inquiries, podcast invitations, and press profile requests for Delphine Horvilleur.",
-    isVisibleCategory: true,
-    canReceiveEmails: true,
-    positionX: 700,
-    positionY: -600,
+    positionX: 1000,
+    positionY: -300,
   });
 
   const nodeGeneralSecretariat = await findOrCreateNode({
     name: "General secretariat",
     description:
       "General administrative correspondence for Delphine Horvilleur that does not fit a more specific secretariat category.",
-    isVisibleCategory: true,
-    canReceiveEmails: true,
-    positionX: 850,
-    positionY: -400,
+    positionX: 1250,
+    positionY: -300,
   });
 
   // ── Catch-all ─────────────────────────────────────────────────────────────
@@ -296,19 +227,15 @@ async function main() {
   const nodeOtherReview = await findOrCreateNode({
     name: "Other / needs review",
     description:
-      "Email that does not clearly fit the Tenoua magazine branch or the Delphine Horvilleur secretariat branch and requires human review.",
-    isVisibleCategory: true,
-    canReceiveEmails: true,
+      "Email that does not clearly fit the Tenoua magazine or the Delphine Horvilleur secretariat categories and requires human review.",
     positionX: 0,
-    positionY: 200,
+    positionY: 300,
   });
 
   // ── 7. TaxonomyEdges ──────────────────────────────────────────────────────
   async function findOrCreateEdge(params: {
     sourceNodeId: string;
     targetNodeId: string;
-    sortingQuestion: string;
-    priority?: number;
   }) {
     const existing = await db.taxonomyEdge.findFirst({
       where: { workspaceId, sourceNodeId: params.sourceNodeId, targetNodeId: params.targetNodeId },
@@ -319,126 +246,21 @@ async function main() {
         workspaceId,
         sourceNodeId: params.sourceNodeId,
         targetNodeId: params.targetNodeId,
-        sortingQuestion: params.sortingQuestion,
-        priority: params.priority ?? 0,
       },
     });
   }
 
-  // Inbox → top-level routing
-  await findOrCreateEdge({
-    sourceNodeId: nodeInbox.id,
-    targetNodeId: nodeTenouaRouting.id,
-    sortingQuestion:
-      "Is this email related to Tenoua magazine — editorial content, subscriptions, contributors, or partnerships?",
-    priority: 0,
-  });
-
-  await findOrCreateEdge({
-    sourceNodeId: nodeInbox.id,
-    targetNodeId: nodeSecretariatTriage.id,
-    sortingQuestion:
-      "Is this email for Delphine Horvilleur's secretariat — a ceremony, speaking engagement, media request, or administrative matter?",
-    priority: 1,
-  });
-
-  await findOrCreateEdge({
-    sourceNodeId: nodeInbox.id,
-    targetNodeId: nodeOtherReview.id,
-    sortingQuestion:
-      "Does this email not clearly fit Tenoua magazine or the secretariat?",
-    priority: 2,
-  });
-
-  // Tenoua routing → Tenoua sub-categories
-  await findOrCreateEdge({
-    sourceNodeId: nodeTenouaRouting.id,
-    targetNodeId: nodeEditorial.id,
-    sortingQuestion:
-      "Is this an article pitch, editorial submission, or content proposal for Tenoua?",
-    priority: 0,
-  });
-
-  await findOrCreateEdge({
-    sourceNodeId: nodeTenouaRouting.id,
-    targetNodeId: nodeSubscriptions.id,
-    sortingQuestion:
-      "Is this about a reader subscription, renewal, or delivery issue for Tenoua?",
-    priority: 1,
-  });
-
-  await findOrCreateEdge({
-    sourceNodeId: nodeTenouaRouting.id,
-    targetNodeId: nodeContributors.id,
-    sortingQuestion:
-      "Is this from or about a Tenoua contributor, author, illustrator, or translator?",
-    priority: 2,
-  });
-
-  await findOrCreateEdge({
-    sourceNodeId: nodeTenouaRouting.id,
-    targetNodeId: nodePartnerships.id,
-    sortingQuestion:
-      "Is this a partnership offer, press inquiry, or institutional relations matter for Tenoua?",
-    priority: 3,
-  });
-
-  // Secretariat request triage → secretariat sub-categories
-  await findOrCreateEdge({
-    sourceNodeId: nodeSecretariatTriage.id,
-    targetNodeId: nodeCeremonyTriage.id,
-    sortingQuestion:
-      "Is this a lifecycle ceremony request — a wedding or a funeral/memorial?",
-    priority: 0,
-  });
-
-  await findOrCreateEdge({
-    sourceNodeId: nodeSecretariatTriage.id,
-    targetNodeId: nodeBookingQualification.id,
-    sortingQuestion:
-      "Is this a speaking engagement, conference invitation, or media/press request?",
-    priority: 1,
-  });
-
-  // Weak fallback — relies on node description for context.
-  await findOrCreateEdge({
-    sourceNodeId: nodeSecretariatTriage.id,
-    targetNodeId: nodeGeneralSecretariat.id,
-    sortingQuestion: "yes",
-    priority: 2,
-  });
-
-  // Lifecycle ceremony triage → ceremony leaves
-  // Weak yes/no edges; node descriptions carry the wedding vs. funeral distinction.
-  await findOrCreateEdge({
-    sourceNodeId: nodeCeremonyTriage.id,
-    targetNodeId: nodeWeddings.id,
-    sortingQuestion: "yes",
-    priority: 0,
-  });
-
-  await findOrCreateEdge({
-    sourceNodeId: nodeCeremonyTriage.id,
-    targetNodeId: nodeFunerals.id,
-    sortingQuestion: "no",
-    priority: 1,
-  });
-
-  // Booking qualification → engagement leaves
-  // Weak yes/no edges; node descriptions carry the conference vs. media distinction.
-  await findOrCreateEdge({
-    sourceNodeId: nodeBookingQualification.id,
-    targetNodeId: nodeConferences.id,
-    sortingQuestion: "yes",
-    priority: 0,
-  });
-
-  await findOrCreateEdge({
-    sourceNodeId: nodeBookingQualification.id,
-    targetNodeId: nodeMediaInterviews.id,
-    sortingQuestion: "no",
-    priority: 1,
-  });
+  // Inbox → all destination nodes
+  await findOrCreateEdge({ sourceNodeId: nodeInbox.id, targetNodeId: nodeEditorial.id });
+  await findOrCreateEdge({ sourceNodeId: nodeInbox.id, targetNodeId: nodeSubscriptions.id });
+  await findOrCreateEdge({ sourceNodeId: nodeInbox.id, targetNodeId: nodeContributors.id });
+  await findOrCreateEdge({ sourceNodeId: nodeInbox.id, targetNodeId: nodePartnerships.id });
+  await findOrCreateEdge({ sourceNodeId: nodeInbox.id, targetNodeId: nodeWeddings.id });
+  await findOrCreateEdge({ sourceNodeId: nodeInbox.id, targetNodeId: nodeFunerals.id });
+  await findOrCreateEdge({ sourceNodeId: nodeInbox.id, targetNodeId: nodeConferences.id });
+  await findOrCreateEdge({ sourceNodeId: nodeInbox.id, targetNodeId: nodeMediaInterviews.id });
+  await findOrCreateEdge({ sourceNodeId: nodeInbox.id, targetNodeId: nodeGeneralSecretariat.id });
+  await findOrCreateEdge({ sourceNodeId: nodeInbox.id, targetNodeId: nodeOtherReview.id });
 
   // ── 8. Tags ───────────────────────────────────────────────────────────────
   const tagDefs = [
@@ -717,15 +539,13 @@ async function main() {
     });
   }
 
-  // Wedding → Inbox → Secretariat request triage → Lifecycle ceremony triage → Weddings
+  // Wedding → Inbox → Weddings
   const classWedding = await findOrCreateClassification({
     emailThreadId: threadWedding.id,
     emailMessageId: msgWedding.id,
     finalNodeId: nodeWeddings.id,
     path: [
       { nodeId: nodeInbox.id, nodeName: "Inbox" },
-      { nodeId: nodeSecretariatTriage.id, nodeName: "Secretariat request triage" },
-      { nodeId: nodeCeremonyTriage.id, nodeName: "Lifecycle ceremony triage" },
       { nodeId: nodeWeddings.id, nodeName: "Weddings" },
     ],
     confidence: 0.93,
@@ -740,15 +560,13 @@ async function main() {
     needsHumanReview: false,
   });
 
-  // Funeral → Inbox → Secretariat request triage → Lifecycle ceremony triage → Funerals
+  // Funeral → Inbox → Funerals
   const classFuneral = await findOrCreateClassification({
     emailThreadId: threadFuneral.id,
     emailMessageId: msgFuneral.id,
     finalNodeId: nodeFunerals.id,
     path: [
       { nodeId: nodeInbox.id, nodeName: "Inbox" },
-      { nodeId: nodeSecretariatTriage.id, nodeName: "Secretariat request triage" },
-      { nodeId: nodeCeremonyTriage.id, nodeName: "Lifecycle ceremony triage" },
       { nodeId: nodeFunerals.id, nodeName: "Funerals" },
     ],
     confidence: 0.95,
@@ -763,14 +581,13 @@ async function main() {
     needsHumanReview: false,
   });
 
-  // Article pitch → Inbox → Tenoua routing → Editorial / pitches
+  // Article pitch → Inbox → Editorial / pitches
   const classPitch = await findOrCreateClassification({
     emailThreadId: threadPitch.id,
     emailMessageId: msgPitch.id,
     finalNodeId: nodeEditorial.id,
     path: [
       { nodeId: nodeInbox.id, nodeName: "Inbox" },
-      { nodeId: nodeTenouaRouting.id, nodeName: "Tenoua routing" },
       { nodeId: nodeEditorial.id, nodeName: "Editorial / pitches" },
     ],
     confidence: 0.91,
@@ -785,14 +602,13 @@ async function main() {
     needsHumanReview: false,
   });
 
-  // Subscription issue → Inbox → Tenoua routing → Subscriptions / distribution
+  // Subscription issue → Inbox → Subscriptions / distribution
   const classSubscription = await findOrCreateClassification({
     emailThreadId: threadSubscription.id,
     emailMessageId: msgSubscription.id,
     finalNodeId: nodeSubscriptions.id,
     path: [
       { nodeId: nodeInbox.id, nodeName: "Inbox" },
-      { nodeId: nodeTenouaRouting.id, nodeName: "Tenoua routing" },
       { nodeId: nodeSubscriptions.id, nodeName: "Subscriptions / distribution" },
     ],
     confidence: 0.88,
@@ -807,15 +623,13 @@ async function main() {
     needsHumanReview: false,
   });
 
-  // Interview request → Inbox → Secretariat request triage → Booking qualification → Media / interviews
+  // Interview request → Inbox → Media / interviews
   const classInterview = await findOrCreateClassification({
     emailThreadId: threadInterview.id,
     emailMessageId: msgInterview.id,
     finalNodeId: nodeMediaInterviews.id,
     path: [
       { nodeId: nodeInbox.id, nodeName: "Inbox" },
-      { nodeId: nodeSecretariatTriage.id, nodeName: "Secretariat request triage" },
-      { nodeId: nodeBookingQualification.id, nodeName: "Booking qualification" },
       { nodeId: nodeMediaInterviews.id, nodeName: "Media / interviews" },
     ],
     confidence: 0.89,

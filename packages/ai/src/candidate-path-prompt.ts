@@ -49,11 +49,6 @@ function renderCandidate(c: CandidatePath, index: number): string {
     lines.push(`   description: ${desc}`);
   }
 
-  if (c.edgeSteps.length > 0) {
-    const questions = c.edgeSteps.map((s) => `"${s.sortingQuestion}"`).join(" → ");
-    lines.push(`   routing: ${questions}`);
-  }
-
   lines.push(`   path: ${c.label}`);
   return lines.join("\n");
 }

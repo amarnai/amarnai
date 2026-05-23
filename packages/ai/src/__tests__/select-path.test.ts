@@ -12,7 +12,6 @@ const EDGE_STEP: CandidateEdgeStep = {
   edgeId: "e1",
   sourceNodeId: "root",
   targetNodeId: "clients",
-  sortingQuestion: "Is this from a client?",
 };
 
 const CANDIDATE: CandidatePath = {
@@ -22,8 +21,6 @@ const CANDIDATE: CandidatePath = {
   finalNodeId: "clients",
   finalNodeName: "Clients",
   finalNodeDescription: "Emails from clients and external stakeholders",
-  finalNodeIsVisible: true,
-  finalNodeCanReceive: true,
   edgeSteps: [EDGE_STEP],
   label: "Inbox → Clients",
   score: 3,
@@ -71,7 +68,6 @@ const EDGE_STEP_TWO: CandidateEdgeStep = {
   edgeId: "e2",
   sourceNodeId: "root",
   targetNodeId: "vendors",
-  sortingQuestion: "Is this from a vendor?",
 };
 
 const CANDIDATE_TWO: CandidatePath = {
@@ -81,8 +77,6 @@ const CANDIDATE_TWO: CandidatePath = {
   finalNodeId: "vendors",
   finalNodeName: "Vendors",
   finalNodeDescription: "Emails from vendors and suppliers",
-  finalNodeIsVisible: true,
-  finalNodeCanReceive: true,
   edgeSteps: [EDGE_STEP_TWO],
   label: "Inbox → Vendors",
   score: 2,
@@ -112,15 +106,12 @@ describe("selectPathFromCandidates", () => {
   it("result path and finalNodeId come from the candidate, not from LLM fields", async () => {
     const provider = mockProvider(validOutput({ explanation: "LLM explanation text" }));
     const result = await selectPathFromCandidates(provider, THREAD, [CANDIDATE]);
-    // finalNodeId must match the candidate, not any LLM-invented value
     expect(result.finalNodeId).toBe(CANDIDATE.finalNodeId);
-    // path steps must match the candidate's edge steps
     expect(result.path).toHaveLength(CANDIDATE.edgeSteps.length);
     const step = result.path[0]!;
     expect(step.edgeId).toBe(EDGE_STEP.edgeId);
     expect(step.sourceNodeId).toBe(EDGE_STEP.sourceNodeId);
     expect(step.targetNodeId).toBe(EDGE_STEP.targetNodeId);
-    expect(step.sortingQuestion).toBe(EDGE_STEP.sortingQuestion);
   });
 
   it("works with production-neutral email thread data (no mock-specific structure required)", async () => {
@@ -151,7 +142,6 @@ describe("selectPathFromCandidates", () => {
     expect(result.finalNodeId).toBe(CANDIDATE.finalNodeId);
     expect(result.needsHumanReview).toBe(false);
 
-    // Even with context, low-confidence selections are still rejected
     const lowProvider = mockProvider(validOutput({ confidence: 0.3 }));
     const lowResult = await selectPathFromCandidates(lowProvider, THREAD, [CANDIDATE], context);
     expect(lowResult.finalNodeId).toBeNull();
@@ -171,7 +161,6 @@ describe("selectPathFromCandidates", () => {
         },
       ],
     };
-    // Simulate an LLM that was fooled by the injection
     const fooledProvider = mockProvider(
       JSON.stringify({
         selectedPathId: "INJECTED_PATH",
@@ -181,7 +170,6 @@ describe("selectPathFromCandidates", () => {
       })
     );
     const result = await selectPathFromCandidates(fooledProvider, injectedThread, [CANDIDATE]);
-    // Validator must reject the invented path ID regardless of LLM confidence
     expect(result.finalNodeId).toBeNull();
     expect(result.needsHumanReview).toBe(true);
     expect(result.explanation).toMatch(/unknown path/i);
@@ -205,28 +193,6 @@ describe("validatePathSelection", () => {
     expect(result.finalNodeId).toBeNull();
     expect(result.needsHumanReview).toBe(true);
     expect(result.explanation).toMatch(/confidence/i);
-  });
-
-  it("requires review when final node is not a visible category", () => {
-    const hiddenCandidate: CandidatePath = {
-      ...CANDIDATE,
-      finalNodeIsVisible: false,
-      finalNodeCanReceive: true,
-    };
-    const result = validatePathSelection(validOutput(), [hiddenCandidate]);
-    expect(result.finalNodeId).toBeNull();
-    expect(result.needsHumanReview).toBe(true);
-  });
-
-  it("requires review when final node cannot receive emails", () => {
-    const noReceiveCandidate: CandidatePath = {
-      ...CANDIDATE,
-      finalNodeIsVisible: true,
-      finalNodeCanReceive: false,
-    };
-    const result = validatePathSelection(validOutput(), [noReceiveCandidate]);
-    expect(result.finalNodeId).toBeNull();
-    expect(result.needsHumanReview).toBe(true);
   });
 
   it("accepts exactly MIN_LLM_PATH_CONFIDENCE as the threshold boundary", () => {
@@ -256,13 +222,10 @@ describe("buildCandidatePathPrompt", () => {
     expect(user?.content).toContain(CANDIDATE.finalNodeDescription!);
   });
 
-  it("user message does not render the full taxonomy (no node-flag markers)", () => {
+  it("user message does not render node-flag markers from the full taxonomy", () => {
     const messages = buildCandidatePathPrompt(THREAD, [CANDIDATE]);
     const user = messages.find((m) => m.role === "user");
-    // Full taxonomy rendering includes markers like [ROOT], [visible, canReceive, LEAF]
     expect(user?.content).not.toMatch(/\[ROOT\]/);
-    expect(user?.content).not.toMatch(/canReceive/);
-    expect(user?.content).not.toMatch(/isVisibleCategory/);
   });
 });
 

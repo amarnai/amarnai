@@ -11,7 +11,6 @@ import {
   Handle,
   Position,
   BaseEdge,
-  EdgeLabelRenderer,
   getBezierPath,
   MarkerType,
   type Node,
@@ -44,11 +43,8 @@ import {
   deleteTaxonomyEdgeAction,
 } from "@/actions/taxonomy";
 import {
-  isMissingSortingQuestion,
   computeIgnoredReasons,
-  computeNodeValidityWarnings,
   type IgnoredReason,
-  type NodeValidityWarning,
 } from "./taxonomyUtils";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -57,42 +53,34 @@ function nodeById(nodes: TaxonomyNode[], id: string): TaxonomyNode | undefined {
   return nodes.find((n) => n.id === id);
 }
 
-function formatEdgeLabel(q: string | null | undefined): string {
-  if (isMissingSortingQuestion(q)) return "Missing sorting question";
-  return q!.trim();
-}
-
 // ─── React Flow node/edge converters ──────────────────────────────────────────
 
-type RFNodeData = { node: TaxonomyNode; ignoredReason: IgnoredReason; validityWarnings: NodeValidityWarning[] };
+type RFNodeData = { node: TaxonomyNode; ignoredReason: IgnoredReason };
 type RFNode = Node<RFNodeData, "taxonomy">;
 
-function toRFNode(n: TaxonomyNode, ignoredReason: IgnoredReason, validityWarnings: NodeValidityWarning[]): RFNode {
+function toRFNode(n: TaxonomyNode, ignoredReason: IgnoredReason): RFNode {
   return {
     id: n.id,
     type: "taxonomy",
     position: { x: n.positionX, y: n.positionY },
-    data: { node: n, ignoredReason, validityWarnings },
+    data: { node: n, ignoredReason },
   };
 }
 
 function toRFNodes(nodes: TaxonomyNode[], edges: TaxonomyEdge[]): RFNode[] {
   const ignoredMap = computeIgnoredReasons(nodes, edges);
-  const warningsMap = computeNodeValidityWarnings(nodes, edges);
-  return nodes.map((n) => toRFNode(n, ignoredMap.get(n.id) ?? null, warningsMap.get(n.id) ?? []));
+  return nodes.map((n) => toRFNode(n, ignoredMap.get(n.id) ?? null));
 }
 
 function toRFEdge(e: TaxonomyEdge, ignoredReasonsMap: Map<string, IgnoredReason>): Edge {
-  const missing = isMissingSortingQuestion(e.sortingQuestion);
   const targetIgnored = ignoredReasonsMap.has(e.targetNodeId);
-  const isWarning = missing || targetIgnored;
   return {
     id: e.id,
     source: e.sourceNodeId,
     target: e.targetNodeId,
     type: "taxonomy-edge",
-    markerEnd: { type: MarkerType.ArrowClosed, color: isWarning ? tokens.accent : tokens.edgeDefault },
-    data: { sortingQuestion: e.sortingQuestion, targetIgnored },
+    markerEnd: { type: MarkerType.ArrowClosed, color: targetIgnored ? tokens.accent : tokens.edgeDefault },
+    data: { targetIgnored },
   };
 }
 
@@ -104,27 +92,12 @@ function toRFEdges(edges: TaxonomyEdge[], nodes: TaxonomyNode[]): Edge[] {
 // ─── Custom node component ────────────────────────────────────────────────────
 
 function TaxonomyNodeCard({ data, selected }: NodeProps<RFNode>) {
-  const { node, ignoredReason, validityWarnings } = data;
+  const { node, ignoredReason } = data;
   const ignored = ignoredReason !== null;
 
-  const tooltipParts: string[] = [];
-  if (ignoredReason === "no-incoming") {
-    tooltipParts.push("This node has no incoming sorting question and will not be used.");
-  } else if (ignoredReason === "all-invalid") {
-    tooltipParts.push("All incoming sorting questions are missing or invalid, so this node will not be used.");
-  } else if (ignoredReason === "invalid-leaf") {
-    tooltipParts.push("Leaf nodes must be visible categories that can receive emails.");
-  }
-  if (validityWarnings.includes("dead-end")) {
-    tooltipParts.push("This node cannot receive emails and has no valid outgoing sorting questions.");
-  }
-  if (validityWarnings.includes("visible-not-receivable")) {
-    tooltipParts.push("Visible categories must be able to receive emails.");
-  }
-  if (validityWarnings.includes("hidden-destination")) {
-    tooltipParts.push("Nodes that receive emails should be visible categories in the MVP.");
-  }
-  const tooltipText = tooltipParts.join("\n") || undefined;
+  const tooltipText = ignoredReason === "no-incoming"
+    ? "This node has no incoming edge and will not be used."
+    : undefined;
 
   return (
     <div
@@ -139,21 +112,10 @@ function TaxonomyNodeCard({ data, selected }: NodeProps<RFNode>) {
       <div className="node-badges">
         {node.isRoot ? (
           <span className="badge node-kind node-kind-rule">Entry</span>
-        ) : node.isVisibleCategory && node.canReceiveEmails ? (
-          <span className="badge node-kind node-kind-category">Category Destination</span>
         ) : (
-          <span className="badge node-kind node-kind-rule">Sorting Step</span>
+          <span className="badge node-kind node-kind-category">Category</span>
         )}
         {ignored && <span className="badge badge-unreachable">Ignored</span>}
-        {validityWarnings.includes("dead-end") && (
-          <span className="badge badge-warning">Dead End</span>
-        )}
-        {validityWarnings.includes("visible-not-receivable") && (
-          <span className="badge badge-warning">Invalid Category</span>
-        )}
-        {validityWarnings.includes("hidden-destination") && (
-          <span className="badge badge-warning">Hidden Destination</span>
-        )}
       </div>
       <Handle type="source" position={Position.Right} />
     </div>
@@ -164,7 +126,7 @@ const nodeTypes = { taxonomy: TaxonomyNodeCard };
 
 // ─── Custom edge component ────────────────────────────────────────────────────
 
-type RFEdgeData = { sortingQuestion: string; targetIgnored: boolean };
+type RFEdgeData = { targetIgnored: boolean };
 
 function TaxonomyEdge({
   id,
@@ -178,7 +140,7 @@ function TaxonomyEdge({
   data,
   selected,
 }: EdgeProps) {
-  const [edgePath, labelX, labelY] = getBezierPath({
+  const [edgePath] = getBezierPath({
     sourceX,
     sourceY,
     sourcePosition,
@@ -187,40 +149,23 @@ function TaxonomyEdge({
     targetPosition,
   });
 
-  const sortingQuestion = (data as RFEdgeData | undefined)?.sortingQuestion;
   const targetIgnored = (data as RFEdgeData | undefined)?.targetIgnored ?? false;
-  const missing = isMissingSortingQuestion(sortingQuestion);
-  const isWarning = missing || targetIgnored;
-  const label = formatEdgeLabel(sortingQuestion);
+  const isWarning = targetIgnored;
   const strokeColor = isWarning && selected ? tokens.accentDim : selected ? tokens.primary : isWarning ? tokens.accent : tokens.edgeDefault;
   const resolvedMarkerEnd = markerEnd !== undefined
     ? ({ ...(markerEnd as unknown as object), color: strokeColor } as unknown as string)
     : undefined;
 
   return (
-    <>
-      <BaseEdge
-        id={id}
-        path={edgePath}
-        {...(resolvedMarkerEnd !== undefined ? { markerEnd: resolvedMarkerEnd } : {})}
-        style={{
-          stroke: strokeColor,
-          strokeWidth: selected ? 2.5 : 1.5,
-        }}
-      />
-      <EdgeLabelRenderer>
-        <div
-          style={{
-            position: "absolute",
-            transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
-            pointerEvents: "all",
-          }}
-          className={`nodrag nopan edge-label${isWarning && selected ? " edge-label-selected-warning" : isWarning ? " edge-label-warning" : selected ? " edge-label-selected" : ""}`}
-        >
-          {label}
-        </div>
-      </EdgeLabelRenderer>
-    </>
+    <BaseEdge
+      id={id}
+      path={edgePath}
+      {...(resolvedMarkerEnd !== undefined ? { markerEnd: resolvedMarkerEnd } : {})}
+      style={{
+        stroke: strokeColor,
+        strokeWidth: selected ? 2.5 : 1.5,
+      }}
+    />
   );
 }
 
@@ -249,9 +194,6 @@ function NodeForm({
 
   const [name, setName] = useState(node?.name ?? "");
   const [description, setDescription] = useState(node?.description ?? "");
-  const [isCategoryDestination, setIsCategoryDestination] = useState(
-    (node?.isVisibleCategory ?? false) && (node?.canReceiveEmails ?? false)
-  );
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -263,8 +205,6 @@ function NodeForm({
       ...(trimmedDescription ? { description: trimmedDescription } : {}),
       instructions: node?.instructions ?? null,
       examples: node?.examples ?? [],
-      isVisibleCategory: isCategoryDestination,
-      canReceiveEmails: isCategoryDestination,
     });
   }
 
@@ -299,28 +239,13 @@ function NodeForm({
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             required={!isRoot}
-            minLength={!isRoot ? 20 : undefined}
             maxLength={300}
           />
           {!isRoot && (
             <p style={{ fontSize: 11, color: "var(--color-muted)", marginTop: 2 }}>
-              Min 20 characters. Descriptions improve AI sorting quality.
+              At least 30 non-whitespace characters. Descriptions improve AI sorting quality.
             </p>
           )}
-        </div>
-        <div className="form-group">
-          <label style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <input
-              type="checkbox"
-              checked={isCategoryDestination}
-              onChange={(e) => setIsCategoryDestination(e.target.checked)}
-              disabled={isRoot}
-            />
-            Category destination
-          </label>
-          <p style={{ fontSize: 11, color: "var(--color-muted)", marginTop: 4 }}>
-            Category destinations appear as folders and can receive sorted threads. Sorting steps only route emails.
-          </p>
         </div>
         <div className="form-actions">
           <button className="btn-primary" type="submit" disabled={submitting}>
@@ -381,29 +306,15 @@ function EdgeForm({
 
   const [sourceNodeId, setSourceNodeId] = useState(edge?.sourceNodeId ?? "");
   const [targetNodeId, setTargetNodeId] = useState(edge?.targetNodeId ?? "");
-  const [sortingQuestion, setSortingQuestion] = useState(
-    edge?.sortingQuestion ?? ""
-  );
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (edge) {
-      onSubmit({
-        sortingQuestion,
-        examples: edge.examples ?? [],
-        negativeExamples: edge.negativeExamples ?? [],
-        priority: edge.priority ?? 0,
-        confidenceThreshold: edge.confidenceThreshold ?? null,
-      } satisfies UpdateTaxonomyEdgeInput);
+      onSubmit({} satisfies UpdateTaxonomyEdgeInput);
     } else {
       onSubmit({
         sourceNodeId,
         targetNodeId,
-        sortingQuestion,
-        examples: [],
-        negativeExamples: [],
-        priority: 0,
-        confidenceThreshold: null,
       } satisfies CreateTaxonomyEdgeInput);
     }
   }
@@ -465,31 +376,6 @@ function EdgeForm({
             </span>
           </div>
         )}
-        <div className="form-group">
-          <label className="form-label">
-            Sorting question <span className="required">*</span>
-          </label>
-          <p style={{ fontSize: 11, color: "var(--color-muted)", marginTop: 1, marginBottom: 4 }}>
-            Short routing questions only. Max 160 characters. Put extra guidance in node descriptions/examples later.
-          </p>
-          <input
-            className="form-input"
-            value={sortingQuestion}
-            onChange={(e) => setSortingQuestion(e.target.value)}
-            required
-            maxLength={160}
-          />
-          <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 2 }}>
-            <span style={{ fontSize: 11, color: sortingQuestion.length >= 160 ? "var(--color-destructive)" : "var(--color-subtle)" }}>
-              {sortingQuestion.length}/160
-            </span>
-          </div>
-          {sortingQuestion.length >= 160 && (
-            <p style={{ fontSize: 11, color: "var(--color-destructive)", marginTop: 2 }}>
-              Sorting questions cannot exceed 160 characters.
-            </p>
-          )}
-        </div>
         <div className="form-actions">
           <button className="btn-primary" type="submit" disabled={submitting}>
             {submitting ? "Saving…" : edge ? "Save" : "Create"}
@@ -596,11 +482,6 @@ function TaxonomyCanvasInner({
         await createTaxonomyEdgeAction(workspaceId, {
           sourceNodeId: connection.source,
           targetNodeId: connection.target,
-          sortingQuestion: "",
-          examples: [],
-          negativeExamples: [],
-          priority: 0,
-          confidenceThreshold: null,
         });
         await refetch();
       } catch (err) {

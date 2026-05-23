@@ -3,14 +3,12 @@ import type { ClassifyInput, TaxonomyEdgeInput, TaxonomyNodeInput, ThreadMessage
 const SYSTEM_PROMPT = `You are an email classification assistant. Classify an email thread into the most appropriate destination node in a taxonomy tree.
 
 Rules:
-- Start from the root node and follow valid edges to a destination node
-- Use only the edge IDs listed in the taxonomy — never invent source/target transitions
-- When a node has outgoing edges, evaluate those child edges before treating it as the final destination
-- Do not stop at a node only because canReceiveEmails=true if it has outgoing edges — prefer the deepest matching node
-- Stop at the current node only when: it has no outgoing edges AND isVisibleCategory=true AND canReceiveEmails=true
-- If a node has outgoing edges but no child edge matches with sufficient confidence, you may fall back to that node only if isVisibleCategory=true AND canReceiveEmails=true
-- If a node has outgoing edges but no child matches and that node cannot receive emails, set finalNodeId to null and needsHumanReview to true
-- Record only the edges actually followed in "path" — do not include rejected or considered-but-not-taken edges
+- Start from the root node and follow edges toward leaf nodes
+- Choose the node whose name and description best match the email content
+- Prefer deeper, more specific nodes over broader ancestors
+- Stop at a leaf node (no outgoing edges) unless a shallower node is clearly the better match
+- If no node fits, set finalNodeId to null and needsHumanReview to true
+- Record only the edges actually followed in "path"
 - Classify the thread as a whole — weight the latest message most heavily
 - If uncertain or no valid destination exists, set finalNodeId to null and needsHumanReview to true
 
@@ -45,8 +43,6 @@ function renderTaxonomyTree(nodes: TaxonomyNodeInput[], edges: TaxonomyEdgeInput
     const outgoing = edges.filter((e) => e.sourceNodeId === nodeId);
     const flags: string[] = [];
     if (node.isRoot) flags.push("ROOT");
-    if (node.isVisibleCategory) flags.push("visible");
-    if (node.canReceiveEmails) flags.push("canReceive");
     if (outgoing.length === 0) flags.push("LEAF");
 
     const lines: string[] = [];
@@ -56,9 +52,7 @@ function renderTaxonomyTree(nodes: TaxonomyNodeInput[], edges: TaxonomyEdgeInput
     if (node.examples.length > 0) lines.push(`${indent}  examples: ${node.examples.join("; ")}`);
 
     for (const edge of outgoing) {
-      lines.push(`${indent}  → "${edge.sortingQuestion}" (edge:${edge.id})`);
-      if (edge.examples.length > 0) lines.push(`${indent}    yes: ${edge.examples.join("; ")}`);
-      if (edge.negativeExamples.length > 0) lines.push(`${indent}    no: ${edge.negativeExamples.join("; ")}`);
+      lines.push(`${indent}  → (edge:${edge.id})`);
       lines.push(renderNode(edge.targetNodeId, indent + "    ", childVisited));
     }
 

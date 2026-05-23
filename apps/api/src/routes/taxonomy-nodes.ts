@@ -16,8 +16,6 @@ const nodeSelect = {
   instructions: true,
   examples: true,
   isRoot: true,
-  isVisibleCategory: true,
-  canReceiveEmails: true,
   positionX: true,
   positionY: true,
   createdAt: true,
@@ -41,14 +39,14 @@ const nameSchema = z
 const descriptionSchema = z
   .string()
   .trim()
-  .min(
-    20,
-    "Description must be at least 20 characters. Descriptions improve AI sorting quality."
-  )
   .max(300, "Description must be at most 300 characters")
   .refine(
     (v) => !HTML_TAG_RE.test(v),
     "Description must be plain text (no HTML). Descriptions improve AI sorting quality."
+  )
+  .refine(
+    (v) => v.replace(/\s/g, "").length >= 30,
+    "Description must have at least 30 non-whitespace characters. Descriptions improve AI sorting quality."
   );
 
 // description is required for all non-root node creation (POST always sets isRoot: false)
@@ -58,8 +56,6 @@ const createBodySchema = z
     description: descriptionSchema,
     instructions: z.string().max(2000).nullable().optional(),
     examples: z.array(z.string()).optional(),
-    isVisibleCategory: z.boolean().optional(),
-    canReceiveEmails: z.boolean().optional(),
     positionX: z.number().optional(),
     positionY: z.number().optional(),
   })
@@ -72,16 +68,6 @@ const createBodySchema = z
         path: ["description"],
       });
     }
-    if (
-      data.isVisibleCategory !== undefined &&
-      data.canReceiveEmails !== undefined &&
-      data.isVisibleCategory !== data.canReceiveEmails
-    ) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "isVisibleCategory and canReceiveEmails must have the same value",
-      });
-    }
   });
 
 const updateBodySchema = z
@@ -90,8 +76,6 @@ const updateBodySchema = z
     description: descriptionSchema.optional(),
     instructions: z.string().max(2000).nullable().optional(),
     examples: z.array(z.string()).optional(),
-    isVisibleCategory: z.boolean().optional(),
-    canReceiveEmails: z.boolean().optional(),
     positionX: z.number().optional(),
     positionY: z.number().optional(),
   })
@@ -176,8 +160,6 @@ taxonomyNodes.post("/workspaces/:workspaceId/taxonomy-nodes", async (c) => {
       description: d.description,
       ...(d.instructions != null ? { instructions: d.instructions } : {}),
       ...(d.examples !== undefined ? { examples: d.examples } : {}),
-      ...(d.isVisibleCategory !== undefined ? { isVisibleCategory: d.isVisibleCategory } : {}),
-      ...(d.canReceiveEmails !== undefined ? { canReceiveEmails: d.canReceiveEmails } : {}),
       ...(d.positionX !== undefined ? { positionX: d.positionX } : {}),
       ...(d.positionY !== undefined ? { positionY: d.positionY } : {}),
     },
@@ -225,25 +207,6 @@ taxonomyNodes.patch(
       return c.json({ error: "Node not found" }, 404);
     }
 
-    if (existing.isRoot && (d.isVisibleCategory !== undefined || d.canReceiveEmails !== undefined)) {
-      return c.json(
-        { error: "Cannot change isVisibleCategory or canReceiveEmails on the root node" },
-        422
-      );
-    }
-
-    if (
-      !existing.isRoot &&
-      d.isVisibleCategory !== undefined &&
-      d.canReceiveEmails !== undefined &&
-      d.isVisibleCategory !== d.canReceiveEmails
-    ) {
-      return c.json(
-        { error: "isVisibleCategory and canReceiveEmails must have the same value" },
-        422
-      );
-    }
-
     const updated = await db.taxonomyNode.update({
       where: { id: nodeId },
       data: {
@@ -251,8 +214,6 @@ taxonomyNodes.patch(
         ...(d.description !== undefined ? { description: d.description } : {}),
         ...(d.instructions !== undefined ? { instructions: d.instructions } : {}),
         ...(d.examples !== undefined ? { examples: d.examples } : {}),
-        ...(d.isVisibleCategory !== undefined ? { isVisibleCategory: d.isVisibleCategory } : {}),
-        ...(d.canReceiveEmails !== undefined ? { canReceiveEmails: d.canReceiveEmails } : {}),
         ...(d.positionX !== undefined ? { positionX: d.positionX } : {}),
         ...(d.positionY !== undefined ? { positionY: d.positionY } : {}),
       },

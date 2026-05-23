@@ -37,8 +37,6 @@ const NODES = [
     instructions: null,
     examples: [],
     isRoot: true,
-    isVisibleCategory: false,
-    canReceiveEmails: false,
   },
   {
     id: "node-leaf",
@@ -47,8 +45,6 @@ const NODES = [
     instructions: null,
     examples: [],
     isRoot: false,
-    isVisibleCategory: true,
-    canReceiveEmails: true,
   },
 ];
 
@@ -57,9 +53,6 @@ const EDGES = [
     id: "edge-1",
     sourceNodeId: "node-root",
     targetNodeId: "node-leaf",
-    sortingQuestion: "Client email?",
-    examples: [],
-    negativeExamples: [],
   },
 ];
 
@@ -83,7 +76,6 @@ const VALID_AI_RESULT = {
       edgeId: "edge-1",
       sourceNodeId: "node-root",
       targetNodeId: "node-leaf",
-      sortingQuestion: "Client email?",
       confidence: 0.9,
       explanation: "Client email",
     },

@@ -26,17 +26,12 @@ export type TaxonomyNodeInput = {
   instructions: string | null;
   examples: string[];
   isRoot: boolean;
-  isVisibleCategory: boolean;
-  canReceiveEmails: boolean;
 };
 
 export type TaxonomyEdgeInput = {
   id: string;
   sourceNodeId: string;
   targetNodeId: string;
-  sortingQuestion: string;
-  examples: string[];
-  negativeExamples: string[];
 };
 
 export type ClassifyInput = {

@@ -7,6 +7,9 @@ import {
   UpdateTaxonomyNodeInputSchema,
 } from "./taxonomy.js";
 
+// A description with at least 30 non-whitespace characters.
+const VALID_DESCRIPTION = "Emails from clients and project stakeholders";
+
 describe("TaxonomyNodeSchema", () => {
   const base = {
     id: "node_1",
@@ -16,8 +19,6 @@ describe("TaxonomyNodeSchema", () => {
     instructions: null,
     examples: [],
     isRoot: true,
-    isVisibleCategory: false,
-    canReceiveEmails: false,
     positionX: 0,
     positionY: 0,
     createdAt: "2026-01-01T00:00:00.000Z",
@@ -44,13 +45,13 @@ describe("CreateTaxonomyNodeInputSchema", () => {
   const minimal = {
     workspaceId: "ws_1",
     name: "Clients",
-    description: "Emails from clients and project stakeholders",
+    description: VALID_DESCRIPTION,
   };
 
   it("parses a minimal valid input (name + description)", () => {
     const result = CreateTaxonomyNodeInputSchema.parse(minimal);
     expect(result.name).toBe("Clients");
-    expect(result.description).toBe("Emails from clients and project stakeholders");
+    expect(result.description).toBe(VALID_DESCRIPTION);
   });
 
   it("parses a full valid input", () => {
@@ -58,13 +59,9 @@ describe("CreateTaxonomyNodeInputSchema", () => {
       ...minimal,
       instructions: "Match emails mentioning client names",
       examples: ["Your project update", "Re: proposal"],
-      isVisibleCategory: true,
-      canReceiveEmails: true,
       positionX: 100,
       positionY: 200,
     });
-    expect(result.isVisibleCategory).toBe(true);
-    expect(result.canReceiveEmails).toBe(true);
     expect(result.examples).toEqual(["Your project update", "Re: proposal"]);
   });
 
@@ -79,33 +76,30 @@ describe("CreateTaxonomyNodeInputSchema", () => {
     ).toThrow();
   });
 
-  it("rejects when isVisibleCategory and canReceiveEmails have different values", () => {
+  it("rejects description with fewer than 30 non-whitespace characters", () => {
     expect(() =>
-      CreateTaxonomyNodeInputSchema.parse({ ...minimal, isVisibleCategory: true, canReceiveEmails: false })
-    ).toThrow();
-    expect(() =>
-      CreateTaxonomyNodeInputSchema.parse({ ...minimal, isVisibleCategory: false, canReceiveEmails: true })
+      CreateTaxonomyNodeInputSchema.parse({ ...minimal, description: "Short desc" })
     ).toThrow();
   });
 
-  it("accepts when both isVisibleCategory and canReceiveEmails are true", () => {
+  it("accepts description with exactly 30 non-whitespace characters", () => {
+    // "a" repeated 30 times — no spaces, 30 non-whitespace chars
     const result = CreateTaxonomyNodeInputSchema.parse({
-      ...minimal,
-      isVisibleCategory: true,
-      canReceiveEmails: true,
+      workspaceId: "ws_1",
+      name: "Node",
+      description: "a".repeat(30),
     });
-    expect(result.isVisibleCategory).toBe(true);
-    expect(result.canReceiveEmails).toBe(true);
+    expect(result.description).toHaveLength(30);
   });
 
-  it("accepts when both isVisibleCategory and canReceiveEmails are false", () => {
-    const result = CreateTaxonomyNodeInputSchema.parse({
-      ...minimal,
-      isVisibleCategory: false,
-      canReceiveEmails: false,
-    });
-    expect(result.isVisibleCategory).toBe(false);
-    expect(result.canReceiveEmails).toBe(false);
+  it("rejects description with 29 non-whitespace characters", () => {
+    expect(() =>
+      CreateTaxonomyNodeInputSchema.parse({
+        workspaceId: "ws_1",
+        name: "Node",
+        description: "a".repeat(29),
+      })
+    ).toThrow();
   });
 });
 
@@ -118,15 +112,6 @@ describe("UpdateTaxonomyNodeInputSchema", () => {
   it("accepts a partial update", () => {
     const result = UpdateTaxonomyNodeInputSchema.parse({ name: "New name" });
     expect(result.name).toBe("New name");
-  });
-
-  it("rejects when isVisibleCategory and canReceiveEmails have different values", () => {
-    expect(() =>
-      UpdateTaxonomyNodeInputSchema.parse({ isVisibleCategory: true, canReceiveEmails: false })
-    ).toThrow();
-    expect(() =>
-      UpdateTaxonomyNodeInputSchema.parse({ isVisibleCategory: false, canReceiveEmails: true })
-    ).toThrow();
   });
 
   it("strips workspaceId (not part of update schema)", () => {
@@ -143,55 +128,22 @@ describe("CreateTaxonomyEdgeInputSchema", () => {
     workspaceId: "ws_1",
     sourceNodeId: "node_a",
     targetNodeId: "node_b",
-    sortingQuestion: "Is this a client email?",
   };
 
   it("parses a minimal valid input", () => {
     const result = CreateTaxonomyEdgeInputSchema.parse(minimal);
-    expect(result.sortingQuestion).toBe("Is this a client email?");
+    expect(result.sourceNodeId).toBe("node_a");
+    expect(result.targetNodeId).toBe("node_b");
   });
 
-  it("parses a full valid input", () => {
-    const result = CreateTaxonomyEdgeInputSchema.parse({
-      ...minimal,
-      examples: ["Yes, from acme corp"],
-      negativeExamples: ["Newsletter from vendor"],
-      priority: 1,
-      confidenceThreshold: 0.75,
-    });
-    expect(result.priority).toBe(1);
-    expect(result.confidenceThreshold).toBe(0.75);
+  it("rejects missing sourceNodeId", () => {
+    const { sourceNodeId: _omit, ...without } = minimal;
+    expect(() => CreateTaxonomyEdgeInputSchema.parse(without)).toThrow();
   });
 
-  it("rejects confidenceThreshold outside [0, 1]", () => {
-    expect(() =>
-      CreateTaxonomyEdgeInputSchema.parse({ ...minimal, confidenceThreshold: 1.5 })
-    ).toThrow();
-    expect(() =>
-      CreateTaxonomyEdgeInputSchema.parse({ ...minimal, confidenceThreshold: -0.1 })
-    ).toThrow();
-  });
-
-  it("rejects missing sorting question", () => {
-    const { sortingQuestion: _omit, ...withoutQuestion } = minimal;
-    expect(() => CreateTaxonomyEdgeInputSchema.parse(withoutQuestion)).toThrow();
-  });
-
-  it("accepts a sortingQuestion of exactly 160 characters", () => {
-    const result = CreateTaxonomyEdgeInputSchema.parse({
-      ...minimal,
-      sortingQuestion: "a".repeat(160),
-    });
-    expect(result.sortingQuestion).toHaveLength(160);
-  });
-
-  it("rejects a sortingQuestion exceeding 160 characters", () => {
-    expect(() =>
-      CreateTaxonomyEdgeInputSchema.parse({
-        ...minimal,
-        sortingQuestion: "a".repeat(161),
-      })
-    ).toThrow();
+  it("rejects missing targetNodeId", () => {
+    const { targetNodeId: _omit, ...without } = minimal;
+    expect(() => CreateTaxonomyEdgeInputSchema.parse(without)).toThrow();
   });
 });
 
@@ -200,7 +152,6 @@ describe("ClassificationPathStepSchema", () => {
     edgeId: "edge_1",
     sourceNodeId: "node_0",
     targetNodeId: "node_1",
-    sortingQuestion: "Is this a client email?",
     confidence: 0.9,
     explanation: "Matches client criteria",
   };
@@ -210,7 +161,6 @@ describe("ClassificationPathStepSchema", () => {
     expect(result.edgeId).toBe("edge_1");
     expect(result.sourceNodeId).toBe("node_0");
     expect(result.targetNodeId).toBe("node_1");
-    expect(result.sortingQuestion).toBe("Is this a client email?");
     expect(result.confidence).toBe(0.9);
     expect(result.explanation).toBe("Matches client criteria");
   });

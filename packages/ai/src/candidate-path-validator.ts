@@ -51,7 +51,6 @@ function buildPath(
     edgeId: step.edgeId,
     sourceNodeId: step.sourceNodeId,
     targetNodeId: step.targetNodeId,
-    sortingQuestion: step.sortingQuestion,
     confidence,
     explanation,
   }));
@@ -95,14 +94,7 @@ export function validatePathSelection(
     );
   }
 
-  // 6. Final destination policy: must be visible and able to receive emails
-  if (!candidate.finalNodeIsVisible || !candidate.finalNodeCanReceive) {
-    return reviewNeeded(
-      `Selected path leads to an invalid destination (isVisible=${candidate.finalNodeIsVisible}, canReceive=${candidate.finalNodeCanReceive})`
-    );
-  }
-
-  // 7. Path and finalNodeId come from the validated candidate — never from LLM output
+  // 6. Path and finalNodeId come from the validated candidate — never from LLM output
   return {
     finalNodeId: candidate.finalNodeId,
     path: buildPath(candidate.edgeSteps, output.confidence, output.explanation),

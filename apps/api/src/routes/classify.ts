@@ -90,8 +90,6 @@ classify.post(
           instructions: true,
           examples: true,
           isRoot: true,
-          isVisibleCategory: true,
-          canReceiveEmails: true,
         },
       }),
       db.taxonomyEdge.findMany({
@@ -100,9 +98,6 @@ classify.post(
           id: true,
           sourceNodeId: true,
           targetNodeId: true,
-          sortingQuestion: true,
-          examples: true,
-          negativeExamples: true,
         },
       }),
     ]);
@@ -112,11 +107,7 @@ classify.post(
     }
 
     const nodes = rawNodes.map((n) => ({ ...n, examples: n.examples as string[] }));
-    const edges = rawEdges.map((e) => ({
-      ...e,
-      examples: e.examples as string[],
-      negativeExamples: e.negativeExamples as string[],
-    }));
+    const edges = rawEdges;
 
     const result = await classifyThread(provider, {
       nodes,
@@ -225,11 +216,11 @@ classify.post(
     const [nodes, rawMockEdges] = await Promise.all([
       db.taxonomyNode.findMany({
         where: { workspaceId },
-        select: { id: true, name: true, isRoot: true, isVisibleCategory: true, canReceiveEmails: true },
+        select: { id: true, name: true, isRoot: true },
       }),
       db.taxonomyEdge.findMany({
         where: { workspaceId },
-        select: { id: true, sourceNodeId: true, targetNodeId: true, sortingQuestion: true },
+        select: { id: true, sourceNodeId: true, targetNodeId: true },
       }),
     ]);
 

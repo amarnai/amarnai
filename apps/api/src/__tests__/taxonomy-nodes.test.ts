@@ -20,7 +20,7 @@ import { db } from "@amarnai/db";
 const WS_ID = "ws-1";
 const NODE_ID = "node-1";
 
-// A description that meets all constraints: >= 20 chars, <= 300 chars, no HTML,
+// A description that meets all constraints: >= 30 non-whitespace chars, <= 300 chars, no HTML,
 // not identical to any test node name.
 const VALID_DESCRIPTION = "A valid description for testing purposes";
 
@@ -32,8 +32,6 @@ const baseNode = {
   instructions: null,
   examples: [],
   isRoot: false,
-  isVisibleCategory: false,
-  canReceiveEmails: false,
   positionX: 0,
   positionY: 0,
   createdAt: new Date().toISOString(),
@@ -122,8 +120,6 @@ describe("POST /workspaces/:workspaceId/taxonomy-nodes", () => {
       ...baseNode,
       name: "Clients",
       description: VALID_DESCRIPTION,
-      isVisibleCategory: true,
-      canReceiveEmails: true,
       examples: ["ex1"],
     };
     vi.mocked(db.workspace.findUnique).mockResolvedValue({ id: WS_ID } as never);
@@ -132,13 +128,10 @@ describe("POST /workspaces/:workspaceId/taxonomy-nodes", () => {
     const res = await post(`/workspaces/${WS_ID}/taxonomy-nodes`, {
       name: "Clients",
       description: VALID_DESCRIPTION,
-      isVisibleCategory: true,
-      canReceiveEmails: true,
       examples: ["ex1"],
     });
     expect(res.status).toBe(201);
     const body = await res.json() as typeof full;
-    expect(body.isVisibleCategory).toBe(true);
     expect(body.examples).toEqual(["ex1"]);
   });
 
@@ -165,16 +158,16 @@ describe("POST /workspaces/:workspaceId/taxonomy-nodes", () => {
     expect(body.error).toBe("Validation error");
   });
 
-  it("returns 400 when description is under 20 characters", async () => {
+  it("returns 400 when description has fewer than 30 non-whitespace characters", async () => {
     const res = await post(`/workspaces/${WS_ID}/taxonomy-nodes`, {
       name: "Clients",
-      description: "Too short",
+      description: "Too short desc",
     });
     expect(res.status).toBe(400);
     const body = await res.json() as { error: string; issues: unknown[] };
     expect(body.error).toBe("Validation error");
     const issueMessages = (body.issues as Array<{ message: string }>).map((i) => i.message);
-    expect(issueMessages.some((m) => m.toLowerCase().includes("20"))).toBe(true);
+    expect(issueMessages.some((m) => m.toLowerCase().includes("30"))).toBe(true);
   });
 
   it("returns 400 when description is over 300 characters", async () => {
@@ -256,31 +249,6 @@ describe("POST /workspaces/:workspaceId/taxonomy-nodes", () => {
     expect(res.status).toBe(404);
   });
 
-  it("returns 400 when isVisibleCategory=true and canReceiveEmails=false", async () => {
-    const res = await post(`/workspaces/${WS_ID}/taxonomy-nodes`, {
-      name: "Clients",
-      description: VALID_DESCRIPTION,
-      isVisibleCategory: true,
-      canReceiveEmails: false,
-    });
-    expect(res.status).toBe(400);
-    const body = await res.json() as { error: string; issues: unknown[] };
-    expect(body.error).toBe("Validation error");
-    const issueMessages = (body.issues as Array<{ message: string }>).map((i) => i.message);
-    expect(issueMessages.some((m) => m.toLowerCase().includes("same value"))).toBe(true);
-  });
-
-  it("returns 400 when isVisibleCategory=false and canReceiveEmails=true", async () => {
-    const res = await post(`/workspaces/${WS_ID}/taxonomy-nodes`, {
-      name: "Clients",
-      description: VALID_DESCRIPTION,
-      isVisibleCategory: false,
-      canReceiveEmails: true,
-    });
-    expect(res.status).toBe(400);
-    const body = await res.json() as { error: string; issues: unknown[] };
-    expect(body.error).toBe("Validation error");
-  });
 });
 
 // ─── PATCH ────────────────────────────────────────────────────────────────────
@@ -298,20 +266,6 @@ describe("PATCH /workspaces/:workspaceId/taxonomy-nodes/:nodeId", () => {
     expect(res.status).toBe(200);
     const body = await res.json() as typeof updated;
     expect(body.name).toBe("Renamed");
-  });
-
-  it("updates boolean flags", async () => {
-    const updated = { ...baseNode, isVisibleCategory: true, canReceiveEmails: true };
-    vi.mocked(db.taxonomyNode.findUnique).mockResolvedValue(baseNode as never);
-    vi.mocked(db.taxonomyNode.update).mockResolvedValue(updated as never);
-
-    const res = await patch(
-      `/workspaces/${WS_ID}/taxonomy-nodes/${NODE_ID}`,
-      { isVisibleCategory: true, canReceiveEmails: true }
-    );
-    expect(res.status).toBe(200);
-    const body = await res.json() as typeof updated;
-    expect(body.isVisibleCategory).toBe(true);
   });
 
   it("allows updating a non-root node's description to a valid value", async () => {
@@ -355,12 +309,12 @@ describe("PATCH /workspaces/:workspaceId/taxonomy-nodes/:nodeId", () => {
     expect(res.status).toBe(200);
   });
 
-  it("returns 400 when updated description is under 20 characters", async () => {
+  it("returns 400 when updated description has fewer than 30 non-whitespace characters", async () => {
     vi.mocked(db.taxonomyNode.findUnique).mockResolvedValue(baseNode as never);
 
     const res = await patch(
       `/workspaces/${WS_ID}/taxonomy-nodes/${NODE_ID}`,
-      { description: "Too short" }
+      { description: "Too short desc" }
     );
     expect(res.status).toBe(400);
     const body = await res.json() as { error: string };
@@ -433,34 +387,6 @@ describe("PATCH /workspaces/:workspaceId/taxonomy-nodes/:nodeId", () => {
     expect(body.error).toMatch(/isRoot/i);
   });
 
-  it("returns 422 when changing isVisibleCategory on the root node", async () => {
-    vi.mocked(db.taxonomyNode.findUnique).mockResolvedValue(
-      { ...baseNode, isRoot: true } as never
-    );
-
-    const res = await patch(
-      `/workspaces/${WS_ID}/taxonomy-nodes/${NODE_ID}`,
-      { isVisibleCategory: false }
-    );
-    expect(res.status).toBe(422);
-    const body = await res.json() as { error: string };
-    expect(body.error).toMatch(/isVisibleCategory/i);
-  });
-
-  it("returns 422 when changing canReceiveEmails on the root node", async () => {
-    vi.mocked(db.taxonomyNode.findUnique).mockResolvedValue(
-      { ...baseNode, isRoot: true } as never
-    );
-
-    const res = await patch(
-      `/workspaces/${WS_ID}/taxonomy-nodes/${NODE_ID}`,
-      { canReceiveEmails: false }
-    );
-    expect(res.status).toBe(422);
-    const body = await res.json() as { error: string };
-    expect(body.error).toMatch(/canReceiveEmails/i);
-  });
-
   it("allows other field changes on the root node", async () => {
     const updated = { ...baseNode, name: "Renamed Root", isRoot: true };
     vi.mocked(db.taxonomyNode.findUnique).mockResolvedValue(
@@ -475,30 +401,6 @@ describe("PATCH /workspaces/:workspaceId/taxonomy-nodes/:nodeId", () => {
     expect(res.status).toBe(200);
     const body = await res.json() as typeof updated;
     expect(body.name).toBe("Renamed Root");
-  });
-
-  it("returns 422 when isVisibleCategory and canReceiveEmails differ for a non-root node", async () => {
-    vi.mocked(db.taxonomyNode.findUnique).mockResolvedValue(baseNode as never);
-
-    const res = await patch(
-      `/workspaces/${WS_ID}/taxonomy-nodes/${NODE_ID}`,
-      { isVisibleCategory: true, canReceiveEmails: false }
-    );
-    expect(res.status).toBe(422);
-    const body = await res.json() as { error: string };
-    expect(body.error).toMatch(/same value/i);
-  });
-
-  it("returns 422 when isVisibleCategory=false and canReceiveEmails=true for a non-root node", async () => {
-    vi.mocked(db.taxonomyNode.findUnique).mockResolvedValue(baseNode as never);
-
-    const res = await patch(
-      `/workspaces/${WS_ID}/taxonomy-nodes/${NODE_ID}`,
-      { isVisibleCategory: false, canReceiveEmails: true }
-    );
-    expect(res.status).toBe(422);
-    const body = await res.json() as { error: string };
-    expect(body.error).toMatch(/same value/i);
   });
 
   it("root Inbox can be patched without providing a description", async () => {

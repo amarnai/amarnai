@@ -12,8 +12,6 @@ export async function ensureInboxNode(workspaceId: string): Promise<void> {
       workspaceId,
       name: "Inbox",
       isRoot: true,
-      isVisibleCategory: false,
-      canReceiveEmails: false,
     },
   });
 }

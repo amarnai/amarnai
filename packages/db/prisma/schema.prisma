@@ -221,19 +221,17 @@ model ProviderSyncState {
 }
 
 model TaxonomyNode {
-  id                String   @id @default(cuid())
-  workspaceId       String
-  name              String
-  description       String?
-  instructions      String?
-  examples          Json     @default("[]")
-  isRoot            Boolean  @default(false)
-  isVisibleCategory Boolean  @default(true)
-  canReceiveEmails  Boolean  @default(true)
-  positionX         Float    @default(0)
-  positionY         Float    @default(0)
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id          String   @id @default(cuid())
+  workspaceId String
+  name        String
+  description String?
+  instructions String?
+  examples    Json     @default("[]")
+  isRoot      Boolean  @default(false)
+  positionX   Float    @default(0)
+  positionY   Float    @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   workspace       Workspace             @relation(fields: [workspaceId], references: [id])
   outgoingEdges   TaxonomyEdge[]        @relation("SourceNode")
@@ -242,17 +240,12 @@ model TaxonomyNode {
 }
 
 model TaxonomyEdge {
-  id                  String   @id @default(cuid())
-  workspaceId         String
-  sourceNodeId        String
-  targetNodeId        String
-  sortingQuestion     String
-  examples            Json     @default("[]")
-  negativeExamples    Json     @default("[]")
-  priority            Int      @default(0)
-  confidenceThreshold Float?
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
+  id           String   @id @default(cuid())
+  workspaceId  String
+  sourceNodeId String
+  targetNodeId String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   workspace  Workspace    @relation(fields: [workspaceId], references: [id])
   sourceNode TaxonomyNode @relation("SourceNode", fields: [sourceNodeId], references: [id])

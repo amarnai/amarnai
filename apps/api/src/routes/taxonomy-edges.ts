@@ -13,11 +13,6 @@ const edgeSelect = {
   workspaceId: true,
   sourceNodeId: true,
   targetNodeId: true,
-  sortingQuestion: true,
-  examples: true,
-  negativeExamples: true,
-  priority: true,
-  confidenceThreshold: true,
   createdAt: true,
   updatedAt: true,
 } as const;
@@ -25,16 +20,9 @@ const edgeSelect = {
 const createBodySchema = z.object({
   sourceNodeId: z.string().min(1),
   targetNodeId: z.string().min(1),
-  sortingQuestion: z.string().max(160),
-  examples: z.array(z.string()).optional(),
-  negativeExamples: z.array(z.string()).optional(),
-  priority: z.number().int().optional(),
-  confidenceThreshold: z.number().min(0).max(1).nullable().optional(),
 });
 
-const updateBodySchema = createBodySchema
-  .omit({ sourceNodeId: true, targetNodeId: true })
-  .partial();
+const updateBodySchema = z.object({});
 
 async function hasCycle(
   workspaceId: string,
@@ -80,7 +68,7 @@ taxonomyEdges.get("/workspaces/:workspaceId/taxonomy-edges", async (c) => {
     where: { id: parsed.data.workspaceId },
     select: {
       taxonomyEdges: {
-        orderBy: [{ priority: "asc" }, { createdAt: "asc" }],
+        orderBy: { createdAt: "asc" },
         select: edgeSelect,
       },
     },
@@ -162,11 +150,6 @@ taxonomyEdges.post("/workspaces/:workspaceId/taxonomy-edges", async (c) => {
       workspaceId,
       sourceNodeId: d.sourceNodeId,
       targetNodeId: d.targetNodeId,
-      sortingQuestion: d.sortingQuestion,
-      ...(d.examples !== undefined ? { examples: d.examples } : {}),
-      ...(d.negativeExamples !== undefined ? { negativeExamples: d.negativeExamples } : {}),
-      ...(d.priority !== undefined ? { priority: d.priority } : {}),
-      ...(d.confidenceThreshold != null ? { confidenceThreshold: d.confidenceThreshold } : {}),
     },
     select: edgeSelect,
   });
@@ -210,15 +193,7 @@ taxonomyEdges.patch(
 
     const updated = await db.taxonomyEdge.update({
       where: { id: edgeId },
-      data: {
-        ...(d.sortingQuestion !== undefined ? { sortingQuestion: d.sortingQuestion } : {}),
-        ...(d.examples !== undefined ? { examples: d.examples } : {}),
-        ...(d.negativeExamples !== undefined ? { negativeExamples: d.negativeExamples } : {}),
-        ...(d.priority !== undefined ? { priority: d.priority } : {}),
-        ...(d.confidenceThreshold !== undefined
-          ? { confidenceThreshold: d.confidenceThreshold }
-          : {}),
-      },
+      data: {},
       select: edgeSelect,
     });
 

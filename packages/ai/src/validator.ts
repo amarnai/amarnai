@@ -77,7 +77,6 @@ export function parseAndValidateOutput(
       edgeId: edge.id,
       sourceNodeId: edge.sourceNodeId,
       targetNodeId: edge.targetNodeId,
-      sortingQuestion: edge.sortingQuestion,
       confidence: step.confidence,
       explanation: step.explanation,
     });
@@ -137,31 +136,10 @@ export function parseAndValidateOutput(
         pathIsConnected = false;
       }
     }
-  }
 
-  // 7. Validate final destination using traversal policy (rules 3-5)
-  if (output.finalNodeId !== null) {
-    const node = nodes.find((n) => n.id === output.finalNodeId)!;
-
-    const hasOutgoingEdges = edges.some((e) => e.sourceNodeId === node.id);
-
-    if (hasOutgoingEdges) {
-      // Rule 4/5: node is intermediate (has outgoing edges).
-      // Rule 4: valid fallback only if visible and can receive emails.
-      // Rule 5: if it cannot receive emails, no valid fallback exists — needs review.
-      if (!node.isVisibleCategory || !node.canReceiveEmails) {
-        return reviewNeeded(
-          `Node "${output.finalNodeId}" has outgoing edges but cannot serve as a fallback destination (isVisibleCategory=${node.isVisibleCategory}, canReceiveEmails=${node.canReceiveEmails})`
-        );
-      }
-      // Rule 4 satisfied: visible + receivable intermediate fallback is allowed.
-    } else {
-      // Rule 3: leaf node — must be visible and able to receive emails.
-      if (!node.isVisibleCategory || !node.canReceiveEmails) {
-        return reviewNeeded(
-          `Node "${output.finalNodeId}" is not a valid email destination (isVisibleCategory=${node.isVisibleCategory}, canReceiveEmails=${node.canReceiveEmails})`
-        );
-      }
+    // 7. Root node cannot be a final destination
+    if (finalNode && finalNode.isRoot) {
+      return reviewNeeded(`Root node "${output.finalNodeId}" cannot be a final destination`);
     }
   }
 

@@ -6,7 +6,7 @@ function node(
   id: string,
   name: string,
   description: string | null,
-  opts: { isRoot?: boolean; visible?: boolean; receiving?: boolean } = {}
+  opts: { isRoot?: boolean } = {}
 ): TaxonomyNodeInput {
   return {
     id,
@@ -15,8 +15,6 @@ function node(
     instructions: null,
     examples: [],
     isRoot: opts.isRoot ?? false,
-    isVisibleCategory: opts.visible ?? true,
-    canReceiveEmails: opts.receiving ?? true,
   };
 }
 
@@ -24,47 +22,26 @@ function edge(
   id: string,
   sourceNodeId: string,
   targetNodeId: string,
-  sortingQuestion: string
 ): TaxonomyEdgeInput {
-  return { id, sourceNodeId, targetNodeId, sortingQuestion, examples: [], negativeExamples: [] };
+  return { id, sourceNodeId, targetNodeId };
 }
-
-const HIDDEN = { visible: false, receiving: false } as const;
 
 // ─── Taxonomy ─────────────────────────────────────────────────────────────────
 //
-// Inbox [root, hidden]
-// ├── Secretariat triage [hidden]
-// │   ├── Lifecycle ceremony triage [hidden]
-// │   │   ├── Weddings
-// │   │   └── Funerals
-// │   ├── Booking qualification [hidden]
-// │   │   ├── Conferences / invitations
-// │   │   └── Media / interviews
-// │   └── General secretariat
-// ├── Tenoua routing [hidden]
-// │   ├── Editorial / pitches
-// │   ├── Contributors
-// │   ├── Subscriptions / distribution
-// │   └── Partnerships / press
+// Inbox [root]
+// ├── Weddings
+// ├── Funerals
+// ├── Conferences / invitations
+// ├── Media / interviews
+// ├── General secretariat
+// ├── Editorial / pitches
+// ├── Contributors
+// ├── Subscriptions / distribution
+// ├── Partnerships / press
 // └── Other / needs review
 
 export const NODES = {
-  inbox: node("inbox", "Inbox", null, { isRoot: true, ...HIDDEN }),
-
-  secretariatTriage: node(
-    "secretariat-triage",
-    "Secretariat triage",
-    "Hidden routing step for secretariat requests: ceremonies, bookings, and general inquiries.",
-    HIDDEN
-  ),
-
-  lifecycleTriage: node(
-    "lifecycle-triage",
-    "Lifecycle ceremony triage",
-    "Hidden routing step for wedding and funeral ceremony requests.",
-    HIDDEN
-  ),
+  inbox: node("inbox", "Inbox", null, { isRoot: true }),
 
   weddings: node(
     "weddings",
@@ -76,13 +53,6 @@ export const NODES = {
     "funerals",
     "Funerals",
     "Funeral service inquiries, bereavement coordination, memorial ceremony requests, and related administrative matters."
-  ),
-
-  bookingQualification: node(
-    "booking-qualification",
-    "Booking qualification",
-    "Hidden routing step for event bookings, speaking invitations, and media appearances.",
-    HIDDEN
   ),
 
   conferencesInvitations: node(
@@ -103,17 +73,10 @@ export const NODES = {
     "Administrative requests that do not fit ceremonies or bookings: scheduling, correspondence, and general coordination."
   ),
 
-  tenouaRouting: node(
-    "tenoua-routing",
-    "Tenoua routing",
-    "Hidden routing step for Tenoua magazine emails.",
-    HIDDEN
-  ),
-
   editorialPitches: node(
     "editorial-pitches",
     "Editorial / pitches",
-    "New article pitches and editorial proposals from writers who want to be published in Tenoua for the first time or submit a specific piece."
+    "New article pitch and editorial proposals from writers who want to be published in Tenoua for the first time or submit a specific piece."
   ),
 
   contributors: node(
@@ -142,90 +105,16 @@ export const NODES = {
 } as const;
 
 export const EDGES = {
-  inboxToSecretariat: edge(
-    "e-inbox-sec",
-    "inbox",
-    "secretariat-triage",
-    "Is this a secretariat request? (ceremonies, bookings, general administrative inquiries)"
-  ),
-  secretariatToLifecycle: edge(
-    "e-sec-lifecycle",
-    "secretariat-triage",
-    "lifecycle-triage",
-    "Is this about a lifecycle ceremony — a wedding or a funeral?"
-  ),
-  lifecycleToWeddings: edge(
-    "e-lifecycle-weddings",
-    "lifecycle-triage",
-    "weddings",
-    "Is this specifically about a wedding ceremony?"
-  ),
-  lifecycleToFunerals: edge(
-    "e-lifecycle-funerals",
-    "lifecycle-triage",
-    "funerals",
-    "Is this specifically about a funeral or bereavement service?"
-  ),
-  secretariatToBooking: edge(
-    "e-sec-booking",
-    "secretariat-triage",
-    "booking-qualification",
-    "Is this a booking for an event, conference, or media appearance?"
-  ),
-  bookingToConferences: edge(
-    "e-booking-conf",
-    "booking-qualification",
-    "conferences-invitations",
-    "Is this a conference, seminar, or public speaking invitation?"
-  ),
-  bookingToMedia: edge(
-    "e-booking-media",
-    "booking-qualification",
-    "media-interviews",
-    "Is this a press interview, media appearance, or journalist inquiry?"
-  ),
-  secretariatToGeneral: edge(
-    "e-sec-general",
-    "secretariat-triage",
-    "general-secretariat",
-    "Is this a general administrative request that does not fit ceremonies or bookings?"
-  ),
-  inboxToTenoua: edge(
-    "e-inbox-tenoua",
-    "inbox",
-    "tenoua-routing",
-    "Is this related to the Tenoua magazine (editorial, subscriptions, contributors, partnerships)?"
-  ),
-  tenouaToEditorial: edge(
-    "e-tenoua-editorial",
-    "tenoua-routing",
-    "editorial-pitches",
-    "Is this a new article pitch or editorial proposal from a writer who wants to be published in Tenoua?"
-  ),
-  tenouaToContributors: edge(
-    "e-tenoua-contributors",
-    "tenoua-routing",
-    "contributors",
-    "Is this from an established Tenoua contributor or staff member who already writes regularly for the magazine?"
-  ),
-  tenouaToSubscriptions: edge(
-    "e-tenoua-subs",
-    "tenoua-routing",
-    "subscriptions-distribution",
-    "Is this a subscription request from a reader — signing up, renewing, or asking about distribution?"
-  ),
-  tenouaToPartnerships: edge(
-    "e-tenoua-partnerships",
-    "tenoua-routing",
-    "partnerships-press",
-    "Is this a partnership, sponsorship, or press inquiry for Tenoua?"
-  ),
-  inboxToOther: edge(
-    "e-inbox-other",
-    "inbox",
-    "other-needs-review",
-    "Does this email not fit any known category?"
-  ),
+  inboxToWeddings: edge("e-inbox-weddings", "inbox", "weddings"),
+  inboxToFunerals: edge("e-inbox-funerals", "inbox", "funerals"),
+  inboxToConferences: edge("e-inbox-conf", "inbox", "conferences-invitations"),
+  inboxToMedia: edge("e-inbox-media", "inbox", "media-interviews"),
+  inboxToGeneral: edge("e-inbox-general", "inbox", "general-secretariat"),
+  inboxToEditorial: edge("e-inbox-editorial", "inbox", "editorial-pitches"),
+  inboxToContributors: edge("e-inbox-contributors", "inbox", "contributors"),
+  inboxToSubscriptions: edge("e-inbox-subs", "inbox", "subscriptions-distribution"),
+  inboxToPartnerships: edge("e-inbox-partnerships", "inbox", "partnerships-press"),
+  inboxToOther: edge("e-inbox-other", "inbox", "other-needs-review"),
 } as const;
 
 export const ALL_NODES: TaxonomyNodeInput[] = Object.values(NODES);
@@ -299,8 +188,6 @@ export const TEST_EMAILS: TestEmail[] = [
     allowNeedsHumanReview: false,
   },
   {
-    // Journalist/media request with strong media-interviews signals (journalist,
-    // interview, media appearance) and no conference, wedding, or Tenoua tokens.
     id: "media-interview-request",
     difficulty: "easy",
     messages: [
@@ -317,9 +204,6 @@ export const TEST_EMAILS: TestEmail[] = [
     allowNeedsHumanReview: false,
   },
   {
-    // Subscription renewal email. Misleading tokens (mourning, funeral, ceremonies)
-    // score for the Funerals path, but subscription/distribution tokens should
-    // keep Subscriptions / distribution ranked above Funerals in candidates.
     id: "tenoua-subscription-mourning-distractors",
     difficulty: "medium",
     messages: [
@@ -337,11 +221,6 @@ export const TEST_EMAILS: TestEmail[] = [
     misleadingKeywords: ["mourning", "funeral", "ceremonies"],
   },
   {
-    // Editorial pitch whose TOPIC is mourning rituals. Misleading tokens (mourning,
-    // funeral, rituals, ceremonies) score for the Funerals path. The dominant
-    // editorial/article/pitch/draft signals should keep Editorial / pitches ranked
-    // above Funerals in candidate-path scoring; the LLM must recognise this as a
-    // magazine submission, not a personal funeral service request.
     id: "tenoua-editorial-funeral-distractors",
     difficulty: "medium",
     messages: [
@@ -359,11 +238,6 @@ export const TEST_EMAILS: TestEmail[] = [
     misleadingKeywords: ["mourning", "funeral", "rituals", "ceremonies"],
   },
   {
-    // Editorial pitch to Tenoua whose TOPIC is media/journalism. Misleading tokens
-    // (media, journalist, interview, press) score for the Media / interviews path.
-    // The dominant editorial/article/proposals/tenoua signals should keep
-    // Editorial / pitches ranked above Media / interviews in candidate-path scoring;
-    // the LLM must recognise this as a magazine submission, not a broadcast request.
     id: "tenoua-editorial-media-topic-distractors",
     difficulty: "medium",
     messages: [

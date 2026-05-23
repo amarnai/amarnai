@@ -48,8 +48,6 @@ const NODE_ROOT = {
   instructions: null,
   examples: [],
   isRoot: true,
-  isVisibleCategory: false,
-  canReceiveEmails: false,
 };
 const NODE_LEAF = {
   id: "node-leaf",
@@ -58,8 +56,6 @@ const NODE_LEAF = {
   instructions: null,
   examples: [],
   isRoot: false,
-  isVisibleCategory: true,
-  canReceiveEmails: true,
 };
 
 const mockWorkspace = {
@@ -327,7 +323,6 @@ describe("ai classifier mode", () => {
         edgeId: "edge-1",
         sourceNodeId: "node-root",
         targetNodeId: "node-leaf",
-        sortingQuestion: "Client email?",
         confidence: 0.88,
         explanation: "AI classified as Clients",
       },

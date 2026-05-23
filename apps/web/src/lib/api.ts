@@ -67,8 +67,6 @@ export type TaxonomyNode = {
   instructions: string | null;
   examples: string[];
   isRoot: boolean;
-  isVisibleCategory: boolean;
-  canReceiveEmails: boolean;
   positionX: number;
   positionY: number;
   createdAt: string;
@@ -80,8 +78,6 @@ export type CreateTaxonomyNodeInput = {
   description?: string; // required for non-root nodes; omit rather than pass null
   instructions?: string | null;
   examples?: string[];
-  isVisibleCategory?: boolean;
-  canReceiveEmails?: boolean;
   positionX?: number;
   positionY?: number;
 };
@@ -93,11 +89,6 @@ export type TaxonomyEdge = {
   workspaceId: string;
   sourceNodeId: string;
   targetNodeId: string;
-  sortingQuestion: string;
-  examples: string[];
-  negativeExamples: string[];
-  priority: number;
-  confidenceThreshold: number | null;
   createdAt: string;
   updatedAt: string;
 };
@@ -105,16 +96,9 @@ export type TaxonomyEdge = {
 export type CreateTaxonomyEdgeInput = {
   sourceNodeId: string;
   targetNodeId: string;
-  sortingQuestion: string;
-  examples?: string[];
-  negativeExamples?: string[];
-  priority?: number;
-  confidenceThreshold?: number | null;
 };
 
-export type UpdateTaxonomyEdgeInput = Partial<
-  Omit<CreateTaxonomyEdgeInput, "sourceNodeId" | "targetNodeId">
->;
+export type UpdateTaxonomyEdgeInput = Record<string, never>;
 
 export type Tag = {
   id: string;
@@ -252,7 +236,6 @@ export type MockInboxResult = {
       edgeId: string;
       sourceNodeId: string;
       targetNodeId: string;
-      sortingQuestion: string;
       confidence: number;
       explanation: string;
     }>;
@@ -289,13 +272,10 @@ export type CandidatePath = {
   finalNodeId: string;
   finalNodeName: string;
   finalNodeDescription: string | null;
-  finalNodeIsVisible: boolean;
-  finalNodeCanReceive: boolean;
   edgeSteps: Array<{
     edgeId: string;
     sourceNodeId: string;
     targetNodeId: string;
-    sortingQuestion: string;
   }>;
   label: string;
   score: number;
@@ -320,7 +300,6 @@ export type LLMPathSelectionResult = {
       edgeId: string;
       sourceNodeId: string;
       targetNodeId: string;
-      sortingQuestion: string;
       confidence: number;
       explanation: string;
     }>;
@@ -356,7 +335,6 @@ export type GmailSortResult = {
       edgeId: string;
       sourceNodeId: string;
       targetNodeId: string;
-      sortingQuestion: string;
       confidence: number;
       explanation: string;
     }>;
@@ -385,7 +363,6 @@ export type ClassifyResult = {
       edgeId: string;
       sourceNodeId: string;
       targetNodeId: string;
-      sortingQuestion: string;
       confidence: number;
       explanation: string;
     }>;

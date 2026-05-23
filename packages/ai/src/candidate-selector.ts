@@ -13,7 +13,6 @@ export type CandidateEdgeStep = {
   edgeId: string;
   sourceNodeId: string;
   targetNodeId: string;
-  sortingQuestion: string;
 };
 
 export type CandidatePath = {
@@ -23,8 +22,6 @@ export type CandidatePath = {
   finalNodeId: string;
   finalNodeName: string;
   finalNodeDescription: string | null;
-  finalNodeIsVisible: boolean;
-  finalNodeCanReceive: boolean;
   edgeSteps: CandidateEdgeStep[];
   label: string;
   score: number;
@@ -124,8 +121,6 @@ function stripFallback(s: ScoredPath): CandidatePath {
     finalNodeId: s.finalNodeId,
     finalNodeName: s.finalNodeName,
     finalNodeDescription: s.finalNodeDescription,
-    finalNodeIsVisible: s.finalNodeIsVisible,
-    finalNodeCanReceive: s.finalNodeCanReceive,
     edgeSteps: s.edgeSteps,
     label: s.label,
     score: s.score,
@@ -190,7 +185,8 @@ export function selectCandidatePaths(
   for (const raw of rawPaths) {
     const finalNode = nodeMap.get(raw.finalNodeId);
     if (!finalNode) continue;
-    if (!finalNode.isVisibleCategory || !finalNode.canReceiveEmails) continue;
+    // Skip root node as a destination
+    if (finalNode.isRoot) continue;
 
     const reasons: string[] = [];
     let totalScore = 0;
@@ -211,19 +207,6 @@ export function selectCandidatePaths(
         matchedProfilesSet.add("description");
       }
       totalScore += descResult.score;
-    }
-
-    // Edge sorting questions (weight 1.5)
-    for (const edgeId of raw.edgeIds) {
-      const edge = edges.find((e) => e.id === edgeId);
-      if (edge) {
-        const edgeResult = scoreText(queryTokens, edge.sortingQuestion, 1.5);
-        if (edgeResult.matched.length > 0) {
-          reasons.push(`edge:${edgeResult.matched.join(",")}`);
-          matchedProfilesSet.add("edge");
-        }
-        totalScore += edgeResult.score;
-      }
     }
 
     // Ancestor names (weight 1) — intermediate nodes between root and final
@@ -280,7 +263,7 @@ export function selectCandidatePaths(
       .map((id) => {
         const e = edgeMap.get(id);
         return e
-          ? { edgeId: e.id, sourceNodeId: e.sourceNodeId, targetNodeId: e.targetNodeId, sortingQuestion: e.sortingQuestion }
+          ? { edgeId: e.id, sourceNodeId: e.sourceNodeId, targetNodeId: e.targetNodeId }
           : null;
       })
       .filter((s): s is CandidateEdgeStep => s !== null);
@@ -292,8 +275,6 @@ export function selectCandidatePaths(
       finalNodeId: raw.finalNodeId,
       finalNodeName: finalNode.name,
       finalNodeDescription: finalNode.description,
-      finalNodeIsVisible: finalNode.isVisibleCategory,
-      finalNodeCanReceive: finalNode.canReceiveEmails,
       edgeSteps,
       label,
       score: Math.round(totalScore * 100) / 100,

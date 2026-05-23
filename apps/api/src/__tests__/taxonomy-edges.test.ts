@@ -33,11 +33,6 @@ const baseEdge = {
   workspaceId: WS_ID,
   sourceNodeId: NODE_A,
   targetNodeId: NODE_B,
-  sortingQuestion: "Is this urgent?",
-  examples: [],
-  negativeExamples: [],
-  priority: 0,
-  confidenceThreshold: null,
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
 };
@@ -84,7 +79,7 @@ describe("GET /workspaces/:workspaceId/taxonomy-edges", () => {
     expect(res.status).toBe(200);
     const body = (await res.json()) as typeof baseEdge[];
     expect(body).toHaveLength(1);
-    expect(body[0]).toMatchObject({ id: EDGE_ID, sortingQuestion: "Is this urgent?" });
+    expect(body[0]).toMatchObject({ id: EDGE_ID, sourceNodeId: NODE_A, targetNodeId: NODE_B });
   });
 
   it("returns 404 when workspace not found", async () => {
@@ -107,49 +102,21 @@ describe("POST /workspaces/:workspaceId/taxonomy-edges", () => {
     vi.mocked(db.taxonomyEdge.findMany).mockResolvedValue([]);
   }
 
-  it("creates an edge with minimal fields", async () => {
+  it("creates an edge with source and target", async () => {
     setupValidNodes();
     vi.mocked(db.taxonomyEdge.create).mockResolvedValue(baseEdge as never);
 
     const res = await post(`/workspaces/${WS_ID}/taxonomy-edges`, {
       sourceNodeId: NODE_A,
       targetNodeId: NODE_B,
-      sortingQuestion: "Is this urgent?",
     });
     expect(res.status).toBe(201);
     const body = (await res.json()) as typeof baseEdge;
-    expect(body).toMatchObject({ id: EDGE_ID, sortingQuestion: "Is this urgent?" });
+    expect(body).toMatchObject({ id: EDGE_ID, sourceNodeId: NODE_A, targetNodeId: NODE_B });
   });
 
-  it("creates an edge with all optional fields", async () => {
-    setupValidNodes();
-    const full = {
-      ...baseEdge,
-      examples: ["ex1"],
-      negativeExamples: ["nex1"],
-      priority: 5,
-      confidenceThreshold: 0.8,
-    };
-    vi.mocked(db.taxonomyEdge.create).mockResolvedValue(full as never);
-
+  it("returns 400 when sourceNodeId is missing", async () => {
     const res = await post(`/workspaces/${WS_ID}/taxonomy-edges`, {
-      sourceNodeId: NODE_A,
-      targetNodeId: NODE_B,
-      sortingQuestion: "Is this urgent?",
-      examples: ["ex1"],
-      negativeExamples: ["nex1"],
-      priority: 5,
-      confidenceThreshold: 0.8,
-    });
-    expect(res.status).toBe(201);
-    const body = (await res.json()) as typeof full;
-    expect(body.priority).toBe(5);
-    expect(body.confidenceThreshold).toBe(0.8);
-  });
-
-  it("returns 400 when sortingQuestion is missing", async () => {
-    const res = await post(`/workspaces/${WS_ID}/taxonomy-edges`, {
-      sourceNodeId: NODE_A,
       targetNodeId: NODE_B,
     });
     expect(res.status).toBe(400);
@@ -157,25 +124,13 @@ describe("POST /workspaces/:workspaceId/taxonomy-edges", () => {
     expect(body.error).toBe("Validation error");
   });
 
-  it("returns 400 when sortingQuestion exceeds 160 characters", async () => {
+  it("returns 400 when targetNodeId is missing", async () => {
     const res = await post(`/workspaces/${WS_ID}/taxonomy-edges`, {
       sourceNodeId: NODE_A,
-      targetNodeId: NODE_B,
-      sortingQuestion: "a".repeat(161),
     });
     expect(res.status).toBe(400);
     const body = (await res.json()) as { error: string };
     expect(body.error).toBe("Validation error");
-  });
-
-  it("returns 400 when confidenceThreshold is out of range", async () => {
-    const res = await post(`/workspaces/${WS_ID}/taxonomy-edges`, {
-      sourceNodeId: NODE_A,
-      targetNodeId: NODE_B,
-      sortingQuestion: "?",
-      confidenceThreshold: 1.5,
-    });
-    expect(res.status).toBe(400);
   });
 
   it("returns 404 when workspace does not exist", async () => {
@@ -184,7 +139,6 @@ describe("POST /workspaces/:workspaceId/taxonomy-edges", () => {
     const res = await post(`/workspaces/nope/taxonomy-edges`, {
       sourceNodeId: NODE_A,
       targetNodeId: NODE_B,
-      sortingQuestion: "?",
     });
     expect(res.status).toBe(404);
   });
@@ -198,7 +152,6 @@ describe("POST /workspaces/:workspaceId/taxonomy-edges", () => {
     const res = await post(`/workspaces/${WS_ID}/taxonomy-edges`, {
       sourceNodeId: "nope",
       targetNodeId: NODE_B,
-      sortingQuestion: "?",
     });
     expect(res.status).toBe(404);
     const body = (await res.json()) as { error: string };
@@ -214,7 +167,6 @@ describe("POST /workspaces/:workspaceId/taxonomy-edges", () => {
     const res = await post(`/workspaces/${WS_ID}/taxonomy-edges`, {
       sourceNodeId: NODE_A,
       targetNodeId: "nope",
-      sortingQuestion: "?",
     });
     expect(res.status).toBe(404);
     const body = (await res.json()) as { error: string };
@@ -230,7 +182,6 @@ describe("POST /workspaces/:workspaceId/taxonomy-edges", () => {
     const res = await post(`/workspaces/${WS_ID}/taxonomy-edges`, {
       sourceNodeId: NODE_A,
       targetNodeId: rootNode.id,
-      sortingQuestion: "?",
     });
     expect(res.status).toBe(422);
     const body = (await res.json()) as { error: string };
@@ -247,7 +198,6 @@ describe("POST /workspaces/:workspaceId/taxonomy-edges", () => {
     const res = await post(`/workspaces/${WS_ID}/taxonomy-edges`, {
       sourceNodeId: NODE_A,
       targetNodeId: NODE_B,
-      sortingQuestion: "?",
     });
     expect(res.status).toBe(422);
     const body = (await res.json()) as { error: string };
@@ -270,7 +220,6 @@ describe("POST /workspaces/:workspaceId/taxonomy-edges", () => {
     const res = await post(`/workspaces/${WS_ID}/taxonomy-edges`, {
       sourceNodeId: NODE_C,
       targetNodeId: NODE_A,
-      sortingQuestion: "?",
     });
     expect(res.status).toBe(422);
     const body = (await res.json()) as { error: string };
@@ -288,7 +237,6 @@ describe("POST /workspaces/:workspaceId/taxonomy-edges", () => {
     const res = await post(`/workspaces/${WS_ID}/taxonomy-edges`, {
       sourceNodeId: NODE_A,
       targetNodeId: NODE_A,
-      sortingQuestion: "?",
     });
     expect(res.status).toBe(422);
     const body = (await res.json()) as { error: string };
@@ -315,7 +263,6 @@ describe("POST /workspaces/:workspaceId/taxonomy-edges", () => {
     const res = await post(`/workspaces/${WS_ID}/taxonomy-edges`, {
       sourceNodeId: NODE_A,
       targetNodeId: NODE_C,
-      sortingQuestion: "?",
     });
     expect(res.status).toBe(201);
   });
@@ -324,42 +271,18 @@ describe("POST /workspaces/:workspaceId/taxonomy-edges", () => {
 // ─── PATCH ────────────────────────────────────────────────────────────────────
 
 describe("PATCH /workspaces/:workspaceId/taxonomy-edges/:edgeId", () => {
-  it("updates the sorting question", async () => {
-    const updated = { ...baseEdge, sortingQuestion: "Updated?" };
+  it("returns 200 with an empty patch body", async () => {
     vi.mocked(db.taxonomyEdge.findUnique).mockResolvedValue(baseEdge as never);
-    vi.mocked(db.taxonomyEdge.update).mockResolvedValue(updated as never);
+    vi.mocked(db.taxonomyEdge.update).mockResolvedValue(baseEdge as never);
 
-    const res = await patch(
-      `/workspaces/${WS_ID}/taxonomy-edges/${EDGE_ID}`,
-      { sortingQuestion: "Updated?" }
-    );
+    const res = await patch(`/workspaces/${WS_ID}/taxonomy-edges/${EDGE_ID}`, {});
     expect(res.status).toBe(200);
-    const body = (await res.json()) as typeof updated;
-    expect(body.sortingQuestion).toBe("Updated?");
-  });
-
-  it("updates priority and confidenceThreshold", async () => {
-    const updated = { ...baseEdge, priority: 3, confidenceThreshold: 0.75 };
-    vi.mocked(db.taxonomyEdge.findUnique).mockResolvedValue(baseEdge as never);
-    vi.mocked(db.taxonomyEdge.update).mockResolvedValue(updated as never);
-
-    const res = await patch(
-      `/workspaces/${WS_ID}/taxonomy-edges/${EDGE_ID}`,
-      { priority: 3, confidenceThreshold: 0.75 }
-    );
-    expect(res.status).toBe(200);
-    const body = (await res.json()) as typeof updated;
-    expect(body.priority).toBe(3);
-    expect(body.confidenceThreshold).toBe(0.75);
   });
 
   it("returns 404 when edge does not exist", async () => {
     vi.mocked(db.taxonomyEdge.findUnique).mockResolvedValue(null);
 
-    const res = await patch(
-      `/workspaces/${WS_ID}/taxonomy-edges/nope`,
-      { sortingQuestion: "?" }
-    );
+    const res = await patch(`/workspaces/${WS_ID}/taxonomy-edges/nope`, {});
     expect(res.status).toBe(404);
   });
 
@@ -368,37 +291,8 @@ describe("PATCH /workspaces/:workspaceId/taxonomy-edges/:edgeId", () => {
       { ...baseEdge, workspaceId: "other-ws" } as never
     );
 
-    const res = await patch(
-      `/workspaces/${WS_ID}/taxonomy-edges/${EDGE_ID}`,
-      { sortingQuestion: "?" }
-    );
+    const res = await patch(`/workspaces/${WS_ID}/taxonomy-edges/${EDGE_ID}`, {});
     expect(res.status).toBe(404);
-  });
-
-  it("allows sortingQuestion to be empty", async () => {
-    vi.mocked(db.taxonomyEdge.findUnique).mockResolvedValue(baseEdge as never);
-    vi.mocked(db.taxonomyEdge.update).mockResolvedValue({
-      ...baseEdge,
-      sortingQuestion: "",
-    } as never);
-
-    const res = await patch(
-      `/workspaces/${WS_ID}/taxonomy-edges/${EDGE_ID}`,
-      { sortingQuestion: "" }
-    );
-    expect(res.status).toBe(200);
-  });
-
-  it("returns 400 when sortingQuestion exceeds 160 characters", async () => {
-    vi.mocked(db.taxonomyEdge.findUnique).mockResolvedValue(baseEdge as never);
-
-    const res = await patch(
-      `/workspaces/${WS_ID}/taxonomy-edges/${EDGE_ID}`,
-      { sortingQuestion: "a".repeat(161) }
-    );
-    expect(res.status).toBe(400);
-    const body = (await res.json()) as { error: string };
-    expect(body.error).toBe("Validation error");
   });
 });
 

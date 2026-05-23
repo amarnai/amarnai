@@ -23,20 +23,12 @@ function rankOf(candidates: ReturnType<typeof selectCandidatePaths>["candidates"
 
 describe("sorting fixtures — validity", () => {
   const leafNodes = ALL_NODES.filter((n) => !ALL_EDGES.some((e) => e.sourceNodeId === n.id));
-  const hiddenNodes = ALL_NODES.filter((n) => !n.isVisibleCategory || !n.canReceiveEmails);
   const nodeIds = new Set(ALL_NODES.map((n) => n.id));
 
-  it("every leaf node is a visible receiving category", () => {
+  it("every leaf node has a non-null description", () => {
     for (const n of leafNodes) {
-      expect(n.isVisibleCategory, `${n.name} should be visible`).toBe(true);
-      expect(n.canReceiveEmails, `${n.name} should receive emails`).toBe(true);
-    }
-  });
-
-  it("hidden nodes are neither visible nor receiving", () => {
-    for (const n of hiddenNodes) {
-      expect(n.isVisibleCategory, `${n.name}.isVisibleCategory should be false`).toBe(false);
-      expect(n.canReceiveEmails, `${n.name}.canReceiveEmails should be false`).toBe(false);
+      if (n.isRoot) continue;
+      expect(n.description, `${n.name} should have a description`).not.toBeNull();
     }
   });
 
@@ -74,22 +66,9 @@ describe("candidate paths — structural properties", () => {
     }
   });
 
-  it("all candidate final nodes are visible receiving categories", () => {
+  it("root node does not appear as a final destination", () => {
     for (const c of result.candidates) {
-      expect(c.finalNodeIsVisible, `${c.finalNodeName} should be visible`).toBe(true);
-      expect(c.finalNodeCanReceive, `${c.finalNodeName} should receive emails`).toBe(true);
-    }
-  });
-
-  it("hidden intermediate nodes do not appear as final destinations", () => {
-    const hiddenIds = new Set(
-      ALL_NODES.filter((n) => !n.isVisibleCategory || !n.canReceiveEmails).map((n) => n.id)
-    );
-    for (const c of result.candidates) {
-      expect(
-        hiddenIds.has(c.finalNodeId),
-        `${c.finalNodeName} is hidden and must not be a final candidate`
-      ).toBe(false);
+      expect(c.finalNodeId, `inbox should not be a final destination`).not.toBe(NODES.inbox.id);
     }
   });
 
@@ -133,14 +112,11 @@ describe("candidate paths — intended destination survives misleading keywords"
         const result = selectCandidatePaths(ALL_NODES, ALL_EDGES, emails);
         const correctRank = rankOf(result.candidates, email.expectedFinalNodeId);
 
-        // Find the highest-ranked candidate that is NOT the expected destination —
-        // that is the "misleading" winner the test guards against.
         const topMisleadingRank = result.candidates.findIndex(
           (c) => c.finalNodeId !== email.expectedFinalNodeId
         );
 
         expect(correctRank).not.toBe(-1);
-        // Correct destination must be ranked at least as high as the misleading alternative.
         expect(
           correctRank,
           `"${email.expectedFinalNodeId}" ranked ${correctRank} but top misleading candidate ranked ${topMisleadingRank}`
