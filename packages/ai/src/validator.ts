@@ -71,7 +71,11 @@ export function parseAndValidateOutput(
   for (const step of output.path) {
     const edge = edgeMap.get(step.edgeId);
     if (!edge) {
-      return reviewNeeded(`Unknown edgeId in path: "${step.edgeId}"`);
+      // Unknown edge ID — local LLMs sometimes hallucinate path step IDs.
+      // Drop the entire path and fall through to finalNodeId validation,
+      // consistent with how disconnected and mis-rooted paths are handled below.
+      enrichedPath.length = 0;
+      break;
     }
     enrichedPath.push({
       edgeId: edge.id,
