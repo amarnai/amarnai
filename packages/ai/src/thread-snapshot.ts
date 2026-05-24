@@ -1,3 +1,11 @@
+/**
+ * Snapshot types for normalised Gmail thread data, and a converter to the
+ * `ThreadMessage[]` format consumed by the AI classifiers.
+ *
+ * `ThreadSnapshot` is the normalised representation produced by the Gmail
+ * thread adapter. `SnapshotMessage.bodyExcerpt` is already truncated and
+ * stripped of quoted replies — it is safe to pass directly to LLMs.
+ */
 import type { ThreadMessage } from "./types.js";
 
 export type AttachmentMeta = {

@@ -17,19 +17,25 @@ vi.mock("@amarnai/db", () => ({
     emailClassification: { create: vi.fn() },
     reviewItem: { create: vi.fn() },
     taxonomyEdge: { findMany: vi.fn() },
+    taxonomyNode: { update: vi.fn() },
   },
 }));
 
-const mockClassifyThread = vi.fn();
+const mockSortThreadByEmbedding = vi.fn();
 vi.mock("@amarnai/ai", () => ({
   createAIProvider: vi.fn().mockReturnValue({
     providerName: "test-provider",
     modelName: "test-model",
   }),
-  classifyThread: (...args: unknown[]) => mockClassifyThread(...args),
-  selectCandidatePaths: vi.fn().mockReturnValue({ candidates: [], diagnostics: { queryText: "", matchedProfiles: [], warnings: [] } }),
-  buildCandidatePathPrompt: vi.fn().mockReturnValue([]),
-  validatePathSelection: vi.fn().mockReturnValue({ finalNodeId: null, path: [], confidence: 0, explanation: "mock", needsHumanReview: true }),
+  createEmbeddingProvider: vi.fn().mockReturnValue({
+    providerName: "test-embedding",
+    modelName: "test-embedding-model",
+    embed: vi.fn(),
+  }),
+  sortThreadByEmbedding: (...args: unknown[]) => mockSortThreadByEmbedding(...args),
+  selectCandidateNodes: vi.fn().mockReturnValue({ candidates: [], diagnostics: { queryText: "", matchedProfiles: [], warnings: [] } }),
+  buildCandidateNodePrompt: vi.fn().mockReturnValue([]),
+  validateNodeSelection: vi.fn().mockReturnValue({ finalNodeId: null, confidence: 0, explanation: "mock", needsHumanReview: true }),
 }));
 
 import app from "../app.js";
@@ -48,14 +54,20 @@ const NODE_ROOT = {
   instructions: null,
   examples: [],
   isRoot: true,
+  embeddingVector: [],
+  embeddingModel: null,
+  embeddingTextHash: null,
 };
 const NODE_LEAF = {
   id: "node-leaf",
   name: "Clients",
-  description: null,
+  description: "Client emails",
   instructions: null,
   examples: [],
   isRoot: false,
+  embeddingVector: [],
+  embeddingModel: null,
+  embeddingTextHash: null,
 };
 
 const mockWorkspace = {
@@ -318,32 +330,21 @@ describe("existing thread mode", () => {
 describe("ai classifier mode", () => {
   const AI_RESULT = {
     finalNodeId: "node-leaf",
-    path: [
-      {
-        edgeId: "edge-1",
-        sourceNodeId: "node-root",
-        targetNodeId: "node-leaf",
-        confidence: 0.88,
-        explanation: "AI classified as Clients",
-      },
-    ],
+    path: [],
     confidence: 0.88,
     explanation: "AI classified as Clients",
-    priority: "MEDIUM",
-    urgency: "NONE",
-    riskLevel: "LOW",
-    requiredAction: "NONE",
-    sensitivity: "NORMAL",
-    dueAt: null,
-    suggestedNextStep: "LABEL_ONLY",
     needsHumanReview: false,
+    decisionSource: "embedding_auto" as const,
+    rawSimilarities: {},
+    subtreeScores: {},
+    updatedNodeEmbeddings: [],
   };
 
   beforeEach(() => {
     process.env["AI_PROVIDER"] = "ollama";
     process.env["OLLAMA_BASE_URL"] = "http://localhost:11434";
     process.env["OLLAMA_MODEL"] = "llama3.1:8b";
-    mockClassifyThread.mockResolvedValue(AI_RESULT);
+    mockSortThreadByEmbedding.mockResolvedValue(AI_RESULT);
   });
 
   afterEach(() => {
@@ -368,7 +369,7 @@ describe("ai classifier mode", () => {
     });
 
     expect(res.status).toBe(201);
-    expect(mockClassifyThread).toHaveBeenCalledTimes(1);
+    expect(mockSortThreadByEmbedding).toHaveBeenCalledTimes(1);
     const body = await res.json() as Record<string, unknown>;
     const cls = body.classification as Record<string, unknown>;
     expect(cls.modelProvider).toBe("test-provider");
@@ -376,12 +377,12 @@ describe("ai classifier mode", () => {
   });
 
   it("creates review item when AI returns needsHumanReview=true", async () => {
-    mockClassifyThread.mockResolvedValue({
+    mockSortThreadByEmbedding.mockResolvedValue({
       ...AI_RESULT,
       finalNodeId: null,
       needsHumanReview: true,
       explanation: "Cannot classify",
-      suggestedNextStep: "ASK_USER",
+      decisionSource: "inbox_fallback",
     });
 
     vi.mocked(db.workspace.findUnique).mockResolvedValue(mockWorkspace as never);

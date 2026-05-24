@@ -1,4 +1,29 @@
-import type { TaxonomyNodeInput, TaxonomyEdgeInput } from "./types.js";
+/**
+ * Deterministic keyword-based pre-selection of candidate destination nodes.
+ *
+ * Given a taxonomy graph and a set of email inputs, enumerates every root→leaf
+ * path via BFS, scores each final node against the tokenised email content, and
+ * returns the top `MAX_CANDIDATE_PATHS` candidates as `CandidateNode` objects.
+ *
+ * Only node-level data (id, name, description, breadcrumb) is surfaced to
+ * callers. Path and edge metadata used during scoring is kept internal.
+ *
+ * Scoring weights (per query token matched):
+ *   - Final node name        × 3
+ *   - Final node description × 2
+ *   - Ancestor node names    × 1
+ *   - Final node siblings    × 0.5
+ *   - Instructions           × 1
+ *   - Examples               × 1
+ *
+ * If more candidates than the cap exist, a named "fallback" node (e.g. "Other",
+ * "Misc") is promoted to the last slot so the LLM always has an escape hatch.
+ *
+ * The result feeds directly into `buildCandidateNodePrompt`. The LLM never sees
+ * raw node IDs — it only sees opaque `candidate_N` identifiers assigned at prompt
+ * build time.
+ */
+import type { TaxonomyNodeInput, TaxonomyEdgeInput } from "../types.js";
 
 export const MAX_CANDIDATE_PATHS = 15;
 
@@ -9,27 +34,19 @@ export type EmailInput = {
   bodyText?: string;
 };
 
-export type CandidateEdgeStep = {
-  edgeId: string;
-  sourceNodeId: string;
-  targetNodeId: string;
-};
-
-export type CandidatePath = {
-  pathId: string;
-  edgeIds: string[];
-  nodeIds: string[];
-  finalNodeId: string;
-  finalNodeName: string;
-  finalNodeDescription: string | null;
-  edgeSteps: CandidateEdgeStep[];
-  label: string;
+export type CandidateNode = {
+  nodeId: string;
+  name: string;
+  description: string | null;
+  /** Optional breadcrumb for LLM context (e.g. "Inbox → Events → Weddings").
+   *  For display/explanation only — never used as a selection target. */
+  breadcrumb?: string;
   score: number;
   reasons: string[];
 };
 
-export type CandidatePathResult = {
-  candidates: CandidatePath[];
+export type CandidateNodeResult = {
+  candidates: CandidateNode[];
   diagnostics: {
     queryText: string;
     matchedProfiles: string[];
@@ -111,29 +128,35 @@ function enumeratePaths(rootId: string, edges: TaxonomyEdgeInput[]): RawPath[] {
   return result;
 }
 
-type ScoredPath = CandidatePath & { isFallback: boolean };
+// Internal scored node; breadcrumb is always present here (computed from path),
+// and isFallback is stripped before returning to callers.
+type ScoredNode = {
+  nodeId: string;
+  name: string;
+  description: string | null;
+  breadcrumb: string; // always set internally — optional only in the public CandidateNode type
+  score: number;
+  reasons: string[];
+  isFallback: boolean;
+};
 
-function stripFallback(s: ScoredPath): CandidatePath {
+function stripFallback(s: ScoredNode): CandidateNode {
   return {
-    pathId: s.pathId,
-    edgeIds: s.edgeIds,
-    nodeIds: s.nodeIds,
-    finalNodeId: s.finalNodeId,
-    finalNodeName: s.finalNodeName,
-    finalNodeDescription: s.finalNodeDescription,
-    edgeSteps: s.edgeSteps,
-    label: s.label,
+    nodeId: s.nodeId,
+    name: s.name,
+    description: s.description,
+    breadcrumb: s.breadcrumb,
     score: s.score,
     reasons: s.reasons,
   };
 }
 
-export function selectCandidatePaths(
+export function selectCandidateNodes(
   nodes: TaxonomyNodeInput[],
   edges: TaxonomyEdgeInput[],
   emails: EmailInput[],
   currentNodeId?: string
-): CandidatePathResult {
+): CandidateNodeResult {
   const warnings: string[] = [];
   const matchedProfilesSet = new Set<string>();
 
@@ -178,9 +201,8 @@ export function selectCandidatePaths(
   const queryTokens = [...new Set(rawTokens)];
   const queryText = [...queryTokens].sort().join(" ");
 
-  const edgeMap = new Map(edges.map((e) => [e.id, e]));
   const rawPaths = enumeratePaths(rootNode.id, edges);
-  const scored: ScoredPath[] = [];
+  const scored: ScoredNode[] = [];
 
   for (const raw of rawPaths) {
     const finalNode = nodeMap.get(raw.finalNodeId);
@@ -254,39 +276,26 @@ export function selectCandidatePaths(
       totalScore += exResult.score;
     }
 
-    const pathNodeNames = raw.nodeIds.map((id) => nodeMap.get(id)?.name ?? id);
-    const label = pathNodeNames.join(" → ");
-    const pathId = raw.edgeIds.join("|");
+    // Breadcrumb: full path from root, for LLM context only
+    const pathNodeNames = raw.nodeIds.map((id) => nodeMap.get(id)?.name ?? "(unknown)");
+    const breadcrumb = pathNodeNames.join(" → ");
     const isFallback = FALLBACK_NAMES.has(finalNode.name.toLowerCase());
 
-    const edgeSteps: CandidateEdgeStep[] = raw.edgeIds
-      .map((id) => {
-        const e = edgeMap.get(id);
-        return e
-          ? { edgeId: e.id, sourceNodeId: e.sourceNodeId, targetNodeId: e.targetNodeId }
-          : null;
-      })
-      .filter((s): s is CandidateEdgeStep => s !== null);
-
     scored.push({
-      pathId,
-      edgeIds: raw.edgeIds,
-      nodeIds: raw.nodeIds,
-      finalNodeId: raw.finalNodeId,
-      finalNodeName: finalNode.name,
-      finalNodeDescription: finalNode.description,
-      edgeSteps,
-      label,
+      nodeId: raw.finalNodeId,
+      name: finalNode.name,
+      description: finalNode.description,
+      breadcrumb,
       score: Math.round(totalScore * 100) / 100,
       reasons: [...new Set(reasons)],
       isFallback,
     });
   }
 
-  // Sort: score DESC, then pathId ASC (deterministic tie-breaking)
-  scored.sort((a, b) => b.score - a.score || (a.pathId < b.pathId ? -1 : 1));
+  // Sort: score DESC, then nodeId ASC (deterministic tie-breaking)
+  scored.sort((a, b) => b.score - a.score || (a.nodeId < b.nodeId ? -1 : 1));
 
-  let candidates: CandidatePath[];
+  let candidates: CandidateNode[];
 
   if (scored.length <= MAX_CANDIDATE_PATHS) {
     candidates = scored.map(stripFallback);
@@ -298,7 +307,7 @@ export function selectCandidatePaths(
       // Swap last slot with the highest-scoring cut fallback node
       top[MAX_CANDIDATE_PATHS - 1] = cutFallback;
       warnings.push(
-        `Fallback node "${cutFallback.label}" was promoted to the last candidate slot.`
+        `Fallback node "${cutFallback.breadcrumb ?? cutFallback.name}" was promoted to the last candidate slot.`
       );
     }
 
@@ -312,7 +321,7 @@ export function selectCandidatePaths(
   }
 
   if (currentNodeId !== undefined) {
-    const inCandidates = candidates.some((c) => c.finalNodeId === currentNodeId);
+    const inCandidates = candidates.some((c) => c.nodeId === currentNodeId);
     if (!inCandidates) {
       const currentNode = nodeMap.get(currentNodeId);
       if (currentNode) {

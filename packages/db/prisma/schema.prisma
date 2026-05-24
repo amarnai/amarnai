@@ -352,13 +352,13 @@ model EmailClassification {
   path              Json              @default("[]")
   confidence        Float
   explanation       String?
-  priority          Priority
-  urgency           Urgency
-  riskLevel         RiskLevel
-  requiredAction    RequiredAction
-  sensitivity       Sensitivity
+  priority          Priority?
+  urgency           Urgency?
+  riskLevel         RiskLevel?
+  requiredAction    RequiredAction?
+  sensitivity       Sensitivity?
   dueAt             DateTime?
-  suggestedNextStep SuggestedNextStep
+  suggestedNextStep SuggestedNextStep?
   needsHumanReview  Boolean
   modelProvider     String?
   modelName         String?

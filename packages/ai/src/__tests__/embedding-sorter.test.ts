@@ -1,8 +1,8 @@
 import { describe, it, expect, vi } from "vitest";
-import { sortThreadByEmbedding } from "../embedding-sorter.js";
-import { THETA_MIN } from "../embedding-sorter.js";
-import { buildNodeEmbeddingText, buildThreadEmbeddingText } from "../embedding-math.js";
-import type { EmbeddingProvider } from "../embedding-types.js";
+import { sortThreadByEmbedding } from "../embedding/sorter.js";
+import { THETA_MIN } from "../embedding/sorter.js";
+import { buildNodeEmbeddingText, buildThreadEmbeddingText } from "../embedding/math.js";
+import type { EmbeddingProvider } from "../embedding/types.js";
 import type { AIProvider, TaxonomyNodeInput, TaxonomyEdgeInput, ThreadMessage } from "../types.js";
 
 // ─── Test helpers ──────────────────────────────────────────────────────────────
@@ -156,7 +156,7 @@ describe("embedding sorter — clear route to direct child", () => {
 
   const embeddingProvider = makeMockEmbeddingProvider(table);
   const { provider: llmProvider, chatSpy } = makeLlmSpy(
-    JSON.stringify({ selectedPathId: null, confidence: 0, explanation: "not called", needsHumanReview: true })
+    JSON.stringify({ selectedNodeId: null, confidence: 0, explanation: "not called", needsHumanReview: true })
   );
 
   it("routes to Alpha", async () => {
@@ -251,7 +251,7 @@ describe("embedding sorter — clear route to deep child", () => {
 
   const embeddingProvider = makeMockEmbeddingProvider(table);
   const llmProvider = makeMockLlmProvider(
-    JSON.stringify({ selectedPathId: null, confidence: 0, explanation: "not called", needsHumanReview: true })
+    JSON.stringify({ selectedNodeId: null, confidence: 0, explanation: "not called", needsHumanReview: true })
   );
 
   it("descends through Events to Weddings", async () => {
@@ -305,7 +305,7 @@ describe("embedding sorter — ambiguous children stop traversal at parent", () 
 
   const embeddingProvider = makeMockEmbeddingProvider(table);
   const llmProvider = makeMockLlmProvider(
-    JSON.stringify({ selectedPathId: null, confidence: 0, explanation: "not called", needsHumanReview: true })
+    JSON.stringify({ selectedNodeId: null, confidence: 0, explanation: "not called", needsHumanReview: true })
   );
 
   it("stops at Events (parent) — cannot resolve which child wins", async () => {
@@ -403,7 +403,7 @@ describe("embedding sorter — rival root branches trigger LLM resolver", () => 
     // We return candidate_1 (Beta) to verify LLM output is respected.
     const llmProvider = makeMockLlmProvider(
       JSON.stringify({
-        selectedPathId: "candidate_1",
+        selectedNodeId: "candidate_1",
         confidence: 0.9,
         explanation: "Media appearance matches Beta",
         needsHumanReview: false,
@@ -425,7 +425,7 @@ describe("embedding sorter — rival root branches trigger LLM resolver", () => 
   it("LLM is called exactly once", async () => {
     const { provider: llmProvider, chatSpy } = makeLlmSpy(
       JSON.stringify({
-        selectedPathId: "candidate_0",
+        selectedNodeId: "candidate_0",
         confidence: 0.85,
         explanation: "Administrative match",
         needsHumanReview: false,
@@ -455,7 +455,7 @@ describe("embedding sorter — Inbox special rule: LLM uncertainty → fallback"
   const embeddingProvider = makeMockEmbeddingProvider(table);
   const llmProvider = makeMockLlmProvider(
     JSON.stringify({
-      selectedPathId: null,
+      selectedNodeId: null,
       confidence: 0.3,
       explanation: "Cannot determine the correct category",
       needsHumanReview: true,
@@ -533,7 +533,7 @@ describe("embedding sorter — large subtree does not dominate smaller subtree",
 
   const embeddingProvider = makeMockEmbeddingProvider(table);
   const { provider: llmProvider, chatSpy } = makeLlmSpy(
-    JSON.stringify({ selectedPathId: null, confidence: 0, explanation: "not called", needsHumanReview: true })
+    JSON.stringify({ selectedNodeId: null, confidence: 0, explanation: "not called", needsHumanReview: true })
   );
 
   it("routes to SmallLeaf not BigBranch despite BigBranch having three children", async () => {
@@ -619,7 +619,7 @@ describe("embedding sorter — stale embedding detection", () => {
 
   it("skips re-embedding nodes whose hash is current", async () => {
     const { buildNodeEmbeddingText: buildText, hashEmbeddingInput: hashFn } = await import(
-      "../embedding-math.js"
+      "../embedding/math.js"
     );
 
     const modelName = "current-model";
@@ -683,19 +683,184 @@ describe("embedding sorter — no root node", () => {
   });
 });
 
-// ─── Scenario 10: Quality gate threshold ──────────────────────────────────────
+// ─── Scenario 10: Thread stays in Inbox — no first-level child matches ────────
+//
+// Five direct children of Inbox. The thread slightly favours the first child
+// (raw sim ≈ 0.542) but the other four are close behind (≈ 0.420 each).
+//
+// Cross-branch top-2 diff (≈ 0.122) exceeds CROSS_BRANCH_MARGIN (0.08),
+// so the LLM cross-branch trigger is NOT fired.
+//
+// With five competitors the softmax spread collapses to ≈ 0.20 — below
+// THETA_SPREAD (0.25) — so traversal cannot confidently leave Inbox.
+// Under the new policy, Inbox is returned as the valid final destination
+// rather than routing to human review.
+
+describe("embedding sorter — thread stays in Inbox when no first-level child matches confidently", () => {
+  const INBOX5 = n("inbox5", "Inbox", null, true);
+  const NODE_A = n("n5-a", "Alpha", "Administrative coordination and scheduling requests");
+  const NODE_B = n("n5-b", "Beta", "Media appearances, journalism interviews, and press coverage");
+  const NODE_C = n("n5-c", "Gamma", "Subscription renewals, distribution logistics, and reader services");
+  const NODE_D = n("n5-d", "Delta", "Sales outreach and business development partnerships");
+  const NODE_E = n("n5-e", "Epsilon", "Technical support tickets and infrastructure incidents");
+
+  const nodes5 = [INBOX5, NODE_A, NODE_B, NODE_C, NODE_D, NODE_E];
+  const edges5 = [
+    e("e5-i-a", "inbox5", "n5-a"),
+    e("e5-i-b", "inbox5", "n5-b"),
+    e("e5-i-c", "inbox5", "n5-c"),
+    e("e5-i-d", "inbox5", "n5-d"),
+    e("e5-i-e", "inbox5", "n5-e"),
+  ];
+
+  // Thread normalized from [0.4, 0.31, 0.31, 0.31, 0.31] in 5-D one-hot space.
+  // Raw cosine sims ≈ [0.542, 0.420, 0.420, 0.420, 0.420].
+  const threadVec5 = normalize([0.4, 0.31, 0.31, 0.31, 0.31]);
+  const messages5 = [msg("General inquiry", "This message does not clearly fit any single category")];
+
+  const table5 = buildTable(
+    [
+      { node: NODE_A, vec: oneHot(0, 5) },
+      { node: NODE_B, vec: oneHot(1, 5) },
+      { node: NODE_C, vec: oneHot(2, 5) },
+      { node: NODE_D, vec: oneHot(3, 5) },
+      { node: NODE_E, vec: oneHot(4, 5) },
+    ],
+    messages5,
+    threadVec5
+  );
+
+  const embeddingProvider5 = makeMockEmbeddingProvider(table5);
+  const { provider: llmProvider5, chatSpy: chatSpy5 } = makeLlmSpy(
+    JSON.stringify({ selectedNodeId: null, confidence: 0, explanation: "not called", needsHumanReview: true })
+  );
+
+  it("returns Inbox (root) as the final destination — no human review needed", async () => {
+    const result = await sortThreadByEmbedding(
+      embeddingProvider5,
+      llmProvider5,
+      nodes5,
+      edges5,
+      messages5
+    );
+    expect(result.finalNodeId).toBe("inbox5");
+    expect(result.needsHumanReview).toBe(false);
+    expect(result.decisionSource).toBe("inbox_fallback");
+  });
+
+  it("path is empty — no traversal steps were taken", async () => {
+    const result = await sortThreadByEmbedding(
+      embeddingProvider5,
+      llmProvider5,
+      nodes5,
+      edges5,
+      messages5
+    );
+    expect(result.path).toHaveLength(0);
+  });
+
+  it("LLM is not called — cross-branch margin not triggered", async () => {
+    chatSpy5.mockClear();
+    await sortThreadByEmbedding(embeddingProvider5, llmProvider5, nodes5, edges5, messages5);
+    expect(chatSpy5).not.toHaveBeenCalled();
+  });
+
+  it("explanation mentions Inbox and confident", async () => {
+    const result = await sortThreadByEmbedding(
+      embeddingProvider5,
+      llmProvider5,
+      nodes5,
+      edges5,
+      messages5
+    );
+    expect(result.explanation).toMatch(/inbox/i);
+    expect(result.explanation).toMatch(/confidently/i);
+  });
+});
+
+// ─── Scenario 11: Existing non-Inbox fallback behavior preserved ───────────────
+//
+// Confirm that quality-gate failure and LLM uncertainty still route to human
+// review (finalNodeId: null) — these are distinct from the "stop at Inbox" case.
+
+describe("embedding sorter — existing non-Inbox fallback behavior still works", () => {
+  it("quality gate failure still returns null + needsHumanReview (thread too dissimilar to all nodes)", async () => {
+    const messages = [msg("Vague", "Something completely off-topic")];
+    const dim4 = 4;
+    const belowThresholdVec = normalize([0.1, 0.1, 0.1, 1.0]);
+
+    const ALPHA_F = n("alpha-f", "Alpha", "Administrative coordination and scheduling requests");
+    const BETA_F = n("beta-f", "Beta", "Media appearances, journalism interviews, and press coverage");
+    const INBOX_F = n("inbox-f", "Inbox", null, true);
+
+    const nodes_f = [INBOX_F, ALPHA_F, BETA_F];
+    const edges_f = [e("ef-i-a", "inbox-f", "alpha-f"), e("ef-i-b", "inbox-f", "beta-f")];
+
+    const table_f = buildTable(
+      [
+        { node: ALPHA_F, vec: oneHot(0, dim4) },
+        { node: BETA_F, vec: oneHot(1, dim4) },
+      ],
+      messages,
+      belowThresholdVec
+    );
+
+    const result = await sortThreadByEmbedding(
+      makeMockEmbeddingProvider(table_f),
+      makeMockLlmProvider("{}"),
+      nodes_f,
+      edges_f,
+      messages
+    );
+
+    expect(result.finalNodeId).toBeNull();
+    expect(result.needsHumanReview).toBe(true);
+    expect(result.decisionSource).toBe("inbox_fallback");
+  });
+
+  it("LLM cross-branch uncertainty still returns null + needsHumanReview", async () => {
+    const messages = [msg("Ambiguous", "Hard to classify")];
+    const threadVec = normalize([1, 1, 0]); // equidistant Alpha and Beta
+
+    const table = buildTable(
+      [
+        { node: ALPHA, vec: ALPHA_VEC },
+        { node: BETA, vec: BETA_VEC },
+        { node: GAMMA, vec: GAMMA_VEC },
+      ],
+      messages,
+      threadVec
+    );
+
+    const result = await sortThreadByEmbedding(
+      makeMockEmbeddingProvider(table),
+      makeMockLlmProvider(
+        JSON.stringify({
+          selectedNodeId: null,
+          confidence: 0.3,
+          explanation: "Cannot determine the correct category",
+          needsHumanReview: true,
+        })
+      ),
+      FLAT_NODES,
+      FLAT_EDGES,
+      messages
+    );
+
+    expect(result.finalNodeId).toBeNull();
+    expect(result.needsHumanReview).toBe(true);
+    expect(result.decisionSource).toBe("inbox_fallback");
+  });
+});
+
+// ─── Scenario 12: Quality gate threshold ──────────────────────────────────────
 
 describe("embedding sorter — quality gate", () => {
-  it(`routes to inbox_fallback when max raw similarity < THETA_MIN (${THETA_MIN})`, async () => {
+  it(`routes to inbox_fallback (needsHumanReview) when max raw similarity < THETA_MIN (${THETA_MIN})`, async () => {
     const messages = [msg("Vague", "Something vague")];
-    // Thread at 45° to Alpha and Beta: sim = 0.707, but also sim = 0.707... wait
-    // Use a slightly below-threshold vector: project weakly onto all nodes
-    const weakVec = normalize([0.1, 0.1, 0.1]); // equal projection ~0.577 each? no...
-    // oneHot sim: sim([0.577,0.577,0.577], [1,0,0]) = 0.577 > THETA_MIN
-    // So we need a vector with even lower max projection.
-    // Use a vector pointing "between" all three, but scaled down artificially via a
-    // 4D space where we add a large orthogonal component:
-    // [0.1, 0.1, 0.1, 0.99] → after normalize: sim to any oneHot(0-2, 4) ≈ 0.1 / norm ≈ 0.1
+    // Use a 4D space where the thread points mostly in the 4th (orthogonal) direction,
+    // giving very low cosine sim to any one-hot node vector in dims 0–2.
+    // [0.1, 0.1, 0.1, 1.0] → after normalize: sim to oneHot(i,4) ≈ 0.099 < THETA_MIN.
     const dim4 = 4;
     const belowThresholdVec = normalize([0.1, 0.1, 0.1, 1.0]); // sim to oneHot(0,4) ≈ 0.1/1.015 ≈ 0.099
 

@@ -1,3 +1,27 @@
+/**
+ * Embedding-based email thread sorting algorithm.
+ *
+ * Replaces a single full-taxonomy LLM call with a two-phase approach:
+ *   Phase 1 — Embedding auto-routing (no LLM):
+ *     Embed each non-root taxonomy node (name + description) and the email thread
+ *     (subject + bounded body). Compute cosine similarity, propagate scores
+ *     bottom-up through the tree (subtree scoring), then greedily descend from
+ *     the root, stopping when the decision is not confident enough.
+ *
+ *   Phase 2 — LLM fallback for ambiguous cases:
+ *     If the top two root-branch subtree scores are within `crossBranchMargin`
+ *     (cross-branch ambiguity), or a rival from a different branch scores close
+ *     to the chosen destination (post-traversal rival check), the top-K candidates
+ *     are sent to the LLM via `selectPathFromCandidates`. The LLM only sees opaque
+ *     `candidate_N` IDs — never raw node or edge IDs — to prevent hallucination.
+ *
+ * Exported tuneable constants (`THETA_MIN`, `LAMBDA_DEPTH_DECAY`, etc.) let
+ * callers and tests override the default thresholds via the `options` parameter
+ * of `sortThreadByEmbedding`.
+ *
+ * Node embeddings are cached via `embeddingTextHash`; stale or missing embeddings
+ * are recomputed and returned in `updatedNodeEmbeddings` for the caller to persist.
+ */
 import {
   cosineSimilarity,
   softmax,
@@ -5,12 +29,12 @@ import {
   buildThreadEmbeddingText,
   hashEmbeddingInput,
   computeSubtreeScores,
-} from "./embedding-math.js";
-import { selectPathFromCandidates } from "./select-path.js";
-import type { EmbeddingProvider, EmbeddableNode, UpdatedNodeEmbedding } from "./embedding-types.js";
-import type { AIProvider, TaxonomyEdgeInput, ThreadMessage } from "./types.js";
+} from "./math.js";
+import { selectNodeFromCandidates } from "../selection/select-path.js";
+import type { EmbeddingProvider, EmbeddableNode, UpdatedNodeEmbedding } from "./types.js";
+import type { AIProvider, TaxonomyEdgeInput, ThreadMessage } from "../types.js";
 import type { ClassificationPathStep } from "@amarnai/shared";
-import type { CandidatePath, CandidateEdgeStep } from "./candidate-selector.js";
+import type { CandidateNode } from "../selection/candidate-selector.js";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -106,36 +130,33 @@ function buildClassificationPath(
   return [];
 }
 
-/** Build CandidatePath objects for the LLM resolver from a list of node IDs. */
+/**
+ * Build CandidateNode objects for the LLM resolver from a list of node IDs.
+ * Breadcrumbs are included as read-only context; they are not selectable.
+ * Path reconstruction from the selected node happens in the caller after
+ * LLM resolution returns.
+ */
 function buildLlmCandidates(
   nodeIds: string[],
   nodeMap: Map<string, EmbeddableNode>,
   edges: ReadonlyArray<TaxonomyEdgeInput>,
   rootId: string
-): CandidatePath[] {
-  return nodeIds.flatMap((nodeId): CandidatePath[] => {
+): CandidateNode[] {
+  return nodeIds.flatMap((nodeId): CandidateNode[] => {
     const node = nodeMap.get(nodeId);
     if (!node) return [];
 
+    // Build breadcrumb for LLM context only — never used as a selection target
     const pathSteps = buildClassificationPath(rootId, nodeId, edges, 1, "");
-    const edgeSteps: CandidateEdgeStep[] = pathSteps.map((s) => ({
-      edgeId: s.edgeId,
-      sourceNodeId: s.sourceNodeId,
-      targetNodeId: s.targetNodeId,
-    }));
-    const edgeIds = edgeSteps.map((s) => s.edgeId);
-    const nodeIds2 = [rootId, ...edgeSteps.map((s) => s.targetNodeId)];
+    const breadcrumbIds = [rootId, ...pathSteps.map((s) => s.targetNodeId)];
+    const breadcrumb = breadcrumbIds.map((id) => nodeMap.get(id)?.name ?? "(unknown)").join(" → ");
 
     return [
       {
-        pathId: edgeIds.join("|") || nodeId,
-        edgeIds,
-        nodeIds: nodeIds2,
-        finalNodeId: nodeId,
-        finalNodeName: node.name,
-        finalNodeDescription: node.description,
-        edgeSteps,
-        label: nodeIds2.map((id) => nodeMap.get(id)?.name ?? id).join(" → "),
+        nodeId,
+        name: node.name,
+        description: node.description,
+        breadcrumb,
         score: 0,
         reasons: [],
       },
@@ -317,12 +338,20 @@ export async function sortThreadByEmbedding(
     const candidates = buildLlmCandidates(topIds, nodeMap, edges, rootNode.id);
 
     if (candidates.length > 0) {
-      const llmResult = await selectPathFromCandidates(llmProvider, { messages }, candidates);
+      const llmResult = await selectNodeFromCandidates(llmProvider, { messages }, candidates);
 
       if (!llmResult.needsHumanReview && llmResult.finalNodeId) {
+        // Reconstruct path from the graph after node selection
+        const selectedPath = buildClassificationPath(
+          rootNode.id,
+          llmResult.finalNodeId,
+          edges,
+          llmResult.confidence,
+          llmResult.explanation
+        );
         return {
           finalNodeId: llmResult.finalNodeId,
-          path: llmResult.path,
+          path: selectedPath,
           confidence: llmResult.confidence,
           explanation: llmResult.explanation,
           needsHumanReview: false,
@@ -393,28 +422,27 @@ export async function sortThreadByEmbedding(
       currentNodeId = bestChildId;
     } else {
       // Stop: cannot confidently descend further.
-      // Special Inbox rule: stopping at root is not a valid destination.
-      if (currentNodeId === rootNode.id) {
-        return makeInboxFallback(
-          `Traversal could not confidently leave Inbox (spread ${spread.toFixed(3)})`,
-          rawSimsRecord,
-          subtreeScoresRecord,
-          updatedNodeEmbeddings
-        );
-      }
+      // The current node — including root (Inbox) — becomes the final destination.
       break;
     }
   }
 
-  const finalNodeId = currentNodeId === rootNode.id ? null : currentNodeId;
-  if (!finalNodeId) {
-    return makeInboxFallback(
-      "Traversal ended at root",
-      rawSimsRecord,
-      subtreeScoresRecord,
-      updatedNodeEmbeddings
-    );
+  // Traversal halted here. If we stopped at root, Inbox is the final destination.
+  if (currentNodeId === rootNode.id) {
+    return {
+      finalNodeId: rootNode.id,
+      path: [],
+      confidence: 0,
+      explanation: `No child branch matched confidently; thread stays in Inbox`,
+      needsHumanReview: false,
+      decisionSource: "inbox_fallback",
+      rawSimilarities: rawSimsRecord,
+      subtreeScores: subtreeScoresRecord,
+      updatedNodeEmbeddings,
+    };
   }
+
+  const finalNodeId = currentNodeId;
 
   // ── Step 10: Post-traversal global rival check ─────────────────────────────
   //
@@ -450,12 +478,20 @@ export async function sortThreadByEmbedding(
     const candidates = buildLlmCandidates(deduped, nodeMap, edges, rootNode.id);
 
     if (candidates.length > 0) {
-      const llmResult = await selectPathFromCandidates(llmProvider, { messages }, candidates);
+      const llmResult = await selectNodeFromCandidates(llmProvider, { messages }, candidates);
 
       if (!llmResult.needsHumanReview && llmResult.finalNodeId) {
+        // Reconstruct path from the graph after node selection
+        const selectedPath = buildClassificationPath(
+          rootNode.id,
+          llmResult.finalNodeId,
+          edges,
+          llmResult.confidence,
+          llmResult.explanation
+        );
         return {
           finalNodeId: llmResult.finalNodeId,
-          path: llmResult.path,
+          path: selectedPath,
           confidence: llmResult.confidence,
           explanation: llmResult.explanation,
           needsHumanReview: false,

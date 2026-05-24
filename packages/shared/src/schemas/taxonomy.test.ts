@@ -5,6 +5,7 @@ import {
   CreateTaxonomyEdgeInputSchema,
   ClassificationPathStepSchema,
   UpdateTaxonomyNodeInputSchema,
+  gmailLabelSyncCandidates,
 } from "./taxonomy.js";
 
 // A description with at least 30 non-whitespace characters.
@@ -146,6 +147,72 @@ describe("CreateTaxonomyEdgeInputSchema", () => {
     expect(() => CreateTaxonomyEdgeInputSchema.parse(without)).toThrow();
   });
 });
+
+// ─── Inbox-specific policies ─────────────────────────────────────────────────
+
+describe("Inbox node policies", () => {
+  const rootNode = {
+    id: "node_inbox",
+    workspaceId: "ws_1",
+    name: "Inbox",
+    description: null,
+    instructions: null,
+    examples: [],
+    isRoot: true,
+    positionX: 0,
+    positionY: 0,
+    createdAt: "2026-01-01T00:00:00.000Z",
+    updatedAt: "2026-01-01T00:00:00.000Z",
+  };
+
+  it("root Inbox node does not require a description (TaxonomyNodeSchema accepts null)", () => {
+    const result = TaxonomyNodeSchema.parse(rootNode);
+    expect(result.isRoot).toBe(true);
+    expect(result.description).toBeNull();
+  });
+
+  it("CreateTaxonomyNodeInputSchema requires description (user-created nodes only — Inbox bypasses this schema)", () => {
+    // Inbox is seeded directly, never created via the API. The create schema
+    // enforces description for all user-created (non-root) nodes.
+    expect(() =>
+      CreateTaxonomyNodeInputSchema.parse({
+        workspaceId: "ws_1",
+        name: "Clients",
+        // description intentionally omitted
+      })
+    ).toThrow();
+  });
+});
+
+// ─── Gmail label sync ─────────────────────────────────────────────────────────
+
+describe("gmailLabelSyncCandidates", () => {
+  const inboxNode = { id: "inbox", isRoot: true, name: "Inbox" };
+  const clientsNode = { id: "clients", isRoot: false, name: "Clients" };
+  const vendorsNode = { id: "vendors", isRoot: false, name: "Vendors" };
+
+  it("excludes root (Inbox) from Gmail label sync candidates", () => {
+    const candidates = gmailLabelSyncCandidates([inboxNode, clientsNode, vendorsNode]);
+    expect(candidates).toHaveLength(2);
+    expect(candidates.map((n) => n.id)).not.toContain("inbox");
+  });
+
+  it("returns all non-root nodes when they are the only nodes", () => {
+    const candidates = gmailLabelSyncCandidates([clientsNode, vendorsNode]);
+    expect(candidates).toHaveLength(2);
+    expect(candidates.every((n) => !n.isRoot)).toBe(true);
+  });
+
+  it("returns empty array when all nodes are root (only Inbox exists)", () => {
+    expect(gmailLabelSyncCandidates([inboxNode])).toHaveLength(0);
+  });
+
+  it("returns empty array for an empty node list", () => {
+    expect(gmailLabelSyncCandidates([])).toHaveLength(0);
+  });
+});
+
+// ─── ClassificationPathStep ───────────────────────────────────────────────────
 
 describe("ClassificationPathStepSchema", () => {
   const validStep = {

@@ -1,7 +1,8 @@
 import { Hono } from "hono";
 import { z } from "zod";
 import { db, Prisma } from "@amarnai/db";
-import { createAIProvider, classifyThread, snapshotToThreadMessages } from "@amarnai/ai";
+import { createAIProvider, createEmbeddingProvider, sortThreadByEmbedding, snapshotToThreadMessages } from "@amarnai/ai";
+import type { EmbeddableNode } from "@amarnai/ai";
 import { GmailClient } from "../services/gmail-client.js";
 import { normalizeGmailThread } from "../services/gmail-thread-adapter.js";
 
@@ -41,6 +42,30 @@ function getAIProviderConfig(): import("@amarnai/ai").AIProviderConfig {
   if (fProvider ?? fApiKey ?? fModel ?? fBaseUrl) {
     cfg.frontier = {
       ...(fProvider ? { provider: fProvider } : {}),
+      ...(fApiKey ? { apiKey: fApiKey } : {}),
+      ...(fModel ? { model: fModel } : {}),
+      ...(fBaseUrl ? { baseUrl: fBaseUrl } : {}),
+    };
+  }
+  return cfg;
+}
+
+function getEmbeddingProviderConfig(): import("@amarnai/ai").EmbeddingProviderConfig {
+  const provider = (process.env["EMBEDDING_PROVIDER"] ?? "ollama") as "ollama" | "frontier";
+  const cfg: import("@amarnai/ai").EmbeddingProviderConfig = { provider };
+  const ollamaBase = process.env["OLLAMA_BASE_URL"];
+  const ollamaEmbModel = process.env["OLLAMA_EMBEDDING_MODEL"];
+  if (ollamaBase ?? ollamaEmbModel) {
+    cfg.ollama = {
+      ...(ollamaBase ? { baseUrl: ollamaBase } : {}),
+      ...(ollamaEmbModel ? { model: ollamaEmbModel } : {}),
+    };
+  }
+  const fApiKey = process.env["FRONTIER_EMBEDDING_API_KEY"];
+  const fModel = process.env["FRONTIER_EMBEDDING_MODEL"];
+  const fBaseUrl = process.env["FRONTIER_EMBEDDING_BASE_URL"];
+  if (fApiKey ?? fModel ?? fBaseUrl) {
+    cfg.frontier = {
       ...(fApiKey ? { apiKey: fApiKey } : {}),
       ...(fModel ? { model: fModel } : {}),
       ...(fBaseUrl ? { baseUrl: fBaseUrl } : {}),
@@ -207,15 +232,14 @@ gmailSort.post("/dev/workspaces/:workspaceId/gmail-sort-thread", async (c) => {
         instructions: true,
         examples: true,
         isRoot: true,
+        embeddingVector: true,
+        embeddingModel: true,
+        embeddingTextHash: true,
       },
     }),
     db.taxonomyEdge.findMany({
       where: { workspaceId },
-      select: {
-        id: true,
-        sourceNodeId: true,
-        targetNodeId: true,
-      },
+      select: { id: true, sourceNodeId: true, targetNodeId: true },
     }),
   ]);
 
@@ -223,22 +247,42 @@ gmailSort.post("/dev/workspaces/:workspaceId/gmail-sort-thread", async (c) => {
     return c.json({ error: "No taxonomy nodes found for classification" }, 422);
   }
 
-  const nodes: import("@amarnai/ai").TaxonomyNodeInput[] = rawNodes.map(
-    (n: (typeof rawNodes)[number]) => ({ ...n, examples: n.examples as string[] })
-  );
-  const edges: import("@amarnai/ai").TaxonomyEdgeInput[] = rawEdges;
+  const nodes: EmbeddableNode[] = rawNodes.map((n: (typeof rawNodes)[number]) => ({
+    ...n,
+    examples: n.examples as string[],
+    embeddingVector: n.embeddingVector.length > 0 ? n.embeddingVector : null,
+  }));
 
   // ── 7. Classify ───────────────────────────────────────────────────────────
 
   let provider: ReturnType<typeof createAIProvider>;
+  let embeddingProvider: ReturnType<typeof createEmbeddingProvider>;
   try {
     provider = createAIProvider(getAIProviderConfig());
+    embeddingProvider = createEmbeddingProvider(getEmbeddingProviderConfig());
   } catch (err) {
     return c.json({ error: err instanceof Error ? err.message : String(err) }, 400);
   }
 
   const messages = snapshotToThreadMessages(snapshot);
-  const result = await classifyThread(provider, { nodes, edges, messages });
+  const result = await sortThreadByEmbedding(embeddingProvider, provider, nodes, rawEdges, messages);
+
+  // Persist updated node embeddings (cache for future calls)
+  if (result.updatedNodeEmbeddings.length > 0) {
+    await Promise.all(
+      result.updatedNodeEmbeddings.map((e) =>
+        db.taxonomyNode.update({
+          where: { id: e.nodeId },
+          data: {
+            embeddingVector: e.embeddingVector,
+            embeddingModel: e.embeddingModel,
+            embeddingTextHash: e.embeddingTextHash,
+            embeddingUpdatedAt: e.embeddingUpdatedAt,
+          },
+        })
+      )
+    );
+  }
 
   // ── 8. Persist classification ─────────────────────────────────────────────
 
@@ -247,16 +291,8 @@ gmailSort.post("/dev/workspaces/:workspaceId/gmail-sort-thread", async (c) => {
       workspaceId,
       emailThreadId: emailThread.id,
       finalNodeId: result.finalNodeId,
-      path: result.path as unknown as Prisma.InputJsonValue,
       confidence: result.confidence,
       explanation: result.explanation,
-      priority: result.priority,
-      urgency: result.urgency,
-      riskLevel: result.riskLevel,
-      requiredAction: result.requiredAction,
-      sensitivity: result.sensitivity,
-      dueAt: result.dueAt ? new Date(result.dueAt) : null,
-      suggestedNextStep: result.suggestedNextStep,
       needsHumanReview: result.needsHumanReview,
       modelProvider: provider.providerName,
       modelName: provider.modelName,
@@ -287,6 +323,12 @@ gmailSort.post("/dev/workspaces/:workspaceId/gmail-sort-thread", async (c) => {
     ? (rawNodes.find((n: (typeof rawNodes)[number]) => n.id === result.finalNodeId)?.name ?? null)
     : null;
 
+  // Build nodeId → name map for debug display
+  const nodeNames: Record<string, string> = {};
+  for (const n of rawNodes) {
+    nodeNames[n.id] = n.name;
+  }
+
   return c.json(
     {
       snapshot: {
@@ -300,22 +342,22 @@ gmailSort.post("/dev/workspaces/:workspaceId/gmail-sort-thread", async (c) => {
         id: classification.id,
         finalNodeId: result.finalNodeId,
         finalNodeName,
-        path: result.path,
         confidence: result.confidence,
         explanation: result.explanation,
-        priority: result.priority,
-        urgency: result.urgency,
-        riskLevel: result.riskLevel,
-        requiredAction: result.requiredAction,
-        sensitivity: result.sensitivity,
-        dueAt: result.dueAt ?? null,
-        suggestedNextStep: result.suggestedNextStep,
         needsHumanReview: result.needsHumanReview,
+        decisionSource: result.decisionSource,
         modelProvider: provider.providerName,
         modelName: provider.modelName,
       },
       reviewItemCreated: reviewItemId !== null,
       reviewItemId,
+      debug: {
+        path: result.path,
+        rawSimilarities: result.rawSimilarities,
+        subtreeScores: result.subtreeScores,
+        nodeNames,
+        updatedEmbeddingsCount: result.updatedNodeEmbeddings.length,
+      },
     },
     201
   );
@@ -349,7 +391,8 @@ gmailSort.get("/dev/workspaces/:workspaceId/gmail-recent-threads", async (c) => 
   let threads: Array<{ id: string; subject: string | null }>;
   try {
     threads = await client.listRecentThreads(5);
-  } catch {
+  } catch (err) {
+    console.error("[gmail-recent-threads] Failed:", err);
     return c.json({ error: "Failed to list recent Gmail threads" }, 502);
   }
 

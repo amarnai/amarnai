@@ -4,7 +4,7 @@ vi.mock("@amarnai/db", () => ({
   Prisma: {},
   db: {
     emailThread: { findFirst: vi.fn() },
-    taxonomyNode: { findMany: vi.fn() },
+    taxonomyNode: { findMany: vi.fn(), update: vi.fn() },
     taxonomyEdge: { findMany: vi.fn() },
     emailClassification: { create: vi.fn() },
     reviewItem: { create: vi.fn() },
@@ -15,10 +15,16 @@ const mockCreateAIProvider = vi.fn().mockReturnValue({
   providerName: "test-provider",
   modelName: "test-model",
 });
-const mockClassifyThread = vi.fn();
+const mockCreateEmbeddingProvider = vi.fn().mockReturnValue({
+  providerName: "test-embedding",
+  modelName: "test-embedding-model",
+  embed: vi.fn(),
+});
+const mockSortThreadByEmbedding = vi.fn();
 vi.mock("@amarnai/ai", () => ({
   createAIProvider: (...args: unknown[]) => mockCreateAIProvider(...args),
-  classifyThread: (...args: unknown[]) => mockClassifyThread(...args),
+  createEmbeddingProvider: (...args: unknown[]) => mockCreateEmbeddingProvider(...args),
+  sortThreadByEmbedding: (...args: unknown[]) => mockSortThreadByEmbedding(...args),
 }));
 
 import app from "../app.js";
@@ -37,14 +43,20 @@ const NODES = [
     instructions: null,
     examples: [],
     isRoot: true,
+    embeddingVector: [],
+    embeddingModel: null,
+    embeddingTextHash: null,
   },
   {
     id: "node-leaf",
     name: "Clients",
-    description: null,
+    description: "Client emails",
     instructions: null,
     examples: [],
     isRoot: false,
+    embeddingVector: [],
+    embeddingModel: null,
+    embeddingTextHash: null,
   },
 ];
 
@@ -71,34 +83,23 @@ const THREAD = {
 
 const VALID_AI_RESULT = {
   finalNodeId: "node-leaf",
-  path: [
-    {
-      edgeId: "edge-1",
-      sourceNodeId: "node-root",
-      targetNodeId: "node-leaf",
-      confidence: 0.9,
-      explanation: "Client email",
-    },
-  ],
+  path: [],
   confidence: 0.9,
   explanation: "Client email",
-  priority: "MEDIUM" as const,
-  urgency: "NONE" as const,
-  riskLevel: "LOW" as const,
-  requiredAction: "NONE" as const,
-  sensitivity: "NORMAL" as const,
-  dueAt: null,
-  suggestedNextStep: "LABEL_ONLY" as const,
   needsHumanReview: false,
+  decisionSource: "embedding_auto" as const,
+  rawSimilarities: {},
+  subtreeScores: {},
+  updatedNodeEmbeddings: [],
 };
 
 const REVIEW_NEEDED_RESULT = {
   ...VALID_AI_RESULT,
   finalNodeId: null,
   confidence: 0,
-  explanation: 'Unknown finalNodeId: "node-ghost"',
+  explanation: "No branch matched confidently",
   needsHumanReview: true,
-  suggestedNextStep: "ASK_USER" as const,
+  decisionSource: "inbox_fallback" as const,
 };
 
 function post(path: string) {
@@ -126,8 +127,7 @@ afterEach(() => {
 // ─── ai-classify ──────────────────────────────────────────────────────────────
 
 describe("POST /workspaces/:workspaceId/email-threads/:threadId/ai-classify", () => {
-  it("returns 400 when AI_PROVIDER is mock", async () => {
-    process.env["AI_PROVIDER"] = "mock";
+  it("returns 400 when AI provider throws during setup", async () => {
     mockCreateAIProvider.mockImplementationOnce(() => {
       throw new Error("AI_PROVIDER is set to 'mock'. Set AI_PROVIDER=ollama or AI_PROVIDER=frontier to use AI classification.");
     });
@@ -149,8 +149,8 @@ describe("POST /workspaces/:workspaceId/email-threads/:threadId/ai-classify", ()
     expect(res.status).toBe(422);
   });
 
-  it("persists classification and returns 201 on valid AI output", async () => {
-    mockClassifyThread.mockResolvedValue(VALID_AI_RESULT);
+  it("persists classification and returns 201 on valid result", async () => {
+    mockSortThreadByEmbedding.mockResolvedValue(VALID_AI_RESULT);
 
     const res = await post(`/workspaces/${WS_ID}/email-threads/${THREAD_ID}/ai-classify`);
 
@@ -162,7 +162,7 @@ describe("POST /workspaces/:workspaceId/email-threads/:threadId/ai-classify", ()
   });
 
   it("creates review item when needsHumanReview is true", async () => {
-    mockClassifyThread.mockResolvedValue(REVIEW_NEEDED_RESULT);
+    mockSortThreadByEmbedding.mockResolvedValue(REVIEW_NEEDED_RESULT);
 
     const res = await post(`/workspaces/${WS_ID}/email-threads/${THREAD_ID}/ai-classify`);
 
@@ -174,7 +174,7 @@ describe("POST /workspaces/:workspaceId/email-threads/:threadId/ai-classify", ()
   });
 
   it("persists review-needed classification when finalNodeId is null", async () => {
-    mockClassifyThread.mockResolvedValue(REVIEW_NEEDED_RESULT);
+    mockSortThreadByEmbedding.mockResolvedValue(REVIEW_NEEDED_RESULT);
 
     await post(`/workspaces/${WS_ID}/email-threads/${THREAD_ID}/ai-classify`);
 
@@ -184,7 +184,7 @@ describe("POST /workspaces/:workspaceId/email-threads/:threadId/ai-classify", ()
   });
 
   it("creates a new classification row on each call (history accumulates)", async () => {
-    mockClassifyThread.mockResolvedValue(VALID_AI_RESULT);
+    mockSortThreadByEmbedding.mockResolvedValue(VALID_AI_RESULT);
 
     vi.mocked(db.emailClassification.create)
       .mockResolvedValueOnce({ id: "cls-1" } as never)

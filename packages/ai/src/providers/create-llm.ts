@@ -1,6 +1,13 @@
-import { FrontierAIProvider } from "./providers/frontier.js";
-import { OllamaAIProvider } from "./providers/ollama.js";
-import type { AIProvider, AIProviderConfig } from "./types.js";
+/**
+ * Factory for `AIProvider` instances (LLM chat completion).
+ *
+ * Supported providers: `"ollama"` (local) and `"frontier"` (API-based).
+ * `"mock"` throws intentionally — use a hand-rolled `AIProvider` stub in tests
+ * rather than a provider instance, to keep tests fast and offline.
+ */
+import { FrontierAIProvider } from "./frontier.js";
+import { OllamaAIProvider } from "./ollama.js";
+import type { AIProvider, AIProviderConfig } from "../types.js";
 
 export function createAIProvider(config: AIProviderConfig): AIProvider {
   switch (config.provider) {

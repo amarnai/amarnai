@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
-import { selectCandidatePaths, MAX_CANDIDATE_PATHS } from "../candidate-selector.js";
-import type { EmailInput } from "../candidate-selector.js";
-import { ALL_NODES, ALL_EDGES, NODES, EDGES, TEST_EMAILS } from "./fixtures/sorting-fixtures.js";
+import { selectCandidateNodes, MAX_CANDIDATE_PATHS } from "../selection/candidate-selector.js";
+import type { EmailInput } from "../selection/candidate-selector.js";
+import { ALL_NODES, ALL_EDGES, NODES, TEST_EMAILS } from "./fixtures/sorting-fixtures.js";
 import type { ThreadMessage } from "../types.js";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -15,8 +15,8 @@ function toEmailInputs(messages: ThreadMessage[]): EmailInput[] {
   }));
 }
 
-function rankOf(candidates: ReturnType<typeof selectCandidatePaths>["candidates"], nodeId: string): number {
-  return candidates.findIndex((c) => c.finalNodeId === nodeId);
+function rankOf(candidates: ReturnType<typeof selectCandidateNodes>["candidates"], nodeId: string): number {
+  return candidates.findIndex((c) => c.nodeId === nodeId);
 }
 
 // ─── Fixture validity ─────────────────────────────────────────────────────────
@@ -55,20 +55,20 @@ describe("sorting fixtures — validity", () => {
   });
 });
 
-// ─── Candidate path selection — structural properties ─────────────────────────
+// ─── Candidate node selection — structural properties ─────────────────────────
 
-describe("candidate paths — structural properties", () => {
-  const result = selectCandidatePaths(ALL_NODES, ALL_EDGES, []);
+describe("candidate nodes — structural properties", () => {
+  const result = selectCandidateNodes(ALL_NODES, ALL_EDGES, []);
 
-  it("all candidate paths start from Inbox", () => {
+  it("all candidate nodes have a breadcrumb starting from Inbox", () => {
     for (const c of result.candidates) {
-      expect(c.nodeIds[0], `path "${c.label}" should start from inbox`).toBe(NODES.inbox.id);
+      expect(c.breadcrumb, `candidate "${c.name}" should have a breadcrumb starting from Inbox`).toMatch(/^Inbox/);
     }
   });
 
-  it("root node does not appear as a final destination", () => {
+  it("root node does not appear as a candidate destination", () => {
     for (const c of result.candidates) {
-      expect(c.finalNodeId, `inbox should not be a final destination`).not.toBe(NODES.inbox.id);
+      expect(c.nodeId, `inbox should not be a candidate destination`).not.toBe(NODES.inbox.id);
     }
   });
 
@@ -76,44 +76,49 @@ describe("candidate paths — structural properties", () => {
     expect(result.candidates.length).toBeLessThanOrEqual(MAX_CANDIDATE_PATHS);
   });
 
-  it("other/needs-review fallback path is always included", () => {
-    const ids = result.candidates.map((c) => c.finalNodeId);
+  it("other/needs-review fallback node is always included", () => {
+    const ids = result.candidates.map((c) => c.nodeId);
     expect(ids).toContain(NODES.otherNeedsReview.id);
   });
 
   it("candidate ordering is deterministic across repeated calls", () => {
     const emails = toEmailInputs(TEST_EMAILS[0]!.messages);
-    const r1 = selectCandidatePaths(ALL_NODES, ALL_EDGES, emails);
-    const r2 = selectCandidatePaths(ALL_NODES, ALL_EDGES, emails);
-    expect(r1.candidates.map((c) => c.finalNodeId)).toEqual(r2.candidates.map((c) => c.finalNodeId));
+    const r1 = selectCandidateNodes(ALL_NODES, ALL_EDGES, emails);
+    const r2 = selectCandidateNodes(ALL_NODES, ALL_EDGES, emails);
+    expect(r1.candidates.map((c) => c.nodeId)).toEqual(r2.candidates.map((c) => c.nodeId));
   });
 
-  it("inbox → other path uses the correct edge", () => {
-    const otherPath = result.candidates.find((c) => c.finalNodeId === NODES.otherNeedsReview.id);
-    expect(otherPath).toBeDefined();
-    expect(otherPath!.edgeIds).toContain(EDGES.inboxToOther.id);
+  it("candidates expose node-level fields only — no path or edge IDs", () => {
+    for (const c of result.candidates) {
+      expect(c).toHaveProperty("nodeId");
+      expect(c).toHaveProperty("name");
+      expect(c).toHaveProperty("score");
+      expect(c).not.toHaveProperty("pathId");
+      expect(c).not.toHaveProperty("edgeIds");
+      expect(c).not.toHaveProperty("edgeSteps");
+    }
   });
 });
 
-// ─── Candidate path selection — correct destination despite misleading keywords ──
+// ─── Candidate node selection — correct destination despite misleading keywords ──
 
-describe("candidate paths — intended destination survives misleading keywords", () => {
+describe("candidate nodes — intended destination survives misleading keywords", () => {
   for (const email of TEST_EMAILS) {
     const emails = toEmailInputs(email.messages);
 
     it(`${email.id}: expected destination "${email.expectedFinalNodeId}" appears in candidates`, () => {
-      const result = selectCandidatePaths(ALL_NODES, ALL_EDGES, emails);
-      const ids = result.candidates.map((c) => c.finalNodeId);
+      const result = selectCandidateNodes(ALL_NODES, ALL_EDGES, emails);
+      const ids = result.candidates.map((c) => c.nodeId);
       expect(ids).toContain(email.expectedFinalNodeId);
     });
 
     if (email.misleadingKeywords && email.misleadingKeywords.length > 0) {
       it(`${email.id}: correct destination ranked ahead of the top-scoring misleading candidate`, () => {
-        const result = selectCandidatePaths(ALL_NODES, ALL_EDGES, emails);
+        const result = selectCandidateNodes(ALL_NODES, ALL_EDGES, emails);
         const correctRank = rankOf(result.candidates, email.expectedFinalNodeId);
 
         const topMisleadingRank = result.candidates.findIndex(
-          (c) => c.finalNodeId !== email.expectedFinalNodeId
+          (c) => c.nodeId !== email.expectedFinalNodeId
         );
 
         expect(correctRank).not.toBe(-1);
@@ -127,8 +132,8 @@ describe("candidate paths — intended destination survives misleading keywords"
 
   it("easy emails: expected destination is the top-ranked candidate", () => {
     for (const email of TEST_EMAILS.filter((e) => e.difficulty === "easy")) {
-      const result = selectCandidatePaths(ALL_NODES, ALL_EDGES, toEmailInputs(email.messages));
-      expect(result.candidates[0]?.finalNodeId).toBe(email.expectedFinalNodeId);
+      const result = selectCandidateNodes(ALL_NODES, ALL_EDGES, toEmailInputs(email.messages));
+      expect(result.candidates[0]?.nodeId).toBe(email.expectedFinalNodeId);
     }
   });
 });

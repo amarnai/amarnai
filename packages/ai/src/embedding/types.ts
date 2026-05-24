@@ -1,4 +1,4 @@
-import type { TaxonomyNodeInput } from "./types.js";
+import type { TaxonomyNodeInput } from "../types.js";
 
 // ─── Provider interface ────────────────────────────────────────────────────────
 

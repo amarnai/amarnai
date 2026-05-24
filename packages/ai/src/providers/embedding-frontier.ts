@@ -1,5 +1,5 @@
 import OpenAI from "openai";
-import type { EmbeddingProvider } from "../embedding-types.js";
+import type { EmbeddingProvider } from "../embedding/types.js";
 
 export class FrontierEmbeddingProvider implements EmbeddingProvider {
   readonly providerName: string;

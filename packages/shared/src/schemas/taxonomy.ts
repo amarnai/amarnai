@@ -121,6 +121,18 @@ export const CreateTaxonomyEdgeInputSchema = z.object({
 });
 export type CreateTaxonomyEdgeInput = z.infer<typeof CreateTaxonomyEdgeInputSchema>;
 
+// ─── Gmail label sync ─────────────────────────────────────────────────────────
+
+/**
+ * Returns nodes eligible to be synced as custom Gmail labels.
+ *
+ * The root Inbox node is excluded — it maps to Gmail's built-in Inbox,
+ * not a user-created label. Only non-root nodes should become custom labels.
+ */
+export function gmailLabelSyncCandidates<T extends { isRoot: boolean }>(nodes: T[]): T[] {
+  return nodes.filter((n) => !n.isRoot);
+}
+
 // ─── ClassificationPathStep ───────────────────────────────────────────────────
 
 export const ClassificationPathStepSchema = z.object({

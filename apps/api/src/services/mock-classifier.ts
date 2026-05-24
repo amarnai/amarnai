@@ -11,24 +11,9 @@ type NodeInput = {
   isRoot: boolean;
 };
 
-type EdgeInput = {
-  id: string;
-  sourceNodeId: string;
-  targetNodeId: string;
-};
-
-type PathStep = {
-  edgeId: string;
-  sourceNodeId: string;
-  targetNodeId: string;
-  confidence: number;
-  explanation: string;
-};
-
 export type MockClassificationResult = {
   finalNodeId: string;
   finalNodeName: string;
-  path: PathStep[];
   confidence: number;
   explanation: string;
   priority: "LOW" | "MEDIUM" | "HIGH";
@@ -45,28 +30,10 @@ const FINANCIAL_KEYWORDS = ["invoice", "payment", "pay", "bill", "financial", "f
 const PERSONAL_KEYWORDS = ["personal", "weekend", "coffee", "lunch", "family", "friend"];
 const APPROVAL_KEYWORDS = ["approve", "approval", "sign off", "authorize"];
 
-function findEdgePath(fromId: string, toId: string, edges: EdgeInput[]): EdgeInput[] | null {
-  if (fromId === toId) return [];
-  const queue: Array<{ nodeId: string; path: EdgeInput[] }> = [{ nodeId: fromId, path: [] }];
-  const visited = new Set([fromId]);
-  while (queue.length > 0) {
-    const { nodeId, path } = queue.shift()!;
-    for (const edge of edges) {
-      if (edge.sourceNodeId === nodeId && !visited.has(edge.targetNodeId)) {
-        const newPath = [...path, edge];
-        if (edge.targetNodeId === toId) return newPath;
-        visited.add(edge.targetNodeId);
-        queue.push({ nodeId: edge.targetNodeId, path: newPath });
-      }
-    }
-  }
-  return null;
-}
 
 export function mockClassify(
   messages: MessageInput[],
-  nodes: NodeInput[],
-  edges: EdgeInput[]
+  nodes: NodeInput[]
 ): MockClassificationResult {
   if (nodes.length === 0) {
     throw new Error("No taxonomy nodes available for classification");
@@ -81,8 +48,6 @@ export function mockClassify(
   const isFinancial = FINANCIAL_KEYWORDS.some((kw) => text.includes(kw));
   const isPersonal = PERSONAL_KEYWORDS.some((kw) => text.includes(kw));
   const needsApproval = APPROVAL_KEYWORDS.some((kw) => text.includes(kw));
-
-  const rootNode = nodes.find((n) => n.isRoot);
 
   const pool = nodes.filter((n) => !n.isRoot);
 
@@ -128,22 +93,9 @@ export function mockClassify(
       ? `Classified as ${bestNode.name} (mock). Detected: ${traits.join(", ")}.`
       : `Classified as ${bestNode.name} (mock). No strong signal detected; confidence is low.`;
 
-  // Build enriched path from edge traversal (BFS from root to best node)
-  const edgePath = rootNode ? findEdgePath(rootNode.id, bestNode.id, edges) : null;
-  const path: PathStep[] = edgePath
-    ? edgePath.map((edge) => ({
-        edgeId: edge.id,
-        sourceNodeId: edge.sourceNodeId,
-        targetNodeId: edge.targetNodeId,
-        confidence,
-        explanation,
-      }))
-    : [];
-
   return {
     finalNodeId: bestNode.id,
     finalNodeName: bestNode.name,
-    path,
     confidence,
     explanation,
     priority,

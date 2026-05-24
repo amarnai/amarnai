@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { api, type EmailThreadSummary, type MockInboxResult, type CandidatePathResult, type LLMPathSelectionResult } from "@/lib/api";
+import { api, type EmailThreadSummary, type MockInboxResult, type CandidateNodeResult, type LLMNodeSelectionResult } from "@/lib/api";
 
 type Props = {
   workspaceId: string;
@@ -23,10 +23,10 @@ export function MockInboxClient({ workspaceId, threads }: Props) {
   const [result, setResult] = useState<MockInboxResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [candidatePaths, setCandidatePaths] = useState<CandidatePathResult | null>(null);
+  const [candidatePaths, setCandidatePaths] = useState<CandidateNodeResult | null>(null);
   const [candidatesLoading, setCandidatesLoading] = useState(false);
   const [candidatesError, setCandidatesError] = useState<string | null>(null);
-  const [llmSelection, setLlmSelection] = useState<LLMPathSelectionResult | null>(null);
+  const [llmSelection, setLlmSelection] = useState<LLMNodeSelectionResult | null>(null);
   const [llmSelectionLoading, setLlmSelectionLoading] = useState(false);
   const [llmSelectionError, setLlmSelectionError] = useState<string | null>(null);
 
@@ -70,7 +70,7 @@ export function MockInboxClient({ workspaceId, threads }: Props) {
     setLlmSelection(null);
     setLlmSelectionLoading(true);
     try {
-      const data = await api.llmPathSelection(workspaceId, {
+      const data = await api.llmNodeSelection(workspaceId, {
         emails: [
           {
             ...(subject ? { subject } : {}),
@@ -95,7 +95,7 @@ export function MockInboxClient({ workspaceId, threads }: Props) {
     setCandidatePaths(null);
     setCandidatesLoading(true);
     try {
-      const data = await api.candidatePaths(workspaceId, {
+      const data = await api.candidateNodes(workspaceId, {
         emails: [
           {
             ...(subject ? { subject } : {}),
@@ -280,8 +280,8 @@ export function MockInboxClient({ workspaceId, threads }: Props) {
           ) : (
             <ol style={{ margin: 0, paddingLeft: 20, display: "flex", flexDirection: "column", gap: 6 }}>
               {candidatePaths.candidates.map((c) => (
-                <li key={c.pathId} style={{ fontSize: 13 }}>
-                  <strong>{c.label}</strong>
+                <li key={c.nodeId} style={{ fontSize: 13 }}>
+                  <strong>{c.breadcrumb ?? c.name}</strong>
                   <span style={{ color: "var(--color-subtle)", marginLeft: 8 }}>
                     score: {c.score}
                   </span>
@@ -318,8 +318,8 @@ export function MockInboxClient({ workspaceId, threads }: Props) {
               <div className="meta-value">
                 {llmSelection.result.finalNodeId
                   ? (llmSelection.candidateResult.candidates.find(
-                      (c) => c.finalNodeId === llmSelection.result.finalNodeId
-                    )?.finalNodeName ?? llmSelection.result.finalNodeId)
+                      (c) => c.nodeId === llmSelection.result.finalNodeId
+                    )?.name ?? llmSelection.result.finalNodeId)
                   : <span style={{ color: "var(--color-warning)" }}>Unclassified</span>
                 }
               </div>
@@ -351,10 +351,10 @@ export function MockInboxClient({ workspaceId, threads }: Props) {
                 Selection debug
               </summary>
               <div style={{ fontSize: 11, marginTop: 8, display: "flex", flexDirection: "column", gap: 4 }}>
-                <div><span style={{ color: "var(--color-subtle)" }}>rawSelectedPathId:</span> <code>{llmSelection.debug.rawSelectedPathId ?? "null"}</code></div>
-                <div><span style={{ color: "var(--color-subtle)" }}>resolvedPathId:</span> <code>{llmSelection.debug.resolvedPathId ?? "null"}</code></div>
-                <div><span style={{ color: "var(--color-subtle)" }}>resolvedLabel:</span> <code>{llmSelection.debug.resolvedLabel ?? "null"}</code></div>
-                <div><span style={{ color: "var(--color-subtle)" }}>resolvedFinalNodeName:</span> <code>{llmSelection.debug.resolvedFinalNodeName ?? "null"}</code></div>
+                <div><span style={{ color: "var(--color-subtle)" }}>rawSelectedNodeId:</span> <code>{llmSelection.debug.rawSelectedNodeId ?? "null"}</code></div>
+                <div><span style={{ color: "var(--color-subtle)" }}>resolvedNodeId:</span> <code>{llmSelection.debug.resolvedNodeId ?? "null"}</code></div>
+                <div><span style={{ color: "var(--color-subtle)" }}>resolvedBreadcrumb:</span> <code>{llmSelection.debug.resolvedBreadcrumb ?? "null"}</code></div>
+                <div><span style={{ color: "var(--color-subtle)" }}>resolvedName:</span> <code>{llmSelection.debug.resolvedName ?? "null"}</code></div>
               </div>
             </details>
           )}
@@ -419,26 +419,6 @@ export function MockInboxClient({ workspaceId, threads }: Props) {
             <div>
               <div className="meta-label">Next Step</div>
               <div className="meta-value">{cls.suggestedNextStep}</div>
-            </div>
-          </div>
-
-          {/* Path */}
-          <div style={{ marginBottom: 12 }}>
-            <div className="meta-label" style={{ marginBottom: 6 }}>Path</div>
-            <div style={{ display: "flex", gap: 6, flexWrap: "wrap", alignItems: "center" }}>
-              {cls.path.length === 0 ? (
-                <span style={{ color: "var(--color-subtle)" }}>—</span>
-              ) : (
-                <>
-                  <span className="badge">{cls.path[0]!.sourceNodeId}</span>
-                  {cls.path.map((step) => (
-                    <span key={step.edgeId} style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                      <span style={{ color: "var(--color-subtle)" }}>→</span>
-                      <span className="badge">{step.targetNodeId}</span>
-                    </span>
-                  ))}
-                </>
-              )}
             </div>
           </div>
 

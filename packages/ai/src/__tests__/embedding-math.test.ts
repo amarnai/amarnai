@@ -6,7 +6,7 @@ import {
   buildThreadEmbeddingText,
   hashEmbeddingInput,
   computeSubtreeScores,
-} from "../embedding-math.js";
+} from "../embedding/math.js";
 import type { TaxonomyEdgeInput } from "../types.js";
 
 // ─── cosineSimilarity ─────────────────────────────────────────────────────────

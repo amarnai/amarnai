@@ -1,6 +1,13 @@
-import { FrontierEmbeddingProvider } from "./providers/embedding-frontier.js";
-import { OllamaEmbeddingProvider } from "./providers/embedding-ollama.js";
-import type { EmbeddingProvider, EmbeddingProviderConfig } from "./embedding-types.js";
+/**
+ * Factory for `EmbeddingProvider` instances (vector embedding).
+ *
+ * Supported providers: `"ollama"` (local) and `"frontier"` (API-based).
+ * `"mock"` throws — use `createMockEmbeddingProvider()` from test utilities
+ * instead, which returns deterministic fixed-dimension vectors.
+ */
+import { FrontierEmbeddingProvider } from "./embedding-frontier.js";
+import { OllamaEmbeddingProvider } from "./embedding-ollama.js";
+import type { EmbeddingProvider, EmbeddingProviderConfig } from "../embedding/types.js";
 
 export function createEmbeddingProvider(config: EmbeddingProviderConfig): EmbeddingProvider {
   switch (config.provider) {

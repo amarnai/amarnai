@@ -1,13 +1,16 @@
-import { z } from "zod";
-import {
-  PrioritySchema,
-  UrgencySchema,
-  RiskLevelSchema,
-  RequiredActionSchema,
-  SensitivitySchema,
-  SuggestedNextStepSchema,
-  type ClassificationPathStep,
-} from "@amarnai/shared";
+/**
+ * Core type definitions for the @amarnai/ai package.
+ *
+ * The classification pipeline:
+ *   embedding-sorter.ts → candidate-selector.ts →
+ *   candidate-path-prompt.ts → candidate-path-validator.ts
+ *
+ * Embedding preselection narrows the taxonomy to a short candidate list;
+ * the LLM selects among opaque `candidate_N` identifiers. The model never
+ * sees raw node or edge IDs, preventing hallucination.
+ *
+ * The result is `EmbeddingSortResult` (see embedding-sorter.ts).
+ */
 
 // ─── Input types ───────────────────────────────────────────────────────────────
 
@@ -32,54 +35,6 @@ export type TaxonomyEdgeInput = {
   id: string;
   sourceNodeId: string;
   targetNodeId: string;
-};
-
-export type ClassifyInput = {
-  nodes: TaxonomyNodeInput[];
-  edges: TaxonomyEdgeInput[];
-  messages: ThreadMessage[];
-};
-
-// ─── LLM output schema (finalNodeId is nullable) ───────────────────────────────
-
-// What the LLM returns for each traversal step (source/target are derived from DB edge)
-const LLMPathStepSchema = z.object({
-  edgeId: z.string().min(1),
-  confidence: z.number().min(0).max(1),
-  explanation: z.string(),
-});
-
-export const LLMOutputSchema = z.object({
-  finalNodeId: z.string().min(1).nullable(),
-  path: z.array(LLMPathStepSchema),
-  confidence: z.number().min(0).max(1),
-  explanation: z.string(),
-  priority: PrioritySchema.catch("MEDIUM"),
-  urgency: UrgencySchema.catch("UNKNOWN"),
-  riskLevel: RiskLevelSchema.catch("LOW"),
-  requiredAction: RequiredActionSchema.catch("REVIEW"),
-  sensitivity: SensitivitySchema.catch("NORMAL"),
-  dueAt: z.string().datetime().nullable().optional().catch(undefined),
-  suggestedNextStep: SuggestedNextStepSchema.catch("ASK_USER"),
-  needsHumanReview: z.boolean(),
-});
-
-export type LLMOutput = z.infer<typeof LLMOutputSchema>;
-export type { ClassificationPathStep } from "@amarnai/shared";
-
-export type ClassifyOutput = {
-  finalNodeId: string | null;
-  path: ClassificationPathStep[];
-  confidence: number;
-  explanation: string;
-  priority: "LOW" | "MEDIUM" | "HIGH";
-  urgency: "NONE" | "SOON" | "TODAY" | "OVERDUE" | "UNKNOWN";
-  riskLevel: "LOW" | "MEDIUM" | "HIGH";
-  requiredAction: "NONE" | "REPLY" | "REVIEW" | "APPROVE" | "SCHEDULE" | "PAY" | "DELEGATE" | "ARCHIVE" | "UNKNOWN";
-  sensitivity: "NORMAL" | "CONFIDENTIAL" | "PERSONAL_DATA" | "FINANCIAL" | "LEGAL" | "SECURITY";
-  dueAt: string | null;
-  suggestedNextStep: "LABEL_ONLY" | "CREATE_DRAFT" | "ASK_USER" | "OPEN_IN_GMAIL";
-  needsHumanReview: boolean;
 };
 
 // ─── Provider interface ────────────────────────────────────────────────────────

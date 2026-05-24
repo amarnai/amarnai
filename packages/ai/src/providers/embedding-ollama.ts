@@ -1,4 +1,4 @@
-import type { EmbeddingProvider } from "../embedding-types.js";
+import type { EmbeddingProvider } from "../embedding/types.js";
 
 type OllamaEmbedResponse = {
   embeddings?: number[][];

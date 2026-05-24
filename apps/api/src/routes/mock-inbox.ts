@@ -1,15 +1,16 @@
 import { Hono } from "hono";
 import { z } from "zod";
-import { db, Prisma } from "@amarnai/db";
+import { db } from "@amarnai/db";
 import { mockClassify } from "../services/mock-classifier.js";
 import {
   createAIProvider,
-  classifyThread,
-  selectCandidatePaths,
-  buildCandidatePathPrompt,
-  validatePathSelection,
+  createEmbeddingProvider,
+  sortThreadByEmbedding,
+  selectCandidateNodes,
+  buildCandidateNodePrompt,
+  validateNodeSelection,
 } from "@amarnai/ai";
-import type { EmailInput, PathSelectionContext } from "@amarnai/ai";
+import type { EmailInput, NodeSelectionContext, EmbeddableNode } from "@amarnai/ai";
 
 function getAIProviderConfig() {
   const cfg: import("@amarnai/ai").AIProviderConfig = {
@@ -30,6 +31,30 @@ function getAIProviderConfig() {
   if (fProvider ?? fApiKey ?? fModel ?? fBaseUrl) {
     cfg.frontier = {
       ...(fProvider ? { provider: fProvider } : {}),
+      ...(fApiKey ? { apiKey: fApiKey } : {}),
+      ...(fModel ? { model: fModel } : {}),
+      ...(fBaseUrl ? { baseUrl: fBaseUrl } : {}),
+    };
+  }
+  return cfg;
+}
+
+function getEmbeddingProviderConfig(): import("@amarnai/ai").EmbeddingProviderConfig {
+  const provider = (process.env["EMBEDDING_PROVIDER"] ?? "ollama") as "ollama" | "frontier";
+  const cfg: import("@amarnai/ai").EmbeddingProviderConfig = { provider };
+  const ollamaBase = process.env["OLLAMA_BASE_URL"];
+  const ollamaEmbModel = process.env["OLLAMA_EMBEDDING_MODEL"];
+  if (ollamaBase ?? ollamaEmbModel) {
+    cfg.ollama = {
+      ...(ollamaBase ? { baseUrl: ollamaBase } : {}),
+      ...(ollamaEmbModel ? { model: ollamaEmbModel } : {}),
+    };
+  }
+  const fApiKey = process.env["FRONTIER_EMBEDDING_API_KEY"];
+  const fModel = process.env["FRONTIER_EMBEDDING_MODEL"];
+  const fBaseUrl = process.env["FRONTIER_EMBEDDING_BASE_URL"];
+  if (fApiKey ?? fModel ?? fBaseUrl) {
+    cfg.frontier = {
       ...(fApiKey ? { apiKey: fApiKey } : {}),
       ...(fModel ? { model: fModel } : {}),
       ...(fBaseUrl ? { baseUrl: fBaseUrl } : {}),
@@ -106,6 +131,9 @@ mockInbox.post("/dev/workspaces/:workspaceId/mock-inbox-event", async (c) => {
           instructions: true,
           examples: true,
           isRoot: true,
+          embeddingVector: true,
+          embeddingModel: true,
+          embeddingTextHash: true,
         },
       },
     },
@@ -119,16 +147,20 @@ mockInbox.post("/dev/workspaces/:workspaceId/mock-inbox-event", async (c) => {
     return c.json({ error: "No email account found for workspace" }, 422);
   }
 
-  const nodes: import("@amarnai/ai").TaxonomyNodeInput[] = (
-    workspace.taxonomyNodes as Array<{
-      id: string;
-      name: string;
-      description: string | null;
-      instructions: string | null;
-      examples: unknown[];
-      isRoot: boolean;
-    }>
-  ).map((n) => ({
+  type RawNode = {
+    id: string;
+    name: string;
+    description: string | null;
+    instructions: string | null;
+    examples: unknown[];
+    isRoot: boolean;
+    embeddingVector: number[];
+    embeddingModel: string | null;
+    embeddingTextHash: string | null;
+  };
+
+  const rawNodes = workspace.taxonomyNodes as RawNode[];
+  const nodes: import("@amarnai/ai").TaxonomyNodeInput[] = rawNodes.map((n) => ({
     id: n.id,
     name: n.name,
     description: n.description,
@@ -231,8 +263,18 @@ mockInbox.post("/dev/workspaces/:workspaceId/mock-inbox-event", async (c) => {
 
   // ─── Run classification ──────────────────────────────────────────────────────
 
-  type ClassResult = import("@amarnai/ai").ClassifyOutput & {
+  type ClassResult = {
+    finalNodeId: string | null;
     finalNodeName: string | null;
+    confidence: number;
+    explanation: string;
+    priority?: string | null;
+    urgency?: string | null;
+    riskLevel?: string | null;
+    requiredAction?: string | null;
+    sensitivity?: string | null;
+    suggestedNextStep?: string | null;
+    needsHumanReview: boolean;
     modelProvider: string;
     modelName: string;
   };
@@ -241,41 +283,60 @@ mockInbox.post("/dev/workspaces/:workspaceId/mock-inbox-event", async (c) => {
 
   if (classifier === "ai") {
     let aiProvider: ReturnType<typeof createAIProvider>;
+    let embeddingProvider: ReturnType<typeof createEmbeddingProvider>;
     try {
       aiProvider = createAIProvider(getAIProviderConfig());
+      embeddingProvider = createEmbeddingProvider(getEmbeddingProviderConfig());
     } catch (err) {
       return c.json({ error: err instanceof Error ? err.message : String(err) }, 400);
     }
-    const aiNodes: import("@amarnai/ai").TaxonomyNodeInput[] = nodes.map((n) => ({
-      ...n,
+
+    const embeddableNodes: EmbeddableNode[] = rawNodes.map((n) => ({
+      id: n.id,
+      name: n.name,
+      description: n.description,
+      instructions: n.instructions,
       examples: n.examples as string[],
+      isRoot: n.isRoot,
+      embeddingVector: n.embeddingVector.length > 0 ? n.embeddingVector : null,
+      embeddingModel: n.embeddingModel,
+      embeddingTextHash: n.embeddingTextHash,
     }));
-    const aiResult = await classifyThread(aiProvider, { nodes: aiNodes, edges, messages: allMessages });
+
+    const aiResult = await sortThreadByEmbedding(embeddingProvider, aiProvider, embeddableNodes, edges, allMessages);
+
+    if (aiResult.updatedNodeEmbeddings.length > 0) {
+      await Promise.all(
+        aiResult.updatedNodeEmbeddings.map((e) =>
+          db.taxonomyNode.update({
+            where: { id: e.nodeId },
+            data: {
+              embeddingVector: e.embeddingVector,
+              embeddingModel: e.embeddingModel,
+              embeddingTextHash: e.embeddingTextHash,
+              embeddingUpdatedAt: e.embeddingUpdatedAt,
+            },
+          })
+        )
+      );
+    }
+
     result = {
       finalNodeId: aiResult.finalNodeId,
       finalNodeName: aiResult.finalNodeId
         ? (nodes.find((n) => n.id === aiResult.finalNodeId)?.name ?? null)
         : null,
-      path: aiResult.path,
       confidence: aiResult.confidence,
       explanation: aiResult.explanation,
-      priority: aiResult.priority,
-      urgency: aiResult.urgency,
-      riskLevel: aiResult.riskLevel,
-      requiredAction: aiResult.requiredAction,
-      sensitivity: aiResult.sensitivity,
-      dueAt: aiResult.dueAt,
-      suggestedNextStep: aiResult.suggestedNextStep,
       needsHumanReview: aiResult.needsHumanReview,
       modelProvider: aiProvider.providerName,
       modelName: aiProvider.modelName,
     };
   } else {
-    const mockResult = mockClassify(allMessages, nodes, edges);
+    const mockResult = mockClassify(allMessages, nodes);
     result = {
       finalNodeId: mockResult.finalNodeId,
       finalNodeName: mockResult.finalNodeName,
-      path: mockResult.path,
       confidence: mockResult.confidence,
       explanation: mockResult.explanation,
       priority: mockResult.priority,
@@ -283,7 +344,6 @@ mockInbox.post("/dev/workspaces/:workspaceId/mock-inbox-event", async (c) => {
       riskLevel: mockResult.riskLevel,
       requiredAction: mockResult.requiredAction,
       sensitivity: mockResult.sensitivity,
-      dueAt: null,
       suggestedNextStep: mockResult.suggestedNextStep,
       needsHumanReview: mockResult.needsHumanReview,
       modelProvider: "mock",
@@ -296,16 +356,14 @@ mockInbox.post("/dev/workspaces/:workspaceId/mock-inbox-event", async (c) => {
       workspaceId,
       emailThreadId: threadId,
       finalNodeId: result.finalNodeId,
-      path: result.path as unknown as Prisma.InputJsonValue,
       confidence: result.confidence,
       explanation: result.explanation,
-      priority: result.priority,
-      urgency: result.urgency,
-      riskLevel: result.riskLevel,
-      requiredAction: result.requiredAction,
-      sensitivity: result.sensitivity,
-      dueAt: result.dueAt ? new Date(result.dueAt) : null,
-      suggestedNextStep: result.suggestedNextStep,
+      ...(result.priority != null ? { priority: result.priority } : {}),
+      ...(result.urgency != null ? { urgency: result.urgency } : {}),
+      ...(result.riskLevel != null ? { riskLevel: result.riskLevel } : {}),
+      ...(result.requiredAction != null ? { requiredAction: result.requiredAction } : {}),
+      ...(result.sensitivity != null ? { sensitivity: result.sensitivity } : {}),
+      ...(result.suggestedNextStep != null ? { suggestedNextStep: result.suggestedNextStep } : {}),
       needsHumanReview: result.needsHumanReview,
       modelProvider: result.modelProvider,
       modelName: result.modelName,
@@ -343,15 +401,14 @@ mockInbox.post("/dev/workspaces/:workspaceId/mock-inbox-event", async (c) => {
         finalNode: result.finalNodeId
           ? { id: result.finalNodeId, name: result.finalNodeName ?? result.finalNodeId }
           : null,
-        path: result.path,
         confidence: result.confidence,
         explanation: result.explanation,
-        priority: result.priority,
-        urgency: result.urgency,
-        riskLevel: result.riskLevel,
-        requiredAction: result.requiredAction,
-        sensitivity: result.sensitivity,
-        suggestedNextStep: result.suggestedNextStep,
+        priority: result.priority ?? null,
+        urgency: result.urgency ?? null,
+        riskLevel: result.riskLevel ?? null,
+        requiredAction: result.requiredAction ?? null,
+        sensitivity: result.sensitivity ?? null,
+        suggestedNextStep: result.suggestedNextStep ?? null,
         needsHumanReview: result.needsHumanReview,
         modelProvider: result.modelProvider,
         modelName: result.modelName,
@@ -450,7 +507,7 @@ mockInbox.post("/dev/workspaces/:workspaceId/candidate-paths", async (c) => {
     examples: n.examples as string[],
     isRoot: n.isRoot,
   }));
-  const result = selectCandidatePaths(
+  const result = selectCandidateNodes(
     nodes,
     edges,
     body.data.emails as EmailInput[],
@@ -554,7 +611,7 @@ mockInbox.post("/dev/workspaces/:workspaceId/llm-path-selection", async (c) => {
     isRoot: n.isRoot,
   }));
 
-  const candidateResult = selectCandidatePaths(
+  const candidateResult = selectCandidateNodes(
     nodes,
     aiEdges,
     body.data.emails as EmailInput[],
@@ -583,7 +640,7 @@ mockInbox.post("/dev/workspaces/:workspaceId/llm-path-selection", async (c) => {
   }
 
   const rawContext = body.data.context;
-  const context: PathSelectionContext | undefined =
+  const context: NodeSelectionContext | undefined =
     rawContext !== undefined
       ? {
           ...(rawContext.timestamp !== undefined ? { timestamp: rawContext.timestamp } : {}),
@@ -591,7 +648,7 @@ mockInbox.post("/dev/workspaces/:workspaceId/llm-path-selection", async (c) => {
         }
       : undefined;
 
-  const messages = buildCandidatePathPrompt(
+  const messages = buildCandidateNodePrompt(
     { messages: body.data.emails.map((e) => ({
       subject: e.subject ?? null,
       senderEmail: e.senderEmail ?? "",
@@ -604,29 +661,29 @@ mockInbox.post("/dev/workspaces/:workspaceId/llm-path-selection", async (c) => {
   );
 
   const rawLLMOutput = await aiProvider.chat(messages);
-  const result = validatePathSelection(rawLLMOutput, candidateResult.candidates);
+  const result = validateNodeSelection(rawLLMOutput, candidateResult.candidates);
 
-  // Build debug info for dev: show how selectedPathId resolved
-  let rawSelectedPathId: string | null = null;
-  let resolvedCandidate: import("@amarnai/ai").CandidatePath | undefined;
+  // Build debug info for dev: show how selectedNodeId resolved
+  let rawSelectedNodeId: string | null = null;
+  let resolvedCandidate: import("@amarnai/ai").CandidateNode | undefined;
   try {
     const parsed = JSON.parse(rawLLMOutput.trim()) as Record<string, unknown>;
-    if (typeof parsed["selectedPathId"] === "string") {
-      rawSelectedPathId = parsed["selectedPathId"];
-      const candidateByPathId = new Map(
+    if (typeof parsed["selectedNodeId"] === "string") {
+      rawSelectedNodeId = parsed["selectedNodeId"];
+      const candidateByNodeId = new Map(
         candidateResult.candidates.map((c, i) => [`candidate_${i}`, c])
       );
-      resolvedCandidate = candidateByPathId.get(rawSelectedPathId);
+      resolvedCandidate = candidateByNodeId.get(rawSelectedNodeId);
     }
   } catch {
     // best-effort; ignore parse failures in debug
   }
 
   const debug = {
-    rawSelectedPathId,
-    resolvedPathId: resolvedCandidate?.pathId ?? null,
-    resolvedLabel: resolvedCandidate?.label ?? null,
-    resolvedFinalNodeName: resolvedCandidate?.finalNodeName ?? null,
+    rawSelectedNodeId,
+    resolvedNodeId: resolvedCandidate?.nodeId ?? null,
+    resolvedBreadcrumb: resolvedCandidate?.breadcrumb ?? null,
+    resolvedName: resolvedCandidate?.name ?? null,
   };
 
   return c.json({ candidateResult, rawLLMOutput, result, debug });

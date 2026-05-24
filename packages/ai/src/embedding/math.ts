@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import type { TaxonomyEdgeInput } from "./types.js";
+import type { TaxonomyEdgeInput } from "../types.js";
 
 // ─── Similarity ────────────────────────────────────────────────────────────────
 

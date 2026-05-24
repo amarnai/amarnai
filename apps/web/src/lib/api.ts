@@ -130,13 +130,13 @@ export type Classification = {
   id: string;
   confidence: number;
   explanation: string | null;
-  priority: string;
-  urgency: string;
-  riskLevel: string;
-  requiredAction: string;
-  sensitivity: string;
+  priority: string | null;
+  urgency: string | null;
+  riskLevel: string | null;
+  requiredAction: string | null;
+  sensitivity: string | null;
   dueAt: string | null;
-  suggestedNextStep: string;
+  suggestedNextStep: string | null;
   needsHumanReview: boolean;
   modelProvider: string | null;
   modelName: string | null;
@@ -232,21 +232,14 @@ export type MockInboxResult = {
   classification: {
     id: string;
     finalNode: { id: string; name: string } | null;
-    path: Array<{
-      edgeId: string;
-      sourceNodeId: string;
-      targetNodeId: string;
-      confidence: number;
-      explanation: string;
-    }>;
     confidence: number;
     explanation: string;
-    priority: string;
-    urgency: string;
-    riskLevel: string;
-    requiredAction: string;
-    sensitivity: string;
-    suggestedNextStep: string;
+    priority: string | null;
+    urgency: string | null;
+    riskLevel: string | null;
+    requiredAction: string | null;
+    sensitivity: string | null;
+    suggestedNextStep: string | null;
     needsHumanReview: boolean;
     modelProvider?: string;
     modelName?: string;
@@ -255,7 +248,7 @@ export type MockInboxResult = {
   reviewItemId: string | null;
 };
 
-export type CandidatePathInput = {
+export type CandidateNodeInput = {
   emails: Array<{
     subject?: string;
     senderEmail?: string;
@@ -265,25 +258,17 @@ export type CandidatePathInput = {
   currentNodeId?: string;
 };
 
-export type CandidatePath = {
-  pathId: string;
-  edgeIds: string[];
-  nodeIds: string[];
-  finalNodeId: string;
-  finalNodeName: string;
-  finalNodeDescription: string | null;
-  edgeSteps: Array<{
-    edgeId: string;
-    sourceNodeId: string;
-    targetNodeId: string;
-  }>;
-  label: string;
+export type CandidateNode = {
+  nodeId: string;
+  name: string;
+  description: string | null;
+  breadcrumb?: string;
   score: number;
   reasons: string[];
 };
 
-export type CandidatePathResult = {
-  candidates: CandidatePath[];
+export type CandidateNodeResult = {
+  candidates: CandidateNode[];
   diagnostics: {
     queryText: string;
     matchedProfiles: string[];
@@ -291,32 +276,33 @@ export type CandidatePathResult = {
   };
 };
 
-export type LLMPathSelectionResult = {
-  candidateResult: CandidatePathResult;
+export type LLMNodeSelectionResult = {
+  candidateResult: CandidateNodeResult;
   rawLLMOutput: string | null;
   result: {
     finalNodeId: string | null;
-    path: Array<{
-      edgeId: string;
-      sourceNodeId: string;
-      targetNodeId: string;
-      confidence: number;
-      explanation: string;
-    }>;
     confidence: number;
     explanation: string;
     needsHumanReview: boolean;
   };
   debug?: {
-    rawSelectedPathId: string | null;
-    resolvedPathId: string | null;
-    resolvedLabel: string | null;
-    resolvedFinalNodeName: string | null;
+    rawSelectedNodeId: string | null;
+    resolvedNodeId: string | null;
+    resolvedBreadcrumb: string | null;
+    resolvedName: string | null;
   };
 };
 
 export type GmailRecentThreadsResult = {
   threads: Array<{ id: string; subject: string | null }>;
+};
+
+export type GmailSortPathStep = {
+  edgeId: string;
+  sourceNodeId: string;
+  targetNodeId: string;
+  confidence: number;
+  explanation: string;
 };
 
 export type GmailSortResult = {
@@ -331,51 +317,32 @@ export type GmailSortResult = {
     id: string;
     finalNodeId: string | null;
     finalNodeName: string | null;
-    path: Array<{
-      edgeId: string;
-      sourceNodeId: string;
-      targetNodeId: string;
-      confidence: number;
-      explanation: string;
-    }>;
     confidence: number;
     explanation: string;
-    priority: string;
-    urgency: string;
-    riskLevel: string;
-    requiredAction: string;
-    sensitivity: string;
-    dueAt: string | null;
-    suggestedNextStep: string;
     needsHumanReview: boolean;
+    decisionSource: string;
     modelProvider: string | null;
     modelName: string | null;
   };
   reviewItemCreated: boolean;
   reviewItemId: string | null;
+  debug?: {
+    path: GmailSortPathStep[];
+    rawSimilarities: Record<string, number>;
+    subtreeScores: Record<string, number>;
+    nodeNames: Record<string, string>;
+    updatedEmbeddingsCount: number;
+  };
 };
 
 export type ClassifyResult = {
   classification: {
     id: string;
     finalNodeId: string | null;
-    path: Array<{
-      edgeId: string;
-      sourceNodeId: string;
-      targetNodeId: string;
-      confidence: number;
-      explanation: string;
-    }>;
     confidence: number;
     explanation: string;
-    priority: string;
-    urgency: string;
-    riskLevel: string;
-    requiredAction: string;
-    sensitivity: string;
-    dueAt: string | null;
-    suggestedNextStep: string;
     needsHumanReview: boolean;
+    decisionSource: string;
     modelProvider: string;
     modelName: string;
   };
@@ -447,14 +414,14 @@ export const api = {
       "POST",
       input
     ),
-  candidatePaths: (workspaceId: string, input: CandidatePathInput) =>
-    apiMutate<CandidatePathResult>(
+  candidateNodes: (workspaceId: string, input: CandidateNodeInput) =>
+    apiMutate<CandidateNodeResult>(
       `/dev/workspaces/${workspaceId}/candidate-paths`,
       "POST",
       input
     ),
-  llmPathSelection: (workspaceId: string, input: CandidatePathInput) =>
-    apiMutate<LLMPathSelectionResult>(
+  llmNodeSelection: (workspaceId: string, input: CandidateNodeInput) =>
+    apiMutate<LLMNodeSelectionResult>(
       `/dev/workspaces/${workspaceId}/llm-path-selection`,
       "POST",
       input

@@ -8,7 +8,7 @@ vi.mock("@amarnai/db", () => ({
     emailAccount: { upsert: vi.fn() },
     emailThread: { upsert: vi.fn() },
     emailMessage: { upsert: vi.fn() },
-    taxonomyNode: { findMany: vi.fn() },
+    taxonomyNode: { findMany: vi.fn(), update: vi.fn() },
     taxonomyEdge: { findMany: vi.fn() },
     emailClassification: { create: vi.fn() },
     reviewItem: { create: vi.fn() },
@@ -23,13 +23,18 @@ vi.mock("../services/gmail-client.js", () => ({
   })),
 }));
 
-const mockClassifyThread = vi.fn();
+const mockSortThreadByEmbedding = vi.fn();
 vi.mock("@amarnai/ai", () => ({
   createAIProvider: vi.fn().mockReturnValue({
     providerName: "mock",
     modelName: "mock-v1",
   }),
-  classifyThread: (...args: unknown[]) => mockClassifyThread(...args),
+  createEmbeddingProvider: vi.fn().mockReturnValue({
+    providerName: "mock-embedding",
+    modelName: "mock-embedding-v1",
+    embed: vi.fn(),
+  }),
+  sortThreadByEmbedding: (...args: unknown[]) => mockSortThreadByEmbedding(...args),
   snapshotToThreadMessages: vi.fn().mockReturnValue([]),
 }));
 
@@ -56,14 +61,20 @@ const BASE_NODES = [
     instructions: null,
     examples: [],
     isRoot: true,
+    embeddingVector: [],
+    embeddingModel: null,
+    embeddingTextHash: null,
   },
   {
     id: "node-leaf",
     name: "Clients",
-    description: null,
+    description: "Client emails",
     instructions: null,
     examples: [],
     isRoot: false,
+    embeddingVector: [],
+    embeddingModel: null,
+    embeddingTextHash: null,
   },
 ];
 
@@ -88,14 +99,11 @@ const VALID_CLASSIFY_RESULT = {
   ],
   confidence: 0.9,
   explanation: "Client email",
-  priority: "MEDIUM" as const,
-  urgency: "NONE" as const,
-  riskLevel: "LOW" as const,
-  requiredAction: "NONE" as const,
-  sensitivity: "NORMAL" as const,
-  dueAt: null,
-  suggestedNextStep: "LABEL_ONLY" as const,
   needsHumanReview: false,
+  decisionSource: "embedding_auto" as const,
+  rawSimilarities: {},
+  subtreeScores: {},
+  updatedNodeEmbeddings: [],
 };
 
 // Minimal raw Gmail thread to feed to normalizeGmailThread
@@ -146,7 +154,7 @@ beforeEach(() => {
   vi.mocked(db.taxonomyEdge.findMany).mockResolvedValue(BASE_EDGES as never);
   vi.mocked(db.emailClassification.create).mockResolvedValue({ id: "cls-1" } as never);
   vi.mocked(db.reviewItem.create).mockResolvedValue({ id: "review-1" } as never);
-  mockClassifyThread.mockResolvedValue(VALID_CLASSIFY_RESULT);
+  mockSortThreadByEmbedding.mockResolvedValue(VALID_CLASSIFY_RESULT);
 });
 
 afterEach(() => {
@@ -282,11 +290,12 @@ describe("POST /dev/workspaces/:workspaceId/gmail-sort-thread", () => {
       listRecentThreads: vi.fn(),
     }) as never);
 
-    mockClassifyThread.mockResolvedValue({
+    mockSortThreadByEmbedding.mockResolvedValue({
       ...VALID_CLASSIFY_RESULT,
       finalNodeId: null,
       needsHumanReview: true,
       confidence: 0.2,
+      decisionSource: "inbox_fallback",
     });
 
     const res = await postSort("gmail-thread-1");
