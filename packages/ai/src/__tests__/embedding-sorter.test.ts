@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
 import { sortThreadByEmbedding } from "../embedding/sorter.js";
 import { THETA_MIN } from "../embedding/sorter.js";
+import { buildSimTable, makeSimEmbedder } from "./fixtures/sim-embedder.js";
 import {
   buildNodeEmbeddingText,
   buildThreadEmbeddingText,
@@ -1239,6 +1240,10 @@ describe("embedding sorter — current-intent policy: long old thread does not o
 });
 
 // ─── Scenario 12: Quality gate threshold ──────────────────────────────────────
+//
+// NOTE: The scenarios numbered 16–19 below (sim-based spread and descent tests)
+// use buildSimTable/makeSimEmbedder from fixtures/sim-embedder.ts to specify
+// cosine similarities directly, without constructing one-hot vectors by hand.
 
 describe("embedding sorter — quality gate", () => {
   it(`routes to inbox_fallback (needsHumanReview) when max raw similarity < THETA_MIN (${THETA_MIN})`, async () => {
@@ -1282,5 +1287,230 @@ describe("embedding sorter — quality gate", () => {
     expect(result.needsHumanReview).toBe(true);
     const maxSim = Math.max(...Object.values(result.rawSimilarities));
     expect(maxSim).toBeLessThan(THETA_MIN);
+  });
+});
+
+// ─── Scenario 16: Spread blocks descent — 3 clustered children ────────────────
+//
+// Parent scores 0.65. Its three leaf children score 0.18 / 0.17 / 0.15 — all
+// weak and close together. Softmax at temp=0.05 produces spread ≈ 0.077, which
+// is below THETA_SPREAD=0.15. Algorithm stops at parent.
+//
+// This verifies that spread alone (without θ_descent) is sufficient to prevent
+// incorrect descent into a group of equally-weak leaf nodes.
+
+describe("embedding sorter — spread blocks descent when 3 children are clustered", () => {
+  const S16_ROOT   = n("s16-root",   "Inbox",   null,                                                    true);
+  const S16_PARENT = n("s16-parent", "Events",  "Coordination and management activities for events and meetings.");
+  const S16_LEAF1  = n("s16-leaf1",  "Events / Admin",       "Administrative document processing and correspondence.");
+  const S16_LEAF2  = n("s16-leaf2",  "Events / Scheduling",  "Calendar scheduling and meeting booking.");
+  const S16_LEAF3  = n("s16-leaf3",  "Events / Resources",   "Resource allocation and procurement logistics.");
+
+  const s16Nodes = [S16_ROOT, S16_PARENT, S16_LEAF1, S16_LEAF2, S16_LEAF3];
+  const s16Edges = [
+    e("s16-r-p",  "s16-root",   "s16-parent"),
+    e("s16-p-l1", "s16-parent", "s16-leaf1"),
+    e("s16-p-l2", "s16-parent", "s16-leaf2"),
+    e("s16-p-l3", "s16-parent", "s16-leaf3"),
+  ];
+
+  const s16Messages = [msg(
+    "Events coordination inquiry",
+    "We would like to discuss several event coordination matters including administration, " +
+    "scheduling, and resource planning. Could you advise on the appropriate process?"
+  )];
+
+  const s16Sims = { "s16-parent": 0.65, "s16-leaf1": 0.18, "s16-leaf2": 0.17, "s16-leaf3": 0.15 };
+  const s16Embedder = makeSimEmbedder(buildSimTable(s16Nodes, s16Edges, s16Sims, s16Messages));
+  const s16Llm = makeMockLlmProvider(
+    JSON.stringify({ selectedNodeId: null, confidence: 0, explanation: "not called", needsHumanReview: true })
+  );
+
+  it("stops at Events (parent) — spread too small to distinguish children", async () => {
+    const result = await sortThreadByEmbedding(s16Embedder, s16Llm, s16Nodes, s16Edges, s16Messages);
+    expect(result.finalNodeId).toBe("s16-parent");
+    expect(result.decisionSource).toBe("embedding_auto");
+    expect(result.needsHumanReview).toBe(false);
+  });
+
+  it("path has exactly one step: root → parent", async () => {
+    const result = await sortThreadByEmbedding(s16Embedder, s16Llm, s16Nodes, s16Edges, s16Messages);
+    expect(result.path).toHaveLength(1);
+    expect(result.path[0]?.targetNodeId).toBe("s16-parent");
+  });
+
+  it("parent raw similarity is substantially higher than any child", async () => {
+    const result = await sortThreadByEmbedding(s16Embedder, s16Llm, s16Nodes, s16Edges, s16Messages);
+    const parentSim = result.rawSimilarities["s16-parent"] ?? 0;
+    const maxChildSim = Math.max(
+      result.rawSimilarities["s16-leaf1"] ?? 0,
+      result.rawSimilarities["s16-leaf2"] ?? 0,
+      result.rawSimilarities["s16-leaf3"] ?? 0
+    );
+    expect(parentSim).toBeGreaterThan(maxChildSim);
+  });
+});
+
+// ─── Scenario 17: Spread blocks descent — 2 nearly tied children ─────────────
+//
+// Parent (ceremonies) scores 0.72. Both children score 0.17 / 0.16 — nearly
+// equal with low absolute values. Softmax spread ≈ 0.10 < THETA_SPREAD=0.15.
+// Algorithm stops at parent.
+
+describe("embedding sorter — spread blocks descent when 2 children are nearly tied", () => {
+  const S17_ROOT   = n("s17-root",   "Inbox",      null,                                                true);
+  const S17_PARENT = n("s17-parent", "Ceremonies", "Lifecycle ceremony coordination for community events.");
+  const S17_CHILD1 = n("s17-child1", "Ceremonies / Weddings", "Wedding ceremony planning and marriage coordination.");
+  const S17_CHILD2 = n("s17-child2", "Ceremonies / Funerals", "Funeral services and bereavement support coordination.");
+
+  const s17Nodes = [S17_ROOT, S17_PARENT, S17_CHILD1, S17_CHILD2];
+  const s17Edges = [
+    e("s17-r-p",  "s17-root",   "s17-parent"),
+    e("s17-p-c1", "s17-parent", "s17-child1"),
+    e("s17-p-c2", "s17-parent", "s17-child2"),
+  ];
+
+  const s17Messages = [msg(
+    "Ceremony inquiry — type undetermined",
+    "We are writing to enquire about ceremony coordination. We have not yet determined " +
+    "the exact nature of the ceremony and would like to discuss options."
+  )];
+
+  const s17Sims = { "s17-parent": 0.72, "s17-child1": 0.17, "s17-child2": 0.16 };
+  const s17Embedder = makeSimEmbedder(buildSimTable(s17Nodes, s17Edges, s17Sims, s17Messages));
+  const s17Llm = makeMockLlmProvider(
+    JSON.stringify({ selectedNodeId: null, confidence: 0, explanation: "not called", needsHumanReview: true })
+  );
+
+  it("stops at Ceremonies (parent) — children too similar to distinguish", async () => {
+    const result = await sortThreadByEmbedding(s17Embedder, s17Llm, s17Nodes, s17Edges, s17Messages);
+    expect(result.finalNodeId).toBe("s17-parent");
+    expect(result.decisionSource).toBe("embedding_auto");
+    expect(result.needsHumanReview).toBe(false);
+  });
+
+  it("path has exactly one step: root → parent", async () => {
+    const result = await sortThreadByEmbedding(s17Embedder, s17Llm, s17Nodes, s17Edges, s17Messages);
+    expect(result.path).toHaveLength(1);
+    expect(result.path[0]?.targetNodeId).toBe("s17-parent");
+  });
+});
+
+// ─── Scenario 18: Spread allows descent when one child clearly dominates ──────
+//
+// Parent (editorial) scores 0.60. Three children score 0.78 / 0.12 / 0.11 —
+// one leaf is the overwhelming winner. Softmax spread ≈ 1.0 >> THETA_SPREAD=0.15.
+// Algorithm descends through parent to the winning leaf.
+
+describe("embedding sorter — spread allows descent when one child clearly dominates", () => {
+  const S18_ROOT   = n("s18-root",   "Inbox",     null,                                                 true);
+  const S18_PARENT = n("s18-parent", "Editorial", "Editorial direction and content management.");
+  const S18_LEAF1  = n("s18-leaf1",  "Editorial / Breaking News", "Urgent breaking news stories and real-time coverage.");
+  const S18_LEAF2  = n("s18-leaf2",  "Editorial / Opinion",       "Opinion pieces and editorial commentary.");
+  const S18_LEAF3  = n("s18-leaf3",  "Editorial / Features",      "Long-form feature articles and investigations.");
+
+  const s18Nodes = [S18_ROOT, S18_PARENT, S18_LEAF1, S18_LEAF2, S18_LEAF3];
+  const s18Edges = [
+    e("s18-r-p",  "s18-root",   "s18-parent"),
+    e("s18-p-l1", "s18-parent", "s18-leaf1"),
+    e("s18-p-l2", "s18-parent", "s18-leaf2"),
+    e("s18-p-l3", "s18-parent", "s18-leaf3"),
+  ];
+
+  const s18Messages = [msg(
+    "Breaking news coverage request",
+    "We have an urgent breaking news story and need immediate editorial coverage."
+  )];
+
+  const s18Sims = { "s18-parent": 0.60, "s18-leaf1": 0.78, "s18-leaf2": 0.12, "s18-leaf3": 0.11 };
+  const s18Embedder = makeSimEmbedder(buildSimTable(s18Nodes, s18Edges, s18Sims, s18Messages));
+  const s18Llm = makeMockLlmProvider(
+    JSON.stringify({ selectedNodeId: null, confidence: 0, explanation: "not called", needsHumanReview: true })
+  );
+
+  it("descends to Breaking News leaf — clear winner among siblings", async () => {
+    const result = await sortThreadByEmbedding(s18Embedder, s18Llm, s18Nodes, s18Edges, s18Messages);
+    expect(result.finalNodeId).toBe("s18-leaf1");
+    expect(result.decisionSource).toBe("embedding_auto");
+    expect(result.needsHumanReview).toBe(false);
+  });
+
+  it("path has two steps: root → parent → leaf", async () => {
+    const result = await sortThreadByEmbedding(s18Embedder, s18Llm, s18Nodes, s18Edges, s18Messages);
+    expect(result.path).toHaveLength(2);
+    expect(result.path[0]?.targetNodeId).toBe("s18-parent");
+    expect(result.path[1]?.targetNodeId).toBe("s18-leaf1");
+  });
+
+  it("winning leaf raw similarity is much higher than its siblings", async () => {
+    const result = await sortThreadByEmbedding(s18Embedder, s18Llm, s18Nodes, s18Edges, s18Messages);
+    const winner = result.rawSimilarities["s18-leaf1"] ?? 0;
+    const loser1 = result.rawSimilarities["s18-leaf2"] ?? 0;
+    const loser2 = result.rawSimilarities["s18-leaf3"] ?? 0;
+    expect(winner).toBeGreaterThan(loser1 * 4);
+    expect(winner).toBeGreaterThan(loser2 * 4);
+  });
+});
+
+// ─── Scenario 19: Strong signal through 4-level single-child chain ─────────────
+//
+// A 4-level single-child chain (root → L1 → L2 → L3 → L4) where every node
+// has strong signal (0.75 → 0.70 → 0.65 → 0.60 after unit-sphere normalisation).
+// At each single-child node spread = 1.0 >> THETA_SPREAD, and every raw_sim > 0 =
+// THETA_DESCENT. Algorithm descends to the deepest leaf.
+//
+// This is the regression guard for deep-descent: any θ_descent ≤ 0.40 should
+// allow full traversal of this chain.
+
+describe("embedding sorter — strong signal through 4-level single-child chain reaches leaf", () => {
+  const S19_ROOT = n("s19-root", "Inbox",    null,                                                      true);
+  const S19_L1   = n("s19-l1",  "Research", "Academic research inquiries and scholarly correspondence.");
+  const S19_L2   = n("s19-l2",  "Research / Jewish Studies",          "Inquiries about Jewish history and religious scholarship.");
+  const S19_L3   = n("s19-l3",  "Research / Jewish Studies / Modern", "Modern Jewish history and 20th-century scholarship.");
+  const S19_L4   = n("s19-l4",  "Research / Jewish Studies / Modern / France", "French Jewish history and community research.");
+
+  const s19Nodes = [S19_ROOT, S19_L1, S19_L2, S19_L3, S19_L4];
+  const s19Edges = [
+    e("s19-r-l1",  "s19-root", "s19-l1"),
+    e("s19-l1-l2", "s19-l1",   "s19-l2"),
+    e("s19-l2-l3", "s19-l2",   "s19-l3"),
+    e("s19-l3-l4", "s19-l3",   "s19-l4"),
+  ];
+
+  const s19Messages = [msg(
+    "French Jewish history research request",
+    "I am specifically researching French Jewish history and would like to access " +
+    "archival materials on the modern French Jewish community."
+  )];
+
+  // Σ s_i² = 0.75²+0.70²+0.65²+0.60² = 1.835 > 1 — buildSimTable scales proportionally.
+  // Relative ordering and positivity are preserved; all conditions still pass.
+  const s19Sims = { "s19-l1": 0.75, "s19-l2": 0.70, "s19-l3": 0.65, "s19-l4": 0.60 };
+  const s19Embedder = makeSimEmbedder(buildSimTable(s19Nodes, s19Edges, s19Sims, s19Messages));
+  const s19Llm = makeMockLlmProvider(
+    JSON.stringify({ selectedNodeId: null, confidence: 0, explanation: "not called", needsHumanReview: true })
+  );
+
+  it("descends all the way to France leaf — signal stays strong at every level", async () => {
+    const result = await sortThreadByEmbedding(s19Embedder, s19Llm, s19Nodes, s19Edges, s19Messages);
+    expect(result.finalNodeId).toBe("s19-l4");
+    expect(result.decisionSource).toBe("embedding_auto");
+    expect(result.needsHumanReview).toBe(false);
+  });
+
+  it("path has 4 steps through the full chain", async () => {
+    const result = await sortThreadByEmbedding(s19Embedder, s19Llm, s19Nodes, s19Edges, s19Messages);
+    expect(result.path).toHaveLength(4);
+    expect(result.path[0]?.targetNodeId).toBe("s19-l1");
+    expect(result.path[1]?.targetNodeId).toBe("s19-l2");
+    expect(result.path[2]?.targetNodeId).toBe("s19-l3");
+    expect(result.path[3]?.targetNodeId).toBe("s19-l4");
+  });
+
+  it("all nodes in the chain have positive raw similarity", async () => {
+    const result = await sortThreadByEmbedding(s19Embedder, s19Llm, s19Nodes, s19Edges, s19Messages);
+    for (const id of ["s19-l1", "s19-l2", "s19-l3", "s19-l4"]) {
+      expect(result.rawSimilarities[id]).toBeGreaterThan(0);
+    }
   });
 });

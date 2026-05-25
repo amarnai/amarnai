@@ -18,7 +18,7 @@ import {
   LAMBDA_DEPTH_DECAY,
   SOFTMAX_TEMPERATURE,
   THETA_SPREAD,
-  DELTA_DESCENT_MARGIN,
+  THETA_DESCENT,
   CROSS_BRANCH_MARGIN,
 } from "../embedding/sorter.js";
 import { makeRealEmbeddingProvider } from "./fixtures/real-embedding-table.js";
@@ -47,7 +47,7 @@ const GRID = {
   lambdaDepthDecay:   [0.85, 0.90, 0.95, 1.00],
   softmaxTemperature: [0.05, 0.10, 0.15, 0.20],
   thetaSpread:        [0.15, 0.20, 0.25, 0.30],
-  deltaDescentMargin: [0.02, 0.05, 0.08, 0.10],
+  thetaDescent:       [0.00, 0.10, 0.20, 0.30],
   crossBranchMargin:  [0.05, 0.08, 0.10, 0.15],
 } as const;
 
@@ -74,7 +74,7 @@ type Config = {
   lambdaDepthDecay: number;
   softmaxTemperature: number;
   thetaSpread: number;
-  deltaDescentMargin: number;
+  thetaDescent: number;
   crossBranchMargin: number;
 };
 
@@ -104,9 +104,9 @@ function* generateCombinations(): Generator<Config> {
     for (const lambdaDepthDecay of GRID.lambdaDepthDecay)
       for (const softmaxTemperature of GRID.softmaxTemperature)
         for (const thetaSpread of GRID.thetaSpread)
-          for (const deltaDescentMargin of GRID.deltaDescentMargin)
+          for (const thetaDescent of GRID.thetaDescent)
             for (const crossBranchMargin of GRID.crossBranchMargin)
-              yield { thetaMin, lambdaDepthDecay, softmaxTemperature, thetaSpread, deltaDescentMargin, crossBranchMargin };
+              yield { thetaMin, lambdaDepthDecay, softmaxTemperature, thetaSpread, thetaDescent, crossBranchMargin };
 }
 
 // ─── Single-config runner ─────────────────────────────────────────────────────
@@ -182,7 +182,7 @@ async function runConfig(
 // ─── Formatting helpers ───────────────────────────────────────────────────────
 
 function configKey(c: Config): string {
-  return [c.thetaMin, c.lambdaDepthDecay, c.softmaxTemperature, c.thetaSpread, c.deltaDescentMargin, c.crossBranchMargin].join(",");
+  return [c.thetaMin, c.lambdaDepthDecay, c.softmaxTemperature, c.thetaSpread, c.thetaDescent, c.crossBranchMargin].join(",");
 }
 
 function isCurrentDefaults(c: Config): boolean {
@@ -191,7 +191,7 @@ function isCurrentDefaults(c: Config): boolean {
     c.lambdaDepthDecay === LAMBDA_DEPTH_DECAY &&
     c.softmaxTemperature === SOFTMAX_TEMPERATURE &&
     c.thetaSpread === THETA_SPREAD &&
-    c.deltaDescentMargin === DELTA_DESCENT_MARGIN &&
+    c.thetaDescent === THETA_DESCENT &&
     c.crossBranchMargin === CROSS_BRANCH_MARGIN
   );
 }
@@ -257,7 +257,7 @@ async function main(): Promise<void> {
     console.log(
       `${String(i + 1).padStart(4)}  ${String(score.toFixed(1)).padStart(6)}` +
       `  ${fmt(c.thetaMin)}  ${fmt(c.lambdaDepthDecay)}  ${fmt(c.softmaxTemperature)}` +
-      `  ${fmt(c.thetaSpread)}  ${fmt(c.deltaDescentMargin)}  ${fmt(c.crossBranchMargin)}` +
+      `  ${fmt(c.thetaSpread)}  ${fmt(c.thetaDescent)}  ${fmt(c.crossBranchMargin)}` +
       `  ${String(llmPct).padStart(3)}%${mark}`
     );
   }
@@ -269,7 +269,7 @@ async function main(): Promise<void> {
     lambdaDepthDecay: LAMBDA_DEPTH_DECAY,
     softmaxTemperature: SOFTMAX_TEMPERATURE,
     thetaSpread: THETA_SPREAD,
-    deltaDescentMargin: DELTA_DESCENT_MARGIN,
+    thetaDescent: THETA_DESCENT,
     crossBranchMargin: CROSS_BRANCH_MARGIN,
   });
   const currentRank = results.findIndex((r) => configKey(r.config) === currentDefaultsKey);
@@ -303,7 +303,7 @@ async function main(): Promise<void> {
     console.log(`  LAMBDA_DEPTH_DECAY   = ${winner.lambdaDepthDecay}`);
     console.log(`  SOFTMAX_TEMPERATURE  = ${winner.softmaxTemperature}`);
     console.log(`  THETA_SPREAD         = ${winner.thetaSpread}`);
-    console.log(`  DELTA_DESCENT_MARGIN = ${winner.deltaDescentMargin}`);
+    console.log(`  THETA_DESCENT = ${winner.thetaDescent}`);
     console.log(`  CROSS_BRANCH_MARGIN  = ${winner.crossBranchMargin}`);
     console.log();
   }
