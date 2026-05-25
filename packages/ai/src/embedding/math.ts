@@ -127,44 +127,159 @@ export function findDescendants(
 }
 
 /**
- * Compact thread text for embedding (subject + bounded body excerpts).
+ * Character budget for thread embedding text across all messages.
+ *
+ * nomic-embed-text and OpenAI embeddings both accept ~8K tokens.
+ * 6,000 chars ≈ 1,500 tokens leaves comfortable headroom for the subject
+ * line and structural labels while capturing far more signal than the old
+ * 500-char-per-message cap.
+ *
+ * Distribution:
+ *   - Latest message:  60 % of budget (3,600 chars)
+ *   - Earlier messages: 40 % shared equally (2,400 chars total)
+ *
+ * If dividing the earlier budget equally would give each message fewer than
+ * MIN_EARLIER_MSG_CHARS chars, oldest messages are dropped until each
+ * remaining one receives at least that many.
+ */
+export const THREAD_EMBEDDING_CHAR_BUDGET = 6000;
+
+const LATEST_SHARE = 0.6;
+/** Minimum per-message budget for earlier messages before the oldest are dropped. */
+const MIN_EARLIER_MSG_CHARS = 200;
+
+/**
+ * Strip email boilerplate from a message body before embedding.
+ *
+ * Operations (applied in order):
+ *  1. Remove quoted reply blocks — lines starting with ">" and everything
+ *     from a recognised "On … wrote:" attribution line onward (Gmail / Apple
+ *     Mail / Outlook thread wrapping).
+ *  2. Remove email signatures — everything after a bare "-- " line (RFC 3676)
+ *     or after a recognisable sign-off phrase (Best regards, Thanks, …) when
+ *     ≤ 4 lines follow it (name / title / company).
+ *  3. Remove tracking/footer URLs — lines that consist of nothing but a URL.
+ *  4. Normalise whitespace — collapse 3+ consecutive blank lines to one,
+ *     trim leading/trailing whitespace.
+ *
+ * Pure and deterministic — identical inputs always produce identical outputs,
+ * so embeddingTextHash invalidation is predictable.
+ */
+export function cleanForEmbedding(body: string): string {
+  // 1a. "On … wrote:" attribution line (may wrap across multiple lines).
+  //     Matches "On " at start of a line, through "wrote:" (end of that line),
+  //     then removes the attribution AND all content after it (the quoted block).
+  body = body.replace(/^On\s[\s\S]*?wrote:[^\n]*[\s\S]*/m, "");
+
+  // 1b. Quoted lines — any line beginning with one or more ">" characters.
+  body = body
+    .split("\n")
+    .filter((l) => !/^>/.test(l))
+    .join("\n");
+
+  // 2a. RFC 3676 signature delimiter: "-- " (or "--") on its own line.
+  body = body.replace(/\n--\s*\n[\s\S]*$/, "");
+
+  // 2b. Recognisable sign-off phrases near the end (≤ 4 remaining lines).
+  //     Only strip when the remaining content is plausibly just a name block.
+  //     A trailing period is NOT matched — "Thanks." is sentence punctuation,
+  //     not a sign-off marker. Only "Thanks," or bare "Thanks" are stripped.
+  const SIGNOFF_RE =
+    /^(best\s+regards|kind\s+regards|warm\s+regards|yours\s+sincerely|yours|sincerely|regards|with\s+regards|best|thanks|thank\s+you|cheers),?\s*$/i;
+  const signoffLines = body.split("\n");
+  const signoffIdx = signoffLines.findIndex((l) => SIGNOFF_RE.test(l.trim()));
+  if (signoffIdx !== -1 && signoffLines.length - signoffIdx <= 5) {
+    body = signoffLines.slice(0, signoffIdx).join("\n");
+  }
+
+  // 3. Lines that are nothing but a URL (tracking pixels, unsubscribe links, …).
+  body = body
+    .split("\n")
+    .filter((l) => !/^\s*https?:\/\/\S+\s*$/.test(l))
+    .join("\n");
+
+  // 4. Whitespace normalisation.
+  return body.replace(/\n{3,}/g, "\n\n").trim();
+}
+
+/**
+ * Truncate `text` to at most `budget` characters using a 70 / 30 head/tail split.
+ *
+ * When the text fits within the budget it is returned unchanged.
+ * When truncating, 70 % of the budget comes from the head (topic, context)
+ * and 30 % from the tail (action items, sign-off intent), separated by " … ".
+ */
+function truncateToShare(text: string, budget: number): string {
+  if (text.length <= budget) return text;
+  const headLen = Math.floor(budget * 0.7);
+  const tailLen = budget - headLen;
+  return `${text.slice(0, headLen)} … ${text.slice(-tailLen)}`;
+}
+
+/**
+ * Compact thread text for embedding (subject + cleaned, budgeted body excerpts).
  *
  * Current-intent policy: the latest message is the primary classification
  * signal. For multi-message threads the latest message is placed first and
  * labelled, with earlier messages listed afterwards as secondary context.
- * Single-message threads use the original flat format for backward
- * compatibility.
+ * Single-message threads use the same budget logic with the flat format for
+ * backward compatibility.
+ *
+ * Budget: THREAD_EMBEDDING_CHAR_BUDGET (6,000 chars total).
+ *   Latest message:  60 % (3,600 chars).
+ *   Earlier messages: 40 % shared equally across included messages (2,400 chars).
+ *   If equal sharing would give each earlier message < MIN_EARLIER_MSG_CHARS,
+ *   oldest messages are dropped until each kept message has enough room.
+ *
+ * Each included body is first passed through cleanForEmbedding to remove
+ * quoted replies, signatures, and tracking URLs, then truncated with a
+ * 70/30 head/tail split if it still exceeds its budget share.
  */
 export function buildThreadEmbeddingText(
   messages: ReadonlyArray<{ subject?: string | null; bodyText?: string | null }>
 ): string {
   if (messages.length === 0) return "";
 
+  const latestBudget = Math.floor(THREAD_EMBEDDING_CHAR_BUDGET * LATEST_SHARE);
+  const earlierBudget = THREAD_EMBEDDING_CHAR_BUDGET - latestBudget;
+
   const parts: string[] = [];
   const firstSubject = messages[0]?.subject;
   if (firstSubject) parts.push(`Subject: ${firstSubject}`);
 
   if (messages.length === 1) {
-    // Single message: flat format (backward-compatible).
+    // Single message: flat format (backward-compatible with stored hashes).
     const msg = messages[0]!;
     if (msg.bodyText) {
-      parts.push(msg.bodyText.slice(0, 500));
+      parts.push(truncateToShare(cleanForEmbedding(msg.bodyText), latestBudget));
     }
   } else {
-    // Multi-message thread: latest message is the primary signal.
-    // Earlier messages are secondary context for interpreting the latest.
+    // Multi-message thread: latest first, earlier as secondary context.
     const latest = messages[messages.length - 1]!;
     const earlier = messages.slice(0, -1);
 
     parts.push("[LATEST MESSAGE — primary classification signal]");
     if (latest.bodyText) {
-      parts.push(latest.bodyText.slice(0, 500));
+      parts.push(truncateToShare(cleanForEmbedding(latest.bodyText), latestBudget));
     }
 
-    parts.push("[EARLIER THREAD CONTEXT — secondary]");
-    for (const msg of earlier) {
-      if (msg.bodyText) {
-        parts.push(msg.bodyText.slice(0, 500));
+    // Determine how many earlier messages to include.
+    // Drop from oldest (front of array) if per-message share falls below the minimum.
+    let keptEarlier = earlier;
+    let perEarlier = keptEarlier.length > 0
+      ? Math.floor(earlierBudget / keptEarlier.length)
+      : 0;
+    while (perEarlier < MIN_EARLIER_MSG_CHARS && keptEarlier.length > 1) {
+      keptEarlier = keptEarlier.slice(1); // drop oldest
+      perEarlier = Math.floor(earlierBudget / keptEarlier.length);
+    }
+
+    if (keptEarlier.length > 0) {
+      parts.push("[EARLIER THREAD CONTEXT — secondary]");
+      for (const msg of keptEarlier) {
+        if (msg.bodyText) {
+          parts.push(truncateToShare(cleanForEmbedding(msg.bodyText), perEarlier));
+        }
       }
     }
   }

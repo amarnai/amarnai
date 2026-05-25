@@ -4,6 +4,8 @@ import {
   softmax,
   buildNodeEmbeddingText,
   buildThreadEmbeddingText,
+  cleanForEmbedding,
+  THREAD_EMBEDDING_CHAR_BUDGET,
   hashEmbeddingInput,
   computeSubtreeScores,
   deriveBreadcrumb,
@@ -157,10 +159,20 @@ describe("buildThreadEmbeddingText", () => {
     expect(text).toContain("body text here");
   });
 
-  it("truncates body at 500 chars", () => {
+  it("does not blindly truncate at 500 chars — uses full budget", () => {
+    // Single message body of 1000 chars (well within the 3600-char latest budget).
     const long = "x".repeat(1000);
     const text = buildThreadEmbeddingText([{ subject: null, bodyText: long }]);
-    expect(text.length).toBeLessThan(600);
+    // The entire body must appear — no early truncation.
+    expect(text).toContain(long);
+  });
+
+  it("truncates with … marker when body exceeds latestBudget (60% of THREAD_EMBEDDING_CHAR_BUDGET)", () => {
+    const latestBudget = Math.floor(THREAD_EMBEDDING_CHAR_BUDGET * 0.6); // 3600
+    const long = "a".repeat(latestBudget + 200);
+    const text = buildThreadEmbeddingText([{ subject: null, bodyText: long }]);
+    expect(text).toContain(" … ");
+    expect(text.length).toBeLessThan(long.length);
   });
 
   it("handles empty message list", () => {
@@ -200,19 +212,256 @@ describe("buildThreadEmbeddingText", () => {
     expect(text).toContain("Subject: Original Subject");
   });
 
-  it("multi-message thread: each body is still truncated at 500 chars", () => {
+  it("multi-message thread: bodies use budget allocation, not a 500-char cap", () => {
+    // Two messages each 1000 chars — well within both the latest (3600) and
+    // earlier (2400 total, 2400 for 1 message) budget slices.
     const long = "y".repeat(1000);
     const text = buildThreadEmbeddingText([
       { subject: null, bodyText: long },
       { subject: null, bodyText: long },
     ]);
-    // Labels + subject add some overhead; check that no single body block exceeds 500
-    const latestLabel = "[LATEST MESSAGE — primary classification signal]";
-    const earlierLabel = "[EARLIER THREAD CONTEXT — secondary]";
-    const latestStart = text.indexOf(latestLabel) + latestLabel.length;
-    const earlierStart = text.indexOf(earlierLabel);
-    const latestBody = text.slice(latestStart, earlierStart).trim();
-    expect(latestBody.length).toBeLessThanOrEqual(500);
+    // Both full bodies must appear unchanged.
+    const count = (text.match(/y{1000}/g) ?? []).length;
+    expect(count).toBe(2);
+  });
+});
+
+// ─── cleanForEmbedding ────────────────────────────────────────────────────────
+
+describe("cleanForEmbedding", () => {
+  // ── Passthrough ─────────────────────────────────────────────────────────────
+
+  it("plain text with no boilerplate passes through unchanged", () => {
+    const body = "We would like to request enterprise pricing for our team.";
+    expect(cleanForEmbedding(body)).toBe(body);
+  });
+
+  it("empty string returns empty string", () => {
+    expect(cleanForEmbedding("")).toBe("");
+  });
+
+  it("whitespace-only string returns empty string after trim", () => {
+    expect(cleanForEmbedding("   \n\n   ")).toBe("");
+  });
+
+  // ── Quoted reply blocks ──────────────────────────────────────────────────────
+
+  it("strips lines beginning with '>'", () => {
+    const body = "Our main concern is pricing.\n> That sounds good.\n> Let me know.";
+    const cleaned = cleanForEmbedding(body);
+    expect(cleaned).toContain("Our main concern is pricing.");
+    expect(cleaned).not.toContain("> That sounds good.");
+    expect(cleaned).not.toContain("> Let me know.");
+  });
+
+  it("strips nested quoted lines (>> …)", () => {
+    const body = "Reply here.\n>> deeply quoted\n> outer quote";
+    const cleaned = cleanForEmbedding(body);
+    expect(cleaned).not.toContain(">>");
+    expect(cleaned).not.toContain("> outer");
+  });
+
+  it("does not strip lines where '>' is not the first character", () => {
+    const body = "Price is > $100 per seat.";
+    expect(cleanForEmbedding(body)).toContain("Price is > $100 per seat.");
+  });
+
+  it("strips 'On … wrote:' attribution and everything after it", () => {
+    const body =
+      "Please see my reply below.\n\nOn Mon, Jan 1, 2024 at 12:00 PM Jane Doe <jane@example.com> wrote:\n\nOriginal email content.";
+    const cleaned = cleanForEmbedding(body);
+    expect(cleaned).toContain("Please see my reply below.");
+    expect(cleaned).not.toContain("Jane Doe");
+    expect(cleaned).not.toContain("Original email content");
+  });
+
+  it("strips multi-line wrapped 'On … wrote:' attribution", () => {
+    const body =
+      "My reply is below.\n\nOn Monday, 1 January 2024 at 12:00:00 UTC, John Smith\n<john@example.com> wrote:\n\nQuoted original.";
+    const cleaned = cleanForEmbedding(body);
+    expect(cleaned).toContain("My reply is below.");
+    expect(cleaned).not.toContain("John Smith");
+    expect(cleaned).not.toContain("Quoted original");
+  });
+
+  // ── Email signatures ─────────────────────────────────────────────────────────
+
+  it("strips everything after an RFC 3676 '-- ' delimiter", () => {
+    const body = "Please find the details below.\n-- \nJohn Smith\nSenior Engineer\njohn@example.com";
+    const cleaned = cleanForEmbedding(body);
+    expect(cleaned).toContain("Please find the details below.");
+    expect(cleaned).not.toContain("John Smith");
+    expect(cleaned).not.toContain("Senior Engineer");
+  });
+
+  it("strips everything after '-- ' (no trailing space variant)", () => {
+    const body = "Message body here.\n--\nSignature text.";
+    const cleaned = cleanForEmbedding(body);
+    expect(cleaned).toContain("Message body here.");
+    expect(cleaned).not.toContain("Signature text.");
+  });
+
+  it("strips sign-off phrase and name when ≤ 4 lines remain", () => {
+    const body = "We look forward to your response.\n\nBest regards,\nJane";
+    const cleaned = cleanForEmbedding(body);
+    expect(cleaned).toContain("We look forward to your response.");
+    expect(cleaned).not.toContain("Best regards");
+    expect(cleaned).not.toContain("Jane");
+  });
+
+  it("does NOT strip sign-off phrase when many lines of content follow it (mid-email)", () => {
+    // "Thanks," appears early; 10 paragraphs of real content come after it.
+    // lines.length − signoffIdx > 5 → not treated as a sign-off.
+    const lines = ["Thanks,", "Alice", ""];
+    for (let i = 0; i < 10; i++) lines.push(`Paragraph ${i} with additional content.`);
+    const body = lines.join("\n");
+    const cleaned = cleanForEmbedding(body);
+    // Both the "sign-off" and subsequent content should be preserved.
+    expect(cleaned).toContain("Thanks,");
+    expect(cleaned).toContain("Paragraph 9 with additional content.");
+  });
+
+  it("handles 'Thanks' sign-off at end", () => {
+    const body = "Let us know if you need anything else.\n\nThanks,\nBob";
+    const cleaned = cleanForEmbedding(body);
+    expect(cleaned).not.toContain("Thanks,");
+    expect(cleaned).not.toContain("Bob");
+    expect(cleaned).toContain("Let us know if you need anything else.");
+  });
+
+  // ── Tracking/footer URLs ────────────────────────────────────────────────────
+
+  it("strips lines that are nothing but an http URL", () => {
+    const body = "Click here to unsubscribe:\nhttp://example.com/unsubscribe?token=abc123\nThanks.";
+    const cleaned = cleanForEmbedding(body);
+    expect(cleaned).toContain("Click here to unsubscribe:");
+    expect(cleaned).not.toContain("http://example.com/unsubscribe");
+    expect(cleaned).toContain("Thanks.");
+  });
+
+  it("strips lines that are nothing but an https URL", () => {
+    const body = "View in browser:\nhttps://mail.example.com/view?id=xyz\nMain content here.";
+    const cleaned = cleanForEmbedding(body);
+    expect(cleaned).not.toContain("https://mail.example.com");
+    expect(cleaned).toContain("Main content here.");
+  });
+
+  it("does NOT strip URLs embedded mid-sentence", () => {
+    const body = "See our docs at https://example.com/docs for more details.";
+    expect(cleanForEmbedding(body)).toContain("See our docs at https://example.com/docs");
+  });
+
+  // ── Whitespace normalisation ────────────────────────────────────────────────
+
+  it("collapses 3+ consecutive blank lines to one blank line", () => {
+    const body = "First paragraph.\n\n\n\nSecond paragraph.";
+    const cleaned = cleanForEmbedding(body);
+    expect(cleaned).not.toMatch(/\n{3,}/);
+    expect(cleaned).toContain("First paragraph.");
+    expect(cleaned).toContain("Second paragraph.");
+  });
+
+  it("trims leading and trailing whitespace", () => {
+    const body = "\n\n  Some content here.  \n\n";
+    expect(cleanForEmbedding(body)).toBe("Some content here.");
+  });
+});
+
+// ─── buildThreadEmbeddingText — budget allocation ─────────────────────────────
+
+describe("buildThreadEmbeddingText — budget allocation", () => {
+  const LATEST_BUDGET = Math.floor(THREAD_EMBEDDING_CHAR_BUDGET * 0.6); // 3600
+  const EARLIER_BUDGET = THREAD_EMBEDDING_CHAR_BUDGET - LATEST_BUDGET;  // 2400
+
+  it("single short message: included as-is (no truncation)", () => {
+    const body = "Short body.";
+    const text = buildThreadEmbeddingText([{ subject: null, bodyText: body }]);
+    expect(text).toContain(body);
+    expect(text).not.toContain(" … ");
+  });
+
+  it("single message at exactly the latest budget: no truncation", () => {
+    const body = "a".repeat(LATEST_BUDGET);
+    const text = buildThreadEmbeddingText([{ subject: null, bodyText: body }]);
+    expect(text).not.toContain(" … ");
+    expect(text).toContain(body);
+  });
+
+  it("single long message (> latestBudget): truncated with … marker using 70/30 split", () => {
+    const body = "a".repeat(LATEST_BUDGET + 500);
+    const text = buildThreadEmbeddingText([{ subject: null, bodyText: body }]);
+    expect(text).toContain(" … ");
+    // Head: first 70% of budget; tail: last 30%
+    const headLen = Math.floor(LATEST_BUDGET * 0.7);
+    const tailLen = LATEST_BUDGET - headLen;
+    expect(text).toContain("a".repeat(headLen));
+    expect(text.endsWith("a".repeat(tailLen))).toBe(true);
+  });
+
+  it("many short messages: all included without truncation", () => {
+    // 12 messages × 100 chars = 1200 chars total < 2400 earlier budget → all fit
+    const msgs = Array.from({ length: 12 }, (_, i) => ({
+      subject: null,
+      bodyText: `message ${i} with some content here.`,
+    }));
+    const text = buildThreadEmbeddingText(msgs);
+    // All 11 earlier messages are kept (12th is "latest")
+    for (let i = 0; i < 11; i++) {
+      expect(text).toContain(`message ${i} with some content here.`);
+    }
+    expect(text).not.toContain(" … ");
+  });
+
+  it("many long messages: latest gets latestBudget, each earlier gets earlierBudget/N share", () => {
+    // 3 messages each 1500 chars — latest gets 3600, each earlier gets 2400/2 = 1200
+    const body = "b".repeat(1500);
+    const msgs = [
+      { subject: null, bodyText: body },
+      { subject: null, bodyText: body },
+      { subject: null, bodyText: body },
+    ];
+    const text = buildThreadEmbeddingText(msgs);
+    // Latest (1500 chars) fits within 3600 → no truncation for latest
+    // Each earlier gets 2400/2 = 1200 chars → 1500 > 1200 → truncated with …
+    const earlierBudgetPer = Math.floor(EARLIER_BUDGET / 2);
+    expect(earlierBudgetPer).toBe(1200);
+    // The text should contain at least one … (from truncated earlier messages)
+    expect(text).toContain(" … ");
+    // Latest body (1500 < 3600) should appear intact once
+    expect(text.indexOf("b".repeat(1500))).not.toBe(-1);
+  });
+
+  it("too many messages: oldest are dropped, newest earlier messages kept", () => {
+    // 14 messages: 1 latest + 13 earlier.
+    // 2400 / 13 ≈ 184 < MIN_EARLIER_MSG_CHARS (200) → drop oldest until ≥ 200.
+    // Drop 1 oldest → 12 earlier → 2400/12 = 200 ≥ 200 → stop.
+    const msgs = Array.from({ length: 14 }, (_, i) => ({
+      subject: null,
+      bodyText: `unique-body-${i}`,
+    }));
+    const text = buildThreadEmbeddingText(msgs);
+    // The oldest earlier message (index 0) should be dropped.
+    expect(text).not.toContain("unique-body-0");
+    // Newer earlier messages should still appear.
+    expect(text).toContain("unique-body-1");
+    expect(text).toContain("unique-body-12"); // second-to-last = newest earlier
+    // Latest (index 13) always appears.
+    expect(text).toContain("unique-body-13");
+  });
+
+  it("single earlier message gets full 40% budget (not split further)", () => {
+    // 2 messages: latest + 1 earlier. Earlier gets full 2400 chars.
+    const body = "c".repeat(EARLIER_BUDGET + 100); // 2500 chars > 2400
+    const msgs = [
+      { subject: null, bodyText: body },  // earlier
+      { subject: null, bodyText: "latest" },
+    ];
+    const text = buildThreadEmbeddingText(msgs);
+    // Earlier body exceeds 2400 → must be truncated
+    expect(text).toContain(" … ");
+    // Head of earlier body (70% of 2400 = 1680 chars)
+    const headLen = Math.floor(EARLIER_BUDGET * 0.7);
+    expect(text).toContain("c".repeat(headLen));
   });
 });
 
