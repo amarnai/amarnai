@@ -1452,6 +1452,68 @@ describe("embedding sorter — spread allows descent when one child clearly domi
   });
 });
 
+// ─── Scenario 20: Deliberate stop at root → embedding_inbox ──────────────────
+//
+// Two root children A (sim=0.20) and B (sim=0.15) in a flat taxonomy.
+// Subtree score diff = 0.05 = CROSS_BRANCH_MARGIN, so the cross-branch check
+// does NOT fire (condition is strictly-less-than).  However a very high
+// thetaSpread override (0.70) means the normalised spread (≈0.69) is below
+// the threshold, so the traversal stops at root without descending.
+//
+// This is the "embedding_inbox" path: the algorithm makes a deliberate,
+// confident decision to keep the thread in Inbox — as opposed to the
+// "inbox_fallback" path which signals a failure (quality gate, LLM error, …).
+
+describe("embedding sorter — deliberate stop at root produces embedding_inbox", () => {
+  const S20_ROOT  = n("s20-root",  "Inbox",     null,                                                       true);
+  const S20_NODE_A = n("s20-a", "Operations", "Operational coordination, logistics, and process management.");
+  const S20_NODE_B = n("s20-b", "Legal",      "Legal matters, contract review, compliance, and regulatory affairs.");
+
+  const s20Nodes = [S20_ROOT, S20_NODE_A, S20_NODE_B];
+  const s20Edges = [
+    e("s20-r-a", "s20-root", "s20-a"),
+    e("s20-r-b", "s20-root", "s20-b"),
+  ];
+
+  const s20Messages = [msg(
+    "General coordination update",
+    "We need to align on several topics including operations and legal, but nothing specific yet."
+  )];
+
+  // A has a clear but narrow raw-sim advantage; subtree diff (0.05) is exactly
+  // CROSS_BRANCH_MARGIN so the LLM is never called.
+  const s20Sims = { "s20-a": 0.20, "s20-b": 0.15 };
+  const s20Embedder = makeSimEmbedder(buildSimTable(s20Nodes, s20Edges, s20Sims, s20Messages));
+  const s20Llm = makeMockLlmProvider(
+    JSON.stringify({ selectedNodeId: null, confidence: 0, explanation: "not called", needsHumanReview: true })
+  );
+
+  // High thetaSpread override: normalised spread ≈ 0.693 < 0.70 → stops at root.
+  const s20Options = { thetaSpread: 0.70 };
+
+  it("returns the root node as final destination", async () => {
+    const result = await sortThreadByEmbedding(s20Embedder, s20Llm, s20Nodes, s20Edges, s20Messages, s20Options);
+    expect(result.finalNodeId).toBe("s20-root");
+    expect(result.needsHumanReview).toBe(false);
+  });
+
+  it("decisionSource is embedding_inbox, not inbox_fallback", async () => {
+    const result = await sortThreadByEmbedding(s20Embedder, s20Llm, s20Nodes, s20Edges, s20Messages, s20Options);
+    expect(result.decisionSource).toBe("embedding_inbox");
+  });
+
+  it("path is empty — no traversal steps were taken", async () => {
+    const result = await sortThreadByEmbedding(s20Embedder, s20Llm, s20Nodes, s20Edges, s20Messages, s20Options);
+    expect(result.path).toHaveLength(0);
+  });
+
+  it("rawSimilarities contains scores for both children", async () => {
+    const result = await sortThreadByEmbedding(s20Embedder, s20Llm, s20Nodes, s20Edges, s20Messages, s20Options);
+    expect(result.rawSimilarities["s20-a"]).toBeGreaterThan(0);
+    expect(result.rawSimilarities["s20-b"]).toBeGreaterThan(0);
+  });
+});
+
 // ─── Scenario 19: Strong signal through 4-level single-child chain ─────────────
 //
 // A 4-level single-child chain (root → L1 → L2 → L3 → L4) where every node

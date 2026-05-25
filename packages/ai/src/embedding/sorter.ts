@@ -104,7 +104,11 @@ export const TOP_K_LLM_CANDIDATES = 5;
 
 // ─── Result type ──────────────────────────────────────────────────────────────
 
-export type DecisionSource = "embedding_auto" | "llm" | "inbox_fallback";
+export type DecisionSource =
+  | "embedding_auto"   // embedding traversal reached a non-root leaf/mid-node
+  | "embedding_inbox"  // embedding traversal stopped at root (deliberate Inbox stay)
+  | "llm"              // cross-branch ambiguity resolved by LLM
+  | "inbox_fallback";  // catastrophic failure: quality gate, LLM error, no root, etc.
 
 export type EmbeddingSortResult = {
   finalNodeId: string | null;
@@ -505,6 +509,9 @@ export async function sortThreadByEmbedding(
   }
 
   // Traversal halted here. If we stopped at root, Inbox is the final destination.
+  // This is a deliberate, confident decision (no branch was clear enough to descend
+  // into), so decisionSource is "embedding_inbox" — distinct from "inbox_fallback"
+  // which signals a catastrophic failure (null finalNodeId, needsHumanReview: true).
   if (currentNodeId === rootNode.id) {
     return {
       finalNodeId: rootNode.id,
@@ -512,7 +519,7 @@ export async function sortThreadByEmbedding(
       confidence: 0,
       explanation: `No child branch matched confidently; thread stays in Inbox`,
       needsHumanReview: false,
-      decisionSource: "inbox_fallback",
+      decisionSource: "embedding_inbox",
       rawSimilarities: rawSimsRecord,
       subtreeScores: subtreeScoresRecord,
       updatedNodeEmbeddings,
