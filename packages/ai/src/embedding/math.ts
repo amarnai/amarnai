@@ -126,18 +126,49 @@ export function findDescendants(
   return result;
 }
 
-/** Compact thread text for embedding (subject + bounded body excerpts). */
+/**
+ * Compact thread text for embedding (subject + bounded body excerpts).
+ *
+ * Current-intent policy: the latest message is the primary classification
+ * signal. For multi-message threads the latest message is placed first and
+ * labelled, with earlier messages listed afterwards as secondary context.
+ * Single-message threads use the original flat format for backward
+ * compatibility.
+ */
 export function buildThreadEmbeddingText(
   messages: ReadonlyArray<{ subject?: string | null; bodyText?: string | null }>
 ): string {
+  if (messages.length === 0) return "";
+
   const parts: string[] = [];
   const firstSubject = messages[0]?.subject;
   if (firstSubject) parts.push(`Subject: ${firstSubject}`);
-  for (const msg of messages) {
+
+  if (messages.length === 1) {
+    // Single message: flat format (backward-compatible).
+    const msg = messages[0]!;
     if (msg.bodyText) {
       parts.push(msg.bodyText.slice(0, 500));
     }
+  } else {
+    // Multi-message thread: latest message is the primary signal.
+    // Earlier messages are secondary context for interpreting the latest.
+    const latest = messages[messages.length - 1]!;
+    const earlier = messages.slice(0, -1);
+
+    parts.push("[LATEST MESSAGE — primary classification signal]");
+    if (latest.bodyText) {
+      parts.push(latest.bodyText.slice(0, 500));
+    }
+
+    parts.push("[EARLIER THREAD CONTEXT — secondary]");
+    for (const msg of earlier) {
+      if (msg.bodyText) {
+        parts.push(msg.bodyText.slice(0, 500));
+      }
+    }
   }
+
   return parts.join("\n\n");
 }
 

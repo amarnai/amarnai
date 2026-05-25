@@ -1048,6 +1048,182 @@ describe("embedding sorter — existing non-Inbox fallback behavior still works"
   });
 });
 
+// ─── Scenarios 12–15: Current-intent policy (multi-message threads) ───────────
+//
+// All four scenarios use the flat 3-node taxonomy:
+//   INBOX (root) → ALPHA (admin) | BETA (media) | GAMMA (subscriptions)
+//
+// The embedding table maps the full thread text (produced by the updated
+// buildThreadEmbeddingText, which labels latest first) to the expected vector.
+// This verifies that the sorter uses buildThreadEmbeddingText for both table
+// construction and embedding lookup, producing the correct routing.
+
+function msgAt(subject: string, bodyText: string, daysAgo: number): ThreadMessage {
+  const d = new Date();
+  d.setDate(d.getDate() - daysAgo);
+  return { subject, senderEmail: "test@example.com", senderName: null, bodyText, receivedAt: d };
+}
+
+describe("embedding sorter — current-intent policy: latest message changes topic", () => {
+  // Earlier message: admin scheduling (ALPHA territory)
+  // Latest message: media interview request (BETA territory)
+  // Expected: routes to BETA because latest message is the primary signal.
+  const messages = [
+    msgAt("Admin follow-up", "Administrative scheduling request for document coordination", 3),
+    msgAt("Re: Follow up", "We are requesting a media interview and press appearance for our documentary", 0),
+  ];
+  const threadVec = BETA_VEC; // latest message (media) drives the embedding
+
+  const table = buildTable(
+    [
+      { node: ALPHA, vec: ALPHA_VEC },
+      { node: BETA, vec: BETA_VEC },
+      { node: GAMMA, vec: GAMMA_VEC },
+    ],
+    messages,
+    threadVec,
+    FLAT_NODES,
+    FLAT_EDGES
+  );
+
+  const embeddingProvider = makeMockEmbeddingProvider(table);
+  const { provider: llmProvider, chatSpy } = makeLlmSpy(
+    JSON.stringify({ selectedNodeId: null, confidence: 0, explanation: "not called", needsHumanReview: true })
+  );
+
+  it("routes to Beta (media) — latest message overrides earlier admin topic", async () => {
+    const result = await sortThreadByEmbedding(
+      embeddingProvider, llmProvider, FLAT_NODES, FLAT_EDGES, messages
+    );
+    expect(result.finalNodeId).toBe("beta");
+    expect(result.decisionSource).toBe("embedding_auto");
+  });
+
+  it("LLM is not called — embedding result is confident", async () => {
+    chatSpy.mockClear();
+    await sortThreadByEmbedding(embeddingProvider, llmProvider, FLAT_NODES, FLAT_EDGES, messages);
+    expect(chatSpy).not.toHaveBeenCalled();
+  });
+});
+
+describe("embedding sorter — current-intent policy: resolved thread routes to new intent", () => {
+  // Earlier: urgent media interview request (BETA territory)
+  // Latest: administrative resolution / cancel note (ALPHA territory)
+  // Expected: routes to ALPHA because the latest message changes the active intent.
+  const messages = [
+    msgAt("URGENT: Press interview request", "We urgently need a media interview and press appearance arrangement", 5),
+    msgAt("Re: Settled — no longer needed", "Please disregard our previous request. This has been resolved administratively and no further action is required.", 0),
+  ];
+  const threadVec = ALPHA_VEC; // latest message (admin resolution) drives the embedding
+
+  const table = buildTable(
+    [
+      { node: ALPHA, vec: ALPHA_VEC },
+      { node: BETA, vec: BETA_VEC },
+      { node: GAMMA, vec: GAMMA_VEC },
+    ],
+    messages,
+    threadVec,
+    FLAT_NODES,
+    FLAT_EDGES
+  );
+
+  const embeddingProvider = makeMockEmbeddingProvider(table);
+  const { provider: llmProvider } = makeLlmSpy(
+    JSON.stringify({ selectedNodeId: null, confidence: 0, explanation: "not called", needsHumanReview: true })
+  );
+
+  it("routes to Alpha (admin) — latest message cancels the earlier urgent media request", async () => {
+    const result = await sortThreadByEmbedding(
+      embeddingProvider, llmProvider, FLAT_NODES, FLAT_EDGES, messages
+    );
+    expect(result.finalNodeId).toBe("alpha");
+    expect(result.decisionSource).toBe("embedding_auto");
+  });
+});
+
+describe("embedding sorter — current-intent policy: short referential latest uses earlier context", () => {
+  // Earlier: detailed subscription renewal (GAMMA territory)
+  // Latest: short referential reply ("Yes, please go ahead")
+  // Earlier thread context is included in the embedding text; the combined text
+  // resolves the short latest message to GAMMA.
+  const messages = [
+    msgAt("Subscription renewal", "I would like to renew my subscription and continue receiving the publication via distribution", 7),
+    msgAt("Re: Confirmation", "Yes, please go ahead.", 0),
+  ];
+  const threadVec = GAMMA_VEC; // earlier context (subscription) resolves the short latest message
+
+  const table = buildTable(
+    [
+      { node: ALPHA, vec: ALPHA_VEC },
+      { node: BETA, vec: BETA_VEC },
+      { node: GAMMA, vec: GAMMA_VEC },
+    ],
+    messages,
+    threadVec,
+    FLAT_NODES,
+    FLAT_EDGES
+  );
+
+  const embeddingProvider = makeMockEmbeddingProvider(table);
+  const { provider: llmProvider } = makeLlmSpy(
+    JSON.stringify({ selectedNodeId: null, confidence: 0, explanation: "not called", needsHumanReview: true })
+  );
+
+  it("routes to Gamma (subscriptions) — earlier context resolves the referential latest message", async () => {
+    const result = await sortThreadByEmbedding(
+      embeddingProvider, llmProvider, FLAT_NODES, FLAT_EDGES, messages
+    );
+    expect(result.finalNodeId).toBe("gamma");
+    expect(result.decisionSource).toBe("embedding_auto");
+  });
+});
+
+describe("embedding sorter — current-intent policy: long old thread does not overpower latest message", () => {
+  // 4 earlier messages about admin scheduling (ALPHA territory)
+  // Latest message: media interview request (BETA territory)
+  // Despite having 4× more earlier messages, the embedding reflects the latest message.
+  const messages = [
+    msgAt("Admin #1", "Administrative coordination for scheduling and document requests", 20),
+    msgAt("Admin #2", "Follow-up on administrative scheduling coordination and documents", 15),
+    msgAt("Admin #3", "Third administrative request regarding document coordination", 10),
+    msgAt("Admin #4", "Additional administrative scheduling follow-up coordination", 5),
+    msgAt("New topic", "I am now reaching out about a media interview and press appearance for our documentary", 0),
+  ];
+  const threadVec = BETA_VEC; // latest message (media) wins despite 4 earlier admin messages
+
+  const table = buildTable(
+    [
+      { node: ALPHA, vec: ALPHA_VEC },
+      { node: BETA, vec: BETA_VEC },
+      { node: GAMMA, vec: GAMMA_VEC },
+    ],
+    messages,
+    threadVec,
+    FLAT_NODES,
+    FLAT_EDGES
+  );
+
+  const embeddingProvider = makeMockEmbeddingProvider(table);
+  const { provider: llmProvider, chatSpy } = makeLlmSpy(
+    JSON.stringify({ selectedNodeId: null, confidence: 0, explanation: "not called", needsHumanReview: true })
+  );
+
+  it("routes to Beta (media) — latest message wins despite 4 earlier admin messages", async () => {
+    const result = await sortThreadByEmbedding(
+      embeddingProvider, llmProvider, FLAT_NODES, FLAT_EDGES, messages
+    );
+    expect(result.finalNodeId).toBe("beta");
+    expect(result.decisionSource).toBe("embedding_auto");
+  });
+
+  it("LLM is not called — embedding result is confident", async () => {
+    chatSpy.mockClear();
+    await sortThreadByEmbedding(embeddingProvider, llmProvider, FLAT_NODES, FLAT_EDGES, messages);
+    expect(chatSpy).not.toHaveBeenCalled();
+  });
+});
+
 // ─── Scenario 12: Quality gate threshold ──────────────────────────────────────
 
 describe("embedding sorter — quality gate", () => {

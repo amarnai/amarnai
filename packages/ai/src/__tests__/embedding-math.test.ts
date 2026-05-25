@@ -171,6 +171,49 @@ describe("buildThreadEmbeddingText", () => {
     const text = buildThreadEmbeddingText([{ subject: null, bodyText: null }]);
     expect(text).toBe("");
   });
+
+  it("single-message thread: no labels added (backward-compatible format)", () => {
+    const text = buildThreadEmbeddingText([{ subject: "S", bodyText: "just one message" }]);
+    expect(text).not.toContain("[LATEST MESSAGE");
+    expect(text).not.toContain("[EARLIER THREAD CONTEXT");
+    expect(text).toContain("just one message");
+  });
+
+  it("multi-message thread: latest message appears first with primary-signal label", () => {
+    const text = buildThreadEmbeddingText([
+      { subject: "Original", bodyText: "earlier content here" },
+      { subject: "Re: Original", bodyText: "latest content here" },
+    ]);
+    expect(text).toContain("[LATEST MESSAGE — primary classification signal]");
+    expect(text).toContain("latest content here");
+    expect(text).toContain("[EARLIER THREAD CONTEXT — secondary]");
+    expect(text).toContain("earlier content here");
+    // Latest appears before earlier in the combined text
+    expect(text.indexOf("latest content here")).toBeLessThan(text.indexOf("earlier content here"));
+  });
+
+  it("multi-message thread: subject always comes from the first message", () => {
+    const text = buildThreadEmbeddingText([
+      { subject: "Original Subject", bodyText: "older body" },
+      { subject: "Re: Original Subject", bodyText: "newer body" },
+    ]);
+    expect(text).toContain("Subject: Original Subject");
+  });
+
+  it("multi-message thread: each body is still truncated at 500 chars", () => {
+    const long = "y".repeat(1000);
+    const text = buildThreadEmbeddingText([
+      { subject: null, bodyText: long },
+      { subject: null, bodyText: long },
+    ]);
+    // Labels + subject add some overhead; check that no single body block exceeds 500
+    const latestLabel = "[LATEST MESSAGE — primary classification signal]";
+    const earlierLabel = "[EARLIER THREAD CONTEXT — secondary]";
+    const latestStart = text.indexOf(latestLabel) + latestLabel.length;
+    const earlierStart = text.indexOf(earlierLabel);
+    const latestBody = text.slice(latestStart, earlierStart).trim();
+    expect(latestBody.length).toBeLessThanOrEqual(500);
+  });
 });
 
 // ─── hashEmbeddingInput ───────────────────────────────────────────────────────

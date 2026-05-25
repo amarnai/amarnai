@@ -232,6 +232,82 @@ describe("buildCandidateNodePrompt", () => {
   });
 });
 
+// ─── Current-intent policy: prompt structure ──────────────────────────────────
+
+const MULTI_THREAD: { messages: ThreadMessage[] } = {
+  messages: [
+    {
+      subject: "Original inquiry",
+      senderEmail: "sender@example.com",
+      senderName: "Sender",
+      bodyText: "Earlier message about subscription renewal.",
+      receivedAt: new Date("2026-01-01T10:00:00Z"),
+    },
+    {
+      subject: "Re: Original inquiry",
+      senderEmail: "sender@example.com",
+      senderName: "Sender",
+      bodyText: "Latest message about a press interview.",
+      receivedAt: new Date("2026-01-02T10:00:00Z"),
+    },
+  ],
+};
+
+describe("buildCandidateNodePrompt — current-intent policy", () => {
+  it("system prompt includes current-intent policy rules", () => {
+    const messages = buildCandidateNodePrompt(THREAD, [CANDIDATE]);
+    const system = messages.find((m) => m.role === "system");
+    expect(system?.content).toMatch(/latest message/i);
+    expect(system?.content).toMatch(/primary/i);
+    expect(system?.content).toMatch(/earlier.*secondary/i);
+  });
+
+  it("system prompt: latest message priority applies when it changes destination or urgency", () => {
+    const messages = buildCandidateNodePrompt(THREAD, [CANDIDATE]);
+    const system = messages.find((m) => m.role === "system");
+    // Must mention key override signals
+    expect(system?.content).toMatch(/urgency|priority|resolved/i);
+  });
+
+  it("system prompt: short/referential latest message resolves using earlier context", () => {
+    const messages = buildCandidateNodePrompt(THREAD, [CANDIDATE]);
+    const system = messages.find((m) => m.role === "system");
+    expect(system?.content).toMatch(/referential|ambiguous/i);
+  });
+
+  it("single-message thread: user prompt renders messages without latest/earlier labels", () => {
+    const messages = buildCandidateNodePrompt(THREAD, [CANDIDATE]);
+    const user = messages.find((m) => m.role === "user")!;
+    expect(user.content).not.toMatch(/latest message.*primary classification signal/i);
+    expect(user.content).not.toMatch(/earlier thread context.*secondary/i);
+  });
+
+  it("multi-message thread: user prompt labels latest and earlier messages separately", () => {
+    const messages = buildCandidateNodePrompt(MULTI_THREAD, [CANDIDATE]);
+    const user = messages.find((m) => m.role === "user")!;
+    expect(user.content).toMatch(/latest message.*primary classification signal/i);
+    expect(user.content).toMatch(/earlier thread context.*secondary/i);
+  });
+
+  it("multi-message thread: latest message appears before earlier messages in the user prompt", () => {
+    const messages = buildCandidateNodePrompt(MULTI_THREAD, [CANDIDATE]);
+    const user = messages.find((m) => m.role === "user")!;
+    const latestIdx = user.content.indexOf("Latest message about a press interview");
+    const earlierIdx = user.content.indexOf("Earlier message about subscription renewal");
+    expect(latestIdx).toBeGreaterThan(-1);
+    expect(earlierIdx).toBeGreaterThan(-1);
+    expect(latestIdx).toBeLessThan(earlierIdx);
+  });
+
+  it("multi-message thread: raw node IDs are still not exposed to the LLM", () => {
+    const cuid = "cma1b2c3d4e5f6g7h8i9j0k";
+    const candidateWithCuid: CandidateNode = { ...CANDIDATE, nodeId: cuid };
+    const messages = buildCandidateNodePrompt(MULTI_THREAD, [candidateWithCuid]);
+    const user = messages.find((m) => m.role === "user")!;
+    expect(user.content).not.toContain(cuid);
+  });
+});
+
 // ─── selectedNodeId resolution bug-fix tests ─────────────────────────────────
 
 describe("selectedNodeId resolution (sequential candidate_N IDs)", () => {
