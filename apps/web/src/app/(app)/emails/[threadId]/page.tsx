@@ -15,18 +15,18 @@ function fmt(iso: string): string {
   });
 }
 
-function priorityClass(priority: string): string {
+function priorityClass(priority: string | null): string {
   if (priority === "HIGH") return "badge-high";
   if (priority === "MEDIUM") return "badge-medium";
   if (priority === "LOW") return "badge-low";
   return "badge-none";
 }
 
-function MetaItem({ label, value }: { label: string; value: string }) {
+function MetaItem({ label, value }: { label: string; value: string | null }) {
   return (
     <div>
       <div className="meta-label">{label}</div>
-      <div className="meta-value">{value}</div>
+      <div className="meta-value">{value ?? "—"}</div>
     </div>
   );
 }
