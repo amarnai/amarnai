@@ -34,5 +34,11 @@ export function createEmbeddingProvider(config: EmbeddingProviderConfig): Embedd
       throw new Error(
         "EMBEDDING_PROVIDER is set to 'mock'. Use createMockEmbeddingProvider() for tests."
       );
+    default: {
+      const got = (config as { provider: string }).provider;
+      throw new Error(
+        `EMBEDDING_PROVIDER must be 'ollama' or 'frontier'${got ? `, got '${got}'` : " (not set)"}.`
+      );
+    }
   }
 }

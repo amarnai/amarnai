@@ -38,14 +38,7 @@ function getAIProviderConfig(): import("@amarnai/ai").AIProviderConfig {
 }
 
 function getEmbeddingProviderConfig(): import("@amarnai/ai").EmbeddingProviderConfig {
-  const rawProvider = process.env["EMBEDDING_PROVIDER"];
-  if (!rawProvider) {
-    throw new Error("EMBEDDING_PROVIDER is required (set to 'ollama' for local dev or 'frontier' for production)");
-  }
-  if (rawProvider !== "ollama" && rawProvider !== "frontier") {
-    throw new Error(`EMBEDDING_PROVIDER must be 'ollama' or 'frontier', got '${rawProvider}'`);
-  }
-  const provider = rawProvider;
+  const provider = (process.env["EMBEDDING_PROVIDER"] ?? "mock") as "mock" | "ollama" | "frontier";
   const cfg: import("@amarnai/ai").EmbeddingProviderConfig = { provider };
   const ollamaBase = process.env["OLLAMA_BASE_URL"];
   const ollamaEmbModel = process.env["OLLAMA_EMBEDDING_MODEL"];
