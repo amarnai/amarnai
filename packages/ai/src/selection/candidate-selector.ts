@@ -38,7 +38,7 @@ export type CandidateNode = {
   nodeId: string;
   name: string;
   description: string | null;
-  /** Optional breadcrumb for LLM context (e.g. "Inbox → Events → Weddings").
+  /** Optional breadcrumb for LLM context (e.g. "Inbox → Support → Billing").
    *  For display/explanation only — never used as a selection target. */
   breadcrumb?: string;
   score: number;

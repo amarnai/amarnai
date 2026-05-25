@@ -17,11 +17,11 @@
  *   │   └── Finance     desc: "accounting budget financial reporting audit"
  *   │       ├── Invoice   desc: "billing accounts receivable payment vendor"
  *   │       └── Payroll   desc: "salary wages compensation employees benefits"
- *   ├── Events          desc: "events venue booking organization hosting"
+ *   ├── Support         desc: "support helpdesk service ticket customer assistance"
  *   │   ├── Conferences desc: "conference seminar workshop gathering speakers"
- *   │   └── Ceremonies  desc: "ceremony ritual celebration formal occasion"
- *   │       ├── Weddings  desc: "wedding marriage bridal venue celebration"
- *   │       └── Funerals  desc: "funeral memorial bereavement mourning service"
+ *   │   └── Billing     desc: "billing invoice payment processing financial accounts"
+ *   │       ├── Invoice2  desc: "invoice accounts receivable vendor payment tracking"
+ *   │       └── Expense   desc: "expense reimbursement budget approval cost management"
  *   ├── Press           desc: "media communication public relations outreach"
  *   │   ├── Interview   desc: "journalist reporter interview appearance broadcast"
  *   │   └── Releases    desc: "announcement publication news statement"
@@ -64,11 +64,11 @@ const DISPUTES   = n("disputes",   "Disputes",    "litigation arbitration confli
 const FINANCE    = n("finance",    "Finance",     "accounting budget financial reporting audit");
 const INVOICE    = n("invoice",    "Invoice",     "billing accounts receivable payment vendor");
 const PAYROLL    = n("payroll",    "Payroll",     "salary wages compensation employees benefits");
-const EVENTS     = n("events",     "Events",      "events venue booking organization hosting");
+const SUPPORT    = n("support",    "Support",     "support helpdesk service ticket customer assistance");
 const CONFERENCES= n("conferences","Conferences", "conference seminar workshop gathering speakers");
-const CEREMONIES = n("ceremonies", "Ceremonies",  "ceremony ritual celebration formal occasion");
-const WEDDINGS   = n("weddings",   "Weddings",    "wedding marriage bridal venue celebration");
-const FUNERALS   = n("funerals",   "Funerals",    "funeral memorial bereavement mourning service");
+const BILLING    = n("billing",    "Billing",     "billing invoice payment processing financial accounts");
+const INVOICE2   = n("invoice2",   "Invoice2",    "invoice accounts receivable vendor payment tracking");
+const EXPENSE    = n("expense",    "Expense",     "expense reimbursement budget approval cost management");
 const PRESS      = n("press",      "Press",       "media communication public relations outreach");
 const INTERVIEW  = n("interview",  "Interview",   "journalist reporter interview appearance broadcast");
 const RELEASES   = n("releases",   "Releases",    "announcement publication news statement");
@@ -76,29 +76,29 @@ const OTHER      = n("other",      "Other",       "unclassified general miscella
 
 const NODES: TaxonomyNodeInput[] = [
   ROOT, WORK, LEGAL, CONTRACTS, DISPUTES, FINANCE, INVOICE, PAYROLL,
-  EVENTS, CONFERENCES, CEREMONIES, WEDDINGS, FUNERALS,
+  SUPPORT, CONFERENCES, BILLING, INVOICE2, EXPENSE,
   PRESS, INTERVIEW, RELEASES, OTHER,
 ];
 
 // ─── Complex taxonomy edges ────────────────────────────────────────────────────
 
 const EDGES: TaxonomyEdgeInput[] = [
-  e("e-root-work",        "root",       "work"),
-  e("e-root-events",      "root",       "events"),
-  e("e-root-press",       "root",       "press"),
-  e("e-root-other",       "root",       "other"),
-  e("e-work-legal",       "work",       "legal"),
-  e("e-work-finance",     "work",       "finance"),
-  e("e-legal-contracts",  "legal",      "contracts"),
-  e("e-legal-disputes",   "legal",      "disputes"),
-  e("e-finance-invoice",  "finance",    "invoice"),
-  e("e-finance-payroll",  "finance",    "payroll"),
-  e("e-events-conf",      "events",     "conferences"),
-  e("e-events-cere",      "events",     "ceremonies"),
-  e("e-cere-weddings",    "ceremonies", "weddings"),
-  e("e-cere-funerals",    "ceremonies", "funerals"),
-  e("e-press-interview",  "press",      "interview"),
-  e("e-press-releases",   "press",      "releases"),
+  e("e-root-work",        "root",    "work"),
+  e("e-root-support",     "root",    "support"),
+  e("e-root-press",       "root",    "press"),
+  e("e-root-other",       "root",    "other"),
+  e("e-work-legal",       "work",    "legal"),
+  e("e-work-finance",     "work",    "finance"),
+  e("e-legal-contracts",  "legal",   "contracts"),
+  e("e-legal-disputes",   "legal",   "disputes"),
+  e("e-finance-invoice",  "finance", "invoice"),
+  e("e-finance-payroll",  "finance", "payroll"),
+  e("e-support-conf",     "support", "conferences"),
+  e("e-support-bill",     "support", "billing"),
+  e("e-bill-invoice2",    "billing", "invoice2"),
+  e("e-bill-expense",     "billing", "expense"),
+  e("e-press-interview",  "press",   "interview"),
+  e("e-press-releases",   "press",   "releases"),
 ];
 
 // ─── Test helpers ──────────────────────────────────────────────────────────────
@@ -243,48 +243,48 @@ describe("complex taxonomy — specific child node outranks broad parent", () =>
 
 // ─── Suite 4: Broad parent outranks weakly matched children ───────────────────
 //
-// The email uses general event-planning vocabulary (events, booking, hosting)
-// without signaling any specific event type. Events (the parent) should rank
-// as the primary candidate, with its subcategories ranked below it.
+// The email uses general support-desk vocabulary (support, helpdesk, service,
+// ticket) without signaling any specific sub-category. Support (the parent)
+// should rank as the primary candidate, with its subcategories ranked below it.
 
 describe("complex taxonomy — broad parent outranks weakly matched children", () => {
   const emails: EmailInput[] = [
     {
       bodyText:
-        "We are looking for information about events booking and hosting. Please send us your events calendar and available hosting slots.",
+        "We are looking for information about support helpdesk service. Please send us your support ticket portal and available assistance slots.",
     },
   ];
   const result = runSelect(emails);
 
-  it("Events (parent) ranks above every descendant", () => {
-    const eventsRank = rankOf(result.candidates, "events");
-    expect(eventsRank, "Events should be in candidates").not.toBe(-1);
+  it("Support (parent) ranks above every descendant", () => {
+    const supportRank = rankOf(result.candidates, "support");
+    expect(supportRank, "Support should be in candidates").not.toBe(-1);
 
-    for (const childId of ["conferences", "ceremonies", "weddings", "funerals"]) {
+    for (const childId of ["conferences", "billing", "invoice2", "expense"]) {
       const childRank = rankOf(result.candidates, childId);
       if (childRank === -1) continue; // not in candidates — fine, even stricter
-      expect(eventsRank, `Events should rank above ${childId}`).toBeLessThan(childRank);
+      expect(supportRank, `Support should rank above ${childId}`).toBeLessThan(childRank);
     }
   });
 
-  it("Events scores strictly higher than every descendant", () => {
-    const eventsScore = scoreOf(result.candidates, "events");
-    expect(eventsScore).toBeGreaterThan(0);
+  it("Support scores strictly higher than every descendant", () => {
+    const supportScore = scoreOf(result.candidates, "support");
+    expect(supportScore).toBeGreaterThan(0);
 
-    for (const childId of ["conferences", "ceremonies", "weddings", "funerals"]) {
+    for (const childId of ["conferences", "billing", "invoice2", "expense"]) {
       const childScore = scoreOf(result.candidates, childId);
       if (childScore === -1) continue;
-      expect(eventsScore, `Events should score above ${childId}`).toBeGreaterThan(childScore);
+      expect(supportScore, `Support should score above ${childId}`).toBeGreaterThan(childScore);
     }
   });
 
-  it("Events is the top-ranked candidate", () => {
-    expect(result.candidates[0]?.nodeId).toBe("events");
+  it("Support is the top-ranked candidate", () => {
+    expect(result.candidates[0]?.nodeId).toBe("support");
   });
 
   it("descendant nodes are still present as lower-ranked candidates (not excluded)", () => {
     // Even with low relevance, subcategories should not be silently omitted.
-    for (const childId of ["conferences", "ceremonies", "weddings", "funerals"]) {
+    for (const childId of ["conferences", "billing", "invoice2", "expense"]) {
       expect(rankOf(result.candidates, childId), `${childId} should be in candidates`).not.toBe(-1);
     }
   });
@@ -292,54 +292,54 @@ describe("complex taxonomy — broad parent outranks weakly matched children", (
 
 // ─── Suite 5: Ambiguous siblings — parent ranks above both children ────────────
 //
-// The email mentions both Weddings and Funerals within the context of overall
-// ceremonies planning, repeating "ceremonies" most frequently. Since neither
-// specific child dominates, the parent (Ceremonies) should rank highest as the
+// The email mentions both Invoice2 and Expense within the context of overall
+// billing processing, repeating "billing" most frequently. Since neither
+// specific child dominates, the parent (Billing) should rank highest as the
 // safest shared destination.
 
 describe("complex taxonomy — ambiguous siblings: parent ranks above both children", () => {
   const emails: EmailInput[] = [
     {
-      subject: "Ceremonies formal occasion inquiry",
+      subject: "Billing financial accounts inquiry",
       bodyText:
-        "We need ceremonies coordination for formal occasions. Our upcoming weddings and funerals both require ceremonies planning. Please advise on available ceremonies slots.",
+        "We need billing coordination for financial accounts. Our upcoming invoices and expenses both require billing processing. Please advise on available billing payment options.",
     },
   ];
   const result = runSelect(emails);
 
-  it("Ceremonies (parent) ranks above Weddings (child)", () => {
-    const ceremRank = rankOf(result.candidates, "ceremonies");
-    const weddRank  = rankOf(result.candidates, "weddings");
-    expect(ceremRank, "Ceremonies should be in candidates").not.toBe(-1);
-    expect(weddRank,  "Weddings should be in candidates").not.toBe(-1);
-    expect(ceremRank).toBeLessThan(weddRank);
+  it("Billing (parent) ranks above Invoice2 (child)", () => {
+    const billRank    = rankOf(result.candidates, "billing");
+    const invoice2Rank = rankOf(result.candidates, "invoice2");
+    expect(billRank,    "Billing should be in candidates").not.toBe(-1);
+    expect(invoice2Rank, "Invoice2 should be in candidates").not.toBe(-1);
+    expect(billRank).toBeLessThan(invoice2Rank);
   });
 
-  it("Ceremonies (parent) ranks above Funerals (child)", () => {
-    const ceremRank = rankOf(result.candidates, "ceremonies");
-    const funeRank  = rankOf(result.candidates, "funerals");
-    expect(funeRank, "Funerals should be in candidates").not.toBe(-1);
-    expect(ceremRank).toBeLessThan(funeRank);
+  it("Billing (parent) ranks above Expense (child)", () => {
+    const billRank   = rankOf(result.candidates, "billing");
+    const expenseRank = rankOf(result.candidates, "expense");
+    expect(expenseRank, "Expense should be in candidates").not.toBe(-1);
+    expect(billRank).toBeLessThan(expenseRank);
   });
 
-  it("Ceremonies scores strictly higher than both Weddings and Funerals", () => {
-    const ceremScore = scoreOf(result.candidates, "ceremonies");
-    expect(ceremScore).toBeGreaterThan(scoreOf(result.candidates, "weddings"));
-    expect(ceremScore).toBeGreaterThan(scoreOf(result.candidates, "funerals"));
+  it("Billing scores strictly higher than both Invoice2 and Expense", () => {
+    const billScore = scoreOf(result.candidates, "billing");
+    expect(billScore).toBeGreaterThan(scoreOf(result.candidates, "invoice2"));
+    expect(billScore).toBeGreaterThan(scoreOf(result.candidates, "expense"));
   });
 
-  it("Weddings and Funerals are close rivals — both present and within 2 ranks of each other", () => {
-    const weddRank = rankOf(result.candidates, "weddings");
-    const funeRank = rankOf(result.candidates, "funerals");
-    expect(weddRank).not.toBe(-1);
-    expect(funeRank).not.toBe(-1);
+  it("Invoice2 and Expense are close rivals — both present and within 2 ranks of each other", () => {
+    const invoice2Rank = rankOf(result.candidates, "invoice2");
+    const expenseRank  = rankOf(result.candidates, "expense");
+    expect(invoice2Rank).not.toBe(-1);
+    expect(expenseRank).not.toBe(-1);
     // They should be near-tied: neither dominates the other by more than 2 ranks.
-    expect(Math.abs(weddRank - funeRank)).toBeLessThanOrEqual(2);
+    expect(Math.abs(invoice2Rank - expenseRank)).toBeLessThanOrEqual(2);
   });
 
-  it("Weddings and Funerals both score higher than zero (they are genuinely relevant)", () => {
-    expect(scoreOf(result.candidates, "weddings")).toBeGreaterThan(0);
-    expect(scoreOf(result.candidates, "funerals")).toBeGreaterThan(0);
+  it("Invoice2 and Expense both score higher than zero (they are genuinely relevant)", () => {
+    expect(scoreOf(result.candidates, "invoice2")).toBeGreaterThan(0);
+    expect(scoreOf(result.candidates, "expense")).toBeGreaterThan(0);
   });
 });
 
@@ -398,7 +398,7 @@ describe("complex taxonomy — rival candidates from different branches", () => 
       rankOf(result.candidates, "conferences"),
       rankOf(result.candidates, "interview")
     );
-    for (const unrelatedId of ["payroll", "disputes", "weddings", "funerals"]) {
+    for (const unrelatedId of ["payroll", "disputes", "invoice2", "expense"]) {
       const rank = rankOf(result.candidates, unrelatedId);
       if (rank === -1) continue; // absent is stricter than just ranked below
       expect(rank, `${unrelatedId} should rank below both rivals`).toBeGreaterThan(topRivalRank);
@@ -457,13 +457,15 @@ describe("complex taxonomy — multi-branch ambiguous email", () => {
     }
   });
 
-  it("completely unrelated branch nodes (Weddings, Funerals, Interview, Releases) rank below all relevant nodes", () => {
+  it("completely unrelated branch nodes (Support, Conferences, Interview, Releases) rank below all relevant nodes", () => {
+    // "support" (helpdesk/ticket vocabulary) and "conferences" (seminar/workshop)
+    // have zero overlap with the legal-contracts/billing-invoice email.
     const relevantRanks = ["legal", "contracts", "invoice", "finance"]
       .map((id) => rankOf(result.candidates, id))
       .filter((r) => r !== -1);
     const worstRelevantRank = Math.max(...relevantRanks);
 
-    for (const unrelatedId of ["weddings", "funerals", "interview", "releases"]) {
+    for (const unrelatedId of ["support", "conferences", "interview", "releases"]) {
       const rank = rankOf(result.candidates, unrelatedId);
       if (rank === -1) continue; // absent is even stricter
       expect(
@@ -555,18 +557,18 @@ describe("complex taxonomy — semantically relevant nodes outrank irrelevant on
   });
 
   it("general category vocabulary prioritizes the category node over its subcategories", () => {
-    // Email only mentions "events" — not any specific event type.
-    // Events (the parent) should rank above Conferences, Ceremonies, etc.
-    const emails: EmailInput[] = [{ bodyText: "events planning" }];
+    // Email only mentions "support" — not any specific sub-category.
+    // Support (the parent) should rank above Conferences, Billing, etc.
+    const emails: EmailInput[] = [{ bodyText: "support helpdesk" }];
     const result = runSelect(emails);
 
-    const eventsRank = rankOf(result.candidates, "events");
-    expect(eventsRank, "Events should be in candidates").not.toBe(-1);
+    const supportRank = rankOf(result.candidates, "support");
+    expect(supportRank, "Support should be in candidates").not.toBe(-1);
 
-    for (const subcategoryId of ["conferences", "ceremonies", "weddings", "funerals"]) {
+    for (const subcategoryId of ["conferences", "billing", "invoice2", "expense"]) {
       const subcategoryRank = rankOf(result.candidates, subcategoryId);
       if (subcategoryRank === -1) continue; // absent is fine — even less relevant
-      expect(eventsRank, `Events should rank above ${subcategoryId}`).toBeLessThan(subcategoryRank);
+      expect(supportRank, `Support should rank above ${subcategoryId}`).toBeLessThan(subcategoryRank);
     }
   });
 });

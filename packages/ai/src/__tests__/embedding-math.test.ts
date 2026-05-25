@@ -95,25 +95,25 @@ describe("softmax", () => {
 describe("buildNodeEmbeddingText", () => {
   it("output contains Path:, Name:, and Description: lines", () => {
     const text = buildNodeEmbeddingText({
-      name: "Weddings",
-      description: "Wedding planning.",
-      breadcrumb: "Inbox > Weddings",
+      name: "Billing",
+      description: "Invoice processing and payment management.",
+      breadcrumb: "Inbox > Billing",
     });
-    expect(text).toContain("Path: Inbox > Weddings");
-    expect(text).toContain("Name: Weddings");
-    expect(text).toContain("Description: Wedding planning.");
+    expect(text).toContain("Path: Inbox > Billing");
+    expect(text).toContain("Name: Billing");
+    expect(text).toContain("Description: Invoice processing and payment management.");
   });
 
   it("breadcrumb appears on the first line prefixed with 'Path:'", () => {
     const text = buildNodeEmbeddingText({
-      name: "Funerals",
-      description: "Memorial services.",
-      breadcrumb: "Inbox > Events > Funerals",
+      name: "Legal",
+      description: "Contract review and compliance inquiries.",
+      breadcrumb: "Inbox > Support > Legal",
     });
     const lines = text.split("\n");
-    expect(lines[0]).toBe("Path: Inbox > Events > Funerals");
-    expect(lines[1]).toBe("Name: Funerals");
-    expect(lines[2]).toBe("Description: Memorial services.");
+    expect(lines[0]).toBe("Path: Inbox > Support > Legal");
+    expect(lines[1]).toBe("Name: Legal");
+    expect(lines[2]).toBe("Description: Contract review and compliance inquiries.");
   });
 
   it("all three fields are present in the output", () => {
@@ -128,7 +128,7 @@ describe("buildNodeEmbeddingText", () => {
   });
 
   it("is deterministic for identical inputs", () => {
-    const node = { name: "Funerals", description: "Memorial services.", breadcrumb: "Inbox > Funerals" };
+    const node = { name: "Legal", description: "Contract review and compliance inquiries.", breadcrumb: "Inbox > Legal" };
     expect(buildNodeEmbeddingText(node)).toBe(buildNodeEmbeddingText(node));
   });
 
@@ -237,13 +237,13 @@ describe("hashEmbeddingInput", () => {
   });
 
   it("old format (name\\ndescription) produces a different hash than new format", () => {
-    const name = "Weddings";
-    const description = "Wedding ceremony requests.";
+    const name = "Billing";
+    const description = "Invoice processing and payment management.";
     const oldText = `${name}\n${description}`;
     const newText = buildNodeEmbeddingText({
       name,
       description,
-      breadcrumb: "Inbox > Weddings",
+      breadcrumb: "Inbox > Billing",
     });
     expect(hashEmbeddingInput(oldText, "model-v1")).not.toBe(
       hashEmbeddingInput(newText, "model-v1")
@@ -255,13 +255,13 @@ describe("hashEmbeddingInput", () => {
 
 describe("deriveBreadcrumb", () => {
   const INBOX = { id: "inbox", name: "Inbox", isRoot: true };
-  const EVENTS = { id: "events", name: "Events", isRoot: false };
-  const WEDDINGS = { id: "weddings", name: "Weddings", isRoot: false };
+  const SUPPORT = { id: "support", name: "Support", isRoot: false };
+  const BILLING = { id: "billing", name: "Billing", isRoot: false };
 
-  const nodes = [INBOX, EVENTS, WEDDINGS];
+  const nodes = [INBOX, SUPPORT, BILLING];
   const edges: TaxonomyEdgeInput[] = [
-    { id: "e1", sourceNodeId: "inbox", targetNodeId: "events" },
-    { id: "e2", sourceNodeId: "events", targetNodeId: "weddings" },
+    { id: "e1", sourceNodeId: "inbox", targetNodeId: "support" },
+    { id: "e2", sourceNodeId: "support", targetNodeId: "billing" },
   ];
 
   it("root node returns just its own name", () => {
@@ -269,11 +269,11 @@ describe("deriveBreadcrumb", () => {
   });
 
   it("direct child of root returns 'Root > Child'", () => {
-    expect(deriveBreadcrumb("events", nodes, edges)).toBe("Inbox > Events");
+    expect(deriveBreadcrumb("support", nodes, edges)).toBe("Inbox > Support");
   });
 
   it("grandchild returns full three-level path", () => {
-    expect(deriveBreadcrumb("weddings", nodes, edges)).toBe("Inbox > Events > Weddings");
+    expect(deriveBreadcrumb("billing", nodes, edges)).toBe("Inbox > Support > Billing");
   });
 
   it("node absent from all edges returns just its own name", () => {
@@ -300,8 +300,8 @@ describe("deriveBreadcrumb", () => {
   });
 
   it("is deterministic for identical inputs", () => {
-    expect(deriveBreadcrumb("weddings", nodes, edges)).toBe(
-      deriveBreadcrumb("weddings", nodes, edges)
+    expect(deriveBreadcrumb("billing", nodes, edges)).toBe(
+      deriveBreadcrumb("billing", nodes, edges)
     );
   });
 });
@@ -428,7 +428,7 @@ describe("getStaleEmbeddableNodes", () => {
     examples: [], isRoot: false,
   };
   const BETA: EmbeddableNode = {
-    id: "beta", name: "Beta", description: "Media appearances and press.", instructions: null,
+    id: "beta", name: "Beta", description: "Sales inquiries and business development.", instructions: null,
     examples: [], isRoot: false,
   };
 
