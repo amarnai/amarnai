@@ -8,10 +8,6 @@ Amarnai is an open-source, self-hostable AI email triage assistant. It is Gmail-
 
 Amarnai sorts email threads, not individual messages. New messages in existing threads trigger re-sorting of the full thread.
 
-Users define a visual email sorting tree. AI follows sorting questions on edges, chooses one final destination node, adds structured metadata, and sends uncertain/risky results to review.
-
-Amarnai must not auto-send emails or send emails from its own GUI in the MVP.
-
 ## Monorepo
 
 - `apps/web/` - Next.js frontend
@@ -21,19 +17,6 @@ Amarnai must not auto-send emails or send emails from its own GUI in the MVP.
 - `packages/shared/` - shared types and Zod schemas
 - `packages/ai/` - AI providers, prompts, output validation
 - `packages/config/` - shared env/config
-
-## Core Model
-
-- Each workspace has one DB-backed root entry node: `Inbox`.
-- All sorting starts from `Inbox`.
-- `TaxonomyNode` = visual sorting step.
-- A node may be a visible category/folder or a hidden sorting step.
-- Final destination nodes must be visible categories and able to receive emails.
-- `TaxonomyEdge` = sorting question from parent/source node to child/target node.
-- Edges with missing/default sorting questions are invalid and ignored.
-- Tags are user-controlled labels, optionally imported from Gmail later.
-- Metadata is AI-generated: priority, urgency, risk, required action, sensitivity, due date, confidence, explanation, review status.
-- Review queue handles low-confidence, sensitive, invalid, or risky results.
 
 ## AI & Policy
 
@@ -73,3 +56,7 @@ Amarnai must not auto-send emails or send emails from its own GUI in the MVP.
 - Arbitrary workflow automation
 - Node marketplace
 - Kubernetes
+
+## Testing
+
+- Tests must never be adjusted to accommodate the algorithm. If a test is failing and the test itself is not flawed, fix the algorithm, NOT the test.
