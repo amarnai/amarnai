@@ -32,8 +32,9 @@ Amarnai can use an Ollama instance running on your machine.
 # 2. Start Ollama
 ollama serve
 
-# 3. Pull the local test model
-ollama pull llama3.1:8b
+# 3. Pull the local models
+ollama pull llama3.1:8b          # LLM (used at runtime)
+ollama pull nomic-embed-text     # embeddings (used for sorting tests)
 
 # 4. Copy local overrides
 cp .env.local.example .env.local
@@ -184,6 +185,45 @@ Starts all apps in parallel:
 pnpm typecheck   # type-check all packages
 pnpm lint        # lint all packages
 pnpm test        # run tests
+```
+
+## Testing
+
+### Running tests
+
+```bash
+pnpm test                  # all packages
+pnpm test:sorting          # AI sorting tests only (fast, no DB)
+```
+
+### AI embedding fixtures
+
+The embedding sorter tests in `packages/ai` use pre-computed vectors stored in
+`packages/ai/src/__tests__/fixtures/embedding-vectors.json`. These are real
+`nomic-embed-text` embeddings (committed to the repo) so the test suite runs
+offline without Ollama and stays deterministic in CI.
+
+**When to regenerate:** if you change a taxonomy node's name or description, add
+new test emails to `sorting-fixtures.ts`, or switch the embedding model.
+
+**How to regenerate:**
+
+```bash
+# Requires Ollama running locally with nomic-embed-text
+ollama pull nomic-embed-text
+
+pnpm --filter @amarnai/ai seed:embeddings
+```
+
+This calls Ollama once, embeds all taxonomy nodes and test email threads, and
+overwrites `embedding-vectors.json`. Commit the updated file alongside your
+taxonomy or fixture changes.
+
+To use a different Ollama base URL or model:
+
+```bash
+OLLAMA_BASE_URL=http://my-host:11434 OLLAMA_EMBEDDING_MODEL=mxbai-embed-large \
+  pnpm --filter @amarnai/ai seed:embeddings
 ```
 
 ## Structure

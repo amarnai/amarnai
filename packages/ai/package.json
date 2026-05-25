@@ -11,7 +11,8 @@
     "lint": "eslint src",
     "typecheck": "tsc --noEmit",
     "test": "vitest run --passWithNoTests",
-    "test:sorting": "vitest run --reporter=verbose src/__tests__/sorting-candidate-paths.test.ts src/__tests__/sorting-llm.test.ts src/__tests__/embedding-math.test.ts src/__tests__/embedding-sorter.test.ts"
+    "test:sorting": "vitest run --reporter=verbose src/__tests__/sorting-candidate-paths.test.ts src/__tests__/sorting-llm.test.ts src/__tests__/embedding-math.test.ts src/__tests__/embedding-sorter.test.ts",
+    "seed:embeddings": "SEED_EMBEDDINGS=1 vitest run --reporter=verbose src/__tests__/fixtures/seed-embeddings.test.ts"
   },
   "dependencies": {
     "@amarnai/shared": "workspace:*",

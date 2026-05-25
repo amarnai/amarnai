@@ -418,7 +418,14 @@ export async function sortThreadByEmbedding(
     const bestChildSubtreeScore = subtreeScores.get(bestChildId) ?? 0;
     const currentRawSim = rawSims.get(currentNodeId) ?? 0;
 
-    const spreadOk = spread > thetaSpread;
+    // Normalize spread by the number of children so that a clear winner produces
+    // a consistent signal regardless of how many branches the current node has.
+    // With k children, uniform softmax gives each child 1/k probability; the
+    // "spread" (best − second-best) scales as roughly (1 − 1/k) for a perfect
+    // winner and 0 for a tie. Multiplying by k removes that dependency on k,
+    // making thetaSpread a model-agnostic dominance threshold.
+    const normalizedSpread = spread * children.length;
+    const spreadOk = normalizedSpread > thetaSpread;
     const marginOk = bestChildSubtreeScore > currentRawSim + deltaMargin;
 
     if (spreadOk && marginOk) {
@@ -431,7 +438,7 @@ export async function sortThreadByEmbedding(
           sourceNodeId: edge.sourceNodeId,
           targetNodeId: edge.targetNodeId,
           confidence: bestProb,
-          explanation: `Subtree score ${bestChildSubtreeScore.toFixed(3)}, spread ${spread.toFixed(3)}`,
+          explanation: `Subtree score ${bestChildSubtreeScore.toFixed(3)}, spread ${normalizedSpread.toFixed(3)} (normalized)`,
         });
       }
       currentNodeId = bestChildId;
