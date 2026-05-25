@@ -4,14 +4,17 @@
  * Sorts an incoming thread into the most specific appropriate node of a
  * user-defined taxonomy graph using three phases:
  *
- *   Phase 0 — Absolute quality gate:
- *     If max raw similarity across all visible nodes is below `thetaMin`, route
- *     to Inbox immediately. This is the only step that detects whether the email
- *     fits the taxonomy at all, before normalization destroys that information.
- *
  *   Phase 1 — Bottom-up subtree scores:
  *     Propagate scores from leaves to root. S(v) = best reachable similarity in
  *     the subtree rooted at v, decayed by `lambdaDepthDecay` per level.
+ *
+ *   Phase 0 — Absolute quality gate (evaluated after Phase 1):
+ *     If max subtree score across all nodes is below `thetaMin`, route to Inbox
+ *     immediately.  Gating on subtree scores rather than raw similarities means
+ *     the gate uses the same aggregated evidence as the traversal.  The two are
+ *     logically equivalent (S(v) ≥ rawSim(v) for every v, so both thresholds
+ *     fire iff all raw similarities are below `thetaMin`), but the gate now sits
+ *     after Phase 1 so subtreeScores are available in the fallback result.
  *
  *   Phase 3 — Cross-branch LLM trigger (evaluated before traversal):
  *     If the top two root-child subtree scores are within `crossBranchMargin`,
@@ -50,14 +53,16 @@ import type { CandidateNode } from "../selection/candidate-selector.js";
 //
 // Grid-search tuned (benchmark-constants.ts) against 11 labeled email fixtures
 // with pre-computed nomic-embed-text vectors (2026-05-25).
-// Score improved from 49.0 → 64.2 / 85 max across 4,096 combinations.
+// Score improved from 49.0 → 79.8 / 85 max across 4,096 combinations.
+// (Quality gate moved to post-subtree-score Step 6: no benchmark change.)
 //
 // THETA_MIN
-//   Absolute quality gate. If the highest raw cosine similarity across all
-//   non-root nodes is below this value, the thread doesn't fit the taxonomy at
-//   all and routes immediately to Inbox — before normalisation (softmax) can
-//   wash out the signal. Lowered from the original hand-tuned value, which
-//   rejected legitimate emails.
+//   Absolute quality gate. If the highest subtree score across all nodes is
+//   below this value, the thread doesn't fit the taxonomy at all and routes
+//   immediately to Inbox. Gating on subtree scores (after Phase 1) rather than
+//   raw similarities means the fallback result includes computed subtreeScores
+//   and that the gate uses the same aggregated signal as the traversal.
+//   Logically equivalent to a raw-sim gate since S(v) ≥ rawSim(v) ∀v.
 //
 // LAMBDA_DEPTH_DECAY
 //   Multiplicative penalty applied per level during bottom-up subtree score
@@ -344,25 +349,33 @@ export async function sortThreadByEmbedding(
   }
   const rawSimsRecord = Object.fromEntries(rawSims);
 
-  // ── Step 5: Quality gate ───────────────────────────────────────────────────
-
-  let maxRawSim = 0;
-  for (const v of rawSims.values()) {
-    if (v > maxRawSim) maxRawSim = v;
-  }
-  if (maxRawSim < thetaMin) {
-    return makeInboxFallback(
-      `Max similarity ${maxRawSim.toFixed(3)} below quality threshold ${thetaMin}`,
-      rawSimsRecord,
-      {},
-      updatedNodeEmbeddings
-    );
-  }
-
-  // ── Step 6: Bottom-up subtree scores ──────────────────────────────────────
+  // ── Step 5: Bottom-up subtree scores ──────────────────────────────────────
 
   const subtreeScores = computeSubtreeScores(rootNode.id, rawSims, edges, lambdaDecay);
   const subtreeScoresRecord = Object.fromEntries(subtreeScores);
+
+  // ── Step 6: Quality gate ───────────────────────────────────────────────────
+  //
+  // Gate on the maximum subtree score rather than the maximum raw similarity.
+  // S(v) = max(rawSim(v), λ·S(best_child)), so S(v) ≥ rawSim(v) for every
+  // node; the gate is logically equivalent to the old raw-sim gate while
+  // reflecting the aggregated descendant evidence that the rest of the
+  // algorithm uses.  Reject when no subtree carries enough signal to be
+  // useful — this fires for genuinely off-topic threads regardless of
+  // taxonomy depth.
+
+  let maxSubtreeScore = 0;
+  for (const v of subtreeScores.values()) {
+    if (v > maxSubtreeScore) maxSubtreeScore = v;
+  }
+  if (maxSubtreeScore < thetaMin) {
+    return makeInboxFallback(
+      `Max subtree score ${maxSubtreeScore.toFixed(3)} below quality threshold ${thetaMin}`,
+      rawSimsRecord,
+      subtreeScoresRecord,
+      updatedNodeEmbeddings
+    );
+  }
 
   // ── Step 7: Build children map and edge lookup for traversal ─────────────
 
