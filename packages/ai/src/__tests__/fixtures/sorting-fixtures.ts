@@ -270,4 +270,52 @@ export const TEST_EMAILS: TestEmail[] = [
     expectedFinalNodeId: NODES.generalSecretariat.id,
     allowNeedsHumanReview: true,
   },
+  {
+    id: "contributors-ongoing",
+    difficulty: "easy",
+    messages: [
+      {
+        subject: "My next column for Tenoua — submission for issue 47",
+        senderEmail: "columnist@example.com",
+        senderName: "A Regular Columnist",
+        bodyText:
+          "Dear team, as your regular contributor I am sending my next column for publication in issue 47. This is my ongoing column on Jewish thought and culture that I have been writing for Tenoua for the past three years. Please find the draft attached as usual. Looking forward to our continued collaboration.",
+        receivedAt: SENT_AT,
+      },
+    ],
+    expectedFinalNodeId: NODES.contributors.id,
+    allowNeedsHumanReview: false,
+  },
+  {
+    id: "partnerships-sponsorship",
+    difficulty: "easy",
+    messages: [
+      {
+        subject: "Sponsorship and co-branding partnership proposal for Tenoua",
+        senderEmail: "partnerships@brand.com",
+        senderName: "Brand Partnerships",
+        bodyText:
+          "Dear Tenoua team, we would like to propose a co-branding sponsorship partnership between our organisation and Tenoua. We believe a press partnership and sponsorship arrangement would benefit both parties. Please let us know if you are open to discussing partnership opportunities and co-branding terms.",
+        receivedAt: SENT_AT,
+      },
+    ],
+    expectedFinalNodeId: NODES.partnershipsPress.id,
+    allowNeedsHumanReview: false,
+  },
+  {
+    id: "unclassifiable-off-topic",
+    difficulty: "hard",
+    messages: [
+      {
+        subject: "Question about your parking lot",
+        senderEmail: "random@example.com",
+        senderName: "Random Sender",
+        bodyText:
+          "Hello, I noticed there was a car parked in front of your building this morning blocking the entrance. Could you please ask the driver to move it? I was unable to access the street. Thank you.",
+        receivedAt: SENT_AT,
+      },
+    ],
+    expectedFinalNodeId: NODES.otherNeedsReview.id,
+    allowNeedsHumanReview: true,
+  },
 ];

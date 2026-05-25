@@ -226,6 +226,17 @@ OLLAMA_BASE_URL=http://my-host:11434 OLLAMA_EMBEDDING_MODEL=mxbai-embed-large \
   pnpm --filter @amarnai/ai seed:embeddings
 ```
 
+### Fine-tuning sorter constants
+
+The sorter uses several numeric thresholds (`THETA_MIN`, `CROSS_BRANCH_MARGIN`, etc.). A grid-search benchmark sweeps 4,096 constant combinations against the labeled fixtures and ranks them by score:
+
+```bash
+# Requires embedding-vectors.json to be current (run seed:embeddings first)
+pnpm --filter @amarnai/ai benchmark:constants
+```
+
+The output shows the top-ranked configurations with a per-email breakdown and a recommendation. If a configuration beats the current defaults, update the constants at the top of `packages/ai/src/embedding/sorter.ts`. Re-run `pnpm test` afterwards to confirm no regressions.
+
 ## Structure
 
 ```

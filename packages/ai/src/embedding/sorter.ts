@@ -38,13 +38,27 @@ import type { ClassificationPathStep } from "@amarnai/shared";
 import type { CandidateNode } from "../selection/candidate-selector.js";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
+//
+// Tuned by grid-search benchmark (benchmark-constants.ts) against 11 labeled
+// email fixtures using pre-computed nomic-embed-text vectors (2026-05-25).
+// Score improved from 49.0 → 64.2 / 85 max across 4,096 combinations.
+//
+// Changes vs original hand-tuned values:
+//   THETA_MIN           0.25 → 0.15  (quality gate was rejecting legitimate emails)
+//   SOFTMAX_TEMPERATURE 0.15 → 0.05  (sharper per-step distribution = fewer bad splits)
+//   CROSS_BRANCH_MARGIN 0.08 → 0.05  (0.08 over-triggered LLM on easy, clear-winner cases)
+//
+// LAMBDA_DEPTH_DECAY, THETA_SPREAD, DELTA_DESCENT_MARGIN are unchanged — the
+// benchmark taxonomy is flat (depth 1), so those constants were invariant across
+// all top-scoring configurations. They retain values appropriate for multi-level
+// taxonomies. Re-run the benchmark against a deep taxonomy to tune them.
 
-export const THETA_MIN = 0.25;
+export const THETA_MIN = 0.15;
 export const LAMBDA_DEPTH_DECAY = 0.95;
-export const SOFTMAX_TEMPERATURE = 0.15;
+export const SOFTMAX_TEMPERATURE = 0.05;
 export const THETA_SPREAD = 0.25;
 export const DELTA_DESCENT_MARGIN = 0.05;
-export const CROSS_BRANCH_MARGIN = 0.08;
+export const CROSS_BRANCH_MARGIN = 0.05;
 export const TOP_K_LLM_CANDIDATES = 5;
 
 // ─── Result type ──────────────────────────────────────────────────────────────
