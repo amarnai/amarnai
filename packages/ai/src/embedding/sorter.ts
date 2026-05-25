@@ -428,7 +428,6 @@ export async function sortThreadByEmbedding(
 
   let currentNodeId = rootNode.id;
   const traversalPath: ClassificationPathStep[] = [];
-  let lastBestProb = 0;
 
   while (true) {
     const children = childrenMap.get(currentNodeId) ?? [];
@@ -463,20 +462,22 @@ export async function sortThreadByEmbedding(
     // We normalise by the maximum raw spread achievable with a uniform background
     // of k−1 siblings, which is (1 − 1/k):
     //
-    //   Δ_norm = Δ / (1 − 1/max(k, 2))
+    //   Δ_norm = Δ / (1 − 1/max(k, 3))
     //
     // A perfect winner (p* → 1) gives Δ_norm → 1/(1 − 1/k) ≈ 1 for large k.
     // A tie (Δ = 0) gives Δ_norm = 0 regardless of k.
     // The θ_spread threshold is therefore consistent across nodes with different
     // fan-out, so the same constant works for shallow and wide subtrees alike.
+    //
+    // Floor is 3 (not 2): for k=2, the denominator (1−½=0.5) would double the
+    // raw spread, making very small gaps (e.g. 0.17 vs 0.16 → Δ≈0.10) clear
+    // the threshold despite being near-ties. Treating k<3 as k=3 caps the
+    // amplification at 1.5× and keeps the threshold meaningful.
     const spread = bestProb - secondBestProb;
-    const normalizedSpread = spread / (1 - 1 / Math.max(children.length, 2));
+    const normalizedSpread = spread / (1 - 1 / Math.max(children.length, 3));
 
     const bestChildSubtreeScore = subtreeScores.get(bestChildId) ?? 0;
     const bestChildRawSim = rawSims.get(bestChildId) ?? 0;
-
-    // Record the probability at this level before deciding; used for confidence.
-    lastBestProb = bestProb;
 
     // Descent requires both conditions (spec Phase 2, Steps 2–4):
     //   spreadOk  — best child is meaningfully differentiated from its siblings
@@ -522,16 +523,20 @@ export async function sortThreadByEmbedding(
 
   // ── Return embedding-auto result ───────────────────────────────────────────
   //
-  // Confidence is the softmax probability of the winning child at the level
-  // where descent was last considered (spec confidence assignment).
+  // Confidence is the raw cosine similarity of the final node — the actual
+  // quality signal, bounded by [THETA_MIN, 1]. Using lastBestProb (softmax
+  // probability) would depend on sibling count and temperature rather than
+  // absolute match quality, and Math.max(..., 0.5) lied to callers when the
+  // similarity was just above THETA_MIN.
 
   const finalNode = nodeMap.get(finalNodeId);
+  const finalRawSim = rawSims.get(finalNodeId) ?? 0;
 
   return {
     finalNodeId,
     path: traversalPath,
-    confidence: lastBestProb,
-    explanation: `Embedding routing to "${finalNode?.name ?? finalNodeId}" (raw sim ${(rawSims.get(finalNodeId) ?? 0).toFixed(3)})`,
+    confidence: finalRawSim,
+    explanation: `Embedding routing to "${finalNode?.name ?? finalNodeId}" (raw sim ${finalRawSim.toFixed(3)})`,
     needsHumanReview: false,
     decisionSource: "embedding_auto",
     rawSimilarities: rawSimsRecord,
