@@ -106,8 +106,8 @@ function makeLlmSpy(jsonResponse: string): { provider: AIProvider; chatSpy: Retu
 
 const INBOX = n("inbox", "Inbox", null, true);
 const ALPHA = n("alpha", "Alpha", "Administrative coordination and scheduling requests");
-const BETA = n("beta", "Beta", "Media appearances, journalism interviews, and press coverage");
-const GAMMA = n("gamma", "Gamma", "Subscription renewals, distribution logistics, and reader services");
+const BETA = n("beta", "Beta", "Sales inquiries, business development, and inbound lead qualification");
+const GAMMA = n("gamma", "Gamma", "Finance requests, billing inquiries, and payment processing");
 
 const FLAT_NODES = [INBOX, ALPHA, BETA, GAMMA];
 const FLAT_EDGES = [
@@ -120,26 +120,26 @@ const ALPHA_VEC = oneHot(0, 3);
 const BETA_VEC = oneHot(1, 3);
 const GAMMA_VEC = oneHot(2, 3);
 
-// ─── Two-level taxonomy: Inbox → Events → {Weddings, Funerals} | Press → {Interviews, Articles}
+// ─── Two-level taxonomy: Inbox → Support → {Technical, Billing} | Sales → {Inbound, Outbound}
 //
-// Six-D one-hot: Weddings=0, Funerals=1, Events=2, Interviews=3, Articles=4, Press=5
+// Six-D one-hot: Technical=0, Billing=1, Support=2, Inbound=3, Outbound=4, Sales=5
 
 const INBOX2 = n("inbox2", "Inbox", null, true);
-const EVENTS = n("events", "Events", "Social events, ceremonies, and community gatherings");
-const WEDDINGS = n("weddings", "Weddings", "Wedding ceremony requests and marriage coordination");
-const FUNERALS = n("funerals", "Funerals", "Funeral services, bereavement support, and memorial ceremonies");
-const PRESS = n("press", "Press", "Media and editorial content production and partnerships");
-const INTERVIEWS = n("interviews", "Interviews", "Press interview requests and media appearances");
-const ARTICLES = n("articles", "Articles", "Article submissions, editorial pitches, and written content");
+const SUPPORT = n("support", "Support", "Customer support requests, issue escalation, and technical assistance");
+const TECHNICAL = n("technical", "Technical Issues", "Technical product issues, bug reports, and system error resolution");
+const BILLING = n("billing", "Billing Issues", "Billing inquiries, payment problems, and invoice disputes");
+const SALES2 = n("sales2", "Sales", "Sales inquiries, business development, and revenue opportunities");
+const INBOUND = n("inbound", "Inbound Leads", "Inbound sales leads, prospect inquiries, and demo requests");
+const OUTBOUND = n("outbound", "Outbound Campaigns", "Outbound sales campaigns, cold outreach, and business development");
 
-const DEEP_NODES = [INBOX2, EVENTS, WEDDINGS, FUNERALS, PRESS, INTERVIEWS, ARTICLES];
+const DEEP_NODES = [INBOX2, SUPPORT, TECHNICAL, BILLING, SALES2, INBOUND, OUTBOUND];
 const DEEP_EDGES = [
-  e("e2-inbox-events", "inbox2", "events"),
-  e("e2-inbox-press", "inbox2", "press"),
-  e("e2-events-weddings", "events", "weddings"),
-  e("e2-events-funerals", "events", "funerals"),
-  e("e2-press-interviews", "press", "interviews"),
-  e("e2-press-articles", "press", "articles"),
+  e("e2-inbox-support", "inbox2", "support"),
+  e("e2-inbox-sales2", "inbox2", "sales2"),
+  e("e2-support-technical", "support", "technical"),
+  e("e2-support-billing", "support", "billing"),
+  e("e2-sales2-inbound", "sales2", "inbound"),
+  e("e2-sales2-outbound", "sales2", "outbound"),
 ];
 
 const [WED_VEC, FUN_VEC, EVT_VEC, INT_VEC, ART_VEC, PRS_VEC] = [0, 1, 2, 3, 4, 5].map((i) =>
@@ -247,17 +247,17 @@ describe("embedding sorter — clear route to direct child", () => {
 // ─── Scenario 2: Clear route to a deep child ──────────────────────────────────
 
 describe("embedding sorter — clear route to deep child", () => {
-  const messages = [msg("Wedding venue", "We are planning a wedding ceremony for next spring")];
-  const threadVec = WED_VEC!;
+  const messages = [msg("Technical support request", "We have a technical issue with your product and need assistance resolving a system error")];
+  const threadVec = WED_VEC!; // WED_VEC maps to index 0 = Technical Issues
 
   const table = buildTable(
     [
-      { node: EVENTS, vec: EVT_VEC! },
-      { node: WEDDINGS, vec: WED_VEC! },
-      { node: FUNERALS, vec: FUN_VEC! },
-      { node: PRESS, vec: PRS_VEC! },
-      { node: INTERVIEWS, vec: INT_VEC! },
-      { node: ARTICLES, vec: ART_VEC! },
+      { node: SUPPORT, vec: EVT_VEC! },
+      { node: TECHNICAL, vec: WED_VEC! },
+      { node: BILLING, vec: FUN_VEC! },
+      { node: SALES2, vec: PRS_VEC! },
+      { node: INBOUND, vec: INT_VEC! },
+      { node: OUTBOUND, vec: ART_VEC! },
     ],
     messages,
     threadVec,
@@ -270,7 +270,7 @@ describe("embedding sorter — clear route to deep child", () => {
     JSON.stringify({ selectedNodeId: null, confidence: 0, explanation: "not called", needsHumanReview: true })
   );
 
-  it("descends through Events to Weddings", async () => {
+  it("descends through Support to Technical Issues", async () => {
     const result = await sortThreadByEmbedding(
       embeddingProvider,
       llmProvider,
@@ -278,12 +278,12 @@ describe("embedding sorter — clear route to deep child", () => {
       DEEP_EDGES,
       messages
     );
-    expect(result.finalNodeId).toBe("weddings");
+    expect(result.finalNodeId).toBe("technical");
     expect(result.decisionSource).toBe("embedding_auto");
     expect(result.needsHumanReview).toBe(false);
   });
 
-  it("path has two steps: Inbox→Events→Weddings", async () => {
+  it("path has two steps: Inbox→Support→Technical Issues", async () => {
     const result = await sortThreadByEmbedding(
       embeddingProvider,
       llmProvider,
@@ -292,25 +292,25 @@ describe("embedding sorter — clear route to deep child", () => {
       messages
     );
     expect(result.path).toHaveLength(2);
-    expect(result.path[0]?.targetNodeId).toBe("events");
-    expect(result.path[1]?.targetNodeId).toBe("weddings");
+    expect(result.path[0]?.targetNodeId).toBe("support");
+    expect(result.path[1]?.targetNodeId).toBe("technical");
   });
 });
 
 // ─── Scenario 3: Ambiguous children stopping at parent ────────────────────────
 
 describe("embedding sorter — ambiguous children stop traversal at parent", () => {
-  const messages = [msg("Ceremony inquiry", "Planning a family ceremony event")];
-  const threadVec = normalize([1, 1, 0, 0, 0, 0]);
+  const messages = [msg("Support inquiry", "We have a customer support inquiry about your service")];
+  const threadVec = normalize([1, 1, 0, 0, 0, 0]); // equal weight on Technical (0) and Billing (1)
 
   const table = buildTable(
     [
-      { node: EVENTS, vec: EVT_VEC! },
-      { node: WEDDINGS, vec: WED_VEC! },
-      { node: FUNERALS, vec: FUN_VEC! },
-      { node: PRESS, vec: PRS_VEC! },
-      { node: INTERVIEWS, vec: INT_VEC! },
-      { node: ARTICLES, vec: ART_VEC! },
+      { node: SUPPORT, vec: EVT_VEC! },
+      { node: TECHNICAL, vec: WED_VEC! },
+      { node: BILLING, vec: FUN_VEC! },
+      { node: SALES2, vec: PRS_VEC! },
+      { node: INBOUND, vec: INT_VEC! },
+      { node: OUTBOUND, vec: ART_VEC! },
     ],
     messages,
     threadVec,
@@ -323,7 +323,7 @@ describe("embedding sorter — ambiguous children stop traversal at parent", () 
     JSON.stringify({ selectedNodeId: null, confidence: 0, explanation: "not called", needsHumanReview: true })
   );
 
-  it("stops at Events (parent) — cannot resolve which child wins", async () => {
+  it("stops at Support (parent) — cannot resolve which child wins", async () => {
     const result = await sortThreadByEmbedding(
       embeddingProvider,
       llmProvider,
@@ -331,12 +331,12 @@ describe("embedding sorter — ambiguous children stop traversal at parent", () 
       DEEP_EDGES,
       messages
     );
-    expect(result.finalNodeId).toBe("events");
+    expect(result.finalNodeId).toBe("support");
     expect(result.decisionSource).toBe("embedding_auto");
     expect(result.needsHumanReview).toBe(false);
   });
 
-  it("path has exactly one step: Inbox→Events", async () => {
+  it("path has exactly one step: Inbox→Support", async () => {
     const result = await sortThreadByEmbedding(
       embeddingProvider,
       llmProvider,
@@ -345,7 +345,7 @@ describe("embedding sorter — ambiguous children stop traversal at parent", () 
       messages
     );
     expect(result.path).toHaveLength(1);
-    expect(result.path[0]?.targetNodeId).toBe("events");
+    expect(result.path[0]?.targetNodeId).toBe("support");
   });
 });
 
@@ -906,9 +906,9 @@ describe("embedding sorter — no root node", () => {
 describe("embedding sorter — truly ambiguous thread falls back via LLM to human review", () => {
   const INBOX5 = n("inbox5", "Inbox", null, true);
   const NODE_A = n("n5-a", "Alpha", "Administrative coordination and scheduling requests");
-  const NODE_B = n("n5-b", "Beta", "Media appearances, journalism interviews, and press coverage");
-  const NODE_C = n("n5-c", "Gamma", "Subscription renewals, distribution logistics, and reader services");
-  const NODE_D = n("n5-d", "Delta", "Sales outreach and business development partnerships");
+  const NODE_B = n("n5-b", "Beta", "Sales inquiries, business development, and inbound lead qualification");
+  const NODE_C = n("n5-c", "Gamma", "Finance requests, billing inquiries, and payment processing");
+  const NODE_D = n("n5-d", "Delta", "Partnership proposals and co-marketing collaboration opportunities");
   const NODE_E = n("n5-e", "Epsilon", "Technical support tickets and infrastructure incidents");
 
   const nodes5 = [INBOX5, NODE_A, NODE_B, NODE_C, NODE_D, NODE_E];
@@ -996,7 +996,7 @@ describe("embedding sorter — existing non-Inbox fallback behavior still works"
     const belowThresholdVec = normalize([0.1, 0.1, 0.1, 1.0]);
 
     const ALPHA_F = n("alpha-f", "Alpha", "Administrative coordination and scheduling requests");
-    const BETA_F = n("beta-f", "Beta", "Media appearances, journalism interviews, and press coverage");
+    const BETA_F = n("beta-f", "Beta", "Sales inquiries, business development, and inbound lead qualification");
     const INBOX_F = n("inbox-f", "Inbox", null, true);
 
     const nodes_f = [INBOX_F, ALPHA_F, BETA_F];
@@ -1081,13 +1081,13 @@ function msgAt(subject: string, bodyText: string, daysAgo: number): ThreadMessag
 
 describe("embedding sorter — current-intent policy: latest message changes topic", () => {
   // Earlier message: admin scheduling (ALPHA territory)
-  // Latest message: media interview request (BETA territory)
+  // Latest message: sales inquiry (BETA territory)
   // Expected: routes to BETA because latest message is the primary signal.
   const messages = [
     msgAt("Admin follow-up", "Administrative scheduling request for document coordination", 3),
-    msgAt("Re: Follow up", "We are requesting a media interview and press appearance for our documentary", 0),
+    msgAt("Re: Follow up", "We are requesting enterprise pricing and a sales demo for our team", 0),
   ];
-  const threadVec = BETA_VEC; // latest message (media) drives the embedding
+  const threadVec = BETA_VEC; // latest message (sales) drives the embedding
 
   const table = buildTable(
     [
@@ -1106,7 +1106,7 @@ describe("embedding sorter — current-intent policy: latest message changes top
     JSON.stringify({ selectedNodeId: null, confidence: 0, explanation: "not called", needsHumanReview: true })
   );
 
-  it("routes to Beta (media) — latest message overrides earlier admin topic", async () => {
+  it("routes to Beta (sales) — latest message overrides earlier admin topic", async () => {
     const result = await sortThreadByEmbedding(
       embeddingProvider, llmProvider, FLAT_NODES, FLAT_EDGES, messages
     );
@@ -1122,11 +1122,11 @@ describe("embedding sorter — current-intent policy: latest message changes top
 });
 
 describe("embedding sorter — current-intent policy: resolved thread routes to new intent", () => {
-  // Earlier: urgent media interview request (BETA territory)
+  // Earlier: urgent sales inquiry (BETA territory)
   // Latest: administrative resolution / cancel note (ALPHA territory)
   // Expected: routes to ALPHA because the latest message changes the active intent.
   const messages = [
-    msgAt("URGENT: Press interview request", "We urgently need a media interview and press appearance arrangement", 5),
+    msgAt("URGENT: Sales inquiry", "We urgently need enterprise pricing and a product demo for our procurement team", 5),
     msgAt("Re: Settled — no longer needed", "Please disregard our previous request. This has been resolved administratively and no further action is required.", 0),
   ];
   const threadVec = ALPHA_VEC; // latest message (admin resolution) drives the embedding
@@ -1148,7 +1148,7 @@ describe("embedding sorter — current-intent policy: resolved thread routes to 
     JSON.stringify({ selectedNodeId: null, confidence: 0, explanation: "not called", needsHumanReview: true })
   );
 
-  it("routes to Alpha (admin) — latest message cancels the earlier urgent media request", async () => {
+  it("routes to Alpha (admin) — latest message cancels the earlier urgent sales request", async () => {
     const result = await sortThreadByEmbedding(
       embeddingProvider, llmProvider, FLAT_NODES, FLAT_EDGES, messages
     );
@@ -1158,15 +1158,15 @@ describe("embedding sorter — current-intent policy: resolved thread routes to 
 });
 
 describe("embedding sorter — current-intent policy: short referential latest uses earlier context", () => {
-  // Earlier: detailed subscription renewal (GAMMA territory)
+  // Earlier: detailed billing inquiry (GAMMA territory)
   // Latest: short referential reply ("Yes, please go ahead")
   // Earlier thread context is included in the embedding text; the combined text
   // resolves the short latest message to GAMMA.
   const messages = [
-    msgAt("Subscription renewal", "I would like to renew my subscription and continue receiving the publication via distribution", 7),
+    msgAt("Finance billing inquiry", "I would like to confirm our invoice payment details and billing setup for the account", 7),
     msgAt("Re: Confirmation", "Yes, please go ahead.", 0),
   ];
-  const threadVec = GAMMA_VEC; // earlier context (subscription) resolves the short latest message
+  const threadVec = GAMMA_VEC; // earlier context (billing/finance) resolves the short latest message
 
   const table = buildTable(
     [
@@ -1185,7 +1185,7 @@ describe("embedding sorter — current-intent policy: short referential latest u
     JSON.stringify({ selectedNodeId: null, confidence: 0, explanation: "not called", needsHumanReview: true })
   );
 
-  it("routes to Gamma (subscriptions) — earlier context resolves the referential latest message", async () => {
+  it("routes to Gamma (finance) — earlier context resolves the referential latest message", async () => {
     const result = await sortThreadByEmbedding(
       embeddingProvider, llmProvider, FLAT_NODES, FLAT_EDGES, messages
     );
@@ -1196,16 +1196,16 @@ describe("embedding sorter — current-intent policy: short referential latest u
 
 describe("embedding sorter — current-intent policy: long old thread does not overpower latest message", () => {
   // 4 earlier messages about admin scheduling (ALPHA territory)
-  // Latest message: media interview request (BETA territory)
+  // Latest message: sales inquiry (BETA territory)
   // Despite having 4× more earlier messages, the embedding reflects the latest message.
   const messages = [
     msgAt("Admin #1", "Administrative coordination for scheduling and document requests", 20),
     msgAt("Admin #2", "Follow-up on administrative scheduling coordination and documents", 15),
     msgAt("Admin #3", "Third administrative request regarding document coordination", 10),
     msgAt("Admin #4", "Additional administrative scheduling follow-up coordination", 5),
-    msgAt("New topic", "I am now reaching out about a media interview and press appearance for our documentary", 0),
+    msgAt("New topic", "I am now reaching out about enterprise pricing and a sales inquiry for our procurement team", 0),
   ];
-  const threadVec = BETA_VEC; // latest message (media) wins despite 4 earlier admin messages
+  const threadVec = BETA_VEC; // latest message (sales) wins despite 4 earlier admin messages
 
   const table = buildTable(
     [
@@ -1224,7 +1224,7 @@ describe("embedding sorter — current-intent policy: long old thread does not o
     JSON.stringify({ selectedNodeId: null, confidence: 0, explanation: "not called", needsHumanReview: true })
   );
 
-  it("routes to Beta (media) — latest message wins despite 4 earlier admin messages", async () => {
+  it("routes to Beta (sales) — latest message wins despite 4 earlier admin messages", async () => {
     const result = await sortThreadByEmbedding(
       embeddingProvider, llmProvider, FLAT_NODES, FLAT_EDGES, messages
     );
@@ -1353,15 +1353,15 @@ describe("embedding sorter — spread blocks descent when 3 children are cluster
 
 // ─── Scenario 17: Spread blocks descent — 2 nearly tied children ─────────────
 //
-// Parent (ceremonies) scores 0.72. Both children score 0.17 / 0.16 — nearly
+// Parent (billing) scores 0.72. Both children score 0.17 / 0.16 — nearly
 // equal with low absolute values. Softmax spread ≈ 0.10 < THETA_SPREAD=0.15.
 // Algorithm stops at parent.
 
 describe("embedding sorter — spread blocks descent when 2 children are nearly tied", () => {
-  const S17_ROOT   = n("s17-root",   "Inbox",      null,                                                true);
-  const S17_PARENT = n("s17-parent", "Ceremonies", "Lifecycle ceremony coordination for community events.");
-  const S17_CHILD1 = n("s17-child1", "Ceremonies / Weddings", "Wedding ceremony planning and marriage coordination.");
-  const S17_CHILD2 = n("s17-child2", "Ceremonies / Funerals", "Funeral services and bereavement support coordination.");
+  const S17_ROOT   = n("s17-root",   "Inbox",   null,                                              true);
+  const S17_PARENT = n("s17-parent", "Billing", "Billing coordination, invoice processing, and expense management.");
+  const S17_CHILD1 = n("s17-child1", "Billing / Invoice", "Invoice processing, accounts receivable, and payment tracking.");
+  const S17_CHILD2 = n("s17-child2", "Billing / Expense", "Expense reimbursement, budget approvals, and cost management.");
 
   const s17Nodes = [S17_ROOT, S17_PARENT, S17_CHILD1, S17_CHILD2];
   const s17Edges = [
@@ -1371,9 +1371,9 @@ describe("embedding sorter — spread blocks descent when 2 children are nearly 
   ];
 
   const s17Messages = [msg(
-    "Ceremony inquiry — type undetermined",
-    "We are writing to enquire about ceremony coordination. We have not yet determined " +
-    "the exact nature of the ceremony and would like to discuss options."
+    "Billing inquiry — type undetermined",
+    "We are writing to enquire about billing coordination. We have not yet determined " +
+    "the exact nature of the matter and would like to discuss options."
   )];
 
   const s17Sims = { "s17-parent": 0.72, "s17-child1": 0.17, "s17-child2": 0.16 };
@@ -1382,7 +1382,7 @@ describe("embedding sorter — spread blocks descent when 2 children are nearly 
     JSON.stringify({ selectedNodeId: null, confidence: 0, explanation: "not called", needsHumanReview: true })
   );
 
-  it("stops at Ceremonies (parent) — children too similar to distinguish", async () => {
+  it("stops at Billing (parent) — children too similar to distinguish", async () => {
     const result = await sortThreadByEmbedding(s17Embedder, s17Llm, s17Nodes, s17Edges, s17Messages);
     expect(result.finalNodeId).toBe("s17-parent");
     expect(result.decisionSource).toBe("embedding_auto");
@@ -1463,11 +1463,11 @@ describe("embedding sorter — spread allows descent when one child clearly domi
 // allow full traversal of this chain.
 
 describe("embedding sorter — strong signal through 4-level single-child chain reaches leaf", () => {
-  const S19_ROOT = n("s19-root", "Inbox",    null,                                                      true);
-  const S19_L1   = n("s19-l1",  "Research", "Academic research inquiries and scholarly correspondence.");
-  const S19_L2   = n("s19-l2",  "Research / Jewish Studies",          "Inquiries about Jewish history and religious scholarship.");
-  const S19_L3   = n("s19-l3",  "Research / Jewish Studies / Modern", "Modern Jewish history and 20th-century scholarship.");
-  const S19_L4   = n("s19-l4",  "Research / Jewish Studies / Modern / France", "French Jewish history and community research.");
+  const S19_ROOT = n("s19-root", "Inbox",            null,                                                        true);
+  const S19_L1   = n("s19-l1",  "Technical Support", "Technical support inquiries, platform issues, and developer assistance.");
+  const S19_L2   = n("s19-l2",  "Technical Support / API",                 "API integration issues, SDK problems, and developer support requests.");
+  const S19_L3   = n("s19-l3",  "Technical Support / API / Authentication","API authentication errors, token issues, and OAuth integration problems.");
+  const S19_L4   = n("s19-l4",  "Technical Support / API / Authentication / OAuth", "OAuth 2.0 configuration, authorization flow errors, and token refresh troubleshooting.");
 
   const s19Nodes = [S19_ROOT, S19_L1, S19_L2, S19_L3, S19_L4];
   const s19Edges = [
@@ -1478,9 +1478,9 @@ describe("embedding sorter — strong signal through 4-level single-child chain 
   ];
 
   const s19Messages = [msg(
-    "French Jewish history research request",
-    "I am specifically researching French Jewish history and would like to access " +
-    "archival materials on the modern French Jewish community."
+    "OAuth API authentication support request",
+    "I am specifically troubleshooting an OAuth authentication issue and would like to access " +
+    "documentation on the OAuth token refresh flow and authorization configuration."
   )];
 
   // Σ s_i² = 0.75²+0.70²+0.65²+0.60² = 1.835 > 1 — buildSimTable scales proportionally.
@@ -1491,7 +1491,7 @@ describe("embedding sorter — strong signal through 4-level single-child chain 
     JSON.stringify({ selectedNodeId: null, confidence: 0, explanation: "not called", needsHumanReview: true })
   );
 
-  it("descends all the way to France leaf — signal stays strong at every level", async () => {
+  it("descends all the way to OAuth leaf — signal stays strong at every level", async () => {
     const result = await sortThreadByEmbedding(s19Embedder, s19Llm, s19Nodes, s19Edges, s19Messages);
     expect(result.finalNodeId).toBe("s19-l4");
     expect(result.decisionSource).toBe("embedding_auto");

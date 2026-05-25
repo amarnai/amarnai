@@ -359,13 +359,15 @@ export async function sortThreadByEmbedding(
   const subtreeScores = computeSubtreeScores(rootNode.id, rawSims, edges, lambdaDecay);
   const subtreeScoresRecord = Object.fromEntries(subtreeScores);
 
-  // ── Step 7: Build children map for traversal ──────────────────────────────
+  // ── Step 7: Build children map and edge lookup for traversal ─────────────
 
   const childrenMap = new Map<string, string[]>();
+  const edgeByEndpoints = new Map<string, TaxonomyEdgeInput>();
   for (const edge of edges) {
     const list = childrenMap.get(edge.sourceNodeId) ?? [];
     list.push(edge.targetNodeId);
     childrenMap.set(edge.sourceNodeId, list);
+    edgeByEndpoints.set(`${edge.sourceNodeId}:${edge.targetNodeId}`, edge);
   }
 
   // ── Step 8: Cross-branch LLM trigger at Inbox ─────────────────────────────
@@ -467,9 +469,7 @@ export async function sortThreadByEmbedding(
     const descentOk = bestChildRawSim >= thetaDescent;
 
     if (spreadOk && descentOk) {
-      const edge = edges.find(
-        (e) => e.sourceNodeId === currentNodeId && e.targetNodeId === bestChildId
-      );
+      const edge = edgeByEndpoints.get(`${currentNodeId}:${bestChildId}`);
       if (edge) {
         traversalPath.push({
           edgeId: edge.id,
