@@ -202,7 +202,10 @@ function buildLlmCandidates(
 ): CandidateNode[] {
   return nodeIds.flatMap((nodeId): CandidateNode[] => {
     const node = nodeMap.get(nodeId);
-    if (!node) return [];
+    if (!node) {
+      console.warn(`[buildLlmCandidates] nodeId "${nodeId}" not found in nodeMap — skipping`);
+      return [];
+    }
 
     // Build breadcrumb for LLM context only — never used as a selection target
     const pathSteps = buildClassificationPath(rootId, nodeId, childEdges, 1, "");
