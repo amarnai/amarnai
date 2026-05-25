@@ -120,6 +120,78 @@ export const EDGES = {
 export const ALL_NODES: TaxonomyNodeInput[] = Object.values(NODES);
 export const ALL_EDGES: TaxonomyEdgeInput[] = Object.values(EDGES);
 
+// ─── Depth-2 taxonomy ─────────────────────────────────────────────────────────
+//
+// A two-level taxonomy designed to exercise the mid-traversal cross-branch
+// LLM escalation path (Step 9 of the sorting algorithm). The thread is clearly
+// a customer-support matter but ambiguous between Technical Issues and Billing
+// Issues — the two leaf siblings whose raw similarities fall within
+// CROSS_BRANCH_MARGIN of each other.
+//
+// d2-inbox [root]
+// ├── d2-customer-support
+// │   ├── d2-technical-issues
+// │   └── d2-billing-issues
+// └── d2-sales
+
+export const NODES_D2 = {
+  inbox: node("d2-inbox", "Inbox", null, { isRoot: true }),
+
+  customerSupport: node(
+    "d2-customer-support",
+    "Customer Support",
+    "Customer support requests, issue escalation, account access problems, and technical assistance from existing users."
+  ),
+
+  technicalIssues: node(
+    "d2-technical-issues",
+    "Technical Issues",
+    "Technical product defects, bug reports, integration errors, API failures, and system outage notifications."
+  ),
+
+  billingIssues: node(
+    "d2-billing-issues",
+    "Billing Issues",
+    "Billing discrepancies, invoice disputes, subscription charge queries, payment failures, and refund requests."
+  ),
+
+  sales: node(
+    "d2-sales",
+    "Sales",
+    "Outbound sales inquiries, enterprise pricing requests, new business leads, and commercial proposals from prospects."
+  ),
+} as const;
+
+export const EDGES_D2 = {
+  inboxToSupport: edge("d2-e-inbox-support",     "d2-inbox",            "d2-customer-support"),
+  inboxToSales:   edge("d2-e-inbox-sales",        "d2-inbox",            "d2-sales"),
+  supportToTech:  edge("d2-e-support-technical",  "d2-customer-support", "d2-technical-issues"),
+  supportToBill:  edge("d2-e-support-billing",    "d2-customer-support", "d2-billing-issues"),
+} as const;
+
+export const ALL_NODES_D2: TaxonomyNodeInput[] = Object.values(NODES_D2);
+export const ALL_EDGES_D2: TaxonomyEdgeInput[] = Object.values(EDGES_D2);
+
+/** An email that is clearly support-related but ambiguous between the two leaf siblings. */
+export const D2_AMBIGUOUS_EMAIL: TestEmail = {
+  id: "d2-support-tech-or-billing",
+  difficulty: "hard",
+  messages: [
+    {
+      subject: "Account issue — unsure if technical or billing",
+      senderEmail: "user@example.com",
+      senderName: "Platform User",
+      bodyText:
+        "I am having trouble with my account and I am not sure if it is a technical error or a billing problem. " +
+        "The system shows an error when I try to access my dashboard, and I also noticed an unexpected charge on my last invoice. " +
+        "Could your support team investigate both and let me know which team is handling this?",
+      receivedAt: new Date("2026-01-15T10:00:00Z"),
+    },
+  ],
+  expectedFinalNodeId: NODES_D2.technicalIssues.id,
+  allowNeedsHumanReview: true,
+};
+
 // ─── Email fixtures ───────────────────────────────────────────────────────────
 
 export type TestEmail = {

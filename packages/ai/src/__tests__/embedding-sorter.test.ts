@@ -1514,6 +1514,80 @@ describe("embedding sorter — deliberate stop at root produces embedding_inbox"
   });
 });
 
+// ─── Scenario 21: Mid-traversal cross-branch LLM escalation ──────────────────
+//
+// Depth-2 taxonomy reusing DEEP_NODES / DEEP_EDGES:
+//   INBOX2 → SUPPORT → {TECHNICAL, BILLING}
+//   INBOX2 → SALES2  → {INBOUND, OUTBOUND}
+//
+// Controlled sims (via buildSimTable):
+//   support=0.65, technical=0.21, billing=0.19, sales2/inbound/outbound=0.05
+//
+// At root:
+//   subtreeScore(support)=0.65 >> subtreeScore(sales2)=0.05; diff=0.60 ≥ 0.05
+//   → root cross-branch check does NOT fire; descent to support is unambiguous.
+//
+// At support (mid-traversal):
+//   subtreeScore(technical)=0.21, subtreeScore(billing)=0.19; diff=0.02 < 0.05
+//   billing rawSim=0.19 ≥ thetaMin=0.15
+//   spreadOk && descentOk are both true, so we enter the `if` branch.
+//   → mid-traversal check fires; LLM is called with candidates [technical, billing].
+//   candidate_0 = technical (sorted by rawSim desc), candidate_1 = billing.
+
+describe("embedding sorter — mid-traversal cross-branch escalates to LLM", () => {
+  const s21Messages = [msg(
+    "Support request — technical or billing?",
+    "We are experiencing an issue that may relate to our account billing or a technical error. " +
+    "We are unsure which team to contact — please advise."
+  )];
+
+  // Σs² = 0.65²+0.21²+0.19²+0.05²+0.05²+0.05² ≈ 0.510 ≤ 1 — no scaling needed.
+  const s21Sims: Record<string, number> = {
+    support:  0.65,
+    technical: 0.21,
+    billing:   0.19,
+    sales2:    0.05,
+    inbound:   0.05,
+    outbound:  0.05,
+  };
+  const s21Embedder = makeSimEmbedder(buildSimTable(DEEP_NODES, DEEP_EDGES, s21Sims, s21Messages));
+
+  it("calls LLM exactly once — mid-traversal fires, root does not", async () => {
+    const { provider: llmProvider, chatSpy } = makeLlmSpy(
+      JSON.stringify({ selectedNodeId: "candidate_0", confidence: 0.8, explanation: "Technical error", needsHumanReview: false })
+    );
+    await sortThreadByEmbedding(s21Embedder, llmProvider, DEEP_NODES, DEEP_EDGES, s21Messages);
+    expect(chatSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it("decisionSource is 'llm' and needsHumanReview is false when LLM resolves", async () => {
+    const llmProvider = makeMockLlmProvider(
+      JSON.stringify({ selectedNodeId: "candidate_0", confidence: 0.8, explanation: "Technical error", needsHumanReview: false })
+    );
+    const result = await sortThreadByEmbedding(s21Embedder, llmProvider, DEEP_NODES, DEEP_EDGES, s21Messages);
+    expect(result.decisionSource).toBe("llm");
+    expect(result.needsHumanReview).toBe(false);
+  });
+
+  it("LLM candidate_0 (highest rawSim = technical) becomes finalNodeId", async () => {
+    const llmProvider = makeMockLlmProvider(
+      JSON.stringify({ selectedNodeId: "candidate_0", confidence: 0.8, explanation: "Technical error", needsHumanReview: false })
+    );
+    const result = await sortThreadByEmbedding(s21Embedder, llmProvider, DEEP_NODES, DEEP_EDGES, s21Messages);
+    expect(result.finalNodeId).toBe("technical");
+  });
+
+  it("when LLM cannot resolve, routes to inbox_fallback with needsHumanReview", async () => {
+    const llmProvider = makeMockLlmProvider(
+      JSON.stringify({ selectedNodeId: null, confidence: 0, explanation: "Cannot decide", needsHumanReview: true })
+    );
+    const result = await sortThreadByEmbedding(s21Embedder, llmProvider, DEEP_NODES, DEEP_EDGES, s21Messages);
+    expect(result.finalNodeId).toBeNull();
+    expect(result.needsHumanReview).toBe(true);
+    expect(result.decisionSource).toBe("inbox_fallback");
+  });
+});
+
 // ─── Scenario 19: Strong signal through 4-level single-child chain ─────────────
 //
 // A 4-level single-child chain (root → L1 → L2 → L3 → L4) where every node

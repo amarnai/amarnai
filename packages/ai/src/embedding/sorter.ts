@@ -16,10 +16,15 @@
  *     fire iff all raw similarities are below `thetaMin`), but the gate now sits
  *     after Phase 1 so subtreeScores are available in the fallback result.
  *
- *   Phase 3 — Cross-branch LLM trigger (evaluated before traversal):
- *     If the top two root-child subtree scores are within `crossBranchMargin`,
- *     embeddings cannot distinguish the main branches. The LLM resolves with the
- *     top-K candidates by raw similarity.
+ *   Phase 3 — Cross-branch LLM trigger:
+ *     (a) Before traversal: if the top two root-child subtree scores are within
+ *     `crossBranchMargin`, embeddings cannot distinguish the main branches; the
+ *     LLM resolves with the top-K candidates by raw similarity.
+ *     (b) During traversal (mid-traversal): at each descent step, after picking
+ *     the best child, any same-parent sibling within `crossBranchMargin` in
+ *     subtree score that also has rawSim ≥ thetaMin triggers LLM escalation.
+ *     Leaf candidates from all ambiguous branches are collected via
+ *     findDescendants and the top-K by raw similarity are offered to the LLM.
  *
  *   Phase 2 — Top-down traversal:
  *     Descend from root, at each node applying softmax over child subtree scores.
@@ -42,6 +47,7 @@ import {
   hashEmbeddingInput,
   computeSubtreeScores,
   deriveBreadcrumb,
+  findDescendants,
 } from "./math.js";
 import { selectNodeFromCandidates } from "../selection/select-path.js";
 import type { EmbeddingProvider, EmbeddableNode, UpdatedNodeEmbedding } from "./types.js";
@@ -94,8 +100,11 @@ import type { CandidateNode } from "../selection/candidate-selector.js";
 //   against a deep taxonomy.
 //
 // CROSS_BRANCH_MARGIN
-//   If the top two root-child subtree scores differ by less than this, embeddings
-//   alone cannot choose a main branch and the LLM takes over. Lowered from the
+//   If two sibling subtree scores differ by less than this, embeddings alone
+//   cannot choose between the branches and the LLM takes over. Applied in two
+//   places: (a) before traversal, comparing the top two root-child subtree
+//   scores; (b) mid-traversal, comparing the best child's subtree score against
+//   each same-parent sibling that also has rawSim ≥ thetaMin. Lowered from the
 //   original, which over-triggered the LLM on cases where one branch was a clear
 //   winner.
 
@@ -506,6 +515,60 @@ export async function sortThreadByEmbedding(
     const descentOk = bestChildRawSim >= thetaDescent;
 
     if (spreadOk && descentOk) {
+      // Mid-traversal cross-branch check: even when spread is sufficient to
+      // descend, check whether any same-parent sibling is within
+      // crossBranchMargin in subtree score and has rawSim ≥ thetaMin. If so,
+      // embeddings cannot reliably distinguish these branches at this level —
+      // escalate to LLM with leaf candidates from all ambiguous branches.
+      const midAmbiguousSiblings = children.filter((id) => {
+        if (id === bestChildId) return false;
+        const gap = bestChildSubtreeScore - (subtreeScores.get(id) ?? 0);
+        return gap < crossBranchMargin && (rawSims.get(id) ?? 0) >= thetaMin;
+      });
+
+      if (midAmbiguousSiblings.length > 0) {
+        const candidateIds: string[] = [];
+        for (const subtreeRoot of [bestChildId, ...midAmbiguousSiblings]) {
+          const descendants = findDescendants(subtreeRoot, edges);
+          if (descendants.length === 0) {
+            // subtreeRoot is itself a leaf
+            candidateIds.push(subtreeRoot);
+          } else {
+            const leaves = descendants.filter((id) => (childrenMap.get(id) ?? []).length === 0);
+            candidateIds.push(...(leaves.length > 0 ? leaves : [subtreeRoot]));
+          }
+        }
+        const topCandidateIds = candidateIds
+          .sort((a, b) => (rawSims.get(b) ?? 0) - (rawSims.get(a) ?? 0))
+          .slice(0, topKLlm);
+        const candidates = buildLlmCandidates(topCandidateIds, nodeMap, childEdges, rootNode.id);
+        if (candidates.length > 0) {
+          const llmResult = await selectNodeFromCandidates(llmProvider, { messages }, candidates);
+          if (!llmResult.needsHumanReview && llmResult.finalNodeId) {
+            const selectedPath = buildClassificationPath(
+              rootNode.id, llmResult.finalNodeId, childEdges,
+              llmResult.confidence, llmResult.explanation
+            );
+            return {
+              finalNodeId: llmResult.finalNodeId,
+              path: selectedPath,
+              confidence: llmResult.confidence,
+              explanation: llmResult.explanation,
+              needsHumanReview: false,
+              decisionSource: "llm",
+              rawSimilarities: rawSimsRecord,
+              subtreeScores: subtreeScoresRecord,
+              updatedNodeEmbeddings,
+            };
+          }
+          return makeInboxFallback(
+            `LLM could not resolve mid-traversal ambiguity at "${nodeMap.get(currentNodeId)?.name ?? currentNodeId}": ${llmResult.explanation}`,
+            rawSimsRecord, subtreeScoresRecord, updatedNodeEmbeddings
+          );
+        }
+      }
+
+      // No mid-traversal ambiguity — descend normally.
       const edge = edgeByEndpoints.get(`${currentNodeId}:${bestChildId}`);
       if (edge) {
         traversalPath.push({
