@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import { z } from "zod";
 import { db } from "@amarnai/db";
+import { findDescendants } from "@amarnai/ai";
 
 const workspaceParam = z.object({ workspaceId: z.string().min(1) });
 const nodeParam = z.object({
@@ -207,6 +208,14 @@ taxonomyNodes.patch(
       return c.json({ error: "Node not found" }, 404);
     }
 
+    // Fields that affect embedding text: name (also invalidates descendants via
+    // breadcrumb) and description. instructions/examples/position do not affect
+    // the embedding — no invalidation needed for those.
+    const embeddingInvalidation =
+      d.name !== undefined || d.description !== undefined
+        ? { embeddingTextHash: null, embeddingVector: [] as number[], embeddingUpdatedAt: null }
+        : {};
+
     const updated = await db.taxonomyNode.update({
       where: { id: nodeId },
       data: {
@@ -216,9 +225,25 @@ taxonomyNodes.patch(
         ...(d.examples !== undefined ? { examples: d.examples } : {}),
         ...(d.positionX !== undefined ? { positionX: d.positionX } : {}),
         ...(d.positionY !== undefined ? { positionY: d.positionY } : {}),
+        ...embeddingInvalidation,
       },
       select: nodeSelect,
     });
+
+    // Name change: also invalidate descendants — their breadcrumb includes this node's name.
+    if (d.name !== undefined) {
+      const edges = await db.taxonomyEdge.findMany({
+        where: { workspaceId },
+        select: { id: true, sourceNodeId: true, targetNodeId: true },
+      });
+      const descendants = findDescendants(nodeId, edges);
+      if (descendants.length > 0) {
+        await db.taxonomyNode.updateMany({
+          where: { id: { in: descendants } },
+          data: { embeddingTextHash: null, embeddingVector: [] as number[], embeddingUpdatedAt: null },
+        });
+      }
+    }
 
     return c.json(updated);
   }

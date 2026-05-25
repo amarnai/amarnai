@@ -29,6 +29,7 @@ import {
   buildThreadEmbeddingText,
   hashEmbeddingInput,
   computeSubtreeScores,
+  deriveBreadcrumb,
 } from "./math.js";
 import { selectNodeFromCandidates } from "../selection/select-path.js";
 import type { EmbeddingProvider, EmbeddableNode, UpdatedNodeEmbedding } from "./types.js";
@@ -222,13 +223,22 @@ export async function sortThreadByEmbedding(
   const nodeMap = new Map(nodes.map((n) => [n.id, n]));
 
   // ── Step 2: Ensure non-root node embeddings are current ────────────────────
+  //
+  // Breadcrumbs are derived from the live taxonomy tree and are never stored
+  // as a node field. They are pre-computed once here to avoid redundant work.
 
   const updatedNodeEmbeddings: UpdatedNodeEmbedding[] = [];
   const nodeEmbeddings = new Map<string, number[]>();
 
+  const breadcrumbCache = new Map<string, string>();
+  for (const n of nonRootNodes) {
+    breadcrumbCache.set(n.id, deriveBreadcrumb(n.id, nodes, edges));
+  }
+
   const staleNodes: EmbeddableNode[] = [];
   for (const n of nonRootNodes) {
-    const text = buildNodeEmbeddingText({ name: n.name, description: n.description! });
+    const breadcrumb = breadcrumbCache.get(n.id)!;
+    const text = buildNodeEmbeddingText({ name: n.name, description: n.description!, breadcrumb });
     const expectedHash = hashEmbeddingInput(text, embeddingProvider.modelName);
     const isFresh =
       n.embeddingVector != null &&
@@ -245,14 +255,19 @@ export async function sortThreadByEmbedding(
 
   if (staleNodes.length > 0) {
     const texts = staleNodes.map((n) =>
-      buildNodeEmbeddingText({ name: n.name, description: n.description! })
+      buildNodeEmbeddingText({
+        name: n.name,
+        description: n.description!,
+        breadcrumb: breadcrumbCache.get(n.id)!,
+      })
     );
     const vectors = await embeddingProvider.embed(texts);
 
     for (let i = 0; i < staleNodes.length; i++) {
       const node = staleNodes[i]!;
       const vector = vectors[i]!;
-      const text = buildNodeEmbeddingText({ name: node.name, description: node.description! });
+      const breadcrumb = breadcrumbCache.get(node.id)!;
+      const text = buildNodeEmbeddingText({ name: node.name, description: node.description!, breadcrumb });
       const textHash = hashEmbeddingInput(text, embeddingProvider.modelName);
       nodeEmbeddings.set(node.id, vector);
       updatedNodeEmbeddings.push({

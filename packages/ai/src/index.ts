@@ -19,6 +19,9 @@ export {
   buildThreadEmbeddingText,
   hashEmbeddingInput,
   computeSubtreeScores,
+  deriveBreadcrumb,
+  findDescendants,
+  getStaleEmbeddableNodes,
 } from "./embedding/math.js";
 export {
   sortThreadByEmbedding,

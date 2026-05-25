@@ -1,8 +1,14 @@
 import { describe, it, expect, vi } from "vitest";
 import { sortThreadByEmbedding } from "../embedding/sorter.js";
 import { THETA_MIN } from "../embedding/sorter.js";
-import { buildNodeEmbeddingText, buildThreadEmbeddingText } from "../embedding/math.js";
+import {
+  buildNodeEmbeddingText,
+  buildThreadEmbeddingText,
+  hashEmbeddingInput,
+  deriveBreadcrumb,
+} from "../embedding/math.js";
 import type { EmbeddingProvider } from "../embedding/types.js";
+import type { EmbeddableNode } from "../embedding/types.js";
 import type { AIProvider, TaxonomyNodeInput, TaxonomyEdgeInput, ThreadMessage } from "../types.js";
 
 // ─── Test helpers ──────────────────────────────────────────────────────────────
@@ -48,16 +54,23 @@ function makeMockEmbeddingProvider(
   };
 }
 
-/** Build the embedding table for a set of nodes and a thread. */
+/**
+ * Build the embedding table for a set of nodes and a thread.
+ * Uses the breadcrumb-aware embedding text so mock lookups match
+ * what the sorter computes at runtime.
+ */
 function buildTable(
   nodeVectors: Array<{ node: TaxonomyNodeInput; vec: number[] }>,
   threadMessages: ThreadMessage[],
-  threadVec: number[]
+  threadVec: number[],
+  allNodes: TaxonomyNodeInput[],
+  allEdges: TaxonomyEdgeInput[]
 ): ReadonlyMap<string, number[]> {
   const map = new Map<string, number[]>();
   for (const { node, vec } of nodeVectors) {
     if (!node.isRoot && node.description) {
-      map.set(buildNodeEmbeddingText({ name: node.name, description: node.description }), vec);
+      const breadcrumb = deriveBreadcrumb(node.id, allNodes, allEdges);
+      map.set(buildNodeEmbeddingText({ name: node.name, description: node.description, breadcrumb }), vec);
     }
   }
   const threadText = buildThreadEmbeddingText(
@@ -151,7 +164,9 @@ describe("embedding sorter — clear route to direct child", () => {
       { node: GAMMA, vec: GAMMA_VEC },
     ],
     messages,
-    threadVec
+    threadVec,
+    FLAT_NODES,
+    FLAT_EDGES
   );
 
   const embeddingProvider = makeMockEmbeddingProvider(table);
@@ -221,7 +236,6 @@ describe("embedding sorter — clear route to direct child", () => {
       FLAT_EDGES,
       messages
     );
-    // All nodes start without embeddings → all should be in the updated list
     const updatedIds = result.updatedNodeEmbeddings.map((u) => u.nodeId);
     expect(updatedIds).toContain("alpha");
     expect(updatedIds).toContain("beta");
@@ -232,7 +246,6 @@ describe("embedding sorter — clear route to direct child", () => {
 // ─── Scenario 2: Clear route to a deep child ──────────────────────────────────
 
 describe("embedding sorter — clear route to deep child", () => {
-  // Thread matches Weddings leaf exactly; Events parent has an independent direction.
   const messages = [msg("Wedding venue", "We are planning a wedding ceremony for next spring")];
   const threadVec = WED_VEC!;
 
@@ -246,7 +259,9 @@ describe("embedding sorter — clear route to deep child", () => {
       { node: ARTICLES, vec: ART_VEC! },
     ],
     messages,
-    threadVec
+    threadVec,
+    DEEP_NODES,
+    DEEP_EDGES
   );
 
   const embeddingProvider = makeMockEmbeddingProvider(table);
@@ -284,11 +299,8 @@ describe("embedding sorter — clear route to deep child", () => {
 // ─── Scenario 3: Ambiguous children stopping at parent ────────────────────────
 
 describe("embedding sorter — ambiguous children stop traversal at parent", () => {
-  // Thread is equidistant from Weddings and Funerals.
-  // Events is the best destination (root-level is clear), but at Events,
-  // neither child has sufficient spread to warrant descent.
   const messages = [msg("Ceremony inquiry", "Planning a family ceremony event")];
-  const threadVec = normalize([1, 1, 0, 0, 0, 0]); // equidistant Weddings/Funerals
+  const threadVec = normalize([1, 1, 0, 0, 0, 0]);
 
   const table = buildTable(
     [
@@ -300,7 +312,9 @@ describe("embedding sorter — ambiguous children stop traversal at parent", () 
       { node: ARTICLES, vec: ART_VEC! },
     ],
     messages,
-    threadVec
+    threadVec,
+    DEEP_NODES,
+    DEEP_EDGES
   );
 
   const embeddingProvider = makeMockEmbeddingProvider(table);
@@ -337,7 +351,6 @@ describe("embedding sorter — ambiguous children stop traversal at parent", () 
 // ─── Scenario 4: Poor taxonomy fit → Inbox fallback ───────────────────────────
 
 describe("embedding sorter — poor taxonomy fit routes to Inbox review", () => {
-  // Thread vector is zero → no similarity to any node → quality gate fails.
   const messages = [msg("Unrelated", "Something completely unrelated to the taxonomy")];
   const ZERO_VEC = [0, 0, 0];
 
@@ -348,11 +361,13 @@ describe("embedding sorter — poor taxonomy fit routes to Inbox review", () => 
       { node: GAMMA, vec: GAMMA_VEC },
     ],
     messages,
-    ZERO_VEC
+    ZERO_VEC,
+    FLAT_NODES,
+    FLAT_EDGES
   );
 
   const embeddingProvider = makeMockEmbeddingProvider(table);
-  const llmProvider = makeMockLlmProvider("{}"); // should not be called
+  const llmProvider = makeMockLlmProvider("{}");
 
   it("returns inbox_fallback with needsHumanReview", async () => {
     const result = await sortThreadByEmbedding(
@@ -382,9 +397,8 @@ describe("embedding sorter — poor taxonomy fit routes to Inbox review", () => 
 // ─── Scenario 5: Rival root branches trigger LLM ─────────────────────────────
 
 describe("embedding sorter — rival root branches trigger LLM resolver", () => {
-  // Thread is equidistant between Alpha and Beta → cross-branch LLM trigger.
   const messages = [msg("Ambiguous request", "Scheduling a media appearance")];
-  const threadVec = normalize([1, 1, 0]); // equidistant Alpha and Beta
+  const threadVec = normalize([1, 1, 0]);
 
   const table = buildTable(
     [
@@ -393,14 +407,14 @@ describe("embedding sorter — rival root branches trigger LLM resolver", () => 
       { node: GAMMA, vec: GAMMA_VEC },
     ],
     messages,
-    threadVec
+    threadVec,
+    FLAT_NODES,
+    FLAT_EDGES
   );
 
   const embeddingProvider = makeMockEmbeddingProvider(table);
 
   it("calls LLM and returns its answer (LLM picks Beta)", async () => {
-    // candidate_0 is the top-scored node; in ties both Alpha and Beta rank first.
-    // We return candidate_1 (Beta) to verify LLM output is respected.
     const llmProvider = makeMockLlmProvider(
       JSON.stringify({
         selectedNodeId: "candidate_1",
@@ -418,7 +432,6 @@ describe("embedding sorter — rival root branches trigger LLM resolver", () => 
     );
     expect(result.decisionSource).toBe("llm");
     expect(result.needsHumanReview).toBe(false);
-    // LLM-selected node must be a real node from the taxonomy
     expect(["alpha", "beta", "gamma"]).toContain(result.finalNodeId);
   });
 
@@ -440,7 +453,7 @@ describe("embedding sorter — rival root branches trigger LLM resolver", () => 
 
 describe("embedding sorter — Inbox special rule: LLM uncertainty → fallback", () => {
   const messages = [msg("Ambiguous request", "Something that is hard to classify")];
-  const threadVec = normalize([1, 1, 0]); // equidistant Alpha and Beta
+  const threadVec = normalize([1, 1, 0]);
 
   const table = buildTable(
     [
@@ -449,7 +462,9 @@ describe("embedding sorter — Inbox special rule: LLM uncertainty → fallback"
       { node: GAMMA, vec: GAMMA_VEC },
     ],
     messages,
-    threadVec
+    threadVec,
+    FLAT_NODES,
+    FLAT_EDGES
   );
 
   const embeddingProvider = makeMockEmbeddingProvider(table);
@@ -488,13 +503,8 @@ describe("embedding sorter — Inbox special rule: LLM uncertainty → fallback"
 });
 
 // ─── Scenario 7: Large subtree does not dominate smaller subtree ──────────────
-//
-// BigBranch has 3 children each with similarity 0.38.
-// SmallLeaf is a single direct child with similarity 0.5.
-// Using max (not sum), SmallLeaf wins because 0.5 > 0.95 * 0.38 = 0.361.
 
 describe("embedding sorter — large subtree does not dominate smaller subtree", () => {
-  // Six-D space: Big1=0, Big2=1, Big3=2, BigBranch=3, SmallLeaf=4, (unused=5)
   const INBOX_BIG = n("inbox-big", "Inbox", null, true);
   const BIG_BRANCH = n("big-branch", "BigBranch", "Large multi-topic events and coordination hub");
   const BIG1 = n("big1", "BigOne", "First sub-topic of the large branch category");
@@ -511,24 +521,24 @@ describe("embedding sorter — large subtree does not dominate smaller subtree",
     e("eb-bb-b3", "big-branch", "big3"),
   ];
 
-  // The thread matches SmallLeaf best (0.5), and each BigBranch child moderately (0.38)
-  // thread ≈ [0.38, 0.38, 0.38, 0, 0.5, 0] (not yet unit)
   const rawThread = [0.38, 0.38, 0.38, 0, 0.5, 0];
-  const threadVec = normalize(rawThread); // sim to each oneHot direction is rawThread[i] / norm(rawThread)
+  const threadVec = normalize(rawThread);
 
   const dim6 = (i: number) => oneHot(i, 6);
   const messages = [msg("Partnership inquiry", "Specific partnership request targeting our niche area")];
 
   const table = buildTable(
     [
-      { node: BIG_BRANCH, vec: dim6(3) }, // BigBranch has its own direction (dim 3)
+      { node: BIG_BRANCH, vec: dim6(3) },
       { node: BIG1, vec: dim6(0) },
       { node: BIG2, vec: dim6(1) },
       { node: BIG3, vec: dim6(2) },
       { node: SMALL_LEAF, vec: dim6(4) },
     ],
     messages,
-    threadVec
+    threadVec,
+    bigNodes,
+    bigEdges
   );
 
   const embeddingProvider = makeMockEmbeddingProvider(table);
@@ -586,13 +596,14 @@ describe("embedding sorter — stale embedding detection", () => {
         { node: GAMMA, vec: GAMMA_VEC },
       ],
       messages,
-      threadVec
+      threadVec,
+      FLAT_NODES,
+      FLAT_EDGES
     );
 
     const embeddingProvider = makeMockEmbeddingProvider(table, "new-model-v2");
     const llmProvider = makeMockLlmProvider("{}");
 
-    // Supply nodes with embeddings from old model → stale
     const nodesWithOldEmbeddings = FLAT_NODES.map((node) =>
       node.isRoot
         ? node
@@ -612,16 +623,11 @@ describe("embedding sorter — stale embedding detection", () => {
       messages
     );
 
-    // All non-root nodes should be re-embedded and returned in updatedNodeEmbeddings
     expect(result.updatedNodeEmbeddings.length).toBe(3);
     expect(result.updatedNodeEmbeddings.every((u) => u.embeddingModel === "new-model-v2")).toBe(true);
   });
 
   it("skips re-embedding nodes whose hash is current", async () => {
-    const { buildNodeEmbeddingText: buildText, hashEmbeddingInput: hashFn } = await import(
-      "../embedding/math.js"
-    );
-
     const modelName = "current-model";
     const table = buildTable(
       [
@@ -630,15 +636,21 @@ describe("embedding sorter — stale embedding detection", () => {
         { node: GAMMA, vec: GAMMA_VEC },
       ],
       messages,
-      threadVec
+      threadVec,
+      FLAT_NODES,
+      FLAT_EDGES
     );
 
     const embeddingProvider = makeMockEmbeddingProvider(table, modelName);
     const llmProvider = makeMockLlmProvider("{}");
 
-    // Provide Alpha with a fresh (current) embedding
-    const alphaText = buildText({ name: ALPHA.name, description: ALPHA.description! });
-    const alphaHash = hashFn(alphaText, modelName);
+    const alphaBreadcrumb = deriveBreadcrumb("alpha", FLAT_NODES, FLAT_EDGES);
+    const alphaText = buildNodeEmbeddingText({
+      name: ALPHA.name,
+      description: ALPHA.description!,
+      breadcrumb: alphaBreadcrumb,
+    });
+    const alphaHash = hashEmbeddingInput(alphaText, modelName);
 
     const nodesWithFreshAlpha = FLAT_NODES.map((node) =>
       node.id === "alpha"
@@ -654,11 +666,204 @@ describe("embedding sorter — stale embedding detection", () => {
       messages
     );
 
-    // Alpha should NOT be re-embedded (it was fresh); Beta and Gamma should be
     const updatedIds = result.updatedNodeEmbeddings.map((u) => u.nodeId);
     expect(updatedIds).not.toContain("alpha");
     expect(updatedIds).toContain("beta");
     expect(updatedIds).toContain("gamma");
+  });
+
+  it("embedding text includes breadcrumb, name, and description", async () => {
+    const modelName = "current-model";
+    const table = buildTable(
+      [
+        { node: ALPHA, vec: ALPHA_VEC },
+        { node: BETA, vec: BETA_VEC },
+        { node: GAMMA, vec: GAMMA_VEC },
+      ],
+      messages,
+      threadVec,
+      FLAT_NODES,
+      FLAT_EDGES
+    );
+
+    const embeddingProvider = makeMockEmbeddingProvider(table, modelName);
+    const llmProvider = makeMockLlmProvider("{}");
+
+    const result = await sortThreadByEmbedding(
+      embeddingProvider,
+      llmProvider,
+      FLAT_NODES,
+      FLAT_EDGES,
+      messages
+    );
+
+    // All nodes freshly embedded — verify Alpha's stored hash matches the expected text format
+    const alphaUpdate = result.updatedNodeEmbeddings.find((u) => u.nodeId === "alpha");
+    expect(alphaUpdate).toBeDefined();
+
+    const breadcrumb = deriveBreadcrumb("alpha", FLAT_NODES, FLAT_EDGES);
+    const expectedText = buildNodeEmbeddingText({
+      name: ALPHA.name,
+      description: ALPHA.description!,
+      breadcrumb,
+    });
+    expect(expectedText).toContain("Path:");
+    expect(expectedText).toContain("Name: Alpha");
+    expect(expectedText).toContain("Description:");
+    expect(expectedText).toContain("Inbox > Alpha");
+
+    const expectedHash = hashEmbeddingInput(expectedText, modelName);
+    expect(alphaUpdate?.embeddingTextHash).toBe(expectedHash);
+  });
+
+  it("path is not stored as a node field", () => {
+    const node: EmbeddableNode = {
+      ...ALPHA,
+      embeddingVector: null,
+      embeddingModel: null,
+      embeddingTextHash: null,
+    };
+    // EmbeddableNode must not have a breadcrumb property
+    expect(node).not.toHaveProperty("breadcrumb");
+    // TaxonomyNodeInput also must not have breadcrumb
+    const taxonomyNode: TaxonomyNodeInput = ALPHA;
+    expect(taxonomyNode).not.toHaveProperty("breadcrumb");
+  });
+
+  it("description change refreshes only that node", async () => {
+    const modelName = "current-model";
+    const table = buildTable(
+      [
+        { node: ALPHA, vec: ALPHA_VEC },
+        { node: BETA, vec: BETA_VEC },
+        { node: GAMMA, vec: GAMMA_VEC },
+      ],
+      messages,
+      threadVec,
+      FLAT_NODES,
+      FLAT_EDGES
+    );
+
+    const embeddingProvider = makeMockEmbeddingProvider(table, modelName);
+    const llmProvider = makeMockLlmProvider("{}");
+
+    // Beta is fresh (current hash for current name+description+breadcrumb)
+    const betaBreadcrumb = deriveBreadcrumb("beta", FLAT_NODES, FLAT_EDGES);
+    const betaText = buildNodeEmbeddingText({
+      name: BETA.name,
+      description: BETA.description!,
+      breadcrumb: betaBreadcrumb,
+    });
+    const betaHash = hashEmbeddingInput(betaText, modelName);
+
+    const nodesWithFreshBeta = FLAT_NODES.map((node) =>
+      node.id === "beta"
+        ? { ...node, embeddingVector: BETA_VEC, embeddingModel: modelName, embeddingTextHash: betaHash }
+        : node
+    );
+
+    const result = await sortThreadByEmbedding(
+      embeddingProvider,
+      llmProvider,
+      nodesWithFreshBeta,
+      FLAT_EDGES,
+      messages
+    );
+
+    const updatedIds = result.updatedNodeEmbeddings.map((u) => u.nodeId);
+    // Beta was fresh (simulating: only other nodes had description changed) — not re-embedded
+    expect(updatedIds).not.toContain("beta");
+    // Alpha and Gamma are stale — re-embedded
+    expect(updatedIds).toContain("alpha");
+    expect(updatedIds).toContain("gamma");
+  });
+
+  it("nodes with old-format embedding hashes are detected as stale", async () => {
+    // The old format was "Name\nDescription" with no Path: prefix.
+    // Any hash computed from that format will not match the new path-aware hash.
+    const modelName = "current-model";
+    const table = buildTable(
+      [
+        { node: ALPHA, vec: ALPHA_VEC },
+        { node: BETA, vec: BETA_VEC },
+        { node: GAMMA, vec: GAMMA_VEC },
+      ],
+      messages,
+      threadVec,
+      FLAT_NODES,
+      FLAT_EDGES
+    );
+
+    const embeddingProvider = makeMockEmbeddingProvider(table, modelName);
+    const llmProvider = makeMockLlmProvider("{}");
+
+    // Give Alpha an old-format hash (name\ndescription, no breadcrumb)
+    const oldText = `${ALPHA.name}\n${ALPHA.description}`;
+    const oldHash = hashEmbeddingInput(oldText, modelName);
+
+    const nodesWithOldAlpha = FLAT_NODES.map((node) =>
+      node.id === "alpha"
+        ? { ...node, embeddingVector: ALPHA_VEC, embeddingModel: modelName, embeddingTextHash: oldHash }
+        : node
+    );
+
+    const result = await sortThreadByEmbedding(
+      embeddingProvider,
+      llmProvider,
+      nodesWithOldAlpha,
+      FLAT_EDGES,
+      messages
+    );
+
+    // Alpha's old hash does not match the new path-aware hash → detected as stale
+    const updatedIds = result.updatedNodeEmbeddings.map((u) => u.nodeId);
+    expect(updatedIds).toContain("alpha");
+  });
+
+  it("sorting does not silently use stale embeddings — stale nodes appear in updatedNodeEmbeddings", async () => {
+    const modelName = "current-model";
+    const table = buildTable(
+      [
+        { node: ALPHA, vec: ALPHA_VEC },
+        { node: BETA, vec: BETA_VEC },
+        { node: GAMMA, vec: GAMMA_VEC },
+      ],
+      messages,
+      threadVec,
+      FLAT_NODES,
+      FLAT_EDGES
+    );
+
+    const embeddingProvider = makeMockEmbeddingProvider(table, modelName);
+    const llmProvider = makeMockLlmProvider("{}");
+
+    // Supply all non-root nodes with stale hashes
+    const nodesWithStaleHashes = FLAT_NODES.map((node) =>
+      node.isRoot
+        ? node
+        : { ...node, embeddingVector: [0.5, 0.5, 0.5], embeddingModel: modelName, embeddingTextHash: "stale" }
+    );
+
+    const result = await sortThreadByEmbedding(
+      embeddingProvider,
+      llmProvider,
+      nodesWithStaleHashes,
+      FLAT_EDGES,
+      messages
+    );
+
+    // All stale nodes must appear in updatedNodeEmbeddings — none silently used old vectors
+    const updatedIds = result.updatedNodeEmbeddings.map((u) => u.nodeId);
+    expect(updatedIds).toContain("alpha");
+    expect(updatedIds).toContain("beta");
+    expect(updatedIds).toContain("gamma");
+    // And the new hashes must match the path-aware format
+    for (const update of result.updatedNodeEmbeddings) {
+      const node = FLAT_NODES.find((n) => n.id === update.nodeId)!;
+      const breadcrumb = deriveBreadcrumb(node.id, FLAT_NODES, FLAT_EDGES);
+      const text = buildNodeEmbeddingText({ name: node.name, description: node.description!, breadcrumb });
+      expect(update.embeddingTextHash).toBe(hashEmbeddingInput(text, modelName));
+    }
   });
 });
 
@@ -684,17 +889,6 @@ describe("embedding sorter — no root node", () => {
 });
 
 // ─── Scenario 10: Thread stays in Inbox — no first-level child matches ────────
-//
-// Five direct children of Inbox. The thread slightly favours the first child
-// (raw sim ≈ 0.542) but the other four are close behind (≈ 0.420 each).
-//
-// Cross-branch top-2 diff (≈ 0.122) exceeds CROSS_BRANCH_MARGIN (0.08),
-// so the LLM cross-branch trigger is NOT fired.
-//
-// With five competitors the softmax spread collapses to ≈ 0.20 — below
-// THETA_SPREAD (0.25) — so traversal cannot confidently leave Inbox.
-// Under the new policy, Inbox is returned as the valid final destination
-// rather than routing to human review.
 
 describe("embedding sorter — thread stays in Inbox when no first-level child matches confidently", () => {
   const INBOX5 = n("inbox5", "Inbox", null, true);
@@ -713,8 +907,6 @@ describe("embedding sorter — thread stays in Inbox when no first-level child m
     e("e5-i-e", "inbox5", "n5-e"),
   ];
 
-  // Thread normalized from [0.4, 0.31, 0.31, 0.31, 0.31] in 5-D one-hot space.
-  // Raw cosine sims ≈ [0.542, 0.420, 0.420, 0.420, 0.420].
   const threadVec5 = normalize([0.4, 0.31, 0.31, 0.31, 0.31]);
   const messages5 = [msg("General inquiry", "This message does not clearly fit any single category")];
 
@@ -727,7 +919,9 @@ describe("embedding sorter — thread stays in Inbox when no first-level child m
       { node: NODE_E, vec: oneHot(4, 5) },
     ],
     messages5,
-    threadVec5
+    threadVec5,
+    nodes5,
+    edges5
   );
 
   const embeddingProvider5 = makeMockEmbeddingProvider(table5);
@@ -779,9 +973,6 @@ describe("embedding sorter — thread stays in Inbox when no first-level child m
 });
 
 // ─── Scenario 11: Existing non-Inbox fallback behavior preserved ───────────────
-//
-// Confirm that quality-gate failure and LLM uncertainty still route to human
-// review (finalNodeId: null) — these are distinct from the "stop at Inbox" case.
 
 describe("embedding sorter — existing non-Inbox fallback behavior still works", () => {
   it("quality gate failure still returns null + needsHumanReview (thread too dissimilar to all nodes)", async () => {
@@ -802,7 +993,9 @@ describe("embedding sorter — existing non-Inbox fallback behavior still works"
         { node: BETA_F, vec: oneHot(1, dim4) },
       ],
       messages,
-      belowThresholdVec
+      belowThresholdVec,
+      nodes_f,
+      edges_f
     );
 
     const result = await sortThreadByEmbedding(
@@ -820,7 +1013,7 @@ describe("embedding sorter — existing non-Inbox fallback behavior still works"
 
   it("LLM cross-branch uncertainty still returns null + needsHumanReview", async () => {
     const messages = [msg("Ambiguous", "Hard to classify")];
-    const threadVec = normalize([1, 1, 0]); // equidistant Alpha and Beta
+    const threadVec = normalize([1, 1, 0]);
 
     const table = buildTable(
       [
@@ -829,7 +1022,9 @@ describe("embedding sorter — existing non-Inbox fallback behavior still works"
         { node: GAMMA, vec: GAMMA_VEC },
       ],
       messages,
-      threadVec
+      threadVec,
+      FLAT_NODES,
+      FLAT_EDGES
     );
 
     const result = await sortThreadByEmbedding(
@@ -858,11 +1053,8 @@ describe("embedding sorter — existing non-Inbox fallback behavior still works"
 describe("embedding sorter — quality gate", () => {
   it(`routes to inbox_fallback (needsHumanReview) when max raw similarity < THETA_MIN (${THETA_MIN})`, async () => {
     const messages = [msg("Vague", "Something vague")];
-    // Use a 4D space where the thread points mostly in the 4th (orthogonal) direction,
-    // giving very low cosine sim to any one-hot node vector in dims 0–2.
-    // [0.1, 0.1, 0.1, 1.0] → after normalize: sim to oneHot(i,4) ≈ 0.099 < THETA_MIN.
     const dim4 = 4;
-    const belowThresholdVec = normalize([0.1, 0.1, 0.1, 1.0]); // sim to oneHot(0,4) ≈ 0.1/1.015 ≈ 0.099
+    const belowThresholdVec = normalize([0.1, 0.1, 0.1, 1.0]);
 
     const ALPHA4 = n("alpha4", "Alpha", "Administrative coordination and scheduling requests");
     const BETA4 = n("beta4", "Beta", "Media appearances, journalism interviews, and press coverage");
@@ -883,15 +1075,14 @@ describe("embedding sorter — quality gate", () => {
         { node: GAMMA4, vec: oneHot(2, dim4) },
       ],
       messages,
-      belowThresholdVec
+      belowThresholdVec,
+      nodes4,
+      edges4
     );
 
-    const embeddingProvider = makeMockEmbeddingProvider(table);
-    const llmProvider = makeMockLlmProvider("{}");
-
     const result = await sortThreadByEmbedding(
-      embeddingProvider,
-      llmProvider,
+      makeMockEmbeddingProvider(table),
+      makeMockLlmProvider("{}"),
       nodes4,
       edges4,
       messages
@@ -899,7 +1090,6 @@ describe("embedding sorter — quality gate", () => {
 
     expect(result.decisionSource).toBe("inbox_fallback");
     expect(result.needsHumanReview).toBe(true);
-    // Max raw sim should be below THETA_MIN
     const maxSim = Math.max(...Object.values(result.rawSimilarities));
     expect(maxSim).toBeLessThan(THETA_MIN);
   });

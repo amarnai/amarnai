@@ -12,6 +12,7 @@
     "migrate": "dotenv -e ../../.env -- prisma migrate dev",
     "seed": "dotenv -e ../../.env -- prisma db seed",
     "backfill-inbox": "dotenv -e ../../.env -- tsx prisma/backfill-inbox.ts",
+    "embeddings:refresh-taxonomy": "dotenv -e ../../.env -- tsx prisma/refresh-taxonomy-embeddings.ts",
     "reset": "dotenv -e ../../.env -- prisma migrate reset",
     "lint": "eslint src",
     "typecheck": "tsc --noEmit",
@@ -21,6 +22,7 @@
     "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
+    "@amarnai/ai": "workspace:*",
     "@prisma/client": "^6.3.0"
   },
   "devDependencies": {

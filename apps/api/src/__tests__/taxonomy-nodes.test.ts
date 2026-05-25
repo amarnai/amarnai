@@ -9,7 +9,11 @@ vi.mock("@amarnai/db", () => ({
       findUnique: vi.fn(),
       create: vi.fn(),
       update: vi.fn(),
+      updateMany: vi.fn(),
       delete: vi.fn(),
+    },
+    taxonomyEdge: {
+      findMany: vi.fn(),
     },
   },
 }));
@@ -60,6 +64,10 @@ function del(path: string) {
 
 beforeEach(() => {
   vi.clearAllMocks();
+  // Default: no edges → no descendants to invalidate for any name-change test.
+  // Individual tests override this when testing descendant invalidation.
+  vi.mocked(db.taxonomyEdge.findMany).mockResolvedValue([] as never);
+  vi.mocked(db.taxonomyNode.updateMany).mockResolvedValue({ count: 0 } as never);
 });
 
 // ─── GET ─────────────────────────────────────────────────────────────────────
@@ -145,7 +153,6 @@ describe("POST /workspaces/:workspaceId/taxonomy-nodes", () => {
       description: `  ${VALID_DESCRIPTION}  `,
     });
     expect(res.status).toBe(201);
-    // Confirm the create was called (trimmed values passed schema validation)
     expect(vi.mocked(db.taxonomyNode.create)).toHaveBeenCalledTimes(1);
   });
 
@@ -283,7 +290,6 @@ describe("PATCH /workspaces/:workspaceId/taxonomy-nodes/:nodeId", () => {
   });
 
   it("allows updating a non-root legacy node's name without providing description", async () => {
-    // Legacy nodes with null descriptions must not fail on PATCH when description is omitted.
     const updated = { ...baseNode, name: "New Name" };
     vi.mocked(db.taxonomyNode.findUnique).mockResolvedValue(baseNode as never);
     vi.mocked(db.taxonomyNode.update).mockResolvedValue(updated as never);
@@ -345,7 +351,6 @@ describe("PATCH /workspaces/:workspaceId/taxonomy-nodes/:nodeId", () => {
   });
 
   it("returns 400 when updated description is identical to updated name (case-insensitive)", async () => {
-    // Both name and description present in same PATCH — cross-field check applies.
     const res = await patch(
       `/workspaces/${WS_ID}/taxonomy-nodes/${NODE_ID}`,
       { name: "Finance", description: "finance" }
@@ -404,7 +409,6 @@ describe("PATCH /workspaces/:workspaceId/taxonomy-nodes/:nodeId", () => {
   });
 
   it("root Inbox can be patched without providing a description", async () => {
-    // Root node bypasses the "description required" rule.
     const updated = { ...baseNode, name: "Inbox", isRoot: true };
     vi.mocked(db.taxonomyNode.findUnique).mockResolvedValue(
       { ...baseNode, isRoot: true } as never
@@ -416,6 +420,121 @@ describe("PATCH /workspaces/:workspaceId/taxonomy-nodes/:nodeId", () => {
       { name: "Inbox" }
     );
     expect(res.status).toBe(200);
+  });
+
+  // ── Embedding invalidation ─────────────────────────────────────────────────
+
+  it("PATCH name change includes embeddingTextHash: null in the main update", async () => {
+    const updated = { ...baseNode, name: "Renamed" };
+    vi.mocked(db.taxonomyNode.findUnique).mockResolvedValue(baseNode as never);
+    vi.mocked(db.taxonomyNode.update).mockResolvedValue(updated as never);
+
+    await patch(`/workspaces/${WS_ID}/taxonomy-nodes/${NODE_ID}`, { name: "Renamed" });
+
+    const [callArg] = vi.mocked(db.taxonomyNode.update).mock.calls;
+    expect(callArg![0]).toMatchObject({ data: { embeddingTextHash: null, embeddingVector: [] } });
+  });
+
+  it("PATCH description change includes embeddingTextHash: null in the main update", async () => {
+    const updated = { ...baseNode, description: VALID_DESCRIPTION };
+    vi.mocked(db.taxonomyNode.findUnique).mockResolvedValue(baseNode as never);
+    vi.mocked(db.taxonomyNode.update).mockResolvedValue(updated as never);
+
+    await patch(`/workspaces/${WS_ID}/taxonomy-nodes/${NODE_ID}`, { description: VALID_DESCRIPTION });
+
+    const [callArg] = vi.mocked(db.taxonomyNode.update).mock.calls;
+    expect(callArg![0]).toMatchObject({ data: { embeddingTextHash: null, embeddingVector: [] } });
+  });
+
+  it("PATCH description-only change does not call taxonomyEdge.findMany or updateMany", async () => {
+    const updated = { ...baseNode, description: VALID_DESCRIPTION };
+    vi.mocked(db.taxonomyNode.findUnique).mockResolvedValue(baseNode as never);
+    vi.mocked(db.taxonomyNode.update).mockResolvedValue(updated as never);
+
+    const res = await patch(
+      `/workspaces/${WS_ID}/taxonomy-nodes/${NODE_ID}`,
+      { description: VALID_DESCRIPTION }
+    );
+    expect(res.status).toBe(200);
+    // Description-only: no descendant walk needed
+    expect(vi.mocked(db.taxonomyEdge.findMany)).not.toHaveBeenCalled();
+    expect(vi.mocked(db.taxonomyNode.updateMany)).not.toHaveBeenCalled();
+  });
+
+  it("PATCH name change calls taxonomyEdge.findMany to walk descendants", async () => {
+    const updated = { ...baseNode, name: "Renamed" };
+    vi.mocked(db.taxonomyNode.findUnique).mockResolvedValue(baseNode as never);
+    vi.mocked(db.taxonomyNode.update).mockResolvedValue(updated as never);
+
+    await patch(`/workspaces/${WS_ID}/taxonomy-nodes/${NODE_ID}`, { name: "Renamed" });
+
+    expect(vi.mocked(db.taxonomyEdge.findMany)).toHaveBeenCalledWith(
+      expect.objectContaining({ where: { workspaceId: WS_ID } })
+    );
+  });
+
+  it("PATCH name change calls updateMany to null embeddings on descendants", async () => {
+    const CHILD_ID = "node-2";
+    const updated = { ...baseNode, name: "Renamed" };
+    vi.mocked(db.taxonomyNode.findUnique).mockResolvedValue(baseNode as never);
+    vi.mocked(db.taxonomyNode.update).mockResolvedValue(updated as never);
+    // Simulate one descendant edge
+    vi.mocked(db.taxonomyEdge.findMany).mockResolvedValue([
+      { id: "e1", sourceNodeId: NODE_ID, targetNodeId: CHILD_ID },
+    ] as never);
+
+    await patch(`/workspaces/${WS_ID}/taxonomy-nodes/${NODE_ID}`, { name: "Renamed" });
+
+    expect(vi.mocked(db.taxonomyNode.updateMany)).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { id: { in: [CHILD_ID] } },
+        data: expect.objectContaining({ embeddingTextHash: null }),
+      })
+    );
+  });
+
+  it("PATCH name change with no descendants does not call updateMany", async () => {
+    const updated = { ...baseNode, name: "Renamed" };
+    vi.mocked(db.taxonomyNode.findUnique).mockResolvedValue(baseNode as never);
+    vi.mocked(db.taxonomyNode.update).mockResolvedValue(updated as never);
+    // Default: no edges → no descendants
+
+    await patch(`/workspaces/${WS_ID}/taxonomy-nodes/${NODE_ID}`, { name: "Renamed" });
+
+    expect(vi.mocked(db.taxonomyNode.updateMany)).not.toHaveBeenCalled();
+  });
+
+  it("PATCH instructions change does not include embedding invalidation", async () => {
+    const updated = { ...baseNode, instructions: "Sort by sender domain first" };
+    vi.mocked(db.taxonomyNode.findUnique).mockResolvedValue(baseNode as never);
+    vi.mocked(db.taxonomyNode.update).mockResolvedValue(updated as never);
+
+    const res = await patch(
+      `/workspaces/${WS_ID}/taxonomy-nodes/${NODE_ID}`,
+      { instructions: "Sort by sender domain first" }
+    );
+    expect(res.status).toBe(200);
+
+    // No embedding invalidation for instructions-only change
+    expect(vi.mocked(db.taxonomyEdge.findMany)).not.toHaveBeenCalled();
+    expect(vi.mocked(db.taxonomyNode.updateMany)).not.toHaveBeenCalled();
+    const [callArg] = vi.mocked(db.taxonomyNode.update).mock.calls;
+    expect(callArg![0]).not.toMatchObject({ data: { embeddingTextHash: null } });
+  });
+
+  it("PATCH positionX change does not include embedding invalidation", async () => {
+    const updated = { ...baseNode, positionX: 100 };
+    vi.mocked(db.taxonomyNode.findUnique).mockResolvedValue(baseNode as never);
+    vi.mocked(db.taxonomyNode.update).mockResolvedValue(updated as never);
+
+    const res = await patch(
+      `/workspaces/${WS_ID}/taxonomy-nodes/${NODE_ID}`,
+      { positionX: 100 }
+    );
+    expect(res.status).toBe(200);
+    expect(vi.mocked(db.taxonomyEdge.findMany)).not.toHaveBeenCalled();
+    const [callArg] = vi.mocked(db.taxonomyNode.update).mock.calls;
+    expect(callArg![0]).not.toMatchObject({ data: { embeddingTextHash: null } });
   });
 });
 
