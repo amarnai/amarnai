@@ -145,22 +145,18 @@ function makeInboxFallback(
 /**
  * BFS path from `fromId` to `toId`, returning ClassificationPathStep[].
  * Returns [] if the two nodes are the same or no path exists.
+ *
+ * `childEdges` must be pre-built by the caller (Map<sourceNodeId, edges[]>).
+ * No internal fallback is provided — pass the map explicitly at every call site.
  */
 function buildClassificationPath(
   fromId: string,
   toId: string,
-  edges: ReadonlyArray<TaxonomyEdgeInput>,
+  childEdges: ReadonlyMap<string, TaxonomyEdgeInput[]>,
   confidence: number,
   explanation: string
 ): ClassificationPathStep[] {
   if (fromId === toId) return [];
-
-  const childEdges = new Map<string, TaxonomyEdgeInput[]>();
-  for (const edge of edges) {
-    const list = childEdges.get(edge.sourceNodeId) ?? [];
-    list.push(edge);
-    childEdges.set(edge.sourceNodeId, list);
-  }
 
   type Entry = { nodeId: string; path: ClassificationPathStep[] };
   const queue: Entry[] = [{ nodeId: fromId, path: [] }];
@@ -191,11 +187,13 @@ function buildClassificationPath(
  * Breadcrumbs are included as read-only context; they are not selectable.
  * Path reconstruction from the selected node happens in the caller after
  * LLM resolution returns.
+ *
+ * `childEdges` must be pre-built by the caller (Map<sourceNodeId, edges[]>).
  */
 function buildLlmCandidates(
   nodeIds: string[],
   nodeMap: Map<string, EmbeddableNode>,
-  edges: ReadonlyArray<TaxonomyEdgeInput>,
+  childEdges: ReadonlyMap<string, TaxonomyEdgeInput[]>,
   rootId: string
 ): CandidateNode[] {
   return nodeIds.flatMap((nodeId): CandidateNode[] => {
@@ -203,7 +201,7 @@ function buildLlmCandidates(
     if (!node) return [];
 
     // Build breadcrumb for LLM context only — never used as a selection target
-    const pathSteps = buildClassificationPath(rootId, nodeId, edges, 1, "");
+    const pathSteps = buildClassificationPath(rootId, nodeId, childEdges, 1, "");
     const breadcrumbIds = [rootId, ...pathSteps.map((s) => s.targetNodeId)];
     const breadcrumb = breadcrumbIds.map((id) => nodeMap.get(id)?.name ?? "(unknown)").join(" → ");
 
@@ -362,11 +360,15 @@ export async function sortThreadByEmbedding(
   // ── Step 7: Build children map and edge lookup for traversal ─────────────
 
   const childrenMap = new Map<string, string[]>();
+  const childEdges = new Map<string, TaxonomyEdgeInput[]>();
   const edgeByEndpoints = new Map<string, TaxonomyEdgeInput>();
   for (const edge of edges) {
     const list = childrenMap.get(edge.sourceNodeId) ?? [];
     list.push(edge.targetNodeId);
     childrenMap.set(edge.sourceNodeId, list);
+    const edgeList = childEdges.get(edge.sourceNodeId) ?? [];
+    edgeList.push(edge);
+    childEdges.set(edge.sourceNodeId, edgeList);
     edgeByEndpoints.set(`${edge.sourceNodeId}:${edge.targetNodeId}`, edge);
   }
 
@@ -386,7 +388,7 @@ export async function sortThreadByEmbedding(
 
   if (crossBranchAmbiguous) {
     const topIds = rootChildrenRanked.slice(0, topKLlm).map((c) => c.id);
-    const candidates = buildLlmCandidates(topIds, nodeMap, edges, rootNode.id);
+    const candidates = buildLlmCandidates(topIds, nodeMap, childEdges, rootNode.id);
 
     if (candidates.length > 0) {
       const llmResult = await selectNodeFromCandidates(llmProvider, { messages }, candidates);
@@ -396,7 +398,7 @@ export async function sortThreadByEmbedding(
         const selectedPath = buildClassificationPath(
           rootNode.id,
           llmResult.finalNodeId,
-          edges,
+          childEdges,
           llmResult.confidence,
           llmResult.explanation
         );
