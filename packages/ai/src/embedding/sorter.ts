@@ -453,10 +453,24 @@ export async function sortThreadByEmbedding(
     const bestProb = probs[bestIdx]!;
     const secondBestProb = secondBestIdx >= 0 ? probs[secondBestIdx]! : 0;
 
-    // Δ = p(c*) − p(c**): how much the best child stands out among siblings.
-    // No children.length normalisation — the spread threshold θ_spread operates
-    // directly on this raw probability gap, as specified.
+    // Δ_norm: k-invariant spread.
+    //
+    // Raw spread Δ = p(c*) − p(c**) shrinks as k grows because each runner-up
+    // absorbs a share of the probability mass (for fixed softmax scores, Δ ≈
+    // (α−1)/(α+k−1) where α = e^{Δscore/T}, so Δ → 0 as k → ∞ even when the
+    // winner is unambiguous).
+    //
+    // We normalise by the maximum raw spread achievable with a uniform background
+    // of k−1 siblings, which is (1 − 1/k):
+    //
+    //   Δ_norm = Δ / (1 − 1/max(k, 2))
+    //
+    // A perfect winner (p* → 1) gives Δ_norm → 1/(1 − 1/k) ≈ 1 for large k.
+    // A tie (Δ = 0) gives Δ_norm = 0 regardless of k.
+    // The θ_spread threshold is therefore consistent across nodes with different
+    // fan-out, so the same constant works for shallow and wide subtrees alike.
     const spread = bestProb - secondBestProb;
+    const normalizedSpread = spread / (1 - 1 / Math.max(children.length, 2));
 
     const bestChildSubtreeScore = subtreeScores.get(bestChildId) ?? 0;
     const bestChildRawSim = rawSims.get(bestChildId) ?? 0;
@@ -467,7 +481,7 @@ export async function sortThreadByEmbedding(
     // Descent requires both conditions (spec Phase 2, Steps 2–4):
     //   spreadOk  — best child is meaningfully differentiated from its siblings
     //   descentOk — best child is relevant to the email in absolute terms
-    const spreadOk = spread > thetaSpread;
+    const spreadOk = normalizedSpread > thetaSpread;
     const descentOk = bestChildRawSim >= thetaDescent;
 
     if (spreadOk && descentOk) {
@@ -478,7 +492,7 @@ export async function sortThreadByEmbedding(
           sourceNodeId: edge.sourceNodeId,
           targetNodeId: edge.targetNodeId,
           confidence: bestProb,
-          explanation: `Subtree score ${bestChildSubtreeScore.toFixed(3)}, spread ${spread.toFixed(3)}`,
+          explanation: `Subtree score ${bestChildSubtreeScore.toFixed(3)}, spread ${normalizedSpread.toFixed(3)} (raw ${spread.toFixed(3)})`,
         });
       }
       currentNodeId = bestChildId;
