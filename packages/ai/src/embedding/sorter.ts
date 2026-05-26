@@ -212,7 +212,8 @@ function buildLlmCandidates(
   nodeIds: string[],
   nodeMap: Map<string, EmbeddableNode>,
   childEdges: ReadonlyMap<string, TaxonomyEdgeInput[]>,
-  rootId: string
+  rootId: string,
+  rawSims: ReadonlyMap<string, number>
 ): CandidateNode[] {
   return nodeIds.flatMap((nodeId): CandidateNode[] => {
     const node = nodeMap.get(nodeId);
@@ -232,7 +233,7 @@ function buildLlmCandidates(
         name: node.name,
         description: node.description,
         breadcrumb,
-        score: 0,
+        score: rawSims.get(nodeId) ?? 0,
         reasons: [],
       },
     ];
@@ -476,7 +477,7 @@ export async function sortThreadByEmbedding(
     const leafCandidateIds = [...new Set(collectLeavesFromSubtrees(topIds, childrenMap))]
       .sort((a, b) => (rawSims.get(b) ?? 0) - (rawSims.get(a) ?? 0))
       .slice(0, topKLlm);
-    const candidates = buildLlmCandidates(leafCandidateIds, nodeMap, childEdges, rootNode.id);
+    const candidates = buildLlmCandidates(leafCandidateIds, nodeMap, childEdges, rootNode.id, rawSims);
 
     if (candidates.length > 0) {
       const llmResult = await selectNodeFromCandidates(llmProvider, { messages }, candidates);
@@ -593,7 +594,7 @@ export async function sortThreadByEmbedding(
         const topCandidateIds = candidateIds
           .sort((a, b) => (rawSims.get(b) ?? 0) - (rawSims.get(a) ?? 0))
           .slice(0, topKLlm);
-        const candidates = buildLlmCandidates(topCandidateIds, nodeMap, childEdges, rootNode.id);
+        const candidates = buildLlmCandidates(topCandidateIds, nodeMap, childEdges, rootNode.id, rawSims);
         if (candidates.length > 0) {
           const llmResult = await selectNodeFromCandidates(llmProvider, { messages }, candidates);
           if (!llmResult.needsHumanReview && llmResult.finalNodeId) {
