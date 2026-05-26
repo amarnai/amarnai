@@ -109,11 +109,14 @@ export type Tag = {
   updatedAt: string;
 };
 
+export type TriageStatus = "PENDING" | "SORTED" | "NEEDS_REVIEW";
+
 export type EmailThreadSummary = {
   id: string;
   subject: string | null;
   latestMessageAt: string | null;
   messageCount: number;
+  triageStatus: TriageStatus;
   createdAt: string;
   messages: Array<{
     id: string;
@@ -149,6 +152,7 @@ export type EmailThreadDetail = {
   subject: string | null;
   latestMessageAt: string | null;
   messageCount: number;
+  triageStatus: TriageStatus;
   createdAt: string;
   updatedAt: string;
   messages: Array<{
@@ -164,12 +168,6 @@ export type EmailThreadDetail = {
   }>;
   latestClassification: Classification | null;
   tags: EmailTag[];
-  reviewItems: Array<{
-    id: string;
-    status: string;
-    reason: string;
-    createdAt: string;
-  }>;
 };
 
 export type GmailConnection = {
@@ -183,25 +181,38 @@ export type GmailConnection = {
   updatedAt: string;
 } | null;
 
+export type BackfillStatus = "PENDING" | "RUNNING" | "DONE" | "ERROR";
+
+export type SyncStatus = {
+  status: "IDLE" | "SYNCING" | "ERROR";
+  lastSyncedAt: string | null;
+  errorMessage: string | null;
+  backfillStatus: BackfillStatus;
+  backfillSkipped: number;
+  backfillCompletedAt: string | null;
+} | null;
+
 export type ReviewItem = {
   id: string;
-  status: string;
-  reason: string;
-  createdAt: string;
-  updatedAt: string;
-  emailThread: {
-    id: string;
-    subject: string | null;
-    latestMessageAt: string | null;
-    tags: EmailTag[];
-  };
-  emailMessage: {
+  triageStatus: TriageStatus;
+  subject: string | null;
+  latestMessageAt: string | null;
+  tags: EmailTag[];
+  latestMessage: {
     id: string;
     senderEmail: string;
     senderName: string | null;
     snippet: string | null;
   } | null;
-  classification: ClassificationSummary | null;
+  classification: {
+    id: string;
+    confidence: number;
+    explanation: string | null;
+    priority: string | null;
+    urgency: string | null;
+    needsHumanReview: boolean;
+    finalNode: { id: string; name: string } | null;
+  } | null;
 };
 
 export type MockInboxEventInput =
@@ -244,8 +255,6 @@ export type MockInboxResult = {
     modelProvider?: string;
     modelName?: string;
   };
-  reviewItemCreated: boolean;
-  reviewItemId: string | null;
 };
 
 export type CandidateNodeInput = {
@@ -324,8 +333,6 @@ export type GmailSortResult = {
     modelProvider: string | null;
     modelName: string | null;
   };
-  reviewItemCreated: boolean;
-  reviewItemId: string | null;
   debug?: {
     path: GmailSortPathStep[];
     rawSimilarities: Record<string, number>;
@@ -346,8 +353,6 @@ export type ClassifyResult = {
     modelProvider: string;
     modelName: string;
   };
-  reviewItemCreated: boolean;
-  reviewItemId: string | null;
 };
 
 // ─── API helpers ──────────────────────────────────────────────────────────────
@@ -356,6 +361,8 @@ export const api = {
   workspaces: () => apiFetch<Workspace[]>("/workspaces"),
   gmailConnection: (workspaceId: string) =>
     apiFetch<GmailConnection>(`/workspaces/${workspaceId}/gmail-connection`),
+  syncStatus: (workspaceId: string) =>
+    apiFetch<SyncStatus>(`/workspaces/${workspaceId}/sync-status`),
   taxonomyNodes: (workspaceId: string) =>
     apiFetch<TaxonomyNode[]>(`/workspaces/${workspaceId}/taxonomy-nodes`),
   createTaxonomyNode: (workspaceId: string, input: CreateTaxonomyNodeInput) =>
@@ -433,6 +440,16 @@ export const api = {
       `/dev/workspaces/${workspaceId}/gmail-sort-thread`,
       "POST",
       { gmailThreadId }
+    ),
+  triageThread: (
+    workspaceId: string,
+    threadId: string,
+    action: { action: "approve" } | { action: "move"; nodeId: string }
+  ) =>
+    apiMutate<{ ok: boolean; triageStatus: TriageStatus }>(
+      `/workspaces/${workspaceId}/email-threads/${threadId}/triage`,
+      "PATCH",
+      action
     ),
   aiClassify: (workspaceId: string, threadId: string) =>
     apiMutate<ClassifyResult>(

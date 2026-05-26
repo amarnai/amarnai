@@ -371,21 +371,10 @@ mockInbox.post("/dev/workspaces/:workspaceId/mock-inbox-event", async (c) => {
     select: { id: true },
   });
 
-  let reviewItemId: string | null = null;
-  if (result.needsHumanReview) {
-    const reviewItem = await db.reviewItem.create({
-      data: {
-        workspaceId,
-        emailThreadId: threadId,
-        classificationId: classification.id,
-        reason: result.finalNodeId === null
-          ? `AI classification could not determine a destination: ${result.explanation}`
-          : `Low confidence classification (${Math.round(result.confidence * 100)}%). Manual review required.`,
-      },
-      select: { id: true },
-    });
-    reviewItemId = reviewItem.id;
-  }
+  await db.emailThread.update({
+    where: { id: threadId },
+    data: { triageStatus: result.needsHumanReview ? "NEEDS_REVIEW" : "SORTED" },
+  });
 
   return c.json(
     {
@@ -412,8 +401,6 @@ mockInbox.post("/dev/workspaces/:workspaceId/mock-inbox-event", async (c) => {
         modelProvider: result.modelProvider,
         modelName: result.modelName,
       },
-      reviewItemCreated: reviewItemId !== null,
-      reviewItemId,
     },
     201
   );

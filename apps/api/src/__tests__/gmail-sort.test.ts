@@ -6,12 +6,11 @@ vi.mock("@amarnai/db", () => ({
     workspace: { findUnique: vi.fn() },
     gmailConnection: { findUnique: vi.fn() },
     emailAccount: { upsert: vi.fn() },
-    emailThread: { upsert: vi.fn() },
+    emailThread: { upsert: vi.fn(), update: vi.fn() },
     emailMessage: { upsert: vi.fn() },
     taxonomyNode: { findMany: vi.fn(), update: vi.fn() },
     taxonomyEdge: { findMany: vi.fn() },
     emailClassification: { create: vi.fn() },
-    reviewItem: { create: vi.fn() },
   },
 }));
 
@@ -148,7 +147,7 @@ beforeEach(() => {
   vi.mocked(db.taxonomyNode.findMany).mockResolvedValue(BASE_NODES as never);
   vi.mocked(db.taxonomyEdge.findMany).mockResolvedValue(BASE_EDGES as never);
   vi.mocked(db.emailClassification.create).mockResolvedValue({ id: "cls-1" } as never);
-  vi.mocked(db.reviewItem.create).mockResolvedValue({ id: "review-1" } as never);
+  vi.mocked(db.emailThread.update).mockResolvedValue({} as never);
   mockSortThreadByEmbedding.mockResolvedValue(VALID_CLASSIFY_RESULT);
 });
 
@@ -279,7 +278,7 @@ describe("POST /dev/workspaces/:workspaceId/gmail-sort-thread", () => {
     expect(db.emailClassification.create).toHaveBeenCalledTimes(2);
   });
 
-  it("creates a review item when needsHumanReview is true", async () => {
+  it("sets triageStatus to NEEDS_REVIEW when needsHumanReview is true", async () => {
     vi.mocked(GmailClient).mockImplementationOnce(() => ({
       getThread: vi.fn().mockResolvedValue(makeRawThread()),
       listRecentThreads: vi.fn(),
@@ -295,9 +294,9 @@ describe("POST /dev/workspaces/:workspaceId/gmail-sort-thread", () => {
 
     const res = await postSort("gmail-thread-1");
     expect(res.status).toBe(201);
-    const body = (await res.json()) as Record<string, unknown>;
-    expect(body.reviewItemCreated).toBe(true);
-    expect(db.reviewItem.create).toHaveBeenCalledTimes(1);
+    expect(db.emailThread.update).toHaveBeenCalledWith(
+      expect.objectContaining({ data: expect.objectContaining({ triageStatus: "NEEDS_REVIEW" }) })
+    );
   });
 
   it("returns 422 when no taxonomy nodes exist", async () => {

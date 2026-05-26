@@ -11,6 +11,9 @@ import { mockInboxRoute } from "./routes/mock-inbox.js";
 import { classifyRoute } from "./routes/classify.js";
 import { gmailConnectionRoute } from "./routes/gmail-connection.js";
 import { gmailSortRoute } from "./routes/gmail-sort.js";
+import { triggerSyncRoute } from "./routes/trigger-sync.js";
+import { syncStatusRoute } from "./routes/sync-status.js";
+import { triageRoute } from "./routes/triage.js";
 
 const app = new Hono();
 
@@ -27,5 +30,8 @@ app.route("/", mockInboxRoute);
 app.route("/", classifyRoute);
 app.route("/", gmailConnectionRoute);
 app.route("/", gmailSortRoute);
+app.route("/", triggerSyncRoute);
+app.route("/", syncStatusRoute);
+app.route("/", triageRoute);
 
 export default app;

@@ -3,11 +3,10 @@ import { vi, describe, it, expect, beforeEach, afterEach } from "vitest";
 vi.mock("@amarnai/db", () => ({
   Prisma: {},
   db: {
-    emailThread: { findFirst: vi.fn() },
+    emailThread: { findFirst: vi.fn(), update: vi.fn() },
     taxonomyNode: { findMany: vi.fn(), update: vi.fn() },
     taxonomyEdge: { findMany: vi.fn() },
     emailClassification: { create: vi.fn() },
-    reviewItem: { create: vi.fn() },
   },
 }));
 
@@ -33,7 +32,6 @@ import { db } from "@amarnai/db";
 const WS_ID = "ws-1";
 const THREAD_ID = "thread-1";
 const CLS_ID = "cls-1";
-const REVIEW_ID = "review-1";
 
 const NODES = [
   {
@@ -111,11 +109,11 @@ beforeEach(() => {
   process.env["AI_PROVIDER"] = "ollama";
   process.env["OLLAMA_BASE_URL"] = "http://localhost:11434";
   process.env["OLLAMA_MODEL"] = "llama3.1:8b";
-  vi.mocked(db.reviewItem.create).mockResolvedValue({ id: REVIEW_ID } as never);
   vi.mocked(db.emailClassification.create).mockResolvedValue({ id: CLS_ID } as never);
   vi.mocked(db.taxonomyNode.findMany).mockResolvedValue(NODES as never);
   vi.mocked(db.taxonomyEdge.findMany).mockResolvedValue(EDGES as never);
   vi.mocked(db.emailThread.findFirst).mockResolvedValue(THREAD as never);
+  vi.mocked(db.emailThread.update).mockResolvedValue({} as never);
 });
 
 afterEach(() => {
@@ -158,19 +156,22 @@ describe("POST /workspaces/:workspaceId/email-threads/:threadId/ai-classify", ()
     const body = await res.json() as Record<string, unknown>;
     expect((body.classification as Record<string, unknown>).id).toBe(CLS_ID);
     expect(db.emailClassification.create).toHaveBeenCalledTimes(1);
-    expect(db.reviewItem.create).not.toHaveBeenCalled();
   });
 
-  it("creates review item when needsHumanReview is true", async () => {
+  it("sets triageStatus to SORTED when classification is confident", async () => {
+    mockSortThreadByEmbedding.mockResolvedValue(VALID_AI_RESULT);
+    await post(`/workspaces/${WS_ID}/email-threads/${THREAD_ID}/ai-classify`);
+    expect(db.emailThread.update).toHaveBeenCalledWith(
+      expect.objectContaining({ data: expect.objectContaining({ triageStatus: "SORTED" }) })
+    );
+  });
+
+  it("sets triageStatus to NEEDS_REVIEW when needsHumanReview is true", async () => {
     mockSortThreadByEmbedding.mockResolvedValue(REVIEW_NEEDED_RESULT);
-
-    const res = await post(`/workspaces/${WS_ID}/email-threads/${THREAD_ID}/ai-classify`);
-
-    expect(res.status).toBe(201);
-    const body = await res.json() as Record<string, unknown>;
-    expect(body.reviewItemCreated).toBe(true);
-    expect(body.reviewItemId).toBe(REVIEW_ID);
-    expect(db.reviewItem.create).toHaveBeenCalledTimes(1);
+    await post(`/workspaces/${WS_ID}/email-threads/${THREAD_ID}/ai-classify`);
+    expect(db.emailThread.update).toHaveBeenCalledWith(
+      expect.objectContaining({ data: expect.objectContaining({ triageStatus: "NEEDS_REVIEW" }) })
+    );
   });
 
   it("persists review-needed classification when finalNodeId is null", async () => {

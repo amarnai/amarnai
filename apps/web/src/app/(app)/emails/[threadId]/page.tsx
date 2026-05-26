@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { requireUser, getOrCreateDefaultWorkspace } from "@/lib/session";
-import { api, type EmailThreadDetail } from "@/lib/api";
+import { api, type EmailThreadDetail, type TaxonomyNode } from "@/lib/api";
 import { ClassificationActions } from "./ClassificationActions";
+import { TriageActions } from "./TriageActions";
 import { MessageBody } from "./MessageBody";
 
 type Props = { params: Promise<{ threadId: string }> };
@@ -38,10 +39,14 @@ export default async function ThreadDetailPage({ params }: Props) {
   const workspaceId = workspace.id;
 
   let thread: EmailThreadDetail | null = null;
+  let nodes: TaxonomyNode[] = [];
   let error: string | null = null;
 
   try {
-    thread = await api.emailThread(workspaceId, threadId);
+    [thread, nodes] = await Promise.all([
+      api.emailThread(workspaceId, threadId),
+      api.taxonomyNodes(workspaceId),
+    ]);
   } catch (err) {
     error = err instanceof Error ? err.message : String(err);
   }
@@ -67,22 +72,23 @@ export default async function ThreadDetailPage({ params }: Props) {
 
       <h1>{thread.subject ?? "(no subject)"}</h1>
 
-      {/* Classification actions */}
-      {workspaceId && (
-        <ClassificationActions
-          workspaceId={workspaceId}
-          threadId={thread.id}
-          modelProvider={thread.latestClassification?.modelProvider ?? null}
-          modelName={thread.latestClassification?.modelName ?? null}
-        />
-      )}
+      {/* Triage actions — approve / move to node */}
+      <TriageActions
+        workspaceId={workspaceId}
+        threadId={thread.id}
+        triageStatus={thread.triageStatus}
+        nodes={nodes}
+      />
 
-      {/* Review notice */}
-      {thread.reviewItems.length > 0 && thread.reviewItems[0] && (
-        <div className="warning-box">
-          <strong>Needs review:</strong> {thread.reviewItems[0].reason}
-        </div>
-      )}
+      {/* Retry classification */}
+      <ClassificationActions
+        workspaceId={workspaceId}
+        threadId={thread.id}
+        triageStatus={thread.triageStatus}
+        hasClassification={thread.latestClassification !== null}
+        modelProvider={thread.latestClassification?.modelProvider ?? null}
+        modelName={thread.latestClassification?.modelName ?? null}
+      />
 
       {/* Tags */}
       {thread.tags.length > 0 && (

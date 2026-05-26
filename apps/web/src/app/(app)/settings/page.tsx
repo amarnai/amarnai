@@ -14,8 +14,12 @@ export default async function SettingsPage({ searchParams }: { searchParams: Sea
   const connectSuccess = params["gmail_connected"] === "1";
 
   let connection = null;
+  let syncStatus = null;
   try {
-    connection = await api.gmailConnection(workspace.id);
+    [connection, syncStatus] = await Promise.all([
+      api.gmailConnection(workspace.id),
+      api.syncStatus(workspace.id),
+    ]);
   } catch {
     // API unavailable — show disconnected state
   }
@@ -26,6 +30,7 @@ export default async function SettingsPage({ searchParams }: { searchParams: Sea
       <GmailConnectionSection
         workspaceId={workspace.id}
         connection={connection}
+        syncStatus={syncStatus}
         connectError={connectError}
         connectSuccess={connectSuccess}
       />

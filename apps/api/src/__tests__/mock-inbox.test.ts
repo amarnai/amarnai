@@ -15,7 +15,6 @@ vi.mock("@amarnai/db", () => ({
       findMany: vi.fn(),
     },
     emailClassification: { create: vi.fn() },
-    reviewItem: { create: vi.fn() },
     taxonomyEdge: { findMany: vi.fn() },
     taxonomyNode: { update: vi.fn() },
   },
@@ -45,7 +44,7 @@ const WS_ID = "ws-1";
 const THREAD_ID = "thread-1";
 const MSG_ID = "msg-1";
 const CLS_ID = "cls-1";
-const REVIEW_ID = "review-1";
+
 const ACCOUNT_ID = "account-1";
 const NODE_ROOT = {
   id: "node-root",
@@ -99,7 +98,6 @@ function post(path: string, body: unknown) {
 beforeEach(() => {
   vi.clearAllMocks();
   process.env["ENABLE_DEV_TOOLS"] = "true";
-  vi.mocked(db.reviewItem.create).mockResolvedValue({ id: REVIEW_ID } as never);
   vi.mocked(db.taxonomyEdge.findMany).mockResolvedValue([] as never);
 });
 
@@ -172,14 +170,12 @@ describe("new thread mode", () => {
     const body = await res.json() as Record<string, unknown>;
     expect(body.thread).toMatchObject({ id: THREAD_ID, isNew: true });
     expect(body.classification).toMatchObject({ id: CLS_ID });
-    expect(body.reviewItemCreated).toBe(false);
     expect(db.emailThread.create).toHaveBeenCalledTimes(1);
     expect(db.emailMessage.create).toHaveBeenCalledTimes(1);
     expect(db.emailClassification.create).toHaveBeenCalledTimes(1);
-    expect(db.reviewItem.create).not.toHaveBeenCalled();
   });
 
-  it("creates a review item when confidence is low (no keyword matches)", async () => {
+  it("sets triageStatus to NEEDS_REVIEW when confidence is low (no keyword matches)", async () => {
     vi.mocked(db.workspace.findUnique).mockResolvedValue(mockWorkspace as never);
     vi.mocked(db.emailThread.create).mockResolvedValue({ id: THREAD_ID } as never);
     vi.mocked(db.emailMessage.create).mockResolvedValue({ id: MSG_ID } as never);
@@ -189,7 +185,6 @@ describe("new thread mode", () => {
     ] as never);
     vi.mocked(db.emailThread.findUniqueOrThrow).mockResolvedValue(mockThread as never);
     vi.mocked(db.emailClassification.create).mockResolvedValue({ id: CLS_ID } as never);
-    vi.mocked(db.reviewItem.create).mockResolvedValue({ id: REVIEW_ID } as never);
 
     const res = await post(`/dev/workspaces/${WS_ID}/mock-inbox-event`, {
       mode: "new_thread",
@@ -198,10 +193,9 @@ describe("new thread mode", () => {
     });
 
     expect(res.status).toBe(201);
-    const body = await res.json() as Record<string, unknown>;
-    expect(body.reviewItemCreated).toBe(true);
-    expect(body.reviewItemId).toBe(REVIEW_ID);
-    expect(db.reviewItem.create).toHaveBeenCalledTimes(1);
+    expect(db.emailThread.update).toHaveBeenCalledWith(
+      expect.objectContaining({ data: expect.objectContaining({ triageStatus: "NEEDS_REVIEW" }) })
+    );
   });
 
   it("returns 404 when workspace not found", async () => {
@@ -264,7 +258,8 @@ describe("existing thread mode", () => {
     expect(body.thread).toMatchObject({ id: THREAD_ID, isNew: false, messageCount: 2 });
     expect(db.emailThread.create).not.toHaveBeenCalled();
     expect(db.emailThread.findFirst).toHaveBeenCalledTimes(1);
-    expect(db.emailThread.update).toHaveBeenCalledTimes(1);
+    // update is called twice: once for messageCount, once for triageStatus
+    expect(db.emailThread.update).toHaveBeenCalledTimes(2);
     expect(db.emailMessage.create).toHaveBeenCalledTimes(1);
     expect(db.emailClassification.create).toHaveBeenCalledTimes(1);
   });
@@ -376,7 +371,7 @@ describe("ai classifier mode", () => {
     expect(cls.modelName).toBe("test-model");
   });
 
-  it("creates review item when AI returns needsHumanReview=true", async () => {
+  it("sets triageStatus to NEEDS_REVIEW when AI returns needsHumanReview=true", async () => {
     mockSortThreadByEmbedding.mockResolvedValue({
       ...AI_RESULT,
       finalNodeId: null,
@@ -400,8 +395,8 @@ describe("ai classifier mode", () => {
     });
 
     expect(res.status).toBe(201);
-    const body = await res.json() as Record<string, unknown>;
-    expect(body.reviewItemCreated).toBe(true);
-    expect(db.reviewItem.create).toHaveBeenCalledTimes(1);
+    expect(db.emailThread.update).toHaveBeenCalledWith(
+      expect.objectContaining({ data: expect.objectContaining({ triageStatus: "NEEDS_REVIEW" }) })
+    );
   });
 });

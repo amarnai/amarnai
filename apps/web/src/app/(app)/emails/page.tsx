@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { requireUser, getOrCreateDefaultWorkspace } from "@/lib/session";
-import { api, type EmailThreadSummary } from "@/lib/api";
+import { api, type EmailThreadSummary, type SyncStatus } from "@/lib/api";
 
 function fmt(iso: string | null): string {
   if (!iso) return "";
@@ -8,6 +8,40 @@ function fmt(iso: string | null): string {
     month: "short",
     day: "numeric",
   });
+}
+
+function BackfillBanner({ syncStatus }: { syncStatus: SyncStatus }) {
+  if (!syncStatus) return null;
+
+  const { backfillStatus, backfillSkipped } = syncStatus;
+
+  if (backfillStatus === "RUNNING") {
+    return (
+      <div className="backfill-banner backfill-banner-running">
+        ⏳ Sorting your inbox history — this may take a minute…
+      </div>
+    );
+  }
+
+  if (backfillStatus === "ERROR") {
+    return (
+      <div className="backfill-banner backfill-banner-error">
+        ⚠ Inbox backfill failed — historical threads may not be sorted yet.
+      </div>
+    );
+  }
+
+  if (backfillStatus === "DONE" && backfillSkipped > 0) {
+    return (
+      <div className="backfill-banner backfill-banner-warning">
+        ℹ {backfillSkipped.toLocaleString()} thread
+        {backfillSkipped === 1 ? "" : "s"} from the last 90 days{" "}
+        {backfillSkipped === 1 ? "was" : "were"} not sorted (inbox cap reached).
+      </div>
+    );
+  }
+
+  return null;
 }
 
 function priorityClass(priority: string): string {
@@ -22,10 +56,14 @@ export default async function EmailsPage() {
   const workspace = await getOrCreateDefaultWorkspace(user.id);
 
   let threads: EmailThreadSummary[] = [];
+  let syncStatus: SyncStatus = null;
   let error: string | null = null;
 
   try {
-    threads = await api.emailThreads(workspace.id);
+    [threads, syncStatus] = await Promise.all([
+      api.emailThreads(workspace.id),
+      api.syncStatus(workspace.id),
+    ]);
   } catch (err) {
     error = err instanceof Error ? err.message : String(err);
   }
@@ -33,6 +71,7 @@ export default async function EmailsPage() {
   return (
     <>
       <h1>Email Threads</h1>
+      <BackfillBanner syncStatus={syncStatus} />
       {error && <div className="error-box">{error}</div>}
 
       {threads.length === 0 && !error ? (
@@ -93,9 +132,21 @@ export default async function EmailsPage() {
                     </div>
                   )}
                 </div>
-                <div className="thread-meta" style={{ flexShrink: 0 }}>
-                  {thread.messageCount}{" "}
-                  {thread.messageCount === 1 ? "msg" : "msgs"}
+                <div style={{ flexShrink: 0, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 4 }}>
+                  <span className="thread-meta">
+                    {thread.messageCount}{" "}
+                    {thread.messageCount === 1 ? "msg" : "msgs"}
+                  </span>
+                  {thread.triageStatus === "NEEDS_REVIEW" && (
+                    <span className="triage-badge triage-badge-needs_review" style={{ fontSize: 10 }}>
+                      ⚠ Review
+                    </span>
+                  )}
+                  {thread.triageStatus === "PENDING" && (
+                    <span className="triage-badge triage-badge-pending" style={{ fontSize: 10 }}>
+                      Pending
+                    </span>
+                  )}
                 </div>
               </Link>
             );

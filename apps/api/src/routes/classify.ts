@@ -4,60 +4,12 @@ import { db } from "@amarnai/db";
 import { createAIProvider, createEmbeddingProvider, sortThreadByEmbedding } from "@amarnai/ai";
 import type { EmbeddableNode } from "@amarnai/ai";
 import { mockClassify } from "../services/mock-classifier.js";
+import { getAIProviderConfig, getEmbeddingProviderConfig } from "../services/ai-providers.js";
 
 const params = z.object({
   workspaceId: z.string().min(1),
   threadId: z.string().min(1),
 });
-
-function getAIProviderConfig(): import("@amarnai/ai").AIProviderConfig {
-  const cfg: import("@amarnai/ai").AIProviderConfig = {
-    provider: (process.env["AI_PROVIDER"] ?? "mock") as "mock" | "ollama" | "frontier",
-  };
-  const ollamaBase = process.env["OLLAMA_BASE_URL"];
-  const ollamaModel = process.env["OLLAMA_MODEL"];
-  if (ollamaBase ?? ollamaModel) {
-    cfg.ollama = {
-      ...(ollamaBase ? { baseUrl: ollamaBase } : {}),
-      ...(ollamaModel ? { model: ollamaModel } : {}),
-    };
-  }
-  const fProvider = process.env["FRONTIER_LLM_PROVIDER"];
-  const fApiKey = process.env["FRONTIER_LLM_API_KEY"];
-  const fModel = process.env["FRONTIER_LLM_MODEL"];
-  const fBaseUrl = process.env["FRONTIER_LLM_BASE_URL"];
-  if (fProvider ?? fApiKey ?? fModel ?? fBaseUrl) {
-    cfg.frontier = {
-      ...(fProvider ? { provider: fProvider } : {}),
-      ...(fApiKey ? { apiKey: fApiKey } : {}),
-      ...(fModel ? { model: fModel } : {}),
-      ...(fBaseUrl ? { baseUrl: fBaseUrl } : {}),
-    };
-  }
-  return cfg;
-}
-
-function getEmbeddingProviderConfig(): import("@amarnai/ai").EmbeddingProviderConfig {
-  const provider = (process.env["EMBEDDING_PROVIDER"] ?? "mock") as "mock" | "ollama" | "gemini";
-  const cfg: import("@amarnai/ai").EmbeddingProviderConfig = { provider };
-  const ollamaBase = process.env["OLLAMA_BASE_URL"];
-  const ollamaEmbModel = process.env["OLLAMA_EMBEDDING_MODEL"];
-  if (ollamaBase ?? ollamaEmbModel) {
-    cfg.ollama = {
-      ...(ollamaBase ? { baseUrl: ollamaBase } : {}),
-      ...(ollamaEmbModel ? { model: ollamaEmbModel } : {}),
-    };
-  }
-  const gApiKey = process.env["GEMINI_EMBEDDING_API_KEY"];
-  const gModel = process.env["GEMINI_EMBEDDING_MODEL"];
-  if (gApiKey ?? gModel) {
-    cfg.gemini = {
-      ...(gApiKey ? { apiKey: gApiKey } : {}),
-      ...(gModel ? { model: gModel } : {}),
-    };
-  }
-  return cfg;
-}
 
 const classify = new Hono();
 
@@ -175,21 +127,11 @@ classify.post(
       select: { id: true },
     });
 
-    let reviewItemId: string | null = null;
-    if (result.needsHumanReview) {
-      const reviewItem = await db.reviewItem.create({
-        data: {
-          workspaceId,
-          emailThreadId: threadId,
-          classificationId: classification.id,
-          reason: result.finalNodeId === null
-            ? `AI classification could not determine a destination: ${result.explanation}`
-            : `Low-confidence AI classification (${Math.round(result.confidence * 100)}%). Manual review required.`,
-        },
-        select: { id: true },
-      });
-      reviewItemId = reviewItem.id;
-    }
+    // Update triage status to reflect the latest classification outcome
+    await db.emailThread.update({
+      where: { id: threadId },
+      data: { triageStatus: result.needsHumanReview ? "NEEDS_REVIEW" : "SORTED" },
+    });
 
     return c.json(
       {
@@ -203,8 +145,6 @@ classify.post(
           modelProvider: provider.providerName,
           modelName: provider.modelName,
         },
-        reviewItemCreated: reviewItemId !== null,
-        reviewItemId,
       },
       201
     );
@@ -276,19 +216,10 @@ classify.post(
       select: { id: true },
     });
 
-    let reviewItemId: string | null = null;
-    if (result.needsHumanReview) {
-      const reviewItem = await db.reviewItem.create({
-        data: {
-          workspaceId,
-          emailThreadId: threadId,
-          classificationId: classification.id,
-          reason: `Low confidence classification (${Math.round(result.confidence * 100)}%). Manual review required.`,
-        },
-        select: { id: true },
-      });
-      reviewItemId = reviewItem.id;
-    }
+    await db.emailThread.update({
+      where: { id: threadId },
+      data: { triageStatus: result.needsHumanReview ? "NEEDS_REVIEW" : "SORTED" },
+    });
 
     return c.json(
       {
@@ -307,8 +238,6 @@ classify.post(
           modelProvider: "mock",
           modelName: "mock-classifier-v1",
         },
-        reviewItemCreated: reviewItemId !== null,
-        reviewItemId,
       },
       201
     );

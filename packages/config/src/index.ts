@@ -6,6 +6,8 @@ const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
   API_PORT: z.string().default('3001'),
   WORKER_PORT: z.string().default('3002'),
+  REDIS_URL: z.string().default('redis://localhost:6379'),
+  INBOX_SYNC_INTERVAL_MS: z.string().default('300000'), // 5 minutes
   AI_PROVIDER: z.enum(['mock', 'ollama', 'frontier']).default('mock'),
   ENABLE_DEV_TOOLS: boolStr,
   FRONTIER_LLM_PROVIDER: z.string().optional(),
@@ -49,6 +51,10 @@ export const config = {
   },
   worker: {
     port: Number(env.WORKER_PORT),
+    inboxSyncIntervalMs: Number(env.INBOX_SYNC_INTERVAL_MS),
+  },
+  redis: {
+    url: env.REDIS_URL,
   },
   ai: {
     provider: env.AI_PROVIDER,

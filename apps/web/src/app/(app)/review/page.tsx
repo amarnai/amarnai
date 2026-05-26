@@ -1,7 +1,8 @@
 import { requireUser, getOrCreateDefaultWorkspace } from "@/lib/session";
 import { api, type ReviewItem } from "@/lib/api";
+import { RetryButton } from "./RetryButton";
 
-function priorityClass(priority: string): string {
+function priorityClass(priority: string | null): string {
   if (priority === "HIGH") return "badge-high";
   if (priority === "MEDIUM") return "badge-medium";
   if (priority === "LOW") return "badge-low";
@@ -11,12 +12,13 @@ function priorityClass(priority: string): string {
 export default async function ReviewPage() {
   const user = await requireUser();
   const workspace = await getOrCreateDefaultWorkspace(user.id);
+  const workspaceId = workspace.id;
 
   let items: ReviewItem[] = [];
   let error: string | null = null;
 
   try {
-    items = await api.reviewItems(workspace.id);
+    items = await api.reviewItems(workspaceId);
   } catch (err) {
     error = err instanceof Error ? err.message : String(err);
   }
@@ -45,17 +47,21 @@ export default async function ReviewPage() {
               }}
             >
               <div style={{ minWidth: 0, flex: 1 }}>
-                <div className="review-title">
-                  {item.emailThread.subject ?? "(no subject)"}
-                </div>
-                {item.emailMessage && (
+                <a
+                  href={`/emails/${item.id}`}
+                  className="review-title review-title-link"
+                >
+                  {item.subject ?? "(no subject)"}
+                </a>
+                {item.latestMessage && (
                   <div style={{ fontSize: 12, color: "var(--color-muted)", marginTop: 2 }}>
                     From:{" "}
-                    {item.emailMessage.senderName ??
-                      item.emailMessage.senderEmail}
+                    {item.latestMessage.senderName ?? item.latestMessage.senderEmail}
                   </div>
                 )}
-                <p className="review-reason">{item.reason}</p>
+                {item.classification?.explanation && (
+                  <p className="review-reason">{item.classification.explanation}</p>
+                )}
               </div>
 
               {item.classification && (
@@ -71,25 +77,22 @@ export default async function ReviewPage() {
                   <span className="badge">
                     {item.classification.finalNode?.name ?? "—"}
                   </span>
-                  <span
-                    className={`badge ${priorityClass(
-                      item.classification.priority
-                    )}`}
-                  >
-                    {item.classification.priority}
-                  </span>
+                  {item.classification.priority && (
+                    <span className={`badge ${priorityClass(item.classification.priority)}`}>
+                      {item.classification.priority}
+                    </span>
+                  )}
                   <span className="badge">
-                    {Math.round(item.classification.confidence * 100)}%
-                    confidence
+                    {Math.round(item.classification.confidence * 100)}% confidence
                   </span>
-                  <span className="badge">
-                    {item.classification.urgency}
-                  </span>
+                  {item.classification.urgency && (
+                    <span className="badge">{item.classification.urgency}</span>
+                  )}
                 </div>
               )}
             </div>
 
-            {item.emailMessage?.snippet && (
+            {item.latestMessage?.snippet && (
               <p
                 style={{
                   marginTop: 10,
@@ -99,22 +102,19 @@ export default async function ReviewPage() {
                   paddingTop: 10,
                 }}
               >
-                {item.emailMessage.snippet}
+                {item.latestMessage.snippet}
               </p>
             )}
 
-            {item.emailThread.tags.length > 0 && (
+            {item.tags.length > 0 && (
               <div className="inline-tags">
-                {item.emailThread.tags.map((et) => (
+                {item.tags.map((et) => (
                   <span
                     key={et.id}
                     className="tag-chip"
                     style={
                       et.tag.color
-                        ? {
-                            background: `${et.tag.color}28`,
-                            color: et.tag.color,
-                          }
+                        ? { background: `${et.tag.color}28`, color: et.tag.color }
                         : {}
                     }
                   >
@@ -123,6 +123,8 @@ export default async function ReviewPage() {
                 ))}
               </div>
             )}
+
+            <RetryButton workspaceId={workspaceId} threadId={item.id} />
           </div>
         ))
       )}

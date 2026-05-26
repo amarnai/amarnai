@@ -91,10 +91,17 @@ enum SuggestedNextStep {
   OPEN_IN_GMAIL
 }
 
-enum ReviewStatus {
-  OPEN
-  RESOLVED
-  DISMISSED
+enum TriageStatus {
+  PENDING
+  SORTED
+  NEEDS_REVIEW
+}
+
+enum BackfillStatus {
+  PENDING
+  RUNNING
+  DONE
+  ERROR
 }
 
 enum DraftStatus {
@@ -128,8 +135,6 @@ model User {
   ownedWorkspaces      Workspace[]
   workspaceMemberships WorkspaceMember[]
   emailAccounts        EmailAccount[]
-  assignedReviews      ReviewItem[]      @relation("AssignedReviews")
-  resolvedReviews      ReviewItem[]      @relation("ResolvedReviews")
   auditLogs            AuditLog[]
 }
 
@@ -150,7 +155,6 @@ model Workspace {
   emailMessages   EmailMessage[]
   tags            Tag[]
   classifications EmailClassification[]
-  reviewItems     ReviewItem[]
   drafts          Draft[]
   auditLogs       AuditLog[]
 }
@@ -207,15 +211,18 @@ model EmailAddressIdentity {
 }
 
 model ProviderSyncState {
-  id             String     @id @default(cuid())
-  emailAccountId String     @unique
-  provider       Provider
-  historyId      String?
-  lastSyncedAt   DateTime?
-  status         SyncStatus @default(IDLE)
-  errorMessage   String?
-  createdAt      DateTime   @default(now())
-  updatedAt      DateTime   @updatedAt
+  id                  String         @id @default(cuid())
+  emailAccountId      String         @unique
+  provider            Provider
+  historyId           String?
+  lastSyncedAt        DateTime?
+  status              SyncStatus     @default(IDLE)
+  errorMessage        String?
+  backfillStatus      BackfillStatus @default(PENDING)
+  backfillSkipped     Int            @default(0)
+  backfillCompletedAt DateTime?
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
 
   emailAccount EmailAccount @relation(fields: [emailAccountId], references: [id])
 }
@@ -260,23 +267,23 @@ model TaxonomyEdge {
 }
 
 model EmailThread {
-  id               String    @id @default(cuid())
+  id               String        @id @default(cuid())
   workspaceId      String
   emailAccountId   String
   provider         Provider
   providerThreadId String
   subject          String?
   latestMessageAt  DateTime?
-  messageCount     Int       @default(0)
-  createdAt        DateTime  @default(now())
-  updatedAt        DateTime  @updatedAt
+  messageCount     Int           @default(0)
+  triageStatus     TriageStatus  @default(PENDING)
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
 
   workspace       Workspace             @relation(fields: [workspaceId], references: [id])
   emailAccount    EmailAccount          @relation(fields: [emailAccountId], references: [id])
   messages        EmailMessage[]
   tags            EmailTag[]
   classifications EmailClassification[]
-  reviewItems     ReviewItem[]
   drafts          Draft[]
 
   @@unique([emailAccountId, providerThreadId])
@@ -308,7 +315,6 @@ model EmailMessage {
   thread          EmailThread           @relation(fields: [emailThreadId], references: [id])
   tags            EmailTag[]
   classifications EmailClassification[]
-  reviewItems     ReviewItem[]
   drafts          Draft[]
 
   @@unique([emailAccountId, providerMessageId])
@@ -370,30 +376,7 @@ model EmailClassification {
   emailThread  EmailThread   @relation(fields: [emailThreadId], references: [id])
   emailMessage EmailMessage? @relation(fields: [emailMessageId], references: [id])
   finalNode    TaxonomyNode? @relation(fields: [finalNodeId], references: [id])
-  reviewItems  ReviewItem[]
   drafts       Draft[]
-}
-
-model ReviewItem {
-  id               String       @id @default(cuid())
-  workspaceId      String
-  emailThreadId    String
-  emailMessageId   String?
-  classificationId String?
-  status           ReviewStatus @default(OPEN)
-  reason           String
-  assignedToUserId String?
-  resolvedByUserId String?
-  resolvedAt       DateTime?
-  createdAt        DateTime     @default(now())
-  updatedAt        DateTime     @updatedAt
-
-  workspace      Workspace             @relation(fields: [workspaceId], references: [id])
-  emailThread    EmailThread           @relation(fields: [emailThreadId], references: [id])
-  emailMessage   EmailMessage?         @relation(fields: [emailMessageId], references: [id])
-  classification EmailClassification?  @relation(fields: [classificationId], references: [id])
-  assignedTo     User?                 @relation("AssignedReviews", fields: [assignedToUserId], references: [id])
-  resolvedBy     User?                 @relation("ResolvedReviews", fields: [resolvedByUserId], references: [id])
 }
 
 model Draft {

@@ -28,6 +28,7 @@ emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
           subject: true,
           latestMessageAt: true,
           messageCount: true,
+          triageStatus: true,
           createdAt: true,
           messages: {
             orderBy: { receivedAt: "desc" },
@@ -98,6 +99,7 @@ emailThreads.get(
         subject: true,
         latestMessageAt: true,
         messageCount: true,
+        triageStatus: true,
         createdAt: true,
         updatedAt: true,
         messages: {
@@ -146,16 +148,6 @@ emailThreads.get(
             },
           },
         },
-        reviewItems: {
-          where: { status: "OPEN" },
-          take: 1,
-          select: {
-            id: true,
-            status: true,
-            reason: true,
-            createdAt: true,
-          },
-        },
       },
     });
 
@@ -164,10 +156,7 @@ emailThreads.get(
     }
 
     const { classifications, ...rest } = thread;
-    return c.json({
-      ...rest,
-      latestClassification: classifications[0] ?? null,
-    });
+    return c.json({ ...rest, latestClassification: classifications[0] ?? null });
   }
 );
 

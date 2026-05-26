@@ -647,10 +647,55 @@ h2 {
   margin-bottom: 2px;
 }
 
+.review-title-link {
+  text-decoration: none;
+}
+
+.review-title-link:hover {
+  text-decoration: underline;
+  color: var(--color-primary);
+}
+
 .review-reason {
   font-size: 12px;
   color: var(--color-muted);
   margin-top: 4px;
+}
+
+.retry-button-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-border-light);
+}
+
+.btn-retry {
+  padding: 6px 14px;
+  border-radius: 6px;
+  border: 1px solid var(--color-border-input);
+  background: var(--color-surface);
+  color: var(--color-foreground);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.btn-retry:hover:not(:disabled) {
+  background: var(--color-bg-subtle);
+  border-color: var(--color-primary);
+}
+
+.btn-retry:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.retry-error {
+  font-size: 12px;
+  color: var(--color-destructive);
 }
 
 /* ─── Thread detail ──────────────────────────────────────────────────────── */
@@ -766,6 +811,34 @@ h2 {
   border: 1px solid var(--color-warning-border);
 }
 
+/* ─── Backfill banner ─────────────────────────────────────────────────────── */
+
+.backfill-banner {
+  padding: 10px 14px;
+  border-radius: 8px;
+  margin-bottom: 14px;
+  font-size: 13px;
+  border: 1px solid transparent;
+}
+
+.backfill-banner-running {
+  background: var(--ink-tint-bg);
+  color: var(--ink-tint-text);
+  border-color: var(--ink-tint-border);
+}
+
+.backfill-banner-warning {
+  background: var(--color-warning-bg);
+  color: var(--color-warning-text);
+  border-color: var(--color-warning-border);
+}
+
+.backfill-banner-error {
+  background: var(--color-destructive-bg);
+  color: var(--color-destructive-text);
+  border-color: #fca5a5;
+}
+
 .empty {
   color: var(--color-subtle);
   font-style: italic;
@@ -804,6 +877,128 @@ h2 {
 
 a {
   color: var(--color-primary);
+}
+
+/* ─── Settings / Gmail connection ───────────────────────────────────────── */
+
+.settings-section {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 20px;
+  max-width: 560px;
+}
+
+.settings-section h2 {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 0 16px;
+}
+
+.gmail-connection-status {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.gmail-connection-empty {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.gmail-connection-empty p {
+  color: var(--color-muted);
+  margin: 0;
+}
+
+.gmail-address {
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.gmail-meta {
+  font-size: 13px;
+  color: var(--color-muted);
+  margin-bottom: 4px;
+}
+
+.alert {
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 13.5px;
+  margin-bottom: 12px;
+}
+
+.alert-success {
+  background: var(--color-success-bg);
+  color: var(--color-success-text);
+}
+
+.alert-error {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* ─── Sync status row ────────────────────────────────────────────────────── */
+
+.sync-status-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 8px 0;
+  border-top: 1px solid var(--color-border-light);
+  border-bottom: 1px solid var(--color-border-light);
+  margin-bottom: 8px;
+}
+
+.sync-status-label {
+  font-size: 13px;
+  color: var(--color-muted);
+  white-space: nowrap;
+}
+
+.sync-status-time {
+  font-size: 12px;
+  color: var(--color-muted);
+  margin-left: auto;
+}
+
+.sync-error-message {
+  width: 100%;
+  font-size: 12px;
+  color: #991b1b;
+  background: #fee2e2;
+  border-radius: 4px;
+  padding: 6px 10px;
+  margin-top: 2px;
+}
+
+.sync-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.sync-badge-idle {
+  background: var(--color-success-bg);
+  color: var(--color-success-text);
+}
+
+.sync-badge-syncing {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.sync-badge-error {
+  background: #fee2e2;
+  color: #991b1b;
 }
 
 /* ─── Folders section ────────────────────────────────────────────────────── */
@@ -1139,4 +1334,96 @@ a {
 
 .btn-google:hover {
   opacity: 0.9;
+}
+
+/* ─── Triage actions ─────────────────────────────────────────────────────── */
+
+.triage-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.triage-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 99px;
+  width: fit-content;
+}
+
+.triage-badge-sorted {
+  background: var(--color-success-bg);
+  color: var(--color-success-text);
+}
+
+.triage-badge-needs_review {
+  background: var(--color-warning-bg);
+  color: var(--color-warning-text);
+}
+
+.triage-badge-pending {
+  background: var(--color-surface-elevated);
+  color: var(--color-muted);
+}
+
+.triage-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.triage-move {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.triage-select {
+  padding: 6px 10px;
+  font-size: 13px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  cursor: pointer;
+  min-width: 160px;
+}
+
+.triage-select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.triage-error {
+  margin-top: 4px;
+  font-size: 13px;
+}
+
+/* ─── Secondary button ───────────────────────────────────────────────────── */
+
+.btn-secondary {
+  padding: 7px 14px;
+  background: var(--color-surface-elevated);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: var(--color-border-light);
+  border-color: var(--color-border-muted);
+}
+
+.btn-secondary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }

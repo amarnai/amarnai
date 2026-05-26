@@ -12,7 +12,6 @@ import {
   RequiredAction,
   Sensitivity,
   SuggestedNextStep,
-  ReviewStatus,
   AuditActorType,
 } from "@prisma/client";
 
@@ -297,6 +296,7 @@ async function main() {
     receivedAt: Date;
     toEmails: string[];
     hasAttachments?: boolean;
+    triageStatus?: "PENDING" | "SORTED" | "NEEDS_REVIEW";
   }) {
     const thread = await db.emailThread.upsert({
       where: {
@@ -314,6 +314,7 @@ async function main() {
         subject: params.subject,
         latestMessageAt: params.receivedAt,
         messageCount: 1,
+        triageStatus: params.triageStatus ?? "PENDING",
       },
     });
 
@@ -349,6 +350,7 @@ async function main() {
   // 1. Wedding ceremony request → Weddings
   const { thread: threadWedding, message: msgWedding } =
     await findOrCreateThread({
+      triageStatus: "SORTED",
       providerThreadId: "thread-001",
       providerMessageId: "msg-001",
       subject: "Cérémonie de mariage — demande d'officiant pour le 14 septembre",
@@ -373,6 +375,7 @@ async function main() {
   // 2. Funeral / memorial request → Funerals
   const { thread: threadFuneral, message: msgFuneral } =
     await findOrCreateThread({
+      triageStatus: "SORTED",
       providerThreadId: "thread-002",
       providerMessageId: "msg-002",
       subject: "Cérémonie funèbre — notre père nous a quittés",
@@ -397,6 +400,7 @@ async function main() {
   // 3. Tenoua article pitch → Editorial / pitches
   const { thread: threadPitch, message: msgPitch } =
     await findOrCreateThread({
+      triageStatus: "SORTED",
       providerThreadId: "thread-003",
       providerMessageId: "msg-003",
       subject: "Proposition d'article : Les nouvelles liturgies du quotidien",
@@ -421,6 +425,7 @@ async function main() {
   // 4. Subscription delivery issue → Subscriptions / distribution
   const { thread: threadSubscription, message: msgSubscription } =
     await findOrCreateThread({
+      triageStatus: "SORTED",
       providerThreadId: "thread-004",
       providerMessageId: "msg-004",
       subject: "[Tenoua] Abonnement #2024-876 — numéro printemps non reçu",
@@ -445,6 +450,7 @@ async function main() {
   // 5. Radio interview request → Media / interviews
   const { thread: threadInterview, message: msgInterview } =
     await findOrCreateThread({
+      triageStatus: "SORTED",
       providerThreadId: "thread-005",
       providerMessageId: "msg-005",
       subject: "Invitation : émission 'Voix du monde' — France Inter, juin 2026",
@@ -470,6 +476,7 @@ async function main() {
   // 6. Vague admin request → Other / needs review (low confidence)
   const { thread: threadVague, message: msgVague } =
     await findOrCreateThread({
+      triageStatus: "NEEDS_REVIEW",
       providerThreadId: "thread-006",
       providerMessageId: "msg-006",
       subject: "Suite à notre échange",
@@ -710,42 +717,7 @@ async function main() {
     source: EmailTagSource.AI_SUGGESTED,
   });
 
-  // ── 12. ReviewItems ───────────────────────────────────────────────────────
-  async function findOrCreateReviewItem(params: {
-    emailThreadId: string;
-    emailMessageId: string;
-    classificationId: string;
-    reason: string;
-  }) {
-    const existing = await db.reviewItem.findFirst({
-      where: {
-        emailThreadId: params.emailThreadId,
-        classificationId: params.classificationId,
-      },
-    });
-    if (existing) return existing;
-    return db.reviewItem.create({
-      data: {
-        workspaceId,
-        emailThreadId: params.emailThreadId,
-        emailMessageId: params.emailMessageId,
-        classificationId: params.classificationId,
-        reason: params.reason,
-        status: ReviewStatus.OPEN,
-        assignedToUserId: user.id,
-      },
-    });
-  }
-
-  const reviewVague = await findOrCreateReviewItem({
-    emailThreadId: threadVague.id,
-    emailMessageId: msgVague.id,
-    classificationId: classVague.id,
-    reason:
-      "Classification confidence is below threshold (0.29). Unknown sender, vague subject, and no secretariat or Tenoua context.",
-  });
-
-  // ── 13. AuditLog entries ──────────────────────────────────────────────────
+  // ── 12. AuditLog entries ──────────────────────────────────────────────────
   async function findOrCreateAuditLog(params: {
     actorType: AuditActorType;
     actorUserId?: string;
@@ -817,14 +789,6 @@ async function main() {
     entityType: "EmailClassification",
     entityId: classVague.id,
     metadata: { confidence: 0.29, finalNodeName: "Other / needs review", needsHumanReview: true },
-  });
-
-  await findOrCreateAuditLog({
-    actorType: AuditActorType.SYSTEM,
-    eventType: "review.created",
-    entityType: "ReviewItem",
-    entityId: reviewVague.id,
-    metadata: { reason: "Low confidence classification", threadId: threadVague.id },
   });
 
   console.log("Done.");

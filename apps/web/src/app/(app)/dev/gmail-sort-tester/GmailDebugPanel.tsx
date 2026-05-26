@@ -297,7 +297,6 @@ export function GmailDebugPanel({ workspaceId }: Props) {
             {cls.needsHumanReview && (
               <div className="warning-box" style={{ marginBottom: 8 }}>
                 Flagged for human review
-                {sortResult.reviewItemCreated ? " — review item created" : ""}
               </div>
             )}
 

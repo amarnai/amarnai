@@ -2,64 +2,62 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { api } from "@/lib/api";
+import { api, type TriageStatus } from "@/lib/api";
 
 type Props = {
   workspaceId: string;
   threadId: string;
+  triageStatus: TriageStatus;
+  hasClassification: boolean;
   modelProvider?: string | null;
   modelName?: string | null;
 };
 
-export function ClassificationActions({ workspaceId, threadId, modelProvider, modelName }: Props) {
+export function ClassificationActions({
+  workspaceId,
+  threadId,
+  triageStatus,
+  hasClassification,
+  modelProvider,
+  modelName,
+}: Props) {
   const router = useRouter();
-  const [loading, setLoading] = useState<"ai" | "mock" | null>(null);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  async function runClassification(type: "ai" | "mock") {
+  const isPending = triageStatus === "PENDING";
+
+  async function handleRetry() {
     setError(null);
-    setLoading(type);
+    setLoading(true);
     try {
-      if (type === "ai") {
-        await api.aiClassify(workspaceId, threadId);
-      } else {
-        await api.mockClassifyThread(workspaceId, threadId);
-      }
+      await api.aiClassify(workspaceId, threadId);
       router.refresh();
     } catch (err) {
-      setError(err instanceof Error ? err.message : String(err));
+      setError(err instanceof Error ? err.message : "Retry failed");
     } finally {
-      setLoading(null);
+      setLoading(false);
     }
+  }
+
+  function buttonLabel(): string {
+    if (loading) return "Sorting…";
+    if (isPending) return "Pending…";
+    return hasClassification ? "Retry sorting" : "Sort thread";
   }
 
   return (
     <div style={{ marginBottom: "24px" }}>
       <div style={{ display: "flex", gap: "10px", alignItems: "center", flexWrap: "wrap" }}>
         <button
-          onClick={() => runClassification("ai")}
-          disabled={loading !== null}
+          onClick={handleRetry}
+          disabled={loading || isPending}
           className="btn-primary"
         >
-          {loading === "ai" ? "Classifying…" : "Run AI classification"}
-        </button>
-        <button
-          onClick={() => runClassification("mock")}
-          disabled={loading !== null}
-          style={{
-            padding: "8px 14px",
-            borderRadius: "6px",
-            border: "1px solid var(--color-border-input)",
-            background: "var(--color-surface)",
-            cursor: loading !== null ? "not-allowed" : "pointer",
-            fontSize: "14px",
-            color: "var(--color-text-secondary)",
-          }}
-        >
-          {loading === "mock" ? "Classifying…" : "Run mock classification"}
+          {buttonLabel()}
         </button>
         {modelProvider && modelName && (
-          <span style={{ fontSize: 12, color: "var(--color-subtle)" }}>
+          <span style={{ fontSize: 12, color: "var(--color-muted)" }}>
             Last: {modelProvider} / {modelName}
           </span>
         )}

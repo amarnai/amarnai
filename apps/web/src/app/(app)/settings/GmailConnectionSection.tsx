@@ -2,11 +2,12 @@
 
 import { useTransition } from "react";
 import { disconnectGmailAction } from "@/actions/gmail";
-import type { GmailConnection } from "@/lib/api";
+import type { GmailConnection, SyncStatus } from "@/lib/api";
 
 type Props = {
   workspaceId: string;
   connection: GmailConnection;
+  syncStatus: SyncStatus;
   connectError: string | null;
   connectSuccess: boolean;
 };
@@ -37,9 +38,19 @@ function formatDate(iso: string | null): string {
   return new Date(iso).toLocaleString();
 }
 
+const SYNC_BADGE: Record<
+  "IDLE" | "SYNCING" | "ERROR",
+  { label: string; className: string }
+> = {
+  IDLE:    { label: "Up to date",  className: "sync-badge sync-badge-idle" },
+  SYNCING: { label: "Syncing…",    className: "sync-badge sync-badge-syncing" },
+  ERROR:   { label: "Sync error",  className: "sync-badge sync-badge-error" },
+};
+
 export function GmailConnectionSection({
   workspaceId,
   connection,
+  syncStatus,
   connectError,
   connectSuccess,
 }: Props) {
@@ -54,6 +65,8 @@ export function GmailConnectionSection({
   const errorMessage = connectError
     ? (ERROR_MESSAGES[connectError] ?? "Connection failed. Please try again.")
     : null;
+
+  const badge = syncStatus ? SYNC_BADGE[syncStatus.status] : null;
 
   return (
     <section className="settings-section">
@@ -72,6 +85,27 @@ export function GmailConnectionSection({
           <div className="gmail-meta">
             Last verified: {formatDate(connection.lastVerifiedAt)}
           </div>
+
+          {syncStatus !== null ? (
+            <div className="sync-status-row">
+              <span className="sync-status-label">Inbox sync</span>
+              {badge && <span className={badge.className}>{badge.label}</span>}
+              <span className="sync-status-time">
+                {syncStatus.lastSyncedAt
+                  ? `Last synced ${formatDate(syncStatus.lastSyncedAt)}`
+                  : "Not yet synced"}
+              </span>
+              {syncStatus.status === "ERROR" && syncStatus.errorMessage && (
+                <div className="sync-error-message">{syncStatus.errorMessage}</div>
+              )}
+            </div>
+          ) : (
+            <div className="sync-status-row">
+              <span className="sync-status-label">Inbox sync</span>
+              <span className="sync-status-time">Waiting for first sync…</span>
+            </div>
+          )}
+
           <button
             className="btn-danger"
             onClick={handleDisconnect}

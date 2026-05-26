@@ -116,6 +116,15 @@ export async function GET(req: NextRequest) {
     return NextResponse.redirect(settingsUrl);
   }
 
+  // ── Step 4: trigger an immediate inbox sync ──────────────────────────────────
+  // Fire-and-forget: enqueues a sync-inbox job so the user's inbox starts
+  // syncing straight away rather than waiting for the scheduler's next tick.
+  // Failure here is non-fatal — the scheduler will pick it up automatically.
+  const apiBase = process.env["API_URL"] ?? "http://localhost:3001";
+  fetch(`${apiBase}/workspaces/${workspaceId}/trigger-sync`, { method: "POST" }).catch(
+    (err) => console.error("[gmail/callback] trigger_sync:", err instanceof Error ? err.message : err)
+  );
+
   settingsUrl.searchParams.set("gmail_connected", "1");
   return NextResponse.redirect(settingsUrl);
 }

@@ -1,0 +1,56 @@
+import { Queue } from "bullmq";
+import {
+  QUEUE_SYNC_INBOX,
+  QUEUE_CLASSIFY_THREAD,
+  QUEUE_BACKFILL_INBOX,
+} from "@amarnai/queue";
+import { redisConnection } from "./redis.js";
+
+// Re-export so job files can import names and types from one place.
+export { QUEUE_SYNC_INBOX, QUEUE_CLASSIFY_THREAD, QUEUE_BACKFILL_INBOX } from "@amarnai/queue";
+export type { SyncInboxJobData, ClassifyThreadJobData, BackfillInboxJobData } from "@amarnai/queue";
+
+// ─── Queue instances ──────────────────────────────────────────────────────────
+
+/**
+ * Enqueue a workspace inbox sync.
+ * The `sync-inbox` worker reads ProviderSyncState, calls the Gmail History
+ * API, and enqueues `classify-thread` jobs for every changed thread.
+ */
+export const syncInboxQueue = new Queue(QUEUE_SYNC_INBOX, {
+  connection: redisConnection,
+  defaultJobOptions: {
+    attempts: 3,
+    backoff: { type: "exponential", delay: 5_000 },
+    removeOnComplete: { count: 100 },
+    removeOnFail: { count: 500 },
+  },
+});
+
+/**
+ * Enqueue an AI classification run for a single thread.
+ */
+export const classifyThreadQueue = new Queue(QUEUE_CLASSIFY_THREAD, {
+  connection: redisConnection,
+  defaultJobOptions: {
+    attempts: 3,
+    backoff: { type: "exponential", delay: 10_000 },
+    removeOnComplete: { count: 500 },
+    removeOnFail: { count: 1_000 },
+  },
+});
+
+/**
+ * Enqueue a one-time historical backfill for a workspace.
+ * Only 2 retry attempts — if the cursor expires mid-run the job should
+ * restart from scratch rather than retrying indefinitely.
+ */
+export const backfillInboxQueue = new Queue(QUEUE_BACKFILL_INBOX, {
+  connection: redisConnection,
+  defaultJobOptions: {
+    attempts: 2,
+    backoff: { type: "exponential", delay: 30_000 },
+    removeOnComplete: { count: 10 },
+    removeOnFail: { count: 50 },
+  },
+});
