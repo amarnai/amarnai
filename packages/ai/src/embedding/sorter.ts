@@ -453,6 +453,13 @@ export async function sortThreadByEmbedding(
   // ambiguous branches, not the branch roots themselves. Root children are
   // intermediate nodes in deep taxonomies; giving the LLM leaf nodes lets it
   // make a direct, actionable decision. The same pattern is used mid-traversal.
+  //
+  // Guard: the second-best root child must also have subtreeScore ≥ thetaMin.
+  // After the quality gate the best root child is guaranteed ≥ thetaMin/λ, but
+  // the second-best may sit below thetaMin with no real signal. Arbitrating
+  // between a viable branch and a signal-less one via LLM is wasteful and
+  // misleading. subtreeScore (not rawSim) is the right metric here: root children
+  // are often structural intermediates whose own rawSim is legitimately 0.
 
   const rootChildren = childrenMap.get(rootNode.id) ?? [];
   const rootChildrenRanked = rootChildren
@@ -461,7 +468,8 @@ export async function sortThreadByEmbedding(
 
   const crossBranchAmbiguous =
     rootChildrenRanked.length >= 2 &&
-    rootChildrenRanked[0]!.score - rootChildrenRanked[1]!.score < crossBranchMargin;
+    rootChildrenRanked[0]!.score - rootChildrenRanked[1]!.score < crossBranchMargin &&
+    rootChildrenRanked[1]!.score >= thetaMin;
 
   if (crossBranchAmbiguous) {
     const topIds = rootChildrenRanked.slice(0, topKLlm).map((c) => c.id);
