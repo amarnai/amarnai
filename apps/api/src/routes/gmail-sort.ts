@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import { z } from "zod";
-import { db, Prisma } from "@amarnai/db";
+import { db } from "@amarnai/db";
 import { createAIProvider, createEmbeddingProvider, sortThreadByEmbedding, snapshotToThreadMessages } from "@amarnai/ai";
 import type { EmbeddableNode } from "@amarnai/ai";
 import { GmailClient } from "../services/gmail-client.js";
@@ -51,7 +51,7 @@ function getAIProviderConfig(): import("@amarnai/ai").AIProviderConfig {
 }
 
 function getEmbeddingProviderConfig(): import("@amarnai/ai").EmbeddingProviderConfig {
-  const provider = (process.env["EMBEDDING_PROVIDER"] ?? "ollama") as "ollama" | "frontier";
+  const provider = (process.env["EMBEDDING_PROVIDER"] ?? "ollama") as "ollama" | "gemini";
   const cfg: import("@amarnai/ai").EmbeddingProviderConfig = { provider };
   const ollamaBase = process.env["OLLAMA_BASE_URL"];
   const ollamaEmbModel = process.env["OLLAMA_EMBEDDING_MODEL"];
@@ -61,14 +61,12 @@ function getEmbeddingProviderConfig(): import("@amarnai/ai").EmbeddingProviderCo
       ...(ollamaEmbModel ? { model: ollamaEmbModel } : {}),
     };
   }
-  const fApiKey = process.env["FRONTIER_EMBEDDING_API_KEY"];
-  const fModel = process.env["FRONTIER_EMBEDDING_MODEL"];
-  const fBaseUrl = process.env["FRONTIER_EMBEDDING_BASE_URL"];
-  if (fApiKey ?? fModel ?? fBaseUrl) {
-    cfg.frontier = {
-      ...(fApiKey ? { apiKey: fApiKey } : {}),
-      ...(fModel ? { model: fModel } : {}),
-      ...(fBaseUrl ? { baseUrl: fBaseUrl } : {}),
+  const gApiKey = process.env["GEMINI_EMBEDDING_API_KEY"];
+  const gModel = process.env["GEMINI_EMBEDDING_MODEL"];
+  if (gApiKey ?? gModel) {
+    cfg.gemini = {
+      ...(gApiKey ? { apiKey: gApiKey } : {}),
+      ...(gModel ? { model: gModel } : {}),
     };
   }
   return cfg;

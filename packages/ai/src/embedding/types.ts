@@ -12,15 +12,14 @@ export interface EmbeddingProvider {
 // ─── Provider config ───────────────────────────────────────────────────────────
 
 export type EmbeddingProviderConfig = {
-  provider: "mock" | "ollama" | "frontier";
+  provider: "mock" | "ollama" | "gemini";
   ollama?: {
     baseUrl?: string;
     model?: string;
   };
-  frontier?: {
+  gemini?: {
     apiKey?: string;
     model?: string;
-    baseUrl?: string;
   };
 };
 

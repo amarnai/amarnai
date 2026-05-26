@@ -7,7 +7,7 @@
  * Usage:
  *   pnpm --filter @amarnai/ai seed:embeddings
  *
- * Requires Ollama running locally with nomic-embed-text (default) or the model
+ * Requires Ollama running locally with qwen3-embedding (default) or the model
  * specified via OLLAMA_EMBEDDING_MODEL. Override the base URL with OLLAMA_BASE_URL.
  */
 import { it, describe } from "vitest";
@@ -23,7 +23,7 @@ import {
 import { ALL_NODES, ALL_EDGES, TEST_EMAILS } from "./sorting-fixtures.js";
 
 const OLLAMA_BASE_URL = process.env.OLLAMA_BASE_URL ?? "http://localhost:11434";
-const OLLAMA_MODEL = process.env.OLLAMA_EMBEDDING_MODEL ?? "nomic-embed-text";
+const OLLAMA_MODEL = process.env.OLLAMA_EMBEDDING_MODEL ?? "qwen3-embedding";
 
 describe("seed embedding fixtures", () => {
   if (process.env.SEED_EMBEDDINGS !== "1") {

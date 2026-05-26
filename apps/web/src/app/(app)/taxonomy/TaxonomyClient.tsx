@@ -518,10 +518,11 @@ function TaxonomyCanvasInner({
 
   const history = useTaxonomyHistory({ nodes: initialNodes, edges: initialEdges });
 
-  // Reset history when workspace changes (safety guard if component is reused)
+  // Reset history when workspace changes (safety guard if component is reused).
+  // Intentionally depends only on workspaceId — initialNodes/initialEdges are
+  // the initial snapshot and must not trigger repeated resets on re-renders.
   useEffect(() => {
     history.reset({ nodes: initialNodes, edges: initialEdges });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [workspaceId]);
 
   const refetch = useCallback(async () => {

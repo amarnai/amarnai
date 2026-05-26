@@ -181,7 +181,6 @@ taxonomyEdges.patch(
     }
 
     const { workspaceId, edgeId } = params.data;
-    const d = body.data;
 
     const existing = await db.taxonomyEdge.findUnique({
       where: { id: edgeId },

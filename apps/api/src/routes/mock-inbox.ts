@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { z } from "zod";
 import { db } from "@amarnai/db";
 import { mockClassify } from "../services/mock-classifier.js";
+import type { MockClassificationResult } from "../services/mock-classifier.js";
 import {
   createAIProvider,
   createEmbeddingProvider,
@@ -40,7 +41,7 @@ function getAIProviderConfig() {
 }
 
 function getEmbeddingProviderConfig(): import("@amarnai/ai").EmbeddingProviderConfig {
-  const provider = (process.env["EMBEDDING_PROVIDER"] ?? "ollama") as "ollama" | "frontier";
+  const provider = (process.env["EMBEDDING_PROVIDER"] ?? "ollama") as "ollama" | "gemini";
   const cfg: import("@amarnai/ai").EmbeddingProviderConfig = { provider };
   const ollamaBase = process.env["OLLAMA_BASE_URL"];
   const ollamaEmbModel = process.env["OLLAMA_EMBEDDING_MODEL"];
@@ -50,14 +51,12 @@ function getEmbeddingProviderConfig(): import("@amarnai/ai").EmbeddingProviderCo
       ...(ollamaEmbModel ? { model: ollamaEmbModel } : {}),
     };
   }
-  const fApiKey = process.env["FRONTIER_EMBEDDING_API_KEY"];
-  const fModel = process.env["FRONTIER_EMBEDDING_MODEL"];
-  const fBaseUrl = process.env["FRONTIER_EMBEDDING_BASE_URL"];
-  if (fApiKey ?? fModel ?? fBaseUrl) {
-    cfg.frontier = {
-      ...(fApiKey ? { apiKey: fApiKey } : {}),
-      ...(fModel ? { model: fModel } : {}),
-      ...(fBaseUrl ? { baseUrl: fBaseUrl } : {}),
+  const gApiKey = process.env["GEMINI_EMBEDDING_API_KEY"];
+  const gModel = process.env["GEMINI_EMBEDDING_MODEL"];
+  if (gApiKey ?? gModel) {
+    cfg.gemini = {
+      ...(gApiKey ? { apiKey: gApiKey } : {}),
+      ...(gModel ? { model: gModel } : {}),
     };
   }
   return cfg;
@@ -268,12 +267,12 @@ mockInbox.post("/dev/workspaces/:workspaceId/mock-inbox-event", async (c) => {
     finalNodeName: string | null;
     confidence: number;
     explanation: string;
-    priority?: string | null;
-    urgency?: string | null;
-    riskLevel?: string | null;
-    requiredAction?: string | null;
-    sensitivity?: string | null;
-    suggestedNextStep?: string | null;
+    priority?: MockClassificationResult["priority"] | null;
+    urgency?: MockClassificationResult["urgency"] | null;
+    riskLevel?: MockClassificationResult["riskLevel"] | null;
+    requiredAction?: MockClassificationResult["requiredAction"] | null;
+    sensitivity?: MockClassificationResult["sensitivity"] | null;
+    suggestedNextStep?: MockClassificationResult["suggestedNextStep"] | null;
     needsHumanReview: boolean;
     modelProvider: string;
     modelName: string;

@@ -129,10 +129,12 @@ export function findDescendants(
 /**
  * Character budget for thread embedding text across all messages.
  *
- * nomic-embed-text and OpenAI embeddings both accept ~8K tokens.
- * 6,000 chars ≈ 1,500 tokens leaves comfortable headroom for the subject
- * line and structural labels while capturing far more signal than the old
- * 500-char-per-message cap.
+ * The binding constraint is Gemini text-embedding-004 (production), which
+ * accepts a maximum of 2,048 tokens. 6,000 chars ≈ 1,500 tokens leaves
+ * ~500 tokens of headroom for the structural labels and subject line.
+ *
+ * qwen3-embedding (local dev) supports 32,768 tokens — the budget is kept
+ * consistent with production rather than expanded to use that extra capacity.
  *
  * Distribution:
  *   - Latest message:  60 % of budget (3,600 chars)
@@ -225,7 +227,8 @@ function truncateToShare(text: string, budget: number): string {
  * Single-message threads use the same budget logic with the flat format for
  * backward compatibility.
  *
- * Budget: THREAD_EMBEDDING_CHAR_BUDGET (6,000 chars total).
+ * Budget: THREAD_EMBEDDING_CHAR_BUDGET (6,000 chars ≈ 1,500 tokens).
+ *   Set by Gemini text-embedding-004's 2,048-token production limit.
  *   Latest message:  60 % (3,600 chars).
  *   Earlier messages: 40 % shared equally across included messages (2,400 chars).
  *   If equal sharing would give each earlier message < MIN_EARLIER_MSG_CHARS,

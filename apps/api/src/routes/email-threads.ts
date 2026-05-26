@@ -72,10 +72,10 @@ emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
     return c.json({ error: "Workspace not found" }, 404);
   }
 
-  const threads = workspace.emailThreads.map(({ classifications, ...rest }) => ({
-    ...rest,
-    latestClassification: classifications[0] ?? null,
-  }));
+  const threads = workspace.emailThreads.map((thread) => {
+    const { classifications, ...rest } = thread;
+    return { ...rest, latestClassification: classifications[0] ?? null };
+  });
   return c.json(threads);
 });
 

@@ -58,7 +58,7 @@ import type { CandidateNode } from "../selection/candidate-selector.js";
 // ─── Constants ────────────────────────────────────────────────────────────────
 //
 // Grid-search tuned (benchmark-constants.ts) against 11 labeled email fixtures
-// with pre-computed nomic-embed-text vectors (2026-05-25).
+// with pre-computed embedding vectors (2026-05-25).
 // Score improved from 49.0 → 79.8 / 85 max across 4,096 combinations.
 // (Quality gate moved to post-subtree-score Step 6: no benchmark change.)
 //

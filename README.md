@@ -33,8 +33,8 @@ Amarnai can use an Ollama instance running on your machine.
 ollama serve
 
 # 3. Pull the local models
-ollama pull llama3.1:8b          # LLM (used at runtime)
-ollama pull nomic-embed-text     # embeddings (used for sorting tests)
+ollama pull llama3.1:8b       # LLM (used at runtime)
+ollama pull qwen3-embedding   # embeddings (used for sorting)
 
 # 4. Copy local overrides
 cp .env.local.example .env.local
@@ -58,16 +58,24 @@ curl http://localhost:11434/api/tags
 If port `11434` is already in use, Ollama is probably already running. In that case, skip `ollama serve` and continue with `ollama pull llama3.1:8b`.
 
 
-### Production frontier LLM
+### Production LLM + embeddings
 
 Set the following in `.env` (or your deployment secrets):
 
-```
+```env
+# LLM
 AI_PROVIDER=frontier
 FRONTIER_LLM_PROVIDER=openai
 FRONTIER_LLM_API_KEY=<your key>
 FRONTIER_LLM_MODEL=<model name>
+
+# Embeddings (Gemini)
+EMBEDDING_PROVIDER=gemini
+GEMINI_EMBEDDING_API_KEY=<your Google AI Studio key>
+GEMINI_EMBEDDING_MODEL=text-embedding-004
 ```
+
+Get a Gemini API key from [Google AI Studio](https://aistudio.google.com/apikey).
 
 ## Authentication setup
 
@@ -200,7 +208,7 @@ pnpm test:sorting          # AI sorting tests only (fast, no DB)
 
 The embedding sorter tests in `packages/ai` use pre-computed vectors stored in
 `packages/ai/src/__tests__/fixtures/embedding-vectors.json`. These are real
-`nomic-embed-text` embeddings (committed to the repo) so the test suite runs
+`qwen3-embedding` embeddings (committed to the repo) so the test suite runs
 offline without Ollama and stays deterministic in CI.
 
 **When to regenerate:** if you change a taxonomy node's name or description, add
@@ -209,8 +217,8 @@ new test emails to `sorting-fixtures.ts`, or switch the embedding model.
 **How to regenerate:**
 
 ```bash
-# Requires Ollama running locally with nomic-embed-text
-ollama pull nomic-embed-text
+# Requires Ollama running locally with qwen3-embedding
+ollama pull qwen3-embedding
 
 pnpm --filter @amarnai/ai seed:embeddings
 ```
@@ -222,7 +230,7 @@ taxonomy or fixture changes.
 To use a different Ollama base URL or model:
 
 ```bash
-OLLAMA_BASE_URL=http://my-host:11434 OLLAMA_EMBEDDING_MODEL=mxbai-embed-large \
+OLLAMA_BASE_URL=http://my-host:11434 OLLAMA_EMBEDDING_MODEL=qwen3-embedding:0.6b \
   pnpm --filter @amarnai/ai seed:embeddings
 ```
 

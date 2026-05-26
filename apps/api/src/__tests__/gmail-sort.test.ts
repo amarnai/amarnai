@@ -135,11 +135,6 @@ function makeRawThread(threadId = "gmail-thread-1") {
   };
 }
 
-function getMockClientInstance() {
-  return vi.mocked(GmailClient).mock.results[vi.mocked(GmailClient).mock.results.length - 1]!
-    .value as { getThread: ReturnType<typeof vi.fn>; listRecentThreads: ReturnType<typeof vi.fn> };
-}
-
 beforeEach(() => {
   vi.clearAllMocks();
   process.env["NODE_ENV"] = "development";
@@ -317,10 +312,10 @@ describe("POST /dev/workspaces/:workspaceId/gmail-sort-thread", () => {
   });
 
   it("scopes workspace check so workspaceId is always enforced", async () => {
-    vi.mocked(db.workspace.findUnique).mockImplementation(async (args: unknown) => {
+    vi.mocked(db.workspace.findUnique).mockImplementation((async (args: unknown) => {
       const a = args as { where: { id: string } };
-      return a.where.id === WS_ID ? (BASE_WORKSPACE as never) : null;
-    });
+      return a.where.id === WS_ID ? BASE_WORKSPACE : null;
+    }) as never);
 
     const res = await app.request(`/dev/workspaces/other-ws/gmail-sort-thread`, {
       method: "POST",

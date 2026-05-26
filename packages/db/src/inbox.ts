@@ -1,4 +1,4 @@
-import { db } from "./client";
+import { db } from "./client.js";
 
 export async function ensureInboxNode(workspaceId: string): Promise<void> {
   const existing = await db.taxonomyNode.findFirst({

@@ -5,12 +5,11 @@
  * name + description + model) are re-embedded.
  *
  * Environment variables required (same as the API):
- *   EMBEDDING_PROVIDER  — "ollama" | "frontier"
- *   OLLAMA_BASE_URL     — (if provider=ollama)
- *   OLLAMA_EMBEDDING_MODEL
- *   FRONTIER_EMBEDDING_API_KEY   — (if provider=frontier)
- *   FRONTIER_EMBEDDING_MODEL
- *   FRONTIER_EMBEDDING_BASE_URL
+ *   EMBEDDING_PROVIDER        — "gemini" | "ollama"
+ *   GEMINI_EMBEDDING_API_KEY  — (if provider=gemini)
+ *   GEMINI_EMBEDDING_MODEL    — (if provider=gemini, default: text-embedding-004)
+ *   OLLAMA_BASE_URL           — (if provider=ollama)
+ *   OLLAMA_EMBEDDING_MODEL    — (if provider=ollama, default: qwen3-embedding)
  *
  * Usage:
  *   pnpm --filter @amarnai/db embeddings:refresh-taxonomy
@@ -32,29 +31,27 @@ const db = new PrismaClient();
 
 function getEmbeddingConfig(): EmbeddingProviderConfig {
   const raw = process.env["EMBEDDING_PROVIDER"];
-  if (!raw || (raw !== "ollama" && raw !== "frontier")) {
+  if (!raw || (raw !== "gemini" && raw !== "ollama")) {
     throw new Error(
-      "EMBEDDING_PROVIDER must be set to 'ollama' or 'frontier'. " +
+      "EMBEDDING_PROVIDER must be set to 'gemini' or 'ollama'. " +
         "Example: EMBEDDING_PROVIDER=ollama pnpm --filter @amarnai/db embeddings:refresh-taxonomy"
     );
   }
   const cfg: EmbeddingProviderConfig = { provider: raw };
+  const gApiKey = process.env["GEMINI_EMBEDDING_API_KEY"];
+  const gModel = process.env["GEMINI_EMBEDDING_MODEL"];
+  if (gApiKey ?? gModel) {
+    cfg.gemini = {
+      ...(gApiKey ? { apiKey: gApiKey } : {}),
+      ...(gModel ? { model: gModel } : {}),
+    };
+  }
   const ollamaBase = process.env["OLLAMA_BASE_URL"];
   const ollamaModel = process.env["OLLAMA_EMBEDDING_MODEL"];
   if (ollamaBase ?? ollamaModel) {
     cfg.ollama = {
       ...(ollamaBase ? { baseUrl: ollamaBase } : {}),
       ...(ollamaModel ? { model: ollamaModel } : {}),
-    };
-  }
-  const fApiKey = process.env["FRONTIER_EMBEDDING_API_KEY"];
-  const fModel = process.env["FRONTIER_EMBEDDING_MODEL"];
-  const fBaseUrl = process.env["FRONTIER_EMBEDDING_BASE_URL"];
-  if (fApiKey ?? fModel ?? fBaseUrl) {
-    cfg.frontier = {
-      ...(fApiKey ? { apiKey: fApiKey } : {}),
-      ...(fModel ? { model: fModel } : {}),
-      ...(fBaseUrl ? { baseUrl: fBaseUrl } : {}),
     };
   }
   return cfg;
