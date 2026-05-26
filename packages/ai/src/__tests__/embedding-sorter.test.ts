@@ -1650,3 +1650,102 @@ describe("embedding sorter — strong signal through 4-level single-child chain 
     }
   });
 });
+
+// ─── Scenario 22: Root cross-branch ambiguity with deep taxonomy (DEEP_NODES/DEEP_EDGES) ─────
+//
+// The root (inbox2) has two intermediate-node children: Support (→ {Technical,
+// Billing}) and Sales2 (→ {Inbound, Outbound}). Controlled sims produce subtree
+// scores close enough to fire the root cross-branch check before any traversal.
+//
+// Sims (via buildSimTable):
+//   support=0.05, technical=0.35, billing=0.28, sales2=0.05, inbound=0.33, outbound=0.26
+//
+// Derived subtree scores (λ=0.85):
+//   subtreeScore(support) = max(0.05, 0.85×0.35) = 0.2975
+//   subtreeScore(sales2)  = max(0.05, 0.85×0.33) = 0.2805
+//   diff = 0.017 < crossBranchMargin(0.05) → root cross-branch fires ✓
+//   sales2 score 0.2805 ≥ thetaMin(0.15) → second branch is viable ✓
+//
+// Leaf candidates (collectLeavesFromSubtrees removes intermediates), sorted by
+// rawSim desc: technical(0.35), inbound(0.33), billing(0.28), outbound(0.26)
+//   candidate_0 = technical, candidate_1 = inbound, candidate_2 = billing, candidate_3 = outbound
+//
+// Σ s² = 0.0025+0.1225+0.0784+0.0025+0.1089+0.0676 = 0.3824 < 1 — no scaling needed.
+
+describe("embedding sorter — root cross-branch with deep taxonomy escalates to LLM with only leaf candidates", () => {
+  const s22Messages = [msg(
+    "Support or sales inquiry?",
+    "We are unsure whether our issue falls under technical support or whether we should " +
+    "contact the sales team. It may involve either a technical error or a potential new purchase."
+  )];
+
+  const s22Sims: Record<string, number> = {
+    support:   0.05,
+    technical: 0.35,
+    billing:   0.28,
+    sales2:    0.05,
+    inbound:   0.33,
+    outbound:  0.26,
+  };
+
+  const s22Embedder = makeSimEmbedder(buildSimTable(DEEP_NODES, DEEP_EDGES, s22Sims, s22Messages));
+
+  const LLM_PICKS_TECHNICAL = JSON.stringify({
+    selectedNodeId: "candidate_0",
+    confidence: 0.85,
+    explanation: "Technical error matches Technical Issues",
+    needsHumanReview: false,
+  });
+
+  it("calls LLM exactly once — root cross-branch fires, not mid-traversal", async () => {
+    const { provider: llmProvider, chatSpy } = makeLlmSpy(LLM_PICKS_TECHNICAL);
+    await sortThreadByEmbedding(s22Embedder, llmProvider, DEEP_NODES, DEEP_EDGES, s22Messages);
+    expect(chatSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it("every candidate offered to LLM is a leaf — support and sales2 are absent from candidate names", async () => {
+    const { provider: llmProvider, chatSpy } = makeLlmSpy(LLM_PICKS_TECHNICAL);
+    await sortThreadByEmbedding(s22Embedder, llmProvider, DEEP_NODES, DEEP_EDGES, s22Messages);
+
+    const callMessages = chatSpy.mock.calls[0]![0] as Array<{ role: string; content: string }>;
+    const userContent = callMessages.find((m) => m.role === "user")?.content ?? "";
+
+    // All four leaf node names must appear as candidates
+    expect(userContent).toContain("name: Technical Issues");
+    expect(userContent).toContain("name: Billing Issues");
+    expect(userContent).toContain("name: Inbound Leads");
+    expect(userContent).toContain("name: Outbound Campaigns");
+
+    // Intermediate node names must NOT appear as selectable candidate names.
+    // Filter to "   name: <X>" lines only — breadcrumbs contain intermediate names
+    // as path context, but those lines start with "   breadcrumb:", not "   name:".
+    const nameLines = userContent.split("\n").filter((l) => l.trimStart().startsWith("name:"));
+    expect(nameLines.some((l) => l.includes("Support"))).toBe(false);
+    expect(nameLines.some((l) => l.includes("Sales"))).toBe(false);
+  });
+
+  it("selected leaf becomes finalNodeId with decisionSource 'llm' (LLM picks technical — candidate_0)", async () => {
+    const llmProvider = makeMockLlmProvider(LLM_PICKS_TECHNICAL);
+    const result = await sortThreadByEmbedding(s22Embedder, llmProvider, DEEP_NODES, DEEP_EDGES, s22Messages);
+
+    expect(result.finalNodeId).toBe("technical");
+    expect(result.decisionSource).toBe("llm");
+    expect(result.needsHumanReview).toBe(false);
+  });
+
+  it("LLM can also route to inbound (candidate_1) — any valid leaf selection is honoured", async () => {
+    const llmProvider = makeMockLlmProvider(
+      JSON.stringify({
+        selectedNodeId: "candidate_1",
+        confidence: 0.80,
+        explanation: "New purchase matches Inbound Leads",
+        needsHumanReview: false,
+      })
+    );
+    const result = await sortThreadByEmbedding(s22Embedder, llmProvider, DEEP_NODES, DEEP_EDGES, s22Messages);
+
+    expect(result.finalNodeId).toBe("inbound");
+    expect(result.decisionSource).toBe("llm");
+    expect(result.needsHumanReview).toBe(false);
+  });
+});
