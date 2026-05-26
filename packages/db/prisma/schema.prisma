@@ -276,6 +276,7 @@ model EmailThread {
   latestMessageAt  DateTime?
   messageCount     Int           @default(0)
   triageStatus     TriageStatus  @default(PENDING)
+  classifyingAt    DateTime?
   createdAt        DateTime      @default(now())
   updatedAt        DateTime      @updatedAt
 

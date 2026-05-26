@@ -23,6 +23,15 @@ function priorityClass(priority: string | null): string {
   return "badge-none";
 }
 
+function ClassifyingBanner() {
+  return (
+    <div className="classifying-banner">
+      <span className="classifying-dot" />
+      Sorting this thread right now — results will appear shortly.
+    </div>
+  );
+}
+
 function PendingThreadBanner({
   triageStatus,
   syncStatus,
@@ -109,7 +118,10 @@ export default async function ThreadDetailPage({ params }: Props) {
 
       <h1>{thread.subject ?? "(no subject)"}</h1>
 
-      <PendingThreadBanner triageStatus={thread.triageStatus} syncStatus={syncStatus} />
+      {thread.isClassifying
+        ? <ClassifyingBanner />
+        : <PendingThreadBanner triageStatus={thread.triageStatus} syncStatus={syncStatus} />
+      }
 
       {/* Triage actions — approve / move to node */}
       <TriageActions

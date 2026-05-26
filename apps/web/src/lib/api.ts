@@ -117,6 +117,7 @@ export type EmailThreadSummary = {
   latestMessageAt: string | null;
   messageCount: number;
   triageStatus: TriageStatus;
+  isClassifying: boolean;
   createdAt: string;
   messages: Array<{
     id: string;
@@ -153,6 +154,7 @@ export type EmailThreadDetail = {
   latestMessageAt: string | null;
   messageCount: number;
   triageStatus: TriageStatus;
+  isClassifying: boolean;
   createdAt: string;
   updatedAt: string;
   messages: Array<{

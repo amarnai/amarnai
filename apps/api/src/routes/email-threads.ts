@@ -8,6 +8,14 @@ const threadParam = z.object({
   threadId: z.string().min(1),
 });
 
+/** A classify-thread job stamped more than 2 minutes ago is considered stale. */
+const CLASSIFY_STALE_MS = 2 * 60 * 1_000;
+
+function deriveIsClassifying(classifyingAt: Date | null): boolean {
+  if (!classifyingAt) return false;
+  return Date.now() - classifyingAt.getTime() < CLASSIFY_STALE_MS;
+}
+
 const emailThreads = new Hono();
 
 emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
@@ -29,6 +37,7 @@ emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
           latestMessageAt: true,
           messageCount: true,
           triageStatus: true,
+          classifyingAt: true,
           createdAt: true,
           messages: {
             orderBy: { receivedAt: "desc" },
@@ -74,8 +83,12 @@ emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
   }
 
   const threads = workspace.emailThreads.map((thread) => {
-    const { classifications, ...rest } = thread;
-    return { ...rest, latestClassification: classifications[0] ?? null };
+    const { classifications, classifyingAt, ...rest } = thread;
+    return {
+      ...rest,
+      isClassifying: deriveIsClassifying(classifyingAt),
+      latestClassification: classifications[0] ?? null,
+    };
   });
   return c.json(threads);
 });
@@ -100,6 +113,7 @@ emailThreads.get(
         latestMessageAt: true,
         messageCount: true,
         triageStatus: true,
+        classifyingAt: true,
         createdAt: true,
         updatedAt: true,
         messages: {
@@ -155,8 +169,12 @@ emailThreads.get(
       return c.json({ error: "Thread not found" }, 404);
     }
 
-    const { classifications, ...rest } = thread;
-    return c.json({ ...rest, latestClassification: classifications[0] ?? null });
+    const { classifications, classifyingAt, ...rest } = thread;
+    return c.json({
+      ...rest,
+      isClassifying: deriveIsClassifying(classifyingAt),
+      latestClassification: classifications[0] ?? null,
+    });
   }
 );
 

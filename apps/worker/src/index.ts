@@ -25,9 +25,14 @@ async function scheduleSyncJobs(): Promise<void> {
       name: "sync-inbox",
       data: { workspaceId },
       opts: {
-        // One pending sync per workspace at a time. BullMQ ignores the add if
-        // a job with this ID is already waiting or active.
-        jobId: `sync-inbox_${workspaceId}`,
+        // Deduplicate while a sync is already waiting or active for this
+        // workspace. Unlike `jobId`, BullMQ's `deduplication` option does NOT
+        // block re-adds once the job has completed — avoiding the bug where a
+        // fixed jobId persisted in the completed set and caused every subsequent
+        // scheduler tick to be silently dropped.
+        deduplication: {
+          id: `sync-inbox_${workspaceId}`,
+        },
       },
     }))
   );

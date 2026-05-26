@@ -40,6 +40,19 @@ export function createClassifyThreadWorker(): Worker {
 
       if (!thread) throw new Error(`EmailThread not found: ${emailThreadId}`);
 
+      // ── 1b. Mark thread as actively classifying ─────────────────────────────
+      //
+      // Cleared in the finally block regardless of success or failure.
+      // If the worker crashes without running finally, the API treats
+      // classifyingAt older than 2 minutes as stale and ignores it.
+
+      await db.emailThread.update({
+        where: { id: emailThreadId },
+        data: { classifyingAt: new Date() },
+      });
+
+      try {
+
       // ── 2. Re-fetch thread from Gmail ───────────────────────────────────────
 
       const client = new GmailClient(thread.emailAccount.refreshTokenEncrypted);
@@ -145,14 +158,27 @@ export function createClassifyThreadWorker(): Worker {
         select: { id: true },
       });
 
-      // ── 7. Update triage status ─────────────────────────────────────────────
+      // ── 7. Update triage status and clear classifying flag ─────────────────
 
       await db.emailThread.update({
         where: { id: emailThreadId },
-        data: { triageStatus: result.needsHumanReview ? "NEEDS_REVIEW" : "SORTED" },
+        data: {
+          triageStatus: result.needsHumanReview ? "NEEDS_REVIEW" : "SORTED",
+          classifyingAt: null,
+        },
       });
 
       await job.updateProgress(100);
+
+      } finally {
+        // Ensure classifyingAt is always cleared, even on error/early return.
+        await db.emailThread.update({
+          where: { id: emailThreadId },
+          data: { classifyingAt: null },
+        }).catch(() => {
+          // Best-effort — don't mask the original error.
+        });
+      }
     },
     {
       connection: redisConnection,

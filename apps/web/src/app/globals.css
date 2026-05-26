@@ -1389,6 +1389,47 @@ a {
   color: var(--color-muted);
 }
 
+/* ─── Classifying / sorting indicator ───────────────────────────────────── */
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+
+.classifying-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 99px;
+  background: var(--ink-tint-bg);
+  color: var(--ink-tint-text);
+  border: 1px solid var(--ink-tint-border);
+}
+
+.classifying-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: pulse-dot 1.2s ease-in-out infinite;
+}
+
+.classifying-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  margin-bottom: 14px;
+  font-size: 13px;
+  background: var(--ink-tint-bg);
+  color: var(--ink-tint-text);
+  border: 1px solid var(--ink-tint-border);
+}
+
 .triage-controls {
   display: flex;
   flex-wrap: wrap;

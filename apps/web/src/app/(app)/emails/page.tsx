@@ -180,15 +180,24 @@ export default async function EmailsPage() {
                     {thread.messageCount}{" "}
                     {thread.messageCount === 1 ? "msg" : "msgs"}
                   </span>
-                  {thread.triageStatus === "NEEDS_REVIEW" && (
-                    <span className="triage-badge triage-badge-needs_review" style={{ fontSize: 10 }}>
-                      ⚠ Review
+                  {thread.isClassifying ? (
+                    <span className="classifying-badge">
+                      <span className="classifying-dot" />
+                      Sorting…
                     </span>
-                  )}
-                  {thread.triageStatus === "PENDING" && (
-                    <span className="triage-badge triage-badge-pending" style={{ fontSize: 10 }}>
-                      Pending
-                    </span>
+                  ) : (
+                    <>
+                      {thread.triageStatus === "NEEDS_REVIEW" && (
+                        <span className="triage-badge triage-badge-needs_review" style={{ fontSize: 10 }}>
+                          ⚠ Review
+                        </span>
+                      )}
+                      {thread.triageStatus === "PENDING" && (
+                        <span className="triage-badge triage-badge-pending" style={{ fontSize: 10 }}>
+                          Pending
+                        </span>
+                      )}
+                    </>
                   )}
                 </div>
               </Link>
