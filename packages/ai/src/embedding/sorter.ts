@@ -19,7 +19,8 @@
  *   Phase 3 — Cross-branch LLM trigger:
  *     (a) Before traversal: if the top two root-child subtree scores are within
  *     `crossBranchMargin`, embeddings cannot distinguish the main branches; the
- *     LLM resolves with the top-K candidates by raw similarity.
+ *     LLM resolves with the top-K leaf candidates (collected via
+ *     collectLeavesFromSubtrees, ranked by raw similarity) from those branches.
  *     (b) During traversal (mid-traversal): at each descent step, after picking
  *     the best child, any same-parent sibling within `crossBranchMargin` in
  *     subtree score that also has rawSim ≥ thetaMin triggers LLM escalation.
@@ -447,6 +448,11 @@ export async function sortThreadByEmbedding(
   //
   // Before descending, check whether the top two root-child subtree scores
   // are close. If so, embeddings alone cannot confidently choose a branch.
+  //
+  // Offer the LLM the most specific reachable destinations (leaves) from the
+  // ambiguous branches, not the branch roots themselves. Root children are
+  // intermediate nodes in deep taxonomies; giving the LLM leaf nodes lets it
+  // make a direct, actionable decision. The same pattern is used mid-traversal.
 
   const rootChildren = childrenMap.get(rootNode.id) ?? [];
   const rootChildrenRanked = rootChildren
@@ -459,7 +465,10 @@ export async function sortThreadByEmbedding(
 
   if (crossBranchAmbiguous) {
     const topIds = rootChildrenRanked.slice(0, topKLlm).map((c) => c.id);
-    const candidates = buildLlmCandidates(topIds, nodeMap, childEdges, rootNode.id);
+    const leafCandidateIds = collectLeavesFromSubtrees(topIds, childrenMap)
+      .sort((a, b) => (rawSims.get(b) ?? 0) - (rawSims.get(a) ?? 0))
+      .slice(0, topKLlm);
+    const candidates = buildLlmCandidates(leafCandidateIds, nodeMap, childEdges, rootNode.id);
 
     if (candidates.length > 0) {
       const llmResult = await selectNodeFromCandidates(llmProvider, { messages }, candidates);
