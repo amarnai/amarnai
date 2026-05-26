@@ -47,7 +47,6 @@ import {
   hashEmbeddingInput,
   computeSubtreeScores,
   deriveBreadcrumb,
-  findDescendants,
 } from "./math.js";
 import { selectNodeFromCandidates } from "../selection/select-path.js";
 import type { EmbeddingProvider, EmbeddableNode, UpdatedNodeEmbedding } from "./types.js";
@@ -237,6 +236,49 @@ function buildLlmCandidates(
       },
     ];
   });
+}
+
+/**
+ * Collect leaf nodes from a set of subtree roots using the caller's pre-built
+ * childrenMap. For each root, descends via BFS and returns nodes with no
+ * children. Falls back to the root itself if BFS finds no leaves (isolated
+ * node or degenerate subgraph).
+ *
+ * Uses the childrenMap already built at Step 7 — never re-traverses the edge
+ * list.
+ */
+function collectLeavesFromSubtrees(
+  subtreeRoots: string[],
+  childrenMap: Map<string, string[]>
+): string[] {
+  const result: string[] = [];
+  for (const subtreeRoot of subtreeRoots) {
+    const rootChildren = childrenMap.get(subtreeRoot) ?? [];
+    if (rootChildren.length === 0) {
+      // subtreeRoot is itself a leaf
+      result.push(subtreeRoot);
+      continue;
+    }
+    const leaves: string[] = [];
+    const visited = new Set<string>([subtreeRoot]);
+    const queue: string[] = [subtreeRoot];
+    while (queue.length > 0) {
+      const current = queue.shift()!;
+      const children = childrenMap.get(current) ?? [];
+      if (children.length === 0) {
+        leaves.push(current);
+      } else {
+        for (const child of children) {
+          if (!visited.has(child)) {
+            visited.add(child);
+            queue.push(child);
+          }
+        }
+      }
+    }
+    result.push(...(leaves.length > 0 ? leaves : [subtreeRoot]));
+  }
+  return result;
 }
 
 // ─── Main algorithm ───────────────────────────────────────────────────────────
@@ -527,17 +569,10 @@ export async function sortThreadByEmbedding(
       });
 
       if (midAmbiguousSiblings.length > 0) {
-        const candidateIds: string[] = [];
-        for (const subtreeRoot of [bestChildId, ...midAmbiguousSiblings]) {
-          const descendants = findDescendants(subtreeRoot, edges);
-          if (descendants.length === 0) {
-            // subtreeRoot is itself a leaf
-            candidateIds.push(subtreeRoot);
-          } else {
-            const leaves = descendants.filter((id) => (childrenMap.get(id) ?? []).length === 0);
-            candidateIds.push(...(leaves.length > 0 ? leaves : [subtreeRoot]));
-          }
-        }
+        const candidateIds = collectLeavesFromSubtrees(
+          [bestChildId, ...midAmbiguousSiblings],
+          childrenMap
+        );
         const topCandidateIds = candidateIds
           .sort((a, b) => (rawSims.get(b) ?? 0) - (rawSims.get(a) ?? 0))
           .slice(0, topKLlm);
