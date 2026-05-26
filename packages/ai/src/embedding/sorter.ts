@@ -473,7 +473,7 @@ export async function sortThreadByEmbedding(
 
   if (crossBranchAmbiguous) {
     const topIds = rootChildrenRanked.slice(0, topKLlm).map((c) => c.id);
-    const leafCandidateIds = collectLeavesFromSubtrees(topIds, childrenMap)
+    const leafCandidateIds = [...new Set(collectLeavesFromSubtrees(topIds, childrenMap))]
       .sort((a, b) => (rawSims.get(b) ?? 0) - (rawSims.get(a) ?? 0))
       .slice(0, topKLlm);
     const candidates = buildLlmCandidates(leafCandidateIds, nodeMap, childEdges, rootNode.id);
@@ -586,10 +586,10 @@ export async function sortThreadByEmbedding(
       });
 
       if (midAmbiguousSiblings.length > 0) {
-        const candidateIds = collectLeavesFromSubtrees(
+        const candidateIds = [...new Set(collectLeavesFromSubtrees(
           [bestChildId, ...midAmbiguousSiblings],
           childrenMap
-        );
+        ))];
         const topCandidateIds = candidateIds
           .sort((a, b) => (rawSims.get(b) ?? 0) - (rawSims.get(a) ?? 0))
           .slice(0, topKLlm);
