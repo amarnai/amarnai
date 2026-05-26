@@ -821,6 +821,12 @@ h2 {
   border: 1px solid transparent;
 }
 
+.backfill-banner-pending {
+  background: var(--color-bg-subtle);
+  color: var(--color-muted);
+  border-color: var(--color-border);
+}
+
 .backfill-banner-running {
   background: var(--ink-tint-bg);
   color: var(--ink-tint-text);
@@ -837,6 +843,19 @@ h2 {
   background: var(--color-destructive-bg);
   color: var(--color-destructive-text);
   border-color: #fca5a5;
+}
+
+.backfill-counts {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  font-size: 12px;
+  margin-top: 5px;
+  opacity: 0.85;
+}
+
+.backfill-counts-sep {
+  opacity: 0.5;
 }
 
 .empty {

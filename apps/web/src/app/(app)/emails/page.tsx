@@ -10,38 +10,71 @@ function fmt(iso: string | null): string {
   });
 }
 
-function BackfillBanner({ syncStatus }: { syncStatus: SyncStatus }) {
+type ThreadCounts = { sorted: number; pending: number; needsReview: number };
+
+function CountsLine({ counts }: { counts: ThreadCounts }) {
+  const { sorted, pending, needsReview } = counts;
+  return (
+    <div className="backfill-counts">
+      <span>{sorted.toLocaleString()} sorted</span>
+      <span className="backfill-counts-sep">·</span>
+      <span>{pending.toLocaleString()} pending</span>
+      <span className="backfill-counts-sep">·</span>
+      <span
+        style={needsReview > 0 ? { color: "var(--color-warning-text)", fontWeight: 500 } : {}}
+      >
+        {needsReview.toLocaleString()} need{needsReview === 1 ? "s" : ""} review
+      </span>
+    </div>
+  );
+}
+
+function BackfillBanner({
+  syncStatus,
+  counts,
+}: {
+  syncStatus: SyncStatus;
+  counts: ThreadCounts;
+}) {
   if (!syncStatus) return null;
 
   const { backfillStatus, backfillSkipped } = syncStatus;
+  const { pending, needsReview } = counts;
+  const total = counts.sorted + pending + needsReview;
 
-  if (backfillStatus === "RUNNING") {
-    return (
-      <div className="backfill-banner backfill-banner-running">
-        ⏳ Sorting your inbox history — this may take a minute…
-      </div>
-    );
-  }
+  // Determine the status message and visual variant for this backfill state.
+  type Variant = "pending" | "running" | "warning" | "error";
+  let statusLine: React.ReactNode = null;
+  let variant: Variant = "pending";
 
-  if (backfillStatus === "ERROR") {
-    return (
-      <div className="backfill-banner backfill-banner-error">
-        ⚠ Inbox backfill failed — historical threads may not be sorted yet.
-      </div>
-    );
-  }
-
-  if (backfillStatus === "DONE" && backfillSkipped > 0) {
-    return (
-      <div className="backfill-banner backfill-banner-warning">
+  if (backfillStatus === "PENDING") {
+    statusLine = "Your inbox history will be sorted automatically after the first sync.";
+  } else if (backfillStatus === "RUNNING") {
+    statusLine = "⏳ Sorting your inbox history — this may take a minute…";
+    variant = "running";
+  } else if (backfillStatus === "ERROR") {
+    statusLine = "⚠ Inbox backfill failed — historical threads may not be sorted yet.";
+    variant = "error";
+  } else if (backfillStatus === "DONE" && backfillSkipped > 0) {
+    statusLine = (
+      <>
         ℹ {backfillSkipped.toLocaleString()} thread
         {backfillSkipped === 1 ? "" : "s"} from the last 90 days{" "}
         {backfillSkipped === 1 ? "was" : "were"} not sorted (inbox cap reached).
-      </div>
+      </>
     );
+    variant = "warning";
   }
 
-  return null;
+  // If there's no status message and everything is clean, hide the banner.
+  if (!statusLine && pending === 0 && needsReview === 0) return null;
+
+  return (
+    <div className={`backfill-banner backfill-banner-${variant}`}>
+      {statusLine && <div>{statusLine}</div>}
+      {total > 0 && <CountsLine counts={counts} />}
+    </div>
+  );
 }
 
 function priorityClass(priority: string): string {
@@ -68,10 +101,20 @@ export default async function EmailsPage() {
     error = err instanceof Error ? err.message : String(err);
   }
 
+  const counts: ThreadCounts = threads.reduce(
+    (acc, t) => {
+      if (t.triageStatus === "SORTED") acc.sorted++;
+      else if (t.triageStatus === "PENDING") acc.pending++;
+      else if (t.triageStatus === "NEEDS_REVIEW") acc.needsReview++;
+      return acc;
+    },
+    { sorted: 0, pending: 0, needsReview: 0 }
+  );
+
   return (
     <>
       <h1>Email Threads</h1>
-      <BackfillBanner syncStatus={syncStatus} />
+      <BackfillBanner syncStatus={syncStatus} counts={counts} />
       {error && <div className="error-box">{error}</div>}
 
       {threads.length === 0 && !error ? (

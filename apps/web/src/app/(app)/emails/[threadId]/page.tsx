@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { requireUser, getOrCreateDefaultWorkspace } from "@/lib/session";
-import { api, type EmailThreadDetail, type TaxonomyNode } from "@/lib/api";
+import { api, type EmailThreadDetail, type TaxonomyNode, type SyncStatus } from "@/lib/api";
 import { ClassificationActions } from "./ClassificationActions";
 import { TriageActions } from "./TriageActions";
 import { MessageBody } from "./MessageBody";
@@ -23,6 +23,41 @@ function priorityClass(priority: string | null): string {
   return "badge-none";
 }
 
+function PendingThreadBanner({
+  triageStatus,
+  syncStatus,
+}: {
+  triageStatus: EmailThreadDetail["triageStatus"];
+  syncStatus: SyncStatus;
+}) {
+  if (triageStatus !== "PENDING") return null;
+
+  const backfillStatus = syncStatus?.backfillStatus;
+
+  if (backfillStatus === "RUNNING") {
+    return (
+      <div className="backfill-banner backfill-banner-running" style={{ marginBottom: 16 }}>
+        ⏳ This thread will be sorted as part of the inbox backfill in progress.
+      </div>
+    );
+  }
+
+  if (backfillStatus === "PENDING") {
+    return (
+      <div className="backfill-banner backfill-banner-pending" style={{ marginBottom: 16 }}>
+        This thread will be sorted automatically after the first sync.
+      </div>
+    );
+  }
+
+  // DONE, ERROR, or no sync state — prompt the user to sort manually.
+  return (
+    <div className="backfill-banner backfill-banner-pending" style={{ marginBottom: 16 }}>
+      This thread hasn&apos;t been sorted yet — use the sort button below.
+    </div>
+  );
+}
+
 function MetaItem({ label, value }: { label: string; value: string | null }) {
   return (
     <div>
@@ -40,12 +75,14 @@ export default async function ThreadDetailPage({ params }: Props) {
 
   let thread: EmailThreadDetail | null = null;
   let nodes: TaxonomyNode[] = [];
+  let syncStatus: SyncStatus = null;
   let error: string | null = null;
 
   try {
-    [thread, nodes] = await Promise.all([
+    [thread, nodes, syncStatus] = await Promise.all([
       api.emailThread(workspaceId, threadId),
       api.taxonomyNodes(workspaceId),
+      api.syncStatus(workspaceId),
     ]);
   } catch (err) {
     error = err instanceof Error ? err.message : String(err);
@@ -71,6 +108,8 @@ export default async function ThreadDetailPage({ params }: Props) {
       </Link>
 
       <h1>{thread.subject ?? "(no subject)"}</h1>
+
+      <PendingThreadBanner triageStatus={thread.triageStatus} syncStatus={syncStatus} />
 
       {/* Triage actions — approve / move to node */}
       <TriageActions
