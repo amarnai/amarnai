@@ -628,7 +628,7 @@ export async function sortThreadByEmbedding(
           edgeId: edge.id,
           sourceNodeId: edge.sourceNodeId,
           targetNodeId: edge.targetNodeId,
-          confidence: bestProb,
+          confidence: bestChildRawSim,
           explanation: `Subtree score ${bestChildSubtreeScore.toFixed(3)}, spread ${normalizedSpread.toFixed(3)} (raw ${spread.toFixed(3)})`,
         });
       }
