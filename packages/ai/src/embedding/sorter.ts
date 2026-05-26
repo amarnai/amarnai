@@ -2,13 +2,13 @@
  * Embedding-based email thread sorting algorithm.
  *
  * Sorts an incoming thread into the most specific appropriate node of a
- * user-defined taxonomy graph using three phases:
+ * user-defined taxonomy graph using four phases:
  *
  *   Phase 1 — Bottom-up subtree scores:
  *     Propagate scores from leaves to root. S(v) = best reachable similarity in
  *     the subtree rooted at v, decayed by `lambdaDepthDecay` per level.
  *
- *   Phase 0 — Absolute quality gate (evaluated after Phase 1):
+ *   Phase 2 — Absolute quality gate (evaluated after Phase 1):
  *     If max subtree score across all nodes is below `thetaMin`, route to Inbox
  *     immediately.  Gating on subtree scores rather than raw similarities means
  *     the gate uses the same aggregated evidence as the traversal.  The two are
@@ -25,9 +25,9 @@
  *     the best child, any same-parent sibling within `crossBranchMargin` in
  *     subtree score that also has rawSim ≥ thetaMin triggers LLM escalation.
  *     Leaf candidates from all ambiguous branches are collected via
- *     findDescendants and the top-K by raw similarity are offered to the LLM.
+ *     collectLeavesFromSubtrees and the top-K by raw similarity are offered to the LLM.
  *
- *   Phase 2 — Top-down traversal:
+ *   Phase 4 — Top-down traversal:
  *     Descend from root, at each node applying softmax over child subtree scores.
  *     Descent requires both spread (Δ = p(c*) − p(c**) > thetaSpread) and
  *     quality (raw_sim(c*) ≥ thetaDescent). Stop when either condition fails or
