@@ -231,7 +231,7 @@ model TaxonomyNode {
   positionX   Float    @default(0)
   positionY   Float    @default(0)
   // Embedding cache — recomputed only when embeddingTextHash changes
-  embeddingVector    Float[]
+  embeddingVector    Float[]  @default([])
   embeddingModel     String?
   embeddingTextHash  String?
   embeddingUpdatedAt DateTime?
