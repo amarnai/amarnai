@@ -126,7 +126,7 @@ export function createSyncInboxWorker(): Worker {
         where: { emailAccountId },
         create: { emailAccountId, provider: "GMAIL" },
         update: { status: "SYNCING", errorMessage: null },
-        select: { historyId: true },
+        select: { historyId: true, backfillStatus: true },
       });
 
       // Capture whether this is the very first sync before we overwrite the cursor.
@@ -247,13 +247,14 @@ export function createSyncInboxWorker(): Worker {
         },
       });
 
-      // On the very first sync, trigger a one-time backfill of historical threads.
-      // Use a deterministic jobId so duplicate triggers are ignored by BullMQ.
-      if (isFirstSync) {
+      // Trigger a historical backfill whenever it hasn't completed yet (PENDING is
+      // the DB default). Using deduplication rather than a fixed jobId means a
+      // previously-failed backfill job doesn't block re-enqueuing.
+      if (syncState.backfillStatus === "PENDING") {
         await backfillInboxQueue.add(
           "backfill-inbox",
           { workspaceId },
-          { jobId: `backfill-inbox_${workspaceId}` }
+          { deduplication: { id: `backfill-inbox_${workspaceId}` } }
         );
       }
 

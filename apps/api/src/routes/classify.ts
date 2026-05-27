@@ -1,10 +1,8 @@
 import { Hono } from "hono";
 import { z } from "zod";
 import { db } from "@amarnai/db";
-import { createAIProvider, createEmbeddingProvider, sortThreadByEmbedding } from "@amarnai/ai";
-import type { EmbeddableNode } from "@amarnai/ai";
 import { mockClassify } from "../services/mock-classifier.js";
-import { getAIProviderConfig, getEmbeddingProviderConfig } from "../services/ai-providers.js";
+import { classifyThreadQueue } from "../queues.js";
 
 const params = z.object({
   workspaceId: z.string().min(1),
@@ -14,6 +12,11 @@ const params = z.object({
 const classify = new Hono();
 
 // ─── POST /workspaces/:workspaceId/email-threads/:threadId/ai-classify ─────────
+//
+// Enqueues a classify-thread BullMQ job and returns immediately (202).
+// The worker stamps classifyingAt on the thread, runs the AI, then clears it.
+// Callers should poll the thread until isClassifying is false and a
+// classification result is present.
 
 classify.post(
   "/workspaces/:workspaceId/email-threads/:threadId/ai-classify",
@@ -27,127 +30,40 @@ classify.post(
     }
     const { workspaceId, threadId } = parsed.data;
 
-    // Build providers early so we return 400 before DB queries if misconfigured
-    let provider: ReturnType<typeof createAIProvider>;
-    let embeddingProvider: ReturnType<typeof createEmbeddingProvider>;
-    try {
-      provider = createAIProvider(getAIProviderConfig());
-      embeddingProvider = createEmbeddingProvider(getEmbeddingProviderConfig());
-    } catch (err) {
-      return c.json({ error: err instanceof Error ? err.message : String(err) }, 400);
-    }
-
     const thread = await db.emailThread.findFirst({
       where: { id: threadId, workspaceId },
-      select: {
-        id: true,
-        messages: {
-          orderBy: { receivedAt: "asc" },
-          select: {
-            subject: true,
-            senderEmail: true,
-            senderName: true,
-            bodyText: true,
-            receivedAt: true,
-          },
-        },
-      },
+      select: { id: true },
     });
     if (!thread) {
       return c.json({ error: "Thread not found" }, 404);
     }
 
-    const [rawNodes, rawEdges] = await Promise.all([
-      db.taxonomyNode.findMany({
-        where: { workspaceId },
-        select: {
-          id: true,
-          name: true,
-          description: true,
-          instructions: true,
-          examples: true,
-          isRoot: true,
-          embeddingVector: true,
-          embeddingModel: true,
-          embeddingTextHash: true,
-        },
-      }),
-      db.taxonomyEdge.findMany({
-        where: { workspaceId },
-        select: { id: true, sourceNodeId: true, targetNodeId: true },
-      }),
-    ]);
-
-    if (rawNodes.length === 0) {
+    const nodeCount = await db.taxonomyNode.count({ where: { workspaceId } });
+    if (nodeCount === 0) {
       return c.json({ error: "No taxonomy nodes found for classification" }, 422);
     }
 
-    const nodes: EmbeddableNode[] = rawNodes.map((n: (typeof rawNodes)[number]) => ({
-      ...n,
-      examples: n.examples as string[],
-      embeddingVector: n.embeddingVector.length > 0 ? n.embeddingVector : null,
-    }));
-
-    const result = await sortThreadByEmbedding(
-      embeddingProvider,
-      provider,
-      nodes,
-      rawEdges,
-      thread.messages
-    );
-
-    // Persist updated node embeddings (cache for future calls)
-    if (result.updatedNodeEmbeddings.length > 0) {
-      await Promise.all(
-        result.updatedNodeEmbeddings.map((e) =>
-          db.taxonomyNode.update({
-            where: { id: e.nodeId },
-            data: {
-              embeddingVector: e.embeddingVector,
-              embeddingModel: e.embeddingModel,
-              embeddingTextHash: e.embeddingTextHash,
-              embeddingUpdatedAt: e.embeddingUpdatedAt,
-            },
-          })
-        )
-      );
-    }
-
-    const classification = await db.emailClassification.create({
-      data: {
-        workspaceId,
-        emailThreadId: threadId,
-        finalNodeId: result.finalNodeId,
-        confidence: result.confidence,
-        explanation: result.explanation,
-        needsHumanReview: result.needsHumanReview,
-        modelProvider: provider.providerName,
-        modelName: provider.modelName,
-      },
-      select: { id: true },
-    });
-
-    // Update triage status to reflect the latest classification outcome
+    // Stamp classifyingAt immediately so the UI shows the indicator before
+    // the worker has had a chance to pick up the job.
     await db.emailThread.update({
       where: { id: threadId },
-      data: { triageStatus: result.needsHumanReview ? "NEEDS_REVIEW" : "SORTED" },
+      data: { classifyingAt: new Date() },
     });
 
-    return c.json(
-      {
-        classification: {
-          id: classification.id,
-          finalNodeId: result.finalNodeId,
-          confidence: result.confidence,
-          explanation: result.explanation,
-          needsHumanReview: result.needsHumanReview,
-          decisionSource: result.decisionSource,
-          modelProvider: provider.providerName,
-          modelName: provider.modelName,
-        },
-      },
-      201
+    // Deterministic jobId: deduplicates rapid re-clicks while respecting BullMQ's
+    // deduplication semantics (unlike a fixed jobId, this doesn't block re-queuing
+    // after a job completes).
+    const job = await classifyThreadQueue.add(
+      "classify-thread",
+      { workspaceId, emailThreadId: threadId },
+      { deduplication: { id: `classify_${workspaceId}_${threadId}` } }
     );
+
+    console.log(
+      `[classify] Enqueued classify-thread job ${job?.id ?? "(deduped)"} for thread ${threadId} (workspace ${workspaceId})`
+    );
+
+    return c.json({ queued: true }, 202);
   }
 );
 

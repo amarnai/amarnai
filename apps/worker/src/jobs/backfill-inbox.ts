@@ -222,13 +222,18 @@ export function createBackfillInboxWorker(): Worker {
         await job.updateProgress(80);
 
         // ── 8. Enqueue classify-thread jobs at backfill priority ─────────────
+        //
+        // Use deduplication rather than a fixed jobId so that a previously-failed
+        // classify job for this thread doesn't block re-enqueuing — deduplication
+        // keys are cleared after the job completes or fails, unlike jobId which
+        // persists in the failed set until explicitly removed.
 
         await classifyThreadQueue.addBulk(
           upsertedEmailThreadIds.map((emailThreadId) => ({
             name: "classify-thread",
             data: { workspaceId, emailThreadId },
             opts: {
-              jobId: `classify_backfill_${workspaceId}_${emailThreadId}`,
+              deduplication: { id: `classify_backfill_${workspaceId}_${emailThreadId}` },
               priority: BACKFILL_CLASSIFY_PRIORITY,
             },
           }))
