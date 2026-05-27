@@ -181,6 +181,10 @@ export function createSyncInboxWorker(): Worker {
           });
 
           if (stuck.length > 0) {
+            await db.emailThread.updateMany({
+              where: { id: { in: stuck.map((s) => s.id) } },
+              data: { classifyingAt: new Date() },
+            });
             await classifyThreadQueue.addBulk(
               stuck.map(({ id: emailThreadId }) => ({
                 name: "classify-thread",
@@ -341,6 +345,15 @@ export function createSyncInboxWorker(): Worker {
       // ── 6. Enqueue classify-thread jobs for every upserted thread ────────────
       //
       // Priority 1 ensures live sync jobs always outrank backfill jobs (priority 10).
+      // Stamp classifyingAt before adding to the queue so isClassifying is true
+      // while jobs wait — without this the banner shows "use the sort button".
+
+      if (upsertedEmailThreadIds.length > 0) {
+        await db.emailThread.updateMany({
+          where: { id: { in: upsertedEmailThreadIds } },
+          data: { classifyingAt: new Date() },
+        });
+      }
 
       await classifyThreadQueue.addBulk(
         upsertedEmailThreadIds.map((emailThreadId) => ({
@@ -377,6 +390,10 @@ export function createSyncInboxWorker(): Worker {
         });
 
         if (stuck.length > 0) {
+          await db.emailThread.updateMany({
+            where: { id: { in: stuck.map((s) => s.id) } },
+            data: { classifyingAt: new Date() },
+          });
           await classifyThreadQueue.addBulk(
             stuck.map(({ id: emailThreadId }) => ({
               name: "classify-thread",
@@ -396,6 +413,10 @@ export function createSyncInboxWorker(): Worker {
       connection: redisConnection,
       // At most 2 workspace syncs run concurrently in this process.
       concurrency: 2,
+      // Sync iterates over changed threads and makes per-thread Gmail API calls.
+      // 60 s is generous for a normal sync cycle; lock auto-renews every 30 s.
+      lockDuration: 60_000,
+      maxStalledCount: 2,
     }
   );
 

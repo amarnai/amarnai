@@ -314,6 +314,16 @@ export function createBackfillInboxWorker(): Worker {
         // classify job for this thread doesn't block re-enqueuing — deduplication
         // keys are cleared after the job completes or fails, unlike jobId which
         // persists in the failed set until explicitly removed.
+        //
+        // Stamp classifyingAt before adding to the queue so that isClassifying
+        // is true while jobs wait — without this, threads look unsorted to the
+        // banner even though they are in the queue.
+
+        const enqueuedAt = new Date();
+        await db.emailThread.updateMany({
+          where: { id: { in: upsertedEmailThreadIds } },
+          data: { classifyingAt: enqueuedAt },
+        });
 
         await classifyThreadQueue.addBulk(
           upsertedEmailThreadIds.map((emailThreadId) => ({
@@ -358,6 +368,12 @@ export function createBackfillInboxWorker(): Worker {
       connection: redisConnection,
       // Only one backfill per process at a time — these are heavy jobs.
       concurrency: 1,
+      // Backfill iterates up to 1 000 threads with per-thread Gmail API calls;
+      // the job can run for many minutes.  The lock auto-renews every
+      // lockDuration/2 ms while running, so 10 minutes gives comfortable headroom.
+      lockDuration: 600_000,
+      // Allow recovery from a small number of stalls (e.g. dev restarts).
+      maxStalledCount: 2,
     }
   );
 
