@@ -8,6 +8,8 @@ Amarnai is an open-source, self-hostable AI email triage assistant. It is Gmail-
 
 Amarnai sorts email threads, not individual messages. New messages in existing threads trigger re-sorting of the full thread.
 
+A key use case is bulk triage of an existing inbox: users may want to sort and classify thousands of emails already accumulated, not just handle incoming ones. Features and jobs should be designed to handle both ongoing (real-time) and historical (backfill) triage at scale.
+
 ## Monorepo
 
 - `apps/web/` - Next.js frontend
