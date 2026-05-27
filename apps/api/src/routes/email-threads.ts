@@ -9,8 +9,13 @@ const threadParam = z.object({
   threadId: z.string().min(1),
 });
 
-/** A classify-thread job stamped more than 2 minutes ago is considered stale. */
-const CLASSIFY_STALE_MS = 2 * 60 * 1_000;
+// With Ollama (concurrency=1), a job can wait several minutes in the queue
+// before the worker picks it up — especially when other classify jobs are ahead.
+// 15 minutes covers realistic queue depths (up to ~5 jobs × ~3 min each).
+// The worker re-stamps classifyingAt at pickup (step 1b), resetting the timer
+// for the active phase. The cost of increasing this threshold is that a
+// crashed-worker's stale indicator takes longer to clear (acceptable trade-off).
+const CLASSIFY_STALE_MS = 15 * 60 * 1_000;
 
 function deriveIsClassifying(classifyingAt: Date | null): boolean {
   if (!classifyingAt) return false;
