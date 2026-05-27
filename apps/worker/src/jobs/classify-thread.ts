@@ -323,7 +323,10 @@ export function createClassifyThreadWorker(): Worker {
     },
   );
 
-  // Log definitively when all retry attempts are exhausted.
+  // When a job is permanently failed (all retries exhausted), the finally
+  // block in the processor may not have run (e.g. the job stalled because the
+  // worker process was killed). Clear classifyingAt here so the thread is not
+  // stuck showing "Queued" in the UI indefinitely.
   worker.on("failed", (job, err) => {
     if (!job) return;
     const { workspaceId, emailThreadId } = job.data;
@@ -331,6 +334,14 @@ export function createClassifyThreadWorker(): Worker {
       `[classify-thread] Permanently failed for thread ${emailThreadId} (workspace ${workspaceId}) after ${job.attemptsMade} attempt(s):`,
       err,
     );
+    db.emailThread
+      .update({
+        where: { id: emailThreadId },
+        data: { classifyingAt: null },
+      })
+      .catch(() => {
+        // Best-effort — don't mask the original error.
+      });
   });
 
   return worker;

@@ -39,10 +39,12 @@ function ThreadStatusBanner({
   triageStatus,
   syncStatus,
   hasClassification,
+  isQueued,
 }: {
   triageStatus: EmailThreadDetail["triageStatus"];
   syncStatus: SyncStatus;
   hasClassification: boolean;
+  isQueued: boolean;
 }) {
   if (triageStatus === "SORTED") {
     return (
@@ -60,16 +62,17 @@ function ThreadStatusBanner({
     );
   }
 
-  // PENDING — show context-aware queuing message.
-  const backfillStatus = syncStatus?.backfillStatus;
-
-  if (backfillStatus === "RUNNING") {
+  // PENDING — check whether a classify job is already enqueued.
+  if (isQueued) {
     return (
       <div className="backfill-banner backfill-banner-running" style={{ marginBottom: 16 }}>
-        ⏳ This thread will be sorted as part of the inbox backfill in progress.
+        ⏳ This thread is queued for sorting and will be processed automatically.
       </div>
     );
   }
+
+  // PENDING, not queued — show context-aware message based on backfill state.
+  const backfillStatus = syncStatus?.backfillStatus;
 
   if (backfillStatus === "PENDING") {
     return (
@@ -79,9 +82,8 @@ function ThreadStatusBanner({
     );
   }
 
-  // Backfill is DONE, ERROR, or absent.
-  // Only prompt to sort if there is genuinely no classification yet — a thread
-  // with existing results but a stale PENDING status should not show this.
+  // Backfill is DONE, ERROR, or absent — no job in flight.
+  // Only prompt to sort if there is genuinely no classification yet.
   if (hasClassification) return null;
 
   return (
@@ -146,7 +148,7 @@ export default async function ThreadDetailPage({ params }: Props) {
 
       {thread.isClassifying
         ? <ClassifyingBanner hasClassification={thread.latestClassification !== null} />
-        : <ThreadStatusBanner triageStatus={thread.triageStatus} syncStatus={syncStatus} hasClassification={cls !== null} />
+        : <ThreadStatusBanner triageStatus={thread.triageStatus} syncStatus={syncStatus} hasClassification={cls !== null} isQueued={thread.isQueued} />
       }
 
       {/* Triage actions — approve / move to node */}
@@ -164,6 +166,7 @@ export default async function ThreadDetailPage({ params }: Props) {
         triageStatus={thread.triageStatus}
         hasClassification={thread.latestClassification !== null}
         isClassifying={thread.isClassifying}
+        isQueued={thread.isQueued}
         modelProvider={thread.latestClassification?.modelProvider ?? null}
         modelName={thread.latestClassification?.modelName ?? null}
       />

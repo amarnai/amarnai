@@ -10,6 +10,8 @@ type Props = {
   triageStatus: TriageStatus;
   hasClassification: boolean;
   isClassifying: boolean;
+  /** classifyingAt is set — a classify job is already enqueued or in progress. */
+  isQueued: boolean;
   modelProvider?: string | null;
   modelName?: string | null;
 };
@@ -20,6 +22,7 @@ export function ClassificationActions({
   triageStatus: _triageStatus,
   hasClassification,
   isClassifying,
+  isQueued,
   modelProvider,
   modelName,
 }: Props) {
@@ -28,7 +31,8 @@ export function ClassificationActions({
   const [analyzeLoading, setAnalyzeLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const busy = sortLoading || analyzeLoading || isClassifying;
+  // Disable all actions while a job is in flight, active, or already queued.
+  const busy = sortLoading || analyzeLoading || isClassifying || isQueued;
 
   async function handleRetrySort() {
     setError(null);

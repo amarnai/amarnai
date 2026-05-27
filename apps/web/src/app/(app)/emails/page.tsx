@@ -198,7 +198,7 @@ export default async function EmailsPage() {
                       )}
                       {thread.triageStatus === "PENDING" && (
                         <span className="triage-badge triage-badge-pending" style={{ fontSize: 10 }}>
-                          Pending
+                          {thread.isQueued ? "Queued" : "Pending"}
                         </span>
                       )}
                     </>

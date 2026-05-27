@@ -119,6 +119,8 @@ export type EmailThreadSummary = {
   messageCount: number;
   triageStatus: TriageStatus;
   isClassifying: boolean;
+  /** classifyingAt is set — a classify job is enqueued or in progress. */
+  isQueued: boolean;
   createdAt: string;
   messages: Array<{
     id: string;
@@ -156,6 +158,8 @@ export type EmailThreadDetail = {
   messageCount: number;
   triageStatus: TriageStatus;
   isClassifying: boolean;
+  /** classifyingAt is set — a classify job is enqueued or in progress. */
+  isQueued: boolean;
   createdAt: string;
   updatedAt: string;
   messages: Array<{

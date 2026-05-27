@@ -108,6 +108,9 @@ emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
     return {
       ...rest,
       isClassifying: deriveIsClassifying(classifyingAt),
+      // true whenever classifyingAt is set, regardless of staleness — the
+      // thread has a classify job enqueued or in progress.
+      isQueued: classifyingAt !== null,
       latestClassification: classifications[0] ?? null,
     };
   });
@@ -194,6 +197,7 @@ emailThreads.get(
     return c.json({
       ...rest,
       isClassifying: deriveIsClassifying(classifyingAt),
+      isQueued: classifyingAt !== null,
       latestClassification: classifications[0] ?? null,
     });
   }
