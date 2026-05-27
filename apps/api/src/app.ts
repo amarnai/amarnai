@@ -16,6 +16,7 @@ import { triggerSyncRoute } from "./routes/trigger-sync.js";
 import { sweepInboxRoute } from "./routes/sweep-inbox.js";
 import { syncStatusRoute } from "./routes/sync-status.js";
 import { triageRoute } from "./routes/triage.js";
+import { folderCountsRoute } from "./routes/folder-counts.js";
 
 const app = new Hono();
 
@@ -37,5 +38,6 @@ app.route("/", triggerSyncRoute);
 app.route("/", sweepInboxRoute);
 app.route("/", syncStatusRoute);
 app.route("/", triageRoute);
+app.route("/", folderCountsRoute);
 
 export default app;

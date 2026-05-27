@@ -14,7 +14,7 @@ type FolderNode = {
 function buildFolderTree(
   nodes: TaxonomyNode[],
   edges: TaxonomyEdge[],
-  threads: EmailThreadSummary[]
+  folderCounts: Record<string, number>
 ): FolderNode[] {
   const childrenMap = new Map<string, string[]>();
   for (const node of nodes) {
@@ -23,14 +23,6 @@ function buildFolderTree(
   for (const edge of edges) {
     const list = childrenMap.get(edge.sourceNodeId);
     if (list) list.push(edge.targetNodeId);
-  }
-
-  const threadCountByNode = new Map<string, number>();
-  for (const thread of threads) {
-    const nodeId = thread.latestClassification?.finalNode?.id;
-    if (nodeId) {
-      threadCountByNode.set(nodeId, (threadCountByNode.get(nodeId) ?? 0) + 1);
-    }
   }
 
   const nodeById = new Map(nodes.map((n) => [n.id, n]));
@@ -47,7 +39,7 @@ function buildFolderTree(
       result.push({
         id: child.id,
         name: child.name,
-        threadCount: threadCountByNode.get(child.id) ?? 0,
+        threadCount: folderCounts[child.id] ?? 0,
         children: getChildren(child.id),
       });
     }
@@ -132,29 +124,41 @@ function FolderRow({
 type Props = {
   nodes: TaxonomyNode[];
   edges: TaxonomyEdge[];
+  /** First-page threads — used only for the right-panel preview list. */
   threads: EmailThreadSummary[];
+  /** DB-aggregated count of threads per taxonomy node (latest classification). */
+  folderCounts: Record<string, number>;
+  /** Total number of threads that have at least one classification. */
+  totalClassified: number;
 };
 
-export default function FoldersSection({ nodes, edges, threads }: Props) {
+export default function FoldersSection({
+  nodes,
+  edges,
+  threads,
+  folderCounts,
+  totalClassified,
+}: Props) {
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
   const tree = useMemo(
-    () => buildFolderTree(nodes, edges, threads),
-    [nodes, edges, threads]
+    () => buildFolderTree(nodes, edges, folderCounts),
+    [nodes, edges, folderCounts]
   );
 
-  const sortedThreads = useMemo(
+  // Right-panel preview: threads from the first page that have a classification.
+  const classifiedThreads = useMemo(
     () => threads.filter((t) => t.latestClassification !== null),
     [threads]
   );
 
   const visibleThreads = useMemo(() => {
-    if (selectedId === null) return sortedThreads;
+    if (selectedId === null) return classifiedThreads;
     return threads.filter(
       (t) => t.latestClassification?.finalNode?.id === selectedId
     );
-  }, [selectedId, sortedThreads, threads]);
+  }, [selectedId, classifiedThreads, threads]);
 
   function handleToggle(id: string) {
     setExpandedIds((prev) => {
@@ -177,7 +181,7 @@ export default function FoldersSection({ nodes, edges, threads }: Props) {
           onClick={() => handleSelect(null)}
         >
           <span className="folder-name">All sorted</span>
-          <span className="folder-count">{sortedThreads.length}</span>
+          <span className="folder-count">{totalClassified}</span>
         </button>
         <div className="folders-divider" />
         {tree.length === 0 ? (

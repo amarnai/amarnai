@@ -112,6 +112,11 @@ export type Tag = {
 
 export type TriageStatus = "PENDING" | "SORTED" | "NEEDS_REVIEW";
 
+export type FolderCountsResult = {
+  counts: { nodeId: string; count: number }[];
+  total: number;
+};
+
 export type FilterCounts = {
   total: number;
   PENDING: number;
@@ -444,6 +449,8 @@ export const api = {
     ),
   tags: (workspaceId: string) =>
     apiFetch<Tag[]>(`/workspaces/${workspaceId}/tags`),
+  folderCounts: (workspaceId: string) =>
+    apiFetch<FolderCountsResult>(`/workspaces/${workspaceId}/folder-counts`),
   emailThreads: (
     workspaceId: string,
     filters?: { nodeId?: string; status?: string; cursor?: string }

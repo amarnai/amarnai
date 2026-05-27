@@ -8,24 +8,35 @@ export default async function DashboardPage() {
 
   let data;
   try {
-    const [nodes, edges, threadsResult, reviews, tags] = await Promise.all([
-      api.taxonomyNodes(workspace.id),
-      api.taxonomyEdges(workspace.id),
-      api.emailThreads(workspace.id),
-      api.reviewItems(workspace.id),
-      api.tags(workspace.id),
-    ]);
+    const [nodes, edges, threadsResult, reviews, tags, folderCountsResult] =
+      await Promise.all([
+        api.taxonomyNodes(workspace.id),
+        api.taxonomyEdges(workspace.id),
+        api.emailThreads(workspace.id),
+        api.reviewItems(workspace.id),
+        api.tags(workspace.id),
+        api.folderCounts(workspace.id),
+      ]);
+
+    // Convert the counts array to a Record for O(1) lookup in FoldersSection.
+    const folderCounts: Record<string, number> = {};
+    for (const { nodeId, count } of folderCountsResult.counts) {
+      folderCounts[nodeId] = count;
+    }
+
     data = {
       workspace,
       nodes,
       edges,
-      // First page of threads only — FoldersSection per-node counts are
-      // approximate until the dashboard gets its own aggregation endpoint.
+      // First-page threads — used only for the right-panel thread preview in
+      // FoldersSection. Per-node counts come from folderCounts instead.
       threads: threadsResult.threads,
       nodeCount: nodes.length,
       threadCount: threadsResult.counts.total,
       reviewCount: reviews.length,
       tagCount: tags.length,
+      folderCounts,
+      totalClassified: folderCountsResult.total,
     };
   } catch (err) {
     return (
@@ -67,6 +78,8 @@ export default async function DashboardPage() {
           nodes={data.nodes}
           edges={data.edges}
           threads={data.threads}
+          folderCounts={data.folderCounts}
+          totalClassified={data.totalClassified}
         />
       </div>
     </>
