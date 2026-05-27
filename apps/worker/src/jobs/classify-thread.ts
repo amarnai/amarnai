@@ -7,7 +7,7 @@ import {
   analyzeThreadTriage,
   snapshotToThreadMessages,
 } from "@amarnai/ai";
-import type { EmbeddableNode } from "@amarnai/ai";
+import type { EmbeddableNode, TriageMetadata } from "@amarnai/ai";
 import { GmailClient, normalizeGmailThread } from "@amarnai/gmail";
 import {
   QUEUE_CLASSIFY_THREAD,
@@ -18,6 +18,42 @@ import {
   getAIProviderConfig,
   getEmbeddingProviderConfig,
 } from "../providers.js";
+
+// ── Helpers ────────────────────────────────────────────────────────────────────
+
+/** Write all 7 triage metadata fields onto an existing classification record. */
+async function persistTriageMetadata(
+  classificationId: string,
+  triage: TriageMetadata
+): Promise<void> {
+  await db.emailClassification.update({
+    where: { id: classificationId },
+    data: {
+      priority: triage.priority,
+      urgency: triage.urgency,
+      riskLevel: triage.riskLevel,
+      requiredAction: triage.requiredAction,
+      sensitivity: triage.sensitivity,
+      dueAt: triage.dueAt !== null ? new Date(triage.dueAt) : null,
+      suggestedNextStep: triage.suggestedNextStep,
+    },
+  });
+}
+
+/**
+ * Best-effort clear of classifyingAt. Used in finally and the failed handler
+ * — failures here must never mask an original error.
+ */
+async function clearClassifyingAt(emailThreadId: string): Promise<void> {
+  await db.emailThread
+    .update({
+      where: { id: emailThreadId },
+      data: { classifyingAt: null },
+    })
+    .catch(() => {});
+}
+
+// ── Worker ─────────────────────────────────────────────────────────────────────
 
 export function createClassifyThreadWorker(): Worker {
   const worker = new Worker<ClassifyThreadJobData>(
@@ -64,7 +100,8 @@ export function createClassifyThreadWorker(): Worker {
           where: { id: emailThreadId },
           data: { classifyingAt: new Date() },
         });
-        // ── 2. Re-fetch thread from Gmail ───────────────────────────────────────
+
+        // ── 2. Re-fetch thread from Gmail ───────────────────────────────────
 
         const client = new GmailClient(connection.encryptedRefreshToken);
 
@@ -88,7 +125,7 @@ export function createClassifyThreadWorker(): Worker {
         const aiProvider = createAIProvider(getAIProviderConfig());
 
         if (triageOnly) {
-          // ── Triage-only path ──────────────────────────────────────────────────
+          // ── Triage-only path ──────────────────────────────────────────────
           //
           // Skip routing entirely. Re-run the triage metadata analysis and update
           // the most recent existing classification record. triageStatus is left
@@ -121,27 +158,16 @@ export function createClassifyThreadWorker(): Worker {
             );
           }
 
-          await db.emailClassification.update({
-            where: { id: existingClassification.id },
-            data: {
-              priority: triage.priority,
-              urgency: triage.urgency,
-              riskLevel: triage.riskLevel,
-              requiredAction: triage.requiredAction,
-              sensitivity: triage.sensitivity,
-              dueAt: triage.dueAt !== null ? new Date(triage.dueAt) : null,
-              suggestedNextStep: triage.suggestedNextStep,
-            },
-          });
+          await persistTriageMetadata(existingClassification.id, triage);
           console.log(
             `[classify-thread] Triage-only metadata saved for thread ${emailThreadId}: priority=${triage.priority}, urgency=${triage.urgency}`
           );
 
           await job.updateProgress(95);
         } else {
-          // ── Full classification path ──────────────────────────────────────────
+          // ── Full classification path ──────────────────────────────────────
 
-          // ── 3. Load taxonomy ────────────────────────────────────────────────────
+          // ── 3. Load taxonomy ──────────────────────────────────────────────
 
           const [rawNodes, rawEdges] = await Promise.all([
             db.taxonomyNode.findMany({
@@ -177,7 +203,7 @@ export function createClassifyThreadWorker(): Worker {
 
           await job.updateProgress(35);
 
-          // ── 4. Route via embeddings ─────────────────────────────────────────────
+          // ── 4. Route via embeddings ───────────────────────────────────────
           //
           // Run routing then triage sequentially — Ollama processes requests
           // serially; concurrent calls queue and can exceed the 5-minute headers
@@ -197,7 +223,7 @@ export function createClassifyThreadWorker(): Worker {
 
           await job.updateProgress(60);
 
-          // ── 5. Persist updated node embedding cache ───────────────────────────
+          // ── 5. Persist updated node embedding cache ───────────────────────
 
           if (result.updatedNodeEmbeddings.length > 0) {
             await Promise.all(
@@ -215,7 +241,7 @@ export function createClassifyThreadWorker(): Worker {
             );
           }
 
-          // ── 6. Persist routing result + update thread status ──────────────────
+          // ── 6. Persist routing result + update thread status ──────────────
           //
           // Done before triage so the UI can distinguish the two phases:
           //   classifyingAt set  + no classification  → "Sorting…"   (routing)
@@ -243,7 +269,7 @@ export function createClassifyThreadWorker(): Worker {
 
           await job.updateProgress(75);
 
-          // ── 7. Triage metadata ────────────────────────────────────────────────
+          // ── 7. Triage metadata ────────────────────────────────────────────
           //
           // Non-fatal — thread is already sorted; triage fields are left null
           // if the LLM fails or returns invalid output.
@@ -251,18 +277,7 @@ export function createClassifyThreadWorker(): Worker {
           const triage = await analyzeThreadTriage(aiProvider, messages);
 
           if (triage !== null) {
-            await db.emailClassification.update({
-              where: { id: classificationId },
-              data: {
-                priority: triage.priority,
-                urgency: triage.urgency,
-                riskLevel: triage.riskLevel,
-                requiredAction: triage.requiredAction,
-                sensitivity: triage.sensitivity,
-                dueAt: triage.dueAt !== null ? new Date(triage.dueAt) : null,
-                suggestedNextStep: triage.suggestedNextStep,
-              },
-            });
+            await persistTriageMetadata(classificationId, triage);
             console.log(
               `[classify-thread] Triage metadata saved for thread ${emailThreadId}: priority=${triage.priority}, urgency=${triage.urgency}`
             );
@@ -289,15 +304,7 @@ export function createClassifyThreadWorker(): Worker {
         );
         throw err;
       } finally {
-        // Ensure classifyingAt is always cleared, even on error/early return.
-        await db.emailThread
-          .update({
-            where: { id: emailThreadId },
-            data: { classifyingAt: null },
-          })
-          .catch(() => {
-            // Best-effort — don't mask the original error.
-          });
+        await clearClassifyingAt(emailThreadId);
       }
     },
     {
@@ -331,14 +338,7 @@ export function createClassifyThreadWorker(): Worker {
       `[classify-thread] Permanently failed for thread ${emailThreadId} (workspace ${workspaceId}) after ${job.attemptsMade} attempt(s):`,
       err,
     );
-    db.emailThread
-      .update({
-        where: { id: emailThreadId },
-        data: { classifyingAt: null },
-      })
-      .catch(() => {
-        // Best-effort — don't mask the original error.
-      });
+    void clearClassifyingAt(emailThreadId);
   });
 
   return worker;
