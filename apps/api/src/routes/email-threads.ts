@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import { z } from "zod";
 import { db } from "@amarnai/db";
+import { DEFAULT_GMAIL_SYNC_SETTINGS } from "@amarnai/shared";
 
 const workspaceParam = z.object({ workspaceId: z.string().min(1) });
 const threadParam = z.object({
@@ -26,10 +27,25 @@ emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
     return c.json({ error: "Invalid workspace ID" }, 400);
   }
 
+  // Load sync settings to determine which threads should be visible.
+  const syncSettingsRow = await db.gmailSyncSettings.findUnique({
+    where: { workspaceId: parsed.data.workspaceId },
+    select: { includeSpam: true, includePromotions: true },
+  });
+  const syncSettings = syncSettingsRow ?? DEFAULT_GMAIL_SYNC_SETTINGS;
+
+  // Trash is always excluded; spam/promotions depend on user settings.
+  const threadWhere = {
+    gmailIsTrash: false,
+    ...(syncSettings.includeSpam       ? {} : { gmailIsSpam: false }),
+    ...(syncSettings.includePromotions ? {} : { gmailIsPromotions: false }),
+  };
+
   const workspace = await db.workspace.findUnique({
     where: { id: parsed.data.workspaceId },
     select: {
       emailThreads: {
+        where: threadWhere,
         orderBy: { latestMessageAt: "desc" },
         select: {
           id: true,

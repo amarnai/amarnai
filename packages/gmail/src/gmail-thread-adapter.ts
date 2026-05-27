@@ -15,6 +15,7 @@ type RawPart = {
 type RawMessage = {
   id: string;
   threadId: string;
+  labelIds?: string[];
   snippet?: string;
   payload: RawPart & { headers: RawHeader[] };
 };
@@ -217,6 +218,7 @@ function normalizeMessage(msg: RawMessage): SnapshotMessage {
     bodyExcerpt,
     attachments,
     receivedAt,
+    labelIds: msg.labelIds ?? [],
   };
 }
 

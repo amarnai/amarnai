@@ -1,6 +1,7 @@
 import { Worker } from "bullmq";
 import { db } from "@amarnai/db";
 import { GmailClient, GmailThreadMeta, normalizeGmailThread } from "@amarnai/gmail";
+import type { GmailSyncSettings } from "@amarnai/shared";
 import {
   classifyThreadQueue,
   backfillInboxQueue,
@@ -8,6 +9,12 @@ import {
   type BackfillInboxJobData,
 } from "../queues.js";
 import { redisConnection } from "../redis.js";
+import {
+  applyThreadFilter,
+  computeThreadLabelFlags,
+  computeThreadLabelFlagsFromMeta,
+  isThreadExcluded,
+} from "./filter-thread-messages.js";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -37,9 +44,9 @@ export function createBackfillInboxWorker(): Worker {
     async (job) => {
       const { workspaceId } = job.data;
 
-      // ── 1. Load workspace + Gmail connection ────────────────────────────────
+      // ── 1. Load workspace + Gmail connection + sync settings ───────────────
 
-      const [workspace, connection] = await Promise.all([
+      const [workspace, connection, syncSettingsRow] = await Promise.all([
         db.workspace.findUnique({
           where: { id: workspaceId },
           select: { ownerUserId: true },
@@ -52,10 +59,19 @@ export function createBackfillInboxWorker(): Worker {
             encryptedRefreshToken: true,
           },
         }),
+        db.gmailSyncSettings.findUnique({
+          where: { workspaceId },
+          select: { includeSpam: true, includePromotions: true },
+        }),
       ]);
 
       if (!workspace) throw new Error(`Workspace not found: ${workspaceId}`);
       if (!connection) throw new Error(`No Gmail connection for workspace: ${workspaceId}`);
+
+      const settings: GmailSyncSettings = {
+        includeSpam:       syncSettingsRow?.includeSpam       ?? false,
+        includePromotions: syncSettingsRow?.includePromotions ?? false,
+      };
 
       // ── 2. Resolve the EmailAccount and current ProviderSyncState ───────────
 
@@ -131,16 +147,29 @@ export function createBackfillInboxWorker(): Worker {
                 providerThreadId: gmailThread.id,
               },
             },
-            select: { id: true },
+            select: { id: true, triageStatus: true },
           });
 
           if (existing) {
-            // Already captured by a live sync — just enqueue classification.
-            upsertedEmailThreadIds.push(existing.id);
+            // Compute label flags from metadata (no extra network call needed).
+            const flagsFromMeta = computeThreadLabelFlagsFromMeta(gmailThread.messageLabelIds);
+
+            // Always update stored flags so query-time filtering reflects current Gmail state.
+            await db.emailThread.update({
+              where: { id: existing.id },
+              data: flagsFromMeta,
+            });
+
+            // Skip classification if excluded; only re-classify PENDING threads.
+            const excluded = isThreadExcluded(flagsFromMeta, settings);
+            if (!excluded && existing.triageStatus === "PENDING") {
+              upsertedEmailThreadIds.push(existing.id);
+            }
             continue;
           }
 
-          // Fetch full thread to normalize and upsert.
+          // ── New thread: fetch full data, compute flags, apply filter ────────
+
           let rawFull: unknown;
           try {
             rawFull = await client.getThread(gmailThread.id);
@@ -150,8 +179,35 @@ export function createBackfillInboxWorker(): Worker {
             throw err;
           }
 
-          const snapshot = normalizeGmailThread(rawFull);
-          if (snapshot.messages.length === 0) continue;
+          const rawSnapshot = normalizeGmailThread(rawFull);
+          const labelFlags = computeThreadLabelFlags(rawSnapshot.messages);
+          const snapshot = applyThreadFilter(rawSnapshot, settings);
+
+          if (snapshot === null) {
+            // Fully excluded — persist with flags so query-time filtering works,
+            // but don't upsert messages and don't enqueue classification.
+            await db.emailThread.upsert({
+              where: {
+                emailAccountId_providerThreadId: {
+                  emailAccountId,
+                  providerThreadId: rawSnapshot.providerThreadId,
+                },
+              },
+              create: {
+                workspaceId,
+                emailAccountId,
+                provider: "GMAIL",
+                providerThreadId: rawSnapshot.providerThreadId,
+                subject: rawSnapshot.subject,
+                latestMessageAt: rawSnapshot.latestMessageAt,
+                messageCount: rawSnapshot.messageCount,
+                ...labelFlags,
+              },
+              update: labelFlags,
+              select: { id: true },
+            });
+            continue;
+          }
 
           const emailThread = await db.emailThread.upsert({
             where: {
@@ -168,11 +224,17 @@ export function createBackfillInboxWorker(): Worker {
               subject: snapshot.subject,
               latestMessageAt: snapshot.latestMessageAt,
               messageCount: snapshot.messageCount,
+              gmailIsSpam: false,
+              gmailIsPromotions: false,
+              gmailIsTrash: false,
             },
             update: {
               subject: snapshot.subject,
               latestMessageAt: snapshot.latestMessageAt,
               messageCount: snapshot.messageCount,
+              gmailIsSpam: false,
+              gmailIsPromotions: false,
+              gmailIsTrash: false,
             },
             select: { id: true },
           });

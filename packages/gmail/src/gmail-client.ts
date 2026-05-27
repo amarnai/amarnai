@@ -62,6 +62,12 @@ export type GmailThreadMeta = {
   unread: boolean;
   /** Timestamp of the most recent message in the thread. */
   latestMessageAt: Date;
+  /**
+   * Per-message label ID arrays, in message order.
+   * Used by the backfill worker to compute thread-level label flags (spam, promotions, trash)
+   * without a second full-thread fetch.
+   */
+  messageLabelIds: string[][];
 };
 
 export type GmailThreadWindowResult = {
@@ -260,7 +266,7 @@ export class GmailClient {
         `${GMAIL_THREAD_URL}/${encodeURIComponent(id)}?${params}`,
         { headers: { Authorization: `Bearer ${accessToken}` } }
       );
-      if (!res.ok) return { id, unread: false, latestMessageAt: new Date(0) };
+      if (!res.ok) return { id, unread: false, latestMessageAt: new Date(0), messageLabelIds: [] };
 
       const data = (await res.json()) as ThreadMetaResp;
       const messages = data.messages ?? [];
@@ -269,8 +275,9 @@ export class GmailClient {
       const latestMessageAt = lastMsg?.internalDate
         ? new Date(Number(lastMsg.internalDate))
         : new Date(0);
+      const messageLabelIds = messages.map((m) => m.labelIds ?? []);
 
-      return { id, unread, latestMessageAt };
+      return { id, unread, latestMessageAt, messageLabelIds };
     }
 
     const threads: GmailThreadMeta[] = [];

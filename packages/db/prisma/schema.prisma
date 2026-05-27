@@ -145,11 +145,12 @@ model Workspace {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  owner           User                  @relation(fields: [ownerUserId], references: [id])
-  members         WorkspaceMember[]
-  emailAccounts   EmailAccount[]
-  gmailConnection GmailConnection?
-  taxonomyNodes   TaxonomyNode[]
+  owner             User                  @relation(fields: [ownerUserId], references: [id])
+  members           WorkspaceMember[]
+  emailAccounts     EmailAccount[]
+  gmailConnection   GmailConnection?
+  gmailSyncSettings GmailSyncSettings?
+  taxonomyNodes     TaxonomyNode[]
   taxonomyEdges   TaxonomyEdge[]
   emailThreads    EmailThread[]
   emailMessages   EmailMessage[]
@@ -277,6 +278,12 @@ model EmailThread {
   messageCount     Int           @default(0)
   triageStatus     TriageStatus  @default(PENDING)
   classifyingAt    DateTime?
+  // Gmail category flags — all messages in the thread have the respective label.
+  // Used to filter threads at query time based on GmailSyncSettings.
+  // gmailIsTrash is always filtered out; gmailIsSpam/Promotions depend on user settings.
+  gmailIsSpam        Boolean  @default(false)
+  gmailIsPromotions  Boolean  @default(false)
+  gmailIsTrash       Boolean  @default(false)
   createdAt        DateTime      @default(now())
   updatedAt        DateTime      @updatedAt
 
@@ -426,6 +433,17 @@ model GmailConnection {
   lastVerifiedAt        DateTime?
   createdAt             DateTime              @default(now())
   updatedAt             DateTime              @updatedAt
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id])
+}
+
+model GmailSyncSettings {
+  id                String   @id @default(cuid())
+  workspaceId       String   @unique
+  includeSpam       Boolean  @default(false)
+  includePromotions Boolean  @default(false)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 
   workspace Workspace @relation(fields: [workspaceId], references: [id])
 }

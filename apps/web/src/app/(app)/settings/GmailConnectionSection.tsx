@@ -2,12 +2,19 @@
 
 import { useTransition } from "react";
 import { disconnectGmailAction } from "@/actions/gmail";
-import type { GmailConnection, SyncStatus } from "@/lib/api";
+import type { GmailConnection, SyncStatus, GmailSyncSettings } from "@/lib/api";
+import { GmailSyncSettingsSection } from "./GmailSyncSettingsSection";
+
+const DEFAULT_SYNC_SETTINGS: GmailSyncSettings = {
+  includeSpam: false,
+  includePromotions: false,
+};
 
 type Props = {
   workspaceId: string;
   connection: GmailConnection;
   syncStatus: SyncStatus;
+  syncSettings: GmailSyncSettings | null;
   connectError: string | null;
   connectSuccess: boolean;
 };
@@ -51,6 +58,7 @@ export function GmailConnectionSection({
   workspaceId,
   connection,
   syncStatus,
+  syncSettings,
   connectError,
   connectSuccess,
 }: Props) {
@@ -80,41 +88,48 @@ export function GmailConnectionSection({
       )}
 
       {connection ? (
-        <div className="gmail-connection-status">
-          <div className="gmail-address">{connection.gmailAddress}</div>
-          <div className="gmail-meta">
-            Last verified: {formatDate(connection.lastVerifiedAt)}
+        <>
+          <div className="gmail-connection-status">
+            <div className="gmail-address">{connection.gmailAddress}</div>
+            <div className="gmail-meta">
+              Last verified: {formatDate(connection.lastVerifiedAt)}
+            </div>
+
+            {syncStatus !== null ? (
+              <div className="sync-status-row">
+                <span className="sync-status-label">Inbox sync</span>
+                {badge && <span className={badge.className}>{badge.label}</span>}
+                <span className="sync-status-time">
+                  {syncStatus.lastSyncedAt
+                    ? `Last synced ${formatDate(syncStatus.lastSyncedAt)}`
+                    : "Not yet synced"}
+                </span>
+                {syncStatus.status === "ERROR" && syncStatus.errorMessage && (
+                  <div className="sync-error-message">{syncStatus.errorMessage}</div>
+                )}
+              </div>
+            ) : (
+              <div className="sync-status-row">
+                <span className="sync-status-label">Inbox sync</span>
+                <span className="sync-status-time">Waiting for first sync…</span>
+              </div>
+            )}
+
+            <button
+              className="btn-danger"
+              onClick={handleDisconnect}
+              disabled={isPending}
+              type="button"
+            >
+              {isPending ? "Disconnecting…" : "Disconnect Gmail"}
+            </button>
           </div>
 
-          {syncStatus !== null ? (
-            <div className="sync-status-row">
-              <span className="sync-status-label">Inbox sync</span>
-              {badge && <span className={badge.className}>{badge.label}</span>}
-              <span className="sync-status-time">
-                {syncStatus.lastSyncedAt
-                  ? `Last synced ${formatDate(syncStatus.lastSyncedAt)}`
-                  : "Not yet synced"}
-              </span>
-              {syncStatus.status === "ERROR" && syncStatus.errorMessage && (
-                <div className="sync-error-message">{syncStatus.errorMessage}</div>
-              )}
-            </div>
-          ) : (
-            <div className="sync-status-row">
-              <span className="sync-status-label">Inbox sync</span>
-              <span className="sync-status-time">Waiting for first sync…</span>
-            </div>
-          )}
-
-          <button
-            className="btn-danger"
-            onClick={handleDisconnect}
-            disabled={isPending}
-            type="button"
-          >
-            {isPending ? "Disconnecting…" : "Disconnect Gmail"}
-          </button>
-        </div>
+          <GmailSyncSettingsSection
+            workspaceId={workspaceId}
+            initialSettings={syncSettings ?? DEFAULT_SYNC_SETTINGS}
+          />
+        </>
       ) : (
         <div className="gmail-connection-empty">
           <p>No Gmail inbox connected to this workspace.</p>

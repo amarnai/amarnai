@@ -6,6 +6,7 @@ vi.mock("@amarnai/db", () => ({
   db: {
     workspace: { findUnique: vi.fn() },
     gmailConnection: { findUnique: vi.fn() },
+    gmailSyncSettings: { findUnique: vi.fn() },
     emailAccount: { findUnique: vi.fn() },
     providerSyncState: {
       findUnique: vi.fn(),
@@ -126,6 +127,8 @@ beforeEach(() => {
     googleSubjectId: "google-sub-1",
     encryptedRefreshToken: "enc-token",
   } as never);
+  // No settings row → defaults apply (includeSpam: false, includePromotions: false).
+  vi.mocked(db.gmailSyncSettings.findUnique).mockResolvedValue(null);
   vi.mocked(db.emailAccount.findUnique).mockResolvedValue({
     id: "account-1",
   } as never);

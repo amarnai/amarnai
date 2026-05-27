@@ -15,10 +15,12 @@ export default async function SettingsPage({ searchParams }: { searchParams: Sea
 
   let connection = null;
   let syncStatus = null;
+  let syncSettings = null;
   try {
-    [connection, syncStatus] = await Promise.all([
+    [connection, syncStatus, syncSettings] = await Promise.all([
       api.gmailConnection(workspace.id),
       api.syncStatus(workspace.id),
+      api.gmailSyncSettings(workspace.id),
     ]);
   } catch {
     // API unavailable — show disconnected state
@@ -31,6 +33,7 @@ export default async function SettingsPage({ searchParams }: { searchParams: Sea
         workspaceId={workspace.id}
         connection={connection}
         syncStatus={syncStatus}
+        syncSettings={syncSettings}
         connectError={connectError}
         connectSuccess={connectSuccess}
       />

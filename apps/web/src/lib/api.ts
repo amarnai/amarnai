@@ -173,6 +173,11 @@ export type EmailThreadDetail = {
   tags: EmailTag[];
 };
 
+export type GmailSyncSettings = {
+  includeSpam: boolean;
+  includePromotions: boolean;
+};
+
 export type GmailConnection = {
   id: string;
   workspaceId: string;
@@ -370,6 +375,14 @@ export const api = {
     apiFetch<GmailConnection>(`/workspaces/${workspaceId}/gmail-connection`),
   syncStatus: (workspaceId: string) =>
     apiFetch<SyncStatus>(`/workspaces/${workspaceId}/sync-status`),
+  gmailSyncSettings: (workspaceId: string) =>
+    apiFetch<GmailSyncSettings>(`/workspaces/${workspaceId}/gmail-sync-settings`),
+  updateGmailSyncSettings: (workspaceId: string, patch: Partial<GmailSyncSettings>) =>
+    apiMutate<GmailSyncSettings>(
+      `/workspaces/${workspaceId}/gmail-sync-settings`,
+      "PATCH",
+      patch
+    ),
   taxonomyNodes: (workspaceId: string) =>
     apiFetch<TaxonomyNode[]>(`/workspaces/${workspaceId}/taxonomy-nodes`),
   createTaxonomyNode: (workspaceId: string, input: CreateTaxonomyNodeInput) =>
@@ -466,6 +479,11 @@ export const api = {
   mockClassifyThread: (workspaceId: string, threadId: string) =>
     apiMutate<ClassifyResult>(
       `/workspaces/${workspaceId}/email-threads/${threadId}/mock-classify`,
+      "POST"
+    ),
+  sweepInbox: (workspaceId: string) =>
+    apiMutate<{ ok: boolean; workspaceId: string }>(
+      `/workspaces/${workspaceId}/sweep-inbox`,
       "POST"
     ),
 };

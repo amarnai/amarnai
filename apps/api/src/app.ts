@@ -10,8 +10,10 @@ import { reviewItemsRoute } from "./routes/review-items.js";
 import { mockInboxRoute } from "./routes/mock-inbox.js";
 import { classifyRoute } from "./routes/classify.js";
 import { gmailConnectionRoute } from "./routes/gmail-connection.js";
+import { gmailSyncSettingsRoute } from "./routes/gmail-sync-settings.js";
 import { gmailSortRoute } from "./routes/gmail-sort.js";
 import { triggerSyncRoute } from "./routes/trigger-sync.js";
+import { sweepInboxRoute } from "./routes/sweep-inbox.js";
 import { syncStatusRoute } from "./routes/sync-status.js";
 import { triageRoute } from "./routes/triage.js";
 
@@ -29,8 +31,10 @@ app.route("/", reviewItemsRoute);
 app.route("/", mockInboxRoute);
 app.route("/", classifyRoute);
 app.route("/", gmailConnectionRoute);
+app.route("/", gmailSyncSettingsRoute);
 app.route("/", gmailSortRoute);
 app.route("/", triggerSyncRoute);
+app.route("/", sweepInboxRoute);
 app.route("/", syncStatusRoute);
 app.route("/", triageRoute);
 

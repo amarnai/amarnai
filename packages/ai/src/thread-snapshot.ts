@@ -25,6 +25,8 @@ export type SnapshotMessage = {
   bodyExcerpt: string | null;
   attachments: AttachmentMeta[];
   receivedAt: Date;
+  /** Gmail label IDs on this message (e.g. ["INBOX","SPAM","UNREAD"]). Optional — only populated when label data is available from the provider. */
+  labelIds?: string[];
 };
 
 export type ThreadSnapshot = {

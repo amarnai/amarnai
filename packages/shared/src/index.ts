@@ -4,3 +4,4 @@ export * from "./schemas/email-metadata.js";
 export * from "./schemas/taxonomy.js";
 export * from "./schemas/tag.js";
 export * from "./schemas/classification.js";
+export * from "./schemas/gmail-sync-settings.js";
