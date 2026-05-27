@@ -51,18 +51,19 @@ export function createClassifyThreadWorker(): Worker {
       if (!connection)
         throw new Error(`No Gmail connection for workspace: ${workspaceId}`);
 
-      // ── 1b. Mark thread as actively classifying ─────────────────────────────
-      //
-      // Cleared in the finally block regardless of success or failure.
-      // If the worker crashes without running finally, the API treats
-      // classifyingAt older than 2 minutes as stale and ignores it.
-
-      await db.emailThread.update({
-        where: { id: emailThreadId },
-        data: { classifyingAt: new Date() },
-      });
-
       try {
+        // ── 1b. Mark thread as actively classifying ─────────────────────────
+        //
+        // Inside the try so the finally block is guaranteed to clear it.
+        // If the worker crashes without running finally, the API treats
+        // classifyingAt older than 15 minutes as stale (isClassifying=false)
+        // but still uses it for isQueued=true until the failed handler clears
+        // it after all retries are exhausted.
+
+        await db.emailThread.update({
+          where: { id: emailThreadId },
+          data: { classifyingAt: new Date() },
+        });
         // ── 2. Re-fetch thread from Gmail ───────────────────────────────────────
 
         const client = new GmailClient(connection.encryptedRefreshToken);
@@ -109,27 +110,32 @@ export function createClassifyThreadWorker(): Worker {
 
           const triage = await analyzeThreadTriage(aiProvider, messages);
 
-          if (triage !== null) {
-            await db.emailClassification.update({
-              where: { id: existingClassification.id },
-              data: {
-                priority: triage.priority,
-                urgency: triage.urgency,
-                riskLevel: triage.riskLevel,
-                requiredAction: triage.requiredAction,
-                sensitivity: triage.sensitivity,
-                dueAt: triage.dueAt !== null ? new Date(triage.dueAt) : null,
-                suggestedNextStep: triage.suggestedNextStep,
-              },
-            });
-            console.log(
-              `[classify-thread] Triage-only metadata saved for thread ${emailThreadId}: priority=${triage.priority}, urgency=${triage.urgency}`
-            );
-          } else {
-            console.error(
-              `[classify-thread] Triage returned null for thread ${emailThreadId} — metadata not updated`
+          if (triage === null) {
+            // Unlike the full classification path where routing already
+            // succeeded and triage is supplementary, triage-only has no
+            // fallback — the entire purpose of the job was to get metadata.
+            // Throw so BullMQ retries and the classifying indicator stays
+            // active rather than silently disappearing with no result.
+            throw new Error(
+              `Triage analysis returned null for thread ${emailThreadId} — LLM failed or returned invalid output`
             );
           }
+
+          await db.emailClassification.update({
+            where: { id: existingClassification.id },
+            data: {
+              priority: triage.priority,
+              urgency: triage.urgency,
+              riskLevel: triage.riskLevel,
+              requiredAction: triage.requiredAction,
+              sensitivity: triage.sensitivity,
+              dueAt: triage.dueAt !== null ? new Date(triage.dueAt) : null,
+              suggestedNextStep: triage.suggestedNextStep,
+            },
+          });
+          console.log(
+            `[classify-thread] Triage-only metadata saved for thread ${emailThreadId}: priority=${triage.priority}, urgency=${triage.urgency}`
+          );
 
           await job.updateProgress(95);
         } else {
@@ -268,15 +274,6 @@ export function createClassifyThreadWorker(): Worker {
 
           await job.updateProgress(95);
         }
-
-        // ── Clear classifying flag (both paths) ─────────────────────────────────
-
-        await db.emailThread.update({
-          where: { id: emailThreadId },
-          data: {
-            classifyingAt: null,
-          },
-        });
 
         await job.updateProgress(100);
       } catch (err) {
