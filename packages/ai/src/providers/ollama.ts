@@ -8,11 +8,11 @@ type OlamaChatResponse = {
 };
 
 // Local LLMs can be very slow to produce the first response token, especially
-// on a cold start or when multiple requests queue up behind a single Ollama
-// worker. Five minutes is generous but avoids spurious timeouts under normal
-// load. bodyTimeout is set to the same value so a slow streaming response
-// also doesn't trip the limit before stream: false finishes.
-const OLLAMA_TIMEOUT_MS = 5 * 60 * 1_000;
+// on a cold start or when the model is being loaded into memory. Ten minutes
+// covers even large models on CPU-only hardware. bodyTimeout is set to the
+// same value so a slow streaming response also doesn't trip the limit before
+// stream: false finishes.
+const OLLAMA_TIMEOUT_MS = 10 * 60 * 1_000;
 
 const ollamaAgent = new Agent({
   headersTimeout: OLLAMA_TIMEOUT_MS,
@@ -57,6 +57,11 @@ export class OllamaAIProvider implements AIProvider {
       if (code === "ECONNREFUSED" || code === "UND_ERR_CONNECT_TIMEOUT") {
         throw new Error(
           `Ollama is not running at ${this.baseUrl} — start it with \`ollama serve\` or \`docker compose --profile local-ai up\``
+        );
+      }
+      if (code === "UND_ERR_HEADERS_TIMEOUT") {
+        throw new Error(
+          `Ollama at ${this.baseUrl} connected but did not respond within ${OLLAMA_TIMEOUT_MS / 60_000} minutes — the model may still be loading or the system is under heavy load`
         );
       }
       throw err;
