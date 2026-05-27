@@ -67,6 +67,65 @@ classify.post(
   }
 );
 
+// ─── POST /workspaces/:workspaceId/email-threads/:threadId/ai-triage ──────────
+//
+// Enqueues a classify-thread job with triageOnly=true. Skips routing and
+// re-runs only the triage metadata analysis (priority, urgency, risk, etc.)
+// on the most recent existing classification record.
+// Requires an existing classification — returns 422 if none exists.
+
+classify.post(
+  "/workspaces/:workspaceId/email-threads/:threadId/ai-triage",
+  async (c) => {
+    const parsed = params.safeParse({
+      workspaceId: c.req.param("workspaceId"),
+      threadId: c.req.param("threadId"),
+    });
+    if (!parsed.success) {
+      return c.json({ error: "Invalid params" }, 400);
+    }
+    const { workspaceId, threadId } = parsed.data;
+
+    const thread = await db.emailThread.findFirst({
+      where: { id: threadId, workspaceId },
+      select: { id: true },
+    });
+    if (!thread) {
+      return c.json({ error: "Thread not found" }, 404);
+    }
+
+    const existing = await db.emailClassification.findFirst({
+      where: { emailThreadId: threadId, workspaceId },
+      orderBy: { createdAt: "desc" },
+      select: { id: true },
+    });
+    if (!existing) {
+      return c.json(
+        { error: "No existing classification — sort the thread first before re-analyzing" },
+        422
+      );
+    }
+
+    // Stamp classifyingAt immediately so the UI shows the indicator.
+    await db.emailThread.update({
+      where: { id: threadId },
+      data: { classifyingAt: new Date() },
+    });
+
+    const job = await classifyThreadQueue.add(
+      "classify-thread",
+      { workspaceId, emailThreadId: threadId, triageOnly: true },
+      { deduplication: { id: `triage_${workspaceId}_${threadId}` } }
+    );
+
+    console.log(
+      `[classify] Enqueued triage-only classify-thread job ${job?.id ?? "(deduped)"} for thread ${threadId} (workspace ${workspaceId})`
+    );
+
+    return c.json({ queued: true }, 202);
+  }
+);
+
 // ─── POST /workspaces/:workspaceId/email-threads/:threadId/mock-classify ───────
 
 classify.post(
