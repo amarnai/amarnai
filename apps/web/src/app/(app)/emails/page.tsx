@@ -187,7 +187,7 @@ export default async function EmailsPage() {
                   {thread.isClassifying ? (
                     <span className="classifying-badge">
                       <span className="classifying-dot" />
-                      Sorting…
+                      {thread.latestClassification ? "Analyzing…" : "Sorting…"}
                     </span>
                   ) : (
                     <>

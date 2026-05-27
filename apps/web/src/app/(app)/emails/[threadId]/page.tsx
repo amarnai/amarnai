@@ -24,24 +24,43 @@ function priorityClass(priority: string | null): string {
   return "badge-none";
 }
 
-function ClassifyingBanner() {
+function ClassifyingBanner({ hasClassification }: { hasClassification: boolean }) {
   return (
     <div className="classifying-banner">
       <span className="classifying-dot" />
-      Sorting this thread right now — results will appear shortly.
+      {hasClassification
+        ? "Analyzing this thread — priority, urgency, and actions will appear shortly."
+        : "Sorting this thread right now — results will appear shortly."}
     </div>
   );
 }
 
-function PendingThreadBanner({
+function ThreadStatusBanner({
   triageStatus,
   syncStatus,
+  hasClassification,
 }: {
   triageStatus: EmailThreadDetail["triageStatus"];
   syncStatus: SyncStatus;
+  hasClassification: boolean;
 }) {
-  if (triageStatus !== "PENDING") return null;
+  if (triageStatus === "SORTED") {
+    return (
+      <div className="backfill-banner backfill-banner-success" style={{ marginBottom: 16 }}>
+        ✓ Thread sorted.
+      </div>
+    );
+  }
 
+  if (triageStatus === "NEEDS_REVIEW") {
+    return (
+      <div className="backfill-banner backfill-banner-warning" style={{ marginBottom: 16 }}>
+        ⚠ This thread is flagged for human review.
+      </div>
+    );
+  }
+
+  // PENDING — show context-aware queuing message.
   const backfillStatus = syncStatus?.backfillStatus;
 
   if (backfillStatus === "RUNNING") {
@@ -60,9 +79,13 @@ function PendingThreadBanner({
     );
   }
 
-  // DONE, ERROR, or no sync state — prompt the user to sort manually.
+  // Backfill is DONE, ERROR, or absent.
+  // Only prompt to sort if there is genuinely no classification yet — a thread
+  // with existing results but a stale PENDING status should not show this.
+  if (hasClassification) return null;
+
   return (
-    <div className="backfill-banner backfill-banner-pending" style={{ marginBottom: 16 }}>
+    <div className="backfill-banner backfill-banner-warning" style={{ marginBottom: 16 }}>
       This thread hasn&apos;t been sorted yet — use the sort button below.
     </div>
   );
@@ -122,8 +145,8 @@ export default async function ThreadDetailPage({ params }: Props) {
       <h1>{thread.subject ?? "(no subject)"}</h1>
 
       {thread.isClassifying
-        ? <ClassifyingBanner />
-        : <PendingThreadBanner triageStatus={thread.triageStatus} syncStatus={syncStatus} />
+        ? <ClassifyingBanner hasClassification={thread.latestClassification !== null} />
+        : <ThreadStatusBanner triageStatus={thread.triageStatus} syncStatus={syncStatus} hasClassification={cls !== null} />
       }
 
       {/* Triage actions — approve / move to node */}
