@@ -4,11 +4,13 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 const POLL_INTERVAL_MS = 5_000;
-const MAX_POLL_MS = 2 * 60 * 1_000; // 2 minutes
+// Must be >= CLASSIFY_STALE_MS in the API (currently 15 min) so the poller
+// does not give up while a job is legitimately waiting in a long Ollama queue.
+const MAX_POLL_MS = 15 * 60 * 1_000; // 15 minutes
 
 /**
  * Invisible component that calls router.refresh() every 5 s while `active`
- * is true. Stops automatically after 2 minutes and renders an error prompt
+ * is true. Stops automatically after 15 minutes and renders an error prompt
  * so the user isn't left polling forever if a classify job gets stuck.
  *
  * Mount it in a server page when one or more threads are being classified
@@ -16,6 +18,9 @@ const MAX_POLL_MS = 2 * 60 * 1_000; // 2 minutes
  */
 export function ClassifyingRefresher({ active }: { active: boolean }) {
   const router = useRouter();
+  // Bumping this key restarts the polling loop (e.g. after the user clicks
+  // Refresh while the poller has timed out).
+  const [pollKey, setPollKey] = useState(0);
   const [timedOut, setTimedOut] = useState(false);
 
   useEffect(() => {
@@ -34,7 +39,9 @@ export function ClassifyingRefresher({ active }: { active: boolean }) {
       clearInterval(pollId);
       clearTimeout(timeoutId);
     };
-  }, [active, router]);
+  // pollKey is included so clicking Refresh restarts the interval + timeout.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [active, router, pollKey]);
 
   if (timedOut) {
     return (
@@ -43,6 +50,7 @@ export function ClassifyingRefresher({ active }: { active: boolean }) {
         <button
           onClick={() => {
             setTimedOut(false);
+            setPollKey((k) => k + 1);
             router.refresh();
           }}
         >
