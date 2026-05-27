@@ -164,9 +164,13 @@ export class GmailClient {
     do {
       const params = new URLSearchParams({
         startHistoryId: sinceHistoryId,
-        historyTypes: "messageAdded",
         maxResults: "500",
       });
+      // Request all three change types so label mutations (spam, trash,
+      // promotions) are caught in addition to newly-added messages.
+      params.append("historyTypes", "messageAdded");
+      params.append("historyTypes", "labelAdded");
+      params.append("historyTypes", "labelRemoved");
       if (pageToken) params.set("pageToken", pageToken);
 
       const res = await fetch(`${GMAIL_HISTORY_URL}?${params}`, {
@@ -288,6 +292,36 @@ export class GmailClient {
     }
 
     return { threads, totalFound };
+  }
+
+  /**
+   * Returns all thread IDs matching `q` (a Gmail search query), paged up to
+   * `maxResults`. Useful for targeted passes like `in:trash after:X`.
+   *
+   * Note: unlike listThreadsInWindow this method does not fetch message
+   * metadata — it returns bare IDs only.
+   */
+  async listThreadIdsByQuery(q: string, maxResults: number): Promise<string[]> {
+    const accessToken = await this.refreshAccessToken();
+    const allIds: string[] = [];
+    let nextPageToken: string | undefined;
+
+    do {
+      const params = new URLSearchParams({ q, maxResults: "100" });
+      if (nextPageToken) params.set("pageToken", nextPageToken);
+
+      const res = await fetch(`${GMAIL_THREADS_URL}?${params}`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+      if (!res.ok) throw new Error(`Gmail threads list failed: ${res.status}`);
+
+      type ThreadListPage = { threads?: Array<{ id: string }>; nextPageToken?: string };
+      const data = (await res.json()) as ThreadListPage;
+      allIds.push(...(data.threads ?? []).map((t) => t.id));
+      nextPageToken = data.nextPageToken;
+    } while (nextPageToken && allIds.length < maxResults);
+
+    return allIds.slice(0, maxResults);
   }
 
   async getThread(threadId: string): Promise<unknown> {

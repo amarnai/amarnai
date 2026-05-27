@@ -224,17 +224,13 @@ export function createBackfillInboxWorker(): Worker {
               subject: snapshot.subject,
               latestMessageAt: snapshot.latestMessageAt,
               messageCount: snapshot.messageCount,
-              gmailIsSpam: false,
-              gmailIsPromotions: false,
-              gmailIsTrash: false,
+              ...labelFlags,
             },
             update: {
               subject: snapshot.subject,
               latestMessageAt: snapshot.latestMessageAt,
               messageCount: snapshot.messageCount,
-              gmailIsSpam: false,
-              gmailIsPromotions: false,
-              gmailIsTrash: false,
+              ...labelFlags,
             },
             select: { id: true },
           });
@@ -283,7 +279,36 @@ export function createBackfillInboxWorker(): Worker {
 
         await job.updateProgress(80);
 
-        // ── 8. Enqueue classify-thread jobs at backfill priority ─────────────
+        // ── 8. Cleanup pass: mark threads that moved to trash/spam ───────────
+        //
+        // listThreadsInWindow uses a plain `after:` query which Gmail excludes
+        // trash and spam from by default.  Threads that were in the inbox when
+        // first synced and later moved to trash/spam never appear in the main
+        // loop above, so their gmailIsTrash / gmailIsSpam flags are never
+        // updated and they remain visible.  Here we do a targeted query for
+        // each excluded area and bulk-update any matching DB rows.
+
+        const afterSecs = Math.floor(afterMs / 1000);
+
+        const [trashIds, spamIds] = await Promise.all([
+          client.listThreadIdsByQuery(`in:trash after:${afterSecs}`, 500),
+          client.listThreadIdsByQuery(`in:spam after:${afterSecs}`, 500),
+        ]);
+
+        if (trashIds.length > 0) {
+          await db.emailThread.updateMany({
+            where: { emailAccountId, providerThreadId: { in: trashIds } },
+            data: { gmailIsTrash: true },
+          });
+        }
+        if (spamIds.length > 0) {
+          await db.emailThread.updateMany({
+            where: { emailAccountId, providerThreadId: { in: spamIds } },
+            data: { gmailIsSpam: true },
+          });
+        }
+
+        // ── 10. Enqueue classify-thread jobs at backfill priority ───────────
         //
         // Use deduplication rather than a fixed jobId so that a previously-failed
         // classify job for this thread doesn't block re-enqueuing — deduplication
@@ -303,7 +328,7 @@ export function createBackfillInboxWorker(): Worker {
 
         await job.updateProgress(95);
 
-        // ── 9. Mark DONE and record skipped count ────────────────────────────
+        // ── 11. Mark DONE and record skipped count ───────────────────────────
 
         const backfillSkipped = Math.max(0, totalFound - rawThreads.length);
         await db.providerSyncState.update({
