@@ -431,8 +431,18 @@ export const api = {
     ),
   tags: (workspaceId: string) =>
     apiFetch<Tag[]>(`/workspaces/${workspaceId}/tags`),
-  emailThreads: (workspaceId: string) =>
-    apiFetch<EmailThreadSummary[]>(`/workspaces/${workspaceId}/email-threads`, 5),
+  emailThreads: (workspaceId: string, filters?: { nodeId?: string; status?: string }) => {
+    const params = new URLSearchParams();
+    if (filters?.nodeId) params.set("nodeId", filters.nodeId);
+    if (filters?.status) params.set("status", filters.status);
+    const qs = params.toString();
+    // Skip the 5-second cache when filters are active so results are fresh.
+    const revalidate = qs ? undefined : 5;
+    return apiFetch<EmailThreadSummary[]>(
+      `/workspaces/${workspaceId}/email-threads${qs ? `?${qs}` : ""}`,
+      revalidate
+    );
+  },
   emailThread: (workspaceId: string, threadId: string) =>
     apiFetch<EmailThreadDetail>(
       `/workspaces/${workspaceId}/email-threads/${threadId}`

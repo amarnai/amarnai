@@ -9,6 +9,9 @@ const threadParam = z.object({
   threadId: z.string().min(1),
 });
 
+const VALID_TRIAGE_STATUSES = ["PENDING", "SORTED", "NEEDS_REVIEW"] as const;
+type TriageStatusValue = typeof VALID_TRIAGE_STATUSES[number];
+
 // With Ollama (concurrency=1), a job can wait several minutes in the queue
 // before the worker picks it up — especially when other classify jobs are ahead.
 // 15 minutes covers realistic queue depths (up to ~5 jobs × ~3 min each).
@@ -31,79 +34,94 @@ emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
   if (!parsed.success) {
     return c.json({ error: "Invalid workspace ID" }, 400);
   }
+  const { workspaceId } = parsed.data;
+
+  // Parse optional filter query params.
+  const rawNodeId = c.req.query("nodeId");
+  const rawStatus = c.req.query("status");
+
+  const nodeId = rawNodeId && rawNodeId.length > 0 ? rawNodeId : null;
+  const triageStatus: TriageStatusValue | null =
+    rawStatus && (VALID_TRIAGE_STATUSES as readonly string[]).includes(rawStatus)
+      ? (rawStatus as TriageStatusValue)
+      : null;
+
+  // Verify workspace exists.
+  const workspace = await db.workspace.findUnique({
+    where: { id: workspaceId },
+    select: { id: true },
+  });
+  if (!workspace) {
+    return c.json({ error: "Workspace not found" }, 404);
+  }
 
   // Load sync settings to determine which threads should be visible.
   const syncSettingsRow = await db.gmailSyncSettings.findUnique({
-    where: { workspaceId: parsed.data.workspaceId },
+    where: { workspaceId },
     select: { includeSpam: true, includePromotions: true },
   });
   const syncSettings = syncSettingsRow ?? DEFAULT_GMAIL_SYNC_SETTINGS;
 
-  // Trash is always excluded; spam/promotions depend on user settings.
-  const threadWhere = {
-    gmailIsTrash: false,
-    ...(syncSettings.includeSpam       ? {} : { gmailIsSpam: false }),
-    ...(syncSettings.includePromotions ? {} : { gmailIsPromotions: false }),
-  };
-
-  const workspace = await db.workspace.findUnique({
-    where: { id: parsed.data.workspaceId },
+  // Build the where clause. nodeId filters by any classification with that
+  // finalNodeId — a reasonable approximation for MVP since reclassification to
+  // a different node is uncommon. Trash is always excluded; spam/promotions
+  // depend on user settings.
+  const threads = await db.emailThread.findMany({
+    where: {
+      workspaceId,
+      gmailIsTrash: false,
+      ...(syncSettings.includeSpam       ? {} : { gmailIsSpam: false }),
+      ...(syncSettings.includePromotions ? {} : { gmailIsPromotions: false }),
+      ...(triageStatus                   ? { triageStatus }               : {}),
+      ...(nodeId ? { classifications: { some: { finalNodeId: nodeId } } } : {}),
+    },
+    orderBy: { latestMessageAt: "desc" },
     select: {
-      emailThreads: {
-        where: threadWhere,
-        orderBy: { latestMessageAt: "desc" },
+      id: true,
+      subject: true,
+      latestMessageAt: true,
+      messageCount: true,
+      triageStatus: true,
+      classifyingAt: true,
+      createdAt: true,
+      messages: {
+        orderBy: { receivedAt: "desc" },
+        take: 1,
         select: {
           id: true,
-          subject: true,
-          latestMessageAt: true,
-          messageCount: true,
-          triageStatus: true,
-          classifyingAt: true,
-          createdAt: true,
-          messages: {
-            orderBy: { receivedAt: "desc" },
-            take: 1,
-            select: {
-              id: true,
-              senderEmail: true,
-              senderName: true,
-              snippet: true,
-              receivedAt: true,
-            },
+          senderEmail: true,
+          senderName: true,
+          snippet: true,
+          receivedAt: true,
+        },
+      },
+      tags: {
+        select: {
+          id: true,
+          source: true,
+          tag: {
+            select: { id: true, name: true, color: true },
           },
-          tags: {
-            select: {
-              id: true,
-              source: true,
-              tag: {
-                select: { id: true, name: true, color: true },
-              },
-            },
-          },
-          classifications: {
-            orderBy: { createdAt: "desc" },
-            take: 1,
-            select: {
-              id: true,
-              priority: true,
-              urgency: true,
-              confidence: true,
-              needsHumanReview: true,
-              finalNode: {
-                select: { id: true, name: true },
-              },
-            },
+        },
+      },
+      classifications: {
+        orderBy: { createdAt: "desc" },
+        take: 1,
+        select: {
+          id: true,
+          priority: true,
+          urgency: true,
+          confidence: true,
+          needsHumanReview: true,
+          finalNode: {
+            select: { id: true, name: true },
           },
         },
       },
     },
   });
 
-  if (!workspace) {
-    return c.json({ error: "Workspace not found" }, 404);
-  }
-
-  const threads = workspace.emailThreads.map((thread) => {
+  const result = threads.map((thread) => {
     const { classifications, classifyingAt, ...rest } = thread;
     return {
       ...rest,
@@ -114,7 +132,7 @@ emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
       latestClassification: classifications[0] ?? null,
     };
   });
-  return c.json(threads);
+  return c.json(result);
 });
 
 emailThreads.get(

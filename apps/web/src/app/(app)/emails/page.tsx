@@ -1,7 +1,9 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import { requireUser, getOrCreateDefaultWorkspace } from "@/lib/session";
-import { api, type EmailThreadSummary, type SyncStatus } from "@/lib/api";
+import { api, type EmailThreadSummary, type SyncStatus, type TaxonomyNode } from "@/lib/api";
 import { ClassifyingRefresher } from "@/components/ClassifyingRefresher";
+import { ThreadFilters, type FilterCounts } from "./ThreadFilters";
 
 function fmt(iso: string | null): string {
   if (!iso) return "";
@@ -11,39 +13,11 @@ function fmt(iso: string | null): string {
   });
 }
 
-type ThreadCounts = { sorted: number; pending: number; needsReview: number };
-
-function CountsLine({ counts }: { counts: ThreadCounts }) {
-  const { sorted, pending, needsReview } = counts;
-  return (
-    <div className="backfill-counts">
-      <span>{sorted.toLocaleString()} sorted</span>
-      <span className="backfill-counts-sep">·</span>
-      <span>{pending.toLocaleString()} pending</span>
-      <span className="backfill-counts-sep">·</span>
-      <span
-        style={needsReview > 0 ? { color: "var(--color-warning-text)", fontWeight: 500 } : {}}
-      >
-        {needsReview.toLocaleString()} need{needsReview === 1 ? "s" : ""} review
-      </span>
-    </div>
-  );
-}
-
-function BackfillBanner({
-  syncStatus,
-  counts,
-}: {
-  syncStatus: SyncStatus;
-  counts: ThreadCounts;
-}) {
+function BackfillBanner({ syncStatus }: { syncStatus: SyncStatus }) {
   if (!syncStatus) return null;
 
   const { backfillStatus, backfillSkipped } = syncStatus;
-  const { pending, needsReview } = counts;
-  const total = counts.sorted + pending + needsReview;
 
-  // Determine the status message and visual variant for this backfill state.
   type Variant = "pending" | "running" | "warning" | "error";
   let statusLine: React.ReactNode = null;
   let variant: Variant = "pending";
@@ -67,13 +41,11 @@ function BackfillBanner({
     variant = "warning";
   }
 
-  // If there's no status message and everything is clean, hide the banner.
-  if (!statusLine && pending === 0 && needsReview === 0) return null;
+  if (!statusLine) return null;
 
   return (
     <div className={`backfill-banner backfill-banner-${variant}`}>
-      {statusLine && <div>{statusLine}</div>}
-      {total > 0 && <CountsLine counts={counts} />}
+      {statusLine}
     </div>
   );
 }
@@ -85,47 +57,80 @@ function priorityClass(priority: string): string {
   return "badge-none";
 }
 
-export default async function EmailsPage() {
+function computeFilterCounts(threads: EmailThreadSummary[]): FilterCounts {
+  return threads.reduce(
+    (acc, t) => {
+      acc.total++;
+      if (t.triageStatus === "SORTED") acc.SORTED++;
+      else if (t.triageStatus === "PENDING") acc.PENDING++;
+      else if (t.triageStatus === "NEEDS_REVIEW") acc.NEEDS_REVIEW++;
+      return acc;
+    },
+    { total: 0, PENDING: 0, NEEDS_REVIEW: 0, SORTED: 0 }
+  );
+}
+
+type PageProps = {
+  searchParams: Promise<{ nodeId?: string; status?: string }>;
+};
+
+export default async function EmailsPage({ searchParams }: PageProps) {
   const user = await requireUser();
   const workspace = await getOrCreateDefaultWorkspace(user.id);
 
-  let threads: EmailThreadSummary[] = [];
+  const { nodeId, status } = await searchParams;
+  const filters = {
+    ...(nodeId ? { nodeId } : {}),
+    ...(status ? { status } : {}),
+  };
+  const hasFilters = Object.keys(filters).length > 0;
+
+  let displayThreads: EmailThreadSummary[] = [];
   let syncStatus: SyncStatus = null;
+  let nodes: TaxonomyNode[] = [];
+  let counts: FilterCounts = { total: 0, PENDING: 0, NEEDS_REVIEW: 0, SORTED: 0 };
   let error: string | null = null;
 
   try {
-    [threads, syncStatus] = await Promise.all([
+    // Always fetch unfiltered threads so pill counts reflect the full inbox.
+    // When a filter is active, also fetch the filtered set for display — both
+    // calls run in parallel so there's no sequential cost.
+    const [allThreads, filteredThreads, syncResult, nodesResult] = await Promise.all([
       api.emailThreads(workspace.id),
+      hasFilters ? api.emailThreads(workspace.id, filters) : Promise.resolve(null),
       api.syncStatus(workspace.id),
+      api.taxonomyNodes(workspace.id),
     ]);
+
+    counts = computeFilterCounts(allThreads);
+    displayThreads = filteredThreads ?? allThreads;
+    syncStatus = syncResult;
+    nodes = nodesResult;
   } catch (err) {
     error = err instanceof Error ? err.message : String(err);
   }
 
-  const counts: ThreadCounts = threads.reduce(
-    (acc, t) => {
-      if (t.triageStatus === "SORTED") acc.sorted++;
-      else if (t.triageStatus === "PENDING") acc.pending++;
-      else if (t.triageStatus === "NEEDS_REVIEW") acc.needsReview++;
-      return acc;
-    },
-    { sorted: 0, pending: 0, needsReview: 0 }
-  );
-
-  const anyClassifying = threads.some((t) => t.isClassifying);
+  const anyClassifying = displayThreads.some((t) => t.isClassifying);
 
   return (
     <>
       <ClassifyingRefresher active={anyClassifying} />
       <h1>Email Threads</h1>
-      <BackfillBanner syncStatus={syncStatus} counts={counts} />
+      <BackfillBanner syncStatus={syncStatus} />
       {error && <div className="error-box">{error}</div>}
 
-      {threads.length === 0 && !error ? (
-        <p className="empty">No threads</p>
+      {/* ThreadFilters uses useSearchParams, so it must be wrapped in Suspense. */}
+      <Suspense fallback={null}>
+        <ThreadFilters nodes={nodes} counts={counts} />
+      </Suspense>
+
+      {displayThreads.length === 0 && !error ? (
+        <p className="empty">
+          {hasFilters ? "No threads match the selected filter." : "No threads"}
+        </p>
       ) : (
         <div className="card">
-          {threads.map((thread) => {
+          {displayThreads.map((thread) => {
             const latest = thread.messages[0];
             return (
               <Link
