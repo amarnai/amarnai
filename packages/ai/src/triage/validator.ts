@@ -35,14 +35,28 @@ export type TriageMetadata = {
   suggestedNextStep: z.infer<typeof SuggestedNextStepSchema>;
 };
 
+/**
+ * Normalise whatever the LLM returns for dueAt into an ISO 8601 UTC string,
+ * or null.  LLMs commonly return date-only strings ("2026-06-01"), datetimes
+ * without timezone ("2026-06-01T09:00:00"), or the string literal "null"
+ * instead of a JSON null.  Strict datetime validation would fail all of these
+ * and silently drop all seven triage fields — so we accept any string and
+ * normalise rather than reject.
+ */
+function normaliseDueAt(val: string | null | undefined): string | null {
+  if (val == null || val === "null" || val.trim() === "") return null;
+  const d = new Date(val);
+  return isNaN(d.getTime()) ? null : d.toISOString();
+}
+
 const LLMTriageSchema = z.object({
   priority: PrioritySchema,
   urgency: UrgencySchema,
   riskLevel: RiskLevelSchema,
   requiredAction: RequiredActionSchema,
   sensitivity: SensitivitySchema,
-  // The LLM may return null, a datetime string, or omit the field.
-  dueAt: z.string().datetime({ offset: true }).nullable().optional(),
+  // Accept any string (or null/omitted) and normalise in normaliseDueAt.
+  dueAt: z.union([z.string(), z.null()]).optional(),
   suggestedNextStep: SuggestedNextStepSchema,
 });
 
@@ -89,7 +103,7 @@ export function validateTriageMetadata(rawText: string): TriageMetadata | null {
     riskLevel: d.riskLevel,
     requiredAction: d.requiredAction,
     sensitivity: d.sensitivity,
-    dueAt: d.dueAt ?? null,
+    dueAt: normaliseDueAt(d.dueAt),
     suggestedNextStep: d.suggestedNextStep,
   };
 }

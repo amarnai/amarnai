@@ -47,23 +47,53 @@ describe("validateTriageMetadata", () => {
     expect(result!.riskLevel).toBe("MEDIUM");
     expect(result!.requiredAction).toBe("REPLY");
     expect(result!.sensitivity).toBe("NORMAL");
-    expect(result!.dueAt).toBe("2026-06-01T00:00:00Z");
+    expect(result!.dueAt).toBe("2026-06-01T00:00:00.000Z");
     expect(result!.suggestedNextStep).toBe("CREATE_DRAFT");
   });
 
-  it("returns null for null dueAt", () => {
+  it("returns null dueAt for JSON null", () => {
     const json = JSON.stringify({ ...JSON.parse(VALID_TRIAGE_JSON), dueAt: null });
     const result = validateTriageMetadata(json);
     expect(result).not.toBeNull();
     expect(result!.dueAt).toBeNull();
   });
 
-  it("returns null for missing dueAt (treats as null)", () => {
+  it("returns null dueAt for missing dueAt field", () => {
     const parsed = JSON.parse(VALID_TRIAGE_JSON);
     delete parsed.dueAt;
     const result = validateTriageMetadata(JSON.stringify(parsed));
     expect(result).not.toBeNull();
     expect(result!.dueAt).toBeNull();
+  });
+
+  it("normalises date-only dueAt string to ISO 8601", () => {
+    const json = JSON.stringify({ ...JSON.parse(VALID_TRIAGE_JSON), dueAt: "2026-06-01" });
+    const result = validateTriageMetadata(json);
+    expect(result).not.toBeNull();
+    expect(result!.dueAt).toMatch(/^2026-06-01T/);
+  });
+
+  it("normalises datetime-without-timezone dueAt to ISO 8601", () => {
+    const json = JSON.stringify({ ...JSON.parse(VALID_TRIAGE_JSON), dueAt: "2026-06-01T09:00:00" });
+    const result = validateTriageMetadata(json);
+    expect(result).not.toBeNull();
+    expect(result!.dueAt).toMatch(/^2026-06-01T/);
+  });
+
+  it("returns null dueAt for the string literal 'null'", () => {
+    const json = JSON.stringify({ ...JSON.parse(VALID_TRIAGE_JSON), dueAt: "null" });
+    const result = validateTriageMetadata(json);
+    expect(result).not.toBeNull();
+    expect(result!.dueAt).toBeNull();
+  });
+
+  it("returns null dueAt for an unparseable date string without failing the whole record", () => {
+    const json = JSON.stringify({ ...JSON.parse(VALID_TRIAGE_JSON), dueAt: "sometime next week" });
+    const result = validateTriageMetadata(json);
+    expect(result).not.toBeNull();
+    expect(result!.dueAt).toBeNull();
+    // Other fields should still be present
+    expect(result!.priority).toBe("HIGH");
   });
 
   it("tolerates markdown-fenced JSON", () => {
