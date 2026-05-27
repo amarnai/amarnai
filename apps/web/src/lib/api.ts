@@ -1,7 +1,8 @@
 const API_BASE = process.env["API_URL"] ?? "http://localhost:3001";
 
-async function apiFetch<T>(path: string): Promise<T> {
-  const res = await fetch(`${API_BASE}${path}`, { cache: "no-store" });
+async function apiFetch<T>(path: string, revalidate?: number): Promise<T> {
+  const next = revalidate !== undefined ? { next: { revalidate } } : { cache: "no-store" as RequestCache };
+  const res = await fetch(`${API_BASE}${path}`, next);
   if (!res.ok) {
     throw new Error(`API ${path} returned ${res.status}`);
   }
@@ -344,6 +345,7 @@ export type GmailSortResult = {
   };
 };
 
+/** Returned by mock-classify (synchronous, result available immediately). */
 export type ClassifyResult = {
   classification: {
     id: string;
@@ -356,6 +358,9 @@ export type ClassifyResult = {
     modelName: string;
   };
 };
+
+/** Returned by ai-classify (async — job enqueued, poll isClassifying for completion). */
+export type QueuedResult = { queued: true };
 
 // ─── API helpers ──────────────────────────────────────────────────────────────
 
@@ -410,7 +415,7 @@ export const api = {
   tags: (workspaceId: string) =>
     apiFetch<Tag[]>(`/workspaces/${workspaceId}/tags`),
   emailThreads: (workspaceId: string) =>
-    apiFetch<EmailThreadSummary[]>(`/workspaces/${workspaceId}/email-threads`),
+    apiFetch<EmailThreadSummary[]>(`/workspaces/${workspaceId}/email-threads`, 5),
   emailThread: (workspaceId: string, threadId: string) =>
     apiFetch<EmailThreadDetail>(
       `/workspaces/${workspaceId}/email-threads/${threadId}`
@@ -454,7 +459,7 @@ export const api = {
       action
     ),
   aiClassify: (workspaceId: string, threadId: string) =>
-    apiMutate<ClassifyResult>(
+    apiMutate<QueuedResult>(
       `/workspaces/${workspaceId}/email-threads/${threadId}/ai-classify`,
       "POST"
     ),
