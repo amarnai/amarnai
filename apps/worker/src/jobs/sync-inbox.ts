@@ -5,6 +5,7 @@ import {
   GmailHistoryCursorExpiredError,
   normalizeGmailThread,
 } from "@amarnai/gmail";
+import type { GmailSyncSettings } from "@amarnai/shared";
 import {
   classifyThreadQueue,
   backfillInboxQueue,
@@ -12,6 +13,7 @@ import {
   type SyncInboxJobData,
 } from "../queues.js";
 import { redisConnection } from "../redis.js";
+import { applyThreadFilter, computeThreadLabelFlags } from "./filter-thread-messages.js";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -92,9 +94,9 @@ export function createSyncInboxWorker(): Worker {
     async (job) => {
       const { workspaceId } = job.data;
 
-      // ── 1. Load workspace + Gmail connection ────────────────────────────────
+      // ── 1. Load workspace + Gmail connection + sync settings ───────────────
 
-      const [workspace, connection] = await Promise.all([
+      const [workspace, connection, syncSettingsRow] = await Promise.all([
         db.workspace.findUnique({
           where: { id: workspaceId },
           select: { ownerUserId: true },
@@ -107,10 +109,19 @@ export function createSyncInboxWorker(): Worker {
             encryptedRefreshToken: true,
           },
         }),
+        db.gmailSyncSettings.findUnique({
+          where: { workspaceId },
+          select: { includeSpam: true, includePromotions: true },
+        }),
       ]);
 
       if (!workspace) throw new Error(`Workspace not found: ${workspaceId}`);
       if (!connection) throw new Error(`No Gmail connection for workspace: ${workspaceId}`);
+
+      const settings: GmailSyncSettings = {
+        includeSpam:       syncSettingsRow?.includeSpam       ?? false,
+        includePromotions: syncSettingsRow?.includePromotions ?? false,
+      };
 
       // ── 2. Ensure EmailAccount + ProviderSyncState rows exist ───────────────
 
@@ -129,9 +140,6 @@ export function createSyncInboxWorker(): Worker {
         select: { historyId: true, backfillStatus: true },
       });
 
-      // Capture whether this is the very first sync before we overwrite the cursor.
-      const isFirstSync = syncState.historyId === null;
-
       // ── 3. Discover changed thread IDs ──────────────────────────────────────
 
       const client = new GmailClient(connection.encryptedRefreshToken);
@@ -141,11 +149,51 @@ export function createSyncInboxWorker(): Worker {
       );
 
       if (changedThreadIds.length === 0) {
-        // Nothing changed — advance the cursor and exit early.
+        // Nothing changed — advance the cursor, then check whether backfill or
+        // stuck-thread recovery still needs to run (they must not be skipped just
+        // because the inbox was quiet this cycle).
         await db.providerSyncState.update({
           where: { emailAccountId },
           data: { historyId: newHistoryId, lastSyncedAt: new Date(), status: "IDLE" },
         });
+
+        // Trigger backfill when it hasn't completed (or failed) yet.
+        if (syncState.backfillStatus === "PENDING" || syncState.backfillStatus === "ERROR") {
+          await backfillInboxQueue.add(
+            "backfill-inbox",
+            { workspaceId },
+            { deduplication: { id: `backfill-inbox_${workspaceId}` } }
+          );
+        }
+
+        // Re-enqueue stuck PENDING threads when the backfill has already finished
+        // but some classify jobs exhausted all retries.
+        if (syncState.backfillStatus === "DONE") {
+          const stuck = await db.emailThread.findMany({
+            where: {
+              workspaceId,
+              triageStatus: "PENDING",
+              classifyingAt: null,
+            },
+            select: { id: true },
+            orderBy: { latestMessageAt: "desc" },
+            take: 50,
+          });
+
+          if (stuck.length > 0) {
+            await classifyThreadQueue.addBulk(
+              stuck.map(({ id: emailThreadId }) => ({
+                name: "classify-thread",
+                data: { workspaceId, emailThreadId },
+                opts: {
+                  deduplication: { id: `classify_${workspaceId}_${emailThreadId}` },
+                  priority: 5, // below live sync (1), above backfill (10)
+                },
+              }))
+            );
+          }
+        }
+
         return;
       }
 
@@ -168,8 +216,38 @@ export function createSyncInboxWorker(): Worker {
           throw err;
         }
 
-        const snapshot = normalizeGmailThread(rawThread);
-        if (snapshot.messages.length === 0) continue;
+        const rawSnapshot = normalizeGmailThread(rawThread);
+        // Compute label flags from all messages (before filtering).
+        // Stored on the thread so the API can filter at query time without re-fetching.
+        const labelFlags = computeThreadLabelFlags(rawSnapshot.messages);
+        const snapshot = applyThreadFilter(rawSnapshot, settings);
+
+        if (snapshot === null) {
+          // Thread is fully excluded by current settings or always-excluded labels.
+          // Persist the flags so the thread is hidden at query time, but don't
+          // upsert messages and don't enqueue classification.
+          await db.emailThread.upsert({
+            where: {
+              emailAccountId_providerThreadId: {
+                emailAccountId,
+                providerThreadId: rawSnapshot.providerThreadId,
+              },
+            },
+            create: {
+              workspaceId,
+              emailAccountId,
+              provider: "GMAIL",
+              providerThreadId: rawSnapshot.providerThreadId,
+              subject: rawSnapshot.subject,
+              latestMessageAt: rawSnapshot.latestMessageAt,
+              messageCount: rawSnapshot.messageCount,
+              ...labelFlags,
+            },
+            update: labelFlags,
+            select: { id: true },
+          });
+          continue;
+        }
 
         const emailThread = await db.emailThread.upsert({
           where: {
@@ -186,11 +264,17 @@ export function createSyncInboxWorker(): Worker {
             subject: snapshot.subject,
             latestMessageAt: snapshot.latestMessageAt,
             messageCount: snapshot.messageCount,
+            gmailIsSpam: false,
+            gmailIsPromotions: false,
+            gmailIsTrash: false,
           },
           update: {
             subject: snapshot.subject,
             latestMessageAt: snapshot.latestMessageAt,
             messageCount: snapshot.messageCount,
+            gmailIsSpam: false,
+            gmailIsPromotions: false,
+            gmailIsTrash: false,
           },
           select: { id: true },
         });
@@ -247,10 +331,10 @@ export function createSyncInboxWorker(): Worker {
         },
       });
 
-      // Trigger a historical backfill whenever it hasn't completed yet (PENDING is
-      // the DB default). Using deduplication rather than a fixed jobId means a
-      // previously-failed backfill job doesn't block re-enqueuing.
-      if (syncState.backfillStatus === "PENDING") {
+      // Trigger a historical backfill whenever it hasn't completed yet.
+      // Also re-trigger on ERROR so a failed backfill retries automatically.
+      // Deduplication prevents concurrent backfills for the same workspace.
+      if (syncState.backfillStatus === "PENDING" || syncState.backfillStatus === "ERROR") {
         await backfillInboxQueue.add(
           "backfill-inbox",
           { workspaceId },
@@ -260,8 +344,6 @@ export function createSyncInboxWorker(): Worker {
 
       // ── 6. Enqueue classify-thread jobs for every upserted thread ────────────
       //
-      // Job ID is deterministic per thread: a concurrent sync cannot enqueue
-      // two classification runs for the same thread within the same second.
       // Priority 1 ensures live sync jobs always outrank backfill jobs (priority 10).
 
       await classifyThreadQueue.addBulk(
@@ -274,6 +356,43 @@ export function createSyncInboxWorker(): Worker {
           },
         }))
       );
+
+      // ── 7. Re-enqueue classify jobs for threads still PENDING after backfill ──
+      //
+      // Covers threads whose classify jobs exhausted all retries (e.g. Ollama was
+      // unreachable during the backfill run). The backfill marks DONE once it has
+      // enqueued jobs, not once they succeed, so permanently-failed jobs leave
+      // threads stuck as PENDING with no automatic recovery. This runs on every
+      // sync cycle as a lightweight catch-up: it skips threads already being
+      // classified (classifyingAt set) and threads changed in this sync cycle
+      // (already handled above). Deduplication prevents duplicate queue entries.
+
+      if (syncState.backfillStatus === "DONE") {
+        const stuck = await db.emailThread.findMany({
+          where: {
+            workspaceId,
+            triageStatus: "PENDING",
+            classifyingAt: null,
+            id: { notIn: upsertedEmailThreadIds },
+          },
+          select: { id: true },
+          orderBy: { latestMessageAt: "desc" },
+          take: 50,
+        });
+
+        if (stuck.length > 0) {
+          await classifyThreadQueue.addBulk(
+            stuck.map(({ id: emailThreadId }) => ({
+              name: "classify-thread",
+              data: { workspaceId, emailThreadId },
+              opts: {
+                deduplication: { id: `classify_${workspaceId}_${emailThreadId}` },
+                priority: 5, // below live sync (1), above backfill (10)
+              },
+            }))
+          );
+        }
+      }
 
       await job.updateProgress(100);
     },
