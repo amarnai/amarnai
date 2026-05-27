@@ -49,15 +49,27 @@ function normaliseDueAt(val: string | null | undefined): string | null {
   return isNaN(d.getTime()) ? null : d.toISOString();
 }
 
+/**
+ * Coerce a string to uppercase before matching against an enum schema.
+ * LLMs sometimes return "Medium" or "medium" instead of "MEDIUM".
+ * A completely wrong value (e.g. "CRITICAL") still fails validation.
+ */
+function upcaseEnum<T extends z.ZodEnum<[string, ...string[]]>>(schema: T) {
+  return z.preprocess(
+    (v) => (typeof v === "string" ? v.toUpperCase() : v),
+    schema
+  );
+}
+
 const LLMTriageSchema = z.object({
-  priority: PrioritySchema,
-  urgency: UrgencySchema,
-  riskLevel: RiskLevelSchema,
-  requiredAction: RequiredActionSchema,
-  sensitivity: SensitivitySchema,
+  priority: upcaseEnum(PrioritySchema),
+  urgency: upcaseEnum(UrgencySchema),
+  riskLevel: upcaseEnum(RiskLevelSchema),
+  requiredAction: upcaseEnum(RequiredActionSchema),
+  sensitivity: upcaseEnum(SensitivitySchema),
   // Accept any string (or null/omitted) and normalise in normaliseDueAt.
   dueAt: z.union([z.string(), z.null()]).optional(),
-  suggestedNextStep: SuggestedNextStepSchema,
+  suggestedNextStep: upcaseEnum(SuggestedNextStepSchema),
 });
 
 function extractJSON(text: string): unknown {
@@ -80,18 +92,22 @@ function extractJSON(text: string): unknown {
 }
 
 export function validateTriageMetadata(rawText: string): TriageMetadata | null {
+  const preview = rawText.slice(0, 500);
+
   let parsed: unknown;
   try {
     parsed = extractJSON(rawText);
   } catch (e) {
-    console.warn(`[triage-validator] Failed to parse LLM output as JSON: ${String(e)}`);
+    console.error(
+      `[triage-validator] Failed to parse LLM output as JSON: ${String(e)}\nRaw (first 500 chars): ${preview}`
+    );
     return null;
   }
 
   const result = LLMTriageSchema.safeParse(parsed);
   if (!result.success) {
-    console.warn(
-      `[triage-validator] LLM triage schema validation failed: ${result.error.message}`
+    console.error(
+      `[triage-validator] LLM triage schema validation failed: ${result.error.message}\nParsed value: ${JSON.stringify(parsed)}\nRaw (first 500 chars): ${preview}`
     );
     return null;
   }

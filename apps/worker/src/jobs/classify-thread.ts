@@ -23,10 +23,10 @@ export function createClassifyThreadWorker(): Worker {
   const worker = new Worker<ClassifyThreadJobData>(
     QUEUE_CLASSIFY_THREAD,
     async (job) => {
-      const { workspaceId, emailThreadId } = job.data;
+      const { workspaceId, emailThreadId, triageOnly = false } = job.data;
 
       console.log(
-        `[classify-thread] Job ${job.id} received — thread ${emailThreadId} (workspace ${workspaceId})`
+        `[classify-thread] Job ${job.id} received — thread ${emailThreadId} (workspace ${workspaceId})${triageOnly ? " [triage-only]" : ""}`,
       );
 
       // ── 1. Load thread + Gmail connection ──────────────────────────────────
@@ -48,7 +48,8 @@ export function createClassifyThreadWorker(): Worker {
       ]);
 
       if (!thread) throw new Error(`EmailThread not found: ${emailThreadId}`);
-      if (!connection) throw new Error(`No Gmail connection for workspace: ${workspaceId}`);
+      if (!connection)
+        throw new Error(`No Gmail connection for workspace: ${workspaceId}`);
 
       // ── 1b. Mark thread as actively classifying ─────────────────────────────
       //
@@ -83,116 +84,196 @@ export function createClassifyThreadWorker(): Worker {
 
         await job.updateProgress(20);
 
-        // ── 3. Load taxonomy ────────────────────────────────────────────────────
-
-        const [rawNodes, rawEdges] = await Promise.all([
-          db.taxonomyNode.findMany({
-            where: { workspaceId },
-            select: {
-              id: true,
-              name: true,
-              description: true,
-              instructions: true,
-              examples: true,
-              isRoot: true,
-              embeddingVector: true,
-              embeddingModel: true,
-              embeddingTextHash: true,
-            },
-          }),
-          db.taxonomyEdge.findMany({
-            where: { workspaceId },
-            select: { id: true, sourceNodeId: true, targetNodeId: true },
-          }),
-        ]);
-
-        if (rawNodes.length === 0) {
-          throw new Error(`No taxonomy nodes for workspace: ${workspaceId}`);
-        }
-
-        const nodes: EmbeddableNode[] = rawNodes.map((n) => ({
-          ...n,
-          examples: n.examples as string[],
-          embeddingVector:
-            n.embeddingVector.length > 0 ? n.embeddingVector : null,
-        }));
-
-        await job.updateProgress(35);
-
-        // ── 4. Run AI classification ────────────────────────────────────────────
-
         const aiProvider = createAIProvider(getAIProviderConfig());
-        const embeddingProvider = createEmbeddingProvider(
-          getEmbeddingProviderConfig(),
-        );
 
-        // Run routing and triage metadata analysis concurrently — they are
-        // independent: routing selects a taxonomy node, triage describes the
-        // email's priority/urgency/risk/action. A triage failure (null) is
-        // non-fatal and leaves those columns unpopulated.
-        const [result, triage] = await Promise.all([
-          sortThreadByEmbedding(
+        if (triageOnly) {
+          // ── Triage-only path ──────────────────────────────────────────────────
+          //
+          // Skip routing entirely. Re-run the triage metadata analysis and update
+          // the most recent existing classification record. triageStatus is left
+          // unchanged — the user is satisfied with the routing result.
+
+          const existingClassification = await db.emailClassification.findFirst({
+            where: { emailThreadId, workspaceId },
+            orderBy: { createdAt: "desc" },
+            select: { id: true },
+          });
+
+          if (!existingClassification) {
+            throw new Error(
+              `No existing classification for thread ${emailThreadId} — sort first before re-analyzing`
+            );
+          }
+
+          await job.updateProgress(40);
+
+          const triage = await analyzeThreadTriage(aiProvider, messages);
+
+          if (triage !== null) {
+            await db.emailClassification.update({
+              where: { id: existingClassification.id },
+              data: {
+                priority: triage.priority,
+                urgency: triage.urgency,
+                riskLevel: triage.riskLevel,
+                requiredAction: triage.requiredAction,
+                sensitivity: triage.sensitivity,
+                dueAt: triage.dueAt !== null ? new Date(triage.dueAt) : null,
+                suggestedNextStep: triage.suggestedNextStep,
+              },
+            });
+            console.log(
+              `[classify-thread] Triage-only metadata saved for thread ${emailThreadId}: priority=${triage.priority}, urgency=${triage.urgency}`
+            );
+          } else {
+            console.error(
+              `[classify-thread] Triage returned null for thread ${emailThreadId} — metadata not updated`
+            );
+          }
+
+          await job.updateProgress(95);
+        } else {
+          // ── Full classification path ──────────────────────────────────────────
+
+          // ── 3. Load taxonomy ────────────────────────────────────────────────────
+
+          const [rawNodes, rawEdges] = await Promise.all([
+            db.taxonomyNode.findMany({
+              where: { workspaceId },
+              select: {
+                id: true,
+                name: true,
+                description: true,
+                instructions: true,
+                examples: true,
+                isRoot: true,
+                embeddingVector: true,
+                embeddingModel: true,
+                embeddingTextHash: true,
+              },
+            }),
+            db.taxonomyEdge.findMany({
+              where: { workspaceId },
+              select: { id: true, sourceNodeId: true, targetNodeId: true },
+            }),
+          ]);
+
+          if (rawNodes.length === 0) {
+            throw new Error(`No taxonomy nodes for workspace: ${workspaceId}`);
+          }
+
+          const nodes: EmbeddableNode[] = rawNodes.map((n) => ({
+            ...n,
+            examples: n.examples as string[],
+            embeddingVector:
+              n.embeddingVector.length > 0 ? n.embeddingVector : null,
+          }));
+
+          await job.updateProgress(35);
+
+          // ── 4. Route via embeddings ─────────────────────────────────────────────
+          //
+          // Run routing then triage sequentially — Ollama processes requests
+          // serially; concurrent calls queue and can exceed the 5-minute headers
+          // timeout. For API-based frontier LLMs this is not a concern.
+
+          const embeddingProvider = createEmbeddingProvider(
+            getEmbeddingProviderConfig(),
+          );
+
+          const result = await sortThreadByEmbedding(
             embeddingProvider,
             aiProvider,
             nodes,
             rawEdges,
             messages,
-          ),
-          analyzeThreadTriage(aiProvider, messages),
-        ]);
-
-        await job.updateProgress(80);
-
-        // ── 5. Persist updated node embedding cache ─────────────────────────────
-
-        if (result.updatedNodeEmbeddings.length > 0) {
-          await Promise.all(
-            result.updatedNodeEmbeddings.map((e) =>
-              db.taxonomyNode.update({
-                where: { id: e.nodeId },
-                data: {
-                  embeddingVector: e.embeddingVector,
-                  embeddingModel: e.embeddingModel,
-                  embeddingTextHash: e.embeddingTextHash,
-                  embeddingUpdatedAt: e.embeddingUpdatedAt,
-                },
-              }),
-            ),
           );
+
+          await job.updateProgress(60);
+
+          // ── 5. Persist updated node embedding cache ───────────────────────────
+
+          if (result.updatedNodeEmbeddings.length > 0) {
+            await Promise.all(
+              result.updatedNodeEmbeddings.map((e) =>
+                db.taxonomyNode.update({
+                  where: { id: e.nodeId },
+                  data: {
+                    embeddingVector: e.embeddingVector,
+                    embeddingModel: e.embeddingModel,
+                    embeddingTextHash: e.embeddingTextHash,
+                    embeddingUpdatedAt: e.embeddingUpdatedAt,
+                  },
+                }),
+              ),
+            );
+          }
+
+          // ── 6. Persist routing result + update thread status ──────────────────
+          //
+          // Done before triage so the UI can distinguish the two phases:
+          //   classifyingAt set  + no classification  → "Sorting…"   (routing)
+          //   classifyingAt set  + classification exists → "Analyzing…" (triage)
+          //   classifyingAt null + classification exists → done
+
+          const { id: classificationId } = await db.emailClassification.create({
+            data: {
+              workspaceId,
+              emailThreadId,
+              finalNodeId: result.finalNodeId,
+              confidence: result.confidence,
+              explanation: result.explanation,
+              needsHumanReview: result.needsHumanReview,
+              modelProvider: aiProvider.providerName,
+              modelName: aiProvider.modelName,
+            },
+            select: { id: true },
+          });
+
+          await db.emailThread.update({
+            where: { id: emailThreadId },
+            data: { triageStatus: result.needsHumanReview ? "NEEDS_REVIEW" : "SORTED" },
+          });
+
+          await job.updateProgress(75);
+
+          // ── 7. Triage metadata ────────────────────────────────────────────────
+          //
+          // Non-fatal — thread is already sorted; triage fields are left null
+          // if the LLM fails or returns invalid output.
+
+          const triage = await analyzeThreadTriage(aiProvider, messages);
+
+          if (triage !== null) {
+            await db.emailClassification.update({
+              where: { id: classificationId },
+              data: {
+                priority: triage.priority,
+                urgency: triage.urgency,
+                riskLevel: triage.riskLevel,
+                requiredAction: triage.requiredAction,
+                sensitivity: triage.sensitivity,
+                dueAt: triage.dueAt !== null ? new Date(triage.dueAt) : null,
+                suggestedNextStep: triage.suggestedNextStep,
+              },
+            });
+            console.log(
+              `[classify-thread] Triage metadata saved for thread ${emailThreadId}: priority=${triage.priority}, urgency=${triage.urgency}`
+            );
+          } else {
+            console.error(
+              `[classify-thread] Triage returned null for thread ${emailThreadId} — metadata not saved`
+            );
+          }
+
+          await job.updateProgress(95);
         }
 
-        // ── 6. Persist classification record ────────────────────────────────────
-
-        await db.emailClassification.create({
-          data: {
-            workspaceId,
-            emailThreadId,
-            finalNodeId: result.finalNodeId,
-            confidence: result.confidence,
-            explanation: result.explanation,
-            needsHumanReview: result.needsHumanReview,
-            modelProvider: aiProvider.providerName,
-            modelName: aiProvider.modelName,
-            // Triage metadata — populated only when the LLM returned valid output.
-            ...(triage !== null && {
-              priority: triage.priority,
-              urgency: triage.urgency,
-              riskLevel: triage.riskLevel,
-              requiredAction: triage.requiredAction,
-              sensitivity: triage.sensitivity,
-              dueAt: triage.dueAt !== null ? new Date(triage.dueAt) : null,
-              suggestedNextStep: triage.suggestedNextStep,
-            }),
-          },
-          select: { id: true },
-        });
-
-        // ── 7. Update triage status and clear classifying flag ─────────────────
+        // ── Clear classifying flag (both paths) ─────────────────────────────────
 
         await db.emailThread.update({
           where: { id: emailThreadId },
           data: {
-            triageStatus: result.needsHumanReview ? "NEEDS_REVIEW" : "SORTED",
             classifyingAt: null,
           },
         });
@@ -200,12 +281,14 @@ export function createClassifyThreadWorker(): Worker {
         await job.updateProgress(100);
       } catch (err) {
         const attempt = job.attemptsMade + 1;
-        const maxAttempts = (job.opts.attempts ?? 1);
+        const maxAttempts = job.opts.attempts ?? 1;
         const remaining = maxAttempts - attempt;
         const msg = err instanceof Error ? err.message : String(err);
         console.error(
           `[classify-thread] Failed attempt ${attempt}/${maxAttempts} for thread ${emailThreadId} (workspace ${workspaceId}): ${msg}`,
-          remaining > 0 ? `— ${remaining} retry attempt(s) left` : "— no retries left",
+          remaining > 0
+            ? `— ${remaining} retry attempt(s) left`
+            : "— no retries left",
         );
         throw err;
       } finally {
@@ -222,9 +305,21 @@ export function createClassifyThreadWorker(): Worker {
     },
     {
       connection: redisConnection,
-      // Up to 5 classification runs in parallel — bounded by LLM/embedding
-      // rate limits rather than by CPU.
-      concurrency: 5,
+      // Ollama processes requests serially — a single slow model inference
+      // (30-120 s) blocks every concurrent HTTP request queued behind it.
+      // With concurrency > 1, the last job in line easily exceeds the
+      // 5-minute headers timeout before Ollama even starts responding.
+      // For frontier LLM APIs (OpenAI, Anthropic) that handle parallel
+      // requests natively, higher concurrency is fine.
+      concurrency: (process.env["AI_PROVIDER"] ?? "mock") === "ollama" ? 1 : 5,
+      // LLM + embedding calls can take several minutes with local Ollama.
+      // The lock auto-renews every lockDuration/2 ms while the job is running,
+      // so 5 minutes covers even the slowest models without false stalls.
+      lockDuration: 300_000,
+      // Tolerate up to 3 stalls (e.g. dev-server hot-reloads) before
+      // permanently failing a job.  Classification is idempotent so retrying
+      // a stalled job is always safe.
+      maxStalledCount: 3,
     },
   );
 

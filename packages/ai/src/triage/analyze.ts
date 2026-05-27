@@ -22,8 +22,9 @@ export async function analyzeThreadTriage(
   try {
     rawText = await provider.chat(promptMessages);
   } catch (e) {
-    console.warn(`[triage] LLM call failed: ${String(e)}`);
+    console.error(`[triage] LLM call failed: ${String(e)}`);
     return null;
   }
+  console.log(`[triage] LLM raw response (first 300 chars): ${rawText.slice(0, 300)}`);
   return validateTriageMetadata(rawText);
 }
