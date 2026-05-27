@@ -16,11 +16,16 @@ export type SyncInboxJobData = {
 /**
  * Payload for a `classify-thread` job.
  * One job per thread that changed during an inbox sync (or triggered manually).
+ *
+ * `triageOnly` — skip routing (taxonomy node selection) and only re-run
+ * the triage metadata analysis (priority, urgency, risk, etc.) on the most
+ * recent existing classification record. Used by the "Re-analyze" UI action.
  */
 export type ClassifyThreadJobData = {
   workspaceId: string;
   /** Internal EmailThread.id — not the Gmail thread ID. */
   emailThreadId: string;
+  triageOnly?: boolean;
 };
 
 /** Payload for a `backfill-inbox` job. One job per workspace, run once. */
