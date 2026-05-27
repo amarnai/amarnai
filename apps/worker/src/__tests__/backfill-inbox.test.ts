@@ -15,6 +15,7 @@ vi.mock("@amarnai/db", () => ({
     emailThread: {
       findUnique: vi.fn(),
       upsert: vi.fn(),
+      updateMany: vi.fn().mockResolvedValue({ count: 0 }),
     },
     emailMessage: {
       upsert: vi.fn(),
@@ -24,11 +25,13 @@ vi.mock("@amarnai/db", () => ({
 
 const mockListThreadsInWindow = vi.fn();
 const mockGetThread = vi.fn();
+const mockListThreadIdsByQuery = vi.fn().mockResolvedValue([]);
 
 vi.mock("@amarnai/gmail", () => ({
   GmailClient: vi.fn().mockImplementation(() => ({
     listThreadsInWindow: mockListThreadsInWindow,
     getThread: mockGetThread,
+    listThreadIdsByQuery: mockListThreadIdsByQuery,
   })),
   normalizeGmailThread: vi.fn().mockImplementation((raw: unknown) => {
     const r = raw as { id: string; subject?: string };
