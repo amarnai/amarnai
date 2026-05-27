@@ -104,9 +104,9 @@ export default async function EmailsPage({ searchParams }: PageProps) {
       api.taxonomyNodes(workspace.id),
     ]);
 
-    displayThreads = result.threads;
-    nextCursor     = result.nextCursor;
-    counts         = result.counts;
+    displayThreads = result.threads  ?? [];
+    nextCursor     = result.nextCursor ?? null;
+    counts         = result.counts   ?? { total: 0, PENDING: 0, NEEDS_REVIEW: 0, SORTED: 0 };
     syncStatus     = syncResult;
     nodes          = nodesResult;
   } catch (err) {
@@ -217,18 +217,17 @@ export default async function EmailsPage({ searchParams }: PageProps) {
                 </Link>
               );
             })}
+            {nextCursor && (
+              <div className="pagination">
+                <Link
+                  href={buildNextUrl(nodeId, status, nextCursor)}
+                  className="btn-secondary"
+                >
+                  Next page →
+                </Link>
+              </div>
+            )}
           </div>
-
-          {nextCursor && (
-            <div className="pagination">
-              <Link
-                href={buildNextUrl(nodeId, status, nextCursor)}
-                className="btn-secondary"
-              >
-                Next page →
-              </Link>
-            </div>
-          )}
         </>
       )}
     </>
