@@ -9,6 +9,7 @@ type Props = {
   threadId: string;
   triageStatus: TriageStatus;
   hasClassification: boolean;
+  isClassifying: boolean;
   modelProvider?: string | null;
   modelName?: string | null;
 };
@@ -16,16 +17,15 @@ type Props = {
 export function ClassificationActions({
   workspaceId,
   threadId,
-  triageStatus,
+  triageStatus: _triageStatus,
   hasClassification,
+  isClassifying,
   modelProvider,
   modelName,
 }: Props) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  const isPending = triageStatus === "PENDING";
 
   async function handleRetry() {
     setError(null);
@@ -41,8 +41,7 @@ export function ClassificationActions({
   }
 
   function buttonLabel(): string {
-    if (loading) return "Sorting…";
-    if (isPending) return "Pending…";
+    if (loading || isClassifying) return "Sorting…";
     return hasClassification ? "Retry sorting" : "Sort thread";
   }
 
@@ -51,7 +50,7 @@ export function ClassificationActions({
       <div style={{ display: "flex", gap: "10px", alignItems: "center", flexWrap: "wrap" }}>
         <button
           onClick={handleRetry}
-          disabled={loading || isPending}
+          disabled={loading || isClassifying}
           className="btn-primary"
         >
           {buttonLabel()}

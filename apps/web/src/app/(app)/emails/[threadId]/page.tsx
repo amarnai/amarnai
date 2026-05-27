@@ -4,6 +4,7 @@ import { api, type EmailThreadDetail, type TaxonomyNode, type SyncStatus } from 
 import { ClassificationActions } from "./ClassificationActions";
 import { TriageActions } from "./TriageActions";
 import { MessageBody } from "./MessageBody";
+import { ClassifyingRefresher } from "@/components/ClassifyingRefresher";
 
 type Props = { params: Promise<{ threadId: string }> };
 
@@ -116,6 +117,8 @@ export default async function ThreadDetailPage({ params }: Props) {
         ← Back to Emails
       </Link>
 
+      <ClassifyingRefresher active={thread.isClassifying} />
+
       <h1>{thread.subject ?? "(no subject)"}</h1>
 
       {thread.isClassifying
@@ -137,6 +140,7 @@ export default async function ThreadDetailPage({ params }: Props) {
         threadId={thread.id}
         triageStatus={thread.triageStatus}
         hasClassification={thread.latestClassification !== null}
+        isClassifying={thread.isClassifying}
         modelProvider={thread.latestClassification?.modelProvider ?? null}
         modelName={thread.latestClassification?.modelName ?? null}
       />

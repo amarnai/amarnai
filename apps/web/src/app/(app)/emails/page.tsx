@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { requireUser, getOrCreateDefaultWorkspace } from "@/lib/session";
 import { api, type EmailThreadSummary, type SyncStatus } from "@/lib/api";
+import { ClassifyingRefresher } from "@/components/ClassifyingRefresher";
 
 function fmt(iso: string | null): string {
   if (!iso) return "";
@@ -111,8 +112,11 @@ export default async function EmailsPage() {
     { sorted: 0, pending: 0, needsReview: 0 }
   );
 
+  const anyClassifying = threads.some((t) => t.isClassifying);
+
   return (
     <>
+      <ClassifyingRefresher active={anyClassifying} />
       <h1>Email Threads</h1>
       <BackfillBanner syncStatus={syncStatus} counts={counts} />
       {error && <div className="error-box">{error}</div>}
