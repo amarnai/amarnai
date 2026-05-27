@@ -34,3 +34,6 @@ export {
   TOP_K_LLM_CANDIDATES,
 } from "./embedding/sorter.js";
 export type { EmbeddingSortResult, DecisionSource } from "./embedding/sorter.js";
+// ─── Triage ───────────────────────────────────────────────────────────────────
+export { analyzeThreadTriage } from "./triage/analyze.js";
+export type { TriageMetadata } from "./triage/analyze.js";

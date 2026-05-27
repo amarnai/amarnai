@@ -4,6 +4,7 @@ import {
   createAIProvider,
   createEmbeddingProvider,
   sortThreadByEmbedding,
+  analyzeThreadTriage,
   snapshotToThreadMessages,
 } from "@amarnai/ai";
 import type { EmbeddableNode } from "@amarnai/ai";
@@ -125,13 +126,20 @@ export function createClassifyThreadWorker(): Worker {
           getEmbeddingProviderConfig(),
         );
 
-        const result = await sortThreadByEmbedding(
-          embeddingProvider,
-          aiProvider,
-          nodes,
-          rawEdges,
-          messages,
-        );
+        // Run routing and triage metadata analysis concurrently — they are
+        // independent: routing selects a taxonomy node, triage describes the
+        // email's priority/urgency/risk/action. A triage failure (null) is
+        // non-fatal and leaves those columns unpopulated.
+        const [result, triage] = await Promise.all([
+          sortThreadByEmbedding(
+            embeddingProvider,
+            aiProvider,
+            nodes,
+            rawEdges,
+            messages,
+          ),
+          analyzeThreadTriage(aiProvider, messages),
+        ]);
 
         await job.updateProgress(80);
 
@@ -165,6 +173,16 @@ export function createClassifyThreadWorker(): Worker {
             needsHumanReview: result.needsHumanReview,
             modelProvider: aiProvider.providerName,
             modelName: aiProvider.modelName,
+            // Triage metadata — populated only when the LLM returned valid output.
+            ...(triage !== null && {
+              priority: triage.priority,
+              urgency: triage.urgency,
+              riskLevel: triage.riskLevel,
+              requiredAction: triage.requiredAction,
+              sensitivity: triage.sensitivity,
+              dueAt: triage.dueAt !== null ? new Date(triage.dueAt) : null,
+              suggestedNextStep: triage.suggestedNextStep,
+            }),
           },
           select: { id: true },
         });
