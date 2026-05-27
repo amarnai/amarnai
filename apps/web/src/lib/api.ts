@@ -476,6 +476,11 @@ export const api = {
       `/workspaces/${workspaceId}/email-threads/${threadId}/ai-classify`,
       "POST"
     ),
+  aiTriage: (workspaceId: string, threadId: string) =>
+    apiMutate<QueuedResult>(
+      `/workspaces/${workspaceId}/email-threads/${threadId}/ai-triage`,
+      "POST"
+    ),
   mockClassifyThread: (workspaceId: string, threadId: string) =>
     apiMutate<ClassifyResult>(
       `/workspaces/${workspaceId}/email-threads/${threadId}/mock-classify`,
