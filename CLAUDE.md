@@ -50,6 +50,7 @@ A key use case is bulk triage of an existing inbox: users may want to sort and c
 - Idempotent, retry-safe background jobs.
 - Test policy logic, AI output parsing, provider adapters, graph validity, and job behavior.
 - Use centralized Amarnai design tokens; do not hardcode brand hex values in components.
+- Do not duplicate logic or styles. Before adding new code or styles, check whether the behavior or style already exists and reuse or extend it instead.
 
 ## Non-Goals
 
