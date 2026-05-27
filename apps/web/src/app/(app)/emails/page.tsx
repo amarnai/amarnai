@@ -1,9 +1,15 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import { requireUser, getOrCreateDefaultWorkspace } from "@/lib/session";
-import { api, type EmailThreadSummary, type SyncStatus, type TaxonomyNode } from "@/lib/api";
+import {
+  api,
+  type EmailThreadSummary,
+  type SyncStatus,
+  type TaxonomyNode,
+  type FilterCounts,
+} from "@/lib/api";
 import { ClassifyingRefresher } from "@/components/ClassifyingRefresher";
-import { ThreadFilters, type FilterCounts } from "./ThreadFilters";
+import { ThreadFilters } from "./ThreadFilters";
 
 function fmt(iso: string | null): string {
   if (!iso) return "";
@@ -57,60 +63,58 @@ function priorityClass(priority: string): string {
   return "badge-none";
 }
 
-function computeFilterCounts(threads: EmailThreadSummary[]): FilterCounts {
-  return threads.reduce(
-    (acc, t) => {
-      acc.total++;
-      if (t.triageStatus === "SORTED") acc.SORTED++;
-      else if (t.triageStatus === "PENDING") acc.PENDING++;
-      else if (t.triageStatus === "NEEDS_REVIEW") acc.NEEDS_REVIEW++;
-      return acc;
-    },
-    { total: 0, PENDING: 0, NEEDS_REVIEW: 0, SORTED: 0 }
-  );
+function buildNextUrl(
+  nodeId: string | undefined,
+  status: string | undefined,
+  nextCursor: string
+): string {
+  const params = new URLSearchParams();
+  if (nodeId)  params.set("nodeId",  nodeId);
+  if (status)  params.set("status",  status);
+  params.set("cursor", nextCursor);
+  return `/emails?${params.toString()}`;
 }
 
 type PageProps = {
-  searchParams: Promise<{ nodeId?: string; status?: string }>;
+  searchParams: Promise<{ nodeId?: string; status?: string; cursor?: string }>;
 };
 
 export default async function EmailsPage({ searchParams }: PageProps) {
   const user = await requireUser();
   const workspace = await getOrCreateDefaultWorkspace(user.id);
 
-  const { nodeId, status } = await searchParams;
+  const { nodeId, status, cursor } = await searchParams;
   const filters = {
-    ...(nodeId ? { nodeId } : {}),
-    ...(status ? { status } : {}),
+    ...(nodeId  ? { nodeId }  : {}),
+    ...(status  ? { status }  : {}),
+    ...(cursor  ? { cursor }  : {}),
   };
-  const hasFilters = Object.keys(filters).length > 0;
 
   let displayThreads: EmailThreadSummary[] = [];
+  let nextCursor: string | null = null;
   let syncStatus: SyncStatus = null;
   let nodes: TaxonomyNode[] = [];
   let counts: FilterCounts = { total: 0, PENDING: 0, NEEDS_REVIEW: 0, SORTED: 0 };
   let error: string | null = null;
 
   try {
-    // Always fetch unfiltered threads so pill counts reflect the full inbox.
-    // When a filter is active, also fetch the filtered set for display — both
-    // calls run in parallel so there's no sequential cost.
-    const [allThreads, filteredThreads, syncResult, nodesResult] = await Promise.all([
-      api.emailThreads(workspace.id),
-      hasFilters ? api.emailThreads(workspace.id, filters) : Promise.resolve(null),
+    const [result, syncResult, nodesResult] = await Promise.all([
+      api.emailThreads(workspace.id, filters),
       api.syncStatus(workspace.id),
       api.taxonomyNodes(workspace.id),
     ]);
 
-    counts = computeFilterCounts(allThreads);
-    displayThreads = filteredThreads ?? allThreads;
-    syncStatus = syncResult;
-    nodes = nodesResult;
+    displayThreads = result.threads;
+    nextCursor     = result.nextCursor;
+    counts         = result.counts;
+    syncStatus     = syncResult;
+    nodes          = nodesResult;
   } catch (err) {
     error = err instanceof Error ? err.message : String(err);
   }
 
   const anyClassifying = displayThreads.some((t) => t.isClassifying);
+  const hasFilters = !!(nodeId || status);
 
   return (
     <>
@@ -129,90 +133,103 @@ export default async function EmailsPage({ searchParams }: PageProps) {
           {hasFilters ? "No threads match the selected filter." : "No threads"}
         </p>
       ) : (
-        <div className="card">
-          {displayThreads.map((thread) => {
-            const latest = thread.messages[0];
-            return (
-              <Link
-                key={thread.id}
-                href={`/emails/${thread.id}`}
-                className="thread-row"
-              >
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div className="thread-subject">
-                    {thread.subject ?? "(no subject)"}
+        <>
+          <div className="card">
+            {displayThreads.map((thread) => {
+              const latest = thread.messages[0];
+              return (
+                <Link
+                  key={thread.id}
+                  href={`/emails/${thread.id}`}
+                  className="thread-row"
+                >
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div className="thread-subject">
+                      {thread.subject ?? "(no subject)"}
+                    </div>
+                    <div className="thread-meta">
+                      {latest?.senderName ?? latest?.senderEmail ?? "Unknown"} ·{" "}
+                      {fmt(thread.latestMessageAt)}
+                      {thread.latestClassification && (
+                        <>
+                          {" · "}
+                          <span
+                            className={`badge ${priorityClass(
+                              thread.latestClassification.priority
+                            )}`}
+                            style={{ fontSize: 10 }}
+                          >
+                            {thread.latestClassification.priority}
+                          </span>
+                          {" "}
+                          <span className="badge" style={{ fontSize: 10 }}>
+                            {thread.latestClassification.finalNode?.name ?? "—"}
+                          </span>
+                        </>
+                      )}
+                    </div>
+                    {thread.tags.length > 0 && (
+                      <div className="inline-tags">
+                        {thread.tags.map((et) => (
+                          <span
+                            key={et.id}
+                            className="tag-chip"
+                            style={
+                              et.tag.color
+                                ? {
+                                    background: `${et.tag.color}28`,
+                                    color: et.tag.color,
+                                  }
+                                : {}
+                            }
+                          >
+                            {et.tag.name}
+                          </span>
+                        ))}
+                      </div>
+                    )}
                   </div>
-                  <div className="thread-meta">
-                    {latest?.senderName ?? latest?.senderEmail ?? "Unknown"} ·{" "}
-                    {fmt(thread.latestMessageAt)}
-                    {thread.latestClassification && (
+                  <div style={{ flexShrink: 0, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 4 }}>
+                    <span className="thread-meta">
+                      {thread.messageCount}{" "}
+                      {thread.messageCount === 1 ? "msg" : "msgs"}
+                    </span>
+                    {thread.isClassifying ? (
+                      <span className="classifying-badge">
+                        <span className="classifying-dot" />
+                        {thread.latestClassification ? "Analyzing…" : "Sorting…"}
+                      </span>
+                    ) : (
                       <>
-                        {" · "}
-                        <span
-                          className={`badge ${priorityClass(
-                            thread.latestClassification.priority
-                          )}`}
-                          style={{ fontSize: 10 }}
-                        >
-                          {thread.latestClassification.priority}
-                        </span>
-                        {" "}
-                        <span className="badge" style={{ fontSize: 10 }}>
-                          {thread.latestClassification.finalNode?.name ?? "—"}
-                        </span>
+                        {thread.triageStatus === "NEEDS_REVIEW" && (
+                          <span className="triage-badge triage-badge-needs_review" style={{ fontSize: 10 }}>
+                            ⚠ Review
+                          </span>
+                        )}
+                        {thread.triageStatus === "PENDING" && (
+                          <span className="triage-badge triage-badge-pending" style={{ fontSize: 10 }}>
+                            {thread.isQueued ? "Queued" : "Pending"}
+                          </span>
+                        )}
                       </>
                     )}
                   </div>
-                  {thread.tags.length > 0 && (
-                    <div className="inline-tags">
-                      {thread.tags.map((et) => (
-                        <span
-                          key={et.id}
-                          className="tag-chip"
-                          style={
-                            et.tag.color
-                              ? {
-                                  background: `${et.tag.color}28`,
-                                  color: et.tag.color,
-                                }
-                              : {}
-                          }
-                        >
-                          {et.tag.name}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-                <div style={{ flexShrink: 0, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 4 }}>
-                  <span className="thread-meta">
-                    {thread.messageCount}{" "}
-                    {thread.messageCount === 1 ? "msg" : "msgs"}
-                  </span>
-                  {thread.isClassifying ? (
-                    <span className="classifying-badge">
-                      <span className="classifying-dot" />
-                      {thread.latestClassification ? "Analyzing…" : "Sorting…"}
-                    </span>
-                  ) : (
-                    <>
-                      {thread.triageStatus === "NEEDS_REVIEW" && (
-                        <span className="triage-badge triage-badge-needs_review" style={{ fontSize: 10 }}>
-                          ⚠ Review
-                        </span>
-                      )}
-                      {thread.triageStatus === "PENDING" && (
-                        <span className="triage-badge triage-badge-pending" style={{ fontSize: 10 }}>
-                          {thread.isQueued ? "Queued" : "Pending"}
-                        </span>
-                      )}
-                    </>
-                  )}
-                </div>
+                </Link>
+              );
+            })}
+          </div>
+
+          {nextCursor && (
+            <div className="pagination">
+              <Link
+                href={buildNextUrl(nodeId, status, nextCursor)}
+                className="btn-secondary"
+              >
+                Next page →
               </Link>
-            );
-          })}
-        </div>
+            </div>
+          )}
+        </>
       )}
     </>
   );

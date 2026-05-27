@@ -1,14 +1,9 @@
 "use client";
 
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
-import type { TaxonomyNode } from "@/lib/api";
+import type { TaxonomyNode, FilterCounts } from "@/lib/api";
 
-export type FilterCounts = {
-  total: number;
-  PENDING: number;
-  NEEDS_REVIEW: number;
-  SORTED: number;
-};
+export type { FilterCounts };
 
 type Props = {
   nodes: TaxonomyNode[];
@@ -40,6 +35,7 @@ export function ThreadFilters({ nodes, counts }: Props) {
   // Non-root nodes are the leaf categories threads can be sorted into.
   const leafNodes = nodes.filter((n) => !n.isRoot);
 
+  // Changing a filter always resets to page 1 (no cursor).
   function navigate(status: string, nodeId: string) {
     const params = new URLSearchParams();
     if (status) params.set("status", status);

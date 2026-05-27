@@ -112,6 +112,19 @@ export type Tag = {
 
 export type TriageStatus = "PENDING" | "SORTED" | "NEEDS_REVIEW";
 
+export type FilterCounts = {
+  total: number;
+  PENDING: number;
+  NEEDS_REVIEW: number;
+  SORTED: number;
+};
+
+export type EmailThreadListResult = {
+  threads: EmailThreadSummary[];
+  nextCursor: string | null;
+  counts: FilterCounts;
+};
+
 export type EmailThreadSummary = {
   id: string;
   subject: string | null;
@@ -431,16 +444,19 @@ export const api = {
     ),
   tags: (workspaceId: string) =>
     apiFetch<Tag[]>(`/workspaces/${workspaceId}/tags`),
-  emailThreads: (workspaceId: string, filters?: { nodeId?: string; status?: string }) => {
+  emailThreads: (
+    workspaceId: string,
+    filters?: { nodeId?: string; status?: string; cursor?: string }
+  ) => {
     const params = new URLSearchParams();
-    if (filters?.nodeId) params.set("nodeId", filters.nodeId);
-    if (filters?.status) params.set("status", filters.status);
+    if (filters?.nodeId)  params.set("nodeId",  filters.nodeId);
+    if (filters?.status)  params.set("status",  filters.status);
+    if (filters?.cursor)  params.set("cursor",  filters.cursor);
     const qs = params.toString();
-    // Skip the 5-second cache when filters are active so results are fresh.
-    const revalidate = qs ? undefined : 5;
-    return apiFetch<EmailThreadSummary[]>(
+    // Always no-store: cursor-based pages are ephemeral and must be fresh.
+    return apiFetch<EmailThreadListResult>(
       `/workspaces/${workspaceId}/email-threads${qs ? `?${qs}` : ""}`,
-      revalidate
+      undefined
     );
   },
   emailThread: (workspaceId: string, threadId: string) =>

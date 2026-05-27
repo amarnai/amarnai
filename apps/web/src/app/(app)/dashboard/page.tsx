@@ -8,7 +8,7 @@ export default async function DashboardPage() {
 
   let data;
   try {
-    const [nodes, edges, threads, reviews, tags] = await Promise.all([
+    const [nodes, edges, threadsResult, reviews, tags] = await Promise.all([
       api.taxonomyNodes(workspace.id),
       api.taxonomyEdges(workspace.id),
       api.emailThreads(workspace.id),
@@ -19,9 +19,11 @@ export default async function DashboardPage() {
       workspace,
       nodes,
       edges,
-      threads,
+      // First page of threads only — FoldersSection per-node counts are
+      // approximate until the dashboard gets its own aggregation endpoint.
+      threads: threadsResult.threads,
       nodeCount: nodes.length,
-      threadCount: threads.length,
+      threadCount: threadsResult.counts.total,
       reviewCount: reviews.length,
       tagCount: tags.length,
     };

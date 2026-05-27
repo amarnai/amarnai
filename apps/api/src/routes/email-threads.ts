@@ -19,11 +19,66 @@ type TriageStatusValue = typeof VALID_TRIAGE_STATUSES[number];
 // for the active phase. The cost of increasing this threshold is that a
 // crashed-worker's stale indicator takes longer to clear (acceptable trade-off).
 const CLASSIFY_STALE_MS = 15 * 60 * 1_000;
+const DEFAULT_PAGE_LIMIT = 50;
+const MAX_PAGE_LIMIT = 100;
 
 function deriveIsClassifying(classifyingAt: Date | null): boolean {
   if (!classifyingAt) return false;
   return Date.now() - classifyingAt.getTime() < CLASSIFY_STALE_MS;
 }
+
+// ─── Cursor helpers ───────────────────────────────────────────────────────────
+//
+// Cursor encodes the last-seen (latestMessageAt, id) pair so the next page
+// query can pick up exactly where the previous one left off. base64url keeps
+// the value URL-safe without additional encoding.
+//
+// Sort order: latestMessageAt DESC NULLS LAST, id DESC
+// Null-thread handling:
+//   - When cursor.lat is non-null: include OR latestMessageAt IS NULL so that
+//     threads with no latestMessageAt (sorted last) are captured on subsequent
+//     pages.
+//   - When cursor.lat is null: we are already in the null zone; only match
+//     null-latestMessageAt threads with a smaller id.
+
+type PageCursor = { lat: string | null; id: string };
+
+function encodeCursor(cursor: PageCursor): string {
+  return Buffer.from(JSON.stringify(cursor)).toString("base64url");
+}
+
+function decodeCursor(encoded: string): PageCursor | null {
+  try {
+    const raw = Buffer.from(encoded, "base64url").toString("utf8");
+    const parsed: unknown = JSON.parse(raw);
+    if (!parsed || typeof parsed !== "object") return null;
+    const p = parsed as Record<string, unknown>;
+    if (typeof p["id"] !== "string") return null;
+    if (p["lat"] !== null && typeof p["lat"] !== "string") return null;
+    return { lat: (p["lat"] as string | null) ?? null, id: p["id"] as string };
+  } catch {
+    return null;
+  }
+}
+
+function buildCursorWhere(cursor: PageCursor) {
+  if (cursor.lat === null) {
+    // Already in the null zone — only null-latestMessageAt threads with a
+    // smaller id remain.
+    return { latestMessageAt: null, id: { lt: cursor.id } };
+  }
+  const cursorDate = new Date(cursor.lat);
+  return {
+    OR: [
+      { latestMessageAt: { lt: cursorDate } },
+      { latestMessageAt: cursorDate, id: { lt: cursor.id } },
+      // null threads sort after all dated threads (NULLS LAST).
+      { latestMessageAt: null },
+    ],
+  };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 
 const emailThreads = new Hono();
 
@@ -36,15 +91,22 @@ emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
   }
   const { workspaceId } = parsed.data;
 
-  // Parse optional filter query params.
-  const rawNodeId = c.req.query("nodeId");
-  const rawStatus = c.req.query("status");
+  // Parse filter query params.
+  const rawNodeId  = c.req.query("nodeId");
+  const rawStatus  = c.req.query("status");
+  const rawCursor  = c.req.query("cursor");
+  const rawLimit   = c.req.query("limit");
 
   const nodeId = rawNodeId && rawNodeId.length > 0 ? rawNodeId : null;
   const triageStatus: TriageStatusValue | null =
     rawStatus && (VALID_TRIAGE_STATUSES as readonly string[]).includes(rawStatus)
       ? (rawStatus as TriageStatusValue)
       : null;
+  const cursor  = rawCursor ? decodeCursor(rawCursor) : null;
+  const limit   = Math.min(
+    MAX_PAGE_LIMIT,
+    Math.max(1, parseInt(rawLimit ?? String(DEFAULT_PAGE_LIMIT), 10) || DEFAULT_PAGE_LIMIT)
+  );
 
   // Verify workspace exists.
   const workspace = await db.workspace.findUnique({
@@ -62,66 +124,103 @@ emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
   });
   const syncSettings = syncSettingsRow ?? DEFAULT_GMAIL_SYNC_SETTINGS;
 
-  // Build the where clause. nodeId filters by any classification with that
-  // finalNodeId — a reasonable approximation for MVP since reclassification to
-  // a different node is uncommon. Trash is always excluded; spam/promotions
-  // depend on user settings.
-  const threads = await db.emailThread.findMany({
-    where: {
-      workspaceId,
-      gmailIsTrash: false,
-      ...(syncSettings.includeSpam       ? {} : { gmailIsSpam: false }),
-      ...(syncSettings.includePromotions ? {} : { gmailIsPromotions: false }),
-      ...(triageStatus                   ? { triageStatus }               : {}),
-      ...(nodeId ? { classifications: { some: { finalNodeId: nodeId } } } : {}),
-    },
-    orderBy: { latestMessageAt: "desc" },
-    select: {
-      id: true,
-      subject: true,
-      latestMessageAt: true,
-      messageCount: true,
-      triageStatus: true,
-      classifyingAt: true,
-      createdAt: true,
-      messages: {
-        orderBy: { receivedAt: "desc" },
-        take: 1,
-        select: {
-          id: true,
-          senderEmail: true,
-          senderName: true,
-          snippet: true,
-          receivedAt: true,
-        },
-      },
-      tags: {
-        select: {
-          id: true,
-          source: true,
-          tag: {
-            select: { id: true, name: true, color: true },
-          },
-        },
-      },
-      classifications: {
-        orderBy: { createdAt: "desc" },
-        take: 1,
-        select: {
-          id: true,
-          priority: true,
-          urgency: true,
-          confidence: true,
-          needsHumanReview: true,
-          finalNode: {
-            select: { id: true, name: true },
-          },
-        },
-      },
-    },
-  });
+  // baseWhere: visibility filters only (no status/node/cursor).
+  // Used for the global counts so pill totals stay accurate regardless of
+  // which filter is active.
+  const baseWhere = {
+    workspaceId,
+    gmailIsTrash: false,
+    ...(syncSettings.includeSpam       ? {} : { gmailIsSpam: false }),
+    ...(syncSettings.includePromotions ? {} : { gmailIsPromotions: false }),
+  };
 
-  const result = threads.map((thread) => {
+  // fullWhere: adds status, node, and cursor conditions on top of baseWhere.
+  const fullWhere = {
+    ...baseWhere,
+    ...(triageStatus ? { triageStatus }                                     : {}),
+    ...(nodeId       ? { classifications: { some: { finalNodeId: nodeId } } } : {}),
+    ...(cursor       ? buildCursorWhere(cursor)                             : {}),
+  };
+
+  const threadSelect = {
+    id: true,
+    subject: true,
+    latestMessageAt: true,
+    messageCount: true,
+    triageStatus: true,
+    classifyingAt: true,
+    createdAt: true,
+    messages: {
+      orderBy: { receivedAt: "desc" } as const,
+      take: 1,
+      select: {
+        id: true,
+        senderEmail: true,
+        senderName: true,
+        snippet: true,
+        receivedAt: true,
+      },
+    },
+    tags: {
+      select: {
+        id: true,
+        source: true,
+        tag: { select: { id: true, name: true, color: true } },
+      },
+    },
+    classifications: {
+      orderBy: { createdAt: "desc" } as const,
+      take: 1,
+      select: {
+        id: true,
+        priority: true,
+        urgency: true,
+        confidence: true,
+        needsHumanReview: true,
+        finalNode: { select: { id: true, name: true } },
+      },
+    },
+  };
+
+  // Fetch one extra row to detect whether a next page exists, and run the
+  // status-count groupBy in parallel.
+  const [rawThreads, grouped] = await Promise.all([
+    db.emailThread.findMany({
+      where: fullWhere,
+      orderBy: [
+        { latestMessageAt: { sort: "desc", nulls: "last" } },
+        { id: "desc" },
+      ],
+      take: limit + 1,
+      select: threadSelect,
+    }),
+    db.emailThread.groupBy({
+      by: ["triageStatus"],
+      where: baseWhere,
+      _count: { _all: true },
+    }),
+  ]);
+
+  // Build the next-page cursor from the last item in the current page.
+  const hasNextPage = rawThreads.length > limit;
+  const pageThreads = hasNextPage ? rawThreads.slice(0, limit) : rawThreads;
+  const lastThread  = pageThreads.at(-1);
+  const nextCursor  = hasNextPage && lastThread
+    ? encodeCursor({
+        lat: lastThread.latestMessageAt?.toISOString() ?? null,
+        id:  lastThread.id,
+      })
+    : null;
+
+  // Transform grouped counts.
+  const counts = {
+    total:        grouped.reduce((s, g) => s + g._count._all, 0),
+    PENDING:      grouped.find((g) => g.triageStatus === "PENDING")?._count._all      ?? 0,
+    SORTED:       grouped.find((g) => g.triageStatus === "SORTED")?._count._all       ?? 0,
+    NEEDS_REVIEW: grouped.find((g) => g.triageStatus === "NEEDS_REVIEW")?._count._all ?? 0,
+  };
+
+  const threads = pageThreads.map((thread) => {
     const { classifications, classifyingAt, ...rest } = thread;
     return {
       ...rest,
@@ -132,7 +231,8 @@ emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
       latestClassification: classifications[0] ?? null,
     };
   });
-  return c.json(result);
+
+  return c.json({ threads, nextCursor, counts });
 });
 
 emailThreads.get(
