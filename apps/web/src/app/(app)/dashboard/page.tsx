@@ -9,12 +9,11 @@ export default async function DashboardPage() {
 
   let data;
   try {
-    const [nodes, edges, threadsResult, reviews, folderCountsResult] =
+    const [nodes, edges, threadsResult, folderCountsResult] =
       await Promise.all([
         api.taxonomyNodes(workspace.id),
         api.taxonomyEdges(workspace.id),
         api.emailThreads(workspace.id),
-        api.reviewItems(workspace.id),
         api.folderCounts(workspace.id),
       ]);
 
@@ -33,7 +32,6 @@ export default async function DashboardPage() {
       threads: threadsResult.threads,
       nodeCount: nodes.length,
       threadCount: threadsResult.counts.total,
-      reviewCount: reviews.length,
       folderCounts,
       totalClassified: folderCountsResult.total,
     };
@@ -60,10 +58,6 @@ export default async function DashboardPage() {
         <div className="stat-card">
           <div className="stat-label">Email threads</div>
           <div className="stat-value">{data.threadCount}</div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-label">Open reviews</div>
-          <div className="stat-value">{data.reviewCount}</div>
         </div>
       </div>
 

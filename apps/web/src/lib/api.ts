@@ -215,29 +215,6 @@ export type SyncStatus = {
   sortingPaused: boolean;
 } | null;
 
-export type ReviewItem = {
-  id: string;
-  triageStatus: TriageStatus;
-  subject: string | null;
-  latestMessageAt: string | null;
-  tags: EmailTag[];
-  latestMessage: {
-    id: string;
-    senderEmail: string;
-    senderName: string | null;
-    snippet: string | null;
-  } | null;
-  classification: {
-    id: string;
-    confidence: number;
-    explanation: string | null;
-    priority: string | null;
-    urgency: string | null;
-    needsHumanReview: boolean;
-    finalNode: { id: string; name: string } | null;
-  } | null;
-};
-
 export type MockInboxEventInput =
   | {
       mode: "new_thread";
@@ -461,8 +438,6 @@ export const api = {
     apiFetch<EmailThreadDetail>(
       `/workspaces/${workspaceId}/email-threads/${threadId}`
     ),
-  reviewItems: (workspaceId: string) =>
-    apiFetch<ReviewItem[]>(`/workspaces/${workspaceId}/review-items`),
   mockInboxEvent: (workspaceId: string, input: MockInboxEventInput) =>
     apiMutate<MockInboxResult>(
       `/dev/workspaces/${workspaceId}/mock-inbox-event`,

@@ -440,8 +440,7 @@ export function MockInboxClient({ workspaceId, threads }: Props) {
           {/* Review notice */}
           {cls.needsHumanReview && (
             <div className="warning-box" style={{ marginBottom: 0 }}>
-              Flagged for human review —{" "}
-              <Link href="/review">Go to review queue →</Link>
+              Flagged for human review
             </div>
           )}
         </div>
