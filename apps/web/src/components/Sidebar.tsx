@@ -16,7 +16,6 @@ const NAV = [
   { href: "/taxonomy", label: "Taxonomy" },
   { href: "/review", label: "Review Queue" },
   { href: "/emails", label: "Emails" },
-  { href: "/tags", label: "Tags" },
   { href: "/settings", label: "Settings" },
   ...(isDevEnabled ? [{ href: "/dev/mock-inbox", label: "Mock Inbox" }] : []),
   ...(isGmailDebugEnabled ? [{ href: "/dev/gmail-sort-tester", label: "Gmail Sort Tester" }] : []),

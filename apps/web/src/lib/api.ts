@@ -101,15 +101,6 @@ export type CreateTaxonomyEdgeInput = {
 
 export type UpdateTaxonomyEdgeInput = Record<string, never>;
 
-export type Tag = {
-  id: string;
-  name: string;
-  color: string | null;
-  source: "AMARNAI" | "GMAIL";
-  createdAt: string;
-  updatedAt: string;
-};
-
 export type TriageStatus = "PENDING" | "SORTED" | "NEEDS_REVIEW";
 
 export type FolderCountsResult = {
@@ -447,8 +438,6 @@ export const api = {
       `/workspaces/${workspaceId}/taxonomy-edges/${edgeId}`,
       "DELETE"
     ),
-  tags: (workspaceId: string) =>
-    apiFetch<Tag[]>(`/workspaces/${workspaceId}/tags`),
   folderCounts: (workspaceId: string) =>
     apiFetch<FolderCountsResult>(`/workspaces/${workspaceId}/folder-counts`),
   emailThreads: (
