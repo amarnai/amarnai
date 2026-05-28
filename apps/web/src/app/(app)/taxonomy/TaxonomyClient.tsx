@@ -84,7 +84,7 @@ function toRFEdge(e: TaxonomyEdge, ignoredReasonsMap: Map<string, IgnoredReason>
     source: e.sourceNodeId,
     target: e.targetNodeId,
     type: "taxonomy-edge",
-    markerEnd: { type: MarkerType.Arrow, color: targetIgnored ? tokens.accent : tokens.edgeDefault },
+    markerEnd: { type: MarkerType.ArrowClosed, color: targetIgnored ? tokens.accent : tokens.edgeDefault },
     data: { targetIgnored },
   };
 }

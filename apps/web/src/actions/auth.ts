@@ -29,7 +29,7 @@ export async function signOutAction() {
 }
 
 export async function googleSignInAction() {
-  await signIn("google", { redirectTo: "/folders" });
+  await signIn("google", { redirectTo: "/emails" });
 }
 
 export async function credentialsSignInAction(
@@ -40,7 +40,7 @@ export async function credentialsSignInAction(
     await signIn("credentials", {
       email: formData.get("email"),
       password: formData.get("password"),
-      redirectTo: "/folders",
+      redirectTo: "/emails",
     });
   } catch (err) {
     // Re-throw NEXT_REDIRECT so Next.js handles it as a navigation.

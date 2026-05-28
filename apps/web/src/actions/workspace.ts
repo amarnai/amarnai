@@ -26,7 +26,7 @@ export async function switchWorkspaceAction(workspaceId: string): Promise<void> 
     maxAge: 60 * 60 * 24 * 365,
   });
 
-  redirect("/folders");
+  redirect("/emails");
 }
 
 export async function updateWorkspaceNameAction(
@@ -79,7 +79,7 @@ export async function createWorkspaceAction(
     maxAge: 60 * 60 * 24 * 365,
   });
 
-  redirect("/folders");
+  redirect("/emails");
 }
 
 export async function deleteWorkspaceAction(
@@ -134,5 +134,5 @@ export async function deleteWorkspaceAction(
   }
 
   revalidatePath("/", "layout");
-  redirect("/folders");
+  redirect("/emails");
 }

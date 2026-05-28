@@ -14,9 +14,8 @@ const isGmailDebugEnabled =
   process.env.NEXT_PUBLIC_ENABLE_GMAIL_DEBUG_TOOLS === "true";
 
 const NAV = [
-  { href: "/folders", label: "Folders" },
-  { href: "/taxonomy", label: "Taxonomy" },
   { href: "/emails", label: "Emails" },
+  { href: "/taxonomy", label: "Taxonomy" },
   { href: "/settings", label: "Workspace" },
   ...(isDevEnabled ? [{ href: "/dev/mock-inbox", label: "Mock Inbox" }] : []),
   ...(isGmailDebugEnabled
