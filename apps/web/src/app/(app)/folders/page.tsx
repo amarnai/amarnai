@@ -2,6 +2,7 @@ import { requireUser } from "@/lib/session";
 import { getSelectedWorkspace } from "@/lib/workspace";
 import { api } from "@/lib/api";
 import FolderBrowser from "./FolderBrowser";
+import { ConnectGmailCta } from "@/components/ConnectGmailCta";
 
 export default async function FoldersPage() {
   const user = await requireUser();
@@ -9,12 +10,22 @@ export default async function FoldersPage() {
 
   let data;
   try {
-    const [nodes, edges, threadsResult, folderCountsResult] = await Promise.all([
+    const [connection, nodes, edges, threadsResult, folderCountsResult] = await Promise.all([
+      api.gmailConnection(workspace.id),
       api.taxonomyNodes(workspace.id),
       api.taxonomyEdges(workspace.id),
       api.emailThreads(workspace.id),
       api.folderCounts(workspace.id),
     ]);
+
+    if (!connection) {
+      return (
+        <>
+          <h1>Folders</h1>
+          <ConnectGmailCta workspaceId={workspace.id} />
+        </>
+      );
+    }
 
     const folderCounts: Record<string, number> = {};
     for (const { nodeId, count } of folderCountsResult.counts) {

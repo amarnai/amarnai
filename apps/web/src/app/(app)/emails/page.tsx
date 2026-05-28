@@ -10,6 +10,7 @@ import {
   type FilterCounts,
 } from "@/lib/api";
 import { ClassifyingRefresher } from "@/components/ClassifyingRefresher";
+import { ConnectGmailCta } from "@/components/ConnectGmailCta";
 import { ThreadFilters } from "./ThreadFilters";
 import { SortingQueueControl } from "./SortingQueueControl";
 import { StartSortingControl } from "./StartSortingControl";
@@ -133,6 +134,7 @@ export default async function EmailsPage({ searchParams }: PageProps) {
     ...(cursor  ? { cursor }  : {}),
   };
 
+  let gmailConnected = false;
   let displayThreads: EmailThreadSummary[] = [];
   let nextCursor: string | null = null;
   let syncStatus: SyncStatus = null;
@@ -141,11 +143,13 @@ export default async function EmailsPage({ searchParams }: PageProps) {
   let error: string | null = null;
 
   try {
-    const [result, syncResult, nodesResult] = await Promise.all([
+    const [connection, result, syncResult, nodesResult] = await Promise.all([
+      api.gmailConnection(workspace.id),
       api.emailThreads(workspace.id, filters),
       api.syncStatus(workspace.id),
       api.taxonomyNodes(workspace.id),
     ]);
+    gmailConnected = connection !== null;
 
     displayThreads = result.threads  ?? [];
     nextCursor     = result.nextCursor ?? null;
@@ -160,6 +164,15 @@ export default async function EmailsPage({ searchParams }: PageProps) {
   const hasFilters = !!(nodeId || status);
 
   const sortingPaused = syncStatus?.sortingPaused ?? false;
+
+  if (!gmailConnected) {
+    return (
+      <>
+        <h1>Email Threads</h1>
+        <ConnectGmailCta workspaceId={workspace.id} />
+      </>
+    );
+  }
 
   return (
     <>
