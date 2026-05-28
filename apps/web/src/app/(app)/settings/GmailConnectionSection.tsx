@@ -8,6 +8,7 @@ import { GmailSyncSettingsSection } from "./GmailSyncSettingsSection";
 const DEFAULT_SYNC_SETTINGS: GmailSyncSettings = {
   includeSpam: false,
   includePromotions: false,
+  sortingPaused: false,
 };
 
 type Props = {

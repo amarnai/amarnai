@@ -189,6 +189,7 @@ export type EmailThreadDetail = {
 export type GmailSyncSettings = {
   includeSpam: boolean;
   includePromotions: boolean;
+  sortingPaused: boolean;
 };
 
 export type GmailConnection = {
@@ -211,6 +212,7 @@ export type SyncStatus = {
   backfillStatus: BackfillStatus;
   backfillSkipped: number;
   backfillCompletedAt: string | null;
+  sortingPaused: boolean;
 } | null;
 
 export type ReviewItem = {
@@ -515,6 +517,26 @@ export const api = {
   sweepInbox: (workspaceId: string) =>
     apiMutate<{ ok: boolean; workspaceId: string }>(
       `/workspaces/${workspaceId}/sweep-inbox`,
+      "POST"
+    ),
+  pauseSorting: (workspaceId: string) =>
+    apiMutate<{ sortingPaused: boolean }>(
+      `/workspaces/${workspaceId}/sorting-queue/pause`,
+      "POST"
+    ),
+  resumeSorting: (workspaceId: string) =>
+    apiMutate<{ sortingPaused: boolean; requeued: number }>(
+      `/workspaces/${workspaceId}/sorting-queue/resume`,
+      "POST"
+    ),
+  cancelClassify: (workspaceId: string, threadId: string) =>
+    apiMutate<{ cancelled: boolean; jobRemoved: boolean }>(
+      `/workspaces/${workspaceId}/email-threads/${threadId}/classify`,
+      "DELETE"
+    ),
+  startSorting: (workspaceId: string) =>
+    apiMutate<{ ok: boolean; workspaceId: string }>(
+      `/workspaces/${workspaceId}/sorting-queue/start`,
       "POST"
     ),
 };
