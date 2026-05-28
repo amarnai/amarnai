@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { api, type TriageStatus } from "@/lib/api";
+import { cancelClassifyAction } from "@/actions/gmail";
 
 type Props = {
   workspaceId: string;
@@ -28,12 +29,10 @@ export function ClassificationActions({
 }: Props) {
   const router = useRouter();
   const [sortLoading, setSortLoading] = useState(false);
-  // analyzeLoading — post-MVP, required by Re-analyze button
-  // const [analyzeLoading, setAnalyzeLoading] = useState(false);
+  const [stopLoading, setStopLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Disable all actions while a job is in flight, active, or already queued.
-  const busy = sortLoading || isClassifying || isQueued;
+  const isSortingInProgress = isClassifying || isQueued;
 
   async function handleRetrySort() {
     setError(null);
@@ -48,11 +47,18 @@ export function ClassificationActions({
     }
   }
 
-  // handleReanalyze — post-MVP, required by Re-analyze button
-  // async function handleReanalyze() { ... }
-
-  // analyzeLabel — post-MVP, required by Re-analyze button
-  // function analyzeLabel(): string { ... }
+  async function handleStopSorting() {
+    setError(null);
+    setStopLoading(true);
+    try {
+      await cancelClassifyAction(workspaceId, threadId);
+      router.refresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not stop sorting");
+    } finally {
+      setStopLoading(false);
+    }
+  }
 
   function sortLabel(): string {
     if (sortLoading) return "Sorting…";
@@ -62,24 +68,23 @@ export function ClassificationActions({
   return (
     <div style={{ marginBottom: "24px" }}>
       <div style={{ display: "flex", gap: "10px", alignItems: "center", flexWrap: "wrap" }}>
-        <button
-          onClick={handleRetrySort}
-          disabled={busy}
-          className="btn-primary"
-        >
-          {sortLabel()}
-        </button>
-
-        {/* Re-analyze — post-MVP, requires paid-tier LLM triage */}
-        {/* {hasClassification && (
+        {isSortingInProgress ? (
           <button
-            onClick={handleReanalyze}
-            disabled={busy}
-            className="btn-secondary"
+            onClick={handleStopSorting}
+            disabled={stopLoading}
+            className="btn-ghost btn-danger"
           >
-            {analyzeLabel()}
+            {stopLoading ? "Stopping…" : "Stop sorting"}
           </button>
-        )} */}
+        ) : (
+          <button
+            onClick={handleRetrySort}
+            disabled={sortLoading}
+            className="btn-primary"
+          >
+            {sortLabel()}
+          </button>
+        )}
 
         {modelProvider && modelName && (
           <span style={{ fontSize: 12, color: "var(--color-muted)" }}>
