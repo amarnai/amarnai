@@ -84,7 +84,7 @@ function toRFEdge(e: TaxonomyEdge, ignoredReasonsMap: Map<string, IgnoredReason>
     source: e.sourceNodeId,
     target: e.targetNodeId,
     type: "taxonomy-edge",
-    markerEnd: { type: MarkerType.ArrowClosed, color: targetIgnored ? tokens.accent : tokens.edgeDefault },
+    markerEnd: { type: MarkerType.Arrow, color: targetIgnored ? tokens.accent : tokens.edgeDefault },
     data: { targetIgnored },
   };
 }
@@ -157,15 +157,12 @@ function TaxonomyEdge({
   const targetIgnored = (data as RFEdgeData | undefined)?.targetIgnored ?? false;
   const isWarning = targetIgnored;
   const strokeColor = isWarning && selected ? tokens.accentDim : selected ? tokens.primary : isWarning ? tokens.accent : tokens.edgeDefault;
-  const resolvedMarkerEnd = markerEnd !== undefined
-    ? ({ ...(markerEnd as unknown as object), color: strokeColor } as unknown as string)
-    : undefined;
 
   return (
     <BaseEdge
       id={id}
       path={edgePath}
-      {...(resolvedMarkerEnd !== undefined ? { markerEnd: resolvedMarkerEnd } : {})}
+      {...(markerEnd !== undefined ? { markerEnd } : {})}
       style={{
         stroke: strokeColor,
         strokeWidth: selected ? 2.5 : 1.5,
