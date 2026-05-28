@@ -770,7 +770,7 @@ function TaxonomyCanvasInner({
           disabled={!history.canUndo || submitting}
           title="Undo"
         >
-          Undo
+          ↶
         </button>
         <button
           className="btn-ghost"
@@ -778,7 +778,7 @@ function TaxonomyCanvasInner({
           disabled={!history.canRedo || submitting}
           title="Redo"
         >
-          Redo
+          ↷
         </button>
         {panel.type !== "none" && (
           <button className="btn-ghost" onClick={() => setPanel({ type: "none" })}>
