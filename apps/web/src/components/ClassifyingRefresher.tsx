@@ -40,7 +40,6 @@ export function ClassifyingRefresher({ active }: { active: boolean }) {
       clearTimeout(timeoutId);
     };
   // pollKey is included so clicking Refresh restarts the interval + timeout.
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active, router, pollKey]);
 
   if (timedOut) {
