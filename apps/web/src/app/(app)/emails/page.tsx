@@ -11,6 +11,8 @@ import {
 } from "@/lib/api";
 import { ClassifyingRefresher } from "@/components/ClassifyingRefresher";
 import { ThreadFilters } from "./ThreadFilters";
+import { SortingQueueControl } from "./SortingQueueControl";
+import { StartSortingControl } from "./StartSortingControl";
 
 function fmt(iso: string | null): string {
   if (!iso) return "";
@@ -20,39 +22,83 @@ function fmt(iso: string | null): string {
   });
 }
 
-function BackfillBanner({ syncStatus }: { syncStatus: SyncStatus }) {
+const MIN_NODES_TO_SORT = 4; // sorting requires more than 3 nodes
+
+function BackfillBanner({
+  syncStatus,
+  nodeCount,
+  workspaceId,
+}: {
+  syncStatus: SyncStatus;
+  nodeCount: number;
+  workspaceId: string;
+}) {
   if (!syncStatus) return null;
 
   const { backfillStatus, backfillSkipped } = syncStatus;
 
   type Variant = "pending" | "running" | "warning" | "error";
-  let statusLine: React.ReactNode = null;
-  let variant: Variant = "pending";
+  type BannerContent = { line: React.ReactNode; variant: Variant };
+
+  let banner: BannerContent | null = null;
 
   if (backfillStatus === "PENDING") {
-    statusLine = "Your inbox history will be sorted automatically after the first sync.";
+    if (nodeCount < MIN_NODES_TO_SORT) {
+      banner = {
+        line: (
+          <>
+            Your inbox cannot be sorted yet — add more than 3 taxonomy nodes first.{" "}
+            <Link href="/taxonomy" style={{ textDecoration: "underline" }}>
+              Go to Taxonomy →
+            </Link>
+          </>
+        ),
+        variant: "pending",
+      };
+    } else {
+      banner = {
+        line: (
+          <span style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+            Your inbox history is ready to sort.
+            <StartSortingControl workspaceId={workspaceId} />
+          </span>
+        ),
+        variant: "pending",
+      };
+    }
   } else if (backfillStatus === "RUNNING") {
-    statusLine = "⏳ Sorting your inbox history — this may take a minute…";
-    variant = "running";
+    banner = {
+      line: "⏳ Sorting your inbox history — this may take a minute…",
+      variant: "running",
+    };
   } else if (backfillStatus === "ERROR") {
-    statusLine = "⚠ Inbox backfill failed — historical threads may not be sorted yet.";
-    variant = "error";
+    banner = {
+      line: (
+        <span style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+          ⚠ Inbox sort failed — historical threads may not be sorted yet.
+          {nodeCount >= MIN_NODES_TO_SORT && <StartSortingControl workspaceId={workspaceId} />}
+        </span>
+      ),
+      variant: "error",
+    };
   } else if (backfillStatus === "DONE" && backfillSkipped > 0) {
-    statusLine = (
-      <>
-        ℹ {backfillSkipped.toLocaleString()} thread
-        {backfillSkipped === 1 ? "" : "s"} from the last 90 days{" "}
-        {backfillSkipped === 1 ? "was" : "were"} not sorted (inbox cap reached).
-      </>
-    );
-    variant = "warning";
+    banner = {
+      line: (
+        <>
+          ℹ {backfillSkipped.toLocaleString()} thread
+          {backfillSkipped === 1 ? "" : "s"} from the last 90 days{" "}
+          {backfillSkipped === 1 ? "was" : "were"} not sorted (inbox cap reached).
+        </>
+      ),
+      variant: "warning",
+    };
   }
 
-  if (!statusLine) return null;
+  if (!banner) return null;
 
   return (
-    <div className={`backfill-banner backfill-banner-${variant}`}>
-      {statusLine}
+    <div className={`backfill-banner backfill-banner-${banner.variant}`}>
+      {banner.line}
     </div>
   );
 }
@@ -113,11 +159,23 @@ export default async function EmailsPage({ searchParams }: PageProps) {
   const anyClassifying = displayThreads.some((t) => t.isClassifying);
   const hasFilters = !!(nodeId || status);
 
+  const sortingPaused = syncStatus?.sortingPaused ?? false;
+
   return (
     <>
       <ClassifyingRefresher active={anyClassifying} />
-      <h1>Email Threads</h1>
-      <BackfillBanner syncStatus={syncStatus} />
+      <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 24, flexWrap: "wrap" }}>
+        <h1 style={{ marginBottom: 0 }}>Email Threads</h1>
+        {syncStatus !== null && (
+          <SortingQueueControl workspaceId={workspace.id} sortingPaused={sortingPaused} />
+        )}
+      </div>
+      {sortingPaused && (
+        <div className="backfill-banner backfill-banner-warning">
+          Sorting is paused — new emails will not be sorted automatically. Resume to continue.
+        </div>
+      )}
+      <BackfillBanner syncStatus={syncStatus} nodeCount={nodes.length} workspaceId={workspace.id} />
       {error && <div className="error-box">{error}</div>}
 
       {/* ThreadFilters uses useSearchParams, so it must be wrapped in Suspense. */}
