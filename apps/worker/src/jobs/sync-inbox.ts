@@ -111,7 +111,7 @@ export function createSyncInboxWorker(): Worker {
         }),
         db.gmailSyncSettings.findUnique({
           where: { workspaceId },
-          select: { includeSpam: true, includePromotions: true },
+          select: { includeSpam: true, includePromotions: true, sortingPaused: true },
         }),
       ]);
 
@@ -121,7 +121,9 @@ export function createSyncInboxWorker(): Worker {
       const settings: GmailSyncSettings = {
         includeSpam:       syncSettingsRow?.includeSpam       ?? false,
         includePromotions: syncSettingsRow?.includePromotions ?? false,
+        sortingPaused:     syncSettingsRow?.sortingPaused     ?? false,
       };
+      const sortingPaused = settings.sortingPaused;
 
       // ── 2. Ensure EmailAccount + ProviderSyncState rows exist ───────────────
 
@@ -157,18 +159,23 @@ export function createSyncInboxWorker(): Worker {
           data: { historyId: newHistoryId, lastSyncedAt: new Date(), status: "IDLE" },
         });
 
-        // Trigger backfill when it hasn't completed (or failed) yet.
+        // Trigger backfill when it hasn't completed (or failed) yet, but only
+        // if the workspace has enough taxonomy nodes to classify threads (≥ 3).
+        // With fewer nodes the user needs to elaborate the taxonomy first.
         if (syncState.backfillStatus === "PENDING" || syncState.backfillStatus === "ERROR") {
-          await backfillInboxQueue.add(
-            "backfill-inbox",
-            { workspaceId },
-            { deduplication: { id: `backfill-inbox_${workspaceId}` } }
-          );
+          const nodeCount = await db.taxonomyNode.count({ where: { workspaceId } });
+          if (nodeCount > 3) {
+            await backfillInboxQueue.add(
+              "backfill-inbox",
+              { workspaceId },
+              { deduplication: { id: `backfill-inbox_${workspaceId}` } }
+            );
+          }
         }
 
         // Re-enqueue stuck PENDING threads when the backfill has already finished
         // but some classify jobs exhausted all retries.
-        if (syncState.backfillStatus === "DONE") {
+        if (syncState.backfillStatus === "DONE" && !sortingPaused) {
           const stuck = await db.emailThread.findMany({
             where: {
               workspaceId,
@@ -331,15 +338,17 @@ export function createSyncInboxWorker(): Worker {
         },
       });
 
-      // Trigger a historical backfill whenever it hasn't completed yet.
-      // Also re-trigger on ERROR so a failed backfill retries automatically.
-      // Deduplication prevents concurrent backfills for the same workspace.
+      // Trigger a historical backfill whenever it hasn't completed yet, but only
+      // if the workspace has enough taxonomy nodes to classify threads (≥ 3).
       if (syncState.backfillStatus === "PENDING" || syncState.backfillStatus === "ERROR") {
-        await backfillInboxQueue.add(
-          "backfill-inbox",
-          { workspaceId },
-          { deduplication: { id: `backfill-inbox_${workspaceId}` } }
-        );
+        const nodeCount = await db.taxonomyNode.count({ where: { workspaceId } });
+        if (nodeCount >= 3) {
+          await backfillInboxQueue.add(
+            "backfill-inbox",
+            { workspaceId },
+            { deduplication: { id: `backfill-inbox_${workspaceId}` } }
+          );
+        }
       }
 
       // ── 6. Enqueue classify-thread jobs for every upserted thread ────────────
@@ -347,24 +356,26 @@ export function createSyncInboxWorker(): Worker {
       // Priority 1 ensures live sync jobs always outrank backfill jobs (priority 10).
       // Stamp classifyingAt before adding to the queue so isClassifying is true
       // while jobs wait — without this the banner shows "use the sort button".
+      // Skip enqueuing when sorting is paused; threads remain PENDING and will be
+      // picked up when the user resumes sorting.
 
-      if (upsertedEmailThreadIds.length > 0) {
+      if (upsertedEmailThreadIds.length > 0 && !sortingPaused) {
         await db.emailThread.updateMany({
           where: { id: { in: upsertedEmailThreadIds } },
           data: { classifyingAt: new Date() },
         });
-      }
 
-      await classifyThreadQueue.addBulk(
-        upsertedEmailThreadIds.map((emailThreadId) => ({
-          name: "classify-thread",
-          data: { workspaceId, emailThreadId },
-          opts: {
-            jobId: `classify_${workspaceId}_${emailThreadId}_${Date.now()}`,
-            priority: 1,
-          },
-        }))
-      );
+        await classifyThreadQueue.addBulk(
+          upsertedEmailThreadIds.map((emailThreadId) => ({
+            name: "classify-thread",
+            data: { workspaceId, emailThreadId },
+            opts: {
+              jobId: `classify_${workspaceId}_${emailThreadId}_${Date.now()}`,
+              priority: 1,
+            },
+          }))
+        );
+      }
 
       // ── 7. Re-enqueue classify jobs for threads still PENDING after backfill ──
       //
@@ -376,7 +387,7 @@ export function createSyncInboxWorker(): Worker {
       // classified (classifyingAt set) and threads changed in this sync cycle
       // (already handled above). Deduplication prevents duplicate queue entries.
 
-      if (syncState.backfillStatus === "DONE") {
+      if (syncState.backfillStatus === "DONE" && !sortingPaused) {
         const stuck = await db.emailThread.findMany({
           where: {
             workspaceId,

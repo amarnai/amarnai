@@ -61,7 +61,7 @@ export function createBackfillInboxWorker(): Worker {
         }),
         db.gmailSyncSettings.findUnique({
           where: { workspaceId },
-          select: { includeSpam: true, includePromotions: true },
+          select: { includeSpam: true, includePromotions: true, sortingPaused: true },
         }),
       ]);
 
@@ -71,7 +71,9 @@ export function createBackfillInboxWorker(): Worker {
       const settings: GmailSyncSettings = {
         includeSpam:       syncSettingsRow?.includeSpam       ?? false,
         includePromotions: syncSettingsRow?.includePromotions ?? false,
+        sortingPaused:     syncSettingsRow?.sortingPaused     ?? false,
       };
+      const sortingPaused = settings.sortingPaused;
 
       // ── 2. Resolve the EmailAccount and current ProviderSyncState ───────────
 
@@ -318,23 +320,28 @@ export function createBackfillInboxWorker(): Worker {
         // Stamp classifyingAt before adding to the queue so that isClassifying
         // is true while jobs wait — without this, threads look unsorted to the
         // banner even though they are in the queue.
+        //
+        // Skip enqueuing when sorting is paused; threads remain PENDING and will
+        // be picked up when the user resumes sorting.
 
-        const enqueuedAt = new Date();
-        await db.emailThread.updateMany({
-          where: { id: { in: upsertedEmailThreadIds } },
-          data: { classifyingAt: enqueuedAt },
-        });
+        if (!sortingPaused && upsertedEmailThreadIds.length > 0) {
+          const enqueuedAt = new Date();
+          await db.emailThread.updateMany({
+            where: { id: { in: upsertedEmailThreadIds } },
+            data: { classifyingAt: enqueuedAt },
+          });
 
-        await classifyThreadQueue.addBulk(
-          upsertedEmailThreadIds.map((emailThreadId) => ({
-            name: "classify-thread",
-            data: { workspaceId, emailThreadId },
-            opts: {
-              deduplication: { id: `classify_backfill_${workspaceId}_${emailThreadId}` },
-              priority: BACKFILL_CLASSIFY_PRIORITY,
-            },
-          }))
-        );
+          await classifyThreadQueue.addBulk(
+            upsertedEmailThreadIds.map((emailThreadId) => ({
+              name: "classify-thread",
+              data: { workspaceId, emailThreadId },
+              opts: {
+                deduplication: { id: `classify_backfill_${workspaceId}_${emailThreadId}` },
+                priority: BACKFILL_CLASSIFY_PRIORITY,
+              },
+            }))
+          );
+        }
 
         await job.updateProgress(95);
 

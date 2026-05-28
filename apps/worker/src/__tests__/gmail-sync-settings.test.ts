@@ -39,6 +39,7 @@ function makeThread(messages: SnapshotMessage[]): ThreadSnapshot {
 const defaultSettings: GmailSyncSettings = {
   includeSpam: false,
   includePromotions: false,
+  sortingPaused: false,
 };
 
 // ─── Tests ────────────────────────────────────────────────────────────────────
@@ -50,7 +51,7 @@ describe("applyThreadFilter", () => {
   });
 
   it("TRASH is always excluded regardless of settings", () => {
-    const allOn: GmailSyncSettings = { includeSpam: true, includePromotions: true };
+    const allOn: GmailSyncSettings = { includeSpam: true, includePromotions: true, sortingPaused: false };
     const snapshot = makeThread([makeMessage("msg-1", ["TRASH"])]);
     expect(applyThreadFilter(snapshot, allOn)).toBeNull();
   });
@@ -61,7 +62,7 @@ describe("applyThreadFilter", () => {
   });
 
   it("SPAM is included when includeSpam is true", () => {
-    const settings: GmailSyncSettings = { includeSpam: true, includePromotions: false };
+    const settings: GmailSyncSettings = { includeSpam: true, includePromotions: false, sortingPaused: false };
     const snapshot = makeThread([makeMessage("msg-1", ["SPAM"])]);
     expect(applyThreadFilter(snapshot, settings)).not.toBeNull();
   });
@@ -72,7 +73,7 @@ describe("applyThreadFilter", () => {
   });
 
   it("CATEGORY_PROMOTIONS is included when includePromotions is true", () => {
-    const settings: GmailSyncSettings = { includeSpam: false, includePromotions: true };
+    const settings: GmailSyncSettings = { includeSpam: false, includePromotions: true, sortingPaused: false };
     const snapshot = makeThread([makeMessage("msg-1", ["CATEGORY_PROMOTIONS", "INBOX"])]);
     expect(applyThreadFilter(snapshot, settings)).not.toBeNull();
   });
@@ -123,17 +124,17 @@ describe("applyThreadFilter", () => {
 
   it("TRASH is excluded even when message also has INBOX label", () => {
     const snapshot = makeThread([makeMessage("msg-1", ["INBOX", "TRASH"])]);
-    expect(applyThreadFilter(snapshot, { includeSpam: true, includePromotions: true })).toBeNull();
+    expect(applyThreadFilter(snapshot, { includeSpam: true, includePromotions: true, sortingPaused: false })).toBeNull();
   });
 
   it("SPAM and Promotions are treated independently", () => {
     // Promotions message with includeSpam: true but includePromotions: false → still excluded
-    const settings: GmailSyncSettings = { includeSpam: true, includePromotions: false };
+    const settings: GmailSyncSettings = { includeSpam: true, includePromotions: false, sortingPaused: false };
     const promoSnapshot = makeThread([makeMessage("promo", ["CATEGORY_PROMOTIONS"])]);
     expect(applyThreadFilter(promoSnapshot, settings)).toBeNull();
 
     // Spam message with includePromotions: true but includeSpam: false → still excluded
-    const settings2: GmailSyncSettings = { includeSpam: false, includePromotions: true };
+    const settings2: GmailSyncSettings = { includeSpam: false, includePromotions: true, sortingPaused: false };
     const spamSnapshot = makeThread([makeMessage("spam", ["SPAM"])]);
     expect(applyThreadFilter(spamSnapshot, settings2)).toBeNull();
   });
