@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const config: NextConfig = {
+  devIndicators: false,
   transpilePackages: ["@amarnai/db"],
   webpack: (config) => {
     // When transpiling workspace packages that use NodeNext-style `.js` extensions
