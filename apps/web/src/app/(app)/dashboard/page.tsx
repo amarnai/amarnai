@@ -1,10 +1,11 @@
-import { requireUser, getOrCreateDefaultWorkspace } from "@/lib/session";
+import { requireUser } from "@/lib/session";
+import { getSelectedWorkspace } from "@/lib/workspace";
 import { api } from "@/lib/api";
 import FoldersSection from "./FoldersSection";
 
 export default async function DashboardPage() {
   const user = await requireUser();
-  const workspace = await getOrCreateDefaultWorkspace(user.id);
+  const workspace = await getSelectedWorkspace(user.id);
 
   let data;
   try {

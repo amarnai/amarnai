@@ -15,6 +15,12 @@ services:
     ports:
       - "6379:6379"
 
+  mailpit:
+    image: axllent/mailpit
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
   ollama:
     image: ollama/ollama
     profiles:

@@ -1,7 +1,7 @@
 import "server-only";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { db, ensureInboxNode } from "@amarnai/db";
+import { db } from "@amarnai/db";
 
 export type AuthUser = {
   id: string;
@@ -23,27 +23,7 @@ export async function requireUser(): Promise<AuthUser> {
   };
 }
 
-export async function getOrCreateDefaultWorkspace(userId: string) {
-  const existing = await db.workspace.findFirst({
-    where: { ownerUserId: userId },
-    orderBy: { createdAt: "asc" },
-    select: { id: true, name: true },
-  });
-  if (existing) return existing;
-
-  const created = await db.workspace.create({
-    data: {
-      name: "My Workspace",
-      ownerUserId: userId,
-      members: {
-        create: { userId, role: "OWNER" },
-      },
-    },
-    select: { id: true, name: true },
-  });
-  await ensureInboxNode(created.id);
-  return created;
-}
+export { getOrCreateDefaultWorkspace } from "@/lib/workspace";
 
 export async function assertWorkspaceOwner(workspaceId: string, userId: string) {
   const ws = await db.workspace.findFirst({

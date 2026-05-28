@@ -1,12 +1,14 @@
-import { requireUser, getOrCreateDefaultWorkspace } from "@/lib/session";
+import { requireUser } from "@/lib/session";
+import { getSelectedWorkspace } from "@/lib/workspace";
 import { api } from "@/lib/api";
 import { GmailConnectionSection } from "./GmailConnectionSection";
+import { WorkspaceNameSection } from "./WorkspaceNameSection";
 
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 
 export default async function SettingsPage({ searchParams }: { searchParams: SearchParams }) {
   const user = await requireUser();
-  const workspace = await getOrCreateDefaultWorkspace(user.id);
+  const workspace = await getSelectedWorkspace(user.id);
   const params = await searchParams;
 
   const connectError =
@@ -28,7 +30,8 @@ export default async function SettingsPage({ searchParams }: { searchParams: Sea
 
   return (
     <>
-      <h1>Settings</h1>
+      <h1>Workspace Settings</h1>
+      <WorkspaceNameSection currentName={workspace.name} />
       <GmailConnectionSection
         workspaceId={workspace.id}
         connection={connection}

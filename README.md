@@ -79,7 +79,14 @@ Get a Gemini API key from [Google AI Studio](https://aistudio.google.com/apikey)
 
 ## Authentication setup
 
-Amarnai uses Google Sign-In for app identity. Before running locally, create OAuth credentials:
+Amarnai supports two sign-in methods:
+
+- **Google** — one-step signup: Google OAuth grants both app identity and `gmail.readonly` inbox access simultaneously. The default workspace is created and connected automatically.
+- **Email + password** — sign up with any email address, verify it, then connect a Gmail inbox separately from Settings.
+
+### Google OAuth credentials
+
+Required for both Google sign-in and Gmail inbox connection:
 
 1. Go to [Google Cloud Console](https://console.cloud.google.com/) → APIs & Services → Credentials
 2. Create an OAuth 2.0 Client ID (Web application)
@@ -102,11 +109,27 @@ openssl rand -hex 32      # paste as INTERNAL_API_SECRET
 openssl rand -hex 32      # paste as GMAIL_TOKEN_ENCRYPTION_KEY
 ```
 
+### Email auth (local dev)
+
+Verification and password reset emails are captured by [Mailpit](https://mailpit.axllent.org/) — no real emails are sent. Start Mailpit with `docker compose up -d mailpit` and open the inbox at http://localhost:8025.
+
+For production, configure an SMTP provider (e.g. AWS SES) via:
+
+```env
+EMAIL_FROM=noreply@yourdomain.com
+SMTP_HOST=email-smtp.us-east-1.amazonaws.com
+SMTP_PORT=587
+SMTP_USER=<SES SMTP username>
+SMTP_PASS=<SES SMTP password>
+```
+
 ## Gmail inbox setup
 
-Amarnai lets each workspace connect one Gmail inbox for email triage. This is a separate OAuth flow from sign-in and requests only `gmail.readonly` access — it cannot read, send, or modify email.
+Amarnai lets each workspace connect one Gmail inbox for email triage. The connection requests only `gmail.readonly` access — it cannot send or modify email.
 
-After signing in, go to **Settings** in the sidebar and click **Connect Gmail**. Google will ask you to grant read-only access to the inbox you want to sort. Once connected, the workspace shows the linked Gmail address and last verification time.
+**Google sign-in users:** inbox access is granted during sign-up as part of the same OAuth consent — no extra step needed.
+
+**Email/password users:** after verifying your email, go to **Settings** in the sidebar and click **Connect Gmail**. Google will ask you to grant read-only access to the inbox you want to sort. Once connected, the workspace shows the linked Gmail address and last verification time.
 
 **Required APIs** — enable these in your Google Cloud project:
 
@@ -144,9 +167,10 @@ cp .env.example .env
 
 # 2. Fill in secrets (see Authentication setup above):
 #    AUTH_SECRET, AUTH_GOOGLE_ID, AUTH_GOOGLE_SECRET, INTERNAL_API_SECRET, GMAIL_TOKEN_ENCRYPTION_KEY
+#    SMTP vars default to Mailpit (127.0.0.1:1025) — no changes needed for local email auth
 
-# 3. Start Postgres and Redis
-docker compose up -d postgres redis
+# 3. Start Postgres, Redis, and Mailpit
+docker compose up -d postgres redis mailpit
 
 # 4. Install dependencies
 pnpm install

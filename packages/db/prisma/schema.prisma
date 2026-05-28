@@ -117,6 +117,11 @@ enum AuditActorType {
   SYSTEM
 }
 
+enum VerificationTokenType {
+  EMAIL_VERIFICATION
+  PASSWORD_RESET
+}
+
 enum GmailConnectionStatus {
   ACTIVE
 }
@@ -136,6 +141,8 @@ model User {
   workspaceMemberships WorkspaceMember[]
   emailAccounts        EmailAccount[]
   auditLogs            AuditLog[]
+  credential           UserCredential?
+  verificationTokens   VerificationToken[]
 }
 
 model Workspace {
@@ -420,6 +427,27 @@ model AuditLog {
 
   workspace Workspace @relation(fields: [workspaceId], references: [id])
   actor     User?     @relation(fields: [actorUserId], references: [id])
+}
+
+model UserCredential {
+  id           String   @id @default(cuid())
+  userId       String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model VerificationToken {
+  id        String                @id @default(cuid())
+  userId    String
+  token     String                @unique
+  type      VerificationTokenType
+  expiresAt DateTime
+  createdAt DateTime              @default(now())
+
+  user User @relation(fields: [userId], references: [id])
 }
 
 model GmailConnection {

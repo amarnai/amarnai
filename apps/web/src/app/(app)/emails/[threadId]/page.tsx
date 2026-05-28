@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { requireUser, getOrCreateDefaultWorkspace } from "@/lib/session";
+import { requireUser } from "@/lib/session";
+import { getSelectedWorkspace } from "@/lib/workspace";
 import { api, type EmailThreadDetail, type TaxonomyNode, type SyncStatus } from "@/lib/api";
 import { ClassificationActions } from "./ClassificationActions";
 import { TriageActions } from "./TriageActions";
@@ -106,7 +107,7 @@ function MetaItem({ label, value }: { label: string; value: string | null }) {
 export default async function ThreadDetailPage({ params }: Props) {
   const { threadId } = await params;
   const user = await requireUser();
-  const workspace = await getOrCreateDefaultWorkspace(user.id);
+  const workspace = await getSelectedWorkspace(user.id);
   const workspaceId = workspace.id;
 
   let thread: EmailThreadDetail | null = null;

@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
-import { requireUser, getOrCreateDefaultWorkspace } from "@/lib/session";
+import { requireUser } from "@/lib/session";
+import { getSelectedWorkspace } from "@/lib/workspace";
 import { api, type EmailThreadSummary } from "@/lib/api";
 import { MockInboxClient } from "./MockInboxClient";
 
@@ -13,7 +14,7 @@ export default async function MockInboxPage() {
   }
 
   const user = await requireUser();
-  const workspace = await getOrCreateDefaultWorkspace(user.id);
+  const workspace = await getSelectedWorkspace(user.id);
 
   let threads: EmailThreadSummary[] = [];
   let error: string | null = null;

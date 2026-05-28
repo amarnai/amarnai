@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Suspense } from "react";
-import { requireUser, getOrCreateDefaultWorkspace } from "@/lib/session";
+import { requireUser } from "@/lib/session";
+import { getSelectedWorkspace } from "@/lib/workspace";
 import {
   api,
   type EmailThreadSummary,
@@ -77,7 +78,7 @@ type PageProps = {
 
 export default async function EmailsPage({ searchParams }: PageProps) {
   const user = await requireUser();
-  const workspace = await getOrCreateDefaultWorkspace(user.id);
+  const workspace = await getSelectedWorkspace(user.id);
 
   const { nodeId, status, cursor } = await searchParams;
   const filters = {

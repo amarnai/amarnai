@@ -1,4 +1,5 @@
-import { requireUser, getOrCreateDefaultWorkspace } from "@/lib/session";
+import { requireUser } from "@/lib/session";
+import { getSelectedWorkspace } from "@/lib/workspace";
 import { api, type ReviewItem } from "@/lib/api";
 import { RetryButton } from "./RetryButton";
 
@@ -7,7 +8,7 @@ import { RetryButton } from "./RetryButton";
 
 export default async function ReviewPage() {
   const user = await requireUser();
-  const workspace = await getOrCreateDefaultWorkspace(user.id);
+  const workspace = await getSelectedWorkspace(user.id);
   const workspaceId = workspace.id;
 
   let items: ReviewItem[] = [];
