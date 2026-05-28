@@ -28,11 +28,12 @@ export function ClassificationActions({
 }: Props) {
   const router = useRouter();
   const [sortLoading, setSortLoading] = useState(false);
-  const [analyzeLoading, setAnalyzeLoading] = useState(false);
+  // analyzeLoading — post-MVP, required by Re-analyze button
+  // const [analyzeLoading, setAnalyzeLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   // Disable all actions while a job is in flight, active, or already queued.
-  const busy = sortLoading || analyzeLoading || isClassifying || isQueued;
+  const busy = sortLoading || isClassifying || isQueued;
 
   async function handleRetrySort() {
     setError(null);
@@ -47,29 +48,15 @@ export function ClassificationActions({
     }
   }
 
-  async function handleReanalyze() {
-    setError(null);
-    setAnalyzeLoading(true);
-    try {
-      await api.aiTriage(workspaceId, threadId);
-      router.refresh();
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Re-analyze failed");
-    } finally {
-      setAnalyzeLoading(false);
-    }
-  }
+  // handleReanalyze — post-MVP, required by Re-analyze button
+  // async function handleReanalyze() { ... }
 
-  // Use only local loading state for button labels — isClassifying is true for
-  // both sort and re-analyze operations and can't distinguish between them.
+  // analyzeLabel — post-MVP, required by Re-analyze button
+  // function analyzeLabel(): string { ... }
+
   function sortLabel(): string {
     if (sortLoading) return "Sorting…";
     return hasClassification ? "Retry sorting" : "Sort thread";
-  }
-
-  function analyzeLabel(): string {
-    if (analyzeLoading) return "Analyzing…";
-    return "Re-analyze";
   }
 
   return (
@@ -83,8 +70,8 @@ export function ClassificationActions({
           {sortLabel()}
         </button>
 
-        {/* Re-analyze is only meaningful when a classification already exists */}
-        {hasClassification && (
+        {/* Re-analyze — post-MVP, requires paid-tier LLM triage */}
+        {/* {hasClassification && (
           <button
             onClick={handleReanalyze}
             disabled={busy}
@@ -92,7 +79,7 @@ export function ClassificationActions({
           >
             {analyzeLabel()}
           </button>
-        )}
+        )} */}
 
         {modelProvider && modelName && (
           <span style={{ fontSize: 12, color: "var(--color-muted)" }}>

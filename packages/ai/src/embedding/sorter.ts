@@ -137,6 +137,8 @@ export type EmbeddingSortResult = {
   subtreeScores: Record<string, number>;
   /** Embeddings recomputed during this call; persist these to avoid redundant work. */
   updatedNodeEmbeddings: UpdatedNodeEmbedding[];
+  /** Thread embedding vector computed during sorting. Empty array if embedding failed or was never attempted. */
+  threadEmbeddingVector: number[];
 };
 
 // ─── Internal helpers ─────────────────────────────────────────────────────────
@@ -145,7 +147,8 @@ function makeInboxFallback(
   explanation: string,
   rawSimilarities: Record<string, number>,
   subtreeScores: Record<string, number>,
-  updatedNodeEmbeddings: UpdatedNodeEmbedding[]
+  updatedNodeEmbeddings: UpdatedNodeEmbedding[],
+  threadEmbeddingVector: number[] = []
 ): EmbeddingSortResult {
   return {
     finalNodeId: null,
@@ -157,6 +160,7 @@ function makeInboxFallback(
     rawSimilarities,
     subtreeScores,
     updatedNodeEmbeddings,
+    threadEmbeddingVector,
   };
 }
 
@@ -299,6 +303,8 @@ export async function sortThreadByEmbedding(
     thetaDescent?: number;
     crossBranchMargin?: number;
     topKLlmCandidates?: number;
+    /** Pre-computed thread embedding vector. When provided, skips the internal embed call (Step 3). */
+    precomputedThreadVector?: number[];
   }
 ): Promise<EmbeddingSortResult> {
   const thetaMin = options?.thetaMin ?? THETA_MIN;
@@ -385,13 +391,22 @@ export async function sortThreadByEmbedding(
   }
 
   // ── Step 3: Embed the thread ───────────────────────────────────────────────
+  //
+  // Use a pre-computed vector when the caller has already embedded the thread
+  // (e.g. to run routing and triage in parallel). Otherwise embed here.
 
-  const threadText = buildThreadEmbeddingText(
-    messages.map((m) => ({ subject: m.subject, bodyText: m.bodyText }))
-  );
-  const [threadVector] = await embeddingProvider.embed([threadText]);
-  if (!threadVector || threadVector.length === 0) {
-    return makeInboxFallback("Thread embedding failed", {}, {}, updatedNodeEmbeddings);
+  let threadVector: number[];
+  if (options?.precomputedThreadVector && options.precomputedThreadVector.length > 0) {
+    threadVector = options.precomputedThreadVector;
+  } else {
+    const threadText = buildThreadEmbeddingText(
+      messages.map((m) => ({ subject: m.subject, bodyText: m.bodyText }))
+    );
+    const [computed] = await embeddingProvider.embed([threadText]);
+    if (!computed || computed.length === 0) {
+      return makeInboxFallback("Thread embedding failed", {}, {}, updatedNodeEmbeddings, []);
+    }
+    threadVector = computed;
   }
 
   // ── Step 4: Raw cosine similarities ───────────────────────────────────────
@@ -426,7 +441,8 @@ export async function sortThreadByEmbedding(
       `Max subtree score ${maxSubtreeScore.toFixed(3)} below quality threshold ${thetaMin}`,
       rawSimsRecord,
       subtreeScoresRecord,
-      updatedNodeEmbeddings
+      updatedNodeEmbeddings,
+      threadVector
     );
   }
 
@@ -501,6 +517,7 @@ export async function sortThreadByEmbedding(
           rawSimilarities: rawSimsRecord,
           subtreeScores: subtreeScoresRecord,
           updatedNodeEmbeddings,
+          threadEmbeddingVector: threadVector,
         };
       }
 
@@ -508,7 +525,8 @@ export async function sortThreadByEmbedding(
         `LLM could not resolve cross-branch ambiguity: ${llmResult.explanation}`,
         rawSimsRecord,
         subtreeScoresRecord,
-        updatedNodeEmbeddings
+        updatedNodeEmbeddings,
+        threadVector
       );
     }
   }
@@ -612,11 +630,12 @@ export async function sortThreadByEmbedding(
               rawSimilarities: rawSimsRecord,
               subtreeScores: subtreeScoresRecord,
               updatedNodeEmbeddings,
+              threadEmbeddingVector: threadVector,
             };
           }
           return makeInboxFallback(
             `LLM could not resolve mid-traversal ambiguity at "${nodeMap.get(currentNodeId)?.name ?? currentNodeId}": ${llmResult.explanation}`,
-            rawSimsRecord, subtreeScoresRecord, updatedNodeEmbeddings
+            rawSimsRecord, subtreeScoresRecord, updatedNodeEmbeddings, threadVector
           );
         }
       }
@@ -655,6 +674,7 @@ export async function sortThreadByEmbedding(
       rawSimilarities: rawSimsRecord,
       subtreeScores: subtreeScoresRecord,
       updatedNodeEmbeddings,
+      threadEmbeddingVector: threadVector,
     };
   }
 
@@ -681,5 +701,6 @@ export async function sortThreadByEmbedding(
     rawSimilarities: rawSimsRecord,
     subtreeScores: subtreeScoresRecord,
     updatedNodeEmbeddings,
+    threadEmbeddingVector: threadVector,
   };
 }

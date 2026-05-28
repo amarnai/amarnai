@@ -17,19 +17,20 @@ function fmt(iso: string): string {
   });
 }
 
-function priorityClass(priority: string | null): string {
-  if (priority === "HIGH") return "badge-high";
-  if (priority === "MEDIUM") return "badge-medium";
-  if (priority === "LOW") return "badge-low";
-  return "badge-none";
-}
+// priorityClass — post-MVP, requires LLM triage
+// function priorityClass(priority: string | null): string {
+//   if (priority === "HIGH") return "badge-high";
+//   if (priority === "MEDIUM") return "badge-medium";
+//   if (priority === "LOW") return "badge-low";
+//   return "badge-none";
+// }
 
 function ClassifyingBanner({ hasClassification }: { hasClassification: boolean }) {
   return (
     <div className="classifying-banner">
       <span className="classifying-dot" />
       {hasClassification
-        ? "Analyzing this thread — priority, urgency, and actions will appear shortly."
+        ? "Analyzing this thread — actions and sensitivity will appear shortly."
         : "Sorting this thread right now — results will appear shortly."}
     </div>
   );
@@ -203,23 +204,27 @@ export default async function ThreadDetailPage({ params }: Props) {
                 label="Confidence"
                 value={`${Math.round(cls.confidence * 100)}%`}
               />
-              <div>
+              {/* priority — post-MVP, requires LLM triage */}
+              {/* <div>
                 <div className="meta-label">Priority</div>
                 <span className={`badge ${priorityClass(cls.priority)}`}>
                   {cls.priority}
                 </span>
-              </div>
-              <MetaItem label="Urgency" value={cls.urgency} />
-              <MetaItem label="Risk" value={cls.riskLevel} />
+              </div> */}
+              {/* urgency — post-MVP, requires LLM triage */}
+              {/* <MetaItem label="Urgency" value={cls.urgency} /> */}
+              {/* riskLevel — post-MVP, requires LLM triage */}
+              {/* <MetaItem label="Risk" value={cls.riskLevel} /> */}
               <MetaItem label="Required action" value={cls.requiredAction} />
               <MetaItem label="Sensitivity" value={cls.sensitivity} />
               <MetaItem label="Next step" value={cls.suggestedNextStep} />
-              {cls.dueAt && (
+              {/* dueAt — post-MVP, requires LLM triage */}
+              {/* {cls.dueAt && (
                 <MetaItem
                   label="Due"
                   value={new Date(cls.dueAt).toLocaleDateString()}
                 />
-              )}
+              )} */}
             </div>
             {cls.explanation && (
               <p

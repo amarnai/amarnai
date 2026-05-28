@@ -6,6 +6,13 @@ When working on Amarnai, prioritize readability, safety, and a focused MVP. Avoi
 
 Amarnai is an open-source, self-hostable AI email triage assistant. It is Gmail-first, but not a full email client.
 
+Amarnai will also be offered as a hosted SaaS product. The codebase must support both deployment models equally. Design, architecture, storage layout, and API cost structure must never assume a single-tenant or fully self-managed environment. Specifically:
+
+- Multi-tenancy must be a first-class concern: data isolation, per-user resource accounting, and tenant-scoped configuration should be built in, not retrofitted.
+- AI and third-party API costs must be attributable per user so the hosted offering can track and control spend.
+- Infrastructure choices (database, queues, storage) should have clear self-host-friendly defaults (e.g. Postgres, Redis, local file storage) while remaining swappable for managed cloud equivalents in production.
+- Features that would be prohibitively expensive or operationally complex to run at scale in the hosted offering should be flagged before implementation.
+
 Amarnai sorts email threads, not individual messages. New messages in existing threads trigger re-sorting of the full thread.
 
 A key use case is bulk triage of an existing inbox: users may want to sort and classify thousands of emails already accumulated, not just handle incoming ones. Features and jobs should be designed to handle both ongoing (real-time) and historical (backfill) triage at scale.

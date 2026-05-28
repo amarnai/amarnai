@@ -37,3 +37,5 @@ export type { EmbeddingSortResult, DecisionSource } from "./embedding/sorter.js"
 // ─── Triage ───────────────────────────────────────────────────────────────────
 export { analyzeThreadTriage } from "./triage/analyze.js";
 export type { TriageMetadata } from "./triage/analyze.js";
+export { classifyTriageByEmbedding, deriveNextStep } from "./triage/embed-triage.js";
+export type { EmbeddingTriageResult } from "./triage/embed-triage.js";

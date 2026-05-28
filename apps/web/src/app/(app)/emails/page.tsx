@@ -56,12 +56,8 @@ function BackfillBanner({ syncStatus }: { syncStatus: SyncStatus }) {
   );
 }
 
-function priorityClass(priority: string): string {
-  if (priority === "HIGH") return "badge-high";
-  if (priority === "MEDIUM") return "badge-medium";
-  if (priority === "LOW") return "badge-low";
-  return "badge-none";
-}
+// priorityClass — post-MVP, requires LLM triage
+// function priorityClass(priority: string): string { ... }
 
 function buildNextUrl(
   nodeId: string | undefined,
@@ -153,7 +149,8 @@ export default async function EmailsPage({ searchParams }: PageProps) {
                       {thread.latestClassification && (
                         <>
                           {" · "}
-                          <span
+                          {/* priority badge — post-MVP, requires LLM triage */}
+                          {/* <span
                             className={`badge ${priorityClass(
                               thread.latestClassification.priority
                             )}`}
@@ -161,7 +158,7 @@ export default async function EmailsPage({ searchParams }: PageProps) {
                           >
                             {thread.latestClassification.priority}
                           </span>
-                          {" "}
+                          {" "} */}
                           <span className="badge" style={{ fontSize: 10 }}>
                             {thread.latestClassification.finalNode?.name ?? "—"}
                           </span>

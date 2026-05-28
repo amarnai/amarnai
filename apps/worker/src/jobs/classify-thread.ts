@@ -5,9 +5,11 @@ import {
   createEmbeddingProvider,
   sortThreadByEmbedding,
   analyzeThreadTriage,
+  classifyTriageByEmbedding,
+  buildThreadEmbeddingText,
   snapshotToThreadMessages,
 } from "@amarnai/ai";
-import type { EmbeddableNode, TriageMetadata } from "@amarnai/ai";
+import type { EmbeddableNode, TriageMetadata, EmbeddingTriageResult } from "@amarnai/ai";
 import { GmailClient, normalizeGmailThread } from "@amarnai/gmail";
 import {
   QUEUE_CLASSIFY_THREAD,
@@ -35,6 +37,21 @@ async function persistTriageMetadata(
       requiredAction: triage.requiredAction,
       sensitivity: triage.sensitivity,
       dueAt: triage.dueAt !== null ? new Date(triage.dueAt) : null,
+      suggestedNextStep: triage.suggestedNextStep,
+    },
+  });
+}
+
+/** Write the three embedding-computed triage fields onto an existing classification record. */
+async function persistEmbeddingTriage(
+  classificationId: string,
+  triage: EmbeddingTriageResult
+): Promise<void> {
+  await db.emailClassification.update({
+    where: { id: classificationId },
+    data: {
+      sensitivity: triage.sensitivity,
+      requiredAction: triage.requiredAction,
       suggestedNextStep: triage.suggestedNextStep,
     },
   });
@@ -203,27 +220,50 @@ export function createClassifyThreadWorker(): Worker {
 
           await job.updateProgress(35);
 
-          // ── 4. Route via embeddings ───────────────────────────────────────
+          // ── 4. Embed the thread ───────────────────────────────────────────
           //
-          // Run routing then triage sequentially — Ollama processes requests
-          // serially; concurrent calls queue and can exceed the 5-minute headers
-          // timeout. For API-based frontier LLMs this is not a concern.
+          // Compute the thread vector once and share it with both routing and
+          // triage so they can run in parallel (Step 5).
 
           const embeddingProvider = createEmbeddingProvider(
             getEmbeddingProviderConfig(),
           );
 
-          const result = await sortThreadByEmbedding(
-            embeddingProvider,
-            aiProvider,
-            nodes,
-            rawEdges,
-            messages,
+          const threadText = buildThreadEmbeddingText(
+            messages.map((m) => ({ subject: m.subject, bodyText: m.bodyText }))
           );
+          const [threadVector] = await embeddingProvider.embed([threadText]);
 
-          await job.updateProgress(60);
+          await job.updateProgress(45);
 
-          // ── 5. Persist updated node embedding cache ───────────────────────
+          // ── 5. Route + triage in parallel ─────────────────────────────────
+          //
+          // Both operations share the pre-computed thread vector. Routing may
+          // trigger an LLM call for cross-branch ambiguity; triage runs
+          // concurrently using only embeddings.
+
+          const [result, embeddingTriage] = await Promise.all([
+            sortThreadByEmbedding(
+              embeddingProvider,
+              aiProvider,
+              nodes,
+              rawEdges,
+              messages,
+              threadVector ? { precomputedThreadVector: threadVector } : undefined,
+            ),
+            threadVector && threadVector.length > 0
+              ? classifyTriageByEmbedding(threadVector, embeddingProvider).catch((e) => {
+                  console.error(
+                    `[classify-thread] Embedding triage failed for thread ${emailThreadId}: ${String(e)}`
+                  );
+                  return null;
+                })
+              : Promise.resolve(null),
+          ]);
+
+          await job.updateProgress(70);
+
+          // ── 6. Persist updated node embedding cache ───────────────────────
 
           if (result.updatedNodeEmbeddings.length > 0) {
             await Promise.all(
@@ -241,12 +281,7 @@ export function createClassifyThreadWorker(): Worker {
             );
           }
 
-          // ── 6. Persist routing result + update thread status ──────────────
-          //
-          // Done before triage so the UI can distinguish the two phases:
-          //   classifyingAt set  + no classification  → "Sorting…"   (routing)
-          //   classifyingAt set  + classification exists → "Analyzing…" (triage)
-          //   classifyingAt null + classification exists → done
+          // ── 7. Persist routing result + triage ────────────────────────────
 
           const { id: classificationId } = await db.emailClassification.create({
             data: {
@@ -267,23 +302,10 @@ export function createClassifyThreadWorker(): Worker {
             data: { triageStatus: result.needsHumanReview ? "NEEDS_REVIEW" : "SORTED" },
           });
 
-          await job.updateProgress(75);
-
-          // ── 7. Triage metadata ────────────────────────────────────────────
-          //
-          // Non-fatal — thread is already sorted; triage fields are left null
-          // if the LLM fails or returns invalid output.
-
-          const triage = await analyzeThreadTriage(aiProvider, messages);
-
-          if (triage !== null) {
-            await persistTriageMetadata(classificationId, triage);
+          if (embeddingTriage !== null) {
+            await persistEmbeddingTriage(classificationId, embeddingTriage);
             console.log(
-              `[classify-thread] Triage metadata saved for thread ${emailThreadId}: priority=${triage.priority}, urgency=${triage.urgency}`
-            );
-          } else {
-            console.error(
-              `[classify-thread] Triage returned null for thread ${emailThreadId} — metadata not saved`
+              `[classify-thread] Triage saved for thread ${emailThreadId}: sensitivity=${embeddingTriage.sensitivity}, requiredAction=${embeddingTriage.requiredAction}`
             );
           }
 

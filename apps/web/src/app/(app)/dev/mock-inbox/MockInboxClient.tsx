@@ -396,7 +396,8 @@ export function MockInboxClient({ workspaceId, threads }: Props) {
               <div className="meta-label">Confidence</div>
               <div className="meta-value">{Math.round(cls.confidence * 100)}%</div>
             </div>
-            <div>
+            {/* priority, urgency, riskLevel — post-MVP, requires LLM triage */}
+            {/* <div>
               <div className="meta-label">Priority</div>
               <div className="meta-value">{cls.priority}</div>
             </div>
@@ -407,7 +408,7 @@ export function MockInboxClient({ workspaceId, threads }: Props) {
             <div>
               <div className="meta-label">Risk</div>
               <div className="meta-value">{cls.riskLevel}</div>
-            </div>
+            </div> */}
             <div>
               <div className="meta-label">Required Action</div>
               <div className="meta-value">{cls.requiredAction}</div>

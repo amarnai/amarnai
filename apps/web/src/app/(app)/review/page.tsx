@@ -2,12 +2,8 @@ import { requireUser, getOrCreateDefaultWorkspace } from "@/lib/session";
 import { api, type ReviewItem } from "@/lib/api";
 import { RetryButton } from "./RetryButton";
 
-function priorityClass(priority: string | null): string {
-  if (priority === "HIGH") return "badge-high";
-  if (priority === "MEDIUM") return "badge-medium";
-  if (priority === "LOW") return "badge-low";
-  return "badge-none";
-}
+// priorityClass — post-MVP, requires LLM triage
+// function priorityClass(priority: string | null): string { ... }
 
 export default async function ReviewPage() {
   const user = await requireUser();
@@ -77,17 +73,19 @@ export default async function ReviewPage() {
                   <span className="badge">
                     {item.classification.finalNode?.name ?? "—"}
                   </span>
-                  {item.classification.priority && (
+                  {/* priority badge — post-MVP, requires LLM triage */}
+                  {/* {item.classification.priority && (
                     <span className={`badge ${priorityClass(item.classification.priority)}`}>
                       {item.classification.priority}
                     </span>
-                  )}
+                  )} */}
                   <span className="badge">
                     {Math.round(item.classification.confidence * 100)}% confidence
                   </span>
-                  {item.classification.urgency && (
+                  {/* urgency badge — post-MVP, requires LLM triage */}
+                  {/* {item.classification.urgency && (
                     <span className="badge">{item.classification.urgency}</span>
-                  )}
+                  )} */}
                 </div>
               )}
             </div>
