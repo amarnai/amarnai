@@ -1,69 +1,107 @@
-/* ─── Brand tokens ──────────────────────────────────────────────────────────
-   Raw brand hex values live here only. Do not repeat them in components or
-   other style files; reference the semantic variables below instead.
+/* ─── Design tokens ──────────────────────────────────────────────────────────
+   Warm-neutral surfaces + soft indigo accent. Raw values live here only;
+   semantic aliases below bridge to existing component class names.
    ────────────────────────────────────────────────────────────────────────── */
 
 :root {
-  /* Brand primitives */
-  --brand-ink:        #1E3A5F;
-  --brand-gold:       #D4A017;
-  --brand-parchment:  #FAF7EF;
-  --brand-carbon:     #111111;
-  --brand-signal-red: #EA4335;
-  --brand-cedar:      #1F5C4D;
+  /* ── Surfaces ── */
+  --bg:        oklch(98.4% 0.006 80);   /* warm page canvas */
+  --bg-soft:   oklch(97.0% 0.008 80);   /* sidebar, inset areas */
+  --bg-sunk:   oklch(95.5% 0.009 80);   /* progress bars, deep insets */
+  --surface:   #ffffff;
+  --surface-2: oklch(99.0% 0.004 80);
 
-  /* Layout & surface */
-  --color-bg:           var(--brand-parchment);
-  --color-surface:      #ffffff;
-  --color-bg-subtle:    #f9fafb;
-  --color-border:       #e5e7eb;
-  --color-border-input: #d1d5db;
-  --color-border-light: #f3f4f6;
+  /* ── Ink scale (warm near-blacks / grays) ── */
+  --ink:   oklch(22% 0.012 80);
+  --ink-2: oklch(38% 0.010 80);
+  --ink-3: oklch(55% 0.008 80);
+  --ink-4: oklch(70% 0.006 80);
+  --ink-5: oklch(82% 0.005 80);
 
-  /* Text */
-  --color-foreground:     var(--brand-carbon);
-  --color-text-secondary: #374151;
-  --color-muted:          #6b7280;
-  --color-subtle:         #9ca3af;
+  /* ── Lines / borders ── */
+  --line:   oklch(93% 0.005 80);
+  --line-2: oklch(88% 0.006 80);
+  --line-3: oklch(80% 0.008 80);
 
-  /* Brand roles */
-  --color-primary:       var(--brand-ink);
-  --color-primary-hover: #162c47;
-  --color-primary-ring:  rgba(30, 58, 95, 0.18);
-  --color-accent:        var(--brand-gold);
+  /* ── Accent — soft indigo ── */
+  --accent:      oklch(58% 0.13 275);
+  --accent-ink:  oklch(34% 0.09 275);
+  --accent-soft: oklch(95.5% 0.025 275);
+  --accent-line: oklch(86% 0.05 275);
+
+  /* ── State: ok / warn / danger ── */
+  --ok:          oklch(58% 0.12 145);
+  --ok-soft:     oklch(96% 0.03 145);
+  --ok-line:     oklch(86% 0.06 145);
+  --warn:        oklch(72% 0.12 65);
+  --warn-ink:    oklch(45% 0.09 55);
+  --warn-soft:   oklch(96% 0.028 75);
+  --warn-line:   oklch(86% 0.06 65);
+  --danger:      oklch(50% 0.16 25);
+  --danger-soft: oklch(96.5% 0.02 25);
+  --danger-line: oklch(86% 0.06 25);
+
+  /* ── Radius & shadow ── */
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 16px;
+  --shadow-1: 0 1px 1px oklch(20% 0.01 80 / 0.04), 0 2px 6px oklch(20% 0.01 80 / 0.045);
+  --shadow-2: 0 1px 2px oklch(20% 0.01 80 / 0.06), 0 8px 24px oklch(20% 0.01 80 / 0.08);
+
+  /* ── Typography ── */
+  --f-sans: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: var(--font-geist-mono), ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  /* ── Semantic aliases (used by existing component classes below) ── */
+  --color-bg:           var(--bg);
+  --color-surface:      var(--surface);
+  --color-bg-subtle:    var(--bg-soft);
+  --color-border:       var(--line);
+  --color-border-input: var(--line-2);
+  --color-border-light: oklch(95% 0.005 80);
+
+  --color-foreground:     var(--ink);
+  --color-text-secondary: var(--ink-2);
+  --color-muted:          var(--ink-3);
+  --color-subtle:         var(--ink-4);
+
+  --color-primary:       var(--accent);
+  --color-primary-hover: oklch(53% 0.14 275);
+  --color-primary-ring:  oklch(58% 0.13 275 / 0.18);
+  --color-accent:        var(--accent);
 
   /* Ink tints (active states, tags, edge labels) */
-  --ink-tint-bg:     #dce8f2;
-  --ink-tint-text:   #1a3757;
-  --ink-tint-border: #8aafc8;
-  --color-active-bg: #e8f0f8;
+  --ink-tint-bg:     var(--accent-soft);
+  --ink-tint-text:   var(--accent-ink);
+  --ink-tint-border: var(--accent-line);
+  --color-active-bg: var(--accent-soft);
 
-  /* Sidebar (on primary/dark background) */
-  --sidebar-bg:               var(--color-primary);
-  --sidebar-fg:               #c8d8e8;
-  --sidebar-fg-muted:         #8aacc8;
-  --sidebar-active-indicator: var(--color-accent);
+  /* Sidebar — light warm-neutral */
+  --sidebar-bg:               var(--bg-soft);
+  --sidebar-fg:               var(--ink-2);
+  --sidebar-fg-muted:         var(--ink-4);
+  --sidebar-active-indicator: var(--accent);
 
   /* State */
-  --color-success:          var(--brand-cedar);
-  --color-success-bg:       #d1fae5;
-  --color-success-text:     var(--brand-cedar);
-  --color-warning:          var(--brand-gold);
-  --color-warning-bg:       #fef3c7;
-  --color-warning-text:     #92400e;
-  --color-warning-border:   #fde68a;
-  --color-destructive:      var(--brand-signal-red);
-  --color-destructive-bg:   #fee2e2;
-  --color-destructive-text: #b91c1c;
-  --color-review:           var(--brand-signal-red);
-  --color-low-confidence:   var(--brand-gold);
-  --color-high-risk:        var(--brand-signal-red);
+  --color-success:          var(--ok);
+  --color-success-bg:       var(--ok-soft);
+  --color-success-text:     oklch(35% 0.10 145);
+  --color-warning:          var(--warn);
+  --color-warning-bg:       var(--warn-soft);
+  --color-warning-text:     var(--warn-ink);
+  --color-warning-border:   var(--warn-line);
+  --color-destructive:      var(--danger);
+  --color-destructive-bg:   var(--danger-soft);
+  --color-destructive-text: oklch(35% 0.14 25);
+  --color-review:           var(--danger);
+  --color-low-confidence:   var(--warn);
+  --color-high-risk:        var(--danger);
 
   /* Taxonomy node kind chips */
-  --node-category-bg:   var(--ink-tint-bg);
-  --node-category-text: var(--ink-tint-text);
-  --node-rule-bg:       var(--color-warning-bg);
-  --node-rule-text:     var(--color-warning-text);
+  --node-category-bg:   var(--accent-soft);
+  --node-category-text: var(--accent-ink);
+  --node-rule-bg:       var(--warn-soft);
+  --node-rule-text:     var(--warn-ink);
 }
 
 *,
@@ -75,11 +113,14 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: var(--f-sans);
+  font-feature-settings: "ss01", "cv11";
   font-size: 14px;
   line-height: 1.5;
   color: var(--color-foreground);
   background: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
   min-height: 100vh;
 }
 
@@ -87,24 +128,62 @@ body {
 
 .shell {
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
 }
 
+/* ─── Sidebar (light warm-neutral) ──────────────────────────────────────── */
+
 .sidebar {
-  width: 208px;
-  background: var(--sidebar-bg);
-  color: var(--sidebar-fg);
+  width: 232px;
+  height: 100vh;
+  overflow-y: auto;
+  background: var(--bg-soft);
+  border-right: 1px solid var(--line);
+  color: var(--ink-2);
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
-  padding: 24px 0 16px;
+  padding: 20px 14px;
+  gap: 2px;
+}
+
+/* Brand mark + app name */
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 10px 14px;
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.sidebar-brand-mark {
+  width: 22px;
+  height: 22px;
+  border-radius: 7px;
+  background: radial-gradient(circle at 30% 30%, oklch(78% 0.10 275), oklch(55% 0.14 275) 70%);
+  box-shadow: inset 0 0 0 1px oklch(45% 0.10 275 / 0.4), 0 1px 2px oklch(45% 0.10 275 / 0.3);
+  flex-shrink: 0;
+}
+
+/* "WORKSPACE" section label */
+.sidebar-section-label {
+  font-family: var(--f-mono);
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--ink-4);
+  padding: 10px 10px 4px;
 }
 
 /* ─── Workspace switcher ─────────────────────────────────────────────────── */
 
 .ws-switcher {
   position: relative;
-  padding: 0 12px 20px;
 }
 
 .ws-switcher-btn {
@@ -113,22 +192,42 @@ body {
   justify-content: space-between;
   gap: 6px;
   width: 100%;
-  padding: 8px 10px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 6px;
+  padding: 7px 10px;
+  background: transparent;
+  border: none;
+  border-radius: var(--r-sm);
   cursor: pointer;
   text-align: left;
 }
 
 .ws-switcher-btn:hover {
-  background: rgba(255, 255, 255, 0.13);
+  background: var(--surface-2);
+}
+
+/* Header variant — larger, heavier, matches former brand row */
+.ws-switcher-btn--header {
+  padding: 6px 10px 14px;
+  gap: 10px;
+}
+
+.ws-switcher-btn--header .ws-switcher-name {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.ws-switcher-btn--header:hover {
+  background: transparent;
+}
+
+.ws-switcher-btn--header:hover .ws-switcher-name {
+  color: var(--accent-ink);
 }
 
 .ws-switcher-name {
   font-size: 13.5px;
   font-weight: 600;
-  color: #fff;
+  color: var(--ink);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -137,7 +236,7 @@ body {
 
 .ws-switcher-chevron {
   font-size: 11px;
-  color: var(--sidebar-fg-muted);
+  color: var(--ink-4);
   flex-shrink: 0;
   transition: transform 0.15s;
 }
@@ -148,13 +247,13 @@ body {
 
 .ws-dropdown {
   position: absolute;
-  top: calc(100% - 8px);
-  left: 12px;
-  right: 12px;
-  background: var(--sidebar-bg);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 6px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: var(--surface);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-2);
   z-index: 50;
   overflow: hidden;
 }
@@ -164,7 +263,8 @@ body {
   width: 100%;
   padding: 9px 14px;
   font-size: 13px;
-  color: var(--sidebar-fg-muted);
+  font-family: inherit;
+  color: var(--ink-2);
   background: none;
   border: none;
   cursor: pointer;
@@ -172,18 +272,18 @@ body {
 }
 
 .ws-dropdown-item:hover {
-  background: rgba(255, 255, 255, 0.07);
-  color: #fff;
+  background: var(--bg-soft);
+  color: var(--ink);
 }
 
 .ws-dropdown-item.active {
-  color: #fff;
+  color: var(--accent-ink);
   font-weight: 500;
 }
 
 .ws-dropdown-separator {
   height: 1px;
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--line);
   margin: 4px 0;
 }
 
@@ -193,7 +293,7 @@ body {
   padding: 9px 14px;
   font-size: 13px;
   font-family: inherit;
-  color: var(--sidebar-fg-muted);
+  color: var(--ink-3);
   background: none;
   border: none;
   cursor: pointer;
@@ -201,8 +301,8 @@ body {
 }
 
 .ws-dropdown-new:hover {
-  background: rgba(255, 255, 255, 0.07);
-  color: #fff;
+  background: var(--bg-soft);
+  color: var(--ink);
 }
 
 .ws-create-form {
@@ -217,19 +317,20 @@ body {
   padding: 6px 9px;
   font-family: inherit;
   font-size: 12.5px;
-  color: #fff;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line-2);
   border-radius: 5px;
   outline: none;
 }
 
 .ws-create-input::placeholder {
-  color: var(--sidebar-fg-muted);
+  color: var(--ink-4);
 }
 
 .ws-create-input:focus {
-  border-color: rgba(255, 255, 255, 0.4);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-soft);
 }
 
 .ws-create-actions {
@@ -243,16 +344,16 @@ body {
   font-size: 12px;
   font-family: inherit;
   font-weight: 500;
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--accent);
   color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--accent);
   border-radius: 5px;
   cursor: pointer;
   transition: background 0.1s;
 }
 
 .ws-create-submit:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.22);
+  background: var(--color-primary-hover);
 }
 
 .ws-create-submit:disabled {
@@ -265,16 +366,16 @@ body {
   font-size: 12px;
   font-family: inherit;
   background: none;
-  color: var(--sidebar-fg-muted);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--ink-3);
+  border: 1px solid var(--line-2);
   border-radius: 5px;
   cursor: pointer;
   transition: color 0.1s, background 0.1s;
 }
 
 .ws-create-cancel:hover:not(:disabled) {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.07);
+  color: var(--ink);
+  background: var(--bg-soft);
 }
 
 .ws-create-cancel:disabled {
@@ -284,36 +385,56 @@ body {
 
 .ws-create-error {
   font-size: 11.5px;
-  color: #fca5a5;
+  color: var(--danger);
   margin: 0;
 }
+
+/* ─── Sidebar nav ────────────────────────────────────────────────────────── */
 
 .sidebar-nav {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 1px;
 }
 
 .sidebar-nav a {
-  display: block;
-  padding: 9px 20px;
-  color: var(--sidebar-fg-muted);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 10px;
+  color: var(--ink-2);
   text-decoration: none;
-  border-left: 3px solid transparent;
+  border-radius: var(--r-sm);
   font-size: 13.5px;
-  transition: color 0.1s, background 0.1s;
+  font-weight: 500;
+  transition: background 0.1s, color 0.1s;
 }
 
 .sidebar-nav a:hover {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.07);
+  background: var(--surface-2);
+  color: var(--ink);
+  text-decoration: none;
 }
 
 .sidebar-nav a.active {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.1);
-  border-left-color: var(--sidebar-active-indicator);
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: var(--shadow-1);
+  font-weight: 600;
+}
+
+/* Dot indicator beside each nav item */
+.nav-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ink-5);
+  flex-shrink: 0;
+}
+
+.sidebar-nav a.active .nav-dot {
+  background: var(--accent);
 }
 
 .main {
@@ -321,6 +442,7 @@ body {
   padding: 32px 36px;
   overflow: auto;
   min-width: 0;
+  background: var(--bg);
 }
 
 /* ─── Typography ─────────────────────────────────────────────────────────── */
@@ -725,8 +847,8 @@ h2 {
 .form-input:focus,
 .form-select:focus,
 .form-textarea:focus {
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 2px var(--color-primary-ring);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-soft);
 }
 
 .form-textarea {
@@ -748,10 +870,10 @@ h2 {
   align-items: center;
   gap: 5px;
   padding: 8px 16px;
-  background: var(--color-primary);
+  background: var(--accent);
   color: #fff;
   border: none;
-  border-radius: 7px;
+  border-radius: 9px;
   font-family: inherit;
   font-size: 13.5px;
   font-weight: 500;
@@ -1551,32 +1673,55 @@ a {
   box-shadow: 0 0 0 2px var(--color-warning-border);
 }
 
-/* ─── Sidebar user ───────────────────────────────────────────────────────── */
+/* ─── Sidebar footer (user + workspace) ─────────────────────────────────── */
 
-.sidebar-user {
+.sidebar-footer {
   margin-top: auto;
-  padding: 12px 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
-.sidebar-user-link {
-  display: block;
-  text-decoration: none;
-  border-radius: 6px;
+/* Avatar circle */
+.sidebar-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, oklch(82% 0.08 50), oklch(72% 0.10 30));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  font-size: 11px;
+  flex-shrink: 0;
+}
+
+/* User account link row */
+.sidebar-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   padding: 8px 10px;
-  margin: 0 -10px;
+  border-radius: var(--r-sm);
+  text-decoration: none;
+  color: var(--ink-2);
   transition: background 0.1s;
 }
 
-.sidebar-user-link:hover {
-  background: rgba(255, 255, 255, 0.07);
+.sidebar-user:hover {
+  background: var(--surface-2);
+  color: var(--ink);
+  text-decoration: none;
 }
 
 .sidebar-user-name {
   display: block;
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 500;
-  color: #fff;
+  color: var(--ink-2);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1584,12 +1729,36 @@ a {
 
 .sidebar-user-email {
   display: block;
-  font-size: 11.5px;
-  color: var(--sidebar-fg-muted);
+  font-size: 11px;
+  color: var(--ink-4);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  margin-top: 2px;
+  margin-top: 1px;
+}
+
+/* Workspace switcher in footer */
+.sidebar-user-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: var(--r-sm);
+  text-decoration: none;
+  color: var(--ink-2);
+  transition: background 0.1s;
+  cursor: pointer;
+  width: 100%;
+  border: none;
+  background: transparent;
+  font: inherit;
+  text-align: left;
+}
+
+.sidebar-user-link:hover {
+  background: var(--surface-2);
+  color: var(--ink);
+  text-decoration: none;
 }
 
 /* ─── Sign-in page ───────────────────────────────────────────────────────── */
@@ -1614,7 +1783,7 @@ a {
 .sign-in-title {
   font-size: 24px;
   font-weight: 700;
-  color: var(--color-primary);
+  color: var(--accent-ink);
   margin-bottom: 6px;
 }
 

@@ -4,6 +4,7 @@ import { useActionState, useState } from "react";
 import { updateNameAction, deleteAccountAction, signOutAction } from "@/actions/auth";
 
 export function AccountForm({ currentName, email }: { currentName: string | null; email: string }) {
+  const [nameValue, setNameValue] = useState(currentName ?? "");
   const [nameState, nameAction, namePending] = useActionState(updateNameAction, null);
   const [deleteState, deleteAction, deletePending] = useActionState(deleteAccountAction, null);
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -25,7 +26,8 @@ export function AccountForm({ currentName, email }: { currentName: string | null
               id="name"
               name="name"
               type="text"
-              defaultValue={currentName ?? ""}
+              value={nameValue}
+              onChange={(e) => setNameValue(e.target.value)}
               placeholder="Your name"
               maxLength={100}
               className="form-input"

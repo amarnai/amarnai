@@ -3,7 +3,10 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { switchWorkspaceAction, createWorkspaceAction } from "@/actions/workspace";
+import {
+  switchWorkspaceAction,
+  createWorkspaceAction,
+} from "@/actions/workspace";
 
 const isDevEnabled = process.env.NEXT_PUBLIC_ENABLE_DEV_TOOLS === "true";
 
@@ -20,6 +23,18 @@ const NAV = [
     ? [{ href: "/dev/gmail-sort-tester", label: "Gmail Sort Tester" }]
     : []),
 ];
+
+function getInitials(name: string | null, email: string): string {
+  if (name) {
+    const parts = name.trim().split(/\s+/).filter(Boolean);
+    const first = parts[0] ?? "";
+    const last = parts[parts.length - 1] ?? "";
+    if (parts.length >= 2)
+      return ((first.at(0) ?? "") + (last.at(0) ?? "")).toUpperCase();
+    return first.slice(0, 2).toUpperCase();
+  }
+  return email.slice(0, 2).toUpperCase();
+}
 
 type SidebarWorkspace = { id: string; name: string };
 type SidebarUser = { email: string; name: string | null } | null;
@@ -47,7 +62,10 @@ export function Sidebar({
   useEffect(() => {
     if (!wsOpen) return;
     function onClickOutside(e: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node)
+      ) {
         setWsOpen(false);
         setCreating(false);
         setCreateName("");
@@ -84,7 +102,6 @@ export function Sidebar({
       setCreateError(result.error);
       setCreatePending(false);
     }
-    // On success, the action redirects — no cleanup needed
   }
 
   function handleCancelCreate() {
@@ -93,12 +110,18 @@ export function Sidebar({
     setCreateError(null);
   }
 
+  const initials = user ? getInitials(user.name, user.email) : "?";
+
   return (
     <aside className="sidebar">
-      {/* Workspace switcher */}
-      <div className="ws-switcher" ref={dropdownRef}>
+      {/* Workspace switcher — top of sidebar, replaces brand header */}
+      <div
+        className="ws-switcher"
+        ref={dropdownRef}
+        style={{ marginBottom: 8 }}
+      >
         <button
-          className="ws-switcher-btn"
+          className="ws-switcher-btn ws-switcher-btn--header"
           type="button"
           onClick={() => {
             if (wsOpen) {
@@ -113,8 +136,14 @@ export function Sidebar({
           aria-haspopup="listbox"
           aria-expanded={wsOpen}
         >
-          <span className="ws-switcher-name">{workspace?.name ?? "No workspace"}</span>
-          <span className={`ws-switcher-chevron${wsOpen ? " open" : ""}`} aria-hidden>
+          <div className="sidebar-brand-mark" aria-hidden />
+          <span className="ws-switcher-name">
+            {workspace?.name ?? "No workspace"}
+          </span>
+          <span
+            className={`ws-switcher-chevron${wsOpen ? " open" : ""}`}
+            aria-hidden
+          >
             ▾
           </span>
         </button>
@@ -198,6 +227,7 @@ export function Sidebar({
                 href={item.href}
                 className={pathname.startsWith(item.href) ? "active" : ""}
               >
+                <span className="nav-dot" aria-hidden />
                 {item.label}
               </Link>
             </li>
@@ -205,14 +235,21 @@ export function Sidebar({
         </ul>
       </nav>
 
-      {/* User → account link */}
+      {/* Footer: user account link */}
       {user && (
-        <Link href="/account" className="sidebar-user sidebar-user-link">
-          <span className="sidebar-user-name">{user.name ?? user.email}</span>
-          {user.name && (
-            <span className="sidebar-user-email">{user.email}</span>
-          )}
-        </Link>
+        <div className="sidebar-footer">
+          <Link href="/account" className="sidebar-user">
+            <div className="sidebar-avatar" aria-hidden>
+              {initials}
+            </div>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              {user.name && (
+                <span className="sidebar-user-name">{user.name}</span>
+              )}
+              <span className="sidebar-user-email">{user.email}</span>
+            </div>
+          </Link>
+        </div>
       )}
     </aside>
   );

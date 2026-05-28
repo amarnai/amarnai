@@ -9,7 +9,7 @@ import { encrypt } from "@/lib/encryption";
 
 const GMAIL_READONLY_SCOPE = "https://www.googleapis.com/auth/gmail.readonly";
 
-export const { handlers, auth, signIn, signOut } = NextAuth({
+export const { handlers, auth, signIn, signOut, unstable_update } = NextAuth({
   providers: [
     Google({
       clientId: process.env["AUTH_GOOGLE_ID"] ?? "",
@@ -133,10 +133,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (needsLookup && token.email) {
         const dbUser = await db.user.findUnique({
           where: { email: token.email },
-          select: { id: true, emailVerified: true },
+          select: { id: true, name: true, emailVerified: true },
         });
         if (dbUser) {
           token.userId = dbUser.id;
+          token.name = dbUser.name;
           token.isEmailVerified = dbUser.emailVerified !== null;
         } else {
           delete token.userId;

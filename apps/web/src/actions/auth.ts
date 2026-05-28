@@ -3,7 +3,7 @@
 import crypto from "crypto";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
-import { signIn, signOut } from "@/auth";
+import { signIn, signOut, unstable_update } from "@/auth";
 import { db } from "@amarnai/db";
 import { requireUser } from "@/lib/session";
 import { sendVerificationEmail, sendPasswordResetEmail } from "@/lib/email";
@@ -163,6 +163,8 @@ export async function updateNameAction(
     where: { id: user.id },
     data: { name: name || null },
   });
+
+  await unstable_update({});
 
   return { success: true };
 }
