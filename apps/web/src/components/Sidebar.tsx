@@ -5,16 +5,14 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { switchWorkspaceAction } from "@/actions/workspace";
 
-const isDevEnabled =
-  process.env.NODE_ENV === "development" ||
-  process.env.NEXT_PUBLIC_ENABLE_DEV_TOOLS === "true";
+const isDevEnabled = process.env.NEXT_PUBLIC_ENABLE_DEV_TOOLS === "true";
 
 const isGmailDebugEnabled =
   process.env.NEXT_PUBLIC_ENABLE_GMAIL_DEBUG_TOOLS === "true";
 
 const NAV = [
+  { href: "/folders", label: "Folders" },
   { href: "/taxonomy", label: "Taxonomy" },
-  { href: "/dashboard", label: "Dashboard" },
   { href: "/emails", label: "Emails" },
   { href: "/settings", label: "Workspace" },
   ...(isDevEnabled ? [{ href: "/dev/mock-inbox", label: "Mock Inbox" }] : []),

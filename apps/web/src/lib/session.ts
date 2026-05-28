@@ -30,5 +30,5 @@ export async function assertWorkspaceOwner(workspaceId: string, userId: string) 
     where: { id: workspaceId, ownerUserId: userId },
     select: { id: true },
   });
-  if (!ws) redirect("/dashboard");
+  if (!ws) redirect("/folders");
 }

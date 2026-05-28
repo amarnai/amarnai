@@ -26,7 +26,7 @@ export async function switchWorkspaceAction(workspaceId: string): Promise<void> 
     maxAge: 60 * 60 * 24 * 365,
   });
 
-  redirect("/dashboard");
+  redirect("/folders");
 }
 
 export async function updateWorkspaceNameAction(

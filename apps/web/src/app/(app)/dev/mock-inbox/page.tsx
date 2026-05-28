@@ -10,7 +10,7 @@ export default async function MockInboxPage() {
     process.env["ENABLE_DEV_TOOLS"] === "true";
 
   if (!isDevEnabled) {
-    redirect("/dashboard");
+    redirect("/folders");
   }
 
   const user = await requireUser();

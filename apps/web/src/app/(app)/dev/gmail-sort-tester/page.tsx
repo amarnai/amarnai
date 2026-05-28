@@ -6,7 +6,7 @@ import { GmailDebugPanel } from "./GmailDebugPanel";
 
 export default async function GmailSortTesterPage() {
   if (process.env["NEXT_PUBLIC_ENABLE_GMAIL_DEBUG_TOOLS"] !== "true") {
-    redirect("/dashboard");
+    redirect("/folders");
   }
 
   const user = await requireUser();
