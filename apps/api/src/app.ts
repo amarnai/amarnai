@@ -17,6 +17,7 @@ import { sweepInboxRoute } from "./routes/sweep-inbox.js";
 import { syncStatusRoute } from "./routes/sync-status.js";
 import { triageRoute } from "./routes/triage.js";
 import { folderCountsRoute } from "./routes/folder-counts.js";
+import { sortingQueueRoute } from "./routes/sorting-queue.js";
 
 const app = new Hono();
 
@@ -39,5 +40,6 @@ app.route("/", sweepInboxRoute);
 app.route("/", syncStatusRoute);
 app.route("/", triageRoute);
 app.route("/", folderCountsRoute);
+app.route("/", sortingQueueRoute);
 
 export default app;

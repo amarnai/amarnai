@@ -36,17 +36,23 @@ syncStatus.get("/workspaces/:workspaceId/sync-status", async (c) => {
 
   if (!account) return c.json(null, 200);
 
-  const state = await db.providerSyncState.findUnique({
-    where: { emailAccountId: account.id },
-    select: {
-      status: true,
-      lastSyncedAt: true,
-      errorMessage: true,
-      backfillStatus: true,
-      backfillSkipped: true,
-      backfillCompletedAt: true,
-    },
-  });
+  const [state, syncSettings] = await Promise.all([
+    db.providerSyncState.findUnique({
+      where: { emailAccountId: account.id },
+      select: {
+        status: true,
+        lastSyncedAt: true,
+        errorMessage: true,
+        backfillStatus: true,
+        backfillSkipped: true,
+        backfillCompletedAt: true,
+      },
+    }),
+    db.gmailSyncSettings.findUnique({
+      where: { workspaceId },
+      select: { sortingPaused: true },
+    }),
+  ]);
 
   if (!state) return c.json(null, 200);
 
@@ -57,6 +63,7 @@ syncStatus.get("/workspaces/:workspaceId/sync-status", async (c) => {
     backfillStatus: state.backfillStatus,
     backfillSkipped: state.backfillSkipped,
     backfillCompletedAt: state.backfillCompletedAt?.toISOString() ?? null,
+    sortingPaused: syncSettings?.sortingPaused ?? false,
   });
 });
 

@@ -23,7 +23,7 @@ gmailSyncSettings.get("/workspaces/:workspaceId/gmail-sync-settings", async (c) 
 
   const row = await db.gmailSyncSettings.findUnique({
     where: { workspaceId: parsed.data.workspaceId },
-    select: { includeSpam: true, includePromotions: true },
+    select: { includeSpam: true, includePromotions: true, sortingPaused: true },
   });
 
   return c.json(row ?? DEFAULT_GMAIL_SYNC_SETTINGS);
@@ -50,9 +50,10 @@ gmailSyncSettings.patch("/workspaces/:workspaceId/gmail-sync-settings", async (c
   if (!workspace) return c.json({ error: "Workspace not found" }, 404);
 
   // Build explicit update object — avoid spreading optional fields with exactOptionalPropertyTypes.
-  const updateData: { includeSpam?: boolean; includePromotions?: boolean } = {};
+  const updateData: { includeSpam?: boolean; includePromotions?: boolean; sortingPaused?: boolean } = {};
   if (bodyParsed.data.includeSpam !== undefined) updateData.includeSpam = bodyParsed.data.includeSpam;
   if (bodyParsed.data.includePromotions !== undefined) updateData.includePromotions = bodyParsed.data.includePromotions;
+  if (bodyParsed.data.sortingPaused !== undefined) updateData.sortingPaused = bodyParsed.data.sortingPaused;
 
   const updated = await db.gmailSyncSettings.upsert({
     where: { workspaceId: paramParsed.data.workspaceId },
@@ -60,9 +61,10 @@ gmailSyncSettings.patch("/workspaces/:workspaceId/gmail-sync-settings", async (c
       workspaceId: paramParsed.data.workspaceId,
       includeSpam:       updateData.includeSpam       ?? DEFAULT_GMAIL_SYNC_SETTINGS.includeSpam,
       includePromotions: updateData.includePromotions ?? DEFAULT_GMAIL_SYNC_SETTINGS.includePromotions,
+      sortingPaused:     updateData.sortingPaused     ?? DEFAULT_GMAIL_SYNC_SETTINGS.sortingPaused,
     },
     update: updateData,
-    select: { includeSpam: true, includePromotions: true },
+    select: { includeSpam: true, includePromotions: true, sortingPaused: true },
   });
 
   return c.json(updated);
