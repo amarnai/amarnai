@@ -3,6 +3,7 @@ import { getSelectedWorkspace } from "@/lib/workspace";
 import { api } from "@/lib/api";
 import { GmailConnectionSection } from "./GmailConnectionSection";
 import { WorkspaceNameSection } from "./WorkspaceNameSection";
+import { DeleteWorkspaceSection } from "./DeleteWorkspaceSection";
 
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 
@@ -40,6 +41,7 @@ export default async function SettingsPage({ searchParams }: { searchParams: Sea
         connectError={connectError}
         connectSuccess={connectSuccess}
       />
+      <DeleteWorkspaceSection workspaceId={workspace.id} />
     </>
   );
 }

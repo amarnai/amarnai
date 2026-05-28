@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { switchWorkspaceAction } from "@/actions/workspace";
+import { switchWorkspaceAction, createWorkspaceAction } from "@/actions/workspace";
 
 const isDevEnabled = process.env.NEXT_PUBLIC_ENABLE_DEV_TOOLS === "true";
 
@@ -28,32 +28,70 @@ export function Sidebar({
   user,
   workspace,
   workspaces,
+  canCreateWorkspace,
 }: {
   user: SidebarUser;
   workspace: SidebarWorkspace | null;
   workspaces: SidebarWorkspace[];
+  canCreateWorkspace: boolean;
 }) {
   const pathname = usePathname();
   const [wsOpen, setWsOpen] = useState(false);
+  const [creating, setCreating] = useState(false);
+  const [createName, setCreateName] = useState("");
+  const [createError, setCreateError] = useState<string | null>(null);
+  const [createPending, setCreatePending] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const createInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!wsOpen) return;
     function onClickOutside(e: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
         setWsOpen(false);
+        setCreating(false);
+        setCreateName("");
+        setCreateError(null);
       }
     }
     document.addEventListener("mousedown", onClickOutside);
     return () => document.removeEventListener("mousedown", onClickOutside);
   }, [wsOpen]);
 
+  useEffect(() => {
+    if (creating) {
+      createInputRef.current?.focus();
+    }
+  }, [creating]);
+
   async function handleSwitch(id: string) {
     setWsOpen(false);
     await switchWorkspaceAction(id);
   }
 
-  const hasMultiple = workspaces.length > 1;
+  function handleOpenCreate() {
+    setCreating(true);
+    setCreateError(null);
+    setCreateName("");
+  }
+
+  async function handleCreate() {
+    if (!createName.trim()) return;
+    setCreatePending(true);
+    setCreateError(null);
+    const result = await createWorkspaceAction(createName);
+    if (result?.error) {
+      setCreateError(result.error);
+      setCreatePending(false);
+    }
+    // On success, the action redirects — no cleanup needed
+  }
+
+  function handleCancelCreate() {
+    setCreating(false);
+    setCreateName("");
+    setCreateError(null);
+  }
 
   return (
     <aside className="sidebar">
@@ -62,19 +100,26 @@ export function Sidebar({
         <button
           className="ws-switcher-btn"
           type="button"
-          onClick={() => hasMultiple && setWsOpen((o) => !o)}
-          aria-haspopup={hasMultiple ? "listbox" : undefined}
+          onClick={() => {
+            if (wsOpen) {
+              setWsOpen(false);
+              setCreating(false);
+              setCreateName("");
+              setCreateError(null);
+            } else {
+              setWsOpen(true);
+            }
+          }}
+          aria-haspopup="listbox"
           aria-expanded={wsOpen}
         >
           <span className="ws-switcher-name">{workspace?.name ?? "No workspace"}</span>
-          {hasMultiple && (
-            <span className={`ws-switcher-chevron${wsOpen ? " open" : ""}`} aria-hidden>
-              ▾
-            </span>
-          )}
+          <span className={`ws-switcher-chevron${wsOpen ? " open" : ""}`} aria-hidden>
+            ▾
+          </span>
         </button>
 
-        {wsOpen && hasMultiple && (
+        {wsOpen && (
           <div className="ws-dropdown" role="listbox">
             {workspaces.map((ws) => (
               <button
@@ -88,6 +133,58 @@ export function Sidebar({
                 {ws.name}
               </button>
             ))}
+
+            {canCreateWorkspace && (
+              <>
+                <div className="ws-dropdown-separator" aria-hidden />
+                {!creating ? (
+                  <button
+                    type="button"
+                    className="ws-dropdown-new"
+                    onClick={handleOpenCreate}
+                  >
+                    + New workspace
+                  </button>
+                ) : (
+                  <div className="ws-create-form">
+                    <input
+                      ref={createInputRef}
+                      type="text"
+                      className="ws-create-input"
+                      placeholder="Workspace name"
+                      value={createName}
+                      maxLength={100}
+                      onChange={(e) => setCreateName(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") handleCreate();
+                        if (e.key === "Escape") handleCancelCreate();
+                      }}
+                    />
+                    {createError && (
+                      <p className="ws-create-error">{createError}</p>
+                    )}
+                    <div className="ws-create-actions">
+                      <button
+                        type="button"
+                        className="ws-create-submit"
+                        onClick={handleCreate}
+                        disabled={createPending || !createName.trim()}
+                      >
+                        {createPending ? "Creating…" : "Create"}
+                      </button>
+                      <button
+                        type="button"
+                        className="ws-create-cancel"
+                        onClick={handleCancelCreate}
+                        disabled={createPending}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
           </div>
         )}
       </div>

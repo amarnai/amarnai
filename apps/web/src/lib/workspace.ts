@@ -3,6 +3,12 @@ import { db, ensureInboxNode } from "@amarnai/db";
 
 const WORKSPACE_COOKIE = "amarnai-workspace";
 
+export function getWorkspaceLimit(): number {
+  const envLimit = process.env.MAX_WORKSPACES_PER_USER;
+  if (envLimit) return parseInt(envLimit, 10);
+  return Infinity;
+}
+
 export async function getSelectedWorkspace(userId: string): Promise<{ id: string; name: string }> {
   const cookieStore = await cookies();
   const selectedId = cookieStore.get(WORKSPACE_COOKIE)?.value;

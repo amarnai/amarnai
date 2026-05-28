@@ -181,6 +181,113 @@ body {
   font-weight: 500;
 }
 
+.ws-dropdown-separator {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 4px 0;
+}
+
+.ws-dropdown-new {
+  display: block;
+  width: 100%;
+  padding: 9px 14px;
+  font-size: 13px;
+  font-family: inherit;
+  color: var(--sidebar-fg-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+}
+
+.ws-dropdown-new:hover {
+  background: rgba(255, 255, 255, 0.07);
+  color: #fff;
+}
+
+.ws-create-form {
+  padding: 10px 12px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ws-create-input {
+  width: 100%;
+  padding: 6px 9px;
+  font-family: inherit;
+  font-size: 12.5px;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
+  outline: none;
+}
+
+.ws-create-input::placeholder {
+  color: var(--sidebar-fg-muted);
+}
+
+.ws-create-input:focus {
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.ws-create-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.ws-create-submit {
+  flex: 1;
+  padding: 5px 10px;
+  font-size: 12px;
+  font-family: inherit;
+  font-weight: 500;
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.ws-create-submit:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.ws-create-submit:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.ws-create-cancel {
+  padding: 5px 8px;
+  font-size: 12px;
+  font-family: inherit;
+  background: none;
+  color: var(--sidebar-fg-muted);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: color 0.1s, background 0.1s;
+}
+
+.ws-create-cancel:hover:not(:disabled) {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.ws-create-cancel:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.ws-create-error {
+  font-size: 11.5px;
+  color: #fca5a5;
+  margin: 0;
+}
+
 .sidebar-nav {
   list-style: none;
   display: flex;
