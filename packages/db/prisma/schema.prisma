@@ -470,6 +470,7 @@ model GmailSyncSettings {
   workspaceId       String   @unique
   includeSpam       Boolean  @default(false)
   includePromotions Boolean  @default(false)
+  sortingPaused     Boolean  @default(false)
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
 
