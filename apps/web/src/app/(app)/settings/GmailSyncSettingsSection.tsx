@@ -54,7 +54,7 @@ export function GmailSyncSettingsSection({ workspaceId, initialSettings }: Props
   }
 
   return (
-    <section className="settings-section">
+    <div className="settings-subsection">
       <h3>Sync filters</h3>
       <p className="settings-hint">
         These settings control which Gmail threads are imported. Trash is always excluded.
@@ -104,6 +104,6 @@ export function GmailSyncSettingsSection({ workspaceId, initialSettings }: Props
       <p className="settings-hint">
         Use "Rescan inbox" after changing filter settings to apply them to threads already in your inbox.
       </p>
-    </section>
+    </div>
   );
 }

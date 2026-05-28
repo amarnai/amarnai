@@ -211,6 +211,7 @@ body {
 }
 
 .ws-switcher-btn--header .ws-switcher-name {
+  flex: 1;
   font-size: 15px;
   font-weight: 600;
   letter-spacing: -0.01em;
@@ -924,13 +925,31 @@ h2 {
 }
 
 .btn-danger {
-  color: var(--color-destructive);
-  border-color: var(--color-destructive-bg);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 7px 14px;
+  background: transparent;
+  color: var(--danger);
+  border: 1px solid color-mix(in srgb, var(--danger) 28%, transparent);
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.1s, color 0.1s, border-color 0.1s;
+  white-space: nowrap;
 }
 
-.btn-danger:hover {
-  background: var(--color-destructive-bg);
+.btn-danger:hover:not(:disabled) {
+  background: var(--danger-soft);
+  border-color: color-mix(in srgb, var(--danger) 45%, transparent);
   color: var(--color-destructive-text);
+}
+
+.btn-danger:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
 /* ─── Review items ───────────────────────────────────────────────────────── */
@@ -1212,11 +1231,76 @@ a {
 }
 
 .settings-section-danger {
-  border-color: color-mix(in srgb, var(--color-danger, #dc2626) 30%, transparent);
+  border-color: color-mix(in srgb, var(--danger) 30%, transparent);
 }
 
 .settings-section-danger h2 {
-  color: var(--color-danger, #dc2626);
+  color: var(--danger);
+}
+
+.settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.settings-subsection {
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
+.settings-subsection h3 {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ink-2);
+  margin: 0 0 10px;
+}
+
+.settings-hint {
+  font-size: 13px;
+  color: var(--ink-3);
+  margin: 0 0 12px;
+  line-height: 1.5;
+}
+
+.settings-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13.5px;
+  color: var(--ink-2);
+  cursor: pointer;
+  margin-bottom: 10px;
+  user-select: none;
+}
+
+.settings-toggle input[type="checkbox"] {
+  width: 15px;
+  height: 15px;
+  accent-color: var(--accent);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.rescan-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 4px;
+  margin-bottom: 12px;
+}
+
+.rescan-feedback {
+  font-size: 13px;
+}
+
+.rescan-feedback-ok {
+  color: var(--ok);
+}
+
+.rescan-feedback-error {
+  color: var(--danger);
 }
 
 .account-form {
@@ -2075,10 +2159,11 @@ a {
 
 .btn-secondary {
   padding: 7px 14px;
-  background: var(--color-surface-elevated);
-  color: var(--color-text);
+  background: var(--surface-2);
+  color: var(--ink-2);
   border: 1px solid var(--color-border);
   border-radius: 6px;
+  font-family: inherit;
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
@@ -2086,8 +2171,8 @@ a {
 }
 
 .btn-secondary:hover:not(:disabled) {
-  background: var(--color-border-light);
-  border-color: var(--color-border-muted);
+  background: var(--bg-soft);
+  border-color: var(--line-2);
 }
 
 .btn-secondary:disabled {

@@ -62,7 +62,6 @@ export function ThreadRow({ thread, folder, active, selected, onSelect }: Props)
     >
       <div className="em-thread-main">
         <div className="em-thread-top">
-          <span className="em-unread-pip" />
           <span className="em-thread-from">{thread.participants}</span>
           {thread.messageCount > 1 && (
             <span className="em-msg-count">{thread.messageCount}</span>
