@@ -140,6 +140,8 @@ export type EmailThreadSummary = {
   }>;
   tags: EmailTag[];
   latestClassification: ClassificationSummary | null;
+  hasDraft: boolean;
+  isDrafting: boolean;
 };
 
 export type Classification = {
@@ -359,6 +361,14 @@ export type ClassifyResult = {
 /** Returned by ai-classify (async — job enqueued, poll isClassifying for completion). */
 export type QueuedResult = { queued: true };
 
+export type Draft = {
+  id: string;
+  subject: string | null;
+  body: string;
+  status: "GENERATING" | "PROPOSED" | "SENT" | string;
+  createdAt: string;
+};
+
 // ─── API helpers ──────────────────────────────────────────────────────────────
 
 export const api = {
@@ -513,5 +523,25 @@ export const api = {
     apiMutate<{ ok: boolean; workspaceId: string }>(
       `/workspaces/${workspaceId}/sorting-queue/start`,
       "POST"
+    ),
+  generateDraft: (workspaceId: string, threadId: string) =>
+    apiMutate<{ draft: Draft } | { generating: true }>(
+      `/workspaces/${workspaceId}/email-threads/${threadId}/generate-draft`,
+      "POST"
+    ),
+  threadDrafts: (workspaceId: string, threadId: string) =>
+    apiFetch<{ drafts: Draft[] }>(
+      `/workspaces/${workspaceId}/email-threads/${threadId}/drafts`
+    ),
+  dismissDraft: (workspaceId: string, threadId: string, draftId: string) =>
+    apiMutate<{ ok: boolean }>(
+      `/workspaces/${workspaceId}/email-threads/${threadId}/drafts/${draftId}`,
+      "DELETE"
+    ),
+  toggleDraftSent: (workspaceId: string, threadId: string, draftId: string, sent: boolean) =>
+    apiMutate<{ draft: Draft }>(
+      `/workspaces/${workspaceId}/email-threads/${threadId}/drafts/${draftId}`,
+      "PATCH",
+      { status: sent ? "SENT" : "PROPOSED" }
     ),
 };

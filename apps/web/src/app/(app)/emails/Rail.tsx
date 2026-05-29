@@ -34,7 +34,7 @@ export function Rail({
   onNewFolder,
 }: Props) {
   const lastSync = syncStatus?.lastSyncedAt
-    ? formatSyncAge(new Date(syncStatus.lastSyncedAt))
+    ? formatSyncAge(new Date(syncStatus.lastSyncedAt), now)
     : null;
 
   return (
@@ -43,9 +43,9 @@ export function Rail({
         <div className="em-rail-head-top">
           <h2>Mail</h2>
           {lastSync && (
-            <div className="em-sync-chip" title={`Last Gmail sync ${lastSync} ago`}>
+            <div className="em-sync-chip" title={`Last Gmail sync ${lastSync} ago`} suppressHydrationWarning>
               <span className="em-sync-dot" />
-              <span>{lastSync}</span>
+              <span suppressHydrationWarning>{lastSync}</span>
             </div>
           )}
         </div>
@@ -111,8 +111,8 @@ export function Rail({
   );
 }
 
-function formatSyncAge(d: Date): string {
-  const diff = Math.floor((Date.now() - d.getTime()) / 1000);
+function formatSyncAge(d: Date, now: Date): string {
+  const diff = Math.floor((now.getTime() - d.getTime()) / 1000);
   if (diff < 60) return `${diff}s`;
   if (diff < 3600) return `${Math.floor(diff / 60)}m`;
   return `${Math.floor(diff / 3600)}h`;

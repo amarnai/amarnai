@@ -55,7 +55,7 @@ export function MessageCard({ message, defaultExpanded = false }: Props) {
           {message.bodyText ? (
             <pre className="em-msg-text">{message.bodyText}</pre>
           ) : message.snippet ? (
-            <p className="em-msg-text">{message.snippet}</p>
+            <p className="em-msg-text">{message.snippet}&thinsp;…</p>
           ) : (
             <p className="em-msg-text em-msg-empty">(No body)</p>
           )}

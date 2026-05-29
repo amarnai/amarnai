@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
 }
 
 datasource db {
@@ -105,7 +106,9 @@ enum BackfillStatus {
 }
 
 enum DraftStatus {
+  GENERATING
   PROPOSED
+  SENT
   CREATED_IN_GMAIL
   REJECTED
   FAILED

@@ -3,6 +3,7 @@ import type { NextConfig } from "next";
 const config: NextConfig = {
   devIndicators: false,
   transpilePackages: ["@amarnai/db"],
+  serverExternalPackages: ["@prisma/client"],
   webpack: (config) => {
     // When transpiling workspace packages that use NodeNext-style `.js` extensions
     // for TypeScript source files, Webpack needs to know that `.js` can resolve to `.ts`.

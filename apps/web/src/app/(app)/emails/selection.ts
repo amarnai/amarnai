@@ -51,12 +51,6 @@ export type ThreadMessage = {
   bodyText: string | null;
 };
 
-export type SuggestedDraft = {
-  eyebrow: string;
-  title: string;
-  desc: string;
-};
-
 export type ThreadItem = {
   id: string;
   subject: string;
@@ -70,8 +64,10 @@ export type ThreadItem = {
   confidence: number;
   reasoning: string | null;
   alternativeFolder: { folderId: string; name: string; weight: number } | null;
-  suggestedDraft?: SuggestedDraft;
   messages: ThreadMessage[];
+  hasDraft: boolean;
+  isDrafting: boolean;
+  lastSenderEmail: string | null;
 };
 
 // ─── Shared filter ─────────────────────────────────────────────────────────────

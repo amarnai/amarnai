@@ -56,6 +56,11 @@ export default async function EmailsPage({ searchParams }: PageProps) {
             : (edges as PromiseRejectedResult).reason.message);
   }
 
+  const workspaceEmail =
+    connection.status === "fulfilled" && connection.value
+      ? connection.value.gmailAddress
+      : null;
+
   const rawThreads =
     threadsResult.status === "fulfilled" ? threadsResult.value.threads : [];
   const rawNodes =
@@ -78,9 +83,9 @@ export default async function EmailsPage({ searchParams }: PageProps) {
     const validQueue = QUEUES.find((queue) => queue.id === q);
     initialActive = validQueue
       ? { kind: "queue", id: validQueue.id }
-      : { kind: "queue", id: "review" };
+      : { kind: "queue", id: "all" };
   } else {
-    initialActive = { kind: "queue", id: "review" };
+    initialActive = { kind: "queue", id: "all" };
   }
 
   const initialSelectedId = t ?? null;
@@ -100,6 +105,7 @@ export default async function EmailsPage({ searchParams }: PageProps) {
         initialActive={initialActive}
         initialSelectedId={initialSelectedId}
         syncStatus={resolvedSyncStatus}
+        workspaceEmail={workspaceEmail}
       />
     </>
   );

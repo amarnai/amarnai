@@ -59,6 +59,11 @@ export function mapThreads(threads: EmailThreadSummary[]): ThreadItem[] {
       confidence: cls?.confidence ?? 0,
       reasoning: null,
       alternativeFolder: null,
+      hasDraft: t.hasDraft,
+      isDrafting: t.isDrafting,
+      lastSenderEmail: t.messages.length > 0
+        ? (t.messages[t.messages.length - 1]?.senderEmail ?? null)
+        : null,
       messages: t.messages.map((m) => ({
         id: m.id,
         fromName: m.senderName ?? m.senderEmail,

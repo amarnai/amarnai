@@ -39,3 +39,6 @@ export { analyzeThreadTriage } from "./triage/analyze.js";
 export type { TriageMetadata } from "./triage/analyze.js";
 export { classifyTriageByEmbedding, deriveNextStep } from "./triage/embed-triage.js";
 export type { EmbeddingTriageResult } from "./triage/embed-triage.js";
+// ─── Draft generation ─────────────────────────────────────────────────────────
+export { generateDraft } from "./draft/generate.js";
+export type { DraftContext, DraftResult } from "./draft/generate.js";

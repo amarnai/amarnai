@@ -12,6 +12,7 @@ type Props = {
   selectedId: string | null;
   query: string;
   now: Date;
+  workspaceEmail: string | null;
   onSelectThread: (id: string) => void;
   onSelectFolder: (id: string) => void;
   onQueryChange: (q: string) => void;
@@ -49,6 +50,7 @@ export function ThreadList({
   selectedId,
   query,
   now,
+  workspaceEmail,
   onSelectThread,
   onSelectFolder,
   onQueryChange,
@@ -90,6 +92,7 @@ export function ThreadList({
                   folder={folder}
                   active={active}
                   selected={thread.id === selectedId}
+                  workspaceEmail={workspaceEmail}
                   onSelect={() => onSelectThread(thread.id)}
                 />
               );

@@ -19,10 +19,11 @@ type Props = {
   folder: FolderItem | undefined;
   active: ActiveSelection;
   selected: boolean;
+  workspaceEmail: string | null;
   onSelect: () => void;
 };
 
-export function ThreadRow({ thread, folder, active, selected, onSelect }: Props) {
+export function ThreadRow({ thread, folder, active, selected, workspaceEmail, onSelect }: Props) {
   const today = new Date().toISOString().slice(0, 10);
   const confPct = Math.round(thread.confidence * 100);
   const confColor =
@@ -78,6 +79,13 @@ export function ThreadRow({ thread, folder, active, selected, onSelect }: Props)
               {chipLabel}
             </span>
           )}
+          {(() => {
+            const lastIsOwn = !!workspaceEmail && !!thread.lastSenderEmail &&
+              thread.lastSenderEmail.toLowerCase() === workspaceEmail.toLowerCase();
+            if (thread.isDrafting && !lastIsOwn) return <span className="em-pill">Drafting…</span>;
+            if (thread.hasDraft && !lastIsOwn) return <span className="em-pill accent">draft</span>;
+            return null;
+          })()}
           <span className="em-conf">
             <span
               className="em-donut"
@@ -90,9 +98,7 @@ export function ThreadRow({ thread, folder, active, selected, onSelect }: Props)
             />
             {confPct}%
           </span>
-          {thread.suggestedDraft && (
-            <span className="em-pill accent">draft</span>
-          )}
+
         </div>
       </div>
 

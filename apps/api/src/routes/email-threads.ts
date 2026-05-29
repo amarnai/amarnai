@@ -19,12 +19,19 @@ type TriageStatusValue = typeof VALID_TRIAGE_STATUSES[number];
 // for the active phase. The cost of increasing this threshold is that a
 // crashed-worker's stale indicator takes longer to clear (acceptable trade-off).
 const CLASSIFY_STALE_MS = 15 * 60 * 1_000;
+const DRAFT_GENERATING_STALE_MS = 5 * 60 * 1_000;
 const DEFAULT_PAGE_LIMIT = 50;
 const MAX_PAGE_LIMIT = 100;
 
 function deriveIsClassifying(classifyingAt: Date | null): boolean {
   if (!classifyingAt) return false;
   return Date.now() - classifyingAt.getTime() < CLASSIFY_STALE_MS;
+}
+
+function deriveIsDrafting(drafts: Array<{ status: string; createdAt: Date }>): boolean {
+  return drafts.some(
+    (d) => d.status === "GENERATING" && Date.now() - d.createdAt.getTime() < DRAFT_GENERATING_STALE_MS
+  );
 }
 
 // ─── Cursor helpers ───────────────────────────────────────────────────────────
@@ -180,6 +187,11 @@ emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
         finalNode: { select: { id: true, name: true } },
       },
     },
+    drafts: {
+      where: { status: { in: ["PROPOSED", "GENERATING"] as ("PROPOSED" | "GENERATING")[] } },
+      take: 2,
+      select: { id: true, status: true, createdAt: true },
+    },
   };
 
   // Fetch one extra row to detect whether a next page exists, and run the
@@ -221,7 +233,7 @@ emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
   };
 
   const threads = pageThreads.map((thread) => {
-    const { classifications, classifyingAt, ...rest } = thread;
+    const { classifications, classifyingAt, drafts, ...rest } = thread;
     return {
       ...rest,
       isClassifying: deriveIsClassifying(classifyingAt),
@@ -229,6 +241,8 @@ emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
       // thread has a classify job enqueued or in progress.
       isQueued: classifyingAt !== null,
       latestClassification: classifications[0] ?? null,
+      hasDraft: drafts.some((d) => d.status === "PROPOSED"),
+      isDrafting: deriveIsDrafting(drafts),
     };
   });
 

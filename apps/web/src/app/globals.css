@@ -29,6 +29,12 @@
   --accent-soft: oklch(95.5% 0.025 275);
   --accent-line: oklch(86% 0.05 275);
 
+  /* ── Teal — AI generation actions ── */
+  --teal:      oklch(57% 0.13 190);
+  --teal-soft: oklch(95.5% 0.025 190);
+  --teal-line: oklch(86% 0.055 190);
+  --teal-ink:  oklch(34% 0.09 190);
+
   /* ── State: ok / warn / danger ── */
   --ok:          oklch(58% 0.12 145);
   --ok-soft:     oklch(96% 0.03 145);
@@ -110,6 +116,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  font: inherit;
 }
 
 body {
@@ -3610,9 +3617,93 @@ a {
 
 .em-msg-list { margin-top: 16px; }
 
+/* Draft body text */
+.em-draft-body {
+  font-size: 13px;
+  color: var(--ink-2);
+  line-height: 1.65;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin-top: 8px;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
 /* ─── Draft card actions ─────────────────────────────────────────────────── */
 
-.em-draft-actions { margin-top: 12px; }
+.em-draft-actions { margin-top: 12px; display: flex; gap: 6px; }
+
+/* Draft loading skeleton */
+.em-draft-skeleton {
+  margin-top: 14px;
+  background: var(--surface-2);
+  border: 1px dashed var(--accent-line);
+  border-radius: var(--r-lg);
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--accent-ink);
+  font-size: 12.5px;
+}
+
+.em-draft-skeleton-pulse {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+  animation: em-pulse 1.6s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+/* Draft error */
+.em-draft-error {
+  margin-top: 14px;
+  padding: 12px 16px;
+  background: var(--danger-soft);
+  border: 1px solid var(--danger-line);
+  border-radius: var(--r-md);
+  font-size: 12.5px;
+  color: var(--color-destructive-text);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* ─── Draft CTA button ───────────────────────────────────────────────────── */
+
+.em-draft-cta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  width: 100%;
+  padding: 11px 16px;
+  background: var(--teal-soft);
+  border: 1.5px solid var(--teal-line);
+  border-radius: var(--r-lg);
+  color: var(--teal-ink);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: var(--shadow-1);
+  transition: background 0.12s, border-color 0.12s, box-shadow 0.12s;
+}
+
+.em-draft-cta:hover {
+  background: oklch(93% 0.04 190);
+  border-color: var(--teal);
+  box-shadow: var(--shadow-2);
+}
+
+.em-draft-cta-glyph {
+  display: flex;
+  align-items: center;
+  opacity: 0.75;
+}
 
 /* ─── Re-route popover ───────────────────────────────────────────────────── */
 

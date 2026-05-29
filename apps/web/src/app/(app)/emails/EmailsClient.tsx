@@ -23,6 +23,7 @@ type Props = {
   initialActive: ActiveSelection;
   initialSelectedId: string | null;
   syncStatus: SyncStatus;
+  workspaceEmail: string | null;
 };
 
 export function EmailsClient({
@@ -32,6 +33,7 @@ export function EmailsClient({
   initialActive,
   initialSelectedId,
   syncStatus,
+  workspaceEmail,
 }: Props) {
   const router = useRouter();
   const now = useRef(new Date()).current;
@@ -161,6 +163,32 @@ export function EmailsClient({
     setRerouteTarget(null);
   }
 
+  // ─── Draft generated ────────────────────────────────────────────────────────
+
+  function handleDraftStarted(threadId: string) {
+    setThreads((ts) =>
+      ts.map((t) => (t.id === threadId ? { ...t, isDrafting: true } : t))
+    );
+  }
+
+  function handleDraftFailed(threadId: string) {
+    setThreads((ts) =>
+      ts.map((t) => (t.id === threadId ? { ...t, isDrafting: false } : t))
+    );
+  }
+
+  function handleDraftGenerated(threadId: string) {
+    setThreads((ts) =>
+      ts.map((t) => (t.id === threadId ? { ...t, hasDraft: true, isDrafting: false } : t))
+    );
+  }
+
+  function handleDraftSentToggled(threadId: string, sent: boolean) {
+    setThreads((ts) =>
+      ts.map((t) => (t.id === threadId ? { ...t, hasDraft: !sent } : t))
+    );
+  }
+
   // ─── New folder ──────────────────────────────────────────────────────────────
 
   useEffect(() => {
@@ -191,7 +219,7 @@ export function EmailsClient({
   });
 
   return (
-    <div className="em-grid">
+    <div className="em-grid" suppressHydrationWarning>
       <Rail
         threads={threads}
         folders={folders}
@@ -213,6 +241,7 @@ export function EmailsClient({
         selectedId={selectedId}
         query={query}
         now={now}
+        workspaceEmail={workspaceEmail}
         onSelectThread={selectThread}
         onSelectFolder={(id) => pushActive({ kind: "folder", id })}
         onQueryChange={setQuery}
@@ -227,6 +256,11 @@ export function EmailsClient({
           onApprove={handleApprove}
           onReroute={openRerouteFor}
           onClose={() => setSelectedId(null)}
+          workspaceEmail={workspaceEmail}
+          onDraftStarted={handleDraftStarted}
+          onDraftFailed={handleDraftFailed}
+          onDraftGenerated={handleDraftGenerated}
+          onDraftSentToggled={handleDraftSentToggled}
         />
       ) : (
         <div className="em-preview-empty">
