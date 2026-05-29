@@ -267,6 +267,7 @@ mockInbox.post("/dev/workspaces/:workspaceId/mock-inbox-event", async (c) => {
     finalNodeName: string | null;
     confidence: number;
     explanation: string;
+    decisionSource: string;
     priority?: MockClassificationResult["priority"] | null;
     urgency?: MockClassificationResult["urgency"] | null;
     riskLevel?: MockClassificationResult["riskLevel"] | null;
@@ -327,6 +328,7 @@ mockInbox.post("/dev/workspaces/:workspaceId/mock-inbox-event", async (c) => {
         : null,
       confidence: aiResult.confidence,
       explanation: aiResult.explanation,
+      decisionSource: aiResult.decisionSource,
       needsHumanReview: aiResult.needsHumanReview,
       modelProvider: aiProvider.providerName,
       modelName: aiProvider.modelName,
@@ -345,6 +347,7 @@ mockInbox.post("/dev/workspaces/:workspaceId/mock-inbox-event", async (c) => {
       sensitivity: mockResult.sensitivity,
       suggestedNextStep: mockResult.suggestedNextStep,
       needsHumanReview: mockResult.needsHumanReview,
+      decisionSource: "mock",
       modelProvider: "mock",
       modelName: "mock-classifier-v1",
     };
@@ -364,6 +367,7 @@ mockInbox.post("/dev/workspaces/:workspaceId/mock-inbox-event", async (c) => {
       ...(result.sensitivity != null ? { sensitivity: result.sensitivity } : {}),
       ...(result.suggestedNextStep != null ? { suggestedNextStep: result.suggestedNextStep } : {}),
       needsHumanReview: result.needsHumanReview,
+      decisionSource: result.decisionSource,
       modelProvider: result.modelProvider,
       modelName: result.modelName,
       ...(classifier === "mock" ? { promptVersion: "1.0.0" } : {}),

@@ -291,6 +291,7 @@ export function createClassifyThreadWorker(): Worker {
               confidence: result.confidence,
               explanation: result.explanation,
               needsHumanReview: result.needsHumanReview,
+              decisionSource: result.decisionSource,
               modelProvider: aiProvider.providerName,
               modelName: aiProvider.modelName,
             },

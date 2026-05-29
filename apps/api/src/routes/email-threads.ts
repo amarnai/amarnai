@@ -301,6 +301,7 @@ emailThreads.get(
             dueAt: true,
             suggestedNextStep: true,
             needsHumanReview: true,
+            decisionSource: true,
             modelProvider: true,
             modelName: true,
             createdAt: true,

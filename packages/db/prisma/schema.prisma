@@ -384,6 +384,7 @@ model EmailClassification {
   dueAt             DateTime?
   suggestedNextStep SuggestedNextStep?
   needsHumanReview  Boolean
+  decisionSource    String?
   modelProvider     String?
   modelName         String?
   promptVersion     String?

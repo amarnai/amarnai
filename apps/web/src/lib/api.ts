@@ -156,6 +156,7 @@ export type Classification = {
   dueAt: string | null;
   suggestedNextStep: string | null;
   needsHumanReview: boolean;
+  decisionSource: string | null;
   modelProvider: string | null;
   modelName: string | null;
   createdAt: string;

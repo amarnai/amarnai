@@ -184,6 +184,7 @@ classify.post(
         sensitivity: result.sensitivity,
         suggestedNextStep: result.suggestedNextStep,
         needsHumanReview: result.needsHumanReview,
+        decisionSource: "mock",
         modelProvider: "mock",
         modelName: "mock-classifier-v1",
         promptVersion: "1.0.0",

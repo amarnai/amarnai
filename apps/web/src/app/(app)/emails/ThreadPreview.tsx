@@ -38,7 +38,8 @@ export function ThreadPreview({
   onDraftSentToggled,
 }: Props) {
   const [reasoning, setReasoning] = useState<string | null>(thread.reasoning);
-  const [bodyLoaded, setBodyLoaded] = useState(false);
+  const [decisionSource, setDecisionSource] = useState<string | null>(null);
+  const [_bodyLoaded, setBodyLoaded] = useState(false);
   const [messages, setMessages] = useState(thread.messages);
 
   const [draftState, setDraftState] = useState<DraftState>("idle");
@@ -83,6 +84,7 @@ export function ThreadPreview({
 
     api.emailThread(workspaceId, thread.id).then((detail) => {
       setReasoning(detail.latestClassification?.explanation ?? null);
+      setDecisionSource(detail.latestClassification?.decisionSource ?? null);
       setMessages(
         detail.messages.map((m) => ({
           id: m.id,
@@ -113,7 +115,7 @@ export function ThreadPreview({
     }
 
     return clearPoll;
-  }, [thread.id, workspaceId]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [thread.id, workspaceId]);
 
   function handleGenerateDraft() {
     const threadId = thread.id;
@@ -180,6 +182,7 @@ export function ThreadPreview({
         <RationaleCard
           thread={enrichedThread}
           folders={folders}
+          decisionSource={decisionSource}
           onApprove={() => onApprove(thread.id)}
           onReroute={(anchor) => onReroute(thread.id, anchor)}
         />

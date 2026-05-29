@@ -244,6 +244,7 @@ gmailSort.post("/dev/workspaces/:workspaceId/gmail-sort-thread", async (c) => {
       confidence: result.confidence,
       explanation: result.explanation,
       needsHumanReview: result.needsHumanReview,
+      decisionSource: result.decisionSource,
       modelProvider: provider.providerName,
       modelName: provider.modelName,
     },

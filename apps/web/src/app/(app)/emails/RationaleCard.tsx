@@ -1,13 +1,23 @@
 import type { FolderItem, ThreadItem } from "./selection";
 
+const EMBEDDING_SOURCES = new Set(["embedding_auto", "embedding_inbox", "inbox_fallback"]);
+
+function isEmbeddingExplanation(source: string | null, text: string | null): boolean {
+  if (!text) return false;
+  if (source !== null) return EMBEDDING_SOURCES.has(source);
+  // Backward compat: old records have no decisionSource — infer from explanation text
+  return text.startsWith("Embedding routing to") || text.startsWith("No child branch matched confidently");
+}
+
 type Props = {
   thread: ThreadItem;
   folders: FolderItem[];
+  decisionSource: string | null;
   onApprove: () => void;
   onReroute: (anchor: HTMLElement) => void;
 };
 
-export function RationaleCard({ thread, folders, onApprove, onReroute }: Props) {
+export function RationaleCard({ thread, folders, decisionSource, onApprove, onReroute }: Props) {
   const folder = folders.find((f) => f.id === thread.folderId);
   const unrouted = !folder;
   const confPct = Math.round(thread.confidence * 100);
@@ -36,9 +46,11 @@ export function RationaleCard({ thread, folders, onApprove, onReroute }: Props) 
         <span>{folder?.name ?? "Unrouted"}</span>
       </div>
 
-      {thread.reasoning && (
+      {isEmbeddingExplanation(decisionSource, thread.reasoning) ? (
+        <div className="em-rationale-reason em-rationale-reason--muted">Sorted automatically by content similarity.</div>
+      ) : thread.reasoning ? (
         <div className="em-rationale-reason">{thread.reasoning}</div>
-      )}
+      ) : null}
 
       {altFolder && thread.alternativeFolder && (
         <div className="em-rationale-alt">
