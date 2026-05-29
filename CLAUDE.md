@@ -1,6 +1,6 @@
 # Project Context
 
-When working on Amarnai, prioritize readability, safety, and a focused MVP. Avoid clever abstractions and do not add non-MVP features without explicit approval.
+When working on Amarnai, prioritize readability, safety, and a focused feature set. Avoid clever abstractions and do not add out-of-scope features without explicit approval.
 
 ## About
 
@@ -39,7 +39,7 @@ A key use case is bulk triage of an existing inbox: users may want to sort and c
 ## Safety & Privacy
 
 - Never auto-send email.
-- Never send from Amarnai GUI in MVP.
+- Never send from Amarnai GUI.
 - Drafts require user approval.
 - Store minimal email data.
 - Never log full email bodies.
@@ -49,6 +49,10 @@ A key use case is bulk triage of an existing inbox: users may want to sort and c
 ## Workflow
 
 - At the end of large tasks (multi-file changes, feature additions, refactors), provide a brief summary: what was changed, which files were affected, and any caveats or follow-up work.
+
+## UX
+
+- Minimize the number of clicks required to complete any action. Prefer inline controls, smart defaults, and progressive disclosure over multi-step flows.
 
 ## Standards
 
@@ -64,7 +68,6 @@ A key use case is bulk triage of an existing inbox: users may want to sort and c
 - Outlook/IMAP support
 - Team features
 - Arbitrary workflow automation
-- Node marketplace
 - Kubernetes
 
 ## Testing
