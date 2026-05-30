@@ -104,6 +104,19 @@ export function ThreadRow({ thread, folder, active, selected, workspaceEmail, on
 
       <div className="em-thread-side">
         <div className="em-thread-time">{fmtTime(thread.latestAt, today)}</div>
+        <a
+          href={`https://mail.google.com/mail/u/0/#all/${thread.providerThreadId}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="em-thread-gmail-link"
+          title="Open in Gmail"
+          aria-label="Open in Gmail"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden>
+            <path d="M5 2H2a1 1 0 00-1 1v7a1 1 0 001 1h7a1 1 0 001-1V7M7.5 1H11v3.5M11 1L5.5 6.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </a>
       </div>
     </div>
   );

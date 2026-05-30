@@ -124,6 +124,7 @@ export type EmailThreadListResult = {
 export type EmailThreadSummary = {
   id: string;
   subject: string | null;
+  providerThreadId: string;
   latestMessageAt: string | null;
   messageCount: number;
   triageStatus: TriageStatus;
@@ -193,6 +194,7 @@ export type GmailSyncSettings = {
   includeSpam: boolean;
   includePromotions: boolean;
   sortingPaused: boolean;
+  blacklistedSenderEmails: string[];
 };
 
 export type GmailConnection = {
@@ -385,6 +387,17 @@ export const api = {
       `/workspaces/${workspaceId}/gmail-sync-settings`,
       "PATCH",
       patch
+    ),
+  addBlacklistedEmail: (workspaceId: string, email: string) =>
+    apiMutate<GmailSyncSettings>(
+      `/workspaces/${workspaceId}/gmail-sync-settings/blacklist`,
+      "POST",
+      { email }
+    ),
+  removeBlacklistedEmail: (workspaceId: string, email: string) =>
+    apiMutate<GmailSyncSettings>(
+      `/workspaces/${workspaceId}/gmail-sync-settings/blacklist/${encodeURIComponent(email)}`,
+      "DELETE"
     ),
   taxonomyNodes: (workspaceId: string) =>
     apiFetch<TaxonomyNode[]>(`/workspaces/${workspaceId}/taxonomy-nodes`),

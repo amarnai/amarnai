@@ -47,6 +47,7 @@ export function mapThreads(threads: EmailThreadSummary[]): ThreadItem[] {
     return {
       id: t.id,
       subject: t.subject ?? "(no subject)",
+      providerThreadId: t.providerThreadId,
       participants,
       latestAt: t.latestMessageAt
         ? new Date(t.latestMessageAt)

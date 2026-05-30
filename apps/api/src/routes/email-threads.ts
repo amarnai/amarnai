@@ -127,18 +127,22 @@ emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
   // Load sync settings to determine which threads should be visible.
   const syncSettingsRow = await db.gmailSyncSettings.findUnique({
     where: { workspaceId },
-    select: { includeSpam: true, includePromotions: true },
+    select: { includeSpam: true, includePromotions: true, blacklistedSenderEmails: true },
   });
   const syncSettings = syncSettingsRow ?? DEFAULT_GMAIL_SYNC_SETTINGS;
 
   // baseWhere: visibility filters only (no status/node/cursor).
   // Used for the global counts so pill totals stay accurate regardless of
   // which filter is active.
+  const blacklist = syncSettings.blacklistedSenderEmails ?? [];
   const baseWhere = {
     workspaceId,
     gmailIsTrash: false,
     ...(syncSettings.includeSpam       ? {} : { gmailIsSpam: false }),
     ...(syncSettings.includePromotions ? {} : { gmailIsPromotions: false }),
+    ...(blacklist.length > 0
+      ? { NOT: { messages: { some: { senderEmail: { in: blacklist } } } } }
+      : {}),
   };
 
   // fullWhere: adds status, node, and cursor conditions on top of baseWhere.
@@ -152,6 +156,7 @@ emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
   const threadSelect = {
     id: true,
     subject: true,
+    providerThreadId: true,
     latestMessageAt: true,
     messageCount: true,
     triageStatus: true,

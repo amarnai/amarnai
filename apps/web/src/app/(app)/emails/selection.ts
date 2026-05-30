@@ -54,6 +54,7 @@ export type ThreadMessage = {
 export type ThreadItem = {
   id: string;
   subject: string;
+  providerThreadId: string;
   participants: string;
   latestAt: Date;
   messageCount: number;
