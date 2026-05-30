@@ -23,14 +23,16 @@ export default async function AppLayout({
   let canCreateWorkspace = false;
 
   if (userId) {
+    // Include both owned workspaces and workspaces where the user is a team member.
     workspaces = await db.workspace.findMany({
-      where: { ownerUserId: userId },
+      where: { members: { some: { userId } } },
       select: { id: true, name: true },
       orderBy: { createdAt: "asc" },
     });
 
     const limit = getWorkspaceLimit();
-    canCreateWorkspace = !isFinite(limit) || workspaces.length < limit;
+    const ownedWorkspaceCount = await db.workspace.count({ where: { ownerUserId: userId } });
+    canCreateWorkspace = !isFinite(limit) || ownedWorkspaceCount < limit;
 
     const cookieStore = await cookies();
     const selectedId = cookieStore.get(WORKSPACE_COOKIE)?.value;

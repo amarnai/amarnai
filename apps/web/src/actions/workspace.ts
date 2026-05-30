@@ -12,11 +12,12 @@ const WORKSPACE_COOKIE = "amarnai-workspace";
 export async function switchWorkspaceAction(workspaceId: string): Promise<void> {
   const user = await requireUser();
 
-  const ws = await db.workspace.findFirst({
-    where: { id: workspaceId, ownerUserId: user.id },
-    select: { id: true },
+  // Allow both owners and team members to switch to any workspace they belong to.
+  const member = await db.workspaceMember.findUnique({
+    where: { workspaceId_userId: { workspaceId, userId: user.id } },
+    select: { role: true },
   });
-  if (!ws) return;
+  if (!member) return;
 
   const cookieStore = await cookies();
   cookieStore.set(WORKSPACE_COOKIE, workspaceId, {
@@ -37,7 +38,16 @@ export async function updateWorkspaceNameAction(
   const name = (formData.get("name") as string | null)?.trim() ?? "";
   if (!name) return { error: "Workspace name cannot be empty" };
   if (name.length > 100) return { error: "Name must be 100 characters or fewer" };
+
   const workspace = await getSelectedWorkspace(user.id);
+
+  // Only admins (OWNER) can rename the workspace.
+  const member = await db.workspaceMember.findUnique({
+    where: { workspaceId_userId: { workspaceId: workspace.id, userId: user.id } },
+    select: { role: true },
+  });
+  if (member?.role !== "OWNER") return { error: "Only admins can rename the workspace" };
+
   await db.workspace.update({ where: { id: workspace.id }, data: { name } });
   revalidatePath("/", "layout");
   return { success: true };
@@ -87,11 +97,12 @@ export async function deleteWorkspaceAction(
 ): Promise<{ error?: string }> {
   const user = await requireUser();
 
+  // Only the admin (OWNER) can delete a workspace.
   const workspace = await db.workspace.findFirst({
     where: { id: workspaceId, ownerUserId: user.id },
     select: { id: true },
   });
-  if (!workspace) return { error: "Workspace not found" };
+  if (!workspace) return { error: "Workspace not found or you are not the admin" };
 
   const count = await db.workspace.count({ where: { ownerUserId: user.id } });
   if (count <= 1) return { error: "You cannot delete your only workspace" };
@@ -123,6 +134,7 @@ export async function deleteWorkspaceAction(
     db.emailAccount.deleteMany({ where: { workspaceId } }),
     db.gmailConnection.deleteMany({ where: { workspaceId } }),
     db.gmailSyncSettings.deleteMany({ where: { workspaceId } }),
+    db.workspaceInvitation.deleteMany({ where: { workspaceId } }),
     db.workspaceMember.deleteMany({ where: { workspaceId } }),
     db.workspace.delete({ where: { id: workspaceId } }),
   ]);

@@ -1,10 +1,13 @@
-import { requireUser } from "@/lib/session";
+import { requireUser, getUserWorkspaceRole } from "@/lib/session";
 import { getSelectedWorkspace } from "@/lib/workspace";
 import { api } from "@/lib/api";
+import { db } from "@amarnai/db";
 import { GmailConnectionSection } from "./GmailConnectionSection";
 import { WorkspaceNameSection } from "./WorkspaceNameSection";
 import { DeleteWorkspaceSection } from "./DeleteWorkspaceSection";
 import { EmailBlacklistSection } from "./EmailBlacklistSection";
+import { TeamMembersSection } from "./TeamMembersSection";
+import { TaxonomyPermissionSection } from "./TaxonomyPermissionSection";
 
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 
@@ -12,6 +15,9 @@ export default async function SettingsPage({ searchParams }: { searchParams: Sea
   const user = await requireUser();
   const workspace = await getSelectedWorkspace(user.id);
   const params = await searchParams;
+
+  const role = await getUserWorkspaceRole(workspace.id, user.id);
+  const isAdmin = role === "OWNER";
 
   const connectError =
     typeof params["gmail_error"] === "string" ? params["gmail_error"] : null;
@@ -30,23 +36,83 @@ export default async function SettingsPage({ searchParams }: { searchParams: Sea
     // API unavailable — show disconnected state
   }
 
+  // Fetch team members and pending invitations for the team section.
+  const [membersRaw, invitationsRaw, workspaceSettings] = await Promise.all([
+    db.workspaceMember.findMany({
+      where: { workspaceId: workspace.id },
+      select: {
+        id: true,
+        userId: true,
+        role: true,
+        user: { select: { email: true, name: true } },
+      },
+      orderBy: [{ role: "asc" }, { createdAt: "asc" }],
+    }),
+    isAdmin
+      ? db.workspaceInvitation.findMany({
+          where: { workspaceId: workspace.id },
+          select: { id: true, invitedEmail: true, expiresAt: true },
+          orderBy: { createdAt: "desc" },
+        })
+      : Promise.resolve([]),
+    db.workspace.findUnique({
+      where: { id: workspace.id },
+      select: { membersCanEditTaxonomy: true },
+    }),
+  ]);
+
+  // Sort: OWNER first, then MEMBER.
+  const members = membersRaw
+    .sort((a, b) => {
+      if (a.role === "OWNER" && b.role !== "OWNER") return -1;
+      if (a.role !== "OWNER" && b.role === "OWNER") return 1;
+      return 0;
+    })
+    .map((m) => ({
+      id: m.id,
+      userId: m.userId,
+      role: m.role,
+      user: m.user,
+    }));
+
+  const pendingInvitations = invitationsRaw.map((inv) => ({
+    id: inv.id,
+    invitedEmail: inv.invitedEmail,
+    expiresAt: inv.expiresAt.toISOString(),
+  }));
+
   return (
     <>
       <h1>Workspace Settings</h1>
-      <WorkspaceNameSection currentName={workspace.name} />
-      <GmailConnectionSection
+
+      <TeamMembersSection
         workspaceId={workspace.id}
-        connection={connection}
-        syncStatus={syncStatus}
-        syncSettings={syncSettings}
-        connectError={connectError}
-        connectSuccess={connectSuccess}
+        isAdmin={isAdmin}
+        members={members}
+        pendingInvitations={pendingInvitations}
       />
-      <EmailBlacklistSection
-        workspaceId={workspace.id}
-        initialEmails={syncSettings?.blacklistedSenderEmails ?? []}
-      />
-      <DeleteWorkspaceSection workspaceId={workspace.id} />
+
+      {isAdmin && (
+        <>
+          <WorkspaceNameSection currentName={workspace.name} />
+          <GmailConnectionSection
+            workspaceId={workspace.id}
+            connection={connection}
+            syncStatus={syncStatus}
+            syncSettings={syncSettings}
+            connectError={connectError}
+            connectSuccess={connectSuccess}
+          />
+          <EmailBlacklistSection
+            workspaceId={workspace.id}
+            initialEmails={syncSettings?.blacklistedSenderEmails ?? []}
+          />
+          <TaxonomyPermissionSection
+            initialCanEdit={workspaceSettings?.membersCanEditTaxonomy ?? true}
+          />
+          <DeleteWorkspaceSection workspaceId={workspace.id} />
+        </>
+      )}
     </>
   );
 }

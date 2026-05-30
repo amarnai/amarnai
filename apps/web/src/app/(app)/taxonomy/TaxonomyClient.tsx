@@ -495,10 +495,12 @@ function TaxonomyCanvasInner({
   workspaceId,
   initialNodes,
   initialEdges,
+  readOnly = false,
 }: {
   workspaceId: string;
   initialNodes: TaxonomyNode[];
   initialEdges: TaxonomyEdge[];
+  readOnly?: boolean;
 }) {
   const [dbNodes, setDbNodes] = useState<TaxonomyNode[]>(initialNodes);
   const [dbEdges, setDbEdges] = useState<TaxonomyEdge[]>(initialEdges);
@@ -544,6 +546,7 @@ function TaxonomyCanvasInner({
 
   const onNodeDragStop: OnNodeDrag<RFNode> = useCallback(
     async (_event, rfNode) => {
+      if (readOnly) return;
       try {
         await updateTaxonomyNodeAction(workspaceId, rfNode.id, {
           positionX: Math.round(rfNode.position.x),
@@ -567,6 +570,7 @@ function TaxonomyCanvasInner({
 
   const onConnect: OnConnect = useCallback(
     async (connection: Connection) => {
+      if (readOnly) return;
       if (!connection.source || !connection.target) return;
       if (dbNodes.find((n) => n.id === connection.target && n.isRoot)) return;
       try {
@@ -587,20 +591,22 @@ function TaxonomyCanvasInner({
 
   const onNodeClick: NodeMouseHandler<RFNode> = useCallback(
     (_event, rfNode) => {
+      if (readOnly) return;
       const found = dbNodes.find((n) => n.id === rfNode.id);
       if (found && !found.isRoot) openPanel({ type: "edit-node", node: found });
     },
-    [dbNodes]
+    [dbNodes, readOnly]
   );
 
   // ─── Click edge: open edit panel ─────────────────────────────────────────
 
   const onEdgeClick: EdgeMouseHandler = useCallback(
     (_event, rfEdge) => {
+      if (readOnly) return;
       const found = dbEdges.find((e) => e.id === rfEdge.id);
       if (found) openPanel({ type: "edit-edge", edge: found });
     },
-    [dbEdges]
+    [dbEdges, readOnly]
   );
 
   // ─── Node mutations ───────────────────────────────────────────────────────
@@ -751,41 +757,47 @@ function TaxonomyCanvasInner({
 
   return (
     <div>
-      <div className="taxonomy-toolbar">
-        <button
-          className="btn-primary"
-          onClick={() => openPanel({ type: "create-node" })}
-        >
-          + Create Node
-        </button>
-        <button
-          className="btn-ghost"
-          onClick={() => openPanel({ type: "create-edge" })}
-        >
-          + Create Edge
-        </button>
-        <button
-          className="btn-ghost"
-          onClick={handleUndo}
-          disabled={!history.canUndo || submitting}
-          title="Undo"
-        >
-          ↶
-        </button>
-        <button
-          className="btn-ghost"
-          onClick={handleRedo}
-          disabled={!history.canRedo || submitting}
-          title="Redo"
-        >
-          ↷
-        </button>
-        {panel.type !== "none" && (
-          <button className="btn-ghost" onClick={() => setPanel({ type: "none" })}>
-            Close panel
+      {readOnly ? (
+        <div className="taxonomy-readonly-banner">
+          Taxonomy is view-only. Only workspace admins can edit it.
+        </div>
+      ) : (
+        <div className="taxonomy-toolbar">
+          <button
+            className="btn-primary"
+            onClick={() => openPanel({ type: "create-node" })}
+          >
+            + Add Node
           </button>
-        )}
-      </div>
+          <button
+            className="btn-ghost"
+            onClick={() => openPanel({ type: "create-edge" })}
+          >
+            + Create Edge
+          </button>
+          <button
+            className="btn-ghost"
+            onClick={handleUndo}
+            disabled={!history.canUndo || submitting}
+            title="Undo"
+          >
+            ↶
+          </button>
+          <button
+            className="btn-ghost"
+            onClick={handleRedo}
+            disabled={!history.canRedo || submitting}
+            title="Redo"
+          >
+            ↷
+          </button>
+          {panel.type !== "none" && (
+            <button className="btn-ghost" onClick={() => setPanel({ type: "none" })}>
+              Close panel
+            </button>
+          )}
+        </div>
+      )}
 
       {apiError && (
         <div className="error-box" style={{ marginBottom: 12 }}>
@@ -807,6 +819,8 @@ function TaxonomyCanvasInner({
             nodeTypes={nodeTypes}
             edgeTypes={edgeTypes}
             deleteKeyCode={null}
+            nodesDraggable={!readOnly}
+            nodesConnectable={!readOnly}
             fitView
             fitViewOptions={{ padding: 0.3 }}
           >
@@ -875,10 +889,12 @@ export function TaxonomyClient({
   workspaceId,
   nodes,
   edges,
+  readOnly = false,
 }: {
   workspaceId: string;
   nodes: TaxonomyNode[];
   edges: TaxonomyEdge[];
+  readOnly?: boolean;
 }) {
   return (
     <ReactFlowProvider>
@@ -886,6 +902,7 @@ export function TaxonomyClient({
         workspaceId={workspaceId}
         initialNodes={nodes}
         initialEdges={edges}
+        readOnly={readOnly}
       />
     </ReactFlowProvider>
   );

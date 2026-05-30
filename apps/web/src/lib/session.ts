@@ -10,6 +10,8 @@ export type AuthUser = {
   image: string | null | undefined;
 };
 
+export type WorkspaceRole = "OWNER" | "ADMIN" | "MEMBER";
+
 export async function requireUser(): Promise<AuthUser> {
   const session = await auth();
   if (!session?.user?.id || !session.user.email) {
@@ -25,10 +27,57 @@ export async function requireUser(): Promise<AuthUser> {
 
 export { getOrCreateDefaultWorkspace } from "@/lib/workspace";
 
-export async function assertWorkspaceOwner(workspaceId: string, userId: string) {
-  const ws = await db.workspace.findFirst({
-    where: { id: workspaceId, ownerUserId: userId },
-    select: { id: true },
+/** Returns the user's role in the workspace, or null if not a member. */
+export async function getUserWorkspaceRole(
+  workspaceId: string,
+  userId: string
+): Promise<WorkspaceRole | null> {
+  const member = await db.workspaceMember.findUnique({
+    where: { workspaceId_userId: { workspaceId, userId } },
+    select: { role: true },
   });
-  if (!ws) redirect("/emails");
+  return (member?.role as WorkspaceRole) ?? null;
+}
+
+/** Redirects to /emails if the user is not the workspace admin (OWNER). */
+export async function assertWorkspaceAdmin(workspaceId: string, userId: string): Promise<void> {
+  const role = await getUserWorkspaceRole(workspaceId, userId);
+  if (role !== "OWNER") redirect("/emails");
+}
+
+/** Redirects to /emails if the user is not a member (any role) of the workspace. */
+export async function assertWorkspaceMember(workspaceId: string, userId: string): Promise<void> {
+  const role = await getUserWorkspaceRole(workspaceId, userId);
+  if (!role) redirect("/emails");
+}
+
+/**
+ * Verifies the user can edit taxonomy in this workspace.
+ * OWNER can always edit. MEMBER can edit only when membersCanEditTaxonomy=true.
+ * Throws an error (not a redirect) so taxonomy actions can surface a useful message.
+ */
+export async function assertTaxonomyEditor(workspaceId: string, userId: string): Promise<void> {
+  const [member, workspace] = await Promise.all([
+    db.workspaceMember.findUnique({
+      where: { workspaceId_userId: { workspaceId, userId } },
+      select: { role: true },
+    }),
+    db.workspace.findUnique({
+      where: { id: workspaceId },
+      select: { membersCanEditTaxonomy: true },
+    }),
+  ]);
+
+  if (!member) {
+    throw new Error("Not a member of this workspace");
+  }
+  if (member.role === "OWNER") return;
+  if (!workspace?.membersCanEditTaxonomy) {
+    throw new Error("Taxonomy editing is restricted to workspace admins");
+  }
+}
+
+/** @deprecated Use assertWorkspaceAdmin */
+export async function assertWorkspaceOwner(workspaceId: string, userId: string): Promise<void> {
+  return assertWorkspaceAdmin(workspaceId, userId);
 }

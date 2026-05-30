@@ -15,7 +15,10 @@ export async function getSelectedWorkspace(userId: string): Promise<{ id: string
 
   if (selectedId) {
     const ws = await db.workspace.findFirst({
-      where: { id: selectedId, ownerUserId: userId },
+      where: {
+        id: selectedId,
+        members: { some: { userId } },
+      },
       select: { id: true, name: true },
     });
     if (ws) return ws;
@@ -25,13 +28,23 @@ export async function getSelectedWorkspace(userId: string): Promise<{ id: string
 }
 
 export async function getOrCreateDefaultWorkspace(userId: string) {
-  const existing = await db.workspace.findFirst({
+  // Prefer a workspace owned by this user.
+  const owned = await db.workspace.findFirst({
     where: { ownerUserId: userId },
     orderBy: { createdAt: "asc" },
     select: { id: true, name: true },
   });
-  if (existing) return existing;
+  if (owned) return owned;
 
+  // Fall back to a workspace where the user is a team member.
+  const membership = await db.workspaceMember.findFirst({
+    where: { userId },
+    orderBy: { createdAt: "asc" },
+    select: { workspace: { select: { id: true, name: true } } },
+  });
+  if (membership) return membership.workspace;
+
+  // New user — create their first workspace.
   const created = await db.workspace.create({
     data: {
       name: "My Workspace",

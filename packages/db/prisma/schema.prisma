@@ -140,23 +140,26 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
-  ownedWorkspaces      Workspace[]
-  workspaceMemberships WorkspaceMember[]
-  emailAccounts        EmailAccount[]
-  auditLogs            AuditLog[]
-  credential           UserCredential?
-  verificationTokens   VerificationToken[]
+  ownedWorkspaces          Workspace[]
+  workspaceMemberships     WorkspaceMember[]
+  sentWorkspaceInvitations WorkspaceInvitation[]
+  emailAccounts            EmailAccount[]
+  auditLogs                AuditLog[]
+  credential               UserCredential?
+  verificationTokens       VerificationToken[]
 }
 
 model Workspace {
-  id          String   @id @default(cuid())
-  name        String
-  ownerUserId String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id                     String   @id @default(cuid())
+  name                   String
+  ownerUserId            String
+  membersCanEditTaxonomy Boolean  @default(false)
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
 
   owner             User                  @relation(fields: [ownerUserId], references: [id])
   members           WorkspaceMember[]
+  invitations       WorkspaceInvitation[]
   emailAccounts     EmailAccount[]
   gmailConnection   GmailConnection?
   gmailSyncSettings GmailSyncSettings?
@@ -181,6 +184,21 @@ model WorkspaceMember {
   user      User      @relation(fields: [userId], references: [id])
 
   @@unique([workspaceId, userId])
+}
+
+model WorkspaceInvitation {
+  id             String   @id @default(cuid())
+  workspaceId    String
+  invitedEmail   String
+  invitedByUserId String
+  token          String   @unique
+  expiresAt      DateTime
+  createdAt      DateTime @default(now())
+
+  workspace   Workspace @relation(fields: [workspaceId], references: [id])
+  invitedBy   User      @relation(fields: [invitedByUserId], references: [id])
+
+  @@unique([workspaceId, invitedEmail])
 }
 
 model EmailAccount {

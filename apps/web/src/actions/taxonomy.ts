@@ -1,6 +1,6 @@
 "use server";
 
-import { requireUser, assertWorkspaceOwner } from "@/lib/session";
+import { requireUser, assertTaxonomyEditor } from "@/lib/session";
 import type {
   TaxonomyNode,
   TaxonomyEdge,
@@ -41,7 +41,7 @@ export async function createTaxonomyNodeAction(
   data: CreateTaxonomyNodeInput
 ): Promise<TaxonomyNode> {
   const user = await requireUser();
-  await assertWorkspaceOwner(workspaceId, user.id);
+  await assertTaxonomyEditor(workspaceId, user.id);
   return apiCall<TaxonomyNode>(
     `/workspaces/${workspaceId}/taxonomy-nodes`,
     "POST",
@@ -56,7 +56,7 @@ export async function updateTaxonomyNodeAction(
   data: UpdateTaxonomyNodeInput
 ): Promise<TaxonomyNode> {
   const user = await requireUser();
-  await assertWorkspaceOwner(workspaceId, user.id);
+  await assertTaxonomyEditor(workspaceId, user.id);
   return apiCall<TaxonomyNode>(
     `/workspaces/${workspaceId}/taxonomy-nodes/${nodeId}`,
     "PATCH",
@@ -70,7 +70,7 @@ export async function deleteTaxonomyNodeAction(
   nodeId: string
 ): Promise<{ ok: boolean }> {
   const user = await requireUser();
-  await assertWorkspaceOwner(workspaceId, user.id);
+  await assertTaxonomyEditor(workspaceId, user.id);
   return apiCall<{ ok: boolean }>(
     `/workspaces/${workspaceId}/taxonomy-nodes/${nodeId}`,
     "DELETE",
@@ -83,7 +83,7 @@ export async function createTaxonomyEdgeAction(
   data: CreateTaxonomyEdgeInput
 ): Promise<TaxonomyEdge> {
   const user = await requireUser();
-  await assertWorkspaceOwner(workspaceId, user.id);
+  await assertTaxonomyEditor(workspaceId, user.id);
   return apiCall<TaxonomyEdge>(
     `/workspaces/${workspaceId}/taxonomy-edges`,
     "POST",
@@ -98,7 +98,7 @@ export async function updateTaxonomyEdgeAction(
   data: UpdateTaxonomyEdgeInput
 ): Promise<TaxonomyEdge> {
   const user = await requireUser();
-  await assertWorkspaceOwner(workspaceId, user.id);
+  await assertTaxonomyEditor(workspaceId, user.id);
   return apiCall<TaxonomyEdge>(
     `/workspaces/${workspaceId}/taxonomy-edges/${edgeId}`,
     "PATCH",
@@ -112,7 +112,7 @@ export async function deleteTaxonomyEdgeAction(
   edgeId: string
 ): Promise<{ ok: boolean }> {
   const user = await requireUser();
-  await assertWorkspaceOwner(workspaceId, user.id);
+  await assertTaxonomyEditor(workspaceId, user.id);
   return apiCall<{ ok: boolean }>(
     `/workspaces/${workspaceId}/taxonomy-edges/${edgeId}`,
     "DELETE",
