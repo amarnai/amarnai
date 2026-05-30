@@ -5,7 +5,7 @@
 // matching CSS variable in globals.css.
 
 export const tokens = {
-  primary: "#1E3A5F",      // --color-primary (--brand-ink)
+  primary: "#c2683f",      // --color-primary (--accent terracotta)
   accent: "#D4A017",       // --color-accent / --color-warning (--brand-gold)
   accentDim: "#b5890e",    // darker gold for selected-warning edge state
   edgeDefault: "#94a3b8",  // neutral slate for unselected, non-warning edges
