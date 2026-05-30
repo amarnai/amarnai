@@ -51,12 +51,22 @@ export function computeThreadLabelFlagsFromMeta(messageLabelIds: string[][]): Th
 
 /**
  * Returns true if the thread should be hidden given the current settings,
- * based on its stored label flags.
+ * based on its stored label flags and sender blacklist.
  */
-export function isThreadExcluded(flags: ThreadLabelFlags, settings: GmailSyncSettings): boolean {
+export function isThreadExcluded(
+  flags: ThreadLabelFlags,
+  settings: GmailSyncSettings,
+  senderEmails?: string[]
+): boolean {
   if (flags.gmailIsTrash) return true;
   if (!settings.includeSpam && flags.gmailIsSpam) return true;
   if (!settings.includePromotions && flags.gmailIsPromotions) return true;
+  if (
+    senderEmails &&
+    senderEmails.length > 0 &&
+    settings.blacklistedSenderEmails.length > 0 &&
+    senderEmails.some((e) => settings.blacklistedSenderEmails.includes(e.toLowerCase()))
+  ) return true;
   return false;
 }
 
@@ -66,8 +76,9 @@ export function isThreadExcluded(flags: ThreadLabelFlags, settings: GmailSyncSet
  * - TRASH is always excluded regardless of settings.
  * - SPAM is excluded when includeSpam is false.
  * - CATEGORY_PROMOTIONS is excluded when includePromotions is false.
+ * - Threads where any message sender is blacklisted are excluded entirely.
  *
- * Returns null if ALL messages are excluded — caller should skip the thread entirely.
+ * Returns null if the thread is blacklisted or ALL messages are excluded.
  * Returns the original snapshot reference unchanged if no messages are filtered (fast path).
  * Returns a new snapshot with recomputed messageCount/latestMessageAt otherwise.
  */
@@ -75,6 +86,14 @@ export function applyThreadFilter(
   snapshot: ThreadSnapshot,
   settings: GmailSyncSettings
 ): ThreadSnapshot | null {
+  // Exclude the entire thread if any sender is blacklisted.
+  if (settings.blacklistedSenderEmails.length > 0) {
+    const blacklisted = snapshot.messages.some((m) =>
+      settings.blacklistedSenderEmails.includes(m.senderEmail.toLowerCase())
+    );
+    if (blacklisted) return null;
+  }
+
   const eligible = snapshot.messages.filter((m) => isEligibleMessage(m, settings));
 
   if (eligible.length === 0) return null;

@@ -1298,6 +1298,58 @@ a {
   margin-bottom: 12px;
 }
 
+/* ─── Collapsible settings section ─────────────────────────────────────── */
+
+.settings-collapsible > summary {
+  list-style: none;
+  cursor: pointer;
+  margin-bottom: 0;
+}
+
+.settings-collapsible > summary::-webkit-details-marker {
+  display: none;
+}
+
+.settings-collapsible-summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  user-select: none;
+}
+
+.settings-collapsible-summary h2 {
+  margin: 0;
+  flex: 1;
+}
+
+.settings-collapsible-summary::after {
+  content: "›";
+  font-size: 18px;
+  color: var(--ink-4);
+  transition: transform 0.18s;
+  transform: rotate(0deg);
+  line-height: 1;
+}
+
+.settings-collapsible[open] .settings-collapsible-summary::after {
+  transform: rotate(90deg);
+}
+
+.settings-collapsible[open] .settings-collapsible-summary {
+  margin-bottom: 16px;
+}
+
+.settings-collapsible-count {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--accent-ink);
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-line);
+  border-radius: 999px;
+  padding: 1px 7px;
+  line-height: 18px;
+}
+
 /* ─── Email blacklist ───────────────────────────────────────────────────── */
 
 .blacklist-input-row {

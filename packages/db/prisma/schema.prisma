@@ -470,13 +470,14 @@ model GmailConnection {
 }
 
 model GmailSyncSettings {
-  id                String   @id @default(cuid())
-  workspaceId       String   @unique
-  includeSpam       Boolean  @default(false)
-  includePromotions Boolean  @default(false)
-  sortingPaused     Boolean  @default(false)
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id                       String   @id @default(cuid())
+  workspaceId              String   @unique
+  includeSpam              Boolean  @default(false)
+  includePromotions        Boolean  @default(false)
+  sortingPaused            Boolean  @default(false)
+  blacklistedSenderEmails  String[] @default([])
+  createdAt                DateTime @default(now())
+  updatedAt                DateTime @updatedAt
 
   workspace Workspace @relation(fields: [workspaceId], references: [id])
 }

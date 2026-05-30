@@ -61,7 +61,7 @@ export function createBackfillInboxWorker(): Worker {
         }),
         db.gmailSyncSettings.findUnique({
           where: { workspaceId },
-          select: { includeSpam: true, includePromotions: true, sortingPaused: true },
+          select: { includeSpam: true, includePromotions: true, sortingPaused: true, blacklistedSenderEmails: true },
         }),
       ]);
 
@@ -69,9 +69,10 @@ export function createBackfillInboxWorker(): Worker {
       if (!connection) throw new Error(`No Gmail connection for workspace: ${workspaceId}`);
 
       const settings: GmailSyncSettings = {
-        includeSpam:       syncSettingsRow?.includeSpam       ?? false,
-        includePromotions: syncSettingsRow?.includePromotions ?? false,
-        sortingPaused:     syncSettingsRow?.sortingPaused     ?? false,
+        includeSpam:             syncSettingsRow?.includeSpam             ?? false,
+        includePromotions:       syncSettingsRow?.includePromotions       ?? false,
+        sortingPaused:           syncSettingsRow?.sortingPaused           ?? false,
+        blacklistedSenderEmails: syncSettingsRow?.blacklistedSenderEmails ?? [],
       };
       const sortingPaused = settings.sortingPaused;
 

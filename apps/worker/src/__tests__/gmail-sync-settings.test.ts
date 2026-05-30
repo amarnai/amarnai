@@ -40,6 +40,7 @@ const defaultSettings: GmailSyncSettings = {
   includeSpam: false,
   includePromotions: false,
   sortingPaused: false,
+  blacklistedSenderEmails: [],
 };
 
 // ─── Tests ────────────────────────────────────────────────────────────────────
@@ -51,7 +52,7 @@ describe("applyThreadFilter", () => {
   });
 
   it("TRASH is always excluded regardless of settings", () => {
-    const allOn: GmailSyncSettings = { includeSpam: true, includePromotions: true, sortingPaused: false };
+    const allOn: GmailSyncSettings = { includeSpam: true, includePromotions: true, sortingPaused: false, blacklistedSenderEmails: [] };
     const snapshot = makeThread([makeMessage("msg-1", ["TRASH"])]);
     expect(applyThreadFilter(snapshot, allOn)).toBeNull();
   });
@@ -62,7 +63,7 @@ describe("applyThreadFilter", () => {
   });
 
   it("SPAM is included when includeSpam is true", () => {
-    const settings: GmailSyncSettings = { includeSpam: true, includePromotions: false, sortingPaused: false };
+    const settings: GmailSyncSettings = { includeSpam: true, includePromotions: false, sortingPaused: false, blacklistedSenderEmails: [] };
     const snapshot = makeThread([makeMessage("msg-1", ["SPAM"])]);
     expect(applyThreadFilter(snapshot, settings)).not.toBeNull();
   });
@@ -73,7 +74,7 @@ describe("applyThreadFilter", () => {
   });
 
   it("CATEGORY_PROMOTIONS is included when includePromotions is true", () => {
-    const settings: GmailSyncSettings = { includeSpam: false, includePromotions: true, sortingPaused: false };
+    const settings: GmailSyncSettings = { includeSpam: false, includePromotions: true, sortingPaused: false, blacklistedSenderEmails: [] };
     const snapshot = makeThread([makeMessage("msg-1", ["CATEGORY_PROMOTIONS", "INBOX"])]);
     expect(applyThreadFilter(snapshot, settings)).not.toBeNull();
   });
@@ -124,19 +125,65 @@ describe("applyThreadFilter", () => {
 
   it("TRASH is excluded even when message also has INBOX label", () => {
     const snapshot = makeThread([makeMessage("msg-1", ["INBOX", "TRASH"])]);
-    expect(applyThreadFilter(snapshot, { includeSpam: true, includePromotions: true, sortingPaused: false })).toBeNull();
+    expect(applyThreadFilter(snapshot, { includeSpam: true, includePromotions: true, sortingPaused: false, blacklistedSenderEmails: [] })).toBeNull();
   });
 
   it("SPAM and Promotions are treated independently", () => {
     // Promotions message with includeSpam: true but includePromotions: false → still excluded
-    const settings: GmailSyncSettings = { includeSpam: true, includePromotions: false, sortingPaused: false };
+    const settings: GmailSyncSettings = { includeSpam: true, includePromotions: false, sortingPaused: false, blacklistedSenderEmails: [] };
     const promoSnapshot = makeThread([makeMessage("promo", ["CATEGORY_PROMOTIONS"])]);
     expect(applyThreadFilter(promoSnapshot, settings)).toBeNull();
 
     // Spam message with includePromotions: true but includeSpam: false → still excluded
-    const settings2: GmailSyncSettings = { includeSpam: false, includePromotions: true, sortingPaused: false };
+    const settings2: GmailSyncSettings = { includeSpam: false, includePromotions: true, sortingPaused: false, blacklistedSenderEmails: [] };
     const spamSnapshot = makeThread([makeMessage("spam", ["SPAM"])]);
     expect(applyThreadFilter(spamSnapshot, settings2)).toBeNull();
+  });
+
+  it("blacklisted sender email excludes entire thread", () => {
+    const settings: GmailSyncSettings = {
+      ...defaultSettings,
+      blacklistedSenderEmails: ["blocked@example.com"],
+    };
+    const snapshot = makeThread([makeMessage("msg-1", ["INBOX"])]);
+    // makeMessage uses "sender@example.com" — not blacklisted
+    expect(applyThreadFilter(snapshot, settings)).not.toBeNull();
+
+    // Thread with a blacklisted sender
+    const blockedMsg: SnapshotMessage = {
+      providerMessageId: "blocked-msg",
+      senderEmail: "blocked@example.com",
+      senderName: null,
+      toEmails: [],
+      ccEmails: [],
+      subject: null,
+      bodyExcerpt: null,
+      attachments: [],
+      receivedAt: new Date("2026-01-01T00:00:00Z"),
+      labelIds: ["INBOX"],
+    };
+    const blockedSnapshot = makeThread([blockedMsg]);
+    expect(applyThreadFilter(blockedSnapshot, settings)).toBeNull();
+  });
+
+  it("blacklist check is case-insensitive", () => {
+    const settings: GmailSyncSettings = {
+      ...defaultSettings,
+      blacklistedSenderEmails: ["blocked@example.com"],
+    };
+    const blockedMsg: SnapshotMessage = {
+      providerMessageId: "blocked-upper",
+      senderEmail: "BLOCKED@EXAMPLE.COM",
+      senderName: null,
+      toEmails: [],
+      ccEmails: [],
+      subject: null,
+      bodyExcerpt: null,
+      attachments: [],
+      receivedAt: new Date("2026-01-01T00:00:00Z"),
+      labelIds: ["INBOX"],
+    };
+    expect(applyThreadFilter(makeThread([blockedMsg]), settings)).toBeNull();
   });
 
   it("message with no labelIds is treated as eligible", () => {

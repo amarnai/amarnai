@@ -9,6 +9,7 @@ const DEFAULT_SYNC_SETTINGS: GmailSyncSettings = {
   includeSpam: false,
   includePromotions: false,
   sortingPaused: false,
+  blacklistedSenderEmails: [],
 };
 
 type Props = {

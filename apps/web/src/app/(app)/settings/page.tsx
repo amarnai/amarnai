@@ -4,6 +4,7 @@ import { api } from "@/lib/api";
 import { GmailConnectionSection } from "./GmailConnectionSection";
 import { WorkspaceNameSection } from "./WorkspaceNameSection";
 import { DeleteWorkspaceSection } from "./DeleteWorkspaceSection";
+import { EmailBlacklistSection } from "./EmailBlacklistSection";
 
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 
@@ -40,6 +41,10 @@ export default async function SettingsPage({ searchParams }: { searchParams: Sea
         syncSettings={syncSettings}
         connectError={connectError}
         connectSuccess={connectSuccess}
+      />
+      <EmailBlacklistSection
+        workspaceId={workspace.id}
+        initialEmails={syncSettings?.blacklistedSenderEmails ?? []}
       />
       <DeleteWorkspaceSection workspaceId={workspace.id} />
     </>

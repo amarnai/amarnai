@@ -1,11 +1,18 @@
 import { Hono } from "hono";
 import { z } from "zod";
 import { db } from "@amarnai/db";
-import { UpdateGmailSyncSettingsSchema, DEFAULT_GMAIL_SYNC_SETTINGS } from "@amarnai/shared";
+import { UpdateGmailSyncSettingsSchema, AddBlacklistEmailSchema, DEFAULT_GMAIL_SYNC_SETTINGS } from "@amarnai/shared";
 
 const workspaceParam = z.object({ workspaceId: z.string().min(1) });
 
 const gmailSyncSettings = new Hono();
+
+const SETTINGS_SELECT = {
+  includeSpam: true,
+  includePromotions: true,
+  sortingPaused: true,
+  blacklistedSenderEmails: true,
+} as const;
 
 /**
  * GET /workspaces/:workspaceId/gmail-sync-settings
@@ -23,7 +30,7 @@ gmailSyncSettings.get("/workspaces/:workspaceId/gmail-sync-settings", async (c) 
 
   const row = await db.gmailSyncSettings.findUnique({
     where: { workspaceId: parsed.data.workspaceId },
-    select: { includeSpam: true, includePromotions: true, sortingPaused: true },
+    select: SETTINGS_SELECT,
   });
 
   return c.json(row ?? DEFAULT_GMAIL_SYNC_SETTINGS);
@@ -49,7 +56,6 @@ gmailSyncSettings.patch("/workspaces/:workspaceId/gmail-sync-settings", async (c
   });
   if (!workspace) return c.json({ error: "Workspace not found" }, 404);
 
-  // Build explicit update object — avoid spreading optional fields with exactOptionalPropertyTypes.
   const updateData: { includeSpam?: boolean; includePromotions?: boolean; sortingPaused?: boolean } = {};
   if (bodyParsed.data.includeSpam !== undefined) updateData.includeSpam = bodyParsed.data.includeSpam;
   if (bodyParsed.data.includePromotions !== undefined) updateData.includePromotions = bodyParsed.data.includePromotions;
@@ -64,7 +70,94 @@ gmailSyncSettings.patch("/workspaces/:workspaceId/gmail-sync-settings", async (c
       sortingPaused:     updateData.sortingPaused     ?? DEFAULT_GMAIL_SYNC_SETTINGS.sortingPaused,
     },
     update: updateData,
-    select: { includeSpam: true, includePromotions: true, sortingPaused: true },
+    select: SETTINGS_SELECT,
+  });
+
+  return c.json(updated);
+});
+
+/**
+ * POST /workspaces/:workspaceId/gmail-sync-settings/blacklist
+ * Adds an email address to the sender blacklist.
+ */
+gmailSyncSettings.post("/workspaces/:workspaceId/gmail-sync-settings/blacklist", async (c) => {
+  const paramParsed = workspaceParam.safeParse({ workspaceId: c.req.param("workspaceId") });
+  if (!paramParsed.success) return c.json({ error: "Invalid workspace ID" }, 400);
+
+  const body = await c.req.json().catch(() => null);
+  const bodyParsed = AddBlacklistEmailSchema.safeParse(body);
+  if (!bodyParsed.success) {
+    return c.json({ error: "Invalid email address" }, 400);
+  }
+
+  const { workspaceId } = paramParsed.data;
+  const email = bodyParsed.data.email.toLowerCase();
+
+  const workspace = await db.workspace.findUnique({
+    where: { id: workspaceId },
+    select: { id: true },
+  });
+  if (!workspace) return c.json({ error: "Workspace not found" }, 404);
+
+  const existing = await db.gmailSyncSettings.findUnique({
+    where: { workspaceId },
+    select: { blacklistedSenderEmails: true },
+  });
+
+  const current = existing?.blacklistedSenderEmails ?? [];
+  if (current.includes(email)) {
+    // Already blacklisted — return current settings idempotently.
+    const row = await db.gmailSyncSettings.findUnique({ where: { workspaceId }, select: SETTINGS_SELECT });
+    return c.json(row ?? DEFAULT_GMAIL_SYNC_SETTINGS);
+  }
+
+  const updated = await db.gmailSyncSettings.upsert({
+    where: { workspaceId },
+    create: {
+      workspaceId,
+      blacklistedSenderEmails: [email],
+    },
+    update: {
+      blacklistedSenderEmails: { push: email },
+    },
+    select: SETTINGS_SELECT,
+  });
+
+  return c.json(updated);
+});
+
+/**
+ * DELETE /workspaces/:workspaceId/gmail-sync-settings/blacklist/:email
+ * Removes an email address from the sender blacklist.
+ */
+gmailSyncSettings.delete("/workspaces/:workspaceId/gmail-sync-settings/blacklist/:email", async (c) => {
+  const paramParsed = workspaceParam.safeParse({ workspaceId: c.req.param("workspaceId") });
+  if (!paramParsed.success) return c.json({ error: "Invalid workspace ID" }, 400);
+
+  const { workspaceId } = paramParsed.data;
+  const email = decodeURIComponent(c.req.param("email")).toLowerCase();
+
+  const workspace = await db.workspace.findUnique({
+    where: { id: workspaceId },
+    select: { id: true },
+  });
+  if (!workspace) return c.json({ error: "Workspace not found" }, 404);
+
+  const existing = await db.gmailSyncSettings.findUnique({
+    where: { workspaceId },
+    select: { blacklistedSenderEmails: true },
+  });
+
+  if (!existing) {
+    return c.json(DEFAULT_GMAIL_SYNC_SETTINGS);
+  }
+
+  const updated = await db.gmailSyncSettings.update({
+    where: { workspaceId },
+    data: {
+      blacklistedSenderEmails: existing.blacklistedSenderEmails.filter((e) => e !== email),
+    },
+    select: SETTINGS_SELECT,
   });
 
   return c.json(updated);
