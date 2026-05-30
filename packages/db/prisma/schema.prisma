@@ -147,6 +147,7 @@ model User {
   auditLogs                AuditLog[]
   credential               UserCredential?
   verificationTokens       VerificationToken[]
+  resolvedThreads          EmailThread[]         @relation("ResolvedByUser")
 }
 
 model Workspace {
@@ -312,11 +313,14 @@ model EmailThread {
   gmailIsSpam        Boolean  @default(false)
   gmailIsPromotions  Boolean  @default(false)
   gmailIsTrash       Boolean  @default(false)
+  resolvedByUserId   String?
+  resolvedAt         DateTime?
   createdAt        DateTime      @default(now())
   updatedAt        DateTime      @updatedAt
 
   workspace       Workspace             @relation(fields: [workspaceId], references: [id])
   emailAccount    EmailAccount          @relation(fields: [emailAccountId], references: [id])
+  resolvedByUser  User?                 @relation("ResolvedByUser", fields: [resolvedByUserId], references: [id])
   messages        EmailMessage[]
   tags            EmailTag[]
   classifications EmailClassification[]

@@ -9,21 +9,28 @@ function isEmbeddingExplanation(source: string | null, text: string | null): boo
   return text.startsWith("Embedding routing to") || text.startsWith("No child branch matched confidently");
 }
 
+function fmtDoneBy(doneMark: NonNullable<ThreadItem["doneMark"]>): string {
+  return doneMark.userName ?? doneMark.userEmail;
+}
+
 type Props = {
   thread: ThreadItem;
   folders: FolderItem[];
   decisionSource: string | null;
   onApprove: () => void;
   onReroute: (anchor: HTMLElement) => void;
+  onMarkDone: () => void;
+  onUnmarkDone: () => void;
 };
 
-export function RationaleCard({ thread, folders, decisionSource, onApprove, onReroute }: Props) {
+export function RationaleCard({ thread, folders, decisionSource, onApprove, onReroute, onMarkDone, onUnmarkDone }: Props) {
   const folder = folders.find((f) => f.id === thread.folderId);
   const unrouted = !folder;
   const confPct = Math.round(thread.confidence * 100);
   const altFolder = thread.alternativeFolder
     ? folders.find((f) => f.id === thread.alternativeFolder?.folderId)
     : null;
+  const isDone = !!thread.doneMark;
 
   return (
     <div className={`em-rationale-card${unrouted ? " unrouted" : ""}`}>
@@ -78,6 +85,21 @@ export function RationaleCard({ thread, folders, decisionSource, onApprove, onRe
           onClick={(e) => onReroute(e.currentTarget)}
         >
           Move to…
+        </button>
+        <button
+          type="button"
+          className={`em-btn-done-toggle${isDone ? " is-done" : ""}`}
+          onClick={isDone ? onUnmarkDone : onMarkDone}
+          aria-pressed={isDone}
+        >
+          {isDone && thread.doneMark ? (
+            <>
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden style={{ verticalAlign: -1, marginRight: 4 }}>
+                <path d="M1.5 5l2.2 2.5L8.5 2" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              {`${fmtDoneBy(thread.doneMark)} marked done · Undo`}
+            </>
+          ) : "Mark as done"}
         </button>
       </div>
     </div>

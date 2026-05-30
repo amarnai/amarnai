@@ -103,6 +103,13 @@ export type UpdateTaxonomyEdgeInput = Record<string, never>;
 
 export type TriageStatus = "PENDING" | "SORTED" | "NEEDS_REVIEW";
 
+export type DoneMark = {
+  userId: string;
+  userName: string | null;
+  userEmail: string;
+  resolvedAt: string;
+};
+
 export type FolderCountsResult = {
   counts: { nodeId: string; count: number }[];
   total: number;
@@ -143,6 +150,7 @@ export type EmailThreadSummary = {
   latestClassification: ClassificationSummary | null;
   hasDraft: boolean;
   isDrafting: boolean;
+  doneMark: DoneMark | null;
 };
 
 export type Classification = {
@@ -188,6 +196,7 @@ export type EmailThreadDetail = {
   }>;
   latestClassification: Classification | null;
   tags: EmailTag[];
+  doneMark: DoneMark | null;
 };
 
 export type GmailSyncSettings = {
@@ -497,6 +506,18 @@ export const api = {
       `/workspaces/${workspaceId}/email-threads/${threadId}/triage`,
       "PATCH",
       action
+    ),
+  markThreadDone: (workspaceId: string, threadId: string, userId: string) =>
+    apiMutate<{ ok: boolean; doneMark: DoneMark }>(
+      `/workspaces/${workspaceId}/email-threads/${threadId}/resolve`,
+      "POST",
+      { userId }
+    ),
+  unmarkThreadDone: (workspaceId: string, threadId: string, userId: string) =>
+    apiMutate<{ ok: boolean; doneMark: null }>(
+      `/workspaces/${workspaceId}/email-threads/${threadId}/resolve`,
+      "DELETE",
+      { userId }
     ),
   aiClassify: (workspaceId: string, threadId: string) =>
     apiMutate<QueuedResult>(

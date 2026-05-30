@@ -18,6 +18,7 @@ type Toast = { message: string; onUndo?: () => void };
 
 type Props = {
   workspaceId: string;
+  currentUserId: string;
   initialThreads: ThreadItem[];
   initialFolders: FolderItem[];
   initialActive: ActiveSelection;
@@ -28,6 +29,7 @@ type Props = {
 
 export function EmailsClient({
   workspaceId,
+  currentUserId,
   initialThreads,
   initialFolders,
   initialActive,
@@ -109,6 +111,43 @@ export function EmailsClient({
         if (prev) setThreads((ts) => ts.map((t) => (t.id === threadId ? prev : t)));
       });
     showToast({ message: "Routing approved" });
+  }
+
+  // ─── Mark done ──────────────────────────────────────────────────────────────
+
+  function handleMarkDone(threadId: string) {
+    const prev = threads.find((t) => t.id === threadId);
+    const optimisticMark = {
+      userId: currentUserId,
+      userName: null,
+      userEmail: "",
+      resolvedAt: new Date().toISOString(),
+    };
+    setThreads((ts) =>
+      ts.map((t) => (t.id === threadId ? { ...t, doneMark: optimisticMark } : t))
+    );
+    api
+      .markThreadDone(workspaceId, threadId, currentUserId)
+      .then(({ doneMark }) => {
+        setThreads((ts) =>
+          ts.map((t) => (t.id === threadId ? { ...t, doneMark } : t))
+        );
+      })
+      .catch(() => {
+        if (prev) setThreads((ts) => ts.map((t) => (t.id === threadId ? prev : t)));
+      });
+  }
+
+  function handleUnmarkDone(threadId: string) {
+    const prev = threads.find((t) => t.id === threadId);
+    setThreads((ts) =>
+      ts.map((t) => (t.id === threadId ? { ...t, doneMark: null } : t))
+    );
+    api
+      .unmarkThreadDone(workspaceId, threadId, currentUserId)
+      .catch(() => {
+        if (prev) setThreads((ts) => ts.map((t) => (t.id === threadId ? prev : t)));
+      });
   }
 
   // ─── Reroute ────────────────────────────────────────────────────────────────
@@ -246,6 +285,8 @@ export function EmailsClient({
         onSelectFolder={(id) => pushActive({ kind: "folder", id })}
         onQueryChange={setQuery}
         searchRef={searchRef}
+        onMarkDone={handleMarkDone}
+        onUnmarkDone={handleUnmarkDone}
       />
 
       {selectedThread ? (
@@ -261,6 +302,8 @@ export function EmailsClient({
           onDraftFailed={handleDraftFailed}
           onDraftGenerated={handleDraftGenerated}
           onDraftSentToggled={handleDraftSentToggled}
+          onMarkDone={handleMarkDone}
+          onUnmarkDone={handleUnmarkDone}
         />
       ) : (
         <div className="em-preview-empty">

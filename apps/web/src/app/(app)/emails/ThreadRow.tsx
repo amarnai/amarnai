@@ -6,6 +6,12 @@ const FOLDER_ICO = (
   </svg>
 );
 
+const CHECK_ICO = (
+  <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden>
+    <path d="M1.5 5l2.2 2.5L8.5 2" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
 function fmtTime(d: Date, today: string): string {
   const ds = d.toISOString().slice(0, 10);
   if (ds === today) {
@@ -21,9 +27,11 @@ type Props = {
   selected: boolean;
   workspaceEmail: string | null;
   onSelect: () => void;
+  onMarkDone: () => void;
+  onUnmarkDone: () => void;
 };
 
-export function ThreadRow({ thread, folder, active, selected, workspaceEmail, onSelect }: Props) {
+export function ThreadRow({ thread, folder, active, selected, workspaceEmail, onSelect, onMarkDone, onUnmarkDone }: Props) {
   const today = new Date().toISOString().slice(0, 10);
   const confPct = Math.round(thread.confidence * 100);
   const confColor =
@@ -49,9 +57,12 @@ export function ThreadRow({ thread, folder, active, selected, workspaceEmail, on
     "em-thread-row",
     thread.unread ? "unread" : "",
     selected ? "selected" : "",
+    thread.doneMark ? "done" : "",
   ]
     .filter(Boolean)
     .join(" ");
+
+  const isDone = !!thread.doneMark;
 
   return (
     <div
@@ -73,13 +84,19 @@ export function ThreadRow({ thread, folder, active, selected, workspaceEmail, on
           <div className="em-thread-snippet">{thread.snippet}</div>
         )}
         <div className="em-thread-meta-row">
+          {isDone && (
+            <span className="em-pill em-pill--done">
+              {CHECK_ICO}
+              Done
+            </span>
+          )}
           {!inExactFolder && folder && (
             <span className={chipClass}>
               <span className="em-chip-ico">{FOLDER_ICO}</span>
               {chipLabel}
             </span>
           )}
-          {(() => {
+          {!isDone && (() => {
             const lastIsOwn = !!workspaceEmail && !!thread.lastSenderEmail &&
               thread.lastSenderEmail.toLowerCase() === workspaceEmail.toLowerCase();
             if (thread.isDrafting && !lastIsOwn) return <span className="em-pill">Drafting…</span>;
@@ -104,19 +121,34 @@ export function ThreadRow({ thread, folder, active, selected, workspaceEmail, on
 
       <div className="em-thread-side">
         <div className="em-thread-time">{fmtTime(thread.latestAt, today)}</div>
-        <a
-          href={`https://mail.google.com/mail/u/0/#all/${thread.providerThreadId}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="em-thread-gmail-link"
-          title="Open in Gmail"
-          aria-label="Open in Gmail"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden>
-            <path d="M5 2H2a1 1 0 00-1 1v7a1 1 0 001 1h7a1 1 0 001-1V7M7.5 1H11v3.5M11 1L5.5 6.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </a>
+        <div className="em-thread-actions">
+          <button
+            type="button"
+            className={`em-done-btn${isDone ? " is-done" : ""}`}
+            title={isDone ? "Mark as not done" : "Mark as done"}
+            aria-label={isDone ? "Mark as not done" : "Mark as done"}
+            aria-pressed={isDone}
+            onClick={(e) => {
+              e.stopPropagation();
+              if (isDone) { onUnmarkDone(); } else { onMarkDone(); }
+            }}
+          >
+            {CHECK_ICO}
+          </button>
+          <a
+            href={`https://mail.google.com/mail/u/0/#all/${thread.providerThreadId}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="em-thread-gmail-link"
+            title="Open in Gmail"
+            aria-label="Open in Gmail"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden>
+              <path d="M5 2H2a1 1 0 00-1 1v7a1 1 0 001 1h7a1 1 0 001-1V7M7.5 1H11v3.5M11 1L5.5 6.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </a>
+        </div>
       </div>
     </div>
   );

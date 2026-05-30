@@ -100,6 +100,7 @@ export default async function EmailsPage({ searchParams }: PageProps) {
       )}
       <EmailsClient
         workspaceId={workspace.id}
+        currentUserId={user.id}
         initialThreads={threads}
         initialFolders={folders}
         initialActive={initialActive}

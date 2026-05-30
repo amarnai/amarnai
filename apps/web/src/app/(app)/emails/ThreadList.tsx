@@ -17,6 +17,8 @@ type Props = {
   onSelectFolder: (id: string) => void;
   onQueryChange: (q: string) => void;
   searchRef: React.RefObject<HTMLInputElement | null>;
+  onMarkDone: (threadId: string) => void;
+  onUnmarkDone: (threadId: string) => void;
 };
 
 function groupByDate(threads: ThreadItem[], now: Date): { label: string; items: ThreadItem[] }[] {
@@ -55,6 +57,8 @@ export function ThreadList({
   onSelectFolder,
   onQueryChange,
   searchRef,
+  onMarkDone,
+  onUnmarkDone,
 }: Props) {
   const filtered = filterThreads(threads, folders, active, "all", query, now);
   const unreadCount = filtered.filter((t) => t.unread).length;
@@ -94,6 +98,8 @@ export function ThreadList({
                   selected={thread.id === selectedId}
                   workspaceEmail={workspaceEmail}
                   onSelect={() => onSelectThread(thread.id)}
+                  onMarkDone={() => onMarkDone(thread.id)}
+                  onUnmarkDone={() => onUnmarkDone(thread.id)}
                 />
               );
             })}

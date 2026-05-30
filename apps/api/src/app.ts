@@ -18,6 +18,7 @@ import { triageRoute } from "./routes/triage.js";
 import { folderCountsRoute } from "./routes/folder-counts.js";
 import { sortingQueueRoute } from "./routes/sorting-queue.js";
 import { draftsRoute } from "./routes/drafts.js";
+import { resolveThreadRoute } from "./routes/resolve-thread.js";
 
 const app = new Hono();
 
@@ -41,5 +42,6 @@ app.route("/", triageRoute);
 app.route("/", folderCountsRoute);
 app.route("/", sortingQueueRoute);
 app.route("/", draftsRoute);
+app.route("/", resolveThreadRoute);
 
 export default app;

@@ -18,6 +18,25 @@ import { applyThreadFilter, computeThreadLabelFlags } from "./filter-thread-mess
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
 /**
+ * Returns the receivedAt timestamp of the latest message in the thread that was
+ * sent by an address other than the workspace's own email, or null if no such
+ * message exists. Used to decide whether a thread's done mark should be cleared
+ * when new messages arrive.
+ */
+export function latestExternalMessageTime(
+  messages: Array<{ senderEmail: string; receivedAt: Date }>,
+  workspaceEmail: string
+): Date | null {
+  const external = messages.filter(
+    (m) => m.senderEmail.toLowerCase() !== workspaceEmail.toLowerCase()
+  );
+  if (external.length === 0) return null;
+  return external.reduce((latest, m) =>
+    m.receivedAt > latest.receivedAt ? m : latest
+  ).receivedAt;
+}
+
+/**
  * Ensure an EmailAccount row exists for the connected Gmail address and return
  * its internal ID. Mirrors the upsert already used in the API's gmail-sort
  * route so the two flows share the same account record.
@@ -319,6 +338,20 @@ export function createSyncInboxWorker(): Worker {
               hasAttachments: msg.attachments.length > 0,
             },
             select: { id: true },
+          });
+        }
+
+        // Clear done mark if an external message arrived after the thread was
+        // marked done. Uses updateMany with a conditional where clause so no
+        // extra query is needed when the thread isn't marked done.
+        const latestExternal = latestExternalMessageTime(snapshot.messages, connection.gmailAddress);
+        if (latestExternal) {
+          await db.emailThread.updateMany({
+            where: {
+              id: emailThread.id,
+              resolvedAt: { not: null, lt: latestExternal },
+            },
+            data: { resolvedByUserId: null, resolvedAt: null },
           });
         }
 

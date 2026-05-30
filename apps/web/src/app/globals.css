@@ -3173,6 +3173,12 @@ a {
   padding-top: 1px;
 }
 
+.em-thread-actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
 .em-thread-time {
   font-family: var(--f-mono);
   font-size: 10.5px;
@@ -3197,6 +3203,35 @@ a {
 .em-thread-row.selected .em-thread-gmail-link { opacity: 1; }
 
 .em-thread-gmail-link:hover { background: var(--bg); color: var(--ink); }
+
+.em-done-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  border: none;
+  background: transparent;
+  color: var(--ink-4);
+  opacity: 0;
+  cursor: pointer;
+  transition: opacity 0.1s, color 0.1s, background 0.1s;
+  flex-shrink: 0;
+  padding: 0;
+}
+
+.em-thread-row:hover .em-done-btn,
+.em-thread-row.selected .em-done-btn { opacity: 1; }
+
+.em-done-btn:hover { background: var(--ok-soft); color: var(--ok); }
+
+.em-done-btn.is-done {
+  opacity: 1;
+  color: var(--ok);
+}
+
+.em-done-btn.is-done:hover { background: var(--bg-soft); color: var(--ink-3); }
 
 /* Confidence donut */
 .em-conf {
@@ -3280,6 +3315,8 @@ a {
 }
 
 .em-pill.accent { color: var(--accent-ink); background: var(--accent-soft); border-color: var(--accent-line); }
+
+.em-pill--done { color: var(--color-success-text); background: var(--ok-soft); border-color: var(--ok-line); }
 
 /* List footer */
 .em-list-foot {
@@ -3899,6 +3936,45 @@ a {
   transition: background 0.1s;
 }
 .em-btn-secondary:hover { background: var(--bg-soft); }
+
+.em-btn-done-toggle {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 11px;
+  background: var(--surface);
+  color: var(--ink-3);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  font-size: 12.5px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.1s, color 0.1s, border-color 0.1s;
+}
+
+.em-btn-done-toggle:hover { background: var(--ok-soft); color: var(--color-success-text); border-color: var(--ok-line); }
+
+.em-btn-done-toggle.is-done {
+  background: var(--ok-soft);
+  color: var(--color-success-text);
+  border-color: var(--ok-line);
+}
+
+.em-btn-done-toggle.is-done:hover { background: var(--bg-soft); color: var(--ink-3); border-color: var(--line); }
+
+.em-done-notice {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11.5px;
+  color: var(--color-success-text);
+  background: var(--ok-soft);
+  border: 1px solid var(--ok-line);
+  border-radius: var(--r-sm);
+  padding: 5px 10px;
+  margin-top: 6px;
+  margin-bottom: 4px;
+}
 
 /* ─── Message card ───────────────────────────────────────────────────────── */
 

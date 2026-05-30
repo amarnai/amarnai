@@ -51,6 +51,13 @@ export type ThreadMessage = {
   bodyText: string | null;
 };
 
+export type DoneMark = {
+  userId: string;
+  userName: string | null;
+  userEmail: string;
+  resolvedAt: string;
+};
+
 export type ThreadItem = {
   id: string;
   subject: string;
@@ -69,6 +76,7 @@ export type ThreadItem = {
   hasDraft: boolean;
   isDrafting: boolean;
   lastSenderEmail: string | null;
+  doneMark: DoneMark | null;
 };
 
 // ─── Shared filter ─────────────────────────────────────────────────────────────

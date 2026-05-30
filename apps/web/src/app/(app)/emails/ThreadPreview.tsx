@@ -22,6 +22,8 @@ type Props = {
   onDraftFailed: (threadId: string) => void;
   onDraftGenerated: (threadId: string) => void;
   onDraftSentToggled: (threadId: string, sent: boolean) => void;
+  onMarkDone: (threadId: string) => void;
+  onUnmarkDone: (threadId: string) => void;
 };
 
 export function ThreadPreview({
@@ -36,6 +38,8 @@ export function ThreadPreview({
   onDraftFailed,
   onDraftGenerated,
   onDraftSentToggled,
+  onMarkDone,
+  onUnmarkDone,
 }: Props) {
   const [reasoning, setReasoning] = useState<string | null>(thread.reasoning);
   const [decisionSource, setDecisionSource] = useState<string | null>(null);
@@ -199,6 +203,8 @@ export function ThreadPreview({
           decisionSource={decisionSource}
           onApprove={() => onApprove(thread.id)}
           onReroute={(anchor) => onReroute(thread.id, anchor)}
+          onMarkDone={() => onMarkDone(thread.id)}
+          onUnmarkDone={() => onUnmarkDone(thread.id)}
         />
 
         <div className="em-msg-list">

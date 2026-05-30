@@ -162,6 +162,11 @@ emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
     triageStatus: true,
     classifyingAt: true,
     createdAt: true,
+    resolvedByUserId: true,
+    resolvedAt: true,
+    resolvedByUser: {
+      select: { id: true, email: true, name: true },
+    },
     messages: {
       orderBy: { receivedAt: "desc" } as const,
       take: 1,
@@ -238,7 +243,7 @@ emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
   };
 
   const threads = pageThreads.map((thread) => {
-    const { classifications, classifyingAt, drafts, ...rest } = thread;
+    const { classifications, classifyingAt, drafts, resolvedByUserId, resolvedAt, resolvedByUser, ...rest } = thread;
     return {
       ...rest,
       isClassifying: deriveIsClassifying(classifyingAt),
@@ -248,6 +253,14 @@ emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
       latestClassification: classifications[0] ?? null,
       hasDraft: drafts.some((d) => d.status === "PROPOSED"),
       isDrafting: deriveIsDrafting(drafts),
+      doneMark: resolvedByUserId && resolvedAt && resolvedByUser
+        ? {
+            userId: resolvedByUserId,
+            userEmail: resolvedByUser.email,
+            userName: resolvedByUser.name,
+            resolvedAt: resolvedAt.toISOString(),
+          }
+        : null,
     };
   });
 
@@ -277,6 +290,11 @@ emailThreads.get(
         classifyingAt: true,
         createdAt: true,
         updatedAt: true,
+        resolvedByUserId: true,
+        resolvedAt: true,
+        resolvedByUser: {
+          select: { id: true, email: true, name: true },
+        },
         messages: {
           orderBy: { receivedAt: "asc" },
           select: {
@@ -331,12 +349,20 @@ emailThreads.get(
       return c.json({ error: "Thread not found" }, 404);
     }
 
-    const { classifications, classifyingAt, ...rest } = thread;
+    const { classifications, classifyingAt, resolvedByUserId, resolvedAt, resolvedByUser, ...rest } = thread;
     return c.json({
       ...rest,
       isClassifying: deriveIsClassifying(classifyingAt),
       isQueued: classifyingAt !== null,
       latestClassification: classifications[0] ?? null,
+      doneMark: resolvedByUserId && resolvedAt && resolvedByUser
+        ? {
+            userId: resolvedByUserId,
+            userEmail: resolvedByUser.email,
+            userName: resolvedByUser.name,
+            resolvedAt: resolvedAt.toISOString(),
+          }
+        : null,
     });
   }
 );
