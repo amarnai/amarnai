@@ -48,7 +48,7 @@ export default async function AppLayout({
         workspaces={workspaces}
         canCreateWorkspace={canCreateWorkspace}
       />
-      <main className="main">{children}</main>
+      <main className="main" suppressHydrationWarning>{children}</main>
     </div>
   );
 }
