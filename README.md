@@ -159,6 +159,69 @@ Running `pnpm db:seed` creates a local dev user and workspace:
 
 This seed user is attached to the mock taxonomy and sample email threads used for local testing and AI sorting tests. It is **not** created in production signups.
 
+## Self-hosting
+
+Amarnai can be self-hosted on any machine with Docker and Docker Compose. All services (web, API, worker, Postgres, Redis) start with a single command.
+
+### Prerequisites
+
+- Docker 24+ with the Compose plugin (`docker compose version`)
+- A Google Cloud project with OAuth 2.0 credentials (see [Authentication setup](#authentication-setup))
+- An AI API key — OpenAI, any OpenAI-compatible provider, or Gemini for embeddings
+
+### Setup
+
+```bash
+# 1. Clone the repo
+git clone https://github.com/your-org/amarnai.git
+cd amarnai
+
+# 2. Create your env file from the self-host template
+cp .env.selfhost.example .env
+
+# 3. Fill in every value marked <required>:
+#    AUTH_SECRET, AUTH_GOOGLE_ID, AUTH_GOOGLE_SECRET, INTERNAL_API_SECRET,
+#    GMAIL_TOKEN_ENCRYPTION_KEY, FRONTIER_LLM_API_KEY, GEMINI_EMBEDDING_API_KEY,
+#    SMTP_HOST / SMTP_USER / SMTP_PASS, EMAIL_FROM
+#    Update AUTH_URL, CORS_ORIGIN, and GMAIL_OAUTH_CALLBACK_URL to your domain.
+
+# 4. Build images and start all services
+#    First boot runs database migrations automatically before the API starts.
+docker compose -f docker-compose.selfhost.yml up -d --build
+```
+
+The web UI is available at `http://localhost:3000` (or your configured domain).
+
+| Service | Default port |
+|---------|-------------|
+| Web     | 3000        |
+| API     | 3001        |
+| Postgres | internal   |
+| Redis    | internal   |
+
+Postgres and Redis are not exposed externally by default. If you need direct access (e.g. for backups), add `ports` entries to `docker-compose.selfhost.yml`.
+
+### Upgrading
+
+```bash
+git pull
+docker compose -f docker-compose.selfhost.yml up -d --build
+```
+
+Migrations run automatically on each deploy via the `migrate` service.
+
+### Reverse proxy
+
+For production HTTPS, put Nginx or Caddy in front and proxy port 3000. Example Caddyfile:
+
+```
+mail.yourdomain.com {
+    reverse_proxy localhost:3000
+}
+```
+
+Update `AUTH_URL`, `CORS_ORIGIN`, and `GMAIL_OAUTH_CALLBACK_URL` in `.env` to match your domain, then re-run `docker compose -f docker-compose.selfhost.yml up -d`.
+
 ## Local development
 
 ```bash

@@ -9,7 +9,7 @@ interface Props {
   workspaceName: string;
 }
 
-export function UpgradeClient({ workspaceId, workspaceName }: Props) {
+export function UpgradeClient({ workspaceId: _workspaceId, workspaceName }: Props) {
   const [pendingPlan, setPendingPlan] = useState<PlanId | null>(null);
 
   function handleSelectPlan(plan: PlanId, _cycle: string) {

@@ -9,11 +9,11 @@
   },
   "scripts": {
     "generate": "prisma generate",
-    "migrate": "dotenv -e ../../.env -- prisma migrate dev",
-    "seed": "dotenv -e ../../.env -- prisma db seed",
-    "backfill-inbox": "dotenv -e ../../.env -- tsx prisma/backfill-inbox.ts",
-    "embeddings:refresh-taxonomy": "dotenv -e ../../.env -- tsx prisma/refresh-taxonomy-embeddings.ts",
-    "reset": "dotenv -e ../../.env -- prisma migrate reset",
+    "migrate": "dotenv -e ../../.env.local -e ../../.env -- prisma migrate dev",
+    "seed": "dotenv -e ../../.env.local -e ../../.env -- prisma db seed",
+    "backfill-inbox": "dotenv -e ../../.env.local -e ../../.env -- tsx prisma/backfill-inbox.ts",
+    "embeddings:refresh-taxonomy": "dotenv -e ../../.env.local -e ../../.env -- tsx prisma/refresh-taxonomy-embeddings.ts",
+    "reset": "dotenv -e ../../.env.local -e ../../.env -- prisma migrate reset",
     "lint": "eslint src",
     "typecheck": "tsc --noEmit",
     "test": "vitest run --passWithNoTests"

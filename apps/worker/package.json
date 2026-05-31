@@ -6,15 +6,10 @@
   "scripts": {
     "dev": "dotenv -e ../../.env.local -e ../../.env -- node --import tsx --watch src/index.ts",
     "build": "tsc",
-    "start": "node dist/index.js",
+    "start": "tsx src/index.ts",
     "lint": "eslint src",
     "typecheck": "tsc --noEmit",
     "test": "vitest run --passWithNoTests"
-  },
-  "devDependencies": {
-    "@types/node": "^22.0.0",
-    "tsx": "^4.19.0",
-    "vitest": "^3.0.0"
   },
   "dependencies": {
     "@amarnai/ai": "workspace:*",
@@ -23,6 +18,11 @@
     "@amarnai/db": "workspace:*",
     "@amarnai/gmail": "workspace:*",
     "@amarnai/queue": "workspace:*",
-    "bullmq": "^5.77.3"
+    "bullmq": "^5.77.3",
+    "tsx": "^4.19.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "vitest": "^3.0.0"
   }
 }

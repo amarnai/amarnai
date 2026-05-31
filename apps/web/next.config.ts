@@ -1,6 +1,10 @@
 import type { NextConfig } from "next";
+import path from "path";
 
 const config: NextConfig = {
+  output: "standalone",
+  // Trace files relative to the monorepo root so workspace packages are included.
+  outputFileTracingRoot: path.join(__dirname, "../../"),
   devIndicators: false,
   transpilePackages: ["@amarnai/db", "@amarnai/ui"],
   serverExternalPackages: ["@prisma/client"],
