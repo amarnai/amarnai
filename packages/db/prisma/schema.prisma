@@ -105,6 +105,12 @@ enum BackfillStatus {
   ERROR
 }
 
+enum WorkspacePlan {
+  FREE
+  PRO
+  BUSINESS
+}
+
 enum DraftStatus {
   GENERATING
   PROPOSED
@@ -151,12 +157,13 @@ model User {
 }
 
 model Workspace {
-  id                     String   @id @default(cuid())
+  id                     String         @id @default(cuid())
   name                   String
   ownerUserId            String
-  membersCanEditTaxonomy Boolean  @default(false)
-  createdAt              DateTime @default(now())
-  updatedAt              DateTime @updatedAt
+  plan                   WorkspacePlan  @default(FREE)
+  membersCanEditTaxonomy Boolean        @default(false)
+  createdAt              DateTime       @default(now())
+  updatedAt              DateTime       @updatedAt
 
   owner             User                  @relation(fields: [ownerUserId], references: [id])
   members           WorkspaceMember[]

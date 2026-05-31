@@ -1,15 +1,21 @@
+import Link from "next/link";
 import { requireUser, getUserWorkspaceRole } from "@/lib/session";
 import { getSelectedWorkspace } from "@/lib/workspace";
 import { api } from "@/lib/api";
-import { db } from "@amarnai/db";
+import { db, WorkspacePlan } from "@amarnai/db";
 import { GmailConnectionSection } from "./GmailConnectionSection";
 import { WorkspaceNameSection } from "./WorkspaceNameSection";
 import { DeleteWorkspaceSection } from "./DeleteWorkspaceSection";
 import { EmailBlacklistSection } from "./EmailBlacklistSection";
 import { TeamMembersSection } from "./TeamMembersSection";
-import { TaxonomyPermissionSection } from "./TaxonomyPermissionSection";
 
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;
+
+const planLabels: Record<string, string> = {
+  FREE: "Personal",
+  PRO: "Pro",
+  BUSINESS: "Business",
+};
 
 export default async function SettingsPage({ searchParams }: { searchParams: SearchParams }) {
   const user = await requireUser();
@@ -37,7 +43,7 @@ export default async function SettingsPage({ searchParams }: { searchParams: Sea
   }
 
   // Fetch team members and pending invitations for the team section.
-  const [membersRaw, invitationsRaw, workspaceSettings] = await Promise.all([
+  const [membersRaw, invitationsRaw] = await Promise.all([
     db.workspaceMember.findMany({
       where: { workspaceId: workspace.id },
       select: {
@@ -55,10 +61,6 @@ export default async function SettingsPage({ searchParams }: { searchParams: Sea
           orderBy: { createdAt: "desc" },
         })
       : Promise.resolve([]),
-    db.workspace.findUnique({
-      where: { id: workspace.id },
-      select: { membersCanEditTaxonomy: true },
-    }),
   ]);
 
   // Sort: OWNER first, then MEMBER.
@@ -94,6 +96,18 @@ export default async function SettingsPage({ searchParams }: { searchParams: Sea
 
       {isAdmin && (
         <>
+          <section className="settings-section">
+            <h2>Plan</h2>
+            <div className="plan-current-row">
+              <span className="plan-current-badge">{planLabels[workspace.plan] ?? workspace.plan}</span>
+              {workspace.plan !== WorkspacePlan.BUSINESS && (
+                <Link href="/upgrade" className="btn-primary">
+                  Upgrade
+                </Link>
+              )}
+            </div>
+          </section>
+
           <WorkspaceNameSection currentName={workspace.name} />
           <GmailConnectionSection
             workspaceId={workspace.id}
@@ -106,9 +120,6 @@ export default async function SettingsPage({ searchParams }: { searchParams: Sea
           <EmailBlacklistSection
             workspaceId={workspace.id}
             initialEmails={syncSettings?.blacklistedSenderEmails ?? []}
-          />
-          <TaxonomyPermissionSection
-            initialCanEdit={workspaceSettings?.membersCanEditTaxonomy ?? true}
           />
           <DeleteWorkspaceSection workspaceId={workspace.id} />
         </>

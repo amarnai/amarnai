@@ -4,7 +4,6 @@ import crypto from "crypto";
 import { revalidatePath } from "next/cache";
 import { db } from "@amarnai/db";
 import { requireUser } from "@/lib/session";
-import { getSelectedWorkspace } from "@/lib/workspace";
 import { sendWorkspaceInvitationEmail } from "@/lib/email";
 import { MEMBER_LIMIT } from "@/lib/members";
 
@@ -163,27 +162,3 @@ export async function cancelInvitationAction(
   return { success: true };
 }
 
-export type UpdateTaxonomyPermissionResult = { error?: string; success?: boolean };
-
-export async function updateTaxonomyPermissionAction(
-  canEdit: boolean
-): Promise<UpdateTaxonomyPermissionResult> {
-  const user = await requireUser();
-  const workspace = await getSelectedWorkspace(user.id);
-
-  const member = await db.workspaceMember.findUnique({
-    where: { workspaceId_userId: { workspaceId: workspace.id, userId: user.id } },
-    select: { role: true },
-  });
-  if (member?.role !== "OWNER") {
-    return { error: "Only admins can change taxonomy permissions" };
-  }
-
-  await db.workspace.update({
-    where: { id: workspace.id },
-    data: { membersCanEditTaxonomy: canEdit },
-  });
-
-  revalidatePath("/settings");
-  return { success: true };
-}

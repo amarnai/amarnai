@@ -36,7 +36,7 @@ syncStatus.get("/workspaces/:workspaceId/sync-status", async (c) => {
 
   if (!account) return c.json(null, 200);
 
-  const [state, syncSettings] = await Promise.all([
+  const [state, syncSettings, workspace] = await Promise.all([
     db.providerSyncState.findUnique({
       where: { emailAccountId: account.id },
       select: {
@@ -52,6 +52,10 @@ syncStatus.get("/workspaces/:workspaceId/sync-status", async (c) => {
       where: { workspaceId },
       select: { sortingPaused: true },
     }),
+    db.workspace.findUnique({
+      where: { id: workspaceId },
+      select: { plan: true },
+    }),
   ]);
 
   if (!state) return c.json(null, 200);
@@ -64,6 +68,7 @@ syncStatus.get("/workspaces/:workspaceId/sync-status", async (c) => {
     backfillSkipped: state.backfillSkipped,
     backfillCompletedAt: state.backfillCompletedAt?.toISOString() ?? null,
     sortingPaused: syncSettings?.sortingPaused ?? false,
+    workspacePlan: workspace?.plan ?? "FREE",
   });
 });
 

@@ -118,7 +118,7 @@ export function createSyncInboxWorker(): Worker {
       const [workspace, connection, syncSettingsRow] = await Promise.all([
         db.workspace.findUnique({
           where: { id: workspaceId },
-          select: { ownerUserId: true },
+          select: { ownerUserId: true, plan: true },
         }),
         db.gmailConnection.findUnique({
           where: { workspaceId },
@@ -182,7 +182,11 @@ export function createSyncInboxWorker(): Worker {
         // Trigger backfill when it hasn't completed (or failed) yet, but only
         // if the workspace has enough taxonomy nodes to classify threads (≥ 3).
         // With fewer nodes the user needs to elaborate the taxonomy first.
-        if (syncState.backfillStatus === "PENDING" || syncState.backfillStatus === "ERROR") {
+        // Backfill is a paying-plan-only feature.
+        if (
+          workspace.plan !== "FREE" &&
+          (syncState.backfillStatus === "PENDING" || syncState.backfillStatus === "ERROR")
+        ) {
           const nodeCount = await db.taxonomyNode.count({ where: { workspaceId } });
           if (nodeCount > 3) {
             await backfillInboxQueue.add(
@@ -374,7 +378,11 @@ export function createSyncInboxWorker(): Worker {
 
       // Trigger a historical backfill whenever it hasn't completed yet, but only
       // if the workspace has enough taxonomy nodes to classify threads (≥ 3).
-      if (syncState.backfillStatus === "PENDING" || syncState.backfillStatus === "ERROR") {
+      // Backfill is a paying-plan-only feature.
+      if (
+        workspace.plan !== "FREE" &&
+        (syncState.backfillStatus === "PENDING" || syncState.backfillStatus === "ERROR")
+      ) {
         const nodeCount = await db.taxonomyNode.count({ where: { workspaceId } });
         if (nodeCount >= 3) {
           await backfillInboxQueue.add(

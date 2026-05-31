@@ -9,7 +9,7 @@ export function getWorkspaceLimit(): number {
   return Infinity;
 }
 
-export async function getSelectedWorkspace(userId: string): Promise<{ id: string; name: string }> {
+export async function getSelectedWorkspace(userId: string): Promise<{ id: string; name: string; plan: string }> {
   const cookieStore = await cookies();
   const selectedId = cookieStore.get(WORKSPACE_COOKIE)?.value;
 
@@ -19,7 +19,7 @@ export async function getSelectedWorkspace(userId: string): Promise<{ id: string
         id: selectedId,
         members: { some: { userId } },
       },
-      select: { id: true, name: true },
+      select: { id: true, name: true, plan: true },
     });
     if (ws) return ws;
   }
@@ -32,7 +32,7 @@ export async function getOrCreateDefaultWorkspace(userId: string) {
   const owned = await db.workspace.findFirst({
     where: { ownerUserId: userId },
     orderBy: { createdAt: "asc" },
-    select: { id: true, name: true },
+    select: { id: true, name: true, plan: true },
   });
   if (owned) return owned;
 
@@ -40,7 +40,7 @@ export async function getOrCreateDefaultWorkspace(userId: string) {
   const membership = await db.workspaceMember.findFirst({
     where: { userId },
     orderBy: { createdAt: "asc" },
-    select: { workspace: { select: { id: true, name: true } } },
+    select: { workspace: { select: { id: true, name: true, plan: true } } },
   });
   if (membership) return membership.workspace;
 
@@ -53,7 +53,7 @@ export async function getOrCreateDefaultWorkspace(userId: string) {
         create: { userId, role: "OWNER" },
       },
     },
-    select: { id: true, name: true },
+    select: { id: true, name: true, plan: true },
   });
   await ensureInboxNode(created.id);
   return created;

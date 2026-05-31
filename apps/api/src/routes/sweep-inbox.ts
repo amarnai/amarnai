@@ -26,6 +26,16 @@ sweepInbox.post("/workspaces/:workspaceId/sweep-inbox", async (c) => {
 
   const { workspaceId } = parsed.data;
 
+  // Backfill is restricted to paying plans.
+  const workspace = await db.workspace.findUnique({
+    where: { id: workspaceId },
+    select: { plan: true },
+  });
+  if (!workspace) return c.json({ error: "Workspace not found" }, 404);
+  if (workspace.plan === "FREE") {
+    return c.json({ error: "Backfill requires a paying plan" }, 403);
+  }
+
   // Verify an active Gmail connection exists.
   const connection = await db.gmailConnection.findUnique({
     where: { workspaceId },

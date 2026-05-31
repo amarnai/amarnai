@@ -227,6 +227,7 @@ export type SyncStatus = {
   backfillSkipped: number;
   backfillCompletedAt: string | null;
   sortingPaused: boolean;
+  workspacePlan: "FREE" | "PRO" | "BUSINESS";
 } | null;
 
 export type MockInboxEventInput =
