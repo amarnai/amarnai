@@ -75,6 +75,9 @@ importers:
 
   apps/site:
     dependencies:
+      '@amarnai/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
       '@opennextjs/cloudflare':
         specifier: ^1.19.11
         version: 1.19.11(next@15.5.18(react-dom@19.2.6(react@19.2.6))(react@19.2.6))(wrangler@4.93.0)
