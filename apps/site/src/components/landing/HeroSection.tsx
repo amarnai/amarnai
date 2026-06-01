@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import { HERO_TREE_ITEMS } from "@/components/demo/demo-seed";
 
@@ -12,8 +15,11 @@ function FolderIcon({ size = 12 }: { size?: number }) {
 }
 
 function HeroTaxonomyCard() {
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const activeId = hoveredId ?? "customers-enterprise";
+
   return (
-    <div className="ld-hero-card">
+    <div className="ld-hero-card" onMouseLeave={() => setHoveredId(null)}>
       <div className="ld-hero-card-cap">
         <span className="ld-hero-card-title">Your taxonomy</span>
         <span className="ld-live-chip">
@@ -33,38 +39,39 @@ function HeroTaxonomyCard() {
         </div>
 
         <div className="ld-tree-children">
-          {HERO_TREE_ITEMS.map((item, groupIdx) => {
+          {HERO_TREE_ITEMS.map((item) => {
             if ("children" in item) {
               return (
                 <div key={item.id} className="ld-tree-group">
-                  <div className="ld-tree-child ld-tree-child--parent">
+                  <div
+                    className={`ld-tree-child ld-tree-child--parent${item.id === activeId ? " ld-tree-child--active" : ""}`}
+                    onMouseEnter={() => setHoveredId(item.id)}
+                  >
                     <span className="ld-tree-child-icon"><FolderIcon /></span>
                     <span className="ld-tree-child-label">{item.label}</span>
                   </div>
                   <div className="ld-tree-subchildren">
-                    {item.children.map((child, childIdx) => {
-                      const isActive = groupIdx === 0 && childIdx === 0;
-                      return (
-                        <div
-                          key={child.id}
-                          className={`ld-tree-child ld-tree-child--sub${isActive ? " ld-tree-child--active" : ""}`}
-                        >
-                          <span className="ld-tree-child-icon"><FolderIcon size={10} /></span>
-                          <span className="ld-tree-child-label">{child.label}</span>
-                          {isActive ? (
-                            <span className="ld-sort-badge">+ Mercer &amp; Co</span>
-                          ) : (
-                            <span className="ld-tree-child-count">{child.count}</span>
-                          )}
-                        </div>
-                      );
-                    })}
+                    {item.children.map((child) => (
+                      <div
+                        key={child.id}
+                        className={`ld-tree-child ld-tree-child--sub${child.id === activeId ? " ld-tree-child--active" : ""}`}
+                        onMouseEnter={() => setHoveredId(child.id)}
+                      >
+                        <span className="ld-tree-child-icon"><FolderIcon size={10} /></span>
+                        <span className="ld-tree-child-label">{child.label}</span>
+                        <span className="ld-tree-child-count">{child.count}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
               );
             }
             return (
-              <div key={item.id} className="ld-tree-child">
+              <div
+                key={item.id}
+                className={`ld-tree-child${item.id === activeId ? " ld-tree-child--active" : ""}`}
+                onMouseEnter={() => setHoveredId(item.id)}
+              >
                 <span className="ld-tree-child-icon"><FolderIcon /></span>
                 <span className="ld-tree-child-label">{item.label}</span>
                 <span className="ld-tree-child-count">{(item as TreeLeaf).count}</span>
@@ -90,7 +97,7 @@ export function HeroSection() {
 
             <h1>
               Stop sorting email.<br />
-              <span className="soft">Map it once.</span>
+              <span className="soft">Sort it once.</span>
             </h1>
 
             <p className="ld-hero-sub">
