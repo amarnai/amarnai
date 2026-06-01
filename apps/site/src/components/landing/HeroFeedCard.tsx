@@ -163,9 +163,6 @@ export function HeroFeedCard() {
   return (
     <div className="ld-feed-card" ref={cardRef}>
       <div className="ld-feed-cap">
-        <span className="ld-feed-dots" aria-hidden>
-          <i /><i /><i />
-        </span>
         <span className="ld-feed-url">app.amarnai.com</span>
         <span className="ld-feed-live">
           <span className="ld-feed-live-dot" />
