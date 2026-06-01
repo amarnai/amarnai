@@ -1,0 +1,49 @@
+"use client";
+
+import type { SyncInfo } from "./types.js";
+
+export interface BackfillCardProps {
+  syncInfo: SyncInfo;
+  upgradeHref?: string | undefined;
+}
+
+export function BackfillCard({ syncInfo, upgradeHref = "#" }: BackfillCardProps) {
+  if (!syncInfo) return null;
+
+  if (syncInfo.workspacePlan === "FREE") {
+    return (
+      <>
+        <div className="em-section-label">
+          <span>Backfill</span>
+        </div>
+        <div className="em-backfill em-backfill--locked">
+          <div className="em-backfill-title">Bulk triage your inbox</div>
+          <div className="em-backfill-desc">
+            Sort thousands of historical emails automatically. Available on Pro and Business plans.
+          </div>
+          <a href={upgradeHref} className="em-backfill-upgrade-btn">
+            Upgrade to unlock
+          </a>
+        </div>
+      </>
+    );
+  }
+
+  if (syncInfo.backfillStatus !== "RUNNING") return null;
+
+  return (
+    <>
+      <div className="em-section-label">
+        <span>Backfill</span>
+      </div>
+      <div className="em-backfill">
+        <div className="em-backfill-eyebrow">
+          <span className="em-pulse" />
+          Sorting historical inbox
+        </div>
+        <div className="em-backfill-title">Sorting in progress…</div>
+        <div className="em-backfill-desc">New threads will appear as they are sorted.</div>
+      </div>
+    </>
+  );
+}
