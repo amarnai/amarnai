@@ -72,10 +72,8 @@ export function FolderTree({
               ]
                 .filter(Boolean)
                 .join(" ")}
-              onClick={() => onSelect?.(root.id)}
-              onKeyDown={(e) =>
-                (e.key === "Enter" || e.key === " ") && onSelect?.(root.id)
-              }
+              onClick={() => { onSelect?.(root.id); if (children.length) onToggle?.(root.id); }}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { onSelect?.(root.id); if (children.length) onToggle?.(root.id); } }}
             >
               <button
                 type="button"
