@@ -6,9 +6,9 @@ export function FinalCTASection() {
       <div className="ld-final-inner ld-reveal">
         <h2>Hand the sorting to Amarnai.</h2>
         <p>
-          Buy a seat, connect Gmail, and Amarnai starts sorting within minutes.
-          Pricing is per user — sort as much mail as you like, with backfill of
-          your whole history included.
+          Connect Gmail and Amarnai starts sorting within minutes. Pricing is
+          per workspace — sort as much mail as you like, with backfill of your
+          whole history included.
         </p>
         <Link className="ld-btn accent lg" href="/pricing">
           Start free

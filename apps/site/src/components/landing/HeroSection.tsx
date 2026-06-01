@@ -111,7 +111,7 @@ export function HeroSection() {
                 Start free
               </Link>
             </div>
-            <p className="ld-cta-note">Priced per user · 14-day free trial</p>
+            <p className="ld-cta-note">Priced per workspace · 14-day free trial</p>
           </div>
 
           <div className="ld-hero-side">

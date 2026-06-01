@@ -21,7 +21,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "How is pricing structured?",
-    a: "Pricing is per user, billed monthly or annually. Every account starts with a 14-day free trial — no card required. See the pricing page for current plan details.",
+    a: "Pricing is per workspace, billed monthly or annually. Every workspace starts with a 14-day free trial — no card required. See the pricing page for current plan details.",
   },
   {
     q: "Can I self-host Amarnai?",
