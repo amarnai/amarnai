@@ -3,6 +3,13 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
+function scrollTo(id: string) {
+  return (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  };
+}
+
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
 
@@ -17,17 +24,17 @@ export function Nav() {
   return (
     <header className={`ld-nav${scrolled ? " scrolled" : ""}`} id="nav">
       <div className="ld-nav-inner">
-        <Link className="ld-brand" href="#top" aria-label="Amarnai home">
-          <span className="ld-brand-mark" aria-hidden="true" />
+        <a className="ld-brand" href="#top" onClick={scrollTo("top")} aria-label="Amarnai home">
+          <img src="/logo.png" alt="" aria-hidden="true" className="ld-brand-mark" />
           Amarnai
-        </Link>
+        </a>
 
         <nav className="ld-nav-links">
-          <Link href="#how">How it works</Link>
-          <Link href="#taxonomy">Taxonomy</Link>
-          <Link href="#triage">Triage</Link>
-          <Link href="#faq">FAQ</Link>
-          <Link className="ld-btn ld-nav-cta" href="/pricing">
+          <a href="#how" onClick={scrollTo("how")}>How it works</a>
+          <a href="#taxonomy" onClick={scrollTo("taxonomy")}>Taxonomy</a>
+          <a href="#triage" onClick={scrollTo("triage")}>Triage</a>
+          <a href="#faq" onClick={scrollTo("faq")}>FAQ</a>
+          <Link className="ld-btn ld-nav-cta accent" href="/pricing">
             See plans
           </Link>
         </nav>
