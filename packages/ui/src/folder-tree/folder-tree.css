@@ -1,0 +1,108 @@
+/* ─── Folder tree ─────────────────────────────────────────────────────────── */
+/* Requires the consuming app to provide Amarnai CSS custom properties.       */
+
+.em-tree-item {
+  display: grid;
+  grid-template-columns: 14px 14px 1fr auto;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  color: var(--ink-2);
+  font-size: 13px;
+  cursor: pointer;
+  user-select: none;
+  border: none;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+}
+
+.em-tree-item:hover {
+  background: var(--surface-2);
+  color: var(--ink);
+}
+
+.em-tree-item.active {
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: var(--shadow-1);
+  font-weight: 600;
+}
+
+.em-twirl {
+  width: 14px;
+  height: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-4);
+  transition: transform 0.12s;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.em-twirl.empty {
+  visibility: hidden;
+}
+
+.em-twirl.open {
+  transform: rotate(90deg);
+}
+
+.em-folder-icon {
+  width: 14px;
+  height: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-3);
+  flex-shrink: 0;
+}
+
+.em-tree-item.active .em-folder-icon {
+  color: var(--accent);
+}
+
+.em-tree-item.ignored .em-folder-icon {
+  color: var(--warn-ink);
+}
+
+.em-tree-item.ignored .em-tree-name {
+  color: var(--warn-ink);
+  font-style: italic;
+}
+
+.em-tree-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.em-tree-count {
+  font-family: var(--f-mono);
+  font-size: 10.5px;
+  color: var(--ink-4);
+  flex-shrink: 0;
+}
+
+.em-tree-item.active .em-tree-count {
+  color: var(--accent-ink);
+}
+
+.em-tree-item.has-unread .em-tree-name {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.em-tree-item.has-unread .em-tree-count {
+  color: var(--accent-ink);
+}
+
+.em-tree-children {
+  padding-left: 16px;
+}
