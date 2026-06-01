@@ -20,7 +20,7 @@ export default function HomePage() {
   return (
     <>
       <Nav />
-      <main id="top">
+      <main id="top" suppressHydrationWarning>
         <HeroSection />
         <HowItWorksSection />
         <TaxonomyDemoSection />
