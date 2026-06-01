@@ -1,45 +1,35 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import type { Metadata } from "next";
+import "./landing.css";
+import { Nav } from "@/components/landing/Nav";
+import { HeroSection } from "@/components/landing/HeroSection";
+import { HowItWorksSection } from "@/components/landing/HowItWorksSection";
+import { TaxonomyDemoSection } from "@/components/landing/TaxonomyDemoSection";
+import { EmailsDemoSection } from "@/components/landing/EmailsDemoSection";
+import { FAQSection } from "@/components/landing/FAQSection";
+import { FinalCTASection } from "@/components/landing/FinalCTASection";
+import { Footer } from "@/components/landing/Footer";
+import { RevealObserver } from "@/components/landing/RevealObserver";
 
-export default function Home() {
+export const metadata: Metadata = {
+  title: "Amarnai — email triage that explains itself",
+  description:
+    "Amarnai reads your inbox the way you would: it sorts threads into folders you define, and drafts replies you approve. Gmail-first, hosted or self-hosted.",
+};
+
+export default function HomePage() {
   return (
-    <main className={styles.page}>
-      <div className={styles.card}>
-        <div className={styles.mark}>
-          <Image
-            src="/logo.png"
-            alt="Amarnai"
-            width={80}
-            height={80}
-            priority
-          />
-        </div>
-
-        <p className={styles.eyebrow}>Work in progress</p>
-
-        <h1 className={styles.title}>Amarnai</h1>
-
-        <p className={styles.tagline}>
-          Open-source AI email triage, rooted in your own workflow.
-        </p>
-
-        <p className={styles.body}>
-          Amarnai is a self-hostable assistant layer for Gmail that helps sort,
-          draft, and escalate email through a visual workflow. The product is
-          currently in development.
-        </p>
-
-        <footer className={styles.footer}>
-          <a
-            className={styles.link}
-            href="https://github.com/amarnai/amarnai"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            GitHub
-          </a>
-        </footer>
-      </div>
-    </main>
+    <>
+      <Nav />
+      <main id="top">
+        <HeroSection />
+        <HowItWorksSection />
+        <TaxonomyDemoSection />
+        <EmailsDemoSection />
+        <FAQSection />
+        <FinalCTASection />
+      </main>
+      <Footer />
+      <RevealObserver />
+    </>
   );
 }
