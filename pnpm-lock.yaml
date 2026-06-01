@@ -311,6 +311,12 @@ importers:
 
   packages/ui:
     dependencies:
+      '@amarnai/shared':
+        specifier: workspace:*
+        version: link:../shared
+      '@xyflow/react':
+        specifier: ^12.0.0
+        version: 12.10.2(@types/react@19.2.14)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       react:
         specifier: ^19.0.0
         version: 19.2.6

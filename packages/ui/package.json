@@ -5,12 +5,17 @@
   "type": "module",
   "main": "./src/index.ts",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./taxonomy": "./src/taxonomy/index.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit"
   },
+  "dependencies": {
+    "@amarnai/shared": "workspace:*"
+  },
   "peerDependencies": {
+    "@xyflow/react": "^12.0.0",
     "react": "^19.0.0"
   },
   "devDependencies": {
