@@ -2,14 +2,16 @@
 
 import { useEffect, useRef, useState } from "react";
 import { OptionCards, type OptionCardItem } from "@amarnai/ui";
+import type { PlanId, BillingCycle } from "@amarnai/ui";
 
 type Choice = "upgrade" | "create";
 
 interface Props {
+  workspaceId: string;
   workspaceName: string;
+  plan: PlanId;
+  cycle: BillingCycle;
   onClose: () => void;
-  onUpgradeCurrentWorkspace: () => void;
-  onCreatePaidWorkspace: () => void;
 }
 
 const OPTIONS: OptionCardItem<Choice>[] = [
@@ -21,18 +23,21 @@ const OPTIONS: OptionCardItem<Choice>[] = [
   {
     id: "create",
     label: "Create a new workspace",
-    description:
-      "Use this plan for a business, team, or separate Gmail account.",
+    description: "Use this plan for a business, team, or separate Gmail account.",
   },
 ];
 
 export function WorkspaceChoiceModal({
+  workspaceId,
   workspaceName,
+  plan,
+  cycle,
   onClose,
-  onUpgradeCurrentWorkspace,
-  onCreatePaidWorkspace,
 }: Props) {
   const [selected, setSelected] = useState<Choice | null>(null);
+  const [newName, setNewName] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const backdropRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -43,14 +48,48 @@ export function WorkspaceChoiceModal({
     return () => document.removeEventListener("keydown", onKey);
   }, [onClose]);
 
-  function handleContinue() {
-    if (selected === "upgrade") onUpgradeCurrentWorkspace();
-    else if (selected === "create") onCreatePaidWorkspace();
-  }
-
   function handleBackdropClick(e: React.MouseEvent<HTMLDivElement>) {
     if (e.target === backdropRef.current) onClose();
   }
+
+  async function handleContinue() {
+    if (!selected) return;
+    if (selected === "create" && !newName.trim()) {
+      setError("Workspace name cannot be empty");
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/billing/create-checkout-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: selected,
+          plan,
+          cycle,
+          workspaceId: selected === "upgrade" ? workspaceId : undefined,
+          newWorkspaceName: selected === "create" ? newName.trim() : undefined,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error ?? "Something went wrong. Please try again.");
+        return;
+      }
+      window.location.href = data.url;
+    } catch {
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const canContinue =
+    selected !== null &&
+    (selected !== "create" || newName.trim().length > 0) &&
+    !loading;
 
   return (
     <div
@@ -80,8 +119,7 @@ export function WorkspaceChoiceModal({
 
         <div className="modal-body">
           <p className="ws-choice-helper">
-            Current workspace:{" "}
-            <strong>{workspaceName}</strong>
+            Current workspace: <strong>{workspaceName}</strong>
           </p>
 
           <OptionCards
@@ -90,6 +128,20 @@ export function WorkspaceChoiceModal({
             onChange={setSelected}
           />
 
+          {selected === "create" && (
+            <input
+              className="ws-create-input"
+              type="text"
+              placeholder="New workspace name"
+              value={newName}
+              onChange={(e) => setNewName(e.target.value)}
+              maxLength={100}
+              autoFocus
+            />
+          )}
+
+          {error && <p className="ws-choice-error">{error}</p>}
+
           <p className="ws-choice-helper">
             You can keep your free Personal workspace and use paid workspaces
             separately.
@@ -97,16 +149,16 @@ export function WorkspaceChoiceModal({
         </div>
 
         <div className="modal-footer">
-          <button type="button" className="btn-ghost" onClick={onClose}>
+          <button type="button" className="btn-ghost" onClick={onClose} disabled={loading}>
             Cancel
           </button>
           <button
             type="button"
             className="btn-primary"
-            disabled={selected === null}
+            disabled={!canContinue}
             onClick={handleContinue}
           >
-            Continue
+            {loading ? "Redirecting…" : "Continue to payment"}
           </button>
         </div>
       </div>

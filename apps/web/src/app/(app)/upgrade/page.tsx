@@ -1,12 +1,20 @@
 import { requireUser } from "@/lib/session";
 import { getSelectedWorkspace } from "@/lib/workspace";
 import { UpgradeClient } from "./UpgradeClient";
+import type { PlanId } from "@amarnai/ui";
 
 export const metadata = { title: "Upgrade — Amarnai" };
+
+const planIdMap: Record<string, PlanId> = {
+  FREE: "free",
+  PRO: "pro",
+  BUSINESS: "business",
+};
 
 export default async function UpgradePage() {
   const user = await requireUser();
   const workspace = await getSelectedWorkspace(user.id);
+  const currentPlan = planIdMap[workspace.plan] ?? "free";
 
   return (
     <div className="upgrade-page">
@@ -17,6 +25,7 @@ export default async function UpgradePage() {
       <UpgradeClient
         workspaceId={workspace.id}
         workspaceName={workspace.name}
+        currentPlan={currentPlan}
       />
     </div>
   );

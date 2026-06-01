@@ -4861,3 +4861,131 @@ a {
   line-height: 1.4;
   padding: 0 2px;
 }
+
+.ws-choice-error {
+  font-size: 12.5px;
+  color: var(--color-error, #d44);
+  padding: 0 2px;
+}
+
+/* ─── Billing section (settings) ────────────────────────────────────────── */
+
+.billing-alert {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: var(--r-md);
+  font-size: 13px;
+  line-height: 1.4;
+  margin-bottom: 12px;
+}
+
+.billing-alert--error {
+  background: oklch(97% 0.02 20);
+  border: 1px solid oklch(88% 0.06 20);
+  color: oklch(35% 0.1 20);
+}
+
+.billing-alert--warn {
+  background: oklch(97% 0.02 70);
+  border: 1px solid oklch(88% 0.06 70);
+  color: oklch(35% 0.08 70);
+}
+
+.billing-alert-action {
+  flex-shrink: 0;
+  margin-left: auto;
+  padding: 3px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: var(--r-sm);
+  border: 1px solid currentColor;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  opacity: 0.85;
+}
+
+.billing-alert-action:hover:not(:disabled) {
+  opacity: 1;
+}
+
+.billing-alert-action:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.plan-cycle-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px;
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 500;
+  background: var(--bg-soft);
+  color: var(--ink-3);
+  border: 1px solid var(--line-2);
+}
+
+.billing-note {
+  font-size: 12.5px;
+  color: var(--ink-4);
+  margin-top: 8px;
+  line-height: 1.4;
+}
+
+/* ─── Upgrade success page ───────────────────────────────────────────────── */
+
+.upgrade-success-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 64px 24px;
+  gap: 12px;
+  max-width: 440px;
+  margin: 0 auto;
+}
+
+.upgrade-success-check {
+  margin-bottom: 4px;
+}
+
+.upgrade-success-title {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin: 0;
+}
+
+.upgrade-success-workspace {
+  font-size: 14px;
+  color: var(--ink-3);
+  margin: 0;
+}
+
+.upgrade-success-body {
+  font-size: 13.5px;
+  color: var(--ink-3);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.upgrade-success-cta {
+  margin-top: 8px;
+}
+
+.upgrade-success-spinner {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 3px solid var(--line-2);
+  border-top-color: var(--accent);
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

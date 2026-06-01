@@ -7,7 +7,7 @@ export function Footer() {
         <div className="ld-footer-inner">
           <div>
             <div className="ld-brand">
-              <span className="ld-brand-mark" aria-hidden="true" />
+              <img src="/logo.png" alt="" aria-hidden="true" className="ld-brand-mark" />
               Amarnai
             </div>
             <p className="ld-footer-tagline">

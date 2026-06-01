@@ -1,21 +1,15 @@
-import Link from "next/link";
 import { requireUser, getUserWorkspaceRole } from "@/lib/session";
 import { getSelectedWorkspace } from "@/lib/workspace";
 import { api } from "@/lib/api";
-import { db, WorkspacePlan } from "@amarnai/db";
+import { db } from "@amarnai/db";
 import { GmailConnectionSection } from "./GmailConnectionSection";
 import { WorkspaceNameSection } from "./WorkspaceNameSection";
 import { DeleteWorkspaceSection } from "./DeleteWorkspaceSection";
 import { EmailBlacklistSection } from "./EmailBlacklistSection";
 import { TeamMembersSection } from "./TeamMembersSection";
+import { BillingSection } from "./BillingSection";
 
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;
-
-const planLabels: Record<string, string> = {
-  FREE: "Personal",
-  PRO: "Pro",
-  BUSINESS: "Business",
-};
 
 export default async function SettingsPage({ searchParams }: { searchParams: SearchParams }) {
   const user = await requireUser();
@@ -41,6 +35,19 @@ export default async function SettingsPage({ searchParams }: { searchParams: Sea
   } catch {
     // API unavailable — show disconnected state
   }
+
+  const billing = await db.workspace.findUnique({
+    where: { id: workspace.id },
+    select: {
+      plan: true,
+      billingCycle: true,
+      currentPeriodEnd: true,
+      trialEndsAt: true,
+      cancelAtPeriodEnd: true,
+      paymentFailed: true,
+      stripeSubscriptionId: true,
+    },
+  });
 
   // Fetch team members and pending invitations for the team section.
   const [membersRaw, invitationsRaw] = await Promise.all([
@@ -96,17 +103,16 @@ export default async function SettingsPage({ searchParams }: { searchParams: Sea
 
       {isAdmin && (
         <>
-          <section className="settings-section">
-            <h2>Plan</h2>
-            <div className="plan-current-row">
-              <span className="plan-current-badge">{planLabels[workspace.plan] ?? workspace.plan}</span>
-              {workspace.plan !== WorkspacePlan.BUSINESS && (
-                <Link href="/upgrade" className="btn-primary">
-                  Upgrade
-                </Link>
-              )}
-            </div>
-          </section>
+          <BillingSection
+            plan={billing?.plan ?? workspace.plan}
+            billingCycle={billing?.billingCycle ?? null}
+            currentPeriodEnd={billing?.currentPeriodEnd ?? null}
+            trialEndsAt={billing?.trialEndsAt ?? null}
+            cancelAtPeriodEnd={billing?.cancelAtPeriodEnd ?? false}
+            paymentFailed={billing?.paymentFailed ?? false}
+            hasSubscription={!!billing?.stripeSubscriptionId}
+            isAdmin={isAdmin}
+          />
 
           <WorkspaceNameSection currentName={workspace.name} />
           <GmailConnectionSection

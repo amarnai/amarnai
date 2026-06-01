@@ -111,6 +111,11 @@ enum WorkspacePlan {
   BUSINESS
 }
 
+enum BillingCycle {
+  MONTHLY
+  ANNUAL
+}
+
 enum DraftStatus {
   GENERATING
   PROPOSED
@@ -162,6 +167,14 @@ model Workspace {
   ownerUserId            String
   plan                   WorkspacePlan  @default(FREE)
   membersCanEditTaxonomy Boolean        @default(false)
+  stripeCustomerId       String?
+  stripeSubscriptionId   String?        @unique
+  stripePriceId          String?
+  billingCycle           BillingCycle?
+  trialEndsAt            DateTime?
+  currentPeriodEnd       DateTime?
+  cancelAtPeriodEnd      Boolean        @default(false)
+  paymentFailed          Boolean        @default(false)
   createdAt              DateTime       @default(now())
   updatedAt              DateTime       @updatedAt
 

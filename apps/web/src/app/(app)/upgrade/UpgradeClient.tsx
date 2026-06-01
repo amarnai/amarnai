@@ -1,42 +1,39 @@
 "use client";
 
 import { useState } from "react";
-import { PricingPlans, type PlanId } from "@amarnai/ui";
+import { PricingPlans, type PlanId, type BillingCycle } from "@amarnai/ui";
 import { WorkspaceChoiceModal } from "./WorkspaceChoiceModal";
 
 interface Props {
   workspaceId: string;
   workspaceName: string;
+  currentPlan: PlanId;
 }
 
-export function UpgradeClient({ workspaceId: _workspaceId, workspaceName }: Props) {
-  const [pendingPlan, setPendingPlan] = useState<PlanId | null>(null);
+interface Pending {
+  plan: PlanId;
+  cycle: BillingCycle;
+}
 
-  function handleSelectPlan(plan: PlanId, _cycle: string) {
+export function UpgradeClient({ workspaceId, workspaceName, currentPlan }: Props) {
+  const [pending, setPending] = useState<Pending | null>(null);
+
+  function handleSelectPlan(plan: PlanId, cycle: BillingCycle) {
     if (plan === "free") return;
-    setPendingPlan(plan);
-  }
-
-  function upgradeCurrentWorkspace() {
-    // TODO: implement upgrade flow for workspace ${workspaceId} to plan ${pendingPlan}
-    setPendingPlan(null);
-  }
-
-  function createPaidWorkspace() {
-    // TODO: implement new paid workspace creation for plan ${pendingPlan}
-    setPendingPlan(null);
+    setPending({ plan, cycle });
   }
 
   return (
     <>
-      <PricingPlans currentPlan="free" onSelectPlan={handleSelectPlan} />
+      <PricingPlans currentPlan={currentPlan} onSelectPlan={handleSelectPlan} />
 
-      {pendingPlan !== null && (
+      {pending !== null && (
         <WorkspaceChoiceModal
+          workspaceId={workspaceId}
           workspaceName={workspaceName}
-          onClose={() => setPendingPlan(null)}
-          onUpgradeCurrentWorkspace={upgradeCurrentWorkspace}
-          onCreatePaidWorkspace={createPaidWorkspace}
+          plan={pending.plan}
+          cycle={pending.cycle}
+          onClose={() => setPending(null)}
         />
       )}
     </>

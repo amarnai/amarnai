@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { DEMO_THREADS, DEMO_FOLDERS } from "@/components/demo/demo-seed";
 
 type Tone = "ok" | "review" | "accent" | "neutral";
 
@@ -13,16 +14,44 @@ type PoolItem = {
   tone: Tone;
 };
 
-const POOL: PoolItem[] = [
-  { from: "Burna-Buriash II",       init: "BB", hue: 220, subj: "Gold balance — third consignment overdue",    dest: "Customers › Enterprise", tone: "ok" },
-  { from: "Aziru of Amurru",        init: "AA", hue: 140, subj: "Alliance proposal — house of Amurru",          dest: "Needs review",           tone: "review" },
-  { from: "Royal Appointments",     init: "RA", hue: 65,  subj: "Application: Chief of Correspondence",         dest: "Hiring",                 tone: "accent" },
-  { from: "Rib-Hadda of Byblos",    init: "RH", hue: 30,  subj: "Re: Grain shipment — third delay this season", dest: "Customers › SMB",        tone: "ok" },
-  { from: "Abdi-Heba of Urusalim",  init: "AU", hue: 55,  subj: "Passing through the Delta — free to meet?",   dest: "Needs review",           tone: "review" },
-  { from: "Tushratta of Mitanni",   init: "TM", hue: 280, subj: "Council convening — season of Shemu",          dest: "Investors › Current",    tone: "accent" },
-  { from: "Horemheb of Thebes",     init: "HT", hue: 190, subj: "Re: Interview — Chief of Correspondence",     dest: "Hiring",                 tone: "accent" },
-  { from: "Scribal Office",         init: "SO", hue: 75,  subj: "Q2 clay tablet ledger — please review",        dest: "Other",                  tone: "neutral" },
-];
+// Hue and initials are presentation-only — everything else comes from demo-seed
+const THREAD_DISPLAY: Record<string, { hue: number; init: string }> = {
+  t1: { hue: 220, init: "BB" },
+  t2: { hue: 140, init: "AA" },
+  t3: { hue: 65,  init: "BR" },
+  t4: { hue: 30,  init: "RH" },
+  t5: { hue: 55,  init: "AU" },
+  t6: { hue: 280, init: "TM" },
+};
+
+function folderDest(folderId: string | null): string {
+  const folder = DEMO_FOLDERS.find(f => f.id === folderId);
+  if (!folder) return folderId ?? "";
+  if (folder.parentId) {
+    const parent = DEMO_FOLDERS.find(f => f.id === folder.parentId);
+    if (parent) return `${parent.name} › ${folder.name}`;
+  }
+  return folder.name;
+}
+
+function threadTone(folderId: string | null, status: string | null): Tone {
+  if (status === "review") return "review";
+  if (folderId?.startsWith("customers")) return "ok";
+  if (folderId === "other") return "neutral";
+  return "accent";
+}
+
+const POOL: PoolItem[] = DEMO_THREADS.map(t => {
+  const display = THREAD_DISPLAY[t.id] ?? { hue: 200, init: "??" };
+  return {
+    from: t.messages[0]!.fromName,
+    init: display.init,
+    hue: display.hue,
+    subj: t.subject,
+    dest: folderDest(t.folderId),
+    tone: threadTone(t.folderId, t.status),
+  };
+});
 
 const MAX = 5;
 

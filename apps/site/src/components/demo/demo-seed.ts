@@ -241,11 +241,11 @@ export const DEMO_THREADS: ThreadItem[] = [
     messages: [
       {
         id: "m5a",
-        fromName: "Abdi-Heba of Urusalim",
+        fromName: "Abdi-Heba of Urushalim",
         fromEmail: "abdi-heba@urusalim.gov",
         time: d("2026-05-27T18:33:00Z"),
         snippet: "Passing through the Delta — free to meet?",
-        bodyText: "To the Great King,\n\nMy travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face — there are matters easier said than written.\n\nYour servant, Abdi-Heba, governor of Urusalim",
+        bodyText: "To the Great King,\n\nMy travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face — there are matters easier said than written.\n\nYour servant, Abdi-Heba, governor of Urushalim",
       },
     ],
     hasDraft: false,
