@@ -15,9 +15,13 @@ export interface ThreadPreviewProps {
   /** AI reasoning text — provided statically. */
   reasoning: string | null;
   decisionSource?: string | null;
-  /** Pre-loaded draft, if any. */
+  /** Current draft — controlled by the parent. */
   draft?: DraftItem | null | undefined;
   workspaceEmail?: string | null | undefined;
+  /** Called when the user clicks "Generate draft reply". Should resolve when the draft is ready. */
+  onGenerateDraft?: (() => Promise<void>) | undefined;
+  /** Called when the user toggles the sent status of the draft. */
+  onToggleDraftSent?: (() => void) | undefined;
   onApprove?: ((threadId: string) => void) | undefined;
   onReroute?: ((threadId: string, anchor: HTMLElement) => void) | undefined;
   onClose?: (() => void) | undefined;
@@ -31,15 +35,17 @@ export function ThreadPreview({
   messages,
   reasoning,
   decisionSource = null,
-  draft: initialDraft = null,
+  draft = null,
   workspaceEmail,
+  onGenerateDraft,
+  onToggleDraftSent,
   onApprove,
   onReroute,
   onClose,
   onMarkDone,
   onUnmarkDone,
 }: ThreadPreviewProps) {
-  const [draft, setDraft] = useState<DraftItem | null>(initialDraft);
+  const [generating, setGenerating] = useState(false);
 
   const enrichedThread = { ...thread, reasoning };
   const lastMsg = messages[messages.length - 1];
@@ -49,10 +55,14 @@ export function ThreadPreview({
     lastMsg.fromEmail.toLowerCase() === workspaceEmail.toLowerCase();
   const canDraft = thread.status !== "unsorted" && !lastMsgIsOwn;
 
-  function handleToggleDraftSent() {
-    if (!draft) return;
-    const newSent = draft.status !== "SENT";
-    setDraft({ ...draft, status: newSent ? "SENT" : "PROPOSED" });
+  async function handleGenerateDraft() {
+    if (!onGenerateDraft) return;
+    setGenerating(true);
+    try {
+      await onGenerateDraft();
+    } finally {
+      setGenerating(false);
+    }
   }
 
   return (
@@ -107,8 +117,8 @@ export function ThreadPreview({
           ))}
         </div>
 
-        {canDraft && !draft && (
-          <button type="button" className="em-draft-cta" onClick={() => {}}>
+        {canDraft && !draft && !generating && (
+          <button type="button" className="em-draft-cta" onClick={handleGenerateDraft}>
             <span className="em-draft-cta-glyph" aria-hidden>
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                 <path d="M2 9.5h8M2 7l5-5 1.5 1.5-5 5H2V7zM7 3l1.5-1.5 1.5 1.5-1.5 1.5L7 3z" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round" />
@@ -118,8 +128,15 @@ export function ThreadPreview({
           </button>
         )}
 
-        {draft && (
-          <SuggestedDraftCard draft={draft} onToggleSent={handleToggleDraftSent} />
+        {generating && (
+          <div className="em-draft-skeleton">
+            <span className="em-draft-skeleton-pulse" />
+            Writing draft reply…
+          </div>
+        )}
+
+        {draft && !generating && (
+          <SuggestedDraftCard draft={draft} onToggleSent={() => onToggleDraftSent?.()} />
         )}
       </div>
     </div>

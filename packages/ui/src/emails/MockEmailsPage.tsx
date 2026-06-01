@@ -19,6 +19,8 @@ export interface MockEmailsPageProps {
   syncInfo?: SyncInfo;
   workspaceEmail?: string | null;
   upgradeHref?: string;
+  /** Maps thread id → pre-written draft body for mock generation. */
+  draftBodies?: Record<string, string>;
 }
 
 export function MockEmailsPage({
@@ -29,6 +31,7 @@ export function MockEmailsPage({
   syncInfo = null,
   workspaceEmail,
   upgradeHref,
+  draftBodies,
 }: MockEmailsPageProps) {
   const now = useRef(new Date()).current;
 
@@ -104,6 +107,31 @@ export function MockEmailsPage({
     setRerouteThreadId(null);
   }
 
+  function handleToggleDraftSent(threadId: string) {
+    setDraftMap((m) => {
+      const existing = m.get(threadId);
+      if (!existing) return m;
+      const next = new Map(m);
+      next.set(threadId, { ...existing, status: existing.status === "SENT" ? "PROPOSED" : "SENT" });
+      return next;
+    });
+  }
+
+  function handleGenerateDraft(threadId: string): Promise<void> {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const body = draftBodies?.[threadId] ?? "Thank you for your message. I'll follow up shortly.";
+        setDraftMap((m) => {
+          const next = new Map(m);
+          next.set(threadId, { id: `draft-${threadId}`, subject: null, body, status: "PROPOSED" });
+          return next;
+        });
+        setThreads((ts) => ts.map((t) => t.id === threadId ? { ...t, hasDraft: true, isDrafting: false } : t));
+        resolve();
+      }, 1000);
+    });
+  }
+
   function commitReroute(folderId: string) {
     const folder = folders.find((f) => f.id === folderId);
     const folderName = folder?.name ?? "folder";
@@ -165,6 +193,8 @@ export function MockEmailsPage({
           reasoning={selectedThread.reasoning}
           draft={draftMap.get(selectedThread.id) ?? null}
           workspaceEmail={workspaceEmail}
+          onGenerateDraft={draftBodies ? () => handleGenerateDraft(selectedThread.id) : undefined}
+          onToggleDraftSent={() => handleToggleDraftSent(selectedThread.id)}
           onApprove={handleApprove}
           onReroute={openRerouteFor}
           onClose={() => setSelectedId(null)}

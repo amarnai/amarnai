@@ -1,7 +1,7 @@
 "use client";
 
 import { MockEmailsPage } from "@amarnai/ui/emails";
-import { DEMO_THREADS, DEMO_FOLDERS } from "@/components/demo/demo-seed";
+import { DEMO_THREADS, DEMO_FOLDERS, DEMO_DRAFT_BODIES } from "@/components/demo/demo-seed";
 
 export function EmailsDemoSection() {
   return (
@@ -39,6 +39,7 @@ export function EmailsDemoSection() {
             <MockEmailsPage
               initialThreads={DEMO_THREADS}
               initialFolders={DEMO_FOLDERS}
+              draftBodies={DEMO_DRAFT_BODIES}
               syncInfo={{ lastSyncedAt: new Date().toISOString(), backfillStatus: "IDLE", workspacePlan: "PRO" }}
             />
           </div>
