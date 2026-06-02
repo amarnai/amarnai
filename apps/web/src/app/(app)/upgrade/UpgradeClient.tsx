@@ -8,6 +8,7 @@ interface Props {
   workspaceId: string;
   workspaceName: string;
   currentPlan: PlanId;
+  trialUsed: boolean;
 }
 
 interface Pending {
@@ -15,7 +16,7 @@ interface Pending {
   cycle: BillingCycle;
 }
 
-export function UpgradeClient({ workspaceId, workspaceName, currentPlan }: Props) {
+export function UpgradeClient({ workspaceId, workspaceName, currentPlan, trialUsed }: Props) {
   const [pending, setPending] = useState<Pending | null>(null);
 
   function handleSelectPlan(plan: PlanId, cycle: BillingCycle) {
@@ -25,7 +26,7 @@ export function UpgradeClient({ workspaceId, workspaceName, currentPlan }: Props
 
   return (
     <>
-      <PricingPlans currentPlan={currentPlan} onSelectPlan={handleSelectPlan} />
+      <PricingPlans currentPlan={currentPlan} trialUsed={trialUsed} onSelectPlan={handleSelectPlan} />
 
       {pending !== null && (
         <WorkspaceChoiceModal

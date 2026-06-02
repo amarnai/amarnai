@@ -12,6 +12,7 @@ import {
 
 interface Props {
   currentPlan?: PlanId;
+  trialUsed?: boolean;
   onSelectPlan?: (plan: PlanId, cycle: BillingCycle) => void;
   className?: string;
   showMatrix?: boolean;
@@ -165,14 +166,22 @@ function PlanCard({
   plan,
   cycle,
   isCurrent,
+  isFeatured,
+  showBadge,
+  trialUsed,
+  isLowerThanCurrent,
   onSelect,
 }: {
   plan: (typeof PLANS)[number];
   cycle: BillingCycle;
   isCurrent: boolean;
+  isFeatured: boolean;
+  showBadge: boolean;
+  trialUsed: boolean;
+  isLowerThanCurrent: boolean;
   onSelect?: ((plan: PlanId, cycle: BillingCycle) => void) | undefined;
 }) {
-  const cardClass = ["plan-card", plan.featured ? "featured" : ""].filter(Boolean).join(" ");
+  const cardClass = ["plan-card", isFeatured ? "featured" : "", isCurrent ? "current" : ""].filter(Boolean).join(" ");
   const ctaClass = [
     "plan-cta",
     plan.cta.kind === "primary" ? "primary" : "",
@@ -182,7 +191,7 @@ function PlanCard({
 
   return (
     <div className={cardClass}>
-      {plan.badge && <span className="plan-badge">{plan.badge}</span>}
+      {showBadge && plan.badge && <span className="plan-badge">{plan.badge}</span>}
       <div className="plan-name">{plan.name}</div>
       <div className="plan-tagline">{plan.tagline}</div>
       <PlanPrice plan={plan} cycle={cycle} />
@@ -191,7 +200,13 @@ function PlanCard({
         disabled={isCurrent}
         onClick={() => !isCurrent && onSelect?.(plan.id, cycle)}
       >
-        {isCurrent ? "Current plan" : plan.cta.label}
+        {isCurrent
+          ? "Current plan"
+          : isLowerThanCurrent
+          ? `Downgrade to ${plan.name}`
+          : trialUsed && !plan.free
+          ? `Upgrade to ${plan.name}`
+          : plan.cta.label}
       </button>
       <ul className="plan-hl">
         {plan.highlights.map((h) => (
@@ -205,8 +220,13 @@ function PlanCard({
   );
 }
 
-function ComparisonMatrix({ cycle }: { cycle: BillingCycle }) {
-  const featuredIdx = PLANS.findIndex((p) => p.featured);
+function ComparisonMatrix({ cycle, featuredPlanId }: { cycle: BillingCycle; featuredPlanId?: PlanId | null }) {
+  const featuredIdx =
+    featuredPlanId === null
+      ? -1
+      : featuredPlanId !== undefined
+      ? PLANS.findIndex((p) => p.id === featuredPlanId)
+      : PLANS.findIndex((p) => p.featured);
   const [mobilePlan, setMobilePlan] = useState(featuredIdx);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -352,14 +372,32 @@ function SelfHostNote() {
   );
 }
 
+const PLAN_ORDER: PlanId[] = ["free", "pro", "business"];
+
 export function PricingPlans({
   currentPlan,
+  trialUsed = false,
   onSelectPlan,
   className,
   showMatrix = true,
   showSelfHost = true,
 }: Props) {
   const [cycle, setCycle] = useState<BillingCycle>("monthly");
+
+  const currentIdx = currentPlan ? PLAN_ORDER.indexOf(currentPlan) : -1;
+  // On the highest tier there is nothing to emphasise.
+  const isHighestPlan = currentIdx === PLAN_ORDER.length - 1;
+  // Next tier up gets the featured treatment; null when no current plan or on highest.
+  const emphasizedPlanId: PlanId | null =
+    !isHighestPlan && currentIdx >= 0 && currentIdx < PLAN_ORDER.length - 1
+      ? PLAN_ORDER[currentIdx + 1]!
+      : null;
+  // Show the badge only when using the default emphasis or when the override
+  // points at the same plan as the static featured plan (free → pro).
+  const defaultFeaturedId = PLANS.find((p) => p.featured)?.id;
+  const showBadge =
+    !isHighestPlan &&
+    (emphasizedPlanId === null || emphasizedPlanId === defaultFeaturedId);
 
   return (
     <div className={["plans", className].filter(Boolean).join(" ")}>
@@ -371,11 +409,26 @@ export function PricingPlans({
             plan={plan}
             cycle={cycle}
             isCurrent={plan.id === currentPlan}
+            isFeatured={
+              isHighestPlan
+                ? false
+                : emphasizedPlanId !== null
+                ? plan.id === emphasizedPlanId
+                : !!plan.featured
+            }
+            showBadge={showBadge}
+            trialUsed={trialUsed}
+            isLowerThanCurrent={currentIdx >= 0 && PLAN_ORDER.indexOf(plan.id) < currentIdx}
             onSelect={onSelectPlan}
           />
         ))}
       </div>
-      {showMatrix && <ComparisonMatrix cycle={cycle} />}
+      {showMatrix && (
+        <ComparisonMatrix
+          cycle={cycle}
+          {...(isHighestPlan ? { featuredPlanId: null } : emphasizedPlanId !== undefined ? { featuredPlanId: emphasizedPlanId } : {})}
+        />
+      )}
       {showSelfHost && <SelfHostNote />}
     </div>
   );

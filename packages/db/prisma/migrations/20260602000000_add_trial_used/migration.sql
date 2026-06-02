@@ -1,0 +1,1 @@
+ALTER TABLE "Workspace" ADD COLUMN "trialUsed" BOOLEAN NOT NULL DEFAULT false;

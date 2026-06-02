@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 interface Props {
@@ -12,6 +13,7 @@ interface Props {
   paymentFailed: boolean;
   hasSubscription: boolean;
   isAdmin: boolean;
+  cancelled?: boolean;
 }
 
 const planLabels: Record<string, string> = {
@@ -34,15 +36,17 @@ export function BillingSection({
   paymentFailed,
   hasSubscription,
   isAdmin,
+  cancelled,
 }: Props) {
+  const router = useRouter();
   const [portalLoading, setPortalLoading] = useState(false);
+  const [cancelStep, setCancelStep] = useState<"idle" | "confirming" | "loading">("idle");
+  const [cancelError, setCancelError] = useState<string | null>(null);
 
   async function openBillingPortal() {
     setPortalLoading(true);
     try {
-      const res = await fetch("/api/billing/create-portal-session", {
-        method: "POST",
-      });
+      const res = await fetch("/api/billing/create-portal-session", { method: "POST" });
       const data = await res.json();
       if (data.url) window.location.href = data.url;
     } finally {
@@ -50,13 +54,58 @@ export function BillingSection({
     }
   }
 
+  async function confirmCancel() {
+    setCancelStep("loading");
+    setCancelError(null);
+    try {
+      const res = await fetch("/api/billing/cancel-subscription", { method: "POST" });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setCancelError(data.error ?? "Something went wrong. Please try again.");
+        setCancelStep("confirming");
+        return;
+      }
+      router.push("/settings?cancelled=true");
+    } catch {
+      setCancelError("Something went wrong. Please try again.");
+      setCancelStep("confirming");
+    }
+  }
+
   const now = new Date();
   const isTrialing = trialEndsAt !== null && trialEndsAt > now;
   const cycleLabel = billingCycle ? cycleLabels[billingCycle] : null;
+  const canCancel = isAdmin && hasSubscription && !cancelAtPeriodEnd;
 
   return (
     <section className="settings-section">
       <h2>Plan &amp; Billing</h2>
+
+      {cancelled && !cancelAtPeriodEnd && plan === "FREE" && (
+        <div className="billing-alert billing-alert--info">
+          <span>Your subscription has been cancelled and your workspace has been downgraded to the free plan.</span>
+        </div>
+      )}
+
+      {cancelled && cancelAtPeriodEnd && currentPeriodEnd && (
+        <div className="billing-alert billing-alert--info">
+          <span>
+            Subscription cancelled.{" "}
+            {planLabels[plan] ?? plan} access continues until{" "}
+            <strong>{currentPeriodEnd.toLocaleDateString()}</strong>.
+          </span>
+          {hasSubscription && isAdmin && (
+            <button
+              type="button"
+              className="billing-alert-action"
+              onClick={openBillingPortal}
+              disabled={portalLoading}
+            >
+              {portalLoading ? "Loading…" : "Reactivate"}
+            </button>
+          )}
+        </div>
+      )}
 
       {paymentFailed && (
         <div className="billing-alert billing-alert--error">
@@ -100,22 +149,12 @@ export function BillingSection({
           <span className="plan-cycle-badge">{cycleLabel}</span>
         )}
 
-        {isAdmin && plan === "FREE" && (
+        {isAdmin && plan !== "BUSINESS" && !cancelAtPeriodEnd && (
           <Link href="/upgrade" className="btn-primary">
             Upgrade
           </Link>
         )}
 
-        {isAdmin && hasSubscription && !cancelAtPeriodEnd && (
-          <button
-            type="button"
-            className="btn-ghost"
-            onClick={openBillingPortal}
-            disabled={portalLoading}
-          >
-            {portalLoading ? "Loading…" : "Manage billing"}
-          </button>
-        )}
       </div>
 
       {isTrialing && trialEndsAt && (
@@ -131,6 +170,47 @@ export function BillingSection({
           Renews {billingCycle === "ANNUAL" ? "annually" : "monthly"} on{" "}
           <strong>{currentPeriodEnd.toLocaleDateString()}</strong>.
         </p>
+      )}
+
+      {canCancel && cancelStep === "idle" && (
+        <button
+          type="button"
+          className="billing-cancel-link"
+          onClick={() => setCancelStep("confirming")}
+        >
+          Cancel subscription
+        </button>
+      )}
+
+      {canCancel && cancelStep !== "idle" && (
+        <div className="billing-cancel-confirm">
+          <p className="billing-cancel-confirm__message">
+            {isTrialing
+              ? "Your free trial will end immediately and your workspace will be downgraded to the free plan."
+              : `Your subscription will cancel at the end of the current billing period${currentPeriodEnd ? ` on ${currentPeriodEnd.toLocaleDateString()}` : ""}.`}
+          </p>
+          {cancelError && (
+            <p className="billing-cancel-confirm__error">{cancelError}</p>
+          )}
+          <div className="billing-cancel-confirm__actions">
+            <button
+              type="button"
+              className="btn-danger"
+              onClick={confirmCancel}
+              disabled={cancelStep === "loading"}
+            >
+              {cancelStep === "loading" ? "Cancelling…" : "Confirm cancellation"}
+            </button>
+            <button
+              type="button"
+              className="btn-ghost"
+              onClick={() => { setCancelStep("idle"); setCancelError(null); }}
+              disabled={cancelStep === "loading"}
+            >
+              Keep subscription
+            </button>
+          </div>
+        </div>
       )}
     </section>
   );

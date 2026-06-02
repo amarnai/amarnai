@@ -95,6 +95,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
         stripePriceId: priceId,
         billingCycle: cycleValue,
         trialEndsAt,
+        ...(trialEndsAt !== null ? { trialUsed: true } : {}),
         currentPeriodEnd,
         cancelAtPeriodEnd: false,
         paymentFailed: false,
@@ -128,6 +129,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
         stripePriceId: priceId,
         billingCycle: cycleValue,
         trialEndsAt,
+        trialUsed: trialEndsAt !== null,
         currentPeriodEnd,
         members: { create: { userId: meta.userId, role: "OWNER" } },
       },
@@ -153,6 +155,35 @@ async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
     select: { id: true },
   });
   if (!workspace) return;
+
+  // If the user cancels while still in trial, revoke access immediately rather
+  // than waiting until the trial period ends.
+  if (subscription.cancel_at_period_end && subscription.status === "trialing") {
+    await db.workspace.update({
+      where: { id: workspace.id },
+      data: {
+        plan: "FREE",
+        stripeSubscriptionId: null,
+        stripePriceId: null,
+        billingCycle: null,
+        trialEndsAt: null,
+        currentPeriodEnd: null,
+        cancelAtPeriodEnd: false,
+        paymentFailed: false,
+      },
+    });
+    await db.auditLog.create({
+      data: {
+        workspaceId: workspace.id,
+        actorType: "SYSTEM",
+        eventType: "workspace.plan.downgraded",
+        entityType: "Workspace",
+        entityId: workspace.id,
+        metadata: { subscriptionId: subscription.id, reason: "trial_cancelled" },
+      },
+    });
+    return;
+  }
 
   await db.workspace.update({
     where: { id: workspace.id },

@@ -78,6 +78,10 @@ export function WorkspaceChoiceModal({
         setError(data.error ?? "Something went wrong. Please try again.");
         return;
       }
+      if (data.upgraded) {
+        window.location.href = "/settings";
+        return;
+      }
       window.location.href = data.url;
     } catch {
       setError("Something went wrong. Please try again.");

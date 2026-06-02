@@ -4317,6 +4317,10 @@ a {
 .plan-card.featured:hover {
   box-shadow: 0 0 0 1px var(--accent-line), var(--shadow-3);
 }
+.plan-card.current {
+  opacity: 0.55;
+  pointer-events: none;
+}
 .plan-badge {
   position: absolute;
   top: -11px;
@@ -5015,6 +5019,50 @@ a {
   color: var(--ink-4);
   margin-top: 8px;
   line-height: 1.4;
+}
+
+.billing-cancel-link {
+  display: inline-block;
+  margin-top: 14px;
+  font-size: 12.5px;
+  color: var(--ink-4);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.billing-cancel-link:hover {
+  color: var(--ink-1);
+}
+
+.billing-cancel-confirm {
+  margin-top: 14px;
+  padding: 14px;
+  border-radius: var(--r-md);
+  background: var(--bg-soft);
+  border: 1px solid var(--line-2);
+}
+
+.billing-cancel-confirm__message {
+  font-size: 13px;
+  color: var(--ink-2);
+  line-height: 1.5;
+  margin: 0 0 4px;
+}
+
+.billing-cancel-confirm__error {
+  font-size: 12.5px;
+  color: oklch(40% 0.12 20);
+  margin: 6px 0 0;
+}
+
+.billing-cancel-confirm__actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
 }
 
 /* ─── Upgrade success page ───────────────────────────────────────────────── */

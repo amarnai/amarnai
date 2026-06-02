@@ -46,7 +46,9 @@ export function ThreadPreview({
   const [_bodyLoaded, setBodyLoaded] = useState(false);
   const [messages, setMessages] = useState(thread.messages);
 
-  const [draftState, setDraftState] = useState<DraftState>("idle");
+  const [draftState, setDraftState] = useState<DraftState>(
+    thread.isDrafting ? "loading" : thread.hasDraft ? "ready" : "idle"
+  );
   const [draft, setDraft] = useState<Draft | null>(null);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -82,7 +84,7 @@ export function ThreadPreview({
 
   useEffect(() => {
     setBodyLoaded(false);
-    setDraftState(thread.isDrafting ? "loading" : "idle");
+    setDraftState(thread.isDrafting ? "loading" : thread.hasDraft ? "ready" : "idle");
     setDraft(null);
     clearPoll();
 

@@ -4,6 +4,32 @@ import { db } from "@amarnai/db";
 import { stripe } from "@/lib/stripe";
 import { getSelectedWorkspace } from "@/lib/workspace";
 
+// Configure the Stripe portal on first open per process — idempotent on Stripe's side.
+let _portalConfigured = false;
+
+async function configurePortal(): Promise<void> {
+  if (_portalConfigured) return;
+  try {
+    const { data: configs } = await stripe.billingPortal.configurations.list({ limit: 10 });
+    const config = configs.find((c) => c.is_default) ?? configs[0];
+    if (config) {
+      await stripe.billingPortal.configurations.update(config.id, {
+        business_profile: {
+          headline: "Amarnai",
+        },
+        features: {
+          subscription_cancel: {
+            cancellation_reason: { enabled: false },
+          },
+        },
+      });
+    }
+    _portalConfigured = true;
+  } catch {
+    // Non-fatal — proceed with whatever the portal is currently configured to show.
+  }
+}
+
 export async function POST() {
   const session = await auth();
   if (!session?.user?.id) {
@@ -27,9 +53,11 @@ export async function POST() {
 
   const baseUrl = process.env.AUTH_URL ?? "http://localhost:3000";
 
+  await configurePortal();
+
   const portalSession = await stripe.billingPortal.sessions.create({
     customer: ws.stripeCustomerId,
-    return_url: `${baseUrl}/settings`,
+    return_url: `${baseUrl}/settings?cancelled=true`,
   });
 
   return NextResponse.json({ url: portalSession.url });
