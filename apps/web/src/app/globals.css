@@ -4665,6 +4665,67 @@ a {
   }
 }
 
+@media (max-width: 640px) {
+  /* Center toggle above the list */
+  .plans-compare {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .plans-compare-tabs {
+    margin-bottom: 32px;
+  }
+
+  /* Clay accent on Pro toggle button (inactive gets accent text; active gets full fill) */
+  .plans-compare-tabs button.featured-plan {
+    color: var(--accent-ink);
+  }
+  .plans-compare-tabs button.on.featured-plan {
+    background: var(--accent-soft);
+    color: var(--accent-ink);
+    box-shadow: 0 0 0 1.5px var(--accent-line), var(--shadow-1);
+  }
+
+  /* Single-column stacked feature list */
+  .compare-mobile-list {
+    width: 100%;
+  }
+  .compare-mobile-group {
+    font-family: var(--f-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent-ink);
+    padding: 28px 0 10px;
+    border-bottom: 1px solid var(--accent-line);
+  }
+  .compare-mobile-group:first-child {
+    padding-top: 0;
+  }
+  .compare-mobile-row {
+    padding: 13px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .compare-mobile-label {
+    font-size: 12px;
+    color: var(--ink-4);
+    line-height: 1.4;
+  }
+  .compare-mobile-hint {
+    font-size: 11px;
+    color: var(--ink-5);
+    margin-top: 2px;
+    line-height: 1.4;
+  }
+  .compare-mobile-value {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-top: 6px;
+    line-height: 1.4;
+  }
+}
+
 /* ─── Upgrade page ───────────────────────────────────────────────────────── */
 
 .upgrade-page {

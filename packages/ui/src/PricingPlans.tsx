@@ -207,7 +207,16 @@ function PlanCard({
 
 function ComparisonMatrix({ cycle }: { cycle: BillingCycle }) {
   const featuredIdx = PLANS.findIndex((p) => p.featured);
-  const colClass = (i: number) => (i === featuredIdx ? "cell featured-col" : "cell");
+  const [mobilePlan, setMobilePlan] = useState(featuredIdx);
+  const [isMobile, setIsMobile] = useState(false);
+
+  React.useEffect(() => {
+    const mq = window.matchMedia("(max-width: 640px)");
+    const update = () => setIsMobile(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
 
   return (
     <div className="plans-compare">
@@ -215,62 +224,95 @@ function ComparisonMatrix({ cycle }: { cycle: BillingCycle }) {
         <h3>Compare every plan</h3>
         <span className="hint">All limits are per workspace.</span>
       </div>
-      <div className="plans-compare-scroll">
-        <table className="plans-table">
-          <colgroup>
-            <col className="col-feat" />
-            {PLANS.map((p) => (
-              <col key={p.id} />
+
+      {isMobile ? (
+        <>
+          <div className="plans-seg plans-compare-tabs" role="tablist" aria-label="Select plan to compare">
+            {PLANS.map((p, i) => (
+              <button
+                key={p.id}
+                role="tab"
+                aria-selected={i === mobilePlan}
+                className={[i === mobilePlan ? "on" : "", p.featured ? "featured-plan" : ""].filter(Boolean).join(" ")}
+                onClick={() => setMobilePlan(i)}
+              >
+                {p.name}
+              </button>
             ))}
-          </colgroup>
-          <thead className="plans-thead">
-            <tr>
-              <th />
-              {PLANS.map((p, i) => (
-                <th
-                  key={p.id}
-                  className={"planhead" + (i === featuredIdx ? " featured" : "")}
-                >
-                  <div className="ph-name">{p.name}</div>
-                  <div className="ph-price">
-                    {p.free
-                      ? "Free"
-                      : `$${p[cycle === "annual" ? "annualMonthlyPrice" : "monthlyPrice"]}/workspace/month`}
-                  </div>
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
+          </div>
+          <div className="compare-mobile-list">
             {FEATURE_GROUPS.map((group) => (
               <React.Fragment key={group.name}>
-                <tr className="plans-group-row">
-                  <td className="group-label">{group.name}</td>
-                  {PLANS.map((p, i) => (
-                    <td key={p.id} className={i === featuredIdx ? "featured-col" : ""} />
-                  ))}
-                </tr>
+                <div className="compare-mobile-group">{group.name}</div>
                 {group.rows.map((row) => {
-                  const cells = "billing" in row ? row.billing[cycle] : row.values;
+                  const allCells = "billing" in row ? row.billing[cycle] : row.values;
                   return (
-                    <tr className="row" key={row.label}>
-                      <td className="feat">
-                        <div className="feat-label">{row.label}</div>
-                        {row.hint && <div className="feat-hint">{row.hint}</div>}
-                      </td>
-                      {cells.map((v, i) => (
-                        <td key={i} className={colClass(i)}>
-                          <Cell value={v} />
-                        </td>
-                      ))}
-                    </tr>
+                    <div className="compare-mobile-row" key={row.label}>
+                      <div className="compare-mobile-label">{row.label}</div>
+                      {row.hint && <div className="compare-mobile-hint">{row.hint}</div>}
+                      <div className="compare-mobile-value">
+                        <Cell value={allCells[mobilePlan]} />
+                      </div>
+                    </div>
                   );
                 })}
               </React.Fragment>
             ))}
-          </tbody>
-        </table>
-      </div>
+          </div>
+        </>
+      ) : (
+        <div className="plans-compare-scroll">
+          <table className="plans-table">
+            <colgroup>
+              <col className="col-feat" />
+              {PLANS.map((p) => <col key={p.id} />)}
+            </colgroup>
+            <thead className="plans-thead">
+              <tr>
+                <th />
+                {PLANS.map((p, i) => (
+                  <th key={p.id} className={["planhead", i === featuredIdx ? "featured" : ""].filter(Boolean).join(" ")}>
+                    <div className="ph-name">{p.name}</div>
+                    <div className="ph-price">
+                      {p.free
+                        ? "Free"
+                        : `$${p[cycle === "annual" ? "annualMonthlyPrice" : "monthlyPrice"]}/workspace/month`}
+                    </div>
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {FEATURE_GROUPS.map((group) => (
+                <React.Fragment key={group.name}>
+                  <tr className="plans-group-row">
+                    <td className="group-label">{group.name}</td>
+                    {PLANS.map((p, i) => (
+                      <td key={p.id} className={i === featuredIdx ? "featured-col" : ""} />
+                    ))}
+                  </tr>
+                  {group.rows.map((row) => {
+                    const allCells = "billing" in row ? row.billing[cycle] : row.values;
+                    return (
+                      <tr className="row" key={row.label}>
+                        <td className="feat">
+                          <div className="feat-label">{row.label}</div>
+                          {row.hint && <div className="feat-hint">{row.hint}</div>}
+                        </td>
+                        {PLANS.map((p, i) => (
+                          <td key={p.id} className={["cell", i === featuredIdx ? "featured-col" : ""].filter(Boolean).join(" ")}>
+                            <Cell value={allCells[i]} />
+                          </td>
+                        ))}
+                      </tr>
+                    );
+                  })}
+                </React.Fragment>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 }
