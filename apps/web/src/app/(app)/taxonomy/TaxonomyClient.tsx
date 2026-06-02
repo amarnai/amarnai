@@ -8,8 +8,6 @@ import {
   Controls,
   useNodesState,
   useEdgesState,
-  Handle,
-  Position,
   BaseEdge,
   getBezierPath,
   MarkerType,
@@ -51,6 +49,7 @@ import {
   snapshotsEqual,
   type GraphSnapshot,
 } from "./useTaxonomyHistory";
+import { TaxonomyNodeCardBase } from "@amarnai/ui/taxonomy";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -98,32 +97,19 @@ function toRFEdges(edges: TaxonomyEdge[], nodes: TaxonomyNode[]): Edge[] {
 
 function TaxonomyNodeCard({ data, selected }: NodeProps<RFNode>) {
   const { node, ignoredReason } = data;
-  const ignored = ignoredReason !== null;
-
-  const tooltipText = ignoredReason === "no-incoming"
+  const title = ignoredReason === "no-incoming"
     ? "This node has no incoming edge and will not be used."
     : undefined;
 
   return (
-    <div
-      className={`taxonomy-node-card${selected ? " selected" : ""}${ignored ? " unreachable" : ""}`}
-      title={tooltipText}
-    >
-      {!node.isRoot && <Handle type="target" position={Position.Left} />}
-      <div className="node-name">{node.name}</div>
-      {node.description && (
-        <div className="node-description">{node.description}</div>
-      )}
-      <div className="node-badges">
-        {node.isRoot ? (
-          <span className="badge node-kind node-kind-rule">Entry</span>
-        ) : (
-          <span className="badge node-kind node-kind-category">Category</span>
-        )}
-        {ignored && <span className="badge badge-unreachable">Ignored</span>}
-      </div>
-      <Handle type="source" position={Position.Right} />
-    </div>
+    <TaxonomyNodeCardBase
+      name={node.name}
+      {...(node.description ? { description: node.description } : {})}
+      isRoot={node.isRoot}
+      ignored={ignoredReason !== null}
+      selected={selected}
+      {...(title ? { title } : {})}
+    />
   );
 }
 

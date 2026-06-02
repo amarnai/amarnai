@@ -5,8 +5,6 @@ import {
   ReactFlowProvider,
   Background,
   Controls,
-  Handle,
-  Position,
   useNodesState,
   useEdgesState,
   addEdge,
@@ -15,6 +13,7 @@ import {
   type Connection,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
+import { TaxonomyNodeCardBase } from "@amarnai/ui/taxonomy";
 import type { DemoNode, DemoNodeData } from "./demo-seed";
 import { DEMO_NODES, DEMO_EDGES } from "./demo-seed";
 
@@ -22,21 +21,12 @@ const EDGE_COLOR = "#94a3b8";
 
 function DemoNodeCard({ data }: NodeProps<DemoNode>) {
   const { label, description, isRoot } = data as DemoNodeData;
-
   return (
-    <div className="taxonomy-node-card">
-      {!isRoot && <Handle type="target" position={Position.Left} />}
-      <div className="node-name">{label}</div>
-      {description && <div className="node-description">{description}</div>}
-      <div className="node-badges">
-        {isRoot ? (
-          <span className="badge node-kind node-kind-rule">Entry</span>
-        ) : (
-          <span className="badge node-kind node-kind-category">Category</span>
-        )}
-      </div>
-      <Handle type="source" position={Position.Right} />
-    </div>
+    <TaxonomyNodeCardBase
+      name={label}
+      {...(description ? { description } : {})}
+      isRoot={isRoot}
+    />
   );
 }
 
