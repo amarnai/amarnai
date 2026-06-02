@@ -1,8 +1,13 @@
 const API_BASE = process.env["API_URL"] ?? "http://localhost:3001";
 
+function internalAuthHeader() {
+  const secret = process.env["INTERNAL_API_SECRET"] ?? "dev-internal-secret";
+  return { Authorization: `Bearer ${secret}` };
+}
+
 async function apiFetch<T>(path: string, revalidate?: number): Promise<T> {
   const next = revalidate !== undefined ? { next: { revalidate } } : { cache: "no-store" as RequestCache };
-  const res = await fetch(`${API_BASE}${path}`, next);
+  const res = await fetch(`${API_BASE}${path}`, { ...next, headers: internalAuthHeader() });
   if (!res.ok) {
     throw new Error(`API ${path} returned ${res.status}`);
   }
@@ -17,7 +22,10 @@ async function apiMutate<T>(
   const hasBody = body !== undefined;
   const res = await fetch(`${API_BASE}${path}`, {
     method,
-    headers: hasBody ? { "Content-Type": "application/json" } : {},
+    headers: {
+      ...internalAuthHeader(),
+      ...(hasBody ? { "Content-Type": "application/json" } : {}),
+    },
     body: hasBody ? JSON.stringify(body) : null,
     cache: "no-store",
   });
@@ -567,7 +575,7 @@ export const api = {
   ): Promise<{ draft: Draft } | { generating: true } | { quotaExceeded: true; used: number; limit: number; resetsAt: string }> => {
     const res = await fetch(
       `${API_BASE}/workspaces/${workspaceId}/email-threads/${threadId}/generate-draft`,
-      { method: "POST", cache: "no-store" }
+      { method: "POST", cache: "no-store", headers: internalAuthHeader() }
     );
     if (res.status === 429) {
       const body = await res.json().catch(() => ({})) as Record<string, unknown>;

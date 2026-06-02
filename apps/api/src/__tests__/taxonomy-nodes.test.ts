@@ -1,4 +1,5 @@
 import { vi, describe, it, expect, beforeEach } from "vitest";
+import { authed } from "./helpers.js";
 
 vi.mock("@amarnai/db", () => ({
   db: {
@@ -43,23 +44,23 @@ const baseNode = {
 };
 
 function post(path: string, body: unknown) {
-  return app.request(path, {
+  return app.request(path, authed({
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
-  });
+  }));
 }
 
 function patch(path: string, body: unknown) {
-  return app.request(path, {
+  return app.request(path, authed({
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
-  });
+  }));
 }
 
 function del(path: string) {
-  return app.request(path, { method: "DELETE" });
+  return app.request(path, authed({ method: "DELETE" }));
 }
 
 beforeEach(() => {
@@ -79,7 +80,7 @@ describe("GET /workspaces/:workspaceId/taxonomy-nodes", () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
 
-    const res = await app.request(`/workspaces/${WS_ID}/taxonomy-nodes`);
+    const res = await app.request(`/workspaces/${WS_ID}/taxonomy-nodes`, authed());
     expect(res.status).toBe(200);
     const body = (await res.json()) as typeof baseNode[];
     expect(body).toHaveLength(1);
@@ -92,7 +93,7 @@ describe("GET /workspaces/:workspaceId/taxonomy-nodes", () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
 
-    const res = await app.request(`/workspaces/${WS_ID}/taxonomy-nodes`);
+    const res = await app.request(`/workspaces/${WS_ID}/taxonomy-nodes`, authed());
     expect(res.status).toBe(200);
     const body = (await res.json()) as typeof baseNode[];
     expect(body[0]?.description).toBeNull();
@@ -101,7 +102,7 @@ describe("GET /workspaces/:workspaceId/taxonomy-nodes", () => {
   it("returns 404 when workspace not found", async () => {
     vi.mocked(db.workspace.findUnique).mockResolvedValue(null);
 
-    const res = await app.request(`/workspaces/nope/taxonomy-nodes`);
+    const res = await app.request(`/workspaces/nope/taxonomy-nodes`, authed());
     expect(res.status).toBe(404);
   });
 });

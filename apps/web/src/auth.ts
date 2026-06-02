@@ -108,7 +108,11 @@ export const { handlers, auth, signIn, signOut, unstable_update } = NextAuth({
 
           if (isNew) {
             const apiBase = process.env["API_URL"] ?? "http://localhost:3001";
-            fetch(`${apiBase}/workspaces/${workspace.id}/trigger-sync`, { method: "POST" }).catch(
+            const internalSecret = process.env["INTERNAL_API_SECRET"] ?? "dev-internal-secret";
+            fetch(`${apiBase}/workspaces/${workspace.id}/trigger-sync`, {
+              method: "POST",
+              headers: { Authorization: `Bearer ${internalSecret}` },
+            }).catch(
               (err) =>
                 console.error(
                   "[auth] trigger_sync:",

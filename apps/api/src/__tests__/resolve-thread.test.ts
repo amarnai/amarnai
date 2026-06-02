@@ -1,4 +1,5 @@
 import { vi, describe, it, expect, beforeEach } from "vitest";
+import { authed } from "./helpers.js";
 
 vi.mock("@amarnai/db", () => ({
   db: {
@@ -43,11 +44,11 @@ describe("POST /workspaces/:workspaceId/email-threads/:threadId/resolve", () => 
 
     const res = await app.request(
       `/workspaces/${WS_ID}/email-threads/${THREAD_ID}/resolve`,
-      {
+      authed({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId: USER_ID }),
-      }
+      })
     );
 
     expect(res.status).toBe(200);
@@ -72,11 +73,11 @@ describe("POST /workspaces/:workspaceId/email-threads/:threadId/resolve", () => 
 
     const res = await app.request(
       `/workspaces/${WS_ID}/email-threads/${THREAD_ID}/resolve`,
-      {
+      authed({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId: USER_ID }),
-      }
+      })
     );
 
     expect(res.status).toBe(404);
@@ -89,11 +90,11 @@ describe("POST /workspaces/:workspaceId/email-threads/:threadId/resolve", () => 
 
     const res = await app.request(
       `/workspaces/${WS_ID}/email-threads/${THREAD_ID}/resolve`,
-      {
+      authed({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId: USER_ID }),
-      }
+      })
     );
 
     expect(res.status).toBe(403);
@@ -103,11 +104,11 @@ describe("POST /workspaces/:workspaceId/email-threads/:threadId/resolve", () => 
   it("returns 400 when userId is missing", async () => {
     const res = await app.request(
       `/workspaces/${WS_ID}/email-threads/${THREAD_ID}/resolve`,
-      {
+      authed({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({}),
-      }
+      })
     );
 
     expect(res.status).toBe(400);
@@ -120,11 +121,11 @@ describe("DELETE /workspaces/:workspaceId/email-threads/:threadId/resolve", () =
 
     const res = await app.request(
       `/workspaces/${WS_ID}/email-threads/${THREAD_ID}/resolve`,
-      {
+      authed({
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId: USER_ID }),
-      }
+      })
     );
 
     expect(res.status).toBe(200);
@@ -146,11 +147,11 @@ describe("DELETE /workspaces/:workspaceId/email-threads/:threadId/resolve", () =
 
     const res = await app.request(
       `/workspaces/${WS_ID}/email-threads/${THREAD_ID}/resolve`,
-      {
+      authed({
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId: USER_ID }),
-      }
+      })
     );
 
     expect(res.status).toBe(404);
@@ -163,11 +164,11 @@ describe("DELETE /workspaces/:workspaceId/email-threads/:threadId/resolve", () =
 
     const res = await app.request(
       `/workspaces/${WS_ID}/email-threads/${THREAD_ID}/resolve`,
-      {
+      authed({
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId: USER_ID }),
-      }
+      })
     );
 
     expect(res.status).toBe(403);

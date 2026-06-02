@@ -1,4 +1,5 @@
 import { vi, describe, it, expect, beforeEach, afterEach } from "vitest";
+import { authed } from "./helpers.js";
 
 vi.mock("@amarnai/db", () => ({
   Prisma: {},
@@ -88,11 +89,11 @@ const mockMessages = [
 ];
 
 function post(path: string, body: unknown) {
-  return app.request(path, {
+  return app.request(path, authed({
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
-  });
+  }));
 }
 
 beforeEach(() => {

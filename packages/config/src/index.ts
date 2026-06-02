@@ -20,6 +20,10 @@ const envSchema = z.object({
   // Set to 'false' to disable per-workspace monthly draft quotas.
   // Self-hosted deployments that manage their own AI costs should set this to false.
   ENFORCE_DRAFT_QUOTA: z.string().transform((v) => v !== 'false').default('true'),
+  // Set to 'false' to disable per-workspace monthly thread-sort quotas.
+  // Self-hosted deployments that manage their own AI costs should set this to false.
+  ENFORCE_THREAD_SORT_QUOTA: z.string().transform((v) => v !== 'false').default('true'),
+  INTERNAL_API_SECRET: z.string().optional(),
 });
 
 function validateEnv(raw: NodeJS.ProcessEnv) {
@@ -35,6 +39,10 @@ function validateEnv(raw: NodeJS.ProcessEnv) {
     if (env.NODE_ENV === 'production' && !env.ALLOW_LOCAL_AI_IN_PRODUCTION) {
       throw new Error('AI_PROVIDER=ollama is not allowed in production unless ALLOW_LOCAL_AI_IN_PRODUCTION=true');
     }
+  }
+
+  if (env.NODE_ENV === 'production' && !env.INTERNAL_API_SECRET) {
+    throw new Error('INTERNAL_API_SECRET is required in production');
   }
 
   if (env.AI_PROVIDER === 'frontier') {
@@ -76,5 +84,7 @@ export const config = {
   },
   billing: {
     enforceDraftQuota: env.ENFORCE_DRAFT_QUOTA,
+    enforceThreadSortQuota: env.ENFORCE_THREAD_SORT_QUOTA,
   },
+  internalApiSecret: env.INTERNAL_API_SECRET ?? 'dev-internal-secret',
 };

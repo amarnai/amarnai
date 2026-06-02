@@ -1,4 +1,5 @@
 import { vi, describe, it, expect, beforeEach } from "vitest";
+import { authed } from "./helpers.js";
 
 vi.mock("@amarnai/db", () => ({
   db: {
@@ -40,7 +41,7 @@ describe("GET /workspaces", () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     vi.mocked(db.workspace.findMany).mockResolvedValue(mockWorkspaces as any);
 
-    const res = await app.request("/workspaces");
+    const res = await app.request("/workspaces", authed());
     expect(res.status).toBe(200);
     const body = (await res.json()) as Array<{ id: string; name: string }>;
     expect(body).toHaveLength(1);
@@ -51,7 +52,7 @@ describe("GET /workspaces", () => {
   it("returns an empty list when no workspaces exist", async () => {
     vi.mocked(db.workspace.findMany).mockResolvedValue([]);
 
-    const res = await app.request("/workspaces");
+    const res = await app.request("/workspaces", authed());
     expect(res.status).toBe(200);
     expect(await res.json()).toEqual([]);
   });

@@ -1,5 +1,6 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
+import { config } from "@amarnai/config";
 import { healthRoute } from "./routes/health.js";
 import { workspacesRoute } from "./routes/workspaces.js";
 import { taxonomyNodesRoute } from "./routes/taxonomy-nodes.js";
@@ -23,6 +24,15 @@ import { resolveThreadRoute } from "./routes/resolve-thread.js";
 const app = new Hono();
 
 app.use("*", cors({ origin: process.env["CORS_ORIGIN"] ?? "http://localhost:3000" }));
+
+app.use("*", async (c, next) => {
+  if (c.req.path === "/health") return next();
+  const auth = c.req.header("Authorization");
+  if (auth !== `Bearer ${config.internalApiSecret}`) {
+    return c.json({ error: "Unauthorized" }, 401);
+  }
+  return next();
+});
 
 app.route("/", healthRoute);
 app.route("/", workspacesRoute);

@@ -1,6 +1,8 @@
 import { Hono } from "hono";
 import { z } from "zod";
 import { db } from "@amarnai/db";
+import { getDraftQuotaWindowStart, getDraftQuotaResetsAt, getThreadSortLimit } from "@amarnai/shared";
+import { config } from "@amarnai/config";
 import { mockClassify } from "../services/mock-classifier.js";
 import { classifyThreadQueue } from "../queues.js";
 
@@ -41,6 +43,38 @@ classify.post(
     const nodeCount = await db.taxonomyNode.count({ where: { workspaceId } });
     if (nodeCount === 0) {
       return c.json({ error: "No taxonomy nodes found for classification" }, 422);
+    }
+
+    if (config.billing.enforceThreadSortQuota) {
+      const workspace = await db.workspace.findUnique({
+        where: { id: workspaceId },
+        select: { plan: true },
+      });
+      if (!workspace) {
+        return c.json({ error: "Workspace not found" }, 404);
+      }
+
+      const now = new Date();
+      const windowStart = getDraftQuotaWindowStart(now);
+      const limit = getThreadSortLimit(workspace.plan);
+
+      const [{ count }] = await db.$queryRaw<[{ count: bigint }]>`
+        SELECT COUNT(DISTINCT "emailThreadId") AS count FROM "EmailClassification"
+        WHERE "workspaceId" = ${workspaceId}
+          AND "createdAt" >= ${windowStart}
+      `;
+
+      if (Number(count) >= limit) {
+        return c.json(
+          {
+            error: "Monthly thread-sort quota exceeded",
+            used: Number(count),
+            limit,
+            resetsAt: getDraftQuotaResetsAt(now).toISOString(),
+          },
+          429
+        );
+      }
     }
 
     // Stamp classifyingAt immediately so the UI shows the indicator before

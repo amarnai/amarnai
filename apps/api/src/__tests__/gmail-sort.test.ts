@@ -1,4 +1,5 @@
 import { vi, describe, it, expect, beforeEach, afterEach } from "vitest";
+import { authed } from "./helpers.js";
 
 vi.mock("@amarnai/db", () => ({
   Prisma: {},
@@ -156,11 +157,11 @@ afterEach(() => {
 });
 
 function postSort(threadId = "gmail-thread-abc123") {
-  return app.request(`/dev/workspaces/${WS_ID}/gmail-sort-thread`, {
+  return app.request(`/dev/workspaces/${WS_ID}/gmail-sort-thread`, authed({
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ gmailThreadId: threadId }),
-  });
+  }));
 }
 
 // ─── POST /dev/workspaces/:workspaceId/gmail-sort-thread ──────────────────────
@@ -192,11 +193,11 @@ describe("POST /dev/workspaces/:workspaceId/gmail-sort-thread", () => {
   });
 
   it("returns 400 when gmailThreadId is missing", async () => {
-    const res = await app.request(`/dev/workspaces/${WS_ID}/gmail-sort-thread`, {
+    const res = await app.request(`/dev/workspaces/${WS_ID}/gmail-sort-thread`, authed({
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({}),
-    });
+    }));
     expect(res.status).toBe(400);
   });
 
@@ -316,11 +317,11 @@ describe("POST /dev/workspaces/:workspaceId/gmail-sort-thread", () => {
       return a.where.id === WS_ID ? BASE_WORKSPACE : null;
     }) as never);
 
-    const res = await app.request(`/dev/workspaces/other-ws/gmail-sort-thread`, {
+    const res = await app.request(`/dev/workspaces/other-ws/gmail-sort-thread`, authed({
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ gmailThreadId: "gmail-thread-abc" }),
-    });
+    }));
     expect(res.status).toBe(404);
   });
 
@@ -345,7 +346,7 @@ describe("GET /dev/workspaces/:workspaceId/gmail-recent-threads", () => {
     process.env["NODE_ENV"] = "production";
     process.env["ENABLE_DEV_TOOLS"] = "false";
 
-    const res = await app.request(`/dev/workspaces/${WS_ID}/gmail-recent-threads`);
+    const res = await app.request(`/dev/workspaces/${WS_ID}/gmail-recent-threads`, authed());
     expect(res.status).toBe(404);
 
     delete process.env["ENABLE_DEV_TOOLS"];
@@ -354,13 +355,13 @@ describe("GET /dev/workspaces/:workspaceId/gmail-recent-threads", () => {
 
   it("returns 404 when workspace does not exist", async () => {
     vi.mocked(db.workspace.findUnique).mockResolvedValue(null);
-    const res = await app.request(`/dev/workspaces/${WS_ID}/gmail-recent-threads`);
+    const res = await app.request(`/dev/workspaces/${WS_ID}/gmail-recent-threads`, authed());
     expect(res.status).toBe(404);
   });
 
   it("returns 422 when no Gmail connection exists", async () => {
     vi.mocked(db.gmailConnection.findUnique).mockResolvedValue(null);
-    const res = await app.request(`/dev/workspaces/${WS_ID}/gmail-recent-threads`);
+    const res = await app.request(`/dev/workspaces/${WS_ID}/gmail-recent-threads`, authed());
     expect(res.status).toBe(422);
   });
 
@@ -375,7 +376,7 @@ describe("GET /dev/workspaces/:workspaceId/gmail-recent-threads", () => {
       listRecentThreads: vi.fn().mockResolvedValue(mockThreads),
     }) as never);
 
-    const res = await app.request(`/dev/workspaces/${WS_ID}/gmail-recent-threads`);
+    const res = await app.request(`/dev/workspaces/${WS_ID}/gmail-recent-threads`, authed());
     expect(res.status).toBe(200);
     const body = (await res.json()) as { threads: Array<{ id: string; subject: string | null }> };
     expect(body.threads).toEqual(mockThreads);
@@ -387,7 +388,7 @@ describe("GET /dev/workspaces/:workspaceId/gmail-recent-threads", () => {
       listRecentThreads: vi.fn().mockRejectedValue(new Error("Gmail threads list failed: 401")),
     }) as never);
 
-    const res = await app.request(`/dev/workspaces/${WS_ID}/gmail-recent-threads`);
+    const res = await app.request(`/dev/workspaces/${WS_ID}/gmail-recent-threads`, authed());
     expect(res.status).toBe(502);
   });
 });

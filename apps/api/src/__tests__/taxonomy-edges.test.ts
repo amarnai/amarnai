@@ -1,4 +1,5 @@
 import { vi, describe, it, expect, beforeEach } from "vitest";
+import { authed } from "./helpers.js";
 
 vi.mock("@amarnai/db", () => ({
   db: {
@@ -43,23 +44,23 @@ const nodeC = { id: NODE_C, workspaceId: WS_ID, isRoot: false };
 const rootNode = { id: "root-1", workspaceId: WS_ID, isRoot: true };
 
 function post(path: string, body: unknown) {
-  return app.request(path, {
+  return app.request(path, authed({
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
-  });
+  }));
 }
 
 function patch(path: string, body: unknown) {
-  return app.request(path, {
+  return app.request(path, authed({
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
-  });
+  }));
 }
 
 function del(path: string) {
-  return app.request(path, { method: "DELETE" });
+  return app.request(path, authed({ method: "DELETE" }));
 }
 
 beforeEach(() => {
@@ -75,7 +76,7 @@ describe("GET /workspaces/:workspaceId/taxonomy-edges", () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
 
-    const res = await app.request(`/workspaces/${WS_ID}/taxonomy-edges`);
+    const res = await app.request(`/workspaces/${WS_ID}/taxonomy-edges`, authed());
     expect(res.status).toBe(200);
     const body = (await res.json()) as typeof baseEdge[];
     expect(body).toHaveLength(1);
@@ -85,7 +86,7 @@ describe("GET /workspaces/:workspaceId/taxonomy-edges", () => {
   it("returns 404 when workspace not found", async () => {
     vi.mocked(db.workspace.findUnique).mockResolvedValue(null);
 
-    const res = await app.request(`/workspaces/nope/taxonomy-edges`);
+    const res = await app.request(`/workspaces/nope/taxonomy-edges`, authed());
     expect(res.status).toBe(404);
   });
 });
