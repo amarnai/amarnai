@@ -74,6 +74,9 @@ function DemoCanvasInner() {
           nodesConnectable
           fitView
           fitViewOptions={{ padding: 0.25 }}
+          onInit={(instance) => {
+            requestAnimationFrame(() => instance.fitView({ padding: 0.25 }));
+          }}
         >
           <Background />
           <Controls />
