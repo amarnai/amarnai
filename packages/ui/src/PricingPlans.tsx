@@ -251,7 +251,7 @@ function ComparisonMatrix({ cycle }: { cycle: BillingCycle }) {
                       <div className="compare-mobile-label">{row.label}</div>
                       {row.hint && <div className="compare-mobile-hint">{row.hint}</div>}
                       <div className="compare-mobile-value">
-                        <Cell value={allCells[mobilePlan]} />
+                        <Cell value={allCells[mobilePlan]!} />
                       </div>
                     </div>
                   );
