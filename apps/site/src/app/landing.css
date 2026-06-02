@@ -887,7 +887,7 @@
 
 .ld-final-note {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   gap: 6px;
   margin-top: 16px;
@@ -895,8 +895,9 @@
   color: var(--ink-4);
 }
 
-.ld-final-note svg { color: var(--ok-ink); flex-shrink: 0; }
+.ld-final-note svg { color: var(--ok-ink); flex-shrink: 0; margin-top: 1px; }
 .ld-final-note a { color: var(--accent-ink); text-decoration: underline; text-underline-offset: 2px; }
+.ld-final-note-br { display: none; }
 
 /* ─── Footer ──────────────────────────────────────────────────────────────── */
 
@@ -1025,4 +1026,6 @@
   .ld-demo-head { flex-direction: column; align-items: flex-start; gap: 16px; }
 
   .ld-footer-cols { flex-direction: column; gap: 24px; }
+
+  .ld-final-note-br { display: inline; }
 }
