@@ -24,11 +24,10 @@ function EmailsIcon() {
 function TaxonomyIcon() {
   return (
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" className="nav-icon">
-      <rect x="1.5" y="2" width="4" height="3" rx="1" stroke="currentColor" strokeWidth="1.4" />
-      <rect x="6.5" y="6.5" width="4" height="3" rx="1" stroke="currentColor" strokeWidth="1.4" />
-      <rect x="6.5" y="11" width="4" height="3" rx="1" stroke="currentColor" strokeWidth="1.4" />
-      <path d="M3.5 5v1.5c0 .83 0 1.25.34 1.58.34.34.76.42 1.66.42h1" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
-      <path d="M3.5 5v6c0 .83 0 1.25.34 1.58.34.34.76.42 1.66.42h1" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+      <rect x="1" y="5.75" width="4.5" height="2.5" rx="1" stroke="currentColor" strokeWidth="1.4" />
+      <rect x="10" y="2.75" width="4.5" height="2.5" rx="1" stroke="currentColor" strokeWidth="1.4" />
+      <rect x="10" y="8.75" width="4.5" height="2.5" rx="1" stroke="currentColor" strokeWidth="1.4" />
+      <path d="M5.5 7H8V4H10M8 7V10H10" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
