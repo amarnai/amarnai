@@ -742,7 +742,7 @@ function TaxonomyCanvasInner({
   }
 
   return (
-    <div>
+    <div className="taxonomy-inner">
       {readOnly ? (
         <div className="taxonomy-readonly-banner">
           Taxonomy is view-only. Only workspace admins can edit it.

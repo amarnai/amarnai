@@ -24,9 +24,11 @@ export default async function TaxonomyPage() {
   }
 
   return (
-    <>
-      <h1>Taxonomy</h1>
-      {error && <div className="error-box">{error}</div>}
+    <div className="taxonomy-shell">
+      <div className="taxonomy-page-header">
+        <h1>Taxonomy</h1>
+        {error && <div className="error-box">{error}</div>}
+      </div>
       {!error && (
         <TaxonomyClient
           workspaceId={workspace.id}
@@ -35,6 +37,6 @@ export default async function TaxonomyPage() {
           readOnly={!isAdmin}
         />
       )}
-    </>
+    </div>
   );
 }
