@@ -3,6 +3,14 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+
+function HamburgerIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+      <path d="M2.5 4.5h13M2.5 9h13M2.5 13.5h13" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+    </svg>
+  );
+}
 import {
   switchWorkspaceAction,
   createWorkspaceAction,
@@ -50,6 +58,7 @@ export function Sidebar({
   canCreateWorkspace: boolean;
 }) {
   const pathname = usePathname();
+  const [mobileOpen, setMobileOpen] = useState(false);
   const [wsOpen, setWsOpen] = useState(false);
   const [creating, setCreating] = useState(false);
   const [createName, setCreateName] = useState("");
@@ -57,6 +66,10 @@ export function Sidebar({
   const [createPending, setCreatePending] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const createInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [pathname]);
 
   useEffect(() => {
     if (!wsOpen) return;
@@ -112,7 +125,25 @@ export function Sidebar({
   const initials = user ? getInitials(user.name, user.email) : "?";
 
   return (
-    <aside className="sidebar">
+    <>
+      <button
+        className="mobile-menu-btn"
+        onClick={() => setMobileOpen(true)}
+        aria-label="Open navigation"
+        aria-expanded={mobileOpen}
+      >
+        <HamburgerIcon />
+      </button>
+
+      {mobileOpen && (
+        <div
+          className="shell-overlay"
+          onClick={() => setMobileOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
+    <aside className={`sidebar${mobileOpen ? " mobile-open" : ""}`}>
       {/* Workspace switcher — top of sidebar, replaces brand header */}
       <div
         className="ws-switcher"
@@ -251,5 +282,6 @@ export function Sidebar({
         </div>
       )}
     </aside>
+    </>
   );
 }

@@ -260,6 +260,27 @@ function StepArt3() {
   );
 }
 
+const stepArrow = (
+  <svg
+    width="32"
+    height="10"
+    viewBox="0 0 32 10"
+    fill="none"
+    aria-hidden="true"
+  >
+    <line
+      x1="0"
+      y1="5"
+      x2="22"
+      y2="5"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+    />
+    <path d="M19 1 L31 5 L19 9 Z" fill="currentColor" />
+  </svg>
+);
+
 const penIcon = (
   <svg
     width="11"
@@ -320,6 +341,10 @@ export function HowItWorksSection() {
             </div>
           </div>
 
+          <div className="ld-step-connector" aria-hidden="true">
+            {stepArrow}
+          </div>
+
           <div className="ld-step ld-reveal">
             <div className="ld-step-n">
               <span className="ld-step-num">2</span>
@@ -334,6 +359,10 @@ export function HowItWorksSection() {
             <div className="ld-step-art">
               <StepArt2 />
             </div>
+          </div>
+
+          <div className="ld-step-connector" aria-hidden="true">
+            {stepArrow}
           </div>
 
           <div className="ld-step ld-reveal">

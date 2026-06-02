@@ -1259,3 +1259,149 @@
 .em-toast button:hover { color: white; }
 
 .em-toast-close { margin-left: 2px; opacity: 0.6; }
+
+/* ─── Responsive ──────────────────────────────────────────────────────────── */
+
+/* Mobile-only email controls — hidden on desktop */
+.em-back-btn     { display: none; }
+.em-rail-toggle-btn { display: none; }
+.em-nav-toggle   { display: none; }
+
+@media (max-width: 640px) {
+  /* em-grid: flex column for panel switching */
+  .em-grid {
+    display: flex;
+    flex-direction: column;
+    grid-template-columns: unset;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  /* ── List view: toggle → folders drawer → header → thread scroll ──────── */
+
+  /* Dissolve list column so its children join the flex column directly */
+  .em-grid[data-mobile-view="list"] .em-list-col {
+    display: contents;
+  }
+
+  /* Toggle row: first in the flex column */
+  .em-grid[data-mobile-view="list"] .em-nav-toggle {
+    order: 0;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    padding: 14px 18px 0;
+    background: var(--bg);
+  }
+
+  /* Folders drawer: expands downward below the toggle */
+  .em-grid[data-mobile-view="list"] .em-rail {
+    order: 1;
+    flex: 0 0 auto;
+    max-height: 0;
+    overflow: hidden;
+    border-right: none;
+    border-bottom: none;
+    transition: max-height 0.25s ease;
+    box-shadow: none;
+  }
+
+  .em-grid[data-mobile-view="list"][data-rail-open="true"] .em-rail {
+    max-height: 300px;
+    border-bottom: 1px solid var(--line);
+    box-shadow: 0 6px 18px oklch(20% 0.01 80 / 0.09);
+  }
+
+  /* List header: sits below the drawer */
+  .em-grid[data-mobile-view="list"] .em-list-head {
+    order: 2;
+    flex-shrink: 0;
+    background: var(--bg);
+  }
+
+  /* Thread scroll: fills remaining height */
+  .em-grid[data-mobile-view="list"] .em-list-scroll {
+    order: 3;
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    background: var(--bg);
+  }
+
+  /* Compact rail header in the dropdown */
+  .em-rail-head {
+    padding: 10px 14px 8px;
+  }
+
+  .em-rail-head h2,
+  .em-sync-chip {
+    display: none;
+  }
+
+  /* ── Panel visibility ──────────────────────────────────────────────────── */
+
+  .em-grid[data-mobile-view="list"] .em-preview-col,
+  .em-grid[data-mobile-view="list"] .em-preview-empty {
+    display: none;
+  }
+
+  .em-grid[data-mobile-view="preview"] .em-list-col {
+    display: none;
+  }
+
+  .em-grid[data-mobile-view="preview"] .em-rail {
+    display: none;
+  }
+
+  .em-grid[data-mobile-view="preview"] .em-preview-col {
+    flex: 1;
+    min-height: 0;
+  }
+
+  /* ── Mobile-only controls ─────────────────────────────────────────────── */
+
+  .em-back-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    padding: 0 8px 0 0;
+    color: var(--accent);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  .em-back-btn:hover {
+    opacity: 0.75;
+  }
+
+  .em-rail-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--bg-soft);
+    border: 1px solid var(--line-2);
+    border-radius: var(--r-md);
+    padding: 5px 12px 5px 10px;
+    color: var(--ink-2);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-bottom: 10px;
+    transition: background 0.12s, border-color 0.12s, color 0.12s;
+  }
+
+  .em-rail-toggle-btn:hover {
+    background: var(--surface);
+    border-color: var(--line-3);
+    color: var(--ink);
+  }
+
+  .em-rail-toggle-btn[aria-pressed="true"] {
+    background: var(--accent-bg);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+}

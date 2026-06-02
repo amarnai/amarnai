@@ -7,8 +7,8 @@ export function WorkspaceSetupWaiting() {
   const router = useRouter();
 
   useEffect(() => {
-    const timer = setTimeout(() => router.refresh(), 3000);
-    return () => clearTimeout(timer);
+    const timer = setInterval(() => router.refresh(), 3000);
+    return () => clearInterval(timer);
   }, [router]);
 
   return (

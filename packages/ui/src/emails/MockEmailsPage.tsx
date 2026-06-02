@@ -39,6 +39,10 @@ export function MockEmailsPage({
   const [folders] = useState<FolderItem[]>(initialFolders);
   const [active, setActive] = useState<ActiveSelection>(initialActive);
   const [selectedId, setSelectedId] = useState<string | null>(initialSelectedId);
+  const [mobileView, setMobileView] = useState<"list" | "preview">(
+    initialSelectedId ? "preview" : "list"
+  );
+  const [railOpen, setRailOpen] = useState(true);
   const [query, setQuery] = useState("");
   const [railQuery, setRailQuery] = useState("");
   const [openFolderIds, setOpenFolderIds] = useState<Set<string>>(new Set());
@@ -55,7 +59,19 @@ export function MockEmailsPage({
   function pushActive(a: ActiveSelection) {
     setActive(a);
     setSelectedId(null);
+    setMobileView("list");
+    setRailOpen(false);
     setQuery("");
+  }
+
+  function selectThread(id: string) {
+    setSelectedId(id);
+    setMobileView("preview");
+  }
+
+  function closePreview() {
+    setSelectedId(null);
+    setMobileView("list");
   }
 
   function toggleFolder(id: string) {
@@ -154,7 +170,12 @@ export function MockEmailsPage({
   }
 
   return (
-    <div className="em-grid" suppressHydrationWarning>
+    <div
+      className="em-grid"
+      data-mobile-view={mobileView}
+      data-rail-open={String(railOpen)}
+      suppressHydrationWarning
+    >
       <EmailRail
         threads={threads}
         folders={folders}
@@ -177,12 +198,14 @@ export function MockEmailsPage({
         query={query}
         now={now}
         workspaceEmail={workspaceEmail}
-        onSelectThread={setSelectedId}
+        onSelectThread={selectThread}
         onSelectFolder={(id) => pushActive({ kind: "folder", id })}
         onQueryChange={setQuery}
         searchRef={searchRef}
         onMarkDone={handleMarkDone}
         onUnmarkDone={handleUnmarkDone}
+        railOpen={railOpen}
+        onToggleRail={() => setRailOpen((v) => !v)}
       />
 
       {selectedThread ? (
@@ -197,7 +220,7 @@ export function MockEmailsPage({
           onToggleDraftSent={() => handleToggleDraftSent(selectedThread.id)}
           onApprove={handleApprove}
           onReroute={openRerouteFor}
-          onClose={() => setSelectedId(null)}
+          onClose={closePreview}
           onMarkDone={handleMarkDone}
           onUnmarkDone={handleUnmarkDone}
         />

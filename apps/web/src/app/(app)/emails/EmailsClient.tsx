@@ -44,6 +44,10 @@ export function EmailsClient({
   const [folders] = useState<FolderItem[]>(initialFolders);
   const [active, setActive] = useState<ActiveSelection>(initialActive);
   const [selectedId, setSelectedId] = useState<string | null>(initialSelectedId);
+  const [mobileView, setMobileView] = useState<"list" | "preview">(
+    initialSelectedId ? "preview" : "list"
+  );
+  const [railOpen, setRailOpen] = useState(true);
   const [query, setQuery] = useState("");
   const [railQuery, setRailQuery] = useState("");
   const [openFolderIds, setOpenFolderIds] = useState<Set<string>>(new Set());
@@ -63,6 +67,8 @@ export function EmailsClient({
   function pushActive(a: ActiveSelection) {
     setActive(a);
     setSelectedId(null);
+    setMobileView("list");
+    setRailOpen(false);
     setQuery("");
     const param = a.kind === "queue" ? `?q=${a.id}` : `?f=${a.id}`;
     router.replace(`/emails${param}`, { scroll: false });
@@ -70,10 +76,16 @@ export function EmailsClient({
 
   function selectThread(id: string) {
     setSelectedId(id);
+    setMobileView("preview");
     const a = active.kind === "queue"
       ? `?q=${active.id}&t=${id}`
       : `?f=${active.id}&t=${id}`;
     router.replace(`/emails${a}`, { scroll: false });
+  }
+
+  function closePreview() {
+    setSelectedId(null);
+    setMobileView("list");
   }
 
   function toggleFolder(id: string) {
@@ -258,7 +270,12 @@ export function EmailsClient({
   });
 
   return (
-    <div className="em-grid" suppressHydrationWarning>
+    <div
+      className="em-grid"
+      data-mobile-view={mobileView}
+      data-rail-open={String(railOpen)}
+      suppressHydrationWarning
+    >
       <Rail
         threads={threads}
         folders={folders}
@@ -287,6 +304,8 @@ export function EmailsClient({
         searchRef={searchRef}
         onMarkDone={handleMarkDone}
         onUnmarkDone={handleUnmarkDone}
+        railOpen={railOpen}
+        onToggleRail={() => setRailOpen((v) => !v)}
       />
 
       {selectedThread ? (
@@ -296,7 +315,7 @@ export function EmailsClient({
           workspaceId={workspaceId}
           onApprove={handleApprove}
           onReroute={openRerouteFor}
-          onClose={() => setSelectedId(null)}
+          onClose={closePreview}
           workspaceEmail={workspaceEmail}
           onDraftStarted={handleDraftStarted}
           onDraftFailed={handleDraftFailed}

@@ -166,6 +166,17 @@ export function ThreadPreview({
   return (
     <div className="em-preview-col">
       <div className="em-preview-toolbar">
+        <button
+          type="button"
+          className="em-back-btn"
+          onClick={onClose}
+          aria-label="Back to list"
+        >
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
+            <path d="M9 11L5 7l4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+          Back
+        </button>
         <span className="em-preview-spacer" />
         <button
           type="button"

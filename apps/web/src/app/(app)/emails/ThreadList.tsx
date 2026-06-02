@@ -19,6 +19,8 @@ type Props = {
   searchRef: React.RefObject<HTMLInputElement | null>;
   onMarkDone: (threadId: string) => void;
   onUnmarkDone: (threadId: string) => void;
+  railOpen?: boolean;
+  onToggleRail?: () => void;
 };
 
 function groupByDate(threads: ThreadItem[], now: Date): { label: string; items: ThreadItem[] }[] {
@@ -59,6 +61,8 @@ export function ThreadList({
   searchRef,
   onMarkDone,
   onUnmarkDone,
+  railOpen,
+  onToggleRail,
 }: Props) {
   const filtered = filterThreads(threads, folders, active, "all", query, now);
   const unreadCount = filtered.filter((t) => t.unread).length;
@@ -66,6 +70,25 @@ export function ThreadList({
 
   return (
     <div className="em-list-col">
+      {onToggleRail && (
+        <div className="em-nav-toggle">
+          <button
+            type="button"
+            className="em-rail-toggle-btn"
+            onClick={onToggleRail}
+            aria-pressed={railOpen}
+            aria-label="Toggle folders"
+          >
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
+              <path d="M1 2h4.5l1 1.5H11a.5.5 0 01.5.5v5.5a.5.5 0 01-.5.5H1a.5.5 0 01-.5-.5V2.5A.5.5 0 011 2z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" />
+            </svg>
+            Folders
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden style={{ marginLeft: 2, transition: "transform 0.18s ease", transform: railOpen ? "rotate(180deg)" : "rotate(0deg)" }}>
+              <path d="M2 3.5l3 3 3-3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+        </div>
+      )}
       <ThreadListHeader
         active={active}
         folders={folders}

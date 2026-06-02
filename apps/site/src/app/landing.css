@@ -459,8 +459,15 @@
 
 .ld-steps {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 28px;
+  grid-template-columns: 1fr 32px 1fr 32px 1fr;
+  gap: 28px 0;
+}
+
+.ld-step-connector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--line-3);
 }
 
 .ld-step {
@@ -964,12 +971,27 @@
     gap: 40px;
   }
 
+  /* Center the feed card when stacked below the hero copy */
+  .ld-hero-side {
+    max-width: 480px;
+    margin-inline: auto;
+    width: 100%;
+  }
+
   .ld-feed-card { max-width: 480px; }
 
   .ld-steps {
     grid-template-columns: 1fr;
     max-width: 560px;
     margin-inline: auto;
+  }
+
+  .ld-step-connector {
+    padding: 4px 0;
+  }
+
+  .ld-step-connector svg {
+    transform: rotate(90deg);
   }
 
   .ld-footer-inner {
@@ -986,10 +1008,21 @@
 
   .ld-hero { padding: 56px 0 48px; }
 
+  /* Reduce vertical section padding on mobile */
+  .ld-section { padding: 64px 0; }
+  .ld-demo-section { padding: 56px 0; }
+  .ld-final { padding: 64px 0; }
+
   .ld-nav-links a:not(.ld-nav-cta) { display: none; }
 
   .ld-demo-stage { height: 480px; }
-  .ld-demo-stage.emails { height: 520px; }
+  .ld-demo-stage.emails { height: 480px; }
+
+  /* Allow feed footer to wrap on narrow screens */
+  .ld-feed-foot { flex-wrap: wrap; gap: 8px; }
+
+  /* Demo header copy/note stack on mobile */
+  .ld-demo-head { flex-direction: column; align-items: flex-start; gap: 16px; }
 
   .ld-footer-cols { flex-direction: column; gap: 24px; }
 }
