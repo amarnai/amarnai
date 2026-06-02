@@ -17,6 +17,9 @@ const envSchema = z.object({
   OLLAMA_BASE_URL: z.string().optional(),
   OLLAMA_MODEL: z.string().optional(),
   ALLOW_LOCAL_AI_IN_PRODUCTION: boolStr,
+  // Set to 'false' to disable per-workspace monthly draft quotas.
+  // Self-hosted deployments that manage their own AI costs should set this to false.
+  ENFORCE_DRAFT_QUOTA: z.string().transform((v) => v !== 'false').default('true'),
 });
 
 function validateEnv(raw: NodeJS.ProcessEnv) {
@@ -70,5 +73,8 @@ export const config = {
       baseUrl: env.OLLAMA_BASE_URL,
       model: env.OLLAMA_MODEL,
     },
+  },
+  billing: {
+    enforceDraftQuota: env.ENFORCE_DRAFT_QUOTA,
   },
 };

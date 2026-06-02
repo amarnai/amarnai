@@ -435,7 +435,7 @@ body {
   font-weight: 600;
 }
 
-/* Dot indicator beside each nav item */
+/* Dot indicator for dev nav items */
 .nav-dot {
   width: 6px;
   height: 6px;
@@ -446,6 +446,17 @@ body {
 
 .sidebar-nav a.active .nav-dot {
   background: var(--accent);
+}
+
+.nav-icon {
+  flex-shrink: 0;
+  color: var(--ink-3);
+  transition: color 0.1s;
+}
+
+.sidebar-nav a:hover .nav-icon,
+.sidebar-nav a.active .nav-icon {
+  color: var(--ink);
 }
 
 .main {
@@ -4096,8 +4107,6 @@ a {
   white-space: pre-wrap;
   word-break: break-word;
   margin-top: 8px;
-  max-height: 320px;
-  overflow-y: auto;
 }
 
 /* ─── Draft card actions ─────────────────────────────────────────────────── */
@@ -4174,6 +4183,34 @@ a {
   display: flex;
   align-items: center;
   opacity: 0.75;
+}
+
+.em-draft-cta:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.em-draft-cta:disabled:hover {
+  background: var(--teal-soft);
+  border-color: var(--teal-line);
+  box-shadow: none;
+}
+
+.em-draft-cta-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.em-draft-quota {
+  font-size: 11.5px;
+  color: var(--ink-4);
+  text-align: center;
+}
+
+.em-draft-quota--exhausted {
+  color: var(--warn-ink);
 }
 
 /* ─── Re-route popover ───────────────────────────────────────────────────── */
@@ -5021,6 +5058,18 @@ a {
   line-height: 1.4;
 }
 
+.billing-usage-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.billing-usage--exhausted {
+  color: var(--warn-ink);
+  font-weight: 500;
+}
+
 .billing-cancel-link {
   display: inline-block;
   margin-top: 14px;
@@ -5063,6 +5112,28 @@ a {
   display: flex;
   gap: 8px;
   margin-top: 12px;
+}
+
+.billing-cancel-members-warning {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: var(--r-sm);
+  background: oklch(97% 0.01 50);
+  border: 1px solid oklch(88% 0.04 50);
+  font-size: 12.5px;
+  color: var(--ink-2);
+}
+
+.billing-cancel-members-warning strong {
+  display: block;
+  color: oklch(45% 0.08 50);
+  margin-bottom: 5px;
+}
+
+.billing-cancel-members-warning ul {
+  margin: 0;
+  padding: 0 0 0 16px;
+  line-height: 1.7;
 }
 
 /* ─── Upgrade success page ───────────────────────────────────────────────── */

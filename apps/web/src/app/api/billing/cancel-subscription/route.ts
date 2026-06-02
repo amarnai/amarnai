@@ -34,19 +34,24 @@ export async function POST() {
 
   if (isTrialing) {
     await stripe.subscriptions.cancel(ws.stripeSubscriptionId);
-    await db.workspace.update({
-      where: { id: workspace.id },
-      data: {
-        plan: "FREE",
-        stripeSubscriptionId: null,
-        stripePriceId: null,
-        billingCycle: null,
-        trialEndsAt: null,
-        currentPeriodEnd: null,
-        cancelAtPeriodEnd: false,
-        paymentFailed: false,
-      },
-    });
+    await db.$transaction([
+      db.workspaceMember.deleteMany({
+        where: { workspaceId: workspace.id, NOT: { role: "OWNER" } },
+      }),
+      db.workspace.update({
+        where: { id: workspace.id },
+        data: {
+          plan: "FREE",
+          stripeSubscriptionId: null,
+          stripePriceId: null,
+          billingCycle: null,
+          trialEndsAt: null,
+          currentPeriodEnd: null,
+          cancelAtPeriodEnd: false,
+          paymentFailed: false,
+        },
+      }),
+    ]);
     return NextResponse.json({ immediateDowngrade: true });
   }
 

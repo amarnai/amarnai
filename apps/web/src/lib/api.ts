@@ -561,10 +561,32 @@ export const api = {
       `/workspaces/${workspaceId}/sorting-queue/start`,
       "POST"
     ),
-  generateDraft: (workspaceId: string, threadId: string) =>
-    apiMutate<{ draft: Draft } | { generating: true }>(
-      `/workspaces/${workspaceId}/email-threads/${threadId}/generate-draft`,
-      "POST"
+  generateDraft: async (
+    workspaceId: string,
+    threadId: string
+  ): Promise<{ draft: Draft } | { generating: true } | { quotaExceeded: true; used: number; limit: number; resetsAt: string }> => {
+    const res = await fetch(
+      `${API_BASE}/workspaces/${workspaceId}/email-threads/${threadId}/generate-draft`,
+      { method: "POST", cache: "no-store" }
+    );
+    if (res.status === 429) {
+      const body = await res.json().catch(() => ({})) as Record<string, unknown>;
+      return {
+        quotaExceeded: true as const,
+        used: typeof body["used"] === "number" ? body["used"] : 0,
+        limit: typeof body["limit"] === "number" ? body["limit"] : 0,
+        resetsAt: typeof body["resetsAt"] === "string" ? body["resetsAt"] : "",
+      };
+    }
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({})) as { error?: string };
+      throw new Error(err.error ?? `API returned ${res.status}`);
+    }
+    return res.json() as Promise<{ draft: Draft } | { generating: true }>;
+  },
+  draftQuota: (workspaceId: string) =>
+    apiFetch<{ used: number; limit: number; resetsAt: string }>(
+      `/workspaces/${workspaceId}/draft-quota`
     ),
   threadDrafts: (workspaceId: string, threadId: string) =>
     apiFetch<{ drafts: Draft[] }>(

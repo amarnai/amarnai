@@ -159,19 +159,24 @@ async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
   // If the user cancels while still in trial, revoke access immediately rather
   // than waiting until the trial period ends.
   if (subscription.cancel_at_period_end && subscription.status === "trialing") {
-    await db.workspace.update({
-      where: { id: workspace.id },
-      data: {
-        plan: "FREE",
-        stripeSubscriptionId: null,
-        stripePriceId: null,
-        billingCycle: null,
-        trialEndsAt: null,
-        currentPeriodEnd: null,
-        cancelAtPeriodEnd: false,
-        paymentFailed: false,
-      },
-    });
+    await db.$transaction([
+      db.workspaceMember.deleteMany({
+        where: { workspaceId: workspace.id, NOT: { role: "OWNER" } },
+      }),
+      db.workspace.update({
+        where: { id: workspace.id },
+        data: {
+          plan: "FREE",
+          stripeSubscriptionId: null,
+          stripePriceId: null,
+          billingCycle: null,
+          trialEndsAt: null,
+          currentPeriodEnd: null,
+          cancelAtPeriodEnd: false,
+          paymentFailed: false,
+        },
+      }),
+    ]);
     await db.auditLog.create({
       data: {
         workspaceId: workspace.id,
@@ -201,19 +206,24 @@ async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
   });
   if (!workspace) return;
 
-  await db.workspace.update({
-    where: { id: workspace.id },
-    data: {
-      plan: "FREE",
-      stripeSubscriptionId: null,
-      stripePriceId: null,
-      billingCycle: null,
-      trialEndsAt: null,
-      currentPeriodEnd: null,
-      cancelAtPeriodEnd: false,
-      paymentFailed: false,
-    },
-  });
+  await db.$transaction([
+    db.workspaceMember.deleteMany({
+      where: { workspaceId: workspace.id, NOT: { role: "OWNER" } },
+    }),
+    db.workspace.update({
+      where: { id: workspace.id },
+      data: {
+        plan: "FREE",
+        stripeSubscriptionId: null,
+        stripePriceId: null,
+        billingCycle: null,
+        trialEndsAt: null,
+        currentPeriodEnd: null,
+        cancelAtPeriodEnd: false,
+        paymentFailed: false,
+      },
+    }),
+  ]);
   await db.auditLog.create({
     data: {
       workspaceId: workspace.id,

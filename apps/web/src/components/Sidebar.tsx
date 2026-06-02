@@ -11,6 +11,40 @@ function HamburgerIcon() {
     </svg>
   );
 }
+
+function EmailsIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" className="nav-icon">
+      <rect x="1.5" y="3" width="13" height="10" rx="1.5" stroke="currentColor" strokeWidth="1.4" />
+      <path d="M1.5 5.5l6.5 4.5 6.5-4.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function TaxonomyIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" className="nav-icon">
+      <rect x="1.5" y="2" width="4" height="3" rx="1" stroke="currentColor" strokeWidth="1.4" />
+      <rect x="6.5" y="6.5" width="4" height="3" rx="1" stroke="currentColor" strokeWidth="1.4" />
+      <rect x="6.5" y="11" width="4" height="3" rx="1" stroke="currentColor" strokeWidth="1.4" />
+      <path d="M3.5 5v1.5c0 .83 0 1.25.34 1.58.34.34.76.42 1.66.42h1" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+      <path d="M3.5 5v6c0 .83 0 1.25.34 1.58.34.34.76.42 1.66.42h1" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function SettingsIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" className="nav-icon">
+      <path
+        fill="currentColor"
+        fillRule="evenodd"
+        d="M9.46 1.15 9.04 3.11A5 5 0 0 1 11.72 4.65L13.2 3.32A7 7 0 0 1 14.66 5.84L12.76 6.46A5 5 0 0 1 12.76 9.55L14.66 10.16A7 7 0 0 1 13.2 12.69L11.72 11.35A5 5 0 0 1 9.04 12.89L9.46 14.85A7 7 0 0 1 6.54 14.85L6.96 12.89A5 5 0 0 1 4.28 11.35L2.8 12.69A7 7 0 0 1 1.34 10.16L3.25 9.55A5 5 0 0 1 3.25 6.46L1.34 5.84A7 7 0 0 1 2.8 3.32L4.28 4.65A5 5 0 0 1 6.96 3.11L6.54 1.15A7 7 0 0 1 9.46 1.15Z M8 5.7A2.3 2.3 0 1 0 8 10.3A2.3 2.3 0 1 0 8 5.7Z"
+      />
+    </svg>
+  );
+}
+
 import {
   switchWorkspaceAction,
   createWorkspaceAction,
@@ -22,12 +56,12 @@ const isGmailDebugEnabled =
   process.env.NEXT_PUBLIC_ENABLE_GMAIL_DEBUG_TOOLS === "true";
 
 const NAV = [
-  { href: "/emails", label: "Emails" },
-  { href: "/taxonomy", label: "Taxonomy" },
-  { href: "/settings", label: "Settings" },
-  ...(isDevEnabled ? [{ href: "/dev/mock-inbox", label: "Mock Inbox" }] : []),
+  { href: "/emails", label: "Emails", icon: <EmailsIcon /> },
+  { href: "/taxonomy", label: "Taxonomy", icon: <TaxonomyIcon /> },
+  { href: "/settings", label: "Settings", icon: <SettingsIcon /> },
+  ...(isDevEnabled ? [{ href: "/dev/mock-inbox", label: "Mock Inbox", icon: null }] : []),
   ...(isGmailDebugEnabled
-    ? [{ href: "/dev/gmail-sort-tester", label: "Gmail Sort Tester" }]
+    ? [{ href: "/dev/gmail-sort-tester", label: "Gmail Sort Tester", icon: null }]
     : []),
 ];
 
@@ -257,7 +291,7 @@ export function Sidebar({
                 href={item.href}
                 className={pathname.startsWith(item.href) ? "active" : ""}
               >
-                <span className="nav-dot" aria-hidden />
+                {item.icon ?? <span className="nav-dot" aria-hidden />}
                 {item.label}
               </Link>
             </li>

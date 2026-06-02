@@ -1,7 +1,9 @@
 import { Hono } from "hono";
 import { z } from "zod";
-import { db } from "@amarnai/db";
+import { db, Prisma } from "@amarnai/db";
 import { createAIProvider, generateDraft } from "@amarnai/ai";
+import { getDraftLimit, getDraftQuotaWindowStart, getDraftQuotaResetsAt } from "@amarnai/shared";
+import { config } from "@amarnai/config";
 import { getAIProviderConfig } from "../services/ai-providers.js";
 
 const params = z.object({
@@ -23,11 +25,24 @@ const drafts = new Hono();
 // persists a PROPOSED Draft row, and returns the draft inline. Returns 422 if
 // the thread has not been classified yet, or 503 if no AI provider is configured.
 //
-// A GENERATING placeholder row is created before the LLM call so that if the
-// client disconnects (e.g. page refresh), the thread list can expose isDrafting
-// and the UI can poll until the draft becomes PROPOSED.
+// A GENERATING placeholder row is created inside a locked transaction so that:
+//   1. Concurrent requests for the same workspace serialize on the quota check —
+//      preventing TOCTOU races where two requests both read "quota OK" before
+//      either has committed a placeholder.
+//   2. If the client disconnects (e.g. page refresh), the GENERATING row survives
+//      so the thread list can expose isDrafting and the UI can poll.
+//
+// Quota enforcement:
+//   Drafts with status PROPOSED, SENT, CREATED_IN_GMAIL, or non-stale GENERATING
+//   count against the monthly quota. FAILED rows are excluded — server errors
+//   should not burn the user's allowance. Stale GENERATING rows (server crash
+//   recovery) are similarly excluded after DRAFT_GENERATING_STALE_MS.
 
 const DRAFT_GENERATING_STALE_MS = 5 * 60 * 1_000;
+
+// Statuses that represent a completed or in-progress generation and count toward quota.
+// Raw SQL fragment — keep in sync with DraftStatus enum in schema.prisma.
+const QUOTA_COUNTED_STATUSES = `('PROPOSED', 'SENT', 'CREATED_IN_GMAIL', 'GENERATING')`;
 
 drafts.post(
   "/workspaces/:workspaceId/email-threads/:threadId/generate-draft",
@@ -88,14 +103,17 @@ drafts.post(
       select: { gmailAddress: true },
     });
 
-    // Return an existing proposed draft without re-generating.
-    // Ignore GENERATING drafts older than the stale threshold (server crash recovery).
+    // ── Stale threshold shared by the quick check and the transaction ─────────
     const staleThreshold = new Date(Date.now() - DRAFT_GENERATING_STALE_MS);
+
+    // ── Quick check outside the lock ──────────────────────────────────────────
+    // For the common case of re-fetching an already-generated draft, avoid
+    // acquiring a row lock altogether.
     const existingDraft = await db.draft.findFirst({
       where: {
         emailThreadId: threadId,
         workspaceId,
-        status: { in: ["GENERATING", "PROPOSED"] as ("GENERATING" | "PROPOSED")[] },
+        status: { in: ["GENERATING", "PROPOSED"] },
         OR: [{ status: "PROPOSED" }, { createdAt: { gt: staleThreshold } }],
       },
       orderBy: { createdAt: "desc" },
@@ -108,6 +126,15 @@ drafts.post(
       return c.json({ draft: existingDraft }, 200);
     }
 
+    // Fetch workspace plan before the transaction so the lock duration stays short.
+    const workspace = await db.workspace.findUnique({
+      where: { id: workspaceId },
+      select: { plan: true },
+    });
+    if (!workspace) {
+      return c.json({ error: "Workspace not found" }, 404);
+    }
+
     let provider;
     try {
       provider = createAIProvider(getAIProviderConfig());
@@ -115,18 +142,96 @@ drafts.post(
       return c.json({ error: `AI provider not configured: ${String(e)}` }, 503);
     }
 
-    // Create a GENERATING placeholder so the status survives a page refresh.
-    const placeholder = await db.draft.create({
-      data: {
-        workspaceId,
-        emailThreadId: threadId,
-        classificationId: classification.id,
-        subject: thread.subject ? `Re: ${thread.subject}` : "",
-        body: "",
-        status: "GENERATING",
-      },
-      select: { id: true },
+    // ── Atomic quota check + placeholder creation ─────────────────────────────
+    // SELECT FOR UPDATE on the Workspace row serializes concurrent generate
+    // requests for the same workspace. This prevents two simultaneous requests
+    // from both passing the quota check before either has inserted a placeholder.
+    //
+    // The re-check for an existing draft under the lock closes the race between
+    // the quick check above and now.
+    type TxResult =
+      | { kind: "placeholder"; placeholder: { id: string } }
+      | { kind: "existing_generating" }
+      | { kind: "existing_proposed"; draft: { id: string; subject: string | null; body: string; status: string; createdAt: Date } }
+      | { kind: "quota_exceeded"; used: number; limit: number; resetsAt: Date };
+
+    const txResult = await db.$transaction(async (tx): Promise<TxResult> => {
+      await tx.$queryRaw`SELECT id FROM "Workspace" WHERE id = ${workspaceId} FOR UPDATE`;
+
+      // Re-check under lock.
+      const existingUnderLock = await tx.draft.findFirst({
+        where: {
+          emailThreadId: threadId,
+          workspaceId,
+          status: { in: ["GENERATING", "PROPOSED"] },
+          OR: [{ status: "PROPOSED" }, { createdAt: { gt: staleThreshold } }],
+        },
+        orderBy: { createdAt: "desc" },
+        select: { id: true, subject: true, body: true, status: true, createdAt: true },
+      });
+      if (existingUnderLock?.status === "GENERATING") return { kind: "existing_generating" };
+      if (existingUnderLock?.status === "PROPOSED") return { kind: "existing_proposed", draft: existingUnderLock };
+
+      if (config.billing.enforceDraftQuota) {
+        const now = new Date();
+        const windowStart = getDraftQuotaWindowStart(now);
+        const limit = getDraftLimit(workspace.plan);
+
+        // Count non-FAILED drafts in the current calendar-month window.
+        // Stale GENERATING rows (server crashes) are excluded so a crash does
+        // not permanently burn the user's allowance.
+        const [{ count }] = await tx.$queryRaw<[{ count: bigint }]>`
+          SELECT COUNT(*) AS count FROM "Draft"
+          WHERE "workspaceId" = ${workspaceId}
+            AND "createdAt" >= ${windowStart}
+            AND status IN ${Prisma.raw(QUOTA_COUNTED_STATUSES)}
+            AND NOT (status = 'GENERATING' AND "createdAt" <= ${staleThreshold})
+        `;
+
+        if (Number(count) >= limit) {
+          return {
+            kind: "quota_exceeded",
+            used: Number(count),
+            limit,
+            resetsAt: getDraftQuotaResetsAt(now),
+          };
+        }
+      }
+
+      const placeholder = await tx.draft.create({
+        data: {
+          workspaceId,
+          emailThreadId: threadId,
+          classificationId: classification.id,
+          subject: thread.subject ? `Re: ${thread.subject}` : "",
+          body: "",
+          status: "GENERATING",
+        },
+        select: { id: true },
+      });
+
+      return { kind: "placeholder", placeholder };
     });
+
+    if (txResult.kind === "existing_generating") {
+      return c.json({ generating: true }, 202);
+    }
+    if (txResult.kind === "existing_proposed") {
+      return c.json({ draft: txResult.draft }, 200);
+    }
+    if (txResult.kind === "quota_exceeded") {
+      return c.json(
+        {
+          error: "Monthly draft quota exceeded",
+          used: txResult.used,
+          limit: txResult.limit,
+          resetsAt: txResult.resetsAt.toISOString(),
+        },
+        429
+      );
+    }
+
+    const { placeholder } = txResult;
 
     let result;
     try {
@@ -163,6 +268,49 @@ drafts.post(
 
     console.log(`[drafts] Generated draft ${draft.id} for thread ${threadId}`);
     return c.json({ draft }, 201);
+  }
+);
+
+// ─── GET /workspaces/:workspaceId/draft-quota ──────────────────────────────────
+//
+// Returns the workspace's current draft usage for the active calendar-month window:
+//   { used, limit, resetsAt }
+// No lock is needed — this is a point-in-time read for display purposes only.
+
+drafts.get(
+  "/workspaces/:workspaceId/draft-quota",
+  async (c) => {
+    const workspaceId = c.req.param("workspaceId");
+    if (!workspaceId) {
+      return c.json({ error: "Invalid params" }, 400);
+    }
+
+    const workspace = await db.workspace.findUnique({
+      where: { id: workspaceId },
+      select: { plan: true },
+    });
+    if (!workspace) {
+      return c.json({ error: "Workspace not found" }, 404);
+    }
+
+    const now = new Date();
+    const windowStart = getDraftQuotaWindowStart(now);
+    const staleThreshold = new Date(now.getTime() - DRAFT_GENERATING_STALE_MS);
+    const limit = getDraftLimit(workspace.plan);
+
+    const [{ count }] = await db.$queryRaw<[{ count: bigint }]>`
+      SELECT COUNT(*) AS count FROM "Draft"
+      WHERE "workspaceId" = ${workspaceId}
+        AND "createdAt" >= ${windowStart}
+        AND status IN ${Prisma.raw(QUOTA_COUNTED_STATUSES)}
+        AND NOT (status = 'GENERATING' AND "createdAt" <= ${staleThreshold})
+    `;
+
+    return c.json({
+      used: Number(count),
+      limit,
+      resetsAt: getDraftQuotaResetsAt(now).toISOString(),
+    });
   }
 );
 

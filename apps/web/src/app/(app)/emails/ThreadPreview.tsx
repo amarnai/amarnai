@@ -50,6 +50,7 @@ export function ThreadPreview({
     thread.isDrafting ? "loading" : thread.hasDraft ? "ready" : "idle"
   );
   const [draft, setDraft] = useState<Draft | null>(null);
+  const [draftQuota, setDraftQuota] = useState<{ used: number; limit: number; resetsAt: string } | null>(null);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   function clearPoll() {
@@ -107,6 +108,8 @@ export function ThreadPreview({
     });
 
     if (thread.status !== "unsorted") {
+      api.draftQuota(workspaceId).then(setDraftQuota).catch(() => {});
+
       api.threadDrafts(workspaceId, thread.id).then(({ drafts }) => {
         const latest = drafts[0];
         if (latest?.status === "GENERATING" || (!latest && thread.isDrafting)) {
@@ -134,8 +137,15 @@ export function ThreadPreview({
         startPoll(threadId);
         return;
       }
+      if ("quotaExceeded" in result) {
+        setDraftState("idle");
+        setDraftQuota({ used: result.used, limit: result.limit, resetsAt: result.resetsAt });
+        onDraftFailed(threadId);
+        return;
+      }
       setDraft(result.draft);
       setDraftState("ready");
+      setDraftQuota((q) => q ? { ...q, used: q.used + 1 } : q);
       onDraftGenerated(threadId);
     }).catch(() => {
       setDraftState("error");
@@ -164,6 +174,10 @@ export function ThreadPreview({
     !!lastMsg?.fromEmail &&
     lastMsg.fromEmail.toLowerCase() === workspaceEmail.toLowerCase();
   const canDraft = thread.status !== "unsorted" && !lastMsgIsOwn;
+  const quotaExhausted = draftQuota !== null && draftQuota.used >= draftQuota.limit;
+  const quotaResetDate = draftQuota
+    ? new Date(draftQuota.resetsAt).toLocaleDateString("en", { month: "short", day: "numeric", timeZone: "UTC" })
+    : null;
 
   return (
     <div className="em-preview-col">
@@ -231,24 +245,35 @@ export function ThreadPreview({
         </div>
 
         {canDraft && draftState === "idle" && (
-          <button
-            type="button"
-            className="em-draft-cta"
-            onClick={handleGenerateDraft}
-          >
-            <span className="em-draft-cta-glyph" aria-hidden>
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                <path
-                  d="M2 9.5h8M2 7l5-5 1.5 1.5-5 5H2V7zM7 3l1.5-1.5 1.5 1.5-1.5 1.5L7 3z"
-                  stroke="currentColor"
-                  strokeWidth="1.1"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </span>
-            Generate draft reply
-          </button>
+          <div className="em-draft-cta-wrap">
+            <button
+              type="button"
+              className="em-draft-cta"
+              onClick={handleGenerateDraft}
+              disabled={quotaExhausted}
+            >
+              <span className="em-draft-cta-glyph" aria-hidden>
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                  <path
+                    d="M2 9.5h8M2 7l5-5 1.5 1.5-5 5H2V7zM7 3l1.5-1.5 1.5 1.5-1.5 1.5L7 3z"
+                    stroke="currentColor"
+                    strokeWidth="1.1"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </span>
+              Generate draft reply
+            </button>
+            {draftQuota !== null && (
+              <p className={`em-draft-quota${quotaExhausted ? " em-draft-quota--exhausted" : ""}`}>
+                {quotaExhausted
+                  ? <>No drafts remaining · resets {quotaResetDate}</>
+                  : <>{draftQuota.limit - draftQuota.used} of {draftQuota.limit} remaining · resets {quotaResetDate}</>
+                }
+              </p>
+            )}
+          </div>
         )}
 
         {draftState === "loading" && (

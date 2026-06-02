@@ -14,6 +14,8 @@ interface Props {
   hasSubscription: boolean;
   isAdmin: boolean;
   cancelled?: boolean;
+  membersToRemoveOnCancel: Array<{ name: string | null; email: string }>;
+  draftQuota?: { used: number; limit: number; resetsAt: string } | null;
 }
 
 const planLabels: Record<string, string> = {
@@ -37,6 +39,8 @@ export function BillingSection({
   hasSubscription,
   isAdmin,
   cancelled,
+  membersToRemoveOnCancel,
+  draftQuota,
 }: Props) {
   const router = useRouter();
   const [portalLoading, setPortalLoading] = useState(false);
@@ -157,6 +161,16 @@ export function BillingSection({
 
       </div>
 
+      {draftQuota != null && (
+        <p className="billing-note billing-usage-row">
+          <span>AI draft replies</span>
+          <span className={draftQuota.used >= draftQuota.limit ? "billing-usage--exhausted" : undefined}>
+            {draftQuota.used} / {draftQuota.limit} used · resets{" "}
+            {new Date(draftQuota.resetsAt).toLocaleDateString("en", { month: "short", day: "numeric", timeZone: "UTC" })}
+          </span>
+        </p>
+      )}
+
       {isTrialing && trialEndsAt && (
         <p className="billing-note">
           Free trial until{" "}
@@ -189,6 +203,20 @@ export function BillingSection({
               ? "Your free trial will end immediately and your workspace will be downgraded to the free plan."
               : `Your subscription will cancel at the end of the current billing period${currentPeriodEnd ? ` on ${currentPeriodEnd.toLocaleDateString()}` : ""}.`}
           </p>
+          {membersToRemoveOnCancel.length > 0 && (
+            <div className="billing-cancel-members-warning">
+              <strong>
+                {isTrialing
+                  ? "These collaborators will immediately lose access:"
+                  : `These collaborators will lose access on ${currentPeriodEnd?.toLocaleDateString() ?? "the end of the billing period"}:`}
+              </strong>
+              <ul>
+                {membersToRemoveOnCancel.map((m) => (
+                  <li key={m.email}>{m.name ? `${m.name} (${m.email})` : m.email}</li>
+                ))}
+              </ul>
+            </div>
+          )}
           {cancelError && (
             <p className="billing-cancel-confirm__error">{cancelError}</p>
           )}

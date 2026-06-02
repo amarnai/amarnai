@@ -69,34 +69,44 @@ export default async function SettingsPage({ searchParams }: { searchParams: Sea
 
       if (subscription.status === "canceled") {
         // Subscription was deleted on Stripe — mirrors handleSubscriptionDeleted.
-        await db.workspace.update({
-          where: { id: workspace.id },
-          data: {
-            plan: "FREE",
-            stripeSubscriptionId: null,
-            stripePriceId: null,
-            billingCycle: null,
-            trialEndsAt: null,
-            currentPeriodEnd: null,
-            cancelAtPeriodEnd: false,
-            paymentFailed: false,
-          },
-        });
+        await db.$transaction([
+          db.workspaceMember.deleteMany({
+            where: { workspaceId: workspace.id, NOT: { role: "OWNER" } },
+          }),
+          db.workspace.update({
+            where: { id: workspace.id },
+            data: {
+              plan: "FREE",
+              stripeSubscriptionId: null,
+              stripePriceId: null,
+              billingCycle: null,
+              trialEndsAt: null,
+              currentPeriodEnd: null,
+              cancelAtPeriodEnd: false,
+              paymentFailed: false,
+            },
+          }),
+        ]);
       } else if (subscription.cancel_at_period_end && subscription.status === "trialing") {
         // Trial cancelled — revoke access immediately (mirrors webhook 1b logic).
-        await db.workspace.update({
-          where: { id: workspace.id },
-          data: {
-            plan: "FREE",
-            stripeSubscriptionId: null,
-            stripePriceId: null,
-            billingCycle: null,
-            trialEndsAt: null,
-            currentPeriodEnd: null,
-            cancelAtPeriodEnd: false,
-            paymentFailed: false,
-          },
-        });
+        await db.$transaction([
+          db.workspaceMember.deleteMany({
+            where: { workspaceId: workspace.id, NOT: { role: "OWNER" } },
+          }),
+          db.workspace.update({
+            where: { id: workspace.id },
+            data: {
+              plan: "FREE",
+              stripeSubscriptionId: null,
+              stripePriceId: null,
+              billingCycle: null,
+              trialEndsAt: null,
+              currentPeriodEnd: null,
+              cancelAtPeriodEnd: false,
+              paymentFailed: false,
+            },
+          }),
+        ]);
       } else if (subscription.cancel_at_period_end) {
         const item = subscription.items.data[0];
         const currentPeriodEnd = item?.current_period_end
@@ -158,6 +168,14 @@ export default async function SettingsPage({ searchParams }: { searchParams: Sea
     expiresAt: inv.expiresAt.toISOString(),
   }));
 
+  const membersToRemoveOnCancel = members
+    .filter((m) => m.role !== "OWNER")
+    .map((m) => ({ name: m.user.name, email: m.user.email }));
+
+  const draftQuota = isAdmin
+    ? await api.draftQuota(workspace.id).catch(() => null)
+    : null;
+
   return (
     <>
       <h1>Workspace Settings</h1>
@@ -182,6 +200,8 @@ export default async function SettingsPage({ searchParams }: { searchParams: Sea
             hasSubscription={!!billing?.stripeSubscriptionId}
             isAdmin={isAdmin}
             cancelled={billingCancelled}
+            membersToRemoveOnCancel={membersToRemoveOnCancel}
+            draftQuota={draftQuota}
           />
 
           <WorkspaceNameSection currentName={workspace.name} />
