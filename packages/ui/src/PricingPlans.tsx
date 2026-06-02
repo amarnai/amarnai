@@ -301,7 +301,7 @@ function ComparisonMatrix({ cycle }: { cycle: BillingCycle }) {
                         </td>
                         {PLANS.map((p, i) => (
                           <td key={p.id} className={["cell", i === featuredIdx ? "featured-col" : ""].filter(Boolean).join(" ")}>
-                            <Cell value={allCells[i]} />
+                            <Cell value={allCells[i]!} />
                           </td>
                         ))}
                       </tr>
