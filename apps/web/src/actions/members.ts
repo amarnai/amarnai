@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { db } from "@amarnai/db";
 import { requireUser } from "@/lib/session";
 import { sendWorkspaceInvitationEmail } from "@/lib/email";
-import { MEMBER_LIMIT } from "@/lib/members";
+import { getCollaboratorLimit } from "@amarnai/shared";
 
 function generateInviteToken(): string {
   return crypto.randomBytes(32).toString("hex");
@@ -31,22 +31,24 @@ export async function inviteMemberAction(
     where: { workspaceId_userId: { workspaceId, userId: user.id } },
     select: { role: true },
   });
-  if (adminMember?.role !== "OWNER") return { error: "Only admins can invite team members" };
+  if (adminMember?.role !== "OWNER") return { error: "Only admins can invite collaborators" };
 
   // Fetch workspace for name and member count.
   const workspace = await db.workspace.findUnique({
     where: { id: workspaceId },
     select: {
       name: true,
+      plan: true,
       members: { select: { userId: true, role: true } },
     },
   });
   if (!workspace) return { error: "Workspace not found" };
 
-  // Enforce member limit (max MEMBER_LIMIT team members, not counting the admin).
+  // Enforce collaborator limit based on the workspace plan.
+  const collaboratorLimit = getCollaboratorLimit(workspace.plan);
   const teamMemberCount = workspace.members.filter((m) => m.role !== "OWNER").length;
-  if (teamMemberCount >= MEMBER_LIMIT) {
-    return { error: `This workspace already has the maximum of ${MEMBER_LIMIT} team members` };
+  if (teamMemberCount >= collaboratorLimit) {
+    return { error: "This workspace has reached its collaborator limit" };
   }
 
   // Prevent inviting the admin themselves.
@@ -64,7 +66,7 @@ export async function inviteMemberAction(
       where: { workspaceId_userId: { workspaceId, userId: invitedUser.id } },
       select: { id: true },
     });
-    if (alreadyMember) return { error: "This person is already a team member" };
+    if (alreadyMember) return { error: "This person is already a collaborator" };
   }
 
   // Upsert the invitation (replace any existing pending invite for this email).
@@ -114,7 +116,7 @@ export async function removeMemberAction(
     where: { workspaceId_userId: { workspaceId, userId: user.id } },
     select: { role: true },
   });
-  if (adminMember?.role !== "OWNER") return { error: "Only admins can remove team members" };
+  if (adminMember?.role !== "OWNER") return { error: "Only admins can remove collaborators" };
 
   // Prevent removing the admin themselves.
   if (memberUserId === user.id) return { error: "You cannot remove yourself" };

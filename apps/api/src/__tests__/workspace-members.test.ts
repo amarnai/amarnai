@@ -34,10 +34,9 @@ vi.mock("@amarnai/db", () => ({
 }));
 
 import { db } from "@amarnai/db";
+import { getCollaboratorLimit } from "@amarnai/shared";
 
 // ─── Helpers replicated from server actions for unit-testable extraction ──────
-
-const MEMBER_LIMIT = 4;
 
 function isValidEmail(value: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
@@ -93,16 +92,16 @@ async function canInviteMember(
     where: { id: workspaceId },
     select: {
       name: true,
+      plan: true,
       members: { select: { userId: true, role: true } },
     },
   });
   if (!workspace) return { error: "Workspace not found" };
 
+  const collaboratorLimit = getCollaboratorLimit(workspace.plan);
   const teamMemberCount = workspace.members.filter((m) => m.role !== "OWNER").length;
-  if (teamMemberCount >= MEMBER_LIMIT) {
-    return {
-      error: `This workspace already has the maximum of ${MEMBER_LIMIT} team members`,
-    };
+  if (teamMemberCount >= collaboratorLimit) {
+    return { error: "This workspace has reached its collaborator limit" };
   }
 
   return { ok: true };
@@ -215,6 +214,7 @@ describe("canInviteMember", () => {
     mockOwnerMember();
     vi.mocked(db.workspace.findUnique).mockResolvedValue({
       name: "Test WS",
+      plan: "PRO",
       members: [{ userId: OWNER_ID, role: "OWNER" }],
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
@@ -237,39 +237,36 @@ describe("canInviteMember", () => {
     if ("error" in result) expect(result.error).toMatch(/admin/i);
   });
 
-  it("rejects when member limit reached", async () => {
+  it("rejects when collaborator limit reached (PRO: 10)", async () => {
     mockOwnerMember();
     vi.mocked(db.workspace.findUnique).mockResolvedValue({
       name: "Test WS",
+      plan: "PRO",
       members: [
         { userId: OWNER_ID, role: "OWNER" },
-        { userId: "m1", role: "MEMBER" },
-        { userId: "m2", role: "MEMBER" },
-        { userId: "m3", role: "MEMBER" },
-        { userId: "m4", role: "MEMBER" },
+        ...Array.from({ length: 10 }, (_, i) => ({ userId: `m${i + 1}`, role: "MEMBER" })),
       ],
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
 
-    const result = await canInviteMember(WS_ID, OWNER_ID, "fifth@example.com");
+    const result = await canInviteMember(WS_ID, OWNER_ID, "eleventh@example.com");
     expect("error" in result).toBe(true);
-    if ("error" in result) expect(result.error).toMatch(/maximum/i);
+    if ("error" in result) expect(result.error).toMatch(/collaborator limit/i);
   });
 
-  it("allows invite when exactly at limit minus 1 (last slot)", async () => {
+  it("allows invite when exactly at limit minus 1 (last slot, PRO: 10)", async () => {
     mockOwnerMember();
     vi.mocked(db.workspace.findUnique).mockResolvedValue({
       name: "Test WS",
+      plan: "PRO",
       members: [
         { userId: OWNER_ID, role: "OWNER" },
-        { userId: "m1", role: "MEMBER" },
-        { userId: "m2", role: "MEMBER" },
-        { userId: "m3", role: "MEMBER" },
+        ...Array.from({ length: 9 }, (_, i) => ({ userId: `m${i + 1}`, role: "MEMBER" })),
       ],
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
 
-    const result = await canInviteMember(WS_ID, OWNER_ID, "fourth@example.com");
+    const result = await canInviteMember(WS_ID, OWNER_ID, "tenth@example.com");
     expect(result).toEqual({ ok: true });
   });
 
@@ -277,6 +274,7 @@ describe("canInviteMember", () => {
     mockOwnerMember();
     vi.mocked(db.workspace.findUnique).mockResolvedValue({
       name: "Test WS",
+      plan: "PRO",
       members: [{ userId: OWNER_ID, role: "OWNER" }],
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
@@ -295,11 +293,23 @@ describe("canInviteMember", () => {
   });
 });
 
-// ─── Member limit constant ────────────────────────────────────────────────────
+// ─── Collaborator limit ───────────────────────────────────────────────────────
 
-describe("MEMBER_LIMIT", () => {
-  it("is 4", () => {
-    expect(MEMBER_LIMIT).toBe(4);
+describe("getCollaboratorLimit", () => {
+  it("returns 0 for FREE plan", () => {
+    expect(getCollaboratorLimit("FREE")).toBe(0);
+  });
+
+  it("returns 10 for PRO plan", () => {
+    expect(getCollaboratorLimit("PRO")).toBe(10);
+  });
+
+  it("returns 25 for BUSINESS plan", () => {
+    expect(getCollaboratorLimit("BUSINESS")).toBe(25);
+  });
+
+  it("falls back to FREE limit for unknown plans", () => {
+    expect(getCollaboratorLimit("UNKNOWN")).toBe(0);
   });
 });
 

@@ -3,6 +3,7 @@ import { getSelectedWorkspace } from "@/lib/workspace";
 import { api } from "@/lib/api";
 import { db } from "@amarnai/db";
 import { stripe } from "@/lib/stripe";
+import { getCollaboratorLimit } from "@amarnai/shared";
 import { GmailConnectionSection } from "./GmailConnectionSection";
 import { WorkspaceNameSection } from "./WorkspaceNameSection";
 import { DeleteWorkspaceSection } from "./DeleteWorkspaceSection";
@@ -166,6 +167,7 @@ export default async function SettingsPage({ searchParams }: { searchParams: Sea
         isAdmin={isAdmin}
         members={members}
         pendingInvitations={pendingInvitations}
+        collaboratorLimit={getCollaboratorLimit(billing?.plan ?? workspace.plan)}
       />
 
       {isAdmin && (

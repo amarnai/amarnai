@@ -6,7 +6,6 @@ import {
   removeMemberAction,
   cancelInvitationAction,
 } from "@/actions/members";
-import { MEMBER_LIMIT } from "@/lib/members";
 
 type Member = {
   id: string;
@@ -26,6 +25,7 @@ type Props = {
   isAdmin: boolean;
   members: Member[];
   pendingInvitations: PendingInvitation[];
+  collaboratorLimit: number;
 };
 
 function isValidEmail(value: string): boolean {
@@ -45,6 +45,7 @@ export function TeamMembersSection({
   isAdmin,
   members,
   pendingInvitations: initialInvitations,
+  collaboratorLimit,
 }: Props) {
   const [inviteInput, setInviteInput] = useState("");
   const [inviteError, setInviteError] = useState<string | null>(null);
@@ -57,7 +58,7 @@ export function TeamMembersSection({
   const inputRef = useRef<HTMLInputElement>(null);
 
   const teamMemberCount = members.filter((m) => m.role !== "OWNER").length;
-  const atLimit = teamMemberCount >= MEMBER_LIMIT;
+  const atLimit = teamMemberCount >= collaboratorLimit;
 
   function handleInvite() {
     const email = inviteInput.trim().toLowerCase();
@@ -122,10 +123,10 @@ export function TeamMembersSection({
 
   return (
     <section className="settings-section">
-      <h2>Team members</h2>
+      <h2>Collaborators</h2>
       <p className="settings-hint">
         {isAdmin
-          ? `You can invite up to ${MEMBER_LIMIT} team members to this workspace.`
+          ? `You can invite up to ${collaboratorLimit} collaborator${collaboratorLimit === 1 ? "" : "s"} to this workspace.`
           : "People with access to this workspace."}
       </p>
 
@@ -182,10 +183,10 @@ export function TeamMembersSection({
 
       {isAdmin && (
         <div className="settings-subsection">
-          <h3>Invite a team member</h3>
+          <h3>Invite a collaborator</h3>
           {atLimit ? (
             <p className="settings-hint">
-              Maximum of {MEMBER_LIMIT} team members reached.
+              Maximum of {collaboratorLimit} collaborator{collaboratorLimit === 1 ? "" : "s"} reached.
             </p>
           ) : (
             <>
