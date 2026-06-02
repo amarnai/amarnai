@@ -16,6 +16,9 @@ interface Props {
   cancelled?: boolean;
   membersToRemoveOnCancel: Array<{ name: string | null; email: string }>;
   draftQuota?: { used: number; limit: number; resetsAt: string } | null;
+  threadSortQuota?: { used: number; limit: number; resetsAt: string } | null;
+  collaboratorCount?: number;
+  collaboratorLimit?: number;
 }
 
 const planLabels: Record<string, string> = {
@@ -41,6 +44,9 @@ export function BillingSection({
   cancelled,
   membersToRemoveOnCancel,
   draftQuota,
+  threadSortQuota,
+  collaboratorCount,
+  collaboratorLimit,
 }: Props) {
   const router = useRouter();
   const [portalLoading, setPortalLoading] = useState(false);
@@ -161,15 +167,40 @@ export function BillingSection({
 
       </div>
 
-      {draftQuota != null && (
-        <p className="billing-note billing-usage-row">
-          <span>AI draft replies</span>
-          <span className={draftQuota.used >= draftQuota.limit ? "billing-usage--exhausted" : undefined}>
-            {draftQuota.used} / {draftQuota.limit} used · resets{" "}
-            {new Date(draftQuota.resetsAt).toLocaleDateString("en", { month: "short", day: "numeric", timeZone: "UTC" })}
-          </span>
-        </p>
-      )}
+      <hr className="billing-usage-divider" />
+
+      <div className="billing-usage-block">
+        {draftQuota != null && (
+          <p className="billing-note billing-usage-row">
+            <span>AI drafts</span>
+            <span className={draftQuota.used >= draftQuota.limit ? "billing-usage--exhausted" : undefined}>
+              {Math.max(0, draftQuota.limit - draftQuota.used)} / {draftQuota.limit} left · resets{" "}
+              {new Date(draftQuota.resetsAt).toLocaleDateString("en", { month: "short", day: "numeric", timeZone: "UTC" })}
+            </span>
+          </p>
+        )}
+        {threadSortQuota != null && (
+          <p className="billing-note billing-usage-row">
+            <span>Threads sorted</span>
+            <span className={threadSortQuota.used >= threadSortQuota.limit ? "billing-usage--exhausted" : undefined}>
+              {threadSortQuota.used} / {threadSortQuota.limit} · resets{" "}
+              {new Date(threadSortQuota.resetsAt).toLocaleDateString("en", { month: "short", day: "numeric", timeZone: "UTC" })}
+            </span>
+          </p>
+        )}
+        {collaboratorCount != null && collaboratorLimit != null && (
+          <p className="billing-note billing-usage-row">
+            <span>Collaborators</span>
+            {collaboratorLimit === 0 ? (
+              <span>Not included · <Link href="/upgrade">upgrade to add</Link></span>
+            ) : (
+              <span className={collaboratorCount >= collaboratorLimit ? "billing-usage--exhausted" : undefined}>
+                {collaboratorCount} / {collaboratorLimit} added
+              </span>
+            )}
+          </p>
+        )}
+      </div>
 
       {isTrialing && trialEndsAt && (
         <p className="billing-note">

@@ -172,20 +172,44 @@ export default async function SettingsPage({ searchParams }: { searchParams: Sea
     .filter((m) => m.role !== "OWNER")
     .map((m) => ({ name: m.user.name, email: m.user.email }));
 
-  const draftQuota = isAdmin
-    ? await api.draftQuota(workspace.id).catch(() => null)
-    : null;
+  const [draftQuota, threadSortQuota] = isAdmin
+    ? await Promise.all([
+        api.draftQuota(workspace.id).catch(() => null),
+        api.threadSortQuota(workspace.id).catch(() => null),
+      ])
+    : [null, null];
+
+  const collaboratorCount = members.filter((m) => m.role !== "OWNER").length;
+  const collaboratorLimit = getCollaboratorLimit(billing?.plan ?? workspace.plan);
 
   return (
     <>
       <h1>Workspace Settings</h1>
+
+      {isAdmin && (
+        <>
+          <WorkspaceNameSection currentName={workspace.name} />
+          <GmailConnectionSection
+            workspaceId={workspace.id}
+            connection={connection}
+            syncStatus={syncStatus}
+            syncSettings={syncSettings}
+            connectError={connectError}
+            connectSuccess={connectSuccess}
+          />
+          <EmailBlacklistSection
+            workspaceId={workspace.id}
+            initialEmails={syncSettings?.blacklistedSenderEmails ?? []}
+          />
+        </>
+      )}
 
       <TeamMembersSection
         workspaceId={workspace.id}
         isAdmin={isAdmin}
         members={members}
         pendingInvitations={pendingInvitations}
-        collaboratorLimit={getCollaboratorLimit(billing?.plan ?? workspace.plan)}
+        collaboratorLimit={collaboratorLimit}
       />
 
       {isAdmin && (
@@ -202,20 +226,9 @@ export default async function SettingsPage({ searchParams }: { searchParams: Sea
             cancelled={billingCancelled}
             membersToRemoveOnCancel={membersToRemoveOnCancel}
             draftQuota={draftQuota}
-          />
-
-          <WorkspaceNameSection currentName={workspace.name} />
-          <GmailConnectionSection
-            workspaceId={workspace.id}
-            connection={connection}
-            syncStatus={syncStatus}
-            syncSettings={syncSettings}
-            connectError={connectError}
-            connectSuccess={connectSuccess}
-          />
-          <EmailBlacklistSection
-            workspaceId={workspace.id}
-            initialEmails={syncSettings?.blacklistedSenderEmails ?? []}
+            threadSortQuota={threadSortQuota}
+            collaboratorCount={collaboratorCount}
+            collaboratorLimit={collaboratorLimit}
           />
           <DeleteWorkspaceSection workspaceId={workspace.id} />
         </>

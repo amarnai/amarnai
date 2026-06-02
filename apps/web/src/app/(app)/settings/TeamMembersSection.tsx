@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState, useTransition, useRef } from "react";
 import {
   inviteMemberAction,
@@ -127,7 +128,7 @@ export function TeamMembersSection({
       <p className="settings-hint">
         {isAdmin
           ? collaboratorLimit === 0
-            ? "Collaborators are available on Pro and Business plans."
+            ? <>Collaborators are available on Pro and Business plans. <Link href="/upgrade">Upgrade to add.</Link></>
             : `You can invite up to ${collaboratorLimit} collaborators to this workspace.`
           : "People with access to this workspace."}
       </p>

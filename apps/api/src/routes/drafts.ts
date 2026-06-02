@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import { z } from "zod";
 import { db, Prisma } from "@amarnai/db";
 import { createAIProvider, generateDraft } from "@amarnai/ai";
-import { getDraftLimit, getDraftQuotaWindowStart, getDraftQuotaResetsAt } from "@amarnai/shared";
+import { getDraftLimit, getDraftQuotaWindowStart, getDraftQuotaResetsAt, getThreadSortLimit } from "@amarnai/shared";
 import { config } from "@amarnai/config";
 import { getAIProviderConfig } from "../services/ai-providers.js";
 
@@ -304,6 +304,46 @@ drafts.get(
         AND "createdAt" >= ${windowStart}
         AND status IN ${Prisma.raw(QUOTA_COUNTED_STATUSES)}
         AND NOT (status = 'GENERATING' AND "createdAt" <= ${staleThreshold})
+    `;
+
+    return c.json({
+      used: Number(count),
+      limit,
+      resetsAt: getDraftQuotaResetsAt(now).toISOString(),
+    });
+  }
+);
+
+// ─── GET /workspaces/:workspaceId/thread-sort-quota ───────────────────────────
+//
+// Returns the workspace's current thread-sort usage for the active calendar-month
+// window: { used, limit, resetsAt }
+// "used" counts distinct email threads classified this month.
+
+drafts.get(
+  "/workspaces/:workspaceId/thread-sort-quota",
+  async (c) => {
+    const workspaceId = c.req.param("workspaceId");
+    if (!workspaceId) {
+      return c.json({ error: "Invalid params" }, 400);
+    }
+
+    const workspace = await db.workspace.findUnique({
+      where: { id: workspaceId },
+      select: { plan: true },
+    });
+    if (!workspace) {
+      return c.json({ error: "Workspace not found" }, 404);
+    }
+
+    const now = new Date();
+    const windowStart = getDraftQuotaWindowStart(now);
+    const limit = getThreadSortLimit(workspace.plan);
+
+    const [{ count }] = await db.$queryRaw<[{ count: bigint }]>`
+      SELECT COUNT(DISTINCT "emailThreadId") AS count FROM "EmailClassification"
+      WHERE "workspaceId" = ${workspaceId}
+        AND "createdAt" >= ${windowStart}
     `;
 
     return c.json({

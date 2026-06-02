@@ -588,6 +588,10 @@ export const api = {
     apiFetch<{ used: number; limit: number; resetsAt: string }>(
       `/workspaces/${workspaceId}/draft-quota`
     ),
+  threadSortQuota: (workspaceId: string) =>
+    apiFetch<{ used: number; limit: number; resetsAt: string }>(
+      `/workspaces/${workspaceId}/thread-sort-quota`
+    ),
   threadDrafts: (workspaceId: string, threadId: string) =>
     apiFetch<{ drafts: Draft[] }>(
       `/workspaces/${workspaceId}/email-threads/${threadId}/drafts`
