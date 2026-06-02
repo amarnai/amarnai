@@ -38,4 +38,17 @@ if [[ -n "$hits" ]]; then
   exit 1
 fi
 
+# ── Lint & typecheck ──────────────────────────────────────────────────────────
+echo "[pre-commit] Running lint..."
+if ! pnpm lint; then
+  echo -e "${RED}[pre-commit] Lint failed. Fix errors or commit with --no-verify.${NC}"
+  exit 1
+fi
+
+echo "[pre-commit] Running typecheck..."
+if ! pnpm typecheck; then
+  echo -e "${RED}[pre-commit] Typecheck failed. Fix errors or commit with --no-verify.${NC}"
+  exit 1
+fi
+
 exit 0

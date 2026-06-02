@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+RED='\033[0;31m'
+NC='\033[0m'
+
+echo "[pre-push] Running tests..."
+if ! pnpm test; then
+  echo -e "${RED}[pre-push] Tests failed. Fix errors or push with --no-verify.${NC}"
+  exit 1
+fi
+
+exit 0
