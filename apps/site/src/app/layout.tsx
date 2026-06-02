@@ -6,7 +6,7 @@ const geist = Geist({ subsets: ["latin"], variable: "--font-geist-sans" });
 const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" });
 
 export const metadata: Metadata = {
-  title: "Amarnai — Open-source AI email triage",
+  title: "Amarnai | Open-source AI email triage",
   description:
     "Amarnai is a self-hostable AI assistant layer for Gmail that sorts, drafts, and escalates email through a visual workflow you define.",
 };

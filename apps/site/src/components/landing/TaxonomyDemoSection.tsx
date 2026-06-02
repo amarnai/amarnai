@@ -10,7 +10,7 @@ export function TaxonomyDemoSection() {
             <p className="ld-section-lede">
               Your taxonomy is a map Amarnai walks from the inbox down to a
               single folder. Drag the cards to arrange them, then connect
-              folders by dragging from the blue handle dot — exactly as you
+              folders by dragging from the blue handle dot, exactly as you
               would in the real product.
             </p>
           </div>

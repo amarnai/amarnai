@@ -99,7 +99,7 @@ export const DEMO_DRAFT_BODIES: Record<string, string> = {
   t2: "Aziru,\n\nYour words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n\nWith regards,",
   t3: "To the Bureau of Royal Appointments,\n\nWe have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n\nBy royal decree,",
   t4: "Rib-Hadda,\n\nWe hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n\nBe well,",
-  t5: "Abdi-Heba,\n\nI will be near the Delta that same week. Let us meet at the waystation on the second day — I can spare the morning.\n\nUntil then,",
+  t5: "Abdi-Heba,\n\nI will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n\nUntil then,",
   t6: "Great King,\n\nThe reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n\nIn brotherhood,",
 };
 
@@ -110,7 +110,7 @@ const d = (iso: string) => new Date(iso);
 export const DEMO_THREADS: ThreadItem[] = [
   {
     id: "t1",
-    subject: "Gold balance — third consignment overdue",
+    subject: "Gold balance: third consignment overdue",
     providerThreadId: "p1",
     participants: "burna.buriash@babylon.iq",
     latestAt: d("2026-05-30T10:14:00Z"),
@@ -139,7 +139,7 @@ export const DEMO_THREADS: ThreadItem[] = [
   },
   {
     id: "t2",
-    subject: "Alliance proposal — house of Amurru",
+    subject: "Alliance proposal: house of Amurru",
     providerThreadId: "p2",
     participants: "aziru@amurru.co",
     latestAt: d("2026-05-29T16:45:00Z"),
@@ -149,7 +149,7 @@ export const DEMO_THREADS: ThreadItem[] = [
     folderId: "investors",
     status: "review",
     confidence: 0.71,
-    reasoning: "Flagged as alliance/investor intro based on language (\"mutual benefit\", \"long-standing friendship\"). Confidence is moderate — Aziru has been known to send similar overtures to multiple courts.",
+    reasoning: "Flagged as alliance/investor intro based on language (\"mutual benefit\", \"long-standing friendship\"). Confidence is moderate; Aziru has been known to send similar overtures to multiple courts.",
     alternativeFolder: { folderId: "other", name: "Other", weight: 0.21 },
     messages: [
       {
@@ -158,7 +158,7 @@ export const DEMO_THREADS: ThreadItem[] = [
         fromEmail: "aziru@amurru.co",
         time: d("2026-05-29T16:45:00Z"),
         snippet: "I write to propose that we formalise our friendship.",
-        bodyText: "To the Great King,\n\nFor many years our houses have been as brothers. I write now to propose that we formalise this friendship for the benefit of both our peoples — a pact of mutual protection and shared routes.\n\nI ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n\nAziru, servant of the Great King, lord of Amurru",
+        bodyText: "To the Great King,\n\nFor many years our houses have been as brothers. I write now to propose that we formalise this friendship for the benefit of both our peoples: a pact of mutual protection and shared routes.\n\nI ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n\nAziru, servant of the Great King, lord of Amurru",
       },
     ],
     hasDraft: true,
@@ -197,12 +197,12 @@ export const DEMO_THREADS: ThreadItem[] = [
   },
   {
     id: "t4",
-    subject: "Re: Grain shipment — third delay this season",
+    subject: "Re: Grain shipment: third delay this season",
     providerThreadId: "p4",
     participants: "rib-hadda@byblos.lb",
     latestAt: d("2026-05-28T14:10:00Z"),
     messageCount: 4,
-    snippet: "The grain you sent last month was received with gratitude. But I must write again — the third shipment has not arrived and the city grows restless.",
+    snippet: "The grain you sent last month was received with gratitude. But I must write again: the third shipment has not arrived and the city grows restless.",
     unread: false,
     folderId: "customers-smb",
     status: "sorted",
@@ -216,7 +216,7 @@ export const DEMO_THREADS: ThreadItem[] = [
         fromEmail: "rib-hadda@byblos.lb",
         time: d("2026-05-28T14:10:00Z"),
         snippet: "The third grain shipment has not arrived.",
-        bodyText: "To the Great King, my lord, my sun,\n\nThe grain you sent last month was received with gratitude and I praised your name before the people. But I must write again — the third shipment has not arrived and the city grows restless.\n\nI have written seven times. I do not wish to trouble you, yet what else can I do?\n\nYour servant, Rib-Hadda, governor of Byblos",
+        bodyText: "To the Great King, my lord, my sun,\n\nThe grain you sent last month was received with gratitude and I praised your name before the people. But I must write again: the third shipment has not arrived and the city grows restless.\n\nI have written seven times. I do not wish to trouble you, yet what else can I do?\n\nYour servant, Rib-Hadda, governor of Byblos",
       },
     ],
     hasDraft: true,
@@ -226,7 +226,7 @@ export const DEMO_THREADS: ThreadItem[] = [
   },
   {
     id: "t5",
-    subject: "Passing through the Delta — free to meet?",
+    subject: "Passing through the Delta: free to meet?",
     providerThreadId: "p5",
     participants: "abdi-heba@urusalim.gov",
     latestAt: d("2026-05-27T18:33:00Z"),
@@ -236,7 +236,7 @@ export const DEMO_THREADS: ThreadItem[] = [
     folderId: "other",
     status: "review",
     confidence: 0.52,
-    reasoning: "Informal message with no clear category — personal visit or political audience? Tone is personal but sender is a known vassal governor. Routed to Other with low confidence.",
+    reasoning: "Informal message with no clear category: personal visit or political audience? Tone is personal but sender is a known vassal governor. Routed to Other with low confidence.",
     alternativeFolder: { folderId: "customers-smb", name: "SMB", weight: 0.28 },
     messages: [
       {
@@ -244,8 +244,8 @@ export const DEMO_THREADS: ThreadItem[] = [
         fromName: "Abdi-Heba of Urushalim",
         fromEmail: "abdi-heba@urusalim.gov",
         time: d("2026-05-27T18:33:00Z"),
-        snippet: "Passing through the Delta — free to meet?",
-        bodyText: "To the Great King,\n\nMy travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face — there are matters easier said than written.\n\nYour servant, Abdi-Heba, governor of Urushalim",
+        snippet: "Passing through the Delta: free to meet?",
+        bodyText: "To the Great King,\n\nMy travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n\nYour servant, Abdi-Heba, governor of Urushalim",
       },
     ],
     hasDraft: false,
@@ -255,7 +255,7 @@ export const DEMO_THREADS: ThreadItem[] = [
   },
   {
     id: "t6",
-    subject: "Council convening — season of Shemu",
+    subject: "Council convening: season of Shemu",
     providerThreadId: "p6",
     participants: "tushratta@mitanni.int",
     latestAt: d("2026-05-26T11:00:00Z"),
@@ -274,7 +274,7 @@ export const DEMO_THREADS: ThreadItem[] = [
         fromEmail: "tushratta@mitanni.int",
         time: d("2026-05-26T11:00:00Z"),
         snippet: "Prepare your accounts before the council convenes.",
-        bodyText: "To my brother, the Great King,\n\nThe great council convenes at the start of Shemu. I ask that you prepare a full accounting of the eastern territories and send it ahead by fast courier — before the new moon if possible.\n\nOur alliance is strong. Let us show the council that it remains so.\n\nTushratta, Great King of Mitanni",
+        bodyText: "To my brother, the Great King,\n\nThe great council convenes at the start of Shemu. I ask that you prepare a full accounting of the eastern territories and send it ahead by fast courier, before the new moon if possible.\n\nOur alliance is strong. Let us show the council that it remains so.\n\nTushratta, Great King of Mitanni",
       },
     ],
     hasDraft: false,

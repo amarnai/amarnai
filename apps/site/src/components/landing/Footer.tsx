@@ -11,7 +11,7 @@ export function Footer() {
               Amarnai
             </div>
             <p className="ld-footer-tagline">
-              Open-source AI email triage. Gmail-first. Hosted or self-hosted — your call.
+              Open-source AI email triage. Gmail-first. Hosted or self-hosted. Your call.
             </p>
           </div>
 

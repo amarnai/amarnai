@@ -11,7 +11,7 @@ import { Footer } from "@/components/landing/Footer";
 import { RevealObserver } from "@/components/landing/RevealObserver";
 
 export const metadata: Metadata = {
-  title: "Amarnai — email triage that explains itself",
+  title: "Amarnai | email triage that explains itself",
   description:
     "Amarnai reads your inbox the way you would: it sorts threads into folders you define, and drafts replies you approve. Gmail-first, hosted or self-hosted.",
 };

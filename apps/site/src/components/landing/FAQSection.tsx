@@ -5,11 +5,11 @@ import { useState } from "react";
 const FAQ_ITEMS = [
   {
     q: "What does Amarnai actually do to my Gmail?",
-    a: "Amarnai reads your threads using Gmail's read-only OAuth scope. It never sends email, never modifies labels directly, and never deletes anything. All writes — if any — require your explicit approval.",
+    a: "Amarnai reads your threads using Gmail's read-only OAuth scope. It never sends email, never modifies labels directly, and never deletes anything. All writes (if any) require your explicit approval.",
   },
   {
     q: "How does the taxonomy work?",
-    a: "You define a tree of folders (like Customers → Enterprise, Customers → SMB) and describe each in a sentence. Amarnai walks that tree and routes each thread to the best match. The model sees your descriptions, not your rules — you write plain English, not code.",
+    a: "You define a tree of folders (like Customers → Enterprise, Customers → SMB) and describe each in a sentence. Amarnai walks that tree and routes each thread to the best match. The model sees your descriptions, not your rules; you write plain English, not code.",
   },
   {
     q: "What happens to low-confidence threads?",
@@ -17,15 +17,15 @@ const FAQ_ITEMS = [
   },
   {
     q: "Can Amarnai draft replies?",
-    a: "Yes — open a thread and press Generate draft reply. A draft appears in the interface for your review. It is never sent automatically and never leaves Amarnai until you copy it into Gmail yourself.",
+    a: "Yes. Open a thread and press Generate draft reply. A draft appears in the interface for your review. It is never sent automatically and never leaves Amarnai until you copy it into Gmail yourself.",
   },
   {
     q: "How is pricing structured?",
-    a: "Pricing is per workspace, billed monthly or annually. Every workspace starts with a 14-day free trial — no card required. See the pricing page for current plan details.",
+    a: "Pricing is per workspace, billed monthly or annually. Every workspace starts with a 14-day free trial, no card required. See the pricing page for current plan details.",
   },
   {
     q: "Can I self-host Amarnai?",
-    a: "Yes. Amarnai is fully open source under AGPL-3.0. You can clone the repo and run it yourself with Docker. Self-hosted deployments are free and unsupported — community support is available on GitHub.",
+    a: "Yes. Amarnai is fully open source under AGPL-3.0. You can clone the repo and run it yourself with Docker. Self-hosted deployments are free and unsupported; community support is available on GitHub.",
   },
   {
     q: "What AI model does Amarnai use?",

@@ -13,7 +13,7 @@ export function EmailsDemoSection() {
             <p className="ld-section-lede">
               Browse folders, open a thread, and read why Amarnai routed it
               there. When a reply is needed, press{" "}
-              <strong>Generate draft reply</strong> — a draft appears instantly,
+              <strong>Generate draft reply</strong>: a draft appears instantly,
               ready for your edits. This is the real interface.
             </p>
           </div>
