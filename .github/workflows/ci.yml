@@ -44,6 +44,7 @@ jobs:
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile
+      - run: pnpm db:generate
 
       - name: Cache Turborepo
         uses: actions/cache@v4
@@ -72,6 +73,7 @@ jobs:
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile
+      - run: pnpm db:generate
 
       - name: Cache Turborepo
         uses: actions/cache@v4
