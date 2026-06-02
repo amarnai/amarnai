@@ -37,34 +37,35 @@ export function HeroSection() {
         </div>
 
         <div className="ld-trust">
-          <span className="ld-trust-label">Built to be trusted</span>
+          <span className="ld-trust-label">Privacy by design</span>
           <div className="ld-trust-items">
             <span className="ld-trust-item">
               <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden>
                 <path d="M7.5 1.3 2 3.4v3.7c0 3.2 2.3 5.3 5.5 6.6 3.2-1.3 5.5-3.4 5.5-6.6V3.4L7.5 1.3Z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" />
               </svg>
-              Never auto-sends email
+              You approve every action
             </span>
             <span className="ld-trust-item">
               <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden>
                 <rect x="3" y="6.5" width="9" height="6.5" rx="1.3" stroke="currentColor" strokeWidth="1.2" />
                 <path d="M4.8 6.5V5a2.7 2.7 0 0 1 5.4 0v1.5" stroke="currentColor" strokeWidth="1.2" />
               </svg>
-              Tokens encrypted at rest
+              Your Gmail stays yours
             </span>
             <span className="ld-trust-item">
               <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden>
                 <path d="M2 7.5h11M7.5 2v11" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
                 <circle cx="7.5" cy="7.5" r="5.7" stroke="currentColor" strokeWidth="1.2" />
               </svg>
-              Open-source &amp; self-hostable
+              Open-source &amp; auditable
             </span>
             <span className="ld-trust-item">
               <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden>
-                <path d="M7.5 1.5 13 4v3.5c0 .8-.1 1.5-.3 2.2" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-                <path d="M7.5 13.5C4.3 12.2 2 10.2 2 7V4l5.5-2.5" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" />
+                <path d="M1.5 7.5Q4.5 3.5 7.5 3.5Q10.5 3.5 13.5 7.5Q10.5 11.5 7.5 11.5Q4.5 11.5 1.5 7.5Z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" />
+                <circle cx="7.5" cy="7.5" r="1.8" stroke="currentColor" strokeWidth="1.2" />
+                <line x1="3" y1="3" x2="12" y2="12" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
               </svg>
-              Stores minimal email data
+              No email bodies stored
             </span>
           </div>
         </div>
