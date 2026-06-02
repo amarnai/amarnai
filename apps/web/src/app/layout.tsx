@@ -7,19 +7,14 @@ const geist = Geist({ subsets: ["latin"], variable: "--font-geist-sans" });
 const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" });
 
 export const metadata: Metadata = {
-  title: "Amarnai",
-  description: "Gmail-first AI email triage assistant",
-  openGraph: {
-    title: "Amarnai",
-    description: "AI email triage for Gmail. Open source and self-hostable.",
-    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
+  title: {
+    template: "%s | Amarnai",
+    default: "Amarnai",
   },
-  twitter: {
-    card: "summary_large_image",
-    title: "Amarnai",
-    description: "AI email triage for Gmail. Open source and self-hostable.",
-    images: ["/og-image.png"],
-  },
+  description: "Your AI email triage assistant.",
+  applicationName: "Amarnai",
+  metadataBase: new URL("https://app.amarnai.com"),
+  robots: { index: false, follow: false },
 };
 
 export default function RootLayout({
