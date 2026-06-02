@@ -53,6 +53,7 @@ A key use case is bulk triage of an existing inbox: users may want to sort and c
 ## UX
 
 - Minimize the number of clicks required to complete any action. Prefer inline controls, smart defaults, and progressive disclosure over multi-step flows.
+- Both the marketing site and the web app must be fully responsive. All layouts, components, and interactions must work correctly on mobile, tablet, and desktop screen sizes.
 
 ## Standards
 
