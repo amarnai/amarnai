@@ -11,6 +11,7 @@ import { ThreadList } from "./ThreadList";
 import { ThreadPreview } from "./ThreadPreview";
 import { ReroutePopover } from "./ReroutePopover";
 import { useThreadKeyboard } from "./useThreadKeyboard";
+import { mapThreads } from "./queries";
 
 type RerouteTarget = { kind: "single"; threadId: string } | null;
 
@@ -42,6 +43,28 @@ export function EmailsClient({
 
   const [threads, setThreads] = useState<ThreadItem[]>(initialThreads);
   const [folders] = useState<FolderItem[]>(initialFolders);
+
+  // Sync server-rendered threads into local state after router.refresh() — e.g.
+  // when ClassifyingRefresher fires.
+  useEffect(() => {
+    setThreads(initialThreads);
+  }, [initialThreads]);
+
+  // Connect to the workspace SSE stream; refresh the thread list immediately
+  // when the sync-inbox worker finishes, without a full page reload.
+  useEffect(() => {
+    const es = new EventSource(
+      `/api/workspace-events?workspaceId=${encodeURIComponent(workspaceId)}`
+    );
+    es.addEventListener("synced", () => {
+      api.emailThreads(workspaceId).then(({ threads: fresh }) => {
+        setThreads(mapThreads(fresh));
+      }).catch(() => {});
+    });
+    es.onerror = () => {};
+    return () => es.close();
+  }, [workspaceId]);
+
   const [active, setActive] = useState<ActiveSelection>(initialActive);
   const [selectedId, setSelectedId] = useState<string | null>(initialSelectedId);
   const [mobileView, setMobileView] = useState<"list" | "preview">(

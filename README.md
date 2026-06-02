@@ -127,6 +127,57 @@ SMTP_PASS=<SES SMTP password>
 
 Amarnai lets each workspace connect one Gmail inbox for email triage. The connection requests only `gmail.readonly` access — it cannot send or modify email.
 
+### Real-time sync (Gmail Push Notifications)
+
+By default, Amarnai polls Gmail every 5 minutes for new messages. To get near-zero latency — Gmail notifies Amarnai the instant a message arrives — enable Gmail Push Notifications via Google Cloud Pub/Sub.
+
+**One-time GCP setup:**
+
+```bash
+# 1. Enable APIs
+gcloud services enable gmail.googleapis.com pubsub.googleapis.com
+
+# 2. Create a Pub/Sub topic
+gcloud pubsub topics create amarnai-gmail-push
+
+# 3. Grant the Gmail service account publish rights on the topic
+gcloud pubsub topics add-iam-policy-binding amarnai-gmail-push \
+  --member="serviceAccount:gmail-api-push@system.gserviceaccount.com" \
+  --role="roles/pubsub.publisher"
+
+# 4. Generate a webhook secret and note it — you'll set it as GMAIL_PUBSUB_WEBHOOK_SECRET
+openssl rand -hex 32
+
+# 5. Create a push subscription pointing at your API's webhook endpoint
+gcloud pubsub subscriptions create amarnai-gmail-sub \
+  --topic=amarnai-gmail-push \
+  --push-endpoint="https://api.yourdomain.com/webhooks/gmail?token=<your-secret>" \
+  --ack-deadline=30
+```
+
+**Set the env vars:**
+
+```env
+GMAIL_PUBSUB_TOPIC=projects/<project-id>/topics/amarnai-gmail-push
+GMAIL_PUBSUB_WEBHOOK_SECRET=<your-secret>
+```
+
+When these are set, Amarnai automatically registers each connected inbox with Gmail's push API on connection and renews the registration daily (Gmail watches expire after 7 days). Polling continues as a fallback for any missed events.
+
+**Notes:**
+- The Pub/Sub push endpoint (`/webhooks/gmail`) must be reachable from the public internet — this is a Google → your server call.
+- Self-hosters who prefer not to set up GCP can leave both vars unset and rely on polling.
+
+**Local development:**
+
+Run `pnpm tunnel` in a separate terminal alongside `pnpm dev`. It starts a [Cloudflare quick tunnel](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/) exposing your local API and automatically updates the Pub/Sub push endpoint:
+
+```bash
+pnpm tunnel
+```
+
+Requires [`cloudflared`](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/downloads/) and `gcloud` on your PATH. Quick tunnel URLs are ephemeral — re-run `pnpm tunnel` each dev session (the script updates the push endpoint automatically each time).
+
 **Google sign-in users:** inbox access is granted during sign-up as part of the same OAuth consent — no extra step needed.
 
 **Email/password users:** after verifying your email, go to **Settings** in the sidebar and click **Connect Gmail**. Google will ask you to grant read-only access to the inbox you want to sort. Once connected, the workspace shows the linked Gmail address and last verification time.
@@ -141,6 +192,8 @@ Amarnai lets each workspace connect one Gmail inbox for email triage. The connec
 |----------|-------------|
 | `GMAIL_OAUTH_CALLBACK_URL` | Redirect URI registered in Google Cloud Console. Default: `http://localhost:3000/api/gmail/callback` |
 | `GMAIL_TOKEN_ENCRYPTION_KEY` | 64-char hex string (32 bytes) used to AES-256-GCM-encrypt stored refresh tokens. Generate with `openssl rand -hex 32`. Falls back to a key derived from `AUTH_SECRET` when unset — always set this explicitly in production. |
+| `GMAIL_PUBSUB_TOPIC` | Optional. Pub/Sub topic for real-time push notifications. Format: `projects/<project-id>/topics/<topic-name>`. See [Real-time sync](#real-time-sync-gmail-push-notifications). |
+| `GMAIL_PUBSUB_WEBHOOK_SECRET` | Optional. Secret token verified on incoming Pub/Sub push requests. Generate with `openssl rand -hex 32`. Required when `GMAIL_PUBSUB_TOPIC` is set. |
 
 **Google Cloud Console checklist for Gmail:**
 

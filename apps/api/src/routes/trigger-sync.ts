@@ -37,9 +37,9 @@ triggerSync.post("/workspaces/:workspaceId/trigger-sync", async (c) => {
     "sync-inbox",
     { workspaceId },
     {
-      // Same deduplication key as the scheduler so a manual trigger and a
-      // concurrent scheduler tick don't both queue the same workspace.
-      jobId: `sync-inbox_${workspaceId}`,
+      // Same deduplication key as the webhook so a manual trigger and a
+      // concurrent push notification don't both queue the same workspace.
+      deduplication: { id: `sync-inbox_${workspaceId}` },
     }
   );
 

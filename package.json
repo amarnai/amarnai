@@ -12,6 +12,7 @@
     "db:seed": "pnpm --filter @amarnai/db seed",
     "db:reset": "pnpm --filter @amarnai/db reset",
     "embeddings:refresh-taxonomy": "pnpm --filter @amarnai/db embeddings:refresh-taxonomy",
+    "tunnel": "node scripts/gmail-tunnel.mjs",
     "prepare": "git config core.hooksPath .githooks"
   },
   "devDependencies": {

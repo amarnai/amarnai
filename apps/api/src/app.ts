@@ -20,13 +20,17 @@ import { folderCountsRoute } from "./routes/folder-counts.js";
 import { sortingQueueRoute } from "./routes/sorting-queue.js";
 import { draftsRoute } from "./routes/drafts.js";
 import { resolveThreadRoute } from "./routes/resolve-thread.js";
+import { gmailWebhookRoute } from "./routes/gmail-webhook.js";
+import { gmailWatchRoute } from "./routes/gmail-watch.js";
+import { workspaceEventsRoute } from "./routes/workspace-events.js";
 
 const app = new Hono();
 
 app.use("*", cors({ origin: process.env["CORS_ORIGIN"] ?? "http://localhost:3000" }));
 
 app.use("*", async (c, next) => {
-  if (c.req.path === "/health") return next();
+  // /health and /webhooks/gmail use their own auth — skip internal secret check.
+  if (c.req.path === "/health" || c.req.path === "/webhooks/gmail") return next();
   const auth = c.req.header("Authorization");
   if (auth !== `Bearer ${config.internalApiSecret}`) {
     return c.json({ error: "Unauthorized" }, 401);
@@ -53,5 +57,8 @@ app.route("/", folderCountsRoute);
 app.route("/", sortingQueueRoute);
 app.route("/", draftsRoute);
 app.route("/", resolveThreadRoute);
+app.route("/", gmailWebhookRoute);
+app.route("/", gmailWatchRoute);
+app.route("/", workspaceEventsRoute);
 
 export default app;

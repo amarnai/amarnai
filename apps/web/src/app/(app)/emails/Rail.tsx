@@ -43,7 +43,7 @@ export function Rail({
         <div className="em-rail-head-top">
           <h2>Mail</h2>
           {lastSync && (
-            <div className="em-sync-chip" title={`Last Gmail sync ${lastSync} ago`} suppressHydrationWarning>
+            <div className="em-sync-chip" title={`Last synced with Gmail ${lastSync} ago`} suppressHydrationWarning>
               <span className="em-sync-dot" />
               <span suppressHydrationWarning>{lastSync}</span>
             </div>

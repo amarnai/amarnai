@@ -29,11 +29,24 @@ export class GmailHistoryCursorExpiredError extends Error {
   }
 }
 
+/**
+ * Thrown when the OAuth refresh token is invalid or revoked (invalid_grant).
+ * The caller should mark the Gmail connection as DISCONNECTED so the workspace
+ * stops receiving sync attempts.
+ */
+export class GmailAuthError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "GmailAuthError";
+  }
+}
+
 const GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token";
 const GMAIL_PROFILE_URL = "https://gmail.googleapis.com/gmail/v1/users/me/profile";
 const GMAIL_THREADS_URL = "https://gmail.googleapis.com/gmail/v1/users/me/threads";
 const GMAIL_THREAD_URL = "https://gmail.googleapis.com/gmail/v1/users/me/threads";
 const GMAIL_HISTORY_URL = "https://gmail.googleapis.com/gmail/v1/users/me/history";
+const GMAIL_WATCH_URL = "https://gmail.googleapis.com/gmail/v1/users/me/watch";
 
 type TokenResponse = {
   access_token: string;
@@ -76,6 +89,13 @@ export type GmailThreadWindowResult = {
   totalFound: number;
 };
 
+export type GmailWatchResult = {
+  /** Current historyId at the time the watch was registered. */
+  historyId: string;
+  /** Unix ms timestamp (as string) when the watch expires (~7 days). */
+  expiration: string;
+};
+
 export class GmailClient {
   constructor(private readonly encryptedRefreshToken: string) {}
 
@@ -91,7 +111,14 @@ export class GmailClient {
         grant_type: "refresh_token",
       }),
     });
-    if (!res.ok) throw new Error(`Token refresh failed: ${res.status}`);
+    if (!res.ok) {
+      let code: string | undefined;
+      try { code = ((await res.json()) as { error?: string }).error; } catch {}
+      if (code === "invalid_grant" || res.status === 401) {
+        throw new GmailAuthError(`Token refresh failed: ${code ?? res.status}`);
+      }
+      throw new Error(`Token refresh failed: ${res.status}`);
+    }
     const data = (await res.json()) as TokenResponse;
     return data.access_token;
   }
@@ -322,6 +349,32 @@ export class GmailClient {
     } while (nextPageToken && allIds.length < maxResults);
 
     return allIds.slice(0, maxResults);
+  }
+
+  /**
+   * Registers a Gmail push notification watch for this inbox.
+   * Gmail will publish a message to `topicName` (a Cloud Pub/Sub topic) whenever
+   * the inbox changes. The watch expires after ~7 days and must be renewed.
+   *
+   * The Pub/Sub topic must have the Gmail service account
+   * (gmail-api-push@system.gserviceaccount.com) granted the Publisher role —
+   * this is operator infrastructure set up once, not per-user.
+   */
+  async watchInbox(topicName: string): Promise<GmailWatchResult> {
+    const accessToken = await this.refreshAccessToken();
+    const res = await fetch(GMAIL_WATCH_URL, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ topicName }),
+    });
+    if (!res.ok) {
+      const body = await res.text();
+      throw new Error(`Gmail watch failed: ${res.status} ${body}`);
+    }
+    return res.json() as Promise<GmailWatchResult>;
   }
 
   async getThread(threadId: string): Promise<unknown> {

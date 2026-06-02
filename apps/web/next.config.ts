@@ -7,7 +7,7 @@ const config: NextConfig = {
   outputFileTracingRoot: path.join(__dirname, "../../"),
   devIndicators: false,
   transpilePackages: ["@amarnai/db", "@amarnai/ui"],
-  serverExternalPackages: ["@prisma/client"],
+  serverExternalPackages: ["@prisma/client", "ioredis"],
   webpack: (config) => {
     // When transpiling workspace packages that use NodeNext-style `.js` extensions
     // for TypeScript source files, Webpack needs to know that `.js` can resolve to `.ts`.

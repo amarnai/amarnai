@@ -109,15 +109,22 @@ export const { handlers, auth, signIn, signOut, unstable_update } = NextAuth({
           if (isNew) {
             const apiBase = process.env["API_URL"] ?? "http://localhost:3001";
             const internalSecret = process.env["INTERNAL_API_SECRET"] ?? "dev-internal-secret";
+            const authHeader = { Authorization: `Bearer ${internalSecret}` };
+
             fetch(`${apiBase}/workspaces/${workspace.id}/trigger-sync`, {
               method: "POST",
-              headers: { Authorization: `Bearer ${internalSecret}` },
+              headers: authHeader,
             }).catch(
               (err) =>
-                console.error(
-                  "[auth] trigger_sync:",
-                  err instanceof Error ? err.message : err
-                )
+                console.error("[auth] trigger_sync:", err instanceof Error ? err.message : err)
+            );
+
+            fetch(`${apiBase}/workspaces/${workspace.id}/register-gmail-watch`, {
+              method: "POST",
+              headers: authHeader,
+            }).catch(
+              (err) =>
+                console.error("[auth] register_watch:", err instanceof Error ? err.message : err)
             );
           }
         } catch (err) {

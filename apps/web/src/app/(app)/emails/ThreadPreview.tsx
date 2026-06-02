@@ -85,6 +85,9 @@ export function ThreadPreview({
 
   useEffect(() => {
     setBodyLoaded(false);
+    setMessages(thread.messages);
+    setReasoning(null);
+    setDecisionSource(null);
     setDraftState(thread.isDrafting ? "loading" : thread.hasDraft ? "ready" : "idle");
     setDraft(null);
     clearPoll();
@@ -235,11 +238,11 @@ export function ThreadPreview({
         />
 
         <div className="em-msg-list">
-          {messages.map((msg, i) => (
+          {messages.map((msg) => (
             <MessageCard
               key={msg.id}
               message={msg}
-              defaultExpanded={i === messages.length - 1}
+              defaultExpanded
             />
           ))}
         </div>

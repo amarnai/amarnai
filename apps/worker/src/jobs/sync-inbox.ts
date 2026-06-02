@@ -2,6 +2,7 @@ import { Worker } from "bullmq";
 import { db } from "@amarnai/db";
 import {
   GmailClient,
+  GmailAuthError,
   GmailHistoryCursorExpiredError,
   normalizeGmailThread,
 } from "@amarnai/gmail";
@@ -13,6 +14,7 @@ import {
   type SyncInboxJobData,
 } from "../queues.js";
 import { redisConnection } from "../redis.js";
+import { publishWorkspaceSynced } from "../redis-publisher.js";
 import { applyThreadFilter, computeThreadLabelFlags } from "./filter-thread-messages.js";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -112,6 +114,7 @@ export function createSyncInboxWorker(): Worker {
     QUEUE_SYNC_INBOX,
     async (job) => {
       const { workspaceId } = job.data;
+      console.log(`[sync-inbox] Starting job #${job.id} for workspace=${workspaceId}`);
 
       // ── 1. Load workspace + Gmail connection + sync settings ───────────────
 
@@ -189,6 +192,9 @@ export function createSyncInboxWorker(): Worker {
       const { changedThreadIds, newHistoryId } = await getChangedThreadIds(
         client,
         syncState.historyId
+      );
+      console.log(
+        `[sync-inbox] workspace=${workspaceId} historyId=${syncState.historyId ?? "null"} → ${changedThreadIds.length} changed thread(s)`
       );
 
       if (changedThreadIds.length === 0) {
@@ -397,6 +403,13 @@ export function createSyncInboxWorker(): Worker {
         },
       });
 
+      // Notify connected browser tabs that the inbox changed. Fire-and-forget:
+      // a pub/sub failure must never fail the sync job.
+      console.log(`[sync-inbox] workspace=${workspaceId} upserted ${upsertedEmailThreadIds.length} thread(s) — publishing synced event`);
+      publishWorkspaceSynced(workspaceId).catch((err) => {
+        console.error("[sync-inbox] Failed to publish synced event:", err instanceof Error ? err.message : err);
+      });
+
       // Trigger a historical backfill whenever it hasn't completed yet, but only
       // if the workspace has enough taxonomy nodes to classify threads (≥ 3).
       // Backfill is a paying-plan-only feature.
@@ -495,10 +508,24 @@ export function createSyncInboxWorker(): Worker {
   );
 
   // Mark sync state as ERROR when a job exhausts all retries.
+  // For auth errors (invalid_grant / revoked token) also mark the Gmail
+  // connection as DISCONNECTED so the webhook stops enqueuing syncs for it.
   worker.on("failed", async (job, err) => {
     if (!job) return;
     const { workspaceId } = job.data;
     try {
+      const isAuthError = err instanceof GmailAuthError;
+
+      if (isAuthError) {
+        await db.gmailConnection.update({
+          where: { workspaceId },
+          data: { status: "DISCONNECTED" },
+        });
+        console.warn(
+          `[sync-inbox] Gmail connection disconnected for workspace ${workspaceId}: ${err.message}`
+        );
+      }
+
       const connection = await db.gmailConnection.findUnique({
         where: { workspaceId },
         select: { googleSubjectId: true, gmailAddress: true },

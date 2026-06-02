@@ -1,6 +1,12 @@
-const API_BASE = process.env["API_URL"] ?? "http://localhost:3001";
+// Server-side: call the API directly with the internal secret.
+// Browser-side: route through the Next.js proxy at /api/internal which adds the secret.
+const isBrowser = typeof window !== "undefined";
+const API_BASE = isBrowser
+  ? "/api/internal"
+  : (process.env["API_URL"] ?? "http://localhost:3001");
 
-function internalAuthHeader() {
+function internalAuthHeader(): Record<string, string> {
+  if (isBrowser) return {}; // proxy adds auth
   const secret = process.env["INTERNAL_API_SECRET"] ?? "dev-internal-secret";
   return { Authorization: `Bearer ${secret}` };
 }

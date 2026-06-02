@@ -116,13 +116,25 @@ export async function GET(req: NextRequest) {
     return NextResponse.redirect(settingsUrl);
   }
 
-  // ── Step 4: trigger an immediate inbox sync ──────────────────────────────────
-  // Fire-and-forget: enqueues a sync-inbox job so the user's inbox starts
-  // syncing straight away rather than waiting for the scheduler's next tick.
-  // Failure here is non-fatal — the scheduler will pick it up automatically.
+  // ── Step 4: trigger an immediate inbox sync and register push watch ──────────
+  // Both are fire-and-forget. Failures are non-fatal — the polling scheduler
+  // provides a fallback for sync, and the worker's daily renewal covers watch.
   const apiBase = process.env["API_URL"] ?? "http://localhost:3001";
-  fetch(`${apiBase}/workspaces/${workspaceId}/trigger-sync`, { method: "POST" }).catch(
+  const internalSecret = process.env["INTERNAL_API_SECRET"] ?? "dev-internal-secret";
+  const authHeader = { Authorization: `Bearer ${internalSecret}` };
+
+  fetch(`${apiBase}/workspaces/${workspaceId}/trigger-sync`, {
+    method: "POST",
+    headers: authHeader,
+  }).catch(
     (err) => console.error("[gmail/callback] trigger_sync:", err instanceof Error ? err.message : err)
+  );
+
+  fetch(`${apiBase}/workspaces/${workspaceId}/register-gmail-watch`, {
+    method: "POST",
+    headers: authHeader,
+  }).catch(
+    (err) => console.error("[gmail/callback] register_watch:", err instanceof Error ? err.message : err)
   );
 
   settingsUrl.searchParams.set("gmail_connected", "1");

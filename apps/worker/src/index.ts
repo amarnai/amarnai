@@ -1,9 +1,51 @@
 import { db } from "@amarnai/db";
 import { config } from "@amarnai/config";
+import { GmailClient, GmailAuthError } from "@amarnai/gmail";
 import { createSyncInboxWorker } from "./jobs/sync-inbox.js";
 import { createClassifyThreadWorker } from "./jobs/classify-thread.js";
 import { createBackfillInboxWorker } from "./jobs/backfill-inbox.js";
 import { syncInboxQueue, backfillInboxQueue } from "./queues.js";
+import { closePublisher } from "./redis-publisher.js";
+
+// ─── Watch renewal ────────────────────────────────────────────────────────────
+
+/**
+ * Renews the gmail.users.watch() subscription for every active Gmail connection.
+ * Gmail push watches expire after ~7 days, so this runs once on startup and
+ * then daily to keep all workspaces registered.
+ *
+ * No-ops when GMAIL_PUBSUB_TOPIC is not configured (polling-only deployments).
+ */
+async function renewAllGmailWatches(): Promise<void> {
+  if (!config.gmail.pubsubTopic) return;
+
+  const connections = await db.gmailConnection.findMany({
+    where: { status: "ACTIVE" },
+    select: { workspaceId: true, gmailAddress: true, encryptedRefreshToken: true },
+  });
+
+  if (connections.length === 0) return;
+
+  await Promise.allSettled(
+    connections.map(async (conn) => {
+      const client = new GmailClient(conn.encryptedRefreshToken);
+      try {
+        const result = await client.watchInbox(config.gmail.pubsubTopic!);
+        const expiresAt = new Date(Number(result.expiration)).toISOString();
+        console.log(`[watch-renewal] Renewed watch for ${conn.gmailAddress} — historyId=${result.historyId} expires=${expiresAt}`);
+      } catch (err) {
+        // Auth errors mean the refresh token is revoked/invalid — log at info
+        // level since sync jobs will surface this to the user separately.
+        if (err instanceof GmailAuthError) {
+          console.log(`[watch-renewal] Skipping ${conn.gmailAddress} — token needs re-authorization`);
+        } else {
+          const msg = err instanceof Error ? err.message : String(err);
+          console.error(`[watch-renewal] Failed for ${conn.gmailAddress}:`, msg);
+        }
+      }
+    })
+  );
+}
 
 // ─── Scheduler ────────────────────────────────────────────────────────────────
 
@@ -66,6 +108,20 @@ async function main(): Promise<void> {
     `[worker] Scheduler running — polling every ${config.worker.inboxSyncIntervalMs / 1000}s`
   );
 
+  // ── Gmail push watch renewal ───────────────────────────────────────────────
+  // Renew watch registrations on startup, then daily (Gmail watches expire ~7d).
+  await renewAllGmailWatches();
+
+  const watchRenewalHandle = setInterval(() => {
+    renewAllGmailWatches().catch((err) => {
+      console.error("[watch-renewal] Failed:", err);
+    });
+  }, 24 * 60 * 60 * 1000);
+
+  if (config.gmail.pubsubTopic) {
+    console.log("[worker] Gmail push notifications active — watch renewal scheduled daily");
+  }
+
   // ── Graceful shutdown ──────────────────────────────────────────────────────
   //
   // On SIGTERM / SIGINT:
@@ -78,6 +134,7 @@ async function main(): Promise<void> {
     console.log(`[worker] ${signal} received — shutting down gracefully…`);
 
     clearInterval(intervalHandle);
+    clearInterval(watchRenewalHandle);
 
     await Promise.all([
       syncWorker.close(),
@@ -88,6 +145,7 @@ async function main(): Promise<void> {
     await Promise.all([
       syncInboxQueue.close(),
       backfillInboxQueue.close(),
+      closePublisher(),
     ]);
 
     await db.$disconnect();

@@ -24,6 +24,14 @@ const envSchema = z.object({
   // Self-hosted deployments that manage their own AI costs should set this to false.
   ENFORCE_THREAD_SORT_QUOTA: z.string().transform((v) => v !== 'false').default('true'),
   INTERNAL_API_SECRET: z.string().optional(),
+  // Gmail Push Notifications via Google Cloud Pub/Sub.
+  // When set, Gmail pushes change notifications in real time instead of waiting
+  // for the polling interval. Both vars must be set together.
+  // Format: "projects/<project-id>/topics/<topic-name>"
+  GMAIL_PUBSUB_TOPIC: z.string().optional(),
+  // Random secret included as ?token= in the Pub/Sub push subscription URL.
+  // Generate with: openssl rand -hex 32
+  GMAIL_PUBSUB_WEBHOOK_SECRET: z.string().optional(),
 });
 
 function validateEnv(raw: NodeJS.ProcessEnv) {
@@ -87,4 +95,8 @@ export const config = {
     enforceThreadSortQuota: env.ENFORCE_THREAD_SORT_QUOTA,
   },
   internalApiSecret: env.INTERNAL_API_SECRET ?? 'dev-internal-secret',
+  gmail: {
+    pubsubTopic: env.GMAIL_PUBSUB_TOPIC,
+    webhookSecret: env.GMAIL_PUBSUB_WEBHOOK_SECRET,
+  },
 };
