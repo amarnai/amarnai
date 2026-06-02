@@ -15,10 +15,19 @@ package-lock.json
 # Turbo
 .turbo/
 
-# Env files
+# Env files — allow only .example templates
 .env
-.env.local
-.env*.local
+.env.*
+!.env.*.example
+!.env.example
+
+# Private keys and credentials
+*.pem
+*.key
+*.p12
+*.pfx
+*serviceAccountKey.json
+*credentials.json
 
 # Editor
 .idea/
@@ -27,6 +36,6 @@ package-lock.json
 .DS_Store
 
 # DOCS
-docs/
+/docs/
 tsconfig.tsbuildinfo
 *.tsbuildinfo

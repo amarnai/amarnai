@@ -11,7 +11,8 @@
     "db:migrate": "pnpm --filter @amarnai/db migrate",
     "db:seed": "pnpm --filter @amarnai/db seed",
     "db:reset": "pnpm --filter @amarnai/db reset",
-    "embeddings:refresh-taxonomy": "pnpm --filter @amarnai/db embeddings:refresh-taxonomy"
+    "embeddings:refresh-taxonomy": "pnpm --filter @amarnai/db embeddings:refresh-taxonomy",
+    "prepare": "git config core.hooksPath .githooks"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^8.0.0",

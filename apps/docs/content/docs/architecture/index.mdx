@@ -1,0 +1,35 @@
+---
+title: Architecture
+description: High-level overview of how Amarnai is built.
+---
+
+Amarnai is a TypeScript monorepo managed with [pnpm workspaces](https://pnpm.io/workspaces) and [Turborepo](https://turbo.build/). It is composed of three deployable applications and five shared packages.
+
+## Applications
+
+| App      | Description                                                      |
+|----------|------------------------------------------------------------------|
+| `web`    | Next.js 15 frontend — the user-facing UI                         |
+| `api`    | Hono HTTP server — handles all data-mutating operations          |
+| `worker` | Background job runner — Gmail polling, AI triage, queue processing |
+
+## Packages
+
+| Package    | Description                                              |
+|------------|----------------------------------------------------------|
+| `db`       | Prisma schema, migrations, and generated client           |
+| `ai`       | AI provider abstraction, prompts, output validation       |
+| `gmail`    | Gmail API client and OAuth helpers                        |
+| `queue`    | BullMQ job definitions and queue configuration            |
+| `shared`   | Shared types and Zod schemas                              |
+| `config`   | Environment variable loading and validation               |
+
+## Key design decisions
+
+**Threads, not messages.** Amarnai triages Gmail threads as a unit. A new message in an existing thread triggers re-triage of the whole thread, so the sort order always reflects the full conversation.
+
+**Multi-tenant by default.** Every resource in the database is scoped to a workspace. API costs are attributable per user so the hosted offering can track and control spend.
+
+**AI output is untrusted.** All LLM responses are validated with Zod before any action is taken. Policy code — not prompts — decides final labels and destinations.
+
+**Idempotent jobs.** All background jobs are safe to retry. Duplicate runs produce the same result rather than double-applying effects.

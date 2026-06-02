@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+# Blocks commits that contain secrets or credential files.
+set -euo pipefail
+
+RED='\033[0;31m'
+YELLOW='\033[1;33m'
+NC='\033[0m'
+
+staged=$(git diff --cached --name-only)
+
+# ── Blocked file patterns ──────────────────────────────────────────────────────
+blocked_files=()
+while IFS= read -r file; do
+  case "$file" in
+    # Env files — only .example variants are safe to commit
+    .env|.env.*) [[ "$file" == *.example ]] || blocked_files+=("$file") ;;
+    # Private keys and credential files
+    *.pem|*.key|*.p12|*.pfx|*serviceAccountKey.json|*credentials.json)
+      blocked_files+=("$file") ;;
+  esac
+done <<< "$staged"
+
+if [[ ${#blocked_files[@]} -gt 0 ]]; then
+  echo -e "${RED}[pre-commit] Blocked: credential or env file staged for commit:${NC}"
+  for f in "${blocked_files[@]}"; do echo "  $f"; done
+  exit 1
+fi
+
+# ── Secret pattern scan ────────────────────────────────────────────────────────
+# Patterns: OpenAI keys, Stripe keys, generic high-entropy tokens
+secret_pattern='(sk-[A-Za-z0-9]{20,}|pk_live_[A-Za-z0-9]+|rk_live_[A-Za-z0-9]+|whsec_[A-Za-z0-9]+|AIza[A-Za-z0-9_-]{35}|AKIA[A-Z0-9]{16})'
+
+hits=$(git diff --cached -U0 | grep '^+' | grep -P "$secret_pattern" || true)
+if [[ -n "$hits" ]]; then
+  echo -e "${RED}[pre-commit] Blocked: staged diff appears to contain secrets:${NC}"
+  echo -e "${YELLOW}$hits${NC}"
+  echo "If this is a false positive, commit with --no-verify."
+  exit 1
+fi
+
+exit 0

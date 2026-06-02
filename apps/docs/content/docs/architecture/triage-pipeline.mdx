@@ -1,0 +1,70 @@
+---
+title: Triage Pipeline
+description: How Amarnai sorts Gmail threads from inbox to labelled category.
+---
+
+The triage pipeline is the core of Amarnai. It runs inside the worker for every thread that needs sorting — both new threads arriving in real time and existing threads during a backfill.
+
+## Pipeline stages
+
+```
+Gmail inbox
+    │
+    ▼
+1. Fetch thread
+    │  Pull the full thread (all messages) via the Gmail API.
+    │  Only metadata and a short snippet are stored — full bodies
+    │  are never persisted.
+    ▼
+2. Filter messages
+    │  Select the most relevant messages from the thread to send
+    │  to the AI (e.g. strip quoted replies, boilerplate footers).
+    │  Keeps token usage bounded for long threads.
+    ▼
+3. Embed thread
+    │  Produce a vector embedding of the thread summary using the
+    │  configured embedding model (Gemini in production, Ollama locally).
+    ▼
+4. Sort (embedding similarity)
+    │  Compare the thread embedding against embeddings of all taxonomy
+    │  nodes. Candidate categories are scored by cosine similarity.
+    ▼
+5. LLM confirmation (optional)
+    │  For ambiguous cases, a frontier LLM receives the thread summary
+    │  and the top candidate categories and returns a final decision.
+    │  The response is validated with Zod before it is used.
+    ▼
+6. Policy check
+    │  Policy code validates the proposed destination:
+    │  - The target category must exist in the workspace taxonomy.
+    │  - Unknown node IDs and invalid paths are rejected.
+    │  - Policy decides the final action, not the prompt.
+    ▼
+7. Apply label
+    │  The Gmail API applies the corresponding label to the thread.
+    │  Amarnai never modifies thread content or sends email.
+    ▼
+Done
+```
+
+## Real-time vs. backfill
+
+**Real-time:** The worker polls each connected inbox on a configurable interval (`INBOX_SYNC_INTERVAL_MS`, default 5 minutes). New threads and threads with new messages are enqueued for triage.
+
+**Backfill:** Users can trigger a full-inbox sort from the UI. This enqueues all threads in the inbox as individual jobs. Jobs are idempotent — running triage on an already-sorted thread is safe and produces the same result.
+
+## AI provider abstraction
+
+The pipeline does not call OpenAI or Gemini directly. It goes through the `packages/ai` provider abstraction, which routes to the configured backend:
+
+| `AI_PROVIDER`  | Used for               |
+|----------------|------------------------|
+| `frontier`     | Production             |
+| `ollama`       | Local development      |
+| `mock`         | Deterministic testing  |
+
+Swapping providers requires only an env var change — no code changes.
+
+## Taxonomy
+
+Categories are defined in a per-workspace taxonomy — a tree of named nodes (e.g. `Work → Invoices`, `Personal → Travel`). Each node has a name and description used to generate its embedding. The taxonomy is what the embedding sorter compares threads against.

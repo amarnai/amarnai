@@ -1,0 +1,61 @@
+---
+title: Monorepo Structure
+description: How the Amarnai codebase is organised across apps and packages.
+---
+
+```
+amarnai/
+├── apps/
+│   ├── web/       Next.js 15 frontend
+│   ├── api/       Hono API server
+│   ├── worker/    Background job runner
+│   └── site/      Marketing site
+├── packages/
+│   ├── db/        Prisma schema, migrations, client
+│   ├── ai/        AI providers, prompts, output validation
+│   ├── gmail/     Gmail API client, OAuth helpers
+│   ├── queue/     BullMQ job definitions
+│   ├── shared/    Shared types and Zod schemas
+│   └── config/    Environment config
+├── docker-compose.yml             Local development
+├── docker-compose.selfhost.yml    Self-hosting
+└── .env.example                   Environment variable template
+```
+
+## apps/web
+
+The Next.js frontend. Uses the App Router, React Server Components, and server actions for data mutations. Server actions call the Hono API over HTTP using a shared internal secret rather than talking to the database directly — this keeps the API as the single source of truth for writes.
+
+## apps/api
+
+A [Hono](https://hono.dev/) server that handles all write operations and data queries that require business logic. It is the only service that writes to the database. The web app and worker both communicate with it.
+
+## apps/worker
+
+Runs background jobs via BullMQ. The worker handles:
+
+- **Gmail polling** — periodically fetching new threads from connected inboxes
+- **Thread triage** — sending threads through the AI pipeline and applying labels
+- **Backfill jobs** — processing large batches of existing inbox threads
+
+## packages/db
+
+Prisma schema and all database migrations. Other packages import the generated Prisma client from here. Running `pnpm db:migrate` applies pending migrations; `pnpm db:generate` regenerates the client after schema changes.
+
+## packages/ai
+
+Provider abstraction over LLMs and embedding models. Supports:
+
+- **Frontier** — any OpenAI-compatible API (production)
+- **Ollama** — local models for development
+- **Mock** — deterministic responses for testing
+
+All AI output goes through Zod validation before it is acted on. The package also contains the embedding-based sorter and its test fixtures.
+
+## packages/gmail
+
+Gmail API client built on the Google APIs Node.js library. Handles OAuth token refresh, inbox history polling, thread fetching, and label management. Refresh tokens are stored AES-256-GCM encrypted in the database.
+
+## packages/queue
+
+BullMQ job type definitions and queue setup. Centralising these here means both the API (which enqueues jobs) and the worker (which processes them) share the same type-safe job contracts.

@@ -1,0 +1,66 @@
+---
+title: Self-Hosting
+description: Run Amarnai on your own infrastructure using Docker Compose.
+---
+
+Amarnai ships as a set of Docker images that start with a single `docker compose` command. All services — web UI, API, background worker, Postgres, and Redis — are defined in `docker-compose.selfhost.yml`.
+
+## Quick start
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/BenAzlay/amarnai.git
+cd amarnai
+
+# 2. Create your env file
+cp .env.example .env
+
+# 3. Fill in every required value (see Configuration)
+#    AUTH_SECRET, AUTH_GOOGLE_ID, AUTH_GOOGLE_SECRET,
+#    INTERNAL_API_SECRET, GMAIL_TOKEN_ENCRYPTION_KEY,
+#    FRONTIER_LLM_API_KEY, GEMINI_EMBEDDING_API_KEY,
+#    SMTP_HOST / SMTP_USER / SMTP_PASS, EMAIL_FROM
+#    Update AUTH_URL, CORS_ORIGIN, and GMAIL_OAUTH_CALLBACK_URL to your domain.
+
+# 4. Build images and start all services
+#    Database migrations run automatically before the API starts.
+docker compose -f docker-compose.selfhost.yml up -d --build
+```
+
+The web UI is available at `http://localhost:3000` (or your configured domain).
+
+## Service ports
+
+| Service  | Default port     |
+|----------|-----------------|
+| Web      | 3000            |
+| API      | 3001            |
+| Postgres | internal only   |
+| Redis    | internal only   |
+
+Postgres and Redis are not exposed externally by default. To access them directly (e.g. for backups), add `ports` entries to `docker-compose.selfhost.yml`.
+
+## Upgrading
+
+```bash
+git pull
+docker compose -f docker-compose.selfhost.yml up -d --build
+```
+
+Migrations run automatically on each deploy via the `migrate` service — there is no manual migration step.
+
+## Reverse proxy
+
+For production HTTPS, place Nginx or Caddy in front and proxy port 3000. Example Caddyfile:
+
+```
+mail.yourdomain.com {
+    reverse_proxy localhost:3000
+}
+```
+
+After changing your domain, update `AUTH_URL`, `CORS_ORIGIN`, and `GMAIL_OAUTH_CALLBACK_URL` in `.env` to match, then restart:
+
+```bash
+docker compose -f docker-compose.selfhost.yml up -d
+```

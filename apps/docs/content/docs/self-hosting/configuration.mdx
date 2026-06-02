@@ -1,0 +1,84 @@
+---
+title: Configuration
+description: Full environment variable reference for self-hosting Amarnai.
+---
+
+All configuration is done through environment variables in a single `.env` file at the monorepo root. Copy `.env.example` as a starting point.
+
+## Postgres
+
+| Variable            | Default                                              | Description                    |
+|---------------------|------------------------------------------------------|--------------------------------|
+| `DATABASE_URL`      | `postgresql://amarnai:amarnai@localhost:5432/amarnai` | Full Postgres connection string |
+| `POSTGRES_USER`     | `amarnai`                                            | Postgres username              |
+| `POSTGRES_PASSWORD` | `amarnai`                                            | Postgres password              |
+| `POSTGRES_DB`       | `amarnai`                                            | Postgres database name         |
+
+## Redis
+
+| Variable    | Default                  | Description               |
+|-------------|--------------------------|---------------------------|
+| `REDIS_URL` | `redis://localhost:6379` | Redis connection string   |
+
+## Application
+
+| Variable                   | Default                        | Description                                                                |
+|----------------------------|--------------------------------|----------------------------------------------------------------------------|
+| `API_PORT`                 | `3001`                         | Port the API server listens on                                             |
+| `WORKER_PORT`              | `3002`                         | Port the worker process listens on                                         |
+| `INBOX_SYNC_INTERVAL_MS`   | `300000`                       | How often the worker polls each connected Gmail inbox (milliseconds)       |
+| `CORS_ORIGIN`              | `http://localhost:3000`        | Allowed CORS origin — set to your web app domain in production             |
+
+## Auth
+
+| Variable               | Required | Description                                                                                  |
+|------------------------|----------|----------------------------------------------------------------------------------------------|
+| `AUTH_SECRET`          | Yes      | Random secret for NextAuth. Generate with `openssl rand -base64 32`                          |
+| `AUTH_URL`             | Yes      | Public URL of the web app (e.g. `https://mail.yourdomain.com`)                               |
+| `AUTH_GOOGLE_ID`       | Yes      | Google OAuth Client ID                                                                       |
+| `AUTH_GOOGLE_SECRET`   | Yes      | Google OAuth Client Secret                                                                   |
+| `INTERNAL_API_SECRET`  | Yes      | Shared secret for server-action → API calls. Generate with `openssl rand -hex 32`            |
+
+## Gmail
+
+| Variable                    | Required | Description                                                                                                   |
+|-----------------------------|----------|---------------------------------------------------------------------------------------------------------------|
+| `GMAIL_OAUTH_CALLBACK_URL`  | Yes      | Redirect URI registered in Google Cloud Console (e.g. `https://mail.yourdomain.com/api/gmail/callback`)       |
+| `GMAIL_TOKEN_ENCRYPTION_KEY`| Yes      | 64-char hex string (32 bytes) for AES-256-GCM encryption of stored refresh tokens. `openssl rand -hex 32`    |
+
+## AI
+
+| Variable                      | Default      | Description                                                         |
+|-------------------------------|--------------|---------------------------------------------------------------------|
+| `AI_PROVIDER`                 | `mock`       | `frontier` for production, `ollama` for local dev, `mock` for tests |
+| `FRONTIER_LLM_PROVIDER`       | `openai`     | LLM backend (`openai` or any OpenAI-compatible provider)            |
+| `FRONTIER_LLM_API_KEY`        | —            | API key for the LLM provider                                        |
+| `FRONTIER_LLM_MODEL`          | `gpt-4o-mini`| Model name                                                          |
+| `FRONTIER_LLM_BASE_URL`       | —            | Override base URL for OpenAI-compatible endpoints                   |
+| `EMBEDDING_PROVIDER`          | `gemini`     | `gemini` for production, `ollama` for local dev                     |
+| `GEMINI_EMBEDDING_API_KEY`    | —            | Google AI Studio key for Gemini embeddings                          |
+| `GEMINI_EMBEDDING_MODEL`      | `text-embedding-004` | Gemini embedding model (768-dim)                          |
+
+## SMTP
+
+| Variable      | Default         | Description                                     |
+|---------------|-----------------|-------------------------------------------------|
+| `EMAIL_FROM`  | —               | Sender address for verification and reset emails |
+| `SMTP_HOST`   | `127.0.0.1`     | SMTP server hostname                            |
+| `SMTP_PORT`   | `1025`          | SMTP server port                                |
+| `SMTP_USER`   | —               | SMTP username (required for production)         |
+| `SMTP_PASS`   | —               | SMTP password (required for production)         |
+
+## Stripe (optional)
+
+Stripe is only needed if you are running the hosted SaaS offering with paid plans. Self-hosters can leave these unset.
+
+| Variable                       | Description                                  |
+|--------------------------------|----------------------------------------------|
+| `STRIPE_SECRET_KEY`            | Stripe secret key                            |
+| `STRIPE_WEBHOOK_SECRET`        | Stripe webhook signing secret                |
+| `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Stripe publishable key               |
+| `STRIPE_PRICE_PRO_MONTHLY`     | Stripe Price ID for the Pro monthly plan     |
+| `STRIPE_PRICE_PRO_ANNUAL`      | Stripe Price ID for the Pro annual plan      |
+| `STRIPE_PRICE_BUSINESS_MONTHLY`| Stripe Price ID for Business monthly         |
+| `STRIPE_PRICE_BUSINESS_ANNUAL` | Stripe Price ID for Business annual          |

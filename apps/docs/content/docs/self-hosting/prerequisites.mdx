@@ -1,0 +1,77 @@
+---
+title: Prerequisites
+description: What you need before self-hosting Amarnai.
+---
+
+## System requirements
+
+- **Docker 24+** with the Compose plugin — verify with `docker compose version`
+- A machine with at least 1 GB RAM (2 GB recommended)
+
+## Google Cloud project
+
+Amarnai uses Google OAuth for both user authentication and Gmail inbox access. You need a single OAuth 2.0 client ID that covers both flows.
+
+### Create credentials
+
+1. Go to [Google Cloud Console](https://console.cloud.google.com/) → **APIs & Services → Credentials**
+2. Click **Create Credentials → OAuth 2.0 Client ID** (Web application)
+3. Under **Authorised JavaScript origins**, add your domain (e.g. `https://mail.yourdomain.com`)
+4. Under **Authorised redirect URIs**, add **both**:
+   - `https://mail.yourdomain.com/api/auth/callback/google` — NextAuth sign-in
+   - `https://mail.yourdomain.com/api/gmail/callback` — Gmail inbox connection
+5. Copy the **Client ID** and **Client Secret** into `.env` as `AUTH_GOOGLE_ID` and `AUTH_GOOGLE_SECRET`
+
+### Enable required APIs
+
+In **APIs & Services → Library**, enable:
+
+- **Gmail API** (`gmail.googleapis.com`)
+
+### Generate secrets
+
+```bash
+openssl rand -base64 32   # → AUTH_SECRET
+openssl rand -hex 32      # → INTERNAL_API_SECRET
+openssl rand -hex 32      # → GMAIL_TOKEN_ENCRYPTION_KEY
+```
+
+## AI providers
+
+Amarnai needs two AI capabilities: an LLM for sorting decisions and an embedding model for semantic similarity.
+
+### LLM
+
+Set `AI_PROVIDER=frontier` and configure your provider:
+
+```bash
+FRONTIER_LLM_PROVIDER=openai        # or any OpenAI-compatible provider
+FRONTIER_LLM_API_KEY=<your key>
+FRONTIER_LLM_MODEL=gpt-4o-mini
+```
+
+Any OpenAI-compatible endpoint works — set `FRONTIER_LLM_BASE_URL` to point at a different host.
+
+### Embeddings
+
+The recommended embedding provider for production is Gemini:
+
+```bash
+EMBEDDING_PROVIDER=gemini
+GEMINI_EMBEDDING_API_KEY=<your Google AI Studio key>
+GEMINI_EMBEDDING_MODEL=text-embedding-004
+```
+
+Get a key from [Google AI Studio](https://aistudio.google.com/apikey). `text-embedding-004` produces 768-dimensional vectors and is free within Google's quota limits.
+
+## SMTP
+
+Amarnai sends email for account verification and password resets. Configure an SMTP provider such as AWS SES:
+
+```bash
+EMAIL_FROM=noreply@yourdomain.com
+SMTP_HOST=email-smtp.us-east-1.amazonaws.com
+SMTP_PORT=587
+SMTP_USER=<SES SMTP username>
+SMTP_PASS=<SES SMTP password>
+```

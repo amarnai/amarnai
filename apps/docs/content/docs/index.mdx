@@ -1,0 +1,20 @@
+---
+title: Introduction
+description: Amarnai is an open-source, self-hostable AI email triage assistant.
+---
+
+Amarnai automatically sorts Gmail threads into the categories you define, using embeddings and an LLM to decide where each thread belongs. It is Gmail-first and focused solely on triage — it never sends email.
+
+## What Amarnai does
+
+- Fetches new and existing Gmail threads via the Gmail API
+- Runs each thread through an AI pipeline to determine its category
+- Labels threads in Gmail accordingly
+- Supports bulk backfill of an existing inbox as well as real-time triage of new messages
+
+## Sections
+
+<Cards>
+  <Card title="Self-Hosting" href="/docs/self-hosting" description="Run Amarnai on your own infrastructure with Docker Compose." />
+  <Card title="Architecture" href="/docs/architecture" description="Understand how Amarnai is structured and how the triage pipeline works." />
+</Cards>
