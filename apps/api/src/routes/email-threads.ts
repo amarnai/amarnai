@@ -162,6 +162,7 @@ emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
     triageStatus: true,
     classifyingAt: true,
     createdAt: true,
+    gmailIsImportant: true,
     resolvedByUserId: true,
     resolvedAt: true,
     resolvedByUser: {

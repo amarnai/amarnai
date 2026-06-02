@@ -66,6 +66,7 @@ export function mapThreads(threads: EmailThreadSummary[]): ThreadItem[] {
         ? (t.messages[t.messages.length - 1]?.senderEmail ?? null)
         : null,
       doneMark: t.doneMark ?? null,
+      isImportant: t.gmailIsImportant,
       messages: t.messages.map((m) => ({
         id: m.id,
         fromName: m.senderName ?? m.senderEmail,

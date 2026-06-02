@@ -22,6 +22,11 @@ export const QUEUES = [
     name: "Pending",
     desc: "Threads that haven't been sorted yet.",
   },
+  {
+    id: "important" as const,
+    name: "Important",
+    desc: "Threads Gmail has flagged as important.",
+  },
 ];
 
 export type QueueId = (typeof QUEUES)[number]["id"];
@@ -77,6 +82,7 @@ export type ThreadItem = {
   isDrafting: boolean;
   lastSenderEmail: string | null;
   doneMark: DoneMark | null;
+  isImportant: boolean;
 };
 
 // ─── Shared filter ─────────────────────────────────────────────────────────────
@@ -106,6 +112,8 @@ function baseFilter(
       return threads.filter((t) => t.status === "review");
     case "pending":
       return threads.filter((t) => t.status === "unsorted");
+    case "important":
+      return threads.filter((t) => t.isImportant);
   }
 }
 

@@ -172,6 +172,7 @@ model Workspace {
   stripePriceId          String?
   billingCycle           BillingCycle?
   trialEndsAt            DateTime?
+  trialUsed              Boolean        @default(false)
   currentPeriodEnd       DateTime?
   cancelAtPeriodEnd      Boolean        @default(false)
   paymentFailed          Boolean        @default(false)
@@ -271,6 +272,8 @@ model ProviderSyncState {
   backfillStatus      BackfillStatus @default(PENDING)
   backfillSkipped     Int            @default(0)
   backfillCompletedAt DateTime?
+  // Set to true after a one-time pass that marks existing threads with gmailIsImportant.
+  importantBackfilled Boolean        @default(false)
   createdAt           DateTime       @default(now())
   updatedAt           DateTime       @updatedAt
 
@@ -333,6 +336,8 @@ model EmailThread {
   gmailIsSpam        Boolean  @default(false)
   gmailIsPromotions  Boolean  @default(false)
   gmailIsTrash       Boolean  @default(false)
+  // True when ANY message carries Gmail's IMPORTANT label (priority inbox signal).
+  gmailIsImportant   Boolean  @default(false)
   resolvedByUserId   String?
   resolvedAt         DateTime?
   createdAt        DateTime      @default(now())

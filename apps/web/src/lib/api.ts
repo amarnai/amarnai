@@ -139,6 +139,7 @@ export type EmailThreadSummary = {
   /** classifyingAt is set — a classify job is enqueued or in progress. */
   isQueued: boolean;
   createdAt: string;
+  gmailIsImportant: boolean;
   messages: Array<{
     id: string;
     senderEmail: string;
