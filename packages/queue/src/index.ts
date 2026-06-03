@@ -1,3 +1,14 @@
+// ─── Redis ────────────────────────────────────────────────────────────────────
+
+export function parseRedisUrl(url: string): { host: string; port: number; password?: string } {
+  const parsed = new URL(url);
+  return {
+    host: parsed.hostname,
+    port: Number(parsed.port) || 6379,
+    ...(parsed.password ? { password: decodeURIComponent(parsed.password) } : {}),
+  };
+}
+
 // ─── Queue names ──────────────────────────────────────────────────────────────
 // Single source of truth. Import these constants everywhere instead of
 // hardcoding strings so a rename stays a one-line change.

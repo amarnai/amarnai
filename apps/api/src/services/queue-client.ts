@@ -1,16 +1,7 @@
 import { Queue } from "bullmq";
 import { config } from "@amarnai/config";
-import { QUEUE_SYNC_INBOX, QUEUE_BACKFILL_INBOX } from "@amarnai/queue";
+import { parseRedisUrl, QUEUE_SYNC_INBOX, QUEUE_BACKFILL_INBOX } from "@amarnai/queue";
 import type { SyncInboxJobData, BackfillInboxJobData } from "@amarnai/queue";
-
-function parseRedisUrl(url: string): { host: string; port: number; password?: string } {
-  const parsed = new URL(url);
-  return {
-    host: parsed.hostname,
-    port: Number(parsed.port) || 6379,
-    ...(parsed.password ? { password: decodeURIComponent(parsed.password) } : {}),
-  };
-}
 
 const connection = parseRedisUrl(config.redis.url);
 
