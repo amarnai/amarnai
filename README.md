@@ -33,7 +33,7 @@ Amarnai can use an Ollama instance running on your machine.
 ollama serve
 
 # 3. Pull the local models
-ollama pull llama3.1:8b       # LLM (used at runtime)
+ollama pull qwen3:14b         # LLM (used at runtime)
 ollama pull qwen3-embedding   # embeddings (used for sorting)
 
 # 4. Copy local overrides
@@ -45,7 +45,7 @@ Make sure `.env.local` contains:
 ```env
 AI_PROVIDER=ollama
 OLLAMA_BASE_URL=http://localhost:11434
-OLLAMA_MODEL=llama3.1:8b
+OLLAMA_MODEL=qwen3:14b
 ENABLE_DEV_TOOLS=true
 ```
 
@@ -55,7 +55,7 @@ Check that Ollama is reachable:
 curl http://localhost:11434/api/tags
 ```
 
-If port `11434` is already in use, Ollama is probably already running. In that case, skip `ollama serve` and continue with `ollama pull llama3.1:8b`.
+If port `11434` is already in use, Ollama is probably already running. In that case, skip `ollama serve` and continue with `ollama pull qwen3:14b`.
 
 
 ### Production LLM + embeddings
@@ -226,7 +226,7 @@ Amarnai can be self-hosted on any machine with Docker and Docker Compose. All se
 
 ```bash
 # 1. Clone the repo
-git clone https://github.com/your-org/amarnai.git
+git clone https://github.com/amarnai/amarnai.git
 cd amarnai
 
 # 2. Create your env file from the self-host template
