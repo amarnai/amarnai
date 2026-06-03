@@ -4,6 +4,7 @@ import { db, Prisma } from "@amarnai/db";
 import { createAIProvider, generateDraft, getAIProviderConfig } from "@amarnai/ai";
 import { getDraftLimit, getDraftQuotaWindowStart, getDraftQuotaResetsAt, getThreadSortLimit } from "@amarnai/shared";
 import { config } from "@amarnai/config";
+import { GmailClient, normalizeGmailThread } from "@amarnai/gmail";
 
 const params = z.object({
   workspaceId: z.string().min(1),
@@ -60,9 +61,11 @@ drafts.post(
       select: {
         id: true,
         subject: true,
+        providerThreadId: true,
         messages: {
           orderBy: { receivedAt: "asc" },
           select: {
+            providerMessageId: true,
             subject: true,
             senderEmail: true,
             senderName: true,
@@ -99,7 +102,7 @@ drafts.post(
 
     const gmailConnection = await db.gmailConnection.findUnique({
       where: { workspaceId },
-      select: { gmailAddress: true },
+      select: { gmailAddress: true, encryptedRefreshToken: true },
     });
 
     // ── Stale threshold shared by the quick check and the transaction ─────────
@@ -232,9 +235,29 @@ drafts.post(
 
     const { placeholder } = txResult;
 
+    // Fetch full body texts from Gmail (one call for all messages in the thread).
+    // Falls back to DB bodyText for mock inbox (no Gmail connection) or on error.
+    let messagesForDraft = thread.messages.map(({ providerMessageId: _pmid, ...m }) => m);
+    if (gmailConnection?.encryptedRefreshToken) {
+      try {
+        const client = new GmailClient(gmailConnection.encryptedRefreshToken);
+        const rawThread = await client.getThread(thread.providerThreadId);
+        const snapshot = normalizeGmailThread(rawThread);
+        const bodyByMessageId = new Map(
+          snapshot.messages.map((m) => [m.providerMessageId, m.bodyExcerpt])
+        );
+        messagesForDraft = thread.messages.map(({ providerMessageId, ...m }) => ({
+          ...m,
+          bodyText: bodyByMessageId.get(providerMessageId) ?? m.bodyText,
+        }));
+      } catch {
+        // Non-fatal: fall back to DB values
+      }
+    }
+
     let result;
     try {
-      result = await generateDraft(provider, thread.messages, {
+      result = await generateDraft(provider, messagesForDraft, {
         requiredAction: classification.requiredAction ?? null,
         suggestedNextStep: classification.suggestedNextStep ?? null,
         explanation: classification.explanation ?? null,

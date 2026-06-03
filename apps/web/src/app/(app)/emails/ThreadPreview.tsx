@@ -41,7 +41,7 @@ export function ThreadPreview({
 }: Props) {
   const [reasoning, setReasoning] = useState<string | null>(thread.reasoning);
   const [decisionSource, setDecisionSource] = useState<string | null>(null);
-  const [_bodyLoaded, setBodyLoaded] = useState(false);
+  const [bodyLoaded, setBodyLoaded] = useState(false);
   const [messages, setMessages] = useState(thread.messages);
 
   const [draftState, setDraftState] = useState<DraftState>(
@@ -242,11 +242,12 @@ export function ThreadPreview({
         />
 
         <div className="em-msg-list">
-          {messages.map((msg) => (
+          {messages.map((msg, idx) => (
             <MessageCard
               key={msg.id}
               message={msg}
-              defaultExpanded
+              defaultExpanded={idx === messages.length - 1}
+              loading={!bodyLoaded}
             />
           ))}
         </div>

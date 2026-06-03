@@ -15,9 +15,10 @@ function fmtDateTime(d: Date): string {
 export interface MessageCardProps {
   message: ThreadMessage;
   defaultExpanded?: boolean;
+  loading?: boolean;
 }
 
-export function MessageCard({ message, defaultExpanded = false }: MessageCardProps) {
+export function MessageCard({ message, defaultExpanded = false, loading = false }: MessageCardProps) {
   const [expanded, setExpanded] = useState(defaultExpanded);
 
   return (
@@ -52,8 +53,8 @@ export function MessageCard({ message, defaultExpanded = false }: MessageCardPro
           )}
           {message.bodyText ? (
             <pre className="em-msg-text">{message.bodyText}</pre>
-          ) : message.snippet ? (
-            <p className="em-msg-text">{message.snippet}&thinsp;…</p>
+          ) : loading ? (
+            <p className="em-msg-text em-msg-loading">Loading…</p>
           ) : (
             <p className="em-msg-text em-msg-empty">(No body)</p>
           )}

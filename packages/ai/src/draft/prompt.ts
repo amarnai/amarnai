@@ -1,6 +1,6 @@
 import type { ThreadMessage } from "../types.js";
 
-const MAX_BODY_CHARS = 2000;
+const MAX_BODY_CHARS = 16_000;
 
 const SYSTEM_PROMPT = `You are a professional email assistant. Generate a concise, polished reply draft for the email thread provided.
 

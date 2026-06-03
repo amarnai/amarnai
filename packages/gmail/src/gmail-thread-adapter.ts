@@ -28,8 +28,6 @@ export type RawGmailThread = {
 
 // ─── Internal helpers ──────────────────────────────────────────────────────────
 
-const BODY_EXCERPT_MAX = 2000;
-
 function decodeBase64Url(encoded: string): string {
   const base64 = encoded.replace(/-/g, "+").replace(/_/g, "/");
   const padded = base64 + "=".repeat((4 - (base64.length % 4)) % 4);
@@ -200,10 +198,7 @@ function normalizeMessage(msg: RawMessage): SnapshotMessage {
   let bodyExcerpt: string | null = null;
   if (rawText) {
     const stripped = stripQuotedReply(rawText);
-    const bounded = stripped.length > BODY_EXCERPT_MAX
-      ? stripped.slice(0, BODY_EXCERPT_MAX) + " [truncated]"
-      : stripped;
-    bodyExcerpt = bounded || null;
+    bodyExcerpt = stripped || null;
   }
 
   const attachments = extractAttachments(msg.payload);
