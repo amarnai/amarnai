@@ -26,7 +26,7 @@ export function Footer() {
             <div className="ld-footer-col">
               <h4>Resources</h4>
               <Link href="#faq">FAQ</Link>
-              <a href="https://docs.amarnai.com">Documentation</a>
+              <a href="https://docs.amarnai.com" target="_blank" rel="noopener noreferrer">Documentation</a>
               <a href="https://github.com/amarnai/amarnai" target="_blank" rel="noopener noreferrer">
                 GitHub
               </a>
