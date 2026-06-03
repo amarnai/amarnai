@@ -777,11 +777,6 @@ function TaxonomyCanvasInner({
           >
             ↷
           </button>
-          {panel.type !== "none" && (
-            <button className="btn-ghost" onClick={() => setPanel({ type: "none" })}>
-              Close panel
-            </button>
-          )}
         </div>
       )}
 
@@ -817,6 +812,13 @@ function TaxonomyCanvasInner({
 
         {panel.type !== "none" && (
           <div className="taxonomy-panel">
+            <button
+              className="taxonomy-panel-close"
+              onClick={() => setPanel({ type: "none" })}
+              aria-label="Close panel"
+            >
+              ✕
+            </button>
             {panel.type === "create-node" && (
               <NodeForm
                 key="create-node"
