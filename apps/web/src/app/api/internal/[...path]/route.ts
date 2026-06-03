@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { requireUser } from "@/lib/session";
+import { auth } from "@/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -9,8 +9,9 @@ const INTERNAL_SECRET = process.env["INTERNAL_API_SECRET"] ?? "dev-internal-secr
 type Ctx = { params: Promise<{ path: string[] }> };
 
 async function proxyRequest(req: NextRequest, ctx: Ctx): Promise<NextResponse> {
-  const user = await requireUser().catch(() => null);
-  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const session = await auth();
+  if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const user = session.user;
 
   const { path } = await ctx.params;
   const apiPath = path.join("/");
@@ -25,6 +26,7 @@ async function proxyRequest(req: NextRequest, ctx: Ctx): Promise<NextResponse> {
     method,
     headers: {
       Authorization: `Bearer ${INTERNAL_SECRET}`,
+      "X-User-Id": user.id,
       ...(hasBody ? { "Content-Type": req.headers.get("Content-Type") ?? "application/json" } : {}),
     },
     body: body ?? null,

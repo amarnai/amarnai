@@ -60,3 +60,15 @@ export type AIProviderConfig = {
     baseUrl?: string;
   };
 };
+
+export type EmbeddingProviderConfig = {
+  provider: "mock" | "ollama" | "gemini";
+  ollama?: {
+    baseUrl?: string;
+    model?: string;
+  };
+  gemini?: {
+    apiKey?: string;
+    model?: string;
+  };
+};

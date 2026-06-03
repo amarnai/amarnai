@@ -1,6 +1,8 @@
+import { timingSafeEqual } from "node:crypto";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { config } from "@amarnai/config";
+import type { AppEnv } from "./env.js";
 import { healthRoute } from "./routes/health.js";
 import { workspacesRoute } from "./routes/workspaces.js";
 import { taxonomyNodesRoute } from "./routes/taxonomy-nodes.js";
@@ -24,17 +26,30 @@ import { gmailWebhookRoute } from "./routes/gmail-webhook.js";
 import { gmailWatchRoute } from "./routes/gmail-watch.js";
 import { workspaceEventsRoute } from "./routes/workspace-events.js";
 
-const app = new Hono();
+const app = new Hono<AppEnv>();
 
 app.use("*", cors({ origin: process.env["CORS_ORIGIN"] ?? "http://localhost:3000" }));
 
 app.use("*", async (c, next) => {
   // /health and /webhooks/gmail use their own auth — skip internal secret check.
   if (c.req.path === "/health" || c.req.path === "/webhooks/gmail") return next();
-  const auth = c.req.header("Authorization");
-  if (auth !== `Bearer ${config.internalApiSecret}`) {
+
+  const secret = config.internalApiSecret;
+  if (!secret) return c.json({ error: "Unauthorized" }, 401);
+
+  const authHeader = c.req.header("Authorization");
+  const token = authHeader?.startsWith("Bearer ") ? authHeader.slice(7) : null;
+  if (!token) return c.json({ error: "Unauthorized" }, 401);
+
+  const tokenBuf = Buffer.from(token, "utf8");
+  const secretBuf = Buffer.from(secret, "utf8");
+  if (tokenBuf.length !== secretBuf.length || !timingSafeEqual(tokenBuf, secretBuf)) {
     return c.json({ error: "Unauthorized" }, 401);
   }
+
+  const userId = c.req.header("X-User-Id");
+  if (userId) c.set("userId", userId);
+
   return next();
 });
 

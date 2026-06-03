@@ -10,7 +10,8 @@ export default auth((req) => {
     pathname.startsWith("/sign-up") ||
     pathname.startsWith("/forgot-password") ||
     pathname.startsWith("/reset-password") ||
-    pathname.startsWith("/api/auth");
+    pathname.startsWith("/api/auth") ||
+    pathname.startsWith("/api/internal");
 
   if (!isSignedIn && !isPublic) {
     return NextResponse.redirect(new URL("/sign-in", req.url));

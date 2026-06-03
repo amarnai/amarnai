@@ -1,6 +1,10 @@
 import { vi, describe, it, expect, beforeEach } from "vitest";
 import { authed } from "./helpers.js";
 
+function authedUser(userId = "u1"): RequestInit {
+  return authed({ headers: { "X-User-Id": userId } });
+}
+
 vi.mock("@amarnai/db", () => ({
   db: {
     workspace: {
@@ -41,7 +45,7 @@ describe("GET /workspaces", () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     vi.mocked(db.workspace.findMany).mockResolvedValue(mockWorkspaces as any);
 
-    const res = await app.request("/workspaces", authed());
+    const res = await app.request("/workspaces", authedUser());
     expect(res.status).toBe(200);
     const body = (await res.json()) as Array<{ id: string; name: string }>;
     expect(body).toHaveLength(1);
@@ -49,10 +53,10 @@ describe("GET /workspaces", () => {
     expect(db.workspace.findMany).toHaveBeenCalledOnce();
   });
 
-  it("returns an empty list when no workspaces exist", async () => {
+  it("returns an empty list when no workspaces exist for the user", async () => {
     vi.mocked(db.workspace.findMany).mockResolvedValue([]);
 
-    const res = await app.request("/workspaces", authed());
+    const res = await app.request("/workspaces", authedUser());
     expect(res.status).toBe(200);
     expect(await res.json()).toEqual([]);
   });

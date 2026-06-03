@@ -1,10 +1,17 @@
 import { Hono } from "hono";
 import { db } from "@amarnai/db";
+import type { AppEnv } from "../env.js";
 
-const workspaces = new Hono();
+const workspaces = new Hono<AppEnv>();
 
 workspaces.get("/workspaces", async (c) => {
+  const userId = c.get("userId") as string | undefined;
+  if (!userId) return c.json([]);
+
   const result = await db.workspace.findMany({
+    where: {
+      members: { some: { userId } },
+    },
     select: {
       id: true,
       name: true,
