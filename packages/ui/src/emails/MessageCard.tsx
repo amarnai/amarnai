@@ -55,6 +55,8 @@ export function MessageCard({ message, defaultExpanded = false, loading = false 
             <pre className="em-msg-text">{message.bodyText}</pre>
           ) : loading ? (
             <p className="em-msg-text em-msg-loading">Loading…</p>
+          ) : message.snippet ? (
+            <p className="em-msg-text">{message.snippet}</p>
           ) : (
             <p className="em-msg-text em-msg-empty">(No body)</p>
           )}
