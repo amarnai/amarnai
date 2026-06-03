@@ -5,8 +5,8 @@ import { ConnectGmailCta } from "@/components/ConnectGmailCta";
 import { ClassifyingRefresher } from "@/components/ClassifyingRefresher";
 import { EmailsClient } from "./EmailsClient";
 import { mapFolders, mapThreads } from "./queries";
-import type { ActiveSelection } from "./selection";
-import { QUEUES } from "./selection";
+import type { ActiveSelection } from "@amarnai/ui/emails";
+import { QUEUES } from "@amarnai/ui/emails";
 
 type PageProps = {
   searchParams: Promise<{ q?: string; f?: string; t?: string }>;

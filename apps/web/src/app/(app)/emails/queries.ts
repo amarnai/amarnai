@@ -3,7 +3,7 @@ import type {
   TaxonomyNode,
   TaxonomyEdge,
 } from "@/lib/api";
-import type { FolderItem, ThreadItem } from "./selection";
+import type { FolderItem, ThreadItem } from "@amarnai/ui/emails";
 
 export function mapFolders(
   nodes: TaxonomyNode[],

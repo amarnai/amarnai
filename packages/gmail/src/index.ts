@@ -1,4 +1,4 @@
-export { decrypt } from "./encryption.js";
+export { encrypt, decrypt } from "./encryption.js";
 export {
   GmailClient,
   GmailAuthError,

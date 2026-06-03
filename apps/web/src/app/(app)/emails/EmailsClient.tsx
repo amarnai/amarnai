@@ -4,10 +4,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { api } from "@/lib/api";
 import type { SyncStatus } from "@/lib/api";
-import type { ActiveSelection, FolderItem, ThreadItem } from "./selection";
-import { filterThreads } from "./selection";
-import { EmailRail } from "@amarnai/ui/emails";
-import { ThreadList, ReroutePopover } from "@amarnai/ui/emails";
+import type { ActiveSelection, FolderItem, ThreadItem } from "@amarnai/ui/emails";
+import { filterThreads, EmailRail, ThreadList, ReroutePopover } from "@amarnai/ui/emails";
 import { ThreadPreview } from "./ThreadPreview";
 import { useThreadKeyboard } from "./useThreadKeyboard";
 import { mapThreads } from "./queries";
@@ -79,7 +77,7 @@ export function EmailsClient({
   const searchRef = useRef<HTMLInputElement>(null);
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const filteredThreads = filterThreads(threads, folders, active, "all", query, now);
+  const filteredThreads = filterThreads(threads, folders, active, "all", query);
   const filteredIds = filteredThreads.map((t) => t.id);
 
   const selectedThread = selectedId

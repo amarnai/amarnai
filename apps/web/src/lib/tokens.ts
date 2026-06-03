@@ -4,9 +4,4 @@
 // the subset needed for JS expressions. Do not add new values here without a
 // matching CSS variable in globals.css.
 
-export const tokens = {
-  primary: "#c2683f",      // --color-primary (--accent terracotta)
-  accent: "#D4A017",       // --color-accent / --color-warning (--brand-gold)
-  accentDim: "#b5890e",    // darker gold for selected-warning edge state
-  edgeDefault: "#94a3b8",  // neutral slate for unselected, non-warning edges
-} as const;
+export { taxonomyTokens as tokens } from "@amarnai/ui/taxonomy";

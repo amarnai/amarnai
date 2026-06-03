@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { api } from "@/lib/api";
 import type { Draft } from "@/lib/api";
-import type { FolderItem, ThreadItem } from "./selection";
+import type { FolderItem, ThreadItem } from "@amarnai/ui/emails";
 import { RationaleCard, MessageCard, SuggestedDraftCard } from "@amarnai/ui/emails";
 
 type DraftState = "idle" | "loading" | "ready" | "error";

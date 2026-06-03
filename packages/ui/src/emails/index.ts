@@ -1,6 +1,7 @@
 export type {
   ActiveSelection,
   QueueId,
+  SegFilter,
   ThreadStatus,
   ThreadMessage,
   DoneMark,
@@ -8,6 +9,7 @@ export type {
   DraftItem,
   SyncInfo,
 } from "./types.js";
+export type { FolderItem } from "../folder-tree/types.js";
 
 export { filterThreads, countForActive, buildFolderCounts, QUEUES } from "./selection.js";
 export { QueueList } from "./QueueList.js";

@@ -1,10 +1,9 @@
 import { Hono } from "hono";
 import { z } from "zod";
 import { db, Prisma } from "@amarnai/db";
-import { createAIProvider, generateDraft } from "@amarnai/ai";
+import { createAIProvider, generateDraft, getAIProviderConfig } from "@amarnai/ai";
 import { getDraftLimit, getDraftQuotaWindowStart, getDraftQuotaResetsAt, getThreadSortLimit } from "@amarnai/shared";
 import { config } from "@amarnai/config";
-import { getAIProviderConfig } from "../services/ai-providers.js";
 
 const params = z.object({
   workspaceId: z.string().min(1),

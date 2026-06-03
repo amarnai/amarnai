@@ -1,4 +1,4 @@
-import type { AIProviderConfig, EmbeddingProviderConfig } from "@amarnai/ai";
+import type { AIProviderConfig, EmbeddingProviderConfig } from "./types.js";
 
 export function getAIProviderConfig(): AIProviderConfig {
   const cfg: AIProviderConfig = {

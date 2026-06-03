@@ -16,10 +16,7 @@ import {
   type ClassifyThreadJobData,
 } from "../queues.js";
 import { redisConnection } from "../redis.js";
-import {
-  getAIProviderConfig,
-  getEmbeddingProviderConfig,
-} from "../providers.js";
+import { getAIProviderConfig, getEmbeddingProviderConfig } from "@amarnai/ai";
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
 

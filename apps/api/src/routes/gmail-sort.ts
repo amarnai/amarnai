@@ -1,11 +1,10 @@
 import { Hono } from "hono";
 import { z } from "zod";
 import { db } from "@amarnai/db";
-import { createAIProvider, createEmbeddingProvider, sortThreadByEmbedding, snapshotToThreadMessages } from "@amarnai/ai";
+import { createAIProvider, createEmbeddingProvider, sortThreadByEmbedding, snapshotToThreadMessages, getAIProviderConfig, getEmbeddingProviderConfig } from "@amarnai/ai";
 import type { EmbeddableNode } from "@amarnai/ai";
 import { GmailClient } from "../services/gmail-client.js";
 import { normalizeGmailThread } from "../services/gmail-thread-adapter.js";
-import { getAIProviderConfig, getEmbeddingProviderConfig } from "../services/ai-providers.js";
 
 const workspaceParam = z.object({ workspaceId: z.string().min(1) });
 
