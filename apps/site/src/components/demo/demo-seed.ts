@@ -137,6 +137,7 @@ export const DEMO_THREADS: ThreadItem[] = [
     lastSenderEmail: "burna.buriash@babylon.iq",
     doneMark: null,
     isImportant: false,
+    isClassifying: false,
   },
   {
     id: "t2",
@@ -167,6 +168,7 @@ export const DEMO_THREADS: ThreadItem[] = [
     lastSenderEmail: "aziru@amurru.co",
     doneMark: null,
     isImportant: false,
+    isClassifying: false,
   },
   {
     id: "t3",
@@ -197,6 +199,7 @@ export const DEMO_THREADS: ThreadItem[] = [
     lastSenderEmail: "appointments@house-of-records.clay",
     doneMark: null,
     isImportant: false,
+    isClassifying: false,
   },
   {
     id: "t4",
@@ -227,6 +230,7 @@ export const DEMO_THREADS: ThreadItem[] = [
     lastSenderEmail: "rib-hadda@byblos.lb",
     doneMark: null,
     isImportant: false,
+    isClassifying: false,
   },
   {
     id: "t5",
@@ -257,6 +261,7 @@ export const DEMO_THREADS: ThreadItem[] = [
     lastSenderEmail: "abdi-heba@urusalim.gov",
     doneMark: null,
     isImportant: false,
+    isClassifying: false,
   },
   {
     id: "t6",
@@ -287,5 +292,6 @@ export const DEMO_THREADS: ThreadItem[] = [
     lastSenderEmail: "tushratta@mitanni.int",
     doneMark: null,
     isImportant: false,
+    isClassifying: false,
   },
 ];

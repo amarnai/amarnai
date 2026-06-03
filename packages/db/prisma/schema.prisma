@@ -511,6 +511,7 @@ model GmailConnection {
   grantedScopes         String[]
   status                GmailConnectionStatus @default(ACTIVE)
   lastVerifiedAt        DateTime?
+  gmailWatchExpiresAt   DateTime?
   createdAt             DateTime              @default(now())
   updatedAt             DateTime              @updatedAt
 

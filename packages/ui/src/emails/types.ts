@@ -46,6 +46,7 @@ export type ThreadItem = {
   lastSenderEmail: string | null;
   doneMark: DoneMark | null;
   isImportant: boolean;
+  isClassifying: boolean;
 };
 
 export type DraftItem = {
@@ -59,4 +60,5 @@ export type SyncInfo = {
   lastSyncedAt: string | null;
   backfillStatus: "IDLE" | "RUNNING" | null;
   workspacePlan: "FREE" | "PRO" | "BUSINESS";
+  pushEnabled: boolean;
 } | null;

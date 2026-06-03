@@ -7,13 +7,6 @@ import { QueueList } from "./QueueList.js";
 import { BackfillCard } from "./BackfillCard.js";
 import { buildFolderCounts } from "./selection.js";
 
-function formatSyncAge(d: Date, now: Date): string {
-  const diff = Math.floor((now.getTime() - d.getTime()) / 1000);
-  if (diff < 60) return `${diff}s`;
-  if (diff < 3600) return `${Math.floor(diff / 60)}m`;
-  return `${Math.floor(diff / 3600)}h`;
-}
-
 export interface EmailRailProps {
   threads: ThreadItem[];
   folders: FolderItem[];
@@ -21,7 +14,6 @@ export interface EmailRailProps {
   railQuery: string;
   openFolderIds: Set<string>;
   syncInfo: SyncInfo;
-  now: Date;
   onSelectActive: (a: ActiveSelection) => void;
   onRailQueryChange: (q: string) => void;
   onToggleFolder: (id: string) => void;
@@ -36,17 +28,12 @@ export function EmailRail({
   railQuery,
   openFolderIds,
   syncInfo,
-  now,
   onSelectActive,
   onRailQueryChange,
   onToggleFolder,
   onNewFolder,
   upgradeHref,
 }: EmailRailProps) {
-  const lastSync =
-    syncInfo?.lastSyncedAt
-      ? formatSyncAge(new Date(syncInfo.lastSyncedAt), now)
-      : null;
 
   const folderCounts = buildFolderCounts(threads, folders);
   const activeId = active.kind === "folder" ? active.id : null;
@@ -56,10 +43,10 @@ export function EmailRail({
       <div className="em-rail-head">
         <div className="em-rail-head-top">
           <h2>Mail</h2>
-          {lastSync && (
-            <div className="em-sync-chip" title={`Last Gmail sync ${lastSync} ago`}>
+          {syncInfo?.pushEnabled && (
+            <div className="em-sync-chip" title="Gmail live sync active">
               <span className="em-sync-dot" />
-              <span>{lastSync}</span>
+              <span>Live</span>
             </div>
           )}
         </div>

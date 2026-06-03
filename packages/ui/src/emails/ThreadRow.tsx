@@ -55,6 +55,7 @@ export function ThreadRow({
   const chipLabel = thread.status === "review" ? `Wants ${folder?.name ?? "—"}` : (folder?.name ?? "—");
   const chipClass = thread.status === "review" ? "em-route-chip needs-review" : "em-route-chip";
   const isDone = !!thread.doneMark;
+  const isClassifying = thread.isClassifying;
 
   const classes = ["em-thread-row", thread.unread ? "unread" : "", selected ? "selected" : "", isDone ? "done" : ""]
     .filter(Boolean)
@@ -82,7 +83,12 @@ export function ThreadRow({
               Done
             </span>
           )}
-          {!inExactFolder && folder && (
+          {isClassifying ? (
+            <span className="em-route-chip sorting">
+              <span className="em-chip-spin" aria-hidden />
+              Sorting…
+            </span>
+          ) : !inExactFolder && folder && (
             <span className={chipClass}>
               <span className="em-chip-ico">{FOLDER_ICO}</span>
               {chipLabel}

@@ -22,7 +22,7 @@ syncStatus.get("/workspaces/:workspaceId/sync-status", async (c) => {
   // Resolve the GmailConnection → EmailAccount → ProviderSyncState chain.
   const connection = await db.gmailConnection.findUnique({
     where: { workspaceId },
-    select: { googleSubjectId: true, gmailAddress: true },
+    select: { googleSubjectId: true, gmailAddress: true, gmailWatchExpiresAt: true },
   });
 
   if (!connection) return c.json(null, 200);
@@ -60,6 +60,10 @@ syncStatus.get("/workspaces/:workspaceId/sync-status", async (c) => {
 
   if (!state) return c.json(null, 200);
 
+  const now = new Date();
+  const pushEnabled =
+    connection.gmailWatchExpiresAt != null && connection.gmailWatchExpiresAt > now;
+
   return c.json({
     status: state.status,
     lastSyncedAt: state.lastSyncedAt?.toISOString() ?? null,
@@ -69,6 +73,7 @@ syncStatus.get("/workspaces/:workspaceId/sync-status", async (c) => {
     backfillCompletedAt: state.backfillCompletedAt?.toISOString() ?? null,
     sortingPaused: syncSettings?.sortingPaused ?? false,
     workspacePlan: workspace?.plan ?? "FREE",
+    pushEnabled,
   });
 });
 

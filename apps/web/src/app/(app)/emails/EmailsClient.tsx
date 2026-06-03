@@ -294,6 +294,7 @@ export function EmailsClient({
         lastSyncedAt: syncStatus.lastSyncedAt,
         backfillStatus: syncStatus.backfillStatus === "RUNNING" ? ("RUNNING" as const) : ("IDLE" as const),
         workspacePlan: syncStatus.workspacePlan,
+        pushEnabled: syncStatus.pushEnabled,
       }
     : null;
 
@@ -311,7 +312,6 @@ export function EmailsClient({
         railQuery={railQuery}
         openFolderIds={openFolderIds}
         syncInfo={syncInfo}
-        now={now}
         onSelectActive={pushActive}
         onRailQueryChange={setRailQuery}
         onToggleFolder={toggleFolder}

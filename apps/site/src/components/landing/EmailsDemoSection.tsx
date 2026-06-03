@@ -40,7 +40,7 @@ export function EmailsDemoSection() {
               initialThreads={DEMO_THREADS}
               initialFolders={DEMO_FOLDERS}
               draftBodies={DEMO_DRAFT_BODIES}
-              syncInfo={{ lastSyncedAt: new Date().toISOString(), backfillStatus: "IDLE", workspacePlan: "PRO" }}
+              syncInfo={{ lastSyncedAt: new Date().toISOString(), backfillStatus: "IDLE", workspacePlan: "PRO", pushEnabled: true }}
             />
           </div>
         </div>

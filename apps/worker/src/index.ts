@@ -31,8 +31,12 @@ async function renewAllGmailWatches(): Promise<void> {
       const client = new GmailClient(conn.encryptedRefreshToken);
       try {
         const result = await client.watchInbox(config.gmail.pubsubTopic!);
-        const expiresAt = new Date(Number(result.expiration)).toISOString();
-        console.log(`[watch-renewal] Renewed watch for ${conn.gmailAddress} — historyId=${result.historyId} expires=${expiresAt}`);
+        const expiresAt = new Date(Number(result.expiration));
+        await db.gmailConnection.update({
+          where: { workspaceId: conn.workspaceId },
+          data: { gmailWatchExpiresAt: expiresAt },
+        });
+        console.log(`[watch-renewal] Renewed watch for ${conn.gmailAddress} — historyId=${result.historyId} expires=${expiresAt.toISOString()}`);
       } catch (err) {
         // Auth errors mean the refresh token is revoked/invalid — log at info
         // level since sync jobs will surface this to the user separately.

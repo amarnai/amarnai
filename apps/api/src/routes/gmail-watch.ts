@@ -42,9 +42,14 @@ gmailWatch.post("/workspaces/:workspaceId/register-gmail-watch", async (c) => {
   }
 
   const client = new GmailClient(connection.encryptedRefreshToken);
-  await client.watchInbox(config.gmail.pubsubTopic);
+  const result = await client.watchInbox(config.gmail.pubsubTopic);
+  const expiresAt = new Date(Number(result.expiration));
+  await db.gmailConnection.update({
+    where: { workspaceId },
+    data: { gmailWatchExpiresAt: expiresAt },
+  });
 
-  console.log(`[gmail-watch] Registered push watch for ${connection.gmailAddress} (workspace=${workspaceId})`);
+  console.log(`[gmail-watch] Registered push watch for ${connection.gmailAddress} (workspace=${workspaceId}) expires=${expiresAt.toISOString()}`);
 
   return c.json({ ok: true });
 });

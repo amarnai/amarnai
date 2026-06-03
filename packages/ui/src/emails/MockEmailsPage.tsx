@@ -183,7 +183,6 @@ export function MockEmailsPage({
         railQuery={railQuery}
         openFolderIds={openFolderIds}
         syncInfo={syncInfo}
-        now={now}
         onSelectActive={pushActive}
         onRailQueryChange={setRailQuery}
         onToggleFolder={toggleFolder}

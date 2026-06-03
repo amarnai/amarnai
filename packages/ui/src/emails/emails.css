@@ -719,6 +719,25 @@
 
 .em-route-chip.needs-review .em-chip-ico { color: var(--warn-ink); }
 
+@keyframes em-chip-spin { to { transform: rotate(360deg); } }
+
+.em-route-chip.sorting {
+  color: var(--ink-3);
+  background: var(--bg-sunk);
+  border-color: var(--line-2);
+  font-family: var(--f-mono);
+  letter-spacing: 0.02em;
+}
+.em-chip-spin {
+  width: 10px;
+  height: 10px;
+  flex: none;
+  border-radius: 50%;
+  border: 1.5px solid var(--line-3);
+  border-top-color: var(--accent);
+  animation: em-chip-spin 0.7s linear infinite;
+}
+
 .em-pill {
   display: inline-flex;
   align-items: center;
