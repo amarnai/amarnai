@@ -25,6 +25,8 @@ vi.mock("../services/gmail-client.js", () => ({
 
 const mockSortThreadByEmbedding = vi.fn();
 vi.mock("@amarnai/ai", () => ({
+  getAIProviderConfig: vi.fn().mockReturnValue({}),
+  getEmbeddingProviderConfig: vi.fn().mockReturnValue({}),
   createAIProvider: vi.fn().mockReturnValue({
     providerName: "mock",
     modelName: "mock-v1",
