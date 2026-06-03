@@ -1,6 +1,6 @@
 export type { FolderItem } from "../folder-tree/types.js";
 
-export type QueueId = "all" | "sorted" | "review" | "pending";
+export type QueueId = "all" | "sorted" | "review" | "pending" | "important";
 
 export type ActiveSelection =
   | { kind: "queue"; id: QueueId }
@@ -45,6 +45,7 @@ export type ThreadItem = {
   isDrafting: boolean;
   lastSenderEmail: string | null;
   doneMark: DoneMark | null;
+  isImportant: boolean;
 };
 
 export type DraftItem = {

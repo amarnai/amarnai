@@ -11,6 +11,7 @@ export const QUEUES: { id: QueueId; name: string; warn?: boolean; desc: string }
     desc: "Threads flagged for review — Amarnai wasn't confident enough to sort automatically.",
   },
   { id: "pending", name: "Pending", desc: "Threads that haven't been sorted yet." },
+  { id: "important", name: "Important", desc: "Threads Gmail has flagged as important." },
 ];
 
 function baseFilter(
@@ -30,6 +31,7 @@ function baseFilter(
     case "sorted": return threads.filter((t) => t.status === "sorted");
     case "review": return threads.filter((t) => t.status === "review");
     case "pending": return threads.filter((t) => t.status === "unsorted");
+    case "important": return threads.filter((t) => t.isImportant);
   }
 }
 

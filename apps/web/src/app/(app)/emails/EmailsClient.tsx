@@ -6,10 +6,9 @@ import { api } from "@/lib/api";
 import type { SyncStatus } from "@/lib/api";
 import type { ActiveSelection, FolderItem, ThreadItem } from "./selection";
 import { filterThreads } from "./selection";
-import { Rail } from "./Rail";
-import { ThreadList } from "./ThreadList";
+import { EmailRail } from "@amarnai/ui/emails";
+import { ThreadList, ReroutePopover } from "@amarnai/ui/emails";
 import { ThreadPreview } from "./ThreadPreview";
-import { ReroutePopover } from "./ReroutePopover";
 import { useThreadKeyboard } from "./useThreadKeyboard";
 import { mapThreads } from "./queries";
 
@@ -292,6 +291,14 @@ export function EmailsClient({
     onFocusSearch: () => searchRef.current?.focus(),
   });
 
+  const syncInfo = syncStatus
+    ? {
+        lastSyncedAt: syncStatus.lastSyncedAt,
+        backfillStatus: syncStatus.backfillStatus === "RUNNING" ? ("RUNNING" as const) : ("IDLE" as const),
+        workspacePlan: syncStatus.workspacePlan,
+      }
+    : null;
+
   return (
     <div
       className="em-grid"
@@ -299,18 +306,19 @@ export function EmailsClient({
       data-rail-open={String(railOpen)}
       suppressHydrationWarning
     >
-      <Rail
+      <EmailRail
         threads={threads}
         folders={folders}
         active={active}
         railQuery={railQuery}
         openFolderIds={openFolderIds}
-        syncStatus={syncStatus}
+        syncInfo={syncInfo}
         now={now}
         onSelectActive={pushActive}
         onRailQueryChange={setRailQuery}
         onToggleFolder={toggleFolder}
         onNewFolder={() => router.push("/taxonomy")}
+        upgradeHref="/upgrade"
       />
 
       <ThreadList

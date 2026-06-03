@@ -9,6 +9,7 @@ const ICON_SVG: Record<string, string> = {
   sorted: `<circle cx="7" cy="7" r="5.3" stroke="currentColor" stroke-width="1.3"/><path d="M4.5 7l2 2 3-3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>`,
   review: `<circle cx="7" cy="7" r="5.3" stroke="currentColor" stroke-width="1.3"/><path d="M7 4.4v3M7 9.6h.01" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>`,
   pending: `<circle cx="7" cy="7" r="5.3" stroke="currentColor" stroke-width="1.3"/><path d="M7 4v3.2l2 1.2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>`,
+  important: `<path d="M7 2l1.4 3h3.1l-2.5 1.9 1 3.1L7 8.2l-3 1.8 1-3.1L2.5 5H5.6z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>`,
 };
 
 export interface QueueListProps {
