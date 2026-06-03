@@ -281,111 +281,79 @@ emailThreads.get(
     }
     const { workspaceId, threadId } = parsed.data;
 
-    const [thread, gmailConnection] = await Promise.all([
-      db.emailThread.findFirst({
-        where: { id: threadId, workspaceId },
-        select: {
-          id: true,
-          subject: true,
-          providerThreadId: true,
-          latestMessageAt: true,
-          messageCount: true,
-          triageStatus: true,
-          classifyingAt: true,
-          createdAt: true,
-          updatedAt: true,
-          resolvedByUserId: true,
-          resolvedAt: true,
-          resolvedByUser: {
-            select: { id: true, email: true, name: true },
+    const thread = await db.emailThread.findFirst({
+      where: { id: threadId, workspaceId },
+      select: {
+        id: true,
+        subject: true,
+        latestMessageAt: true,
+        messageCount: true,
+        triageStatus: true,
+        classifyingAt: true,
+        createdAt: true,
+        updatedAt: true,
+        resolvedByUserId: true,
+        resolvedAt: true,
+        resolvedByUser: {
+          select: { id: true, email: true, name: true },
+        },
+        messages: {
+          orderBy: { receivedAt: "asc" },
+          select: {
+            id: true,
+            senderEmail: true,
+            senderName: true,
+            subject: true,
+            snippet: true,
+            bodyText: true,
+            receivedAt: true,
+            hasAttachments: true,
+            toEmails: true,
           },
-          messages: {
-            orderBy: { receivedAt: "asc" },
-            select: {
-              id: true,
-              providerMessageId: true,
-              senderEmail: true,
-              senderName: true,
-              subject: true,
-              snippet: true,
-              bodyText: true,
-              receivedAt: true,
-              hasAttachments: true,
-              toEmails: true,
-            },
-          },
-          classifications: {
-            orderBy: { createdAt: "desc" },
-            take: 1,
-            select: {
-              id: true,
-              confidence: true,
-              explanation: true,
-              priority: true,
-              urgency: true,
-              riskLevel: true,
-              requiredAction: true,
-              sensitivity: true,
-              dueAt: true,
-              suggestedNextStep: true,
-              needsHumanReview: true,
-              decisionSource: true,
-              modelProvider: true,
-              modelName: true,
-              createdAt: true,
-              finalNode: {
-                select: { id: true, name: true },
-              },
-            },
-          },
-          tags: {
-            select: {
-              id: true,
-              source: true,
-              tag: {
-                select: { id: true, name: true, color: true },
-              },
+        },
+        classifications: {
+          orderBy: { createdAt: "desc" },
+          take: 1,
+          select: {
+            id: true,
+            confidence: true,
+            explanation: true,
+            priority: true,
+            urgency: true,
+            riskLevel: true,
+            requiredAction: true,
+            sensitivity: true,
+            dueAt: true,
+            suggestedNextStep: true,
+            needsHumanReview: true,
+            decisionSource: true,
+            modelProvider: true,
+            modelName: true,
+            createdAt: true,
+            finalNode: {
+              select: { id: true, name: true },
             },
           },
         },
-      }),
-      db.gmailConnection.findUnique({
-        where: { workspaceId },
-        select: { encryptedRefreshToken: true },
-      }),
-    ]);
+        tags: {
+          select: {
+            id: true,
+            source: true,
+            tag: {
+              select: { id: true, name: true, color: true },
+            },
+          },
+        },
+      },
+    });
 
     if (!thread) {
       return c.json({ error: "Thread not found" }, 404);
     }
 
-    // Fetch full body texts from Gmail (one call for all messages in the thread).
-    // Falls back to DB bodyText for mock inbox (no Gmail connection) or on error.
-    let bodyByMessageId: Map<string, string | null> | null = null;
-    if (gmailConnection) {
-      try {
-        const client = new GmailClient(gmailConnection.encryptedRefreshToken);
-        const rawThread = await client.getThread(thread.providerThreadId);
-        const snapshot = normalizeGmailThread(rawThread);
-        bodyByMessageId = new Map(
-          snapshot.messages.map((m) => [m.providerMessageId, m.bodyExcerpt])
-        );
-      } catch {
-        // Non-fatal: fall back to DB values
-      }
-    }
-
-    const messages = thread.messages.map(({ providerMessageId, ...msg }) => ({
-      ...msg,
-      bodyText: bodyByMessageId
-        ? (bodyByMessageId.get(providerMessageId) ?? msg.bodyText)
-        : msg.bodyText,
-    }));
-
     const { classifications, classifyingAt, resolvedByUserId, resolvedAt, resolvedByUser, ...rest } = thread;
     return c.json({
       ...rest,
-      messages,
       isClassifying: deriveIsClassifying(classifyingAt),
       isQueued: classifyingAt !== null,
       latestClassification: classifications[0] ?? null,
@@ -398,6 +366,66 @@ emailThreads.get(
           }
         : null,
     });
+  }
+);
+
+// ─── GET /workspaces/:workspaceId/email-threads/:threadId/bodies ───────────────
+//
+// Fetches full body text for every message in the thread from Gmail in a single
+// getThread call. Returns a map of DB message id → body text so the client can
+// apply it without a page reload. Returns an empty map for mock inbox threads
+// (no Gmail connection) or on Gmail error.
+
+emailThreads.get(
+  "/workspaces/:workspaceId/email-threads/:threadId/bodies",
+  async (c) => {
+    const parsed = threadParam.safeParse({
+      workspaceId: c.req.param("workspaceId"),
+      threadId: c.req.param("threadId"),
+    });
+    if (!parsed.success) {
+      return c.json({ error: "Invalid params" }, 400);
+    }
+    const { workspaceId, threadId } = parsed.data;
+
+    const [thread, gmailConnection] = await Promise.all([
+      db.emailThread.findFirst({
+        where: { id: threadId, workspaceId },
+        select: {
+          providerThreadId: true,
+          messages: {
+            select: { id: true, providerMessageId: true },
+          },
+        },
+      }),
+      db.gmailConnection.findUnique({
+        where: { workspaceId },
+        select: { encryptedRefreshToken: true },
+      }),
+    ]);
+
+    if (!thread) {
+      return c.json({ error: "Thread not found" }, 404);
+    }
+    if (!gmailConnection) {
+      return c.json({ bodies: {} });
+    }
+
+    try {
+      const client = new GmailClient(gmailConnection.encryptedRefreshToken);
+      const rawThread = await client.getThread(thread.providerThreadId);
+      const snapshot = normalizeGmailThread(rawThread);
+      const bodyByProviderMsgId = new Map(
+        snapshot.messages.map((m) => [m.providerMessageId, m.bodyExcerpt])
+      );
+      const bodies: Record<string, string | null> = {};
+      for (const msg of thread.messages) {
+        bodies[msg.id] = bodyByProviderMsgId.get(msg.providerMessageId) ?? null;
+      }
+      return c.json({ bodies });
+    } catch {
+      return c.json({ bodies: {} });
+    }
   }
 );
 

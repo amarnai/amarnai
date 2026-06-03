@@ -50,6 +50,7 @@ export function ThreadPreview({
   const [draft, setDraft] = useState<Draft | null>(null);
   const [draftQuota, setDraftQuota] = useState<{ used: number; limit: number; resetsAt: string } | null>(null);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const bodiesRef = useRef<Record<string, string | null> | null>(null);
 
   function clearPoll() {
     if (pollRef.current) {
@@ -83,6 +84,7 @@ export function ThreadPreview({
 
   useEffect(() => {
     setBodyLoaded(false);
+    bodiesRef.current = null;
     setMessages(thread.messages);
     setReasoning(null);
     setDecisionSource(null);
@@ -90,9 +92,14 @@ export function ThreadPreview({
     setDraft(null);
     clearPoll();
 
+    // Fire both calls simultaneously. emailThread resolves first (DB-only, fast)
+    // and renders metadata. threadBodies resolves later (Gmail fetch) and fills
+    // in body text. bodiesRef guards against the race where threadBodies wins.
+
     api.emailThread(workspaceId, thread.id).then((detail) => {
       setReasoning(detail.latestClassification?.explanation ?? null);
       setDecisionSource(detail.latestClassification?.decisionSource ?? null);
+      const bodies = bodiesRef.current;
       setMessages(
         detail.messages.map((m) => ({
           id: m.id,
@@ -100,9 +107,14 @@ export function ThreadPreview({
           fromEmail: m.senderEmail,
           time: new Date(m.receivedAt),
           snippet: m.snippet,
-          bodyText: m.bodyText,
+          bodyText: (bodies !== null && m.id in bodies ? bodies[m.id] : null) ?? m.bodyText,
         }))
       );
+    }).catch(() => {});
+
+    api.threadBodies(workspaceId, thread.id).then(({ bodies }) => {
+      bodiesRef.current = bodies;
+      setMessages((prev) => prev.map((m) => (m.id in bodies ? { ...m, bodyText: bodies[m.id] ?? null } : m)));
       setBodyLoaded(true);
     }).catch(() => {
       setBodyLoaded(true);

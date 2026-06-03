@@ -488,6 +488,10 @@ export const api = {
     apiFetch<EmailThreadDetail>(
       `/workspaces/${workspaceId}/email-threads/${threadId}`
     ),
+  threadBodies: (workspaceId: string, threadId: string) =>
+    apiFetch<{ bodies: Record<string, string | null> }>(
+      `/workspaces/${workspaceId}/email-threads/${threadId}/bodies`
+    ),
   mockInboxEvent: (workspaceId: string, input: MockInboxEventInput) =>
     apiMutate<MockInboxResult>(
       `/dev/workspaces/${workspaceId}/mock-inbox-event`,
