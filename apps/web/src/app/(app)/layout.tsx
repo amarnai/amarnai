@@ -1,10 +1,7 @@
-import { cookies } from "next/headers";
 import { auth } from "@/auth";
 import { db } from "@amarnai/db";
 import { Sidebar } from "@/components/Sidebar";
-import { getWorkspaceLimit } from "@/lib/workspace";
-
-const WORKSPACE_COOKIE = "amarnai-workspace";
+import { getSelectedWorkspace, getWorkspaceLimit } from "@/lib/workspace";
 
 export default async function AppLayout({
   children,
@@ -23,21 +20,20 @@ export default async function AppLayout({
   let canCreateWorkspace = false;
 
   if (userId) {
-    // Include both owned workspaces and workspaces where the user is a team member.
-    workspaces = await db.workspace.findMany({
-      where: { members: { some: { userId } } },
-      select: { id: true, name: true },
-      orderBy: { createdAt: "asc" },
-    });
-
     const limit = getWorkspaceLimit();
+    // Include both owned workspaces and workspaces where the user is a team member.
+    // getSelectedWorkspace is cached per request — child pages calling it get a free cache hit.
+    [workspaces, workspace] = await Promise.all([
+      db.workspace.findMany({
+        where: { members: { some: { userId } } },
+        select: { id: true, name: true },
+        orderBy: { createdAt: "asc" },
+      }),
+      getSelectedWorkspace(userId),
+    ]);
+
     const ownedWorkspaceCount = await db.workspace.count({ where: { ownerUserId: userId } });
     canCreateWorkspace = !isFinite(limit) || ownedWorkspaceCount < limit;
-
-    const cookieStore = await cookies();
-    const selectedId = cookieStore.get(WORKSPACE_COOKIE)?.value;
-    workspace =
-      workspaces.find((w) => w.id === selectedId) ?? workspaces[0] ?? null;
   }
 
   return (

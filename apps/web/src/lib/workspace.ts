@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { cookies } from "next/headers";
 import { db, ensureInboxNode } from "@amarnai/db";
 
@@ -9,7 +10,7 @@ export function getWorkspaceLimit(): number {
   return Infinity;
 }
 
-export async function getSelectedWorkspace(userId: string): Promise<{ id: string; name: string; plan: string }> {
+export const getSelectedWorkspace = cache(async function getSelectedWorkspace(userId: string): Promise<{ id: string; name: string; plan: string }> {
   const cookieStore = await cookies();
   const selectedId = cookieStore.get(WORKSPACE_COOKIE)?.value;
 
@@ -25,7 +26,7 @@ export async function getSelectedWorkspace(userId: string): Promise<{ id: string
   }
 
   return getOrCreateDefaultWorkspace(userId);
-}
+});
 
 export async function getOrCreateDefaultWorkspace(userId: string) {
   // Prefer a workspace owned by this user.
