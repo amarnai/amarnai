@@ -168,6 +168,7 @@ export function ThreadPreview({
       });
   }
 
+  const isDone = !!thread.doneMark;
   const enrichedThread = { ...thread, reasoning };
   const lastMsg = messages[messages.length - 1];
   const lastMsgIsOwn =
@@ -223,6 +224,19 @@ export function ThreadPreview({
               <path d="M5 2H2a1 1 0 00-1 1v7a1 1 0 001 1h7a1 1 0 001-1V7M7.5 1H11v3.5M11 1L5.5 6.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </a>
+          <button
+            type="button"
+            className={`em-preview-done-btn${isDone ? " is-done" : ""}`}
+            onClick={isDone ? () => onUnmarkDone(thread.id) : () => onMarkDone(thread.id)}
+            title={isDone ? "Marked as done · Click to undo" : "Mark as done"}
+            aria-label={isDone ? "Marked as done, click to undo" : "Mark as done"}
+            aria-pressed={isDone}
+          >
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
+              <circle cx="6" cy="6" r="4.5" stroke="currentColor" strokeWidth="1.2" />
+              <path d="M4 6l1.4 1.6L8.2 4.4" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
         </h2>
 
         <RationaleCard
@@ -231,8 +245,6 @@ export function ThreadPreview({
           decisionSource={decisionSource}
           onApprove={() => onApprove(thread.id)}
           onReroute={(anchor) => onReroute(thread.id, anchor)}
-          onMarkDone={() => onMarkDone(thread.id)}
-          onUnmarkDone={() => onUnmarkDone(thread.id)}
         />
 
         <div className="em-msg-list">

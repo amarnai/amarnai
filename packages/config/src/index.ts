@@ -16,6 +16,10 @@ const envSchema = z.object({
   FRONTIER_LLM_BASE_URL: z.string().optional(),
   OLLAMA_BASE_URL: z.string().optional(),
   OLLAMA_MODEL: z.string().optional(),
+  EMBEDDING_PROVIDER: z.enum(['mock', 'ollama', 'gemini']).default('mock'),
+  OLLAMA_EMBEDDING_MODEL: z.string().optional(),
+  GEMINI_EMBEDDING_API_KEY: z.string().optional(),
+  GEMINI_EMBEDDING_MODEL: z.string().optional(),
   ALLOW_LOCAL_AI_IN_PRODUCTION: boolStr,
   // Set to 'false' to disable per-workspace monthly draft quotas.
   // Self-hosted deployments that manage their own AI costs should set this to false.
@@ -59,6 +63,19 @@ function validateEnv(raw: NodeJS.ProcessEnv) {
     if (!env.FRONTIER_LLM_MODEL) throw new Error('FRONTIER_LLM_MODEL is required when AI_PROVIDER=frontier');
   }
 
+  if (env.EMBEDDING_PROVIDER === 'ollama') {
+    if (!env.OLLAMA_BASE_URL) throw new Error('OLLAMA_BASE_URL is required when EMBEDDING_PROVIDER=ollama');
+    if (!env.OLLAMA_EMBEDDING_MODEL) throw new Error('OLLAMA_EMBEDDING_MODEL is required when EMBEDDING_PROVIDER=ollama');
+    if (env.NODE_ENV === 'production' && !env.ALLOW_LOCAL_AI_IN_PRODUCTION) {
+      throw new Error('EMBEDDING_PROVIDER=ollama is not allowed in production unless ALLOW_LOCAL_AI_IN_PRODUCTION=true');
+    }
+  }
+
+  if (env.EMBEDDING_PROVIDER === 'gemini') {
+    if (!env.GEMINI_EMBEDDING_API_KEY) throw new Error('GEMINI_EMBEDDING_API_KEY is required when EMBEDDING_PROVIDER=gemini');
+    if (!env.GEMINI_EMBEDDING_MODEL) throw new Error('GEMINI_EMBEDDING_MODEL is required when EMBEDDING_PROVIDER=gemini');
+  }
+
   return env;
 }
 
@@ -88,6 +105,17 @@ export const config = {
     ollama: {
       baseUrl: env.OLLAMA_BASE_URL,
       model: env.OLLAMA_MODEL,
+    },
+  },
+  embedding: {
+    provider: env.EMBEDDING_PROVIDER,
+    ollama: {
+      baseUrl: env.OLLAMA_BASE_URL,
+      model: env.OLLAMA_EMBEDDING_MODEL,
+    },
+    gemini: {
+      apiKey: env.GEMINI_EMBEDDING_API_KEY,
+      model: env.GEMINI_EMBEDDING_MODEL,
     },
   },
   billing: {

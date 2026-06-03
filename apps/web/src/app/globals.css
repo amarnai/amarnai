@@ -3501,6 +3501,29 @@ a {
 
 .em-preview-gmail-link:hover { color: var(--ink); }
 
+.em-preview-done-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  border: none;
+  background: transparent;
+  color: oklch(72% 0.09 145);
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.1s, background 0.1s;
+  margin-bottom: 1px;
+}
+
+.em-preview-done-btn:hover { background: var(--ok-soft); color: var(--ok-ink); }
+
+.em-preview-done-btn.is-done { color: var(--ok); }
+
+.em-preview-done-btn.is-done:hover { background: var(--bg-soft); color: var(--ink-3); }
+
 .em-preview-sub {
   margin-top: 8px;
   display: flex;
@@ -4041,30 +4064,6 @@ a {
 }
 .em-btn-secondary:hover { background: var(--bg-soft); }
 
-.em-btn-done-toggle {
-  display: inline-flex;
-  align-items: center;
-  padding: 5px 11px;
-  background: var(--surface);
-  color: var(--ink-3);
-  border: 1px solid var(--line);
-  border-radius: var(--r-sm);
-  font-size: 12.5px;
-  font-weight: 500;
-  font-family: inherit;
-  cursor: pointer;
-  transition: background 0.1s, color 0.1s, border-color 0.1s;
-}
-
-.em-btn-done-toggle:hover { background: var(--ok-soft); color: var(--color-success-text); border-color: var(--ok-line); }
-
-.em-btn-done-toggle.is-done {
-  background: var(--ok-soft);
-  color: var(--color-success-text);
-  border-color: var(--ok-line);
-}
-
-.em-btn-done-toggle.is-done:hover { background: var(--bg-soft); color: var(--ink-3); border-color: var(--line); }
 
 .em-done-notice {
   display: flex;

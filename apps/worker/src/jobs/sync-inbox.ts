@@ -214,7 +214,7 @@ export function createSyncInboxWorker(): Worker {
           (syncState.backfillStatus === "PENDING" || syncState.backfillStatus === "ERROR")
         ) {
           const nodeCount = await db.taxonomyNode.count({ where: { workspaceId } });
-          if (nodeCount > 3) {
+          if (nodeCount >= 3) {
             await backfillInboxQueue.add(
               "backfill-inbox",
               { workspaceId },
@@ -223,9 +223,12 @@ export function createSyncInboxWorker(): Worker {
           }
         }
 
-        // Re-enqueue stuck PENDING threads when the backfill has already finished
-        // but some classify jobs exhausted all retries.
-        if (syncState.backfillStatus === "DONE" && !sortingPaused) {
+        // Re-enqueue stuck PENDING threads whose classify jobs exhausted all retries.
+        // This covers both live-sync failures (any plan) and backfill failures
+        // (paid plans). Gating on backfillStatus === "DONE" was incorrect: FREE
+        // plan workspaces never run backfill, so their threads were permanently
+        // stuck. The fix runs the recovery on every quiet cycle regardless of plan.
+        if (!sortingPaused) {
           const stuck = await db.emailThread.findMany({
             where: {
               workspaceId,
@@ -390,7 +393,39 @@ export function createSyncInboxWorker(): Worker {
 
       await job.updateProgress(80);
 
-      // ── 5. Advance sync cursor ───────────────────────────────────────────────
+      // ── 5. Enqueue classify-thread jobs for every upserted thread ────────────
+      //
+      // Priority 1 ensures live sync jobs always outrank backfill jobs (priority 10).
+      // Stamp classifyingAt before adding to the queue so isClassifying is true
+      // while jobs wait — without this the banner shows "use the sort button".
+      // Skip enqueuing when sorting is paused; threads remain PENDING and will be
+      // picked up by the stuck-thread recovery when the user resumes sorting.
+      //
+      // IMPORTANT: classify enqueue runs BEFORE the cursor is advanced (step 6).
+      // If addBulk fails, the job throws and BullMQ retries with the old historyId,
+      // so the same changed thread IDs are re-discovered and classification is
+      // re-attempted. Advancing the cursor first would lose these threads
+      // permanently if addBulk then failed.
+
+      if (upsertedEmailThreadIds.length > 0 && !sortingPaused) {
+        await db.emailThread.updateMany({
+          where: { id: { in: upsertedEmailThreadIds } },
+          data: { classifyingAt: new Date() },
+        });
+
+        await classifyThreadQueue.addBulk(
+          upsertedEmailThreadIds.map((emailThreadId) => ({
+            name: "classify-thread",
+            data: { workspaceId, emailThreadId },
+            opts: {
+              jobId: `classify_${workspaceId}_${emailThreadId}_${Date.now()}`,
+              priority: 1,
+            },
+          }))
+        );
+      }
+
+      // ── 6. Advance sync cursor ───────────────────────────────────────────────
 
       await db.providerSyncState.update({
         where: { emailAccountId },
@@ -426,43 +461,16 @@ export function createSyncInboxWorker(): Worker {
         }
       }
 
-      // ── 6. Enqueue classify-thread jobs for every upserted thread ────────────
-      //
-      // Priority 1 ensures live sync jobs always outrank backfill jobs (priority 10).
-      // Stamp classifyingAt before adding to the queue so isClassifying is true
-      // while jobs wait — without this the banner shows "use the sort button".
-      // Skip enqueuing when sorting is paused; threads remain PENDING and will be
-      // picked up when the user resumes sorting.
-
-      if (upsertedEmailThreadIds.length > 0 && !sortingPaused) {
-        await db.emailThread.updateMany({
-          where: { id: { in: upsertedEmailThreadIds } },
-          data: { classifyingAt: new Date() },
-        });
-
-        await classifyThreadQueue.addBulk(
-          upsertedEmailThreadIds.map((emailThreadId) => ({
-            name: "classify-thread",
-            data: { workspaceId, emailThreadId },
-            opts: {
-              jobId: `classify_${workspaceId}_${emailThreadId}_${Date.now()}`,
-              priority: 1,
-            },
-          }))
-        );
-      }
-
-      // ── 7. Re-enqueue classify jobs for threads still PENDING after backfill ──
+      // ── 7. Re-enqueue classify jobs for threads still PENDING after this cycle ──
       //
       // Covers threads whose classify jobs exhausted all retries (e.g. Ollama was
-      // unreachable during the backfill run). The backfill marks DONE once it has
-      // enqueued jobs, not once they succeed, so permanently-failed jobs leave
-      // threads stuck as PENDING with no automatic recovery. This runs on every
-      // sync cycle as a lightweight catch-up: it skips threads already being
-      // classified (classifyingAt set) and threads changed in this sync cycle
-      // (already handled above). Deduplication prevents duplicate queue entries.
+      // unreachable, AI provider down). Also catches threads whose classifyingAt was
+      // stamped but addBulk failed in a previous cycle. Runs on every sync cycle
+      // regardless of plan — the previous backfillStatus === "DONE" gate was
+      // incorrect: FREE plan workspaces never run backfill, so their threads were
+      // permanently stuck. Deduplication prevents duplicate queue entries.
 
-      if (syncState.backfillStatus === "DONE" && !sortingPaused) {
+      if (!sortingPaused) {
         const stuck = await db.emailThread.findMany({
           where: {
             workspaceId,
