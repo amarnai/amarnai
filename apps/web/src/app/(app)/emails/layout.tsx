@@ -1,3 +1,5 @@
+import "@amarnai/ui/emails/styles";
+
 export default function EmailsLayout({
   children,
 }: {
