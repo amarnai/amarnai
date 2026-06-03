@@ -267,22 +267,20 @@ describe("normalizeGmailThread — quoted reply stripping", () => {
 // ─── Body bounding ────────────────────────────────────────────────────────────
 
 describe("normalizeGmailThread — body bounding", () => {
-  it("truncates body excerpts longer than 2000 chars", () => {
+  it("returns the full body without truncation regardless of length", () => {
     const longBody = "A".repeat(3000);
     const raw = makeThread([makeMessage({ bodyData: longBody })]);
     const snap = normalizeGmailThread(raw);
     const excerpt = snap.messages[0]!.bodyExcerpt ?? "";
-    // slice(0, 2000) + " [truncated]" = 2000 + 12 chars
-    expect(excerpt.length).toBeLessThanOrEqual(2012);
-    expect(excerpt).toContain("[truncated]");
+    expect(excerpt.length).toBe(3000);
+    expect(excerpt).not.toContain("[truncated]");
   });
 
-  it("does not truncate body excerpts under 2000 chars", () => {
+  it("returns short bodies unchanged", () => {
     const body = "Short body.";
     const raw = makeThread([makeMessage({ bodyData: body })]);
     const snap = normalizeGmailThread(raw);
     expect(snap.messages[0]!.bodyExcerpt).toBe("Short body.");
-    expect(snap.messages[0]!.bodyExcerpt).not.toContain("[truncated]");
   });
 });
 
