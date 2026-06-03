@@ -154,17 +154,19 @@ export function BillingSection({
       )}
 
       <div className="plan-current-row">
-        <span className="plan-current-badge">{planLabels[plan] ?? plan}</span>
-        {cycleLabel && (
-          <span className="plan-cycle-badge">{cycleLabel}</span>
-        )}
+        <div className="plan-current-info">
+          <span className="plan-current-label">Current plan</span>
+          <div className="plan-current-name">
+            {planLabels[plan] ?? plan}
+            {cycleLabel && <span className="plan-cycle-badge">{cycleLabel}</span>}
+          </div>
+        </div>
 
         {isAdmin && plan !== "BUSINESS" && !cancelAtPeriodEnd && (
-          <Link href="/upgrade" className="btn-primary">
-            Upgrade
+          <Link href="/upgrade" className="btn-upgrade">
+            Upgrade <span aria-hidden="true">→</span>
           </Link>
         )}
-
       </div>
 
       <hr className="billing-usage-divider" />

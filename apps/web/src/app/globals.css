@@ -2036,6 +2036,27 @@ a {
   border-left: 1px solid var(--color-border);
   background: var(--color-surface);
   overflow-y: auto;
+  position: relative;
+}
+
+.taxonomy-panel-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-muted);
+  font-size: 16px;
+  line-height: 1;
+  padding: 2px 4px;
+  border-radius: 4px;
+  z-index: 1;
+}
+
+.taxonomy-panel-close:hover {
+  color: var(--color-foreground);
+  background: var(--color-hover);
 }
 
 .taxonomy-node-card {
@@ -4841,19 +4862,63 @@ a {
 .plan-current-row {
   display: flex;
   align-items: center;
-  gap: 12px;
+  justify-content: space-between;
+  gap: 16px;
 }
 
-.plan-current-badge {
+.plan-current-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.plan-current-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ink-4);
+}
+
+.plan-current-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+
+.btn-upgrade {
   display: inline-flex;
   align-items: center;
-  padding: 3px 10px;
-  border-radius: 99px;
-  font-size: 12px;
+  gap: 6px;
+  padding: 8px 18px;
+  background: linear-gradient(135deg, var(--accent) 0%, oklch(52% 0.16 30) 100%);
+  color: #fff;
+  border: none;
+  border-radius: 9px;
+  font-family: inherit;
+  font-size: 13.5px;
   font-weight: 600;
-  background: var(--accent-soft);
-  color: var(--accent-ink);
-  border: 1px solid var(--accent-line);
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  letter-spacing: -0.01em;
+  box-shadow: 0 1px 3px oklch(20% 0.01 80 / 0.14), 0 4px 12px oklch(58% 0.14 40 / 0.22);
+  transition: opacity 0.15s, transform 0.1s, box-shadow 0.15s;
+  flex-shrink: 0;
+}
+
+.btn-upgrade:hover {
+  opacity: 0.88;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px oklch(20% 0.01 80 / 0.14), 0 8px 20px oklch(58% 0.14 40 / 0.28);
+}
+
+.btn-upgrade:active {
+  transform: translateY(0);
+  opacity: 1;
+  box-shadow: 0 1px 3px oklch(20% 0.01 80 / 0.14);
 }
 
 /* ─── Modal shell ────────────────────────────────────────────────────────── */
