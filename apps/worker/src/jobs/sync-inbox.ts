@@ -374,6 +374,20 @@ export function createSyncInboxWorker(): Worker {
           });
         }
 
+        // Remove messages that are no longer in the Gmail thread. This covers
+        // drafts that were replaced by their sent counterpart (different message ID)
+        // and messages individually deleted in Gmail. We compare against the raw
+        // (unfiltered) snapshot so that messages excluded only by current settings
+        // (e.g. promotions) are not removed and can reappear if settings change.
+        const rawMessageIds = rawSnapshot.messages.map((m) => m.providerMessageId);
+        await db.emailMessage.deleteMany({
+          where: {
+            emailThreadId: emailThread.id,
+            emailAccountId,
+            providerMessageId: { notIn: rawMessageIds },
+          },
+        });
+
         // Clear done mark if an external message arrived after the thread was
         // marked done. Uses updateMany with a conditional where clause so no
         // extra query is needed when the thread isn't marked done.
