@@ -68,6 +68,7 @@ proc.on("error", (err) => {
 });
 
 let configured = false;
+let stopping = false;
 let buf = "";
 
 function onLine(line) {
@@ -112,10 +113,11 @@ for (const stream of [proc.stdout, proc.stderr]) {
 
 proc.on("exit", (code) => {
   if (buf) onLine(buf);
-  process.exit(code ?? 0);
+  process.exit(stopping ? 0 : (code ?? 0));
 });
 
 process.on("SIGINT", () => {
   console.error("\nStopping tunnel…");
+  stopping = true;
   proc.kill("SIGTERM");
 });
