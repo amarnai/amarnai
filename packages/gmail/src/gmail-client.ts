@@ -368,7 +368,11 @@ export class GmailClient {
         Authorization: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ topicName }),
+      body: JSON.stringify({
+        topicName,
+        labelIds: ["INBOX"],
+        labelFilterAction: "include",
+      }),
     });
     if (!res.ok) {
       const body = await res.text();

@@ -114,7 +114,6 @@ export function createSyncInboxWorker(): Worker {
     QUEUE_SYNC_INBOX,
     async (job) => {
       const { workspaceId } = job.data;
-      console.log(`[sync-inbox] Starting job #${job.id} for workspace=${workspaceId}`);
 
       // ── 1. Load workspace + Gmail connection + sync settings ───────────────
 

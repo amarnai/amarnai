@@ -136,6 +136,7 @@ export const DEMO_THREADS: ThreadItem[] = [
     isDrafting: false,
     lastSenderEmail: "burna.buriash@babylon.iq",
     doneMark: null,
+    isImportant: false,
   },
   {
     id: "t2",
@@ -165,6 +166,7 @@ export const DEMO_THREADS: ThreadItem[] = [
     isDrafting: false,
     lastSenderEmail: "aziru@amurru.co",
     doneMark: null,
+    isImportant: false,
   },
   {
     id: "t3",
@@ -194,6 +196,7 @@ export const DEMO_THREADS: ThreadItem[] = [
     isDrafting: false,
     lastSenderEmail: "appointments@house-of-records.clay",
     doneMark: null,
+    isImportant: false,
   },
   {
     id: "t4",
@@ -223,6 +226,7 @@ export const DEMO_THREADS: ThreadItem[] = [
     isDrafting: false,
     lastSenderEmail: "rib-hadda@byblos.lb",
     doneMark: null,
+    isImportant: false,
   },
   {
     id: "t5",
@@ -252,6 +256,7 @@ export const DEMO_THREADS: ThreadItem[] = [
     isDrafting: false,
     lastSenderEmail: "abdi-heba@urusalim.gov",
     doneMark: null,
+    isImportant: false,
   },
   {
     id: "t6",
@@ -281,5 +286,6 @@ export const DEMO_THREADS: ThreadItem[] = [
     isDrafting: false,
     lastSenderEmail: "tushratta@mitanni.int",
     doneMark: null,
+    isImportant: false,
   },
 ];

@@ -56,9 +56,7 @@ export async function GET(req: NextRequest) {
         send("synced", workspaceId);
       });
 
-      subscriber.subscribe(channel).then(() => {
-        console.log(`[sse] Subscribed to ${channel}`);
-      }).catch(() => {
+      subscriber.subscribe(channel).catch(() => {
         controller.close();
         subscriber.quit().catch(() => {});
       });
@@ -74,7 +72,6 @@ export async function GET(req: NextRequest) {
       }, 25_000);
 
       // Initial handshake so the browser knows the stream is live.
-      console.log(`[sse] Client connected for workspace=${workspaceId}`);
       send("connected", workspaceId);
 
       req.signal.addEventListener("abort", () => {
