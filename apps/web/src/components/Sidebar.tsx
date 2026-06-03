@@ -76,6 +76,37 @@ function getInitials(name: string | null, email: string): string {
   return email.slice(0, 2).toUpperCase();
 }
 
+function getWorkspaceInitials(name: string): string {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length >= 2) {
+    return ((parts[0]!.at(0) ?? "") + (parts[parts.length - 1]!.at(0) ?? "")).toUpperCase();
+  }
+  return (parts[0] ?? "?").slice(0, 2).toUpperCase();
+}
+
+// Deterministic hue from workspace name for visual differentiation
+function getWorkspaceHue(name: string): number {
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) {
+    hash = (hash * 31 + name.charCodeAt(i)) >>> 0;
+  }
+  return hash % 360;
+}
+
+function WorkspaceMark({ name }: { name: string }) {
+  const hue = getWorkspaceHue(name);
+  const initials = getWorkspaceInitials(name);
+  return (
+    <span
+      className="ws-mark"
+      aria-hidden
+      style={{ "--ws-hue": hue } as React.CSSProperties}
+    >
+      {initials}
+    </span>
+  );
+}
+
 type SidebarWorkspace = { id: string; name: string };
 type SidebarUser = { email: string; name: string | null } | null;
 
@@ -199,7 +230,7 @@ export function Sidebar({
           aria-haspopup="listbox"
           aria-expanded={wsOpen}
         >
-          <div className="sidebar-brand-mark" aria-hidden />
+          <WorkspaceMark name={workspace?.name ?? "?"} />
           <span className="ws-switcher-name">
             {workspace?.name ?? "No workspace"}
           </span>
