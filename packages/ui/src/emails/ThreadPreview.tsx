@@ -122,6 +122,7 @@ export function ThreadPreview({
             doneMark={thread.doneMark}
             onMark={() => onMarkDone?.(thread.id)}
             onUnmark={() => onUnmarkDone?.(thread.id)}
+            showDoneBy={false}
           />
         )}
 

@@ -7,9 +7,10 @@ interface Props {
   doneMark: DoneMark | null;
   onMark: () => void;
   onUnmark: () => void;
+  showDoneBy?: boolean;
 }
 
-export function PreviewDoneBar({ isDone, doneMark, onMark, onUnmark }: Props) {
+export function PreviewDoneBar({ isDone, doneMark, onMark, onUnmark, showDoneBy = true }: Props) {
   return (
     <button
       type="button"
@@ -21,7 +22,7 @@ export function PreviewDoneBar({ isDone, doneMark, onMark, onUnmark }: Props) {
         <path d="M1.5 5l2.2 2.5L8.5 2" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
       {isDone && doneMark
-        ? `Marked as done · ${doneMark.userName ?? doneMark.userEmail}`
+        ? `Marked as done${showDoneBy ? ` · ${doneMark.userName ?? doneMark.userEmail}` : ""}`
         : "Mark as done"}
     </button>
   );
