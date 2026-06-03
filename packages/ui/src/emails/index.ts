@@ -19,6 +19,7 @@ export { ThreadListHeader } from "./ThreadListHeader.js";
 export { ThreadRow } from "./ThreadRow.js";
 export { ThreadList } from "./ThreadList.js";
 export { RationaleCard } from "./RationaleCard.js";
+export { PreviewDoneBar } from "./PreviewDoneBar.js";
 export { MessageCard } from "./MessageCard.js";
 export { SuggestedDraftCard } from "./SuggestedDraftCard.js";
 export { ReroutePopover } from "./ReroutePopover.js";

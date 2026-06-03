@@ -3501,28 +3501,26 @@ a {
 
 .em-preview-gmail-link:hover { color: var(--ink); }
 
-.em-preview-done-btn {
+.em-preview-done-bar {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  width: 20px;
-  height: 20px;
-  border-radius: 4px;
-  border: none;
-  background: transparent;
-  color: oklch(72% 0.09 145);
-  cursor: pointer;
+  gap: 6px;
   padding: 0;
-  transition: color 0.1s, background 0.1s;
-  margin-bottom: 1px;
+  background: transparent;
+  border: none;
+  font-size: 12.5px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  color: var(--ok);
+  transition: color 0.1s;
+  margin-top: 8px;
+  margin-bottom: 2px;
 }
 
-.em-preview-done-btn:hover { background: var(--ok-soft); color: var(--ok-ink); }
+.em-preview-done-bar:hover { color: var(--ok-ink); }
 
-.em-preview-done-btn.is-done { color: var(--ok); }
-
-.em-preview-done-btn.is-done:hover { background: var(--bg-soft); color: var(--ink-3); }
+.em-preview-done-bar.is-done:hover { color: var(--ink-3); }
 
 .em-preview-sub {
   margin-top: 8px;

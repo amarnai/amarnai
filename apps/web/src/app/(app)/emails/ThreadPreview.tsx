@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { api } from "@/lib/api";
 import type { Draft } from "@/lib/api";
 import type { FolderItem, ThreadItem } from "@amarnai/ui/emails";
-import { RationaleCard, MessageCard, SuggestedDraftCard } from "@amarnai/ui/emails";
+import { RationaleCard, MessageCard, SuggestedDraftCard, PreviewDoneBar } from "@amarnai/ui/emails";
 
 type DraftState = "idle" | "loading" | "ready" | "error";
 
@@ -224,20 +224,14 @@ export function ThreadPreview({
               <path d="M5 2H2a1 1 0 00-1 1v7a1 1 0 001 1h7a1 1 0 001-1V7M7.5 1H11v3.5M11 1L5.5 6.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </a>
-          <button
-            type="button"
-            className={`em-preview-done-btn${isDone ? " is-done" : ""}`}
-            onClick={isDone ? () => onUnmarkDone(thread.id) : () => onMarkDone(thread.id)}
-            title={isDone ? "Marked as done · Click to undo" : "Mark as done"}
-            aria-label={isDone ? "Marked as done, click to undo" : "Mark as done"}
-            aria-pressed={isDone}
-          >
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
-              <circle cx="6" cy="6" r="4.5" stroke="currentColor" strokeWidth="1.2" />
-              <path d="M4 6l1.4 1.6L8.2 4.4" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </button>
         </h2>
+
+        <PreviewDoneBar
+          isDone={isDone}
+          doneMark={thread.doneMark}
+          onMark={() => onMarkDone(thread.id)}
+          onUnmark={() => onUnmarkDone(thread.id)}
+        />
 
         <RationaleCard
           thread={enrichedThread}
