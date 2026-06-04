@@ -162,6 +162,47 @@ function PlanPrice({ plan, cycle }: { plan: (typeof PLANS)[number]; cycle: Billi
   );
 }
 
+function getPlanCtaLabel(
+  plan: (typeof PLANS)[number],
+  isCurrent: boolean,
+  isLowerThanCurrent: boolean,
+  trialUsed: boolean,
+): string {
+  if (isCurrent) return "Current plan";
+  if (isLowerThanCurrent) return `Downgrade to ${plan.name}`;
+  if (trialUsed && !plan.free) return `Upgrade to ${plan.name}`;
+  return plan.cta.label;
+}
+
+function PlanCtaButton({
+  plan,
+  cycle,
+  isCurrent,
+  isLowerThanCurrent,
+  trialUsed,
+  onSelect,
+  baseClass,
+}: {
+  plan: (typeof PLANS)[number];
+  cycle: BillingCycle;
+  isCurrent: boolean;
+  isLowerThanCurrent: boolean;
+  trialUsed: boolean;
+  onSelect?: (plan: PlanId, cycle: BillingCycle) => void;
+  baseClass: string;
+}) {
+  const className = [baseClass, plan.cta.kind === "primary" ? "primary" : ""].filter(Boolean).join(" ");
+  return (
+    <button
+      className={className}
+      disabled={isCurrent}
+      onClick={() => !isCurrent && onSelect?.(plan.id, cycle)}
+    >
+      {getPlanCtaLabel(plan, isCurrent, isLowerThanCurrent, trialUsed)}
+    </button>
+  );
+}
+
 function PlanCard({
   plan,
   cycle,
@@ -179,35 +220,24 @@ function PlanCard({
   showBadge: boolean;
   trialUsed: boolean;
   isLowerThanCurrent: boolean;
-  onSelect?: ((plan: PlanId, cycle: BillingCycle) => void) | undefined;
+  onSelect?: (plan: PlanId, cycle: BillingCycle) => void;
 }) {
   const cardClass = ["plan-card", isFeatured ? "featured" : "", isCurrent ? "current" : ""].filter(Boolean).join(" ");
-  const ctaClass = [
-    "plan-cta",
-    plan.cta.kind === "primary" ? "primary" : "",
-  ]
-    .filter(Boolean)
-    .join(" ");
-
   return (
     <div className={cardClass}>
       {showBadge && plan.badge && <span className="plan-badge">{plan.badge}</span>}
       <div className="plan-name">{plan.name}</div>
       <div className="plan-tagline">{plan.tagline}</div>
       <PlanPrice plan={plan} cycle={cycle} />
-      <button
-        className={ctaClass}
-        disabled={isCurrent}
-        onClick={() => !isCurrent && onSelect?.(plan.id, cycle)}
-      >
-        {isCurrent
-          ? "Current plan"
-          : isLowerThanCurrent
-          ? `Downgrade to ${plan.name}`
-          : trialUsed && !plan.free
-          ? `Upgrade to ${plan.name}`
-          : plan.cta.label}
-      </button>
+      <PlanCtaButton
+        plan={plan}
+        cycle={cycle}
+        isCurrent={isCurrent}
+        isLowerThanCurrent={isLowerThanCurrent}
+        trialUsed={trialUsed}
+        {...(onSelect !== undefined ? { onSelect } : {})}
+        baseClass="plan-cta"
+      />
       <ul className="plan-hl">
         {plan.highlights.map((h) => (
           <li key={h}>
@@ -218,18 +248,6 @@ function PlanCard({
       </ul>
     </div>
   );
-}
-
-function getCompareCTALabel(
-  plan: (typeof PLANS)[number],
-  isCurrent: boolean,
-  isLowerThanCurrent: boolean,
-  trialUsed: boolean,
-): string {
-  if (isCurrent) return "Current plan";
-  if (isLowerThanCurrent) return `Downgrade to ${plan.name}`;
-  if (trialUsed && !plan.free) return `Upgrade to ${plan.name}`;
-  return plan.cta.label;
 }
 
 function ComparisonMatrix({
@@ -310,16 +328,17 @@ function ComparisonMatrix({
             if (!plan) return null;
             const isCurrent = plan.id === currentPlan;
             const isLower = currentIdx >= 0 && PLAN_ORDER.indexOf(plan.id) < currentIdx;
-            const label = getCompareCTALabel(plan, isCurrent, isLower, trialUsed);
             return (
               <div className="compare-mobile-cta">
-                <button
-                  className={["compare-cta", plan.cta.kind === "primary" ? "primary" : ""].filter(Boolean).join(" ")}
-                  disabled={isCurrent}
-                  onClick={() => !isCurrent && onSelectPlan?.(plan.id, cycle)}
-                >
-                  {label}
-                </button>
+                <PlanCtaButton
+                  plan={plan}
+                  cycle={cycle}
+                  isCurrent={isCurrent}
+                  isLowerThanCurrent={isLower}
+                  trialUsed={trialUsed}
+                  {...(onSelectPlan !== undefined ? { onSelect: onSelectPlan } : {})}
+                  baseClass="compare-cta"
+                />
               </div>
             );
           })()}
@@ -380,16 +399,17 @@ function ComparisonMatrix({
                 {PLANS.map((p, i) => {
                   const isCurrent = p.id === currentPlan;
                   const isLower = currentIdx >= 0 && PLAN_ORDER.indexOf(p.id) < currentIdx;
-                  const label = getCompareCTALabel(p, isCurrent, isLower, trialUsed);
                   return (
                     <td key={p.id} className={i === featuredIdx ? "featured-col" : ""}>
-                      <button
-                        className={["compare-cta", p.cta.kind === "primary" ? "primary" : ""].filter(Boolean).join(" ")}
-                        disabled={isCurrent}
-                        onClick={() => !isCurrent && onSelectPlan?.(p.id, cycle)}
-                      >
-                        {label}
-                      </button>
+                      <PlanCtaButton
+                        plan={p}
+                        cycle={cycle}
+                        isCurrent={isCurrent}
+                        isLowerThanCurrent={isLower}
+                        trialUsed={trialUsed}
+                        {...(onSelectPlan !== undefined ? { onSelect: onSelectPlan } : {})}
+                        baseClass="compare-cta"
+                      />
                     </td>
                   );
                 })}
@@ -484,7 +504,7 @@ export function PricingPlans({
             showBadge={showBadge}
             trialUsed={trialUsed}
             isLowerThanCurrent={currentIdx >= 0 && PLAN_ORDER.indexOf(plan.id) < currentIdx}
-            onSelect={onSelectPlan}
+            {...(onSelectPlan !== undefined ? { onSelect: onSelectPlan } : {})}
           />
         ))}
       </div>
