@@ -220,7 +220,33 @@ function PlanCard({
   );
 }
 
-function ComparisonMatrix({ cycle, featuredPlanId }: { cycle: BillingCycle; featuredPlanId?: PlanId | null }) {
+function getCompareCTALabel(
+  plan: (typeof PLANS)[number],
+  isCurrent: boolean,
+  isLowerThanCurrent: boolean,
+  trialUsed: boolean,
+): string {
+  if (isCurrent) return "Current plan";
+  if (isLowerThanCurrent) return `Downgrade to ${plan.name}`;
+  if (trialUsed && !plan.free) return `Upgrade to ${plan.name}`;
+  return plan.cta.label;
+}
+
+function ComparisonMatrix({
+  cycle,
+  featuredPlanId,
+  onSelectPlan,
+  currentPlan,
+  trialUsed = false,
+  currentIdx,
+}: {
+  cycle: BillingCycle;
+  featuredPlanId?: PlanId | null;
+  onSelectPlan?: (plan: PlanId, cycle: BillingCycle) => void;
+  currentPlan?: PlanId;
+  trialUsed?: boolean;
+  currentIdx: number;
+}) {
   const featuredIdx =
     featuredPlanId === null
       ? -1
@@ -279,6 +305,24 @@ function ComparisonMatrix({ cycle, featuredPlanId }: { cycle: BillingCycle; feat
               </React.Fragment>
             ))}
           </div>
+          {(() => {
+            const plan = PLANS[mobilePlan];
+            if (!plan) return null;
+            const isCurrent = plan.id === currentPlan;
+            const isLower = currentIdx >= 0 && PLAN_ORDER.indexOf(plan.id) < currentIdx;
+            const label = getCompareCTALabel(plan, isCurrent, isLower, trialUsed);
+            return (
+              <div className="compare-mobile-cta">
+                <button
+                  className={["compare-cta", plan.cta.kind === "primary" ? "primary" : ""].filter(Boolean).join(" ")}
+                  disabled={isCurrent}
+                  onClick={() => !isCurrent && onSelectPlan?.(plan.id, cycle)}
+                >
+                  {label}
+                </button>
+              </div>
+            );
+          })()}
         </>
       ) : (
         <div className="plans-compare-scroll">
@@ -330,6 +374,27 @@ function ComparisonMatrix({ cycle, featuredPlanId }: { cycle: BillingCycle; feat
                 </React.Fragment>
               ))}
             </tbody>
+            <tfoot className="plans-tfoot">
+              <tr>
+                <td />
+                {PLANS.map((p, i) => {
+                  const isCurrent = p.id === currentPlan;
+                  const isLower = currentIdx >= 0 && PLAN_ORDER.indexOf(p.id) < currentIdx;
+                  const label = getCompareCTALabel(p, isCurrent, isLower, trialUsed);
+                  return (
+                    <td key={p.id} className={i === featuredIdx ? "featured-col" : ""}>
+                      <button
+                        className={["compare-cta", p.cta.kind === "primary" ? "primary" : ""].filter(Boolean).join(" ")}
+                        disabled={isCurrent}
+                        onClick={() => !isCurrent && onSelectPlan?.(p.id, cycle)}
+                      >
+                        {label}
+                      </button>
+                    </td>
+                  );
+                })}
+              </tr>
+            </tfoot>
           </table>
         </div>
       )}
@@ -356,7 +421,7 @@ function SelfHostNote() {
         <strong>{info.title}</strong>
         <p>{info.body}</p>
       </div>
-      <a className="sh-cta" href={info.cta.href}>
+      <a className="sh-cta" href={info.cta.href} target="_blank" rel="noopener noreferrer">
         {info.cta.label}
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
           <path
@@ -426,6 +491,10 @@ export function PricingPlans({
       {showMatrix && (
         <ComparisonMatrix
           cycle={cycle}
+          trialUsed={trialUsed}
+          currentIdx={currentIdx}
+          {...(currentPlan !== undefined ? { currentPlan } : {})}
+          {...(onSelectPlan !== undefined ? { onSelectPlan } : {})}
           {...(isHighestPlan ? { featuredPlanId: null } : emphasizedPlanId !== undefined ? { featuredPlanId: emphasizedPlanId } : {})}
         />
       )}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PricingPlans, type PlanId, type BillingCycle } from "@amarnai/ui";
 import { WorkspaceChoiceModal } from "./WorkspaceChoiceModal";
 
@@ -9,6 +9,8 @@ interface Props {
   workspaceName: string;
   currentPlan: PlanId;
   trialUsed: boolean;
+  preselectedPlan?: PlanId;
+  preselectedCycle?: BillingCycle;
 }
 
 interface Pending {
@@ -16,8 +18,23 @@ interface Pending {
   cycle: BillingCycle;
 }
 
-export function UpgradeClient({ workspaceId, workspaceName, currentPlan, trialUsed }: Props) {
-  const [pending, setPending] = useState<Pending | null>(null);
+export function UpgradeClient({
+  workspaceId,
+  workspaceName,
+  currentPlan,
+  trialUsed,
+  preselectedPlan,
+  preselectedCycle,
+}: Props) {
+  const [pending, setPending] = useState<Pending | null>(
+    preselectedPlan ? { plan: preselectedPlan, cycle: preselectedCycle ?? "monthly" } : null,
+  );
+
+  useEffect(() => {
+    if (preselectedPlan && preselectedPlan !== currentPlan) {
+      setPending({ plan: preselectedPlan, cycle: preselectedCycle ?? "monthly" });
+    }
+  }, [preselectedPlan, preselectedCycle, currentPlan]);
 
   function handleSelectPlan(plan: PlanId, cycle: BillingCycle) {
     if (plan === "free") return;

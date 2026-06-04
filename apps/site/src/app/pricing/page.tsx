@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { PricingPlans } from "@amarnai/ui";
+import { PricingPageClient } from "./PricingPageClient";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -30,7 +30,7 @@ export default function PricingPage() {
         </p>
       </div>
       <div className={styles.body}>
-        <PricingPlans />
+        <PricingPageClient />
       </div>
     </div>
   );

@@ -2,7 +2,7 @@ import { requireUser } from "@/lib/session";
 import { getSelectedWorkspace } from "@/lib/workspace";
 import { db } from "@amarnai/db";
 import { UpgradeClient } from "./UpgradeClient";
-import type { PlanId } from "@amarnai/ui";
+import type { PlanId, BillingCycle } from "@amarnai/ui";
 
 export const metadata = { title: "Upgrade — Amarnai" };
 
@@ -12,7 +12,14 @@ const planIdMap: Record<string, PlanId> = {
   BUSINESS: "business",
 };
 
-export default async function UpgradePage() {
+const VALID_PLANS: PlanId[] = ["pro", "business"];
+const VALID_CYCLES: BillingCycle[] = ["monthly", "annual"];
+
+export default async function UpgradePage({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
   const user = await requireUser();
   const workspace = await getSelectedWorkspace(user.id);
   const currentPlan = planIdMap[workspace.plan] ?? "free";
@@ -21,6 +28,12 @@ export default async function UpgradePage() {
     where: { id: workspace.id },
     select: { trialUsed: true },
   });
+
+  const params = await searchParams;
+  const planParam = typeof params.plan === "string" ? params.plan as PlanId : undefined;
+  const cycleParam = typeof params.cycle === "string" ? params.cycle as BillingCycle : undefined;
+  const preselectedPlan = planParam && VALID_PLANS.includes(planParam) ? planParam : undefined;
+  const preselectedCycle = cycleParam && VALID_CYCLES.includes(cycleParam) ? cycleParam : undefined;
 
   return (
     <div className="upgrade-page">
@@ -33,6 +46,8 @@ export default async function UpgradePage() {
         workspaceName={workspace.name}
         currentPlan={currentPlan}
         trialUsed={billing?.trialUsed ?? false}
+        {...(preselectedPlan ? { preselectedPlan } : {})}
+        {...(preselectedCycle ? { preselectedCycle } : {})}
       />
     </div>
   );
