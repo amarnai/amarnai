@@ -9,12 +9,12 @@ export function EmailsDemoSection() {
       <div className="ld-wrap">
         <div className="ld-demo-head ld-reveal">
           <div className="ld-copy">
-            <h2 className="ld-section-h">Triage that explains itself.</h2>
+            <h2 className="ld-section-h">Every email goes where it belongs.</h2>
             <p className="ld-section-lede">
-              Browse folders, open a thread, and read why Amarnai routed it
-              there. When a reply is needed, press{" "}
-              <strong>Generate draft reply</strong>: a draft appears instantly,
-              ready for your edits. This is the real interface.
+              Every thread lands in one of your folders, exactly where
+              you would expect to find it. When a reply is needed, a draft
+              is one click away, ready for your edits and never sent
+              without them.
             </p>
           </div>
           <div className="ld-play-note">

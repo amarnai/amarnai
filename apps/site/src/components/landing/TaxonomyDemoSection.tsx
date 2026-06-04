@@ -6,12 +6,11 @@ export function TaxonomyDemoSection() {
       <div className="ld-wrap">
         <div className="ld-demo-head ld-reveal">
           <div className="ld-copy">
-            <h2 className="ld-section-h">Shape how your inbox thinks.</h2>
+            <h2 className="ld-section-h">You draw the map.</h2>
             <p className="ld-section-lede">
-              Your taxonomy is a map Amarnai walks from the inbox down to a
-              single folder. Drag the cards to arrange them, then connect
-              folders by dragging from the blue handle dot, exactly as you
-              would in the real product.
+              Your taxonomy is a simple folder tree: your
+              categories branching out from the inbox. Sketch it once,
+              and Amarnai walks it for every email that arrives.
             </p>
           </div>
           <div className="ld-play-note">
