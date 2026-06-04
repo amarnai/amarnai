@@ -18,8 +18,8 @@ type TaxonomyItem = {
 const TAXONOMY: TaxonomyItem[] = [
   { id: "inbox",                label: "Inbox",      isRoot: true,  parentId: null, position: { x: 40,  y: 310 } },
   { id: "customers",            label: "Customers",  description: "Messages from paying customers and account holders.",         parentId: null,        position: { x: 310, y: 100 } },
-  { id: "customers-enterprise", label: "Enterprise", description: "Named accounts, contract renewals, and CSM threads.",         parentId: "customers", position: { x: 600, y: 30  }, heroCount: 5 },
-  { id: "customers-smb",        label: "SMB",        description: "Self-serve customers, billing questions, and support.",       parentId: "customers", position: { x: 600, y: 170 }, heroCount: 7 },
+  { id: "customers-billing",     label: "Billing",    description: "Invoice questions, overdue balances, and payment disputes.",  parentId: "customers", position: { x: 600, y: 30  }, heroCount: 5 },
+  { id: "customers-support",    label: "Support",    description: "Help requests, supply issues, and escalations from customers.", parentId: "customers", position: { x: 600, y: 170 }, heroCount: 7 },
   { id: "investors",            label: "Investors",  description: "Updates, intros, and check-ins from current or prospective investors.", parentId: null, position: { x: 310, y: 310 } },
   { id: "investors-current",    label: "Current",    description: "Board members, existing fund partners, and portfolio updates.", parentId: "investors", position: { x: 600, y: 310 }, heroCount: 3 },
   { id: "hiring",               label: "Hiring",     description: "Applications, recruiter outreach, and interview scheduling.", parentId: null,        position: { x: 310, y: 510 }, heroCount: 7 },
@@ -117,10 +117,10 @@ export const DEMO_THREADS: ThreadItem[] = [
     messageCount: 3,
     snippet: "The third gold consignment agreed under our treaty has not arrived. Two messengers have passed and still we wait.",
     unread: true,
-    folderId: "customers-enterprise",
+    folderId: "customers-billing",
     status: "sorted",
     confidence: 0.96,
-    reasoning: "Sender is a known treaty partner of significant standing. Subject explicitly references an outstanding balance, which matches the Enterprise folder description.",
+    reasoning: "Sender is a known treaty partner of significant standing. Subject explicitly references an outstanding balance on an agreed consignment, which matches the Billing folder.",
     alternativeFolder: null,
     messages: [
       {
@@ -210,10 +210,10 @@ export const DEMO_THREADS: ThreadItem[] = [
     messageCount: 4,
     snippet: "The grain you sent last month was received with gratitude. But I must write again: the third shipment has not arrived and the city grows restless.",
     unread: false,
-    folderId: "customers-smb",
+    folderId: "customers-support",
     status: "sorted",
     confidence: 0.93,
-    reasoning: "Ongoing thread with a known city governor raising a recurring supply issue. Sender domain and persistent tone match the SMB folder.",
+    reasoning: "Ongoing thread with a known city governor raising a recurring supply issue. Escalatory tone and repeated follow-ups match the Support folder.",
     alternativeFolder: null,
     messages: [
       {
@@ -245,7 +245,7 @@ export const DEMO_THREADS: ThreadItem[] = [
     status: "review",
     confidence: 0.52,
     reasoning: "Informal message with no clear category: personal visit or political audience? Tone is personal but sender is a known vassal governor. Routed to Other with low confidence.",
-    alternativeFolder: { folderId: "customers-smb", name: "SMB", weight: 0.28 },
+    alternativeFolder: { folderId: "customers-support", name: "Support", weight: 0.28 },
     messages: [
       {
         id: "m5a",

@@ -9,7 +9,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "How does the taxonomy work?",
-    a: "You define a tree of folders (like Customers → Enterprise, Customers → SMB) and describe each in a sentence. Amarnai walks that tree and routes each thread to the best match. The model sees your descriptions, not your rules; you write plain English, not code.",
+    a: "You define a tree of folders (like Customers → Support, Customers → Billing) and describe each in a sentence. Amarnai walks that tree and routes each thread to the best match. The model sees your descriptions, not your rules; you write plain English, not code.",
   },
   {
     q: "What happens to low-confidence threads?",

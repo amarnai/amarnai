@@ -244,7 +244,7 @@ function StepArt3() {
       <div className="ld-dr-thread">
         <span className="ld-sa-ava">PN</span>
         <span className="ld-dr-subj">Re: Q3 renewal</span>
-        <span className="ld-dr-flag">Enterprise</span>
+        <span className="ld-dr-flag">Billing</span>
       </div>
       <div className="ld-dr-card">
         <div className="ld-dr-card-top">
