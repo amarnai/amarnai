@@ -25,7 +25,7 @@ export function HeroSection() {
 
             <div className="ld-cta-row">
               <Link className="ld-btn accent lg" href="/pricing">
-                Start free
+                Start sorting
               </Link>
             </div>
           </div>

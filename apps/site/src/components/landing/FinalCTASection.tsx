@@ -11,7 +11,7 @@ export function FinalCTASection() {
           whole history included.
         </p>
         <Link className="ld-btn accent lg" href="/pricing">
-          Start free
+          Try Amarnai
         </Link>
         <div className="ld-final-note">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>

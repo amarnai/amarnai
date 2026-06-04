@@ -97,7 +97,7 @@
   background: var(--surface);
   color: var(--ink);
   cursor: pointer;
-  transition: background 0.14s, border-color 0.14s, transform 0.06s;
+  transition: background 0.14s, border-color 0.14s, box-shadow 0.14s, transform 0.06s;
   white-space: nowrap;
 }
 
@@ -112,16 +112,19 @@
   background: var(--accent);
   color: white;
   border-color: var(--accent);
+  font-weight: 600;
+  box-shadow: 0 2px 12px oklch(58% 0.14 40 / 0.30);
 }
 
 .ld-btn.accent:hover {
   background: var(--color-primary-hover);
   border-color: var(--color-primary-hover);
+  box-shadow: 0 2px 16px oklch(53% 0.15 40 / 0.38);
 }
 
 .ld-btn.lg {
-  padding: 12px 26px;
-  font-size: 15px;
+  padding: 13px 30px;
+  font-size: 16px;
   border-radius: 12px;
 }
 
