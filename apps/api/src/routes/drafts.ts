@@ -90,7 +90,7 @@ drafts.post(
         requiredAction: true,
         suggestedNextStep: true,
         explanation: true,
-        finalNode: { select: { name: true } },
+        finalNode: { select: { name: true, draftPrompt: true } },
       },
     });
     if (!classification) {
@@ -105,12 +105,18 @@ drafts.post(
       select: { gmailAddress: true, encryptedRefreshToken: true },
     });
 
+    // force=true bypasses the short-circuit that returns an existing PROPOSED
+    // draft. Used by the re-generate action: creates a new draft even when one
+    // already exists, and counts against quota like any other generation.
+    // Carried in a custom header so it survives the Next.js proxy reliably.
+    const force = c.req.header("X-Force-Regenerate") === "1";
+
     // ── Stale threshold shared by the quick check and the transaction ─────────
     const staleThreshold = new Date(Date.now() - DRAFT_GENERATING_STALE_MS);
 
     // ── Quick check outside the lock ──────────────────────────────────────────
     // For the common case of re-fetching an already-generated draft, avoid
-    // acquiring a row lock altogether.
+    // acquiring a row lock altogether. Skipped for PROPOSED when force=true.
     const existingDraft = await db.draft.findFirst({
       where: {
         emailThreadId: threadId,
@@ -124,7 +130,7 @@ drafts.post(
     if (existingDraft?.status === "GENERATING") {
       return c.json({ generating: true }, 202);
     }
-    if (existingDraft?.status === "PROPOSED") {
+    if (!force && existingDraft?.status === "PROPOSED") {
       return c.json({ draft: existingDraft }, 200);
     }
 
@@ -152,7 +158,7 @@ drafts.post(
     // The re-check for an existing draft under the lock closes the race between
     // the quick check above and now.
     type TxResult =
-      | { kind: "placeholder"; placeholder: { id: string } }
+      | { kind: "placeholder"; placeholder: { id: string }; supersededId: string | null }
       | { kind: "existing_generating" }
       | { kind: "existing_proposed"; draft: { id: string; subject: string | null; body: string; status: string; createdAt: Date } }
       | { kind: "quota_exceeded"; used: number; limit: number; resetsAt: Date };
@@ -172,7 +178,12 @@ drafts.post(
         select: { id: true, subject: true, body: true, status: true, createdAt: true },
       });
       if (existingUnderLock?.status === "GENERATING") return { kind: "existing_generating" };
-      if (existingUnderLock?.status === "PROPOSED") return { kind: "existing_proposed", draft: existingUnderLock };
+      if (!force && existingUnderLock?.status === "PROPOSED") return { kind: "existing_proposed", draft: existingUnderLock };
+
+      // NOTE: do NOT supersede the existing PROPOSED draft here. Doing so before
+      // the quota check would reduce the counted total by 1, letting regeneration
+      // bypass the limit (user at 3/3 frees a slot then immediately fills it).
+      // The supersede happens after the new draft is committed (see below).
 
       if (config.billing.enforceDraftQuota) {
         const now = new Date();
@@ -212,7 +223,11 @@ drafts.post(
         select: { id: true },
       });
 
-      return { kind: "placeholder", placeholder };
+      return {
+        kind: "placeholder",
+        placeholder,
+        supersededId: (force && existingUnderLock?.status === "PROPOSED") ? existingUnderLock.id : null,
+      };
     });
 
     if (txResult.kind === "existing_generating") {
@@ -233,7 +248,7 @@ drafts.post(
       );
     }
 
-    const { placeholder } = txResult;
+    const { placeholder, supersededId } = txResult;
 
     // Fetch full body texts from Gmail (one call for all messages in the thread).
     // Falls back to DB bodyText for mock inbox (no Gmail connection) or on error.
@@ -263,6 +278,7 @@ drafts.post(
         explanation: classification.explanation ?? null,
         finalNodeName: classification.finalNode?.name ?? null,
         senderEmail: gmailConnection?.gmailAddress ?? null,
+        draftInstructions: classification.finalNode?.draftPrompt ?? null,
       });
     } catch (e) {
       await db.draft.update({
@@ -287,6 +303,15 @@ drafts.post(
       data: { status: "PROPOSED", subject, body: result.body },
       select: { id: true, subject: true, body: true, status: true, createdAt: true },
     });
+
+    // Supersede the old PROPOSED draft now that the new one is committed.
+    // Done after the transaction so the quota SQL never sees the slot freed.
+    if (supersededId) {
+      void db.draft.updateMany({
+        where: { id: supersededId, status: "PROPOSED" },
+        data: { status: "FAILED", errorMessage: "Superseded by regeneration" },
+      }).catch(() => {});
+    }
 
     console.log(`[drafts] Generated draft ${draft.id} for thread ${threadId}`);
     return c.json({ draft }, 201);

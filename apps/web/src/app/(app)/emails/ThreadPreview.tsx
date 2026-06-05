@@ -139,11 +139,11 @@ export function ThreadPreview({
     return clearPoll;
   }, [thread.id, workspaceId]);
 
-  function handleGenerateDraft() {
+  function handleGenerateDraft(opts: { force?: boolean } = {}) {
     const threadId = thread.id;
     setDraftState("loading");
     onDraftStarted(threadId);
-    api.generateDraft(workspaceId, threadId).then((result) => {
+    api.generateDraft(workspaceId, threadId, opts).then((result) => {
       if ("generating" in result) {
         // Server says generation is already in progress (e.g. duplicate click);
         // poll until the draft resolves.
@@ -151,19 +151,25 @@ export function ThreadPreview({
         return;
       }
       if ("quotaExceeded" in result) {
-        setDraftState("idle");
+        setDraftState(opts.force ? "ready" : "idle");
         setDraftQuota({ used: result.used, limit: result.limit, resetsAt: result.resetsAt });
         onDraftFailed(threadId);
         return;
       }
       setDraft(result.draft);
       setDraftState("ready");
-      setDraftQuota((q) => q ? { ...q, used: q.used + 1 } : q);
+      if (result.isNew) {
+        setDraftQuota((q) => q ? { ...q, used: q.used + 1 } : q);
+      }
       onDraftGenerated(threadId);
     }).catch(() => {
       setDraftState("error");
       onDraftFailed(threadId);
     });
+  }
+
+  function handleRegenerateDraft() {
+    handleGenerateDraft({ force: true });
   }
 
   function handleToggleDraftSent() {
@@ -269,7 +275,7 @@ export function ThreadPreview({
             <button
               type="button"
               className="em-draft-cta"
-              onClick={handleGenerateDraft}
+              onClick={() => handleGenerateDraft()}
               disabled={quotaExhausted}
             >
               <span className="em-draft-cta-glyph" aria-hidden>
@@ -309,7 +315,7 @@ export function ThreadPreview({
             <button
               type="button"
               className="em-btn ghost"
-              onClick={handleGenerateDraft}
+              onClick={() => handleGenerateDraft()}
             >
               Retry
             </button>
@@ -317,7 +323,12 @@ export function ThreadPreview({
         )}
 
         {canDraft && draftState === "ready" && draft && (
-          <SuggestedDraftCard draft={draft} onToggleSent={handleToggleDraftSent} />
+          <SuggestedDraftCard
+            draft={draft}
+            onToggleSent={handleToggleDraftSent}
+            onRegenerate={handleRegenerateDraft}
+            quota={draftQuota}
+          />
         )}
       </div>
     </div>

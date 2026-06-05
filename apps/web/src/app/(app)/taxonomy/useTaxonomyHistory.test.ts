@@ -14,6 +14,7 @@ function makeNode(id: string, overrides: Partial<TaxonomyNode> = {}): TaxonomyNo
     name: id,
     description: null,
     instructions: null,
+    draftPrompt: null,
     examples: [],
     isRoot: false,
     positionX: 0,

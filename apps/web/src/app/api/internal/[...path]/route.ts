@@ -22,12 +22,17 @@ async function proxyRequest(req: NextRequest, ctx: Ctx): Promise<NextResponse> {
   const hasBody = method !== "GET" && method !== "HEAD";
   const body = hasBody ? await req.text() : null;
 
+  // Forward select client headers that carry per-request metadata.
+  // Normalize to a literal "1" rather than forwarding raw user input verbatim.
+  const forceRegenerate = req.headers.get("X-Force-Regenerate") === "1";
+
   const upstream = await fetch(url, {
     method,
     headers: {
       Authorization: `Bearer ${INTERNAL_SECRET}`,
       "X-User-Id": user.id,
       ...(hasBody ? { "Content-Type": req.headers.get("Content-Type") ?? "application/json" } : {}),
+      ...(forceRegenerate ? { "X-Force-Regenerate": "1" } : {}),
     },
     body: body ?? null,
     cache: "no-store",

@@ -950,7 +950,8 @@
 
 .em-btn:hover { background: var(--bg-soft); border-color: var(--line-3); }
 .em-btn.ghost { background: transparent; border-color: transparent; color: var(--ink-2); }
-.em-btn.ghost:hover { background: var(--bg-soft); color: var(--ink); }
+.em-btn.ghost:hover:not(:disabled) { background: var(--bg-soft); color: var(--ink); }
+.em-btn.ghost:disabled { opacity: 0.45; cursor: default; }
 
 .em-btn-primary {
   display: inline-flex;
@@ -1126,7 +1127,15 @@
   overflow-y: auto;
 }
 
-.em-draft-actions { margin-top: 12px; display: flex; gap: 6px; }
+.em-draft-actions { margin-top: 12px; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+
+.em-draft-quota {
+  font-size: 11.5px;
+  color: var(--ink-4);
+  margin-top: 8px;
+}
+
+.em-draft-quota--exhausted { color: var(--warn-ink); }
 
 .em-draft-cta {
   display: flex;

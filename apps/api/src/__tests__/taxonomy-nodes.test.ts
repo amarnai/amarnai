@@ -35,6 +35,7 @@ const baseNode = {
   name: "Inbox",
   description: null,
   instructions: null,
+  draftPrompt: null,
   examples: [],
   isRoot: false,
   positionX: 0,

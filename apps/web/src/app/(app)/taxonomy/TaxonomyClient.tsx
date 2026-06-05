@@ -182,16 +182,19 @@ function NodeForm({
 
   const [name, setName] = useState(node?.name ?? "");
   const [description, setDescription] = useState(node?.description ?? "");
+  const [draftPrompt, setDraftPrompt] = useState(node?.draftPrompt ?? "");
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     const trimmedDescription = description.trim();
+    const trimmedDraftPrompt = draftPrompt.trim();
     onSubmit({
       name: name.trim(),
       // Only include description if non-empty; omitting it on a root-node edit
       // leaves the existing DB value unchanged.
       ...(trimmedDescription ? { description: trimmedDescription } : {}),
       instructions: node?.instructions ?? null,
+      draftPrompt: trimmedDraftPrompt || null,
       examples: node?.examples ?? [],
     });
   }
@@ -234,6 +237,19 @@ function NodeForm({
               At least 30 non-whitespace characters. Descriptions improve AI sorting quality.
             </p>
           )}
+        </div>
+        <div className="form-group">
+          <label className="form-label">Draft style guidance</label>
+          <textarea
+            className="form-textarea"
+            value={draftPrompt}
+            onChange={(e) => setDraftPrompt(e.target.value)}
+            maxLength={500}
+            placeholder="e.g. Reply formally. Keep responses under 3 sentences."
+          />
+          <p style={{ fontSize: 11, color: "var(--color-muted)", marginTop: 2 }}>
+            Optional. Applied when generating draft replies for threads in this category.
+          </p>
         </div>
         <div className="form-actions">
           <button className="btn-primary" type="submit" disabled={submitting}>
@@ -403,6 +419,7 @@ function nodesIdentical(a: TaxonomyNode, b: TaxonomyNode): boolean {
     a.name === b.name &&
     a.description === b.description &&
     a.instructions === b.instructions &&
+    a.draftPrompt === b.draftPrompt &&
     a.positionX === b.positionX &&
     a.positionY === b.positionY &&
     JSON.stringify(a.examples) === JSON.stringify(b.examples)
@@ -442,6 +459,7 @@ async function applySnapshotDiff(
         name: toNode.name,
         ...(toNode.description ? { description: toNode.description } : {}),
         instructions: toNode.instructions,
+        draftPrompt: toNode.draftPrompt,
         examples: toNode.examples,
         positionX: toNode.positionX,
         positionY: toNode.positionY,
@@ -467,6 +485,7 @@ async function applySnapshotDiff(
         name: toNode.name,
         ...(toNode.description ? { description: toNode.description } : {}),
         instructions: toNode.instructions,
+        draftPrompt: toNode.draftPrompt,
         examples: toNode.examples,
         positionX: toNode.positionX,
         positionY: toNode.positionY,

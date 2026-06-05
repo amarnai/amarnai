@@ -80,6 +80,7 @@ export type TaxonomyNode = {
   name: string;
   description: string | null;
   instructions: string | null;
+  draftPrompt: string | null;
   examples: string[];
   isRoot: boolean;
   positionX: number;
@@ -92,6 +93,7 @@ export type CreateTaxonomyNodeInput = {
   name: string;
   description?: string; // required for non-root nodes; omit rather than pass null
   instructions?: string | null;
+  draftPrompt?: string | null;
   examples?: string[];
   positionX?: number;
   positionY?: number;
@@ -582,12 +584,18 @@ export const api = {
     ),
   generateDraft: async (
     workspaceId: string,
-    threadId: string
-  ): Promise<{ draft: Draft } | { generating: true } | { quotaExceeded: true; used: number; limit: number; resetsAt: string }> => {
-    const res = await fetch(
-      `${API_BASE}/workspaces/${workspaceId}/email-threads/${threadId}/generate-draft`,
-      { method: "POST", cache: "no-store", headers: internalAuthHeader() }
-    );
+    threadId: string,
+    opts: { force?: boolean } = {}
+  ): Promise<{ draft: Draft; isNew: boolean } | { generating: true } | { quotaExceeded: true; used: number; limit: number; resetsAt: string }> => {
+    const url = `${API_BASE}/workspaces/${workspaceId}/email-threads/${threadId}/generate-draft`;
+    const res = await fetch(url, {
+      method: "POST",
+      cache: "no-store",
+      headers: {
+        ...internalAuthHeader(),
+        ...(opts.force ? { "X-Force-Regenerate": "1" } : {}),
+      },
+    });
     if (res.status === 429) {
       const body = await res.json().catch(() => ({})) as Record<string, unknown>;
       return {
@@ -601,7 +609,11 @@ export const api = {
       const err = await res.json().catch(() => ({})) as { error?: string };
       throw new Error(err.error ?? `API returned ${res.status}`);
     }
-    return res.json() as Promise<{ draft: Draft } | { generating: true }>;
+    const data = await res.json() as { draft: Draft } | { generating: true };
+    if ("draft" in data) {
+      return { draft: data.draft, isNew: res.status === 201 };
+    }
+    return data;
   },
   draftQuota: (workspaceId: string) =>
     apiFetch<{ used: number; limit: number; resetsAt: string }>(

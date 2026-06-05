@@ -3506,7 +3506,8 @@ a {
 
 .em-btn:hover { background: var(--bg-soft); border-color: var(--line-3); }
 .em-btn.ghost { background: transparent; border-color: transparent; color: var(--ink-2); }
-.em-btn.ghost:hover { background: var(--bg-soft); color: var(--ink); }
+.em-btn.ghost:hover:not(:disabled) { background: var(--bg-soft); color: var(--ink); }
+.em-btn.ghost:disabled { opacity: 0.45; cursor: default; }
 
 .em-preview-subject {
   font-size: 20px;
@@ -4183,7 +4184,7 @@ a {
 
 /* ─── Draft card actions ─────────────────────────────────────────────────── */
 
-.em-draft-actions { margin-top: 12px; display: flex; gap: 6px; }
+.em-draft-actions { margin-top: 12px; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
 
 /* Draft loading skeleton */
 .em-draft-skeleton {
@@ -4279,6 +4280,7 @@ a {
   font-size: 11.5px;
   color: var(--ink-4);
   text-align: center;
+  margin-top: 8px;
 }
 
 .em-draft-quota--exhausted {

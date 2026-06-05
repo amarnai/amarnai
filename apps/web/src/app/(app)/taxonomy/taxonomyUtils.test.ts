@@ -8,6 +8,7 @@ function makeNode(overrides: Partial<TaxonomyNode> & { id: string }): TaxonomyNo
     name: overrides.id,
     description: null,
     instructions: null,
+    draftPrompt: null,
     examples: [],
     isRoot: false,
     positionX: 0,
