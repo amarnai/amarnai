@@ -13,7 +13,7 @@
     "db:reset": "pnpm --filter @amarnai/db reset",
     "embeddings:refresh-taxonomy": "pnpm --filter @amarnai/db embeddings:refresh-taxonomy",
     "tunnel": "node scripts/gmail-tunnel.mjs",
-    "prepare": "git config core.hooksPath .githooks"
+    "prepare": "git config core.hooksPath .githooks || true"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^8.0.0",
