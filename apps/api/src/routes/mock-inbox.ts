@@ -41,7 +41,7 @@ function getAIProviderConfig() {
 }
 
 function getEmbeddingProviderConfig(): import("@amarnai/ai").EmbeddingProviderConfig {
-  const provider = (process.env["EMBEDDING_PROVIDER"] ?? "ollama") as "ollama" | "gemini";
+  const provider = (process.env["EMBEDDING_PROVIDER"] ?? "ollama") as "ollama" | "frontier";
   const cfg: import("@amarnai/ai").EmbeddingProviderConfig = { provider };
   const ollamaBase = process.env["OLLAMA_BASE_URL"];
   const ollamaEmbModel = process.env["OLLAMA_EMBEDDING_MODEL"];
@@ -51,12 +51,16 @@ function getEmbeddingProviderConfig(): import("@amarnai/ai").EmbeddingProviderCo
       ...(ollamaEmbModel ? { model: ollamaEmbModel } : {}),
     };
   }
-  const gApiKey = process.env["GEMINI_EMBEDDING_API_KEY"];
-  const gModel = process.env["GEMINI_EMBEDDING_MODEL"];
-  if (gApiKey ?? gModel) {
-    cfg.gemini = {
-      ...(gApiKey ? { apiKey: gApiKey } : {}),
-      ...(gModel ? { model: gModel } : {}),
+  const fProvider = process.env["FRONTIER_EMBEDDING_PROVIDER"];
+  const fApiKey = process.env["FRONTIER_EMBEDDING_API_KEY"];
+  const fModel = process.env["FRONTIER_EMBEDDING_MODEL"];
+  const fBaseUrl = process.env["FRONTIER_EMBEDDING_BASE_URL"];
+  if (fProvider ?? fApiKey ?? fModel ?? fBaseUrl) {
+    cfg.frontier = {
+      ...(fProvider ? { provider: fProvider } : {}),
+      ...(fApiKey ? { apiKey: fApiKey } : {}),
+      ...(fModel ? { model: fModel } : {}),
+      ...(fBaseUrl ? { baseUrl: fBaseUrl } : {}),
     };
   }
   return cfg;

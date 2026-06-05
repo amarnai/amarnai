@@ -16,10 +16,12 @@ const envSchema = z.object({
   FRONTIER_LLM_BASE_URL: z.string().optional(),
   OLLAMA_BASE_URL: z.string().optional(),
   OLLAMA_MODEL: z.string().optional(),
-  EMBEDDING_PROVIDER: z.enum(['mock', 'ollama', 'gemini']).default('mock'),
+  EMBEDDING_PROVIDER: z.enum(['mock', 'ollama', 'frontier']).default('mock'),
   OLLAMA_EMBEDDING_MODEL: z.string().optional(),
-  GEMINI_EMBEDDING_API_KEY: z.string().optional(),
-  GEMINI_EMBEDDING_MODEL: z.string().optional(),
+  FRONTIER_EMBEDDING_PROVIDER: z.string().optional(),
+  FRONTIER_EMBEDDING_API_KEY: z.string().optional(),
+  FRONTIER_EMBEDDING_MODEL: z.string().optional(),
+  FRONTIER_EMBEDDING_BASE_URL: z.string().optional(),
   ALLOW_LOCAL_AI_IN_PRODUCTION: boolStr,
   // Set to 'false' to disable per-workspace monthly draft quotas.
   // Self-hosted deployments that manage their own AI costs should set this to false.
@@ -71,9 +73,9 @@ function validateEnv(raw: NodeJS.ProcessEnv) {
     }
   }
 
-  if (env.EMBEDDING_PROVIDER === 'gemini') {
-    if (!env.GEMINI_EMBEDDING_API_KEY) throw new Error('GEMINI_EMBEDDING_API_KEY is required when EMBEDDING_PROVIDER=gemini');
-    if (!env.GEMINI_EMBEDDING_MODEL) throw new Error('GEMINI_EMBEDDING_MODEL is required when EMBEDDING_PROVIDER=gemini');
+  if (env.EMBEDDING_PROVIDER === 'frontier') {
+    if (!env.FRONTIER_EMBEDDING_API_KEY) throw new Error('FRONTIER_EMBEDDING_API_KEY is required when EMBEDDING_PROVIDER=frontier');
+    if (!env.FRONTIER_EMBEDDING_MODEL) throw new Error('FRONTIER_EMBEDDING_MODEL is required when EMBEDDING_PROVIDER=frontier');
   }
 
   return env;
@@ -113,9 +115,11 @@ export const config = {
       baseUrl: env.OLLAMA_BASE_URL,
       model: env.OLLAMA_EMBEDDING_MODEL,
     },
-    gemini: {
-      apiKey: env.GEMINI_EMBEDDING_API_KEY,
-      model: env.GEMINI_EMBEDDING_MODEL,
+    frontier: {
+      provider: env.FRONTIER_EMBEDDING_PROVIDER,
+      apiKey: env.FRONTIER_EMBEDDING_API_KEY,
+      model: env.FRONTIER_EMBEDDING_MODEL,
+      baseUrl: env.FRONTIER_EMBEDDING_BASE_URL,
     },
   },
   billing: {

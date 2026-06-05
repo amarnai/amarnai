@@ -54,15 +54,29 @@ Any OpenAI-compatible endpoint works — set `FRONTIER_LLM_BASE_URL` to point at
 
 ### Embeddings
 
-The recommended embedding provider for production is Gemini:
+Set `EMBEDDING_PROVIDER=frontier` and configure the provider you want to use.
+
+**Gemini** (recommended — free within Google's quota limits, 768-dim vectors):
 
 ```bash
-EMBEDDING_PROVIDER=gemini
-GEMINI_EMBEDDING_API_KEY=<your Google AI Studio key>
-GEMINI_EMBEDDING_MODEL=text-embedding-004
+EMBEDDING_PROVIDER=frontier
+FRONTIER_EMBEDDING_PROVIDER=gemini
+FRONTIER_EMBEDDING_API_KEY=<your Google AI Studio key>
+FRONTIER_EMBEDDING_MODEL=text-embedding-004
 ```
 
-Get a key from [Google AI Studio](https://aistudio.google.com/apikey). `text-embedding-004` produces 768-dimensional vectors and is free within Google's quota limits.
+Get a key from [Google AI Studio](https://aistudio.google.com/apikey).
+
+**OpenAI** (or any OpenAI-compatible endpoint):
+
+```bash
+EMBEDDING_PROVIDER=frontier
+FRONTIER_EMBEDDING_PROVIDER=openai
+FRONTIER_EMBEDDING_API_KEY=<your OpenAI API key>
+FRONTIER_EMBEDDING_MODEL=text-embedding-3-small
+# Optional: override for a custom endpoint
+# FRONTIER_EMBEDDING_BASE_URL=https://my-endpoint.example.com/v1
+```
 
 ## SMTP
 

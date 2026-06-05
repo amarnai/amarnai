@@ -55,9 +55,11 @@ All configuration is done through environment variables in a single `.env` file 
 | `FRONTIER_LLM_API_KEY`        | —            | API key for the LLM provider                                        |
 | `FRONTIER_LLM_MODEL`          | `gpt-4o-mini`| Model name                                                          |
 | `FRONTIER_LLM_BASE_URL`       | —            | Override base URL for OpenAI-compatible endpoints                   |
-| `EMBEDDING_PROVIDER`          | `gemini`     | `gemini` for production, `ollama` for local dev                     |
-| `GEMINI_EMBEDDING_API_KEY`    | —            | Google AI Studio key for Gemini embeddings                          |
-| `GEMINI_EMBEDDING_MODEL`      | `text-embedding-004` | Gemini embedding model (768-dim)                          |
+| `EMBEDDING_PROVIDER`          | `mock`       | `frontier` for production, `ollama` for local dev, `mock` for tests |
+| `FRONTIER_EMBEDDING_PROVIDER` | `gemini`     | Embedding backend: `gemini` or any OpenAI-compatible provider       |
+| `FRONTIER_EMBEDDING_API_KEY`  | —            | API key for the embedding provider                                  |
+| `FRONTIER_EMBEDDING_MODEL`    | —            | Embedding model name (e.g. `text-embedding-004`, `text-embedding-3-small`) |
+| `FRONTIER_EMBEDDING_BASE_URL` | —            | Override base URL for OpenAI-compatible embedding endpoints         |
 
 ## SMTP
 

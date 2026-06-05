@@ -5,11 +5,13 @@
  * name + description + model) are re-embedded.
  *
  * Environment variables required (same as the API):
- *   EMBEDDING_PROVIDER        — "gemini" | "ollama"
- *   GEMINI_EMBEDDING_API_KEY  — (if provider=gemini)
- *   GEMINI_EMBEDDING_MODEL    — (if provider=gemini, default: text-embedding-004)
- *   OLLAMA_BASE_URL           — (if provider=ollama)
- *   OLLAMA_EMBEDDING_MODEL    — (if provider=ollama, default: qwen3-embedding)
+ *   EMBEDDING_PROVIDER           — "frontier" | "ollama"
+ *   FRONTIER_EMBEDDING_PROVIDER  — (if provider=frontier, e.g. "gemini" or "openai")
+ *   FRONTIER_EMBEDDING_API_KEY   — (if provider=frontier)
+ *   FRONTIER_EMBEDDING_MODEL     — (if provider=frontier)
+ *   FRONTIER_EMBEDDING_BASE_URL  — (if provider=frontier with a custom OpenAI-compatible endpoint)
+ *   OLLAMA_BASE_URL              — (if provider=ollama)
+ *   OLLAMA_EMBEDDING_MODEL       — (if provider=ollama, default: qwen3-embedding)
  *
  * Usage:
  *   pnpm --filter @amarnai/db embeddings:refresh-taxonomy
@@ -31,19 +33,23 @@ const db = new PrismaClient();
 
 function getEmbeddingConfig(): EmbeddingProviderConfig {
   const raw = process.env["EMBEDDING_PROVIDER"];
-  if (!raw || (raw !== "gemini" && raw !== "ollama")) {
+  if (!raw || (raw !== "frontier" && raw !== "ollama")) {
     throw new Error(
-      "EMBEDDING_PROVIDER must be set to 'gemini' or 'ollama'. " +
+      "EMBEDDING_PROVIDER must be set to 'frontier' or 'ollama'. " +
         "Example: EMBEDDING_PROVIDER=ollama pnpm --filter @amarnai/db embeddings:refresh-taxonomy"
     );
   }
   const cfg: EmbeddingProviderConfig = { provider: raw };
-  const gApiKey = process.env["GEMINI_EMBEDDING_API_KEY"];
-  const gModel = process.env["GEMINI_EMBEDDING_MODEL"];
-  if (gApiKey ?? gModel) {
-    cfg.gemini = {
-      ...(gApiKey ? { apiKey: gApiKey } : {}),
-      ...(gModel ? { model: gModel } : {}),
+  const fProvider = process.env["FRONTIER_EMBEDDING_PROVIDER"];
+  const fApiKey = process.env["FRONTIER_EMBEDDING_API_KEY"];
+  const fModel = process.env["FRONTIER_EMBEDDING_MODEL"];
+  const fBaseUrl = process.env["FRONTIER_EMBEDDING_BASE_URL"];
+  if (fProvider ?? fApiKey ?? fModel ?? fBaseUrl) {
+    cfg.frontier = {
+      ...(fProvider ? { provider: fProvider } : {}),
+      ...(fApiKey ? { apiKey: fApiKey } : {}),
+      ...(fModel ? { model: fModel } : {}),
+      ...(fBaseUrl ? { baseUrl: fBaseUrl } : {}),
     };
   }
   const ollamaBase = process.env["OLLAMA_BASE_URL"];

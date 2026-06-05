@@ -69,13 +69,14 @@ FRONTIER_LLM_PROVIDER=openai
 FRONTIER_LLM_API_KEY=<your key>
 FRONTIER_LLM_MODEL=<model name>
 
-# Embeddings (Gemini)
-EMBEDDING_PROVIDER=gemini
-GEMINI_EMBEDDING_API_KEY=<your Google AI Studio key>
-GEMINI_EMBEDDING_MODEL=text-embedding-004
+# Embeddings (any provider — Gemini shown as an example)
+EMBEDDING_PROVIDER=frontier
+FRONTIER_EMBEDDING_PROVIDER=gemini
+FRONTIER_EMBEDDING_API_KEY=<your Google AI Studio key>
+FRONTIER_EMBEDDING_MODEL=text-embedding-004
 ```
 
-Get a Gemini API key from [Google AI Studio](https://aistudio.google.com/apikey).
+Get a Gemini API key from [Google AI Studio](https://aistudio.google.com/apikey). You can also use OpenAI embeddings (`FRONTIER_EMBEDDING_PROVIDER=openai`) or any OpenAI-compatible endpoint via `FRONTIER_EMBEDDING_BASE_URL`.
 
 ## Authentication setup
 
@@ -234,7 +235,7 @@ cp .env.selfhost.example .env
 
 # 3. Fill in every value marked <required>:
 #    AUTH_SECRET, AUTH_GOOGLE_ID, AUTH_GOOGLE_SECRET, INTERNAL_API_SECRET,
-#    GMAIL_TOKEN_ENCRYPTION_KEY, FRONTIER_LLM_API_KEY, GEMINI_EMBEDDING_API_KEY,
+#    GMAIL_TOKEN_ENCRYPTION_KEY, FRONTIER_LLM_API_KEY, FRONTIER_EMBEDDING_API_KEY,
 #    SMTP_HOST / SMTP_USER / SMTP_PASS, EMAIL_FROM
 #    Update AUTH_URL, CORS_ORIGIN, and GMAIL_OAUTH_CALLBACK_URL to your domain.
 
