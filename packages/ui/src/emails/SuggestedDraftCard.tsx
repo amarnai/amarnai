@@ -77,7 +77,10 @@ export function SuggestedDraftCard({ draft, onToggleSent, onRegenerate, quota }:
               title={quotaExhausted ? "No drafts remaining this month" : "Generate a new draft — uses one from your monthly allowance"}
             >
               <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden>
-                <path d="M10 6A4 4 0 1 1 6 2M6 2l2-2M6 2l2 2" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+                {/* arc: 3 o'clock → clockwise 270° → 1 o'clock */}
+                <path d="M10,6 A4,4 0 1 1 8,2.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+                {/* filled arrowhead tangent to arc at 1 o'clock, pointing lower-right */}
+                <polygon points="7.1,4.1 8.9,0.9 10.4,3.9" fill="currentColor" />
               </svg>
               Regenerate
             </button>
