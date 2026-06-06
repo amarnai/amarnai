@@ -6,6 +6,9 @@ vi.mock("@amarnai/db", () => ({
     workspace: {
       findUnique: vi.fn(),
     },
+    workspaceMember: {
+      findUnique: vi.fn(),
+    },
     taxonomyNode: {
       findUnique: vi.fn(),
     },
@@ -65,6 +68,7 @@ function del(path: string) {
 
 beforeEach(() => {
   vi.clearAllMocks();
+  vi.mocked(db.workspaceMember.findUnique).mockResolvedValue({ userId: "test-user-1" } as never);
 });
 
 // ─── GET ─────────────────────────────────────────────────────────────────────

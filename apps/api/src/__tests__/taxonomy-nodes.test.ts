@@ -6,6 +6,9 @@ vi.mock("@amarnai/db", () => ({
     workspace: {
       findUnique: vi.fn(),
     },
+    workspaceMember: {
+      findUnique: vi.fn(),
+    },
     taxonomyNode: {
       findUnique: vi.fn(),
       create: vi.fn(),
@@ -66,6 +69,7 @@ function del(path: string) {
 
 beforeEach(() => {
   vi.clearAllMocks();
+  vi.mocked(db.workspaceMember.findUnique).mockResolvedValue({ userId: "test-user-1" } as never);
   // Default: no edges → no descendants to invalidate for any name-change test.
   // Individual tests override this when testing descendant invalidation.
   vi.mocked(db.taxonomyEdge.findMany).mockResolvedValue([] as never);

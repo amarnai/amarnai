@@ -6,6 +6,9 @@ vi.mock("@amarnai/db", () => ({
     workspace: {
       findUnique: vi.fn(),
     },
+    workspaceMember: {
+      findUnique: vi.fn(),
+    },
     gmailConnection: {
       findUnique: vi.fn(),
       delete: vi.fn(),
@@ -32,6 +35,7 @@ const baseConnection = {
 
 beforeEach(() => {
   vi.clearAllMocks();
+  vi.mocked(db.workspaceMember.findUnique).mockResolvedValue({ userId: "test-user-1" } as never);
 });
 
 // ─── GET /workspaces/:workspaceId/gmail-connection ─────────────────────────

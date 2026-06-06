@@ -13,7 +13,7 @@ import { db } from "@amarnai/db";
 const USER_ID = "user-1";
 
 function authedUser(userId = USER_ID): RequestInit {
-  return authed({ headers: { "X-User-Id": userId } });
+  return authed({}, userId);
 }
 
 beforeEach(() => {
@@ -59,7 +59,7 @@ describe("auth middleware", () => {
 
 describe("GET /workspaces", () => {
   it("returns empty array and skips DB query when no X-User-Id header", async () => {
-    const res = await app.request("/workspaces", authed());
+    const res = await app.request("/workspaces", authed({}, null));
     expect(res.status).toBe(200);
     expect(await res.json()).toEqual([]);
     expect(db.workspace.findMany).not.toHaveBeenCalled();

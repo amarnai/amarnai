@@ -5,6 +5,7 @@ vi.mock("@amarnai/db", () => ({
   Prisma: {},
   db: {
     workspace: { findUnique: vi.fn() },
+    workspaceMember: { findUnique: vi.fn() },
     emailThread: {
       create: vi.fn(),
       findFirst: vi.fn(),
@@ -101,6 +102,7 @@ function post(path: string, body: unknown) {
 beforeEach(() => {
   vi.clearAllMocks();
   process.env["ENABLE_DEV_TOOLS"] = "true";
+  vi.mocked(db.workspaceMember.findUnique).mockResolvedValue({ userId: "test-user-1" } as never);
   vi.mocked(db.taxonomyEdge.findMany).mockResolvedValue([] as never);
 });
 

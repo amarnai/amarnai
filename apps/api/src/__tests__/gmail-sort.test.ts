@@ -5,6 +5,7 @@ vi.mock("@amarnai/db", () => ({
   Prisma: {},
   db: {
     workspace: { findUnique: vi.fn() },
+    workspaceMember: { findUnique: vi.fn() },
     gmailConnection: { findUnique: vi.fn() },
     emailAccount: { upsert: vi.fn() },
     emailThread: { upsert: vi.fn(), update: vi.fn() },
@@ -144,6 +145,7 @@ beforeEach(() => {
   process.env["NODE_ENV"] = "development";
   process.env["AI_PROVIDER"] = "mock";
 
+  vi.mocked(db.workspaceMember.findUnique).mockResolvedValue({ userId: "test-user-1" } as never);
   vi.mocked(db.workspace.findUnique).mockResolvedValue(BASE_WORKSPACE as never);
   vi.mocked(db.gmailConnection.findUnique).mockResolvedValue(BASE_CONNECTION as never);
   vi.mocked(db.emailAccount.upsert).mockResolvedValue({ id: "acc-1" } as never);

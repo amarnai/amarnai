@@ -18,6 +18,7 @@ vi.mock("@amarnai/db", () => ({
     taxonomyNode: { count: vi.fn(), findMany: vi.fn() },
     emailClassification: { create: vi.fn(), findFirst: vi.fn() },
     workspace: { findUnique: vi.fn() },
+    workspaceMember: { findUnique: vi.fn() },
     $queryRaw: vi.fn(),
   },
 }));
@@ -58,6 +59,7 @@ const NODES = [
 beforeEach(() => {
   vi.clearAllMocks();
   mockBilling.enforceThreadSortQuota = true;
+  vi.mocked(db.workspaceMember.findUnique).mockResolvedValue({ userId: "test-user-1" } as never);
   vi.mocked(db.taxonomyNode.count).mockResolvedValue(2 as never);
   vi.mocked(db.taxonomyNode.findMany).mockResolvedValue(NODES as never);
   vi.mocked(db.emailThread.findFirst).mockResolvedValue(THREAD as never);

@@ -36,6 +36,9 @@ function mockAll() {
 
 beforeEach(() => {
   vi.clearAllMocks();
+  // requireWorkspaceMember middleware checks the authenticated user (X-User-Id).
+  // Default to a valid member so middleware passes; individual tests can override.
+  vi.mocked(db.workspaceMember.findUnique).mockResolvedValue(BASE_MEMBER as never);
 });
 
 describe("POST /workspaces/:workspaceId/email-threads/:threadId/resolve", () => {
@@ -86,7 +89,11 @@ describe("POST /workspaces/:workspaceId/email-threads/:threadId/resolve", () => 
 
   it("returns 403 when user is not a workspace member", async () => {
     vi.mocked(db.emailThread.findFirst).mockResolvedValue(BASE_THREAD as never);
-    vi.mocked(db.workspaceMember.findUnique).mockResolvedValue(null);
+    // First call: requireWorkspaceMember middleware checks the authed user — must pass.
+    // Second call: route checks the body userId — returns null to trigger 403.
+    vi.mocked(db.workspaceMember.findUnique)
+      .mockResolvedValueOnce(BASE_MEMBER as never)
+      .mockResolvedValueOnce(null);
 
     const res = await app.request(
       `/workspaces/${WS_ID}/email-threads/${THREAD_ID}/resolve`,
@@ -160,7 +167,11 @@ describe("DELETE /workspaces/:workspaceId/email-threads/:threadId/resolve", () =
 
   it("returns 403 when user is not a workspace member", async () => {
     vi.mocked(db.emailThread.findFirst).mockResolvedValue(BASE_THREAD as never);
-    vi.mocked(db.workspaceMember.findUnique).mockResolvedValue(null);
+    // First call: requireWorkspaceMember middleware checks the authed user — must pass.
+    // Second call: route checks the body userId — returns null to trigger 403.
+    vi.mocked(db.workspaceMember.findUnique)
+      .mockResolvedValueOnce(BASE_MEMBER as never)
+      .mockResolvedValueOnce(null);
 
     const res = await app.request(
       `/workspaces/${WS_ID}/email-threads/${THREAD_ID}/resolve`,
