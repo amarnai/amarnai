@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { z } from "zod";
 import { db, Prisma } from "@amarnai/db";
-import { createAIProvider, generateDraft, getAIProviderConfig } from "@amarnai/ai";
+import { createAIProvider, generateDraft, getAIProviderConfig, type ThreadMessage } from "@amarnai/ai";
 import { getDraftLimit, getDraftQuotaWindowStart, getDraftQuotaResetsAt, getThreadSortLimit } from "@amarnai/shared";
 import { config } from "@amarnai/config";
 import { GmailClient, normalizeGmailThread } from "@amarnai/gmail";
@@ -65,6 +65,8 @@ drafts.post(
         messages: {
           orderBy: { receivedAt: "asc" },
           select: {
+            // providerMessageId is fetched only to match Gmail API responses by ID below.
+            // It is split off immediately and never reaches the AI layer.
             providerMessageId: true,
             subject: true,
             senderEmail: true,
@@ -81,6 +83,13 @@ drafts.post(
     if (thread.messages.length === 0) {
       return c.json({ error: "Thread has no messages" }, 422);
     }
+
+    // Split immediately so the AI layer only ever sees ThreadMessage (no internal IDs).
+    // providerMessageIds is a parallel array used solely for Gmail body lookup below.
+    const providerMessageIds = thread.messages.map((m) => m.providerMessageId);
+    const aiMessages: ThreadMessage[] = thread.messages.map(
+      ({ providerMessageId: _, ...m }) => m
+    );
 
     const classification = await db.emailClassification.findFirst({
       where: { emailThreadId: threadId, workspaceId },
@@ -252,7 +261,7 @@ drafts.post(
 
     // Fetch full body texts from Gmail (one call for all messages in the thread).
     // Falls back to DB bodyText for mock inbox (no Gmail connection) or on error.
-    let messagesForDraft = thread.messages.map(({ providerMessageId: _pmid, ...m }) => m);
+    let messagesForDraft: ThreadMessage[] = aiMessages;
     if (gmailConnection?.encryptedRefreshToken) {
       try {
         const client = new GmailClient(gmailConnection.encryptedRefreshToken);
@@ -261,9 +270,9 @@ drafts.post(
         const bodyByMessageId = new Map(
           snapshot.messages.map((m) => [m.providerMessageId, m.bodyExcerpt])
         );
-        messagesForDraft = thread.messages.map(({ providerMessageId, ...m }) => ({
+        messagesForDraft = aiMessages.map((m, i) => ({
           ...m,
-          bodyText: bodyByMessageId.get(providerMessageId) ?? m.bodyText,
+          bodyText: bodyByMessageId.get(providerMessageIds[i]!) ?? m.bodyText,
         }));
       } catch {
         // Non-fatal: fall back to DB values
