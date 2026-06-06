@@ -2,6 +2,8 @@ import { timingSafeEqual } from "node:crypto";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { config } from "@amarnai/config";
+import { db } from "@amarnai/db";
+import type { MiddlewareHandler } from "hono";
 import type { AppEnv } from "./env.js";
 import { healthRoute } from "./routes/health.js";
 import { workspacesRoute } from "./routes/workspaces.js";
@@ -52,6 +54,27 @@ app.use("*", async (c, next) => {
 
   return next();
 });
+
+// Workspace membership guard: rejects requests where the authenticated user
+// is not a member of the workspace in the URL. Returns 404 to avoid leaking
+// whether the workspace exists to non-members.
+const requireWorkspaceMember: MiddlewareHandler<AppEnv> = async (c, next) => {
+  // workspaceId is guaranteed by the /workspaces/:workspaceId/* middleware path.
+  const workspaceId = c.req.param("workspaceId") as string;
+  const userId: string = c.get("userId");
+  if (!userId) return c.json({ error: "Unauthorized" }, 401);
+
+  const member = await db.workspaceMember.findUnique({
+    where: { workspaceId_userId: { workspaceId, userId } },
+    select: { userId: true },
+  });
+  if (!member) return c.json({ error: "Workspace not found" }, 404);
+
+  return next();
+};
+
+app.use("/workspaces/:workspaceId/*", requireWorkspaceMember);
+app.use("/dev/workspaces/:workspaceId/*", requireWorkspaceMember);
 
 app.route("/", healthRoute);
 app.route("/", workspacesRoute);
