@@ -68,8 +68,8 @@ export const PLANS: Plan[] = [
     id: "pro",
     name: "Pro",
     tagline: "For power users and small businesses who live in their inbox.",
-    monthlyPrice: 29,
-    annualMonthlyPrice: 24,
+    monthlyPrice: 5,
+    annualMonthlyPrice: 4,
     featured: true,
     badge: "Most popular",
     highlights: [
@@ -85,8 +85,8 @@ export const PLANS: Plan[] = [
     id: "business",
     name: "Business",
     tagline: "For larger organizations and higher-volume teams.",
-    monthlyPrice: 149,
-    annualMonthlyPrice: 119,
+    monthlyPrice: 12,
+    annualMonthlyPrice: 10,
     highlights: [
       "Up to 25 collaborators",
       "50,000 threads sorted / month",

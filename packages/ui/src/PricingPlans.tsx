@@ -111,7 +111,14 @@ function BillingToggle({
           Annual
         </button>
       </div>
-      <span className="plans-save">
+      <span
+        className="plans-save"
+        onClick={cycle === "monthly" ? () => onChange("annual") : undefined}
+        role={cycle === "monthly" ? "button" : undefined}
+        tabIndex={cycle === "monthly" ? 0 : undefined}
+        onKeyDown={cycle === "monthly" ? (e) => e.key === "Enter" && onChange("annual") : undefined}
+        style={cycle === "monthly" ? { cursor: "pointer" } : undefined}
+      >
         <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
           <path
             d="M7 1.4 8.7 4.9l3.9.5-2.8 2.7.7 3.8L7 10.1 3.5 11.9l.7-3.8L1.4 5.4l3.9-.5L7 1.4Z"
@@ -158,7 +165,7 @@ function PlanPrice({ plan, cycle }: { plan: (typeof PLANS)[number]; cycle: Billi
           "Billed monthly · 14-day free trial"
         )}
       </div>
-    </>
+</>
   );
 }
 
