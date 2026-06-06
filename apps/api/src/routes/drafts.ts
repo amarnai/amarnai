@@ -41,8 +41,7 @@ const drafts = new Hono();
 const DRAFT_GENERATING_STALE_MS = 5 * 60 * 1_000;
 
 // Statuses that represent a completed or in-progress generation and count toward quota.
-// Raw SQL fragment — keep in sync with DraftStatus enum in schema.prisma.
-const QUOTA_COUNTED_STATUSES = `('PROPOSED', 'SENT', 'CREATED_IN_GMAIL', 'GENERATING')`;
+const QUOTA_COUNTED_STATUSES = ['PROPOSED', 'SENT', 'CREATED_IN_GMAIL', 'GENERATING'] as const;
 
 drafts.post(
   "/workspaces/:workspaceId/email-threads/:threadId/generate-draft",
@@ -206,7 +205,7 @@ drafts.post(
           SELECT COUNT(*) AS count FROM "Draft"
           WHERE "workspaceId" = ${workspaceId}
             AND "createdAt" >= ${windowStart}
-            AND status IN ${Prisma.raw(QUOTA_COUNTED_STATUSES)}
+            AND status IN (${Prisma.join(QUOTA_COUNTED_STATUSES)})
             AND NOT (status = 'GENERATING' AND "createdAt" <= ${staleThreshold})
         `;
 
@@ -358,7 +357,7 @@ drafts.get(
       SELECT COUNT(*) AS count FROM "Draft"
       WHERE "workspaceId" = ${workspaceId}
         AND "createdAt" >= ${windowStart}
-        AND status IN ${Prisma.raw(QUOTA_COUNTED_STATUSES)}
+        AND status IN (${Prisma.join(QUOTA_COUNTED_STATUSES)})
         AND NOT (status = 'GENERATING' AND "createdAt" <= ${staleThreshold})
     `;
 
