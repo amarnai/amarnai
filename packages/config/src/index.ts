@@ -59,6 +59,10 @@ function validateEnv(raw: NodeJS.ProcessEnv) {
     throw new Error('INTERNAL_API_SECRET is required in production');
   }
 
+  if (env.GMAIL_PUBSUB_TOPIC && !env.GMAIL_PUBSUB_WEBHOOK_SECRET) {
+    throw new Error('GMAIL_PUBSUB_WEBHOOK_SECRET is required when GMAIL_PUBSUB_TOPIC is set');
+  }
+
   if (env.AI_PROVIDER === 'frontier') {
     if (!env.FRONTIER_LLM_PROVIDER) throw new Error('FRONTIER_LLM_PROVIDER is required when AI_PROVIDER=frontier');
     if (!env.FRONTIER_LLM_API_KEY) throw new Error('FRONTIER_LLM_API_KEY is required when AI_PROVIDER=frontier');

@@ -35,10 +35,8 @@ const gmailWebhook = new Hono();
 gmailWebhook.post("/webhooks/gmail", async (c) => {
   // ── Auth ──────────────────────────────────────────────────────────────────
   const webhookSecret = config.gmail.webhookSecret;
-  if (webhookSecret) {
-    if (c.req.query("token") !== webhookSecret) {
-      return c.json({ error: "Unauthorized" }, 401);
-    }
+  if (!webhookSecret || c.req.query("token") !== webhookSecret) {
+    return c.json({ error: "Unauthorized" }, 401);
   }
 
   // ── Parse Pub/Sub envelope ────────────────────────────────────────────────
