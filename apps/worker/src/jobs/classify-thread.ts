@@ -16,7 +16,7 @@ import {
   type ClassifyThreadJobData,
 } from "../queues.js";
 import { redisConnection } from "../redis.js";
-import { getAIProviderConfig, getEmbeddingProviderConfig } from "@amarnai/ai";
+import { getRoutingAIProviderConfig, getEmbeddingProviderConfig } from "@amarnai/ai";
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
 
@@ -136,7 +136,7 @@ export function createClassifyThreadWorker(): Worker {
 
         await job.updateProgress(20);
 
-        const aiProvider = createAIProvider(getAIProviderConfig());
+        const aiProvider = createAIProvider(getRoutingAIProviderConfig());
 
         if (triageOnly) {
           // ── Triage-only path ──────────────────────────────────────────────

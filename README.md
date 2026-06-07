@@ -69,6 +69,11 @@ FRONTIER_LLM_PROVIDER=openai
 FRONTIER_LLM_API_KEY=<your key>
 FRONTIER_LLM_MODEL=<model name>
 
+# Optional: use a lighter model for email routing and a larger model for drafts.
+# Both fall back to FRONTIER_LLM_MODEL if unset.
+ROUTING_LLM_MODEL=
+DRAFT_LLM_MODEL=
+
 # Embeddings (any provider — Gemini shown as an example)
 EMBEDDING_PROVIDER=frontier
 FRONTIER_EMBEDDING_PROVIDER=gemini

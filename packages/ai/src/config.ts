@@ -27,6 +27,24 @@ export function getAIProviderConfig(): AIProviderConfig {
   return cfg;
 }
 
+export function getRoutingAIProviderConfig(): AIProviderConfig {
+  const cfg = getAIProviderConfig();
+  const routingModel = process.env["ROUTING_LLM_MODEL"];
+  const routingOllamaModel = process.env["ROUTING_OLLAMA_MODEL"];
+  if (routingModel && cfg.frontier) cfg.frontier = { ...cfg.frontier, model: routingModel };
+  if (routingOllamaModel && cfg.ollama) cfg.ollama = { ...cfg.ollama, model: routingOllamaModel };
+  return cfg;
+}
+
+export function getDraftAIProviderConfig(): AIProviderConfig {
+  const cfg = getAIProviderConfig();
+  const draftModel = process.env["DRAFT_LLM_MODEL"];
+  const draftOllamaModel = process.env["DRAFT_OLLAMA_MODEL"];
+  if (draftModel && cfg.frontier) cfg.frontier = { ...cfg.frontier, model: draftModel };
+  if (draftOllamaModel && cfg.ollama) cfg.ollama = { ...cfg.ollama, model: draftOllamaModel };
+  return cfg;
+}
+
 export function getEmbeddingProviderConfig(): EmbeddingProviderConfig {
   const provider = (process.env["EMBEDDING_PROVIDER"] ?? "mock") as "mock" | "ollama" | "frontier";
   const cfg: EmbeddingProviderConfig = { provider };
