@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { z } from "zod";
 import { db, Prisma } from "@amarnai/db";
-import { createAIProvider, generateDraft, getAIProviderConfig, type ThreadMessage } from "@amarnai/ai";
+import { createAIProvider, generateDraft, getDraftAIProviderConfig, type ThreadMessage } from "@amarnai/ai";
 import { getDraftLimit, getDraftQuotaWindowStart, getDraftQuotaResetsAt, getThreadSortLimit } from "@amarnai/shared";
 import { config } from "@amarnai/config";
 import { GmailClient, normalizeGmailThread } from "@amarnai/gmail";
@@ -153,7 +153,7 @@ drafts.post(
 
     let provider;
     try {
-      provider = createAIProvider(getAIProviderConfig());
+      provider = createAIProvider(getDraftAIProviderConfig());
     } catch (e) {
       return c.json({ error: `AI provider not configured: ${String(e)}` }, 503);
     }
@@ -205,8 +205,8 @@ drafts.post(
           SELECT COUNT(*) AS count FROM "Draft"
           WHERE "workspaceId" = ${workspaceId}
             AND "createdAt" >= ${windowStart}
-            AND status IN (${Prisma.join(QUOTA_COUNTED_STATUSES)})
-            AND NOT (status = 'GENERATING' AND "createdAt" <= ${staleThreshold})
+            AND status::text IN (${Prisma.join(QUOTA_COUNTED_STATUSES)})
+            AND NOT (status::text = 'GENERATING' AND "createdAt" <= ${staleThreshold})
         `;
 
         if (Number(count) >= limit) {
@@ -357,8 +357,8 @@ drafts.get(
       SELECT COUNT(*) AS count FROM "Draft"
       WHERE "workspaceId" = ${workspaceId}
         AND "createdAt" >= ${windowStart}
-        AND status IN (${Prisma.join(QUOTA_COUNTED_STATUSES)})
-        AND NOT (status = 'GENERATING' AND "createdAt" <= ${staleThreshold})
+        AND status::text IN (${Prisma.join(QUOTA_COUNTED_STATUSES)})
+        AND NOT (status::text = 'GENERATING' AND "createdAt" <= ${staleThreshold})
     `;
 
     return c.json({
