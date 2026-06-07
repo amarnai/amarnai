@@ -1,13 +1,8 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import type { GmailSyncSettings } from "@/lib/api";
+import { api, type GmailSyncSettings } from "@/lib/api";
 import { sweepInboxAction } from "@/actions/gmail";
-
-const API_BASE =
-  typeof window !== "undefined"
-    ? (process.env["NEXT_PUBLIC_API_URL"] ?? "http://localhost:3001")
-    : "http://localhost:3001";
 
 type Props = {
   workspaceId: string;
@@ -19,23 +14,19 @@ export function GmailSyncSettingsSection({ workspaceId, initialSettings }: Props
   const [isPending, startTransition] = useTransition();
   const [rescanState, setRescanState] = useState<"idle" | "pending" | "done" | "error">("idle");
 
-  function handleToggle(field: keyof GmailSyncSettings) {
+  const isDirty =
+    settings.includeSpam !== initialSettings.includeSpam ||
+    settings.includePromotions !== initialSettings.includePromotions;
+
+  function handleToggle(field: "includeSpam" | "includePromotions") {
     const newValue = !settings[field];
-    // Optimistic update
     setSettings((prev) => ({ ...prev, [field]: newValue }));
 
     startTransition(async () => {
       try {
-        const res = await fetch(`${API_BASE}/workspaces/${workspaceId}/gmail-sync-settings`, {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ [field]: newValue }),
-        });
-        if (!res.ok) throw new Error(`PATCH returned ${res.status}`);
-        const updated = (await res.json()) as GmailSyncSettings;
+        const updated = await api.updateGmailSyncSettings(workspaceId, { [field]: newValue });
         setSettings(updated);
       } catch {
-        // Revert on error
         setSettings((prev) => ({ ...prev, [field]: !newValue }));
       }
     });
@@ -84,7 +75,7 @@ export function GmailSyncSettingsSection({ workspaceId, initialSettings }: Props
         <button
           className="btn-secondary"
           onClick={handleRescan}
-          disabled={isPending || rescanState === "pending"}
+          disabled={isPending || rescanState === "pending" || !isDirty}
           type="button"
         >
           {rescanState === "pending" ? "Queuing rescan…" : "Rescan inbox"}
