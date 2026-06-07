@@ -47,7 +47,7 @@ if (!gcpProject) {
   process.exit(1);
 }
 
-const SUBSCRIPTION = "amarnai-gmail-sub";
+const SUBSCRIPTION = loadEnv("GMAIL_PUBSUB_SUBSCRIPTION") ?? "amarnai-gmail-sub-dev";
 
 console.log("Starting Cloudflare quick tunnel → http://localhost:3001\n");
 
