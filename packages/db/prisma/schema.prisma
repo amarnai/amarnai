@@ -152,6 +152,8 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
+  trialUsed                Boolean               @default(false)
+
   ownedWorkspaces          Workspace[]
   workspaceMemberships     WorkspaceMember[]
   sentWorkspaceInvitations WorkspaceInvitation[]
@@ -173,7 +175,6 @@ model Workspace {
   stripePriceId          String?
   billingCycle           BillingCycle?
   trialEndsAt            DateTime?
-  trialUsed              Boolean        @default(false)
   currentPeriodEnd       DateTime?
   cancelAtPeriodEnd      Boolean        @default(false)
   paymentFailed          Boolean        @default(false)

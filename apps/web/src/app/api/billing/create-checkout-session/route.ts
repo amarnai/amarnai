@@ -27,7 +27,11 @@ export async function POST(request: Request) {
 
   const { plan, cycle, action, workspaceId, newWorkspaceName } = parsed.data;
 
-  let offerTrial = true;
+  const userRecord = await db.user.findUnique({
+    where: { id: userId },
+    select: { trialUsed: true },
+  });
+  const offerTrial = !userRecord?.trialUsed;
 
   if (action === "upgrade") {
     if (!workspaceId) {
@@ -42,7 +46,7 @@ export async function POST(request: Request) {
     }
     const workspace = await db.workspace.findUnique({
       where: { id: workspaceId },
-      select: { plan: true, trialUsed: true, stripeSubscriptionId: true },
+      select: { plan: true, stripeSubscriptionId: true },
     });
     if (!workspace) {
       return NextResponse.json({ error: "Workspace not found" }, { status: 404 });
@@ -98,18 +102,10 @@ export async function POST(request: Request) {
       });
       return NextResponse.json({ upgraded: true });
     }
-
-    if (workspace.trialUsed) offerTrial = false;
   } else {
     if (!newWorkspaceName?.trim()) {
       return NextResponse.json({ error: "newWorkspaceName required for create" }, { status: 400 });
     }
-    // Check if this user has already used a trial on any owned workspace
-    const usedTrialBefore = await db.workspace.findFirst({
-      where: { ownerUserId: userId, trialUsed: true },
-      select: { id: true },
-    });
-    if (usedTrialBefore) offerTrial = false;
   }
 
   const priceId = getPriceId(plan, cycle);

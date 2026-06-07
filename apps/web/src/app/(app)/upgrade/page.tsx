@@ -24,8 +24,8 @@ export default async function UpgradePage({
   const workspace = await getSelectedWorkspace(user.id);
   const currentPlan = planIdMap[workspace.plan] ?? "free";
 
-  const billing = await db.workspace.findUnique({
-    where: { id: workspace.id },
+  const userBilling = await db.user.findUnique({
+    where: { id: user.id },
     select: { trialUsed: true },
   });
 
@@ -45,7 +45,7 @@ export default async function UpgradePage({
         workspaceId={workspace.id}
         workspaceName={workspace.name}
         currentPlan={currentPlan}
-        trialUsed={billing?.trialUsed ?? false}
+        trialUsed={userBilling?.trialUsed ?? false}
         {...(preselectedPlan ? { preselectedPlan } : {})}
         {...(preselectedCycle ? { preselectedCycle } : {})}
       />

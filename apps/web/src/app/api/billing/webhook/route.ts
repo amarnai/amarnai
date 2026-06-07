@@ -86,21 +86,25 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
 
   if (meta.action === "upgrade") {
     if (!meta.workspaceId) return;
-    await db.workspace.update({
-      where: { id: meta.workspaceId },
-      data: {
-        plan: planValue,
-        stripeCustomerId: customerId,
-        stripeSubscriptionId: subscriptionId,
-        stripePriceId: priceId,
-        billingCycle: cycleValue,
-        trialEndsAt,
-        ...(trialEndsAt !== null ? { trialUsed: true } : {}),
-        currentPeriodEnd,
-        cancelAtPeriodEnd: false,
-        paymentFailed: false,
-      },
-    });
+    await db.$transaction([
+      db.workspace.update({
+        where: { id: meta.workspaceId },
+        data: {
+          plan: planValue,
+          stripeCustomerId: customerId,
+          stripeSubscriptionId: subscriptionId,
+          stripePriceId: priceId,
+          billingCycle: cycleValue,
+          trialEndsAt,
+          currentPeriodEnd,
+          cancelAtPeriodEnd: false,
+          paymentFailed: false,
+        },
+      }),
+      ...(trialEndsAt !== null
+        ? [db.user.update({ where: { id: meta.userId }, data: { trialUsed: true } })]
+        : []),
+    ]);
     await db.auditLog.create({
       data: {
         workspaceId: meta.workspaceId,
@@ -129,11 +133,13 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
         stripePriceId: priceId,
         billingCycle: cycleValue,
         trialEndsAt,
-        trialUsed: trialEndsAt !== null,
         currentPeriodEnd,
         members: { create: { userId: meta.userId, role: "OWNER" } },
       },
     });
+    if (trialEndsAt !== null) {
+      await db.user.update({ where: { id: meta.userId }, data: { trialUsed: true } });
+    }
     await ensureInboxNode(workspace.id);
     await db.auditLog.create({
       data: {
