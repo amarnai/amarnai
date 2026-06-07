@@ -114,7 +114,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Stripe price ID not configured" }, { status: 500 });
   }
 
-  const baseUrl = process.env.AUTH_URL ?? "http://localhost:3000";
+  const baseUrl = process.env.AUTH_URL ?? "https://app.amarnai.com";
 
   const checkoutSession = await stripe.checkout.sessions.create({
     mode: "subscription",

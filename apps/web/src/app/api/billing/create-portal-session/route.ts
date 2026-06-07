@@ -52,7 +52,7 @@ export async function POST() {
     return NextResponse.json({ error: "No billing account found" }, { status: 404 });
   }
 
-  const baseUrl = process.env.AUTH_URL ?? "http://localhost:3000";
+  const baseUrl = process.env.AUTH_URL ?? "https://app.amarnai.com";
 
   await configurePortal();
 

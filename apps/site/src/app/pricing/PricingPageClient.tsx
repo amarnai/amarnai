@@ -2,7 +2,7 @@
 
 import { PricingPlans, type PlanId, type BillingCycle } from "@amarnai/ui";
 
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://app.amarnai.com";
 
 export function PricingPageClient() {
   function handleSelectPlan(plan: PlanId, cycle: BillingCycle) {
