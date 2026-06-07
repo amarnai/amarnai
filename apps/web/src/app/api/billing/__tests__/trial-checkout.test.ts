@@ -1,5 +1,10 @@
 import { vi, describe, it, expect, beforeEach } from "vitest";
 
+const mockStripe = vi.hoisted(() => ({
+  checkout: { sessions: { create: vi.fn() } },
+  subscriptions: { retrieve: vi.fn(), update: vi.fn() },
+}));
+
 vi.mock("@/auth", () => ({ auth: vi.fn() }));
 
 vi.mock("@amarnai/db", () => ({
@@ -12,17 +17,16 @@ vi.mock("@amarnai/db", () => ({
 }));
 
 vi.mock("@/lib/stripe", () => ({
-  stripe: {
-    checkout: { sessions: { create: vi.fn() } },
-    subscriptions: { retrieve: vi.fn(), update: vi.fn() },
-  },
+  getStripe: () => mockStripe,
   getPriceId: vi.fn(),
 }));
 
 import { auth } from "@/auth";
 import { db } from "@amarnai/db";
-import { stripe, getPriceId } from "@/lib/stripe";
+import { getStripe, getPriceId } from "@/lib/stripe";
 import { POST } from "@/app/api/billing/create-checkout-session/route";
+
+const stripe = getStripe();
 
 const USER_ID = "user-1";
 const WS_ID = "ws-1";

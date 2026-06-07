@@ -1,5 +1,9 @@
 import { vi, describe, it, expect, beforeEach } from "vitest";
 
+const mockStripe = vi.hoisted(() => ({
+  subscriptions: { cancel: vi.fn(), update: vi.fn() },
+}));
+
 vi.mock("@/auth", () => ({ auth: vi.fn() }));
 
 vi.mock("@amarnai/db", () => ({
@@ -12,9 +16,7 @@ vi.mock("@amarnai/db", () => ({
 }));
 
 vi.mock("@/lib/stripe", () => ({
-  stripe: {
-    subscriptions: { cancel: vi.fn(), update: vi.fn() },
-  },
+  getStripe: () => mockStripe,
   getPriceId: vi.fn(),
 }));
 
@@ -24,9 +26,11 @@ vi.mock("@/lib/workspace", () => ({
 
 import { auth } from "@/auth";
 import { db } from "@amarnai/db";
-import { stripe } from "@/lib/stripe";
+import { getStripe } from "@/lib/stripe";
 import { getSelectedWorkspace } from "@/lib/workspace";
 import { POST } from "@/app/api/billing/cancel-subscription/route";
+
+const stripe = getStripe();
 
 const USER_ID = "user-1";
 const WS_ID = "ws-1";

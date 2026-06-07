@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { auth } from "@/auth";
 import { db } from "@amarnai/db";
-import { stripe, getPriceId } from "@/lib/stripe";
+import { getStripe, getPriceId } from "@/lib/stripe";
 
 const bodySchema = z.object({
   workspaceId: z.string().optional(),
@@ -26,6 +26,7 @@ export async function POST(request: Request) {
   }
 
   const { plan, cycle, action, workspaceId, newWorkspaceName } = parsed.data;
+  const stripe = getStripe();
 
   const userRecord = await db.user.findUnique({
     where: { id: userId },

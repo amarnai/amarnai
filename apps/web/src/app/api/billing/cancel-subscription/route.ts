@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { db } from "@amarnai/db";
-import { stripe } from "@/lib/stripe";
+import { getStripe } from "@/lib/stripe";
 import { getSelectedWorkspace } from "@/lib/workspace";
 
 export async function POST() {
@@ -29,6 +29,7 @@ export async function POST() {
     return NextResponse.json({ error: "No active subscription" }, { status: 404 });
   }
 
+  const stripe = getStripe();
   const now = new Date();
   const isTrialing = ws.trialEndsAt !== null && ws.trialEndsAt > now;
 

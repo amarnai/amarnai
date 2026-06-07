@@ -12,7 +12,7 @@ const { testStripe } = vi.hoisted(() => {
 });
 
 vi.mock("@/lib/stripe", () => ({
-  stripe: testStripe,
+  getStripe: () => testStripe,
   getPriceId: vi.fn(),
 }));
 

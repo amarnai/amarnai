@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { requireUser } from "@/lib/session";
-import { stripe } from "@/lib/stripe";
+import { getStripe } from "@/lib/stripe";
 import { db, ensureInboxNode } from "@amarnai/db";
 import { WorkspaceSetupWaiting } from "./WorkspaceSetupWaiting";
 
@@ -29,6 +29,7 @@ export default async function UpgradeSuccessPage({
 
   if (typeof session_id !== "string") redirect("/upgrade");
 
+  const stripe = getStripe();
   let session;
   try {
     session = await stripe.checkout.sessions.retrieve(session_id);

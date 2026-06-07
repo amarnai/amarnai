@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
 import type Stripe from "stripe";
-import { stripe } from "@/lib/stripe";
+import { getStripe } from "@/lib/stripe";
 import { db, ensureInboxNode } from "@amarnai/db";
 
 export async function POST(request: Request) {
+  const stripe = getStripe();
   const body = await request.text();
   const sig = request.headers.get("stripe-signature");
 
@@ -69,6 +70,7 @@ function invoiceSubscriptionId(invoice: Stripe.Invoice): string | null {
 }
 
 async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
+  const stripe = getStripe();
   const meta = session.metadata;
   if (!meta?.action || !meta.userId) return;
 

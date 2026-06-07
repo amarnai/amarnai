@@ -2,7 +2,7 @@ import { requireUser, getUserWorkspaceRole } from "@/lib/session";
 import { getSelectedWorkspace } from "@/lib/workspace";
 import { apiFor } from "@/lib/api";
 import { db } from "@amarnai/db";
-import { stripe } from "@/lib/stripe";
+import { getStripe } from "@/lib/stripe";
 import { getCollaboratorLimit } from "@amarnai/shared";
 import { GmailConnectionSection } from "./GmailConnectionSection";
 import { WorkspaceNameSection } from "./WorkspaceNameSection";
@@ -66,7 +66,7 @@ export default async function SettingsPage({ searchParams }: { searchParams: Sea
 
   if (needsSync && billing?.stripeSubscriptionId) {
     try {
-      const subscription = await stripe.subscriptions.retrieve(billing.stripeSubscriptionId);
+      const subscription = await getStripe().subscriptions.retrieve(billing.stripeSubscriptionId);
 
       if (subscription.status === "canceled") {
         // Subscription was deleted on Stripe — mirrors handleSubscriptionDeleted.

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { db } from "@amarnai/db";
-import { stripe } from "@/lib/stripe";
+import { getStripe } from "@/lib/stripe";
 import { getSelectedWorkspace } from "@/lib/workspace";
 
 // Configure the Stripe portal on first open per process — idempotent on Stripe's side.
@@ -9,6 +9,7 @@ let _portalConfigured = false;
 
 async function configurePortal(): Promise<void> {
   if (_portalConfigured) return;
+  const stripe = getStripe();
   try {
     const { data: configs } = await stripe.billingPortal.configurations.list({ limit: 10 });
     const config = configs.find((c) => c.is_default) ?? configs[0];
@@ -55,7 +56,7 @@ export async function POST() {
 
   await configurePortal();
 
-  const portalSession = await stripe.billingPortal.sessions.create({
+  const portalSession = await getStripe().billingPortal.sessions.create({
     customer: ws.stripeCustomerId,
     return_url: `${baseUrl}/settings?cancelled=true`,
   });

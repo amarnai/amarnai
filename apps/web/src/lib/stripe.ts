@@ -1,13 +1,19 @@
 import Stripe from "stripe";
 import type { PlanId, BillingCycle } from "@amarnai/ui";
 
-if (!process.env.STRIPE_SECRET_KEY) {
-  throw new Error("STRIPE_SECRET_KEY is not set");
-}
+let _stripe: Stripe | undefined;
 
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: "2026-05-27.dahlia",
-});
+export function getStripe(): Stripe {
+  if (!_stripe) {
+    if (!process.env.STRIPE_SECRET_KEY) {
+      throw new Error("STRIPE_SECRET_KEY is not set");
+    }
+    _stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+      apiVersion: "2026-05-27.dahlia",
+    });
+  }
+  return _stripe;
+}
 
 const PRICE_IDS: Record<PlanId, Record<BillingCycle, string | undefined>> = {
   free: { monthly: undefined, annual: undefined },
