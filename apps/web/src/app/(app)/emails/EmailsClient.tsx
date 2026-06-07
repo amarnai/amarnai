@@ -14,6 +14,35 @@ type RerouteTarget = { kind: "single"; threadId: string } | null;
 
 type Toast = { message: string; onUndo?: () => void };
 
+// Merge a fresh server thread list into local state without clobbering
+// in-progress draft state. Two races can occur if we blindly replace:
+//   1. The server may not yet have committed a GENERATING placeholder when
+//      ClassifyingRefresher fires, so it returns isDrafting:false even though
+//      the client already set it to true — discarding the loading indicator.
+//   2. The selected thread may fall outside the first-page window (>50 threads),
+//      causing selectedThread to become null, which unmounts ThreadPreview and
+//      loses the draftState React state.
+// The merge preserves local isDrafting/hasDraft until the server confirms the
+// final state, and re-inserts the selected thread if the server dropped it.
+function mergeThreads(fresh: ThreadItem[], prev: ThreadItem[], pinnedId: string | null): ThreadItem[] {
+  const prevMap = new Map(prev.map((t) => [t.id, t]));
+  const merged = fresh.map((t) => {
+    const existing = prevMap.get(t.id);
+    if (!existing) return t;
+    // Keep isDrafting true until the server confirms the draft is proposed
+    // (hasDraft:true means PROPOSED is in the DB, so drafting is over).
+    const isDrafting = (t.isDrafting || existing.isDrafting) && !t.hasDraft;
+    const hasDraft = t.hasDraft || existing.hasDraft;
+    return { ...t, isDrafting, hasDraft };
+  });
+  // Re-insert the selected thread if the server omitted it (pagination drop).
+  if (pinnedId && !merged.some((t) => t.id === pinnedId)) {
+    const pinned = prevMap.get(pinnedId);
+    if (pinned) merged.push(pinned);
+  }
+  return merged;
+}
+
 type Props = {
   workspaceId: string;
   currentUserId: string;
@@ -41,10 +70,19 @@ export function EmailsClient({
   const [threads, setThreads] = useState<ThreadItem[]>(initialThreads);
   const [folders] = useState<FolderItem[]>(initialFolders);
 
+  const [active, setActive] = useState<ActiveSelection>(initialActive);
+  const [selectedId, setSelectedId] = useState<string | null>(initialSelectedId);
+
+  // Always-current ref so async callbacks (SSE, fetch) can read the latest
+  // selectedId without being added to useEffect deps (which would reconnect
+  // the EventSource on every thread selection).
+  const selectedIdRef = useRef(selectedId);
+  useEffect(() => { selectedIdRef.current = selectedId; }, [selectedId]);
+
   // Sync server-rendered threads into local state after router.refresh() — e.g.
   // when ClassifyingRefresher fires.
   useEffect(() => {
-    setThreads(initialThreads);
+    setThreads((prev) => mergeThreads(initialThreads, prev, selectedIdRef.current));
   }, [initialThreads]);
 
   // Connect to the workspace SSE stream; refresh the thread list immediately
@@ -55,15 +93,13 @@ export function EmailsClient({
     );
     es.addEventListener("synced", () => {
       api.emailThreads(workspaceId).then(({ threads: fresh }) => {
-        setThreads(mapThreads(fresh));
+        setThreads((prev) => mergeThreads(mapThreads(fresh), prev, selectedIdRef.current));
       }).catch(() => {});
     });
     es.onerror = () => {};
     return () => es.close();
   }, [workspaceId]);
 
-  const [active, setActive] = useState<ActiveSelection>(initialActive);
-  const [selectedId, setSelectedId] = useState<string | null>(initialSelectedId);
   const [mobileView, setMobileView] = useState<"list" | "preview">(
     initialSelectedId ? "preview" : "list"
   );
