@@ -1,6 +1,6 @@
 import { requireUser } from "@/lib/session";
 import { getSelectedWorkspace } from "@/lib/workspace";
-import { api } from "@/lib/api";
+import { apiFor } from "@/lib/api";
 import { ConnectGmailCta } from "@/components/ConnectGmailCta";
 import { ClassifyingRefresher } from "@/components/ClassifyingRefresher";
 import { EmailsClient } from "./EmailsClient";
@@ -21,13 +21,14 @@ export default async function EmailsPage({ searchParams }: PageProps) {
   let gmailConnected = false;
   let error: string | null = null;
 
+  const userApi = apiFor(user.id);
   const [connection, threadsResult, syncStatus, nodes, edges] =
     await Promise.allSettled([
-      api.gmailConnection(workspace.id),
-      api.emailThreads(workspace.id),
-      api.syncStatus(workspace.id),
-      api.taxonomyNodes(workspace.id),
-      api.taxonomyEdges(workspace.id),
+      userApi.gmailConnection(workspace.id),
+      userApi.emailThreads(workspace.id),
+      userApi.syncStatus(workspace.id),
+      userApi.taxonomyNodes(workspace.id),
+      userApi.taxonomyEdges(workspace.id),
     ]);
 
   if (connection.status === "fulfilled") {

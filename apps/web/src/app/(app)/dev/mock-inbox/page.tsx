@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/session";
 import { getSelectedWorkspace } from "@/lib/workspace";
-import { api, type EmailThreadSummary } from "@/lib/api";
+import { apiFor, type EmailThreadSummary } from "@/lib/api";
 import { MockInboxClient } from "./MockInboxClient";
 
 export default async function MockInboxPage() {
@@ -20,7 +20,7 @@ export default async function MockInboxPage() {
   let error: string | null = null;
 
   try {
-    threads = (await api.emailThreads(workspace.id)).threads;
+    threads = (await apiFor(user.id).emailThreads(workspace.id)).threads;
   } catch (err) {
     error = err instanceof Error ? err.message : String(err);
   }

@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/session";
 import { getSelectedWorkspace } from "@/lib/workspace";
-import { api } from "@/lib/api";
+import { apiFor } from "@/lib/api";
 import { GmailDebugPanel } from "./GmailDebugPanel";
 
 export default async function GmailSortTesterPage() {
@@ -14,7 +14,7 @@ export default async function GmailSortTesterPage() {
 
   let connection = null;
   try {
-    connection = await api.gmailConnection(workspace.id);
+    connection = await apiFor(user.id).gmailConnection(workspace.id);
   } catch {
     // API unavailable
   }

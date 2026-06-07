@@ -5,42 +5,298 @@ const API_BASE = isBrowser
   ? "/api/internal"
   : (process.env["API_URL"] ?? "http://localhost:3001");
 
-function internalAuthHeader(): Record<string, string> {
-  if (isBrowser) return {}; // proxy adds auth
-  const secret = process.env["INTERNAL_API_SECRET"] ?? "dev-internal-secret";
-  return { Authorization: `Bearer ${secret}` };
-}
-
-async function apiFetch<T>(path: string, revalidate?: number): Promise<T> {
-  const next = revalidate !== undefined ? { next: { revalidate } } : { cache: "no-store" as RequestCache };
-  const res = await fetch(`${API_BASE}${path}`, { ...next, headers: internalAuthHeader() });
-  if (!res.ok) {
-    throw new Error(`API ${path} returned ${res.status}`);
+// ─── Factory ──────────────────────────────────────────────────────────────────
+// Browser calls go through the /api/internal proxy (which adds both the secret
+// and X-User-Id), so no auth headers are needed client-side.
+// Server calls must pass the authenticated user's ID so the API's
+// requireWorkspaceMember middleware can authorise workspace-scoped routes.
+function makeApi(serverUserId?: string) {
+  function internalAuthHeader(): Record<string, string> {
+    if (isBrowser) return {};
+    const secret = process.env["INTERNAL_API_SECRET"] ?? "dev-internal-secret";
+    return {
+      Authorization: `Bearer ${secret}`,
+      ...(serverUserId ? { "X-User-Id": serverUserId } : {}),
+    };
   }
-  return res.json() as Promise<T>;
-}
 
-async function apiMutate<T>(
-  path: string,
-  method: "POST" | "PATCH" | "DELETE",
-  body?: unknown
-): Promise<T> {
-  const hasBody = body !== undefined;
-  const res = await fetch(`${API_BASE}${path}`, {
-    method,
-    headers: {
-      ...internalAuthHeader(),
-      ...(hasBody ? { "Content-Type": "application/json" } : {}),
+  async function apiFetch<T>(path: string, revalidate?: number): Promise<T> {
+    const next = revalidate !== undefined ? { next: { revalidate } } : { cache: "no-store" as RequestCache };
+    const res = await fetch(`${API_BASE}${path}`, { ...next, headers: internalAuthHeader() });
+    if (!res.ok) {
+      throw new Error(`API ${path} returned ${res.status}`);
+    }
+    return res.json() as Promise<T>;
+  }
+
+  async function apiMutate<T>(
+    path: string,
+    method: "POST" | "PATCH" | "DELETE",
+    body?: unknown
+  ): Promise<T> {
+    const hasBody = body !== undefined;
+    const res = await fetch(`${API_BASE}${path}`, {
+      method,
+      headers: {
+        ...internalAuthHeader(),
+        ...(hasBody ? { "Content-Type": "application/json" } : {}),
+      },
+      body: hasBody ? JSON.stringify(body) : null,
+      cache: "no-store",
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({})) as { error?: string };
+      throw new Error(err.error ?? `API ${path} returned ${res.status}`);
+    }
+    return res.json() as Promise<T>;
+  }
+
+  return {
+    workspaces: () => apiFetch<Workspace[]>("/workspaces"),
+    gmailConnection: (workspaceId: string) =>
+      apiFetch<GmailConnection>(`/workspaces/${workspaceId}/gmail-connection`),
+    syncStatus: (workspaceId: string) =>
+      apiFetch<SyncStatus>(`/workspaces/${workspaceId}/sync-status`),
+    gmailSyncSettings: (workspaceId: string) =>
+      apiFetch<GmailSyncSettings>(`/workspaces/${workspaceId}/gmail-sync-settings`),
+    updateGmailSyncSettings: (workspaceId: string, patch: Partial<GmailSyncSettings>) =>
+      apiMutate<GmailSyncSettings>(
+        `/workspaces/${workspaceId}/gmail-sync-settings`,
+        "PATCH",
+        patch
+      ),
+    addBlacklistedEmail: (workspaceId: string, email: string) =>
+      apiMutate<GmailSyncSettings>(
+        `/workspaces/${workspaceId}/gmail-sync-settings/blacklist`,
+        "POST",
+        { email }
+      ),
+    removeBlacklistedEmail: (workspaceId: string, email: string) =>
+      apiMutate<GmailSyncSettings>(
+        `/workspaces/${workspaceId}/gmail-sync-settings/blacklist/${encodeURIComponent(email)}`,
+        "DELETE"
+      ),
+    taxonomyNodes: (workspaceId: string) =>
+      apiFetch<TaxonomyNode[]>(`/workspaces/${workspaceId}/taxonomy-nodes`),
+    createTaxonomyNode: (workspaceId: string, input: CreateTaxonomyNodeInput) =>
+      apiMutate<TaxonomyNode>(
+        `/workspaces/${workspaceId}/taxonomy-nodes`,
+        "POST",
+        input
+      ),
+    updateTaxonomyNode: (
+      workspaceId: string,
+      nodeId: string,
+      input: UpdateTaxonomyNodeInput
+    ) =>
+      apiMutate<TaxonomyNode>(
+        `/workspaces/${workspaceId}/taxonomy-nodes/${nodeId}`,
+        "PATCH",
+        input
+      ),
+    deleteTaxonomyNode: (workspaceId: string, nodeId: string) =>
+      apiMutate<{ ok: boolean }>(
+        `/workspaces/${workspaceId}/taxonomy-nodes/${nodeId}`,
+        "DELETE"
+      ),
+    taxonomyEdges: (workspaceId: string) =>
+      apiFetch<TaxonomyEdge[]>(`/workspaces/${workspaceId}/taxonomy-edges`),
+    createTaxonomyEdge: (workspaceId: string, input: CreateTaxonomyEdgeInput) =>
+      apiMutate<TaxonomyEdge>(
+        `/workspaces/${workspaceId}/taxonomy-edges`,
+        "POST",
+        input
+      ),
+    updateTaxonomyEdge: (workspaceId: string, edgeId: string, input: UpdateTaxonomyEdgeInput) =>
+      apiMutate<TaxonomyEdge>(
+        `/workspaces/${workspaceId}/taxonomy-edges/${edgeId}`,
+        "PATCH",
+        input
+      ),
+    deleteTaxonomyEdge: (workspaceId: string, edgeId: string) =>
+      apiMutate<{ ok: boolean }>(
+        `/workspaces/${workspaceId}/taxonomy-edges/${edgeId}`,
+        "DELETE"
+      ),
+    folderCounts: (workspaceId: string) =>
+      apiFetch<FolderCountsResult>(`/workspaces/${workspaceId}/folder-counts`),
+    emailThreads: (
+      workspaceId: string,
+      filters?: { nodeId?: string; status?: string; cursor?: string }
+    ) => {
+      const params = new URLSearchParams();
+      if (filters?.nodeId)  params.set("nodeId",  filters.nodeId);
+      if (filters?.status)  params.set("status",  filters.status);
+      if (filters?.cursor)  params.set("cursor",  filters.cursor);
+      const qs = params.toString();
+      // Always no-store: cursor-based pages are ephemeral and must be fresh.
+      return apiFetch<EmailThreadListResult>(
+        `/workspaces/${workspaceId}/email-threads${qs ? `?${qs}` : ""}`,
+        undefined
+      );
     },
-    body: hasBody ? JSON.stringify(body) : null,
-    cache: "no-store",
-  });
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({})) as { error?: string };
-    throw new Error(err.error ?? `API ${path} returned ${res.status}`);
-  }
-  return res.json() as Promise<T>;
+    emailThread: (workspaceId: string, threadId: string) =>
+      apiFetch<EmailThreadDetail>(
+        `/workspaces/${workspaceId}/email-threads/${threadId}`
+      ),
+    threadBodies: (workspaceId: string, threadId: string) =>
+      apiFetch<{ bodies: Record<string, string | null> }>(
+        `/workspaces/${workspaceId}/email-threads/${threadId}/bodies`
+      ),
+    mockInboxEvent: (workspaceId: string, input: MockInboxEventInput) =>
+      apiMutate<MockInboxResult>(
+        `/dev/workspaces/${workspaceId}/mock-inbox-event`,
+        "POST",
+        input
+      ),
+    candidateNodes: (workspaceId: string, input: CandidateNodeInput) =>
+      apiMutate<CandidateNodeResult>(
+        `/dev/workspaces/${workspaceId}/candidate-paths`,
+        "POST",
+        input
+      ),
+    llmNodeSelection: (workspaceId: string, input: CandidateNodeInput) =>
+      apiMutate<LLMNodeSelectionResult>(
+        `/dev/workspaces/${workspaceId}/llm-path-selection`,
+        "POST",
+        input
+      ),
+    gmailRecentThreads: (workspaceId: string) =>
+      apiFetch<GmailRecentThreadsResult>(`/dev/workspaces/${workspaceId}/gmail-recent-threads`),
+    sortGmailThread: (workspaceId: string, gmailThreadId: string) =>
+      apiMutate<GmailSortResult>(
+        `/dev/workspaces/${workspaceId}/gmail-sort-thread`,
+        "POST",
+        { gmailThreadId }
+      ),
+    triageThread: (
+      workspaceId: string,
+      threadId: string,
+      action: { action: "approve" } | { action: "move"; nodeId: string }
+    ) =>
+      apiMutate<{ ok: boolean; triageStatus: TriageStatus }>(
+        `/workspaces/${workspaceId}/email-threads/${threadId}/triage`,
+        "PATCH",
+        action
+      ),
+    markThreadDone: (workspaceId: string, threadId: string, userId: string) =>
+      apiMutate<{ ok: boolean; doneMark: DoneMark }>(
+        `/workspaces/${workspaceId}/email-threads/${threadId}/resolve`,
+        "POST",
+        { userId }
+      ),
+    unmarkThreadDone: (workspaceId: string, threadId: string, userId: string) =>
+      apiMutate<{ ok: boolean; doneMark: null }>(
+        `/workspaces/${workspaceId}/email-threads/${threadId}/resolve`,
+        "DELETE",
+        { userId }
+      ),
+    aiClassify: (workspaceId: string, threadId: string) =>
+      apiMutate<QueuedResult>(
+        `/workspaces/${workspaceId}/email-threads/${threadId}/ai-classify`,
+        "POST"
+      ),
+    aiTriage: (workspaceId: string, threadId: string) =>
+      apiMutate<QueuedResult>(
+        `/workspaces/${workspaceId}/email-threads/${threadId}/ai-triage`,
+        "POST"
+      ),
+    mockClassifyThread: (workspaceId: string, threadId: string) =>
+      apiMutate<ClassifyResult>(
+        `/workspaces/${workspaceId}/email-threads/${threadId}/mock-classify`,
+        "POST"
+      ),
+    sweepInbox: (workspaceId: string) =>
+      apiMutate<{ ok: boolean; workspaceId: string }>(
+        `/workspaces/${workspaceId}/sweep-inbox`,
+        "POST"
+      ),
+    pauseSorting: (workspaceId: string) =>
+      apiMutate<{ sortingPaused: boolean }>(
+        `/workspaces/${workspaceId}/sorting-queue/pause`,
+        "POST"
+      ),
+    resumeSorting: (workspaceId: string) =>
+      apiMutate<{ sortingPaused: boolean; requeued: number }>(
+        `/workspaces/${workspaceId}/sorting-queue/resume`,
+        "POST"
+      ),
+    cancelClassify: (workspaceId: string, threadId: string) =>
+      apiMutate<{ cancelled: boolean; jobRemoved: boolean }>(
+        `/workspaces/${workspaceId}/email-threads/${threadId}/classify`,
+        "DELETE"
+      ),
+    startSorting: (workspaceId: string) =>
+      apiMutate<{ ok: boolean; workspaceId: string }>(
+        `/workspaces/${workspaceId}/sorting-queue/start`,
+        "POST"
+      ),
+    generateDraft: async (
+      workspaceId: string,
+      threadId: string,
+      opts: { force?: boolean } = {}
+    ): Promise<{ draft: Draft; isNew: boolean } | { generating: true } | { quotaExceeded: true; used: number; limit: number; resetsAt: string }> => {
+      const url = `${API_BASE}/workspaces/${workspaceId}/email-threads/${threadId}/generate-draft`;
+      const res = await fetch(url, {
+        method: "POST",
+        cache: "no-store",
+        headers: {
+          ...internalAuthHeader(),
+          ...(opts.force ? { "X-Force-Regenerate": "1" } : {}),
+        },
+      });
+      if (res.status === 429) {
+        const body = await res.json().catch(() => ({})) as Record<string, unknown>;
+        return {
+          quotaExceeded: true as const,
+          used: typeof body["used"] === "number" ? body["used"] : 0,
+          limit: typeof body["limit"] === "number" ? body["limit"] : 0,
+          resetsAt: typeof body["resetsAt"] === "string" ? body["resetsAt"] : "",
+        };
+      }
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({})) as { error?: string };
+        throw new Error(err.error ?? `API returned ${res.status}`);
+      }
+      const data = await res.json() as { draft: Draft } | { generating: true };
+      if ("draft" in data) {
+        return { draft: data.draft, isNew: res.status === 201 };
+      }
+      return data;
+    },
+    draftQuota: (workspaceId: string) =>
+      apiFetch<{ used: number; limit: number; resetsAt: string }>(
+        `/workspaces/${workspaceId}/draft-quota`
+      ),
+    threadSortQuota: (workspaceId: string) =>
+      apiFetch<{ used: number; limit: number; resetsAt: string }>(
+        `/workspaces/${workspaceId}/thread-sort-quota`
+      ),
+    threadDrafts: (workspaceId: string, threadId: string) =>
+      apiFetch<{ drafts: Draft[] }>(
+        `/workspaces/${workspaceId}/email-threads/${threadId}/drafts`
+      ),
+    dismissDraft: (workspaceId: string, threadId: string, draftId: string) =>
+      apiMutate<{ ok: boolean }>(
+        `/workspaces/${workspaceId}/email-threads/${threadId}/drafts/${draftId}`,
+        "DELETE"
+      ),
+    toggleDraftSent: (workspaceId: string, threadId: string, draftId: string, sent: boolean) =>
+      apiMutate<{ draft: Draft }>(
+        `/workspaces/${workspaceId}/email-threads/${threadId}/drafts/${draftId}`,
+        "PATCH",
+        { status: sent ? "SENT" : "PROPOSED" }
+      ),
+  };
 }
+
+// Browser and server-action callers that already have auth context injected
+// by the /api/internal proxy use this default instance.
+export const api = makeApi();
+
+// Server components that call workspace-scoped API routes directly must pass
+// the authenticated user's ID so requireWorkspaceMember can authorise the request.
+export const apiFor = (userId: string) => makeApi(userId);
 
 // ─── Shared sub-types ─────────────────────────────────────────────────────────
 
@@ -398,244 +654,4 @@ export type Draft = {
   body: string;
   status: "GENERATING" | "PROPOSED" | "SENT" | string;
   createdAt: string;
-};
-
-// ─── API helpers ──────────────────────────────────────────────────────────────
-
-export const api = {
-  workspaces: () => apiFetch<Workspace[]>("/workspaces"),
-  gmailConnection: (workspaceId: string) =>
-    apiFetch<GmailConnection>(`/workspaces/${workspaceId}/gmail-connection`),
-  syncStatus: (workspaceId: string) =>
-    apiFetch<SyncStatus>(`/workspaces/${workspaceId}/sync-status`),
-  gmailSyncSettings: (workspaceId: string) =>
-    apiFetch<GmailSyncSettings>(`/workspaces/${workspaceId}/gmail-sync-settings`),
-  updateGmailSyncSettings: (workspaceId: string, patch: Partial<GmailSyncSettings>) =>
-    apiMutate<GmailSyncSettings>(
-      `/workspaces/${workspaceId}/gmail-sync-settings`,
-      "PATCH",
-      patch
-    ),
-  addBlacklistedEmail: (workspaceId: string, email: string) =>
-    apiMutate<GmailSyncSettings>(
-      `/workspaces/${workspaceId}/gmail-sync-settings/blacklist`,
-      "POST",
-      { email }
-    ),
-  removeBlacklistedEmail: (workspaceId: string, email: string) =>
-    apiMutate<GmailSyncSettings>(
-      `/workspaces/${workspaceId}/gmail-sync-settings/blacklist/${encodeURIComponent(email)}`,
-      "DELETE"
-    ),
-  taxonomyNodes: (workspaceId: string) =>
-    apiFetch<TaxonomyNode[]>(`/workspaces/${workspaceId}/taxonomy-nodes`),
-  createTaxonomyNode: (workspaceId: string, input: CreateTaxonomyNodeInput) =>
-    apiMutate<TaxonomyNode>(
-      `/workspaces/${workspaceId}/taxonomy-nodes`,
-      "POST",
-      input
-    ),
-  updateTaxonomyNode: (
-    workspaceId: string,
-    nodeId: string,
-    input: UpdateTaxonomyNodeInput
-  ) =>
-    apiMutate<TaxonomyNode>(
-      `/workspaces/${workspaceId}/taxonomy-nodes/${nodeId}`,
-      "PATCH",
-      input
-    ),
-  deleteTaxonomyNode: (workspaceId: string, nodeId: string) =>
-    apiMutate<{ ok: boolean }>(
-      `/workspaces/${workspaceId}/taxonomy-nodes/${nodeId}`,
-      "DELETE"
-    ),
-  taxonomyEdges: (workspaceId: string) =>
-    apiFetch<TaxonomyEdge[]>(`/workspaces/${workspaceId}/taxonomy-edges`),
-  createTaxonomyEdge: (workspaceId: string, input: CreateTaxonomyEdgeInput) =>
-    apiMutate<TaxonomyEdge>(
-      `/workspaces/${workspaceId}/taxonomy-edges`,
-      "POST",
-      input
-    ),
-  updateTaxonomyEdge: (workspaceId: string, edgeId: string, input: UpdateTaxonomyEdgeInput) =>
-    apiMutate<TaxonomyEdge>(
-      `/workspaces/${workspaceId}/taxonomy-edges/${edgeId}`,
-      "PATCH",
-      input
-    ),
-  deleteTaxonomyEdge: (workspaceId: string, edgeId: string) =>
-    apiMutate<{ ok: boolean }>(
-      `/workspaces/${workspaceId}/taxonomy-edges/${edgeId}`,
-      "DELETE"
-    ),
-  folderCounts: (workspaceId: string) =>
-    apiFetch<FolderCountsResult>(`/workspaces/${workspaceId}/folder-counts`),
-  emailThreads: (
-    workspaceId: string,
-    filters?: { nodeId?: string; status?: string; cursor?: string }
-  ) => {
-    const params = new URLSearchParams();
-    if (filters?.nodeId)  params.set("nodeId",  filters.nodeId);
-    if (filters?.status)  params.set("status",  filters.status);
-    if (filters?.cursor)  params.set("cursor",  filters.cursor);
-    const qs = params.toString();
-    // Always no-store: cursor-based pages are ephemeral and must be fresh.
-    return apiFetch<EmailThreadListResult>(
-      `/workspaces/${workspaceId}/email-threads${qs ? `?${qs}` : ""}`,
-      undefined
-    );
-  },
-  emailThread: (workspaceId: string, threadId: string) =>
-    apiFetch<EmailThreadDetail>(
-      `/workspaces/${workspaceId}/email-threads/${threadId}`
-    ),
-  threadBodies: (workspaceId: string, threadId: string) =>
-    apiFetch<{ bodies: Record<string, string | null> }>(
-      `/workspaces/${workspaceId}/email-threads/${threadId}/bodies`
-    ),
-  mockInboxEvent: (workspaceId: string, input: MockInboxEventInput) =>
-    apiMutate<MockInboxResult>(
-      `/dev/workspaces/${workspaceId}/mock-inbox-event`,
-      "POST",
-      input
-    ),
-  candidateNodes: (workspaceId: string, input: CandidateNodeInput) =>
-    apiMutate<CandidateNodeResult>(
-      `/dev/workspaces/${workspaceId}/candidate-paths`,
-      "POST",
-      input
-    ),
-  llmNodeSelection: (workspaceId: string, input: CandidateNodeInput) =>
-    apiMutate<LLMNodeSelectionResult>(
-      `/dev/workspaces/${workspaceId}/llm-path-selection`,
-      "POST",
-      input
-    ),
-  gmailRecentThreads: (workspaceId: string) =>
-    apiFetch<GmailRecentThreadsResult>(`/dev/workspaces/${workspaceId}/gmail-recent-threads`),
-  sortGmailThread: (workspaceId: string, gmailThreadId: string) =>
-    apiMutate<GmailSortResult>(
-      `/dev/workspaces/${workspaceId}/gmail-sort-thread`,
-      "POST",
-      { gmailThreadId }
-    ),
-  triageThread: (
-    workspaceId: string,
-    threadId: string,
-    action: { action: "approve" } | { action: "move"; nodeId: string }
-  ) =>
-    apiMutate<{ ok: boolean; triageStatus: TriageStatus }>(
-      `/workspaces/${workspaceId}/email-threads/${threadId}/triage`,
-      "PATCH",
-      action
-    ),
-  markThreadDone: (workspaceId: string, threadId: string, userId: string) =>
-    apiMutate<{ ok: boolean; doneMark: DoneMark }>(
-      `/workspaces/${workspaceId}/email-threads/${threadId}/resolve`,
-      "POST",
-      { userId }
-    ),
-  unmarkThreadDone: (workspaceId: string, threadId: string, userId: string) =>
-    apiMutate<{ ok: boolean; doneMark: null }>(
-      `/workspaces/${workspaceId}/email-threads/${threadId}/resolve`,
-      "DELETE",
-      { userId }
-    ),
-  aiClassify: (workspaceId: string, threadId: string) =>
-    apiMutate<QueuedResult>(
-      `/workspaces/${workspaceId}/email-threads/${threadId}/ai-classify`,
-      "POST"
-    ),
-  aiTriage: (workspaceId: string, threadId: string) =>
-    apiMutate<QueuedResult>(
-      `/workspaces/${workspaceId}/email-threads/${threadId}/ai-triage`,
-      "POST"
-    ),
-  mockClassifyThread: (workspaceId: string, threadId: string) =>
-    apiMutate<ClassifyResult>(
-      `/workspaces/${workspaceId}/email-threads/${threadId}/mock-classify`,
-      "POST"
-    ),
-  sweepInbox: (workspaceId: string) =>
-    apiMutate<{ ok: boolean; workspaceId: string }>(
-      `/workspaces/${workspaceId}/sweep-inbox`,
-      "POST"
-    ),
-  pauseSorting: (workspaceId: string) =>
-    apiMutate<{ sortingPaused: boolean }>(
-      `/workspaces/${workspaceId}/sorting-queue/pause`,
-      "POST"
-    ),
-  resumeSorting: (workspaceId: string) =>
-    apiMutate<{ sortingPaused: boolean; requeued: number }>(
-      `/workspaces/${workspaceId}/sorting-queue/resume`,
-      "POST"
-    ),
-  cancelClassify: (workspaceId: string, threadId: string) =>
-    apiMutate<{ cancelled: boolean; jobRemoved: boolean }>(
-      `/workspaces/${workspaceId}/email-threads/${threadId}/classify`,
-      "DELETE"
-    ),
-  startSorting: (workspaceId: string) =>
-    apiMutate<{ ok: boolean; workspaceId: string }>(
-      `/workspaces/${workspaceId}/sorting-queue/start`,
-      "POST"
-    ),
-  generateDraft: async (
-    workspaceId: string,
-    threadId: string,
-    opts: { force?: boolean } = {}
-  ): Promise<{ draft: Draft; isNew: boolean } | { generating: true } | { quotaExceeded: true; used: number; limit: number; resetsAt: string }> => {
-    const url = `${API_BASE}/workspaces/${workspaceId}/email-threads/${threadId}/generate-draft`;
-    const res = await fetch(url, {
-      method: "POST",
-      cache: "no-store",
-      headers: {
-        ...internalAuthHeader(),
-        ...(opts.force ? { "X-Force-Regenerate": "1" } : {}),
-      },
-    });
-    if (res.status === 429) {
-      const body = await res.json().catch(() => ({})) as Record<string, unknown>;
-      return {
-        quotaExceeded: true as const,
-        used: typeof body["used"] === "number" ? body["used"] : 0,
-        limit: typeof body["limit"] === "number" ? body["limit"] : 0,
-        resetsAt: typeof body["resetsAt"] === "string" ? body["resetsAt"] : "",
-      };
-    }
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({})) as { error?: string };
-      throw new Error(err.error ?? `API returned ${res.status}`);
-    }
-    const data = await res.json() as { draft: Draft } | { generating: true };
-    if ("draft" in data) {
-      return { draft: data.draft, isNew: res.status === 201 };
-    }
-    return data;
-  },
-  draftQuota: (workspaceId: string) =>
-    apiFetch<{ used: number; limit: number; resetsAt: string }>(
-      `/workspaces/${workspaceId}/draft-quota`
-    ),
-  threadSortQuota: (workspaceId: string) =>
-    apiFetch<{ used: number; limit: number; resetsAt: string }>(
-      `/workspaces/${workspaceId}/thread-sort-quota`
-    ),
-  threadDrafts: (workspaceId: string, threadId: string) =>
-    apiFetch<{ drafts: Draft[] }>(
-      `/workspaces/${workspaceId}/email-threads/${threadId}/drafts`
-    ),
-  dismissDraft: (workspaceId: string, threadId: string, draftId: string) =>
-    apiMutate<{ ok: boolean }>(
-      `/workspaces/${workspaceId}/email-threads/${threadId}/drafts/${draftId}`,
-      "DELETE"
-    ),
-  toggleDraftSent: (workspaceId: string, threadId: string, draftId: string, sent: boolean) =>
-    apiMutate<{ draft: Draft }>(
-      `/workspaces/${workspaceId}/email-threads/${threadId}/drafts/${draftId}`,
-      "PATCH",
-      { status: sent ? "SENT" : "PROPOSED" }
-    ),
 };

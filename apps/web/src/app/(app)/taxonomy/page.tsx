@@ -1,6 +1,6 @@
 import { requireUser, getUserWorkspaceRole } from "@/lib/session";
 import { getSelectedWorkspace } from "@/lib/workspace";
-import { api, type TaxonomyNode, type TaxonomyEdge } from "@/lib/api";
+import { apiFor, type TaxonomyNode, type TaxonomyEdge } from "@/lib/api";
 import { TaxonomyClient } from "./TaxonomyClient";
 
 export default async function TaxonomyPage() {
@@ -16,8 +16,8 @@ export default async function TaxonomyPage() {
 
   try {
     [nodes, edges] = await Promise.all([
-      api.taxonomyNodes(workspace.id),
-      api.taxonomyEdges(workspace.id),
+      apiFor(user.id).taxonomyNodes(workspace.id),
+      apiFor(user.id).taxonomyEdges(workspace.id),
     ]);
   } catch (err) {
     error = err instanceof Error ? err.message : String(err);

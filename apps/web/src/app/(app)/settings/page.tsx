@@ -1,6 +1,6 @@
 import { requireUser, getUserWorkspaceRole } from "@/lib/session";
 import { getSelectedWorkspace } from "@/lib/workspace";
-import { api } from "@/lib/api";
+import { apiFor } from "@/lib/api";
 import { db } from "@amarnai/db";
 import { stripe } from "@/lib/stripe";
 import { getCollaboratorLimit } from "@amarnai/shared";
@@ -29,11 +29,12 @@ export default async function SettingsPage({ searchParams }: { searchParams: Sea
   let connection = null;
   let syncStatus = null;
   let syncSettings = null;
+  const userApi = apiFor(user.id);
   try {
     [connection, syncStatus, syncSettings] = await Promise.all([
-      api.gmailConnection(workspace.id),
-      api.syncStatus(workspace.id),
-      api.gmailSyncSettings(workspace.id),
+      userApi.gmailConnection(workspace.id),
+      userApi.syncStatus(workspace.id),
+      userApi.gmailSyncSettings(workspace.id),
     ]);
   } catch {
     // API unavailable — show disconnected state
@@ -174,8 +175,8 @@ export default async function SettingsPage({ searchParams }: { searchParams: Sea
 
   const [draftQuota, threadSortQuota] = isAdmin
     ? await Promise.all([
-        api.draftQuota(workspace.id).catch(() => null),
-        api.threadSortQuota(workspace.id).catch(() => null),
+        userApi.draftQuota(workspace.id).catch(() => null),
+        userApi.threadSortQuota(workspace.id).catch(() => null),
       ])
     : [null, null];
 
