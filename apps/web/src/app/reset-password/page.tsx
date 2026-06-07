@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Suspense } from "react";
 import { resetPasswordAction } from "@/actions/auth";
+import { AuthShell } from "@/components/AuthShell";
 
 function ResetPasswordForm() {
   const token = useSearchParams().get("token") ?? "";
@@ -57,14 +58,10 @@ function ResetPasswordForm() {
 
 export default function ResetPasswordPage() {
   return (
-    <div className="sign-in-page">
-      <div className="sign-in-card">
-        <h1 className="sign-in-title">New password</h1>
-        <p className="sign-in-subtitle">Choose a new password for your account.</p>
-        <Suspense>
-          <ResetPasswordForm />
-        </Suspense>
-      </div>
-    </div>
+    <AuthShell title="New password" subtitle="Choose a new password for your account.">
+      <Suspense>
+        <ResetPasswordForm />
+      </Suspense>
+    </AuthShell>
   );
 }
