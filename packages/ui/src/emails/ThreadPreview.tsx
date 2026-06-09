@@ -104,7 +104,7 @@ export function ThreadPreview({
       <div className="em-preview-scroll">
         <h2 className="em-preview-subject">
           {thread.subject}
-          <Tooltip content="Open in Gmail">
+          <Tooltip content="Open in Gmail" placement="bottom">
             <a
               href={`https://mail.google.com/mail/u/0/#all/${thread.providerThreadId}`}
               target="_blank"
