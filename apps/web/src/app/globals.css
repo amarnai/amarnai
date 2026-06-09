@@ -5552,3 +5552,123 @@ a {
     padding: 20px 16px 0;
   }
 }
+
+/* ─── 404 page ────────────────────────────────────────────────────────────── */
+
+.page-404 {
+  min-height: 100vh;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+}
+
+.page-404-nav {
+  padding: 24px 48px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  width: fit-content;
+}
+
+.page-404-nav-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+}
+
+.page-404-center {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 24px 60px;
+}
+
+/* vertical stack: mascot on top, card below with overlap */
+.page-404-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 420px;
+}
+
+.page-404-mascot {
+  width: 300px;
+  position: relative;
+  z-index: 1;
+  /* pull the card up over Aziru's lower body */
+  margin-bottom: -130px;
+  flex-shrink: 0;
+}
+
+.page-404-mascot img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.page-404-card {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-2);
+  /* top padding clears the overlap so text starts below Aziru's torso */
+  padding: 40px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.page-404-code {
+  font-size: 80px;
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.page-404-heading {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.25;
+  margin-bottom: 0px;
+}
+
+.page-404-subtext {
+  font-size: 14px;
+  color: var(--ink-3);
+  line-height: 1.65;
+  max-width: 320px;
+}
+
+@media (max-width: 480px) {
+  .page-404-nav {
+    padding: 20px 24px;
+  }
+
+  .page-404-mascot {
+    width: 220px;
+    margin-bottom: -105px;
+  }
+
+  .page-404-card {
+    padding: 32px 28px 32px;
+  }
+
+  .page-404-code {
+    font-size: 64px;
+  }
+
+  .page-404-heading {
+    font-size: 20px;
+  }
+}
