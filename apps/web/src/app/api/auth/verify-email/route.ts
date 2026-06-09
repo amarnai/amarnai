@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@amarnai/db";
+import { auth, unstable_update } from "@/auth";
 import { getOrCreateDefaultWorkspace } from "@/lib/workspace";
 
 export async function GET(req: NextRequest) {
@@ -29,6 +30,14 @@ export async function GET(req: NextRequest) {
   await getOrCreateDefaultWorkspace(record.userId);
 
   await db.verificationToken.delete({ where: { token } });
+
+  // If the user is signed in on this browser, refresh the JWT so the
+  // middleware sees isEmailVerified: true immediately, then go straight to the app.
+  const session = await auth();
+  if (session?.user?.id === record.userId) {
+    await unstable_update({});
+    return NextResponse.redirect(new URL("/emails", req.url));
+  }
 
   signInUrl.searchParams.set("verified", "1");
   return NextResponse.redirect(signInUrl);
