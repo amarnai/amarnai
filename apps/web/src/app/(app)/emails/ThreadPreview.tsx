@@ -215,7 +215,7 @@ export function ThreadPreview({
           Back
         </button>
         <span className="em-preview-spacer" />
-        <Tooltip content="Close preview">
+        <Tooltip content="Close preview" placement="left">
           <button
             type="button"
             className="em-icon-btn"
