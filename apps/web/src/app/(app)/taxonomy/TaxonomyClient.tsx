@@ -51,6 +51,7 @@ import {
   type GraphSnapshot,
 } from "./useTaxonomyHistory";
 import { TaxonomyNodeCardBase } from "@amarnai/ui/taxonomy";
+import { Tooltip } from "@amarnai/ui";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -315,16 +316,18 @@ function NodeForm({
             </button>
             {node && !node.isRoot && onDelete && (
               deleteDisabledReason != null ? (
-                <span title={deleteDisabledReason} style={{ display: "inline-block", cursor: "not-allowed" }}>
-                  <button
-                    className="btn-danger"
-                    type="button"
-                    disabled
-                    style={{ pointerEvents: "none" }}
-                  >
-                    Delete
-                  </button>
-                </span>
+                <Tooltip content={deleteDisabledReason ?? ""}>
+                  <span style={{ display: "inline-block", cursor: "not-allowed" }}>
+                    <button
+                      className="btn-danger"
+                      type="button"
+                      disabled
+                      style={{ pointerEvents: "none" }}
+                    >
+                      Delete
+                    </button>
+                  </span>
+                </Tooltip>
               ) : (
                 <button
                   className="btn-danger"
@@ -854,22 +857,24 @@ function TaxonomyCanvasInner({
           >
             + Create Edge
           </button>
-          <button
-            className="btn-ghost"
-            onClick={handleUndo}
-            disabled={!history.canUndo || submitting}
-            title="Undo"
-          >
-            ↶
-          </button>
-          <button
-            className="btn-ghost"
-            onClick={handleRedo}
-            disabled={!history.canRedo || submitting}
-            title="Redo"
-          >
-            ↷
-          </button>
+          <Tooltip content="Undo">
+            <button
+              className="btn-ghost"
+              onClick={handleUndo}
+              disabled={!history.canUndo || submitting}
+            >
+              ↶
+            </button>
+          </Tooltip>
+          <Tooltip content="Redo">
+            <button
+              className="btn-ghost"
+              onClick={handleRedo}
+              disabled={!history.canRedo || submitting}
+            >
+              ↷
+            </button>
+          </Tooltip>
         </div>
       )}
 

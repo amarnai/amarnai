@@ -3,6 +3,7 @@
 import { Handle, Position, type NodeProps, type Node } from "@xyflow/react";
 import type { TaxonomyNode } from "@amarnai/shared";
 import type { IgnoredReason } from "./utils.js";
+import { Tooltip } from "../Tooltip.js";
 
 export type TaxonomyNodeData = { node: TaxonomyNode; ignoredReason: IgnoredReason };
 export type TaxonomyRFNode = Node<TaxonomyNodeData, "taxonomy">;
@@ -24,10 +25,9 @@ export function TaxonomyNodeCardBase({
   selected = false,
   title,
 }: TaxonomyNodeCardBaseProps) {
-  return (
+  const card = (
     <div
       className={`taxonomy-node-card${selected ? " selected" : ""}${ignored ? " unreachable" : ""}`}
-      title={title}
     >
       {!isRoot && <Handle type="target" position={Position.Left} />}
       <div className="node-name">{name}</div>
@@ -39,6 +39,8 @@ export function TaxonomyNodeCardBase({
       <Handle type="source" position={Position.Right} />
     </div>
   );
+
+  return title ? <Tooltip content={title}>{card}</Tooltip> : card;
 }
 
 export function TaxonomyNodeCard({ data }: NodeProps<TaxonomyRFNode>) {

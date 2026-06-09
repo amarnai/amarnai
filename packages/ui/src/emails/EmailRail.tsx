@@ -6,6 +6,7 @@ import type { ActiveSelection, ThreadItem, SyncInfo } from "./types.js";
 import { QueueList } from "./QueueList.js";
 import { BackfillCard } from "./BackfillCard.js";
 import { buildFolderCounts } from "./selection.js";
+import { Tooltip } from "../Tooltip.js";
 
 export interface EmailRailProps {
   threads: ThreadItem[];
@@ -44,10 +45,12 @@ export function EmailRail({
         <div className="em-rail-head-top">
           <h2>Mail</h2>
           {syncInfo?.pushEnabled && (
-            <div className="em-sync-chip" title="Gmail live sync active">
-              <span className="em-sync-dot" />
-              <span>Live</span>
-            </div>
+            <Tooltip content="Gmail live sync active" placement="bottom">
+              <div className="em-sync-chip">
+                <span className="em-sync-dot" />
+                <span>Live</span>
+              </div>
+            </Tooltip>
           )}
         </div>
 
@@ -82,17 +85,18 @@ export function EmailRail({
         <div className="em-section-label">
           <span>Folders</span>
           {onNewFolder && (
-            <button
-              type="button"
-              className="em-add-btn"
-              title="New folder"
-              onClick={onNewFolder}
-              aria-label="New folder"
-            >
-              <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden>
-                <path d="M5 1.5v7M1.5 5h7" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
-              </svg>
-            </button>
+            <Tooltip content="New folder">
+              <button
+                type="button"
+                className="em-add-btn"
+                onClick={onNewFolder}
+                aria-label="New folder"
+              >
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden>
+                  <path d="M5 1.5v7M1.5 5h7" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
+                </svg>
+              </button>
+            </Tooltip>
           )}
         </div>
 

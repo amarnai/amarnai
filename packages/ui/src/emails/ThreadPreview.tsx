@@ -7,6 +7,7 @@ import { RationaleCard } from "./RationaleCard.js";
 import { PreviewDoneBar } from "./PreviewDoneBar.js";
 import { MessageCard } from "./MessageCard.js";
 import { SuggestedDraftCard } from "./SuggestedDraftCard.js";
+import { Tooltip } from "../Tooltip.js";
 
 export interface ThreadPreviewProps {
   thread: ThreadItem;
@@ -85,35 +86,37 @@ export function ThreadPreview({
         )}
         <span className="em-preview-spacer" />
         {onClose && (
-          <button
-            type="button"
-            className="em-icon-btn"
-            title="Close preview"
-            aria-label="Close preview"
-            onClick={onClose}
-          >
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
-              <path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
-            </svg>
-          </button>
+          <Tooltip content="Close preview">
+            <button
+              type="button"
+              className="em-icon-btn"
+              aria-label="Close preview"
+              onClick={onClose}
+            >
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
+                <path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+              </svg>
+            </button>
+          </Tooltip>
         )}
       </div>
 
       <div className="em-preview-scroll">
         <h2 className="em-preview-subject">
           {thread.subject}
-          <a
-            href={`https://mail.google.com/mail/u/0/#all/${thread.providerThreadId}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="em-preview-gmail-link"
-            title="Open in Gmail"
-            aria-label="Open in Gmail"
-          >
-            <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden>
-              <path d="M5 2H2a1 1 0 00-1 1v7a1 1 0 001 1h7a1 1 0 001-1V7M7.5 1H11v3.5M11 1L5.5 6.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </a>
+          <Tooltip content="Open in Gmail">
+            <a
+              href={`https://mail.google.com/mail/u/0/#all/${thread.providerThreadId}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="em-preview-gmail-link"
+              aria-label="Open in Gmail"
+            >
+              <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden>
+                <path d="M5 2H2a1 1 0 00-1 1v7a1 1 0 001 1h7a1 1 0 001-1V7M7.5 1H11v3.5M11 1L5.5 6.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </a>
+          </Tooltip>
         </h2>
 
         {(onMarkDone || onUnmarkDone) && (
