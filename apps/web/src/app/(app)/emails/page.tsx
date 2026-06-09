@@ -36,12 +36,7 @@ export default async function EmailsPage({ searchParams }: PageProps) {
   }
 
   if (!gmailConnected) {
-    return (
-      <div style={{ padding: "40px 32px" }}>
-        <h1>Emails</h1>
-        <ConnectGmailCta workspaceId={workspace.id} />
-      </div>
-    );
+    return <ConnectGmailCta workspaceId={workspace.id} />;
   }
 
   if (

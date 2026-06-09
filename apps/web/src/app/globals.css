@@ -1709,22 +1709,60 @@ a {
 
 .connect-gmail-cta {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  gap: 14px;
-  padding: 60px 24px;
-  text-align: center;
+  gap: 40px;
+  padding: 64px 48px;
+  max-width: 680px;
+}
+
+.connect-gmail-cta-mascot {
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-end;
+  filter: drop-shadow(0 8px 24px oklch(20% 0.01 80 / 0.10));
+}
+
+.connect-gmail-cta-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
 }
 
 .connect-gmail-cta-title {
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 22px;
+  font-weight: 700;
   color: var(--color-foreground);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
 }
 
 .connect-gmail-cta-description {
   color: var(--color-muted);
-  max-width: 360px;
+  font-size: 14px;
+  line-height: 1.6;
+  max-width: 340px;
+}
+
+.connect-gmail-cta-btn {
+  margin-top: 4px;
+  padding: 10px 22px;
+  font-size: 14px;
+}
+
+@media (max-width: 560px) {
+  .connect-gmail-cta {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 48px 24px;
+    gap: 24px;
+  }
+
+  .connect-gmail-cta-body {
+    align-items: center;
+  }
 }
 
 .gmail-address {
