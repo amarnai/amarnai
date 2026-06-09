@@ -122,7 +122,7 @@ export async function GET(req: NextRequest) {
   // provides a fallback for sync, and the worker's daily renewal covers watch.
   const apiBase = process.env["API_URL"] ?? "http://localhost:3001";
   const internalSecret = process.env["INTERNAL_API_SECRET"] ?? "dev-internal-secret";
-  const authHeader = { Authorization: `Bearer ${internalSecret}` };
+  const authHeader = { Authorization: `Bearer ${internalSecret}`, "X-User-Id": user.id };
 
   fetch(`${apiBase}/workspaces/${workspaceId}/trigger-sync`, {
     method: "POST",

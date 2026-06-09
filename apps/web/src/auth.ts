@@ -109,7 +109,7 @@ export const { handlers, auth, signIn, signOut, unstable_update } = NextAuth({
           if (isNew) {
             const apiBase = process.env["API_URL"] ?? "http://localhost:3001";
             const internalSecret = process.env["INTERNAL_API_SECRET"] ?? "dev-internal-secret";
-            const authHeader = { Authorization: `Bearer ${internalSecret}` };
+            const authHeader = { Authorization: `Bearer ${internalSecret}`, "X-User-Id": dbUser.id };
 
             fetch(`${apiBase}/workspaces/${workspace.id}/trigger-sync`, {
               method: "POST",
