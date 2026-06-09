@@ -1707,13 +1707,25 @@ a {
   margin: 0;
 }
 
+.connect-gmail-cta-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* fill main's content area: 100vh minus main's 32px top + 32px bottom padding */
+  min-height: calc(100vh - 64px);
+  padding: 32px;
+}
+
 .connect-gmail-cta {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 40px;
-  padding: 64px 48px;
-  max-width: 680px;
+  padding: 48px 52px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-2);
 }
 
 .connect-gmail-cta-mascot {
@@ -1742,7 +1754,7 @@ a {
   color: var(--color-muted);
   font-size: 14px;
   line-height: 1.6;
-  max-width: 340px;
+  max-width: 300px;
 }
 
 .connect-gmail-cta-btn {
@@ -1752,11 +1764,16 @@ a {
 }
 
 @media (max-width: 560px) {
+  .connect-gmail-cta-wrap {
+    padding: 24px 16px;
+    align-items: flex-start;
+  }
+
   .connect-gmail-cta {
     flex-direction: column;
     align-items: center;
     text-align: center;
-    padding: 48px 24px;
+    padding: 36px 28px;
     gap: 24px;
   }
 
