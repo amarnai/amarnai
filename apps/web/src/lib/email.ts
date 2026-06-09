@@ -1,10 +1,11 @@
 import nodemailer from "nodemailer";
 
 function createTransport() {
+  const port = Number(process.env["SMTP_PORT"] ?? 1025);
   return nodemailer.createTransport({
     host: process.env["SMTP_HOST"] ?? "127.0.0.1",
-    port: Number(process.env["SMTP_PORT"] ?? 1025),
-    secure: false,
+    port,
+    secure: process.env["SMTP_SECURE"] === "true" || port === 465,
     ...(process.env["SMTP_USER"]
       ? { auth: { user: process.env["SMTP_USER"], pass: process.env["SMTP_PASS"] ?? "" } }
       : {}),
