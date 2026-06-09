@@ -22,6 +22,20 @@ function generateToken(): string {
   return crypto.randomBytes(32).toString("hex");
 }
 
+async function rotateVerificationToken(userId: string, email: string): Promise<void> {
+  await db.verificationToken.deleteMany({ where: { userId, type: "EMAIL_VERIFICATION" } });
+  const token = generateToken();
+  await db.verificationToken.create({
+    data: {
+      userId,
+      token,
+      type: "EMAIL_VERIFICATION",
+      expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
+    },
+  });
+  await sendVerificationEmail(email, token);
+}
+
 // ─── Sign in / out ───────────────────────────────────────────────────────────
 
 export async function signOutAction() {
@@ -67,35 +81,30 @@ export async function registerAction(
 
   const existing = await db.user.findUnique({
     where: { email },
-    select: { id: true, credential: { select: { id: true } } },
+    select: { id: true, emailVerified: true, credential: { select: { id: true } } },
   });
   if (existing) {
     if (!existing.credential) {
       return { error: "An account with this email exists. Sign in with Google instead." };
     }
-    return { error: "An account with this email already exists." };
+    if (existing.emailVerified) {
+      return { error: "An account with this email already exists." };
+    }
+    // Unverified account: update password and resend verification.
+    const passwordHash = await bcrypt.hash(password, 12);
+    await db.userCredential.update({ where: { userId: existing.id }, data: { passwordHash } });
+    await rotateVerificationToken(existing.id, email);
+    await signIn("credentials", { email, password, redirectTo: "/verify-email" });
+    return {};
   }
 
   const passwordHash = await bcrypt.hash(password, 12);
   const user = await db.user.create({
-    data: {
-      email,
-      credential: { create: { passwordHash } },
-    },
+    data: { email, credential: { create: { passwordHash } } },
     select: { id: true },
   });
 
-  const token = generateToken();
-  await db.verificationToken.create({
-    data: {
-      userId: user.id,
-      token,
-      type: "EMAIL_VERIFICATION",
-      expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
-    },
-  });
-
-  await sendVerificationEmail(email, token);
+  await rotateVerificationToken(user.id, email);
 
   // Sign in immediately — throws NEXT_REDIRECT to /verify-email (middleware gates unverified users there).
   await signIn("credentials", { email, password, redirectTo: "/verify-email" });
@@ -130,21 +139,7 @@ export async function resendVerificationAction(): Promise<{ error?: string; succ
     return { error: "Please wait before requesting another email" };
   }
 
-  await db.verificationToken.deleteMany({
-    where: { userId: user.id, type: "EMAIL_VERIFICATION" },
-  });
-
-  const token = generateToken();
-  await db.verificationToken.create({
-    data: {
-      userId: user.id,
-      token,
-      type: "EMAIL_VERIFICATION",
-      expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
-    },
-  });
-
-  await sendVerificationEmail(dbUser.email, token);
+  await rotateVerificationToken(user.id, dbUser.email);
   return { success: true };
 }
 
