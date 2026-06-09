@@ -21,6 +21,7 @@ function makeNode(id: string, overrides: Partial<TaxonomyNode> = {}): TaxonomyNo
     positionY: 0,
     createdAt: "2026-01-01T00:00:00.000Z",
     updatedAt: "2026-01-01T00:00:00.000Z",
+    threadCount: 0,
     ...overrides,
   };
 }

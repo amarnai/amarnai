@@ -122,7 +122,15 @@ taxonomyNodes.get("/workspaces/:workspaceId/taxonomy-nodes", async (c) => {
     return c.json({ error: "Workspace not found" }, 404);
   }
 
-  return c.json(workspace.taxonomyNodes);
+  const threadCounts = await db.$queryRaw<{ finalNodeId: string; count: bigint }[]>`
+    SELECT "finalNodeId", COUNT(DISTINCT "emailThreadId") as count
+    FROM "EmailClassification"
+    WHERE "workspaceId" = ${parsed.data.workspaceId} AND "finalNodeId" IS NOT NULL
+    GROUP BY "finalNodeId"
+  `;
+  const threadCountMap = new Map(threadCounts.map((r) => [r.finalNodeId, Number(r.count)]));
+
+  return c.json(workspace.taxonomyNodes.map((n) => ({ ...n, threadCount: threadCountMap.get(n.id) ?? 0 })));
 });
 
 taxonomyNodes.post("/workspaces/:workspaceId/taxonomy-nodes", async (c) => {
@@ -171,7 +179,7 @@ taxonomyNodes.post("/workspaces/:workspaceId/taxonomy-nodes", async (c) => {
     select: nodeSelect,
   });
 
-  return c.json(node, 201);
+  return c.json({ ...node, threadCount: 0 }, 201);
 });
 
 taxonomyNodes.patch(
@@ -250,7 +258,7 @@ taxonomyNodes.patch(
       }
     }
 
-    return c.json(updated);
+    return c.json({ ...updated, threadCount: 0 });
   }
 );
 
@@ -266,6 +274,9 @@ taxonomyNodes.delete(
     }
 
     const { workspaceId, nodeId } = params.data;
+
+    const body = await c.req.json().catch(() => ({})) as { moveToNodeId?: unknown };
+    const moveToNodeId = typeof body.moveToNodeId === "string" ? body.moveToNodeId : null;
 
     const existing = await db.taxonomyNode.findUnique({
       where: { id: nodeId },
@@ -284,18 +295,32 @@ taxonomyNodes.delete(
       return c.json({ error: "Cannot delete the Inbox node" }, 422);
     }
 
-    if (existing._count.outgoingEdges > 0 || existing._count.incomingEdges > 0) {
+    if (existing._count.outgoingEdges > 0) {
       return c.json(
-        { error: "Cannot delete a node that has edges" },
+        { error: "Cannot delete a node that has outgoing edges" },
         422
       );
     }
 
+    if (moveToNodeId) {
+      const target = await db.taxonomyNode.findUnique({
+        where: { id: moveToNodeId },
+        select: { id: true, workspaceId: true },
+      });
+      if (!target || target.workspaceId !== workspaceId) {
+        return c.json({ error: "Target node not found" }, 422);
+      }
+    }
+
     if (existing._count.classifications > 0) {
-      return c.json(
-        { error: "Cannot delete a node that has email classifications" },
-        422
-      );
+      await db.emailClassification.updateMany({
+        where: { finalNodeId: nodeId },
+        data: { finalNodeId: moveToNodeId ?? null },
+      });
+    }
+
+    if (existing._count.incomingEdges > 0) {
+      await db.taxonomyEdge.deleteMany({ where: { targetNodeId: nodeId } });
     }
 
     await db.taxonomyNode.delete({ where: { id: nodeId } });

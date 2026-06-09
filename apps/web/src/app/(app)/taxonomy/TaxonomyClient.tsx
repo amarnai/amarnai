@@ -8,6 +8,7 @@ import {
   Controls,
   useNodesState,
   useEdgesState,
+  useReactFlow,
   BaseEdge,
   getBezierPath,
   MarkerType,
@@ -167,14 +168,18 @@ function NodeForm({
   onCancel,
   onDelete,
   deleteDisabledReason,
+  classificationCount = 0,
+  otherNodes = [],
   submitting,
   error,
 }: {
   node: TaxonomyNode | null;
   onSubmit: (data: CreateTaxonomyNodeInput) => void;
   onCancel: () => void;
-  onDelete?: () => void;
+  onDelete?: (moveToNodeId?: string) => void;
   deleteDisabledReason?: string | null;
+  classificationCount?: number;
+  otherNodes?: Pick<TaxonomyNode, "id" | "name">[];
   submitting: boolean;
   error: string | null;
 }) {
@@ -183,6 +188,8 @@ function NodeForm({
   const [name, setName] = useState(node?.name ?? "");
   const [description, setDescription] = useState(node?.description ?? "");
   const [draftPrompt, setDraftPrompt] = useState(node?.draftPrompt ?? "");
+  const [confirmingDelete, setConfirmingDelete] = useState(false);
+  const [moveToNodeId, setMoveToNodeId] = useState("");
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -197,6 +204,14 @@ function NodeForm({
       draftPrompt: trimmedDraftPrompt || null,
       examples: node?.examples ?? [],
     });
+  }
+
+  function handleDeleteClick() {
+    if (classificationCount > 0) {
+      setConfirmingDelete(true);
+    } else {
+      onDelete?.();
+    }
   }
 
   return (
@@ -251,37 +266,78 @@ function NodeForm({
             Optional. Applied when generating draft replies for threads in this category.
           </p>
         </div>
-        <div className="form-actions">
-          <button className="btn-primary" type="submit" disabled={submitting}>
-            {submitting ? "Saving…" : node ? "Save" : "Create"}
-          </button>
-          <button className="btn-ghost" type="button" onClick={onCancel}>
-            Cancel
-          </button>
-          {node && !node.isRoot && onDelete && (
-            deleteDisabledReason != null ? (
-              <span title={deleteDisabledReason} style={{ display: "inline-block", cursor: "not-allowed" }}>
-                <button
-                  className="btn-danger"
-                  type="button"
-                  disabled
-                  style={{ pointerEvents: "none" }}
+        {confirmingDelete ? (
+          <div style={{ marginTop: 16 }}>
+            <div className="warning-box" style={{ marginBottom: 12 }}>
+              Deleting this node will leave {classificationCount} thread{classificationCount !== 1 ? "s" : ""} unsorted.
+            </div>
+            {otherNodes.length > 0 && (
+              <div className="form-group">
+                <label className="form-label">Move them to</label>
+                <select
+                  className="form-select"
+                  value={moveToNodeId}
+                  onChange={(e) => setMoveToNodeId(e.target.value)}
                 >
-                  Delete
-                </button>
-              </span>
-            ) : (
+                  <option value="">Leave unsorted</option>
+                  {otherNodes.map((n) => (
+                    <option key={n.id} value={n.id}>{n.name}</option>
+                  ))}
+                </select>
+              </div>
+            )}
+            <div className="form-actions">
               <button
                 className="btn-danger"
                 type="button"
-                onClick={onDelete}
+                onClick={() => onDelete?.(moveToNodeId || undefined)}
                 disabled={submitting}
               >
-                Delete
+                {submitting ? "Deleting…" : "Confirm Delete"}
               </button>
-            )
-          )}
-        </div>
+              <button
+                className="btn-ghost"
+                type="button"
+                onClick={() => setConfirmingDelete(false)}
+                disabled={submitting}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="form-actions">
+            <button className="btn-primary" type="submit" disabled={submitting}>
+              {submitting ? "Saving…" : node ? "Save" : "Create"}
+            </button>
+            <button className="btn-ghost" type="button" onClick={onCancel}>
+              Cancel
+            </button>
+            {node && !node.isRoot && onDelete && (
+              deleteDisabledReason != null ? (
+                <span title={deleteDisabledReason} style={{ display: "inline-block", cursor: "not-allowed" }}>
+                  <button
+                    className="btn-danger"
+                    type="button"
+                    disabled
+                    style={{ pointerEvents: "none" }}
+                  >
+                    Delete
+                  </button>
+                </span>
+              ) : (
+                <button
+                  className="btn-danger"
+                  type="button"
+                  onClick={handleDeleteClick}
+                  disabled={submitting}
+                >
+                  Delete
+                </button>
+              )
+            )}
+          </div>
+        )}
       </form>
     </div>
   );
@@ -407,7 +463,7 @@ function EdgeForm({
 
 type Panel =
   | { type: "none" }
-  | { type: "create-node" }
+  | { type: "create-node"; spawnPosition?: { x: number; y: number } }
   | { type: "edit-node"; node: TaxonomyNode }
   | { type: "create-edge" }
   | { type: "edit-edge"; edge: TaxonomyEdge };
@@ -521,6 +577,7 @@ function TaxonomyCanvasInner({
   const [apiError, setApiError] = useState<string | null>(null);
 
   const history = useTaxonomyHistory({ nodes: initialNodes, edges: initialEdges });
+  const { screenToFlowPosition } = useReactFlow();
 
   // Reset history when workspace changes (safety guard if component is reused).
   // Intentionally depends only on workspaceId — initialNodes/initialEdges are
@@ -528,6 +585,17 @@ function TaxonomyCanvasInner({
   useEffect(() => {
     history.reset({ nodes: initialNodes, edges: initialEdges });
   }, [workspaceId]);
+
+  const onCanvasDoubleClick = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      if (readOnly) return;
+      const target = event.target as Element;
+      if (!target.classList.contains("react-flow__pane")) return;
+      const spawnPosition = screenToFlowPosition({ x: event.clientX, y: event.clientY });
+      openPanel({ type: "create-node", spawnPosition });
+    },
+    [readOnly, screenToFlowPosition]
+  );
 
   const refetch = useCallback(async () => {
     const [newNodes, newEdges] = await Promise.all([
@@ -619,8 +687,14 @@ function TaxonomyCanvasInner({
   async function handleCreateNode(data: CreateTaxonomyNodeInput) {
     setSubmitting(true);
     setFormError(null);
+    const spawnPosition = panel.type === "create-node" ? panel.spawnPosition : undefined;
     try {
-      await createTaxonomyNodeAction(workspaceId, data);
+      await createTaxonomyNodeAction(workspaceId, {
+        ...data,
+        ...(spawnPosition
+          ? { positionX: Math.round(spawnPosition.x), positionY: Math.round(spawnPosition.y) }
+          : {}),
+      });
       const { nodes, edges } = await refetch();
       history.push({ nodes, edges });
       setPanel({ type: "none" });
@@ -678,11 +752,11 @@ function TaxonomyCanvasInner({
     }
   }
 
-  async function handleDeleteNode(nodeId: string) {
+  async function handleDeleteNode(nodeId: string, moveToNodeId?: string) {
     setSubmitting(true);
     setFormError(null);
     try {
-      await deleteTaxonomyNodeAction(workspaceId, nodeId);
+      await deleteTaxonomyNodeAction(workspaceId, nodeId, moveToNodeId);
       const { nodes, edges } = await refetch();
       history.push({ nodes, edges });
       setPanel({ type: "none" });
@@ -752,11 +826,11 @@ function TaxonomyCanvasInner({
 
   let nodeDeleteDisabledReason: string | null = null;
   if (panel.type === "edit-node") {
-    const nodeHasEdges = dbEdges.some(
-      (e) => e.sourceNodeId === panel.node.id || e.targetNodeId === panel.node.id
+    const nodeHasOutgoingEdges = dbEdges.some(
+      (e) => e.sourceNodeId === panel.node.id
     );
-    nodeDeleteDisabledReason = nodeHasEdges
-      ? "Remove connected edges before deleting this node."
+    nodeDeleteDisabledReason = nodeHasOutgoingEdges
+      ? "This node has child connections. Removing it would restructure the graph unexpectedly — delete its outgoing edges first."
       : null;
   }
 
@@ -806,7 +880,7 @@ function TaxonomyCanvasInner({
       )}
 
       <div className="taxonomy-canvas-wrap">
-        <div className="taxonomy-canvas">
+        <div className="taxonomy-canvas" onDoubleClick={onCanvasDoubleClick}>
           <ReactFlow
             nodes={rfNodes}
             edges={rfEdges}
@@ -819,6 +893,7 @@ function TaxonomyCanvasInner({
             nodeTypes={nodeTypes}
             edgeTypes={edgeTypes}
             deleteKeyCode={null}
+            zoomOnDoubleClick={false}
             nodesDraggable={!readOnly}
             nodesConnectable={!readOnly}
             fitView
@@ -854,8 +929,10 @@ function TaxonomyCanvasInner({
                 node={panel.node}
                 onSubmit={(data) => handleUpdateNode(panel.node.id, data)}
                 onCancel={() => setPanel({ type: "none" })}
-                onDelete={() => handleDeleteNode(panel.node.id)}
+                onDelete={(moveToNodeId) => handleDeleteNode(panel.node.id, moveToNodeId)}
                 deleteDisabledReason={nodeDeleteDisabledReason}
+                classificationCount={panel.node.threadCount}
+                otherNodes={dbNodes.filter((n) => n.id !== panel.node.id && !n.isRoot)}
                 submitting={submitting}
                 error={formError}
               />

@@ -343,6 +343,7 @@ export type TaxonomyNode = {
   positionY: number;
   createdAt: string;
   updatedAt: string;
+  threadCount: number;
 };
 
 export type CreateTaxonomyNodeInput = {

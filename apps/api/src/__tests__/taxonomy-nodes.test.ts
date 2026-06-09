@@ -3,6 +3,7 @@ import { authed } from "./helpers.js";
 
 vi.mock("@amarnai/db", () => ({
   db: {
+    $queryRaw: vi.fn(),
     workspace: {
       findUnique: vi.fn(),
     },
@@ -18,6 +19,10 @@ vi.mock("@amarnai/db", () => ({
     },
     taxonomyEdge: {
       findMany: vi.fn(),
+      deleteMany: vi.fn(),
+    },
+    emailClassification: {
+      updateMany: vi.fn(),
     },
   },
 }));
@@ -67,6 +72,14 @@ function del(path: string) {
   return app.request(path, authed({ method: "DELETE" }));
 }
 
+function delWithBody(path: string, body: unknown) {
+  return app.request(path, authed({
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  }));
+}
+
 beforeEach(() => {
   vi.clearAllMocks();
   vi.mocked(db.workspaceMember.findUnique).mockResolvedValue({ userId: "test-user-1" } as never);
@@ -74,6 +87,7 @@ beforeEach(() => {
   // Individual tests override this when testing descendant invalidation.
   vi.mocked(db.taxonomyEdge.findMany).mockResolvedValue([] as never);
   vi.mocked(db.taxonomyNode.updateMany).mockResolvedValue({ count: 0 } as never);
+  vi.mocked(db.$queryRaw).mockResolvedValue([] as never);
 });
 
 // ─── GET ─────────────────────────────────────────────────────────────────────
@@ -581,26 +595,81 @@ describe("DELETE /workspaces/:workspaceId/taxonomy-nodes/:nodeId", () => {
     expect(body.error).toMatch(/edge/i);
   });
 
-  it("returns 422 when node has incoming edges", async () => {
+  it("deletes incoming edges along with the node", async () => {
     vi.mocked(db.taxonomyNode.findUnique).mockResolvedValue(
       { ...baseNode, _count: { outgoingEdges: 0, incomingEdges: 1, classifications: 0 } } as never
     );
+    vi.mocked(db.taxonomyEdge.deleteMany).mockResolvedValue({ count: 1 } as never);
+    vi.mocked(db.taxonomyNode.delete).mockResolvedValue(baseNode as never);
 
     const res = await del(`/workspaces/${WS_ID}/taxonomy-nodes/${NODE_ID}`);
-    expect(res.status).toBe(422);
-    const body = await res.json() as { error: string };
-    expect(body.error).toMatch(/edge/i);
+    expect(res.status).toBe(200);
+    expect(vi.mocked(db.taxonomyEdge.deleteMany)).toHaveBeenCalledWith({
+      where: { targetNodeId: NODE_ID },
+    });
   });
 
-  it("returns 422 when node has email classifications", async () => {
+  it("deletes node with classifications, unsorts threads when no moveToNodeId given", async () => {
     vi.mocked(db.taxonomyNode.findUnique).mockResolvedValue(
       { ...baseNode, _count: { outgoingEdges: 0, incomingEdges: 0, classifications: 3 } } as never
     );
+    vi.mocked(db.emailClassification.updateMany).mockResolvedValue({ count: 3 } as never);
+    vi.mocked(db.taxonomyNode.delete).mockResolvedValue(baseNode as never);
 
     const res = await del(`/workspaces/${WS_ID}/taxonomy-nodes/${NODE_ID}`);
+    expect(res.status).toBe(200);
+    expect(vi.mocked(db.emailClassification.updateMany)).toHaveBeenCalledWith({
+      where: { finalNodeId: NODE_ID },
+      data: { finalNodeId: null },
+    });
+  });
+
+  it("deletes node with classifications, moves threads to target node", async () => {
+    const TARGET_NODE_ID = "node-2";
+    vi.mocked(db.taxonomyNode.findUnique)
+      .mockResolvedValueOnce(
+        { ...baseNode, _count: { outgoingEdges: 0, incomingEdges: 0, classifications: 3 } } as never
+      )
+      .mockResolvedValueOnce(
+        { id: TARGET_NODE_ID, workspaceId: WS_ID } as never
+      );
+    vi.mocked(db.emailClassification.updateMany).mockResolvedValue({ count: 3 } as never);
+    vi.mocked(db.taxonomyNode.delete).mockResolvedValue(baseNode as never);
+
+    const res = await delWithBody(`/workspaces/${WS_ID}/taxonomy-nodes/${NODE_ID}`, { moveToNodeId: TARGET_NODE_ID });
+    expect(res.status).toBe(200);
+    expect(vi.mocked(db.emailClassification.updateMany)).toHaveBeenCalledWith({
+      where: { finalNodeId: NODE_ID },
+      data: { finalNodeId: TARGET_NODE_ID },
+    });
+  });
+
+  it("returns 422 when moveToNodeId does not exist", async () => {
+    vi.mocked(db.taxonomyNode.findUnique)
+      .mockResolvedValueOnce(
+        { ...baseNode, _count: { outgoingEdges: 0, incomingEdges: 0, classifications: 1 } } as never
+      )
+      .mockResolvedValueOnce(null);
+
+    const res = await delWithBody(`/workspaces/${WS_ID}/taxonomy-nodes/${NODE_ID}`, { moveToNodeId: "nonexistent" });
     expect(res.status).toBe(422);
     const body = await res.json() as { error: string };
-    expect(body.error).toMatch(/classification/i);
+    expect(body.error).toMatch(/target node/i);
+  });
+
+  it("returns 422 when moveToNodeId belongs to a different workspace", async () => {
+    vi.mocked(db.taxonomyNode.findUnique)
+      .mockResolvedValueOnce(
+        { ...baseNode, _count: { outgoingEdges: 0, incomingEdges: 0, classifications: 1 } } as never
+      )
+      .mockResolvedValueOnce(
+        { id: "node-2", workspaceId: "other-ws" } as never
+      );
+
+    const res = await delWithBody(`/workspaces/${WS_ID}/taxonomy-nodes/${NODE_ID}`, { moveToNodeId: "node-2" });
+    expect(res.status).toBe(422);
+    const body = await res.json() as { error: string };
+    expect(body.error).toMatch(/target node/i);
   });
 
   it("returns 404 when node does not exist", async () => {

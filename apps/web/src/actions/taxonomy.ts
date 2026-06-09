@@ -67,14 +67,16 @@ export async function updateTaxonomyNodeAction(
 
 export async function deleteTaxonomyNodeAction(
   workspaceId: string,
-  nodeId: string
+  nodeId: string,
+  moveToNodeId?: string
 ): Promise<{ ok: boolean }> {
   const user = await requireUser();
   await assertTaxonomyEditor(workspaceId, user.id);
   return apiCall<{ ok: boolean }>(
     `/workspaces/${workspaceId}/taxonomy-nodes/${nodeId}`,
     "DELETE",
-    user.id
+    user.id,
+    moveToNodeId ? { moveToNodeId } : undefined
   );
 }
 
