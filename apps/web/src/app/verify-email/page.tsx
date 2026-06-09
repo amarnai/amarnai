@@ -1,11 +1,21 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { resendVerificationAction, signOutAction } from "@/actions/auth";
 import { AuthShell } from "@/components/AuthShell";
 
 export default function VerifyEmailPage() {
+  const router = useRouter();
   const [state, action, pending] = useActionState(resendVerificationAction, null);
+
+  useEffect(() => {
+    const handleVisibility = () => {
+      if (document.visibilityState === "visible") router.refresh();
+    };
+    document.addEventListener("visibilitychange", handleVisibility);
+    return () => document.removeEventListener("visibilitychange", handleVisibility);
+  }, [router]);
 
   return (
     <AuthShell

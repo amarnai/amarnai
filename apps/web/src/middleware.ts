@@ -17,9 +17,15 @@ export default auth((req) => {
     return NextResponse.redirect(new URL("/sign-in", req.url));
   }
 
+  const isEmailVerified = req.auth?.user?.isEmailVerified === true;
+
+  // Verified users have no reason to be on /verify-email.
+  if (isSignedIn && isEmailVerified && pathname.startsWith("/verify-email")) {
+    return NextResponse.redirect(new URL("/emails", req.url));
+  }
+
   // Signed-in users who haven't verified their email are gated to /verify-email.
   // /verify-email itself requires being signed in but is exempt from this gate.
-  const isEmailVerified = req.auth?.user?.isEmailVerified === true;
   if (isSignedIn && !isEmailVerified && !isPublic && !pathname.startsWith("/verify-email")) {
     return NextResponse.redirect(new URL("/verify-email", req.url));
   }
