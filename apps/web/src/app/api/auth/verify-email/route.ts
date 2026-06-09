@@ -5,7 +5,8 @@ import { getOrCreateDefaultWorkspace } from "@/lib/workspace";
 
 export async function GET(req: NextRequest) {
   const token = req.nextUrl.searchParams.get("token");
-  const signInUrl = new URL("/sign-in", req.url);
+  const baseUrl = (process.env["AUTH_URL"] ?? req.nextUrl.origin).replace(/\/$/, "");
+  const signInUrl = new URL("/sign-in", baseUrl);
 
   if (!token) {
     signInUrl.searchParams.set("error", "invalid_token");
@@ -36,7 +37,7 @@ export async function GET(req: NextRequest) {
   const session = await auth();
   if (session?.user?.id === record.userId) {
     await unstable_update({});
-    return NextResponse.redirect(new URL("/emails", req.url));
+    return NextResponse.redirect(new URL("/emails", baseUrl));
   }
 
   signInUrl.searchParams.set("verified", "1");

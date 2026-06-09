@@ -16,7 +16,8 @@ export async function GET(req: NextRequest) {
   const state = searchParams.get("state");
   const googleError = searchParams.get("error");
 
-  const settingsUrl = new URL("/settings", req.url);
+  const baseUrl = (process.env["AUTH_URL"] ?? req.nextUrl.origin).replace(/\/$/, "");
+  const settingsUrl = new URL("/settings", baseUrl);
 
   if (googleError) {
     settingsUrl.searchParams.set("gmail_error", "access_denied");
