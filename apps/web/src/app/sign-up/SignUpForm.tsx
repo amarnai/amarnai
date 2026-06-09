@@ -4,6 +4,7 @@ import { useActionState } from "react";
 import Link from "next/link";
 import { registerAction } from "@/actions/auth";
 import { AuthShell } from "@/components/AuthShell";
+import { GoogleButton } from "@/components/GoogleButton";
 
 export function SignUpForm() {
   const [state, action, pending] = useActionState(registerAction, null);
@@ -47,6 +48,12 @@ export function SignUpForm() {
           {pending ? "Creating account…" : "Create account"}
         </button>
       </form>
+
+      <div className="auth-divider">
+        <span>or</span>
+      </div>
+
+      <GoogleButton label="Sign up with Google" />
 
       <p className="auth-switch">
         Already have an account?{" "}
