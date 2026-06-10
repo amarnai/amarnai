@@ -20,6 +20,7 @@ vi.mock("@amarnai/db", () => ({
       update: vi.fn(),
       delete: vi.fn(),
     },
+    $transaction: vi.fn(),
   },
 }));
 
@@ -209,6 +210,25 @@ describe("POST /workspaces/:workspaceId/taxonomy-edges", () => {
     expect(body.error).toMatch(/already exists/i);
   });
 
+  it("returns 422 when the target node already has a parent", async () => {
+    vi.mocked(db.workspace.findUnique).mockResolvedValue({ id: WS_ID } as never);
+    vi.mocked(db.taxonomyNode.findUnique)
+      .mockResolvedValueOnce(nodeC as never)  // source
+      .mockResolvedValueOnce(nodeB as never); // target
+    // duplicate check → null (C→B doesn't exist), incoming check → baseEdge (A→B exists)
+    vi.mocked(db.taxonomyEdge.findFirst)
+      .mockResolvedValueOnce(null)
+      .mockResolvedValueOnce(baseEdge as never);
+
+    const res = await post(`/workspaces/${WS_ID}/taxonomy-edges`, {
+      sourceNodeId: NODE_C,
+      targetNodeId: NODE_B,
+    });
+    expect(res.status).toBe(422);
+    const body = (await res.json()) as { error: string };
+    expect(body.error).toMatch(/already has a parent/i);
+  });
+
   it("returns 422 when the edge would create a cycle (A→B→C + C→A)", async () => {
     vi.mocked(db.workspace.findUnique).mockResolvedValue({ id: WS_ID } as never);
     vi.mocked(db.taxonomyNode.findUnique)
@@ -276,12 +296,49 @@ describe("POST /workspaces/:workspaceId/taxonomy-edges", () => {
 // ─── PATCH ────────────────────────────────────────────────────────────────────
 
 describe("PATCH /workspaces/:workspaceId/taxonomy-edges/:edgeId", () => {
-  it("returns 200 with an empty patch body", async () => {
+  it("returns the unchanged edge when no newSourceNodeId is provided", async () => {
     vi.mocked(db.taxonomyEdge.findUnique).mockResolvedValue(baseEdge as never);
-    vi.mocked(db.taxonomyEdge.update).mockResolvedValue(baseEdge as never);
 
     const res = await patch(`/workspaces/${WS_ID}/taxonomy-edges/${EDGE_ID}`, {});
     expect(res.status).toBe(200);
+    const body = (await res.json()) as typeof baseEdge;
+    expect(body).toMatchObject({ id: EDGE_ID, sourceNodeId: NODE_A, targetNodeId: NODE_B });
+  });
+
+  it("returns the unchanged edge when newSourceNodeId equals the current source", async () => {
+    vi.mocked(db.taxonomyEdge.findUnique).mockResolvedValue(baseEdge as never);
+
+    const res = await patch(`/workspaces/${WS_ID}/taxonomy-edges/${EDGE_ID}`, {
+      newSourceNodeId: NODE_A,
+    });
+    expect(res.status).toBe(200);
+    const body = (await res.json()) as typeof baseEdge;
+    expect(body).toMatchObject({ id: EDGE_ID });
+  });
+
+  it("re-parents the edge and returns the new edge", async () => {
+    const reparentedEdge = { ...baseEdge, id: "edge-new", sourceNodeId: NODE_C };
+    vi.mocked(db.taxonomyEdge.findUnique).mockResolvedValue(baseEdge as never);
+    vi.mocked(db.taxonomyNode.findUnique).mockResolvedValue(nodeC as never);
+    vi.mocked(db.taxonomyEdge.findFirst).mockResolvedValue(null);
+    vi.mocked(db.taxonomyEdge.findMany).mockResolvedValue([]);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (db.$transaction as unknown as ReturnType<typeof vi.fn>).mockImplementation((fn: any) => fn(db));
+    vi.mocked(db.taxonomyEdge.delete).mockResolvedValue(baseEdge as never);
+    vi.mocked(db.taxonomyEdge.create).mockResolvedValue(reparentedEdge as never);
+
+    const res = await patch(`/workspaces/${WS_ID}/taxonomy-edges/${EDGE_ID}`, {
+      newSourceNodeId: NODE_C,
+    });
+    expect(res.status).toBe(200);
+    const body = (await res.json()) as typeof reparentedEdge;
+    expect(body).toMatchObject({ sourceNodeId: NODE_C, targetNodeId: NODE_B });
+    expect(vi.mocked(db.taxonomyEdge.delete)).toHaveBeenCalledWith({ where: { id: EDGE_ID } });
+    expect(vi.mocked(db.taxonomyEdge.create)).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({ sourceNodeId: NODE_C, targetNodeId: NODE_B }),
+      })
+    );
   });
 
   it("returns 404 when edge does not exist", async () => {
@@ -298,6 +355,46 @@ describe("PATCH /workspaces/:workspaceId/taxonomy-edges/:edgeId", () => {
 
     const res = await patch(`/workspaces/${WS_ID}/taxonomy-edges/${EDGE_ID}`, {});
     expect(res.status).toBe(404);
+  });
+
+  it("returns 404 when the new source node does not exist", async () => {
+    vi.mocked(db.taxonomyEdge.findUnique).mockResolvedValue(baseEdge as never);
+    vi.mocked(db.taxonomyNode.findUnique).mockResolvedValue(null);
+
+    const res = await patch(`/workspaces/${WS_ID}/taxonomy-edges/${EDGE_ID}`, {
+      newSourceNodeId: "nope",
+    });
+    expect(res.status).toBe(404);
+    const body = (await res.json()) as { error: string };
+    expect(body.error).toMatch(/source/i);
+  });
+
+  it("returns 422 when re-parenting would create a duplicate edge", async () => {
+    vi.mocked(db.taxonomyEdge.findUnique).mockResolvedValue(baseEdge as never);
+    vi.mocked(db.taxonomyNode.findUnique).mockResolvedValue(nodeC as never);
+    vi.mocked(db.taxonomyEdge.findFirst).mockResolvedValue(baseEdge as never);
+
+    const res = await patch(`/workspaces/${WS_ID}/taxonomy-edges/${EDGE_ID}`, {
+      newSourceNodeId: NODE_C,
+    });
+    expect(res.status).toBe(422);
+    const body = (await res.json()) as { error: string };
+    expect(body.error).toMatch(/already exists/i);
+  });
+
+  it("returns 422 when re-parenting would introduce a cycle", async () => {
+    // Edge is A→B; trying to move to B→B is a self-loop caught by hasCycle
+    vi.mocked(db.taxonomyEdge.findUnique).mockResolvedValue(baseEdge as never);
+    vi.mocked(db.taxonomyNode.findUnique).mockResolvedValue(nodeB as never);
+    vi.mocked(db.taxonomyEdge.findFirst).mockResolvedValue(null);
+    vi.mocked(db.taxonomyEdge.findMany).mockResolvedValue([]);
+
+    const res = await patch(`/workspaces/${WS_ID}/taxonomy-edges/${EDGE_ID}`, {
+      newSourceNodeId: NODE_B,
+    });
+    expect(res.status).toBe(422);
+    const body = (await res.json()) as { error: string };
+    expect(body.error).toMatch(/cycle/i);
   });
 });
 

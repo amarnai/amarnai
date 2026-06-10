@@ -371,7 +371,11 @@ function EdgeForm({
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (edge) {
-      onSubmit({} satisfies UpdateTaxonomyEdgeInput);
+      onSubmit(
+        sourceNodeId !== edge.sourceNodeId
+          ? ({ newSourceNodeId: sourceNodeId } satisfies UpdateTaxonomyEdgeInput)
+          : ({} satisfies UpdateTaxonomyEdgeInput)
+      );
     } else {
       onSubmit({
         sourceNodeId,
@@ -429,12 +433,27 @@ function EdgeForm({
             </div>
           </div>
         ) : (
-          <div className="node-meta-row" style={{ marginBottom: 4 }}>
-            <span className="node-meta-item">
-              {nodeById(nodes, edge.sourceNodeId)?.name ?? edge.sourceNodeId}
-              {" → "}
-              {nodeById(nodes, edge.targetNodeId)?.name ?? edge.targetNodeId}
-            </span>
+          <div className="form-row">
+            <div className="form-group">
+              <label className="form-label">From (parent)</label>
+              <select
+                className="form-select"
+                value={sourceNodeId}
+                onChange={(e) => setSourceNodeId(e.target.value)}
+              >
+                {nodes.map((n) => (
+                  <option key={n.id} value={n.id}>
+                    {n.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="form-group">
+              <label className="form-label">To</label>
+              <div className="form-select" style={{ display: "flex", alignItems: "center", cursor: "default" }}>
+                {nodeById(nodes, edge.targetNodeId)?.name ?? edge.targetNodeId}
+              </div>
+            </div>
           </div>
         )}
         <div className="form-actions">

@@ -22,7 +22,9 @@ const createBodySchema = z.object({
   targetNodeId: z.string().min(1),
 });
 
-const updateBodySchema = z.object({});
+const updateBodySchema = z.object({
+  newSourceNodeId: z.string().min(1).optional(),
+});
 
 async function hasCycle(
   workspaceId: string,
@@ -141,6 +143,14 @@ taxonomyEdges.post("/workspaces/:workspaceId/taxonomy-edges", async (c) => {
     return c.json({ error: "An edge between these nodes already exists" }, 422);
   }
 
+  const existingIncoming = await db.taxonomyEdge.findFirst({
+    where: { workspaceId, targetNodeId: d.targetNodeId },
+    select: { id: true },
+  });
+  if (existingIncoming) {
+    return c.json({ error: "This node already has a parent. Remove the existing connection first." }, 422);
+  }
+
   if (await hasCycle(workspaceId, d.sourceNodeId, d.targetNodeId)) {
     return c.json({ error: "Creating this edge would introduce a cycle" }, 422);
   }
@@ -181,22 +191,53 @@ taxonomyEdges.patch(
     }
 
     const { workspaceId, edgeId } = params.data;
+    const { newSourceNodeId } = body.data;
 
     const existing = await db.taxonomyEdge.findUnique({
       where: { id: edgeId },
-      select: { id: true, workspaceId: true },
+      select: { id: true, workspaceId: true, sourceNodeId: true, targetNodeId: true },
     });
     if (!existing || existing.workspaceId !== workspaceId) {
       return c.json({ error: "Edge not found" }, 404);
     }
 
-    const updated = await db.taxonomyEdge.update({
-      where: { id: edgeId },
-      data: {},
-      select: edgeSelect,
+    if (!newSourceNodeId || newSourceNodeId === existing.sourceNodeId) {
+      const unchanged = await db.taxonomyEdge.findUnique({
+        where: { id: edgeId },
+        select: edgeSelect,
+      });
+      return c.json(unchanged);
+    }
+
+    const newSource = await db.taxonomyNode.findUnique({
+      where: { id: newSourceNodeId },
+      select: { id: true, workspaceId: true },
+    });
+    if (!newSource || newSource.workspaceId !== workspaceId) {
+      return c.json({ error: "New source node not found" }, 404);
+    }
+
+    const duplicate = await db.taxonomyEdge.findFirst({
+      where: { workspaceId, sourceNodeId: newSourceNodeId, targetNodeId: existing.targetNodeId },
+      select: { id: true },
+    });
+    if (duplicate) {
+      return c.json({ error: "An edge between these nodes already exists" }, 422);
+    }
+
+    if (await hasCycle(workspaceId, newSourceNodeId, existing.targetNodeId)) {
+      return c.json({ error: "Moving this edge would introduce a cycle" }, 422);
+    }
+
+    const newEdge = await db.$transaction(async (tx) => {
+      await tx.taxonomyEdge.delete({ where: { id: edgeId } });
+      return tx.taxonomyEdge.create({
+        data: { workspaceId, sourceNodeId: newSourceNodeId, targetNodeId: existing.targetNodeId },
+        select: edgeSelect,
+      });
     });
 
-    return c.json(updated);
+    return c.json(newEdge);
   }
 );
 

@@ -382,7 +382,7 @@ export type CreateTaxonomyEdgeInput = {
   targetNodeId: string;
 };
 
-export type UpdateTaxonomyEdgeInput = Record<string, never>;
+export type UpdateTaxonomyEdgeInput = { newSourceNodeId?: string };
 
 export type TriageStatus = "PENDING" | "SORTED" | "NEEDS_REVIEW" | "UNROUTED" | "UNCLASSIFIED";
 
