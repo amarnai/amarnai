@@ -55,7 +55,7 @@ export async function updateWorkspaceNameAction(
 
 export async function createWorkspaceAction(
   name: string,
-): Promise<{ error?: string }> {
+): Promise<{ error?: string; success?: boolean }> {
   const user = await requireUser();
   const trimmed = name.trim();
   if (!trimmed) return { error: "Workspace name cannot be empty" };
@@ -89,7 +89,8 @@ export async function createWorkspaceAction(
     maxAge: 60 * 60 * 24 * 365,
   });
 
-  redirect("/emails");
+  revalidatePath("/", "layout");
+  return { success: true };
 }
 
 export async function deleteWorkspaceAction(

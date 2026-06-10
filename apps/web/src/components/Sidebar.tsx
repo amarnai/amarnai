@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 function HamburgerIcon() {
   return (
@@ -122,6 +122,7 @@ export function Sidebar({
   canCreateWorkspace: boolean;
 }) {
   const pathname = usePathname();
+  const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [wsOpen, setWsOpen] = useState(false);
   const [creating, setCreating] = useState(false);
@@ -177,7 +178,12 @@ export function Sidebar({
     if (result?.error) {
       setCreateError(result.error);
       setCreatePending(false);
+      return;
     }
+    setCreatePending(false);
+    setCreating(false);
+    setWsOpen(false);
+    router.push("/emails");
   }
 
   function handleCancelCreate() {
