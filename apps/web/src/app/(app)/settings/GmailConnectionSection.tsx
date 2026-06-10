@@ -1,6 +1,6 @@
 "use client";
 
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import { disconnectGmailAction } from "@/actions/gmail";
 import type { GmailConnection, SyncStatus, GmailSyncSettings } from "@/lib/api";
 import { GmailSyncSettingsSection } from "./GmailSyncSettingsSection";
@@ -19,6 +19,7 @@ type Props = {
   syncSettings: GmailSyncSettings | null;
   connectError: string | null;
   connectSuccess: boolean;
+  alsoConnectedIn?: { id: string; name: string }[];
 };
 
 const ERROR_MESSAGES: Record<string, string> = {
@@ -63,12 +64,17 @@ export function GmailConnectionSection({
   syncSettings,
   connectError,
   connectSuccess,
+  alsoConnectedIn = [],
 }: Props) {
   const [isPending, startTransition] = useTransition();
+  const [confirming, setConfirming] = useState(false);
+  const [eraseData, setEraseData] = useState(false);
 
   function handleDisconnect() {
     startTransition(async () => {
-      await disconnectGmailAction(workspaceId);
+      await disconnectGmailAction(workspaceId, { eraseData });
+      setConfirming(false);
+      setEraseData(false);
     });
   }
 
@@ -77,6 +83,8 @@ export function GmailConnectionSection({
     : null;
 
   const badge = syncStatus ? SYNC_BADGE[syncStatus.status] : null;
+  const isShared = alsoConnectedIn.length > 0;
+  const sharedNames = alsoConnectedIn.map((w) => w.name).join(", ");
 
   return (
     <section className="settings-section">
@@ -89,13 +97,19 @@ export function GmailConnectionSection({
         <div className="alert alert-error">{errorMessage}</div>
       )}
 
-      {connection ? (
+      {connection?.status === "ACTIVE" ? (
         <>
           <div className="gmail-connection-status">
             <div className="gmail-address">{connection.gmailAddress}</div>
             <div className="gmail-meta">
               Last verified: {formatDate(connection.lastVerifiedAt)}
             </div>
+
+            {isShared && (
+              <div className="alert alert-info">
+                This Gmail is also connected in {sharedNames}. Each workspace syncs and classifies it separately, which uses separate AI quota.
+              </div>
+            )}
 
             {syncStatus !== null ? (
               <div className="sync-status-row">
@@ -117,14 +131,51 @@ export function GmailConnectionSection({
               </div>
             )}
 
-            <button
-              className="btn-danger"
-              onClick={handleDisconnect}
-              disabled={isPending}
-              type="button"
-            >
-              {isPending ? "Disconnecting…" : "Disconnect Gmail"}
-            </button>
+            {!confirming ? (
+              <button
+                className="btn-danger"
+                onClick={() => setConfirming(true)}
+                disabled={isPending}
+                type="button"
+              >
+                Disconnect Gmail
+              </button>
+            ) : (
+              <div className="account-delete-confirm">
+                <p className="account-danger-warning">
+                  {isShared
+                    ? `Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in ${sharedNames}.`
+                    : "Stops syncing and revokes Amarnai's access to this mailbox. Synced email data is kept so you can reconnect later."}
+                </p>
+                <label className="checkbox-label">
+                  <input
+                    type="checkbox"
+                    checked={eraseData}
+                    onChange={(e) => setEraseData(e.target.checked)}
+                    disabled={isPending}
+                  />
+                  Also erase synced email data
+                </label>
+                <div className="account-delete-actions">
+                  <button
+                    type="button"
+                    className="btn-danger"
+                    onClick={handleDisconnect}
+                    disabled={isPending}
+                  >
+                    {isPending ? "Disconnecting…" : "Yes, disconnect"}
+                  </button>
+                  <button
+                    type="button"
+                    className="btn-ghost"
+                    onClick={() => { setConfirming(false); setEraseData(false); }}
+                    disabled={isPending}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
 
           <GmailSyncSettingsSection
@@ -132,6 +183,19 @@ export function GmailConnectionSection({
             initialSettings={syncSettings ?? DEFAULT_SYNC_SETTINGS}
           />
         </>
+      ) : connection?.status === "DISCONNECTED" ? (
+        <div className="gmail-connection-status">
+          <div className="gmail-address">{connection.gmailAddress}</div>
+          <div className="alert alert-error">
+            Disconnected. Amarnai is no longer syncing this inbox.
+          </div>
+          <a
+            href={`/api/gmail/connect?workspaceId=${workspaceId}`}
+            className="btn-primary"
+          >
+            Reconnect Gmail
+          </a>
+        </div>
       ) : (
         <div className="gmail-connection-empty">
           <p>No Gmail inbox connected to this workspace.</p>

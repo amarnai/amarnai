@@ -2,14 +2,16 @@
 
 import { revalidatePath } from "next/cache";
 import { requireUser, assertWorkspaceOwner } from "@/lib/session";
-import { db } from "@amarnai/db";
-import { api } from "@/lib/api";
+import { apiFor } from "@/lib/api";
 
-export async function disconnectGmailAction(workspaceId: string): Promise<void> {
+export async function disconnectGmailAction(
+  workspaceId: string,
+  options?: { eraseData?: boolean }
+): Promise<void> {
   const user = await requireUser();
   await assertWorkspaceOwner(workspaceId, user.id);
 
-  await db.gmailConnection.deleteMany({ where: { workspaceId } });
+  await apiFor(user.id).disconnectGmail(workspaceId, options?.eraseData ?? false);
 
   revalidatePath("/settings");
 }
@@ -18,14 +20,14 @@ export async function sweepInboxAction(workspaceId: string): Promise<void> {
   const user = await requireUser();
   await assertWorkspaceOwner(workspaceId, user.id);
 
-  await api.sweepInbox(workspaceId);
+  await apiFor(user.id).sweepInbox(workspaceId);
 }
 
 export async function pauseSortingAction(workspaceId: string): Promise<void> {
   const user = await requireUser();
   await assertWorkspaceOwner(workspaceId, user.id);
 
-  await api.pauseSorting(workspaceId);
+  await apiFor(user.id).pauseSorting(workspaceId);
   revalidatePath("/emails");
 }
 
@@ -33,7 +35,7 @@ export async function resumeSortingAction(workspaceId: string): Promise<void> {
   const user = await requireUser();
   await assertWorkspaceOwner(workspaceId, user.id);
 
-  await api.resumeSorting(workspaceId);
+  await apiFor(user.id).resumeSorting(workspaceId);
   revalidatePath("/emails");
 }
 
@@ -44,7 +46,7 @@ export async function cancelClassifyAction(
   const user = await requireUser();
   await assertWorkspaceOwner(workspaceId, user.id);
 
-  await api.cancelClassify(workspaceId, threadId);
+  await apiFor(user.id).cancelClassify(workspaceId, threadId);
   revalidatePath(`/emails/${threadId}`);
 }
 
@@ -52,6 +54,6 @@ export async function startSortingAction(workspaceId: string): Promise<void> {
   const user = await requireUser();
   await assertWorkspaceOwner(workspaceId, user.id);
 
-  await api.startSorting(workspaceId);
+  await apiFor(user.id).startSorting(workspaceId);
   revalidatePath("/emails");
 }

@@ -26,25 +26,40 @@ async function renewAllGmailWatches(): Promise<void> {
 
   if (connections.length === 0) return;
 
+  // Group connections by gmailAddress. Gmail only allows one active watch per
+  // mailbox per app, so we register it once per unique address using the first
+  // connection in each group, then stamp gmailWatchExpiresAt on all rows.
+  const byAddress = new Map<string, typeof connections>();
+  for (const conn of connections) {
+    const group = byAddress.get(conn.gmailAddress) ?? [];
+    group.push(conn);
+    byAddress.set(conn.gmailAddress, group);
+  }
+
   await Promise.allSettled(
-    connections.map(async (conn) => {
-      const client = new GmailClient(conn.encryptedRefreshToken);
+    Array.from(byAddress.values()).map(async (group) => {
+      const primary = group[0]!;
+      const client = new GmailClient(primary.encryptedRefreshToken);
       try {
         const result = await client.watchInbox(config.gmail.pubsubTopic!);
         const expiresAt = new Date(Number(result.expiration));
-        await db.gmailConnection.update({
-          where: { workspaceId: conn.workspaceId },
-          data: { gmailWatchExpiresAt: expiresAt },
-        });
-        console.log(`[watch-renewal] Renewed watch for ${conn.gmailAddress} — historyId=${result.historyId} expires=${expiresAt.toISOString()}`);
+        await Promise.all(
+          group.map((conn) =>
+            db.gmailConnection.update({
+              where: { workspaceId: conn.workspaceId },
+              data: { gmailWatchExpiresAt: expiresAt },
+            })
+          )
+        );
+        console.log(`[watch-renewal] Renewed watch for ${primary.gmailAddress} (${group.length} workspace(s)) — historyId=${result.historyId} expires=${expiresAt.toISOString()}`);
       } catch (err) {
         // Auth errors mean the refresh token is revoked/invalid — log at info
         // level since sync jobs will surface this to the user separately.
         if (err instanceof GmailAuthError) {
-          console.log(`[watch-renewal] Skipping ${conn.gmailAddress} — token needs re-authorization`);
+          console.log(`[watch-renewal] Skipping ${primary.gmailAddress} — token needs re-authorization`);
         } else {
           const msg = err instanceof Error ? err.message : String(err);
-          console.error(`[watch-renewal] Failed for ${conn.gmailAddress}:`, msg);
+          console.error(`[watch-renewal] Failed for ${primary.gmailAddress}:`, msg);
         }
       }
     })

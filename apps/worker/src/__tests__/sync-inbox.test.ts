@@ -134,6 +134,7 @@ beforeEach(() => {
     gmailAddress: "test@gmail.com",
     googleSubjectId: "sub-1",
     encryptedRefreshToken: "enc-token",
+    status: "ACTIVE",
   } as never);
   vi.mocked(db.gmailSyncSettings.findUnique).mockResolvedValue({
     includeSpam: false,
@@ -145,6 +146,7 @@ beforeEach(() => {
   vi.mocked(db.providerSyncState.upsert).mockResolvedValue({
     historyId: "hist-1",
     backfillStatus: "DONE",
+    backfillStartedAt: null,
     importantBackfilled: true,
   } as never);
   vi.mocked(db.providerSyncState.update).mockResolvedValue({} as never);
@@ -254,5 +256,69 @@ describe("createSyncInboxWorker — taxonomy gate", () => {
 
     expect(db.taxonomyNode.findMany).toHaveBeenCalledOnce();
     expect(db.taxonomyEdge.findMany).toHaveBeenCalledOnce();
+  });
+});
+
+// ─── Disconnect-awareness ─────────────────────────────────────────────────────
+
+describe("createSyncInboxWorker — disconnect-awareness", () => {
+  it("returns gracefully when connection status is not ACTIVE", async () => {
+    vi.mocked(db.gmailConnection.findUnique).mockResolvedValue({
+      gmailAddress: "test@gmail.com",
+      googleSubjectId: "sub-1",
+      encryptedRefreshToken: "enc-token",
+      status: "DISCONNECTED",
+    } as never);
+
+    createSyncInboxWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID }));
+
+    // Should not load taxonomy, touch syncState, or make any Gmail calls
+    expect(db.taxonomyNode.findMany).not.toHaveBeenCalled();
+    expect(db.providerSyncState.upsert).not.toHaveBeenCalled();
+    expect(mockGetProfile).not.toHaveBeenCalled();
+  });
+
+  it("triggers backfill when RUNNING is stale (worker-crash recovery)", async () => {
+    const staleDate = new Date(Date.now() - 2 * 60 * 60 * 1_000); // 2 hours ago
+    // Quiet inbox cycle so we hit the backfill-trigger branch
+    mockListHistory.mockResolvedValue({ changedThreadIds: [], newHistoryId: "hist-2" });
+    vi.mocked(db.providerSyncState.upsert).mockResolvedValue({
+      historyId: "hist-1",
+      backfillStatus: "RUNNING",
+      backfillStartedAt: staleDate,
+      importantBackfilled: true,
+    } as never);
+
+    createSyncInboxWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID }));
+
+    expect(vi.mocked(mockListRecentThreadIds)).not.toHaveBeenCalled();
+    const { backfillInboxQueue } = await import("../queues.js");
+    expect(vi.mocked(backfillInboxQueue.add)).toHaveBeenCalledWith(
+      "backfill-inbox",
+      { workspaceId: WS_ID },
+      expect.objectContaining({ deduplication: { id: `backfill-inbox_${WS_ID}` } })
+    );
+  });
+
+  it("does not trigger backfill when RUNNING is fresh (another worker is running it)", async () => {
+    const freshDate = new Date(); // just now
+    mockListHistory.mockResolvedValue({ changedThreadIds: [], newHistoryId: "hist-2" });
+    vi.mocked(db.providerSyncState.upsert).mockResolvedValue({
+      historyId: "hist-1",
+      backfillStatus: "RUNNING",
+      backfillStartedAt: freshDate,
+      importantBackfilled: true,
+    } as never);
+
+    createSyncInboxWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID }));
+
+    const { backfillInboxQueue } = await import("../queues.js");
+    expect(vi.mocked(backfillInboxQueue.add)).not.toHaveBeenCalled();
   });
 });

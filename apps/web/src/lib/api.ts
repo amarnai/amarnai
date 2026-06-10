@@ -55,6 +55,11 @@ function makeApi(serverUserId?: string) {
     workspaces: () => apiFetch<Workspace[]>("/workspaces"),
     gmailConnection: (workspaceId: string) =>
       apiFetch<GmailConnection>(`/workspaces/${workspaceId}/gmail-connection`),
+    disconnectGmail: (workspaceId: string, eraseData: boolean) =>
+      apiMutate<DisconnectResult>(
+        `/workspaces/${workspaceId}/gmail-connection${eraseData ? "?eraseData=true" : ""}`,
+        "DELETE"
+      ),
     syncStatus: (workspaceId: string) =>
       apiFetch<SyncStatus>(`/workspaces/${workspaceId}/sync-status`),
     gmailSyncSettings: (workspaceId: string) =>
@@ -497,11 +502,20 @@ export type GmailConnection = {
   workspaceId: string;
   gmailAddress: string;
   grantedScopes: string[];
-  status: "ACTIVE";
+  status: "ACTIVE" | "DISCONNECTED";
   lastVerifiedAt: string | null;
   createdAt: string;
   updatedAt: string;
 } | null;
+
+export type DisconnectResult = {
+  ok: true;
+  erased: boolean;
+  revoked: boolean;
+  watchStopped: boolean;
+  jobsRemoved: number;
+  sharedMailbox: boolean;
+};
 
 export type BackfillStatus = "PENDING" | "RUNNING" | "DONE" | "ERROR";
 

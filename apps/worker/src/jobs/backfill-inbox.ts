@@ -2,7 +2,7 @@ import { Worker } from "bullmq";
 import { db } from "@amarnai/db";
 import { GmailClient, GmailThreadMeta, normalizeGmailThread } from "@amarnai/gmail";
 import type { GmailSyncSettings } from "@amarnai/shared";
-import { isTaxonomyRoutable } from "@amarnai/shared";
+import { isTaxonomyRoutable, isBackfillResumable } from "@amarnai/shared";
 import {
   classifyThreadQueue,
   backfillInboxQueue,
@@ -58,6 +58,7 @@ export function createBackfillInboxWorker(): Worker {
             gmailAddress: true,
             googleSubjectId: true,
             encryptedRefreshToken: true,
+            status: true,
           },
         }),
         db.gmailSyncSettings.findUnique({
@@ -68,6 +69,10 @@ export function createBackfillInboxWorker(): Worker {
 
       if (!workspace) throw new Error(`Workspace not found: ${workspaceId}`);
       if (!connection) throw new Error(`No Gmail connection for workspace: ${workspaceId}`);
+      if (connection.status !== "ACTIVE") {
+        console.log(`[backfill-inbox] Workspace ${workspaceId} Gmail connection is not active — skipping backfill`);
+        return;
+      }
 
       const settings: GmailSyncSettings = {
         includeSpam:             syncSettingsRow?.includeSpam             ?? false,
@@ -91,15 +96,22 @@ export function createBackfillInboxWorker(): Worker {
 
       const syncState = await db.providerSyncState.findUnique({
         where: { emailAccountId },
-        select: { backfillStatus: true },
+        select: { backfillStatus: true, backfillStartedAt: true },
       });
 
-      // ── 3. Guard: skip if already completed or currently running ────────────
+      // ── 3. Guard: skip if already completed or freshly running ──────────────
+      // isBackfillResumable returns false for DONE and for RUNNING within the
+      // staleness window, recovering jobs stranded at RUNNING after a crash.
 
-      if (syncState?.backfillStatus === "DONE" || syncState?.backfillStatus === "RUNNING") {
-        console.log(
-          `[backfill-inbox] Workspace ${workspaceId} already ${syncState.backfillStatus} — skipping`
-        );
+      if (syncState?.backfillStatus === "DONE") {
+        console.log(`[backfill-inbox] Workspace ${workspaceId} backfill already DONE — skipping`);
+        return;
+      }
+      if (
+        syncState?.backfillStatus === "RUNNING" &&
+        !isBackfillResumable("RUNNING", syncState.backfillStartedAt ?? null)
+      ) {
+        console.log(`[backfill-inbox] Workspace ${workspaceId} backfill is freshly RUNNING — skipping`);
         return;
       }
 
@@ -107,7 +119,7 @@ export function createBackfillInboxWorker(): Worker {
 
       await db.providerSyncState.update({
         where: { emailAccountId },
-        data: { backfillStatus: "RUNNING" },
+        data: { backfillStatus: "RUNNING", backfillStartedAt: new Date() },
       });
 
       await job.updateProgress(5);
@@ -275,9 +287,24 @@ export function createBackfillInboxWorker(): Worker {
 
           upsertedEmailThreadIds.push(emailThread.id);
 
-          // Report progress periodically.
+          // Report progress and check for disconnect periodically.
           if (i % 50 === 0) {
             await job.updateProgress(20 + Math.floor((i / total) * 60));
+
+            const currentConn = await db.gmailConnection.findUnique({
+              where: { workspaceId },
+              select: { status: true },
+            });
+            if (!currentConn || currentConn.status !== "ACTIVE") {
+              console.log(
+                `[backfill-inbox] Workspace ${workspaceId} disconnected mid-backfill at thread ${i}/${total} — resetting to PENDING`
+              );
+              await db.providerSyncState.update({
+                where: { emailAccountId },
+                data: { backfillStatus: "PENDING", backfillStartedAt: null },
+              });
+              return;
+            }
           }
         }
 
@@ -379,6 +406,7 @@ export function createBackfillInboxWorker(): Worker {
           where: { emailAccountId },
           data: {
             backfillStatus: "DONE",
+            backfillStartedAt: null,
             backfillCompletedAt: new Date(),
             backfillSkipped,
           },
@@ -393,7 +421,7 @@ export function createBackfillInboxWorker(): Worker {
         // ── On failure: mark ERROR so the UI can show a retry signal ─────────
         await db.providerSyncState.update({
           where: { emailAccountId },
-          data: { backfillStatus: "ERROR" },
+          data: { backfillStatus: "ERROR", backfillStartedAt: null },
         });
         throw err;
       }

@@ -1,0 +1,214 @@
+import { Job } from "bullmq";
+import { db } from "@amarnai/db";
+import { GmailClient, revokeGoogleToken } from "@amarnai/gmail";
+import { classifyThreadQueue } from "../queues.js";
+import { syncInboxQueue, backfillInboxQueue } from "./queue-client.js";
+import { recordAudit } from "./audit.js";
+
+export type DisconnectResult = {
+  ok: true;
+  erased: boolean;
+  revoked: boolean;
+  watchStopped: boolean;
+  jobsRemoved: number;
+  sharedMailbox: boolean;
+};
+
+/**
+ * Disconnects a workspace's Gmail connection.
+ *
+ * - Sets status to DISCONNECTED immediately (stops all new enqueues).
+ * - If no other workspace shares the mailbox, stops the Gmail push watch and
+ *   revokes the OAuth grant at Google.
+ * - Scrubs the stored token.
+ * - Removes pending BullMQ jobs for this workspace.
+ * - Optionally erases all synced email data.
+ * - Writes an audit log entry.
+ *
+ * Best-effort: revoke/watch-stop failures never block the disconnect.
+ */
+export async function disconnectGmail(
+  workspaceId: string,
+  opts: { eraseData: boolean; actorUserId: string | null }
+): Promise<DisconnectResult> {
+  const { eraseData, actorUserId } = opts;
+
+  const connection = await db.gmailConnection.findUnique({
+    where: { workspaceId },
+    select: {
+      id: true,
+      gmailAddress: true,
+      googleSubjectId: true,
+      encryptedRefreshToken: true,
+      status: true,
+    },
+  });
+
+  if (!connection) {
+    throw new Error(`No Gmail connection found for workspace: ${workspaceId}`);
+  }
+
+  // ── 1. Flip status immediately ────────────────────────────────────────────
+  // This stops the scheduler, webhook, and all enqueue paths from adding new
+  // work before we do anything else.
+  await db.gmailConnection.update({
+    where: { workspaceId },
+    data: { status: "DISCONNECTED" },
+  });
+
+  // ── 2. Shared-mailbox check ───────────────────────────────────────────────
+  // Google-side teardown (watch stop + token revocation) is scoped to the
+  // mailbox/grant, not to this workspace. Skip it when another ACTIVE workspace
+  // shares the same address so we don't break their sync.
+  const siblingsCount = await db.gmailConnection.count({
+    where: {
+      gmailAddress: connection.gmailAddress,
+      status: "ACTIVE",
+      NOT: { workspaceId },
+    },
+  });
+  const sharedMailbox = siblingsCount > 0;
+
+  let watchStopped = false;
+  let revoked = false;
+
+  if (!sharedMailbox && connection.encryptedRefreshToken) {
+    // ── 3. Stop push watch (needs a valid token, so runs before revoke) ──────
+    try {
+      const client = new GmailClient(connection.encryptedRefreshToken);
+      await client.stopWatch();
+      watchStopped = true;
+    } catch (err) {
+      console.warn(
+        "[gmail-disconnect] Watch stop failed (non-fatal):",
+        err instanceof Error ? err.message : err
+      );
+    }
+
+    // ── 4. Revoke OAuth grant ─────────────────────────────────────────────────
+    revoked = await revokeGoogleToken(connection.encryptedRefreshToken);
+    if (!revoked) {
+      console.warn("[gmail-disconnect] Token revocation failed or token already invalid");
+    }
+  }
+
+  // ── 5. Scrub stored tokens ────────────────────────────────────────────────
+  await db.gmailConnection.update({
+    where: { workspaceId },
+    data: { encryptedRefreshToken: "", gmailWatchExpiresAt: null },
+  });
+
+  const providerAccountId = connection.googleSubjectId ?? connection.gmailAddress;
+  const emailAccount = await db.emailAccount.findUnique({
+    where: { workspaceId_providerAccountId: { workspaceId, providerAccountId } },
+    select: { id: true },
+  });
+  if (emailAccount) {
+    await db.emailAccount.update({
+      where: { id: emailAccount.id },
+      data: { refreshTokenEncrypted: "placeholder" },
+    });
+  }
+
+  // ── 6. Cancel pending jobs ────────────────────────────────────────────────
+  let jobsRemoved = 0;
+
+  // classify-thread: scan waiting/delayed/prioritized jobs for this workspace.
+  // Live-sync jobs use timestamped jobIds so dedup-id lookup can't find them;
+  // we must scan the queue and filter by workspaceId.
+  const PAGE_SIZE = 500;
+  let start = 0;
+  while (true) {
+    const jobs = await classifyThreadQueue.getJobs(
+      ["waiting", "delayed", "prioritized"],
+      start,
+      start + PAGE_SIZE - 1
+    );
+    for (const job of jobs) {
+      if (job.data.workspaceId === workspaceId) {
+        try {
+          const state = await job.getState();
+          if (state === "waiting" || state === "delayed" || state === "prioritized") {
+            await job.remove();
+            jobsRemoved++;
+          }
+        } catch {
+          // Job may have turned active between listing and removal — ignore.
+        }
+      }
+    }
+    if (jobs.length < PAGE_SIZE) break;
+    start += PAGE_SIZE;
+  }
+
+  // sync-inbox and backfill-inbox: exactly one dedup id each.
+  for (const [queue, key] of [
+    [syncInboxQueue, `sync-inbox_${workspaceId}`],
+    [backfillInboxQueue, `backfill-inbox_${workspaceId}`],
+  ] as const) {
+    try {
+      const jobId = await queue.getDeduplicationJobId(key);
+      if (jobId) {
+        const job = await Job.fromId(queue, jobId);
+        if (job) {
+          const state = await job.getState();
+          if (state === "waiting" || state === "delayed" || state === "prioritized") {
+            await job.remove();
+            jobsRemoved++;
+          }
+        }
+      }
+    } catch {
+      // Non-fatal best-effort removal.
+    }
+  }
+
+  // Clear classifyingAt so threads don't show as "Queued" after jobs are removed.
+  await db.emailThread.updateMany({
+    where: { workspaceId, classifyingAt: { not: null } },
+    data: { classifyingAt: null },
+  });
+
+  // ── 7. Optionally erase synced email data ─────────────────────────────────
+  let erased = false;
+  if (eraseData && emailAccount) {
+    await db.$transaction([
+      db.emailTag.deleteMany({
+        where: {
+          OR: [
+            { emailThread: { emailAccountId: emailAccount.id } },
+            { emailMessage: { emailAccountId: emailAccount.id } },
+          ],
+        },
+      }),
+      db.draft.deleteMany({ where: { emailThread: { emailAccountId: emailAccount.id } } }),
+      db.emailClassification.deleteMany({ where: { emailThread: { emailAccountId: emailAccount.id } } }),
+      db.emailMessage.deleteMany({ where: { emailAccountId: emailAccount.id } }),
+      db.emailThread.deleteMany({ where: { emailAccountId: emailAccount.id } }),
+      db.providerSyncState.deleteMany({ where: { emailAccountId: emailAccount.id } }),
+      db.emailAddressIdentity.deleteMany({ where: { emailAccountId: emailAccount.id } }),
+      db.emailAccount.delete({ where: { id: emailAccount.id } }),
+    ]);
+    erased = true;
+  }
+
+  // ── 8. Audit log ──────────────────────────────────────────────────────────
+  await recordAudit({
+    workspaceId,
+    actorType: "USER",
+    actorUserId,
+    eventType: "gmail.disconnected",
+    entityType: "GmailConnection",
+    entityId: connection.id,
+    metadata: {
+      gmailAddress: connection.gmailAddress,
+      eraseData,
+      revoked,
+      watchStopped,
+      jobsRemoved,
+      sharedMailbox,
+    },
+  });
+
+  return { ok: true, erased, revoked, watchStopped, jobsRemoved, sharedMailbox };
+}

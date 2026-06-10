@@ -145,6 +145,7 @@ beforeEach(() => {
   } as never);
   vi.mocked(db.gmailConnection.findUnique).mockResolvedValue({
     encryptedRefreshToken: "enc-token",
+    status: "ACTIVE",
   } as never);
   vi.mocked(db.emailThread.update).mockResolvedValue({} as never);
   vi.mocked(db.taxonomyEdge.findMany).mockResolvedValue(makeEdges(3) as never);
@@ -299,3 +300,36 @@ describe("createClassifyThreadWorker — UNCLASSIFIED detection", () => {
     );
   });
 });
+
+// ─── Disconnect-awareness ─────────────────────────────────────────────────────
+
+describe("createClassifyThreadWorker — disconnect-awareness", () => {
+  it("returns gracefully when connection status is not ACTIVE", async () => {
+    vi.mocked(db.gmailConnection.findUnique).mockResolvedValue({
+      encryptedRefreshToken: "enc-token",
+      status: "DISCONNECTED",
+    } as never);
+
+    createClassifyThreadWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID, emailThreadId: THREAD_ID }));
+
+    // Should not touch the thread or make any AI/Gmail calls
+    expect(mockGetThread).not.toHaveBeenCalled();
+    expect(mockSortThreadByEmbedding).not.toHaveBeenCalled();
+    expect(db.emailThread.update).not.toHaveBeenCalled();
+  });
+
+  it("returns gracefully when connection is null", async () => {
+    vi.mocked(db.gmailConnection.findUnique).mockResolvedValue(null);
+
+    createClassifyThreadWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID, emailThreadId: THREAD_ID }));
+
+    expect(mockGetThread).not.toHaveBeenCalled();
+    expect(mockSortThreadByEmbedding).not.toHaveBeenCalled();
+    expect(db.emailThread.update).not.toHaveBeenCalled();
+  });
+});
+

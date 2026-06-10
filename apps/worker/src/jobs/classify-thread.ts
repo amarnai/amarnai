@@ -94,13 +94,17 @@ export function createClassifyThreadWorker(): Worker {
         }),
         db.gmailConnection.findUnique({
           where: { workspaceId },
-          select: { encryptedRefreshToken: true },
+          select: { encryptedRefreshToken: true, status: true },
         }),
       ]);
 
       if (!thread) throw new Error(`EmailThread not found: ${emailThreadId}`);
-      if (!connection)
-        throw new Error(`No Gmail connection for workspace: ${workspaceId}`);
+      if (!connection || connection.status !== "ACTIVE") {
+        console.log(
+          `[classify-thread] Workspace ${workspaceId} has no active Gmail connection — skipping thread ${emailThreadId}`
+        );
+        return;
+      }
 
       try {
         // ── 1b. Mark thread as actively classifying ─────────────────────────

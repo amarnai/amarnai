@@ -7,7 +7,7 @@ import {
   normalizeGmailThread,
 } from "@amarnai/gmail";
 import type { GmailSyncSettings } from "@amarnai/shared";
-import { isTaxonomyRoutable } from "@amarnai/shared";
+import { isTaxonomyRoutable, isBackfillResumable } from "@amarnai/shared";
 import {
   classifyThreadQueue,
   backfillInboxQueue,
@@ -49,7 +49,6 @@ async function ensureEmailAccount(
   ownerUserId: string,
   gmailAddress: string,
   googleSubjectId: string | null,
-  encryptedRefreshToken: string
 ): Promise<string> {
   const providerAccountId = googleSubjectId ?? gmailAddress;
   const account = await db.emailAccount.upsert({
@@ -60,11 +59,10 @@ async function ensureEmailAccount(
       provider: "GMAIL",
       primaryEmailAddress: gmailAddress,
       providerAccountId,
-      // The worker holds a reference to the encrypted token through GmailClient;
-      // we store a placeholder here because the worker never issues access tokens
-      // directly — GmailClient handles token refresh from the refresh token.
+      // GmailConnection is the single authoritative token source.
+      // These fields are not used for token refresh and hold only placeholders.
       accessTokenEncrypted: "placeholder",
-      refreshTokenEncrypted: encryptedRefreshToken,
+      refreshTokenEncrypted: "placeholder",
     },
     update: {},
     select: { id: true },
@@ -129,6 +127,7 @@ export function createSyncInboxWorker(): Worker {
             gmailAddress: true,
             googleSubjectId: true,
             encryptedRefreshToken: true,
+            status: true,
           },
         }),
         db.gmailSyncSettings.findUnique({
@@ -139,6 +138,10 @@ export function createSyncInboxWorker(): Worker {
 
       if (!workspace) throw new Error(`Workspace not found: ${workspaceId}`);
       if (!connection) throw new Error(`No Gmail connection for workspace: ${workspaceId}`);
+      if (connection.status !== "ACTIVE") {
+        console.log(`[sync-inbox] Workspace ${workspaceId} Gmail connection is not active — skipping sync`);
+        return;
+      }
 
       const settings: GmailSyncSettings = {
         includeSpam:             syncSettingsRow?.includeSpam             ?? false,
@@ -171,14 +174,13 @@ export function createSyncInboxWorker(): Worker {
         workspace.ownerUserId,
         connection.gmailAddress,
         connection.googleSubjectId,
-        connection.encryptedRefreshToken
       );
 
       const syncState = await db.providerSyncState.upsert({
         where: { emailAccountId },
         create: { emailAccountId, provider: "GMAIL" },
         update: { status: "SYNCING", errorMessage: null },
-        select: { historyId: true, backfillStatus: true, importantBackfilled: true },
+        select: { historyId: true, backfillStatus: true, backfillStartedAt: true, importantBackfilled: true },
       });
 
       // ── 3. Discover changed thread IDs ──────────────────────────────────────
@@ -226,9 +228,10 @@ export function createSyncInboxWorker(): Worker {
         // if the workspace has enough taxonomy nodes to classify threads (≥ 3).
         // With fewer nodes the user needs to elaborate the taxonomy first.
         // Backfill is a paying-plan-only feature.
+        // isBackfillResumable also recovers stale RUNNING state (worker crash).
         if (
           workspace.plan !== "FREE" &&
-          (syncState.backfillStatus === "PENDING" || syncState.backfillStatus === "ERROR")
+          isBackfillResumable(syncState.backfillStatus, syncState.backfillStartedAt)
         ) {
           if (taxonomyStrong) {
             await backfillInboxQueue.add(
@@ -485,9 +488,10 @@ export function createSyncInboxWorker(): Worker {
       // Trigger a historical backfill whenever it hasn't completed yet, but only
       // if the workspace has enough taxonomy nodes to classify threads (≥ 3).
       // Backfill is a paying-plan-only feature.
+      // isBackfillResumable also recovers stale RUNNING state (worker crash).
       if (
         workspace.plan !== "FREE" &&
-        (syncState.backfillStatus === "PENDING" || syncState.backfillStatus === "ERROR")
+        isBackfillResumable(syncState.backfillStatus, syncState.backfillStartedAt)
       ) {
         if (taxonomyStrong) {
           await backfillInboxQueue.add(

@@ -3,6 +3,7 @@ export {
   GmailClient,
   GmailAuthError,
   GmailHistoryCursorExpiredError,
+  revokeGoogleToken,
 } from "./gmail-client.js";
 export type { GmailProfile, GmailHistoryResult, GmailThreadMeta, GmailThreadWindowResult, GmailWatchResult } from "./gmail-client.js";
 export { normalizeGmailThread } from "./gmail-thread-adapter.js";

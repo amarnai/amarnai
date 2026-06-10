@@ -40,6 +40,26 @@ export default async function SettingsPage({ searchParams }: { searchParams: Sea
     // API unavailable — show disconnected state
   }
 
+  // Find other workspaces the user belongs to that share the same Gmail address.
+  // Scoped to the user's own memberships — never exposes other tenants' data.
+  let alsoConnectedIn: { id: string; name: string }[] = [];
+  if (connection?.gmailAddress) {
+    try {
+      const siblings = await db.gmailConnection.findMany({
+        where: {
+          gmailAddress: connection.gmailAddress,
+          status: "ACTIVE",
+          NOT: { workspaceId: workspace.id },
+          workspace: { members: { some: { userId: user.id } } },
+        },
+        select: { workspace: { select: { id: true, name: true } } },
+      });
+      alsoConnectedIn = siblings.map((s) => s.workspace);
+    } catch {
+      // Non-fatal — omit the notice if the query fails
+    }
+  }
+
   const billingSelect = {
     plan: true,
     billingCycle: true,
@@ -197,6 +217,7 @@ export default async function SettingsPage({ searchParams }: { searchParams: Sea
             syncSettings={syncSettings}
             connectError={connectError}
             connectSuccess={connectSuccess}
+            alsoConnectedIn={alsoConnectedIn}
           />
           <EmailBlacklistSection
             workspaceId={workspace.id}

@@ -274,6 +274,7 @@ model ProviderSyncState {
   status              SyncStatus     @default(IDLE)
   errorMessage        String?
   backfillStatus      BackfillStatus @default(PENDING)
+  backfillStartedAt   DateTime?
   backfillSkipped     Int            @default(0)
   backfillCompletedAt DateTime?
   // Set to true after a one-time pass that marks existing threads with gmailIsImportant.

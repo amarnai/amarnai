@@ -101,7 +101,7 @@ gmailSort.post("/dev/workspaces/:workspaceId/gmail-sort-thread", async (c) => {
       primaryEmailAddress: connection.gmailAddress,
       providerAccountId,
       accessTokenEncrypted: "placeholder",
-      refreshTokenEncrypted: connection.encryptedRefreshToken,
+      refreshTokenEncrypted: "placeholder",
     },
     update: {},
     select: { id: true },

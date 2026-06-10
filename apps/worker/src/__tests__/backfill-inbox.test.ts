@@ -147,6 +147,7 @@ beforeEach(() => {
     gmailAddress: "test@gmail.com",
     googleSubjectId: "google-sub-1",
     encryptedRefreshToken: "enc-token",
+    status: "ACTIVE",
   } as never);
   // No settings row → defaults apply (includeSpam: false, includePromotions: false).
   vi.mocked(db.gmailSyncSettings.findUnique).mockResolvedValue(null);
@@ -184,9 +185,10 @@ describe("createBackfillInboxWorker", () => {
     expect(classifyThreadQueue.addBulk).not.toHaveBeenCalled();
   });
 
-  it("(a) returns early without any DB writes when backfillStatus is RUNNING", async () => {
+  it("(a) returns early without any DB writes when backfillStatus is freshly RUNNING", async () => {
     vi.mocked(db.providerSyncState.findUnique).mockResolvedValue({
       backfillStatus: "RUNNING",
+      backfillStartedAt: new Date(), // fresh — should not be resumed
     } as never);
 
     createBackfillInboxWorker();
@@ -200,6 +202,7 @@ describe("createBackfillInboxWorker", () => {
   it("(b) enqueues classify jobs with unread threads first, then by recency", async () => {
     vi.mocked(db.providerSyncState.findUnique).mockResolvedValue({
       backfillStatus: "PENDING",
+      backfillStartedAt: null,
     } as never);
 
     // Three threads: one read-old, one unread-mid, one read-new.
@@ -248,6 +251,7 @@ describe("createBackfillInboxWorker", () => {
   it("(c) backfillSkipped is correct when totalFound exceeds the cap", async () => {
     vi.mocked(db.providerSyncState.findUnique).mockResolvedValue({
       backfillStatus: "PENDING",
+      backfillStartedAt: null,
     } as never);
 
     // totalFound = 1200 but only 1000 threads returned (cap applied by listThreadsInWindow).
@@ -285,6 +289,7 @@ describe("createBackfillInboxWorker", () => {
   it("(d) marks threads as UNROUTED and does not enqueue when routable count < threshold", async () => {
     vi.mocked(db.providerSyncState.findUnique).mockResolvedValue({
       backfillStatus: "PENDING",
+      backfillStartedAt: null,
     } as never);
     vi.mocked(db.taxonomyNode.findMany).mockResolvedValue(makeNodes(2) as never);
     vi.mocked(db.taxonomyEdge.findMany).mockResolvedValue(makeEdges(2) as never);
@@ -310,6 +315,7 @@ describe("createBackfillInboxWorker", () => {
   it("(d2) marks threads as UNROUTED when 3 nodes exist but are not linked to the root", async () => {
     vi.mocked(db.providerSyncState.findUnique).mockResolvedValue({
       backfillStatus: "PENDING",
+      backfillStartedAt: null,
     } as never);
     vi.mocked(db.taxonomyNode.findMany).mockResolvedValue(makeNodes(3) as never);
     vi.mocked(db.taxonomyEdge.findMany).mockResolvedValue([] as never);
@@ -335,6 +341,7 @@ describe("createBackfillInboxWorker", () => {
   it("(e) enqueues classify jobs when routable count equals the threshold", async () => {
     vi.mocked(db.providerSyncState.findUnique).mockResolvedValue({
       backfillStatus: "PENDING",
+      backfillStartedAt: null,
     } as never);
 
     const thread = makeGmailThread({ id: "t1" });
@@ -355,5 +362,144 @@ describe("createBackfillInboxWorker", () => {
     );
     expect(unroutedCall).toBeUndefined();
     expect((bulkJobs as unknown[]).length).toBeGreaterThan(0);
+  });
+});
+
+// ─── Disconnect-awareness ─────────────────────────────────────────────────────
+
+describe("createBackfillInboxWorker — disconnect-awareness", () => {
+  it("returns gracefully when connection status is not ACTIVE", async () => {
+    vi.mocked(db.gmailConnection.findUnique).mockResolvedValue({
+      gmailAddress: "test@gmail.com",
+      googleSubjectId: "google-sub-1",
+      encryptedRefreshToken: "enc-token",
+      status: "DISCONNECTED",
+    } as never);
+    vi.mocked(db.providerSyncState.findUnique).mockResolvedValue({
+      backfillStatus: "PENDING",
+      backfillStartedAt: null,
+    } as never);
+
+    createBackfillInboxWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID }));
+
+    expect(db.providerSyncState.update).not.toHaveBeenCalled();
+    expect(mockListThreadsInWindow).not.toHaveBeenCalled();
+    expect(classifyThreadQueue.addBulk).not.toHaveBeenCalled();
+  });
+
+  it("stamps backfillStartedAt when marking RUNNING", async () => {
+    vi.mocked(db.providerSyncState.findUnique).mockResolvedValue({
+      backfillStatus: "PENDING",
+      backfillStartedAt: null,
+    } as never);
+    mockListThreadsInWindow.mockResolvedValue({ threads: [], totalFound: 0 });
+
+    createBackfillInboxWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID }));
+
+    const runningCall = vi.mocked(db.providerSyncState.update).mock.calls.find(
+      (c) => (c[0] as { data: { backfillStatus?: string } }).data?.backfillStatus === "RUNNING"
+    );
+    expect(runningCall).toBeDefined();
+    const runningData = (runningCall![0] as { data: { backfillStartedAt: unknown } }).data;
+    expect(runningData.backfillStartedAt).toBeInstanceOf(Date);
+  });
+
+  it("clears backfillStartedAt when marking DONE", async () => {
+    vi.mocked(db.providerSyncState.findUnique).mockResolvedValue({
+      backfillStatus: "PENDING",
+      backfillStartedAt: null,
+    } as never);
+    mockListThreadsInWindow.mockResolvedValue({ threads: [], totalFound: 0 });
+
+    createBackfillInboxWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID }));
+
+    const doneCall = vi.mocked(db.providerSyncState.update).mock.calls.find(
+      (c) => (c[0] as { data: { backfillStatus?: string } }).data?.backfillStatus === "DONE"
+    );
+    expect(doneCall).toBeDefined();
+    const doneData = (doneCall![0] as { data: { backfillStartedAt: unknown } }).data;
+    expect(doneData.backfillStartedAt).toBeNull();
+  });
+
+  it("treats stale RUNNING as resumable and proceeds", async () => {
+    const staleDate = new Date(Date.now() - 2 * 60 * 60 * 1_000); // 2 hours ago
+    vi.mocked(db.providerSyncState.findUnique).mockResolvedValue({
+      backfillStatus: "RUNNING",
+      backfillStartedAt: staleDate,
+    } as never);
+    mockListThreadsInWindow.mockResolvedValue({ threads: [], totalFound: 0 });
+
+    createBackfillInboxWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID }));
+
+    // Should stamp RUNNING again (re-enter the backfill)
+    const runningCall = vi.mocked(db.providerSyncState.update).mock.calls.find(
+      (c) => (c[0] as { data: { backfillStatus?: string } }).data?.backfillStatus === "RUNNING"
+    );
+    expect(runningCall).toBeDefined();
+    // Should eventually mark DONE
+    const doneCall = vi.mocked(db.providerSyncState.update).mock.calls.find(
+      (c) => (c[0] as { data: { backfillStatus?: string } }).data?.backfillStatus === "DONE"
+    );
+    expect(doneCall).toBeDefined();
+  });
+
+  it("resets to PENDING and stops when disconnected mid-loop (i=0 check)", async () => {
+    vi.mocked(db.providerSyncState.findUnique).mockResolvedValue({
+      backfillStatus: "PENDING",
+      backfillStartedAt: null,
+    } as never);
+
+    const thread = makeGmailThread({ id: "t1" });
+    mockListThreadsInWindow.mockResolvedValue({ threads: [thread], totalFound: 1 });
+    vi.mocked(db.emailThread.findUnique).mockResolvedValue(null); // new thread → upsert path
+    mockGetThread.mockResolvedValue({ id: "t1" });
+    vi.mocked(db.emailThread.upsert).mockResolvedValue({ id: "db-t1" } as never);
+
+    // First call (Promise.all startup): ACTIVE; second call (loop i=0): DISCONNECTED
+    vi.mocked(db.gmailConnection.findUnique)
+      .mockResolvedValueOnce({
+        gmailAddress: "test@gmail.com",
+        googleSubjectId: "google-sub-1",
+        encryptedRefreshToken: "enc-token",
+        status: "ACTIVE",
+      } as never)
+      .mockResolvedValueOnce({ status: "DISCONNECTED" } as never);
+
+    createBackfillInboxWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID }));
+
+    const updateCalls = vi.mocked(db.providerSyncState.update).mock.calls;
+
+    // Should have stamped RUNNING at the start
+    const runningCall = updateCalls.find(
+      (c) => (c[0] as { data: { backfillStatus?: string } }).data?.backfillStatus === "RUNNING"
+    );
+    expect(runningCall).toBeDefined();
+
+    // Should have reset to PENDING with null startedAt
+    const pendingCall = updateCalls.find(
+      (c) => (c[0] as { data: { backfillStatus?: string } }).data?.backfillStatus === "PENDING"
+    );
+    expect(pendingCall).toBeDefined();
+    const pendingData = (pendingCall![0] as { data: { backfillStartedAt: unknown } }).data;
+    expect(pendingData.backfillStartedAt).toBeNull();
+
+    // Should NOT have reached DONE
+    const doneCall = updateCalls.find(
+      (c) => (c[0] as { data: { backfillStatus?: string } }).data?.backfillStatus === "DONE"
+    );
+    expect(doneCall).toBeUndefined();
+
+    // Should NOT have enqueued any classify jobs
+    expect(classifyThreadQueue.addBulk).not.toHaveBeenCalled();
   });
 });

@@ -10,3 +10,4 @@ export * from "./schemas/gmail-sync-settings.js";
 export * from "./draft-quota.js";
 export * from "./collaborator-quota.js";
 export * from "./thread-sort-quota.js";
+export * from "./backfill-staleness.js";

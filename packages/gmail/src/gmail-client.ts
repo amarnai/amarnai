@@ -42,11 +42,39 @@ export class GmailAuthError extends Error {
 }
 
 const GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token";
+const GOOGLE_REVOKE_URL = "https://oauth2.googleapis.com/revoke";
 const GMAIL_PROFILE_URL = "https://gmail.googleapis.com/gmail/v1/users/me/profile";
 const GMAIL_THREADS_URL = "https://gmail.googleapis.com/gmail/v1/users/me/threads";
 const GMAIL_THREAD_URL = "https://gmail.googleapis.com/gmail/v1/users/me/threads";
 const GMAIL_HISTORY_URL = "https://gmail.googleapis.com/gmail/v1/users/me/history";
 const GMAIL_WATCH_URL = "https://gmail.googleapis.com/gmail/v1/users/me/watch";
+const GMAIL_STOP_URL = "https://gmail.googleapis.com/gmail/v1/users/me/stop";
+
+/**
+ * Revokes the Google OAuth grant for the given encrypted refresh token.
+ * Treats HTTP 400 (token already invalid/revoked) as success.
+ * Returns true on success, false if the revocation call failed for any
+ * other reason. Never logs the token.
+ */
+export async function revokeGoogleToken(encryptedRefreshToken: string): Promise<boolean> {
+  let token: string;
+  try {
+    token = decrypt(encryptedRefreshToken);
+  } catch {
+    return false;
+  }
+  if (!token) return false;
+  try {
+    const res = await fetch(GOOGLE_REVOKE_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({ token }),
+    });
+    return res.ok || res.status === 400;
+  } catch {
+    return false;
+  }
+}
 
 type TokenResponse = {
   access_token: string;
@@ -379,6 +407,22 @@ export class GmailClient {
       throw new Error(`Gmail watch failed: ${res.status} ${body}`);
     }
     return res.json() as Promise<GmailWatchResult>;
+  }
+
+  /**
+   * Stops the Gmail push notification watch for this inbox.
+   * Must be called before revoking the OAuth token so the token is still
+   * valid when making this request.
+   */
+  async stopWatch(): Promise<void> {
+    const accessToken = await this.refreshAccessToken();
+    const res = await fetch(GMAIL_STOP_URL, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+    if (!res.ok) {
+      throw new Error(`Gmail watch stop failed: ${res.status}`);
+    }
   }
 
   async getThread(threadId: string): Promise<unknown> {
