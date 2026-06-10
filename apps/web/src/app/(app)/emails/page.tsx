@@ -2,7 +2,6 @@ import { requireUser } from "@/lib/session";
 import { getSelectedWorkspace } from "@/lib/workspace";
 import { apiFor } from "@/lib/api";
 import { ConnectGmailCta } from "@/components/ConnectGmailCta";
-import { ClassifyingRefresher } from "@/components/ClassifyingRefresher";
 import { EmailsClient } from "./EmailsClient";
 import { mapFolders, mapThreads } from "./queries";
 import type { ActiveSelection } from "@amarnai/ui/emails";
@@ -70,7 +69,6 @@ export default async function EmailsPage({ searchParams }: PageProps) {
   const folders = mapFolders(rawNodes, rawEdges);
   const threads = mapThreads(rawThreads);
 
-  const anyClassifying = rawThreads.some((t) => t.isClassifying);
   const routableNodeCount = countRoutableNonRootNodes(rawNodes, rawEdges);
   const unroutedCount = rawThreads.filter((t) => t.triageStatus === "UNROUTED").length;
   const unclassifiedCount = rawThreads.filter((t) => t.triageStatus === "UNCLASSIFIED").length;
@@ -92,7 +90,6 @@ export default async function EmailsPage({ searchParams }: PageProps) {
 
   return (
     <>
-      {anyClassifying && <ClassifyingRefresher active />}
       {error && (
         <div className="error-box" style={{ margin: "16px 24px" }}>
           {error}

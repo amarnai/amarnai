@@ -10,6 +10,7 @@ import { ThreadPreview } from "./ThreadPreview";
 import { useThreadKeyboard } from "./useThreadKeyboard";
 import { mapThreads } from "./queries";
 import { UnroutedBanner } from "./UnroutedBanner";
+import { ClassifyingRefresher } from "@/components/ClassifyingRefresher";
 
 type RerouteTarget = { kind: "single"; threadId: string } | null;
 
@@ -348,8 +349,11 @@ export function EmailsClient({
     }).catch(() => {});
   }
 
+  const anyClassifying = threads.some((t) => t.isClassifying);
+
   return (
     <>
+    <ClassifyingRefresher active={anyClassifying} />
     <UnroutedBanner
       workspaceId={workspaceId}
       unroutedCount={unroutedCount}
