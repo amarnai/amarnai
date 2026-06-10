@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache";
 import { db, ensureInboxNode } from "@amarnai/db";
 import { requireUser } from "@/lib/session";
 import { getSelectedWorkspace, getWorkspaceLimit } from "@/lib/workspace";
+import { disconnectGmailBeforeDeletion } from "@/lib/gmail-teardown";
 
 const WORKSPACE_COOKIE = "amarnai-workspace";
 
@@ -107,6 +108,11 @@ export async function deleteWorkspaceAction(
 
   const count = await db.workspace.count({ where: { ownerUserId: user.id } });
   if (count <= 1) return { error: "You cannot delete your only workspace" };
+
+  // Cancel queued sorting jobs and revoke the Gmail grant before the rows
+  // disappear — after the transaction the disconnect service has nothing to
+  // work with. Best-effort: never blocks deletion.
+  await disconnectGmailBeforeDeletion(user.id, [workspaceId]);
 
   // Delete in FK-safe order within a single transaction
   await db.$transaction([

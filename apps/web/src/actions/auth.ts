@@ -7,6 +7,7 @@ import { signIn, signOut, unstable_update } from "@/auth";
 import { db } from "@amarnai/db";
 import { requireUser } from "@/lib/session";
 import { sendVerificationEmail, sendPasswordResetEmail } from "@/lib/email";
+import { disconnectGmailBeforeDeletion } from "@/lib/gmail-teardown";
 
 // ─── Shared ───────────────────────────────────────────────────────────────────
 
@@ -168,6 +169,19 @@ export async function updateNameAction(
 
 export async function deleteAccountAction(): Promise<{ error?: string }> {
   const user = await requireUser();
+
+  // Cancel queued sorting jobs and revoke Gmail grants for every owned
+  // workspace before the rows disappear. Runs while the session is still
+  // valid (signOut comes after the transaction). Best-effort: never blocks
+  // account deletion.
+  const ownedWorkspaces = await db.workspace.findMany({
+    where: { ownerUserId: user.id },
+    select: { id: true },
+  });
+  await disconnectGmailBeforeDeletion(
+    user.id,
+    ownedWorkspaces.map((w) => w.id)
+  );
 
   await db.$transaction(async (tx) => {
     const [workspaces, emailAccounts] = await Promise.all([
