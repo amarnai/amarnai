@@ -7,6 +7,7 @@ import { EmailsClient } from "./EmailsClient";
 import { mapFolders, mapThreads } from "./queries";
 import type { ActiveSelection } from "@amarnai/ui/emails";
 import { QUEUES } from "@amarnai/ui/emails";
+import { countRoutableNonRootNodes } from "@amarnai/shared";
 
 type PageProps = {
   searchParams: Promise<{ q?: string; f?: string; t?: string }>;
@@ -70,6 +71,9 @@ export default async function EmailsPage({ searchParams }: PageProps) {
   const threads = mapThreads(rawThreads);
 
   const anyClassifying = rawThreads.some((t) => t.isClassifying);
+  const routableNodeCount = countRoutableNonRootNodes(rawNodes, rawEdges);
+  const unroutedCount = rawThreads.filter((t) => t.triageStatus === "UNROUTED").length;
+  const unclassifiedCount = rawThreads.filter((t) => t.triageStatus === "UNCLASSIFIED").length;
 
   // Resolve initial active selection from URL params
   let initialActive: ActiveSelection;
@@ -103,6 +107,9 @@ export default async function EmailsPage({ searchParams }: PageProps) {
         initialSelectedId={initialSelectedId}
         syncStatus={resolvedSyncStatus}
         workspaceEmail={workspaceEmail}
+        routableNodeCount={routableNodeCount}
+        unroutedCount={unroutedCount}
+        unclassifiedCount={unclassifiedCount}
       />
     </>
   );

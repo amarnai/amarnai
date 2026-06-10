@@ -231,6 +231,16 @@ function makeApi(serverUserId?: string) {
         `/workspaces/${workspaceId}/sorting-queue/start`,
         "POST"
       ),
+    routeUnrouted: (workspaceId: string) =>
+      apiMutate<{ queued: number }>(
+        `/workspaces/${workspaceId}/sorting-queue/route-unrouted`,
+        "POST"
+      ),
+    rerouteUnclassified: (workspaceId: string) =>
+      apiMutate<{ queued: number }>(
+        `/workspaces/${workspaceId}/sorting-queue/reroute-unclassified`,
+        "POST"
+      ),
     generateDraft: async (
       workspaceId: string,
       threadId: string,
@@ -374,7 +384,7 @@ export type CreateTaxonomyEdgeInput = {
 
 export type UpdateTaxonomyEdgeInput = Record<string, never>;
 
-export type TriageStatus = "PENDING" | "SORTED" | "NEEDS_REVIEW";
+export type TriageStatus = "PENDING" | "SORTED" | "NEEDS_REVIEW" | "UNROUTED" | "UNCLASSIFIED";
 
 export type DoneMark = {
   userId: string;
@@ -393,6 +403,8 @@ export type FilterCounts = {
   PENDING: number;
   NEEDS_REVIEW: number;
   SORTED: number;
+  UNROUTED: number;
+  UNCLASSIFIED: number;
 };
 
 export type EmailThreadListResult = {

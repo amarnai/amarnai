@@ -1,6 +1,6 @@
 export type { FolderItem } from "../folder-tree/types.js";
 
-export type QueueId = "all" | "sorted" | "review" | "pending" | "important";
+export type QueueId = "all" | "sorted" | "review" | "pending" | "important" | "unrouted" | "unclassified";
 
 export type ActiveSelection =
   | { kind: "queue"; id: QueueId }
@@ -8,7 +8,7 @@ export type ActiveSelection =
 
 export type SegFilter = "all" | "unread" | "low";
 
-export type ThreadStatus = "sorted" | "review" | "unsorted";
+export type ThreadStatus = "sorted" | "review" | "unsorted" | "unrouted" | "unclassified";
 
 export type ThreadMessage = {
   id: string;

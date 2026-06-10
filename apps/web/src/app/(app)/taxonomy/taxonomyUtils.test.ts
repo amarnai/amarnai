@@ -71,4 +71,24 @@ describe("computeIgnoredReasons", () => {
     expect(result.has("b")).toBe(false);
     expect(result.get("c")).toBe("no-incoming");
   });
+
+  it("flags a node that has an incoming edge but is not reachable from the root", () => {
+    // orphan -> leaf forms an island: leaf has an incoming edge, but neither
+    // node is reachable from the root, so both must be ignored.
+    const orphan = makeNode({ id: "orphan" });
+    const leaf = makeNode({ id: "leaf" });
+    const edge = makeEdge("e1", "orphan", "leaf");
+    const result = computeIgnoredReasons([root, orphan, leaf], [edge]);
+    expect(result.get("orphan")).toBe("no-incoming");
+    expect(result.get("leaf")).toBe("no-incoming");
+  });
+
+  it("flags every node when there is no root", () => {
+    const a = makeNode({ id: "a" });
+    const b = makeNode({ id: "b" });
+    const edge = makeEdge("e1", "a", "b");
+    const result = computeIgnoredReasons([a, b], [edge]);
+    expect(result.get("a")).toBe("no-incoming");
+    expect(result.get("b")).toBe("no-incoming");
+  });
 });

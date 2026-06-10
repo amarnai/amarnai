@@ -9,6 +9,7 @@ import { filterThreads, EmailRail, ThreadList, ReroutePopover } from "@amarnai/u
 import { ThreadPreview } from "./ThreadPreview";
 import { useThreadKeyboard } from "./useThreadKeyboard";
 import { mapThreads } from "./queries";
+import { UnroutedBanner } from "./UnroutedBanner";
 
 type RerouteTarget = { kind: "single"; threadId: string } | null;
 
@@ -52,6 +53,9 @@ type Props = {
   initialSelectedId: string | null;
   syncStatus: SyncStatus;
   workspaceEmail: string | null;
+  routableNodeCount: number;
+  unroutedCount: number;
+  unclassifiedCount: number;
 };
 
 export function EmailsClient({
@@ -63,12 +67,16 @@ export function EmailsClient({
   initialSelectedId,
   syncStatus,
   workspaceEmail,
+  routableNodeCount,
+  unroutedCount: initialUnroutedCount,
+  unclassifiedCount,
 }: Props) {
   const router = useRouter();
   const now = useRef(new Date()).current;
 
   const [threads, setThreads] = useState<ThreadItem[]>(initialThreads);
   const [folders] = useState<FolderItem[]>(initialFolders);
+  const [unroutedCount, setUnroutedCount] = useState(initialUnroutedCount);
 
   const [active, setActive] = useState<ActiveSelection>(initialActive);
   const [selectedId, setSelectedId] = useState<string | null>(initialSelectedId);
@@ -334,7 +342,25 @@ export function EmailsClient({
       }
     : null;
 
+  function handleReroute() {
+    api.rerouteUnclassified(workspaceId).then(() => {
+      showToast({ message: "Re-routing unclassified threads" });
+    }).catch(() => {});
+  }
+
   return (
+    <>
+    <UnroutedBanner
+      workspaceId={workspaceId}
+      unroutedCount={unroutedCount}
+      routableNodeCount={routableNodeCount}
+      onRouted={() => {
+        setUnroutedCount(0);
+        setThreads((prev) =>
+          prev.map((t) => (t.status === "unrouted" ? { ...t, status: "unsorted" as const } : t))
+        );
+      }}
+    />
     <div
       className="em-grid"
       data-mobile-view={mobileView}
@@ -422,5 +448,14 @@ export function EmailsClient({
         </div>
       )}
     </div>
+
+    {unclassifiedCount > 0 && (
+      <div style={{ position: "fixed", bottom: 16, right: 16, zIndex: 100 }}>
+        <button type="button" className="btn-secondary" onClick={handleReroute}>
+          Re-route {unclassifiedCount} unclassified
+        </button>
+      </div>
+    )}
+    </>
   );
 }

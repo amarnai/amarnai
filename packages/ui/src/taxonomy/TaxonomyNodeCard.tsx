@@ -12,19 +12,22 @@ export interface TaxonomyNodeCardBaseProps {
   name: string;
   description?: string;
   isRoot: boolean;
-  ignored?: boolean;
+  ignoredReason?: IgnoredReason;
   selected?: boolean;
-  title?: string;
 }
 
 export function TaxonomyNodeCardBase({
   name,
   description,
   isRoot,
-  ignored = false,
+  ignoredReason = null,
   selected = false,
-  title,
 }: TaxonomyNodeCardBaseProps) {
+  const ignored = ignoredReason !== null;
+  const title = ignoredReason === "no-incoming"
+    ? "This node is not reachable from the inbox and will not be used for routing."
+    : undefined;
+
   const card = (
     <div
       className={`taxonomy-node-card${selected ? " selected" : ""}${ignored ? " unreachable" : ""}`}
@@ -45,18 +48,13 @@ export function TaxonomyNodeCardBase({
 
 export function TaxonomyNodeCard({ data }: NodeProps<TaxonomyRFNode>) {
   const { node, ignoredReason } = data;
-  const title =
-    ignoredReason === "no-incoming"
-      ? "This node has no incoming edge and will not be used."
-      : undefined;
 
   return (
     <TaxonomyNodeCardBase
       name={node.name}
       {...(node.description ? { description: node.description } : {})}
       isRoot={node.isRoot}
-      ignored={ignoredReason !== null}
-      {...(title ? { title } : {})}
+      ignoredReason={ignoredReason}
     />
   );
 }

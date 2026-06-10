@@ -4,7 +4,27 @@ import { Job } from "bullmq";
 import { db } from "@amarnai/db";
 import { classifyThreadQueue } from "../queues.js";
 import { backfillInboxQueue } from "../services/queue-client.js";
-import { DEFAULT_GMAIL_SYNC_SETTINGS } from "@amarnai/shared";
+import { DEFAULT_GMAIL_SYNC_SETTINGS, isTaxonomyRoutable } from "@amarnai/shared";
+import { DEDUP_CLASSIFY_UNROUTED, DEDUP_CLASSIFY_UNCLASSIFIED } from "@amarnai/queue";
+
+/**
+ * Whether the workspace taxonomy has enough non-root nodes reachable from the
+ * root for routing to produce meaningful results. Orphaned nodes (not linked to
+ * the root) are excluded, matching how the router enumerates candidate paths.
+ */
+async function isWorkspaceTaxonomyRoutable(workspaceId: string): Promise<boolean> {
+  const [nodes, edges] = await Promise.all([
+    db.taxonomyNode.findMany({
+      where: { workspaceId },
+      select: { id: true, isRoot: true },
+    }),
+    db.taxonomyEdge.findMany({
+      where: { workspaceId },
+      select: { sourceNodeId: true, targetNodeId: true },
+    }),
+  ]);
+  return isTaxonomyRoutable(nodes, edges);
+}
 
 const workspaceParam = z.object({ workspaceId: z.string().min(1) });
 const threadParam = z.object({
@@ -137,6 +157,8 @@ sortingQueue.delete(
       `classify_${workspaceId}_${threadId}`,
       `classify_backfill_${workspaceId}_${threadId}`,
       `classify_resume_${workspaceId}_${threadId}`,
+      `${DEDUP_CLASSIFY_UNROUTED}_${workspaceId}_${threadId}`,
+      `${DEDUP_CLASSIFY_UNCLASSIFIED}_${workspaceId}_${threadId}`,
     ];
 
     let removed = false;
@@ -182,8 +204,7 @@ sortingQueue.post("/workspaces/:workspaceId/sorting-queue/start", async (c) => {
 
   const { workspaceId } = parsed.data;
 
-  const nodeCount = await db.taxonomyNode.count({ where: { workspaceId } });
-  if (nodeCount <= 3) {
+  if (!(await isWorkspaceTaxonomyRoutable(workspaceId))) {
     return c.json(
       { error: "More than 3 taxonomy nodes are required before sorting can start" },
       422
@@ -206,6 +227,105 @@ sortingQueue.post("/workspaces/:workspaceId/sorting-queue/start", async (c) => {
   );
 
   return c.json({ ok: true, workspaceId }, 202);
+});
+
+// ── Shared helper ──────────────────────────────────────────────────────────────
+
+async function enqueueThreadsByStatus(
+  workspaceId: string,
+  status: "UNROUTED" | "UNCLASSIFIED",
+  dedupPrefix: string,
+  syncSettings: { includeSpam: boolean; includePromotions: boolean } | null
+): Promise<number> {
+  const where = {
+    workspaceId,
+    triageStatus: status,
+    classifyingAt: null,
+    ...(status === "UNROUTED"
+      ? {
+          gmailIsTrash: false,
+          ...(!syncSettings?.includeSpam ? { gmailIsSpam: false } : {}),
+          ...(!syncSettings?.includePromotions ? { gmailIsPromotions: false } : {}),
+        }
+      : {}),
+  };
+
+  const threads = await db.emailThread.findMany({ where, select: { id: true } });
+  if (threads.length === 0) return 0;
+
+  const enqueuedAt = new Date();
+  await db.emailThread.updateMany({
+    where: { id: { in: threads.map((t) => t.id) } },
+    data: { triageStatus: "PENDING", classifyingAt: enqueuedAt },
+  });
+
+  await classifyThreadQueue.addBulk(
+    threads.map(({ id: emailThreadId }) => ({
+      name: "classify-thread",
+      data: { workspaceId, emailThreadId },
+      opts: {
+        deduplication: { id: `${dedupPrefix}_${workspaceId}_${emailThreadId}` },
+        priority: 5,
+      },
+    }))
+  );
+
+  return threads.length;
+}
+
+/**
+ * POST /workspaces/:workspaceId/sorting-queue/route-unrouted
+ *
+ * Enqueues all UNROUTED threads for classification. Requires a strong taxonomy
+ * (enough non-root nodes reachable from the root). Returns 422 with
+ * `{ error: "taxonomy_too_weak" }` if the taxonomy is insufficient.
+ */
+sortingQueue.post("/workspaces/:workspaceId/sorting-queue/route-unrouted", async (c) => {
+  const parsed = workspaceParam.safeParse({ workspaceId: c.req.param("workspaceId") });
+  if (!parsed.success) return c.json({ error: "Invalid workspace ID" }, 400);
+
+  const { workspaceId } = parsed.data;
+
+  if (!(await isWorkspaceTaxonomyRoutable(workspaceId))) {
+    return c.json({ error: "taxonomy_too_weak" }, 422);
+  }
+
+  const syncSettings = await db.gmailSyncSettings.findUnique({
+    where: { workspaceId },
+    select: { includeSpam: true, includePromotions: true },
+  });
+
+  const queued = await enqueueThreadsByStatus(
+    workspaceId,
+    "UNROUTED",
+    DEDUP_CLASSIFY_UNROUTED,
+    syncSettings
+  );
+
+  return c.json({ queued });
+});
+
+/**
+ * POST /workspaces/:workspaceId/sorting-queue/reroute-unclassified
+ *
+ * Enqueues all UNCLASSIFIED threads for re-classification. No taxonomy check
+ * required — routing already ran once; re-routing after taxonomy changes is
+ * always permitted.
+ */
+sortingQueue.post("/workspaces/:workspaceId/sorting-queue/reroute-unclassified", async (c) => {
+  const parsed = workspaceParam.safeParse({ workspaceId: c.req.param("workspaceId") });
+  if (!parsed.success) return c.json({ error: "Invalid workspace ID" }, 400);
+
+  const { workspaceId } = parsed.data;
+
+  const queued = await enqueueThreadsByStatus(
+    workspaceId,
+    "UNCLASSIFIED",
+    DEDUP_CLASSIFY_UNCLASSIFIED,
+    null
+  );
+
+  return c.json({ queued });
 });
 
 export { sortingQueue as sortingQueueRoute };

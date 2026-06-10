@@ -9,6 +9,13 @@ export function parseRedisUrl(url: string): { host: string; port: number; passwo
   };
 }
 
+// ─── Deduplication key prefixes ───────────────────────────────────────────────
+// Used by sorting-queue API endpoints and the cancel endpoint to build and
+// recognise classify-thread job dedup keys without scattering magic strings.
+
+export const DEDUP_CLASSIFY_UNROUTED     = "classify_unrouted";
+export const DEDUP_CLASSIFY_UNCLASSIFIED = "classify_unclassified";
+
 // ─── Queue names ──────────────────────────────────────────────────────────────
 // Single source of truth. Import these constants everywhere instead of
 // hardcoding strings so a rename stays a one-line change.

@@ -89,6 +89,10 @@ export function ThreadRow({
               <span className="em-chip-spin" aria-hidden />
               Sorting…
             </span>
+          ) : thread.status === "unrouted" ? (
+            <span className="em-route-chip unrouted">Waiting</span>
+          ) : thread.status === "unclassified" ? (
+            <span className="em-route-chip needs-review">Unclassified</span>
           ) : !inExactFolder && folder && (
             <span className={chipClass}>
               <span className="em-chip-ico">{FOLDER_ICO}</span>

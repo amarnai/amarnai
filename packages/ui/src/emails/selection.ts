@@ -32,6 +32,8 @@ function baseFilter(
     case "review": return threads.filter((t) => t.status === "review");
     case "pending": return threads.filter((t) => t.status === "unsorted");
     case "important": return threads.filter((t) => t.isImportant);
+    case "unrouted": return threads.filter((t) => t.status === "unrouted");
+    case "unclassified": return threads.filter((t) => t.status === "unclassified");
   }
 }
 

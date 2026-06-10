@@ -1,0 +1,258 @@
+import { vi, describe, it, expect, beforeEach } from "vitest";
+
+// ─── Mocks ────────────────────────────────────────────────────────────────────
+
+vi.mock("@amarnai/db", () => ({
+  db: {
+    workspace: { findUnique: vi.fn() },
+    gmailConnection: { findUnique: vi.fn() },
+    gmailSyncSettings: { findUnique: vi.fn() },
+    emailAccount: { upsert: vi.fn() },
+    providerSyncState: { upsert: vi.fn(), update: vi.fn() },
+    taxonomyNode: { findMany: vi.fn() },
+    taxonomyEdge: { findMany: vi.fn() },
+    emailThread: {
+      upsert: vi.fn(),
+      updateMany: vi.fn().mockResolvedValue({ count: 0 }),
+      findMany: vi.fn().mockResolvedValue([]),
+    },
+    emailMessage: { upsert: vi.fn(), deleteMany: vi.fn() },
+    backfillInboxQueue: { add: vi.fn() },
+  },
+}));
+
+const mockGetProfile = vi.fn();
+const mockListRecentThreadIds = vi.fn();
+const mockListHistory = vi.fn();
+const mockGetThread = vi.fn();
+
+vi.mock("@amarnai/gmail", () => ({
+  GmailClient: vi.fn().mockImplementation(() => ({
+    getProfile: mockGetProfile,
+    listRecentThreadIds: mockListRecentThreadIds,
+    listHistory: mockListHistory,
+    getThread: mockGetThread,
+  })),
+  GmailAuthError: class GmailAuthError extends Error {},
+  GmailHistoryCursorExpiredError: class GmailHistoryCursorExpiredError extends Error {},
+  normalizeGmailThread: vi.fn().mockImplementation((raw: unknown) => {
+    const r = raw as { id: string };
+    return {
+      providerThreadId: r.id,
+      subject: "Test subject",
+      latestMessageAt: new Date(),
+      messageCount: 1,
+      messages: [
+        {
+          providerMessageId: `msg-${r.id}`,
+          senderEmail: "sender@example.com",
+          senderName: "Sender",
+          toEmails: [],
+          ccEmails: [],
+          subject: "Test subject",
+          bodyExcerpt: "snippet",
+          receivedAt: new Date(),
+          attachments: [],
+          labelIds: ["INBOX"],
+        },
+      ],
+    };
+  }),
+}));
+
+vi.mock("bullmq", () => ({
+  Worker: vi.fn().mockImplementation((_queue: string, processor: unknown) => ({
+    _processor: processor,
+    on: vi.fn(),
+  })),
+  Queue: vi.fn().mockImplementation(() => ({
+    addBulk: vi.fn().mockResolvedValue([]),
+    add: vi.fn(),
+    close: vi.fn(),
+  })),
+}));
+
+vi.mock("../redis.js", () => ({ redisConnection: {} }));
+vi.mock("../redis-publisher.js", () => ({ publishWorkspaceSynced: vi.fn().mockResolvedValue(undefined) }));
+
+vi.mock("../queues.js", () => ({
+  classifyThreadQueue: { addBulk: vi.fn().mockResolvedValue([]) },
+  backfillInboxQueue: { add: vi.fn() },
+  QUEUE_SYNC_INBOX: "sync-inbox",
+  QUEUE_CLASSIFY_THREAD: "classify-thread",
+  QUEUE_BACKFILL_INBOX: "backfill-inbox",
+}));
+
+// ─── Import after mocks ───────────────────────────────────────────────────────
+
+import { db } from "@amarnai/db";
+import { Worker } from "bullmq";
+import { classifyThreadQueue } from "../queues.js";
+import { createSyncInboxWorker } from "../jobs/sync-inbox.js";
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
+const WS_ID = "ws-1";
+
+function getProcessor(): (job: unknown) => Promise<void> {
+  const WorkerMock = vi.mocked(Worker);
+  const lastCall = WorkerMock.mock.calls[WorkerMock.mock.calls.length - 1];
+  return lastCall?.[1] as (job: unknown) => Promise<void>;
+}
+
+function makeJob(data: Record<string, string>) {
+  return { data, updateProgress: vi.fn() };
+}
+
+const ROOT_NODE_ID = "root-id";
+
+function makeNodes(nonRootCount: number) {
+  return [
+    { id: ROOT_NODE_ID, isRoot: true },
+    ...Array.from({ length: nonRootCount }, (_, i) => ({ id: `node-${i + 1}`, isRoot: false })),
+  ];
+}
+
+/** Edges linking the first `linkedCount` non-root nodes to the root. */
+function makeEdges(linkedCount: number) {
+  return Array.from({ length: linkedCount }, (_, i) => ({
+    sourceNodeId: ROOT_NODE_ID,
+    targetNodeId: `node-${i + 1}`,
+  }));
+}
+
+// ─── Setup ────────────────────────────────────────────────────────────────────
+
+beforeEach(() => {
+  vi.clearAllMocks();
+
+  vi.mocked(db.workspace.findUnique).mockResolvedValue({
+    ownerUserId: "user-1",
+    plan: "PRO",
+  } as never);
+  vi.mocked(db.gmailConnection.findUnique).mockResolvedValue({
+    gmailAddress: "test@gmail.com",
+    googleSubjectId: "sub-1",
+    encryptedRefreshToken: "enc-token",
+  } as never);
+  vi.mocked(db.gmailSyncSettings.findUnique).mockResolvedValue({
+    includeSpam: false,
+    includePromotions: false,
+    sortingPaused: false,
+    blacklistedSenderEmails: [],
+  } as never);
+  vi.mocked(db.emailAccount.upsert).mockResolvedValue({ id: "account-1" } as never);
+  vi.mocked(db.providerSyncState.upsert).mockResolvedValue({
+    historyId: "hist-1",
+    backfillStatus: "DONE",
+    importantBackfilled: true,
+  } as never);
+  vi.mocked(db.providerSyncState.update).mockResolvedValue({} as never);
+  vi.mocked(db.emailThread.upsert).mockResolvedValue({ id: "db-t1" } as never);
+  vi.mocked(db.emailMessage.upsert).mockResolvedValue({} as never);
+  vi.mocked(db.emailMessage.deleteMany).mockResolvedValue({ count: 0 } as never);
+
+  mockGetProfile.mockResolvedValue({ historyId: "hist-2" });
+  mockListHistory.mockResolvedValue({
+    changedThreadIds: ["gmail-t1"],
+    newHistoryId: "hist-2",
+  });
+  mockGetThread.mockResolvedValue({ id: "gmail-t1" });
+
+  // Default: taxonomy is strong enough (3 non-root nodes all linked to root).
+  vi.mocked(db.taxonomyNode.findMany).mockResolvedValue(makeNodes(3) as never);
+  vi.mocked(db.taxonomyEdge.findMany).mockResolvedValue(makeEdges(3) as never);
+  vi.mocked(classifyThreadQueue.addBulk).mockResolvedValue([]);
+});
+
+// ─── Tests ────────────────────────────────────────────────────────────────────
+
+describe("createSyncInboxWorker — taxonomy gate", () => {
+  it("marks upserted threads as UNROUTED and does not enqueue when taxonomy is weak", async () => {
+    // Only 2 non-root nodes linked to the root → below threshold.
+    vi.mocked(db.taxonomyNode.findMany).mockResolvedValue(makeNodes(2) as never);
+    vi.mocked(db.taxonomyEdge.findMany).mockResolvedValue(makeEdges(2) as never);
+
+    createSyncInboxWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID }));
+
+    expect(db.emailThread.updateMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({ triageStatus: "UNROUTED" }),
+      })
+    );
+    expect(classifyThreadQueue.addBulk).not.toHaveBeenCalled();
+  });
+
+  it("marks upserted threads as UNROUTED when 3 nodes exist but are not linked to the root", async () => {
+    // 3 non-root nodes but no edges → none reachable from root → not routable.
+    vi.mocked(db.taxonomyNode.findMany).mockResolvedValue(makeNodes(3) as never);
+    vi.mocked(db.taxonomyEdge.findMany).mockResolvedValue([] as never);
+
+    createSyncInboxWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID }));
+
+    expect(db.emailThread.updateMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({ triageStatus: "UNROUTED" }),
+      })
+    );
+    expect(classifyThreadQueue.addBulk).not.toHaveBeenCalled();
+  });
+
+  it("enqueues classify jobs when taxonomy is strong and sorting is not paused", async () => {
+    createSyncInboxWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID }));
+
+    expect(classifyThreadQueue.addBulk).toHaveBeenCalledOnce();
+    const calls = vi.mocked(db.emailThread.updateMany).mock.calls;
+    const unroutedCall = calls.find(
+      (c) => (c[0] as { data: { triageStatus?: string } }).data?.triageStatus === "UNROUTED"
+    );
+    expect(unroutedCall).toBeUndefined();
+  });
+
+  it("does not mark threads as UNROUTED when sortingPaused is true (leaves PENDING)", async () => {
+    vi.mocked(db.gmailSyncSettings.findUnique).mockResolvedValue({
+      includeSpam: false,
+      includePromotions: false,
+      sortingPaused: true,
+      blacklistedSenderEmails: [],
+    } as never);
+
+    createSyncInboxWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID }));
+
+    expect(classifyThreadQueue.addBulk).not.toHaveBeenCalled();
+    const calls = vi.mocked(db.emailThread.updateMany).mock.calls;
+    const unroutedCall = calls.find(
+      (c) => (c[0] as { data: { triageStatus?: string } }).data?.triageStatus === "UNROUTED"
+    );
+    expect(unroutedCall).toBeUndefined();
+  });
+
+  it("loads the taxonomy exactly once per sync cycle regardless of thread count", async () => {
+    // Two threads changed this cycle.
+    mockListHistory.mockResolvedValue({
+      changedThreadIds: ["gmail-t1", "gmail-t2"],
+      newHistoryId: "hist-2",
+    });
+    mockGetThread
+      .mockResolvedValueOnce({ id: "gmail-t1" })
+      .mockResolvedValueOnce({ id: "gmail-t2" });
+    vi.mocked(db.emailThread.upsert)
+      .mockResolvedValueOnce({ id: "db-t1" } as never)
+      .mockResolvedValueOnce({ id: "db-t2" } as never);
+
+    createSyncInboxWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID }));
+
+    expect(db.taxonomyNode.findMany).toHaveBeenCalledOnce();
+    expect(db.taxonomyEdge.findMany).toHaveBeenCalledOnce();
+  });
+});

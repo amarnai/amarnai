@@ -2,6 +2,7 @@ import { Worker } from "bullmq";
 import { db } from "@amarnai/db";
 import { GmailClient, GmailThreadMeta, normalizeGmailThread } from "@amarnai/gmail";
 import type { GmailSyncSettings } from "@amarnai/shared";
+import { isTaxonomyRoutable } from "@amarnai/shared";
 import {
   classifyThreadQueue,
   backfillInboxQueue,
@@ -333,22 +334,40 @@ export function createBackfillInboxWorker(): Worker {
         // be picked up when the user resumes sorting.
 
         if (!sortingPaused && upsertedEmailThreadIds.length > 0) {
-          const enqueuedAt = new Date();
-          await db.emailThread.updateMany({
-            where: { id: { in: upsertedEmailThreadIds } },
-            data: { classifyingAt: enqueuedAt },
-          });
+          const [taxonomyNodes, taxonomyEdges] = await Promise.all([
+            db.taxonomyNode.findMany({
+              where: { workspaceId },
+              select: { id: true, isRoot: true },
+            }),
+            db.taxonomyEdge.findMany({
+              where: { workspaceId },
+              select: { sourceNodeId: true, targetNodeId: true },
+            }),
+          ]);
 
-          await classifyThreadQueue.addBulk(
-            upsertedEmailThreadIds.map((emailThreadId) => ({
-              name: "classify-thread",
-              data: { workspaceId, emailThreadId },
-              opts: {
-                deduplication: { id: `classify_backfill_${workspaceId}_${emailThreadId}` },
-                priority: BACKFILL_CLASSIFY_PRIORITY,
-              },
-            }))
-          );
+          if (isTaxonomyRoutable(taxonomyNodes, taxonomyEdges)) {
+            const enqueuedAt = new Date();
+            await db.emailThread.updateMany({
+              where: { id: { in: upsertedEmailThreadIds } },
+              data: { classifyingAt: enqueuedAt },
+            });
+
+            await classifyThreadQueue.addBulk(
+              upsertedEmailThreadIds.map((emailThreadId) => ({
+                name: "classify-thread",
+                data: { workspaceId, emailThreadId },
+                opts: {
+                  deduplication: { id: `classify_backfill_${workspaceId}_${emailThreadId}` },
+                  priority: BACKFILL_CLASSIFY_PRIORITY,
+                },
+              }))
+            );
+          } else {
+            await db.emailThread.updateMany({
+              where: { id: { in: upsertedEmailThreadIds } },
+              data: { triageStatus: "UNROUTED" },
+            });
+          }
         }
 
         await job.updateProgress(95);

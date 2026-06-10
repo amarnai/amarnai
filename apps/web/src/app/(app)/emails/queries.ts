@@ -35,8 +35,10 @@ export function mapThreads(threads: EmailThreadSummary[]): ThreadItem[] {
     const folderId = cls?.finalNode?.id ?? null;
 
     let status: ThreadItem["status"] = "unsorted";
-    if (t.triageStatus === "SORTED") status = "sorted";
-    else if (t.triageStatus === "NEEDS_REVIEW") status = "review";
+    if (t.triageStatus === "SORTED")             status = "sorted";
+    else if (t.triageStatus === "NEEDS_REVIEW")  status = "review";
+    else if (t.triageStatus === "UNROUTED")      status = "unrouted";
+    else if (t.triageStatus === "UNCLASSIFIED")  status = "unclassified";
 
     const senders = t.messages
       .map((m) => m.senderName ?? m.senderEmail)

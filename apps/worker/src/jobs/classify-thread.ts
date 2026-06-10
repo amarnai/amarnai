@@ -17,6 +17,7 @@ import {
 } from "../queues.js";
 import { redisConnection } from "../redis.js";
 import { getRoutingAIProviderConfig, getEmbeddingProviderConfig } from "@amarnai/ai";
+import { isTaxonomyRoutable } from "@amarnai/shared";
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
 
@@ -208,6 +209,15 @@ export function createClassifyThreadWorker(): Worker {
             throw new Error(`No taxonomy nodes for workspace: ${workspaceId}`);
           }
 
+          const rootNode = rawNodes.find((n) => n.isRoot);
+          if (!isTaxonomyRoutable(rawNodes, rawEdges)) {
+            await db.emailThread.update({
+              where: { id: emailThreadId },
+              data: { triageStatus: "UNROUTED" },
+            });
+            return;
+          }
+
           const nodes: EmbeddableNode[] = rawNodes.map((n) => ({
             ...n,
             examples: n.examples as string[],
@@ -295,9 +305,15 @@ export function createClassifyThreadWorker(): Worker {
             select: { id: true },
           });
 
+          const isUnclassified = rootNode != null && result.finalNodeId === rootNode.id;
+          const triageStatus = isUnclassified
+            ? "UNCLASSIFIED"
+            : result.needsHumanReview
+              ? "NEEDS_REVIEW"
+              : "SORTED";
           await db.emailThread.update({
             where: { id: emailThreadId },
-            data: { triageStatus: result.needsHumanReview ? "NEEDS_REVIEW" : "SORTED" },
+            data: { triageStatus },
           });
 
           if (embeddingTriage !== null) {

@@ -12,6 +12,8 @@ vi.mock("@amarnai/db", () => ({
       findUnique: vi.fn(),
       update: vi.fn(),
     },
+    taxonomyNode: { findMany: vi.fn() },
+    taxonomyEdge: { findMany: vi.fn() },
     emailThread: {
       findUnique: vi.fn(),
       upsert: vi.fn(),
@@ -88,6 +90,22 @@ import { createBackfillInboxWorker } from "../jobs/backfill-inbox.js";
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
 const WS_ID = "ws-1";
+const ROOT_NODE_ID = "root-id";
+
+function makeNodes(nonRootCount: number) {
+  return [
+    { id: ROOT_NODE_ID, isRoot: true },
+    ...Array.from({ length: nonRootCount }, (_, i) => ({ id: `node-${i + 1}`, isRoot: false })),
+  ];
+}
+
+/** Edges linking the first `linkedCount` non-root nodes to the root. */
+function makeEdges(linkedCount: number) {
+  return Array.from({ length: linkedCount }, (_, i) => ({
+    sourceNodeId: ROOT_NODE_ID,
+    targetNodeId: `node-${i + 1}`,
+  }));
+}
 
 /** Build a fake GmailThreadMeta. */
 function makeGmailThread(opts: {
@@ -142,6 +160,10 @@ beforeEach(() => {
 
   // Re-attach the mock on classifyThreadQueue.addBulk after clearAllMocks.
   vi.mocked(classifyThreadQueue.addBulk).mockResolvedValue([]);
+
+  // Default: taxonomy is strong enough (3 non-root nodes all linked to root).
+  vi.mocked(db.taxonomyNode.findMany).mockResolvedValue(makeNodes(3) as never);
+  vi.mocked(db.taxonomyEdge.findMany).mockResolvedValue(makeEdges(3) as never);
 });
 
 // ─── Tests ────────────────────────────────────────────────────────────────────
@@ -256,5 +278,82 @@ describe("createBackfillInboxWorker", () => {
     expect(doneCalls).toHaveLength(1);
     const doneData = (doneCalls[0]![0] as { data: { backfillSkipped: number } }).data;
     expect(doneData.backfillSkipped).toBe(200);
+  });
+
+  // ── Taxonomy gate ─────────────────────────────────────────────────────────
+
+  it("(d) marks threads as UNROUTED and does not enqueue when routable count < threshold", async () => {
+    vi.mocked(db.providerSyncState.findUnique).mockResolvedValue({
+      backfillStatus: "PENDING",
+    } as never);
+    vi.mocked(db.taxonomyNode.findMany).mockResolvedValue(makeNodes(2) as never);
+    vi.mocked(db.taxonomyEdge.findMany).mockResolvedValue(makeEdges(2) as never);
+
+    const thread = makeGmailThread({ id: "t1" });
+    mockListThreadsInWindow.mockResolvedValue({ threads: [thread], totalFound: 1 });
+    vi.mocked(db.emailThread.findUnique).mockResolvedValue(null);
+    mockGetThread.mockResolvedValue({ id: "t1" });
+    vi.mocked(db.emailThread.upsert).mockResolvedValue({ id: "db-t1" } as never);
+
+    createBackfillInboxWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID }));
+
+    expect(db.emailThread.updateMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({ triageStatus: "UNROUTED" }),
+      })
+    );
+    expect(classifyThreadQueue.addBulk).not.toHaveBeenCalled();
+  });
+
+  it("(d2) marks threads as UNROUTED when 3 nodes exist but are not linked to the root", async () => {
+    vi.mocked(db.providerSyncState.findUnique).mockResolvedValue({
+      backfillStatus: "PENDING",
+    } as never);
+    vi.mocked(db.taxonomyNode.findMany).mockResolvedValue(makeNodes(3) as never);
+    vi.mocked(db.taxonomyEdge.findMany).mockResolvedValue([] as never);
+
+    const thread = makeGmailThread({ id: "t1" });
+    mockListThreadsInWindow.mockResolvedValue({ threads: [thread], totalFound: 1 });
+    vi.mocked(db.emailThread.findUnique).mockResolvedValue(null);
+    mockGetThread.mockResolvedValue({ id: "t1" });
+    vi.mocked(db.emailThread.upsert).mockResolvedValue({ id: "db-t1" } as never);
+
+    createBackfillInboxWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID }));
+
+    expect(db.emailThread.updateMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({ triageStatus: "UNROUTED" }),
+      })
+    );
+    expect(classifyThreadQueue.addBulk).not.toHaveBeenCalled();
+  });
+
+  it("(e) enqueues classify jobs when routable count equals the threshold", async () => {
+    vi.mocked(db.providerSyncState.findUnique).mockResolvedValue({
+      backfillStatus: "PENDING",
+    } as never);
+
+    const thread = makeGmailThread({ id: "t1" });
+    mockListThreadsInWindow.mockResolvedValue({ threads: [thread], totalFound: 1 });
+    vi.mocked(db.emailThread.findUnique).mockResolvedValue(null);
+    mockGetThread.mockResolvedValue({ id: "t1" });
+    vi.mocked(db.emailThread.upsert).mockResolvedValue({ id: "db-t1" } as never);
+
+    createBackfillInboxWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID }));
+
+    expect(classifyThreadQueue.addBulk).toHaveBeenCalledOnce();
+    const [bulkJobs] = vi.mocked(classifyThreadQueue.addBulk).mock.calls[0]!;
+    const calls = vi.mocked(db.emailThread.updateMany).mock.calls;
+    const unroutedCall = calls.find(
+      (c) => (c[0] as { data: { triageStatus?: string } }).data?.triageStatus === "UNROUTED"
+    );
+    expect(unroutedCall).toBeUndefined();
+    expect((bulkJobs as unknown[]).length).toBeGreaterThan(0);
   });
 });

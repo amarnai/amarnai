@@ -52,6 +52,7 @@ import {
 } from "./useTaxonomyHistory";
 import { TaxonomyNodeCardBase } from "@amarnai/ui/taxonomy";
 import { Tooltip } from "@amarnai/ui";
+import { TAXONOMY_MIN_NON_ROOT_NODES, countRoutableNonRootNodes } from "@amarnai/shared";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -99,18 +100,14 @@ function toRFEdges(edges: TaxonomyEdge[], nodes: TaxonomyNode[]): Edge[] {
 
 function TaxonomyNodeCard({ data, selected }: NodeProps<RFNode>) {
   const { node, ignoredReason } = data;
-  const title = ignoredReason === "no-incoming"
-    ? "This node has no incoming edge and will not be used."
-    : undefined;
 
   return (
     <TaxonomyNodeCardBase
       name={node.name}
       {...(node.description ? { description: node.description } : {})}
       isRoot={node.isRoot}
-      ignored={ignoredReason !== null}
+      ignoredReason={ignoredReason}
       selected={selected}
-      {...(title ? { title } : {})}
     />
   );
 }
@@ -188,6 +185,7 @@ function NodeForm({
 
   const [name, setName] = useState(node?.name ?? "");
   const [description, setDescription] = useState(node?.description ?? "");
+  const descriptionValid = isRoot || description.replace(/\s/g, "").length >= 30;
   const [draftPrompt, setDraftPrompt] = useState(node?.draftPrompt ?? "");
   const [confirmingDelete, setConfirmingDelete] = useState(false);
   const [moveToNodeId, setMoveToNodeId] = useState("");
@@ -308,7 +306,7 @@ function NodeForm({
           </div>
         ) : (
           <div className="form-actions">
-            <button className="btn-primary" type="submit" disabled={submitting}>
+            <button className="btn-primary" type="submit" disabled={submitting || !descriptionValid}>
               {submitting ? "Saving…" : node ? "Save" : "Create"}
             </button>
             <button className="btn-ghost" type="button" onClick={onCancel}>
@@ -883,6 +881,26 @@ function TaxonomyCanvasInner({
           {apiError}
         </div>
       )}
+
+      {(() => {
+        // Count only categories actually reachable from the root — orphaned
+        // nodes never receive threads, so they do not count toward the
+        // routing threshold. Derived from live canvas state so the indicator
+        // updates the moment an edge connects a node to the inbox.
+        const routableCount = countRoutableNonRootNodes(
+          rfNodes.map((n) => ({ id: n.id, isRoot: n.data.node.isRoot })),
+          rfEdges.map((e) => ({ sourceNodeId: e.source, targetNodeId: e.target }))
+        );
+        if (routableCount >= TAXONOMY_MIN_NON_ROOT_NODES) return null;
+        return (
+          <div className="warning-box" style={{ marginBottom: 12 }}>
+            <span className="em-pill accent" style={{ marginRight: 8 }}>
+              {routableCount} / {TAXONOMY_MIN_NON_ROOT_NODES}
+            </span>
+            {routableCount} of {TAXONOMY_MIN_NON_ROOT_NODES} categories connected to your inbox. Routing requires at least {TAXONOMY_MIN_NON_ROOT_NODES}.
+          </div>
+        );
+      })()}
 
       <div className="taxonomy-canvas-wrap">
         <div className="taxonomy-canvas" onDoubleClick={onCanvasDoubleClick}>

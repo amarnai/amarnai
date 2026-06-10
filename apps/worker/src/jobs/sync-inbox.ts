@@ -7,6 +7,7 @@ import {
   normalizeGmailThread,
 } from "@amarnai/gmail";
 import type { GmailSyncSettings } from "@amarnai/shared";
+import { isTaxonomyRoutable } from "@amarnai/shared";
 import {
   classifyThreadQueue,
   backfillInboxQueue,
@@ -147,6 +148,22 @@ export function createSyncInboxWorker(): Worker {
       };
       const sortingPaused = settings.sortingPaused;
 
+      // Routing requires enough non-root nodes that are actually reachable from
+      // the root (orphaned nodes never receive threads). Load nodes + edges once
+      // per sync cycle and reuse the result for the live-sync gate and both
+      // backfill triggers.
+      const [taxonomyNodes, taxonomyEdges] = await Promise.all([
+        db.taxonomyNode.findMany({
+          where: { workspaceId },
+          select: { id: true, isRoot: true },
+        }),
+        db.taxonomyEdge.findMany({
+          where: { workspaceId },
+          select: { sourceNodeId: true, targetNodeId: true },
+        }),
+      ]);
+      const taxonomyStrong = isTaxonomyRoutable(taxonomyNodes, taxonomyEdges);
+
       // ── 2. Ensure EmailAccount + ProviderSyncState rows exist ───────────────
 
       const emailAccountId = await ensureEmailAccount(
@@ -213,8 +230,7 @@ export function createSyncInboxWorker(): Worker {
           workspace.plan !== "FREE" &&
           (syncState.backfillStatus === "PENDING" || syncState.backfillStatus === "ERROR")
         ) {
-          const nodeCount = await db.taxonomyNode.count({ where: { workspaceId } });
-          if (nodeCount >= 3) {
+          if (taxonomyStrong) {
             await backfillInboxQueue.add(
               "backfill-inbox",
               { workspaceId },
@@ -421,22 +437,30 @@ export function createSyncInboxWorker(): Worker {
       // re-attempted. Advancing the cursor first would lose these threads
       // permanently if addBulk then failed.
 
-      if (upsertedEmailThreadIds.length > 0 && !sortingPaused) {
-        await db.emailThread.updateMany({
-          where: { id: { in: upsertedEmailThreadIds } },
-          data: { classifyingAt: new Date() },
-        });
+      if (upsertedEmailThreadIds.length > 0) {
+        if (!sortingPaused && taxonomyStrong) {
+          await db.emailThread.updateMany({
+            where: { id: { in: upsertedEmailThreadIds } },
+            data: { classifyingAt: new Date() },
+          });
 
-        await classifyThreadQueue.addBulk(
-          upsertedEmailThreadIds.map((emailThreadId) => ({
-            name: "classify-thread",
-            data: { workspaceId, emailThreadId },
-            opts: {
-              jobId: `classify_${workspaceId}_${emailThreadId}_${Date.now()}`,
-              priority: 1,
-            },
-          }))
-        );
+          await classifyThreadQueue.addBulk(
+            upsertedEmailThreadIds.map((emailThreadId) => ({
+              name: "classify-thread",
+              data: { workspaceId, emailThreadId },
+              opts: {
+                jobId: `classify_${workspaceId}_${emailThreadId}_${Date.now()}`,
+                priority: 1,
+              },
+            }))
+          );
+        } else if (!taxonomyStrong) {
+          await db.emailThread.updateMany({
+            where: { id: { in: upsertedEmailThreadIds } },
+            data: { triageStatus: "UNROUTED" },
+          });
+        }
+        // sortingPaused && taxonomyStrong → leave PENDING (existing behaviour)
       }
 
       // ── 6. Advance sync cursor ───────────────────────────────────────────────
@@ -465,8 +489,7 @@ export function createSyncInboxWorker(): Worker {
         workspace.plan !== "FREE" &&
         (syncState.backfillStatus === "PENDING" || syncState.backfillStatus === "ERROR")
       ) {
-        const nodeCount = await db.taxonomyNode.count({ where: { workspaceId } });
-        if (nodeCount >= 3) {
+        if (taxonomyStrong) {
           await backfillInboxQueue.add(
             "backfill-inbox",
             { workspaceId },
