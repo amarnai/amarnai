@@ -2,18 +2,32 @@
 
 import { revalidatePath } from "next/cache";
 import { requireUser, assertWorkspaceOwner } from "@/lib/session";
-import { apiFor } from "@/lib/api";
+import { apiFor, type DisconnectResult } from "@/lib/api";
+
+// Narrowed on purpose: only what the disconnect UI reports goes to the browser.
+export type DisconnectOutcome = Pick<
+  DisconnectResult,
+  "revoked" | "sharedMailbox" | "erased"
+>;
 
 export async function disconnectGmailAction(
   workspaceId: string,
   options?: { eraseData?: boolean }
-): Promise<void> {
+): Promise<DisconnectOutcome> {
   const user = await requireUser();
   await assertWorkspaceOwner(workspaceId, user.id);
 
-  await apiFor(user.id).disconnectGmail(workspaceId, options?.eraseData ?? false);
+  const result = await apiFor(user.id).disconnectGmail(
+    workspaceId,
+    options?.eraseData ?? false
+  );
 
   revalidatePath("/settings");
+  return {
+    revoked: result.revoked,
+    sharedMailbox: result.sharedMailbox,
+    erased: result.erased,
+  };
 }
 
 export async function sweepInboxAction(workspaceId: string): Promise<void> {

@@ -16,6 +16,7 @@ vi.mock("@amarnai/db", () => ({
     },
     gmailConnection: {
       findUnique: vi.fn(),
+      findMany: vi.fn(),
       update: vi.fn(),
       count: vi.fn(),
     },
@@ -102,6 +103,7 @@ beforeEach(() => {
   vi.mocked(db.workspaceMember.findUnique).mockResolvedValue({ userId: TEST_USER_ID } as never);
   vi.mocked(db.gmailConnection.update).mockResolvedValue({} as never);
   vi.mocked(db.gmailConnection.count).mockResolvedValue(0); // no siblings by default
+  vi.mocked(db.gmailConnection.findMany).mockResolvedValue([]); // no visible siblings by default
   vi.mocked(db.emailAccount.findUnique).mockResolvedValue(baseEmailAccount as never);
   vi.mocked(db.emailAccount.update).mockResolvedValue({} as never);
   vi.mocked(db.emailThread.updateMany).mockResolvedValue({ count: 0 } as never);
@@ -150,6 +152,57 @@ describe("GET /workspaces/:workspaceId/gmail-connection", () => {
     expect(res.status).toBe(200);
     const body = (await res.json()) as Record<string, unknown>;
     expect(body).not.toHaveProperty("encryptedRefreshToken");
+  });
+
+  it("reports an unshared mailbox when no other workspace syncs it", async () => {
+    vi.mocked(db.workspace.findUnique).mockResolvedValue({ id: WS_ID } as never);
+    vi.mocked(db.gmailConnection.findUnique).mockResolvedValue(baseConnection as never);
+
+    const res = await app.request(`/workspaces/${WS_ID}/gmail-connection`, authed());
+    const body = (await res.json()) as { sharedMailbox: boolean; alsoConnectedIn: unknown[] };
+    expect(body.sharedMailbox).toBe(false);
+    expect(body.alsoConnectedIn).toEqual([]);
+  });
+
+  it("reports sharedMailbox=true without leaking names when the sibling belongs to another tenant", async () => {
+    vi.mocked(db.workspace.findUnique).mockResolvedValue({ id: WS_ID } as never);
+    vi.mocked(db.gmailConnection.findUnique).mockResolvedValue(baseConnection as never);
+    vi.mocked(db.gmailConnection.count).mockResolvedValue(1); // foreign-tenant sibling
+    vi.mocked(db.gmailConnection.findMany).mockResolvedValue([]); // not visible to this user
+
+    const res = await app.request(`/workspaces/${WS_ID}/gmail-connection`, authed());
+    const body = (await res.json()) as { sharedMailbox: boolean; alsoConnectedIn: unknown[] };
+    expect(body.sharedMailbox).toBe(true);
+    expect(body.alsoConnectedIn).toEqual([]);
+  });
+
+  it("lists sibling workspaces the requesting user is a member of", async () => {
+    vi.mocked(db.workspace.findUnique).mockResolvedValue({ id: WS_ID } as never);
+    vi.mocked(db.gmailConnection.findUnique).mockResolvedValue(baseConnection as never);
+    vi.mocked(db.gmailConnection.count).mockResolvedValue(1);
+    vi.mocked(db.gmailConnection.findMany).mockResolvedValue([
+      { workspace: { id: OTHER_WS_ID, name: "Benjamin Personal" } },
+    ] as never);
+
+    const res = await app.request(`/workspaces/${WS_ID}/gmail-connection`, authed());
+    const body = (await res.json()) as { sharedMailbox: boolean; alsoConnectedIn: { id: string; name: string }[] };
+    expect(body.sharedMailbox).toBe(true);
+    expect(body.alsoConnectedIn).toEqual([{ id: OTHER_WS_ID, name: "Benjamin Personal" }]);
+  });
+
+  it("scopes the visible-siblings query to the requesting user's memberships", async () => {
+    vi.mocked(db.workspace.findUnique).mockResolvedValue({ id: WS_ID } as never);
+    vi.mocked(db.gmailConnection.findUnique).mockResolvedValue(baseConnection as never);
+
+    await app.request(`/workspaces/${WS_ID}/gmail-connection`, authed());
+
+    expect(vi.mocked(db.gmailConnection.findMany)).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          workspace: { members: { some: { userId: TEST_USER_ID } } },
+        }),
+      })
+    );
   });
 
   it("only has the gmail.readonly scope in the granted scopes", async () => {

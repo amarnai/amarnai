@@ -506,6 +506,10 @@ export type GmailConnection = {
   lastVerifiedAt: string | null;
   createdAt: string;
   updatedAt: string;
+  /** True when any other ACTIVE workspace (any tenant) syncs the same mailbox. */
+  sharedMailbox: boolean;
+  /** Workspaces sharing this mailbox that the requesting user is a member of. */
+  alsoConnectedIn: { id: string; name: string }[];
 } | null;
 
 export type DisconnectResult = {

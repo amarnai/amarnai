@@ -1323,18 +1323,23 @@ a {
   line-height: 1.5;
 }
 
-.settings-toggle {
+.settings-toggle,
+.checkbox-label {
   display: flex;
   align-items: center;
   gap: 8px;
   font-size: 13.5px;
   color: var(--ink-2);
   cursor: pointer;
-  margin-bottom: 10px;
   user-select: none;
 }
 
-.settings-toggle input[type="checkbox"] {
+.settings-toggle {
+  margin-bottom: 10px;
+}
+
+.settings-toggle input[type="checkbox"],
+.checkbox-label input[type="checkbox"] {
   width: 15px;
   height: 15px;
   accent-color: var(--accent);
@@ -1685,8 +1690,13 @@ a {
 
 .account-danger-warning {
   font-size: 13px;
-  color: var(--color-danger, #dc2626);
-  margin: 0 0 12px;
+  line-height: 1.5;
+  color: var(--color-destructive-text);
+  background: var(--danger-soft);
+  border: 1px solid var(--danger-line);
+  border-radius: var(--r-sm);
+  padding: 10px 14px;
+  margin: 0;
 }
 
 .account-delete-confirm {
@@ -1818,6 +1828,12 @@ a {
 .alert-error {
   background: #fee2e2;
   color: #991b1b;
+}
+
+.alert-info {
+  background: var(--bg-soft);
+  border: 1px solid var(--line-2);
+  color: var(--ink-2);
 }
 
 /* ─── Sync status row ────────────────────────────────────────────────────── */

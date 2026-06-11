@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { disconnectGmailAction } from "@/actions/gmail";
+import { disconnectGmailAction, type DisconnectOutcome } from "@/actions/gmail";
 import type { GmailConnection, SyncStatus, GmailSyncSettings } from "@/lib/api";
 import { GmailSyncSettingsSection } from "./GmailSyncSettingsSection";
 
@@ -19,8 +19,17 @@ type Props = {
   syncSettings: GmailSyncSettings | null;
   connectError: string | null;
   connectSuccess: boolean;
-  alsoConnectedIn?: { id: string; name: string }[];
 };
+
+const GOOGLE_PERMISSIONS_URL = "https://myaccount.google.com/permissions";
+
+function GooglePermissionsLink() {
+  return (
+    <a href={GOOGLE_PERMISSIONS_URL} target="_blank" rel="noreferrer">
+      Google Account permissions
+    </a>
+  );
+}
 
 const ERROR_MESSAGES: Record<string, string> = {
   access_denied:
@@ -64,15 +73,16 @@ export function GmailConnectionSection({
   syncSettings,
   connectError,
   connectSuccess,
-  alsoConnectedIn = [],
 }: Props) {
   const [isPending, startTransition] = useTransition();
   const [confirming, setConfirming] = useState(false);
   const [eraseData, setEraseData] = useState(false);
+  const [outcome, setOutcome] = useState<DisconnectOutcome | null>(null);
 
   function handleDisconnect() {
     startTransition(async () => {
-      await disconnectGmailAction(workspaceId, { eraseData });
+      const result = await disconnectGmailAction(workspaceId, { eraseData });
+      setOutcome(result);
       setConfirming(false);
       setEraseData(false);
     });
@@ -83,8 +93,32 @@ export function GmailConnectionSection({
     : null;
 
   const badge = syncStatus ? SYNC_BADGE[syncStatus.status] : null;
+  const alsoConnectedIn = connection?.alsoConnectedIn ?? [];
+  // sharedMailbox is cross-tenant (drives whether disconnecting revokes the
+  // Google grant); alsoConnectedIn only lists workspaces this user can see.
+  const sharedMailbox = connection?.sharedMailbox ?? false;
   const isShared = alsoConnectedIn.length > 0;
   const sharedNames = alsoConnectedIn.map((w) => w.name).join(", ");
+
+  const disconnectWarning = !sharedMailbox ? (
+    <>
+      Stops syncing and revokes Amarnai&apos;s access to this mailbox. Synced
+      email data is kept so you can reconnect later.
+    </>
+  ) : isShared ? (
+    <>
+      Disconnects this workspace. Amarnai keeps access because this mailbox is
+      still connected in {sharedNames}.
+    </>
+  ) : (
+    <>
+      Disconnects this workspace. Amarnai keeps access because this mailbox is
+      also connected elsewhere in Amarnai. To fully revoke access, remove
+      Amarnai from your <GooglePermissionsLink />.
+    </>
+  );
+
+  const erasedNote = outcome?.erased ? " Synced email data was erased." : null;
 
   return (
     <section className="settings-section">
@@ -142,11 +176,7 @@ export function GmailConnectionSection({
               </button>
             ) : (
               <div className="account-delete-confirm">
-                <p className="account-danger-warning">
-                  {isShared
-                    ? `Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in ${sharedNames}.`
-                    : "Stops syncing and revokes Amarnai's access to this mailbox. Synced email data is kept so you can reconnect later."}
-                </p>
+                <p className="account-danger-warning">{disconnectWarning}</p>
                 <label className="checkbox-label">
                   <input
                     type="checkbox"
@@ -186,9 +216,32 @@ export function GmailConnectionSection({
       ) : connection?.status === "DISCONNECTED" ? (
         <div className="gmail-connection-status">
           <div className="gmail-address">{connection.gmailAddress}</div>
-          <div className="alert alert-error">
-            Disconnected. Amarnai is no longer syncing this inbox.
-          </div>
+          {outcome ? (
+            // Reports what the disconnect actually did, not what was predicted.
+            outcome.sharedMailbox ? (
+              <div className="alert alert-info">
+                Disconnected from this workspace.{erasedNote} Amarnai still has
+                access because this mailbox is connected in another workspace.
+                To fully revoke access, remove Amarnai from your{" "}
+                <GooglePermissionsLink />.
+              </div>
+            ) : outcome.revoked ? (
+              <div className="alert alert-success">
+                Disconnected. Amarnai&apos;s access to this mailbox was revoked
+                at Google.{erasedNote}
+              </div>
+            ) : (
+              <div className="alert alert-info">
+                Disconnected.{erasedNote} Revocation at Google could not be
+                confirmed. You can remove Amarnai from your{" "}
+                <GooglePermissionsLink />.
+              </div>
+            )
+          ) : (
+            <div className="alert alert-error">
+              Disconnected. Amarnai is no longer syncing this inbox.
+            </div>
+          )}
           <a
             href={`/api/gmail/connect?workspaceId=${workspaceId}`}
             className="btn-primary"

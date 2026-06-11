@@ -2,7 +2,11 @@ import { Hono } from "hono";
 import { z } from "zod";
 import { db } from "@amarnai/db";
 import type { AppEnv } from "../env.js";
-import { disconnectGmail } from "../services/gmail-disconnect.js";
+import {
+  disconnectGmail,
+  countActiveSiblingConnections,
+  listVisibleSiblingConnections,
+} from "../services/gmail-disconnect.js";
 
 const workspaceParam = z.object({ workspaceId: z.string().min(1) });
 
@@ -38,7 +42,21 @@ gmailConnection.get("/workspaces/:workspaceId/gmail-connection", async (c) => {
   // encryptedRefreshToken is excluded by the select clause above and must never be returned.
   const { ...safe } = connection as typeof connection & { encryptedRefreshToken?: unknown };
   delete safe.encryptedRefreshToken;
-  return c.json(safe);
+
+  // sharedMailbox is cross-tenant on purpose: it must match the disconnect
+  // service's revocation decision. alsoConnectedIn is scoped to the requesting
+  // user's memberships — other tenants' workspace names must never leak.
+  const userId = c.get("userId");
+  const [siblingsCount, alsoConnectedIn] = await Promise.all([
+    countActiveSiblingConnections(connection.gmailAddress, connection.workspaceId),
+    listVisibleSiblingConnections(connection.gmailAddress, connection.workspaceId, userId),
+  ]);
+
+  return c.json({
+    ...safe,
+    sharedMailbox: siblingsCount > 0,
+    alsoConnectedIn,
+  });
 });
 
 gmailConnection.delete("/workspaces/:workspaceId/gmail-connection", async (c) => {

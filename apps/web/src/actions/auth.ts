@@ -213,6 +213,11 @@ export async function deleteAccountAction(): Promise<{ error?: string }> {
     await tx.gmailConnection.deleteMany({ where: { workspaceId: { in: workspaceIds } } });
     await tx.providerSyncState.deleteMany({ where: { emailAccountId: { in: emailAccountIds } } });
     await tx.emailAddressIdentity.deleteMany({ where: { emailAccountId: { in: emailAccountIds } } });
+    // Deleting by userId is only safe because every emailAccount lives in a
+    // workspace this user owns: Gmail connect requires the OWNER role, and the
+    // OWNER role is only ever granted to the workspace creator (ownerUserId).
+    // If ownership transfer or member promotion is ever added, this scope must
+    // change with it or threads in surviving workspaces will break this delete.
     await tx.emailAccount.deleteMany({ where: { userId: user.id } });
     await tx.workspaceMember.deleteMany({ where: { userId: user.id } });
     await tx.auditLog.deleteMany({ where: { actorUserId: user.id } });

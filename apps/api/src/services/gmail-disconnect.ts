@@ -15,6 +15,47 @@ export type DisconnectResult = {
 };
 
 /**
+ * Counts ACTIVE connections to the same mailbox in other workspaces, across
+ * all tenants. This is the single source of truth for "is this mailbox
+ * shared?" — used both to decide whether disconnecting revokes the Google
+ * grant and to tell the UI which warning to show, so the two can never drift.
+ */
+export async function countActiveSiblingConnections(
+  gmailAddress: string,
+  excludeWorkspaceId: string
+): Promise<number> {
+  return db.gmailConnection.count({
+    where: {
+      gmailAddress,
+      status: "ACTIVE",
+      NOT: { workspaceId: excludeWorkspaceId },
+    },
+  });
+}
+
+/**
+ * Sibling workspaces syncing the same mailbox that the given user is a member
+ * of. Membership-scoped on purpose: other tenants' workspace names must never
+ * be exposed, even though countActiveSiblingConnections counts them.
+ */
+export async function listVisibleSiblingConnections(
+  gmailAddress: string,
+  excludeWorkspaceId: string,
+  userId: string
+): Promise<{ id: string; name: string }[]> {
+  const siblings = await db.gmailConnection.findMany({
+    where: {
+      gmailAddress,
+      status: "ACTIVE",
+      NOT: { workspaceId: excludeWorkspaceId },
+      workspace: { members: { some: { userId } } },
+    },
+    select: { workspace: { select: { id: true, name: true } } },
+  });
+  return siblings.map((s) => s.workspace);
+}
+
+/**
  * Disconnects a workspace's Gmail connection.
  *
  * - Sets status to DISCONNECTED immediately (stops all new enqueues).
@@ -60,13 +101,10 @@ export async function disconnectGmail(
   // Google-side teardown (watch stop + token revocation) is scoped to the
   // mailbox/grant, not to this workspace. Skip it when another ACTIVE workspace
   // shares the same address so we don't break their sync.
-  const siblingsCount = await db.gmailConnection.count({
-    where: {
-      gmailAddress: connection.gmailAddress,
-      status: "ACTIVE",
-      NOT: { workspaceId },
-    },
-  });
+  const siblingsCount = await countActiveSiblingConnections(
+    connection.gmailAddress,
+    workspaceId
+  );
   const sharedMailbox = siblingsCount > 0;
 
   let watchStopped = false;
