@@ -43,9 +43,9 @@ const ERROR_MESSAGES: Record<string, string> = {
   token_exchange:
     "Google could not complete the authorization. The link may have expired — please try again. If the problem persists, check that the Gmail callback URL is registered in Google Cloud Console.",
   insufficient_scope:
-    "Gmail read-only access was not granted. Please try again and approve the requested permission.",
+    "Gmail access was not granted. Please try again and approve the requested permission.",
   gmail_profile_fetch:
-    "Could not access your Gmail inbox. Make sure the Gmail API is enabled and the gmail.readonly scope is added to the OAuth consent screen in Google Cloud Console.",
+    "Could not access your Gmail inbox. Make sure the Gmail API is enabled and the https://mail.google.com/ scope is added to the OAuth consent screen in Google Cloud Console.",
   google_account_info:
     "Could not verify your Google account. Please try again.",
   db_upsert:

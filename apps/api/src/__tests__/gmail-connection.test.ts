@@ -89,7 +89,7 @@ const baseConnection = {
   gmailAddress: "user@gmail.com",
   googleSubjectId: null,
   encryptedRefreshToken: "encrypted-token",
-  grantedScopes: ["https://www.googleapis.com/auth/gmail.readonly"],
+  grantedScopes: ["https://mail.google.com/"],
   status: "ACTIVE" as const,
   lastVerifiedAt: new Date().toISOString(),
   createdAt: new Date().toISOString(),
@@ -205,18 +205,13 @@ describe("GET /workspaces/:workspaceId/gmail-connection", () => {
     );
   });
 
-  it("only has the gmail.readonly scope in the granted scopes", async () => {
+  it("only has the mail.google.com scope in the granted scopes", async () => {
     vi.mocked(db.workspace.findUnique).mockResolvedValue({ id: WS_ID } as never);
     vi.mocked(db.gmailConnection.findUnique).mockResolvedValue(baseConnection as never);
 
     const res = await app.request(`/workspaces/${WS_ID}/gmail-connection`, authed());
     const body = (await res.json()) as typeof baseConnection;
-    expect(body.grantedScopes).toEqual(["https://www.googleapis.com/auth/gmail.readonly"]);
-    expect(body.grantedScopes).not.toContain("https://mail.google.com/");
-    expect(body.grantedScopes).not.toContain("https://www.googleapis.com/auth/gmail.modify");
-    expect(body.grantedScopes).not.toContain("https://www.googleapis.com/auth/gmail.compose");
-    expect(body.grantedScopes).not.toContain("https://www.googleapis.com/auth/gmail.send");
-    expect(body.grantedScopes).not.toContain("https://www.googleapis.com/auth/gmail.labels");
+    expect(body.grantedScopes).toEqual(["https://mail.google.com/"]);
   });
 });
 

@@ -8,7 +8,7 @@ import {
 import { encrypt } from "@/lib/encryption";
 import { db } from "@amarnai/db";
 
-const GMAIL_READONLY_SCOPE = "https://www.googleapis.com/auth/gmail.readonly";
+const GMAIL_SCOPE = "https://mail.google.com/";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
@@ -68,9 +68,9 @@ export async function GET(req: NextRequest) {
     return NextResponse.redirect(settingsUrl);
   }
 
-  // Enforce read-only scope before making any Gmail API calls.
+  // Enforce the required Gmail scope before making any Gmail API calls.
   const grantedScopes = tokens.scope.split(" ");
-  if (!grantedScopes.includes(GMAIL_READONLY_SCOPE)) {
+  if (!grantedScopes.includes(GMAIL_SCOPE)) {
     console.error("[gmail/callback] insufficient_scope granted:", tokens.scope);
     settingsUrl.searchParams.set("gmail_error", "insufficient_scope");
     return NextResponse.redirect(settingsUrl);
@@ -89,7 +89,7 @@ export async function GET(req: NextRequest) {
 
   // ── Step 3: persist the connection ───────────────────────────────────────────
   // googleSubjectId is intentionally omitted: Google's tokeninfo endpoints do not
-  // reliably return a stable account ID for gmail.readonly-only access tokens
+  // reliably return a stable account ID for Gmail-scope-only access tokens
   // without requesting additional scopes. It can be backfilled later.
   try {
     const encryptedRefreshToken = encrypt(tokens.refreshToken);

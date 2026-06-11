@@ -7,7 +7,7 @@ import { getOrCreateDefaultWorkspace } from "@/lib/workspace";
 import { fetchGmailProfile } from "@/lib/gmail-oauth";
 import { encrypt } from "@/lib/encryption";
 
-const GMAIL_READONLY_SCOPE = "https://www.googleapis.com/auth/gmail.readonly";
+const GMAIL_SCOPE = "https://mail.google.com/";
 
 export const { handlers, auth, signIn, signOut, unstable_update } = NextAuth({
   providers: [
@@ -16,7 +16,7 @@ export const { handlers, auth, signIn, signOut, unstable_update } = NextAuth({
       clientSecret: process.env["AUTH_GOOGLE_SECRET"] ?? "",
       authorization: {
         params: {
-          scope: `openid email profile ${GMAIL_READONLY_SCOPE}`,
+          scope: `openid email profile ${GMAIL_SCOPE}`,
           access_type: "offline",
           prompt: "select_account",
         },
@@ -93,14 +93,14 @@ export const { handlers, auth, signIn, signOut, unstable_update } = NextAuth({
               workspaceId: workspace.id,
               gmailAddress: profile.emailAddress,
               encryptedRefreshToken,
-              grantedScopes: [GMAIL_READONLY_SCOPE],
+              grantedScopes: [GMAIL_SCOPE],
               status: "ACTIVE",
               lastVerifiedAt: new Date(),
             },
             update: {
               gmailAddress: profile.emailAddress,
               encryptedRefreshToken,
-              grantedScopes: [GMAIL_READONLY_SCOPE],
+              grantedScopes: [GMAIL_SCOPE],
               status: "ACTIVE",
               lastVerifiedAt: new Date(),
             },
