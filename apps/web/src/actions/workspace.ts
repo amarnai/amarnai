@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { db, ensureInboxNode } from "@amarnai/db";
 import { requireUser } from "@/lib/session";
-import { getSelectedWorkspace, getWorkspaceLimit } from "@/lib/workspace";
+import { getSelectedWorkspace } from "@/lib/workspace";
 import { disconnectGmailBeforeDeletion } from "@/lib/gmail-teardown";
 
 const WORKSPACE_COOKIE = "amarnai-workspace";
@@ -62,14 +62,11 @@ export async function createWorkspaceAction(
   if (!trimmed) return { error: "Workspace name cannot be empty" };
   if (trimmed.length > 100) return { error: "Name must be 100 characters or fewer" };
 
-  const limit = getWorkspaceLimit();
-  if (isFinite(limit)) {
-    const count = await db.workspace.count({ where: { ownerUserId: user.id } });
-    if (count >= limit) {
-      return {
-        error: `You can only have ${limit} workspace${limit === 1 ? "" : "s"} on your current plan`,
-      };
-    }
+  const existingFree = await db.workspace.count({
+    where: { ownerUserId: user.id, plan: "FREE" },
+  });
+  if (existingFree >= 1) {
+    return { error: "You already have a free workspace." };
   }
 
   const workspace = await db.workspace.create({

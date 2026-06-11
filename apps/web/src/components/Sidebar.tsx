@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 function HamburgerIcon() {
   return (
@@ -44,10 +44,8 @@ function SettingsIcon() {
   );
 }
 
-import {
-  switchWorkspaceAction,
-  createWorkspaceAction,
-} from "@/actions/workspace";
+import { switchWorkspaceAction } from "@/actions/workspace";
+import { CreateWorkspaceDialog } from "@/components/CreateWorkspaceDialog";
 
 const isDevEnabled = process.env.NEXT_PUBLIC_ENABLE_DEV_TOOLS === "true";
 
@@ -114,23 +112,18 @@ export function Sidebar({
   user,
   workspace,
   workspaces,
-  canCreateWorkspace,
+  hasFreeWorkspace,
 }: {
   user: SidebarUser;
   workspace: SidebarWorkspace | null;
   workspaces: SidebarWorkspace[];
-  canCreateWorkspace: boolean;
+  hasFreeWorkspace: boolean;
 }) {
   const pathname = usePathname();
-  const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [wsOpen, setWsOpen] = useState(false);
-  const [creating, setCreating] = useState(false);
-  const [createName, setCreateName] = useState("");
-  const [createError, setCreateError] = useState<string | null>(null);
-  const [createPending, setCreatePending] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const createInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     setMobileOpen(false);
@@ -144,52 +137,15 @@ export function Sidebar({
         !dropdownRef.current.contains(e.target as Node)
       ) {
         setWsOpen(false);
-        setCreating(false);
-        setCreateName("");
-        setCreateError(null);
       }
     }
     document.addEventListener("mousedown", onClickOutside);
     return () => document.removeEventListener("mousedown", onClickOutside);
   }, [wsOpen]);
 
-  useEffect(() => {
-    if (creating) {
-      createInputRef.current?.focus();
-    }
-  }, [creating]);
-
   async function handleSwitch(id: string) {
     setWsOpen(false);
     await switchWorkspaceAction(id);
-  }
-
-  function handleOpenCreate() {
-    setCreating(true);
-    setCreateError(null);
-    setCreateName("");
-  }
-
-  async function handleCreate() {
-    if (!createName.trim()) return;
-    setCreatePending(true);
-    setCreateError(null);
-    const result = await createWorkspaceAction(createName);
-    if (result?.error) {
-      setCreateError(result.error);
-      setCreatePending(false);
-      return;
-    }
-    setCreatePending(false);
-    setCreating(false);
-    setWsOpen(false);
-    router.push("/emails");
-  }
-
-  function handleCancelCreate() {
-    setCreating(false);
-    setCreateName("");
-    setCreateError(null);
   }
 
   const initials = user ? getInitials(user.name, user.email) : "?";
@@ -223,16 +179,7 @@ export function Sidebar({
         <button
           className="ws-switcher-btn ws-switcher-btn--header"
           type="button"
-          onClick={() => {
-            if (wsOpen) {
-              setWsOpen(false);
-              setCreating(false);
-              setCreateName("");
-              setCreateError(null);
-            } else {
-              setWsOpen(true);
-            }
-          }}
+          onClick={() => setWsOpen((v) => !v)}
           aria-haspopup="listbox"
           aria-expanded={wsOpen}
         >
@@ -263,57 +210,17 @@ export function Sidebar({
               </button>
             ))}
 
-            {canCreateWorkspace && (
-              <>
-                <div className="ws-dropdown-separator" aria-hidden />
-                {!creating ? (
-                  <button
-                    type="button"
-                    className="ws-dropdown-new"
-                    onClick={handleOpenCreate}
-                  >
-                    + New workspace
-                  </button>
-                ) : (
-                  <div className="ws-create-form">
-                    <input
-                      ref={createInputRef}
-                      type="text"
-                      className="ws-create-input"
-                      placeholder="Workspace name"
-                      value={createName}
-                      maxLength={100}
-                      onChange={(e) => setCreateName(e.target.value)}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") handleCreate();
-                        if (e.key === "Escape") handleCancelCreate();
-                      }}
-                    />
-                    {createError && (
-                      <p className="ws-create-error">{createError}</p>
-                    )}
-                    <div className="ws-create-actions">
-                      <button
-                        type="button"
-                        className="ws-create-submit"
-                        onClick={handleCreate}
-                        disabled={createPending || !createName.trim()}
-                      >
-                        {createPending ? "Creating…" : "Create"}
-                      </button>
-                      <button
-                        type="button"
-                        className="ws-create-cancel"
-                        onClick={handleCancelCreate}
-                        disabled={createPending}
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </>
-            )}
+            <div className="ws-dropdown-separator" aria-hidden />
+            <button
+              type="button"
+              className="ws-dropdown-new"
+              onClick={() => {
+                setWsOpen(false);
+                setDialogOpen(true);
+              }}
+            >
+              + New workspace
+            </button>
           </div>
         )}
       </div>
@@ -352,6 +259,13 @@ export function Sidebar({
         </div>
       )}
     </aside>
+
+    {dialogOpen && (
+      <CreateWorkspaceDialog
+        hasFreeWorkspace={hasFreeWorkspace}
+        onClose={() => setDialogOpen(false)}
+      />
+    )}
     </>
   );
 }

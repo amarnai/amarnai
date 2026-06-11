@@ -5276,6 +5276,37 @@ a {
   padding: 0 2px;
 }
 
+/* ─── Create workspace dialog ───────────────────────────────────────────── */
+
+.new-ws-dialog-mascot {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 4px;
+  filter: drop-shadow(0 8px 24px oklch(20% 0.01 80 / 0.10));
+}
+
+.new-ws-plan-cards {
+  display: flex;
+  gap: 10px;
+}
+
+.new-ws-plan-card {
+  flex: 1;
+}
+
+.new-ws-plan-card-price {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1.2;
+}
+
+@media (max-width: 480px) {
+  .new-ws-plan-cards {
+    flex-direction: column;
+  }
+}
+
 /* ─── Billing section (settings) ────────────────────────────────────────── */
 
 .billing-alert {

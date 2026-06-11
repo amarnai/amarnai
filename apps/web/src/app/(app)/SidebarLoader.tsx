@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import { db } from "@amarnai/db";
 import { Sidebar } from "@/components/Sidebar";
-import { getSelectedWorkspace, getWorkspaceLimit } from "@/lib/workspace";
+import { getSelectedWorkspace } from "@/lib/workspace";
 
 export async function SidebarLoader() {
   const session = await auth();
@@ -13,10 +13,9 @@ export async function SidebarLoader() {
 
   let workspace: { id: string; name: string } | null = null;
   let workspaces: Array<{ id: string; name: string }> = [];
-  let canCreateWorkspace = false;
+  let hasFreeWorkspace = false;
 
   if (userId) {
-    const limit = getWorkspaceLimit();
     [workspaces, workspace] = await Promise.all([
       db.workspace.findMany({
         where: { members: { some: { userId } } },
@@ -26,8 +25,8 @@ export async function SidebarLoader() {
       getSelectedWorkspace(userId),
     ]);
 
-    const ownedWorkspaceCount = await db.workspace.count({ where: { ownerUserId: userId } });
-    canCreateWorkspace = !isFinite(limit) || ownedWorkspaceCount < limit;
+    hasFreeWorkspace =
+      (await db.workspace.count({ where: { ownerUserId: userId, plan: "FREE" } })) > 0;
   }
 
   return (
@@ -35,7 +34,7 @@ export async function SidebarLoader() {
       user={user}
       workspace={workspace}
       workspaces={workspaces}
-      canCreateWorkspace={canCreateWorkspace}
+      hasFreeWorkspace={hasFreeWorkspace}
     />
   );
 }
