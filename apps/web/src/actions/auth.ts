@@ -8,6 +8,7 @@ import { db } from "@amarnai/db";
 import { requireUser } from "@/lib/session";
 import { sendVerificationEmail, sendPasswordResetEmail } from "@/lib/email";
 import { disconnectGmailBeforeDeletion } from "@/lib/gmail-teardown";
+import { isWaitlistMode } from "@/lib/waitlist";
 
 // ─── Shared ───────────────────────────────────────────────────────────────────
 
@@ -71,6 +72,12 @@ export async function registerAction(
   _prev: { error?: string } | null,
   formData: FormData
 ): Promise<{ error?: string }> {
+  // The sign-up page renders the waitlist instead of this form in waitlist
+  // mode, but the server must enforce its own policy.
+  if (isWaitlistMode()) {
+    return { error: "Sign-ups are currently invite-only. Join the waitlist to get access." };
+  }
+
   const parsed = registerSchema.safeParse({
     email: formData.get("email"),
     password: formData.get("password"),

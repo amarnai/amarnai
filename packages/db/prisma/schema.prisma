@@ -535,3 +535,16 @@ model GmailSyncSettings {
 
   workspace Workspace @relation(fields: [workspaceId], references: [id])
 }
+
+// Closed-beta waitlist (WAITLIST_MODE=true). `email` is the Google account
+// address the user will sign in with and connect Gmail from. It is what the
+// operator pastes into the OAuth test-user allowlist. Stored lowercased.
+model WaitlistEntry {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  createdAt DateTime  @default(now())
+  // Set when the operator has added this address to the Google test-user
+  // allowlist and sent the invite. Tracked app-side only — Google has no API
+  // for the test-user list, so this is manual bookkeeping.
+  invitedAt DateTime?
+}
