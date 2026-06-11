@@ -33,8 +33,8 @@ export function Footer() {
             </div>
             <div className="ld-footer-col">
               <h4>Legal</h4>
-              <a href="#">Privacy</a>
-              <a href="#">Security</a>
+              <Link href="/privacy">Privacy</Link>
+              <Link href="/terms">Terms</Link>
             </div>
           </div>
         </div>

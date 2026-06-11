@@ -679,6 +679,158 @@ body {
   }
 }
 
+/* ─── Prose pages (privacy, terms) ──────────────────────────────────────── */
+
+.prose-page {
+  min-height: 100vh;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 20px 64px;
+}
+
+.prose-header {
+  width: 100%;
+  max-width: 680px;
+  padding: 28px 0 0;
+  margin-bottom: 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.prose-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.8125rem;
+  color: var(--ink-3);
+  text-decoration: none;
+  transition: color 0.1s;
+}
+
+.prose-back:hover {
+  color: var(--ink);
+}
+
+.prose-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  text-decoration: none;
+  color: var(--ink);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.prose-brand:hover {
+  color: var(--accent);
+}
+
+.prose-body {
+  width: 100%;
+  max-width: 680px;
+}
+
+.prose-title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--ink);
+  letter-spacing: -0.03em;
+  margin-bottom: 6px;
+}
+
+.prose-meta {
+  font-size: 0.8125rem;
+  color: var(--ink-3);
+  margin-bottom: 36px;
+}
+
+.prose-body h2 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-top: 36px;
+  margin-bottom: 10px;
+  letter-spacing: -0.01em;
+}
+
+.prose-body p {
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: var(--ink-2);
+  margin-bottom: 14px;
+}
+
+.prose-body ul {
+  padding-left: 20px;
+  margin-bottom: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.prose-body li {
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--ink-2);
+}
+
+.prose-body a {
+  color: var(--accent-ink);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.prose-body a:hover {
+  color: var(--accent);
+}
+
+.prose-footer {
+  width: 100%;
+  max-width: 680px;
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 0.8125rem;
+  color: var(--ink-3);
+}
+
+.prose-footer a {
+  color: var(--ink-3);
+  text-decoration: none;
+}
+
+.prose-footer a:hover {
+  color: var(--ink);
+}
+
+.prose-footer-links {
+  display: flex;
+  gap: 16px;
+}
+
+@media (max-width: 480px) {
+  .prose-header {
+    margin-bottom: 32px;
+  }
+
+  .prose-title {
+    font-size: 1.5rem;
+  }
+
+  .prose-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
 /* ─── Shared badge & node-kind styles (used by taxonomy components) ───────── */
 
 .badge {
