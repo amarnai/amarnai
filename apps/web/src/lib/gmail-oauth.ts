@@ -1,6 +1,6 @@
 import crypto from "crypto";
 
-const GMAIL_SCOPE = "https://mail.google.com/";
+const GMAIL_SCOPE = "https://www.googleapis.com/auth/gmail.readonly";
 const GOOGLE_AUTH_URL = "https://accounts.google.com/o/oauth2/v2/auth";
 const GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token";
 // v1 tokeninfo is used (not v3) because v3 uses `sub` which is only reliably
@@ -102,8 +102,8 @@ export function verifyState(
 }
 
 // ─── OAuth URL ────────────────────────────────────────────────────────────────
-// Requests the full mail.google.com scope: required for permanent message
-// deletion (users.messages.delete), which no narrower Gmail scope grants.
+// Requests gmail.readonly — minimum scope for the MVP triage feature set.
+// Will be upgraded to mail.google.com when compose/send/delete ship.
 
 export function buildGmailAuthUrl(state: string): string {
   const params = new URLSearchParams({
@@ -199,7 +199,7 @@ export async function fetchGmailProfile(accessToken: string): Promise<GmailProfi
 
 // ─── Google subject ID via tokeninfo ─────────────────────────────────────────
 // The OIDC userinfo endpoint (openidconnect.googleapis.com/v1/userinfo) requires
-// the `openid` scope, which our Gmail-scope-only token does not carry.
+// the `openid` scope, which our gmail.readonly-only token does not carry.
 // The tokeninfo endpoint works with any valid Google OAuth access token and
 // returns the `sub` (stable Google account ID) without additional scopes.
 // This is a server-side call only; the token never appears in browser URLs or logs.

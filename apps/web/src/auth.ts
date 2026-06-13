@@ -7,7 +7,7 @@ import { getOrCreateDefaultWorkspace } from "@/lib/workspace";
 import { fetchGmailProfile } from "@/lib/gmail-oauth";
 import { encrypt } from "@/lib/encryption";
 
-const GMAIL_SCOPE = "https://mail.google.com/";
+const GMAIL_SCOPE = "https://www.googleapis.com/auth/gmail.readonly";
 
 export const { handlers, auth, signIn, signOut, unstable_update } = NextAuth({
   providers: [
