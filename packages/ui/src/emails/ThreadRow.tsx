@@ -118,7 +118,7 @@ export function ThreadRow({
       </div>
 
       <div className="em-thread-side">
-        <div className="em-thread-time">{fmtTime(thread.latestAt, today)}</div>
+        <div className="em-thread-time" suppressHydrationWarning>{fmtTime(thread.latestAt, today)}</div>
         <div className="em-thread-actions">
           <Tooltip content={isDone ? "Mark as not done" : "Mark as done"}>
             <button

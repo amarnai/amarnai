@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import Link from "next/link";
 import { db } from "@amarnai/db";
 import { requireUser } from "@/lib/session";
 import { isWaitlistAdmin } from "@/lib/waitlist";
@@ -47,6 +48,9 @@ export default async function AdminWaitlistPage() {
 
   return (
     <AuthShell title="Waitlist" subtitle={`${pending.length} pending · ${invited.length} invited`}>
+      <Link href="/emails" className="btn-ghost btn-sm" style={{ alignSelf: "flex-start" }}>
+        ← Back
+      </Link>
       {entries.length === 0 ? (
         <p className="auth-hint">No signups yet.</p>
       ) : (
