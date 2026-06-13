@@ -160,7 +160,7 @@ export function GmailDebugPanel({ workspaceId }: Props) {
                 {sortResult.snapshot.subject ?? <em style={{ color: "var(--color-subtle)" }}>no subject</em>}
               </div>
               <div><strong>Messages:</strong> {sortResult.snapshot.messageCount}</div>
-              <div>
+              <div suppressHydrationWarning>
                 <strong>Latest:</strong>{" "}
                 {new Date(sortResult.snapshot.latestMessageAt).toLocaleString()}
               </div>

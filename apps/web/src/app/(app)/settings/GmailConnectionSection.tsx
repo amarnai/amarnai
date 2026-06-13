@@ -135,7 +135,7 @@ export function GmailConnectionSection({
         <>
           <div className="gmail-connection-status">
             <div className="gmail-address">{connection.gmailAddress}</div>
-            <div className="gmail-meta">
+            <div className="gmail-meta" suppressHydrationWarning>
               Last verified: {formatDate(connection.lastVerifiedAt)}
             </div>
 
@@ -149,7 +149,7 @@ export function GmailConnectionSection({
               <div className="sync-status-row">
                 <span className="sync-status-label">Inbox sync</span>
                 {badge && <span className={badge.className}>{badge.label}</span>}
-                <span className="sync-status-time">
+                <span className="sync-status-time" suppressHydrationWarning>
                   {syncStatus.lastSyncedAt
                     ? `Last synced ${formatDate(syncStatus.lastSyncedAt)}`
                     : "Not yet synced"}

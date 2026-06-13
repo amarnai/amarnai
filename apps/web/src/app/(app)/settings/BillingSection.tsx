@@ -102,7 +102,7 @@ export function BillingSection({
           <span>
             Subscription cancelled.{" "}
             {planLabels[plan] ?? plan} access continues until{" "}
-            <strong>{currentPeriodEnd.toLocaleDateString()}</strong>.
+            <strong suppressHydrationWarning>{currentPeriodEnd.toLocaleDateString()}</strong>.
           </span>
           {hasSubscription && isAdmin && (
             <button
@@ -138,7 +138,7 @@ export function BillingSection({
           <span>
             Subscription will not renew.{" "}
             {planLabels[plan] ?? plan} access ends on{" "}
-            <strong>{currentPeriodEnd.toLocaleDateString()}</strong>.
+            <strong suppressHydrationWarning>{currentPeriodEnd.toLocaleDateString()}</strong>.
           </span>
           {hasSubscription && isAdmin && (
             <button
@@ -207,7 +207,7 @@ export function BillingSection({
       {isTrialing && trialEndsAt && (
         <p className="billing-note">
           Free trial until{" "}
-          <strong>{trialEndsAt.toLocaleDateString()}</strong>. You
+          <strong suppressHydrationWarning>{trialEndsAt.toLocaleDateString()}</strong>. You
           won&apos;t be charged before then.
         </p>
       )}
@@ -215,7 +215,7 @@ export function BillingSection({
       {!isTrialing && currentPeriodEnd && !cancelAtPeriodEnd && (
         <p className="billing-note">
           Renews {billingCycle === "ANNUAL" ? "annually" : "monthly"} on{" "}
-          <strong>{currentPeriodEnd.toLocaleDateString()}</strong>.
+          <strong suppressHydrationWarning>{currentPeriodEnd.toLocaleDateString()}</strong>.
         </p>
       )}
 
@@ -231,14 +231,14 @@ export function BillingSection({
 
       {canCancel && cancelStep !== "idle" && (
         <div className="billing-cancel-confirm">
-          <p className="billing-cancel-confirm__message">
+          <p className="billing-cancel-confirm__message" suppressHydrationWarning>
             {isTrialing
               ? "Your free trial will end immediately and your workspace will be downgraded to the free plan."
               : `Your subscription will cancel at the end of the current billing period${currentPeriodEnd ? ` on ${currentPeriodEnd.toLocaleDateString()}` : ""}.`}
           </p>
           {membersToRemoveOnCancel.length > 0 && (
             <div className="billing-cancel-members-warning">
-              <strong>
+              <strong suppressHydrationWarning>
                 {isTrialing
                   ? "These collaborators will immediately lose access:"
                   : `These collaborators will lose access on ${currentPeriodEnd?.toLocaleDateString() ?? "the end of the billing period"}:`}
