@@ -129,7 +129,7 @@ export function findDescendants(
 /**
  * Character budget for thread embedding text across all messages.
  *
- * The binding constraint is Gemini text-embedding-004 (production), which
+ * The binding constraint is Gemini gemini-embedding-001 (production), which
  * accepts a maximum of 2,048 tokens. 6,000 chars ≈ 1,500 tokens leaves
  * ~500 tokens of headroom for the structural labels and subject line.
  *
@@ -228,7 +228,7 @@ function truncateToShare(text: string, budget: number): string {
  * backward compatibility.
  *
  * Budget: THREAD_EMBEDDING_CHAR_BUDGET (6,000 chars ≈ 1,500 tokens).
- *   Set by Gemini text-embedding-004's 2,048-token production limit.
+ *   Set by Gemini gemini-embedding-001's 2,048-token production limit.
  *   Latest message:  60 % (3,600 chars).
  *   Earlier messages: 40 % shared equally across included messages (2,400 chars).
  *   If equal sharing would give each earlier message < MIN_EARLIER_MSG_CHARS,

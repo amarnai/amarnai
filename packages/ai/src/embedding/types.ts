@@ -23,6 +23,13 @@ export type EmbeddingProviderConfig = {
     apiKey?: string;
     model?: string;
     baseUrl?: string;
+    /**
+     * Output vector size. Gemini (Matryoshka) and OpenAI text-embedding-3 both
+     * support truncating the embedding to a smaller dimension. Omit to use the
+     * model default. The chosen value is folded into the model identity so a
+     * change re-embeds stored vectors. See composeEmbeddingModelId.
+     */
+    dimensions?: number;
   };
 };
 

@@ -13,6 +13,7 @@ export { snapshotToThreadMessages } from "./thread-snapshot.js";
 // ─── Embedding ────────────────────────────────────────────────────────────────
 export type { EmbeddingProvider, EmbeddingProviderConfig, EmbeddableNode, UpdatedNodeEmbedding } from "./embedding/types.js";
 export { createEmbeddingProvider } from "./providers/create-embedding.js";
+export { EmbeddingModelNotFoundError } from "./providers/embedding-gemini.js";
 export {
   cosineSimilarity,
   softmax,

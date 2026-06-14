@@ -1,6 +1,11 @@
 import { db } from "@amarnai/db";
 import { config } from "@amarnai/config";
 import { GmailClient, GmailAuthError } from "@amarnai/gmail";
+import {
+  createEmbeddingProvider,
+  getEmbeddingProviderConfig,
+  EmbeddingModelNotFoundError,
+} from "@amarnai/ai";
 import { createSyncInboxWorker } from "./jobs/sync-inbox.js";
 import { createClassifyThreadWorker } from "./jobs/classify-thread.js";
 import { createBackfillInboxWorker } from "./jobs/backfill-inbox.js";
@@ -111,10 +116,47 @@ async function scheduleSyncJobs(): Promise<void> {
   console.log(`[scheduler] Enqueued sync for ${connections.length} workspace(s)`);
 }
 
+// ─── Preflight ──────────────────────────────────────────────────────────────
+
+/**
+ * Verifies the configured embedding model exists before processing any jobs.
+ *
+ * A missing/retired model returns 404 from the embedding API and breaks every
+ * `classify-thread` job identically. Catching it once at startup turns
+ * thousands of failed jobs (and a log-rate-limit storm) into a single clear
+ * fatal error. Mock providers (used in tests/dev) are skipped.
+ */
+async function preflightEmbeddingModel(): Promise<void> {
+  const embeddingConfig = getEmbeddingProviderConfig();
+  if (embeddingConfig.provider === "mock") return;
+
+  const provider = createEmbeddingProvider(embeddingConfig);
+  try {
+    await provider.embed(["preflight"]);
+    console.log(
+      `[worker] Embedding preflight OK — provider=${provider.providerName} model=${provider.modelName}`,
+    );
+  } catch (err) {
+    if (err instanceof EmbeddingModelNotFoundError) {
+      console.error(
+        `[worker] Fatal: ${err.message}. Set FRONTIER_EMBEDDING_MODEL (or OLLAMA_EMBEDDING_MODEL) to a valid model and redeploy.`,
+      );
+      process.exit(1);
+    }
+    // Other errors (transient network, rate limits) shouldn't block startup —
+    // per-job retries handle those. Log and continue.
+    const msg = err instanceof Error ? err.message : String(err);
+    console.error(`[worker] Embedding preflight check failed (non-fatal): ${msg}`);
+  }
+}
+
 // ─── Bootstrap ────────────────────────────────────────────────────────────────
 
 async function main(): Promise<void> {
   console.log("[worker] Starting…");
+
+  // Verify the embedding model exists before accepting any classify jobs.
+  await preflightEmbeddingModel();
 
   // Register job processors.
   const syncWorker = createSyncInboxWorker();

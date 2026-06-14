@@ -22,6 +22,11 @@ const envSchema = z.object({
   FRONTIER_EMBEDDING_API_KEY: z.string().optional(),
   FRONTIER_EMBEDDING_MODEL: z.string().optional(),
   FRONTIER_EMBEDDING_BASE_URL: z.string().optional(),
+  // Output vector size (Matryoshka truncation for gemini-embedding-001, or the
+  // `dimensions` param for OpenAI text-embedding-3). Recommended: 768. Omit to
+  // use the model default (3072 for gemini-embedding-001). Folded into the
+  // stored embeddingModel identity, so changing it re-embeds all vectors.
+  FRONTIER_EMBEDDING_DIMENSIONS: z.coerce.number().int().positive().optional(),
   ALLOW_LOCAL_AI_IN_PRODUCTION: boolStr,
   // Set to 'false' to disable per-workspace monthly draft quotas.
   // Self-hosted deployments that manage their own AI costs should set this to false.
@@ -124,6 +129,7 @@ export const config = {
       apiKey: env.FRONTIER_EMBEDDING_API_KEY,
       model: env.FRONTIER_EMBEDDING_MODEL,
       baseUrl: env.FRONTIER_EMBEDDING_BASE_URL,
+      dimensions: env.FRONTIER_EMBEDDING_DIMENSIONS,
     },
   },
   billing: {

@@ -10,6 +10,8 @@
  *   FRONTIER_EMBEDDING_API_KEY   — (if provider=frontier)
  *   FRONTIER_EMBEDDING_MODEL     — (if provider=frontier)
  *   FRONTIER_EMBEDDING_BASE_URL  — (if provider=frontier with a custom OpenAI-compatible endpoint)
+ *   FRONTIER_EMBEDDING_DIMENSIONS — (optional output vector size, e.g. 768; must
+ *                                   match the value used by the API/worker)
  *   OLLAMA_BASE_URL              — (if provider=ollama)
  *   OLLAMA_EMBEDDING_MODEL       — (if provider=ollama, default: qwen3-embedding)
  *
@@ -44,12 +46,16 @@ function getEmbeddingConfig(): EmbeddingProviderConfig {
   const fApiKey = process.env["FRONTIER_EMBEDDING_API_KEY"];
   const fModel = process.env["FRONTIER_EMBEDDING_MODEL"];
   const fBaseUrl = process.env["FRONTIER_EMBEDDING_BASE_URL"];
-  if (fProvider ?? fApiKey ?? fModel ?? fBaseUrl) {
+  const fDimsRaw = process.env["FRONTIER_EMBEDDING_DIMENSIONS"];
+  const fDims = fDimsRaw ? Number(fDimsRaw) : undefined;
+  const fDimensions = fDims && Number.isInteger(fDims) && fDims > 0 ? fDims : undefined;
+  if (fProvider ?? fApiKey ?? fModel ?? fBaseUrl ?? fDimensions) {
     cfg.frontier = {
       ...(fProvider ? { provider: fProvider } : {}),
       ...(fApiKey ? { apiKey: fApiKey } : {}),
       ...(fModel ? { model: fModel } : {}),
       ...(fBaseUrl ? { baseUrl: fBaseUrl } : {}),
+      ...(fDimensions ? { dimensions: fDimensions } : {}),
     };
   }
   const ollamaBase = process.env["OLLAMA_BASE_URL"];

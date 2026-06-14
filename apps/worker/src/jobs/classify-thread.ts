@@ -1,4 +1,4 @@
-import { Worker } from "bullmq";
+import { Worker, UnrecoverableError } from "bullmq";
 import { db, countRecurringThreadSorts } from "@amarnai/db";
 import { config } from "@amarnai/config";
 import { getThreadSortLimit, getDraftQuotaWindowStart } from "@amarnai/shared";
@@ -10,6 +10,7 @@ import {
   classifyTriageByEmbedding,
   buildThreadEmbeddingText,
   snapshotToThreadMessages,
+  EmbeddingModelNotFoundError,
 } from "@amarnai/ai";
 import type { EmbeddableNode, TriageMetadata, EmbeddingTriageResult } from "@amarnai/ai";
 import { GmailClient, GmailAuthError, normalizeGmailThread } from "@amarnai/gmail";
@@ -380,6 +381,15 @@ export function createClassifyThreadWorker(): Worker {
             .update({ where: { workspaceId }, data: { status: "DISCONNECTED" } })
             .catch(() => {});
           return;
+        }
+        if (err instanceof EmbeddingModelNotFoundError) {
+          // The configured embedding model does not exist — a deployment
+          // misconfiguration that affects every thread. Retrying wastes
+          // attempts and floods logs, so fail permanently after one attempt.
+          console.error(
+            `[classify-thread] Embedding model misconfigured — failing thread ${emailThreadId} (workspace ${workspaceId}) without retry: ${err.message}`,
+          );
+          throw new UnrecoverableError(err.message);
         }
         const attempt = job.attemptsMade + 1;
         const maxAttempts = job.opts.attempts ?? 1;

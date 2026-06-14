@@ -19,10 +19,11 @@ export function createEmbeddingProvider(config: EmbeddingProviderConfig): Embedd
       const apiKey = config.frontier?.apiKey;
       const model = config.frontier?.model;
       const subProvider = config.frontier?.provider ?? "gemini";
+      const dimensions = config.frontier?.dimensions;
       if (!apiKey) throw new Error("FRONTIER_EMBEDDING_API_KEY is required for frontier embedding provider");
       if (!model) throw new Error("FRONTIER_EMBEDDING_MODEL is required for frontier embedding provider");
       if (subProvider === "gemini") {
-        return new GeminiEmbeddingProvider({ apiKey, model });
+        return new GeminiEmbeddingProvider({ apiKey, model, ...(dimensions ? { dimensions } : {}) });
       }
       const baseUrl = config.frontier?.baseUrl;
       return new OpenAIEmbeddingProvider({
@@ -30,6 +31,7 @@ export function createEmbeddingProvider(config: EmbeddingProviderConfig): Embedd
         apiKey,
         model,
         ...(baseUrl ? { baseUrl } : {}),
+        ...(dimensions ? { dimensions } : {}),
       });
     }
     case "ollama": {
