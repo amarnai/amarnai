@@ -464,7 +464,9 @@ export function createBackfillInboxWorker(): Worker {
             await classifyThreadQueue.addBulk(
               upsertedEmailThreadIds.map((emailThreadId) => ({
                 name: "classify-thread",
-                data: { workspaceId, emailThreadId },
+                // BACKFILL: the one-time historical allowance, exempt from the
+                // monthly thread-sort quota.
+                data: { workspaceId, emailThreadId, source: "BACKFILL" as const },
                 opts: {
                   deduplication: { id: `classify_backfill_${workspaceId}_${emailThreadId}` },
                   priority: BACKFILL_CLASSIFY_PRIORITY,

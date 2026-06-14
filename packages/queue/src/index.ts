@@ -32,18 +32,34 @@ export type SyncInboxJobData = {
 };
 
 /**
+ * Origin of a classify-thread job. Mirrors the Prisma `ClassificationSource`
+ * enum (kept as a string union here so the queue package stays free of a Prisma
+ * dependency). The worker stamps this onto the EmailClassification row, and the
+ * monthly thread-sort quota meters every source except BACKFILL.
+ *   LIVE     — automatic sort from an inbox sync (new/changed thread or stuck recovery).
+ *   BACKFILL — the one-time historical backfill (exempt from the monthly quota).
+ *   REROUTE  — resume / route-unrouted / reroute-unclassified re-sorts.
+ *   MANUAL   — a user-triggered sort via the API.
+ */
+export type ClassifyThreadSource = "LIVE" | "BACKFILL" | "REROUTE" | "MANUAL";
+
+/**
  * Payload for a `classify-thread` job.
  * One job per thread that changed during an inbox sync (or triggered manually).
  *
  * `triageOnly` — skip routing (taxonomy node selection) and only re-run
  * the triage metadata analysis (priority, urgency, risk, etc.) on the most
  * recent existing classification record. Used by the "Re-analyze" UI action.
+ *
+ * `source` — origin of the sort, used for quota attribution. Defaults to LIVE
+ * when omitted so older enqueues remain metered as recurring sorts.
  */
 export type ClassifyThreadJobData = {
   workspaceId: string;
   /** Internal EmailThread.id — not the Gmail thread ID. */
   emailThreadId: string;
   triageOnly?: boolean;
+  source?: ClassifyThreadSource;
 };
 
 /** Payload for a `backfill-inbox` job. One job per workspace, run once. */

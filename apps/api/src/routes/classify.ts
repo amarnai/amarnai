@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import { z } from "zod";
-import { db } from "@amarnai/db";
+import { db, countRecurringThreadSorts } from "@amarnai/db";
 import { getDraftQuotaWindowStart, getDraftQuotaResetsAt, getThreadSortLimit } from "@amarnai/shared";
 import { config } from "@amarnai/config";
 import { mockClassify } from "../services/mock-classifier.js";
@@ -58,17 +58,15 @@ classify.post(
       const windowStart = getDraftQuotaWindowStart(now);
       const limit = getThreadSortLimit(workspace.plan);
 
-      const [{ count }] = await db.$queryRaw<[{ count: bigint }]>`
-        SELECT COUNT(DISTINCT "emailThreadId") AS count FROM "EmailClassification"
-        WHERE "workspaceId" = ${workspaceId}
-          AND "createdAt" >= ${windowStart}
-      `;
+      // Recurring sorts only — the one-time backfill is exempt from the monthly
+      // quota, so a first-month backfill never blocks a manual sort.
+      const used = await countRecurringThreadSorts(workspaceId, windowStart);
 
-      if (Number(count) >= limit) {
+      if (used >= limit) {
         return c.json(
           {
             error: "Monthly thread-sort quota exceeded",
-            used: Number(count),
+            used,
             limit,
             resetsAt: getDraftQuotaResetsAt(now).toISOString(),
           },
@@ -89,7 +87,7 @@ classify.post(
     // after a job completes).
     const job = await classifyThreadQueue.add(
       "classify-thread",
-      { workspaceId, emailThreadId: threadId },
+      { workspaceId, emailThreadId: threadId, source: "MANUAL" as const },
       { deduplication: { id: `classify_${workspaceId}_${threadId}` } }
     );
 
@@ -218,6 +216,7 @@ classify.post(
         sensitivity: result.sensitivity,
         suggestedNextStep: result.suggestedNextStep,
         needsHumanReview: result.needsHumanReview,
+        source: "MANUAL",
         decisionSource: "mock",
         modelProvider: "mock",
         modelName: "mock-classifier-v1",

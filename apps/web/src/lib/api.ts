@@ -384,7 +384,7 @@ export type CreateTaxonomyEdgeInput = {
 
 export type UpdateTaxonomyEdgeInput = { newSourceNodeId?: string };
 
-export type TriageStatus = "PENDING" | "SORTED" | "NEEDS_REVIEW" | "UNROUTED" | "UNCLASSIFIED";
+export type TriageStatus = "PENDING" | "SORTED" | "NEEDS_REVIEW" | "UNROUTED" | "UNCLASSIFIED" | "QUOTA_BLOCKED";
 
 export type DoneMark = {
   userId: string;

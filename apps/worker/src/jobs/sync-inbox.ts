@@ -1,5 +1,6 @@
 import { Worker } from "bullmq";
-import { db } from "@amarnai/db";
+import { db, countRecurringThreadSorts } from "@amarnai/db";
+import { config } from "@amarnai/config";
 import {
   GmailClient,
   GmailAuthError,
@@ -7,7 +8,12 @@ import {
   normalizeGmailThread,
 } from "@amarnai/gmail";
 import type { GmailSyncSettings } from "@amarnai/shared";
-import { isTaxonomyRoutable, isBackfillResumable } from "@amarnai/shared";
+import {
+  isTaxonomyRoutable,
+  isBackfillResumable,
+  getThreadSortLimit,
+  getDraftQuotaWindowStart,
+} from "@amarnai/shared";
 import {
   classifyThreadQueue,
   backfillInboxQueue,
@@ -106,6 +112,65 @@ async function getChangedThreadIds(
   }
 }
 
+/** Max QUOTA_BLOCKED threads recovered per sync cycle, bounding queue bursts. */
+const QUOTA_RECOVERY_BATCH = 200;
+
+/**
+ * Re-enqueue threads deferred as QUOTA_BLOCKED once the workspace has quota again
+ * — on month rollover (the recurring count resets) or a plan upgrade (the limit
+ * rises). Recovers at most the remaining capacity so recovered threads do not
+ * immediately re-block, and is a no-op when no capacity is free. Recovered sorts
+ * are tagged LIVE (recurring) and re-check the quota in the worker, so a small
+ * concurrent overshoot self-corrects on the next cycle.
+ *
+ * Caller gates on a strong taxonomy and sorting not being paused, matching the
+ * conditions under which live threads are enqueued.
+ */
+async function recoverQuotaBlockedThreads(
+  workspaceId: string,
+  plan: string,
+): Promise<void> {
+  // Cheap existence check first: the common case has nothing deferred, so avoid
+  // the COUNT(DISTINCT) recurring-usage query unless there is work to recover.
+  const blocked = await db.emailThread.findMany({
+    where: { workspaceId, triageStatus: "QUOTA_BLOCKED", classifyingAt: null },
+    select: { id: true },
+    orderBy: { latestMessageAt: "desc" },
+    take: QUOTA_RECOVERY_BATCH,
+  });
+  if (blocked.length === 0) return;
+
+  // Bound recovery to the remaining monthly capacity so recovered threads do not
+  // immediately re-block. When enforcement is off there is no cap.
+  let recoverable = blocked;
+  if (config.billing.enforceThreadSortQuota) {
+    const used = await countRecurringThreadSorts(workspaceId, getDraftQuotaWindowStart());
+    const remaining = getThreadSortLimit(plan) - used;
+    if (remaining <= 0) return;
+    recoverable = blocked.slice(0, remaining);
+  }
+
+  await db.emailThread.updateMany({
+    where: { id: { in: recoverable.map((t) => t.id) } },
+    data: { triageStatus: "PENDING", classifyingAt: new Date() },
+  });
+
+  await classifyThreadQueue.addBulk(
+    recoverable.map(({ id: emailThreadId }) => ({
+      name: "classify-thread",
+      data: { workspaceId, emailThreadId, source: "LIVE" as const },
+      opts: {
+        deduplication: { id: `classify_quota_recovery_${workspaceId}_${emailThreadId}` },
+        priority: 5, // below live sync (1), above backfill (10)
+      },
+    })),
+  );
+
+  console.log(
+    `[sync-inbox] Workspace ${workspaceId} recovered ${recoverable.length} QUOTA_BLOCKED thread(s)`
+  );
+}
+
 // ─── Worker ───────────────────────────────────────────────────────────────────
 
 export function createSyncInboxWorker(): Worker {
@@ -119,7 +184,7 @@ export function createSyncInboxWorker(): Worker {
       const [workspace, connection, syncSettingsRow] = await Promise.all([
         db.workspace.findUnique({
           where: { id: workspaceId },
-          select: { ownerUserId: true },
+          select: { ownerUserId: true, plan: true },
         }),
         db.gmailConnection.findUnique({
           where: { workspaceId },
@@ -265,7 +330,7 @@ export function createSyncInboxWorker(): Worker {
             await classifyThreadQueue.addBulk(
               stuck.map(({ id: emailThreadId }) => ({
                 name: "classify-thread",
-                data: { workspaceId, emailThreadId },
+                data: { workspaceId, emailThreadId, source: "LIVE" as const },
                 opts: {
                   deduplication: { id: `classify_${workspaceId}_${emailThreadId}` },
                   priority: 5, // below live sync (1), above backfill (10)
@@ -273,6 +338,12 @@ export function createSyncInboxWorker(): Worker {
               }))
             );
           }
+        }
+
+        // Recover quota-deferred threads when capacity has freed up (month
+        // rollover or plan upgrade). Same gating as live classification.
+        if (!sortingPaused && taxonomyStrong) {
+          await recoverQuotaBlockedThreads(workspaceId, workspace.plan);
         }
 
         return;
@@ -448,7 +519,7 @@ export function createSyncInboxWorker(): Worker {
           await classifyThreadQueue.addBulk(
             upsertedEmailThreadIds.map((emailThreadId) => ({
               name: "classify-thread",
-              data: { workspaceId, emailThreadId },
+              data: { workspaceId, emailThreadId, source: "LIVE" as const },
               opts: {
                 jobId: `classify_${workspaceId}_${emailThreadId}_${Date.now()}`,
                 priority: 1,
@@ -528,7 +599,7 @@ export function createSyncInboxWorker(): Worker {
           await classifyThreadQueue.addBulk(
             stuck.map(({ id: emailThreadId }) => ({
               name: "classify-thread",
-              data: { workspaceId, emailThreadId },
+              data: { workspaceId, emailThreadId, source: "LIVE" as const },
               opts: {
                 deduplication: { id: `classify_${workspaceId}_${emailThreadId}` },
                 priority: 5, // below live sync (1), above backfill (10)
@@ -536,6 +607,12 @@ export function createSyncInboxWorker(): Worker {
             }))
           );
         }
+      }
+
+      // Recover quota-deferred threads when capacity has freed up (month rollover
+      // or plan upgrade). Same gating as live classification above.
+      if (!sortingPaused && taxonomyStrong) {
+        await recoverQuotaBlockedThreads(workspaceId, workspace.plan);
       }
 
       await job.updateProgress(100);

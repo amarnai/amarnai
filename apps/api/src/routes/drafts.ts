@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import { z } from "zod";
-import { db, Prisma } from "@amarnai/db";
+import { db, Prisma, getThreadSortUsage } from "@amarnai/db";
 import { createAIProvider, generateDraft, getDraftAIProviderConfig, type ThreadMessage } from "@amarnai/ai";
 import { getDraftLimit, getDraftQuotaWindowStart, getDraftQuotaResetsAt, getThreadSortLimit } from "@amarnai/shared";
 import { config } from "@amarnai/config";
@@ -371,9 +371,11 @@ drafts.get(
 
 // ─── GET /workspaces/:workspaceId/thread-sort-quota ───────────────────────────
 //
-// Returns the workspace's current thread-sort usage for the active calendar-month
-// window: { used, limit, resetsAt }
-// "used" counts distinct email threads classified this month.
+// Returns the workspace's thread-sort usage for the active calendar-month window:
+//   { used, limit, resetsAt, recurring, backfill }
+// "used" (== recurring) counts distinct threads sorted by recurring sources this
+// month and is what the monthly limit meters. "backfill" reports distinct threads
+// sorted by the one-time historical backfill, which is exempt from the limit.
 
 drafts.get(
   "/workspaces/:workspaceId/thread-sort-quota",
@@ -395,16 +397,14 @@ drafts.get(
     const windowStart = getDraftQuotaWindowStart(now);
     const limit = getThreadSortLimit(workspace.plan);
 
-    const [{ count }] = await db.$queryRaw<[{ count: bigint }]>`
-      SELECT COUNT(DISTINCT "emailThreadId") AS count FROM "EmailClassification"
-      WHERE "workspaceId" = ${workspaceId}
-        AND "createdAt" >= ${windowStart}
-    `;
+    const usage = await getThreadSortUsage(workspaceId, windowStart);
 
     return c.json({
-      used: Number(count),
+      used: usage.recurring,
       limit,
       resetsAt: getDraftQuotaResetsAt(now).toISOString(),
+      recurring: usage.recurring,
+      backfill: usage.backfill,
     });
   }
 );

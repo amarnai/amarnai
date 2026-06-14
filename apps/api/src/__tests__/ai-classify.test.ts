@@ -21,6 +21,7 @@ vi.mock("@amarnai/db", () => ({
     workspaceMember: { findUnique: vi.fn() },
     $queryRaw: vi.fn(),
   },
+  countRecurringThreadSorts: vi.fn(),
 }));
 
 vi.mock("../queues.js", () => ({
@@ -28,7 +29,7 @@ vi.mock("../queues.js", () => ({
 }));
 
 import app from "../app.js";
-import { db } from "@amarnai/db";
+import { db, countRecurringThreadSorts } from "@amarnai/db";
 import { classifyThreadQueue } from "../queues.js";
 
 const WS_ID = "ws-1";
@@ -67,9 +68,9 @@ beforeEach(() => {
   vi.mocked(db.emailClassification.create).mockResolvedValue({ id: "cls-1" } as never);
   vi.mocked(db.emailClassification.findFirst).mockResolvedValue({ id: "cls-existing" } as never);
   vi.mocked(classifyThreadQueue.add).mockResolvedValue({} as never);
-  // Default workspace: FREE plan, 0 threads sorted this month (well under the 500 limit).
+  // Default workspace: FREE plan, 0 recurring threads sorted this month (well under the 500 limit).
   vi.mocked(db.workspace.findUnique).mockResolvedValue({ plan: "FREE" } as never);
-  vi.mocked(db.$queryRaw as ReturnType<typeof vi.fn>).mockResolvedValue([{ count: BigInt(0) }]);
+  vi.mocked(countRecurringThreadSorts).mockResolvedValue(0);
 });
 
 // ─── ai-classify ──────────────────────────────────────────────────────────────
@@ -111,7 +112,7 @@ describe("POST /workspaces/:workspaceId/email-threads/:threadId/ai-classify", ()
     expect(classifyThreadQueue.add).toHaveBeenCalledOnce();
     expect(classifyThreadQueue.add).toHaveBeenCalledWith(
       "classify-thread",
-      { workspaceId: WS_ID, emailThreadId: THREAD_ID },
+      { workspaceId: WS_ID, emailThreadId: THREAD_ID, source: "MANUAL" },
       expect.objectContaining({ deduplication: expect.objectContaining({ id: expect.any(String) }) })
     );
   });
@@ -127,7 +128,7 @@ describe("POST /workspaces/:workspaceId/email-threads/:threadId/ai-classify", ()
 describe("POST /workspaces/:workspaceId/email-threads/:threadId/ai-classify — quota", () => {
   it("allows the request when usage is below the limit", async () => {
     // 499 of 500 FREE-plan slots used — one remaining.
-    vi.mocked(db.$queryRaw as ReturnType<typeof vi.fn>).mockResolvedValue([{ count: BigInt(499) }]);
+    vi.mocked(countRecurringThreadSorts).mockResolvedValue(499);
     const res = await post(`/workspaces/${WS_ID}/email-threads/${THREAD_ID}/ai-classify`);
     expect(res.status).toBe(202);
     expect(classifyThreadQueue.add).toHaveBeenCalledOnce();
@@ -135,7 +136,7 @@ describe("POST /workspaces/:workspaceId/email-threads/:threadId/ai-classify — 
 
   it("returns 429 with quota details when the monthly limit is reached", async () => {
     // 500 of 500 — at the FREE limit.
-    vi.mocked(db.$queryRaw as ReturnType<typeof vi.fn>).mockResolvedValue([{ count: BigInt(500) }]);
+    vi.mocked(countRecurringThreadSorts).mockResolvedValue(500);
     const res = await post(`/workspaces/${WS_ID}/email-threads/${THREAD_ID}/ai-classify`);
     expect(res.status).toBe(429);
     const body = await res.json() as Record<string, unknown>;
@@ -146,7 +147,7 @@ describe("POST /workspaces/:workspaceId/email-threads/:threadId/ai-classify — 
   });
 
   it("does not stamp classifyingAt or enqueue a job when quota is exceeded", async () => {
-    vi.mocked(db.$queryRaw as ReturnType<typeof vi.fn>).mockResolvedValue([{ count: BigInt(500) }]);
+    vi.mocked(countRecurringThreadSorts).mockResolvedValue(500);
     await post(`/workspaces/${WS_ID}/email-threads/${THREAD_ID}/ai-classify`);
     expect(db.emailThread.update).not.toHaveBeenCalled();
     expect(classifyThreadQueue.add).not.toHaveBeenCalled();
@@ -155,7 +156,7 @@ describe("POST /workspaces/:workspaceId/email-threads/:threadId/ai-classify — 
   it("uses the plan-specific limit (PRO allows 10 000 threads per month)", async () => {
     vi.mocked(db.workspace.findUnique).mockResolvedValue({ plan: "PRO" } as never);
     // 500 used — over the FREE limit but under the PRO limit of 10 000.
-    vi.mocked(db.$queryRaw as ReturnType<typeof vi.fn>).mockResolvedValue([{ count: BigInt(500) }]);
+    vi.mocked(countRecurringThreadSorts).mockResolvedValue(500);
     const res = await post(`/workspaces/${WS_ID}/email-threads/${THREAD_ID}/ai-classify`);
     expect(res.status).toBe(202);
   });
@@ -169,11 +170,11 @@ describe("POST /workspaces/:workspaceId/email-threads/:threadId/ai-classify — 
   it("skips the quota check entirely when enforcement is disabled", async () => {
     mockBilling.enforceThreadSortQuota = false;
     // Usage at the FREE limit — should still proceed because enforcement is off.
-    vi.mocked(db.$queryRaw as ReturnType<typeof vi.fn>).mockResolvedValue([{ count: BigInt(500) }]);
+    vi.mocked(countRecurringThreadSorts).mockResolvedValue(500);
     const res = await post(`/workspaces/${WS_ID}/email-threads/${THREAD_ID}/ai-classify`);
     expect(res.status).toBe(202);
     expect(db.workspace.findUnique).not.toHaveBeenCalled();
-    expect(db.$queryRaw).not.toHaveBeenCalled();
+    expect(countRecurringThreadSorts).not.toHaveBeenCalled();
   });
 });
 

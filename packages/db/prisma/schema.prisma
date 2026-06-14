@@ -98,6 +98,23 @@ enum TriageStatus {
   NEEDS_REVIEW
   UNROUTED
   UNCLASSIFIED
+  // Deferred: the workspace hit its monthly thread-sort quota before this thread
+  // could be sorted. Not lost — re-enqueued automatically on month rollover or a
+  // plan upgrade. Excluded from stuck-recovery and resume so it is never churned.
+  QUOTA_BLOCKED
+}
+
+// Origin of a thread sort, used to attribute usage per workspace and to keep the
+// one-time historical backfill out of the recurring monthly quota.
+//   LIVE     — automatic sort triggered by an inbox sync (new/changed thread).
+//   BACKFILL — the one-time historical backfill (exempt from the monthly quota).
+//   REROUTE  — resume / route-unrouted / reroute-unclassified re-sorts.
+//   MANUAL   — a user-triggered sort via the API.
+enum ClassificationSource {
+  LIVE
+  BACKFILL
+  REROUTE
+  MANUAL
 }
 
 enum BackfillStatus {
@@ -446,6 +463,7 @@ model EmailClassification {
   dueAt             DateTime?
   suggestedNextStep SuggestedNextStep?
   needsHumanReview  Boolean
+  source            ClassificationSource @default(LIVE)
   decisionSource    String?
   modelProvider     String?
   modelName         String?
@@ -458,6 +476,10 @@ model EmailClassification {
   emailMessage EmailMessage? @relation(fields: [emailMessageId], references: [id])
   finalNode    TaxonomyNode? @relation(fields: [finalNodeId], references: [id])
   drafts       Draft[]
+
+  // Supports the monthly thread-sort quota count + usage reporting, which filter
+  // by workspace and createdAt window and split distinct threads by source.
+  @@index([workspaceId, createdAt, source])
 }
 
 model Draft {

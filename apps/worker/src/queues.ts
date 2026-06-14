@@ -8,7 +8,7 @@ import { redisConnection } from "./redis.js";
 
 // Re-export so job files can import names and types from one place.
 export { QUEUE_SYNC_INBOX, QUEUE_CLASSIFY_THREAD, QUEUE_BACKFILL_INBOX } from "@amarnai/queue";
-export type { SyncInboxJobData, ClassifyThreadJobData, BackfillInboxJobData } from "@amarnai/queue";
+export type { SyncInboxJobData, ClassifyThreadJobData, ClassifyThreadSource, BackfillInboxJobData } from "@amarnai/queue";
 
 // ─── Queue instances ──────────────────────────────────────────────────────────
 

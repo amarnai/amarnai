@@ -1,5 +1,7 @@
 import { Worker } from "bullmq";
-import { db } from "@amarnai/db";
+import { db, countRecurringThreadSorts } from "@amarnai/db";
+import { config } from "@amarnai/config";
+import { getThreadSortLimit, getDraftQuotaWindowStart } from "@amarnai/shared";
 import {
   createAIProvider,
   createEmbeddingProvider,
@@ -74,7 +76,7 @@ export function createClassifyThreadWorker(): Worker {
   const worker = new Worker<ClassifyThreadJobData>(
     QUEUE_CLASSIFY_THREAD,
     async (job) => {
-      const { workspaceId, emailThreadId, triageOnly = false } = job.data;
+      const { workspaceId, emailThreadId, triageOnly = false, source = "LIVE" } = job.data;
 
       console.log(
         `[classify-thread] Job ${job.id} received — thread ${emailThreadId} (workspace ${workspaceId})${triageOnly ? " [triage-only]" : ""}`,
@@ -107,7 +109,44 @@ export function createClassifyThreadWorker(): Worker {
       }
 
       try {
-        // ── 1b. Mark thread as actively classifying ─────────────────────────
+        // ── 1b. Monthly thread-sort quota (recurring sorts only) ────────────
+        //
+        // Runs before stamping classifyingAt so a deferred thread is not briefly
+        // shown as "classifying". BACKFILL is exempt — it is a separate one-time
+        // historical allowance. When the workspace is at or over its plan's
+        // monthly limit, defer this thread as QUOTA_BLOCKED instead of sorting it:
+        // the thread is not lost (it is re-enqueued on month rollover or plan
+        // upgrade) and not churned (QUOTA_BLOCKED is excluded from stuck-recovery
+        // and resume). The count excludes the current thread so re-sorting a
+        // thread already counted this month is never blocked. Concurrent workers
+        // can overshoot the limit slightly (check-then-act race); accepted as a
+        // soft cap. The finally block clears the enqueue-time classifyingAt.
+        if (!triageOnly && config.billing.enforceThreadSortQuota && source !== "BACKFILL") {
+          const workspace = await db.workspace.findUnique({
+            where: { id: workspaceId },
+            select: { plan: true },
+          });
+          if (workspace) {
+            const limit = getThreadSortLimit(workspace.plan);
+            const used = await countRecurringThreadSorts(
+              workspaceId,
+              getDraftQuotaWindowStart(),
+              emailThreadId,
+            );
+            if (used >= limit) {
+              console.log(
+                `[classify-thread] Workspace ${workspaceId} at thread-sort quota (${used}/${limit}) — deferring thread ${emailThreadId} as QUOTA_BLOCKED`,
+              );
+              await db.emailThread.update({
+                where: { id: emailThreadId },
+                data: { triageStatus: "QUOTA_BLOCKED" },
+              });
+              return;
+            }
+          }
+        }
+
+        // ── 1c. Mark thread as actively classifying ─────────────────────────
         //
         // Inside the try so the finally block is guaranteed to clear it.
         // If the worker crashes without running finally, the API treats
@@ -302,6 +341,7 @@ export function createClassifyThreadWorker(): Worker {
               confidence: result.confidence,
               explanation: result.explanation,
               needsHumanReview: result.needsHumanReview,
+              source,
               decisionSource: result.decisionSource,
               modelProvider: aiProvider.providerName,
               modelName: aiProvider.modelName,

@@ -113,7 +113,7 @@ sortingQueue.post("/workspaces/:workspaceId/sorting-queue/resume", async (c) => 
     await classifyThreadQueue.addBulk(
       pending.map(({ id: emailThreadId }) => ({
         name: "classify-thread",
-        data: { workspaceId, emailThreadId },
+        data: { workspaceId, emailThreadId, source: "REROUTE" as const },
         opts: {
           deduplication: { id: `classify_resume_${workspaceId}_${emailThreadId}` },
           priority: 5,
@@ -156,6 +156,7 @@ sortingQueue.delete(
       `classify_${workspaceId}_${threadId}`,
       `classify_backfill_${workspaceId}_${threadId}`,
       `classify_resume_${workspaceId}_${threadId}`,
+      `classify_quota_recovery_${workspaceId}_${threadId}`,
       `${DEDUP_CLASSIFY_UNROUTED}_${workspaceId}_${threadId}`,
       `${DEDUP_CLASSIFY_UNCLASSIFIED}_${workspaceId}_${threadId}`,
     ];
@@ -223,7 +224,7 @@ async function enqueueThreadsByStatus(
   await classifyThreadQueue.addBulk(
     threads.map(({ id: emailThreadId }) => ({
       name: "classify-thread",
-      data: { workspaceId, emailThreadId },
+      data: { workspaceId, emailThreadId, source: "REROUTE" as const },
       opts: {
         deduplication: { id: `${dedupPrefix}_${workspaceId}_${emailThreadId}` },
         priority: 5,

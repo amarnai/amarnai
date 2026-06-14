@@ -10,6 +10,7 @@ const {
   mockSnapshotToThreadMessages,
   mockBuildThreadEmbeddingText,
   mockGetThread,
+  mockCountRecurringThreadSorts,
 } = vi.hoisted(() => ({
   mockEmbed: vi.fn(),
   mockSortThreadByEmbedding: vi.fn(),
@@ -18,12 +19,14 @@ const {
   mockSnapshotToThreadMessages: vi.fn(),
   mockBuildThreadEmbeddingText: vi.fn(),
   mockGetThread: vi.fn(),
+  mockCountRecurringThreadSorts: vi.fn(),
 }));
 
 // ─── Mocks ────────────────────────────────────────────────────────────────────
 
 vi.mock("@amarnai/db", () => ({
   db: {
+    workspace: { findUnique: vi.fn() },
     emailThread: {
       findFirst: vi.fn(),
       update: vi.fn().mockResolvedValue({}),
@@ -33,6 +36,12 @@ vi.mock("@amarnai/db", () => ({
     taxonomyEdge: { findMany: vi.fn() },
     emailClassification: { create: vi.fn(), findFirst: vi.fn() },
   },
+  countRecurringThreadSorts: mockCountRecurringThreadSorts,
+}));
+
+// Quota enforcement is on by default; individual tests flip it as needed.
+vi.mock("@amarnai/config", () => ({
+  config: { billing: { enforceThreadSortQuota: true } },
 }));
 
 vi.mock("@amarnai/ai", () => ({
@@ -79,6 +88,7 @@ vi.mock("../queues.js", () => ({ QUEUE_CLASSIFY_THREAD: "classify-thread" }));
 // ─── Import after mocks ───────────────────────────────────────────────────────
 
 import { db } from "@amarnai/db";
+import { config } from "@amarnai/config";
 import { Worker } from "bullmq";
 import { createEmbeddingProvider } from "@amarnai/ai";
 import { createClassifyThreadWorker } from "../jobs/classify-thread.js";
@@ -139,6 +149,11 @@ const BASE_SORT_RESULT = {
 
 beforeEach(() => {
   vi.clearAllMocks();
+
+  // Quota enforcement on, FREE plan (limit 500), well under the cap by default.
+  config.billing.enforceThreadSortQuota = true;
+  vi.mocked(db.workspace.findUnique).mockResolvedValue({ plan: "FREE" } as never);
+  mockCountRecurringThreadSorts.mockResolvedValue(0);
 
   vi.mocked(db.emailThread.findFirst).mockResolvedValue({
     providerThreadId: "gmail-t1",
@@ -330,6 +345,93 @@ describe("createClassifyThreadWorker — disconnect-awareness", () => {
     expect(mockGetThread).not.toHaveBeenCalled();
     expect(mockSortThreadByEmbedding).not.toHaveBeenCalled();
     expect(db.emailThread.update).not.toHaveBeenCalled();
+  });
+});
+
+// ─── Monthly thread-sort quota ─────────────────────────────────────────────────
+
+describe("createClassifyThreadWorker — monthly thread-sort quota", () => {
+  it("defers the thread as QUOTA_BLOCKED and skips work when at the limit", async () => {
+    // FREE limit is 500; pretend 500 recurring threads already sorted this month.
+    mockCountRecurringThreadSorts.mockResolvedValue(500);
+
+    createClassifyThreadWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID, emailThreadId: THREAD_ID, source: "LIVE" }));
+
+    expect(db.emailThread.update).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { id: THREAD_ID },
+        data: expect.objectContaining({ triageStatus: "QUOTA_BLOCKED" }),
+      })
+    );
+    // No Gmail fetch, no embedding, no classification when blocked.
+    expect(mockGetThread).not.toHaveBeenCalled();
+    expect(mockSortThreadByEmbedding).not.toHaveBeenCalled();
+    expect(db.emailClassification.create).not.toHaveBeenCalled();
+  });
+
+  it("does not block BACKFILL sorts and never counts toward the quota", async () => {
+    mockCountRecurringThreadSorts.mockResolvedValue(10_000);
+
+    createClassifyThreadWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID, emailThreadId: THREAD_ID, source: "BACKFILL" }));
+
+    // Backfill is exempt: the count is never consulted and the thread is sorted.
+    expect(mockCountRecurringThreadSorts).not.toHaveBeenCalled();
+    expect(mockSortThreadByEmbedding).toHaveBeenCalledOnce();
+    expect(db.emailClassification.create).toHaveBeenCalledWith(
+      expect.objectContaining({ data: expect.objectContaining({ source: "BACKFILL" }) })
+    );
+  });
+
+  it("stamps the job source onto the classification row", async () => {
+    createClassifyThreadWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID, emailThreadId: THREAD_ID, source: "REROUTE" }));
+
+    expect(db.emailClassification.create).toHaveBeenCalledWith(
+      expect.objectContaining({ data: expect.objectContaining({ source: "REROUTE" }) })
+    );
+  });
+
+  it("defaults source to LIVE when the job omits it", async () => {
+    createClassifyThreadWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID, emailThreadId: THREAD_ID }));
+
+    expect(db.emailClassification.create).toHaveBeenCalledWith(
+      expect.objectContaining({ data: expect.objectContaining({ source: "LIVE" }) })
+    );
+  });
+
+  it("excludes the current thread from the count so re-sorts are not blocked", async () => {
+    mockCountRecurringThreadSorts.mockResolvedValue(0);
+
+    createClassifyThreadWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID, emailThreadId: THREAD_ID, source: "LIVE" }));
+
+    // The count helper must be asked to exclude this thread.
+    expect(mockCountRecurringThreadSorts).toHaveBeenCalledWith(
+      WS_ID,
+      expect.any(Date),
+      THREAD_ID
+    );
+    expect(mockSortThreadByEmbedding).toHaveBeenCalledOnce();
+  });
+
+  it("skips the quota check entirely when enforcement is disabled (self-host)", async () => {
+    config.billing.enforceThreadSortQuota = false;
+    mockCountRecurringThreadSorts.mockResolvedValue(10_000);
+
+    createClassifyThreadWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID, emailThreadId: THREAD_ID, source: "LIVE" }));
+
+    expect(mockCountRecurringThreadSorts).not.toHaveBeenCalled();
+    expect(mockSortThreadByEmbedding).toHaveBeenCalledOnce();
   });
 });
 

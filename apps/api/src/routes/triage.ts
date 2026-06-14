@@ -83,6 +83,7 @@ triage.patch(
           confidence: 1.0,
           explanation: `Manually moved to "${node.name}" by user.`,
           needsHumanReview: false,
+          source: "MANUAL",
           decisionSource: "manual",
           modelProvider: "user",
           modelName: "manual",

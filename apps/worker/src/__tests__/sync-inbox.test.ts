@@ -19,6 +19,12 @@ vi.mock("@amarnai/db", () => ({
     emailMessage: { upsert: vi.fn(), deleteMany: vi.fn() },
     backfillInboxQueue: { add: vi.fn() },
   },
+  // Quota recovery counts recurring sorts; default to 0 so nothing is throttled.
+  countRecurringThreadSorts: vi.fn().mockResolvedValue(0),
+}));
+
+vi.mock("@amarnai/config", () => ({
+  config: { billing: { enforceThreadSortQuota: true } },
 }));
 
 const mockGetProfile = vi.fn();
@@ -85,7 +91,7 @@ vi.mock("../queues.js", () => ({
 
 // ─── Import after mocks ───────────────────────────────────────────────────────
 
-import { db } from "@amarnai/db";
+import { db, countRecurringThreadSorts } from "@amarnai/db";
 import { Worker } from "bullmq";
 import { classifyThreadQueue } from "../queues.js";
 import { createSyncInboxWorker } from "../jobs/sync-inbox.js";
@@ -256,6 +262,75 @@ describe("createSyncInboxWorker — taxonomy gate", () => {
 
     expect(db.taxonomyNode.findMany).toHaveBeenCalledOnce();
     expect(db.taxonomyEdge.findMany).toHaveBeenCalledOnce();
+  });
+});
+
+// ─── QUOTA_BLOCKED recovery ────────────────────────────────────────────────────
+
+describe("createSyncInboxWorker — quota-blocked recovery", () => {
+  // Make findMany return a deferred thread only for the QUOTA_BLOCKED query,
+  // and nothing for the PENDING stuck-recovery query.
+  function withBlockedThread(id: string) {
+    vi.mocked(db.emailThread.findMany).mockImplementation((args: unknown) => {
+      const where = (args as { where?: { triageStatus?: string } }).where;
+      return Promise.resolve(
+        where?.triageStatus === "QUOTA_BLOCKED" ? [{ id }] : []
+      ) as never;
+    });
+  }
+
+  function quotaRecoveryCall() {
+    return vi.mocked(classifyThreadQueue.addBulk).mock.calls.find((call) => {
+      const jobs = call[0] as Array<{ opts?: { deduplication?: { id?: string } } }>;
+      return jobs.some((j) => j.opts?.deduplication?.id?.includes("classify_quota_recovery"));
+    });
+  }
+
+  it("re-enqueues QUOTA_BLOCKED threads as LIVE when capacity is free", async () => {
+    withBlockedThread("qb-1");
+
+    createSyncInboxWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID }));
+
+    // Moved back to PENDING with classifyingAt stamped.
+    const toPending = vi.mocked(db.emailThread.updateMany).mock.calls.find(
+      (c) => (c[0] as { data: { triageStatus?: string } }).data?.triageStatus === "PENDING"
+    );
+    expect(toPending).toBeDefined();
+
+    const recovery = quotaRecoveryCall();
+    expect(recovery).toBeDefined();
+    const jobs = recovery![0] as Array<{ data: { source?: string } }>;
+    expect(jobs[0]!.data.source).toBe("LIVE");
+  });
+
+  it("does not recover when the workspace is still at its limit", async () => {
+    withBlockedThread("qb-1");
+    // PRO limit is 10000; pretend it is already full.
+    vi.mocked(countRecurringThreadSorts).mockResolvedValue(10_000);
+
+    createSyncInboxWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID }));
+
+    expect(quotaRecoveryCall()).toBeUndefined();
+  });
+
+  it("does not recover when sorting is paused", async () => {
+    withBlockedThread("qb-1");
+    vi.mocked(db.gmailSyncSettings.findUnique).mockResolvedValue({
+      includeSpam: false,
+      includePromotions: false,
+      sortingPaused: true,
+      blacklistedSenderEmails: [],
+    } as never);
+
+    createSyncInboxWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID }));
+
+    expect(quotaRecoveryCall()).toBeUndefined();
   });
 });
 
