@@ -83,7 +83,9 @@ triage.patch(
           confidence: 1.0,
           explanation: `Manually moved to "${node.name}" by user.`,
           needsHumanReview: false,
-          source: "MANUAL",
+          // MOVE: a manual folder reassignment runs no embedding/LLM, so it is
+          // exempt from the monthly thread-sort quota (see thread-sort-usage).
+          source: "MOVE",
           decisionSource: "manual",
           modelProvider: "user",
           modelName: "manual",

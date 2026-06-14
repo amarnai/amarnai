@@ -104,17 +104,20 @@ enum TriageStatus {
   QUOTA_BLOCKED
 }
 
-// Origin of a thread sort, used to attribute usage per workspace and to keep the
-// one-time historical backfill out of the recurring monthly quota.
+// Origin of a thread sort, used to attribute usage per workspace and to decide
+// what the recurring monthly quota meters.
 //   LIVE     — automatic sort triggered by an inbox sync (new/changed thread).
 //   BACKFILL — the one-time historical backfill (exempt from the monthly quota).
 //   REROUTE  — resume / route-unrouted / reroute-unclassified re-sorts.
-//   MANUAL   — a user-triggered sort via the API.
+//   MANUAL   — a user-triggered AI sort via the API (real embedding/LLM cost).
+//   MOVE     — a manual folder reassignment (no embedding/LLM, zero AI cost);
+//              exempt from the monthly quota like BACKFILL.
 enum ClassificationSource {
   LIVE
   BACKFILL
   REROUTE
   MANUAL
+  MOVE
 }
 
 enum BackfillStatus {
