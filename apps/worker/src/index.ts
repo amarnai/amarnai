@@ -5,6 +5,9 @@ import {
   createEmbeddingProvider,
   getEmbeddingProviderConfig,
   EmbeddingModelNotFoundError,
+  createAIProvider,
+  getRoutingAIProviderConfig,
+  LLMAuthenticationError,
 } from "@amarnai/ai";
 import { createSyncInboxWorker } from "./jobs/sync-inbox.js";
 import { createClassifyThreadWorker } from "./jobs/classify-thread.js";
@@ -150,13 +153,47 @@ async function preflightEmbeddingModel(): Promise<void> {
   }
 }
 
+/**
+ * Verifies the LLM credentials work before processing any jobs.
+ *
+ * An invalid API key returns 401 from the LLM API and breaks the routing step
+ * of every classify-thread job identically. Catching it once at startup turns
+ * thousands of failed jobs (and a log-rate-limit storm) into a single clear
+ * fatal error. Ollama (no auth) and mock providers are skipped; non-auth errors
+ * are non-fatal since the LLM is only invoked for ambiguous threads.
+ */
+async function preflightLLM(): Promise<void> {
+  const aiConfig = getRoutingAIProviderConfig();
+  if (aiConfig.provider !== "frontier") return;
+
+  const provider = createAIProvider(aiConfig);
+  try {
+    await provider.chat([{ role: "user", content: 'Reply with the JSON {"ok":true}.' }]);
+    console.log(
+      `[worker] LLM preflight OK — provider=${provider.providerName} model=${provider.modelName}`,
+    );
+  } catch (err) {
+    if (err instanceof LLMAuthenticationError) {
+      console.error(
+        `[worker] Fatal: ${err.message}. Set FRONTIER_LLM_API_KEY (and FRONTIER_LLM_BASE_URL for Gemini) to valid credentials and redeploy.`,
+      );
+      process.exit(1);
+    }
+    // Other errors (transient network, rate limits, response formatting)
+    // shouldn't block startup — per-job retries handle those. Log and continue.
+    const msg = err instanceof Error ? err.message : String(err);
+    console.error(`[worker] LLM preflight check failed (non-fatal): ${msg}`);
+  }
+}
+
 // ─── Bootstrap ────────────────────────────────────────────────────────────────
 
 async function main(): Promise<void> {
   console.log("[worker] Starting…");
 
-  // Verify the embedding model exists before accepting any classify jobs.
+  // Verify the embedding model and LLM credentials before accepting any jobs.
   await preflightEmbeddingModel();
+  await preflightLLM();
 
   // Register job processors.
   const syncWorker = createSyncInboxWorker();

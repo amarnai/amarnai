@@ -11,6 +11,7 @@ import {
   buildThreadEmbeddingText,
   snapshotToThreadMessages,
   EmbeddingModelNotFoundError,
+  LLMAuthenticationError,
 } from "@amarnai/ai";
 import type { EmbeddableNode, TriageMetadata, EmbeddingTriageResult } from "@amarnai/ai";
 import { GmailClient, GmailAuthError, normalizeGmailThread } from "@amarnai/gmail";
@@ -388,6 +389,15 @@ export function createClassifyThreadWorker(): Worker {
           // attempts and floods logs, so fail permanently after one attempt.
           console.error(
             `[classify-thread] Embedding model misconfigured — failing thread ${emailThreadId} (workspace ${workspaceId}) without retry: ${err.message}`,
+          );
+          throw new UnrecoverableError(err.message);
+        }
+        if (err instanceof LLMAuthenticationError) {
+          // The LLM API key is invalid — a deployment misconfiguration that
+          // affects every thread. Retrying wastes attempts and floods logs, so
+          // fail permanently after one attempt.
+          console.error(
+            `[classify-thread] LLM auth failed — failing thread ${emailThreadId} (workspace ${workspaceId}) without retry: ${err.message}`,
           );
           throw new UnrecoverableError(err.message);
         }
