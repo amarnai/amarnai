@@ -22,7 +22,7 @@ export function BackfillCard({ syncInfo, upgradeHref = "#" }: BackfillCardProps)
             Sort thousands of historical emails automatically. Available on Pro and Business plans.
           </div>
           <a href={upgradeHref} className="em-backfill-upgrade-btn">
-            Upgrade to unlock
+            Upgrade your plan
           </a>
         </div>
       </>
