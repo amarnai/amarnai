@@ -11,6 +11,7 @@ vi.mock("@amarnai/db", () => ({
     providerSyncState: {
       findUnique: vi.fn(),
       update: vi.fn(),
+      updateMany: vi.fn().mockResolvedValue({ count: 1 }),
     },
     taxonomyNode: { findMany: vi.fn() },
     taxonomyEdge: { findMany: vi.fn() },
@@ -165,6 +166,8 @@ beforeEach(() => {
     id: "account-1",
   } as never);
   vi.mocked(db.providerSyncState.update).mockResolvedValue({} as never);
+  // Default: the atomic claim and every progress write succeed (count 1).
+  vi.mocked(db.providerSyncState.updateMany).mockResolvedValue({ count: 1 } as never);
   vi.mocked(db.emailThread.upsert).mockResolvedValue({ id: "thread-db-1" } as never);
   vi.mocked(db.emailMessage.upsert).mockResolvedValue({} as never);
   mockGetThread.mockResolvedValue({ id: "gmail-1" });
@@ -189,24 +192,27 @@ describe("createBackfillInboxWorker", () => {
     const processor = getProcessor();
     await processor(makeJob({ workspaceId: WS_ID }));
 
-    // Only findUnique should have been called — no update, no Gmail calls.
-    expect(db.providerSyncState.update).not.toHaveBeenCalled();
+    // Only findUnique should have been called — no claim/write, no Gmail calls.
+    expect(db.providerSyncState.updateMany).not.toHaveBeenCalled();
     expect(mockListThreadsPage).not.toHaveBeenCalled();
     expect(classifyThreadQueue.addBulk).not.toHaveBeenCalled();
   });
 
-  it("(a) returns early without any DB writes when backfillStatus is freshly RUNNING", async () => {
+  it("(a) skips when the atomic claim is lost (already running elsewhere)", async () => {
     vi.mocked(db.providerSyncState.findUnique).mockResolvedValue({
       backfillStatus: "RUNNING",
-      backfillStartedAt: new Date(), // fresh — should not be resumed
+      backfillStartedAt: new Date(), // fresh — claim should not be won
     } as never);
+    // The conditional claim matches no row (another worker holds it).
+    vi.mocked(db.providerSyncState.updateMany).mockResolvedValue({ count: 0 } as never);
 
     createBackfillInboxWorker();
     const processor = getProcessor();
     await processor(makeJob({ workspaceId: WS_ID }));
 
-    expect(db.providerSyncState.update).not.toHaveBeenCalled();
+    // Claim attempted, but processing never started.
     expect(mockListThreadsPage).not.toHaveBeenCalled();
+    expect(classifyThreadQueue.addBulk).not.toHaveBeenCalled();
   });
 
   it("(b) enqueues classify jobs with unread threads first, then by recency", async () => {
@@ -320,7 +326,7 @@ describe("createBackfillInboxWorker", () => {
 
     // Free cap is 500 → exactly 5 pages of 100, then it stops (cap reached = done).
     expect(mockListThreadsPage).toHaveBeenCalledTimes(5);
-    const doneCall = vi.mocked(db.providerSyncState.update).mock.calls.find(
+    const doneCall = vi.mocked(db.providerSyncState.updateMany).mock.calls.find(
       (c) => (c[0] as { data: { backfillStatus?: string } }).data?.backfillStatus === "DONE"
     );
     expect(doneCall).toBeDefined();
@@ -351,13 +357,13 @@ describe("createBackfillInboxWorker", () => {
     await getProcessor()(makeJob({ workspaceId: WS_ID }));
 
     // Did NOT finish.
-    const doneCall = vi.mocked(db.providerSyncState.update).mock.calls.find(
+    const doneCall = vi.mocked(db.providerSyncState.updateMany).mock.calls.find(
       (c) => (c[0] as { data: { backfillStatus?: string } }).data?.backfillStatus === "DONE"
     );
     expect(doneCall).toBeUndefined();
 
     // Persisted the cursor + progress, leaving status RUNNING with a cleared lock.
-    const cursorCall = vi.mocked(db.providerSyncState.update).mock.calls.find(
+    const cursorCall = vi.mocked(db.providerSyncState.updateMany).mock.calls.find(
       (c) => (c[0] as { data: { backfillPageToken?: string } }).data?.backfillPageToken === "next-cursor"
     );
     expect(cursorCall).toBeDefined();
@@ -395,7 +401,7 @@ describe("createBackfillInboxWorker", () => {
       expect.objectContaining({ pageToken: "resume-here" })
     );
     // Cap reached (9,950 + 50) → DONE with the final count.
-    const doneCall = vi.mocked(db.providerSyncState.update).mock.calls.find(
+    const doneCall = vi.mocked(db.providerSyncState.updateMany).mock.calls.find(
       (c) => (c[0] as { data: { backfillStatus?: string } }).data?.backfillStatus === "DONE"
     );
     expect(doneCall).toBeDefined();
@@ -428,7 +434,7 @@ describe("createBackfillInboxWorker", () => {
     await getProcessor()(makeJob({ workspaceId: WS_ID }));
 
     // Finished despite the bad thread, recording it as skipped.
-    const doneCall = vi.mocked(db.providerSyncState.update).mock.calls.find(
+    const doneCall = vi.mocked(db.providerSyncState.updateMany).mock.calls.find(
       (c) => (c[0] as { data: { backfillStatus?: string } }).data?.backfillStatus === "DONE"
     );
     expect(doneCall).toBeDefined();
@@ -458,11 +464,11 @@ describe("createBackfillInboxWorker", () => {
     createBackfillInboxWorker();
     await expect(getProcessor()(makeJob({ workspaceId: WS_ID }))).rejects.toThrow("429");
 
-    const errorCall = vi.mocked(db.providerSyncState.update).mock.calls.find(
+    const errorCall = vi.mocked(db.providerSyncState.updateMany).mock.calls.find(
       (c) => (c[0] as { data: { backfillStatus?: string } }).data?.backfillStatus === "ERROR"
     );
     expect(errorCall).toBeDefined();
-    const doneCall = vi.mocked(db.providerSyncState.update).mock.calls.find(
+    const doneCall = vi.mocked(db.providerSyncState.updateMany).mock.calls.find(
       (c) => (c[0] as { data: { backfillStatus?: string } }).data?.backfillStatus === "DONE"
     );
     expect(doneCall).toBeUndefined();
@@ -485,10 +491,47 @@ describe("createBackfillInboxWorker", () => {
     createBackfillInboxWorker();
     await expect(getProcessor()(makeJob({ workspaceId: WS_ID }))).rejects.toThrow();
 
-    const doneCall = vi.mocked(db.providerSyncState.update).mock.calls.find(
+    const doneCall = vi.mocked(db.providerSyncState.updateMany).mock.calls.find(
       (c) => (c[0] as { data: { backfillStatus?: string } }).data?.backfillStatus === "DONE"
     );
     expect(doneCall).toBeUndefined();
+  });
+
+  // ── Concurrency: atomic claim + generation guard ──────────────────────────────
+
+  it("(i) hands off without marking DONE when superseded by a reset mid-run", async () => {
+    vi.mocked(db.providerSyncState.findUnique).mockResolvedValue({
+      backfillStatus: "PENDING",
+      backfillStartedAt: null,
+      backfillPageToken: null,
+      backfillProcessedCount: 0,
+      backfillSkipped: 0,
+      backfillGeneration: 7,
+    } as never);
+    // Claim wins (count 1), but the generation-guarded final write matches
+    // nothing (a sweep bumped the generation while we were running).
+    vi.mocked(db.providerSyncState.updateMany)
+      .mockResolvedValueOnce({ count: 1 } as never) // claim
+      .mockResolvedValue({ count: 0 } as never); // superseded final write
+
+    mockListThreadsPage.mockResolvedValue({
+      threads: [makeGmailThread({ id: "t1" })],
+      nextPageToken: undefined,
+    });
+    vi.mocked(db.emailThread.findUnique).mockResolvedValue(null);
+    mockGetThread.mockResolvedValue({ id: "t1" });
+    vi.mocked(db.emailThread.upsert).mockResolvedValue({ id: "db-t1" } as never);
+
+    const { backfillInboxQueue } = await import("../queues.js");
+
+    createBackfillInboxWorker();
+    await getProcessor()(makeJob({ workspaceId: WS_ID }));
+
+    // The final write was superseded, so it must NOT have committed a DONE that
+    // overwrites the reset — and it hands the work off to a fresh run.
+    expect(vi.mocked(backfillInboxQueue.add)).toHaveBeenCalledWith("backfill-inbox", {
+      workspaceId: WS_ID,
+    });
   });
 
   // ── Taxonomy gate ─────────────────────────────────────────────────────────
@@ -591,7 +634,7 @@ describe("createBackfillInboxWorker — disconnect-awareness", () => {
     const processor = getProcessor();
     await processor(makeJob({ workspaceId: WS_ID }));
 
-    expect(db.providerSyncState.update).not.toHaveBeenCalled();
+    expect(db.providerSyncState.updateMany).not.toHaveBeenCalled();
     expect(mockListThreadsPage).not.toHaveBeenCalled();
     expect(classifyThreadQueue.addBulk).not.toHaveBeenCalled();
   });
@@ -607,7 +650,7 @@ describe("createBackfillInboxWorker — disconnect-awareness", () => {
     const processor = getProcessor();
     await processor(makeJob({ workspaceId: WS_ID }));
 
-    const runningCall = vi.mocked(db.providerSyncState.update).mock.calls.find(
+    const runningCall = vi.mocked(db.providerSyncState.updateMany).mock.calls.find(
       (c) => (c[0] as { data: { backfillStatus?: string } }).data?.backfillStatus === "RUNNING"
     );
     expect(runningCall).toBeDefined();
@@ -626,7 +669,7 @@ describe("createBackfillInboxWorker — disconnect-awareness", () => {
     const processor = getProcessor();
     await processor(makeJob({ workspaceId: WS_ID }));
 
-    const doneCall = vi.mocked(db.providerSyncState.update).mock.calls.find(
+    const doneCall = vi.mocked(db.providerSyncState.updateMany).mock.calls.find(
       (c) => (c[0] as { data: { backfillStatus?: string } }).data?.backfillStatus === "DONE"
     );
     expect(doneCall).toBeDefined();
@@ -647,12 +690,12 @@ describe("createBackfillInboxWorker — disconnect-awareness", () => {
     await processor(makeJob({ workspaceId: WS_ID }));
 
     // Should stamp RUNNING again (re-enter the backfill)
-    const runningCall = vi.mocked(db.providerSyncState.update).mock.calls.find(
+    const runningCall = vi.mocked(db.providerSyncState.updateMany).mock.calls.find(
       (c) => (c[0] as { data: { backfillStatus?: string } }).data?.backfillStatus === "RUNNING"
     );
     expect(runningCall).toBeDefined();
     // Should eventually mark DONE
-    const doneCall = vi.mocked(db.providerSyncState.update).mock.calls.find(
+    const doneCall = vi.mocked(db.providerSyncState.updateMany).mock.calls.find(
       (c) => (c[0] as { data: { backfillStatus?: string } }).data?.backfillStatus === "DONE"
     );
     expect(doneCall).toBeDefined();
@@ -684,7 +727,7 @@ describe("createBackfillInboxWorker — disconnect-awareness", () => {
     const processor = getProcessor();
     await processor(makeJob({ workspaceId: WS_ID }));
 
-    const updateCalls = vi.mocked(db.providerSyncState.update).mock.calls;
+    const updateCalls = vi.mocked(db.providerSyncState.updateMany).mock.calls;
 
     // Should have stamped RUNNING at the start
     const runningCall = updateCalls.find(

@@ -2,7 +2,7 @@ import { Worker } from "bullmq";
 import { db } from "@amarnai/db";
 import { GmailClient, GmailAuthError, GmailThreadMeta, normalizeGmailThread } from "@amarnai/gmail";
 import type { GmailSyncSettings } from "@amarnai/shared";
-import { isTaxonomyRoutable, isBackfillResumable, getBackfillCap } from "@amarnai/shared";
+import { isTaxonomyRoutable, getBackfillCap, BACKFILL_RUNNING_STALE_MS } from "@amarnai/shared";
 import {
   classifyThreadQueue,
   backfillInboxQueue,
@@ -142,33 +142,47 @@ export function createBackfillInboxWorker(): Worker {
           backfillPageToken: true,
           backfillProcessedCount: true,
           backfillSkipped: true,
+          backfillGeneration: true,
         },
       });
 
-      // ── 3. Guard: skip if already completed or actively running ─────────────
-      // isBackfillResumable returns false for DONE and for RUNNING with a fresh
-      // backfillStartedAt — another run is actively processing a chunk right now.
-      // Between chunks backfillStartedAt is cleared (status stays RUNNING), so a
-      // continuation run resumes here; a stale started-at recovers a crashed run.
-
-      if (syncState?.backfillStatus === "DONE") {
+      if (!syncState) {
+        console.log(`[backfill-inbox] Workspace ${workspaceId} has no sync state yet — skipping`);
+        return;
+      }
+      if (syncState.backfillStatus === "DONE") {
         console.log(`[backfill-inbox] Workspace ${workspaceId} backfill already DONE — skipping`);
         return;
       }
-      if (
-        syncState?.backfillStatus === "RUNNING" &&
-        !isBackfillResumable("RUNNING", syncState.backfillStartedAt ?? null)
-      ) {
-        console.log(`[backfill-inbox] Workspace ${workspaceId} backfill is freshly RUNNING — skipping`);
+
+      // The generation we are responsible for. Captured before claiming so that a
+      // concurrent reset (sweep bumps it) makes our later progress writes no-ops.
+      const claimedGeneration = syncState.backfillGeneration;
+
+      // ── 3. Atomically claim this chunk ──────────────────────────────────────
+      // A single conditional update is the lock: it only succeeds when the row is
+      // claimable (PENDING/ERROR, or RUNNING whose started-at is cleared between
+      // chunks or stale after a crash). The DB serialises competing claims, so
+      // exactly one worker wins; the others get count 0 and skip. This replaces
+      // the old read-then-write guard, which two processes could both pass.
+
+      const now = new Date();
+      const staleBefore = new Date(now.getTime() - BACKFILL_RUNNING_STALE_MS);
+      const claim = await db.providerSyncState.updateMany({
+        where: {
+          emailAccountId,
+          OR: [
+            { backfillStatus: { in: ["PENDING", "ERROR"] } },
+            { backfillStatus: "RUNNING", backfillStartedAt: null },
+            { backfillStatus: "RUNNING", backfillStartedAt: { lt: staleBefore } },
+          ],
+        },
+        data: { backfillStatus: "RUNNING", backfillStartedAt: now },
+      });
+      if (claim.count === 0) {
+        console.log(`[backfill-inbox] Workspace ${workspaceId} backfill not claimable (running elsewhere) — skipping`);
         return;
       }
-
-      // ── 4. Claim this chunk: mark RUNNING with a fresh started-at lock ───────
-
-      await db.providerSyncState.update({
-        where: { emailAccountId },
-        data: { backfillStatus: "RUNNING", backfillStartedAt: new Date() },
-      });
 
       await job.updateProgress(5);
 
@@ -396,8 +410,8 @@ export function createBackfillInboxWorker(): Worker {
           console.log(
             `[backfill-inbox] Workspace ${workspaceId} disconnected mid-backfill — resetting to PENDING`
           );
-          await db.providerSyncState.update({
-            where: { emailAccountId },
+          await db.providerSyncState.updateMany({
+            where: { emailAccountId, backfillGeneration: claimedGeneration },
             data: {
               backfillStatus: "PENDING",
               backfillStartedAt: null,
@@ -458,15 +472,17 @@ export function createBackfillInboxWorker(): Worker {
         // ── 9. More to do? Persist the cursor and re-enqueue a continuation ─────
         // Status stays RUNNING (so the UI banner stays up) but backfillStartedAt
         // is cleared, releasing the active lock so the next run can claim it. The
-        // continuation is added WITHOUT deduplication: this still-active job may
-        // hold the `backfill-inbox_<ws>` dedup key, which would silently drop a
-        // deduped add. The RUNNING/started-at guard prevents concurrent runs.
+        // write is guarded on our generation: if a sweep reset the backfill mid-
+        // run it won't match, so we don't overwrite the reset (count 0). The
+        // continuation is added WITHOUT deduplication (this still-active job may
+        // hold the dedup key) and runs regardless: it either resumes from the
+        // cursor we just saved, or picks up the fresh post-reset state.
 
         const done = exhausted || processed >= cap.maxThreads;
 
         if (!done) {
-          await db.providerSyncState.update({
-            where: { emailAccountId },
+          const res = await db.providerSyncState.updateMany({
+            where: { emailAccountId, backfillGeneration: claimedGeneration },
             data: {
               backfillStatus: "RUNNING",
               backfillStartedAt: null,
@@ -478,7 +494,9 @@ export function createBackfillInboxWorker(): Worker {
           await backfillInboxQueue.add("backfill-inbox", { workspaceId });
           await job.updateProgress(100);
           console.log(
-            `[backfill-inbox] Workspace ${workspaceId}: processed ${processedThisRun} this run (${processed} total) — continuing`
+            res.count === 0
+              ? `[backfill-inbox] Workspace ${workspaceId}: superseded by a reset mid-run — handing off`
+              : `[backfill-inbox] Workspace ${workspaceId}: processed ${processedThisRun} this run (${processed} total) — continuing`
           );
           return;
         }
@@ -516,8 +534,8 @@ export function createBackfillInboxWorker(): Worker {
           });
         }
 
-        await db.providerSyncState.update({
-          where: { emailAccountId },
+        const doneRes = await db.providerSyncState.updateMany({
+          where: { emailAccountId, backfillGeneration: claimedGeneration },
           data: {
             backfillStatus: "DONE",
             backfillStartedAt: null,
@@ -530,14 +548,23 @@ export function createBackfillInboxWorker(): Worker {
 
         await job.updateProgress(100);
 
+        if (doneRes.count === 0) {
+          // A reset (sweep) landed just as we finished — don't mark DONE over it;
+          // hand off so the fresh scan runs.
+          await backfillInboxQueue.add("backfill-inbox", { workspaceId });
+          console.log(`[backfill-inbox] Workspace ${workspaceId}: superseded by a reset at completion — handing off`);
+          return;
+        }
+
         console.log(
           `[backfill-inbox] Workspace ${workspaceId}: backfill complete — processed ${processed} threads, skipped ${baseSkipped + runSkipped}`
         );
       } catch (err) {
         // ── On failure: mark ERROR but keep the cursor so a retry resumes ──────
-        // rather than restarting from the beginning of the inbox.
-        await db.providerSyncState.update({
-          where: { emailAccountId },
+        // rather than restarting from the beginning of the inbox. Guarded on our
+        // generation so a concurrent reset (sweep) is not overwritten.
+        await db.providerSyncState.updateMany({
+          where: { emailAccountId, backfillGeneration: claimedGeneration },
           data: { backfillStatus: "ERROR", backfillStartedAt: null },
         });
         throw err;

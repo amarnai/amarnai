@@ -49,10 +49,19 @@ sweepInbox.post("/workspaces/:workspaceId/sweep-inbox", async (c) => {
   }
 
   // Reset backfillStatus to PENDING and clear the resume cursor so the worker
-  // re-scans all threads from the beginning.
+  // re-scans all threads from the beginning. Bump backfillGeneration so any
+  // chunk already in flight detects it was superseded and abandons its progress
+  // instead of overwriting this reset.
   await db.providerSyncState.update({
     where: { emailAccountId: emailAccount.id },
-    data: { backfillStatus: "PENDING", backfillPageToken: null, backfillProcessedCount: 0 },
+    data: {
+      backfillStatus: "PENDING",
+      backfillStartedAt: null,
+      backfillPageToken: null,
+      backfillProcessedCount: 0,
+      backfillSkipped: 0,
+      backfillGeneration: { increment: 1 },
+    },
   });
 
   // Enqueue the job. Deduplication prevents double-enqueueing if one is

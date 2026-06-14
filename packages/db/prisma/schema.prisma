@@ -282,6 +282,10 @@ model ProviderSyncState {
   // when a fresh backfill is requested (e.g. sweep) or on disconnect.
   backfillPageToken      String?
   backfillProcessedCount Int         @default(0)
+  // Bumped whenever a fresh backfill is requested (e.g. sweep). A running chunk
+  // records the generation it claimed under and only persists its progress while
+  // that generation still matches, so a concurrent reset is never clobbered.
+  backfillGeneration     Int         @default(0)
   // Set to true after a one-time pass that marks existing threads with gmailIsImportant.
   importantBackfilled Boolean        @default(false)
   createdAt           DateTime       @default(now())
