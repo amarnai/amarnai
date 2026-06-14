@@ -1,5 +1,6 @@
 "use client";
 
+import { TAXONOMY_MIN_NON_ROOT_NODES } from "@amarnai/shared";
 import type { FolderItem } from "../folder-tree/types.js";
 import type { ThreadItem } from "./types.js";
 
@@ -42,6 +43,26 @@ export function RationaleCard({
         <div className="em-rationale-dest">
           <span className="em-chip-spin" aria-hidden />
           <span>Sorting…</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (thread.status === "unrouted") {
+    return (
+      <div className="em-rationale-card unrouted">
+        <div className="em-rationale-header">
+          <span className="em-rationale-label">AI Routing</span>
+        </div>
+        <div className="em-rationale-dest">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
+            <circle cx="6" cy="6" r="5" stroke="currentColor" strokeWidth="1.2" />
+            <path d="M6 5.5v3M6 3.5h.01" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
+          </svg>
+          <span>Waiting</span>
+        </div>
+        <div className="em-rationale-reason em-rationale-reason--muted">
+          This thread cannot be sorted yet. Add at least {TAXONOMY_MIN_NON_ROOT_NODES} categories to your taxonomy to begin routing.
         </div>
       </div>
     );

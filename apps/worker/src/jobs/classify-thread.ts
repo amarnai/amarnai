@@ -12,7 +12,7 @@ import {
   snapshotToThreadMessages,
 } from "@amarnai/ai";
 import type { EmbeddableNode, TriageMetadata, EmbeddingTriageResult } from "@amarnai/ai";
-import { GmailClient, normalizeGmailThread } from "@amarnai/gmail";
+import { GmailClient, GmailAuthError, normalizeGmailThread } from "@amarnai/gmail";
 import {
   QUEUE_CLASSIFY_THREAD,
   type ClassifyThreadJobData,
@@ -248,10 +248,6 @@ export function createClassifyThreadWorker(): Worker {
             }),
           ]);
 
-          if (rawNodes.length === 0) {
-            throw new Error(`No taxonomy nodes for workspace: ${workspaceId}`);
-          }
-
           const rootNode = rawNodes.find((n) => n.isRoot);
           if (!isTaxonomyRoutable(rawNodes, rawEdges)) {
             await db.emailThread.update({
@@ -372,6 +368,17 @@ export function createClassifyThreadWorker(): Worker {
 
         await job.updateProgress(100);
       } catch (err) {
+        if (err instanceof GmailAuthError) {
+          // Token is permanently invalid — mark the connection as disconnected
+          // so all remaining queued jobs for this workspace skip immediately.
+          console.error(
+            `[classify-thread] Gmail auth failed for workspace ${workspaceId} — marking connection DISCONNECTED: ${err.message}`,
+          );
+          await db.gmailConnection
+            .update({ where: { workspaceId }, data: { status: "DISCONNECTED" } })
+            .catch(() => {});
+          return;
+        }
         const attempt = job.attemptsMade + 1;
         const maxAttempts = job.opts.attempts ?? 1;
         const remaining = maxAttempts - attempt;
