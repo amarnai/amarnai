@@ -47,6 +47,8 @@ if (!gcpProject) {
   process.exit(1);
 }
 
+// Default to the dev-only subscription so this script never overwrites the
+// production endpoint. Set GMAIL_PUBSUB_SUBSCRIPTION in .env.local to override.
 const SUBSCRIPTION = loadEnv("GMAIL_PUBSUB_SUBSCRIPTION") ?? "amarnai-gmail-sub-dev";
 
 console.log("Starting Cloudflare quick tunnel → http://localhost:3001\n");

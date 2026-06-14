@@ -19,8 +19,18 @@ import { closePublisher } from "./redis-publisher.js";
 async function renewAllGmailWatches(): Promise<void> {
   if (!config.gmail.pubsubTopic) return;
 
+  // Only renew watches expiring within 25 hours (or never registered).
+  // Watches last ~7 days, so this fires at most once per day per user and
+  // avoids rate-limit spikes from frequent worker restarts or redeploys.
+  const renewBefore = new Date(Date.now() + 25 * 60 * 60 * 1000);
   const connections = await db.gmailConnection.findMany({
-    where: { status: "ACTIVE" },
+    where: {
+      status: "ACTIVE",
+      OR: [
+        { gmailWatchExpiresAt: null },
+        { gmailWatchExpiresAt: { lte: renewBefore } },
+      ],
+    },
     select: { workspaceId: true, gmailAddress: true, encryptedRefreshToken: true },
   });
 
