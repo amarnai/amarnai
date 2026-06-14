@@ -46,6 +46,7 @@ import {
   computeIgnoredReasons,
   type IgnoredReason,
 } from "./taxonomyUtils";
+import { TAXONOMY_TEMPLATES } from "./taxonomyTemplates";
 import {
   useTaxonomyHistory,
   snapshotsEqual,
@@ -606,6 +607,8 @@ function TaxonomyCanvasInner({
   const [apiError, setApiError] = useState<string | null>(null);
   const [importConfirmOpen, setImportConfirmOpen] = useState(false);
   const [pendingImportFile, setPendingImportFile] = useState<TaxonomyTransferFile | null>(null);
+  const [templatePickerOpen, setTemplatePickerOpen] = useState(false);
+  const [selectedTemplateIdx, setSelectedTemplateIdx] = useState<number | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const history = useTaxonomyHistory({ nodes: initialNodes, edges: initialEdges });
@@ -931,6 +934,15 @@ function TaxonomyCanvasInner({
     }
   }
 
+  async function handleUseTemplate() {
+    if (selectedTemplateIdx === null) return;
+    const template = TAXONOMY_TEMPLATES[selectedTemplateIdx];
+    if (!template) return;
+    setTemplatePickerOpen(false);
+    setSelectedTemplateIdx(null);
+    await executeImport(template.file);
+  }
+
   // ─── Render ───────────────────────────────────────────────────────────────
 
   const taxonomyIsRoutable = isTaxonomyRoutable(
@@ -1039,11 +1051,28 @@ function TaxonomyCanvasInner({
         );
         if (routableCount >= TAXONOMY_MIN_NON_ROOT_NODES) return null;
         return (
-          <div className="warning-box" style={{ marginBottom: 12 }}>
-            <span className="em-pill accent" style={{ marginRight: 8 }}>
-              {routableCount} / {TAXONOMY_MIN_NON_ROOT_NODES}
+          <div className="warning-box" style={{ marginBottom: 12, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
+            <span>
+              <span className="em-pill accent" style={{ marginRight: 8 }}>
+                {routableCount} / {TAXONOMY_MIN_NON_ROOT_NODES}
+              </span>
+              {routableCount} of {TAXONOMY_MIN_NON_ROOT_NODES} categories connected to your inbox. Routing requires at least {TAXONOMY_MIN_NON_ROOT_NODES}.
             </span>
-            {routableCount} of {TAXONOMY_MIN_NON_ROOT_NODES} categories connected to your inbox. Routing requires at least {TAXONOMY_MIN_NON_ROOT_NODES}.
+            {!readOnly && (
+              <button
+                className="btn-primary"
+                style={{ flexShrink: 0 }}
+                onClick={() => {
+                  setSelectedTemplateIdx(null);
+                  setTemplatePickerOpen(true);
+                }}
+              >
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
+                  <path d="M7 1.5L8.2 5.8L12.5 7L8.2 8.2L7 12.5L5.8 8.2L1.5 7L5.8 5.8Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+                </svg>
+                Use a template
+              </button>
+            )}
           </div>
         );
       })()}
@@ -1190,6 +1219,94 @@ function TaxonomyCanvasInner({
                 disabled={submitting}
               >
                 Replace taxonomy
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {templatePickerOpen && (
+        <div
+          className="modal-backdrop"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              setTemplatePickerOpen(false);
+              setSelectedTemplateIdx(null);
+            }
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Escape") {
+              setTemplatePickerOpen(false);
+              setSelectedTemplateIdx(null);
+            }
+          }}
+          role="dialog"
+          aria-modal="true"
+        >
+          <div className="modal">
+            <div className="modal-header">
+              <h2 className="modal-title">Start from a template</h2>
+              <button
+                className="modal-close"
+                aria-label="Cancel"
+                onClick={() => {
+                  setTemplatePickerOpen(false);
+                  setSelectedTemplateIdx(null);
+                }}
+              >
+                ✕
+              </button>
+            </div>
+            <div className="modal-body" style={{ overflowY: "auto", maxHeight: "60vh" }}>
+              <div className="option-cards">
+                {TAXONOMY_TEMPLATES.map((template, idx) => {
+                  const rootRef = template.file.nodes.find((n) => n.isRoot)?.ref;
+                  const topLevelNames = template.file.edges
+                    .filter((e) => e.sourceRef === rootRef)
+                    .map((e) => template.file.nodes.find((n) => n.ref === e.targetRef)?.name)
+                    .filter((n): n is string => !!n);
+                  const isSelected = selectedTemplateIdx === idx;
+                  return (
+                    <button
+                      key={template.id}
+                      type="button"
+                      className={`option-card${isSelected ? " option-card--selected" : ""}`}
+                      aria-pressed={isSelected}
+                      onClick={() => setSelectedTemplateIdx(idx)}
+                    >
+                      <span className="option-card-radio">
+                        {isSelected && <span className="option-card-radio-dot" />}
+                      </span>
+                      <span className="option-card-text">
+                        <span className="option-card-label">{template.name}</span>
+                        <span className="option-card-desc">{template.description}</span>
+                        <span style={{ display: "flex", flexWrap: "wrap", gap: 4, marginTop: 6 }}>
+                          {topLevelNames.map((name) => (
+                            <span key={name} className="em-pill">{name}</span>
+                          ))}
+                        </span>
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button
+                className="btn-ghost"
+                onClick={() => {
+                  setTemplatePickerOpen(false);
+                  setSelectedTemplateIdx(null);
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                className="btn-primary"
+                onClick={handleUseTemplate}
+                disabled={selectedTemplateIdx === null || submitting}
+              >
+                Use template
               </button>
             </div>
           </div>
