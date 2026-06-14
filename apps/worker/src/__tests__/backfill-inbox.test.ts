@@ -534,6 +534,36 @@ describe("createBackfillInboxWorker", () => {
     });
   });
 
+  it("(j) resumes from the cursor read AFTER the claim, not the one read before", async () => {
+    // First read (pre-claim, status short-circuit) carries a STALE cursor; the
+    // second read (post-claim, authoritative) carries a FRESH cursor. The run
+    // must use the fresh one — proving the cursor is read after winning the claim.
+    vi.mocked(db.providerSyncState.findUnique)
+      .mockResolvedValueOnce({
+        backfillStatus: "PENDING",
+        backfillPageToken: "STALE",
+        backfillProcessedCount: 0,
+        backfillSkipped: 0,
+        backfillGeneration: 0,
+      } as never)
+      .mockResolvedValue({
+        backfillStatus: "PENDING",
+        backfillPageToken: "FRESH",
+        backfillProcessedCount: 0,
+        backfillSkipped: 0,
+        backfillGeneration: 0,
+      } as never);
+    // Claim succeeds (default count 1).
+    mockListThreadsPage.mockResolvedValue({ threads: [], nextPageToken: undefined });
+
+    createBackfillInboxWorker();
+    await getProcessor()(makeJob({ workspaceId: WS_ID }));
+
+    expect(mockListThreadsPage).toHaveBeenCalledWith(
+      expect.objectContaining({ pageToken: "FRESH" })
+    );
+  });
+
   // ── Taxonomy gate ─────────────────────────────────────────────────────────
 
   it("(d) marks threads as UNROUTED and does not enqueue when routable count < threshold", async () => {

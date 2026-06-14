@@ -134,30 +134,22 @@ export function createBackfillInboxWorker(): Worker {
       }
       const emailAccountId = emailAccount.id;
 
-      const syncState = await db.providerSyncState.findUnique({
+      // Pre-claim read: only the status, for a cheap short-circuit. The cursor is
+      // read AFTER the claim (below) so it can't be moved by another worker
+      // between the read and the claim.
+      const preClaim = await db.providerSyncState.findUnique({
         where: { emailAccountId },
-        select: {
-          backfillStatus: true,
-          backfillStartedAt: true,
-          backfillPageToken: true,
-          backfillProcessedCount: true,
-          backfillSkipped: true,
-          backfillGeneration: true,
-        },
+        select: { backfillStatus: true },
       });
 
-      if (!syncState) {
+      if (!preClaim) {
         console.log(`[backfill-inbox] Workspace ${workspaceId} has no sync state yet — skipping`);
         return;
       }
-      if (syncState.backfillStatus === "DONE") {
+      if (preClaim.backfillStatus === "DONE") {
         console.log(`[backfill-inbox] Workspace ${workspaceId} backfill already DONE — skipping`);
         return;
       }
-
-      // The generation we are responsible for. Captured before claiming so that a
-      // concurrent reset (sweep bumps it) makes our later progress writes no-ops.
-      const claimedGeneration = syncState.backfillGeneration;
 
       // ── 3. Atomically claim this chunk ──────────────────────────────────────
       // A single conditional update is the lock: it only succeeds when the row is
@@ -184,6 +176,24 @@ export function createBackfillInboxWorker(): Worker {
         return;
       }
 
+      // Post-claim read: now that we are the sole owner, the resume cursor and
+      // generation are authoritative — no other worker can advance them until we
+      // release. A chunk persists its cursor and clears started-at in one atomic
+      // write, so the row only becomes claimable once the cursor is up to date.
+      const claimed = await db.providerSyncState.findUnique({
+        where: { emailAccountId },
+        select: {
+          backfillPageToken: true,
+          backfillProcessedCount: true,
+          backfillSkipped: true,
+          backfillGeneration: true,
+        },
+      });
+
+      // The generation we are responsible for. A concurrent reset (sweep bumps
+      // it) makes our later progress writes no-ops, so the reset is never clobbered.
+      const claimedGeneration = claimed?.backfillGeneration ?? 0;
+
       await job.updateProgress(5);
 
       try {
@@ -201,8 +211,8 @@ export function createBackfillInboxWorker(): Worker {
         const nowMs = Date.now();
         const afterMs = cap.windowDays === null ? 0 : nowMs - cap.windowDays * MS_PER_DAY;
 
-        let pageToken = syncState?.backfillPageToken ?? undefined;
-        let processed = syncState?.backfillProcessedCount ?? 0;
+        let pageToken = claimed?.backfillPageToken ?? undefined;
+        let processed = claimed?.backfillProcessedCount ?? 0;
 
         // ── Per-thread upsert: returns the EmailThread id to classify, or null ──
         //
@@ -342,7 +352,7 @@ export function createBackfillInboxWorker(): Worker {
         // ── 6. Process pages until the chunk budget or the plan cap is reached ──
 
         const upsertedEmailThreadIds: string[] = [];
-        const baseSkipped = syncState?.backfillSkipped ?? 0;
+        const baseSkipped = claimed?.backfillSkipped ?? 0;
         let runSkipped = 0;
         let processedThisRun = 0;
         let exhausted = false;
