@@ -46,7 +46,7 @@ import {
   computeIgnoredReasons,
   type IgnoredReason,
 } from "./taxonomyUtils";
-import { TAXONOMY_TEMPLATES } from "./taxonomyTemplates";
+import { TAXONOMY_TEMPLATES, type TaxonomyTemplate } from "./taxonomyTemplates";
 import {
   useTaxonomyHistory,
   snapshotsEqual,
@@ -68,6 +68,28 @@ import {
 
 function nodeById(nodes: TaxonomyNode[], id: string): TaxonomyNode | undefined {
   return nodes.find((n) => n.id === id);
+}
+
+function matchesTemplate(
+  dbNodes: TaxonomyNode[],
+  dbEdges: TaxonomyEdge[],
+  template: TaxonomyTemplate
+): boolean {
+  const { nodes: tNodes, edges: tEdges } = template.file;
+  if (dbNodes.length !== tNodes.length || dbEdges.length !== tEdges.length) return false;
+
+  const dbNames = dbNodes.map((n) => n.name).sort();
+  const tNames = tNodes.map((n) => n.name).sort();
+  if (dbNames.some((n, i) => n !== tNames[i])) return false;
+
+  const dbIdToName = new Map(dbNodes.map((n) => [n.id, n.name]));
+  const tRefToName = new Map(tNodes.map((n) => [n.ref, n.name]));
+  const dbEdgeSet = new Set(
+    dbEdges.map((e) => `${dbIdToName.get(e.sourceNodeId)}→${dbIdToName.get(e.targetNodeId)}`)
+  );
+  return tEdges.every(
+    (e) => dbEdgeSet.has(`${tRefToName.get(e.sourceRef)}→${tRefToName.get(e.targetRef)}`)
+  );
 }
 
 // ─── React Flow node/edge converters ──────────────────────────────────────────
@@ -940,7 +962,12 @@ function TaxonomyCanvasInner({
     if (!template) return;
     setTemplatePickerOpen(false);
     setSelectedTemplateIdx(null);
-    await executeImport(template.file);
+    if (taxonomyIsRoutable) {
+      setPendingImportFile(template.file);
+      setImportConfirmOpen(true);
+    } else {
+      await executeImport(template.file);
+    }
   }
 
   // ─── Render ───────────────────────────────────────────────────────────────
@@ -948,6 +975,10 @@ function TaxonomyCanvasInner({
   const taxonomyIsRoutable = isTaxonomyRoutable(
     rfNodes.map((n) => ({ id: n.id, isRoot: n.data.node.isRoot })),
     rfEdges.map((e) => ({ sourceNodeId: e.source, targetNodeId: e.target }))
+  );
+
+  const currentTemplateIdx = TAXONOMY_TEMPLATES.findIndex((t) =>
+    matchesTemplate(dbNodes, dbEdges, t)
   );
 
   let nodeDeleteDisabledReason: string | null = null;
@@ -1022,6 +1053,22 @@ function TaxonomyCanvasInner({
                 <path d="M7 3V11M4 8L7 11L10 8M2 13H12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
               Import
+            </button>
+          </Tooltip>
+          <Tooltip content="Start from a template (replaces current)">
+            <button
+              className="btn-ghost"
+              onClick={() => {
+                setSelectedTemplateIdx(null);
+                setTemplatePickerOpen(true);
+              }}
+              disabled={submitting}
+              aria-label="Browse templates"
+            >
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
+                <path d="M7 1.5L8.2 5.8L12.5 7L8.2 8.2L7 12.5L5.8 8.2L1.5 7L5.8 5.8Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+              </svg>
+              Templates
             </button>
           </Tooltip>
           <input
@@ -1245,7 +1292,7 @@ function TaxonomyCanvasInner({
         >
           <div className="modal">
             <div className="modal-header">
-              <h2 className="modal-title">Start from a template</h2>
+              <h2 className="modal-title">{taxonomyIsRoutable ? "Replace with a template" : "Start from a template"}</h2>
               <button
                 className="modal-close"
                 aria-label="Cancel"
@@ -1266,19 +1313,24 @@ function TaxonomyCanvasInner({
                     .map((e) => template.file.nodes.find((n) => n.ref === e.targetRef)?.name)
                     .filter((n): n is string => !!n);
                   const isSelected = selectedTemplateIdx === idx;
+                  const isCurrent = currentTemplateIdx === idx;
                   return (
                     <button
                       key={template.id}
                       type="button"
                       className={`option-card${isSelected ? " option-card--selected" : ""}`}
                       aria-pressed={isSelected}
+                      disabled={isCurrent}
                       onClick={() => setSelectedTemplateIdx(idx)}
                     >
                       <span className="option-card-radio">
                         {isSelected && <span className="option-card-radio-dot" />}
                       </span>
                       <span className="option-card-text">
-                        <span className="option-card-label">{template.name}</span>
+                        <span className="option-card-label" style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                          {template.name}
+                          {isCurrent && <span className="em-pill">Current</span>}
+                        </span>
                         <span className="option-card-desc">{template.description}</span>
                         <span style={{ display: "flex", flexWrap: "wrap", gap: 4, marginTop: 6 }}>
                           {topLevelNames.map((name) => (
@@ -1304,7 +1356,7 @@ function TaxonomyCanvasInner({
               <button
                 className="btn-primary"
                 onClick={handleUseTemplate}
-                disabled={selectedTemplateIdx === null || submitting}
+                disabled={selectedTemplateIdx === null || selectedTemplateIdx === currentTemplateIdx || submitting}
               >
                 Use template
               </button>
