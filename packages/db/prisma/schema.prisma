@@ -277,6 +277,11 @@ model ProviderSyncState {
   backfillStartedAt   DateTime?
   backfillSkipped     Int            @default(0)
   backfillCompletedAt DateTime?
+  // Resumable-backfill cursor: Gmail threads.list pageToken to fetch next, and
+  // the cumulative thread count processed so far toward the plan cap. Both reset
+  // when a fresh backfill is requested (e.g. sweep) or on disconnect.
+  backfillPageToken      String?
+  backfillProcessedCount Int         @default(0)
   // Set to true after a one-time pass that marks existing threads with gmailIsImportant.
   importantBackfilled Boolean        @default(false)
   createdAt           DateTime       @default(now())

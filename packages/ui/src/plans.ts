@@ -1,5 +1,46 @@
+import { getBackfillCap } from "@amarnai/shared";
+
 export type PlanId = "free" | "pro" | "business";
 export type BillingCycle = "monthly" | "annual";
+
+// ── Initial-backfill labels ──────────────────────────────────────────────────
+// Derived from the shared backfill caps so the marketing copy never duplicates
+// the numbers. Keep wording here; the caps live in @amarnai/shared.
+
+const PLAN_KEY: Record<PlanId, string> = { free: "FREE", pro: "PRO", business: "BUSINESS" };
+
+/** Format an integer with thousands separators, locale-independently. */
+function formatCount(n: number): string {
+  return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+/**
+ * Human label for a plan's initial backfill at a given billing cycle.
+ * `noun` lets callers say "threads" (comparison matrix) or "historical threads"
+ * (feature list) while sharing the same underlying cap.
+ */
+function backfillLabel(
+  plan: PlanId,
+  cycle: "monthly" | "annual",
+  noun: "threads" | "historical threads"
+): string {
+  const monthly = getBackfillCap(PLAN_KEY[plan], "MONTHLY");
+  const cap = getBackfillCap(PLAN_KEY[plan], cycle === "annual" ? "ANNUAL" : "MONTHLY");
+
+  // Plans whose annual cap matches monthly (e.g. Free) collapse to one label.
+  if (
+    cycle === "annual" &&
+    cap.maxThreads === monthly.maxThreads &&
+    cap.windowDays === monthly.windowDays
+  ) {
+    return "Same as monthly";
+  }
+
+  if (cap.windowDays != null) {
+    return `${formatCount(cap.maxThreads)} threads or last ${cap.windowDays} days`;
+  }
+  return `${formatCount(cap.maxThreads)} ${noun}`;
+}
 
 /** null = coming soon / not yet available */
 export type FeatureValue = string | boolean | null;
@@ -130,11 +171,15 @@ export const FEATURE_GROUPS: FeatureGroup[] = [
         hint: "Historical threads sorted when you first connect",
         billing: {
           monthly: [
-            "500 threads or last 30 days",
-            "10,000 threads",
-            "75,000 threads",
+            backfillLabel("free", "monthly", "threads"),
+            backfillLabel("pro", "monthly", "threads"),
+            backfillLabel("business", "monthly", "threads"),
           ],
-          annual: ["Same as monthly", "50,000 threads", "250,000 threads"],
+          annual: [
+            backfillLabel("free", "annual", "threads"),
+            backfillLabel("pro", "annual", "threads"),
+            backfillLabel("business", "annual", "threads"),
+          ],
         },
       },
       {
@@ -211,9 +256,9 @@ export const PLAN_FEATURES: PlanFeature[] = [
     label: "Initial backfill (monthly plan)",
     showInCard: false,
     values: {
-      free: "500 threads or last 30 days",
-      pro: "10,000 historical threads",
-      business: "75,000 historical threads",
+      free: backfillLabel("free", "monthly", "historical threads"),
+      pro: backfillLabel("pro", "monthly", "historical threads"),
+      business: backfillLabel("business", "monthly", "historical threads"),
     },
   },
   {
@@ -221,9 +266,9 @@ export const PLAN_FEATURES: PlanFeature[] = [
     label: "Initial backfill (annual plan)",
     showInCard: false,
     values: {
-      free: "Same as monthly",
-      pro: "50,000 historical threads",
-      business: "250,000 historical threads",
+      free: backfillLabel("free", "annual", "historical threads"),
+      pro: backfillLabel("pro", "annual", "historical threads"),
+      business: backfillLabel("business", "annual", "historical threads"),
     },
   },
   {

@@ -25,13 +25,19 @@ vi.mock("@amarnai/db", () => ({
   },
 }));
 
-const mockListThreadsInWindow = vi.fn();
+const mockListThreadsPage = vi.fn();
 const mockGetThread = vi.fn();
 const mockListThreadIdsByQuery = vi.fn().mockResolvedValue([]);
 
 vi.mock("@amarnai/gmail", () => ({
+  GmailAuthError: class GmailAuthError extends Error {
+    constructor(message: string) {
+      super(message);
+      this.name = "GmailAuthError";
+    }
+  },
   GmailClient: vi.fn().mockImplementation(() => ({
-    listThreadsInWindow: mockListThreadsInWindow,
+    listThreadsPage: mockListThreadsPage,
     getThread: mockGetThread,
     listThreadIdsByQuery: mockListThreadIdsByQuery,
   })),
@@ -83,6 +89,7 @@ vi.mock("../queues.js", () => ({
 // ─── Import after mocks ───────────────────────────────────────────────────────
 
 import { db } from "@amarnai/db";
+import { GmailAuthError } from "@amarnai/gmail";
 import { Worker } from "bullmq";
 import { classifyThreadQueue } from "../queues.js";
 import { createBackfillInboxWorker } from "../jobs/backfill-inbox.js";
@@ -139,9 +146,12 @@ function makeJob(data: Record<string, string>) {
 beforeEach(() => {
   vi.clearAllMocks();
 
-  // Default workspace + connection stubs.
+  // Default workspace + connection stubs. PRO/MONTHLY → 10,000-thread cap,
+  // full history (no time window).
   vi.mocked(db.workspace.findUnique).mockResolvedValue({
     ownerUserId: "user-1",
+    plan: "PRO",
+    billingCycle: "MONTHLY",
   } as never);
   vi.mocked(db.gmailConnection.findUnique).mockResolvedValue({
     gmailAddress: "test@gmail.com",
@@ -181,7 +191,7 @@ describe("createBackfillInboxWorker", () => {
 
     // Only findUnique should have been called — no update, no Gmail calls.
     expect(db.providerSyncState.update).not.toHaveBeenCalled();
-    expect(mockListThreadsInWindow).not.toHaveBeenCalled();
+    expect(mockListThreadsPage).not.toHaveBeenCalled();
     expect(classifyThreadQueue.addBulk).not.toHaveBeenCalled();
   });
 
@@ -196,7 +206,7 @@ describe("createBackfillInboxWorker", () => {
     await processor(makeJob({ workspaceId: WS_ID }));
 
     expect(db.providerSyncState.update).not.toHaveBeenCalled();
-    expect(mockListThreadsInWindow).not.toHaveBeenCalled();
+    expect(mockListThreadsPage).not.toHaveBeenCalled();
   });
 
   it("(b) enqueues classify jobs with unread threads first, then by recency", async () => {
@@ -213,7 +223,7 @@ describe("createBackfillInboxWorker", () => {
       makeGmailThread({ id: "read-new", unread: false, daysAgo: 1 }),
     ];
 
-    mockListThreadsInWindow.mockResolvedValue({ threads, totalFound: 3 });
+    mockListThreadsPage.mockResolvedValue({ threads, nextPageToken: undefined });
 
     // All threads are new (not yet in DB).
     vi.mocked(db.emailThread.findUnique).mockResolvedValue(null);
@@ -248,40 +258,237 @@ describe("createBackfillInboxWorker", () => {
     expect(readNewIdx).toBeLessThan(readOldIdx);
   });
 
-  it("(c) backfillSkipped is correct when totalFound exceeds the cap", async () => {
+  // ── Plan-derived caps ───────────────────────────────────────────────────────
+
+  it("(c2) scans full history for a paid plan (afterMs 0)", async () => {
+    vi.mocked(db.providerSyncState.findUnique).mockResolvedValue({
+      backfillStatus: "PENDING",
+      backfillStartedAt: null,
+    } as never);
+    mockListThreadsPage.mockResolvedValue({ threads: [], nextPageToken: undefined });
+
+    createBackfillInboxWorker();
+    await getProcessor()(makeJob({ workspaceId: WS_ID }));
+
+    expect(mockListThreadsPage).toHaveBeenCalledWith(
+      expect.objectContaining({ afterMs: 0 })
+    );
+  });
+
+  it("(c3) bounds the Free plan to a 30-day window", async () => {
+    vi.mocked(db.workspace.findUnique).mockResolvedValue({
+      ownerUserId: "user-1",
+      plan: "FREE",
+      billingCycle: null,
+    } as never);
+    vi.mocked(db.providerSyncState.findUnique).mockResolvedValue({
+      backfillStatus: "PENDING",
+      backfillStartedAt: null,
+    } as never);
+    mockListThreadsPage.mockResolvedValue({ threads: [], nextPageToken: undefined });
+
+    const before = Date.now() - 30 * 24 * 60 * 60 * 1_000;
+    createBackfillInboxWorker();
+    await getProcessor()(makeJob({ workspaceId: WS_ID }));
+    const after = Date.now() - 30 * 24 * 60 * 60 * 1_000;
+
+    const arg = mockListThreadsPage.mock.calls[0]![0] as { afterMs: number };
+    expect(arg.afterMs).toBeGreaterThanOrEqual(before);
+    expect(arg.afterMs).toBeLessThanOrEqual(after);
+  });
+
+  it("(c4) stops at the plan cap when more threads exist (Free → 500)", async () => {
+    vi.mocked(db.workspace.findUnique).mockResolvedValue({
+      ownerUserId: "user-1",
+      plan: "FREE",
+      billingCycle: null,
+    } as never);
     vi.mocked(db.providerSyncState.findUnique).mockResolvedValue({
       backfillStatus: "PENDING",
       backfillStartedAt: null,
     } as never);
 
-    // totalFound = 1200 but only 1000 threads returned (cap applied by listThreadsInWindow).
-    const cappedThreads = Array.from({ length: 1000 }, (_, i) =>
-      makeGmailThread({ id: `t-${i}`, unread: false, daysAgo: 1 })
-    );
-    mockListThreadsInWindow.mockResolvedValue({
-      threads: cappedThreads,
-      totalFound: 1200,
-    });
-
+    // Every page is full and always has a next page → effectively infinite.
+    const fullPage = Array.from({ length: 100 }, (_, i) => makeGmailThread({ id: `t-${i}` }));
+    mockListThreadsPage.mockResolvedValue({ threads: fullPage, nextPageToken: "more" });
     vi.mocked(db.emailThread.findUnique).mockResolvedValue(null);
     mockGetThread.mockImplementation(async (id: string) => ({ id }));
-    vi.mocked(db.emailThread.upsert).mockImplementation(
-      (({ create }: { create: { providerThreadId: string } }) =>
-        Promise.resolve({ id: `db-${create.providerThreadId}` })) as never
-    );
+    vi.mocked(db.emailThread.upsert).mockResolvedValue({ id: "db-x" } as never);
 
     createBackfillInboxWorker();
-    const processor = getProcessor();
-    await processor(makeJob({ workspaceId: WS_ID }));
+    await getProcessor()(makeJob({ workspaceId: WS_ID }));
 
-    // The DONE update should record backfillSkipped = 1200 - 1000 = 200.
-    const doneCalls = vi.mocked(db.providerSyncState.update).mock.calls.filter(
-      (call) =>
-        (call[0] as { data: { backfillStatus?: string } }).data?.backfillStatus === "DONE"
+    // Free cap is 500 → exactly 5 pages of 100, then it stops (cap reached = done).
+    expect(mockListThreadsPage).toHaveBeenCalledTimes(5);
+    const doneCall = vi.mocked(db.providerSyncState.update).mock.calls.find(
+      (c) => (c[0] as { data: { backfillStatus?: string } }).data?.backfillStatus === "DONE"
     );
-    expect(doneCalls).toHaveLength(1);
-    const doneData = (doneCalls[0]![0] as { data: { backfillSkipped: number } }).data;
-    expect(doneData.backfillSkipped).toBe(200);
+    expect(doneCall).toBeDefined();
+    const doneData = (doneCall![0] as { data: { backfillProcessedCount: number } }).data;
+    expect(doneData.backfillProcessedCount).toBe(500);
+  });
+
+  // ── Chunked continuation ──────────────────────────────────────────────────────
+
+  it("(c5) persists the cursor and re-enqueues when more remains after a chunk", async () => {
+    // PRO cap is 10,000; one run processes BACKFILL_CHUNK_THREADS (500) then stops.
+    vi.mocked(db.providerSyncState.findUnique).mockResolvedValue({
+      backfillStatus: "PENDING",
+      backfillStartedAt: null,
+      backfillPageToken: null,
+      backfillProcessedCount: 0,
+    } as never);
+
+    const fullPage = Array.from({ length: 100 }, (_, i) => makeGmailThread({ id: `t-${i}` }));
+    mockListThreadsPage.mockResolvedValue({ threads: fullPage, nextPageToken: "next-cursor" });
+    vi.mocked(db.emailThread.findUnique).mockResolvedValue(null);
+    mockGetThread.mockImplementation(async (id: string) => ({ id }));
+    vi.mocked(db.emailThread.upsert).mockResolvedValue({ id: "db-x" } as never);
+
+    const { backfillInboxQueue } = await import("../queues.js");
+
+    createBackfillInboxWorker();
+    await getProcessor()(makeJob({ workspaceId: WS_ID }));
+
+    // Did NOT finish.
+    const doneCall = vi.mocked(db.providerSyncState.update).mock.calls.find(
+      (c) => (c[0] as { data: { backfillStatus?: string } }).data?.backfillStatus === "DONE"
+    );
+    expect(doneCall).toBeUndefined();
+
+    // Persisted the cursor + progress, leaving status RUNNING with a cleared lock.
+    const cursorCall = vi.mocked(db.providerSyncState.update).mock.calls.find(
+      (c) => (c[0] as { data: { backfillPageToken?: string } }).data?.backfillPageToken === "next-cursor"
+    );
+    expect(cursorCall).toBeDefined();
+    const cursorData = (cursorCall![0] as {
+      data: { backfillStatus: string; backfillStartedAt: unknown; backfillProcessedCount: number };
+    }).data;
+    expect(cursorData.backfillStatus).toBe("RUNNING");
+    expect(cursorData.backfillStartedAt).toBeNull();
+    expect(cursorData.backfillProcessedCount).toBe(500);
+
+    // Re-enqueued a continuation (without deduplication).
+    expect(vi.mocked(backfillInboxQueue.add)).toHaveBeenCalledWith("backfill-inbox", { workspaceId: WS_ID });
+  });
+
+  it("(c6) resumes from the persisted pageToken and processed count", async () => {
+    // PRO cap 10,000; resume at 9,950 processed → only 50 left before DONE.
+    vi.mocked(db.providerSyncState.findUnique).mockResolvedValue({
+      backfillStatus: "RUNNING",
+      backfillStartedAt: null,
+      backfillPageToken: "resume-here",
+      backfillProcessedCount: 9_950,
+    } as never);
+
+    const fullPage = Array.from({ length: 100 }, (_, i) => makeGmailThread({ id: `t-${i}` }));
+    mockListThreadsPage.mockResolvedValue({ threads: fullPage, nextPageToken: "ignored" });
+    vi.mocked(db.emailThread.findUnique).mockResolvedValue(null);
+    mockGetThread.mockImplementation(async (id: string) => ({ id }));
+    vi.mocked(db.emailThread.upsert).mockResolvedValue({ id: "db-x" } as never);
+
+    createBackfillInboxWorker();
+    await getProcessor()(makeJob({ workspaceId: WS_ID }));
+
+    // First fetch resumes from the persisted cursor.
+    expect(mockListThreadsPage).toHaveBeenCalledWith(
+      expect.objectContaining({ pageToken: "resume-here" })
+    );
+    // Cap reached (9,950 + 50) → DONE with the final count.
+    const doneCall = vi.mocked(db.providerSyncState.update).mock.calls.find(
+      (c) => (c[0] as { data: { backfillStatus?: string } }).data?.backfillStatus === "DONE"
+    );
+    expect(doneCall).toBeDefined();
+    const doneData = (doneCall![0] as { data: { backfillProcessedCount: number } }).data;
+    expect(doneData.backfillProcessedCount).toBe(10_000);
+  });
+
+  // ── Per-thread error handling ─────────────────────────────────────────────────
+
+  it("(f) skips a thread that fails with a permanent error and still completes", async () => {
+    vi.mocked(db.providerSyncState.findUnique).mockResolvedValue({
+      backfillStatus: "PENDING",
+      backfillStartedAt: null,
+      backfillPageToken: null,
+      backfillProcessedCount: 0,
+      backfillSkipped: 0,
+    } as never);
+
+    const good = makeGmailThread({ id: "good" });
+    const bad = makeGmailThread({ id: "bad" });
+    mockListThreadsPage.mockResolvedValue({ threads: [good, bad], nextPageToken: undefined });
+    vi.mocked(db.emailThread.findUnique).mockResolvedValue(null);
+    mockGetThread.mockImplementation(async (id: string) => {
+      if (id === "bad") throw new Error("Gmail thread fetch failed: 400");
+      return { id };
+    });
+    vi.mocked(db.emailThread.upsert).mockResolvedValue({ id: "db-good" } as never);
+
+    createBackfillInboxWorker();
+    await getProcessor()(makeJob({ workspaceId: WS_ID }));
+
+    // Finished despite the bad thread, recording it as skipped.
+    const doneCall = vi.mocked(db.providerSyncState.update).mock.calls.find(
+      (c) => (c[0] as { data: { backfillStatus?: string } }).data?.backfillStatus === "DONE"
+    );
+    expect(doneCall).toBeDefined();
+    const doneData = (doneCall![0] as { data: { backfillSkipped: number } }).data;
+    expect(doneData.backfillSkipped).toBe(1);
+
+    // The good thread was still enqueued for classification.
+    expect(classifyThreadQueue.addBulk).toHaveBeenCalledOnce();
+    const [bulkJobs] = vi.mocked(classifyThreadQueue.addBulk).mock.calls[0]!;
+    expect((bulkJobs as unknown[]).length).toBe(1);
+  });
+
+  it("(g) aborts with ERROR (not skip) on a transient fetch error", async () => {
+    vi.mocked(db.providerSyncState.findUnique).mockResolvedValue({
+      backfillStatus: "PENDING",
+      backfillStartedAt: null,
+      backfillPageToken: null,
+      backfillProcessedCount: 0,
+      backfillSkipped: 0,
+    } as never);
+
+    const bad = makeGmailThread({ id: "bad" });
+    mockListThreadsPage.mockResolvedValue({ threads: [bad], nextPageToken: undefined });
+    vi.mocked(db.emailThread.findUnique).mockResolvedValue(null);
+    mockGetThread.mockRejectedValue(new Error("Gmail thread fetch failed: 429"));
+
+    createBackfillInboxWorker();
+    await expect(getProcessor()(makeJob({ workspaceId: WS_ID }))).rejects.toThrow("429");
+
+    const errorCall = vi.mocked(db.providerSyncState.update).mock.calls.find(
+      (c) => (c[0] as { data: { backfillStatus?: string } }).data?.backfillStatus === "ERROR"
+    );
+    expect(errorCall).toBeDefined();
+    const doneCall = vi.mocked(db.providerSyncState.update).mock.calls.find(
+      (c) => (c[0] as { data: { backfillStatus?: string } }).data?.backfillStatus === "DONE"
+    );
+    expect(doneCall).toBeUndefined();
+  });
+
+  it("(h) aborts on an auth error rather than skipping the whole inbox", async () => {
+    vi.mocked(db.providerSyncState.findUnique).mockResolvedValue({
+      backfillStatus: "PENDING",
+      backfillStartedAt: null,
+      backfillPageToken: null,
+      backfillProcessedCount: 0,
+      backfillSkipped: 0,
+    } as never);
+
+    const bad = makeGmailThread({ id: "bad" });
+    mockListThreadsPage.mockResolvedValue({ threads: [bad], nextPageToken: undefined });
+    vi.mocked(db.emailThread.findUnique).mockResolvedValue(null);
+    mockGetThread.mockRejectedValue(new GmailAuthError("Token refresh failed: invalid_grant"));
+
+    createBackfillInboxWorker();
+    await expect(getProcessor()(makeJob({ workspaceId: WS_ID }))).rejects.toThrow();
+
+    const doneCall = vi.mocked(db.providerSyncState.update).mock.calls.find(
+      (c) => (c[0] as { data: { backfillStatus?: string } }).data?.backfillStatus === "DONE"
+    );
+    expect(doneCall).toBeUndefined();
   });
 
   // ── Taxonomy gate ─────────────────────────────────────────────────────────
@@ -295,7 +502,7 @@ describe("createBackfillInboxWorker", () => {
     vi.mocked(db.taxonomyEdge.findMany).mockResolvedValue(makeEdges(2) as never);
 
     const thread = makeGmailThread({ id: "t1" });
-    mockListThreadsInWindow.mockResolvedValue({ threads: [thread], totalFound: 1 });
+    mockListThreadsPage.mockResolvedValue({ threads: [thread], nextPageToken: undefined });
     vi.mocked(db.emailThread.findUnique).mockResolvedValue(null);
     mockGetThread.mockResolvedValue({ id: "t1" });
     vi.mocked(db.emailThread.upsert).mockResolvedValue({ id: "db-t1" } as never);
@@ -321,7 +528,7 @@ describe("createBackfillInboxWorker", () => {
     vi.mocked(db.taxonomyEdge.findMany).mockResolvedValue([] as never);
 
     const thread = makeGmailThread({ id: "t1" });
-    mockListThreadsInWindow.mockResolvedValue({ threads: [thread], totalFound: 1 });
+    mockListThreadsPage.mockResolvedValue({ threads: [thread], nextPageToken: undefined });
     vi.mocked(db.emailThread.findUnique).mockResolvedValue(null);
     mockGetThread.mockResolvedValue({ id: "t1" });
     vi.mocked(db.emailThread.upsert).mockResolvedValue({ id: "db-t1" } as never);
@@ -345,7 +552,7 @@ describe("createBackfillInboxWorker", () => {
     } as never);
 
     const thread = makeGmailThread({ id: "t1" });
-    mockListThreadsInWindow.mockResolvedValue({ threads: [thread], totalFound: 1 });
+    mockListThreadsPage.mockResolvedValue({ threads: [thread], nextPageToken: undefined });
     vi.mocked(db.emailThread.findUnique).mockResolvedValue(null);
     mockGetThread.mockResolvedValue({ id: "t1" });
     vi.mocked(db.emailThread.upsert).mockResolvedValue({ id: "db-t1" } as never);
@@ -385,7 +592,7 @@ describe("createBackfillInboxWorker — disconnect-awareness", () => {
     await processor(makeJob({ workspaceId: WS_ID }));
 
     expect(db.providerSyncState.update).not.toHaveBeenCalled();
-    expect(mockListThreadsInWindow).not.toHaveBeenCalled();
+    expect(mockListThreadsPage).not.toHaveBeenCalled();
     expect(classifyThreadQueue.addBulk).not.toHaveBeenCalled();
   });
 
@@ -394,7 +601,7 @@ describe("createBackfillInboxWorker — disconnect-awareness", () => {
       backfillStatus: "PENDING",
       backfillStartedAt: null,
     } as never);
-    mockListThreadsInWindow.mockResolvedValue({ threads: [], totalFound: 0 });
+    mockListThreadsPage.mockResolvedValue({ threads: [], nextPageToken: undefined });
 
     createBackfillInboxWorker();
     const processor = getProcessor();
@@ -413,7 +620,7 @@ describe("createBackfillInboxWorker — disconnect-awareness", () => {
       backfillStatus: "PENDING",
       backfillStartedAt: null,
     } as never);
-    mockListThreadsInWindow.mockResolvedValue({ threads: [], totalFound: 0 });
+    mockListThreadsPage.mockResolvedValue({ threads: [], nextPageToken: undefined });
 
     createBackfillInboxWorker();
     const processor = getProcessor();
@@ -433,7 +640,7 @@ describe("createBackfillInboxWorker — disconnect-awareness", () => {
       backfillStatus: "RUNNING",
       backfillStartedAt: staleDate,
     } as never);
-    mockListThreadsInWindow.mockResolvedValue({ threads: [], totalFound: 0 });
+    mockListThreadsPage.mockResolvedValue({ threads: [], nextPageToken: undefined });
 
     createBackfillInboxWorker();
     const processor = getProcessor();
@@ -458,7 +665,7 @@ describe("createBackfillInboxWorker — disconnect-awareness", () => {
     } as never);
 
     const thread = makeGmailThread({ id: "t1" });
-    mockListThreadsInWindow.mockResolvedValue({ threads: [thread], totalFound: 1 });
+    mockListThreadsPage.mockResolvedValue({ threads: [thread], nextPageToken: undefined });
     vi.mocked(db.emailThread.findUnique).mockResolvedValue(null); // new thread → upsert path
     mockGetThread.mockResolvedValue({ id: "t1" });
     vi.mocked(db.emailThread.upsert).mockResolvedValue({ id: "db-t1" } as never);

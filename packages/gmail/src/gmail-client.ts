@@ -96,7 +96,7 @@ export type GmailHistoryResult = {
   newHistoryId: string;
 };
 
-/** Lightweight metadata for a thread returned by listThreadsInWindow. */
+/** Lightweight metadata for a thread returned by listThreadsPage. */
 export type GmailThreadMeta = {
   id: string;
   /** True if any message in the thread carries the UNREAD label. */
@@ -109,12 +109,6 @@ export type GmailThreadMeta = {
    * without a second full-thread fetch.
    */
   messageLabelIds: string[][];
-};
-
-export type GmailThreadWindowResult = {
-  threads: GmailThreadMeta[];
-  /** Total threads found in the window before the maxResults cap was applied. */
-  totalFound: number;
 };
 
 export type GmailWatchResult = {
@@ -263,64 +257,20 @@ export class GmailClient {
   }
 
   /**
-   * Lists Gmail threads with activity after `afterMs` (Unix ms timestamp),
-   * fetching metadata-only to determine UNREAD status and latest message time.
-   *
-   * Pages through threads.list until `maxResults` IDs are collected or there
-   * are no more pages. Returns `totalFound` as the pre-cap thread count so the
-   * caller can compute how many threads were skipped.
+   * Fetch metadata (UNREAD status, latest message time, per-message label IDs)
+   * for a list of thread IDs, in batches of 50. Returns one GmailThreadMeta per
+   * input ID; threads whose metadata fetch fails get a safe empty placeholder.
    */
-  async listThreadsInWindow(opts: {
-    afterMs: number;
-    maxResults: number;
-  }): Promise<GmailThreadWindowResult> {
-    const accessToken = await this.refreshAccessToken();
-    const afterSecs = Math.floor(opts.afterMs / 1000);
-
-    // ── Phase 1: collect thread IDs via threads.list (IDs + snippets only) ───
-    type ThreadListPage = {
-      threads?: Array<{ id: string }>;
-      nextPageToken?: string;
-    };
-
-    const allIds: string[] = [];
-    let nextPageToken: string | undefined;
-
-    do {
-      const params = new URLSearchParams({
-        q: `after:${afterSecs}`,
-        maxResults: "100",
-      });
-      if (nextPageToken) params.set("pageToken", nextPageToken);
-
-      const res = await fetch(`${GMAIL_THREADS_URL}?${params}`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      });
-      if (!res.ok) throw new Error(`Gmail threads list failed: ${res.status}`);
-
-      const data = (await res.json()) as ThreadListPage;
-      const ids = (data.threads ?? []).map((t) => t.id);
-      allIds.push(...ids);
-      nextPageToken = data.nextPageToken;
-    } while (nextPageToken && allIds.length < opts.maxResults);
-
-    // Anything beyond the cap is recorded as skipped — ids we didn't fetch.
-    const totalFound = allIds.length;
-    const cappedIds = allIds.slice(0, opts.maxResults);
-
-    // ── Phase 2: fetch METADATA for each capped thread (in batches of 50) ───
+  private async fetchThreadMetaForIds(
+    ids: string[],
+    accessToken: string
+  ): Promise<GmailThreadMeta[]> {
     type ThreadMetaResp = {
-      messages?: Array<{
-        labelIds?: string[];
-        internalDate?: string;
-      }>;
+      messages?: Array<{ labelIds?: string[]; internalDate?: string }>;
     };
 
-    async function fetchMeta(id: string): Promise<GmailThreadMeta> {
-      const params = new URLSearchParams({
-        format: "METADATA",
-        metadataHeaders: "Date",
-      });
+    const fetchMeta = async (id: string): Promise<GmailThreadMeta> => {
+      const params = new URLSearchParams({ format: "METADATA", metadataHeaders: "Date" });
       const res = await fetch(
         `${GMAIL_THREAD_URL}/${encodeURIComponent(id)}?${params}`,
         { headers: { Authorization: `Bearer ${accessToken}` } }
@@ -337,23 +287,58 @@ export class GmailClient {
       const messageLabelIds = messages.map((m) => m.labelIds ?? []);
 
       return { id, unread, latestMessageAt, messageLabelIds };
-    }
+    };
 
     const threads: GmailThreadMeta[] = [];
-    for (let i = 0; i < cappedIds.length; i += 50) {
-      const batch = cappedIds.slice(i, i + 50);
+    for (let i = 0; i < ids.length; i += 50) {
+      const batch = ids.slice(i, i + 50);
       const results = await Promise.all(batch.map(fetchMeta));
       threads.push(...results);
     }
+    return threads;
+  }
 
-    return { threads, totalFound };
+  /**
+   * Fetch a single page of threads with activity after `afterMs` (Unix ms;
+   * 0 means full history), resuming from `pageToken` when provided. Returns the
+   * page's thread metadata plus nextPageToken (undefined when no further pages).
+   *
+   * Used by the resumable backfill: the caller persists nextPageToken between
+   * chunks so a large historical scan can span many job runs without loading
+   * every thread ID into memory up front.
+   */
+  async listThreadsPage(opts: {
+    afterMs: number;
+    pageToken?: string | undefined;
+    pageSize?: number | undefined;
+  }): Promise<{ threads: GmailThreadMeta[]; nextPageToken: string | undefined }> {
+    const accessToken = await this.refreshAccessToken();
+    const afterSecs = Math.floor(opts.afterMs / 1000);
+
+    const params = new URLSearchParams({
+      q: `after:${afterSecs}`,
+      maxResults: String(opts.pageSize ?? 100),
+    });
+    if (opts.pageToken) params.set("pageToken", opts.pageToken);
+
+    const res = await fetch(`${GMAIL_THREADS_URL}?${params}`, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+    if (!res.ok) throw new Error(`Gmail threads list failed: ${res.status}`);
+
+    type ThreadListPage = { threads?: Array<{ id: string }>; nextPageToken?: string };
+    const data = (await res.json()) as ThreadListPage;
+    const ids = (data.threads ?? []).map((t) => t.id);
+    const threads = await this.fetchThreadMetaForIds(ids, accessToken);
+
+    return { threads, nextPageToken: data.nextPageToken };
   }
 
   /**
    * Returns all thread IDs matching `q` (a Gmail search query), paged up to
    * `maxResults`. Useful for targeted passes like `in:trash after:X`.
    *
-   * Note: unlike listThreadsInWindow this method does not fetch message
+   * Note: unlike listThreadsPage this method does not fetch message
    * metadata — it returns bare IDs only.
    */
   async listThreadIdsByQuery(q: string, maxResults: number): Promise<string[]> {

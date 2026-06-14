@@ -41,7 +41,7 @@ export function computeThreadLabelFlags(messages: SnapshotMessage[]): ThreadLabe
 
 /**
  * Computes per-thread label flags from the per-message label ID arrays returned
- * by listThreadsInWindow (METADATA format). Avoids a full thread fetch for threads
+ * by listThreadsPage (METADATA format). Avoids a full thread fetch for threads
  * that are already in the database.
  */
 export function computeThreadLabelFlagsFromMeta(messageLabelIds: string[][]): ThreadLabelFlags {

@@ -26,16 +26,6 @@ sweepInbox.post("/workspaces/:workspaceId/sweep-inbox", async (c) => {
 
   const { workspaceId } = parsed.data;
 
-  // Backfill is restricted to paying plans.
-  const workspace = await db.workspace.findUnique({
-    where: { id: workspaceId },
-    select: { plan: true },
-  });
-  if (!workspace) return c.json({ error: "Workspace not found" }, 404);
-  if (workspace.plan === "FREE") {
-    return c.json({ error: "Backfill requires a paying plan" }, 403);
-  }
-
   // Verify an active Gmail connection exists.
   const connection = await db.gmailConnection.findUnique({
     where: { workspaceId },
@@ -58,10 +48,11 @@ sweepInbox.post("/workspaces/:workspaceId/sweep-inbox", async (c) => {
     return c.json({ error: "Email account not found — run a sync first" }, 422);
   }
 
-  // Reset backfillStatus to PENDING so the worker re-scans all threads.
+  // Reset backfillStatus to PENDING and clear the resume cursor so the worker
+  // re-scans all threads from the beginning.
   await db.providerSyncState.update({
     where: { emailAccountId: emailAccount.id },
-    data: { backfillStatus: "PENDING" },
+    data: { backfillStatus: "PENDING", backfillPageToken: null, backfillProcessedCount: 0 },
   });
 
   // Enqueue the job. Deduplication prevents double-enqueueing if one is

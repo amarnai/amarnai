@@ -119,7 +119,7 @@ export function createSyncInboxWorker(): Worker {
       const [workspace, connection, syncSettingsRow] = await Promise.all([
         db.workspace.findUnique({
           where: { id: workspaceId },
-          select: { ownerUserId: true, plan: true },
+          select: { ownerUserId: true },
         }),
         db.gmailConnection.findUnique({
           where: { workspaceId },
@@ -227,26 +227,24 @@ export function createSyncInboxWorker(): Worker {
         // Trigger backfill when it hasn't completed (or failed) yet, but only
         // if the workspace has enough taxonomy nodes to classify threads (≥ 3).
         // With fewer nodes the user needs to elaborate the taxonomy first.
-        // Backfill is a paying-plan-only feature.
+        // Every plan backfills; per-plan thread/window limits are enforced by
+        // the backfill job via getBackfillCap.
         // isBackfillResumable also recovers stale RUNNING state (worker crash).
         if (
-          workspace.plan !== "FREE" &&
+          taxonomyStrong &&
           isBackfillResumable(syncState.backfillStatus, syncState.backfillStartedAt)
         ) {
-          if (taxonomyStrong) {
-            await backfillInboxQueue.add(
-              "backfill-inbox",
-              { workspaceId },
-              { deduplication: { id: `backfill-inbox_${workspaceId}` } }
-            );
-          }
+          await backfillInboxQueue.add(
+            "backfill-inbox",
+            { workspaceId },
+            { deduplication: { id: `backfill-inbox_${workspaceId}` } }
+          );
         }
 
         // Re-enqueue stuck PENDING threads whose classify jobs exhausted all retries.
-        // This covers both live-sync failures (any plan) and backfill failures
-        // (paid plans). Gating on backfillStatus === "DONE" was incorrect: FREE
-        // plan workspaces never run backfill, so their threads were permanently
-        // stuck. The fix runs the recovery on every quiet cycle regardless of plan.
+        // This covers both live-sync and backfill failures. Recovery runs on every
+        // quiet cycle regardless of plan or backfill status, so threads are never
+        // left permanently stuck.
         if (!sortingPaused) {
           const stuck = await db.emailThread.findMany({
             where: {
@@ -487,19 +485,18 @@ export function createSyncInboxWorker(): Worker {
 
       // Trigger a historical backfill whenever it hasn't completed yet, but only
       // if the workspace has enough taxonomy nodes to classify threads (≥ 3).
-      // Backfill is a paying-plan-only feature.
+      // Every plan backfills; per-plan thread/window limits are enforced by the
+      // backfill job via getBackfillCap.
       // isBackfillResumable also recovers stale RUNNING state (worker crash).
       if (
-        workspace.plan !== "FREE" &&
+        taxonomyStrong &&
         isBackfillResumable(syncState.backfillStatus, syncState.backfillStartedAt)
       ) {
-        if (taxonomyStrong) {
-          await backfillInboxQueue.add(
-            "backfill-inbox",
-            { workspaceId },
-            { deduplication: { id: `backfill-inbox_${workspaceId}` } }
-          );
-        }
+        await backfillInboxQueue.add(
+          "backfill-inbox",
+          { workspaceId },
+          { deduplication: { id: `backfill-inbox_${workspaceId}` } }
+        );
       }
 
       // ── 7. Re-enqueue classify jobs for threads still PENDING after this cycle ──
@@ -507,9 +504,8 @@ export function createSyncInboxWorker(): Worker {
       // Covers threads whose classify jobs exhausted all retries (e.g. Ollama was
       // unreachable, AI provider down). Also catches threads whose classifyingAt was
       // stamped but addBulk failed in a previous cycle. Runs on every sync cycle
-      // regardless of plan — the previous backfillStatus === "DONE" gate was
-      // incorrect: FREE plan workspaces never run backfill, so their threads were
-      // permanently stuck. Deduplication prevents duplicate queue entries.
+      // regardless of plan or backfill status, so threads are never left permanently
+      // stuck. Deduplication prevents duplicate queue entries.
 
       if (!sortingPaused) {
         const stuck = await db.emailThread.findMany({

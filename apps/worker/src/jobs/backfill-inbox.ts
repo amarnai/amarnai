@@ -1,8 +1,8 @@
 import { Worker } from "bullmq";
 import { db } from "@amarnai/db";
-import { GmailClient, GmailThreadMeta, normalizeGmailThread } from "@amarnai/gmail";
+import { GmailClient, GmailAuthError, GmailThreadMeta, normalizeGmailThread } from "@amarnai/gmail";
 import type { GmailSyncSettings } from "@amarnai/shared";
-import { isTaxonomyRoutable, isBackfillResumable } from "@amarnai/shared";
+import { isTaxonomyRoutable, isBackfillResumable, getBackfillCap } from "@amarnai/shared";
 import {
   classifyThreadQueue,
   backfillInboxQueue,
@@ -19,13 +19,53 @@ import {
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
-const BACKFILL_WINDOW_DAYS = 90;
-const BACKFILL_MAX_THREADS = 1_000;
-
 /** BullMQ priority for backfill classify jobs — higher number = lower priority. */
 const BACKFILL_CLASSIFY_PRIORITY = 10;
 
+const MS_PER_DAY = 24 * 60 * 60 * 1_000;
+
+/** threads.list page size per Gmail request. */
+const BACKFILL_PAGE_SIZE = 100;
+
+/**
+ * Maximum threads processed in a single job run before persisting the cursor
+ * and re-enqueuing a continuation. Bounds each run's wall-clock time well under
+ * the BullMQ lock duration and yields the queue to other tenants between chunks,
+ * so even a 250k-thread cap completes across many short runs.
+ */
+const BACKFILL_CHUNK_THREADS = 500;
+
 // ─── Helpers ──────────────────────────────────────────────────────────────────
+
+/**
+ * A permanent, thread-specific failure: this one thread cannot be fetched or
+ * parsed and never will be (e.g. it was deleted, or its data is malformed). The
+ * backfill skips it and moves on instead of failing the whole run.
+ *
+ * Systemic and transient failures (auth, rate limits, 5xx, network, DB) are NOT
+ * wrapped in this — they propagate so the run aborts and resumes from its cursor.
+ */
+class SkippableThreadError extends Error {
+  constructor(public readonly threadId: string, cause: unknown) {
+    const reason = cause instanceof Error ? cause.message : String(cause);
+    super(`unprocessable thread ${threadId}: ${reason}`);
+    this.name = "SkippableThreadError";
+  }
+}
+
+/**
+ * True when a getThread failure is permanent for that single thread — a 404 /
+ * "not found" (deleted) or a 400 (bad request). Auth, rate-limit (429), server
+ * (5xx) and network errors are transient or systemic and must propagate so the
+ * run retries rather than silently skipping threads.
+ */
+function isPermanentThreadFetchError(err: unknown): boolean {
+  if (err instanceof GmailAuthError) return false;
+  const msg = err instanceof Error ? err.message : String(err);
+  if (msg.includes("not found")) return true;
+  const status = Number(msg.match(/fetch failed: (\d+)/)?.[1]);
+  return status === 400 || status === 404;
+}
 
 /** Sort threads: unread first, then by latestMessageAt descending. */
 function sortByPriority(threads: GmailThreadMeta[]): GmailThreadMeta[] {
@@ -50,7 +90,7 @@ export function createBackfillInboxWorker(): Worker {
       const [workspace, connection, syncSettingsRow] = await Promise.all([
         db.workspace.findUnique({
           where: { id: workspaceId },
-          select: { ownerUserId: true },
+          select: { ownerUserId: true, plan: true, billingCycle: true },
         }),
         db.gmailConnection.findUnique({
           where: { workspaceId },
@@ -96,12 +136,20 @@ export function createBackfillInboxWorker(): Worker {
 
       const syncState = await db.providerSyncState.findUnique({
         where: { emailAccountId },
-        select: { backfillStatus: true, backfillStartedAt: true },
+        select: {
+          backfillStatus: true,
+          backfillStartedAt: true,
+          backfillPageToken: true,
+          backfillProcessedCount: true,
+          backfillSkipped: true,
+        },
       });
 
-      // ── 3. Guard: skip if already completed or freshly running ──────────────
-      // isBackfillResumable returns false for DONE and for RUNNING within the
-      // staleness window, recovering jobs stranded at RUNNING after a crash.
+      // ── 3. Guard: skip if already completed or actively running ─────────────
+      // isBackfillResumable returns false for DONE and for RUNNING with a fresh
+      // backfillStartedAt — another run is actively processing a chunk right now.
+      // Between chunks backfillStartedAt is cleared (status stays RUNNING), so a
+      // continuation run resumes here; a stale started-at recovers a crashed run.
 
       if (syncState?.backfillStatus === "DONE") {
         console.log(`[backfill-inbox] Workspace ${workspaceId} backfill already DONE — skipping`);
@@ -115,7 +163,7 @@ export function createBackfillInboxWorker(): Worker {
         return;
       }
 
-      // ── 4. Mark as RUNNING ──────────────────────────────────────────────────
+      // ── 4. Claim this chunk: mark RUNNING with a fresh started-at lock ───────
 
       await db.providerSyncState.update({
         where: { emailAccountId },
@@ -125,79 +173,68 @@ export function createBackfillInboxWorker(): Worker {
       await job.updateProgress(5);
 
       try {
-        // ── 5. Fetch threads in the 90-day window (capped at 1,000) ────────────
+        // ── 5. Resolve the plan cap and resume cursor ──────────────────────────
+        //
+        // Thread count + look-back window come from the workspace plan + billing
+        // cycle (single source of truth in @amarnai/shared). Paid plans have no
+        // time window (windowDays === null → afterMs 0 → full history); Free is
+        // bounded to its 30-day / 500-thread cap. Large caps are processed across
+        // multiple runs, resuming from the persisted pageToken / processed count.
+
+        const cap = getBackfillCap(workspace.plan, workspace.billingCycle);
 
         const client = new GmailClient(connection.encryptedRefreshToken);
         const nowMs = Date.now();
-        const afterMs = nowMs - BACKFILL_WINDOW_DAYS * 24 * 60 * 60 * 1_000;
+        const afterMs = cap.windowDays === null ? 0 : nowMs - cap.windowDays * MS_PER_DAY;
 
-        const { threads: rawThreads, totalFound } = await client.listThreadsInWindow({
-          afterMs,
-          maxResults: BACKFILL_MAX_THREADS,
-        });
+        let pageToken = syncState?.backfillPageToken ?? undefined;
+        let processed = syncState?.backfillProcessedCount ?? 0;
 
-        await job.updateProgress(20);
-
-        // ── 6. Sort: unread first, then by recency ──────────────────────────────
-
-        const sortedThreads = sortByPriority(rawThreads);
-
-        // ── 7. Upsert threads + messages; skip those already in the DB ──────────
+        // ── Per-thread upsert: returns the EmailThread id to classify, or null ──
         //
-        // We only upsert threads that are NOT already present as EmailThread rows
-        // for this account (i.e., not already picked up by a live sync). For those
-        // that are already present we still want to classify them, so we track all
-        // thread IDs.
-
-        const upsertedEmailThreadIds: string[] = [];
-        const total = sortedThreads.length;
-
-        for (let i = 0; i < total; i++) {
-          const gmailThread = sortedThreads[i]!;
-
-          // Check if thread already exists in DB for this account.
+        // Threads already present (picked up by a live sync) only have their label
+        // flags refreshed; we still classify them if they are PENDING and not
+        // excluded. New threads are fetched in full, filtered, and persisted.
+        async function processThread(gmailThread: GmailThreadMeta): Promise<string | null> {
           const existing = await db.emailThread.findUnique({
             where: {
-              emailAccountId_providerThreadId: {
-                emailAccountId,
-                providerThreadId: gmailThread.id,
-              },
+              emailAccountId_providerThreadId: { emailAccountId, providerThreadId: gmailThread.id },
             },
             select: { id: true, triageStatus: true },
           });
 
           if (existing) {
-            // Compute label flags from metadata (no extra network call needed).
             const flagsFromMeta = computeThreadLabelFlagsFromMeta(gmailThread.messageLabelIds);
-
             // Always update stored flags so query-time filtering reflects current Gmail state.
-            await db.emailThread.update({
-              where: { id: existing.id },
-              data: flagsFromMeta,
-            });
+            await db.emailThread.update({ where: { id: existing.id }, data: flagsFromMeta });
 
-            // Skip classification if excluded; only re-classify PENDING threads.
             const excluded = isThreadExcluded(flagsFromMeta, settings);
-            if (!excluded && existing.triageStatus === "PENDING") {
-              upsertedEmailThreadIds.push(existing.id);
-            }
-            continue;
+            return !excluded && existing.triageStatus === "PENDING" ? existing.id : null;
           }
 
-          // ── New thread: fetch full data, compute flags, apply filter ────────
-
+          // New thread: fetch full data, compute flags, apply filter. A failure
+          // that is permanent for this one thread is rethrown as a
+          // SkippableThreadError so the caller skips it; everything else (auth,
+          // rate limits, 5xx, network) propagates to abort and retry the run.
           let rawFull: unknown;
           try {
             rawFull = await client.getThread(gmailThread.id);
           } catch (err) {
-            const msg = err instanceof Error ? err.message : String(err);
-            if (msg.includes("not found")) continue;
+            if (isPermanentThreadFetchError(err)) throw new SkippableThreadError(gmailThread.id, err);
             throw err;
           }
 
-          const rawSnapshot = normalizeGmailThread(rawFull);
-          const labelFlags = computeThreadLabelFlags(rawSnapshot.messages);
-          const snapshot = applyThreadFilter(rawSnapshot, settings);
+          let rawSnapshot: ReturnType<typeof normalizeGmailThread>;
+          let labelFlags: ReturnType<typeof computeThreadLabelFlags>;
+          let snapshot: ReturnType<typeof applyThreadFilter>;
+          try {
+            rawSnapshot = normalizeGmailThread(rawFull);
+            labelFlags = computeThreadLabelFlags(rawSnapshot.messages);
+            snapshot = applyThreadFilter(rawSnapshot, settings);
+          } catch (err) {
+            // Malformed thread data — permanent for this thread, never retryable.
+            throw new SkippableThreadError(gmailThread.id, err);
+          }
 
           if (snapshot === null) {
             // Fully excluded — persist with flags so query-time filtering works,
@@ -222,7 +259,7 @@ export function createBackfillInboxWorker(): Worker {
               update: labelFlags,
               select: { id: true },
             });
-            continue;
+            return null;
           }
 
           const emailThread = await db.emailThread.upsert({
@@ -285,80 +322,101 @@ export function createBackfillInboxWorker(): Worker {
             });
           }
 
-          upsertedEmailThreadIds.push(emailThread.id);
+          return emailThread.id;
+        }
 
-          // Report progress and check for disconnect periodically.
-          if (i % 50 === 0) {
-            await job.updateProgress(20 + Math.floor((i / total) * 60));
+        // ── 6. Process pages until the chunk budget or the plan cap is reached ──
 
-            const currentConn = await db.gmailConnection.findUnique({
-              where: { workspaceId },
-              select: { status: true },
-            });
-            if (!currentConn || currentConn.status !== "ACTIVE") {
-              console.log(
-                `[backfill-inbox] Workspace ${workspaceId} disconnected mid-backfill at thread ${i}/${total} — resetting to PENDING`
-              );
-              await db.providerSyncState.update({
-                where: { emailAccountId },
-                data: { backfillStatus: "PENDING", backfillStartedAt: null },
+        const upsertedEmailThreadIds: string[] = [];
+        const baseSkipped = syncState?.backfillSkipped ?? 0;
+        let runSkipped = 0;
+        let processedThisRun = 0;
+        let exhausted = false;
+        let disconnected = false;
+
+        while (processedThisRun < BACKFILL_CHUNK_THREADS && processed < cap.maxThreads) {
+          const page = await client.listThreadsPage({
+            afterMs,
+            pageToken,
+            pageSize: BACKFILL_PAGE_SIZE,
+          });
+
+          // An empty page means we've reached the end of the inbox.
+          if (page.threads.length === 0) {
+            exhausted = true;
+            break;
+          }
+
+          // Don't exceed the plan cap: only take as many threads as remain.
+          const remaining = cap.maxThreads - processed;
+          const pageThreads = sortByPriority(page.threads).slice(0, remaining);
+
+          for (let i = 0; i < pageThreads.length; i++) {
+            try {
+              const id = await processThread(pageThreads[i]!);
+              if (id) upsertedEmailThreadIds.push(id);
+            } catch (err) {
+              // Permanent per-thread failure: skip it and keep going so one bad
+              // thread can never stall the backfill. Anything else propagates.
+              if (!(err instanceof SkippableThreadError)) throw err;
+              runSkipped++;
+              console.warn(`[backfill-inbox] Workspace ${workspaceId} skipping ${err.message}`);
+            }
+
+            // Check for disconnect periodically so a long run stops promptly.
+            if ((processed + i) % 50 === 0) {
+              const currentConn = await db.gmailConnection.findUnique({
+                where: { workspaceId },
+                select: { status: true },
               });
-              return;
+              if (!currentConn || currentConn.status !== "ACTIVE") {
+                disconnected = true;
+                break;
+              }
             }
           }
+
+          processed += pageThreads.length;
+          processedThisRun += pageThreads.length;
+          pageToken = page.nextPageToken;
+
+          if (disconnected) break;
+          if (!page.nextPageToken) {
+            exhausted = true;
+            break;
+          }
+          // If the page was cap-trimmed, the while condition ends the loop next.
         }
 
-        await job.updateProgress(80);
-
-        // ── 8. Cleanup pass: mark threads that moved to trash/spam ───────────
-        //
-        // listThreadsInWindow uses a plain `after:` query which Gmail excludes
-        // trash and spam from by default.  Threads that were in the inbox when
-        // first synced and later moved to trash/spam never appear in the main
-        // loop above, so their gmailIsTrash / gmailIsSpam flags are never
-        // updated and they remain visible.  Here we do a targeted query for
-        // each excluded area and bulk-update any matching DB rows.
-
-        const afterSecs = Math.floor(afterMs / 1000);
-
-        const [trashIds, spamIds, importantIds] = await Promise.all([
-          client.listThreadIdsByQuery(`in:trash after:${afterSecs}`, 500),
-          client.listThreadIdsByQuery(`in:spam after:${afterSecs}`, 500),
-          client.listThreadIdsByQuery("is:important", 2_000),
-        ]);
-
-        if (trashIds.length > 0) {
-          await db.emailThread.updateMany({
-            where: { emailAccountId, providerThreadId: { in: trashIds } },
-            data: { gmailIsTrash: true },
+        // ── 7. Disconnected mid-run: reset to PENDING and drop the cursor ───────
+        // The Gmail pageToken may be stale by the time the user reconnects, so we
+        // restart the backfill from scratch (already-synced threads are skipped
+        // cheaply via the existing-row check).
+        if (disconnected) {
+          console.log(
+            `[backfill-inbox] Workspace ${workspaceId} disconnected mid-backfill — resetting to PENDING`
+          );
+          await db.providerSyncState.update({
+            where: { emailAccountId },
+            data: {
+              backfillStatus: "PENDING",
+              backfillStartedAt: null,
+              backfillPageToken: null,
+              backfillProcessedCount: 0,
+              backfillSkipped: 0,
+            },
           });
-        }
-        if (spamIds.length > 0) {
-          await db.emailThread.updateMany({
-            where: { emailAccountId, providerThreadId: { in: spamIds } },
-            data: { gmailIsSpam: true },
-          });
-        }
-        if (importantIds.length > 0) {
-          await db.emailThread.updateMany({
-            where: { emailAccountId, providerThreadId: { in: importantIds } },
-            data: { gmailIsImportant: true },
-          });
+          return;
         }
 
-        // ── 10. Enqueue classify-thread jobs at backfill priority ───────────
+        await job.updateProgress(60);
+
+        // ── 8. Enqueue classify-thread jobs for threads upserted this run ───────
         //
-        // Use deduplication rather than a fixed jobId so that a previously-failed
-        // classify job for this thread doesn't block re-enqueuing — deduplication
-        // keys are cleared after the job completes or fails, unlike jobId which
-        // persists in the failed set until explicitly removed.
-        //
-        // Stamp classifyingAt before adding to the queue so that isClassifying
-        // is true while jobs wait — without this, threads look unsorted to the
-        // banner even though they are in the queue.
-        //
-        // Skip enqueuing when sorting is paused; threads remain PENDING and will
-        // be picked up when the user resumes sorting.
+        // Deduplication (not a fixed jobId) lets a previously-failed classify job
+        // for a thread be re-enqueued — dedup keys clear on completion/failure.
+        // Stamp classifyingAt first so the UI shows the threads as queued. Skip
+        // when sorting is paused; threads stay PENDING for the resume flow.
 
         if (!sortingPaused && upsertedEmailThreadIds.length > 0) {
           const [taxonomyNodes, taxonomyEdges] = await Promise.all([
@@ -397,28 +455,87 @@ export function createBackfillInboxWorker(): Worker {
           }
         }
 
-        await job.updateProgress(95);
+        // ── 9. More to do? Persist the cursor and re-enqueue a continuation ─────
+        // Status stays RUNNING (so the UI banner stays up) but backfillStartedAt
+        // is cleared, releasing the active lock so the next run can claim it. The
+        // continuation is added WITHOUT deduplication: this still-active job may
+        // hold the `backfill-inbox_<ws>` dedup key, which would silently drop a
+        // deduped add. The RUNNING/started-at guard prevents concurrent runs.
 
-        // ── 11. Mark DONE and record skipped count ───────────────────────────
+        const done = exhausted || processed >= cap.maxThreads;
 
-        const backfillSkipped = Math.max(0, totalFound - rawThreads.length);
+        if (!done) {
+          await db.providerSyncState.update({
+            where: { emailAccountId },
+            data: {
+              backfillStatus: "RUNNING",
+              backfillStartedAt: null,
+              backfillPageToken: pageToken ?? null,
+              backfillProcessedCount: processed,
+              backfillSkipped: baseSkipped + runSkipped,
+            },
+          });
+          await backfillInboxQueue.add("backfill-inbox", { workspaceId });
+          await job.updateProgress(100);
+          console.log(
+            `[backfill-inbox] Workspace ${workspaceId}: processed ${processedThisRun} this run (${processed} total) — continuing`
+          );
+          return;
+        }
+
+        // ── 10. Final run: reconcile trash/spam/important, then mark DONE ───────
+        //
+        // The `after:` query excludes trash and spam by default, so threads that
+        // moved there after first sync never appear in the page loop. Run targeted
+        // queries once, on the final run, to correct their flags.
+
+        const afterSecs = Math.floor(afterMs / 1000);
+
+        const [trashIds, spamIds, importantIds] = await Promise.all([
+          client.listThreadIdsByQuery(`in:trash after:${afterSecs}`, 500),
+          client.listThreadIdsByQuery(`in:spam after:${afterSecs}`, 500),
+          client.listThreadIdsByQuery("is:important", 2_000),
+        ]);
+
+        if (trashIds.length > 0) {
+          await db.emailThread.updateMany({
+            where: { emailAccountId, providerThreadId: { in: trashIds } },
+            data: { gmailIsTrash: true },
+          });
+        }
+        if (spamIds.length > 0) {
+          await db.emailThread.updateMany({
+            where: { emailAccountId, providerThreadId: { in: spamIds } },
+            data: { gmailIsSpam: true },
+          });
+        }
+        if (importantIds.length > 0) {
+          await db.emailThread.updateMany({
+            where: { emailAccountId, providerThreadId: { in: importantIds } },
+            data: { gmailIsImportant: true },
+          });
+        }
+
         await db.providerSyncState.update({
           where: { emailAccountId },
           data: {
             backfillStatus: "DONE",
             backfillStartedAt: null,
             backfillCompletedAt: new Date(),
-            backfillSkipped,
+            backfillPageToken: null,
+            backfillProcessedCount: processed,
+            backfillSkipped: baseSkipped + runSkipped,
           },
         });
 
         await job.updateProgress(100);
 
         console.log(
-          `[backfill-inbox] Workspace ${workspaceId}: classified ${upsertedEmailThreadIds.length} threads, skipped ${backfillSkipped}`
+          `[backfill-inbox] Workspace ${workspaceId}: backfill complete — processed ${processed} threads, skipped ${baseSkipped + runSkipped}`
         );
       } catch (err) {
-        // ── On failure: mark ERROR so the UI can show a retry signal ─────────
+        // ── On failure: mark ERROR but keep the cursor so a retry resumes ──────
+        // rather than restarting from the beginning of the inbox.
         await db.providerSyncState.update({
           where: { emailAccountId },
           data: { backfillStatus: "ERROR", backfillStartedAt: null },
@@ -430,9 +547,10 @@ export function createBackfillInboxWorker(): Worker {
       connection: redisConnection,
       // Only one backfill per process at a time — these are heavy jobs.
       concurrency: 1,
-      // Backfill iterates up to 1 000 threads with per-thread Gmail API calls;
-      // the job can run for many minutes.  The lock auto-renews every
-      // lockDuration/2 ms while running, so 10 minutes gives comfortable headroom.
+      // Each run processes up to BACKFILL_CHUNK_THREADS threads with per-thread
+      // Gmail API calls, then re-enqueues, so a run is bounded but can still take
+      // minutes. The lock auto-renews every lockDuration/2 ms while running, so
+      // 10 minutes gives comfortable headroom.
       lockDuration: 600_000,
       // Allow recovery from a small number of stalls (e.g. dev restarts).
       maxStalledCount: 2,
