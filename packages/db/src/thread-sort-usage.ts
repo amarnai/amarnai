@@ -43,7 +43,7 @@ export async function countRecurringThreadSorts(
     SELECT COUNT(DISTINCT "emailThreadId") AS count FROM "EmailClassification"
     WHERE "workspaceId" = ${workspaceId}
       AND "createdAt" >= ${windowStart}
-      AND "source" NOT IN (${Prisma.join(UNMETERED_SOURCES)})
+      AND "source"::text NOT IN (${Prisma.join(UNMETERED_SOURCES)})
       ${excludeThreadId ? Prisma.sql`AND "emailThreadId" <> ${excludeThreadId}` : Prisma.empty}
   `;
   return Number(count);
