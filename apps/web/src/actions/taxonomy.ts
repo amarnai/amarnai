@@ -9,6 +9,7 @@ import type {
   CreateTaxonomyEdgeInput,
   UpdateTaxonomyEdgeInput,
 } from "@/lib/api";
+import type { TaxonomyTransferFile } from "@amarnai/shared";
 
 const API_BASE = process.env["API_URL"] ?? "http://localhost:3001";
 const INTERNAL_SECRET = process.env["INTERNAL_API_SECRET"] ?? "";
@@ -119,5 +120,19 @@ export async function deleteTaxonomyEdgeAction(
     `/workspaces/${workspaceId}/taxonomy-edges/${edgeId}`,
     "DELETE",
     user.id
+  );
+}
+
+export async function importTaxonomyAction(
+  workspaceId: string,
+  file: TaxonomyTransferFile
+): Promise<{ ok: boolean; nodeCount: number; edgeCount: number }> {
+  const user = await requireUser();
+  await assertTaxonomyEditor(workspaceId, user.id);
+  return apiCall<{ ok: boolean; nodeCount: number; edgeCount: number }>(
+    `/workspaces/${workspaceId}/taxonomy-import`,
+    "POST",
+    user.id,
+    file
   );
 }

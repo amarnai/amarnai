@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import {
   ReactFlow,
   ReactFlowProvider,
@@ -40,6 +40,7 @@ import {
   createTaxonomyEdgeAction,
   updateTaxonomyEdgeAction,
   deleteTaxonomyEdgeAction,
+  importTaxonomyAction,
 } from "@/actions/taxonomy";
 import {
   computeIgnoredReasons,
@@ -52,7 +53,15 @@ import {
 } from "./useTaxonomyHistory";
 import { TaxonomyNodeCardBase } from "@amarnai/ui/taxonomy";
 import { Tooltip } from "@amarnai/ui";
-import { TAXONOMY_MIN_NON_ROOT_NODES, countRoutableNonRootNodes } from "@amarnai/shared";
+import {
+  TAXONOMY_MIN_NON_ROOT_NODES,
+  countRoutableNonRootNodes,
+  isTaxonomyRoutable,
+  serializeTaxonomy,
+  TaxonomyTransferFileSchema,
+  validateTaxonomyTransfer,
+  type TaxonomyTransferFile,
+} from "@amarnai/shared";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -595,6 +604,9 @@ function TaxonomyCanvasInner({
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
   const [apiError, setApiError] = useState<string | null>(null);
+  const [importConfirmOpen, setImportConfirmOpen] = useState(false);
+  const [pendingImportFile, setPendingImportFile] = useState<TaxonomyTransferFile | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const history = useTaxonomyHistory({ nodes: initialNodes, edges: initialEdges });
   const { screenToFlowPosition } = useReactFlow();
@@ -842,7 +854,89 @@ function TaxonomyCanvasInner({
     }
   }
 
+  // ─── Export ───────────────────────────────────────────────────────────────
+
+  function handleExport() {
+    const file = serializeTaxonomy(dbNodes, dbEdges);
+    const blob = new Blob([JSON.stringify(file, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const date = new Date().toISOString().slice(0, 10);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `amarnai-taxonomy-${workspaceId}-${date}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  // ─── Import ───────────────────────────────────────────────────────────────
+
+  function handleImportClick() {
+    setApiError(null);
+    fileInputRef.current?.click();
+  }
+
+  async function handleFileSelected(e: React.ChangeEvent<HTMLInputElement>) {
+    const f = e.target.files?.[0];
+    // Reset so the same file can be re-selected after an error
+    e.target.value = "";
+    if (!f) return;
+
+    let raw: unknown;
+    try {
+      raw = JSON.parse(await f.text());
+    } catch {
+      setApiError("Could not read file: invalid JSON.");
+      return;
+    }
+
+    const parsed = TaxonomyTransferFileSchema.safeParse(raw);
+    if (!parsed.success) {
+      const first = parsed.error.issues[0];
+      setApiError(`Invalid taxonomy file: ${first?.message ?? "unknown error"}`);
+      return;
+    }
+
+    const validation = validateTaxonomyTransfer(parsed.data);
+    if (!validation.ok) {
+      setApiError(`Invalid taxonomy file: ${validation.error}`);
+      return;
+    }
+
+    const currentlyRoutable = isTaxonomyRoutable(
+      rfNodes.map((n) => ({ id: n.id, isRoot: n.data.node.isRoot })),
+      rfEdges.map((e) => ({ sourceNodeId: e.source, targetNodeId: e.target }))
+    );
+
+    if (currentlyRoutable) {
+      setPendingImportFile(validation.data);
+      setImportConfirmOpen(true);
+    } else {
+      await executeImport(validation.data);
+    }
+  }
+
+  async function executeImport(file: TaxonomyTransferFile) {
+    setImportConfirmOpen(false);
+    setPendingImportFile(null);
+    setSubmitting(true);
+    setApiError(null);
+    try {
+      await importTaxonomyAction(workspaceId, file);
+      const { nodes, edges } = await refetch();
+      history.reset({ nodes, edges });
+    } catch (err) {
+      setApiError(err instanceof Error ? err.message : "Import failed");
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
   // ─── Render ───────────────────────────────────────────────────────────────
+
+  const taxonomyIsRoutable = isTaxonomyRoutable(
+    rfNodes.map((n) => ({ id: n.id, isRoot: n.data.node.isRoot })),
+    rfEdges.map((e) => ({ sourceNodeId: e.source, targetNodeId: e.target }))
+  );
 
   let nodeDeleteDisabledReason: string | null = null;
   if (panel.type === "edit-node") {
@@ -892,6 +986,39 @@ function TaxonomyCanvasInner({
               ↷
             </button>
           </Tooltip>
+          <Tooltip content={taxonomyIsRoutable ? "Export taxonomy" : "Add at least 3 connected categories to export"}>
+            <button
+              className="btn-ghost"
+              onClick={handleExport}
+              disabled={submitting || !taxonomyIsRoutable}
+              aria-label="Export taxonomy"
+            >
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
+                <path d="M7 11V3M4 6L7 3L10 6M2 13H12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              Export
+            </button>
+          </Tooltip>
+          <Tooltip content="Import taxonomy (replaces current)">
+            <button
+              className="btn-ghost"
+              onClick={handleImportClick}
+              disabled={submitting}
+              aria-label="Import taxonomy"
+            >
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
+                <path d="M7 3V11M4 8L7 11L10 8M2 13H12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              Import
+            </button>
+          </Tooltip>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="application/json,.json"
+            style={{ display: "none" }}
+            onChange={handleFileSelected}
+          />
         </div>
       )}
 
@@ -1005,6 +1132,69 @@ function TaxonomyCanvasInner({
           </div>
         )}
       </div>
+
+      {importConfirmOpen && pendingImportFile && (
+        <div
+          className="modal-backdrop"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              setImportConfirmOpen(false);
+              setPendingImportFile(null);
+            }
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Escape") {
+              setImportConfirmOpen(false);
+              setPendingImportFile(null);
+            }
+          }}
+          role="dialog"
+          aria-modal="true"
+        >
+          <div className="modal">
+            <div className="modal-header">
+              <h2 className="modal-title">Replace taxonomy?</h2>
+              <button
+                className="modal-close"
+                aria-label="Cancel"
+                onClick={() => {
+                  setImportConfirmOpen(false);
+                  setPendingImportFile(null);
+                }}
+              >
+                ✕
+              </button>
+            </div>
+            <div className="modal-body">
+              <p>
+                Importing will replace your current taxonomy with{" "}
+                <strong>{pendingImportFile.nodes.length} nodes</strong> and{" "}
+                <strong>{pendingImportFile.edges.length} edges</strong> from the file.
+                Threads that were sorted into removed categories will become unsorted.
+                This cannot be undone.
+              </p>
+            </div>
+            <div className="modal-footer">
+              <button
+                className="btn-ghost"
+                onClick={() => {
+                  setImportConfirmOpen(false);
+                  setPendingImportFile(null);
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                className="btn-danger"
+                onClick={() => executeImport(pendingImportFile)}
+                disabled={submitting}
+              >
+                Replace taxonomy
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
