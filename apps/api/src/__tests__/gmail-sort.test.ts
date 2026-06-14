@@ -14,6 +14,7 @@ vi.mock("@amarnai/db", () => ({
     taxonomyEdge: { findMany: vi.fn() },
     emailClassification: { create: vi.fn() },
   },
+  countRecurringThreadSorts: vi.fn(),
 }));
 
 // Mock GmailClient so tests never make real HTTP calls
@@ -42,12 +43,12 @@ vi.mock("@amarnai/ai", () => ({
 }));
 
 import app from "../app.js";
-import { db } from "@amarnai/db";
+import { db, countRecurringThreadSorts } from "@amarnai/db";
 import { GmailClient } from "../services/gmail-client.js";
 
 const WS_ID = "ws-1";
 
-const BASE_WORKSPACE = { id: WS_ID, ownerUserId: "user-1" };
+const BASE_WORKSPACE = { id: WS_ID, ownerUserId: "user-1", plan: "FREE" };
 
 const BASE_CONNECTION = {
   id: "conn-1",
@@ -155,6 +156,8 @@ beforeEach(() => {
   vi.mocked(db.taxonomyEdge.findMany).mockResolvedValue(BASE_EDGES as never);
   vi.mocked(db.emailClassification.create).mockResolvedValue({ id: "cls-1" } as never);
   vi.mocked(db.emailThread.update).mockResolvedValue({} as never);
+  // Well under the FREE limit (500) by default so the quota check passes.
+  vi.mocked(countRecurringThreadSorts).mockResolvedValue(0);
   mockSortThreadByEmbedding.mockResolvedValue(VALID_CLASSIFY_RESULT);
 });
 
@@ -196,6 +199,36 @@ describe("POST /dev/workspaces/:workspaceId/gmail-sort-thread", () => {
     expect(res.status).toBe(422);
     const body = (await res.json()) as { error: string };
     expect(body.error).toMatch(/no gmail inbox/i);
+  });
+
+  it("returns 429 when the monthly thread-sort quota is reached", async () => {
+    // FREE limit is 500; pretend it is full. The check runs before the Gmail
+    // fetch + AI sort, so neither should be attempted.
+    vi.mocked(countRecurringThreadSorts).mockResolvedValue(500);
+
+    const res = await postSort();
+    expect(res.status).toBe(429);
+    const body = (await res.json()) as Record<string, unknown>;
+    expect(body.error).toMatch(/quota exceeded/i);
+    expect(body.used).toBe(500);
+    expect(body.limit).toBe(500);
+    expect(typeof body.resetsAt).toBe("string");
+
+    expect(db.gmailConnection.findUnique).not.toHaveBeenCalled();
+    expect(mockSortThreadByEmbedding).not.toHaveBeenCalled();
+    expect(db.emailClassification.create).not.toHaveBeenCalled();
+  });
+
+  it("proceeds with the sort when usage is below the limit", async () => {
+    vi.mocked(countRecurringThreadSorts).mockResolvedValue(499);
+    vi.mocked(GmailClient).mockImplementationOnce(() => ({
+      getThread: vi.fn().mockResolvedValue(makeRawThread()),
+      listRecentThreads: vi.fn(),
+    }) as never);
+
+    const res = await postSort("gmail-thread-1");
+    expect(res.status).toBe(201);
+    expect(mockSortThreadByEmbedding).toHaveBeenCalledOnce();
   });
 
   it("returns 400 when gmailThreadId is missing", async () => {

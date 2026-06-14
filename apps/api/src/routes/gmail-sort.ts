@@ -1,8 +1,10 @@
 import { Hono } from "hono";
 import { z } from "zod";
-import { db } from "@amarnai/db";
+import { db, countRecurringThreadSorts } from "@amarnai/db";
 import { createAIProvider, createEmbeddingProvider, sortThreadByEmbedding, snapshotToThreadMessages, getAIProviderConfig, getEmbeddingProviderConfig } from "@amarnai/ai";
 import type { EmbeddableNode } from "@amarnai/ai";
+import { getThreadSortLimit, getDraftQuotaWindowStart, getDraftQuotaResetsAt } from "@amarnai/shared";
+import { config } from "@amarnai/config";
 import { GmailClient } from "../services/gmail-client.js";
 import { normalizeGmailThread } from "../services/gmail-thread-adapter.js";
 
@@ -52,9 +54,32 @@ gmailSort.post("/dev/workspaces/:workspaceId/gmail-sort-thread", async (c) => {
 
   const workspace = await db.workspace.findUnique({
     where: { id: workspaceId },
-    select: { id: true, ownerUserId: true },
+    select: { id: true, ownerUserId: true, plan: true },
   });
   if (!workspace) return c.json({ error: "Workspace not found" }, 404);
+
+  // ── 1a. Monthly thread-sort quota ─────────────────────────────────────────
+  //
+  // This synchronous sort runs a real embedding/LLM, so it is metered like any
+  // recurring sort. Checked before the Gmail fetch + AI call to avoid wasted
+  // work when over limit. Recurring sorts only (BACKFILL/MOVE are exempt — see
+  // thread-sort-usage). Gated by enforceThreadSortQuota for self-host/dev.
+  if (config.billing.enforceThreadSortQuota) {
+    const now = new Date();
+    const limit = getThreadSortLimit(workspace.plan);
+    const used = await countRecurringThreadSorts(workspaceId, getDraftQuotaWindowStart(now));
+    if (used >= limit) {
+      return c.json(
+        {
+          error: "Monthly thread-sort quota exceeded",
+          used,
+          limit,
+          resetsAt: getDraftQuotaResetsAt(now).toISOString(),
+        },
+        429
+      );
+    }
+  }
 
   const connection = await db.gmailConnection.findUnique({
     where: { workspaceId },
