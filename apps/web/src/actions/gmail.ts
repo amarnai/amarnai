@@ -63,11 +63,3 @@ export async function cancelClassifyAction(
   await apiFor(user.id).cancelClassify(workspaceId, threadId);
   revalidatePath(`/emails/${threadId}`);
 }
-
-export async function startSortingAction(workspaceId: string): Promise<void> {
-  const user = await requireUser();
-  await assertWorkspaceOwner(workspaceId, user.id);
-
-  await apiFor(user.id).startSorting(workspaceId);
-  revalidatePath("/emails");
-}

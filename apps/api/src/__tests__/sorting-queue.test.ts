@@ -18,7 +18,6 @@ vi.mock("@amarnai/db", () => ({
     emailThread: { findMany: vi.fn(), updateMany: vi.fn() },
     gmailConnection: { findUnique: vi.fn() },
     gmailSyncSettings: { findUnique: vi.fn() },
-    backfillInboxQueue: { add: vi.fn() },
   },
 }));
 
@@ -199,25 +198,3 @@ describe("POST /workspaces/:workspaceId/sorting-queue/reroute-unclassified", () 
   });
 });
 
-// ─── POST /sorting-queue/start (fixed threshold check) ───────────────────────
-
-describe("POST /workspaces/:workspaceId/sorting-queue/start — taxonomy threshold fix", () => {
-  it("returns 422 when routable count is below threshold (even if total count would pass old check)", async () => {
-    // Old bug: nodeCount <= 3 with total count. 3 total nodes = root + 2 non-root → should reject.
-    // Fixed: counts non-root nodes reachable from root. 2 routable < 3 → reject.
-    mockTaxonomy(2);
-    const res = await post(`/workspaces/${WS_ID}/sorting-queue/start`);
-    expect(res.status).toBe(422);
-  });
-
-  it("returns 422 when 3 nodes exist but none are linked to the root", async () => {
-    mockTaxonomy(TAXONOMY_MIN_NON_ROOT_NODES, 0);
-    const res = await post(`/workspaces/${WS_ID}/sorting-queue/start`);
-    expect(res.status).toBe(422);
-  });
-
-  it("returns 202 when routable count meets the threshold", async () => {
-    const res = await post(`/workspaces/${WS_ID}/sorting-queue/start`);
-    expect(res.status).toBe(202);
-  });
-});

@@ -3,7 +3,6 @@ import { z } from "zod";
 import { Job } from "bullmq";
 import { db } from "@amarnai/db";
 import { classifyThreadQueue } from "../queues.js";
-import { backfillInboxQueue } from "../services/queue-client.js";
 import { DEFAULT_GMAIL_SYNC_SETTINGS, isTaxonomyRoutable } from "@amarnai/shared";
 import { DEDUP_CLASSIFY_UNROUTED, DEDUP_CLASSIFY_UNCLASSIFIED } from "@amarnai/queue";
 
@@ -190,44 +189,6 @@ sortingQueue.delete(
     return c.json({ cancelled: true, jobRemoved: removed });
   }
 );
-
-/**
- * POST /workspaces/:workspaceId/sorting-queue/start
- *
- * Manually triggers the historical inbox backfill for a workspace.
- * Requires the workspace to have at least 3 taxonomy nodes; returns 422
- * if the taxonomy is too small. Returns 202 Accepted once the job is queued.
- */
-sortingQueue.post("/workspaces/:workspaceId/sorting-queue/start", async (c) => {
-  const parsed = workspaceParam.safeParse({ workspaceId: c.req.param("workspaceId") });
-  if (!parsed.success) return c.json({ error: "Invalid workspace ID" }, 400);
-
-  const { workspaceId } = parsed.data;
-
-  if (!(await isWorkspaceTaxonomyRoutable(workspaceId))) {
-    return c.json(
-      { error: "More than 3 taxonomy nodes are required before sorting can start" },
-      422
-    );
-  }
-
-  const connection = await db.gmailConnection.findUnique({
-    where: { workspaceId },
-    select: { status: true },
-  });
-  if (!connection) return c.json({ error: "No Gmail connection found" }, 422);
-  if (connection.status !== "ACTIVE") {
-    return c.json({ error: "Gmail connection is not active" }, 422);
-  }
-
-  await backfillInboxQueue.add(
-    "backfill-inbox",
-    { workspaceId },
-    { deduplication: { id: `backfill-inbox_${workspaceId}` } }
-  );
-
-  return c.json({ ok: true, workspaceId }, 202);
-});
 
 // ── Shared helper ──────────────────────────────────────────────────────────────
 

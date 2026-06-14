@@ -231,11 +231,6 @@ function makeApi(serverUserId?: string) {
         `/workspaces/${workspaceId}/email-threads/${threadId}/classify`,
         "DELETE"
       ),
-    startSorting: (workspaceId: string) =>
-      apiMutate<{ ok: boolean; workspaceId: string }>(
-        `/workspaces/${workspaceId}/sorting-queue/start`,
-        "POST"
-      ),
     routeUnrouted: (workspaceId: string) =>
       apiMutate<{ queued: number }>(
         `/workspaces/${workspaceId}/sorting-queue/route-unrouted`,
