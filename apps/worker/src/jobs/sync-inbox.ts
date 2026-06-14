@@ -289,14 +289,16 @@ export function createSyncInboxWorker(): Worker {
           data: { historyId: newHistoryId, lastSyncedAt: new Date(), status: "IDLE" },
         });
 
-        // Trigger backfill when it hasn't completed (or failed) yet, but only
-        // if the workspace has enough taxonomy nodes to classify threads (≥ 3).
-        // With fewer nodes the user needs to elaborate the taxonomy first.
+        // Trigger backfill when it hasn't completed (or failed) yet, regardless
+        // of taxonomy strength. With a routable taxonomy backfill classifies
+        // threads; without one it populates the historical inbox and marks every
+        // thread UNROUTED so the user sees the waiting state and the "Build
+        // taxonomy" CTA (backfill-inbox handles both cases). Once a taxonomy is
+        // built the UNROUTED threads are routed via the "Route now" flow.
         // Every plan backfills; per-plan thread/window limits are enforced by
         // the backfill job via getBackfillCap.
         // isBackfillResumable also recovers stale RUNNING state (worker crash).
         if (
-          taxonomyStrong &&
           isBackfillResumable(syncState.backfillStatus, syncState.backfillStartedAt)
         ) {
           await backfillInboxQueue.add(
@@ -554,13 +556,14 @@ export function createSyncInboxWorker(): Worker {
         console.error("[sync-inbox] Failed to publish synced event:", err instanceof Error ? err.message : err);
       });
 
-      // Trigger a historical backfill whenever it hasn't completed yet, but only
-      // if the workspace has enough taxonomy nodes to classify threads (≥ 3).
+      // Trigger a historical backfill whenever it hasn't completed yet,
+      // regardless of taxonomy strength. With a routable taxonomy backfill
+      // classifies threads; without one it populates the inbox and marks every
+      // thread UNROUTED (backfill-inbox handles both cases).
       // Every plan backfills; per-plan thread/window limits are enforced by the
       // backfill job via getBackfillCap.
       // isBackfillResumable also recovers stale RUNNING state (worker crash).
       if (
-        taxonomyStrong &&
         isBackfillResumable(syncState.backfillStatus, syncState.backfillStartedAt)
       ) {
         await backfillInboxQueue.add(

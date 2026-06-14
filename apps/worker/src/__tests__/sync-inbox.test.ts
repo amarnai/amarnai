@@ -379,6 +379,31 @@ describe("createSyncInboxWorker — disconnect-awareness", () => {
     );
   });
 
+  it("triggers backfill even when taxonomy is weak (populates inbox as UNROUTED)", async () => {
+    // Weak taxonomy: only 2 non-root nodes linked to the root.
+    vi.mocked(db.taxonomyNode.findMany).mockResolvedValue(makeNodes(2) as never);
+    vi.mocked(db.taxonomyEdge.findMany).mockResolvedValue(makeEdges(2) as never);
+    // Quiet inbox cycle with a resumable (PENDING) backfill so we hit the trigger.
+    mockListHistory.mockResolvedValue({ changedThreadIds: [], newHistoryId: "hist-2" });
+    vi.mocked(db.providerSyncState.upsert).mockResolvedValue({
+      historyId: "hist-1",
+      backfillStatus: "PENDING",
+      backfillStartedAt: null,
+      importantBackfilled: true,
+    } as never);
+
+    createSyncInboxWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID }));
+
+    const { backfillInboxQueue } = await import("../queues.js");
+    expect(vi.mocked(backfillInboxQueue.add)).toHaveBeenCalledWith(
+      "backfill-inbox",
+      { workspaceId: WS_ID },
+      expect.objectContaining({ deduplication: { id: `backfill-inbox_${WS_ID}` } })
+    );
+  });
+
   it("does not trigger backfill when RUNNING is fresh (another worker is running it)", async () => {
     const freshDate = new Date(); // just now
     mockListHistory.mockResolvedValue({ changedThreadIds: [], newHistoryId: "hist-2" });
