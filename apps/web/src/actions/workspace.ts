@@ -7,6 +7,7 @@ import { db, ensureInboxNode } from "@amarnai/db";
 import { requireUser } from "@/lib/session";
 import { getSelectedWorkspace } from "@/lib/workspace";
 import { disconnectGmailBeforeDeletion } from "@/lib/gmail-teardown";
+import { apiFor } from "@/lib/api";
 
 const WORKSPACE_COOKIE = "amarnai-workspace";
 
@@ -148,6 +149,63 @@ export async function deleteWorkspaceAction(
   if (selectedId === workspaceId) {
     cookieStore.delete(WORKSPACE_COOKIE);
   }
+
+  revalidatePath("/", "layout");
+  redirect("/emails");
+}
+
+export async function resetWorkspaceAction(
+  workspaceId: string,
+): Promise<{ error?: string }> {
+  const user = await requireUser();
+
+  const workspace = await db.workspace.findFirst({
+    where: { id: workspaceId, ownerUserId: user.id },
+    select: { id: true },
+  });
+  if (!workspace) return { error: "Workspace not found or you are not the admin" };
+
+  // Best-effort Gmail disconnect before wiping taxonomy.
+  const hasConnection = await db.gmailConnection.findUnique({
+    where: { workspaceId },
+    select: { id: true },
+  });
+  if (hasConnection) {
+    try {
+      await apiFor(user.id).disconnectGmail(workspaceId, true);
+    } catch (err) {
+      console.warn(
+        "[reset-workspace] Gmail disconnect failed (non-fatal):",
+        err instanceof Error ? err.message : err,
+      );
+    }
+  }
+
+  // Belt-and-suspenders cleanup in FK-safe order: covers the case where the
+  // disconnect above failed. deleteMany on already-deleted rows is a no-op.
+  await db.$transaction([
+    db.draft.deleteMany({ where: { workspaceId } }),
+    db.emailTag.deleteMany({
+      where: {
+        OR: [
+          { emailThread: { workspaceId } },
+          { emailMessage: { workspaceId } },
+        ],
+      },
+    }),
+    db.emailClassification.deleteMany({ where: { workspaceId } }),
+    db.taxonomyEdge.deleteMany({ where: { workspaceId } }),
+    db.taxonomyNode.deleteMany({ where: { workspaceId } }),
+    db.emailMessage.deleteMany({ where: { workspaceId } }),
+    db.providerSyncState.deleteMany({ where: { emailAccount: { workspaceId } } }),
+    db.emailAddressIdentity.deleteMany({ where: { emailAccount: { workspaceId } } }),
+    db.emailThread.deleteMany({ where: { workspaceId } }),
+    db.emailAccount.deleteMany({ where: { workspaceId } }),
+    db.gmailSyncSettings.deleteMany({ where: { workspaceId } }),
+    db.gmailConnection.deleteMany({ where: { workspaceId } }),
+  ]);
+
+  await ensureInboxNode(workspaceId);
 
   revalidatePath("/", "layout");
   redirect("/emails");

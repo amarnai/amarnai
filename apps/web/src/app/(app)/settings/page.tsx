@@ -7,6 +7,7 @@ import { getCollaboratorLimit } from "@amarnai/shared";
 import { GmailConnectionSection } from "./GmailConnectionSection";
 import { WorkspaceNameSection } from "./WorkspaceNameSection";
 import { DeleteWorkspaceSection } from "./DeleteWorkspaceSection";
+import { ResetWorkspaceSection } from "./ResetWorkspaceSection";
 import { EmailBlacklistSection } from "./EmailBlacklistSection";
 import { TeamMembersSection } from "./TeamMembersSection";
 import { BillingSection } from "./BillingSection";
@@ -129,6 +130,8 @@ export default async function SettingsPage({ searchParams }: { searchParams: Sea
   }
 
   // Fetch team members and pending invitations for the team section.
+  const ownedWorkspaceCount = await db.workspace.count({ where: { ownerUserId: user.id } });
+
   const [membersRaw, invitationsRaw] = await Promise.all([
     db.workspaceMember.findMany({
       where: { workspaceId: workspace.id },
@@ -231,7 +234,11 @@ export default async function SettingsPage({ searchParams }: { searchParams: Sea
             collaboratorCount={collaboratorCount}
             collaboratorLimit={collaboratorLimit}
           />
-          <DeleteWorkspaceSection workspaceId={workspace.id} />
+          {ownedWorkspaceCount <= 1 ? (
+            <ResetWorkspaceSection workspaceId={workspace.id} />
+          ) : (
+            <DeleteWorkspaceSection workspaceId={workspace.id} />
+          )}
         </>
       )}
     </>
