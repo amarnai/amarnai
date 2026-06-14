@@ -10,7 +10,6 @@
   "scripts": {
     "generate": "prisma generate",
     "migrate": "dotenv -e ../../.env.local -e ../../.env -- prisma migrate dev",
-    "migrate:deploy": "prisma migrate deploy",
     "seed": "dotenv -e ../../.env.local -e ../../.env -- prisma db seed",
     "backfill-inbox": "dotenv -e ../../.env.local -e ../../.env -- tsx prisma/backfill-inbox.ts",
     "embeddings:refresh-taxonomy": "dotenv -e ../../.env.local -e ../../.env -- tsx prisma/refresh-taxonomy-embeddings.ts",
