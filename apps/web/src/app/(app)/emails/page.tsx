@@ -18,7 +18,6 @@ export default async function EmailsPage({ searchParams }: PageProps) {
 
   const { q, f, t } = await searchParams;
 
-  let gmailConnected = false;
   let error: string | null = null;
 
   const userApi = apiFor(user.id);
@@ -31,12 +30,20 @@ export default async function EmailsPage({ searchParams }: PageProps) {
       userApi.taxonomyEdges(workspace.id),
     ]);
 
-  if (connection.status === "fulfilled") {
-    gmailConnected = connection.value !== null;
-  }
+  const connectionValue =
+    connection.status === "fulfilled" ? connection.value : null;
+
+  // A connection record can exist but be DISCONNECTED (e.g. revoked or expired).
+  // Only an ACTIVE connection is actually syncing this inbox.
+  const gmailConnected = connectionValue?.status === "ACTIVE";
 
   if (!gmailConnected) {
-    return <ConnectGmailCta workspaceId={workspace.id} />;
+    return (
+      <ConnectGmailCta
+        workspaceId={workspace.id}
+        reconnect={connectionValue !== null}
+      />
+    );
   }
 
   if (
@@ -52,10 +59,7 @@ export default async function EmailsPage({ searchParams }: PageProps) {
             : (edges as PromiseRejectedResult).reason.message);
   }
 
-  const workspaceEmail =
-    connection.status === "fulfilled" && connection.value
-      ? connection.value.gmailAddress
-      : null;
+  const workspaceEmail = connectionValue ? connectionValue.gmailAddress : null;
 
   const rawThreads =
     threadsResult.status === "fulfilled" ? threadsResult.value.threads : [];
@@ -70,7 +74,6 @@ export default async function EmailsPage({ searchParams }: PageProps) {
   const threads = mapThreads(rawThreads);
 
   const routableNodeCount = countRoutableNonRootNodes(rawNodes, rawEdges);
-  const unroutedCount = rawThreads.filter((t) => t.triageStatus === "UNROUTED").length;
   const unclassifiedCount = rawThreads.filter((t) => t.triageStatus === "UNCLASSIFIED").length;
 
   // Resolve initial active selection from URL params
@@ -105,7 +108,6 @@ export default async function EmailsPage({ searchParams }: PageProps) {
         syncStatus={resolvedSyncStatus}
         workspaceEmail={workspaceEmail}
         routableNodeCount={routableNodeCount}
-        unroutedCount={unroutedCount}
         unclassifiedCount={unclassifiedCount}
       />
     </>

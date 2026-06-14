@@ -180,36 +180,35 @@ beforeEach(() => {
 
 // ─── Tests ────────────────────────────────────────────────────────────────────
 
-describe("createClassifyThreadWorker — UNROUTED early exit", () => {
-  it("marks thread UNROUTED and skips embedding when non-root count < threshold", async () => {
+describe("createClassifyThreadWorker — weak taxonomy early exit", () => {
+  it("skips embedding and leaves thread PENDING when non-root count < threshold", async () => {
     vi.mocked(db.taxonomyNode.findMany).mockResolvedValue(makeNodes(1) as never);
 
     createClassifyThreadWorker();
     const processor = getProcessor();
     await processor(makeJob({ workspaceId: WS_ID, emailThreadId: THREAD_ID }));
 
-    expect(db.emailThread.update).toHaveBeenCalledWith(
-      expect.objectContaining({
-        where: { id: THREAD_ID },
-        data: expect.objectContaining({ triageStatus: "UNROUTED" }),
-      })
+    const updateCalls = vi.mocked(db.emailThread.update).mock.calls;
+    const unroutedCall = updateCalls.find(
+      (c) => (c[0] as { data: { triageStatus?: string } }).data?.triageStatus === "UNROUTED"
     );
+    expect(unroutedCall).toBeUndefined();
     expect(createEmbeddingProvider).not.toHaveBeenCalled();
     expect(mockSortThreadByEmbedding).not.toHaveBeenCalled();
   });
 
-  it("marks thread UNROUTED when there are exactly 2 non-root nodes (one below threshold)", async () => {
+  it("skips embedding and leaves thread PENDING when exactly 2 non-root nodes (one below threshold)", async () => {
     vi.mocked(db.taxonomyNode.findMany).mockResolvedValue(makeNodes(2) as never);
 
     createClassifyThreadWorker();
     const processor = getProcessor();
     await processor(makeJob({ workspaceId: WS_ID, emailThreadId: THREAD_ID }));
 
-    expect(db.emailThread.update).toHaveBeenCalledWith(
-      expect.objectContaining({
-        data: expect.objectContaining({ triageStatus: "UNROUTED" }),
-      })
+    const updateCalls = vi.mocked(db.emailThread.update).mock.calls;
+    const unroutedCall = updateCalls.find(
+      (c) => (c[0] as { data: { triageStatus?: string } }).data?.triageStatus === "UNROUTED"
     );
+    expect(unroutedCall).toBeUndefined();
   });
 
   it("proceeds to classification when non-root count equals threshold (3)", async () => {
@@ -220,7 +219,6 @@ describe("createClassifyThreadWorker — UNROUTED early exit", () => {
     await processor(makeJob({ workspaceId: WS_ID, emailThreadId: THREAD_ID }));
 
     expect(mockSortThreadByEmbedding).toHaveBeenCalledOnce();
-    // triageStatus must NOT be UNROUTED
     const updateCalls = vi.mocked(db.emailThread.update).mock.calls;
     const unroutedCall = updateCalls.find(
       (c) => (c[0] as { data: { triageStatus?: string } }).data?.triageStatus === "UNROUTED"
@@ -228,7 +226,7 @@ describe("createClassifyThreadWorker — UNROUTED early exit", () => {
     expect(unroutedCall).toBeUndefined();
   });
 
-  it("marks thread UNROUTED when 3 non-root nodes exist but none are linked to the root", async () => {
+  it("skips embedding and leaves thread PENDING when 3 nodes exist but none are linked to root", async () => {
     vi.mocked(db.taxonomyNode.findMany).mockResolvedValue(makeNodes(3) as never);
     // No edges → the three categories are orphaned, so none are routable.
     vi.mocked(db.taxonomyEdge.findMany).mockResolvedValue([] as never);
@@ -237,11 +235,11 @@ describe("createClassifyThreadWorker — UNROUTED early exit", () => {
     const processor = getProcessor();
     await processor(makeJob({ workspaceId: WS_ID, emailThreadId: THREAD_ID }));
 
-    expect(db.emailThread.update).toHaveBeenCalledWith(
-      expect.objectContaining({
-        data: expect.objectContaining({ triageStatus: "UNROUTED" }),
-      })
+    const updateCalls = vi.mocked(db.emailThread.update).mock.calls;
+    const unroutedCall = updateCalls.find(
+      (c) => (c[0] as { data: { triageStatus?: string } }).data?.triageStatus === "UNROUTED"
     );
+    expect(unroutedCall).toBeUndefined();
     expect(createEmbeddingProvider).not.toHaveBeenCalled();
     expect(mockSortThreadByEmbedding).not.toHaveBeenCalled();
   });

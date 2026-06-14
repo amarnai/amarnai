@@ -473,12 +473,9 @@ export function createBackfillInboxWorker(): Worker {
                 },
               }))
             );
-          } else {
-            await db.emailThread.updateMany({
-              where: { id: { in: upsertedEmailThreadIds } },
-              data: { triageStatus: "UNROUTED" },
-            });
           }
+          // Taxonomy not routable → leave threads PENDING. The sync cycle's
+          // stuck-thread recovery will classify them once taxonomy is set.
         }
 
         // ── 9. More to do? Persist the cursor and re-enqueue a continuation ─────

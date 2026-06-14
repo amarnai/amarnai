@@ -64,8 +64,11 @@ sortingQueue.post("/workspaces/:workspaceId/sorting-queue/pause", async (c) => {
  * POST /workspaces/:workspaceId/sorting-queue/resume
  *
  * Resumes the sorting queue for this workspace and re-enqueues all PENDING
- * threads that have no active classify job. Returns 200 with the updated state
- * and the count of threads re-enqueued.
+ * threads that have no active classify job. Requires a routable taxonomy —
+ * if taxonomy is too weak, sorting is still unpaused but no classify jobs are
+ * enqueued (the sync cycle's stuck-thread recovery will handle them once the
+ * taxonomy is set up). Returns 200 with the updated state and the count of
+ * threads re-enqueued.
  */
 sortingQueue.post("/workspaces/:workspaceId/sorting-queue/resume", async (c) => {
   const parsed = workspaceParam.safeParse({ workspaceId: c.req.param("workspaceId") });
@@ -73,7 +76,7 @@ sortingQueue.post("/workspaces/:workspaceId/sorting-queue/resume", async (c) => 
 
   const { workspaceId } = parsed.data;
 
-  const [syncSettings] = await Promise.all([
+  const [syncSettings, taxonomyRoutable] = await Promise.all([
     db.gmailSyncSettings.upsert({
       where: { workspaceId },
       create: {
@@ -85,7 +88,16 @@ sortingQueue.post("/workspaces/:workspaceId/sorting-queue/resume", async (c) => 
       update: { sortingPaused: false },
       select: { includeSpam: true, includePromotions: true },
     }),
+    isWorkspaceTaxonomyRoutable(workspaceId),
   ]);
+
+  // Only re-enqueue when taxonomy is routable. Without a valid taxonomy,
+  // classify-thread cannot route threads and they'd loop back to PENDING.
+  // The sync cycle's stuck-thread recovery will classify them automatically
+  // once taxonomy is set up.
+  if (!taxonomyRoutable) {
+    return c.json({ sortingPaused: false, requeued: 0 });
+  }
 
   // Re-enqueue all PENDING threads that aren't already being classified.
   const pendingWhere = {
@@ -193,17 +205,18 @@ sortingQueue.delete(
 
 // ── Shared helper ──────────────────────────────────────────────────────────────
 
-async function enqueueThreadsByStatus(
+async function enqueueThreadsForRouting(
   workspaceId: string,
-  status: "UNROUTED" | "UNCLASSIFIED",
+  statuses: ("PENDING" | "UNROUTED" | "UNCLASSIFIED")[],
   dedupPrefix: string,
-  syncSettings: { includeSpam: boolean; includePromotions: boolean } | null
+  syncSettings: { includeSpam: boolean; includePromotions: boolean } | null,
+  applyInboxFilter: boolean
 ): Promise<number> {
   const where = {
     workspaceId,
-    triageStatus: status,
+    triageStatus: { in: statuses },
     classifyingAt: null,
-    ...(status === "UNROUTED"
+    ...(applyInboxFilter
       ? {
           gmailIsTrash: false,
           ...(!syncSettings?.includeSpam ? { gmailIsSpam: false } : {}),
@@ -238,9 +251,15 @@ async function enqueueThreadsByStatus(
 /**
  * POST /workspaces/:workspaceId/sorting-queue/route-unrouted
  *
- * Enqueues all UNROUTED threads for classification. Requires a strong taxonomy
+ * Manually starts routing for all threads waiting to be sorted. The waiting set
+ * is every inbox-visible thread still PENDING (synced while the taxonomy was too
+ * weak to route) plus any legacy UNROUTED threads. Requires a strong taxonomy
  * (enough non-root nodes reachable from the root). Returns 422 with
  * `{ error: "taxonomy_too_weak" }` if the taxonomy is insufficient.
+ *
+ * This is the only path that routes the historical backlog — background sync
+ * never auto-routes waiting threads, so bulk AI routing only happens on explicit
+ * user action.
  */
 sortingQueue.post("/workspaces/:workspaceId/sorting-queue/route-unrouted", async (c) => {
   const parsed = workspaceParam.safeParse({ workspaceId: c.req.param("workspaceId") });
@@ -257,11 +276,12 @@ sortingQueue.post("/workspaces/:workspaceId/sorting-queue/route-unrouted", async
     select: { includeSpam: true, includePromotions: true },
   });
 
-  const queued = await enqueueThreadsByStatus(
+  const queued = await enqueueThreadsForRouting(
     workspaceId,
-    "UNROUTED",
+    ["PENDING", "UNROUTED"],
     DEDUP_CLASSIFY_UNROUTED,
-    syncSettings
+    syncSettings,
+    true
   );
 
   return c.json({ queued });
@@ -280,11 +300,12 @@ sortingQueue.post("/workspaces/:workspaceId/sorting-queue/reroute-unclassified",
 
   const { workspaceId } = parsed.data;
 
-  const queued = await enqueueThreadsByStatus(
+  const queued = await enqueueThreadsForRouting(
     workspaceId,
-    "UNCLASSIFIED",
+    ["UNCLASSIFIED"],
     DEDUP_CLASSIFY_UNCLASSIFIED,
-    null
+    null,
+    false
   );
 
   return c.json({ queued });

@@ -291,10 +291,9 @@ export function createSyncInboxWorker(): Worker {
 
         // Trigger backfill when it hasn't completed (or failed) yet, regardless
         // of taxonomy strength. With a routable taxonomy backfill classifies
-        // threads; without one it populates the historical inbox and marks every
-        // thread UNROUTED so the user sees the waiting state and the "Build
-        // taxonomy" CTA (backfill-inbox handles both cases). Once a taxonomy is
-        // built the UNROUTED threads are routed via the "Route now" flow.
+        // threads; without one it populates the inbox and leaves threads PENDING
+        // (backfill-inbox handles both cases). The stuck-thread recovery here
+        // classifies them once taxonomy is set.
         // Every plan backfills; per-plan thread/window limits are enforced by
         // the backfill job via getBackfillCap.
         // isBackfillResumable also recovers stale RUNNING state (worker crash).
@@ -308,39 +307,11 @@ export function createSyncInboxWorker(): Worker {
           );
         }
 
-        // Re-enqueue stuck PENDING threads whose classify jobs exhausted all retries.
-        // This covers both live-sync and backfill failures. Recovery runs on every
-        // quiet cycle regardless of plan or backfill status, so threads are never
-        // left permanently stuck.
-        if (!sortingPaused) {
-          const stuck = await db.emailThread.findMany({
-            where: {
-              workspaceId,
-              triageStatus: "PENDING",
-              classifyingAt: null,
-            },
-            select: { id: true },
-            orderBy: { latestMessageAt: "desc" },
-            take: 50,
-          });
-
-          if (stuck.length > 0) {
-            await db.emailThread.updateMany({
-              where: { id: { in: stuck.map((s) => s.id) } },
-              data: { classifyingAt: new Date() },
-            });
-            await classifyThreadQueue.addBulk(
-              stuck.map(({ id: emailThreadId }) => ({
-                name: "classify-thread",
-                data: { workspaceId, emailThreadId, source: "LIVE" as const },
-                opts: {
-                  deduplication: { id: `classify_${workspaceId}_${emailThreadId}` },
-                  priority: 5, // below live sync (1), above backfill (10)
-                },
-              }))
-            );
-          }
-        }
+        // Threads left PENDING (synced while the taxonomy was too weak, or whose
+        // classify jobs failed) are NOT auto-routed here. They stay in the waiting
+        // state until the user manually starts routing via "Route now", so bulk AI
+        // routing only happens on explicit user action. New live threads still
+        // auto-route in real time (the upserted-thread enqueue below).
 
         // Recover quota-deferred threads when capacity has freed up (month
         // rollover or plan upgrade). Same gating as live classification.
@@ -528,13 +499,9 @@ export function createSyncInboxWorker(): Worker {
               },
             }))
           );
-        } else if (!taxonomyStrong) {
-          await db.emailThread.updateMany({
-            where: { id: { in: upsertedEmailThreadIds } },
-            data: { triageStatus: "UNROUTED" },
-          });
         }
-        // sortingPaused && taxonomyStrong → leave PENDING (existing behaviour)
+        // taxonomy not routable or sorting paused → leave PENDING; stuck-thread
+        // recovery will classify once taxonomy is set and a sync cycle runs.
       }
 
       // ── 6. Advance sync cursor ───────────────────────────────────────────────
@@ -558,8 +525,8 @@ export function createSyncInboxWorker(): Worker {
 
       // Trigger a historical backfill whenever it hasn't completed yet,
       // regardless of taxonomy strength. With a routable taxonomy backfill
-      // classifies threads; without one it populates the inbox and marks every
-      // thread UNROUTED (backfill-inbox handles both cases).
+      // classifies threads; without one it populates the inbox and leaves
+      // threads PENDING (backfill-inbox handles both cases).
       // Every plan backfills; per-plan thread/window limits are enforced by the
       // backfill job via getBackfillCap.
       // isBackfillResumable also recovers stale RUNNING state (worker crash).
@@ -573,44 +540,13 @@ export function createSyncInboxWorker(): Worker {
         );
       }
 
-      // ── 7. Re-enqueue classify jobs for threads still PENDING after this cycle ──
+      // ── 7. Waiting threads are not auto-routed ───────────────────────────────
       //
-      // Covers threads whose classify jobs exhausted all retries (e.g. Ollama was
-      // unreachable, AI provider down). Also catches threads whose classifyingAt was
-      // stamped but addBulk failed in a previous cycle. Runs on every sync cycle
-      // regardless of plan or backfill status, so threads are never left permanently
-      // stuck. Deduplication prevents duplicate queue entries.
-
-      if (!sortingPaused) {
-        const stuck = await db.emailThread.findMany({
-          where: {
-            workspaceId,
-            triageStatus: "PENDING",
-            classifyingAt: null,
-            id: { notIn: upsertedEmailThreadIds },
-          },
-          select: { id: true },
-          orderBy: { latestMessageAt: "desc" },
-          take: 50,
-        });
-
-        if (stuck.length > 0) {
-          await db.emailThread.updateMany({
-            where: { id: { in: stuck.map((s) => s.id) } },
-            data: { classifyingAt: new Date() },
-          });
-          await classifyThreadQueue.addBulk(
-            stuck.map(({ id: emailThreadId }) => ({
-              name: "classify-thread",
-              data: { workspaceId, emailThreadId, source: "LIVE" as const },
-              opts: {
-                deduplication: { id: `classify_${workspaceId}_${emailThreadId}` },
-                priority: 5, // below live sync (1), above backfill (10)
-              },
-            }))
-          );
-        }
-      }
+      // Threads left PENDING from earlier cycles (synced while the taxonomy was too
+      // weak, or whose classify jobs failed) stay in the waiting state until the
+      // user manually starts routing via "Route now". Background sync never routes
+      // the historical backlog, so bulk AI routing only happens on explicit user
+      // action. New live threads still auto-route in real time (step 5 above).
 
       // Recover quota-deferred threads when capacity has freed up (month rollover
       // or plan upgrade). Same gating as live classification above.

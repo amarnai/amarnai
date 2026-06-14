@@ -55,7 +55,6 @@ type Props = {
   syncStatus: SyncStatus;
   workspaceEmail: string | null;
   routableNodeCount: number;
-  unroutedCount: number;
   unclassifiedCount: number;
 };
 
@@ -69,7 +68,6 @@ export function EmailsClient({
   syncStatus,
   workspaceEmail,
   routableNodeCount,
-  unroutedCount: initialUnroutedCount,
   unclassifiedCount,
 }: Props) {
   const router = useRouter();
@@ -77,7 +75,6 @@ export function EmailsClient({
 
   const [threads, setThreads] = useState<ThreadItem[]>(initialThreads);
   const [folders] = useState<FolderItem[]>(initialFolders);
-  const [unroutedCount, setUnroutedCount] = useState(initialUnroutedCount);
 
   const [active, setActive] = useState<ActiveSelection>(initialActive);
   const [selectedId, setSelectedId] = useState<string | null>(initialSelectedId);
@@ -351,17 +348,24 @@ export function EmailsClient({
 
   const anyClassifying = threads.some((t) => t.isClassifying);
 
+  // Threads waiting to be routed: not yet sorted and not actively classifying.
+  // These are routed only on an explicit "Route now" click, never automatically.
+  const isWaiting = (t: ThreadItem) =>
+    !t.isClassifying && (t.status === "unsorted" || t.status === "unrouted");
+  const waitingCount = threads.filter(isWaiting).length;
+
   return (
     <>
     <ClassifyingRefresher active={anyClassifying} />
     <UnroutedBanner
       workspaceId={workspaceId}
-      unroutedCount={unroutedCount}
+      waitingCount={waitingCount}
       routableNodeCount={routableNodeCount}
       onRouted={() => {
-        setUnroutedCount(0);
+        // Optimistically mark the waiting threads as classifying so the banner
+        // hides and the "Sorting…" indicator appears until the refresh lands.
         setThreads((prev) =>
-          prev.map((t) => (t.status === "unrouted" ? { ...t, status: "unsorted" as const } : t))
+          prev.map((t) => (isWaiting(t) ? { ...t, isClassifying: true } : t))
         );
       }}
     />
@@ -408,6 +412,7 @@ export function EmailsClient({
           thread={selectedThread}
           folders={folders}
           workspaceId={workspaceId}
+          routableNodeCount={routableNodeCount}
           onApprove={handleApprove}
           onReroute={openRerouteFor}
           onClose={closePreview}

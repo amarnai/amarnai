@@ -16,6 +16,8 @@ export interface RationaleCardProps {
   thread: ThreadItem;
   folders: FolderItem[];
   decisionSource: string | null;
+  /** Non-root taxonomy nodes reachable from the root. Drives the waiting copy. */
+  routableNodeCount: number;
   onApprove?: (() => void) | undefined;
   onReroute?: ((anchor: HTMLElement) => void) | undefined;
 }
@@ -24,6 +26,7 @@ export function RationaleCard({
   thread,
   folders,
   decisionSource,
+  routableNodeCount,
   onApprove,
   onReroute,
 }: RationaleCardProps) {
@@ -48,7 +51,12 @@ export function RationaleCard({
     );
   }
 
-  if (thread.status === "unrouted") {
+  // Waiting state: the thread has not been routed and is not actively sorting.
+  // This covers PENDING threads (synced while the taxonomy was too weak, or not
+  // yet manually routed) and legacy UNROUTED threads. Routing never starts
+  // automatically for these — the user triggers it with "Route now".
+  const taxonomyWeak = routableNodeCount < TAXONOMY_MIN_NON_ROOT_NODES;
+  if (thread.status === "unrouted" || thread.status === "unsorted") {
     return (
       <div className="em-rationale-card unrouted">
         <div className="em-rationale-header">
@@ -62,7 +70,9 @@ export function RationaleCard({
           <span>Waiting</span>
         </div>
         <div className="em-rationale-reason em-rationale-reason--muted">
-          This thread cannot be sorted yet. Add at least {TAXONOMY_MIN_NON_ROOT_NODES} categories to your taxonomy to begin routing.
+          {taxonomyWeak
+            ? `This thread cannot be sorted yet. Add at least ${TAXONOMY_MIN_NON_ROOT_NODES} categories to your taxonomy to begin routing.`
+            : "This thread is waiting to be routed. Use “Route now” to start sorting."}
         </div>
       </div>
     );

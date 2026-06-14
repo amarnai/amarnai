@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { TAXONOMY_MIN_NON_ROOT_NODES } from "@amarnai/shared";
 import type { FolderItem } from "../folder-tree/types.js";
 import type { ThreadItem, ThreadMessage, DraftItem } from "./types.js";
 import { RationaleCard } from "./RationaleCard.js";
@@ -12,6 +13,8 @@ import { Tooltip } from "../Tooltip.js";
 export interface ThreadPreviewProps {
   thread: ThreadItem;
   folders: FolderItem[];
+  /** Non-root taxonomy nodes reachable from the root. Drives the waiting copy. */
+  routableNodeCount?: number;
   /** Full message list — provided statically (no fetching). */
   messages: ThreadMessage[];
   /** AI reasoning text — provided statically. */
@@ -34,6 +37,7 @@ export interface ThreadPreviewProps {
 export function ThreadPreview({
   thread,
   folders,
+  routableNodeCount = TAXONOMY_MIN_NON_ROOT_NODES,
   messages,
   reasoning,
   decisionSource = null,
@@ -133,6 +137,7 @@ export function ThreadPreview({
           thread={enrichedThread}
           folders={folders}
           decisionSource={decisionSource}
+          routableNodeCount={routableNodeCount}
           onApprove={onApprove ? () => onApprove(thread.id) : undefined}
           onReroute={onReroute ? (anchor) => onReroute(thread.id, anchor) : undefined}
         />

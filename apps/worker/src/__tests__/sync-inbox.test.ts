@@ -176,7 +176,7 @@ beforeEach(() => {
 // ─── Tests ────────────────────────────────────────────────────────────────────
 
 describe("createSyncInboxWorker — taxonomy gate", () => {
-  it("marks upserted threads as UNROUTED and does not enqueue when taxonomy is weak", async () => {
+  it("leaves threads PENDING and does not enqueue when taxonomy is weak", async () => {
     // Only 2 non-root nodes linked to the root → below threshold.
     vi.mocked(db.taxonomyNode.findMany).mockResolvedValue(makeNodes(2) as never);
     vi.mocked(db.taxonomyEdge.findMany).mockResolvedValue(makeEdges(2) as never);
@@ -185,15 +185,15 @@ describe("createSyncInboxWorker — taxonomy gate", () => {
     const processor = getProcessor();
     await processor(makeJob({ workspaceId: WS_ID }));
 
-    expect(db.emailThread.updateMany).toHaveBeenCalledWith(
-      expect.objectContaining({
-        data: expect.objectContaining({ triageStatus: "UNROUTED" }),
-      })
+    const calls = vi.mocked(db.emailThread.updateMany).mock.calls;
+    const unroutedCall = calls.find(
+      (c) => (c[0] as { data: { triageStatus?: string } }).data?.triageStatus === "UNROUTED"
     );
+    expect(unroutedCall).toBeUndefined();
     expect(classifyThreadQueue.addBulk).not.toHaveBeenCalled();
   });
 
-  it("marks upserted threads as UNROUTED when 3 nodes exist but are not linked to the root", async () => {
+  it("leaves threads PENDING when nodes exist but are not linked to root", async () => {
     // 3 non-root nodes but no edges → none reachable from root → not routable.
     vi.mocked(db.taxonomyNode.findMany).mockResolvedValue(makeNodes(3) as never);
     vi.mocked(db.taxonomyEdge.findMany).mockResolvedValue([] as never);
@@ -202,11 +202,11 @@ describe("createSyncInboxWorker — taxonomy gate", () => {
     const processor = getProcessor();
     await processor(makeJob({ workspaceId: WS_ID }));
 
-    expect(db.emailThread.updateMany).toHaveBeenCalledWith(
-      expect.objectContaining({
-        data: expect.objectContaining({ triageStatus: "UNROUTED" }),
-      })
+    const calls = vi.mocked(db.emailThread.updateMany).mock.calls;
+    const unroutedCall = calls.find(
+      (c) => (c[0] as { data: { triageStatus?: string } }).data?.triageStatus === "UNROUTED"
     );
+    expect(unroutedCall).toBeUndefined();
     expect(classifyThreadQueue.addBulk).not.toHaveBeenCalled();
   });
 
@@ -268,8 +268,7 @@ describe("createSyncInboxWorker — taxonomy gate", () => {
 // ─── QUOTA_BLOCKED recovery ────────────────────────────────────────────────────
 
 describe("createSyncInboxWorker — quota-blocked recovery", () => {
-  // Make findMany return a deferred thread only for the QUOTA_BLOCKED query,
-  // and nothing for the PENDING stuck-recovery query.
+  // Make findMany return a deferred thread only for the QUOTA_BLOCKED query.
   function withBlockedThread(id: string) {
     vi.mocked(db.emailThread.findMany).mockImplementation((args: unknown) => {
       const where = (args as { where?: { triageStatus?: string } }).where;
@@ -379,7 +378,7 @@ describe("createSyncInboxWorker — disconnect-awareness", () => {
     );
   });
 
-  it("triggers backfill even when taxonomy is weak (populates inbox as UNROUTED)", async () => {
+  it("triggers backfill even when taxonomy is weak", async () => {
     // Weak taxonomy: only 2 non-root nodes linked to the root.
     vi.mocked(db.taxonomyNode.findMany).mockResolvedValue(makeNodes(2) as never);
     vi.mocked(db.taxonomyEdge.findMany).mockResolvedValue(makeEdges(2) as never);

@@ -89,7 +89,7 @@ export function ThreadRow({
               <span className="em-chip-spin" aria-hidden />
               Sorting…
             </span>
-          ) : thread.status === "unrouted" ? (
+          ) : thread.status === "unrouted" || thread.status === "unsorted" ? (
             <span className="em-route-chip unrouted">Waiting</span>
           ) : thread.status === "unclassified" ? (
             <span className="em-route-chip needs-review">Unclassified</span>

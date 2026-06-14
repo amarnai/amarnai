@@ -250,10 +250,12 @@ export function createClassifyThreadWorker(): Worker {
 
           const rootNode = rawNodes.find((n) => n.isRoot);
           if (!isTaxonomyRoutable(rawNodes, rawEdges)) {
-            await db.emailThread.update({
-              where: { id: emailThreadId },
-              data: { triageStatus: "UNROUTED" },
-            });
+            // Taxonomy is not routable — leave the thread PENDING so stuck-thread
+            // recovery re-enqueues it on the next sync cycle once taxonomy is set.
+            // classifyingAt is cleared by the finally block.
+            console.log(
+              `[classify-thread] Taxonomy not routable for workspace ${workspaceId} — leaving thread ${emailThreadId} as PENDING`
+            );
             return;
           }
 

@@ -566,7 +566,7 @@ describe("createBackfillInboxWorker", () => {
 
   // ── Taxonomy gate ─────────────────────────────────────────────────────────
 
-  it("(d) marks threads as UNROUTED and does not enqueue when routable count < threshold", async () => {
+  it("(d) leaves threads PENDING and does not enqueue when routable count < threshold", async () => {
     vi.mocked(db.providerSyncState.findUnique).mockResolvedValue({
       backfillStatus: "PENDING",
       backfillStartedAt: null,
@@ -584,15 +584,15 @@ describe("createBackfillInboxWorker", () => {
     const processor = getProcessor();
     await processor(makeJob({ workspaceId: WS_ID }));
 
-    expect(db.emailThread.updateMany).toHaveBeenCalledWith(
-      expect.objectContaining({
-        data: expect.objectContaining({ triageStatus: "UNROUTED" }),
-      })
+    const calls = vi.mocked(db.emailThread.updateMany).mock.calls;
+    const unroutedCall = calls.find(
+      (c) => (c[0] as { data: { triageStatus?: string } }).data?.triageStatus === "UNROUTED"
     );
+    expect(unroutedCall).toBeUndefined();
     expect(classifyThreadQueue.addBulk).not.toHaveBeenCalled();
   });
 
-  it("(d2) marks threads as UNROUTED when 3 nodes exist but are not linked to the root", async () => {
+  it("(d2) leaves threads PENDING when nodes exist but are not linked to root", async () => {
     vi.mocked(db.providerSyncState.findUnique).mockResolvedValue({
       backfillStatus: "PENDING",
       backfillStartedAt: null,
@@ -610,11 +610,11 @@ describe("createBackfillInboxWorker", () => {
     const processor = getProcessor();
     await processor(makeJob({ workspaceId: WS_ID }));
 
-    expect(db.emailThread.updateMany).toHaveBeenCalledWith(
-      expect.objectContaining({
-        data: expect.objectContaining({ triageStatus: "UNROUTED" }),
-      })
+    const calls = vi.mocked(db.emailThread.updateMany).mock.calls;
+    const unroutedCall = calls.find(
+      (c) => (c[0] as { data: { triageStatus?: string } }).data?.triageStatus === "UNROUTED"
     );
+    expect(unroutedCall).toBeUndefined();
     expect(classifyThreadQueue.addBulk).not.toHaveBeenCalled();
   });
 

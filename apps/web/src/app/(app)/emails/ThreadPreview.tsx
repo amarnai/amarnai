@@ -14,6 +14,7 @@ type Props = {
   folders: FolderItem[];
   workspaceId: string;
   workspaceEmail: string | null;
+  routableNodeCount: number;
   onApprove: (threadId: string) => void;
   onReroute: (threadId: string, anchor: HTMLElement) => void;
   onClose: () => void;
@@ -30,6 +31,7 @@ export function ThreadPreview({
   folders,
   workspaceId,
   workspaceEmail,
+  routableNodeCount,
   onApprove,
   onReroute,
   onClose,
@@ -258,6 +260,7 @@ export function ThreadPreview({
           thread={enrichedThread}
           folders={folders}
           decisionSource={decisionSource}
+          routableNodeCount={routableNodeCount}
           onApprove={() => onApprove(thread.id)}
           onReroute={(anchor) => onReroute(thread.id, anchor)}
         />

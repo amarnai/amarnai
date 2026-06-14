@@ -98,7 +98,7 @@ describe("POST /workspaces/:workspaceId/sorting-queue/route-unrouted", () => {
     expect(body.error).toBe("taxonomy_too_weak");
   });
 
-  it("returns 200 with queued:0 when taxonomy is strong but no UNROUTED threads exist", async () => {
+  it("returns 200 with queued:0 when taxonomy is strong but no waiting threads exist", async () => {
     vi.mocked(db.emailThread.findMany).mockResolvedValue([] as never);
 
     const res = await post(`/workspaces/${WS_ID}/sorting-queue/route-unrouted`);
@@ -108,7 +108,7 @@ describe("POST /workspaces/:workspaceId/sorting-queue/route-unrouted", () => {
     expect(classifyThreadQueue.addBulk).not.toHaveBeenCalled();
   });
 
-  it("transitions UNROUTED threads to PENDING, stamps classifyingAt, and enqueues jobs", async () => {
+  it("routes the waiting set (PENDING + UNROUTED, inbox-visible) to PENDING and enqueues jobs", async () => {
     vi.mocked(db.emailThread.findMany).mockResolvedValue([
       { id: "t1" },
       { id: "t2" },
@@ -118,6 +118,17 @@ describe("POST /workspaces/:workspaceId/sorting-queue/route-unrouted", () => {
     expect(res.status).toBe(200);
     const body = await res.json() as Record<string, unknown>;
     expect(body.queued).toBe(2);
+
+    // Targets both PENDING (waiting) and legacy UNROUTED threads, excluding trash.
+    expect(db.emailThread.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          triageStatus: { in: ["PENDING", "UNROUTED"] },
+          classifyingAt: null,
+          gmailIsTrash: false,
+        }),
+      })
+    );
 
     expect(db.emailThread.updateMany).toHaveBeenCalledWith(
       expect.objectContaining({
