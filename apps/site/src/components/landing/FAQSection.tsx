@@ -9,7 +9,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "How does the taxonomy work?",
-    a: "You build a tree of folders (for example a Customers folder with Support and Billing beneath it) and describe each one in plain language. Amarnai walks the tree and routes each thread to the folder that best matches your descriptions. You write sentences, not rules or code.",
+    a: "Building your taxonomy is straightforward: create a tree of folders (for example a Customers folder with Support and Billing beneath it) and describe each one in plain language. Amarnai walks the tree and routes every thread to the folder that fits best, based on your descriptions. Setup is just describing your folders in plain words, with no technical know-how required. To get started quickly, you can pick one of our ready-made templates, each a solid folder structure you can use as-is or adapt to your inbox.",
   },
   {
     q: "What happens to low-confidence threads?",
@@ -53,7 +53,10 @@ export function FAQSection() {
 
         <div className="ld-faq">
           {FAQ_ITEMS.map((item, i) => (
-            <div key={i} className={`ld-faq-item${openIndex === i ? " open" : ""}`}>
+            <div
+              key={i}
+              className={`ld-faq-item${openIndex === i ? " open" : ""}`}
+            >
               <button
                 type="button"
                 className="ld-faq-q"
