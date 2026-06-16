@@ -72,9 +72,9 @@ describe("CreateTaxonomyNodeInputSchema", () => {
     expect(() => CreateTaxonomyNodeInputSchema.parse({ workspaceId: "ws_1" })).toThrow();
   });
 
-  it("rejects name that is too long (over 60 characters)", () => {
+  it("rejects name that is too long (over 40 characters)", () => {
     expect(() =>
-      CreateTaxonomyNodeInputSchema.parse({ ...minimal, name: "a".repeat(61) })
+      CreateTaxonomyNodeInputSchema.parse({ ...minimal, name: "a".repeat(41) })
     ).toThrow();
   });
 

@@ -219,8 +219,9 @@ describe("validateTaxonomyTransfer", () => {
 
   it("rejects description equal to name", () => {
     // Name must be 30+ non-whitespace chars so it passes the description
-    // length check and reaches the "must differ" rule.
-    const longName = "Billing payment invoices extra chars here";
+    // length check and reaches the "must differ" rule, while staying within
+    // the 40-character name limit.
+    const longName = "Billing payments and invoices today";
     const file = makeFile({
       nodes: [
         { ref: "root", name: "Inbox", description: null, instructions: null,

@@ -326,7 +326,7 @@ function NodeForm({
   const isRoot = node?.isRoot ?? false;
 
   const [name, setName] = useState(node?.name ?? "");
-  const nameValid = name.trim().length >= 3 && name.trim().length <= 60;
+  const nameValid = name.trim().length >= 3 && name.trim().length <= 40;
   const [description, setDescription] = useState(node?.description ?? "");
   const descriptionValid =
     isRoot || description.replace(/\s/g, "").length >= 30;
@@ -376,7 +376,7 @@ function NodeForm({
             onChange={(e) => setName(e.target.value)}
             required
             minLength={3}
-            maxLength={60}
+            maxLength={40}
           />
         </div>
         <div className="form-group">

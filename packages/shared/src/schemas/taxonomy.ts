@@ -8,7 +8,7 @@ export const nodeNameSchema = z
   .string()
   .trim()
   .min(3, "Name must be at least 3 characters")
-  .max(60, "Name must be at most 60 characters")
+  .max(40, "Name must be at most 40 characters")
   .refine(
     (v) => /[\p{L}\p{N}]/u.test(v),
     "Name must contain at least one letter or digit"
