@@ -42,10 +42,7 @@ import {
   deleteTaxonomyEdgeAction,
   importTaxonomyAction,
 } from "@/actions/taxonomy";
-import {
-  computeIgnoredReasons,
-  type IgnoredReason,
-} from "./taxonomyUtils";
+import { computeIgnoredReasons, type IgnoredReason } from "./taxonomyUtils";
 import { TAXONOMY_TEMPLATES, type TaxonomyTemplate } from "./taxonomyTemplates";
 import {
   useTaxonomyHistory,
@@ -73,10 +70,11 @@ function nodeById(nodes: TaxonomyNode[], id: string): TaxonomyNode | undefined {
 function matchesTemplate(
   dbNodes: TaxonomyNode[],
   dbEdges: TaxonomyEdge[],
-  template: TaxonomyTemplate
+  template: TaxonomyTemplate,
 ): boolean {
   const { nodes: tNodes, edges: tEdges } = template.file;
-  if (dbNodes.length !== tNodes.length || dbEdges.length !== tEdges.length) return false;
+  if (dbNodes.length !== tNodes.length || dbEdges.length !== tEdges.length)
+    return false;
 
   const dbNames = dbNodes.map((n) => n.name).sort();
   const tNames = tNodes.map((n) => n.name).sort();
@@ -85,10 +83,15 @@ function matchesTemplate(
   const dbIdToName = new Map(dbNodes.map((n) => [n.id, n.name]));
   const tRefToName = new Map(tNodes.map((n) => [n.ref, n.name]));
   const dbEdgeSet = new Set(
-    dbEdges.map((e) => `${dbIdToName.get(e.sourceNodeId)}→${dbIdToName.get(e.targetNodeId)}`)
+    dbEdges.map(
+      (e) =>
+        `${dbIdToName.get(e.sourceNodeId)}→${dbIdToName.get(e.targetNodeId)}`,
+    ),
   );
-  return tEdges.every(
-    (e) => dbEdgeSet.has(`${tRefToName.get(e.sourceRef)}→${tRefToName.get(e.targetRef)}`)
+  return tEdges.every((e) =>
+    dbEdgeSet.has(
+      `${tRefToName.get(e.sourceRef)}→${tRefToName.get(e.targetRef)}`,
+    ),
   );
 }
 
@@ -111,14 +114,20 @@ function toRFNodes(nodes: TaxonomyNode[], edges: TaxonomyEdge[]): RFNode[] {
   return nodes.map((n) => toRFNode(n, ignoredMap.get(n.id) ?? null));
 }
 
-function toRFEdge(e: TaxonomyEdge, ignoredReasonsMap: Map<string, IgnoredReason>): Edge {
+function toRFEdge(
+  e: TaxonomyEdge,
+  ignoredReasonsMap: Map<string, IgnoredReason>,
+): Edge {
   const targetIgnored = ignoredReasonsMap.has(e.targetNodeId);
   return {
     id: e.id,
     source: e.sourceNodeId,
     target: e.targetNodeId,
     type: "taxonomy-edge",
-    markerEnd: { type: MarkerType.ArrowClosed, color: targetIgnored ? tokens.accent : tokens.edgeDefault },
+    markerEnd: {
+      type: MarkerType.ArrowClosed,
+      color: targetIgnored ? tokens.accent : tokens.edgeDefault,
+    },
     data: { targetIgnored },
   };
 }
@@ -171,9 +180,17 @@ function TaxonomyEdge({
     targetPosition,
   });
 
-  const targetIgnored = (data as RFEdgeData | undefined)?.targetIgnored ?? false;
+  const targetIgnored =
+    (data as RFEdgeData | undefined)?.targetIgnored ?? false;
   const isWarning = targetIgnored;
-  const strokeColor = isWarning && selected ? tokens.accentDim : selected ? tokens.primary : isWarning ? tokens.accent : tokens.edgeDefault;
+  const strokeColor =
+    isWarning && selected
+      ? tokens.accentDim
+      : selected
+        ? tokens.primary
+        : isWarning
+          ? tokens.accent
+          : tokens.edgeDefault;
 
   return (
     <BaseEdge
@@ -189,6 +206,99 @@ function TaxonomyEdge({
 }
 
 const edgeTypes = { "taxonomy-edge": TaxonomyEdge };
+
+// ─── DescriptionTips ────────────────────────────────────────────────────────
+
+function DescriptionTips() {
+  const [open, setOpen] = useState(false);
+  return (
+    <div>
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 4,
+          background: "none",
+          border: "none",
+          padding: 0,
+          margin: 0,
+          font: "inherit",
+          fontSize: 11,
+          fontWeight: 500,
+          color: "var(--accent)",
+          cursor: "pointer",
+        }}
+      >
+        <svg
+          width="11"
+          height="11"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="3"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+          style={{
+            transform: open ? "rotate(90deg)" : "rotate(0deg)",
+            transition: "transform 0.15s ease",
+          }}
+        >
+          <polyline points="9 6 15 12 9 18" />
+        </svg>
+        {open ? "Hide tips" : "How to write a good description"}
+      </button>
+      {open && (
+        <div
+          style={{
+            fontSize: 11,
+            lineHeight: 1.5,
+            color: "var(--color-foreground)",
+            marginTop: 6,
+            padding: "8px 10px",
+            background: "var(--color-surface)",
+            border: "1px solid var(--color-border-input)",
+            borderRadius: 6,
+          }}
+        >
+          <p style={{ margin: 0 }}>
+            Describe what kinds of emails belong here: who they come from and
+            what they are about. Be specific and use the actual names, topics,
+            and words that show up in those emails. Describe what the emails
+            are, not what you plan to do about them. The clearer your
+            description, the more accurately your email is sorted here.
+          </p>
+          <div
+            style={{
+              marginTop: 8,
+              padding: "5px 8px",
+              borderRadius: 5,
+              background: "var(--color-success-bg)",
+              color: "var(--color-success-text)",
+            }}
+          >
+            ✓ Receipts, payment confirmations, and billing questions from
+            vendors.
+          </div>
+          <div
+            style={{
+              marginTop: 6,
+              padding: "5px 8px",
+              borderRadius: 5,
+              background: "var(--danger-soft)",
+              color: "var(--danger)",
+            }}
+          >
+            ✗ Emails about my bills that I need to deal with.
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
 
 // ─── NodeForm ─────────────────────────────────────────────────────────────────
 
@@ -216,8 +326,10 @@ function NodeForm({
   const isRoot = node?.isRoot ?? false;
 
   const [name, setName] = useState(node?.name ?? "");
+  const nameValid = name.trim().length >= 3 && name.trim().length <= 60;
   const [description, setDescription] = useState(node?.description ?? "");
-  const descriptionValid = isRoot || description.replace(/\s/g, "").length >= 30;
+  const descriptionValid =
+    isRoot || description.replace(/\s/g, "").length >= 30;
   const [draftPrompt, setDraftPrompt] = useState(node?.draftPrompt ?? "");
   const [confirmingDelete, setConfirmingDelete] = useState(false);
   const [moveToNodeId, setMoveToNodeId] = useState("");
@@ -280,9 +392,13 @@ function NodeForm({
             placeholder="e.g. Invoices, receipts, payment confirmations, and billing questions from clients and vendors."
           />
           {!isRoot && (
-            <p style={{ fontSize: 11, color: "var(--color-muted)", marginTop: 2 }}>
-              List the kinds of emails that belong here: senders, topics, keywords. At least 30 characters.
-            </p>
+            <>
+              <p style={{ fontSize: 11, color: "var(--color-muted)" }}>
+                List the kinds of emails that belong here: senders, topics,
+                keywords. At least 30 characters.
+              </p>
+              <DescriptionTips />
+            </>
           )}
         </div>
         <div className="form-group">
@@ -294,14 +410,18 @@ function NodeForm({
             maxLength={500}
             placeholder="e.g. Reply formally. Keep responses under 3 sentences."
           />
-          <p style={{ fontSize: 11, color: "var(--color-muted)", marginTop: 2 }}>
-            Optional. Applied when generating draft replies for threads in this category.
+          <p
+            style={{ fontSize: 11, color: "var(--color-muted)", marginTop: 2 }}
+          >
+            Optional. Applied when generating draft replies for threads in this
+            category.
           </p>
         </div>
         {confirmingDelete ? (
           <div style={{ marginTop: 16 }}>
             <div className="warning-box" style={{ marginBottom: 12 }}>
-              Deleting this node will leave {classificationCount} thread{classificationCount !== 1 ? "s" : ""} unsorted.
+              Deleting this node will leave {classificationCount} thread
+              {classificationCount !== 1 ? "s" : ""} unsorted.
             </div>
             {otherNodes.length > 0 && (
               <div className="form-group">
@@ -313,7 +433,9 @@ function NodeForm({
                 >
                   <option value="">Leave unsorted</option>
                   {otherNodes.map((n) => (
-                    <option key={n.id} value={n.id}>{n.name}</option>
+                    <option key={n.id} value={n.id}>
+                      {n.name}
+                    </option>
                   ))}
                 </select>
               </div>
@@ -339,16 +461,24 @@ function NodeForm({
           </div>
         ) : (
           <div className="form-actions">
-            <button className="btn-primary" type="submit" disabled={submitting || !descriptionValid}>
+            <button
+              className="btn-primary"
+              type="submit"
+              disabled={submitting || !nameValid || !descriptionValid}
+            >
               {submitting ? "Saving…" : node ? "Save" : "Create"}
             </button>
             <button className="btn-ghost" type="button" onClick={onCancel}>
               Cancel
             </button>
-            {node && !node.isRoot && onDelete && (
-              deleteDisabledReason != null ? (
+            {node &&
+              !node.isRoot &&
+              onDelete &&
+              (deleteDisabledReason != null ? (
                 <Tooltip content={deleteDisabledReason ?? ""}>
-                  <span style={{ display: "inline-block", cursor: "not-allowed" }}>
+                  <span
+                    style={{ display: "inline-block", cursor: "not-allowed" }}
+                  >
                     <button
                       className="btn-danger"
                       type="button"
@@ -368,8 +498,7 @@ function NodeForm({
                 >
                   Delete
                 </button>
-              )
-            )}
+              ))}
           </div>
         )}
       </form>
@@ -406,8 +535,10 @@ function EdgeForm({
     if (edge) {
       onSubmit(
         sourceNodeId !== edge.sourceNodeId
-          ? ({ newSourceNodeId: sourceNodeId } satisfies UpdateTaxonomyEdgeInput)
-          : ({} satisfies UpdateTaxonomyEdgeInput)
+          ? ({
+              newSourceNodeId: sourceNodeId,
+            } satisfies UpdateTaxonomyEdgeInput)
+          : ({} satisfies UpdateTaxonomyEdgeInput),
       );
     } else {
       onSubmit({
@@ -483,7 +614,14 @@ function EdgeForm({
             </div>
             <div className="form-group">
               <label className="form-label">To</label>
-              <div className="form-select" style={{ display: "flex", alignItems: "center", cursor: "default" }}>
+              <div
+                className="form-select"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  cursor: "default",
+                }}
+              >
                 {nodeById(nodes, edge.targetNodeId)?.name ?? edge.targetNodeId}
               </div>
             </div>
@@ -619,22 +757,28 @@ function TaxonomyCanvasInner({
   const [dbNodes, setDbNodes] = useState<TaxonomyNode[]>(initialNodes);
   const [dbEdges, setDbEdges] = useState<TaxonomyEdge[]>(initialEdges);
   const [rfNodes, setRfNodes, onNodesChange] = useNodesState<RFNode>(
-    toRFNodes(initialNodes, initialEdges)
+    toRFNodes(initialNodes, initialEdges),
   );
   const [rfEdges, setRfEdges, onEdgesChange] = useEdgesState<Edge>(
-    toRFEdges(initialEdges, initialNodes)
+    toRFEdges(initialEdges, initialNodes),
   );
   const [panel, setPanel] = useState<Panel>({ type: "none" });
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
   const [apiError, setApiError] = useState<string | null>(null);
   const [importConfirmOpen, setImportConfirmOpen] = useState(false);
-  const [pendingImportFile, setPendingImportFile] = useState<TaxonomyTransferFile | null>(null);
+  const [pendingImportFile, setPendingImportFile] =
+    useState<TaxonomyTransferFile | null>(null);
   const [templatePickerOpen, setTemplatePickerOpen] = useState(false);
-  const [selectedTemplateIdx, setSelectedTemplateIdx] = useState<number | null>(null);
+  const [selectedTemplateIdx, setSelectedTemplateIdx] = useState<number | null>(
+    null,
+  );
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const history = useTaxonomyHistory({ nodes: initialNodes, edges: initialEdges });
+  const history = useTaxonomyHistory({
+    nodes: initialNodes,
+    edges: initialEdges,
+  });
   const { screenToFlowPosition } = useReactFlow();
 
   // Reset history when workspace changes (safety guard if component is reused).
@@ -649,10 +793,13 @@ function TaxonomyCanvasInner({
       if (readOnly) return;
       const target = event.target as Element;
       if (!target.classList.contains("react-flow__pane")) return;
-      const spawnPosition = screenToFlowPosition({ x: event.clientX, y: event.clientY });
+      const spawnPosition = screenToFlowPosition({
+        x: event.clientX,
+        y: event.clientY,
+      });
       openPanel({ type: "create-node", spawnPosition });
     },
-    [readOnly, screenToFlowPosition]
+    [readOnly, screenToFlowPosition],
   );
 
   const refetch = useCallback(async () => {
@@ -685,16 +832,22 @@ function TaxonomyCanvasInner({
         });
         const updatedNodes = dbNodes.map((n) =>
           n.id === rfNode.id
-            ? { ...n, positionX: rfNode.position.x, positionY: rfNode.position.y }
-            : n
+            ? {
+                ...n,
+                positionX: rfNode.position.x,
+                positionY: rfNode.position.y,
+              }
+            : n,
         );
         setDbNodes(updatedNodes);
         history.push({ nodes: updatedNodes, edges: dbEdges });
       } catch (err) {
-        setApiError(err instanceof Error ? err.message : "Failed to save position");
+        setApiError(
+          err instanceof Error ? err.message : "Failed to save position",
+        );
       }
     },
-    [workspaceId, dbNodes, dbEdges, history]
+    [workspaceId, dbNodes, dbEdges, history],
   );
 
   // ─── Connect nodes: create edge ───────────────────────────────────────────
@@ -712,10 +865,12 @@ function TaxonomyCanvasInner({
         const { nodes, edges } = await refetch();
         history.push({ nodes, edges });
       } catch (err) {
-        setApiError(err instanceof Error ? err.message : "Failed to create edge");
+        setApiError(
+          err instanceof Error ? err.message : "Failed to create edge",
+        );
       }
     },
-    [workspaceId, refetch, dbNodes, history]
+    [workspaceId, refetch, dbNodes, history],
   );
 
   // ─── Click node: open edit panel ──────────────────────────────────────────
@@ -726,7 +881,7 @@ function TaxonomyCanvasInner({
       const found = dbNodes.find((n) => n.id === rfNode.id);
       if (found && !found.isRoot) openPanel({ type: "edit-node", node: found });
     },
-    [dbNodes, readOnly]
+    [dbNodes, readOnly],
   );
 
   // ─── Click edge: open edit panel ─────────────────────────────────────────
@@ -737,7 +892,7 @@ function TaxonomyCanvasInner({
       const found = dbEdges.find((e) => e.id === rfEdge.id);
       if (found) openPanel({ type: "edit-edge", edge: found });
     },
-    [dbEdges, readOnly]
+    [dbEdges, readOnly],
   );
 
   // ─── Node mutations ───────────────────────────────────────────────────────
@@ -745,25 +900,34 @@ function TaxonomyCanvasInner({
   async function handleCreateNode(data: CreateTaxonomyNodeInput) {
     setSubmitting(true);
     setFormError(null);
-    const spawnPosition = panel.type === "create-node" ? panel.spawnPosition : undefined;
+    const spawnPosition =
+      panel.type === "create-node" ? panel.spawnPosition : undefined;
     try {
       await createTaxonomyNodeAction(workspaceId, {
         ...data,
         ...(spawnPosition
-          ? { positionX: Math.round(spawnPosition.x), positionY: Math.round(spawnPosition.y) }
+          ? {
+              positionX: Math.round(spawnPosition.x),
+              positionY: Math.round(spawnPosition.y),
+            }
           : {}),
       });
       const { nodes, edges } = await refetch();
       history.push({ nodes, edges });
       setPanel({ type: "none" });
     } catch (err) {
-      setFormError(err instanceof Error ? err.message : "Failed to create node");
+      setFormError(
+        err instanceof Error ? err.message : "Failed to create node",
+      );
     } finally {
       setSubmitting(false);
     }
   }
 
-  async function handleUpdateNode(nodeId: string, data: UpdateTaxonomyNodeInput) {
+  async function handleUpdateNode(
+    nodeId: string,
+    data: UpdateTaxonomyNodeInput,
+  ) {
     setSubmitting(true);
     setFormError(null);
     try {
@@ -772,7 +936,9 @@ function TaxonomyCanvasInner({
       history.push({ nodes, edges });
       setPanel({ type: "none" });
     } catch (err) {
-      setFormError(err instanceof Error ? err.message : "Failed to update node");
+      setFormError(
+        err instanceof Error ? err.message : "Failed to update node",
+      );
     } finally {
       setSubmitting(false);
     }
@@ -780,31 +946,47 @@ function TaxonomyCanvasInner({
 
   // ─── Edge mutations ───────────────────────────────────────────────────────
 
-  async function handleCreateEdge(data: CreateTaxonomyEdgeInput | UpdateTaxonomyEdgeInput) {
+  async function handleCreateEdge(
+    data: CreateTaxonomyEdgeInput | UpdateTaxonomyEdgeInput,
+  ) {
     setSubmitting(true);
     setFormError(null);
     try {
-      await createTaxonomyEdgeAction(workspaceId, data as CreateTaxonomyEdgeInput);
+      await createTaxonomyEdgeAction(
+        workspaceId,
+        data as CreateTaxonomyEdgeInput,
+      );
       const { nodes, edges } = await refetch();
       history.push({ nodes, edges });
       setPanel({ type: "none" });
     } catch (err) {
-      setFormError(err instanceof Error ? err.message : "Failed to create edge");
+      setFormError(
+        err instanceof Error ? err.message : "Failed to create edge",
+      );
     } finally {
       setSubmitting(false);
     }
   }
 
-  async function handleUpdateEdge(edgeId: string, data: CreateTaxonomyEdgeInput | UpdateTaxonomyEdgeInput) {
+  async function handleUpdateEdge(
+    edgeId: string,
+    data: CreateTaxonomyEdgeInput | UpdateTaxonomyEdgeInput,
+  ) {
     setSubmitting(true);
     setFormError(null);
     try {
-      await updateTaxonomyEdgeAction(workspaceId, edgeId, data as UpdateTaxonomyEdgeInput);
+      await updateTaxonomyEdgeAction(
+        workspaceId,
+        edgeId,
+        data as UpdateTaxonomyEdgeInput,
+      );
       const { nodes, edges } = await refetch();
       history.push({ nodes, edges });
       setPanel({ type: "none" });
     } catch (err) {
-      setFormError(err instanceof Error ? err.message : "Failed to update edge");
+      setFormError(
+        err instanceof Error ? err.message : "Failed to update edge",
+      );
     } finally {
       setSubmitting(false);
     }
@@ -819,7 +1001,9 @@ function TaxonomyCanvasInner({
       history.push({ nodes, edges });
       setPanel({ type: "none" });
     } catch (err) {
-      setFormError(err instanceof Error ? err.message : "Failed to delete node");
+      setFormError(
+        err instanceof Error ? err.message : "Failed to delete node",
+      );
     } finally {
       setSubmitting(false);
     }
@@ -834,7 +1018,9 @@ function TaxonomyCanvasInner({
       history.push({ nodes, edges });
       setPanel({ type: "none" });
     } catch (err) {
-      setFormError(err instanceof Error ? err.message : "Failed to delete edge");
+      setFormError(
+        err instanceof Error ? err.message : "Failed to delete edge",
+      );
     } finally {
       setSubmitting(false);
     }
@@ -884,7 +1070,9 @@ function TaxonomyCanvasInner({
 
   function handleExport() {
     const file = serializeTaxonomy(dbNodes, dbEdges);
-    const blob = new Blob([JSON.stringify(file, null, 2)], { type: "application/json" });
+    const blob = new Blob([JSON.stringify(file, null, 2)], {
+      type: "application/json",
+    });
     const url = URL.createObjectURL(blob);
     const date = new Date().toISOString().slice(0, 10);
     const a = document.createElement("a");
@@ -918,7 +1106,9 @@ function TaxonomyCanvasInner({
     const parsed = TaxonomyTransferFileSchema.safeParse(raw);
     if (!parsed.success) {
       const first = parsed.error.issues[0];
-      setApiError(`Invalid taxonomy file: ${first?.message ?? "unknown error"}`);
+      setApiError(
+        `Invalid taxonomy file: ${first?.message ?? "unknown error"}`,
+      );
       return;
     }
 
@@ -930,7 +1120,7 @@ function TaxonomyCanvasInner({
 
     const currentlyRoutable = isTaxonomyRoutable(
       rfNodes.map((n) => ({ id: n.id, isRoot: n.data.node.isRoot })),
-      rfEdges.map((e) => ({ sourceNodeId: e.source, targetNodeId: e.target }))
+      rfEdges.map((e) => ({ sourceNodeId: e.source, targetNodeId: e.target })),
     );
 
     if (currentlyRoutable) {
@@ -975,17 +1165,17 @@ function TaxonomyCanvasInner({
 
   const taxonomyIsRoutable = isTaxonomyRoutable(
     rfNodes.map((n) => ({ id: n.id, isRoot: n.data.node.isRoot })),
-    rfEdges.map((e) => ({ sourceNodeId: e.source, targetNodeId: e.target }))
+    rfEdges.map((e) => ({ sourceNodeId: e.source, targetNodeId: e.target })),
   );
 
   const currentTemplateIdx = TAXONOMY_TEMPLATES.findIndex((t) =>
-    matchesTemplate(dbNodes, dbEdges, t)
+    matchesTemplate(dbNodes, dbEdges, t),
   );
 
   let nodeDeleteDisabledReason: string | null = null;
   if (panel.type === "edit-node") {
     const nodeHasOutgoingEdges = dbEdges.some(
-      (e) => e.sourceNodeId === panel.node.id
+      (e) => e.sourceNodeId === panel.node.id,
     );
     nodeDeleteDisabledReason = nodeHasOutgoingEdges
       ? "This node has child connections. Removing it would restructure the graph unexpectedly — delete its outgoing edges first."
@@ -1030,15 +1220,33 @@ function TaxonomyCanvasInner({
               ↷
             </button>
           </Tooltip>
-          <Tooltip content={taxonomyIsRoutable ? "Export taxonomy" : "Add at least 3 connected categories to export"}>
+          <Tooltip
+            content={
+              taxonomyIsRoutable
+                ? "Export taxonomy"
+                : "Add at least 3 connected categories to export"
+            }
+          >
             <button
               className="btn-ghost"
               onClick={handleExport}
               disabled={submitting || !taxonomyIsRoutable}
               aria-label="Export taxonomy"
             >
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
-                <path d="M7 11V3M4 6L7 3L10 6M2 13H12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 14 14"
+                fill="none"
+                aria-hidden
+              >
+                <path
+                  d="M7 11V3M4 6L7 3L10 6M2 13H12"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
               </svg>
               Export
             </button>
@@ -1050,8 +1258,20 @@ function TaxonomyCanvasInner({
               disabled={submitting}
               aria-label="Import taxonomy"
             >
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
-                <path d="M7 3V11M4 8L7 11L10 8M2 13H12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 14 14"
+                fill="none"
+                aria-hidden
+              >
+                <path
+                  d="M7 3V11M4 8L7 11L10 8M2 13H12"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
               </svg>
               Import
             </button>
@@ -1066,8 +1286,19 @@ function TaxonomyCanvasInner({
               disabled={submitting}
               aria-label="Browse templates"
             >
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
-                <path d="M7 1.5L8.2 5.8L12.5 7L8.2 8.2L7 12.5L5.8 8.2L1.5 7L5.8 5.8Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 14 14"
+                fill="none"
+                aria-hidden
+              >
+                <path
+                  d="M7 1.5L8.2 5.8L12.5 7L8.2 8.2L7 12.5L5.8 8.2L1.5 7L5.8 5.8Z"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinejoin="round"
+                />
               </svg>
               Templates
             </button>
@@ -1095,16 +1326,30 @@ function TaxonomyCanvasInner({
         // updates the moment an edge connects a node to the inbox.
         const routableCount = countRoutableNonRootNodes(
           rfNodes.map((n) => ({ id: n.id, isRoot: n.data.node.isRoot })),
-          rfEdges.map((e) => ({ sourceNodeId: e.source, targetNodeId: e.target }))
+          rfEdges.map((e) => ({
+            sourceNodeId: e.source,
+            targetNodeId: e.target,
+          })),
         );
         if (routableCount >= TAXONOMY_MIN_NON_ROOT_NODES) return null;
         return (
-          <div className="warning-box" style={{ marginBottom: 12, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
+          <div
+            className="warning-box"
+            style={{
+              marginBottom: 12,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: 12,
+            }}
+          >
             <span>
               <span className="em-pill accent" style={{ marginRight: 8 }}>
                 {routableCount} / {TAXONOMY_MIN_NON_ROOT_NODES}
               </span>
-              {routableCount} of {TAXONOMY_MIN_NON_ROOT_NODES} categories connected to your inbox. Routing requires at least {TAXONOMY_MIN_NON_ROOT_NODES}.
+              {routableCount} of {TAXONOMY_MIN_NON_ROOT_NODES} categories
+              connected to your inbox. Routing requires at least{" "}
+              {TAXONOMY_MIN_NON_ROOT_NODES}.
             </span>
             {!readOnly && (
               <button
@@ -1115,8 +1360,19 @@ function TaxonomyCanvasInner({
                   setTemplatePickerOpen(true);
                 }}
               >
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
-                  <path d="M7 1.5L8.2 5.8L12.5 7L8.2 8.2L7 12.5L5.8 8.2L1.5 7L5.8 5.8Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 14 14"
+                  fill="none"
+                  aria-hidden
+                >
+                  <path
+                    d="M7 1.5L8.2 5.8L12.5 7L8.2 8.2L7 12.5L5.8 8.2L1.5 7L5.8 5.8Z"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinejoin="round"
+                  />
                 </svg>
                 Use a template
               </button>
@@ -1175,10 +1431,14 @@ function TaxonomyCanvasInner({
                 node={panel.node}
                 onSubmit={(data) => handleUpdateNode(panel.node.id, data)}
                 onCancel={() => setPanel({ type: "none" })}
-                onDelete={(moveToNodeId) => handleDeleteNode(panel.node.id, moveToNodeId)}
+                onDelete={(moveToNodeId) =>
+                  handleDeleteNode(panel.node.id, moveToNodeId)
+                }
                 deleteDisabledReason={nodeDeleteDisabledReason}
                 classificationCount={panel.node.threadCount}
-                otherNodes={dbNodes.filter((n) => n.id !== panel.node.id && !n.isRoot)}
+                otherNodes={dbNodes.filter(
+                  (n) => n.id !== panel.node.id && !n.isRoot,
+                )}
                 submitting={submitting}
                 error={formError}
               />
@@ -1246,9 +1506,9 @@ function TaxonomyCanvasInner({
               <p>
                 Importing will replace your current taxonomy with{" "}
                 <strong>{pendingImportFile.nodes.length} nodes</strong> and{" "}
-                <strong>{pendingImportFile.edges.length} edges</strong> from the file.
-                Threads that were sorted into removed categories will become unsorted.
-                This cannot be undone.
+                <strong>{pendingImportFile.edges.length} edges</strong> from the
+                file. Threads that were sorted into removed categories will
+                become unsorted. This cannot be undone.
               </p>
             </div>
             <div className="modal-footer">
@@ -1293,7 +1553,11 @@ function TaxonomyCanvasInner({
         >
           <div className="modal">
             <div className="modal-header">
-              <h2 className="modal-title">{taxonomyIsRoutable ? "Replace with a template" : "Start from a template"}</h2>
+              <h2 className="modal-title">
+                {taxonomyIsRoutable
+                  ? "Replace with a template"
+                  : "Start from a template"}
+              </h2>
               <button
                 className="modal-close"
                 aria-label="Cancel"
@@ -1305,13 +1569,22 @@ function TaxonomyCanvasInner({
                 ✕
               </button>
             </div>
-            <div className="modal-body" style={{ overflowY: "auto", maxHeight: "60vh" }}>
+            <div
+              className="modal-body"
+              style={{ overflowY: "auto", maxHeight: "60vh" }}
+            >
               <div className="option-cards">
                 {TAXONOMY_TEMPLATES.map((template, idx) => {
-                  const rootRef = template.file.nodes.find((n) => n.isRoot)?.ref;
+                  const rootRef = template.file.nodes.find(
+                    (n) => n.isRoot,
+                  )?.ref;
                   const topLevelNames = template.file.edges
                     .filter((e) => e.sourceRef === rootRef)
-                    .map((e) => template.file.nodes.find((n) => n.ref === e.targetRef)?.name)
+                    .map(
+                      (e) =>
+                        template.file.nodes.find((n) => n.ref === e.targetRef)
+                          ?.name,
+                    )
                     .filter((n): n is string => !!n);
                   const isSelected = selectedTemplateIdx === idx;
                   const isCurrent = currentTemplateIdx === idx;
@@ -1325,17 +1598,39 @@ function TaxonomyCanvasInner({
                       onClick={() => setSelectedTemplateIdx(idx)}
                     >
                       <span className="option-card-radio">
-                        {isSelected && <span className="option-card-radio-dot" />}
+                        {isSelected && (
+                          <span className="option-card-radio-dot" />
+                        )}
                       </span>
                       <span className="option-card-text">
-                        <span className="option-card-label" style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                        <span
+                          className="option-card-label"
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 6,
+                          }}
+                        >
                           {template.name}
-                          {isCurrent && <span className="em-pill">Current</span>}
+                          {isCurrent && (
+                            <span className="em-pill">Current</span>
+                          )}
                         </span>
-                        <span className="option-card-desc">{template.description}</span>
-                        <span style={{ display: "flex", flexWrap: "wrap", gap: 4, marginTop: 6 }}>
+                        <span className="option-card-desc">
+                          {template.description}
+                        </span>
+                        <span
+                          style={{
+                            display: "flex",
+                            flexWrap: "wrap",
+                            gap: 4,
+                            marginTop: 6,
+                          }}
+                        >
                           {topLevelNames.map((name) => (
-                            <span key={name} className="em-pill">{name}</span>
+                            <span key={name} className="em-pill">
+                              {name}
+                            </span>
                           ))}
                         </span>
                       </span>
@@ -1357,7 +1652,11 @@ function TaxonomyCanvasInner({
               <button
                 className="btn-primary"
                 onClick={handleUseTemplate}
-                disabled={selectedTemplateIdx === null || selectedTemplateIdx === currentTemplateIdx || submitting}
+                disabled={
+                  selectedTemplateIdx === null ||
+                  selectedTemplateIdx === currentTemplateIdx ||
+                  submitting
+                }
               >
                 Use template
               </button>
