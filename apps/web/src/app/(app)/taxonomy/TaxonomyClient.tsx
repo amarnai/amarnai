@@ -277,10 +277,11 @@ function NodeForm({
             onChange={(e) => setDescription(e.target.value)}
             required={!isRoot}
             maxLength={300}
+            placeholder="e.g. Invoices, receipts, payment confirmations, and billing questions from clients and vendors."
           />
           {!isRoot && (
             <p style={{ fontSize: 11, color: "var(--color-muted)", marginTop: 2 }}>
-              At least 30 non-whitespace characters. Descriptions improve AI sorting quality.
+              List the kinds of emails that belong here: senders, topics, keywords. At least 30 characters.
             </p>
           )}
         </div>
