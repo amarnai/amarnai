@@ -4,36 +4,36 @@ import { useState } from "react";
 
 const FAQ_ITEMS = [
   {
-    q: "What does Amarnai actually do to my Gmail?",
-    a: "Amarnai reads your threads using Gmail's read-only OAuth scope. It never sends email, never modifies labels directly, and never deletes anything. All writes (if any) require your explicit approval.",
+    q: "What does Amarnai do to my Gmail?",
+    a: "Amarnai connects with Gmail's read-only scope, so it can read your threads but cannot send, delete, label, or change anything in your account. All sorting happens inside Amarnai's own interface; your Gmail inbox is left untouched.",
   },
   {
     q: "How does the taxonomy work?",
-    a: "You define a tree of folders (like Customers → Support, Customers → Billing) and describe each in a sentence. Amarnai walks that tree and routes each thread to the best match. The model sees your descriptions, not your rules; you write plain English, not code.",
+    a: "You build a tree of folders (for example a Customers folder with Support and Billing beneath it) and describe each one in plain language. Amarnai walks the tree and routes each thread to the folder that best matches your descriptions. You write sentences, not rules or code.",
   },
   {
     q: "What happens to low-confidence threads?",
-    a: "Any thread below your confidence threshold lands in the review queue and waits for you. You see the reason and the top alternative. One click to approve, re-route, or ignore.",
+    a: "Any thread the model is unsure about is flagged for review instead of being filed automatically. Open it to see the suggested folder, the confidence score, and the reasoning, then approve the routing or send it to a different folder.",
   },
   {
     q: "Can Amarnai draft replies?",
-    a: "Yes. Open a thread and press Generate draft reply. A draft appears in the interface for your review. It is never sent automatically and never leaves Amarnai until you copy it into Gmail yourself.",
+    a: "Yes. Open a thread, press Generate draft reply, and a suggested draft appears in Amarnai for you to read and edit. Nothing is ever sent for you: when you are happy with it, you copy the text and paste it into Gmail yourself. Each plan includes a monthly draft allowance.",
   },
   {
     q: "How is pricing structured?",
-    a: "Pricing is per workspace, billed monthly or annually. Every workspace starts with a 14-day free trial, no card required. See the pricing page for current plan details.",
+    a: "Pricing is per workspace, billed monthly or annually. Every account starts with a free Personal workspace, no card required. The paid Pro and Business plans add higher limits and include a 14-day trial. See the pricing page for current details.",
   },
   {
     q: "Can I self-host Amarnai?",
-    a: "Yes. Amarnai is fully open source under AGPL-3.0. You can clone the repo and run it yourself with Docker. Self-hosted deployments are free and unsupported; community support is available on GitHub.",
+    a: "Yes. Amarnai is open source under the AGPL-3.0 license. You can clone the repository and run it yourself with Docker. Self-hosting is free and unsupported, with community support available on GitHub.",
   },
   {
     q: "What AI model does Amarnai use?",
-    a: "Hosted plans use frontier models (currently Claude). Self-hosted deployments can be configured to use any provider, including local Ollama for fully offline operation.",
+    a: "Hosted plans run on a frontier large language model. Self-hosted deployments can point at any OpenAI-compatible provider, such as OpenAI or Google Gemini, or a local Ollama model for fully offline operation.",
   },
   {
     q: "Does Amarnai store my email content?",
-    a: "Amarnai stores the minimum needed to sort and display threads: subject, participants, snippet, and AI-generated metadata. Full email bodies are processed in memory and not persisted. OAuth tokens are encrypted at rest.",
+    a: "Amarnai keeps only what it needs to sort and display threads: subjects, participants, snippets, and the labels and reasoning it generates. Full message bodies are fetched from Gmail when needed and processed in memory, not stored. OAuth tokens are encrypted at rest.",
   },
 ];
 
