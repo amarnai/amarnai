@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description: "How Amarnai collects, uses, and protects your data.",
 };
 
-const LAST_UPDATED = "June 11, 2026";
+const LAST_UPDATED = "June 16, 2026";
 
 export default function PrivacyPage() {
   return (
@@ -122,10 +122,11 @@ export default function PrivacyPage() {
 
       <h2>Data Retention</h2>
       <p>
-        Thread metadata and content is retained while your account is active and for up
-        to 30 days after account deletion, to allow recovery from accidental deletion.
+        Thread metadata and content is retained while your account is active. When you
+        delete your account, all of your data, including thread metadata and content, is
+        permanently deleted as part of the deletion request, with no recovery period.
         OAuth tokens are deleted immediately upon Gmail disconnection or account
-        deletion.
+        deletion. Deletion is permanent and cannot be undone.
       </p>
 
       <h2>Your Rights and Data Deletion</h2>
@@ -138,7 +139,8 @@ export default function PrivacyPage() {
         </li>
         <li>
           <strong>Delete your account:</strong> go to Settings and click &ldquo;Delete
-          account&rdquo;. All your data is permanently deleted within 30 days.
+          account&rdquo;. All your data is permanently and immediately deleted. This
+          cannot be undone.
         </li>
         <li>
           <strong>Revoke Google access directly:</strong> visit{" "}

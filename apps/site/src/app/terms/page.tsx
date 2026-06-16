@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description: "Terms governing your use of Amarnai.",
 };
 
-const LAST_UPDATED = "June 11, 2026";
+const LAST_UPDATED = "June 16, 2026";
 
 export default function TermsPage() {
   return (
@@ -117,8 +117,9 @@ export default function TermsPage() {
       <h2>Termination</h2>
       <p>
         You may stop using the Service and delete your account at any time from
-        Settings. We may suspend or terminate your account if you violate these Terms,
-        with notice where reasonably practicable.
+        Settings. Deleting your account permanently removes your data as described in
+        our <a href="/privacy">Privacy Policy</a>. We may suspend or terminate your
+        account if you violate these Terms, with notice where reasonably practicable.
       </p>
 
       <h2>Changes to These Terms</h2>
