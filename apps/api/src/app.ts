@@ -32,6 +32,18 @@ import { gmailWebhookRoute } from "./routes/gmail-webhook.js";
 import { gmailWatchRoute } from "./routes/gmail-watch.js";
 import { workspaceEventsRoute } from "./routes/workspace-events.js";
 
+// Endpoints that authenticate themselves and must skip the bearer-token check.
+// An explicit allowlist (not an "/auth/" prefix match) so a future /auth/* route
+// cannot accidentally become public.
+const PUBLIC_PATHS = new Set([
+  "/health",
+  "/webhooks/gmail",
+  "/auth/login",
+  "/auth/google",
+  "/auth/refresh",
+  "/auth/logout",
+]);
+
 const app = new Hono<AppEnv>();
 
 app.use("*", cors({ origin: process.env["CORS_ORIGIN"] ?? "http://localhost:3000" }));
@@ -44,14 +56,9 @@ app.use("/auth/google", rateLimit({ limit: 20, windowSeconds: 900, prefix: "goog
 app.use("/auth/refresh", rateLimit({ limit: 60, windowSeconds: 900, prefix: "refresh" }));
 
 app.use("*", async (c, next) => {
-  // Public endpoints that authenticate themselves: the health check, the Gmail
-  // Pub/Sub webhook, and the /auth/* endpoints (which mint tokens and therefore
-  // cannot require one).
-  if (
-    c.req.path === "/health" ||
-    c.req.path === "/webhooks/gmail" ||
-    c.req.path.startsWith("/auth/")
-  ) {
+  // Public endpoints that authenticate themselves (health check, Gmail Pub/Sub
+  // webhook, and the token-minting /auth endpoints).
+  if (PUBLIC_PATHS.has(c.req.path)) {
     return next();
   }
 

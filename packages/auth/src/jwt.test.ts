@@ -29,10 +29,24 @@ describe("access tokens", () => {
     const wrongType = await new SignJWT({ typ: "refresh" })
       .setProtectedHeader({ alg: "HS256" })
       .setSubject("user-123")
+      .setIssuer("amarnai")
+      .setAudience("amarnai-api")
       .setIssuedAt()
       .setExpirationTime("15m")
       .sign(SECRET);
     expect(await verifyAccessToken(wrongType)).toBeNull();
+  });
+
+  it("rejects a token with the wrong audience", async () => {
+    const wrongAud = await new SignJWT({ typ: "access" })
+      .setProtectedHeader({ alg: "HS256" })
+      .setSubject("user-123")
+      .setIssuer("amarnai")
+      .setAudience("some-other-service")
+      .setIssuedAt()
+      .setExpirationTime("15m")
+      .sign(SECRET);
+    expect(await verifyAccessToken(wrongAud)).toBeNull();
   });
 
   it("rejects an expired token", async () => {
