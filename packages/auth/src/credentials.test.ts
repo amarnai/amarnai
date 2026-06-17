@@ -4,7 +4,6 @@ import bcrypt from "bcryptjs";
 vi.mock("@amarnai/db", () => ({
   db: {
     user: { findUnique: vi.fn() },
-    userCredential: { findUnique: vi.fn() },
   },
 }));
 
@@ -21,15 +20,21 @@ beforeEach(async () => {
 
 describe("verifyCredentials", () => {
   it("returns the user id for a correct password", async () => {
-    vi.mocked(db.user.findUnique).mockResolvedValue({ id: "user-1" } as never);
-    vi.mocked(db.userCredential.findUnique).mockResolvedValue({ passwordHash } as never);
+    vi.mocked(db.user.findUnique).mockResolvedValue({
+      id: "user-1",
+      credential: { passwordHash },
+    } as never);
 
     expect(await verifyCredentials("a@b.com", PASSWORD)).toBe("user-1");
+    // Single round-trip (credential fetched via the relation).
+    expect(db.user.findUnique).toHaveBeenCalledTimes(1);
   });
 
   it("returns null for a wrong password", async () => {
-    vi.mocked(db.user.findUnique).mockResolvedValue({ id: "user-1" } as never);
-    vi.mocked(db.userCredential.findUnique).mockResolvedValue({ passwordHash } as never);
+    vi.mocked(db.user.findUnique).mockResolvedValue({
+      id: "user-1",
+      credential: { passwordHash },
+    } as never);
 
     expect(await verifyCredentials("a@b.com", "wrong")).toBeNull();
   });
@@ -37,12 +42,13 @@ describe("verifyCredentials", () => {
   it("returns null for an unknown user", async () => {
     vi.mocked(db.user.findUnique).mockResolvedValue(null);
     expect(await verifyCredentials("missing@b.com", PASSWORD)).toBeNull();
-    expect(db.userCredential.findUnique).not.toHaveBeenCalled();
   });
 
   it("returns null for a Google-only account with no password set", async () => {
-    vi.mocked(db.user.findUnique).mockResolvedValue({ id: "user-1" } as never);
-    vi.mocked(db.userCredential.findUnique).mockResolvedValue(null);
+    vi.mocked(db.user.findUnique).mockResolvedValue({
+      id: "user-1",
+      credential: null,
+    } as never);
 
     expect(await verifyCredentials("a@b.com", PASSWORD)).toBeNull();
   });
