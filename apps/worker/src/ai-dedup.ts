@@ -1,13 +1,20 @@
 import { config } from "@amarnai/config";
 import { createRedisSingleton } from "./redis-singleton.js";
 
-// Retry de-duplication memo for paid AI calls.
+// De-duplication memo for paid AI calls. Two key shapes share one cache:
 //
-// A `classify-thread` job runs with attempts: 3. Paid AI calls (e.g. the thread
-// embedding) happen before the steps that most often fail, so a retry would
-// re-pay for work the previous attempt already completed. This module memoizes
-// a derived value (an embedding vector, a validated decision) under a key tied
-// to the BullMQ jobId, so the same job reads it back instead of re-paying.
+//   buildDedupKey        — tied to the BullMQ jobId. Survives only retries of
+//                          the same job. Used for the cross-branch LLM decision,
+//                          whose result depends on the taxonomy at sort time and
+//                          so must not be reused across re-sorts.
+//   buildEmbeddingCacheKey — content-addressed (thread text hash + model). The
+//                          same thread content embedded by any later re-sort —
+//                          a re-route after a taxonomy edit, a resume, a retry —
+//                          reads the vector back instead of re-paying.
+//
+// A `classify-thread` job runs with attempts: 3. Paid AI calls happen before the
+// steps that most often fail, so a retry would otherwise re-pay for work the
+// previous attempt already completed; both key shapes cover that case.
 //
 // Fails OPEN: any Redis error falls through to recomputing. A dead Redis must
 // never crash a job — it only forfeits the cost saving.
@@ -23,11 +30,25 @@ import { createRedisSingleton } from "./redis-singleton.js";
 // falling open. enableOfflineQueue: false rejects immediately when
 // disconnected, and commandTimeout bounds a slow-but-connected server. All such
 // errors land in the try/catch around get/set and trigger recompute.
-const cache = createRedisSingleton(config.redis.url, "ai-dedup", {
-  maxRetriesPerRequest: 1,
-  enableOfflineQueue: false,
-  commandTimeout: 1_000,
-});
+//
+// Memory isolation from BullMQ: at backfill scale the embedding cache can hold
+// one ~KB-scale vector per thread for the full TTL. Set AI_CACHE_REDIS_URL to a
+// dedicated instance so this cache can never evict BullMQ queue/job data under
+// memory pressure. A separate logical DB on the same instance does NOT help —
+// maxmemory and eviction are instance-wide. When the cache must share the main
+// instance (the default), every entry we write carries a TTL (EX) while BullMQ's
+// queue/job keys do not, so configuring that instance with
+// `maxmemory-policy volatile-lru` confines eviction to our cache and protects
+// BullMQ. allkeys-* policies, by contrast, can drop jobs.
+const cache = createRedisSingleton(
+  config.redis.aiCacheUrl ?? config.redis.url,
+  "ai-dedup",
+  {
+    maxRetriesPerRequest: 1,
+    enableOfflineQueue: false,
+    commandTimeout: 1_000,
+  },
+);
 
 export async function closeAiDedup(): Promise<void> {
   await cache.close();
@@ -35,8 +56,18 @@ export async function closeAiDedup(): Promise<void> {
 
 // Long enough to outlast a full 3-attempt retry window (exponential backoff plus
 // up to lockDuration 300s per attempt), short enough that stale derived vectors
-// expire promptly. The single tunable in this module.
+// expire promptly. Default TTL for jobId-scoped (retry) memos.
 const TTL_SECONDS = 900;
+
+// Thread embedding cache TTL. Far longer than the retry window because the
+// entry is content-addressed (buildEmbeddingCacheKey): a re-sort of unchanged
+// thread content reads it back instead of re-embedding. Bounded at 6h to cap
+// Redis memory — at backfill scale the cache holds one vector per embedded
+// thread and shares the instance with BullMQ, so eviction of job data is the
+// risk. 6h covers a taxonomy-setup / bulk re-route working session; raise it to
+// trade memory for a longer reuse window. Fails open, so eviction only forfeits
+// a cost saving. This is the single tunable for the embedding cache.
+export const THREAD_EMBEDDING_TTL_SECONDS = 6 * 60 * 60;
 
 /**
  * Build a workspace-scoped dedup key tied to the BullMQ jobId, a step name, and
@@ -51,6 +82,21 @@ export function buildDedupKey(
 ): string | null {
   if (!jobId) return null;
   return `aidedup:${workspaceId}:${jobId}:${step}:${model}`;
+}
+
+/**
+ * Build a content-addressed embedding cache key: workspace + model + a hash of
+ * the embedded text. Unlike buildDedupKey this is not tied to a jobId, so the
+ * same content embedded by a later re-sort hits the same entry. `contentHash`
+ * should already fold in the model (e.g. hashEmbeddingInput(text, model)); the
+ * model is repeated in the key only for readability and namespacing.
+ */
+export function buildEmbeddingCacheKey(
+  workspaceId: string,
+  contentHash: string,
+  model: string,
+): string {
+  return `aiembed:${workspaceId}:${model}:${contentHash}`;
 }
 
 export type MemoCodec<T> = {
@@ -75,6 +121,7 @@ export type MemoCodec<T> = {
 export async function memoizeAcrossRetries<T>(
   key: string | null,
   codec: MemoCodec<T>,
+  ttlSeconds: number = TTL_SECONDS,
 ): Promise<T> {
   if (key === null) return codec.compute();
 
@@ -92,7 +139,7 @@ export async function memoizeAcrossRetries<T>(
 
   if (codec.shouldCache === undefined || codec.shouldCache(value)) {
     try {
-      await cache.get().set(key, codec.serialize(value), "EX", TTL_SECONDS);
+      await cache.get().set(key, codec.serialize(value), "EX", ttlSeconds);
     } catch (err) {
       console.error("[ai-dedup] Write failed, ignoring:", (err as Error).message);
     }

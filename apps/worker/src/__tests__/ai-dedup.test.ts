@@ -25,6 +25,7 @@ vi.mock("@amarnai/config", () => ({
 
 import {
   buildDedupKey,
+  buildEmbeddingCacheKey,
   memoizeAcrossRetries,
   parseVector,
   type MemoCodec,
@@ -61,6 +62,22 @@ describe("buildDedupKey", () => {
   });
 });
 
+// ─── buildEmbeddingCacheKey ──────────────────────────────────────────────────────
+
+describe("buildEmbeddingCacheKey", () => {
+  it("builds a content-addressed key scoped by workspace, model, and hash", () => {
+    expect(buildEmbeddingCacheKey("ws-1", "abc123", "model-x")).toBe(
+      "aiembed:ws-1:model-x:abc123",
+    );
+  });
+
+  it("is independent of any jobId: same content yields the same key", () => {
+    const a = buildEmbeddingCacheKey("ws-1", "abc123", "model-x");
+    const b = buildEmbeddingCacheKey("ws-1", "abc123", "model-x");
+    expect(a).toBe(b);
+  });
+});
+
 // ─── memoizeAcrossRetries ────────────────────────────────────────────────────────
 
 describe("memoizeAcrossRetries", () => {
@@ -74,6 +91,15 @@ describe("memoizeAcrossRetries", () => {
     expect(compute).toHaveBeenCalledOnce();
     expect(mockSet).toHaveBeenCalledOnce();
     expect(mockSet).toHaveBeenCalledWith("k", JSON.stringify(VECTOR), "EX", 900);
+  });
+
+  it("uses a caller-supplied TTL when provided (overrides the default)", async () => {
+    mockGet.mockResolvedValue(null);
+    const compute = vi.fn().mockResolvedValue(VECTOR);
+
+    await memoizeAcrossRetries("k", vectorCodec(compute), 21600);
+
+    expect(mockSet).toHaveBeenCalledWith("k", JSON.stringify(VECTOR), "EX", 21600);
   });
 
   it("hit: returns the cached value without calling compute", async () => {

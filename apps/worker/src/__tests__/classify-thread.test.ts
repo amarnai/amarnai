@@ -52,6 +52,7 @@ vi.mock("@amarnai/ai", () => ({
   classifyTriageByEmbedding: mockClassifyTriageByEmbedding,
   snapshotToThreadMessages: mockSnapshotToThreadMessages,
   buildThreadEmbeddingText: mockBuildThreadEmbeddingText,
+  hashEmbeddingInput: vi.fn().mockReturnValue("content-hash"),
   getRoutingAIProviderConfig: vi.fn().mockReturnValue({}),
   getEmbeddingProviderConfig: vi.fn().mockReturnValue({}),
 }));
@@ -89,10 +90,12 @@ vi.mock("../queues.js", () => ({ QUEUE_CLASSIFY_THREAD: "classify-thread" }));
 // Dedup behavior itself is covered in ai-dedup.test.ts.
 vi.mock("../ai-dedup.js", () => ({
   buildDedupKey: vi.fn().mockReturnValue("dedup-key"),
+  buildEmbeddingCacheKey: vi.fn().mockReturnValue("embed-key"),
   memoizeAcrossRetries: vi.fn(
     (_key: string | null, codec: { compute: () => Promise<unknown> }) => codec.compute(),
   ),
   parseVector: vi.fn(),
+  THREAD_EMBEDDING_TTL_SECONDS: 21600,
 }));
 
 // ─── Import after mocks ───────────────────────────────────────────────────────

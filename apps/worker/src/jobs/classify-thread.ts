@@ -9,6 +9,7 @@ import {
   analyzeThreadTriage,
   classifyTriageByEmbedding,
   buildThreadEmbeddingText,
+  hashEmbeddingInput,
   snapshotToThreadMessages,
   EmbeddingModelNotFoundError,
   LLMAuthenticationError,
@@ -20,7 +21,13 @@ import {
   type ClassifyThreadJobData,
 } from "../queues.js";
 import { redisConnection } from "../redis.js";
-import { buildDedupKey, memoizeAcrossRetries, parseVector } from "../ai-dedup.js";
+import {
+  buildDedupKey,
+  buildEmbeddingCacheKey,
+  memoizeAcrossRetries,
+  parseVector,
+  THREAD_EMBEDDING_TTL_SECONDS,
+} from "../ai-dedup.js";
 import { getRoutingAIProviderConfig, getEmbeddingProviderConfig } from "@amarnai/ai";
 import { isTaxonomyRoutable } from "@amarnai/shared";
 
@@ -284,27 +291,33 @@ export function createClassifyThreadWorker(): Worker {
             messages.map((m) => ({ subject: m.subject, bodyText: m.bodyText }))
           );
 
-          // Memoize the thread embedding across this job's retries so a failure
-          // after this point doesn't re-pay for the embedding on the next attempt.
-          // Fails open: Redis trouble just recomputes (see ai-dedup.ts).
-          const dedupKey = buildDedupKey(
+          // Cache the thread embedding content-addressed by text hash + model,
+          // not by jobId. Any later re-sort of unchanged content — a re-route
+          // after a taxonomy edit, a resume, or a retry of this job — reads the
+          // vector back instead of re-paying the embedding cost. The TTL bounds
+          // Redis memory (see THREAD_EMBEDDING_TTL_SECONDS). Fails open: Redis
+          // trouble just recomputes (see ai-dedup.ts).
+          const embeddingCacheKey = buildEmbeddingCacheKey(
             workspaceId,
-            job.id,
-            "thread-embedding",
+            hashEmbeddingInput(threadText, embeddingProvider.modelName),
             embeddingProvider.modelName,
           );
-          const threadVector = await memoizeAcrossRetries<number[]>(dedupKey, {
-            compute: async () => {
-              const [v] = await embeddingProvider.embed([threadText]);
-              return v ?? [];
+          const threadVector = await memoizeAcrossRetries<number[]>(
+            embeddingCacheKey,
+            {
+              compute: async () => {
+                const [v] = await embeddingProvider.embed([threadText]);
+                return v ?? [];
+              },
+              serialize: (v) => JSON.stringify(v),
+              deserialize: parseVector,
+              // Never cache an empty vector: it's a failed embed, and caching it
+              // would skip the outer embed on the next attempt while the sorter
+              // re-embeds anyway. Leaving it uncached lets a retry re-embed cleanly.
+              shouldCache: (v) => v.length > 0,
             },
-            serialize: (v) => JSON.stringify(v),
-            deserialize: parseVector,
-            // Never memoize an empty vector: it's a failed embed, and caching it
-            // would skip the outer embed on retry while the sorter re-embeds
-            // anyway. Leaving it uncached lets the next attempt re-embed cleanly.
-            shouldCache: (v) => v.length > 0,
-          });
+            THREAD_EMBEDDING_TTL_SECONDS,
+          );
 
           await job.updateProgress(45);
 

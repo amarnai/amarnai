@@ -7,6 +7,13 @@ const envSchema = z.object({
   API_PORT: z.string().default('3001'),
   WORKER_PORT: z.string().default('3002'),
   REDIS_URL: z.string().default('redis://localhost:6379'),
+  // Optional dedicated Redis for the best-effort AI cache (embedding vectors,
+  // dedup memos). Point this at a separate instance in production so the cache
+  // can never evict BullMQ queue/job data under memory pressure — separate
+  // logical DBs do NOT help, since maxmemory and eviction are instance-wide.
+  // When unset, the cache shares REDIS_URL; see ai-dedup.ts for the eviction
+  // guidance that applies in that shared case.
+  AI_CACHE_REDIS_URL: z.string().optional(),
   INBOX_SYNC_INTERVAL_MS: z.string().default('300000'), // 5 minutes
   AI_PROVIDER: z.enum(['mock', 'ollama', 'frontier']).default('mock'),
   ENABLE_DEV_TOOLS: boolStr,
@@ -102,6 +109,8 @@ export const config = {
   },
   redis: {
     url: env.REDIS_URL,
+    // Dedicated AI-cache instance when set; otherwise the cache shares `url`.
+    aiCacheUrl: env.AI_CACHE_REDIS_URL,
   },
   ai: {
     provider: env.AI_PROVIDER,
