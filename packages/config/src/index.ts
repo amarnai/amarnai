@@ -46,6 +46,9 @@ const envSchema = z.object({
   // Distinct from INTERNAL_API_SECRET (service-to-service) and AUTH_SECRET
   // (next-auth web session). Generate with: openssl rand -hex 32
   AUTH_JWT_SECRET: z.string().optional(),
+  // Set to 'true' to turn off per-IP rate limiting on the /auth/* endpoints.
+  // Intended only for self-host setups that throttle at the proxy layer.
+  AUTH_RATE_LIMIT_DISABLED: boolStr,
   // Gmail Push Notifications via Google Cloud Pub/Sub.
   // When set, Gmail pushes change notifications in real time instead of waiting
   // for the polling interval. Both vars must be set together.
@@ -155,6 +158,9 @@ export const config = {
   },
   internalApiSecret: env.INTERNAL_API_SECRET ?? 'dev-internal-secret',
   authJwtSecret: env.AUTH_JWT_SECRET ?? 'dev-auth-jwt-secret',
+  authRateLimit: {
+    disabled: env.AUTH_RATE_LIMIT_DISABLED,
+  },
   gmail: {
     pubsubTopic: env.GMAIL_PUBSUB_TOPIC,
     webhookSecret: env.GMAIL_PUBSUB_WEBHOOK_SECRET,

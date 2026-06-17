@@ -6,6 +6,7 @@ import { db } from "@amarnai/db";
 import { verifyAccessToken } from "@amarnai/auth";
 import type { MiddlewareHandler } from "hono";
 import type { AppEnv } from "./env.js";
+import { rateLimit } from "./services/rate-limit.js";
 import { healthRoute } from "./routes/health.js";
 import { authRoute } from "./routes/auth.js";
 import { workspacesRoute } from "./routes/workspaces.js";
@@ -34,6 +35,13 @@ import { workspaceEventsRoute } from "./routes/workspace-events.js";
 const app = new Hono<AppEnv>();
 
 app.use("*", cors({ origin: process.env["CORS_ORIGIN"] ?? "http://localhost:3000" }));
+
+// Per-IP rate limiting on the public auth endpoints (the only token-less surface).
+// Login is the tightest since it is the password brute-force target; refresh is
+// looser because legitimate clients refresh periodically.
+app.use("/auth/login", rateLimit({ limit: 10, windowSeconds: 900, prefix: "login" }));
+app.use("/auth/google", rateLimit({ limit: 20, windowSeconds: 900, prefix: "google" }));
+app.use("/auth/refresh", rateLimit({ limit: 60, windowSeconds: 900, prefix: "refresh" }));
 
 app.use("*", async (c, next) => {
   // Public endpoints that authenticate themselves: the health check, the Gmail
