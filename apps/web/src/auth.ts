@@ -2,9 +2,8 @@ import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 import Credentials from "next-auth/providers/credentials";
 import { verifyCredentials, provisionGoogleUser } from "@amarnai/auth";
+import { GMAIL_READONLY_SCOPE } from "@amarnai/gmail";
 import { db } from "@amarnai/db";
-
-const GMAIL_SCOPE = "https://www.googleapis.com/auth/gmail.readonly";
 
 export const { handlers, auth, signIn, signOut, unstable_update } = NextAuth({
   providers: [
@@ -13,7 +12,7 @@ export const { handlers, auth, signIn, signOut, unstable_update } = NextAuth({
       clientSecret: process.env["AUTH_GOOGLE_SECRET"] ?? "",
       authorization: {
         params: {
-          scope: `openid email profile ${GMAIL_SCOPE}`,
+          scope: `openid email profile ${GMAIL_READONLY_SCOPE}`,
           access_type: "offline",
           prompt: "select_account",
         },

@@ -7,11 +7,17 @@ import {
   revokeRefreshToken,
   verifyCredentials,
   provisionGoogleUser,
+  type IssuedRefreshToken,
 } from "@amarnai/auth";
-import { exchangeAuthCode, fetchGmailProfile, fetchGoogleUserInfo, GmailApiError, type GoogleUserInfo } from "@amarnai/gmail";
+import {
+  exchangeAuthCode,
+  fetchGmailProfile,
+  fetchGoogleUserInfo,
+  GmailApiError,
+  GMAIL_READONLY_SCOPE,
+  type GoogleUserInfo,
+} from "@amarnai/gmail";
 import { syncInboxQueue } from "../services/queue-client.js";
-
-const GMAIL_SCOPE = "https://www.googleapis.com/auth/gmail.readonly";
 
 const loginSchema = z.object({
   email: z.string().email(),
@@ -38,16 +44,20 @@ type TokenPair = {
   refreshTokenExpiresAt: string;
 };
 
-async function issueTokenPair(userId: string): Promise<TokenPair> {
-  const [accessToken, refresh] = await Promise.all([
-    issueAccessToken(userId),
-    issueRefreshToken(userId),
-  ]);
+function tokenPairResponse(accessToken: string, refresh: IssuedRefreshToken): TokenPair {
   return {
     accessToken,
     refreshToken: refresh.token,
     refreshTokenExpiresAt: refresh.expiresAt.toISOString(),
   };
+}
+
+async function issueTokenPair(userId: string): Promise<TokenPair> {
+  const [accessToken, refresh] = await Promise.all([
+    issueAccessToken(userId),
+    issueRefreshToken(userId),
+  ]);
+  return tokenPairResponse(accessToken, refresh);
 }
 
 // Email/password login for native clients. Returns a short-lived access token
@@ -88,7 +98,7 @@ auth.post("/auth/google", async (c) => {
 
   // Enforce the read-only scope before storing anything or calling Gmail.
   const grantedScopes = tokens.scope.split(" ");
-  if (!grantedScopes.includes(GMAIL_SCOPE)) {
+  if (!grantedScopes.includes(GMAIL_READONLY_SCOPE)) {
     return c.json({ error: "Gmail read access was not granted" }, 403);
   }
 
@@ -142,11 +152,7 @@ auth.post("/auth/refresh", async (c) => {
   if (!rotated) return c.json({ error: "Invalid refresh token" }, 401);
 
   const accessToken = await issueAccessToken(rotated.userId);
-  return c.json({
-    accessToken,
-    refreshToken: rotated.refresh.token,
-    refreshTokenExpiresAt: rotated.refresh.expiresAt.toISOString(),
-  });
+  return c.json(tokenPairResponse(accessToken, rotated.refresh));
 });
 
 // Sign-out: revokes the refresh token. Idempotent — an already-invalid token

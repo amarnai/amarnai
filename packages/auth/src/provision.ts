@@ -1,8 +1,6 @@
 import { db } from "@amarnai/db";
-import { encrypt, fetchGmailProfile } from "@amarnai/gmail";
+import { encrypt, fetchGmailProfile, GMAIL_READONLY_SCOPE } from "@amarnai/gmail";
 import { getOrCreateDefaultWorkspace } from "./workspace.js";
-
-const GMAIL_SCOPE = "https://www.googleapis.com/auth/gmail.readonly";
 
 export type ProvisionGoogleUserInput = {
   email: string;
@@ -67,7 +65,7 @@ export async function provisionGoogleUser(
     const workspace = await getOrCreateDefaultWorkspace(user.id);
     const profile = await fetchGmailProfile(input.gmailAccessToken);
     const encryptedRefreshToken = encrypt(input.gmailRefreshToken);
-    const grantedScopes = input.grantedScopes ?? [GMAIL_SCOPE];
+    const grantedScopes = input.grantedScopes ?? [GMAIL_READONLY_SCOPE];
 
     await db.gmailConnection.upsert({
       where: { workspaceId: workspace.id },

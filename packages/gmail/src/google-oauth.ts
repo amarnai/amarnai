@@ -3,6 +3,11 @@
 // and the consent-URL builder — stay in apps/web/src/lib/gmail-oauth.ts.
 import type { GmailProfile } from "./gmail-client.js";
 
+// The minimum Gmail scope for the triage MVP. Single source of truth, shared by
+// the web OAuth flow, the API, and provisioning. Will expand to modify/send when
+// compose/send ship.
+export const GMAIL_READONLY_SCOPE = "https://www.googleapis.com/auth/gmail.readonly";
+
 const GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token";
 // v1 tokeninfo is used (not v3) because v3 uses `sub` which is only reliably
 // populated for ID tokens. v1 returns `user_id` for any valid access token.

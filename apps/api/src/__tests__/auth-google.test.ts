@@ -15,6 +15,7 @@ vi.mock("@amarnai/gmail", () => {
     exchangeAuthCode: vi.fn(),
     fetchGmailProfile: vi.fn(),
     fetchGoogleUserInfo: vi.fn(),
+    GMAIL_READONLY_SCOPE: "https://www.googleapis.com/auth/gmail.readonly",
     GmailApiError,
     GmailClient,
     decrypt: vi.fn(),

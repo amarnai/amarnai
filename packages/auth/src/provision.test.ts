@@ -11,6 +11,7 @@ vi.mock("@amarnai/db", () => ({
 vi.mock("@amarnai/gmail", () => ({
   encrypt: vi.fn((v: string) => `enc(${v})`),
   fetchGmailProfile: vi.fn(),
+  GMAIL_READONLY_SCOPE: "https://www.googleapis.com/auth/gmail.readonly",
 }));
 
 vi.mock("./workspace.js", () => ({

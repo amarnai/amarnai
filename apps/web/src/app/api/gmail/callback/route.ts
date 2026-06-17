@@ -6,9 +6,8 @@ import {
   fetchGmailProfile,
 } from "@/lib/gmail-oauth";
 import { encrypt } from "@/lib/encryption";
+import { GMAIL_READONLY_SCOPE } from "@amarnai/gmail";
 import { db } from "@amarnai/db";
-
-const GMAIL_SCOPE = "https://www.googleapis.com/auth/gmail.readonly";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
@@ -70,7 +69,7 @@ export async function GET(req: NextRequest) {
 
   // Enforce read-only scope before making any Gmail API calls.
   const grantedScopes = tokens.scope.split(" ");
-  if (!grantedScopes.includes(GMAIL_SCOPE)) {
+  if (!grantedScopes.includes(GMAIL_READONLY_SCOPE)) {
     console.error("[gmail/callback] insufficient_scope granted:", tokens.scope);
     settingsUrl.searchParams.set("gmail_error", "insufficient_scope");
     return NextResponse.redirect(settingsUrl);

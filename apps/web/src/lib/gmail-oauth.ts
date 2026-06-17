@@ -1,5 +1,6 @@
 import crypto from "crypto";
 import {
+  GMAIL_READONLY_SCOPE,
   GmailApiError,
   exchangeAuthCode,
   fetchGmailProfile,
@@ -15,7 +16,6 @@ export type { GmailProfile, GmailTokens };
 
 const GOOGLE_AUTH_URL = "https://accounts.google.com/o/oauth2/v2/auth";
 const GMAIL_THREADS_URL = "https://gmail.googleapis.com/gmail/v1/users/me/threads";
-const GMAIL_SCOPE = "https://www.googleapis.com/auth/gmail.readonly";
 
 function getCallbackUrl(): string {
   return process.env["GMAIL_OAUTH_CALLBACK_URL"] ?? "http://localhost:3000/api/gmail/callback";
@@ -95,7 +95,7 @@ export function buildGmailAuthUrl(state: string): string {
     client_id: process.env["AUTH_GOOGLE_ID"] ?? "",
     redirect_uri: getCallbackUrl(),
     response_type: "code",
-    scope: GMAIL_SCOPE,
+    scope: GMAIL_READONLY_SCOPE,
     access_type: "offline",
     prompt: "consent",
     state,

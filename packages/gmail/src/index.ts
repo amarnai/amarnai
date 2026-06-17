@@ -9,6 +9,7 @@ export type { GmailProfile, GmailHistoryResult, GmailThreadMeta, GmailWatchResul
 export { normalizeGmailThread } from "./gmail-thread-adapter.js";
 export type { RawGmailThread } from "./gmail-thread-adapter.js";
 export {
+  GMAIL_READONLY_SCOPE,
   GmailApiError,
   exchangeAuthCode,
   fetchGmailProfile,
