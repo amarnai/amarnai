@@ -67,23 +67,19 @@ export async function provisionGoogleUser(
     const encryptedRefreshToken = encrypt(input.gmailRefreshToken);
     const grantedScopes = input.grantedScopes ?? [GMAIL_READONLY_SCOPE];
 
+    // Shared between create and update; only the create needs the workspace key.
+    const connectionData = {
+      gmailAddress: profile.emailAddress,
+      encryptedRefreshToken,
+      grantedScopes,
+      status: "ACTIVE" as const,
+      lastVerifiedAt: new Date(),
+    };
+
     await db.gmailConnection.upsert({
       where: { workspaceId: workspace.id },
-      create: {
-        workspaceId: workspace.id,
-        gmailAddress: profile.emailAddress,
-        encryptedRefreshToken,
-        grantedScopes,
-        status: "ACTIVE",
-        lastVerifiedAt: new Date(),
-      },
-      update: {
-        gmailAddress: profile.emailAddress,
-        encryptedRefreshToken,
-        grantedScopes,
-        status: "ACTIVE",
-        lastVerifiedAt: new Date(),
-      },
+      create: { workspaceId: workspace.id, ...connectionData },
+      update: connectionData,
     });
 
     return { userId: user.id, workspaceId: workspace.id, isNew, gmailConnected: true };
