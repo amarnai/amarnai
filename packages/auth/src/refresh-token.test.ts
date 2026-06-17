@@ -13,7 +13,12 @@ vi.mock("@amarnai/db", () => ({
 }));
 
 import { db } from "@amarnai/db";
-import { issueRefreshToken, rotateRefreshToken, revokeRefreshToken } from "./refresh-token.js";
+import {
+  issueRefreshToken,
+  rotateRefreshToken,
+  revokeRefreshToken,
+  deleteExpiredRefreshTokens,
+} from "./refresh-token.js";
 
 const sha256 = (raw: string) => createHash("sha256").update(raw).digest("hex");
 
@@ -132,5 +137,16 @@ describe("revokeRefreshToken", () => {
     vi.mocked(db.refreshToken.findUnique).mockResolvedValue(null);
     await revokeRefreshToken("nope");
     expect(db.refreshToken.deleteMany).not.toHaveBeenCalled();
+  });
+});
+
+describe("deleteExpiredRefreshTokens", () => {
+  it("deletes rows past their expiry and returns the count", async () => {
+    vi.mocked(db.refreshToken.deleteMany).mockResolvedValue({ count: 3 } as never);
+    const removed = await deleteExpiredRefreshTokens();
+    expect(removed).toBe(3);
+    expect(db.refreshToken.deleteMany).toHaveBeenCalledWith({
+      where: { expiresAt: { lt: expect.any(Date) } },
+    });
   });
 });

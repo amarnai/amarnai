@@ -1,6 +1,7 @@
 import { db } from "@amarnai/db";
 import { config } from "@amarnai/config";
 import { GmailClient, GmailAuthError } from "@amarnai/gmail";
+import { deleteExpiredRefreshTokens } from "@amarnai/auth";
 import {
   createEmbeddingProvider,
   getEmbeddingProviderConfig,
@@ -231,6 +232,22 @@ async function main(): Promise<void> {
     console.log("[worker] Gmail push notifications active — watch renewal scheduled daily");
   }
 
+  // ── Expired refresh-token cleanup ──────────────────────────────────────────
+  // Delete refresh tokens past their expiry on startup, then daily, so consumed
+  // and expired rows do not accumulate.
+  async function reapRefreshTokens(): Promise<void> {
+    const count = await deleteExpiredRefreshTokens();
+    if (count > 0) console.log(`[refresh-token-reaper] Deleted ${count} expired refresh token(s)`);
+  }
+
+  await reapRefreshTokens().catch((err) =>
+    console.error("[refresh-token-reaper] Failed:", err)
+  );
+
+  const refreshReaperHandle = setInterval(() => {
+    reapRefreshTokens().catch((err) => console.error("[refresh-token-reaper] Failed:", err));
+  }, 24 * 60 * 60 * 1000);
+
   // ── Graceful shutdown ──────────────────────────────────────────────────────
   //
   // On SIGTERM / SIGINT:
@@ -244,6 +261,7 @@ async function main(): Promise<void> {
 
     clearInterval(intervalHandle);
     clearInterval(watchRenewalHandle);
+    clearInterval(refreshReaperHandle);
 
     await Promise.all([
       syncWorker.close(),

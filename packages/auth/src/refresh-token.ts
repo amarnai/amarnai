@@ -77,3 +77,12 @@ export async function revokeRefreshToken(raw: string): Promise<void> {
     await db.refreshToken.deleteMany({ where: { familyId: existing.familyId } });
   }
 }
+
+// Deletes refresh tokens past their expiry. Run periodically (a daily worker
+// job) so consumed and expired rows do not accumulate. Returns the count removed.
+export async function deleteExpiredRefreshTokens(): Promise<number> {
+  const { count } = await db.refreshToken.deleteMany({
+    where: { expiresAt: { lt: new Date() } },
+  });
+  return count;
+}

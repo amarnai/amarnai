@@ -3,6 +3,7 @@ export {
   issueRefreshToken,
   rotateRefreshToken,
   revokeRefreshToken,
+  deleteExpiredRefreshTokens,
 } from "./refresh-token.js";
 export type { IssuedRefreshToken } from "./refresh-token.js";
 export { verifyCredentials } from "./credentials.js";
