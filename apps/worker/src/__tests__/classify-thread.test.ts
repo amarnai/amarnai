@@ -85,6 +85,16 @@ vi.mock("bullmq", () => ({
 vi.mock("../redis.js", () => ({ redisConnection: {} }));
 vi.mock("../queues.js", () => ({ QUEUE_CLASSIFY_THREAD: "classify-thread" }));
 
+// Retry-dedup is a pass-through here: every test drives the real embed mock.
+// Dedup behavior itself is covered in ai-dedup.test.ts.
+vi.mock("../ai-dedup.js", () => ({
+  buildDedupKey: vi.fn().mockReturnValue("dedup-key"),
+  memoizeAcrossRetries: vi.fn(
+    (_key: string | null, codec: { compute: () => Promise<unknown> }) => codec.compute(),
+  ),
+  parseVector: vi.fn(),
+}));
+
 // ─── Import after mocks ───────────────────────────────────────────────────────
 
 import { db } from "@amarnai/db";

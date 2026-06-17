@@ -20,6 +20,7 @@ import {
   type ClassifyThreadJobData,
 } from "../queues.js";
 import { redisConnection } from "../redis.js";
+import { buildDedupKey, memoizeAcrossRetries, parseVector } from "../ai-dedup.js";
 import { getRoutingAIProviderConfig, getEmbeddingProviderConfig } from "@amarnai/ai";
 import { isTaxonomyRoutable } from "@amarnai/shared";
 
@@ -282,7 +283,28 @@ export function createClassifyThreadWorker(): Worker {
           const threadText = buildThreadEmbeddingText(
             messages.map((m) => ({ subject: m.subject, bodyText: m.bodyText }))
           );
-          const [threadVector] = await embeddingProvider.embed([threadText]);
+
+          // Memoize the thread embedding across this job's retries so a failure
+          // after this point doesn't re-pay for the embedding on the next attempt.
+          // Fails open: Redis trouble just recomputes (see ai-dedup.ts).
+          const dedupKey = buildDedupKey(
+            workspaceId,
+            job.id,
+            "thread-embedding",
+            embeddingProvider.modelName,
+          );
+          const threadVector = await memoizeAcrossRetries<number[]>(dedupKey, {
+            compute: async () => {
+              const [v] = await embeddingProvider.embed([threadText]);
+              return v ?? [];
+            },
+            serialize: (v) => JSON.stringify(v),
+            deserialize: parseVector,
+            // Never memoize an empty vector: it's a failed embed, and caching it
+            // would skip the outer embed on retry while the sorter re-embeds
+            // anyway. Leaving it uncached lets the next attempt re-embed cleanly.
+            shouldCache: (v) => v.length > 0,
+          });
 
           await job.updateProgress(45);
 
