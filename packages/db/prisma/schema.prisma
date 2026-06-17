@@ -183,6 +183,7 @@ model User {
   auditLogs                AuditLog[]
   credential               UserCredential?
   verificationTokens       VerificationToken[]
+  refreshTokens            RefreshToken[]
   resolvedThreads          EmailThread[]         @relation("ResolvedByUser")
 }
 
@@ -539,6 +540,21 @@ model VerificationToken {
   createdAt DateTime              @default(now())
 
   user User @relation(fields: [userId], references: [id])
+}
+
+// Long-lived refresh tokens for native clients (mobile). The raw token is
+// returned to the device once; only its SHA-256 hash is stored. Tokens are
+// rotated on every refresh (the old row is deleted) and can be revoked on logout.
+model RefreshToken {
+  id        String   @id @default(cuid())
+  userId    String
+  tokenHash String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model GmailConnection {

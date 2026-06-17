@@ -9,6 +9,7 @@ vi.mock("@amarnai/db", () => ({
 
 import app from "../app.js";
 import { db } from "@amarnai/db";
+import { issueAccessToken } from "@amarnai/auth";
 
 const USER_ID = "user-1";
 
@@ -52,6 +53,42 @@ describe("auth middleware", () => {
   it("passes with the correct Bearer token", async () => {
     const res = await app.request("/workspaces", authed());
     expect(res.status).toBe(200);
+  });
+});
+
+// ─── Per-user access token (native client) path ───────────────────────────────
+
+describe("auth middleware: per-user access token", () => {
+  it("authenticates a valid user JWT and scopes to its subject", async () => {
+    const token = await issueAccessToken("jwt-user-7");
+    const res = await app.request("/workspaces", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    expect(res.status).toBe(200);
+    expect(db.workspace.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { members: { some: { userId: "jwt-user-7" } } },
+      })
+    );
+  });
+
+  it("ignores a caller-supplied X-User-Id, trusting only the token subject", async () => {
+    const token = await issueAccessToken("jwt-user-7");
+    await app.request("/workspaces", {
+      headers: { Authorization: `Bearer ${token}`, "X-User-Id": "attacker-99" },
+    });
+    expect(db.workspace.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { members: { some: { userId: "jwt-user-7" } } },
+      })
+    );
+  });
+
+  it("returns 401 for an expired/garbage token that is neither secret nor valid JWT", async () => {
+    const res = await app.request("/workspaces", {
+      headers: { Authorization: "Bearer eyJ-not-a-real-token" },
+    });
+    expect(res.status).toBe(401);
   });
 });
 

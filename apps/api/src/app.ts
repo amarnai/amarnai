@@ -3,9 +3,11 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { config } from "@amarnai/config";
 import { db } from "@amarnai/db";
+import { verifyAccessToken } from "@amarnai/auth";
 import type { MiddlewareHandler } from "hono";
 import type { AppEnv } from "./env.js";
 import { healthRoute } from "./routes/health.js";
+import { authRoute } from "./routes/auth.js";
 import { workspacesRoute } from "./routes/workspaces.js";
 import { taxonomyNodesRoute } from "./routes/taxonomy-nodes.js";
 import { taxonomyEdgesRoute } from "./routes/taxonomy-edges.js";
@@ -34,26 +36,41 @@ const app = new Hono<AppEnv>();
 app.use("*", cors({ origin: process.env["CORS_ORIGIN"] ?? "http://localhost:3000" }));
 
 app.use("*", async (c, next) => {
-  // /health and /webhooks/gmail use their own auth — skip internal secret check.
-  if (c.req.path === "/health" || c.req.path === "/webhooks/gmail") return next();
-
-  const secret = config.internalApiSecret;
-  if (!secret) return c.json({ error: "Unauthorized" }, 401);
+  // Public endpoints that authenticate themselves: the health check, the Gmail
+  // Pub/Sub webhook, and the /auth/* endpoints (which mint tokens and therefore
+  // cannot require one).
+  if (
+    c.req.path === "/health" ||
+    c.req.path === "/webhooks/gmail" ||
+    c.req.path.startsWith("/auth/")
+  ) {
+    return next();
+  }
 
   const authHeader = c.req.header("Authorization");
   const token = authHeader?.startsWith("Bearer ") ? authHeader.slice(7) : null;
   if (!token) return c.json({ error: "Unauthorized" }, 401);
 
+  // Path 1 — trusted service-to-service caller (web SSR, worker): the shared
+  // internal secret plus an X-User-Id header it is trusted to set.
+  const secret = config.internalApiSecret;
   const tokenBuf = Buffer.from(token, "utf8");
   const secretBuf = Buffer.from(secret, "utf8");
-  if (tokenBuf.length !== secretBuf.length || !timingSafeEqual(tokenBuf, secretBuf)) {
-    return c.json({ error: "Unauthorized" }, 401);
+  if (tokenBuf.length === secretBuf.length && timingSafeEqual(tokenBuf, secretBuf)) {
+    const headerUserId = c.req.header("X-User-Id");
+    if (headerUserId) c.set("userId", headerUserId);
+    return next();
   }
 
-  const userId = c.req.header("X-User-Id");
-  if (userId) c.set("userId", userId);
+  // Path 2 — per-user access token (native clients). The user id is taken from
+  // the verified token; any caller-supplied X-User-Id header is ignored.
+  const tokenUserId = await verifyAccessToken(token);
+  if (tokenUserId) {
+    c.set("userId", tokenUserId);
+    return next();
+  }
 
-  return next();
+  return c.json({ error: "Unauthorized" }, 401);
 });
 
 // Workspace membership guard: rejects requests where the authenticated user
@@ -78,6 +95,7 @@ app.use("/workspaces/:workspaceId/*", requireWorkspaceMember);
 app.use("/dev/workspaces/:workspaceId/*", requireWorkspaceMember);
 
 app.route("/", healthRoute);
+app.route("/", authRoute);
 app.route("/", workspacesRoute);
 app.route("/", taxonomyNodesRoute);
 app.route("/", taxonomyEdgesRoute);

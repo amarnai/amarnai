@@ -35,6 +35,9 @@ importers:
       '@amarnai/ai':
         specifier: workspace:*
         version: link:../../packages/ai
+      '@amarnai/auth':
+        specifier: workspace:*
+        version: link:../../packages/auth
       '@amarnai/config':
         specifier: workspace:*
         version: link:../../packages/config
@@ -146,6 +149,9 @@ importers:
 
   apps/web:
     dependencies:
+      '@amarnai/auth':
+        specifier: workspace:*
+        version: link:../../packages/auth
       '@amarnai/db':
         specifier: workspace:*
         version: link:../../packages/db
@@ -275,6 +281,37 @@ importers:
         specifier: ^3.25.0
         version: 3.25.76
     devDependencies:
+      '@types/node':
+        specifier: ^22.0.0
+        version: 22.19.19
+      typescript:
+        specifier: ^5.8.0
+        version: 5.9.3
+      vitest:
+        specifier: ^3.0.0
+        version: 3.2.4(@types/debug@4.1.13)(@types/node@22.19.19)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@1.8.0))(terser@5.16.9)(tsx@4.22.1)(yaml@2.9.0)
+
+  packages/auth:
+    dependencies:
+      '@amarnai/config':
+        specifier: workspace:*
+        version: link:../config
+      '@amarnai/db':
+        specifier: workspace:*
+        version: link:../db
+      '@amarnai/gmail':
+        specifier: workspace:*
+        version: link:../gmail
+      bcryptjs:
+        specifier: ^3.0.3
+        version: 3.0.3
+      jose:
+        specifier: ^6.2.3
+        version: 6.2.3
+    devDependencies:
+      '@types/bcryptjs':
+        specifier: ^3.0.0
+        version: 3.0.0
       '@types/node':
         specifier: ^22.0.0
         version: 22.19.19
