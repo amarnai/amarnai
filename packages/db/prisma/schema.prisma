@@ -543,18 +543,23 @@ model VerificationToken {
 }
 
 // Long-lived refresh tokens for native clients (mobile). The raw token is
-// returned to the device once; only its SHA-256 hash is stored. Tokens are
-// rotated on every refresh (the old row is deleted) and can be revoked on logout.
+// returned to the device once; only its SHA-256 hash is stored. Tokens rotate on
+// every refresh: the presented token is marked used (usedAt) and a child token is
+// issued in the same family. Presenting an already-used token signals theft and
+// revokes the whole family. Logout revokes the family too.
 model RefreshToken {
-  id        String   @id @default(cuid())
+  id        String    @id @default(cuid())
   userId    String
-  tokenHash String   @unique
+  familyId  String
+  tokenHash String    @unique
+  usedAt    DateTime?
   expiresAt DateTime
-  createdAt DateTime @default(now())
+  createdAt DateTime  @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
+  @@index([familyId])
 }
 
 model GmailConnection {
