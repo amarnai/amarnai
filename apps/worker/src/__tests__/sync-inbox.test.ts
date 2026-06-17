@@ -16,7 +16,7 @@ vi.mock("@amarnai/db", () => ({
       updateMany: vi.fn().mockResolvedValue({ count: 0 }),
       findMany: vi.fn().mockResolvedValue([]),
     },
-    emailMessage: { upsert: vi.fn(), deleteMany: vi.fn() },
+    emailMessage: { upsert: vi.fn(), deleteMany: vi.fn(), findMany: vi.fn() },
     backfillInboxQueue: { add: vi.fn() },
   },
   // Quota recovery counts recurring sorts; default to 0 so nothing is throttled.
@@ -159,6 +159,9 @@ beforeEach(() => {
   vi.mocked(db.emailThread.upsert).mockResolvedValue({ id: "db-t1" } as never);
   vi.mocked(db.emailMessage.upsert).mockResolvedValue({} as never);
   vi.mocked(db.emailMessage.deleteMany).mockResolvedValue({ count: 0 } as never);
+  // Default: no messages stored yet, so every synced thread looks brand-new and
+  // counts as content-changed. Tests for label-only changes override this.
+  vi.mocked(db.emailMessage.findMany).mockResolvedValue([] as never);
 
   mockGetProfile.mockResolvedValue({ historyId: "hist-2" });
   mockListHistory.mockResolvedValue({
@@ -221,6 +224,42 @@ describe("createSyncInboxWorker — taxonomy gate", () => {
       (c) => (c[0] as { data: { triageStatus?: string } }).data?.triageStatus === "UNROUTED"
     );
     expect(unroutedCall).toBeUndefined();
+  });
+
+  it("does not re-classify a thread when only a label changed (message set unchanged)", async () => {
+    // The thread already has exactly the message the snapshot reports, so this
+    // sync reflects a label-only change (read/star/archive). No new message
+    // arrived and none was removed, so no classify job should be enqueued.
+    vi.mocked(db.emailMessage.findMany).mockResolvedValue([
+      { providerMessageId: "msg-gmail-t1" },
+    ] as never);
+
+    createSyncInboxWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID }));
+
+    expect(classifyThreadQueue.addBulk).not.toHaveBeenCalled();
+    // The thread was still touched: classifyingAt is never stamped for it.
+    const classifyingStamp = vi
+      .mocked(db.emailThread.updateMany)
+      .mock.calls.find(
+        (c) => (c[0] as { data?: { classifyingAt?: unknown } }).data?.classifyingAt != null
+      );
+    expect(classifyingStamp).toBeUndefined();
+  });
+
+  it("re-classifies a thread when a new message arrived alongside existing ones", async () => {
+    // A different message ID is already stored; the snapshot's message is new,
+    // so the message set changed and the thread must be re-sorted.
+    vi.mocked(db.emailMessage.findMany).mockResolvedValue([
+      { providerMessageId: "msg-old" },
+    ] as never);
+
+    createSyncInboxWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID }));
+
+    expect(classifyThreadQueue.addBulk).toHaveBeenCalledOnce();
   });
 
   it("does not mark threads as UNROUTED when sortingPaused is true (leaves PENDING)", async () => {

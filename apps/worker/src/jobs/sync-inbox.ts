@@ -327,6 +327,13 @@ export function createSyncInboxWorker(): Worker {
       // ── 4. Fetch, normalize, and upsert each changed thread ─────────────────
 
       const upsertedEmailThreadIds: string[] = [];
+      // Subset of the above whose message set actually changed (a message was
+      // added or removed). Gmail's history includes label-only changes (read,
+      // star, archive, label add/remove), which touch the thread but leave its
+      // content untouched. Re-sorting those would re-pay the embedding + routing
+      // cost for no reason, so only content-changed threads are re-classified —
+      // matching the rule that new messages, not label changes, trigger sorting.
+      const threadsToClassify: string[] = [];
 
       for (const gmailThreadId of changedThreadIds) {
         let rawThread: unknown;
@@ -400,6 +407,19 @@ export function createSyncInboxWorker(): Worker {
           select: { id: true },
         });
 
+        // Capture the thread's stored message IDs before we upsert/delete, so we
+        // can tell afterwards whether this sync actually changed the message set
+        // (vs. a label-only change). A brand-new thread has none, so it always
+        // counts as changed.
+        const priorMessageIds = new Set(
+          (
+            await db.emailMessage.findMany({
+              where: { emailThreadId: emailThread.id, emailAccountId },
+              select: { providerMessageId: true },
+            })
+          ).map((m) => m.providerMessageId)
+        );
+
         // Upsert messages — metadata only, body text is never persisted.
         for (const msg of snapshot.messages) {
           const snippet = msg.bodyExcerpt ? msg.bodyExcerpt.slice(0, 200) : null;
@@ -464,11 +484,31 @@ export function createSyncInboxWorker(): Worker {
         }
 
         upsertedEmailThreadIds.push(emailThread.id);
+
+        // Decide whether the message set changed. A new eligible message we just
+        // stored, or a previously-stored message no longer present in Gmail
+        // (rawMessageIds, the unfiltered set deleteMany compares against), both
+        // count. A pure label change leaves the stored ID set identical, so the
+        // thread is touched (flags updated, UI notified) but not re-sorted.
+        const rawMessageIdSet = new Set(rawMessageIds);
+        const messageAdded = snapshot.messages.some(
+          (m) => !priorMessageIds.has(m.providerMessageId)
+        );
+        const messageRemoved = [...priorMessageIds].some(
+          (id) => !rawMessageIdSet.has(id)
+        );
+        if (messageAdded || messageRemoved) {
+          threadsToClassify.push(emailThread.id);
+        }
       }
 
       await job.updateProgress(80);
 
-      // ── 5. Enqueue classify-thread jobs for every upserted thread ────────────
+      // ── 5. Enqueue classify-thread jobs for content-changed threads ──────────
+      //
+      // Only threads whose message set changed (threadsToClassify) are re-sorted;
+      // label-only changes are skipped (see step 4). Their flags are already
+      // persisted and the synced event below still refreshes the UI.
       //
       // Priority 1 ensures live sync jobs always outrank backfill jobs (priority 10).
       // Stamp classifyingAt before adding to the queue so isClassifying is true
@@ -482,15 +522,15 @@ export function createSyncInboxWorker(): Worker {
       // re-attempted. Advancing the cursor first would lose these threads
       // permanently if addBulk then failed.
 
-      if (upsertedEmailThreadIds.length > 0) {
+      if (threadsToClassify.length > 0) {
         if (!sortingPaused && taxonomyStrong) {
           await db.emailThread.updateMany({
-            where: { id: { in: upsertedEmailThreadIds } },
+            where: { id: { in: threadsToClassify } },
             data: { classifyingAt: new Date() },
           });
 
           await classifyThreadQueue.addBulk(
-            upsertedEmailThreadIds.map((emailThreadId) => ({
+            threadsToClassify.map((emailThreadId) => ({
               name: "classify-thread",
               data: { workspaceId, emailThreadId, source: "LIVE" as const },
               opts: {
