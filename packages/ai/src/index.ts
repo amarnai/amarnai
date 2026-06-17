@@ -1,4 +1,4 @@
-export type { AIProvider, AIProviderConfig, TaxonomyNodeInput, TaxonomyEdgeInput, ThreadMessage } from "./types.js";
+export type { AIProvider, AIProviderConfig, TaxonomyNodeInput, TaxonomyEdgeInput, ThreadMessage, LlmCallMemoizer } from "./types.js";
 export { getAIProviderConfig, getRoutingAIProviderConfig, getDraftAIProviderConfig, getEmbeddingProviderConfig } from "./config.js";
 export { createAIProvider } from "./providers/create-llm.js";
 export { LLMAuthenticationError } from "./providers/frontier.js";

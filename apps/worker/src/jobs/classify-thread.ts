@@ -13,7 +13,7 @@ import {
   EmbeddingModelNotFoundError,
   LLMAuthenticationError,
 } from "@amarnai/ai";
-import type { EmbeddableNode, TriageMetadata, EmbeddingTriageResult } from "@amarnai/ai";
+import type { EmbeddableNode, TriageMetadata, EmbeddingTriageResult, LlmCallMemoizer } from "@amarnai/ai";
 import { GmailClient, GmailAuthError, normalizeGmailThread } from "@amarnai/gmail";
 import {
   QUEUE_CLASSIFY_THREAD,
@@ -313,6 +313,34 @@ export function createClassifyThreadWorker(): Worker {
           // Both operations share the pre-computed thread vector. Routing may
           // trigger an LLM call for cross-branch ambiguity; triage runs
           // concurrently using only embeddings.
+          //
+          // Memoize that cross-branch LLM call across this job's retries the
+          // same way the thread embedding is memoized above: a failure after
+          // the call (e.g. a DB write below) re-runs sortThreadByEmbedding on
+          // the next attempt, and this replays the cached raw response instead
+          // of re-paying for it. The sorter supplies a per-call-site `step`;
+          // buildDedupKey scopes the key by workspace, jobId, and model. The
+          // sorter still re-validates the cached raw string (Zod + policy) on
+          // every read, so a hit is never trusted blindly. Fails open.
+          const llmMemoizer: LlmCallMemoizer = (step, compute) =>
+            memoizeAcrossRetries<string>(
+              buildDedupKey(workspaceId, job.id, step, aiProvider.modelName),
+              {
+                compute,
+                serialize: (s) => JSON.stringify(s),
+                deserialize: (raw) => {
+                  try {
+                    const v: unknown = JSON.parse(raw);
+                    return typeof v === "string" && v.length > 0 ? v : null;
+                  } catch {
+                    return null;
+                  }
+                },
+                // Never cache an empty response: it carries no decision and
+                // would suppress a clean recompute on the next attempt.
+                shouldCache: (s) => s.length > 0,
+              },
+            );
 
           const [result, embeddingTriage] = await Promise.all([
             sortThreadByEmbedding(
@@ -321,7 +349,10 @@ export function createClassifyThreadWorker(): Worker {
               nodes,
               rawEdges,
               messages,
-              threadVector ? { precomputedThreadVector: threadVector } : undefined,
+              {
+                ...(threadVector ? { precomputedThreadVector: threadVector } : {}),
+                llmMemoizer,
+              },
             ),
             threadVector && threadVector.length > 0
               ? classifyTriageByEmbedding(threadVector, embeddingProvider).catch((e) => {

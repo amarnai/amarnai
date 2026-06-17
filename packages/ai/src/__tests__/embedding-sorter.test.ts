@@ -448,6 +448,80 @@ describe("embedding sorter — rival root branches trigger LLM resolver", () => 
     await sortThreadByEmbedding(embeddingProvider, llmProvider, FLAT_NODES, FLAT_EDGES, messages);
     expect(chatSpy).toHaveBeenCalledTimes(1);
   });
+
+  // ── Retry-dedup of the cross-branch LLM call ────────────────────────────────
+  //
+  // Mirrors the worker's memoizeAcrossRetries codec: compute on a key miss,
+  // store the raw string, replay it on a hit. A second sort of the "same job"
+  // (same backing store) must not re-call the model, and must still produce a
+  // validated decision — proving the cache holds only the raw string and that
+  // validateNodeSelection runs on the replayed read, not just on a fresh call.
+  describe("llmMemoizer retry-dedup", () => {
+    function makeJobMemoizer() {
+      const store = new Map<string, string>();
+      const steps: string[] = [];
+      const memoize = async (step: string, compute: () => Promise<string>): Promise<string> => {
+        steps.push(step);
+        const cached = store.get(step);
+        if (cached !== undefined) {
+          const v: unknown = JSON.parse(cached);
+          if (typeof v === "string" && v.length > 0) return v;
+        }
+        const value = await compute();
+        if (value.length > 0) store.set(step, JSON.stringify(value));
+        return value;
+      };
+      return { memoize, steps };
+    }
+
+    it("replays the cached response on retry without re-calling the model, still validated", async () => {
+      const { provider: llmProvider, chatSpy } = makeLlmSpy(
+        JSON.stringify({
+          selectedNodeId: "candidate_1",
+          confidence: 0.9,
+          explanation: "Media appearance matches Beta",
+          needsHumanReview: false,
+        })
+      );
+      const { memoize } = makeJobMemoizer();
+
+      const first = await sortThreadByEmbedding(
+        embeddingProvider, llmProvider, FLAT_NODES, FLAT_EDGES, messages, { llmMemoizer: memoize }
+      );
+      // Simulated retry of the same job: same memoizer/backing store.
+      const second = await sortThreadByEmbedding(
+        embeddingProvider, llmProvider, FLAT_NODES, FLAT_EDGES, messages, { llmMemoizer: memoize }
+      );
+
+      expect(chatSpy).toHaveBeenCalledTimes(1);
+      expect(second.decisionSource).toBe("llm");
+      expect(second.needsHumanReview).toBe(false);
+      expect(second.finalNodeId).toBe(first.finalNodeId);
+    });
+
+    it("uses a stable, candidate-derived step key across attempts", async () => {
+      const llmProvider = makeMockLlmProvider(
+        JSON.stringify({
+          selectedNodeId: "candidate_0",
+          confidence: 0.85,
+          explanation: "Administrative match",
+          needsHumanReview: false,
+        })
+      );
+      const { memoize, steps } = makeJobMemoizer();
+
+      await sortThreadByEmbedding(
+        embeddingProvider, llmProvider, FLAT_NODES, FLAT_EDGES, messages, { llmMemoizer: memoize }
+      );
+      await sortThreadByEmbedding(
+        embeddingProvider, llmProvider, FLAT_NODES, FLAT_EDGES, messages, { llmMemoizer: memoize }
+      );
+
+      expect(steps).toHaveLength(2);
+      expect(steps[0]).toBe(steps[1]);
+      expect(steps[0]).toMatch(/^llm-ambiguity:root:[0-9a-f]{16}$/);
+    });
+  });
 });
 
 // ─── Scenario 6: LLM called but uncertain → Inbox fallback ───────────────────

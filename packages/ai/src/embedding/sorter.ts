@@ -51,7 +51,7 @@ import {
 } from "./math.js";
 import { selectNodeFromCandidates } from "../selection/select-path.js";
 import type { EmbeddingProvider, EmbeddableNode, UpdatedNodeEmbedding } from "./types.js";
-import type { AIProvider, TaxonomyEdgeInput, ThreadMessage } from "../types.js";
+import type { AIProvider, TaxonomyEdgeInput, ThreadMessage, LlmCallMemoizer } from "../types.js";
 import type { ClassificationPathStep } from "@amarnai/shared";
 import type { CandidateNode } from "../selection/candidate-selector.js";
 
@@ -245,6 +245,19 @@ function buildLlmCandidates(
 }
 
 /**
+ * Per-call-site dedup discriminator for the cross-branch LLM call. Combines a
+ * site label ("root" | "mid") with a short hash of the ordered candidate node
+ * IDs offered to the LLM. Distinct candidate sets therefore map to distinct
+ * cache keys: if the candidate list ever differs across a job's retries,
+ * validateNodeSelection (which resolves candidate_N by index) never replays a
+ * response built for a different set — it is a clean cache miss instead.
+ */
+function buildLlmDedupStep(site: "root" | "mid", candidateNodeIds: string[]): string {
+  const hash = hashEmbeddingInput(candidateNodeIds.join(","), "llm-candidates").slice(0, 16);
+  return `llm-ambiguity:${site}:${hash}`;
+}
+
+/**
  * Collect leaf nodes from a set of subtree roots using the caller's pre-built
  * childrenMap. For each root, descends via BFS and returns nodes with no
  * children. Falls back to the root itself if BFS finds no leaves (isolated
@@ -305,6 +318,14 @@ export async function sortThreadByEmbedding(
     topKLlmCandidates?: number;
     /** Pre-computed thread embedding vector. When provided, skips the internal embed call (Step 3). */
     precomputedThreadVector?: number[];
+    /**
+     * Optional retry-dedup wrapper for the cross-branch ambiguity LLM call.
+     * When provided (by the worker), a repeated attempt of the same job replays
+     * the cached raw LLM response instead of re-paying for it. The cache holds
+     * only the untrusted raw string; selectNodeFromCandidates re-validates on
+     * every read. Absent for callers without job context (API routes, tests).
+     */
+    llmMemoizer?: LlmCallMemoizer;
   }
 ): Promise<EmbeddingSortResult> {
   const thetaMin = options?.thetaMin ?? THETA_MIN;
@@ -314,6 +335,7 @@ export async function sortThreadByEmbedding(
   const thetaDescent = options?.thetaDescent ?? THETA_DESCENT;
   const crossBranchMargin = options?.crossBranchMargin ?? CROSS_BRANCH_MARGIN;
   const topKLlm = options?.topKLlmCandidates ?? TOP_K_LLM_CANDIDATES;
+  const llmMemoizer = options?.llmMemoizer;
 
   // ── Step 1: Identify root ──────────────────────────────────────────────────
 
@@ -496,7 +518,10 @@ export async function sortThreadByEmbedding(
     const candidates = buildLlmCandidates(leafCandidateIds, nodeMap, childEdges, rootNode.id, rawSims);
 
     if (candidates.length > 0) {
-      const llmResult = await selectNodeFromCandidates(llmProvider, { messages }, candidates);
+      const memo = llmMemoizer
+        ? { memoize: llmMemoizer, step: buildLlmDedupStep("root", candidates.map((c) => c.nodeId)) }
+        : undefined;
+      const llmResult = await selectNodeFromCandidates(llmProvider, { messages }, candidates, undefined, memo);
 
       if (!llmResult.needsHumanReview && llmResult.finalNodeId) {
         // Reconstruct path from the graph after node selection
@@ -614,7 +639,10 @@ export async function sortThreadByEmbedding(
           .slice(0, topKLlm);
         const candidates = buildLlmCandidates(topCandidateIds, nodeMap, childEdges, rootNode.id, rawSims);
         if (candidates.length > 0) {
-          const llmResult = await selectNodeFromCandidates(llmProvider, { messages }, candidates);
+          const memo = llmMemoizer
+            ? { memoize: llmMemoizer, step: buildLlmDedupStep("mid", candidates.map((c) => c.nodeId)) }
+            : undefined;
+          const llmResult = await selectNodeFromCandidates(llmProvider, { messages }, candidates, undefined, memo);
           if (!llmResult.needsHumanReview && llmResult.finalNodeId) {
             const selectedPath = buildClassificationPath(
               rootNode.id, llmResult.finalNodeId, childEdges,

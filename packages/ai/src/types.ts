@@ -45,6 +45,22 @@ export interface AIProvider {
   chat(messages: Array<{ role: "system" | "user" | "assistant"; content: string }>): Promise<string>;
 }
 
+/**
+ * Optional wrapper around a paid LLM call that lets a caller deduplicate the
+ * call across retries (e.g. a worker keying on its BullMQ jobId). Given a
+ * `step` discriminator and a `compute` thunk returning the raw model response,
+ * it returns either a freshly computed or a replayed-from-cache raw string.
+ *
+ * The ai package only declares this shape; the implementation (and any Redis /
+ * job-context concerns) lives in the caller, so the ai package stays
+ * infrastructure-agnostic. Callers must still validate the returned raw string
+ * before trusting it — the cache holds only untrusted model output.
+ */
+export type LlmCallMemoizer = (
+  step: string,
+  compute: () => Promise<string>
+) => Promise<string>;
+
 // ─── Provider config ───────────────────────────────────────────────────────────
 
 export type AIProviderConfig = {
