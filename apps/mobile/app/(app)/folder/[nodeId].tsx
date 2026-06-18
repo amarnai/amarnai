@@ -38,10 +38,9 @@ export default function FolderThreadsScreen() {
     }
   }, [refresh]);
 
-  // Slice 3 selects the thread on tap; Slice 4 adds the thread/[threadId] detail
-  // route and wires navigation here.
   const handleThreadPress = (threadId: string) => {
     setSelectedId(threadId);
+    router.push({ pathname: '/(app)/thread/[threadId]', params: { threadId } });
   };
 
   return (
