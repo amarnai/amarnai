@@ -333,6 +333,36 @@ Starts all apps in parallel:
 | API | http://localhost:3001 |
 | Worker | — |
 
+## Mobile app
+
+`apps/mobile` is the Amarnai Android app (Expo + Expo Router), a readonly triage
+companion. It is intentionally kept out of `pnpm dev` so web/API/worker
+contributors aren't forced into the React Native toolchain.
+
+To run it on a **physical phone** (recommended) or an emulator with Expo Go:
+
+```bash
+# 1. Install the Expo Go app on your Android phone, on the SAME Wi-Fi as your
+#    dev machine. (Or have an Android emulator running.)
+
+# 2. Start the backend (api on 3001 + worker + web) in one terminal:
+pnpm dev
+
+# 3. Start the app's Metro bundler in another terminal:
+pnpm mobile
+
+# 4. Scan the QR code shown in the terminal with Expo Go.
+```
+
+The app auto-detects your dev machine's LAN IP from the Metro connection and
+points the API at `http://<that-ip>:3001`, so there is nothing to configure. The
+home screen shows a connectivity indicator (green **API OK** when the phone
+reaches your local API). To override the API URL, set `EXPO_PUBLIC_API_URL` (see
+`apps/mobile/.env.example`).
+
+See [`apps/mobile/README.md`](apps/mobile/README.md) for troubleshooting and notes
+on push notifications (which require a development build rather than Expo Go).
+
 ## Other commands
 
 ```bash
@@ -398,9 +428,12 @@ apps/
   web/      Next.js frontend
   api/      Hono API server
   worker/   Background jobs
+  mobile/   Expo Android app (readonly triage companion)
 packages/
-  shared/   Shared types and constants
-  config/   Environment config
-  db/       Database schema and client
-  ai/       AI provider abstraction
+  shared/     Shared types and constants
+  config/     Environment config
+  db/         Database schema and client
+  ai/         AI provider abstraction
+  tokens/     Framework-agnostic design tokens (web + mobile)
+  api-client/ Transport-agnostic typed API client (web + mobile)
 ```

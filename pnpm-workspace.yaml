@@ -1,6 +1,18 @@
 packages:
   - "apps/*"
   - "packages/*"
+# Expo's CLI and Metro resolve their own dependencies (e.g. metro-runtime) from
+# their install location, which pnpm's default isolated node_modules layout
+# hides. Hoist the React Native / Metro / Expo toolchain into the public root
+# node_modules so the Expo dev server and `expo export` work in this monorepo.
+# Does not change the dependency graph (pnpm-lock.yaml is unaffected); only
+# flattens these packages on disk.
+publicHoistPattern:
+  - "*metro*"
+  - "*react-native*"
+  - "@react-native/*"
+  - "@expo/*"
+  - "expo-modules-*"
 onlyBuiltDependencies:
   - "@prisma/client"
   - "@prisma/engines"

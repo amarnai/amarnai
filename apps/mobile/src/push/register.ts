@@ -6,10 +6,12 @@ import type { ApiClient } from '@amarnai/api-client';
 import { registerNotificationCategories } from './categories';
 
 // Show triage pushes while the app is foregrounded (otherwise Expo silently
-// drops them). Set once at module load.
+// drops them). Set once at module load. shouldShowBanner/shouldShowList replace
+// the deprecated shouldShowAlert in expo-notifications (SDK 53+).
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
-    shouldShowAlert: true,
+    shouldShowBanner: true,
+    shouldShowList: true,
     shouldPlaySound: false,
     shouldSetBadge: false,
   }),
