@@ -7,10 +7,43 @@ import "./globals.css";
 const geist = Geist({ subsets: ["latin"], variable: "--font-geist-sans" });
 const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" });
 
+const title = "Amarnai — AI email triage";
+const description =
+  "Amarnai sorts your Gmail threads into folders you define, drafts replies for your approval, and shows its reasoning. Open-source and self-hostable.";
+
 export const metadata: Metadata = {
-  title: "Amarnai — AI email triage",
-  description:
-    "Amarnai sorts your Gmail threads into folders you define, drafts replies for your approval, and shows its reasoning. Open-source and self-hostable.",
+  metadataBase: new URL("https://amarnai.com"),
+  title,
+  description,
+  applicationName: "Amarnai",
+  keywords: [
+    "AI email triage",
+    "Gmail assistant",
+    "email sorting",
+    "open source",
+    "self-hostable",
+  ],
+  openGraph: {
+    type: "website",
+    siteName: "Amarnai",
+    url: "/",
+    title,
+    description,
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Amarnai — AI email triage",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+    images: ["/og-image.png"],
+  },
 };
 
 export default function RootLayout({
