@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { buildFolderCounts } from '@amarnai/core';
 import { colors, radii } from '@amarnai/tokens';
@@ -6,15 +7,17 @@ import { useTriage } from '../../src/triage/TriageProvider';
 import { FolderRow } from '../../src/components/FolderRow';
 
 export default function HomeScreen() {
+  const router = useRouter();
   const { signOut } = useSession();
   const triage = useTriage();
 
   const folderCounts = buildFolderCounts(triage.threads, triage.folders);
 
-  // Slice 2 sets the active folder on tap; Slice 3 adds the folder/[nodeId]
-  // thread-list route and wires navigation here.
+  // Set the active folder, then open its thread list. The folder screen also
+  // sets active from its route param, so deep links and back navigation work too.
   const handleFolderPress = (folderId: string) => {
     triage.setActive({ kind: 'folder', id: folderId });
+    router.push({ pathname: '/(app)/folder/[nodeId]', params: { nodeId: folderId } });
   };
 
   return (
