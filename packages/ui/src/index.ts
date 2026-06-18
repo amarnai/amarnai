@@ -19,3 +19,5 @@ export type {
 } from "./plans.js";
 export { OptionCards } from "./OptionCards.js";
 export type { OptionCardItem } from "./OptionCards.js";
+export { AppDownloadBanner } from "./AppDownloadBanner.js";
+export type { AppDownloadBannerProps } from "./AppDownloadBanner.js";
