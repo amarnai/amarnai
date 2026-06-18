@@ -67,4 +67,34 @@ export default tseslint.config(...tseslint.configs.recommended, {
       ],
     }],
   },
+},
+// Enforce that the mobile app never imports the web-only UI package or any
+// server-only package. Mobile is a React Native client: it talks to the API
+// through @amarnai/api-client and reuses @amarnai/core / @amarnai/shared /
+// @amarnai/tokens only. A server-only import (db, ai, queue, gmail, config)
+// would pull Node-only code into the bundle and leak server concerns onto a
+// shipped device.
+{
+  files: ["apps/mobile/**/*.{ts,tsx}"],
+  rules: {
+    "no-restricted-imports": ["error", {
+      patterns: [
+        {
+          group: ["@amarnai/ui", "@amarnai/ui/*"],
+          message: "apps/mobile must not import @amarnai/ui (web/DOM rendering). Build screens from React Native primitives styled with @amarnai/tokens, driven by @amarnai/core.",
+        },
+        {
+          group: [
+            "@amarnai/db", "@amarnai/db/*",
+            "@amarnai/ai", "@amarnai/ai/*",
+            "@amarnai/queue", "@amarnai/queue/*",
+            "@amarnai/gmail", "@amarnai/gmail/*",
+            "@amarnai/config", "@amarnai/config/*",
+            "@prisma/client", "@prisma/client/*",
+          ],
+          message: "apps/mobile must not import server-only packages. Reach the backend through @amarnai/api-client instead.",
+        },
+      ],
+    }],
+  },
 });

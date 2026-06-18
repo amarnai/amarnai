@@ -1,6 +1,14 @@
 packages:
   - "apps/*"
   - "packages/*"
+# Force a single React across the monorepo. Expo SDK 54 pins react 19.1.0; without
+# this, packages whose specifier is "^19.0.0" (e.g. @amarnai/core, web, ui) float to
+# a newer 19.2.x, producing two physical React copies. Metro then renders the app
+# with one and runs @amarnai/core's hooks against the other, which throws the
+# "Invalid hook call" / "Cannot read property 'useState' of null" error.
+overrides:
+  react: "19.1.0"
+  react-dom: "19.1.0"
 # Expo's CLI and Metro resolve their own dependencies (e.g. metro-runtime) from
 # their install location, which pnpm's default isolated node_modules layout
 # hides. Hoist the React Native / Metro / Expo toolchain into the public root

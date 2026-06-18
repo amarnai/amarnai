@@ -6,18 +6,24 @@
   "scripts": {
     "start": "expo start",
     "android": "expo run:android",
-    "typecheck": "tsc --noEmit"
+    "lint": "eslint app src",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
   },
   "dependencies": {
     "@amarnai/api-client": "workspace:*",
+    "@amarnai/core": "workspace:*",
     "@amarnai/shared": "workspace:*",
     "@amarnai/tokens": "workspace:*",
     "@expo/metro-runtime": "~6.1.2",
+    "@tanstack/react-query": "^5.101.0",
     "expo": "~54.0.35",
     "expo-constants": "~18.0.13",
     "expo-device": "~8.0.10",
     "expo-notifications": "~0.32.17",
     "expo-router": "~6.0.24",
+    "expo-secure-store": "~15.0.8",
+    "expo-splash-screen": "~31.0.13",
     "expo-status-bar": "~3.0.9",
     "react": "19.1.0",
     "react-native": "0.81.5",
@@ -26,7 +32,8 @@
   },
   "devDependencies": {
     "@babel/core": "^7.25.0",
-    "@types/react": "^19.1.17",
-    "typescript": "^5.8.0"
+    "@types/react": "~19.1.10",
+    "typescript": "^5.8.0",
+    "vitest": "^3.2.4"
   }
 }

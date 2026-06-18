@@ -1,3 +1,4 @@
+import bcrypt from "bcryptjs";
 import {
   PrismaClient,
   Prisma,
@@ -30,6 +31,18 @@ async function main() {
       emailVerified: new Date(),
     },
   });
+
+  // ── 1b. Dev password credential ───────────────────────────────────────────
+  // Lets the dev user sign in with email + password locally (e.g. the mobile
+  // app, which has no Google OAuth in dev). Dev-only convenience; never created
+  // in production signups. update:{} keeps re-seeding idempotent.
+  const DEV_PASSWORD = "password";
+  await db.userCredential.upsert({
+    where: { userId: user.id },
+    update: {},
+    create: { userId: user.id, passwordHash: bcrypt.hashSync(DEV_PASSWORD, 10) },
+  });
+  console.log(`  Dev login: dev@amarnai.local / ${DEV_PASSWORD}`);
 
   // ── 2. Workspace ──────────────────────────────────────────────────────────
   let workspace = await db.workspace.findFirst({
