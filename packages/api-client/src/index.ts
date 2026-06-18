@@ -40,4 +40,7 @@ export type {
   QueuedResult,
   OkResult,
   QuotaInfo,
+  DevicePlatform,
+  RegisterPushDeviceInput,
+  RegisterPushDeviceResult,
 } from "./types.js";

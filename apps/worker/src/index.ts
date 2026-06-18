@@ -16,6 +16,7 @@ import { createBackfillInboxWorker } from "./jobs/backfill-inbox.js";
 import { syncInboxQueue, backfillInboxQueue } from "./queues.js";
 import { closePublisher } from "./redis-publisher.js";
 import { closeAiDedup } from "./ai-dedup.js";
+import { closePushBudget } from "./notifications/notify-threads.js";
 
 // ─── Watch renewal ────────────────────────────────────────────────────────────
 
@@ -274,6 +275,7 @@ async function main(): Promise<void> {
       backfillInboxQueue.close(),
       closePublisher(),
       closeAiDedup(),
+      closePushBudget(),
     ]);
 
     await db.$disconnect();

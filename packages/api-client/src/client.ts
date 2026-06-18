@@ -29,6 +29,8 @@ import type {
   QueuedResult,
   OkResult,
   QuotaInfo,
+  RegisterPushDeviceInput,
+  RegisterPushDeviceResult,
 } from "./types.js";
 
 export function makeApiClient(transport: ApiTransport) {
@@ -318,6 +320,11 @@ export function makeApiClient(transport: ApiTransport) {
         "PATCH",
         { status: sent ? "SENT" : "PROPOSED" }
       ),
+
+    // ── Push devices ─────────────────────────────────────────────────────────
+
+    registerPushDevice: (input: RegisterPushDeviceInput) =>
+      apiMutate<RegisterPushDeviceResult>("/devices", "POST", input),
 
     // ── Dev endpoints ──────────────────────────────────────────────────────────
 

@@ -30,6 +30,7 @@ import {
 } from "../ai-dedup.js";
 import { getRoutingAIProviderConfig, getEmbeddingProviderConfig } from "@amarnai/ai";
 import { isTaxonomyRoutable } from "@amarnai/shared";
+import { notifyThreadNeedsAttention } from "../notifications/notify-threads.js";
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
 
@@ -425,6 +426,25 @@ export function createClassifyThreadWorker(): Worker {
             where: { id: emailThreadId },
             data: { triageStatus },
           });
+
+          // ── 7b. Push notification — thread needs attention ────────────────
+          //
+          // Fire-and-forget on the existing sort-completion path: when a sort
+          // lands on NEEDS_REVIEW the user has to make a call, so we nudge their
+          // registered devices. Tenant-scoped + rate-limited inside the notifier.
+          // Never awaited into the job result — a push failure must not fail or
+          // retry classification (which is the source of truth).
+          if (triageStatus === "NEEDS_REVIEW") {
+            void notifyThreadNeedsAttention({
+              workspaceId,
+              emailThreadId,
+              subject: snapshot.subject,
+            }).catch((err) => {
+              console.error(
+                `[classify-thread] Push notify failed for thread ${emailThreadId}: ${err instanceof Error ? err.message : String(err)}`,
+              );
+            });
+          }
 
           if (embeddingTriage !== null) {
             await persistEmbeddingTriage(classificationId, embeddingTriage);

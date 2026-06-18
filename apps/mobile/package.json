@@ -1,0 +1,31 @@
+{
+  "name": "@amarnai/mobile",
+  "version": "0.1.0",
+  "private": true,
+  "main": "expo-router/entry",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo run:android",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@amarnai/api-client": "workspace:*",
+    "@amarnai/shared": "workspace:*",
+    "@amarnai/tokens": "workspace:*",
+    "expo": "~52.0.0",
+    "expo-constants": "~17.0.3",
+    "expo-device": "~7.0.1",
+    "expo-notifications": "~0.29.11",
+    "expo-router": "~4.0.0",
+    "expo-status-bar": "~2.0.0",
+    "react": "18.3.1",
+    "react-native": "0.76.5",
+    "react-native-safe-area-context": "4.12.0",
+    "react-native-screens": "~4.3.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.25.0",
+    "@types/react": "^19.0.0",
+    "typescript": "^5.8.0"
+  }
+}

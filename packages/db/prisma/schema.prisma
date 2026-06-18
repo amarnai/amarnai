@@ -163,6 +163,13 @@ enum GmailConnectionStatus {
   DISCONNECTED
 }
 
+// Push delivery platform for a registered device. v1 ships Android only
+// (Expo Push over FCM); IOS is reserved so the column never needs widening.
+enum DevicePlatform {
+  ANDROID
+  IOS
+}
+
 // ─── Models ──────────────────────────────────────────────────────────────────
 
 model User {
@@ -184,6 +191,7 @@ model User {
   credential               UserCredential?
   verificationTokens       VerificationToken[]
   refreshTokens            RefreshToken[]
+  pushDevices              PushDevice[]
   resolvedThreads          EmailThread[]         @relation("ResolvedByUser")
 }
 
@@ -560,6 +568,28 @@ model RefreshToken {
 
   @@index([userId])
   @@index([familyId])
+}
+
+// A registered Expo push token for one of a user's devices. Tenant-scoped per
+// userId so pushes are attributable per user for hosted cost accounting (a
+// workspace fans out to every member's devices at emit time). The Expo token is
+// the natural key: it is unique per app install and rotates when the install is
+// reset, so we upsert on it and reassign ownership if a device is handed over to
+// a different user. No email content is stored here.
+model PushDevice {
+  id            String         @id @default(cuid())
+  userId        String
+  expoPushToken String         @unique
+  platform      DevicePlatform
+  // Bumped on every re-registration; lets a future reaper prune tokens that
+  // Expo reports as DeviceNotRegistered or that have gone silent for too long.
+  lastSeenAt    DateTime       @default(now())
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model GmailConnection {

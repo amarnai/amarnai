@@ -31,6 +31,7 @@ import { resolveThreadRoute } from "./routes/resolve-thread.js";
 import { gmailWebhookRoute } from "./routes/gmail-webhook.js";
 import { gmailWatchRoute } from "./routes/gmail-watch.js";
 import { workspaceEventsRoute } from "./routes/workspace-events.js";
+import { devicesRoute } from "./routes/devices.js";
 
 // Endpoints that authenticate themselves and must skip the bearer-token check.
 // An explicit allowlist (not an "/auth/" prefix match) so a future /auth/* route
@@ -133,5 +134,6 @@ app.route("/", resolveThreadRoute);
 app.route("/", gmailWebhookRoute);
 app.route("/", gmailWatchRoute);
 app.route("/", workspaceEventsRoute);
+app.route("/", devicesRoute);
 
 export default app;

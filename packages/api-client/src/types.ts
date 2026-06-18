@@ -384,3 +384,14 @@ export type ClassifyResult = {
 };
 
 export type QueuedResult = { queued: true };
+
+// ── Push devices ──────────────────────────────────────────────────────────────
+
+export type DevicePlatform = "ANDROID" | "IOS";
+
+export type RegisterPushDeviceInput = {
+  expoPushToken: string;
+  platform: DevicePlatform;
+};
+
+export type RegisterPushDeviceResult = { ok: boolean; deviceId: string };
