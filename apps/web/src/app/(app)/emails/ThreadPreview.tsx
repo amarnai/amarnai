@@ -178,7 +178,7 @@ export function ThreadPreview({
   function handleToggleDraftSent() {
     if (!draft) return;
     const newSent = draft.status !== "SENT";
-    const optimistic = { ...draft, status: newSent ? "SENT" : "PROPOSED" };
+    const optimistic: Draft = { ...draft, status: newSent ? "SENT" : "PROPOSED" };
     setDraft(optimistic);
     onDraftSentToggled(thread.id, newSent);
     api.toggleDraftSent(workspaceId, thread.id, draft.id, newSent)

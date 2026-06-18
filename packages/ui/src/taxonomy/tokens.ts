@@ -1,7 +1,8 @@
-// Mirror of apps/web/src/lib/tokens.ts — kept in sync with globals.css :root vars.
+import { colors } from "@amarnai/tokens";
+
 export const taxonomyTokens = {
-  primary: "#c2683f",
-  accent: "#D4A017",
-  accentDim: "#b5890e",
+  primary:    colors.accent,
+  accent:     "#D4A017",
+  accentDim:  "#b5890e",
   edgeDefault: "#94a3b8",
 } as const;
