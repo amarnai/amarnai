@@ -16,7 +16,7 @@ export default function Index() {
 
   if (status === 'signedOut') return <Redirect href="/sign-in" />;
 
-  return <Redirect href="/(app)" />;
+  return <Redirect href="/emails" />;
 }
 
 const styles = StyleSheet.create({

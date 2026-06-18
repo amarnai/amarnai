@@ -1,20 +1,16 @@
 import { useRouter } from 'expo-router';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { buildFolderCounts } from '@amarnai/core';
-import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
-import { useSession } from '../../src/auth/session';
-import { useTriage } from '../../src/triage/TriageProvider';
-import { FolderRow } from '../../src/components/FolderRow';
+import { colors, space, fontSize, fontWeight } from '@amarnai/tokens';
+import { useTriage } from '../../../../src/triage/TriageProvider';
+import { FolderRow } from '../../../../src/components/FolderRow';
 
-export default function HomeScreen() {
+export default function EmailsScreen() {
   const router = useRouter();
-  const { signOut } = useSession();
   const triage = useTriage();
 
   const folderCounts = buildFolderCounts(triage.threads, triage.folders);
 
-  // Set the active folder, then open its thread list. The folder screen also
-  // sets active from its route param, so deep links and back navigation work too.
   const handleFolderPress = (folderId: string) => {
     triage.setActive({ kind: 'folder', id: folderId });
     router.push({ pathname: '/(app)/folder/[nodeId]', params: { nodeId: folderId } });
@@ -37,10 +33,6 @@ export default function HomeScreen() {
           ))
         )}
       </ScrollView>
-
-      <TouchableOpacity style={styles.signOut} onPress={() => void signOut()}>
-        <Text style={styles.signOutText}>Sign out</Text>
-      </TouchableOpacity>
     </View>
   );
 }
@@ -69,20 +61,5 @@ const styles = StyleSheet.create({
     color: colors.ink3,
     textAlign: 'center',
     marginTop: space.xxl,
-  },
-  signOut: {
-    marginHorizontal: space.xl,
-    marginBottom: space.xxl,
-    borderColor: colors.line2,
-    borderWidth: 1,
-    borderRadius: radii.md,
-    paddingHorizontal: space.xl + space.xs,
-    paddingVertical: space.lg - space.xxs,
-  },
-  signOutText: {
-    fontSize: fontSize.lg,
-    color: colors.ink2,
-    fontWeight: fontWeight.medium,
-    textAlign: 'center',
   },
 });

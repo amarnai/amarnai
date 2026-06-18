@@ -8,3 +8,5 @@ export { space } from "./space.js";
 export type { SpaceToken } from "./space.js";
 export { fontSize, fontWeight } from "./text.js";
 export type { FontSizeToken, FontWeightToken } from "./text.js";
+export { navIconDefs } from "./icons.js";
+export type { NavIconName, IconDef, IconShape, StrokeShape, FillShape } from "./icons.js";
