@@ -165,78 +165,78 @@ async function main() {
     positionY: 0,
   });
 
-  // ── Tenoua magazine branch ────────────────────────────────────────────────
+  // ── Revenue branch ────────────────────────────────────────────────────────
 
-  const nodeEditorial = await findOrCreateNode({
-    name: "Editorial / pitches",
+  const nodeSales = await findOrCreateNode({
+    name: "Sales / new business",
     description:
-      "Article proposals, editorial submissions, content pitches, and writing queries addressed to the Tenoua editorial team.",
+      "Inbound sales inquiries, demo requests, pricing questions, and new-business leads from prospective customers.",
     positionX: -750,
     positionY: -300,
   });
 
-  const nodeSubscriptions = await findOrCreateNode({
-    name: "Subscriptions / distribution",
+  const nodeBilling = await findOrCreateNode({
+    name: "Billing / invoices",
     description:
-      "Reader subscription requests, renewals, delivery issues, and distribution logistics for Tenoua magazine.",
+      "Invoices, payment issues, billing disputes, refunds, and subscription renewal questions from existing customers.",
     positionX: -500,
     positionY: -300,
   });
 
-  const nodeContributors = await findOrCreateNode({
-    name: "Contributors",
+  const nodePartnerships = await findOrCreateNode({
+    name: "Partnerships / vendors",
     description:
-      "Correspondence with current or prospective Tenoua contributors, authors, illustrators, and translators.",
+      "Partnership proposals, integration and reseller offers, and correspondence with vendors and suppliers.",
     positionX: -250,
     positionY: -300,
   });
 
-  const nodePartnerships = await findOrCreateNode({
-    name: "Partnerships / press",
+  const nodePress = await findOrCreateNode({
+    name: "Press / media",
     description:
-      "Institutional partnership offers, press inquiries, advertising proposals, and media relations for Tenoua magazine.",
+      "Journalist interview requests, press inquiries, analyst briefings, and media relations correspondence.",
     positionX: 0,
     positionY: -300,
   });
 
-  // ── Delphine Horvilleur secretariat branch ────────────────────────────────
+  // ── Operations branch ──────────────────────────────────────────────────────
 
-  const nodeWeddings = await findOrCreateNode({
-    name: "Weddings",
+  const nodeSupport = await findOrCreateNode({
+    name: "Customer support",
     description:
-      "Wedding ceremony requests, officiation inquiries, and marriage-related correspondence addressed to Delphine Horvilleur.",
+      "Product issues, bug reports, how-to questions, and technical support requests from existing customers.",
     positionX: 250,
     positionY: -300,
   });
 
-  const nodeFunerals = await findOrCreateNode({
-    name: "Funerals",
+  const nodeRecruiting = await findOrCreateNode({
+    name: "Recruiting / HR",
     description:
-      "Funeral service requests, memorial ceremony inquiries, and mourning-related correspondence addressed to Delphine Horvilleur.",
+      "Job applications, candidate correspondence, recruiter outreach, and hiring-related communication.",
     positionX: 500,
     positionY: -300,
   });
 
-  const nodeConferences = await findOrCreateNode({
-    name: "Conferences / invitations",
+  const nodeMeetings = await findOrCreateNode({
+    name: "Meetings / scheduling",
     description:
-      "Speaking engagement invitations, conference participation requests, panel invitations, and event booking requests for Delphine Horvilleur.",
+      "Meeting requests, scheduling and rescheduling, calendar invitations, and availability confirmations.",
     positionX: 750,
     positionY: -300,
   });
 
-  const nodeMediaInterviews = await findOrCreateNode({
-    name: "Media / interviews",
+  const nodeLegal = await findOrCreateNode({
+    name: "Legal / compliance",
     description:
-      "Journalist interview requests, radio and TV appearance inquiries, podcast invitations, and press profile requests for Delphine Horvilleur.",
+      "Contracts, NDAs, data processing agreements, compliance questionnaires, and legal review requests.",
     positionX: 1000,
     positionY: -300,
   });
 
-  const nodeGeneralSecretariat = await findOrCreateNode({
-    name: "General secretariat",
+  const nodeInternal = await findOrCreateNode({
+    name: "Internal / operations",
     description:
-      "General administrative correspondence for Delphine Horvilleur that does not fit a more specific secretariat category.",
+      "Internal team correspondence and general operational matters that do not fit a more specific category.",
     positionX: 1250,
     positionY: -300,
   });
@@ -246,7 +246,7 @@ async function main() {
   const nodeOtherReview = await findOrCreateNode({
     name: "Other / needs review",
     description:
-      "Email that does not clearly fit the Tenoua magazine or the Delphine Horvilleur secretariat categories and requires human review.",
+      "Email that does not clearly fit any of the defined categories and requires human review.",
     positionX: 0,
     positionY: 300,
   });
@@ -270,23 +270,23 @@ async function main() {
   }
 
   // Inbox → all destination nodes
-  await findOrCreateEdge({ sourceNodeId: nodeInbox.id, targetNodeId: nodeEditorial.id });
-  await findOrCreateEdge({ sourceNodeId: nodeInbox.id, targetNodeId: nodeSubscriptions.id });
-  await findOrCreateEdge({ sourceNodeId: nodeInbox.id, targetNodeId: nodeContributors.id });
+  await findOrCreateEdge({ sourceNodeId: nodeInbox.id, targetNodeId: nodeSales.id });
+  await findOrCreateEdge({ sourceNodeId: nodeInbox.id, targetNodeId: nodeBilling.id });
   await findOrCreateEdge({ sourceNodeId: nodeInbox.id, targetNodeId: nodePartnerships.id });
-  await findOrCreateEdge({ sourceNodeId: nodeInbox.id, targetNodeId: nodeWeddings.id });
-  await findOrCreateEdge({ sourceNodeId: nodeInbox.id, targetNodeId: nodeFunerals.id });
-  await findOrCreateEdge({ sourceNodeId: nodeInbox.id, targetNodeId: nodeConferences.id });
-  await findOrCreateEdge({ sourceNodeId: nodeInbox.id, targetNodeId: nodeMediaInterviews.id });
-  await findOrCreateEdge({ sourceNodeId: nodeInbox.id, targetNodeId: nodeGeneralSecretariat.id });
+  await findOrCreateEdge({ sourceNodeId: nodeInbox.id, targetNodeId: nodePress.id });
+  await findOrCreateEdge({ sourceNodeId: nodeInbox.id, targetNodeId: nodeSupport.id });
+  await findOrCreateEdge({ sourceNodeId: nodeInbox.id, targetNodeId: nodeRecruiting.id });
+  await findOrCreateEdge({ sourceNodeId: nodeInbox.id, targetNodeId: nodeMeetings.id });
+  await findOrCreateEdge({ sourceNodeId: nodeInbox.id, targetNodeId: nodeLegal.id });
+  await findOrCreateEdge({ sourceNodeId: nodeInbox.id, targetNodeId: nodeInternal.id });
   await findOrCreateEdge({ sourceNodeId: nodeInbox.id, targetNodeId: nodeOtherReview.id });
 
   // ── 8. Tags ───────────────────────────────────────────────────────────────
   const tagDefs = [
-    { name: "Cérémonie", color: "#8B5CF6" },
-    { name: "Tenoua", color: "#F59E0B" },
-    { name: "Médias", color: "#3B82F6" },
-    { name: "Secrétariat", color: "#10B981" },
+    { name: "Revenue", color: "#8B5CF6" },
+    { name: "Customer", color: "#F59E0B" },
+    { name: "Press", color: "#3B82F6" },
+    { name: "Operations", color: "#10B981" },
   ] as const;
 
   const tags: Record<string, string> = {};
@@ -367,150 +367,149 @@ async function main() {
     return { thread, message };
   }
 
-  // 1. Wedding ceremony request → Weddings
-  const { thread: threadWedding, message: msgWedding } =
+  // 1. Inbound sales inquiry → Sales / new business
+  const { thread: threadSales, message: msgSales } =
     await findOrCreateThread({
       triageStatus: "SORTED",
       providerThreadId: "thread-001",
       providerMessageId: "msg-001",
-      subject: "Cérémonie de mariage — demande d'officiant pour le 14 septembre",
-      senderEmail: "marion.levy@gmail.com",
-      senderName: "Marion Lévy",
+      subject: "Interested in your platform — pricing for a 50-person team",
+      senderEmail: "jordan.mills@brightwave.example",
+      senderName: "Jordan Mills",
       snippet:
-        "Nous souhaitons vous contacter au sujet de notre mariage prévu le 14 septembre. Seriez-vous disponible pour célébrer notre union ?",
+        "We are evaluating tools for our operations team and would like to understand your pricing for around 50 seats.",
       bodyText: [
-        "Madame Horvilleur,",
+        "Hello,",
         "",
-        "Mon fiancé et moi souhaitons vous demander si vous seriez disponible pour officier notre cérémonie de mariage le 14 septembre prochain à Paris.",
+        "I lead operations at Brightwave and we are evaluating a few platforms for our team this quarter. We would likely start with around 50 seats.",
         "",
-        "Nous sommes très attachés à une cérémonie qui reflète nos valeurs et notre parcours familial. Nous aurions aimé vous rencontrer pour en discuter.",
+        "Could you share pricing for that team size and let me know whether a short demo is possible next week?",
         "",
-        "Dans l'attente de votre réponse,",
-        "Marion Lévy",
+        "Best regards,",
+        "Jordan Mills",
       ].join("\n"),
       receivedAt: new Date("2026-05-17T10:30:00Z"),
       toEmails: ["demo@amarnai.local"],
     });
 
-  // 2. Funeral / memorial request → Funerals
-  const { thread: threadFuneral, message: msgFuneral } =
+  // 2. Customer support issue → Customer support
+  const { thread: threadSupport, message: msgSupport } =
     await findOrCreateThread({
       triageStatus: "SORTED",
       providerThreadId: "thread-002",
       providerMessageId: "msg-002",
-      subject: "Cérémonie funèbre — notre père nous a quittés",
-      senderEmail: "david.cohen@outlook.com",
-      senderName: "David Cohen",
+      subject: "Sync stopped working this morning — urgent",
+      senderEmail: "david.chen@northstar-retail.example",
+      senderName: "David Chen",
       snippet:
-        "Notre père est décédé lundi. Nous cherchons quelqu'un pour présider la cérémonie funèbre en accord avec notre tradition.",
+        "Our account stopped syncing around 8am and the team is blocked. Can someone look into this today?",
       bodyText: [
-        "Madame,",
+        "Hi support,",
         "",
-        "Notre père, Abraham Cohen, nous a quittés lundi dernier. Nous sommes une famille pratiquante et souhaitons organiser une cérémonie funèbre qui honore sa mémoire.",
+        "Our workspace stopped syncing this morning at about 8am. New items are not coming through and the whole team is blocked on it.",
         "",
-        "Quelqu'un nous a recommandé votre nom. Seriez-vous disponible pour nous accompagner dans ce moment douloureux ?",
+        "This is affecting our daily operations, so a quick response today would be greatly appreciated.",
         "",
-        "Avec respect,",
-        "David Cohen",
+        "Thanks,",
+        "David Chen",
       ].join("\n"),
       receivedAt: new Date("2026-05-16T08:00:00Z"),
       toEmails: ["demo@amarnai.local"],
     });
 
-  // 3. Tenoua article pitch → Editorial / pitches
-  const { thread: threadPitch, message: msgPitch } =
+  // 3. Partnership proposal → Partnerships / vendors
+  const { thread: threadPartnership, message: msgPartnership } =
     await findOrCreateThread({
       triageStatus: "SORTED",
       providerThreadId: "thread-003",
       providerMessageId: "msg-003",
-      subject: "Proposition d'article : Les nouvelles liturgies du quotidien",
-      senderEmail: "sarah.benguigui@journaliste.fr",
-      senderName: "Sarah Benguigui",
+      subject: "Partnership proposal: integration + co-marketing",
+      senderEmail: "sarah.bennett@meridianapps.example",
+      senderName: "Sarah Bennett",
       snippet:
-        "Je me permets de vous soumettre une proposition d'article sur les rituels profanes qui structurent nos vies modernes.",
+        "We build a complementary product and would like to explore a technical integration and joint go-to-market.",
       bodyText: [
-        "Chère équipe de Tenoua,",
+        "Hello,",
         "",
-        "Je suis journaliste et essayiste, et je me permets de vous soumettre une proposition d'article intitulée 'Les nouvelles liturgies du quotidien'.",
+        "I head up partnerships at Meridian Apps. We build a complementary product to yours, and several shared customers have asked us to work together.",
         "",
-        "Ce texte explore comment des rituels profanes — repas en famille, moments de silence, gestes hebdomadaires — remplissent une fonction proche du sacré dans nos vies modernes. Je pense que cela correspond à la ligne éditoriale de Tenoua.",
+        "We would like to explore a technical integration and a co-marketing arrangement. Would you be open to a call to discuss?",
         "",
-        "Je serais ravie d'en discuter avec vous.",
-        "Sarah Benguigui",
+        "Best,",
+        "Sarah Bennett",
       ].join("\n"),
       receivedAt: new Date("2026-05-15T14:20:00Z"),
       toEmails: ["demo@amarnai.local"],
     });
 
-  // 4. Subscription delivery issue → Subscriptions / distribution
-  const { thread: threadSubscription, message: msgSubscription } =
+  // 4. Billing dispute → Billing / invoices
+  const { thread: threadBilling, message: msgBilling } =
     await findOrCreateThread({
       triageStatus: "SORTED",
       providerThreadId: "thread-004",
       providerMessageId: "msg-004",
-      subject: "[Tenoua] Abonnement #2024-876 — numéro printemps non reçu",
-      senderEmail: "pierre.simon@free.fr",
-      senderName: "Pierre Simon",
+      subject: "Invoice #2026-0481 — duplicate charge on our card",
+      senderEmail: "peter.simmons@harborlogistics.example",
+      senderName: "Peter Simmons",
       snippet:
-        "Abonné depuis deux ans, je n'ai pas reçu le numéro de printemps. Pouvez-vous vérifier ma livraison ?",
+        "We were charged twice for invoice #2026-0481 this month. Can you confirm and issue a refund for the duplicate?",
       bodyText: [
-        "Bonjour,",
+        "Hello,",
         "",
-        "Je suis abonné à Tenoua depuis deux ans (abonnement n°2024-876). Je n'ai toujours pas reçu le numéro de printemps alors que nous sommes mi-mai.",
+        "It looks like we were charged twice for invoice #2026-0481 this billing cycle. Both charges hit the same card within a day of each other.",
         "",
-        "Pouvez-vous vérifier si mon numéro a bien été expédié et me donner un suivi de livraison ?",
+        "Could you confirm the duplicate charge and issue a refund for the second one?",
         "",
-        "Merci,",
-        "Pierre Simon",
+        "Thanks,",
+        "Peter Simmons",
       ].join("\n"),
       receivedAt: new Date("2026-05-14T09:45:00Z"),
       toEmails: ["demo@amarnai.local"],
     });
 
-  // 5. Radio interview request → Media / interviews
+  // 5. Press interview request → Press / media
   const { thread: threadInterview, message: msgInterview } =
     await findOrCreateThread({
       triageStatus: "SORTED",
       providerThreadId: "thread-005",
       providerMessageId: "msg-005",
-      subject: "Invitation : émission 'Voix du monde' — France Inter, juin 2026",
-      senderEmail: "productrice@franceinter.example",
-      senderName: "Amélie Rousseau — France Inter",
+      subject: "Interview request — feature on email automation tools",
+      senderEmail: "amelia.rivera@techsignal.example",
+      senderName: "Amelia Rivera — TechSignal",
       snippet:
-        "Nous aimerions vous inviter dans notre émission 'Voix du monde' pour parler de votre dernier ouvrage. Enregistrement prévu début juin.",
+        "I'm writing a feature on email automation tools and would love to include your perspective. Could we talk this week?",
       bodyText: [
-        "Madame Horvilleur,",
+        "Hello,",
         "",
-        "Je suis productrice de l'émission 'Voix du monde' sur France Inter. Nous aimerions vous recevoir pour un entretien consacré à votre dernier ouvrage et à votre engagement pour le dialogue interreligieux.",
+        "I'm a reporter at TechSignal working on a feature about email automation tools and how teams are adopting them.",
         "",
-        "L'enregistrement serait prévu début juin, pour une diffusion le 14 juin.",
+        "I'd love to include your perspective. Would you be available for a 30-minute interview this week? The piece is scheduled to run on June 14.",
         "",
-        "Seriez-vous disponible ? Merci de bien vouloir confirmer.",
-        "",
-        "Amélie Rousseau",
+        "Thank you,",
+        "Amelia Rivera",
       ].join("\n"),
       receivedAt: new Date("2026-05-17T16:00:00Z"),
       toEmails: ["demo@amarnai.local"],
     });
 
-  // 6. Vague admin request → Other / needs review (low confidence)
+  // 6. Vague follow-up → Other / needs review (low confidence)
   const { thread: threadVague, message: msgVague } =
     await findOrCreateThread({
       triageStatus: "NEEDS_REVIEW",
       providerThreadId: "thread-006",
       providerMessageId: "msg-006",
-      subject: "Suite à notre échange",
-      senderEmail: "contact@domaineinconnu.example",
-      senderName: "M. Marchand",
+      subject: "Following up",
+      senderEmail: "contact@unknown-domain.example",
+      senderName: "M. Marsh",
       snippet:
-        "Comme convenu, je reviens vers vous. Merci de me dire comment procéder.",
+        "As discussed, I'm circling back. Let me know how you'd like to proceed.",
       bodyText: [
-        "Bonjour,",
+        "Hello,",
         "",
-        "Comme convenu lors de notre échange, je reviens vers vous. Merci de me faire savoir comment procéder pour la suite.",
+        "As discussed, I'm circling back on this. Let me know how you'd like to proceed from here.",
         "",
-        "Cordialement,",
-        "M. Marchand",
+        "Regards,",
+        "M. Marsh",
       ].join("\n"),
       receivedAt: new Date("2026-05-17T07:30:00Z"),
       toEmails: ["demo@amarnai.local"],
@@ -566,60 +565,60 @@ async function main() {
     });
   }
 
-  // Wedding → Inbox → Weddings
-  const classWedding = await findOrCreateClassification({
-    emailThreadId: threadWedding.id,
-    emailMessageId: msgWedding.id,
-    finalNodeId: nodeWeddings.id,
+  // Sales inquiry → Inbox → Sales / new business
+  const classSales = await findOrCreateClassification({
+    emailThreadId: threadSales.id,
+    emailMessageId: msgSales.id,
+    finalNodeId: nodeSales.id,
     path: [
       { nodeId: nodeInbox.id, nodeName: "Inbox" },
-      { nodeId: nodeWeddings.id, nodeName: "Weddings" },
+      { nodeId: nodeSales.id, nodeName: "Sales / new business" },
     ],
     confidence: 0.93,
     explanation:
-      "Explicit request to officiate a wedding ceremony on a named date. Sender is a private individual seeking a ceremony officiant.",
+      "Prospective customer evaluating the product asks for pricing at a named team size and requests a demo. Clear inbound sales lead.",
     priority: Priority.MEDIUM,
     urgency: Urgency.SOON,
     riskLevel: RiskLevel.LOW,
     requiredAction: RequiredAction.REPLY,
-    sensitivity: Sensitivity.PERSONAL_DATA,
+    sensitivity: Sensitivity.NORMAL,
     suggestedNextStep: SuggestedNextStep.OPEN_IN_GMAIL,
     needsHumanReview: false,
   });
 
-  // Funeral → Inbox → Funerals
-  const classFuneral = await findOrCreateClassification({
-    emailThreadId: threadFuneral.id,
-    emailMessageId: msgFuneral.id,
-    finalNodeId: nodeFunerals.id,
+  // Support issue → Inbox → Customer support
+  const classSupport = await findOrCreateClassification({
+    emailThreadId: threadSupport.id,
+    emailMessageId: msgSupport.id,
+    finalNodeId: nodeSupport.id,
     path: [
       { nodeId: nodeInbox.id, nodeName: "Inbox" },
-      { nodeId: nodeFunerals.id, nodeName: "Funerals" },
+      { nodeId: nodeSupport.id, nodeName: "Customer support" },
     ],
     confidence: 0.95,
     explanation:
-      "Recent bereavement. Family requests a funeral ceremony presided by Delphine Horvilleur. Urgent pastoral care context.",
+      "Existing customer reports a sync outage blocking their team since this morning. Time-sensitive technical support issue.",
     priority: Priority.HIGH,
     urgency: Urgency.TODAY,
     riskLevel: RiskLevel.LOW,
     requiredAction: RequiredAction.REPLY,
-    sensitivity: Sensitivity.PERSONAL_DATA,
+    sensitivity: Sensitivity.NORMAL,
     suggestedNextStep: SuggestedNextStep.OPEN_IN_GMAIL,
     needsHumanReview: false,
   });
 
-  // Article pitch → Inbox → Editorial / pitches
-  const classPitch = await findOrCreateClassification({
-    emailThreadId: threadPitch.id,
-    emailMessageId: msgPitch.id,
-    finalNodeId: nodeEditorial.id,
+  // Partnership proposal → Inbox → Partnerships / vendors
+  const classPartnership = await findOrCreateClassification({
+    emailThreadId: threadPartnership.id,
+    emailMessageId: msgPartnership.id,
+    finalNodeId: nodePartnerships.id,
     path: [
       { nodeId: nodeInbox.id, nodeName: "Inbox" },
-      { nodeId: nodeEditorial.id, nodeName: "Editorial / pitches" },
+      { nodeId: nodePartnerships.id, nodeName: "Partnerships / vendors" },
     ],
     confidence: 0.91,
     explanation:
-      "Professional journalist submitting a named article proposal for Tenoua. Subject and body both explicitly reference editorial content.",
+      "Partnerships lead from a complementary vendor proposing a technical integration and co-marketing. Subject and body both reference partnership intent.",
     priority: Priority.MEDIUM,
     urgency: Urgency.NONE,
     riskLevel: RiskLevel.LOW,
@@ -629,39 +628,39 @@ async function main() {
     needsHumanReview: false,
   });
 
-  // Subscription issue → Inbox → Subscriptions / distribution
-  const classSubscription = await findOrCreateClassification({
-    emailThreadId: threadSubscription.id,
-    emailMessageId: msgSubscription.id,
-    finalNodeId: nodeSubscriptions.id,
+  // Billing dispute → Inbox → Billing / invoices
+  const classBilling = await findOrCreateClassification({
+    emailThreadId: threadBilling.id,
+    emailMessageId: msgBilling.id,
+    finalNodeId: nodeBilling.id,
     path: [
       { nodeId: nodeInbox.id, nodeName: "Inbox" },
-      { nodeId: nodeSubscriptions.id, nodeName: "Subscriptions / distribution" },
+      { nodeId: nodeBilling.id, nodeName: "Billing / invoices" },
     ],
     confidence: 0.88,
     explanation:
-      "Reader reports a missing issue by subscription number. Clear distribution problem for Tenoua magazine.",
+      "Customer reports a duplicate charge for a named invoice number and requests a refund. Clear billing issue.",
     priority: Priority.LOW,
     urgency: Urgency.SOON,
     riskLevel: RiskLevel.LOW,
     requiredAction: RequiredAction.REPLY,
-    sensitivity: Sensitivity.NORMAL,
+    sensitivity: Sensitivity.PERSONAL_DATA,
     suggestedNextStep: SuggestedNextStep.LABEL_ONLY,
     needsHumanReview: false,
   });
 
-  // Interview request → Inbox → Media / interviews
+  // Press interview → Inbox → Press / media
   const classInterview = await findOrCreateClassification({
     emailThreadId: threadInterview.id,
     emailMessageId: msgInterview.id,
-    finalNodeId: nodeMediaInterviews.id,
+    finalNodeId: nodePress.id,
     path: [
       { nodeId: nodeInbox.id, nodeName: "Inbox" },
-      { nodeId: nodeMediaInterviews.id, nodeName: "Media / interviews" },
+      { nodeId: nodePress.id, nodeName: "Press / media" },
     ],
     confidence: 0.89,
     explanation:
-      "France Inter producer inviting Delphine Horvilleur for a radio interview. Named programme, named airdate — clear media request.",
+      "Reporter requesting an interview for a named publication with a stated run date. Clear press/media request.",
     priority: Priority.MEDIUM,
     urgency: Urgency.SOON,
     riskLevel: RiskLevel.LOW,
@@ -671,7 +670,7 @@ async function main() {
     needsHumanReview: false,
   });
 
-  // Vague admin → Inbox → Other / needs review (low confidence)
+  // Vague follow-up → Inbox → Other / needs review (low confidence)
   const classVague = await findOrCreateClassification({
     emailThreadId: threadVague.id,
     emailMessageId: msgVague.id,
@@ -682,7 +681,7 @@ async function main() {
     ],
     confidence: 0.29,
     explanation:
-      "Vague subject and body. Unknown sender. No context about Tenoua, ceremonies, or specific secretariat topics. Cannot classify with confidence.",
+      "Vague subject and body. Unknown sender. No context about the account, product, or any specific topic. Cannot classify with confidence.",
     priority: Priority.MEDIUM,
     urgency: Urgency.UNKNOWN,
     riskLevel: RiskLevel.MEDIUM,
@@ -707,33 +706,33 @@ async function main() {
   }
 
   await findOrCreateEmailTag({
-    emailThreadId: threadWedding.id,
-    tagId: tags["Cérémonie"]!,
+    emailThreadId: threadSales.id,
+    tagId: tags["Revenue"]!,
     source: EmailTagSource.AI_SUGGESTED,
   });
   await findOrCreateEmailTag({
-    emailThreadId: threadFuneral.id,
-    tagId: tags["Cérémonie"]!,
+    emailThreadId: threadPartnership.id,
+    tagId: tags["Revenue"]!,
     source: EmailTagSource.AI_SUGGESTED,
   });
   await findOrCreateEmailTag({
-    emailThreadId: threadPitch.id,
-    tagId: tags["Tenoua"]!,
+    emailThreadId: threadSupport.id,
+    tagId: tags["Customer"]!,
     source: EmailTagSource.AI_SUGGESTED,
   });
   await findOrCreateEmailTag({
-    emailThreadId: threadSubscription.id,
-    tagId: tags["Tenoua"]!,
+    emailThreadId: threadBilling.id,
+    tagId: tags["Customer"]!,
     source: EmailTagSource.USER,
   });
   await findOrCreateEmailTag({
     emailThreadId: threadInterview.id,
-    tagId: tags["Médias"]!,
+    tagId: tags["Press"]!,
     source: EmailTagSource.AI_SUGGESTED,
   });
   await findOrCreateEmailTag({
     emailThreadId: threadVague.id,
-    tagId: tags["Secrétariat"]!,
+    tagId: tags["Operations"]!,
     source: EmailTagSource.AI_SUGGESTED,
   });
 
@@ -767,32 +766,32 @@ async function main() {
     actorType: AuditActorType.AI,
     eventType: "email.classified",
     entityType: "EmailClassification",
-    entityId: classWedding.id,
-    metadata: { confidence: 0.93, finalNodeName: "Weddings", needsHumanReview: false },
+    entityId: classSales.id,
+    metadata: { confidence: 0.93, finalNodeName: "Sales / new business", needsHumanReview: false },
   });
 
   await findOrCreateAuditLog({
     actorType: AuditActorType.AI,
     eventType: "email.classified",
     entityType: "EmailClassification",
-    entityId: classFuneral.id,
-    metadata: { confidence: 0.95, finalNodeName: "Funerals", needsHumanReview: false },
+    entityId: classSupport.id,
+    metadata: { confidence: 0.95, finalNodeName: "Customer support", needsHumanReview: false },
   });
 
   await findOrCreateAuditLog({
     actorType: AuditActorType.AI,
     eventType: "email.classified",
     entityType: "EmailClassification",
-    entityId: classPitch.id,
-    metadata: { confidence: 0.91, finalNodeName: "Editorial / pitches", needsHumanReview: false },
+    entityId: classPartnership.id,
+    metadata: { confidence: 0.91, finalNodeName: "Partnerships / vendors", needsHumanReview: false },
   });
 
   await findOrCreateAuditLog({
     actorType: AuditActorType.AI,
     eventType: "email.classified",
     entityType: "EmailClassification",
-    entityId: classSubscription.id,
-    metadata: { confidence: 0.88, finalNodeName: "Subscriptions / distribution", needsHumanReview: false },
+    entityId: classBilling.id,
+    metadata: { confidence: 0.88, finalNodeName: "Billing / invoices", needsHumanReview: false },
   });
 
   await findOrCreateAuditLog({
@@ -800,7 +799,7 @@ async function main() {
     eventType: "email.classified",
     entityType: "EmailClassification",
     entityId: classInterview.id,
-    metadata: { confidence: 0.89, finalNodeName: "Media / interviews", needsHumanReview: false },
+    metadata: { confidence: 0.89, finalNodeName: "Press / media", needsHumanReview: false },
   });
 
   await findOrCreateAuditLog({
