@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useRef, useState } from "react";
 import type { ApiClient } from "@amarnai/api-client";
 import type { ActiveSelection, FolderItem, ThreadItem } from "./types.js";
