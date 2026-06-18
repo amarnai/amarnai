@@ -74,3 +74,4 @@ A key use case is bulk triage of an existing inbox: users may want to sort and c
 ## Testing
 
 - Tests must never be adjusted to accommodate the algorithm. If a test is failing and the test itself is not flawed, fix the algorithm, NOT the test.
+- When a process is started to run a test, kill it once the test is done. Do not leave test or dev processes running in the background.
