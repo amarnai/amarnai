@@ -34,15 +34,22 @@ async function main() {
 
   // ── 1b. Dev password credential ───────────────────────────────────────────
   // Lets the dev user sign in with email + password locally (e.g. the mobile
-  // app, which has no Google OAuth in dev). Dev-only convenience; never created
-  // in production signups. update:{} keeps re-seeding idempotent.
-  const DEV_PASSWORD = "password";
-  await db.userCredential.upsert({
-    where: { userId: user.id },
-    update: {},
-    create: { userId: user.id, passwordHash: bcrypt.hashSync(DEV_PASSWORD, 10) },
-  });
-  console.log(`  Dev login: dev@amarnai.local / ${DEV_PASSWORD}`);
+  // app, which has no Google OAuth in dev). Dev-only convenience: this is a
+  // sign-in-able account with a trivial password, so it must never exist in a
+  // production database. Hard-refuse when NODE_ENV is production rather than
+  // relying on "don't run seed in prod" by convention. update:{} keeps
+  // re-seeding idempotent.
+  if (process.env.NODE_ENV === "production") {
+    console.log("  Skipping dev login credential (NODE_ENV=production)");
+  } else {
+    const DEV_PASSWORD = "password";
+    await db.userCredential.upsert({
+      where: { userId: user.id },
+      update: {},
+      create: { userId: user.id, passwordHash: bcrypt.hashSync(DEV_PASSWORD, 10) },
+    });
+    console.log(`  Dev login: dev@amarnai.local / ${DEV_PASSWORD}`);
+  }
 
   // ── 2. Workspace ──────────────────────────────────────────────────────────
   let workspace = await db.workspace.findFirst({
