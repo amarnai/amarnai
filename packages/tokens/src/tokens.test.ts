@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, it, expect } from "vitest";
-import { colors, radii, shadows, typography } from "./index.js";
+import { colors, radii, shadows, typography, space, fontSize } from "./index.js";
 
 const HEX_RE = /^#[0-9a-fA-F]{6}$/;
 
@@ -34,6 +34,47 @@ describe("@amarnai/tokens", () => {
       expect(radii.sm).toBeLessThan(radii.md);
       expect(radii.md).toBeLessThan(radii.lg);
       expect(radii.lg).toBeLessThan(radii.xl);
+    });
+  });
+
+  describe("space", () => {
+    it("all spacing values are positive integers", () => {
+      for (const [key, value] of Object.entries(space)) {
+        expect(value, `space.${key}`).toBeGreaterThan(0);
+        expect(Number.isInteger(value), `space.${key} is integer`).toBe(true);
+      }
+    });
+
+    it("scale is strictly increasing xxs -> xxl", () => {
+      const ordered = [space.xxs, space.xs, space.sm, space.md, space.lg, space.xl, space.xxl];
+      for (let i = 1; i < ordered.length; i++) {
+        expect(ordered[i]).toBeGreaterThan(ordered[i - 1]!);
+      }
+    });
+  });
+
+  describe("fontSize", () => {
+    it("all font sizes are positive integers", () => {
+      for (const [key, value] of Object.entries(fontSize)) {
+        expect(value, `fontSize.${key}`).toBeGreaterThan(0);
+        expect(Number.isInteger(value), `fontSize.${key} is integer`).toBe(true);
+      }
+    });
+
+    it("scale is strictly increasing xs -> display", () => {
+      const ordered = [
+        fontSize.xs,
+        fontSize.sm,
+        fontSize.base,
+        fontSize.md,
+        fontSize.lg,
+        fontSize.xl,
+        fontSize.xxl,
+        fontSize.display,
+      ];
+      for (let i = 1; i < ordered.length; i++) {
+        expect(ordered[i]).toBeGreaterThan(ordered[i - 1]!);
+      }
     });
   });
 
@@ -78,10 +119,32 @@ describe("@amarnai/tokens", () => {
         "--warn",
         "--danger",
         "--teal",
+        "--space-xxs",
+        "--space-xxl",
+        "--fs-xs",
+        "--fs-xxl",
       ];
 
       for (const v of requiredVars) {
         expect(css, `globals.css should define ${v}`).toContain(v + ":");
+      }
+    });
+
+    it("globals.css --space-* values match the space scale", () => {
+      const css = readFileSync(cssPath, "utf8");
+      for (const [key, value] of Object.entries(space)) {
+        const match = css.match(new RegExp(`--space-${key}\\s*:\\s*(\\d+)px`));
+        expect(match, `--space-${key} present in globals.css`).not.toBeNull();
+        expect(Number(match?.[1]), `--space-${key} matches space.${key}`).toBe(value);
+      }
+    });
+
+    it("globals.css --fs-* values match the fontSize scale", () => {
+      const css = readFileSync(cssPath, "utf8");
+      for (const [key, value] of Object.entries(fontSize)) {
+        const match = css.match(new RegExp(`--fs-${key}\\s*:\\s*(\\d+)px`));
+        expect(match, `--fs-${key} present in globals.css`).not.toBeNull();
+        expect(Number(match?.[1]), `--fs-${key} matches fontSize.${key}`).toBe(value);
       }
     });
 

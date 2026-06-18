@@ -4,3 +4,7 @@ export { radii } from "./radii.js";
 export type { RadiusToken } from "./radii.js";
 export { shadows } from "./shadows.js";
 export { typography } from "./typography.js";
+export { space } from "./space.js";
+export type { SpaceToken } from "./space.js";
+export { fontSize, fontWeight } from "./text.js";
+export type { FontSizeToken, FontWeightToken } from "./text.js";

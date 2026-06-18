@@ -12,7 +12,7 @@ import {
   View,
 } from 'react-native';
 import { Redirect } from 'expo-router';
-import { colors, radii } from '@amarnai/tokens';
+import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
 import { useSession } from '../src/auth/session';
 import { API_BASE_URL } from '../src/config';
 import { useApiHealth } from '../src/health';
@@ -137,67 +137,67 @@ const styles = StyleSheet.create({
   scroll: {
     flexGrow: 1,
     justifyContent: 'center',
-    padding: 24,
+    padding: space.xxl,
   },
   form: {
-    gap: 12,
+    gap: space.lg,
   },
   heading: {
-    fontSize: 32,
-    fontWeight: '700',
+    fontSize: fontSize.display,
+    fontWeight: fontWeight.bold,
     color: colors.ink,
     textAlign: 'center',
   },
   subheading: {
-    fontSize: 15,
+    fontSize: fontSize.lg,
     color: colors.ink3,
     textAlign: 'center',
-    marginBottom: 12,
+    marginBottom: space.lg,
   },
   input: {
     backgroundColor: colors.surface,
     borderColor: colors.line2,
     borderWidth: 1,
     borderRadius: radii.md,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
-    fontSize: 16,
+    paddingHorizontal: space.xl,
+    paddingVertical: space.lg,
+    fontSize: fontSize.xl,
     color: colors.ink,
   },
   error: {
     color: colors.danger,
-    fontSize: 14,
+    fontSize: fontSize.md,
   },
   button: {
     backgroundColor: colors.accent,
     borderRadius: radii.md,
-    paddingVertical: 14,
+    paddingVertical: space.xl,
     alignItems: 'center',
-    marginTop: 4,
+    marginTop: space.xs,
   },
   buttonDisabled: {
     opacity: 0.5,
   },
   buttonText: {
     color: colors.surface,
-    fontSize: 16,
-    fontWeight: '600',
+    fontSize: fontSize.xl,
+    fontWeight: fontWeight.semibold,
   },
   footer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 8,
-    paddingHorizontal: 24,
-    paddingBottom: 16,
+    gap: space.md,
+    paddingHorizontal: space.xxl,
+    paddingBottom: space.xl,
   },
   dot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
+    width: space.md,
+    height: space.md,
+    borderRadius: radii.full,
   },
   footerText: {
-    fontSize: 12,
+    fontSize: fontSize.sm,
     color: colors.ink3,
     flexShrink: 1,
   },

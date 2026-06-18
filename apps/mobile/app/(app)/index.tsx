@@ -1,7 +1,7 @@
 import { useRouter } from 'expo-router';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { buildFolderCounts } from '@amarnai/core';
-import { colors, radii } from '@amarnai/tokens';
+import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
 import { useSession } from '../../src/auth/session';
 import { useTriage } from '../../src/triage/TriageProvider';
 import { FolderRow } from '../../src/components/FolderRow';
@@ -54,35 +54,35 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   listContent: {
-    paddingTop: 16,
+    paddingTop: space.xl,
   },
   sectionTitle: {
-    fontSize: 14,
-    fontWeight: '600',
+    fontSize: fontSize.md,
+    fontWeight: fontWeight.semibold,
     color: colors.ink3,
-    paddingHorizontal: 16,
-    paddingBottom: 8,
+    paddingHorizontal: space.xl,
+    paddingBottom: space.md,
     textTransform: 'uppercase',
   },
   empty: {
-    fontSize: 14,
+    fontSize: fontSize.md,
     color: colors.ink3,
     textAlign: 'center',
-    marginTop: 24,
+    marginTop: space.xxl,
   },
   signOut: {
-    marginHorizontal: 16,
-    marginBottom: 24,
+    marginHorizontal: space.xl,
+    marginBottom: space.xxl,
     borderColor: colors.line2,
     borderWidth: 1,
     borderRadius: radii.md,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
+    paddingHorizontal: space.xl + space.xs,
+    paddingVertical: space.lg - space.xxs,
   },
   signOutText: {
-    fontSize: 15,
+    fontSize: fontSize.lg,
     color: colors.ink2,
-    fontWeight: '500',
+    fontWeight: fontWeight.medium,
     textAlign: 'center',
   },
 });

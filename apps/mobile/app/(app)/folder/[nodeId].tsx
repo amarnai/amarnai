@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { colors } from '@amarnai/tokens';
+import { colors, space, fontSize, fontWeight } from '@amarnai/tokens';
 import { useTriage } from '../../../src/triage/TriageProvider';
 import { ThreadRow } from '../../../src/components/ThreadRow';
 
@@ -88,29 +88,29 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingTop: 12,
-    paddingBottom: 12,
+    paddingHorizontal: space.xl,
+    paddingTop: space.lg,
+    paddingBottom: space.lg,
     borderBottomWidth: 1,
     borderBottomColor: colors.line2,
-    gap: 12,
+    gap: space.lg,
   },
   back: {
-    paddingVertical: 2,
+    paddingVertical: space.xxs,
   },
   backText: {
-    fontSize: 15,
+    fontSize: fontSize.lg,
     color: colors.accent,
-    fontWeight: '500',
+    fontWeight: fontWeight.medium,
   },
   title: {
-    fontSize: 18,
-    fontWeight: '600',
+    fontSize: fontSize.xxl,
+    fontWeight: fontWeight.semibold,
     color: colors.ink,
     flex: 1,
   },
   empty: {
-    fontSize: 14,
+    fontSize: fontSize.md,
     color: colors.ink3,
     textAlign: 'center',
   },

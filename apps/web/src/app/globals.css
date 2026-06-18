@@ -53,9 +53,29 @@
   --r-md: 12px;
   --r-lg: 16px;
   --r-xl: 22px;
+  --r-full: 9999px;
   --shadow-1: 0 1px 1px oklch(20% 0.01 80 / 0.04), 0 2px 6px oklch(20% 0.01 80 / 0.045);
   --shadow-2: 0 1px 2px oklch(20% 0.01 80 / 0.06), 0 8px 24px oklch(20% 0.01 80 / 0.08);
   --shadow-3: 0 2px 4px oklch(20% 0.01 80 / 0.06), 0 18px 48px oklch(20% 0.01 80 / 0.12);
+
+  /* ── Spacing scale (shared with @amarnai/tokens `space`; locked by tokens.test) ── */
+  --space-xxs: 2px;
+  --space-xs:  4px;
+  --space-sm:  6px;
+  --space-md:  8px;
+  --space-lg:  12px;
+  --space-xl:  16px;
+  --space-xxl: 24px;
+
+  /* ── Type scale (shared with @amarnai/tokens `fontSize`; locked by tokens.test) ── */
+  --fs-xs:   11px;
+  --fs-sm:   12px;
+  --fs-base: 13px;
+  --fs-md:   14px;
+  --fs-lg:   15px;
+  --fs-xl:   16px;
+  --fs-xxl:  18px;
+  --fs-display: 32px;
 
   /* ── Typography ── */
   --f-sans: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;

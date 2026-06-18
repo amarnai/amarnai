@@ -1,5 +1,5 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { colors } from '@amarnai/tokens';
+import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
 import type { ThreadItem } from '@amarnai/core';
 
 interface ThreadRowProps {
@@ -74,11 +74,11 @@ export function ThreadRow({ thread, onPress }: ThreadRowProps) {
 
 const styles = StyleSheet.create({
   row: {
-    paddingHorizontal: 16,
-    paddingVertical: 12,
+    paddingHorizontal: space.xl,
+    paddingVertical: space.lg,
     borderBottomWidth: 1,
     borderBottomColor: colors.line2,
-    gap: 3,
+    gap: space.xxs,
   },
   topLine: {
     flexDirection: 'row',
@@ -86,43 +86,42 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   from: {
-    fontSize: 14,
-    fontWeight: '600',
+    fontSize: fontSize.md,
+    fontWeight: fontWeight.semibold,
     color: colors.ink2,
     flex: 1,
-    marginRight: 8,
+    marginRight: space.md,
   },
   time: {
-    fontSize: 12,
+    fontSize: fontSize.sm,
     color: colors.ink4,
   },
   subject: {
-    fontSize: 15,
-    fontWeight: '500',
+    fontSize: fontSize.lg,
+    fontWeight: fontWeight.medium,
     color: colors.ink,
   },
   snippet: {
-    fontSize: 13,
+    fontSize: fontSize.base,
     color: colors.ink3,
-    lineHeight: 18,
   },
   metaLine: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 4,
-    gap: 8,
+    marginTop: space.xs,
+    gap: space.md,
   },
   badge: {
-    borderRadius: 6,
-    paddingHorizontal: 8,
-    paddingVertical: 2,
+    borderRadius: radii.sm,
+    paddingHorizontal: space.md,
+    paddingVertical: space.xxs,
   },
   badgeText: {
-    fontSize: 11,
-    fontWeight: '600',
+    fontSize: fontSize.xs,
+    fontWeight: fontWeight.semibold,
   },
   msgCount: {
-    fontSize: 12,
+    fontSize: fontSize.sm,
     color: colors.ink4,
   },
 });
