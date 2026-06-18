@@ -210,6 +210,9 @@ importers:
       '@amarnai/auth':
         specifier: workspace:*
         version: link:../../packages/auth
+      '@amarnai/core':
+        specifier: workspace:*
+        version: link:../../packages/core
       '@amarnai/db':
         specifier: workspace:*
         version: link:../../packages/db
@@ -418,6 +421,31 @@ importers:
         specifier: ^3.0.0
         version: 3.2.4(@types/debug@4.1.13)(@types/node@22.19.19)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@1.8.0))(lightningcss@1.32.0)(terser@5.16.9)(tsx@4.22.1)(yaml@2.9.0)
 
+  packages/core:
+    dependencies:
+      '@amarnai/api-client':
+        specifier: workspace:*
+        version: link:../api-client
+      '@amarnai/shared':
+        specifier: workspace:*
+        version: link:../shared
+    devDependencies:
+      '@types/node':
+        specifier: ^22.0.0
+        version: 22.19.19
+      '@types/react':
+        specifier: ^19.0.0
+        version: 19.2.14
+      react:
+        specifier: ^19.0.0
+        version: 19.2.6
+      typescript:
+        specifier: ^5.8.0
+        version: 5.9.3
+      vitest:
+        specifier: ^3.0.0
+        version: 3.2.4(@types/debug@4.1.13)(@types/node@22.19.19)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@1.8.0))(lightningcss@1.32.0)(terser@5.16.9)(tsx@4.22.1)(yaml@2.9.0)
+
   packages/db:
     dependencies:
       '@amarnai/ai':
@@ -501,6 +529,9 @@ importers:
 
   packages/ui:
     dependencies:
+      '@amarnai/core':
+        specifier: workspace:*
+        version: link:../core
       '@amarnai/shared':
         specifier: workspace:*
         version: link:../shared

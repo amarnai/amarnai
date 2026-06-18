@@ -42,8 +42,12 @@ import {
   deleteTaxonomyEdgeAction,
   importTaxonomyAction,
 } from "@/actions/taxonomy";
-import { computeIgnoredReasons, type IgnoredReason } from "./taxonomyUtils";
-import { TAXONOMY_TEMPLATES, type TaxonomyTemplate } from "./taxonomyTemplates";
+import {
+  computeIgnoredReasons,
+  type IgnoredReason,
+  TAXONOMY_TEMPLATES,
+  type TaxonomyTemplate,
+} from "@amarnai/core/taxonomy";
 import {
   useTaxonomyHistory,
   snapshotsEqual,

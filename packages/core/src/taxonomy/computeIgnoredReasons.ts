@@ -1,6 +1,9 @@
-import type { TaxonomyNode, TaxonomyEdge } from "@/lib/api";
-
 export type IgnoredReason = "no-incoming" | null;
+
+// Minimal structural shapes so this works for both the @amarnai/shared and
+// @amarnai/api-client taxonomy node/edge types without coupling to either.
+type IgnoredNode = { id: string; isRoot: boolean };
+type IgnoredEdge = { sourceNodeId: string; targetNodeId: string };
 
 /**
  * A non-root node is ignored when it is not reachable from the root by
@@ -11,8 +14,8 @@ export type IgnoredReason = "no-incoming" | null;
  * candidate paths from the root.
  */
 export function computeIgnoredReasons(
-  nodes: TaxonomyNode[],
-  edges: TaxonomyEdge[]
+  nodes: readonly IgnoredNode[],
+  edges: readonly IgnoredEdge[],
 ): Map<string, IgnoredReason> {
   const root = nodes.find((n) => n.isRoot);
 

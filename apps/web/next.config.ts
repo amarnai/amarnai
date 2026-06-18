@@ -6,7 +6,7 @@ const config: NextConfig = {
   // Trace files relative to the monorepo root so workspace packages are included.
   outputFileTracingRoot: path.join(__dirname, "../../"),
   devIndicators: false,
-  transpilePackages: ["@amarnai/db", "@amarnai/ui"],
+  transpilePackages: ["@amarnai/core", "@amarnai/db", "@amarnai/ui"],
   serverExternalPackages: ["@prisma/client", "ioredis"],
   webpack: (config) => {
     // When transpiling workspace packages that use NodeNext-style `.js` extensions

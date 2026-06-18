@@ -10,7 +10,7 @@ import {
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import type { TaxonomyNode, TaxonomyEdge } from "@amarnai/shared";
-import { computeIgnoredReasons, type IgnoredReason } from "./utils.js";
+import { computeIgnoredReasons, type IgnoredReason } from "@amarnai/core/taxonomy";
 import {
   TaxonomyNodeCard,
   type TaxonomyRFNode,

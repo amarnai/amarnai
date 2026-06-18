@@ -1,64 +1,14 @@
-export type { FolderItem } from "../folder-tree/types.js";
-
-export type QueueId = "all" | "sorted" | "review" | "pending" | "important" | "unrouted" | "unclassified";
-
-export type ActiveSelection =
-  | { kind: "queue"; id: QueueId }
-  | { kind: "folder"; id: string };
-
-export type SegFilter = "all" | "unread" | "low";
-
-export type ThreadStatus = "sorted" | "review" | "unsorted" | "unrouted" | "unclassified";
-
-export type ThreadMessage = {
-  id: string;
-  fromName: string;
-  fromEmail: string;
-  time: Date;
-  snippet: string | null;
-  bodyText: string | null;
-};
-
-export type DoneMark = {
-  userId: string;
-  userName: string | null;
-  userEmail: string;
-  resolvedAt: string;
-};
-
-export type ThreadItem = {
-  id: string;
-  subject: string;
-  providerThreadId: string;
-  participants: string;
-  latestAt: Date;
-  messageCount: number;
-  snippet: string;
-  unread: boolean;
-  folderId: string | null;
-  status: ThreadStatus;
-  confidence: number;
-  reasoning: string | null;
-  alternativeFolder: { folderId: string; name: string; weight: number } | null;
-  messages: ThreadMessage[];
-  hasDraft: boolean;
-  isDrafting: boolean;
-  lastSenderEmail: string | null;
-  doneMark: DoneMark | null;
-  isImportant: boolean;
-  isClassifying: boolean;
-};
-
-export type DraftItem = {
-  id: string;
-  subject: string | null;
-  body: string;
-  status: "GENERATING" | "PROPOSED" | "SENT" | string;
-};
-
-export type SyncInfo = {
-  lastSyncedAt: string | null;
-  backfillStatus: "IDLE" | "RUNNING" | null;
-  workspacePlan: "FREE" | "PRO" | "BUSINESS";
-  pushEnabled: boolean;
-} | null;
+// Re-export shim. The canonical, platform-agnostic email view-model types live
+// in @amarnai/core/emails so both the web app and the mobile app share them.
+export type {
+  FolderItem,
+  QueueId,
+  ActiveSelection,
+  SegFilter,
+  ThreadStatus,
+  ThreadMessage,
+  DoneMark,
+  ThreadItem,
+  DraftItem,
+  SyncInfo,
+} from "@amarnai/core/emails";

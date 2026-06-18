@@ -4,8 +4,8 @@ import {
   snapshotsEqual,
   type GraphSnapshot,
   type HistoryState,
-} from "./useTaxonomyHistory";
-import type { TaxonomyNode, TaxonomyEdge } from "@/lib/api";
+} from "./history.js";
+import type { TaxonomyNode, TaxonomyEdge } from "@amarnai/api-client";
 
 function makeNode(id: string, overrides: Partial<TaxonomyNode> = {}): TaxonomyNode {
   return {

@@ -2,7 +2,7 @@
 
 import { Handle, Position, type NodeProps, type Node } from "@xyflow/react";
 import type { TaxonomyNode } from "@amarnai/shared";
-import type { IgnoredReason } from "./utils.js";
+import type { IgnoredReason } from "@amarnai/core/taxonomy";
 import { Tooltip } from "../Tooltip.js";
 
 export type TaxonomyNodeData = { node: TaxonomyNode; ignoredReason: IgnoredReason };
