@@ -1404,6 +1404,7 @@ function TaxonomyCanvasInner({
             nodesConnectable={!readOnly}
             fitView
             fitViewOptions={{ padding: 0.3 }}
+            proOptions={{ hideAttribution: true }}
           >
             <Background />
             <Controls />
