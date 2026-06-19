@@ -71,6 +71,33 @@ describe("makeApiClient", () => {
       const client = makeApiClient(makeMockTransport(fetchFn));
       await expect(client.sweepInbox("ws1")).rejects.toThrow("Workspace not found");
     });
+
+    it("deleteTaxonomyNode sends moveToNodeId body when provided", async () => {
+      const fetchFn = vi.fn().mockResolvedValue(mockOk({ ok: true }));
+      const client = makeApiClient(makeMockTransport(fetchFn));
+      await client.deleteTaxonomyNode("ws1", "node1", "node2");
+      const [url, init] = fetchFn.mock.calls[0] as [string, RequestInit & { headers?: Record<string, string> }];
+      expect(url).toBe("https://api.test/workspaces/ws1/taxonomy-nodes/node1");
+      expect(init.method).toBe("DELETE");
+      expect((init.headers as Record<string, string>)["Content-Type"]).toBe("application/json");
+      expect(init.body).toBe(JSON.stringify({ moveToNodeId: "node2" }));
+    });
+
+    it("importTaxonomy POSTs the transfer file to taxonomy-import", async () => {
+      const fetchFn = vi.fn().mockResolvedValue(mockOk({ ok: true }));
+      const client = makeApiClient(makeMockTransport(fetchFn));
+      const file = {
+        amarnaiTaxonomyVersion: 1 as const,
+        exportedAt: "2026-01-01T00:00:00.000Z",
+        nodes: [],
+        edges: [],
+      };
+      await client.importTaxonomy("ws1", file);
+      const [url, init] = fetchFn.mock.calls[0] as [string, RequestInit & { headers?: Record<string, string> }];
+      expect(url).toBe("https://api.test/workspaces/ws1/taxonomy-import");
+      expect(init.method).toBe("POST");
+      expect(init.body).toBe(JSON.stringify(file));
+    });
   });
 
   describe("emailThreads", () => {

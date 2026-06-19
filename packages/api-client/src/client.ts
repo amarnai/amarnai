@@ -1,3 +1,4 @@
+import type { TaxonomyTransferFile } from "@amarnai/shared";
 import type { ApiTransport, TransportInit } from "./transport.js";
 import type {
   Workspace,
@@ -126,10 +127,11 @@ export function makeApiClient(transport: ApiTransport) {
         input
       ),
 
-    deleteTaxonomyNode: (workspaceId: string, nodeId: string) =>
+    deleteTaxonomyNode: (workspaceId: string, nodeId: string, moveToNodeId?: string) =>
       apiMutate<OkResult>(
         `/workspaces/${workspaceId}/taxonomy-nodes/${nodeId}`,
-        "DELETE"
+        "DELETE",
+        moveToNodeId ? { moveToNodeId } : undefined
       ),
 
     taxonomyEdges: (workspaceId: string) =>
@@ -153,6 +155,16 @@ export function makeApiClient(transport: ApiTransport) {
       apiMutate<OkResult>(
         `/workspaces/${workspaceId}/taxonomy-edges/${edgeId}`,
         "DELETE"
+      ),
+
+    // Atomically replaces the workspace's non-root taxonomy from a transfer file
+    // (the root node is preserved server-side). Used by template-apply now and by
+    // file import later.
+    importTaxonomy: (workspaceId: string, file: TaxonomyTransferFile) =>
+      apiMutate<{ ok: true }>(
+        `/workspaces/${workspaceId}/taxonomy-import`,
+        "POST",
+        file
       ),
 
     folderCounts: (workspaceId: string) =>

@@ -46,7 +46,7 @@ import {
   computeIgnoredReasons,
   type IgnoredReason,
   TAXONOMY_TEMPLATES,
-  type TaxonomyTemplate,
+  matchesTemplate,
 } from "@amarnai/core/taxonomy";
 import {
   useTaxonomyHistory,
@@ -71,33 +71,6 @@ function nodeById(nodes: TaxonomyNode[], id: string): TaxonomyNode | undefined {
   return nodes.find((n) => n.id === id);
 }
 
-function matchesTemplate(
-  dbNodes: TaxonomyNode[],
-  dbEdges: TaxonomyEdge[],
-  template: TaxonomyTemplate,
-): boolean {
-  const { nodes: tNodes, edges: tEdges } = template.file;
-  if (dbNodes.length !== tNodes.length || dbEdges.length !== tEdges.length)
-    return false;
-
-  const dbNames = dbNodes.map((n) => n.name).sort();
-  const tNames = tNodes.map((n) => n.name).sort();
-  if (dbNames.some((n, i) => n !== tNames[i])) return false;
-
-  const dbIdToName = new Map(dbNodes.map((n) => [n.id, n.name]));
-  const tRefToName = new Map(tNodes.map((n) => [n.ref, n.name]));
-  const dbEdgeSet = new Set(
-    dbEdges.map(
-      (e) =>
-        `${dbIdToName.get(e.sourceNodeId)}→${dbIdToName.get(e.targetNodeId)}`,
-    ),
-  );
-  return tEdges.every((e) =>
-    dbEdgeSet.has(
-      `${tRefToName.get(e.sourceRef)}→${tRefToName.get(e.targetRef)}`,
-    ),
-  );
-}
 
 // ─── React Flow node/edge converters ──────────────────────────────────────────
 
