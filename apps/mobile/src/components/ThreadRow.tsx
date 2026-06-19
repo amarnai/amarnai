@@ -20,6 +20,13 @@ function formatTime(date: Date): string {
   return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
 }
 
+// Mirrors the web confidence donut thresholds: green ≥80%, yellow 60–80%, red <60%.
+function confidenceDotColor(confidence: number): string {
+  if (confidence >= 0.8) return colors.okInk;
+  if (confidence >= 0.6) return colors.warnInk;
+  return colors.dangerInk;
+}
+
 // Maps a thread's triage state to a single badge (label + colors from tokens),
 // mirroring the web row's status chip wording.
 function statusBadge(thread: ThreadItem): { label: string; bg: string; fg: string } {
@@ -64,6 +71,9 @@ export function ThreadRow({ thread, onPress }: ThreadRowProps) {
         <View style={[styles.badge, { backgroundColor: badge.bg }]}>
           <Text style={[styles.badgeText, { color: badge.fg }]}>{badge.label}</Text>
         </View>
+        {thread.confidence > 0 && (thread.status === 'sorted' || thread.status === 'review') ? (
+          <View style={[styles.confidenceDot, { backgroundColor: confidenceDotColor(thread.confidence) }]} />
+        ) : null}
         {thread.messageCount > 1 ? (
           <Text style={styles.msgCount}>{thread.messageCount} messages</Text>
         ) : null}
@@ -119,6 +129,11 @@ const styles = StyleSheet.create({
   badgeText: {
     fontSize: fontSize.xs,
     fontWeight: fontWeight.semibold,
+  },
+  confidenceDot: {
+    width: 7,
+    height: 7,
+    borderRadius: 4,
   },
   msgCount: {
     fontSize: fontSize.sm,

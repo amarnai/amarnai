@@ -27,3 +27,8 @@ export {
   type Toast,
   type RerouteTarget,
 } from "./useEmailTriage.js";
+
+export {
+  groupThreadsByDate,
+  type DateSection,
+} from "./groupThreadsByDate.js";
