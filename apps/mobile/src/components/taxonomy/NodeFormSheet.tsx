@@ -1,8 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
 import {
-  KeyboardAvoidingView,
-  Modal,
-  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -18,6 +15,7 @@ import type {
   TaxonomyNode,
 } from '@amarnai/api-client';
 import { descendantIds } from '../../taxonomy/buildTree';
+import { BottomSheet } from '../BottomSheet';
 import { NodePickerSheet, type NodePickerOption } from './NodePickerSheet';
 import type { ParentChange } from '../../data/taxonomyQueries';
 
@@ -218,27 +216,23 @@ export function NodeFormSheet({
   }
 
   return (
-    <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
-      <KeyboardAvoidingView
-        style={styles.fill}
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      >
-        <View style={styles.backdrop}>
-          <View style={styles.sheet}>
-            <View style={styles.header}>
-              <Text style={styles.title}>
-                {readOnly
-                  ? 'Category'
-                  : mode === 'create'
-                    ? 'New category'
-                    : isRoot
-                      ? 'Edit inbox'
-                      : 'Edit category'}
-              </Text>
-              <TouchableOpacity onPress={onClose} hitSlop={8}>
-                <Text style={styles.cancel}>{readOnly ? 'Close' : 'Cancel'}</Text>
-              </TouchableOpacity>
-            </View>
+    <>
+      <BottomSheet visible={visible} onClose={onClose} keyboardAvoiding>
+        <View style={styles.sheet}>
+          <View style={styles.header}>
+            <Text style={styles.title}>
+              {readOnly
+                ? 'Category'
+                : mode === 'create'
+                  ? 'New category'
+                  : isRoot
+                    ? 'Edit inbox'
+                    : 'Edit category'}
+            </Text>
+            <TouchableOpacity onPress={onClose} hitSlop={8}>
+              <Ionicons name="close" size={22} color={colors.ink3} />
+            </TouchableOpacity>
+          </View>
 
             <ScrollView
               style={styles.body}
@@ -393,9 +387,8 @@ export function NodeFormSheet({
                 </TouchableOpacity>
               </View>
             ) : null}
-          </View>
         </View>
-      </KeyboardAvoidingView>
+      </BottomSheet>
 
       <NodePickerSheet
         visible={parentPickerOpen}
@@ -419,17 +412,11 @@ export function NodeFormSheet({
         }}
         onClose={() => setReassignPickerOpen(false)}
       />
-    </Modal>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
-  fill: { flex: 1 },
-  backdrop: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.4)',
-    justifyContent: 'flex-end',
-  },
   sheet: {
     backgroundColor: colors.bg,
     borderTopLeftRadius: radii.xl,
@@ -450,10 +437,6 @@ const styles = StyleSheet.create({
     fontSize: fontSize.xl,
     fontWeight: fontWeight.semibold,
     color: colors.ink,
-  },
-  cancel: {
-    fontSize: fontSize.md,
-    color: colors.ink3,
   },
   body: { paddingHorizontal: space.xl },
   bodyContent: { paddingVertical: space.lg, gap: space.xs },

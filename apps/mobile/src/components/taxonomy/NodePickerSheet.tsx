@@ -1,6 +1,5 @@
 import {
   FlatList,
-  Modal,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -8,6 +7,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
+import { BottomSheet } from '../BottomSheet';
 
 export type NodePickerOption = {
   // `null` id is the "none" choice (no parent / leave unsorted).
@@ -37,57 +37,50 @@ export function NodePickerSheet({
   onClose,
 }: NodePickerSheetProps) {
   return (
-    <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
-      <TouchableOpacity style={styles.backdrop} activeOpacity={1} onPress={onClose}>
-        <TouchableOpacity style={styles.sheet} activeOpacity={1}>
-          <View style={styles.handle} />
-          <Text style={styles.title}>{title}</Text>
-          <FlatList
-            data={options}
-            keyExtractor={(o) => o.id ?? '__none__'}
-            renderItem={({ item }) => {
-              const isSelected = item.id === selectedId;
-              return (
-                <TouchableOpacity
-                  style={styles.row}
-                  onPress={() => onSelect(item.id)}
-                  disabled={item.disabled}
-                >
-                  <View style={styles.rowText}>
-                    <Text
-                      style={[
-                        styles.label,
-                        item.disabled && styles.labelDisabled,
-                      ]}
-                      numberOfLines={1}
-                    >
-                      {item.label}
+    <BottomSheet visible={visible} onClose={onClose}>
+      <View style={styles.sheet}>
+        <View style={styles.handle} />
+        <Text style={styles.title}>{title}</Text>
+        <FlatList
+          data={options}
+          keyExtractor={(o) => o.id ?? '__none__'}
+          renderItem={({ item }) => {
+            const isSelected = item.id === selectedId;
+            return (
+              <TouchableOpacity
+                style={styles.row}
+                onPress={() => onSelect(item.id)}
+                disabled={item.disabled}
+              >
+                <View style={styles.rowText}>
+                  <Text
+                    style={[
+                      styles.label,
+                      item.disabled && styles.labelDisabled,
+                    ]}
+                    numberOfLines={1}
+                  >
+                    {item.label}
+                  </Text>
+                  {item.sublabel ? (
+                    <Text style={styles.sublabel} numberOfLines={1}>
+                      {item.sublabel}
                     </Text>
-                    {item.sublabel ? (
-                      <Text style={styles.sublabel} numberOfLines={1}>
-                        {item.sublabel}
-                      </Text>
-                    ) : null}
-                  </View>
-                  {isSelected ? (
-                    <Ionicons name="checkmark" size={18} color={colors.accent} />
                   ) : null}
-                </TouchableOpacity>
-              );
-            }}
-          />
-        </TouchableOpacity>
-      </TouchableOpacity>
-    </Modal>
+                </View>
+                {isSelected ? (
+                  <Ionicons name="checkmark" size={18} color={colors.accent} />
+                ) : null}
+              </TouchableOpacity>
+            );
+          }}
+        />
+      </View>
+    </BottomSheet>
   );
 }
 
 const styles = StyleSheet.create({
-  backdrop: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.4)',
-    justifyContent: 'flex-end',
-  },
   sheet: {
     backgroundColor: colors.bg,
     borderTopLeftRadius: radii.xl,

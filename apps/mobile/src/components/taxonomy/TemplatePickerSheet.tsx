@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import {
   FlatList,
-  Modal,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -10,6 +9,7 @@ import {
 import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
 import type { TaxonomyTemplate } from '@amarnai/core/taxonomy';
 import type { TaxonomyTransferFile } from '@amarnai/shared';
+import { BottomSheet } from '../BottomSheet';
 
 interface TemplatePickerSheetProps {
   visible: boolean;
@@ -40,13 +40,12 @@ export function TemplatePickerSheet({
   }
 
   return (
-    <Modal visible={visible} transparent animationType="slide" onRequestClose={close}>
-      <TouchableOpacity style={styles.backdrop} activeOpacity={1} onPress={close}>
-        <TouchableOpacity style={styles.sheet} activeOpacity={1}>
-          <View style={styles.handle} />
-          <Text style={styles.title}>Start from a template</Text>
+    <BottomSheet visible={visible} onClose={close}>
+      <View style={styles.sheet}>
+        <View style={styles.handle} />
+        <Text style={styles.title}>Start from a template</Text>
 
-          {selected ? (
+        {selected ? (
             <View style={styles.confirm}>
               <Text style={styles.confirmText}>
                 Apply "{selected.name}"? This replaces your current taxonomy.
@@ -101,18 +100,12 @@ export function TemplatePickerSheet({
               }}
             />
           )}
-        </TouchableOpacity>
-      </TouchableOpacity>
-    </Modal>
+      </View>
+    </BottomSheet>
   );
 }
 
 const styles = StyleSheet.create({
-  backdrop: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.4)',
-    justifyContent: 'flex-end',
-  },
   sheet: {
     backgroundColor: colors.bg,
     borderTopLeftRadius: radii.xl,

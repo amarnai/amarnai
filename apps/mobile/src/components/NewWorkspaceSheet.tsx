@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   Linking,
-  Modal,
   ScrollView,
   StyleSheet,
   Text,
@@ -15,6 +14,7 @@ import { colors, fontWeight, fontSize, radii, space } from '@amarnai/tokens';
 import { useSession } from '../auth/session';
 import { secureTokenStore } from '../auth/tokenStore';
 import { WEB_APP_URL } from '../config';
+import { BottomSheet } from './BottomSheet';
 
 type PlanId = 'free' | 'pro' | 'business';
 type BillingCycle = 'monthly' | 'annual';
@@ -160,10 +160,9 @@ export function NewWorkspaceSheet({ visible, onClose }: NewWorkspaceSheetProps) 
       : 'Continue to checkout';
 
   return (
-    <Modal visible={visible} transparent animationType="slide" onRequestClose={handleClose}>
-      <TouchableOpacity style={styles.backdrop} activeOpacity={1} onPress={handleClose}>
-        <TouchableOpacity style={styles.sheet} activeOpacity={1}>
-          <View style={styles.handle} />
+    <BottomSheet visible={visible} onClose={handleClose}>
+      <View style={styles.sheet}>
+        <View style={styles.handle} />
           <Text style={styles.title}>New workspace</Text>
 
           <ScrollView
@@ -269,18 +268,12 @@ export function NewWorkspaceSheet({ visible, onClose }: NewWorkspaceSheetProps) 
               )}
             </TouchableOpacity>
           </View>
-        </TouchableOpacity>
-      </TouchableOpacity>
-    </Modal>
+      </View>
+    </BottomSheet>
   );
 }
 
 const styles = StyleSheet.create({
-  backdrop: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.4)',
-    justifyContent: 'flex-end',
-  },
   sheet: {
     backgroundColor: colors.bg,
     borderTopLeftRadius: radii.xl,

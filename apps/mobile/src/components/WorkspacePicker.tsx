@@ -1,8 +1,9 @@
-import { FlatList, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
 import type { Workspace } from '@amarnai/api-client';
 import { WorkspaceMark } from './WorkspaceMark';
+import { BottomSheet } from './BottomSheet';
 
 interface WorkspacePickerProps {
   visible: boolean;
@@ -26,50 +27,43 @@ export function WorkspacePicker({
   onCreateNew,
 }: WorkspacePickerProps) {
   return (
-    <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
-      <TouchableOpacity style={styles.backdrop} activeOpacity={1} onPress={onClose}>
-        <TouchableOpacity style={styles.sheet} activeOpacity={1}>
-          <View style={styles.handle} />
-          <Text style={styles.title}>Workspaces</Text>
-          <FlatList
-            data={workspaces}
-            keyExtractor={(w) => w.id}
-            renderItem={({ item }) => {
-              const isCurrent = item.id === currentWorkspaceId;
-              return (
-                <TouchableOpacity
-                  style={styles.row}
-                  onPress={() => onSelect(item.id)}
-                  disabled={isCurrent}
-                >
-                  <WorkspaceMark name={item.name} size={24} />
-                  <Text style={styles.rowText} numberOfLines={1}>
-                    {item.name}
-                  </Text>
-                  {isCurrent ? (
-                    <Ionicons name="checkmark" size={20} color={colors.accent} />
-                  ) : null}
-                </TouchableOpacity>
-              );
-            }}
-            ListEmptyComponent={<Text style={styles.empty}>No workspaces</Text>}
-          />
-          <TouchableOpacity style={styles.createRow} onPress={onCreateNew}>
-            <Ionicons name="add-circle-outline" size={22} color={colors.accent} />
-            <Text style={styles.createRowText}>New workspace</Text>
-          </TouchableOpacity>
+    <BottomSheet visible={visible} onClose={onClose}>
+      <View style={styles.sheet}>
+        <View style={styles.handle} />
+        <Text style={styles.title}>Workspaces</Text>
+        <FlatList
+          data={workspaces}
+          keyExtractor={(w) => w.id}
+          renderItem={({ item }) => {
+            const isCurrent = item.id === currentWorkspaceId;
+            return (
+              <TouchableOpacity
+                style={styles.row}
+                onPress={() => onSelect(item.id)}
+                disabled={isCurrent}
+              >
+                <WorkspaceMark name={item.name} size={24} />
+                <Text style={styles.rowText} numberOfLines={1}>
+                  {item.name}
+                </Text>
+                {isCurrent ? (
+                  <Ionicons name="checkmark" size={20} color={colors.accent} />
+                ) : null}
+              </TouchableOpacity>
+            );
+          }}
+          ListEmptyComponent={<Text style={styles.empty}>No workspaces</Text>}
+        />
+        <TouchableOpacity style={styles.createRow} onPress={onCreateNew}>
+          <Ionicons name="add-circle-outline" size={22} color={colors.accent} />
+          <Text style={styles.createRowText}>New workspace</Text>
         </TouchableOpacity>
-      </TouchableOpacity>
-    </Modal>
+      </View>
+    </BottomSheet>
   );
 }
 
 const styles = StyleSheet.create({
-  backdrop: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.4)',
-    justifyContent: 'flex-end',
-  },
   sheet: {
     backgroundColor: colors.bg,
     borderTopLeftRadius: radii.xl,

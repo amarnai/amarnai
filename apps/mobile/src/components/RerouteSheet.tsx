@@ -1,6 +1,5 @@
 import {
   FlatList,
-  Modal,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -8,6 +7,7 @@ import {
 } from 'react-native';
 import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
 import type { FolderItem } from '@amarnai/core';
+import { BottomSheet } from './BottomSheet';
 
 interface RerouteSheetProps {
   visible: boolean;
@@ -28,43 +28,36 @@ export function RerouteSheet({
   onClose,
 }: RerouteSheetProps) {
   return (
-    <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
-      <TouchableOpacity style={styles.backdrop} activeOpacity={1} onPress={onClose}>
-        <TouchableOpacity style={styles.sheet} activeOpacity={1}>
-          <View style={styles.handle} />
-          <Text style={styles.title}>Move to folder</Text>
-          <FlatList
-            data={folders}
-            keyExtractor={(f) => f.id}
-            renderItem={({ item }) => {
-              const isCurrent = item.id === currentFolderId;
-              return (
-                <TouchableOpacity
-                  style={styles.row}
-                  onPress={() => onSelect(item.id)}
-                  disabled={isCurrent}
-                >
-                  <Text style={[styles.rowText, isCurrent && styles.rowTextCurrent]}>
-                    {item.name}
-                  </Text>
-                  {isCurrent ? <Text style={styles.currentTag}>Current</Text> : null}
-                </TouchableOpacity>
-              );
-            }}
-            ListEmptyComponent={<Text style={styles.empty}>No folders available</Text>}
-          />
-        </TouchableOpacity>
-      </TouchableOpacity>
-    </Modal>
+    <BottomSheet visible={visible} onClose={onClose}>
+      <View style={styles.sheet}>
+        <View style={styles.handle} />
+        <Text style={styles.title}>Move to folder</Text>
+        <FlatList
+          data={folders}
+          keyExtractor={(f) => f.id}
+          renderItem={({ item }) => {
+            const isCurrent = item.id === currentFolderId;
+            return (
+              <TouchableOpacity
+                style={styles.row}
+                onPress={() => onSelect(item.id)}
+                disabled={isCurrent}
+              >
+                <Text style={[styles.rowText, isCurrent && styles.rowTextCurrent]}>
+                  {item.name}
+                </Text>
+                {isCurrent ? <Text style={styles.currentTag}>Current</Text> : null}
+              </TouchableOpacity>
+            );
+          }}
+          ListEmptyComponent={<Text style={styles.empty}>No folders available</Text>}
+        />
+      </View>
+    </BottomSheet>
   );
 }
 
 const styles = StyleSheet.create({
-  backdrop: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.4)',
-    justifyContent: 'flex-end',
-  },
   sheet: {
     backgroundColor: colors.bg,
     borderTopLeftRadius: radii.xl,

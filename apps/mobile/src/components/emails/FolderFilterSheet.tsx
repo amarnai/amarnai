@@ -1,6 +1,7 @@
-import { FlatList, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { buildFolderCounts, type ActiveSelection, type FolderItem, type ThreadItem } from '@amarnai/core';
 import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
+import { BottomSheet } from '../BottomSheet';
 
 interface FolderFilterSheetProps {
   visible: boolean;
@@ -25,60 +26,53 @@ export function FolderFilterSheet({
   const activeFolderId = active.kind === 'folder' ? active.id : null;
 
   return (
-    <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
-      <TouchableOpacity style={styles.backdrop} activeOpacity={1} onPress={onClose}>
-        <TouchableOpacity style={styles.sheet} activeOpacity={1}>
-          <View style={styles.handle} />
-          <Text style={styles.title}>Filter by folder</Text>
+    <BottomSheet visible={visible} onClose={onClose}>
+      <View style={styles.sheet}>
+        <View style={styles.handle} />
+        <Text style={styles.title}>Filter by folder</Text>
 
-          <FlatList
-            data={folders}
-            keyExtractor={(f) => f.id}
-            ListHeaderComponent={
+        <FlatList
+          data={folders}
+          keyExtractor={(f) => f.id}
+          ListHeaderComponent={
+            <TouchableOpacity
+              style={styles.row}
+              onPress={() => { onSelectAll(); onClose(); }}
+            >
+              <Text style={[styles.rowText, activeFolderId === null && styles.rowTextActive]}>
+                All threads
+              </Text>
+              {activeFolderId === null ? <Text style={styles.checkmark}>✓</Text> : null}
+            </TouchableOpacity>
+          }
+          renderItem={({ item }) => {
+            const isActive = item.id === activeFolderId;
+            const count = folderCounts.get(item.id);
+            return (
               <TouchableOpacity
                 style={styles.row}
-                onPress={() => { onSelectAll(); onClose(); }}
+                onPress={() => { onSelectFolder(item.id); onClose(); }}
               >
-                <Text style={[styles.rowText, activeFolderId === null && styles.rowTextActive]}>
-                  All threads
+                <Text style={[styles.rowText, isActive && styles.rowTextActive]} numberOfLines={1}>
+                  {item.name}
                 </Text>
-                {activeFolderId === null ? <Text style={styles.checkmark}>✓</Text> : null}
+                <View style={styles.rowRight}>
+                  {count !== undefined && count > 0 ? (
+                    <Text style={styles.count}>{count}</Text>
+                  ) : null}
+                  {isActive ? <Text style={styles.checkmark}>✓</Text> : null}
+                </View>
               </TouchableOpacity>
-            }
-            renderItem={({ item }) => {
-              const isActive = item.id === activeFolderId;
-              const count = folderCounts.get(item.id);
-              return (
-                <TouchableOpacity
-                  style={styles.row}
-                  onPress={() => { onSelectFolder(item.id); onClose(); }}
-                >
-                  <Text style={[styles.rowText, isActive && styles.rowTextActive]} numberOfLines={1}>
-                    {item.name}
-                  </Text>
-                  <View style={styles.rowRight}>
-                    {count !== undefined && count > 0 ? (
-                      <Text style={styles.count}>{count}</Text>
-                    ) : null}
-                    {isActive ? <Text style={styles.checkmark}>✓</Text> : null}
-                  </View>
-                </TouchableOpacity>
-              );
-            }}
-            ListEmptyComponent={<Text style={styles.empty}>No folders yet</Text>}
-          />
-        </TouchableOpacity>
-      </TouchableOpacity>
-    </Modal>
+            );
+          }}
+          ListEmptyComponent={<Text style={styles.empty}>No folders yet</Text>}
+        />
+      </View>
+    </BottomSheet>
   );
 }
 
 const styles = StyleSheet.create({
-  backdrop: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.4)',
-    justifyContent: 'flex-end',
-  },
   sheet: {
     backgroundColor: colors.bg,
     borderTopLeftRadius: radii.xl,
