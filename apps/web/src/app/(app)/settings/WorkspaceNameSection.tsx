@@ -8,7 +8,7 @@ export function WorkspaceNameSection({ currentName }: { currentName: string }) {
 
   return (
     <section className="settings-section">
-      <h2>Workspace Name</h2>
+      <h2>Workspace Details</h2>
       <form action={formAction} className="settings-form">
         <div className="form-group">
           <label htmlFor="ws-name" className="form-label">Name</label>

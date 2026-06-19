@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
 import { useSession } from '../../../src/auth/session';
 import { useTriage } from '../../../src/triage/TriageProvider';
@@ -135,7 +136,7 @@ function Header({ onBack, title }: { onBack: () => void; title: string }) {
   return (
     <View style={styles.header}>
       <TouchableOpacity style={styles.back} onPress={onBack} hitSlop={8}>
-        <Text style={styles.backText}>Back</Text>
+        <Ionicons name="chevron-back" size={24} color={colors.ink} />
       </TouchableOpacity>
       <Text style={styles.title} numberOfLines={1}>
         {title}
@@ -161,11 +162,6 @@ const styles = StyleSheet.create({
   },
   back: {
     paddingVertical: space.xxs,
-  },
-  backText: {
-    fontSize: fontSize.lg,
-    color: colors.accent,
-    fontWeight: fontWeight.medium,
   },
   title: {
     fontSize: fontSize.xxl,

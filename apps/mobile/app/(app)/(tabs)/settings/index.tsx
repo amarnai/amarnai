@@ -1,23 +1,34 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'expo-router';
 import {
-  ActivityIndicator,
   Alert,
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, space, fontSize, fontWeight, radii } from '@amarnai/tokens';
+import type { GmailConnection, GmailSyncSettings, SyncStatus } from '@amarnai/api-client';
 import { useSession } from '../../../../src/auth/session';
 import { AppHeader } from '../../../../src/components/AppHeader';
 import { UserAvatar } from '../../../../src/components/UserAvatar';
 import { WorkspaceMark } from '../../../../src/components/WorkspaceMark';
 import { WorkspacePicker } from '../../../../src/components/WorkspacePicker';
 import { NewWorkspaceSheet } from '../../../../src/components/NewWorkspaceSheet';
+import { GmailSettingsSheet } from '../../../../src/components/GmailSettingsSheet';
+import { SyncFiltersSheet } from '../../../../src/components/SyncFiltersSheet';
+import { BlacklistSheet } from '../../../../src/components/BlacklistSheet';
+import { RenameWorkspaceSheet } from '../../../../src/components/RenameWorkspaceSheet';
+import { PlanSheet } from '../../../../src/components/PlanSheet';
+import { CollaboratorsSheet } from '../../../../src/components/CollaboratorsSheet';
+
+const PLAN_LABEL: Record<string, string> = {
+  FREE: 'Free',
+  PRO: 'Pro',
+  BUSINESS: 'Business',
+};
 
 const errorMessage = (err: unknown, fallback: string) =>
   err instanceof Error ? err.message : fallback;
@@ -28,6 +39,11 @@ export default function SettingsScreen() {
     useSession();
   const [pickerOpen, setPickerOpen] = useState(false);
   const [newWorkspaceOpen, setNewWorkspaceOpen] = useState(false);
+  const [gmailSheetOpen, setGmailSheetOpen] = useState(false);
+  const [syncFiltersSheetOpen, setSyncFiltersSheetOpen] = useState(false);
+  const [blacklistSheetOpen, setBlacklistSheetOpen] = useState(false);
+  const [planSheetOpen, setPlanSheetOpen] = useState(false);
+  const [collaboratorsSheetOpen, setCollaboratorsSheetOpen] = useState(false);
 
   const activeWorkspace = workspaces.find((w) => w.id === workspaceId) ?? null;
 
@@ -37,34 +53,70 @@ export default function SettingsScreen() {
     (activeWorkspace.owner.id === userId ||
       activeWorkspace.members.some((m) => m.user.id === userId && m.role === 'OWNER'));
 
-  // ── Rename ────────────────────────────────────────────────────────────────
-  const [name, setName] = useState(activeWorkspace?.name ?? '');
-  const [savingName, setSavingName] = useState(false);
-  const [nameError, setNameError] = useState<string | null>(null);
+  // ── Gmail data ────────────────────────────────────────────────────────────
+  const [gmailConnection, setGmailConnection] = useState<GmailConnection | undefined>(undefined);
+  const [syncStatus, setSyncStatus] = useState<SyncStatus | undefined>(undefined);
+  const [syncSettings, setSyncSettings] = useState<GmailSyncSettings | null>(null);
 
-  // Keep the input in sync when the active workspace changes (switch) or its
-  // name updates (after a successful rename re-fetches the list).
   useEffect(() => {
-    setName(activeWorkspace?.name ?? '');
-    setNameError(null);
-  }, [activeWorkspace?.id, activeWorkspace?.name]);
+    if (!workspaceId) return;
+    let cancelled = false;
+    Promise.allSettled([
+      client.gmailConnection(workspaceId),
+      client.syncStatus(workspaceId),
+      client.gmailSyncSettings(workspaceId),
+    ]).then(([connResult, statusResult, settingsResult]) => {
+      if (cancelled) return;
+      setGmailConnection(connResult.status === 'fulfilled' ? connResult.value : null);
+      setSyncStatus(statusResult.status === 'fulfilled' ? statusResult.value : null);
+      setSyncSettings(settingsResult.status === 'fulfilled' ? settingsResult.value : null);
+    });
+    return () => { cancelled = true; };
+  }, [workspaceId, client]);
 
-  const trimmedName = name.trim();
-  const nameDirty = !!activeWorkspace && trimmedName.length > 0 && trimmedName !== activeWorkspace.name;
+  function refreshGmailData() {
+    if (!workspaceId) return;
+    Promise.allSettled([
+      client.gmailConnection(workspaceId),
+      client.syncStatus(workspaceId),
+    ]).then(([connResult, statusResult]) => {
+      setGmailConnection(connResult.status === 'fulfilled' ? connResult.value : null);
+      setSyncStatus(statusResult.status === 'fulfilled' ? statusResult.value : null);
+    });
+  }
 
-  const handleRename = async () => {
-    if (!workspaceId || !nameDirty) return;
-    setSavingName(true);
-    setNameError(null);
-    try {
-      await client.updateWorkspace(workspaceId, trimmedName);
-      await refreshWorkspaces();
-    } catch (err) {
-      setNameError(errorMessage(err, 'Could not rename workspace'));
-    } finally {
-      setSavingName(false);
-    }
-  };
+  // `undefined` means the first fetch hasn't resolved yet; `null` means no inbox.
+  const gmailLoading = gmailConnection === undefined;
+  const gmailSummary = gmailLoading
+    ? '…'
+    : !gmailConnection
+      ? 'Not connected'
+      : gmailConnection.status === 'DISCONNECTED'
+        ? 'Disconnected'
+        : gmailConnection.gmailAddress;
+  const blacklistCount = syncSettings?.blacklistedSenderEmails.length ?? 0;
+  const blacklistSummary = gmailLoading
+    ? '…'
+    : blacklistCount === 0
+      ? 'None'
+      : `${blacklistCount} blocked`;
+  const enabledFilters = [
+    syncSettings?.includeSpam ? 'Spam' : null,
+    syncSettings?.includePromotions ? 'Promotions' : null,
+  ].filter(Boolean);
+  const syncFiltersSummary = gmailLoading
+    ? '…'
+    : enabledFilters.length > 0
+      ? enabledFilters.join(', ')
+      : 'Default';
+  const planLabel = activeWorkspace
+    ? PLAN_LABEL[activeWorkspace.plan] ?? activeWorkspace.plan
+    : '';
+  const members = activeWorkspace?.members ?? [];
+  const collaboratorsSummary = members.length <= 1 ? 'Just you' : `${members.length} people`;
+
+  // ── Rename ────────────────────────────────────────────────────────────────
+  const [renameSheetOpen, setRenameSheetOpen] = useState(false);
 
   // ── Reset / Delete ──────────────────────────────────────────────────────────
   const [busy, setBusy] = useState(false);
@@ -147,70 +199,115 @@ export default function SettingsScreen() {
           <Ionicons name="chevron-forward" size={20} color={colors.ink4} />
         </TouchableOpacity>
 
-        {/* Workspace — current workspace, tap to switch. */}
+        {/* Workspace — switch, plus owner-only name and plan. */}
         <Text style={styles.sectionTitle}>Workspace</Text>
-        <TouchableOpacity style={styles.row} onPress={() => setPickerOpen(true)}>
-          <WorkspaceMark name={activeWorkspace?.name ?? '?'} size={24} />
-          <Text style={styles.rowText} numberOfLines={1}>
-            {activeWorkspace?.name ?? 'No workspace'}
-          </Text>
-          <Text style={styles.rowMeta}>Switch</Text>
-          <Ionicons name="chevron-forward" size={18} color={colors.ink4} />
-        </TouchableOpacity>
+        <View style={styles.linkGroup}>
+          <TouchableOpacity style={styles.linkRow} onPress={() => setPickerOpen(true)}>
+            <WorkspaceMark name={activeWorkspace?.name ?? '?'} size={20} />
+            <Text style={[styles.linkLabel, styles.linkLabelGrow]} numberOfLines={1}>
+              {activeWorkspace?.name ?? 'No workspace'}
+            </Text>
+            <Text style={styles.rowMeta}>Switch</Text>
+            <Ionicons name="chevron-forward" size={18} color={colors.ink4} />
+          </TouchableOpacity>
+
+          {isOwner ? (
+            <>
+              <TouchableOpacity
+                style={[styles.linkRow, styles.linkRowDivided]}
+                onPress={() => setRenameSheetOpen(true)}
+              >
+                <Ionicons name="create-outline" size={20} color={colors.ink3} />
+                <Text style={styles.linkLabel}>Name</Text>
+                <Text style={styles.linkMeta} numberOfLines={1}>
+                  {activeWorkspace?.name ?? ''}
+                </Text>
+                <Ionicons name="chevron-forward" size={18} color={colors.ink4} />
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[styles.linkRow, styles.linkRowDivided]}
+                onPress={() => setCollaboratorsSheetOpen(true)}
+              >
+                <Ionicons name="people-outline" size={20} color={colors.ink3} />
+                <Text style={styles.linkLabel}>Collaborators</Text>
+                <Text style={styles.linkMeta} numberOfLines={1}>{collaboratorsSummary}</Text>
+                <Ionicons name="chevron-forward" size={18} color={colors.ink4} />
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[styles.linkRow, styles.linkRowDivided]}
+                onPress={() => setPlanSheetOpen(true)}
+              >
+                <Ionicons name="card-outline" size={20} color={colors.ink3} />
+                <Text style={styles.linkLabel}>Plan</Text>
+                <Text style={styles.linkMeta} numberOfLines={1}>{planLabel}</Text>
+                <Ionicons name="chevron-forward" size={18} color={colors.ink4} />
+              </TouchableOpacity>
+            </>
+          ) : null}
+        </View>
 
         {/* Owner-only management. Members get a read-only view. */}
         {isOwner ? (
           <>
-            <Text style={styles.sectionTitle}>Workspace name</Text>
-            <View style={styles.nameSection}>
-              <TextInput
-                style={styles.input}
-                value={name}
-                onChangeText={setName}
-                placeholder="Workspace name"
-                placeholderTextColor={colors.ink4}
-                maxLength={100}
-                editable={!savingName}
-                returnKeyType="done"
-                onSubmitEditing={() => void handleRename()}
-              />
+            {/* Gmail — summary rows that open their settings in a sheet. */}
+            <Text style={styles.sectionTitle}>Gmail</Text>
+            <View style={styles.linkGroup}>
               <TouchableOpacity
-                style={[styles.saveBtn, (!nameDirty || savingName) && styles.btnDisabled]}
-                onPress={() => void handleRename()}
-                disabled={!nameDirty || savingName}
+                style={styles.linkRow}
+                onPress={() => setGmailSheetOpen(true)}
+                disabled={gmailLoading}
               >
-                {savingName ? (
-                  <ActivityIndicator color={colors.surface} size="small" />
-                ) : (
-                  <Text style={styles.saveBtnText}>Save</Text>
-                )}
+                <Ionicons name="mail-outline" size={20} color={colors.ink3} />
+                <Text style={styles.linkLabel}>Inbox</Text>
+                <Text style={styles.linkMeta} numberOfLines={1}>{gmailSummary}</Text>
+                <Ionicons name="chevron-forward" size={18} color={colors.ink4} />
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[styles.linkRow, styles.linkRowDivided]}
+                onPress={() => setSyncFiltersSheetOpen(true)}
+                disabled={gmailLoading}
+              >
+                <Ionicons name="options-outline" size={20} color={colors.ink3} />
+                <Text style={styles.linkLabel}>Sync filters</Text>
+                <Text style={styles.linkMeta} numberOfLines={1}>{syncFiltersSummary}</Text>
+                <Ionicons name="chevron-forward" size={18} color={colors.ink4} />
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[styles.linkRow, styles.linkRowDivided]}
+                onPress={() => setBlacklistSheetOpen(true)}
+                disabled={gmailLoading}
+              >
+                <Ionicons name="ban-outline" size={20} color={colors.ink3} />
+                <Text style={styles.linkLabel}>Sender blacklist</Text>
+                <Text style={styles.linkMeta} numberOfLines={1}>{blacklistSummary}</Text>
+                <Ionicons name="chevron-forward" size={18} color={colors.ink4} />
               </TouchableOpacity>
             </View>
-            {nameError ? <Text style={styles.errorText}>{nameError}</Text> : null}
 
             <Text style={[styles.sectionTitle, styles.dangerTitle]}>Danger zone</Text>
-            <View style={styles.dangerSection}>
+            <View style={styles.linkGroup}>
               <TouchableOpacity
-                style={[styles.dangerBtn, busy && styles.btnDisabled]}
+                style={[styles.linkRow, busy && styles.btnDisabled]}
                 onPress={confirmReset}
                 disabled={busy}
               >
-                <Text style={styles.dangerBtnText}>Reset workspace</Text>
+                <Ionicons name="refresh-outline" size={20} color={colors.danger} />
+                <Text style={[styles.linkLabel, styles.linkLabelGrow, styles.dangerLabel]}>Reset workspace</Text>
+                <Ionicons name="chevron-forward" size={18} color={colors.danger} />
               </TouchableOpacity>
-              <Text style={styles.dangerHint}>
-                Remove the Gmail connection, delete synced emails, and reset the taxonomy to Inbox.
-              </Text>
-
               <TouchableOpacity
-                style={[styles.dangerBtn, styles.deleteBtn, busy && styles.btnDisabled]}
+                style={[styles.linkRow, styles.linkRowDivided, busy && styles.btnDisabled]}
                 onPress={confirmDelete}
                 disabled={busy}
               >
-                <Text style={[styles.dangerBtnText, styles.deleteBtnText]}>Delete workspace</Text>
+                <Ionicons name="trash-outline" size={20} color={colors.danger} />
+                <Text style={[styles.linkLabel, styles.linkLabelGrow, styles.dangerLabel]}>Delete workspace</Text>
+                <Ionicons name="chevron-forward" size={18} color={colors.danger} />
               </TouchableOpacity>
-              <Text style={styles.dangerHint}>
-                Permanently delete this workspace and everything in it.
-              </Text>
             </View>
           </>
         ) : null}
@@ -235,6 +332,68 @@ export default function SettingsScreen() {
         visible={newWorkspaceOpen}
         onClose={() => setNewWorkspaceOpen(false)}
       />
+
+      {workspaceId ? (
+        <>
+          <RenameWorkspaceSheet
+            visible={renameSheetOpen}
+            onClose={() => setRenameSheetOpen(false)}
+            workspaceId={workspaceId}
+            client={client}
+            currentName={activeWorkspace?.name ?? ''}
+            onRenamed={refreshWorkspaces}
+          />
+          <GmailSettingsSheet
+            visible={gmailSheetOpen}
+            onClose={() => setGmailSheetOpen(false)}
+            workspaceId={workspaceId}
+            client={client}
+            connection={gmailConnection ?? null}
+            syncStatus={syncStatus ?? null}
+            onDisconnected={refreshGmailData}
+          />
+          <SyncFiltersSheet
+            visible={syncFiltersSheetOpen}
+            onClose={() => setSyncFiltersSheetOpen(false)}
+            workspaceId={workspaceId}
+            client={client}
+            syncSettings={syncSettings}
+            onChange={(updated) => setSyncSettings(updated)}
+          />
+          <BlacklistSheet
+            visible={blacklistSheetOpen}
+            onClose={() => setBlacklistSheetOpen(false)}
+            workspaceId={workspaceId}
+            client={client}
+            emails={syncSettings?.blacklistedSenderEmails ?? []}
+            onChange={(emails) =>
+              setSyncSettings((prev) =>
+                prev
+                  ? { ...prev, blacklistedSenderEmails: emails }
+                  : {
+                      includeSpam: false,
+                      includePromotions: false,
+                      sortingPaused: false,
+                      blacklistedSenderEmails: emails,
+                    },
+              )
+            }
+          />
+          <PlanSheet
+            visible={planSheetOpen}
+            onClose={() => setPlanSheetOpen(false)}
+            workspaceId={workspaceId}
+            client={client}
+            planLabel={planLabel}
+          />
+          <CollaboratorsSheet
+            visible={collaboratorsSheetOpen}
+            onClose={() => setCollaboratorsSheetOpen(false)}
+            members={members}
+            currentUserId={userId}
+          />
+        </>
+      ) : null}
     </View>
   );
 }
@@ -284,93 +443,43 @@ const styles = StyleSheet.create({
   dangerTitle: {
     color: colors.danger,
   },
-  row: {
+  rowMeta: {
+    fontSize: fontSize.md,
+    color: colors.ink4,
+  },
+  btnDisabled: {
+    opacity: 0.5,
+  },
+  dangerLabel: {
+    color: colors.danger,
+  },
+  linkGroup: {
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: colors.line2,
+  },
+  linkRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: space.lg,
     paddingHorizontal: space.xl,
     paddingVertical: space.lg,
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderColor: colors.line2,
   },
-  rowText: {
-    flex: 1,
+  linkRowDivided: {
+    borderTopWidth: 1,
+    borderTopColor: colors.line,
+  },
+  linkLabel: {
     fontSize: fontSize.lg,
     color: colors.ink,
   },
-  rowMeta: {
+  linkLabelGrow: {
+    flex: 1,
+  },
+  linkMeta: {
+    flex: 1,
     fontSize: fontSize.md,
     color: colors.ink4,
-  },
-  nameSection: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: space.md,
-    paddingHorizontal: space.xl,
-  },
-  input: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: colors.line2,
-    borderRadius: radii.md,
-    paddingHorizontal: space.lg,
-    paddingVertical: space.md,
-    fontSize: fontSize.lg,
-    color: colors.ink,
-    backgroundColor: colors.surface,
-  },
-  saveBtn: {
-    backgroundColor: colors.accent,
-    borderRadius: radii.md,
-    paddingHorizontal: space.xl,
-    paddingVertical: space.md + space.xxs,
-    minWidth: 72,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  saveBtnText: {
-    color: colors.surface,
-    fontSize: fontSize.lg,
-    fontWeight: fontWeight.semibold,
-  },
-  btnDisabled: {
-    opacity: 0.5,
-  },
-  errorText: {
-    color: colors.danger,
-    fontSize: fontSize.md,
-    paddingHorizontal: space.xl,
-    paddingTop: space.md,
-  },
-  dangerSection: {
-    paddingHorizontal: space.xl,
-    gap: space.md,
-  },
-  dangerBtn: {
-    borderWidth: 1,
-    borderColor: colors.dangerLine,
-    borderRadius: radii.md,
-    paddingVertical: space.lg - space.xxs,
-    alignItems: 'center',
-    backgroundColor: colors.dangerSoft,
-  },
-  dangerBtnText: {
-    color: colors.danger,
-    fontSize: fontSize.lg,
-    fontWeight: fontWeight.medium,
-  },
-  deleteBtn: {
-    marginTop: space.lg,
-    backgroundColor: colors.danger,
-    borderColor: colors.danger,
-  },
-  deleteBtnText: {
-    color: colors.surface,
-    fontWeight: fontWeight.semibold,
-  },
-  dangerHint: {
-    fontSize: fontSize.sm,
-    color: colors.ink3,
+    textAlign: 'right',
   },
 });

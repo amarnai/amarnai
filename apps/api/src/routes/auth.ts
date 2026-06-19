@@ -22,9 +22,10 @@ import {
 import { RegisterCredentialsSchema } from "@amarnai/shared";
 import { sendVerificationEmail } from "@amarnai/email";
 import { config } from "@amarnai/config";
-import { db } from "@amarnai/db";
+import { db, deleteUserCascade } from "@amarnai/db";
 import type { AppEnv } from "../env.js";
 import { syncInboxQueue } from "../services/queue-client.js";
+import { disconnectGmail } from "../services/gmail-disconnect.js";
 
 const loginSchema = z.object({
   email: z.string().email(),
@@ -223,6 +224,53 @@ auth.get("/auth/me", async (c) => {
     name: user.name,
     emailVerified: user.emailVerified !== null,
   });
+});
+
+// Update the authenticated user's display name.
+auth.patch("/auth/me", async (c) => {
+  const userId = c.get("userId") as string | undefined;
+  if (!userId) return c.json({ error: "Unauthorized" }, 401);
+
+  const body = await c.req.json().catch(() => null);
+  const name = typeof body?.name === "string" ? body.name.trim() : "";
+  if (name.length > 100) return c.json({ error: "Name must be 100 characters or fewer" }, 400);
+
+  const user = await db.user.update({
+    where: { id: userId },
+    data: { name: name || null },
+    select: { id: true, email: true, name: true, emailVerified: true },
+  });
+
+  return c.json({ userId: user.id, email: user.email, name: user.name, emailVerified: user.emailVerified !== null });
+});
+
+// Permanently delete the authenticated user's account and all owned data.
+// Disconnects all Gmail connections (best-effort) before wiping rows.
+auth.delete("/auth/me", async (c) => {
+  const userId = c.get("userId") as string | undefined;
+  if (!userId) return c.json({ error: "Unauthorized" }, 401);
+
+  const ownedWorkspaces = await db.workspace.findMany({
+    where: { ownerUserId: userId },
+    select: { id: true },
+  });
+
+  for (const { id: workspaceId } of ownedWorkspaces) {
+    const connection = await db.gmailConnection.findUnique({ where: { workspaceId }, select: { id: true } });
+    if (connection) {
+      try {
+        await disconnectGmail(workspaceId, { eraseData: false, actorUserId: userId });
+      } catch (err) {
+        console.warn(
+          `[delete-account] Gmail disconnect failed for workspace ${workspaceId} (non-fatal):`,
+          err instanceof Error ? err.message : err,
+        );
+      }
+    }
+  }
+
+  await deleteUserCascade(userId);
+  return c.json({ ok: true });
 });
 
 // Re-sends the email-verification link for the authenticated user. Throttled to

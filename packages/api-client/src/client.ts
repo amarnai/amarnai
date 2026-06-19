@@ -81,6 +81,12 @@ export function makeApiClient(transport: ApiTransport) {
     // throttles to one request per minute and returns 429 past that.
     resendVerification: () => apiMutate<OkResult>("/auth/resend-verification", "POST"),
 
+    // Update the authenticated user's display name (empty string clears it).
+    updateMe: (name: string) => apiMutate<CurrentUser>("/auth/me", "PATCH", { name }),
+
+    // Permanently delete the authenticated user's account and all owned data.
+    deleteMe: () => apiMutate<OkResult>("/auth/me", "DELETE"),
+
     workspaces: () =>
       apiFetch<Workspace[]>("/workspaces"),
 
