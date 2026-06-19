@@ -32,6 +32,8 @@ import {
 } from '../../../../src/taxonomy/buildTree';
 import { AppHeader } from '../../../../src/components/AppHeader';
 import { Toast } from '../../../../src/components/Toast';
+import { ScreenContainer } from '../../../../src/components/ScreenContainer';
+import { CenterView } from '../../../../src/components/CenterView';
 import { TaxonomyNodeRow } from '../../../../src/components/taxonomy/TaxonomyNodeRow';
 import {
   NodeFormSheet,
@@ -197,7 +199,7 @@ export default function TaxonomyScreen() {
   const loading = !loadError && (!nodes || !edges);
 
   return (
-    <View style={styles.container}>
+    <ScreenContainer>
       <AppHeader variant="workspace" />
 
       <View style={styles.subHeader}>
@@ -254,16 +256,16 @@ export default function TaxonomyScreen() {
       </View>
 
       {loading ? (
-        <View style={styles.center}>
+        <CenterView>
           <ActivityIndicator color={colors.accent} />
-        </View>
+        </CenterView>
       ) : loadError ? (
-        <View style={styles.center}>
+        <CenterView>
           <Text style={styles.empty}>Could not load the taxonomy.</Text>
           <TouchableOpacity onPress={refetch} style={styles.retry}>
             <Text style={styles.retryText}>Retry</Text>
           </TouchableOpacity>
-        </View>
+        </CenterView>
       ) : (
         <FlatList
           data={rows}
@@ -320,15 +322,11 @@ export default function TaxonomyScreen() {
       />
 
       <Toast toast={toast} onUndo={() => setToast(null)} onDismiss={() => setToast(null)} />
-    </View>
+    </ScreenContainer>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.bg,
-  },
   subHeader: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -392,12 +390,6 @@ const styles = StyleSheet.create({
     fontSize: fontSize.md,
     color: colors.ink,
     paddingVertical: 0,
-  },
-  center: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: space.lg,
   },
   empty: {
     fontSize: fontSize.md,

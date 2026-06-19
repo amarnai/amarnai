@@ -4,14 +4,14 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, space, fontSize, fontWeight, radii } from '@amarnai/tokens';
 import type { ApiClient } from '@amarnai/api-client';
-import { BottomSheet } from './BottomSheet';
+import { SheetLayout } from './SheetLayout';
+import { FormInput } from './FormInput';
 
 type Props = {
   visible: boolean;
@@ -31,7 +31,7 @@ export function BlacklistSheet({ visible, onClose, workspaceId, client, emails, 
   const [error, setError] = useState<string | null>(null);
   const [adding, setAdding] = useState(false);
   const [removingEmail, setRemovingEmail] = useState<string | null>(null);
-  const inputRef = useRef<TextInput>(null);
+  const inputRef = useRef(null);
 
   // Reset transient input state each time the sheet opens.
   useEffect(() => {
@@ -62,7 +62,6 @@ export function BlacklistSheet({ visible, onClose, workspaceId, client, emails, 
       setError('Could not add email. Please try again.');
     } finally {
       setAdding(false);
-      inputRef.current?.focus();
     }
   }
 
@@ -81,104 +80,73 @@ export function BlacklistSheet({ visible, onClose, workspaceId, client, emails, 
   }
 
   return (
-    <BottomSheet visible={visible} onClose={onClose} keyboardAvoiding>
-      <View style={styles.sheet}>
-        <View style={styles.header}>
-          <Text style={styles.title}>Sender blacklist</Text>
-          <TouchableOpacity onPress={onClose} hitSlop={8}>
-            <Ionicons name="close" size={22} color={colors.ink3} />
+    <SheetLayout visible={visible} onClose={onClose} title="Sender blacklist" keyboardAvoiding>
+      <ScrollView
+        style={styles.body}
+        contentContainerStyle={styles.bodyContent}
+        keyboardShouldPersistTaps="handled"
+      >
+        <Text style={styles.hint}>
+          Threads from these senders will never be imported or sorted by Amarnai.
+        </Text>
+
+        <View style={styles.inputRow}>
+          <FormInput
+            ref={inputRef}
+            style={styles.inputFlex}
+            value={input}
+            onChangeText={(v) => { setInput(v); setError(null); }}
+            placeholder="sender@example.com"
+            autoCapitalize="none"
+            keyboardType="email-address"
+            returnKeyType="done"
+            onSubmitEditing={() => void handleAdd()}
+            editable={!adding}
+          />
+          <TouchableOpacity
+            style={[styles.addBtn, (adding || input.trim() === '') && styles.btnDisabled]}
+            onPress={() => void handleAdd()}
+            disabled={adding || input.trim() === ''}
+          >
+            {adding ? (
+              <ActivityIndicator size="small" color={colors.surface} />
+            ) : (
+              <Text style={styles.addBtnText}>Add</Text>
+            )}
           </TouchableOpacity>
         </View>
 
-            <ScrollView
-              style={styles.body}
-              contentContainerStyle={styles.bodyContent}
-              keyboardShouldPersistTaps="handled"
-            >
-              <Text style={styles.hint}>
-                Threads from these senders will never be imported or sorted by Amarnai.
-              </Text>
+        {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
-              <View style={styles.inputRow}>
-                <TextInput
-                  ref={inputRef}
-                  style={styles.input}
-                  value={input}
-                  onChangeText={(v) => { setInput(v); setError(null); }}
-                  placeholder="sender@example.com"
-                  placeholderTextColor={colors.ink4}
-                  autoCapitalize="none"
-                  keyboardType="email-address"
-                  returnKeyType="done"
-                  onSubmitEditing={() => void handleAdd()}
-                  editable={!adding}
-                />
+        {emails.length > 0 ? (
+          <View style={styles.pillsWrap}>
+            {emails.map((email) => (
+              <View key={email} style={styles.pill}>
+                <Text style={styles.pillEmail} numberOfLines={1}>{email}</Text>
                 <TouchableOpacity
-                  style={[styles.addBtn, (adding || input.trim() === '') && styles.btnDisabled]}
-                  onPress={() => void handleAdd()}
-                  disabled={adding || input.trim() === ''}
+                  onPress={() => void handleRemove(email)}
+                  disabled={removingEmail === email}
+                  style={styles.pillRemove}
+                  hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
                 >
-                  {adding ? (
-                    <ActivityIndicator size="small" color={colors.surface} />
+                  {removingEmail === email ? (
+                    <ActivityIndicator size="small" color={colors.ink4} />
                   ) : (
-                    <Text style={styles.addBtnText}>Add</Text>
+                    <Ionicons name="close" size={14} color={colors.ink3} />
                   )}
                 </TouchableOpacity>
               </View>
-
-              {error ? <Text style={styles.errorText}>{error}</Text> : null}
-
-              {emails.length > 0 ? (
-                <View style={styles.pillsWrap}>
-                  {emails.map((email) => (
-                    <View key={email} style={styles.pill}>
-                      <Text style={styles.pillEmail} numberOfLines={1}>{email}</Text>
-                      <TouchableOpacity
-                        onPress={() => void handleRemove(email)}
-                        disabled={removingEmail === email}
-                        style={styles.pillRemove}
-                        hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-                      >
-                        {removingEmail === email ? (
-                          <ActivityIndicator size="small" color={colors.ink4} />
-                        ) : (
-                          <Ionicons name="close" size={14} color={colors.ink3} />
-                        )}
-                      </TouchableOpacity>
-                    </View>
-                  ))}
-                </View>
-              ) : (
-                <Text style={styles.emptyText}>No senders blocked yet.</Text>
-              )}
-        </ScrollView>
-      </View>
-    </BottomSheet>
+            ))}
+          </View>
+        ) : (
+          <Text style={styles.emptyText}>No senders blocked yet.</Text>
+        )}
+      </ScrollView>
+    </SheetLayout>
   );
 }
 
 const styles = StyleSheet.create({
-  sheet: {
-    backgroundColor: colors.bg,
-    borderTopLeftRadius: radii.xl,
-    borderTopRightRadius: radii.xl,
-    maxHeight: '85%',
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: space.xl,
-    paddingTop: space.lg,
-    paddingBottom: space.md,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.line2,
-  },
-  title: {
-    fontSize: fontSize.xl,
-    fontWeight: fontWeight.semibold,
-    color: colors.ink,
-  },
   body: {
     paddingHorizontal: space.xl,
   },
@@ -196,16 +164,9 @@ const styles = StyleSheet.create({
     gap: space.md,
     alignItems: 'center',
   },
-  input: {
+  inputFlex: {
     flex: 1,
-    borderWidth: 1,
-    borderColor: colors.line2,
-    borderRadius: radii.md,
-    paddingHorizontal: space.lg,
-    paddingVertical: space.md,
     fontSize: fontSize.md,
-    color: colors.ink,
-    backgroundColor: colors.surface,
   },
   addBtn: {
     backgroundColor: colors.accent,

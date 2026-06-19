@@ -5,7 +5,6 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -15,6 +14,7 @@ import { useSession } from '../auth/session';
 import { secureTokenStore } from '../auth/tokenStore';
 import { WEB_APP_URL } from '../config';
 import { BottomSheet } from './BottomSheet';
+import { FormInput } from './FormInput';
 
 type PlanId = 'free' | 'pro' | 'business';
 type BillingCycle = 'monthly' | 'annual';
@@ -204,12 +204,10 @@ export function NewWorkspaceSheet({ visible, onClose }: NewWorkspaceSheetProps) 
             </View>
 
             {/* Name input */}
-            <TextInput
-              style={styles.input}
+            <FormInput
               value={name}
               onChangeText={setName}
               placeholder="Workspace name"
-              placeholderTextColor={colors.ink4}
               maxLength={100}
               editable={!loading}
               returnKeyType="done"
@@ -370,16 +368,6 @@ const styles = StyleSheet.create({
   planCardTagline: {
     fontSize: fontSize.sm,
     color: colors.ink3,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: colors.line2,
-    borderRadius: radii.md,
-    paddingHorizontal: space.lg,
-    paddingVertical: space.md,
-    fontSize: fontSize.lg,
-    color: colors.ink,
-    backgroundColor: colors.surface,
   },
   cycleToggle: {
     flexDirection: 'row',

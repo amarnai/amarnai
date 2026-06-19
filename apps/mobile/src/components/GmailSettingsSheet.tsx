@@ -8,10 +8,9 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import { colors, space, fontSize, fontWeight, radii } from '@amarnai/tokens';
 import type { ApiClient, GmailConnection, SyncStatus } from '@amarnai/api-client';
-import { BottomSheet } from './BottomSheet';
+import { SheetLayout } from './SheetLayout';
 
 type Props = {
   visible: boolean;
@@ -89,94 +88,64 @@ export function GmailSettingsSheet({
   const statusKey = syncStatus?.status ?? 'IDLE';
 
   return (
-    <BottomSheet visible={visible} onClose={onClose}>
-      <View style={styles.sheet}>
-        <View style={styles.header}>
-          <Text style={styles.title}>Inbox</Text>
-          <TouchableOpacity onPress={onClose} hitSlop={8}>
-            <Ionicons name="close" size={22} color={colors.ink3} />
-          </TouchableOpacity>
-        </View>
-
-        <ScrollView style={styles.body} contentContainerStyle={styles.bodyContent}>
-            {!connection ? (
-              <Text style={styles.infoText}>
-                No Gmail inbox connected. Connect via the web app.
+    <SheetLayout visible={visible} onClose={onClose} title="Inbox">
+      <ScrollView style={styles.body} contentContainerStyle={styles.bodyContent}>
+          {!connection ? (
+            <Text style={styles.infoText}>
+              No Gmail inbox connected. Connect via the web app.
+            </Text>
+          ) : connection.status === 'DISCONNECTED' ? (
+            <>
+              <Text style={styles.gmailAddress}>{connection.gmailAddress}</Text>
+              <Text style={styles.disconnectedBadge}>Disconnected</Text>
+              <Text style={styles.infoText}>Reconnect via the web app.</Text>
+            </>
+          ) : (
+            <>
+              {/* Connection header */}
+              <Text style={styles.gmailAddress}>{connection.gmailAddress}</Text>
+              <Text style={styles.metaText}>
+                Last verified: {formatDate(connection.lastVerifiedAt)}
               </Text>
-            ) : connection.status === 'DISCONNECTED' ? (
-              <>
-                <Text style={styles.gmailAddress}>{connection.gmailAddress}</Text>
-                <Text style={styles.disconnectedBadge}>Disconnected</Text>
-                <Text style={styles.infoText}>Reconnect via the web app.</Text>
-              </>
-            ) : (
-              <>
-                {/* Connection header */}
-                <Text style={styles.gmailAddress}>{connection.gmailAddress}</Text>
-                <Text style={styles.metaText}>
-                  Last verified: {formatDate(connection.lastVerifiedAt)}
-                </Text>
 
-                {/* Sync status badge */}
-                <View style={styles.syncRow}>
-                  <Text style={styles.syncLabel}>Inbox sync</Text>
-                  <View style={[styles.badge, { backgroundColor: SYNC_BG[statusKey] }]}>
-                    <Text style={[styles.badgeText, { color: SYNC_COLOR[statusKey] }]}>
-                      {SYNC_LABEL[statusKey]}
-                    </Text>
-                  </View>
-                </View>
-                {syncStatus?.lastSyncedAt ? (
-                  <Text style={styles.metaText}>
-                    Last synced {formatDate(syncStatus.lastSyncedAt)}
+              {/* Sync status badge */}
+              <View style={styles.syncRow}>
+                <Text style={styles.syncLabel}>Inbox sync</Text>
+                <View style={[styles.badge, { backgroundColor: SYNC_BG[statusKey] }]}>
+                  <Text style={[styles.badgeText, { color: SYNC_COLOR[statusKey] }]}>
+                    {SYNC_LABEL[statusKey]}
                   </Text>
-                ) : null}
-                {syncStatus?.status === 'ERROR' && syncStatus.errorMessage ? (
-                  <Text style={styles.errorText}>{syncStatus.errorMessage}</Text>
-                ) : null}
+                </View>
+              </View>
+              {syncStatus?.lastSyncedAt ? (
+                <Text style={styles.metaText}>
+                  Last synced {formatDate(syncStatus.lastSyncedAt)}
+                </Text>
+              ) : null}
+              {syncStatus?.status === 'ERROR' && syncStatus.errorMessage ? (
+                <Text style={styles.errorText}>{syncStatus.errorMessage}</Text>
+              ) : null}
 
-                {/* Disconnect */}
-                <TouchableOpacity
-                  style={[styles.disconnectBtn, disconnecting && styles.btnDisabled]}
-                  onPress={confirmDisconnect}
-                  disabled={disconnecting}
-                >
-                  {disconnecting ? (
-                    <ActivityIndicator size="small" color={colors.danger} />
-                  ) : (
-                    <Text style={styles.disconnectBtnText}>Disconnect Gmail</Text>
-                  )}
-                </TouchableOpacity>
-              </>
-            )}
-        </ScrollView>
-      </View>
-    </BottomSheet>
+              {/* Disconnect */}
+              <TouchableOpacity
+                style={[styles.disconnectBtn, disconnecting && styles.btnDisabled]}
+                onPress={confirmDisconnect}
+                disabled={disconnecting}
+              >
+                {disconnecting ? (
+                  <ActivityIndicator size="small" color={colors.danger} />
+                ) : (
+                  <Text style={styles.disconnectBtnText}>Disconnect Gmail</Text>
+                )}
+              </TouchableOpacity>
+            </>
+          )}
+      </ScrollView>
+    </SheetLayout>
   );
 }
 
 const styles = StyleSheet.create({
-  sheet: {
-    backgroundColor: colors.bg,
-    borderTopLeftRadius: radii.xl,
-    borderTopRightRadius: radii.xl,
-    maxHeight: '85%',
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: space.xl,
-    paddingTop: space.lg,
-    paddingBottom: space.md,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.line2,
-  },
-  title: {
-    fontSize: fontSize.xl,
-    fontWeight: fontWeight.semibold,
-    color: colors.ink,
-  },
   body: {
     paddingHorizontal: space.xl,
   },

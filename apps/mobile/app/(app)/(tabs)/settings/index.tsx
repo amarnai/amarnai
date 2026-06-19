@@ -13,6 +13,9 @@ import { colors, space, fontSize, fontWeight, radii } from '@amarnai/tokens';
 import type { GmailConnection, GmailSyncSettings, SyncStatus } from '@amarnai/api-client';
 import { useSession } from '../../../../src/auth/session';
 import { AppHeader } from '../../../../src/components/AppHeader';
+import { ScreenContainer } from '../../../../src/components/ScreenContainer';
+import { SectionTitle } from '../../../../src/components/SectionTitle';
+import { SettingsGroup, SettingsRow } from '../../../../src/components/SettingsGroup';
 import { UserAvatar } from '../../../../src/components/UserAvatar';
 import { WorkspaceMark } from '../../../../src/components/WorkspaceMark';
 import { WorkspacePicker } from '../../../../src/components/WorkspacePicker';
@@ -176,7 +179,7 @@ export default function SettingsScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <ScreenContainer>
       <AppHeader variant="title" title="Settings" />
 
       <ScrollView contentContainerStyle={styles.content}>
@@ -200,115 +203,86 @@ export default function SettingsScreen() {
         </TouchableOpacity>
 
         {/* Workspace — switch, plus owner-only name and plan. */}
-        <Text style={styles.sectionTitle}>Workspace</Text>
-        <View style={styles.linkGroup}>
-          <TouchableOpacity style={styles.linkRow} onPress={() => setPickerOpen(true)}>
+        <SectionTitle>Workspace</SectionTitle>
+        <SettingsGroup>
+          <SettingsRow onPress={() => setPickerOpen(true)}>
             <WorkspaceMark name={activeWorkspace?.name ?? '?'} size={20} />
             <Text style={[styles.linkLabel, styles.linkLabelGrow]} numberOfLines={1}>
               {activeWorkspace?.name ?? 'No workspace'}
             </Text>
             <Text style={styles.rowMeta}>Switch</Text>
             <Ionicons name="chevron-forward" size={18} color={colors.ink4} />
-          </TouchableOpacity>
+          </SettingsRow>
 
           {isOwner ? (
             <>
-              <TouchableOpacity
-                style={[styles.linkRow, styles.linkRowDivided]}
-                onPress={() => setRenameSheetOpen(true)}
-              >
+              <SettingsRow divider onPress={() => setRenameSheetOpen(true)}>
                 <Ionicons name="create-outline" size={20} color={colors.ink3} />
                 <Text style={styles.linkLabel}>Name</Text>
                 <Text style={styles.linkMeta} numberOfLines={1}>
                   {activeWorkspace?.name ?? ''}
                 </Text>
                 <Ionicons name="chevron-forward" size={18} color={colors.ink4} />
-              </TouchableOpacity>
+              </SettingsRow>
 
-              <TouchableOpacity
-                style={[styles.linkRow, styles.linkRowDivided]}
-                onPress={() => setCollaboratorsSheetOpen(true)}
-              >
+              <SettingsRow divider onPress={() => setCollaboratorsSheetOpen(true)}>
                 <Ionicons name="people-outline" size={20} color={colors.ink3} />
                 <Text style={styles.linkLabel}>Collaborators</Text>
                 <Text style={styles.linkMeta} numberOfLines={1}>{collaboratorsSummary}</Text>
                 <Ionicons name="chevron-forward" size={18} color={colors.ink4} />
-              </TouchableOpacity>
+              </SettingsRow>
 
-              <TouchableOpacity
-                style={[styles.linkRow, styles.linkRowDivided]}
-                onPress={() => setPlanSheetOpen(true)}
-              >
+              <SettingsRow divider onPress={() => setPlanSheetOpen(true)}>
                 <Ionicons name="card-outline" size={20} color={colors.ink3} />
                 <Text style={styles.linkLabel}>Plan</Text>
                 <Text style={styles.linkMeta} numberOfLines={1}>{planLabel}</Text>
                 <Ionicons name="chevron-forward" size={18} color={colors.ink4} />
-              </TouchableOpacity>
+              </SettingsRow>
             </>
           ) : null}
-        </View>
+        </SettingsGroup>
 
         {/* Owner-only management. Members get a read-only view. */}
         {isOwner ? (
           <>
             {/* Gmail — summary rows that open their settings in a sheet. */}
-            <Text style={styles.sectionTitle}>Gmail</Text>
-            <View style={styles.linkGroup}>
-              <TouchableOpacity
-                style={styles.linkRow}
-                onPress={() => setGmailSheetOpen(true)}
-                disabled={gmailLoading}
-              >
+            <SectionTitle>Gmail</SectionTitle>
+            <SettingsGroup>
+              <SettingsRow onPress={() => setGmailSheetOpen(true)} disabled={gmailLoading}>
                 <Ionicons name="mail-outline" size={20} color={colors.ink3} />
                 <Text style={styles.linkLabel}>Inbox</Text>
                 <Text style={styles.linkMeta} numberOfLines={1}>{gmailSummary}</Text>
                 <Ionicons name="chevron-forward" size={18} color={colors.ink4} />
-              </TouchableOpacity>
+              </SettingsRow>
 
-              <TouchableOpacity
-                style={[styles.linkRow, styles.linkRowDivided]}
-                onPress={() => setSyncFiltersSheetOpen(true)}
-                disabled={gmailLoading}
-              >
+              <SettingsRow divider onPress={() => setSyncFiltersSheetOpen(true)} disabled={gmailLoading}>
                 <Ionicons name="options-outline" size={20} color={colors.ink3} />
                 <Text style={styles.linkLabel}>Sync filters</Text>
                 <Text style={styles.linkMeta} numberOfLines={1}>{syncFiltersSummary}</Text>
                 <Ionicons name="chevron-forward" size={18} color={colors.ink4} />
-              </TouchableOpacity>
+              </SettingsRow>
 
-              <TouchableOpacity
-                style={[styles.linkRow, styles.linkRowDivided]}
-                onPress={() => setBlacklistSheetOpen(true)}
-                disabled={gmailLoading}
-              >
+              <SettingsRow divider onPress={() => setBlacklistSheetOpen(true)} disabled={gmailLoading}>
                 <Ionicons name="ban-outline" size={20} color={colors.ink3} />
                 <Text style={styles.linkLabel}>Sender blacklist</Text>
                 <Text style={styles.linkMeta} numberOfLines={1}>{blacklistSummary}</Text>
                 <Ionicons name="chevron-forward" size={18} color={colors.ink4} />
-              </TouchableOpacity>
-            </View>
+              </SettingsRow>
+            </SettingsGroup>
 
-            <Text style={[styles.sectionTitle, styles.dangerTitle]}>Danger zone</Text>
-            <View style={styles.linkGroup}>
-              <TouchableOpacity
-                style={[styles.linkRow, busy && styles.btnDisabled]}
-                onPress={confirmReset}
-                disabled={busy}
-              >
+            <SectionTitle danger>Danger zone</SectionTitle>
+            <SettingsGroup>
+              <SettingsRow onPress={confirmReset} disabled={busy}>
                 <Ionicons name="refresh-outline" size={20} color={colors.danger} />
                 <Text style={[styles.linkLabel, styles.linkLabelGrow, styles.dangerLabel]}>Reset workspace</Text>
                 <Ionicons name="chevron-forward" size={18} color={colors.danger} />
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[styles.linkRow, styles.linkRowDivided, busy && styles.btnDisabled]}
-                onPress={confirmDelete}
-                disabled={busy}
-              >
+              </SettingsRow>
+              <SettingsRow divider onPress={confirmDelete} disabled={busy}>
                 <Ionicons name="trash-outline" size={20} color={colors.danger} />
                 <Text style={[styles.linkLabel, styles.linkLabelGrow, styles.dangerLabel]}>Delete workspace</Text>
                 <Ionicons name="chevron-forward" size={18} color={colors.danger} />
-              </TouchableOpacity>
-            </View>
+              </SettingsRow>
+            </SettingsGroup>
           </>
         ) : null}
       </ScrollView>
@@ -394,15 +368,11 @@ export default function SettingsScreen() {
           />
         </>
       ) : null}
-    </View>
+    </ScreenContainer>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.bg,
-  },
   content: {
     paddingVertical: space.xl,
     paddingBottom: space.xxl,
@@ -431,43 +401,12 @@ const styles = StyleSheet.create({
     fontSize: fontSize.md,
     color: colors.ink3,
   },
-  sectionTitle: {
-    fontSize: fontSize.sm,
-    fontWeight: fontWeight.semibold,
-    color: colors.ink3,
-    textTransform: 'uppercase',
-    paddingHorizontal: space.xl,
-    paddingTop: space.xxl,
-    paddingBottom: space.md,
-  },
-  dangerTitle: {
-    color: colors.danger,
-  },
   rowMeta: {
     fontSize: fontSize.md,
     color: colors.ink4,
   },
-  btnDisabled: {
-    opacity: 0.5,
-  },
   dangerLabel: {
     color: colors.danger,
-  },
-  linkGroup: {
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderColor: colors.line2,
-  },
-  linkRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: space.lg,
-    paddingHorizontal: space.xl,
-    paddingVertical: space.lg,
-  },
-  linkRowDivided: {
-    borderTopWidth: 1,
-    borderTopColor: colors.line,
   },
   linkLabel: {
     fontSize: fontSize.lg,

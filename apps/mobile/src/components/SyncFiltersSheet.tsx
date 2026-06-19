@@ -9,10 +9,9 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import { colors, space, fontSize, fontWeight, radii } from '@amarnai/tokens';
 import type { ApiClient, GmailSyncSettings } from '@amarnai/api-client';
-import { BottomSheet } from './BottomSheet';
+import { SheetLayout } from './SheetLayout';
 
 type Props = {
   visible: boolean;
@@ -87,98 +86,68 @@ export function SyncFiltersSheet({
   }
 
   return (
-    <BottomSheet visible={visible} onClose={onClose}>
-      <View style={styles.sheet}>
-        <View style={styles.header}>
-          <Text style={styles.title}>Sync filters</Text>
-          <TouchableOpacity onPress={onClose} hitSlop={8}>
-            <Ionicons name="close" size={22} color={colors.ink3} />
-          </TouchableOpacity>
-        </View>
+    <SheetLayout visible={visible} onClose={onClose} title="Sync filters">
+      <ScrollView style={styles.body} contentContainerStyle={styles.bodyContent}>
+          <Text style={styles.hint}>
+            Controls which Gmail threads are imported. Trash is always excluded.
+          </Text>
 
-        <ScrollView style={styles.body} contentContainerStyle={styles.bodyContent}>
-            <Text style={styles.hint}>
-              Controls which Gmail threads are imported. Trash is always excluded.
-            </Text>
+          {localSettings ? (
+            <>
+              <View style={styles.toggleRow}>
+                <Text style={styles.toggleLabel}>Include spam</Text>
+                <Switch
+                  value={localSettings.includeSpam}
+                  onValueChange={(v) => void handleToggle('includeSpam', v)}
+                  disabled={updating}
+                  trackColor={{ false: colors.line2, true: colors.accentLine }}
+                  thumbColor={localSettings.includeSpam ? colors.accent : colors.ink4}
+                />
+              </View>
 
-            {localSettings ? (
-              <>
-                <View style={styles.toggleRow}>
-                  <Text style={styles.toggleLabel}>Include spam</Text>
-                  <Switch
-                    value={localSettings.includeSpam}
-                    onValueChange={(v) => void handleToggle('includeSpam', v)}
-                    disabled={updating}
-                    trackColor={{ false: colors.line2, true: colors.accentLine }}
-                    thumbColor={localSettings.includeSpam ? colors.accent : colors.ink4}
-                  />
-                </View>
+              <View style={styles.toggleRow}>
+                <Text style={styles.toggleLabel}>Include Promotions</Text>
+                <Switch
+                  value={localSettings.includePromotions}
+                  onValueChange={(v) => void handleToggle('includePromotions', v)}
+                  disabled={updating}
+                  trackColor={{ false: colors.line2, true: colors.accentLine }}
+                  thumbColor={localSettings.includePromotions ? colors.accent : colors.ink4}
+                />
+              </View>
 
-                <View style={styles.toggleRow}>
-                  <Text style={styles.toggleLabel}>Include Promotions</Text>
-                  <Switch
-                    value={localSettings.includePromotions}
-                    onValueChange={(v) => void handleToggle('includePromotions', v)}
-                    disabled={updating}
-                    trackColor={{ false: colors.line2, true: colors.accentLine }}
-                    thumbColor={localSettings.includePromotions ? colors.accent : colors.ink4}
-                  />
-                </View>
-
-                <TouchableOpacity
-                  style={[styles.rescanBtn, (!dirty || rescanning) && styles.btnDisabled]}
-                  onPress={() => void handleRescan()}
-                  disabled={!dirty || rescanning}
-                >
-                  {rescanning ? (
-                    <ActivityIndicator size="small" color={colors.ink3} />
-                  ) : (
-                    <Text style={styles.rescanBtnText}>Rescan inbox</Text>
-                  )}
-                </TouchableOpacity>
-                {rescanDone ? (
-                  <Text style={styles.rescanFeedback}>
-                    Rescan queued — threads will update shortly.
-                  </Text>
-                ) : null}
-                <Text style={styles.hint}>
-                  Use "Rescan inbox" after changing filters to apply them to threads already in
-                  your inbox.
+              <TouchableOpacity
+                style={[styles.rescanBtn, (!dirty || rescanning) && styles.btnDisabled]}
+                onPress={() => void handleRescan()}
+                disabled={!dirty || rescanning}
+              >
+                {rescanning ? (
+                  <ActivityIndicator size="small" color={colors.ink3} />
+                ) : (
+                  <Text style={styles.rescanBtnText}>Rescan inbox</Text>
+                )}
+              </TouchableOpacity>
+              {rescanDone ? (
+                <Text style={styles.rescanFeedback}>
+                  Rescan queued — threads will update shortly.
                 </Text>
-              </>
-            ) : (
-              <Text style={styles.infoText}>
-                Connect a Gmail inbox to configure sync filters.
+              ) : null}
+              <Text style={styles.hint}>
+                Use "Rescan inbox" after changing filters to apply them to threads already in
+                your inbox.
               </Text>
-            )}
-        </ScrollView>
-      </View>
-    </BottomSheet>
+            </>
+          ) : (
+            <Text style={styles.infoText}>
+              Connect a Gmail inbox to configure sync filters.
+            </Text>
+          )}
+      </ScrollView>
+    </SheetLayout>
   );
 }
 
 const styles = StyleSheet.create({
-  sheet: {
-    backgroundColor: colors.bg,
-    borderTopLeftRadius: radii.xl,
-    borderTopRightRadius: radii.xl,
-    maxHeight: '85%',
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: space.xl,
-    paddingTop: space.lg,
-    paddingBottom: space.md,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.line2,
-  },
-  title: {
-    fontSize: fontSize.xl,
-    fontWeight: fontWeight.semibold,
-    color: colors.ink,
-  },
   body: {
     paddingHorizontal: space.xl,
   },

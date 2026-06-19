@@ -1,15 +1,14 @@
 import { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
-  Modal,
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from 'react-native';
 import { colors, space, fontSize, fontWeight, radii } from '@amarnai/tokens';
 import type { ApiClient, QuotaInfo } from '@amarnai/api-client';
+import { SheetLayout } from './SheetLayout';
 
 type Props = {
   visible: boolean;
@@ -66,75 +65,34 @@ export function PlanSheet({ visible, onClose, workspaceId, client, planLabel }: 
   }, [visible, workspaceId, client]);
 
   return (
-    <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
-      <View style={styles.backdrop}>
-        <View style={styles.sheet}>
-          <View style={styles.header}>
-            <Text style={styles.title}>Plan &amp; usage</Text>
-            <TouchableOpacity onPress={onClose} hitSlop={8}>
-              <Text style={styles.close}>Close</Text>
-            </TouchableOpacity>
+    <SheetLayout visible={visible} onClose={onClose} title="Plan & usage">
+      <ScrollView style={styles.body} contentContainerStyle={styles.bodyContent}>
+        <View style={styles.planRow}>
+          <Text style={styles.planLabel}>Current plan</Text>
+          <View style={styles.planBadge}>
+            <Text style={styles.planBadgeText}>{planLabel}</Text>
           </View>
-
-          <ScrollView style={styles.body} contentContainerStyle={styles.bodyContent}>
-            <View style={styles.planRow}>
-              <Text style={styles.planLabel}>Current plan</Text>
-              <View style={styles.planBadge}>
-                <Text style={styles.planBadgeText}>{planLabel}</Text>
-              </View>
-            </View>
-
-            {loading ? (
-              <ActivityIndicator style={styles.loader} color={colors.ink4} />
-            ) : (
-              <>
-                <Text style={styles.sectionLabel}>This month</Text>
-                <UsageRow label="AI drafts" quota={draftQuota} />
-                <UsageRow label="Threads sorted" quota={threadSortQuota} />
-              </>
-            )}
-
-            <Text style={styles.note}>
-              Upgrades, downgrades, and billing are managed on the web app.
-            </Text>
-          </ScrollView>
         </View>
-      </View>
-    </Modal>
+
+        {loading ? (
+          <ActivityIndicator style={styles.loader} color={colors.ink4} />
+        ) : (
+          <>
+            <Text style={styles.sectionLabel}>This month</Text>
+            <UsageRow label="AI drafts" quota={draftQuota} />
+            <UsageRow label="Threads sorted" quota={threadSortQuota} />
+          </>
+        )}
+
+        <Text style={styles.note}>
+          Upgrades, downgrades, and billing are managed on the web app.
+        </Text>
+      </ScrollView>
+    </SheetLayout>
   );
 }
 
 const styles = StyleSheet.create({
-  backdrop: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.4)',
-    justifyContent: 'flex-end',
-  },
-  sheet: {
-    backgroundColor: colors.bg,
-    borderTopLeftRadius: radii.xl,
-    borderTopRightRadius: radii.xl,
-    maxHeight: '85%',
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: space.xl,
-    paddingTop: space.lg,
-    paddingBottom: space.md,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.line2,
-  },
-  title: {
-    fontSize: fontSize.xl,
-    fontWeight: fontWeight.semibold,
-    color: colors.ink,
-  },
-  close: {
-    fontSize: fontSize.md,
-    color: colors.ink3,
-  },
   body: {
     paddingHorizontal: space.xl,
   },

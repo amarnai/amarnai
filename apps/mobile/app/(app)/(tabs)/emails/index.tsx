@@ -12,6 +12,7 @@ import type { QueueId } from '@amarnai/core';
 import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
 import { useTriage } from '../../../../src/triage/TriageProvider';
 import { AppHeader } from '../../../../src/components/AppHeader';
+import { ScreenContainer } from '../../../../src/components/ScreenContainer';
 import { Toast } from '../../../../src/components/Toast';
 import { QueueChips } from '../../../../src/components/emails/QueueChips';
 import { FolderFilterSheet } from '../../../../src/components/emails/FolderFilterSheet';
@@ -80,7 +81,7 @@ export default function EmailsScreen() {
         : 'No threads yet';
 
   return (
-    <View style={styles.container}>
+    <ScreenContainer>
       <AppHeader variant="workspace" />
 
       <QueueChips
@@ -161,15 +162,11 @@ export default function EmailsScreen() {
         }}
         onDismiss={triage.dismissToast}
       />
-    </View>
+    </ScreenContainer>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.bg,
-  },
   searchRow: {
     paddingHorizontal: space.xl,
     paddingVertical: space.sm,

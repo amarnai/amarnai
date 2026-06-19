@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
 import { useSession } from '../../../src/auth/session';
 import { useTriage } from '../../../src/triage/TriageProvider';
@@ -10,6 +9,9 @@ import { RationaleCard } from '../../../src/components/RationaleCard';
 import { MessageCard } from '../../../src/components/MessageCard';
 import { RerouteSheet } from '../../../src/components/RerouteSheet';
 import { Toast } from '../../../src/components/Toast';
+import { ScreenContainer } from '../../../src/components/ScreenContainer';
+import { CenterView } from '../../../src/components/CenterView';
+import { BackHeader } from '../../../src/components/BackHeader';
 
 export default function ThreadDetailScreen() {
   const router = useRouter();
@@ -47,12 +49,12 @@ export default function ThreadDetailScreen() {
 
   if (!thread) {
     return (
-      <View style={styles.container}>
-        <Header onBack={() => router.back()} title="Thread" />
-        <View style={styles.center}>
+      <ScreenContainer>
+        <BackHeader onBack={() => router.back()} title="Thread" />
+        <CenterView>
           <Text style={styles.empty}>Thread not found</Text>
-        </View>
-      </View>
+        </CenterView>
+      </ScreenContainer>
     );
   }
 
@@ -72,8 +74,8 @@ export default function ThreadDetailScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <Header onBack={() => router.back()} title={thread.subject} />
+    <ScreenContainer>
+      <BackHeader onBack={() => router.back()} title={thread.subject} />
 
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.doneBar}>
@@ -128,47 +130,11 @@ export default function ThreadDetailScreen() {
         }}
         onDismiss={triage.dismissToast}
       />
-    </View>
-  );
-}
-
-function Header({ onBack, title }: { onBack: () => void; title: string }) {
-  return (
-    <View style={styles.header}>
-      <TouchableOpacity style={styles.back} onPress={onBack} hitSlop={8}>
-        <Ionicons name="chevron-back" size={24} color={colors.ink} />
-      </TouchableOpacity>
-      <Text style={styles.title} numberOfLines={1}>
-        {title}
-      </Text>
-    </View>
+    </ScreenContainer>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.bg,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: space.xl,
-    paddingTop: space.lg,
-    paddingBottom: space.lg,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.line2,
-    gap: space.lg,
-  },
-  back: {
-    paddingVertical: space.xxs,
-  },
-  title: {
-    fontSize: fontSize.xxl,
-    fontWeight: fontWeight.semibold,
-    color: colors.ink,
-    flex: 1,
-  },
   scrollContent: {
     paddingBottom: space.xxl * 3,
   },
@@ -199,11 +165,6 @@ const styles = StyleSheet.create({
     fontSize: fontSize.md,
     fontWeight: fontWeight.semibold,
     color: colors.okInk,
-  },
-  center: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   empty: {
     fontSize: fontSize.md,

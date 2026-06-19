@@ -8,20 +8,41 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { colors, space, fontSize, fontWeight, radii } from '@amarnai/tokens';
 import { useSession } from '../../src/auth/session';
 import { UserAvatar } from '../../src/components/UserAvatar';
-import { EditNameSheet } from '../../src/components/EditNameSheet';
+import { ScreenContainer } from '../../src/components/ScreenContainer';
+import { BackHeader } from '../../src/components/BackHeader';
+import { SectionTitle } from '../../src/components/SectionTitle';
+import { SettingsGroup, SettingsRow } from '../../src/components/SettingsGroup';
+import { FormInput } from '../../src/components/FormInput';
+import { PrimaryButton } from '../../src/components/PrimaryButton';
 
 export default function AccountScreen() {
   const router = useRouter();
-  const insets = useSafeAreaInsets();
   const { user, client, refresh, signOut } = useSession();
 
-  const [editNameOpen, setEditNameOpen] = useState(false);
+  const [nameValue, setNameValue] = useState(user?.name ?? '');
+  const [namePending, setNamePending] = useState(false);
+  const [nameSuccess, setNameSuccess] = useState(false);
+  const [nameError, setNameError] = useState<string | null>(null);
+
   const [deletePending, setDeletePending] = useState(false);
+
+  async function saveName() {
+    setNamePending(true);
+    setNameError(null);
+    setNameSuccess(false);
+    try {
+      await client.updateMe(nameValue.trim());
+      await refresh();
+      setNameSuccess(true);
+    } catch (err) {
+      setNameError(err instanceof Error ? err.message : 'Could not update name');
+    } finally {
+      setNamePending(false);
+    }
+  }
 
   function confirmDelete() {
     Alert.alert(
@@ -50,113 +71,85 @@ export default function AccountScreen() {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={[styles.header, { paddingTop: insets.top + space.md }]}>
-        <TouchableOpacity style={styles.back} onPress={() => router.back()} hitSlop={8}>
-          <Ionicons name="chevron-back" size={24} color={colors.ink} />
-        </TouchableOpacity>
-        <Text style={styles.title} numberOfLines={1}>
-          Account
-        </Text>
-      </View>
+    <ScreenContainer>
+      <BackHeader title="Account" onBack={() => router.back()} />
 
       <ScrollView contentContainerStyle={styles.content}>
-        {/* Identity card */}
-        <View style={styles.accountCard}>
-          <UserAvatar name={user?.name ?? null} email={user?.email ?? ''} size={44} />
-          <View style={styles.accountText}>
+        {/* Profile card */}
+        <View style={styles.profileCard}>
+          <UserAvatar name={user?.name ?? null} email={user?.email ?? ''} size={56} />
+          <View style={styles.profileText}>
             {user?.name ? (
-              <Text style={styles.accountName} numberOfLines={1}>{user.name}</Text>
+              <Text style={styles.profileName} numberOfLines={1}>{user.name}</Text>
             ) : null}
-            <Text style={styles.accountEmail} numberOfLines={1}>{user?.email ?? ''}</Text>
+            <Text style={styles.profileEmail} numberOfLines={1}>{user?.email ?? ''}</Text>
           </View>
         </View>
 
-        {/* Profile */}
-        <Text style={styles.sectionTitle}>Profile</Text>
-        <View style={styles.linkGroup}>
-          <TouchableOpacity style={styles.linkRow} onPress={() => setEditNameOpen(true)}>
-            <Ionicons name="person-outline" size={20} color={colors.ink3} />
-            <Text style={styles.linkLabel}>Display name</Text>
-            <Text style={styles.linkMeta} numberOfLines={1}>
-              {user?.name ?? 'Not set'}
-            </Text>
-            <Ionicons name="chevron-forward" size={18} color={colors.ink4} />
-          </TouchableOpacity>
-
-          <View style={[styles.linkRow, styles.linkRowDivided]}>
-            <Ionicons name="mail-outline" size={20} color={colors.ink3} />
-            <Text style={styles.linkLabel}>Email</Text>
-            <Text style={styles.linkMeta} numberOfLines={1}>{user?.email ?? ''}</Text>
+        {/* Profile section */}
+        <SectionTitle>Profile</SectionTitle>
+        <View style={styles.formGroup}>
+          <Text style={styles.label}>Display name</Text>
+          <FormInput
+            value={nameValue}
+            onChangeText={(v) => { setNameValue(v); setNameSuccess(false); setNameError(null); }}
+            placeholder="Your name"
+            maxLength={100}
+            autoCapitalize="words"
+            returnKeyType="done"
+            onSubmitEditing={() => void saveName()}
+          />
+        </View>
+        <View style={styles.formGroup}>
+          <Text style={styles.label}>Email</Text>
+          <View style={styles.inputReadonly}>
+            <Text style={styles.inputReadonlyText} numberOfLines={1}>{user?.email ?? ''}</Text>
           </View>
         </View>
+        {nameError ? <Text style={styles.errorText}>{nameError}</Text> : null}
+        {nameSuccess ? <Text style={styles.successText}>Name updated.</Text> : null}
+        <PrimaryButton
+          label={namePending ? 'Saving…' : 'Save changes'}
+          onPress={() => void saveName()}
+          loading={namePending}
+          style={styles.saveBtn}
+        />
 
-        {/* Session */}
-        <Text style={styles.sectionTitle}>Session</Text>
-        <View style={styles.linkGroup}>
-          <TouchableOpacity style={styles.linkRow} onPress={() => void signOut()}>
-            <Ionicons name="log-out-outline" size={20} color={colors.ink3} />
+        {/* Session section */}
+        <SectionTitle>Session</SectionTitle>
+        <SettingsGroup>
+          <SettingsRow onPress={() => void signOut()}>
             <Text style={styles.linkLabel}>Sign out</Text>
-            <Ionicons name="chevron-forward" size={18} color={colors.ink4} />
-          </TouchableOpacity>
-        </View>
+          </SettingsRow>
+        </SettingsGroup>
 
         {/* Danger zone */}
-        <Text style={[styles.sectionTitle, styles.dangerTitle]}>Danger zone</Text>
-        <View style={styles.linkGroup}>
+        <SectionTitle danger>Danger zone</SectionTitle>
+        <View style={styles.dangerSection}>
           <TouchableOpacity
-            style={[styles.linkRow, deletePending && styles.btnDisabled]}
+            style={[styles.deleteBtn, deletePending && styles.btnDisabled]}
             onPress={confirmDelete}
             disabled={deletePending}
           >
-            <Ionicons name="trash-outline" size={20} color={colors.danger} />
-            <Text style={[styles.linkLabel, styles.linkLabelGrow, styles.dangerLabel]}>
+            <Text style={styles.deleteBtnText}>
               {deletePending ? 'Deleting…' : 'Delete account'}
             </Text>
-            <Ionicons name="chevron-forward" size={18} color={colors.danger} />
           </TouchableOpacity>
+          <Text style={styles.dangerHint}>
+            Permanently delete your account and all associated data. This cannot be undone.
+          </Text>
         </View>
       </ScrollView>
-
-      <EditNameSheet
-        visible={editNameOpen}
-        onClose={() => setEditNameOpen(false)}
-        client={client}
-        currentName={user?.name ?? null}
-        onSaved={refresh}
-      />
-    </View>
+    </ScreenContainer>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.bg,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: space.xl,
-    paddingBottom: space.lg,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.line2,
-    gap: space.lg,
-  },
-  back: {
-    paddingVertical: space.xxs,
-  },
-  title: {
-    fontSize: fontSize.xxl,
-    fontWeight: fontWeight.semibold,
-    color: colors.ink,
-    flex: 1,
-  },
   content: {
     paddingVertical: space.xl,
     paddingBottom: space.xxl,
   },
-  accountCard: {
+  profileCard: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: space.lg,
@@ -167,64 +160,83 @@ const styles = StyleSheet.create({
     borderRadius: radii.md,
     backgroundColor: colors.surface,
   },
-  accountText: {
+  profileText: {
     flex: 1,
     minWidth: 0,
   },
-  accountName: {
+  profileName: {
     fontSize: fontSize.lg,
     fontWeight: fontWeight.semibold,
     color: colors.ink,
   },
-  accountEmail: {
+  profileEmail: {
     fontSize: fontSize.md,
     color: colors.ink3,
   },
-  sectionTitle: {
+  formGroup: {
+    paddingHorizontal: space.xl,
+    marginBottom: space.md,
+    gap: space.xs,
+  },
+  label: {
     fontSize: fontSize.sm,
-    fontWeight: fontWeight.semibold,
+    fontWeight: fontWeight.medium,
+    color: colors.ink2,
+    marginBottom: space.xxs,
+  },
+  inputReadonly: {
+    borderWidth: 1,
+    borderColor: colors.line,
+    borderRadius: radii.md,
+    paddingHorizontal: space.lg,
+    paddingVertical: space.md,
+    backgroundColor: colors.bg,
+  },
+  inputReadonlyText: {
+    fontSize: fontSize.lg,
     color: colors.ink3,
-    textTransform: 'uppercase',
-    paddingHorizontal: space.xl,
-    paddingTop: space.xxl,
-    paddingBottom: space.md,
   },
-  dangerTitle: {
+  errorText: {
+    fontSize: fontSize.sm,
     color: colors.danger,
-  },
-  dangerLabel: {
-    color: colors.danger,
-  },
-  linkGroup: {
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderColor: colors.line2,
-  },
-  linkRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: space.lg,
     paddingHorizontal: space.xl,
-    paddingVertical: space.lg,
+    marginBottom: space.md,
   },
-  linkRowDivided: {
-    borderTopWidth: 1,
-    borderTopColor: colors.line,
+  successText: {
+    fontSize: fontSize.sm,
+    color: colors.accentInk,
+    paddingHorizontal: space.xl,
+    marginBottom: space.md,
+  },
+  saveBtn: {
+    marginHorizontal: space.xl,
   },
   linkLabel: {
     fontSize: fontSize.lg,
     color: colors.ink,
   },
-  linkLabelGrow: {
-    flex: 1,
+  dangerSection: {
+    paddingHorizontal: space.xl,
+    gap: space.md,
   },
-  linkMeta: {
-    flex: 1,
-    fontSize: fontSize.md,
-    color: colors.ink4,
-    textAlign: 'right',
+  deleteBtn: {
+    borderWidth: 1,
+    borderColor: colors.danger,
+    borderRadius: radii.md,
+    paddingVertical: space.md,
+    alignItems: 'center',
+    backgroundColor: colors.danger,
+  },
+  deleteBtnText: {
+    color: colors.surface,
+    fontSize: fontSize.lg,
+    fontWeight: fontWeight.semibold,
   },
   btnDisabled: {
     opacity: 0.5,
+  },
+  dangerHint: {
+    fontSize: fontSize.sm,
+    color: colors.ink3,
   },
 });
