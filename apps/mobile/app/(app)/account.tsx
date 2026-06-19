@@ -5,7 +5,6 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -14,33 +13,15 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { colors, space, fontSize, fontWeight, radii } from '@amarnai/tokens';
 import { useSession } from '../../src/auth/session';
 import { UserAvatar } from '../../src/components/UserAvatar';
+import { EditNameSheet } from '../../src/components/EditNameSheet';
 
 export default function AccountScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { user, client, refresh, signOut } = useSession();
 
-  const [nameValue, setNameValue] = useState(user?.name ?? '');
-  const [namePending, setNamePending] = useState(false);
-  const [nameSuccess, setNameSuccess] = useState(false);
-  const [nameError, setNameError] = useState<string | null>(null);
-
+  const [editNameOpen, setEditNameOpen] = useState(false);
   const [deletePending, setDeletePending] = useState(false);
-
-  async function saveName() {
-    setNamePending(true);
-    setNameError(null);
-    setNameSuccess(false);
-    try {
-      await client.updateMe(nameValue.trim());
-      await refresh();
-      setNameSuccess(true);
-    } catch (err) {
-      setNameError(err instanceof Error ? err.message : 'Could not update name');
-    } finally {
-      setNamePending(false);
-    }
-  }
 
   function confirmDelete() {
     Alert.alert(
@@ -80,74 +61,70 @@ export default function AccountScreen() {
       </View>
 
       <ScrollView contentContainerStyle={styles.content}>
-        {/* Profile card */}
-        <View style={styles.profileCard}>
-          <UserAvatar name={user?.name ?? null} email={user?.email ?? ''} size={56} />
-          <View style={styles.profileText}>
+        {/* Identity card */}
+        <View style={styles.accountCard}>
+          <UserAvatar name={user?.name ?? null} email={user?.email ?? ''} size={44} />
+          <View style={styles.accountText}>
             {user?.name ? (
-              <Text style={styles.profileName} numberOfLines={1}>{user.name}</Text>
+              <Text style={styles.accountName} numberOfLines={1}>{user.name}</Text>
             ) : null}
-            <Text style={styles.profileEmail} numberOfLines={1}>{user?.email ?? ''}</Text>
+            <Text style={styles.accountEmail} numberOfLines={1}>{user?.email ?? ''}</Text>
           </View>
         </View>
 
-        {/* Profile section */}
+        {/* Profile */}
         <Text style={styles.sectionTitle}>Profile</Text>
-        <View style={styles.formGroup}>
-          <Text style={styles.label}>Display name</Text>
-          <TextInput
-            style={styles.input}
-            value={nameValue}
-            onChangeText={(v) => { setNameValue(v); setNameSuccess(false); setNameError(null); }}
-            placeholder="Your name"
-            placeholderTextColor={colors.ink4}
-            maxLength={100}
-            autoCapitalize="words"
-            returnKeyType="done"
-            onSubmitEditing={() => void saveName()}
-          />
-        </View>
-        <View style={styles.formGroup}>
-          <Text style={styles.label}>Email</Text>
-          <View style={styles.inputReadonly}>
-            <Text style={styles.inputReadonlyText} numberOfLines={1}>{user?.email ?? ''}</Text>
+        <View style={styles.linkGroup}>
+          <TouchableOpacity style={styles.linkRow} onPress={() => setEditNameOpen(true)}>
+            <Ionicons name="person-outline" size={20} color={colors.ink3} />
+            <Text style={styles.linkLabel}>Display name</Text>
+            <Text style={styles.linkMeta} numberOfLines={1}>
+              {user?.name ?? 'Not set'}
+            </Text>
+            <Ionicons name="chevron-forward" size={18} color={colors.ink4} />
+          </TouchableOpacity>
+
+          <View style={[styles.linkRow, styles.linkRowDivided]}>
+            <Ionicons name="mail-outline" size={20} color={colors.ink3} />
+            <Text style={styles.linkLabel}>Email</Text>
+            <Text style={styles.linkMeta} numberOfLines={1}>{user?.email ?? ''}</Text>
           </View>
         </View>
-        {nameError ? <Text style={styles.errorText}>{nameError}</Text> : null}
-        {nameSuccess ? <Text style={styles.successText}>Name updated.</Text> : null}
-        <TouchableOpacity
-          style={[styles.btnPrimary, namePending && styles.btnDisabled]}
-          onPress={() => void saveName()}
-          disabled={namePending}
-        >
-          <Text style={styles.btnPrimaryText}>{namePending ? 'Saving…' : 'Save changes'}</Text>
-        </TouchableOpacity>
 
-        {/* Session section */}
+        {/* Session */}
         <Text style={styles.sectionTitle}>Session</Text>
         <View style={styles.linkGroup}>
           <TouchableOpacity style={styles.linkRow} onPress={() => void signOut()}>
+            <Ionicons name="log-out-outline" size={20} color={colors.ink3} />
             <Text style={styles.linkLabel}>Sign out</Text>
+            <Ionicons name="chevron-forward" size={18} color={colors.ink4} />
           </TouchableOpacity>
         </View>
 
         {/* Danger zone */}
         <Text style={[styles.sectionTitle, styles.dangerTitle]}>Danger zone</Text>
-        <View style={styles.dangerSection}>
+        <View style={styles.linkGroup}>
           <TouchableOpacity
-            style={[styles.deleteBtn, deletePending && styles.btnDisabled]}
+            style={[styles.linkRow, deletePending && styles.btnDisabled]}
             onPress={confirmDelete}
             disabled={deletePending}
           >
-            <Text style={styles.deleteBtnText}>
+            <Ionicons name="trash-outline" size={20} color={colors.danger} />
+            <Text style={[styles.linkLabel, styles.linkLabelGrow, styles.dangerLabel]}>
               {deletePending ? 'Deleting…' : 'Delete account'}
             </Text>
+            <Ionicons name="chevron-forward" size={18} color={colors.danger} />
           </TouchableOpacity>
-          <Text style={styles.dangerHint}>
-            Permanently delete your account and all associated data. This cannot be undone.
-          </Text>
         </View>
       </ScrollView>
+
+      <EditNameSheet
+        visible={editNameOpen}
+        onClose={() => setEditNameOpen(false)}
+        client={client}
+        currentName={user?.name ?? null}
+        onSaved={refresh}
+      />
     </View>
   );
 }
@@ -179,7 +156,7 @@ const styles = StyleSheet.create({
     paddingVertical: space.xl,
     paddingBottom: space.xxl,
   },
-  profileCard: {
+  accountCard: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: space.lg,
@@ -190,16 +167,16 @@ const styles = StyleSheet.create({
     borderRadius: radii.md,
     backgroundColor: colors.surface,
   },
-  profileText: {
+  accountText: {
     flex: 1,
     minWidth: 0,
   },
-  profileName: {
+  accountName: {
     fontSize: fontSize.lg,
     fontWeight: fontWeight.semibold,
     color: colors.ink,
   },
-  profileEmail: {
+  accountEmail: {
     fontSize: fontSize.md,
     color: colors.ink3,
   },
@@ -215,65 +192,8 @@ const styles = StyleSheet.create({
   dangerTitle: {
     color: colors.danger,
   },
-  formGroup: {
-    paddingHorizontal: space.xl,
-    marginBottom: space.md,
-    gap: space.xs,
-  },
-  label: {
-    fontSize: fontSize.sm,
-    fontWeight: fontWeight.medium,
-    color: colors.ink2,
-    marginBottom: space.xxs,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: colors.line2,
-    borderRadius: radii.md,
-    paddingHorizontal: space.lg,
-    paddingVertical: space.lg - space.xxs,
-    fontSize: fontSize.lg,
-    color: colors.ink,
-    backgroundColor: colors.surface,
-  },
-  inputReadonly: {
-    borderWidth: 1,
-    borderColor: colors.line,
-    borderRadius: radii.md,
-    paddingHorizontal: space.lg,
-    paddingVertical: space.lg - space.xxs,
-    backgroundColor: colors.bg,
-  },
-  inputReadonlyText: {
-    fontSize: fontSize.lg,
-    color: colors.ink3,
-  },
-  errorText: {
-    fontSize: fontSize.sm,
+  dangerLabel: {
     color: colors.danger,
-    paddingHorizontal: space.xl,
-    marginBottom: space.md,
-  },
-  successText: {
-    fontSize: fontSize.sm,
-    color: colors.accentInk,
-    paddingHorizontal: space.xl,
-    marginBottom: space.md,
-  },
-  btnPrimary: {
-    marginHorizontal: space.xl,
-    backgroundColor: colors.accent,
-    borderRadius: radii.md,
-    paddingVertical: space.lg - space.xxs,
-    alignItems: 'center',
-  },
-  btnPrimaryText: {
-    fontSize: fontSize.lg,
-    fontWeight: fontWeight.semibold,
-    color: colors.surface,
-  },
-  btnDisabled: {
-    opacity: 0.5,
   },
   linkGroup: {
     borderTopWidth: 1,
@@ -283,32 +203,28 @@ const styles = StyleSheet.create({
   linkRow: {
     flexDirection: 'row',
     alignItems: 'center',
+    gap: space.lg,
     paddingHorizontal: space.xl,
     paddingVertical: space.lg,
+  },
+  linkRowDivided: {
+    borderTopWidth: 1,
+    borderTopColor: colors.line,
   },
   linkLabel: {
     fontSize: fontSize.lg,
     color: colors.ink,
   },
-  dangerSection: {
-    paddingHorizontal: space.xl,
-    gap: space.md,
+  linkLabelGrow: {
+    flex: 1,
   },
-  deleteBtn: {
-    borderWidth: 1,
-    borderColor: colors.danger,
-    borderRadius: radii.md,
-    paddingVertical: space.lg - space.xxs,
-    alignItems: 'center',
-    backgroundColor: colors.danger,
+  linkMeta: {
+    flex: 1,
+    fontSize: fontSize.md,
+    color: colors.ink4,
+    textAlign: 'right',
   },
-  deleteBtnText: {
-    color: colors.surface,
-    fontSize: fontSize.lg,
-    fontWeight: fontWeight.semibold,
-  },
-  dangerHint: {
-    fontSize: fontSize.sm,
-    color: colors.ink3,
+  btnDisabled: {
+    opacity: 0.5,
   },
 });
