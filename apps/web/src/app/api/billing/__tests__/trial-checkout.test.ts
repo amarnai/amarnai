@@ -61,8 +61,11 @@ beforeEach(() => {
   vi.mocked(getPriceId).mockReturnValue(PRICE_ID);
   vi.mocked(stripe.checkout.sessions.create).mockResolvedValue({ url: CHECKOUT_URL } as never);
 
-  // Default: fresh user, no prior trial
-  vi.mocked(db.user.findUnique).mockResolvedValue({ trialUsed: false } as never);
+  // Default: fresh, email-verified user with no prior trial
+  vi.mocked(db.user.findUnique).mockResolvedValue({
+    trialUsed: false,
+    emailVerified: new Date(),
+  } as never);
 
   // Default: user is workspace OWNER
   vi.mocked(db.workspaceMember.findUnique).mockResolvedValue({ role: "OWNER" } as never);
@@ -85,7 +88,7 @@ describe("trial eligibility — upgrade action (FREE → paid)", () => {
   it("scenario 1a: after cancelling a trial on the same workspace, second checkout has no trial", async () => {
     // After cancellation the webhook sets user.trialUsed = true.
     // Simulate that state here: user already consumed their trial.
-    vi.mocked(db.user.findUnique).mockResolvedValue({ trialUsed: true } as never);
+    vi.mocked(db.user.findUnique).mockResolvedValue({ trialUsed: true, emailVerified: new Date() } as never);
 
     const res = await POST(upgradeReq(WS_ID));
 
@@ -94,7 +97,7 @@ describe("trial eligibility — upgrade action (FREE → paid)", () => {
   });
 
   it("scenario 2: after cancelling a trial on workspace A, upgrading workspace B has no trial", async () => {
-    vi.mocked(db.user.findUnique).mockResolvedValue({ trialUsed: true } as never);
+    vi.mocked(db.user.findUnique).mockResolvedValue({ trialUsed: true, emailVerified: new Date() } as never);
     // Second workspace (still FREE, no subscription)
     vi.mocked(db.workspace.findUnique).mockResolvedValue({
       plan: "FREE",
@@ -108,7 +111,7 @@ describe("trial eligibility — upgrade action (FREE → paid)", () => {
   });
 
   it("scenario 3a: after a Pro trial, trying Business on the same workspace has no trial", async () => {
-    vi.mocked(db.user.findUnique).mockResolvedValue({ trialUsed: true } as never);
+    vi.mocked(db.user.findUnique).mockResolvedValue({ trialUsed: true, emailVerified: new Date() } as never);
     vi.mocked(getPriceId).mockReturnValue("price_test_business_monthly");
 
     const res = await POST(upgradeReq(WS_ID, "business", "monthly"));
@@ -118,7 +121,7 @@ describe("trial eligibility — upgrade action (FREE → paid)", () => {
   });
 
   it("scenario 3b: after a Business trial, trying Pro annual has no trial", async () => {
-    vi.mocked(db.user.findUnique).mockResolvedValue({ trialUsed: true } as never);
+    vi.mocked(db.user.findUnique).mockResolvedValue({ trialUsed: true, emailVerified: new Date() } as never);
     vi.mocked(getPriceId).mockReturnValue("price_test_pro_annual");
 
     const res = await POST(upgradeReq(WS_ID, "pro", "annual"));
@@ -166,6 +169,27 @@ describe("trial eligibility — upgrade action (FREE → paid)", () => {
     expect(res.status).toBe(401);
     expect(stripe.checkout.sessions.create).not.toHaveBeenCalled();
   });
+
+  it("returns 403 and never starts checkout when the account is unverified", async () => {
+    vi.mocked(db.user.findUnique).mockResolvedValue({
+      trialUsed: false,
+      emailVerified: null,
+    } as never);
+
+    const res = await POST(upgradeReq(WS_ID));
+
+    expect(res.status).toBe(403);
+    expect(stripe.checkout.sessions.create).not.toHaveBeenCalled();
+  });
+
+  it("returns 401 when the session points to a user that no longer exists", async () => {
+    vi.mocked(db.user.findUnique).mockResolvedValue(null);
+
+    const res = await POST(upgradeReq(WS_ID));
+
+    expect(res.status).toBe(401);
+    expect(stripe.checkout.sessions.create).not.toHaveBeenCalled();
+  });
 });
 
 describe("trial eligibility — create action (new workspace)", () => {
@@ -177,7 +201,7 @@ describe("trial eligibility — create action (new workspace)", () => {
   });
 
   it("scenario 2b: after cancelling a trial on workspace A, creating workspace B has no trial", async () => {
-    vi.mocked(db.user.findUnique).mockResolvedValue({ trialUsed: true } as never);
+    vi.mocked(db.user.findUnique).mockResolvedValue({ trialUsed: true, emailVerified: new Date() } as never);
 
     const res = await POST(createReq("pro", "monthly", "Second Workspace"));
 
@@ -186,7 +210,7 @@ describe("trial eligibility — create action (new workspace)", () => {
   });
 
   it("scenario 3c: after using a Pro trial, creating a new workspace for Business has no trial", async () => {
-    vi.mocked(db.user.findUnique).mockResolvedValue({ trialUsed: true } as never);
+    vi.mocked(db.user.findUnique).mockResolvedValue({ trialUsed: true, emailVerified: new Date() } as never);
 
     const res = await POST(createReq("business", "annual", "Business Workspace"));
 

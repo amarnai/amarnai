@@ -40,6 +40,7 @@ export type {
   QueuedResult,
   OkResult,
   QuotaInfo,
+  CurrentUser,
   DevicePlatform,
   RegisterPushDeviceInput,
   RegisterPushDeviceResult,

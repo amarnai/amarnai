@@ -40,6 +40,7 @@ const PUBLIC_PATHS = new Set([
   "/health",
   "/webhooks/gmail",
   "/auth/login",
+  "/auth/register",
   "/auth/google",
   "/auth/refresh",
   "/auth/logout",
@@ -53,6 +54,7 @@ app.use("*", cors({ origin: process.env["CORS_ORIGIN"] ?? "http://localhost:3000
 // Login is the tightest since it is the password brute-force target; refresh is
 // looser because legitimate clients refresh periodically.
 app.use("/auth/login", rateLimit({ limit: 10, windowSeconds: 900, prefix: "login" }));
+app.use("/auth/register", rateLimit({ limit: 5, windowSeconds: 900, prefix: "register" }));
 app.use("/auth/google", rateLimit({ limit: 20, windowSeconds: 900, prefix: "google" }));
 app.use("/auth/refresh", rateLimit({ limit: 60, windowSeconds: 900, prefix: "refresh" }));
 

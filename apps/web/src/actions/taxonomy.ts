@@ -12,7 +12,7 @@ import type {
 import type { TaxonomyTransferFile } from "@amarnai/shared";
 
 const API_BASE = process.env["API_URL"] ?? "http://localhost:3001";
-const INTERNAL_SECRET = process.env["INTERNAL_API_SECRET"] ?? "";
+const INTERNAL_SECRET = process.env["INTERNAL_API_SECRET"] ?? "dev-internal-secret";
 
 async function apiCall<T>(
   path: string,

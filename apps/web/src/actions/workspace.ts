@@ -3,7 +3,7 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import { db, ensureInboxNode } from "@amarnai/db";
+import { db, resetWorkspaceData, deleteWorkspaceCascade, createFreeWorkspace, FreeWorkspaceLimitError } from "@amarnai/db";
 import { requireUser } from "@/lib/session";
 import { getSelectedWorkspace } from "@/lib/workspace";
 import { disconnectGmailBeforeDeletion } from "@/lib/gmail-teardown";
@@ -63,25 +63,16 @@ export async function createWorkspaceAction(
   if (!trimmed) return { error: "Workspace name cannot be empty" };
   if (trimmed.length > 100) return { error: "Name must be 100 characters or fewer" };
 
-  const existingFree = await db.workspace.count({
-    where: { ownerUserId: user.id, plan: "FREE" },
-  });
-  if (existingFree >= 1) {
-    return { error: "You already have a free workspace." };
+  let workspaceId: string;
+  try {
+    workspaceId = await createFreeWorkspace(user.id, trimmed);
+  } catch (err) {
+    if (err instanceof FreeWorkspaceLimitError) return { error: err.message };
+    throw err;
   }
 
-  const workspace = await db.workspace.create({
-    data: {
-      name: trimmed,
-      ownerUserId: user.id,
-      members: { create: { userId: user.id, role: "OWNER" } },
-    },
-    select: { id: true },
-  });
-  await ensureInboxNode(workspace.id);
-
   const cookieStore = await cookies();
-  cookieStore.set(WORKSPACE_COOKIE, workspace.id, {
+  cookieStore.set(WORKSPACE_COOKIE, workspaceId, {
     path: "/",
     httpOnly: true,
     sameSite: "lax",
@@ -108,41 +99,12 @@ export async function deleteWorkspaceAction(
   if (count <= 1) return { error: "You cannot delete your only workspace" };
 
   // Cancel queued sorting jobs and revoke the Gmail grant before the rows
-  // disappear — after the transaction the disconnect service has nothing to
-  // work with. Best-effort: never blocks deletion.
+  // disappear — after the cascade the disconnect service has nothing to work
+  // with. Best-effort: never blocks deletion.
   await disconnectGmailBeforeDeletion(user.id, [workspaceId]);
 
-  // Delete in FK-safe order within a single transaction
-  await db.$transaction([
-    db.draft.deleteMany({ where: { workspaceId } }),
-    db.emailTag.deleteMany({
-      where: {
-        OR: [
-          { emailThread: { workspaceId } },
-          { emailMessage: { workspaceId } },
-        ],
-      },
-    }),
-    db.emailClassification.deleteMany({ where: { workspaceId } }),
-    db.auditLog.deleteMany({ where: { workspaceId } }),
-    db.taxonomyEdge.deleteMany({ where: { workspaceId } }),
-    db.taxonomyNode.deleteMany({ where: { workspaceId } }),
-    db.tag.deleteMany({ where: { workspaceId } }),
-    db.emailMessage.deleteMany({ where: { workspaceId } }),
-    db.providerSyncState.deleteMany({
-      where: { emailAccount: { workspaceId } },
-    }),
-    db.emailAddressIdentity.deleteMany({
-      where: { emailAccount: { workspaceId } },
-    }),
-    db.emailThread.deleteMany({ where: { workspaceId } }),
-    db.emailAccount.deleteMany({ where: { workspaceId } }),
-    db.gmailConnection.deleteMany({ where: { workspaceId } }),
-    db.gmailSyncSettings.deleteMany({ where: { workspaceId } }),
-    db.workspaceInvitation.deleteMany({ where: { workspaceId } }),
-    db.workspaceMember.deleteMany({ where: { workspaceId } }),
-    db.workspace.delete({ where: { id: workspaceId } }),
-  ]);
+  // FK-safe cascade shared with the API route (single source of truth).
+  await deleteWorkspaceCascade(workspaceId);
 
   const cookieStore = await cookies();
   const selectedId = cookieStore.get(WORKSPACE_COOKIE)?.value;
@@ -181,31 +143,10 @@ export async function resetWorkspaceAction(
     }
   }
 
-  // Belt-and-suspenders cleanup in FK-safe order: covers the case where the
-  // disconnect above failed. deleteMany on already-deleted rows is a no-op.
-  await db.$transaction([
-    db.draft.deleteMany({ where: { workspaceId } }),
-    db.emailTag.deleteMany({
-      where: {
-        OR: [
-          { emailThread: { workspaceId } },
-          { emailMessage: { workspaceId } },
-        ],
-      },
-    }),
-    db.emailClassification.deleteMany({ where: { workspaceId } }),
-    db.taxonomyEdge.deleteMany({ where: { workspaceId } }),
-    db.taxonomyNode.deleteMany({ where: { workspaceId } }),
-    db.emailMessage.deleteMany({ where: { workspaceId } }),
-    db.providerSyncState.deleteMany({ where: { emailAccount: { workspaceId } } }),
-    db.emailAddressIdentity.deleteMany({ where: { emailAccount: { workspaceId } } }),
-    db.emailThread.deleteMany({ where: { workspaceId } }),
-    db.emailAccount.deleteMany({ where: { workspaceId } }),
-    db.gmailSyncSettings.deleteMany({ where: { workspaceId } }),
-    db.gmailConnection.deleteMany({ where: { workspaceId } }),
-  ]);
-
-  await ensureInboxNode(workspaceId);
+  // Belt-and-suspenders cleanup shared with the API route: wipes data in FK-safe
+  // order and restores Inbox. Covers the case where the disconnect above failed;
+  // deleteMany on already-deleted rows is a no-op.
+  await resetWorkspaceData(workspaceId);
 
   revalidatePath("/", "layout");
   redirect("/emails");

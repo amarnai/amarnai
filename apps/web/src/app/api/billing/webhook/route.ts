@@ -77,6 +77,24 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   const subscriptionId = session.subscription as string;
   const customerId = session.customer as string;
 
+  // The initiating account must still exist before we provision. Otherwise the
+  // create-action workspace insert violates the ownerUserId foreign key, this
+  // handler throws, Stripe retries the event indefinitely, and a captured
+  // payment is silently lost. If the user is gone (e.g. the account was deleted
+  // between checkout and this event), log the Stripe identifiers for manual
+  // reconciliation/refund and acknowledge the event so Stripe stops retrying.
+  const initiatingUser = await db.user.findUnique({
+    where: { id: meta.userId },
+    select: { id: true },
+  });
+  if (!initiatingUser) {
+    console.error(
+      `[billing/webhook] orphaned checkout.session.completed: user ${meta.userId} not found for ` +
+        `subscription ${subscriptionId} (customer ${customerId}); manual reconciliation required`
+    );
+    return;
+  }
+
   const subscription = await stripe.subscriptions.retrieve(subscriptionId);
   const currentPeriodEnd = subscriptionPeriodEnd(subscription);
   const trialEndsAt = subscription.trial_end

@@ -1,5 +1,6 @@
 export { db } from "./client.js";
 export { ensureInboxNode } from "./inbox.js";
+export { resetWorkspaceData, deleteWorkspaceCascade, createFreeWorkspace, FreeWorkspaceLimitError } from "./workspace-ops.js";
 export {
   countRecurringThreadSorts,
   getThreadSortUsage,

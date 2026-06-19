@@ -9,6 +9,15 @@ export type OkResult = { ok: boolean };
 
 export type QuotaInfo = { used: number; limit: number; resetsAt: string };
 
+// Authenticated identity for the current access token (GET /auth/me). Native
+// clients use emailVerified to gate app access after sign-up.
+export type CurrentUser = {
+  userId: string;
+  email: string;
+  name: string | null;
+  emailVerified: boolean;
+};
+
 // Body-only inputs; workspaceId is carried in the URL path (differs from shared).
 export type CreateTaxonomyEdgeInput = {
   sourceNodeId: string;
@@ -26,6 +35,7 @@ export type UpdateTaxonomyNodeInput = Partial<CreateTaxonomyNodeInput>;
 export type Workspace = {
   id: string;
   name: string;
+  plan: "FREE" | "PRO";
   createdAt: string;
   updatedAt: string;
   owner: { id: string; email: string; name: string | null };

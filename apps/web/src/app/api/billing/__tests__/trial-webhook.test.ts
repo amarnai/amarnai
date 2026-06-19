@@ -20,7 +20,7 @@ vi.mock("@amarnai/db", () => ({
   db: {
     workspace: { findFirst: vi.fn(), update: vi.fn(), create: vi.fn() },
     workspaceMember: { deleteMany: vi.fn() },
-    user: { update: vi.fn() },
+    user: { findUnique: vi.fn(), update: vi.fn() },
     auditLog: { create: vi.fn() },
     $transaction: vi.fn(),
   },
@@ -186,6 +186,7 @@ beforeEach(() => {
   vi.mocked(db.workspace.update).mockResolvedValue({} as never);
   vi.mocked(db.workspace.create).mockResolvedValue({ id: WS_ID } as never);
   vi.mocked(db.workspace.findFirst).mockResolvedValue(null);
+  vi.mocked(db.user.findUnique).mockResolvedValue({ id: USER_ID } as never);
   vi.mocked(db.user.update).mockResolvedValue({} as never);
   vi.mocked(db.workspaceMember.deleteMany).mockResolvedValue({ count: 0 } as never);
   vi.mocked(db.auditLog.create).mockResolvedValue({} as never);
@@ -279,6 +280,22 @@ describe("checkout.session.completed — create action", () => {
 
     expect(res.status).toBe(200);
     expect(db.workspace.create).not.toHaveBeenCalled();
+    expect(db.user.update).not.toHaveBeenCalled();
+  });
+});
+
+describe("checkout.session.completed — orphaned payment (user gone)", () => {
+  it("acknowledges with 200 and provisions nothing when the initiating user no longer exists", async () => {
+    // Account deleted between checkout and this event: provisioning would violate
+    // the ownerUserId FK. The handler must not throw (which would make Stripe
+    // retry forever); it logs for reconciliation and acks.
+    vi.mocked(db.user.findUnique).mockResolvedValue(null);
+
+    const res = await POST(webhookRequest(makeCreateCheckoutEvent()));
+
+    expect(res.status).toBe(200);
+    expect(db.workspace.create).not.toHaveBeenCalled();
+    expect(db.workspace.update).not.toHaveBeenCalled();
     expect(db.user.update).not.toHaveBeenCalled();
   });
 });

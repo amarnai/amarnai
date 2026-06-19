@@ -48,6 +48,9 @@ importers:
       '@amarnai/db':
         specifier: workspace:*
         version: link:../../packages/db
+      '@amarnai/email':
+        specifier: workspace:*
+        version: link:../../packages/email
       '@amarnai/gmail':
         specifier: workspace:*
         version: link:../../packages/gmail
@@ -238,6 +241,9 @@ importers:
       '@amarnai/db':
         specifier: workspace:*
         version: link:../../packages/db
+      '@amarnai/email':
+        specifier: workspace:*
+        version: link:../../packages/email
       '@amarnai/gmail':
         specifier: workspace:*
         version: link:../../packages/gmail
@@ -267,19 +273,13 @@ importers:
         version: 15.5.19(babel-plugin-react-compiler@1.0.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       next-auth:
         specifier: ^5.0.0-beta.25
-        version: 5.0.0-beta.31(next@15.5.19(babel-plugin-react-compiler@1.0.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(nodemailer@8.0.11)(react@19.1.0)
-      nodemailer:
-        specifier: ^8.0.9
-        version: 8.0.11
+        version: 5.0.0-beta.31(next@15.5.19(babel-plugin-react-compiler@1.0.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)
       react:
         specifier: 19.1.0
         version: 19.1.0
       react-dom:
         specifier: 19.1.0
         version: 19.1.0(react@19.1.0)
-      resend:
-        specifier: ^6.12.4
-        version: 6.13.0
       stripe:
         specifier: ^22.2.0
         version: 22.2.1(@types/node@22.19.21)
@@ -299,9 +299,6 @@ importers:
       '@types/node':
         specifier: ^22.0.0
         version: 22.19.21
-      '@types/nodemailer':
-        specifier: ^8.0.0
-        version: 8.0.1
       '@types/react':
         specifier: ^19.0.0
         version: 19.2.17
@@ -489,6 +486,28 @@ importers:
       tsx:
         specifier: ^4.19.0
         version: 4.22.4
+      typescript:
+        specifier: ^5.8.0
+        version: 5.9.3
+      vitest:
+        specifier: ^3.0.0
+        version: 3.2.6(@types/debug@4.1.13)(@types/node@22.19.21)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@1.8.0))(lightningcss@1.32.0)(terser@5.48.0)(tsx@4.22.4)(yaml@2.9.0)
+
+  packages/email:
+    dependencies:
+      nodemailer:
+        specifier: ^8.0.9
+        version: 8.0.11
+      resend:
+        specifier: ^6.12.4
+        version: 6.13.0
+    devDependencies:
+      '@types/node':
+        specifier: ^22.0.0
+        version: 22.19.21
+      '@types/nodemailer':
+        specifier: ^8.0.0
+        version: 8.0.1
       typescript:
         specifier: ^5.8.0
         version: 5.9.3
@@ -8020,15 +8039,13 @@ snapshots:
       '@ast-grep/napi-win32-ia32-msvc': 0.40.5
       '@ast-grep/napi-win32-x64-msvc': 0.40.5
 
-  '@auth/core@0.41.2(nodemailer@8.0.11)':
+  '@auth/core@0.41.2':
     dependencies:
       '@panva/hkdf': 1.2.1
       jose: 6.2.3
       oauth4webapi: 3.8.6
       preact: 10.24.3
       preact-render-to-string: 6.5.11(preact@10.24.3)
-    optionalDependencies:
-      nodemailer: 8.0.11
 
   '@aws-crypto/crc32@5.2.0':
     dependencies:
@@ -14982,13 +14999,11 @@ snapshots:
 
   nested-error-stacks@2.0.1: {}
 
-  next-auth@5.0.0-beta.31(next@15.5.19(babel-plugin-react-compiler@1.0.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(nodemailer@8.0.11)(react@19.1.0):
+  next-auth@5.0.0-beta.31(next@15.5.19(babel-plugin-react-compiler@1.0.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0):
     dependencies:
-      '@auth/core': 0.41.2(nodemailer@8.0.11)
+      '@auth/core': 0.41.2
       next: 15.5.19(babel-plugin-react-compiler@1.0.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       react: 19.1.0
-    optionalDependencies:
-      nodemailer: 8.0.11
 
   next-themes@0.4.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
     dependencies:

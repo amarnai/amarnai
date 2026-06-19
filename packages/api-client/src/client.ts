@@ -32,6 +32,7 @@ import type {
   QuotaInfo,
   RegisterPushDeviceInput,
   RegisterPushDeviceResult,
+  CurrentUser,
 } from "./types.js";
 
 export function makeApiClient(transport: ApiTransport) {
@@ -72,8 +73,35 @@ export function makeApiClient(transport: ApiTransport) {
   }
 
   return {
+    // Authenticated identity for the current access token. Native clients read
+    // emailVerified here to gate app access after sign-up.
+    me: () => apiFetch<CurrentUser>("/auth/me"),
+
+    // Re-send the email-verification link for the signed-in user. The API
+    // throttles to one request per minute and returns 429 past that.
+    resendVerification: () => apiMutate<OkResult>("/auth/resend-verification", "POST"),
+
     workspaces: () =>
       apiFetch<Workspace[]>("/workspaces"),
+
+    // Create a free workspace for the authenticated user. Returns 409 if the
+    // user already owns a free workspace (paid creation happens on the web).
+    createWorkspace: (name: string) =>
+      apiMutate<Workspace>("/workspaces", "POST", { name }),
+
+    // Rename a workspace (OWNER only). Returns the updated workspace.
+    updateWorkspace: (workspaceId: string, name: string) =>
+      apiMutate<Workspace>(`/workspaces/${workspaceId}`, "PATCH", { name }),
+
+    // Wipe a workspace's Gmail connection, synced emails, and taxonomy back to
+    // Inbox (OWNER only). Keeps the workspace and its members.
+    resetWorkspace: (workspaceId: string) =>
+      apiMutate<OkResult>(`/workspaces/${workspaceId}/reset`, "POST"),
+
+    // Permanently delete a workspace and all its data (OWNER only). The API
+    // rejects deleting the user's only owned workspace.
+    deleteWorkspace: (workspaceId: string) =>
+      apiMutate<OkResult>(`/workspaces/${workspaceId}`, "DELETE"),
 
     gmailConnection: (workspaceId: string) =>
       apiFetch<GmailConnection>(`/workspaces/${workspaceId}/gmail-connection`),

@@ -3,6 +3,7 @@ import { z } from "zod";
 import { auth } from "@/auth";
 import { db } from "@amarnai/db";
 import { getStripe, getPriceId } from "@/lib/stripe";
+import { verifyAccessToken } from "@amarnai/auth";
 
 const bodySchema = z.object({
   workspaceId: z.string().optional(),
@@ -13,11 +14,22 @@ const bodySchema = z.object({
 });
 
 export async function POST(request: Request) {
+  // Primary: web session cookie. Fallback: Bearer JWT for native mobile clients,
+  // which cannot share the web cookie but carry a signed access token.
+  let userId: string | undefined;
   const session = await auth();
-  if (!session?.user?.id) {
+  if (session?.user?.id) {
+    userId = session.user.id;
+  } else {
+    const authHeader = request.headers.get("Authorization");
+    if (authHeader?.startsWith("Bearer ")) {
+      const jwtUserId = await verifyAccessToken(authHeader.slice(7));
+      if (jwtUserId) userId = jwtUserId;
+    }
+  }
+  if (!userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  const userId = session.user.id;
 
   const body = await request.json().catch(() => null);
   const parsed = bodySchema.safeParse(body);
@@ -30,9 +42,20 @@ export async function POST(request: Request) {
 
   const userRecord = await db.user.findUnique({
     where: { id: userId },
-    select: { trialUsed: true },
+    select: { trialUsed: true, emailVerified: true },
   });
-  const offerTrial = !userRecord?.trialUsed;
+  // Defense in depth for verify-before-pay: the middleware already keeps
+  // unverified users out of the billing routes, but enforce it here too so a
+  // charge can never originate from an unverified (or vanished) account even if
+  // the middleware matcher ever changes. Authoritative DB read rather than the
+  // JWT claim, so a freshly verified user is never wrongly blocked by a stale token.
+  if (!userRecord) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  if (!userRecord.emailVerified) {
+    return NextResponse.json({ error: "Email not verified" }, { status: 403 });
+  }
+  const offerTrial = !userRecord.trialUsed;
 
   if (action === "upgrade") {
     if (!workspaceId) {

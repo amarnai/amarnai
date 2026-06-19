@@ -1,0 +1,25 @@
+{
+  "name": "@amarnai/email",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --passWithNoTests"
+  },
+  "dependencies": {
+    "nodemailer": "^8.0.9",
+    "resend": "^6.12.4"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/nodemailer": "^8.0.0",
+    "typescript": "^5.8.0",
+    "vitest": "^3.0.0"
+  }
+}

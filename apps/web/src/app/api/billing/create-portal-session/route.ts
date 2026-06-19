@@ -37,6 +37,16 @@ export async function POST() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  // Verify-before-pay, enforced at the route as well as the middleware: an
+  // unverified account must not reach Stripe billing management.
+  const userRecord = await db.user.findUnique({
+    where: { id: session.user.id },
+    select: { emailVerified: true },
+  });
+  if (!userRecord?.emailVerified) {
+    return NextResponse.json({ error: "Email not verified" }, { status: 403 });
+  }
+
   const workspace = await getSelectedWorkspace(session.user.id);
 
   const ws = await db.workspace.findUnique({

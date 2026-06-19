@@ -1,5 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
-import { makeApiClient, type ApiClient } from '@amarnai/api-client';
+import { makeApiClient, type ApiClient, type Workspace } from '@amarnai/api-client';
 import { API_BASE_URL } from '../config';
 import { readUserIdFromAccessToken } from './jwt';
 import { secureTokenStore, type StoredTokens } from './tokenStore';
@@ -7,13 +7,51 @@ import { makeMobileTransport } from './transport';
 
 type Status = 'loading' | 'signedOut' | 'signedIn';
 
+type SessionUser = { email: string; name: string | null };
+
+// Resolve the signed-in user's profile from any workspace they belong to (owner
+// or member). The API does not expose a dedicated "me" endpoint, but every
+// workspace payload carries the full member list, so the active user is always
+// present in the workspaces response.
+function findUser(workspaces: Workspace[], userId: string | null): SessionUser | null {
+  if (!userId) return null;
+  for (const ws of workspaces) {
+    if (ws.owner.id === userId) return { email: ws.owner.email, name: ws.owner.name };
+    const member = ws.members.find((m) => m.user.id === userId);
+    if (member) return { email: member.user.email, name: member.user.name };
+  }
+  return null;
+}
+
 interface SessionValue {
   status: Status;
   userId: string | null;
+  user: SessionUser | null;
+  // null until /auth/me resolves (or if it fails): treat null as "unknown" and
+  // do not gate on it. false means the account exists but is not yet verified.
+  emailVerified: boolean | null;
   workspaceId: string | null;
+  workspaces: Workspace[];
+  // Bumped to force triage (folders + threads) to re-seed when the active
+  // workspace's data changed in place, e.g. after a reset. See AppLayout, which
+  // keys the TriageProvider on it.
+  dataVersion: number;
+  // Switch the active workspace. No-op if the id is not one the user belongs to.
+  switchWorkspace(id: string): void;
+  // Re-fetch the workspace list (after rename/delete/create); repoints the
+  // active workspace if it no longer exists. Pass switchToId to atomically
+  // switch to a newly created workspace in the same state update.
+  refreshWorkspaces(switchToId?: string): Promise<void>;
+  // Force a triage re-seed for the current workspace (after reset).
+  bumpDataVersion(): void;
   client: ApiClient;
   // Throws on invalid credentials so the sign-in screen can show the error.
   signIn(email: string, password: string): Promise<void>;
+  // Throws on a taken email / closed sign-up so the sign-up screen can show it.
+  signUp(email: string, password: string): Promise<void>;
+  // Re-resolve identity + verification from the stored token. Used by the
+  // verify-email screen to detect when the link has been clicked.
+  refresh(): Promise<void>;
   signOut(): Promise<void>;
 }
 
@@ -30,10 +68,27 @@ async function login(email: string, password: string): Promise<StoredTokens> {
   return (await res.json()) as StoredTokens;
 }
 
+async function register(email: string, password: string): Promise<StoredTokens> {
+  const res = await fetch(`${API_BASE_URL}/auth/register`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password }),
+  });
+  if (res.ok) return (await res.json()) as StoredTokens;
+  // 409 (taken / Google-only), 403 (waitlist), and 400 (validation) all carry a
+  // user-facing message from the API; surface it verbatim.
+  const body = (await res.json().catch(() => null)) as { error?: string } | null;
+  throw new Error(body?.error ?? `Sign-up failed (${res.status})`);
+}
+
 export function SessionProvider({ children }: { children: ReactNode }) {
   const [status, setStatus] = useState<Status>('loading');
   const [userId, setUserId] = useState<string | null>(null);
+  const [user, setUser] = useState<SessionUser | null>(null);
+  const [emailVerified, setEmailVerified] = useState<boolean | null>(null);
   const [workspaceId, setWorkspaceId] = useState<string | null>(null);
+  const [workspaces, setWorkspaces] = useState<Workspace[]>([]);
+  const [dataVersion, setDataVersion] = useState(0);
 
   // Stable across the app's lifetime: the transport reads the current tokens
   // from the store per request, so the same client works before and after
@@ -41,7 +96,10 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   const signOutLocal = useRef(() => {
     setStatus('signedOut');
     setUserId(null);
+    setUser(null);
+    setEmailVerified(null);
     setWorkspaceId(null);
+    setWorkspaces([]);
   });
   const client = useMemo<ApiClient>(
     () =>
@@ -56,15 +114,51 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   );
 
   // Resolve the signed-in identity + active workspace from a valid access token.
+  // /auth/me is the authority on identity and verification; the workspace list
+  // may be empty for a freshly signed-up account that hasn't connected Gmail.
   const bootstrap = useCallback(
     async (accessToken: string) => {
-      setUserId(readUserIdFromAccessToken(accessToken));
-      const workspaces = await client.workspaces().catch(() => []);
-      setWorkspaceId(workspaces[0]?.id ?? null);
+      const id = readUserIdFromAccessToken(accessToken);
+      setUserId(id);
+      const [me, list] = await Promise.all([
+        client.me().catch(() => null),
+        client.workspaces().catch(() => []),
+      ]);
+      setWorkspaces(list);
+      setUser(me ? { email: me.email, name: me.name } : findUser(list, id));
+      setEmailVerified(me ? me.emailVerified : null);
+      setWorkspaceId(list[0]?.id ?? null);
       setStatus('signedIn');
     },
     [client],
   );
+
+  // Persisted per-session only (in memory): switching is a view concern, the API
+  // is queried per workspace id. Guards against ids the user no longer belongs to.
+  const switchWorkspace = useCallback(
+    (id: string) => {
+      setWorkspaceId((current) =>
+        workspaces.some((ws) => ws.id === id) ? id : current,
+      );
+    },
+    [workspaces],
+  );
+
+  const refreshWorkspaces = useCallback(async (switchToId?: string) => {
+    const list = await client.workspaces().catch(() => null);
+    if (!list) return;
+    setWorkspaces(list);
+    setUser(findUser(list, userId));
+    setWorkspaceId((current) => {
+      // If a specific id was requested (e.g. just-created workspace) and it
+      // is in the fresh list, switch to it atomically in the same state update.
+      if (switchToId && list.some((ws) => ws.id === switchToId)) return switchToId;
+      // If the active workspace was deleted, fall back to the first remaining one.
+      return list.some((ws) => ws.id === current) ? current : (list[0]?.id ?? null);
+    });
+  }, [client, userId]);
+
+  const bumpDataVersion = useCallback(() => setDataVersion((v) => v + 1), []);
 
   // On launch, restore any stored session.
   useEffect(() => {
@@ -92,6 +186,22 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     [bootstrap],
   );
 
+  const signUp = useCallback(
+    async (email: string, password: string) => {
+      const tokens = await register(email, password);
+      await secureTokenStore.set(tokens);
+      await bootstrap(tokens.accessToken);
+    },
+    [bootstrap],
+  );
+
+  // Re-resolve from the stored token without re-authenticating. No-op when
+  // signed out. The verify-email screen polls this to detect verification.
+  const refresh = useCallback(async () => {
+    const tokens = await secureTokenStore.get();
+    if (tokens) await bootstrap(tokens.accessToken);
+  }, [bootstrap]);
+
   const signOut = useCallback(async () => {
     const tokens = await secureTokenStore.get();
     if (tokens?.refreshToken) {
@@ -107,8 +217,40 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const value = useMemo<SessionValue>(
-    () => ({ status, userId, workspaceId, client, signIn, signOut }),
-    [status, userId, workspaceId, client, signIn, signOut],
+    () => ({
+      status,
+      userId,
+      user,
+      emailVerified,
+      workspaceId,
+      workspaces,
+      dataVersion,
+      switchWorkspace,
+      refreshWorkspaces,
+      bumpDataVersion,
+      client,
+      signIn,
+      signUp,
+      refresh,
+      signOut,
+    }),
+    [
+      status,
+      userId,
+      user,
+      emailVerified,
+      workspaceId,
+      workspaces,
+      dataVersion,
+      switchWorkspace,
+      refreshWorkspaces,
+      bumpDataVersion,
+      client,
+      signIn,
+      signUp,
+      refresh,
+      signOut,
+    ],
   );
 
   return <SessionContext.Provider value={value}>{children}</SessionContext.Provider>;

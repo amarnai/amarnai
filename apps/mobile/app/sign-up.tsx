@@ -5,42 +5,53 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
-  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
 import { Link, Redirect } from 'expo-router';
-import { colors, radii, space, fontSize } from '@amarnai/tokens';
+import { colors } from '@amarnai/tokens';
+import { PASSWORD_MIN_LENGTH } from '@amarnai/shared';
 import { useSession } from '../src/auth/session';
 import { authStyles } from '../src/auth/authStyles';
-import { API_BASE_URL } from '../src/config';
-import { useApiHealth } from '../src/health';
 
-export default function SignInScreen() {
-  const { status, signIn } = useSession();
-  const health = useApiHealth();
+export default function SignUpScreen() {
+  const { status, emailVerified, signUp } = useSession();
   const passwordRef = useRef<TextInput>(null);
+  const confirmRef = useRef<TextInput>(null);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirm, setConfirm] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
-  if (status === 'signedIn') return <Redirect href="/" />;
+  // After sign-up the account is signed in but unverified — route straight to
+  // the verify screen (the app-boundary gate enforces the same thing).
+  if (status === 'signedIn') {
+    return <Redirect href={emailVerified === false ? '/verify-email' : '/'} />;
+  }
 
-  const canSubmit = email.trim().length > 0 && password.length > 0 && !submitting;
+  const canSubmit =
+    email.trim().length > 0 &&
+    password.length >= PASSWORD_MIN_LENGTH &&
+    confirm.length > 0 &&
+    !submitting;
 
   async function onSubmit() {
     if (!canSubmit) return;
     Keyboard.dismiss();
+    if (password !== confirm) {
+      setError('Passwords do not match');
+      return;
+    }
     setError(null);
     setSubmitting(true);
     try {
-      await signIn(email.trim(), password);
+      await signUp(email.trim(), password);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Sign-in failed');
+      setError(err instanceof Error ? err.message : 'Sign-up failed');
     } finally {
       setSubmitting(false);
     }
@@ -51,8 +62,6 @@ export default function SignInScreen() {
       style={authStyles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
-      {/* keyboardShouldPersistTaps="handled" lets a tap focus another field
-          while the keyboard is open, instead of being swallowed by the dismiss. */}
       <ScrollView
         contentContainerStyle={authStyles.scroll}
         keyboardShouldPersistTaps="handled"
@@ -60,7 +69,7 @@ export default function SignInScreen() {
       >
         <View style={authStyles.form}>
           <Text style={authStyles.heading}>Amarnai</Text>
-          <Text style={authStyles.subheading}>Sign in to triage your inbox</Text>
+          <Text style={authStyles.subheading}>Create an account to triage your inbox</Text>
 
           <TextInput
             style={authStyles.input}
@@ -81,15 +90,31 @@ export default function SignInScreen() {
           <TextInput
             ref={passwordRef}
             style={authStyles.input}
-            placeholder="Password"
+            placeholder={`Password (min ${PASSWORD_MIN_LENGTH} characters)`}
             placeholderTextColor={colors.ink4}
             autoCapitalize="none"
-            autoComplete="current-password"
-            textContentType="password"
+            autoComplete="new-password"
+            textContentType="newPassword"
             secureTextEntry
-            returnKeyType="go"
+            returnKeyType="next"
+            submitBehavior="submit"
             value={password}
             onChangeText={setPassword}
+            onSubmitEditing={() => confirmRef.current?.focus()}
+            editable={!submitting}
+          />
+          <TextInput
+            ref={confirmRef}
+            style={authStyles.input}
+            placeholder="Confirm password"
+            placeholderTextColor={colors.ink4}
+            autoCapitalize="none"
+            autoComplete="new-password"
+            textContentType="newPassword"
+            secureTextEntry
+            returnKeyType="go"
+            value={confirm}
+            onChangeText={setConfirm}
             onSubmitEditing={onSubmit}
             editable={!submitting}
           />
@@ -104,56 +129,18 @@ export default function SignInScreen() {
             {submitting ? (
               <ActivityIndicator color={colors.surface} />
             ) : (
-              <Text style={authStyles.buttonText}>Sign in</Text>
+              <Text style={authStyles.buttonText}>Create account</Text>
             )}
           </TouchableOpacity>
 
-          <Link href="/sign-up" style={authStyles.switchLink} disabled={submitting}>
+          <Link href="/sign-in" style={authStyles.switchLink} disabled={submitting}>
             <Text style={authStyles.switchText}>
-              Don't have an account?{' '}
-              <Text style={authStyles.switchTextStrong}>Create one</Text>
+              Already have an account?{' '}
+              <Text style={authStyles.switchTextStrong}>Sign in</Text>
             </Text>
           </Link>
         </View>
       </ScrollView>
-
-      <View style={styles.footer}>
-        <View style={[styles.dot, { backgroundColor: healthColor(health.status) }]} />
-        <Text style={styles.footerText} numberOfLines={1}>
-          {health.status === 'ok'
-            ? API_BASE_URL
-            : health.status === 'checking'
-              ? `Checking ${API_BASE_URL}…`
-              : `API unreachable: ${API_BASE_URL}`}
-        </Text>
-      </View>
     </KeyboardAvoidingView>
   );
 }
-
-function healthColor(status: ReturnType<typeof useApiHealth>['status']): string {
-  if (status === 'ok') return colors.ok;
-  if (status === 'unreachable') return colors.danger;
-  return colors.ink4;
-}
-
-const styles = StyleSheet.create({
-  footer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: space.md,
-    paddingHorizontal: space.xxl,
-    paddingBottom: space.xl,
-  },
-  dot: {
-    width: space.md,
-    height: space.md,
-    borderRadius: radii.full,
-  },
-  footerText: {
-    fontSize: fontSize.sm,
-    color: colors.ink3,
-    flexShrink: 1,
-  },
-});

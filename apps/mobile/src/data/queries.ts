@@ -28,3 +28,17 @@ export function useThreadDetail(workspaceId: string, threadId: string) {
     enabled: !!workspaceId && !!threadId,
   });
 }
+
+/**
+ * Gmail connection for the active workspace (null when none). The inbox screen
+ * uses this to show a "connect Gmail on the web" hint for fresh accounts, since
+ * connecting Gmail is a web-only flow.
+ */
+export function useGmailConnection(workspaceId: string) {
+  const { client } = useSession();
+  return useQuery({
+    queryKey: ['gmailConnection', workspaceId],
+    queryFn: () => client.gmailConnection(workspaceId),
+    enabled: !!workspaceId,
+  });
+}

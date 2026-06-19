@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { navIconDefs, type NavIconName, type IconShape } from "@amarnai/tokens";
+import { userInitials, workspaceInitials, workspaceHue } from "@amarnai/core";
 
 function HamburgerIcon() {
   return (
@@ -87,38 +88,9 @@ const NAV = [
     : []),
 ];
 
-function getInitials(name: string | null, email: string): string {
-  if (name) {
-    const parts = name.trim().split(/\s+/).filter(Boolean);
-    const first = parts[0] ?? "";
-    const last = parts[parts.length - 1] ?? "";
-    if (parts.length >= 2)
-      return ((first.at(0) ?? "") + (last.at(0) ?? "")).toUpperCase();
-    return first.slice(0, 2).toUpperCase();
-  }
-  return email.slice(0, 2).toUpperCase();
-}
-
-function getWorkspaceInitials(name: string): string {
-  const parts = name.trim().split(/\s+/).filter(Boolean);
-  if (parts.length >= 2) {
-    return ((parts[0]!.at(0) ?? "") + (parts[parts.length - 1]!.at(0) ?? "")).toUpperCase();
-  }
-  return (parts[0] ?? "?").slice(0, 2).toUpperCase();
-}
-
-// Deterministic hue from workspace name for visual differentiation
-function getWorkspaceHue(name: string): number {
-  let hash = 0;
-  for (let i = 0; i < name.length; i++) {
-    hash = (hash * 31 + name.charCodeAt(i)) >>> 0;
-  }
-  return hash % 360;
-}
-
 function WorkspaceMark({ name }: { name: string }) {
-  const hue = getWorkspaceHue(name);
-  const initials = getWorkspaceInitials(name);
+  const hue = workspaceHue(name);
+  const initials = workspaceInitials(name);
   return (
     <span
       className="ws-mark"
@@ -173,7 +145,7 @@ export function Sidebar({
     await switchWorkspaceAction(id);
   }
 
-  const initials = user ? getInitials(user.name, user.email) : "?";
+  const initials = user ? userInitials(user.name, user.email) : "?";
 
   return (
     <>

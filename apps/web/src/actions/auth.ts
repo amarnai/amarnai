@@ -5,6 +5,8 @@ import bcrypt from "bcryptjs";
 import { z } from "zod";
 import { signIn, signOut, unstable_update } from "@/auth";
 import { db } from "@amarnai/db";
+import { registerWithPassword, rotateVerificationToken } from "@amarnai/auth";
+import { RegisterCredentialsSchema } from "@amarnai/shared";
 import { requireUser } from "@/lib/session";
 import { sendVerificationEmail, sendPasswordResetEmail } from "@/lib/email";
 import { disconnectGmailBeforeDeletion } from "@/lib/gmail-teardown";
@@ -12,30 +14,8 @@ import { isWaitlistMode } from "@/lib/waitlist";
 
 // ─── Shared ───────────────────────────────────────────────────────────────────
 
-const registerSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  password: z
-    .string()
-    .min(8, "Password must be at least 8 characters")
-    .max(72, "Password must be at most 72 characters"),
-});
-
 function generateToken(): string {
   return crypto.randomBytes(32).toString("hex");
-}
-
-async function rotateVerificationToken(userId: string, email: string): Promise<void> {
-  await db.verificationToken.deleteMany({ where: { userId, type: "EMAIL_VERIFICATION" } });
-  const token = generateToken();
-  await db.verificationToken.create({
-    data: {
-      userId,
-      token,
-      type: "EMAIL_VERIFICATION",
-      expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
-    },
-  });
-  await sendVerificationEmail(email, token);
 }
 
 // ─── Sign in / out ───────────────────────────────────────────────────────────
@@ -78,7 +58,7 @@ export async function registerAction(
     return { error: "Sign-ups are currently invite-only. Join the waitlist to get access." };
   }
 
-  const parsed = registerSchema.safeParse({
+  const parsed = RegisterCredentialsSchema.safeParse({
     email: formData.get("email"),
     password: formData.get("password"),
   });
@@ -87,32 +67,15 @@ export async function registerAction(
   }
   const { email, password } = parsed.data;
 
-  const existing = await db.user.findUnique({
-    where: { email },
-    select: { id: true, emailVerified: true, credential: { select: { id: true } } },
-  });
-  if (existing) {
-    if (!existing.credential) {
-      return { error: "An account with this email exists. Sign in with Google instead." };
-    }
-    if (existing.emailVerified) {
-      return { error: "An account with this email already exists." };
-    }
-    // Unverified account: update password and resend verification.
-    const passwordHash = await bcrypt.hash(password, 12);
-    await db.userCredential.update({ where: { userId: existing.id }, data: { passwordHash } });
-    await rotateVerificationToken(existing.id, email);
-    await signIn("credentials", { email, password, redirectTo: "/verify-email" });
-    return {};
+  const result = await registerWithPassword({ email, password });
+  if (result.status === "google_only") {
+    return { error: "An account with this email exists. Sign in with Google instead." };
+  }
+  if (result.status === "exists") {
+    return { error: "An account with this email already exists." };
   }
 
-  const passwordHash = await bcrypt.hash(password, 12);
-  const user = await db.user.create({
-    data: { email, credential: { create: { passwordHash } } },
-    select: { id: true },
-  });
-
-  await rotateVerificationToken(user.id, email);
+  await sendVerificationEmail(email, result.verificationToken);
 
   // Sign in immediately — throws NEXT_REDIRECT to /verify-email (middleware gates unverified users there).
   await signIn("credentials", { email, password, redirectTo: "/verify-email" });
@@ -147,7 +110,8 @@ export async function resendVerificationAction(): Promise<{ error?: string; succ
     return { error: "Please wait before requesting another email" };
   }
 
-  await rotateVerificationToken(user.id, dbUser.email);
+  const token = await rotateVerificationToken(user.id);
+  await sendVerificationEmail(dbUser.email, token);
   return { success: true };
 }
 
