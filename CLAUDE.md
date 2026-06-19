@@ -55,6 +55,10 @@ A key use case is bulk triage of an existing inbox: users may want to sort and c
 - Minimize the number of clicks required to complete any action. Prefer inline controls, smart defaults, and progressive disclosure over multi-step flows.
 - Both the marketing site and the web app must be fully responsive. All layouts, components, and interactions must work correctly on mobile, tablet, and desktop screen sizes.
 
+## Cross-Platform Parity
+
+- Before implementing any feature or change, check whether that functionality exists in both `apps/web/` and `apps/mobile/`. If it does, the change must be applied to both. Never update one without updating the other.
+
 ## Standards
 
 - TypeScript strict mode.
