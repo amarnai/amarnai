@@ -15,9 +15,10 @@ import { colors } from '@amarnai/tokens';
 import { PASSWORD_MIN_LENGTH } from '@amarnai/shared';
 import { useSession } from '../src/auth/session';
 import { authStyles } from '../src/auth/authStyles';
+import { GoogleSignInButton } from '../src/auth/GoogleSignInButton';
 
 export default function SignUpScreen() {
-  const { status, emailVerified, signUp } = useSession();
+  const { status, emailVerified, signUp, signInWithGoogle } = useSession();
   const passwordRef = useRef<TextInput>(null);
   const confirmRef = useRef<TextInput>(null);
 
@@ -26,6 +27,8 @@ export default function SignUpScreen() {
   const [confirm, setConfirm] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [googleSubmitting, setGoogleSubmitting] = useState(false);
+  const busy = submitting || googleSubmitting;
 
   // After sign-up the account is signed in but unverified — route straight to
   // the verify screen (the app-boundary gate enforces the same thing).
@@ -37,7 +40,7 @@ export default function SignUpScreen() {
     email.trim().length > 0 &&
     password.length >= PASSWORD_MIN_LENGTH &&
     confirm.length > 0 &&
-    !submitting;
+    !busy;
 
   async function onSubmit() {
     if (!canSubmit) return;
@@ -54,6 +57,20 @@ export default function SignUpScreen() {
       setError(err instanceof Error ? err.message : 'Sign-up failed');
     } finally {
       setSubmitting(false);
+    }
+  }
+
+  async function onGoogleSignIn() {
+    if (busy) return;
+    setError(null);
+    setGoogleSubmitting(true);
+    try {
+      await signInWithGoogle();
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Google sign-in failed';
+      if (msg !== 'cancelled') setError(msg);
+    } finally {
+      setGoogleSubmitting(false);
     }
   }
 
@@ -133,7 +150,13 @@ export default function SignUpScreen() {
             )}
           </TouchableOpacity>
 
-          <Link href="/sign-in" style={authStyles.switchLink} disabled={submitting}>
+          <GoogleSignInButton
+            onPress={onGoogleSignIn}
+            submitting={googleSubmitting}
+            disabled={submitting}
+          />
+
+          <Link href="/sign-in" style={authStyles.switchLink} disabled={busy}>
             <Text style={authStyles.switchText}>
               Already have an account?{' '}
               <Text style={authStyles.switchTextStrong}>Sign in</Text>
@@ -144,3 +167,4 @@ export default function SignUpScreen() {
     </KeyboardAvoidingView>
   );
 }
+

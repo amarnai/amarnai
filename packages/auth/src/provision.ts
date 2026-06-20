@@ -1,6 +1,7 @@
 import { db } from "@amarnai/db";
-import { encrypt, fetchGmailProfile, GMAIL_READONLY_SCOPE } from "@amarnai/gmail";
+import { GMAIL_READONLY_SCOPE } from "@amarnai/gmail";
 import { getOrCreateDefaultWorkspace } from "./workspace.js";
+import { storeGmailConnection } from "./gmail-connection.js";
 
 export type ProvisionGoogleUserInput = {
   email: string;
@@ -63,23 +64,11 @@ export async function provisionGoogleUser(
 
   try {
     const workspace = await getOrCreateDefaultWorkspace(user.id);
-    const profile = await fetchGmailProfile(input.gmailAccessToken);
-    const encryptedRefreshToken = encrypt(input.gmailRefreshToken);
-    const grantedScopes = input.grantedScopes ?? [GMAIL_READONLY_SCOPE];
-
-    // Shared between create and update; only the create needs the workspace key.
-    const connectionData = {
-      gmailAddress: profile.emailAddress,
-      encryptedRefreshToken,
-      grantedScopes,
-      status: "ACTIVE" as const,
-      lastVerifiedAt: new Date(),
-    };
-
-    await db.gmailConnection.upsert({
-      where: { workspaceId: workspace.id },
-      create: { workspaceId: workspace.id, ...connectionData },
-      update: connectionData,
+    await storeGmailConnection({
+      workspaceId: workspace.id,
+      accessToken: input.gmailAccessToken,
+      refreshToken: input.gmailRefreshToken,
+      grantedScopes: input.grantedScopes ?? [GMAIL_READONLY_SCOPE],
     });
 
     return { userId: user.id, workspaceId: workspace.id, isNew, gmailConnected: true };

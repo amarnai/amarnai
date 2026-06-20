@@ -11,6 +11,7 @@ import {
 import { colors, space, fontSize, fontWeight, radii } from '@amarnai/tokens';
 import type { ApiClient, GmailConnection, SyncStatus } from '@amarnai/api-client';
 import { SheetLayout } from './SheetLayout';
+import { useConnectGmail } from '../auth/useConnectGmail';
 
 type Props = {
   visible: boolean;
@@ -20,6 +21,7 @@ type Props = {
   connection: GmailConnection;
   syncStatus: SyncStatus;
   onDisconnected: () => void;
+  onConnected?: () => void;
 };
 
 function formatDate(iso: string | null): string {
@@ -53,8 +55,17 @@ export function GmailSettingsSheet({
   connection,
   syncStatus,
   onDisconnected,
+  onConnected,
 }: Props) {
   const [disconnecting, setDisconnecting] = useState(false);
+  const { connect, connecting } = useConnectGmail(workspaceId, client);
+
+  function handleConnect() {
+    void connect(() => {
+      onConnected?.();
+      onClose();
+    });
+  }
 
   async function doDisconnect(eraseData: boolean) {
     setDisconnecting(true);
@@ -90,15 +101,31 @@ export function GmailSettingsSheet({
   return (
     <SheetLayout visible={visible} onClose={onClose} title="Inbox">
       <ScrollView style={styles.body} contentContainerStyle={styles.bodyContent}>
-          {!connection ? (
-            <Text style={styles.infoText}>
-              No Gmail inbox connected. Connect via the web app.
-            </Text>
-          ) : connection.status === 'DISCONNECTED' ? (
+          {!connection || connection.status === 'DISCONNECTED' ? (
             <>
-              <Text style={styles.gmailAddress}>{connection.gmailAddress}</Text>
-              <Text style={styles.disconnectedBadge}>Disconnected</Text>
-              <Text style={styles.infoText}>Reconnect via the web app.</Text>
+              {connection?.status === 'DISCONNECTED' ? (
+                <>
+                  <Text style={styles.gmailAddress}>{connection.gmailAddress}</Text>
+                  <Text style={styles.disconnectedBadge}>Disconnected</Text>
+                </>
+              ) : (
+                <Text style={styles.infoText}>
+                  No Gmail inbox connected. Connect your account to start syncing.
+                </Text>
+              )}
+              <TouchableOpacity
+                style={[styles.connectBtn, connecting && styles.btnDisabled]}
+                onPress={handleConnect}
+                disabled={connecting}
+              >
+                {connecting ? (
+                  <ActivityIndicator size="small" color={colors.accent} />
+                ) : (
+                  <Text style={styles.connectBtnText}>
+                    {connection ? 'Reconnect Gmail' : 'Connect Gmail'}
+                  </Text>
+                )}
+              </TouchableOpacity>
             </>
           ) : (
             <>
@@ -194,6 +221,21 @@ const styles = StyleSheet.create({
   errorText: {
     fontSize: fontSize.sm,
     color: colors.danger,
+  },
+  connectBtn: {
+    borderWidth: 1,
+    borderColor: colors.accentLine,
+    borderRadius: radii.md,
+    paddingVertical: space.md,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.accentSoft,
+    minHeight: 40,
+  },
+  connectBtnText: {
+    fontSize: fontSize.md,
+    color: colors.accent,
+    fontWeight: fontWeight.medium,
   },
   disconnectBtn: {
     marginTop: space.sm,

@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { colors, fontSize, fontWeight, radii, space } from '@amarnai/tokens';
 import { BottomSheet } from './BottomSheet';
 
@@ -11,6 +12,7 @@ interface Props {
   children: ReactNode;
   maxHeight?: boolean;
   keyboardAvoiding?: boolean;
+  handle?: boolean;
 }
 
 export function SheetLayout({
@@ -20,16 +22,25 @@ export function SheetLayout({
   children,
   maxHeight = true,
   keyboardAvoiding,
+  handle = false,
 }: Props) {
+  const { bottom } = useSafeAreaInsets();
   return (
     <BottomSheet visible={visible} onClose={onClose} {...(keyboardAvoiding ? { keyboardAvoiding } : {})}>
-      <View style={[styles.sheet, maxHeight && styles.maxHeight]}>
-        <View style={styles.header}>
-          <Text style={styles.title}>{title}</Text>
-          <TouchableOpacity onPress={onClose} hitSlop={8}>
-            <Ionicons name="close" size={22} color={colors.ink3} />
-          </TouchableOpacity>
-        </View>
+      <View style={[styles.sheet, maxHeight && styles.maxHeight, { paddingBottom: bottom }]}>
+        {handle ? (
+          <View style={styles.handleHeader}>
+            <View style={styles.handlePill} />
+            <Text style={styles.handleTitle}>{title}</Text>
+          </View>
+        ) : (
+          <View style={styles.header}>
+            <Text style={styles.title}>{title}</Text>
+            <TouchableOpacity onPress={onClose} hitSlop={8}>
+              <Ionicons name="close" size={22} color={colors.ink3} />
+            </TouchableOpacity>
+          </View>
+        )}
         {children}
       </View>
     </BottomSheet>
@@ -59,5 +70,24 @@ const styles = StyleSheet.create({
     fontSize: fontSize.xl,
     fontWeight: fontWeight.semibold,
     color: colors.ink,
+  },
+  handleHeader: {
+    paddingTop: space.md,
+    alignItems: 'flex-start',
+  },
+  handlePill: {
+    alignSelf: 'center',
+    width: 36,
+    height: 4,
+    borderRadius: radii.full,
+    backgroundColor: colors.line3,
+    marginBottom: space.md,
+  },
+  handleTitle: {
+    fontSize: fontSize.xl,
+    fontWeight: fontWeight.semibold,
+    color: colors.ink,
+    paddingHorizontal: space.xl,
+    paddingBottom: space.md,
   },
 });

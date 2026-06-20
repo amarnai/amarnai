@@ -8,6 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { colors } from '@amarnai/tokens';
 import { SessionProvider } from '../src/auth/session';
+import { PortalProvider } from '../src/portal';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -28,13 +29,15 @@ export default function RootLayout() {
     <SafeAreaProvider>
       <QueryClientProvider client={queryClient}>
         <SessionProvider>
-          <StatusBar style="dark" />
-          <Stack
-            screenOptions={{
-              headerShown: false,
-              contentStyle: { backgroundColor: colors.bg },
-            }}
-          />
+          <PortalProvider>
+            <StatusBar style="dark" />
+            <Stack
+              screenOptions={{
+                headerShown: false,
+                contentStyle: { backgroundColor: colors.bg },
+              }}
+            />
+          </PortalProvider>
         </SessionProvider>
       </QueryClientProvider>
     </SafeAreaProvider>

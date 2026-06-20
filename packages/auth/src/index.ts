@@ -12,3 +12,5 @@ export type { RegisterWithPasswordInput, RegisterWithPasswordResult } from "./re
 export { getOrCreateDefaultWorkspace } from "./workspace.js";
 export { provisionGoogleUser } from "./provision.js";
 export type { ProvisionGoogleUserInput, ProvisionGoogleUserResult } from "./provision.js";
+export { storeGmailConnection } from "./gmail-connection.js";
+export type { StoreGmailConnectionInput } from "./gmail-connection.js";

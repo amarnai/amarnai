@@ -12,7 +12,6 @@ vi.mock("@amarnai/gmail", () => {
   }
   class GmailClient {}
   return {
-    exchangeAuthCode: vi.fn(),
     fetchGmailProfile: vi.fn(),
     fetchGoogleUserInfo: vi.fn(),
     GMAIL_READONLY_SCOPE: "https://www.googleapis.com/auth/gmail.readonly",
@@ -44,12 +43,7 @@ vi.mock("../services/queue-client.js", () => ({
 }));
 
 import app from "../app.js";
-import {
-  exchangeAuthCode,
-  fetchGmailProfile,
-  fetchGoogleUserInfo,
-  GmailApiError,
-} from "@amarnai/gmail";
+import { fetchGmailProfile, fetchGoogleUserInfo } from "@amarnai/gmail";
 import { provisionGoogleUser } from "@amarnai/auth";
 import { syncInboxQueue } from "../services/queue-client.js";
 
@@ -63,16 +57,15 @@ async function post(body: unknown): Promise<Response> {
   });
 }
 
-const VALID_BODY = { code: "auth-code", redirectUri: "amarnai://oauth", codeVerifier: "verifier" };
+// The mobile app exchanges the auth code on-device and posts the tokens here.
+const VALID_BODY = {
+  accessToken: "google-at",
+  refreshToken: "google-rt",
+  scope: `openid email ${GMAIL_SCOPE}`,
+};
 
 beforeEach(() => {
   vi.clearAllMocks();
-  vi.mocked(exchangeAuthCode).mockResolvedValue({
-    accessToken: "google-at",
-    refreshToken: "google-rt",
-    scope: `openid email ${GMAIL_SCOPE}`,
-    expiresAt: new Date(),
-  });
   vi.mocked(fetchGmailProfile).mockResolvedValue({ emailAddress: "a@b.com" } as never);
   vi.mocked(fetchGoogleUserInfo).mockResolvedValue({ name: "Test G", picture: "http://img/p.png" });
   vi.mocked(provisionGoogleUser).mockResolvedValue({
@@ -92,7 +85,6 @@ describe("POST /auth/google", () => {
       refreshToken: "refresh-tok",
       refreshTokenExpiresAt: "2030-01-01T00:00:00.000Z",
     });
-    expect(exchangeAuthCode).toHaveBeenCalledWith("auth-code", "amarnai://oauth", "verifier");
     expect(provisionGoogleUser).toHaveBeenCalledWith(
       expect.objectContaining({
         email: "a@b.com",
@@ -125,28 +117,23 @@ describe("POST /auth/google", () => {
     expect(syncInboxQueue.add).not.toHaveBeenCalled();
   });
 
-  it("rejects a missing authorization code with 400", async () => {
-    const res = await post({ redirectUri: "amarnai://oauth" });
+  it("rejects a request missing the access token with 400", async () => {
+    const res = await post({ refreshToken: "google-rt", scope: GMAIL_SCOPE });
     expect(res.status).toBe(400);
-    expect(exchangeAuthCode).not.toHaveBeenCalled();
-  });
-
-  it("returns 403 and provisions nothing when gmail.readonly was not granted", async () => {
-    vi.mocked(exchangeAuthCode).mockResolvedValue({
-      accessToken: "google-at",
-      refreshToken: "google-rt",
-      scope: "openid email",
-      expiresAt: new Date(),
-    });
-    const res = await post(VALID_BODY);
-    expect(res.status).toBe(403);
     expect(provisionGoogleUser).not.toHaveBeenCalled();
   });
 
-  it("returns 401 when the Google code exchange fails", async () => {
-    vi.mocked(exchangeAuthCode).mockRejectedValue(new GmailApiError("invalid_grant", 401));
+  it("returns 403 and provisions nothing when gmail.readonly was not granted", async () => {
+    const res = await post({ ...VALID_BODY, scope: "openid email" });
+    expect(res.status).toBe(403);
+    expect(provisionGoogleUser).not.toHaveBeenCalled();
+    expect(fetchGmailProfile).not.toHaveBeenCalled();
+  });
+
+  it("returns 502 when the Gmail profile cannot be read", async () => {
+    vi.mocked(fetchGmailProfile).mockRejectedValue(new Error("profile fetch failed"));
     const res = await post(VALID_BODY);
-    expect(res.status).toBe(401);
+    expect(res.status).toBe(502);
     expect(provisionGoogleUser).not.toHaveBeenCalled();
   });
 });

@@ -4,6 +4,7 @@ import { API_BASE_URL } from '../config';
 import { readUserIdFromAccessToken } from './jwt';
 import { secureTokenStore, type StoredTokens } from './tokenStore';
 import { makeMobileTransport } from './transport';
+import { requestGoogleAuth } from './googleAuth';
 
 type Status = 'loading' | 'signedOut' | 'signedIn';
 
@@ -49,6 +50,10 @@ interface SessionValue {
   signIn(email: string, password: string): Promise<void>;
   // Throws on a taken email / closed sign-up so the sign-up screen can show it.
   signUp(email: string, password: string): Promise<void>;
+  // Runs the on-device PKCE OAuth flow and provisions or signs in the user via
+  // /auth/google. Throws 'cancelled' when the user dismisses the browser, and a
+  // user-facing message for other failures so the screen can show the error.
+  signInWithGoogle(): Promise<void>;
   // Re-resolve identity + verification from the stored token. Used by the
   // verify-email screen to detect when the link has been clicked.
   refresh(): Promise<void>;
@@ -195,6 +200,22 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     [bootstrap],
   );
 
+  const signInWithGoogle = useCallback(async () => {
+    const authResult = await requestGoogleAuth(); // throws 'cancelled' on dismiss
+    const res = await fetch(`${API_BASE_URL}/auth/google`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(authResult),
+    });
+    if (!res.ok) {
+      const body = (await res.json().catch(() => null)) as { error?: string } | null;
+      throw new Error(body?.error ?? `Google sign-in failed (${res.status})`);
+    }
+    const tokens = (await res.json()) as StoredTokens;
+    await secureTokenStore.set(tokens);
+    await bootstrap(tokens.accessToken);
+  }, [bootstrap]);
+
   // Re-resolve from the stored token without re-authenticating. No-op when
   // signed out. The verify-email screen polls this to detect verification.
   const refresh = useCallback(async () => {
@@ -231,6 +252,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       client,
       signIn,
       signUp,
+      signInWithGoogle,
       refresh,
       signOut,
     }),
@@ -248,6 +270,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       client,
       signIn,
       signUp,
+      signInWithGoogle,
       refresh,
       signOut,
     ],

@@ -1,7 +1,7 @@
 import { useCallback, useRef, useState } from 'react';
 import { useFocusEffect, useRouter } from 'expo-router';
 import {
-  Linking,
+  ActivityIndicator,
   StyleSheet,
   Text,
   TextInput,
@@ -20,12 +20,12 @@ import { ThreadListView } from '../../../../src/components/emails/ThreadListView
 import { UnroutedBanner } from '../../../../src/components/emails/UnroutedBanner';
 import { useSession } from '../../../../src/auth/session';
 import { useGmailConnection } from '../../../../src/data/queries';
-import { WEB_APP_URL } from '../../../../src/config';
+import { useConnectGmail } from '../../../../src/auth/useConnectGmail';
 
 export default function EmailsScreen() {
   const router = useRouter();
   const triage = useTriage();
-  const { workspaceId } = useSession();
+  const { workspaceId, client } = useSession();
 
   const [folderSheetOpen, setFolderSheetOpen] = useState(false);
 
@@ -40,11 +40,16 @@ export default function EmailsScreen() {
     }, []),
   );
 
-  // When Gmail isn't connected yet the inbox is empty. Point new users to the
-  // web app where the OAuth connection flow lives.
+  // When Gmail isn't connected, show an in-app connect CTA instead of the
+  // thread list. On success, invalidate the connection query so the empty
+  // state clears and the first sync results appear.
   const connectionQuery = useGmailConnection(workspaceId ?? '');
   const showConnectHint =
     connectionQuery.isSuccess && connectionQuery.data?.status !== 'ACTIVE';
+  const { connect: connectGmail, connecting: gmailConnecting } = useConnectGmail(
+    workspaceId ?? '',
+    client,
+  );
 
   const handleThreadPress = (threadId: string) => {
     triage.setSelectedId(threadId);
@@ -124,15 +129,19 @@ export default function EmailsScreen() {
           <View style={styles.hint}>
             <Text style={styles.hintTitle}>Connect Gmail to start triaging</Text>
             <Text style={styles.hintBody}>
-              Connect your Gmail account on the web to sync your inbox into Amarnai.
+              Connect your Gmail account to sync your inbox into Amarnai.
             </Text>
             <TouchableOpacity
-              style={styles.hintButton}
-              onPress={() => Linking.openURL(WEB_APP_URL)}
+              style={[styles.hintButton, gmailConnecting && styles.hintButtonDisabled]}
+              onPress={() => void connectGmail(() => connectionQuery.refetch())}
+              disabled={gmailConnecting}
             >
-              <Text style={styles.hintButtonText}>Open the web app</Text>
+              {gmailConnecting ? (
+                <ActivityIndicator color={colors.surface} />
+              ) : (
+                <Text style={styles.hintButtonText}>Connect Gmail</Text>
+              )}
             </TouchableOpacity>
-            <Text style={styles.hintUrl} numberOfLines={1}>{WEB_APP_URL}</Text>
           </View>
         </View>
       ) : (
@@ -231,14 +240,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: space.xxl,
     alignItems: 'center',
     marginTop: space.xs,
+    minHeight: 44,
+    justifyContent: 'center',
+  },
+  hintButtonDisabled: {
+    opacity: 0.6,
   },
   hintButtonText: {
     color: colors.surface,
     fontSize: fontSize.md,
     fontWeight: fontWeight.semibold,
-  },
-  hintUrl: {
-    fontSize: fontSize.sm,
-    color: colors.ink4,
   },
 });

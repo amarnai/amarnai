@@ -47,23 +47,12 @@ export type GmailTokens = {
   expiresAt: Date;
 };
 
-// Exchanges an authorization code for tokens. `redirectUri` must match the one
-// used to obtain the code (web callback URL or the native client's redirect).
-// `codeVerifier` is supplied by PKCE clients (mobile); omit it for the web flow.
-export async function exchangeAuthCode(
-  code: string,
-  redirectUri: string,
-  codeVerifier?: string
+// Shared HTTP + parse logic. `params` carries the client credentials so the
+// two public variants (web vs native) only differ in what they pass in.
+async function doTokenExchange(
+  params: Record<string, string>,
+  logLabel: string
 ): Promise<GmailTokens> {
-  const params: Record<string, string> = {
-    code,
-    client_id: process.env["AUTH_GOOGLE_ID"] ?? "",
-    client_secret: process.env["AUTH_GOOGLE_SECRET"] ?? "",
-    redirect_uri: redirectUri,
-    grant_type: "authorization_code",
-  };
-  if (codeVerifier) params["code_verifier"] = codeVerifier;
-
   const res = await fetch(GOOGLE_TOKEN_URL, {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -75,7 +64,7 @@ export async function exchangeAuthCode(
     // "redirect_uri_mismatch" — never tokens or secrets.
     type ErrorBody = { error?: string; error_description?: string };
     const body = (await res.json().catch(() => ({}))) as ErrorBody;
-    devLog("token_exchange", res.status, body.error);
+    devLog(logLabel, res.status, body.error);
     throw new GmailApiError(`Token exchange failed: ${res.status}`, res.status, body.error);
   }
 
@@ -101,6 +90,25 @@ export async function exchangeAuthCode(
     scope: data.scope,
     expiresAt: new Date(Date.now() + data.expires_in * 1000),
   };
+}
+
+// Exchanges an authorization code for tokens. `redirectUri` must match the one
+// used to obtain the code (web callback URL or the native client's redirect).
+// `codeVerifier` is supplied by PKCE clients (mobile); omit it for the web flow.
+export async function exchangeAuthCode(
+  code: string,
+  redirectUri: string,
+  codeVerifier?: string
+): Promise<GmailTokens> {
+  const params: Record<string, string> = {
+    code,
+    client_id: process.env["AUTH_GOOGLE_ID"] ?? "",
+    client_secret: process.env["AUTH_GOOGLE_SECRET"] ?? "",
+    redirect_uri: redirectUri,
+    grant_type: "authorization_code",
+  };
+  if (codeVerifier) params["code_verifier"] = codeVerifier;
+  return doTokenExchange(params, "token_exchange");
 }
 
 // ─── Gmail profile ────────────────────────────────────────────────────────────

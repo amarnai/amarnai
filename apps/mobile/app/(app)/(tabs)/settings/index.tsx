@@ -325,6 +325,7 @@ export default function SettingsScreen() {
             connection={gmailConnection ?? null}
             syncStatus={syncStatus ?? null}
             onDisconnected={refreshGmailData}
+            onConnected={refreshGmailData}
           />
           <SyncFiltersSheet
             visible={syncFiltersSheetOpen}

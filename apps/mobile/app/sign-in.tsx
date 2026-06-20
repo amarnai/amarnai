@@ -15,11 +15,12 @@ import { Link, Redirect } from 'expo-router';
 import { colors, radii, space, fontSize } from '@amarnai/tokens';
 import { useSession } from '../src/auth/session';
 import { authStyles } from '../src/auth/authStyles';
+import { GoogleSignInButton } from '../src/auth/GoogleSignInButton';
 import { API_BASE_URL } from '../src/config';
 import { useApiHealth } from '../src/health';
 
 export default function SignInScreen() {
-  const { status, signIn } = useSession();
+  const { status, signIn, signInWithGoogle } = useSession();
   const health = useApiHealth();
   const passwordRef = useRef<TextInput>(null);
 
@@ -27,10 +28,12 @@ export default function SignInScreen() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [googleSubmitting, setGoogleSubmitting] = useState(false);
+  const busy = submitting || googleSubmitting;
 
   if (status === 'signedIn') return <Redirect href="/" />;
 
-  const canSubmit = email.trim().length > 0 && password.length > 0 && !submitting;
+  const canSubmit = email.trim().length > 0 && password.length > 0 && !busy;
 
   async function onSubmit() {
     if (!canSubmit) return;
@@ -43,6 +46,20 @@ export default function SignInScreen() {
       setError(err instanceof Error ? err.message : 'Sign-in failed');
     } finally {
       setSubmitting(false);
+    }
+  }
+
+  async function onGoogleSignIn() {
+    if (busy) return;
+    setError(null);
+    setGoogleSubmitting(true);
+    try {
+      await signInWithGoogle();
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Google sign-in failed';
+      if (msg !== 'cancelled') setError(msg);
+    } finally {
+      setGoogleSubmitting(false);
     }
   }
 
@@ -76,7 +93,7 @@ export default function SignInScreen() {
             value={email}
             onChangeText={setEmail}
             onSubmitEditing={() => passwordRef.current?.focus()}
-            editable={!submitting}
+            editable={!busy}
           />
           <TextInput
             ref={passwordRef}
@@ -91,7 +108,7 @@ export default function SignInScreen() {
             value={password}
             onChangeText={setPassword}
             onSubmitEditing={onSubmit}
-            editable={!submitting}
+            editable={!busy}
           />
 
           {error ? <Text style={authStyles.error}>{error}</Text> : null}
@@ -108,7 +125,13 @@ export default function SignInScreen() {
             )}
           </TouchableOpacity>
 
-          <Link href="/sign-up" style={authStyles.switchLink} disabled={submitting}>
+          <GoogleSignInButton
+            onPress={onGoogleSignIn}
+            submitting={googleSubmitting}
+            disabled={submitting}
+          />
+
+          <Link href="/sign-up" style={authStyles.switchLink} disabled={busy}>
             <Text style={authStyles.switchText}>
               Don't have an account?{' '}
               <Text style={authStyles.switchTextStrong}>Create one</Text>

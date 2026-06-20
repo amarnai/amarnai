@@ -195,6 +195,12 @@ export type EmailThreadDetail = {
 
 // ── Gmail ─────────────────────────────────────────────────────────────────────
 
+export type ConnectGmailInput = {
+  accessToken: string;
+  refreshToken: string;
+  scope: string;
+};
+
 export type GmailConnection = {
   id: string;
   workspaceId: string;

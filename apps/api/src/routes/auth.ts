@@ -12,10 +12,8 @@ import {
   type IssuedRefreshToken,
 } from "@amarnai/auth";
 import {
-  exchangeAuthCode,
   fetchGmailProfile,
   fetchGoogleUserInfo,
-  GmailApiError,
   GMAIL_READONLY_SCOPE,
   type GoogleUserInfo,
 } from "@amarnai/gmail";
@@ -36,12 +34,13 @@ const refreshSchema = z.object({
   refreshToken: z.string().min(1),
 });
 
-// Native clients run the Google OAuth PKCE flow on-device and send the resulting
-// authorization code here. redirectUri must match the one used on-device.
+// Native clients exchange the Google auth code on-device (Android OAuth clients
+// are public clients — Google blocks server-side exchange) and send the resulting
+// tokens here for user provisioning.
 const googleSchema = z.object({
-  code: z.string().min(1),
-  redirectUri: z.string().min(1),
-  codeVerifier: z.string().min(1).optional(),
+  accessToken: z.string().min(1),
+  refreshToken: z.string().min(1),
+  scope: z.string().min(1),
 });
 
 const auth = new Hono<AppEnv>();
@@ -115,51 +114,39 @@ auth.post("/auth/register", async (c) => {
   return c.json(await issueTokenPair(result.userId));
 });
 
-// Google sign-in for native clients. Exchanges the on-device authorization code
-// for Gmail tokens, provisions the user + workspace + Gmail connection, and
-// returns an Amarnai token pair.
+// Google sign-in for native clients. The mobile app exchanges the auth code
+// on-device (Android public client + PKCE) and sends the resulting tokens here
+// for user provisioning and Gmail connection storage.
 auth.post("/auth/google", async (c) => {
   const body = await c.req.json().catch(() => null);
   const parsed = googleSchema.safeParse(body);
   if (!parsed.success) return c.json({ error: "Invalid request" }, 400);
 
-  let tokens: Awaited<ReturnType<typeof exchangeAuthCode>>;
-  try {
-    tokens = await exchangeAuthCode(
-      parsed.data.code,
-      parsed.data.redirectUri,
-      parsed.data.codeVerifier
-    );
-  } catch (err) {
-    if (err instanceof GmailApiError) {
-      return c.json({ error: "Google authorization failed" }, 401);
-    }
-    return c.json({ error: "Google authorization failed" }, 400);
-  }
+  const { accessToken, refreshToken, scope } = parsed.data;
 
   // Enforce the read-only scope before storing anything or calling Gmail.
-  const grantedScopes = tokens.scope.split(" ");
+  const grantedScopes = scope.split(" ");
   if (!grantedScopes.includes(GMAIL_READONLY_SCOPE)) {
     return c.json({ error: "Gmail read access was not granted" }, 403);
   }
 
   let email: string;
   try {
-    email = (await fetchGmailProfile(tokens.accessToken)).emailAddress;
+    email = (await fetchGmailProfile(accessToken)).emailAddress;
   } catch {
     return c.json({ error: "Could not read Gmail profile" }, 502);
   }
 
   // Best-effort: requires openid + profile scopes. Missing fields are fine —
   // provisionGoogleUser treats name/imageUrl as optional.
-  const userInfo = await fetchGoogleUserInfo(tokens.accessToken).catch(() => ({} as GoogleUserInfo));
+  const userInfo = await fetchGoogleUserInfo(accessToken).catch(() => ({} as GoogleUserInfo));
 
   const result = await provisionGoogleUser({
     email,
     ...(userInfo.name !== undefined ? { name: userInfo.name } : {}),
     ...(userInfo.picture !== undefined ? { imageUrl: userInfo.picture } : {}),
-    gmailAccessToken: tokens.accessToken,
-    gmailRefreshToken: tokens.refreshToken,
+    gmailAccessToken: accessToken,
+    gmailRefreshToken: refreshToken,
     grantedScopes,
   });
 
