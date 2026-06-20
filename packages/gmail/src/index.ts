@@ -12,6 +12,7 @@ export {
   GMAIL_READONLY_SCOPE,
   GmailApiError,
   exchangeAuthCode,
+  parseGrantedScopes,
   fetchGmailProfile,
   fetchGoogleSubjectId,
   fetchGoogleUserInfo,

@@ -11,10 +11,15 @@ vi.mock("@amarnai/gmail", () => {
     }
   }
   class GmailClient {}
+  const GMAIL_READONLY_SCOPE = "https://www.googleapis.com/auth/gmail.readonly";
   return {
     fetchGmailProfile: vi.fn(),
     fetchGoogleUserInfo: vi.fn(),
-    GMAIL_READONLY_SCOPE: "https://www.googleapis.com/auth/gmail.readonly",
+    GMAIL_READONLY_SCOPE,
+    parseGrantedScopes: (scope: string) => {
+      const scopes = scope.split(" ");
+      return { scopes, hasReadonly: scopes.includes(GMAIL_READONLY_SCOPE) };
+    },
     GmailApiError,
     GmailClient,
     decrypt: vi.fn(),

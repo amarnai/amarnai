@@ -14,7 +14,7 @@ import {
 import {
   fetchGmailProfile,
   fetchGoogleUserInfo,
-  GMAIL_READONLY_SCOPE,
+  parseGrantedScopes,
   type GoogleUserInfo,
 } from "@amarnai/gmail";
 import { RegisterCredentialsSchema } from "@amarnai/shared";
@@ -125,8 +125,8 @@ auth.post("/auth/google", async (c) => {
   const { accessToken, refreshToken, scope } = parsed.data;
 
   // Enforce the read-only scope before storing anything or calling Gmail.
-  const grantedScopes = scope.split(" ");
-  if (!grantedScopes.includes(GMAIL_READONLY_SCOPE)) {
+  const { scopes: grantedScopes, hasReadonly } = parseGrantedScopes(scope);
+  if (!hasReadonly) {
     return c.json({ error: "Gmail read access was not granted" }, 403);
   }
 

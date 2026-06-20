@@ -10,6 +10,7 @@ vi.mock("@amarnai/db", () => ({
   db: {
     workspace: {
       findUnique: vi.fn(),
+      findFirst: vi.fn(),
     },
     workspaceMember: {
       findUnique: vi.fn(),
@@ -18,6 +19,7 @@ vi.mock("@amarnai/db", () => ({
       findUnique: vi.fn(),
       findMany: vi.fn(),
       update: vi.fn(),
+      upsert: vi.fn(),
       count: vi.fn(),
     },
     emailAccount: {
@@ -54,11 +56,26 @@ vi.mock("@amarnai/db", () => ({
   },
 }));
 
+const GMAIL_SCOPE = "https://www.googleapis.com/auth/gmail.readonly";
+
+// @amarnai/auth (and its real storeGmailConnection) stays unmocked; we stub its
+// gmail dependencies here so the real upsert path runs against the db mock.
 vi.mock("@amarnai/gmail", () => ({
   GmailClient: vi.fn().mockImplementation(() => ({
     stopWatch: mockStopWatch,
   })),
   revokeGoogleToken: mockRevokeGoogleToken,
+  // Literal, not the GMAIL_SCOPE const — this factory is hoisted above it.
+  GMAIL_READONLY_SCOPE: "https://www.googleapis.com/auth/gmail.readonly",
+  parseGrantedScopes: (scope: string) => {
+    const scopes = scope.split(" ");
+    return {
+      scopes,
+      hasReadonly: scopes.includes("https://www.googleapis.com/auth/gmail.readonly"),
+    };
+  },
+  fetchGmailProfile: vi.fn(),
+  encrypt: vi.fn(),
 }));
 
 vi.mock("../queues.js", () => ({
@@ -70,6 +87,7 @@ vi.mock("../queues.js", () => ({
 vi.mock("../services/queue-client.js", () => ({
   syncInboxQueue: {
     getDeduplicationJobId: vi.fn().mockResolvedValue(null),
+    add: vi.fn().mockResolvedValue({}),
   },
   backfillInboxQueue: {
     getDeduplicationJobId: vi.fn().mockResolvedValue(null),
@@ -78,7 +96,8 @@ vi.mock("../services/queue-client.js", () => ({
 
 import app from "../app.js";
 import { db } from "@amarnai/db";
-import { revokeGoogleToken, GmailClient } from "@amarnai/gmail";
+import { revokeGoogleToken, GmailClient, fetchGmailProfile, encrypt } from "@amarnai/gmail";
+import { syncInboxQueue } from "../services/queue-client.js";
 
 const WS_ID = "ws-1";
 const OTHER_WS_ID = "ws-other";
@@ -110,6 +129,10 @@ beforeEach(() => {
   vi.mocked(db.auditLog.create).mockResolvedValue({} as never);
   mockStopWatch.mockResolvedValue(undefined);
   mockRevokeGoogleToken.mockResolvedValue(true);
+  vi.mocked(fetchGmailProfile).mockResolvedValue({ emailAddress: "user@gmail.com" } as never);
+  vi.mocked(encrypt).mockReturnValue("encrypted-token");
+  vi.mocked(db.gmailConnection.upsert).mockResolvedValue({} as never);
+  vi.mocked(syncInboxQueue.add).mockResolvedValue({} as never);
 });
 
 // ─── GET /workspaces/:workspaceId/gmail-connection ─────────────────────────
@@ -212,6 +235,111 @@ describe("GET /workspaces/:workspaceId/gmail-connection", () => {
     const res = await app.request(`/workspaces/${WS_ID}/gmail-connection`, authed());
     const body = (await res.json()) as typeof baseConnection;
     expect(body.grantedScopes).toEqual(["https://www.googleapis.com/auth/gmail.readonly"]);
+  });
+});
+
+// ─── POST /workspaces/:workspaceId/gmail-connection ────────────────────────
+
+const VALID_CONNECT_BODY = {
+  accessToken: "google-at",
+  refreshToken: "google-rt",
+  scope: `openid email ${GMAIL_SCOPE}`,
+};
+
+// What connectionSelect returns — no encryptedRefreshToken.
+const safeConnection = {
+  id: "conn-1",
+  workspaceId: WS_ID,
+  gmailAddress: "user@gmail.com",
+  grantedScopes: [GMAIL_SCOPE],
+  status: "ACTIVE" as const,
+  lastVerifiedAt: new Date().toISOString(),
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
+};
+
+async function connect(body: unknown): Promise<Response> {
+  return app.request(
+    `/workspaces/${WS_ID}/gmail-connection`,
+    authed({
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    })
+  );
+}
+
+describe("POST /workspaces/:workspaceId/gmail-connection", () => {
+  beforeEach(() => {
+    vi.mocked(db.workspace.findFirst).mockResolvedValue({ id: WS_ID } as never); // requester owns the ws
+    vi.mocked(db.gmailConnection.findUnique).mockResolvedValue(safeConnection as never);
+  });
+
+  it("stores the connection, enqueues one sync, and returns it (201)", async () => {
+    const res = await connect(VALID_CONNECT_BODY);
+    expect(res.status).toBe(201);
+    const body = (await res.json()) as Record<string, unknown>;
+    expect(body).toMatchObject({
+      gmailAddress: "user@gmail.com",
+      status: "ACTIVE",
+      sharedMailbox: false,
+    });
+
+    // The access token verifies the mailbox; the refresh token is encrypted.
+    expect(vi.mocked(fetchGmailProfile)).toHaveBeenCalledWith("google-at");
+    expect(vi.mocked(encrypt)).toHaveBeenCalledWith("google-rt");
+    expect(vi.mocked(db.gmailConnection.upsert)).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { workspaceId: WS_ID },
+        create: expect.objectContaining({
+          workspaceId: WS_ID,
+          gmailAddress: "user@gmail.com",
+          encryptedRefreshToken: "encrypted-token",
+          grantedScopes: ["openid", "email", GMAIL_SCOPE],
+          status: "ACTIVE",
+        }),
+      })
+    );
+    expect(vi.mocked(syncInboxQueue.add)).toHaveBeenCalledTimes(1);
+    expect(vi.mocked(syncInboxQueue.add)).toHaveBeenCalledWith(
+      "sync-inbox",
+      { workspaceId: WS_ID },
+      { deduplication: { id: `sync-inbox_${WS_ID}` } }
+    );
+  });
+
+  it("never returns the encrypted refresh token", async () => {
+    const res = await connect(VALID_CONNECT_BODY);
+    const body = (await res.json()) as Record<string, unknown>;
+    expect(body).not.toHaveProperty("encryptedRefreshToken");
+    // The guarantee relies on the Prisma select excluding the field.
+    expect(vi.mocked(db.gmailConnection.findUnique)).toHaveBeenCalledWith(
+      expect.objectContaining({
+        select: expect.not.objectContaining({ encryptedRefreshToken: true }),
+      })
+    );
+  });
+
+  it("rejects a non-owner with 403 and stores nothing", async () => {
+    vi.mocked(db.workspace.findFirst).mockResolvedValue(null); // requester is not the owner
+    const res = await connect(VALID_CONNECT_BODY);
+    expect(res.status).toBe(403);
+    expect(vi.mocked(db.gmailConnection.upsert)).not.toHaveBeenCalled();
+    expect(vi.mocked(syncInboxQueue.add)).not.toHaveBeenCalled();
+  });
+
+  it("returns 403 and stores nothing when gmail.readonly was not granted", async () => {
+    const res = await connect({ ...VALID_CONNECT_BODY, scope: "openid email" });
+    expect(res.status).toBe(403);
+    expect(vi.mocked(fetchGmailProfile)).not.toHaveBeenCalled();
+    expect(vi.mocked(db.gmailConnection.upsert)).not.toHaveBeenCalled();
+    expect(vi.mocked(syncInboxQueue.add)).not.toHaveBeenCalled();
+  });
+
+  it("rejects a request missing the access token with 400", async () => {
+    const res = await connect({ refreshToken: "google-rt", scope: GMAIL_SCOPE });
+    expect(res.status).toBe(400);
+    expect(vi.mocked(db.gmailConnection.upsert)).not.toHaveBeenCalled();
   });
 });
 

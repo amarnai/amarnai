@@ -113,8 +113,8 @@ export function makeApiClient(transport: ApiTransport) {
     gmailConnection: (workspaceId: string) =>
       apiFetch<GmailConnection>(`/workspaces/${workspaceId}/gmail-connection`),
 
-    // Connect (or reconnect) Gmail for the workspace. Accepts the PKCE auth code
-    // from the on-device OAuth flow. Owner-only. Returns the updated connection.
+    // Connect (or reconnect) Gmail for the workspace. Accepts the tokens from the
+    // on-device OAuth exchange. Owner-only. Returns the updated connection.
     connectGmail: (workspaceId: string, input: ConnectGmailInput) =>
       apiMutate<NonNullable<GmailConnection>>(
         `/workspaces/${workspaceId}/gmail-connection`,

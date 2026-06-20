@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import { z } from "zod";
 import { db } from "@amarnai/db";
 import {
-  GMAIL_READONLY_SCOPE,
+  parseGrantedScopes,
   GmailApiError,
 } from "@amarnai/gmail";
 import { storeGmailConnection } from "@amarnai/auth";
@@ -93,8 +93,8 @@ gmailConnection.post("/workspaces/:workspaceId/gmail-connection", async (c) => {
   if (!bodyParsed.success) return c.json({ error: "Invalid request" }, 400);
 
   const { accessToken, refreshToken, scope } = bodyParsed.data;
-  const grantedScopes = scope.split(" ");
-  if (!grantedScopes.includes(GMAIL_READONLY_SCOPE)) {
+  const { scopes: grantedScopes, hasReadonly } = parseGrantedScopes(scope);
+  if (!hasReadonly) {
     return c.json({ error: "Gmail read access was not granted" }, 403);
   }
 
