@@ -71,6 +71,15 @@ export function ThreadRow({ thread, onPress }: ThreadRowProps) {
         <View style={[styles.badge, { backgroundColor: badge.bg }]}>
           <Text style={[styles.badgeText, { color: badge.fg }]}>{badge.label}</Text>
         </View>
+        {thread.isDrafting ? (
+          <View style={styles.draftPill}>
+            <Text style={styles.draftPillText}>Drafting…</Text>
+          </View>
+        ) : thread.hasDraft ? (
+          <View style={[styles.draftPill, styles.draftPillAccent]}>
+            <Text style={[styles.draftPillText, styles.draftPillTextAccent]}>Draft</Text>
+          </View>
+        ) : null}
         {thread.confidence > 0 && (thread.status === 'sorted' || thread.status === 'review') ? (
           <View style={[styles.confidenceDot, { backgroundColor: confidenceDotColor(thread.confidence) }]} />
         ) : null}
@@ -138,5 +147,22 @@ const styles = StyleSheet.create({
   msgCount: {
     fontSize: fontSize.sm,
     color: colors.ink4,
+  },
+  draftPill: {
+    borderRadius: radii.sm,
+    paddingHorizontal: space.md,
+    paddingVertical: space.xxs,
+    backgroundColor: colors.bgSunk,
+  },
+  draftPillAccent: {
+    backgroundColor: colors.accentSoft,
+  },
+  draftPillText: {
+    fontSize: fontSize.xs,
+    fontWeight: fontWeight.semibold,
+    color: colors.ink3,
+  },
+  draftPillTextAccent: {
+    color: colors.accentInk,
   },
 });

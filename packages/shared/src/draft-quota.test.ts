@@ -4,6 +4,7 @@ import {
   getDraftLimit,
   getDraftQuotaWindowStart,
   getDraftQuotaResetsAt,
+  formatQuotaResetDate,
 } from "./draft-quota.js";
 
 describe("getDraftLimit", () => {
@@ -51,5 +52,16 @@ describe("getDraftQuotaResetsAt", () => {
     expect(getDraftQuotaResetsAt(now).getTime()).toBeGreaterThan(
       getDraftQuotaWindowStart(now).getTime()
     );
+  });
+});
+
+describe("formatQuotaResetDate", () => {
+  it("formats a reset timestamp as a short UTC month/day", () => {
+    expect(formatQuotaResetDate("2026-07-01T00:00:00.000Z")).toBe("Jul 1");
+  });
+
+  it("uses UTC so the day does not shift across timezones", () => {
+    // Just past UTC midnight on the 1st: must still read as the 1st, not the 30th.
+    expect(formatQuotaResetDate("2026-07-01T00:30:00.000Z")).toBe("Jul 1");
   });
 });

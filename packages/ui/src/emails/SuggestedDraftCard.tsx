@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { formatQuotaResetDate } from "@amarnai/shared";
 import type { DraftItem } from "./types.js";
 import { Tooltip } from "../Tooltip.js";
 
@@ -15,9 +16,7 @@ export function SuggestedDraftCard({ draft, onToggleSent, onRegenerate, quota }:
   const [copied, setCopied] = useState(false);
   const isSent = draft.status === "SENT";
   const quotaExhausted = quota != null && quota.used >= quota.limit;
-  const quotaResetDate = quota
-    ? new Date(quota.resetsAt).toLocaleDateString("en", { month: "short", day: "numeric", timeZone: "UTC" })
-    : null;
+  const quotaResetDate = quota ? formatQuotaResetDate(quota.resetsAt) : null;
 
   function handleCopy() {
     navigator.clipboard.writeText(draft.body).then(() => {

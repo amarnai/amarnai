@@ -1,4 +1,4 @@
-import { createContext, useContext, type ReactNode } from 'react';
+import { createContext, useContext, useMemo, type ReactNode } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import {
@@ -14,7 +14,37 @@ import { colors } from '@amarnai/tokens';
 
 type Triage = ReturnType<typeof useEmailTriage>;
 
-const TriageContext = createContext<Triage | null>(null);
+// The action surface is the set of stable (useCallback) functions. Splitting it
+// into its own context lets action-only consumers (e.g. useThreadDraft) subscribe
+// without re-rendering on every triage state change.
+type TriageActions = Pick<
+  Triage,
+  | 'setActive'
+  | 'setSelectedId'
+  | 'setQuery'
+  | 'syncThreads'
+  | 'refresh'
+  | 'handleApprove'
+  | 'handleMarkDone'
+  | 'handleUnmarkDone'
+  | 'openRerouteFor'
+  | 'closeReroute'
+  | 'commitReroute'
+  | 'handleDraftStarted'
+  | 'handleDraftFailed'
+  | 'handleDraftGenerated'
+  | 'handleDraftSentToggled'
+  | 'handleReroute'
+  | 'markWaitingClassifying'
+  | 'showToast'
+  | 'dismissToast'
+  | 'isWaiting'
+>;
+
+type TriageState = Omit<Triage, keyof TriageActions>;
+
+const TriageStateContext = createContext<TriageState | null>(null);
+const TriageActionsContext = createContext<TriageActions | null>(null);
 
 interface TriageProviderProps {
   children: ReactNode;
@@ -95,13 +125,114 @@ function TriageInner({
     initialSelectedId: null,
   });
 
-  return <TriageContext.Provider value={triage}>{children}</TriageContext.Provider>;
+  // Actions are stable (useEmailTriage memoizes them), so this object's identity
+  // never changes after mount → action-only consumers don't re-render on state.
+  const actions = useMemo<TriageActions>(
+    () => ({
+      setActive: triage.setActive,
+      setSelectedId: triage.setSelectedId,
+      setQuery: triage.setQuery,
+      syncThreads: triage.syncThreads,
+      refresh: triage.refresh,
+      handleApprove: triage.handleApprove,
+      handleMarkDone: triage.handleMarkDone,
+      handleUnmarkDone: triage.handleUnmarkDone,
+      openRerouteFor: triage.openRerouteFor,
+      closeReroute: triage.closeReroute,
+      commitReroute: triage.commitReroute,
+      handleDraftStarted: triage.handleDraftStarted,
+      handleDraftFailed: triage.handleDraftFailed,
+      handleDraftGenerated: triage.handleDraftGenerated,
+      handleDraftSentToggled: triage.handleDraftSentToggled,
+      handleReroute: triage.handleReroute,
+      markWaitingClassifying: triage.markWaitingClassifying,
+      showToast: triage.showToast,
+      dismissToast: triage.dismissToast,
+      isWaiting: triage.isWaiting,
+    }),
+    [
+      triage.setActive,
+      triage.setSelectedId,
+      triage.setQuery,
+      triage.syncThreads,
+      triage.refresh,
+      triage.handleApprove,
+      triage.handleMarkDone,
+      triage.handleUnmarkDone,
+      triage.openRerouteFor,
+      triage.closeReroute,
+      triage.commitReroute,
+      triage.handleDraftStarted,
+      triage.handleDraftFailed,
+      triage.handleDraftGenerated,
+      triage.handleDraftSentToggled,
+      triage.handleReroute,
+      triage.markWaitingClassifying,
+      triage.showToast,
+      triage.dismissToast,
+      triage.isWaiting,
+    ],
+  );
+
+  // Volatile state. New identity whenever any triage state changes — that is the
+  // intended behavior for state consumers.
+  const state = useMemo<TriageState>(
+    () => ({
+      threads: triage.threads,
+      folders: triage.folders,
+      active: triage.active,
+      selectedId: triage.selectedId,
+      selectedThread: triage.selectedThread,
+      query: triage.query,
+      rerouteTarget: triage.rerouteTarget,
+      toast: triage.toast,
+      filteredThreads: triage.filteredThreads,
+      filteredIds: triage.filteredIds,
+      anyClassifying: triage.anyClassifying,
+      waitingCount: triage.waitingCount,
+    }),
+    [
+      triage.threads,
+      triage.folders,
+      triage.active,
+      triage.selectedId,
+      triage.selectedThread,
+      triage.query,
+      triage.rerouteTarget,
+      triage.toast,
+      triage.filteredThreads,
+      triage.filteredIds,
+      triage.anyClassifying,
+      triage.waitingCount,
+    ],
+  );
+
+  return (
+    <TriageActionsContext.Provider value={actions}>
+      <TriageStateContext.Provider value={state}>{children}</TriageStateContext.Provider>
+    </TriageActionsContext.Provider>
+  );
 }
 
-export function useTriage(): Triage {
-  const ctx = useContext(TriageContext);
-  if (!ctx) throw new Error('useTriage must be used within a TriageProvider');
+export function useTriageActions(): TriageActions {
+  const ctx = useContext(TriageActionsContext);
+  if (!ctx) throw new Error('useTriageActions must be used within a TriageProvider');
   return ctx;
+}
+
+export function useTriageState(): TriageState {
+  const ctx = useContext(TriageStateContext);
+  if (!ctx) throw new Error('useTriageState must be used within a TriageProvider');
+  return ctx;
+}
+
+// Combined view for consumers that need both state and actions (screens). These
+// re-render on state changes, which they want; action-only consumers should use
+// useTriageActions to avoid that.
+export function useTriage(): Triage {
+  const state = useTriageState();
+  const actions = useTriageActions();
+  return { ...state, ...actions } as Triage;
 }
 
 const styles = StyleSheet.create({

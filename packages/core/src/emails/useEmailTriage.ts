@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { ApiClient } from "@amarnai/api-client";
 import type { ActiveSelection, FolderItem, ThreadItem } from "./types.js";
 import { filterThreads } from "./selection.js";
@@ -31,6 +31,12 @@ export type UseEmailTriageOptions = {
  * Server/refresh triggers are also left to the caller — call `syncThreads` with
  * a fresh mapped list (web: on Next server-prop refresh; mobile: after a poll),
  * or call `refresh` to fetch-and-merge through the injected api client.
+ *
+ * All returned functions have stable identity (useCallback + refs), so callers
+ * that split state from actions (e.g. the mobile context provider) can memoize
+ * the action surface and avoid re-rendering action-only consumers on state
+ * changes. Handlers that need the latest thread/reroute state read it through
+ * refs rather than closures, mirroring the `selectedIdRef` pattern.
  */
 export function useEmailTriage(options: UseEmailTriageOptions) {
   const { api, workspaceId, currentUserId, initialThreads, initialFolders, initialActive, initialSelectedId } =
@@ -44,48 +50,58 @@ export function useEmailTriage(options: UseEmailTriageOptions) {
   const [rerouteTarget, setRerouteTarget] = useState<RerouteTarget>(null);
   const [toast, setToast] = useState<Toast | null>(null);
 
-  // Always-current ref so async callbacks (refresh, fetch) can read the latest
-  // selectedId without being added to effect deps.
+  // Always-current refs so stable (useCallback) handlers can read the latest
+  // state without listing it as a dependency (which would churn their identity).
   const selectedIdRef = useRef(selectedId);
   useEffect(() => {
     selectedIdRef.current = selectedId;
   }, [selectedId]);
 
+  const threadsRef = useRef(threads);
+  useEffect(() => {
+    threadsRef.current = threads;
+  }, [threads]);
+
+  const rerouteTargetRef = useRef(rerouteTarget);
+  useEffect(() => {
+    rerouteTargetRef.current = rerouteTarget;
+  }, [rerouteTarget]);
+
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // ─── Toast ───────────────────────────────────────────────────────────────────
+
+  const showToast = useCallback((msg: Toast) => {
+    setToast(msg);
+    if (toastTimer.current) clearTimeout(toastTimer.current);
+    toastTimer.current = setTimeout(() => setToast(null), 4000);
+  }, []);
+
+  const dismissToast = useCallback(() => {
+    setToast(null);
+    if (toastTimer.current) clearTimeout(toastTimer.current);
+  }, []);
 
   // ─── Thread sync ─────────────────────────────────────────────────────────────
 
   // Merge a fresh mapped thread list into local state, preserving in-progress
   // draft state and the pinned (selected) thread.
-  function syncThreads(fresh: ThreadItem[]) {
+  const syncThreads = useCallback((fresh: ThreadItem[]) => {
     setThreads((prev) => mergeThreads(fresh, prev, selectedIdRef.current));
-  }
+  }, []);
 
   // Fetch the latest threads from the server and merge them in.
-  function refresh() {
+  const refresh = useCallback(() => {
     return api
       .emailThreads(workspaceId)
       .then(({ threads: fresh }) => syncThreads(mapThreads(fresh)))
       .catch(() => {});
-  }
-
-  // ─── Toast ───────────────────────────────────────────────────────────────────
-
-  function showToast(msg: Toast) {
-    setToast(msg);
-    if (toastTimer.current) clearTimeout(toastTimer.current);
-    toastTimer.current = setTimeout(() => setToast(null), 4000);
-  }
-
-  function dismissToast() {
-    setToast(null);
-    if (toastTimer.current) clearTimeout(toastTimer.current);
-  }
+  }, [api, workspaceId, syncThreads]);
 
   // ─── Approve ───────────────────────────────────────────────────────────────
 
-  function handleApprove(threadId: string) {
-    const prev = threads.find((t) => t.id === threadId);
+  const handleApprove = useCallback((threadId: string) => {
+    const prev = threadsRef.current.find((t) => t.id === threadId);
     setThreads((ts) =>
       ts.map((t) => (t.id === threadId ? { ...t, status: "sorted" as const } : t))
     );
@@ -95,12 +111,12 @@ export function useEmailTriage(options: UseEmailTriageOptions) {
         if (prev) setThreads((ts) => ts.map((t) => (t.id === threadId ? prev : t)));
       });
     showToast({ message: "Routing approved" });
-  }
+  }, [api, workspaceId, showToast]);
 
   // ─── Mark done ─────────────────────────────────────────────────────────────
 
-  function handleMarkDone(threadId: string) {
-    const prev = threads.find((t) => t.id === threadId);
+  const handleMarkDone = useCallback((threadId: string) => {
+    const prev = threadsRef.current.find((t) => t.id === threadId);
     const optimisticMark = {
       userId: currentUserId,
       userName: null,
@@ -120,10 +136,10 @@ export function useEmailTriage(options: UseEmailTriageOptions) {
       .catch(() => {
         if (prev) setThreads((ts) => ts.map((t) => (t.id === threadId ? prev : t)));
       });
-  }
+  }, [api, workspaceId, currentUserId]);
 
-  function handleUnmarkDone(threadId: string) {
-    const prev = threads.find((t) => t.id === threadId);
+  const handleUnmarkDone = useCallback((threadId: string) => {
+    const prev = threadsRef.current.find((t) => t.id === threadId);
     setThreads((ts) =>
       ts.map((t) => (t.id === threadId ? { ...t, doneMark: null } : t))
     );
@@ -132,26 +148,27 @@ export function useEmailTriage(options: UseEmailTriageOptions) {
       .catch(() => {
         if (prev) setThreads((ts) => ts.map((t) => (t.id === threadId ? prev : t)));
       });
-  }
+  }, [api, workspaceId, currentUserId]);
 
   // ─── Reroute ─────────────────────────────────────────────────────────────────
 
-  function openRerouteFor(threadId: string) {
+  const openRerouteFor = useCallback((threadId: string) => {
     setRerouteTarget({ kind: "single", threadId });
-  }
+  }, []);
 
-  function closeReroute() {
+  const closeReroute = useCallback(() => {
     setRerouteTarget(null);
-  }
+  }, []);
 
-  function commitReroute(folderId: string) {
+  const commitReroute = useCallback((folderId: string) => {
     const folder = folders.find((f) => f.id === folderId);
     const folderName = folder?.name ?? "folder";
 
-    if (!rerouteTarget) return;
+    const target = rerouteTargetRef.current;
+    if (!target) return;
 
-    const { threadId } = rerouteTarget;
-    const prev = threads.find((t) => t.id === threadId);
+    const { threadId } = target;
+    const prev = threadsRef.current.find((t) => t.id === threadId);
     setThreads((ts) =>
       ts.map((t) =>
         t.id === threadId ? { ...t, folderId, status: "sorted" as const } : t
@@ -181,52 +198,60 @@ export function useEmailTriage(options: UseEmailTriageOptions) {
     }
 
     setRerouteTarget(null);
-  }
+  }, [api, workspaceId, folders, showToast]);
 
   // ─── Draft state ───────────────────────────────────────────────────────────
 
-  function handleDraftStarted(threadId: string) {
+  const handleDraftStarted = useCallback((threadId: string) => {
     setThreads((ts) =>
       ts.map((t) => (t.id === threadId ? { ...t, isDrafting: true } : t))
     );
-  }
+  }, []);
 
-  function handleDraftFailed(threadId: string) {
+  const handleDraftFailed = useCallback((threadId: string) => {
     setThreads((ts) =>
       ts.map((t) => (t.id === threadId ? { ...t, isDrafting: false } : t))
     );
-  }
+  }, []);
 
-  function handleDraftGenerated(threadId: string) {
+  const handleDraftGenerated = useCallback((threadId: string) => {
     setThreads((ts) =>
       ts.map((t) => (t.id === threadId ? { ...t, hasDraft: true, isDrafting: false } : t))
     );
-  }
+  }, []);
 
-  function handleDraftSentToggled(threadId: string, sent: boolean) {
+  const handleDraftSentToggled = useCallback((threadId: string, sent: boolean) => {
     setThreads((ts) =>
       ts.map((t) => (t.id === threadId ? { ...t, hasDraft: !sent } : t))
     );
-  }
+  }, []);
 
   // ─── Reroute unclassified ──────────────────────────────────────────────────
 
-  function handleReroute() {
+  const handleReroute = useCallback(() => {
     api
       .rerouteUnclassified(workspaceId)
       .then(() => {
         showToast({ message: "Re-routing unclassified threads" });
       })
       .catch(() => {});
-  }
+  }, [api, workspaceId, showToast]);
+
+  // Threads waiting to be routed: not yet sorted and not actively classifying.
+  // These are routed only on an explicit "Route now" click, never automatically.
+  const isWaiting = useCallback(
+    (t: ThreadItem) =>
+      !t.isClassifying && (t.status === "unsorted" || t.status === "unrouted"),
+    [],
+  );
 
   // Optimistically mark waiting threads as classifying (used after a "Route now"
   // click so the banner hides and the "Sorting…" indicator shows until refresh).
-  function markWaitingClassifying() {
+  const markWaitingClassifying = useCallback(() => {
     setThreads((prev) =>
       prev.map((t) => (isWaiting(t) ? { ...t, isClassifying: true } : t))
     );
-  }
+  }, [isWaiting]);
 
   // ─── Derived ─────────────────────────────────────────────────────────────────
 
@@ -239,10 +264,6 @@ export function useEmailTriage(options: UseEmailTriageOptions) {
 
   const anyClassifying = threads.some((t) => t.isClassifying);
 
-  // Threads waiting to be routed: not yet sorted and not actively classifying.
-  // These are routed only on an explicit "Route now" click, never automatically.
-  const isWaiting = (t: ThreadItem) =>
-    !t.isClassifying && (t.status === "unsorted" || t.status === "unrouted");
   const waitingCount = threads.filter(isWaiting).length;
 
   return {

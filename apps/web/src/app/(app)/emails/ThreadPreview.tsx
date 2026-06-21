@@ -6,6 +6,7 @@ import type { Draft } from "@/lib/api";
 import type { FolderItem, ThreadItem } from "@amarnai/ui/emails";
 import { RationaleCard, MessageCard, SuggestedDraftCard, PreviewDoneBar } from "@amarnai/ui/emails";
 import { Tooltip } from "@amarnai/ui";
+import { formatQuotaResetDate } from "@amarnai/shared";
 
 type DraftState = "idle" | "loading" | "ready" | "error";
 
@@ -198,9 +199,7 @@ export function ThreadPreview({
     lastMsg.fromEmail.toLowerCase() === workspaceEmail.toLowerCase();
   const canDraft = thread.status !== "unsorted" && !lastMsgIsOwn;
   const quotaExhausted = draftQuota !== null && draftQuota.used >= draftQuota.limit;
-  const quotaResetDate = draftQuota
-    ? new Date(draftQuota.resetsAt).toLocaleDateString("en", { month: "short", day: "numeric", timeZone: "UTC" })
-    : null;
+  const quotaResetDate = draftQuota ? formatQuotaResetDate(draftQuota.resetsAt) : null;
 
   return (
     <div className="em-preview-col">

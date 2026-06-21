@@ -19,3 +19,9 @@ export function getDraftQuotaWindowStart(now = new Date()): Date {
 export function getDraftQuotaResetsAt(now = new Date()): Date {
   return new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + 1, 1));
 }
+
+// Short, UTC-stable display of a quota reset date (e.g. "Jul 1"). Shared by the
+// web, ui, and mobile draft-quota copy so the format never drifts between them.
+export function formatQuotaResetDate(resetsAt: string): string {
+  return new Date(resetsAt).toLocaleDateString("en", { month: "short", day: "numeric", timeZone: "UTC" });
+}
