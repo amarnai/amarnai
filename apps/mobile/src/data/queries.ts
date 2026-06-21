@@ -42,3 +42,20 @@ export function useGmailConnection(workspaceId: string) {
     enabled: !!workspaceId,
   });
 }
+
+/**
+ * Sync status for the active workspace, including `backfillStatus` and
+ * `workspacePlan`. The inbox screen uses this to surface the backfill card
+ * (upgrade upsell on FREE, "sorting in progress" while a historical backfill
+ * runs). Polls while a backfill is RUNNING so the card clears once it finishes.
+ */
+export function useSyncStatus(workspaceId: string) {
+  const { client } = useSession();
+  return useQuery({
+    queryKey: ['syncStatus', workspaceId],
+    queryFn: () => client.syncStatus(workspaceId),
+    enabled: !!workspaceId,
+    refetchInterval: (query) =>
+      query.state.data?.backfillStatus === 'RUNNING' ? 5000 : false,
+  });
+}

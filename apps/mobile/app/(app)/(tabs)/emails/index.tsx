@@ -18,8 +18,9 @@ import { QueueChips } from '../../../../src/components/emails/QueueChips';
 import { FolderFilterSheet } from '../../../../src/components/emails/FolderFilterSheet';
 import { ThreadListView } from '../../../../src/components/emails/ThreadListView';
 import { UnroutedBanner } from '../../../../src/components/emails/UnroutedBanner';
+import { BackfillBanner } from '../../../../src/components/emails/BackfillBanner';
 import { useSession } from '../../../../src/auth/session';
-import { useGmailConnection } from '../../../../src/data/queries';
+import { useGmailConnection, useSyncStatus } from '../../../../src/data/queries';
 import { useConnectGmail } from '../../../../src/auth/useConnectGmail';
 
 export default function EmailsScreen() {
@@ -28,6 +29,7 @@ export default function EmailsScreen() {
   const { workspaceId, client } = useSession();
 
   const [folderSheetOpen, setFolderSheetOpen] = useState(false);
+  const [backfillDismissed, setBackfillDismissed] = useState(false);
 
   // Keep a stable ref so the focus callback never captures a stale `refresh`.
   const refreshRef = useRef(triage.refresh);
@@ -44,6 +46,7 @@ export default function EmailsScreen() {
   // thread list. On success, invalidate the connection query so the empty
   // state clears and the first sync results appear.
   const connectionQuery = useGmailConnection(workspaceId ?? '');
+  const syncStatusQuery = useSyncStatus(workspaceId ?? '');
   const showConnectHint =
     connectionQuery.isSuccess && connectionQuery.data?.status !== 'ACTIVE';
   const { connect: connectGmail, connecting: gmailConnecting } = useConnectGmail(
@@ -150,6 +153,13 @@ export default function EmailsScreen() {
           emptyText={emptyText}
           onRefresh={triage.refresh}
           onThreadPress={handleThreadPress}
+          listHeader={
+            <BackfillBanner
+              syncStatus={syncStatusQuery.data}
+              dismissed={backfillDismissed}
+              onDismiss={() => setBackfillDismissed(true)}
+            />
+          }
         />
       )}
 

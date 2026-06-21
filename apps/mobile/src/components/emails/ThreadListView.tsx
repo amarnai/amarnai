@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState, type ReactElement } from 'react';
 import { RefreshControl, SectionList, StyleSheet, Text, View } from 'react-native';
 import { groupThreadsByDate, type ThreadItem } from '@amarnai/core';
 import { colors, space, fontSize, fontWeight } from '@amarnai/tokens';
@@ -9,9 +9,18 @@ interface ThreadListViewProps {
   emptyText?: string;
   onRefresh: () => Promise<void>;
   onThreadPress: (threadId: string) => void;
+  // Rendered inside the scroll area, above the threads, so it scrolls with the
+  // list rather than staying pinned above it.
+  listHeader?: ReactElement | null;
 }
 
-export function ThreadListView({ threads, emptyText = 'No threads', onRefresh, onThreadPress }: ThreadListViewProps) {
+export function ThreadListView({
+  threads,
+  emptyText = 'No threads',
+  onRefresh,
+  onThreadPress,
+  listHeader,
+}: ThreadListViewProps) {
   const [refreshing, setRefreshing] = useState(false);
 
   const handleRefresh = useCallback(async () => {
@@ -38,6 +47,7 @@ export function ThreadListView({ threads, emptyText = 'No threads', onRefresh, o
           <Text style={styles.sectionLabel}>{section.label}</Text>
         </View>
       )}
+      ListHeaderComponent={listHeader ?? null}
       refreshControl={
         <RefreshControl
           refreshing={refreshing}
