@@ -9,6 +9,7 @@ export type { IssuedRefreshToken } from "./refresh-token.js";
 export { verifyCredentials } from "./credentials.js";
 export { registerWithPassword, rotateVerificationToken } from "./register.js";
 export type { RegisterWithPasswordInput, RegisterWithPasswordResult } from "./register.js";
+export { createPasswordResetToken } from "./password-reset.js";
 export { getOrCreateDefaultWorkspace } from "./workspace.js";
 export { provisionGoogleUser } from "./provision.js";
 export type { ProvisionGoogleUserInput, ProvisionGoogleUserResult } from "./provision.js";

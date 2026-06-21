@@ -111,6 +111,10 @@ export default function SignInScreen() {
             editable={!busy}
           />
 
+          <Link href="/forgot-password" style={styles.forgotLink} disabled={busy}>
+            <Text style={authStyles.switchTextStrong}>Forgot password?</Text>
+          </Link>
+
           {error ? <Text style={authStyles.error}>{error}</Text> : null}
 
           <TouchableOpacity
@@ -161,6 +165,10 @@ function healthColor(status: ReturnType<typeof useApiHealth>['status']): string 
 }
 
 const styles = StyleSheet.create({
+  forgotLink: {
+    alignSelf: 'flex-end',
+    marginTop: -space.xs,
+  },
   footer: {
     flexDirection: 'row',
     alignItems: 'center',

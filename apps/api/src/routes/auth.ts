@@ -9,6 +9,7 @@ import {
   registerWithPassword,
   rotateVerificationToken,
   provisionGoogleUser,
+  createPasswordResetToken,
   type IssuedRefreshToken,
 } from "@amarnai/auth";
 import {
@@ -18,7 +19,7 @@ import {
   type GoogleUserInfo,
 } from "@amarnai/gmail";
 import { RegisterCredentialsSchema } from "@amarnai/shared";
-import { sendVerificationEmail } from "@amarnai/email";
+import { sendVerificationEmail, sendPasswordResetEmail } from "@amarnai/email";
 import { config } from "@amarnai/config";
 import { db, deleteUserCascade } from "@amarnai/db";
 import type { AppEnv } from "../env.js";
@@ -32,6 +33,10 @@ const loginSchema = z.object({
 
 const refreshSchema = z.object({
   refreshToken: z.string().min(1),
+});
+
+const forgotPasswordSchema = z.object({
+  email: z.string().email(),
 });
 
 // Native clients exchange the Google auth code on-device (Android OAuth clients
@@ -112,6 +117,28 @@ auth.post("/auth/register", async (c) => {
   );
 
   return c.json(await issueTokenPair(result.userId));
+});
+
+// Requests a password-reset email for native clients. Always returns 200 — it
+// never reveals whether an account exists. The shared createPasswordResetToken
+// returns null (no mail) for missing/Google-only/throttled accounts. The emailed
+// link points at the web /reset-password page (same as the web forgot flow), so
+// there is no in-app reset screen to maintain.
+auth.post("/auth/forgot-password", async (c) => {
+  const body = await c.req.json().catch(() => null);
+  const parsed = forgotPasswordSchema.safeParse(body);
+  if (!parsed.success) return c.json({ error: "Invalid request" }, 400);
+
+  const token = await createPasswordResetToken(parsed.data.email);
+  if (token) {
+    // Best-effort: a delivery failure must not turn into an account-existence
+    // oracle. Never logs the recipient address.
+    await sendPasswordResetEmail(parsed.data.email, token).catch((err) =>
+      console.error("[auth/forgot-password] send_reset:", err instanceof Error ? err.message : err)
+    );
+  }
+
+  return c.json({ ok: true });
 });
 
 // Google sign-in for native clients. The mobile app exchanges the auth code

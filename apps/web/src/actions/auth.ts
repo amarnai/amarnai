@@ -1,22 +1,15 @@
 "use server";
 
-import crypto from "crypto";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
 import { signIn, signOut, unstable_update } from "@/auth";
 import { db } from "@amarnai/db";
-import { registerWithPassword, rotateVerificationToken } from "@amarnai/auth";
+import { registerWithPassword, rotateVerificationToken, createPasswordResetToken } from "@amarnai/auth";
 import { RegisterCredentialsSchema } from "@amarnai/shared";
 import { requireUser } from "@/lib/session";
 import { sendVerificationEmail, sendPasswordResetEmail } from "@/lib/email";
 import { disconnectGmailBeforeDeletion } from "@/lib/gmail-teardown";
 import { isWaitlistMode } from "@/lib/waitlist";
-
-// ─── Shared ───────────────────────────────────────────────────────────────────
-
-function generateToken(): string {
-  return crypto.randomBytes(32).toString("hex");
-}
 
 // ─── Sign in / out ───────────────────────────────────────────────────────────
 
@@ -212,29 +205,10 @@ export async function forgotPasswordAction(
   const email = z.string().email().safeParse(formData.get("email"));
   if (!email.success) return { error: "Invalid email address" };
 
-  const user = await db.user.findUnique({
-    where: { email: email.data },
-    select: { id: true, credential: { select: { id: true } } },
-  });
-
-  // Silent success — don't reveal whether an account exists.
-  if (!user || !user.credential) return { success: true };
-
-  await db.verificationToken.deleteMany({
-    where: { userId: user.id, type: "PASSWORD_RESET" },
-  });
-
-  const token = generateToken();
-  await db.verificationToken.create({
-    data: {
-      userId: user.id,
-      token,
-      type: "PASSWORD_RESET",
-      expiresAt: new Date(Date.now() + 60 * 60 * 1000),
-    },
-  });
-
-  await sendPasswordResetEmail(email.data, token);
+  // Silent success — createPasswordResetToken returns null (no email sent) when
+  // the account is missing, Google-only, or throttled, never revealing which.
+  const token = await createPasswordResetToken(email.data);
+  if (token) await sendPasswordResetEmail(email.data, token);
   return { success: true };
 }
 

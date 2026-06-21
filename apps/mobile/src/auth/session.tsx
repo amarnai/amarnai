@@ -50,6 +50,10 @@ interface SessionValue {
   signIn(email: string, password: string): Promise<void>;
   // Throws on a taken email / closed sign-up so the sign-up screen can show it.
   signUp(email: string, password: string): Promise<void>;
+  // Requests a password-reset email. Always resolves (the API never reveals
+  // whether an account exists); the reset itself is completed on the web page
+  // the email links to.
+  requestPasswordReset(email: string): Promise<void>;
   // Runs the on-device PKCE OAuth flow and provisions or signs in the user via
   // /auth/google. Throws 'cancelled' when the user dismisses the browser, and a
   // user-facing message for other failures so the screen can show the error.
@@ -87,6 +91,17 @@ async function register(email: string, password: string): Promise<StoredTokens> 
   // user-facing message from the API; surface it verbatim.
   const body = (await res.json().catch(() => null)) as { error?: string } | null;
   throw new Error(body?.error ?? `Sign-up failed (${res.status})`);
+}
+
+// Requests a password-reset email. The API always returns 200 (it never reveals
+// whether an account exists), so this resolves on any non-network error too —
+// the screen shows the same neutral confirmation regardless.
+async function requestPasswordReset(email: string): Promise<void> {
+  await fetch(`${API_BASE_URL}/auth/forgot-password`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email }),
+  });
 }
 
 export function SessionProvider({ children }: { children: ReactNode }) {
@@ -255,6 +270,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       client,
       signIn,
       signUp,
+      requestPasswordReset,
       signInWithGoogle,
       refresh,
       signOut,

@@ -44,6 +44,7 @@ const PUBLIC_PATHS = new Set([
   "/auth/google",
   "/auth/refresh",
   "/auth/logout",
+  "/auth/forgot-password",
 ]);
 
 const app = new Hono<AppEnv>();
@@ -57,6 +58,7 @@ app.use("/auth/login", rateLimit({ limit: 10, windowSeconds: 900, prefix: "login
 app.use("/auth/register", rateLimit({ limit: 5, windowSeconds: 900, prefix: "register" }));
 app.use("/auth/google", rateLimit({ limit: 20, windowSeconds: 900, prefix: "google" }));
 app.use("/auth/refresh", rateLimit({ limit: 60, windowSeconds: 900, prefix: "refresh" }));
+app.use("/auth/forgot-password", rateLimit({ limit: 5, windowSeconds: 900, prefix: "forgot-password" }));
 
 app.use("*", async (c, next) => {
   // Public endpoints that authenticate themselves (health check, Gmail Pub/Sub
