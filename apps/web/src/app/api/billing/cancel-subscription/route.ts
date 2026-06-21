@@ -1,19 +1,27 @@
 import { NextResponse } from "next/server";
-import { auth } from "@/auth";
 import { db } from "@amarnai/db";
 import { getStripe } from "@/lib/stripe";
-import { getSelectedWorkspace } from "@/lib/workspace";
+import { resolveBillingUser, resolveBillingWorkspaceId } from "@/lib/billing-auth";
+import { FREE_PLAN_RESET } from "@/lib/billing-mutations";
 
-export async function POST() {
-  const session = await auth();
-  if (!session?.user?.id) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+export async function POST(request: Request) {
+  // Web session cookie or Bearer JWT (native mobile), with verify-before-pay.
+  const authResult = await resolveBillingUser(request);
+  if (!authResult.ok) {
+    return NextResponse.json({ error: authResult.error }, { status: authResult.status });
+  }
+  const { userId } = authResult;
+
+  // Mobile passes workspaceId explicitly; web falls back to the cookie selection.
+  const body = await request.json().catch(() => ({}));
+  const requestedWorkspaceId = typeof body?.workspaceId === "string" ? body.workspaceId : undefined;
+  const workspaceId = await resolveBillingWorkspaceId(userId, requestedWorkspaceId);
+  if (!workspaceId) {
+    return NextResponse.json({ error: "Workspace not found" }, { status: 404 });
   }
 
-  const workspace = await getSelectedWorkspace(session.user.id);
-
   const ws = await db.workspace.findUnique({
-    where: { id: workspace.id },
+    where: { id: workspaceId },
     select: {
       ownerUserId: true,
       stripeSubscriptionId: true,
@@ -21,7 +29,7 @@ export async function POST() {
     },
   });
 
-  if (ws?.ownerUserId !== session.user.id) {
+  if (ws?.ownerUserId !== userId) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
@@ -37,21 +45,9 @@ export async function POST() {
     await stripe.subscriptions.cancel(ws.stripeSubscriptionId);
     await db.$transaction([
       db.workspaceMember.deleteMany({
-        where: { workspaceId: workspace.id, NOT: { role: "OWNER" } },
+        where: { workspaceId, NOT: { role: "OWNER" } },
       }),
-      db.workspace.update({
-        where: { id: workspace.id },
-        data: {
-          plan: "FREE",
-          stripeSubscriptionId: null,
-          stripePriceId: null,
-          billingCycle: null,
-          trialEndsAt: null,
-          currentPeriodEnd: null,
-          cancelAtPeriodEnd: false,
-          paymentFailed: false,
-        },
-      }),
+      db.workspace.update({ where: { id: workspaceId }, data: FREE_PLAN_RESET }),
     ]);
     return NextResponse.json({ immediateDowngrade: true });
   }
@@ -66,7 +62,7 @@ export async function POST() {
     : null;
 
   await db.workspace.update({
-    where: { id: workspace.id },
+    where: { id: workspaceId },
     data: { cancelAtPeriodEnd: true, currentPeriodEnd },
   });
 

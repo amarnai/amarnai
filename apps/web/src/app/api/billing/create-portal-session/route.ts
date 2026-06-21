@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server";
-import { auth } from "@/auth";
 import { db } from "@amarnai/db";
 import { getStripe } from "@/lib/stripe";
-import { getSelectedWorkspace } from "@/lib/workspace";
+import { resolveBillingUser, resolveBillingWorkspaceId } from "@/lib/billing-auth";
 
 // Configure the Stripe portal on first open per process — idempotent on Stripe's side.
 let _portalConfigured = false;
@@ -31,30 +30,28 @@ async function configurePortal(): Promise<void> {
   }
 }
 
-export async function POST() {
-  const session = await auth();
-  if (!session?.user?.id) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+export async function POST(request: Request) {
+  // Web session cookie or Bearer JWT (native mobile), with verify-before-pay.
+  const authResult = await resolveBillingUser(request);
+  if (!authResult.ok) {
+    return NextResponse.json({ error: authResult.error }, { status: authResult.status });
   }
+  const { userId } = authResult;
 
-  // Verify-before-pay, enforced at the route as well as the middleware: an
-  // unverified account must not reach Stripe billing management.
-  const userRecord = await db.user.findUnique({
-    where: { id: session.user.id },
-    select: { emailVerified: true },
-  });
-  if (!userRecord?.emailVerified) {
-    return NextResponse.json({ error: "Email not verified" }, { status: 403 });
+  // Mobile passes workspaceId explicitly; web falls back to the cookie selection.
+  const body = await request.json().catch(() => ({}));
+  const requestedWorkspaceId = typeof body?.workspaceId === "string" ? body.workspaceId : undefined;
+  const workspaceId = await resolveBillingWorkspaceId(userId, requestedWorkspaceId);
+  if (!workspaceId) {
+    return NextResponse.json({ error: "Workspace not found" }, { status: 404 });
   }
-
-  const workspace = await getSelectedWorkspace(session.user.id);
 
   const ws = await db.workspace.findUnique({
-    where: { id: workspace.id },
+    where: { id: workspaceId },
     select: { stripeCustomerId: true, ownerUserId: true },
   });
 
-  if (ws?.ownerUserId !== session.user.id) {
+  if (ws?.ownerUserId !== userId) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
@@ -66,10 +63,22 @@ export async function POST() {
 
   await configurePortal();
 
-  const portalSession = await getStripe().billingPortal.sessions.create({
-    customer: ws.stripeCustomerId,
-    return_url: `${baseUrl}/settings?cancelled=true`,
-  });
-
-  return NextResponse.json({ url: portalSession.url });
+  try {
+    const portalSession = await getStripe().billingPortal.sessions.create({
+      customer: ws.stripeCustomerId,
+      return_url: `${baseUrl}/settings?cancelled=true`,
+    });
+    return NextResponse.json({ url: portalSession.url });
+  } catch (err) {
+    // The stored customer can be absent in the active Stripe account (e.g. a dev
+    // DB seeded against a different account, or wiped test data). Surface a clean
+    // message instead of a 500 so the client can guide the user to reconcile.
+    if ((err as { code?: string }).code === "resource_missing") {
+      return NextResponse.json(
+        { error: "Billing account is out of sync with Stripe. Reset the workspace or re-subscribe to fix this." },
+        { status: 409 },
+      );
+    }
+    throw err;
+  }
 }

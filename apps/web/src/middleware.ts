@@ -12,11 +12,11 @@ export default auth((req) => {
     pathname.startsWith("/reset-password") ||
     pathname.startsWith("/api/auth") ||
     pathname.startsWith("/api/internal") ||
-    // These billing routes authenticate themselves and must not be redirected to
-    // /sign-in: the webhook verifies the Stripe signature, and checkout-session
-    // accepts a Bearer JWT (native mobile clients have no web session cookie).
-    pathname.startsWith("/api/billing/webhook") ||
-    pathname.startsWith("/api/billing/create-checkout-session");
+    // The billing routes authenticate themselves and must not be redirected to
+    // /sign-in: the webhook verifies the Stripe signature, and the rest accept a
+    // Bearer JWT (native mobile clients have no web session cookie) alongside the
+    // web cookie session. Each route enforces auth + ownership on its own.
+    pathname.startsWith("/api/billing/");
 
   if (!isSignedIn && !isPublic) {
     return NextResponse.redirect(new URL("/sign-in", req.url));

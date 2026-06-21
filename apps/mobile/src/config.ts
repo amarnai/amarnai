@@ -38,14 +38,25 @@ function resolveApiBaseUrl(): string {
 }
 
 /**
- * Resolves the web app URL. Gmail connection and email verification happen on
- * the web, so the app links out to it (the "connect Gmail on the web" hint and
- * the verify-email screen). Same host-resolution order as the API URL, on the
- * web port. Set EXPO_PUBLIC_WEB_URL for staging / production.
+ * Resolves the web app URL. Gmail connection, email verification, and billing
+ * happen on the web, so the app links/fetches out to it.
+ *
+ * Order:
+ *  1. EXPO_PUBLIC_WEB_URL if set (use for a tunnel, staging, or production where
+ *     the web app lives on a different host than the API).
+ *  2. Reuse the host pinned in EXPO_PUBLIC_API_URL on the web port. The API and
+ *     web dev servers run on the same machine, so a single `EXPO_PUBLIC_API_URL=
+ *     http://<lan-ip>:3001` makes both reachable from a physical device with no
+ *     second variable. Only applied when that URL is an explicit host:port.
+ *  3. Fall back to the Metro dev-server host, then localhost.
  */
 function resolveWebAppUrl(): string {
   const explicit = process.env.EXPO_PUBLIC_WEB_URL;
   if (explicit) return explicit.replace(/\/+$/, '');
+
+  const apiUrl = process.env.EXPO_PUBLIC_API_URL?.replace(/\/+$/, '');
+  const apiHostPort = apiUrl?.match(/^(https?:\/\/[^/:]+):\d+$/);
+  if (apiHostPort) return `${apiHostPort[1]}:${DEFAULT_WEB_PORT}`;
 
   const host = devHost();
   if (host) return `http://${host}:${DEFAULT_WEB_PORT}`;

@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { auth } from "@/auth";
 import { db } from "@amarnai/db";
 import { getStripe, getPriceId } from "@/lib/stripe";
-import { verifyAccessToken } from "@amarnai/auth";
+import { resolveBillingUser } from "@/lib/billing-auth";
+import { applyPaidPlanChange } from "@/lib/billing-mutations";
 
 const bodySchema = z.object({
   workspaceId: z.string().optional(),
@@ -14,22 +14,12 @@ const bodySchema = z.object({
 });
 
 export async function POST(request: Request) {
-  // Primary: web session cookie. Fallback: Bearer JWT for native mobile clients,
-  // which cannot share the web cookie but carry a signed access token.
-  let userId: string | undefined;
-  const session = await auth();
-  if (session?.user?.id) {
-    userId = session.user.id;
-  } else {
-    const authHeader = request.headers.get("Authorization");
-    if (authHeader?.startsWith("Bearer ")) {
-      const jwtUserId = await verifyAccessToken(authHeader.slice(7));
-      if (jwtUserId) userId = jwtUserId;
-    }
+  // Web session cookie or Bearer JWT (native mobile), with verify-before-pay.
+  const authResult = await resolveBillingUser(request);
+  if (!authResult.ok) {
+    return NextResponse.json({ error: authResult.error }, { status: authResult.status });
   }
-  if (!userId) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const { userId } = authResult;
 
   const body = await request.json().catch(() => null);
   const parsed = bodySchema.safeParse(body);
@@ -40,20 +30,13 @@ export async function POST(request: Request) {
   const { plan, cycle, action, workspaceId, newWorkspaceName } = parsed.data;
   const stripe = getStripe();
 
+  // `trialUsed` decides whether to offer the 14-day trial on first paid plan.
   const userRecord = await db.user.findUnique({
     where: { id: userId },
-    select: { trialUsed: true, emailVerified: true },
+    select: { trialUsed: true },
   });
-  // Defense in depth for verify-before-pay: the middleware already keeps
-  // unverified users out of the billing routes, but enforce it here too so a
-  // charge can never originate from an unverified (or vanished) account even if
-  // the middleware matcher ever changes. Authoritative DB read rather than the
-  // JWT claim, so a freshly verified user is never wrongly blocked by a stale token.
   if (!userRecord) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-  if (!userRecord.emailVerified) {
-    return NextResponse.json({ error: "Email not verified" }, { status: 403 });
   }
   const offerTrial = !userRecord.trialUsed;
 
@@ -86,44 +69,18 @@ export async function POST(request: Request) {
       if (!workspace.stripeSubscriptionId) {
         return NextResponse.json({ error: "No active subscription to upgrade" }, { status: 400 });
       }
-      const priceId = getPriceId(plan, cycle);
-      if (!priceId) {
-        return NextResponse.json({ error: "Stripe price ID not configured" }, { status: 500 });
+      const result = await applyPaidPlanChange({
+        workspaceId,
+        userId,
+        subscriptionId: workspace.stripeSubscriptionId,
+        plan,
+        cycle,
+        eventType: "workspace.plan.upgraded",
+        clearTrial: true,
+      });
+      if (!result.ok) {
+        return NextResponse.json({ error: result.error }, { status: result.status });
       }
-      const subscription = await stripe.subscriptions.retrieve(workspace.stripeSubscriptionId);
-      const item = subscription.items.data[0];
-      const updated = await stripe.subscriptions.update(workspace.stripeSubscriptionId, {
-        items: [{ id: item!.id, price: priceId }],
-        proration_behavior: "create_prorations",
-        cancel_at_period_end: false,
-      });
-      const updatedItem = updated.items.data[0];
-      const currentPeriodEnd = updatedItem?.current_period_end
-        ? new Date(updatedItem.current_period_end * 1000)
-        : null;
-      const cycleValue = cycle === "annual" ? "ANNUAL" : "MONTHLY";
-      await db.workspace.update({
-        where: { id: workspaceId },
-        data: {
-          plan: planValue,
-          stripePriceId: priceId,
-          billingCycle: cycleValue,
-          trialEndsAt: null,
-          currentPeriodEnd,
-          cancelAtPeriodEnd: false,
-        },
-      });
-      await db.auditLog.create({
-        data: {
-          workspaceId,
-          actorType: "USER",
-          actorUserId: userId,
-          eventType: "workspace.plan.upgraded",
-          entityType: "Workspace",
-          entityId: workspaceId,
-          metadata: { plan, cycle, subscriptionId: workspace.stripeSubscriptionId },
-        },
-      });
       return NextResponse.json({ upgraded: true });
     }
   } else {

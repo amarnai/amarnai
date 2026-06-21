@@ -35,7 +35,7 @@ export type UpdateTaxonomyNodeInput = Partial<CreateTaxonomyNodeInput>;
 export type Workspace = {
   id: string;
   name: string;
-  plan: "FREE" | "PRO";
+  plan: "FREE" | "PRO" | "BUSINESS";
   createdAt: string;
   updatedAt: string;
   owner: { id: string; email: string; name: string | null };

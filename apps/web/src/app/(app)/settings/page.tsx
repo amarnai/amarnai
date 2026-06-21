@@ -2,8 +2,7 @@ import { requireUser, getUserWorkspaceRole } from "@/lib/session";
 import { getSelectedWorkspace } from "@/lib/workspace";
 import { apiFor } from "@/lib/api";
 import { db } from "@amarnai/db";
-import { getStripe } from "@/lib/stripe";
-import { getCollaboratorLimit } from "@amarnai/shared";
+import { assembleBillingState } from "@/lib/billing-state";
 import { GmailConnectionSection } from "./GmailConnectionSection";
 import { WorkspaceNameSection } from "./WorkspaceNameSection";
 import { DeleteWorkspaceSection } from "./DeleteWorkspaceSection";
@@ -41,93 +40,11 @@ export default async function SettingsPage({ searchParams }: { searchParams: Sea
     // API unavailable — show disconnected state
   }
 
-  const billingSelect = {
-    plan: true,
-    billingCycle: true,
-    currentPeriodEnd: true,
-    trialEndsAt: true,
-    cancelAtPeriodEnd: true,
-    paymentFailed: true,
-    stripeSubscriptionId: true,
-  } as const;
-
-  let billing = await db.workspace.findUnique({
-    where: { id: workspace.id },
-    select: billingSelect,
+  // Billing state, reconciled with Stripe on portal return. Computed before the
+  // team list below so any trial-cancellation member removal is reflected there.
+  const billingState = await assembleBillingState(user.id, workspace.id, {
+    forceReconcile: billingCancelled,
   });
-
-  // Sync subscription state from Stripe so the UI is accurate even if the webhook
-  // hasn't arrived yet. Runs on every portal return (?cancelled=true) AND whenever
-  // the workspace is on a paid plan but cancelAtPeriodEnd is not yet set — covering
-  // the case where the user navigated away from the portal return URL.
-  const needsSync =
-    billing?.stripeSubscriptionId &&
-    (billingCancelled ||
-      (billing.plan !== "FREE" && !billing.cancelAtPeriodEnd));
-
-  if (needsSync && billing?.stripeSubscriptionId) {
-    try {
-      const subscription = await getStripe().subscriptions.retrieve(billing.stripeSubscriptionId);
-
-      if (subscription.status === "canceled") {
-        // Subscription was deleted on Stripe — mirrors handleSubscriptionDeleted.
-        await db.$transaction([
-          db.workspaceMember.deleteMany({
-            where: { workspaceId: workspace.id, NOT: { role: "OWNER" } },
-          }),
-          db.workspace.update({
-            where: { id: workspace.id },
-            data: {
-              plan: "FREE",
-              stripeSubscriptionId: null,
-              stripePriceId: null,
-              billingCycle: null,
-              trialEndsAt: null,
-              currentPeriodEnd: null,
-              cancelAtPeriodEnd: false,
-              paymentFailed: false,
-            },
-          }),
-        ]);
-      } else if (subscription.cancel_at_period_end && subscription.status === "trialing") {
-        // Trial cancelled — revoke access immediately (mirrors webhook 1b logic).
-        await db.$transaction([
-          db.workspaceMember.deleteMany({
-            where: { workspaceId: workspace.id, NOT: { role: "OWNER" } },
-          }),
-          db.workspace.update({
-            where: { id: workspace.id },
-            data: {
-              plan: "FREE",
-              stripeSubscriptionId: null,
-              stripePriceId: null,
-              billingCycle: null,
-              trialEndsAt: null,
-              currentPeriodEnd: null,
-              cancelAtPeriodEnd: false,
-              paymentFailed: false,
-            },
-          }),
-        ]);
-      } else if (subscription.cancel_at_period_end) {
-        const item = subscription.items.data[0];
-        const currentPeriodEnd = item?.current_period_end
-          ? new Date(item.current_period_end * 1000)
-          : null;
-        await db.workspace.update({
-          where: { id: workspace.id },
-          data: { cancelAtPeriodEnd: true, currentPeriodEnd },
-        });
-      }
-
-      billing = await db.workspace.findUnique({
-        where: { id: workspace.id },
-        select: billingSelect,
-      });
-    } catch {
-      // Non-fatal — fall back to whatever state is already in the DB.
-    }
-  }
 
   // Fetch team members and pending invitations for the team section.
   const ownedWorkspaceCount = await db.workspace.count({ where: { ownerUserId: user.id } });
@@ -172,10 +89,6 @@ export default async function SettingsPage({ searchParams }: { searchParams: Sea
     expiresAt: inv.expiresAt.toISOString(),
   }));
 
-  const membersToRemoveOnCancel = members
-    .filter((m) => m.role !== "OWNER")
-    .map((m) => ({ name: m.user.name, email: m.user.email }));
-
   const [draftQuota, threadSortQuota] = isAdmin
     ? await Promise.all([
         userApi.draftQuota(workspace.id).catch(() => null),
@@ -183,8 +96,7 @@ export default async function SettingsPage({ searchParams }: { searchParams: Sea
       ])
     : [null, null];
 
-  const collaboratorCount = members.filter((m) => m.role !== "OWNER").length;
-  const collaboratorLimit = getCollaboratorLimit(billing?.plan ?? workspace.plan);
+  const collaboratorLimit = billingState.collaboratorLimit;
 
   return (
     <>
@@ -219,19 +131,19 @@ export default async function SettingsPage({ searchParams }: { searchParams: Sea
       {isAdmin && (
         <>
           <BillingSection
-            plan={billing?.plan ?? workspace.plan}
-            billingCycle={billing?.billingCycle ?? null}
-            currentPeriodEnd={billing?.currentPeriodEnd ?? null}
-            trialEndsAt={billing?.trialEndsAt ?? null}
-            cancelAtPeriodEnd={billing?.cancelAtPeriodEnd ?? false}
-            paymentFailed={billing?.paymentFailed ?? false}
-            hasSubscription={!!billing?.stripeSubscriptionId}
+            plan={billingState.plan}
+            billingCycle={billingState.billingCycle}
+            currentPeriodEnd={billingState.currentPeriodEnd ? new Date(billingState.currentPeriodEnd) : null}
+            trialEndsAt={billingState.trialEndsAt ? new Date(billingState.trialEndsAt) : null}
+            cancelAtPeriodEnd={billingState.cancelAtPeriodEnd}
+            paymentFailed={billingState.paymentFailed}
+            hasSubscription={billingState.hasSubscription}
             isAdmin={isAdmin}
             cancelled={billingCancelled}
-            membersToRemoveOnCancel={membersToRemoveOnCancel}
+            membersToRemoveOnCancel={billingState.membersToRemoveOnCancel}
             draftQuota={draftQuota}
             threadSortQuota={threadSortQuota}
-            collaboratorCount={collaboratorCount}
+            collaboratorCount={billingState.collaboratorCount}
             collaboratorLimit={collaboratorLimit}
           />
           {ownedWorkspaceCount <= 1 ? (

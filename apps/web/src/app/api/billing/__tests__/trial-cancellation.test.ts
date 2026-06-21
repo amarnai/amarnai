@@ -10,7 +10,7 @@ vi.mock("@amarnai/db", () => ({
   db: {
     workspace: { findUnique: vi.fn(), update: vi.fn() },
     workspaceMember: { deleteMany: vi.fn() },
-    user: { update: vi.fn() },
+    user: { findUnique: vi.fn(), update: vi.fn() },
     $transaction: vi.fn(),
   },
 }));
@@ -39,11 +39,20 @@ const FUTURE = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
 const PAST = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
 const PERIOD_END_TS = Math.floor(Date.now() / 1000) + 30 * 24 * 60 * 60;
 
+// The route reads an optional workspaceId from the JSON body; web callers send none.
+const makeReq = (body: Record<string, unknown> = {}) =>
+  new Request("http://test/api/billing/cancel-subscription", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+
 beforeEach(() => {
   vi.clearAllMocks();
 
   vi.mocked(auth).mockResolvedValue({ user: { id: USER_ID } } as never);
   vi.mocked(getSelectedWorkspace).mockResolvedValue({ id: WS_ID } as never);
+  vi.mocked(db.user.findUnique).mockResolvedValue({ emailVerified: new Date() } as never);
 
   vi.mocked(db.$transaction).mockResolvedValue([] as never);
   vi.mocked(db.workspace.update).mockResolvedValue({} as never);
@@ -65,14 +74,14 @@ describe("cancel during active trial", () => {
   });
 
   it("immediately cancels the Stripe subscription", async () => {
-    await POST();
+    await POST(makeReq());
 
     expect(stripe.subscriptions.cancel).toHaveBeenCalledWith(SUB_ID);
     expect(stripe.subscriptions.update).not.toHaveBeenCalled();
   });
 
   it("returns immediateDowngrade: true", async () => {
-    const res = await POST();
+    const res = await POST(makeReq());
     const body = await res.json() as { immediateDowngrade: boolean };
 
     expect(res.status).toBe(200);
@@ -80,7 +89,7 @@ describe("cancel during active trial", () => {
   });
 
   it("downgrades workspace to FREE and clears subscription fields", async () => {
-    await POST();
+    await POST(makeReq());
 
     expect(db.workspace.update).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -96,7 +105,7 @@ describe("cancel during active trial", () => {
   });
 
   it("never clears user.trialUsed — the trial is consumed even if cancelled early", async () => {
-    await POST();
+    await POST(makeReq());
 
     // The workspace update must not include trialUsed so the flag on User is never reset
     const workspaceUpdateData = vi.mocked(db.workspace.update).mock.calls[0]?.[0]?.data;
@@ -117,7 +126,7 @@ describe("cancel after trial period (paid phase)", () => {
   });
 
   it("schedules cancellation at period end instead of cancelling immediately", async () => {
-    await POST();
+    await POST(makeReq());
 
     expect(stripe.subscriptions.update).toHaveBeenCalledWith(SUB_ID, {
       cancel_at_period_end: true,
@@ -126,7 +135,7 @@ describe("cancel after trial period (paid phase)", () => {
   });
 
   it("returns immediateDowngrade: false", async () => {
-    const res = await POST();
+    const res = await POST(makeReq());
     const body = await res.json() as { immediateDowngrade: boolean };
 
     expect(res.status).toBe(200);
@@ -134,7 +143,7 @@ describe("cancel after trial period (paid phase)", () => {
   });
 
   it("sets cancelAtPeriodEnd on the workspace, does not touch user.trialUsed", async () => {
-    await POST();
+    await POST(makeReq());
 
     expect(db.workspace.update).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -155,7 +164,7 @@ describe("cancel with no active trial date (null trialEndsAt)", () => {
       trialEndsAt: null,
     } as never);
 
-    const res = await POST();
+    const res = await POST(makeReq());
     const body = await res.json() as { immediateDowngrade: boolean };
 
     expect(res.status).toBe(200);
@@ -174,7 +183,7 @@ describe("access control", () => {
       trialEndsAt: FUTURE,
     } as never);
 
-    const res = await POST();
+    const res = await POST(makeReq());
 
     expect(res.status).toBe(403);
     expect(stripe.subscriptions.cancel).not.toHaveBeenCalled();
@@ -188,7 +197,7 @@ describe("access control", () => {
       trialEndsAt: null,
     } as never);
 
-    const res = await POST();
+    const res = await POST(makeReq());
 
     expect(res.status).toBe(404);
   });
@@ -196,7 +205,7 @@ describe("access control", () => {
   it("returns 401 when unauthenticated", async () => {
     vi.mocked(auth).mockResolvedValue(null as never);
 
-    const res = await POST();
+    const res = await POST(makeReq());
 
     expect(res.status).toBe(401);
   });

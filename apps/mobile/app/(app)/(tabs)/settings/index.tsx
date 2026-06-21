@@ -24,7 +24,6 @@ import { GmailSettingsSheet } from '../../../../src/components/GmailSettingsShee
 import { SyncFiltersSheet } from '../../../../src/components/SyncFiltersSheet';
 import { BlacklistSheet } from '../../../../src/components/BlacklistSheet';
 import { RenameWorkspaceSheet } from '../../../../src/components/RenameWorkspaceSheet';
-import { PlanSheet } from '../../../../src/components/PlanSheet';
 import { CollaboratorsSheet } from '../../../../src/components/CollaboratorsSheet';
 
 const PLAN_LABEL: Record<string, string> = {
@@ -45,7 +44,6 @@ export default function SettingsScreen() {
   const [gmailSheetOpen, setGmailSheetOpen] = useState(false);
   const [syncFiltersSheetOpen, setSyncFiltersSheetOpen] = useState(false);
   const [blacklistSheetOpen, setBlacklistSheetOpen] = useState(false);
-  const [planSheetOpen, setPlanSheetOpen] = useState(false);
   const [collaboratorsSheetOpen, setCollaboratorsSheetOpen] = useState(false);
 
   const activeWorkspace = workspaces.find((w) => w.id === workspaceId) ?? null;
@@ -232,7 +230,7 @@ export default function SettingsScreen() {
                 <Ionicons name="chevron-forward" size={18} color={colors.ink4} />
               </SettingsRow>
 
-              <SettingsRow divider onPress={() => setPlanSheetOpen(true)}>
+              <SettingsRow divider onPress={() => router.push('/(app)/plan')}>
                 <Ionicons name="card-outline" size={20} color={colors.ink3} />
                 <Text style={styles.linkLabel}>Plan</Text>
                 <Text style={styles.linkMeta} numberOfLines={1}>{planLabel}</Text>
@@ -353,13 +351,6 @@ export default function SettingsScreen() {
                     },
               )
             }
-          />
-          <PlanSheet
-            visible={planSheetOpen}
-            onClose={() => setPlanSheetOpen(false)}
-            workspaceId={workspaceId}
-            client={client}
-            planLabel={planLabel}
           />
           <CollaboratorsSheet
             visible={collaboratorsSheetOpen}

@@ -1,0 +1,71 @@
+import { auth } from "@/auth";
+import { db } from "@amarnai/db";
+import { verifyAccessToken } from "@amarnai/auth";
+import { getSelectedWorkspace } from "@/lib/workspace";
+
+export type BillingAuthResult =
+  | { ok: true; userId: string }
+  | { ok: false; status: number; error: string };
+
+/**
+ * Resolve the acting user for a billing request.
+ *
+ * Primary: the web session cookie. Fallback: a Bearer JWT access token, which
+ * native mobile clients carry (they cannot share the web cookie). Enforces
+ * verify-before-pay with an authoritative DB read so a charge or billing change
+ * can never originate from an unverified (or vanished) account, even if the
+ * middleware matcher changes.
+ */
+export async function resolveBillingUser(request: Request): Promise<BillingAuthResult> {
+  let userId: string | undefined;
+
+  const session = await auth();
+  if (session?.user?.id) {
+    userId = session.user.id;
+  } else {
+    const authHeader = request.headers.get("Authorization");
+    if (authHeader?.startsWith("Bearer ")) {
+      const jwtUserId = await verifyAccessToken(authHeader.slice(7));
+      if (jwtUserId) userId = jwtUserId;
+    }
+  }
+
+  if (!userId) {
+    return { ok: false, status: 401, error: "Unauthorized" };
+  }
+
+  const userRecord = await db.user.findUnique({
+    where: { id: userId },
+    select: { emailVerified: true },
+  });
+  if (!userRecord) {
+    return { ok: false, status: 401, error: "Unauthorized" };
+  }
+  if (!userRecord.emailVerified) {
+    return { ok: false, status: 403, error: "Email not verified" };
+  }
+
+  return { ok: true, userId };
+}
+
+/**
+ * Resolve the workspace a billing request targets.
+ *
+ * Mobile clients pass `workspaceId` explicitly (no cookie-selected workspace);
+ * web falls back to the cookie selection. Returns null if the user is not a
+ * member of an explicitly requested workspace.
+ */
+export async function resolveBillingWorkspaceId(
+  userId: string,
+  requestedWorkspaceId?: string,
+): Promise<string | null> {
+  if (requestedWorkspaceId) {
+    const ws = await db.workspace.findFirst({
+      where: { id: requestedWorkspaceId, members: { some: { userId } } },
+      select: { id: true },
+    });
+    return ws?.id ?? null;
+  }
+  const selected = await getSelectedWorkspace(userId);
+  return selected.id;
+}
