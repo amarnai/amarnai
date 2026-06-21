@@ -68,9 +68,12 @@ async function login(email: string, password: string): Promise<StoredTokens> {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email, password }),
   });
+  if (res.ok) return (await res.json()) as StoredTokens;
   if (res.status === 401) throw new Error('Invalid email or password');
-  if (!res.ok) throw new Error(`Sign-in failed (${res.status})`);
-  return (await res.json()) as StoredTokens;
+  // Other failures (e.g. 403 waitlist, 400 validation) carry a user-facing
+  // message from the API; surface it verbatim so the cause is explicit.
+  const body = (await res.json().catch(() => null)) as { error?: string } | null;
+  throw new Error(body?.error ?? 'Sign-in failed. Please try again.');
 }
 
 async function register(email: string, password: string): Promise<StoredTokens> {
@@ -209,7 +212,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     });
     if (!res.ok) {
       const body = (await res.json().catch(() => null)) as { error?: string } | null;
-      throw new Error(body?.error ?? `Google sign-in failed (${res.status})`);
+      throw new Error(body?.error ?? 'Google sign-in failed. Please try again.');
     }
     const tokens = (await res.json()) as StoredTokens;
     await secureTokenStore.set(tokens);
