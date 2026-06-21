@@ -18,7 +18,7 @@ vi.mock("@/lib/stripe", () => ({
 
 vi.mock("@amarnai/db", () => ({
   db: {
-    workspace: { findFirst: vi.fn(), update: vi.fn(), create: vi.fn() },
+    workspace: { findFirst: vi.fn(), findUnique: vi.fn(), update: vi.fn(), create: vi.fn() },
     workspaceMember: { deleteMany: vi.fn() },
     user: { findUnique: vi.fn(), update: vi.fn() },
     auditLog: { create: vi.fn() },
@@ -186,6 +186,9 @@ beforeEach(() => {
   vi.mocked(db.workspace.update).mockResolvedValue({} as never);
   vi.mocked(db.workspace.create).mockResolvedValue({ id: WS_ID } as never);
   vi.mocked(db.workspace.findFirst).mockResolvedValue(null);
+  // Upgrade-path idempotency probe in provisionFromCheckoutSession: default to an
+  // unprovisioned workspace so provisioning proceeds.
+  vi.mocked(db.workspace.findUnique).mockResolvedValue(null);
   vi.mocked(db.user.findUnique).mockResolvedValue({ id: USER_ID } as never);
   vi.mocked(db.user.update).mockResolvedValue({} as never);
   vi.mocked(db.workspaceMember.deleteMany).mockResolvedValue({ count: 0 } as never);

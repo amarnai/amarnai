@@ -49,10 +49,22 @@ export interface StartCheckoutInput {
 
 /** Create a Stripe Checkout session (browser) or apply a paid->paid upgrade directly. */
 export function startCheckout(input: StartCheckoutInput) {
-  return billingRequest<{ url?: string; upgraded?: boolean }>('create-checkout-session', {
-    method: 'POST',
-    body: input,
-  });
+  return billingRequest<{ url?: string; upgraded?: boolean; sessionId?: string }>(
+    'create-checkout-session',
+    { method: 'POST', body: input },
+  );
+}
+
+/**
+ * Confirm a completed Checkout session on return from the browser so the upgrade
+ * lands without waiting on the Stripe webhook. `pending` means payment isn't
+ * finished yet (retry on the next foreground).
+ */
+export function confirmCheckout(sessionId: string) {
+  return billingRequest<{ provisioned?: boolean; pending?: boolean; plan?: string; workspaceId?: string }>(
+    'confirm-checkout',
+    { method: 'POST', body: { sessionId } },
+  );
 }
 
 /** In-app downgrade to a lower-or-equal paid tier (no payment, no browser). */

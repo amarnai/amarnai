@@ -1,10 +1,13 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { AppState } from 'react-native';
 import { makeApiClient, type ApiClient, type Workspace } from '@amarnai/api-client';
 import { API_BASE_URL } from '../config';
 import { readUserIdFromAccessToken } from './jwt';
 import { secureTokenStore, type StoredTokens } from './tokenStore';
 import { makeMobileTransport } from './transport';
 import { requestGoogleAuth } from './googleAuth';
+import { confirmCheckout } from '../billing/api';
+import { getPendingCheckout, clearPendingCheckout } from '../billing/pendingCheckout';
 
 type Status = 'loading' | 'signedOut' | 'signedIn';
 
@@ -199,6 +202,43 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       cancelled = true;
     };
   }, [bootstrap]);
+
+  // After a Stripe Checkout browser detour, confirm the session on return so the
+  // upgrade / new workspace lands immediately, independent of the Stripe webhook.
+  // Runs on sign-in and whenever the app foregrounds.
+  const refreshWorkspacesRef = useRef(refreshWorkspaces);
+  refreshWorkspacesRef.current = refreshWorkspaces;
+  useEffect(() => {
+    if (status !== 'signedIn') return;
+    let running = false;
+    const confirmPending = async () => {
+      if (running) return;
+      running = true;
+      try {
+        const sessionId = await getPendingCheckout();
+        if (!sessionId) return;
+        const res = await confirmCheckout(sessionId);
+        if (res.ok && res.data.provisioned) {
+          await clearPendingCheckout();
+          await refreshWorkspacesRef.current();
+        } else if (res.ok && res.data.pending) {
+          // Payment not finished yet — keep it for the next foreground.
+        } else {
+          // Terminal (invalid / forbidden) — stop retrying.
+          await clearPendingCheckout();
+        }
+      } catch {
+        // Network error — leave it pending for the next foreground.
+      } finally {
+        running = false;
+      }
+    };
+    void confirmPending();
+    const sub = AppState.addEventListener('change', (s) => {
+      if (s === 'active') void confirmPending();
+    });
+    return () => sub.remove();
+  }, [status]);
 
   const signIn = useCallback(
     async (email: string, password: string) => {

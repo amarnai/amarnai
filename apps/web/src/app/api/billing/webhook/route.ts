@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import type Stripe from "stripe";
 import { getStripe } from "@/lib/stripe";
-import { db, ensureInboxNode } from "@amarnai/db";
+import { db } from "@amarnai/db";
+import { provisionFromCheckoutSession } from "@/lib/billing-provision";
 
 export async function POST(request: Request) {
   const stripe = getStripe();
@@ -27,7 +28,7 @@ export async function POST(request: Request) {
   try {
     switch (event.type) {
       case "checkout.session.completed":
-        await handleCheckoutCompleted(event.data.object as Stripe.Checkout.Session);
+        await provisionFromCheckoutSession(event.data.object as Stripe.Checkout.Session);
         break;
       case "customer.subscription.updated":
         await handleSubscriptionUpdated(event.data.object as Stripe.Subscription);
@@ -67,112 +68,6 @@ function invoiceSubscriptionId(invoice: Stripe.Invoice): string | null {
     return typeof sub === "string" ? sub : (sub?.id ?? null);
   }
   return null;
-}
-
-async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
-  const stripe = getStripe();
-  const meta = session.metadata;
-  if (!meta?.action || !meta.userId) return;
-
-  const subscriptionId = session.subscription as string;
-  const customerId = session.customer as string;
-
-  // The initiating account must still exist before we provision. Otherwise the
-  // create-action workspace insert violates the ownerUserId foreign key, this
-  // handler throws, Stripe retries the event indefinitely, and a captured
-  // payment is silently lost. If the user is gone (e.g. the account was deleted
-  // between checkout and this event), log the Stripe identifiers for manual
-  // reconciliation/refund and acknowledge the event so Stripe stops retrying.
-  const initiatingUser = await db.user.findUnique({
-    where: { id: meta.userId },
-    select: { id: true },
-  });
-  if (!initiatingUser) {
-    console.error(
-      `[billing/webhook] orphaned checkout.session.completed: user ${meta.userId} not found for ` +
-        `subscription ${subscriptionId} (customer ${customerId}); manual reconciliation required`
-    );
-    return;
-  }
-
-  const subscription = await stripe.subscriptions.retrieve(subscriptionId);
-  const currentPeriodEnd = subscriptionPeriodEnd(subscription);
-  const trialEndsAt = subscription.trial_end
-    ? new Date(subscription.trial_end * 1000)
-    : null;
-  const priceId = subscription.items.data[0]?.price.id ?? null;
-  const planValue = meta.plan === "pro" ? "PRO" : "BUSINESS";
-  const cycleValue = meta.cycle === "annual" ? "ANNUAL" : "MONTHLY";
-
-  if (meta.action === "upgrade") {
-    if (!meta.workspaceId) return;
-    await db.$transaction([
-      db.workspace.update({
-        where: { id: meta.workspaceId },
-        data: {
-          plan: planValue,
-          stripeCustomerId: customerId,
-          stripeSubscriptionId: subscriptionId,
-          stripePriceId: priceId,
-          billingCycle: cycleValue,
-          trialEndsAt,
-          currentPeriodEnd,
-          cancelAtPeriodEnd: false,
-          paymentFailed: false,
-        },
-      }),
-      ...(trialEndsAt !== null
-        ? [db.user.update({ where: { id: meta.userId }, data: { trialUsed: true } })]
-        : []),
-    ]);
-    await db.auditLog.create({
-      data: {
-        workspaceId: meta.workspaceId,
-        actorType: "USER",
-        actorUserId: meta.userId,
-        eventType: "workspace.plan.upgraded",
-        entityType: "Workspace",
-        entityId: meta.workspaceId,
-        metadata: { plan: meta.plan, cycle: meta.cycle, subscriptionId },
-      },
-    });
-  } else if (meta.action === "create") {
-    const existing = await db.workspace.findFirst({
-      where: { stripeSubscriptionId: subscriptionId },
-      select: { id: true },
-    });
-    if (existing) return;
-
-    const workspace = await db.workspace.create({
-      data: {
-        name: meta.newWorkspaceName || "My Workspace",
-        ownerUserId: meta.userId,
-        plan: planValue,
-        stripeCustomerId: customerId,
-        stripeSubscriptionId: subscriptionId,
-        stripePriceId: priceId,
-        billingCycle: cycleValue,
-        trialEndsAt,
-        currentPeriodEnd,
-        members: { create: { userId: meta.userId, role: "OWNER" } },
-      },
-    });
-    if (trialEndsAt !== null) {
-      await db.user.update({ where: { id: meta.userId }, data: { trialUsed: true } });
-    }
-    await ensureInboxNode(workspace.id);
-    await db.auditLog.create({
-      data: {
-        workspaceId: workspace.id,
-        actorType: "USER",
-        actorUserId: meta.userId,
-        eventType: "workspace.created.paid",
-        entityType: "Workspace",
-        entityId: workspace.id,
-        metadata: { plan: meta.plan, cycle: meta.cycle, subscriptionId },
-      },
-    });
-  }
 }
 
 async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {

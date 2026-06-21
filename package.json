@@ -14,6 +14,7 @@
     "db:seed": "pnpm --filter @amarnai/db seed",
     "db:reset": "pnpm --filter @amarnai/db reset",
     "embeddings:refresh-taxonomy": "pnpm --filter @amarnai/db embeddings:refresh-taxonomy",
+    "stripe": "stripe listen --forward-to localhost:3000/api/billing/webhook",
     "tunnel": "node scripts/gmail-tunnel.mjs",
     "configure:pubsub": "node scripts/configure-pubsub.mjs",
     "prepare": "git config core.hooksPath .githooks || true"

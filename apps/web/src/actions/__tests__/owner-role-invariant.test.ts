@@ -25,7 +25,9 @@ const ALLOWED_OWNER_GRANT_FILES = new Set([
   "apps/web/src/actions/workspace.ts",
   "apps/web/src/lib/workspace.ts",
   "apps/web/src/app/(app)/upgrade/success/page.tsx",
-  "apps/web/src/app/api/billing/webhook/route.ts",
+  // Shared checkout provisioning (used by the webhook and confirm-checkout). The
+  // OWNER member created here is the same user stored as workspace.ownerUserId.
+  "apps/web/src/lib/billing-provision.ts",
 ]);
 
 function listSourceFiles(dir: string): string[] {

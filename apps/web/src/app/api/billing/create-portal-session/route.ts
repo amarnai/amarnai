@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { db } from "@amarnai/db";
 import { getStripe } from "@/lib/stripe";
 import { resolveBillingUser, resolveBillingWorkspaceId } from "@/lib/billing-auth";
+import { getReturnBaseUrl } from "@/lib/request-origin";
 
 // Configure the Stripe portal on first open per process — idempotent on Stripe's side.
 let _portalConfigured = false;
@@ -59,7 +60,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "No billing account found" }, { status: 404 });
   }
 
-  const baseUrl = process.env.AUTH_URL ?? "https://app.amarnai.com";
+  const baseUrl = getReturnBaseUrl(request);
 
   await configurePortal();
 

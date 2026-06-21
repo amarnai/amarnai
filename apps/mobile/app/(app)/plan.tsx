@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useFocusEffect, useRouter } from 'expo-router';
 import {
   ActivityIndicator,
@@ -23,6 +23,7 @@ import {
   startCheckout,
 } from '../../src/billing/api';
 import { selectPlanAction } from '../../src/billing/selectPlanAction';
+import { setPendingCheckout } from '../../src/billing/pendingCheckout';
 import { BackHeader } from '../../src/components/BackHeader';
 import { ScreenContainer } from '../../src/components/ScreenContainer';
 import { CenterView } from '../../src/components/CenterView';
@@ -44,7 +45,10 @@ type BannerKind = 'info' | 'warn' | 'error';
 
 export default function PlanScreen() {
   const router = useRouter();
-  const { workspaceId, client, refreshWorkspaces } = useSession();
+  const { workspaceId, client, refreshWorkspaces, workspaces } = useSession();
+  // The session's plan for the active workspace updates when a checkout is
+  // confirmed on foreground (SessionProvider); re-fetch billing state when it does.
+  const sessionPlan = workspaces.find((w) => w.id === workspaceId)?.plan;
 
   const [state, setState] = useState<BillingState | null>(null);
   const [draftQuota, setDraftQuota] = useState<QuotaInfo | null>(null);
@@ -86,6 +90,12 @@ export default function PlanScreen() {
       return () => sub.remove();
     }, [reload]),
   );
+
+  // Re-fetch billing state when the session plan changes (e.g. a checkout was
+  // confirmed on foreground), so the screen reflects the new plan without a manual refresh.
+  useEffect(() => {
+    void reload();
+  }, [sessionPlan, reload]);
 
   // Keep the session's plan label in sync after an in-app change.
   const refreshSession = useRef(refreshWorkspaces);
@@ -178,7 +188,9 @@ export default function PlanScreen() {
         }
         setPricingOpen(false);
         if (res.data.url) {
-          // New paid subscription needs payment — hand off to the browser.
+          // New paid subscription needs payment — hand off to the browser. Record
+          // the session so we can confirm provisioning on return (webhook-independent).
+          if (res.data.sessionId) await setPendingCheckout(res.data.sessionId);
           await Linking.openURL(res.data.url);
         } else {
           // Paid -> paid upgrade applied directly (proration), no browser.

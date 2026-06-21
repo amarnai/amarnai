@@ -13,6 +13,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { colors, fontWeight, fontSize, radii, space } from '@amarnai/tokens';
 import { useSession } from '../auth/session';
 import { startCheckout } from '../billing/api';
+import { setPendingCheckout } from '../billing/pendingCheckout';
 import { BottomSheet } from './BottomSheet';
 import { FormInput } from './FormInput';
 
@@ -118,9 +119,10 @@ export function NewWorkspaceSheet({ visible, onClose }: NewWorkspaceSheetProps) 
         setLoading(false);
         return;
       }
-      // Open Stripe checkout in the device browser. Workspace is provisioned by
-      // the web's Stripe webhook on success; the user returns to the app and can
-      // pull-to-refresh or re-open the workspace picker to see it.
+      // Record the session so we confirm provisioning on return from the browser
+      // (webhook-independent); the new workspace then appears after refresh.
+      if (res.data.sessionId) await setPendingCheckout(res.data.sessionId);
+      // Open Stripe checkout in the device browser.
       await Linking.openURL(res.data.url);
       handleClose();
     } catch (err) {

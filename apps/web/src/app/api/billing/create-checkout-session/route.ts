@@ -4,6 +4,7 @@ import { db } from "@amarnai/db";
 import { getStripe, getPriceId } from "@/lib/stripe";
 import { resolveBillingUser } from "@/lib/billing-auth";
 import { applyPaidPlanChange } from "@/lib/billing-mutations";
+import { getReturnBaseUrl } from "@/lib/request-origin";
 
 const bodySchema = z.object({
   workspaceId: z.string().optional(),
@@ -94,7 +95,9 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Stripe price ID not configured" }, { status: 500 });
   }
 
-  const baseUrl = process.env.AUTH_URL ?? "https://app.amarnai.com";
+  // Return to the origin the request came from so the redirect is reachable by
+  // the same browser (native mobile reaches a LAN host, not localhost/AUTH_URL).
+  const baseUrl = getReturnBaseUrl(request);
 
   const checkoutSession = await stripe.checkout.sessions.create({
     mode: "subscription",
@@ -124,5 +127,8 @@ export async function POST(request: Request) {
     allow_promotion_codes: true,
   });
 
-  return NextResponse.json({ url: checkoutSession.url });
+  // Return the session id so native clients can confirm provisioning on return
+  // from the browser (POST /api/billing/confirm-checkout) without depending on
+  // the webhook having already arrived.
+  return NextResponse.json({ url: checkoutSession.url, sessionId: checkoutSession.id });
 }
