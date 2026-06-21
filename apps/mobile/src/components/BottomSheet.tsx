@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useId, useRef, type ReactNode } from 'react';
 import {
   Animated,
+  BackHandler,
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
@@ -64,8 +65,14 @@ export function BottomSheet({ visible, onClose, children, keyboardAvoiding }: Bo
 
       const inner = (
         <TouchableOpacity style={styles.fill} activeOpacity={1} onPress={handleClose}>
-          <Animated.View style={{ transform: [{ translateY }] }}>
-            <TouchableOpacity activeOpacity={1}>{childrenRef.current}</TouchableOpacity>
+          {/* The sheet is capped and bottom-anchored here, where the parent fill
+              has a definite height — so the cap resolves and the sheet's bottom
+              edge always sits at the screen bottom regardless of content height.
+              `content` shrinks to the cap so inner scroll views can scroll. */}
+          <Animated.View style={[styles.sheet, { transform: [{ translateY }] }]}>
+            <TouchableOpacity activeOpacity={1} style={styles.content}>
+              {childrenRef.current}
+            </TouchableOpacity>
           </Animated.View>
         </TouchableOpacity>
       );
@@ -122,6 +129,18 @@ export function BottomSheet({ visible, onClose, children, keyboardAvoiding }: Bo
     if (visible) invalidate();
   });
 
+  // While open, the Android hardware back button closes the sheet instead of
+  // navigating away. Returning true consumes the event; the listener only
+  // exists while visible, so a closed sheet never swallows back navigation.
+  useEffect(() => {
+    if (!visible) return;
+    const sub = BackHandler.addEventListener('hardwareBackPress', () => {
+      handleClose();
+      return true;
+    });
+    return () => sub.remove();
+  }, [visible, handleClose]);
+
   return null;
 }
 
@@ -133,5 +152,16 @@ const styles = StyleSheet.create({
   fill: {
     flex: 1,
     justifyContent: 'flex-end',
+  },
+  // Cap the sheet so very tall content never pushes its bottom off-screen; the
+  // percentage resolves against `fill` (a definite full-screen height). The
+  // remaining sliver at the top shows the backdrop and is tappable to dismiss.
+  sheet: {
+    maxHeight: '92%',
+  },
+  // Shrink the content into the cap so a scroll view inside the sheet scrolls
+  // rather than overflowing and floating the sheet above the screen bottom.
+  content: {
+    flexShrink: 1,
   },
 });

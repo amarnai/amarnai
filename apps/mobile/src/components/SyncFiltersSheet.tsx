@@ -150,6 +150,7 @@ export function SyncFiltersSheet({
 const styles = StyleSheet.create({
   body: {
     paddingHorizontal: space.xl,
+    flexShrink: 1,
   },
   bodyContent: {
     paddingVertical: space.lg,

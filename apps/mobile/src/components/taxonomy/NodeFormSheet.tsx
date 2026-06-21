@@ -8,6 +8,7 @@ import {
   View,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
 import type {
   CreateTaxonomyNodeInput,
@@ -113,6 +114,7 @@ export function NodeFormSheet({
   onAddChild,
   onClose,
 }: NodeFormSheetProps) {
+  const { bottom } = useSafeAreaInsets();
   const isRoot = node?.isRoot ?? false;
   const rootNode = useMemo(() => nodes.find((n) => n.isRoot) ?? null, [nodes]);
 
@@ -375,7 +377,7 @@ export function NodeFormSheet({
             </ScrollView>
 
             {!readOnly ? (
-              <View style={styles.footer}>
+              <View style={[styles.footer, { paddingBottom: space.xxl + bottom }]}>
                 <TouchableOpacity
                   style={[styles.btn, styles.btnPrimary, !canSave && styles.btnDisabled]}
                   onPress={handleSubmit}
@@ -421,7 +423,10 @@ const styles = StyleSheet.create({
     backgroundColor: colors.bg,
     borderTopLeftRadius: radii.xl,
     borderTopRightRadius: radii.xl,
-    maxHeight: '92%',
+    // Shrink within the sheet's height cap (set in BottomSheet) so the form
+    // scrolls; clip rounded corners against scrolled content.
+    flexShrink: 1,
+    overflow: 'hidden',
   },
   header: {
     flexDirection: 'row',
@@ -438,7 +443,7 @@ const styles = StyleSheet.create({
     fontWeight: fontWeight.semibold,
     color: colors.ink,
   },
-  body: { paddingHorizontal: space.xl },
+  body: { paddingHorizontal: space.xl, flexShrink: 1 },
   bodyContent: { paddingVertical: space.lg, gap: space.xs },
   label: {
     fontSize: fontSize.sm,
@@ -593,7 +598,8 @@ const styles = StyleSheet.create({
   footer: {
     paddingHorizontal: space.xl,
     paddingTop: space.md,
-    paddingBottom: space.xxl,
+    // paddingBottom is applied inline (space.xxl + safe-area inset) so the save
+    // button clears the Android navigation buttons.
     borderTopWidth: 1,
     borderTopColor: colors.line2,
   },

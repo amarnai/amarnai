@@ -10,7 +10,6 @@ interface Props {
   onClose: () => void;
   title: string;
   children: ReactNode;
-  maxHeight?: boolean;
   keyboardAvoiding?: boolean;
   handle?: boolean;
 }
@@ -20,14 +19,13 @@ export function SheetLayout({
   onClose,
   title,
   children,
-  maxHeight = true,
   keyboardAvoiding,
   handle = false,
 }: Props) {
   const { bottom } = useSafeAreaInsets();
   return (
     <BottomSheet visible={visible} onClose={onClose} {...(keyboardAvoiding ? { keyboardAvoiding } : {})}>
-      <View style={[styles.sheet, maxHeight && styles.maxHeight, { paddingBottom: bottom }]}>
+      <View style={[styles.sheet, { paddingBottom: bottom }]}>
         {handle ? (
           <View style={styles.handleHeader}>
             <View style={styles.handlePill} />
@@ -52,9 +50,10 @@ const styles = StyleSheet.create({
     backgroundColor: colors.bg,
     borderTopLeftRadius: radii.xl,
     borderTopRightRadius: radii.xl,
-  },
-  maxHeight: {
-    maxHeight: '85%',
+    // Shrink within the sheet's height cap (set in BottomSheet) so a scroll view
+    // child scrolls; clip rounded corners against scrolled content.
+    flexShrink: 1,
+    overflow: 'hidden',
   },
   header: {
     flexDirection: 'row',

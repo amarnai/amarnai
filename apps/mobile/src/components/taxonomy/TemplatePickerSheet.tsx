@@ -9,7 +9,7 @@ import {
 import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
 import type { TaxonomyTemplate } from '@amarnai/core/taxonomy';
 import type { TaxonomyTransferFile } from '@amarnai/shared';
-import { BottomSheet } from '../BottomSheet';
+import { SheetLayout } from '../SheetLayout';
 
 interface TemplatePickerSheetProps {
   visible: boolean;
@@ -40,94 +40,70 @@ export function TemplatePickerSheet({
   }
 
   return (
-    <BottomSheet visible={visible} onClose={close}>
-      <View style={styles.sheet}>
-        <View style={styles.handle} />
-        <Text style={styles.title}>Start from a template</Text>
-
-        {selected ? (
-            <View style={styles.confirm}>
-              <Text style={styles.confirmText}>
-                Apply "{selected.name}"? This replaces your current taxonomy.
+    <SheetLayout visible={visible} onClose={close} title="Start from a template" handle>
+      {selected ? (
+        <View style={styles.confirm}>
+          <Text style={styles.confirmText}>
+            Apply "{selected.name}"? This replaces your current taxonomy.
+          </Text>
+          <View style={styles.confirmRow}>
+            <TouchableOpacity
+              style={[styles.btn, styles.btnGhost]}
+              onPress={() => setSelected(null)}
+              disabled={applying}
+            >
+              <Text style={styles.btnGhostText}>Back</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.btn, styles.btnPrimary]}
+              onPress={() => onApply(selected.file)}
+              disabled={applying}
+            >
+              <Text style={styles.btnPrimaryText}>
+                {applying ? 'Applying...' : 'Apply template'}
               </Text>
-              <View style={styles.confirmRow}>
-                <TouchableOpacity
-                  style={[styles.btn, styles.btnGhost]}
-                  onPress={() => setSelected(null)}
-                  disabled={applying}
-                >
-                  <Text style={styles.btnGhostText}>Back</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[styles.btn, styles.btnPrimary]}
-                  onPress={() => onApply(selected.file)}
-                  disabled={applying}
-                >
-                  <Text style={styles.btnPrimaryText}>
-                    {applying ? 'Applying...' : 'Apply template'}
+            </TouchableOpacity>
+          </View>
+        </View>
+      ) : (
+        <FlatList
+          style={styles.list}
+          data={templates}
+          keyExtractor={(t) => t.id}
+          renderItem={({ item }) => {
+            const categories = item.file.nodes.filter((n) => !n.isRoot).length;
+            const isCurrent = item.id === currentTemplateId;
+            return (
+              <TouchableOpacity
+                style={styles.row}
+                onPress={() => setSelected(item)}
+                disabled={isCurrent}
+              >
+                <View style={styles.rowHead}>
+                  <Text style={[styles.name, isCurrent && styles.nameDisabled]}>
+                    {item.name}
                   </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          ) : (
-            <FlatList
-              data={templates}
-              keyExtractor={(t) => t.id}
-              renderItem={({ item }) => {
-                const categories = item.file.nodes.filter((n) => !n.isRoot).length;
-                const isCurrent = item.id === currentTemplateId;
-                return (
-                  <TouchableOpacity
-                    style={styles.row}
-                    onPress={() => setSelected(item)}
-                    disabled={isCurrent}
-                  >
-                    <View style={styles.rowHead}>
-                      <Text style={[styles.name, isCurrent && styles.nameDisabled]}>
-                        {item.name}
-                      </Text>
-                      {isCurrent ? <Text style={styles.currentTag}>Current</Text> : null}
-                    </View>
-                    <Text
-                      style={[styles.desc, isCurrent && styles.descDisabled]}
-                      numberOfLines={2}
-                    >
-                      {item.description}
-                    </Text>
-                    <Text style={styles.count}>{categories} categories</Text>
-                  </TouchableOpacity>
-                );
-              }}
-            />
-          )}
-      </View>
-    </BottomSheet>
+                  {isCurrent ? <Text style={styles.currentTag}>Current</Text> : null}
+                </View>
+                <Text
+                  style={[styles.desc, isCurrent && styles.descDisabled]}
+                  numberOfLines={2}
+                >
+                  {item.description}
+                </Text>
+                <Text style={styles.count}>{categories} categories</Text>
+              </TouchableOpacity>
+            );
+          }}
+        />
+      )}
+    </SheetLayout>
   );
 }
 
 const styles = StyleSheet.create({
-  sheet: {
-    backgroundColor: colors.bg,
-    borderTopLeftRadius: radii.xl,
-    borderTopRightRadius: radii.xl,
-    paddingTop: space.md,
-    paddingBottom: space.xxl,
-    maxHeight: '70%',
-  },
-  handle: {
-    alignSelf: 'center',
-    width: 36,
-    height: 4,
-    borderRadius: radii.full,
-    backgroundColor: colors.line3,
-    marginBottom: space.md,
-  },
-  title: {
-    fontSize: fontSize.xl,
-    fontWeight: fontWeight.semibold,
-    color: colors.ink,
-    paddingHorizontal: space.xl,
-    paddingBottom: space.md,
+  list: {
+    flexShrink: 1,
   },
   row: {
     paddingHorizontal: space.xl,

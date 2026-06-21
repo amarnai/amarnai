@@ -25,6 +25,7 @@ export function WorkspacePicker({
   return (
     <SheetLayout visible={visible} onClose={onClose} title="Workspaces" handle>
       <FlatList
+        style={styles.list}
         data={workspaces}
         keyExtractor={(w) => w.id}
         renderItem={({ item }) => {
@@ -56,6 +57,9 @@ export function WorkspacePicker({
 }
 
 const styles = StyleSheet.create({
+  list: {
+    flexShrink: 1,
+  },
   row: {
     flexDirection: 'row',
     alignItems: 'center',

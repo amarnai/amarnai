@@ -9,6 +9,7 @@ import {
   View,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { colors, fontWeight, fontSize, radii, space } from '@amarnai/tokens';
 import { useSession } from '../auth/session';
 import { startCheckout } from '../billing/api';
@@ -47,6 +48,7 @@ interface NewWorkspaceSheetProps {
 
 export function NewWorkspaceSheet({ visible, onClose }: NewWorkspaceSheetProps) {
   const { userId, workspaces, client, refreshWorkspaces } = useSession();
+  const { bottom } = useSafeAreaInsets();
 
   // Refresh workspaces on open so `plan` is always fresh (it was added to the
   // API response and may not be in a session bootstrapped against an older build).
@@ -222,7 +224,7 @@ export function NewWorkspaceSheet({ visible, onClose }: NewWorkspaceSheetProps) 
           </ScrollView>
 
           {/* Footer */}
-          <View style={styles.footer}>
+          <View style={[styles.footer, { paddingBottom: space.lg + bottom }]}>
             <TouchableOpacity style={styles.cancelBtn} onPress={handleClose} disabled={loading}>
               <Text style={styles.cancelBtnText}>Cancel</Text>
             </TouchableOpacity>
@@ -254,7 +256,10 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: radii.xl,
     borderTopRightRadius: radii.xl,
     paddingTop: space.md,
-    maxHeight: '85%',
+    // Shrink within the sheet's height cap (set in BottomSheet) so the body
+    // scrolls while the footer stays pinned; clip rounded corners.
+    flexShrink: 1,
+    overflow: 'hidden',
   },
   handle: {
     alignSelf: 'center',
@@ -273,6 +278,7 @@ const styles = StyleSheet.create({
   },
   scroll: {
     flexGrow: 0,
+    flexShrink: 1,
   },
   scrollContent: {
     paddingHorizontal: space.xl,
