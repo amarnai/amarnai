@@ -68,7 +68,6 @@ export function EditNameSheet({ visible, onClose, client, currentName, onSaved }
             placeholderTextColor={colors.ink4}
             maxLength={100}
             editable={!saving}
-            autoFocus
             autoCapitalize="words"
             returnKeyType="done"
             onSubmitEditing={() => void handleSave()}

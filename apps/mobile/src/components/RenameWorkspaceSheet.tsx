@@ -64,7 +64,6 @@ export function RenameWorkspaceSheet({
           placeholder="Workspace name"
           maxLength={100}
           editable={!saving}
-          autoFocus
           returnKeyType="done"
           onSubmitEditing={() => void handleSave()}
         />

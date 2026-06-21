@@ -11,8 +11,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { colors, fontWeight, fontSize, radii, space } from '@amarnai/tokens';
 import { useSession } from '../auth/session';
-import { secureTokenStore } from '../auth/tokenStore';
-import { WEB_APP_URL } from '../config';
+import { startCheckout } from '../billing/api';
 import { BottomSheet } from './BottomSheet';
 import { FormInput } from './FormInput';
 
@@ -104,44 +103,23 @@ export function NewWorkspaceSheet({ visible, onClose }: NewWorkspaceSheetProps) 
     }
 
     // Paid plan: create a Stripe checkout session via the web's billing endpoint.
-    // The mobile carries a signed JWT; the endpoint accepts Bearer auth alongside
-    // the web's cookie session.
     try {
-      const tokens = await secureTokenStore.get();
-      const res = await fetch(`${WEB_APP_URL}/api/billing/create-checkout-session`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(tokens?.accessToken ? { Authorization: `Bearer ${tokens.accessToken}` } : {}),
-        },
-        body: JSON.stringify({
-          action: 'create',
-          plan: selectedPlan,
-          cycle,
-          newWorkspaceName: trimmed,
-        }),
+      const res = await startCheckout({
+        action: 'create',
+        plan: selectedPlan,
+        cycle,
+        newWorkspaceName: trimmed,
       });
 
-      // The endpoint returns JSON on success and for handled errors, but an
-      // unconfigured Stripe (no STRIPE_SECRET_KEY) surfaces as a 500 with a
-      // non-JSON body. Read the real reason rather than masking it.
-      const raw = await res.text();
-      let data: { url?: string; error?: string } = {};
-      try {
-        data = JSON.parse(raw) as { url?: string; error?: string };
-      } catch {
-        data = {};
-      }
-
-      if (!res.ok || !data.url) {
-        setError(data.error ?? `Could not start checkout (${res.status}). Please try again.`);
+      if (!res.ok || !res.data.url) {
+        setError(res.data.error ?? `Could not start checkout (${res.status}). Please try again.`);
         setLoading(false);
         return;
       }
       // Open Stripe checkout in the device browser. Workspace is provisioned by
       // the web's Stripe webhook on success; the user returns to the app and can
       // pull-to-refresh or re-open the workspace picker to see it.
-      await Linking.openURL(data.url);
+      await Linking.openURL(res.data.url);
       handleClose();
     } catch (err) {
       setError(
@@ -212,7 +190,6 @@ export function NewWorkspaceSheet({ visible, onClose }: NewWorkspaceSheetProps) 
               editable={!loading}
               returnKeyType="done"
               onSubmitEditing={() => void handleSubmit()}
-              autoFocus
             />
 
             {/* Billing cycle toggle — only for paid plans, mirrors "plans-seg" */}
