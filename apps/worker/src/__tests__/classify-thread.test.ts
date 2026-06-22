@@ -11,6 +11,7 @@ const {
   mockBuildThreadEmbeddingText,
   mockGetThread,
   mockCountRecurringThreadSorts,
+  mockNotifyThreadNeedsAttention,
 } = vi.hoisted(() => ({
   mockEmbed: vi.fn(),
   mockSortThreadByEmbedding: vi.fn(),
@@ -20,6 +21,7 @@ const {
   mockBuildThreadEmbeddingText: vi.fn(),
   mockGetThread: vi.fn(),
   mockCountRecurringThreadSorts: vi.fn(),
+  mockNotifyThreadNeedsAttention: vi.fn(),
 }));
 
 // ─── Mocks ────────────────────────────────────────────────────────────────────
@@ -85,6 +87,10 @@ vi.mock("bullmq", () => ({
 
 vi.mock("../redis.js", () => ({ redisConnection: {} }));
 vi.mock("../queues.js", () => ({ QUEUE_CLASSIFY_THREAD: "classify-thread" }));
+
+vi.mock("../notifications/notify-threads.js", () => ({
+  notifyThreadNeedsAttention: mockNotifyThreadNeedsAttention,
+}));
 
 // Retry-dedup is a pass-through here: every test drives the real embed mock.
 // Dedup behavior itself is covered in ai-dedup.test.ts.
@@ -156,6 +162,7 @@ const BASE_SORT_RESULT = {
   needsHumanReview: false,
   decisionSource: "embedding",
   updatedNodeEmbeddings: [],
+  failedOpenOnError: false,
 };
 
 // ─── Setup ────────────────────────────────────────────────────────────────────
@@ -186,6 +193,7 @@ beforeEach(() => {
   mockSortThreadByEmbedding.mockResolvedValue(BASE_SORT_RESULT);
   mockAnalyzeThreadTriage.mockResolvedValue(null);
   mockClassifyTriageByEmbedding.mockResolvedValue(null);
+  mockNotifyThreadNeedsAttention.mockResolvedValue(undefined);
 
   // Default: strong taxonomy (3 non-root nodes).
   vi.mocked(db.taxonomyNode.findMany).mockResolvedValue(makeNodes(3) as never);
@@ -324,6 +332,50 @@ describe("createClassifyThreadWorker — UNCLASSIFIED detection", () => {
         data: expect.objectContaining({ triageStatus: "NEEDS_REVIEW" }),
       })
     );
+  });
+});
+
+// ─── Needs-attention push (fail-open suppression) ──────────────────────────────
+
+describe("createClassifyThreadWorker — needs-attention push", () => {
+  it("pushes when NEEDS_REVIEW comes from a real quality-gate decision", async () => {
+    mockSortThreadByEmbedding.mockResolvedValue({
+      ...BASE_SORT_RESULT,
+      finalNodeId: "node-1",
+      needsHumanReview: true,
+      failedOpenOnError: false,
+    });
+
+    createClassifyThreadWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID, emailThreadId: THREAD_ID }));
+
+    expect(mockNotifyThreadNeedsAttention).toHaveBeenCalledOnce();
+  });
+
+  it("does NOT push when NEEDS_REVIEW is an LLM-error fail-open", async () => {
+    // inbox_fallback on LLM error: finalNodeId null → not the root, needsHumanReview
+    // true → triageStatus NEEDS_REVIEW, but failedOpenOnError suppresses the push.
+    mockSortThreadByEmbedding.mockResolvedValue({
+      ...BASE_SORT_RESULT,
+      finalNodeId: "node-1",
+      needsHumanReview: true,
+      decisionSource: "inbox_fallback",
+      failedOpenOnError: true,
+    });
+
+    createClassifyThreadWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID, emailThreadId: THREAD_ID }));
+
+    // Thread still flips to NEEDS_REVIEW (visible in-app) ...
+    expect(db.emailThread.update).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({ triageStatus: "NEEDS_REVIEW" }),
+      })
+    );
+    // ... but the device push is suppressed to avoid an outage push-storm.
+    expect(mockNotifyThreadNeedsAttention).not.toHaveBeenCalled();
   });
 });
 

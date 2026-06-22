@@ -13,6 +13,7 @@ import {
   snapshotToThreadMessages,
   EmbeddingModelNotFoundError,
   LLMAuthenticationError,
+  LLMRequestError,
 } from "@amarnai/ai";
 import type { EmbeddableNode, TriageMetadata, EmbeddingTriageResult, LlmCallMemoizer } from "@amarnai/ai";
 import { GmailClient, GmailAuthError, normalizeGmailThread } from "@amarnai/gmail";
@@ -458,7 +459,18 @@ export function createClassifyThreadWorker(): Worker {
           // registered devices. Tenant-scoped + rate-limited inside the notifier.
           // Never awaited into the job result — a push failure must not fail or
           // retry classification (which is the source of truth).
-          if (triageStatus === "NEEDS_REVIEW") {
+          //
+          // Suppress the push when NEEDS_REVIEW came from an LLM-error fail-open
+          // (result.failedOpenOnError): an outage flips many threads to review at
+          // once, and pushing each would storm every user's devices for what is a
+          // transient infrastructure problem, not a real triage signal. The thread
+          // is still visible in-app and re-sorts cleanly once the provider recovers.
+          if (result.failedOpenOnError) {
+            console.warn(
+              `[classify-thread] workspace=${workspaceId} thread=${emailThreadId} fail-open to review on LLM error — suppressing needs-attention push`,
+            );
+          }
+          if (triageStatus === "NEEDS_REVIEW" && !result.failedOpenOnError) {
             void notifyThreadNeedsAttention({
               workspaceId,
               emailThreadId,
@@ -508,6 +520,16 @@ export function createClassifyThreadWorker(): Worker {
           // fail permanently after one attempt.
           console.error(
             `[classify-thread] LLM auth failed — failing thread ${emailThreadId} (workspace ${workspaceId}) without retry: ${err.message}`,
+          );
+          throw new UnrecoverableError(err.message);
+        }
+        if (err instanceof LLMRequestError) {
+          // The LLM API rejected the request itself (400/403/404/422) — a
+          // deterministic fault (bad model, malformed body) that recurs on an
+          // identical retry. Fail permanently rather than burn attempts/cost.
+          // (408/429 are NOT mapped to this error, so they still retry.)
+          console.error(
+            `[classify-thread] LLM request rejected (${err.status}) — failing thread ${emailThreadId} (workspace ${workspaceId}) without retry: ${err.message}`,
           );
           throw new UnrecoverableError(err.message);
         }

@@ -1,7 +1,7 @@
 export type { AIProvider, AIProviderConfig, TaxonomyNodeInput, TaxonomyEdgeInput, ThreadMessage, LlmCallMemoizer } from "./types.js";
 export { getAIProviderConfig, getRoutingAIProviderConfig, getDraftAIProviderConfig, getEmbeddingProviderConfig } from "./config.js";
 export { createAIProvider } from "./providers/create-llm.js";
-export { LLMAuthenticationError } from "./providers/frontier.js";
+export { LLMAuthenticationError, LLMRequestError } from "./providers/frontier.js";
 export { selectCandidateNodes, tokenize, MAX_CANDIDATE_PATHS } from "./selection/candidate-selector.js";
 export type { EmailInput, CandidateNode, CandidateNodeResult } from "./selection/candidate-selector.js";
 export { buildCandidateNodePrompt } from "./selection/prompt.js";

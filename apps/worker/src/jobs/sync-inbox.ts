@@ -214,6 +214,52 @@ async function recoverFailedThreads(workspaceId: string, plan: string): Promise<
   }
 }
 
+/** A thread with classifyingAt older than this is treated as stuck "Sorting…". */
+const STALE_CLASSIFYING_MS = 15 * 60 * 1000;
+
+/**
+ * Re-enqueue threads stuck "Sorting…" because classifyingAt was stamped but the
+ * job never cleared it (addBulk failed, or the worker died before the job's
+ * finally ran). Normal recovery skips these — its filters require
+ * classifyingAt: null — so without this they show "Sorting…" forever. A thread
+ * that is PENDING with a stale classifyingAt was provably enqueued (the stamp
+ * happens only at enqueue time), so it is not the invalid-taxonomy bulk backlog
+ * (which has classifyingAt: null) and is safe to re-enqueue. enqueueRecovery
+ * re-stamps classifyingAt and re-adds the job. Caller gates on a strong taxonomy
+ * and sorting not being paused.
+ */
+async function recoverStaleClassifyingThreads(workspaceId: string, plan: string): Promise<void> {
+  const stale = await db.emailThread.findMany({
+    where: {
+      workspaceId,
+      triageStatus: "PENDING",
+      classifyingAt: { lt: new Date(Date.now() - STALE_CLASSIFYING_MS) },
+    },
+    select: { id: true },
+    orderBy: { latestMessageAt: "desc" },
+    take: QUOTA_RECOVERY_BATCH,
+  });
+  const recovered = await enqueueRecovery(workspaceId, plan, stale, "classify_stale_recovery");
+  if (recovered > 0) {
+    console.log(`[sync-inbox] Workspace ${workspaceId} recovered ${recovered} stale classifying thread(s)`);
+  }
+}
+
+/**
+ * Run a recovery helper without letting its failure fail the sync. Recovery is a
+ * best-effort self-heal that runs after the cursor has already advanced and the
+ * main sync work has committed; a throw here (e.g. a transient DB error in a
+ * recovery query) would otherwise mark the whole sync failed and trigger a retry
+ * that re-does the main work for nothing.
+ */
+async function runRecovery(fn: () => Promise<void>): Promise<void> {
+  try {
+    await fn();
+  } catch (err) {
+    console.error("[sync-inbox] Recovery step failed (continuing):", err instanceof Error ? err.message : err);
+  }
+}
+
 // ─── Worker ───────────────────────────────────────────────────────────────────
 
 export function createSyncInboxWorker(): Worker {
@@ -357,11 +403,14 @@ export function createSyncInboxWorker(): Worker {
         // attempted and failed (classifyFailedAt set) DO auto-recover below, and
         // new live threads auto-route in real time (the upserted-thread enqueue).
 
-        // Recover quota-deferred and failed threads. Same gating as live
-        // classification (strong taxonomy, sorting not paused).
+        // Recover quota-deferred, failed, and stale-classifying threads. Same
+        // gating as live classification (strong taxonomy, sorting not paused).
+        // Each call is guarded so one recovery query failing does not fail the
+        // whole sync after its main work already ran.
         if (!sortingPaused && taxonomyStrong) {
-          await recoverQuotaBlockedThreads(workspaceId, workspace.plan);
-          await recoverFailedThreads(workspaceId, workspace.plan);
+          await runRecovery(() => recoverQuotaBlockedThreads(workspaceId, workspace.plan));
+          await runRecovery(() => recoverFailedThreads(workspaceId, workspace.plan));
+          await runRecovery(() => recoverStaleClassifyingThreads(workspaceId, workspace.plan));
         }
 
         return;
@@ -637,8 +686,9 @@ export function createSyncInboxWorker(): Worker {
       // so a transient provider/embedding/DB fault self-heals. New live threads
       // auto-route in real time (step 5 above). Same gating as live classification.
       if (!sortingPaused && taxonomyStrong) {
-        await recoverQuotaBlockedThreads(workspaceId, workspace.plan);
-        await recoverFailedThreads(workspaceId, workspace.plan);
+        await runRecovery(() => recoverQuotaBlockedThreads(workspaceId, workspace.plan));
+        await runRecovery(() => recoverFailedThreads(workspaceId, workspace.plan));
+        await runRecovery(() => recoverStaleClassifyingThreads(workspaceId, workspace.plan));
       }
 
       await job.updateProgress(100);

@@ -450,6 +450,98 @@ describe("createSyncInboxWorker — failed-thread recovery", () => {
   });
 });
 
+// ─── Stale-classifying recovery ────────────────────────────────────────────────
+
+describe("createSyncInboxWorker — stale-classifying recovery", () => {
+  // findMany returns a thread only for the stale-classifying query (PENDING with
+  // a classifyingAt range filter, and no classifyFailedAt filter).
+  function withStaleThread(id: string, classifyingAt: { lt: Date } | undefined) {
+    vi.mocked(db.emailThread.findMany).mockImplementation((args: unknown) => {
+      const where = (args as {
+        where?: { triageStatus?: string; classifyingAt?: unknown; classifyFailedAt?: unknown };
+      }).where;
+      const isStaleQuery =
+        where?.triageStatus === "PENDING" &&
+        where?.classifyingAt !== null &&
+        where?.classifyingAt !== undefined &&
+        where?.classifyFailedAt === undefined;
+      return Promise.resolve(isStaleQuery && classifyingAt ? [{ id }] : []) as never;
+    });
+  }
+
+  function staleRecoveryCall() {
+    return vi.mocked(classifyThreadQueue.addBulk).mock.calls.find((call) => {
+      const jobs = call[0] as Array<{ opts?: { deduplication?: { id?: string } } }>;
+      return jobs.some((j) => j.opts?.deduplication?.id?.includes("classify_stale_recovery"));
+    });
+  }
+
+  it("re-enqueues a thread whose classifyingAt is stale", async () => {
+    withStaleThread("s-1", { lt: new Date() });
+    vi.mocked(countRecurringThreadSorts).mockResolvedValue(0); // capacity free
+
+    createSyncInboxWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID }));
+
+    const recovery = staleRecoveryCall();
+    expect(recovery).toBeDefined();
+    const jobs = recovery![0] as Array<{ data: { source?: string } }>;
+    expect(jobs[0]!.data.source).toBe("LIVE");
+  });
+
+  it("uses a stale classifyingAt window and the PENDING status in the query", async () => {
+    withStaleThread("s-1", { lt: new Date() });
+    vi.mocked(countRecurringThreadSorts).mockResolvedValue(0);
+
+    createSyncInboxWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID }));
+
+    const staleQuery = vi.mocked(db.emailThread.findMany).mock.calls.find((c) => {
+      const where = (c[0] as {
+        where?: { triageStatus?: string; classifyingAt?: { lt?: Date }; classifyFailedAt?: unknown };
+      }).where;
+      return where?.triageStatus === "PENDING" && where?.classifyingAt != null && where?.classifyFailedAt === undefined;
+    });
+    expect(staleQuery).toBeDefined();
+    const where = (staleQuery![0] as { where: { classifyingAt: { lt: Date } } }).where;
+    // The cutoff is 15 minutes in the past.
+    const cutoff = where.classifyingAt.lt.getTime();
+    expect(Date.now() - cutoff).toBeGreaterThanOrEqual(15 * 60 * 1000 - 5_000);
+  });
+
+  it("does not recover a thread whose classifyingAt is recent (returned by the query as empty)", async () => {
+    // No thread matches the stale window → query returns nothing → no recovery.
+    withStaleThread("s-1", undefined);
+    vi.mocked(countRecurringThreadSorts).mockResolvedValue(0);
+
+    createSyncInboxWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID }));
+
+    expect(staleRecoveryCall()).toBeUndefined();
+  });
+});
+
+// ─── Recovery is non-fatal to sync ──────────────────────────────────────────────
+
+describe("createSyncInboxWorker — recovery non-fatal", () => {
+  it("still resolves when a recovery query throws", async () => {
+    // emailThread.findMany backs all three recovery helpers; reject it so each
+    // recovery step throws. The sync must still resolve (recovery is guarded).
+    vi.mocked(db.emailThread.findMany).mockRejectedValue(new Error("db down"));
+    vi.mocked(countRecurringThreadSorts).mockResolvedValue(0);
+
+    createSyncInboxWorker();
+    const processor = getProcessor();
+    await expect(processor(makeJob({ workspaceId: WS_ID }))).resolves.toBeUndefined();
+
+    // The main sync work still committed: the cursor advanced.
+    expect(db.providerSyncState.update).toHaveBeenCalled();
+  });
+});
+
 // ─── Disconnect-awareness ─────────────────────────────────────────────────────
 
 describe("createSyncInboxWorker — disconnect-awareness", () => {

@@ -381,6 +381,9 @@ describe("embedding sorter — poor taxonomy fit routes to Inbox review", () => 
     expect(result.finalNodeId).toBeNull();
     expect(result.needsHumanReview).toBe(true);
     expect(result.decisionSource).toBe("inbox_fallback");
+    // The quality gate is a legitimate review decision, not an error fail-open,
+    // so the push must NOT be suppressed.
+    expect(result.failedOpenOnError).toBe(false);
   });
 
   it("explanation mentions quality threshold", async () => {
@@ -470,6 +473,8 @@ describe("embedding sorter — rival root branches trigger LLM resolver", () => 
     expect(result.decisionSource).toBe("inbox_fallback");
     expect(result.needsHumanReview).toBe(true);
     expect(result.explanation).toMatch(/temporarily unavailable/);
+    // An LLM-error fallback is flagged so the caller can suppress the push.
+    expect(result.failedOpenOnError).toBe(true);
   });
 
   it("rethrows the LLM error by default (so BullMQ can retry)", async () => {

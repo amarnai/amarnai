@@ -139,6 +139,15 @@ export type EmbeddingSortResult = {
   updatedNodeEmbeddings: UpdatedNodeEmbedding[];
   /** Thread embedding vector computed during sorting. Empty array if embedding failed or was never attempted. */
   threadEmbeddingVector: number[];
+  /**
+   * True only when this result is an inbox fallback produced by catching a
+   * thrown LLM error (fail-open on the final retry). It is false for every
+   * deliberate fallback — the quality gate, an LLM that declined to resolve
+   * ambiguity, a missing root, a failed embedding. Lets the caller distinguish
+   * a legitimate "needs review" (notify the user) from an outage-driven one (do
+   * not push, or a provider blip would push-storm the whole inbox).
+   */
+  failedOpenOnError: boolean;
 };
 
 // ─── Internal helpers ─────────────────────────────────────────────────────────
@@ -156,7 +165,9 @@ function makeInboxFallback(
   rawSimilarities: Record<string, number>,
   subtreeScores: Record<string, number>,
   updatedNodeEmbeddings: UpdatedNodeEmbedding[],
-  threadEmbeddingVector: number[] = []
+  threadEmbeddingVector: number[] = [],
+  // Only the LLM-error catch sets this; every deliberate fallback leaves it false.
+  failedOpenOnError = false
 ): EmbeddingSortResult {
   return {
     finalNodeId: null,
@@ -169,6 +180,7 @@ function makeInboxFallback(
     subtreeScores,
     updatedNodeEmbeddings,
     threadEmbeddingVector,
+    failedOpenOnError,
   };
 }
 
@@ -552,7 +564,8 @@ export async function sortThreadByEmbedding(
           rawSimsRecord,
           subtreeScoresRecord,
           updatedNodeEmbeddings,
-          threadVector
+          threadVector,
+          true
         );
       }
 
@@ -576,6 +589,7 @@ export async function sortThreadByEmbedding(
           subtreeScores: subtreeScoresRecord,
           updatedNodeEmbeddings,
           threadEmbeddingVector: threadVector,
+          failedOpenOnError: false,
         };
       }
 
@@ -685,7 +699,7 @@ export async function sortThreadByEmbedding(
             );
             return makeInboxFallback(
               LLM_ERROR_FALLBACK_EXPLANATION,
-              rawSimsRecord, subtreeScoresRecord, updatedNodeEmbeddings, threadVector
+              rawSimsRecord, subtreeScoresRecord, updatedNodeEmbeddings, threadVector, true
             );
           }
           if (!llmResult.needsHumanReview && llmResult.finalNodeId) {
@@ -704,6 +718,7 @@ export async function sortThreadByEmbedding(
               subtreeScores: subtreeScoresRecord,
               updatedNodeEmbeddings,
               threadEmbeddingVector: threadVector,
+              failedOpenOnError: false,
             };
           }
           return makeInboxFallback(
@@ -748,6 +763,7 @@ export async function sortThreadByEmbedding(
       subtreeScores: subtreeScoresRecord,
       updatedNodeEmbeddings,
       threadEmbeddingVector: threadVector,
+      failedOpenOnError: false,
     };
   }
 
@@ -775,5 +791,6 @@ export async function sortThreadByEmbedding(
     subtreeScores: subtreeScoresRecord,
     updatedNodeEmbeddings,
     threadEmbeddingVector: threadVector,
+    failedOpenOnError: false,
   };
 }
