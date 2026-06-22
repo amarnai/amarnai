@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'expo-router';
-import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, space, fontSize, fontWeight, radii } from '@amarnai/tokens';
 import { useSession } from '../../src/auth/session';
@@ -18,6 +18,42 @@ export default function AccountScreen() {
 
   const [editNameOpen, setEditNameOpen] = useState(false);
   const [deletePending, setDeletePending] = useState(false);
+
+  // Weekly reminder preference. Loaded from /auth/me (the session `user` is
+  // derived from workspace membership and doesn't carry it). null while loading.
+  const [remindersEnabled, setRemindersEnabled] = useState<boolean | null>(null);
+  const [remindersSaving, setRemindersSaving] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+    void client
+      .me()
+      .then((me) => {
+        if (active) setRemindersEnabled(me.lifecycleEmailsEnabled);
+      })
+      .catch(() => {
+        /* leave null — the row simply stays disabled until it loads */
+      });
+    return () => {
+      active = false;
+    };
+  }, [client]);
+
+  function toggleReminders(next: boolean) {
+    const previous = remindersEnabled;
+    setRemindersEnabled(next); // optimistic
+    setRemindersSaving(true);
+    void (async () => {
+      try {
+        await client.updateMe({ lifecycleEmailsEnabled: next });
+      } catch (err) {
+        setRemindersEnabled(previous ?? null); // revert on failure
+        Alert.alert('Update failed', toUserMessage(err, 'Could not update your reminder setting.'));
+      } finally {
+        setRemindersSaving(false);
+      }
+    })();
+  }
 
   function confirmDelete() {
     Alert.alert(
@@ -83,6 +119,22 @@ export default function AccountScreen() {
             <Ionicons name="mail-outline" size={20} color={colors.ink3} />
             <Text style={styles.linkLabel}>Email</Text>
             <Text style={styles.linkMeta} numberOfLines={1}>{user?.email ?? ''}</Text>
+          </SettingsRow>
+        </SettingsGroup>
+
+        {/* Notifications */}
+        <SectionTitle>Notifications</SectionTitle>
+        <SettingsGroup>
+          <SettingsRow>
+            <Ionicons name="notifications-outline" size={20} color={colors.ink3} />
+            <Text style={[styles.linkLabel, styles.linkLabelGrow]}>Weekly inbox reminder</Text>
+            <Switch
+              value={remindersEnabled ?? false}
+              onValueChange={toggleReminders}
+              disabled={remindersEnabled === null || remindersSaving}
+              trackColor={{ false: colors.line2, true: colors.accentLine }}
+              thumbColor={remindersEnabled ? colors.accent : colors.ink4}
+            />
           </SettingsRow>
         </SettingsGroup>
 

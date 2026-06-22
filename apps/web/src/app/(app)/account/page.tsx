@@ -7,7 +7,7 @@ export default async function AccountPage() {
 
   const dbUser = await db.user.findUnique({
     where: { id: user.id },
-    select: { name: true, email: true },
+    select: { name: true, email: true, lifecycleEmailsEnabled: true },
   });
 
   return (
@@ -16,6 +16,7 @@ export default async function AccountPage() {
       <AccountForm
         currentName={dbUser?.name ?? null}
         email={dbUser?.email ?? user.email}
+        lifecycleEmailsEnabled={dbUser?.lifecycleEmailsEnabled ?? true}
       />
     </>
   );

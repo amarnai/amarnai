@@ -16,6 +16,15 @@ export type CurrentUser = {
   email: string;
   name: string | null;
   emailVerified: boolean;
+  // Whether the user receives weekly inbox-reminder lifecycle emails.
+  lifecycleEmailsEnabled: boolean;
+};
+
+// Partial profile/preferences update for PATCH /auth/me. Only the provided
+// fields are changed server-side.
+export type UpdateCurrentUserInput = {
+  name?: string;
+  lifecycleEmailsEnabled?: boolean;
 };
 
 // Body-only inputs; workspaceId is carried in the URL path (differs from shared).

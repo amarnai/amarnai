@@ -1,13 +1,39 @@
 "use client";
 
-import { useActionState, useState } from "react";
-import { updateNameAction, deleteAccountAction, signOutAction } from "@/actions/auth";
+import { useActionState, useState, useTransition } from "react";
+import {
+  updateNameAction,
+  deleteAccountAction,
+  signOutAction,
+  setLifecycleEmailsAction,
+} from "@/actions/auth";
 
-export function AccountForm({ currentName, email }: { currentName: string | null; email: string }) {
+export function AccountForm({
+  currentName,
+  email,
+  lifecycleEmailsEnabled,
+}: {
+  currentName: string | null;
+  email: string;
+  lifecycleEmailsEnabled: boolean;
+}) {
   const [nameValue, setNameValue] = useState(currentName ?? "");
   const [nameState, nameAction, namePending] = useActionState(updateNameAction, null);
   const [deleteState, deleteAction, deletePending] = useActionState(deleteAccountAction, null);
   const [confirmDelete, setConfirmDelete] = useState(false);
+
+  // Instant-save toggle (no separate Save button) to keep the interaction to a
+  // single click. Optimistic local state reverts if the action fails.
+  const [remindersEnabled, setRemindersEnabled] = useState(lifecycleEmailsEnabled);
+  const [remindersPending, startReminders] = useTransition();
+
+  function toggleReminders(next: boolean) {
+    setRemindersEnabled(next);
+    startReminders(async () => {
+      const result = await setLifecycleEmailsAction(next);
+      if (result?.error) setRemindersEnabled(!next); // revert on failure
+    });
+  }
 
   return (
     <>
@@ -43,6 +69,19 @@ export function AccountForm({ currentName, email }: { currentName: string | null
             {namePending ? "Saving…" : "Save changes"}
           </button>
         </form>
+      </section>
+
+      <section className="settings-section">
+        <h2>Email reminders</h2>
+        <label className="settings-toggle">
+          <input
+            type="checkbox"
+            checked={remindersEnabled}
+            disabled={remindersPending}
+            onChange={(e) => toggleReminders(e.target.checked)}
+          />
+          Send me a weekly reminder when my Amarnai inbox needs attention.
+        </label>
       </section>
 
       <section className="settings-section">

@@ -42,6 +42,7 @@ export type {
   OkResult,
   QuotaInfo,
   CurrentUser,
+  UpdateCurrentUserInput,
   DevicePlatform,
   RegisterPushDeviceInput,
   RegisterPushDeviceResult,

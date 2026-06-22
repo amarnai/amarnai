@@ -34,7 +34,7 @@ export function EditNameSheet({ visible, onClose, client, currentName, onSaved }
     setSaving(true);
     setError(null);
     try {
-      await client.updateMe(trimmed);
+      await client.updateMe({ name: trimmed });
       await onSaved();
       onClose();
     } catch (err) {

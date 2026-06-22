@@ -5,4 +5,5 @@ export {
   sendVerificationEmail,
   sendWorkspaceInvitationEmail,
   sendPasswordResetEmail,
+  sendWelcomeEmail,
 } from "@amarnai/email";

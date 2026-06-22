@@ -23,6 +23,7 @@ export const DEDUP_CLASSIFY_UNCLASSIFIED = "classify_unclassified";
 export const QUEUE_SYNC_INBOX = "sync-inbox";
 export const QUEUE_CLASSIFY_THREAD = "classify-thread";
 export const QUEUE_BACKFILL_INBOX = "backfill-inbox";
+export const QUEUE_LIFECYCLE_EMAIL = "lifecycle-email";
 
 // ─── Job data types ───────────────────────────────────────────────────────────
 
@@ -65,4 +66,14 @@ export type ClassifyThreadJobData = {
 /** Payload for a `backfill-inbox` job. One job per workspace, run once. */
 export type BackfillInboxJobData = {
   workspaceId: string;
+};
+
+/**
+ * Payload for a `lifecycle-email` job. One job per due user per weekly cycle.
+ * The worker aggregates the user's inbox status across all their workspaces and
+ * sends a single reminder digest (or skips the send when there is nothing to
+ * report), then stamps `User.lifecycleEmailSentAt`.
+ */
+export type LifecycleEmailJobData = {
+  userId: string;
 };

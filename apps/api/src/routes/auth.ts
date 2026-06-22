@@ -219,6 +219,31 @@ auth.post("/auth/logout", async (c) => {
   return c.json({ ok: true });
 });
 
+// Shared shape for the "me" endpoints so GET and PATCH never drift.
+const ME_SELECT = {
+  id: true,
+  email: true,
+  name: true,
+  emailVerified: true,
+  lifecycleEmailsEnabled: true,
+} as const;
+
+function toMeResponse(user: {
+  id: string;
+  email: string;
+  name: string | null;
+  emailVerified: Date | null;
+  lifecycleEmailsEnabled: boolean;
+}) {
+  return {
+    userId: user.id,
+    email: user.email,
+    name: user.name,
+    emailVerified: user.emailVerified !== null,
+    lifecycleEmailsEnabled: user.lifecycleEmailsEnabled,
+  };
+}
+
 // Authenticated identity for the current access token. There is no other "me"
 // endpoint; native clients use this to resolve the signed-in user and to read
 // emailVerified for the post-sign-up verification gate.
@@ -226,36 +251,40 @@ auth.get("/auth/me", async (c) => {
   const userId = c.get("userId") as string | undefined;
   if (!userId) return c.json({ error: "Unauthorized" }, 401);
 
-  const user = await db.user.findUnique({
-    where: { id: userId },
-    select: { id: true, email: true, name: true, emailVerified: true },
-  });
+  const user = await db.user.findUnique({ where: { id: userId }, select: ME_SELECT });
   if (!user) return c.json({ error: "User not found" }, 404);
 
-  return c.json({
-    userId: user.id,
-    email: user.email,
-    name: user.name,
-    emailVerified: user.emailVerified !== null,
-  });
+  return c.json(toMeResponse(user));
 });
 
-// Update the authenticated user's display name.
+// Update the authenticated user's profile/preferences. Partial: only the fields
+// present in the body are changed, so a client can toggle one setting without
+// clobbering the others.
 auth.patch("/auth/me", async (c) => {
   const userId = c.get("userId") as string | undefined;
   if (!userId) return c.json({ error: "Unauthorized" }, 401);
 
   const body = await c.req.json().catch(() => null);
-  const name = typeof body?.name === "string" ? body.name.trim() : "";
-  if (name.length > 100) return c.json({ error: "Name must be 100 characters or fewer" }, 400);
+  if (!body || typeof body !== "object") return c.json({ error: "Invalid body" }, 400);
 
-  const user = await db.user.update({
-    where: { id: userId },
-    data: { name: name || null },
-    select: { id: true, email: true, name: true, emailVerified: true },
-  });
+  const data: { name?: string | null; lifecycleEmailsEnabled?: boolean } = {};
 
-  return c.json({ userId: user.id, email: user.email, name: user.name, emailVerified: user.emailVerified !== null });
+  if ("name" in body) {
+    const name = typeof body.name === "string" ? body.name.trim() : "";
+    if (name.length > 100) return c.json({ error: "Name must be 100 characters or fewer" }, 400);
+    data.name = name || null;
+  }
+
+  if ("lifecycleEmailsEnabled" in body) {
+    if (typeof body.lifecycleEmailsEnabled !== "boolean") {
+      return c.json({ error: "lifecycleEmailsEnabled must be a boolean" }, 400);
+    }
+    data.lifecycleEmailsEnabled = body.lifecycleEmailsEnabled;
+  }
+
+  const user = await db.user.update({ where: { id: userId }, data, select: ME_SELECT });
+
+  return c.json(toMeResponse(user));
 });
 
 // Permanently delete the authenticated user's account and all owned data.

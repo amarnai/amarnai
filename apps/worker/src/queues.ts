@@ -3,12 +3,13 @@ import {
   QUEUE_SYNC_INBOX,
   QUEUE_CLASSIFY_THREAD,
   QUEUE_BACKFILL_INBOX,
+  QUEUE_LIFECYCLE_EMAIL,
 } from "@amarnai/queue";
 import { redisConnection } from "./redis.js";
 
 // Re-export so job files can import names and types from one place.
-export { QUEUE_SYNC_INBOX, QUEUE_CLASSIFY_THREAD, QUEUE_BACKFILL_INBOX } from "@amarnai/queue";
-export type { SyncInboxJobData, ClassifyThreadJobData, ClassifyThreadSource, BackfillInboxJobData } from "@amarnai/queue";
+export { QUEUE_SYNC_INBOX, QUEUE_CLASSIFY_THREAD, QUEUE_BACKFILL_INBOX, QUEUE_LIFECYCLE_EMAIL } from "@amarnai/queue";
+export type { SyncInboxJobData, ClassifyThreadJobData, ClassifyThreadSource, BackfillInboxJobData, LifecycleEmailJobData } from "@amarnai/queue";
 
 // ─── Queue instances ──────────────────────────────────────────────────────────
 
@@ -52,5 +53,20 @@ export const backfillInboxQueue = new Queue(QUEUE_BACKFILL_INBOX, {
     backoff: { type: "exponential", delay: 30_000 },
     removeOnComplete: { count: 10 },
     removeOnFail: { count: 50 },
+  },
+});
+
+/**
+ * Enqueue a weekly lifecycle reminder for a single user.
+ * One job per due user per cycle; the cadence guard lives on the scheduler
+ * (User.lifecycleEmailSentAt), so a missed send is simply retried next tick.
+ */
+export const lifecycleEmailQueue = new Queue(QUEUE_LIFECYCLE_EMAIL, {
+  connection: redisConnection,
+  defaultJobOptions: {
+    attempts: 2,
+    backoff: { type: "exponential", delay: 30_000 },
+    removeOnComplete: { count: 100 },
+    removeOnFail: { count: 500 },
   },
 });

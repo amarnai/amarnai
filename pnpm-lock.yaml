@@ -332,6 +332,9 @@ importers:
       '@amarnai/db':
         specifier: workspace:*
         version: link:../../packages/db
+      '@amarnai/email':
+        specifier: workspace:*
+        version: link:../../packages/email
       '@amarnai/gmail':
         specifier: workspace:*
         version: link:../../packages/gmail
@@ -501,6 +504,9 @@ importers:
 
   packages/email:
     dependencies:
+      '@amarnai/tokens':
+        specifier: workspace:*
+        version: link:../tokens
       nodemailer:
         specifier: ^8.0.9
         version: 8.0.11

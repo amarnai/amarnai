@@ -183,6 +183,13 @@ model User {
 
   trialUsed                Boolean               @default(false)
 
+  // Weekly lifecycle reminder email. `lifecycleEmailsEnabled` is the opt-out
+  // flag (flipped by the unsubscribe link or the in-app toggle).
+  // `lifecycleEmailSentAt` is the last send, used by the worker's daily tick to
+  // enforce the weekly cadence in a restart-safe, idempotent way.
+  lifecycleEmailsEnabled   Boolean               @default(true)
+  lifecycleEmailSentAt     DateTime?
+
   ownedWorkspaces          Workspace[]
   workspaceMemberships     WorkspaceMember[]
   sentWorkspaceInvitations WorkspaceInvitation[]

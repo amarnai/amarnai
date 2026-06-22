@@ -13,7 +13,8 @@ import {
 import { createSyncInboxWorker } from "./jobs/sync-inbox.js";
 import { createClassifyThreadWorker } from "./jobs/classify-thread.js";
 import { createBackfillInboxWorker } from "./jobs/backfill-inbox.js";
-import { syncInboxQueue, backfillInboxQueue } from "./queues.js";
+import { createLifecycleEmailWorker } from "./jobs/lifecycle-email.js";
+import { syncInboxQueue, backfillInboxQueue, lifecycleEmailQueue } from "./queues.js";
 import { closePublisher } from "./redis-publisher.js";
 import { closeAiDedup } from "./ai-dedup.js";
 import { closePushBudget } from "./notifications/notify-threads.js";
@@ -122,6 +123,51 @@ async function scheduleSyncJobs(): Promise<void> {
   console.log(`[scheduler] Enqueued sync for ${connections.length} workspace(s)`);
 }
 
+// ─── Lifecycle reminder emails ─────────────────────────────────────────────────
+
+const LIFECYCLE_EMAIL_INTERVAL_MS = 7 * 24 * 60 * 60 * 1000;
+
+/**
+ * Enqueues one `lifecycle-email` job per user who is due a weekly reminder.
+ *
+ * Runs on a DAILY tick rather than a 7-day timer: a raw weekly setInterval would
+ * reset on every worker restart/redeploy and so rarely fire. Instead this tick
+ * selects users whose last send (`lifecycleEmailSentAt`) is null or older than 7
+ * days, which makes the effective cadence weekly, restart-safe, idempotent, and
+ * naturally staggered across the week. Only verified, opted-in users who belong
+ * to a workspace with an active Gmail connection are considered — dormant or
+ * disconnected accounts are never emailed. Per-user dedup prevents a duplicate
+ * job while one is already queued for the same user.
+ */
+async function scheduleLifecycleEmails(): Promise<void> {
+  const dueBefore = new Date(Date.now() - LIFECYCLE_EMAIL_INTERVAL_MS);
+  const users = await db.user.findMany({
+    where: {
+      emailVerified: { not: null },
+      lifecycleEmailsEnabled: true,
+      OR: [{ lifecycleEmailSentAt: null }, { lifecycleEmailSentAt: { lte: dueBefore } }],
+      workspaceMemberships: { some: { workspace: { gmailConnection: { status: "ACTIVE" } } } },
+    },
+    select: { id: true },
+  });
+
+  if (users.length === 0) return;
+
+  await lifecycleEmailQueue.addBulk(
+    users.map(({ id }) => ({
+      name: "lifecycle-email",
+      data: { userId: id },
+      opts: {
+        // Same pattern as sync-inbox: dedup only while a job is waiting/active for
+        // this user, so a daily tick cannot stack duplicate reminders.
+        deduplication: { id: `lifecycle-email_${id}` },
+      },
+    })),
+  );
+
+  console.log(`[lifecycle-email] Enqueued reminders for ${users.length} due user(s)`);
+}
+
 // ─── Preflight ──────────────────────────────────────────────────────────────
 
 /**
@@ -202,8 +248,9 @@ async function main(): Promise<void> {
   const syncWorker = createSyncInboxWorker();
   const classifyWorker = createClassifyThreadWorker();
   const backfillWorker = createBackfillInboxWorker();
+  const lifecycleEmailWorker = createLifecycleEmailWorker();
 
-  console.log("[worker] sync-inbox, classify-thread, and backfill-inbox workers registered");
+  console.log("[worker] sync-inbox, classify-thread, backfill-inbox, and lifecycle-email workers registered");
 
   // Run immediately on startup so the first sync doesn't wait a full interval.
   await scheduleSyncJobs();
@@ -249,6 +296,21 @@ async function main(): Promise<void> {
     reapRefreshTokens().catch((err) => console.error("[refresh-token-reaper] Failed:", err));
   }, 24 * 60 * 60 * 1000);
 
+  // ── Weekly lifecycle reminder emails ───────────────────────────────────────
+  // Enqueue due reminders on startup, then on a daily tick. The 7-day cadence is
+  // enforced per user via lifecycleEmailSentAt (see scheduleLifecycleEmails), so
+  // a daily tick gives a restart-safe weekly send rather than a fragile 7-day
+  // timer that resets on every redeploy.
+  await scheduleLifecycleEmails().catch((err) =>
+    console.error("[lifecycle-email] Failed to enqueue reminders:", err)
+  );
+
+  const lifecycleEmailHandle = setInterval(() => {
+    scheduleLifecycleEmails().catch((err) =>
+      console.error("[lifecycle-email] Failed to enqueue reminders:", err)
+    );
+  }, 24 * 60 * 60 * 1000);
+
   // ── Graceful shutdown ──────────────────────────────────────────────────────
   //
   // On SIGTERM / SIGINT:
@@ -263,16 +325,19 @@ async function main(): Promise<void> {
     clearInterval(intervalHandle);
     clearInterval(watchRenewalHandle);
     clearInterval(refreshReaperHandle);
+    clearInterval(lifecycleEmailHandle);
 
     await Promise.all([
       syncWorker.close(),
       classifyWorker.close(),
       backfillWorker.close(),
+      lifecycleEmailWorker.close(),
     ]);
 
     await Promise.all([
       syncInboxQueue.close(),
       backfillInboxQueue.close(),
+      lifecycleEmailQueue.close(),
       closePublisher(),
       closeAiDedup(),
       closePushBudget(),

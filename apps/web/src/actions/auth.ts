@@ -129,6 +129,21 @@ export async function updateNameAction(
   return { success: true };
 }
 
+// ─── Email reminder preference ─────────────────────────────────────────────────
+
+export async function setLifecycleEmailsAction(
+  enabled: boolean
+): Promise<{ error?: string; success?: boolean }> {
+  const user = await requireUser();
+
+  await db.user.update({
+    where: { id: user.id },
+    data: { lifecycleEmailsEnabled: enabled },
+  });
+
+  return { success: true };
+}
+
 // ─── Delete account ───────────────────────────────────────────────────────────
 
 export async function deleteAccountAction(): Promise<{ error?: string }> {

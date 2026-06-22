@@ -1,7 +1,7 @@
 import { vi, describe, it, expect, beforeEach } from "vitest";
 
 vi.mock("@amarnai/db", () => ({
-  db: { user: { findUnique: vi.fn() } },
+  db: { user: { findUnique: vi.fn(), update: vi.fn() } },
 }));
 
 vi.mock("@amarnai/gmail", () => ({
@@ -50,6 +50,7 @@ describe("GET /auth/me", () => {
       email: "a@b.com",
       name: "Ann",
       emailVerified: new Date(),
+      lifecycleEmailsEnabled: true,
     } as never);
 
     const res = await app.request("/auth/me", authed({ method: "GET" }, "user-1"));
@@ -60,6 +61,7 @@ describe("GET /auth/me", () => {
       email: "a@b.com",
       name: "Ann",
       emailVerified: true,
+      lifecycleEmailsEnabled: true,
     });
   });
 
@@ -89,5 +91,76 @@ describe("GET /auth/me", () => {
     const res = await app.request("/auth/me", authed({ method: "GET" }, "ghost"));
 
     expect(res.status).toBe(404);
+  });
+});
+
+describe("PATCH /auth/me", () => {
+  function mockUpdated(overrides: Record<string, unknown> = {}) {
+    vi.mocked(db.user.update).mockResolvedValue({
+      id: "user-1",
+      email: "a@b.com",
+      name: "Ann",
+      emailVerified: new Date(),
+      lifecycleEmailsEnabled: true,
+      ...overrides,
+    } as never);
+  }
+
+  it("updates only the display name when given just a name", async () => {
+    mockUpdated({ name: "Bob" });
+
+    const res = await app.request(
+      "/auth/me",
+      authed({ method: "PATCH", body: JSON.stringify({ name: "Bob" }) }, "user-1"),
+    );
+
+    expect(res.status).toBe(200);
+    expect(vi.mocked(db.user.update).mock.calls[0]![0]).toMatchObject({
+      where: { id: "user-1" },
+      data: { name: "Bob" },
+    });
+    // lifecycleEmailsEnabled must NOT be touched when absent from the body.
+    expect(vi.mocked(db.user.update).mock.calls[0]![0].data).not.toHaveProperty(
+      "lifecycleEmailsEnabled",
+    );
+  });
+
+  it("toggles lifecycleEmailsEnabled without clobbering the name", async () => {
+    mockUpdated({ lifecycleEmailsEnabled: false });
+
+    const res = await app.request(
+      "/auth/me",
+      authed(
+        { method: "PATCH", body: JSON.stringify({ lifecycleEmailsEnabled: false }) },
+        "user-1",
+      ),
+    );
+
+    expect(res.status).toBe(200);
+    expect(await res.json()).toMatchObject({ lifecycleEmailsEnabled: false });
+    const data = vi.mocked(db.user.update).mock.calls[0]![0].data;
+    expect(data).toEqual({ lifecycleEmailsEnabled: false });
+  });
+
+  it("rejects a non-boolean lifecycleEmailsEnabled", async () => {
+    const res = await app.request(
+      "/auth/me",
+      authed(
+        { method: "PATCH", body: JSON.stringify({ lifecycleEmailsEnabled: "yes" }) },
+        "user-1",
+      ),
+    );
+
+    expect(res.status).toBe(400);
+    expect(db.user.update).not.toHaveBeenCalled();
+  });
+
+  it("returns 401 without authentication", async () => {
+    const res = await app.request("/auth/me", {
+      method: "PATCH",
+      body: JSON.stringify({ name: "X" }),
+    });
+    expect(res.status).toBe(401);
+    expect(db.user.update).not.toHaveBeenCalled();
   });
 });
