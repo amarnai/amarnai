@@ -192,6 +192,7 @@ export function createSyncInboxWorker(): Worker {
             gmailAddress: true,
             googleSubjectId: true,
             encryptedRefreshToken: true,
+            oauthClient: true,
             status: true,
           },
         }),
@@ -250,7 +251,7 @@ export function createSyncInboxWorker(): Worker {
 
       // ── 3. Discover changed thread IDs ──────────────────────────────────────
 
-      const client = new GmailClient(connection.encryptedRefreshToken);
+      const client = new GmailClient(connection.encryptedRefreshToken, connection.oauthClient);
 
       // ── 3a. One-time backfill: stamp gmailIsImportant on existing threads ────
       //

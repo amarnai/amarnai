@@ -104,6 +104,8 @@ gmailConnection.post("/workspaces/:workspaceId/gmail-connection", async (c) => {
       accessToken,
       refreshToken,
       grantedScopes,
+      // Tokens were minted on-device by the Android public OAuth client.
+      oauthClient: "MOBILE",
     });
   } catch (err) {
     if (err instanceof GmailApiError) {

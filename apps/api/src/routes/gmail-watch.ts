@@ -34,14 +34,14 @@ gmailWatch.post("/workspaces/:workspaceId/register-gmail-watch", async (c) => {
 
   const connection = await db.gmailConnection.findUnique({
     where: { workspaceId },
-    select: { encryptedRefreshToken: true, status: true, gmailAddress: true },
+    select: { encryptedRefreshToken: true, oauthClient: true, status: true, gmailAddress: true },
   });
 
   if (!connection || connection.status !== "ACTIVE") {
     return c.json({ error: "No active Gmail connection" }, 422);
   }
 
-  const client = new GmailClient(connection.encryptedRefreshToken);
+  const client = new GmailClient(connection.encryptedRefreshToken, connection.oauthClient);
   const result = await client.watchInbox(config.gmail.pubsubTopic);
   const expiresAt = new Date(Number(result.expiration));
   await db.gmailConnection.update({

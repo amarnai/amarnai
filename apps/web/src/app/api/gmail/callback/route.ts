@@ -99,6 +99,9 @@ export async function GET(req: NextRequest) {
         gmailAddress: profile.emailAddress,
         encryptedRefreshToken,
         grantedScopes,
+        // Web OAuth callback runs the confidential WEB client. Set on update too
+        // so reconnecting via web after a mobile connect corrects the client.
+        oauthClient: "WEB",
         status: "ACTIVE",
         lastVerifiedAt: new Date(),
       },
@@ -106,6 +109,7 @@ export async function GET(req: NextRequest) {
         gmailAddress: profile.emailAddress,
         encryptedRefreshToken,
         grantedScopes,
+        oauthClient: "WEB",
         status: "ACTIVE",
         lastVerifiedAt: new Date(),
       },

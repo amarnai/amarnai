@@ -110,7 +110,7 @@ drafts.post(
 
     const gmailConnection = await db.gmailConnection.findUnique({
       where: { workspaceId },
-      select: { gmailAddress: true, encryptedRefreshToken: true },
+      select: { gmailAddress: true, encryptedRefreshToken: true, oauthClient: true },
     });
 
     // force=true bypasses the short-circuit that returns an existing PROPOSED
@@ -263,7 +263,7 @@ drafts.post(
     let messagesForDraft: ThreadMessage[] = aiMessages;
     if (gmailConnection?.encryptedRefreshToken) {
       try {
-        const client = new GmailClient(gmailConnection.encryptedRefreshToken);
+        const client = new GmailClient(gmailConnection.encryptedRefreshToken, gmailConnection.oauthClient);
         const rawThread = await client.getThread(thread.providerThreadId);
         const snapshot = normalizeGmailThread(rawThread);
         const bodyByMessageId = new Map(

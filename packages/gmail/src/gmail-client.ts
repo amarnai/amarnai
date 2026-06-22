@@ -118,8 +118,36 @@ export type GmailWatchResult = {
   expiration: string;
 };
 
+/**
+ * Identifies which OAuth client minted a stored refresh token. Google binds a
+ * refresh token to its originating client, so it must be refreshed with the same
+ * one: WEB is the confidential server client (id + secret); MOBILE is the Android
+ * public client (id only — public clients have no secret). Mirrors the Prisma
+ * GmailOAuthClient enum without depending on the db package.
+ */
+export type GmailOAuthClient = "WEB" | "MOBILE";
+
+/**
+ * Builds the OAuth client credentials for a refresh-token grant, keyed by the
+ * client that minted the token. Sending the wrong client_id (or a secret for a
+ * public client) makes Google return invalid_grant.
+ */
+function refreshClientCredentials(oauthClient: GmailOAuthClient): Record<string, string> {
+  if (oauthClient === "MOBILE") {
+    // Android public client: client_id only, no secret.
+    return { client_id: process.env["GOOGLE_MOBILE_CLIENT_ID"] ?? "" };
+  }
+  return {
+    client_id: process.env["AUTH_GOOGLE_ID"] ?? "",
+    client_secret: process.env["AUTH_GOOGLE_SECRET"] ?? "",
+  };
+}
+
 export class GmailClient {
-  constructor(private readonly encryptedRefreshToken: string) {}
+  constructor(
+    private readonly encryptedRefreshToken: string,
+    private readonly oauthClient: GmailOAuthClient,
+  ) {}
 
   async refreshAccessToken(): Promise<string> {
     const refreshToken = decrypt(this.encryptedRefreshToken);
@@ -128,8 +156,7 @@ export class GmailClient {
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: new URLSearchParams({
         refresh_token: refreshToken,
-        client_id: process.env["AUTH_GOOGLE_ID"] ?? "",
-        client_secret: process.env["AUTH_GOOGLE_SECRET"] ?? "",
+        ...refreshClientCredentials(this.oauthClient),
         grant_type: "refresh_token",
       }),
     });

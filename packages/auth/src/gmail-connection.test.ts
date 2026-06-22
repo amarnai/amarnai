@@ -30,6 +30,7 @@ describe("storeGmailConnection", () => {
       accessToken: "at",
       refreshToken: "rt",
       grantedScopes: [GMAIL_SCOPE],
+      oauthClient: "WEB",
     });
 
     // The access token is used to confirm Gmail access before anything is stored.
@@ -46,6 +47,7 @@ describe("storeGmailConnection", () => {
       accessToken: "at",
       refreshToken: "rt",
       grantedScopes: [GMAIL_SCOPE],
+      oauthClient: "MOBILE",
     });
 
     const call = vi.mocked(db.gmailConnection.upsert).mock.calls[0]![0] as {
@@ -59,6 +61,8 @@ describe("storeGmailConnection", () => {
       gmailAddress: "a@b.com",
       encryptedRefreshToken: "enc(rt)",
       grantedScopes: [GMAIL_SCOPE],
+      // The minting client is persisted so the worker refreshes with the right one.
+      oauthClient: "MOBILE",
       status: "ACTIVE",
     };
     expect(call.create).toMatchObject({ workspaceId: "ws-1", ...sharedFields });
@@ -76,6 +80,7 @@ describe("storeGmailConnection", () => {
         accessToken: "bad",
         refreshToken: "rt",
         grantedScopes: [GMAIL_SCOPE],
+        oauthClient: "WEB",
       })
     ).rejects.toThrow("401");
 

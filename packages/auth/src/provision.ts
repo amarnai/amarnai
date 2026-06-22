@@ -1,5 +1,5 @@
 import { db } from "@amarnai/db";
-import { GMAIL_READONLY_SCOPE } from "@amarnai/gmail";
+import { GMAIL_READONLY_SCOPE, type GmailOAuthClient } from "@amarnai/gmail";
 import { getOrCreateDefaultWorkspace } from "./workspace.js";
 import { storeGmailConnection } from "./gmail-connection.js";
 
@@ -13,6 +13,10 @@ export type ProvisionGoogleUserInput = {
   gmailRefreshToken?: string | null;
   // Scopes Google actually granted. Defaults to gmail.readonly (the MVP scope).
   grantedScopes?: string[];
+  // Which OAuth client minted the tokens. The web next-auth flow uses the
+  // confidential WEB client; the mobile /auth/google flow uses MOBILE. Defaults
+  // to WEB. Only consulted when a Gmail connection is actually stored.
+  oauthClient?: GmailOAuthClient;
 };
 
 export type ProvisionGoogleUserResult = {
@@ -69,6 +73,7 @@ export async function provisionGoogleUser(
       accessToken: input.gmailAccessToken,
       refreshToken: input.gmailRefreshToken,
       grantedScopes: input.grantedScopes ?? [GMAIL_READONLY_SCOPE],
+      oauthClient: input.oauthClient ?? "WEB",
     });
 
     return { userId: user.id, workspaceId: workspace.id, isNew, gmailConnected: true };

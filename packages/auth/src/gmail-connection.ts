@@ -1,11 +1,14 @@
 import { db } from "@amarnai/db";
-import { encrypt, fetchGmailProfile } from "@amarnai/gmail";
+import { encrypt, fetchGmailProfile, type GmailOAuthClient } from "@amarnai/gmail";
 
 export type StoreGmailConnectionInput = {
   workspaceId: string;
   accessToken: string;
   refreshToken: string;
   grantedScopes: string[];
+  // Which OAuth client minted the refresh token, so the worker refreshes it with
+  // the matching client. WEB = confidential server client, MOBILE = Android.
+  oauthClient: GmailOAuthClient;
 };
 
 // Verifies the token by fetching the Gmail profile, encrypts the refresh token,
@@ -16,6 +19,7 @@ export async function storeGmailConnection({
   accessToken,
   refreshToken,
   grantedScopes,
+  oauthClient,
 }: StoreGmailConnectionInput): Promise<{ gmailAddress: string }> {
   const profile = await fetchGmailProfile(accessToken);
   const encryptedRefreshToken = encrypt(refreshToken);
@@ -24,6 +28,7 @@ export async function storeGmailConnection({
     gmailAddress: profile.emailAddress,
     encryptedRefreshToken,
     grantedScopes,
+    oauthClient,
     status: "ACTIVE" as const,
     lastVerifiedAt: new Date(),
   };

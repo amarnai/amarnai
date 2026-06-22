@@ -61,6 +61,8 @@ export const { handlers, auth, signIn, signOut, unstable_update } = NextAuth({
         imageUrl: user.image ?? null,
         gmailAccessToken: isGoogle ? account?.access_token ?? null : null,
         gmailRefreshToken: isGoogle ? account?.refresh_token ?? null : null,
+        // next-auth runs the confidential WEB OAuth client.
+        oauthClient: "WEB",
       });
 
       // First-time Google sign-up: kick off an immediate inbox sync and register

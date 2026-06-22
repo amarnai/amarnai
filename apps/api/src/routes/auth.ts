@@ -175,6 +175,9 @@ auth.post("/auth/google", async (c) => {
     gmailAccessToken: accessToken,
     gmailRefreshToken: refreshToken,
     grantedScopes,
+    // The /auth/google endpoint serves the mobile app, whose tokens are minted
+    // on-device by the Android public OAuth client.
+    oauthClient: "MOBILE",
   });
 
   // First-time sign-up: kick off an immediate inbox sync (fire-and-forget; the
