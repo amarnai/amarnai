@@ -74,6 +74,13 @@ export type AIProviderConfig = {
     apiKey?: string;
     model?: string;
     baseUrl?: string;
+    /**
+     * Thinking budget for reasoning-capable models (e.g. Gemini 2.5). "none"
+     * disables thinking. Used for routing, where extended thinking adds latency
+     * (and connection-drop risk on the Gemini OpenAI-compat endpoint) without
+     * improving classification accuracy.
+     */
+    reasoningEffort?: "low" | "medium" | "high" | "none";
   };
 };
 

@@ -372,6 +372,84 @@ describe("createSyncInboxWorker — quota-blocked recovery", () => {
   });
 });
 
+// ─── Failed-thread recovery ────────────────────────────────────────────────────
+
+describe("createSyncInboxWorker — failed-thread recovery", () => {
+  // findMany returns a failed thread only for the failed-recovery query (the one
+  // that filters on classifyFailedAt); the QUOTA_BLOCKED query returns nothing.
+  function withFailedThread(id: string) {
+    vi.mocked(db.emailThread.findMany).mockImplementation((args: unknown) => {
+      const where = (args as { where?: { classifyFailedAt?: unknown } }).where;
+      return Promise.resolve(where?.classifyFailedAt ? [{ id }] : []) as never;
+    });
+  }
+
+  function failedRecoveryCall() {
+    return vi.mocked(classifyThreadQueue.addBulk).mock.calls.find((call) => {
+      const jobs = call[0] as Array<{ opts?: { deduplication?: { id?: string } } }>;
+      return jobs.some((j) => j.opts?.deduplication?.id?.includes("classify_failed_recovery"));
+    });
+  }
+
+  it("re-enqueues failed threads as LIVE and stamps classifyingAt", async () => {
+    withFailedThread("f-1");
+    vi.mocked(countRecurringThreadSorts).mockResolvedValue(0); // capacity free
+
+    createSyncInboxWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID }));
+
+    const recovery = failedRecoveryCall();
+    expect(recovery).toBeDefined();
+    const jobs = recovery![0] as Array<{ data: { source?: string } }>;
+    expect(jobs[0]!.data.source).toBe("LIVE");
+
+    // Stamped classifyingAt (without changing triageStatus — already PENDING).
+    const stamped = vi.mocked(db.emailThread.updateMany).mock.calls.find((c) => {
+      const data = (c[0] as { data: { classifyingAt?: unknown; triageStatus?: unknown } }).data;
+      return data?.classifyingAt != null && data?.triageStatus === undefined;
+    });
+    expect(stamped).toBeDefined();
+  });
+
+  it("only targets attempted-and-failed threads, never the bulk backlog", async () => {
+    withFailedThread("f-1");
+
+    createSyncInboxWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID }));
+
+    // The recovery query must require classifyFailedAt set and bound attempts, so
+    // never-attempted backlog threads (classifyFailedAt null) are excluded.
+    const failedQuery = vi.mocked(db.emailThread.findMany).mock.calls.find(
+      (c) => (c[0] as { where?: { classifyFailedAt?: unknown } }).where?.classifyFailedAt !== undefined
+    );
+    expect(failedQuery).toBeDefined();
+    const where = (failedQuery![0] as {
+      where: { triageStatus: string; classifyFailedAt: unknown; classifyAttempts: unknown };
+    }).where;
+    expect(where.triageStatus).toBe("PENDING");
+    expect(where.classifyFailedAt).toEqual({ not: null });
+    expect(where.classifyAttempts).toEqual({ lt: 5 });
+  });
+
+  it("does not recover when sorting is paused", async () => {
+    withFailedThread("f-1");
+    vi.mocked(db.gmailSyncSettings.findUnique).mockResolvedValue({
+      includeSpam: false,
+      includePromotions: false,
+      sortingPaused: true,
+      blacklistedSenderEmails: [],
+    } as never);
+
+    createSyncInboxWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID }));
+
+    expect(failedRecoveryCall()).toBeUndefined();
+  });
+});
+
 // ─── Disconnect-awareness ─────────────────────────────────────────────────────
 
 describe("createSyncInboxWorker — disconnect-awareness", () => {

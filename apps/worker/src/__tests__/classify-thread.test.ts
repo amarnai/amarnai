@@ -446,3 +446,57 @@ describe("createClassifyThreadWorker — monthly thread-sort quota", () => {
   });
 });
 
+// ─── Failure markers ────────────────────────────────────────────────────────
+
+describe("createClassifyThreadWorker — failure markers", () => {
+  function getFailedHandler(): (job: unknown, err: unknown) => void {
+    const WorkerMock = vi.mocked(Worker);
+    const lastResult = WorkerMock.mock.results[WorkerMock.mock.results.length - 1];
+    const worker = lastResult?.value as { on: ReturnType<typeof vi.fn> };
+    const failedCall = worker.on.mock.calls.find((c) => c[0] === "failed");
+    return failedCall?.[1] as (job: unknown, err: unknown) => void;
+  }
+
+  it("stamps classifyFailedAt and increments classifyAttempts on permanent failure", async () => {
+    createClassifyThreadWorker();
+    const onFailed = getFailedHandler();
+    expect(onFailed).toBeDefined();
+
+    onFailed(
+      { data: { workspaceId: WS_ID, emailThreadId: THREAD_ID }, attemptsMade: 3 },
+      new Error("Premature close")
+    );
+
+    // markClassifyFailed is fire-and-forget; wait for the DB write.
+    await vi.waitFor(() => expect(db.emailThread.update).toHaveBeenCalled());
+    expect(db.emailThread.update).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { id: THREAD_ID },
+        data: expect.objectContaining({
+          classifyingAt: null,
+          classifyFailedAt: expect.any(Date),
+          classifyAttempts: { increment: 1 },
+        }),
+      })
+    );
+  });
+
+  it("clears failure markers on a successful classify", async () => {
+    mockSortThreadByEmbedding.mockResolvedValue({
+      ...BASE_SORT_RESULT,
+      finalNodeId: "node-1",
+      needsHumanReview: false,
+    });
+
+    createClassifyThreadWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID, emailThreadId: THREAD_ID }));
+
+    expect(db.emailThread.update).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({ classifyFailedAt: null, classifyAttempts: 0 }),
+      })
+    );
+  });
+});
+

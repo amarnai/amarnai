@@ -26,7 +26,14 @@ export function createAIProvider(config: AIProviderConfig): AIProvider {
       if (!apiKey) throw new Error("FRONTIER_LLM_API_KEY is required for frontier provider");
       if (!model) throw new Error("FRONTIER_LLM_MODEL is required for frontier provider");
       const baseUrl = config.frontier?.baseUrl;
-      return new FrontierAIProvider({ provider, apiKey, model, ...(baseUrl ? { baseUrl } : {}) });
+      const reasoningEffort = config.frontier?.reasoningEffort;
+      return new FrontierAIProvider({
+        provider,
+        apiKey,
+        model,
+        ...(baseUrl ? { baseUrl } : {}),
+        ...(reasoningEffort ? { reasoningEffort } : {}),
+      });
     }
     case "mock":
       throw new Error(

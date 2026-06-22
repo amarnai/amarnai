@@ -390,6 +390,14 @@ model EmailThread {
   messageCount     Int           @default(0)
   triageStatus     TriageStatus  @default(PENDING)
   classifyingAt    DateTime?
+  // Set when a classify-thread job fails permanently (all retries exhausted).
+  // Distinguishes a thread that was attempted and failed (eligible for
+  // auto-recovery) from the invalid-taxonomy bulk backlog (never attempted,
+  // stays behind the manual "Route now"). Cleared on a successful classify.
+  classifyFailedAt DateTime?
+  // Number of permanent classify failures; bounds auto-recovery retries so a
+  // persistently failing thread is not re-enqueued forever.
+  classifyAttempts Int           @default(0)
   // Gmail category flags — all messages in the thread have the respective label.
   // Used to filter threads at query time based on GmailSyncSettings.
   // gmailIsTrash is always filtered out; gmailIsSpam/Promotions depend on user settings.
@@ -412,6 +420,8 @@ model EmailThread {
   drafts          Draft[]
 
   @@unique([emailAccountId, providerThreadId])
+  // Supports the recoverFailedThreads sweep: PENDING threads that have failed.
+  @@index([workspaceId, triageStatus, classifyFailedAt])
 }
 
 model EmailMessage {

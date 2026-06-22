@@ -81,6 +81,22 @@ async function clearClassifyingAt(emailThreadId: string): Promise<void> {
     .catch(() => {});
 }
 
+/**
+ * Stamp failure markers when a classify job fails permanently. classifyFailedAt
+ * makes the thread eligible for the recoverFailedThreads sweep (distinguishing
+ * it from the never-attempted bulk backlog); classifyAttempts bounds retries so
+ * a persistently failing thread is not re-enqueued forever. Best-effort: a
+ * failure to record must not crash the failed handler.
+ */
+async function markClassifyFailed(emailThreadId: string): Promise<void> {
+  await db.emailThread
+    .update({
+      where: { id: emailThreadId },
+      data: { classifyingAt: null, classifyFailedAt: new Date(), classifyAttempts: { increment: 1 } },
+    })
+    .catch(() => {});
+}
+
 // ── Worker ─────────────────────────────────────────────────────────────────────
 
 export function createClassifyThreadWorker(): Worker {
@@ -261,9 +277,10 @@ export function createClassifyThreadWorker(): Worker {
 
           const rootNode = rawNodes.find((n) => n.isRoot);
           if (!isTaxonomyRoutable(rawNodes, rawEdges)) {
-            // Taxonomy is not routable — leave the thread PENDING so stuck-thread
-            // recovery re-enqueues it on the next sync cycle once taxonomy is set.
-            // classifyingAt is cleared by the finally block.
+            // Taxonomy is not routable — leave the thread PENDING as bulk backlog
+            // (returns without throwing, so no classifyFailedAt is set and it is
+            // not auto-recovered). It waits for the user's "Route now" once a
+            // valid taxonomy exists. classifyingAt is cleared by the finally block.
             console.log(
               `[classify-thread] Taxonomy not routable for workspace ${workspaceId} — leaving thread ${emailThreadId} as PENDING`
             );
@@ -366,6 +383,11 @@ export function createClassifyThreadWorker(): Worker {
               {
                 ...(threadVector ? { precomputedThreadVector: threadVector } : {}),
                 llmMemoizer,
+                // On the final retry, a thrown LLM error becomes an inbox
+                // fallback (→ NEEDS_REVIEW) instead of failing the job and
+                // stranding the thread as PENDING. Earlier attempts rethrow so
+                // BullMQ can retry a transient blip.
+                failOpenOnLlmError: job.attemptsMade + 1 >= (job.opts.attempts ?? 1),
               },
             ),
             threadVector && threadVector.length > 0
@@ -424,7 +446,9 @@ export function createClassifyThreadWorker(): Worker {
               : "SORTED";
           await db.emailThread.update({
             where: { id: emailThreadId },
-            data: { triageStatus },
+            // Clear any prior failure markers — this thread classified
+            // successfully, so it is no longer eligible for failure recovery.
+            data: { triageStatus, classifyFailedAt: null, classifyAttempts: 0 },
           });
 
           // ── 7b. Push notification — thread needs attention ────────────────
@@ -524,8 +548,9 @@ export function createClassifyThreadWorker(): Worker {
 
   // When a job is permanently failed (all retries exhausted), the finally
   // block in the processor may not have run (e.g. the job stalled because the
-  // worker process was killed). Clear classifyingAt here so the thread is not
-  // stuck showing "Queued" in the UI indefinitely.
+  // worker process was killed). Stamp failure markers here: clears classifyingAt
+  // so the thread is not stuck showing "Queued", and records classifyFailedAt /
+  // classifyAttempts so recoverFailedThreads can auto-reclassify it later.
   worker.on("failed", (job, err) => {
     if (!job) return;
     const { workspaceId, emailThreadId } = job.data;
@@ -533,7 +558,7 @@ export function createClassifyThreadWorker(): Worker {
       `[classify-thread] Permanently failed for thread ${emailThreadId} (workspace ${workspaceId}) after ${job.attemptsMade} attempt(s):`,
       err,
     );
-    void clearClassifyingAt(emailThreadId);
+    void markClassifyFailed(emailThreadId);
   });
 
   return worker;

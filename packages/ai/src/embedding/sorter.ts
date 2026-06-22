@@ -143,6 +143,14 @@ export type EmbeddingSortResult = {
 
 // ─── Internal helpers ─────────────────────────────────────────────────────────
 
+/**
+ * User-facing explanation for a fail-open routing. Deliberately generic: the raw
+ * provider error (which can include internal endpoint URLs) is logged for ops,
+ * not surfaced to users via EmailClassification.explanation.
+ */
+const LLM_ERROR_FALLBACK_EXPLANATION =
+  "Automatic sorting was temporarily unavailable, so this thread was routed to review.";
+
 function makeInboxFallback(
   explanation: string,
   rawSimilarities: Record<string, number>,
@@ -326,6 +334,15 @@ export async function sortThreadByEmbedding(
      * every read. Absent for callers without job context (API routes, tests).
      */
     llmMemoizer?: LlmCallMemoizer;
+    /**
+     * When true, a thrown error from the cross-branch LLM call is caught and
+     * turned into an inbox fallback (→ needs human review) instead of
+     * propagating. The worker sets this on the final retry attempt so a
+     * persistently failing provider sends the thread to review rather than
+     * leaving it stranded; earlier attempts rethrow so BullMQ can retry a
+     * transient blip. Defaults to false (rethrow) for API routes and tests.
+     */
+    failOpenOnLlmError?: boolean;
   }
 ): Promise<EmbeddingSortResult> {
   const thetaMin = options?.thetaMin ?? THETA_MIN;
@@ -336,6 +353,7 @@ export async function sortThreadByEmbedding(
   const crossBranchMargin = options?.crossBranchMargin ?? CROSS_BRANCH_MARGIN;
   const topKLlm = options?.topKLlmCandidates ?? TOP_K_LLM_CANDIDATES;
   const llmMemoizer = options?.llmMemoizer;
+  const failOpenOnLlmError = options?.failOpenOnLlmError ?? false;
 
   // ── Step 1: Identify root ──────────────────────────────────────────────────
 
@@ -521,7 +539,22 @@ export async function sortThreadByEmbedding(
       const memo = llmMemoizer
         ? { memoize: llmMemoizer, step: buildLlmDedupStep("root", candidates.map((c) => c.nodeId)) }
         : undefined;
-      const llmResult = await selectNodeFromCandidates(llmProvider, { messages }, candidates, undefined, memo);
+      let llmResult;
+      try {
+        llmResult = await selectNodeFromCandidates(llmProvider, { messages }, candidates, undefined, memo);
+      } catch (err) {
+        if (!failOpenOnLlmError) throw err;
+        console.error(
+          `[sorter] cross-branch LLM call failed; failing open to review: ${err instanceof Error ? err.message : String(err)}`
+        );
+        return makeInboxFallback(
+          LLM_ERROR_FALLBACK_EXPLANATION,
+          rawSimsRecord,
+          subtreeScoresRecord,
+          updatedNodeEmbeddings,
+          threadVector
+        );
+      }
 
       if (!llmResult.needsHumanReview && llmResult.finalNodeId) {
         // Reconstruct path from the graph after node selection
@@ -642,7 +675,19 @@ export async function sortThreadByEmbedding(
           const memo = llmMemoizer
             ? { memoize: llmMemoizer, step: buildLlmDedupStep("mid", candidates.map((c) => c.nodeId)) }
             : undefined;
-          const llmResult = await selectNodeFromCandidates(llmProvider, { messages }, candidates, undefined, memo);
+          let llmResult;
+          try {
+            llmResult = await selectNodeFromCandidates(llmProvider, { messages }, candidates, undefined, memo);
+          } catch (err) {
+            if (!failOpenOnLlmError) throw err;
+            console.error(
+              `[sorter] mid-traversal LLM call failed at "${nodeMap.get(currentNodeId)?.name ?? currentNodeId}"; failing open to review: ${err instanceof Error ? err.message : String(err)}`
+            );
+            return makeInboxFallback(
+              LLM_ERROR_FALLBACK_EXPLANATION,
+              rawSimsRecord, subtreeScoresRecord, updatedNodeEmbeddings, threadVector
+            );
+          }
           if (!llmResult.needsHumanReview && llmResult.finalNodeId) {
             const selectedPath = buildClassificationPath(
               rootNode.id, llmResult.finalNodeId, childEdges,

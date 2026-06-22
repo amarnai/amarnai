@@ -33,7 +33,21 @@ export function getRoutingAIProviderConfig(): AIProviderConfig {
   const routingOllamaModel = process.env["ROUTING_OLLAMA_MODEL"];
   if (routingModel && cfg.frontier) cfg.frontier = { ...cfg.frontier, model: routingModel };
   if (routingOllamaModel && cfg.ollama) cfg.ollama = { ...cfg.ollama, model: routingOllamaModel };
+  // Routing does not benefit from extended thinking (benchmarked: identical
+  // accuracy, ~3x higher latency) and long thinking causes the Gemini
+  // OpenAI-compat endpoint to drop the connection mid-response. Default to
+  // disabling it; override with ROUTING_REASONING_EFFORT=low to re-enable a
+  // bounded budget without a code change.
+  if (cfg.frontier) {
+    cfg.frontier = { ...cfg.frontier, reasoningEffort: parseReasoningEffort(process.env["ROUTING_REASONING_EFFORT"]) };
+  }
   return cfg;
+}
+
+/** Parse the routing reasoning-effort env var; defaults to "none". */
+function parseReasoningEffort(raw: string | undefined): "low" | "medium" | "high" | "none" {
+  if (raw === "low" || raw === "medium" || raw === "high" || raw === "none") return raw;
+  return "none";
 }
 
 export function getDraftAIProviderConfig(): AIProviderConfig {

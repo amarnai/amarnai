@@ -449,6 +449,35 @@ describe("embedding sorter — rival root branches trigger LLM resolver", () => 
     expect(chatSpy).toHaveBeenCalledTimes(1);
   });
 
+  // ── Fail-open when the LLM call throws ──────────────────────────────────────
+  const throwingLlm: AIProvider = {
+    providerName: "mock",
+    modelName: "mock-llm",
+    async chat() {
+      throw new Error("Premature close");
+    },
+  };
+
+  it("falls open to inbox review when the LLM call throws and failOpenOnLlmError is set", async () => {
+    const result = await sortThreadByEmbedding(
+      embeddingProvider,
+      throwingLlm,
+      FLAT_NODES,
+      FLAT_EDGES,
+      messages,
+      { failOpenOnLlmError: true }
+    );
+    expect(result.decisionSource).toBe("inbox_fallback");
+    expect(result.needsHumanReview).toBe(true);
+    expect(result.explanation).toMatch(/temporarily unavailable/);
+  });
+
+  it("rethrows the LLM error by default (so BullMQ can retry)", async () => {
+    await expect(
+      sortThreadByEmbedding(embeddingProvider, throwingLlm, FLAT_NODES, FLAT_EDGES, messages)
+    ).rejects.toThrow("Premature close");
+  });
+
   // ── Retry-dedup of the cross-branch LLM call ────────────────────────────────
   //
   // Mirrors the worker's memoizeAcrossRetries codec: compute on a key miss,

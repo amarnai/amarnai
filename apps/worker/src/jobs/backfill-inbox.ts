@@ -475,8 +475,10 @@ export function createBackfillInboxWorker(): Worker {
               }))
             );
           }
-          // Taxonomy not routable → leave threads PENDING. The sync cycle's
-          // stuck-thread recovery will classify them once taxonomy is set.
+          // Taxonomy not routable → leave threads PENDING as the invalid-taxonomy
+          // bulk backlog. They wait for the user's "Route now" once a valid
+          // taxonomy exists (recoverFailedThreads does not touch never-attempted
+          // threads).
         }
 
         // ── 9. More to do? Persist the cursor and re-enqueue a continuation ─────

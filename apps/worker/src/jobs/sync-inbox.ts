@@ -112,47 +112,40 @@ async function getChangedThreadIds(
   }
 }
 
-/** Max QUOTA_BLOCKED threads recovered per sync cycle, bounding queue bursts. */
+/** Max threads recovered per sync cycle per path, bounding queue bursts. */
 const QUOTA_RECOVERY_BATCH = 200;
 
+/** Max attempts before a failed thread stops being auto-recovered. */
+const MAX_CLASSIFY_ATTEMPTS = 5;
+
 /**
- * Re-enqueue threads deferred as QUOTA_BLOCKED once the workspace has quota again
- * — on month rollover (the recurring count resets) or a plan upgrade (the limit
- * rises). Recovers at most the remaining capacity so recovered threads do not
- * immediately re-block, and is a no-op when no capacity is free. Recovered sorts
- * are tagged LIVE (recurring) and re-check the quota in the worker, so a small
- * concurrent overshoot self-corrects on the next cycle.
- *
- * Caller gates on a strong taxonomy and sorting not being paused, matching the
- * conditions under which live threads are enqueued.
+ * Quota-bound a candidate list, stamp classifyingAt, and enqueue LIVE classify
+ * jobs at recovery priority. Shared by the quota and failure recovery paths.
+ * Returns the number actually enqueued (0 when there is nothing to recover or no
+ * remaining monthly capacity). Recovered sorts are tagged LIVE (recurring) and
+ * re-check the quota in the worker, so a small concurrent overshoot self-corrects
+ * on the next cycle. When enforcement is off there is no cap.
  */
-async function recoverQuotaBlockedThreads(
+async function enqueueRecovery(
   workspaceId: string,
   plan: string,
-): Promise<void> {
-  // Cheap existence check first: the common case has nothing deferred, so avoid
-  // the COUNT(DISTINCT) recurring-usage query unless there is work to recover.
-  const blocked = await db.emailThread.findMany({
-    where: { workspaceId, triageStatus: "QUOTA_BLOCKED", classifyingAt: null },
-    select: { id: true },
-    orderBy: { latestMessageAt: "desc" },
-    take: QUOTA_RECOVERY_BATCH,
-  });
-  if (blocked.length === 0) return;
+  candidates: Array<{ id: string }>,
+  dedupPrefix: string,
+  extraThreadData: { triageStatus?: "PENDING" } = {},
+): Promise<number> {
+  if (candidates.length === 0) return 0;
 
-  // Bound recovery to the remaining monthly capacity so recovered threads do not
-  // immediately re-block. When enforcement is off there is no cap.
-  let recoverable = blocked;
+  let recoverable = candidates;
   if (config.billing.enforceThreadSortQuota) {
     const used = await countRecurringThreadSorts(workspaceId, getDraftQuotaWindowStart());
     const remaining = getThreadSortLimit(plan) - used;
-    if (remaining <= 0) return;
-    recoverable = blocked.slice(0, remaining);
+    if (remaining <= 0) return 0;
+    recoverable = candidates.slice(0, remaining);
   }
 
   await db.emailThread.updateMany({
     where: { id: { in: recoverable.map((t) => t.id) } },
-    data: { triageStatus: "PENDING", classifyingAt: new Date() },
+    data: { classifyingAt: new Date(), ...extraThreadData },
   });
 
   await classifyThreadQueue.addBulk(
@@ -160,15 +153,65 @@ async function recoverQuotaBlockedThreads(
       name: "classify-thread",
       data: { workspaceId, emailThreadId, source: "LIVE" as const },
       opts: {
-        deduplication: { id: `classify_quota_recovery_${workspaceId}_${emailThreadId}` },
+        deduplication: { id: `${dedupPrefix}_${workspaceId}_${emailThreadId}` },
         priority: 5, // below live sync (1), above backfill (10)
       },
     })),
   );
 
-  console.log(
-    `[sync-inbox] Workspace ${workspaceId} recovered ${recoverable.length} QUOTA_BLOCKED thread(s)`
-  );
+  return recoverable.length;
+}
+
+/**
+ * Re-enqueue threads deferred as QUOTA_BLOCKED once the workspace has quota again
+ * — on month rollover (the recurring count resets) or a plan upgrade (the limit
+ * rises). Caller gates on a strong taxonomy and sorting not being paused,
+ * matching the conditions under which live threads are enqueued.
+ */
+async function recoverQuotaBlockedThreads(workspaceId: string, plan: string): Promise<void> {
+  // Cheap existence check first: the common case has nothing deferred, so avoid
+  // the COUNT(DISTINCT) recurring-usage query (in enqueueRecovery) unless there
+  // is work to recover.
+  const blocked = await db.emailThread.findMany({
+    where: { workspaceId, triageStatus: "QUOTA_BLOCKED", classifyingAt: null },
+    select: { id: true },
+    orderBy: { latestMessageAt: "desc" },
+    take: QUOTA_RECOVERY_BATCH,
+  });
+  const recovered = await enqueueRecovery(workspaceId, plan, blocked, "classify_quota_recovery", {
+    triageStatus: "PENDING",
+  });
+  if (recovered > 0) {
+    console.log(`[sync-inbox] Workspace ${workspaceId} recovered ${recovered} QUOTA_BLOCKED thread(s)`);
+  }
+}
+
+/**
+ * Re-enqueue threads left PENDING by a permanent classify failure
+ * (classifyFailedAt set) so a transient provider/embedding/DB fault self-heals
+ * instead of stranding the thread behind the manual "Route now" banner. The
+ * invalid-taxonomy bulk backlog has classifyFailedAt = null (never attempted),
+ * so it is excluded and stays manual. classifyAttempts bounds retries so a
+ * persistently failing thread is not re-enqueued forever. Caller gates on a
+ * strong taxonomy and sorting not being paused.
+ */
+async function recoverFailedThreads(workspaceId: string, plan: string): Promise<void> {
+  const failed = await db.emailThread.findMany({
+    where: {
+      workspaceId,
+      triageStatus: "PENDING",
+      classifyFailedAt: { not: null },
+      classifyingAt: null,
+      classifyAttempts: { lt: MAX_CLASSIFY_ATTEMPTS },
+    },
+    select: { id: true },
+    orderBy: { latestMessageAt: "desc" },
+    take: QUOTA_RECOVERY_BATCH,
+  });
+  const recovered = await enqueueRecovery(workspaceId, plan, failed, "classify_failed_recovery");
+  if (recovered > 0) {
+    console.log(`[sync-inbox] Workspace ${workspaceId} recovered ${recovered} failed thread(s)`);
+  }
 }
 
 // ─── Worker ───────────────────────────────────────────────────────────────────
@@ -283,7 +326,7 @@ export function createSyncInboxWorker(): Worker {
 
       if (changedThreadIds.length === 0) {
         // Nothing changed — advance the cursor, then check whether backfill or
-        // stuck-thread recovery still needs to run (they must not be skipped just
+        // failed-thread recovery still needs to run (they must not be skipped just
         // because the inbox was quiet this cycle).
         await db.providerSyncState.update({
           where: { emailAccountId },
@@ -293,8 +336,8 @@ export function createSyncInboxWorker(): Worker {
         // Trigger backfill when it hasn't completed (or failed) yet, regardless
         // of taxonomy strength. With a routable taxonomy backfill classifies
         // threads; without one it populates the inbox and leaves threads PENDING
-        // (backfill-inbox handles both cases). The stuck-thread recovery here
-        // classifies them once taxonomy is set.
+        // (backfill-inbox handles both cases). recoverFailedThreads below picks up
+        // previously-failed threads once the taxonomy is strong.
         // Every plan backfills; per-plan thread/window limits are enforced by
         // the backfill job via getBackfillCap.
         // isBackfillResumable also recovers stale RUNNING state (worker crash).
@@ -308,16 +351,17 @@ export function createSyncInboxWorker(): Worker {
           );
         }
 
-        // Threads left PENDING (synced while the taxonomy was too weak, or whose
-        // classify jobs failed) are NOT auto-routed here. They stay in the waiting
-        // state until the user manually starts routing via "Route now", so bulk AI
-        // routing only happens on explicit user action. New live threads still
-        // auto-route in real time (the upserted-thread enqueue below).
+        // The invalid-taxonomy bulk backlog (PENDING, never attempted) is NOT
+        // auto-routed here — it waits for the user's "Route now" so bulk AI
+        // routing stays an explicit, cost-controlled action. Threads that were
+        // attempted and failed (classifyFailedAt set) DO auto-recover below, and
+        // new live threads auto-route in real time (the upserted-thread enqueue).
 
-        // Recover quota-deferred threads when capacity has freed up (month
-        // rollover or plan upgrade). Same gating as live classification.
+        // Recover quota-deferred and failed threads. Same gating as live
+        // classification (strong taxonomy, sorting not paused).
         if (!sortingPaused && taxonomyStrong) {
           await recoverQuotaBlockedThreads(workspaceId, workspace.plan);
+          await recoverFailedThreads(workspaceId, workspace.plan);
         }
 
         return;
@@ -514,8 +558,8 @@ export function createSyncInboxWorker(): Worker {
       // Priority 1 ensures live sync jobs always outrank backfill jobs (priority 10).
       // Stamp classifyingAt before adding to the queue so isClassifying is true
       // while jobs wait — without this the banner shows "use the sort button".
-      // Skip enqueuing when sorting is paused; threads remain PENDING and will be
-      // picked up by the stuck-thread recovery when the user resumes sorting.
+      // Skip enqueuing when sorting is paused; threads remain PENDING and the
+      // resume endpoint re-enqueues them when the user resumes sorting.
       //
       // IMPORTANT: classify enqueue runs BEFORE the cursor is advanced (step 6).
       // If addBulk fails, the job throws and BullMQ retries with the old historyId,
@@ -541,8 +585,10 @@ export function createSyncInboxWorker(): Worker {
             }))
           );
         }
-        // taxonomy not routable or sorting paused → leave PENDING; stuck-thread
-        // recovery will classify once taxonomy is set and a sync cycle runs.
+        // taxonomy not routable or sorting paused → leave PENDING. The bulk
+        // backlog waits for "Route now"; the resume endpoint re-enqueues on
+        // resume. (Never-attempted threads have no classifyFailedAt, so
+        // recoverFailedThreads deliberately does not touch them.)
       }
 
       // ── 6. Advance sync cursor ───────────────────────────────────────────────
@@ -581,18 +627,18 @@ export function createSyncInboxWorker(): Worker {
         );
       }
 
-      // ── 7. Waiting threads are not auto-routed ───────────────────────────────
+      // ── 7. Recover deferred and failed threads ───────────────────────────────
       //
-      // Threads left PENDING from earlier cycles (synced while the taxonomy was too
-      // weak, or whose classify jobs failed) stay in the waiting state until the
-      // user manually starts routing via "Route now". Background sync never routes
-      // the historical backlog, so bulk AI routing only happens on explicit user
-      // action. New live threads still auto-route in real time (step 5 above).
-
-      // Recover quota-deferred threads when capacity has freed up (month rollover
-      // or plan upgrade). Same gating as live classification above.
+      // The invalid-taxonomy bulk backlog (PENDING, never attempted) is left for
+      // the user's "Route now" so bulk AI routing stays an explicit, cost-
+      // controlled action. Two categories DO auto-recover here: quota-deferred
+      // threads once capacity frees up (month rollover or plan upgrade), and
+      // threads that were attempted and failed permanently (classifyFailedAt set),
+      // so a transient provider/embedding/DB fault self-heals. New live threads
+      // auto-route in real time (step 5 above). Same gating as live classification.
       if (!sortingPaused && taxonomyStrong) {
         await recoverQuotaBlockedThreads(workspaceId, workspace.plan);
+        await recoverFailedThreads(workspaceId, workspace.plan);
       }
 
       await job.updateProgress(100);
