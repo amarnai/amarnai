@@ -2,6 +2,7 @@
   "expo": {
     "name": "Amarnai",
     "slug": "amarnai",
+    "owner": "amarnai",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -16,8 +17,16 @@
       "intentFilters": [
         {
           "action": "VIEW",
-          "data": [{ "scheme": "com.amarnai.app", "path": "/oauth2redirect" }],
-          "category": ["BROWSABLE", "DEFAULT"]
+          "data": [
+            {
+              "scheme": "com.amarnai.app",
+              "path": "/oauth2redirect"
+            }
+          ],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
         }
       ]
     },
@@ -29,6 +38,12 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "c0e4b074-c4b2-4d58-9a8b-3de5c8e648da"
+      }
     }
   }
 }
