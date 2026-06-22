@@ -1,6 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
+import { NavIcon } from '../NavIcon';
 import type { TaxonomyTreeRow } from '../../taxonomy/buildTree';
 
 interface TaxonomyNodeRowProps {
@@ -38,8 +39,8 @@ export function TaxonomyNodeRow({ row, collapsed, flat, onToggle, onPress }: Tax
       </Text>
 
       {node.isRoot ? (
-        <View style={[styles.tag, styles.tagEntry]}>
-          <Text style={[styles.tagText, styles.tagEntryText]}>Entry</Text>
+        <View style={styles.entryIcon}>
+          <NavIcon name="emails" color={colors.ink3} size={18} />
         </View>
       ) : ignored ? (
         <View style={[styles.tag, styles.tagIgnored]}>
@@ -48,9 +49,7 @@ export function TaxonomyNodeRow({ row, collapsed, flat, onToggle, onPress }: Tax
       ) : null}
 
       {node.threadCount > 0 ? (
-        <View style={styles.countBadge}>
-          <Text style={styles.countText}>{node.threadCount}</Text>
-        </View>
+        <Text style={styles.countText}>{node.threadCount}</Text>
       ) : null}
     </TouchableOpacity>
   );
@@ -81,6 +80,9 @@ const styles = StyleSheet.create({
   nameRoot: {
     fontWeight: fontWeight.semibold,
   },
+  entryIcon: {
+    marginLeft: space.sm,
+  },
   tag: {
     borderRadius: radii.sm,
     paddingHorizontal: space.sm,
@@ -91,31 +93,16 @@ const styles = StyleSheet.create({
     fontSize: fontSize.xs,
     fontWeight: fontWeight.semibold,
   },
-  tagEntry: {
-    backgroundColor: colors.accentSoft,
-  },
-  tagEntryText: {
-    color: colors.accentInk,
-  },
   tagIgnored: {
     backgroundColor: colors.warnSoft,
   },
   tagIgnoredText: {
     color: colors.warnInk,
   },
-  countBadge: {
-    backgroundColor: colors.accent,
-    borderRadius: radii.md,
-    minWidth: space.xxl,
-    height: space.xxl,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: space.xs,
-    marginLeft: space.sm,
-  },
   countText: {
-    color: colors.surface,
-    fontSize: fontSize.sm,
+    color: colors.ink3,
+    fontSize: fontSize.md,
     fontWeight: fontWeight.semibold,
+    marginLeft: space.sm,
   },
 });
