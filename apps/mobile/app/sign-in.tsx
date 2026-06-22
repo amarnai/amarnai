@@ -16,6 +16,7 @@ import { colors, radii, space, fontSize } from '@amarnai/tokens';
 import { useSession } from '../src/auth/session';
 import { authStyles } from '../src/auth/authStyles';
 import { GoogleSignInButton } from '../src/auth/GoogleSignInButton';
+import { toUserMessage } from '../src/errors';
 import { API_BASE_URL } from '../src/config';
 import { useApiHealth } from '../src/health';
 
@@ -43,7 +44,7 @@ export default function SignInScreen() {
     try {
       await signIn(email.trim(), password);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Sign-in failed');
+      setError(toUserMessage(err, 'Sign-in failed. Please try again.'));
     } finally {
       setSubmitting(false);
     }
@@ -56,8 +57,8 @@ export default function SignInScreen() {
     try {
       await signInWithGoogle();
     } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Google sign-in failed';
-      if (msg !== 'cancelled') setError(msg);
+      if (err instanceof Error && err.message === 'cancelled') return;
+      setError(toUserMessage(err, 'Google sign-in failed. Please try again.'));
     } finally {
       setGoogleSubmitting(false);
     }
@@ -144,16 +145,21 @@ export default function SignInScreen() {
         </View>
       </ScrollView>
 
-      <View style={styles.footer}>
-        <View style={[styles.dot, { backgroundColor: healthColor(health.status) }]} />
-        <Text style={styles.footerText} numberOfLines={1}>
-          {health.status === 'ok'
-            ? API_BASE_URL
-            : health.status === 'checking'
-              ? `Checking ${API_BASE_URL}…`
-              : `API unreachable: ${API_BASE_URL}`}
-        </Text>
-      </View>
+      {/* Dev-only connectivity indicator: shows which API host the app is
+          hitting and whether it is reachable over LAN. Stripped from production
+          builds so the API URL is never surfaced to end users. */}
+      {__DEV__ ? (
+        <View style={styles.footer}>
+          <View style={[styles.dot, { backgroundColor: healthColor(health.status) }]} />
+          <Text style={styles.footerText} numberOfLines={1}>
+            {health.status === 'ok'
+              ? API_BASE_URL
+              : health.status === 'checking'
+                ? `Checking ${API_BASE_URL}…`
+                : `API unreachable: ${API_BASE_URL}`}
+          </Text>
+        </View>
+      ) : null}
     </KeyboardAvoidingView>
   );
 }

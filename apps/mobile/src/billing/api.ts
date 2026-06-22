@@ -102,7 +102,7 @@ export async function getBillingState(workspaceId: string): Promise<BillingState
     { method: 'GET' },
   );
   if (!res.ok) {
-    throw new Error(res.data.error ?? `Could not load billing (${res.status})`);
+    throw new Error(res.data.error ?? 'Could not load billing. Please try again.');
   }
   return res.data;
 }

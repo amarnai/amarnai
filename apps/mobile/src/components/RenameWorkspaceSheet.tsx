@@ -5,6 +5,7 @@ import type { ApiClient } from '@amarnai/api-client';
 import { SheetLayout } from './SheetLayout';
 import { FormInput } from './FormInput';
 import { PrimaryButton } from './PrimaryButton';
+import { toUserMessage } from '../errors';
 
 type Props = {
   visible: boolean;
@@ -14,9 +15,6 @@ type Props = {
   currentName: string;
   onRenamed: () => void | Promise<void>;
 };
-
-const errorMessage = (err: unknown, fallback: string) =>
-  err instanceof Error ? err.message : fallback;
 
 export function RenameWorkspaceSheet({
   visible,
@@ -49,7 +47,7 @@ export function RenameWorkspaceSheet({
       await onRenamed();
       onClose();
     } catch (err) {
-      setError(errorMessage(err, 'Could not rename workspace'));
+      setError(toUserMessage(err, 'Could not rename workspace. Please try again.'));
     } finally {
       setSaving(false);
     }

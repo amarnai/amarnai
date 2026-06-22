@@ -31,12 +31,10 @@ import { SectionTitle } from '../../src/components/SectionTitle';
 import { SettingsGroup, SettingsRow } from '../../src/components/SettingsGroup';
 import { UsageRow } from '../../src/components/billing/UsageRow';
 import { PricingSheet } from '../../src/components/billing/PricingSheet';
+import { toUserMessage } from '../../src/errors';
 
 const PLAN_LABEL: Record<string, string> = { FREE: 'Free', PRO: 'Pro', BUSINESS: 'Business' };
 const CYCLE_LABEL: Record<string, string> = { MONTHLY: 'Monthly', ANNUAL: 'Annual' };
-
-const errorMessage = (err: unknown, fallback: string) =>
-  err instanceof Error ? err.message : fallback;
 
 const formatDate = (iso: string) =>
   new Date(iso).toLocaleDateString('en', { month: 'short', day: 'numeric', year: 'numeric' });
@@ -73,7 +71,7 @@ export default function PlanScreen() {
       setState(billing);
       setLoadError(null);
     } catch (err) {
-      setLoadError(errorMessage(err, 'Could not load billing'));
+      setLoadError(toUserMessage(err, 'Could not load billing'));
     } finally {
       setLoading(false);
     }
@@ -128,7 +126,7 @@ export default function PlanScreen() {
                 }
                 await afterChange();
               } catch (err) {
-                Alert.alert('Could not cancel', errorMessage(err, 'Please try again.'));
+                Alert.alert('Could not cancel', toUserMessage(err, 'Please try again.'));
               } finally {
                 setBusy(false);
               }
@@ -150,7 +148,7 @@ export default function PlanScreen() {
       }
       await Linking.openURL(res.data.url);
     } catch (err) {
-      Alert.alert('Unavailable', errorMessage(err, 'Could not open billing management.'));
+      Alert.alert('Unavailable', toUserMessage(err, 'Could not open billing management.'));
     } finally {
       setBusy(false);
     }
@@ -207,7 +205,7 @@ export default function PlanScreen() {
         await afterChange();
       }
     } catch (err) {
-      Alert.alert('Something went wrong', errorMessage(err, 'Please try again.'));
+      Alert.alert('Something went wrong', toUserMessage(err, 'Please try again.'));
     } finally {
       setBusy(false);
     }

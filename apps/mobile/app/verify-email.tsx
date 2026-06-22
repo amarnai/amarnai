@@ -11,6 +11,7 @@ import { Redirect } from 'expo-router';
 import { colors, space, fontSize } from '@amarnai/tokens';
 import { useSession } from '../src/auth/session';
 import { authStyles } from '../src/auth/authStyles';
+import { toUserMessage } from '../src/errors';
 
 // How often to re-check verification while this screen is open. The user clicks
 // the link in their email (which the web app handles), so we poll for the
@@ -58,7 +59,7 @@ export default function VerifyEmailScreen() {
       setCoolingDown(true);
       cooldownTimer.current = setTimeout(() => setCoolingDown(false), 60_000);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Could not resend the email');
+      setError(toUserMessage(err, 'Could not resend the email. Please try again.'));
     } finally {
       setResending(false);
     }

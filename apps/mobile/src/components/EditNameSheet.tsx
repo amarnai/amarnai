@@ -5,6 +5,7 @@ import type { ApiClient } from '@amarnai/api-client';
 import { SheetLayout } from './SheetLayout';
 import { FormInput } from './FormInput';
 import { PrimaryButton } from './PrimaryButton';
+import { toUserMessage } from '../errors';
 
 type Props = {
   visible: boolean;
@@ -37,7 +38,7 @@ export function EditNameSheet({ visible, onClose, client, currentName, onSaved }
       await onSaved();
       onClose();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Could not update name');
+      setError(toUserMessage(err, 'Could not update name. Please try again.'));
     } finally {
       setSaving(false);
     }

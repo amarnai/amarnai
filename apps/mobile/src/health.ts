@@ -16,6 +16,9 @@ export function useApiHealth(): HealthState {
   const [state, setState] = useState<HealthState>({ status: 'checking' });
 
   useEffect(() => {
+    // Dev-only connectivity scaffolding: never ping or surface state from
+    // production builds (see the dev-gated footer in sign-in.tsx).
+    if (!__DEV__) return;
     let cancelled = false;
     (async () => {
       try {

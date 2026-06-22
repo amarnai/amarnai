@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react';
 import { Alert } from 'react-native';
 import type { ApiClient } from '@amarnai/api-client';
 import { requestGoogleAuth } from './googleAuth';
+import { toUserMessage } from '../errors';
 
 // Runs the full in-app connect flow:
 //   PKCE browser prompt -> POST /workspaces/:id/gmail-connection -> onSuccess()
@@ -17,10 +18,8 @@ export function useConnectGmail(workspaceId: string, client: ApiClient) {
         await client.connectGmail(workspaceId, authResult);
         onSuccess?.();
       } catch (err) {
-        const msg = err instanceof Error ? err.message : 'Could not connect Gmail';
-        if (msg !== 'cancelled') {
-          Alert.alert('Connect failed', msg);
-        }
+        if (err instanceof Error && err.message === 'cancelled') return;
+        Alert.alert('Connect failed', toUserMessage(err, 'Could not connect Gmail. Please try again.'));
       } finally {
         setConnecting(false);
       }

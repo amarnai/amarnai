@@ -52,10 +52,7 @@ export async function requestGoogleAuth(): Promise<GoogleAuthResult> {
     throw new Error('cancelled');
   }
   if (result.type !== 'success' || !result.params['code']) {
-    const errDesc = result.type === 'error'
-      ? (result.error?.message ?? 'Google sign-in failed')
-      : 'Google sign-in failed';
-    throw new Error(errDesc);
+    throw new Error('Google sign-in failed. Please try again.');
   }
 
   const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
@@ -71,16 +68,25 @@ export async function requestGoogleAuth(): Promise<GoogleAuthResult> {
   });
 
   if (!tokenRes.ok) {
-    type ErrBody = { error?: string; error_description?: string };
-    const body = (await tokenRes.json().catch(() => ({}))) as ErrBody;
-    throw new Error(body.error_description ?? body.error ?? 'Token exchange failed');
+    // Google's error_description is a developer-facing diagnostic; log it for
+    // debugging but show the user a generic, actionable message.
+    if (__DEV__) {
+      const body = (await tokenRes.json().catch(() => ({}))) as {
+        error?: string;
+        error_description?: string;
+      };
+      console.warn('Google token exchange failed:', body.error_description ?? body.error);
+    }
+    throw new Error('Could not complete Google sign-in. Please try again.');
   }
 
   type TokenBody = { access_token?: string; refresh_token?: string; scope?: string };
   const tokenBody = (await tokenRes.json()) as TokenBody;
-  if (!tokenBody.access_token) throw new Error('No access_token in Google response');
+  if (!tokenBody.access_token) {
+    throw new Error('Could not complete Google sign-in. Please try again.');
+  }
   if (!tokenBody.refresh_token) {
-    throw new Error('No refresh_token — sign in again to grant offline access');
+    throw new Error('Google did not grant offline access. Please try signing in again.');
   }
 
   return {

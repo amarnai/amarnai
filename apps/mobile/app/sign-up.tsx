@@ -16,6 +16,7 @@ import { PASSWORD_MIN_LENGTH } from '@amarnai/shared';
 import { useSession } from '../src/auth/session';
 import { authStyles } from '../src/auth/authStyles';
 import { GoogleSignInButton } from '../src/auth/GoogleSignInButton';
+import { toUserMessage } from '../src/errors';
 
 export default function SignUpScreen() {
   const { status, emailVerified, signUp, signInWithGoogle } = useSession();
@@ -54,7 +55,7 @@ export default function SignUpScreen() {
     try {
       await signUp(email.trim(), password);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Sign-up failed');
+      setError(toUserMessage(err, 'Sign-up failed. Please try again.'));
     } finally {
       setSubmitting(false);
     }
@@ -67,8 +68,8 @@ export default function SignUpScreen() {
     try {
       await signInWithGoogle();
     } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Google sign-in failed';
-      if (msg !== 'cancelled') setError(msg);
+      if (err instanceof Error && err.message === 'cancelled') return;
+      setError(toUserMessage(err, 'Google sign-in failed. Please try again.'));
     } finally {
       setGoogleSubmitting(false);
     }

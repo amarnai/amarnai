@@ -16,6 +16,7 @@ import { startCheckout } from '../billing/api';
 import { setPendingCheckout } from '../billing/pendingCheckout';
 import { BottomSheet } from './BottomSheet';
 import { FormInput } from './FormInput';
+import { toUserMessage } from '../errors';
 
 type PlanId = 'free' | 'pro' | 'business';
 type BillingCycle = 'monthly' | 'annual';
@@ -98,7 +99,7 @@ export function NewWorkspaceSheet({ visible, onClose }: NewWorkspaceSheetProps) 
         setName('');
         onClose();
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Could not create workspace');
+        setError(toUserMessage(err, 'Could not create workspace. Please try again.'));
       } finally {
         setLoading(false);
       }

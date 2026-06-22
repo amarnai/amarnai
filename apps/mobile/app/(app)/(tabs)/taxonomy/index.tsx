@@ -41,6 +41,7 @@ import {
 } from '../../../../src/components/taxonomy/NodeFormSheet';
 import { TemplatePickerSheet } from '../../../../src/components/taxonomy/TemplatePickerSheet';
 import { RoutingIndicator } from '../../../../src/components/taxonomy/RoutingIndicator';
+import { toUserMessage } from '../../../../src/errors';
 
 type FormState =
   | { mode: 'create'; node: null; defaultParentId: string | null }
@@ -165,7 +166,7 @@ export default function TaxonomyScreen() {
       }
       setForm(null);
     } catch (err) {
-      setFormError(err instanceof Error ? err.message : 'Something went wrong');
+      setFormError(toUserMessage(err, 'Something went wrong. Please try again.'));
     }
   };
 
@@ -180,7 +181,7 @@ export default function TaxonomyScreen() {
       showToast('Category deleted');
       setForm(null);
     } catch (err) {
-      setFormError(err instanceof Error ? err.message : 'Delete failed');
+      setFormError(toUserMessage(err, 'Delete failed. Please try again.'));
     }
   };
 
@@ -191,7 +192,7 @@ export default function TaxonomyScreen() {
       showToast('Template applied');
     } catch (err) {
       setTemplateOpen(false);
-      showToast(err instanceof Error ? err.message : 'Could not apply template');
+      showToast(toUserMessage(err, 'Could not apply template. Please try again.'));
     }
   };
 

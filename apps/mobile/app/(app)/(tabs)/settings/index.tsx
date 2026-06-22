@@ -25,15 +25,13 @@ import { SyncFiltersSheet } from '../../../../src/components/SyncFiltersSheet';
 import { BlacklistSheet } from '../../../../src/components/BlacklistSheet';
 import { RenameWorkspaceSheet } from '../../../../src/components/RenameWorkspaceSheet';
 import { CollaboratorsSheet } from '../../../../src/components/CollaboratorsSheet';
+import { toUserMessage } from '../../../../src/errors';
 
 const PLAN_LABEL: Record<string, string> = {
   FREE: 'Free',
   PRO: 'Pro',
   BUSINESS: 'Business',
 };
-
-const errorMessage = (err: unknown, fallback: string) =>
-  err instanceof Error ? err.message : fallback;
 
 export default function SettingsScreen() {
   const router = useRouter();
@@ -140,7 +138,7 @@ export default function SettingsScreen() {
                 bumpDataVersion(); // remounts the app subtree to re-seed wiped data
               } catch (err) {
                 setBusy(false);
-                Alert.alert('Reset failed', errorMessage(err, 'Could not reset workspace'));
+                Alert.alert('Reset failed', toUserMessage(err, 'Could not reset workspace'));
               }
             })();
           },
@@ -167,7 +165,7 @@ export default function SettingsScreen() {
                 await refreshWorkspaces(); // active workspace repoints -> subtree remounts
               } catch (err) {
                 setBusy(false);
-                Alert.alert('Delete failed', errorMessage(err, 'Could not delete workspace'));
+                Alert.alert('Delete failed', toUserMessage(err, 'Could not delete workspace'));
               }
             })();
           },

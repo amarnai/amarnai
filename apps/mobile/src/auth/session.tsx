@@ -93,7 +93,7 @@ async function register(email: string, password: string): Promise<StoredTokens> 
   // 409 (taken / Google-only), 403 (waitlist), and 400 (validation) all carry a
   // user-facing message from the API; surface it verbatim.
   const body = (await res.json().catch(() => null)) as { error?: string } | null;
-  throw new Error(body?.error ?? `Sign-up failed (${res.status})`);
+  throw new Error(body?.error ?? 'Sign-up failed. Please try again.');
 }
 
 // Requests a password-reset email. The API always returns 200 (it never reveals

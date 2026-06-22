@@ -10,6 +10,7 @@ import { BackHeader } from '../../src/components/BackHeader';
 import { SectionTitle } from '../../src/components/SectionTitle';
 import { SettingsGroup, SettingsRow } from '../../src/components/SettingsGroup';
 import { EditNameSheet } from '../../src/components/EditNameSheet';
+import { toUserMessage } from '../../src/errors';
 
 export default function AccountScreen() {
   const router = useRouter();
@@ -35,7 +36,7 @@ export default function AccountScreen() {
                 await signOut();
               } catch (err) {
                 setDeletePending(false);
-                Alert.alert('Delete failed', err instanceof Error ? err.message : 'Could not delete account');
+                Alert.alert('Delete failed', toUserMessage(err, 'Could not delete account. Please try again.'));
               }
             })();
           },
