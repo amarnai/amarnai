@@ -15,9 +15,11 @@ const workspaceEvents = new Hono();
  * the sync-inbox worker finishes processing inbox changes, letting connected
  * browser tabs refresh immediately without polling.
  *
- * Authentication: covered by the INTERNAL_API_SECRET middleware in app.ts.
- * Browsers must connect via the Next.js proxy at /api/workspace-events, which
- * authenticates the session and adds the internal auth header.
+ * Authentication: covered by the auth middleware in app.ts, which accepts both
+ * the internal service secret and a per-user access token, plus the workspace-
+ * membership guard. Browsers connect via the Next.js proxy at
+ * /api/workspace-events (which authenticates the session and adds the internal
+ * auth header); the mobile app connects directly with its bearer token.
  *
  * One Redis subscriber connection is created per connected client and cleaned
  * up when the browser tab closes. A heartbeat is sent every 30 s to prevent

@@ -19,9 +19,11 @@ import { FolderFilterSheet } from '../../../../src/components/emails/FolderFilte
 import { ThreadListView } from '../../../../src/components/emails/ThreadListView';
 import { UnroutedBanner } from '../../../../src/components/emails/UnroutedBanner';
 import { BackfillBanner } from '../../../../src/components/emails/BackfillBanner';
+import { DisconnectedBanner } from '../../../../src/components/emails/DisconnectedBanner';
 import { useSession } from '../../../../src/auth/session';
 import { useGmailConnection, useSyncStatus } from '../../../../src/data/queries';
 import { useConnectGmail } from '../../../../src/auth/useConnectGmail';
+import { useWorkspaceEvents } from '../../../../src/realtime/useWorkspaceEvents';
 
 export default function EmailsScreen() {
   const router = useRouter();
@@ -30,25 +32,35 @@ export default function EmailsScreen() {
 
   const [folderSheetOpen, setFolderSheetOpen] = useState(false);
   const [backfillDismissed, setBackfillDismissed] = useState(false);
+  const [focused, setFocused] = useState(false);
 
   // Keep a stable ref so the focus callback never captures a stale `refresh`.
   const refreshRef = useRef(triage.refresh);
   refreshRef.current = triage.refresh;
 
-  // Refresh each time the tab regains focus — replaces web's EventSource SSE.
+  // Refresh once each time the tab regains focus — the catch-up fetch that
+  // covers anything missed while the live stream below was disconnected.
   useFocusEffect(
     useCallback(() => {
       refreshRef.current();
+      setFocused(true);
+      return () => setFocused(false);
     }, []),
   );
 
-  // When Gmail isn't connected, show an in-app connect CTA instead of the
+  // Live updates while this screen is focused and the app is foregrounded:
+  // refresh immediately whenever the worker finishes a sync, matching the web
+  // app's EventSource. Passing null when unfocused disconnects the stream.
+  useWorkspaceEvents(focused ? workspaceId : null, () => refreshRef.current());
+
+  // When Gmail was never connected, show an in-app connect CTA instead of the
   // thread list. On success, invalidate the connection query so the empty
-  // state clears and the first sync results appear.
+  // state clears and the first sync results appear. A DISCONNECTED connection
+  // (revoked/expired token) is handled separately by DisconnectedBanner, which
+  // shows even when stale threads are still present.
   const connectionQuery = useGmailConnection(workspaceId ?? '');
   const syncStatusQuery = useSyncStatus(workspaceId ?? '');
-  const showConnectHint =
-    connectionQuery.isSuccess && connectionQuery.data?.status !== 'ACTIVE';
+  const showConnectHint = connectionQuery.isSuccess && !connectionQuery.data;
   const { connect: connectGmail, connecting: gmailConnecting } = useConnectGmail(
     workspaceId ?? '',
     client,
@@ -125,6 +137,17 @@ export default function EmailsScreen() {
         waitingCount={triage.waitingCount}
         routableFolderCount={triage.folders.length}
         onRouteNow={handleRouteNow}
+      />
+
+      <DisconnectedBanner
+        connection={connectionQuery.data}
+        workspaceId={workspaceId ?? ''}
+        client={client}
+        onReconnected={() => {
+          void connectionQuery.refetch();
+          void syncStatusQuery.refetch();
+          refreshRef.current();
+        }}
       />
 
       {showConnectHint && triage.threads.length === 0 ? (
