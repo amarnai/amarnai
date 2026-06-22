@@ -25,6 +25,7 @@ import { db, deleteUserCascade } from "@amarnai/db";
 import type { AppEnv } from "../env.js";
 import { syncInboxQueue } from "../services/queue-client.js";
 import { disconnectGmail } from "../services/gmail-disconnect.js";
+import { registerGmailWatch } from "../services/gmail-watch.js";
 
 const loginSchema = z.object({
   email: z.string().email(),
@@ -180,20 +181,24 @@ auth.post("/auth/google", async (c) => {
     oauthClient: "MOBILE",
   });
 
-  // First-time sign-up: kick off an immediate inbox sync (fire-and-forget; the
-  // polling scheduler is the fallback). Same dedup id as the trigger-sync route
-  // so a concurrent webhook does not double-queue. Push-watch registration is
-  // covered by the worker's daily renewal.
+  // First-time sign-up: kick off an immediate inbox sync and arm the Gmail push
+  // watch (both fire-and-forget; polling and the worker's daily renewal are the
+  // fallbacks). Same dedup id as the trigger-sync route so a concurrent webhook
+  // does not double-queue. Mirrors the web next-auth new-signup flow.
   if (result.isNew && result.gmailConnected && result.workspaceId) {
+    const { workspaceId } = result;
     syncInboxQueue
       .add(
         "sync-inbox",
-        { workspaceId: result.workspaceId },
-        { deduplication: { id: `sync-inbox_${result.workspaceId}` } }
+        { workspaceId },
+        { deduplication: { id: `sync-inbox_${workspaceId}` } }
       )
       .catch((err) =>
         console.error("[auth/google] trigger_sync:", err instanceof Error ? err.message : err)
       );
+    registerGmailWatch(workspaceId).catch((err) =>
+      console.error("[auth/google] register_watch:", err instanceof Error ? err.message : err)
+    );
   }
 
   return c.json(await issueTokenPair(result.userId));

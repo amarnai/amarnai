@@ -13,6 +13,7 @@ import {
   listVisibleSiblingConnections,
 } from "../services/gmail-disconnect.js";
 import { syncInboxQueue } from "../services/queue-client.js";
+import { registerGmailWatch } from "../services/gmail-watch.js";
 
 const workspaceParam = z.object({ workspaceId: z.string().min(1) });
 
@@ -129,6 +130,16 @@ gmailConnection.post("/workspaces/:workspaceId/gmail-connection", async (c) => {
         err instanceof Error ? err.message : err,
       ),
     );
+
+  // Fire-and-forget: arm the Gmail push watch immediately so Pub/Sub is live
+  // right after (re)connecting, matching the web callback. The worker's daily
+  // renewal is the fallback; polling covers any gap before the watch lands.
+  registerGmailWatch(workspaceId).catch((err) =>
+    console.error(
+      "[gmail-connection/connect] register_watch:",
+      err instanceof Error ? err.message : err,
+    ),
+  );
 
   // Return the full connection shape (same as GET) so the client can update state.
   const connection = await db.gmailConnection.findUnique({
