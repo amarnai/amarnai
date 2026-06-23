@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import type { TaxonomyNode, TaxonomyEdge } from '@amarnai/api-client';
-import { buildTaxonomyTree, descendantIds, flattenVisible } from './buildTree';
+import { buildTaxonomyTree, flattenVisible } from './buildTree';
 
 let seq = 0;
 function node(id: string, isRoot = false): TaxonomyNode {
@@ -79,15 +79,6 @@ describe('buildTaxonomyTree', () => {
     const tree = buildTaxonomyTree([], []);
     expect(tree.rows).toEqual([]);
     expect(tree.rootId).toBeNull();
-  });
-});
-
-describe('descendantIds', () => {
-  it('returns all transitive children, excluding the node itself', () => {
-    const edges = [edge('root', 'a'), edge('a', 'a1'), edge('a1', 'a1x'), edge('root', 'b')];
-    expect([...descendantIds(edges, 'a')].sort()).toEqual(['a1', 'a1x']);
-    expect([...descendantIds(edges, 'a1')].sort()).toEqual(['a1x']);
-    expect(descendantIds(edges, 'b').size).toBe(0);
   });
 });
 

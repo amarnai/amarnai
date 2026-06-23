@@ -15,7 +15,7 @@ import type {
   TaxonomyEdge,
   TaxonomyNode,
 } from '@amarnai/api-client';
-import { descendantIds } from '../../taxonomy/buildTree';
+import { descendantIds } from '@amarnai/core/taxonomy';
 import { BottomSheet } from '../BottomSheet';
 import { NodePickerSheet, type NodePickerOption } from './NodePickerSheet';
 import type { ParentChange } from '../../data/taxonomyQueries';
@@ -49,7 +49,7 @@ interface NodeFormSheetProps {
 const NONE_OPTION: NodePickerOption = {
   id: null,
   label: 'None (not connected)',
-  sublabel: 'Node will be ignored until connected',
+  sublabel: 'Folder will be ignored until connected',
 };
 
 // Collapsible description-writing guidance, mirroring the web NodeForm's
@@ -224,12 +224,12 @@ export function NodeFormSheet({
           <View style={styles.header}>
             <Text style={styles.title}>
               {readOnly
-                ? 'Category'
+                ? 'Folder'
                 : mode === 'create'
-                  ? 'New category'
+                  ? 'New folder'
                   : isRoot
                     ? 'Edit inbox'
-                    : 'Edit category'}
+                    : 'Edit folder'}
             </Text>
             <TouchableOpacity onPress={onClose} hitSlop={8}>
               <Ionicons name="close" size={22} color={colors.ink3} />
@@ -313,7 +313,7 @@ export function NodeFormSheet({
               />
               {!readOnly ? (
                 <Text style={styles.hint}>
-                  Optional. Applied when generating draft replies for this category.
+                  Optional. Applied when generating draft replies for this folder.
                 </Text>
               ) : null}
 
@@ -322,7 +322,7 @@ export function NodeFormSheet({
                   style={styles.addChild}
                   onPress={() => onAddChild(node.id)}
                 >
-                  <Text style={styles.addChildText}>+ Add subcategory</Text>
+                  <Text style={styles.addChildText}>+ Add folder</Text>
                 </TouchableOpacity>
               ) : null}
 
@@ -331,7 +331,7 @@ export function NodeFormSheet({
                   <View style={styles.deleteBlock}>
                     <Text style={styles.deleteWarn}>
                       Deleting leaves {node?.threadCount} thread
-                      {node?.threadCount === 1 ? '' : 's'} without this category.
+                      {node?.threadCount === 1 ? '' : 's'} without this folder.
                     </Text>
                     <Text style={styles.label}>Move them to</Text>
                     <TouchableOpacity
@@ -363,7 +363,7 @@ export function NodeFormSheet({
                         nodeHasChildren && styles.deleteLinkTextDisabled,
                       ]}
                     >
-                      Delete category
+                      Delete folder
                     </Text>
                   </TouchableOpacity>
                 )
@@ -371,7 +371,7 @@ export function NodeFormSheet({
 
               {!readOnly && mode === 'edit' && nodeHasChildren ? (
                 <Text style={styles.hint}>
-                  Remove its subcategories before deleting this one.
+                  Remove its child folders before deleting this one.
                 </Text>
               ) : null}
             </ScrollView>

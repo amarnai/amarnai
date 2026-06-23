@@ -155,14 +155,14 @@ export default function TaxonomyScreen() {
     try {
       if (form?.mode === 'create') {
         await createNode.mutateAsync({ input: payload.input, parentId: payload.parentId });
-        showToast('Category created');
+        showToast('Folder created');
       } else if (form?.mode === 'edit') {
         await updateNode.mutateAsync({
           nodeId: form.node.id,
           input: payload.input,
           ...(payload.parentChange ? { parentChange: payload.parentChange } : {}),
         });
-        showToast('Category updated');
+        showToast('Folder updated');
       }
       setForm(null);
     } catch (err) {
@@ -178,7 +178,7 @@ export default function TaxonomyScreen() {
         nodeId: form.node.id,
         ...(moveToNodeId ? { moveToNodeId } : {}),
       });
-      showToast('Category deleted');
+      showToast('Folder deleted');
       setForm(null);
     } catch (err) {
       setFormError(toUserMessage(err, 'Delete failed. Please try again.'));
@@ -244,7 +244,7 @@ export default function TaxonomyScreen() {
           style={styles.searchInput}
           value={search}
           onChangeText={setSearch}
-          placeholder="Search categories"
+          placeholder="Search folders"
           placeholderTextColor={colors.ink4}
           autoCapitalize="none"
           autoCorrect={false}
@@ -289,7 +289,7 @@ export default function TaxonomyScreen() {
           }
           ListEmptyComponent={
             <Text style={styles.empty}>
-              {searching ? 'No matching categories' : 'No categories yet'}
+              {searching ? 'No matching folders' : 'No folders yet'}
             </Text>
           }
         />

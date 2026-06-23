@@ -1,4 +1,5 @@
 export { computeIgnoredReasons, type IgnoredReason } from "./computeIgnoredReasons.js";
+export { descendantIds } from "./descendantIds.js";
 export {
   historyReducer,
   snapshotsEqual,

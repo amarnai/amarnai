@@ -127,7 +127,7 @@ describe("POST /workspaces/:workspaceId/taxonomy-import", () => {
     const res = await post(IMPORT_PATH, file);
     expect(res.status).toBe(400);
     const body = await res.json() as { error: string };
-    expect(body.error).toMatch(/root node cannot be the target|cycle/);
+    expect(body.error).toMatch(/root folder cannot be the target|cycle/);
   });
 
   it("returns 413 when Content-Length exceeds 1 MB", async () => {

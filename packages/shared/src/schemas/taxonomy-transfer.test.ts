@@ -144,7 +144,7 @@ describe("validateTaxonomyTransfer", () => {
     });
     const result = validateTaxonomyTransfer(file);
     expect(result.ok).toBe(false);
-    expect(result.ok === false && result.error).toMatch(/Duplicate node ref/);
+    expect(result.ok === false && result.error).toMatch(/Duplicate folder ref/);
   });
 
   it("rejects zero root nodes", () => {
@@ -268,7 +268,7 @@ describe("validateTaxonomyTransfer", () => {
     });
     const result = validateTaxonomyTransfer(file);
     expect(result.ok).toBe(false);
-    expect(result.ok === false && result.error).toMatch(/root node cannot be the target/);
+    expect(result.ok === false && result.error).toMatch(/root folder cannot be the target/);
   });
 
   it("rejects node with multiple parents", () => {

@@ -29,8 +29,6 @@ import {
   type TaxonomyNode,
   type TaxonomyEdge,
   type CreateTaxonomyNodeInput,
-  type UpdateTaxonomyNodeInput,
-  type CreateTaxonomyEdgeInput,
   type UpdateTaxonomyEdgeInput,
 } from "@/lib/api";
 import {
@@ -47,6 +45,7 @@ import {
   type IgnoredReason,
   TAXONOMY_TEMPLATES,
   matchesTemplate,
+  descendantIds,
 } from "@amarnai/core/taxonomy";
 import {
   useTaxonomyHistory,
@@ -279,8 +278,26 @@ function DescriptionTips() {
 
 // ─── NodeForm ─────────────────────────────────────────────────────────────────
 
+// Re-parenting a folder reuses / creates / deletes its single incoming edge.
+// `currentEdgeId` is the existing incoming edge (if any); `newParentId` is the
+// chosen parent (null = disconnect).
+type ParentChange = {
+  currentEdgeId: string | null;
+  newParentId: string | null;
+};
+
+type NodeFormSubmit = {
+  data: CreateTaxonomyNodeInput;
+  // create mode: chosen parent (null = orphan / no edge)
+  parentId: string | null;
+  // edit mode: present only when the parent actually changed
+  parentChange?: ParentChange;
+};
+
 function NodeForm({
   node,
+  nodes,
+  edges,
   onSubmit,
   onCancel,
   onDelete,
@@ -291,7 +308,9 @@ function NodeForm({
   error,
 }: {
   node: TaxonomyNode | null;
-  onSubmit: (data: CreateTaxonomyNodeInput) => void;
+  nodes: TaxonomyNode[];
+  edges: TaxonomyEdge[];
+  onSubmit: (submit: NodeFormSubmit) => void;
   onCancel: () => void;
   onDelete?: (moveToNodeId?: string) => void;
   deleteDisabledReason?: string | null;
@@ -302,12 +321,29 @@ function NodeForm({
 }) {
   const isRoot = node?.isRoot ?? false;
 
+  // A folder's parent is modelled as a single "Parent" choice instead of a
+  // standalone Path: the form reuses / creates / deletes the incoming edge as
+  // needed (mirrors the mobile NodeFormSheet).
+  const currentEdge = node
+    ? (edges.find((e) => e.targetNodeId === node.id) ?? null)
+    : null;
+  const currentParentId = currentEdge?.sourceNodeId ?? null;
+
+  // Parent options exclude the folder itself and its descendants (cycle guard;
+  // the server would reject re-parenting a folder under its own subtree).
+  const excluded = node
+    ? new Set<string>([node.id, ...descendantIds(edges, node.id)])
+    : new Set<string>();
+  const parentOptions = nodes.filter((n) => !excluded.has(n.id));
+
   const [name, setName] = useState(node?.name ?? "");
   const nameValid = name.trim().length >= 3 && name.trim().length <= 40;
   const [description, setDescription] = useState(node?.description ?? "");
   const descriptionValid =
     isRoot || description.replace(/\s/g, "").length >= 30;
   const [draftPrompt, setDraftPrompt] = useState(node?.draftPrompt ?? "");
+  // "" represents "None (not connected)".
+  const [parentId, setParentId] = useState(currentParentId ?? "");
   const [confirmingDelete, setConfirmingDelete] = useState(false);
   const [moveToNodeId, setMoveToNodeId] = useState("");
 
@@ -315,7 +351,7 @@ function NodeForm({
     e.preventDefault();
     const trimmedDescription = description.trim();
     const trimmedDraftPrompt = draftPrompt.trim();
-    onSubmit({
+    const data: CreateTaxonomyNodeInput = {
       name: name.trim(),
       // Only include description if non-empty; omitting it on a root-node edit
       // leaves the existing DB value unchanged.
@@ -323,7 +359,20 @@ function NodeForm({
       instructions: node?.instructions ?? null,
       draftPrompt: trimmedDraftPrompt || null,
       examples: node?.examples ?? [],
-    });
+    };
+    const chosenParentId = parentId === "" ? null : parentId;
+    if (node && !isRoot && chosenParentId !== currentParentId) {
+      onSubmit({
+        data,
+        parentId: chosenParentId,
+        parentChange: {
+          currentEdgeId: currentEdge?.id ?? null,
+          newParentId: chosenParentId,
+        },
+      });
+    } else {
+      onSubmit({ data, parentId: chosenParentId });
+    }
   }
 
   function handleDeleteClick() {
@@ -336,7 +385,7 @@ function NodeForm({
 
   return (
     <div className="panel-inner">
-      <h2>{node ? "Edit Node" : "Create Node"}</h2>
+      <h2>{node ? "Edit Folder" : "Create Folder"}</h2>
       {error && (
         <div className="error-box" style={{ marginBottom: 12 }}>
           {error}
@@ -391,13 +440,35 @@ function NodeForm({
             style={{ fontSize: 11, color: "var(--color-muted)", marginTop: 2 }}
           >
             Optional. Applied when generating draft replies for threads in this
-            category.
+            folder.
           </p>
         </div>
+        {!isRoot && (
+          <div className="form-group">
+            <label className="form-label">Parent</label>
+            <select
+              className="form-select"
+              value={parentId}
+              onChange={(e) => setParentId(e.target.value)}
+            >
+              <option value="">None (not connected)</option>
+              {parentOptions.map((n) => (
+                <option key={n.id} value={n.id}>
+                  {n.name}
+                  {n.isRoot ? " (Inbox)" : ""}
+                </option>
+              ))}
+            </select>
+            <p style={{ fontSize: 11, color: "var(--color-muted)", marginTop: 2 }}>
+              Where this folder sits. Folders with no parent stay disconnected
+              and are ignored until connected.
+            </p>
+          </div>
+        )}
         {confirmingDelete ? (
           <div style={{ marginTop: 16 }}>
             <div className="warning-box" style={{ marginBottom: 12 }}>
-              Deleting this node will leave {classificationCount} thread
+              Deleting this folder will leave {classificationCount} thread
               {classificationCount !== 1 ? "s" : ""} unsorted.
             </div>
             {otherNodes.length > 0 && (
@@ -485,6 +556,8 @@ function NodeForm({
 
 // ─── EdgeForm ─────────────────────────────────────────────────────────────────
 
+// Edit-only: opened by clicking a Path on the canvas. New Paths are created via
+// the folder's Parent picker or by dragging a connection between folders.
 function EdgeForm({
   edge,
   nodes,
@@ -494,124 +567,71 @@ function EdgeForm({
   submitting,
   error,
 }: {
-  edge: TaxonomyEdge | null;
+  edge: TaxonomyEdge;
   nodes: TaxonomyNode[];
-  onSubmit: (data: CreateTaxonomyEdgeInput | UpdateTaxonomyEdgeInput) => void;
+  onSubmit: (data: UpdateTaxonomyEdgeInput) => void;
   onCancel: () => void;
   onDelete?: () => void;
   submitting: boolean;
   error: string | null;
 }) {
-  const nonRootNodes = nodes.filter((n) => !n.isRoot);
-
-  const [sourceNodeId, setSourceNodeId] = useState(edge?.sourceNodeId ?? "");
-  const [targetNodeId, setTargetNodeId] = useState(edge?.targetNodeId ?? "");
+  const [sourceNodeId, setSourceNodeId] = useState(edge.sourceNodeId);
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (edge) {
-      onSubmit(
-        sourceNodeId !== edge.sourceNodeId
-          ? ({
-              newSourceNodeId: sourceNodeId,
-            } satisfies UpdateTaxonomyEdgeInput)
-          : ({} satisfies UpdateTaxonomyEdgeInput),
-      );
-    } else {
-      onSubmit({
-        sourceNodeId,
-        targetNodeId,
-      } satisfies CreateTaxonomyEdgeInput);
-    }
+    onSubmit(
+      sourceNodeId !== edge.sourceNodeId
+        ? ({ newSourceNodeId: sourceNodeId } satisfies UpdateTaxonomyEdgeInput)
+        : ({} satisfies UpdateTaxonomyEdgeInput),
+    );
   }
 
   return (
     <div className="panel-inner">
-      <h2>{edge ? "Edit Edge" : "Create Edge"}</h2>
+      <h2>Edit Path</h2>
       {error && (
         <div className="error-box" style={{ marginBottom: 12 }}>
           {error}
         </div>
       )}
       <form className="node-form" onSubmit={handleSubmit}>
-        {!edge ? (
-          <div className="form-row">
-            <div className="form-group">
-              <label className="form-label">
-                From <span className="required">*</span>
-              </label>
-              <select
-                className="form-select"
-                value={sourceNodeId}
-                onChange={(e) => setSourceNodeId(e.target.value)}
-                required
-              >
-                <option value="">Select source</option>
-                {nodes.map((n) => (
-                  <option key={n.id} value={n.id}>
-                    {n.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="form-group">
-              <label className="form-label">
-                To <span className="required">*</span>
-              </label>
-              <select
-                className="form-select"
-                value={targetNodeId}
-                onChange={(e) => setTargetNodeId(e.target.value)}
-                required
-              >
-                <option value="">Select target</option>
-                {nonRootNodes.map((n) => (
-                  <option key={n.id} value={n.id}>
-                    {n.name}
-                  </option>
-                ))}
-              </select>
+        <div className="form-row">
+          <div className="form-group">
+            <label className="form-label">Parent</label>
+            <select
+              className="form-select"
+              value={sourceNodeId}
+              onChange={(e) => setSourceNodeId(e.target.value)}
+            >
+              {nodes.map((n) => (
+                <option key={n.id} value={n.id}>
+                  {n.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="form-group">
+            <label className="form-label">Child folder</label>
+            <div
+              className="form-select"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                cursor: "default",
+              }}
+            >
+              {nodeById(nodes, edge.targetNodeId)?.name ?? edge.targetNodeId}
             </div>
           </div>
-        ) : (
-          <div className="form-row">
-            <div className="form-group">
-              <label className="form-label">From (parent)</label>
-              <select
-                className="form-select"
-                value={sourceNodeId}
-                onChange={(e) => setSourceNodeId(e.target.value)}
-              >
-                {nodes.map((n) => (
-                  <option key={n.id} value={n.id}>
-                    {n.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="form-group">
-              <label className="form-label">To</label>
-              <div
-                className="form-select"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  cursor: "default",
-                }}
-              >
-                {nodeById(nodes, edge.targetNodeId)?.name ?? edge.targetNodeId}
-              </div>
-            </div>
-          </div>
-        )}
+        </div>
         <div className="form-actions">
           <button className="btn-primary" type="submit" disabled={submitting}>
-            {submitting ? "Saving…" : edge ? "Save" : "Create"}
+            {submitting ? "Saving…" : "Save"}
           </button>
           <button className="btn-ghost" type="button" onClick={onCancel}>
             Cancel
           </button>
-          {edge && onDelete && (
+          {onDelete && (
             <button
               className="btn-danger"
               type="button"
@@ -633,7 +653,6 @@ type Panel =
   | { type: "none" }
   | { type: "create-node"; spawnPosition?: { x: number; y: number } }
   | { type: "edit-node"; node: TaxonomyNode }
-  | { type: "create-edge" }
   | { type: "edit-edge"; edge: TaxonomyEdge };
 
 // ─── Snapshot diff applier ────────────────────────────────────────────────────
@@ -843,7 +862,7 @@ function TaxonomyCanvasInner({
         history.push({ nodes, edges });
       } catch (err) {
         setApiError(
-          err instanceof Error ? err.message : "Failed to create edge",
+          err instanceof Error ? err.message : "Failed to create path",
         );
       }
     },
@@ -874,14 +893,16 @@ function TaxonomyCanvasInner({
 
   // ─── Node mutations ───────────────────────────────────────────────────────
 
-  async function handleCreateNode(data: CreateTaxonomyNodeInput) {
+  async function handleCreateNode(submit: NodeFormSubmit) {
     setSubmitting(true);
     setFormError(null);
     const spawnPosition =
       panel.type === "create-node" ? panel.spawnPosition : undefined;
     try {
-      await createTaxonomyNodeAction(workspaceId, {
-        ...data,
+      // Two calls (create folder, then its Path): if the Path call fails the
+      // folder is left disconnected (shown as Ignored), matching mobile.
+      const created = await createTaxonomyNodeAction(workspaceId, {
+        ...submit.data,
         ...(spawnPosition
           ? {
               positionX: Math.round(spawnPosition.x),
@@ -889,32 +910,50 @@ function TaxonomyCanvasInner({
             }
           : {}),
       });
+      if (submit.parentId) {
+        await createTaxonomyEdgeAction(workspaceId, {
+          sourceNodeId: submit.parentId,
+          targetNodeId: created.id,
+        });
+      }
       const { nodes, edges } = await refetch();
       history.push({ nodes, edges });
       setPanel({ type: "none" });
     } catch (err) {
       setFormError(
-        err instanceof Error ? err.message : "Failed to create node",
+        err instanceof Error ? err.message : "Failed to create folder",
       );
     } finally {
       setSubmitting(false);
     }
   }
 
-  async function handleUpdateNode(
-    nodeId: string,
-    data: UpdateTaxonomyNodeInput,
-  ) {
+  async function handleUpdateNode(nodeId: string, submit: NodeFormSubmit) {
     setSubmitting(true);
     setFormError(null);
     try {
-      await updateTaxonomyNodeAction(workspaceId, nodeId, data);
+      await updateTaxonomyNodeAction(workspaceId, nodeId, submit.data);
+      const pc = submit.parentChange;
+      if (pc) {
+        if (pc.currentEdgeId && pc.newParentId) {
+          await updateTaxonomyEdgeAction(workspaceId, pc.currentEdgeId, {
+            newSourceNodeId: pc.newParentId,
+          });
+        } else if (pc.currentEdgeId && !pc.newParentId) {
+          await deleteTaxonomyEdgeAction(workspaceId, pc.currentEdgeId);
+        } else if (!pc.currentEdgeId && pc.newParentId) {
+          await createTaxonomyEdgeAction(workspaceId, {
+            sourceNodeId: pc.newParentId,
+            targetNodeId: nodeId,
+          });
+        }
+      }
       const { nodes, edges } = await refetch();
       history.push({ nodes, edges });
       setPanel({ type: "none" });
     } catch (err) {
       setFormError(
-        err instanceof Error ? err.message : "Failed to update node",
+        err instanceof Error ? err.message : "Failed to update folder",
       );
     } finally {
       setSubmitting(false);
@@ -923,46 +962,20 @@ function TaxonomyCanvasInner({
 
   // ─── Edge mutations ───────────────────────────────────────────────────────
 
-  async function handleCreateEdge(
-    data: CreateTaxonomyEdgeInput | UpdateTaxonomyEdgeInput,
-  ) {
-    setSubmitting(true);
-    setFormError(null);
-    try {
-      await createTaxonomyEdgeAction(
-        workspaceId,
-        data as CreateTaxonomyEdgeInput,
-      );
-      const { nodes, edges } = await refetch();
-      history.push({ nodes, edges });
-      setPanel({ type: "none" });
-    } catch (err) {
-      setFormError(
-        err instanceof Error ? err.message : "Failed to create edge",
-      );
-    } finally {
-      setSubmitting(false);
-    }
-  }
-
   async function handleUpdateEdge(
     edgeId: string,
-    data: CreateTaxonomyEdgeInput | UpdateTaxonomyEdgeInput,
+    data: UpdateTaxonomyEdgeInput,
   ) {
     setSubmitting(true);
     setFormError(null);
     try {
-      await updateTaxonomyEdgeAction(
-        workspaceId,
-        edgeId,
-        data as UpdateTaxonomyEdgeInput,
-      );
+      await updateTaxonomyEdgeAction(workspaceId, edgeId, data);
       const { nodes, edges } = await refetch();
       history.push({ nodes, edges });
       setPanel({ type: "none" });
     } catch (err) {
       setFormError(
-        err instanceof Error ? err.message : "Failed to update edge",
+        err instanceof Error ? err.message : "Failed to update path",
       );
     } finally {
       setSubmitting(false);
@@ -979,7 +992,7 @@ function TaxonomyCanvasInner({
       setPanel({ type: "none" });
     } catch (err) {
       setFormError(
-        err instanceof Error ? err.message : "Failed to delete node",
+        err instanceof Error ? err.message : "Failed to delete folder",
       );
     } finally {
       setSubmitting(false);
@@ -996,7 +1009,7 @@ function TaxonomyCanvasInner({
       setPanel({ type: "none" });
     } catch (err) {
       setFormError(
-        err instanceof Error ? err.message : "Failed to delete edge",
+        err instanceof Error ? err.message : "Failed to delete path",
       );
     } finally {
       setSubmitting(false);
@@ -1155,7 +1168,7 @@ function TaxonomyCanvasInner({
       (e) => e.sourceNodeId === panel.node.id,
     );
     nodeDeleteDisabledReason = nodeHasOutgoingEdges
-      ? "This node has child connections. Removing it would restructure the graph unexpectedly — delete its outgoing edges first."
+      ? "This folder has child folders. Remove their Paths first, then delete it."
       : null;
   }
 
@@ -1171,13 +1184,7 @@ function TaxonomyCanvasInner({
             className="btn-primary"
             onClick={() => openPanel({ type: "create-node" })}
           >
-            + Add Node
-          </button>
-          <button
-            className="btn-ghost"
-            onClick={() => openPanel({ type: "create-edge" })}
-          >
-            + Create Edge
+            + Add Folder
           </button>
           <Tooltip content="Undo">
             <button
@@ -1201,7 +1208,7 @@ function TaxonomyCanvasInner({
             content={
               taxonomyIsRoutable
                 ? "Export taxonomy"
-                : "Add at least 3 connected categories to export"
+                : "Add at least 3 connected folders to export"
             }
           >
             <button
@@ -1324,7 +1331,7 @@ function TaxonomyCanvasInner({
               <span className="em-pill accent" style={{ marginRight: 8 }}>
                 {routableCount} / {TAXONOMY_MIN_NON_ROOT_NODES}
               </span>
-              {routableCount} of {TAXONOMY_MIN_NON_ROOT_NODES} categories
+              {routableCount} of {TAXONOMY_MIN_NON_ROOT_NODES} folders
               connected to your inbox. Routing requires at least{" "}
               {TAXONOMY_MIN_NON_ROOT_NODES}.
             </span>
@@ -1397,6 +1404,8 @@ function TaxonomyCanvasInner({
               <NodeForm
                 key="create-node"
                 node={null}
+                nodes={dbNodes}
+                edges={dbEdges}
                 onSubmit={handleCreateNode}
                 onCancel={() => setPanel({ type: "none" })}
                 submitting={submitting}
@@ -1407,7 +1416,9 @@ function TaxonomyCanvasInner({
               <NodeForm
                 key={panel.node.id}
                 node={panel.node}
-                onSubmit={(data) => handleUpdateNode(panel.node.id, data)}
+                nodes={dbNodes}
+                edges={dbEdges}
+                onSubmit={(submit) => handleUpdateNode(panel.node.id, submit)}
                 onCancel={() => setPanel({ type: "none" })}
                 onDelete={(moveToNodeId) =>
                   handleDeleteNode(panel.node.id, moveToNodeId)
@@ -1417,17 +1428,6 @@ function TaxonomyCanvasInner({
                 otherNodes={dbNodes.filter(
                   (n) => n.id !== panel.node.id && !n.isRoot,
                 )}
-                submitting={submitting}
-                error={formError}
-              />
-            )}
-            {panel.type === "create-edge" && (
-              <EdgeForm
-                key="create-edge"
-                edge={null}
-                nodes={dbNodes}
-                onSubmit={handleCreateEdge}
-                onCancel={() => setPanel({ type: "none" })}
                 submitting={submitting}
                 error={formError}
               />
@@ -1483,9 +1483,9 @@ function TaxonomyCanvasInner({
             <div className="modal-body">
               <p>
                 Importing will replace your current taxonomy with{" "}
-                <strong>{pendingImportFile.nodes.length} nodes</strong> and{" "}
-                <strong>{pendingImportFile.edges.length} edges</strong> from the
-                file. Threads that were sorted into removed categories will
+                <strong>{pendingImportFile.nodes.length} folders</strong> and{" "}
+                <strong>{pendingImportFile.edges.length} paths</strong> from the
+                file. Threads that were sorted into removed folders will
                 become unsorted. This cannot be undone.
               </p>
             </div>

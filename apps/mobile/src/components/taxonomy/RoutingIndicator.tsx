@@ -17,7 +17,7 @@ export function RoutingIndicator({ count, min }: RoutingIndicatorProps) {
         </Text>
       </View>
       <Text style={styles.message}>
-        {count} of {min} categories connected to your inbox. Routing needs at least {min}.
+        {count} of {min} folders connected to your inbox. Routing needs at least {min}.
       </Text>
     </View>
   );

@@ -25,7 +25,7 @@ export function TaxonomyNodeCardBase({
 }: TaxonomyNodeCardBaseProps) {
   const ignored = ignoredReason !== null;
   const title = ignoredReason === "no-incoming"
-    ? "This node is not reachable from the inbox and will not be used for routing."
+    ? "This folder is not reachable from the inbox and will not be used for routing."
     : undefined;
 
   const card = (

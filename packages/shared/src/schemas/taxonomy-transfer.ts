@@ -96,7 +96,7 @@ export function validateTaxonomyTransfer(
   const refs = new Set<string>();
   for (const node of nodes) {
     if (refs.has(node.ref)) {
-      return { ok: false, error: `Duplicate node ref: "${node.ref}"` };
+      return { ok: false, error: `Duplicate folder ref: "${node.ref}"` };
     }
     refs.add(node.ref);
   }
@@ -104,10 +104,10 @@ export function validateTaxonomyTransfer(
   // Exactly one root
   const rootNodes = nodes.filter((n) => n.isRoot);
   if (rootNodes.length === 0) {
-    return { ok: false, error: "Taxonomy must have exactly one root node (Inbox)" };
+    return { ok: false, error: "Taxonomy must have exactly one root folder (Inbox)" };
   }
   if (rootNodes.length > 1) {
-    return { ok: false, error: "Taxonomy must have exactly one root node — found multiple" };
+    return { ok: false, error: "Taxonomy must have exactly one root folder. Found multiple." };
   }
   const rootRef = rootNodes[0]!.ref;
 
@@ -119,14 +119,14 @@ export function validateTaxonomyTransfer(
     if (!nameResult.success) {
       return {
         ok: false,
-        error: `Node "${node.name}": ${nameResult.error.issues[0]?.message ?? "invalid name"}`,
+        error: `Folder "${node.name}": ${nameResult.error.issues[0]?.message ?? "invalid name"}`,
       };
     }
 
     if (!node.description) {
       return {
         ok: false,
-        error: `Node "${node.name}": description is required`,
+        error: `Folder "${node.name}": description is required`,
       };
     }
 
@@ -134,14 +134,14 @@ export function validateTaxonomyTransfer(
     if (!descResult.success) {
       return {
         ok: false,
-        error: `Node "${node.name}": ${descResult.error.issues[0]?.message ?? "invalid description"}`,
+        error: `Folder "${node.name}": ${descResult.error.issues[0]?.message ?? "invalid description"}`,
       };
     }
 
     if (node.description.trim().toLowerCase() === node.name.trim().toLowerCase()) {
       return {
         ok: false,
-        error: `Node "${node.name}": description must differ from the node name`,
+        error: `Folder "${node.name}": description must differ from the folder name`,
       };
     }
   }
@@ -151,19 +151,19 @@ export function validateTaxonomyTransfer(
 
   for (const edge of edges) {
     if (!refs.has(edge.sourceRef)) {
-      return { ok: false, error: `Edge references unknown source ref: "${edge.sourceRef}"` };
+      return { ok: false, error: `Path references unknown source ref: "${edge.sourceRef}"` };
     }
     if (!refs.has(edge.targetRef)) {
-      return { ok: false, error: `Edge references unknown target ref: "${edge.targetRef}"` };
+      return { ok: false, error: `Path references unknown target ref: "${edge.targetRef}"` };
     }
     if (edge.targetRef === rootRef) {
-      return { ok: false, error: "The root node cannot be the target of an edge" };
+      return { ok: false, error: "The root folder cannot be the target of a Path" };
     }
     const count = (incomingCount.get(edge.targetRef) ?? 0) + 1;
     if (count > 1) {
       return {
         ok: false,
-        error: `Node ref "${edge.targetRef}" has more than one parent — taxonomy must be a tree`,
+        error: `Folder ref "${edge.targetRef}" has more than one parent. Taxonomy must be a tree.`,
       };
     }
     incomingCount.set(edge.targetRef, count);

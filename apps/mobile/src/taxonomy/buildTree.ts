@@ -81,29 +81,6 @@ export function buildTaxonomyTree(
 }
 
 /**
- * All nodes reachable from `nodeId` by following edges (its descendants),
- * excluding `nodeId` itself. Used to keep a node from being re-parented under its
- * own subtree, which the server would reject as a cycle.
- */
-export function descendantIds(edges: TaxonomyEdge[], nodeId: string): Set<string> {
-  const childrenByParent = new Map<string, string[]>();
-  for (const e of edges) {
-    const list = childrenByParent.get(e.sourceNodeId) ?? [];
-    list.push(e.targetNodeId);
-    childrenByParent.set(e.sourceNodeId, list);
-  }
-  const out = new Set<string>();
-  const queue = [...(childrenByParent.get(nodeId) ?? [])];
-  while (queue.length > 0) {
-    const id = queue.shift()!;
-    if (out.has(id)) continue;
-    out.add(id);
-    for (const child of childrenByParent.get(id) ?? []) queue.push(child);
-  }
-  return out;
-}
-
-/**
  * Filters the full ordered rows to those currently visible, given a set of
  * collapsed node ids. Relies on the depth-first ordering: once a collapsed node
  * is seen, every following row deeper than it is its descendant and is skipped

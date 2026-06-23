@@ -71,7 +71,7 @@ export function TemplatePickerSheet({
           data={templates}
           keyExtractor={(t) => t.id}
           renderItem={({ item }) => {
-            const categories = item.file.nodes.filter((n) => !n.isRoot).length;
+            const folderCount = item.file.nodes.filter((n) => !n.isRoot).length;
             const isCurrent = item.id === currentTemplateId;
             return (
               <TouchableOpacity
@@ -91,7 +91,7 @@ export function TemplatePickerSheet({
                 >
                   {item.description}
                 </Text>
-                <Text style={styles.count}>{categories} categories</Text>
+                <Text style={styles.count}>{folderCount} folders</Text>
               </TouchableOpacity>
             );
           }}
