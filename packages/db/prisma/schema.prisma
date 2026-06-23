@@ -322,8 +322,19 @@ model ProviderSyncState {
   // records the generation it claimed under and only persists its progress while
   // that generation still matches, so a concurrent reset is never clobbered.
   backfillGeneration     Int         @default(0)
+  // Armed by an explicit "Route now" click while a backfill is still in flight.
+  // While armed, the sync/backfill backlog gates auto-enqueue newly-arrived
+  // PENDING threads for routing instead of leaving them for another manual click.
+  // Cleared when the backfill reaches a terminal state (DONE or ERROR).
+  autoRouteBacklogArmed  Boolean     @default(false)
   // Set to true after a one-time pass that marks existing threads with gmailIsImportant.
   importantBackfilled Boolean        @default(false)
+  // Whether the last backfill stopped because it hit the plan's thread cap (more
+  // threads exist in Gmail than the plan ingests). Drives the "upgrade to load
+  // more" banner. backfillBeyondCount is Gmail's estimate of how many threads
+  // were left beyond the cap (approximate). Reset on a fresh backfill / upgrade.
+  backfillCapReached  Boolean        @default(false)
+  backfillBeyondCount Int            @default(0)
   createdAt           DateTime       @default(now())
   updatedAt           DateTime       @updatedAt
 

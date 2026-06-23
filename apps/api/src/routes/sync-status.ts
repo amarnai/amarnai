@@ -46,6 +46,8 @@ syncStatus.get("/workspaces/:workspaceId/sync-status", async (c) => {
         backfillStatus: true,
         backfillSkipped: true,
         backfillCompletedAt: true,
+        backfillCapReached: true,
+        backfillBeyondCount: true,
       },
     }),
     db.gmailSyncSettings.findUnique({
@@ -71,6 +73,8 @@ syncStatus.get("/workspaces/:workspaceId/sync-status", async (c) => {
     backfillStatus: state.backfillStatus,
     backfillSkipped: state.backfillSkipped,
     backfillCompletedAt: state.backfillCompletedAt?.toISOString() ?? null,
+    backfillCapReached: state.backfillCapReached,
+    backfillBeyondCount: state.backfillBeyondCount,
     sortingPaused: syncSettings?.sortingPaused ?? false,
     workspacePlan: workspace?.plan ?? "FREE",
     pushEnabled,

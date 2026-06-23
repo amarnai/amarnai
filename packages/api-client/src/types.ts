@@ -240,6 +240,10 @@ export type SyncStatus = {
   backfillStatus: BackfillStatus;
   backfillSkipped: number;
   backfillCompletedAt: string | null;
+  // True when the backfill stopped at the plan's thread cap with more threads
+  // still in Gmail; backfillBeyondCount is the approximate number left behind.
+  backfillCapReached: boolean;
+  backfillBeyondCount: number;
   sortingPaused: boolean;
   workspacePlan: "FREE" | "PRO" | "BUSINESS";
   pushEnabled: boolean;

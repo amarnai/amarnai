@@ -83,6 +83,24 @@ export async function provisionFromCheckoutSession(
           paymentFailed: false,
         },
       }),
+      // Reset the backfill so it re-scans up to the new (higher) plan cap and,
+      // for Free -> paid, drops the 30-day window. The worker's sync scheduler
+      // re-enqueues a backfill whenever the status is PENDING. Re-ingesting
+      // already-stored threads is idempotent (upsert by provider thread id).
+      // No-op when the workspace has no connected inbox yet.
+      db.providerSyncState.updateMany({
+        where: { emailAccount: { workspaceId: meta.workspaceId } },
+        data: {
+          backfillStatus: "PENDING",
+          backfillStartedAt: null,
+          backfillPageToken: null,
+          backfillProcessedCount: 0,
+          backfillSkipped: 0,
+          backfillGeneration: { increment: 1 },
+          backfillCapReached: false,
+          backfillBeyondCount: 0,
+        },
+      }),
       ...(trialEndsAt !== null
         ? [db.user.update({ where: { id: meta.userId }, data: { trialUsed: true } })]
         : []),

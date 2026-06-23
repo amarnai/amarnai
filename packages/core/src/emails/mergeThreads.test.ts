@@ -71,4 +71,42 @@ describe("mergeThreads", () => {
     const merged = mergeThreads(fresh, prev, "pinned");
     expect(merged.filter((t) => t.id === "pinned")).toHaveLength(1);
   });
+
+  it("keeps already-loaded later pages when a refresh only returns page 1", () => {
+    // The list has been paginated to two pages; a refresh re-fetches only the
+    // first-page window (a, b). The later-page threads (c, d) must survive.
+    const prev = [makeThread("a"), makeThread("b"), makeThread("c"), makeThread("d")];
+    const fresh = [makeThread("a"), makeThread("b")];
+    const merged = mergeThreads(fresh, prev, null, true);
+    expect(merged.map((t) => t.id)).toEqual(["a", "b", "c", "d"]);
+  });
+
+  it("merges status updates from page 1 without dropping later pages", () => {
+    const prev = [
+      makeThread("a", { status: "unsorted" }),
+      makeThread("c", { status: "unsorted" }),
+    ];
+    // Page 1 now reports "a" as sorted; "c" lives on a later page and is absent.
+    const fresh = [makeThread("a", { status: "sorted" })];
+    const merged = mergeThreads(fresh, prev, null, true);
+    expect(merged.find((t) => t.id === "a")!.status).toBe("sorted");
+    expect(merged.find((t) => t.id === "c")).toBeDefined();
+  });
+
+  it("surfaces a newly-arrived page-1 thread ahead of later pages", () => {
+    const prev = [makeThread("b"), makeThread("c")];
+    // A brand-new thread "a" arrived at the top of page 1.
+    const fresh = [makeThread("a"), makeThread("b")];
+    const merged = mergeThreads(fresh, prev, null, true);
+    expect(merged.map((t) => t.id)).toEqual(["a", "b", "c"]);
+  });
+
+  it("drops a removed thread on a non-paginated refresh (straight replace)", () => {
+    // No pagination (keepTail defaults to false): a thread the server no longer
+    // returns — e.g. it was trashed and filtered out — must disappear.
+    const prev = [makeThread("a"), makeThread("trashed")];
+    const fresh = [makeThread("a")];
+    const merged = mergeThreads(fresh, prev, null);
+    expect(merged.map((t) => t.id)).toEqual(["a"]);
+  });
 });

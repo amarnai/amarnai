@@ -22,6 +22,7 @@ vi.mock("@amarnai/db", () => ({
     workspaceMember: { deleteMany: vi.fn() },
     user: { findUnique: vi.fn(), update: vi.fn() },
     auditLog: { create: vi.fn() },
+    providerSyncState: { updateMany: vi.fn() },
     $transaction: vi.fn(),
   },
   ensureInboxNode: vi.fn(),
@@ -241,6 +242,25 @@ describe("checkout.session.completed — upgrade action", () => {
       expect.objectContaining({
         where: { id: WS_ID },
         data: expect.objectContaining({ plan: "PRO", stripeSubscriptionId: SUB_ID }),
+      })
+    );
+  });
+
+  it("resets the backfill so the higher plan cap re-scans the inbox", async () => {
+    vi.spyOn(testStripe.subscriptions, "retrieve").mockResolvedValue(
+      SUBSCRIPTION_WITH_TRIAL as never
+    );
+
+    await POST(webhookRequest(makeUpgradeCheckoutEvent()));
+
+    expect(db.providerSyncState.updateMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { emailAccount: { workspaceId: WS_ID } },
+        data: expect.objectContaining({
+          backfillStatus: "PENDING",
+          backfillCapReached: false,
+          backfillBeyondCount: 0,
+        }),
       })
     );
   });

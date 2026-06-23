@@ -63,6 +63,8 @@ export default async function EmailsPage({ searchParams }: PageProps) {
 
   const rawThreads =
     threadsResult.status === "fulfilled" ? threadsResult.value.threads : [];
+  const initialNextCursor =
+    threadsResult.status === "fulfilled" ? threadsResult.value.nextCursor : null;
   const rawNodes =
     nodes.status === "fulfilled" ? nodes.value : [];
   const rawEdges =
@@ -102,6 +104,7 @@ export default async function EmailsPage({ searchParams }: PageProps) {
         workspaceId={workspace.id}
         currentUserId={user.id}
         initialThreads={threads}
+        initialNextCursor={initialNextCursor}
         initialFolders={folders}
         initialActive={initialActive}
         initialSelectedId={initialSelectedId}

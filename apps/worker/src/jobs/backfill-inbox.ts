@@ -16,6 +16,7 @@ import {
   computeThreadLabelFlagsFromMeta,
   isThreadExcluded,
 } from "./filter-thread-messages.js";
+import { enqueueArmedBacklog } from "./route-armed-backlog.js";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -67,14 +68,16 @@ function isPermanentThreadFetchError(err: unknown): boolean {
   return status === 400 || status === 404;
 }
 
-/** Sort threads: unread first, then by latestMessageAt descending. */
+/**
+ * Sort threads strictly by latestMessageAt descending (most recent first). When
+ * the plan cap truncates the inbox, the kept set is the most recent threads —
+ * matching what a user expects to see, and composing with the Free plan's 30-day
+ * window. Read state is intentionally not a factor.
+ */
 function sortByPriority(threads: GmailThreadMeta[]): GmailThreadMeta[] {
-  return [...threads].sort((a, b) => {
-    // Unread threads come first.
-    if (a.unread !== b.unread) return a.unread ? -1 : 1;
-    // Within same unread status, newest first.
-    return b.latestMessageAt.getTime() - a.latestMessageAt.getTime();
-  });
+  return [...threads].sort(
+    (a, b) => b.latestMessageAt.getTime() - a.latestMessageAt.getTime(),
+  );
 }
 
 // ─── Worker ───────────────────────────────────────────────────────────────────
@@ -187,12 +190,17 @@ export function createBackfillInboxWorker(): Worker {
           backfillProcessedCount: true,
           backfillSkipped: true,
           backfillGeneration: true,
+          autoRouteBacklogArmed: true,
         },
       });
 
       // The generation we are responsible for. A concurrent reset (sweep bumps
       // it) makes our later progress writes no-ops, so the reset is never clobbered.
       const claimedGeneration = claimed?.backfillGeneration ?? 0;
+      // Set when the user clicked "Route now" mid-backfill: route the arriving
+      // historical backlog automatically instead of re-prompting (cleared below
+      // when the backfill reaches a terminal state).
+      const autoRouteBacklogArmed = claimed?.autoRouteBacklogArmed ?? false;
 
       await job.updateProgress(5);
 
@@ -357,6 +365,9 @@ export function createBackfillInboxWorker(): Worker {
         let processedThisRun = 0;
         let exhausted = false;
         let disconnected = false;
+        // Gmail's estimate of total threads matching the windowed query, captured
+        // from the most recent page. Used to estimate how many sit beyond the cap.
+        let resultSizeEstimate = 0;
 
         while (processedThisRun < BACKFILL_CHUNK_THREADS && processed < cap.maxThreads) {
           const page = await client.listThreadsPage({
@@ -364,6 +375,7 @@ export function createBackfillInboxWorker(): Worker {
             pageToken,
             pageSize: BACKFILL_PAGE_SIZE,
           });
+          resultSizeEstimate = page.resultSizeEstimate;
 
           // An empty page means we've reached the end of the inbox.
           if (page.threads.length === 0) {
@@ -442,7 +454,11 @@ export function createBackfillInboxWorker(): Worker {
         // Stamp classifyingAt first so the UI shows the threads as queued. Skip
         // when sorting is paused; threads stay PENDING for the resume flow.
 
-        if (!sortingPaused && upsertedEmailThreadIds.length > 0) {
+        // When armed, also sweep any orphaned never-attempted PENDING backlog (not
+        // just this run's upserted threads) so a chunk that committed PENDING
+        // around the "Route now" click does not re-surface the banner. Run this
+        // even when this chunk upserted nothing.
+        if (!sortingPaused && (upsertedEmailThreadIds.length > 0 || autoRouteBacklogArmed)) {
           const [taxonomyNodes, taxonomyEdges] = await Promise.all([
             db.taxonomyNode.findMany({
               where: { workspaceId },
@@ -455,24 +471,31 @@ export function createBackfillInboxWorker(): Worker {
           ]);
 
           if (isTaxonomyRoutable(taxonomyNodes, taxonomyEdges)) {
-            const enqueuedAt = new Date();
-            await db.emailThread.updateMany({
-              where: { id: { in: upsertedEmailThreadIds } },
-              data: { classifyingAt: enqueuedAt },
-            });
+            if (autoRouteBacklogArmed) {
+              // User opted the arriving backlog into routing via "Route now".
+              // Route the whole never-attempted PENDING backlog (this run's
+              // upserts plus any orphaned) as REROUTE, matching the manual path.
+              await enqueueArmedBacklog(workspaceId);
+            } else if (upsertedEmailThreadIds.length > 0) {
+              const enqueuedAt = new Date();
+              await db.emailThread.updateMany({
+                where: { id: { in: upsertedEmailThreadIds } },
+                data: { classifyingAt: enqueuedAt },
+              });
 
-            await classifyThreadQueue.addBulk(
-              upsertedEmailThreadIds.map((emailThreadId) => ({
-                name: "classify-thread",
-                // BACKFILL: the one-time historical allowance, exempt from the
-                // monthly thread-sort quota.
-                data: { workspaceId, emailThreadId, source: "BACKFILL" as const },
-                opts: {
-                  deduplication: { id: `classify_backfill_${workspaceId}_${emailThreadId}` },
-                  priority: BACKFILL_CLASSIFY_PRIORITY,
-                },
-              }))
-            );
+              await classifyThreadQueue.addBulk(
+                upsertedEmailThreadIds.map((emailThreadId) => ({
+                  name: "classify-thread",
+                  // BACKFILL: the one-time historical allowance, exempt from the
+                  // monthly thread-sort quota.
+                  data: { workspaceId, emailThreadId, source: "BACKFILL" as const },
+                  opts: {
+                    deduplication: { id: `classify_backfill_${workspaceId}_${emailThreadId}` },
+                    priority: BACKFILL_CLASSIFY_PRIORITY,
+                  },
+                }))
+              );
+            }
           }
           // Taxonomy not routable → leave threads PENDING as the invalid-taxonomy
           // bulk backlog. They wait for the user's "Route now" once a valid
@@ -545,6 +568,12 @@ export function createBackfillInboxWorker(): Worker {
           });
         }
 
+        // Cap-reached when we stopped because the plan cap was hit while Gmail
+        // still had more threads (not because the inbox was exhausted). The
+        // beyond-cap count is approximate (Gmail's resultSizeEstimate).
+        const capReached = !exhausted && processed >= cap.maxThreads;
+        const beyondCount = capReached ? Math.max(0, resultSizeEstimate - processed) : 0;
+
         const doneRes = await db.providerSyncState.updateMany({
           where: { emailAccountId, backfillGeneration: claimedGeneration },
           data: {
@@ -554,6 +583,11 @@ export function createBackfillInboxWorker(): Worker {
             backfillPageToken: null,
             backfillProcessedCount: processed,
             backfillSkipped: baseSkipped + runSkipped,
+            backfillCapReached: capReached,
+            backfillBeyondCount: beyondCount,
+            // Backfill finished — stop auto-routing arriving backlog. New live
+            // threads still auto-route via the normal sync path.
+            autoRouteBacklogArmed: false,
           },
         });
 
@@ -574,6 +608,11 @@ export function createBackfillInboxWorker(): Worker {
         // ── On failure: mark ERROR but keep the cursor so a retry resumes ──────
         // rather than restarting from the beginning of the inbox. Guarded on our
         // generation so a concurrent reset (sweep) is not overwritten.
+        // Keep autoRouteBacklogArmed as-is: ERROR is resumable (the next sync
+        // cycle re-enqueues backfill), so the resumed run should keep auto-routing
+        // the arriving backlog. The arm is cleared only when backfill reaches DONE.
+        // A never-completing backfill leaves the arm set, but that is benign:
+        // enqueueArmedBacklog is a no-op once there is no never-attempted backlog.
         await db.providerSyncState.updateMany({
           where: { emailAccountId, backfillGeneration: claimedGeneration },
           data: { backfillStatus: "ERROR", backfillStartedAt: null },

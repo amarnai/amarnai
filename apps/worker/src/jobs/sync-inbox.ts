@@ -23,6 +23,7 @@ import {
 import { redisConnection } from "../redis.js";
 import { publishWorkspaceSynced } from "../redis-publisher.js";
 import { applyThreadFilter, computeThreadLabelFlags } from "./filter-thread-messages.js";
+import { enqueueArmedBacklog } from "./route-armed-backlog.js";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -334,7 +335,13 @@ export function createSyncInboxWorker(): Worker {
         where: { emailAccountId },
         create: { emailAccountId, provider: "GMAIL" },
         update: { status: "SYNCING", errorMessage: null },
-        select: { historyId: true, backfillStatus: true, backfillStartedAt: true, importantBackfilled: true },
+        select: {
+          historyId: true,
+          backfillStatus: true,
+          backfillStartedAt: true,
+          importantBackfilled: true,
+          autoRouteBacklogArmed: true,
+        },
       });
 
       // ── 3. Discover changed thread IDs ──────────────────────────────────────
@@ -410,6 +417,13 @@ export function createSyncInboxWorker(): Worker {
           await runRecovery(() => recoverQuotaBlockedThreads(workspaceId, workspace.plan));
           await runRecovery(() => recoverFailedThreads(workspaceId, workspace.plan));
           await runRecovery(() => recoverStaleClassifyingThreads(workspaceId, workspace.plan));
+          // While armed (the user clicked "Route now" during an in-flight
+          // backfill), also route the never-attempted PENDING backlog so threads
+          // a backfill chunk committed around the click do not re-surface the
+          // banner. Cleared by backfill on DONE.
+          if (syncState.autoRouteBacklogArmed) {
+            await runRecovery(async () => { await enqueueArmedBacklog(workspaceId); });
+          }
         }
 
         return;
@@ -688,6 +702,11 @@ export function createSyncInboxWorker(): Worker {
         await runRecovery(() => recoverQuotaBlockedThreads(workspaceId, workspace.plan));
         await runRecovery(() => recoverFailedThreads(workspaceId, workspace.plan));
         await runRecovery(() => recoverStaleClassifyingThreads(workspaceId, workspace.plan));
+        // See the quiet-branch comment: route the never-attempted backlog while
+        // the "Route now" arm is set during an in-flight backfill.
+        if (syncState.autoRouteBacklogArmed) {
+          await runRecovery(async () => { await enqueueArmedBacklog(workspaceId); });
+        }
       }
 
       await job.updateProgress(100);

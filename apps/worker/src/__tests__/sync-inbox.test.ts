@@ -94,6 +94,7 @@ vi.mock("../queues.js", () => ({
 import { db, countRecurringThreadSorts } from "@amarnai/db";
 import { Worker } from "bullmq";
 import { classifyThreadQueue } from "../queues.js";
+import { DEDUP_CLASSIFY_UNROUTED } from "@amarnai/queue";
 import { createSyncInboxWorker } from "../jobs/sync-inbox.js";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -521,6 +522,83 @@ describe("createSyncInboxWorker — stale-classifying recovery", () => {
     await processor(makeJob({ workspaceId: WS_ID }));
 
     expect(staleRecoveryCall()).toBeUndefined();
+  });
+});
+
+// ─── Auto-route-backlog arming ──────────────────────────────────────────────────
+
+describe("createSyncInboxWorker — armed backlog recovery", () => {
+  // Mark the backfill in flight with the arm set.
+  function armedSyncState() {
+    vi.mocked(db.providerSyncState.upsert).mockResolvedValue({
+      historyId: "hist-1",
+      backfillStatus: "RUNNING",
+      backfillStartedAt: new Date(),
+      importantBackfilled: true,
+      autoRouteBacklogArmed: true,
+    } as never);
+  }
+
+  // findMany returns a thread only for the armed-backlog query: PENDING, never
+  // attempted (classifyFailedAt null), not queued (classifyingAt null), not trash.
+  function withBacklogThread(id: string) {
+    vi.mocked(db.emailThread.findMany).mockImplementation((args: unknown) => {
+      const where = (args as {
+        where?: { triageStatus?: string; classifyFailedAt?: unknown; classifyingAt?: unknown; gmailIsTrash?: unknown };
+      }).where;
+      const isArmedQuery =
+        where?.triageStatus === "PENDING" &&
+        where?.classifyFailedAt === null &&
+        where?.classifyingAt === null &&
+        where?.gmailIsTrash === false;
+      return Promise.resolve(isArmedQuery ? [{ id }] : []) as never;
+    });
+  }
+
+  function armedBacklogCall() {
+    return vi.mocked(classifyThreadQueue.addBulk).mock.calls.find((call) => {
+      const jobs = call[0] as Array<{ opts?: { deduplication?: { id?: string } } }>;
+      return jobs.some((j) => j.opts?.deduplication?.id?.includes(DEDUP_CLASSIFY_UNROUTED));
+    });
+  }
+
+  it("routes the never-attempted backlog as REROUTE when armed", async () => {
+    armedSyncState();
+    withBacklogThread("bk-1");
+
+    createSyncInboxWorker();
+    await getProcessor()(makeJob({ workspaceId: WS_ID }));
+
+    const recovery = armedBacklogCall();
+    expect(recovery).toBeDefined();
+    const jobs = recovery![0] as Array<{ data: { source?: string } }>;
+    expect(jobs[0]!.data.source).toBe("REROUTE");
+  });
+
+  it("does not route the backlog when not armed", async () => {
+    // Default upsert leaves autoRouteBacklogArmed unset (falsy).
+    withBacklogThread("bk-1");
+
+    createSyncInboxWorker();
+    await getProcessor()(makeJob({ workspaceId: WS_ID }));
+
+    expect(armedBacklogCall()).toBeUndefined();
+  });
+
+  it("does not route the backlog when sorting is paused", async () => {
+    armedSyncState();
+    withBacklogThread("bk-1");
+    vi.mocked(db.gmailSyncSettings.findUnique).mockResolvedValue({
+      includeSpam: false,
+      includePromotions: false,
+      sortingPaused: true,
+      blacklistedSenderEmails: [],
+    } as never);
+
+    createSyncInboxWorker();
+    await getProcessor()(makeJob({ workspaceId: WS_ID }));
+
+    expect(armedBacklogCall()).toBeUndefined();
   });
 });
 

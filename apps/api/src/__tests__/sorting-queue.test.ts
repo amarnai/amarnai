@@ -18,6 +18,8 @@ vi.mock("@amarnai/db", () => ({
     emailThread: { findMany: vi.fn(), updateMany: vi.fn() },
     gmailConnection: { findUnique: vi.fn() },
     gmailSyncSettings: { findUnique: vi.fn() },
+    emailAccount: { findUnique: vi.fn() },
+    providerSyncState: { updateMany: vi.fn() },
   },
 }));
 
@@ -74,7 +76,14 @@ beforeEach(() => {
     includeSpam: false,
     includePromotions: false,
   } as never);
-  vi.mocked(db.gmailConnection.findUnique).mockResolvedValue({ status: "ACTIVE" } as never);
+  vi.mocked(db.gmailConnection.findUnique).mockResolvedValue({
+    status: "ACTIVE",
+    gmailAddress: "user@example.com",
+    googleSubjectId: "sub-1",
+  } as never);
+  vi.mocked(db.emailAccount.findUnique).mockResolvedValue({ id: "acct-1" } as never);
+  // Default: a backfill is still in flight, so arming updates one row.
+  vi.mocked(db.providerSyncState.updateMany).mockResolvedValue({ count: 1 } as never);
   // Default: strong taxonomy (3 non-root nodes all linked to root).
   mockTaxonomy(TAXONOMY_MIN_NON_ROOT_NODES);
 });
@@ -158,6 +167,39 @@ describe("POST /workspaces/:workspaceId/sorting-queue/route-unrouted", () => {
     const res = await post(`/workspaces/${WS_ID}/sorting-queue/route-unrouted`);
     expect(res.status).toBe(200);
     expect((await res.json() as Record<string, unknown>).queued).toBe(0);
+  });
+
+  it("arms autoRouteBacklog only for in-flight backfills (backfillStatus != DONE)", async () => {
+    vi.mocked(db.emailThread.findMany).mockResolvedValue([{ id: "t1" }] as never);
+
+    const res = await post(`/workspaces/${WS_ID}/sorting-queue/route-unrouted`);
+    expect(res.status).toBe(200);
+
+    // The DONE filter is applied in the query, so an already-finished backfill is
+    // never armed; the handler unconditionally issues the guarded update.
+    expect(db.providerSyncState.updateMany).toHaveBeenCalledWith({
+      where: { emailAccountId: "acct-1", backfillStatus: { not: "DONE" } },
+      data: { autoRouteBacklogArmed: true },
+    });
+  });
+
+  it("does not arm when the workspace has no email account yet", async () => {
+    vi.mocked(db.emailAccount.findUnique).mockResolvedValue(null as never);
+    vi.mocked(db.emailThread.findMany).mockResolvedValue([{ id: "t1" }] as never);
+
+    const res = await post(`/workspaces/${WS_ID}/sorting-queue/route-unrouted`);
+    expect(res.status).toBe(200);
+    expect(db.providerSyncState.updateMany).not.toHaveBeenCalled();
+  });
+
+  it("does not arm when there is no Gmail connection", async () => {
+    vi.mocked(db.gmailConnection.findUnique).mockResolvedValue(null as never);
+    vi.mocked(db.emailThread.findMany).mockResolvedValue([{ id: "t1" }] as never);
+
+    const res = await post(`/workspaces/${WS_ID}/sorting-queue/route-unrouted`);
+    expect(res.status).toBe(200);
+    expect(db.emailAccount.findUnique).not.toHaveBeenCalled();
+    expect(db.providerSyncState.updateMany).not.toHaveBeenCalled();
   });
 });
 

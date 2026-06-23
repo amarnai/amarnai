@@ -6,6 +6,7 @@ import type { ActiveSelection, FolderItem, ThreadItem } from "./types.js";
 import { filterThreads } from "./selection.js";
 import { mapThreads } from "./mapThreads.js";
 import { mergeThreads } from "./mergeThreads.js";
+import { appendThreads } from "./appendThreads.js";
 
 export type Toast = { message: string; onUndo?: () => void };
 
@@ -19,6 +20,9 @@ export type UseEmailTriageOptions = {
   initialFolders: FolderItem[];
   initialActive: ActiveSelection;
   initialSelectedId: string | null;
+  // Opaque cursor for the next page of threads, from the initial server fetch.
+  // null/undefined means the first page was the last (no pagination).
+  initialNextCursor?: string | null;
 };
 
 /**
@@ -39,10 +43,12 @@ export type UseEmailTriageOptions = {
  * refs rather than closures, mirroring the `selectedIdRef` pattern.
  */
 export function useEmailTriage(options: UseEmailTriageOptions) {
-  const { api, workspaceId, currentUserId, initialThreads, initialFolders, initialActive, initialSelectedId } =
+  const { api, workspaceId, currentUserId, initialThreads, initialFolders, initialActive, initialSelectedId, initialNextCursor } =
     options;
 
   const [threads, setThreads] = useState<ThreadItem[]>(initialThreads);
+  const [nextCursor, setNextCursor] = useState<string | null>(initialNextCursor ?? null);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [folders] = useState<FolderItem[]>(initialFolders);
   const [active, setActive] = useState<ActiveSelection>(initialActive);
   const [selectedId, setSelectedId] = useState<string | null>(initialSelectedId);
@@ -67,6 +73,18 @@ export function useEmailTriage(options: UseEmailTriageOptions) {
     rerouteTargetRef.current = rerouteTarget;
   }, [rerouteTarget]);
 
+  // Always-current cursor + in-flight guard so loadMore keeps a stable identity
+  // while still reading the latest pagination state.
+  const nextCursorRef = useRef(nextCursor);
+  useEffect(() => {
+    nextCursorRef.current = nextCursor;
+  }, [nextCursor]);
+  const loadingMoreRef = useRef(false);
+  // True once the user has loaded pages beyond the first. Gates whether a
+  // page-1 refresh preserves later pages (it should) versus straight-replacing
+  // (so trashed/removed threads disappear) when no pagination has happened.
+  const hasPaginatedRef = useRef(false);
+
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // ─── Toast ───────────────────────────────────────────────────────────────────
@@ -87,16 +105,49 @@ export function useEmailTriage(options: UseEmailTriageOptions) {
   // Merge a fresh mapped thread list into local state, preserving in-progress
   // draft state and the pinned (selected) thread.
   const syncThreads = useCallback((fresh: ThreadItem[]) => {
-    setThreads((prev) => mergeThreads(fresh, prev, selectedIdRef.current));
+    setThreads((prev) => mergeThreads(fresh, prev, selectedIdRef.current, hasPaginatedRef.current));
   }, []);
 
-  // Fetch the latest threads from the server and merge them in.
+  // Fetch the latest threads from the server and merge them in. This only ever
+  // re-fetches the first page; mergeThreads keeps already-loaded later pages, so
+  // a refresh updates statuses without collapsing a paginated list. The returned
+  // nextCursor (page 2) is intentionally ignored — the deeper pagination cursor
+  // tracked in state is the one that matters.
   const refresh = useCallback(() => {
     return api
       .emailThreads(workspaceId)
       .then(({ threads: fresh }) => syncThreads(mapThreads(fresh)))
       .catch(() => {});
   }, [api, workspaceId, syncThreads]);
+
+  // ─── Pagination ──────────────────────────────────────────────────────────────
+
+  const hasMore = nextCursor !== null;
+
+  // Fetch and append the next page of threads. No-op when there is no next page
+  // or a fetch is already in flight (so a fast-scrolling list does not fire
+  // overlapping requests). Drives the web infinite-scroll sentinel and the
+  // mobile list's onEndReached.
+  const loadMore = useCallback(async () => {
+    const cursor = nextCursorRef.current;
+    if (!cursor || loadingMoreRef.current) return;
+    loadingMoreRef.current = true;
+    hasPaginatedRef.current = true;
+    setLoadingMore(true);
+    try {
+      const { threads: page, nextCursor: cursorAfter } = await api.emailThreads(
+        workspaceId,
+        { cursor },
+      );
+      setThreads((prev) => appendThreads(prev, mapThreads(page)));
+      setNextCursor(cursorAfter);
+    } catch {
+      // Non-fatal — the sentinel/onEndReached will retry on the next trigger.
+    } finally {
+      loadingMoreRef.current = false;
+      setLoadingMore(false);
+    }
+  }, [api, workspaceId]);
 
   // ─── Approve ───────────────────────────────────────────────────────────────
 
@@ -289,6 +340,10 @@ export function useEmailTriage(options: UseEmailTriageOptions) {
     // thread sync
     syncThreads,
     refresh,
+    // pagination
+    hasMore,
+    loadingMore,
+    loadMore,
     // mutations
     handleApprove,
     handleMarkDone,

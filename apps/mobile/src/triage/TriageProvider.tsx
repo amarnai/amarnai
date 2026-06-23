@@ -24,6 +24,7 @@ type TriageActions = Pick<
   | 'setQuery'
   | 'syncThreads'
   | 'refresh'
+  | 'loadMore'
   | 'handleApprove'
   | 'handleMarkDone'
   | 'handleUnmarkDone'
@@ -92,6 +93,7 @@ export function TriageProvider({ children, api, workspaceId, userId }: TriagePro
       userId={userId}
       initialFolders={mapFolders(nodes, edges)}
       initialThreads={mapThreads(threadsResult.threads)}
+      initialNextCursor={threadsResult.nextCursor}
     >
       {children}
     </TriageInner>
@@ -105,6 +107,7 @@ interface TriageInnerProps {
   userId: string;
   initialFolders: FolderItem[];
   initialThreads: ThreadItem[];
+  initialNextCursor: string | null;
 }
 
 function TriageInner({
@@ -114,12 +117,14 @@ function TriageInner({
   userId,
   initialFolders,
   initialThreads,
+  initialNextCursor,
 }: TriageInnerProps) {
   const triage = useEmailTriage({
     api,
     workspaceId,
     currentUserId: userId,
     initialThreads,
+    initialNextCursor,
     initialFolders,
     initialActive: { kind: 'queue', id: 'all' } as ActiveSelection,
     initialSelectedId: null,
@@ -134,6 +139,7 @@ function TriageInner({
       setQuery: triage.setQuery,
       syncThreads: triage.syncThreads,
       refresh: triage.refresh,
+      loadMore: triage.loadMore,
       handleApprove: triage.handleApprove,
       handleMarkDone: triage.handleMarkDone,
       handleUnmarkDone: triage.handleUnmarkDone,
@@ -156,6 +162,7 @@ function TriageInner({
       triage.setQuery,
       triage.syncThreads,
       triage.refresh,
+      triage.loadMore,
       triage.handleApprove,
       triage.handleMarkDone,
       triage.handleUnmarkDone,
@@ -190,6 +197,8 @@ function TriageInner({
       filteredIds: triage.filteredIds,
       anyClassifying: triage.anyClassifying,
       waitingCount: triage.waitingCount,
+      hasMore: triage.hasMore,
+      loadingMore: triage.loadingMore,
     }),
     [
       triage.threads,
@@ -204,6 +213,8 @@ function TriageInner({
       triage.filteredIds,
       triage.anyClassifying,
       triage.waitingCount,
+      triage.hasMore,
+      triage.loadingMore,
     ],
   );
 

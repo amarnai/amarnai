@@ -324,7 +324,14 @@ export class GmailClient {
     afterMs: number;
     pageToken?: string | undefined;
     pageSize?: number | undefined;
-  }): Promise<{ threads: GmailThreadMeta[]; nextPageToken: string | undefined }> {
+  }): Promise<{
+    threads: GmailThreadMeta[];
+    nextPageToken: string | undefined;
+    // Gmail's estimate of the total number of threads matching the query (across
+    // all pages). Approximate; used to surface how many threads sit beyond the
+    // plan cap.
+    resultSizeEstimate: number;
+  }> {
     const accessToken = await this.refreshAccessToken();
     const afterSecs = Math.floor(opts.afterMs / 1000);
 
@@ -339,12 +346,20 @@ export class GmailClient {
     });
     if (!res.ok) throw new Error(`Gmail threads list failed: ${res.status}`);
 
-    type ThreadListPage = { threads?: Array<{ id: string }>; nextPageToken?: string };
+    type ThreadListPage = {
+      threads?: Array<{ id: string }>;
+      nextPageToken?: string;
+      resultSizeEstimate?: number;
+    };
     const data = (await res.json()) as ThreadListPage;
     const ids = (data.threads ?? []).map((t) => t.id);
     const threads = await this.fetchThreadMetaForIds(ids, accessToken);
 
-    return { threads, nextPageToken: data.nextPageToken };
+    return {
+      threads,
+      nextPageToken: data.nextPageToken,
+      resultSizeEstimate: data.resultSizeEstimate ?? 0,
+    };
   }
 
   /**

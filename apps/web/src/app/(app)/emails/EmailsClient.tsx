@@ -10,12 +10,14 @@ import { useEmailTriage } from "@amarnai/core/emails";
 import { ThreadPreview } from "./ThreadPreview";
 import { useThreadKeyboard } from "./useThreadKeyboard";
 import { UnroutedBanner } from "./UnroutedBanner";
+import { PlanCapBanner } from "./PlanCapBanner";
 import { ClassifyingRefresher } from "@/components/ClassifyingRefresher";
 
 type Props = {
   workspaceId: string;
   currentUserId: string;
   initialThreads: ThreadItem[];
+  initialNextCursor: string | null;
   initialFolders: FolderItem[];
   initialActive: ActiveSelection;
   initialSelectedId: string | null;
@@ -29,6 +31,7 @@ export function EmailsClient({
   workspaceId,
   currentUserId,
   initialThreads,
+  initialNextCursor,
   initialFolders,
   initialActive,
   initialSelectedId,
@@ -49,6 +52,7 @@ export function EmailsClient({
     workspaceId,
     currentUserId,
     initialThreads,
+    initialNextCursor,
     initialFolders,
     initialActive,
     initialSelectedId,
@@ -181,6 +185,7 @@ export function EmailsClient({
       routableNodeCount={routableNodeCount}
       onRouted={triage.markWaitingClassifying}
     />
+    <PlanCapBanner syncStatus={syncStatus} />
     <div
       className="em-grid"
       data-mobile-view={mobileView}
@@ -217,6 +222,9 @@ export function EmailsClient({
         onUnmarkDone={triage.handleUnmarkDone}
         railOpen={railOpen}
         onToggleRail={() => setRailOpen((v) => !v)}
+        hasMore={triage.hasMore}
+        loadingMore={triage.loadingMore}
+        onLoadMore={triage.loadMore}
       />
 
       {selectedThread ? (

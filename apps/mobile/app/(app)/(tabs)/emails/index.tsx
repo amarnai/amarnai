@@ -19,6 +19,7 @@ import { FolderFilterSheet } from '../../../../src/components/emails/FolderFilte
 import { ThreadListView } from '../../../../src/components/emails/ThreadListView';
 import { UnroutedBanner } from '../../../../src/components/emails/UnroutedBanner';
 import { BackfillBanner } from '../../../../src/components/emails/BackfillBanner';
+import { PlanCapBanner } from '../../../../src/components/emails/PlanCapBanner';
 import { DisconnectedBanner } from '../../../../src/components/emails/DisconnectedBanner';
 import { useSession } from '../../../../src/auth/session';
 import { useGmailConnection, useSyncStatus } from '../../../../src/data/queries';
@@ -32,6 +33,7 @@ export default function EmailsScreen() {
 
   const [folderSheetOpen, setFolderSheetOpen] = useState(false);
   const [backfillDismissed, setBackfillDismissed] = useState(false);
+  const [planCapDismissed, setPlanCapDismissed] = useState(false);
   const [focused, setFocused] = useState(false);
 
   // Keep a stable ref so the focus callback never captures a stale `refresh`.
@@ -84,8 +86,12 @@ export default function EmailsScreen() {
   };
 
   const handleRouteNow = () => {
-    triage.handleReroute();
+    if (!workspaceId) return;
+    // Route the PENDING/UNROUTED backlog — the same endpoint the web app uses.
+    // (Previously this called rerouteUnclassified, which targets a different set
+    // and never arms the auto-route-during-backfill flag.)
     triage.markWaitingClassifying();
+    client.routeUnrouted(workspaceId).catch(() => {});
   };
 
   const activeFolderName =
@@ -176,12 +182,22 @@ export default function EmailsScreen() {
           emptyText={emptyText}
           onRefresh={triage.refresh}
           onThreadPress={handleThreadPress}
+          hasMore={triage.hasMore}
+          loadingMore={triage.loadingMore}
+          onLoadMore={triage.loadMore}
           listHeader={
-            <BackfillBanner
-              syncStatus={syncStatusQuery.data}
-              dismissed={backfillDismissed}
-              onDismiss={() => setBackfillDismissed(true)}
-            />
+            <>
+              <BackfillBanner
+                syncStatus={syncStatusQuery.data}
+                dismissed={backfillDismissed}
+                onDismiss={() => setBackfillDismissed(true)}
+              />
+              <PlanCapBanner
+                syncStatus={syncStatusQuery.data}
+                dismissed={planCapDismissed}
+                onDismiss={() => setPlanCapDismissed(true)}
+              />
+            </>
           }
         />
       )}

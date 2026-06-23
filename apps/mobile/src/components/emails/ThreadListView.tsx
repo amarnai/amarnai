@@ -1,5 +1,5 @@
 import { useCallback, useState, type ReactElement } from 'react';
-import { RefreshControl, SectionList, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, RefreshControl, SectionList, StyleSheet, Text, View } from 'react-native';
 import { groupThreadsByDate, type ThreadItem } from '@amarnai/core';
 import { colors, space, fontSize, fontWeight } from '@amarnai/tokens';
 import { ThreadRow } from '../ThreadRow';
@@ -12,6 +12,10 @@ interface ThreadListViewProps {
   // Rendered inside the scroll area, above the threads, so it scrolls with the
   // list rather than staying pinned above it.
   listHeader?: ReactElement | null;
+  // Pagination: fetch the next page when the list end is reached.
+  hasMore?: boolean;
+  loadingMore?: boolean;
+  onLoadMore?: () => void;
 }
 
 export function ThreadListView({
@@ -20,6 +24,9 @@ export function ThreadListView({
   onRefresh,
   onThreadPress,
   listHeader,
+  hasMore,
+  loadingMore,
+  onLoadMore,
 }: ThreadListViewProps) {
   const [refreshing, setRefreshing] = useState(false);
 
@@ -48,6 +55,15 @@ export function ThreadListView({
         </View>
       )}
       ListHeaderComponent={listHeader ?? null}
+      onEndReached={hasMore ? onLoadMore : undefined}
+      onEndReachedThreshold={0.5}
+      ListFooterComponent={
+        loadingMore ? (
+          <View style={styles.footer}>
+            <ActivityIndicator color={colors.accent} />
+          </View>
+        ) : null
+      }
       refreshControl={
         <RefreshControl
           refreshing={refreshing}
@@ -95,6 +111,10 @@ const styles = StyleSheet.create({
   emptyContent: {
     flexGrow: 1,
     justifyContent: 'center',
+    alignItems: 'center',
+  },
+  footer: {
+    paddingVertical: space.lg,
     alignItems: 'center',
   },
 });

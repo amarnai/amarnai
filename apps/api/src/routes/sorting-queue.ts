@@ -5,6 +5,7 @@ import { db } from "@amarnai/db";
 import { classifyThreadQueue } from "../queues.js";
 import { DEFAULT_GMAIL_SYNC_SETTINGS, isTaxonomyRoutable } from "@amarnai/shared";
 import { DEDUP_CLASSIFY_UNROUTED, DEDUP_CLASSIFY_UNCLASSIFIED } from "@amarnai/queue";
+import { resolveEmailAccountId } from "../services/email-account.js";
 
 /**
  * Whether the workspace taxonomy has enough non-root nodes reachable from the
@@ -284,8 +285,29 @@ sortingQueue.post("/workspaces/:workspaceId/sorting-queue/route-unrouted", async
     true
   );
 
+  // If a backfill is still in flight, arm auto-routing so threads that arrive
+  // after this click are routed automatically instead of re-prompting the user.
+  // Cleared by the worker when the backfill reaches a terminal state.
+  await armAutoRouteBacklogIfBackfilling(workspaceId);
+
   return c.json({ queued });
 });
+
+/**
+ * When a backfill has not yet finished, set ProviderSyncState.autoRouteBacklogArmed
+ * so the sync/backfill backlog gates auto-enqueue newly-arrived PENDING threads.
+ * No-op when backfill is already DONE (no race) or no sync state exists yet.
+ */
+async function armAutoRouteBacklogIfBackfilling(workspaceId: string): Promise<void> {
+  const emailAccountId = await resolveEmailAccountId(workspaceId);
+  if (!emailAccountId) return;
+
+  // Arm only while backfill is still in progress (PENDING/RUNNING/ERROR-retrying).
+  await db.providerSyncState.updateMany({
+    where: { emailAccountId, backfillStatus: { not: "DONE" } },
+    data: { autoRouteBacklogArmed: true },
+  });
+}
 
 /**
  * POST /workspaces/:workspaceId/sorting-queue/reroute-unclassified

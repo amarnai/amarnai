@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import type { FolderItem } from "../folder-tree/types.js";
 import type { ActiveSelection, ThreadItem } from "./types.js";
 import { filterThreads } from "./selection.js";
@@ -46,6 +47,11 @@ export interface ThreadListProps {
   onUnmarkDone: (threadId: string) => void;
   railOpen?: boolean;
   onToggleRail?: () => void;
+  // Pagination: when more threads are available, an intersection sentinel at the
+  // bottom of the scroll area calls onLoadMore as it scrolls into view.
+  hasMore?: boolean;
+  loadingMore?: boolean;
+  onLoadMore?: () => void;
 }
 
 export function ThreadList({
@@ -64,10 +70,33 @@ export function ThreadList({
   onUnmarkDone,
   railOpen,
   onToggleRail,
+  hasMore,
+  loadingMore,
+  onLoadMore,
 }: ThreadListProps) {
   const filtered = filterThreads(threads, folders, active, "all", query);
   const unreadCount = filtered.filter((t) => t.unread).length;
   const groups = groupByDate(filtered, now);
+
+  // Infinite scroll: observe a sentinel at the end of the list and fetch the
+  // next page as it nears the viewport. Re-runs when the loaded count changes so
+  // a sentinel still in view after an append triggers the following page.
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const sentinelRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!hasMore || !onLoadMore) return;
+    const sentinel = sentinelRef.current;
+    const root = scrollRef.current;
+    if (!sentinel || !root || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) onLoadMore();
+      },
+      { root, rootMargin: "300px" },
+    );
+    io.observe(sentinel);
+    return () => io.disconnect();
+  }, [hasMore, onLoadMore, filtered.length]);
 
   return (
     <div className="em-list-col">
@@ -101,7 +130,7 @@ export function ThreadList({
         searchRef={searchRef}
       />
 
-      <div className="em-list-scroll" role="grid" aria-label="Email threads">
+      <div className="em-list-scroll" role="grid" aria-label="Email threads" ref={scrollRef}>
         {filtered.length === 0 && (
           <div className="em-empty">
             {query ? "No threads match your search." : "No threads here."}
@@ -129,6 +158,12 @@ export function ThreadList({
             })}
           </div>
         ))}
+
+        {hasMore && filtered.length > 0 && (
+          <div ref={sentinelRef} className="em-list-sentinel" aria-hidden>
+            {loadingMore && <span className="em-list-loading">Loading more…</span>}
+          </div>
+        )}
       </div>
     </div>
   );
