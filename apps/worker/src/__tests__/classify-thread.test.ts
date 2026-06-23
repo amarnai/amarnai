@@ -50,6 +50,10 @@ vi.mock("@amarnai/ai", () => ({
   createAIProvider: vi.fn().mockReturnValue({ providerName: "mock", modelName: "mock" }),
   createEmbeddingProvider: vi.fn().mockReturnValue({ embed: mockEmbed }),
   sortThreadByEmbedding: mockSortThreadByEmbedding,
+  buildRoutingTelemetry: vi
+    .fn()
+    .mockReturnValue({ v: 1, maxRawSim: 0, maxSubtreeScore: 0, thetaMin: 0.15, topRawSims: [] }),
+  THETA_MIN: 0.15,
   analyzeThreadTriage: mockAnalyzeThreadTriage,
   classifyTriageByEmbedding: mockClassifyTriageByEmbedding,
   snapshotToThreadMessages: mockSnapshotToThreadMessages,
@@ -60,6 +64,9 @@ vi.mock("@amarnai/ai", () => ({
 }));
 
 vi.mock("@amarnai/gmail", () => ({
+  // Real class so `err instanceof GmailAuthError` in the worker's catch block
+  // evaluates instead of throwing on an undefined mock export.
+  GmailAuthError: class GmailAuthError extends Error {},
   GmailClient: vi.fn().mockImplementation(() => ({
     getThread: mockGetThread,
   })),
