@@ -77,11 +77,18 @@ function validateEnv(raw: NodeJS.ProcessEnv) {
     }
   }
 
-  if (env.NODE_ENV === 'production' && !env.INTERNAL_API_SECRET) {
+  // Skip runtime-secret validation during `next build` — INTERNAL_API_SECRET
+  // and AUTH_JWT_SECRET are injected at container startup, not during the image
+  // build. NEXT_PHASE is set to 'phase-production-build' by Next.js during the
+  // build step and is absent at runtime, so this check is still enforced when
+  // the server actually starts.
+  const isBuildPhase = process.env.NEXT_PHASE === 'phase-production-build';
+
+  if (env.NODE_ENV === 'production' && !isBuildPhase && !env.INTERNAL_API_SECRET) {
     throw new Error('INTERNAL_API_SECRET is required in production');
   }
 
-  if (env.NODE_ENV === 'production' && !env.AUTH_JWT_SECRET) {
+  if (env.NODE_ENV === 'production' && !isBuildPhase && !env.AUTH_JWT_SECRET) {
     throw new Error('AUTH_JWT_SECRET is required in production');
   }
 
