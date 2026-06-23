@@ -4,6 +4,7 @@ import Credentials from "next-auth/providers/credentials";
 import { verifyCredentials, provisionGoogleUser } from "@amarnai/auth";
 import { GMAIL_READONLY_SCOPE } from "@amarnai/gmail";
 import { db } from "@amarnai/db";
+import { triggerPostConnectHooks } from "@/lib/post-connect-hooks";
 
 export const { handlers, auth, signIn, signOut, unstable_update } = NextAuth({
   providers: [
@@ -67,23 +68,7 @@ export const { handlers, auth, signIn, signOut, unstable_update } = NextAuth({
       // the Gmail push watch. Fire-and-forget — the polling scheduler and the
       // worker's daily watch renewal are the fallbacks.
       if (isGoogle && gmailConnected && isNew && workspaceId) {
-        const apiBase = process.env["API_URL"] ?? "http://localhost:3001";
-        const internalSecret = process.env["INTERNAL_API_SECRET"] ?? "dev-internal-secret";
-        const authHeader = { Authorization: `Bearer ${internalSecret}`, "X-User-Id": userId };
-
-        fetch(`${apiBase}/workspaces/${workspaceId}/trigger-sync`, {
-          method: "POST",
-          headers: authHeader,
-        }).catch(
-          (err) => console.error("[auth] trigger_sync:", err instanceof Error ? err.message : err)
-        );
-
-        fetch(`${apiBase}/workspaces/${workspaceId}/register-gmail-watch`, {
-          method: "POST",
-          headers: authHeader,
-        }).catch(
-          (err) => console.error("[auth] register_watch:", err instanceof Error ? err.message : err)
-        );
+        triggerPostConnectHooks("auth", workspaceId, userId);
       }
 
       return true;

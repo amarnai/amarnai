@@ -1,4 +1,5 @@
-import OpenAI from "openai";
+import OpenAI, { type ClientOptions } from "openai";
+import { fetch as undiciFetch } from "undici";
 import type { AIProvider } from "../types.js";
 
 /**
@@ -74,6 +75,13 @@ export class FrontierAIProvider implements AIProvider {
     this.client = new OpenAI({
       apiKey: opts.apiKey,
       timeout: REQUEST_TIMEOUT_MS,
+      // The OpenAI SDK ships node-fetch@2.7.0, which mis-decodes gzipped chat
+      // responses from Gemini's OpenAI-compat endpoint: the Gunzip stream closes
+      // early and every call throws ERR_STREAM_PREMATURE_CLOSE ("Invalid response
+      // body … Premature close"). Our Gemini embedding and Ollama paths use undici
+      // fetch and are unaffected, so route the SDK through undici too. The SDK's
+      // AbortController-based timeout/maxRetries still apply on top of this fetch.
+      fetch: undiciFetch as unknown as ClientOptions["fetch"],
       // The SDK retries multiply with the caller's own retries — the routing
       // path runs under BullMQ (3 attempts with backoff), so the SDK default of
       // 2 means up to 3×3 = 9 paid model calls per thread during a provider

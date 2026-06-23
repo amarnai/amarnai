@@ -6,6 +6,7 @@ import {
   fetchGmailProfile,
 } from "@/lib/gmail-oauth";
 import { encrypt } from "@/lib/encryption";
+import { triggerPostConnectHooks } from "@/lib/post-connect-hooks";
 import { GMAIL_READONLY_SCOPE } from "@amarnai/gmail";
 import { db } from "@amarnai/db";
 
@@ -119,23 +120,7 @@ export async function GET(req: NextRequest) {
   // ── Step 4: trigger an immediate inbox sync and register push watch ──────────
   // Both are fire-and-forget. Failures are non-fatal — the polling scheduler
   // provides a fallback for sync, and the worker's daily renewal covers watch.
-  const apiBase = process.env["API_URL"] ?? "http://localhost:3001";
-  const internalSecret = process.env["INTERNAL_API_SECRET"] ?? "dev-internal-secret";
-  const authHeader = { Authorization: `Bearer ${internalSecret}`, "X-User-Id": user.id };
-
-  fetch(`${apiBase}/workspaces/${workspaceId}/trigger-sync`, {
-    method: "POST",
-    headers: authHeader,
-  }).catch(
-    (err) => console.error("[gmail/callback] trigger_sync:", err instanceof Error ? err.message : err)
-  );
-
-  fetch(`${apiBase}/workspaces/${workspaceId}/register-gmail-watch`, {
-    method: "POST",
-    headers: authHeader,
-  }).catch(
-    (err) => console.error("[gmail/callback] register_watch:", err instanceof Error ? err.message : err)
-  );
+  triggerPostConnectHooks("gmail/callback", workspaceId, user.id);
 
   settingsUrl.searchParams.set("gmail_connected", "1");
   return NextResponse.redirect(settingsUrl);
