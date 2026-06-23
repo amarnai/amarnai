@@ -53,14 +53,34 @@ export async function requestGoogleAuth(): Promise<GoogleAuthResult> {
     };
 
     if (!serverAuthCode) {
-      throw new Error('Google did not return an authorization code. Please try again.');
+      // offlineAccess is on, so a missing code means the Web client id is wrong
+      // (not a real Web OAuth client) rather than a native config problem.
+      throw new Error('Google did not return an authorization code. Check EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID is the Web client id.');
     }
     return { serverAuthCode, scope: (scopes ?? SCOPES).join(' ') };
   } catch (err) {
     if (err instanceof Error && err.message === 'cancelled') throw err;
-    if ((err as { code?: string })?.code === statusCodes.SIGN_IN_CANCELLED) {
+
+    const code = (err as { code?: string })?.code;
+    if (code === statusCodes.SIGN_IN_CANCELLED) {
       throw new Error('cancelled');
     }
-    throw new Error('Could not complete Google sign-in. Please try again.');
+
+    // Surface the native status code so failures are diagnosable from a build.
+    // DEVELOPER_ERROR ('10') is not in statusCodes; it means the Android OAuth
+    // client's package + SHA-1 don't match this binary (or no Android client
+    // exists in the Google Cloud project).
+    const message = err instanceof Error ? err.message : String(err);
+    console.warn('[googleAuth] signIn failed', { code, message });
+
+    if (code === '10' || /DEVELOPER_ERROR/i.test(message)) {
+      throw new Error(
+        'Google rejected this app (DEVELOPER_ERROR). The Android OAuth client SHA-1 / package does not match this build.',
+      );
+    }
+    if (code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+      throw new Error('Google Play services is unavailable or outdated on this device.');
+    }
+    throw new Error(`Could not complete Google sign-in${code ? ` (${code})` : ''}. Please try again.`);
   }
 }
