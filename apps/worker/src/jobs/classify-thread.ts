@@ -6,6 +6,8 @@ import {
   createAIProvider,
   createEmbeddingProvider,
   sortThreadByEmbedding,
+  buildRoutingTelemetry,
+  THETA_MIN,
   analyzeThreadTriage,
   classifyTriageByEmbedding,
   buildThreadEmbeddingText,
@@ -435,6 +437,11 @@ export function createClassifyThreadWorker(): Worker {
               decisionSource: result.decisionSource,
               modelProvider: aiProvider.providerName,
               modelName: aiProvider.modelName,
+              // Compact routing telemetry (maxima + top-K node sims). The scores
+              // are already computed during sorting; persisting the trimmed
+              // summary adds no compute and keeps the row small while enabling
+              // post-hoc diagnosis and data-driven threshold tuning.
+              rawOutput: buildRoutingTelemetry(result, THETA_MIN),
             },
             select: { id: true },
           });
