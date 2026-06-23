@@ -205,8 +205,7 @@ export type EmailThreadDetail = {
 // ── Gmail ─────────────────────────────────────────────────────────────────────
 
 export type ConnectGmailInput = {
-  accessToken: string;
-  refreshToken: string;
+  serverAuthCode: string;
   scope: string;
 };
 

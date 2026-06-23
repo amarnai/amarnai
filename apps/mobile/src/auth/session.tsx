@@ -57,9 +57,9 @@ interface SessionValue {
   // whether an account exists); the reset itself is completed on the web page
   // the email links to.
   requestPasswordReset(email: string): Promise<void>;
-  // Runs the on-device PKCE OAuth flow and provisions or signs in the user via
-  // /auth/google. Throws 'cancelled' when the user dismisses the browser, and a
-  // user-facing message for other failures so the screen can show the error.
+  // Runs the native Google Sign-In flow and provisions or signs in the user via
+  // /auth/google (which redeems the serverAuthCode). Throws 'cancelled' when the
+  // user dismisses the sheet, and a user-facing message for other failures.
   signInWithGoogle(): Promise<void>;
   // Re-resolve identity + verification from the stored token. Used by the
   // verify-email screen to detect when the link has been clicked.

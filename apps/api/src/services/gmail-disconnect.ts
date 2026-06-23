@@ -81,7 +81,6 @@ export async function disconnectGmail(
       gmailAddress: true,
       googleSubjectId: true,
       encryptedRefreshToken: true,
-      oauthClient: true,
       status: true,
     },
   });
@@ -114,7 +113,7 @@ export async function disconnectGmail(
   if (!sharedMailbox && connection.encryptedRefreshToken) {
     // ── 3. Stop push watch (needs a valid token, so runs before revoke) ──────
     try {
-      const client = new GmailClient(connection.encryptedRefreshToken, connection.oauthClient);
+      const client = new GmailClient(connection.encryptedRefreshToken);
       await client.stopWatch();
       watchStopped = true;
     } catch (err) {

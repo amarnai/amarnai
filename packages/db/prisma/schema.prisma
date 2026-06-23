@@ -163,15 +163,6 @@ enum GmailConnectionStatus {
   DISCONNECTED
 }
 
-// Which OAuth client minted the stored refresh token. Google binds refresh
-// tokens to the client that created them, so the token must be refreshed with
-// the same client: WEB is a confidential client (id + secret), MOBILE is the
-// Android public client (id only, no secret). Existing rows default to WEB.
-enum GmailOAuthClient {
-  WEB
-  MOBILE
-}
-
 // Push delivery platform for a registered device. v1 ships Android only
 // (Expo Push over FCM); IOS is reserved so the column never needs widening.
 enum DevicePlatform {
@@ -625,7 +616,6 @@ model GmailConnection {
   gmailAddress          String
   encryptedRefreshToken String
   grantedScopes         String[]
-  oauthClient           GmailOAuthClient      @default(WEB)
   status                GmailConnectionStatus @default(ACTIVE)
   lastVerifiedAt        DateTime?
   gmailWatchExpiresAt   DateTime?

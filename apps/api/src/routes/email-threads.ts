@@ -400,7 +400,7 @@ emailThreads.get(
       }),
       db.gmailConnection.findUnique({
         where: { workspaceId },
-        select: { encryptedRefreshToken: true, oauthClient: true },
+        select: { encryptedRefreshToken: true },
       }),
     ]);
 
@@ -412,7 +412,7 @@ emailThreads.get(
     }
 
     try {
-      const client = new GmailClient(gmailConnection.encryptedRefreshToken, gmailConnection.oauthClient);
+      const client = new GmailClient(gmailConnection.encryptedRefreshToken);
       const rawThread = await client.getThread(thread.providerThreadId);
       const snapshot = normalizeGmailThread(rawThread);
       const bodyByProviderMsgId = new Map(

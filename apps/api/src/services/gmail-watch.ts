@@ -25,7 +25,6 @@ export async function registerGmailWatch(
     where: { workspaceId },
     select: {
       encryptedRefreshToken: true,
-      oauthClient: true,
       status: true,
       gmailAddress: true,
     },
@@ -34,7 +33,7 @@ export async function registerGmailWatch(
     return { ok: false, reason: "no_active_connection" };
   }
 
-  const client = new GmailClient(connection.encryptedRefreshToken, connection.oauthClient);
+  const client = new GmailClient(connection.encryptedRefreshToken);
   const result = await client.watchInbox(config.gmail.pubsubTopic);
   const expiresAt = new Date(Number(result.expiration));
   await db.gmailConnection.update({

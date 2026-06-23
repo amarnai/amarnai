@@ -16,6 +16,7 @@ import {
   fetchGmailProfile,
   fetchGoogleUserInfo,
   parseGrantedScopes,
+  exchangeServerAuthCode,
   type GoogleUserInfo,
 } from "@amarnai/gmail";
 import { RegisterCredentialsSchema } from "@amarnai/shared";
@@ -40,12 +41,11 @@ const forgotPasswordSchema = z.object({
   email: z.string().email(),
 });
 
-// Native clients exchange the Google auth code on-device (Android OAuth clients
-// are public clients — Google blocks server-side exchange) and send the resulting
-// tokens here for user provisioning.
+// Native clients run Google Sign-In with offlineAccess against the Web client and
+// send the resulting one-time serverAuthCode here. The API redeems it server-side
+// with the Web client secret, yielding a server-refreshable refresh token.
 const googleSchema = z.object({
-  accessToken: z.string().min(1),
-  refreshToken: z.string().min(1),
+  serverAuthCode: z.string().min(1),
   scope: z.string().min(1),
 });
 
@@ -150,10 +150,29 @@ auth.post("/auth/google", async (c) => {
   const parsed = googleSchema.safeParse(body);
   if (!parsed.success) return c.json({ error: "Invalid request" }, 400);
 
-  const { accessToken, refreshToken, scope } = parsed.data;
+  const { serverAuthCode, scope } = parsed.data;
 
-  // Enforce the read-only scope before storing anything or calling Gmail.
-  const { scopes: grantedScopes, hasReadonly } = parseGrantedScopes(scope);
+  // Early check on the client-claimed scope to avoid redeeming a code that did
+  // not include read access. The authoritative scope check is on tokens.scope below.
+  if (!parseGrantedScopes(scope).hasReadonly) {
+    return c.json({ error: "Gmail read access was not granted" }, 403);
+  }
+
+  // Redeem the serverAuthCode with the confidential Web client. The resulting
+  // refresh token is server-refreshable (unlike an on-device Android token).
+  let accessToken: string;
+  let refreshToken: string;
+  let grantedScope: string;
+  try {
+    ({ accessToken, refreshToken, scope: grantedScope } =
+      await exchangeServerAuthCode(serverAuthCode));
+  } catch (err) {
+    console.error("[auth/google] exchange:", err instanceof Error ? err.message : err);
+    return c.json({ error: "Could not complete Google sign-in" }, 502);
+  }
+
+  // Store the scopes Google actually granted, not what the client claimed.
+  const { scopes: grantedScopes, hasReadonly } = parseGrantedScopes(grantedScope);
   if (!hasReadonly) {
     return c.json({ error: "Gmail read access was not granted" }, 403);
   }
@@ -176,9 +195,6 @@ auth.post("/auth/google", async (c) => {
     gmailAccessToken: accessToken,
     gmailRefreshToken: refreshToken,
     grantedScopes,
-    // The /auth/google endpoint serves the mobile app, whose tokens are minted
-    // on-device by the Android public OAuth client.
-    oauthClient: "MOBILE",
   });
 
   // First-time sign-up: kick off an immediate inbox sync and arm the Gmail push

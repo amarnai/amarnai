@@ -15,6 +15,7 @@ vi.mock("@amarnai/gmail", () => {
   return {
     fetchGmailProfile: vi.fn(),
     fetchGoogleUserInfo: vi.fn(),
+    exchangeServerAuthCode: vi.fn(),
     GMAIL_READONLY_SCOPE,
     parseGrantedScopes: (scope: string) => {
       const scopes = scope.split(" ");
@@ -48,7 +49,12 @@ vi.mock("../services/queue-client.js", () => ({
 }));
 
 import app from "../app.js";
-import { fetchGmailProfile, fetchGoogleUserInfo } from "@amarnai/gmail";
+import {
+  fetchGmailProfile,
+  fetchGoogleUserInfo,
+  exchangeServerAuthCode,
+  GmailApiError,
+} from "@amarnai/gmail";
 import { provisionGoogleUser } from "@amarnai/auth";
 import { syncInboxQueue } from "../services/queue-client.js";
 
@@ -62,15 +68,21 @@ async function post(body: unknown): Promise<Response> {
   });
 }
 
-// The mobile app exchanges the auth code on-device and posts the tokens here.
+// The mobile app runs Google Sign-In (offlineAccess, Web client) and posts the
+// resulting one-time serverAuthCode here; the API redeems it server-side.
 const VALID_BODY = {
-  accessToken: "google-at",
-  refreshToken: "google-rt",
+  serverAuthCode: "auth-code-123",
   scope: `openid email ${GMAIL_SCOPE}`,
 };
 
 beforeEach(() => {
   vi.clearAllMocks();
+  vi.mocked(exchangeServerAuthCode).mockResolvedValue({
+    accessToken: "google-at",
+    refreshToken: "google-rt",
+    scope: `openid email ${GMAIL_SCOPE}`,
+    expiresAt: new Date("2030-01-01T00:00:00.000Z"),
+  });
   vi.mocked(fetchGmailProfile).mockResolvedValue({ emailAddress: "a@b.com" } as never);
   vi.mocked(fetchGoogleUserInfo).mockResolvedValue({ name: "Test G", picture: "http://img/p.png" });
   vi.mocked(provisionGoogleUser).mockResolvedValue({
@@ -82,7 +94,7 @@ beforeEach(() => {
 });
 
 describe("POST /auth/google", () => {
-  it("provisions the user and returns an Amarnai token pair", async () => {
+  it("redeems the code, provisions the user, and returns an Amarnai token pair", async () => {
     const res = await post(VALID_BODY);
     expect(res.status).toBe(200);
     expect(await res.json()).toEqual({
@@ -90,6 +102,7 @@ describe("POST /auth/google", () => {
       refreshToken: "refresh-tok",
       refreshTokenExpiresAt: "2030-01-01T00:00:00.000Z",
     });
+    expect(exchangeServerAuthCode).toHaveBeenCalledWith("auth-code-123");
     expect(provisionGoogleUser).toHaveBeenCalledWith(
       expect.objectContaining({
         email: "a@b.com",
@@ -122,17 +135,25 @@ describe("POST /auth/google", () => {
     expect(syncInboxQueue.add).not.toHaveBeenCalled();
   });
 
-  it("rejects a request missing the access token with 400", async () => {
-    const res = await post({ refreshToken: "google-rt", scope: GMAIL_SCOPE });
+  it("rejects a request missing the serverAuthCode with 400", async () => {
+    const res = await post({ scope: GMAIL_SCOPE });
     expect(res.status).toBe(400);
+    expect(exchangeServerAuthCode).not.toHaveBeenCalled();
     expect(provisionGoogleUser).not.toHaveBeenCalled();
   });
 
-  it("returns 403 and provisions nothing when gmail.readonly was not granted", async () => {
+  it("returns 403 and redeems nothing when gmail.readonly was not granted", async () => {
     const res = await post({ ...VALID_BODY, scope: "openid email" });
     expect(res.status).toBe(403);
+    expect(exchangeServerAuthCode).not.toHaveBeenCalled();
     expect(provisionGoogleUser).not.toHaveBeenCalled();
-    expect(fetchGmailProfile).not.toHaveBeenCalled();
+  });
+
+  it("returns 502 when the serverAuthCode exchange fails", async () => {
+    vi.mocked(exchangeServerAuthCode).mockRejectedValue(new GmailApiError("invalid_grant", 400));
+    const res = await post(VALID_BODY);
+    expect(res.status).toBe(502);
+    expect(provisionGoogleUser).not.toHaveBeenCalled();
   });
 
   it("returns 502 when the Gmail profile cannot be read", async () => {

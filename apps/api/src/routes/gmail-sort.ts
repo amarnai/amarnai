@@ -88,7 +88,6 @@ gmailSort.post("/dev/workspaces/:workspaceId/gmail-sort-thread", async (c) => {
       gmailAddress: true,
       googleSubjectId: true,
       encryptedRefreshToken: true,
-      oauthClient: true,
     },
   });
   if (!connection) {
@@ -97,7 +96,7 @@ gmailSort.post("/dev/workspaces/:workspaceId/gmail-sort-thread", async (c) => {
 
   // ── 2. Fetch + normalize Gmail thread ─────────────────────────────────────
 
-  const client = new GmailClient(connection.encryptedRefreshToken, connection.oauthClient);
+  const client = new GmailClient(connection.encryptedRefreshToken);
   let rawThread: unknown;
   try {
     rawThread = await client.getThread(gmailThreadId);
@@ -344,13 +343,13 @@ gmailSort.get("/dev/workspaces/:workspaceId/gmail-recent-threads", async (c) => 
 
   const connection = await db.gmailConnection.findUnique({
     where: { workspaceId },
-    select: { encryptedRefreshToken: true, oauthClient: true },
+    select: { encryptedRefreshToken: true },
   });
   if (!connection) {
     return c.json({ error: "No Gmail inbox connected to this workspace" }, 422);
   }
 
-  const client = new GmailClient(connection.encryptedRefreshToken, connection.oauthClient);
+  const client = new GmailClient(connection.encryptedRefreshToken);
   let threads: Array<{ id: string; subject: string | null }>;
   try {
     threads = await client.listRecentThreads(5);

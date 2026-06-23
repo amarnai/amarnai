@@ -5,7 +5,7 @@ import { requestGoogleAuth } from './googleAuth';
 import { toUserMessage } from '../errors';
 
 // Runs the full in-app connect flow:
-//   PKCE browser prompt -> POST /workspaces/:id/gmail-connection -> onSuccess()
+//   Google Sign-In -> POST /workspaces/:id/gmail-connection -> onSuccess()
 // Cancelled by the user is silently swallowed; other errors surface as an Alert.
 export function useConnectGmail(workspaceId: string, client: ApiClient) {
   const [connecting, setConnecting] = useState(false);

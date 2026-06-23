@@ -3,6 +3,7 @@ import { z } from "zod";
 import { db } from "@amarnai/db";
 import {
   parseGrantedScopes,
+  exchangeServerAuthCode,
   GmailApiError,
 } from "@amarnai/gmail";
 import { storeGmailConnection } from "@amarnai/auth";
@@ -66,15 +67,14 @@ gmailConnection.get("/workspaces/:workspaceId/gmail-connection", async (c) => {
   });
 });
 
-// Tokens produced by on-device exchange (Android public client + PKCE).
+// One-time serverAuthCode from the mobile Google Sign-In (offlineAccess, Web client).
 const connectBody = z.object({
-  accessToken: z.string().min(1),
-  refreshToken: z.string().min(1),
+  serverAuthCode: z.string().min(1),
   scope: z.string().min(1),
 });
 
 // Connect or reconnect Gmail for an existing workspace. Owner-only.
-// The mobile app exchanges the auth code on-device and sends the resulting tokens.
+// The mobile app obtains a serverAuthCode; the API redeems it with the Web client.
 gmailConnection.post("/workspaces/:workspaceId/gmail-connection", async (c) => {
   const parsed = workspaceParam.safeParse({ workspaceId: c.req.param("workspaceId") });
   if (!parsed.success) return c.json({ error: "Invalid workspace ID" }, 400);
@@ -93,24 +93,32 @@ gmailConnection.post("/workspaces/:workspaceId/gmail-connection", async (c) => {
   const bodyParsed = connectBody.safeParse(body);
   if (!bodyParsed.success) return c.json({ error: "Invalid request" }, 400);
 
-  const { accessToken, refreshToken, scope } = bodyParsed.data;
-  const { scopes: grantedScopes, hasReadonly } = parseGrantedScopes(scope);
-  if (!hasReadonly) {
+  const { serverAuthCode, scope } = bodyParsed.data;
+  // Early check on the client-claimed scope; the authoritative check is on the
+  // scope Google returns from the exchange below.
+  if (!parseGrantedScopes(scope).hasReadonly) {
     return c.json({ error: "Gmail read access was not granted" }, 403);
   }
 
   try {
+    // Redeem the serverAuthCode with the confidential Web client, then store the
+    // server-refreshable refresh token it returns.
+    const { accessToken, refreshToken, scope: grantedScope } =
+      await exchangeServerAuthCode(serverAuthCode);
+    const { scopes: grantedScopes, hasReadonly } = parseGrantedScopes(grantedScope);
+    if (!hasReadonly) {
+      return c.json({ error: "Gmail read access was not granted" }, 403);
+    }
     await storeGmailConnection({
       workspaceId,
       accessToken,
       refreshToken,
       grantedScopes,
-      // Tokens were minted on-device by the Android public OAuth client.
-      oauthClient: "MOBILE",
     });
   } catch (err) {
     if (err instanceof GmailApiError) {
-      return c.json({ error: "Could not verify Gmail profile" }, 502);
+      // Code redemption or profile verification failed (expired/reused/invalid code).
+      return c.json({ error: "Could not verify Gmail access" }, 502);
     }
     console.error("[gmail-connection/connect] store:", err instanceof Error ? err.message : err);
     return c.json({ error: "Could not store Gmail connection" }, 500);

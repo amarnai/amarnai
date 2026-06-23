@@ -100,7 +100,7 @@ describe("GmailClient.stopWatch", () => {
       .mockResolvedValueOnce(makeTokenResponse())
       .mockResolvedValueOnce({ ok: true, status: 200 });
 
-    const client = new GmailClient("encrypted:refresh:token", "WEB");
+    const client = new GmailClient("encrypted:refresh:token");
     await expect(client.stopWatch()).resolves.toBeUndefined();
 
     const [stopUrl, stopInit] = mockFetch.mock.calls[1] as [string, RequestInit];
@@ -116,7 +116,7 @@ describe("GmailClient.stopWatch", () => {
       .mockResolvedValueOnce(makeTokenResponse())
       .mockResolvedValueOnce({ ok: true, status: 200 });
 
-    const client = new GmailClient("encrypted:refresh:token", "WEB");
+    const client = new GmailClient("encrypted:refresh:token");
     await client.stopWatch();
 
     expect(mockFetch).toHaveBeenCalledTimes(2);
@@ -129,15 +129,15 @@ describe("GmailClient.stopWatch", () => {
       .mockResolvedValueOnce(makeTokenResponse())
       .mockResolvedValueOnce({ ok: false, status: 403 });
 
-    const client = new GmailClient("encrypted:refresh:token", "WEB");
+    const client = new GmailClient("encrypted:refresh:token");
     await expect(client.stopWatch()).rejects.toThrow("403");
   });
 });
 
-// ─── GmailClient.refreshAccessToken (per-client credentials) ──────────────────
-// A refresh token is bound to the OAuth client that minted it. These guard the
-// fix for mobile-connected inboxes: refreshing with the wrong client_id (or a
-// secret for the public Android client) makes Google return invalid_grant.
+// ─── GmailClient.refreshAccessToken ───────────────────────────────────────────
+// All refresh tokens are minted against the confidential Web client, so refresh
+// always sends id + secret. invalid_grant / 401 (revoked or rejected) map to
+// GmailAuthError, which the worker treats as a disconnect.
 
 describe("GmailClient.refreshAccessToken", () => {
   function refreshBody(): URLSearchParams {
@@ -145,32 +145,18 @@ describe("GmailClient.refreshAccessToken", () => {
     return new URLSearchParams(body?.toString() ?? "");
   }
 
-  it("refreshes a WEB token with the confidential client (id + secret)", async () => {
+  it("refreshes with the confidential Web client (id + secret)", async () => {
     vi.stubEnv("AUTH_GOOGLE_ID", "web-client-id");
     vi.stubEnv("AUTH_GOOGLE_SECRET", "web-secret");
     mockFetch.mockResolvedValueOnce(makeTokenResponse());
 
-    const client = new GmailClient("encrypted:refresh:token", "WEB");
+    const client = new GmailClient("encrypted:refresh:token");
     await expect(client.refreshAccessToken()).resolves.toBe("access-abc");
 
     const params = refreshBody();
     expect(params.get("client_id")).toBe("web-client-id");
     expect(params.get("client_secret")).toBe("web-secret");
     expect(params.get("grant_type")).toBe("refresh_token");
-  });
-
-  it("refreshes a MOBILE token with the public client (id, no secret)", async () => {
-    vi.stubEnv("GOOGLE_MOBILE_CLIENT_ID", "android-client-id");
-    vi.stubEnv("AUTH_GOOGLE_SECRET", "web-secret");
-    mockFetch.mockResolvedValueOnce(makeTokenResponse());
-
-    const client = new GmailClient("encrypted:refresh:token", "MOBILE");
-    await client.refreshAccessToken();
-
-    const params = refreshBody();
-    expect(params.get("client_id")).toBe("android-client-id");
-    // Public clients must not send a secret, even when one is configured.
-    expect(params.has("client_secret")).toBe(false);
   });
 
   it("throws GmailAuthError on invalid_grant", async () => {
@@ -180,7 +166,18 @@ describe("GmailClient.refreshAccessToken", () => {
       json: async () => ({ error: "invalid_grant" }),
     });
 
-    const client = new GmailClient("encrypted:refresh:token", "MOBILE");
+    const client = new GmailClient("encrypted:refresh:token");
+    await expect(client.refreshAccessToken()).rejects.toThrow(GmailAuthError);
+  });
+
+  it("throws GmailAuthError on a 401 (e.g. unauthorized_client)", async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: false,
+      status: 401,
+      json: async () => ({ error: "unauthorized_client" }),
+    });
+
+    const client = new GmailClient("encrypted:refresh:token");
     await expect(client.refreshAccessToken()).rejects.toThrow(GmailAuthError);
   });
 });

@@ -98,7 +98,6 @@ export function createBackfillInboxWorker(): Worker {
             gmailAddress: true,
             googleSubjectId: true,
             encryptedRefreshToken: true,
-            oauthClient: true,
             status: true,
           },
         }),
@@ -208,7 +207,7 @@ export function createBackfillInboxWorker(): Worker {
 
         const cap = getBackfillCap(workspace.plan, workspace.billingCycle);
 
-        const client = new GmailClient(connection.encryptedRefreshToken, connection.oauthClient);
+        const client = new GmailClient(connection.encryptedRefreshToken);
         const nowMs = Date.now();
         const afterMs = cap.windowDays === null ? 0 : nowMs - cap.windowDays * MS_PER_DAY;
 

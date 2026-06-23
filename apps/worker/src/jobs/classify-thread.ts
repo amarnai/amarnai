@@ -124,7 +124,7 @@ export function createClassifyThreadWorker(): Worker {
         }),
         db.gmailConnection.findUnique({
           where: { workspaceId },
-          select: { encryptedRefreshToken: true, oauthClient: true, status: true },
+          select: { encryptedRefreshToken: true, status: true },
         }),
       ]);
 
@@ -189,7 +189,7 @@ export function createClassifyThreadWorker(): Worker {
 
         // ── 2. Re-fetch thread from Gmail ───────────────────────────────────
 
-        const client = new GmailClient(connection.encryptedRefreshToken, connection.oauthClient);
+        const client = new GmailClient(connection.encryptedRefreshToken);
 
         let rawThread: unknown;
         try {

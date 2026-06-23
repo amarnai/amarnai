@@ -115,6 +115,16 @@ export async function exchangeAuthCode(
   };
 }
 
+// ─── Server auth code exchange (mobile) ─────────────────────────────────────────
+// The mobile app runs Google Sign-In with offlineAccess against the Web client
+// and receives a one-time serverAuthCode. The API redeems it here with the Web
+// client id + secret. There is no redirect URI (the code was minted for the
+// webClientId, not a redirect flow), so redirect_uri is empty. The resulting
+// refresh token is bound to the confidential Web client and is server-refreshable.
+export function exchangeServerAuthCode(serverAuthCode: string): Promise<GmailTokens> {
+  return exchangeAuthCode(serverAuthCode, "");
+}
+
 // ─── Gmail profile ────────────────────────────────────────────────────────────
 // Fetches the inbox profile with a raw access token. Used during connection
 // setup to verify the token actually has Gmail API access before storing it.

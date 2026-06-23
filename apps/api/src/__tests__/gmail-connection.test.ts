@@ -75,7 +75,15 @@ vi.mock("@amarnai/gmail", () => ({
     };
   },
   fetchGmailProfile: vi.fn(),
+  exchangeServerAuthCode: vi.fn(),
   encrypt: vi.fn(),
+  GmailApiError: class GmailApiError extends Error {
+    status: number;
+    constructor(message: string, status = 400) {
+      super(message);
+      this.status = status;
+    }
+  },
 }));
 
 vi.mock("../queues.js", () => ({
@@ -96,7 +104,14 @@ vi.mock("../services/queue-client.js", () => ({
 
 import app from "../app.js";
 import { db } from "@amarnai/db";
-import { revokeGoogleToken, GmailClient, fetchGmailProfile, encrypt } from "@amarnai/gmail";
+import {
+  revokeGoogleToken,
+  GmailClient,
+  fetchGmailProfile,
+  exchangeServerAuthCode,
+  GmailApiError,
+  encrypt,
+} from "@amarnai/gmail";
 import { syncInboxQueue } from "../services/queue-client.js";
 
 const WS_ID = "ws-1";
@@ -130,6 +145,12 @@ beforeEach(() => {
   mockStopWatch.mockResolvedValue(undefined);
   mockRevokeGoogleToken.mockResolvedValue(true);
   vi.mocked(fetchGmailProfile).mockResolvedValue({ emailAddress: "user@gmail.com" } as never);
+  vi.mocked(exchangeServerAuthCode).mockResolvedValue({
+    accessToken: "google-at",
+    refreshToken: "google-rt",
+    scope: `openid email ${GMAIL_SCOPE}`,
+    expiresAt: new Date("2030-01-01T00:00:00.000Z"),
+  });
   vi.mocked(encrypt).mockReturnValue("encrypted-token");
   vi.mocked(db.gmailConnection.upsert).mockResolvedValue({} as never);
   vi.mocked(syncInboxQueue.add).mockResolvedValue({} as never);
@@ -241,8 +262,7 @@ describe("GET /workspaces/:workspaceId/gmail-connection", () => {
 // ─── POST /workspaces/:workspaceId/gmail-connection ────────────────────────
 
 const VALID_CONNECT_BODY = {
-  accessToken: "google-at",
-  refreshToken: "google-rt",
+  serverAuthCode: "auth-code-123",
   scope: `openid email ${GMAIL_SCOPE}`,
 };
 
@@ -285,7 +305,9 @@ describe("POST /workspaces/:workspaceId/gmail-connection", () => {
       sharedMailbox: false,
     });
 
-    // The access token verifies the mailbox; the refresh token is encrypted.
+    // The serverAuthCode is redeemed; the access token verifies the mailbox and
+    // the resulting refresh token is encrypted.
+    expect(vi.mocked(exchangeServerAuthCode)).toHaveBeenCalledWith("auth-code-123");
     expect(vi.mocked(fetchGmailProfile)).toHaveBeenCalledWith("google-at");
     expect(vi.mocked(encrypt)).toHaveBeenCalledWith("google-rt");
     expect(vi.mocked(db.gmailConnection.upsert)).toHaveBeenCalledWith(
@@ -331,14 +353,24 @@ describe("POST /workspaces/:workspaceId/gmail-connection", () => {
   it("returns 403 and stores nothing when gmail.readonly was not granted", async () => {
     const res = await connect({ ...VALID_CONNECT_BODY, scope: "openid email" });
     expect(res.status).toBe(403);
+    expect(vi.mocked(exchangeServerAuthCode)).not.toHaveBeenCalled();
     expect(vi.mocked(fetchGmailProfile)).not.toHaveBeenCalled();
     expect(vi.mocked(db.gmailConnection.upsert)).not.toHaveBeenCalled();
     expect(vi.mocked(syncInboxQueue.add)).not.toHaveBeenCalled();
   });
 
-  it("rejects a request missing the access token with 400", async () => {
-    const res = await connect({ refreshToken: "google-rt", scope: GMAIL_SCOPE });
+  it("returns 502 and stores nothing when the serverAuthCode exchange fails", async () => {
+    vi.mocked(exchangeServerAuthCode).mockRejectedValue(new GmailApiError("invalid_grant", 400));
+    const res = await connect(VALID_CONNECT_BODY);
+    expect(res.status).toBe(502);
+    expect(vi.mocked(db.gmailConnection.upsert)).not.toHaveBeenCalled();
+    expect(vi.mocked(syncInboxQueue.add)).not.toHaveBeenCalled();
+  });
+
+  it("rejects a request missing the serverAuthCode with 400", async () => {
+    const res = await connect({ scope: GMAIL_SCOPE });
     expect(res.status).toBe(400);
+    expect(vi.mocked(exchangeServerAuthCode)).not.toHaveBeenCalled();
     expect(vi.mocked(db.gmailConnection.upsert)).not.toHaveBeenCalled();
   });
 });

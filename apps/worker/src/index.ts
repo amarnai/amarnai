@@ -43,7 +43,7 @@ async function renewAllGmailWatches(): Promise<void> {
         { gmailWatchExpiresAt: { lte: renewBefore } },
       ],
     },
-    select: { workspaceId: true, gmailAddress: true, encryptedRefreshToken: true, oauthClient: true },
+    select: { workspaceId: true, gmailAddress: true, encryptedRefreshToken: true },
   });
 
   if (connections.length === 0) return;
@@ -61,7 +61,7 @@ async function renewAllGmailWatches(): Promise<void> {
   await Promise.allSettled(
     Array.from(byAddress.values()).map(async (group) => {
       const primary = group[0]!;
-      const client = new GmailClient(primary.encryptedRefreshToken, primary.oauthClient);
+      const client = new GmailClient(primary.encryptedRefreshToken);
       try {
         const result = await client.watchInbox(config.gmail.pubsubTopic!);
         const expiresAt = new Date(Number(result.expiration));
