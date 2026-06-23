@@ -28,7 +28,18 @@ function ensureConfigured(): void {
     // offlineAccess: true is what makes Google return a serverAuthCode bound to
     // the Web client. The Android OAuth client (package + SHA-1) is matched
     // natively and is not passed here.
-    GoogleSignin.configure({ webClientId, offlineAccess: true, scopes: SCOPES });
+    //
+    // forceCodeForRefreshToken: true makes Google mint a serverAuthCode that
+    // exchanges into a refresh token even for accounts that already consented.
+    // Without it, a returning user's exchange yields an access token but no
+    // refresh token, and the API rejects the connection (we need offline access
+    // for background sync).
+    GoogleSignin.configure({
+      webClientId,
+      offlineAccess: true,
+      forceCodeForRefreshToken: true,
+      scopes: SCOPES,
+    });
     configured = true;
   }
 }
