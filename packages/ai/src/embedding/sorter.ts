@@ -124,6 +124,21 @@ export type DecisionSource =
   | "llm"              // cross-branch ambiguity resolved by LLM
   | "inbox_fallback";  // catastrophic failure: quality gate, LLM error, no root, etc.
 
+/**
+ * The cross-branch comparison that decided LLM escalation, or the closest a
+ * thread came to escalating when it did not. Recorded so CROSS_BRANCH_MARGIN can
+ * be tuned on the real decision variable (root-child / sibling subtree-score
+ * gaps) instead of a leaf-similarity proxy. `gap` is the subtree-score margin
+ * between the leading branch and its closest rival that cleared the thetaMin
+ * guard; `triggered` says whether that comparison fired the LLM.
+ */
+export type CrossBranchSignal = {
+  site: "root" | "mid";
+  gap: number;
+  rivalScore: number;
+  triggered: boolean;
+};
+
 export type EmbeddingSortResult = {
   finalNodeId: string | null;
   path: ClassificationPathStep[];
@@ -148,6 +163,11 @@ export type EmbeddingSortResult = {
    * not push, or a provider blip would push-storm the whole inbox).
    */
   failedOpenOnError: boolean;
+  /**
+   * Cross-branch decision signal for margin tuning. Null when no guard-met
+   * comparison occurred (quality-gate fallback, root-only taxonomy, LLM error).
+   */
+  crossBranch: CrossBranchSignal | null;
 };
 
 // ─── Internal helpers ─────────────────────────────────────────────────────────
@@ -181,6 +201,8 @@ function makeInboxFallback(
     updatedNodeEmbeddings,
     threadEmbeddingVector,
     failedOpenOnError,
+    // No traversal happened (gate/error), so there is no cross-branch decision.
+    crossBranch: null,
   };
 }
 
@@ -530,6 +552,18 @@ export async function sortThreadByEmbedding(
   // misleading. subtreeScore (not rawSim) is the right metric here: root children
   // are often structural intermediates whose own rawSim is legitimately 0.
 
+  // Cross-branch decision signal (telemetry only — does not affect routing).
+  // Records the comparison that fired the LLM, or the closest a non-escalating
+  // thread came, so CROSS_BRANCH_MARGIN can be tuned on the real gap metric.
+  let crossBranch: CrossBranchSignal | null = null;
+  const noteCrossBranch = (sig: CrossBranchSignal): void => {
+    if (sig.triggered) {
+      crossBranch = sig;
+    } else if (crossBranch === null || (!crossBranch.triggered && sig.gap < crossBranch.gap)) {
+      crossBranch = sig;
+    }
+  };
+
   const rootChildren = childrenMap.get(rootNode.id) ?? [];
   const rootChildrenRanked = rootChildren
     .map((id) => ({ id, score: subtreeScores.get(id) ?? 0 }))
@@ -539,6 +573,17 @@ export async function sortThreadByEmbedding(
     rootChildrenRanked.length >= 2 &&
     rootChildrenRanked[0]!.score - rootChildrenRanked[1]!.score < crossBranchMargin &&
     rootChildrenRanked[1]!.score >= thetaMin;
+
+  // Record the root-level comparison whenever the runner-up clears the guard,
+  // regardless of whether it escalated (gap may be ≥ margin = no trigger).
+  if (rootChildrenRanked.length >= 2 && rootChildrenRanked[1]!.score >= thetaMin) {
+    noteCrossBranch({
+      site: "root",
+      gap: rootChildrenRanked[0]!.score - rootChildrenRanked[1]!.score,
+      rivalScore: rootChildrenRanked[1]!.score,
+      triggered: crossBranchAmbiguous,
+    });
+  }
 
   if (crossBranchAmbiguous) {
     const topIds = rootChildrenRanked.slice(0, topKLlm).map((c) => c.id);
@@ -590,6 +635,7 @@ export async function sortThreadByEmbedding(
           updatedNodeEmbeddings,
           threadEmbeddingVector: threadVector,
           failedOpenOnError: false,
+          crossBranch,
         };
       }
 
@@ -676,6 +722,31 @@ export async function sortThreadByEmbedding(
         return gap < crossBranchMargin && (rawSims.get(id) ?? 0) >= thetaMin;
       });
 
+      // Record the closest guard-met sibling at this level for margin tuning,
+      // whether or not it escalated (telemetry only — does not affect routing).
+      {
+        let closestGap = Infinity;
+        let closestScore = 0;
+        for (const id of children) {
+          if (id === bestChildId) continue;
+          if ((rawSims.get(id) ?? 0) >= thetaMin) {
+            const g = bestChildSubtreeScore - (subtreeScores.get(id) ?? 0);
+            if (g < closestGap) {
+              closestGap = g;
+              closestScore = subtreeScores.get(id) ?? 0;
+            }
+          }
+        }
+        if (closestGap < Infinity) {
+          noteCrossBranch({
+            site: "mid",
+            gap: closestGap,
+            rivalScore: closestScore,
+            triggered: midAmbiguousSiblings.length > 0,
+          });
+        }
+      }
+
       if (midAmbiguousSiblings.length > 0) {
         const candidateIds = [...new Set(collectLeavesFromSubtrees(
           [bestChildId, ...midAmbiguousSiblings],
@@ -719,6 +790,7 @@ export async function sortThreadByEmbedding(
               updatedNodeEmbeddings,
               threadEmbeddingVector: threadVector,
               failedOpenOnError: false,
+              crossBranch,
             };
           }
           return makeInboxFallback(
@@ -764,6 +836,7 @@ export async function sortThreadByEmbedding(
       updatedNodeEmbeddings,
       threadEmbeddingVector: threadVector,
       failedOpenOnError: false,
+      crossBranch,
     };
   }
 
@@ -792,5 +865,6 @@ export async function sortThreadByEmbedding(
     updatedNodeEmbeddings,
     threadEmbeddingVector: threadVector,
     failedOpenOnError: false,
+    crossBranch,
   };
 }

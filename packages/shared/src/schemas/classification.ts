@@ -33,6 +33,21 @@ export const RoutingTelemetrySchema = z.object({
   thetaMin: z.number(),
   /** Top nodes by raw cosine similarity, highest first. */
   topRawSims: z.array(z.object({ nodeId: z.string(), sim: z.number() })),
+  /**
+   * The cross-branch comparison that decided LLM escalation (or the closest a
+   * non-escalating thread came). This is the real decision variable behind
+   * CROSS_BRANCH_MARGIN, recorded so the margin can be tuned on subtree-score
+   * gaps rather than a leaf-similarity proxy. Null when no guard-met comparison
+   * occurred (quality-gate fallback, root-only taxonomy, LLM error).
+   */
+  crossBranch: z
+    .object({
+      site: z.enum(["root", "mid"]),
+      gap: z.number(),
+      rivalScore: z.number(),
+      triggered: z.boolean(),
+    })
+    .nullable(),
 });
 export type RoutingTelemetry = z.infer<typeof RoutingTelemetrySchema>;
 

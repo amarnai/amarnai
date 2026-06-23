@@ -36,7 +36,7 @@ export {
   CROSS_BRANCH_MARGIN,
   TOP_K_LLM_CANDIDATES,
 } from "./embedding/sorter.js";
-export type { EmbeddingSortResult, DecisionSource } from "./embedding/sorter.js";
+export type { EmbeddingSortResult, DecisionSource, CrossBranchSignal } from "./embedding/sorter.js";
 export { buildRoutingTelemetry, TELEMETRY_TOP_K } from "./embedding/telemetry.js";
 // ─── Triage ───────────────────────────────────────────────────────────────────
 export { analyzeThreadTriage } from "./triage/analyze.js";

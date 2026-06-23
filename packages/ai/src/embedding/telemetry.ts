@@ -19,7 +19,7 @@ export const TELEMETRY_TOP_K = 8;
  * decision can be reconstructed even if the default later changes.
  */
 export function buildRoutingTelemetry(
-  result: Pick<EmbeddingSortResult, "rawSimilarities" | "subtreeScores">,
+  result: Pick<EmbeddingSortResult, "rawSimilarities" | "subtreeScores" | "crossBranch">,
   thetaMin: number,
   topK: number = TELEMETRY_TOP_K,
 ): RoutingTelemetry {
@@ -32,5 +32,6 @@ export function buildRoutingTelemetry(
     maxSubtreeScore: subtreeValues.length > 0 ? Math.max(...subtreeValues) : 0,
     thetaMin,
     topRawSims,
+    crossBranch: result.crossBranch ?? null,
   };
 }
