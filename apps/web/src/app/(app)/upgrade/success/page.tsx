@@ -1,8 +1,8 @@
 import { redirect } from "next/navigation";
-import Link from "next/link";
 import { requireUser } from "@/lib/session";
 import { getStripe } from "@/lib/stripe";
 import { db, ensureInboxNode } from "@amarnai/db";
+import { switchWorkspaceAction } from "@/actions/workspace";
 import { WorkspaceSetupWaiting } from "./WorkspaceSetupWaiting";
 
 export const metadata = { title: "Upgrade Successful — Amarnai" };
@@ -172,9 +172,13 @@ export default async function UpgradeSuccessPage({
           <strong>{workspace.currentPeriodEnd.toLocaleDateString()}</strong>.
         </p>
       )}
-      <Link href="/emails" className="btn-primary upgrade-success-cta">
-        Go to {workspace.name}
-      </Link>
+      {/* Switch the active-workspace cookie to the purchased workspace before
+          navigating — a plain link to /emails would keep the previous selection. */}
+      <form action={switchWorkspaceAction.bind(null, workspace.id)}>
+        <button type="submit" className="btn-primary upgrade-success-cta">
+          Go to {workspace.name}
+        </button>
+      </form>
     </div>
   );
 }

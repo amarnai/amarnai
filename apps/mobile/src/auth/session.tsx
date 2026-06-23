@@ -220,7 +220,9 @@ export function SessionProvider({ children }: { children: ReactNode }) {
         const res = await confirmCheckout(sessionId);
         if (res.ok && res.data.provisioned) {
           await clearPendingCheckout();
-          await refreshWorkspacesRef.current();
+          // Switch to the purchased workspace so the new/upgraded one lands
+          // active, rather than staying on the previously selected workspace.
+          await refreshWorkspacesRef.current(res.data.workspaceId);
         } else if (res.ok && res.data.pending) {
           // Payment not finished yet — keep it for the next foreground.
         } else {
