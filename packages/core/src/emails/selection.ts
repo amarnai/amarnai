@@ -1,3 +1,4 @@
+import type { FilterCounts } from "@amarnai/api-client";
 import type { FolderItem, QueueId, ActiveSelection, SegFilter, ThreadItem } from "./types.js";
 
 export const QUEUES: { id: QueueId; name: string; warn?: boolean; desc: string }[] = [
@@ -90,4 +91,21 @@ export function buildFolderCounts(
     if (unread > 0) counts.set(folder.id, unread);
   }
   return counts;
+}
+
+/**
+ * Map the server-computed inbox counts (over the whole inbox, not just the
+ * loaded page) to per-queue totals, so the queue pills stay accurate regardless
+ * of how many threads are currently loaded.
+ */
+export function queueCountsFromServer(counts: FilterCounts): Partial<Record<QueueId, number>> {
+  return {
+    all:          counts.total,
+    sorted:       counts.SORTED,
+    review:       counts.NEEDS_REVIEW,
+    pending:      counts.PENDING,
+    important:    counts.important,
+    unrouted:     counts.UNROUTED,
+    unclassified: counts.UNCLASSIFIED,
+  };
 }

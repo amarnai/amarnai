@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 
 const POLL_INTERVAL_MS = 5_000;
 // Must be >= CLASSIFY_STALE_MS in the API (currently 15 min) so the poller
@@ -14,10 +13,10 @@ const MAX_POLL_MS = 15 * 60 * 1_000; // 15 minutes
  * so the user isn't left polling forever if a classify job gets stuck.
  *
  * Mount it in a server page when one or more threads are being classified
- * so the UI updates without a manual reload.
+ * so the UI updates without a manual reload. `onPoll` refreshes the thread list
+ * (the view-aware triage refresh), so it respects the active view and search.
  */
-export function ClassifyingRefresher({ active }: { active: boolean }) {
-  const router = useRouter();
+export function ClassifyingRefresher({ active, onPoll }: { active: boolean; onPoll: () => void }) {
   // Bumping this key restarts the polling loop (e.g. after the user clicks
   // Refresh while the poller has timed out).
   const [pollKey, setPollKey] = useState(0);
@@ -29,7 +28,7 @@ export function ClassifyingRefresher({ active }: { active: boolean }) {
       return;
     }
 
-    const pollId = setInterval(() => router.refresh(), POLL_INTERVAL_MS);
+    const pollId = setInterval(() => onPoll(), POLL_INTERVAL_MS);
     const timeoutId = setTimeout(() => {
       clearInterval(pollId);
       setTimedOut(true);
@@ -40,7 +39,7 @@ export function ClassifyingRefresher({ active }: { active: boolean }) {
       clearTimeout(timeoutId);
     };
   // pollKey is included so clicking Refresh restarts the interval + timeout.
-  }, [active, router, pollKey]);
+  }, [active, onPoll, pollKey]);
 
   if (timedOut) {
     return (
@@ -50,7 +49,7 @@ export function ClassifyingRefresher({ active }: { active: boolean }) {
           onClick={() => {
             setTimedOut(false);
             setPollKey((k) => k + 1);
-            router.refresh();
+            onPoll();
           }}
         >
           Refresh

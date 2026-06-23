@@ -114,6 +114,7 @@ export default function EmailsScreen() {
         active={triage.active}
         threads={triage.threads}
         folders={triage.folders}
+        queueCounts={triage.queueCounts}
         onSelectQueue={handleSelectQueue}
         onClearFolder={handleClearFolder}
       />
@@ -140,7 +141,7 @@ export default function EmailsScreen() {
       </TouchableOpacity>
 
       <UnroutedBanner
-        waitingCount={triage.waitingCount}
+        waitingCount={triage.serverWaitingCount}
         routableFolderCount={triage.folders.length}
         onRouteNow={handleRouteNow}
       />
@@ -185,6 +186,7 @@ export default function EmailsScreen() {
           hasMore={triage.hasMore}
           loadingMore={triage.loadingMore}
           onLoadMore={triage.loadMore}
+          total={triage.filteredTotal}
           listHeader={
             <>
               <BackfillBanner

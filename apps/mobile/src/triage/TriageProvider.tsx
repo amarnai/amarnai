@@ -9,7 +9,7 @@ import {
   type FolderItem,
   type ThreadItem,
 } from '@amarnai/core';
-import type { ApiClient } from '@amarnai/api-client';
+import type { ApiClient, FilterCounts } from '@amarnai/api-client';
 import { colors } from '@amarnai/tokens';
 
 type Triage = ReturnType<typeof useEmailTriage>;
@@ -94,6 +94,8 @@ export function TriageProvider({ children, api, workspaceId, userId }: TriagePro
       initialFolders={mapFolders(nodes, edges)}
       initialThreads={mapThreads(threadsResult.threads)}
       initialNextCursor={threadsResult.nextCursor}
+      initialCounts={threadsResult.counts}
+      initialFilteredTotal={threadsResult.filteredTotal}
     >
       {children}
     </TriageInner>
@@ -108,6 +110,8 @@ interface TriageInnerProps {
   initialFolders: FolderItem[];
   initialThreads: ThreadItem[];
   initialNextCursor: string | null;
+  initialCounts: FilterCounts;
+  initialFilteredTotal: number;
 }
 
 function TriageInner({
@@ -118,6 +122,8 @@ function TriageInner({
   initialFolders,
   initialThreads,
   initialNextCursor,
+  initialCounts,
+  initialFilteredTotal,
 }: TriageInnerProps) {
   const triage = useEmailTriage({
     api,
@@ -125,6 +131,8 @@ function TriageInner({
     currentUserId: userId,
     initialThreads,
     initialNextCursor,
+    initialCounts,
+    initialFilteredTotal,
     initialFolders,
     initialActive: { kind: 'queue', id: 'all' } as ActiveSelection,
     initialSelectedId: null,
@@ -199,6 +207,10 @@ function TriageInner({
       waitingCount: triage.waitingCount,
       hasMore: triage.hasMore,
       loadingMore: triage.loadingMore,
+      total: triage.total,
+      queueCounts: triage.queueCounts,
+      serverWaitingCount: triage.serverWaitingCount,
+      filteredTotal: triage.filteredTotal,
     }),
     [
       triage.threads,
@@ -215,6 +227,10 @@ function TriageInner({
       triage.waitingCount,
       triage.hasMore,
       triage.loadingMore,
+      triage.total,
+      triage.queueCounts,
+      triage.serverWaitingCount,
+      triage.filteredTotal,
     ],
   );
 

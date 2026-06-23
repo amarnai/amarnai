@@ -1,7 +1,7 @@
 "use client";
 
 import type { FolderItem } from "../folder-tree/types.js";
-import type { ActiveSelection, ThreadItem } from "./types.js";
+import type { ActiveSelection, ThreadItem, QueueId } from "./types.js";
 import { QUEUES, countForActive } from "./selection.js";
 
 const ICON_SVG: Record<string, string> = {
@@ -17,10 +17,13 @@ export interface QueueListProps {
   folders: FolderItem[];
   active: ActiveSelection;
   railQuery: string;
+  // Server-computed per-queue totals; when a queue is absent here, fall back to
+  // counting the loaded threads.
+  queueCounts?: Partial<Record<QueueId, number>> | undefined;
   onSelect: (a: ActiveSelection) => void;
 }
 
-export function QueueList({ threads, folders, active, railQuery, onSelect }: QueueListProps) {
+export function QueueList({ threads, folders, active, railQuery, queueCounts, onSelect }: QueueListProps) {
   const q = railQuery.trim().toLowerCase();
   const visible = q ? QUEUES.filter((x) => x.name.toLowerCase().includes(q)) : QUEUES;
 
@@ -28,7 +31,7 @@ export function QueueList({ threads, folders, active, railQuery, onSelect }: Que
     <>
       {visible.map((queue) => {
         const isActive = active.kind === "queue" && active.id === queue.id;
-        const count = countForActive(threads, folders, { kind: "queue", id: queue.id });
+        const count = queueCounts?.[queue.id] ?? countForActive(threads, folders, { kind: "queue", id: queue.id });
         return (
           <button
             key={queue.id}

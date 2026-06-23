@@ -10,8 +10,11 @@ const threadParam = z.object({
   threadId: z.string().min(1),
 });
 
-const VALID_TRIAGE_STATUSES = ["PENDING", "SORTED", "NEEDS_REVIEW"] as const;
+const VALID_TRIAGE_STATUSES = ["PENDING", "SORTED", "NEEDS_REVIEW", "UNROUTED", "UNCLASSIFIED"] as const;
 type TriageStatusValue = typeof VALID_TRIAGE_STATUSES[number];
+
+// Cap the search term length to keep the LIKE query bounded.
+const MAX_SEARCH_LEN = 200;
 
 // With Ollama (concurrency=1), a job can wait several minutes in the queue
 // before the worker picks it up — especially when other classify jobs are ahead.
@@ -104,12 +107,16 @@ emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
   const rawStatus  = c.req.query("status");
   const rawCursor  = c.req.query("cursor");
   const rawLimit   = c.req.query("limit");
+  const rawImportant = c.req.query("important");
+  const rawQuery   = c.req.query("q");
 
   const nodeId = rawNodeId && rawNodeId.length > 0 ? rawNodeId : null;
   const triageStatus: TriageStatusValue | null =
     rawStatus && (VALID_TRIAGE_STATUSES as readonly string[]).includes(rawStatus)
       ? (rawStatus as TriageStatusValue)
       : null;
+  const importantOnly = rawImportant === "true";
+  const search = (rawQuery ?? "").trim().slice(0, MAX_SEARCH_LEN);
   const cursor  = rawCursor ? decodeCursor(rawCursor) : null;
   const limit   = Math.min(
     MAX_PAGE_LIMIT,
@@ -146,12 +153,35 @@ emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
       : {}),
   };
 
-  // fullWhere: adds status, node, and cursor conditions on top of baseWhere.
-  const fullWhere = {
+  // Search across the thread subject and its messages' sender + snippet.
+  const searchWhere = search.length > 0
+    ? {
+        OR: [
+          { subject: { contains: search, mode: "insensitive" as const } },
+          { messages: { some: { OR: [
+            { senderName:  { contains: search, mode: "insensitive" as const } },
+            { senderEmail: { contains: search, mode: "insensitive" as const } },
+            { snippet:     { contains: search, mode: "insensitive" as const } },
+          ] } } },
+        ],
+      }
+    : {};
+
+  // viewWhere: the active view (queue/folder) + search, but NOT the page cursor.
+  // Drives the "X threads" count so it reflects the whole matching set, not the
+  // loaded page.
+  const viewWhere = {
     ...baseWhere,
-    ...(triageStatus ? { triageStatus }                                     : {}),
-    ...(nodeId       ? { classifications: { some: { finalNodeId: nodeId } } } : {}),
-    ...(cursor       ? buildCursorWhere(cursor)                             : {}),
+    ...(triageStatus  ? { triageStatus }                                      : {}),
+    ...(importantOnly ? { gmailIsImportant: true }                            : {}),
+    ...(nodeId        ? { classifications: { some: { finalNodeId: nodeId } } } : {}),
+    ...searchWhere,
+  };
+
+  // fullWhere: the view plus the page cursor (the actual page query).
+  const fullWhere = {
+    ...viewWhere,
+    ...(cursor ? buildCursorWhere(cursor) : {}),
   };
 
   const threadSelect = {
@@ -207,8 +237,11 @@ emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
   };
 
   // Fetch one extra row to detect whether a next page exists, and run the
-  // status-count groupBy in parallel.
-  const [rawThreads, grouped] = await Promise.all([
+  // count queries in parallel. Counts are computed over baseWhere (the whole
+  // inbox), not the current page, so the queue pills show true totals regardless
+  // of how many threads are loaded. `important` is orthogonal to triageStatus, so
+  // it needs its own count.
+  const [rawThreads, grouped, importantCount, pendingWaitingCount, filteredTotal] = await Promise.all([
     db.emailThread.findMany({
       where: fullWhere,
       orderBy: [
@@ -223,6 +256,13 @@ emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
       where: baseWhere,
       _count: { _all: true },
     }),
+    db.emailThread.count({ where: { ...baseWhere, gmailIsImportant: true } }),
+    // "Pending" = waiting to be routed: PENDING and not already queued/classifying.
+    // This is what the "Route now" banner and the Pending pill represent, so once
+    // a thread is enqueued it drops out of the count (and the banner) immediately.
+    db.emailThread.count({ where: { ...baseWhere, triageStatus: "PENDING", classifyingAt: null } }),
+    // Count of the active view + search (no cursor): the "X threads" label.
+    db.emailThread.count({ where: viewWhere }),
   ]);
 
   // Build the next-page cursor from the last item in the current page.
@@ -236,12 +276,16 @@ emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
       })
     : null;
 
-  // Transform grouped counts.
+  // Transform grouped counts. Every queue pill reads from here.
+  const byStatus = (s: string) => grouped.find((g) => g.triageStatus === s)?._count._all ?? 0;
   const counts = {
     total:        grouped.reduce((s, g) => s + g._count._all, 0),
-    PENDING:      grouped.find((g) => g.triageStatus === "PENDING")?._count._all      ?? 0,
-    SORTED:       grouped.find((g) => g.triageStatus === "SORTED")?._count._all       ?? 0,
-    NEEDS_REVIEW: grouped.find((g) => g.triageStatus === "NEEDS_REVIEW")?._count._all ?? 0,
+    PENDING:      pendingWaitingCount,
+    SORTED:       byStatus("SORTED"),
+    NEEDS_REVIEW: byStatus("NEEDS_REVIEW"),
+    UNROUTED:     byStatus("UNROUTED"),
+    UNCLASSIFIED: byStatus("UNCLASSIFIED"),
+    important:    importantCount,
   };
 
   const threads = pageThreads.map((thread) => {
@@ -266,7 +310,7 @@ emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
     };
   });
 
-  return c.json({ threads, nextCursor, counts });
+  return c.json({ threads, nextCursor, counts, filteredTotal });
 });
 
 emailThreads.get(

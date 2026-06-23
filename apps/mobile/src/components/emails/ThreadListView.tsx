@@ -1,7 +1,7 @@
 import { useCallback, useState, type ReactElement } from 'react';
-import { ActivityIndicator, RefreshControl, SectionList, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, RefreshControl, SectionList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { groupThreadsByDate, type ThreadItem } from '@amarnai/core';
-import { colors, space, fontSize, fontWeight } from '@amarnai/tokens';
+import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
 import { ThreadRow } from '../ThreadRow';
 
 interface ThreadListViewProps {
@@ -12,10 +12,13 @@ interface ThreadListViewProps {
   // Rendered inside the scroll area, above the threads, so it scrolls with the
   // list rather than staying pinned above it.
   listHeader?: ReactElement | null;
-  // Pagination: fetch the next page when the list end is reached.
+  // Pagination: fetch the next page when the list end is reached, plus an
+  // explicit Load more button and an "X of Y loaded" count. `total` is the
+  // server's inbox-visible thread count.
   hasMore?: boolean;
   loadingMore?: boolean;
   onLoadMore?: () => void;
+  total?: number;
 }
 
 export function ThreadListView({
@@ -27,6 +30,7 @@ export function ThreadListView({
   hasMore,
   loadingMore,
   onLoadMore,
+  total,
 }: ThreadListViewProps) {
   const [refreshing, setRefreshing] = useState(false);
 
@@ -55,12 +59,23 @@ export function ThreadListView({
         </View>
       )}
       ListHeaderComponent={listHeader ?? null}
-      onEndReached={hasMore ? onLoadMore : undefined}
-      onEndReachedThreshold={0.5}
       ListFooterComponent={
-        loadingMore ? (
+        hasMore && threads.length > 0 ? (
           <View style={styles.footer}>
-            <ActivityIndicator color={colors.accent} />
+            <Text style={styles.footerCount}>
+              {threads.length.toLocaleString()} of {(total ?? 0).toLocaleString()} loaded
+            </Text>
+            <TouchableOpacity
+              style={styles.loadMoreBtn}
+              onPress={onLoadMore}
+              disabled={loadingMore}
+            >
+              {loadingMore ? (
+                <ActivityIndicator color={colors.ink3} size="small" />
+              ) : (
+                <Text style={styles.loadMoreText}>Load more</Text>
+              )}
+            </TouchableOpacity>
           </View>
         ) : null
       }
@@ -116,5 +131,25 @@ const styles = StyleSheet.create({
   footer: {
     paddingVertical: space.lg,
     alignItems: 'center',
+    gap: space.sm,
+  },
+  footerCount: {
+    fontSize: fontSize.xs,
+    color: colors.ink3,
+  },
+  loadMoreBtn: {
+    minHeight: 34,
+    justifyContent: 'center',
+    paddingHorizontal: space.lg,
+    paddingVertical: space.xs,
+    borderRadius: radii.sm,
+    borderWidth: 1,
+    borderColor: colors.line2,
+    backgroundColor: colors.bgSunk,
+  },
+  loadMoreText: {
+    fontSize: fontSize.sm,
+    fontWeight: fontWeight.medium,
+    color: colors.ink,
   },
 });

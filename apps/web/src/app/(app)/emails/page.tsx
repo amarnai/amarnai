@@ -20,11 +20,24 @@ export default async function EmailsPage({ searchParams }: PageProps) {
 
   let error: string | null = null;
 
+  // Initial fetch is scoped to the active view (queue/folder) from the URL, so
+  // the server-rendered list, count, and the client view-model all start in sync.
+  const initialFilters: { nodeId?: string; status?: string; important?: boolean } =
+    f
+      ? { nodeId: f }
+      : q === "sorted"       ? { status: "SORTED" }
+      : q === "review"       ? { status: "NEEDS_REVIEW" }
+      : q === "pending"      ? { status: "PENDING" }
+      : q === "important"    ? { important: true }
+      : q === "unrouted"     ? { status: "UNROUTED" }
+      : q === "unclassified" ? { status: "UNCLASSIFIED" }
+      : {};
+
   const userApi = apiFor(user.id);
   const [connection, threadsResult, syncStatus, nodes, edges] =
     await Promise.allSettled([
       userApi.gmailConnection(workspace.id),
-      userApi.emailThreads(workspace.id),
+      userApi.emailThreads(workspace.id, initialFilters),
       userApi.syncStatus(workspace.id),
       userApi.taxonomyNodes(workspace.id),
       userApi.taxonomyEdges(workspace.id),
@@ -65,6 +78,10 @@ export default async function EmailsPage({ searchParams }: PageProps) {
     threadsResult.status === "fulfilled" ? threadsResult.value.threads : [];
   const initialNextCursor =
     threadsResult.status === "fulfilled" ? threadsResult.value.nextCursor : null;
+  const initialCounts =
+    threadsResult.status === "fulfilled" ? threadsResult.value.counts : undefined;
+  const initialFilteredTotal =
+    threadsResult.status === "fulfilled" ? threadsResult.value.filteredTotal : 0;
   const rawNodes =
     nodes.status === "fulfilled" ? nodes.value : [];
   const rawEdges =
@@ -105,6 +122,8 @@ export default async function EmailsPage({ searchParams }: PageProps) {
         currentUserId={user.id}
         initialThreads={threads}
         initialNextCursor={initialNextCursor}
+        initialCounts={initialCounts}
+        initialFilteredTotal={initialFilteredTotal}
         initialFolders={folders}
         initialActive={initialActive}
         initialSelectedId={initialSelectedId}

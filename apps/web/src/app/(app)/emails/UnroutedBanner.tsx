@@ -34,7 +34,7 @@ export function UnroutedBanner({ workspaceId, waitingCount, routableNodeCount, o
   if (taxonomyWeak) {
     return (
       <div className="warning-box" style={{ margin: "12px 16px 0", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
-        <span>
+        <span suppressHydrationWarning>
           {waitingCount} thread{waitingCount !== 1 ? "s are" : " is"} waiting to be routed.
           Connect at least {TAXONOMY_MIN_NON_ROOT_NODES} categories to your inbox to begin sorting.
         </span>
@@ -50,7 +50,7 @@ export function UnroutedBanner({ workspaceId, waitingCount, routableNodeCount, o
       className="success-box"
       style={{ margin: "12px 16px 0", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}
     >
-      <span>
+      <span suppressHydrationWarning>
         {waitingCount} thread{waitingCount !== 1 ? "s are" : " is"} ready to route.
       </span>
       <button

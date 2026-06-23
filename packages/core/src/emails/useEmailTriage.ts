@@ -1,9 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { ApiClient } from "@amarnai/api-client";
+import type { ApiClient, FilterCounts } from "@amarnai/api-client";
 import type { ActiveSelection, FolderItem, ThreadItem } from "./types.js";
-import { filterThreads } from "./selection.js";
+import { queueCountsFromServer } from "./selection.js";
 import { mapThreads } from "./mapThreads.js";
 import { mergeThreads } from "./mergeThreads.js";
 import { appendThreads } from "./appendThreads.js";
@@ -23,7 +23,44 @@ export type UseEmailTriageOptions = {
   // Opaque cursor for the next page of threads, from the initial server fetch.
   // null/undefined means the first page was the last (no pagination).
   initialNextCursor?: string | null;
+  // Server-computed inbox counts (over the whole inbox, not the loaded page) from
+  // the initial fetch. Drives the queue-pill totals and the "X of Y" indicator.
+  initialCounts?: FilterCounts | undefined;
+  // Count of threads matching the initial view (the "All" queue, no search).
+  initialFilteredTotal?: number | undefined;
 };
+
+const EMPTY_COUNTS: FilterCounts = {
+  total: 0, PENDING: 0, NEEDS_REVIEW: 0, SORTED: 0, UNROUTED: 0, UNCLASSIFIED: 0, important: 0,
+};
+
+// Auto-load successive pages up to this many threads so a normal inbox fills in
+// without scrolling. Beyond it, the explicit "Load more" control takes over (a
+// guard against pulling thousands of rows into the DOM without virtualization).
+const AUTO_LOAD_CAP = 200;
+
+// Debounce window for search input before hitting the server.
+const SEARCH_DEBOUNCE_MS = 300;
+
+type ViewParams = { nodeId?: string; status?: string; important?: boolean; q?: string };
+
+// Translate the active view (queue or folder) + search term into the server-side
+// filter params, so the list, count, and search all come from one query.
+function viewParams(active: ActiveSelection, query: string): ViewParams {
+  const q = query.trim() || undefined;
+  if (active.kind === "folder") return { nodeId: active.id, ...(q ? { q } : {}) };
+  const base: ViewParams = q ? { q } : {};
+  switch (active.id) {
+    case "sorted":       return { ...base, status: "SORTED" };
+    case "review":       return { ...base, status: "NEEDS_REVIEW" };
+    case "pending":      return { ...base, status: "PENDING" };
+    case "important":    return { ...base, important: true };
+    case "unrouted":     return { ...base, status: "UNROUTED" };
+    case "unclassified": return { ...base, status: "UNCLASSIFIED" };
+    case "all":
+    default:             return base;
+  }
+}
 
 /**
  * Platform-agnostic email triage view-model. Owns the thread list, selection,
@@ -43,12 +80,20 @@ export type UseEmailTriageOptions = {
  * refs rather than closures, mirroring the `selectedIdRef` pattern.
  */
 export function useEmailTriage(options: UseEmailTriageOptions) {
-  const { api, workspaceId, currentUserId, initialThreads, initialFolders, initialActive, initialSelectedId, initialNextCursor } =
+  const { api, workspaceId, currentUserId, initialThreads, initialFolders, initialActive, initialSelectedId, initialNextCursor, initialCounts, initialFilteredTotal } =
     options;
 
   const [threads, setThreads] = useState<ThreadItem[]>(initialThreads);
   const [nextCursor, setNextCursor] = useState<string | null>(initialNextCursor ?? null);
   const [loadingMore, setLoadingMore] = useState(false);
+  // Server-computed inbox counts. Drives the queue-pill totals and the "X of Y"
+  // indicator; refreshed whenever the server returns fresh counts.
+  const [counts, setCounts] = useState<FilterCounts>(
+    initialCounts ?? { ...EMPTY_COUNTS, total: initialThreads.length },
+  );
+  // Count of threads matching the active view + search (server-computed), shown
+  // as "X threads". Distinct from `counts` (the whole-inbox pill totals).
+  const [filteredTotal, setFilteredTotal] = useState<number>(initialFilteredTotal ?? initialThreads.length);
   const [folders] = useState<FolderItem[]>(initialFolders);
   const [active, setActive] = useState<ActiveSelection>(initialActive);
   const [selectedId, setSelectedId] = useState<string | null>(initialSelectedId);
@@ -85,6 +130,13 @@ export function useEmailTriage(options: UseEmailTriageOptions) {
   // (so trashed/removed threads disappear) when no pagination has happened.
   const hasPaginatedRef = useRef(false);
 
+  // Current view (queue/folder) + search, kept in refs so the stable refresh/
+  // loadMore callbacks always query the active view.
+  const activeRef = useRef(active);
+  useEffect(() => { activeRef.current = active; }, [active]);
+  const queryRef = useRef(query);
+  useEffect(() => { queryRef.current = query; }, [query]);
+
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // ─── Toast ───────────────────────────────────────────────────────────────────
@@ -108,15 +160,18 @@ export function useEmailTriage(options: UseEmailTriageOptions) {
     setThreads((prev) => mergeThreads(fresh, prev, selectedIdRef.current, hasPaginatedRef.current));
   }, []);
 
-  // Fetch the latest threads from the server and merge them in. This only ever
-  // re-fetches the first page; mergeThreads keeps already-loaded later pages, so
-  // a refresh updates statuses without collapsing a paginated list. The returned
-  // nextCursor (page 2) is intentionally ignored — the deeper pagination cursor
-  // tracked in state is the one that matters.
+  // Re-fetch the active view's first page and merge it in (preserving already-
+  // loaded later pages and in-progress draft state). Used by the SSE/poll refresh
+  // triggers; the returned nextCursor is ignored since the deeper pagination
+  // cursor in state is the one that matters.
   const refresh = useCallback(() => {
     return api
-      .emailThreads(workspaceId)
-      .then(({ threads: fresh }) => syncThreads(mapThreads(fresh)))
+      .emailThreads(workspaceId, viewParams(activeRef.current, queryRef.current))
+      .then(({ threads: fresh, counts: freshCounts, filteredTotal: ft }) => {
+        syncThreads(mapThreads(fresh));
+        setCounts(freshCounts);
+        setFilteredTotal(ft);
+      })
       .catch(() => {});
   }, [api, workspaceId, syncThreads]);
 
@@ -124,10 +179,8 @@ export function useEmailTriage(options: UseEmailTriageOptions) {
 
   const hasMore = nextCursor !== null;
 
-  // Fetch and append the next page of threads. No-op when there is no next page
-  // or a fetch is already in flight (so a fast-scrolling list does not fire
-  // overlapping requests). Drives the web infinite-scroll sentinel and the
-  // mobile list's onEndReached.
+  // Fetch and append the next page of the active view. No-op when there is no
+  // next page or a fetch is already in flight.
   const loadMore = useCallback(async () => {
     const cursor = nextCursorRef.current;
     if (!cursor || loadingMoreRef.current) return;
@@ -135,19 +188,57 @@ export function useEmailTriage(options: UseEmailTriageOptions) {
     hasPaginatedRef.current = true;
     setLoadingMore(true);
     try {
-      const { threads: page, nextCursor: cursorAfter } = await api.emailThreads(
-        workspaceId,
-        { cursor },
-      );
+      const { threads: page, nextCursor: cursorAfter, counts: freshCounts, filteredTotal: ft } =
+        await api.emailThreads(workspaceId, { ...viewParams(activeRef.current, queryRef.current), cursor });
       setThreads((prev) => appendThreads(prev, mapThreads(page)));
       setNextCursor(cursorAfter);
+      setCounts(freshCounts);
+      setFilteredTotal(ft);
     } catch {
-      // Non-fatal — the sentinel/onEndReached will retry on the next trigger.
+      // Non-fatal — the auto-load effect / Load more button will retry.
     } finally {
       loadingMoreRef.current = false;
       setLoadingMore(false);
     }
   }, [api, workspaceId]);
+
+  // Server-driven list: whenever the active view (queue/folder) or the search
+  // term changes, fetch that view's first page and replace the list. Search is
+  // debounced; switching views is immediate. The initial render is seeded from
+  // props, so skip the very first run.
+  const didMountRef = useRef(false);
+  const lastQueryRef = useRef(query);
+  useEffect(() => {
+    if (!didMountRef.current) {
+      didMountRef.current = true;
+      lastQueryRef.current = query;
+      return;
+    }
+    const isSearchChange = query !== lastQueryRef.current;
+    lastQueryRef.current = query;
+    const handle = setTimeout(() => {
+      hasPaginatedRef.current = false;
+      api
+        .emailThreads(workspaceId, viewParams(active, query))
+        .then(({ threads: fresh, nextCursor: c, counts: freshCounts, filteredTotal: ft }) => {
+          setThreads(mapThreads(fresh));
+          setNextCursor(c);
+          setCounts(freshCounts);
+          setFilteredTotal(ft);
+        })
+        .catch(() => {});
+    }, isSearchChange ? SEARCH_DEBOUNCE_MS : 0);
+    return () => clearTimeout(handle);
+  }, [active, query, api, workspaceId]);
+
+  // Auto-load successive pages so a normal inbox fills in without scrolling.
+  // Chains: each completed page re-runs this effect until there are no more
+  // pages or the cap is reached (beyond which the user loads more explicitly).
+  useEffect(() => {
+    if (hasMore && !loadingMore && threads.length < AUTO_LOAD_CAP) {
+      void loadMore();
+    }
+  }, [hasMore, loadingMore, threads.length, loadMore]);
 
   // ─── Approve ───────────────────────────────────────────────────────────────
 
@@ -298,15 +389,21 @@ export function useEmailTriage(options: UseEmailTriageOptions) {
 
   // Optimistically mark waiting threads as classifying (used after a "Route now"
   // click so the banner hides and the "Sorting…" indicator shows until refresh).
+  // "Route now" enqueues the whole waiting backlog, so also zero the server
+  // waiting counts immediately — otherwise the banner (which reads them) would
+  // linger until the next refresh.
   const markWaitingClassifying = useCallback(() => {
     setThreads((prev) =>
       prev.map((t) => (isWaiting(t) ? { ...t, isClassifying: true } : t))
     );
+    setCounts((c) => ({ ...c, PENDING: 0, UNROUTED: 0 }));
   }, [isWaiting]);
 
   // ─── Derived ─────────────────────────────────────────────────────────────────
 
-  const filteredThreads = filterThreads(threads, folders, active, "all", query);
+  // The list is filtered server-side (active view + search), so the loaded
+  // threads are already the displayed set — no client-side re-filtering.
+  const filteredThreads = threads;
   const filteredIds = filteredThreads.map((t) => t.id);
 
   const selectedThread = selectedId
@@ -316,6 +413,15 @@ export function useEmailTriage(options: UseEmailTriageOptions) {
   const anyClassifying = threads.some((t) => t.isClassifying);
 
   const waitingCount = threads.filter(isWaiting).length;
+
+  // Server-authoritative totals (whole inbox) for the "X of Y" footer and the
+  // queue pills, so they never reflect just the loaded page.
+  const total = counts.total;
+  const queueCounts = queueCountsFromServer(counts);
+  // Whole-inbox count of threads waiting to be routed (PENDING + legacy
+  // UNROUTED). Drives the "Route now" banner so it matches the Pending pill
+  // rather than only the loaded page.
+  const serverWaitingCount = counts.PENDING + counts.UNROUTED;
 
   return {
     // state
@@ -340,10 +446,14 @@ export function useEmailTriage(options: UseEmailTriageOptions) {
     // thread sync
     syncThreads,
     refresh,
-    // pagination
+    // pagination + counts
     hasMore,
     loadingMore,
     loadMore,
+    total,
+    queueCounts,
+    serverWaitingCount,
+    filteredTotal,
     // mutations
     handleApprove,
     handleMarkDone,

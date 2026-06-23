@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { api } from "@/lib/api";
 import type { SyncStatus } from "@/lib/api";
 import type { ActiveSelection, FolderItem, ThreadItem } from "@amarnai/ui/emails";
+import type { FilterCounts } from "@amarnai/api-client";
 import { EmailRail, ThreadList, ReroutePopover } from "@amarnai/ui/emails";
 import { useEmailTriage } from "@amarnai/core/emails";
 import { ThreadPreview } from "./ThreadPreview";
@@ -18,6 +19,8 @@ type Props = {
   currentUserId: string;
   initialThreads: ThreadItem[];
   initialNextCursor: string | null;
+  initialCounts: FilterCounts | undefined;
+  initialFilteredTotal: number;
   initialFolders: FolderItem[];
   initialActive: ActiveSelection;
   initialSelectedId: string | null;
@@ -32,6 +35,8 @@ export function EmailsClient({
   currentUserId,
   initialThreads,
   initialNextCursor,
+  initialCounts,
+  initialFilteredTotal,
   initialFolders,
   initialActive,
   initialSelectedId,
@@ -53,16 +58,16 @@ export function EmailsClient({
     currentUserId,
     initialThreads,
     initialNextCursor,
+    initialCounts,
+    initialFilteredTotal,
     initialFolders,
     initialActive,
     initialSelectedId,
   });
 
-  // Sync server-rendered threads into local state after router.refresh() — e.g.
-  // when ClassifyingRefresher fires.
-  useEffect(() => {
-    triage.syncThreads(initialThreads);
-  }, [initialThreads]);
+  // The view-model owns list fetching (it re-fetches on view/search change), so
+  // there is no longer an initialThreads→state sync here — that would merge the
+  // server-rendered default view back over the active one.
 
   // Connect to the workspace SSE stream; refresh the thread list immediately
   // when the sync-inbox worker finishes, without a full page reload.
@@ -178,10 +183,10 @@ export function EmailsClient({
 
   return (
     <>
-    <ClassifyingRefresher active={triage.anyClassifying} />
+    <ClassifyingRefresher active={triage.anyClassifying} onPoll={triage.refresh} />
     <UnroutedBanner
       workspaceId={workspaceId}
-      waitingCount={triage.waitingCount}
+      waitingCount={triage.serverWaitingCount}
       routableNodeCount={routableNodeCount}
       onRouted={triage.markWaitingClassifying}
     />
@@ -198,6 +203,7 @@ export function EmailsClient({
         active={active}
         railQuery={railQuery}
         openFolderIds={openFolderIds}
+        queueCounts={triage.queueCounts}
         syncInfo={syncInfo}
         onSelectActive={pushActive}
         onRailQueryChange={setRailQuery}
@@ -225,6 +231,7 @@ export function EmailsClient({
         hasMore={triage.hasMore}
         loadingMore={triage.loadingMore}
         onLoadMore={triage.loadMore}
+        total={triage.filteredTotal}
       />
 
       {selectedThread ? (

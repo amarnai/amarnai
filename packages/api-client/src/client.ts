@@ -219,12 +219,14 @@ export function makeApiClient(transport: ApiTransport) {
 
     emailThreads: (
       workspaceId: string,
-      filters?: { nodeId?: string; status?: string; cursor?: string }
+      filters?: { nodeId?: string; status?: string; cursor?: string; important?: boolean; q?: string }
     ) => {
       const params = new URLSearchParams();
       if (filters?.nodeId) params.set("nodeId", filters.nodeId);
       if (filters?.status) params.set("status", filters.status);
       if (filters?.cursor) params.set("cursor", filters.cursor);
+      if (filters?.important) params.set("important", "true");
+      if (filters?.q && filters.q.trim()) params.set("q", filters.q.trim());
       const qs = params.toString();
       return apiFetch<EmailThreadListResult>(
         `/workspaces/${workspaceId}/email-threads${qs ? `?${qs}` : ""}`

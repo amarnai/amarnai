@@ -333,7 +333,11 @@ export class GmailClient {
     resultSizeEstimate: number;
   }> {
     const accessToken = await this.refreshAccessToken();
-    const afterSecs = Math.floor(opts.afterMs / 1000);
+    // Gmail special-cases `after:0` as "match nothing" rather than "all mail", so
+    // a full-history scan (afterMs = 0, used by the no-window plans) would return
+    // zero threads. Clamp to at least 1 second past the epoch, which Gmail treats
+    // as "everything" while keeping the default spam/trash exclusion.
+    const afterSecs = Math.max(1, Math.floor(opts.afterMs / 1000));
 
     const params = new URLSearchParams({
       q: `after:${afterSecs}`,

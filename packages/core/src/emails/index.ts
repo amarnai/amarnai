@@ -17,6 +17,7 @@ export {
   countForActive,
   folderUnreadCount,
   buildFolderCounts,
+  queueCountsFromServer,
 } from "./selection.js";
 
 export { mapThreads, mapFolders } from "./mapThreads.js";

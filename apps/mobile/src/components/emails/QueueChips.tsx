@@ -6,11 +6,13 @@ interface QueueChipsProps {
   active: ActiveSelection;
   threads: ThreadItem[];
   folders: FolderItem[];
+  // Server-computed per-queue totals; falls back to counting loaded threads.
+  queueCounts?: Partial<Record<QueueId, number>>;
   onSelectQueue: (id: QueueId) => void;
   onClearFolder: () => void;
 }
 
-export function QueueChips({ active, threads, folders, onSelectQueue, onClearFolder }: QueueChipsProps) {
+export function QueueChips({ active, threads, folders, queueCounts, onSelectQueue, onClearFolder }: QueueChipsProps) {
   const activeFolderName =
     active.kind === 'folder'
       ? (folders.find((f) => f.id === active.id)?.name ?? 'Folder')
@@ -30,7 +32,7 @@ export function QueueChips({ active, threads, folders, onSelectQueue, onClearFol
       ) : null}
       {QUEUES.map((q) => {
         const isActive = active.kind === 'queue' && active.id === q.id;
-        const count = countForActive(threads, folders, { kind: 'queue', id: q.id });
+        const count = queueCounts?.[q.id] ?? countForActive(threads, folders, { kind: 'queue', id: q.id });
         const isWarn = !!q.warn && !isActive;
         const isWarnActive = !!q.warn && isActive;
 

@@ -181,3 +181,35 @@ describe("GmailClient.refreshAccessToken", () => {
     await expect(client.refreshAccessToken()).rejects.toThrow(GmailAuthError);
   });
 });
+
+// ─── GmailClient.listThreadsPage ──────────────────────────────────────────────
+
+describe("GmailClient.listThreadsPage", () => {
+  function listUrl(): URL {
+    // calls[0] is the token refresh; calls[1] is the threads.list request.
+    return new URL((mockFetch.mock.calls[1] as [string])[0]);
+  }
+
+  it("clamps a full-history scan (afterMs 0) to after:1, never the broken after:0", async () => {
+    mockFetch
+      .mockResolvedValueOnce(makeTokenResponse())
+      .mockResolvedValueOnce({ ok: true, json: async () => ({ threads: [], resultSizeEstimate: 0 }) });
+
+    const client = new GmailClient("encrypted:refresh:token");
+    await client.listThreadsPage({ afterMs: 0, pageSize: 100 });
+
+    // Gmail returns nothing for after:0, so a full-history scan must use after:1.
+    expect(listUrl().searchParams.get("q")).toBe("after:1");
+  });
+
+  it("uses the real timestamp for a windowed scan", async () => {
+    mockFetch
+      .mockResolvedValueOnce(makeTokenResponse())
+      .mockResolvedValueOnce({ ok: true, json: async () => ({ threads: [], resultSizeEstimate: 0 }) });
+
+    const client = new GmailClient("encrypted:refresh:token");
+    await client.listThreadsPage({ afterMs: 1_700_000_000_000, pageSize: 100 });
+
+    expect(listUrl().searchParams.get("q")).toBe("after:1700000000");
+  });
+});

@@ -2,7 +2,7 @@
 
 import type { FolderItem } from "../folder-tree/types.js";
 import { FolderTree } from "../folder-tree/FolderTree.js";
-import type { ActiveSelection, ThreadItem, SyncInfo } from "./types.js";
+import type { ActiveSelection, ThreadItem, SyncInfo, QueueId } from "./types.js";
 import { QueueList } from "./QueueList.js";
 import { BackfillCard } from "./BackfillCard.js";
 import { buildFolderCounts } from "./selection.js";
@@ -14,6 +14,9 @@ export interface EmailRailProps {
   active: ActiveSelection;
   railQuery: string;
   openFolderIds: Set<string>;
+  // Server-computed per-queue totals; when omitted, QueueList falls back to
+  // counting the loaded threads.
+  queueCounts?: Partial<Record<QueueId, number>> | undefined;
   syncInfo: SyncInfo;
   onSelectActive: (a: ActiveSelection) => void;
   onRailQueryChange: (q: string) => void;
@@ -28,6 +31,7 @@ export function EmailRail({
   active,
   railQuery,
   openFolderIds,
+  queueCounts,
   syncInfo,
   onSelectActive,
   onRailQueryChange,
@@ -79,6 +83,7 @@ export function EmailRail({
           folders={folders}
           active={active}
           railQuery={railQuery}
+          queueCounts={queueCounts}
           onSelect={onSelectActive}
         />
 

@@ -143,6 +143,8 @@ export type FilterCounts = {
   SORTED: number;
   UNROUTED: number;
   UNCLASSIFIED: number;
+  // Count of Gmail-important threads (orthogonal to triageStatus).
+  important: number;
 };
 
 export type EmailThreadSummary = {
@@ -174,6 +176,9 @@ export type EmailThreadListResult = {
   threads: EmailThreadSummary[];
   nextCursor: string | null;
   counts: FilterCounts;
+  // Count of threads matching the active view (queue/folder) + search, ignoring
+  // the page cursor. Drives the "X threads" label.
+  filteredTotal: number;
 };
 
 export type EmailThreadDetail = {

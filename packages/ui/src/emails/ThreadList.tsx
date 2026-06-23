@@ -1,9 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import type { FolderItem } from "../folder-tree/types.js";
 import type { ActiveSelection, ThreadItem } from "./types.js";
-import { filterThreads } from "./selection.js";
 import { ThreadListHeader } from "./ThreadListHeader.js";
 import { ThreadRow } from "./ThreadRow.js";
 
@@ -47,11 +45,13 @@ export interface ThreadListProps {
   onUnmarkDone: (threadId: string) => void;
   railOpen?: boolean;
   onToggleRail?: () => void;
-  // Pagination: when more threads are available, an intersection sentinel at the
-  // bottom of the scroll area calls onLoadMore as it scrolls into view.
+  // Pagination: a footer shows "X of Y loaded" with an explicit Load more button,
+  // and an intersection sentinel auto-loads as it scrolls into view. `total` is
+  // the server's inbox-visible thread count.
   hasMore?: boolean;
   loadingMore?: boolean;
   onLoadMore?: () => void;
+  total?: number;
 }
 
 export function ThreadList({
@@ -73,30 +73,13 @@ export function ThreadList({
   hasMore,
   loadingMore,
   onLoadMore,
+  total,
 }: ThreadListProps) {
-  const filtered = filterThreads(threads, folders, active, "all", query);
-  const unreadCount = filtered.filter((t) => t.unread).length;
-  const groups = groupByDate(filtered, now);
-
-  // Infinite scroll: observe a sentinel at the end of the list and fetch the
-  // next page as it nears the viewport. Re-runs when the loaded count changes so
-  // a sentinel still in view after an append triggers the following page.
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const sentinelRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (!hasMore || !onLoadMore) return;
-    const sentinel = sentinelRef.current;
-    const root = scrollRef.current;
-    if (!sentinel || !root || typeof IntersectionObserver === "undefined") return;
-    const io = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((e) => e.isIntersecting)) onLoadMore();
-      },
-      { root, rootMargin: "300px" },
-    );
-    io.observe(sentinel);
-    return () => io.disconnect();
-  }, [hasMore, onLoadMore, filtered.length]);
+  // The list is already filtered server-side (active view + search), so render
+  // the loaded threads directly. `total` is the server count for "X threads".
+  const viewCount = total ?? threads.length;
+  const unreadCount = threads.filter((t) => t.unread).length;
+  const groups = groupByDate(threads, now);
 
   return (
     <div className="em-list-col">
@@ -122,7 +105,7 @@ export function ThreadList({
       <ThreadListHeader
         active={active}
         folders={folders}
-        threadCount={filtered.length}
+        threadCount={viewCount}
         unreadCount={unreadCount}
         query={query}
         onQueryChange={onQueryChange}
@@ -130,8 +113,8 @@ export function ThreadList({
         searchRef={searchRef}
       />
 
-      <div className="em-list-scroll" role="grid" aria-label="Email threads" ref={scrollRef}>
-        {filtered.length === 0 && (
+      <div className="em-list-scroll" role="grid" aria-label="Email threads">
+        {threads.length === 0 && (
           <div className="em-empty">
             {query ? "No threads match your search." : "No threads here."}
           </div>
@@ -159,9 +142,22 @@ export function ThreadList({
           </div>
         ))}
 
-        {hasMore && filtered.length > 0 && (
-          <div ref={sentinelRef} className="em-list-sentinel" aria-hidden>
-            {loadingMore && <span className="em-list-loading">Loading more…</span>}
+        {/* Pages auto-load up to a cap; past it this footer shows progress and
+            an explicit Load more. A fully-loaded list shows nothing; the queue
+            pills carry the authoritative totals. */}
+        {hasMore && threads.length > 0 && (
+          <div className="em-list-footer">
+            <span className="em-list-count">
+              {threads.length.toLocaleString()} of {viewCount.toLocaleString()} loaded
+            </span>
+            <button
+              type="button"
+              className="em-load-more"
+              onClick={onLoadMore}
+              disabled={loadingMore}
+            >
+              {loadingMore ? "Loading…" : "Load more"}
+            </button>
           </div>
         )}
       </div>
