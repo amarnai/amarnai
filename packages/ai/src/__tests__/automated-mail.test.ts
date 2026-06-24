@@ -66,9 +66,27 @@ describe("detectAutomatedThread", () => {
     expect(detectAutomatedThread([automated, human])).toBe(false);
   });
 
-  it("vetoes on IMPORTANT even with a no-reply sender", () => {
+  it("IMPORTANT does NOT veto a strong signal (no-reply sender or bulk headers)", () => {
+    // Gmail's IMPORTANT auto-heuristic routinely flags bulk (e.g. Google's own
+    // no-reply notifications); a machine-origin signal must override it.
     expect(
-      detectAutomatedThread([msg({ senderEmail: "no-reply@service.com", labelIds: ["INBOX", "IMPORTANT"] })])
+      detectAutomatedThread([msg({ senderEmail: "google-maps-noreply@google.com", labelIds: ["INBOX", "IMPORTANT"] })])
+    ).toBe(true);
+    expect(
+      detectAutomatedThread([
+        msg({
+          senderEmail: "news@substack.com",
+          labelIds: ["INBOX", "IMPORTANT"],
+          automatedHeaders: { listUnsubscribe: true, listId: false, autoSubmitted: null, precedence: null },
+        }),
+      ])
+    ).toBe(true);
+  });
+
+  it("IMPORTANT vetoes a weak (category-only) detection", () => {
+    // Only a Gmail bulk category, no strong signal — IMPORTANT wins.
+    expect(
+      detectAutomatedThread([msg({ senderEmail: "person@gmail.com", labelIds: ["CATEGORY_UPDATES", "IMPORTANT"] })])
     ).toBe(false);
   });
 

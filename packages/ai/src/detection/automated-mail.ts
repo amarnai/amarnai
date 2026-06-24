@@ -72,13 +72,34 @@ export function isAutomatedMessage(
 }
 
 /**
- * Full-fetch variant: a thread is automated only when it has messages, no
- * message carries a human-priority veto label, and EVERY message is automated.
+ * Strong (machine-origin) automation evidence: bulk headers or a no-reply
+ * sender. Excludes the weaker "Gmail bulk category" hint. A human mailbox
+ * effectively never produces these, so they override Gmail's noisy IMPORTANT
+ * auto-flag; a category-only signal does not.
+ */
+function isStronglyAutomatedMessage(
+  msg: Pick<SnapshotMessage, "senderEmail" | "automatedHeaders">
+): boolean {
+  return headersIndicateBulk(msg.automatedHeaders) || senderIsNoReply(msg.senderEmail);
+}
+
+/**
+ * Full-fetch variant: a thread is automated only when it has messages and EVERY
+ * message is automated, subject to two vetoes that protect genuine mail:
+ *
+ * - CATEGORY_PERSONAL is a hard veto (Gmail explicitly classified it personal).
+ * - IMPORTANT vetoes ONLY weak (category-only) detections. Gmail's IMPORTANT is
+ *   a noisy auto-heuristic that routinely flags bulk (Google's own notifications
+ *   especially), so a strong machine-origin signal on every message overrides it.
  */
 export function detectAutomatedThread(messages: SnapshotMessage[]): boolean {
   if (messages.length === 0) return false;
-  if (messages.some((m) => hasHumanVeto(m.labelIds ?? []))) return false;
-  return messages.every(isAutomatedMessage);
+  if (messages.some((m) => (m.labelIds ?? []).includes("CATEGORY_PERSONAL"))) return false;
+  if (!messages.every(isAutomatedMessage)) return false;
+
+  const allStrong = messages.every(isStronglyAutomatedMessage);
+  if (!allStrong && messages.some((m) => (m.labelIds ?? []).includes("IMPORTANT"))) return false;
+  return true;
 }
 
 /**
