@@ -139,6 +139,9 @@ export type Classification = {
 export type FilterCounts = {
   total: number;
   PENDING: number;
+  // Subset of PENDING that are not yet enqueued (classifyingAt = null).
+  // Drives the "Route now" banner; excludes threads already being sorted.
+  PENDING_WAITING: number;
   NEEDS_REVIEW: number;
   SORTED: number;
   UNROUTED: number;

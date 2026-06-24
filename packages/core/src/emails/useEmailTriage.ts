@@ -31,7 +31,7 @@ export type UseEmailTriageOptions = {
 };
 
 const EMPTY_COUNTS: FilterCounts = {
-  total: 0, PENDING: 0, NEEDS_REVIEW: 0, SORTED: 0, UNROUTED: 0, UNCLASSIFIED: 0, important: 0,
+  total: 0, PENDING: 0, PENDING_WAITING: 0, NEEDS_REVIEW: 0, SORTED: 0, UNROUTED: 0, UNCLASSIFIED: 0, important: 0,
 };
 
 // Auto-load successive pages up to this many threads so a normal inbox fills in
@@ -396,7 +396,7 @@ export function useEmailTriage(options: UseEmailTriageOptions) {
     setThreads((prev) =>
       prev.map((t) => (isWaiting(t) ? { ...t, isClassifying: true } : t))
     );
-    setCounts((c) => ({ ...c, PENDING: 0, UNROUTED: 0 }));
+    setCounts((c) => ({ ...c, PENDING: 0, PENDING_WAITING: 0, UNROUTED: 0 }));
   }, [isWaiting]);
 
   // ─── Derived ─────────────────────────────────────────────────────────────────
@@ -421,7 +421,7 @@ export function useEmailTriage(options: UseEmailTriageOptions) {
   // Whole-inbox count of threads waiting to be routed (PENDING + legacy
   // UNROUTED). Drives the "Route now" banner so it matches the Pending pill
   // rather than only the loaded page.
-  const serverWaitingCount = counts.PENDING + counts.UNROUTED;
+  const serverWaitingCount = counts.PENDING_WAITING + counts.UNROUTED;
 
   return {
     // state

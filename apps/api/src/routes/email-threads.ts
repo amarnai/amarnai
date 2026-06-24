@@ -257,9 +257,9 @@ emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
       _count: { _all: true },
     }),
     db.emailThread.count({ where: { ...baseWhere, gmailIsImportant: true } }),
-    // "Pending" = waiting to be routed: PENDING and not already queued/classifying.
-    // This is what the "Route now" banner and the Pending pill represent, so once
-    // a thread is enqueued it drops out of the count (and the banner) immediately.
+    // Threads waiting to be routed but not yet enqueued — drives the "Route now"
+    // banner so it hides once sorting begins. The Pending pill uses the full
+    // PENDING count from groupBy (which includes threads currently being sorted).
     db.emailThread.count({ where: { ...baseWhere, triageStatus: "PENDING", classifyingAt: null } }),
     // Count of the active view + search (no cursor): the "X threads" label.
     db.emailThread.count({ where: viewWhere }),
@@ -279,13 +279,14 @@ emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
   // Transform grouped counts. Every queue pill reads from here.
   const byStatus = (s: string) => grouped.find((g) => g.triageStatus === s)?._count._all ?? 0;
   const counts = {
-    total:        grouped.reduce((s, g) => s + g._count._all, 0),
-    PENDING:      pendingWaitingCount,
-    SORTED:       byStatus("SORTED"),
-    NEEDS_REVIEW: byStatus("NEEDS_REVIEW"),
-    UNROUTED:     byStatus("UNROUTED"),
-    UNCLASSIFIED: byStatus("UNCLASSIFIED"),
-    important:    importantCount,
+    total:           grouped.reduce((s, g) => s + g._count._all, 0),
+    PENDING:         byStatus("PENDING"),
+    PENDING_WAITING: pendingWaitingCount,
+    SORTED:          byStatus("SORTED"),
+    NEEDS_REVIEW:    byStatus("NEEDS_REVIEW"),
+    UNROUTED:        byStatus("UNROUTED"),
+    UNCLASSIFIED:    byStatus("UNCLASSIFIED"),
+    important:       importantCount,
   };
 
   const threads = pageThreads.map((thread) => {
