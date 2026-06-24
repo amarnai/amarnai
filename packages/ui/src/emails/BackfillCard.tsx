@@ -31,14 +31,14 @@ export function BackfillCard({ syncInfo, upgradeHref = "#" }: BackfillCardProps)
 
   if (syncInfo.backfillStatus !== "RUNNING") return null;
 
+  // Fetching past threads from Gmail happens regardless of the taxonomy, so the
+  // loading bar shows for the whole RUNNING phase. The taxonomy only gates
+  // sorting, so it just adapts the subtext (and is also surfaced by the top
+  // "build taxonomy" banner). Cap at 99% — the card clears when backfill is DONE.
   const awaitingTaxonomy = syncInfo.backfillAwaitingTaxonomy ?? false;
-  const sorted = syncInfo.backfillSortedThreads ?? 0;
+  const loaded = syncInfo.backfillLoadedThreads ?? 0;
   const total = syncInfo.backfillTotalThreads ?? 0;
-  // Cap at 99% while RUNNING: the card only clears once the backfill reaches DONE.
-  const percent = total > 0 ? Math.min(Math.round((sorted / total) * 100), 99) : 0;
-  // "Sorting in progress" is only honest once threads have actually been sorted.
-  // Until then the backfill is still discovering threads from Gmail.
-  const sorting = sorted > 0;
+  const percent = total > 0 ? Math.min(Math.round((loaded / total) * 100), 99) : 0;
 
   return (
     <>
@@ -50,28 +50,16 @@ export function BackfillCard({ syncInfo, upgradeHref = "#" }: BackfillCardProps)
           <span className="em-pulse" />
           Sorting historical inbox
         </div>
-        {awaitingTaxonomy ? (
-          <>
-            <div className="em-backfill-title">Waiting for a valid taxonomy</div>
-            <div className="em-backfill-desc">
-              Set up at least 3 folders to start sorting your threads.
-            </div>
-          </>
-        ) : sorting ? (
-          <>
-            <div className="em-backfill-title">Sorting in progress…</div>
-            <div className="em-backfill-desc">New threads will appear as they are sorted.</div>
-            <div className="em-backfill-progress-track">
-              <div className="em-backfill-progress-bar" style={{ width: `${percent}%` }} />
-            </div>
-            <div className="em-backfill-progress-label">{percent}%</div>
-          </>
-        ) : (
-          <>
-            <div className="em-backfill-title">Scanning your inbox…</div>
-            <div className="em-backfill-desc">Finding historical threads to sort.</div>
-          </>
-        )}
+        <div className="em-backfill-title">Loading past threads…</div>
+        <div className="em-backfill-desc">
+          {awaitingTaxonomy
+            ? "Set up at least 3 folders so we can start sorting."
+            : "New threads will appear as they are sorted."}
+        </div>
+        <div className="em-backfill-progress-track">
+          <div className="em-backfill-progress-bar" style={{ width: `${percent}%` }} />
+        </div>
+        <div className="em-backfill-progress-label">{percent}%</div>
       </div>
     </>
   );

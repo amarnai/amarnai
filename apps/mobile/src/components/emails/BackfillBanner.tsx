@@ -50,14 +50,13 @@ export function BackfillBanner({ syncStatus, dismissed, onDismiss }: BackfillBan
 
   if (syncStatus.backfillStatus !== 'RUNNING') return null;
 
+  // Fetching past threads from Gmail happens regardless of the taxonomy, so the
+  // loading bar shows for the whole RUNNING phase. The taxonomy only gates sorting,
+  // so it just adapts the subtext. Cap at 99% — the card clears when backfill is DONE.
   const awaitingTaxonomy = syncStatus.backfillAwaitingTaxonomy ?? false;
-  const sorted = syncStatus.backfillSortedThreads ?? 0;
+  const loaded = syncStatus.backfillLoadedThreads ?? 0;
   const total = syncStatus.backfillTotalThreads ?? 0;
-  // Cap at 99% while RUNNING: the card only clears once the backfill reaches DONE.
-  const percent = total > 0 ? Math.min(Math.round((sorted / total) * 100), 99) : 0;
-  // "Sorting in progress" is only honest once threads have actually been sorted.
-  // Until then the backfill is still discovering threads from Gmail.
-  const sorting = sorted > 0;
+  const percent = total > 0 ? Math.min(Math.round((loaded / total) * 100), 99) : 0;
 
   return (
     <View style={styles.card}>
@@ -65,26 +64,16 @@ export function BackfillBanner({ syncStatus, dismissed, onDismiss }: BackfillBan
         <PulseDot />
         <Text style={styles.eyebrow}>Sorting historical inbox</Text>
       </View>
-      {awaitingTaxonomy ? (
-        <>
-          <Text style={styles.title}>Waiting for a valid taxonomy</Text>
-          <Text style={styles.desc}>Set up at least 3 folders to start sorting your threads.</Text>
-        </>
-      ) : sorting ? (
-        <>
-          <Text style={styles.title}>Sorting in progress…</Text>
-          <Text style={styles.desc}>New threads will appear as they are sorted.</Text>
-          <View style={styles.progressTrack}>
-            <View style={[styles.progressBar, { width: `${percent}%` }]} />
-          </View>
-          <Text style={styles.progressLabel}>{percent}%</Text>
-        </>
-      ) : (
-        <>
-          <Text style={styles.title}>Scanning your inbox…</Text>
-          <Text style={styles.desc}>Finding historical threads to sort.</Text>
-        </>
-      )}
+      <Text style={styles.title}>Loading past threads…</Text>
+      <Text style={styles.desc}>
+        {awaitingTaxonomy
+          ? 'Set up at least 3 folders so we can start sorting.'
+          : 'New threads will appear as they are sorted.'}
+      </Text>
+      <View style={styles.progressTrack}>
+        <View style={[styles.progressBar, { width: `${percent}%` }]} />
+      </View>
+      <Text style={styles.progressLabel}>{percent}%</Text>
     </View>
   );
 }

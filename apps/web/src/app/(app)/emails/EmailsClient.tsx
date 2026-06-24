@@ -183,7 +183,7 @@ export function EmailsClient({
     ? {
         lastSyncedAt: syncStatus.lastSyncedAt,
         backfillStatus: syncStatus.backfillStatus === "RUNNING" ? ("RUNNING" as const) : ("IDLE" as const),
-        backfillSortedThreads: syncStatus.backfillSortedThreads,
+        backfillLoadedThreads: syncStatus.backfillLoadedThreads,
         backfillTotalThreads: syncStatus.backfillTotalThreads,
         backfillAwaitingTaxonomy: syncStatus.backfillAwaitingTaxonomy,
         workspacePlan: syncStatus.workspacePlan,

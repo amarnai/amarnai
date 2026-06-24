@@ -59,6 +59,7 @@ sweepInbox.post("/workspaces/:workspaceId/sweep-inbox", async (c) => {
       backfillStartedAt: null,
       backfillPageToken: null,
       backfillProcessedCount: 0,
+      backfillTotalEstimate: 0,
       backfillSkipped: 0,
       backfillGeneration: { increment: 1 },
       // Recompute the plan-cap state from scratch on the fresh scan.

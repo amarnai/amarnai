@@ -95,6 +95,7 @@ export async function provisionFromCheckoutSession(
           backfillStartedAt: null,
           backfillPageToken: null,
           backfillProcessedCount: 0,
+          backfillTotalEstimate: 0,
           backfillSkipped: 0,
           backfillGeneration: { increment: 1 },
           backfillCapReached: false,

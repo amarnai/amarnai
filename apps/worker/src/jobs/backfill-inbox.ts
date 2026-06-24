@@ -443,6 +443,7 @@ export function createBackfillInboxWorker(): Worker {
               backfillStartedAt: null,
               backfillPageToken: null,
               backfillProcessedCount: 0,
+              backfillTotalEstimate: 0,
               backfillSkipped: 0,
             },
           });
@@ -518,6 +519,11 @@ export function createBackfillInboxWorker(): Worker {
 
         const done = exhausted || processed >= cap.maxThreads;
 
+        // Gmail's estimate of the total threads matching the backfill query,
+        // capped at the plan cap and floored at what we've already processed so the
+        // UI's loading bar can't exceed 100% or run backwards on estimate jitter.
+        const totalEstimate = Math.max(processed, Math.min(resultSizeEstimate, cap.maxThreads));
+
         if (!done) {
           const res = await db.providerSyncState.updateMany({
             where: { emailAccountId, backfillGeneration: claimedGeneration },
@@ -526,6 +532,7 @@ export function createBackfillInboxWorker(): Worker {
               backfillStartedAt: null,
               backfillPageToken: pageToken ?? null,
               backfillProcessedCount: processed,
+              backfillTotalEstimate: totalEstimate,
               backfillSkipped: baseSkipped + runSkipped,
             },
           });
@@ -593,6 +600,8 @@ export function createBackfillInboxWorker(): Worker {
             backfillCompletedAt: new Date(),
             backfillPageToken: null,
             backfillProcessedCount: processed,
+            // All threads loaded — the estimate now equals what we processed.
+            backfillTotalEstimate: processed,
             backfillSkipped: baseSkipped + runSkipped,
             backfillCapReached: capReached,
             backfillBeyondCount: beyondCount,

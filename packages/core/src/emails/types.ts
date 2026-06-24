@@ -67,7 +67,7 @@ export type DraftItem = {
 export type SyncInfo = {
   lastSyncedAt: string | null;
   backfillStatus: "IDLE" | "RUNNING" | null;
-  backfillSortedThreads?: number;
+  backfillLoadedThreads?: number;
   backfillTotalThreads?: number;
   backfillAwaitingTaxonomy?: boolean;
   workspacePlan: "FREE" | "PRO" | "BUSINESS";

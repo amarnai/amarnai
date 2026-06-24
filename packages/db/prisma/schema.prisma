@@ -319,6 +319,11 @@ model ProviderSyncState {
   // when a fresh backfill is requested (e.g. sweep) or on disconnect.
   backfillPageToken      String?
   backfillProcessedCount Int         @default(0)
+  // Gmail's estimate of how many threads match the backfill query (capped at the
+  // plan's thread cap), persisted so the UI can show a "loading past threads"
+  // progress bar that fills as backfillProcessedCount approaches it. Approximate
+  // (Gmail's resultSizeEstimate) and reset on a fresh backfill / disconnect.
+  backfillTotalEstimate  Int         @default(0)
   // Bumped whenever a fresh backfill is requested (e.g. sweep). A running chunk
   // records the generation it claimed under and only persists its progress while
   // that generation still matches, so a concurrent reset is never clobbered.

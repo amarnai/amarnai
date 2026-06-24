@@ -49,11 +49,13 @@ syncStatus.get("/workspaces/:workspaceId/sync-status", async (c) => {
         backfillCompletedAt: true,
         backfillCapReached: true,
         backfillBeyondCount: true,
+        backfillProcessedCount: true,
+        backfillTotalEstimate: true,
       },
     }),
     db.gmailSyncSettings.findUnique({
       where: { workspaceId },
-      select: { sortingPaused: true, includeSpam: true, includePromotions: true },
+      select: { sortingPaused: true },
     }),
     db.workspace.findUnique({
       where: { id: workspaceId },
@@ -67,25 +69,23 @@ syncStatus.get("/workspaces/:workspaceId/sync-status", async (c) => {
   const pushEnabled =
     connection.gmailWatchExpiresAt != null && connection.gmailWatchExpiresAt > now;
 
-  // Sorting progress is only meaningful while a backfill is running. When it is,
-  // report how many of the discovered, inbox-visible threads have finished
-  // classification (any terminal status) versus the total discovered so far, and
-  // whether the taxonomy is too small to route at all. This drives the backfill
-  // card's wording and progress bar; it is the same inbox filter the triage queue
-  // counts use, so the numbers line up with the Pending/Sorted pills.
+  // Backfill loading progress is only meaningful while a backfill is running.
+  // While it is, report how many past threads have been fetched from Gmail so far
+  // (backfillLoadedThreads) versus the estimated total to fetch
+  // (backfillTotalThreads), so the card can render a bar that fills as the inbox
+  // history loads. Also report whether the taxonomy is too small to route any of
+  // them yet, which takes priority in the card's wording.
   let backfillAwaitingTaxonomy = false;
-  let backfillSortedThreads = 0;
+  let backfillLoadedThreads = 0;
   let backfillTotalThreads = 0;
 
   if (state.backfillStatus === "RUNNING") {
-    const inboxVisible = {
-      workspaceId,
-      gmailIsTrash: false,
-      ...(syncSettings?.includeSpam ? {} : { gmailIsSpam: false }),
-      ...(syncSettings?.includePromotions ? {} : { gmailIsPromotions: false }),
-    } as const;
+    backfillLoadedThreads = state.backfillProcessedCount;
+    // The estimate is captured after the first chunk; until then it is 0. Never
+    // report a total below what has already loaded so the bar can't exceed 100%.
+    backfillTotalThreads = Math.max(state.backfillTotalEstimate, state.backfillProcessedCount);
 
-    const [taxonomyNodes, taxonomyEdges, grouped] = await Promise.all([
+    const [taxonomyNodes, taxonomyEdges] = await Promise.all([
       db.taxonomyNode.findMany({
         where: { workspaceId },
         select: { id: true, isRoot: true, isCatchAll: true },
@@ -94,22 +94,9 @@ syncStatus.get("/workspaces/:workspaceId/sync-status", async (c) => {
         where: { workspaceId },
         select: { sourceNodeId: true, targetNodeId: true },
       }),
-      db.emailThread.groupBy({
-        by: ["triageStatus"],
-        where: inboxVisible,
-        _count: { _all: true },
-      }),
     ]);
 
     backfillAwaitingTaxonomy = !isTaxonomyRoutable(taxonomyNodes, taxonomyEdges);
-
-    // Total = every inbox-visible thread discovered so far. Pending = not yet run
-    // through classification. A thread is "sorted" once it leaves PENDING, whatever
-    // the outcome (SORTED / NEEDS_REVIEW / UNROUTED / UNCLASSIFIED).
-    for (const g of grouped) {
-      backfillTotalThreads += g._count._all;
-      if (g.triageStatus !== "PENDING") backfillSortedThreads += g._count._all;
-    }
   }
 
   return c.json({
@@ -121,7 +108,7 @@ syncStatus.get("/workspaces/:workspaceId/sync-status", async (c) => {
     backfillCompletedAt: state.backfillCompletedAt?.toISOString() ?? null,
     backfillCapReached: state.backfillCapReached,
     backfillBeyondCount: state.backfillBeyondCount,
-    backfillSortedThreads,
+    backfillLoadedThreads,
     backfillTotalThreads,
     backfillAwaitingTaxonomy,
     sortingPaused: syncSettings?.sortingPaused ?? false,
