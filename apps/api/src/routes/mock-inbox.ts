@@ -307,7 +307,7 @@ mockInbox.post("/dev/workspaces/:workspaceId/mock-inbox-event", async (c) => {
       embeddingTextHash: n.embeddingTextHash,
     }));
 
-    const aiResult = await sortThreadByEmbedding(embeddingProvider, aiProvider, embeddableNodes, edges, allMessages);
+    const aiResult = await sortThreadByEmbedding(embeddingProvider, aiProvider, embeddableNodes, edges, allMessages, { scaleInvariant: true });
 
     if (aiResult.updatedNodeEmbeddings.length > 0) {
       await Promise.all(
