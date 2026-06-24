@@ -19,7 +19,6 @@ type Props = {
   syncStatus: SyncStatus;
   syncSettings: GmailSyncSettings | null;
   connectError: string | null;
-  connectSuccess: boolean;
 };
 
 const GOOGLE_PERMISSIONS_URL = "https://myaccount.google.com/permissions";
@@ -73,7 +72,6 @@ export function GmailConnectionSection({
   syncStatus,
   syncSettings,
   connectError,
-  connectSuccess,
 }: Props) {
   const [isPending, startTransition] = useTransition();
   const [confirming, setConfirming] = useState(false);
@@ -125,9 +123,6 @@ export function GmailConnectionSection({
     <section className="settings-section">
       <h2>Gmail Inbox</h2>
 
-      {connectSuccess && (
-        <div className="alert alert-success">Gmail inbox connected successfully.</div>
-      )}
       {errorMessage && (
         <div className="alert alert-error">{errorMessage}</div>
       )}

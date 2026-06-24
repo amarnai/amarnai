@@ -23,7 +23,6 @@ export default async function SettingsPage({ searchParams }: { searchParams: Sea
 
   const connectError =
     typeof params["gmail_error"] === "string" ? params["gmail_error"] : null;
-  const connectSuccess = params["gmail_connected"] === "1";
   const billingCancelled = params["cancelled"] === "true";
 
   let connection = null;
@@ -111,7 +110,6 @@ export default async function SettingsPage({ searchParams }: { searchParams: Sea
             syncStatus={syncStatus}
             syncSettings={syncSettings}
             connectError={connectError}
-            connectSuccess={connectSuccess}
           />
           <EmailBlacklistSection
             workspaceId={workspace.id}

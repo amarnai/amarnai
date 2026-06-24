@@ -122,6 +122,6 @@ export async function GET(req: NextRequest) {
   // provides a fallback for sync, and the worker's daily renewal covers watch.
   triggerPostConnectHooks("gmail/callback", workspaceId, user.id);
 
-  settingsUrl.searchParams.set("gmail_connected", "1");
-  return NextResponse.redirect(settingsUrl);
+  const emailsUrl = new URL("/emails", baseUrl);
+  return NextResponse.redirect(emailsUrl);
 }
