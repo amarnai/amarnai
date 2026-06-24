@@ -98,6 +98,12 @@ function stripQuotedReply(text: string): string {
   return lines.slice(0, cutLine).join("\n").trim();
 }
 
+function stripCidReferences(text: string): string {
+  // Some clients (Apple Mail, Outlook) write literal [cid:...] markers in the
+  // text/plain part to mark where inline images sit in the HTML version.
+  return text.replace(/\[cid:[^\]]+\]/gi, "");
+}
+
 /**
  * Recursively extract the best plain-text body from a MIME part tree.
  * Prefers text/plain over text/html in multipart/alternative.
@@ -106,7 +112,7 @@ function extractText(part: RawPart): string | null {
   if (part.mimeType === "text/plain") {
     const data = part.body.data;
     if (!data) return null;
-    return decodeBase64Url(data);
+    return stripCidReferences(decodeBase64Url(data));
   }
 
   if (part.mimeType === "text/html") {
@@ -143,19 +149,57 @@ function extractText(part: RawPart): string | null {
   return null;
 }
 
+// Normalise a Content-ID for comparison: strip angle brackets, whitespace, and
+// lowercase. "<C3D8...@host>" and the body reference "cid:c3d8...@host" then match.
+function normalizeCid(value: string): string {
+  return value.trim().replace(/^<|>$/g, "").trim().toLowerCase();
+}
+
+/**
+ * Collect every Content-ID referenced from the message body, which is the
+ * ground-truth signal that an image is embedded inline rather than attached.
+ * Two reference forms appear:
+ *   - HTML bodies:  <img src="cid:abc@host">
+ *   - plain bodies: [cid:abc@host]  (some clients mark inline images this way)
+ * Quoted replies re-embed prior inline images, so this also matches images
+ * that only appear inside the quoted history.
+ */
+function collectReferencedCids(part: RawPart, acc: Set<string>): void {
+  if ((part.mimeType === "text/html" || part.mimeType === "text/plain") && part.body.data) {
+    const text = decodeBase64Url(part.body.data);
+    const re = /\bcid:([^"'\s)>\]]+)/gi;
+    let m: RegExpExecArray | null;
+    while ((m = re.exec(text)) !== null) {
+      acc.add(normalizeCid(m[1]!));
+    }
+  }
+  if (part.parts) {
+    for (const p of part.parts) collectReferencedCids(p, acc);
+  }
+}
+
 /**
  * Recursively collect attachment metadata from a MIME part tree.
  * Never fetches attachment content — metadata only.
+ * Inline images are excluded: a part is inline when its Content-ID is actually
+ * referenced by a cid: URL somewhere in the message body. Real attachments
+ * (e.g. PDFs) are never referenced this way, so they are always kept even if
+ * the client gave them a Content-ID or marked them Content-Disposition: inline.
  */
-function extractAttachments(part: RawPart): AttachmentMeta[] {
+function extractAttachments(part: RawPart, referencedCids: Set<string>): AttachmentMeta[] {
   const result: AttachmentMeta[] = [];
 
   const isAttachment =
     (part.filename !== undefined && part.filename !== "") ||
     (part.body.attachmentId !== undefined && part.body.attachmentId !== "");
 
+  const cidHeader = part.headers ? getHeader(part.headers, "Content-ID") : null;
+  const isReferencedInline =
+    cidHeader !== null && referencedCids.has(normalizeCid(cidHeader));
+
   if (
     isAttachment &&
+    !isReferencedInline &&
     !part.mimeType.startsWith("text/") &&
     !part.mimeType.startsWith("multipart/")
   ) {
@@ -168,7 +212,7 @@ function extractAttachments(part: RawPart): AttachmentMeta[] {
 
   if (part.parts) {
     for (const p of part.parts) {
-      result.push(...extractAttachments(p));
+      result.push(...extractAttachments(p, referencedCids));
     }
   }
 
@@ -201,7 +245,9 @@ function normalizeMessage(msg: RawMessage): SnapshotMessage {
     bodyExcerpt = stripped || null;
   }
 
-  const attachments = extractAttachments(msg.payload);
+  const referencedCids = new Set<string>();
+  collectReferencedCids(msg.payload, referencedCids);
+  const attachments = extractAttachments(msg.payload, referencedCids);
 
   // Bulk/automation markers — presence flags + raw values for the detector.
   const automatedHeaders = {

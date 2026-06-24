@@ -54,6 +54,7 @@ export type ThreadItem = {
   doneMark: DoneMark | null;
   isImportant: boolean;
   isClassifying: boolean;
+  attachmentCount: number;
 };
 
 export type DraftItem = {

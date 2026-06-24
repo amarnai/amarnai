@@ -24,6 +24,7 @@ function makeThread(id: string): ThreadItem {
     doneMark: null,
     isImportant: false,
     isClassifying: false,
+    attachmentCount: 0,
   };
 }
 

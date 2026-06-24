@@ -167,6 +167,8 @@ export type EmailThreadSummary = {
     senderName: string | null;
     snippet: string | null;
     receivedAt: string;
+    hasAttachments: boolean;
+    attachments: Array<{ filename: string | null; mimeType: string }>;
   }>;
   tags: EmailTag[];
   latestClassification: ClassificationSummary | null;

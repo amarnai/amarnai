@@ -83,6 +83,11 @@ export function ThreadRow({ thread, onPress }: ThreadRowProps) {
         {thread.confidence > 0 && (thread.status === 'sorted' || thread.status === 'review') ? (
           <View style={[styles.confidenceDot, { backgroundColor: confidenceDotColor(thread.confidence) }]} />
         ) : null}
+        {thread.attachmentCount > 0 ? (
+          <Text style={styles.attachCount}>
+            {thread.attachmentCount} {thread.attachmentCount === 1 ? 'file' : 'files'}
+          </Text>
+        ) : null}
         {thread.messageCount > 1 ? (
           <Text style={styles.msgCount}>{thread.messageCount} messages</Text>
         ) : null}
@@ -143,6 +148,10 @@ const styles = StyleSheet.create({
     width: 7,
     height: 7,
     borderRadius: 4,
+  },
+  attachCount: {
+    fontSize: fontSize.sm,
+    color: colors.ink3,
   },
   msgCount: {
     fontSize: fontSize.sm,

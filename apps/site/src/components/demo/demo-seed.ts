@@ -138,6 +138,7 @@ export const DEMO_THREADS: ThreadItem[] = [
     doneMark: null,
     isImportant: false,
     isClassifying: false,
+    attachmentCount: 0,
   },
   {
     id: "t2",
@@ -169,6 +170,7 @@ export const DEMO_THREADS: ThreadItem[] = [
     doneMark: null,
     isImportant: false,
     isClassifying: false,
+    attachmentCount: 0,
   },
   {
     id: "t3",
@@ -200,6 +202,7 @@ export const DEMO_THREADS: ThreadItem[] = [
     doneMark: null,
     isImportant: false,
     isClassifying: false,
+    attachmentCount: 0,
   },
   {
     id: "t4",
@@ -231,6 +234,7 @@ export const DEMO_THREADS: ThreadItem[] = [
     doneMark: null,
     isImportant: false,
     isClassifying: false,
+    attachmentCount: 0,
   },
   {
     id: "t5",
@@ -262,6 +266,7 @@ export const DEMO_THREADS: ThreadItem[] = [
     doneMark: null,
     isImportant: false,
     isClassifying: false,
+    attachmentCount: 0,
   },
   {
     id: "t6",
@@ -293,5 +298,6 @@ export const DEMO_THREADS: ThreadItem[] = [
     doneMark: null,
     isImportant: false,
     isClassifying: false,
+    attachmentCount: 0,
   },
 ];

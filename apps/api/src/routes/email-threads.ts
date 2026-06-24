@@ -201,13 +201,14 @@ emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
     },
     messages: {
       orderBy: { receivedAt: "desc" } as const,
-      take: 1,
       select: {
         id: true,
         senderEmail: true,
         senderName: true,
         snippet: true,
         receivedAt: true,
+        hasAttachments: true,
+        attachments: true,
       },
     },
     tags: {
@@ -397,9 +398,13 @@ emailThreads.get(
       return c.json({ error: "Thread not found" }, 404);
     }
 
-    const { classifications, classifyingAt, resolvedByUserId, resolvedAt, resolvedByUser, ...rest } = thread;
+    const { classifications, classifyingAt, resolvedByUserId, resolvedAt, resolvedByUser, messages, ...rest } = thread;
     return c.json({
       ...rest,
+      messages: messages.map((m) => ({
+        ...m,
+        bodyText: m.bodyText ? m.bodyText.replace(/\[cid:[^\]]+\]/gi, "").trim() || null : null,
+      })),
       isClassifying: deriveIsClassifying(classifyingAt),
       isQueued: classifyingAt !== null,
       latestClassification: classifications[0] ?? null,

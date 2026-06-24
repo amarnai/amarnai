@@ -16,6 +16,12 @@ const CHECK_ICO = (
   </svg>
 );
 
+const CLIP_ICO = (
+  <svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden>
+    <path d="M10 5.5 6 9.5a3 3 0 01-4.24-4.24L6.5 1a2 2 0 012.83 2.83L4.58 8.58a1 1 0 01-1.41-1.41L8 2.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
+
 function fmtTime(d: Date, today: string): string {
   const ds = d.toISOString().slice(0, 10);
   if (ds === today) {
@@ -107,6 +113,12 @@ export function ThreadRow({
             if (thread.hasDraft && !lastIsOwn) return <span className="em-pill accent">draft</span>;
             return null;
           })()}
+          {thread.attachmentCount > 0 && (
+            <span className="em-attach-indicator">
+              {CLIP_ICO}
+              {thread.attachmentCount}
+            </span>
+          )}
           <span className="em-conf">
             <span
               className="em-donut"
