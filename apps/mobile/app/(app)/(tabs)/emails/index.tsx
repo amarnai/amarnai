@@ -163,8 +163,12 @@ export default function EmailsScreen() {
             <Text style={styles.hintTitle}>Connect Gmail to start triaging</Text>
             <Text style={styles.hintBody}>
               Connect your Gmail account to sync your inbox into Amarnai. Amarnai
-              connects with read-only access and never sends, deletes, or changes
-              anything. Your inbox stays yours.
+              connects with <Text style={styles.hintBodyStrong}>read-only access</Text>{' '}
+              and{' '}
+              <Text style={styles.hintBodyStrong}>
+                never sends, deletes, or changes anything
+              </Text>
+              . Your inbox stays yours.
             </Text>
             <TouchableOpacity
               style={[styles.hintButton, gmailConnecting && styles.hintButtonDisabled]}
@@ -285,6 +289,10 @@ const styles = StyleSheet.create({
     fontSize: fontSize.md,
     color: colors.ink3,
     textAlign: 'center',
+  },
+  hintBodyStrong: {
+    fontWeight: fontWeight.semibold,
+    color: colors.ink,
   },
   hintButton: {
     backgroundColor: colors.accent,

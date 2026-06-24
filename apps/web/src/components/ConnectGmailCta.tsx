@@ -25,9 +25,21 @@ export function ConnectGmailCta({ workspaceId, reconnect = false }: Props) {
             {reconnect ? "Reconnect your Gmail inbox" : "Connect your Gmail inbox"}
           </p>
           <p className="connect-gmail-cta-description">
-            {reconnect
-              ? "Amarnai is no longer syncing this inbox. Reconnect your Gmail account to resume sorting your email threads. Access stays read-only, and your inbox stays yours."
-              : "King Aziru is ready to sort your email threads. Connect your Gmail account to get started. Amarnai connects with read-only access and never sends, deletes, or changes anything. Your inbox stays yours."}
+            {reconnect ? (
+              <>
+                Amarnai is no longer syncing this inbox. Reconnect your Gmail
+                account to resume sorting your email threads. Access stays{" "}
+                <strong>read-only</strong>, and your inbox stays yours.
+              </>
+            ) : (
+              <>
+                King Aziru is ready to sort your email threads. Connect your
+                Gmail account to get started. Amarnai connects with{" "}
+                <strong>read-only access</strong> and{" "}
+                <strong>never sends, deletes, or changes anything</strong>. Your
+                inbox stays yours.
+              </>
+            )}
           </p>
           <a
             href={`/api/gmail/connect?workspaceId=${workspaceId}`}

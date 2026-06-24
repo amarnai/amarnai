@@ -82,7 +82,8 @@ export function GmailSyncSettingsSection({ workspaceId, initialSettings }: Props
       </label>
       <p className="settings-hint">
         Detected notifications, newsletters, and service updates are filed to your
-        catch-all folder without using AI. Requires an Updates / Other folder in your taxonomy.
+        catch-all folder without using AI. Requires the <strong>Updates / Other</strong> folder
+        from a taxonomy template.
       </p>
 
       <div className="rescan-row">
