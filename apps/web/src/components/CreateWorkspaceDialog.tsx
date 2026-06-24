@@ -119,14 +119,16 @@ export function CreateWorkspaceDialog({ hasFreeWorkspace, onClose }: Props) {
 
         <div className="modal-body">
           <div className="new-ws-dialog-mascot">
-            <Image
-              src="/aziru-workspace.png"
-              alt="King Aziru"
-              width={220}
-              height={288}
-              priority
-              style={{ width: 120, height: "auto" }}
-            />
+            <div style={{ width: 220, height: 160, overflow: "hidden" }}>
+              <Image
+                src="/aziru-workspace.png"
+                alt="King Aziru"
+                width={220}
+                height={288}
+                priority
+                style={{ width: 220, height: "auto" }}
+              />
+            </div>
           </div>
 
           <div className="new-ws-plan-cards">
