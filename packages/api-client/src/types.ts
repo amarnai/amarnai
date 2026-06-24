@@ -253,6 +253,9 @@ export type SyncStatus = {
   // still in Gmail; backfillBeyondCount is the approximate number left behind.
   backfillCapReached: boolean;
   backfillBeyondCount: number;
+  backfillProcessedCount: number;
+  backfillTotal: number;
+  backfillAwaitingTaxonomy: boolean;
   sortingPaused: boolean;
   workspacePlan: "FREE" | "PRO" | "BUSINESS";
   pushEnabled: boolean;

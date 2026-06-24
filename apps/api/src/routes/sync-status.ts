@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import { z } from "zod";
 import { db } from "@amarnai/db";
+import { getBackfillCap, isTaxonomyRoutable } from "@amarnai/shared";
 
 const workspaceParam = z.object({ workspaceId: z.string().min(1) });
 
@@ -48,6 +49,7 @@ syncStatus.get("/workspaces/:workspaceId/sync-status", async (c) => {
         backfillCompletedAt: true,
         backfillCapReached: true,
         backfillBeyondCount: true,
+        backfillProcessedCount: true,
       },
     }),
     db.gmailSyncSettings.findUnique({
@@ -56,7 +58,7 @@ syncStatus.get("/workspaces/:workspaceId/sync-status", async (c) => {
     }),
     db.workspace.findUnique({
       where: { id: workspaceId },
-      select: { plan: true },
+      select: { plan: true, billingCycle: true },
     }),
   ]);
 
@@ -65,6 +67,23 @@ syncStatus.get("/workspaces/:workspaceId/sync-status", async (c) => {
   const now = new Date();
   const pushEnabled =
     connection.gmailWatchExpiresAt != null && connection.gmailWatchExpiresAt > now;
+
+  const cap = getBackfillCap(workspace?.plan ?? "FREE", workspace?.billingCycle ?? null);
+
+  let backfillAwaitingTaxonomy = false;
+  if (state.backfillStatus === "RUNNING") {
+    const [taxonomyNodes, taxonomyEdges] = await Promise.all([
+      db.taxonomyNode.findMany({
+        where: { workspaceId },
+        select: { id: true, isRoot: true, isCatchAll: true },
+      }),
+      db.taxonomyEdge.findMany({
+        where: { workspaceId },
+        select: { sourceNodeId: true, targetNodeId: true },
+      }),
+    ]);
+    backfillAwaitingTaxonomy = !isTaxonomyRoutable(taxonomyNodes, taxonomyEdges);
+  }
 
   return c.json({
     status: state.status,
@@ -75,6 +94,9 @@ syncStatus.get("/workspaces/:workspaceId/sync-status", async (c) => {
     backfillCompletedAt: state.backfillCompletedAt?.toISOString() ?? null,
     backfillCapReached: state.backfillCapReached,
     backfillBeyondCount: state.backfillBeyondCount,
+    backfillProcessedCount: state.backfillProcessedCount,
+    backfillTotal: cap.maxThreads,
+    backfillAwaitingTaxonomy,
     sortingPaused: syncSettings?.sortingPaused ?? false,
     workspacePlan: workspace?.plan ?? "FREE",
     pushEnabled,

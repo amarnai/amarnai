@@ -50,14 +50,32 @@ export function BackfillBanner({ syncStatus, dismissed, onDismiss }: BackfillBan
 
   if (syncStatus.backfillStatus !== 'RUNNING') return null;
 
+  const processed = syncStatus.backfillProcessedCount ?? 0;
+  const total = syncStatus.backfillTotal ?? 1;
+  const percent = Math.min(Math.round((processed / total) * 100), 99);
+  const awaitingTaxonomy = syncStatus.backfillAwaitingTaxonomy ?? false;
+
   return (
     <View style={styles.card}>
       <View style={styles.eyebrowRow}>
         <PulseDot />
         <Text style={styles.eyebrow}>Sorting historical inbox</Text>
       </View>
-      <Text style={styles.title}>Sorting in progress…</Text>
-      <Text style={styles.desc}>New threads will appear as they are sorted.</Text>
+      {awaitingTaxonomy ? (
+        <>
+          <Text style={styles.title}>Waiting for a valid taxonomy</Text>
+          <Text style={styles.desc}>Set up at least 3 folders to start sorting your threads.</Text>
+        </>
+      ) : (
+        <>
+          <Text style={styles.title}>Sorting in progress…</Text>
+          <Text style={styles.desc}>New threads will appear as they are sorted.</Text>
+        </>
+      )}
+      <View style={styles.progressTrack}>
+        <View style={[styles.progressBar, { width: `${percent}%` }]} />
+      </View>
+      <Text style={styles.progressLabel}>{percent}%</Text>
     </View>
   );
 }
@@ -136,5 +154,24 @@ const styles = StyleSheet.create({
     fontSize: fontSize.sm,
     color: colors.accentInk,
     marginTop: space.sm,
+  },
+  progressTrack: {
+    marginTop: space.sm,
+    height: 4,
+    backgroundColor: colors.line2,
+    borderRadius: radii.full,
+    overflow: 'hidden',
+  },
+  progressBar: {
+    height: '100%',
+    backgroundColor: colors.accent,
+    borderRadius: radii.full,
+    minWidth: 4,
+  },
+  progressLabel: {
+    fontSize: fontSize.xs,
+    color: colors.ink4,
+    marginTop: space.xxs,
+    textAlign: 'right',
   },
 });
