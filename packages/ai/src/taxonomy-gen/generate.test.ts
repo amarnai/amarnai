@@ -45,6 +45,7 @@ const PROFILE: InboxProfile = {
   senderNames: [{ term: "Acme Billing", count: 10 }],
   subjectKeywords: [{ term: "invoice", count: 30 }],
   gmailLabels: [],
+  senderClusters: [{ label: "acme.com", count: 20, keywords: [{ term: "invoice", count: 30 }] }],
 };
 
 class MockProvider implements AIProvider {

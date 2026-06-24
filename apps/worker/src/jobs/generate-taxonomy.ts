@@ -8,6 +8,7 @@ import {
   GENERATION_WINDOW_MS,
   type InboxProfile,
   type ProfileTerm,
+  type SenderCluster,
 } from "@amarnai/shared";
 import {
   generateTaxonomyQueue,
@@ -24,6 +25,10 @@ const SAMPLE_MESSAGE_LIMIT = 3000;
 const TOP_TERMS = 60;
 /** Drop subject keywords seen fewer than this many times (noise + privacy). */
 const MIN_KEYWORD_COUNT = 2;
+/** Top sender domains to include in per-domain keyword clusters. */
+const CLUSTER_DOMAIN_LIMIT = 12;
+/** Keywords kept per sender cluster. */
+const CLUSTER_KEYWORD_LIMIT = 8;
 
 const SUBJECT_STOP_WORDS = new Set([
   "the", "and", "for", "with", "from", "your", "you", "are", "our", "this",
@@ -80,14 +85,23 @@ export async function buildInboxProfile(
   const domains = new Map<string, number>();
   const names = new Map<string, number>();
   const keywords = new Map<string, number>();
+  const perDomainKeywords = new Map<string, Map<string, number>>();
   for (const m of messages) {
     const domain = emailDomain(m.senderEmail);
     if (domain) domains.set(domain, (domains.get(domain) ?? 0) + 1);
     const name = m.senderName?.trim();
     if (name) names.set(name, (names.get(name) ?? 0) + 1);
     if (m.subject) {
-      for (const token of tokenizeSubject(m.subject)) {
+      const tokens = tokenizeSubject(m.subject);
+      for (const token of tokens) {
         keywords.set(token, (keywords.get(token) ?? 0) + 1);
+      }
+      if (domain && tokens.length > 0) {
+        const dk = perDomainKeywords.get(domain) ?? new Map<string, number>();
+        for (const token of tokens) {
+          dk.set(token, (dk.get(token) ?? 0) + 1);
+        }
+        perDomainKeywords.set(domain, dk);
       }
     }
   }
@@ -117,12 +131,20 @@ export async function buildInboxProfile(
     console.error(`[generate-taxonomy] label aggregation failed for ${workspaceId}:`, err);
   }
 
+  const topDomains = rank(domains, CLUSTER_DOMAIN_LIMIT);
+  const senderClusters: SenderCluster[] = topDomains.map((d) => ({
+    label: d.term,
+    count: d.count,
+    keywords: rank(perDomainKeywords.get(d.term) ?? new Map(), CLUSTER_KEYWORD_LIMIT, MIN_KEYWORD_COUNT),
+  }));
+
   return {
     eligibleThreadCount,
     senderDomains: rank(domains, TOP_TERMS),
     senderNames: rank(names, TOP_TERMS),
     subjectKeywords: rank(keywords, TOP_TERMS, MIN_KEYWORD_COUNT),
     gmailLabels: rank(gmailLabels, TOP_TERMS),
+    senderClusters,
   };
 }
 

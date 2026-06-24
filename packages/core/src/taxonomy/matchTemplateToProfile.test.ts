@@ -9,6 +9,7 @@ function profile(keywords: string[]): InboxProfile {
     senderNames: [],
     subjectKeywords: keywords.map((term, i) => ({ term, count: 10 - i })),
     gmailLabels: [],
+    senderClusters: [],
   };
 }
 

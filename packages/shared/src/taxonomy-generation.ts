@@ -75,6 +75,13 @@ export interface ProfileTerm {
   count: number;
 }
 
+/** A top sender domain paired with its co-occurring subject keywords. */
+export interface SenderCluster {
+  label: string;
+  count: number;
+  keywords: ProfileTerm[];
+}
+
 /**
  * Compact, body-free aggregate of a workspace's eligible inbox, used as the
  * LLM input for taxonomy generation. Built fresh per run and discarded after
@@ -91,6 +98,8 @@ export interface InboxProfile {
   subjectKeywords: ProfileTerm[];
   /** Gmail label names + counts. */
   gmailLabels: ProfileTerm[];
+  /** Top sender domains with their co-occurring subject keywords. */
+  senderClusters: SenderCluster[];
 }
 
 export type GenerationEligibilityReason =
