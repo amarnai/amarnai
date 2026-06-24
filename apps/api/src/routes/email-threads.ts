@@ -353,6 +353,7 @@ emailThreads.get(
             bodyText: true,
             receivedAt: true,
             hasAttachments: true,
+            attachments: true,
             toEmails: true,
           },
         },

@@ -23,6 +23,7 @@ export type ThreadMessage = {
   time: Date;
   snippet: string | null;
   bodyText: string | null;
+  attachments?: Array<{ filename: string | null; mimeType: string }>;
 };
 
 export type DoneMark = {

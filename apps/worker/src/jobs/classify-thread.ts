@@ -325,8 +325,49 @@ export function createClassifyThreadWorker(): Worker {
           );
 
           const threadText = buildThreadEmbeddingText(
-            messages.map((m) => ({ subject: m.subject, bodyText: m.bodyText }))
+            messages.map((m) => ({
+              subject: m.subject,
+              bodyText: m.bodyText,
+              ...(m.attachmentNames?.length ? { attachmentNames: m.attachmentNames } : {}),
+            }))
           );
+
+          // Guard: a thread with no textual signal (empty subject, no body, no
+          // attachment names) cannot be embedded. Route directly to NEEDS_REVIEW
+          // so the user can triage it manually instead of crash-looping on embed("").
+          if (threadText.trim() === "") {
+            await db.emailClassification.create({
+              data: {
+                workspaceId,
+                emailThreadId,
+                finalNodeId: rootNode?.id ?? null,
+                confidence: 0,
+                explanation: "Thread has no textual content to classify.",
+                needsHumanReview: true,
+                source,
+                decisionSource: "no_text_content",
+                modelProvider: aiProvider.providerName,
+                modelName: aiProvider.modelName,
+              },
+            });
+            await db.emailThread.update({
+              where: { id: emailThreadId },
+              data: { triageStatus: "NEEDS_REVIEW", classifyFailedAt: null, classifyAttempts: 0 },
+            });
+            console.log(
+              `[classify-thread] Thread ${emailThreadId} has no text content — routed to NEEDS_REVIEW`
+            );
+            void notifyThreadNeedsAttention({
+              workspaceId,
+              emailThreadId,
+              subject: snapshot.subject,
+            }).catch((err) => {
+              console.error(
+                `[classify-thread] Push notify failed for thread ${emailThreadId}: ${err instanceof Error ? err.message : String(err)}`,
+              );
+            });
+            return;
+          }
 
           // Cache the thread embedding content-addressed by text hash + model,
           // not by jobId. Any later re-sort of unchanged content — a re-route

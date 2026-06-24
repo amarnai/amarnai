@@ -47,15 +47,19 @@ export default function ThreadDetailScreen() {
 
   const { draftState, draft, quota, generate, regenerate, toggleSent } = useThreadDraft(thread);
 
-  // Merge fetched bodies into the view-model's message metadata.
+  // Merge fetched bodies and attachment metadata into the view-model messages.
   const messages = useMemo(() => {
     if (!thread) return [];
     const bodies = bodiesQuery.data?.bodies;
-    if (!bodies) return thread.messages;
-    return thread.messages.map((m) =>
-      m.id in bodies ? { ...m, bodyText: bodies[m.id] ?? null } : m,
-    );
-  }, [thread, bodiesQuery.data]);
+    const attachmentMap = detailQuery.data
+      ? new Map(detailQuery.data.messages.map((m) => [m.id, m.attachments]))
+      : null;
+    return thread.messages.map((m) => {
+      const withBody = bodies && m.id in bodies ? { ...m, bodyText: bodies[m.id] ?? null } : m;
+      const att = attachmentMap?.get(m.id);
+      return att?.length ? { ...withBody, attachments: att } : withBody;
+    });
+  }, [thread, bodiesQuery.data, detailQuery.data]);
 
   if (!thread) {
     return (

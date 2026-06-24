@@ -184,11 +184,13 @@ gmailSort.post("/dev/workspaces/:workspaceId/gmail-sort-thread", async (c) => {
         bodyText: null,
         receivedAt: msg.receivedAt,
         hasAttachments: msg.attachments.length > 0,
+        attachments: msg.attachments.map(({ filename, mimeType }) => ({ filename, mimeType })),
       },
       update: {
         senderName: msg.senderName,
         snippet,
         hasAttachments: msg.attachments.length > 0,
+        attachments: msg.attachments.map(({ filename, mimeType }) => ({ filename, mimeType })),
       },
       select: { id: true },
     });

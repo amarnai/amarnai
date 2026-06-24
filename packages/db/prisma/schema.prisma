@@ -450,6 +450,7 @@ model EmailMessage {
   bodyHash          String?
   receivedAt        DateTime
   hasAttachments    Boolean  @default(false)
+  attachments       Json     @default("[]")
   rawMetadata       Json?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt

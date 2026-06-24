@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
 import type { ThreadMessage } from '@amarnai/core';
 
@@ -53,6 +53,17 @@ export function MessageCard({ message, defaultExpanded = false, loading = false 
           ) : (
             <Text style={styles.muted}>(No body)</Text>
           )}
+          {message.attachments && message.attachments.length > 0 ? (
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.attachmentList} contentContainerStyle={styles.attachmentListContent}>
+              {message.attachments.map((a, i) => (
+                <View key={a.filename ?? `${a.mimeType}-${i}`} style={styles.attachmentChip}>
+                  <Text style={styles.attachmentText} numberOfLines={1}>
+                    {a.filename ?? a.mimeType}
+                  </Text>
+                </View>
+              ))}
+            </ScrollView>
+          ) : null}
         </View>
       ) : null}
     </View>
@@ -113,5 +124,24 @@ const styles = StyleSheet.create({
     fontSize: fontSize.md,
     color: colors.ink4,
     fontStyle: 'italic',
+  },
+  attachmentList: {
+    marginTop: space.sm,
+  },
+  attachmentListContent: {
+    flexDirection: 'row',
+    gap: space.xs,
+  },
+  attachmentChip: {
+    backgroundColor: colors.bgSunk,
+    borderWidth: 1,
+    borderColor: colors.line2,
+    borderRadius: radii.sm,
+    paddingHorizontal: space.sm,
+    paddingVertical: space.xxs,
+  },
+  attachmentText: {
+    fontSize: fontSize.xs,
+    color: colors.ink3,
   },
 });

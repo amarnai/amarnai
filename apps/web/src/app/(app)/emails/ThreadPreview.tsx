@@ -112,6 +112,7 @@ export function ThreadPreview({
           time: new Date(m.receivedAt),
           snippet: m.snippet,
           bodyText: (bodies !== null && m.id in bodies ? bodies[m.id] : null) ?? m.bodyText,
+          attachments: m.attachments,
         }))
       );
     }).catch(() => {});

@@ -20,6 +20,7 @@ export type ThreadMessage = {
   senderName: string | null;
   bodyText: string | null;
   receivedAt: Date | string;
+  attachmentNames?: string[];
 };
 
 export type TaxonomyNodeInput = {

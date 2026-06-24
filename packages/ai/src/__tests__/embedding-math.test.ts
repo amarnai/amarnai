@@ -184,6 +184,42 @@ describe("buildThreadEmbeddingText", () => {
     expect(text).toBe("");
   });
 
+  it("includes attachment filenames when body is absent", () => {
+    const text = buildThreadEmbeddingText([
+      { subject: null, bodyText: null, attachmentNames: ["facture.pdf"] },
+    ]);
+    expect(text).toContain("Attachments: facture.pdf");
+  });
+
+  it("attachment-only email: empty subject + no body + one attachment → non-empty text", () => {
+    const text = buildThreadEmbeddingText([
+      { subject: "", bodyText: null, attachmentNames: ["invoice_2026.pdf"] },
+    ]);
+    expect(text.trim()).not.toBe("");
+    expect(text).toContain("invoice_2026.pdf");
+  });
+
+  it("empty subject + no body + no attachments → empty text (triggers needs-review guard)", () => {
+    const text = buildThreadEmbeddingText([{ subject: "", bodyText: null }]);
+    expect(text).toBe("");
+  });
+
+  it("multi-message thread: attachment filenames included for latest and earlier messages", () => {
+    const text = buildThreadEmbeddingText([
+      { subject: "Docs", bodyText: null, attachmentNames: ["contract.docx"] },
+      { subject: "Re: Docs", bodyText: null, attachmentNames: ["signed_contract.pdf"] },
+    ]);
+    expect(text).toContain("Attachments: signed_contract.pdf");
+    expect(text).toContain("Attachments: contract.docx");
+  });
+
+  it("multiple filenames are joined with comma-space", () => {
+    const text = buildThreadEmbeddingText([
+      { subject: null, bodyText: null, attachmentNames: ["a.pdf", "b.xlsx"] },
+    ]);
+    expect(text).toContain("Attachments: a.pdf, b.xlsx");
+  });
+
   it("single-message thread: no labels added (backward-compatible format)", () => {
     const text = buildThreadEmbeddingText([{ subject: "S", bodyText: "just one message" }]);
     expect(text).not.toContain("[LATEST MESSAGE");

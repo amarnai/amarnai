@@ -58,5 +58,6 @@ export function snapshotToThreadMessages(snapshot: ThreadSnapshot): ThreadMessag
     senderName: m.senderName,
     bodyText: m.bodyExcerpt,
     receivedAt: m.receivedAt,
+    attachmentNames: m.attachments.flatMap((a) => (a.filename ? [a.filename] : [])),
   }));
 }

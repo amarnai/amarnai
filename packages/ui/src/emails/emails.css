@@ -1109,6 +1109,26 @@
 .em-msg-text.em-msg-empty { color: var(--ink-4); font-style: italic; }
 .em-msg-text.em-msg-loading { color: var(--ink-4); font-style: italic; }
 
+.em-attachment-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.em-attachment-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--ink-3);
+  background: var(--bg-sunk);
+  border: 1px solid var(--line-2);
+  border-radius: 6px;
+  padding: 3px 8px;
+  white-space: nowrap;
+}
+
 /* ─── Draft card ──────────────────────────────────────────────────────────── */
 
 .em-draft-card {

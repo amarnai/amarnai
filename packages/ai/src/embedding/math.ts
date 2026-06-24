@@ -239,7 +239,7 @@ function truncateToShare(text: string, budget: number): string {
  * 70/30 head/tail split if it still exceeds its budget share.
  */
 export function buildThreadEmbeddingText(
-  messages: ReadonlyArray<{ subject?: string | null; bodyText?: string | null }>
+  messages: ReadonlyArray<{ subject?: string | null; bodyText?: string | null; attachmentNames?: string[] }>
 ): string {
   if (messages.length === 0) return "";
 
@@ -256,6 +256,9 @@ export function buildThreadEmbeddingText(
     if (msg.bodyText) {
       parts.push(truncateToShare(cleanForEmbedding(msg.bodyText), latestBudget));
     }
+    if (msg.attachmentNames?.length) {
+      parts.push(`Attachments: ${msg.attachmentNames.join(", ")}`);
+    }
   } else {
     // Multi-message thread: latest first, earlier as secondary context.
     const latest = messages[messages.length - 1]!;
@@ -264,6 +267,9 @@ export function buildThreadEmbeddingText(
     parts.push("[LATEST MESSAGE — primary classification signal]");
     if (latest.bodyText) {
       parts.push(truncateToShare(cleanForEmbedding(latest.bodyText), latestBudget));
+    }
+    if (latest.attachmentNames?.length) {
+      parts.push(`Attachments: ${latest.attachmentNames.join(", ")}`);
     }
 
     // Determine how many earlier messages to include.
@@ -282,6 +288,9 @@ export function buildThreadEmbeddingText(
       for (const msg of keptEarlier) {
         if (msg.bodyText) {
           parts.push(truncateToShare(cleanForEmbedding(msg.bodyText), perEarlier));
+        }
+        if (msg.attachmentNames?.length) {
+          parts.push(`Attachments: ${msg.attachmentNames.join(", ")}`);
         }
       }
     }

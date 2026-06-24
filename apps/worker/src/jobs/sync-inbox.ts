@@ -553,11 +553,13 @@ export function createSyncInboxWorker(): Worker {
               bodyText: null,
               receivedAt: msg.receivedAt,
               hasAttachments: msg.attachments.length > 0,
+              attachments: msg.attachments.map(({ filename, mimeType }) => ({ filename, mimeType })),
             },
             update: {
               senderName: msg.senderName,
               snippet,
               hasAttachments: msg.attachments.length > 0,
+              attachments: msg.attachments.map(({ filename, mimeType }) => ({ filename, mimeType })),
             },
             select: { id: true },
           });

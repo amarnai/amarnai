@@ -203,6 +203,7 @@ export type EmailThreadDetail = {
     bodyText: string | null;
     receivedAt: string;
     hasAttachments: boolean;
+    attachments: Array<{ filename: string | null; mimeType: string }>;
     toEmails: unknown;
   }>;
   latestClassification: Classification | null;
