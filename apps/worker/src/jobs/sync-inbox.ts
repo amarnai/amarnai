@@ -287,7 +287,7 @@ export function createSyncInboxWorker(): Worker {
         }),
         db.gmailSyncSettings.findUnique({
           where: { workspaceId },
-          select: { includeSpam: true, includePromotions: true, sortingPaused: true, blacklistedSenderEmails: true },
+          select: { includeSpam: true, includePromotions: true, sortingPaused: true, routeBulkToOther: true, blacklistedSenderEmails: true },
         }),
       ]);
 
@@ -302,6 +302,7 @@ export function createSyncInboxWorker(): Worker {
         includeSpam:             syncSettingsRow?.includeSpam             ?? false,
         includePromotions:       syncSettingsRow?.includePromotions       ?? false,
         sortingPaused:           syncSettingsRow?.sortingPaused           ?? false,
+        routeBulkToOther:        syncSettingsRow?.routeBulkToOther        ?? true,
         blacklistedSenderEmails: syncSettingsRow?.blacklistedSenderEmails ?? [],
       };
       const sortingPaused = settings.sortingPaused;

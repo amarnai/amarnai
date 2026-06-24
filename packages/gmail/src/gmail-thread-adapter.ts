@@ -203,6 +203,14 @@ function normalizeMessage(msg: RawMessage): SnapshotMessage {
 
   const attachments = extractAttachments(msg.payload);
 
+  // Bulk/automation markers — presence flags + raw values for the detector.
+  const automatedHeaders = {
+    listUnsubscribe: getHeader(headers, "List-Unsubscribe") !== null,
+    listId: getHeader(headers, "List-Id") !== null,
+    autoSubmitted: getHeader(headers, "Auto-Submitted"),
+    precedence: getHeader(headers, "Precedence"),
+  };
+
   return {
     providerMessageId: msg.id,
     senderEmail,
@@ -214,6 +222,7 @@ function normalizeMessage(msg: RawMessage): SnapshotMessage {
     attachments,
     receivedAt,
     labelIds: msg.labelIds ?? [],
+    automatedHeaders,
   };
 }
 

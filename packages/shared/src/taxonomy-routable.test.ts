@@ -35,6 +35,16 @@ describe("countRoutableNonRootNodes", () => {
     expect(countRoutableNonRootNodes(nodes, edges)).toBe(2);
   });
 
+  it("excludes catch-all nodes from the routable count", () => {
+    // root -> a, b (real folders) and root -> other (catch-all).
+    const other = { id: "other", isRoot: false, isCatchAll: true };
+    const nodes = [root, node("a"), node("b"), other];
+    const edges = [edge("root", "a"), edge("root", "b"), edge("root", "other")];
+    // 2 real folders, not 3 — the catch-all does not count toward routability.
+    expect(countRoutableNonRootNodes(nodes, edges)).toBe(2);
+    expect(isTaxonomyRoutable(nodes, edges)).toBe(false);
+  });
+
   it("counts transitively reachable descendants, not just direct children", () => {
     // root -> a -> b -> c is one chain; all three are reachable.
     const nodes = [root, node("a"), node("b"), node("c")];

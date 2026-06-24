@@ -34,6 +34,7 @@ vi.mock("@amarnai/db", () => ({
       update: vi.fn().mockResolvedValue({}),
     },
     gmailConnection: { findUnique: vi.fn() },
+    gmailSyncSettings: { findUnique: vi.fn().mockResolvedValue(null) },
     taxonomyNode: { findMany: vi.fn() },
     taxonomyEdge: { findMany: vi.fn() },
     emailClassification: { create: vi.fn(), findFirst: vi.fn() },

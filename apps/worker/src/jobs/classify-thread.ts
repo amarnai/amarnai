@@ -119,14 +119,18 @@ export function createClassifyThreadWorker(): Worker {
       // is only written on first create (update: {}) and can become stale after a
       // token rotation or key change, so we do not use it here.
 
-      const [thread, connection] = await Promise.all([
+      const [thread, connection, syncSettings] = await Promise.all([
         db.emailThread.findFirst({
           where: { id: emailThreadId, workspaceId },
-          select: { providerThreadId: true },
+          select: { providerThreadId: true, isAutomated: true },
         }),
         db.gmailConnection.findUnique({
           where: { workspaceId },
           select: { encryptedRefreshToken: true, status: true },
+        }),
+        db.gmailSyncSettings.findUnique({
+          where: { workspaceId },
+          select: { routeBulkToOther: true },
         }),
       ]);
 
@@ -137,6 +141,12 @@ export function createClassifyThreadWorker(): Worker {
         );
         return;
       }
+
+      // Automated/bulk mail (notifications, newsletters, service updates) is
+      // auto-filed to the catch-all folder without an LLM call when the setting
+      // is on (default true). This both exempts the thread from the monthly LLM
+      // quota and suppresses LLM escalation during the embedding sort below.
+      const routeBulkAutomated = thread.isAutomated && (syncSettings?.routeBulkToOther ?? true);
 
       try {
         // ── 1b. Monthly thread-sort quota (recurring sorts only) ────────────
@@ -151,7 +161,12 @@ export function createClassifyThreadWorker(): Worker {
         // thread already counted this month is never blocked. Concurrent workers
         // can overshoot the limit slightly (check-then-act race); accepted as a
         // soft cap. The finally block clears the enqueue-time classifyingAt.
-        if (!triageOnly && config.billing.enforceThreadSortQuota && source !== "BACKFILL") {
+        if (
+          !triageOnly &&
+          config.billing.enforceThreadSortQuota &&
+          source !== "BACKFILL" &&
+          !routeBulkAutomated
+        ) {
           const workspace = await db.workspace.findUnique({
             where: { id: workspaceId },
             select: { plan: true },
@@ -267,6 +282,7 @@ export function createClassifyThreadWorker(): Worker {
                 instructions: true,
                 examples: true,
                 isRoot: true,
+                isCatchAll: true,
                 embeddingVector: true,
                 embeddingModel: true,
                 embeddingTextHash: true,
@@ -391,6 +407,9 @@ export function createClassifyThreadWorker(): Worker {
                 // stranding the thread as PENDING. Earlier attempts rethrow so
                 // BullMQ can retry a transient blip.
                 failOpenOnLlmError: job.attemptsMade + 1 >= (job.opts.attempts ?? 1),
+                // Bulk/automated threads never call the LLM; an unconfident
+                // embedding result is mapped to the catch-all folder below.
+                suppressLlmEscalation: routeBulkAutomated,
               },
             ),
             threadVector && threadVector.length > 0
@@ -423,18 +442,39 @@ export function createClassifyThreadWorker(): Worker {
             );
           }
 
+          // ── 6b. Automated-mail policy (P2: embedding safety net) ──────────
+          //
+          // The LLM was suppressed for bulk/automated threads. If embeddings did
+          // NOT confidently place the thread in a real folder (anything other
+          // than embedding_auto), file it in the catch-all folder instead of
+          // leaving it for human review — at zero LLM cost. A confident
+          // embedding match to a real folder is kept (the safety net against a
+          // false-positive automation flag). If no catch-all node exists, the
+          // embedding result stands unchanged.
+          const catchAllNode = nodes.find((n) => n.isCatchAll);
+          const filedToCatchAll =
+            routeBulkAutomated && catchAllNode != null && result.decisionSource !== "embedding_auto";
+
+          const finalNodeId = filedToCatchAll ? catchAllNode!.id : result.finalNodeId;
+          const confidence = filedToCatchAll ? 1.0 : result.confidence;
+          const explanation = filedToCatchAll
+            ? `Auto-filed to "${catchAllNode!.name}" (automated/bulk mail).`
+            : result.explanation;
+          const needsHumanReview = filedToCatchAll ? false : result.needsHumanReview;
+          const decisionSource: string = filedToCatchAll ? "automated_bulk" : result.decisionSource;
+
           // ── 7. Persist routing result + triage ────────────────────────────
 
           const { id: classificationId } = await db.emailClassification.create({
             data: {
               workspaceId,
               emailThreadId,
-              finalNodeId: result.finalNodeId,
-              confidence: result.confidence,
-              explanation: result.explanation,
-              needsHumanReview: result.needsHumanReview,
+              finalNodeId,
+              confidence,
+              explanation,
+              needsHumanReview,
               source,
-              decisionSource: result.decisionSource,
+              decisionSource,
               modelProvider: aiProvider.providerName,
               modelName: aiProvider.modelName,
               // Compact routing telemetry (maxima + top-K node sims). The scores
@@ -446,10 +486,10 @@ export function createClassifyThreadWorker(): Worker {
             select: { id: true },
           });
 
-          const isUnclassified = rootNode != null && result.finalNodeId === rootNode.id;
+          const isUnclassified = rootNode != null && finalNodeId === rootNode.id;
           const triageStatus = isUnclassified
             ? "UNCLASSIFIED"
-            : result.needsHumanReview
+            : needsHumanReview
               ? "NEEDS_REVIEW"
               : "SORTED";
           await db.emailThread.update({

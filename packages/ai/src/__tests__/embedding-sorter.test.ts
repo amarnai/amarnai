@@ -452,6 +452,30 @@ describe("embedding sorter — rival root branches trigger LLM resolver", () => 
     expect(chatSpy).toHaveBeenCalledTimes(1);
   });
 
+  it("suppressLlmEscalation: skips the LLM entirely and routes by embeddings", async () => {
+    const { provider: llmProvider, chatSpy } = makeLlmSpy(
+      JSON.stringify({
+        selectedNodeId: "candidate_0",
+        confidence: 0.85,
+        explanation: "should not be called",
+        needsHumanReview: false,
+      })
+    );
+    const result = await sortThreadByEmbedding(
+      embeddingProvider,
+      llmProvider,
+      FLAT_NODES,
+      FLAT_EDGES,
+      messages,
+      { suppressLlmEscalation: true }
+    );
+    // The ambiguous branches would normally escalate; with suppression the LLM
+    // is never called and the result is a pure embedding decision.
+    expect(chatSpy).not.toHaveBeenCalled();
+    expect(result.decisionSource).not.toBe("llm");
+    expect(result.decisionSource).not.toBe("inbox_fallback");
+  });
+
   // ── Fail-open when the LLM call throws ──────────────────────────────────────
   const throwingLlm: AIProvider = {
     providerName: "mock",

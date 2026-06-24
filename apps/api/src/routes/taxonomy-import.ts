@@ -98,6 +98,7 @@ taxonomyImport.post("/workspaces/:workspaceId/taxonomy-import", async (c) => {
         data: {
           workspaceId,
           isRoot: false,
+          isCatchAll: node.isCatchAll ?? false,
           name: node.name,
           description: node.description,
           instructions: node.instructions ?? null,

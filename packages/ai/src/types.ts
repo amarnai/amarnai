@@ -29,6 +29,12 @@ export type TaxonomyNodeInput = {
   instructions: string | null;
   examples: string[];
   isRoot: boolean;
+  /**
+   * A non-routable catch-all destination ("Updates / Other"). Excluded from all
+   * embedding/LLM competition; assigned only by the automated-mail policy.
+   * Optional: absent/false means a normal routable node.
+   */
+  isCatchAll?: boolean;
 };
 
 export type TaxonomyEdgeInput = {

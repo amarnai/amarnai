@@ -31,6 +31,8 @@ export const TaxonomyTransferNodeSchema = z.object({
     .array(transferTextField(MAX_EXAMPLE_LENGTH))
     .max(MAX_EXAMPLES_PER_NODE),
   isRoot: z.boolean(),
+  /** A non-routable catch-all destination ("Updates / Other"). Optional for back-compat. */
+  isCatchAll: z.boolean().optional(),
   positionX: z.number().finite(),
   positionY: z.number().finite(),
 });
@@ -194,6 +196,7 @@ export function serializeTaxonomy(
       draftPrompt: n.draftPrompt,
       examples: n.examples,
       isRoot: n.isRoot,
+      isCatchAll: n.isCatchAll ?? false,
       positionX: n.positionX,
       positionY: n.positionY,
     })),

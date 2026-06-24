@@ -42,6 +42,8 @@ export const TaxonomyNodeSchema = z.object({
   draftPrompt: z.string().max(500).nullable(),
   examples: z.array(z.string()),
   isRoot: z.boolean(),
+  /** Non-routable catch-all destination ("Updates / Other"). Optional for back-compat. */
+  isCatchAll: z.boolean().optional(),
   positionX: z.number(),
   positionY: z.number(),
   createdAt: z.string().datetime(),

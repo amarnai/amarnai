@@ -345,6 +345,7 @@ export default function SettingsScreen() {
                       includeSpam: false,
                       includePromotions: false,
                       sortingPaused: false,
+                      routeBulkToOther: true,
                       blacklistedSenderEmails: emails,
                     },
               )

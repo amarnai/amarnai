@@ -11,6 +11,7 @@ const SETTINGS_SELECT = {
   includeSpam: true,
   includePromotions: true,
   sortingPaused: true,
+  routeBulkToOther: true,
   blacklistedSenderEmails: true,
 } as const;
 
@@ -56,10 +57,16 @@ gmailSyncSettings.patch("/workspaces/:workspaceId/gmail-sync-settings", async (c
   });
   if (!workspace) return c.json({ error: "Workspace not found" }, 404);
 
-  const updateData: { includeSpam?: boolean; includePromotions?: boolean; sortingPaused?: boolean } = {};
+  const updateData: {
+    includeSpam?: boolean;
+    includePromotions?: boolean;
+    sortingPaused?: boolean;
+    routeBulkToOther?: boolean;
+  } = {};
   if (bodyParsed.data.includeSpam !== undefined) updateData.includeSpam = bodyParsed.data.includeSpam;
   if (bodyParsed.data.includePromotions !== undefined) updateData.includePromotions = bodyParsed.data.includePromotions;
   if (bodyParsed.data.sortingPaused !== undefined) updateData.sortingPaused = bodyParsed.data.sortingPaused;
+  if (bodyParsed.data.routeBulkToOther !== undefined) updateData.routeBulkToOther = bodyParsed.data.routeBulkToOther;
 
   const updated = await db.gmailSyncSettings.upsert({
     where: { workspaceId: paramParsed.data.workspaceId },
@@ -68,6 +75,7 @@ gmailSyncSettings.patch("/workspaces/:workspaceId/gmail-sync-settings", async (c
       includeSpam:       updateData.includeSpam       ?? DEFAULT_GMAIL_SYNC_SETTINGS.includeSpam,
       includePromotions: updateData.includePromotions ?? DEFAULT_GMAIL_SYNC_SETTINGS.includePromotions,
       sortingPaused:     updateData.sortingPaused     ?? DEFAULT_GMAIL_SYNC_SETTINGS.sortingPaused,
+      routeBulkToOther:  updateData.routeBulkToOther  ?? DEFAULT_GMAIL_SYNC_SETTINGS.routeBulkToOther,
     },
     update: updateData,
     select: SETTINGS_SELECT,

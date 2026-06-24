@@ -347,8 +347,8 @@ function collectLeavesFromSubtrees(
 export async function sortThreadByEmbedding(
   embeddingProvider: EmbeddingProvider,
   llmProvider: AIProvider,
-  nodes: EmbeddableNode[],
-  edges: TaxonomyEdgeInput[],
+  inputNodes: EmbeddableNode[],
+  inputEdges: TaxonomyEdgeInput[],
   messages: ThreadMessage[],
   options?: {
     thetaMin?: number;
@@ -377,6 +377,14 @@ export async function sortThreadByEmbedding(
      * transient blip. Defaults to false (rethrow) for API routes and tests.
      */
     failOpenOnLlmError?: boolean;
+    /**
+     * When true, the two cross-branch ambiguity LLM calls are skipped: the sort
+     * falls through to the embedding decision (descend to the best child or stop
+     * at the current node) and never returns a "llm" or LLM-error fallback. Used
+     * by the automated-mail policy to route bulk threads with zero LLM cost; the
+     * worker then maps an unconfident result to the catch-all folder.
+     */
+    suppressLlmEscalation?: boolean;
   }
 ): Promise<EmbeddingSortResult> {
   const thetaMin = options?.thetaMin ?? THETA_MIN;
@@ -388,6 +396,22 @@ export async function sortThreadByEmbedding(
   const topKLlm = options?.topKLlmCandidates ?? TOP_K_LLM_CANDIDATES;
   const llmMemoizer = options?.llmMemoizer;
   const failOpenOnLlmError = options?.failOpenOnLlmError ?? false;
+  const suppressLlmEscalation = options?.suppressLlmEscalation ?? false;
+
+  // Catch-all nodes ("Updates / Other") are destinations of last resort,
+  // assigned only by the automated-mail policy in the worker. Exclude them and
+  // any incident edge from EVERY routing step (rawSims, childrenMap, subtree
+  // scores, traversal, LLM candidates) by filtering once here. Downstream code
+  // uses these `nodes`/`edges` views, so a catch-all can never win on score.
+  const catchAllIds = new Set(inputNodes.filter((n) => n.isCatchAll).map((n) => n.id));
+  const nodes =
+    catchAllIds.size === 0 ? inputNodes : inputNodes.filter((n) => !catchAllIds.has(n.id));
+  const edges =
+    catchAllIds.size === 0
+      ? inputEdges
+      : inputEdges.filter(
+          (e) => !catchAllIds.has(e.sourceNodeId) && !catchAllIds.has(e.targetNodeId)
+        );
 
   // ── Step 1: Identify root ──────────────────────────────────────────────────
 
@@ -585,7 +609,7 @@ export async function sortThreadByEmbedding(
     });
   }
 
-  if (crossBranchAmbiguous) {
+  if (crossBranchAmbiguous && !suppressLlmEscalation) {
     const topIds = rootChildrenRanked.slice(0, topKLlm).map((c) => c.id);
     const leafCandidateIds = [...new Set(collectLeavesFromSubtrees(topIds, childrenMap))]
       .sort((a, b) => (rawSims.get(b) ?? 0) - (rawSims.get(a) ?? 0))
@@ -747,7 +771,7 @@ export async function sortThreadByEmbedding(
         }
       }
 
-      if (midAmbiguousSiblings.length > 0) {
+      if (midAmbiguousSiblings.length > 0 && !suppressLlmEscalation) {
         const candidateIds = [...new Set(collectLeavesFromSubtrees(
           [bestChildId, ...midAmbiguousSiblings],
           childrenMap

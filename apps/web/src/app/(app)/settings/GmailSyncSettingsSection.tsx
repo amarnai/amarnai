@@ -18,7 +18,7 @@ export function GmailSyncSettingsSection({ workspaceId, initialSettings }: Props
     settings.includeSpam !== initialSettings.includeSpam ||
     settings.includePromotions !== initialSettings.includePromotions;
 
-  function handleToggle(field: "includeSpam" | "includePromotions") {
+  function handleToggle(field: "includeSpam" | "includePromotions" | "routeBulkToOther") {
     const newValue = !settings[field];
     setSettings((prev) => ({ ...prev, [field]: newValue }));
 
@@ -70,6 +70,20 @@ export function GmailSyncSettingsSection({ workspaceId, initialSettings }: Props
         />
         Include Promotions
       </label>
+
+      <label className="settings-toggle">
+        <input
+          type="checkbox"
+          checked={settings.routeBulkToOther}
+          onChange={() => handleToggle("routeBulkToOther")}
+          disabled={isPending}
+        />
+        Auto-file notifications to Updates / Other
+      </label>
+      <p className="settings-hint">
+        Detected notifications, newsletters, and service updates are filed to your
+        catch-all folder without using AI. Requires an Updates / Other folder in your taxonomy.
+      </p>
 
       <div className="rescan-row">
         <button

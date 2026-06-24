@@ -207,8 +207,9 @@ export function selectCandidateNodes(
   for (const raw of rawPaths) {
     const finalNode = nodeMap.get(raw.finalNodeId);
     if (!finalNode) continue;
-    // Skip root node as a destination
-    if (finalNode.isRoot) continue;
+    // Skip root and catch-all nodes as destinations — neither is a competitive
+    // routing target (catch-all is assigned only by the automated-mail policy).
+    if (finalNode.isRoot || finalNode.isCatchAll) continue;
 
     const reasons: string[] = [];
     let totalScore = 0;

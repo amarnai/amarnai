@@ -38,6 +38,12 @@ export {
 } from "./embedding/sorter.js";
 export type { EmbeddingSortResult, DecisionSource, CrossBranchSignal } from "./embedding/sorter.js";
 export { buildRoutingTelemetry, TELEMETRY_TOP_K } from "./embedding/telemetry.js";
+// ─── Automated-mail detection ───────────────────────────────────────────────────
+export {
+  isAutomatedMessage,
+  detectAutomatedThread,
+  detectAutomatedThreadFromMeta,
+} from "./detection/automated-mail.js";
 // ─── Triage ───────────────────────────────────────────────────────────────────
 export { analyzeThreadTriage } from "./triage/analyze.js";
 export type { TriageMetadata } from "./triage/analyze.js";

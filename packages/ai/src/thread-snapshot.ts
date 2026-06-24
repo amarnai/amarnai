@@ -27,6 +27,18 @@ export type SnapshotMessage = {
   receivedAt: Date;
   /** Gmail label IDs on this message (e.g. ["INBOX","SPAM","UNREAD"]). Optional — only populated when label data is available from the provider. */
   labelIds?: string[];
+  /**
+   * Bulk/automation header markers parsed from the raw headers. Optional —
+   * only populated on full-fetch paths (absent on metadata-only paths, where
+   * automation is detected from labels alone). Consumed by the automated-mail
+   * detector; never contains email content.
+   */
+  automatedHeaders?: {
+    listUnsubscribe: boolean;
+    listId: boolean;
+    autoSubmitted: string | null;
+    precedence: string | null;
+  };
 };
 
 export type ThreadSnapshot = {

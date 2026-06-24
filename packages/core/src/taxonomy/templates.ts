@@ -13,7 +13,7 @@ const DATE = "2026-01-01T00:00:00.000Z";
 // Each node's y is the midpoint of its subtree's leaf span.
 // Leaves spaced 140px apart, tree centered at y=0.
 
-export const TAXONOMY_TEMPLATES: TaxonomyTemplate[] = [
+const BASE_TEMPLATES: TaxonomyTemplate[] = [
   {
     id: "freelancer",
     name: "Freelancer",
@@ -665,3 +665,34 @@ export const TAXONOMY_TEMPLATES: TaxonomyTemplate[] = [
     },
   },
 ];
+
+// Every template gets a non-routable catch-all folder. Automated/bulk mail
+// (notifications, newsletters, service updates) is auto-filed here without an
+// LLM call; it is excluded from normal embedding/LLM routing (isCatchAll).
+const CATCH_ALL_NODE: TaxonomyTransferFile["nodes"][number] = {
+  ref: "updates_other",
+  name: "Updates / Other",
+  description:
+    "Automated notifications, newsletters, and service updates that don't fit another folder.",
+  instructions: null,
+  draftPrompt: null,
+  examples: [],
+  isRoot: false,
+  isCatchAll: true,
+  positionX: 300,
+  positionY: 600,
+};
+
+const CATCH_ALL_EDGE: TaxonomyTransferFile["edges"][number] = {
+  sourceRef: "root",
+  targetRef: "updates_other",
+};
+
+export const TAXONOMY_TEMPLATES: TaxonomyTemplate[] = BASE_TEMPLATES.map((t) => ({
+  ...t,
+  file: {
+    ...t.file,
+    nodes: [...t.file.nodes, { ...CATCH_ALL_NODE }],
+    edges: [...t.file.edges, { ...CATCH_ALL_EDGE }],
+  },
+}));

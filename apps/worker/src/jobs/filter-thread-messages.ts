@@ -1,4 +1,5 @@
 import type { ThreadSnapshot, SnapshotMessage } from "@amarnai/ai";
+import { detectAutomatedThread, detectAutomatedThreadFromMeta } from "@amarnai/ai";
 import type { GmailSyncSettings } from "@amarnai/shared";
 
 /** Gmail label IDs that are always excluded, regardless of user settings. */
@@ -15,6 +16,8 @@ export type ThreadLabelFlags = {
   gmailIsTrash: boolean;
   /** True when ANY message in the thread carries Gmail's IMPORTANT label. */
   gmailIsImportant: boolean;
+  /** True when every message looks automated/bulk (notifications, newsletters, service mail). */
+  isAutomated: boolean;
 };
 
 const CLEAN_FLAGS: ThreadLabelFlags = {
@@ -22,6 +25,7 @@ const CLEAN_FLAGS: ThreadLabelFlags = {
   gmailIsPromotions: false,
   gmailIsTrash: false,
   gmailIsImportant: false,
+  isAutomated: false,
 };
 
 /**
@@ -36,6 +40,7 @@ export function computeThreadLabelFlags(messages: SnapshotMessage[]): ThreadLabe
     gmailIsPromotions: messages.every((m) => (m.labelIds ?? []).includes("CATEGORY_PROMOTIONS")),
     gmailIsTrash:      messages.every((m) => (m.labelIds ?? []).includes("TRASH")),
     gmailIsImportant:  messages.some((m)  => (m.labelIds ?? []).includes("IMPORTANT")),
+    isAutomated:       detectAutomatedThread(messages),
   };
 }
 
@@ -51,6 +56,7 @@ export function computeThreadLabelFlagsFromMeta(messageLabelIds: string[][]): Th
     gmailIsPromotions: messageLabelIds.every((labels) => labels.includes("CATEGORY_PROMOTIONS")),
     gmailIsTrash:      messageLabelIds.every((labels) => labels.includes("TRASH")),
     gmailIsImportant:  messageLabelIds.some((labels)  => labels.includes("IMPORTANT")),
+    isAutomated:       detectAutomatedThreadFromMeta(messageLabelIds),
   };
 }
 

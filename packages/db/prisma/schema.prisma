@@ -351,6 +351,9 @@ model TaxonomyNode {
   draftPrompt String?
   examples    Json     @default("[]")
   isRoot      Boolean  @default(false)
+  // A non-routable catch-all destination ("Updates / Other"). Excluded from
+  // embedding/LLM competition; assigned only by the automated-mail policy.
+  isCatchAll  Boolean  @default(false)
   positionX   Float    @default(0)
   positionY   Float    @default(0)
   // Embedding cache — recomputed only when embeddingTextHash changes
@@ -409,6 +412,9 @@ model EmailThread {
   gmailIsTrash       Boolean  @default(false)
   // True when ANY message carries Gmail's IMPORTANT label (priority inbox signal).
   gmailIsImportant   Boolean  @default(false)
+  // True when every message looks automated/bulk (notifications, newsletters,
+  // service mail). Computed at sync; drives the route-to-catch-all policy.
+  isAutomated        Boolean  @default(false)
   resolvedByUserId   String?
   resolvedAt         DateTime?
   createdAt        DateTime      @default(now())
@@ -643,6 +649,9 @@ model GmailSyncSettings {
   includeSpam              Boolean  @default(false)
   includePromotions        Boolean  @default(false)
   sortingPaused            Boolean  @default(false)
+  // When true, threads detected as automated/bulk are auto-filed to the
+  // taxonomy's catch-all folder without invoking the LLM.
+  routeBulkToOther         Boolean  @default(true)
   blacklistedSenderEmails  String[] @default([])
   createdAt                DateTime @default(now())
   updatedAt                DateTime @updatedAt

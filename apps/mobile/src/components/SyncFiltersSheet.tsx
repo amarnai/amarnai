@@ -54,7 +54,10 @@ export function SyncFiltersSheet({
     (localSettings.includeSpam !== initialSettings.includeSpam ||
       localSettings.includePromotions !== initialSettings.includePromotions);
 
-  async function handleToggle(field: 'includeSpam' | 'includePromotions', value: boolean) {
+  async function handleToggle(
+    field: 'includeSpam' | 'includePromotions' | 'routeBulkToOther',
+    value: boolean
+  ) {
     if (!localSettings) return;
     const previous = localSettings;
     setLocalSettings({ ...localSettings, [field]: value });
@@ -115,6 +118,21 @@ export function SyncFiltersSheet({
                   thumbColor={localSettings.includePromotions ? colors.accent : colors.ink4}
                 />
               </View>
+
+              <View style={styles.toggleRow}>
+                <Text style={styles.toggleLabel}>Auto-file notifications to Updates / Other</Text>
+                <Switch
+                  value={localSettings.routeBulkToOther}
+                  onValueChange={(v) => void handleToggle('routeBulkToOther', v)}
+                  disabled={updating}
+                  trackColor={{ false: colors.line2, true: colors.accentLine }}
+                  thumbColor={localSettings.routeBulkToOther ? colors.accent : colors.ink4}
+                />
+              </View>
+              <Text style={styles.hint}>
+                Detected notifications, newsletters, and service updates are filed to your
+                catch-all folder without using AI.
+              </Text>
 
               <TouchableOpacity
                 style={[styles.rescanBtn, (!dirty || rescanning) && styles.btnDisabled]}

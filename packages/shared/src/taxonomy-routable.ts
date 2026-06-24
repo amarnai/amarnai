@@ -3,7 +3,7 @@
 export const TAXONOMY_MIN_NON_ROOT_NODES = 3;
 
 /** Minimal node shape needed to evaluate taxonomy routability. */
-type RoutableNode = { id: string; isRoot: boolean };
+type RoutableNode = { id: string; isRoot: boolean; isCatchAll?: boolean };
 
 /** Minimal edge shape: a directed parent -> child link. */
 type RoutableEdge = { sourceNodeId: string; targetNodeId: string };
@@ -43,9 +43,12 @@ export function countRoutableNonRootNodes(
     }
   }
 
+  // Catch-all nodes are not real routing destinations, so they must not count
+  // toward the routable threshold (a taxonomy of Inbox + catch-all + 2 folders
+  // is not routable on the strength of the catch-all).
   let count = 0;
   for (const node of nodes) {
-    if (!node.isRoot && reachable.has(node.id)) count++;
+    if (!node.isRoot && !node.isCatchAll && reachable.has(node.id)) count++;
   }
   return count;
 }
