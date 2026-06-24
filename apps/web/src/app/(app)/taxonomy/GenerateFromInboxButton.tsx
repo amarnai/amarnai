@@ -6,60 +6,13 @@ import type {
   TaxonomyGenerationStatusResult,
   GenerationEligibilityReason,
 } from "@amarnai/api-client";
+import { generationReasonText, generationPreviewRows } from "@amarnai/core/taxonomy";
 import { Tooltip } from "@amarnai/ui";
 import { api } from "@/lib/api";
 
 type Phase = "idle" | "running" | "ready" | "insufficient" | "failed" | "error";
 
 const POLL_MS = 2500;
-
-/** User-facing copy for each not-eligible reason. */
-function reasonText(reason: GenerationEligibilityReason, nextEligibleAt?: string): string {
-  const when = nextEligibleAt ? new Date(nextEligibleAt).toLocaleString() : null;
-  switch (reason) {
-    case "INBOX_TOO_SMALL":
-      return "Your inbox doesn't have enough variety yet to personalize a taxonomy. Choose a template instead.";
-    case "IMPORTING":
-      return "Still importing your inbox. Check back once the import finishes.";
-    case "NO_NEW_MAIL":
-      return "No significant new mail since your last generation, so the result would be the same. Available again once your inbox grows.";
-    case "COOLDOWN":
-      return when ? `Recently attempted. Available again ${when}.` : "Recently attempted. Try again later.";
-    case "MONTHLY_CAP":
-      return when
-        ? `You've used your generations for now. Available again ${when}.`
-        : "You've used your generations for now.";
-    default:
-      return "Generation isn't available right now.";
-  }
-}
-
-/** Build an ordered, breadcrumbed list of the proposed folders for preview. */
-function previewRows(file: TaxonomyTransferFile): { name: string; breadcrumb: string; description: string }[] {
-  const byRef = new Map(file.nodes.map((n) => [n.ref, n]));
-  const parent = new Map<string, string>();
-  for (const e of file.edges) parent.set(e.targetRef, e.sourceRef);
-  const breadcrumb = (ref: string): string => {
-    const chain: string[] = [];
-    let cur: string | undefined = ref;
-    const seen = new Set<string>();
-    while (cur && !seen.has(cur)) {
-      seen.add(cur);
-      const node = byRef.get(cur);
-      if (!node) break;
-      chain.unshift(node.name);
-      cur = parent.get(cur);
-    }
-    return chain.slice(0, -1).join(" → ");
-  };
-  return file.nodes
-    .filter((n) => !n.isRoot)
-    .map((n) => ({
-      name: n.name,
-      breadcrumb: breadcrumb(n.ref),
-      description: n.description ?? "",
-    }));
-}
 
 export function GenerateFromInboxButton({
   workspaceId,
@@ -165,7 +118,7 @@ export function GenerateFromInboxButton({
         // Limiter denial — refresh to get current eligibility, then show reason.
         await refresh();
         if (body.reason && body.reason !== "RUNNING") {
-          setError(reasonText(body.reason as GenerationEligibilityReason, body.nextEligibleAt));
+          setError(generationReasonText(body.reason as GenerationEligibilityReason, body.nextEligibleAt));
         }
         return;
       }
@@ -285,7 +238,7 @@ export function GenerateFromInboxButton({
 
               {phase === "insufficient" && (
                 <p className="text-muted">
-                  {reasonText("INBOX_TOO_SMALL")}
+                  {generationReasonText("INBOX_TOO_SMALL")}
                 </p>
               )}
 
@@ -306,7 +259,7 @@ export function GenerateFromInboxButton({
                     anything is applied.
                   </p>
                   {!canGenerate && eligibility && (
-                    <p className="text-muted">{reasonText(eligibility.reason, eligibility.nextEligibleAt)}</p>
+                    <p className="text-muted">{generationReasonText(eligibility.reason, eligibility.nextEligibleAt)}</p>
                   )}
                 </>
               )}
@@ -318,7 +271,7 @@ export function GenerateFromInboxButton({
                     everything afterward.
                   </p>
                   <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 8 }}>
-                    {previewRows(status.proposal).map((row, i) => (
+                    {generationPreviewRows(status.proposal).map((row, i) => (
                       <li key={`${row.name}-${i}`}>
                         <div style={{ fontWeight: 600 }}>
                           {row.name}

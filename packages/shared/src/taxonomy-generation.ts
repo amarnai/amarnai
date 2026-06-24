@@ -20,6 +20,26 @@ export const GENERATION_DELTA_PCT = 0.25;
 
 /** Cooldown after a FAILED/INSUFFICIENT run before another attempt is allowed. */
 export const GENERATION_COOLDOWN_MS = 6 * 60 * 60 * 1000; // 6h
+
+/**
+ * Max age of a RUNNING state before it is considered stale (the worker likely
+ * crashed/stalled). Past this, a new generation is allowed and the UI surfaces
+ * a failure instead of polling a stuck "running" forever.
+ */
+export const GENERATION_RUNNING_TTL_MS = 10 * 60 * 1000; // 10m
+
+/** True when a RUNNING state is still fresh (a job is genuinely in flight). */
+export function isGenerationRunningFresh(
+  status: string,
+  updatedAt: Date | null,
+  now: Date,
+): boolean {
+  return (
+    status === "RUNNING" &&
+    updatedAt !== null &&
+    now.getTime() - updatedAt.getTime() < GENERATION_RUNNING_TTL_MS
+  );
+}
 /** Rolling window for the backstop quota. */
 export const GENERATION_WINDOW_MS = 30 * 24 * 60 * 60 * 1000; // 30d
 

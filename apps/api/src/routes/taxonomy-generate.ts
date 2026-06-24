@@ -4,8 +4,11 @@ import { db, eligibleThreadWhere } from "@amarnai/db";
 import {
   computeGenerationEligibility,
   emailDomain,
+  isGenerationRunningFresh,
   type GenerationEligibility,
 } from "@amarnai/shared";
+import type { AppEnv } from "../env.js";
+import { isTaxonomyEditor } from "../services/taxonomy-permission.js";
 import { generateTaxonomyQueue } from "../services/queue-client.js";
 
 const workspaceParam = z.object({ workspaceId: z.string().min(1) });
@@ -14,7 +17,7 @@ const workspaceParam = z.object({ workspaceId: z.string().min(1) });
 // without scanning the whole inbox on every status poll.
 const DOMAIN_SAMPLE_LIMIT = 150;
 
-const taxonomyGenerate = new Hono();
+const taxonomyGenerate = new Hono<AppEnv>();
 
 interface EvalResult {
   state: Awaited<ReturnType<typeof db.taxonomyGenerationState.findUnique>>;
@@ -87,16 +90,27 @@ async function evaluate(workspaceId: string): Promise<EvalResult> {
   return { state, eligibility, eligibleThreadCount, importing };
 }
 
-// POST — request a (re)generation. Enqueues the worker job after the limiter
-// check; returns 409 if one is already running, 429 if the limiter denies it.
+// POST — request a (re)generation. Requires taxonomy-edit permission. Enqueues
+// the worker job after the limiter check; 403 if not an editor, 409 if a fresh
+// run is already in progress, 429 if the limiter denies it.
 taxonomyGenerate.post("/workspaces/:workspaceId/taxonomy-generate", async (c) => {
   const params = workspaceParam.safeParse({ workspaceId: c.req.param("workspaceId") });
   if (!params.success) return c.json({ error: "Invalid workspace ID" }, 400);
   const { workspaceId } = params.data;
 
+  // Authorization: generation spends LLM budget and produces a proposal that can
+  // replace the taxonomy, so it is restricted to taxonomy editors (membership
+  // alone is not enough). Native/proxy callers reach here without the web gate.
+  const userId = c.get("userId");
+  if (!userId || !(await isTaxonomyEditor(workspaceId, userId))) {
+    return c.json({ error: "Taxonomy editing is restricted to workspace admins" }, 403);
+  }
+
   const { state, eligibility } = await evaluate(workspaceId);
 
-  if (state?.status === "RUNNING") {
+  // A genuinely in-flight run blocks a new one; a stale RUNNING (crashed/stalled
+  // worker) does not — it is treated as recoverable so the user is never stuck.
+  if (state && isGenerationRunningFresh(state.status, state.updatedAt, new Date())) {
     return c.json({ error: "Generation already in progress" }, 409);
   }
   if (!eligibility.eligible) {
@@ -107,18 +121,27 @@ taxonomyGenerate.post("/workspaces/:workspaceId/taxonomy-generate", async (c) =>
   }
 
   // Mark RUNNING before enqueue so a concurrent request sees it (the worker
-  // re-checks the full limiter before spending the LLM call).
+  // re-checks the full limiter before spending the LLM call). If the enqueue
+  // fails, roll the status back so the workspace is not stuck RUNNING.
   await db.taxonomyGenerationState.upsert({
     where: { workspaceId },
     create: { workspaceId, status: "RUNNING" },
     update: { status: "RUNNING" },
   });
 
-  await generateTaxonomyQueue.add(
-    "generate-taxonomy",
-    { workspaceId },
-    { deduplication: { id: `generate-taxonomy_${workspaceId}` } },
-  );
+  try {
+    await generateTaxonomyQueue.add(
+      "generate-taxonomy",
+      { workspaceId },
+      { deduplication: { id: `generate-taxonomy_${workspaceId}` } },
+    );
+  } catch (err) {
+    await db.taxonomyGenerationState.update({
+      where: { workspaceId },
+      data: { status: state?.proposal ? "READY" : "IDLE" },
+    });
+    throw err;
+  }
 
   return c.json({ ok: true, status: "RUNNING" }, 202);
 });
@@ -131,14 +154,22 @@ taxonomyGenerate.get("/workspaces/:workspaceId/taxonomy-generate", async (c) => 
 
   const { state, eligibility, importing } = await evaluate(workspaceId);
 
+  // Report a stale RUNNING (crashed/stalled worker) as FAILED so the client stops
+  // polling forever and offers a retry, without a write from a GET.
+  const rawStatus = state?.status ?? "IDLE";
+  const status =
+    rawStatus === "RUNNING" && !isGenerationRunningFresh(rawStatus, state?.updatedAt ?? null, new Date())
+      ? "FAILED"
+      : rawStatus;
+
   return c.json({
-    status: state?.status ?? "IDLE",
+    status,
     eligibility,
     importing,
     matchedTemplateId: state?.matchedTemplateId ?? null,
     lastOutcome: state?.lastOutcome ?? null,
     // Only expose the proposal when it is the current READY result.
-    proposal: state?.status === "READY" ? state.proposal : null,
+    proposal: status === "READY" ? state?.proposal ?? null : null,
   });
 });
 

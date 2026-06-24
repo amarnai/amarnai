@@ -3,8 +3,10 @@ import {
   computeGenerationEligibility,
   generationDeltaThreshold,
   emailDomain,
+  isGenerationRunningFresh,
   GENERATION_MIN_ELIGIBLE_THREADS,
   GENERATION_MIN_SENDER_DOMAINS,
+  GENERATION_RUNNING_TTL_MS,
   type GenerationEligibilityInput,
 } from "./taxonomy-generation.js";
 
@@ -104,6 +106,20 @@ describe("computeGenerationEligibility", () => {
       }),
     );
     expect(r.reason).toBe("INBOX_TOO_SMALL");
+  });
+});
+
+describe("isGenerationRunningFresh", () => {
+  it("is true for a recent RUNNING state", () => {
+    expect(isGenerationRunningFresh("RUNNING", new Date(NOW.getTime() - 60_000), NOW)).toBe(true);
+  });
+  it("is false once the RUNNING state is older than the TTL (stale worker)", () => {
+    const old = new Date(NOW.getTime() - GENERATION_RUNNING_TTL_MS - 1);
+    expect(isGenerationRunningFresh("RUNNING", old, NOW)).toBe(false);
+  });
+  it("is false for non-RUNNING states and missing timestamps", () => {
+    expect(isGenerationRunningFresh("READY", NOW, NOW)).toBe(false);
+    expect(isGenerationRunningFresh("RUNNING", null, NOW)).toBe(false);
   });
 });
 
