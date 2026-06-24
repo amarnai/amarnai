@@ -131,7 +131,9 @@ export function SyncFiltersSheet({
               </View>
               <Text style={styles.hint}>
                 Detected notifications, newsletters, and service updates are filed to your
-                catch-all folder without using AI.
+                catch-all folder without using AI. Requires the{' '}
+                <Text style={styles.hintStrong}>Updates / Other</Text> folder from a taxonomy
+                template.
               </Text>
 
               <TouchableOpacity
@@ -178,6 +180,9 @@ const styles = StyleSheet.create({
   hint: {
     fontSize: fontSize.sm,
     color: colors.ink4,
+  },
+  hintStrong: {
+    fontWeight: fontWeight.medium,
   },
   infoText: {
     fontSize: fontSize.md,
