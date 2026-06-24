@@ -39,6 +39,12 @@ import {
   ALL_NODES_D3,
   ALL_EDGES_D3,
   TEST_EMAILS_D3,
+  ALL_NODES_ORIGIN,
+  ALL_EDGES_ORIGIN,
+  TEST_EMAILS_ORIGIN,
+  ALL_NODES_FM,
+  ALL_EDGES_FM,
+  TEST_EMAILS_FM,
   type TestEmail,
 } from "./fixtures/sorting-fixtures.js";
 import { createEmbeddingProvider, getEmbeddingProviderConfig } from "../index.js";
@@ -203,7 +209,8 @@ async function runEmail(
       nodes,
       edges,
       email.messages,
-      {} // production default constants
+      // Production default constants; opt into the scale-invariant path when set.
+      { scaleInvariant: process.env["BENCHMARK_SCALE_INVARIANT"] === "1" }
     );
     got = result.finalNodeId;
     needsHumanReview = result.needsHumanReview;
@@ -237,6 +244,12 @@ const DATASETS: Array<{
   { name: "d1", nodes: ALL_NODES, edges: ALL_EDGES, emails: TEST_EMAILS },
   { name: "d3", nodes: ALL_NODES_D3, edges: ALL_EDGES_D3, emails: TEST_EMAILS_D3 },
   { name: "d2", nodes: ALL_NODES_D2, edges: ALL_EDGES_D2, emails: [D2_AMBIGUOUS_EMAIL] },
+  // Origin-constrained cases (Track P): the LLM must respect a node's sender/
+  // origin constraint, not file on thematic similarity alone.
+  { name: "origin", nodes: ALL_NODES_ORIGIN, edges: ALL_EDGES_ORIGIN, emails: TEST_EMAILS_ORIGIN },
+  // Failure-mode taxonomy: exercises the sole-child A-fold end-to-end with a real
+  // LLM (does the escalated generic-courier resolve to Deliveries, SwiftShip to SwiftShip).
+  { name: "failure-modes", nodes: ALL_NODES_FM, edges: ALL_EDGES_FM, emails: TEST_EMAILS_FM },
 ];
 
 // ─── Aggregation + reporting ──────────────────────────────────────────────────
@@ -307,6 +320,20 @@ async function main(): Promise<void> {
     console.log(`  Output tok / call   : ${fmt(avg(okCalls.map((c) => c.completionTokens)))}  (reasoning: ${fmt(avg(okCalls.map((c) => c.reasoningTokens)))})`);
     console.log(`  Total tokens        : in ${totalIn}  out ${totalOut}  (reasoning ${totalReason})`);
     console.log(`  Est. cost (subset)  : $${estCost.toFixed(5)}  — verify Gemini rates`);
+
+    // Name the LLM-decided misroutes so prompt-eval cases (e.g. origin-scoped)
+    // are legible, not hidden in an aggregate count.
+    const misses = llmRuns.filter(
+      (r) => r.outcome === "wrong" || r.outcome === "review_bad"
+    );
+    if (misses.length > 0) {
+      console.log(`  Misroutes (LLM)     :`);
+      for (const m of misses) {
+        console.log(
+          `      ${m.outcome === "wrong" ? "✗" : "!"} ${m.email.id}  expected ${m.email.expectedFinalNodeId}  got ${m.got ?? "null"}`
+        );
+      }
+    }
   }
 
   console.log(

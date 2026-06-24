@@ -74,8 +74,13 @@ import type { CandidateNode } from "../selection/candidate-selector.js";
 //   Multiplicative penalty applied per level during bottom-up subtree score
 //   propagation. A score that originates two levels below a node is worth
 //   λ² at that node. Keeps deeper matches from dominating shallow, semantically
-//   weaker ancestors. Unchanged — the benchmark taxonomy is flat (depth 1), so
-//   this constant was invariant across all top-scoring configurations.
+//   weaker ancestors.
+//   Re-tuned 2026-06 on the multi-depth, multi-model grid (flat-d1 + deep-d3 +
+//   failure-modes): the grid winner is λ=1.00 on gemini-embedding-001@768 (the
+//   production model) and λ=0.90 on qwen3-embedding (offline smoke). The prior
+//   0.85 over-penalised depth and depressed deep-taxonomy routing. Set to the
+//   Gemini optimum. NOTE: this is embedding-model specific — re-confirm with
+//   BENCHMARK_EMBEDDING_MODEL before changing the deployed embedding model.
 //
 // SOFTMAX_TEMPERATURE
 //   Controls how sharply softmax concentrates probability on the highest-scoring
@@ -109,12 +114,34 @@ import type { CandidateNode } from "../selection/candidate-selector.js";
 //   winner.
 
 export const THETA_MIN = 0.15;
-export const LAMBDA_DEPTH_DECAY = 0.85;
+export const LAMBDA_DEPTH_DECAY = 1.0;
 export const SOFTMAX_TEMPERATURE = 0.05;
 export const THETA_SPREAD = 0.15;
 export const THETA_DESCENT = 0.0;
 export const CROSS_BRANCH_MARGIN = 0.05;
 export const TOP_K_LLM_CANDIDATES = 5;
+
+// ─── Scale-invariant mode constants (opt-in via options.scaleInvariant) ─────────
+//
+// These replace the absolute gap / floor thresholds above with per-thread z-units
+// (gaps divided by sigmaSim, the std of the thread's similarities) so one set of
+// values works across embedding models that pack cosine similarities differently.
+// They are inert unless scaleInvariant is true; the default routing path is
+// unchanged. Tunable via options for the grid benchmark.
+//
+// CROSS_BRANCH_Z_MARGIN  — two branches are "too close to call" when their gap is
+//   below this many σ. Escalates to the LLM.
+// CROSS_BRANCH_Z_FLOOR   — the runner-up branch is a real contender only when it
+//   sits at least this many σ above the thread's mean similarity (replaces the
+//   absolute thetaMin floor on escalation).
+// SOLE_CHILD_Z_MARGIN    — a sole child is entered without the LLM only when it
+//   beats its parent by more than this many σ; otherwise the parent-vs-child
+//   (descend-vs-stay) decision is escalated to the LLM. This is the folded-in
+//   fix for single-child / specific-vendor leaves, which cosine magnitude alone
+//   cannot resolve (a narrower child description scores lower even when correct).
+export const CROSS_BRANCH_Z_MARGIN = 0.5;
+export const CROSS_BRANCH_Z_FLOOR = 0.0;
+export const SOLE_CHILD_Z_MARGIN = 0.5;
 
 // ─── Result type ──────────────────────────────────────────────────────────────
 
@@ -358,6 +385,16 @@ export async function sortThreadByEmbedding(
     thetaDescent?: number;
     crossBranchMargin?: number;
     topKLlmCandidates?: number;
+    /**
+     * Opt-in scale-invariant decision mode. When true, cross-branch ambiguity and
+     * sole-child descent are decided in per-thread z-units (see *_Z_* constants)
+     * instead of absolute cosine gaps, so one config generalises across embedding
+     * models. Default false — the legacy absolute-threshold path is unchanged.
+     */
+    scaleInvariant?: boolean;
+    crossBranchZMargin?: number;
+    crossBranchZFloor?: number;
+    soleChildZMargin?: number;
     /** Pre-computed thread embedding vector. When provided, skips the internal embed call (Step 3). */
     precomputedThreadVector?: number[];
     /**
@@ -394,6 +431,10 @@ export async function sortThreadByEmbedding(
   const thetaDescent = options?.thetaDescent ?? THETA_DESCENT;
   const crossBranchMargin = options?.crossBranchMargin ?? CROSS_BRANCH_MARGIN;
   const topKLlm = options?.topKLlmCandidates ?? TOP_K_LLM_CANDIDATES;
+  const scaleInvariant = options?.scaleInvariant ?? false;
+  const crossBranchZMargin = options?.crossBranchZMargin ?? CROSS_BRANCH_Z_MARGIN;
+  const crossBranchZFloor = options?.crossBranchZFloor ?? CROSS_BRANCH_Z_FLOOR;
+  const soleChildZMargin = options?.soleChildZMargin ?? SOLE_CHILD_Z_MARGIN;
   const llmMemoizer = options?.llmMemoizer;
   const failOpenOnLlmError = options?.failOpenOnLlmError ?? false;
   const suppressLlmEscalation = options?.suppressLlmEscalation ?? false;
@@ -515,6 +556,26 @@ export async function sortThreadByEmbedding(
   }
   const rawSimsRecord = Object.fromEntries(rawSims);
 
+  // Per-thread similarity scale (scale-invariant mode). Embedding models differ
+  // in how tightly they pack cosine similarities — Gemini compresses every node
+  // into a narrow high band, qwen3 spreads them out — so an absolute gap like
+  // CROSS_BRANCH_MARGIN means different things per model and mis-fires. sigmaSim
+  // is the standard deviation of this thread's similarities across all scored
+  // nodes; dividing gaps by it turns them into model-invariant z-units. Computed
+  // once here over the real (non-empty-vector) similarities; floored so degenerate
+  // all-equal distributions don't divide by zero.
+  const simValues = [...rawSims.values()];
+  const simMean =
+    simValues.length > 0 ? simValues.reduce((a, b) => a + b, 0) / simValues.length : 0;
+  const sigmaSim = Math.max(
+    Math.sqrt(
+      simValues.length > 0
+        ? simValues.reduce((a, b) => a + (b - simMean) ** 2, 0) / simValues.length
+        : 0
+    ),
+    1e-6
+  );
+
   // ── Step 5: Bottom-up subtree scores ──────────────────────────────────────
 
   const subtreeScores = computeSubtreeScores(rootNode.id, rawSims, edges, lambdaDecay);
@@ -593,18 +654,33 @@ export async function sortThreadByEmbedding(
     .map((id) => ({ id, score: subtreeScores.get(id) ?? 0 }))
     .sort((a, b) => b.score - a.score);
 
+  // Cross-branch ambiguity: the top two branches are too close to choose, AND the
+  // runner-up is a real contender (not a signal-less branch). In scale-invariant
+  // mode both tests are expressed in per-thread z-units (gap ÷ sigmaSim, rival's
+  // distance above the mean ÷ sigmaSim) so a single threshold works across
+  // embedding models; otherwise the legacy absolute gap / thetaMin floor is used.
+  const rootGap =
+    rootChildrenRanked.length >= 2
+      ? rootChildrenRanked[0]!.score - rootChildrenRanked[1]!.score
+      : Infinity;
+  const rootRival = rootChildrenRanked.length >= 2 ? rootChildrenRanked[1]!.score : 0;
+  const rootRivalIsContender = scaleInvariant
+    ? (rootRival - simMean) / sigmaSim >= crossBranchZFloor
+    : rootRival >= thetaMin;
+  const rootGapAmbiguous = scaleInvariant
+    ? rootGap / sigmaSim < crossBranchZMargin
+    : rootGap < crossBranchMargin;
+
   const crossBranchAmbiguous =
-    rootChildrenRanked.length >= 2 &&
-    rootChildrenRanked[0]!.score - rootChildrenRanked[1]!.score < crossBranchMargin &&
-    rootChildrenRanked[1]!.score >= thetaMin;
+    rootChildrenRanked.length >= 2 && rootGapAmbiguous && rootRivalIsContender;
 
   // Record the root-level comparison whenever the runner-up clears the guard,
   // regardless of whether it escalated (gap may be ≥ margin = no trigger).
-  if (rootChildrenRanked.length >= 2 && rootChildrenRanked[1]!.score >= thetaMin) {
+  if (rootChildrenRanked.length >= 2 && rootRivalIsContender) {
     noteCrossBranch({
       site: "root",
-      gap: rootChildrenRanked[0]!.score - rootChildrenRanked[1]!.score,
-      rivalScore: rootChildrenRanked[1]!.score,
+      gap: rootGap,
+      rivalScore: rootRival,
       triggered: crossBranchAmbiguous,
     });
   }
@@ -682,6 +758,82 @@ export async function sortThreadByEmbedding(
     const children = childrenMap.get(currentNodeId) ?? [];
     if (children.length === 0) break; // reached a leaf
 
+    // ── Sole-child descend-vs-stay (scale-invariant mode; folded-in Change A) ──
+    //
+    // A node with one child always clears the spread test (softmax([s])=[1]), so
+    // the legacy path descends unconditionally — the single-child / specific-vendor
+    // over-routing bug. Cosine magnitude cannot fix it: a correct-but-narrow child
+    // (e.g. an OAuth leaf) and a wrong specific child (e.g. a vendor leaf for a
+    // generic email) are indistinguishable by child-vs-parent similarity. So we
+    // only auto-enter the sole child when it beats the parent by a clear z-margin;
+    // otherwise the descend-vs-stay call is a content judgment we hand to the LLM
+    // (parent = stay, child = descend).
+    if (scaleInvariant && children.length === 1) {
+      const soleChildId = children[0]!;
+      const soleChildRawSim = rawSims.get(soleChildId) ?? 0;
+      const parentRawSim = rawSims.get(currentNodeId) ?? 0;
+      const soleEdge = edgeByEndpoints.get(`${currentNodeId}:${soleChildId}`);
+      const descendSole = (): void => {
+        if (soleEdge) {
+          traversalPath.push({
+            edgeId: soleEdge.id,
+            sourceNodeId: soleEdge.sourceNodeId,
+            targetNodeId: soleEdge.targetNodeId,
+            confidence: soleChildRawSim,
+            explanation: `Sole child entered (rawSim ${soleChildRawSim.toFixed(3)} vs parent ${parentRawSim.toFixed(3)})`,
+          });
+        }
+        currentNodeId = soleChildId;
+      };
+
+      const childDominates =
+        soleChildRawSim >= thetaDescent &&
+        (soleChildRawSim - parentRawSim) / sigmaSim > soleChildZMargin;
+
+      if (childDominates) {
+        descendSole();
+        continue;
+      }
+      // Ambiguous specificity. Bulk mail never calls the LLM → stop at parent.
+      if (suppressLlmEscalation) break;
+
+      const candidates = buildLlmCandidates(
+        [currentNodeId, soleChildId],
+        nodeMap,
+        childEdges,
+        rootNode.id,
+        rawSims
+      );
+      if (candidates.length < 2) break; // parent has no description to offer → stop at parent
+      const memo = llmMemoizer
+        ? { memoize: llmMemoizer, step: buildLlmDedupStep("mid", candidates.map((c) => c.nodeId)) }
+        : undefined;
+      let soleResult;
+      try {
+        soleResult = await selectNodeFromCandidates(llmProvider, { messages }, candidates, undefined, memo);
+      } catch (err) {
+        if (!failOpenOnLlmError) throw err;
+        console.error(
+          `[sorter] sole-child LLM call failed at "${nodeMap.get(currentNodeId)?.name ?? currentNodeId}"; failing open to review: ${err instanceof Error ? err.message : String(err)}`
+        );
+        return makeInboxFallback(
+          LLM_ERROR_FALLBACK_EXPLANATION,
+          rawSimsRecord, subtreeScoresRecord, updatedNodeEmbeddings, threadVector, true
+        );
+      }
+      if (!soleResult.needsHumanReview && soleResult.finalNodeId) {
+        if (soleResult.finalNodeId === soleChildId) {
+          descendSole();
+          continue;
+        }
+        break; // LLM chose to stay at the parent
+      }
+      return makeInboxFallback(
+        `LLM could not resolve descend-vs-stay at "${nodeMap.get(currentNodeId)?.name ?? currentNodeId}": ${soleResult.explanation}`,
+        rawSimsRecord, subtreeScoresRecord, updatedNodeEmbeddings, threadVector
+      );
+    }
+
     const childScoreList = children.map((id) => subtreeScores.get(id) ?? 0);
     const probs = softmax(childScoreList, softmaxTemp);
 
@@ -743,7 +895,10 @@ export async function sortThreadByEmbedding(
       const midAmbiguousSiblings = children.filter((id) => {
         if (id === bestChildId) return false;
         const gap = bestChildSubtreeScore - (subtreeScores.get(id) ?? 0);
-        return gap < crossBranchMargin && (rawSims.get(id) ?? 0) >= thetaMin;
+        const siblingRaw = rawSims.get(id) ?? 0;
+        return scaleInvariant
+          ? gap / sigmaSim < crossBranchZMargin && (siblingRaw - simMean) / sigmaSim >= crossBranchZFloor
+          : gap < crossBranchMargin && siblingRaw >= thetaMin;
       });
 
       // Record the closest guard-met sibling at this level for margin tuning,
