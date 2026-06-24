@@ -53,7 +53,13 @@ export default function EmailsScreen() {
   // Live updates while this screen is focused and the app is foregrounded:
   // refresh immediately whenever the worker finishes a sync, matching the web
   // app's EventSource. Passing null when unfocused disconnects the stream.
-  useWorkspaceEvents(focused ? workspaceId : null, () => refreshRef.current());
+  // Backfill emits `synced` per batch and on completion, so also re-pull the
+  // sync status to keep the backfill banner's counts/progress current.
+  const syncStatusRefetchRef = useRef<() => void>(() => {});
+  useWorkspaceEvents(focused ? workspaceId : null, () => {
+    refreshRef.current();
+    syncStatusRefetchRef.current();
+  });
 
   // When Gmail was never connected, show an in-app connect CTA instead of the
   // thread list. On success, invalidate the connection query so the empty
@@ -62,6 +68,7 @@ export default function EmailsScreen() {
   // shows even when stale threads are still present.
   const connectionQuery = useGmailConnection(workspaceId ?? '');
   const syncStatusQuery = useSyncStatus(workspaceId ?? '');
+  syncStatusRefetchRef.current = () => void syncStatusQuery.refetch();
   const showConnectHint = connectionQuery.isSuccess && !connectionQuery.data;
   const { connect: connectGmail, connecting: gmailConnecting } = useConnectGmail(
     workspaceId ?? '',

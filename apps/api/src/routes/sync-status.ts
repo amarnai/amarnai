@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { z } from "zod";
 import { db } from "@amarnai/db";
-import { getBackfillCap, isTaxonomyRoutable } from "@amarnai/shared";
+import { isTaxonomyRoutable } from "@amarnai/shared";
 
 const workspaceParam = z.object({ workspaceId: z.string().min(1) });
 
@@ -49,16 +49,15 @@ syncStatus.get("/workspaces/:workspaceId/sync-status", async (c) => {
         backfillCompletedAt: true,
         backfillCapReached: true,
         backfillBeyondCount: true,
-        backfillProcessedCount: true,
       },
     }),
     db.gmailSyncSettings.findUnique({
       where: { workspaceId },
-      select: { sortingPaused: true },
+      select: { sortingPaused: true, includeSpam: true, includePromotions: true },
     }),
     db.workspace.findUnique({
       where: { id: workspaceId },
-      select: { plan: true, billingCycle: true },
+      select: { plan: true },
     }),
   ]);
 
@@ -68,11 +67,25 @@ syncStatus.get("/workspaces/:workspaceId/sync-status", async (c) => {
   const pushEnabled =
     connection.gmailWatchExpiresAt != null && connection.gmailWatchExpiresAt > now;
 
-  const cap = getBackfillCap(workspace?.plan ?? "FREE", workspace?.billingCycle ?? null);
-
+  // Sorting progress is only meaningful while a backfill is running. When it is,
+  // report how many of the discovered, inbox-visible threads have finished
+  // classification (any terminal status) versus the total discovered so far, and
+  // whether the taxonomy is too small to route at all. This drives the backfill
+  // card's wording and progress bar; it is the same inbox filter the triage queue
+  // counts use, so the numbers line up with the Pending/Sorted pills.
   let backfillAwaitingTaxonomy = false;
+  let backfillSortedThreads = 0;
+  let backfillTotalThreads = 0;
+
   if (state.backfillStatus === "RUNNING") {
-    const [taxonomyNodes, taxonomyEdges] = await Promise.all([
+    const inboxVisible = {
+      workspaceId,
+      gmailIsTrash: false,
+      ...(syncSettings?.includeSpam ? {} : { gmailIsSpam: false }),
+      ...(syncSettings?.includePromotions ? {} : { gmailIsPromotions: false }),
+    } as const;
+
+    const [taxonomyNodes, taxonomyEdges, grouped] = await Promise.all([
       db.taxonomyNode.findMany({
         where: { workspaceId },
         select: { id: true, isRoot: true, isCatchAll: true },
@@ -81,8 +94,22 @@ syncStatus.get("/workspaces/:workspaceId/sync-status", async (c) => {
         where: { workspaceId },
         select: { sourceNodeId: true, targetNodeId: true },
       }),
+      db.emailThread.groupBy({
+        by: ["triageStatus"],
+        where: inboxVisible,
+        _count: { _all: true },
+      }),
     ]);
+
     backfillAwaitingTaxonomy = !isTaxonomyRoutable(taxonomyNodes, taxonomyEdges);
+
+    // Total = every inbox-visible thread discovered so far. Pending = not yet run
+    // through classification. A thread is "sorted" once it leaves PENDING, whatever
+    // the outcome (SORTED / NEEDS_REVIEW / UNROUTED / UNCLASSIFIED).
+    for (const g of grouped) {
+      backfillTotalThreads += g._count._all;
+      if (g.triageStatus !== "PENDING") backfillSortedThreads += g._count._all;
+    }
   }
 
   return c.json({
@@ -94,8 +121,8 @@ syncStatus.get("/workspaces/:workspaceId/sync-status", async (c) => {
     backfillCompletedAt: state.backfillCompletedAt?.toISOString() ?? null,
     backfillCapReached: state.backfillCapReached,
     backfillBeyondCount: state.backfillBeyondCount,
-    backfillProcessedCount: state.backfillProcessedCount,
-    backfillTotal: cap.maxThreads,
+    backfillSortedThreads,
+    backfillTotalThreads,
     backfillAwaitingTaxonomy,
     sortingPaused: syncSettings?.sortingPaused ?? false,
     workspacePlan: workspace?.plan ?? "FREE",

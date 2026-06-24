@@ -40,13 +40,17 @@ export function EmailsClient({
   initialFolders,
   initialActive,
   initialSelectedId,
-  syncStatus,
+  syncStatus: initialSyncStatus,
   workspaceEmail,
   routableNodeCount,
   unclassifiedCount,
 }: Props) {
   const router = useRouter();
   const now = useRef(new Date()).current;
+
+  // Sync status (backfill progress, counts) starts from the server-rendered
+  // snapshot and is refreshed live off the SSE stream below.
+  const [syncStatus, setSyncStatus] = useState<SyncStatus>(initialSyncStatus);
 
   // Shared, platform-agnostic triage view-model (thread data, selection,
   // optimistic mutations, toast). This component owns only the web-specific
@@ -77,6 +81,9 @@ export function EmailsClient({
     );
     es.addEventListener("synced", () => {
       triage.refresh();
+      // Backfill emits this per batch and on completion, so re-pull the sync
+      // status to keep the backfill card's counts/progress current.
+      api.syncStatus(workspaceId).then(setSyncStatus).catch(() => {});
     });
     es.onerror = () => {};
     return () => es.close();
@@ -176,8 +183,8 @@ export function EmailsClient({
     ? {
         lastSyncedAt: syncStatus.lastSyncedAt,
         backfillStatus: syncStatus.backfillStatus === "RUNNING" ? ("RUNNING" as const) : ("IDLE" as const),
-        backfillProcessedCount: syncStatus.backfillProcessedCount,
-        backfillTotal: syncStatus.backfillTotal,
+        backfillSortedThreads: syncStatus.backfillSortedThreads,
+        backfillTotalThreads: syncStatus.backfillTotalThreads,
         backfillAwaitingTaxonomy: syncStatus.backfillAwaitingTaxonomy,
         workspacePlan: syncStatus.workspacePlan,
         pushEnabled: syncStatus.pushEnabled,

@@ -31,10 +31,14 @@ export function BackfillCard({ syncInfo, upgradeHref = "#" }: BackfillCardProps)
 
   if (syncInfo.backfillStatus !== "RUNNING") return null;
 
-  const processed = syncInfo.backfillProcessedCount ?? 0;
-  const total = syncInfo.backfillTotal ?? 1;
-  const percent = Math.min(Math.round((processed / total) * 100), 99);
   const awaitingTaxonomy = syncInfo.backfillAwaitingTaxonomy ?? false;
+  const sorted = syncInfo.backfillSortedThreads ?? 0;
+  const total = syncInfo.backfillTotalThreads ?? 0;
+  // Cap at 99% while RUNNING: the card only clears once the backfill reaches DONE.
+  const percent = total > 0 ? Math.min(Math.round((sorted / total) * 100), 99) : 0;
+  // "Sorting in progress" is only honest once threads have actually been sorted.
+  // Until then the backfill is still discovering threads from Gmail.
+  const sorting = sorted > 0;
 
   return (
     <>
@@ -53,16 +57,21 @@ export function BackfillCard({ syncInfo, upgradeHref = "#" }: BackfillCardProps)
               Set up at least 3 folders to start sorting your threads.
             </div>
           </>
-        ) : (
+        ) : sorting ? (
           <>
             <div className="em-backfill-title">Sorting in progress…</div>
             <div className="em-backfill-desc">New threads will appear as they are sorted.</div>
+            <div className="em-backfill-progress-track">
+              <div className="em-backfill-progress-bar" style={{ width: `${percent}%` }} />
+            </div>
+            <div className="em-backfill-progress-label">{percent}%</div>
+          </>
+        ) : (
+          <>
+            <div className="em-backfill-title">Scanning your inbox…</div>
+            <div className="em-backfill-desc">Finding historical threads to sort.</div>
           </>
         )}
-        <div className="em-backfill-progress-track">
-          <div className="em-backfill-progress-bar" style={{ width: `${percent}%` }} />
-        </div>
-        <div className="em-backfill-progress-label">{percent}%</div>
       </div>
     </>
   );

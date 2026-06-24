@@ -10,6 +10,7 @@ import {
   type BackfillInboxJobData,
 } from "../queues.js";
 import { redisConnection } from "../redis.js";
+import { publishWorkspaceSynced } from "../redis-publisher.js";
 import {
   applyThreadFilter,
   computeThreadLabelFlags,
@@ -530,6 +531,13 @@ export function createBackfillInboxWorker(): Worker {
           });
           await backfillInboxQueue.add("backfill-inbox", { workspaceId });
           await job.updateProgress(100);
+          // Notify SSE subscribers so the backfill card's processed count and
+          // thread list update live, without a manual refresh.
+          if (res.count > 0) {
+            publishWorkspaceSynced(workspaceId).catch((err) => {
+              console.error("[backfill-inbox] Failed to publish synced event:", err instanceof Error ? err.message : err);
+            });
+          }
           console.log(
             res.count === 0
               ? `[backfill-inbox] Workspace ${workspaceId}: superseded by a reset mid-run — handing off`
@@ -603,6 +611,12 @@ export function createBackfillInboxWorker(): Worker {
           console.log(`[backfill-inbox] Workspace ${workspaceId}: superseded by a reset at completion — handing off`);
           return;
         }
+
+        // Final notify so the card flips out of its RUNNING state and the
+        // counts settle without a manual refresh.
+        publishWorkspaceSynced(workspaceId).catch((err) => {
+          console.error("[backfill-inbox] Failed to publish synced event:", err instanceof Error ? err.message : err);
+        });
 
         console.log(
           `[backfill-inbox] Workspace ${workspaceId}: backfill complete — processed ${processed} threads, skipped ${baseSkipped + runSkipped}`

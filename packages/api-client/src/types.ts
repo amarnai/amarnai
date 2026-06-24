@@ -255,8 +255,11 @@ export type SyncStatus = {
   // still in Gmail; backfillBeyondCount is the approximate number left behind.
   backfillCapReached: boolean;
   backfillBeyondCount: number;
-  backfillProcessedCount: number;
-  backfillTotal: number;
+  // Backfill sorting progress (only meaningful while backfillStatus is RUNNING):
+  // threads that have finished classification vs. the total discovered so far, and
+  // whether the taxonomy is currently too small to route any of them.
+  backfillSortedThreads: number;
+  backfillTotalThreads: number;
   backfillAwaitingTaxonomy: boolean;
   sortingPaused: boolean;
   workspacePlan: "FREE" | "PRO" | "BUSINESS";
