@@ -17,6 +17,9 @@ function formatTime(date: Date): string {
   if (sameDay) {
     return date.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
   }
+  if (date.getFullYear() !== now.getFullYear()) {
+    return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+  }
   return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
 }
 

@@ -10,9 +10,11 @@ interface MessageCardProps {
 }
 
 function fmtDateTime(d: Date): string {
+  const crossYear = d.getFullYear() !== new Date().getFullYear();
   return d.toLocaleString(undefined, {
     month: 'short',
     day: 'numeric',
+    ...(crossYear ? { year: 'numeric' } : {}),
     hour: '2-digit',
     minute: '2-digit',
   });
