@@ -10,18 +10,9 @@ import type {
   UpdateTaxonomyEdgeInput,
 } from "@/lib/api";
 import type { TaxonomyTransferFile } from "@amarnai/shared";
-import type { TaxonomyGenerationStatusResult } from "@amarnai/api-client";
 
 const API_BASE = process.env["API_URL"] ?? "http://localhost:3001";
 const INTERNAL_SECRET = process.env["INTERNAL_API_SECRET"] ?? "dev-internal-secret";
-
-function authHeaders(userId: string): Record<string, string> {
-  return {
-    "Content-Type": "application/json",
-    "X-User-Id": userId,
-    ...(INTERNAL_SECRET ? { Authorization: `Bearer ${INTERNAL_SECRET}` } : {}),
-  };
-}
 
 async function apiCall<T>(
   path: string,
@@ -144,59 +135,4 @@ export async function importTaxonomyAction(
     user.id,
     file
   );
-}
-
-// ─── Auto-generate taxonomy from inbox ──────────────────────────────────────────
-
-export type GenerateTaxonomyActionResult =
-  | { ok: true }
-  | { ok: false; reason: string; nextEligibleAt?: string };
-
-/**
- * Request a taxonomy generation. Returns ok on enqueue; on a limiter denial
- * (429) or an already-running job (409) returns ok:false with the reason so the
- * UI can explain it rather than throwing.
- */
-export async function generateTaxonomyAction(
-  workspaceId: string
-): Promise<GenerateTaxonomyActionResult> {
-  const user = await requireUser();
-  await assertTaxonomyEditor(workspaceId, user.id);
-  const res = await fetch(`${API_BASE}/workspaces/${workspaceId}/taxonomy-generate`, {
-    method: "POST",
-    headers: authHeaders(user.id),
-    cache: "no-store",
-  });
-  if (res.ok) return { ok: true };
-  const body = (await res.json().catch(() => ({}))) as {
-    error?: string;
-    reason?: string;
-    nextEligibleAt?: string;
-  };
-  if (res.status === 409) return { ok: false, reason: "RUNNING" };
-  if (res.status === 429) {
-    return {
-      ok: false,
-      reason: body.reason ?? "NOT_ELIGIBLE",
-      ...(body.nextEligibleAt ? { nextEligibleAt: body.nextEligibleAt } : {}),
-    };
-  }
-  throw new Error(body.error ?? `API error ${res.status}`);
-}
-
-/** Poll current generation status, eligibility, and the READY proposal. */
-export async function getTaxonomyGenerationAction(
-  workspaceId: string
-): Promise<TaxonomyGenerationStatusResult> {
-  const user = await requireUser();
-  const res = await fetch(`${API_BASE}/workspaces/${workspaceId}/taxonomy-generate`, {
-    method: "GET",
-    headers: authHeaders(user.id),
-    cache: "no-store",
-  });
-  if (!res.ok) {
-    const err = (await res.json().catch(() => ({}))) as { error?: string };
-    throw new Error(err.error ?? `API error ${res.status}`);
-  }
-  return res.json() as Promise<TaxonomyGenerationStatusResult>;
 }

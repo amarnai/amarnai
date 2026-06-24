@@ -7,10 +7,7 @@ import type {
   GenerationEligibilityReason,
 } from "@amarnai/api-client";
 import { Tooltip } from "@amarnai/ui";
-import {
-  generateTaxonomyAction,
-  getTaxonomyGenerationAction,
-} from "@/actions/taxonomy";
+import { api } from "@/lib/api";
 
 type Phase = "idle" | "running" | "ready" | "insufficient" | "failed" | "error";
 
@@ -100,7 +97,7 @@ export function GenerateFromInboxButton({
 
   const refresh = useCallback(async () => {
     try {
-      const s = await getTaxonomyGenerationAction(workspaceId);
+      const s = await api.taxonomyGeneration(workspaceId);
       applyStatus(s);
       if (s.status !== "RUNNING") stopPolling();
     } catch (err) {
@@ -110,9 +107,14 @@ export function GenerateFromInboxButton({
     }
   }, [workspaceId, applyStatus, stopPolling]);
 
-  // Load status when the modal opens; tear down polling when it closes/unmounts.
+  // Reset state and load fresh status each time the modal opens.
   useEffect(() => {
-    if (open) void refresh();
+    if (open) {
+      setError(null);
+      setStatus(null);
+      setPhase("idle");
+      void refresh();
+    }
     return () => stopPolling();
   }, [open, refresh, stopPolling]);
 
@@ -125,16 +127,29 @@ export function GenerateFromInboxButton({
     setError(null);
     setPhase("running");
     try {
-      const res = await generateTaxonomyAction(workspaceId);
-      if (!res.ok) {
-        // Limiter denial / already running — show the reason and stop.
+      const res = await fetch(`/api/internal/workspaces/${workspaceId}/taxonomy-generate`, {
+        method: "POST",
+        cache: "no-store",
+      });
+      if (res.ok) {
+        startPolling();
+        return;
+      }
+      const body = await res.json().catch(() => ({})) as { error?: string; reason?: string; nextEligibleAt?: string };
+      if (res.status === 409) {
+        // Already running — sync state and let polling take over.
         await refresh();
-        if (res.reason && res.reason !== "RUNNING") {
-          setError(reasonText(res.reason as GenerationEligibilityReason, res.nextEligibleAt));
+        return;
+      }
+      if (res.status === 429) {
+        // Limiter denial — refresh to get current eligibility, then show reason.
+        await refresh();
+        if (body.reason && body.reason !== "RUNNING") {
+          setError(reasonText(body.reason as GenerationEligibilityReason, body.nextEligibleAt));
         }
         return;
       }
-      startPolling();
+      throw new Error(body.error ?? `API error ${res.status}`);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to start generation");
       setPhase("error");
