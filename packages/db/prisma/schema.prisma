@@ -182,6 +182,7 @@ model User {
   updatedAt     DateTime  @updatedAt
 
   trialUsed                Boolean               @default(false)
+  isSystemAdmin            Boolean               @default(false)
 
   // Weekly lifecycle reminder email. `lifecycleEmailsEnabled` is the opt-out
   // flag (flipped by the unsubscribe link or the in-app toggle).
