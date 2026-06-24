@@ -1,0 +1,220 @@
+import { ActivityIndicator, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
+import type { TaxonomyTransferFile } from '@amarnai/shared';
+import type {
+  TaxonomyGenerationStatusResult,
+  GenerationEligibilityReason,
+} from '@amarnai/api-client';
+import { SheetLayout } from '../SheetLayout';
+
+interface Props {
+  visible: boolean;
+  generation: TaxonomyGenerationStatusResult | undefined;
+  loading: boolean;
+  generating: boolean;
+  applying: boolean;
+  onGenerate: () => void;
+  onApply: (file: TaxonomyTransferFile) => void;
+  onUseTemplates: () => void;
+  onClose: () => void;
+}
+
+function reasonText(reason: GenerationEligibilityReason, nextEligibleAt?: string | null): string {
+  const when = nextEligibleAt ? new Date(nextEligibleAt).toLocaleString() : null;
+  switch (reason) {
+    case 'INBOX_TOO_SMALL':
+      return "Your inbox doesn't have enough variety yet to personalize a taxonomy. Choose a template instead.";
+    case 'IMPORTING':
+      return 'Still importing your inbox. Check back once the import finishes.';
+    case 'NO_NEW_MAIL':
+      return 'No significant new mail since your last generation. Available again once your inbox grows.';
+    case 'COOLDOWN':
+      return when ? `Recently attempted. Available again ${when}.` : 'Recently attempted. Try again later.';
+    case 'MONTHLY_CAP':
+      return when ? `You've used your generations for now. Available again ${when}.` : "You've used your generations for now.";
+    default:
+      return "Generation isn't available right now.";
+  }
+}
+
+/** Ordered, breadcrumbed folder list for the preview. */
+function previewRows(file: TaxonomyTransferFile): { name: string; breadcrumb: string; description: string }[] {
+  const byRef = new Map(file.nodes.map((n) => [n.ref, n]));
+  const parent = new Map<string, string>();
+  for (const e of file.edges) parent.set(e.targetRef, e.sourceRef);
+  const breadcrumb = (ref: string): string => {
+    const chain: string[] = [];
+    let cur: string | undefined = ref;
+    const seen = new Set<string>();
+    while (cur && !seen.has(cur)) {
+      seen.add(cur);
+      const node = byRef.get(cur);
+      if (!node) break;
+      chain.unshift(node.name);
+      cur = parent.get(cur);
+    }
+    return chain.slice(0, -1).join(' → ');
+  };
+  return file.nodes
+    .filter((n) => !n.isRoot)
+    .map((n) => ({ name: n.name, breadcrumb: breadcrumb(n.ref), description: n.description ?? '' }));
+}
+
+// Auto-generate-taxonomy-from-inbox. Mirrors the web flow: trigger → poll →
+// preview → apply (destructive replace, with the same cost limiter messaging).
+export function GenerateFromInboxSheet({
+  visible,
+  generation,
+  loading,
+  generating,
+  applying,
+  onGenerate,
+  onApply,
+  onUseTemplates,
+  onClose,
+}: Props) {
+  const status = generation?.status ?? 'IDLE';
+  const eligibility = generation?.eligibility;
+  const proposal = status === 'READY' ? generation?.proposal ?? null : null;
+  const running = status === 'RUNNING' || generating;
+
+  return (
+    <SheetLayout visible={visible} onClose={onClose} title="Generate from inbox" handle>
+      <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
+        {loading ? (
+          <ActivityIndicator color={colors.accent} />
+        ) : running ? (
+          <View style={styles.center}>
+            <ActivityIndicator color={colors.accent} />
+            <Text style={styles.muted}>Analyzing your inbox and building a taxonomy…</Text>
+          </View>
+        ) : status === 'INSUFFICIENT' ? (
+          <Text style={styles.muted}>{reasonText('INBOX_TOO_SMALL')}</Text>
+        ) : status === 'FAILED' ? (
+          <Text style={styles.muted}>
+            {`Generation didn't complete. ${
+              eligibility?.nextEligibleAt
+                ? `Try again after ${new Date(eligibility.nextEligibleAt).toLocaleString()}, or start from a template.`
+                : 'Try again shortly, or start from a template.'
+            }`}
+          </Text>
+        ) : proposal ? (
+          <View style={styles.gap}>
+            <Text style={styles.muted}>
+              Proposed folders. Applying replaces your current taxonomy; you can edit everything
+              afterward.
+            </Text>
+            {previewRows(proposal).map((row, i) => (
+              <View key={`${row.name}-${i}`} style={styles.row}>
+                <Text style={styles.name}>
+                  {row.name}
+                  {row.breadcrumb ? <Text style={styles.crumb}>  {row.breadcrumb}</Text> : null}
+                </Text>
+                {row.description ? <Text style={styles.desc}>{row.description}</Text> : null}
+              </View>
+            ))}
+          </View>
+        ) : (
+          <View style={styles.gap}>
+            <Text style={styles.muted}>
+              Amarnai will analyze your senders, labels, and subject keywords (never message
+              bodies) to suggest a personalized set of folders. Review and edit before anything is
+              applied.
+            </Text>
+            {eligibility && !eligibility.eligible ? (
+              <Text style={styles.muted}>
+                {reasonText(eligibility.reason, eligibility.nextEligibleAt)}
+              </Text>
+            ) : null}
+          </View>
+        )}
+      </ScrollView>
+
+      <View style={styles.footer}>
+        {proposal ? (
+          <>
+            <TouchableOpacity
+              style={[styles.btn, styles.btnGhost]}
+              onPress={onClose}
+              disabled={applying}
+            >
+              <Text style={styles.btnGhostText}>Discard</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.btn, styles.btnPrimary]}
+              onPress={() => onApply(proposal)}
+              disabled={applying}
+            >
+              <Text style={styles.btnPrimaryText}>{applying ? 'Applying…' : 'Apply'}</Text>
+            </TouchableOpacity>
+          </>
+        ) : status === 'INSUFFICIENT' || status === 'FAILED' ? (
+          <>
+            <TouchableOpacity style={[styles.btn, styles.btnGhost]} onPress={onClose}>
+              <Text style={styles.btnGhostText}>Close</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.btn, styles.btnPrimary]}
+              onPress={() => {
+                onClose();
+                onUseTemplates();
+              }}
+            >
+              <Text style={styles.btnPrimaryText}>Use a template</Text>
+            </TouchableOpacity>
+          </>
+        ) : !running ? (
+          <>
+            <TouchableOpacity style={[styles.btn, styles.btnGhost]} onPress={onClose}>
+              <Text style={styles.btnGhostText}>Close</Text>
+            </TouchableOpacity>
+            {eligibility?.eligible ? (
+              <TouchableOpacity style={[styles.btn, styles.btnPrimary]} onPress={onGenerate}>
+                <Text style={styles.btnPrimaryText}>Generate</Text>
+              </TouchableOpacity>
+            ) : (
+              // Inbox isn't eligible to generate; offer a template as the path forward.
+              <TouchableOpacity
+                style={[styles.btn, styles.btnPrimary]}
+                onPress={() => {
+                  onClose();
+                  onUseTemplates();
+                }}
+              >
+                <Text style={styles.btnPrimaryText}>Use a template</Text>
+              </TouchableOpacity>
+            )}
+          </>
+        ) : null}
+      </View>
+    </SheetLayout>
+  );
+}
+
+const styles = StyleSheet.create({
+  scroll: { flexShrink: 1 },
+  content: { paddingHorizontal: space.xl, paddingTop: space.md, paddingBottom: space.lg },
+  center: { alignItems: 'center', gap: space.md, paddingVertical: space.xl },
+  gap: { gap: space.md },
+  muted: { fontSize: fontSize.sm, color: colors.ink3 },
+  row: {
+    borderTopWidth: 1,
+    borderTopColor: colors.line2,
+    paddingTop: space.md,
+    gap: space.xxs,
+  },
+  name: { fontSize: fontSize.md, fontWeight: fontWeight.semibold, color: colors.ink },
+  crumb: { fontSize: fontSize.sm, fontWeight: fontWeight.regular, color: colors.ink4 },
+  desc: { fontSize: fontSize.sm, color: colors.ink3 },
+  footer: {
+    flexDirection: 'row',
+    gap: space.md,
+    paddingHorizontal: space.xl,
+    paddingTop: space.md,
+  },
+  btn: { flex: 1, borderRadius: radii.md, paddingVertical: space.lg, alignItems: 'center' },
+  btnPrimary: { backgroundColor: colors.accent },
+  btnPrimaryText: { color: colors.surface, fontSize: fontSize.md, fontWeight: fontWeight.semibold },
+  btnGhost: { backgroundColor: colors.bgSunk },
+  btnGhostText: { color: colors.ink2, fontSize: fontSize.md, fontWeight: fontWeight.medium },
+});

@@ -52,6 +52,7 @@ import {
   snapshotsEqual,
   type GraphSnapshot,
 } from "./useTaxonomyHistory";
+import { GenerateFromInboxButton } from "./GenerateFromInboxButton";
 import { TaxonomyNodeCardBase } from "@amarnai/ui/taxonomy";
 import { Tooltip } from "@amarnai/ui";
 import {
@@ -1287,6 +1288,15 @@ function TaxonomyCanvasInner({
               Templates
             </button>
           </Tooltip>
+          <GenerateFromInboxButton
+            workspaceId={workspaceId}
+            disabled={submitting}
+            onApply={executeImport}
+            onUseTemplates={() => {
+              setSelectedTemplateIdx(null);
+              setTemplatePickerOpen(true);
+            }}
+          />
           <input
             ref={fileInputRef}
             type="file"

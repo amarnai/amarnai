@@ -111,3 +111,30 @@ export function useApplyTemplate(workspaceId: string) {
     onSuccess: invalidate,
   });
 }
+
+// ─── Auto-generate taxonomy from inbox ──────────────────────────────────────────
+
+const generationKey = (ws: string) => ['taxonomyGeneration', ws] as const;
+
+// Polls generation status + eligibility. Auto-refreshes every 2.5s while a run
+// is in progress, then stops. Pass `enabled` so it only runs while the sheet is
+// open.
+export function useTaxonomyGeneration(workspaceId: string, enabled: boolean) {
+  const { client } = useSession();
+  return useQuery({
+    queryKey: generationKey(workspaceId),
+    queryFn: () => client.taxonomyGeneration(workspaceId),
+    enabled: !!workspaceId && enabled,
+    refetchInterval: (query) =>
+      query.state.data?.status === 'RUNNING' ? 2500 : false,
+  });
+}
+
+export function useGenerateTaxonomy(workspaceId: string) {
+  const { client } = useSession();
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: () => client.generateTaxonomy(workspaceId),
+    onSuccess: () => qc.invalidateQueries({ queryKey: generationKey(workspaceId) }),
+  });
+}

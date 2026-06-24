@@ -52,3 +52,7 @@ export type { EmbeddingTriageResult } from "./triage/embed-triage.js";
 // ─── Draft generation ─────────────────────────────────────────────────────────
 export { generateDraft } from "./draft/generate.js";
 export type { DraftContext, DraftResult } from "./draft/generate.js";
+// ─── Taxonomy generation (from inbox) ───────────────────────────────────────────
+export { buildTaxonomyGenerationMessages, buildRepairMessage } from "./taxonomy-gen/prompt.js";
+export { generateTaxonomyFromProfile } from "./taxonomy-gen/generate.js";
+export type { GenerateTaxonomyInput, GenerateTaxonomyResult } from "./taxonomy-gen/generate.js";

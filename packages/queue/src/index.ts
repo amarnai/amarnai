@@ -24,6 +24,7 @@ export const QUEUE_SYNC_INBOX = "sync-inbox";
 export const QUEUE_CLASSIFY_THREAD = "classify-thread";
 export const QUEUE_BACKFILL_INBOX = "backfill-inbox";
 export const QUEUE_LIFECYCLE_EMAIL = "lifecycle-email";
+export const QUEUE_GENERATE_TAXONOMY = "generate-taxonomy";
 
 // ─── Job data types ───────────────────────────────────────────────────────────
 
@@ -76,4 +77,14 @@ export type BackfillInboxJobData = {
  */
 export type LifecycleEmailJobData = {
   userId: string;
+};
+
+/**
+ * Payload for a `generate-taxonomy` job. One job per workspace per request; the
+ * worker samples the workspace's eligible inbox, generates a personalized
+ * taxonomy proposal, and stores it for the user to preview and apply. Dedup by
+ * workspaceId prevents stacking concurrent generations.
+ */
+export type GenerateTaxonomyJobData = {
+  workspaceId: string;
 };
