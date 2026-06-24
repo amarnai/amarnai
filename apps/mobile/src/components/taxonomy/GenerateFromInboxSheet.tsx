@@ -77,10 +77,17 @@ export function GenerateFromInboxSheet({
   const eligibility = generation?.eligibility;
   const proposal = status === 'READY' ? generation?.proposal ?? null : null;
   const running = status === 'RUNNING' || generating;
+  const importing = generation?.importing ?? false;
 
   return (
     <SheetLayout visible={visible} onClose={onClose} title="Generate from inbox" handle>
       <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
+        {importing && !running ? (
+          <Text style={[styles.muted, { marginBottom: space.md }]}>
+            Your inbox is still importing. You can generate now from what&apos;s loaded so far, but
+            regenerating once the import finishes will give a more accurate fit.
+          </Text>
+        ) : null}
         {loading ? (
           <ActivityIndicator color={colors.accent} />
         ) : running ? (

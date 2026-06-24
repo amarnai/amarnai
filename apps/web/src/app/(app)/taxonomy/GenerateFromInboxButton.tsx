@@ -64,15 +64,35 @@ function previewRows(file: TaxonomyTransferFile): { name: string; breadcrumb: st
 export function GenerateFromInboxButton({
   workspaceId,
   disabled,
+  gmailConnected,
   onApply,
   onUseTemplates,
+  variant = "ghost",
+  withTooltip = true,
+  defaultOpen = false,
+  open: controlledOpen,
+  onOpenChange,
 }: {
   workspaceId: string;
   disabled: boolean;
+  gmailConnected: boolean;
   onApply: (file: TaxonomyTransferFile) => Promise<void>;
   onUseTemplates: () => void;
+  /** Toolbar uses "ghost"; the onboarding banner uses "primary". */
+  variant?: "ghost" | "primary";
+  withTooltip?: boolean;
+  /** Open the modal immediately on mount (e.g. navigated via ?openGenerate=1). */
+  defaultOpen?: boolean;
+  /** Externally controlled open state. */
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }) {
-  const [open, setOpen] = useState(false);
+  const [internalOpen, setInternalOpen] = useState(defaultOpen);
+  const open = controlledOpen !== undefined ? controlledOpen : internalOpen;
+  function setOpen(v: boolean) {
+    setInternalOpen(v);
+    onOpenChange?.(v);
+  }
   const [phase, setPhase] = useState<Phase>("idle");
   const [status, setStatus] = useState<TaxonomyGenerationStatusResult | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -173,6 +193,16 @@ export function GenerateFromInboxButton({
   const eligibility = status?.eligibility;
   const canGenerate = eligibility?.eligible ?? false;
 
+  // With no inbox connected there is nothing to generate from, so the button
+  // starts the Gmail OAuth flow instead of opening the (empty) modal.
+  function handleButtonClick() {
+    if (!gmailConnected) {
+      window.location.href = `/api/gmail/connect?workspaceId=${workspaceId}`;
+      return;
+    }
+    setOpen(true);
+  }
+
   // When generation is unavailable (ineligible inbox, insufficient result, or a
   // failed run) the productive action is to start from a template, so we surface
   // that instead of a dead-end disabled "Generate" button.
@@ -182,26 +212,40 @@ export function GenerateFromInboxButton({
     phase === "failed" ||
     ((phase === "idle" || phase === "error") && !canGenerate);
 
+  const triggerButton = (
+    <button
+      className={variant === "primary" ? "btn-primary" : "btn-ghost"}
+      onClick={handleButtonClick}
+      disabled={disabled}
+      aria-label="Generate taxonomy from inbox"
+    >
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
+        <path
+          d="M3 1.5L3.7 3.3L5.5 4L3.7 4.7L3 6.5L2.3 4.7L0.5 4L2.3 3.3ZM9.5 5L10.6 7.9L13.5 9L10.6 10.1L9.5 13L8.4 10.1L5.5 9L8.4 7.9Z"
+          stroke="currentColor"
+          strokeWidth="1.2"
+          strokeLinejoin="round"
+        />
+      </svg>
+      Generate from inbox
+    </button>
+  );
+
   return (
     <>
-      <Tooltip content="Generate a taxonomy from your inbox">
-        <button
-          className="btn-ghost"
-          onClick={() => setOpen(true)}
-          disabled={disabled}
-          aria-label="Generate taxonomy from inbox"
+      {withTooltip ? (
+        <Tooltip
+          content={
+            gmailConnected
+              ? "Generate a taxonomy from your inbox"
+              : "Connect Gmail to generate a taxonomy from your inbox"
+          }
         >
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
-            <path
-              d="M3 1.5L3.7 3.3L5.5 4L3.7 4.7L3 6.5L2.3 4.7L0.5 4L2.3 3.3ZM9.5 5L10.6 7.9L13.5 9L10.6 10.1L9.5 13L8.4 10.1L5.5 9L8.4 7.9Z"
-              stroke="currentColor"
-              strokeWidth="1.2"
-              strokeLinejoin="round"
-            />
-          </svg>
-          Generate from inbox
-        </button>
-      </Tooltip>
+          {triggerButton}
+        </Tooltip>
+      ) : (
+        triggerButton
+      )}
 
       {open && (
         <div
@@ -225,6 +269,13 @@ export function GenerateFromInboxButton({
 
             <div className="modal-body" style={{ overflowY: "auto", maxHeight: "60vh" }}>
               {error && <p className="form-error">{error}</p>}
+
+              {status?.importing && phase !== "running" && (
+                <p className="text-muted" style={{ marginBottom: 8 }}>
+                  Your inbox is still importing. You can generate now from what&apos;s loaded so far,
+                  but regenerating once the import finishes will give a more accurate fit.
+                </p>
+              )}
 
               {phase === "running" && (
                 <p className="text-muted">

@@ -24,6 +24,8 @@ export type TaxonomyGenerationStatus =
 export type TaxonomyGenerationStatusResult = {
   status: TaxonomyGenerationStatus;
   eligibility: GenerationEligibility;
+  /** True while the historical backfill is still ingesting the inbox. */
+  importing: boolean;
   matchedTemplateId: string | null;
   lastOutcome: string | null;
   proposal: TaxonomyTransferFile | null;

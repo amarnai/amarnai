@@ -20,6 +20,8 @@ interface EvalResult {
   state: Awaited<ReturnType<typeof db.taxonomyGenerationState.findUnique>>;
   eligibility: GenerationEligibility;
   eligibleThreadCount: number;
+  /** True while the historical backfill is still ingesting the inbox. */
+  importing: boolean;
 }
 
 /**
@@ -73,16 +75,16 @@ async function evaluate(workspaceId: string): Promise<EvalResult> {
     now: new Date(),
   });
 
+  const importing =
+    syncState?.backfillStatus === "PENDING" || syncState?.backfillStatus === "RUNNING";
+
   // Surface a friendlier reason while the historical backfill is still ingesting:
   // the inbox is "too small" only because it hasn't finished importing yet.
-  if (
-    eligibility.reason === "INBOX_TOO_SMALL" &&
-    (syncState?.backfillStatus === "PENDING" || syncState?.backfillStatus === "RUNNING")
-  ) {
+  if (eligibility.reason === "INBOX_TOO_SMALL" && importing) {
     eligibility.reason = "IMPORTING";
   }
 
-  return { state, eligibility, eligibleThreadCount };
+  return { state, eligibility, eligibleThreadCount, importing };
 }
 
 // POST — request a (re)generation. Enqueues the worker job after the limiter
@@ -127,11 +129,12 @@ taxonomyGenerate.get("/workspaces/:workspaceId/taxonomy-generate", async (c) => 
   if (!params.success) return c.json({ error: "Invalid workspace ID" }, 400);
   const { workspaceId } = params.data;
 
-  const { state, eligibility } = await evaluate(workspaceId);
+  const { state, eligibility, importing } = await evaluate(workspaceId);
 
   return c.json({
     status: state?.status ?? "IDLE",
     eligibility,
+    importing,
     matchedTemplateId: state?.matchedTemplateId ?? null,
     lastOutcome: state?.lastOutcome ?? null,
     // Only expose the proposal when it is the current READY result.

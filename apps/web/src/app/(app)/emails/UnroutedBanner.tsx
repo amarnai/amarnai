@@ -1,12 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { api } from "@/lib/api";
 import { TAXONOMY_MIN_NON_ROOT_NODES } from "@amarnai/shared";
-import { GenerateFromInboxButton } from "../taxonomy/GenerateFromInboxButton";
-import { importTaxonomyAction } from "@/actions/taxonomy";
 
 type Props = {
   workspaceId: string;
@@ -17,7 +13,6 @@ type Props = {
 
 export function UnroutedBanner({ workspaceId, waitingCount, routableNodeCount, onRouted }: Props) {
   const [routing, setRouting] = useState(false);
-  const router = useRouter();
 
   if (waitingCount === 0) return null;
 
@@ -39,24 +34,19 @@ export function UnroutedBanner({ workspaceId, waitingCount, routableNodeCount, o
     return (
       <div className="warning-box" style={{ margin: "12px 16px 0", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
         <span suppressHydrationWarning>
-          {waitingCount} thread{waitingCount !== 1 ? "s are" : " is"} waiting to be routed.
-          Set up your folders to begin sorting: generate them from your inbox, or start from a template.
+          {waitingCount} thread{waitingCount !== 1 ? "s are" : " is"} waiting to be routed. Set up your folders to start sorting.
         </span>
-        <span style={{ display: "flex", gap: 8, flexShrink: 0 }}>
-          <GenerateFromInboxButton
-            workspaceId={workspaceId}
-            disabled={false}
-            onApply={async (file) => {
-              await importTaxonomyAction(workspaceId, file);
-              onRouted();
-              router.refresh();
-            }}
-            onUseTemplates={() => router.push("/taxonomy")}
-          />
-          <Link href="/taxonomy" className="btn-primary" style={{ whiteSpace: "nowrap" }}>
-            Choose a template
-          </Link>
-        </span>
+        <a href="/taxonomy?openGenerate=1" className="btn-primary" style={{ whiteSpace: "nowrap", display: "inline-flex", alignItems: "center", gap: 6, flexShrink: 0 }}>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
+            <path
+              d="M3 1.5L3.7 3.3L5.5 4L3.7 4.7L3 6.5L2.3 4.7L0.5 4L2.3 3.3ZM9.5 5L10.6 7.9L13.5 9L10.6 10.1L9.5 13L8.4 10.1L5.5 9L8.4 7.9Z"
+              stroke="currentColor"
+              strokeWidth="1.2"
+              strokeLinejoin="round"
+            />
+          </svg>
+          Generate from inbox
+        </a>
       </div>
     );
   }
