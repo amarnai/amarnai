@@ -162,7 +162,9 @@ export default function EmailsScreen() {
           <View style={styles.hint}>
             <Text style={styles.hintTitle}>Connect Gmail to start triaging</Text>
             <Text style={styles.hintBody}>
-              Connect your Gmail account to sync your inbox into Amarnai.
+              Connect your Gmail account to sync your inbox into Amarnai. Amarnai
+              connects with read-only access and never sends, deletes, or changes
+              anything. Your inbox stays yours.
             </Text>
             <TouchableOpacity
               style={[styles.hintButton, gmailConnecting && styles.hintButtonDisabled]}

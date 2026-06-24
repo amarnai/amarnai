@@ -12,10 +12,10 @@ export function ConnectGmailCta({ workspaceId, reconnect = false }: Props) {
       <div className="connect-gmail-cta">
         <div className="connect-gmail-cta-mascot">
           <Image
-            src="/aziru-start.png"
+            src="/aziru-safe.png"
             alt="King Aziru"
-            width={220}
-            height={288}
+            width={240}
+            height={240}
             priority
             style={{ width: 240, height: "auto" }}
           />
@@ -26,8 +26,8 @@ export function ConnectGmailCta({ workspaceId, reconnect = false }: Props) {
           </p>
           <p className="connect-gmail-cta-description">
             {reconnect
-              ? "Amarnai is no longer syncing this inbox. Reconnect your Gmail account to resume sorting your email threads."
-              : "King Aziru is ready to sort your email threads. Connect your Gmail account to get started."}
+              ? "Amarnai is no longer syncing this inbox. Reconnect your Gmail account to resume sorting your email threads. Access stays read-only, and your inbox stays yours."
+              : "King Aziru is ready to sort your email threads. Connect your Gmail account to get started. Amarnai connects with read-only access and never sends, deletes, or changes anything. Your inbox stays yours."}
           </p>
           <a
             href={`/api/gmail/connect?workspaceId=${workspaceId}`}
