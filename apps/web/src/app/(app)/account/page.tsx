@@ -1,5 +1,6 @@
 import { requireUser } from "@/lib/session";
 import { db } from "@amarnai/db";
+import { Trans } from "@lingui/react/macro";
 import { AccountForm } from "./AccountForm";
 
 export default async function AccountPage() {
@@ -12,7 +13,7 @@ export default async function AccountPage() {
 
   return (
     <>
-      <h1>Account Settings</h1>
+      <h1><Trans>Account Settings</Trans></h1>
       <AccountForm
         currentName={dbUser?.name ?? null}
         email={dbUser?.email ?? user.email}

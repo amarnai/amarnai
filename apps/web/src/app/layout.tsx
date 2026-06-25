@@ -4,6 +4,7 @@ import Script from "next/script";
 import { headers } from "next/headers";
 import { AppDownloadBanner } from "@amarnai/ui";
 import { isSupportedLocale, SOURCE_LOCALE } from "@amarnai/i18n";
+import { initServerI18n } from "@/lib/i18n-server";
 import { LinguiClientProvider } from "@/components/LinguiClientProvider";
 import "./globals.css";
 
@@ -29,6 +30,9 @@ export default async function RootLayout({
   const headersList = await headers();
   const localeHeader = headersList.get("x-locale") ?? SOURCE_LOCALE;
   const locale = isSupportedLocale(localeHeader) ? localeHeader : SOURCE_LOCALE;
+
+  // Activate Lingui for any Server Component rendered in this request.
+  await initServerI18n(locale);
 
   return (
     <html lang={locale} className={`${geist.variable} ${geistMono.variable}`} suppressHydrationWarning>

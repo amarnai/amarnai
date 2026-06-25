@@ -2,21 +2,25 @@
 
 import { useActionState } from "react";
 import Link from "next/link";
+import { Trans } from "@lingui/react/macro";
+import { useLingui } from "@lingui/react";
+import { msg } from "@lingui/core/macro";
 import { registerAction } from "@/actions/auth";
 import { AuthShell } from "@/components/AuthShell";
 import { GoogleButton } from "@/components/GoogleButton";
 
 export function SignUpForm() {
+  const { _ } = useLingui();
   const [state, action, pending] = useActionState(registerAction, null);
 
   return (
-    <AuthShell title="Create your account">
+    <AuthShell title={_( msg`Create your account`)}>
       <form action={action} className="auth-form">
         {state?.error && <p className="auth-error">{state.error}</p>}
 
         <div className="form-group">
           <label className="form-label" htmlFor="email">
-            Email
+            <Trans>Email</Trans>
           </label>
           <input
             id="email"
@@ -30,7 +34,7 @@ export function SignUpForm() {
 
         <div className="form-group">
           <label className="form-label" htmlFor="password">
-            Password
+            <Trans>Password</Trans>
           </label>
           <input
             id="password"
@@ -41,25 +45,27 @@ export function SignUpForm() {
             minLength={8}
             className="form-input"
           />
-          <p className="auth-hint">At least 8 characters</p>
+          <p className="auth-hint"><Trans>At least 8 characters</Trans></p>
         </div>
 
         <button type="submit" disabled={pending} className="btn-primary auth-submit">
-          {pending ? "Creating account…" : "Create account"}
+          {pending ? _( msg`Creating account…`) : _( msg`Create account`)}
         </button>
       </form>
 
       <div className="auth-divider">
-        <span>or</span>
+        <span><Trans>or</Trans></span>
       </div>
 
-      <GoogleButton label="Sign up with Google" />
+      <GoogleButton label={_( msg`Sign up with Google`)} />
 
       <p className="auth-switch">
-        Already have an account?{" "}
-        <Link href="/sign-in" className="auth-link">
-          Sign in
-        </Link>
+        <Trans>
+          Already have an account?{" "}
+          <Link href="/sign-in" className="auth-link">
+            Sign in
+          </Link>
+        </Trans>
       </p>
     </AuthShell>
   );

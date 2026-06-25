@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { resetWorkspaceAction } from "@/actions/workspace";
+import { Trans } from "@lingui/react/macro";
 
 export function ResetWorkspaceSection({ workspaceId }: { workspaceId: string }) {
   const [confirming, setConfirming] = useState(false);
@@ -22,11 +23,13 @@ export function ResetWorkspaceSection({ workspaceId }: { workspaceId: string }) 
 
   return (
     <section className="settings-section settings-section-danger">
-      <h2>Reset workspace</h2>
+      <h2><Trans>Reset workspace</Trans></h2>
       <p className="account-danger-description">
-        Remove the Gmail connection, delete all synced emails, and reset the
-        taxonomy to Inbox only. Your workspace and account are kept. This
-        cannot be undone.
+        <Trans>
+          Remove the Gmail connection, delete all synced emails, and reset the
+          taxonomy to Inbox only. Your workspace and account are kept. This
+          cannot be undone.
+        </Trans>
       </p>
 
       {error && <p className="auth-error">{error}</p>}
@@ -37,13 +40,15 @@ export function ResetWorkspaceSection({ workspaceId }: { workspaceId: string }) 
           className="btn-danger"
           onClick={() => setConfirming(true)}
         >
-          Reset workspace
+          <Trans>Reset workspace</Trans>
         </button>
       ) : (
         <div className="account-delete-confirm">
           <p className="account-danger-warning">
-            The Gmail connection, all synced emails, and the taxonomy will be
-            permanently deleted.
+            <Trans>
+              The Gmail connection, all synced emails, and the taxonomy will be
+              permanently deleted.
+            </Trans>
           </p>
           <div className="account-delete-actions">
             <button
@@ -52,7 +57,7 @@ export function ResetWorkspaceSection({ workspaceId }: { workspaceId: string }) 
               onClick={handleReset}
               disabled={pending}
             >
-              {pending ? "Resetting…" : "Yes, reset workspace"}
+              {pending ? <Trans>Resetting…</Trans> : <Trans>Yes, reset workspace</Trans>}
             </button>
             <button
               type="button"
@@ -60,7 +65,7 @@ export function ResetWorkspaceSection({ workspaceId }: { workspaceId: string }) 
               onClick={() => setConfirming(false)}
               disabled={pending}
             >
-              Cancel
+              <Trans>Cancel</Trans>
             </button>
           </div>
         </div>

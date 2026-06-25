@@ -1,6 +1,7 @@
 import { requireUser, getUserWorkspaceRole } from "@/lib/session";
 import { getSelectedWorkspace } from "@/lib/workspace";
 import { apiFor, type TaxonomyNode, type TaxonomyEdge } from "@/lib/api";
+import { Trans } from "@lingui/react/macro";
 import { TaxonomyClient } from "./TaxonomyClient";
 
 export default async function TaxonomyPage() {
@@ -37,7 +38,7 @@ export default async function TaxonomyPage() {
   return (
     <div className="taxonomy-shell">
       <div className="taxonomy-page-header">
-        <h1>Taxonomy</h1>
+        <h1><Trans>Taxonomy</Trans></h1>
         {error && <div className="error-box">{error}</div>}
       </div>
       {!error && (

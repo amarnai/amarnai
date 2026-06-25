@@ -3,6 +3,10 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { Trans } from "@lingui/react/macro";
+import { useLingui } from "@lingui/react";
+import { msg } from "@lingui/core/macro";
+import type { MessageDescriptor } from "@lingui/core";
 
 interface Props {
   plan: string;
@@ -21,15 +25,15 @@ interface Props {
   collaboratorLimit?: number;
 }
 
-const planLabels: Record<string, string> = {
-  FREE: "Personal",
-  PRO: "Pro",
-  BUSINESS: "Business",
+const planLabels: Record<string, MessageDescriptor> = {
+  FREE: msg`Personal`,
+  PRO: msg`Pro`,
+  BUSINESS: msg`Business`,
 };
 
-const cycleLabels: Record<string, string> = {
-  MONTHLY: "Monthly",
-  ANNUAL: "Annual",
+const cycleLabels: Record<string, MessageDescriptor> = {
+  MONTHLY: msg`Monthly`,
+  ANNUAL: msg`Annual`,
 };
 
 export function BillingSection({
@@ -48,6 +52,7 @@ export function BillingSection({
   collaboratorCount,
   collaboratorLimit,
 }: Props) {
+  const { _ } = useLingui();
   const router = useRouter();
   const [portalLoading, setPortalLoading] = useState(false);
   const [cancelStep, setCancelStep] = useState<"idle" | "confirming" | "loading">("idle");
@@ -71,38 +76,40 @@ export function BillingSection({
       const res = await fetch("/api/billing/cancel-subscription", { method: "POST" });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        setCancelError(data.error ?? "Something went wrong. Please try again.");
+        setCancelError(data.error ?? _(msg`Something went wrong. Please try again.`));
         setCancelStep("confirming");
         return;
       }
       router.push("/settings?cancelled=true");
     } catch {
-      setCancelError("Something went wrong. Please try again.");
+      setCancelError(_(msg`Something went wrong. Please try again.`));
       setCancelStep("confirming");
     }
   }
 
   const now = new Date();
   const isTrialing = trialEndsAt !== null && trialEndsAt > now;
-  const cycleLabel = billingCycle ? cycleLabels[billingCycle] : null;
+  const cycleLabel = billingCycle && cycleLabels[billingCycle] ? _(cycleLabels[billingCycle]) : null;
+  const planLabel = planLabels[plan] ? _(planLabels[plan]) : plan;
   const canCancel = isAdmin && hasSubscription && !cancelAtPeriodEnd;
 
   return (
     <section className="settings-section">
-      <h2>Subscription</h2>
+      <h2><Trans>Subscription</Trans></h2>
 
       {cancelled && !cancelAtPeriodEnd && plan === "FREE" && (
         <div className="billing-alert billing-alert--info">
-          <span>Your subscription has been cancelled and your workspace has been downgraded to the free tier.</span>
+          <span><Trans>Your subscription has been cancelled and your workspace has been downgraded to the free tier.</Trans></span>
         </div>
       )}
 
       {cancelled && cancelAtPeriodEnd && currentPeriodEnd && (
         <div className="billing-alert billing-alert--info">
           <span>
-            Subscription cancelled.{" "}
-            {planLabels[plan] ?? plan} access continues until{" "}
-            <strong suppressHydrationWarning>{currentPeriodEnd.toLocaleDateString()}</strong>.
+            <Trans>
+              Subscription cancelled. {planLabel} access continues until{" "}
+              <strong suppressHydrationWarning>{currentPeriodEnd.toLocaleDateString()}</strong>.
+            </Trans>
           </span>
           {hasSubscription && isAdmin && (
             <button
@@ -111,7 +118,7 @@ export function BillingSection({
               onClick={openBillingPortal}
               disabled={portalLoading}
             >
-              {portalLoading ? "Loading…" : "Reactivate"}
+              {portalLoading ? <Trans>Loading…</Trans> : <Trans>Reactivate</Trans>}
             </button>
           )}
         </div>
@@ -119,7 +126,7 @@ export function BillingSection({
 
       {paymentFailed && (
         <div className="billing-alert billing-alert--error">
-          <span>Payment failed. Please update your payment method to avoid losing access.</span>
+          <span><Trans>Payment failed. Please update your payment method to avoid losing access.</Trans></span>
           {hasSubscription && isAdmin && (
             <button
               type="button"
@@ -127,7 +134,7 @@ export function BillingSection({
               onClick={openBillingPortal}
               disabled={portalLoading}
             >
-              {portalLoading ? "Loading…" : "Update payment method"}
+              {portalLoading ? <Trans>Loading…</Trans> : <Trans>Update payment method</Trans>}
             </button>
           )}
         </div>
@@ -136,9 +143,10 @@ export function BillingSection({
       {cancelAtPeriodEnd && currentPeriodEnd && !paymentFailed && (
         <div className="billing-alert billing-alert--warn">
           <span>
-            Subscription will not renew.{" "}
-            {planLabels[plan] ?? plan} access ends on{" "}
-            <strong suppressHydrationWarning>{currentPeriodEnd.toLocaleDateString()}</strong>.
+            <Trans>
+              Subscription will not renew. {planLabel} access ends on{" "}
+              <strong suppressHydrationWarning>{currentPeriodEnd.toLocaleDateString()}</strong>.
+            </Trans>
           </span>
           {hasSubscription && isAdmin && (
             <button
@@ -147,7 +155,7 @@ export function BillingSection({
               onClick={openBillingPortal}
               disabled={portalLoading}
             >
-              {portalLoading ? "Loading…" : "Renew"}
+              {portalLoading ? <Trans>Loading…</Trans> : <Trans>Renew</Trans>}
             </button>
           )}
         </div>
@@ -155,16 +163,16 @@ export function BillingSection({
 
       <div className="plan-current-row">
         <div className="plan-current-info">
-          <span className="plan-current-label">Current subscription</span>
+          <span className="plan-current-label"><Trans>Current subscription</Trans></span>
           <div className="plan-current-name">
-            {planLabels[plan] ?? plan}
+            {planLabel}
             {cycleLabel && <span className="plan-cycle-badge">{cycleLabel}</span>}
           </div>
         </div>
 
         {isAdmin && plan !== "BUSINESS" && !cancelAtPeriodEnd && (
           <Link href="/upgrade" className="btn-upgrade">
-            Upgrade <span aria-hidden="true">→</span>
+            <Trans>Upgrade</Trans> <span aria-hidden="true">→</span>
           </Link>
         )}
       </div>
@@ -174,30 +182,34 @@ export function BillingSection({
       <div className="billing-usage-block">
         {draftQuota != null && (
           <p className="billing-note billing-usage-row">
-            <span>AI drafts</span>
+            <span><Trans>AI drafts</Trans></span>
             <span className={draftQuota.used >= draftQuota.limit ? "billing-usage--exhausted" : undefined}>
-              {Math.max(0, draftQuota.limit - draftQuota.used)} / {draftQuota.limit} left · resets{" "}
-              {new Date(draftQuota.resetsAt).toLocaleDateString("en", { month: "short", day: "numeric", timeZone: "UTC" })}
+              <Trans>
+                {Math.max(0, draftQuota.limit - draftQuota.used)} / {draftQuota.limit} left · resets{" "}
+                {new Date(draftQuota.resetsAt).toLocaleDateString("en", { month: "short", day: "numeric", timeZone: "UTC" })}
+              </Trans>
             </span>
           </p>
         )}
         {threadSortQuota != null && (
           <p className="billing-note billing-usage-row">
-            <span>Threads sorted</span>
+            <span><Trans>Threads sorted</Trans></span>
             <span className={threadSortQuota.used >= threadSortQuota.limit ? "billing-usage--exhausted" : undefined}>
-              {threadSortQuota.used} / {threadSortQuota.limit} · resets{" "}
-              {new Date(threadSortQuota.resetsAt).toLocaleDateString("en", { month: "short", day: "numeric", timeZone: "UTC" })}
+              <Trans>
+                {threadSortQuota.used} / {threadSortQuota.limit} · resets{" "}
+                {new Date(threadSortQuota.resetsAt).toLocaleDateString("en", { month: "short", day: "numeric", timeZone: "UTC" })}
+              </Trans>
             </span>
           </p>
         )}
         {collaboratorCount != null && collaboratorLimit != null && (
           <p className="billing-note billing-usage-row">
-            <span>Collaborators</span>
+            <span><Trans>Collaborators</Trans></span>
             {collaboratorLimit === 0 ? (
-              <span>Not included · <Link href="/upgrade">upgrade to add</Link></span>
+              <span><Trans>Not included · <Link href="/upgrade">upgrade to add</Link></Trans></span>
             ) : (
               <span className={collaboratorCount >= collaboratorLimit ? "billing-usage--exhausted" : undefined}>
-                {collaboratorCount} / {collaboratorLimit} added
+                <Trans>{collaboratorCount} / {collaboratorLimit} added</Trans>
               </span>
             )}
           </p>
@@ -206,16 +218,27 @@ export function BillingSection({
 
       {isTrialing && trialEndsAt && (
         <p className="billing-note">
-          Free trial until{" "}
-          <strong suppressHydrationWarning>{trialEndsAt.toLocaleDateString()}</strong>. You
-          won&apos;t be charged before then.
+          <Trans>
+            Free trial until{" "}
+            <strong suppressHydrationWarning>{trialEndsAt.toLocaleDateString()}</strong>. You
+            won&apos;t be charged before then.
+          </Trans>
         </p>
       )}
 
       {!isTrialing && currentPeriodEnd && !cancelAtPeriodEnd && (
         <p className="billing-note">
-          Renews {billingCycle === "ANNUAL" ? "annually" : "monthly"} on{" "}
-          <strong suppressHydrationWarning>{currentPeriodEnd.toLocaleDateString()}</strong>.
+          {billingCycle === "ANNUAL" ? (
+            <Trans>
+              Renews annually on{" "}
+              <strong suppressHydrationWarning>{currentPeriodEnd.toLocaleDateString()}</strong>.
+            </Trans>
+          ) : (
+            <Trans>
+              Renews monthly on{" "}
+              <strong suppressHydrationWarning>{currentPeriodEnd.toLocaleDateString()}</strong>.
+            </Trans>
+          )}
         </p>
       )}
 
@@ -225,23 +248,31 @@ export function BillingSection({
           className="billing-cancel-link"
           onClick={() => setCancelStep("confirming")}
         >
-          Cancel subscription
+          <Trans>Cancel subscription</Trans>
         </button>
       )}
 
       {canCancel && cancelStep !== "idle" && (
         <div className="billing-cancel-confirm">
           <p className="billing-cancel-confirm__message" suppressHydrationWarning>
-            {isTrialing
-              ? "Your free trial will end immediately and your workspace will be downgraded to the free tier."
-              : `Your subscription will cancel at the end of the current billing period${currentPeriodEnd ? ` on ${currentPeriodEnd.toLocaleDateString()}` : ""}.`}
+            {isTrialing ? (
+              <Trans>Your free trial will end immediately and your workspace will be downgraded to the free tier.</Trans>
+            ) : currentPeriodEnd ? (
+              <Trans>Your subscription will cancel at the end of the current billing period on {currentPeriodEnd.toLocaleDateString()}.</Trans>
+            ) : (
+              <Trans>Your subscription will cancel at the end of the current billing period.</Trans>
+            )}
           </p>
           {membersToRemoveOnCancel.length > 0 && (
             <div className="billing-cancel-members-warning">
               <strong suppressHydrationWarning>
-                {isTrialing
-                  ? "These collaborators will immediately lose access:"
-                  : `These collaborators will lose access on ${currentPeriodEnd?.toLocaleDateString() ?? "the end of the billing period"}:`}
+                {isTrialing ? (
+                  <Trans>These collaborators will immediately lose access:</Trans>
+                ) : currentPeriodEnd ? (
+                  <Trans>These collaborators will lose access on {currentPeriodEnd.toLocaleDateString()}:</Trans>
+                ) : (
+                  <Trans>These collaborators will lose access at the end of the billing period:</Trans>
+                )}
               </strong>
               <ul>
                 {membersToRemoveOnCancel.map((m) => (
@@ -260,7 +291,7 @@ export function BillingSection({
               onClick={confirmCancel}
               disabled={cancelStep === "loading"}
             >
-              {cancelStep === "loading" ? "Cancelling…" : "Confirm cancellation"}
+              {cancelStep === "loading" ? <Trans>Cancelling…</Trans> : <Trans>Confirm cancellation</Trans>}
             </button>
             <button
               type="button"
@@ -268,7 +299,7 @@ export function BillingSection({
               onClick={() => { setCancelStep("idle"); setCancelError(null); }}
               disabled={cancelStep === "loading"}
             >
-              Keep subscription
+              <Trans>Keep subscription</Trans>
             </button>
           </div>
         </div>

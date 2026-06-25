@@ -3,6 +3,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Trans } from "@lingui/react/macro";
+import { useLingui } from "@lingui/react";
+import { msg } from "@lingui/core/macro";
+import type { MessageDescriptor } from "@lingui/core";
 import { navIconDefs, type NavIconName, type IconShape } from "@amarnai/tokens";
 import { userInitials, workspaceInitials, workspaceHue } from "@amarnai/core";
 
@@ -78,13 +82,13 @@ const isDevEnabled = process.env.NEXT_PUBLIC_ENABLE_DEV_TOOLS === "true";
 const isGmailDebugEnabled =
   process.env.NEXT_PUBLIC_ENABLE_GMAIL_DEBUG_TOOLS === "true";
 
-const NAV = [
-  { href: "/emails", label: "Emails", icon: <NavIcon name="emails" /> },
-  { href: "/plan", label: "Plan", icon: <NavIcon name="taxonomy" /> },
-  { href: "/settings", label: "Settings", icon: <NavIcon name="settings" /> },
-  ...(isDevEnabled ? [{ href: "/dev/mock-inbox", label: "Mock Inbox", icon: null }] : []),
+const NAV: { href: string; label: MessageDescriptor; icon: React.ReactNode }[] = [
+  { href: "/emails", label: msg`Emails`, icon: <NavIcon name="emails" /> },
+  { href: "/plan", label: msg`Plan`, icon: <NavIcon name="taxonomy" /> },
+  { href: "/settings", label: msg`Settings`, icon: <NavIcon name="settings" /> },
+  ...(isDevEnabled ? [{ href: "/dev/mock-inbox", label: msg`Mock Inbox`, icon: null }] : []),
   ...(isGmailDebugEnabled
-    ? [{ href: "/dev/gmail-sort-tester", label: "Gmail Sort Tester", icon: null }]
+    ? [{ href: "/dev/gmail-sort-tester", label: msg`Gmail Sort Tester`, icon: null }]
     : []),
 ];
 
@@ -116,6 +120,7 @@ export function Sidebar({
   workspaces: SidebarWorkspace[];
   hasFreeWorkspace: boolean;
 }) {
+  const { _ } = useLingui();
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [wsOpen, setWsOpen] = useState(false);
@@ -152,7 +157,7 @@ export function Sidebar({
       <button
         className="mobile-menu-btn"
         onClick={() => setMobileOpen(true)}
-        aria-label="Open navigation"
+        aria-label={_(msg`Open navigation`)}
         aria-expanded={mobileOpen}
       >
         <HamburgerIcon />
@@ -182,7 +187,7 @@ export function Sidebar({
         >
           <WorkspaceMark name={workspace?.name ?? "?"} />
           <span className="ws-switcher-name">
-            {workspace?.name ?? "No workspace"}
+            {workspace?.name ?? _(msg`No workspace`)}
           </span>
           <span
             className={`ws-switcher-chevron${wsOpen ? " open" : ""}`}
@@ -216,7 +221,7 @@ export function Sidebar({
                 setDialogOpen(true);
               }}
             >
-              + New workspace
+              <Trans>+ New workspace</Trans>
             </button>
           </div>
         )}
@@ -232,7 +237,7 @@ export function Sidebar({
                 className={pathname.startsWith(item.href) ? "active" : ""}
               >
                 {item.icon ?? <span className="nav-dot" aria-hidden />}
-                {item.label}
+                {_(item.label)}
               </Link>
             </li>
           ))}

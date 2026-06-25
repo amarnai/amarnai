@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Trans, Plural } from "@lingui/react/macro";
 import { api } from "@/lib/api";
 import { TAXONOMY_MIN_NON_ROOT_NODES } from "@amarnai/shared";
 
@@ -34,7 +35,11 @@ export function UnroutedBanner({ workspaceId, waitingCount, routableNodeCount, o
     return (
       <div className="warning-box" style={{ margin: "12px 16px 0", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
         <span suppressHydrationWarning>
-          {waitingCount} thread{waitingCount !== 1 ? "s are" : " is"} waiting to be routed. Set up your folders to start sorting.
+          <Plural
+            value={waitingCount}
+            one="# thread is waiting to be routed. Set up your folders to start sorting."
+            other="# threads are waiting to be routed. Set up your folders to start sorting."
+          />
         </span>
         <a href="/plan?openGenerate=1" className="btn-primary" style={{ whiteSpace: "nowrap", display: "inline-flex", alignItems: "center", gap: 6, flexShrink: 0 }}>
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
@@ -45,7 +50,7 @@ export function UnroutedBanner({ workspaceId, waitingCount, routableNodeCount, o
               strokeLinejoin="round"
             />
           </svg>
-          Generate from inbox
+          <Trans>Generate from inbox</Trans>
         </a>
       </div>
     );
@@ -57,7 +62,11 @@ export function UnroutedBanner({ workspaceId, waitingCount, routableNodeCount, o
       style={{ margin: "12px 16px 0", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}
     >
       <span suppressHydrationWarning>
-        {waitingCount} thread{waitingCount !== 1 ? "s are" : " is"} ready to route.
+        <Plural
+          value={waitingCount}
+          one="# thread is ready to route."
+          other="# threads are ready to route."
+        />
       </span>
       <button
         type="button"
@@ -66,7 +75,7 @@ export function UnroutedBanner({ workspaceId, waitingCount, routableNodeCount, o
         disabled={routing}
         onClick={handleRouteNow}
       >
-        {routing ? "Routing…" : "Route now"}
+        {routing ? <Trans>Routing…</Trans> : <Trans>Route now</Trans>}
       </button>
     </div>
   );

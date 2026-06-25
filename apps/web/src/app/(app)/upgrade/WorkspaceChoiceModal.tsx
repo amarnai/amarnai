@@ -3,6 +3,10 @@
 import { useEffect, useRef, useState } from "react";
 import { OptionCards, type OptionCardItem } from "@amarnai/ui";
 import type { PlanId, BillingCycle } from "@amarnai/ui";
+import { Trans } from "@lingui/react/macro";
+import { useLingui } from "@lingui/react";
+import { msg } from "@lingui/core/macro";
+import type { MessageDescriptor } from "@lingui/core";
 
 type Choice = "upgrade" | "create";
 
@@ -14,16 +18,16 @@ interface Props {
   onClose: () => void;
 }
 
-const OPTIONS: OptionCardItem<Choice>[] = [
+const OPTION_DESCRIPTORS: { id: Choice; label: MessageDescriptor; description: MessageDescriptor }[] = [
   {
     id: "upgrade",
-    label: "Upgrade this workspace",
-    description: "Keep your current inbox, taxonomy, and sorting history.",
+    label: msg`Upgrade this workspace`,
+    description: msg`Keep your current inbox, taxonomy, and sorting history.`,
   },
   {
     id: "create",
-    label: "Create a new workspace",
-    description: "Use this plan for a business, team, or separate Gmail account.",
+    label: msg`Create a new workspace`,
+    description: msg`Use this plan for a business, team, or separate Gmail account.`,
   },
 ];
 
@@ -34,11 +38,18 @@ export function WorkspaceChoiceModal({
   cycle,
   onClose,
 }: Props) {
+  const { _ } = useLingui();
   const [selected, setSelected] = useState<Choice | null>(null);
   const [newName, setNewName] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const backdropRef = useRef<HTMLDivElement>(null);
+
+  const options: OptionCardItem<Choice>[] = OPTION_DESCRIPTORS.map((opt) => ({
+    id: opt.id,
+    label: _(opt.label),
+    description: _(opt.description),
+  }));
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -55,7 +66,7 @@ export function WorkspaceChoiceModal({
   async function handleContinue() {
     if (!selected) return;
     if (selected === "create" && !newName.trim()) {
-      setError("Workspace name cannot be empty");
+      setError(_(msg`Workspace name cannot be empty`));
       return;
     }
 
@@ -75,7 +86,7 @@ export function WorkspaceChoiceModal({
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error ?? "Something went wrong. Please try again.");
+        setError(data.error ?? _(msg`Something went wrong. Please try again.`));
         return;
       }
       if (data.upgraded) {
@@ -84,7 +95,7 @@ export function WorkspaceChoiceModal({
       }
       window.location.href = data.url;
     } catch {
-      setError("Something went wrong. Please try again.");
+      setError(_(msg`Something went wrong. Please try again.`));
     } finally {
       setLoading(false);
     }
@@ -109,12 +120,12 @@ export function WorkspaceChoiceModal({
       >
         <div className="modal-header">
           <h2 id="ws-choice-title" className="modal-title">
-            How do you want to use this plan?
+            <Trans>How do you want to use this plan?</Trans>
           </h2>
           <button
             type="button"
             className="modal-close"
-            aria-label="Close"
+            aria-label={_(msg`Close`)}
             onClick={onClose}
           >
             ×
@@ -123,11 +134,11 @@ export function WorkspaceChoiceModal({
 
         <div className="modal-body">
           <p className="ws-choice-helper">
-            Current workspace: <strong>{workspaceName}</strong>
+            <Trans>Current workspace: <strong>{workspaceName}</strong></Trans>
           </p>
 
           <OptionCards
-            options={OPTIONS}
+            options={options}
             selected={selected}
             onChange={setSelected}
           />
@@ -136,7 +147,7 @@ export function WorkspaceChoiceModal({
             <input
               className="ws-create-input"
               type="text"
-              placeholder="New workspace name"
+              placeholder={_(msg`New workspace name`)}
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
               maxLength={100}
@@ -147,14 +158,16 @@ export function WorkspaceChoiceModal({
           {error && <p className="ws-choice-error">{error}</p>}
 
           <p className="ws-choice-helper">
-            You can keep your free Personal workspace and use paid workspaces
-            separately.
+            <Trans>
+              You can keep your free Personal workspace and use paid workspaces
+              separately.
+            </Trans>
           </p>
         </div>
 
         <div className="modal-footer">
           <button type="button" className="btn-ghost" onClick={onClose} disabled={loading}>
-            Cancel
+            <Trans>Cancel</Trans>
           </button>
           <button
             type="button"
@@ -162,7 +175,7 @@ export function WorkspaceChoiceModal({
             disabled={!canContinue}
             onClick={handleContinue}
           >
-            {loading ? "Redirecting…" : "Continue to payment"}
+            {loading ? <Trans>Redirecting…</Trans> : <Trans>Continue to payment</Trans>}
           </button>
         </div>
       </div>

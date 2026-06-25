@@ -9,6 +9,8 @@ import {
   setLocaleAction,
 } from "@/actions/auth";
 import { Trans } from "@lingui/react/macro";
+import { useLingui } from "@lingui/react";
+import { msg } from "@lingui/core/macro";
 import {
   SUPPORTED_LOCALES,
   LOCALE_DISPLAY_NAMES,
@@ -27,6 +29,7 @@ export function AccountForm({
   lifecycleEmailsEnabled: boolean;
   locale: string;
 }) {
+  const { _ } = useLingui();
   const [nameValue, setNameValue] = useState(currentName ?? "");
   const [nameState, nameAction, namePending] = useActionState(updateNameAction, null);
   const [deleteState, deleteAction, deletePending] = useActionState(deleteAccountAction, null);
@@ -64,7 +67,7 @@ export function AccountForm({
 
         <form action={nameAction} className="account-form">
           {nameState?.error && <p className="auth-error">{nameState.error}</p>}
-          {nameState?.success && <p className="auth-success">Name updated.</p>}
+          {nameState?.success && <p className="auth-success"><Trans>Name updated.</Trans></p>}
 
           <div className="form-group">
             <label className="form-label" htmlFor="name">
@@ -76,14 +79,14 @@ export function AccountForm({
               type="text"
               value={nameValue}
               onChange={(e) => setNameValue(e.target.value)}
-              placeholder="Your name"
+              placeholder={_(msg`Your name`)}
               maxLength={100}
               className="form-input"
             />
           </div>
 
           <div className="form-group">
-            <label className="form-label">Email</label>
+            <label className="form-label"><Trans>Email</Trans></label>
             <input type="email" value={email} readOnly disabled className="form-input" />
           </div>
 
@@ -94,7 +97,7 @@ export function AccountForm({
       </section>
 
       <section className="settings-section">
-        <h2>Email reminders</h2>
+        <h2><Trans>Email reminders</Trans></h2>
         <label className="settings-toggle">
           <input
             type="checkbox"
@@ -102,7 +105,7 @@ export function AccountForm({
             disabled={remindersPending}
             onChange={(e) => toggleReminders(e.target.checked)}
           />
-          Send me a weekly reminder when my Amarnai inbox needs attention.
+          <Trans>Send me a weekly reminder when my Amarnai inbox needs attention.</Trans>
         </label>
       </section>
 
@@ -141,9 +144,9 @@ export function AccountForm({
       </section>
 
       <section className="settings-section settings-section-danger">
-        <h2>Danger zone</h2>
+        <h2><Trans>Danger zone</Trans></h2>
         <p className="account-danger-description">
-          Permanently delete your account and all associated data. This cannot be undone.
+          <Trans>Permanently delete your account and all associated data. This cannot be undone.</Trans>
         </p>
 
         {deleteState?.error && <p className="auth-error">{deleteState.error}</p>}
@@ -154,23 +157,23 @@ export function AccountForm({
             className="btn-danger"
             onClick={() => setConfirmDelete(true)}
           >
-            Delete account
+            <Trans>Delete account</Trans>
           </button>
         ) : (
           <form action={deleteAction} className="account-delete-confirm">
             <p className="account-danger-warning">
-              All your workspaces, emails, and settings will be deleted permanently.
+              <Trans>All your workspaces, emails, and settings will be deleted permanently.</Trans>
             </p>
             <div className="account-delete-actions">
               <button type="submit" disabled={deletePending} className="btn-danger">
-                {deletePending ? "Deleting…" : "Yes, delete my account"}
+                {deletePending ? <Trans>Deleting…</Trans> : <Trans>Yes, delete my account</Trans>}
               </button>
               <button
                 type="button"
                 className="btn-ghost"
                 onClick={() => setConfirmDelete(false)}
               >
-                Cancel
+                <Trans>Cancel</Trans>
               </button>
             </div>
           </form>

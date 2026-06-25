@@ -3,6 +3,7 @@ import { getSelectedWorkspace } from "@/lib/workspace";
 import { db } from "@amarnai/db";
 import { UpgradeClient } from "./UpgradeClient";
 import type { PlanId, BillingCycle } from "@amarnai/ui";
+import { Trans } from "@lingui/react/macro";
 
 export const metadata = { title: "Upgrade — Amarnai" };
 
@@ -37,9 +38,9 @@ export default async function UpgradePage({
 
   return (
     <div className="upgrade-page">
-      <h1>Choose a subscription</h1>
+      <h1><Trans>Choose a subscription</Trans></h1>
       <p className="upgrade-page-intro">
-        Start for free and upgrade as your needs grow.
+        <Trans>Start for free and upgrade as your needs grow.</Trans>
       </p>
       <UpgradeClient
         workspaceId={workspace.id}

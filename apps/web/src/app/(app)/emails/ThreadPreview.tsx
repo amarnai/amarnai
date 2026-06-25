@@ -1,6 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { Trans } from "@lingui/react/macro";
+import { useLingui } from "@lingui/react";
+import { msg } from "@lingui/core/macro";
 import { api } from "@/lib/api";
 import type { Draft } from "@/lib/api";
 import type { FolderItem, ThreadItem } from "@amarnai/ui/emails";
@@ -43,6 +46,7 @@ export function ThreadPreview({
   onMarkDone,
   onUnmarkDone,
 }: Props) {
+  const { _ } = useLingui();
   const [reasoning, setReasoning] = useState<string | null>(thread.reasoning);
   const [decisionSource, setDecisionSource] = useState<string | null>(null);
   const [bodyLoaded, setBodyLoaded] = useState(false);
@@ -201,6 +205,7 @@ export function ThreadPreview({
   const canDraft = thread.status !== "unsorted" && !lastMsgIsOwn;
   const quotaExhausted = draftQuota !== null && draftQuota.used >= draftQuota.limit;
   const quotaResetDate = draftQuota ? formatQuotaResetDate(draftQuota.resetsAt) : null;
+  const quotaRemaining = draftQuota ? draftQuota.limit - draftQuota.used : 0;
 
   return (
     <div className="em-preview-col">
@@ -209,19 +214,19 @@ export function ThreadPreview({
           type="button"
           className="em-back-btn"
           onClick={onClose}
-          aria-label="Back to list"
+          aria-label={_(msg`Back to list`)}
         >
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
             <path d="M9 11L5 7l4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
-          Back
+          <Trans>Back</Trans>
         </button>
         <span className="em-preview-spacer" />
-        <Tooltip content="Close preview" placement="left">
+        <Tooltip content={_(msg`Close preview`)} placement="left">
           <button
             type="button"
             className="em-icon-btn"
-            aria-label="Close preview"
+            aria-label={_(msg`Close preview`)}
             onClick={onClose}
           >
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
@@ -234,13 +239,13 @@ export function ThreadPreview({
       <div className="em-preview-scroll">
         <h2 className="em-preview-subject">
           {thread.subject}
-          <Tooltip content="Open in Gmail" placement="bottom">
+          <Tooltip content={_(msg`Open in Gmail`)} placement="bottom">
             <a
               href={`https://mail.google.com/mail/u/0/#all/${thread.providerThreadId}`}
               target="_blank"
               rel="noopener noreferrer"
               className="em-preview-gmail-link"
-              aria-label="Open in Gmail"
+              aria-label={_(msg`Open in Gmail`)}
             >
               <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden>
                 <path d="M5 2H2a1 1 0 00-1 1v7a1 1 0 001 1h7a1 1 0 001-1V7M7.5 1H11v3.5M11 1L5.5 6.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
@@ -295,13 +300,13 @@ export function ThreadPreview({
                   />
                 </svg>
               </span>
-              Generate draft reply
+              <Trans>Generate draft reply</Trans>
             </button>
             {draftQuota !== null && (
               <p className={`em-draft-quota${quotaExhausted ? " em-draft-quota--exhausted" : ""}`}>
                 {quotaExhausted
-                  ? <>No drafts remaining · resets {quotaResetDate}</>
-                  : <>{draftQuota.limit - draftQuota.used} of {draftQuota.limit} remaining · resets {quotaResetDate}</>
+                  ? <Trans>No drafts remaining · resets {quotaResetDate}</Trans>
+                  : <Trans>{quotaRemaining} of {draftQuota.limit} remaining · resets {quotaResetDate}</Trans>
                 }
               </p>
             )}
@@ -311,19 +316,19 @@ export function ThreadPreview({
         {draftState === "loading" && (
           <div className="em-draft-skeleton">
             <span className="em-draft-skeleton-pulse" />
-            Writing draft reply…
+            <Trans>Writing draft reply…</Trans>
           </div>
         )}
 
         {draftState === "error" && (
           <div className="em-draft-error">
-            <span>Draft generation failed. Try again.</span>
+            <span><Trans>Draft generation failed. Try again.</Trans></span>
             <button
               type="button"
               className="em-btn ghost"
               onClick={() => handleGenerateDraft()}
             >
-              Retry
+              <Trans>Retry</Trans>
             </button>
           </div>
         )}

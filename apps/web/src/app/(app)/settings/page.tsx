@@ -10,6 +10,7 @@ import { ResetWorkspaceSection } from "./ResetWorkspaceSection";
 import { EmailBlacklistSection } from "./EmailBlacklistSection";
 import { TeamMembersSection } from "./TeamMembersSection";
 import { BillingSection } from "./BillingSection";
+import { Trans } from "@lingui/react/macro";
 
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 
@@ -99,7 +100,7 @@ export default async function SettingsPage({ searchParams }: { searchParams: Sea
 
   return (
     <>
-      <h1>Workspace Settings</h1>
+      <h1><Trans>Workspace Settings</Trans></h1>
 
       {isAdmin && (
         <>

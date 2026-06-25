@@ -4,6 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { PLANS, type PlanId, type BillingCycle } from "@amarnai/ui";
+import { Trans } from "@lingui/react/macro";
+import { useLingui } from "@lingui/react";
+import { msg } from "@lingui/core/macro";
 import { createWorkspaceAction } from "@/actions/workspace";
 
 interface Props {
@@ -13,6 +16,7 @@ interface Props {
 
 export function CreateWorkspaceDialog({ hasFreeWorkspace, onClose }: Props) {
   const router = useRouter();
+  const { _ } = useLingui();
   const [selectedPlan, setSelectedPlan] = useState<PlanId>(
     hasFreeWorkspace ? "pro" : "free"
   );
@@ -38,15 +42,15 @@ export function CreateWorkspaceDialog({ hasFreeWorkspace, onClose }: Props) {
 
   function priceLabel(planId: PlanId): string {
     const plan = PLANS.find((p) => p.id === planId)!;
-    if (plan.free) return "Free";
+    if (plan.free) return _(msg`Free`);
     const price = cycle === "annual" ? plan.annualMonthlyPrice : plan.monthlyPrice;
-    return `$${price}/mo`;
+    return _(msg`$${price}/mo`);
   }
 
   async function handleSubmit() {
     const name = workspaceName.trim();
     if (!name) {
-      setError("Workspace name cannot be empty");
+      setError(_(msg`Workspace name cannot be empty`));
       return;
     }
     setPending(true);
@@ -75,13 +79,13 @@ export function CreateWorkspaceDialog({ hasFreeWorkspace, onClose }: Props) {
         });
         const data = await res.json();
         if (!res.ok) {
-          setError(data.error ?? "Something went wrong. Please try again.");
+          setError(data.error ?? _(msg`Something went wrong. Please try again.`));
           setPending(false);
           return;
         }
         window.location.href = data.url;
       } catch {
-        setError("Something went wrong. Please try again.");
+        setError(_(msg`Something went wrong. Please try again.`));
         setPending(false);
       }
     }
@@ -89,11 +93,11 @@ export function CreateWorkspaceDialog({ hasFreeWorkspace, onClose }: Props) {
 
   const ctaLabel = pending
     ? selectedPlan === "free"
-      ? "Creating…"
-      : "Redirecting…"
+      ? _(msg`Creating…`)
+      : _(msg`Redirecting…`)
     : selectedPlan === "free"
-      ? "Create workspace"
-      : "Continue to checkout";
+      ? _(msg`Create workspace`)
+      : _(msg`Continue to checkout`);
 
   return (
     <div ref={backdropRef} className="modal-backdrop" onClick={handleBackdropClick}>
@@ -105,12 +109,12 @@ export function CreateWorkspaceDialog({ hasFreeWorkspace, onClose }: Props) {
       >
         <div className="modal-header">
           <h2 id="create-ws-title" className="modal-title">
-            Create a workspace
+            <Trans>Create a workspace</Trans>
           </h2>
           <button
             type="button"
             className="modal-close"
-            aria-label="Close"
+            aria-label={_(msg`Close`)}
             onClick={onClose}
           >
             ×
@@ -122,7 +126,7 @@ export function CreateWorkspaceDialog({ hasFreeWorkspace, onClose }: Props) {
             <div style={{ width: 220, height: 160, overflow: "hidden" }}>
               <Image
                 src="/aziru-workspace.png"
-                alt="King Aziru"
+                alt={_(msg`King Aziru`)}
                 width={220}
                 height={288}
                 priority
@@ -160,7 +164,7 @@ export function CreateWorkspaceDialog({ hasFreeWorkspace, onClose }: Props) {
           <input
             className="ws-create-input"
             type="text"
-            placeholder="Workspace name"
+            placeholder={_(msg`Workspace name`)}
             value={workspaceName}
             onChange={(e) => setWorkspaceName(e.target.value)}
             maxLength={100}
@@ -168,7 +172,7 @@ export function CreateWorkspaceDialog({ hasFreeWorkspace, onClose }: Props) {
           />
 
           {selectedPlan !== "free" && (
-            <div className="plans-seg" role="tablist" aria-label="Billing cycle">
+            <div className="plans-seg" role="tablist" aria-label={_(msg`Billing cycle`)}>
               <button
                 type="button"
                 role="tab"
@@ -176,7 +180,7 @@ export function CreateWorkspaceDialog({ hasFreeWorkspace, onClose }: Props) {
                 className={cycle === "monthly" ? "on" : ""}
                 onClick={() => setCycle("monthly")}
               >
-                Monthly
+                <Trans>Monthly</Trans>
               </button>
               <button
                 type="button"
@@ -185,7 +189,7 @@ export function CreateWorkspaceDialog({ hasFreeWorkspace, onClose }: Props) {
                 className={cycle === "annual" ? "on" : ""}
                 onClick={() => setCycle("annual")}
               >
-                Annual · Save 20%
+                <Trans>Annual · Save 20%</Trans>
               </button>
             </div>
           )}
@@ -200,7 +204,7 @@ export function CreateWorkspaceDialog({ hasFreeWorkspace, onClose }: Props) {
             onClick={onClose}
             disabled={pending}
           >
-            Cancel
+            <Trans>Cancel</Trans>
           </button>
           <button
             type="button"

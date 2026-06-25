@@ -7,6 +7,9 @@ import {
   removeMemberAction,
   cancelInvitationAction,
 } from "@/actions/members";
+import { Trans } from "@lingui/react/macro";
+import { useLingui } from "@lingui/react";
+import { msg } from "@lingui/core/macro";
 
 type Member = {
   id: string;
@@ -36,7 +39,7 @@ function isValidEmail(value: string): boolean {
 function RoleBadge({ role }: { role: string }) {
   return (
     <span className={`role-badge role-badge--${role === "OWNER" ? "admin" : "member"}`}>
-      {role === "OWNER" ? "Admin" : "Member"}
+      {role === "OWNER" ? <Trans>Admin</Trans> : <Trans>Member</Trans>}
     </span>
   );
 }
@@ -48,6 +51,7 @@ export function TeamMembersSection({
   pendingInvitations: initialInvitations,
   collaboratorLimit,
 }: Props) {
+  const { _ } = useLingui();
   const [inviteInput, setInviteInput] = useState("");
   const [inviteError, setInviteError] = useState<string | null>(null);
   const [inviteSuccess, setInviteSuccess] = useState<string | null>(null);
@@ -64,7 +68,7 @@ export function TeamMembersSection({
   function handleInvite() {
     const email = inviteInput.trim().toLowerCase();
     if (!isValidEmail(email)) {
-      setInviteError("Enter a valid email address");
+      setInviteError(_(msg`Enter a valid email address`));
       return;
     }
     setInviteError(null);
@@ -75,7 +79,7 @@ export function TeamMembersSection({
       if (result.error) {
         setInviteError(result.error);
       } else {
-        setInviteSuccess(`Invitation sent to ${email}`);
+        setInviteSuccess(_(msg`Invitation sent to ${email}`));
         setInviteInput("");
         // Optimistically add to pending list (server will revalidate for full refresh).
         setInvitations((prev) => [
@@ -124,13 +128,13 @@ export function TeamMembersSection({
 
   return (
     <section className="settings-section">
-      <h2>Collaborators</h2>
+      <h2><Trans>Collaborators</Trans></h2>
       <p className="settings-hint">
         {isAdmin
           ? collaboratorLimit === 0
-            ? <>Collaborators are available on Pro and Business subscriptions. <Link href="/upgrade">Upgrade to add.</Link></>
-            : `You can invite up to ${collaboratorLimit} collaborators to this workspace.`
-          : "People with access to this workspace."}
+            ? <Trans>Collaborators are available on Pro and Business subscriptions. <Link href="/upgrade">Upgrade to add.</Link></Trans>
+            : <Trans>You can invite up to {collaboratorLimit} collaborators to this workspace.</Trans>
+          : <Trans>People with access to this workspace.</Trans>}
       </p>
 
       <ul className="members-list">
@@ -149,9 +153,9 @@ export function TeamMembersSection({
                 className="member-remove"
                 onClick={() => handleRemove(member.userId)}
                 disabled={isPending && removingId === member.userId}
-                aria-label={`Remove ${member.user.email}`}
+                aria-label={_(msg`Remove ${member.user.email}`)}
               >
-                {removingId === member.userId ? "Removing…" : "Remove"}
+                {removingId === member.userId ? <Trans>Removing…</Trans> : <Trans>Remove</Trans>}
               </button>
             )}
           </li>
@@ -162,7 +166,7 @@ export function TeamMembersSection({
 
       {invitations.length > 0 && (
         <div className="settings-subsection">
-          <h3>Pending invitations</h3>
+          <h3><Trans>Pending invitations</Trans></h3>
           <ul className="invitations-list">
             {invitations.map((inv) => (
               <li key={inv.id} className="invitation-row">
@@ -173,9 +177,9 @@ export function TeamMembersSection({
                     className="invitation-cancel"
                     onClick={() => handleCancelInvitation(inv.id, inv.invitedEmail)}
                     disabled={isPending && cancellingId === inv.id}
-                    aria-label={`Cancel invitation for ${inv.invitedEmail}`}
+                    aria-label={_(msg`Cancel invitation for ${inv.invitedEmail}`)}
                   >
-                    {cancellingId === inv.id ? "Cancelling…" : "Cancel"}
+                    {cancellingId === inv.id ? <Trans>Cancelling…</Trans> : <Trans>Cancel</Trans>}
                   </button>
                 )}
               </li>
@@ -186,12 +190,12 @@ export function TeamMembersSection({
 
       {isAdmin && (
         <div className="settings-subsection">
-          <h3>Invite a collaborator</h3>
+          <h3><Trans>Invite a collaborator</Trans></h3>
           {atLimit ? (
             <p className="settings-hint">
               {collaboratorLimit === 0
-                ? "Upgrade to a Pro or Business subscription to invite collaborators."
-                : `Maximum of ${collaboratorLimit} collaborators reached.`}
+                ? <Trans>Upgrade to a Pro or Business subscription to invite collaborators.</Trans>
+                : <Trans>Maximum of {collaboratorLimit} collaborators reached.</Trans>}
             </p>
           ) : (
             <>
@@ -209,7 +213,7 @@ export function TeamMembersSection({
                   }}
                   onKeyDown={handleKeyDown}
                   disabled={isPending}
-                  aria-label="Email address to invite"
+                  aria-label={_(msg`Email address to invite`)}
                 />
                 <button
                   type="button"
@@ -217,7 +221,7 @@ export function TeamMembersSection({
                   onClick={handleInvite}
                   disabled={isPending || inviteInput.trim() === ""}
                 >
-                  {isPending ? "Sending…" : "Send invite"}
+                  {isPending ? <Trans>Sending…</Trans> : <Trans>Send invite</Trans>}
                 </button>
               </div>
               {inviteError && <p className="members-error">{inviteError}</p>}

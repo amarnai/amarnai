@@ -64,6 +64,9 @@ import {
   validateTaxonomyTransfer,
   type TaxonomyTransferFile,
 } from "@amarnai/shared";
+import { Trans, Plural } from "@lingui/react/macro";
+import { useLingui } from "@lingui/react";
+import { msg } from "@lingui/core/macro";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -226,7 +229,7 @@ function DescriptionTips() {
         >
           <polyline points="9 6 15 12 9 18" />
         </svg>
-        {open ? "Hide tips" : "How to write a good description"}
+        {open ? <Trans>Hide tips</Trans> : <Trans>How to write a good description</Trans>}
       </button>
       {open && (
         <div
@@ -242,11 +245,13 @@ function DescriptionTips() {
           }}
         >
           <p style={{ margin: 0 }}>
-            Describe what kinds of emails belong here: who they come from and
-            what they are about. Be specific and use the actual names, topics,
-            and words that show up in those emails. Describe what the emails
-            are, not what you plan to do about them. The clearer your
-            description, the more accurately your email is sorted here.
+            <Trans>
+              Describe what kinds of emails belong here: who they come from and
+              what they are about. Be specific and use the actual names, topics,
+              and words that show up in those emails. Describe what the emails
+              are, not what you plan to do about them. The clearer your
+              description, the more accurately your email is sorted here.
+            </Trans>
           </p>
           <div
             style={{
@@ -257,8 +262,7 @@ function DescriptionTips() {
               color: "var(--color-success-text)",
             }}
           >
-            ✓ Receipts, payment confirmations, and billing questions from
-            vendors.
+            ✓ <Trans>Receipts, payment confirmations, and billing questions from vendors.</Trans>
           </div>
           <div
             style={{
@@ -269,7 +273,7 @@ function DescriptionTips() {
               color: "var(--danger)",
             }}
           >
-            ✗ Emails about my bills that I need to deal with.
+            ✗ <Trans>Emails about my bills that I need to deal with.</Trans>
           </div>
         </div>
       )}
@@ -320,6 +324,7 @@ function NodeForm({
   submitting: boolean;
   error: string | null;
 }) {
+  const { _ } = useLingui();
   const isRoot = node?.isRoot ?? false;
 
   // A folder's parent is modelled as a single "Parent" choice instead of a
@@ -386,7 +391,7 @@ function NodeForm({
 
   return (
     <div className="panel-inner">
-      <h2>{node ? "Edit Folder" : "Create Folder"}</h2>
+      <h2>{node ? <Trans>Edit Folder</Trans> : <Trans>Create Folder</Trans>}</h2>
       {error && (
         <div className="error-box" style={{ marginBottom: 12 }}>
           {error}
@@ -395,7 +400,7 @@ function NodeForm({
       <form className="node-form" onSubmit={handleSubmit}>
         <div className="form-group">
           <label className="form-label">
-            Name <span className="required">*</span>
+            <Trans>Name</Trans> <span className="required">*</span>
           </label>
           <input
             className="form-input"
@@ -408,7 +413,7 @@ function NodeForm({
         </div>
         <div className="form-group">
           <label className="form-label">
-            Description{!isRoot && <span className="required"> *</span>}
+            <Trans>Description</Trans>{!isRoot && <span className="required"> *</span>}
           </label>
           <textarea
             className="form-textarea"
@@ -416,71 +421,80 @@ function NodeForm({
             onChange={(e) => setDescription(e.target.value)}
             required={!isRoot}
             maxLength={300}
-            placeholder="e.g. Invoices, receipts, payment confirmations, and billing questions from clients and vendors."
+            placeholder={_(msg`e.g. Invoices, receipts, payment confirmations, and billing questions from clients and vendors.`)}
           />
           {!isRoot && (
             <>
               <p style={{ fontSize: 11, color: "var(--color-muted)" }}>
-                List the kinds of emails that belong here: senders, topics,
-                keywords. At least 30 characters.
+                <Trans>
+                  List the kinds of emails that belong here: senders, topics,
+                  keywords. At least 30 characters.
+                </Trans>
               </p>
               <DescriptionTips />
             </>
           )}
         </div>
         <div className="form-group">
-          <label className="form-label">Draft style guidance</label>
+          <label className="form-label"><Trans>Draft style guidance</Trans></label>
           <textarea
             className="form-textarea"
             value={draftPrompt}
             onChange={(e) => setDraftPrompt(e.target.value)}
             maxLength={500}
-            placeholder="e.g. Reply formally. Keep responses under 3 sentences."
+            placeholder={_(msg`e.g. Reply formally. Keep responses under 3 sentences.`)}
           />
           <p
             style={{ fontSize: 11, color: "var(--color-muted)", marginTop: 2 }}
           >
-            Optional. Applied when generating draft replies for threads in this
-            folder.
+            <Trans>
+              Optional. Applied when generating draft replies for threads in this
+              folder.
+            </Trans>
           </p>
         </div>
         {!isRoot && (
           <div className="form-group">
-            <label className="form-label">Parent</label>
+            <label className="form-label"><Trans>Parent</Trans></label>
             <select
               className="form-select"
               value={parentId}
               onChange={(e) => setParentId(e.target.value)}
             >
-              <option value="">None (not connected)</option>
+              <option value="">{_(msg`None (not connected)`)}</option>
               {parentOptions.map((n) => (
                 <option key={n.id} value={n.id}>
                   {n.name}
-                  {n.isRoot ? " (Inbox)" : ""}
+                  {n.isRoot ? _(msg` (Inbox)`) : ""}
                 </option>
               ))}
             </select>
             <p style={{ fontSize: 11, color: "var(--color-muted)", marginTop: 2 }}>
-              Where this folder sits. Folders with no parent stay disconnected
-              and are ignored until connected.
+              <Trans>
+                Where this folder sits. Folders with no parent stay disconnected
+                and are ignored until connected.
+              </Trans>
             </p>
           </div>
         )}
         {confirmingDelete ? (
           <div style={{ marginTop: 16 }}>
             <div className="warning-box" style={{ marginBottom: 12 }}>
-              Deleting this folder will leave {classificationCount} thread
-              {classificationCount !== 1 ? "s" : ""} unsorted.
+              <Plural
+                value={classificationCount}
+                one="Deleting this folder will leave # thread unsorted."
+                other="Deleting this folder will leave # threads unsorted."
+              />
             </div>
             {otherNodes.length > 0 && (
               <div className="form-group">
-                <label className="form-label">Move them to</label>
+                <label className="form-label"><Trans>Move them to</Trans></label>
                 <select
                   className="form-select"
                   value={moveToNodeId}
                   onChange={(e) => setMoveToNodeId(e.target.value)}
                 >
-                  <option value="">Leave unsorted</option>
+                  <option value="">{_(msg`Leave unsorted`)}</option>
                   {otherNodes.map((n) => (
                     <option key={n.id} value={n.id}>
                       {n.name}
@@ -496,7 +510,7 @@ function NodeForm({
                 onClick={() => onDelete?.(moveToNodeId || undefined)}
                 disabled={submitting}
               >
-                {submitting ? "Deleting…" : "Confirm Delete"}
+                {submitting ? <Trans>Deleting…</Trans> : <Trans>Confirm Delete</Trans>}
               </button>
               <button
                 className="btn-ghost"
@@ -504,7 +518,7 @@ function NodeForm({
                 onClick={() => setConfirmingDelete(false)}
                 disabled={submitting}
               >
-                Cancel
+                <Trans>Cancel</Trans>
               </button>
             </div>
           </div>
@@ -515,10 +529,10 @@ function NodeForm({
               type="submit"
               disabled={submitting || !nameValid || !descriptionValid}
             >
-              {submitting ? "Saving…" : node ? "Save" : "Create"}
+              {submitting ? <Trans>Saving…</Trans> : node ? <Trans>Save</Trans> : <Trans>Create</Trans>}
             </button>
             <button className="btn-ghost" type="button" onClick={onCancel}>
-              Cancel
+              <Trans>Cancel</Trans>
             </button>
             {node &&
               !node.isRoot &&
@@ -534,7 +548,7 @@ function NodeForm({
                       disabled
                       style={{ pointerEvents: "none" }}
                     >
-                      Delete
+                      <Trans>Delete</Trans>
                     </button>
                   </span>
                 </Tooltip>
@@ -545,7 +559,7 @@ function NodeForm({
                   onClick={handleDeleteClick}
                   disabled={submitting}
                 >
-                  Delete
+                  <Trans>Delete</Trans>
                 </button>
               ))}
           </div>
@@ -589,7 +603,7 @@ function EdgeForm({
 
   return (
     <div className="panel-inner">
-      <h2>Edit Path</h2>
+      <h2><Trans>Edit Path</Trans></h2>
       {error && (
         <div className="error-box" style={{ marginBottom: 12 }}>
           {error}
@@ -598,7 +612,7 @@ function EdgeForm({
       <form className="node-form" onSubmit={handleSubmit}>
         <div className="form-row">
           <div className="form-group">
-            <label className="form-label">Parent</label>
+            <label className="form-label"><Trans>Parent</Trans></label>
             <select
               className="form-select"
               value={sourceNodeId}
@@ -612,7 +626,7 @@ function EdgeForm({
             </select>
           </div>
           <div className="form-group">
-            <label className="form-label">Child folder</label>
+            <label className="form-label"><Trans>Child folder</Trans></label>
             <div
               className="form-select"
               style={{
@@ -627,10 +641,10 @@ function EdgeForm({
         </div>
         <div className="form-actions">
           <button className="btn-primary" type="submit" disabled={submitting}>
-            {submitting ? "Saving…" : "Save"}
+            {submitting ? <Trans>Saving…</Trans> : <Trans>Save</Trans>}
           </button>
           <button className="btn-ghost" type="button" onClick={onCancel}>
-            Cancel
+            <Trans>Cancel</Trans>
           </button>
           {onDelete && (
             <button
@@ -639,7 +653,7 @@ function EdgeForm({
               onClick={onDelete}
               disabled={submitting}
             >
-              Delete
+              <Trans>Delete</Trans>
             </button>
           )}
         </div>
@@ -753,6 +767,7 @@ function TaxonomyCanvasInner({
   readOnly?: boolean;
   gmailConnected?: boolean;
 }) {
+  const { _ } = useLingui();
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -872,11 +887,11 @@ function TaxonomyCanvasInner({
         history.push({ nodes: updatedNodes, edges: dbEdges });
       } catch (err) {
         setApiError(
-          err instanceof Error ? err.message : "Failed to save position",
+          err instanceof Error ? err.message : _(msg`Failed to save position`),
         );
       }
     },
-    [workspaceId, dbNodes, dbEdges, history],
+    [workspaceId, dbNodes, dbEdges, history, _],
   );
 
   // ─── Connect nodes: create edge ───────────────────────────────────────────
@@ -895,11 +910,11 @@ function TaxonomyCanvasInner({
         history.push({ nodes, edges });
       } catch (err) {
         setApiError(
-          err instanceof Error ? err.message : "Failed to create path",
+          err instanceof Error ? err.message : _(msg`Failed to create path`),
         );
       }
     },
-    [workspaceId, refetch, dbNodes, history],
+    [workspaceId, refetch, dbNodes, history, _],
   );
 
   // ─── Click node: open edit panel ──────────────────────────────────────────
@@ -954,7 +969,7 @@ function TaxonomyCanvasInner({
       setPanel({ type: "none" });
     } catch (err) {
       setFormError(
-        err instanceof Error ? err.message : "Failed to create folder",
+        err instanceof Error ? err.message : _(msg`Failed to create folder`),
       );
     } finally {
       setSubmitting(false);
@@ -986,7 +1001,7 @@ function TaxonomyCanvasInner({
       setPanel({ type: "none" });
     } catch (err) {
       setFormError(
-        err instanceof Error ? err.message : "Failed to update folder",
+        err instanceof Error ? err.message : _(msg`Failed to update folder`),
       );
     } finally {
       setSubmitting(false);
@@ -1008,7 +1023,7 @@ function TaxonomyCanvasInner({
       setPanel({ type: "none" });
     } catch (err) {
       setFormError(
-        err instanceof Error ? err.message : "Failed to update path",
+        err instanceof Error ? err.message : _(msg`Failed to update path`),
       );
     } finally {
       setSubmitting(false);
@@ -1025,7 +1040,7 @@ function TaxonomyCanvasInner({
       setPanel({ type: "none" });
     } catch (err) {
       setFormError(
-        err instanceof Error ? err.message : "Failed to delete folder",
+        err instanceof Error ? err.message : _(msg`Failed to delete folder`),
       );
     } finally {
       setSubmitting(false);
@@ -1042,7 +1057,7 @@ function TaxonomyCanvasInner({
       setPanel({ type: "none" });
     } catch (err) {
       setFormError(
-        err instanceof Error ? err.message : "Failed to delete path",
+        err instanceof Error ? err.message : _(msg`Failed to delete path`),
       );
     } finally {
       setSubmitting(false);
@@ -1064,7 +1079,7 @@ function TaxonomyCanvasInner({
       const { nodes, edges } = await refetch();
       history.sync({ nodes, edges });
     } catch (err) {
-      setApiError(err instanceof Error ? err.message : "Failed to undo");
+      setApiError(err instanceof Error ? err.message : _(msg`Failed to undo`));
     } finally {
       setSubmitting(false);
     }
@@ -1083,7 +1098,7 @@ function TaxonomyCanvasInner({
       const { nodes, edges } = await refetch();
       history.sync({ nodes, edges });
     } catch (err) {
-      setApiError(err instanceof Error ? err.message : "Failed to redo");
+      setApiError(err instanceof Error ? err.message : _(msg`Failed to redo`));
     } finally {
       setSubmitting(false);
     }
@@ -1122,22 +1137,21 @@ function TaxonomyCanvasInner({
     try {
       raw = JSON.parse(await f.text());
     } catch {
-      setApiError("Could not read file: invalid JSON.");
+      setApiError(_(msg`Could not read file: invalid JSON.`));
       return;
     }
 
     const parsed = TaxonomyTransferFileSchema.safeParse(raw);
     if (!parsed.success) {
       const first = parsed.error.issues[0];
-      setApiError(
-        `Invalid taxonomy file: ${first?.message ?? "unknown error"}`,
-      );
+      const detail = first?.message ?? _(msg`unknown error`);
+      setApiError(_(msg`Invalid taxonomy file: ${detail}`));
       return;
     }
 
     const validation = validateTaxonomyTransfer(parsed.data);
     if (!validation.ok) {
-      setApiError(`Invalid taxonomy file: ${validation.error}`);
+      setApiError(_(msg`Invalid taxonomy file: ${validation.error}`));
       return;
     }
 
@@ -1164,7 +1178,7 @@ function TaxonomyCanvasInner({
       const { nodes, edges } = await refetch();
       history.reset({ nodes, edges });
     } catch (err) {
-      setApiError(err instanceof Error ? err.message : "Import failed");
+      setApiError(err instanceof Error ? err.message : _(msg`Import failed`));
     } finally {
       setSubmitting(false);
     }
@@ -1201,7 +1215,7 @@ function TaxonomyCanvasInner({
       (e) => e.sourceNodeId === panel.node.id,
     );
     nodeDeleteDisabledReason = nodeHasOutgoingEdges
-      ? "This folder has child folders. Remove their Paths first, then delete it."
+      ? _(msg`This folder has child folders. Remove their Paths first, then delete it.`)
       : null;
   }
 
@@ -1209,7 +1223,7 @@ function TaxonomyCanvasInner({
     <div className="taxonomy-inner">
       {readOnly ? (
         <div className="taxonomy-readonly-banner">
-          Plan is view-only. Only workspace admins can edit it.
+          <Trans>Plan is view-only. Only workspace admins can edit it.</Trans>
         </div>
       ) : (
         <div className="taxonomy-toolbar">
@@ -1217,9 +1231,9 @@ function TaxonomyCanvasInner({
             className="btn-primary"
             onClick={() => openPanel({ type: "create-node" })}
           >
-            + Add Folder
+            + <Trans>Add Folder</Trans>
           </button>
-          <Tooltip content="Undo">
+          <Tooltip content={_(msg`Undo`)}>
             <button
               className="btn-ghost"
               onClick={handleUndo}
@@ -1228,7 +1242,7 @@ function TaxonomyCanvasInner({
               ↶
             </button>
           </Tooltip>
-          <Tooltip content="Redo">
+          <Tooltip content={_(msg`Redo`)}>
             <button
               className="btn-ghost"
               onClick={handleRedo}
@@ -1240,15 +1254,15 @@ function TaxonomyCanvasInner({
           <Tooltip
             content={
               taxonomyIsRoutable
-                ? "Export plan"
-                : "Add at least 3 connected folders to export"
+                ? _(msg`Export plan`)
+                : _(msg`Add at least 3 connected folders to export`)
             }
           >
             <button
               className="btn-ghost"
               onClick={handleExport}
               disabled={submitting || !taxonomyIsRoutable}
-              aria-label="Export plan"
+              aria-label={_(msg`Export plan`)}
             >
               <svg
                 width="14"
@@ -1265,15 +1279,15 @@ function TaxonomyCanvasInner({
                   strokeLinejoin="round"
                 />
               </svg>
-              Export
+              <Trans>Export</Trans>
             </button>
           </Tooltip>
-          <Tooltip content="Import plan (replaces current)">
+          <Tooltip content={_(msg`Import plan (replaces current)`)}>
             <button
               className="btn-ghost"
               onClick={handleImportClick}
               disabled={submitting}
-              aria-label="Import plan"
+              aria-label={_(msg`Import plan`)}
             >
               <svg
                 width="14"
@@ -1290,10 +1304,10 @@ function TaxonomyCanvasInner({
                   strokeLinejoin="round"
                 />
               </svg>
-              Import
+              <Trans>Import</Trans>
             </button>
           </Tooltip>
-          <Tooltip content="Start from a template (replaces current)">
+          <Tooltip content={_(msg`Start from a template (replaces current)`)}>
             <button
               className="btn-ghost"
               onClick={() => {
@@ -1301,7 +1315,7 @@ function TaxonomyCanvasInner({
                 setTemplatePickerOpen(true);
               }}
               disabled={submitting}
-              aria-label="Browse templates"
+              aria-label={_(msg`Browse templates`)}
             >
               <svg
                 width="14"
@@ -1317,7 +1331,7 @@ function TaxonomyCanvasInner({
                   strokeLinejoin="round"
                 />
               </svg>
-              Templates
+              <Trans>Templates</Trans>
             </button>
           </Tooltip>
           <GenerateFromInboxButton
@@ -1376,9 +1390,11 @@ function TaxonomyCanvasInner({
               <span className="em-pill accent" style={{ marginRight: 8 }}>
                 {routableCount} / {TAXONOMY_MIN_NON_ROOT_NODES}
               </span>
-              {routableCount} of {TAXONOMY_MIN_NON_ROOT_NODES} folders
-              connected to your inbox. Routing requires at least{" "}
-              {TAXONOMY_MIN_NON_ROOT_NODES}.
+              <Trans>
+                {routableCount} of {TAXONOMY_MIN_NON_ROOT_NODES} folders
+                connected to your inbox. Routing requires at least{" "}
+                {TAXONOMY_MIN_NON_ROOT_NODES}.
+              </Trans>
             </span>
             {!readOnly && (
               <button
@@ -1400,7 +1416,7 @@ function TaxonomyCanvasInner({
                     strokeLinejoin="round"
                   />
                 </svg>
-                Generate from inbox
+                <Trans>Generate from inbox</Trans>
               </button>
             )}
           </div>
@@ -1438,7 +1454,7 @@ function TaxonomyCanvasInner({
             <button
               className="taxonomy-panel-close"
               onClick={() => setPanel({ type: "none" })}
-              aria-label="Close panel"
+              aria-label={_(msg`Close panel`)}
             >
               ✕
             </button>
@@ -1510,10 +1526,10 @@ function TaxonomyCanvasInner({
         >
           <div className="modal">
             <div className="modal-header">
-              <h2 className="modal-title">Replace plan?</h2>
+              <h2 className="modal-title"><Trans>Replace plan?</Trans></h2>
               <button
                 className="modal-close"
-                aria-label="Cancel"
+                aria-label={_(msg`Cancel`)}
                 onClick={() => {
                   setImportConfirmOpen(false);
                   setPendingImportFile(null);
@@ -1524,11 +1540,13 @@ function TaxonomyCanvasInner({
             </div>
             <div className="modal-body">
               <p>
-                Importing will replace your current plan with{" "}
-                <strong>{pendingImportFile.nodes.length} folders</strong> and{" "}
-                <strong>{pendingImportFile.edges.length} paths</strong> from the
-                file. Threads that were sorted into removed folders will
-                become unsorted. This cannot be undone.
+                <Trans>
+                  Importing will replace your current plan with{" "}
+                  <strong>{pendingImportFile.nodes.length} folders</strong> and{" "}
+                  <strong>{pendingImportFile.edges.length} paths</strong> from the
+                  file. Threads that were sorted into removed folders will
+                  become unsorted. This cannot be undone.
+                </Trans>
               </p>
             </div>
             <div className="modal-footer">
@@ -1539,14 +1557,14 @@ function TaxonomyCanvasInner({
                   setPendingImportFile(null);
                 }}
               >
-                Cancel
+                <Trans>Cancel</Trans>
               </button>
               <button
                 className="btn-danger"
                 onClick={() => executeImport(pendingImportFile)}
                 disabled={submitting}
               >
-                Replace taxonomy
+                <Trans>Replace taxonomy</Trans>
               </button>
             </div>
           </div>
@@ -1575,12 +1593,12 @@ function TaxonomyCanvasInner({
             <div className="modal-header">
               <h2 className="modal-title">
                 {taxonomyIsRoutable
-                  ? "Replace with a template"
-                  : "Start from a template"}
+                  ? <Trans>Replace with a template</Trans>
+                  : <Trans>Start from a template</Trans>}
               </h2>
               <button
                 className="modal-close"
-                aria-label="Cancel"
+                aria-label={_(msg`Cancel`)}
                 onClick={() => {
                   setTemplatePickerOpen(false);
                   setSelectedTemplateIdx(null);
@@ -1633,7 +1651,7 @@ function TaxonomyCanvasInner({
                         >
                           {template.name}
                           {isCurrent && (
-                            <span className="em-pill">Current</span>
+                            <span className="em-pill"><Trans>Current</Trans></span>
                           )}
                         </span>
                         <span className="option-card-desc">
@@ -1667,7 +1685,7 @@ function TaxonomyCanvasInner({
                   setSelectedTemplateIdx(null);
                 }}
               >
-                Cancel
+                <Trans>Cancel</Trans>
               </button>
               <button
                 className="btn-primary"
@@ -1678,7 +1696,7 @@ function TaxonomyCanvasInner({
                   submitting
                 }
               >
-                Use template
+                <Trans>Use template</Trans>
               </button>
             </div>
           </div>
