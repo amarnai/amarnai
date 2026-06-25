@@ -1,4 +1,4 @@
-FROM node:22-alpine AS base
+FROM node:24-alpine AS base
 RUN corepack enable pnpm
 
 # ── Install dependencies (cached until any package.json changes) ──────────────
@@ -35,7 +35,7 @@ RUN pnpm --filter @amarnai/web build
 # ── Runtime ───────────────────────────────────────────────────────────────────
 # next build --output standalone produces a self-contained server.js.
 # No pnpm or node_modules copy needed — the traced deps are bundled inside.
-FROM node:22-alpine AS runner
+FROM node:24-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1

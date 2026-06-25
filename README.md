@@ -4,7 +4,7 @@ Gmail-first AI email triage assistant.
 
 ## Prerequisites
 
-- Node.js 20.6+
+- Node.js 24+ (see `.nvmrc` — run `nvm use`). The Lingui 6 i18n CLI requires Node 24.2 or newer.
 - pnpm (`npm install -g pnpm`)
 - Docker (for local Postgres and Redis)
 
