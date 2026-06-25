@@ -65,6 +65,11 @@ const STOPWORDS = new Set([
   "re", "fw", "fwd",
 ]);
 
+// English-only, by design. This is a best-effort escape-hatch nudge for the
+// mock/keyword path; it does NOT gate the structural catch-all (see the
+// isCatchAll check below), which is the locale-safe safety net. In a localized
+// workspace these names won't match the translated node names — acceptable,
+// since this heuristic never affects real (embedding-sorter) routing.
 const FALLBACK_NAMES = new Set([
   "general", "other", "misc", "miscellaneous", "fallback", "default",
   "uncategorized", "catch-all", "catchall", "everything",
