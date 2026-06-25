@@ -15,6 +15,9 @@ package-lock.json
 # Turbo
 .turbo/
 
+# Compiled Lingui catalogs (.po is the committed source of truth; .mjs compiled at build)
+packages/i18n/src/locales/**/messages.mjs
+
 # Env files — allow only .example templates
 .env
 .env.*
