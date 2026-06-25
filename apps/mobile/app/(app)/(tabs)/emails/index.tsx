@@ -8,6 +8,9 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { Trans } from '@lingui/react/macro';
+import { useLingui } from '@lingui/react';
+import { msg } from '@lingui/core/macro';
 import type { QueueId } from '@amarnai/core';
 import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
 import { useTriage } from '../../../../src/triage/TriageProvider';
@@ -28,6 +31,7 @@ import { useWorkspaceEvents } from '../../../../src/realtime/useWorkspaceEvents'
 
 export default function EmailsScreen() {
   const router = useRouter();
+  const { i18n } = useLingui();
   const triage = useTriage();
   const { workspaceId, client } = useSession();
 
@@ -103,15 +107,16 @@ export default function EmailsScreen() {
 
   const activeFolderName =
     triage.active.kind === 'folder'
-      ? (triage.folders.find((f) => f.id === triage.active.id)?.name ?? 'Folder')
+      ? (triage.folders.find((f) => f.id === triage.active.id)?.name ?? i18n._(msg`Folder`))
       : null;
 
+  const folderName = activeFolderName ?? '';
   const emptyText =
     triage.query
-      ? 'No threads match your search'
+      ? i18n._(msg`No threads match your search`)
       : triage.active.kind === 'folder'
-        ? `No threads in ${activeFolderName}`
-        : 'No threads yet';
+        ? i18n._(msg`No threads in ${folderName}`)
+        : i18n._(msg`No threads yet`);
 
   return (
     <ScreenContainer>
@@ -129,7 +134,7 @@ export default function EmailsScreen() {
       <View style={styles.searchRow}>
         <TextInput
           style={styles.searchInput}
-          placeholder="Search threads…"
+          placeholder={i18n._(msg`Search threads…`)}
           placeholderTextColor={colors.ink4}
           value={triage.query}
           onChangeText={triage.setQuery}
@@ -142,7 +147,11 @@ export default function EmailsScreen() {
 
       <TouchableOpacity style={styles.folderRow} onPress={() => setFolderSheetOpen(true)}>
         <Text style={styles.folderRowText}>
-          {activeFolderName ? `Folder: ${activeFolderName}` : 'All folders'}
+          {activeFolderName ? (
+            <Trans>Folder: {activeFolderName}</Trans>
+          ) : (
+            <Trans>All folders</Trans>
+          )}
         </Text>
         <Text style={styles.folderRowChevron}>▾</Text>
       </TouchableOpacity>
@@ -167,15 +176,19 @@ export default function EmailsScreen() {
       {showConnectHint && triage.threads.length === 0 ? (
         <View style={styles.hintContainer}>
           <View style={styles.hint}>
-            <Text style={styles.hintTitle}>Connect Gmail to start triaging</Text>
+            <Text style={styles.hintTitle}>
+              <Trans>Connect Gmail to start triaging</Trans>
+            </Text>
             <Text style={styles.hintBody}>
-              Connect your Gmail account to sync your inbox into Amarnai. Amarnai
-              connects with <Text style={styles.hintBodyStrong}>read-only access</Text>{' '}
-              and{' '}
-              <Text style={styles.hintBodyStrong}>
-                never sends, deletes, or changes anything
-              </Text>
-              . Your inbox stays yours.
+              <Trans>
+                Connect your Gmail account to sync your inbox into Amarnai. Amarnai
+                connects with{' '}
+                <Text style={styles.hintBodyStrong}>read-only access</Text> and{' '}
+                <Text style={styles.hintBodyStrong}>
+                  never sends, deletes, or changes anything
+                </Text>
+                . Your inbox stays yours.
+              </Trans>
             </Text>
             <TouchableOpacity
               style={[styles.hintButton, gmailConnecting && styles.hintButtonDisabled]}
@@ -185,7 +198,9 @@ export default function EmailsScreen() {
               {gmailConnecting ? (
                 <ActivityIndicator color={colors.surface} />
               ) : (
-                <Text style={styles.hintButtonText}>Connect Gmail</Text>
+                <Text style={styles.hintButtonText}>
+                  <Trans>Connect Gmail</Trans>
+                </Text>
               )}
             </TouchableOpacity>
           </View>

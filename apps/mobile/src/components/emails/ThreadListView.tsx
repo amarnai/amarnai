@@ -1,8 +1,12 @@
 import { useCallback, useState, type ReactElement } from 'react';
 import { ActivityIndicator, RefreshControl, SectionList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Trans } from '@lingui/react/macro';
+import { useLingui } from '@lingui/react';
+import { msg } from '@lingui/core/macro';
 import { groupThreadsByDate, type ThreadItem } from '@amarnai/core';
 import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
 import { ThreadRow } from '../ThreadRow';
+import { DATE_SECTION_LABELS } from './queueLabels';
 
 interface ThreadListViewProps {
   threads: ThreadItem[];
@@ -23,7 +27,7 @@ interface ThreadListViewProps {
 
 export function ThreadListView({
   threads,
-  emptyText = 'No threads',
+  emptyText,
   onRefresh,
   onThreadPress,
   listHeader,
@@ -32,7 +36,9 @@ export function ThreadListView({
   onLoadMore,
   total,
 }: ThreadListViewProps) {
+  const { i18n } = useLingui();
   const [refreshing, setRefreshing] = useState(false);
+  const resolvedEmptyText = emptyText ?? i18n._(msg`No threads`);
 
   const handleRefresh = useCallback(async () => {
     setRefreshing(true);
@@ -55,7 +61,11 @@ export function ThreadListView({
       )}
       renderSectionHeader={({ section }) => (
         <View style={styles.sectionHeader}>
-          <Text style={styles.sectionLabel}>{section.label}</Text>
+          <Text style={styles.sectionLabel}>
+            {DATE_SECTION_LABELS[section.label]
+              ? i18n._(DATE_SECTION_LABELS[section.label]!)
+              : section.label}
+          </Text>
         </View>
       )}
       ListHeaderComponent={listHeader ?? null}
@@ -63,7 +73,10 @@ export function ThreadListView({
         hasMore && threads.length > 0 ? (
           <View style={styles.footer}>
             <Text style={styles.footerCount}>
-              {threads.length.toLocaleString()} of {(total ?? 0).toLocaleString()} loaded
+              <Trans>
+                {threads.length.toLocaleString()} of{' '}
+                {(total ?? 0).toLocaleString()} loaded
+              </Trans>
             </Text>
             <TouchableOpacity
               style={styles.loadMoreBtn}
@@ -73,7 +86,9 @@ export function ThreadListView({
               {loadingMore ? (
                 <ActivityIndicator color={colors.ink3} size="small" />
               ) : (
-                <Text style={styles.loadMoreText}>Load more</Text>
+                <Text style={styles.loadMoreText}>
+                  <Trans>Load more</Trans>
+                </Text>
               )}
             </TouchableOpacity>
           </View>
@@ -89,7 +104,7 @@ export function ThreadListView({
       }
       ListEmptyComponent={
         <View style={styles.emptyContainer}>
-          <Text style={styles.emptyText}>{emptyText}</Text>
+          <Text style={styles.emptyText}>{resolvedEmptyText}</Text>
         </View>
       }
       stickySectionHeadersEnabled={false}

@@ -1,6 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { Trans } from "@lingui/react/macro";
+import { useLingui } from "@lingui/react";
+import { msg } from "@lingui/core/macro";
 import { TAXONOMY_MIN_NON_ROOT_NODES } from "@amarnai/shared";
 import type { FolderItem } from "../folder-tree/types.js";
 import type { ThreadItem, ThreadMessage, DraftItem } from "./types.js";
@@ -51,6 +54,7 @@ export function ThreadPreview({
   onMarkDone,
   onUnmarkDone,
 }: ThreadPreviewProps) {
+  const { i18n } = useLingui();
   const [generating, setGenerating] = useState(false);
 
   const isDone = !!thread.doneMark;
@@ -80,21 +84,21 @@ export function ThreadPreview({
             type="button"
             className="em-back-btn"
             onClick={onClose}
-            aria-label="Back to list"
+            aria-label={i18n._(msg`Back to list`)}
           >
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
               <path d="M9 11L5 7l4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
-            Back
+            <Trans>Back</Trans>
           </button>
         )}
         <span className="em-preview-spacer" />
         {onClose && (
-          <Tooltip content="Close preview">
+          <Tooltip content={i18n._(msg`Close preview`)}>
             <button
               type="button"
               className="em-icon-btn"
-              aria-label="Close preview"
+              aria-label={i18n._(msg`Close preview`)}
               onClick={onClose}
             >
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
@@ -108,13 +112,13 @@ export function ThreadPreview({
       <div className="em-preview-scroll">
         <h2 className="em-preview-subject">
           {thread.subject}
-          <Tooltip content="Open in Gmail" placement="bottom">
+          <Tooltip content={i18n._(msg`Open in Gmail`)} placement="bottom">
             <a
               href={`https://mail.google.com/mail/u/0/#all/${thread.providerThreadId}`}
               target="_blank"
               rel="noopener noreferrer"
               className="em-preview-gmail-link"
-              aria-label="Open in Gmail"
+              aria-label={i18n._(msg`Open in Gmail`)}
             >
               <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden>
                 <path d="M5 2H2a1 1 0 00-1 1v7a1 1 0 001 1h7a1 1 0 001-1V7M7.5 1H11v3.5M11 1L5.5 6.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
@@ -155,14 +159,14 @@ export function ThreadPreview({
                 <path d="M2 9.5h8M2 7l5-5 1.5 1.5-5 5H2V7zM7 3l1.5-1.5 1.5 1.5-1.5 1.5L7 3z" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </span>
-            Generate draft reply
+            <Trans>Generate draft reply</Trans>
           </button>
         )}
 
         {generating && (
           <div className="em-draft-skeleton">
             <span className="em-draft-skeleton-pulse" />
-            Writing draft reply…
+            <Trans>Writing draft reply…</Trans>
           </div>
         )}
 

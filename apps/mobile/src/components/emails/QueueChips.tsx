@@ -1,6 +1,9 @@
 import { ScrollView, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { useLingui } from '@lingui/react';
+import { msg } from '@lingui/core/macro';
 import { QUEUES, countForActive, type ActiveSelection, type FolderItem, type QueueId, type ThreadItem } from '@amarnai/core';
 import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
+import { QUEUE_NAME_LABELS } from './queueLabels';
 
 interface QueueChipsProps {
   active: ActiveSelection;
@@ -13,9 +16,10 @@ interface QueueChipsProps {
 }
 
 export function QueueChips({ active, threads, folders, queueCounts, onSelectQueue, onClearFolder }: QueueChipsProps) {
+  const { i18n } = useLingui();
   const activeFolderName =
     active.kind === 'folder'
-      ? (folders.find((f) => f.id === active.id)?.name ?? 'Folder')
+      ? (folders.find((f) => f.id === active.id)?.name ?? i18n._(msg`Folder`))
       : null;
 
   return (
@@ -55,7 +59,7 @@ export function QueueChips({ active, threads, folders, queueCounts, onSelectQueu
                 isWarnActive && styles.chipTextWarnActive,
               ]}
             >
-              {q.name}
+              {QUEUE_NAME_LABELS[q.id] ? i18n._(QUEUE_NAME_LABELS[q.id]!) : q.name}
               {count > 0 ? `  ${count}` : ''}
             </Text>
           </TouchableOpacity>

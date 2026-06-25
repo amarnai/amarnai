@@ -1,4 +1,8 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Trans, Plural } from '@lingui/react/macro';
+import { useLingui } from '@lingui/react';
+import { msg } from '@lingui/core/macro';
+import type { MessageDescriptor } from '@lingui/core';
 import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
 import type { ThreadItem } from '@amarnai/core';
 
@@ -32,23 +36,24 @@ function confidenceDotColor(confidence: number): string {
 
 // Maps a thread's triage state to a single badge (label + colors from tokens),
 // mirroring the web row's status chip wording.
-function statusBadge(thread: ThreadItem): { label: string; bg: string; fg: string } {
-  if (thread.doneMark) return { label: 'Done', bg: colors.okSoft, fg: colors.okInk };
-  if (thread.isClassifying) return { label: 'Sorting', bg: colors.bgSunk, fg: colors.ink3 };
+function statusBadge(thread: ThreadItem): { label: MessageDescriptor; bg: string; fg: string } {
+  if (thread.doneMark) return { label: msg`Done`, bg: colors.okSoft, fg: colors.okInk };
+  if (thread.isClassifying) return { label: msg`Sorting`, bg: colors.bgSunk, fg: colors.ink3 };
   switch (thread.status) {
     case 'review':
-      return { label: 'Needs review', bg: colors.warnSoft, fg: colors.warnInk };
+      return { label: msg`Needs review`, bg: colors.warnSoft, fg: colors.warnInk };
     case 'unclassified':
-      return { label: 'Unclassified', bg: colors.dangerSoft, fg: colors.dangerInk };
+      return { label: msg`Unclassified`, bg: colors.dangerSoft, fg: colors.dangerInk };
     case 'unrouted':
     case 'unsorted':
-      return { label: 'Waiting', bg: colors.bgSunk, fg: colors.ink3 };
+      return { label: msg`Waiting`, bg: colors.bgSunk, fg: colors.ink3 };
     case 'sorted':
-      return { label: 'Sorted', bg: colors.okSoft, fg: colors.okInk };
+      return { label: msg`Sorted`, bg: colors.okSoft, fg: colors.okInk };
   }
 }
 
 export function ThreadRow({ thread, onPress }: ThreadRowProps) {
+  const { i18n } = useLingui();
   const badge = statusBadge(thread);
 
   return (
@@ -72,15 +77,15 @@ export function ThreadRow({ thread, onPress }: ThreadRowProps) {
 
       <View style={styles.metaLine}>
         <View style={[styles.badge, { backgroundColor: badge.bg }]}>
-          <Text style={[styles.badgeText, { color: badge.fg }]}>{badge.label}</Text>
+          <Text style={[styles.badgeText, { color: badge.fg }]}>{i18n._(badge.label)}</Text>
         </View>
         {thread.isDrafting ? (
           <View style={styles.draftPill}>
-            <Text style={styles.draftPillText}>Drafting…</Text>
+            <Text style={styles.draftPillText}><Trans>Drafting…</Trans></Text>
           </View>
         ) : thread.hasDraft ? (
           <View style={[styles.draftPill, styles.draftPillAccent]}>
-            <Text style={[styles.draftPillText, styles.draftPillTextAccent]}>Draft</Text>
+            <Text style={[styles.draftPillText, styles.draftPillTextAccent]}><Trans>Draft</Trans></Text>
           </View>
         ) : null}
         {thread.confidence > 0 && (thread.status === 'sorted' || thread.status === 'review') ? (
@@ -88,11 +93,13 @@ export function ThreadRow({ thread, onPress }: ThreadRowProps) {
         ) : null}
         {thread.attachmentCount > 0 ? (
           <Text style={styles.attachCount}>
-            {thread.attachmentCount} {thread.attachmentCount === 1 ? 'file' : 'files'}
+            <Plural value={thread.attachmentCount} one="# file" other="# files" />
           </Text>
         ) : null}
         {thread.messageCount > 1 ? (
-          <Text style={styles.msgCount}>{thread.messageCount} messages</Text>
+          <Text style={styles.msgCount}>
+            <Plural value={thread.messageCount} one="# message" other="# messages" />
+          </Text>
         ) : null}
       </View>
     </TouchableOpacity>

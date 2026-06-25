@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Trans } from "@lingui/react/macro";
 import type { ThreadMessage } from "./types.js";
 
 function fmtDateTime(d: Date): string {
@@ -56,11 +57,11 @@ export function MessageCard({ message, defaultExpanded = false, loading = false 
           {message.bodyText ? (
             <pre className="em-msg-text">{message.bodyText}</pre>
           ) : loading ? (
-            <p className="em-msg-text em-msg-loading">Loading…</p>
+            <p className="em-msg-text em-msg-loading"><Trans>Loading…</Trans></p>
           ) : message.snippet ? (
             <p className="em-msg-text">{message.snippet}</p>
           ) : (
-            <p className="em-msg-text em-msg-empty">(No body)</p>
+            <p className="em-msg-text em-msg-empty"><Trans>(No body)</Trans></p>
           )}
           {message.attachments && message.attachments.length > 0 && (
             <div className="em-attachment-list">

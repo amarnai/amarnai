@@ -18,6 +18,23 @@ msgstr ""
 msgid " (Inbox)"
 msgstr "（收件箱）"
 
+#: ../../apps/mobile/src/components/MessageCard.tsx:57
+#: ../ui/src/emails/MessageCard.tsx:64
+#, fuzzy
+msgid "(No body)"
+msgstr "(无正文)"
+
+#. placeholder {0}: thread.attachmentCount
+#: ../../apps/mobile/src/components/ThreadRow.tsx:96
+#, fuzzy
+msgid "{0, plural, one {# file} other {# files}}"
+msgstr "{0, plural, one {# 个文件} other {# 个文件}}"
+
+#. placeholder {0}: thread.messageCount
+#: ../../apps/mobile/src/components/ThreadRow.tsx:101
+msgid "{0, plural, one {# message} other {# messages}}"
+msgstr "{0, plural, one {# 条消息} other {# 条消息}}"
+
 #. placeholder {0}: threadSortQuota.used
 #. placeholder {1}: threadSortQuota.limit
 #. placeholder {2}: new Date(threadSortQuota.resetsAt).toLocaleDateString("en", { month: "short", day: "numeric", timeZone: "UTC" })
@@ -34,6 +51,20 @@ msgstr "{0} / {1} · 重置于 {2}"
 msgid "{0} / {1} left · resets {2}"
 msgstr "剩余 {0} / {1} · 重置于 {2}"
 
+#. placeholder {0}: threads.length.toLocaleString()
+#. placeholder {1}: (total ?? 0).toLocaleString()
+#. placeholder {1}: viewCount.toLocaleString()
+#: ../../apps/mobile/src/components/emails/ThreadListView.tsx:76
+#: ../ui/src/emails/ThreadList.tsx:168
+msgid "{0} of {1} loaded"
+msgstr "{0} / {1} 已加载"
+
+#. placeholder {0}: quota.limit - quota.used
+#. placeholder {1}: quota.limit
+#: ../ui/src/emails/SuggestedDraftCard.tsx:98
+msgid "{0} of {1} remaining · resets {quotaResetDate}"
+msgstr "{0} / {1} 剩余 · {quotaResetDate} 重置"
+
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:489
 #, fuzzy
 msgid "{classificationCount, plural, one {Deleting this folder will leave # thread unsorted.} other {Deleting this folder will leave # threads unsorted.}}"
@@ -43,6 +74,15 @@ msgstr "{classificationCount, plural, one {删除此文件夹将导致 # 条会�
 #, fuzzy
 msgid "{collaboratorCount} / {collaboratorLimit} added"
 msgstr "已添加 {collaboratorCount} / {collaboratorLimit}"
+
+#: ../../apps/mobile/src/components/RationaleCard.tsx:61
+#: ../ui/src/emails/RationaleCard.tsx:94
+msgid "{confPct}% confidence"
+msgstr "{confPct}% 置信度"
+
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:136
+msgid "{draftRemaining} of {draftLimit} left · resets {draftResetDate}"
+msgstr "剩余 {draftRemaining} / {draftLimit} · {draftResetDate} 重置"
 
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:118
 #, fuzzy
@@ -65,11 +105,25 @@ msgstr "{pendingCount} 待处理"
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
 msgstr "剩余 {quotaRemaining} / {0} · 重置于 {quotaResetDate}"
 
+#: ../../apps/mobile/src/components/DraftSheet.tsx:137
+msgid "{remaining} of {limit} remaining · resets {resetDate}"
+msgstr "剩余 {remaining} / {limit} · {resetDate} 重置"
+
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1410
 #, fuzzy
 msgid "{routableCount} of {TAXONOMY_MIN_NON_ROOT_NODES} folders connected to your inbox. Routing requires at least {TAXONOMY_MIN_NON_ROOT_NODES}."
 msgstr "您的收件箱已连接 {routableCount} / {TAXONOMY_MIN_NON_ROOT_NODES} 个文件夹。路由至少需要 {TAXONOMY_MIN_NON_ROOT_NODES} 个文件夹。"
 
+#: ../ui/src/emails/ThreadListHeader.tsx:113
+#, fuzzy
+msgid "{threadCount, plural, one {# thread} other {# threads}}"
+msgstr "{threadCount, plural, one {# 个会话} other {# 个会话}}"
+
+#: ../ui/src/emails/ThreadListHeader.tsx:117
+msgid "{unreadCount} unread"
+msgstr "{unreadCount} 未读"
+
+#: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:59
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:65
 #, fuzzy
 msgid "{waitingCount, plural, one {# thread is ready to route.} other {# threads are ready to route.}}"
@@ -79,6 +133,10 @@ msgstr "{waitingCount, plural, one {# 条会话已准备好路由。} other {# �
 #, fuzzy
 msgid "{waitingCount, plural, one {# thread is waiting to be routed. Set up your folders to start sorting.} other {# threads are waiting to be routed. Set up your folders to start sorting.}}"
 msgstr "{waitingCount, plural, one {# 条会话正在等待路由。设置您的文件夹以开始分类。} other {# 条会话正在等待路由。设置您的文件夹以开始分类。}}"
+
+#: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:37
+msgid "{waitingCount, plural, one {# thread is waiting. Connect at least {TAXONOMY_MIN_NON_ROOT_NODES} folders to begin sorting.} other {# threads are waiting. Connect at least {TAXONOMY_MIN_NON_ROOT_NODES} folders to begin sorting.}}"
+msgstr "{waitingCount, plural, one {# 个会话正在等待。连接至少 {TAXONOMY_MIN_NON_ROOT_NODES} 个文件夹以开始分类。} other {# 个会话正在等待。连接至少 {TAXONOMY_MIN_NON_ROOT_NODES} 个文件夹以开始分类。}}"
 
 #: ../../apps/web/src/app/admin/waitlist/page.tsx:55
 #, fuzzy
@@ -99,6 +157,7 @@ msgstr "+ 新建工作区"
 msgid "${price}/mo"
 msgstr "${price}/月"
 
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:33
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:37
 #, fuzzy
 msgid "About {count, plural, one {# more thread} other {# more threads}} beyond your {plan} subscription limit aren't loaded."
@@ -152,6 +211,30 @@ msgstr "AI 草稿"
 #, fuzzy
 msgid "AI email triage assistant"
 msgstr "AI 邮件分类助手"
+
+#: ../../apps/mobile/src/components/RationaleCard.tsx:34
+#: ../../apps/mobile/src/components/RationaleCard.tsx:43
+#: ../../apps/mobile/src/components/RationaleCard.tsx:60
+#: ../ui/src/emails/RationaleCard.tsx:48
+#: ../ui/src/emails/RationaleCard.tsx:67
+#: ../ui/src/emails/RationaleCard.tsx:93
+#, fuzzy
+msgid "AI Routing"
+msgstr "AI 路由"
+
+#: ../../apps/mobile/src/components/emails/queueLabels.ts:9
+#: ../ui/src/emails/queueLabels.ts:10
+msgid "All"
+msgstr "全部"
+
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:153
+#, fuzzy
+msgid "All folders"
+msgstr "所有文件夹"
+
+#: ../../apps/mobile/src/components/emails/FolderFilterSheet.tsx:44
+msgid "All threads"
+msgstr "所有会话"
 
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:47
 #, fuzzy
@@ -247,6 +330,12 @@ msgstr "应用后会替换您当前的计划。您之后可以完全编辑它。
 msgid "Applying…"
 msgstr "正在应用…"
 
+#: ../../apps/mobile/src/components/RationaleCard.tsx:75
+#: ../ui/src/emails/RationaleCard.tsx:142
+#, fuzzy
+msgid "Approve routing"
+msgstr "批准路由"
+
 #: ../../apps/web/src/app/reset-password/page.tsx:53
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:48
 msgid "At least 8 characters"
@@ -263,11 +352,13 @@ msgstr "不属于其他文件夹的自动通知、新闻通讯和服务更新。
 
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:222
+#: ../ui/src/emails/ThreadPreview.tsx:92
 #, fuzzy
 msgid "Back"
 msgstr "返回"
 
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:217
+#: ../ui/src/emails/ThreadPreview.tsx:87
 #, fuzzy
 msgid "Back to list"
 msgstr "返回列表"
@@ -276,6 +367,12 @@ msgstr "返回列表"
 #, fuzzy
 msgid "Back to sign in"
 msgstr "返回登录"
+
+#: ../ui/src/emails/BackfillCard.tsx:18
+#: ../ui/src/emails/BackfillCard.tsx:49
+#, fuzzy
+msgid "Backfill"
+msgstr "回填"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:81
 msgid "Bank statements, investments, insurance policies, and personal financial records."
@@ -294,6 +391,16 @@ msgstr "自由职业者的账单、付款、发票和财务记录。"
 #, fuzzy
 msgid "Browse templates"
 msgstr "浏览模板"
+
+#: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:48
+#, fuzzy
+msgid "Build plan"
+msgstr "构建计划"
+
+#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
+#: ../ui/src/emails/BackfillCard.tsx:21
+msgid "Bulk triage your inbox"
+msgstr "批量分类您的收件箱"
 
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:31
 #, fuzzy
@@ -388,6 +495,8 @@ msgstr "关闭面板"
 
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:225
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:229
+#: ../ui/src/emails/ThreadPreview.tsx:97
+#: ../ui/src/emails/ThreadPreview.tsx:101
 #, fuzzy
 msgid "Close preview"
 msgstr "关闭预览"
@@ -403,6 +512,10 @@ msgstr "协作者"
 msgid "Collaborators are available on Pro and Business subscriptions. <0>Upgrade to add.</0>"
 msgstr "专业版和商务版订阅支持协作者。<0>升级即可添加。</0>"
 
+#: ../ui/src/folder-tree/FolderTree.tsx:89
+msgid "Collapse"
+msgstr "收起"
+
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:294
 #, fuzzy
 msgid "Confirm cancellation"
@@ -413,6 +526,7 @@ msgstr "确认取消"
 msgid "Confirm Delete"
 msgstr "确认删除"
 
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:268
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:53
 #, fuzzy
@@ -423,6 +537,15 @@ msgstr "连接 Gmail"
 #, fuzzy
 msgid "Connect Gmail to generate a plan from your inbox"
 msgstr "连接 Gmail 以根据收件箱生成计划"
+
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:180
+#, fuzzy
+msgid "Connect Gmail to start triaging"
+msgstr "连接 Gmail 以开始分类"
+
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:183
+msgid "Connect your Gmail account to sync your inbox into Amarnai. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
+msgstr "连接您的 Gmail 帐户以将您的收件箱同步到 Amarnai。Amarnai 以 <0>只读访问</0> 方式连接，且 <1>绝不会发送、删除或更改任何内容</1>。您的收件箱仍归您所有。"
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:29
 #, fuzzy
@@ -456,6 +579,15 @@ msgstr "合同"
 #: ../ui/src/i18n/taxonomy-template-messages.ts:61
 msgid "Contracts, banking, accounting, tax filings, and corporate legal correspondence."
 msgstr "合同、银行、会计、税务申报和公司法律函件。"
+
+#: ../ui/src/emails/SuggestedDraftCard.tsx:57
+#, fuzzy
+msgid "Copied"
+msgstr "已复制"
+
+#: ../ui/src/emails/SuggestedDraftCard.tsx:65
+msgid "Copy"
+msgstr "复制"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:52
 #, fuzzy
@@ -531,6 +663,7 @@ msgstr "正在创建账户…"
 msgid "Creating…"
 msgstr "正在创建…"
 
+#: ../../apps/mobile/src/components/RerouteSheet.tsx:45
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:107
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1671
 #, fuzzy
@@ -646,6 +779,8 @@ msgstr "断开此工作区连接。Amarnai仍保留访问权限，因为此邮�
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "断开此工作区连接。Amarnai仍保留访问权限，因为此邮箱仍连接在{sharedNames}中。"
 
+#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:42
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:48
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:295
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:52
 msgid "Dismiss"
@@ -670,15 +805,52 @@ msgstr "医生、药房、医疗预约、健康保险索赔和实验室结果。
 msgid "Don't have an account? <0>Sign up</0>"
 msgstr "没有账户？<0>注册</0>"
 
+#: ../../apps/mobile/src/components/ThreadRow.tsx:40
+#: ../ui/src/emails/ThreadRow.tsx:101
+#, fuzzy
+msgid "Done"
+msgstr "完成"
+
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:197
+msgid "Done · undo"
+msgstr "完成 · 撤消"
+
+#: ../ui/src/emails/ThreadRow.tsx:124
+#, fuzzy
+msgid "draft"
+msgstr "草稿"
+
+#: ../../apps/mobile/src/components/ThreadRow.tsx:88
+msgid "Draft"
+msgstr "草稿"
+
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:165
+msgid "Draft failed · tap to retry"
+msgstr "草稿失败 · 轻触重试"
+
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:325
 #, fuzzy
 msgid "Draft generation failed. Try again."
 msgstr "草稿生成失败。请重试。"
 
+#: ../../apps/mobile/src/components/DraftSheet.tsx:63
+#: ../ui/src/emails/SuggestedDraftCard.tsx:47
+msgid "Draft reply"
+msgstr "回复草稿"
+
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:112
+msgid "Draft shared"
+msgstr "草稿已分享"
+
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:445
 #, fuzzy
 msgid "Draft style guidance"
 msgstr "草稿风格指南"
+
+#: ../../apps/mobile/src/components/ThreadRow.tsx:84
+#: ../ui/src/emails/ThreadRow.tsx:123
+msgid "Drafting…"
+msgstr "正在起草…"
 
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:430
 #, fuzzy
@@ -689,6 +861,11 @@ msgstr "例如：来自客户和供应商的发票、收据、付款确认和账
 #, fuzzy
 msgid "e.g. Reply formally. Keep responses under 3 sentences."
 msgstr "例如：正式回复。将回复限制在3句话以内。"
+
+#: ../../apps/mobile/src/components/emails/queueLabels.ts:21
+#: ../ui/src/emails/ThreadList.tsx:17
+msgid "Earlier"
+msgstr "更早"
 
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:400
 #, fuzzy
@@ -764,6 +941,16 @@ msgstr "输入您的电子邮件，我们将向您发送重置链接。"
 #, fuzzy
 msgid "Entry"
 msgstr "入口"
+
+#: ../ui/src/emails/queueLabels.ts:11
+#, fuzzy
+msgid "Every thread in your inbox."
+msgstr "收件箱中的所有会话。"
+
+#: ../ui/src/folder-tree/FolderTree.tsx:89
+#, fuzzy
+msgid "Expand"
+msgstr "展开"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:26
 msgid "Expenses"
@@ -848,6 +1035,19 @@ msgstr "更新路径失败"
 msgid "Family"
 msgstr "家庭"
 
+#: ../../apps/mobile/src/components/emails/FolderFilterSheet.tsx:33
+msgid "Filter by folder"
+msgstr "按文件夹筛选"
+
+#: ../ui/src/emails/EmailRail.tsx:72
+#, fuzzy
+msgid "Filter queues & folders…"
+msgstr "筛选队列和文件夹…"
+
+#: ../ui/src/emails/EmailRail.tsx:75
+msgid "Filter rail"
+msgstr "筛选栏"
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:22
 #, fuzzy
 msgid "Finance"
@@ -857,6 +1057,21 @@ msgstr "财务"
 #, fuzzy
 msgid "Flight and hotel bookings, travel itineraries, visa applications, and trip confirmations."
 msgstr "机票和酒店预订、旅行行程、签证申请和行程确认。"
+
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:110
+#: ../../apps/mobile/src/components/emails/QueueChips.tsx:22
+#, fuzzy
+msgid "Folder"
+msgstr "文件夹"
+
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:151
+msgid "Folder: {activeFolderName}"
+msgstr "文件夹：{activeFolderName}"
+
+#: ../ui/src/emails/EmailRail.tsx:95
+#: ../ui/src/emails/ThreadList.tsx:111
+msgid "Folders"
+msgstr "文件夹"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:35
 #, fuzzy
@@ -912,12 +1127,18 @@ msgstr "朋友、校园活动、社团、社交邀请和课外活动。"
 msgid "Generate"
 msgstr "生成"
 
+#: ../ui/src/emails/SuggestedDraftCard.tsx:76
+msgid "Generate a new draft — uses one from your monthly allowance"
+msgstr "生成新草稿 — 消耗本月额度一次"
+
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:212
 #, fuzzy
 msgid "Generate a plan from your inbox"
 msgstr "根据收件箱生成方案"
 
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:131
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:303
+#: ../ui/src/emails/ThreadPreview.tsx:162
 #, fuzzy
 msgid "Generate draft reply"
 msgstr "生成草稿回复"
@@ -945,10 +1166,24 @@ msgstr "正在生成…"
 msgid "Generation didn't complete."
 msgstr "生成未完成。"
 
+#: ../../apps/mobile/src/components/emails/DisconnectedBanner.tsx:39
+msgid "Gmail disconnected. Amarnai stopped syncing this inbox, so new mail will not appear until you reconnect."
+msgstr "Gmail 已断开连接。Amarnai 已停止同步此收件箱，因此在您重新连接之前，新邮件不会显示。"
+
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:131
 #, fuzzy
 msgid "Gmail Inbox"
 msgstr "Gmail 收件箱"
+
+#: ../ui/src/emails/EmailRail.tsx:56
+#, fuzzy
+msgid "Gmail live sync active"
+msgstr "Gmail 实时同步已启用"
+
+#: ../../apps/mobile/src/components/RationaleCard.tsx:67
+#: ../ui/src/emails/RationaleCard.tsx:116
+msgid "Gmail marked as important"
+msgstr "Gmail 已标记为重要"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:50
 #, fuzzy
@@ -1048,6 +1283,11 @@ msgstr "导入方案"
 #, fuzzy
 msgid "Import plan (replaces current)"
 msgstr "导入方案（替换当前）"
+
+#: ../../apps/mobile/src/components/emails/queueLabels.ts:13
+#: ../ui/src/emails/queueLabels.ts:26
+msgid "Important"
+msgstr "重要"
 
 #: ../../apps/web/src/app/sign-up/WaitlistForm.tsx:68
 #, fuzzy
@@ -1246,13 +1486,35 @@ msgstr "列出属于此处的电子邮件类型：发件人、主题、关键词
 #~ msgid "List the kinds of emails that belong here: senders, topics, keywords. At least 30 characters."
 #~ msgstr "列出属于此处的电子邮件类型：发件人、主题、关键词。至少30个字符。"
 
+#: ../ui/src/emails/EmailRail.tsx:59
+msgid "Live"
+msgstr "实时"
+
+#: ../../apps/mobile/src/components/emails/ThreadListView.tsx:90
+#: ../ui/src/emails/ThreadList.tsx:179
+#, fuzzy
+msgid "Load more"
+msgstr "加载更多"
+
+#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:81
+#: ../ui/src/emails/BackfillCard.tsx:56
+msgid "Loading past threads…"
+msgstr "正在加载过去的会话…"
+
+#: ../../apps/mobile/src/components/MessageCard.tsx:53
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:121
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:137
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:158
 #: ../../apps/web/src/app/loading.tsx:6
+#: ../ui/src/emails/MessageCard.tsx:60
+#: ../ui/src/emails/ThreadList.tsx:179
 #, fuzzy
 msgid "Loading…"
 msgstr "加载中…"
+
+#: ../ui/src/emails/EmailRail.tsx:54
+msgid "Mail"
+msgstr "邮件"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:40
 #, fuzzy
@@ -1263,10 +1525,45 @@ msgstr "管理"
 msgid "Manager emails: one-on-ones, performance reviews, and feedback."
 msgstr "经理邮件：一对一会议、绩效评估和反馈。"
 
+#: ../ui/src/emails/PreviewDoneBar.tsx:23
+#: ../ui/src/emails/ThreadRow.tsx:75
+#, fuzzy
+msgid "Mark as done"
+msgstr "标记为完成"
+
+#: ../ui/src/emails/ThreadRow.tsx:75
+#, fuzzy
+msgid "Mark as not done"
+msgstr "标记为未完成"
+
+#: ../../apps/mobile/src/components/DraftSheet.tsx:111
+#: ../ui/src/emails/SuggestedDraftCard.tsx:73
+#, fuzzy
+msgid "Mark as sent"
+msgstr "标记为已发送"
+
+#: ../../apps/mobile/src/components/DraftSheet.tsx:111
+#: ../ui/src/emails/SuggestedDraftCard.tsx:73
+msgid "Mark as unsent"
+msgstr "标记为未发送"
+
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:204
+msgid "Mark done"
+msgstr "标记为完成"
+
 #: ../../apps/web/src/app/admin/waitlist/page.tsx:26
 #, fuzzy
 msgid "Mark invited"
 msgstr "标记为已邀请"
+
+#: ../ui/src/emails/PreviewDoneBar.tsx:22
+#, fuzzy
+msgid "Marked as done"
+msgstr "已标记为完成"
+
+#: ../ui/src/emails/PreviewDoneBar.tsx:21
+msgid "Marked as done · {doneByName}"
+msgstr "已标记为完成 · {doneByName}"
 
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:198
 #, fuzzy
@@ -1293,6 +1590,7 @@ msgstr "模拟收件箱"
 msgid "Monthly"
 msgstr "每月"
 
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:42
 #, fuzzy
 msgid "More threads beyond your {plan} subscription limit aren't loaded."
@@ -1302,6 +1600,21 @@ msgstr "超出您的 {plan} 订阅限制的更多会话未加载。"
 #, fuzzy
 msgid "Move them to"
 msgstr "将其移至"
+
+#: ../../apps/mobile/src/components/RerouteSheet.tsx:29
+msgid "Move to folder"
+msgstr "移至文件夹"
+
+#: ../ui/src/emails/ReroutePopover.tsx:84
+#, fuzzy
+msgid "Move to folder…"
+msgstr "移至文件夹…"
+
+#: ../../apps/mobile/src/components/RationaleCard.tsx:50
+#: ../../apps/mobile/src/components/RationaleCard.tsx:79
+#: ../ui/src/emails/RationaleCard.tsx:151
+msgid "Move to…"
+msgstr "移至…"
 
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:409
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:15
@@ -1314,6 +1627,12 @@ msgstr "名称"
 msgid "Name updated."
 msgstr "名称已更新。"
 
+#: ../../apps/mobile/src/components/emails/queueLabels.ts:11
+#: ../../apps/mobile/src/components/ThreadRow.tsx:44
+#: ../ui/src/emails/queueLabels.ts:18
+msgid "Needs review"
+msgstr "需要审核"
+
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:142
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:157
 #, fuzzy
@@ -1324,21 +1643,63 @@ msgstr "从不"
 msgid "New business inquiries, proposals, pricing discussions, and prospective client outreach."
 msgstr "新业务咨询、提案、定价讨论和潜在客户联系。"
 
+#: ../ui/src/emails/EmailRail.tsx:97
+#: ../ui/src/emails/EmailRail.tsx:102
+msgid "New folder"
+msgstr "新建文件夹"
+
 #: ../../apps/web/src/app/reset-password/page.tsx:42
 #: ../../apps/web/src/app/reset-password/page.tsx:67
 #, fuzzy
 msgid "New password"
 msgstr "新密码"
 
+#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:87
+#: ../ui/src/emails/BackfillCard.tsx:61
+msgid "New threads will appear as they are sorted."
+msgstr "新会话将在分类后显示。"
+
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:150
 #, fuzzy
 msgid "New workspace name"
 msgstr "新工作区名称"
 
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:129
+msgid "No drafts remaining"
+msgstr "没有剩余草稿"
+
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:308
+#: ../ui/src/emails/SuggestedDraftCard.tsx:97
 #, fuzzy
 msgid "No drafts remaining · resets {quotaResetDate}"
 msgstr "无剩余草稿 · 于 {quotaResetDate} 重置"
+
+#: ../../apps/mobile/src/components/DraftSheet.tsx:135
+msgid "No drafts remaining · resets {resetDate}"
+msgstr "没有剩余草稿 · {resetDate} 重置"
+
+#: ../ui/src/emails/SuggestedDraftCard.tsx:76
+#, fuzzy
+msgid "No drafts remaining this month"
+msgstr "本月无剩余草稿"
+
+#: ../../apps/mobile/src/components/RerouteSheet.tsx:49
+#, fuzzy
+msgid "No folders available"
+msgstr "无可用文件夹"
+
+#: ../ui/src/folder-tree/FolderTree.tsx:51
+msgid "No folders defined"
+msgstr "未定义文件夹"
+
+#: ../ui/src/emails/ReroutePopover.tsx:94
+#, fuzzy
+msgid "No folders match"
+msgstr "没有匹配的文件夹"
+
+#: ../../apps/mobile/src/components/emails/FolderFilterSheet.tsx:69
+msgid "No folders yet"
+msgstr "暂无文件夹"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:263
 #, fuzzy
@@ -1349,6 +1710,38 @@ msgstr "此工作区未连接 Gmail 收件箱。"
 #, fuzzy
 msgid "No signups yet."
 msgstr "暂无注册。"
+
+#: ../../apps/mobile/src/components/emails/ThreadListView.tsx:41
+#, fuzzy
+msgid "No threads"
+msgstr "无会话"
+
+#: ../ui/src/emails/ThreadList.tsx:135
+msgid "No threads here."
+msgstr "此处没有会话。"
+
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:117
+#, fuzzy
+#~ msgid "No threads in {activeFolderName}"
+#~ msgstr "{activeFolderName} 中无会话"
+
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:118
+msgid "No threads in {folderName}"
+msgstr "在{folderName}中没有会话"
+
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:116
+#, fuzzy
+msgid "No threads match your search"
+msgstr "无会话符合您的搜索条件"
+
+#: ../ui/src/emails/ThreadList.tsx:133
+#, fuzzy
+msgid "No threads match your search."
+msgstr "没有会话与您的搜索匹配。"
+
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:119
+msgid "No threads yet"
+msgstr "暂无会话"
 
 #: ../../apps/web/src/components/Sidebar.tsx:198
 #, fuzzy
@@ -1374,8 +1767,12 @@ msgstr "尚未同步"
 msgid "Official university emails: registrar, student services, and housing."
 msgstr "大学官方邮件：注册办公室、学生服务和住宿。"
 
+#: ../../apps/mobile/src/components/DraftSheet.tsx:97
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:242
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:248
+#: ../ui/src/emails/ThreadPreview.tsx:115
+#: ../ui/src/emails/ThreadPreview.tsx:121
+#: ../ui/src/emails/ThreadRow.tsx:76
 #, fuzzy
 msgid "Open in Gmail"
 msgstr "在 Gmail 中打开"
@@ -1433,7 +1830,9 @@ msgstr "支付失败。请更新您的支付方式，以免失去访问权限。
 msgid "Payslips, expense reports, reimbursements, and employee benefits emails."
 msgstr "工资单、费用报告、报销和员工福利邮件。"
 
+#: ../../apps/mobile/src/components/emails/queueLabels.ts:12
 #: ../../apps/web/src/app/admin/waitlist/page.tsx:63
+#: ../ui/src/emails/queueLabels.ts:22
 #, fuzzy
 msgid "Pending"
 msgstr "待处理"
@@ -1547,6 +1946,10 @@ msgstr "正在排队重新扫描…"
 msgid "Re-route {unclassifiedCount} unclassified"
 msgstr "重新路由 {unclassifiedCount} 个未分类项"
 
+#: ../ui/src/emails/ReroutePopover.tsx:75
+msgid "Re-route thread"
+msgstr "重新路由会话"
+
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:121
 #, fuzzy
 msgid "Reactivate"
@@ -1556,6 +1959,10 @@ msgstr "重新激活"
 #, fuzzy
 msgid "Receipts, payment confirmations, and billing questions from vendors."
 msgstr "来自供应商的收据、付款确认和账单问题。"
+
+#: ../../apps/mobile/src/components/emails/DisconnectedBanner.tsx:46
+msgid "Reconnect"
+msgstr "重新连接"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:258
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:53
@@ -1567,6 +1974,10 @@ msgstr "重新连接 Gmail"
 #, fuzzy
 msgid "Reconnect your Gmail inbox"
 msgstr "重新连接您的 Gmail 收件箱"
+
+#: ../../apps/mobile/src/components/emails/DisconnectedBanner.tsx:46
+msgid "Reconnecting…"
+msgstr "正在重新连接…"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:45
 #, fuzzy
@@ -1593,7 +2004,9 @@ msgstr "重做"
 msgid "Refresh"
 msgstr "刷新"
 
+#: ../../apps/mobile/src/components/DraftSheet.tsx:127
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:343
+#: ../ui/src/emails/SuggestedDraftCard.tsx:89
 #, fuzzy
 msgid "Regenerate"
 msgstr "重新生成"
@@ -1687,6 +2100,10 @@ msgstr "重置密码"
 msgid "Reset workspace"
 msgstr "重置工作区"
 
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:141
+msgid "Resets {draftResetDate}"
+msgstr "{draftResetDate} 重置"
+
 #: ../../apps/web/src/app/(app)/settings/ResetWorkspaceSection.tsx:60
 #, fuzzy
 msgid "Resetting…"
@@ -1697,15 +2114,24 @@ msgstr "正在重置…"
 msgid "Retry"
 msgstr "重试"
 
+#: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
 #, fuzzy
 msgid "Route now"
 msgstr "立即路由"
 
+#: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
 #, fuzzy
 msgid "Routing…"
 msgstr "正在路由…"
+
+#. placeholder {0}: altFolder.name
+#. placeholder {1}: Math.round(thread.alternativeFolder.weight * 100)
+#: ../ui/src/emails/RationaleCard.tsx:130
+#, fuzzy
+msgid "Runner-up: <0>{0}</0> ({1}%)"
+msgstr "亚军：<0>{0}</0> ({1}%)"
 
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:538
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:650
@@ -1725,6 +2151,25 @@ msgstr "保存更改"
 #, fuzzy
 msgid "Saving…"
 msgstr "正在保存…"
+
+#: ../ui/src/emails/ThreadListHeader.tsx:104
+#, fuzzy
+msgid "Search {threadCount} threads"
+msgstr "搜索 {threadCount} 个会话"
+
+#: ../ui/src/emails/ReroutePopover.tsx:88
+#, fuzzy
+msgid "Search folders"
+msgstr "搜索文件夹"
+
+#: ../ui/src/emails/ThreadListHeader.tsx:107
+#, fuzzy
+msgid "Search threads"
+msgstr "搜索会话"
+
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:137
+msgid "Search threads…"
+msgstr "搜索会话…"
 
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:270
 #, fuzzy
@@ -1767,6 +2212,12 @@ msgstr "会话"
 msgid "Set new password"
 msgstr "设置新密码"
 
+#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:85
+#: ../ui/src/emails/BackfillCard.tsx:59
+#, fuzzy
+msgid "Set up at least 3 folders so we can start sorting."
+msgstr "设置至少 3 个文件夹，以便我们开始分类。"
+
 #: ../../apps/web/src/app/(app)/settings/WorkspaceLanguageSection.tsx:56
 msgid "Sets the language for this workspace, including the interface and AI-generated folders."
 msgstr "设置此工作区的语言，包括界面和 AI 生成的文件夹。"
@@ -1779,6 +2230,15 @@ msgstr "正在设置您的工作区…"
 #: ../../apps/web/src/components/Sidebar.tsx:96
 msgid "Settings"
 msgstr "设置"
+
+#: ../../apps/mobile/src/components/DraftSheet.tsx:87
+#, fuzzy
+msgid "Share / Copy"
+msgstr "分享 / 复制"
+
+#: ../../apps/mobile/src/components/DraftSheet.tsx:87
+msgid "Shared"
+msgstr "已分享"
 
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:24
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:78
@@ -1815,10 +2275,44 @@ msgstr "社交"
 msgid "Something went wrong. Please try again."
 msgstr "出错了。请重试。"
 
+#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:50
+#: ../ui/src/emails/BackfillCard.tsx:23
+#, fuzzy
+msgid "Sort thousands of historical emails automatically. Available on Pro and Business subscriptions."
+msgstr "自动分类数千封历史邮件。适用于专业版和商业版订阅。"
+
+#: ../../apps/mobile/src/components/emails/queueLabels.ts:10
+#: ../../apps/mobile/src/components/ThreadRow.tsx:51
+#: ../ui/src/emails/queueLabels.ts:14
+#, fuzzy
+msgid "Sorted"
+msgstr "已排序"
+
+#: ../ui/src/emails/RationaleCard.tsx:122
+#, fuzzy
+msgid "Sorted automatically by content similarity."
+msgstr "已根据内容相似度自动排序。"
+
+#: ../../apps/mobile/src/components/ThreadRow.tsx:41
+#, fuzzy
+msgid "Sorting"
+msgstr "正在排序"
+
+#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:77
+#: ../ui/src/emails/BackfillCard.tsx:54
+msgid "Sorting historical inbox"
+msgstr "正在分类历史收件箱"
+
 #: ../../apps/web/src/components/ClassifyingRefresher.tsx:48
 #, fuzzy
 msgid "Sorting is taking longer than expected."
 msgstr "排序时间超出预期。"
+
+#: ../../apps/mobile/src/components/RationaleCard.tsx:35
+#: ../ui/src/emails/RationaleCard.tsx:52
+#: ../ui/src/emails/ThreadRow.tsx:107
+msgid "Sorting…"
+msgstr "正在排序…"
 
 #: ../../apps/web/src/app/(app)/upgrade/page.tsx:45
 #, fuzzy
@@ -1993,19 +2487,87 @@ msgstr "此 Gmail 也已连接到 {sharedNames}。每个工作区独立同步和
 msgid "This page wasn't found"
 msgstr "未找到此页面"
 
+#: ../ui/src/emails/RationaleCard.tsx:78
+#, fuzzy
+msgid "This thread cannot be sorted yet. Add at least {TAXONOMY_MIN_NON_ROOT_NODES} categories to your plan to begin routing."
+msgstr "此会话尚未排序。请至少添加 {TAXONOMY_MIN_NON_ROOT_NODES} 个类别到您的计划以开始路由。"
+
+#: ../../apps/mobile/src/components/RationaleCard.tsx:46
+msgid "This thread is waiting to be routed."
+msgstr "此会话正在等待路由。"
+
+#: ../ui/src/emails/RationaleCard.tsx:83
+#, fuzzy
+msgid "This thread is waiting to be routed. Use “Route now” to start sorting."
+msgstr "此会话正在等待路由。使用“立即路由”开始排序。"
+
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:71
+#, fuzzy
+msgid "Thread"
+msgstr "会话"
+
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:73
+msgid "Thread not found"
+msgstr "未找到会话"
+
+#: ../ui/src/emails/queueLabels.ts:15
+#, fuzzy
+msgid "Threads Amarnai has successfully routed to a folder."
+msgstr "Amarnai 已成功路由到文件夹的会话。"
+
+#: ../ui/src/emails/queueLabels.ts:19
+msgid "Threads flagged for review — Amarnai wasn't confident enough to sort automatically."
+msgstr "标记待审阅的会话 — Amarnai 自动排序的信心不足。"
+
 #: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:101
 #, fuzzy
 msgid "Threads from these senders will never be imported or sorted by Amarnai."
 msgstr "来自这些发件人的会话将永远不会被 Amarnai 导入或分类。"
+
+#: ../ui/src/emails/queueLabels.ts:27
+msgid "Threads Gmail has flagged as important."
+msgstr "Gmail 已标记为重要的会话。"
 
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:196
 #, fuzzy
 msgid "Threads sorted"
 msgstr "会话已分类"
 
+#: ../ui/src/emails/ThreadListHeader.tsx:53
+#, fuzzy
+msgid "Threads sorted into this folder by Amarnai."
+msgstr "Amarnai 已排序到此文件夹的会话。"
+
+#: ../ui/src/emails/queueLabels.ts:23
+#, fuzzy
+msgid "Threads that haven't been sorted yet."
+msgstr "尚未排序的会话。"
+
+#: ../../apps/mobile/src/components/emails/queueLabels.ts:19
+#: ../ui/src/emails/ThreadList.tsx:15
+#, fuzzy
+msgid "Today"
+msgstr "今天"
+
+#: ../ui/src/emails/ThreadList.tsx:106
+#, fuzzy
+msgid "Toggle folders"
+msgstr "切换文件夹"
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:91
 msgid "Travel"
 msgstr "旅行"
+
+#: ../ui/src/emails/EmailRail.tsx:82
+#: ../ui/src/emails/ThreadListHeader.tsx:84
+#, fuzzy
+msgid "Triage"
+msgstr "分类"
+
+#: ../../apps/mobile/src/components/ThreadRow.tsx:46
+#: ../ui/src/emails/ThreadRow.tsx:112
+msgid "Unclassified"
+msgstr "未分类"
 
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:292
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1253
@@ -2022,6 +2584,11 @@ msgstr "大学"
 #, fuzzy
 msgid "unknown error"
 msgstr "未知错误"
+
+#: ../../apps/mobile/src/components/RationaleCard.tsx:64
+#: ../ui/src/emails/RationaleCard.tsx:108
+msgid "Unrouted"
+msgstr "未路由"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:68
 #, fuzzy
@@ -2062,10 +2629,20 @@ msgstr "升级此工作区"
 msgid "Upgrade to a Pro or Business subscription to invite collaborators."
 msgstr "升级到专业版或商业版订阅即可邀请协作者。"
 
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:57
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:46
 #, fuzzy
 msgid "Upgrade to load them"
 msgstr "升级以加载它们"
+
+#: ../ui/src/emails/BackfillCard.tsx:28
+#, fuzzy
+msgid "Upgrade your subscription"
+msgstr "升级您的订阅"
+
+#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:56
+msgid "Upgrade your subscription on the web app to enable backfill."
+msgstr "在网页应用中升级您的订阅以启用回填。"
 
 #: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:114
 #, fuzzy
@@ -2101,6 +2678,18 @@ msgstr "供应商合同、工具、基础设施和日常运营沟通。"
 msgid "Verification email sent!"
 msgstr "验证邮件已发送！"
 
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:178
+#, fuzzy
+msgid "View draft reply"
+msgstr "查看草稿回复"
+
+#: ../../apps/mobile/src/components/RationaleCard.tsx:44
+#: ../../apps/mobile/src/components/ThreadRow.tsx:49
+#: ../ui/src/emails/RationaleCard.tsx:74
+#: ../ui/src/emails/ThreadRow.tsx:110
+msgid "Waiting"
+msgstr "等待中"
+
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:167
 #, fuzzy
 msgid "Waiting for first sync…"
@@ -2110,6 +2699,10 @@ msgstr "等待首次同步…"
 #, fuzzy
 msgid "Waitlist"
 msgstr "候补名单"
+
+#: ../ui/src/emails/ThreadRow.tsx:71
+msgid "Wants {folderName}"
+msgstr "想要 {folderName}"
 
 #: ../../apps/web/src/app/verify-email/page.tsx:28
 #, fuzzy
@@ -2135,6 +2728,10 @@ msgstr "工作"
 #: ../ui/src/i18n/taxonomy-template-messages.ts:34
 msgid "Working Professional"
 msgstr "职场人士"
+
+#: ../ui/src/emails/ThreadListHeader.tsx:63
+msgid "Workspace"
+msgstr "工作区"
 
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:12
 #, fuzzy
@@ -2162,7 +2759,9 @@ msgstr "工作区名称已更新。"
 msgid "Workspace Settings"
 msgstr "工作区设置"
 
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:153
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:319
+#: ../ui/src/emails/ThreadPreview.tsx:169
 #, fuzzy
 msgid "Writing draft reply…"
 msgstr "正在撰写回复草稿…"
@@ -2186,6 +2785,11 @@ msgstr "是的，断开连接"
 #, fuzzy
 msgid "Yes, reset workspace"
 msgstr "是的，重置工作区"
+
+#: ../../apps/mobile/src/components/emails/queueLabels.ts:20
+#: ../ui/src/emails/ThreadList.tsx:16
+msgid "Yesterday"
+msgstr "昨天"
 
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:136
 #, fuzzy

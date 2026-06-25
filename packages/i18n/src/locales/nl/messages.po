@@ -18,6 +18,23 @@ msgstr ""
 msgid " (Inbox)"
 msgstr " (Postvak In)"
 
+#: ../../apps/mobile/src/components/MessageCard.tsx:57
+#: ../ui/src/emails/MessageCard.tsx:64
+#, fuzzy
+msgid "(No body)"
+msgstr "(Geen inhoud)"
+
+#. placeholder {0}: thread.attachmentCount
+#: ../../apps/mobile/src/components/ThreadRow.tsx:96
+#, fuzzy
+msgid "{0, plural, one {# file} other {# files}}"
+msgstr "{0, plural, one {# bestand} other {# bestanden}}"
+
+#. placeholder {0}: thread.messageCount
+#: ../../apps/mobile/src/components/ThreadRow.tsx:101
+msgid "{0, plural, one {# message} other {# messages}}"
+msgstr "{0, plural, one {# bericht} other {# berichten}}"
+
 #. placeholder {0}: threadSortQuota.used
 #. placeholder {1}: threadSortQuota.limit
 #. placeholder {2}: new Date(threadSortQuota.resetsAt).toLocaleDateString("en", { month: "short", day: "numeric", timeZone: "UTC" })
@@ -34,6 +51,20 @@ msgstr "{0} / {1} · reset op {2}"
 msgid "{0} / {1} left · resets {2}"
 msgstr "{0} / {1} over · reset op {2}"
 
+#. placeholder {0}: threads.length.toLocaleString()
+#. placeholder {1}: (total ?? 0).toLocaleString()
+#. placeholder {1}: viewCount.toLocaleString()
+#: ../../apps/mobile/src/components/emails/ThreadListView.tsx:76
+#: ../ui/src/emails/ThreadList.tsx:168
+msgid "{0} of {1} loaded"
+msgstr "{0} van {1} geladen"
+
+#. placeholder {0}: quota.limit - quota.used
+#. placeholder {1}: quota.limit
+#: ../ui/src/emails/SuggestedDraftCard.tsx:98
+msgid "{0} of {1} remaining · resets {quotaResetDate}"
+msgstr "{0} van {1} resterend · reset {quotaResetDate}"
+
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:489
 #, fuzzy
 msgid "{classificationCount, plural, one {Deleting this folder will leave # thread unsorted.} other {Deleting this folder will leave # threads unsorted.}}"
@@ -43,6 +74,15 @@ msgstr "{classificationCount, plural, one {Het verwijderen van deze map laat # g
 #, fuzzy
 msgid "{collaboratorCount} / {collaboratorLimit} added"
 msgstr "{collaboratorCount} / {collaboratorLimit} toegevoegd"
+
+#: ../../apps/mobile/src/components/RationaleCard.tsx:61
+#: ../ui/src/emails/RationaleCard.tsx:94
+msgid "{confPct}% confidence"
+msgstr "{confPct}% zekerheid"
+
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:136
+msgid "{draftRemaining} of {draftLimit} left · resets {draftResetDate}"
+msgstr "{draftRemaining} van {draftLimit} resterend · reset {draftResetDate}"
 
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:118
 #, fuzzy
@@ -65,11 +105,25 @@ msgstr "{pendingCount} in afwachting"
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
 msgstr "{quotaRemaining} van {0} over · reset op {quotaResetDate}"
 
+#: ../../apps/mobile/src/components/DraftSheet.tsx:137
+msgid "{remaining} of {limit} remaining · resets {resetDate}"
+msgstr "{remaining} van {limit} resterend · reset {resetDate}"
+
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1410
 #, fuzzy
 msgid "{routableCount} of {TAXONOMY_MIN_NON_ROOT_NODES} folders connected to your inbox. Routing requires at least {TAXONOMY_MIN_NON_ROOT_NODES}."
 msgstr "{routableCount} van {TAXONOMY_MIN_NON_ROOT_NODES} mappen verbonden met je postvak in. Routering vereist minstens {TAXONOMY_MIN_NON_ROOT_NODES}."
 
+#: ../ui/src/emails/ThreadListHeader.tsx:113
+#, fuzzy
+msgid "{threadCount, plural, one {# thread} other {# threads}}"
+msgstr "{threadCount, plural, one {# gesprek} other {# gesprekken}}"
+
+#: ../ui/src/emails/ThreadListHeader.tsx:117
+msgid "{unreadCount} unread"
+msgstr "{unreadCount} ongelezen"
+
+#: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:59
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:65
 #, fuzzy
 msgid "{waitingCount, plural, one {# thread is ready to route.} other {# threads are ready to route.}}"
@@ -79,6 +133,10 @@ msgstr "{waitingCount, plural, one {# gesprek is klaar om te routeren.} other {#
 #, fuzzy
 msgid "{waitingCount, plural, one {# thread is waiting to be routed. Set up your folders to start sorting.} other {# threads are waiting to be routed. Set up your folders to start sorting.}}"
 msgstr "{waitingCount, plural, one {# gesprek wacht om gerouteerd te worden. Configureer je mappen om te beginnen met sorteren.} other {# gesprekken wachten om gerouteerd te worden. Configureer je mappen om te beginnen met sorteren.}}"
+
+#: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:37
+msgid "{waitingCount, plural, one {# thread is waiting. Connect at least {TAXONOMY_MIN_NON_ROOT_NODES} folders to begin sorting.} other {# threads are waiting. Connect at least {TAXONOMY_MIN_NON_ROOT_NODES} folders to begin sorting.}}"
+msgstr "{waitingCount, plural, one {# gesprek wacht. Verbind minstens {TAXONOMY_MIN_NON_ROOT_NODES} mappen om te beginnen met sorteren.} other {# gesprekken wachten. Verbind minstens {TAXONOMY_MIN_NON_ROOT_NODES} mappen om te beginnen met sorteren.}}"
 
 #: ../../apps/web/src/app/admin/waitlist/page.tsx:55
 #, fuzzy
@@ -99,6 +157,7 @@ msgstr "+ Nieuwe werkruimte"
 msgid "${price}/mo"
 msgstr "${price}/maand"
 
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:33
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:37
 #, fuzzy
 msgid "About {count, plural, one {# more thread} other {# more threads}} beyond your {plan} subscription limit aren't loaded."
@@ -152,6 +211,30 @@ msgstr "AI-concepten"
 #, fuzzy
 msgid "AI email triage assistant"
 msgstr "AI e-mail triage assistent"
+
+#: ../../apps/mobile/src/components/RationaleCard.tsx:34
+#: ../../apps/mobile/src/components/RationaleCard.tsx:43
+#: ../../apps/mobile/src/components/RationaleCard.tsx:60
+#: ../ui/src/emails/RationaleCard.tsx:48
+#: ../ui/src/emails/RationaleCard.tsx:67
+#: ../ui/src/emails/RationaleCard.tsx:93
+#, fuzzy
+msgid "AI Routing"
+msgstr "AI-routering"
+
+#: ../../apps/mobile/src/components/emails/queueLabels.ts:9
+#: ../ui/src/emails/queueLabels.ts:10
+msgid "All"
+msgstr "Alles"
+
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:153
+#, fuzzy
+msgid "All folders"
+msgstr "Alle mappen"
+
+#: ../../apps/mobile/src/components/emails/FolderFilterSheet.tsx:44
+msgid "All threads"
+msgstr "Alle gesprekken"
 
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:47
 #, fuzzy
@@ -247,6 +330,12 @@ msgstr "Toepassen vervangt uw huidige plan. U kunt het daarna volledig bewerken.
 msgid "Applying…"
 msgstr "Bezig met toepassen…"
 
+#: ../../apps/mobile/src/components/RationaleCard.tsx:75
+#: ../ui/src/emails/RationaleCard.tsx:142
+#, fuzzy
+msgid "Approve routing"
+msgstr "Routering goedkeuren"
+
 #: ../../apps/web/src/app/reset-password/page.tsx:53
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:48
 msgid "At least 8 characters"
@@ -263,11 +352,13 @@ msgstr "Geautomatiseerde meldingen, nieuwsbrieven en service-updates die niet in
 
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:222
+#: ../ui/src/emails/ThreadPreview.tsx:92
 #, fuzzy
 msgid "Back"
 msgstr "Terug"
 
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:217
+#: ../ui/src/emails/ThreadPreview.tsx:87
 #, fuzzy
 msgid "Back to list"
 msgstr "Terug naar lijst"
@@ -276,6 +367,12 @@ msgstr "Terug naar lijst"
 #, fuzzy
 msgid "Back to sign in"
 msgstr "Terug naar inloggen"
+
+#: ../ui/src/emails/BackfillCard.tsx:18
+#: ../ui/src/emails/BackfillCard.tsx:49
+#, fuzzy
+msgid "Backfill"
+msgstr "Aanvullen"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:81
 msgid "Bank statements, investments, insurance policies, and personal financial records."
@@ -294,6 +391,16 @@ msgstr "Facturatie, betalingen, facturen en financiële gegevens voor freelance 
 #, fuzzy
 msgid "Browse templates"
 msgstr "Sjablonen bekijken"
+
+#: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:48
+#, fuzzy
+msgid "Build plan"
+msgstr "Bouwplan"
+
+#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
+#: ../ui/src/emails/BackfillCard.tsx:21
+msgid "Bulk triage your inbox"
+msgstr "Sorteer je inbox bulksgewijs"
 
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:31
 #, fuzzy
@@ -388,6 +495,8 @@ msgstr "Paneel sluiten"
 
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:225
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:229
+#: ../ui/src/emails/ThreadPreview.tsx:97
+#: ../ui/src/emails/ThreadPreview.tsx:101
 #, fuzzy
 msgid "Close preview"
 msgstr "Voorbeeld sluiten"
@@ -403,6 +512,10 @@ msgstr "Samenwerkers"
 msgid "Collaborators are available on Pro and Business subscriptions. <0>Upgrade to add.</0>"
 msgstr "Samenwerkers zijn beschikbaar met Pro- en Business-abonnementen. <0>Upgrade om toe te voegen.</0>"
 
+#: ../ui/src/folder-tree/FolderTree.tsx:89
+msgid "Collapse"
+msgstr "Invouwen"
+
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:294
 #, fuzzy
 msgid "Confirm cancellation"
@@ -413,6 +526,7 @@ msgstr "Annulering bevestigen"
 msgid "Confirm Delete"
 msgstr "Verwijderen bevestigen"
 
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:268
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:53
 #, fuzzy
@@ -423,6 +537,15 @@ msgstr "Gmail verbinden"
 #, fuzzy
 msgid "Connect Gmail to generate a plan from your inbox"
 msgstr "Verbind Gmail om een plan te genereren vanuit je inbox"
+
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:180
+#, fuzzy
+msgid "Connect Gmail to start triaging"
+msgstr "Verbind Gmail om te beginnen met sorteren"
+
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:183
+msgid "Connect your Gmail account to sync your inbox into Amarnai. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
+msgstr "Verbind je Gmail-account om je inbox te synchroniseren met Amarnai. Amarnai maakt verbinding met <0>alleen-lezen toegang</0> en <1>verstuurt, verwijdert of wijzigt nooit iets</1>. Je inbox blijft van jou."
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:29
 #, fuzzy
@@ -456,6 +579,15 @@ msgstr "Contracten"
 #: ../ui/src/i18n/taxonomy-template-messages.ts:61
 msgid "Contracts, banking, accounting, tax filings, and corporate legal correspondence."
 msgstr "Contracten, bankzaken, boekhouding, belastingaangiften en zakelijke juridische correspondentie."
+
+#: ../ui/src/emails/SuggestedDraftCard.tsx:57
+#, fuzzy
+msgid "Copied"
+msgstr "Gekopieerd"
+
+#: ../ui/src/emails/SuggestedDraftCard.tsx:65
+msgid "Copy"
+msgstr "Kopiëren"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:52
 #, fuzzy
@@ -531,6 +663,7 @@ msgstr "Account aanmaken…"
 msgid "Creating…"
 msgstr "Aanmaken…"
 
+#: ../../apps/mobile/src/components/RerouteSheet.tsx:45
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:107
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1671
 #, fuzzy
@@ -646,6 +779,8 @@ msgstr "Ontkoppelt deze werkruimte. Amarnai behoudt toegang omdat deze mailbox o
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "Ontkoppelt deze werkruimte. Amarnai behoudt toegang omdat deze mailbox nog steeds is verbonden in {sharedNames}."
 
+#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:42
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:48
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:295
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:52
 msgid "Dismiss"
@@ -670,15 +805,52 @@ msgstr "Artsen, apotheken, medische afspraken, declaraties ziektekostenverzekeri
 msgid "Don't have an account? <0>Sign up</0>"
 msgstr "Nog geen account? <0>Aanmelden</0>"
 
+#: ../../apps/mobile/src/components/ThreadRow.tsx:40
+#: ../ui/src/emails/ThreadRow.tsx:101
+#, fuzzy
+msgid "Done"
+msgstr "Gereed"
+
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:197
+msgid "Done · undo"
+msgstr "Klaar · ongedaan maken"
+
+#: ../ui/src/emails/ThreadRow.tsx:124
+#, fuzzy
+msgid "draft"
+msgstr "concept"
+
+#: ../../apps/mobile/src/components/ThreadRow.tsx:88
+msgid "Draft"
+msgstr "Concept"
+
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:165
+msgid "Draft failed · tap to retry"
+msgstr "Concept mislukt · tik om opnieuw te proberen"
+
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:325
 #, fuzzy
 msgid "Draft generation failed. Try again."
 msgstr "Genereren van concept mislukt. Probeer het opnieuw."
 
+#: ../../apps/mobile/src/components/DraftSheet.tsx:63
+#: ../ui/src/emails/SuggestedDraftCard.tsx:47
+msgid "Draft reply"
+msgstr "Conceptantwoord"
+
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:112
+msgid "Draft shared"
+msgstr "Concept gedeeld"
+
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:445
 #, fuzzy
 msgid "Draft style guidance"
 msgstr "Richtlijnen voor conceptstijl"
+
+#: ../../apps/mobile/src/components/ThreadRow.tsx:84
+#: ../ui/src/emails/ThreadRow.tsx:123
+msgid "Drafting…"
+msgstr "Concept aanmaken…"
 
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:430
 #, fuzzy
@@ -689,6 +861,11 @@ msgstr "bijv. Facturen, bonnen, betalingsbevestigingen en vragen over facturerin
 #, fuzzy
 msgid "e.g. Reply formally. Keep responses under 3 sentences."
 msgstr "bijv. Formeel antwoorden. Houd antwoorden onder 3 zinnen."
+
+#: ../../apps/mobile/src/components/emails/queueLabels.ts:21
+#: ../ui/src/emails/ThreadList.tsx:17
+msgid "Earlier"
+msgstr "Eerder"
 
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:400
 #, fuzzy
@@ -764,6 +941,16 @@ msgstr "Voer je e-mailadres in en we sturen je een resetlink."
 #, fuzzy
 msgid "Entry"
 msgstr "Invoer"
+
+#: ../ui/src/emails/queueLabels.ts:11
+#, fuzzy
+msgid "Every thread in your inbox."
+msgstr "Elk gesprek in je inbox."
+
+#: ../ui/src/folder-tree/FolderTree.tsx:89
+#, fuzzy
+msgid "Expand"
+msgstr "Uitvouwen"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:26
 msgid "Expenses"
@@ -848,6 +1035,19 @@ msgstr "Pad bijwerken mislukt"
 msgid "Family"
 msgstr "Familie"
 
+#: ../../apps/mobile/src/components/emails/FolderFilterSheet.tsx:33
+msgid "Filter by folder"
+msgstr "Filteren op map"
+
+#: ../ui/src/emails/EmailRail.tsx:72
+#, fuzzy
+msgid "Filter queues & folders…"
+msgstr "Wachtrijen & mappen filteren…"
+
+#: ../ui/src/emails/EmailRail.tsx:75
+msgid "Filter rail"
+msgstr "Filterbalk"
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:22
 #, fuzzy
 msgid "Finance"
@@ -857,6 +1057,21 @@ msgstr "Financiën"
 #, fuzzy
 msgid "Flight and hotel bookings, travel itineraries, visa applications, and trip confirmations."
 msgstr "Vlucht- en hotelboekingen, reisroutes, visumaanvragen en reisbevestigingen."
+
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:110
+#: ../../apps/mobile/src/components/emails/QueueChips.tsx:22
+#, fuzzy
+msgid "Folder"
+msgstr "Map"
+
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:151
+msgid "Folder: {activeFolderName}"
+msgstr "Map: {activeFolderName}"
+
+#: ../ui/src/emails/EmailRail.tsx:95
+#: ../ui/src/emails/ThreadList.tsx:111
+msgid "Folders"
+msgstr "Mappen"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:35
 #, fuzzy
@@ -912,12 +1127,18 @@ msgstr "Vrienden, campusactiviteiten, clubs, sociale uitnodigingen en buitenscho
 msgid "Generate"
 msgstr "Genereren"
 
+#: ../ui/src/emails/SuggestedDraftCard.tsx:76
+msgid "Generate a new draft — uses one from your monthly allowance"
+msgstr "Nieuw concept genereren — gebruikt één van je maandelijkse tegoed"
+
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:212
 #, fuzzy
 msgid "Generate a plan from your inbox"
 msgstr "Genereer een plan vanuit je inbox"
 
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:131
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:303
+#: ../ui/src/emails/ThreadPreview.tsx:162
 #, fuzzy
 msgid "Generate draft reply"
 msgstr "Conceptantwoord genereren"
@@ -945,10 +1166,24 @@ msgstr "Genereren…"
 msgid "Generation didn't complete."
 msgstr "Generatie niet voltooid."
 
+#: ../../apps/mobile/src/components/emails/DisconnectedBanner.tsx:39
+msgid "Gmail disconnected. Amarnai stopped syncing this inbox, so new mail will not appear until you reconnect."
+msgstr "Gmail is losgekoppeld. Amarnai is gestopt met het synchroniseren van deze inbox, dus nieuwe e-mail zal niet verschijnen totdat je opnieuw verbinding maakt."
+
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:131
 #, fuzzy
 msgid "Gmail Inbox"
 msgstr "Gmail-inbox"
+
+#: ../ui/src/emails/EmailRail.tsx:56
+#, fuzzy
+msgid "Gmail live sync active"
+msgstr "Gmail live synchronisatie actief"
+
+#: ../../apps/mobile/src/components/RationaleCard.tsx:67
+#: ../ui/src/emails/RationaleCard.tsx:116
+msgid "Gmail marked as important"
+msgstr "Gmail gemarkeerd als belangrijk"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:50
 #, fuzzy
@@ -1048,6 +1283,11 @@ msgstr "Plan importeren"
 #, fuzzy
 msgid "Import plan (replaces current)"
 msgstr "Plan importeren (vervangt huidig)"
+
+#: ../../apps/mobile/src/components/emails/queueLabels.ts:13
+#: ../ui/src/emails/queueLabels.ts:26
+msgid "Important"
+msgstr "Belangrijk"
 
 #: ../../apps/web/src/app/sign-up/WaitlistForm.tsx:68
 #, fuzzy
@@ -1246,13 +1486,35 @@ msgstr "Lijst de soorten e-mails op die hier thuishoren: afzenders, onderwerpen,
 #~ msgid "List the kinds of emails that belong here: senders, topics, keywords. At least 30 characters."
 #~ msgstr "Lijst de soorten e-mails op die hier thuishoren: afzenders, onderwerpen, trefwoorden. Minimaal 30 tekens."
 
+#: ../ui/src/emails/EmailRail.tsx:59
+msgid "Live"
+msgstr "Live"
+
+#: ../../apps/mobile/src/components/emails/ThreadListView.tsx:90
+#: ../ui/src/emails/ThreadList.tsx:179
+#, fuzzy
+msgid "Load more"
+msgstr "Laad meer"
+
+#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:81
+#: ../ui/src/emails/BackfillCard.tsx:56
+msgid "Loading past threads…"
+msgstr "Oude gesprekken laden…"
+
+#: ../../apps/mobile/src/components/MessageCard.tsx:53
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:121
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:137
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:158
 #: ../../apps/web/src/app/loading.tsx:6
+#: ../ui/src/emails/MessageCard.tsx:60
+#: ../ui/src/emails/ThreadList.tsx:179
 #, fuzzy
 msgid "Loading…"
 msgstr "Laden…"
+
+#: ../ui/src/emails/EmailRail.tsx:54
+msgid "Mail"
+msgstr "Mail"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:40
 #, fuzzy
@@ -1263,10 +1525,45 @@ msgstr "Management"
 msgid "Manager emails: one-on-ones, performance reviews, and feedback."
 msgstr "E-mails van managers: een-op-eens, functioneringsgesprekken en feedback."
 
+#: ../ui/src/emails/PreviewDoneBar.tsx:23
+#: ../ui/src/emails/ThreadRow.tsx:75
+#, fuzzy
+msgid "Mark as done"
+msgstr "Markeren als gereed"
+
+#: ../ui/src/emails/ThreadRow.tsx:75
+#, fuzzy
+msgid "Mark as not done"
+msgstr "Markeren als niet gereed"
+
+#: ../../apps/mobile/src/components/DraftSheet.tsx:111
+#: ../ui/src/emails/SuggestedDraftCard.tsx:73
+#, fuzzy
+msgid "Mark as sent"
+msgstr "Markeren als verzonden"
+
+#: ../../apps/mobile/src/components/DraftSheet.tsx:111
+#: ../ui/src/emails/SuggestedDraftCard.tsx:73
+msgid "Mark as unsent"
+msgstr "Markeren als niet verzonden"
+
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:204
+msgid "Mark done"
+msgstr "Markeren als klaar"
+
 #: ../../apps/web/src/app/admin/waitlist/page.tsx:26
 #, fuzzy
 msgid "Mark invited"
 msgstr "Markeren als uitgenodigd"
+
+#: ../ui/src/emails/PreviewDoneBar.tsx:22
+#, fuzzy
+msgid "Marked as done"
+msgstr "Gemarkeerd als gereed"
+
+#: ../ui/src/emails/PreviewDoneBar.tsx:21
+msgid "Marked as done · {doneByName}"
+msgstr "Gemarkeerd als gereed · {doneByName}"
 
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:198
 #, fuzzy
@@ -1293,6 +1590,7 @@ msgstr "Voorbeeldbinbox"
 msgid "Monthly"
 msgstr "Maandelijks"
 
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:42
 #, fuzzy
 msgid "More threads beyond your {plan} subscription limit aren't loaded."
@@ -1302,6 +1600,21 @@ msgstr "Meer gesprekken dan de limiet van uw {plan}-abonnement worden niet gelad
 #, fuzzy
 msgid "Move them to"
 msgstr "Verplaats ze naar"
+
+#: ../../apps/mobile/src/components/RerouteSheet.tsx:29
+msgid "Move to folder"
+msgstr "Verplaatsen naar map"
+
+#: ../ui/src/emails/ReroutePopover.tsx:84
+#, fuzzy
+msgid "Move to folder…"
+msgstr "Verplaatsen naar map…"
+
+#: ../../apps/mobile/src/components/RationaleCard.tsx:50
+#: ../../apps/mobile/src/components/RationaleCard.tsx:79
+#: ../ui/src/emails/RationaleCard.tsx:151
+msgid "Move to…"
+msgstr "Verplaatsen naar…"
 
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:409
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:15
@@ -1314,6 +1627,12 @@ msgstr "Naam"
 msgid "Name updated."
 msgstr "Naam bijgewerkt."
 
+#: ../../apps/mobile/src/components/emails/queueLabels.ts:11
+#: ../../apps/mobile/src/components/ThreadRow.tsx:44
+#: ../ui/src/emails/queueLabels.ts:18
+msgid "Needs review"
+msgstr "Nog te beoordelen"
+
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:142
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:157
 #, fuzzy
@@ -1324,21 +1643,63 @@ msgstr "Nooit"
 msgid "New business inquiries, proposals, pricing discussions, and prospective client outreach."
 msgstr "Nieuwe zakelijke aanvragen, voorstellen, prijsbesprekingen en contact met potentiële klanten."
 
+#: ../ui/src/emails/EmailRail.tsx:97
+#: ../ui/src/emails/EmailRail.tsx:102
+msgid "New folder"
+msgstr "Nieuwe map"
+
 #: ../../apps/web/src/app/reset-password/page.tsx:42
 #: ../../apps/web/src/app/reset-password/page.tsx:67
 #, fuzzy
 msgid "New password"
 msgstr "Nieuw wachtwoord"
 
+#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:87
+#: ../ui/src/emails/BackfillCard.tsx:61
+msgid "New threads will appear as they are sorted."
+msgstr "Nieuwe gesprekken verschijnen zodra ze zijn gesorteerd."
+
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:150
 #, fuzzy
 msgid "New workspace name"
 msgstr "Nieuwe werkruimtenaam"
 
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:129
+msgid "No drafts remaining"
+msgstr "Geen concepten meer"
+
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:308
+#: ../ui/src/emails/SuggestedDraftCard.tsx:97
 #, fuzzy
 msgid "No drafts remaining · resets {quotaResetDate}"
 msgstr "Geen concepten meer · reset op {quotaResetDate}"
+
+#: ../../apps/mobile/src/components/DraftSheet.tsx:135
+msgid "No drafts remaining · resets {resetDate}"
+msgstr "Geen concepten meer · reset {resetDate}"
+
+#: ../ui/src/emails/SuggestedDraftCard.tsx:76
+#, fuzzy
+msgid "No drafts remaining this month"
+msgstr "Geen concepten meer deze maand"
+
+#: ../../apps/mobile/src/components/RerouteSheet.tsx:49
+#, fuzzy
+msgid "No folders available"
+msgstr "Geen mappen beschikbaar"
+
+#: ../ui/src/folder-tree/FolderTree.tsx:51
+msgid "No folders defined"
+msgstr "Geen mappen gedefinieerd"
+
+#: ../ui/src/emails/ReroutePopover.tsx:94
+#, fuzzy
+msgid "No folders match"
+msgstr "Geen mappen gevonden"
+
+#: ../../apps/mobile/src/components/emails/FolderFilterSheet.tsx:69
+msgid "No folders yet"
+msgstr "Nog geen mappen"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:263
 #, fuzzy
@@ -1349,6 +1710,38 @@ msgstr "Geen Gmail-inbox verbonden met deze werkruimte."
 #, fuzzy
 msgid "No signups yet."
 msgstr "Nog geen aanmeldingen."
+
+#: ../../apps/mobile/src/components/emails/ThreadListView.tsx:41
+#, fuzzy
+msgid "No threads"
+msgstr "Geen gesprekken"
+
+#: ../ui/src/emails/ThreadList.tsx:135
+msgid "No threads here."
+msgstr "Geen gesprekken hier."
+
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:117
+#, fuzzy
+#~ msgid "No threads in {activeFolderName}"
+#~ msgstr "Geen gesprekken in {activeFolderName}"
+
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:118
+msgid "No threads in {folderName}"
+msgstr "Geen gesprekken in {folderName}"
+
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:116
+#, fuzzy
+msgid "No threads match your search"
+msgstr "Geen gesprekken komen overeen met je zoekopdracht"
+
+#: ../ui/src/emails/ThreadList.tsx:133
+#, fuzzy
+msgid "No threads match your search."
+msgstr "Geen gesprekken komen overeen met je zoekopdracht."
+
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:119
+msgid "No threads yet"
+msgstr "Nog geen gesprekken"
 
 #: ../../apps/web/src/components/Sidebar.tsx:198
 #, fuzzy
@@ -1374,8 +1767,12 @@ msgstr "Nog niet gesynchroniseerd"
 msgid "Official university emails: registrar, student services, and housing."
 msgstr "Officiële universiteitsmails: studentenadministratie, studentenservice en huisvesting."
 
+#: ../../apps/mobile/src/components/DraftSheet.tsx:97
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:242
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:248
+#: ../ui/src/emails/ThreadPreview.tsx:115
+#: ../ui/src/emails/ThreadPreview.tsx:121
+#: ../ui/src/emails/ThreadRow.tsx:76
 #, fuzzy
 msgid "Open in Gmail"
 msgstr "Openen in Gmail"
@@ -1433,7 +1830,9 @@ msgstr "Betaling mislukt. Werk uw betaalmethode bij om te voorkomen dat u de toe
 msgid "Payslips, expense reports, reimbursements, and employee benefits emails."
 msgstr "Salarisstroken, onkostennota's, vergoedingen en e-mails over personeelsvoordelen."
 
+#: ../../apps/mobile/src/components/emails/queueLabels.ts:12
 #: ../../apps/web/src/app/admin/waitlist/page.tsx:63
+#: ../ui/src/emails/queueLabels.ts:22
 #, fuzzy
 msgid "Pending"
 msgstr "In afwachting"
@@ -1547,6 +1946,10 @@ msgstr "Opnieuw scannen wordt in de wachtrij geplaatst…"
 msgid "Re-route {unclassifiedCount} unclassified"
 msgstr "{unclassifiedCount} ongeclassificeerde omleiden"
 
+#: ../ui/src/emails/ReroutePopover.tsx:75
+msgid "Re-route thread"
+msgstr "Gesprek omleiden"
+
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:121
 #, fuzzy
 msgid "Reactivate"
@@ -1556,6 +1959,10 @@ msgstr "Reactiveren"
 #, fuzzy
 msgid "Receipts, payment confirmations, and billing questions from vendors."
 msgstr "Bonnen, betalingsbevestigingen en factuurvragen van leveranciers."
+
+#: ../../apps/mobile/src/components/emails/DisconnectedBanner.tsx:46
+msgid "Reconnect"
+msgstr "Opnieuw verbinden"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:258
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:53
@@ -1567,6 +1974,10 @@ msgstr "Gmail opnieuw verbinden"
 #, fuzzy
 msgid "Reconnect your Gmail inbox"
 msgstr "Uw Gmail-inbox opnieuw verbinden"
+
+#: ../../apps/mobile/src/components/emails/DisconnectedBanner.tsx:46
+msgid "Reconnecting…"
+msgstr "Opnieuw verbinden…"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:45
 #, fuzzy
@@ -1593,7 +2004,9 @@ msgstr "Opnieuw uitvoeren"
 msgid "Refresh"
 msgstr "Vernieuwen"
 
+#: ../../apps/mobile/src/components/DraftSheet.tsx:127
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:343
+#: ../ui/src/emails/SuggestedDraftCard.tsx:89
 #, fuzzy
 msgid "Regenerate"
 msgstr "Opnieuw genereren"
@@ -1687,6 +2100,10 @@ msgstr "Wachtwoord resetten"
 msgid "Reset workspace"
 msgstr "Workspace resetten"
 
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:141
+msgid "Resets {draftResetDate}"
+msgstr "Reset {draftResetDate}"
+
 #: ../../apps/web/src/app/(app)/settings/ResetWorkspaceSection.tsx:60
 #, fuzzy
 msgid "Resetting…"
@@ -1697,15 +2114,24 @@ msgstr "Bezig met resetten…"
 msgid "Retry"
 msgstr "Opnieuw proberen"
 
+#: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
 #, fuzzy
 msgid "Route now"
 msgstr "Nu routeren"
 
+#: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
 #, fuzzy
 msgid "Routing…"
 msgstr "Bezig met routeren…"
+
+#. placeholder {0}: altFolder.name
+#. placeholder {1}: Math.round(thread.alternativeFolder.weight * 100)
+#: ../ui/src/emails/RationaleCard.tsx:130
+#, fuzzy
+msgid "Runner-up: <0>{0}</0> ({1}%)"
+msgstr "Tweede keuze: <0>{0}</0> ({1}%)"
 
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:538
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:650
@@ -1725,6 +2151,25 @@ msgstr "Wijzigingen opslaan"
 #, fuzzy
 msgid "Saving…"
 msgstr "Opslaan…"
+
+#: ../ui/src/emails/ThreadListHeader.tsx:104
+#, fuzzy
+msgid "Search {threadCount} threads"
+msgstr "Zoek {threadCount} gesprekken"
+
+#: ../ui/src/emails/ReroutePopover.tsx:88
+#, fuzzy
+msgid "Search folders"
+msgstr "Mappen doorzoeken"
+
+#: ../ui/src/emails/ThreadListHeader.tsx:107
+#, fuzzy
+msgid "Search threads"
+msgstr "Gesprekken doorzoeken"
+
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:137
+msgid "Search threads…"
+msgstr "Zoek gesprekken…"
 
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:270
 #, fuzzy
@@ -1767,6 +2212,12 @@ msgstr "Sessie"
 msgid "Set new password"
 msgstr "Nieuw wachtwoord instellen"
 
+#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:85
+#: ../ui/src/emails/BackfillCard.tsx:59
+#, fuzzy
+msgid "Set up at least 3 folders so we can start sorting."
+msgstr "Stel minstens 3 mappen in zodat we kunnen beginnen met sorteren."
+
 #: ../../apps/web/src/app/(app)/settings/WorkspaceLanguageSection.tsx:56
 msgid "Sets the language for this workspace, including the interface and AI-generated folders."
 msgstr "Stelt de taal in voor deze werkruimte, inclusief de interface en door AI gegenereerde mappen."
@@ -1779,6 +2230,15 @@ msgstr "Je workspace wordt ingesteld…"
 #: ../../apps/web/src/components/Sidebar.tsx:96
 msgid "Settings"
 msgstr "Instellingen"
+
+#: ../../apps/mobile/src/components/DraftSheet.tsx:87
+#, fuzzy
+msgid "Share / Copy"
+msgstr "Delen / Kopiëren"
+
+#: ../../apps/mobile/src/components/DraftSheet.tsx:87
+msgid "Shared"
+msgstr "Gedeeld"
 
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:24
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:78
@@ -1815,10 +2275,44 @@ msgstr "Sociaal"
 msgid "Something went wrong. Please try again."
 msgstr "Er is iets fout gegaan. Probeer het opnieuw."
 
+#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:50
+#: ../ui/src/emails/BackfillCard.tsx:23
+#, fuzzy
+msgid "Sort thousands of historical emails automatically. Available on Pro and Business subscriptions."
+msgstr "Sorteer automatisch duizenden historische e-mails. Beschikbaar met Pro- en Business-abonnementen."
+
+#: ../../apps/mobile/src/components/emails/queueLabels.ts:10
+#: ../../apps/mobile/src/components/ThreadRow.tsx:51
+#: ../ui/src/emails/queueLabels.ts:14
+#, fuzzy
+msgid "Sorted"
+msgstr "Gesorteerd"
+
+#: ../ui/src/emails/RationaleCard.tsx:122
+#, fuzzy
+msgid "Sorted automatically by content similarity."
+msgstr "Automatisch gesorteerd op inhoudsgelijkheid."
+
+#: ../../apps/mobile/src/components/ThreadRow.tsx:41
+#, fuzzy
+msgid "Sorting"
+msgstr "Sorteren"
+
+#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:77
+#: ../ui/src/emails/BackfillCard.tsx:54
+msgid "Sorting historical inbox"
+msgstr "Historische inbox sorteren"
+
 #: ../../apps/web/src/components/ClassifyingRefresher.tsx:48
 #, fuzzy
 msgid "Sorting is taking longer than expected."
 msgstr "Sorteren duurt langer dan verwacht."
+
+#: ../../apps/mobile/src/components/RationaleCard.tsx:35
+#: ../ui/src/emails/RationaleCard.tsx:52
+#: ../ui/src/emails/ThreadRow.tsx:107
+msgid "Sorting…"
+msgstr "Sorteren…"
 
 #: ../../apps/web/src/app/(app)/upgrade/page.tsx:45
 #, fuzzy
@@ -1993,19 +2487,87 @@ msgstr "Deze Gmail is ook verbonden in {sharedNames}. Elke werkruimte synchronis
 msgid "This page wasn't found"
 msgstr "Deze pagina is niet gevonden"
 
+#: ../ui/src/emails/RationaleCard.tsx:78
+#, fuzzy
+msgid "This thread cannot be sorted yet. Add at least {TAXONOMY_MIN_NON_ROOT_NODES} categories to your plan to begin routing."
+msgstr "Dit gesprek kan nog niet worden gesorteerd. Voeg minstens {TAXONOMY_MIN_NON_ROOT_NODES} categorieën toe aan je abonnement om te beginnen met routeren."
+
+#: ../../apps/mobile/src/components/RationaleCard.tsx:46
+msgid "This thread is waiting to be routed."
+msgstr "Dit gesprek wacht om te worden doorgestuurd."
+
+#: ../ui/src/emails/RationaleCard.tsx:83
+#, fuzzy
+msgid "This thread is waiting to be routed. Use “Route now” to start sorting."
+msgstr "Dit gesprek wacht op routering. Gebruik 'Nu routeren' om te beginnen met sorteren."
+
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:71
+#, fuzzy
+msgid "Thread"
+msgstr "Gesprek"
+
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:73
+msgid "Thread not found"
+msgstr "Gesprek niet gevonden"
+
+#: ../ui/src/emails/queueLabels.ts:15
+#, fuzzy
+msgid "Threads Amarnai has successfully routed to a folder."
+msgstr "Gesprekken die Amarnai succesvol naar een map heeft geleid."
+
+#: ../ui/src/emails/queueLabels.ts:19
+msgid "Threads flagged for review — Amarnai wasn't confident enough to sort automatically."
+msgstr "Gesprekken gemarkeerd voor beoordeling — Amarnai was niet zeker genoeg om automatisch te sorteren."
+
 #: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:101
 #, fuzzy
 msgid "Threads from these senders will never be imported or sorted by Amarnai."
 msgstr "Gesprekken van deze afzenders worden nooit geïmporteerd of gesorteerd door Amarnai."
+
+#: ../ui/src/emails/queueLabels.ts:27
+msgid "Threads Gmail has flagged as important."
+msgstr "Gesprekken die Gmail heeft gemarkeerd als belangrijk."
 
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:196
 #, fuzzy
 msgid "Threads sorted"
 msgstr "Gesprekken gesorteerd"
 
+#: ../ui/src/emails/ThreadListHeader.tsx:53
+#, fuzzy
+msgid "Threads sorted into this folder by Amarnai."
+msgstr "Gesprekken gesorteerd in deze map door Amarnai."
+
+#: ../ui/src/emails/queueLabels.ts:23
+#, fuzzy
+msgid "Threads that haven't been sorted yet."
+msgstr "Gesprekken die nog niet zijn gesorteerd."
+
+#: ../../apps/mobile/src/components/emails/queueLabels.ts:19
+#: ../ui/src/emails/ThreadList.tsx:15
+#, fuzzy
+msgid "Today"
+msgstr "Vandaag"
+
+#: ../ui/src/emails/ThreadList.tsx:106
+#, fuzzy
+msgid "Toggle folders"
+msgstr "Mappen in-/uitschakelen"
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:91
 msgid "Travel"
 msgstr "Reizen"
+
+#: ../ui/src/emails/EmailRail.tsx:82
+#: ../ui/src/emails/ThreadListHeader.tsx:84
+#, fuzzy
+msgid "Triage"
+msgstr "Triage"
+
+#: ../../apps/mobile/src/components/ThreadRow.tsx:46
+#: ../ui/src/emails/ThreadRow.tsx:112
+msgid "Unclassified"
+msgstr "Ongeclassificeerd"
 
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:292
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1253
@@ -2022,6 +2584,11 @@ msgstr "Universiteit"
 #, fuzzy
 msgid "unknown error"
 msgstr "onbekende fout"
+
+#: ../../apps/mobile/src/components/RationaleCard.tsx:64
+#: ../ui/src/emails/RationaleCard.tsx:108
+msgid "Unrouted"
+msgstr "Nog niet gerouteerd"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:68
 #, fuzzy
@@ -2062,10 +2629,20 @@ msgstr "Deze werkruimte upgraden"
 msgid "Upgrade to a Pro or Business subscription to invite collaborators."
 msgstr "Upgrade naar een Pro- of Business-abonnement om samenwerkers uit te nodigen."
 
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:57
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:46
 #, fuzzy
 msgid "Upgrade to load them"
 msgstr "Upgraden om ze te laden"
+
+#: ../ui/src/emails/BackfillCard.tsx:28
+#, fuzzy
+msgid "Upgrade your subscription"
+msgstr "Upgrade je abonnement"
+
+#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:56
+msgid "Upgrade your subscription on the web app to enable backfill."
+msgstr "Upgrade je abonnement in de web-app om backfill in te schakelen."
 
 #: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:114
 #, fuzzy
@@ -2101,6 +2678,18 @@ msgstr "Leverancierscontracten, tools, infrastructuur en dagelijkse operationele
 msgid "Verification email sent!"
 msgstr "Verificatie-e-mail verzonden!"
 
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:178
+#, fuzzy
+msgid "View draft reply"
+msgstr "Conceptantwoord bekijken"
+
+#: ../../apps/mobile/src/components/RationaleCard.tsx:44
+#: ../../apps/mobile/src/components/ThreadRow.tsx:49
+#: ../ui/src/emails/RationaleCard.tsx:74
+#: ../ui/src/emails/ThreadRow.tsx:110
+msgid "Waiting"
+msgstr "Wachtend"
+
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:167
 #, fuzzy
 msgid "Waiting for first sync…"
@@ -2110,6 +2699,10 @@ msgstr "Wachten op eerste synchronisatie…"
 #, fuzzy
 msgid "Waitlist"
 msgstr "Wachtlijst"
+
+#: ../ui/src/emails/ThreadRow.tsx:71
+msgid "Wants {folderName}"
+msgstr "Wil {folderName}"
 
 #: ../../apps/web/src/app/verify-email/page.tsx:28
 #, fuzzy
@@ -2135,6 +2728,10 @@ msgstr "Werk"
 #: ../ui/src/i18n/taxonomy-template-messages.ts:34
 msgid "Working Professional"
 msgstr "Werkende professional"
+
+#: ../ui/src/emails/ThreadListHeader.tsx:63
+msgid "Workspace"
+msgstr "Werkruimte"
 
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:12
 #, fuzzy
@@ -2162,7 +2759,9 @@ msgstr "Naam werkruimte bijgewerkt."
 msgid "Workspace Settings"
 msgstr "Werkruimte-instellingen"
 
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:153
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:319
+#: ../ui/src/emails/ThreadPreview.tsx:169
 #, fuzzy
 msgid "Writing draft reply…"
 msgstr "Conceptantwoord schrijven…"
@@ -2186,6 +2785,11 @@ msgstr "Ja, ontkoppelen"
 #, fuzzy
 msgid "Yes, reset workspace"
 msgstr "Ja, werkruimte opnieuw instellen"
+
+#: ../../apps/mobile/src/components/emails/queueLabels.ts:20
+#: ../ui/src/emails/ThreadList.tsx:16
+msgid "Yesterday"
+msgstr "Gisteren"
 
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:136
 #, fuzzy

@@ -1,6 +1,9 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import { Trans } from '@lingui/react/macro';
+import { useLingui } from '@lingui/react';
+import { msg, plural } from '@lingui/core/macro';
 import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
 import type { SyncStatus } from '@amarnai/api-client';
 
@@ -18,24 +21,31 @@ interface PlanCapBannerProps {
  */
 export function PlanCapBanner({ syncStatus, dismissed, onDismiss }: PlanCapBannerProps) {
   const router = useRouter();
+  const { i18n } = useLingui();
 
   if (!syncStatus || !syncStatus.backfillCapReached || dismissed) return null;
 
   const count = syncStatus.backfillBeyondCount;
-  const countLabel =
-    count > 0 ? `About ${count.toLocaleString()} more thread${count === 1 ? '' : 's'}` : 'More threads';
+  const plan = syncStatus.workspacePlan;
+  const title =
+    count > 0
+      ? i18n._(
+          msg`About ${plural(count, {
+            one: '# more thread',
+            other: '# more threads',
+          })} beyond your ${plan} subscription limit aren't loaded.`,
+        )
+      : i18n._(msg`More threads beyond your ${plan} subscription limit aren't loaded.`);
 
   return (
     <View style={[styles.card, styles.cardLocked]}>
       <View style={styles.titleRow}>
-        <Text style={[styles.title, styles.titleFlex]}>
-          {countLabel} beyond your {syncStatus.workspacePlan} subscription limit aren&apos;t loaded.
-        </Text>
+        <Text style={[styles.title, styles.titleFlex]}>{title}</Text>
         {onDismiss ? (
           <TouchableOpacity
             onPress={onDismiss}
             hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-            accessibilityLabel="Dismiss"
+            accessibilityLabel={i18n._(msg`Dismiss`)}
             accessibilityRole="button"
           >
             <Ionicons name="close" size={18} color={colors.ink4} />
@@ -43,7 +53,9 @@ export function PlanCapBanner({ syncStatus, dismissed, onDismiss }: PlanCapBanne
         ) : null}
       </View>
       <TouchableOpacity style={styles.btn} onPress={() => router.push('/(app)/subscription')}>
-        <Text style={styles.btnText}>Upgrade to load them</Text>
+        <Text style={styles.btnText}>
+          <Trans>Upgrade to load them</Trans>
+        </Text>
       </TouchableOpacity>
     </View>
   );

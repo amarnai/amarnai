@@ -1,4 +1,7 @@
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Trans } from '@lingui/react/macro';
+import { useLingui } from '@lingui/react';
+import { msg } from '@lingui/core/macro';
 import { buildFolderCounts, type ActiveSelection, type FolderItem, type ThreadItem } from '@amarnai/core';
 import { colors, space, fontSize, fontWeight } from '@amarnai/tokens';
 import { SheetLayout } from '../SheetLayout';
@@ -22,11 +25,12 @@ export function FolderFilterSheet({
   onSelectAll,
   onClose,
 }: FolderFilterSheetProps) {
+  const { i18n } = useLingui();
   const folderCounts = buildFolderCounts(threads, folders);
   const activeFolderId = active.kind === 'folder' ? active.id : null;
 
   return (
-    <SheetLayout visible={visible} onClose={onClose} title="Filter by folder" handle>
+    <SheetLayout visible={visible} onClose={onClose} title={i18n._(msg`Filter by folder`)} handle>
       <FlatList
         style={styles.list}
         data={folders}
@@ -37,7 +41,7 @@ export function FolderFilterSheet({
             onPress={() => { onSelectAll(); onClose(); }}
           >
             <Text style={[styles.rowText, activeFolderId === null && styles.rowTextActive]}>
-              All threads
+              <Trans>All threads</Trans>
             </Text>
             {activeFolderId === null ? <Text style={styles.checkmark}>✓</Text> : null}
           </TouchableOpacity>
@@ -62,7 +66,7 @@ export function FolderFilterSheet({
             </TouchableOpacity>
           );
         }}
-        ListEmptyComponent={<Text style={styles.empty}>No folders yet</Text>}
+        ListEmptyComponent={<Text style={styles.empty}><Trans>No folders yet</Trans></Text>}
       />
     </SheetLayout>
   );

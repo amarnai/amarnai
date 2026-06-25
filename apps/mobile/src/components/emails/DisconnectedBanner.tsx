@@ -1,4 +1,5 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Trans } from '@lingui/react/macro';
 import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
 import type { ApiClient, GmailConnection } from '@amarnai/api-client';
 import { useConnectGmail } from '../../auth/useConnectGmail';
@@ -35,11 +36,15 @@ export function DisconnectedBanner({
   return (
     <View style={styles.banner}>
       <Text style={styles.text} numberOfLines={2}>
-        Gmail disconnected. Amarnai stopped syncing this inbox, so new mail will
-        not appear until you reconnect.
+        <Trans>
+          Gmail disconnected. Amarnai stopped syncing this inbox, so new mail will
+          not appear until you reconnect.
+        </Trans>
       </Text>
       <TouchableOpacity style={styles.btn} onPress={handleReconnect} disabled={connecting}>
-        <Text style={styles.btnText}>{connecting ? 'Reconnecting…' : 'Reconnect'}</Text>
+        <Text style={styles.btnText}>
+          {connecting ? <Trans>Reconnecting…</Trans> : <Trans>Reconnect</Trans>}
+        </Text>
       </TouchableOpacity>
     </View>
   );

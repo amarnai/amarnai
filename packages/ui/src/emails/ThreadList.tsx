@@ -1,11 +1,23 @@
 "use client";
 
+import { Trans } from "@lingui/react/macro";
+import { useLingui } from "@lingui/react";
+import { msg } from "@lingui/core/macro";
+import type { MessageDescriptor } from "@lingui/core";
 import type { FolderItem } from "../folder-tree/types.js";
 import type { ActiveSelection, ThreadItem } from "./types.js";
 import { ThreadListHeader } from "./ThreadListHeader.js";
 import { ThreadRow } from "./ThreadRow.js";
 
-function groupByDate(threads: ThreadItem[], now: Date): { label: string; items: ThreadItem[] }[] {
+type DateGroupKey = "today" | "yesterday" | "earlier";
+
+const DATE_GROUP_LABELS: Record<DateGroupKey, MessageDescriptor> = {
+  today: msg`Today`,
+  yesterday: msg`Yesterday`,
+  earlier: msg`Earlier`,
+};
+
+function groupByDate(threads: ThreadItem[], now: Date): { key: DateGroupKey; items: ThreadItem[] }[] {
   const today = now.toISOString().slice(0, 10);
   const yesterday = new Date(now);
   yesterday.setDate(yesterday.getDate() - 1);
@@ -22,10 +34,10 @@ function groupByDate(threads: ThreadItem[], now: Date): { label: string; items: 
     else earlierItems.push(t);
   }
 
-  const groups: { label: string; items: ThreadItem[] }[] = [];
-  if (todayItems.length) groups.push({ label: "Today", items: todayItems });
-  if (yestItems.length) groups.push({ label: "Yesterday", items: yestItems });
-  if (earlierItems.length) groups.push({ label: "Earlier", items: earlierItems });
+  const groups: { key: DateGroupKey; items: ThreadItem[] }[] = [];
+  if (todayItems.length) groups.push({ key: "today", items: todayItems });
+  if (yestItems.length) groups.push({ key: "yesterday", items: yestItems });
+  if (earlierItems.length) groups.push({ key: "earlier", items: earlierItems });
   return groups;
 }
 
@@ -77,6 +89,7 @@ export function ThreadList({
 }: ThreadListProps) {
   // The list is already filtered server-side (active view + search), so render
   // the loaded threads directly. `total` is the server count for "X threads".
+  const { i18n } = useLingui();
   const viewCount = total ?? threads.length;
   const unreadCount = threads.filter((t) => t.unread).length;
   const groups = groupByDate(threads, now);
@@ -90,12 +103,12 @@ export function ThreadList({
             className="em-rail-toggle-btn"
             onClick={onToggleRail}
             aria-pressed={railOpen}
-            aria-label="Toggle folders"
+            aria-label={i18n._(msg`Toggle folders`)}
           >
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
               <path d="M1 2h4.5l1 1.5H11a.5.5 0 01.5.5v5.5a.5.5 0 01-.5.5H1a.5.5 0 01-.5-.5V2.5A.5.5 0 011 2z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" />
             </svg>
-            Folders
+            <Trans>Folders</Trans>
             <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden style={{ marginLeft: 2, transition: "transform 0.18s ease", transform: railOpen ? "rotate(180deg)" : "rotate(0deg)" }}>
               <path d="M2 3.5l3 3 3-3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
@@ -116,13 +129,17 @@ export function ThreadList({
       <div className="em-list-scroll" role="grid" aria-label="Email threads">
         {threads.length === 0 && (
           <div className="em-empty">
-            {query ? "No threads match your search." : "No threads here."}
+            {query ? (
+              <Trans>No threads match your search.</Trans>
+            ) : (
+              <Trans>No threads here.</Trans>
+            )}
           </div>
         )}
 
         {groups.map((group) => (
-          <div key={group.label} className="em-group">
-            <div className="em-group-label">{group.label}</div>
+          <div key={group.key} className="em-group">
+            <div className="em-group-label">{i18n._(DATE_GROUP_LABELS[group.key])}</div>
             {group.items.map((thread) => {
               const folder = folders.find((f) => f.id === thread.folderId);
               return (
@@ -148,7 +165,10 @@ export function ThreadList({
         {hasMore && threads.length > 0 && (
           <div className="em-list-footer">
             <span className="em-list-count">
-              {threads.length.toLocaleString()} of {viewCount.toLocaleString()} loaded
+              <Trans>
+                {threads.length.toLocaleString()} of{" "}
+                {viewCount.toLocaleString()} loaded
+              </Trans>
             </span>
             <button
               type="button"
@@ -156,7 +176,7 @@ export function ThreadList({
               onClick={onLoadMore}
               disabled={loadingMore}
             >
-              {loadingMore ? "Loading…" : "Load more"}
+              {loadingMore ? <Trans>Loading…</Trans> : <Trans>Load more</Trans>}
             </button>
           </div>
         )}

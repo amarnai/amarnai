@@ -1,8 +1,10 @@
 "use client";
 
+import { useLingui } from "@lingui/react";
 import type { FolderItem } from "../folder-tree/types.js";
 import type { ActiveSelection, ThreadItem, QueueId } from "./types.js";
 import { QUEUES, countForActive } from "./selection.js";
+import { QUEUE_LABELS } from "./queueLabels.js";
 
 const ICON_SVG: Record<string, string> = {
   all: `<path d="M2 8v2.5A1.5 1.5 0 0 0 3.5 12h7A1.5 1.5 0 0 0 12 10.5V8M2 8h3l1 1.5h2L9 8h3M2 8l1.5-4.5A1.5 1.5 0 0 1 4.9 2.4h4.2a1.5 1.5 0 0 1 1.4 1.1L12 8" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>`,
@@ -24,8 +26,11 @@ export interface QueueListProps {
 }
 
 export function QueueList({ threads, folders, active, railQuery, queueCounts, onSelect }: QueueListProps) {
+  const { i18n } = useLingui();
+  const queueName = (id: string) =>
+    QUEUE_LABELS[id] ? i18n._(QUEUE_LABELS[id]!.name) : id;
   const q = railQuery.trim().toLowerCase();
-  const visible = q ? QUEUES.filter((x) => x.name.toLowerCase().includes(q)) : QUEUES;
+  const visible = q ? QUEUES.filter((x) => queueName(x.id).toLowerCase().includes(q)) : QUEUES;
 
   return (
     <>
@@ -49,7 +54,7 @@ export function QueueList({ threads, folders, active, railQuery, queueCounts, on
                 dangerouslySetInnerHTML={{ __html: ICON_SVG[queue.id] ?? "" }}
               />
             </span>
-            <span>{queue.name}</span>
+            <span>{queueName(queue.id)}</span>
             <span className="em-qi-count">{count}</span>
           </button>
         );

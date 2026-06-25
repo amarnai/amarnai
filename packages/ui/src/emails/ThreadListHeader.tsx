@@ -1,8 +1,12 @@
 "use client";
 
+import { Trans, Plural } from "@lingui/react/macro";
+import { useLingui } from "@lingui/react";
+import { msg } from "@lingui/core/macro";
 import type { FolderItem } from "../folder-tree/types.js";
 import type { ActiveSelection } from "./types.js";
 import { QUEUES } from "./selection.js";
+import { QUEUE_LABELS } from "./queueLabels.js";
 
 function getFolderAncestry(folderId: string, folders: FolderItem[]): FolderItem[] {
   const chain: FolderItem[] = [];
@@ -36,15 +40,18 @@ export function ThreadListHeader({
   onSelectFolder,
   searchRef,
 }: ThreadListHeaderProps) {
+  const { i18n } = useLingui();
   const isFolder = active.kind === "folder";
   const queue = !isFolder ? QUEUES.find((q) => q.id === active.id) : undefined;
+  const queueLabel = queue ? QUEUE_LABELS[queue.id] : undefined;
 
   const title = isFolder
     ? (folders.find((f) => f.id === active.id)?.name ?? "—")
-    : (queue?.name ?? "—");
+    : (queueLabel ? i18n._(queueLabel.name) : "—");
   const desc = isFolder
-    ? (folders.find((f) => f.id === active.id)?.description ?? "Threads sorted into this folder by Amarnai.")
-    : (queue?.desc ?? "");
+    ? (folders.find((f) => f.id === active.id)?.description ??
+        i18n._(msg`Threads sorted into this folder by Amarnai.`))
+    : (queueLabel ? i18n._(queueLabel.desc) : "");
 
   const ancestry = isFolder ? getFolderAncestry(active.id, folders) : [];
 
@@ -53,7 +60,7 @@ export function ThreadListHeader({
       <div className="em-list-head-top">
         <div className="em-list-head-meta">
           <div className="em-crumbs">
-            <span>Workspace</span>
+            <span><Trans>Workspace</Trans></span>
             {isFolder ? (
               ancestry.map((f, i) => (
                 <span key={f.id} style={{ display: "contents" }}>
@@ -74,7 +81,7 @@ export function ThreadListHeader({
             ) : (
               <>
                 <span className="sep">/</span>
-                <span>Triage</span>
+                <span><Trans>Triage</Trans></span>
                 <span className="sep">/</span>
                 <span style={{ color: "var(--ink-2)" }}>{title}</span>
               </>
@@ -94,17 +101,22 @@ export function ThreadListHeader({
           <input
             ref={searchRef}
             type="text"
-            placeholder={`Search ${threadCount} threads`}
+            placeholder={i18n._(msg`Search ${threadCount} threads`)}
             value={query}
             onChange={(e) => onQueryChange(e.target.value)}
-            aria-label="Search threads"
+            aria-label={i18n._(msg`Search threads`)}
           />
         </div>
       </div>
 
       <div style={{ marginTop: 8, fontSize: 12, color: "var(--ink-3)" }}>
-        {threadCount} thread{threadCount === 1 ? "" : "s"}
-        {unreadCount > 0 && ` · ${unreadCount} unread`}
+        <Plural value={threadCount} one="# thread" other="# threads" />
+        {unreadCount > 0 && (
+          <>
+            {" · "}
+            <Trans>{unreadCount} unread</Trans>
+          </>
+        )}
       </div>
     </div>
   );

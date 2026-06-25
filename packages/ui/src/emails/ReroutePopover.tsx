@@ -1,6 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { Trans } from "@lingui/react/macro";
+import { useLingui } from "@lingui/react";
+import { msg } from "@lingui/core/macro";
 import type { FolderItem } from "../folder-tree/types.js";
 
 export interface ReroutePopoverProps {
@@ -11,6 +14,7 @@ export interface ReroutePopoverProps {
 }
 
 export function ReroutePopover({ folders, anchor, onCommit, onClose }: ReroutePopoverProps) {
+  const { i18n } = useLingui();
   const [query, setQuery] = useState("");
   const [activeIdx, setActiveIdx] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -68,7 +72,7 @@ export function ReroutePopover({ folders, anchor, onCommit, onClose }: ReroutePo
   if (!anchor) return null;
 
   return (
-    <div ref={panelRef} className="em-reroute-panel" role="dialog" aria-label="Re-route thread">
+    <div ref={panelRef} className="em-reroute-panel" role="dialog" aria-label={i18n._(msg`Re-route thread`)}>
       <div className="em-reroute-search">
         <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden>
           <circle cx="5.5" cy="5.5" r="3.7" stroke="currentColor" strokeWidth="1.4" />
@@ -77,17 +81,17 @@ export function ReroutePopover({ folders, anchor, onCommit, onClose }: ReroutePo
         <input
           ref={inputRef}
           type="text"
-          placeholder="Move to folder…"
+          placeholder={i18n._(msg`Move to folder…`)}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={handleKeyDown}
-          aria-label="Search folders"
+          aria-label={i18n._(msg`Search folders`)}
           aria-autocomplete="list"
         />
       </div>
 
       <ul className="em-reroute-list" role="listbox">
-        {filtered.length === 0 && <li className="em-reroute-empty">No folders match</li>}
+        {filtered.length === 0 && <li className="em-reroute-empty"><Trans>No folders match</Trans></li>}
         {filtered.map((folder, i) => (
           <li
             key={folder.id}

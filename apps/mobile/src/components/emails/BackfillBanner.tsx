@@ -1,6 +1,9 @@
 import { useEffect, useRef } from 'react';
 import { Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { Trans } from '@lingui/react/macro';
+import { useLingui } from '@lingui/react';
+import { msg } from '@lingui/core/macro';
 import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
 import type { SyncStatus } from '@amarnai/api-client';
 
@@ -20,6 +23,8 @@ interface BackfillBannerProps {
  * the "sorting in progress" card is transient state and is not dismissible.
  */
 export function BackfillBanner({ syncStatus, dismissed, onDismiss }: BackfillBannerProps) {
+  const { i18n } = useLingui();
+
   if (!syncStatus) return null;
 
   if (syncStatus.workspacePlan === 'FREE') {
@@ -27,12 +32,14 @@ export function BackfillBanner({ syncStatus, dismissed, onDismiss }: BackfillBan
     return (
       <View style={[styles.card, styles.cardLocked]}>
         <View style={styles.titleRow}>
-          <Text style={[styles.title, styles.titleFlex]}>Bulk triage your inbox</Text>
+          <Text style={[styles.title, styles.titleFlex]}>
+            <Trans>Bulk triage your inbox</Trans>
+          </Text>
           {onDismiss ? (
             <TouchableOpacity
               onPress={onDismiss}
               hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-              accessibilityLabel="Dismiss"
+              accessibilityLabel={i18n._(msg`Dismiss`)}
               accessibilityRole="button"
             >
               <Ionicons name="close" size={18} color={colors.ink4} />
@@ -40,10 +47,14 @@ export function BackfillBanner({ syncStatus, dismissed, onDismiss }: BackfillBan
           ) : null}
         </View>
         <Text style={styles.desc}>
-          Sort thousands of historical emails automatically. Available on Pro and Business
-          subscriptions.
+          <Trans>
+            Sort thousands of historical emails automatically. Available on Pro and
+            Business subscriptions.
+          </Trans>
         </Text>
-        <Text style={styles.note}>Upgrade your subscription on the web app to enable backfill.</Text>
+        <Text style={styles.note}>
+          <Trans>Upgrade your subscription on the web app to enable backfill.</Trans>
+        </Text>
       </View>
     );
   }
@@ -62,13 +73,19 @@ export function BackfillBanner({ syncStatus, dismissed, onDismiss }: BackfillBan
     <View style={styles.card}>
       <View style={styles.eyebrowRow}>
         <PulseDot />
-        <Text style={styles.eyebrow}>Sorting historical inbox</Text>
+        <Text style={styles.eyebrow}>
+          <Trans>Sorting historical inbox</Trans>
+        </Text>
       </View>
-      <Text style={styles.title}>Loading past threads…</Text>
+      <Text style={styles.title}>
+        <Trans>Loading past threads…</Trans>
+      </Text>
       <Text style={styles.desc}>
-        {awaitingTaxonomy
-          ? 'Set up at least 3 folders so we can start sorting.'
-          : 'New threads will appear as they are sorted.'}
+        {awaitingTaxonomy ? (
+          <Trans>Set up at least 3 folders so we can start sorting.</Trans>
+        ) : (
+          <Trans>New threads will appear as they are sorted.</Trans>
+        )}
       </Text>
       <View style={styles.progressTrack}>
         <View style={[styles.progressBar, { width: `${percent}%` }]} />

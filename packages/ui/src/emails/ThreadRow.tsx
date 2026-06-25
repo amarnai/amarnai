@@ -1,5 +1,8 @@
 "use client";
 
+import { Trans } from "@lingui/react/macro";
+import { useLingui } from "@lingui/react";
+import { msg } from "@lingui/core/macro";
 import type { FolderItem } from "../folder-tree/types.js";
 import type { ActiveSelection, ThreadItem } from "./types.js";
 import { Tooltip } from "../Tooltip.js";
@@ -55,6 +58,7 @@ export function ThreadRow({
   onMarkDone,
   onUnmarkDone,
 }: ThreadRowProps) {
+  const { i18n } = useLingui();
   const today = new Date().toISOString().slice(0, 10);
   const confPct = Math.round(thread.confidence * 100);
   const confColor =
@@ -63,10 +67,13 @@ export function ThreadRow({
   const inExactFolder =
     active.kind === "folder" && active.id === thread.folderId && thread.status !== "review";
 
-  const chipLabel = thread.status === "review" ? `Wants ${folder?.name ?? "—"}` : (folder?.name ?? "—");
+  const folderName = folder?.name ?? "—";
+  const chipLabel = thread.status === "review" ? i18n._(msg`Wants ${folderName}`) : folderName;
   const chipClass = thread.status === "review" ? "em-route-chip needs-review" : "em-route-chip";
   const isDone = !!thread.doneMark;
   const isClassifying = thread.isClassifying;
+  const markDoneLabel = isDone ? i18n._(msg`Mark as not done`) : i18n._(msg`Mark as done`);
+  const openInGmailLabel = i18n._(msg`Open in Gmail`);
 
   const classes = ["em-thread-row", thread.unread ? "unread" : "", selected ? "selected" : "", isDone ? "done" : ""]
     .filter(Boolean)
@@ -91,18 +98,18 @@ export function ThreadRow({
           {isDone && (
             <span className="em-pill em-pill--done">
               {CHECK_ICO}
-              Done
+              <Trans>Done</Trans>
             </span>
           )}
           {isClassifying ? (
             <span className="em-route-chip sorting">
               <span className="em-chip-spin" aria-hidden />
-              Sorting…
+              <Trans>Sorting…</Trans>
             </span>
           ) : thread.status === "unrouted" || thread.status === "unsorted" ? (
-            <span className="em-route-chip unrouted">Waiting</span>
+            <span className="em-route-chip unrouted"><Trans>Waiting</Trans></span>
           ) : thread.status === "unclassified" ? (
-            <span className="em-route-chip needs-review">Unclassified</span>
+            <span className="em-route-chip needs-review"><Trans>Unclassified</Trans></span>
           ) : !inExactFolder && folder && (
             <span className={chipClass}>
               <span className="em-chip-ico">{FOLDER_ICO}</span>
@@ -113,8 +120,8 @@ export function ThreadRow({
             const lastIsOwn =
               !!workspaceEmail && !!thread.lastSenderEmail &&
               thread.lastSenderEmail.toLowerCase() === workspaceEmail.toLowerCase();
-            if (thread.isDrafting && !lastIsOwn) return <span className="em-pill">Drafting…</span>;
-            if (thread.hasDraft && !lastIsOwn) return <span className="em-pill accent">draft</span>;
+            if (thread.isDrafting && !lastIsOwn) return <span className="em-pill"><Trans>Drafting…</Trans></span>;
+            if (thread.hasDraft && !lastIsOwn) return <span className="em-pill accent"><Trans>draft</Trans></span>;
             return null;
           })()}
           {thread.attachmentCount > 0 && (
@@ -136,24 +143,24 @@ export function ThreadRow({
       <div className="em-thread-side">
         <div className="em-thread-time" suppressHydrationWarning>{fmtTime(thread.latestAt, today)}</div>
         <div className="em-thread-actions">
-          <Tooltip content={isDone ? "Mark as not done" : "Mark as done"}>
+          <Tooltip content={markDoneLabel}>
             <button
               type="button"
               className={`em-done-btn${isDone ? " is-done" : ""}`}
-              aria-label={isDone ? "Mark as not done" : "Mark as done"}
+              aria-label={markDoneLabel}
               aria-pressed={isDone}
               onClick={(e) => { e.stopPropagation(); isDone ? onUnmarkDone() : onMarkDone(); }}
             >
               {CHECK_ICO}
             </button>
           </Tooltip>
-          <Tooltip content="Open in Gmail">
+          <Tooltip content={openInGmailLabel}>
             <a
               href={`https://mail.google.com/mail/u/0/#all/${thread.providerThreadId}`}
               target="_blank"
               rel="noopener noreferrer"
               className="em-thread-gmail-link"
-              aria-label="Open in Gmail"
+              aria-label={openInGmailLabel}
               onClick={(e) => e.stopPropagation()}
             >
               <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden>

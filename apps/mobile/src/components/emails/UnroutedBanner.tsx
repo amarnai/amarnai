@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useRouter } from 'expo-router';
+import { Trans } from '@lingui/react/macro';
+import { useLingui } from '@lingui/react';
+import { msg, plural } from '@lingui/core/macro';
 import { TAXONOMY_MIN_NON_ROOT_NODES } from '@amarnai/shared';
 import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
 
@@ -12,6 +15,7 @@ interface UnroutedBannerProps {
 
 export function UnroutedBanner({ waitingCount, routableFolderCount, onRouteNow }: UnroutedBannerProps) {
   const router = useRouter();
+  const { i18n } = useLingui();
   const [routing, setRouting] = useState(false);
 
   if (waitingCount === 0) return null;
@@ -29,14 +33,20 @@ export function UnroutedBanner({ waitingCount, routableFolderCount, onRouteNow }
     return (
       <View style={[styles.banner, styles.bannerWarn]}>
         <Text style={styles.warnText} numberOfLines={2}>
-          {waitingCount} thread{waitingCount !== 1 ? 's are' : ' is'} waiting.
-          Connect at least {TAXONOMY_MIN_NON_ROOT_NODES} folders to begin sorting.
+          {i18n._(
+            msg`${plural(waitingCount, {
+              one: `# thread is waiting. Connect at least ${TAXONOMY_MIN_NON_ROOT_NODES} folders to begin sorting.`,
+              other: `# threads are waiting. Connect at least ${TAXONOMY_MIN_NON_ROOT_NODES} folders to begin sorting.`,
+            })}`,
+          )}
         </Text>
         <TouchableOpacity
           style={styles.btnWarn}
           onPress={() => router.push('/(app)/(tabs)/plan')}
         >
-          <Text style={styles.btnWarnText}>Build plan</Text>
+          <Text style={styles.btnWarnText}>
+            <Trans>Build plan</Trans>
+          </Text>
         </TouchableOpacity>
       </View>
     );
@@ -45,14 +55,21 @@ export function UnroutedBanner({ waitingCount, routableFolderCount, onRouteNow }
   return (
     <View style={[styles.banner, styles.bannerOk]}>
       <Text style={styles.okText}>
-        {waitingCount} thread{waitingCount !== 1 ? 's are' : ' is'} ready to route.
+        {i18n._(
+          msg`${plural(waitingCount, {
+            one: '# thread is ready to route.',
+            other: '# threads are ready to route.',
+          })}`,
+        )}
       </Text>
       <TouchableOpacity
         style={styles.btnOk}
         onPress={handleRouteNow}
         disabled={routing}
       >
-        <Text style={styles.btnOkText}>{routing ? 'Routing…' : 'Route now'}</Text>
+        <Text style={styles.btnOkText}>
+          {routing ? <Trans>Routing…</Trans> : <Trans>Route now</Trans>}
+        </Text>
       </TouchableOpacity>
     </View>
   );
