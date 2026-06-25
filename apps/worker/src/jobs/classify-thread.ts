@@ -443,6 +443,7 @@ export function createClassifyThreadWorker(): Worker {
               {
                 ...(threadVector ? { precomputedThreadVector: threadVector } : {}),
                 llmMemoizer,
+                scaleInvariant: true,
                 // On the final retry, a thrown LLM error becomes an inbox
                 // fallback (→ NEEDS_REVIEW) instead of failing the job and
                 // stranding the thread as PENDING. Earlier attempts rethrow so

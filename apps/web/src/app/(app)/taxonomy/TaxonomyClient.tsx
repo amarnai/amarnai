@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, useEffect, useRef } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   ReactFlow,
   ReactFlowProvider,
@@ -52,6 +53,7 @@ import {
   snapshotsEqual,
   type GraphSnapshot,
 } from "./useTaxonomyHistory";
+import { GenerateFromInboxButton } from "./GenerateFromInboxButton";
 import { TaxonomyNodeCardBase } from "@amarnai/ui/taxonomy";
 import { Tooltip } from "@amarnai/ui";
 import {
@@ -744,12 +746,17 @@ function TaxonomyCanvasInner({
   initialNodes,
   initialEdges,
   readOnly = false,
+  gmailConnected = false,
 }: {
   workspaceId: string;
   initialNodes: TaxonomyNode[];
   initialEdges: TaxonomyEdge[];
   readOnly?: boolean;
+  gmailConnected?: boolean;
 }) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
   const [dbNodes, setDbNodes] = useState<TaxonomyNode[]>(initialNodes);
   const [dbEdges, setDbEdges] = useState<TaxonomyEdge[]>(initialEdges);
   const [rfNodes, setRfNodes, onNodesChange] = useNodesState<RFNode>(
@@ -769,6 +776,9 @@ function TaxonomyCanvasInner({
   const [selectedTemplateIdx, setSelectedTemplateIdx] = useState<number | null>(
     null,
   );
+  const [generateOpen, setGenerateOpen] = useState(
+    () => searchParams.get("openGenerate") === "1",
+  );
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const history = useTaxonomyHistory({
@@ -783,6 +793,23 @@ function TaxonomyCanvasInner({
   useEffect(() => {
     history.reset({ nodes: initialNodes, edges: initialEdges });
   }, [workspaceId]);
+
+  // Open the template picker or generate modal when navigated here with the
+  // corresponding URL param (e.g. from UnroutedBanner on the emails page).
+  useEffect(() => {
+    const openTemplates = searchParams.get("openTemplates") === "1";
+    const openGenerate = searchParams.get("openGenerate") === "1";
+    if (!openTemplates && !openGenerate) return;
+    if (openTemplates) {
+      setSelectedTemplateIdx(null);
+      setTemplatePickerOpen(true);
+    }
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("openTemplates");
+    params.delete("openGenerate");
+    const next = params.size > 0 ? `?${params.toString()}` : "";
+    router.replace(`/taxonomy${next}`, { scroll: false });
+  }, []);
 
   const onCanvasDoubleClick = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
@@ -1287,6 +1314,18 @@ function TaxonomyCanvasInner({
               Templates
             </button>
           </Tooltip>
+          <GenerateFromInboxButton
+            workspaceId={workspaceId}
+            disabled={submitting}
+            gmailConnected={gmailConnected}
+            onApply={executeImport}
+            onUseTemplates={() => {
+              setSelectedTemplateIdx(null);
+              setTemplatePickerOpen(true);
+            }}
+            open={generateOpen}
+            onOpenChange={setGenerateOpen}
+          />
           <input
             ref={fileInputRef}
             type="file"
@@ -1338,27 +1377,18 @@ function TaxonomyCanvasInner({
             {!readOnly && (
               <button
                 className="btn-primary"
-                style={{ flexShrink: 0 }}
-                onClick={() => {
-                  setSelectedTemplateIdx(null);
-                  setTemplatePickerOpen(true);
-                }}
+                style={{ flexShrink: 0, display: "inline-flex", alignItems: "center", gap: 6 }}
+                onClick={() => setGenerateOpen(true)}
               >
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 14 14"
-                  fill="none"
-                  aria-hidden
-                >
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
                   <path
-                    d="M7 1.5L8.2 5.8L12.5 7L8.2 8.2L7 12.5L5.8 8.2L1.5 7L5.8 5.8Z"
+                    d="M3 1.5L3.7 3.3L5.5 4L3.7 4.7L3 6.5L2.3 4.7L0.5 4L2.3 3.3ZM9.5 5L10.6 7.9L13.5 9L10.6 10.1L9.5 13L8.4 10.1L5.5 9L8.4 7.9Z"
                     stroke="currentColor"
-                    strokeWidth="1.5"
+                    strokeWidth="1.2"
                     strokeLinejoin="round"
                   />
                 </svg>
-                Use a template
+                Generate from inbox
               </button>
             )}
           </div>
@@ -1653,11 +1683,13 @@ export function TaxonomyClient({
   nodes,
   edges,
   readOnly = false,
+  gmailConnected = false,
 }: {
   workspaceId: string;
   nodes: TaxonomyNode[];
   edges: TaxonomyEdge[];
   readOnly?: boolean;
+  gmailConnected?: boolean;
 }) {
   return (
     <ReactFlowProvider>
@@ -1666,6 +1698,7 @@ export function TaxonomyClient({
         initialNodes={nodes}
         initialEdges={edges}
         readOnly={readOnly}
+        gmailConnected={gmailConnected}
       />
     </ReactFlowProvider>
   );

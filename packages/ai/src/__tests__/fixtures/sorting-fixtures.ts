@@ -6,13 +6,13 @@ function node(
   id: string,
   name: string,
   description: string | null,
-  opts: { isRoot?: boolean } = {}
+  opts: { isRoot?: boolean; instructions?: string } = {}
 ): TaxonomyNodeInput {
   return {
     id,
     name,
     description,
-    instructions: null,
+    instructions: opts.instructions ?? null,
     examples: [],
     isRoot: opts.isRoot ?? false,
   };
@@ -547,6 +547,285 @@ export const TEST_EMAILS_D3: TestEmail[] = [
     expectedFinalNodeId: NODES_D3.invoices.id,
     allowNeedsHumanReview: true,
     misleadingKeywords: ["payment", "account balance", "receipt"],
+  },
+];
+
+// ─── Failure-mode taxonomy ────────────────────────────────────────────────────
+//
+// A small, DOMAIN-NEUTRAL depth-2 taxonomy that reproduces structural routing
+// failures by graph shape and embedding geometry — deliberately NOT modelled on
+// any real user's taxonomy, so the benchmark stays general and is not overfit to
+// one inbox. These emails are EXPECTED TO FAIL under the current constants; they
+// exist to prove the harness catches the failure modes, so a later algorithm fix
+// can be measured against them.
+//
+//   fm-inbox [root]
+//   ├── fm-deliveries                   (broad: parcel tracking, dispatch, delivery)
+//   │   └── fm-swiftship                (SINGLE child: parcels handled by SwiftShip courier)
+//   ├── fm-payments
+//   │   ├── fm-card-statements          (monthly card statements, itemised charges)
+//   │   └── fm-wallet-topups            (prepaid wallet reloads / balance top-ups)
+//   └── fm-community                    (forum digests, community announcements)
+//
+// Failure 1 — single-child / specific-vendor leaf: fm-deliveries has exactly one
+//   child (fm-swiftship), so no sibling can trigger the cross-branch check. A
+//   parcel from a DIFFERENT courier descends into fm-swiftship unconditionally
+//   instead of staying at the fm-deliveries parent.
+// Failure 2 — cross-domain sibling near-tie: a "payment processed" notice is
+//   ambiguous between fm-card-statements and fm-wallet-topups; embeddings split
+//   inconsistently between the two siblings.
+// Failure 3 — off-topic / no-signal: a generic digest matches no node and should
+//   hit the quality gate (stay at Inbox / human review), not be force-filed.
+
+export const NODES_FM = {
+  inbox: node("fm-inbox", "Inbox", null, { isRoot: true }),
+
+  deliveries: node(
+    "fm-deliveries",
+    "Deliveries",
+    "Parcel and package logistics: dispatch notifications, tracking updates, delivery windows, and proof-of-delivery from any courier or carrier."
+  ),
+
+  swiftship: node(
+    "fm-swiftship",
+    "SwiftShip",
+    "Parcels handled specifically by the SwiftShip courier, including SwiftShip-branded dispatch, tracking, and delivery confirmations for shipments carried by SwiftShip."
+  ),
+
+  payments: node(
+    "fm-payments",
+    "Payments",
+    "Money movement on the account: charges, statements, balances, and confirmations of completed payment transactions."
+  ),
+
+  cardStatements: node(
+    "fm-card-statements",
+    "Card Statements",
+    "Monthly payment-card statements: itemised lists of charges, statement-ready notifications, and minimum-payment-due notices for a credit or debit card."
+  ),
+
+  walletTopups: node(
+    "fm-wallet-topups",
+    "Wallet Top-ups",
+    "Prepaid wallet reloads: balance top-up confirmations, auto-reload receipts, and stored-value funding notifications for an in-app wallet."
+  ),
+
+  community: node(
+    "fm-community",
+    "Community",
+    "Community forum digests, discussion-thread summaries, and general community announcements unrelated to deliveries or payments."
+  ),
+} as const;
+
+export const EDGES_FM = {
+  inboxToDeliveries:   edge("fm-e-inbox-deliveries",   "fm-inbox",     "fm-deliveries"),
+  inboxToPayments:     edge("fm-e-inbox-payments",     "fm-inbox",     "fm-payments"),
+  inboxToCommunity:    edge("fm-e-inbox-community",     "fm-inbox",     "fm-community"),
+  deliveriesToSwift:   edge("fm-e-deliveries-swift",   "fm-deliveries","fm-swiftship"),
+  paymentsToCard:      edge("fm-e-payments-card",       "fm-payments",  "fm-card-statements"),
+  paymentsToWallet:    edge("fm-e-payments-wallet",     "fm-payments",  "fm-wallet-topups"),
+} as const;
+
+export const ALL_NODES_FM: TaxonomyNodeInput[] = Object.values(NODES_FM);
+export const ALL_EDGES_FM: TaxonomyEdgeInput[] = Object.values(EDGES_FM);
+
+export const TEST_EMAILS_FM: TestEmail[] = [
+  // Failure 1a — a parcel from a non-SwiftShip courier must stay at the Deliveries
+  // parent, NOT descend into the single SwiftShip child. Review is acceptable;
+  // landing in the SwiftShip leaf is wrong.
+  {
+    id: "fm-generic-courier-tracking",
+    difficulty: "hard",
+    messages: [
+      {
+        subject: "Your parcel is on its way — tracking RZ4821",
+        senderEmail: "tracking@parcelpost.example",
+        senderName: "ParcelPost",
+        bodyText:
+          "Good news — your package has been dispatched and is out for delivery with ParcelPost. " +
+          "Estimated delivery is tomorrow between 9am and 1pm. Track your parcel with reference " +
+          "RZ4821. No signature is required.",
+        receivedAt: SENT_AT,
+      },
+    ],
+    expectedFinalNodeId: NODES_FM.deliveries.id,
+    allowNeedsHumanReview: true,
+    misleadingKeywords: ["parcel", "tracking", "delivery", "dispatch"],
+  },
+  // Failure 1b — positive control: a genuinely SwiftShip-carried parcel SHOULD
+  // reach the SwiftShip leaf. Distinguishes the bug from "never route to leaf".
+  {
+    id: "fm-swiftship-dispatch",
+    difficulty: "medium",
+    messages: [
+      {
+        subject: "SwiftShip: your shipment SW-99213 has been collected",
+        senderEmail: "noreply@swiftship.example",
+        senderName: "SwiftShip Courier",
+        bodyText:
+          "SwiftShip has collected your shipment and it is now moving through the SwiftShip network. " +
+          "Your SwiftShip courier will deliver it within two business days. Manage this SwiftShip " +
+          "delivery from your SwiftShip dashboard.",
+        receivedAt: SENT_AT,
+      },
+    ],
+    expectedFinalNodeId: NODES_FM.swiftship.id,
+    allowNeedsHumanReview: false,
+  },
+  // Failure 2 — cross-domain sibling near-tie: a "payment processed" notice
+  // ambiguous between Card Statements and Wallet Top-ups. Either sibling
+  // consistently is fine; review is acceptable. Inconsistent splitting is the failure.
+  {
+    id: "fm-payment-processed-ambiguous",
+    difficulty: "hard",
+    messages: [
+      {
+        subject: "Your payment of 20.00 has been processed",
+        senderEmail: "no-reply@payments.example",
+        senderName: "Payments",
+        bodyText:
+          "A payment of 20.00 has been processed on your account and your balance has been updated. " +
+          "The transaction reference is PMT-55821. You can view the charge and your current balance " +
+          "in your account.",
+        receivedAt: SENT_AT,
+      },
+    ],
+    expectedFinalNodeId: NODES_FM.cardStatements.id,
+    allowNeedsHumanReview: true,
+    misleadingKeywords: ["balance", "top-up", "wallet", "reload"],
+  },
+  // Failure 3 — off-topic / no-signal: matches no node. Should hit the quality
+  // gate (stay at Inbox or human review), not be force-filed somewhere.
+  {
+    id: "fm-offtopic-digest",
+    difficulty: "hard",
+    messages: [
+      {
+        subject: "This week in world affairs — your digest",
+        senderEmail: "digest@worldaffairs.example",
+        senderName: "World Affairs Digest",
+        bodyText:
+          "This week's digest covers regional developments, diplomatic statements, and analysis of " +
+          "ongoing events around the globe. Read the full digest online. You are receiving this " +
+          "because you subscribed to our weekly coverage.",
+        receivedAt: SENT_AT,
+      },
+    ],
+    expectedFinalNodeId: NODES_FM.inbox.id,
+    allowNeedsHumanReview: true,
+  },
+];
+
+// ─── Origin-constrained taxonomy (Track P: LLM prompt eval) ────────────────────
+//
+// Exercises the "LLM ignores origin constraints" failure: a node scoped to a
+// specific sender/institution, and a confusable email that matches the node's
+// THEME but not its ORIGIN, and so must NOT be filed there. Domain-neutral and
+// not modelled on any real user taxonomy.
+//
+//   or-inbox [root]
+//   ├── or-orders                       (broad parent)
+//   │   ├── or-acme-orders              (origin-constrained: orders ONLY from Acme Store)
+//   │   └── or-marketplace-orders       (orders from any other store/marketplace)
+//   └── or-newsletters
+//
+// The discriminator (sender origin) lives ONLY in `instructions`, NOT in the
+// thematic descriptions, which are deliberately near-identical. This isolates
+// the render-`instructions` fix: the current prompt (which renders description
+// but not instructions) cannot tell the two order leaves apart and so cannot
+// confidently place an order by its origin; a prompt that renders `instructions`
+// can. The cases are scored by the live-LLM reasoning benchmark (cross-branch
+// escalation decides them), NOT the embedding grid, which stubs the LLM.
+
+export const NODES_ORIGIN = {
+  inbox: node("or-inbox", "Inbox", null, { isRoot: true }),
+
+  orders: node(
+    "or-orders",
+    "Orders",
+    "Online shopping order confirmations, shipping notices, and purchase receipts from any retailer."
+  ),
+
+  acmeOrders: node(
+    "or-acme-orders",
+    "Acme Orders",
+    // Thematic only — intentionally indistinguishable from Marketplace Orders by description.
+    "Order confirmations, shipping notices, and purchase receipts for online orders.",
+    {
+      instructions:
+        "Only orders from Acme Store (sender at acme-store.example) belong here. " +
+        "Orders from any other store or marketplace do NOT belong here.",
+    }
+  ),
+
+  marketplaceOrders: node(
+    "or-marketplace-orders",
+    "Marketplace Orders",
+    // Thematic only — intentionally indistinguishable from Acme Orders by description.
+    "Order confirmations, shipping notices, and purchase receipts for online orders.",
+    {
+      instructions:
+        "Orders from any retailer or marketplace OTHER than Acme Store belong here.",
+    }
+  ),
+
+  newsletters: node(
+    "or-newsletters",
+    "Newsletters",
+    "Marketing newsletters, promotional digests, and subscription content unrelated to specific orders."
+  ),
+} as const;
+
+export const EDGES_ORIGIN = {
+  inboxToOrders:        edge("or-e-inbox-orders",       "or-inbox",  "or-orders"),
+  inboxToNewsletters:   edge("or-e-inbox-newsletters",  "or-inbox",  "or-newsletters"),
+  ordersToAcme:         edge("or-e-orders-acme",        "or-orders", "or-acme-orders"),
+  ordersToMarketplace:  edge("or-e-orders-marketplace", "or-orders", "or-marketplace-orders"),
+} as const;
+
+export const ALL_NODES_ORIGIN: TaxonomyNodeInput[] = Object.values(NODES_ORIGIN);
+export const ALL_EDGES_ORIGIN: TaxonomyEdgeInput[] = Object.values(EDGES_ORIGIN);
+
+export const TEST_EMAILS_ORIGIN: TestEmail[] = [
+  // Origin violation: a Globex order looks exactly like an Acme order by theme,
+  // but its origin is NOT Acme. Must go to Marketplace Orders, never Acme Orders.
+  // The current prompt tends to file it under Acme on thematic similarity.
+  {
+    id: "or-nonacme-order-confirmation",
+    difficulty: "hard",
+    messages: [
+      {
+        subject: "Your order #88231 is confirmed",
+        senderEmail: "orders@globex-market.example",
+        senderName: "Globex Market",
+        bodyText:
+          "Thanks for shopping with Globex Market! Your order #88231 has been confirmed and a " +
+          "receipt is attached. We'll email you again when it ships. View your order details and " +
+          "invoice in your Globex Market account.",
+        receivedAt: SENT_AT,
+      },
+    ],
+    expectedFinalNodeId: NODES_ORIGIN.marketplaceOrders.id,
+    allowNeedsHumanReview: true,
+    misleadingKeywords: ["order confirmation", "receipt", "invoice"],
+  },
+  // Positive control: a genuine Acme order DOES belong in Acme Orders.
+  {
+    id: "or-acme-order-confirmation",
+    difficulty: "medium",
+    messages: [
+      {
+        subject: "Acme Store — your order #5567 is confirmed",
+        senderEmail: "orders@acme-store.example",
+        senderName: "Acme Store",
+        bodyText:
+          "Thank you for your purchase from Acme Store. Your order #5567 is confirmed and your " +
+          "receipt is attached. We'll notify you when your Acme Store order ships.",
+        receivedAt: SENT_AT,
+      },
+    ],
+    expectedFinalNodeId: NODES_ORIGIN.acmeOrders.id,
+    allowNeedsHumanReview: false,
   },
 ];
 

@@ -19,8 +19,12 @@ vi.mock("@amarnai/db", () => ({
     emailClassification: {
       updateMany: vi.fn(),
     },
+    taxonomyGenerationState: {
+      updateMany: vi.fn(),
+    },
     $transaction: vi.fn(),
   },
+  Prisma: { DbNull: Symbol("DbNull") },
 }));
 
 import app from "../app.js";
@@ -91,6 +95,7 @@ describe("POST /workspaces/:workspaceId/taxonomy-import", () => {
     vi.mocked(db.taxonomyNode.update).mockResolvedValue({} as never);
     vi.mocked(db.taxonomyNode.create).mockResolvedValue({ id: "new-node-id" } as never);
     vi.mocked(db.taxonomyEdge.create).mockResolvedValue({} as never);
+    vi.mocked(db.taxonomyGenerationState.updateMany).mockResolvedValue({ count: 0 } as never);
   });
 
   it("returns 404 when not a workspace member", async () => {
@@ -195,6 +200,15 @@ describe("POST /workspaces/:workspaceId/taxonomy-import", () => {
     });
     // Verify no stray fields from the file object leak through
     expect(createCall?.[0]?.data).not.toHaveProperty("ref");
+  });
+
+  it("happy path: consumes a pending READY generation proposal", async () => {
+    await post(IMPORT_PATH, validFile());
+    const consumeCall = vi.mocked(db.taxonomyGenerationState.updateMany).mock.calls[0];
+    expect(consumeCall?.[0]).toMatchObject({
+      where: { workspaceId: WS_ID, status: "READY" },
+      data: { status: "IDLE", matchedTemplateId: null },
+    });
   });
 
   it("happy path: creates edges using remapped node ids", async () => {

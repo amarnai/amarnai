@@ -1,20 +1,32 @@
 /**
  * Seed script for real embedding fixtures.
  *
- * Generates pre-computed Ollama vectors for all taxonomy nodes and test email
- * threads from sorting-fixtures.ts, then writes them to embedding-vectors.json.
+ * Generates pre-computed vectors for all taxonomy nodes and test email threads
+ * from sorting-fixtures.ts, then writes them to a per-model file
+ * (embedding-vectors.<model>.json) so the grid search can be judged on the
+ * model actually deployed (Gemini) while keeping qwen3 as an offline default.
  *
  * Usage:
- *   pnpm --filter @amarnai/ai seed:embeddings
+ *   pnpm --filter @amarnai/ai seed:embeddings            (default: qwen3 via Ollama)
  *
- * Requires Ollama running locally with qwen3-embedding (default) or the model
- * specified via OLLAMA_EMBEDDING_MODEL. Override the base URL with OLLAMA_BASE_URL.
+ *   EMBEDDING_PROVIDER=frontier \
+ *   FRONTIER_EMBEDDING_PROVIDER=gemini \
+ *   FRONTIER_EMBEDDING_MODEL=gemini-embedding-001 \
+ *   FRONTIER_EMBEDDING_API_KEY=… \
+ *   pnpm --filter @amarnai/ai seed:embeddings            (Gemini)
+ *
+ * The provider is resolved from the env-driven factory (getEmbeddingProviderConfig
+ * + createEmbeddingProvider) exactly like the runtime sorter, so seeded vectors
+ * match production. When EMBEDDING_PROVIDER is unset it defaults to Ollama
+ * qwen3-embedding at localhost:11434, preserving keyless local seeding.
  */
 import { it, describe } from "vitest";
 import { writeFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { OllamaEmbeddingProvider } from "../../providers/embedding-ollama.js";
+import { createEmbeddingProvider } from "../../providers/create-embedding.js";
+import { getEmbeddingProviderConfig } from "../../config.js";
+import { fixtureFileForModel } from "./real-embedding-table.js";
 import {
   buildNodeEmbeddingText,
   buildThreadEmbeddingText,
@@ -30,11 +42,32 @@ import {
   ALL_NODES_D3,
   ALL_EDGES_D3,
   TEST_EMAILS_D3,
+  ALL_NODES_FM,
+  ALL_EDGES_FM,
+  TEST_EMAILS_FM,
+  ALL_NODES_ORIGIN,
+  ALL_EDGES_ORIGIN,
+  TEST_EMAILS_ORIGIN,
 } from "./sorting-fixtures.js";
 import type { TaxonomyNodeInput, TaxonomyEdgeInput } from "../../types.js";
+import type { EmbeddingProviderConfig } from "../../embedding/types.js";
 
-const OLLAMA_BASE_URL = process.env.OLLAMA_BASE_URL ?? "http://localhost:11434";
-const OLLAMA_MODEL = process.env.OLLAMA_EMBEDDING_MODEL ?? "qwen3-embedding";
+/**
+ * Resolve the embedding provider config for seeding. When EMBEDDING_PROVIDER is
+ * explicitly set, use the runtime factory config (supports Gemini/OpenAI/Ollama).
+ * Otherwise default to Ollama qwen3 so local seeding works without any API key
+ * or env setup — the historical behaviour.
+ */
+function resolveSeedConfig(): EmbeddingProviderConfig {
+  if (process.env.EMBEDDING_PROVIDER) return getEmbeddingProviderConfig();
+  return {
+    provider: "ollama",
+    ollama: {
+      baseUrl: process.env.OLLAMA_BASE_URL ?? "http://localhost:11434",
+      model: process.env.OLLAMA_EMBEDDING_MODEL ?? "qwen3-embedding",
+    },
+  };
+}
 
 // Every taxonomy used by the test/benchmark fixtures. The reasoning benchmark
 // routes emails from all three, so all of their node + thread texts must be
@@ -47,6 +80,8 @@ const DATASETS: Array<{
   { nodes: ALL_NODES, edges: ALL_EDGES, emails: TEST_EMAILS },
   { nodes: ALL_NODES_D2, edges: ALL_EDGES_D2, emails: [D2_AMBIGUOUS_EMAIL] },
   { nodes: ALL_NODES_D3, edges: ALL_EDGES_D3, emails: TEST_EMAILS_D3 },
+  { nodes: ALL_NODES_FM, edges: ALL_EDGES_FM, emails: TEST_EMAILS_FM },
+  { nodes: ALL_NODES_ORIGIN, edges: ALL_EDGES_ORIGIN, emails: TEST_EMAILS_ORIGIN },
 ];
 
 describe("seed embedding fixtures", () => {
@@ -55,8 +90,9 @@ describe("seed embedding fixtures", () => {
     return;
   }
 
-  it("generates and writes embedding-vectors.json", async () => {
-    const provider = new OllamaEmbeddingProvider(OLLAMA_BASE_URL, OLLAMA_MODEL);
+  it("generates and writes the per-model embedding fixture", async () => {
+    const provider = createEmbeddingProvider(resolveSeedConfig());
+    const model = provider.modelName;
 
     const textEntries: { key: string; text: string }[] = [];
     const seenText = new Set<string>();
@@ -90,7 +126,7 @@ describe("seed embedding fixtures", () => {
       }
     }
 
-    console.log(`Embedding ${textEntries.length} texts with ${OLLAMA_MODEL}…`);
+    console.log(`Embedding ${textEntries.length} texts with ${model}…`);
     const vectors = await provider.embed(textEntries.map((e) => e.text));
 
     const entries = textEntries.map((entry, i) => ({
@@ -99,10 +135,10 @@ describe("seed embedding fixtures", () => {
       vector: vectors[i]!,
     }));
 
-    const outPath = join(dirname(fileURLToPath(import.meta.url)), "embedding-vectors.json");
+    const outPath = join(dirname(fileURLToPath(import.meta.url)), fixtureFileForModel(model));
     writeFileSync(
       outPath,
-      JSON.stringify({ model: OLLAMA_MODEL, generatedAt: new Date().toISOString(), entries }, null, 2)
+      JSON.stringify({ model, generatedAt: new Date().toISOString(), entries }, null, 2)
     );
 
     console.log(`Wrote ${entries.length} vectors → ${outPath}`);

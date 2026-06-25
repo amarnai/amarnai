@@ -241,7 +241,7 @@ gmailSort.post("/dev/workspaces/:workspaceId/gmail-sort-thread", async (c) => {
   }
 
   const messages = snapshotToThreadMessages(snapshot);
-  const result = await sortThreadByEmbedding(embeddingProvider, provider, nodes, rawEdges, messages);
+  const result = await sortThreadByEmbedding(embeddingProvider, provider, nodes, rawEdges, messages, { scaleInvariant: true });
 
   // Persist updated node embeddings (cache for future calls)
   if (result.updatedNodeEmbeddings.length > 0) {

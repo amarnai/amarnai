@@ -3,9 +3,33 @@ export type {
   TaxonomyEdge,
   GmailSyncSettings,
   UpdateGmailSyncSettingsInput,
+  GenerationEligibility,
+  GenerationEligibilityReason,
 } from "@amarnai/shared";
 
+import type { GenerationEligibility } from "@amarnai/shared";
+import type { TaxonomyTransferFile } from "@amarnai/shared";
+
 export type OkResult = { ok: boolean };
+
+// GET /workspaces/:id/taxonomy-generate — current generation status, the cost
+// limiter verdict, and the latest READY proposal (for preview before apply).
+export type TaxonomyGenerationStatus =
+  | "IDLE"
+  | "RUNNING"
+  | "READY"
+  | "INSUFFICIENT"
+  | "FAILED";
+
+export type TaxonomyGenerationStatusResult = {
+  status: TaxonomyGenerationStatus;
+  eligibility: GenerationEligibility;
+  /** True while the historical backfill is still ingesting the inbox. */
+  importing: boolean;
+  matchedTemplateId: string | null;
+  lastOutcome: string | null;
+  proposal: TaxonomyTransferFile | null;
+};
 
 export type QuotaInfo = { used: number; limit: number; resetsAt: string };
 

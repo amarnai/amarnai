@@ -942,6 +942,34 @@ h2 {
   cursor: not-allowed;
 }
 
+/* Outline variant in brand clay — pairs with .btn-primary as a secondary action. */
+.btn-outline-clay {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 16px;
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 9px;
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.1s;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.btn-outline-clay:hover:not(:disabled) {
+  background: var(--accent-soft);
+}
+
+.btn-outline-clay:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .btn-ghost {
   display: inline-flex;
   align-items: center;
@@ -1896,9 +1924,9 @@ a {
 }
 
 .alert-info {
-  background: var(--bg-soft);
-  border: 1px solid var(--line-2);
-  color: var(--ink-2);
+  background: var(--teal-soft);
+  border: 1px solid var(--teal-line);
+  color: var(--teal-ink);
 }
 
 /* ─── Sync status row ────────────────────────────────────────────────────── */
@@ -5190,6 +5218,38 @@ a {
   box-shadow: var(--shadow-2);
   width: 100%;
   max-width: 480px;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal.modal--wide {
+  max-width: 900px;
+}
+
+.modal.modal--illustrated {
+  flex-direction: row;
+  max-width: 580px;
+  overflow: hidden;
+}
+
+.modal-illo-col {
+  width: 180px;
+  flex-shrink: 0;
+  padding: 20px 0 20px 20px;
+}
+
+.modal-illo-col img {
+  width: 100%;
+  height: 100%;
+  border-radius: var(--r-md);
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+}
+
+.modal-main-col {
+  flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
 }

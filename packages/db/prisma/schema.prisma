@@ -226,6 +226,7 @@ model Workspace {
   emailAccounts     EmailAccount[]
   gmailConnection   GmailConnection?
   gmailSyncSettings GmailSyncSettings?
+  taxonomyGenerationState TaxonomyGenerationState?
   taxonomyNodes     TaxonomyNode[]
   taxonomyEdges   TaxonomyEdge[]
   emailThreads    EmailThread[]
@@ -661,6 +662,45 @@ model GmailSyncSettings {
   blacklistedSenderEmails  String[] @default([])
   createdAt                DateTime @default(now())
   updatedAt                DateTime @updatedAt
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id])
+}
+
+// Per-workspace state for the auto-generate-taxonomy-from-inbox feature.
+// Holds the latest generated proposal (awaiting user apply), the current job
+// status, and the counters that drive the cost limiter (delta gate, cooldown,
+// monthly backstop). One row per workspace.
+enum TaxonomyGenerationStatus {
+  IDLE
+  RUNNING
+  READY
+  INSUFFICIENT
+  FAILED
+}
+
+model TaxonomyGenerationState {
+  id          String                   @id @default(cuid())
+  workspaceId String                   @unique
+  status      TaxonomyGenerationStatus @default(IDLE)
+  // The most recent generated TaxonomyTransferFile, awaiting user apply.
+  // Null until the first READY result; cleared is not required (overwritten).
+  proposal          Json?
+  matchedTemplateId String?
+  // Last successful generation: timestamp + the eligible-thread count at that
+  // time. Drives the delta gate (regenerate only after enough new signal).
+  lastGeneratedAt      DateTime?
+  threadCountAtLastGen Int?
+  // Outcome of the last completed run (SUCCESS | INSUFFICIENT | FAILED).
+  // Distinct from `status`, which is the live job state. Drives the cooldown.
+  lastOutcome String?
+  // Rolling 30-day backstop quota window.
+  generationsWindowStart DateTime?
+  generationsInWindow    Int       @default(0)
+  // Cost attribution for the generation LLM call.
+  modelProvider String?
+  modelName     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   workspace Workspace @relation(fields: [workspaceId], references: [id])
 }

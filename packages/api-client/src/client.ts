@@ -35,6 +35,7 @@ import type {
   RegisterPushDeviceResult,
   CurrentUser,
   UpdateCurrentUserInput,
+  TaxonomyGenerationStatusResult,
 } from "./types.js";
 
 export function makeApiClient(transport: ApiTransport) {
@@ -212,6 +213,20 @@ export function makeApiClient(transport: ApiTransport) {
         `/workspaces/${workspaceId}/taxonomy-import`,
         "POST",
         file
+      ),
+
+    // Auto-generate-taxonomy-from-inbox. `generateTaxonomy` enqueues a run
+    // (202); `taxonomyGeneration` polls status + eligibility and returns the
+    // READY proposal for preview. Apply the proposal via `importTaxonomy`.
+    generateTaxonomy: (workspaceId: string) =>
+      apiMutate<{ ok: true; status: string }>(
+        `/workspaces/${workspaceId}/taxonomy-generate`,
+        "POST"
+      ),
+
+    taxonomyGeneration: (workspaceId: string) =>
+      apiFetch<TaxonomyGenerationStatusResult>(
+        `/workspaces/${workspaceId}/taxonomy-generate`
       ),
 
     folderCounts: (workspaceId: string) =>

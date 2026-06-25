@@ -27,6 +27,10 @@ function fmtTime(d: Date, today: string): string {
   if (ds === today) {
     return `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
   }
+  const currentYear = Number(today.slice(0, 4));
+  if (d.getFullYear() !== currentYear) {
+    return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+  }
   return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
 }
 

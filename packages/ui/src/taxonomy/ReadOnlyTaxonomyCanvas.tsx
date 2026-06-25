@@ -71,6 +71,7 @@ function ReadOnlyTaxonomyCanvasInner({
           deleteKeyCode={null}
           fitView
           fitViewOptions={{ padding: 0.3 }}
+          proOptions={{ hideAttribution: true }}
         >
           <Background />
           <Controls />

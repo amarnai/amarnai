@@ -23,6 +23,17 @@ export default async function TaxonomyPage() {
     error = err instanceof Error ? err.message : String(err);
   }
 
+  // Whether a Gmail inbox is connected, so "Generate from inbox" can start the
+  // OAuth flow instead of opening an empty generator. A connection record can
+  // exist but be DISCONNECTED — only ACTIVE counts as connected.
+  let gmailConnected = false;
+  try {
+    const connection = await apiFor(user.id).gmailConnection(workspace.id);
+    gmailConnected = connection?.status === "ACTIVE";
+  } catch {
+    gmailConnected = false;
+  }
+
   return (
     <div className="taxonomy-shell">
       <div className="taxonomy-page-header">
@@ -35,6 +46,7 @@ export default async function TaxonomyPage() {
           nodes={nodes}
           edges={edges}
           readOnly={!isAdmin}
+          gmailConnected={gmailConnected}
         />
       )}
     </div>

@@ -21,7 +21,9 @@ import {
   useApplyTemplate,
   useCreateNode,
   useDeleteNode,
+  useGenerateTaxonomy,
   useTaxonomyEdges,
+  useTaxonomyGeneration,
   useTaxonomyNodes,
   useUpdateNode,
 } from '../../../../src/data/taxonomyQueries';
@@ -40,6 +42,7 @@ import {
   type NodeFormSubmit,
 } from '../../../../src/components/taxonomy/NodeFormSheet';
 import { TemplatePickerSheet } from '../../../../src/components/taxonomy/TemplatePickerSheet';
+import { GenerateFromInboxSheet } from '../../../../src/components/taxonomy/GenerateFromInboxSheet';
 import { RoutingIndicator } from '../../../../src/components/taxonomy/RoutingIndicator';
 import { toUserMessage } from '../../../../src/errors';
 
@@ -57,13 +60,17 @@ export default function TaxonomyScreen() {
   const updateNode = useUpdateNode(ws);
   const deleteNode = useDeleteNode(ws);
   const applyTemplate = useApplyTemplate(ws);
+  const generateTaxonomy = useGenerateTaxonomy(ws);
 
   const [collapsed, setCollapsed] = useState<Set<string>>(new Set());
   const [search, setSearch] = useState('');
   const [form, setForm] = useState<FormState | null>(null);
   const [formError, setFormError] = useState<string | null>(null);
   const [templateOpen, setTemplateOpen] = useState(false);
+  const [generateOpen, setGenerateOpen] = useState(false);
   const [toast, setToast] = useState<ToastModel | null>(null);
+
+  const generationQ = useTaxonomyGeneration(ws, generateOpen);
 
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const showToast = useCallback((message: string) => {
@@ -196,6 +203,25 @@ export default function TaxonomyScreen() {
     }
   };
 
+  const handleGenerate = async () => {
+    try {
+      await generateTaxonomy.mutateAsync();
+    } catch (err) {
+      showToast(toUserMessage(err, 'Could not start generation. Please try again.'));
+    }
+  };
+
+  const handleApplyProposal = async (file: TaxonomyTransferFile) => {
+    try {
+      await applyTemplate.mutateAsync(file);
+      setGenerateOpen(false);
+      showToast('Taxonomy applied');
+    } catch (err) {
+      setGenerateOpen(false);
+      showToast(toUserMessage(err, 'Could not apply taxonomy. Please try again.'));
+    }
+  };
+
   const loadError = nodesQ.isError || edgesQ.isError;
   const loading = !loadError && (!nodes || !edges);
 
@@ -207,6 +233,14 @@ export default function TaxonomyScreen() {
         <Text style={styles.heading}>Taxonomy</Text>
         {!readOnly ? (
           <View style={styles.actions}>
+            <TouchableOpacity
+              style={styles.iconBtn}
+              onPress={() => setGenerateOpen(true)}
+              hitSlop={8}
+              accessibilityLabel="Generate taxonomy from inbox"
+            >
+              <Ionicons name="color-wand-outline" size={20} color={colors.ink3} />
+            </TouchableOpacity>
             <TouchableOpacity
               style={styles.iconBtn}
               onPress={() => setTemplateOpen(true)}
@@ -320,6 +354,18 @@ export default function TaxonomyScreen() {
         applying={applyTemplate.isPending}
         onApply={handleApplyTemplate}
         onClose={() => setTemplateOpen(false)}
+      />
+
+      <GenerateFromInboxSheet
+        visible={generateOpen}
+        generation={generationQ.data}
+        loading={generationQ.isLoading}
+        generating={generateTaxonomy.isPending}
+        applying={applyTemplate.isPending}
+        onGenerate={handleGenerate}
+        onApply={handleApplyProposal}
+        onUseTemplates={() => setTemplateOpen(true)}
+        onClose={() => setGenerateOpen(false)}
       />
 
       <Toast toast={toast} onUndo={() => setToast(null)} onDismiss={() => setToast(null)} />

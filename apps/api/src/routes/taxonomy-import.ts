@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import { z } from "zod";
-import { db } from "@amarnai/db";
+import { db, Prisma } from "@amarnai/db";
 import {
   TaxonomyTransferFileSchema,
   validateTaxonomyTransfer,
@@ -121,6 +121,16 @@ taxonomyImport.post("/workspaces/:workspaceId/taxonomy-import", async (c) => {
         data: { workspaceId, sourceNodeId, targetNodeId },
       });
     }
+
+    // 7. Consume any pending generated proposal. An import replaces the
+    // taxonomy, so a READY generate-from-inbox proposal is now stale; clearing
+    // it (status only — cooldown fields untouched) stops the preview modal from
+    // re-showing the old proposal next time it opens. Scoped to READY so a
+    // regeneration already RUNNING is not clobbered.
+    await tx.taxonomyGenerationState.updateMany({
+      where: { workspaceId, status: "READY" },
+      data: { status: "IDLE", proposal: Prisma.DbNull, matchedTemplateId: null },
+    });
   });
 
   return c.json({

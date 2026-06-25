@@ -46,4 +46,8 @@ export type {
   DevicePlatform,
   RegisterPushDeviceInput,
   RegisterPushDeviceResult,
+  GenerationEligibility,
+  GenerationEligibilityReason,
+  TaxonomyGenerationStatus,
+  TaxonomyGenerationStatusResult,
 } from "./types.js";

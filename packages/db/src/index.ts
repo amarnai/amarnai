@@ -6,4 +6,5 @@ export {
   getThreadSortUsage,
   type ThreadSortUsage,
 } from "./thread-sort-usage.js";
+export { eligibleThreadWhere } from "./eligible-threads.js";
 export { Prisma, PrismaClient, WorkspacePlan, BillingCycle } from "@prisma/client";

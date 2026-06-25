@@ -4,9 +4,11 @@ import { useState } from "react";
 import type { ThreadMessage } from "./types.js";
 
 function fmtDateTime(d: Date): string {
+  const crossYear = d.getFullYear() !== new Date().getFullYear();
   return d.toLocaleString("en-US", {
     month: "short",
     day: "numeric",
+    ...(crossYear ? { year: "numeric" } : {}),
     hour: "2-digit",
     minute: "2-digit",
   });
