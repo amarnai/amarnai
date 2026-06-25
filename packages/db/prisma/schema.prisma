@@ -190,6 +190,7 @@ model User {
   // enforce the weekly cadence in a restart-safe, idempotent way.
   lifecycleEmailsEnabled   Boolean               @default(true)
   lifecycleEmailSentAt     DateTime?
+  locale                   String                @default("en")
 
   ownedWorkspaces          Workspace[]
   workspaceMemberships     WorkspaceMember[]

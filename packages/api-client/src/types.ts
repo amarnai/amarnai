@@ -42,6 +42,8 @@ export type CurrentUser = {
   emailVerified: boolean;
   // Whether the user receives weekly inbox-reminder lifecycle emails.
   lifecycleEmailsEnabled: boolean;
+  // UI display language (BCP 47 tag, e.g. "en", "fr", "pt-BR").
+  locale: string;
 };
 
 // Partial profile/preferences update for PATCH /auth/me. Only the provided
@@ -49,6 +51,7 @@ export type CurrentUser = {
 export type UpdateCurrentUserInput = {
   name?: string;
   lifecycleEmailsEnabled?: boolean;
+  locale?: string;
 };
 
 // Body-only inputs; workspaceId is carried in the URL path (differs from shared).
