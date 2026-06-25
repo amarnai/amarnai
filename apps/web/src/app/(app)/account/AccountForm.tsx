@@ -6,16 +6,26 @@ import {
   deleteAccountAction,
   signOutAction,
   setLifecycleEmailsAction,
+  setLocaleAction,
 } from "@/actions/auth";
+import { Trans } from "@lingui/react/macro";
+import {
+  SUPPORTED_LOCALES,
+  LOCALE_DISPLAY_NAMES,
+  isSupportedLocale,
+  type SupportedLocale,
+} from "@amarnai/i18n";
 
 export function AccountForm({
   currentName,
   email,
   lifecycleEmailsEnabled,
+  locale,
 }: {
   currentName: string | null;
   email: string;
   lifecycleEmailsEnabled: boolean;
+  locale: string;
 }) {
   const [nameValue, setNameValue] = useState(currentName ?? "");
   const [nameState, nameAction, namePending] = useActionState(updateNameAction, null);
@@ -26,6 +36,18 @@ export function AccountForm({
   // single click. Optimistic local state reverts if the action fails.
   const [remindersEnabled, setRemindersEnabled] = useState(lifecycleEmailsEnabled);
   const [remindersPending, startReminders] = useTransition();
+
+  const currentLocale: SupportedLocale = isSupportedLocale(locale) ? locale : "en";
+  const [selectedLocale, setSelectedLocale] = useState<SupportedLocale>(currentLocale);
+  const [localePending, startLocale] = useTransition();
+
+  function changeLocale(next: SupportedLocale) {
+    setSelectedLocale(next);
+    startLocale(async () => {
+      const result = await setLocaleAction(next);
+      if (result?.error) setSelectedLocale(currentLocale);
+    });
+  }
 
   function toggleReminders(next: boolean) {
     setRemindersEnabled(next);
@@ -38,7 +60,7 @@ export function AccountForm({
   return (
     <>
       <section className="settings-section">
-        <h2>Profile</h2>
+        <h2><Trans>Profile</Trans></h2>
 
         <form action={nameAction} className="account-form">
           {nameState?.error && <p className="auth-error">{nameState.error}</p>}
@@ -46,7 +68,7 @@ export function AccountForm({
 
           <div className="form-group">
             <label className="form-label" htmlFor="name">
-              Display name
+              <Trans>Display name</Trans>
             </label>
             <input
               id="name"
@@ -66,7 +88,7 @@ export function AccountForm({
           </div>
 
           <button type="submit" disabled={namePending} className="btn-primary">
-            {namePending ? "Saving…" : "Save changes"}
+            {namePending ? <Trans>Saving…</Trans> : <Trans>Save changes</Trans>}
           </button>
         </form>
       </section>
@@ -85,10 +107,35 @@ export function AccountForm({
       </section>
 
       <section className="settings-section">
-        <h2>Session</h2>
+        <h2><Trans>Language</Trans></h2>
+        <div className="form-group">
+          <label className="form-label" htmlFor="locale">
+            <Trans>Display language</Trans>
+          </label>
+          <select
+            id="locale"
+            className="form-input"
+            value={selectedLocale}
+            disabled={localePending}
+            onChange={(e) => {
+              const val = e.target.value;
+              if (isSupportedLocale(val)) changeLocale(val);
+            }}
+          >
+            {SUPPORTED_LOCALES.map((l) => (
+              <option key={l} value={l}>
+                {LOCALE_DISPLAY_NAMES[l]}
+              </option>
+            ))}
+          </select>
+        </div>
+      </section>
+
+      <section className="settings-section">
+        <h2><Trans>Session</Trans></h2>
         <form action={signOutAction}>
           <button type="submit" className="btn-secondary">
-            Sign out
+            <Trans>Sign out</Trans>
           </button>
         </form>
       </section>

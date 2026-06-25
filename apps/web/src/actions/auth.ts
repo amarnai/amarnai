@@ -2,10 +2,12 @@
 
 import bcrypt from "bcryptjs";
 import { z } from "zod";
+import { cookies } from "next/headers";
 import { signIn, signOut, unstable_update } from "@/auth";
 import { db } from "@amarnai/db";
 import { registerWithPassword, rotateVerificationToken, createPasswordResetToken } from "@amarnai/auth";
 import { RegisterCredentialsSchema } from "@amarnai/shared";
+import { isSupportedLocale, type SupportedLocale } from "@amarnai/i18n";
 import { requireUser } from "@/lib/session";
 import { sendVerificationEmail, sendPasswordResetEmail } from "@/lib/email";
 import { disconnectGmailBeforeDeletion } from "@/lib/gmail-teardown";
@@ -140,6 +142,24 @@ export async function setLifecycleEmailsAction(
     where: { id: user.id },
     data: { lifecycleEmailsEnabled: enabled },
   });
+
+  return { success: true };
+}
+
+// ─── Locale preference ───────────────────────────────────────────────────────
+
+export async function setLocaleAction(
+  locale: SupportedLocale
+): Promise<{ error?: string; success?: boolean }> {
+  if (!isSupportedLocale(locale)) return { error: "Unsupported locale" };
+
+  const user = await requireUser();
+  await db.user.update({ where: { id: user.id }, data: { locale } });
+
+  // Persist in the locale cookie so the middleware picks it up on next request
+  // without a full page reload.
+  const jar = await cookies();
+  jar.set("amarnai_locale", locale, { path: "/", maxAge: 60 * 60 * 24 * 365 });
 
   return { success: true };
 }

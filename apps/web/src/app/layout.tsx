@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
+import { headers } from "next/headers";
 import { AppDownloadBanner } from "@amarnai/ui";
+import { isSupportedLocale, SOURCE_LOCALE } from "@amarnai/i18n";
+import { LinguiClientProvider } from "@/components/LinguiClientProvider";
 import "./globals.css";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-geist-sans" });
@@ -18,16 +21,22 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const headersList = await headers();
+  const localeHeader = headersList.get("x-locale") ?? SOURCE_LOCALE;
+  const locale = isSupportedLocale(localeHeader) ? localeHeader : SOURCE_LOCALE;
+
   return (
-    <html lang="en" className={`${geist.variable} ${geistMono.variable}`} suppressHydrationWarning>
+    <html lang={locale} className={`${geist.variable} ${geistMono.variable}`} suppressHydrationWarning>
       <body suppressHydrationWarning>
-        <AppDownloadBanner playStoreUrl={process.env.NEXT_PUBLIC_PLAY_STORE_URL} />
-        {children}
+        <LinguiClientProvider locale={locale}>
+          <AppDownloadBanner playStoreUrl={process.env.NEXT_PUBLIC_PLAY_STORE_URL} />
+          {children}
+        </LinguiClientProvider>
         {process.env.NEXT_PUBLIC_ANALYTICS_URL && (
           <Script src={process.env.NEXT_PUBLIC_ANALYTICS_URL} strategy="afterInteractive" />
         )}

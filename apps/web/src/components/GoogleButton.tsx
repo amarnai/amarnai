@@ -1,5 +1,7 @@
 "use client";
 
+import { useLingui } from "@lingui/react";
+import { msg } from "@lingui/core/macro";
 import { googleSignInAction } from "@/actions/auth";
 
 function GoogleIcon() {
@@ -13,12 +15,14 @@ function GoogleIcon() {
   );
 }
 
-export function GoogleButton({ label = "Continue with Google" }: { label?: string }) {
+export function GoogleButton({ label }: { label?: string }) {
+  const { _ } = useLingui();
+  const defaultLabel = _( msg`Continue with Google`);
   return (
     <form action={googleSignInAction}>
       <button className="btn-google" type="submit">
         <GoogleIcon />
-        {label}
+        {label ?? defaultLabel}
       </button>
     </form>
   );
