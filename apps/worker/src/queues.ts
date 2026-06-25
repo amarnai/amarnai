@@ -73,14 +73,18 @@ export const lifecycleEmailQueue = new Queue(QUEUE_LIFECYCLE_EMAIL, {
 });
 
 /**
- * Enqueue a taxonomy generation for a workspace. One LLM call per run, so a
- * single attempt — outcome (including failure) is recorded on
- * TaxonomyGenerationState rather than retried by BullMQ.
+ * Enqueue a taxonomy generation for a workspace. The generation is one LLM call,
+ * but the model (a frontier Gemini tier) intermittently returns transient 503
+ * UNAVAILABLE under demand spikes. With a single attempt every such blip became
+ * a permanent, user-visible FAILED, so retry with backoff for parity with the
+ * other LLM jobs — the worker only records a terminal FAILED on the last attempt.
+ * Idempotent: the job re-reads state and re-checks eligibility before the LLM call.
  */
 export const generateTaxonomyQueue = new Queue(QUEUE_GENERATE_TAXONOMY, {
   connection: redisConnection,
   defaultJobOptions: {
-    attempts: 1,
+    attempts: 3,
+    backoff: { type: "exponential", delay: 10_000 },
     removeOnComplete: { count: 50 },
     removeOnFail: { count: 100 },
   },

@@ -31,6 +31,38 @@ export class LLMRequestError extends Error {
   }
 }
 
+/**
+ * Wrap a fetch implementation so upstream error responses (non-2xx) are logged
+ * with their body before the SDK consumes and discards it. Gemini returns its
+ * real failure reason (e.g. `{"error":{"message":"The model is overloaded..."}}`)
+ * in a small JSON body that the OpenAI SDK drops on some 5xx codes, leaving only
+ * an opaque status — capturing it here is the only way to diagnose outages. The
+ * body is read from a clone so the SDK still gets the original stream, truncated
+ * to a bounded length, and only emitted for failures (no request/success bodies
+ * are logged, so no email content is ever touched).
+ */
+function loggingFetch(
+  fetchImpl: typeof undiciFetch,
+  provider: string,
+  model: string,
+): typeof undiciFetch {
+  return (async (input: Parameters<typeof undiciFetch>[0], init?: Parameters<typeof undiciFetch>[1]) => {
+    const res = await fetchImpl(input, init);
+    if (!res.ok) {
+      let body = "";
+      try {
+        body = await res.clone().text();
+      } catch {
+        body = "(body unavailable)";
+      }
+      console.warn(
+        `[llm] ${provider}/${model} upstream ${res.status} ${res.statusText}: ${body.slice(0, 500)}`,
+      );
+    }
+    return res;
+  }) as typeof undiciFetch;
+}
+
 /** Read an OpenAI-SDK error's HTTP status, or undefined for a non-HTTP error. */
 function errorStatus(err: unknown): number | undefined {
   if (typeof err === "object" && err !== null && "status" in err) {
@@ -81,7 +113,7 @@ export class FrontierAIProvider implements AIProvider {
       // body … Premature close"). Our Gemini embedding and Ollama paths use undici
       // fetch and are unaffected, so route the SDK through undici too. The SDK's
       // AbortController-based timeout/maxRetries still apply on top of this fetch.
-      fetch: undiciFetch as unknown as ClientOptions["fetch"],
+      fetch: loggingFetch(undiciFetch, opts.provider, opts.model) as unknown as ClientOptions["fetch"],
       // The SDK retries multiply with the caller's own retries — the routing
       // path runs under BullMQ (3 attempts with backoff), so the SDK default of
       // 2 means up to 3×3 = 9 paid model calls per thread during a provider

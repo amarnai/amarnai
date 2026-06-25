@@ -44,7 +44,29 @@ export function getRoutingAIProviderConfig(): AIProviderConfig {
   return cfg;
 }
 
-/** Parse the routing reasoning-effort env var; defaults to "none". */
+/**
+ * Provider config for taxonomy generation. Deliberately NOT the routing model:
+ * routing runs on the cheapest tier (e.g. gemini-2.5-flash-lite), which is the
+ * most demand-throttled and routinely returns 503 UNAVAILABLE — fatal for a
+ * one-shot, user-facing generation. Taxonomy is a richer generative task, so it
+ * defaults to the capable frontier model (FRONTIER_LLM_MODEL) and can be pinned
+ * independently with TAXONOMY_LLM_MODEL. Thinking is disabled by default for the
+ * same reason as routing: long thinking drops the Gemini OpenAI-compat
+ * connection mid-response (override with TAXONOMY_REASONING_EFFORT).
+ */
+export function getTaxonomyAIProviderConfig(): AIProviderConfig {
+  const cfg = getAIProviderConfig();
+  const taxonomyModel = process.env["TAXONOMY_LLM_MODEL"];
+  const taxonomyOllamaModel = process.env["TAXONOMY_OLLAMA_MODEL"];
+  if (taxonomyModel && cfg.frontier) cfg.frontier = { ...cfg.frontier, model: taxonomyModel };
+  if (taxonomyOllamaModel && cfg.ollama) cfg.ollama = { ...cfg.ollama, model: taxonomyOllamaModel };
+  if (cfg.frontier) {
+    cfg.frontier = { ...cfg.frontier, reasoningEffort: parseReasoningEffort(process.env["TAXONOMY_REASONING_EFFORT"]) };
+  }
+  return cfg;
+}
+
+/** Parse a reasoning-effort env var; defaults to "none". */
 function parseReasoningEffort(raw: string | undefined): "low" | "medium" | "high" | "none" {
   if (raw === "low" || raw === "medium" || raw === "high" || raw === "none") return raw;
   return "none";

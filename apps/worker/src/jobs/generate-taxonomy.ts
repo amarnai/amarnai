@@ -1,6 +1,6 @@
 import { Worker } from "bullmq";
 import { db, eligibleThreadWhere } from "@amarnai/db";
-import { createAIProvider, getRoutingAIProviderConfig, generateTaxonomyFromProfile } from "@amarnai/ai";
+import { createAIProvider, getTaxonomyAIProviderConfig, generateTaxonomyFromProfile } from "@amarnai/ai";
 import { matchTemplateToProfile, layoutTaxonomyTransfer } from "@amarnai/core/taxonomy";
 import {
   computeGenerationEligibility,
@@ -227,7 +227,7 @@ export async function runGenerateTaxonomyJob(workspaceId: string): Promise<void>
 
   // Match a template (deterministic) and personalize with the LLM.
   const template = matchTemplateToProfile(profile);
-  const provider = createAIProvider(getRoutingAIProviderConfig());
+  const provider = createAIProvider(getTaxonomyAIProviderConfig());
 
   const generated = await generateTaxonomyFromProfile({
     profile,
@@ -280,11 +280,20 @@ export function createGenerateTaxonomyWorker(): Worker {
   );
 
   // Record a terminal FAILED outcome so the UI can surface it and the cooldown
-  // applies. attempts:1 means this fires once per request.
+  // applies. The queue retries (attempts > 1), so only the LAST attempt is
+  // terminal — earlier failures will be retried and must not write FAILED, which
+  // would flip the UI to failed mid-retry and (via the cooldown) block the
+  // retry that follows. The job leaves state at RUNNING between attempts.
   worker.on("failed", (job, err) => {
     const workspaceId = job?.data.workspaceId;
     if (!workspaceId) return;
-    console.error(`[generate-taxonomy] ${workspaceId} failed:`, err);
+    const attempts = job?.opts.attempts ?? 1;
+    const isTerminal = (job?.attemptsMade ?? 0) >= attempts;
+    console.error(
+      `[generate-taxonomy] ${workspaceId} attempt ${job?.attemptsMade}/${attempts} failed${isTerminal ? " (terminal)" : " — will retry"}:`,
+      err,
+    );
+    if (!isTerminal) return;
     void db.taxonomyGenerationState
       .upsert({
         where: { workspaceId },
