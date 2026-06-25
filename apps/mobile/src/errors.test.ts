@@ -25,8 +25,8 @@ describe('toUserMessage', () => {
     expect(toUserMessage(new Error('Invalid email or password'), 'fallback')).toBe(
       'Invalid email or password',
     );
-    expect(toUserMessage(new Error('A category with that name already exists'), 'fallback')).toBe(
-      'A category with that name already exists',
+    expect(toUserMessage(new Error('A folder with that name already exists'), 'fallback')).toBe(
+      'A folder with that name already exists',
     );
   });
 

@@ -30,7 +30,7 @@ export function UnroutedBanner({ waitingCount, routableFolderCount, onRouteNow }
       <View style={[styles.banner, styles.bannerWarn]}>
         <Text style={styles.warnText} numberOfLines={2}>
           {waitingCount} thread{waitingCount !== 1 ? 's are' : ' is'} waiting.
-          Connect at least {TAXONOMY_MIN_NON_ROOT_NODES} categories to begin sorting.
+          Connect at least {TAXONOMY_MIN_NON_ROOT_NODES} folders to begin sorting.
         </Text>
         <TouchableOpacity
           style={styles.btnWarn}

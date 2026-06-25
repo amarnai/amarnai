@@ -1349,7 +1349,7 @@ function TaxonomyCanvasInner({
       )}
 
       {(() => {
-        // Count only categories actually reachable from the root — orphaned
+        // Count only folders actually reachable from the root — orphaned
         // nodes never receive threads, so they do not count toward the
         // routing threshold. Derived from live canvas state so the indicator
         // updates the moment an edge connects a node to the inbox.

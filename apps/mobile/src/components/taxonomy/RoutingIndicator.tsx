@@ -6,7 +6,7 @@ interface RoutingIndicatorProps {
   min: number;
 }
 
-// Mirror of the web "X / 3 categories connected" warning. Rendered only when the
+// Mirror of the web "X / 3 folders connected" warning. Rendered only when the
 // taxonomy is not yet routable, so the count is always below `min` here.
 export function RoutingIndicator({ count, min }: RoutingIndicatorProps) {
   return (
