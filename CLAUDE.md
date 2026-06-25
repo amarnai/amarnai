@@ -59,6 +59,20 @@ A key use case is bulk triage of an existing inbox: users may want to sort and c
 
 - Before implementing any feature or change, check whether that functionality exists in both `apps/web/` and `apps/mobile/`. If it does, the change must be applied to both. Never update one without updating the other.
 
+## Localization
+
+Amarnai uses Lingui v5 for i18n across `apps/web`, `apps/site`, and `apps/mobile`. The source locale is English; all other languages are filled automatically by AI.
+
+**Rules:**
+- Never hardcode user-visible strings as plain text. Wrap every string in a Lingui macro.
+- JSX content: `<Trans>My label</Trans>`
+- Imperative strings (props, attributes, variables): `const { _ } = useLingui(); _( msg`My label`)`
+- Dynamic values and plurals: use ICU MessageFormat inside the macro (`{name}`, `{count, plural, one {# item} other {# items}}`). Never concatenate strings.
+- Write copy that is self-contained and unambiguous. Avoid idioms, wordplay, and split sentences across multiple macros.
+- Settle on the final English text before wrapping. Changing a wrapped string creates a new catalog key and orphans the old translation.
+
+**Pipeline:** `pnpm i18n:extract` then `pnpm i18n:translate` then `pnpm i18n:compile`. The pre-commit hook runs this automatically when string-touching files are staged.
+
 ## Standards
 
 - TypeScript strict mode.

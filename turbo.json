@@ -12,6 +12,14 @@
     "test": {
       "dependsOn": ["^typecheck"]
     },
+    "extract": {
+      "outputs": ["src/locales/**/*.po"],
+      "cache": false
+    },
+    "compile": {
+      "dependsOn": ["extract"],
+      "outputs": ["src/locales/**/*.mjs"]
+    },
     "@amarnai/mobile#start": {
       "persistent": true,
       "cache": false
