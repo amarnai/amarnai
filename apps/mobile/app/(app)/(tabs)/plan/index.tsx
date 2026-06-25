@@ -27,6 +27,8 @@ import {
   useTaxonomyNodes,
   useUpdateNode,
 } from '../../../../src/data/taxonomyQueries';
+import { useGmailConnection } from '../../../../src/data/queries';
+import { useConnectGmail } from '../../../../src/auth/useConnectGmail';
 import {
   buildTaxonomyTree,
   flattenVisible,
@@ -51,7 +53,7 @@ type FormState =
   | { mode: 'edit'; node: TaxonomyNode; defaultParentId: null };
 
 export default function TaxonomyScreen() {
-  const { workspaceId, userId, workspaces } = useSession();
+  const { workspaceId, userId, workspaces, client } = useSession();
   const ws = workspaceId ?? '';
 
   const nodesQ = useTaxonomyNodes(ws);
@@ -71,6 +73,21 @@ export default function TaxonomyScreen() {
   const [toast, setToast] = useState<ToastModel | null>(null);
 
   const generationQ = useTaxonomyGeneration(ws, generateOpen);
+
+  // "Generate from inbox" needs a connected inbox to analyze. With none, opening
+  // the generator would wrongly report "not enough variety", so we run the Gmail
+  // connect flow first (mirrors the web app, which sends the user to OAuth).
+  const connectionQ = useGmailConnection(ws);
+  const gmailConnected = connectionQ.data?.status === 'ACTIVE';
+  const { connect: connectGmail } = useConnectGmail(ws, client);
+
+  const handleOpenGenerate = useCallback(() => {
+    if (gmailConnected) {
+      setGenerateOpen(true);
+      return;
+    }
+    void connectGmail(() => void connectionQ.refetch());
+  }, [gmailConnected, connectGmail, connectionQ]);
 
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const showToast = useCallback((message: string) => {
@@ -235,7 +252,7 @@ export default function TaxonomyScreen() {
           <View style={styles.actions}>
             <TouchableOpacity
               style={styles.iconBtn}
-              onPress={() => setGenerateOpen(true)}
+              onPress={handleOpenGenerate}
               hitSlop={8}
               accessibilityLabel="Generate plan from inbox"
             >

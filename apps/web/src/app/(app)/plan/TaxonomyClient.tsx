@@ -776,7 +776,7 @@ function TaxonomyCanvasInner({
     null,
   );
   const [generateOpen, setGenerateOpen] = useState(
-    () => searchParams.get("openGenerate") === "1",
+    () => gmailConnected && searchParams.get("openGenerate") === "1",
   );
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -803,11 +803,18 @@ function TaxonomyCanvasInner({
       setSelectedTemplateIdx(null);
       setTemplatePickerOpen(true);
     }
+    // Deep-linked generate with no inbox connected: send the user to the Gmail
+    // OAuth flow rather than opening an empty generator that would wrongly
+    // report "not enough variety" (matches GenerateFromInboxButton's click).
+    if (openGenerate && !gmailConnected) {
+      window.location.href = `/api/gmail/connect?workspaceId=${workspaceId}`;
+      return;
+    }
     const params = new URLSearchParams(searchParams.toString());
     params.delete("openTemplates");
     params.delete("openGenerate");
     const next = params.size > 0 ? `?${params.toString()}` : "";
-    router.replace(`/taxonomy${next}`, { scroll: false });
+    router.replace(`/plan${next}`, { scroll: false });
   }, []);
 
   const onCanvasDoubleClick = useCallback(
