@@ -11,10 +11,12 @@ import { EmailBlacklistSection } from "./EmailBlacklistSection";
 import { TeamMembersSection } from "./TeamMembersSection";
 import { BillingSection } from "./BillingSection";
 import { Trans } from "@lingui/react/macro";
+import { initServerI18n } from "@/lib/i18n-server";
 
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 
 export default async function SettingsPage({ searchParams }: { searchParams: SearchParams }) {
+  await initServerI18n();
   const user = await requireUser();
   const workspace = await getSelectedWorkspace(user.id);
   const params = await searchParams;

@@ -5,6 +5,7 @@ import { requireUser } from "@/lib/session";
 import { isWaitlistAdmin } from "@/lib/waitlist";
 import { toggleWaitlistInvitedAction } from "@/actions/waitlist";
 import { Trans } from "@lingui/react/macro";
+import { initServerI18n } from "@/lib/i18n-server";
 import { WaitlistShell } from "./WaitlistShell";
 
 type Entry = { id: string; email: string; createdAt: Date; invitedAt: Date | null };
@@ -40,6 +41,7 @@ function EntryList({ entries }: { entries: Entry[] }) {
 }
 
 export default async function AdminWaitlistPage() {
+  await initServerI18n();
   const user = await requireUser();
   if (!isWaitlistAdmin(user.email)) notFound();
 

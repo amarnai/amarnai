@@ -4,6 +4,7 @@ import { db } from "@amarnai/db";
 import { UpgradeClient } from "./UpgradeClient";
 import type { PlanId, BillingCycle } from "@amarnai/ui";
 import { Trans } from "@lingui/react/macro";
+import { initServerI18n } from "@/lib/i18n-server";
 
 export const metadata = { title: "Upgrade — Amarnai" };
 
@@ -21,6 +22,7 @@ export default async function UpgradePage({
 }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
+  await initServerI18n();
   const user = await requireUser();
   const workspace = await getSelectedWorkspace(user.id);
   const currentPlan = planIdMap[workspace.plan] ?? "free";

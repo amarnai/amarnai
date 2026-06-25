@@ -5,6 +5,7 @@ import { db, ensureInboxNode } from "@amarnai/db";
 import { switchWorkspaceAction } from "@/actions/workspace";
 import { WorkspaceSetupWaiting } from "./WorkspaceSetupWaiting";
 import { Trans } from "@lingui/react/macro";
+import { initServerI18n } from "@/lib/i18n-server";
 
 export const metadata = { title: "Upgrade Successful — Amarnai" };
 
@@ -25,6 +26,7 @@ export default async function UpgradeSuccessPage({
 }: {
   searchParams: SearchParams;
 }) {
+  await initServerI18n();
   const user = await requireUser();
   const { session_id } = await searchParams;
 

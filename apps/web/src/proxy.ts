@@ -53,11 +53,14 @@ export default auth((req) => {
   }
 
   // Propagate the resolved locale so server components and the LinguiClientProvider
-  // can read it without re-parsing the Accept-Language header.
+  // can read it without re-parsing the Accept-Language header. The header must be
+  // set on the forwarded *request* headers: `headers()` in a Server Component reads
+  // the incoming request, not the middleware response, so setting it on the response
+  // would leave the layout falling back to the source locale.
   const locale = resolveLocale(req);
-  const response = NextResponse.next();
-  response.headers.set("x-locale", locale);
-  return response;
+  const requestHeaders = new Headers(req.headers);
+  requestHeaders.set("x-locale", locale);
+  return NextResponse.next({ request: { headers: requestHeaders } });
 });
 
 export const config = {
