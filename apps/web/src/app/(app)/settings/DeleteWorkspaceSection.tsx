@@ -24,7 +24,7 @@ export function DeleteWorkspaceSection({ workspaceId }: { workspaceId: string })
     <section className="settings-section settings-section-danger">
       <h2>Delete workspace</h2>
       <p className="account-danger-description">
-        Permanently delete this workspace and all of its data — emails, taxonomy,
+        Permanently delete this workspace and all of its data — emails, plan,
         settings, and Gmail connection. This cannot be undone.
       </p>
 

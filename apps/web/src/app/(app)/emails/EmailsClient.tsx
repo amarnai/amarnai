@@ -154,7 +154,7 @@ export function EmailsClient({
 
   useEffect(() => {
     function handle() {
-      router.push("/taxonomy");
+      router.push("/plan");
     }
     document.addEventListener("emails:new-folder", handle);
     return () => document.removeEventListener("emails:new-folder", handle);
@@ -218,7 +218,7 @@ export function EmailsClient({
         onSelectActive={pushActive}
         onRailQueryChange={setRailQuery}
         onToggleFolder={toggleFolder}
-        onNewFolder={() => router.push("/taxonomy")}
+        onNewFolder={() => router.push("/plan")}
         upgradeHref="/upgrade"
       />
 

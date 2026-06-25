@@ -41,9 +41,9 @@ export function BackfillBanner({ syncStatus, dismissed, onDismiss }: BackfillBan
         </View>
         <Text style={styles.desc}>
           Sort thousands of historical emails automatically. Available on Pro and Business
-          plans.
+          subscriptions.
         </Text>
-        <Text style={styles.note}>Upgrade your plan on the web app to enable backfill.</Text>
+        <Text style={styles.note}>Upgrade your subscription on the web app to enable backfill.</Text>
       </View>
     );
   }

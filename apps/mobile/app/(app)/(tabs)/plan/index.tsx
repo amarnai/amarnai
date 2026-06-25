@@ -230,14 +230,14 @@ export default function TaxonomyScreen() {
       <AppHeader variant="workspace" />
 
       <View style={styles.subHeader}>
-        <Text style={styles.heading}>Taxonomy</Text>
+        <Text style={styles.heading}>Plan</Text>
         {!readOnly ? (
           <View style={styles.actions}>
             <TouchableOpacity
               style={styles.iconBtn}
               onPress={() => setGenerateOpen(true)}
               hitSlop={8}
-              accessibilityLabel="Generate taxonomy from inbox"
+              accessibilityLabel="Generate plan from inbox"
             >
               <Ionicons name="color-wand-outline" size={20} color={colors.ink3} />
             </TouchableOpacity>
@@ -263,7 +263,7 @@ export default function TaxonomyScreen() {
       {readOnly ? (
         <View style={styles.banner}>
           <Text style={styles.bannerText}>
-            View only. Only workspace admins can edit the taxonomy.
+            View only. Only workspace admins can edit the plan.
           </Text>
         </View>
       ) : null}
@@ -296,7 +296,7 @@ export default function TaxonomyScreen() {
         </CenterView>
       ) : loadError ? (
         <CenterView>
-          <Text style={styles.empty}>Could not load the taxonomy.</Text>
+          <Text style={styles.empty}>Could not load the plan.</Text>
           <TouchableOpacity onPress={refetch} style={styles.retry}>
             <Text style={styles.retryText}>Retry</Text>
           </TouchableOpacity>

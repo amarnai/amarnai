@@ -71,7 +71,7 @@ export function RationaleCard({
         </div>
         <div className="em-rationale-reason em-rationale-reason--muted">
           {taxonomyWeak
-            ? `This thread cannot be sorted yet. Add at least ${TAXONOMY_MIN_NON_ROOT_NODES} categories to your taxonomy to begin routing.`
+            ? `This thread cannot be sorted yet. Add at least ${TAXONOMY_MIN_NON_ROOT_NODES} categories to your plan to begin routing.`
             : "This thread is waiting to be routed. Use “Route now” to start sorting."}
         </div>
       </div>

@@ -34,9 +34,9 @@ export function UnroutedBanner({ waitingCount, routableFolderCount, onRouteNow }
         </Text>
         <TouchableOpacity
           style={styles.btnWarn}
-          onPress={() => router.push('/(app)/(tabs)/taxonomy')}
+          onPress={() => router.push('/(app)/(tabs)/plan')}
         >
-          <Text style={styles.btnWarnText}>Build taxonomy</Text>
+          <Text style={styles.btnWarnText}>Build plan</Text>
         </TouchableOpacity>
       </View>
     );

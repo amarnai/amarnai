@@ -53,7 +53,7 @@ export function GenerateFromInboxSheet({
         ) : running ? (
           <View style={styles.center}>
             <ActivityIndicator color={colors.accent} />
-            <Text style={styles.muted}>Analyzing your inbox and building a taxonomy…</Text>
+            <Text style={styles.muted}>Analyzing your inbox and building a plan…</Text>
           </View>
         ) : status === 'INSUFFICIENT' ? (
           <Text style={styles.muted}>{reasonText('INBOX_TOO_SMALL')}</Text>
@@ -68,7 +68,7 @@ export function GenerateFromInboxSheet({
         ) : proposal ? (
           <View style={styles.gap}>
             <Text style={styles.muted}>
-              Proposed folders. Applying replaces your current taxonomy; you can edit everything
+              Proposed folders. Applying replaces your current plan; you can edit everything
               afterward.
             </Text>
             {previewRows(proposal).map((row, i) => (

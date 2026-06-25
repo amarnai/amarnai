@@ -29,7 +29,7 @@ export function PlanCapBanner({ syncStatus }: Props) {
       style={{ margin: "12px 16px 0", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}
     >
       <span>
-        {countLabel} beyond your {syncStatus.workspacePlan} plan limit aren&apos;t loaded.
+        {countLabel} beyond your {syncStatus.workspacePlan} subscription limit aren&apos;t loaded.
       </span>
       <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
         <Link href="/upgrade" className="btn-primary" style={{ whiteSpace: "nowrap" }}>

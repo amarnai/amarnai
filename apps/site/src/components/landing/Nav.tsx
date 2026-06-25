@@ -31,11 +31,11 @@ export function Nav() {
 
         <nav className="ld-nav-links">
           <a href="#how" onClick={scrollTo("how")}>How it works</a>
-          <a href="#taxonomy" onClick={scrollTo("taxonomy")}>Taxonomy</a>
+          <a href="#taxonomy" onClick={scrollTo("taxonomy")}>Plan</a>
           <a href="#triage" onClick={scrollTo("triage")}>Triage</a>
           <a href="#faq" onClick={scrollTo("faq")}>FAQ</a>
           <Link className="ld-btn ld-nav-cta accent" href="/pricing">
-            See plans
+            Pricing
           </Link>
         </nav>
       </div>

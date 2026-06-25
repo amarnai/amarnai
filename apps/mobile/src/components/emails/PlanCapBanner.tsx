@@ -29,7 +29,7 @@ export function PlanCapBanner({ syncStatus, dismissed, onDismiss }: PlanCapBanne
     <View style={[styles.card, styles.cardLocked]}>
       <View style={styles.titleRow}>
         <Text style={[styles.title, styles.titleFlex]}>
-          {countLabel} beyond your {syncStatus.workspacePlan} plan limit aren&apos;t loaded.
+          {countLabel} beyond your {syncStatus.workspacePlan} subscription limit aren&apos;t loaded.
         </Text>
         {onDismiss ? (
           <TouchableOpacity
@@ -42,7 +42,7 @@ export function PlanCapBanner({ syncStatus, dismissed, onDismiss }: PlanCapBanne
           </TouchableOpacity>
         ) : null}
       </View>
-      <TouchableOpacity style={styles.btn} onPress={() => router.push('/(app)/plan')}>
+      <TouchableOpacity style={styles.btn} onPress={() => router.push('/(app)/subscription')}>
         <Text style={styles.btnText}>Upgrade to load them</Text>
       </TouchableOpacity>
     </View>

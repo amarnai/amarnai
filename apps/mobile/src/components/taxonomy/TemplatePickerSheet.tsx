@@ -44,7 +44,7 @@ export function TemplatePickerSheet({
       {selected ? (
         <View style={styles.confirm}>
           <Text style={styles.confirmText}>
-            Apply "{selected.name}"? This replaces your current taxonomy.
+            Apply "{selected.name}"? This replaces your current plan.
           </Text>
           <View style={styles.confirmRow}>
             <TouchableOpacity

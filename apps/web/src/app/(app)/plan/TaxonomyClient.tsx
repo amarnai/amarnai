@@ -39,7 +39,6 @@ import {
   createTaxonomyEdgeAction,
   updateTaxonomyEdgeAction,
   deleteTaxonomyEdgeAction,
-  importTaxonomyAction,
 } from "@/actions/taxonomy";
 import {
   computeIgnoredReasons,
@@ -1154,7 +1153,7 @@ function TaxonomyCanvasInner({
     setSubmitting(true);
     setApiError(null);
     try {
-      await importTaxonomyAction(workspaceId, file);
+      await api.importTaxonomy(workspaceId, file);
       const { nodes, edges } = await refetch();
       history.reset({ nodes, edges });
     } catch (err) {
@@ -1203,7 +1202,7 @@ function TaxonomyCanvasInner({
     <div className="taxonomy-inner">
       {readOnly ? (
         <div className="taxonomy-readonly-banner">
-          Taxonomy is view-only. Only workspace admins can edit it.
+          Plan is view-only. Only workspace admins can edit it.
         </div>
       ) : (
         <div className="taxonomy-toolbar">
@@ -1234,7 +1233,7 @@ function TaxonomyCanvasInner({
           <Tooltip
             content={
               taxonomyIsRoutable
-                ? "Export taxonomy"
+                ? "Export plan"
                 : "Add at least 3 connected folders to export"
             }
           >
@@ -1242,7 +1241,7 @@ function TaxonomyCanvasInner({
               className="btn-ghost"
               onClick={handleExport}
               disabled={submitting || !taxonomyIsRoutable}
-              aria-label="Export taxonomy"
+              aria-label="Export plan"
             >
               <svg
                 width="14"
@@ -1262,12 +1261,12 @@ function TaxonomyCanvasInner({
               Export
             </button>
           </Tooltip>
-          <Tooltip content="Import taxonomy (replaces current)">
+          <Tooltip content="Import plan (replaces current)">
             <button
               className="btn-ghost"
               onClick={handleImportClick}
               disabled={submitting}
-              aria-label="Import taxonomy"
+              aria-label="Import plan"
             >
               <svg
                 width="14"
@@ -1498,7 +1497,7 @@ function TaxonomyCanvasInner({
         >
           <div className="modal">
             <div className="modal-header">
-              <h2 className="modal-title">Replace taxonomy?</h2>
+              <h2 className="modal-title">Replace plan?</h2>
               <button
                 className="modal-close"
                 aria-label="Cancel"
@@ -1512,7 +1511,7 @@ function TaxonomyCanvasInner({
             </div>
             <div className="modal-body">
               <p>
-                Importing will replace your current taxonomy with{" "}
+                Importing will replace your current plan with{" "}
                 <strong>{pendingImportFile.nodes.length} folders</strong> and{" "}
                 <strong>{pendingImportFile.edges.length} paths</strong> from the
                 file. Threads that were sorted into removed folders will

@@ -89,11 +89,11 @@ export function BillingSection({
 
   return (
     <section className="settings-section">
-      <h2>Plan &amp; Billing</h2>
+      <h2>Subscription</h2>
 
       {cancelled && !cancelAtPeriodEnd && plan === "FREE" && (
         <div className="billing-alert billing-alert--info">
-          <span>Your subscription has been cancelled and your workspace has been downgraded to the free plan.</span>
+          <span>Your subscription has been cancelled and your workspace has been downgraded to the free tier.</span>
         </div>
       )}
 
@@ -155,7 +155,7 @@ export function BillingSection({
 
       <div className="plan-current-row">
         <div className="plan-current-info">
-          <span className="plan-current-label">Current plan</span>
+          <span className="plan-current-label">Current subscription</span>
           <div className="plan-current-name">
             {planLabels[plan] ?? plan}
             {cycleLabel && <span className="plan-cycle-badge">{cycleLabel}</span>}
@@ -233,7 +233,7 @@ export function BillingSection({
         <div className="billing-cancel-confirm">
           <p className="billing-cancel-confirm__message" suppressHydrationWarning>
             {isTrialing
-              ? "Your free trial will end immediately and your workspace will be downgraded to the free plan."
+              ? "Your free trial will end immediately and your workspace will be downgraded to the free tier."
               : `Your subscription will cancel at the end of the current billing period${currentPeriodEnd ? ` on ${currentPeriodEnd.toLocaleDateString()}` : ""}.`}
           </p>
           {membersToRemoveOnCancel.length > 0 && (

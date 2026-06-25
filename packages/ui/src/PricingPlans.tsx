@@ -175,7 +175,7 @@ function getPlanCtaLabel(
   isLowerThanCurrent: boolean,
   trialUsed: boolean,
 ): string {
-  if (isCurrent) return "Current plan";
+  if (isCurrent) return "Current subscription";
   if (isLowerThanCurrent) return `Downgrade to ${plan.name}`;
   if (trialUsed && !plan.free) return `Upgrade to ${plan.name}`;
   return plan.cta.label;
@@ -292,7 +292,7 @@ function ComparisonMatrix({
   return (
     <div className="plans-compare">
       <div className="plans-compare-head">
-        <h3>Compare every plan</h3>
+        <h3>Compare every subscription</h3>
         <span className="hint">All limits are per workspace.</span>
       </div>
 

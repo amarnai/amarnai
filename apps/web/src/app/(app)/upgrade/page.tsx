@@ -37,7 +37,7 @@ export default async function UpgradePage({
 
   return (
     <div className="upgrade-page">
-      <h1>Choose a plan</h1>
+      <h1>Choose a subscription</h1>
       <p className="upgrade-page-intro">
         Start for free and upgrade as your needs grow.
       </p>

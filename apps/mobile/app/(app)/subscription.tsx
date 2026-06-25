@@ -109,9 +109,9 @@ export default function PlanScreen() {
       'Cancel subscription?',
       state?.trialEndsAt && new Date(state.trialEndsAt) > new Date()
         ? 'Your trial ends immediately and the workspace downgrades to Free.'
-        : 'Your plan stays active until the end of the current billing period, then downgrades to Free.',
+        : 'Your subscription stays active until the end of the current billing period, then downgrades to Free.',
       [
-        { text: 'Keep plan', style: 'cancel' },
+        { text: 'Keep subscription', style: 'cancel' },
         {
           text: 'Cancel subscription',
           style: 'destructive',
@@ -198,7 +198,7 @@ export default function PlanScreen() {
         // In-app downgrade / cycle change.
         const res = await changePlan({ workspaceId, plan: action.plan, cycle: action.cycle });
         if (!res.ok) {
-          Alert.alert('Could not change plan', res.data.error ?? 'Please try again.');
+          Alert.alert('Could not change subscription', res.data.error ?? 'Please try again.');
           return;
         }
         setPricingOpen(false);
@@ -214,7 +214,7 @@ export default function PlanScreen() {
   if (loading) {
     return (
       <ScreenContainer>
-        <BackHeader title="Plan & billing" onBack={() => router.back()} />
+        <BackHeader title="Subscription" onBack={() => router.back()} />
         <CenterView>
           <ActivityIndicator color={colors.accent} />
         </CenterView>
@@ -225,7 +225,7 @@ export default function PlanScreen() {
   if (loadError || !state) {
     return (
       <ScreenContainer>
-        <BackHeader title="Plan & billing" onBack={() => router.back()} />
+        <BackHeader title="Subscription" onBack={() => router.back()} />
         <CenterView>
           <Text style={styles.muted}>{loadError ?? 'Could not load billing.'}</Text>
         </CenterView>
@@ -256,7 +256,7 @@ export default function PlanScreen() {
 
   return (
     <ScreenContainer>
-      <BackHeader title="Plan & billing" onBack={() => router.back()} />
+      <BackHeader title="Subscription" onBack={() => router.back()} />
 
       <ScrollView contentContainerStyle={styles.content}>
         {banners.map((b) => (
@@ -266,7 +266,7 @@ export default function PlanScreen() {
         ))}
 
         <View style={styles.planRow}>
-          <Text style={styles.planRowLabel}>Current plan</Text>
+          <Text style={styles.planRowLabel}>Current subscription</Text>
           <View style={styles.planBadge}>
             <Text style={styles.planBadgeText}>
               {planLabel}
@@ -287,7 +287,7 @@ export default function PlanScreen() {
             <SettingsGroup>
               <SettingsRow onPress={() => setPricingOpen(true)} disabled={busy}>
                 <Ionicons name="swap-horizontal-outline" size={20} color={colors.ink3} />
-                <Text style={styles.rowLabel}>Change plan</Text>
+                <Text style={styles.rowLabel}>Change subscription</Text>
                 <Ionicons name="chevron-forward" size={18} color={colors.ink4} />
               </SettingsRow>
               {state.hasSubscription ? (

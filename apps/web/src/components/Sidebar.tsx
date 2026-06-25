@@ -80,7 +80,7 @@ const isGmailDebugEnabled =
 
 const NAV = [
   { href: "/emails", label: "Emails", icon: <NavIcon name="emails" /> },
-  { href: "/taxonomy", label: "Taxonomy", icon: <NavIcon name="taxonomy" /> },
+  { href: "/plan", label: "Plan", icon: <NavIcon name="taxonomy" /> },
   { href: "/settings", label: "Settings", icon: <NavIcon name="settings" /> },
   ...(isDevEnabled ? [{ href: "/dev/mock-inbox", label: "Mock Inbox", icon: null }] : []),
   ...(isGmailDebugEnabled

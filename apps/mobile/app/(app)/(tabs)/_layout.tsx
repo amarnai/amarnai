@@ -29,7 +29,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="taxonomy/index"
         options={{
-          title: 'Taxonomy',
+          title: 'Plan',
           tabBarIcon: ({ color, focused }) => <NavIcon name="taxonomy" color={color} focused={focused} />,
         }}
       />

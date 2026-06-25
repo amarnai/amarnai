@@ -22,7 +22,7 @@ export function PricingSheet({ visible, onClose, currentPlan, currentCycle, busy
   const cycleValue: BillingCycleValue = cycle === 'annual' ? 'ANNUAL' : 'MONTHLY';
 
   return (
-    <SheetLayout visible={visible} onClose={onClose} title="Change plan">
+    <SheetLayout visible={visible} onClose={onClose} title="Change subscription">
       <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
         <View style={styles.cycleToggle}>
           <TouchableOpacity
@@ -78,7 +78,7 @@ export function PricingSheet({ visible, onClose, currentPlan, currentCycle, busy
                 disabled={isCurrent || busy}
                 onPress={() => onSelect(plan.id, cycle)}
               >
-                <Text style={styles.ctaText}>{isCurrent ? 'Current plan' : `Switch to ${plan.name}`}</Text>
+                <Text style={styles.ctaText}>{isCurrent ? 'Current subscription' : `Switch to ${plan.name}`}</Text>
               </TouchableOpacity>
             </View>
           );

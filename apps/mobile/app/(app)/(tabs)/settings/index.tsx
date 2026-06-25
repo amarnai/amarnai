@@ -124,7 +124,7 @@ export default function SettingsScreen() {
     if (!workspaceId) return;
     Alert.alert(
       'Reset workspace?',
-      'This removes the Gmail connection, deletes all synced emails, and resets the taxonomy to Inbox only. The workspace is kept. This cannot be undone.',
+      'This removes the Gmail connection, deletes all synced emails, and resets the plan to Inbox only. The workspace is kept. This cannot be undone.',
       [
         { text: 'Cancel', style: 'cancel' },
         {
@@ -151,7 +151,7 @@ export default function SettingsScreen() {
     if (!workspaceId) return;
     Alert.alert(
       'Delete workspace?',
-      'Permanently delete this workspace and all of its data: emails, taxonomy, settings, and Gmail connection. This cannot be undone.',
+      'Permanently delete this workspace and all of its data: emails, plan, settings, and Gmail connection. This cannot be undone.',
       [
         { text: 'Cancel', style: 'cancel' },
         {
@@ -228,9 +228,9 @@ export default function SettingsScreen() {
                 <Ionicons name="chevron-forward" size={18} color={colors.ink4} />
               </SettingsRow>
 
-              <SettingsRow divider onPress={() => router.push('/(app)/plan')}>
+              <SettingsRow divider onPress={() => router.push('/(app)/subscription')}>
                 <Ionicons name="card-outline" size={20} color={colors.ink3} />
-                <Text style={styles.linkLabel}>Plan</Text>
+                <Text style={styles.linkLabel}>Subscription</Text>
                 <Text style={styles.linkMeta} numberOfLines={1}>{planLabel}</Text>
                 <Ionicons name="chevron-forward" size={18} color={colors.ink4} />
               </SettingsRow>

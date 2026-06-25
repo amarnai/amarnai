@@ -177,7 +177,7 @@ export function GenerateFromInboxButton({
       className={variant === "primary" ? "btn-primary" : "btn-ghost"}
       onClick={handleButtonClick}
       disabled={disabled}
-      aria-label="Generate taxonomy from inbox"
+      aria-label="Generate plan from inbox"
     >
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
         <path
@@ -197,8 +197,8 @@ export function GenerateFromInboxButton({
         <Tooltip
           content={
             gmailConnected
-              ? "Generate a taxonomy from your inbox"
-              : "Connect Gmail to generate a taxonomy from your inbox"
+              ? "Generate a plan from your inbox"
+              : "Connect Gmail to generate a plan from your inbox"
           }
         >
           {triggerButton}
@@ -249,7 +249,7 @@ export function GenerateFromInboxButton({
 
                 {phase === "running" && (
                   <p className="text-muted">
-                    Analyzing your inbox and building a taxonomy… this can take a moment.
+                    Analyzing your inbox and building a plan… this can take a moment.
                   </p>
                 )}
 
@@ -284,7 +284,7 @@ export function GenerateFromInboxButton({
                 {phase === "ready" && displayGraph && (
                   <div>
                     <p className="alert alert-info">
-                      Applying replaces your current taxonomy. You can fully edit it afterward.
+                      Applying replaces your current plan. You can fully edit it afterward.
                     </p>
                     <div style={{ height: 520 }}>
                       <ReadOnlyTaxonomyCanvas nodes={displayGraph.nodes} edges={displayGraph.edges} />

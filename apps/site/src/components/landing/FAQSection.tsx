@@ -29,11 +29,11 @@ const FAQ_ITEMS = [
   },
   {
     q: "Can Amarnai draft replies?",
-    a: "Yes. Open a thread, press Generate draft reply, and a suggested draft appears in Amarnai for you to read and edit. Nothing is ever sent for you: when you are happy with it, you can jump to the thread in Gmail with one click and paste your reply there to send. Each plan includes a monthly draft allowance.",
+    a: "Yes. Open a thread, press Generate draft reply, and a suggested draft appears in Amarnai for you to read and edit. Nothing is ever sent for you: when you are happy with it, you can jump to the thread in Gmail with one click and paste your reply there to send. Each subscription includes a monthly draft allowance.",
   },
   {
     q: "How is Amarnai's pricing structured?",
-    a: "Pricing is per workspace, billed monthly or annually. Every account starts with a free Personal workspace, no card required. The paid Pro and Business plans add higher limits and include a 14-day trial. See the pricing page for current details.",
+    a: "Pricing is per workspace, billed monthly or annually. Every account starts with a free Personal workspace, no card required. The paid Pro and Business subscriptions add higher limits and include a 14-day trial. See the pricing page for current details.",
   },
   {
     q: "Can I self-host Amarnai?",
@@ -41,7 +41,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "What AI model does Amarnai use?",
-    a: "Hosted plans run on a frontier large language model. Self-hosted deployments can point at any OpenAI-compatible provider, such as OpenAI or Google Gemini, or a local Ollama model for fully offline operation.",
+    a: "Hosted subscriptions run on a frontier large language model. Self-hosted deployments can point at any OpenAI-compatible provider, such as OpenAI or Google Gemini, or a local Ollama model for fully offline operation.",
   },
 ];
 

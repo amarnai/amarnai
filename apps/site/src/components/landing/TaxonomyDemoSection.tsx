@@ -8,7 +8,7 @@ export function TaxonomyDemoSection() {
           <div className="ld-copy">
             <h2 className="ld-section-h">You draw the map.</h2>
             <p className="ld-section-lede">
-              Your taxonomy is a simple folder tree: your
+              Your plan is a simple folder tree: your
               categories branching out from the inbox. Sketch it once,
               and Amarnai walks it for every email that arrives.
             </p>
@@ -24,7 +24,7 @@ export function TaxonomyDemoSection() {
             <div className="ld-crumbs">
               <span>Acme Workspace</span>
               <span className="ld-sep">/</span>
-              <span className="ld-here">Taxonomy</span>
+              <span className="ld-here">Plan</span>
             </div>
             <div className="ld-sync-chip">
               <span className="ld-sync-dot" />

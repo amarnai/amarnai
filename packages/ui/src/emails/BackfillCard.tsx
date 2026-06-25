@@ -19,10 +19,10 @@ export function BackfillCard({ syncInfo, upgradeHref = "#" }: BackfillCardProps)
         <div className="em-backfill em-backfill--locked">
           <div className="em-backfill-title">Bulk triage your inbox</div>
           <div className="em-backfill-desc">
-            Sort thousands of historical emails automatically. Available on Pro and Business plans.
+            Sort thousands of historical emails automatically. Available on Pro and Business subscriptions.
           </div>
           <a href={upgradeHref} className="em-backfill-upgrade-btn">
-            Upgrade your plan
+            Upgrade your subscription
           </a>
         </div>
       </>

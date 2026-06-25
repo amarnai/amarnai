@@ -19,7 +19,7 @@ export function Footer() {
             <div className="ld-footer-col">
               <h4>Product</h4>
               <Link href="#how">How it works</Link>
-              <Link href="#taxonomy">Taxonomy</Link>
+              <Link href="#taxonomy">Plan</Link>
               <Link href="#triage">Triage</Link>
               <Link href="/pricing">Pricing</Link>
             </div>

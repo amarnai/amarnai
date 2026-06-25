@@ -128,7 +128,7 @@ export function TeamMembersSection({
       <p className="settings-hint">
         {isAdmin
           ? collaboratorLimit === 0
-            ? <>Collaborators are available on Pro and Business plans. <Link href="/upgrade">Upgrade to add.</Link></>
+            ? <>Collaborators are available on Pro and Business subscriptions. <Link href="/upgrade">Upgrade to add.</Link></>
             : `You can invite up to ${collaboratorLimit} collaborators to this workspace.`
           : "People with access to this workspace."}
       </p>
@@ -190,7 +190,7 @@ export function TeamMembersSection({
           {atLimit ? (
             <p className="settings-hint">
               {collaboratorLimit === 0
-                ? "Upgrade to a Pro or Business plan to invite collaborators."
+                ? "Upgrade to a Pro or Business subscription to invite collaborators."
                 : `Maximum of ${collaboratorLimit} collaborators reached.`}
             </p>
           ) : (
