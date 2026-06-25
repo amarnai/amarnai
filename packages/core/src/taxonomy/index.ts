@@ -16,3 +16,4 @@ export {
   generationPreviewRows,
   type GenerationPreviewRow,
 } from "./generationDisplay.js";
+export { transferToDisplayGraph } from "./transferToDisplayGraph.js";

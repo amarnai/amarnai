@@ -6,8 +6,9 @@ import type {
   TaxonomyGenerationStatusResult,
   GenerationEligibilityReason,
 } from "@amarnai/api-client";
-import { generationReasonText, generationPreviewRows } from "@amarnai/core/taxonomy";
+import { generationReasonText, transferToDisplayGraph } from "@amarnai/core/taxonomy";
 import { Tooltip } from "@amarnai/ui";
+import { ReadOnlyTaxonomyCanvas } from "@amarnai/ui/taxonomy";
 import { api } from "@/lib/api";
 
 type Phase = "idle" | "running" | "ready" | "insufficient" | "failed" | "error";
@@ -73,28 +74,33 @@ export function GenerateFromInboxButton({
       const s = await api.taxonomyGeneration(workspaceId);
       applyStatus(s);
       if (s.status !== "RUNNING") stopPolling();
+      return s.status;
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to load status");
       setPhase("error");
       stopPolling();
+      return null;
     }
   }, [workspaceId, applyStatus, stopPolling]);
-
-  // Reset state and load fresh status each time the modal opens.
-  useEffect(() => {
-    if (open) {
-      setError(null);
-      setStatus(null);
-      setPhase("idle");
-      void refresh();
-    }
-    return () => stopPolling();
-  }, [open, refresh, stopPolling]);
 
   const startPolling = useCallback(() => {
     stopPolling();
     pollRef.current = setInterval(() => void refresh(), POLL_MS);
   }, [refresh, stopPolling]);
+
+  // Reset state and load fresh status each time the modal opens.
+  // If generation is already in progress, resume live polling immediately.
+  useEffect(() => {
+    if (open) {
+      setError(null);
+      setStatus(null);
+      setPhase("idle");
+      void refresh().then((status) => {
+        if (status === "RUNNING") startPolling();
+      });
+    }
+    return () => stopPolling();
+  }, [open, refresh, startPolling, stopPolling]);
 
   async function handleGenerate() {
     setError(null);
@@ -145,6 +151,7 @@ export function GenerateFromInboxButton({
 
   const eligibility = status?.eligibility;
   const canGenerate = eligibility?.eligible ?? false;
+  const displayGraph = status?.proposal ? transferToDisplayGraph(status.proposal) : null;
 
   // With no inbox connected there is nothing to generate from, so the button
   // starts the Gmail OAuth flow instead of opening the (empty) modal.
@@ -212,7 +219,7 @@ export function GenerateFromInboxButton({
           role="dialog"
           aria-modal="true"
         >
-          <div className="modal">
+          <div className={`modal${phase === "ready" ? " modal--wide" : ""}`}>
             <div className="modal-header">
               <h2 className="modal-title">Generate from inbox</h2>
               <button className="modal-close" aria-label="Close" onClick={() => setOpen(false)}>
@@ -220,7 +227,7 @@ export function GenerateFromInboxButton({
               </button>
             </div>
 
-            <div className="modal-body" style={{ overflowY: "auto", maxHeight: "60vh" }}>
+            <div className="modal-body" style={phase !== "ready" ? { overflowY: "auto", maxHeight: "60vh" } : undefined}>
               {error && <p className="form-error">{error}</p>}
 
               {status?.importing && phase !== "running" && (
@@ -264,27 +271,14 @@ export function GenerateFromInboxButton({
                 </>
               )}
 
-              {phase === "ready" && status?.proposal && (
+              {phase === "ready" && displayGraph && (
                 <div>
-                  <p className="text-muted" style={{ marginBottom: 10 }}>
-                    Proposed folders. Applying replaces your current taxonomy; you can edit
-                    everything afterward.
+                  <p className="alert alert-info">
+                    Applying replaces your current taxonomy. You can fully edit it afterward.
                   </p>
-                  <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 8 }}>
-                    {generationPreviewRows(status.proposal).map((row, i) => (
-                      <li key={`${row.name}-${i}`}>
-                        <div style={{ fontWeight: 600 }}>
-                          {row.name}
-                          {row.breadcrumb && (
-                            <span className="text-muted" style={{ fontWeight: 400, marginLeft: 6 }}>
-                              ({row.breadcrumb})
-                            </span>
-                          )}
-                        </div>
-                        <div className="text-muted" style={{ fontSize: 13 }}>{row.description}</div>
-                      </li>
-                    ))}
-                  </ul>
+                  <div style={{ height: 520 }}>
+                    <ReadOnlyTaxonomyCanvas nodes={displayGraph.nodes} edges={displayGraph.edges} />
+                  </div>
                 </div>
               )}
             </div>
