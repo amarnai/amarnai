@@ -15,6 +15,14 @@ type Phase = "idle" | "running" | "ready" | "insufficient" | "failed" | "error";
 
 const POLL_MS = 2500;
 
+// With no inbox connected there is nothing to generate from, so every
+// "Generate from inbox" entry point sends the user to the Gmail OAuth flow
+// instead of opening an empty generator that would wrongly report
+// "not enough variety". Shared so all call sites stay consistent.
+export function startGmailConnect(workspaceId: string) {
+  window.location.href = `/api/gmail/connect?workspaceId=${workspaceId}`;
+}
+
 export function GenerateFromInboxButton({
   workspaceId,
   disabled,
@@ -157,7 +165,7 @@ export function GenerateFromInboxButton({
   // starts the Gmail OAuth flow instead of opening the (empty) modal.
   function handleButtonClick() {
     if (!gmailConnected) {
-      window.location.href = `/api/gmail/connect?workspaceId=${workspaceId}`;
+      startGmailConnect(workspaceId);
       return;
     }
     setOpen(true);

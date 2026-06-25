@@ -52,7 +52,7 @@ import {
   snapshotsEqual,
   type GraphSnapshot,
 } from "./useTaxonomyHistory";
-import { GenerateFromInboxButton } from "./GenerateFromInboxButton";
+import { GenerateFromInboxButton, startGmailConnect } from "./GenerateFromInboxButton";
 import { TaxonomyNodeCardBase } from "@amarnai/ui/taxonomy";
 import { Tooltip } from "@amarnai/ui";
 import {
@@ -807,7 +807,7 @@ function TaxonomyCanvasInner({
     // OAuth flow rather than opening an empty generator that would wrongly
     // report "not enough variety" (matches GenerateFromInboxButton's click).
     if (openGenerate && !gmailConnected) {
-      window.location.href = `/api/gmail/connect?workspaceId=${workspaceId}`;
+      startGmailConnect(workspaceId);
       return;
     }
     const params = new URLSearchParams(searchParams.toString());
@@ -1384,7 +1384,13 @@ function TaxonomyCanvasInner({
               <button
                 className="btn-primary"
                 style={{ flexShrink: 0, display: "inline-flex", alignItems: "center", gap: 6 }}
-                onClick={() => setGenerateOpen(true)}
+                onClick={() => {
+                  if (!gmailConnected) {
+                    startGmailConnect(workspaceId);
+                    return;
+                  }
+                  setGenerateOpen(true);
+                }}
               >
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
                   <path
