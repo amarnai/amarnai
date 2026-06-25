@@ -5,6 +5,7 @@ import { db } from "@amarnai/db";
 import { assembleBillingState } from "@/lib/billing-state";
 import { GmailConnectionSection } from "./GmailConnectionSection";
 import { WorkspaceNameSection } from "./WorkspaceNameSection";
+import { WorkspaceLanguageSection } from "./WorkspaceLanguageSection";
 import { DeleteWorkspaceSection } from "./DeleteWorkspaceSection";
 import { ResetWorkspaceSection } from "./ResetWorkspaceSection";
 import { EmailBlacklistSection } from "./EmailBlacklistSection";
@@ -107,6 +108,7 @@ export default async function SettingsPage({ searchParams }: { searchParams: Sea
       {isAdmin && (
         <>
           <WorkspaceNameSection currentName={workspace.name} />
+          <WorkspaceLanguageSection currentLocale={workspace.locale} />
           <GmailConnectionSection
             workspaceId={workspace.id}
             connection={connection}

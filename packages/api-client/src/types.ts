@@ -71,6 +71,8 @@ export type UpdateTaxonomyNodeInput = Partial<CreateTaxonomyNodeInput>;
 export type Workspace = {
   id: string;
   name: string;
+  // Workspace language (UI + AI-generated taxonomy), an i18n SupportedLocale code.
+  locale: string;
   plan: "FREE" | "PRO" | "BUSINESS";
   createdAt: string;
   updatedAt: string;

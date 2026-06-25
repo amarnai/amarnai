@@ -3,12 +3,12 @@ import { db, ensureInboxNode } from "@amarnai/db";
 // Returns the user's primary workspace, creating their first one (with an Inbox
 // taxonomy node and an OWNER membership) if they have none. Shared by the web
 // app and the API sign-in flow so onboarding provisioning lives in one place.
-export async function getOrCreateDefaultWorkspace(userId: string) {
+export async function getOrCreateDefaultWorkspace(userId: string, locale = "en") {
   // Prefer a workspace owned by this user.
   const owned = await db.workspace.findFirst({
     where: { ownerUserId: userId },
     orderBy: { createdAt: "asc" },
-    select: { id: true, name: true, plan: true },
+    select: { id: true, name: true, locale: true, plan: true },
   });
   if (owned) return owned;
 
@@ -16,7 +16,7 @@ export async function getOrCreateDefaultWorkspace(userId: string) {
   const membership = await db.workspaceMember.findFirst({
     where: { userId },
     orderBy: { createdAt: "asc" },
-    select: { workspace: { select: { id: true, name: true, plan: true } } },
+    select: { workspace: { select: { id: true, name: true, locale: true, plan: true } } },
   });
   if (membership) return membership.workspace;
 
@@ -25,11 +25,12 @@ export async function getOrCreateDefaultWorkspace(userId: string) {
     data: {
       name: "My Workspace",
       ownerUserId: userId,
+      locale,
       members: {
         create: { userId, role: "OWNER" },
       },
     },
-    select: { id: true, name: true, plan: true },
+    select: { id: true, name: true, locale: true, plan: true },
   });
   await ensureInboxNode(created.id);
   return created;

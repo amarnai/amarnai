@@ -10,7 +10,13 @@ export class FreeWorkspaceLimitError extends Error {
 
 // Create a FREE workspace owned by userId. Throws FreeWorkspaceLimitError if
 // the user already owns one free workspace. Returns the new workspace id.
-export async function createFreeWorkspace(userId: string, name: string): Promise<string> {
+// `locale` seeds the workspace's language (UI + AI-generated taxonomy); callers
+// pass the creator's resolved locale, defaulting to the source locale.
+export async function createFreeWorkspace(
+  userId: string,
+  name: string,
+  locale = "en",
+): Promise<string> {
   const existingFree = await db.workspace.count({ where: { ownerUserId: userId, plan: "FREE" } });
   if (existingFree >= 1) throw new FreeWorkspaceLimitError();
 
@@ -18,6 +24,7 @@ export async function createFreeWorkspace(userId: string, name: string): Promise
     data: {
       name,
       ownerUserId: userId,
+      locale,
       members: { create: { userId, role: "OWNER" } },
     },
     select: { id: true },

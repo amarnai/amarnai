@@ -43,7 +43,7 @@ export function RenameWorkspaceSheet({
     setSaving(true);
     setError(null);
     try {
-      await client.updateWorkspace(workspaceId, trimmed);
+      await client.updateWorkspace(workspaceId, { name: trimmed });
       await onRenamed();
       onClose();
     } catch (err) {

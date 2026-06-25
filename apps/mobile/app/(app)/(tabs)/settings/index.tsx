@@ -24,8 +24,10 @@ import { GmailSettingsSheet } from '../../../../src/components/GmailSettingsShee
 import { SyncFiltersSheet } from '../../../../src/components/SyncFiltersSheet';
 import { BlacklistSheet } from '../../../../src/components/BlacklistSheet';
 import { RenameWorkspaceSheet } from '../../../../src/components/RenameWorkspaceSheet';
+import { WorkspaceLanguageSheet } from '../../../../src/components/WorkspaceLanguageSheet';
 import { CollaboratorsSheet } from '../../../../src/components/CollaboratorsSheet';
 import { toUserMessage } from '../../../../src/errors';
+import { LOCALE_DISPLAY_NAMES, isSupportedLocale } from '@amarnai/i18n';
 
 const PLAN_LABEL: Record<string, string> = {
   FREE: 'Free',
@@ -114,8 +116,13 @@ export default function SettingsScreen() {
   const members = activeWorkspace?.members ?? [];
   const collaboratorsSummary = members.length <= 1 ? 'Just you' : `${members.length} people`;
 
-  // ── Rename ────────────────────────────────────────────────────────────────
+  // ── Rename / Language ───────────────────────────────────────────────────────
   const [renameSheetOpen, setRenameSheetOpen] = useState(false);
+  const [languageSheetOpen, setLanguageSheetOpen] = useState(false);
+  const workspaceLocale = activeWorkspace?.locale ?? 'en';
+  const languageSummary = isSupportedLocale(workspaceLocale)
+    ? LOCALE_DISPLAY_NAMES[workspaceLocale]
+    : workspaceLocale;
 
   // ── Reset / Delete ──────────────────────────────────────────────────────────
   const [busy, setBusy] = useState(false);
@@ -221,6 +228,13 @@ export default function SettingsScreen() {
                 <Ionicons name="chevron-forward" size={18} color={colors.ink4} />
               </SettingsRow>
 
+              <SettingsRow divider onPress={() => setLanguageSheetOpen(true)}>
+                <Ionicons name="language-outline" size={20} color={colors.ink3} />
+                <Text style={styles.linkLabel}>Language</Text>
+                <Text style={styles.linkMeta} numberOfLines={1}>{languageSummary}</Text>
+                <Ionicons name="chevron-forward" size={18} color={colors.ink4} />
+              </SettingsRow>
+
               <SettingsRow divider onPress={() => setCollaboratorsSheetOpen(true)}>
                 <Ionicons name="people-outline" size={20} color={colors.ink3} />
                 <Text style={styles.linkLabel}>Collaborators</Text>
@@ -312,6 +326,14 @@ export default function SettingsScreen() {
             client={client}
             currentName={activeWorkspace?.name ?? ''}
             onRenamed={refreshWorkspaces}
+          />
+          <WorkspaceLanguageSheet
+            visible={languageSheetOpen}
+            onClose={() => setLanguageSheetOpen(false)}
+            workspaceId={workspaceId}
+            client={client}
+            currentLocale={workspaceLocale}
+            onChanged={refreshWorkspaces}
           />
           <GmailSettingsSheet
             visible={gmailSheetOpen}

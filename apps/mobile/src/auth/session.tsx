@@ -5,6 +5,7 @@ import { API_BASE_URL } from '../config';
 import { readUserIdFromAccessToken } from './jwt';
 import { secureTokenStore, type StoredTokens } from './tokenStore';
 import { makeMobileTransport } from './transport';
+import { resolveDeviceLocale } from '../i18n/LinguiProvider';
 import { requestGoogleAuth } from './googleAuth';
 import { confirmCheckout } from '../billing/api';
 import { getPendingCheckout, clearPendingCheckout } from '../billing/pendingCheckout';
@@ -34,7 +35,8 @@ interface SessionValue {
   // null until /auth/me resolves (or if it fails): treat null as "unknown" and
   // do not gate on it. false means the account exists but is not yet verified.
   emailVerified: boolean | null;
-  // UI display language as stored on the server. null until /auth/me resolves.
+  // Active workspace's language (UI + taxonomy). Follows the selected workspace;
+  // null until the workspace list resolves, so callers fall back to device locale.
   locale: string | null;
   workspaceId: string | null;
   workspaces: Workspace[];
@@ -114,7 +116,6 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   const [userId, setUserId] = useState<string | null>(null);
   const [user, setUser] = useState<SessionUser | null>(null);
   const [emailVerified, setEmailVerified] = useState<boolean | null>(null);
-  const [locale, setLocale] = useState<string | null>(null);
   const [workspaceId, setWorkspaceId] = useState<string | null>(null);
   const [workspaces, setWorkspaces] = useState<Workspace[]>([]);
   const [dataVersion, setDataVersion] = useState(0);
@@ -127,7 +128,6 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     setUserId(null);
     setUser(null);
     setEmailVerified(null);
-    setLocale(null);
     setWorkspaceId(null);
     setWorkspaces([]);
   });
@@ -138,6 +138,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
           baseUrl: API_BASE_URL,
           tokenStore: secureTokenStore,
           onAuthFailure: () => signOutLocal.current(),
+          acceptLanguage: resolveDeviceLocale(),
         }),
       ),
     [],
@@ -157,7 +158,6 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       setWorkspaces(list);
       setUser(me ? { email: me.email, name: me.name } : findUser(list, id));
       setEmailVerified(me ? me.emailVerified : null);
-      setLocale(me ? me.locale : null);
       setWorkspaceId(list[0]?.id ?? null);
       setStatus('signedIn');
     },
@@ -301,6 +301,10 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     await secureTokenStore.clear();
     signOutLocal.current();
   }, []);
+
+  // The active workspace drives the language (UI + taxonomy). null when no
+  // workspace is selected yet, so SessionLocaleProvider falls back to device locale.
+  const locale = workspaces.find((ws) => ws.id === workspaceId)?.locale ?? null;
 
   const value = useMemo<SessionValue>(
     () => ({

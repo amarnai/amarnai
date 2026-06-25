@@ -20,7 +20,7 @@ import {
   type GoogleUserInfo,
 } from "@amarnai/gmail";
 import { RegisterCredentialsSchema } from "@amarnai/shared";
-import { isSupportedLocale } from "@amarnai/i18n";
+import { isSupportedLocale, localeFromAcceptLanguage } from "@amarnai/i18n";
 import { sendVerificationEmail, sendPasswordResetEmail } from "@amarnai/email";
 import { config } from "@amarnai/config";
 import { db, deleteUserCascade } from "@amarnai/db";
@@ -196,6 +196,8 @@ auth.post("/auth/google", async (c) => {
     gmailAccessToken: accessToken,
     gmailRefreshToken: refreshToken,
     grantedScopes,
+    // Seed the default workspace language from the caller's device locale.
+    locale: localeFromAcceptLanguage(c.req.header("accept-language")),
   });
 
   // First-time sign-up: kick off an immediate inbox sync and arm the Gmail push

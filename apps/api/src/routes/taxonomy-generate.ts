@@ -129,10 +129,18 @@ taxonomyGenerate.post("/workspaces/:workspaceId/taxonomy-generate", async (c) =>
     update: { status: "RUNNING" },
   });
 
+  // The taxonomy is generated in the workspace's language (shared by everyone in
+  // the workspace), not the triggering user's, so the result is consistent
+  // regardless of who triggers it.
+  const workspace = await db.workspace.findUnique({
+    where: { id: workspaceId },
+    select: { locale: true },
+  });
+
   try {
     await generateTaxonomyQueue.add(
       "generate-taxonomy",
-      { workspaceId },
+      { workspaceId, ...(workspace?.locale ? { locale: workspace.locale } : {}) },
       { deduplication: { id: `generate-taxonomy_${workspaceId}` } },
     );
   } catch (err) {

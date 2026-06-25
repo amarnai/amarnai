@@ -13,6 +13,8 @@ export type ProvisionGoogleUserInput = {
   gmailRefreshToken?: string | null;
   // Scopes Google actually granted. Defaults to gmail.readonly (the MVP scope).
   grantedScopes?: string[];
+  // Creator's resolved locale; seeds the default workspace's language.
+  locale?: string;
 };
 
 export type ProvisionGoogleUserResult = {
@@ -63,7 +65,7 @@ export async function provisionGoogleUser(
   }
 
   try {
-    const workspace = await getOrCreateDefaultWorkspace(user.id);
+    const workspace = await getOrCreateDefaultWorkspace(user.id, input.locale);
     await storeGmailConnection({
       workspaceId: workspace.id,
       accessToken: input.gmailAccessToken,
