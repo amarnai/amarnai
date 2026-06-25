@@ -219,71 +219,81 @@ export function GenerateFromInboxButton({
           role="dialog"
           aria-modal="true"
         >
-          <div className={`modal${phase === "ready" ? " modal--wide" : ""}`}>
-            <div className="modal-header">
-              <h2 className="modal-title">Generate from inbox</h2>
-              <button className="modal-close" aria-label="Close" onClick={() => setOpen(false)}>
-                ✕
-              </button>
-            </div>
+          <div className={`modal${phase === "ready" ? " modal--wide" : " modal--illustrated"}`}>
+            {phase !== "ready" && (
+              <div className="modal-illo-col">
+                <img
+                  src={canGenerate || phase === "running" ? "/aziru-generate-taxonomy.png" : "/aziru-templates.png"}
+                  alt=""
+                />
+              </div>
+            )}
 
-            <div className="modal-body" style={phase !== "ready" ? { overflowY: "auto", maxHeight: "60vh" } : undefined}>
-              {error && <p className="form-error">{error}</p>}
+            <div className="modal-main-col">
+              <div className="modal-header">
+                <h2 className="modal-title">Generate from inbox</h2>
+                <button className="modal-close" aria-label="Close" onClick={() => setOpen(false)}>
+                  ✕
+                </button>
+              </div>
 
-              {status?.importing && phase !== "running" && (
-                <p className="text-muted" style={{ marginBottom: 8 }}>
-                  Your inbox is still importing. You can generate now from what&apos;s loaded so far,
-                  but regenerating once the import finishes will give a more accurate fit.
-                </p>
-              )}
+              <div className="modal-body" style={phase !== "ready" ? { overflowY: "auto", maxHeight: "60vh" } : undefined}>
+                {error && <p className="form-error">{error}</p>}
 
-              {phase === "running" && (
-                <p className="text-muted">
-                  Analyzing your inbox and building a taxonomy… this can take a moment.
-                </p>
-              )}
-
-              {phase === "insufficient" && (
-                <p className="text-muted">
-                  {generationReasonText("INBOX_TOO_SMALL")}
-                </p>
-              )}
-
-              {phase === "failed" && (
-                <p className="text-muted">
-                  Generation didn&apos;t complete.{" "}
-                  {eligibility?.nextEligibleAt
-                    ? `You can try again after ${new Date(eligibility.nextEligibleAt).toLocaleString()}, or start from a template.`
-                    : "You can try again shortly, or start from a template."}
-                </p>
-              )}
-
-              {(phase === "idle" || phase === "error") && (
-                <>
+                {status?.importing && phase !== "running" && (
                   <p className="text-muted" style={{ marginBottom: 8 }}>
-                    Amarnai will analyze your senders, labels, and subject keywords (never message
-                    bodies) to suggest a personalized set of folders. You can review and edit before
-                    anything is applied.
+                    Your inbox is still importing. You can generate now from what&apos;s loaded so far,
+                    but regenerating once the import finishes will give a more accurate fit.
                   </p>
-                  {!canGenerate && eligibility && (
-                    <p className="text-muted">{generationReasonText(eligibility.reason, eligibility.nextEligibleAt)}</p>
-                  )}
-                </>
-              )}
+                )}
 
-              {phase === "ready" && displayGraph && (
-                <div>
-                  <p className="alert alert-info">
-                    Applying replaces your current taxonomy. You can fully edit it afterward.
+                {phase === "running" && (
+                  <p className="text-muted">
+                    Analyzing your inbox and building a taxonomy… this can take a moment.
                   </p>
-                  <div style={{ height: 520 }}>
-                    <ReadOnlyTaxonomyCanvas nodes={displayGraph.nodes} edges={displayGraph.edges} />
+                )}
+
+                {phase === "insufficient" && (
+                  <p className="text-muted">
+                    {generationReasonText("INBOX_TOO_SMALL")}
+                  </p>
+                )}
+
+                {phase === "failed" && (
+                  <p className="text-muted">
+                    Generation didn&apos;t complete.{" "}
+                    {eligibility?.nextEligibleAt
+                      ? `You can try again after ${new Date(eligibility.nextEligibleAt).toLocaleString()}, or start from a template.`
+                      : "You can try again shortly, or start from a template."}
+                  </p>
+                )}
+
+                {(phase === "idle" || phase === "error") && (
+                  <>
+                    <p className="text-muted" style={{ marginBottom: 8 }}>
+                      Amarnai will analyze your senders, labels, and subject keywords (never message
+                      bodies) to suggest a personalized set of folders. You can review and edit before
+                      anything is applied.
+                    </p>
+                    {!canGenerate && eligibility && (
+                      <p className="text-muted">{generationReasonText(eligibility.reason, eligibility.nextEligibleAt)}</p>
+                    )}
+                  </>
+                )}
+
+                {phase === "ready" && displayGraph && (
+                  <div>
+                    <p className="alert alert-info">
+                      Applying replaces your current taxonomy. You can fully edit it afterward.
+                    </p>
+                    <div style={{ height: 520 }}>
+                      <ReadOnlyTaxonomyCanvas nodes={displayGraph.nodes} edges={displayGraph.edges} />
+                    </div>
                   </div>
-                </div>
-              )}
-            </div>
+                )}
+              </div>
 
-            <div className="modal-footer">
+              <div className="modal-footer">
               <button className="btn-ghost" onClick={() => setOpen(false)} disabled={applying}>
                 {phase === "ready" ? "Discard" : "Close"}
               </button>
@@ -326,6 +336,7 @@ export function GenerateFromInboxButton({
             </div>
           </div>
         </div>
+      </div>
       )}
     </>
   );
