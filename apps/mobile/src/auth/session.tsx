@@ -34,6 +34,8 @@ interface SessionValue {
   // null until /auth/me resolves (or if it fails): treat null as "unknown" and
   // do not gate on it. false means the account exists but is not yet verified.
   emailVerified: boolean | null;
+  // UI display language as stored on the server. null until /auth/me resolves.
+  locale: string | null;
   workspaceId: string | null;
   workspaces: Workspace[];
   // Bumped to force triage (folders + threads) to re-seed when the active
@@ -112,6 +114,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   const [userId, setUserId] = useState<string | null>(null);
   const [user, setUser] = useState<SessionUser | null>(null);
   const [emailVerified, setEmailVerified] = useState<boolean | null>(null);
+  const [locale, setLocale] = useState<string | null>(null);
   const [workspaceId, setWorkspaceId] = useState<string | null>(null);
   const [workspaces, setWorkspaces] = useState<Workspace[]>([]);
   const [dataVersion, setDataVersion] = useState(0);
@@ -124,6 +127,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     setUserId(null);
     setUser(null);
     setEmailVerified(null);
+    setLocale(null);
     setWorkspaceId(null);
     setWorkspaces([]);
   });
@@ -153,6 +157,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       setWorkspaces(list);
       setUser(me ? { email: me.email, name: me.name } : findUser(list, id));
       setEmailVerified(me ? me.emailVerified : null);
+      setLocale(me ? me.locale : null);
       setWorkspaceId(list[0]?.id ?? null);
       setStatus('signedIn');
     },
@@ -303,6 +308,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       userId,
       user,
       emailVerified,
+      locale,
       workspaceId,
       workspaces,
       dataVersion,
@@ -322,6 +328,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       userId,
       user,
       emailVerified,
+      locale,
       workspaceId,
       workspaces,
       dataVersion,

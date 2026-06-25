@@ -9,6 +9,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { colors } from '@amarnai/tokens';
 import { SessionProvider } from '../src/auth/session';
 import { PortalProvider } from '../src/portal';
+import { SessionLocaleProvider } from '../src/i18n/SessionLocaleProvider';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -29,15 +30,17 @@ export default function RootLayout() {
     <SafeAreaProvider>
       <QueryClientProvider client={queryClient}>
         <SessionProvider>
-          <PortalProvider>
-            <StatusBar style="dark" />
-            <Stack
-              screenOptions={{
-                headerShown: false,
-                contentStyle: { backgroundColor: colors.bg },
-              }}
-            />
-          </PortalProvider>
+          <SessionLocaleProvider>
+            <PortalProvider>
+              <StatusBar style="dark" />
+              <Stack
+                screenOptions={{
+                  headerShown: false,
+                  contentStyle: { backgroundColor: colors.bg },
+                }}
+              />
+            </PortalProvider>
+          </SessionLocaleProvider>
         </SessionProvider>
       </QueryClientProvider>
     </SafeAreaProvider>
