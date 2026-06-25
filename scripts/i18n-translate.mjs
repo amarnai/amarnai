@@ -122,10 +122,85 @@ function writePo(entries) {
 // ── ICU placeholder extraction ────────────────────────────────────────────────
 
 function extractPlaceholders(str) {
-  // Extract ICU variable identifiers as {name} tokens.
-  // Handles nested-brace ICU plurals: {count, plural, one {# item} other {# items}} -> {count}
-  const matches = [...str.matchAll(/\{(\w+)/g)];
-  return new Set(matches.map((m) => `{${m[1]}}`));
+  // Extract ICU argument placeholders as {name} tokens, ignoring the literal
+  // text inside plural/select sub-messages. A naive /\{(\w+)/ regex wrongly
+  // treats the first word of an arm (e.g. `one {Deleting this folder...}`) as a
+  // placeholder, failing valid translations; we walk the ICU structure instead.
+  // Keep in sync with packages/i18n/src/validate-translations.ts (source of truth).
+  const placeholders = new Set();
+  const n = str.length;
+  let i = 0;
+
+  const isWord = (c) => /\w/.test(c);
+  const skipSpace = () => {
+    while (i < n && /\s/.test(str.charAt(i))) i++;
+  };
+
+  const parseMessage = () => {
+    while (i < n) {
+      const c = str.charAt(i);
+      if (c === "}") return;
+      if (c === "{") {
+        parseArgument();
+        continue;
+      }
+      i++;
+    }
+  };
+
+  const parseArgument = () => {
+    i++; // consume `{`
+    skipSpace();
+    const start = i;
+    while (i < n && isWord(str.charAt(i))) i++;
+    const name = str.slice(start, i);
+    if (name) placeholders.add(`{${name}}`);
+    skipSpace();
+    if (str.charAt(i) === ",") {
+      i++; // consume `,`
+      skipSpace();
+      const typeStart = i;
+      while (i < n && isWord(str.charAt(i))) i++;
+      const type = str.slice(typeStart, i);
+      if (type === "plural" || type === "select" || type === "selectordinal") {
+        skipSpace();
+        if (str.charAt(i) === ",") i++;
+        parseArms();
+      } else {
+        skipStyle();
+      }
+    }
+    if (str.charAt(i) === "}") i++; // consume the argument's closing `}`
+  };
+
+  const parseArms = () => {
+    while (i < n) {
+      skipSpace();
+      if (i >= n || str.charAt(i) === "}") return;
+      while (i < n && !/\s/.test(str.charAt(i)) && str.charAt(i) !== "{" && str.charAt(i) !== "}") i++;
+      skipSpace();
+      if (str.charAt(i) !== "{") return; // malformed — bail
+      i++; // consume arm `{`
+      parseMessage();
+      if (str.charAt(i) === "}") i++; // consume arm `}`
+    }
+  };
+
+  const skipStyle = () => {
+    let depth = 0;
+    while (i < n) {
+      const c = str.charAt(i);
+      if (c === "{") depth++;
+      else if (c === "}") {
+        if (depth === 0) return;
+        depth--;
+      }
+      i++;
+    }
+  };
+
+  parseMessage();
+  return placeholders;
 }
 
 // ── Zod validation for AI response ───────────────────────────────────────────
@@ -232,7 +307,13 @@ function buildPrompt(locale, batch) {
   };
   const targetName = localeNames[locale] ?? locale;
 
-  const input = Object.fromEntries(batch.map(({ msgid }) => [msgid, ""]));
+  // Address strings by numeric ID (the entry's index in the batch) rather than
+  // echoing the full English source as a JSON key. The English text stays as the
+  // value so the model still sees the source as its translation anchor, but the
+  // response only has to reproduce short numeric keys — cutting output tokens and
+  // avoiding batch drops from verbatim-key drift. The caller remaps IDs back to
+  // msgids before validation.
+  const input = Object.fromEntries(batch.map(({ msgid }, i) => [String(i), msgid]));
 
   return [
     {
@@ -240,8 +321,9 @@ function buildPrompt(locale, batch) {
       content: `You are a professional UI translator. Translate UI strings from English to ${targetName}.
 
 RULES:
-- Return a JSON object where every key is the EXACT original English string and the value is its ${targetName} translation.
-- Include EVERY key from the input — no additions, no omissions.
+- The input is a JSON object whose keys are numeric IDs and whose values are English strings.
+- Return a JSON object whose keys are the SAME numeric IDs and whose values are the ${targetName} translation of the corresponding English string.
+- Include EVERY ID from the input — no additions, no omissions.
 - Preserve ALL ICU MessageFormat placeholders exactly ({count}, {name}, {count, plural, one{...} other{...}}, etc.).
 - Preserve ALL HTML/JSX-style tags (e.g. <strong>, </em>).
 - Keep translations natural and concise — this is UI copy, not prose.
@@ -325,7 +407,33 @@ async function main() {
         continue;
       }
 
-      const validation = validateTranslations(parsed, batch);
+      // The model replies keyed by numeric ID (the batch index). Verify the
+      // returned ID set matches exactly — no missing, no extra — then remap to a
+      // msgid-keyed object so the existing msgid-based validation runs unchanged.
+      const byMsgid = {};
+      let idSetOk =
+        parsed &&
+        typeof parsed === "object" &&
+        !Array.isArray(parsed) &&
+        Object.keys(parsed).length === batch.length;
+      if (idSetOk) {
+        for (let j = 0; j < batch.length; j++) {
+          if (!Object.prototype.hasOwnProperty.call(parsed, String(j))) {
+            idSetOk = false;
+            break;
+          }
+          byMsgid[batch[j].msgid] = parsed[String(j)];
+        }
+      }
+      if (!idSetOk) {
+        console.warn(
+          `[i18n-translate] ${batchLabel}: response IDs do not match the input, leaving untranslated.`
+        );
+        totalSkipped += batch.length;
+        continue;
+      }
+
+      const validation = validateTranslations(byMsgid, batch);
       if (!validation.ok) {
         console.warn(
           `[i18n-translate] ${batchLabel}: validation failed (${validation.error}), leaving untranslated.`

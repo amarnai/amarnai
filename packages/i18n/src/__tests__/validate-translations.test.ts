@@ -20,6 +20,53 @@ describe("extractPlaceholders", () => {
   it("returns empty set for strings with no placeholders", () => {
     expect(extractPlaceholders("Hello world")).toEqual(new Set());
   });
+
+  it("ignores literal words in plural arms (no false placeholders)", () => {
+    const result = extractPlaceholders(
+      "{classificationCount, plural, one {Deleting this folder will leave # thread unsorted.} other {Deleting this folder will leave # threads unsorted.}}"
+    );
+    expect(result).toEqual(new Set(["{classificationCount}"]));
+  });
+
+  it("ignores single-word select arms", () => {
+    const result = extractPlaceholders(
+      "{status, select, active {Active} inactive {Inactive}}"
+    );
+    expect(result).toEqual(new Set(["{status}"]));
+  });
+
+  it("captures placeholders nested inside plural arms", () => {
+    const result = extractPlaceholders(
+      "{count, plural, one {# item for {name}} other {# items for {name}}}"
+    );
+    expect(result).toEqual(new Set(["{count}", "{name}"]));
+  });
+
+  it("captures placeholders alongside a plural", () => {
+    const result = extractPlaceholders(
+      "About {count, plural, one {# more thread} other {# more threads}} beyond your {plan} limit."
+    );
+    expect(result).toEqual(new Set(["{count}", "{plan}"]));
+  });
+});
+
+describe("validateTranslations with ICU plurals", () => {
+  it("accepts a correctly translated plural without false placeholder errors", () => {
+    const entries = [
+      {
+        msgid:
+          "{classificationCount, plural, one {Deleting this folder will leave # thread unsorted.} other {Deleting this folder will leave # threads unsorted.}}",
+      },
+    ];
+    const result = validateTranslations(
+      {
+        "{classificationCount, plural, one {Deleting this folder will leave # thread unsorted.} other {Deleting this folder will leave # threads unsorted.}}":
+          "{classificationCount, plural, one {Supprimer ce dossier laissera # fil non trié.} other {Supprimer ce dossier laissera # fils non triés.}}",
+      },
+      entries
+    );
+    expect(result.ok).toBe(true);
+  });
 });
 
 describe("validateTranslations", () => {
