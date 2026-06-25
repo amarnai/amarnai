@@ -1,6 +1,7 @@
 import { requireUser } from "@/lib/session";
 import { getSelectedWorkspace } from "@/lib/workspace";
 import { apiFor } from "@/lib/api";
+import { initServerI18n } from "@/lib/i18n-server";
 import { ConnectGmailCta } from "@/components/ConnectGmailCta";
 import { EmailsClient } from "./EmailsClient";
 import { mapFolders, mapThreads } from "./queries";
@@ -13,6 +14,8 @@ type PageProps = {
 };
 
 export default async function EmailsPage({ searchParams }: PageProps) {
+  await initServerI18n();
+
   const user = await requireUser();
   const workspace = await getSelectedWorkspace(user.id);
 
