@@ -292,6 +292,23 @@ async function buildProvider() {
   }
 }
 
+// ── Domain glossary ───────────────────────────────────────────────────────────
+// Preferred target-language term for key app concepts, so the AI translator picks
+// the SAME word every batch/run instead of a fresh synonym each time. In Amarnai a
+// "thread" is always an email *conversation* (never a literal sewing thread/wire),
+// so we anchor it to the locale's word for a conversation. Extend this with other
+// domain terms (e.g. "folder") as drift shows up.
+const GLOSSARY = {
+  fr: { thread: "conversation", threads: "conversations" },
+  es: { thread: "conversación", threads: "conversaciones" },
+  de: { thread: "Konversation", threads: "Konversationen" },
+  "pt-BR": { thread: "conversa", threads: "conversas" },
+  it: { thread: "conversazione", threads: "conversazioni" },
+  nl: { thread: "gesprek", threads: "gesprekken" },
+  ja: { thread: "スレッド", threads: "スレッド" },
+  "zh-CN": { thread: "会话", threads: "会话" },
+};
+
 // ── Build translation prompt ──────────────────────────────────────────────────
 
 function buildPrompt(locale, batch) {
@@ -306,6 +323,14 @@ function buildPrompt(locale, batch) {
     "zh-CN": "Simplified Chinese",
   };
   const targetName = localeNames[locale] ?? locale;
+
+  const glossary = GLOSSARY[locale];
+  const glossaryBlock = glossary
+    ? `\n\nGLOSSARY — use these exact target terms for these concepts, consistently, adjusting only for grammar (gender, number, agreement):\n` +
+      Object.entries(glossary)
+        .map(([en, tgt]) => `- "${en}" (an email conversation, NOT a sewing thread or wire) → "${tgt}"`)
+        .join("\n")
+    : "";
 
   // Address strings by numeric ID (the entry's index in the batch) rather than
   // echoing the full English source as a JSON key. The English text stays as the
@@ -327,7 +352,7 @@ RULES:
 - Preserve ALL ICU MessageFormat placeholders exactly ({count}, {name}, {count, plural, one{...} other{...}}, etc.).
 - Preserve ALL HTML/JSX-style tags (e.g. <strong>, </em>).
 - Keep translations natural and concise — this is UI copy, not prose.
-- Do NOT add explanatory text outside the JSON.`,
+- Do NOT add explanatory text outside the JSON.${glossaryBlock}`,
     },
     {
       role: "user",

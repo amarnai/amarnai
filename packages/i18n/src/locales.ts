@@ -26,11 +26,36 @@ export const LOCALE_DISPLAY_NAMES: Record<SupportedLocale, string> = {
   "zh-CN": "中文（简体）",
 };
 
+// English names of each language, for use inside LLM prompts (where the
+// instruction text is English). Distinct from LOCALE_DISPLAY_NAMES, which are
+// endonyms meant for the language picker UI.
+export const LOCALE_ENGLISH_LANGUAGE_NAMES: Record<SupportedLocale, string> = {
+  en: "English",
+  fr: "French",
+  es: "Spanish",
+  de: "German",
+  "pt-BR": "Brazilian Portuguese",
+  it: "Italian",
+  nl: "Dutch",
+  ja: "Japanese",
+  "zh-CN": "Simplified Chinese",
+};
+
 export function isSupportedLocale(locale: unknown): locale is SupportedLocale {
   return (
     typeof locale === "string" &&
     (SUPPORTED_LOCALES as readonly string[]).includes(locale)
   );
+}
+
+// Parse an `Accept-Language` header (e.g. "fr-FR,fr;q=0.9,en;q=0.8") into a
+// supported locale, ignoring quality weights. Falls back to the source locale.
+export function localeFromAcceptLanguage(header: string | null | undefined): SupportedLocale {
+  const preferred = (header ?? "")
+    .split(",")
+    .map((part) => part.split(";")[0]?.trim() ?? "")
+    .filter(Boolean);
+  return matchLocale(preferred);
 }
 
 export function matchLocale(preferredLocales: string[]): SupportedLocale {
