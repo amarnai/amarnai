@@ -20,6 +20,7 @@ import {
   type GoogleUserInfo,
 } from "@amarnai/gmail";
 import { RegisterCredentialsSchema } from "@amarnai/shared";
+import { isSupportedLocale } from "@amarnai/i18n";
 import { sendVerificationEmail, sendPasswordResetEmail } from "@amarnai/email";
 import { config } from "@amarnai/config";
 import { db, deleteUserCascade } from "@amarnai/db";
@@ -250,6 +251,7 @@ const ME_SELECT = {
   name: true,
   emailVerified: true,
   lifecycleEmailsEnabled: true,
+  locale: true,
 } as const;
 
 function toMeResponse(user: {
@@ -258,6 +260,7 @@ function toMeResponse(user: {
   name: string | null;
   emailVerified: Date | null;
   lifecycleEmailsEnabled: boolean;
+  locale: string;
 }) {
   return {
     userId: user.id,
@@ -265,6 +268,7 @@ function toMeResponse(user: {
     name: user.name,
     emailVerified: user.emailVerified !== null,
     lifecycleEmailsEnabled: user.lifecycleEmailsEnabled,
+    locale: user.locale,
   };
 }
 
@@ -291,7 +295,7 @@ auth.patch("/auth/me", async (c) => {
   const body = await c.req.json().catch(() => null);
   if (!body || typeof body !== "object") return c.json({ error: "Invalid body" }, 400);
 
-  const data: { name?: string | null; lifecycleEmailsEnabled?: boolean } = {};
+  const data: { name?: string | null; lifecycleEmailsEnabled?: boolean; locale?: string } = {};
 
   if ("name" in body) {
     const name = typeof body.name === "string" ? body.name.trim() : "";
@@ -304,6 +308,13 @@ auth.patch("/auth/me", async (c) => {
       return c.json({ error: "lifecycleEmailsEnabled must be a boolean" }, 400);
     }
     data.lifecycleEmailsEnabled = body.lifecycleEmailsEnabled;
+  }
+
+  if ("locale" in body) {
+    if (!isSupportedLocale(body.locale)) {
+      return c.json({ error: "Unsupported locale" }, 400);
+    }
+    data.locale = body.locale;
   }
 
   const user = await db.user.update({ where: { id: userId }, data, select: ME_SELECT });
