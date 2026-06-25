@@ -1,7 +1,9 @@
 import { Worker } from "bullmq";
 import { db, eligibleThreadWhere } from "@amarnai/db";
 import { createAIProvider, getTaxonomyAIProviderConfig, generateTaxonomyFromProfile } from "@amarnai/ai";
-import { matchTemplateToProfile, layoutTaxonomyTransfer } from "@amarnai/core/taxonomy";
+import { matchTemplateToProfile, layoutTaxonomyTransfer, localizeTransferFile } from "@amarnai/core/taxonomy";
+import { setupI18n } from "@lingui/core";
+import { loadCatalog, matchLocale, translateSource, LOCALE_ENGLISH_LANGUAGE_NAMES } from "@amarnai/i18n";
 import {
   computeGenerationEligibility,
   emailDomain,
@@ -171,7 +173,10 @@ async function setState(
  * (paid) LLM call, and records a terminal outcome in every branch. Never calls
  * the LLM when the inbox is insufficient or the limiter denies the run.
  */
-export async function runGenerateTaxonomyJob(workspaceId: string): Promise<void> {
+export async function runGenerateTaxonomyJob(
+  workspaceId: string,
+  locale?: string,
+): Promise<void> {
   const workspace = await db.workspace.findUnique({
     where: { id: workspaceId },
     select: { plan: true },
@@ -225,14 +230,26 @@ export async function runGenerateTaxonomyJob(workspaceId: string): Promise<void>
     return;
   }
 
-  // Match a template (deterministic) and personalize with the LLM.
+  // Match a template (deterministic) and personalize with the LLM. The model is
+  // told to write in the triggering user's language; the fallback seed is
+  // localized the same way taxonomy templates are, so a non-English user never
+  // gets an English taxonomy when the LLM output is unusable.
   const template = matchTemplateToProfile(profile);
   const provider = createAIProvider(getTaxonomyAIProviderConfig());
+
+  const resolvedLocale = matchLocale(locale ? [locale] : []);
+  const li = setupI18n({
+    locale: resolvedLocale,
+    messages: { [resolvedLocale]: await loadCatalog(resolvedLocale) },
+  });
+  const translate = (s: string): string => translateSource(li, s);
 
   const generated = await generateTaxonomyFromProfile({
     profile,
     seed: template.file,
     matchedTemplateName: template.name,
+    targetLanguage: LOCALE_ENGLISH_LANGUAGE_NAMES[resolvedLocale],
+    fallbackSeed: localizeTransferFile(template.file, translate),
     provider,
     now,
   });
@@ -271,7 +288,7 @@ export async function runGenerateTaxonomyJob(workspaceId: string): Promise<void>
 export function createGenerateTaxonomyWorker(): Worker {
   const worker = new Worker<GenerateTaxonomyJobData>(
     QUEUE_GENERATE_TAXONOMY,
-    (job) => runGenerateTaxonomyJob(job.data.workspaceId),
+    (job) => runGenerateTaxonomyJob(job.data.workspaceId, job.data.locale),
     {
       connection: redisConnection,
       // One LLM call per job; a small pool is plenty.

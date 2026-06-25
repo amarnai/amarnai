@@ -6,6 +6,9 @@ import {
   ClassificationPathStepSchema,
   UpdateTaxonomyNodeInputSchema,
   gmailLabelSyncCandidates,
+  nodeNameSchema,
+  nodeDescriptionSchema,
+  isPredominantlyCJK,
 } from "./taxonomy.js";
 
 // A description with at least 30 non-whitespace characters.
@@ -146,6 +149,40 @@ describe("CreateTaxonomyEdgeInputSchema", () => {
   it("rejects missing targetNodeId", () => {
     const { targetNodeId: _omit, ...without } = minimal;
     expect(() => CreateTaxonomyEdgeInputSchema.parse(without)).toThrow();
+  });
+});
+
+// ─── Script-aware length floors (CJK) ────────────────────────────────────────
+
+describe("CJK-aware name/description floors", () => {
+  // 12 kanji, no whitespace — a natural full description in Japanese/Chinese.
+  const CJK_DESCRIPTION = "顧客請求支払契約見積納品検収経理税務通知";
+
+  it("detects predominantly-CJK strings", () => {
+    expect(isPredominantlyCJK("顧客")).toBe(true);
+    expect(isPredominantlyCJK("クライアント")).toBe(true);
+    expect(isPredominantlyCJK("Clients")).toBe(false);
+    expect(isPredominantlyCJK("")).toBe(false);
+  });
+
+  it("accepts a natural 2-character CJK name but rejects 1 character", () => {
+    expect(nodeNameSchema.safeParse("顧客").success).toBe(true);
+    expect(nodeNameSchema.safeParse("客").success).toBe(false);
+  });
+
+  it("still requires 3 characters for Latin names", () => {
+    expect(nodeNameSchema.safeParse("ab").success).toBe(false);
+    expect(nodeNameSchema.safeParse("abc").success).toBe(true);
+  });
+
+  it("accepts a ~12-character CJK description, rejects a much shorter one", () => {
+    expect(nodeDescriptionSchema.safeParse(CJK_DESCRIPTION).success).toBe(true);
+    expect(nodeDescriptionSchema.safeParse("顧客請求").success).toBe(false);
+  });
+
+  it("still requires 30 non-whitespace characters for Latin descriptions", () => {
+    expect(nodeDescriptionSchema.safeParse("a".repeat(29)).success).toBe(false);
+    expect(nodeDescriptionSchema.safeParse("a".repeat(30)).success).toBe(true);
   });
 });
 

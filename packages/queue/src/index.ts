@@ -87,4 +87,8 @@ export type LifecycleEmailJobData = {
  */
 export type GenerateTaxonomyJobData = {
   workspaceId: string;
+  /** Locale of the user who triggered generation; the LLM writes folder
+   * names/descriptions in this language. Optional for back-compat with jobs
+   * enqueued before localization (the worker falls back to the source locale). */
+  locale?: string;
 };

@@ -10,9 +10,12 @@ import {
   View,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { Trans } from '@lingui/react/macro';
+import { useLingui } from '@lingui/react';
+import { translateSource } from '@amarnai/i18n';
 import { countRoutableNonRootNodes, TAXONOMY_MIN_NON_ROOT_NODES } from '@amarnai/shared';
 import type { TaxonomyTransferFile } from '@amarnai/shared';
-import { TAXONOMY_TEMPLATES, matchesTemplate } from '@amarnai/core/taxonomy';
+import { TAXONOMY_TEMPLATES, matchesTemplate, localizeTemplate } from '@amarnai/core/taxonomy';
 import type { Toast as ToastModel } from '@amarnai/core';
 import type { TaxonomyNode } from '@amarnai/api-client';
 import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
@@ -53,6 +56,7 @@ type FormState =
   | { mode: 'edit'; node: TaxonomyNode; defaultParentId: null };
 
 export default function TaxonomyScreen() {
+  const { i18n } = useLingui();
   const { workspaceId, userId, workspaces, client } = useSession();
   const ws = workspaceId ?? '';
 
@@ -129,14 +133,23 @@ export default function TaxonomyScreen() {
     return flattenVisible(tree, collapsed);
   }, [tree, searching, search, collapsed]);
 
+  // Templates are English data; localize names/descriptions (picker + every
+  // folder) into the active locale once, then drive display, the "current"
+  // match, and apply from this single array so persisted names match what the
+  // user sees and what matchesTemplate compares against.
+  const localizedTemplates = useMemo(
+    () => TAXONOMY_TEMPLATES.map((t) => localizeTemplate(t, (s) => translateSource(i18n, s))),
+    [i18n],
+  );
+
   // The template matching the current taxonomy (if any) is shown as "Current"
   // and cannot be re-applied.
   const currentTemplateId = useMemo(
     () =>
       nodes && edges
-        ? TAXONOMY_TEMPLATES.find((t) => matchesTemplate(nodes, edges, t))?.id ?? null
+        ? localizedTemplates.find((t) => matchesTemplate(nodes, edges, t))?.id ?? null
         : null,
-    [nodes, edges],
+    [nodes, edges, localizedTemplates],
   );
 
   const routableCount = useMemo(
@@ -247,7 +260,11 @@ export default function TaxonomyScreen() {
       <AppHeader variant="workspace" />
 
       <View style={styles.subHeader}>
-        <Text style={styles.heading}>Plan</Text>
+        <Text style={styles.heading}>
+          <Trans comment="Screen heading for the email-sorting taxonomy. Not a billing or subscription plan.">
+            Plan
+          </Trans>
+        </Text>
         {!readOnly ? (
           <View style={styles.actions}>
             <TouchableOpacity
@@ -366,7 +383,7 @@ export default function TaxonomyScreen() {
 
       <TemplatePickerSheet
         visible={templateOpen}
-        templates={TAXONOMY_TEMPLATES}
+        templates={localizedTemplates}
         currentTemplateId={currentTemplateId}
         applying={applyTemplate.isPending}
         onApply={handleApplyTemplate}

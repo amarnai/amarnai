@@ -9,6 +9,8 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useLingui } from '@lingui/react';
+import { msg } from '@lingui/core/macro';
 import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
 import type {
   CreateTaxonomyNodeInput,
@@ -16,6 +18,7 @@ import type {
   TaxonomyNode,
 } from '@amarnai/api-client';
 import { descendantIds } from '@amarnai/core/taxonomy';
+import { minNodeNameLength, minNodeDescriptionLength } from '@amarnai/shared';
 import { BottomSheet } from '../BottomSheet';
 import { NodePickerSheet, type NodePickerOption } from './NodePickerSheet';
 import type { ParentChange } from '../../data/taxonomyQueries';
@@ -115,6 +118,7 @@ export function NodeFormSheet({
   onClose,
 }: NodeFormSheetProps) {
   const { bottom } = useSafeAreaInsets();
+  const { _ } = useLingui();
   const isRoot = node?.isRoot ?? false;
   const rootNode = useMemo(() => nodes.find((n) => n.isRoot) ?? null, [nodes]);
 
@@ -152,8 +156,11 @@ export function NodeFormSheet({
     // currentParentId derives from node/edges; node id is the stable trigger.
   }, [visible, node?.id, mode, currentParentId, defaultParentId, rootNode?.id]);
 
-  const nameValid = name.trim().length >= 3 && name.trim().length <= 40;
-  const descriptionValid = isRoot || description.replace(/\s/g, '').length >= 30;
+  const nameValid =
+    name.trim().length >= minNodeNameLength(name) && name.trim().length <= 40;
+  const descriptionValid =
+    isRoot ||
+    description.replace(/\s/g, '').length >= minNodeDescriptionLength(description);
   const canSave = !submitting && nameValid && descriptionValid;
 
   // Parent options exclude the node itself and its descendants (cycle guard;
@@ -166,11 +173,11 @@ export function NodeFormSheet({
       .filter((n) => !excluded.has(n.id))
       .map((n) => ({
         id: n.id,
-        label: n.name,
-        ...(n.isRoot ? { sublabel: 'Inbox (entry point)' } : {}),
+        label: n.isRoot ? _(msg`Inbox`) : n.name,
+        ...(n.isRoot ? { sublabel: _(msg`Inbox (entry point)`) } : {}),
       }));
     return [...opts, NONE_OPTION];
-  }, [nodes, edges, node]);
+  }, [nodes, edges, node, _]);
 
   const reassignOptions = useMemo<NodePickerOption[]>(() => {
     const opts: NodePickerOption[] = nodes
@@ -275,8 +282,10 @@ export function NodeFormSheet({
                   {!readOnly ? (
                     <>
                       <Text style={styles.hint}>
-                        List the senders, topics, and keywords that belong here. At least 30
-                        characters. ({description.replace(/\s/g, '').length}/30)
+                        List the senders, topics, and keywords that belong here. At least{' '}
+                        {minNodeDescriptionLength(description)} characters. (
+                        {description.replace(/\s/g, '').length}/
+                        {minNodeDescriptionLength(description)})
                       </Text>
                       <DescriptionTips />
                     </>

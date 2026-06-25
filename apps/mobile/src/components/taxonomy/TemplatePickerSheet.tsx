@@ -6,6 +6,9 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { Trans, Plural } from '@lingui/react/macro';
+import { useLingui } from '@lingui/react';
+import { msg } from '@lingui/core/macro';
 import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
 import type { TaxonomyTemplate } from '@amarnai/core/taxonomy';
 import type { TaxonomyTransferFile } from '@amarnai/shared';
@@ -32,6 +35,7 @@ export function TemplatePickerSheet({
   onApply,
   onClose,
 }: TemplatePickerSheetProps) {
+  const { i18n } = useLingui();
   const [selected, setSelected] = useState<TaxonomyTemplate | null>(null);
 
   function close() {
@@ -39,12 +43,21 @@ export function TemplatePickerSheet({
     onClose();
   }
 
+  const selectedName = selected?.name ?? '';
+
   return (
-    <SheetLayout visible={visible} onClose={close} title="Start from a template" handle>
+    <SheetLayout
+      visible={visible}
+      onClose={close}
+      title={i18n._(msg`Start from a template`)}
+      handle
+    >
       {selected ? (
         <View style={styles.confirm}>
           <Text style={styles.confirmText}>
-            Apply "{selected.name}"? This replaces your current plan.
+            <Trans>
+              Apply &ldquo;{selectedName}&rdquo;? This replaces your current plan.
+            </Trans>
           </Text>
           <View style={styles.confirmRow}>
             <TouchableOpacity
@@ -52,7 +65,9 @@ export function TemplatePickerSheet({
               onPress={() => setSelected(null)}
               disabled={applying}
             >
-              <Text style={styles.btnGhostText}>Back</Text>
+              <Text style={styles.btnGhostText}>
+                <Trans>Back</Trans>
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.btn, styles.btnPrimary]}
@@ -60,7 +75,11 @@ export function TemplatePickerSheet({
               disabled={applying}
             >
               <Text style={styles.btnPrimaryText}>
-                {applying ? 'Applying...' : 'Apply template'}
+                {applying ? (
+                  <Trans>Applying…</Trans>
+                ) : (
+                  <Trans>Apply template</Trans>
+                )}
               </Text>
             </TouchableOpacity>
           </View>
@@ -83,7 +102,11 @@ export function TemplatePickerSheet({
                   <Text style={[styles.name, isCurrent && styles.nameDisabled]}>
                     {item.name}
                   </Text>
-                  {isCurrent ? <Text style={styles.currentTag}>Current</Text> : null}
+                  {isCurrent ? (
+                    <Text style={styles.currentTag}>
+                      <Trans>Current</Trans>
+                    </Text>
+                  ) : null}
                 </View>
                 <Text
                   style={[styles.desc, isCurrent && styles.descDisabled]}
@@ -91,7 +114,9 @@ export function TemplatePickerSheet({
                 >
                   {item.description}
                 </Text>
-                <Text style={styles.count}>{folderCount} folders</Text>
+                <Text style={styles.count}>
+                  <Plural value={folderCount} one="# folder" other="# folders" />
+                </Text>
               </TouchableOpacity>
             );
           }}

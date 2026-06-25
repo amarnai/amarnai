@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { matchesTemplate } from "./matchesTemplate.js";
+import { localizeTemplate } from "./localizeTemplate.js";
 import { TAXONOMY_TEMPLATES } from "./templates.js";
 
 // Rebuild a DB-shaped taxonomy from a template's transfer file, mapping refs to
@@ -37,5 +38,26 @@ describe("matchesTemplate", () => {
     if (TAXONOMY_TEMPLATES.length < 2) return;
     const { nodes, edges } = dbFromTemplate(0);
     expect(matchesTemplate(nodes, edges, TAXONOMY_TEMPLATES[1]!)).toBe(false);
+  });
+
+  // A localized taxonomy (what apply persists) must match the same template once
+  // localized the same way — otherwise the "current" pill and re-apply guard
+  // break for non-English users. Compares by name, so both sides must localize.
+  it("matches a localized DB taxonomy against its localized template", () => {
+    const translate = (s: string): string => `<${s}>`;
+    const { tpl } = dbFromTemplate(0);
+    const localizedTpl = localizeTemplate(tpl, translate);
+    const refToId = new Map(localizedTpl.file.nodes.map((n, i) => [n.ref, `id${i}`]));
+    const nodes = localizedTpl.file.nodes.map((n) => ({
+      id: refToId.get(n.ref)!,
+      name: n.name,
+    }));
+    const edges = localizedTpl.file.edges.map((e) => ({
+      sourceNodeId: refToId.get(e.sourceRef)!,
+      targetNodeId: refToId.get(e.targetRef)!,
+    }));
+    expect(matchesTemplate(nodes, edges, localizedTpl)).toBe(true);
+    // And the English template no longer matches the localized DB taxonomy.
+    expect(matchesTemplate(nodes, edges, tpl)).toBe(false);
   });
 });

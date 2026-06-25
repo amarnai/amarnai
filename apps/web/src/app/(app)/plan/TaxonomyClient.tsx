@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect, useRef } from "react";
+import { useState, useCallback, useEffect, useRef, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
   ReactFlow,
@@ -45,6 +45,7 @@ import {
   type IgnoredReason,
   TAXONOMY_TEMPLATES,
   matchesTemplate,
+  localizeTemplate,
   descendantIds,
 } from "@amarnai/core/taxonomy";
 import {
@@ -62,11 +63,14 @@ import {
   serializeTaxonomy,
   TaxonomyTransferFileSchema,
   validateTaxonomyTransfer,
+  minNodeNameLength,
+  minNodeDescriptionLength,
   type TaxonomyTransferFile,
 } from "@amarnai/shared";
 import { Trans, Plural } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
+import { translateSource } from "@amarnai/i18n";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -343,10 +347,12 @@ function NodeForm({
   const parentOptions = nodes.filter((n) => !excluded.has(n.id));
 
   const [name, setName] = useState(node?.name ?? "");
-  const nameValid = name.trim().length >= 3 && name.trim().length <= 40;
+  const nameValid =
+    name.trim().length >= minNodeNameLength(name) && name.trim().length <= 40;
   const [description, setDescription] = useState(node?.description ?? "");
   const descriptionValid =
-    isRoot || description.replace(/\s/g, "").length >= 30;
+    isRoot ||
+    description.replace(/\s/g, "").length >= minNodeDescriptionLength(description);
   const [draftPrompt, setDraftPrompt] = useState(node?.draftPrompt ?? "");
   // "" represents "None (not connected)".
   const [parentId, setParentId] = useState(currentParentId ?? "");
@@ -428,7 +434,7 @@ function NodeForm({
               <p style={{ fontSize: 11, color: "var(--color-muted)" }}>
                 <Trans>
                   List the kinds of emails that belong here: senders, topics,
-                  keywords. At least 30 characters.
+                  keywords. Aim for a full sentence.
                 </Trans>
               </p>
               <DescriptionTips />
@@ -464,7 +470,7 @@ function NodeForm({
               <option value="">{_(msg`None (not connected)`)}</option>
               {parentOptions.map((n) => (
                 <option key={n.id} value={n.id}>
-                  {n.name}
+                  {n.isRoot ? _(msg`Inbox`) : n.name}
                   {n.isRoot ? _(msg` (Inbox)`) : ""}
                 </option>
               ))}
@@ -767,7 +773,7 @@ function TaxonomyCanvasInner({
   readOnly?: boolean;
   gmailConnected?: boolean;
 }) {
-  const { _ } = useLingui();
+  const { _, i18n } = useLingui();
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -1184,9 +1190,18 @@ function TaxonomyCanvasInner({
     }
   }
 
+  // Templates are English data; localize names/descriptions (picker + every
+  // folder) into the active locale once, then drive display, the "current"
+  // match, and apply from this single array so persisted names match what the
+  // user sees and what matchesTemplate compares against.
+  const localizedTemplates = useMemo(
+    () => TAXONOMY_TEMPLATES.map((t) => localizeTemplate(t, (s) => translateSource(i18n, s))),
+    [i18n],
+  );
+
   async function handleUseTemplate() {
     if (selectedTemplateIdx === null) return;
-    const template = TAXONOMY_TEMPLATES[selectedTemplateIdx];
+    const template = localizedTemplates[selectedTemplateIdx];
     if (!template) return;
     setTemplatePickerOpen(false);
     setSelectedTemplateIdx(null);
@@ -1205,7 +1220,7 @@ function TaxonomyCanvasInner({
     rfEdges.map((e) => ({ sourceNodeId: e.source, targetNodeId: e.target })),
   );
 
-  const currentTemplateIdx = TAXONOMY_TEMPLATES.findIndex((t) =>
+  const currentTemplateIdx = localizedTemplates.findIndex((t) =>
     matchesTemplate(dbNodes, dbEdges, t),
   );
 
@@ -1223,7 +1238,9 @@ function TaxonomyCanvasInner({
     <div className="taxonomy-inner">
       {readOnly ? (
         <div className="taxonomy-readonly-banner">
-          <Trans>Plan is view-only. Only workspace admins can edit it.</Trans>
+          <Trans comment="“Plan” here is the email-sorting taxonomy, not a billing or subscription plan.">
+            Plan is view-only. Only workspace admins can edit it.
+          </Trans>
         </div>
       ) : (
         <div className="taxonomy-toolbar">
@@ -1231,7 +1248,7 @@ function TaxonomyCanvasInner({
             className="btn-primary"
             onClick={() => openPanel({ type: "create-node" })}
           >
-            + <Trans>Add Folder</Trans>
+            <Trans>+ Add Folder</Trans>
           </button>
           <Tooltip content={_(msg`Undo`)}>
             <button
@@ -1612,7 +1629,7 @@ function TaxonomyCanvasInner({
               style={{ overflowY: "auto", maxHeight: "60vh" }}
             >
               <div className="option-cards">
-                {TAXONOMY_TEMPLATES.map((template, idx) => {
+                {localizedTemplates.map((template, idx) => {
                   const rootRef = template.file.nodes.find(
                     (n) => n.isRoot,
                   )?.ref;

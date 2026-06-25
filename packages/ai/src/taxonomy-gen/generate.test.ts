@@ -69,6 +69,7 @@ describe("generateTaxonomyFromProfile", () => {
       profile: PROFILE,
       seed,
       matchedTemplateName: "Freelancer",
+      targetLanguage: "English",
       provider,
       now: NOW,
     });
@@ -83,6 +84,7 @@ describe("generateTaxonomyFromProfile", () => {
       profile: PROFILE,
       seed,
       matchedTemplateName: "Freelancer",
+      targetLanguage: "English",
       provider,
       now: NOW,
     });
@@ -96,6 +98,7 @@ describe("generateTaxonomyFromProfile", () => {
       profile: PROFILE,
       seed,
       matchedTemplateName: "Freelancer",
+      targetLanguage: "English",
       provider,
       now: NOW,
     });
@@ -108,6 +111,27 @@ describe("generateTaxonomyFromProfile", () => {
     );
   });
 
+  it("falls back to the localized fallbackSeed, not the English seed", async () => {
+    const localized = validFile();
+    // Pretend these are the seed's names translated into the target language.
+    localized.nodes[1]!.name = "Clientes";
+    localized.nodes[2]!.name = "Finanzas";
+    localized.nodes[3]!.name = "Personal";
+    const provider = new MockProvider(["garbage", "still not valid"]);
+    const result = await generateTaxonomyFromProfile({
+      profile: PROFILE,
+      seed,
+      matchedTemplateName: "Freelancer",
+      targetLanguage: "Spanish",
+      fallbackSeed: localized,
+      provider,
+      now: NOW,
+    });
+    expect(result.usedFallback).toBe(true);
+    expect(result.file.nodes.map((n) => n.name)).toContain("Clientes");
+    expect(result.file.nodes.map((n) => n.name)).not.toContain("Clients");
+  });
+
   it("falls back when the model returns structurally invalid taxonomy (cycle)", async () => {
     const bad = validFile();
     bad.edges.push({ sourceRef: "a", targetRef: "root" }); // root as target + cycle
@@ -116,6 +140,7 @@ describe("generateTaxonomyFromProfile", () => {
       profile: PROFILE,
       seed,
       matchedTemplateName: "Freelancer",
+      targetLanguage: "English",
       provider,
       now: NOW,
     });
@@ -129,6 +154,7 @@ describe("generateTaxonomyFromProfile", () => {
       profile: PROFILE,
       seed,
       matchedTemplateName: "Freelancer",
+      targetLanguage: "English",
       provider,
       now: NOW,
     });

@@ -1,6 +1,9 @@
 "use client";
 
 import { Handle, Position, type NodeProps, type Node } from "@xyflow/react";
+import { Trans } from "@lingui/react/macro";
+import { useLingui } from "@lingui/react";
+import { msg } from "@lingui/core/macro";
 import type { TaxonomyNode } from "@amarnai/shared";
 import type { IgnoredReason } from "@amarnai/core/taxonomy";
 import { Tooltip } from "../Tooltip.js";
@@ -23,9 +26,10 @@ export function TaxonomyNodeCardBase({
   ignoredReason = null,
   selected = false,
 }: TaxonomyNodeCardBaseProps) {
+  const { _ } = useLingui();
   const ignored = ignoredReason !== null;
   const title = ignoredReason === "no-incoming"
-    ? "This folder is not reachable from the inbox and will not be used for routing."
+    ? _(msg`This folder is not reachable from the inbox and will not be used for routing.`)
     : undefined;
 
   const card = (
@@ -33,11 +37,11 @@ export function TaxonomyNodeCardBase({
       className={`taxonomy-node-card${selected ? " selected" : ""}${ignored ? " unreachable" : ""}`}
     >
       {!isRoot && <Handle type="target" position={Position.Left} />}
-      <div className="node-name">{name}</div>
+      <div className="node-name">{isRoot ? <Trans>Inbox</Trans> : name}</div>
       {description && <div className="node-description">{description}</div>}
       <div className="node-badges">
-        {isRoot && <span className="badge node-kind node-kind-rule">Entry</span>}
-        {ignored && <span className="badge badge-unreachable">Ignored</span>}
+        {isRoot && <span className="badge node-kind node-kind-rule"><Trans>Entry</Trans></span>}
+        {ignored && <span className="badge badge-unreachable"><Trans>Ignored</Trans></span>}
       </div>
       <Handle type="source" position={Position.Right} />
     </div>
