@@ -5,7 +5,14 @@ const config: NextConfig = {
   images: {
     unoptimized: true,
   },
-  transpilePackages: ["@amarnai/ui"],
+  transpilePackages: ["@amarnai/i18n", "@amarnai/ui"],
+  experimental: {
+    swcPlugins: [["@lingui/swc-plugin", {}]],
+  },
+  // Workspace packages use NodeNext-style `.js` extensions for TypeScript source,
+  // so the bundler must resolve `.js` specifiers to `.ts`/`.tsx`. Turbopack has no
+  // `extensionAlias` equivalent yet (vercel/next.js#82945), so dev/build run with
+  // the `--webpack` flag (see package.json scripts) and this config applies.
   webpack: (config) => {
     config.resolve.extensionAlias = {
       ".js": [".ts", ".tsx", ".js", ".jsx"],
