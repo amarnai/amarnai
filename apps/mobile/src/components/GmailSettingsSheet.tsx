@@ -8,6 +8,10 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { Trans } from '@lingui/react/macro';
+import { msg } from '@lingui/core/macro';
+import { useLingui } from '@lingui/react';
+import type { I18n, MessageDescriptor } from '@lingui/core';
 import { colors, space, fontSize, fontWeight, radii } from '@amarnai/tokens';
 import type { ApiClient, GmailConnection, SyncStatus } from '@amarnai/api-client';
 import { SheetLayout } from './SheetLayout';
@@ -24,15 +28,15 @@ type Props = {
   onConnected?: () => void;
 };
 
-function formatDate(iso: string | null): string {
-  if (!iso) return 'Never';
+function formatDate(iso: string | null, i18n: I18n): string {
+  if (!iso) return i18n._(msg`Never`);
   return new Date(iso).toLocaleString();
 }
 
-const SYNC_LABEL: Record<'IDLE' | 'SYNCING' | 'ERROR', string> = {
-  IDLE: 'Up to date',
-  SYNCING: 'Syncing…',
-  ERROR: 'Sync error',
+const SYNC_LABEL: Record<'IDLE' | 'SYNCING' | 'ERROR', MessageDescriptor> = {
+  IDLE: msg`Up to date`,
+  SYNCING: msg`Syncing…`,
+  ERROR: msg`Sync error`,
 };
 
 const SYNC_COLOR: Record<'IDLE' | 'SYNCING' | 'ERROR', string> = {
@@ -57,6 +61,7 @@ export function GmailSettingsSheet({
   onDisconnected,
   onConnected,
 }: Props) {
+  const { i18n } = useLingui();
   const [disconnecting, setDisconnecting] = useState(false);
   const { connect, connecting } = useConnectGmail(workspaceId, client);
 
@@ -74,7 +79,7 @@ export function GmailSettingsSheet({
       onDisconnected();
       onClose();
     } catch {
-      Alert.alert('Disconnect failed', 'Could not disconnect Gmail. Please try again.');
+      Alert.alert(i18n._(msg`Disconnect failed`), i18n._(msg`Could not disconnect Gmail. Please try again.`));
     } finally {
       setDisconnecting(false);
     }
@@ -82,13 +87,13 @@ export function GmailSettingsSheet({
 
   function confirmDisconnect() {
     Alert.alert(
-      'Disconnect Gmail?',
-      "Stops syncing and revokes Amarnai's access to this mailbox.",
+      i18n._(msg`Disconnect Gmail?`),
+      i18n._(msg`Stops syncing and revokes Amarnai's access to this mailbox.`),
       [
-        { text: 'Cancel', style: 'cancel' },
-        { text: 'Disconnect', onPress: () => void doDisconnect(false) },
+        { text: i18n._(msg`Cancel`), style: 'cancel' },
+        { text: i18n._(msg`Disconnect`), onPress: () => void doDisconnect(false) },
         {
-          text: 'Disconnect & erase data',
+          text: i18n._(msg`Disconnect & erase data`),
           style: 'destructive',
           onPress: () => void doDisconnect(true),
         },
@@ -99,18 +104,18 @@ export function GmailSettingsSheet({
   const statusKey = syncStatus?.status ?? 'IDLE';
 
   return (
-    <SheetLayout visible={visible} onClose={onClose} title="Inbox">
+    <SheetLayout visible={visible} onClose={onClose} title={i18n._(msg`Inbox`)}>
       <ScrollView style={styles.body} contentContainerStyle={styles.bodyContent}>
           {!connection || connection.status === 'DISCONNECTED' ? (
             <>
               {connection?.status === 'DISCONNECTED' ? (
                 <>
                   <Text style={styles.gmailAddress}>{connection.gmailAddress}</Text>
-                  <Text style={styles.disconnectedBadge}>Disconnected</Text>
+                  <Text style={styles.disconnectedBadge}><Trans>Disconnected</Trans></Text>
                 </>
               ) : (
                 <Text style={styles.infoText}>
-                  No Gmail inbox connected. Connect your account to start syncing.
+                  <Trans>No Gmail inbox connected. Connect your account to start syncing.</Trans>
                 </Text>
               )}
               <TouchableOpacity
@@ -122,7 +127,7 @@ export function GmailSettingsSheet({
                   <ActivityIndicator size="small" color={colors.accent} />
                 ) : (
                   <Text style={styles.connectBtnText}>
-                    {connection ? 'Reconnect Gmail' : 'Connect Gmail'}
+                    {connection ? <Trans>Reconnect Gmail</Trans> : <Trans>Connect Gmail</Trans>}
                   </Text>
                 )}
               </TouchableOpacity>
@@ -132,21 +137,21 @@ export function GmailSettingsSheet({
               {/* Connection header */}
               <Text style={styles.gmailAddress}>{connection.gmailAddress}</Text>
               <Text style={styles.metaText}>
-                Last verified: {formatDate(connection.lastVerifiedAt)}
+                <Trans>Last verified: {formatDate(connection.lastVerifiedAt, i18n)}</Trans>
               </Text>
 
               {/* Sync status badge */}
               <View style={styles.syncRow}>
-                <Text style={styles.syncLabel}>Inbox sync</Text>
+                <Text style={styles.syncLabel}><Trans>Inbox sync</Trans></Text>
                 <View style={[styles.badge, { backgroundColor: SYNC_BG[statusKey] }]}>
                   <Text style={[styles.badgeText, { color: SYNC_COLOR[statusKey] }]}>
-                    {SYNC_LABEL[statusKey]}
+                    {i18n._(SYNC_LABEL[statusKey])}
                   </Text>
                 </View>
               </View>
               {syncStatus?.lastSyncedAt ? (
                 <Text style={styles.metaText}>
-                  Last synced {formatDate(syncStatus.lastSyncedAt)}
+                  <Trans>Last synced {formatDate(syncStatus.lastSyncedAt, i18n)}</Trans>
                 </Text>
               ) : null}
               {syncStatus?.status === 'ERROR' && syncStatus.errorMessage ? (
@@ -162,7 +167,7 @@ export function GmailSettingsSheet({
                 {disconnecting ? (
                   <ActivityIndicator size="small" color={colors.danger} />
                 ) : (
-                  <Text style={styles.disconnectBtnText}>Disconnect Gmail</Text>
+                  <Text style={styles.disconnectBtnText}><Trans>Disconnect Gmail</Trans></Text>
                 )}
               </TouchableOpacity>
             </>

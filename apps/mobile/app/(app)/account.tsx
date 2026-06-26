@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'expo-router';
 import { Alert, ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { Trans } from '@lingui/react/macro';
+import { msg } from '@lingui/core/macro';
+import { useLingui } from '@lingui/react';
 import { colors, space, fontSize, fontWeight, radii } from '@amarnai/tokens';
 import { useSession } from '../../src/auth/session';
 import { UserAvatar } from '../../src/components/UserAvatar';
@@ -15,6 +18,7 @@ import { toUserMessage } from '../../src/errors';
 export default function AccountScreen() {
   const router = useRouter();
   const { user, client, refresh, signOut } = useSession();
+  const { i18n } = useLingui();
 
   const [editNameOpen, setEditNameOpen] = useState(false);
   const [deletePending, setDeletePending] = useState(false);
@@ -48,7 +52,7 @@ export default function AccountScreen() {
         await client.updateMe({ lifecycleEmailsEnabled: next });
       } catch (err) {
         setRemindersEnabled(previous ?? null); // revert on failure
-        Alert.alert('Update failed', toUserMessage(err, 'Could not update your reminder setting.'));
+        Alert.alert(i18n._(msg`Update failed`), toUserMessage(err, i18n._(msg`Could not update your reminder setting.`)));
       } finally {
         setRemindersSaving(false);
       }
@@ -57,12 +61,12 @@ export default function AccountScreen() {
 
   function confirmDelete() {
     Alert.alert(
-      'Delete account?',
-      'Permanently delete your account and all associated data. This cannot be undone.',
+      i18n._(msg`Delete account?`),
+      i18n._(msg`Permanently delete your account and all associated data. This cannot be undone.`),
       [
-        { text: 'Cancel', style: 'cancel' },
+        { text: i18n._(msg`Cancel`), style: 'cancel' },
         {
-          text: 'Delete',
+          text: i18n._(msg`Delete`),
           style: 'destructive',
           onPress: () => {
             void (async () => {
@@ -72,7 +76,7 @@ export default function AccountScreen() {
                 await signOut();
               } catch (err) {
                 setDeletePending(false);
-                Alert.alert('Delete failed', toUserMessage(err, 'Could not delete account. Please try again.'));
+                Alert.alert(i18n._(msg`Delete failed`), toUserMessage(err, i18n._(msg`Could not delete account. Please try again.`)));
               }
             })();
           },
@@ -83,7 +87,7 @@ export default function AccountScreen() {
 
   return (
     <ScreenContainer>
-      <BackHeader title="Account" onBack={() => router.back()} />
+      <BackHeader title={i18n._(msg`Account`)} onBack={() => router.back()} />
 
       <ScrollView contentContainerStyle={styles.content}>
         {/* Identity card + sign-out */}
@@ -100,34 +104,34 @@ export default function AccountScreen() {
         <SettingsGroup>
           <SettingsRow onPress={() => void signOut()}>
             <Ionicons name="log-out-outline" size={20} color={colors.ink3} />
-            <Text style={styles.linkLabel}>Sign out</Text>
+            <Text style={styles.linkLabel}><Trans>Sign out</Trans></Text>
           </SettingsRow>
         </SettingsGroup>
 
         {/* Profile */}
-        <SectionTitle>Profile</SectionTitle>
+        <SectionTitle><Trans>Profile</Trans></SectionTitle>
         <SettingsGroup>
           <SettingsRow onPress={() => setEditNameOpen(true)}>
             <Ionicons name="person-outline" size={20} color={colors.ink3} />
-            <Text style={styles.linkLabel}>Name</Text>
+            <Text style={styles.linkLabel}><Trans>Name</Trans></Text>
             <Text style={styles.linkMeta} numberOfLines={1}>
-              {user?.name ?? 'Not set'}
+              {user?.name ?? i18n._(msg`Not set`)}
             </Text>
             <Ionicons name="chevron-forward" size={18} color={colors.ink4} />
           </SettingsRow>
           <SettingsRow divider>
             <Ionicons name="mail-outline" size={20} color={colors.ink3} />
-            <Text style={styles.linkLabel}>Email</Text>
+            <Text style={styles.linkLabel}><Trans>Email</Trans></Text>
             <Text style={styles.linkMeta} numberOfLines={1}>{user?.email ?? ''}</Text>
           </SettingsRow>
         </SettingsGroup>
 
         {/* Notifications */}
-        <SectionTitle>Notifications</SectionTitle>
+        <SectionTitle><Trans>Notifications</Trans></SectionTitle>
         <SettingsGroup>
           <SettingsRow>
             <Ionicons name="notifications-outline" size={20} color={colors.ink3} />
-            <Text style={[styles.linkLabel, styles.linkLabelGrow]}>Weekly inbox reminder</Text>
+            <Text style={[styles.linkLabel, styles.linkLabelGrow]}><Trans>Weekly inbox reminder</Trans></Text>
             <Switch
               value={remindersEnabled ?? false}
               onValueChange={toggleReminders}
@@ -139,12 +143,12 @@ export default function AccountScreen() {
         </SettingsGroup>
 
         {/* Danger zone */}
-        <SectionTitle danger>Danger zone</SectionTitle>
+        <SectionTitle danger><Trans>Danger zone</Trans></SectionTitle>
         <SettingsGroup>
           <SettingsRow onPress={confirmDelete} disabled={deletePending}>
             <Ionicons name="trash-outline" size={20} color={colors.danger} />
             <Text style={[styles.linkLabel, styles.linkLabelGrow, styles.dangerLabel]}>
-              {deletePending ? 'Deleting…' : 'Delete account'}
+              {deletePending ? <Trans>Deleting…</Trans> : <Trans>Delete account</Trans>}
             </Text>
             <Ionicons name="chevron-forward" size={18} color={colors.danger} />
           </SettingsRow>

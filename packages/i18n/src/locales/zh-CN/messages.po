@@ -35,6 +35,17 @@ msgstr "{0, plural, one {# 个文件} other {# 个文件}}"
 msgid "{0, plural, one {# message} other {# messages}}"
 msgstr "{0, plural, one {# 条消息} other {# 条消息}}"
 
+#. placeholder {0}: members.length
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:126
+#, fuzzy
+msgid "{0, plural, one {# person} other {# people}}"
+msgstr "{0, plural, one {# 人} other {# 人}}"
+
+#. placeholder {0}: member.user.name ?? member.user.email
+#: ../../apps/mobile/src/components/CollaboratorsSheet.tsx:47
+msgid "{0} (You)"
+msgstr "{0} (您)"
+
 #. placeholder {0}: threadSortQuota.used
 #. placeholder {1}: threadSortQuota.limit
 #. placeholder {2}: new Date(threadSortQuota.resetsAt).toLocaleDateString("en", { month: "short", day: "numeric", timeZone: "UTC" })
@@ -64,6 +75,10 @@ msgstr "{0} / {1} 已加载"
 #: ../ui/src/emails/SuggestedDraftCard.tsx:98
 msgid "{0} of {1} remaining · resets {quotaResetDate}"
 msgstr "{0} / {1} 剩余 · {quotaResetDate} 重置"
+
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:108
+msgid "{blacklistCount, plural, one {# blocked} other {# blocked}}"
+msgstr "{blacklistCount, plural, one {# 已阻止} other {# 已阻止}}"
 
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:489
 #, fuzzy
@@ -169,6 +184,25 @@ msgstr "+ 新建工作区"
 #, fuzzy
 msgid "${price}/mo"
 msgstr "${price}/月"
+
+#: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:52
+#, fuzzy
+msgid "$10/mo"
+msgstr "10 美元/月"
+
+#: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:52
+#, fuzzy
+msgid "$12/mo"
+msgstr "12 美元/月"
+
+#: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:45
+#, fuzzy
+msgid "$4/mo"
+msgstr "4 美元/月"
+
+#: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:45
+msgid "$5/mo"
+msgstr "5 美元/月"
 
 #: ../ui/src/pricing/planMessages.ts:82
 #, fuzzy
@@ -311,6 +345,10 @@ msgstr "访问权限已授予该 Google 账号，如果这不是您希望 Amarna
 msgid "Access was denied. Grant read-only Gmail access to connect."
 msgstr "访问被拒绝。请授予只读 Gmail 访问权限以进行连接。"
 
+#: ../../apps/mobile/app/(app)/account.tsx:90
+msgid "Account"
+msgstr "账户"
+
 #: ../../apps/web/src/app/(app)/account/page.tsx:18
 #, fuzzy
 msgid "Account Settings"
@@ -326,6 +364,7 @@ msgstr "Acme Workspace"
 msgid "Active project communication, deliverables, feedback, and approvals from clients."
 msgstr "活跃的项目沟通、交付物、客户反馈和批准。"
 
+#: ../../apps/mobile/src/components/BlacklistSheet.tsx:118
 #: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:124
 #, fuzzy
 msgid "Add"
@@ -340,6 +379,7 @@ msgstr "添加至少 3 个已连接的文件夹以导出"
 #~ msgid "Add Folder"
 #~ msgstr ""
 
+#: ../../apps/mobile/src/components/CollaboratorsSheet.tsx:58
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:42
 #: ../ui/src/i18n/taxonomy-template-messages.ts:28
 #, fuzzy
@@ -361,6 +401,7 @@ msgstr "高级版"
 msgid "Advanced review queue"
 msgstr "高级审阅队列"
 
+#: ../../apps/mobile/app/(app)/subscription.tsx:287
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:185
 #: ../ui/src/pricing/planMessages.ts:65
 msgid "AI drafts"
@@ -422,11 +463,13 @@ msgstr "您的所有工作区、电子邮件和设置将被永久删除。"
 msgid "Alliance proposal: house of Amurru"
 msgstr "结盟提议：阿摩利家族"
 
+#: ../../apps/mobile/app/sign-up.tsx:166
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:63
 #, fuzzy
 msgid "Already have an account? <0>Sign in</0>"
 msgstr "已有账号？<0>登录</0>"
 
+#: ../../apps/mobile/src/components/BlacklistSheet.tsx:54
 #: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:37
 #, fuzzy
 msgid "Already in the list."
@@ -442,6 +485,11 @@ msgstr "已被邀请？<0>登录</0>"
 #, fuzzy
 msgid "Also erase synced email data"
 msgstr "同时抹除已同步的邮件数据"
+
+#: ../ui/src/AppDownloadBanner.tsx:68
+#, fuzzy
+msgid "Amarnai for Android"
+msgstr "Amarnai 安卓版"
 
 #: ../../apps/site/src/components/landing/Nav.tsx:31
 msgid "Amarnai home"
@@ -489,12 +537,14 @@ msgstr "正在分析收件箱，并为您制定方案…"
 msgid "Analyzing your inbox and building a plan… this can take a moment."
 msgstr "正在分析您的收件箱并制定计划……这可能需要一点时间。"
 
+#: ../../apps/mobile/app/(app)/subscription.tsx:41
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:36
 #: ../ui/src/PricingPlans.tsx:119
 #, fuzzy
 msgid "Annual"
 msgstr "每年"
 
+#: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:233
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:192
 #, fuzzy
 msgid "Annual · Save 20%"
@@ -558,6 +608,7 @@ msgstr "批准路由"
 msgid "At least 8 characters"
 msgstr "至少8个字符"
 
+#: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:127
 #: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:82
 #, fuzzy
 msgid "Auto-file notifications to Updates / Other"
@@ -603,6 +654,7 @@ msgstr "返回"
 msgid "Back to list"
 msgstr "返回列表"
 
+#: ../../apps/mobile/app/forgot-password.tsx:73
 #: ../../apps/web/src/app/forgot-password/page.tsx:50
 #, fuzzy
 msgid "Back to sign in"
@@ -685,6 +737,9 @@ msgstr "皇家任命局"
 msgid "Burna-Buriash II"
 msgstr "伯尔那布里亚什二世"
 
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:39
+#: ../../apps/mobile/app/(app)/subscription.tsx:40
+#: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:50
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:31
 #: ../ui/src/pricing/planMessages.ts:22
 #, fuzzy
@@ -714,6 +769,11 @@ msgstr "Amarnai 能否分拣我现有的收件箱，而不只是新邮件？"
 msgid "Can I self-host Amarnai?"
 msgstr "我能自托管 Amarnai 吗？"
 
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:145
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:172
+#: ../../apps/mobile/app/(app)/account.tsx:67
+#: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:93
+#: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:245
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:130
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:527
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:541
@@ -738,10 +798,16 @@ msgstr "取消"
 msgid "Cancel invitation for {0}"
 msgstr "取消对 {0} 的邀请"
 
+#: ../../apps/mobile/app/(app)/subscription.tsx:121
+#: ../../apps/mobile/app/(app)/subscription.tsx:316
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:251
 #, fuzzy
 msgid "Cancel subscription"
 msgstr "取消订阅"
+
+#: ../../apps/mobile/app/(app)/subscription.tsx:114
+msgid "Cancel subscription?"
+msgstr "取消订阅？"
 
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:294
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:182
@@ -749,10 +815,19 @@ msgstr "取消订阅"
 msgid "Cancelling…"
 msgstr "正在取消…"
 
+#: ../../apps/mobile/app/(app)/subscription.tsx:297
+msgid "Change subscription"
+msgstr "更改订阅"
+
 #: ../../apps/web/src/app/verify-email/page.tsx:26
 #, fuzzy
 msgid "Check your inbox"
 msgstr "检查收件箱"
+
+#. placeholder {0}: err.message
+#: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:143
+msgid "Checkout failed: {0}"
+msgstr "结算失败：{0}"
 
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:635
 #, fuzzy
@@ -805,6 +880,8 @@ msgstr "关闭面板"
 msgid "Close preview"
 msgstr "关闭预览"
 
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:249
+#: ../../apps/mobile/src/components/CollaboratorsSheet.tsx:36
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:207
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:131
 #: ../ui/src/pricing/planMessages.ts:62
@@ -840,7 +917,16 @@ msgstr "确认取消"
 msgid "Confirm Delete"
 msgstr "确认删除"
 
+#: ../../apps/mobile/app/sign-up.tsx:131
+msgid "Confirm password"
+msgstr "确认密码"
+
+#: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:170
+msgid "Connect a Gmail inbox to configure sync filters."
+msgstr "连接 Gmail 收件箱以配置同步筛选条件。"
+
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
+#: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:334
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:268
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:53
@@ -891,6 +977,7 @@ msgstr "连接您的 Gmail 收件箱"
 msgid "Connection failed. Please try again."
 msgstr "连接失败。请重试。"
 
+#: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:156
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:100
 #, fuzzy
 msgid "Continue to checkout"
@@ -900,6 +987,7 @@ msgstr "继续结账"
 msgid "Continue to payment"
 msgstr "继续付款"
 
+#: ../../apps/mobile/src/auth/GoogleSignInButton.tsx:28
 #: ../../apps/web/src/components/GoogleButton.tsx:20
 #, fuzzy
 msgid "Continue with Google"
@@ -913,6 +1001,10 @@ msgstr "合同"
 #: ../ui/src/i18n/taxonomy-template-messages.ts:61
 msgid "Contracts, banking, accounting, tax filings, and corporate legal correspondence."
 msgstr "合同、银行、会计、税务申报和公司法律函件。"
+
+#: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:99
+msgid "Controls which Gmail threads are imported. Trash is always excluded."
+msgstr "控制哪些 Gmail 会话会被导入。垃圾邮件始终排除在外。"
 
 #: ../ui/src/emails/SuggestedDraftCard.tsx:57
 #, fuzzy
@@ -928,20 +1020,116 @@ msgstr "复制"
 msgid "Could not access your Gmail inbox. Make sure the Gmail API is enabled and the gmail.readonly scope is added to the OAuth consent screen in Google Cloud Console."
 msgstr "无法访问您的 Gmail 收件箱。请确保已启用 Gmail API，并且已将 gmail.readonly 范围添加到 Google Cloud Console 中的 OAuth 同意屏幕。"
 
+#: ../../apps/mobile/src/components/BlacklistSheet.tsx:66
 #: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:59
 #, fuzzy
 msgid "Could not add email. Please try again."
 msgstr "无法添加电子邮件。请重试。"
 
+#: ../../apps/mobile/app/(app)/subscription.tsx:129
+#: ../../apps/mobile/app/(app)/subscription.tsx:134
+#, fuzzy
+msgid "Could not cancel"
+msgstr "无法取消"
+
+#: ../../apps/mobile/app/(app)/subscription.tsx:206
+#, fuzzy
+msgid "Could not change subscription"
+msgstr "无法更改订阅"
+
+#: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:113
+#, fuzzy
+msgid "Could not create workspace. Please try again."
+msgstr "无法创建工作区。请重试。"
+
+#: ../../apps/mobile/app/(app)/account.tsx:79
+#, fuzzy
+msgid "Could not delete account. Please try again."
+msgstr "无法删除账户。请重试。"
+
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:184
+#, fuzzy
+msgid "Could not delete workspace"
+msgstr "无法删除工作区"
+
+#: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:82
+#, fuzzy
+msgid "Could not disconnect Gmail. Please try again."
+msgstr "无法断开 Gmail 连接。请重试。"
+
+#: ../../apps/mobile/app/(app)/subscription.tsx:79
+#, fuzzy
+msgid "Could not load billing"
+msgstr "无法加载账单"
+
+#: ../../apps/mobile/app/(app)/subscription.tsx:235
+#, fuzzy
+msgid "Could not load billing."
+msgstr "无法加载账单。"
+
+#: ../../apps/mobile/app/(app)/subscription.tsx:151
+#: ../../apps/mobile/app/(app)/subscription.tsx:156
+msgid "Could not open billing management."
+msgstr "无法打开账单管理。"
+
+#: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:89
 #: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:108
 #, fuzzy
 msgid "Could not queue rescan. Please try again."
 msgstr "无法排队重新扫描。请重试。"
 
+#: ../../apps/mobile/app/forgot-password.tsx:42
+msgid "Could not reach the server. Please check your connection and try again."
+msgstr "无法连接到服务器。请检查您的网络连接后重试。"
+
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1146
 #, fuzzy
 msgid "Could not read file: invalid JSON."
 msgstr "无法读取文件：JSON 无效。"
+
+#: ../../apps/mobile/src/components/RenameWorkspaceSheet.tsx:53
+#, fuzzy
+msgid "Could not rename workspace. Please try again."
+msgstr "无法重命名工作区。请重试。"
+
+#: ../../apps/mobile/app/verify-email.tsx:66
+msgid "Could not resend the email. Please try again."
+msgstr "无法重新发送邮件。请重试。"
+
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:157
+#, fuzzy
+msgid "Could not reset workspace"
+msgstr "无法重置工作区"
+
+#: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:75
+#, fuzzy
+msgid "Could not save filter setting. Please try again."
+msgstr "无法保存筛选条件设置。请重试。"
+
+#. placeholder {0}: res.status
+#: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:130
+#, fuzzy
+msgid "Could not start checkout ({0}). Please try again."
+msgstr "无法启动结算 ({0})。请重试。"
+
+#: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:144
+#, fuzzy
+msgid "Could not start checkout. Please try again."
+msgstr "无法启动结算。请重试。"
+
+#: ../../apps/mobile/src/components/EditNameSheet.tsx:44
+#, fuzzy
+msgid "Could not update name. Please try again."
+msgstr "无法更新名称。请重试。"
+
+#: ../../apps/mobile/app/(app)/account.tsx:55
+#, fuzzy
+msgid "Could not update your reminder setting."
+msgstr "无法更新您的提醒设置。"
+
+#: ../../apps/mobile/app/(app)/subscription.tsx:189
+msgid "Could not upgrade"
+msgstr "无法升级"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:54
 #, fuzzy
@@ -977,16 +1165,22 @@ msgstr "创建新工作区"
 msgid "Create a workspace"
 msgstr "创建工作区"
 
+#: ../../apps/mobile/app/sign-up.tsx:154
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:52
 #, fuzzy
 msgid "Create account"
 msgstr "创建账户"
+
+#: ../../apps/mobile/app/sign-up.tsx:94
+msgid "Create an account to triage your inbox"
+msgstr "创建账户，高效管理收件箱"
 
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:400
 #, fuzzy
 msgid "Create Folder"
 msgstr "创建文件夹"
 
+#: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:155
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:99
 #, fuzzy
 msgid "Create workspace"
@@ -1002,6 +1196,7 @@ msgstr "创建您的账户"
 msgid "Creating account…"
 msgstr "正在创建账户…"
 
+#: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:152
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:96
 #, fuzzy
 msgid "Creating…"
@@ -1015,6 +1210,7 @@ msgstr "正在创建…"
 msgid "Current"
 msgstr "当前"
 
+#: ../../apps/mobile/app/(app)/subscription.tsx:276
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:166
 #: ../ui/src/PricingPlans.tsx:187
 #, fuzzy
@@ -1037,15 +1233,25 @@ msgstr "客户支持、入职、产品反馈、流失和成功对话。"
 msgid "Customers"
 msgstr "客户"
 
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:292
+#: ../../apps/mobile/app/(app)/account.tsx:146
+#: ../../apps/mobile/app/(app)/subscription.tsx:311
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:101
 #, fuzzy
 msgid "Danger zone"
 msgstr "危险区"
 
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:117
+#, fuzzy
+msgid "Default"
+msgstr "默认"
+
 #: ../ui/src/pricing/planMessages.ts:77
 msgid "Default free workspace"
 msgstr "默认免费工作区"
 
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:174
+#: ../../apps/mobile/app/(app)/account.tsx:69
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:557
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:568
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:662
@@ -1053,17 +1259,34 @@ msgstr "默认免费工作区"
 msgid "Delete"
 msgstr "删除"
 
+#: ../../apps/mobile/app/(app)/account.tsx:151
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:114
 #, fuzzy
 msgid "Delete account"
 msgstr "删除账户"
 
+#: ../../apps/mobile/app/(app)/account.tsx:64
+#, fuzzy
+msgid "Delete account?"
+msgstr "删除账户？"
+
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:184
+#: ../../apps/mobile/app/(app)/account.tsx:79
+msgid "Delete failed"
+msgstr "删除失败"
+
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:301
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:26
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:42
 #, fuzzy
 msgid "Delete workspace"
 msgstr "删除工作区"
 
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:169
+msgid "Delete workspace?"
+msgstr "删除工作区？"
+
+#: ../../apps/mobile/app/(app)/account.tsx:151
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:123
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:519
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:56
@@ -1085,6 +1308,7 @@ msgstr "描述您的文件夹"
 msgid "Description"
 msgstr "描述"
 
+#: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:137
 #: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:85
 #, fuzzy
 msgid "Detected notifications, newsletters, and service updates are filed to your catch-all folder without using AI. Requires the <0>Updates / Other</0> folder from a taxonomy template."
@@ -1096,10 +1320,35 @@ msgstr "检测到的通知、新闻稿和服务更新将归档到您的包罗万
 msgid "Discard"
 msgstr "放弃"
 
+#: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:94
+#, fuzzy
+msgid "Disconnect"
+msgstr "断开连接"
+
+#: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:96
+#, fuzzy
+msgid "Disconnect & erase data"
+msgstr "断开连接并清除数据"
+
+#: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:82
+msgid "Disconnect failed"
+msgstr "断开连接失败"
+
+#: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:170
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:178
 #, fuzzy
 msgid "Disconnect Gmail"
 msgstr "断开Gmail连接"
+
+#: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:90
+#, fuzzy
+msgid "Disconnect Gmail?"
+msgstr "断开 Gmail 连接？"
+
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:101
+#: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:114
+msgid "Disconnected"
+msgstr "已断开连接"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:226
 #, fuzzy
@@ -1140,6 +1389,7 @@ msgstr "断开此工作区连接。Amarnai仍保留访问权限，因为此邮�
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:48
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:295
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:52
+#: ../ui/src/AppDownloadBanner.tsx:80
 msgid "Dismiss"
 msgstr "忽略"
 
@@ -1148,6 +1398,7 @@ msgstr "忽略"
 #~ msgid "Display language"
 #~ msgstr "显示语言"
 
+#: ../../apps/mobile/src/components/EditNameSheet.tsx:51
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:53
 #, fuzzy
 msgid "Display name"
@@ -1165,6 +1416,10 @@ msgstr "医生、药房、医疗预约、健康保险索赔和实验室结果。
 #: ../../apps/site/src/components/landing/Footer.tsx:33
 msgid "Documentation"
 msgstr "文档"
+
+#: ../../apps/mobile/app/sign-in.tsx:145
+msgid "Don't have an account? <0>Create one</0>"
+msgstr "没有账户？<0>立即注册</0>"
 
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:91
 #, fuzzy
@@ -1251,6 +1506,10 @@ msgstr "编辑文件夹"
 msgid "Edit Path"
 msgstr "编辑路径"
 
+#: ../../apps/mobile/app/(app)/account.tsx:124
+#: ../../apps/mobile/app/forgot-password.tsx:85
+#: ../../apps/mobile/app/sign-in.tsx:89
+#: ../../apps/mobile/app/sign-up.tsx:98
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:68
 #: ../../apps/web/src/app/forgot-password/page.tsx:30
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:46
@@ -1278,6 +1537,11 @@ msgstr "邮件整理工具"
 msgid "Email reminders"
 msgstr "电子邮件提醒"
 
+#: ../../apps/mobile/app/verify-email.tsx:109
+#, fuzzy
+msgid "Email sent"
+msgstr "邮件已发送"
+
 #: ../ui/src/pricing/planMessages.ts:99
 msgid "Email support"
 msgstr "邮件支持"
@@ -1287,6 +1551,7 @@ msgstr "邮件支持"
 msgid "Email verified! Sign in to continue."
 msgstr "电子邮件已验证！请登录以继续。"
 
+#: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:28
 #: ../../apps/web/src/components/Sidebar.tsx:86
 #, fuzzy
 msgid "Emails"
@@ -1321,10 +1586,15 @@ msgstr "招生、学费、住房申请和官方校园管理。"
 msgid "Enter a valid email address"
 msgstr "请输入有效的电子邮件地址"
 
+#: ../../apps/mobile/src/components/BlacklistSheet.tsx:50
 #: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:33
 #, fuzzy
 msgid "Enter a valid email address."
 msgstr "请输入有效的电子邮件地址。"
+
+#: ../../apps/mobile/app/forgot-password.tsx:80
+msgid "Enter your email and we'll send you a link to reset your password."
+msgstr "请输入您的电子邮件地址，我们会向您发送重置密码的链接。"
 
 #: ../../apps/web/src/app/forgot-password/page.tsx:18
 #, fuzzy
@@ -1519,6 +1789,7 @@ msgstr "适用于管理客户、项目和财务的独立顾问和自由职业者
 msgid "For individuals managing finances, health, home, family, and personal subscriptions."
 msgstr "适用于管理财务、健康、家庭、家人和个人订阅的个人。"
 
+#: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:38
 #: ../ui/src/pricing/planMessages.ts:25
 #, fuzzy
 msgid "For individuals trying Amarnai on their own inbox."
@@ -1529,6 +1800,11 @@ msgstr "适用于个人用户在其个人收件箱中试用 Amarnai。"
 msgid "For larger organizations and higher-volume teams."
 msgstr "适用于大型组织和高邮件量团队。"
 
+#: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:51
+#, fuzzy
+msgid "For larger organizations."
+msgstr "适用于大型组织。"
+
 #: ../../apps/site/src/components/demo/demo-seed.ts:260
 msgid "For many years our houses have been as brothers. I write now to propose that we formalise this friendship for the benefit of both our peoples."
 msgstr "多年来，我们两家亲如兄弟。我现在写信提议，为了我们两国人民的福祉，将这份友谊正式化。"
@@ -1538,15 +1814,24 @@ msgstr "多年来，我们两家亲如兄弟。我现在写信提议，为了我
 msgid "For power users and small businesses who live in their inbox."
 msgstr "适用于依赖收件箱的资深用户和小型企业。"
 
+#: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:44
+#, fuzzy
+msgid "For power users and small businesses."
+msgstr "专为高级用户和小型企业设计。"
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:66
 msgid "For students balancing university, internship applications, and everyday life."
 msgstr "适用于平衡大学学业、实习申请和日常生活的学生。"
 
+#: ../../apps/mobile/app/sign-in.tsx:120
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:64
 #, fuzzy
 msgid "Forgot password?"
 msgstr "忘记密码？"
 
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:37
+#: ../../apps/mobile/app/(app)/subscription.tsx:40
+#: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:39
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:45
 #: ../ui/src/PricingPlans.tsx:149
 #: ../ui/src/PricingPlans.tsx:380
@@ -1557,6 +1842,11 @@ msgstr "免费"
 #: ../ui/src/PricingPlans.tsx:151
 msgid "Free forever · self-serve"
 msgstr "永久免费 · 自助服务"
+
+#. placeholder {0}: formatDate(state.trialEndsAt)
+#: ../../apps/mobile/app/(app)/subscription.tsx:252
+msgid "Free trial until {0}."
+msgstr "免费试用至 {0}。"
 
 #. placeholder {0}: trialEndsAt.toLocaleDateString()
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:221
@@ -1645,6 +1935,15 @@ msgstr "生成失败。请在 {0} 后重试，或从模板开始。"
 msgid "Generation didn't complete. Try again shortly, or start from a template."
 msgstr "生成失败。请稍后重试，或从模板开始。"
 
+#: ../ui/src/AppDownloadBanner.tsx:65
+#, fuzzy
+msgid "Get the Amarnai app"
+msgstr "获取 Amarnai 应用"
+
+#: ../ui/src/AppDownloadBanner.tsx:75
+msgid "Get the app"
+msgstr "获取应用"
+
 #: ../../apps/site/src/app/[locale]/page.tsx:38
 #, fuzzy
 msgid "gmail ai assistant"
@@ -1721,6 +2020,12 @@ msgstr "Google 账号权限"
 #, fuzzy
 msgid "Google could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the Gmail callback URL is registered in Google Cloud Console."
 msgstr "Google 无法完成授权。链接可能已过期：请重试。如果问题仍然存在，请检查 Gmail 回调 URL 是否已在 Google Cloud Console 中注册。"
+
+#: ../../apps/mobile/app/sign-in.tsx:65
+#: ../../apps/mobile/app/sign-up.tsx:76
+#, fuzzy
+msgid "Google sign-in failed. Please try again."
+msgstr "Google 登录失败。请重试。"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:178
 msgid "Great King,\n"
@@ -1815,6 +2120,11 @@ msgstr "我写信提议，我们将友谊正式化。"
 msgid "If an account exists for that email, a reset link is on its way."
 msgstr "如果该邮箱存在账户，重置链接已发送。"
 
+#: ../../apps/mobile/app/forgot-password.tsx:66
+#, fuzzy
+msgid "If an account exists for that email, we've sent a reset link. Open it to choose a new password, then sign in."
+msgstr "如果此邮箱存在账户，我们已发送重置链接。请打开链接设置新密码，然后登录。"
+
 #: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:52
 #: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:44
 msgid "Ignored"
@@ -1857,6 +2167,8 @@ msgstr "重要提示：请输入您将登录的 Google 账号的邮箱，即您�
 msgid "Importing will replace your current plan with <0>{0} folders</0> and <1>{1} paths</1> from the file. Threads that were sorted into removed folders will become unsorted. This cannot be undone."
 msgstr "导入将用文件中的<0>{0}个文件夹</0>和<1>{1}条路径</1>替换您当前的方案。已分类到已移除文件夹的邮件会话将变为未分类。此操作无法撤消。"
 
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:272
+#: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:107
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:176
 #: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:42
 #: ../../apps/site/src/components/demo/demo-seed.ts:28
@@ -1871,6 +2183,7 @@ msgstr "收件箱"
 msgid "Inbox (entry point)"
 msgstr "收件箱（入口点）"
 
+#: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:145
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:153
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:166
 #, fuzzy
@@ -1881,11 +2194,13 @@ msgstr "收件箱同步"
 msgid "inbox zero"
 msgstr "收件箱清零"
 
+#: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:116
 #: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:72
 #, fuzzy
 msgid "Include Promotions"
 msgstr "包含促销"
 
+#: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:105
 #: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:62
 #, fuzzy
 msgid "Include spam"
@@ -1955,6 +2270,10 @@ msgstr "邀请已发送至 {email}"
 msgid "Invite a collaborator"
 msgstr "邀请协作者"
 
+#: ../../apps/mobile/src/components/CollaboratorsSheet.tsx:66
+msgid "Invite and remove collaborators on the web app."
+msgstr "在网页应用中邀请和移除协作者。"
+
 #: ../../apps/web/src/app/admin/waitlist/page.tsx:70
 #, fuzzy
 msgid "Invited"
@@ -2007,6 +2326,11 @@ msgstr "加入等候名单"
 msgid "Joining…"
 msgstr "正在加入…"
 
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:125
+msgid "Just you"
+msgstr "仅限您本人"
+
+#: ../../apps/mobile/app/(app)/subscription.tsx:119
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:302
 #, fuzzy
 msgid "Keep subscription"
@@ -2031,18 +2355,23 @@ msgstr "阿兹鲁国王已查阅了他档案中的每一块泥板，但此页面
 msgid "King Aziru is ready to sort your email threads. Connect your Gmail account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
 msgstr "阿兹鲁国王已准备好为您整理电子邮件会话。连接您的 Gmail 帐户即可开始。Amarnai 连接时具有 <0>只读访问权限</0>，并且 <1>绝不会发送、删除或更改任何内容</1>。您的收件箱仍然是您的。"
 
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:242
 #: ../../apps/web/src/app/(app)/settings/WorkspaceLanguageSection.tsx:37
 #, fuzzy
 msgid "Language"
 msgstr "语言"
 
 #. placeholder {0}: formatDate(syncStatus.lastSyncedAt, _(msg`Never`))
+#. placeholder {0}: formatDate(syncStatus.lastSyncedAt, i18n)
+#: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:154
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:157
 #, fuzzy
 msgid "Last synced {0}"
 msgstr "上次同步时间 {0}"
 
 #. placeholder {0}: formatDate(connection.lastVerifiedAt, _(msg`Never`))
+#. placeholder {0}: formatDate(connection.lastVerifiedAt, i18n)
+#: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:140
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:142
 #, fuzzy
 msgid "Last verified: {0}"
@@ -2113,6 +2442,15 @@ msgstr "加载中…"
 msgid "Mail"
 msgstr "邮件"
 
+#: ../../apps/mobile/app/(app)/subscription.tsx:293
+#, fuzzy
+msgid "Manage"
+msgstr "管理"
+
+#: ../../apps/mobile/app/(app)/subscription.tsx:303
+msgid "Manage payment method"
+msgstr "管理付款方式"
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:40
 #, fuzzy
 msgid "Management"
@@ -2171,6 +2509,7 @@ msgstr "已达到最大协作者数量 {collaboratorLimit}。"
 msgid "Media inquiries, press coverage, co-marketing proposals, and partnership outreach."
 msgstr "媒体咨询、新闻报道、联合营销提案和合作伙伴联系。"
 
+#: ../../apps/mobile/src/components/CollaboratorsSheet.tsx:58
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:42
 #, fuzzy
 msgid "Member"
@@ -2189,6 +2528,8 @@ msgstr "模拟收件箱"
 msgid "Model quality"
 msgstr "模型质量"
 
+#: ../../apps/mobile/app/(app)/subscription.tsx:41
+#: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:223
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:35
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:183
 #: ../ui/src/PricingPlans.tsx:111
@@ -2202,6 +2543,7 @@ msgstr "每月"
 msgid "More threads beyond your {plan} subscription limit aren't loaded."
 msgstr "超出您的 {plan} 订阅限制的更多会话未加载。"
 
+#: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:46
 #: ../ui/src/pricing/planMessages.ts:30
 msgid "Most popular"
 msgstr "最受欢迎"
@@ -2230,6 +2572,8 @@ msgstr "移至…"
 msgid "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face."
 msgstr "未来几天我的行程将经过三角洲附近。如果伟大君王能抽出一点时间，我将非常乐意面谈。"
 
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:233
+#: ../../apps/mobile/app/(app)/account.tsx:116
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:409
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:15
 #, fuzzy
@@ -2247,6 +2591,7 @@ msgstr "名称已更新。"
 msgid "Needs review"
 msgstr "需要审核"
 
+#: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:32
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:142
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:157
 #, fuzzy
@@ -2282,6 +2627,10 @@ msgstr "新密码"
 #: ../ui/src/emails/BackfillCard.tsx:61
 msgid "New threads will appear as they are sorted."
 msgstr "新会话将在分类后显示。"
+
+#: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:162
+msgid "New workspace"
+msgstr "新建工作区"
 
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:150
 #, fuzzy
@@ -2334,6 +2683,15 @@ msgstr "暂无文件夹"
 msgid "No Gmail inbox connected to this workspace."
 msgstr "此工作区未连接 Gmail 收件箱。"
 
+#: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:118
+#, fuzzy
+msgid "No Gmail inbox connected. Connect your account to start syncing."
+msgstr "未连接 Gmail 收件箱。请连接您的账户以开始同步。"
+
+#: ../../apps/mobile/src/components/BlacklistSheet.tsx:146
+msgid "No senders blocked yet."
+msgstr "暂无已屏蔽发件人。"
+
 #: ../../apps/web/src/app/admin/waitlist/page.tsx:58
 #, fuzzy
 msgid "No signups yet."
@@ -2371,15 +2729,25 @@ msgstr "没有会话与您的搜索匹配。"
 msgid "No threads yet"
 msgstr "暂无会话"
 
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:223
 #: ../../apps/web/src/components/Sidebar.tsx:198
 #, fuzzy
 msgid "No workspace"
 msgstr "无工作区"
 
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:107
+msgid "None"
+msgstr "无"
+
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:470
 #, fuzzy
 msgid "None (not connected)"
 msgstr "无（未连接）"
+
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:99
+#, fuzzy
+msgid "Not connected"
+msgstr "未连接"
 
 #: ../ui/src/PricingPlans.tsx:86
 msgid "Not included"
@@ -2394,10 +2762,19 @@ msgstr "未包含 · <0>升级以添加</0>"
 msgid "Not necessarily. Amarnai can generate a complete plan for you from your inbox, with one click. You can also start from a ready-made template. Most people generate a plan, rename two or three folders, and they're done."
 msgstr "不一定。Amarnai 可一键根据您的收件箱生成完整方案。您也可以从现成的模板开始。大多数用户会生成方案，然后重命名两三个文件夹即可。"
 
+#: ../../apps/mobile/app/(app)/account.tsx:118
+msgid "Not set"
+msgstr "未设置"
+
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:158
 #, fuzzy
 msgid "Not yet synced"
 msgstr "尚未同步"
+
+#: ../../apps/mobile/app/(app)/account.tsx:130
+#, fuzzy
+msgid "Notifications"
+msgstr "通知"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:68
 msgid "Official university emails: registrar, student services, and housing."
@@ -2406,6 +2783,10 @@ msgstr "大学官方邮件：注册办公室、学生服务和住宿。"
 #: ../../apps/site/src/components/demo/demo-seed.ts:337
 msgid "Ongoing thread with a known city governor raising a recurring supply issue. Escalatory tone and repeated follow-ups match the Support folder."
 msgstr "与一位已知城市总督关于反复出现的供应问题的进行中的会话。升级的语气和反复的跟进与“支持”文件夹匹配。"
+
+#: ../../apps/mobile/app/(app)/subscription.tsx:325
+msgid "Only the workspace owner can manage billing."
+msgstr "只有工作区所有者才能管理账单。"
 
 #: ../../apps/mobile/src/components/DraftSheet.tsx:97
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:242
@@ -2450,6 +2831,7 @@ msgstr "运营"
 msgid "Optional. Applied when generating draft replies for threads in this folder."
 msgstr "可选。在此文件夹中为会话生成草稿回复时应用。"
 
+#: ../../apps/mobile/src/auth/GoogleSignInButton.tsx:17
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:84
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:57
 #, fuzzy
@@ -2484,11 +2866,17 @@ msgstr "合作伙伴"
 msgid "Passing through the Delta: free to meet?"
 msgstr "途经三角洲：方便会面吗？"
 
+#: ../../apps/mobile/app/sign-in.tsx:106
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:61
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:37
 #, fuzzy
 msgid "Password"
 msgstr "密码"
+
+#: ../../apps/mobile/app/sign-up.tsx:115
+#, fuzzy
+msgid "Password (min {PASSWORD_MIN_LENGTH} characters)"
+msgstr "密码 (最少 {PASSWORD_MIN_LENGTH} 个字符)"
 
 #: ../../apps/web/src/app/reset-password/page.tsx:21
 msgid "Password updated! You can now sign in."
@@ -2499,10 +2887,19 @@ msgstr "密码已更新！您现在可以登录了。"
 msgid "Password updated. Sign in with your new password."
 msgstr "密码已更新。请使用您的新密码登录。"
 
+#: ../../apps/mobile/app/sign-up.tsx:54
+msgid "Passwords do not match"
+msgstr "密码不匹配"
+
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:129
 #, fuzzy
 msgid "Payment failed. Please update your payment method to avoid losing access."
 msgstr "支付失败。请更新您的支付方式，以免失去访问权限。"
+
+#: ../../apps/mobile/app/(app)/subscription.tsx:244
+#, fuzzy
+msgid "Payment failed. Update your payment method to keep access."
+msgstr "付款失败。请更新您的付款方式以保持访问权限。"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:46
 msgid "Payslips, expense reports, reimbursements, and employee benefits emails."
@@ -2529,15 +2926,18 @@ msgstr "有权访问此工作区的人员。"
 #~ msgid "Permanently delete this workspace and all of its data — emails, plan, settings, and Gmail connection. This cannot be undone."
 #~ msgstr ""
 
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:170
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:28
 msgid "Permanently delete this workspace and all of its data: emails, plan, settings, and Gmail connection. This cannot be undone."
 msgstr "永久删除此工作区及其所有数据：电子邮件、方案、设置和 Gmail 连接。此操作无法撤消。"
 
+#: ../../apps/mobile/app/(app)/account.tsx:65
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:103
 #, fuzzy
 msgid "Permanently delete your account and all associated data. This cannot be undone."
 msgstr "永久删除您的账户和所有相关数据。此操作无法撤消。"
 
+#: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:37
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:29
 #: ../ui/src/i18n/taxonomy-template-messages.ts:32
 #: ../ui/src/pricing/planMessages.ts:20
@@ -2577,6 +2977,7 @@ msgstr "个人通信和日常生活中的非学术邮件。"
 
 #. Screen heading for the email-sorting taxonomy. Not a billing or subscription plan.
 #. Sidebar nav label for the email-sorting taxonomy. Not a billing or subscription plan.
+#: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:35
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:264
 #: ../../apps/site/src/components/demo/DemoTaxonomyCanvas.tsx:205
 #: ../../apps/site/src/components/landing/Footer.tsx:26
@@ -2590,6 +2991,14 @@ msgstr "方案"
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1241
 msgid "Plan is view-only. Only workspace admins can edit it."
 msgstr "方案为只读。只有工作区管理员才能编辑。"
+
+#: ../../apps/mobile/app/(app)/subscription.tsx:129
+#: ../../apps/mobile/app/(app)/subscription.tsx:134
+#: ../../apps/mobile/app/(app)/subscription.tsx:189
+#: ../../apps/mobile/app/(app)/subscription.tsx:206
+#: ../../apps/mobile/app/(app)/subscription.tsx:213
+msgid "Please try again."
+msgstr "请重试。"
 
 #: ../ui/src/pricing/planMessages.ts:111
 #, fuzzy
@@ -2645,6 +3054,9 @@ msgstr "隐私"
 msgid "Privacy by design"
 msgstr "设计即隐私"
 
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:38
+#: ../../apps/mobile/app/(app)/subscription.tsx:40
+#: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:43
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:30
 #: ../ui/src/pricing/planMessages.ts:21
 msgid "Pro"
@@ -2663,6 +3075,7 @@ msgstr "与工作、项目和职场活动相关的专业邮件。"
 msgid "Professors, assignments, study groups, course announcements, and academic deadlines."
 msgstr "教授、作业、学习小组、课程公告和学业截止日期。"
 
+#: ../../apps/mobile/app/(app)/account.tsx:112
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:45
 #, fuzzy
 msgid "Profile"
@@ -2671,6 +3084,11 @@ msgstr "个人资料"
 #: ../ui/src/i18n/taxonomy-template-messages.ts:18
 msgid "Projects"
 msgstr "项目"
+
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:111
+#, fuzzy
+msgid "Promotions"
+msgstr "促销"
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:80
 msgid "Proposed folders. Applying replaces your current plan; you can edit everything afterward."
@@ -2717,6 +3135,7 @@ msgstr "来自供应商的收据、付款确认和账单问题。"
 msgid "Reconnect"
 msgstr "重新连接"
 
+#: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:258
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:53
 #, fuzzy
@@ -2741,6 +3160,7 @@ msgstr "招聘人员联系、职位申请、面试安排和录用通知书。"
 msgid "Recruiting"
 msgstr "招聘"
 
+#: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:153
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:178
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:97
 #, fuzzy
@@ -2763,6 +3183,10 @@ msgstr "刷新"
 #, fuzzy
 msgid "Regenerate"
 msgstr "重新生成"
+
+#: ../../apps/mobile/app/forgot-password.tsx:115
+msgid "Remembered it? <0>Sign in</0>"
+msgstr "想起密码了？<0>立即登录</0>"
 
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:158
 #, fuzzy
@@ -2794,6 +3218,11 @@ msgstr "正在移除…"
 #, fuzzy
 msgid "Renew"
 msgstr "续订"
+
+#. placeholder {0}: formatDate(state.currentPeriodEnd)
+#: ../../apps/mobile/app/(app)/subscription.tsx:254
+msgid "Renews {0}."
+msgstr "{0} 续订。"
 
 #. placeholder {0}: currentPeriodEnd.toLocaleDateString()
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:232
@@ -2827,31 +3256,60 @@ msgstr "替换分类"
 msgid "Replace with a template"
 msgstr "替换为模板"
 
+#: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:89
+msgid "Rescan failed"
+msgstr "重新扫描失败"
+
+#: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:153
 #: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:99
 #, fuzzy
 msgid "Rescan inbox"
 msgstr "重新扫描收件箱"
+
+#: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:158
+msgid "Rescan queued — threads will update shortly."
+msgstr "重新扫描已排队 — 会话即将更新。"
 
 #: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:103
 #, fuzzy
 msgid "Rescan queued: threads will update shortly."
 msgstr "重新扫描已排队：会话即将更新。"
 
+#: ../../apps/mobile/app/verify-email.tsx:109
+msgid "Resend email"
+msgstr "重新发送邮件"
+
 #: ../../apps/web/src/app/verify-email/page.tsx:36
 #, fuzzy
 msgid "Resend verification email"
 msgstr "重新发送验证邮件"
 
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:147
+#, fuzzy
+msgid "Reset"
+msgstr "重置"
+
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:157
+msgid "Reset failed"
+msgstr "重置失败"
+
+#: ../../apps/mobile/app/forgot-password.tsx:61
 #: ../../apps/web/src/app/forgot-password/page.tsx:17
 #, fuzzy
 msgid "Reset password"
 msgstr "重置密码"
 
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:296
 #: ../../apps/web/src/app/(app)/settings/ResetWorkspaceSection.tsx:26
 #: ../../apps/web/src/app/(app)/settings/ResetWorkspaceSection.tsx:43
 #, fuzzy
 msgid "Reset workspace"
 msgstr "重置工作区"
+
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:142
+#, fuzzy
+msgid "Reset workspace?"
+msgstr "重置工作区？"
 
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:141
 msgid "Resets {draftResetDate}"
@@ -2916,6 +3374,8 @@ msgstr "亚军：<0>{0}</0> ({1}%)"
 msgid "Same as monthly"
 msgstr "与月付相同"
 
+#: ../../apps/mobile/src/components/EditNameSheet.tsx:66
+#: ../../apps/mobile/src/components/RenameWorkspaceSheet.tsx:74
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:538
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:650
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:29
@@ -2992,10 +3452,16 @@ msgstr "发送邀请"
 msgid "Send me a weekly reminder when my Amarnai inbox needs attention."
 msgstr "当我的 Amarnai 收件箱需要处理时，每周提醒我。"
 
+#: ../../apps/mobile/app/forgot-password.tsx:109
 #: ../../apps/web/src/app/forgot-password/page.tsx:43
 #, fuzzy
 msgid "Send reset link"
 msgstr "发送重置链接"
+
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:286
+#: ../../apps/mobile/src/components/BlacklistSheet.tsx:87
+msgid "Sender blacklist"
+msgstr "发件人黑名单"
 
 #: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:94
 #, fuzzy
@@ -3038,6 +3504,8 @@ msgstr "设置此工作区的语言，包括界面和 AI 生成的文件夹。"
 msgid "Setting up your workspace…"
 msgstr "正在设置您的工作区…"
 
+#: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:42
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:195
 #: ../../apps/web/src/components/Sidebar.tsx:96
 msgid "Settings"
 msgstr "设置"
@@ -3060,16 +3528,23 @@ msgstr "共享分类法"
 msgid "Shared taxonomy + review queue"
 msgstr "共享分类法 + 审阅队列"
 
+#: ../../apps/mobile/app/sign-in.tsx:133
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:24
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:78
 #, fuzzy
 msgid "Sign in"
 msgstr "登录"
 
+#: ../../apps/mobile/app/sign-in.tsx:85
+#, fuzzy
+msgid "Sign in to triage your inbox"
+msgstr "登录，高效管理收件箱"
+
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:336
 msgid "Sign in with Google. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
 msgstr "使用 Google 登录。Amarnai 会同步您的会话和标签。它绝不会代表您发送或删除邮件。"
 
+#: ../../apps/mobile/app/(app)/account.tsx:107
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:95
 #: ../../apps/web/src/app/verify-email/page.tsx:42
 #, fuzzy
@@ -3079,6 +3554,15 @@ msgstr "退出"
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:60
 msgid "Sign up with Google"
 msgstr "用 Google 注册"
+
+#: ../../apps/mobile/app/sign-in.tsx:51
+#, fuzzy
+msgid "Sign-in failed. Please try again."
+msgstr "登录失败。请重试。"
+
+#: ../../apps/mobile/app/sign-up.tsx:62
+msgid "Sign-up failed. Please try again."
+msgstr "注册失败。请重试。"
 
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:78
 #, fuzzy
@@ -3093,6 +3577,10 @@ msgstr "按工作区简单定价。免费体验，按需升级或创建更多工
 #: ../ui/src/i18n/taxonomy-template-messages.ts:76
 msgid "Social"
 msgstr "社交"
+
+#: ../../apps/mobile/app/(app)/subscription.tsx:213
+msgid "Something went wrong"
+msgstr "发生了一些错误"
 
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:79
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:85
@@ -3158,6 +3646,10 @@ msgstr "分类量"
 msgid "Sorting…"
 msgstr "正在排序…"
 
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:110
+msgid "Spam"
+msgstr "垃圾邮件"
+
 #: ../ui/src/pricing/planMessages.ts:94
 #, fuzzy
 msgid "Standard sorting"
@@ -3200,6 +3692,10 @@ msgstr "初创公司创始人"
 msgid "Stop sorting email.<0/><1>Sort it once.</1>"
 msgstr "别再手动分类邮件了。<0/><1>让它一次搞定。</1>"
 
+#: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:91
+msgid "Stops syncing and revokes Amarnai's access to this mailbox."
+msgstr "停止同步并撤销 Amarnai 对此邮箱的访问权限。"
+
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:110
 #, fuzzy
 msgid "Stops syncing and revokes Amarnai's access to this mailbox. Synced email data is kept so you can reconnect later."
@@ -3219,6 +3715,10 @@ msgstr "学生"
 msgid "Student loans, rent, bank statements, and financial aid notifications."
 msgstr "学生贷款、租金、银行账单和助学金通知。"
 
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:256
+#: ../../apps/mobile/app/(app)/subscription.tsx:222
+#: ../../apps/mobile/app/(app)/subscription.tsx:233
+#: ../../apps/mobile/app/(app)/subscription.tsx:266
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:98
 #, fuzzy
 msgid "Subscription"
@@ -3236,6 +3736,12 @@ msgstr "订阅已取消。{planLabel} 的访问权限将持续到 <0>{0}</0>。"
 msgid "Subscription will not renew. {planLabel} access ends on <0>{0}</0>."
 msgstr "订阅将不会续订。{planLabel} 的访问权限将于 <0>{0}</0> 结束。"
 
+#. placeholder {0}: formatDate(state.currentPeriodEnd)
+#: ../../apps/mobile/app/(app)/subscription.tsx:249
+#, fuzzy
+msgid "Subscription will not renew. Access ends {0}."
+msgstr "订阅将不会续订。访问权限将于 {0} 结束。"
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:93
 msgid "Subscriptions"
 msgstr "订阅"
@@ -3245,11 +3751,18 @@ msgstr "订阅"
 msgid "Support"
 msgstr "支持"
 
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:225
+msgid "Switch"
+msgstr "切换"
+
+#: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:39
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:70
 #, fuzzy
 msgid "Sync error"
 msgstr "同步错误"
 
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:279
+#: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:96
 #: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:50
 #, fuzzy
 msgid "Sync filters"
@@ -3264,6 +3777,7 @@ msgstr "2分钟前同步"
 msgid "Synced email data was erased."
 msgstr "已同步的邮件数据已清除。"
 
+#: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:38
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:69
 #, fuzzy
 msgid "Syncing…"
@@ -3394,10 +3908,18 @@ msgstr "此文件夹无法从收件箱访问，也不会用于路由。"
 msgid "This Gmail is also connected in {sharedNames}. Each workspace syncs and classifies it separately, which uses separate AI quota."
 msgstr "此 Gmail 也已连接到 {sharedNames}。每个工作区独立同步和分类，这将使用独立的 AI 配额。"
 
+#: ../../apps/mobile/app/(app)/subscription.tsx:285
+msgid "This month"
+msgstr "本月"
+
 #: ../../apps/web/src/app/not-found.tsx:29
 #, fuzzy
 msgid "This page wasn't found"
 msgstr "未找到此页面"
+
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:143
+msgid "This removes the Gmail connection, deletes all synced emails, and resets the plan to Inbox only. The workspace is kept. This cannot be undone."
+msgstr "此操作将移除 Gmail 连接，删除所有已同步的邮件，并将套餐重置为仅限收件箱。工作区将保留。此操作无法撤销。"
 
 #: ../ui/src/emails/RationaleCard.tsx:78
 #, fuzzy
@@ -3431,6 +3953,7 @@ msgstr "Amarnai 已成功路由到文件夹的会话。"
 msgid "Threads flagged for review — Amarnai wasn't confident enough to sort automatically."
 msgstr "标记待审阅的会话 — Amarnai 自动排序的信心不足。"
 
+#: ../../apps/mobile/src/components/BlacklistSheet.tsx:94
 #: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:101
 #, fuzzy
 msgid "Threads from these senders will never be imported or sorted by Amarnai."
@@ -3440,6 +3963,7 @@ msgstr "来自这些发件人的会话将永远不会被 Amarnai 导入或分类
 msgid "Threads Gmail has flagged as important."
 msgstr "Gmail 已标记为重要的会话。"
 
+#: ../../apps/mobile/app/(app)/subscription.tsx:288
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:196
 #, fuzzy
 msgid "Threads sorted"
@@ -3597,6 +4121,10 @@ msgstr "分类"
 msgid "Triage & review"
 msgstr "分类与审阅"
 
+#: ../ui/src/AppDownloadBanner.tsx:71
+msgid "Triage your inbox on the go."
+msgstr "随时随地，高效管理收件箱。"
+
 #: ../../apps/site/src/components/landing/HeroFeedCard.tsx:257
 #, fuzzy
 msgid "Triaging 412 threads"
@@ -3611,6 +4139,12 @@ msgstr "试用 Amarnai"
 #, fuzzy
 msgid "Tushratta of Mitanni"
 msgstr "米坦尼的图什拉塔"
+
+#: ../../apps/mobile/app/(app)/subscription.tsx:151
+#: ../../apps/mobile/app/(app)/subscription.tsx:156
+#, fuzzy
+msgid "Unavailable"
+msgstr "不可用"
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:46
 #: ../ui/src/emails/ThreadRow.tsx:112
@@ -3672,10 +4206,16 @@ msgstr "最多25个"
 msgid "Up to 25 collaborators"
 msgstr "最多25位协作成员"
 
+#: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:37
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:68
 #, fuzzy
 msgid "Up to date"
 msgstr "已是最新"
+
+#: ../../apps/mobile/app/(app)/account.tsx:55
+#: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:75
+msgid "Update failed"
+msgstr "更新失败"
 
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:137
 #, fuzzy
@@ -3740,6 +4280,10 @@ msgstr "在网页应用中升级您的订阅以启用回填。"
 msgid "Use \"Rescan inbox\" after changing filter settings to apply them to threads already in your inbox."
 msgstr "更改筛选器设置后，使用“重新扫描收件箱”将其应用于收件箱中已有的会话。"
 
+#: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:162
+msgid "Use \"Rescan inbox\" after changing filters to apply them to threads already in your inbox."
+msgstr "更改筛选器后，请使用“重新扫描收件箱”将其应用于收件箱中已有的会话。"
+
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:143
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:164
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:325
@@ -3771,6 +4315,15 @@ msgstr "供应商合同、工具、基础设施和日常运营沟通。"
 msgid "Verification email sent!"
 msgstr "验证邮件已发送！"
 
+#: ../../apps/mobile/app/verify-email.tsx:62
+#, fuzzy
+msgid "Verification email sent. Check your inbox."
+msgstr "验证邮件已发送。请检查您的收件箱。"
+
+#: ../../apps/mobile/app/verify-email.tsx:85
+msgid "Verify your email"
+msgstr "验证您的邮箱"
+
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:178
 #, fuzzy
 msgid "View draft reply"
@@ -3788,6 +4341,10 @@ msgstr "等待中"
 msgid "Waiting for first sync…"
 msgstr "等待首次同步…"
 
+#: ../../apps/mobile/app/verify-email.tsx:94
+msgid "Waiting for verification…"
+msgstr "等待验证…"
+
 #: ../../apps/web/src/app/admin/waitlist/WaitlistShell.tsx:20
 #, fuzzy
 msgid "Waitlist"
@@ -3797,16 +4354,29 @@ msgstr "候补名单"
 msgid "Wants {folderName}"
 msgstr "想要 {folderName}"
 
+#. placeholder {0}: user.email
+#: ../../apps/mobile/app/verify-email.tsx:88
+msgid "We sent a verification link to {0}. Open it to finish setting up your account."
+msgstr "我们已向 {0} 发送验证链接。请打开链接以完成账户设置。"
+
 #: ../../apps/web/src/app/verify-email/page.tsx:28
 #, fuzzy
 msgid "We sent a verification link to your email address. Click it to activate your account."
 msgstr "我们已向您的电子邮件地址发送了验证链接。点击它以激活您的帐户。"
+
+#: ../../apps/mobile/app/verify-email.tsx:89
+msgid "We sent you a verification link. Open it to finish setting up your account."
+msgstr "我们已向您发送验证链接。请打开链接以完成账户设置。"
 
 #. placeholder {0}: state.email
 #: ../../apps/web/src/app/sign-up/WaitlistForm.tsx:19
 #, fuzzy
 msgid "We'll send your invite to <0>{0}</0>."
 msgstr "我们将把您的邀请发送到 <0>{0}</0>。"
+
+#: ../../apps/mobile/app/(app)/account.tsx:134
+msgid "Weekly inbox reminder"
+msgstr "每周收件箱提醒"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:51
 #, fuzzy
@@ -3831,6 +4401,7 @@ msgstr "工作"
 msgid "Working Professional"
 msgstr "职场人士"
 
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:218
 #: ../ui/src/emails/ThreadListHeader.tsx:63
 #: ../ui/src/pricing/planMessages.ts:53
 msgid "Workspace"
@@ -3841,6 +4412,9 @@ msgstr "工作区"
 msgid "Workspace Details"
 msgstr "工作区详情"
 
+#: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:206
+#: ../../apps/mobile/src/components/RenameWorkspaceSheet.tsx:60
+#: ../../apps/mobile/src/components/RenameWorkspaceSheet.tsx:65
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:167
 #, fuzzy
 msgid "Workspace name"
@@ -3877,6 +4451,10 @@ msgstr "包含的工作区"
 #, fuzzy
 msgid "Writing draft reply…"
 msgstr "正在撰写回复草稿…"
+
+#: ../../apps/mobile/app/verify-email.tsx:116
+msgid "Wrong account? <0>Sign out</0>"
+msgstr "账户有误？<0>退出登录</0>"
 
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:123
 #, fuzzy
@@ -3984,6 +4562,7 @@ msgstr "你的 Gmail，依然是你的。"
 msgid "Your inbox is still importing. You can generate now from what's loaded so far, but regenerating once the import finishes will give a more accurate fit."
 msgstr "您的收件箱仍在导入中。您可以根据目前已加载的内容进行生成，但在导入完成后重新生成将获得更准确的结果。"
 
+#: ../../apps/mobile/src/components/EditNameSheet.tsx:56
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:61
 #, fuzzy
 msgid "Your name"
@@ -4003,6 +4582,10 @@ msgstr "你的方案是一个文件夹树（例如，一个客户文件夹下设
 msgid "Your subscription has been cancelled and your workspace has been downgraded to the free tier."
 msgstr "您的订阅已取消，您的工作区已降级到免费套餐。"
 
+#: ../../apps/mobile/app/(app)/subscription.tsx:117
+msgid "Your subscription stays active until the end of the current billing period, then downgrades to Free."
+msgstr "您的订阅将持续有效至当前计费周期结束，然后降级为免费版。"
+
 #. placeholder {0}: currentPeriodEnd.toLocaleDateString()
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:261
 #, fuzzy
@@ -4013,3 +4596,8 @@ msgstr "您的订阅将于当前账单周期结束时（{0}）取消。"
 #, fuzzy
 msgid "Your subscription will cancel at the end of the current billing period."
 msgstr "您的订阅将在当前账单周期结束时取消。"
+
+#: ../../apps/mobile/app/(app)/subscription.tsx:116
+#, fuzzy
+msgid "Your trial ends immediately and the workspace downgrades to Free."
+msgstr "您的试用将立即结束，工作区降级为免费版。"

@@ -11,12 +11,16 @@ import {
   View,
 } from 'react-native';
 import { Link } from 'expo-router';
+import { Trans } from '@lingui/react/macro';
+import { msg } from '@lingui/core/macro';
+import { useLingui } from '@lingui/react';
 import { colors } from '@amarnai/tokens';
 import { useSession } from '../src/auth/session';
 import { authStyles } from '../src/auth/authStyles';
 
 export default function ForgotPasswordScreen() {
   const { requestPasswordReset } = useSession();
+  const { i18n } = useLingui();
 
   const [email, setEmail] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -35,7 +39,7 @@ export default function ForgotPasswordScreen() {
       setSubmitted(true);
     } catch {
       // Only a network failure reaches here — the API itself always succeeds.
-      setError('Could not reach the server. Please check your connection and try again.');
+      setError(i18n._(msg`Could not reach the server. Please check your connection and try again.`));
     } finally {
       setSubmitting(false);
     }
@@ -54,29 +58,31 @@ export default function ForgotPasswordScreen() {
         keyboardDismissMode="interactive"
       >
         <View style={authStyles.form}>
-          <Text style={authStyles.heading}>Reset password</Text>
+          <Text style={authStyles.heading}><Trans>Reset password</Trans></Text>
 
           {submitted ? (
             <>
               <Text style={authStyles.subheading}>
-                If an account exists for that email, we&apos;ve sent a reset link. Open it to choose
-                a new password, then sign in.
+                <Trans>
+                  If an account exists for that email, we&apos;ve sent a reset link. Open it to choose
+                  a new password, then sign in.
+                </Trans>
               </Text>
               <Link href="/sign-in" style={authStyles.switchLink}>
                 <Text style={authStyles.switchText}>
-                  <Text style={authStyles.switchTextStrong}>Back to sign in</Text>
+                  <Text style={authStyles.switchTextStrong}><Trans>Back to sign in</Trans></Text>
                 </Text>
               </Link>
             </>
           ) : (
             <>
               <Text style={authStyles.subheading}>
-                Enter your email and we&apos;ll send you a link to reset your password.
+                <Trans>Enter your email and we&apos;ll send you a link to reset your password.</Trans>
               </Text>
 
               <TextInput
                 style={authStyles.input}
-                placeholder="Email"
+                placeholder={i18n._(msg`Email`)}
                 placeholderTextColor={colors.ink4}
                 autoCapitalize="none"
                 autoCorrect={false}
@@ -100,13 +106,13 @@ export default function ForgotPasswordScreen() {
                 {submitting ? (
                   <ActivityIndicator color={colors.surface} />
                 ) : (
-                  <Text style={authStyles.buttonText}>Send reset link</Text>
+                  <Text style={authStyles.buttonText}><Trans>Send reset link</Trans></Text>
                 )}
               </TouchableOpacity>
 
               <Link href="/sign-in" style={authStyles.switchLink} disabled={submitting}>
                 <Text style={authStyles.switchText}>
-                  Remembered it? <Text style={authStyles.switchTextStrong}>Sign in</Text>
+                  <Trans>Remembered it? <Text style={authStyles.switchTextStrong}>Sign in</Text></Trans>
                 </Text>
               </Link>
             </>

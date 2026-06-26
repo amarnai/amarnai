@@ -11,6 +11,10 @@ import {
   View,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { Trans } from '@lingui/react/macro';
+import { msg } from '@lingui/core/macro';
+import { useLingui } from '@lingui/react';
+import type { MessageDescriptor } from '@lingui/core';
 import type { BillingState, PlanId, BillingCycle } from '@amarnai/shared';
 import type { QuotaInfo } from '@amarnai/api-client';
 import { colors, fontSize, fontWeight, radii, space } from '@amarnai/tokens';
@@ -33,8 +37,8 @@ import { UsageRow } from '../../src/components/billing/UsageRow';
 import { PricingSheet } from '../../src/components/billing/PricingSheet';
 import { toUserMessage } from '../../src/errors';
 
-const PLAN_LABEL: Record<string, string> = { FREE: 'Free', PRO: 'Pro', BUSINESS: 'Business' };
-const CYCLE_LABEL: Record<string, string> = { MONTHLY: 'Monthly', ANNUAL: 'Annual' };
+const PLAN_LABEL: Record<string, MessageDescriptor> = { FREE: msg`Free`, PRO: msg`Pro`, BUSINESS: msg`Business` };
+const CYCLE_LABEL: Record<string, MessageDescriptor> = { MONTHLY: msg`Monthly`, ANNUAL: msg`Annual` };
 
 const formatDate = (iso: string) =>
   new Date(iso).toLocaleDateString('en', { month: 'short', day: 'numeric', year: 'numeric' });
@@ -43,6 +47,7 @@ type BannerKind = 'info' | 'warn' | 'error';
 
 export default function PlanScreen() {
   const router = useRouter();
+  const { i18n } = useLingui();
   const { workspaceId, client, refreshWorkspaces, workspaces } = useSession();
   // The session's plan for the active workspace updates when a checkout is
   // confirmed on foreground (SessionProvider); re-fetch billing state when it does.
@@ -71,7 +76,7 @@ export default function PlanScreen() {
       setState(billing);
       setLoadError(null);
     } catch (err) {
-      setLoadError(toUserMessage(err, 'Could not load billing'));
+      setLoadError(toUserMessage(err, i18n._(msg`Could not load billing`)));
     } finally {
       setLoading(false);
     }
@@ -106,14 +111,14 @@ export default function PlanScreen() {
   function confirmCancel() {
     if (!workspaceId) return;
     Alert.alert(
-      'Cancel subscription?',
+      i18n._(msg`Cancel subscription?`),
       state?.trialEndsAt && new Date(state.trialEndsAt) > new Date()
-        ? 'Your trial ends immediately and the workspace downgrades to Free.'
-        : 'Your subscription stays active until the end of the current billing period, then downgrades to Free.',
+        ? i18n._(msg`Your trial ends immediately and the workspace downgrades to Free.`)
+        : i18n._(msg`Your subscription stays active until the end of the current billing period, then downgrades to Free.`),
       [
-        { text: 'Keep subscription', style: 'cancel' },
+        { text: i18n._(msg`Keep subscription`), style: 'cancel' },
         {
-          text: 'Cancel subscription',
+          text: i18n._(msg`Cancel subscription`),
           style: 'destructive',
           onPress: () => {
             void (async () => {
@@ -121,12 +126,12 @@ export default function PlanScreen() {
               try {
                 const res = await cancelSubscription(workspaceId);
                 if (!res.ok) {
-                  Alert.alert('Could not cancel', res.data.error ?? 'Please try again.');
+                  Alert.alert(i18n._(msg`Could not cancel`), res.data.error ?? i18n._(msg`Please try again.`));
                   return;
                 }
                 await afterChange();
               } catch (err) {
-                Alert.alert('Could not cancel', toUserMessage(err, 'Please try again.'));
+                Alert.alert(i18n._(msg`Could not cancel`), toUserMessage(err, i18n._(msg`Please try again.`)));
               } finally {
                 setBusy(false);
               }
@@ -143,12 +148,12 @@ export default function PlanScreen() {
     try {
       const res = await createPortalSession(workspaceId);
       if (!res.ok || !res.data.url) {
-        Alert.alert('Unavailable', res.data.error ?? 'Could not open billing management.');
+        Alert.alert(i18n._(msg`Unavailable`), res.data.error ?? i18n._(msg`Could not open billing management.`));
         return;
       }
       await Linking.openURL(res.data.url);
     } catch (err) {
-      Alert.alert('Unavailable', toUserMessage(err, 'Could not open billing management.'));
+      Alert.alert(i18n._(msg`Unavailable`), toUserMessage(err, i18n._(msg`Could not open billing management.`)));
     } finally {
       setBusy(false);
     }
@@ -181,7 +186,7 @@ export default function PlanScreen() {
           workspaceId,
         });
         if (!res.ok) {
-          Alert.alert('Could not upgrade', res.data.error ?? 'Please try again.');
+          Alert.alert(i18n._(msg`Could not upgrade`), res.data.error ?? i18n._(msg`Please try again.`));
           return;
         }
         setPricingOpen(false);
@@ -198,14 +203,14 @@ export default function PlanScreen() {
         // In-app downgrade / cycle change.
         const res = await changePlan({ workspaceId, plan: action.plan, cycle: action.cycle });
         if (!res.ok) {
-          Alert.alert('Could not change subscription', res.data.error ?? 'Please try again.');
+          Alert.alert(i18n._(msg`Could not change subscription`), res.data.error ?? i18n._(msg`Please try again.`));
           return;
         }
         setPricingOpen(false);
         await afterChange();
       }
     } catch (err) {
-      Alert.alert('Something went wrong', toUserMessage(err, 'Please try again.'));
+      Alert.alert(i18n._(msg`Something went wrong`), toUserMessage(err, i18n._(msg`Please try again.`)));
     } finally {
       setBusy(false);
     }
@@ -214,7 +219,7 @@ export default function PlanScreen() {
   if (loading) {
     return (
       <ScreenContainer>
-        <BackHeader title="Subscription" onBack={() => router.back()} />
+        <BackHeader title={i18n._(msg`Subscription`)} onBack={() => router.back()} />
         <CenterView>
           <ActivityIndicator color={colors.accent} />
         </CenterView>
@@ -225,9 +230,9 @@ export default function PlanScreen() {
   if (loadError || !state) {
     return (
       <ScreenContainer>
-        <BackHeader title="Subscription" onBack={() => router.back()} />
+        <BackHeader title={i18n._(msg`Subscription`)} onBack={() => router.back()} />
         <CenterView>
-          <Text style={styles.muted}>{loadError ?? 'Could not load billing.'}</Text>
+          <Text style={styles.muted}>{loadError ?? i18n._(msg`Could not load billing.`)}</Text>
         </CenterView>
       </ScreenContainer>
     );
@@ -236,27 +241,29 @@ export default function PlanScreen() {
   const isTrialing = state.trialEndsAt !== null && new Date(state.trialEndsAt) > new Date();
   const banners: { kind: BannerKind; text: string }[] = [];
   if (state.paymentFailed) {
-    banners.push({ kind: 'error', text: 'Payment failed. Update your payment method to keep access.' });
+    banners.push({ kind: 'error', text: i18n._(msg`Payment failed. Update your payment method to keep access.`) });
   }
   if (state.cancelAtPeriodEnd && state.currentPeriodEnd) {
     banners.push({
       kind: 'warn',
-      text: `Subscription will not renew. Access ends ${formatDate(state.currentPeriodEnd)}.`,
+      text: i18n._(msg`Subscription will not renew. Access ends ${formatDate(state.currentPeriodEnd)}.`),
     });
   } else if (isTrialing && state.trialEndsAt) {
-    banners.push({ kind: 'info', text: `Free trial until ${formatDate(state.trialEndsAt)}.` });
+    banners.push({ kind: 'info', text: i18n._(msg`Free trial until ${formatDate(state.trialEndsAt)}.`) });
   } else if (state.currentPeriodEnd && state.plan !== 'FREE') {
-    banners.push({ kind: 'info', text: `Renews ${formatDate(state.currentPeriodEnd)}.` });
+    banners.push({ kind: 'info', text: i18n._(msg`Renews ${formatDate(state.currentPeriodEnd)}.`) });
   }
 
-  const planLabel = PLAN_LABEL[state.plan] ?? state.plan;
-  const cycleLabel = state.billingCycle ? CYCLE_LABEL[state.billingCycle] : null;
+  const planDescriptor = PLAN_LABEL[state.plan];
+  const planLabel = planDescriptor ? i18n._(planDescriptor) : state.plan;
+  const cycleDescriptor = state.billingCycle ? CYCLE_LABEL[state.billingCycle] : undefined;
+  const cycleLabel = cycleDescriptor ? i18n._(cycleDescriptor) : null;
   const canManage = state.isOwner;
   const showCancel = canManage && state.hasSubscription && !state.cancelAtPeriodEnd;
 
   return (
     <ScreenContainer>
-      <BackHeader title="Subscription" onBack={() => router.back()} />
+      <BackHeader title={i18n._(msg`Subscription`)} onBack={() => router.back()} />
 
       <ScrollView contentContainerStyle={styles.content}>
         {banners.map((b) => (
@@ -266,7 +273,7 @@ export default function PlanScreen() {
         ))}
 
         <View style={styles.planRow}>
-          <Text style={styles.planRowLabel}>Current subscription</Text>
+          <Text style={styles.planRowLabel}><Trans>Current subscription</Trans></Text>
           <View style={styles.planBadge}>
             <Text style={styles.planBadgeText}>
               {planLabel}
@@ -275,25 +282,25 @@ export default function PlanScreen() {
           </View>
         </View>
 
-        <SectionTitle>This month</SectionTitle>
+        <SectionTitle><Trans>This month</Trans></SectionTitle>
         <View style={styles.usage}>
-          <UsageRow label="AI drafts" quota={draftQuota} />
-          <UsageRow label="Threads sorted" quota={threadSortQuota} />
+          <UsageRow label={i18n._(msg`AI drafts`)} quota={draftQuota} />
+          <UsageRow label={i18n._(msg`Threads sorted`)} quota={threadSortQuota} />
         </View>
 
         {canManage ? (
           <>
-            <SectionTitle>Manage</SectionTitle>
+            <SectionTitle><Trans>Manage</Trans></SectionTitle>
             <SettingsGroup>
               <SettingsRow onPress={() => setPricingOpen(true)} disabled={busy}>
                 <Ionicons name="swap-horizontal-outline" size={20} color={colors.ink3} />
-                <Text style={styles.rowLabel}>Change subscription</Text>
+                <Text style={styles.rowLabel}><Trans>Change subscription</Trans></Text>
                 <Ionicons name="chevron-forward" size={18} color={colors.ink4} />
               </SettingsRow>
               {state.hasSubscription ? (
                 <SettingsRow divider onPress={() => void handleManagePayment()} disabled={busy}>
                   <Ionicons name="card-outline" size={20} color={colors.ink3} />
-                  <Text style={styles.rowLabel}>Manage payment method</Text>
+                  <Text style={styles.rowLabel}><Trans>Manage payment method</Trans></Text>
                   <Ionicons name="open-outline" size={16} color={colors.ink4} />
                 </SettingsRow>
               ) : null}
@@ -301,12 +308,12 @@ export default function PlanScreen() {
 
             {showCancel ? (
               <>
-                <SectionTitle danger>Danger zone</SectionTitle>
+                <SectionTitle danger><Trans>Danger zone</Trans></SectionTitle>
                 <SettingsGroup>
                   <SettingsRow onPress={confirmCancel} disabled={busy}>
                     <Ionicons name="close-circle-outline" size={20} color={colors.danger} />
                     <Text style={[styles.rowLabel, styles.rowLabelGrow, styles.dangerLabel]}>
-                      Cancel subscription
+                      <Trans>Cancel subscription</Trans>
                     </Text>
                     <Ionicons name="chevron-forward" size={18} color={colors.danger} />
                   </SettingsRow>
@@ -315,7 +322,7 @@ export default function PlanScreen() {
             ) : null}
           </>
         ) : (
-          <Text style={styles.muted}>Only the workspace owner can manage billing.</Text>
+          <Text style={styles.muted}><Trans>Only the workspace owner can manage billing.</Trans></Text>
         )}
       </ScrollView>
 

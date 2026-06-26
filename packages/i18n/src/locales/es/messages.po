@@ -35,6 +35,17 @@ msgstr "{0, plural, one {# archivo} other {# archivos}}"
 msgid "{0, plural, one {# message} other {# messages}}"
 msgstr "{0, plural, one {# mensaje} other {# mensajes}}"
 
+#. placeholder {0}: members.length
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:126
+#, fuzzy
+msgid "{0, plural, one {# person} other {# people}}"
+msgstr "{0, plural, one {# persona} other {# personas}}"
+
+#. placeholder {0}: member.user.name ?? member.user.email
+#: ../../apps/mobile/src/components/CollaboratorsSheet.tsx:47
+msgid "{0} (You)"
+msgstr "{0} (Tú)"
+
 #. placeholder {0}: threadSortQuota.used
 #. placeholder {1}: threadSortQuota.limit
 #. placeholder {2}: new Date(threadSortQuota.resetsAt).toLocaleDateString("en", { month: "short", day: "numeric", timeZone: "UTC" })
@@ -64,6 +75,10 @@ msgstr "{0} de {1} cargados"
 #: ../ui/src/emails/SuggestedDraftCard.tsx:98
 msgid "{0} of {1} remaining · resets {quotaResetDate}"
 msgstr "{0} de {1} restantes · se reinicia {quotaResetDate}"
+
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:108
+msgid "{blacklistCount, plural, one {# blocked} other {# blocked}}"
+msgstr "{blacklistCount, plural, one {# bloqueado} other {# bloqueados}}"
 
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:489
 #, fuzzy
@@ -169,6 +184,25 @@ msgstr "+ Nuevo espacio de trabajo"
 #, fuzzy
 msgid "${price}/mo"
 msgstr "${price}/mes"
+
+#: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:52
+#, fuzzy
+msgid "$10/mo"
+msgstr "$10/mes"
+
+#: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:52
+#, fuzzy
+msgid "$12/mo"
+msgstr "$12/mes"
+
+#: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:45
+#, fuzzy
+msgid "$4/mo"
+msgstr "$4/mes"
+
+#: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:45
+msgid "$5/mo"
+msgstr "$5/mes"
 
 #: ../ui/src/pricing/planMessages.ts:82
 #, fuzzy
@@ -311,6 +345,10 @@ msgstr "El acceso se concede a esa cuenta exacta de Google, así que si no es la
 msgid "Access was denied. Grant read-only Gmail access to connect."
 msgstr "Acceso denegado. Concede acceso de solo lectura a Gmail para conectar."
 
+#: ../../apps/mobile/app/(app)/account.tsx:90
+msgid "Account"
+msgstr "Cuenta"
+
 #: ../../apps/web/src/app/(app)/account/page.tsx:18
 #, fuzzy
 msgid "Account Settings"
@@ -326,6 +364,7 @@ msgstr "Acme Workspace"
 msgid "Active project communication, deliverables, feedback, and approvals from clients."
 msgstr "Comunicación activa de proyectos, entregables, comentarios y aprobaciones de clientes."
 
+#: ../../apps/mobile/src/components/BlacklistSheet.tsx:118
 #: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:124
 #, fuzzy
 msgid "Add"
@@ -340,6 +379,7 @@ msgstr "Añade al menos 3 carpetas conectadas para exportar"
 #~ msgid "Add Folder"
 #~ msgstr ""
 
+#: ../../apps/mobile/src/components/CollaboratorsSheet.tsx:58
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:42
 #: ../ui/src/i18n/taxonomy-template-messages.ts:28
 #, fuzzy
@@ -361,6 +401,7 @@ msgstr "Avanzado"
 msgid "Advanced review queue"
 msgstr "Cola de revisión avanzada"
 
+#: ../../apps/mobile/app/(app)/subscription.tsx:287
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:185
 #: ../ui/src/pricing/planMessages.ts:65
 msgid "AI drafts"
@@ -422,11 +463,13 @@ msgstr "Todos tus espacios de trabajo, correos electrónicos y configuraciones s
 msgid "Alliance proposal: house of Amurru"
 msgstr "Propuesta de alianza: casa de Amurru"
 
+#: ../../apps/mobile/app/sign-up.tsx:166
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:63
 #, fuzzy
 msgid "Already have an account? <0>Sign in</0>"
 msgstr "¿Ya tienes una cuenta? <0>Inicia sesión</0>"
 
+#: ../../apps/mobile/src/components/BlacklistSheet.tsx:54
 #: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:37
 #, fuzzy
 msgid "Already in the list."
@@ -442,6 +485,11 @@ msgstr "¿Ya invitado? <0>Inicia sesión</0>"
 #, fuzzy
 msgid "Also erase synced email data"
 msgstr "También borrar los datos de correo electrónico sincronizados"
+
+#: ../ui/src/AppDownloadBanner.tsx:68
+#, fuzzy
+msgid "Amarnai for Android"
+msgstr "Amarnai para Android"
 
 #: ../../apps/site/src/components/landing/Nav.tsx:31
 msgid "Amarnai home"
@@ -489,12 +537,14 @@ msgstr "Analizando tu bandeja de entrada y creando un plan…"
 msgid "Analyzing your inbox and building a plan… this can take a moment."
 msgstr "Analizando tu bandeja de entrada y creando un plan… esto puede tardar un momento."
 
+#: ../../apps/mobile/app/(app)/subscription.tsx:41
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:36
 #: ../ui/src/PricingPlans.tsx:119
 #, fuzzy
 msgid "Annual"
 msgstr "Anual"
 
+#: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:233
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:192
 #, fuzzy
 msgid "Annual · Save 20%"
@@ -558,6 +608,7 @@ msgstr "Aprobar enrutamiento"
 msgid "At least 8 characters"
 msgstr "Al menos 8 caracteres"
 
+#: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:127
 #: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:82
 #, fuzzy
 msgid "Auto-file notifications to Updates / Other"
@@ -603,6 +654,7 @@ msgstr "Volver"
 msgid "Back to list"
 msgstr "Volver a la lista"
 
+#: ../../apps/mobile/app/forgot-password.tsx:73
 #: ../../apps/web/src/app/forgot-password/page.tsx:50
 #, fuzzy
 msgid "Back to sign in"
@@ -685,6 +737,9 @@ msgstr "Oficina Real de Nombramientos"
 msgid "Burna-Buriash II"
 msgstr "Burna-Buriash II"
 
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:39
+#: ../../apps/mobile/app/(app)/subscription.tsx:40
+#: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:50
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:31
 #: ../ui/src/pricing/planMessages.ts:22
 #, fuzzy
@@ -714,6 +769,11 @@ msgstr "¿Puede Amarnai clasificar mi bandeja de entrada existente, no solo el c
 msgid "Can I self-host Amarnai?"
 msgstr "¿Puedo autoalojar Amarnai?"
 
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:145
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:172
+#: ../../apps/mobile/app/(app)/account.tsx:67
+#: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:93
+#: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:245
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:130
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:527
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:541
@@ -738,10 +798,16 @@ msgstr "Cancelar"
 msgid "Cancel invitation for {0}"
 msgstr "Cancelar invitación para {0}"
 
+#: ../../apps/mobile/app/(app)/subscription.tsx:121
+#: ../../apps/mobile/app/(app)/subscription.tsx:316
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:251
 #, fuzzy
 msgid "Cancel subscription"
 msgstr "Cancelar suscripción"
+
+#: ../../apps/mobile/app/(app)/subscription.tsx:114
+msgid "Cancel subscription?"
+msgstr "¿Cancelar suscripción?"
 
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:294
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:182
@@ -749,10 +815,19 @@ msgstr "Cancelar suscripción"
 msgid "Cancelling…"
 msgstr "Cancelando…"
 
+#: ../../apps/mobile/app/(app)/subscription.tsx:297
+msgid "Change subscription"
+msgstr "Cambiar suscripción"
+
 #: ../../apps/web/src/app/verify-email/page.tsx:26
 #, fuzzy
 msgid "Check your inbox"
 msgstr "Revisa tu bandeja de entrada"
+
+#. placeholder {0}: err.message
+#: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:143
+msgid "Checkout failed: {0}"
+msgstr "Pago fallido: {0}"
 
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:635
 #, fuzzy
@@ -805,6 +880,8 @@ msgstr "Cerrar panel"
 msgid "Close preview"
 msgstr "Cerrar vista previa"
 
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:249
+#: ../../apps/mobile/src/components/CollaboratorsSheet.tsx:36
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:207
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:131
 #: ../ui/src/pricing/planMessages.ts:62
@@ -840,7 +917,16 @@ msgstr "Confirmar cancelación"
 msgid "Confirm Delete"
 msgstr "Confirmar eliminación"
 
+#: ../../apps/mobile/app/sign-up.tsx:131
+msgid "Confirm password"
+msgstr "Confirmar contraseña"
+
+#: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:170
+msgid "Connect a Gmail inbox to configure sync filters."
+msgstr "Conecta una bandeja de entrada de Gmail para configurar los filtros de sincronización."
+
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
+#: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:334
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:268
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:53
@@ -891,6 +977,7 @@ msgstr "Conecta tu bandeja de entrada de Gmail"
 msgid "Connection failed. Please try again."
 msgstr "Error de conexión. Inténtalo de nuevo."
 
+#: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:156
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:100
 #, fuzzy
 msgid "Continue to checkout"
@@ -900,6 +987,7 @@ msgstr "Continuar a la compra"
 msgid "Continue to payment"
 msgstr "Continuar al pago"
 
+#: ../../apps/mobile/src/auth/GoogleSignInButton.tsx:28
 #: ../../apps/web/src/components/GoogleButton.tsx:20
 #, fuzzy
 msgid "Continue with Google"
@@ -913,6 +1001,10 @@ msgstr "Contratos"
 #: ../ui/src/i18n/taxonomy-template-messages.ts:61
 msgid "Contracts, banking, accounting, tax filings, and corporate legal correspondence."
 msgstr "Contratos, banca, contabilidad, declaraciones de impuestos y correspondencia legal corporativa."
+
+#: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:99
+msgid "Controls which Gmail threads are imported. Trash is always excluded."
+msgstr "Controla qué conversaciones de Gmail se importan. La papelera siempre está excluida."
 
 #: ../ui/src/emails/SuggestedDraftCard.tsx:57
 #, fuzzy
@@ -928,20 +1020,116 @@ msgstr "Copiar"
 msgid "Could not access your Gmail inbox. Make sure the Gmail API is enabled and the gmail.readonly scope is added to the OAuth consent screen in Google Cloud Console."
 msgstr "No se pudo acceder a tu bandeja de entrada de Gmail. Asegúrate de que la API de Gmail esté habilitada y el ámbito gmail.readonly esté añadido a la pantalla de consentimiento de OAuth en Google Cloud Console."
 
+#: ../../apps/mobile/src/components/BlacklistSheet.tsx:66
 #: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:59
 #, fuzzy
 msgid "Could not add email. Please try again."
 msgstr "No se pudo añadir el correo electrónico. Inténtalo de nuevo."
 
+#: ../../apps/mobile/app/(app)/subscription.tsx:129
+#: ../../apps/mobile/app/(app)/subscription.tsx:134
+#, fuzzy
+msgid "Could not cancel"
+msgstr "No se pudo cancelar"
+
+#: ../../apps/mobile/app/(app)/subscription.tsx:206
+#, fuzzy
+msgid "Could not change subscription"
+msgstr "No se pudo cambiar la suscripción"
+
+#: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:113
+#, fuzzy
+msgid "Could not create workspace. Please try again."
+msgstr "No se pudo crear el espacio de trabajo. Inténtalo de nuevo."
+
+#: ../../apps/mobile/app/(app)/account.tsx:79
+#, fuzzy
+msgid "Could not delete account. Please try again."
+msgstr "No se pudo eliminar la cuenta. Inténtalo de nuevo."
+
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:184
+#, fuzzy
+msgid "Could not delete workspace"
+msgstr "No se pudo eliminar el espacio de trabajo"
+
+#: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:82
+#, fuzzy
+msgid "Could not disconnect Gmail. Please try again."
+msgstr "No se pudo desconectar Gmail. Inténtalo de nuevo."
+
+#: ../../apps/mobile/app/(app)/subscription.tsx:79
+#, fuzzy
+msgid "Could not load billing"
+msgstr "No se pudo cargar la facturación"
+
+#: ../../apps/mobile/app/(app)/subscription.tsx:235
+#, fuzzy
+msgid "Could not load billing."
+msgstr "No se pudo cargar la facturación."
+
+#: ../../apps/mobile/app/(app)/subscription.tsx:151
+#: ../../apps/mobile/app/(app)/subscription.tsx:156
+msgid "Could not open billing management."
+msgstr "No se pudo abrir la gestión de facturación."
+
+#: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:89
 #: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:108
 #, fuzzy
 msgid "Could not queue rescan. Please try again."
 msgstr "No se pudo poner en cola el nuevo escaneo. Inténtalo de nuevo."
 
+#: ../../apps/mobile/app/forgot-password.tsx:42
+msgid "Could not reach the server. Please check your connection and try again."
+msgstr "No se pudo conectar con el servidor. Revisa tu conexión e inténtalo de nuevo."
+
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1146
 #, fuzzy
 msgid "Could not read file: invalid JSON."
 msgstr "No se pudo leer el archivo: JSON no válido."
+
+#: ../../apps/mobile/src/components/RenameWorkspaceSheet.tsx:53
+#, fuzzy
+msgid "Could not rename workspace. Please try again."
+msgstr "No se pudo renombrar el espacio de trabajo. Inténtalo de nuevo."
+
+#: ../../apps/mobile/app/verify-email.tsx:66
+msgid "Could not resend the email. Please try again."
+msgstr "No se pudo reenviar el correo electrónico. Inténtalo de nuevo."
+
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:157
+#, fuzzy
+msgid "Could not reset workspace"
+msgstr "No se pudo restablecer el espacio de trabajo"
+
+#: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:75
+#, fuzzy
+msgid "Could not save filter setting. Please try again."
+msgstr "No se pudo guardar la configuración del filtro. Inténtalo de nuevo."
+
+#. placeholder {0}: res.status
+#: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:130
+#, fuzzy
+msgid "Could not start checkout ({0}). Please try again."
+msgstr "No se pudo iniciar el pago ({0}). Inténtalo de nuevo."
+
+#: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:144
+#, fuzzy
+msgid "Could not start checkout. Please try again."
+msgstr "No se pudo iniciar el pago. Inténtalo de nuevo."
+
+#: ../../apps/mobile/src/components/EditNameSheet.tsx:44
+#, fuzzy
+msgid "Could not update name. Please try again."
+msgstr "No se pudo actualizar el nombre. Inténtalo de nuevo."
+
+#: ../../apps/mobile/app/(app)/account.tsx:55
+#, fuzzy
+msgid "Could not update your reminder setting."
+msgstr "No se pudo actualizar tu configuración de recordatorios."
+
+#: ../../apps/mobile/app/(app)/subscription.tsx:189
+msgid "Could not upgrade"
+msgstr "No se pudo actualizar"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:54
 #, fuzzy
@@ -977,16 +1165,22 @@ msgstr "Crear un nuevo espacio de trabajo"
 msgid "Create a workspace"
 msgstr "Crear un espacio de trabajo"
 
+#: ../../apps/mobile/app/sign-up.tsx:154
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:52
 #, fuzzy
 msgid "Create account"
 msgstr "Crear cuenta"
+
+#: ../../apps/mobile/app/sign-up.tsx:94
+msgid "Create an account to triage your inbox"
+msgstr "Crea una cuenta para organizar tu bandeja de entrada."
 
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:400
 #, fuzzy
 msgid "Create Folder"
 msgstr "Crear carpeta"
 
+#: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:155
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:99
 #, fuzzy
 msgid "Create workspace"
@@ -1002,6 +1196,7 @@ msgstr "Crea tu cuenta"
 msgid "Creating account…"
 msgstr "Creando cuenta…"
 
+#: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:152
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:96
 #, fuzzy
 msgid "Creating…"
@@ -1015,6 +1210,7 @@ msgstr "Creando…"
 msgid "Current"
 msgstr "Actual"
 
+#: ../../apps/mobile/app/(app)/subscription.tsx:276
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:166
 #: ../ui/src/PricingPlans.tsx:187
 #, fuzzy
@@ -1037,15 +1233,25 @@ msgstr "Soporte al cliente, incorporación, comentarios de productos, rotación 
 msgid "Customers"
 msgstr "Clientes"
 
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:292
+#: ../../apps/mobile/app/(app)/account.tsx:146
+#: ../../apps/mobile/app/(app)/subscription.tsx:311
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:101
 #, fuzzy
 msgid "Danger zone"
 msgstr "Zona de peligro"
 
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:117
+#, fuzzy
+msgid "Default"
+msgstr "Predeterminado"
+
 #: ../ui/src/pricing/planMessages.ts:77
 msgid "Default free workspace"
 msgstr "Espacio de trabajo gratuito predeterminado"
 
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:174
+#: ../../apps/mobile/app/(app)/account.tsx:69
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:557
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:568
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:662
@@ -1053,17 +1259,34 @@ msgstr "Espacio de trabajo gratuito predeterminado"
 msgid "Delete"
 msgstr "Eliminar"
 
+#: ../../apps/mobile/app/(app)/account.tsx:151
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:114
 #, fuzzy
 msgid "Delete account"
 msgstr "Eliminar cuenta"
 
+#: ../../apps/mobile/app/(app)/account.tsx:64
+#, fuzzy
+msgid "Delete account?"
+msgstr "¿Eliminar cuenta?"
+
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:184
+#: ../../apps/mobile/app/(app)/account.tsx:79
+msgid "Delete failed"
+msgstr "Eliminación fallida"
+
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:301
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:26
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:42
 #, fuzzy
 msgid "Delete workspace"
 msgstr "Eliminar espacio de trabajo"
 
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:169
+msgid "Delete workspace?"
+msgstr "¿Eliminar espacio de trabajo?"
+
+#: ../../apps/mobile/app/(app)/account.tsx:151
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:123
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:519
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:56
@@ -1085,6 +1308,7 @@ msgstr "Describe tus carpetas"
 msgid "Description"
 msgstr "Descripción"
 
+#: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:137
 #: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:85
 #, fuzzy
 msgid "Detected notifications, newsletters, and service updates are filed to your catch-all folder without using AI. Requires the <0>Updates / Other</0> folder from a taxonomy template."
@@ -1096,10 +1320,35 @@ msgstr "Las notificaciones, boletines y actualizaciones de servicio detectados s
 msgid "Discard"
 msgstr "Descartar"
 
+#: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:94
+#, fuzzy
+msgid "Disconnect"
+msgstr "Desconectar"
+
+#: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:96
+#, fuzzy
+msgid "Disconnect & erase data"
+msgstr "Desconectar y borrar datos"
+
+#: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:82
+msgid "Disconnect failed"
+msgstr "Desconexión fallida"
+
+#: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:170
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:178
 #, fuzzy
 msgid "Disconnect Gmail"
 msgstr "Desconectar Gmail"
+
+#: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:90
+#, fuzzy
+msgid "Disconnect Gmail?"
+msgstr "¿Desconectar Gmail?"
+
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:101
+#: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:114
+msgid "Disconnected"
+msgstr "Desconectado"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:226
 #, fuzzy
@@ -1140,6 +1389,7 @@ msgstr "Desconecta este espacio de trabajo. Amarnai mantiene el acceso porque es
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:48
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:295
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:52
+#: ../ui/src/AppDownloadBanner.tsx:80
 msgid "Dismiss"
 msgstr "Descartar"
 
@@ -1148,6 +1398,7 @@ msgstr "Descartar"
 #~ msgid "Display language"
 #~ msgstr "Idioma de visualización"
 
+#: ../../apps/mobile/src/components/EditNameSheet.tsx:51
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:53
 #, fuzzy
 msgid "Display name"
@@ -1165,6 +1416,10 @@ msgstr "Médicos, farmacias, citas médicas, reclamaciones de seguro médico y r
 #: ../../apps/site/src/components/landing/Footer.tsx:33
 msgid "Documentation"
 msgstr "Documentación"
+
+#: ../../apps/mobile/app/sign-in.tsx:145
+msgid "Don't have an account? <0>Create one</0>"
+msgstr "¿No tienes cuenta? <0>Crea una</0>"
 
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:91
 #, fuzzy
@@ -1251,6 +1506,10 @@ msgstr "Editar carpeta"
 msgid "Edit Path"
 msgstr "Editar ruta"
 
+#: ../../apps/mobile/app/(app)/account.tsx:124
+#: ../../apps/mobile/app/forgot-password.tsx:85
+#: ../../apps/mobile/app/sign-in.tsx:89
+#: ../../apps/mobile/app/sign-up.tsx:98
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:68
 #: ../../apps/web/src/app/forgot-password/page.tsx:30
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:46
@@ -1278,6 +1537,11 @@ msgstr "Organizador de correo"
 msgid "Email reminders"
 msgstr "Recordatorios por correo electrónico"
 
+#: ../../apps/mobile/app/verify-email.tsx:109
+#, fuzzy
+msgid "Email sent"
+msgstr "Correo enviado"
+
 #: ../ui/src/pricing/planMessages.ts:99
 msgid "Email support"
 msgstr "Soporte por correo electrónico"
@@ -1287,6 +1551,7 @@ msgstr "Soporte por correo electrónico"
 msgid "Email verified! Sign in to continue."
 msgstr "¡Correo electrónico verificado! Inicia sesión para continuar."
 
+#: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:28
 #: ../../apps/web/src/components/Sidebar.tsx:86
 #, fuzzy
 msgid "Emails"
@@ -1321,10 +1586,15 @@ msgstr "Matrícula, tasas de matrícula, solicitudes de alojamiento y administra
 msgid "Enter a valid email address"
 msgstr "Introduce una dirección de correo electrónico válida"
 
+#: ../../apps/mobile/src/components/BlacklistSheet.tsx:50
 #: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:33
 #, fuzzy
 msgid "Enter a valid email address."
 msgstr "Introduce una dirección de correo electrónico válida."
+
+#: ../../apps/mobile/app/forgot-password.tsx:80
+msgid "Enter your email and we'll send you a link to reset your password."
+msgstr "Introduce tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña."
 
 #: ../../apps/web/src/app/forgot-password/page.tsx:18
 #, fuzzy
@@ -1519,6 +1789,7 @@ msgstr "Para consultores independientes y freelancers que gestionan clientes, pr
 msgid "For individuals managing finances, health, home, family, and personal subscriptions."
 msgstr "Para individuos que gestionan finanzas, salud, hogar, familia y suscripciones personales."
 
+#: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:38
 #: ../ui/src/pricing/planMessages.ts:25
 #, fuzzy
 msgid "For individuals trying Amarnai on their own inbox."
@@ -1529,6 +1800,11 @@ msgstr "Para individuos que prueban Amarnai en su propia bandeja de entrada."
 msgid "For larger organizations and higher-volume teams."
 msgstr "Para organizaciones más grandes y equipos con alto volumen."
 
+#: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:51
+#, fuzzy
+msgid "For larger organizations."
+msgstr "Para organizaciones más grandes."
+
 #: ../../apps/site/src/components/demo/demo-seed.ts:260
 msgid "For many years our houses have been as brothers. I write now to propose that we formalise this friendship for the benefit of both our peoples."
 msgstr "Durante muchos años, nuestras casas han sido como hermanas. Escribo ahora para proponer que formalicemos esta amistad para beneficio de ambos pueblos."
@@ -1538,15 +1814,24 @@ msgstr "Durante muchos años, nuestras casas han sido como hermanas. Escribo aho
 msgid "For power users and small businesses who live in their inbox."
 msgstr "Para usuarios avanzados y pequeñas empresas que viven en su bandeja de entrada."
 
+#: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:44
+#, fuzzy
+msgid "For power users and small businesses."
+msgstr "Para usuarios avanzados y pequeñas empresas."
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:66
 msgid "For students balancing university, internship applications, and everyday life."
 msgstr "Para estudiantes que equilibran la universidad, solicitudes de prácticas y la vida cotidiana."
 
+#: ../../apps/mobile/app/sign-in.tsx:120
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:64
 #, fuzzy
 msgid "Forgot password?"
 msgstr "¿Olvidaste tu contraseña?"
 
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:37
+#: ../../apps/mobile/app/(app)/subscription.tsx:40
+#: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:39
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:45
 #: ../ui/src/PricingPlans.tsx:149
 #: ../ui/src/PricingPlans.tsx:380
@@ -1557,6 +1842,11 @@ msgstr "Gratis"
 #: ../ui/src/PricingPlans.tsx:151
 msgid "Free forever · self-serve"
 msgstr "Gratuito para siempre · autogestión"
+
+#. placeholder {0}: formatDate(state.trialEndsAt)
+#: ../../apps/mobile/app/(app)/subscription.tsx:252
+msgid "Free trial until {0}."
+msgstr "Prueba gratuita hasta el {0}."
 
 #. placeholder {0}: trialEndsAt.toLocaleDateString()
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:221
@@ -1645,6 +1935,15 @@ msgstr "La generación no se completó. Inténtalo de nuevo después de {0} o em
 msgid "Generation didn't complete. Try again shortly, or start from a template."
 msgstr "La generación no se completó. Inténtalo de nuevo en breve o empieza desde una plantilla."
 
+#: ../ui/src/AppDownloadBanner.tsx:65
+#, fuzzy
+msgid "Get the Amarnai app"
+msgstr "Consigue la app de Amarnai"
+
+#: ../ui/src/AppDownloadBanner.tsx:75
+msgid "Get the app"
+msgstr "Consigue la app"
+
 #: ../../apps/site/src/app/[locale]/page.tsx:38
 #, fuzzy
 msgid "gmail ai assistant"
@@ -1721,6 +2020,12 @@ msgstr "Permisos de la cuenta de Google"
 #, fuzzy
 msgid "Google could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the Gmail callback URL is registered in Google Cloud Console."
 msgstr "Google no pudo completar la autorización. Es posible que el enlace haya caducado: inténtalo de nuevo. Si el problema persiste, verifica que la URL de devolución de llamada de Gmail esté registrada en Google Cloud Console."
+
+#: ../../apps/mobile/app/sign-in.tsx:65
+#: ../../apps/mobile/app/sign-up.tsx:76
+#, fuzzy
+msgid "Google sign-in failed. Please try again."
+msgstr "Error al iniciar sesión con Google. Inténtalo de nuevo."
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:178
 msgid "Great King,\n"
@@ -1815,6 +2120,11 @@ msgstr "Escribo para proponer que formalicemos nuestra amistad."
 msgid "If an account exists for that email, a reset link is on its way."
 msgstr "Si existe una cuenta para ese correo electrónico, se ha enviado un enlace de restablecimiento."
 
+#: ../../apps/mobile/app/forgot-password.tsx:66
+#, fuzzy
+msgid "If an account exists for that email, we've sent a reset link. Open it to choose a new password, then sign in."
+msgstr "Si existe una cuenta asociada a ese correo, te hemos enviado un enlace para restablecerla. Ábrelo para elegir una nueva contraseña y luego inicia sesión."
+
 #: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:52
 #: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:44
 msgid "Ignored"
@@ -1857,6 +2167,8 @@ msgstr "Importante: introduce el correo electrónico de la cuenta de Google con 
 msgid "Importing will replace your current plan with <0>{0} folders</0> and <1>{1} paths</1> from the file. Threads that were sorted into removed folders will become unsorted. This cannot be undone."
 msgstr "La importación reemplazará tu plan actual con <0>{0} carpetas</0> y <1>{1} rutas</1> del archivo. Las conversaciones que se clasificaron en carpetas eliminadas pasarán a estar sin clasificar. Esto no se puede deshacer."
 
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:272
+#: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:107
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:176
 #: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:42
 #: ../../apps/site/src/components/demo/demo-seed.ts:28
@@ -1871,6 +2183,7 @@ msgstr "Bandeja de entrada"
 msgid "Inbox (entry point)"
 msgstr "Bandeja de entrada (punto de entrada)"
 
+#: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:145
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:153
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:166
 #, fuzzy
@@ -1881,11 +2194,13 @@ msgstr "Sincronización de bandeja de entrada"
 msgid "inbox zero"
 msgstr "bandeja de entrada cero"
 
+#: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:116
 #: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:72
 #, fuzzy
 msgid "Include Promotions"
 msgstr "Incluir promociones"
 
+#: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:105
 #: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:62
 #, fuzzy
 msgid "Include spam"
@@ -1955,6 +2270,10 @@ msgstr "Invitación enviada a {email}"
 msgid "Invite a collaborator"
 msgstr "Invitar a un colaborador"
 
+#: ../../apps/mobile/src/components/CollaboratorsSheet.tsx:66
+msgid "Invite and remove collaborators on the web app."
+msgstr "Invita y elimina colaboradores en la aplicación web."
+
 #: ../../apps/web/src/app/admin/waitlist/page.tsx:70
 #, fuzzy
 msgid "Invited"
@@ -2007,6 +2326,11 @@ msgstr "Unirse a la lista de espera"
 msgid "Joining…"
 msgstr "Uniéndose…"
 
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:125
+msgid "Just you"
+msgstr "Solo tú"
+
+#: ../../apps/mobile/app/(app)/subscription.tsx:119
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:302
 #, fuzzy
 msgid "Keep subscription"
@@ -2031,18 +2355,23 @@ msgstr "El Rey Aziru ha consultado todas las tablillas de arcilla de su archivo,
 msgid "King Aziru is ready to sort your email threads. Connect your Gmail account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
 msgstr "El Rey Aziru está listo para clasificar tus conversaciones de correo electrónico. Conecta tu cuenta de Gmail para empezar. Amarnai se conecta con <0>acceso de solo lectura</0> y <1>nunca envía, elimina ni cambia nada</1>. Tu bandeja de entrada sigue siendo tuya."
 
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:242
 #: ../../apps/web/src/app/(app)/settings/WorkspaceLanguageSection.tsx:37
 #, fuzzy
 msgid "Language"
 msgstr "Idioma"
 
 #. placeholder {0}: formatDate(syncStatus.lastSyncedAt, _(msg`Never`))
+#. placeholder {0}: formatDate(syncStatus.lastSyncedAt, i18n)
+#: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:154
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:157
 #, fuzzy
 msgid "Last synced {0}"
 msgstr "Última sincronización {0}"
 
 #. placeholder {0}: formatDate(connection.lastVerifiedAt, _(msg`Never`))
+#. placeholder {0}: formatDate(connection.lastVerifiedAt, i18n)
+#: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:140
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:142
 #, fuzzy
 msgid "Last verified: {0}"
@@ -2113,6 +2442,15 @@ msgstr "Cargando…"
 msgid "Mail"
 msgstr "Correo"
 
+#: ../../apps/mobile/app/(app)/subscription.tsx:293
+#, fuzzy
+msgid "Manage"
+msgstr "Gestionar"
+
+#: ../../apps/mobile/app/(app)/subscription.tsx:303
+msgid "Manage payment method"
+msgstr "Gestionar método de pago"
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:40
 #, fuzzy
 msgid "Management"
@@ -2171,6 +2509,7 @@ msgstr "Se ha alcanzado el máximo de {collaboratorLimit} colaboradores."
 msgid "Media inquiries, press coverage, co-marketing proposals, and partnership outreach."
 msgstr "Consultas de medios, cobertura de prensa, propuestas de co-marketing y contacto para asociaciones."
 
+#: ../../apps/mobile/src/components/CollaboratorsSheet.tsx:58
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:42
 #, fuzzy
 msgid "Member"
@@ -2189,6 +2528,8 @@ msgstr "Bandeja de entrada de prueba"
 msgid "Model quality"
 msgstr "Calidad del modelo"
 
+#: ../../apps/mobile/app/(app)/subscription.tsx:41
+#: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:223
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:35
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:183
 #: ../ui/src/PricingPlans.tsx:111
@@ -2202,6 +2543,7 @@ msgstr "Mensual"
 msgid "More threads beyond your {plan} subscription limit aren't loaded."
 msgstr "No se han cargado más conversaciones más allá del límite de tu suscripción {plan}."
 
+#: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:46
 #: ../ui/src/pricing/planMessages.ts:30
 msgid "Most popular"
 msgstr "Más popular"
@@ -2230,6 +2572,8 @@ msgstr "Mover a…"
 msgid "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face."
 msgstr "Mis viajes me acercan al Delta en los próximos días. Si el Gran Rey tiene una hora libre, agradecería la oportunidad de hablar cara a cara."
 
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:233
+#: ../../apps/mobile/app/(app)/account.tsx:116
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:409
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:15
 #, fuzzy
@@ -2247,6 +2591,7 @@ msgstr "Nombre actualizado."
 msgid "Needs review"
 msgstr "Necesita revisión"
 
+#: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:32
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:142
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:157
 #, fuzzy
@@ -2282,6 +2627,10 @@ msgstr "Nueva contraseña"
 #: ../ui/src/emails/BackfillCard.tsx:61
 msgid "New threads will appear as they are sorted."
 msgstr "Las nuevas conversaciones aparecerán a medida que se clasifiquen."
+
+#: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:162
+msgid "New workspace"
+msgstr "Nuevo espacio de trabajo"
 
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:150
 #, fuzzy
@@ -2334,6 +2683,15 @@ msgstr "Aún no hay carpetas"
 msgid "No Gmail inbox connected to this workspace."
 msgstr "No hay ninguna bandeja de entrada de Gmail conectada a este espacio de trabajo."
 
+#: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:118
+#, fuzzy
+msgid "No Gmail inbox connected. Connect your account to start syncing."
+msgstr "Bandeja de entrada de Gmail no conectada. Conecta tu cuenta para empezar a sincronizar."
+
+#: ../../apps/mobile/src/components/BlacklistSheet.tsx:146
+msgid "No senders blocked yet."
+msgstr "Aún no hay remitentes bloqueados."
+
 #: ../../apps/web/src/app/admin/waitlist/page.tsx:58
 #, fuzzy
 msgid "No signups yet."
@@ -2371,15 +2729,25 @@ msgstr "Ninguna conversación coincide con tu búsqueda."
 msgid "No threads yet"
 msgstr "Aún no hay conversaciones"
 
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:223
 #: ../../apps/web/src/components/Sidebar.tsx:198
 #, fuzzy
 msgid "No workspace"
 msgstr "Sin espacio de trabajo"
 
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:107
+msgid "None"
+msgstr "Ninguno"
+
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:470
 #, fuzzy
 msgid "None (not connected)"
 msgstr "Ninguno (no conectado)"
+
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:99
+#, fuzzy
+msgid "Not connected"
+msgstr "No conectado"
 
 #: ../ui/src/PricingPlans.tsx:86
 msgid "Not included"
@@ -2394,10 +2762,19 @@ msgstr "No incluido · <0>actualizar para añadir</0>"
 msgid "Not necessarily. Amarnai can generate a complete plan for you from your inbox, with one click. You can also start from a ready-made template. Most people generate a plan, rename two or three folders, and they're done."
 msgstr "No necesariamente. Amarnai puede generar un plan completo para ti desde tu bandeja de entrada con un solo clic. También puedes empezar con una plantilla predefinida. La mayoría genera un plan, renombra dos o tres carpetas, y listo."
 
+#: ../../apps/mobile/app/(app)/account.tsx:118
+msgid "Not set"
+msgstr "No configurado"
+
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:158
 #, fuzzy
 msgid "Not yet synced"
 msgstr "Aún no sincronizado"
+
+#: ../../apps/mobile/app/(app)/account.tsx:130
+#, fuzzy
+msgid "Notifications"
+msgstr "Notificaciones"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:68
 msgid "Official university emails: registrar, student services, and housing."
@@ -2406,6 +2783,10 @@ msgstr "Correos electrónicos universitarios oficiales: registro, servicios estu
 #: ../../apps/site/src/components/demo/demo-seed.ts:337
 msgid "Ongoing thread with a known city governor raising a recurring supply issue. Escalatory tone and repeated follow-ups match the Support folder."
 msgstr "Conversación en curso con un gobernador de ciudad conocido planteando un problema de suministro recurrente. El tono escalatorio y los seguimientos repetidos coinciden con la carpeta de Soporte."
+
+#: ../../apps/mobile/app/(app)/subscription.tsx:325
+msgid "Only the workspace owner can manage billing."
+msgstr "Solo el propietario del espacio de trabajo puede gestionar la facturación."
 
 #: ../../apps/mobile/src/components/DraftSheet.tsx:97
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:242
@@ -2450,6 +2831,7 @@ msgstr "Operaciones"
 msgid "Optional. Applied when generating draft replies for threads in this folder."
 msgstr "Opcional. Se aplica al generar borradores de respuestas para conversaciones en esta carpeta."
 
+#: ../../apps/mobile/src/auth/GoogleSignInButton.tsx:17
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:84
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:57
 #, fuzzy
@@ -2484,11 +2866,17 @@ msgstr "Socios"
 msgid "Passing through the Delta: free to meet?"
 msgstr "De paso por el Delta: ¿libre para reunirse?"
 
+#: ../../apps/mobile/app/sign-in.tsx:106
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:61
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:37
 #, fuzzy
 msgid "Password"
 msgstr "Contraseña"
+
+#: ../../apps/mobile/app/sign-up.tsx:115
+#, fuzzy
+msgid "Password (min {PASSWORD_MIN_LENGTH} characters)"
+msgstr "Contraseña (mín. {PASSWORD_MIN_LENGTH} caracteres)"
 
 #: ../../apps/web/src/app/reset-password/page.tsx:21
 msgid "Password updated! You can now sign in."
@@ -2499,10 +2887,19 @@ msgstr "¡Contraseña actualizada! Ya puedes iniciar sesión."
 msgid "Password updated. Sign in with your new password."
 msgstr "Contraseña actualizada. Inicia sesión con tu nueva contraseña."
 
+#: ../../apps/mobile/app/sign-up.tsx:54
+msgid "Passwords do not match"
+msgstr "Las contraseñas no coinciden"
+
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:129
 #, fuzzy
 msgid "Payment failed. Please update your payment method to avoid losing access."
 msgstr "El pago falló. Actualiza tu método de pago para evitar perder el acceso."
+
+#: ../../apps/mobile/app/(app)/subscription.tsx:244
+#, fuzzy
+msgid "Payment failed. Update your payment method to keep access."
+msgstr "Pago fallido. Actualiza tu método de pago para mantener el acceso."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:46
 msgid "Payslips, expense reports, reimbursements, and employee benefits emails."
@@ -2529,16 +2926,19 @@ msgstr "Personas con acceso a este espacio de trabajo."
 #~ msgid "Permanently delete this workspace and all of its data — emails, plan, settings, and Gmail connection. This cannot be undone."
 #~ msgstr ""
 
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:170
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:28
 #, fuzzy
 msgid "Permanently delete this workspace and all of its data: emails, plan, settings, and Gmail connection. This cannot be undone."
 msgstr "Eliminar permanentemente este espacio de trabajo y todos sus datos: correos electrónicos, plan, configuración y conexión de Gmail. Esto no se puede deshacer."
 
+#: ../../apps/mobile/app/(app)/account.tsx:65
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:103
 #, fuzzy
 msgid "Permanently delete your account and all associated data. This cannot be undone."
 msgstr "Eliminar permanentemente tu cuenta y todos los datos asociados. Esto no se puede deshacer."
 
+#: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:37
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:29
 #: ../ui/src/i18n/taxonomy-template-messages.ts:32
 #: ../ui/src/pricing/planMessages.ts:20
@@ -2578,6 +2978,7 @@ msgstr "Correspondencia personal y correos electrónicos no académicos para la 
 
 #. Screen heading for the email-sorting taxonomy. Not a billing or subscription plan.
 #. Sidebar nav label for the email-sorting taxonomy. Not a billing or subscription plan.
+#: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:35
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:264
 #: ../../apps/site/src/components/demo/DemoTaxonomyCanvas.tsx:205
 #: ../../apps/site/src/components/landing/Footer.tsx:26
@@ -2591,6 +2992,14 @@ msgstr "Plan"
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1241
 msgid "Plan is view-only. Only workspace admins can edit it."
 msgstr "El plan es de solo lectura. Solo los administradores del espacio de trabajo pueden editarlo."
+
+#: ../../apps/mobile/app/(app)/subscription.tsx:129
+#: ../../apps/mobile/app/(app)/subscription.tsx:134
+#: ../../apps/mobile/app/(app)/subscription.tsx:189
+#: ../../apps/mobile/app/(app)/subscription.tsx:206
+#: ../../apps/mobile/app/(app)/subscription.tsx:213
+msgid "Please try again."
+msgstr "Inténtalo de nuevo."
 
 #: ../ui/src/pricing/planMessages.ts:111
 #, fuzzy
@@ -2646,6 +3055,9 @@ msgstr "Privacidad"
 msgid "Privacy by design"
 msgstr "Privacidad por diseño"
 
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:38
+#: ../../apps/mobile/app/(app)/subscription.tsx:40
+#: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:43
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:30
 #: ../ui/src/pricing/planMessages.ts:21
 msgid "Pro"
@@ -2664,6 +3076,7 @@ msgstr "Correos electrónicos profesionales relacionados con el trabajo, proyect
 msgid "Professors, assignments, study groups, course announcements, and academic deadlines."
 msgstr "Profesores, tareas, grupos de estudio, anuncios de cursos y plazos académicos."
 
+#: ../../apps/mobile/app/(app)/account.tsx:112
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:45
 #, fuzzy
 msgid "Profile"
@@ -2672,6 +3085,11 @@ msgstr "Perfil"
 #: ../ui/src/i18n/taxonomy-template-messages.ts:18
 msgid "Projects"
 msgstr "Proyectos"
+
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:111
+#, fuzzy
+msgid "Promotions"
+msgstr "Promociones"
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:80
 msgid "Proposed folders. Applying replaces your current plan; you can edit everything afterward."
@@ -2717,6 +3135,7 @@ msgstr "Recibos, confirmaciones de pago y preguntas de facturación de proveedor
 msgid "Reconnect"
 msgstr "Volver a conectar"
 
+#: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:258
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:53
 #, fuzzy
@@ -2741,6 +3160,7 @@ msgstr "Contacto de reclutadores, solicitudes de empleo, programación de entrev
 msgid "Recruiting"
 msgstr "Reclutamiento"
 
+#: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:153
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:178
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:97
 #, fuzzy
@@ -2763,6 +3183,10 @@ msgstr "Actualizar"
 #, fuzzy
 msgid "Regenerate"
 msgstr "Regenerar"
+
+#: ../../apps/mobile/app/forgot-password.tsx:115
+msgid "Remembered it? <0>Sign in</0>"
+msgstr "¿La recordaste? <0>Inicia sesión</0>"
 
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:158
 #, fuzzy
@@ -2794,6 +3218,11 @@ msgstr "Eliminando…"
 #, fuzzy
 msgid "Renew"
 msgstr "Renovar"
+
+#. placeholder {0}: formatDate(state.currentPeriodEnd)
+#: ../../apps/mobile/app/(app)/subscription.tsx:254
+msgid "Renews {0}."
+msgstr "Se renueva el {0}."
 
 #. placeholder {0}: currentPeriodEnd.toLocaleDateString()
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:232
@@ -2828,31 +3257,60 @@ msgstr "Reemplazar taxonomía"
 msgid "Replace with a template"
 msgstr "Reemplazar con una plantilla"
 
+#: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:89
+msgid "Rescan failed"
+msgstr "Reescaneo fallido"
+
+#: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:153
 #: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:99
 #, fuzzy
 msgid "Rescan inbox"
 msgstr "Volver a escanear bandeja de entrada"
+
+#: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:158
+msgid "Rescan queued — threads will update shortly."
+msgstr "Reescaneo en cola — las conversaciones se actualizarán en breve."
 
 #: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:103
 #, fuzzy
 msgid "Rescan queued: threads will update shortly."
 msgstr "Reescaneo en cola: las conversaciones se actualizarán en breve."
 
+#: ../../apps/mobile/app/verify-email.tsx:109
+msgid "Resend email"
+msgstr "Reenviar correo"
+
 #: ../../apps/web/src/app/verify-email/page.tsx:36
 #, fuzzy
 msgid "Resend verification email"
 msgstr "Reenviar correo de verificación"
 
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:147
+#, fuzzy
+msgid "Reset"
+msgstr "Restablecer"
+
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:157
+msgid "Reset failed"
+msgstr "Restablecimiento fallido"
+
+#: ../../apps/mobile/app/forgot-password.tsx:61
 #: ../../apps/web/src/app/forgot-password/page.tsx:17
 #, fuzzy
 msgid "Reset password"
 msgstr "Restablecer contraseña"
 
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:296
 #: ../../apps/web/src/app/(app)/settings/ResetWorkspaceSection.tsx:26
 #: ../../apps/web/src/app/(app)/settings/ResetWorkspaceSection.tsx:43
 #, fuzzy
 msgid "Reset workspace"
 msgstr "Restablecer espacio de trabajo"
+
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:142
+#, fuzzy
+msgid "Reset workspace?"
+msgstr "¿Restablecer espacio de trabajo?"
 
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:141
 msgid "Resets {draftResetDate}"
@@ -2917,6 +3375,8 @@ msgstr "Segundo puesto: <0>{0}</0> ({1}%)"
 msgid "Same as monthly"
 msgstr "Igual que el mensual"
 
+#: ../../apps/mobile/src/components/EditNameSheet.tsx:66
+#: ../../apps/mobile/src/components/RenameWorkspaceSheet.tsx:74
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:538
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:650
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:29
@@ -2993,10 +3453,16 @@ msgstr "Enviar invitación"
 msgid "Send me a weekly reminder when my Amarnai inbox needs attention."
 msgstr "Enviarme un recordatorio semanal cuando mi bandeja de entrada de Amarnai necesite atención."
 
+#: ../../apps/mobile/app/forgot-password.tsx:109
 #: ../../apps/web/src/app/forgot-password/page.tsx:43
 #, fuzzy
 msgid "Send reset link"
 msgstr "Enviar enlace de restablecimiento"
+
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:286
+#: ../../apps/mobile/src/components/BlacklistSheet.tsx:87
+msgid "Sender blacklist"
+msgstr "Lista negra de remitentes"
 
 #: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:94
 #, fuzzy
@@ -3039,6 +3505,8 @@ msgstr "Establece el idioma para este espacio de trabajo, incluyendo la interfaz
 msgid "Setting up your workspace…"
 msgstr "Configurando tu espacio de trabajo…"
 
+#: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:42
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:195
 #: ../../apps/web/src/components/Sidebar.tsx:96
 msgid "Settings"
 msgstr "Configuración"
@@ -3061,16 +3529,23 @@ msgstr "Taxonomía compartida"
 msgid "Shared taxonomy + review queue"
 msgstr "Taxonomía compartida + cola de revisión"
 
+#: ../../apps/mobile/app/sign-in.tsx:133
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:24
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:78
 #, fuzzy
 msgid "Sign in"
 msgstr "Iniciar sesión"
 
+#: ../../apps/mobile/app/sign-in.tsx:85
+#, fuzzy
+msgid "Sign in to triage your inbox"
+msgstr "Inicia sesión para organizar tu bandeja de entrada."
+
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:336
 msgid "Sign in with Google. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
 msgstr "Inicia sesión con Google. Amarnai sincroniza tus conversaciones y etiquetas. Nunca envía ni elimina en tu nombre."
 
+#: ../../apps/mobile/app/(app)/account.tsx:107
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:95
 #: ../../apps/web/src/app/verify-email/page.tsx:42
 #, fuzzy
@@ -3080,6 +3555,15 @@ msgstr "Cerrar sesión"
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:60
 msgid "Sign up with Google"
 msgstr "Registrarse con Google"
+
+#: ../../apps/mobile/app/sign-in.tsx:51
+#, fuzzy
+msgid "Sign-in failed. Please try again."
+msgstr "Error al iniciar sesión. Inténtalo de nuevo."
+
+#: ../../apps/mobile/app/sign-up.tsx:62
+msgid "Sign-up failed. Please try again."
+msgstr "Error al registrarse. Inténtalo de nuevo."
 
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:78
 #, fuzzy
@@ -3094,6 +3578,10 @@ msgstr "Precios sencillos por espacio de trabajo. Empieza gratis, actualiza o cr
 #: ../ui/src/i18n/taxonomy-template-messages.ts:76
 msgid "Social"
 msgstr "Social"
+
+#: ../../apps/mobile/app/(app)/subscription.tsx:213
+msgid "Something went wrong"
+msgstr "Algo salió mal"
 
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:79
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:85
@@ -3159,6 +3647,10 @@ msgstr "Volumen de clasificación"
 msgid "Sorting…"
 msgstr "Clasificando…"
 
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:110
+msgid "Spam"
+msgstr "Spam"
+
 #: ../ui/src/pricing/planMessages.ts:94
 #, fuzzy
 msgid "Standard sorting"
@@ -3201,6 +3693,10 @@ msgstr "Fundador de Startup"
 msgid "Stop sorting email.<0/><1>Sort it once.</1>"
 msgstr "Deja de clasificar email.<0/><1>Clasifícalo una vez.</1>"
 
+#: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:91
+msgid "Stops syncing and revokes Amarnai's access to this mailbox."
+msgstr "Detiene la sincronización y revoca el acceso de Amarnai a este buzón."
+
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:110
 #, fuzzy
 msgid "Stops syncing and revokes Amarnai's access to this mailbox. Synced email data is kept so you can reconnect later."
@@ -3220,6 +3716,10 @@ msgstr "Estudiante"
 msgid "Student loans, rent, bank statements, and financial aid notifications."
 msgstr "Préstamos estudiantiles, alquiler, extractos bancarios y notificaciones de ayuda financiera."
 
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:256
+#: ../../apps/mobile/app/(app)/subscription.tsx:222
+#: ../../apps/mobile/app/(app)/subscription.tsx:233
+#: ../../apps/mobile/app/(app)/subscription.tsx:266
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:98
 #, fuzzy
 msgid "Subscription"
@@ -3237,6 +3737,12 @@ msgstr "Suscripción cancelada. El acceso a {planLabel} continúa hasta <0>{0}</
 msgid "Subscription will not renew. {planLabel} access ends on <0>{0}</0>."
 msgstr "La suscripción no se renovará. El acceso a {planLabel} finaliza el <0>{0}</0>."
 
+#. placeholder {0}: formatDate(state.currentPeriodEnd)
+#: ../../apps/mobile/app/(app)/subscription.tsx:249
+#, fuzzy
+msgid "Subscription will not renew. Access ends {0}."
+msgstr "La suscripción no se renovará. El acceso finaliza el {0}."
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:93
 msgid "Subscriptions"
 msgstr "Suscripciones"
@@ -3246,11 +3752,18 @@ msgstr "Suscripciones"
 msgid "Support"
 msgstr "Soporte"
 
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:225
+msgid "Switch"
+msgstr "Cambiar"
+
+#: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:39
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:70
 #, fuzzy
 msgid "Sync error"
 msgstr "Error de sincronización"
 
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:279
+#: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:96
 #: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:50
 #, fuzzy
 msgid "Sync filters"
@@ -3265,6 +3778,7 @@ msgstr "Sincronizado hace 2 min"
 msgid "Synced email data was erased."
 msgstr "Los datos de correo electrónico sincronizados fueron borrados."
 
+#: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:38
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:69
 #, fuzzy
 msgid "Syncing…"
@@ -3395,10 +3909,18 @@ msgstr "Esta carpeta no es accesible desde la bandeja de entrada y no se utiliza
 msgid "This Gmail is also connected in {sharedNames}. Each workspace syncs and classifies it separately, which uses separate AI quota."
 msgstr "Este Gmail también está conectado en {sharedNames}. Cada espacio de trabajo lo sincroniza y clasifica por separado, lo que utiliza una cuota de IA independiente."
 
+#: ../../apps/mobile/app/(app)/subscription.tsx:285
+msgid "This month"
+msgstr "Este mes"
+
 #: ../../apps/web/src/app/not-found.tsx:29
 #, fuzzy
 msgid "This page wasn't found"
 msgstr "No se encontró esta página"
+
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:143
+msgid "This removes the Gmail connection, deletes all synced emails, and resets the plan to Inbox only. The workspace is kept. This cannot be undone."
+msgstr "Esto elimina la conexión con Gmail, borra todos los correos electrónicos sincronizados y restablece el plan a Solo bandeja de entrada. El espacio de trabajo se mantiene. Esto no se puede deshacer."
 
 #: ../ui/src/emails/RationaleCard.tsx:78
 #, fuzzy
@@ -3432,6 +3954,7 @@ msgstr "Conversaciones que Amarnai ha encaminado correctamente a una carpeta."
 msgid "Threads flagged for review — Amarnai wasn't confident enough to sort automatically."
 msgstr "Conversaciones marcadas para revisión — Amarnai no tuvo suficiente confianza para clasificarlas automáticamente."
 
+#: ../../apps/mobile/src/components/BlacklistSheet.tsx:94
 #: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:101
 #, fuzzy
 msgid "Threads from these senders will never be imported or sorted by Amarnai."
@@ -3441,6 +3964,7 @@ msgstr "Las conversaciones de estos remitentes nunca serán importadas o clasifi
 msgid "Threads Gmail has flagged as important."
 msgstr "Conversaciones que Gmail ha marcado como importantes."
 
+#: ../../apps/mobile/app/(app)/subscription.tsx:288
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:196
 #, fuzzy
 msgid "Threads sorted"
@@ -3598,6 +4122,10 @@ msgstr "Triaje"
 msgid "Triage & review"
 msgstr "Clasificar y revisar"
 
+#: ../ui/src/AppDownloadBanner.tsx:71
+msgid "Triage your inbox on the go."
+msgstr "Organiza tu bandeja de entrada desde cualquier lugar."
+
 #: ../../apps/site/src/components/landing/HeroFeedCard.tsx:257
 #, fuzzy
 msgid "Triaging 412 threads"
@@ -3612,6 +4140,12 @@ msgstr "Prueba Amarnai"
 #, fuzzy
 msgid "Tushratta of Mitanni"
 msgstr "Tushratta de Mitanni"
+
+#: ../../apps/mobile/app/(app)/subscription.tsx:151
+#: ../../apps/mobile/app/(app)/subscription.tsx:156
+#, fuzzy
+msgid "Unavailable"
+msgstr "No disponible"
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:46
 #: ../ui/src/emails/ThreadRow.tsx:112
@@ -3673,10 +4207,16 @@ msgstr "Hasta 25"
 msgid "Up to 25 collaborators"
 msgstr "Hasta 25 colaboradores"
 
+#: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:37
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:68
 #, fuzzy
 msgid "Up to date"
 msgstr "Actualizado"
+
+#: ../../apps/mobile/app/(app)/account.tsx:55
+#: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:75
+msgid "Update failed"
+msgstr "Actualización fallida"
 
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:137
 #, fuzzy
@@ -3741,6 +4281,10 @@ msgstr "Actualiza tu suscripción en la aplicación web para habilitar la carga 
 msgid "Use \"Rescan inbox\" after changing filter settings to apply them to threads already in your inbox."
 msgstr "Usa \"Volver a escanear bandeja de entrada\" después de cambiar la configuración del filtro para aplicarlos a las conversaciones ya existentes en tu bandeja de entrada."
 
+#: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:162
+msgid "Use \"Rescan inbox\" after changing filters to apply them to threads already in your inbox."
+msgstr "Usa \"Volver a escanear bandeja de entrada\" después de cambiar los filtros para aplicarlos a las conversaciones que ya están en tu bandeja de entrada."
+
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:143
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:164
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:325
@@ -3772,6 +4316,15 @@ msgstr "Contratos con proveedores, herramientas, infraestructura y comunicacione
 msgid "Verification email sent!"
 msgstr "¡Correo electrónico de verificación enviado!"
 
+#: ../../apps/mobile/app/verify-email.tsx:62
+#, fuzzy
+msgid "Verification email sent. Check your inbox."
+msgstr "Correo de verificación enviado. Revisa tu bandeja de entrada."
+
+#: ../../apps/mobile/app/verify-email.tsx:85
+msgid "Verify your email"
+msgstr "Verifica tu correo electrónico"
+
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:178
 #, fuzzy
 msgid "View draft reply"
@@ -3789,6 +4342,10 @@ msgstr "Esperando"
 msgid "Waiting for first sync…"
 msgstr "Esperando la primera sincronización…"
 
+#: ../../apps/mobile/app/verify-email.tsx:94
+msgid "Waiting for verification…"
+msgstr "Esperando verificación…"
+
 #: ../../apps/web/src/app/admin/waitlist/WaitlistShell.tsx:20
 #, fuzzy
 msgid "Waitlist"
@@ -3798,16 +4355,29 @@ msgstr "Lista de espera"
 msgid "Wants {folderName}"
 msgstr "Quiere {folderName}"
 
+#. placeholder {0}: user.email
+#: ../../apps/mobile/app/verify-email.tsx:88
+msgid "We sent a verification link to {0}. Open it to finish setting up your account."
+msgstr "Hemos enviado un enlace de verificación a {0}. Ábrelo para terminar de configurar tu cuenta."
+
 #: ../../apps/web/src/app/verify-email/page.tsx:28
 #, fuzzy
 msgid "We sent a verification link to your email address. Click it to activate your account."
 msgstr "Hemos enviado un enlace de verificación a tu dirección de correo electrónico. Haz clic para activar tu cuenta."
+
+#: ../../apps/mobile/app/verify-email.tsx:89
+msgid "We sent you a verification link. Open it to finish setting up your account."
+msgstr "Te hemos enviado un enlace de verificación. Ábrelo para terminar de configurar tu cuenta."
 
 #. placeholder {0}: state.email
 #: ../../apps/web/src/app/sign-up/WaitlistForm.tsx:19
 #, fuzzy
 msgid "We'll send your invite to <0>{0}</0>."
 msgstr "Enviaremos tu invitación a <0>{0}</0>."
+
+#: ../../apps/mobile/app/(app)/account.tsx:134
+msgid "Weekly inbox reminder"
+msgstr "Recordatorio semanal de bandeja de entrada"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:51
 #, fuzzy
@@ -3832,6 +4402,7 @@ msgstr "Trabajo"
 msgid "Working Professional"
 msgstr "Profesional en activo"
 
+#: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:218
 #: ../ui/src/emails/ThreadListHeader.tsx:63
 #: ../ui/src/pricing/planMessages.ts:53
 msgid "Workspace"
@@ -3842,6 +4413,9 @@ msgstr "Espacio de trabajo"
 msgid "Workspace Details"
 msgstr "Detalles del espacio de trabajo"
 
+#: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:206
+#: ../../apps/mobile/src/components/RenameWorkspaceSheet.tsx:60
+#: ../../apps/mobile/src/components/RenameWorkspaceSheet.tsx:65
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:167
 #, fuzzy
 msgid "Workspace name"
@@ -3878,6 +4452,10 @@ msgstr "Espacios de trabajo incluidos"
 #, fuzzy
 msgid "Writing draft reply…"
 msgstr "Escribiendo borrador de respuesta…"
+
+#: ../../apps/mobile/app/verify-email.tsx:116
+msgid "Wrong account? <0>Sign out</0>"
+msgstr "¿Cuenta incorrecta? <0>Cerrar sesión</0>"
 
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:123
 #, fuzzy
@@ -3985,6 +4563,7 @@ msgstr "Tu Gmail sigue siendo tuyo"
 msgid "Your inbox is still importing. You can generate now from what's loaded so far, but regenerating once the import finishes will give a more accurate fit."
 msgstr "Tu bandeja de entrada todavía se está importando. Puedes generar ahora a partir de lo que se ha cargado hasta el momento, pero regenerar una vez que la importación finalice te dará un ajuste más preciso."
 
+#: ../../apps/mobile/src/components/EditNameSheet.tsx:56
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:61
 #, fuzzy
 msgid "Your name"
@@ -4004,6 +4583,10 @@ msgstr "Tu plan es un árbol de carpetas (por ejemplo, una carpeta Clientes con 
 msgid "Your subscription has been cancelled and your workspace has been downgraded to the free tier."
 msgstr "Tu suscripción ha sido cancelada y tu espacio de trabajo ha sido degradado al nivel gratuito."
 
+#: ../../apps/mobile/app/(app)/subscription.tsx:117
+msgid "Your subscription stays active until the end of the current billing period, then downgrades to Free."
+msgstr "Tu suscripción permanece activa hasta el final del periodo de facturación actual, luego se degrada a Gratuita."
+
 #. placeholder {0}: currentPeriodEnd.toLocaleDateString()
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:261
 #, fuzzy
@@ -4014,3 +4597,8 @@ msgstr "Tu suscripción se cancelará al final del período de facturación actu
 #, fuzzy
 msgid "Your subscription will cancel at the end of the current billing period."
 msgstr "Tu suscripción se cancelará al final del período de facturación actual."
+
+#: ../../apps/mobile/app/(app)/subscription.tsx:116
+#, fuzzy
+msgid "Your trial ends immediately and the workspace downgrades to Free."
+msgstr "Tu prueba finaliza inmediatamente y el espacio de trabajo se degrada a Gratuito."

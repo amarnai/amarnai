@@ -1,4 +1,7 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Trans } from '@lingui/react/macro';
+import { msg } from '@lingui/core/macro';
+import { useLingui } from '@lingui/react';
 import { colors, space, fontSize, fontWeight, radii } from '@amarnai/tokens';
 import { UserAvatar } from './UserAvatar';
 import { SheetLayout } from './SheetLayout';
@@ -26,10 +29,11 @@ function sortMembers(members: Member[]): Member[] {
 }
 
 export function CollaboratorsSheet({ visible, onClose, members, currentUserId }: Props) {
+  const { i18n } = useLingui();
   const sorted = sortMembers(members);
 
   return (
-    <SheetLayout visible={visible} onClose={onClose} title="Collaborators">
+    <SheetLayout visible={visible} onClose={onClose} title={i18n._(msg`Collaborators`)}>
       <ScrollView style={styles.body} contentContainerStyle={styles.bodyContent}>
         {sorted.map((member) => {
           const isYou = member.user.id === currentUserId;
@@ -39,8 +43,9 @@ export function CollaboratorsSheet({ visible, onClose, members, currentUserId }:
               <UserAvatar name={member.user.name} email={member.user.email} />
               <View style={styles.memberText}>
                 <Text style={styles.memberName} numberOfLines={1}>
-                  {member.user.name ?? member.user.email}
-                  {isYou ? ' (You)' : ''}
+                  {isYou
+                    ? i18n._(msg`${member.user.name ?? member.user.email} (You)`)
+                    : (member.user.name ?? member.user.email)}
                 </Text>
                 {member.user.name ? (
                   <Text style={styles.memberEmail} numberOfLines={1}>
@@ -50,7 +55,7 @@ export function CollaboratorsSheet({ visible, onClose, members, currentUserId }:
               </View>
               <View style={[styles.roleBadge, isOwner ? styles.roleBadgeOwner : styles.roleBadgeMember]}>
                 <Text style={[styles.roleText, isOwner ? styles.roleTextOwner : styles.roleTextMember]}>
-                  {isOwner ? 'Admin' : 'Member'}
+                  {isOwner ? <Trans>Admin</Trans> : <Trans>Member</Trans>}
                 </Text>
               </View>
             </View>
@@ -58,7 +63,7 @@ export function CollaboratorsSheet({ visible, onClose, members, currentUserId }:
         })}
 
         <Text style={styles.note}>
-          Invite and remove collaborators on the web app.
+          <Trans>Invite and remove collaborators on the web app.</Trans>
         </Text>
       </ScrollView>
     </SheetLayout>

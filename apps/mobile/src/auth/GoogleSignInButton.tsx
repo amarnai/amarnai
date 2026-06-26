@@ -1,4 +1,5 @@
 import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Trans } from '@lingui/react/macro';
 import { colors, space, fontSize, fontWeight } from '@amarnai/tokens';
 import { authStyles } from './authStyles';
 
@@ -13,7 +14,7 @@ export function GoogleSignInButton({ onPress, submitting, disabled }: Props) {
     <>
       <View style={styles.divider}>
         <View style={styles.dividerLine} />
-        <Text style={styles.dividerText}>or</Text>
+        <Text style={styles.dividerText}><Trans>or</Trans></Text>
         <View style={styles.dividerLine} />
       </View>
       <TouchableOpacity
@@ -24,7 +25,7 @@ export function GoogleSignInButton({ onPress, submitting, disabled }: Props) {
         {submitting ? (
           <ActivityIndicator color={colors.ink} />
         ) : (
-          <Text style={styles.googleButtonText}>Continue with Google</Text>
+          <Text style={styles.googleButtonText}><Trans>Continue with Google</Trans></Text>
         )}
       </TouchableOpacity>
     </>

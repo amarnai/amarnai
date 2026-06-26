@@ -10,6 +10,10 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Trans } from '@lingui/react/macro';
+import { msg } from '@lingui/core/macro';
+import { useLingui } from '@lingui/react';
+import type { MessageDescriptor } from '@lingui/core';
 import { colors, fontWeight, fontSize, radii, space } from '@amarnai/tokens';
 import { useSession } from '../auth/session';
 import { startCheckout } from '../billing/api';
@@ -21,25 +25,31 @@ import { toUserMessage } from '../errors';
 type PlanId = 'free' | 'pro' | 'business';
 type BillingCycle = 'monthly' | 'annual';
 
-const ALL_PLANS = [
+const ALL_PLANS: Array<{
+  id: PlanId;
+  name: MessageDescriptor;
+  tagline: MessageDescriptor;
+  price: (cycle: BillingCycle) => MessageDescriptor;
+  badge?: MessageDescriptor;
+}> = [
   {
-    id: 'free' as PlanId,
-    name: 'Personal',
-    tagline: 'For individuals trying Amarnai on their own inbox.',
-    price: (_cycle: BillingCycle) => 'Free',
+    id: 'free',
+    name: msg`Personal`,
+    tagline: msg`For individuals trying Amarnai on their own inbox.`,
+    price: (_cycle: BillingCycle) => msg`Free`,
   },
   {
-    id: 'pro' as PlanId,
-    name: 'Pro',
-    tagline: 'For power users and small businesses.',
-    price: (cycle: BillingCycle) => (cycle === 'annual' ? '$4/mo' : '$5/mo'),
-    badge: 'Most popular',
+    id: 'pro',
+    name: msg`Pro`,
+    tagline: msg`For power users and small businesses.`,
+    price: (cycle: BillingCycle) => (cycle === 'annual' ? msg`$4/mo` : msg`$5/mo`),
+    badge: msg`Most popular`,
   },
   {
-    id: 'business' as PlanId,
-    name: 'Business',
-    tagline: 'For larger organizations.',
-    price: (cycle: BillingCycle) => (cycle === 'annual' ? '$10/mo' : '$12/mo'),
+    id: 'business',
+    name: msg`Business`,
+    tagline: msg`For larger organizations.`,
+    price: (cycle: BillingCycle) => (cycle === 'annual' ? msg`$10/mo` : msg`$12/mo`),
   },
 ];
 
@@ -50,6 +60,7 @@ interface NewWorkspaceSheetProps {
 
 export function NewWorkspaceSheet({ visible, onClose }: NewWorkspaceSheetProps) {
   const { userId, workspaces, client, refreshWorkspaces } = useSession();
+  const { i18n } = useLingui();
   const { bottom } = useSafeAreaInsets();
 
   // Refresh workspaces on open so `plan` is always fresh (it was added to the
@@ -99,7 +110,7 @@ export function NewWorkspaceSheet({ visible, onClose }: NewWorkspaceSheetProps) 
         setName('');
         onClose();
       } catch (err) {
-        setError(toUserMessage(err, 'Could not create workspace. Please try again.'));
+        setError(toUserMessage(err, i18n._(msg`Could not create workspace. Please try again.`)));
       } finally {
         setLoading(false);
       }
@@ -116,7 +127,7 @@ export function NewWorkspaceSheet({ visible, onClose }: NewWorkspaceSheetProps) 
       });
 
       if (!res.ok || !res.data.url) {
-        setError(res.data.error ?? `Could not start checkout (${res.status}). Please try again.`);
+        setError(res.data.error ?? i18n._(msg`Could not start checkout (${res.status}). Please try again.`));
         setLoading(false);
         return;
       }
@@ -128,7 +139,9 @@ export function NewWorkspaceSheet({ visible, onClose }: NewWorkspaceSheetProps) 
       handleClose();
     } catch (err) {
       setError(
-        err instanceof Error ? `Checkout failed: ${err.message}` : 'Could not start checkout. Please try again.',
+        err instanceof Error
+          ? i18n._(msg`Checkout failed: ${err.message}`)
+          : i18n._(msg`Could not start checkout. Please try again.`),
       );
       setLoading(false);
     }
@@ -136,17 +149,17 @@ export function NewWorkspaceSheet({ visible, onClose }: NewWorkspaceSheetProps) 
 
   const ctaLabel = loading
     ? selectedPlan === 'free'
-      ? 'Creating…'
-      : 'Redirecting…'
+      ? i18n._(msg`Creating…`)
+      : i18n._(msg`Redirecting…`)
     : selectedPlan === 'free'
-      ? 'Create workspace'
-      : 'Continue to checkout';
+      ? i18n._(msg`Create workspace`)
+      : i18n._(msg`Continue to checkout`);
 
   return (
     <BottomSheet visible={visible} onClose={handleClose}>
       <View style={styles.sheet}>
         <View style={styles.handle} />
-          <Text style={styles.title}>New workspace</Text>
+          <Text style={styles.title}><Trans>New workspace</Trans></Text>
 
           <ScrollView
             style={styles.scroll}
@@ -169,16 +182,16 @@ export function NewWorkspaceSheet({ visible, onClose }: NewWorkspaceSheetProps) 
                     </View>
                     <View style={styles.planCardText}>
                       <View style={styles.planCardNameRow}>
-                        <Text style={styles.planCardName}>{plan.name}</Text>
-                        {'badge' in plan && plan.badge ? (
+                        <Text style={styles.planCardName}>{i18n._(plan.name)}</Text>
+                        {plan.badge ? (
                           <View style={styles.planBadge}>
-                            <Text style={styles.planBadgeText}>{plan.badge}</Text>
+                            <Text style={styles.planBadgeText}>{i18n._(plan.badge)}</Text>
                           </View>
                         ) : null}
                       </View>
-                      <Text style={styles.planCardPrice}>{plan.price(cycle)}</Text>
+                      <Text style={styles.planCardPrice}>{i18n._(plan.price(cycle))}</Text>
                       <Text style={styles.planCardTagline} numberOfLines={2}>
-                        {plan.tagline}
+                        {i18n._(plan.tagline)}
                       </Text>
                     </View>
                   </TouchableOpacity>
@@ -190,7 +203,7 @@ export function NewWorkspaceSheet({ visible, onClose }: NewWorkspaceSheetProps) 
             <FormInput
               value={name}
               onChangeText={setName}
-              placeholder="Workspace name"
+              placeholder={i18n._(msg`Workspace name`)}
               maxLength={100}
               editable={!loading}
               returnKeyType="done"
@@ -207,7 +220,7 @@ export function NewWorkspaceSheet({ visible, onClose }: NewWorkspaceSheetProps) 
                   <Text
                     style={[styles.cycleBtnText, cycle === 'monthly' && styles.cycleBtnTextActive]}
                   >
-                    Monthly
+                    <Trans>Monthly</Trans>
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -217,7 +230,7 @@ export function NewWorkspaceSheet({ visible, onClose }: NewWorkspaceSheetProps) 
                   <Text
                     style={[styles.cycleBtnText, cycle === 'annual' && styles.cycleBtnTextActive]}
                   >
-                    Annual · Save 20%
+                    <Trans>Annual · Save 20%</Trans>
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -229,7 +242,7 @@ export function NewWorkspaceSheet({ visible, onClose }: NewWorkspaceSheetProps) 
           {/* Footer */}
           <View style={[styles.footer, { paddingBottom: space.lg + bottom }]}>
             <TouchableOpacity style={styles.cancelBtn} onPress={handleClose} disabled={loading}>
-              <Text style={styles.cancelBtnText}>Cancel</Text>
+              <Text style={styles.cancelBtnText}><Trans>Cancel</Trans></Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.submitBtn, !canSubmit && styles.btnDisabled]}

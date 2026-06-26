@@ -12,6 +12,9 @@ import {
   View,
 } from 'react-native';
 import { Link, Redirect } from 'expo-router';
+import { Trans } from '@lingui/react/macro';
+import { msg } from '@lingui/core/macro';
+import { useLingui } from '@lingui/react';
 import { colors, radii, space, fontSize } from '@amarnai/tokens';
 import { useSession } from '../src/auth/session';
 import { authStyles } from '../src/auth/authStyles';
@@ -22,6 +25,7 @@ import { useApiHealth } from '../src/health';
 
 export default function SignInScreen() {
   const { status, signIn, signInWithGoogle } = useSession();
+  const { i18n } = useLingui();
   const health = useApiHealth();
   const passwordRef = useRef<TextInput>(null);
 
@@ -44,7 +48,7 @@ export default function SignInScreen() {
     try {
       await signIn(email.trim(), password);
     } catch (err) {
-      setError(toUserMessage(err, 'Sign-in failed. Please try again.'));
+      setError(toUserMessage(err, i18n._(msg`Sign-in failed. Please try again.`)));
     } finally {
       setSubmitting(false);
     }
@@ -58,7 +62,7 @@ export default function SignInScreen() {
       await signInWithGoogle();
     } catch (err) {
       if (err instanceof Error && err.message === 'cancelled') return;
-      setError(toUserMessage(err, 'Google sign-in failed. Please try again.'));
+      setError(toUserMessage(err, i18n._(msg`Google sign-in failed. Please try again.`)));
     } finally {
       setGoogleSubmitting(false);
     }
@@ -78,11 +82,11 @@ export default function SignInScreen() {
       >
         <View style={authStyles.form}>
           <Text style={authStyles.heading}>Amarnai</Text>
-          <Text style={authStyles.subheading}>Sign in to triage your inbox</Text>
+          <Text style={authStyles.subheading}><Trans>Sign in to triage your inbox</Trans></Text>
 
           <TextInput
             style={authStyles.input}
-            placeholder="Email"
+            placeholder={i18n._(msg`Email`)}
             placeholderTextColor={colors.ink4}
             autoCapitalize="none"
             autoCorrect={false}
@@ -99,7 +103,7 @@ export default function SignInScreen() {
           <TextInput
             ref={passwordRef}
             style={authStyles.input}
-            placeholder="Password"
+            placeholder={i18n._(msg`Password`)}
             placeholderTextColor={colors.ink4}
             autoCapitalize="none"
             autoComplete="current-password"
@@ -113,7 +117,7 @@ export default function SignInScreen() {
           />
 
           <Link href="/forgot-password" style={styles.forgotLink} disabled={busy}>
-            <Text style={authStyles.switchTextStrong}>Forgot password?</Text>
+            <Text style={authStyles.switchTextStrong}><Trans>Forgot password?</Trans></Text>
           </Link>
 
           {error ? <Text style={authStyles.error}>{error}</Text> : null}
@@ -126,7 +130,7 @@ export default function SignInScreen() {
             {submitting ? (
               <ActivityIndicator color={colors.surface} />
             ) : (
-              <Text style={authStyles.buttonText}>Sign in</Text>
+              <Text style={authStyles.buttonText}><Trans>Sign in</Trans></Text>
             )}
           </TouchableOpacity>
 
@@ -138,8 +142,10 @@ export default function SignInScreen() {
 
           <Link href="/sign-up" style={authStyles.switchLink} disabled={busy}>
             <Text style={authStyles.switchText}>
-              Don't have an account?{' '}
-              <Text style={authStyles.switchTextStrong}>Create one</Text>
+              <Trans>
+                Don't have an account?{' '}
+                <Text style={authStyles.switchTextStrong}>Create one</Text>
+              </Trans>
             </Text>
           </Link>
         </View>

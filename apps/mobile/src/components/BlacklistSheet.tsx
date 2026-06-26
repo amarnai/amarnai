@@ -8,6 +8,9 @@ import {
   View,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { Trans } from '@lingui/react/macro';
+import { msg } from '@lingui/core/macro';
+import { useLingui } from '@lingui/react';
 import { colors, space, fontSize, fontWeight, radii } from '@amarnai/tokens';
 import type { ApiClient } from '@amarnai/api-client';
 import { SheetLayout } from './SheetLayout';
@@ -27,6 +30,7 @@ function isValidEmail(value: string): boolean {
 }
 
 export function BlacklistSheet({ visible, onClose, workspaceId, client, emails, onChange }: Props) {
+  const { i18n } = useLingui();
   const [input, setInput] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [adding, setAdding] = useState(false);
@@ -43,11 +47,11 @@ export function BlacklistSheet({ visible, onClose, workspaceId, client, emails, 
   async function handleAdd() {
     const email = input.trim().toLowerCase();
     if (!isValidEmail(email)) {
-      setError('Enter a valid email address.');
+      setError(i18n._(msg`Enter a valid email address.`));
       return;
     }
     if (emails.includes(email)) {
-      setError('Already in the list.');
+      setError(i18n._(msg`Already in the list.`));
       return;
     }
     setError(null);
@@ -59,7 +63,7 @@ export function BlacklistSheet({ visible, onClose, workspaceId, client, emails, 
       onChange(updated.blacklistedSenderEmails);
     } catch {
       onChange(emails.filter((e) => e !== email));
-      setError('Could not add email. Please try again.');
+      setError(i18n._(msg`Could not add email. Please try again.`));
     } finally {
       setAdding(false);
     }
@@ -80,14 +84,14 @@ export function BlacklistSheet({ visible, onClose, workspaceId, client, emails, 
   }
 
   return (
-    <SheetLayout visible={visible} onClose={onClose} title="Sender blacklist" keyboardAvoiding>
+    <SheetLayout visible={visible} onClose={onClose} title={i18n._(msg`Sender blacklist`)} keyboardAvoiding>
       <ScrollView
         style={styles.body}
         contentContainerStyle={styles.bodyContent}
         keyboardShouldPersistTaps="handled"
       >
         <Text style={styles.hint}>
-          Threads from these senders will never be imported or sorted by Amarnai.
+          <Trans>Threads from these senders will never be imported or sorted by Amarnai.</Trans>
         </Text>
 
         <View style={styles.inputRow}>
@@ -111,7 +115,7 @@ export function BlacklistSheet({ visible, onClose, workspaceId, client, emails, 
             {adding ? (
               <ActivityIndicator size="small" color={colors.surface} />
             ) : (
-              <Text style={styles.addBtnText}>Add</Text>
+              <Text style={styles.addBtnText}><Trans>Add</Trans></Text>
             )}
           </TouchableOpacity>
         </View>
@@ -139,7 +143,7 @@ export function BlacklistSheet({ visible, onClose, workspaceId, client, emails, 
             ))}
           </View>
         ) : (
-          <Text style={styles.emptyText}>No senders blocked yet.</Text>
+          <Text style={styles.emptyText}><Trans>No senders blocked yet.</Trans></Text>
         )}
       </ScrollView>
     </SheetLayout>
