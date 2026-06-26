@@ -4,16 +4,20 @@ import { useState } from "react";
 
 const FAQ_ITEMS = [
   {
-    q: "Is Amarnai safe to connect to my Gmail?",
-    a: "Amarnai connects with Gmail's read-only scope, so it can read your threads but cannot send, delete, label, or change anything in your account. It keeps only what it needs to sort and display threads: subjects, participants, snippets, and the labels and reasoning it generates. Full message bodies are fetched when needed and processed in memory, not stored, and OAuth tokens are encrypted at rest.",
+    q: "Is connecting my Gmail to Amarnai safe?",
+    a: "Yes. Amarnai connects with Gmail's read-only scope, so it can read your threads but cannot send, delete, label, or change anything in your account. It keeps only what it needs to sort and display threads: subjects, participants, snippets, and the labels and reasoning it generates. Full message bodies are fetched when needed and processed in memory, not stored, and OAuth tokens are encrypted at rest.",
   },
   {
     q: "How does Amarnai save me time?",
     a: "Instead of scanning a crowded inbox, you open Amarnai and find your threads already grouped into the folders you care about, so you can work through customer questions, investor updates, or hiring replies in focused batches. Each thread comes with a suggested folder and the reasoning behind it, and you can draft a reply or jump straight to the thread in Gmail with one click. Triage that used to take an hour takes minutes.",
   },
   {
-    q: "How does Amarnai's taxonomy work?",
-    a: "Building your taxonomy is straightforward: create a tree of folders (for example a Customers folder with Support and Billing beneath it) and describe each one in plain language. Amarnai walks the tree and routes every thread to the folder that fits best, based on your descriptions. Setup is just describing your folders in plain words, with no technical know-how required. To get started quickly, you can pick one of our ready-made templates, each a solid folder structure you can use as-is or adapt to your inbox.",
+    q: "How does Amarnai's plan work?",
+    a: "Your plan is a tree of folders (for example a Customers folder with Support and Billing beneath it), each described in plain language, and Amarnai walks that tree to route every thread to the folder that fits best. The fastest way to build it is to let Amarnai generate one for you: it reads your inbox and proposes a complete tree, named and described, that you can keep as-is or adjust. You can also start from one of our ready-made templates or build your own from scratch. No technical know-how required.",
+  },
+  {
+    q: "Do I have to build the folder structure myself?",
+    a: "Not necessarily. Amarnai can generate a complete plan for you from your inbox, with one click. You can also start from a ready-made template. Most people generate a plan, rename two or three folders, and they're done.",
   },
   {
     q: "How is Amarnai different from Gmail's filters and labels?",
@@ -21,7 +25,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Can Amarnai sort my existing inbox, not just new mail?",
-    a: "Yes. Amarnai can work through the thousands of threads already sitting in your inbox, not only messages that arrive from now on. Historical triage and ongoing sorting use the same taxonomy, so your whole inbox ends up organized the same way.",
+    a: "Yes. Amarnai can work through the thousands of threads already sitting in your inbox, not only messages that arrive from now on. Historical triage and ongoing sorting use the same plan, so your whole inbox ends up organized the same way.",
   },
   {
     q: "What happens to threads Amarnai is unsure about?",

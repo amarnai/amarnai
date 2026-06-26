@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { DEMO_THREADS, DEMO_FOLDERS } from "@/components/demo/demo-seed";
+import { FolderIcon } from "@/components/landing/icons";
 
 type Tone = "ok" | "review" | "accent" | "neutral";
 
@@ -41,15 +42,23 @@ function threadTone(folderId: string | null, status: string | null): Tone {
   return "accent";
 }
 
+// Only one thread is surfaced as "needs review" so the cycling feed reflects the
+// algorithm's true ~1-in-6 review rate rather than the seed's 2-in-6. Other
+// review-status threads are shown confidently sorted in the hero.
+const HERO_REVIEW_ID = "t2";
+
 const POOL: PoolItem[] = DEMO_THREADS.map(t => {
   const display = THREAD_DISPLAY[t.id] ?? { hue: 200, init: "??" };
+  const tone = t.id === HERO_REVIEW_ID
+    ? "review"
+    : threadTone(t.folderId, t.status === "review" ? "sorted" : t.status);
   return {
     from: t.messages[0]!.fromName,
     init: display.init,
     hue: display.hue,
     subj: t.subject,
     dest: folderDest(t.folderId),
-    tone: threadTone(t.folderId, t.status),
+    tone,
   };
 });
 
@@ -61,19 +70,6 @@ type FeedRow = PoolItem & {
   leaving: boolean;
   animateIn: boolean;
 };
-
-function FolderIcon() {
-  return (
-    <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden>
-      <path
-        d="M1 3 2.4 1.6h2.2L5.9 3H11a.8.8 0 0 1 .8.8V9a.8.8 0 0 1-.8.8H1A.8.8 0 0 1 .2 9V3Z"
-        stroke="currentColor"
-        strokeWidth="1"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
 
 function RouteChip({ tone, dest, resolved }: { tone: Tone; dest: string; resolved: boolean }) {
   if (!resolved) {
@@ -192,7 +188,14 @@ export function HeroFeedCard() {
   return (
     <div className="ld-feed-card" ref={cardRef}>
       <div className="ld-feed-cap">
-        <span className="ld-feed-url">app.amarnai.com</span>
+        <a
+          className="ld-feed-url"
+          href="https://app.amarnai.com"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          app.amarnai.com
+        </a>
         <span className="ld-feed-live">
           <span className="ld-feed-live-dot" />
           Sorting live
@@ -234,10 +237,10 @@ export function HeroFeedCard() {
       <div className="ld-feed-foot">
         <span className="ld-feed-foot-l">
           <span className="ld-feed-scan-dot" />
-          Triaging · 412 threads
+          Triaging 412 threads
         </span>
         <span className="ld-feed-foot-r">
-          {filed} filed · {reviewCount} needs review
+          {filed} filed, {reviewCount} needs review
         </span>
       </div>
     </div>

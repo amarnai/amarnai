@@ -17,10 +17,6 @@ export function EmailsDemoSection() {
               without them.
             </p>
           </div>
-          <div className="ld-play-note">
-            <span className="ld-play-dot" />
-            Click folders &amp; threads, then generate a draft.
-          </div>
         </div>
 
         <div className="ld-app-frame ld-reveal">
@@ -29,6 +25,9 @@ export function EmailsDemoSection() {
               <span>Acme Workspace</span>
               <span className="ld-sep">/</span>
               <span className="ld-here">Mail</span>
+            </div>
+            <div className="ld-play-note">
+              Click folders &amp; threads, then generate a draft.
             </div>
             <div className="ld-sync-chip">
               <span className="ld-sync-dot" />

@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { Fragment, useEffect, useRef } from "react";
+import { FolderIcon } from "@/components/landing/icons";
 
 function StepArt2() {
   const ref = useRef<HTMLDivElement>(null);
@@ -244,7 +245,12 @@ function StepArt3() {
       <div className="ld-dr-thread">
         <span className="ld-sa-ava">PN</span>
         <span className="ld-dr-subj">Re: Q3 renewal</span>
-        <span className="ld-dr-flag">Billing</span>
+        <span className="ld-dr-flag">
+          <span className="ld-chip-fi" aria-hidden>
+            <FolderIcon />
+          </span>
+          Billing
+        </span>
       </div>
       <div className="ld-dr-card">
         <div className="ld-dr-card-top">
@@ -298,6 +304,52 @@ const penIcon = (
   </svg>
 );
 
+const steps = [
+  {
+    title: "Connect Gmail",
+    body: (
+      <>
+        Sign in with Google. Amarnai syncs your threads and labels. It never
+        sends or deletes on your behalf.
+      </>
+    ),
+    art: (
+      <div className="ld-sa ld-sa-connect">
+        <span
+          className="ld-sa-gbtn primary"
+          role="img"
+          aria-label="Connect Gmail account button"
+        >
+          <span className="ld-sa-g" />
+          Connect Gmail account
+        </span>
+        <div className="ld-sa-hint">Read-only · OAuth · revoke anytime</div>
+      </div>
+    ),
+  },
+  {
+    title: "Describe your folders",
+    body: (
+      <>
+        Lay out folders like <em>Customers</em>, <em>Investors</em>,{" "}
+        <em>Hiring</em>. A simple sentence each is the
+        whole config.
+      </>
+    ),
+    art: <StepArt2 />,
+  },
+  {
+    title: "Find and draft",
+    body: (
+      <>
+        Browse emails easily through your folders. Generate draft replies and
+        copy them to Gmail.
+      </>
+    ),
+    art: <StepArt3 />,
+  },
+];
+
 export function HowItWorksSection() {
   return (
     <section className="ld-section" id="how">
@@ -307,78 +359,29 @@ export function HowItWorksSection() {
             Three steps. Then it sorts every email for you.
           </h2>
           <p className="ld-section-lede">
-            Connect once, describe your world in plain language, and let Amarnai
+            Connect once, generate your plan once, and let Amarnai
             handle new mail and the thousands of threads already sitting in your
             inbox.
           </p>
         </div>
 
         <div className="ld-steps">
-          <div className="ld-step ld-reveal">
-            <div className="ld-step-n">
-              <span className="ld-step-num">1</span>
-              Connect Gmail
-            </div>
-            <h3>Read-only, in seconds</h3>
-            <p>
-              Sign in with Google. Amarnai syncs your threads and labels. It
-              never sends or deletes on your behalf.
-            </p>
-            <div className="ld-step-art">
-              <div className="ld-sa ld-sa-connect">
-                <span
-                  className="ld-sa-gbtn primary"
-                  role="img"
-                  aria-label="Connect Gmail account button"
-                >
-                  <span className="ld-sa-g" />
-                  Connect Gmail account
-                </span>
-                <div className="ld-sa-hint">
-                  Read-only · OAuth · revoke anytime
+          {steps.map((step, i) => (
+            <Fragment key={step.title}>
+              {i > 0 && (
+                <div className="ld-step-connector" aria-hidden="true">
+                  {stepArrow}
                 </div>
+              )}
+              <div className="ld-step ld-reveal">
+                <h3>
+                  {step.title}
+                </h3>
+                <p>{step.body}</p>
+                <div className="ld-step-art">{step.art}</div>
               </div>
-            </div>
-          </div>
-
-          <div className="ld-step-connector" aria-hidden="true">
-            {stepArrow}
-          </div>
-
-          <div className="ld-step ld-reveal">
-            <div className="ld-step-n">
-              <span className="ld-step-num">2</span>
-              Describe your folders
-            </div>
-            <h3>A tree in plain English</h3>
-            <p>
-              Lay out folders like <em>Customers</em>, <em>Investors</em>,{" "}
-              <em>Hiring</em>. Write a sentence describing each. That&apos;s
-              the whole config.
-            </p>
-            <div className="ld-step-art">
-              <StepArt2 />
-            </div>
-          </div>
-
-          <div className="ld-step-connector" aria-hidden="true">
-            {stepArrow}
-          </div>
-
-          <div className="ld-step ld-reveal">
-            <div className="ld-step-n">
-              <span className="ld-step-num">3</span>
-              Find &amp; draft
-            </div>
-            <h3>Replies, ready for you</h3>
-            <p>
-              Browse emails easily through your folders.
-              Generate draft replies and copy them to Gmail.
-            </p>
-            <div className="ld-step-art">
-              <StepArt3 />
-            </div>
-          </div>
+            </Fragment>
+          ))}
         </div>
       </div>
     </section>

@@ -7,20 +7,14 @@ export function HeroSection() {
       <div className="ld-wrap">
         <div className="ld-hero-grid">
           <div className="ld-hero-main">
-            <div className="ld-hero-badge">
-              <span className="ld-tag">Beta · available now</span>
-              Hosted · Gmail-first AI triage
-            </div>
-
             <h1>
               Stop sorting email.<br />
               <span className="soft">Sort it once.</span>
             </h1>
 
             <p className="ld-hero-sub">
-              Describe each folder in a sentence and let Amarnai do the rest. It
-              sorts new mail as it arrives and works through the thousands of
-              threads already in your inbox.
+              Save hours of triage every week.
+              Let Amarnai sort your inbox, filing every email, old and new, where it belongs.
             </p>
 
             <div className="ld-cta-row">

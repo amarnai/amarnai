@@ -1,5 +1,6 @@
 import type { FolderItem } from "@amarnai/ui/folder-tree";
 import type { ThreadItem } from "@amarnai/ui/emails";
+import { taxonomyTokens } from "@amarnai/ui/taxonomy";
 import type { Node, Edge } from "@xyflow/react";
 import { MarkerType } from "@xyflow/react";
 
@@ -28,13 +29,35 @@ const TAXONOMY: TaxonomyItem[] = [
 
 // ─── ReactFlow canvas ─────────────────────────────────────────────────────────
 
-export type DemoNodeData = { label: string; description?: string; isRoot: boolean };
+export type DemoNodeData = {
+  label: string;
+  description?: string;
+  isRoot: boolean;
+  // Set by the reveal animation to fade/scale a card in as its level unfolds.
+  entering?: boolean;
+  enterDelay?: number;
+};
 export type DemoNode = Node<DemoNodeData, "demo-node">;
+
+// Explicit node sizes (the root has no description, the rest wrap to two lines).
+// The demo edge renderer derives its endpoints from these fixed sizes rather
+// than React Flow's DOM-measured handle bounds, so edges attach identically in
+// the initial and post-animation states instead of shifting with measurement
+// timing. Giving the nodes the same dimensions keeps the cards sized to match.
+const ROOT_SIZE = { width: 160, height: 68 };
+const FOLDER_SIZE = { width: 220, height: 88 };
+
+export type NodeSize = { width: number; height: number };
+
+export const DEMO_NODE_SIZE: Record<string, NodeSize> = Object.fromEntries(
+  TAXONOMY.map((item) => [item.id, item.isRoot ? ROOT_SIZE : FOLDER_SIZE]),
+);
 
 export const DEMO_NODES: DemoNode[] = TAXONOMY.map((item) => ({
   id: item.id,
   type: "demo-node" as const,
   position: item.position,
+  ...(item.isRoot ? ROOT_SIZE : FOLDER_SIZE),
   data: {
     label: item.label,
     ...(item.description !== undefined && { description: item.description }),
@@ -42,15 +65,29 @@ export const DEMO_NODES: DemoNode[] = TAXONOMY.map((item) => ({
   },
 }));
 
-const EDGE_COLOR = "#94a3b8";
+// Depth of each node in the tree: 0 = Inbox (root), 1 = its children,
+// 2 = grandchildren. Drives the "Generate from inbox" reveal animation,
+// which unfolds the tree one level at a time.
+export const DEMO_NODE_DEPTH: Record<string, number> = Object.fromEntries(
+  TAXONOMY.map((item) => [item.id, item.isRoot ? 0 : item.parentId === null ? 1 : 2]),
+);
+
+// The arrowhead the web taxonomy canvas uses: the ArrowClosed marker in the
+// shared color, at React Flow's default size to match web's style. The demo edge
+// renderer leaves a small gap before the node so this sits fully visible.
+export const DEMO_ARROW = {
+  type: MarkerType.ArrowClosed,
+  color: taxonomyTokens.edgeDefault,
+} as const;
 
 function edge(id: string, source: string, target: string): Edge {
   return {
     id,
     source,
     target,
-    markerEnd: { type: MarkerType.ArrowClosed, color: EDGE_COLOR },
-    style: { stroke: EDGE_COLOR, strokeWidth: 1.5 },
+    type: "taxonomy-edge",
+    markerEnd: { ...DEMO_ARROW },
+    data: { targetIgnored: false },
   };
 }
 
