@@ -1,9 +1,13 @@
 "use client";
 
 import { Fragment, useEffect, useRef } from "react";
+import { Trans } from "@lingui/react/macro";
+import { useLingui } from "@lingui/react";
+import { msg } from "@lingui/core/macro";
 import { FolderIcon } from "@/components/landing/icons";
 
 function StepArt2() {
+  const { _ } = useLingui();
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -143,25 +147,25 @@ function StepArt2() {
         <g className="ld-flow-pill ld-flow-root">
           <rect x="8" y="34" width="64" height="24" rx="8" />
           <text x="40" y="50">
-            Inbox
+            {_(msg`Inbox`)}
           </text>
         </g>
         <g className="ld-flow-folder f1">
           <rect x="196" y="10" width="96" height="22" rx="7" />
           <text x="209" y="25">
-            Customers
+            {_(msg`Customers`)}
           </text>
         </g>
         <g className="ld-flow-folder f2">
           <rect x="196" y="35" width="96" height="22" rx="7" />
           <text x="209" y="50">
-            Investors
+            {_(msg`Investors`)}
           </text>
         </g>
         <g className="ld-flow-folder f3">
           <rect x="196" y="60" width="96" height="22" rx="7" />
           <text x="209" y="75">
-            Team
+            {_(msg`Team`)}
           </text>
         </g>
         <circle className="ld-flow-dot" cx="72" cy="46" r="4.5" />
@@ -171,6 +175,7 @@ function StepArt2() {
 }
 
 function StepArt3() {
+  const { _ } = useLingui();
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -181,7 +186,7 @@ function StepArt3() {
     const cursorEl = container.querySelector<HTMLElement>(".ld-dr-cursor");
     if (!textEl || !cursorEl) return;
 
-    const DRAFT = "Thanks for the update. Friday works.";
+    const DRAFT = _(msg`Thanks for the update. Friday works.`);
     const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     if (reduce) {
@@ -238,24 +243,24 @@ function StepArt3() {
       clearTimeout(tid);
       io?.disconnect();
     };
-  }, []);
+  }, [_]);
 
   return (
     <div className="ld-sa ld-sa-draft" ref={ref}>
       <div className="ld-dr-thread">
         <span className="ld-sa-ava">PN</span>
-        <span className="ld-dr-subj">Re: Q3 renewal</span>
+        <span className="ld-dr-subj"><Trans>Re: Q3 renewal</Trans></span>
         <span className="ld-dr-flag">
           <span className="ld-chip-fi" aria-hidden>
             <FolderIcon />
           </span>
-          Billing
+          <Trans>Billing</Trans>
         </span>
       </div>
       <div className="ld-dr-card">
         <div className="ld-dr-card-top">
           <span className="ld-dr-pen">{penIcon}</span>
-          Draft reply
+          <Trans>Draft reply</Trans>
         </div>
         <div className="ld-dr-body">
           <span className="ld-dr-text" />
@@ -304,47 +309,56 @@ const penIcon = (
   </svg>
 );
 
+function StepArt1() {
+  const { _ } = useLingui();
+  return (
+    <div className="ld-sa ld-sa-connect">
+      <span
+        className="ld-sa-gbtn primary"
+        role="img"
+        aria-label={_(msg`Connect Gmail account button`)}
+      >
+        <span className="ld-sa-g" />
+        <Trans>Connect Gmail account</Trans>
+      </span>
+      <div className="ld-sa-hint">
+        <Trans>Read-only · OAuth · revoke anytime</Trans>
+      </div>
+    </div>
+  );
+}
+
 const steps = [
   {
-    title: "Connect Gmail",
+    id: "connect",
+    title: <Trans>Connect Gmail</Trans>,
     body: (
-      <>
+      <Trans>
         Sign in with Google. Amarnai syncs your threads and labels. It never
         sends or deletes on your behalf.
-      </>
+      </Trans>
     ),
-    art: (
-      <div className="ld-sa ld-sa-connect">
-        <span
-          className="ld-sa-gbtn primary"
-          role="img"
-          aria-label="Connect Gmail account button"
-        >
-          <span className="ld-sa-g" />
-          Connect Gmail account
-        </span>
-        <div className="ld-sa-hint">Read-only · OAuth · revoke anytime</div>
-      </div>
-    ),
+    art: <StepArt1 />,
   },
   {
-    title: "Describe your folders",
+    id: "describe",
+    title: <Trans>Describe your folders</Trans>,
     body: (
-      <>
+      <Trans>
         Lay out folders like <em>Customers</em>, <em>Investors</em>,{" "}
-        <em>Hiring</em>. A simple sentence each is the
-        whole config.
-      </>
+        <em>Hiring</em>. A simple sentence each is the whole config.
+      </Trans>
     ),
     art: <StepArt2 />,
   },
   {
-    title: "Find and draft",
+    id: "find",
+    title: <Trans>Find and draft</Trans>,
     body: (
-      <>
+      <Trans>
         Browse emails easily through your folders. Generate draft replies and
         copy them to Gmail.
-      </>
+      </Trans>
     ),
     art: <StepArt3 />,
   },
@@ -356,18 +370,19 @@ export function HowItWorksSection() {
       <div className="ld-wrap">
         <div className="ld-section-head ld-reveal">
           <h2 className="ld-section-h">
-            Three steps. Then it sorts every email for you.
+            <Trans>Three steps. Then it sorts every email for you.</Trans>
           </h2>
           <p className="ld-section-lede">
-            Connect once, generate your plan once, and let Amarnai
-            handle new mail and the thousands of threads already sitting in your
-            inbox.
+            <Trans>
+              Connect once, generate your plan once, and let Amarnai handle new
+              mail and the thousands of threads already sitting in your inbox.
+            </Trans>
           </p>
         </div>
 
         <div className="ld-steps">
           {steps.map((step, i) => (
-            <Fragment key={step.title}>
+            <Fragment key={step.id}>
               {i > 0 && (
                 <div className="ld-step-connector" aria-hidden="true">
                   {stepArrow}

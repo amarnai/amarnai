@@ -6,7 +6,12 @@ import { matchLocale } from "@amarnai/i18n";
 
 const STORAGE_KEY = "amarnai_locale";
 
-export function LocaleRedirect() {
+// Redirects a non-localized route (e.g. `/` or `/pricing`) to its localized
+// equivalent (`/{locale}` or `/{locale}/pricing`), detecting the locale from the
+// stored preference or the browser. `path` is the suffix after the locale segment
+// (default ""), letting other non-locale entry points reuse this component
+// instead of maintaining a second, unlocalized copy of the page.
+export function LocaleRedirect({ path = "" }: { path?: string }) {
   const router = useRouter();
 
   useEffect(() => {
@@ -18,8 +23,8 @@ export function LocaleRedirect() {
         ? [...navigator.languages]
         : [navigator.language];
     const locale = matchLocale(preferredLocales);
-    router.replace(`/${locale}`);
-  }, [router]);
+    router.replace(`/${locale}${path}`);
+  }, [router, path]);
 
   return null;
 }

@@ -1,17 +1,20 @@
 import Link from "next/link";
+import { Trans } from "@lingui/react/macro";
 
 export function FinalCTASection() {
   return (
     <section className="ld-final" id="cta">
       <div className="ld-final-inner ld-reveal">
-        <h2>Hand the sorting to Amarnai.</h2>
+        <h2><Trans>Hand the sorting to Amarnai.</Trans></h2>
         <p>
-          Connect Gmail and Amarnai starts sorting within minutes. Pricing is
-          per workspace. Sort as much mail as you like, with backfill of your
-          whole history included.
+          <Trans>
+            Connect Gmail and Amarnai starts sorting within minutes. Pricing is
+            per workspace. Sort as much mail as you like, with backfill of your
+            whole history included.
+          </Trans>
         </p>
         <Link className="ld-btn accent lg" href="/pricing">
-          Try Amarnai
+          <Trans>Try Amarnai</Trans>
         </Link>
         <div className="ld-final-note">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
@@ -19,11 +22,14 @@ export function FinalCTASection() {
             <path d="M4.8 7 6.4 8.6 9.4 5.4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
           <span>
-            Prefer to self-host? It&apos;s open source:
-            <br className="ld-final-note-br" />{" "}
-            <a href="https://github.com/amarnai/amarnai" target="_blank" rel="noopener noreferrer">
-              clone it and run it free
-            </a>.
+            <Trans>
+              Prefer to self-host? It&apos;s open source:
+              <br className="ld-final-note-br" />{" "}
+              <a href="https://github.com/amarnai/amarnai" target="_blank" rel="noopener noreferrer">
+                clone it and run it free
+              </a>
+              .
+            </Trans>
           </span>
         </div>
       </div>

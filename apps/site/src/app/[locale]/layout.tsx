@@ -6,8 +6,11 @@ import {
   SOURCE_LOCALE,
   type SupportedLocale,
 } from "@amarnai/i18n";
+import { initServerI18n } from "@/lib/i18n-server";
 import { LinguiSiteProvider } from "./LinguiSiteProvider";
 import "../landing.css";
+
+export const dynamicParams = false;
 
 export function generateStaticParams() {
   return SUPPORTED_LOCALES.map((locale) => ({ locale }));
@@ -55,8 +58,12 @@ export default async function LocaleLayout({
     ? locale
     : SOURCE_LOCALE;
 
+  // Activate Lingui for this render's server components, and reuse the loaded
+  // catalog for the client provider so both render in the right locale.
+  const i18n = await initServerI18n(validLocale);
+
   return (
-    <LinguiSiteProvider locale={validLocale}>
+    <LinguiSiteProvider locale={validLocale} messages={i18n.messages}>
       <AppDownloadBanner playStoreUrl={process.env.NEXT_PUBLIC_PLAY_STORE_URL} />
       {children}
     </LinguiSiteProvider>

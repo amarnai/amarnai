@@ -1,6 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
+import { Trans } from "@lingui/react/macro";
+import { useLingui } from "@lingui/react";
+import { msg } from "@lingui/core/macro";
+import type { I18n } from "@lingui/core";
 import {
   PLANS,
   FEATURE_GROUPS,
@@ -9,6 +13,7 @@ import {
   type BillingCycle,
   type CellValue,
 } from "./plans.js";
+import { trPlan } from "./pricing/planMessages.js";
 
 interface Props {
   currentPlan?: PlanId;
@@ -41,8 +46,9 @@ function TickIcon() {
 }
 
 function CellYes() {
+  const { _ } = useLingui();
   return (
-    <span className="cell-yes" role="img" aria-label="Included">
+    <span className="cell-yes" role="img" aria-label={_(msg`Included`)}>
       <svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden="true">
         <path
           d="M3.4 8.4 6.4 11.2 12.6 4.8"
@@ -75,13 +81,14 @@ function CellSoon({ label }: { label: string }) {
 }
 
 function Cell({ value }: { value: CellValue }) {
+  const { i18n, _ } = useLingui();
   if (value === true) return <CellYes />;
-  if (value === false) return <span className="cell-no" role="img" aria-label="Not included" />;
+  if (value === false) return <span className="cell-no" role="img" aria-label={_(msg`Not included`)} />;
   if (typeof value === "object") {
-    if ("soon" in value) return <CellSoon label={value.soon} />;
-    if ("note" in value) return <span className="note">{value.note}</span>;
+    if ("soon" in value) return <CellSoon label={trPlan(i18n, value.soon)} />;
+    if ("note" in value) return <span className="note">{trPlan(i18n, value.note)}</span>;
   }
-  return <span>{value as string}</span>;
+  return <span>{trPlan(i18n, value as string)}</span>;
 }
 
 function BillingToggle({
@@ -91,16 +98,17 @@ function BillingToggle({
   cycle: BillingCycle;
   onChange: (c: BillingCycle) => void;
 }) {
+  const { _ } = useLingui();
   return (
     <div className="plans-billing">
-      <div className="plans-seg" role="tablist" aria-label="Billing cycle">
+      <div className="plans-seg" role="tablist" aria-label={_(msg`Billing cycle`)}>
         <button
           role="tab"
           aria-selected={cycle === "monthly"}
           className={cycle === "monthly" ? "on" : ""}
           onClick={() => onChange("monthly")}
         >
-          Monthly
+          <Trans>Monthly</Trans>
         </button>
         <button
           role="tab"
@@ -108,7 +116,7 @@ function BillingToggle({
           className={cycle === "annual" ? "on" : ""}
           onClick={() => onChange("annual")}
         >
-          Annual
+          <Trans>Annual</Trans>
         </button>
       </div>
       <span
@@ -127,7 +135,7 @@ function BillingToggle({
             strokeLinejoin="round"
           />
         </svg>
-        Save up to 20% annually
+        <Trans>Save up to 20% annually</Trans>
       </span>
     </div>
   );
@@ -138,9 +146,9 @@ function PlanPrice({ plan, cycle }: { plan: (typeof PLANS)[number]; cycle: Billi
     return (
       <>
         <div className="plan-price">
-          <span className="amount">Free</span>
+          <span className="amount"><Trans>Free</Trans></span>
         </div>
-        <div className="plan-pricenote">Free forever · self-serve</div>
+        <div className="plan-pricenote"><Trans>Free forever · self-serve</Trans></div>
       </>
     );
   }
@@ -153,16 +161,15 @@ function PlanPrice({ plan, cycle }: { plan: (typeof PLANS)[number]; cycle: Billi
       <div className="plan-price">
         <span className="cur">$</span>
         <span className="amount">{amount}</span>
-        <span className="per">/ workspace / month</span>
+        <span className="per"><Trans>/ workspace / month</Trans></span>
       </div>
       <div className="plan-pricenote">
         {cycle === "annual" ? (
-          <>
-            Billed annually ·{" "}
-            <span className="ann">save {pct}%</span>
-          </>
+          <Trans>
+            Billed annually · <span className="ann">save {pct}%</span>
+          </Trans>
         ) : (
-          "Billed monthly · 14-day free trial"
+          <Trans>Billed monthly · 14-day free trial</Trans>
         )}
       </div>
 </>
@@ -170,15 +177,17 @@ function PlanPrice({ plan, cycle }: { plan: (typeof PLANS)[number]; cycle: Billi
 }
 
 function getPlanCtaLabel(
+  i18n: I18n,
   plan: (typeof PLANS)[number],
   isCurrent: boolean,
   isLowerThanCurrent: boolean,
   trialUsed: boolean,
 ): string {
-  if (isCurrent) return "Current subscription";
-  if (isLowerThanCurrent) return `Downgrade to ${plan.name}`;
-  if (trialUsed && !plan.free) return `Upgrade to ${plan.name}`;
-  return plan.cta.label;
+  const planName = trPlan(i18n, plan.name);
+  if (isCurrent) return i18n._(msg`Current subscription`);
+  if (isLowerThanCurrent) return i18n._(msg`Downgrade to ${planName}`);
+  if (trialUsed && !plan.free) return i18n._(msg`Upgrade to ${planName}`);
+  return trPlan(i18n, plan.cta.label);
 }
 
 function PlanCtaButton({
@@ -198,6 +207,7 @@ function PlanCtaButton({
   onSelect?: (plan: PlanId, cycle: BillingCycle) => void;
   baseClass: string;
 }) {
+  const { i18n } = useLingui();
   const className = [baseClass, plan.cta.kind === "primary" ? "primary" : ""].filter(Boolean).join(" ");
   return (
     <button
@@ -205,7 +215,7 @@ function PlanCtaButton({
       disabled={isCurrent}
       onClick={() => !isCurrent && onSelect?.(plan.id, cycle)}
     >
-      {getPlanCtaLabel(plan, isCurrent, isLowerThanCurrent, trialUsed)}
+      {getPlanCtaLabel(i18n, plan, isCurrent, isLowerThanCurrent, trialUsed)}
     </button>
   );
 }
@@ -229,12 +239,13 @@ function PlanCard({
   isLowerThanCurrent: boolean;
   onSelect?: (plan: PlanId, cycle: BillingCycle) => void;
 }) {
+  const { i18n } = useLingui();
   const cardClass = ["plan-card", isFeatured ? "featured" : "", isCurrent ? "current" : ""].filter(Boolean).join(" ");
   return (
     <div className={cardClass}>
-      {showBadge && plan.badge && <span className="plan-badge">{plan.badge}</span>}
-      <div className="plan-name">{plan.name}</div>
-      <div className="plan-tagline">{plan.tagline}</div>
+      {showBadge && plan.badge && <span className="plan-badge">{trPlan(i18n, plan.badge)}</span>}
+      <div className="plan-name">{trPlan(i18n, plan.name)}</div>
+      <div className="plan-tagline">{trPlan(i18n, plan.tagline)}</div>
       <PlanPrice plan={plan} cycle={cycle} />
       <PlanCtaButton
         plan={plan}
@@ -249,7 +260,7 @@ function PlanCard({
         {plan.highlights.map((h) => (
           <li key={h}>
             <TickIcon />
-            {h}
+            {trPlan(i18n, h)}
           </li>
         ))}
       </ul>
@@ -272,6 +283,7 @@ function ComparisonMatrix({
   trialUsed?: boolean;
   currentIdx: number;
 }) {
+  const { i18n, _ } = useLingui();
   const featuredIdx =
     featuredPlanId === null
       ? -1
@@ -292,13 +304,13 @@ function ComparisonMatrix({
   return (
     <div className="plans-compare">
       <div className="plans-compare-head">
-        <h3>Compare every subscription</h3>
-        <span className="hint">All limits are per workspace.</span>
+        <h3><Trans>Compare every subscription</Trans></h3>
+        <span className="hint"><Trans>All limits are per workspace.</Trans></span>
       </div>
 
       {isMobile ? (
         <>
-          <div className="plans-seg plans-compare-tabs" role="tablist" aria-label="Select plan to compare">
+          <div className="plans-seg plans-compare-tabs" role="tablist" aria-label={_(msg`Select plan to compare`)}>
             {PLANS.map((p, i) => (
               <button
                 key={p.id}
@@ -307,20 +319,20 @@ function ComparisonMatrix({
                 className={[i === mobilePlan ? "on" : "", p.featured ? "featured-plan" : ""].filter(Boolean).join(" ")}
                 onClick={() => setMobilePlan(i)}
               >
-                {p.name}
+                {trPlan(i18n, p.name)}
               </button>
             ))}
           </div>
           <div className="compare-mobile-list">
             {FEATURE_GROUPS.map((group) => (
               <React.Fragment key={group.name}>
-                <div className="compare-mobile-group">{group.name}</div>
+                <div className="compare-mobile-group">{trPlan(i18n, group.name)}</div>
                 {group.rows.map((row) => {
                   const allCells = "billing" in row ? row.billing[cycle] : row.values;
                   return (
                     <div className="compare-mobile-row" key={row.label}>
-                      <div className="compare-mobile-label">{row.label}</div>
-                      {row.hint && <div className="compare-mobile-hint">{row.hint}</div>}
+                      <div className="compare-mobile-label">{trPlan(i18n, row.label)}</div>
+                      {row.hint && <div className="compare-mobile-hint">{trPlan(i18n, row.hint)}</div>}
                       <div className="compare-mobile-value">
                         <Cell value={allCells[mobilePlan]!} />
                       </div>
@@ -362,10 +374,10 @@ function ComparisonMatrix({
                 <th />
                 {PLANS.map((p, i) => (
                   <th key={p.id} className={["planhead", i === featuredIdx ? "featured" : ""].filter(Boolean).join(" ")}>
-                    <div className="ph-name">{p.name}</div>
+                    <div className="ph-name">{trPlan(i18n, p.name)}</div>
                     <div className="ph-price">
                       {p.free
-                        ? "Free"
+                        ? _(msg`Free`)
                         : `$${p[cycle === "annual" ? "annualMonthlyPrice" : "monthlyPrice"]}/workspace/month`}
                     </div>
                   </th>
@@ -376,7 +388,7 @@ function ComparisonMatrix({
               {FEATURE_GROUPS.map((group) => (
                 <React.Fragment key={group.name}>
                   <tr className="plans-group-row">
-                    <td className="group-label">{group.name}</td>
+                    <td className="group-label">{trPlan(i18n, group.name)}</td>
                     {PLANS.map((p, i) => (
                       <td key={p.id} className={i === featuredIdx ? "featured-col" : ""} />
                     ))}
@@ -386,8 +398,8 @@ function ComparisonMatrix({
                     return (
                       <tr className="row" key={row.label}>
                         <td className="feat">
-                          <div className="feat-label">{row.label}</div>
-                          {row.hint && <div className="feat-hint">{row.hint}</div>}
+                          <div className="feat-label">{trPlan(i18n, row.label)}</div>
+                          {row.hint && <div className="feat-hint">{trPlan(i18n, row.hint)}</div>}
                         </td>
                         {PLANS.map((p, i) => (
                           <td key={p.id} className={["cell", i === featuredIdx ? "featured-col" : ""].filter(Boolean).join(" ")}>
@@ -430,6 +442,7 @@ function ComparisonMatrix({
 }
 
 function SelfHostNote() {
+  const { i18n } = useLingui();
   const info = SELF_HOST_NOTE;
   return (
     <div className="plans-selfhost">
@@ -445,11 +458,11 @@ function SelfHostNote() {
         </svg>
       </span>
       <div className="sh-copy">
-        <strong>{info.title}</strong>
-        <p>{info.body}</p>
+        <strong>{trPlan(i18n, info.title)}</strong>
+        <p>{trPlan(i18n, info.body)}</p>
       </div>
       <a className="sh-cta" href={info.cta.href} target="_blank" rel="noopener noreferrer">
-        {info.cta.label}
+        {trPlan(i18n, info.cta.label)}
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
           <path
             d="M3 7h8M7.5 3.5 11 7l-3.5 3.5"

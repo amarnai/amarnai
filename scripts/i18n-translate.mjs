@@ -69,30 +69,38 @@ const activeLocales = targetLocaleArg
 
 // ── PO parsing/writing (minimal — we only need msgid/msgstr) ─────────────────
 
+// Matches a PO string value (msgid/msgstr) including continuation lines. The PO
+// format allows a string to span several quoted lines, which are concatenated:
+//   msgid "first line\n"
+//   "second line"
+// Capturing only the first quoted segment (as a naive /msgid "([^"]*)"/ does)
+// silently drops everything after the first line, so multi-line bodies get
+// translated as just their opening line. This walks the full run of quoted lines.
+function extractPoValue(block, keyword) {
+  const re = new RegExp(
+    `(?:^|\\n)${keyword}[ \\t]+("(?:[^"\\\\]|\\\\.)*"(?:[ \\t]*\\n[ \\t]*"(?:[^"\\\\]|\\\\.)*")*)`,
+  );
+  const m = block.match(re);
+  if (!m) return null;
+  const segments = m[1].match(/"(?:[^"\\]|\\.)*"/g) ?? [];
+  // PO uses C-style escapes (\n \t \" \\) that are a subset of JSON's, so each
+  // quoted segment decodes cleanly with JSON.parse; join the run into one string.
+  return segments.map((s) => JSON.parse(s)).join("");
+}
+
 function parsePo(content) {
   const entries = [];
   const blocks = content.split(/\n(?=msgid )/);
   for (const block of blocks) {
-    if (!block.trim() || block.startsWith('msgid ""')) {
-      // header block
+    const msgid = block.startsWith("msgid ") ? extractPoValue(block, "msgid") : null;
+    // Header (empty msgid) and any non-entry block are preserved verbatim.
+    if (!block.trim() || msgid === null || msgid === "") {
       entries.push({ isHeader: true, raw: block });
       continue;
     }
 
-    const msgidMatch = block.match(/^msgid "((?:[^"\\]|\\.)*)"/ms);
-    const msgstrMatch = block.match(/\nmsgstr "((?:[^"\\]|\\.)*)"/ms);
+    const msgstr = extractPoValue(block, "msgstr") ?? "";
     const isFuzzy = block.includes("#, fuzzy");
-
-    if (!msgidMatch) {
-      entries.push({ isHeader: false, raw: block, msgid: null, msgstr: null, isFuzzy });
-      continue;
-    }
-
-    const msgid = msgidMatch[1].replace(/\\n/g, "\n").replace(/\\"/g, '"');
-    const msgstr = msgstrMatch
-      ? msgstrMatch[1].replace(/\\n/g, "\n").replace(/\\"/g, '"')
-      : "";
-
     entries.push({ isHeader: false, raw: block, msgid, msgstr, isFuzzy });
   }
   return entries;
@@ -109,7 +117,13 @@ function writePo(entries) {
       // Re-emit block with potentially updated msgstr
       let block = entry.raw;
       const msgstrLine = `msgstr "${escapePoStr(entry.msgstr)}"`;
-      block = block.replace(/\nmsgstr "(?:[^"\\]|\\.)*"/ms, "\n" + msgstrLine);
+      // Replace the whole msgstr, including any continuation lines, with a single
+      // escaped line so multi-line translations round-trip without leaving an
+      // orphaned `""` continuation behind.
+      block = block.replace(
+        /\nmsgstr "(?:[^"\\]|\\.)*"(?:[ \t]*\n[ \t]*"(?:[^"\\]|\\.)*")*/,
+        "\n" + msgstrLine,
+      );
       // Ensure fuzzy flag is present
       if (entry.needsFuzzy && !block.includes("#, fuzzy")) {
         block = "#, fuzzy\n" + block.replace(/^#, fuzzy\n/m, "");
@@ -232,6 +246,20 @@ function validateTranslations(raw, sourceEntries) {
       }
     }
   }
+  // Truncation guard: a multi-paragraph source must keep its paragraph breaks.
+  // Models sometimes return only the first line of a long body; that passes the
+  // checks above (non-empty, no placeholders) but silently drops most of the
+  // text. Newline structure is language-independent, so require it to survive.
+  for (const { msgid } of sourceEntries) {
+    const sourceNewlines = (msgid.match(/\n/g) ?? []).length;
+    const translationNewlines = (parsed.data[msgid].match(/\n/g) ?? []).length;
+    if (sourceNewlines >= 2 && translationNewlines === 0) {
+      return {
+        ok: false,
+        error: `Translation looks truncated (lost line breaks) for: "${msgid.slice(0, 60)}…"`,
+      };
+    }
+  }
   return { ok: true, data: parsed.data };
 }
 
@@ -343,16 +371,24 @@ function buildPrompt(locale, batch) {
   return [
     {
       role: "system",
-      content: `You are a professional UI translator. Translate UI strings from English to ${targetName}.
+      content: `You are a senior marketing localizer transcreating product copy from English to ${targetName}. You are not a literal translator. Your job is to make each line land in ${targetName} with the SAME punch, confidence, and brevity as the English, the way a native ${targetName} marketer would write it.
 
-RULES:
-- The input is a JSON object whose keys are numeric IDs and whose values are English strings.
-- Return a JSON object whose keys are the SAME numeric IDs and whose values are the ${targetName} translation of the corresponding English string.
-- Include EVERY ID from the input — no additions, no omissions.
-- Preserve ALL ICU MessageFormat placeholders exactly ({count}, {name}, {count, plural, one{...} other{...}}, etc.).
-- Preserve ALL HTML/JSX-style tags (e.g. <strong>, </em>).
-- Keep translations natural and concise — this is UI copy, not prose.
-- Do NOT add explanatory text outside the JSON.${glossaryBlock}`,
+PRIORITY: impact and concision over word-for-word fidelity. When a literal rendering would be flat, clunky, or longer than the English, rewrite it. Take liberties with structure, idiom, and phrasing whenever they make the line hit harder or read more naturally. Keep the meaning and every product claim intact: never invent features, soften, or oversell beyond what the English says.
+
+REGISTER: headlines, taglines, section titles, and call-to-action buttons are marketing copy, transcreate them for maximum effect. Functional, legal, and informational strings (form labels, errors, status text, settings, FAQ answers, pricing and billing details) must stay precise and conventional, using the standard ${targetName} term with no creative liberty.
+
+LENGTH: match or beat the English length. UI layouts are tight, so never return a translation materially longer than its source. For CJK, stay compact.
+
+VOICE: direct, modern SaaS, benefit-led. Mirror the English tone, do not make it more formal or more flowery than the original.
+
+HARD CONSTRAINTS:
+- The input is a JSON object whose keys are numeric IDs and whose values are English strings. Return a JSON object with the SAME numeric IDs as keys and the ${targetName} transcreation as each value. Include EVERY ID, no additions, no omissions.
+- Preserve ALL ICU MessageFormat placeholders exactly ({count}, {name}, {count, plural, one{...} other{...}}, etc.). Translate the literal text inside plural/select arms, never the placeholder names.
+- Preserve ALL HTML/JSX-style tags (e.g. <strong>, </em>, <0>, <1/>) and their positions.
+- Keep the brand name "Amarnai" and proper nouns (Gmail, GitHub, AGPL-3.0, etc.) untranslated.
+- Never use em dashes. Use commas, colons, or restructure the sentence. Apply ${targetName} punctuation, spacing, and quotation conventions.
+- Use native ${targetName} marketing idiom. Avoid calques and gratuitous Anglicisms unless they are the standard term in ${targetName} tech marketing.
+- Do NOT add any explanatory text outside the JSON.${glossaryBlock}`,
     },
     {
       role: "user",

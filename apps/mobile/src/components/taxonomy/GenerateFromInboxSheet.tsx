@@ -1,4 +1,7 @@
 import { ActivityIndicator, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Trans } from '@lingui/react/macro';
+import { useLingui } from '@lingui/react';
+import { msg } from '@lingui/core/macro';
 import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
 import type { TaxonomyTransferFile } from '@amarnai/shared';
 import type { TaxonomyGenerationStatusResult } from '@amarnai/api-client';
@@ -33,6 +36,7 @@ export function GenerateFromInboxSheet({
   onUseTemplates,
   onClose,
 }: Props) {
+  const { _ } = useLingui();
   const status = generation?.status ?? 'IDLE';
   const eligibility = generation?.eligibility;
   const proposal = status === 'READY' ? generation?.proposal ?? null : null;
@@ -40,12 +44,14 @@ export function GenerateFromInboxSheet({
   const importing = generation?.importing ?? false;
 
   return (
-    <SheetLayout visible={visible} onClose={onClose} title="Generate from inbox" handle>
+    <SheetLayout visible={visible} onClose={onClose} title={_(msg`Generate from inbox`)} handle>
       <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
         {importing && !running ? (
           <Text style={[styles.muted, { marginBottom: space.md }]}>
-            Your inbox is still importing. You can generate now from what&apos;s loaded so far, but
-            regenerating once the import finishes will give a more accurate fit.
+            <Trans>
+              Your inbox is still importing. You can generate now from what&apos;s loaded so far,
+              but regenerating once the import finishes will give a more accurate fit.
+            </Trans>
           </Text>
         ) : null}
         {loading ? (
@@ -53,23 +59,28 @@ export function GenerateFromInboxSheet({
         ) : running ? (
           <View style={styles.center}>
             <ActivityIndicator color={colors.accent} />
-            <Text style={styles.muted}>Analyzing your inbox and building a plan…</Text>
+            <Text style={styles.muted}><Trans>Analyzing your inbox and building a plan…</Trans></Text>
           </View>
         ) : status === 'INSUFFICIENT' ? (
           <Text style={styles.muted}>{reasonText('INBOX_TOO_SMALL')}</Text>
         ) : status === 'FAILED' ? (
           <Text style={styles.muted}>
-            {`Generation didn't complete. ${
-              eligibility?.nextEligibleAt
-                ? `Try again after ${new Date(eligibility.nextEligibleAt).toLocaleString()}, or start from a template.`
-                : 'Try again shortly, or start from a template.'
-            }`}
+            {eligibility?.nextEligibleAt ? (
+              <Trans>
+                Generation didn&apos;t complete. Try again after{' '}
+                {new Date(eligibility.nextEligibleAt).toLocaleString()}, or start from a template.
+              </Trans>
+            ) : (
+              <Trans>Generation didn&apos;t complete. Try again shortly, or start from a template.</Trans>
+            )}
           </Text>
         ) : proposal ? (
           <View style={styles.gap}>
             <Text style={styles.muted}>
-              Proposed folders. Applying replaces your current plan; you can edit everything
-              afterward.
+              <Trans>
+                Proposed folders. Applying replaces your current plan; you can edit everything
+                afterward.
+              </Trans>
             </Text>
             {previewRows(proposal).map((row, i) => (
               <View key={`${row.name}-${i}`} style={styles.row}>
@@ -84,9 +95,11 @@ export function GenerateFromInboxSheet({
         ) : (
           <View style={styles.gap}>
             <Text style={styles.muted}>
-              Amarnai will analyze your senders, labels, and subject keywords (never message
-              bodies) to suggest a personalized set of folders. Review and edit before anything is
-              applied.
+              <Trans>
+                Amarnai will analyze your senders, labels, and subject keywords (never message
+                bodies) to suggest a personalized set of folders. Review and edit before anything
+                is applied.
+              </Trans>
             </Text>
             {eligibility && !eligibility.eligible ? (
               <Text style={styles.muted}>
@@ -105,20 +118,20 @@ export function GenerateFromInboxSheet({
               onPress={onClose}
               disabled={applying}
             >
-              <Text style={styles.btnGhostText}>Discard</Text>
+              <Text style={styles.btnGhostText}><Trans>Discard</Trans></Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.btn, styles.btnPrimary]}
               onPress={() => onApply(proposal)}
               disabled={applying}
             >
-              <Text style={styles.btnPrimaryText}>{applying ? 'Applying…' : 'Apply'}</Text>
+              <Text style={styles.btnPrimaryText}>{applying ? <Trans>Applying…</Trans> : <Trans>Apply</Trans>}</Text>
             </TouchableOpacity>
           </>
         ) : status === 'INSUFFICIENT' || status === 'FAILED' ? (
           <>
             <TouchableOpacity style={[styles.btn, styles.btnGhost]} onPress={onClose}>
-              <Text style={styles.btnGhostText}>Close</Text>
+              <Text style={styles.btnGhostText}><Trans>Close</Trans></Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.btn, styles.btnPrimary]}
@@ -127,17 +140,17 @@ export function GenerateFromInboxSheet({
                 onUseTemplates();
               }}
             >
-              <Text style={styles.btnPrimaryText}>Use a template</Text>
+              <Text style={styles.btnPrimaryText}><Trans>Use a template</Trans></Text>
             </TouchableOpacity>
           </>
         ) : !running ? (
           <>
             <TouchableOpacity style={[styles.btn, styles.btnGhost]} onPress={onClose}>
-              <Text style={styles.btnGhostText}>Close</Text>
+              <Text style={styles.btnGhostText}><Trans>Close</Trans></Text>
             </TouchableOpacity>
             {eligibility?.eligible ? (
               <TouchableOpacity style={[styles.btn, styles.btnPrimary]} onPress={onGenerate}>
-                <Text style={styles.btnPrimaryText}>Generate</Text>
+                <Text style={styles.btnPrimaryText}><Trans>Generate</Trans></Text>
               </TouchableOpacity>
             ) : (
               // Inbox isn't eligible to generate; offer a template as the path forward.
@@ -148,7 +161,7 @@ export function GenerateFromInboxSheet({
                   onUseTemplates();
                 }}
               >
-                <Text style={styles.btnPrimaryText}>Use a template</Text>
+                <Text style={styles.btnPrimaryText}><Trans>Use a template</Trans></Text>
               </TouchableOpacity>
             )}
           </>
