@@ -3,10 +3,12 @@ export {
   issueRefreshToken,
   rotateRefreshToken,
   revokeRefreshToken,
+  revokeAllRefreshTokensForUser,
   deleteExpiredRefreshTokens,
 } from "./refresh-token.js";
 export type { IssuedRefreshToken } from "./refresh-token.js";
-export { verifyCredentials } from "./credentials.js";
+export { verifyCredentials, checkUserPassword } from "./credentials.js";
+export type { PasswordCheck } from "./credentials.js";
 export { registerWithPassword, rotateVerificationToken } from "./register.js";
 export type { RegisterWithPasswordInput, RegisterWithPasswordResult } from "./register.js";
 export { createPasswordResetToken } from "./password-reset.js";

@@ -30,3 +30,31 @@ export async function verifyCredentials(
   const matches = await bcrypt.compare(password, user.credential.passwordHash);
   return matches ? user.id : null;
 }
+
+export type PasswordCheck = "ok" | "wrong" | "no_password";
+
+// Step-up verification for sensitive actions (e.g. deleting an account). Unlike
+// verifyCredentials it looks the user up by id (the caller already has an
+// authenticated session) and distinguishes three outcomes:
+//   - "no_password": a federated (Google-only) account with no password set —
+//     there is nothing to re-verify, so callers proceed on the session alone.
+//   - "wrong": a password is set but the supplied one does not match.
+//   - "ok": the supplied password matches.
+// A bcrypt comparison runs even in the no-password case to keep timing flat.
+export async function checkUserPassword(
+  userId: string,
+  password: string
+): Promise<PasswordCheck> {
+  const user = await db.user.findUnique({
+    where: { id: userId },
+    select: { credential: { select: { passwordHash: true } } },
+  });
+
+  if (!user?.credential) {
+    await bcrypt.compare(password, DUMMY_HASH);
+    return "no_password";
+  }
+
+  const matches = await bcrypt.compare(password, user.credential.passwordHash);
+  return matches ? "ok" : "wrong";
+}

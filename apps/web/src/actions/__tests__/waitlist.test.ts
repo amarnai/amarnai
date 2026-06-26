@@ -236,7 +236,7 @@ describe("registerAction under waitlist mode", () => {
 
     const result = await registerAction(
       null,
-      form({ email: "user@example.com", password: "password123" })
+      form({ email: "user@example.com", password: "password123456" })
     );
 
     expect(result.error).toBe(
@@ -253,7 +253,7 @@ describe("registerAction under waitlist mode", () => {
 
     const result = await registerAction(
       null,
-      form({ email: "user@example.com", password: "password123" })
+      form({ email: "user@example.com", password: "password123456" })
     );
 
     expect(result.error).toBeUndefined();

@@ -81,13 +81,13 @@ describe("POST /auth/register", () => {
       verificationToken: "verif-tok",
     });
 
-    const res = await post({ email: "new@b.com", password: "password123" });
+    const res = await post({ email: "new@b.com", password: "password123456" });
 
     expect(res.status).toBe(200);
     expect(await res.json()).toEqual(TOKEN_PAIR);
     expect(registerWithPassword).toHaveBeenCalledWith({
       email: "new@b.com",
-      password: "password123",
+      password: "password123456",
     });
     expect(sendVerificationEmail).toHaveBeenCalledWith("new@b.com", "verif-tok");
   });
@@ -99,7 +99,7 @@ describe("POST /auth/register", () => {
       verificationToken: "verif-tok",
     });
 
-    const res = await post({ email: "u@b.com", password: "password123" });
+    const res = await post({ email: "u@b.com", password: "password123456" });
 
     expect(res.status).toBe(200);
     expect(sendVerificationEmail).toHaveBeenCalledWith("u@b.com", "verif-tok");
@@ -108,7 +108,7 @@ describe("POST /auth/register", () => {
   it("returns 409 for an already-registered email", async () => {
     vi.mocked(registerWithPassword).mockResolvedValue({ status: "exists" });
 
-    const res = await post({ email: "v@b.com", password: "password123" });
+    const res = await post({ email: "v@b.com", password: "password123456" });
 
     expect(res.status).toBe(409);
     expect(sendVerificationEmail).not.toHaveBeenCalled();
@@ -117,14 +117,14 @@ describe("POST /auth/register", () => {
   it("returns 409 and directs Google-only accounts to sign in with Google", async () => {
     vi.mocked(registerWithPassword).mockResolvedValue({ status: "google_only" });
 
-    const res = await post({ email: "g@b.com", password: "password123" });
+    const res = await post({ email: "g@b.com", password: "password123456" });
 
     expect(res.status).toBe(409);
     expect(((await res.json()) as { error?: string }).error).toMatch(/Google/);
   });
 
   it("rejects an invalid email with 400 and never touches the db", async () => {
-    const res = await post({ email: "not-an-email", password: "password123" });
+    const res = await post({ email: "not-an-email", password: "password123456" });
 
     expect(res.status).toBe(400);
     expect(registerWithPassword).not.toHaveBeenCalled();
@@ -140,7 +140,7 @@ describe("POST /auth/register", () => {
   it("blocks sign-up with 403 in waitlist mode", async () => {
     config.waitlistMode = true;
 
-    const res = await post({ email: "a@b.com", password: "password123" });
+    const res = await post({ email: "a@b.com", password: "password123456" });
 
     expect(res.status).toBe(403);
     expect(registerWithPassword).not.toHaveBeenCalled();

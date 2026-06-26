@@ -10,6 +10,7 @@ import { BackHeader } from '../../src/components/BackHeader';
 import { SectionTitle } from '../../src/components/SectionTitle';
 import { SettingsGroup, SettingsRow } from '../../src/components/SettingsGroup';
 import { EditNameSheet } from '../../src/components/EditNameSheet';
+import { DeleteAccountSheet } from '../../src/components/DeleteAccountSheet';
 import { toUserMessage } from '../../src/errors';
 
 export default function AccountScreen() {
@@ -17,6 +18,7 @@ export default function AccountScreen() {
   const { user, client, refresh, signOut } = useSession();
 
   const [editNameOpen, setEditNameOpen] = useState(false);
+  const [deleteSheetOpen, setDeleteSheetOpen] = useState(false);
   const [deletePending, setDeletePending] = useState(false);
 
   // Weekly reminder preference. Loaded from /auth/me (the session `user` is
@@ -24,12 +26,18 @@ export default function AccountScreen() {
   const [remindersEnabled, setRemindersEnabled] = useState<boolean | null>(null);
   const [remindersSaving, setRemindersSaving] = useState(false);
 
+  // Whether this account has a password (vs. federated Google-only). Drives the
+  // step-up password prompt on delete. null while loading.
+  const [hasPassword, setHasPassword] = useState<boolean | null>(null);
+
   useEffect(() => {
     let active = true;
     void client
       .me()
       .then((me) => {
-        if (active) setRemindersEnabled(me.lifecycleEmailsEnabled);
+        if (!active) return;
+        setRemindersEnabled(me.lifecycleEmailsEnabled);
+        setHasPassword(me.hasPassword);
       })
       .catch(() => {
         /* leave null — the row simply stays disabled until it loads */
@@ -56,6 +64,13 @@ export default function AccountScreen() {
   }
 
   function confirmDelete() {
+    // Password accounts confirm via the step-up sheet (the server requires the
+    // password). Federated (Google-only) accounts have none, so a plain confirm
+    // dialog is enough.
+    if (hasPassword) {
+      setDeleteSheetOpen(true);
+      return;
+    }
     Alert.alert(
       'Delete account?',
       'Permanently delete your account and all associated data. This cannot be undone.',
@@ -141,7 +156,7 @@ export default function AccountScreen() {
         {/* Danger zone */}
         <SectionTitle danger>Danger zone</SectionTitle>
         <SettingsGroup>
-          <SettingsRow onPress={confirmDelete} disabled={deletePending}>
+          <SettingsRow onPress={confirmDelete} disabled={deletePending || hasPassword === null}>
             <Ionicons name="trash-outline" size={20} color={colors.danger} />
             <Text style={[styles.linkLabel, styles.linkLabelGrow, styles.dangerLabel]}>
               {deletePending ? 'Deleting…' : 'Delete account'}
@@ -157,6 +172,13 @@ export default function AccountScreen() {
         client={client}
         currentName={user?.name ?? null}
         onSaved={refresh}
+      />
+
+      <DeleteAccountSheet
+        visible={deleteSheetOpen}
+        onClose={() => setDeleteSheetOpen(false)}
+        client={client}
+        onDeleted={signOut}
       />
     </ScreenContainer>
   );

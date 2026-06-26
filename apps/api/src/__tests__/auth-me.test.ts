@@ -23,6 +23,7 @@ vi.mock("@amarnai/auth", () => ({
   issueRefreshToken: vi.fn(),
   verifyAccessToken: vi.fn(async () => null),
   verifyCredentials: vi.fn(),
+  checkUserPassword: vi.fn(),
   rotateRefreshToken: vi.fn(),
   revokeRefreshToken: vi.fn(),
   provisionGoogleUser: vi.fn(),
@@ -62,6 +63,7 @@ describe("GET /auth/me", () => {
       name: "Ann",
       emailVerified: true,
       lifecycleEmailsEnabled: true,
+      hasPassword: false,
     });
   });
 

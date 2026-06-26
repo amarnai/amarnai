@@ -78,6 +78,14 @@ export async function revokeRefreshToken(raw: string): Promise<void> {
   }
 }
 
+// Revokes every refresh token a user holds, across all families and devices.
+// Used on password reset so a stolen password cannot keep alive sessions the
+// real owner does not control (ASVS: a password change terminates other active
+// sessions). Short-lived web access JWTs are stateless and lapse on their own.
+export async function revokeAllRefreshTokensForUser(userId: string): Promise<void> {
+  await db.refreshToken.deleteMany({ where: { userId } });
+}
+
 // Deletes refresh tokens past their expiry. Run periodically (a daily worker
 // job) so consumed and expired rows do not accumulate. Returns the count removed.
 export async function deleteExpiredRefreshTokens(): Promise<number> {

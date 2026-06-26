@@ -90,7 +90,10 @@ export function makeApiClient(transport: ApiTransport) {
       apiMutate<CurrentUser>("/auth/me", "PATCH", input),
 
     // Permanently delete the authenticated user's account and all owned data.
-    deleteMe: () => apiMutate<OkResult>("/auth/me", "DELETE"),
+    // Password is required for password-based accounts (step-up re-auth) and
+    // omitted for federated accounts, which the server treats as "no password".
+    deleteMe: (password?: string) =>
+      apiMutate<OkResult>("/auth/me", "DELETE", password ? { password } : undefined),
 
     workspaces: () =>
       apiFetch<Workspace[]>("/workspaces"),

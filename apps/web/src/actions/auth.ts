@@ -4,8 +4,14 @@ import bcrypt from "bcryptjs";
 import { z } from "zod";
 import { signIn, signOut, unstable_update } from "@/auth";
 import { db } from "@amarnai/db";
-import { registerWithPassword, rotateVerificationToken, createPasswordResetToken } from "@amarnai/auth";
-import { RegisterCredentialsSchema } from "@amarnai/shared";
+import {
+  registerWithPassword,
+  rotateVerificationToken,
+  createPasswordResetToken,
+  revokeAllRefreshTokensForUser,
+  checkUserPassword,
+} from "@amarnai/auth";
+import { RegisterCredentialsSchema, PasswordSchema } from "@amarnai/shared";
 import { requireUser } from "@/lib/session";
 import { sendVerificationEmail, sendPasswordResetEmail } from "@/lib/email";
 import { disconnectGmailBeforeDeletion } from "@/lib/gmail-teardown";
@@ -146,8 +152,20 @@ export async function setLifecycleEmailsAction(
 
 // ─── Delete account ───────────────────────────────────────────────────────────
 
-export async function deleteAccountAction(): Promise<{ error?: string }> {
+export async function deleteAccountAction(
+  _prev: { error?: string } | null,
+  formData: FormData
+): Promise<{ error?: string }> {
   const user = await requireUser();
+
+  // Step-up re-authentication: password accounts must re-enter their password
+  // before this irreversible action. Federated (Google-only) accounts have no
+  // password to verify and proceed on their valid session.
+  const password = (formData.get("password") as string | null) ?? "";
+  const check = await checkUserPassword(user.id, password);
+  if (check === "wrong") {
+    return { error: "Incorrect password. Please try again." };
+  }
 
   // Cancel queued sorting jobs and revoke Gmail grants for every owned
   // workspace before the rows disappear. Runs while the session is still
@@ -231,10 +249,7 @@ export async function forgotPasswordAction(
 
 const resetSchema = z.object({
   token: z.string().min(1),
-  password: z
-    .string()
-    .min(8, "Password must be at least 8 characters")
-    .max(72, "Password must be at most 72 characters"),
+  password: PasswordSchema,
 });
 
 export async function resetPasswordAction(
@@ -270,6 +285,11 @@ export async function resetPasswordAction(
   });
 
   await db.verificationToken.delete({ where: { token } });
+
+  // A reset assumes the old password may be compromised, so log out every other
+  // device: revoke all refresh-token families for this user. (Stateless web JWTs
+  // are short-lived and lapse on their own.)
+  await revokeAllRefreshTokensForUser(record.userId);
 
   return { success: true };
 }

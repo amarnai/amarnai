@@ -42,6 +42,9 @@ export type CurrentUser = {
   emailVerified: boolean;
   // Whether the user receives weekly inbox-reminder lifecycle emails.
   lifecycleEmailsEnabled: boolean;
+  // True when the account has a password set (vs. federated Google-only). Used
+  // to decide whether to prompt for a password on sensitive actions.
+  hasPassword: boolean;
 };
 
 // Partial profile/preferences update for PATCH /auth/me. Only the provided

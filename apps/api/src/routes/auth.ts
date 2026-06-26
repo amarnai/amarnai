@@ -6,6 +6,7 @@ import {
   rotateRefreshToken,
   revokeRefreshToken,
   verifyCredentials,
+  checkUserPassword,
   registerWithPassword,
   rotateVerificationToken,
   provisionGoogleUser,
@@ -250,6 +251,9 @@ const ME_SELECT = {
   name: true,
   emailVerified: true,
   lifecycleEmailsEnabled: true,
+  // Presence only (never the hash): lets clients decide whether to prompt for a
+  // password on sensitive actions like account deletion.
+  credential: { select: { userId: true } },
 } as const;
 
 function toMeResponse(user: {
@@ -258,6 +262,7 @@ function toMeResponse(user: {
   name: string | null;
   emailVerified: Date | null;
   lifecycleEmailsEnabled: boolean;
+  credential: { userId: string } | null;
 }) {
   return {
     userId: user.id,
@@ -265,6 +270,7 @@ function toMeResponse(user: {
     name: user.name,
     emailVerified: user.emailVerified !== null,
     lifecycleEmailsEnabled: user.lifecycleEmailsEnabled,
+    hasPassword: user.credential != null,
   };
 }
 
@@ -316,6 +322,15 @@ auth.patch("/auth/me", async (c) => {
 auth.delete("/auth/me", async (c) => {
   const userId = c.get("userId") as string | undefined;
   if (!userId) return c.json({ error: "Unauthorized" }, 401);
+
+  // Step-up re-authentication: password accounts must re-enter their password
+  // before this irreversible action. Federated (Google-only) accounts have no
+  // password to verify ("no_password") and proceed on their valid access token.
+  const body = (await c.req.json().catch(() => null)) as { password?: unknown } | null;
+  const password = typeof body?.password === "string" ? body.password : "";
+  if ((await checkUserPassword(userId, password)) === "wrong") {
+    return c.json({ error: "Incorrect password" }, 401);
+  }
 
   const ownedWorkspaces = await db.workspace.findMany({
     where: { ownerUserId: userId },

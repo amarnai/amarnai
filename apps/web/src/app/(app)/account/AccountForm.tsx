@@ -12,10 +12,12 @@ export function AccountForm({
   currentName,
   email,
   lifecycleEmailsEnabled,
+  hasPassword,
 }: {
   currentName: string | null;
   email: string;
   lifecycleEmailsEnabled: boolean;
+  hasPassword: boolean;
 }) {
   const [nameValue, setNameValue] = useState(currentName ?? "");
   const [nameState, nameAction, namePending] = useActionState(updateNameAction, null);
@@ -114,6 +116,21 @@ export function AccountForm({
             <p className="account-danger-warning">
               All your workspaces, emails, and settings will be deleted permanently.
             </p>
+            {hasPassword && (
+              <div className="form-group">
+                <label className="form-label" htmlFor="delete-password">
+                  Confirm your password to continue
+                </label>
+                <input
+                  id="delete-password"
+                  name="password"
+                  type="password"
+                  autoComplete="current-password"
+                  required
+                  className="form-input"
+                />
+              </div>
+            )}
             <div className="account-delete-actions">
               <button type="submit" disabled={deletePending} className="btn-danger">
                 {deletePending ? "Deleting…" : "Yes, delete my account"}

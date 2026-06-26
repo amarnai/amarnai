@@ -4,6 +4,7 @@ import { useActionState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Suspense } from "react";
+import { PASSWORD_MIN_LENGTH } from "@amarnai/shared";
 import { resetPasswordAction } from "@/actions/auth";
 import { AuthShell } from "@/components/AuthShell";
 
@@ -43,10 +44,10 @@ function ResetPasswordForm() {
           type="password"
           autoComplete="new-password"
           required
-          minLength={8}
+          minLength={PASSWORD_MIN_LENGTH}
           className="form-input"
         />
-        <p className="auth-hint">At least 8 characters</p>
+        <p className="auth-hint">At least {PASSWORD_MIN_LENGTH} characters</p>
       </div>
 
       <button type="submit" disabled={pending} className="btn-primary auth-submit">
