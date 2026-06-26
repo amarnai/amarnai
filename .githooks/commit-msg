@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Strip any "Co-Authored-By: Claude / Anthropic" trailer from the commit message.
+# No commit in this repo should ever be co-authored by Claude, regardless of how
+# the message was produced (auto-attribution, pasted text, tooling, etc.).
+
+MSG_FILE="$1"
+
+if grep -qiE '^Co-Authored-By:.*(claude|anthropic)' "$MSG_FILE"; then
+  grep -ivE '^Co-Authored-By:.*(claude|anthropic)' "$MSG_FILE" > "$MSG_FILE.tmp"
+  # Collapse any trailing blank lines left behind by the removed trailer.
+  sed -e :a -e '/^[[:space:]]*$/{$d;N;ba}' "$MSG_FILE.tmp" > "$MSG_FILE"
+  rm -f "$MSG_FILE.tmp"
+  echo "[commit-msg] Removed Claude co-author trailer."
+fi
+
+exit 0
