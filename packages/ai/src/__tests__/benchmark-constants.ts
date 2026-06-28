@@ -35,6 +35,7 @@ import {
   ALL_NODES,
   ALL_EDGES,
   TEST_EMAILS,
+  TEST_EMAILS_INTL,
   ALL_NODES_D3,
   ALL_EDGES_D3,
   TEST_EMAILS_D3,
@@ -60,6 +61,9 @@ type Dataset = {
 
 const DATASETS: Dataset[] = [
   { name: "flat-d1", nodes: ALL_NODES, edges: ALL_EDGES, emails: TEST_EMAILS },
+  // Multilingual threads with a redundant quoted reply tail, scored as their own
+  // slice so B4's effect on non-English routing is visible separately (flat taxonomy).
+  { name: "intl-d1", nodes: ALL_NODES, edges: ALL_EDGES, emails: TEST_EMAILS_INTL },
   { name: "deep-d3", nodes: ALL_NODES_D3, edges: ALL_EDGES_D3, emails: TEST_EMAILS_D3 },
   { name: "failure-modes", nodes: ALL_NODES_FM, edges: ALL_EDGES_FM, emails: TEST_EMAILS_FM },
 ];

@@ -401,6 +401,101 @@ describe("cleanForEmbedding", () => {
     const body = "\n\n  Some content here.  \n\n";
     expect(cleanForEmbedding(body)).toBe("Some content here.");
   });
+
+  // ── Language-neutral reply-tail stripping ────────────────────────────────────
+
+  it("strips a French 'a écrit :' attribution + quoted tail", () => {
+    const body =
+      "Pouvez-vous confirmer le tarif entreprise ?\n\nLe lun. 1 janv. 2024 à 12:00, Jean Dupont <jean@example.com> a écrit :\n> Bonjour, voici notre devis initial.\n> Cordialement, Jean";
+    const cleaned = cleanForEmbedding(body);
+    expect(cleaned).toContain("Pouvez-vous confirmer le tarif entreprise ?");
+    expect(cleaned).not.toContain("Jean Dupont");
+    expect(cleaned).not.toContain("devis initial");
+  });
+
+  it("strips a German 'schrieb …:' attribution + quoted tail", () => {
+    const body =
+      "Können Sie uns ein Angebot zusenden?\n\nAm 1. Januar 2024 um 12:00 schrieb Anna Müller <anna@example.com>:\n> Hallo, anbei unser erstes Angebot.\n> Mit freundlichen Grüßen, Anna";
+    const cleaned = cleanForEmbedding(body);
+    expect(cleaned).toContain("Können Sie uns ein Angebot zusenden?");
+    expect(cleaned).not.toContain("Anna Müller");
+    expect(cleaned).not.toContain("erstes Angebot");
+  });
+
+  it("strips a Japanese '書きました:' attribution + quoted tail", () => {
+    const body =
+      "見積もりの確認をお願いします。\n\n2024年1月1日 12:00 田中太郎 <tanaka@example.com> が書きました:\n> こんにちは、最初の見積もりをお送りします。\n> よろしくお願いいたします。";
+    const cleaned = cleanForEmbedding(body);
+    expect(cleaned).toContain("見積もりの確認をお願いします。");
+    expect(cleaned).not.toContain("田中太郎");
+    expect(cleaned).not.toContain("最初の見積もり");
+  });
+
+  it("strips an unquoted reply tail (attribution → end, no '>' markers)", () => {
+    const body =
+      "My reply is below.\n\nLe lun. 1 janv. 2024 à 12:00, Jean\n<jean@example.com> a écrit :\n\nContenu original sans guillemets.";
+    const cleaned = cleanForEmbedding(body);
+    expect(cleaned).toContain("My reply is below.");
+    expect(cleaned).not.toContain("Jean");
+    expect(cleaned).not.toContain("Contenu original");
+  });
+
+  // ── Inline-quote preservation (the key conservative guarantee) ───────────────
+
+  it("preserves an inline quote when the author's own text follows it", () => {
+    const body =
+      "Regarding your point below:\n> we should increase the budget\nI agree — let's allocate more for Q2.";
+    const cleaned = cleanForEmbedding(body);
+    expect(cleaned).toContain("we should increase the budget");
+    expect(cleaned).toContain("I agree");
+    expect(cleaned).toContain("Q2");
+  });
+
+  it("preserves an inline quote but still strips the trailing reply chain", () => {
+    const body =
+      "I disagree with this:\n> your quoted point\nHere's why: it costs too much.\n\nOn Mon, Jan 1 2024, Bob <bob@example.com> wrote:\n> the entire previous email\n> more of the previous email";
+    const cleaned = cleanForEmbedding(body);
+    // Inline quotation + author text kept.
+    expect(cleaned).toContain("your quoted point");
+    expect(cleaned).toContain("Here's why: it costs too much.");
+    // Redundant reply tail removed.
+    expect(cleaned).not.toContain("Bob");
+    expect(cleaned).not.toContain("entire previous email");
+  });
+
+  // ── False-positive guards ────────────────────────────────────────────────────
+
+  it("does NOT treat a mid-body colon line with an email as an attribution", () => {
+    // No date → not an attribution header; the content after it must survive.
+    const body =
+      "I forwarded your message to support@acme.com:\nPlease help this customer with their billing issue.";
+    const cleaned = cleanForEmbedding(body);
+    expect(cleaned).toContain("support@acme.com");
+    expect(cleaned).toContain("Please help this customer with their billing issue.");
+  });
+
+  it("does NOT absorb a plain colon intro line above a quoted block", () => {
+    // "Here are the three options:" carries no email/date, so it is kept even
+    // though a quoted block follows it.
+    const body = "Here are the three options:\n> option A\n> option B";
+    const cleaned = cleanForEmbedding(body);
+    expect(cleaned).toContain("Here are the three options:");
+    expect(cleaned).not.toContain("option A");
+  });
+
+  // ── Determinism / idempotency ────────────────────────────────────────────────
+
+  it("is idempotent — clean(clean(x)) === clean(x)", () => {
+    const body =
+      "Final answer here.\n\nLe lun. 1 janv. 2024 à 12:00, Jean <jean@example.com> a écrit :\n> quoted\n\nBest regards,\nBob";
+    const once = cleanForEmbedding(body);
+    expect(cleanForEmbedding(once)).toBe(once);
+  });
+
+  it("is deterministic — repeated calls yield identical output", () => {
+    const body = "Content.\n> trailing quote\n> more";
+    expect(cleanForEmbedding(body)).toBe(cleanForEmbedding(body));
+  });
 });
 
 // ─── buildThreadEmbeddingText — budget allocation ─────────────────────────────
@@ -498,6 +593,18 @@ describe("buildThreadEmbeddingText — budget allocation", () => {
     // Head of earlier body (70% of 2400 = 1680 chars)
     const headLen = Math.floor(EARLIER_BUDGET * 0.7);
     expect(text).toContain("c".repeat(headLen));
+  });
+
+  it("predominantly-CJK body uses a smaller effective budget than Latin", () => {
+    // 2,000 chars: Latin (< latestBudget 3600) is kept intact; CJK is scaled to
+    // 0.4 × 3600 = 1440 and therefore truncated, so dense scripts stay within the
+    // embedding model's token limit instead of being silently over-truncated.
+    const cjkBody = "顧".repeat(2000);
+    const latinBody = "a".repeat(2000);
+    const cjkText = buildThreadEmbeddingText([{ subject: null, bodyText: cjkBody }]);
+    const latinText = buildThreadEmbeddingText([{ subject: null, bodyText: latinBody }]);
+    expect(latinText).not.toContain(" … ");
+    expect(cjkText).toContain(" … ");
   });
 });
 

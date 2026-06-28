@@ -36,6 +36,7 @@ import {
   ALL_NODES,
   ALL_EDGES,
   TEST_EMAILS,
+  TEST_EMAILS_INTL,
   ALL_NODES_D2,
   ALL_EDGES_D2,
   D2_AMBIGUOUS_EMAIL,
@@ -78,6 +79,7 @@ const DATASETS: Array<{
   emails: typeof TEST_EMAILS;
 }> = [
   { nodes: ALL_NODES, edges: ALL_EDGES, emails: TEST_EMAILS },
+  { nodes: ALL_NODES, edges: ALL_EDGES, emails: TEST_EMAILS_INTL },
   { nodes: ALL_NODES_D2, edges: ALL_EDGES_D2, emails: [D2_AMBIGUOUS_EMAIL] },
   { nodes: ALL_NODES_D3, edges: ALL_EDGES_D3, emails: TEST_EMAILS_D3 },
   { nodes: ALL_NODES_FM, edges: ALL_EDGES_FM, emails: TEST_EMAILS_FM },

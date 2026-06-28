@@ -1015,3 +1015,132 @@ export const TEST_EMAILS: TestEmail[] = [
     allowNeedsHumanReview: true,
   },
 ];
+
+// ─── Multilingual fixtures (production-model benchmark only) ───────────────────
+//
+// Realistic threads carrying a redundant quoted "thread summary": the author's
+// new message on top, then a localized attribution line and the full prior
+// message re-quoted with ">" — the exact content B4's cleanForEmbedding removes
+// via language-neutral structure. Routing must be driven by the author's new
+// text, not the tail.
+//
+// These route against the flat taxonomy (ALL_NODES / ALL_EDGES). They are kept
+// OUT of TEST_EMAILS on purpose: the keyless real-embedding test defaults to the
+// local qwen3 fixture, whereas B4 is judged on the production model (Gemini). The
+// seed script and constants benchmark pick these up so they are embedded and
+// scored on whichever model is being seeded.
+export const TEST_EMAILS_INTL: TestEmail[] = [
+  {
+    // French — Sales. Attribution "… a écrit :" + quoted prior message.
+    id: "fr-sales-enterprise-pricing",
+    difficulty: "medium",
+    messages: [
+      {
+        subject: "Demande de tarification entreprise pour 50 licences",
+        senderEmail: "achats@cliententreprise.fr",
+        senderName: "Service Achats",
+        bodyText:
+          "Bonjour, suite à notre échange, nous souhaitons recevoir une proposition commerciale pour 50 licences en édition entreprise, avec les tarifs dégressifs par volume et vos conditions de paiement.\n\n" +
+          "Le lun. 12 janv. 2026 à 09:30, Équipe Commerciale <ventes@example.com> a écrit :\n" +
+          "> Bonjour, merci de votre intérêt pour notre solution. Pouvez-vous préciser le nombre d'utilisateurs concernés ?\n" +
+          "> Cordialement, l'équipe commerciale",
+        receivedAt: SENT_AT,
+      },
+    ],
+    expectedFinalNodeId: NODES.sales.id,
+    allowNeedsHumanReview: true,
+  },
+
+  {
+    // German — Finance. Attribution "… schrieb …:" + quoted prior message.
+    id: "de-finance-invoice-query",
+    difficulty: "medium",
+    messages: [
+      {
+        subject: "Rückfrage zur Rechnung INV-2026-0099",
+        senderEmail: "buchhaltung@kunde.de",
+        senderName: "Buchhaltung",
+        bodyText:
+          "Guten Tag, wir haben Ihre Rechnung INV-2026-0099 über 4.800 EUR erhalten und möchten die Zahlungsfrist sowie die Bankverbindung bestätigen, bevor wir die Überweisung veranlassen.\n\n" +
+          "Am 10. Januar 2026 um 14:15 schrieb Rechnungsstelle <rechnung@example.com>:\n" +
+          "> Anbei finden Sie die Rechnung für das vierte Quartal.\n" +
+          "> Mit freundlichen Grüßen, die Buchhaltung",
+        receivedAt: SENT_AT,
+      },
+    ],
+    expectedFinalNodeId: NODES.finance.id,
+    allowNeedsHumanReview: true,
+  },
+
+  {
+    // Japanese — Customer Support. Attribution "… が書きました:" + quoted prior
+    // message. Also exercises the CJK-aware embedding budget.
+    id: "ja-support-login-issue",
+    difficulty: "medium",
+    messages: [
+      {
+        subject: "ログインできない不具合について",
+        senderEmail: "user@example.co.jp",
+        senderName: "山田花子",
+        bodyText:
+          "お世話になっております。先日ご案内いただいた手順を試しましたが、二段階認証のコードが届かず、いまだにアカウントにログインできません。至急ご対応をお願いいたします。\n\n" +
+          "2026年1月8日 10:00 サポート <support@example.com> が書きました:\n" +
+          "> お問い合わせありがとうございます。まずはパスワードの再設定をお試しください。\n" +
+          "> よろしくお願いいたします。",
+        receivedAt: SENT_AT,
+      },
+    ],
+    expectedFinalNodeId: NODES.customerSupport.id,
+    allowNeedsHumanReview: true,
+  },
+
+  {
+    // German — Finance with a long UNQUOTED, off-topic (HR/recruitment) tail
+    // introduced by "schrieb …:". The tail has no ">" markers, so the legacy
+    // English-only cleaner keeps it entirely and pollutes the vector toward HR;
+    // B4's structural detector strips it, leaving a clean Finance signal. This is
+    // the case that isolates B4's value on the production model — German Finance
+    // is known to clear the routing threshold on this taxonomy.
+    id: "de-finance-unquoted-offtopic-tail",
+    difficulty: "medium",
+    messages: [
+      {
+        subject: "Zahlungsfrist und Bankverbindung für Rechnung INV-2026-0099",
+        senderEmail: "buchhaltung@kunde.de",
+        senderName: "Buchhaltung",
+        bodyText:
+          "Guten Tag, bitte bestätigen Sie die Zahlungsfrist und die Bankverbindung für die Rechnung INV-2026-0099 über 4.800 EUR, damit wir die Überweisung fristgerecht veranlassen können.\n\n" +
+          "Am 10. Januar 2026 um 09:00 schrieb Personalabteilung <personal@firma.de>:\n" +
+          "Vielen Dank für Ihre Bewerbung auf die Stelle als Softwareentwickler. Wir möchten Sie gerne zu einem Vorstellungsgespräch einladen. Bitte teilen Sie uns Ihre Verfügbarkeit für nächste Woche mit. Im Gespräch besprechen wir das Gehalt, den Urlaubsanspruch, die betriebliche Altersvorsorge und Ihren möglichen Eintrittstermin im Team.",
+        receivedAt: SENT_AT,
+      },
+    ],
+    expectedFinalNodeId: NODES.finance.id,
+    allowNeedsHumanReview: true,
+  },
+
+  {
+    // Inline quote preserved + trailing reply chain removed. The "> can you
+    // still reproduce…" line is an intentional inline quotation the author
+    // answers, and must survive cleaning; the "On … wrote:" tail must not.
+    id: "en-support-inline-quote",
+    difficulty: "medium",
+    messages: [
+      {
+        subject: "Re: Bug when exporting reports",
+        senderEmail: "customer@example.com",
+        senderName: "Customer",
+        bodyText:
+          "You asked:\n" +
+          "> can you still reproduce the crash after the update\n" +
+          "Yes — the app still crashes every time I export a report to PDF after updating to version 3.2. The steps to reproduce are the same as before.\n\n" +
+          "On Mon, Jan 5 2026 at 09:00, Support <support@example.com> wrote:\n" +
+          "> Thanks for reporting this. Could you try again after installing the latest update?\n" +
+          "> Best, the support team",
+        receivedAt: SENT_AT,
+      },
+    ],
+    expectedFinalNodeId: NODES.customerSupport.id,
+    allowNeedsHumanReview: true,
+  },
+];

@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import { isPredominantlyCJK } from "@amarnai/shared";
 import type { TaxonomyEdgeInput } from "../types.js";
 import type { EmbeddableNode } from "./types.js";
 
@@ -150,34 +151,115 @@ const LATEST_SHARE = 0.6;
 /** Minimum per-message budget for earlier messages before the oldest are dropped. */
 const MIN_EARLIER_MSG_CHARS = 200;
 
+// ─── Reply-tail detection (language-neutral) ─────────────────────────────────
+//
+// The redundant quoted reply chain ("thread summary") is identified by its
+// STRUCTURE, not by English phrases like "On … wrote:", so it works for French
+// ("Le … a écrit :"), German ("Am … schrieb …:"), Japanese ("…が…に書きました:"),
+// and any other locale. Inline quotations — a ">" block followed by the author's
+// own new text — are deliberately preserved; only a quoted/attributed block that
+// runs to the end of the message is removed.
+
+const QUOTED_LINE_RE = /^\s*>/;
+const BLANK_LINE_RE = /^\s*$/;
+/** An email-ish token: john@example.com or <john@example.com>. */
+const CONTACT_RE = /\S+@\S+/;
+/** A 4-digit year or an HH:MM time — the timestamp every attribution carries. */
+const DATE_RE = /(?:19|20)\d\d|\d{1,2}:\d{2}/;
+/** A line ending in a colon (the universal attribution terminator). */
+const ENDS_COLON_RE = /:\s*$/;
+
+/** Header-material line: ends in ":", or carries an email or a date. */
+function looksAttributionish(line: string): boolean {
+  return ENDS_COLON_RE.test(line) || CONTACT_RE.test(line) || DATE_RE.test(line);
+}
+
+/**
+ * Index at which the redundant trailing reply chain begins, or -1 if none.
+ *
+ * Two structural, language-neutral signals:
+ *
+ *  (A) A trailing block of quoted (">") lines at end-of-message, optionally
+ *      introduced by a wrapped attribution header. The quoted block is strong
+ *      evidence of a reply tail, so a header directly above it is absorbed when
+ *      it carries an email or date (a real "On … wrote:" line in any language)
+ *      but never when it is plain prose (e.g. "Here are the options:").
+ *
+ *  (B) An unquoted reply tail: an attribution line that ends with ":", carries
+ *      an email, and (with any wrapped continuation above it) carries a date,
+ *      running to end-of-message. The email + date + colon combination is
+ *      required so a mid-body colon line such as
+ *      "I forwarded this to support@acme.com:" is never mistaken for a header.
+ *
+ * Pure: depends only on `lines`.
+ */
+function findReplyTailStart(lines: string[]): number {
+  // (A) trailing quoted block, with any wrapped attribution header above it.
+  let i = lines.length - 1;
+  let sawQuoted = false;
+  while (i >= 0 && (BLANK_LINE_RE.test(lines[i]!) || QUOTED_LINE_RE.test(lines[i]!))) {
+    if (QUOTED_LINE_RE.test(lines[i]!)) sawQuoted = true;
+    i--;
+  }
+  if (sawQuoted) {
+    let cut = i + 1; // start of the trailing quoted/blank run
+    // Absorb a header directly above the block: contiguous non-blank,
+    // attribution-ish lines that together carry an email or date.
+    let a = i;
+    const header: string[] = [];
+    while (a >= 0 && !BLANK_LINE_RE.test(lines[a]!) && looksAttributionish(lines[a]!)) {
+      header.push(lines[a]!);
+      a--;
+    }
+    if (header.some((l) => CONTACT_RE.test(l) || DATE_RE.test(l))) {
+      cut = a + 1;
+    }
+    return cut;
+  }
+
+  // (B) unquoted reply tail introduced by an attribution header.
+  for (let j = 0; j < lines.length; j++) {
+    const line = lines[j]!;
+    if (!ENDS_COLON_RE.test(line) || !CONTACT_RE.test(line)) continue;
+    // Absorb a wrapped continuation above the colon line (the date/name line
+    // that precedes e.g. "<john@example.com> wrote:").
+    let a = j - 1;
+    const header: string[] = [line];
+    while (a >= 0 && !BLANK_LINE_RE.test(lines[a]!) && looksAttributionish(lines[a]!)) {
+      header.push(lines[a]!);
+      a--;
+    }
+    if (header.some((l) => DATE_RE.test(l))) return a + 1;
+  }
+
+  return -1;
+}
+
 /**
  * Strip email boilerplate from a message body before embedding.
  *
  * Operations (applied in order):
- *  1. Remove quoted reply blocks — lines starting with ">" and everything
- *     from a recognised "On … wrote:" attribution line onward (Gmail / Apple
- *     Mail / Outlook thread wrapping).
+ *  1. Remove the redundant trailing reply chain (quoted "thread summary" and its
+ *     attribution header) via language-neutral structure — see
+ *     `findReplyTailStart`. Intentional inline quotes are preserved.
  *  2. Remove email signatures — everything after a bare "-- " line (RFC 3676)
  *     or after a recognisable sign-off phrase (Best regards, Thanks, …) when
- *     ≤ 4 lines follow it (name / title / company).
+ *     ≤ 4 lines follow it (name / title / company). The sign-off phrase list is
+ *     English-only and best-effort; the RFC delimiter is language-neutral.
  *  3. Remove tracking/footer URLs — lines that consist of nothing but a URL.
  *  4. Normalise whitespace — collapse 3+ consecutive blank lines to one,
  *     trim leading/trailing whitespace.
  *
  * Pure and deterministic — identical inputs always produce identical outputs,
- * so embeddingTextHash invalidation is predictable.
+ * so embeddingTextHash invalidation is predictable. No locale-sensitive APIs
+ * (no String.toLowerCase): case-insensitive matching uses the regex `i` flag,
+ * whose Unicode case folding is locale-independent (no Turkish-i hazard).
  */
 export function cleanForEmbedding(body: string): string {
-  // 1a. "On … wrote:" attribution line (may wrap across multiple lines).
-  //     Matches "On " at start of a line, through "wrote:" (end of that line),
-  //     then removes the attribution AND all content after it (the quoted block).
-  body = body.replace(/^On\s[\s\S]*?wrote:[^\n]*[\s\S]*/m, "");
-
-  // 1b. Quoted lines — any line beginning with one or more ">" characters.
-  body = body
-    .split("\n")
-    .filter((l) => !/^>/.test(l))
-    .join("\n");
+  // 1. Remove the redundant trailing reply chain (language-neutral, structural).
+  const lines = body.split("\n");
+  const cut = findReplyTailStart(lines);
+  if (cut >= 0) body = lines.slice(0, cut).join("\n");
 
   // 2a. RFC 3676 signature delimiter: "-- " (or "--") on its own line.
   body = body.replace(/\n--\s*\n[\s\S]*$/, "");
@@ -205,16 +287,33 @@ export function cleanForEmbedding(body: string): string {
 }
 
 /**
+ * CJK scripts pack far more meaning — and far more embedding tokens — per
+ * character than space-delimited Latin text, so the same character budget maps
+ * to many more tokens. Scale the per-message character budget down for
+ * predominantly-CJK bodies so a dense thread stays within the embedding model's
+ * token limit (Gemini gemini-embedding-001: 2,048 tokens) instead of being
+ * silently over-truncated at the provider. Non-CJK text is unaffected.
+ */
+const CJK_BUDGET_SCALE = 0.4;
+
+/**
  * Truncate `text` to at most `budget` characters using a 70 / 30 head/tail split.
  *
- * When the text fits within the budget it is returned unchanged.
- * When truncating, 70 % of the budget comes from the head (topic, context)
- * and 30 % from the tail (action items, sign-off intent), separated by " … ".
+ * The budget is scaled down for predominantly-CJK text (see CJK_BUDGET_SCALE)
+ * so dense scripts respect the model's token limit. When the text fits within
+ * the effective budget it is returned unchanged. When truncating, 70 % of the
+ * budget comes from the head (topic, context) and 30 % from the tail (action
+ * items, sign-off intent), separated by " … ".
+ *
+ * Pure and deterministic — isPredominantlyCJK is a pure script-ratio check.
  */
 function truncateToShare(text: string, budget: number): string {
-  if (text.length <= budget) return text;
-  const headLen = Math.floor(budget * 0.7);
-  const tailLen = budget - headLen;
+  const effectiveBudget = isPredominantlyCJK(text)
+    ? Math.floor(budget * CJK_BUDGET_SCALE)
+    : budget;
+  if (text.length <= effectiveBudget) return text;
+  const headLen = Math.floor(effectiveBudget * 0.7);
+  const tailLen = effectiveBudget - headLen;
   return `${text.slice(0, headLen)} … ${text.slice(-tailLen)}`;
 }
 
