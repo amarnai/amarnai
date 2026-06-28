@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Trans } from '@lingui/react/macro';
+import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
 import { translateSource } from '@amarnai/i18n';
 import { countRoutableNonRootNodes, TAXONOMY_MIN_NON_ROOT_NODES } from '@amarnai/shared';
@@ -56,7 +57,7 @@ type FormState =
   | { mode: 'edit'; node: TaxonomyNode; defaultParentId: null };
 
 export default function TaxonomyScreen() {
-  const { i18n } = useLingui();
+  const { i18n, _ } = useLingui();
   const { workspaceId, userId, workspaces, client } = useSession();
   const ws = workspaceId ?? '';
 
@@ -192,18 +193,18 @@ export default function TaxonomyScreen() {
     try {
       if (form?.mode === 'create') {
         await createNode.mutateAsync({ input: payload.input, parentId: payload.parentId });
-        showToast('Folder created');
+        showToast(_(msg`Folder created`));
       } else if (form?.mode === 'edit') {
         await updateNode.mutateAsync({
           nodeId: form.node.id,
           input: payload.input,
           ...(payload.parentChange ? { parentChange: payload.parentChange } : {}),
         });
-        showToast('Folder updated');
+        showToast(_(msg`Folder updated`));
       }
       setForm(null);
     } catch (err) {
-      setFormError(toUserMessage(err, 'Something went wrong. Please try again.'));
+      setFormError(toUserMessage(err, _(msg`Something went wrong. Please try again.`)));
     }
   };
 
@@ -215,10 +216,10 @@ export default function TaxonomyScreen() {
         nodeId: form.node.id,
         ...(moveToNodeId ? { moveToNodeId } : {}),
       });
-      showToast('Folder deleted');
+      showToast(_(msg`Folder deleted`));
       setForm(null);
     } catch (err) {
-      setFormError(toUserMessage(err, 'Delete failed. Please try again.'));
+      setFormError(toUserMessage(err, _(msg`Delete failed. Please try again.`)));
     }
   };
 
@@ -226,10 +227,10 @@ export default function TaxonomyScreen() {
     try {
       await applyTemplate.mutateAsync(file);
       setTemplateOpen(false);
-      showToast('Template applied');
+      showToast(_(msg`Template applied`));
     } catch (err) {
       setTemplateOpen(false);
-      showToast(toUserMessage(err, 'Could not apply template. Please try again.'));
+      showToast(toUserMessage(err, _(msg`Could not apply template. Please try again.`)));
     }
   };
 
@@ -237,7 +238,7 @@ export default function TaxonomyScreen() {
     try {
       await generateTaxonomy.mutateAsync();
     } catch (err) {
-      showToast(toUserMessage(err, 'Could not start generation. Please try again.'));
+      showToast(toUserMessage(err, _(msg`Could not start generation. Please try again.`)));
     }
   };
 
@@ -245,10 +246,10 @@ export default function TaxonomyScreen() {
     try {
       await applyTemplate.mutateAsync(file);
       setGenerateOpen(false);
-      showToast('Taxonomy applied');
+      showToast(_(msg`Taxonomy applied`));
     } catch (err) {
       setGenerateOpen(false);
-      showToast(toUserMessage(err, 'Could not apply taxonomy. Please try again.'));
+      showToast(toUserMessage(err, _(msg`Could not apply taxonomy. Please try again.`)));
     }
   };
 
@@ -271,7 +272,7 @@ export default function TaxonomyScreen() {
               style={styles.iconBtn}
               onPress={handleOpenGenerate}
               hitSlop={8}
-              accessibilityLabel="Generate plan from inbox"
+              accessibilityLabel={_(msg`Generate plan from inbox`)}
             >
               <Ionicons name="color-wand-outline" size={20} color={colors.ink3} />
             </TouchableOpacity>
@@ -279,7 +280,7 @@ export default function TaxonomyScreen() {
               style={styles.iconBtn}
               onPress={() => setTemplateOpen(true)}
               hitSlop={8}
-              accessibilityLabel="Browse templates"
+              accessibilityLabel={_(msg`Browse templates`)}
             >
               <Ionicons name="sparkles-outline" size={20} color={colors.ink3} />
             </TouchableOpacity>
@@ -288,7 +289,9 @@ export default function TaxonomyScreen() {
               onPress={() => openCreate(tree?.rootId ?? null)}
             >
               <Ionicons name="add" size={18} color={colors.surface} />
-              <Text style={styles.addBtnText}>Add</Text>
+              <Text style={styles.addBtnText}>
+                <Trans>Add</Trans>
+              </Text>
             </TouchableOpacity>
           </View>
         ) : null}
@@ -297,7 +300,7 @@ export default function TaxonomyScreen() {
       {readOnly ? (
         <View style={styles.banner}>
           <Text style={styles.bannerText}>
-            View only. Only workspace admins can edit the plan.
+            <Trans>View only. Only workspace admins can edit the plan.</Trans>
           </Text>
         </View>
       ) : null}
@@ -312,7 +315,7 @@ export default function TaxonomyScreen() {
           style={styles.searchInput}
           value={search}
           onChangeText={setSearch}
-          placeholder="Search folders"
+          placeholder={_(msg`Search folders`)}
           placeholderTextColor={colors.ink4}
           autoCapitalize="none"
           autoCorrect={false}
@@ -330,9 +333,13 @@ export default function TaxonomyScreen() {
         </CenterView>
       ) : loadError ? (
         <CenterView>
-          <Text style={styles.empty}>Could not load the plan.</Text>
+          <Text style={styles.empty}>
+            <Trans>Could not load the plan.</Trans>
+          </Text>
           <TouchableOpacity onPress={refetch} style={styles.retry}>
-            <Text style={styles.retryText}>Retry</Text>
+            <Text style={styles.retryText}>
+              <Trans>Retry</Trans>
+            </Text>
           </TouchableOpacity>
         </CenterView>
       ) : (
@@ -357,7 +364,11 @@ export default function TaxonomyScreen() {
           }
           ListEmptyComponent={
             <Text style={styles.empty}>
-              {searching ? 'No matching folders' : 'No folders yet'}
+              {searching ? (
+                <Trans>No matching folders</Trans>
+              ) : (
+                <Trans>No folders yet</Trans>
+              )}
             </Text>
           }
         />

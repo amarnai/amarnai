@@ -1,6 +1,9 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { Trans } from "@lingui/react/macro";
+import { useLingui } from "@lingui/react";
+import { msg } from "@lingui/core/macro";
 import type { FolderItem } from "../folder-tree/types.js";
 import type { ActiveSelection, ThreadItem, DraftItem, SyncInfo } from "./types.js";
 import { filterThreads } from "./selection.js";
@@ -33,6 +36,7 @@ export function MockEmailsPage({
   upgradeHref,
   draftBodies,
 }: MockEmailsPageProps) {
+  const { _ } = useLingui();
   const now = useRef(new Date()).current;
 
   const [threads, setThreads] = useState<ThreadItem[]>(initialThreads);
@@ -96,7 +100,7 @@ export function MockEmailsPage({
 
   function handleApprove(threadId: string) {
     setThreads((ts) => ts.map((t) => t.id === threadId ? { ...t, status: "sorted" as const } : t));
-    showToast({ message: "Routing approved" });
+    showToast({ message: _(msg`Routing approved`) });
   }
 
   function handleMarkDone(threadId: string) {
@@ -136,7 +140,9 @@ export function MockEmailsPage({
   function handleGenerateDraft(threadId: string): Promise<void> {
     return new Promise((resolve) => {
       setTimeout(() => {
-        const body = draftBodies?.[threadId] ?? "Thank you for your message. I'll follow up shortly.";
+        const body =
+          draftBodies?.[threadId] ??
+          _(msg`Thank you for your message. I'll follow up shortly.`);
         setDraftMap((m) => {
           const next = new Map(m);
           next.set(threadId, { id: `draft-${threadId}`, subject: null, body, status: "PROPOSED" });
@@ -150,7 +156,7 @@ export function MockEmailsPage({
 
   function commitReroute(folderId: string) {
     const folder = folders.find((f) => f.id === folderId);
-    const folderName = folder?.name ?? "folder";
+    const folderName = folder?.name ?? _(msg`folder`);
     setRerouteAnchor(null);
     if (!rerouteThreadId) return;
     const threadId = rerouteThreadId;
@@ -160,7 +166,7 @@ export function MockEmailsPage({
     );
     if (prev) {
       showToast({
-        message: `Moved to ${folderName}`,
+        message: _(msg`Moved to ${folderName}`),
         onUndo: () => {
           setThreads((ts) => ts.map((t) => (t.id === threadId ? prev : t)));
         },
@@ -225,7 +231,7 @@ export function MockEmailsPage({
         />
       ) : (
         <div className="em-preview-empty">
-          <span>Select a thread to preview</span>
+          <span><Trans>Select a thread to preview</Trans></span>
         </div>
       )}
 
@@ -244,10 +250,10 @@ export function MockEmailsPage({
               type="button"
               onClick={() => { toast.onUndo?.(); dismissToast(); }}
             >
-              Undo
+              <Trans>Undo</Trans>
             </button>
           )}
-          <button type="button" className="em-toast-close" onClick={dismissToast} aria-label="Dismiss">
+          <button type="button" className="em-toast-close" onClick={dismissToast} aria-label={_(msg`Dismiss`)}>
             ×
           </button>
         </div>

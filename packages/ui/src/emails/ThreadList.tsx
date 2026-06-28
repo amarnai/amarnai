@@ -126,7 +126,7 @@ export function ThreadList({
         searchRef={searchRef}
       />
 
-      <div className="em-list-scroll" role="grid" aria-label="Email threads">
+      <div className="em-list-scroll" role="grid" aria-label={i18n._(msg`Email threads`)}>
         {threads.length === 0 && (
           <div className="em-empty">
             {query ? (

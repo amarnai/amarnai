@@ -42,6 +42,11 @@ msgstr "{0, plural, one {# ข้อความ} other {# ข้อความ
 msgid "{0, plural, one {# person} other {# people}}"
 msgstr "{0, plural, one {# คน} other {# คน}}"
 
+#. placeholder {0}: node?.threadCount ?? 0
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:377
+msgid "{0, plural, one {Deleting leaves # thread without this folder.} other {Deleting leaves # threads without this folder.}}"
+msgstr "{0, plural, one {การลบจะทำให้มี {0} เธรดที่ไม่มีโฟลเดอร์นี้} other {การลบจะทำให้มี {0} เธรดที่ไม่มีโฟลเดอร์นี้}}"
+
 #. placeholder {0}: member.user.name ?? member.user.email
 #: ../../apps/mobile/src/components/CollaboratorsSheet.tsx:47
 #, fuzzy
@@ -186,6 +191,10 @@ msgstr "© 2026 Amarnai โอเพนซอร์สภายใต้ AGPL-3.
 #, fuzzy
 msgid "← Back"
 msgstr "← กลับ"
+
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:368
+msgid "+ Add folder"
+msgstr "+ เพิ่มโฟลเดอร์"
 
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1251
 #, fuzzy
@@ -391,6 +400,7 @@ msgstr "เวิร์กสเปซ Acme"
 msgid "Active project communication, deliverables, feedback, and approvals from clients."
 msgstr "การสื่อสารโครงการ, สิ่งที่ต้องส่งมอบ, ข้อเสนอแนะ และการอนุมัติจากลูกค้า"
 
+#: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:293
 #: ../../apps/mobile/src/components/BlacklistSheet.tsx:118
 #: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:124
 #, fuzzy
@@ -757,6 +767,7 @@ msgstr "สมาชิกคณะกรรมการ, พันธมิต�
 msgid "Browse emails easily through your folders. Generate draft replies and copy them to Gmail."
 msgstr "เรียกดูอีเมลในโฟลเดอร์ได้สะดวก สร้างฉบับร่างตอบกลับและคัดลอกไป Gmail"
 
+#: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:283
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1335
 #, fuzzy
 msgid "Browse templates"
@@ -864,6 +875,11 @@ msgstr "ยกเลิกการสมัครสมาชิกหรือ
 msgid "Cancelling…"
 msgstr "กำลังยกเลิก…"
 
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:331
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:392
+msgid "Change"
+msgstr "เปลี่ยน"
+
 #: ../../apps/mobile/app/(app)/subscription.tsx:297
 #, fuzzy
 msgid "Change subscription"
@@ -894,6 +910,10 @@ msgstr "เลือกรหัสผ่านใหม่สำหรับบ
 #, fuzzy
 msgid "Choose a subscription"
 msgstr "เลือกการสมัครสมาชิก"
+
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:458
+msgid "Choose parent"
+msgstr "เลือกโฟลเดอร์หลัก"
 
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:40
 #, fuzzy
@@ -966,6 +986,10 @@ msgstr "เปรียบเทียบแพ็กเกจทั้งหม
 #, fuzzy
 msgid "Confirm cancellation"
 msgstr "ยืนยันการยกเลิก"
+
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:404
+msgid "Confirm delete"
+msgstr "ยืนยันการลบ"
 
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:519
 #, fuzzy
@@ -1089,6 +1113,15 @@ msgstr "ไม่สามารถเข้าถึงกล่องจดห
 msgid "Could not add email. Please try again."
 msgstr "ไม่สามารถเพิ่มอีเมลได้ โปรดลองอีกครั้ง"
 
+#: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:252
+#, fuzzy
+msgid "Could not apply taxonomy. Please try again."
+msgstr "ไม่สามารถใช้ Taxonomy ได้ โปรดลองอีกครั้ง"
+
+#: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:233
+msgid "Could not apply template. Please try again."
+msgstr "ไม่สามารถใช้เทมเพลตได้ โปรดลองอีกครั้ง"
+
 #: ../../apps/mobile/app/(app)/subscription.tsx:129
 #: ../../apps/mobile/app/(app)/subscription.tsx:134
 #, fuzzy
@@ -1129,6 +1162,10 @@ msgstr "ไม่สามารถโหลดข้อมูลการเร
 #, fuzzy
 msgid "Could not load billing."
 msgstr "ไม่สามารถโหลดข้อมูลการเรียกเก็บเงินได้"
+
+#: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:337
+msgid "Could not load the plan."
+msgstr "ไม่สามารถโหลดแผนได้"
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:151
 #: ../../apps/mobile/app/(app)/subscription.tsx:156
@@ -1183,6 +1220,10 @@ msgstr "ไม่สามารถเริ่มชำระเงินได
 msgid "Could not start checkout. Please try again."
 msgstr "ไม่สามารถเริ่มชำระเงินได้ โปรดลองอีกครั้ง"
 
+#: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:241
+msgid "Could not start generation. Please try again."
+msgstr "ไม่สามารถเริ่มสร้างได้ โปรดลองอีกครั้ง"
+
 #: ../../apps/mobile/src/components/EditNameSheet.tsx:44
 #, fuzzy
 msgid "Could not update name. Please try again."
@@ -1218,6 +1259,7 @@ msgstr "คำขอเตรียมการประชุมสภาจา
 msgid "Courses"
 msgstr "คอร์สเรียน"
 
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:445
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:538
 #, fuzzy
 msgid "Create"
@@ -1347,6 +1389,15 @@ msgstr "ลบบัญชีหรือไม่?"
 msgid "Delete failed"
 msgstr "ลบไม่สำเร็จ"
 
+#: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:222
+#, fuzzy
+msgid "Delete failed. Please try again."
+msgstr "ลบไม่สำเร็จ โปรดลองอีกครั้ง"
+
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:421
+msgid "Delete folder"
+msgstr "ลบโฟลเดอร์"
+
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:301
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:26
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:42
@@ -1359,6 +1410,10 @@ msgstr "ลบเวิร์กสเปซ"
 msgid "Delete workspace?"
 msgstr "ลบเวิร์กสเปซหรือไม่?"
 
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:402
+msgid "Deleting..."
+msgstr "กำลังลบ..."
+
 #: ../../apps/mobile/app/(app)/account.tsx:151
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:123
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:519
@@ -1367,6 +1422,7 @@ msgstr "ลบเวิร์กสเปซหรือไม่?"
 msgid "Deleting…"
 msgstr "กำลังลบ…"
 
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:80
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:252
 #, fuzzy
 msgid "Describe what kinds of emails belong here: who they come from and what they are about. Be specific and use the actual names, topics, and words that show up in those emails. Describe what the emails are, not what you plan to do about them. The clearer your description, the more accurately your email is sorted here."
@@ -1377,6 +1433,7 @@ msgstr "อธิบายว่าอีเมลประเภทใดคว
 msgid "Describe your folders"
 msgstr "อธิบายโฟลเดอร์ของคุณ"
 
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:286
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:422
 #, fuzzy
 msgid "Description"
@@ -1466,6 +1523,7 @@ msgstr "ยกเลิกการเชื่อมต่อเวิร์ก
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:295
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:52
 #: ../ui/src/AppDownloadBanner.tsx:80
+#: ../ui/src/emails/MockEmailsPage.tsx:256
 #, fuzzy
 msgid "Dismiss"
 msgstr "ไม่สนใจ"
@@ -1549,6 +1607,7 @@ msgstr "ร่างการตอบกลับ"
 msgid "Draft shared"
 msgstr "แชร์ฉบับร่างแล้ว"
 
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:339
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:445
 #, fuzzy
 msgid "Draft style guidance"
@@ -1565,11 +1624,16 @@ msgstr "กำลังร่าง..."
 msgid "Drag and connect. It's fully interactive."
 msgstr "ลากแล้วเชื่อมต่อ เป็นการโต้ตอบแบบเต็มรูปแบบ"
 
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:277
+msgid "e.g. Invoices"
+msgstr "เช่น ใบแจ้งหนี้"
+
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:430
 #, fuzzy
 msgid "e.g. Invoices, receipts, payment confirmations, and billing questions from clients and vendors."
 msgstr "เช่น ใบแจ้งหนี้, ใบเสร็จรับเงิน, การยืนยันการชำระเงิน และคำถามเกี่ยวกับการเรียกเก็บเงินจากลูกค้าและผู้ขาย"
 
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:347
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:451
 #, fuzzy
 msgid "e.g. Reply formally. Keep responses under 3 sentences."
@@ -1581,10 +1645,18 @@ msgstr "เช่น ตอบกลับอย่างเป็นทาง�
 msgid "Earlier"
 msgstr "ก่อนหน้านี้"
 
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:250
+msgid "Edit folder"
+msgstr "แก้ไขโฟลเดอร์"
+
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:400
 #, fuzzy
 msgid "Edit Folder"
 msgstr "แก้ไขโฟลเดอร์"
+
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:249
+msgid "Edit inbox"
+msgstr "แก้ไขกล่องขาเข้า"
 
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:612
 #, fuzzy
@@ -1633,6 +1705,10 @@ msgstr "ส่งอีเมลแล้ว"
 msgid "Email support"
 msgstr "ฝ่ายสนับสนุนทางอีเมล"
 
+#: ../ui/src/emails/ThreadList.tsx:129
+msgid "Email threads"
+msgstr "เธรดอีเมล"
+
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:27
 #, fuzzy
 msgid "Email verified! Sign in to continue."
@@ -1644,6 +1720,7 @@ msgstr "ยืนยันอีเมลแล้ว! เข้าสู่ร�
 msgid "Emails"
 msgstr "อีเมล"
 
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:100
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:280
 #, fuzzy
 msgid "Emails about my bills that I need to deal with."
@@ -1853,11 +1930,35 @@ msgstr "ระบุว่าเป็นข้อเสนอพันธมิ
 msgid "Flight and hotel bookings, travel itineraries, visa applications, and trip confirmations."
 msgstr "การจองตั๋วเครื่องบินและโรงแรม, กำหนดการเดินทาง, การยื่นขอวีซ่า และการยืนยันการเดินทาง"
 
+#: ../ui/src/emails/MockEmailsPage.tsx:159
+msgid "folder"
+msgstr "โฟลเดอร์"
+
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:110
 #: ../../apps/mobile/src/components/emails/QueueChips.tsx:22
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:245
 #, fuzzy
 msgid "Folder"
 msgstr "โฟลเดอร์"
+
+#: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:196
+#, fuzzy
+msgid "Folder created"
+msgstr "สร้างโฟลเดอร์แล้ว"
+
+#: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:219
+#, fuzzy
+msgid "Folder deleted"
+msgstr "ลบโฟลเดอร์แล้ว"
+
+#: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:203
+#, fuzzy
+msgid "Folder updated"
+msgstr "อัปเดตโฟลเดอร์แล้ว"
+
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:188
+msgid "Folder will be ignored until connected"
+msgstr "โฟลเดอร์จะถูกละเว้นจนกว่าจะเชื่อมต่อ"
 
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:151
 #, fuzzy
@@ -2012,6 +2113,7 @@ msgstr "สร้างฉบับร่างตอบกลับ"
 msgid "Generate from inbox"
 msgstr "สร้างจากกล่องจดหมาย"
 
+#: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:275
 #: ../../apps/site/src/components/demo/DemoTaxonomyCanvas.tsx:215
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:192
 #, fuzzy
@@ -2171,6 +2273,7 @@ msgstr "สุขภาพ"
 msgid "Help requests, supply issues, and escalations from customers."
 msgstr "คำขอความช่วยเหลือ ปัญหาด้านอุปทาน และการยกระดับปัญหาจากลูกค้า"
 
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:71
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:236
 #, fuzzy
 msgid "Hide tips"
@@ -2228,6 +2331,7 @@ msgstr "โครงสร้างราคาของ Amarnai เป็นอ
 msgid "How it works"
 msgstr "วิธีการทำงาน"
 
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:73
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:236
 #, fuzzy
 msgid "How to write a good description"
@@ -2294,7 +2398,7 @@ msgstr "การนำเข้าจะแทนที่แผนปัจจ
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:272
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:107
-#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:176
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:180
 #: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:42
 #: ../../apps/site/src/components/demo/demo-seed.ts:28
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:150
@@ -2304,7 +2408,7 @@ msgstr "การนำเข้าจะแทนที่แผนปัจจ
 msgid "Inbox"
 msgstr "กล่องจดหมาย"
 
-#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:177
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:181
 #, fuzzy
 msgid "Inbox (entry point)"
 msgstr "กล่องจดหมาย (จุดเข้าใช้งาน)"
@@ -2426,6 +2530,10 @@ msgstr "ใบแจ้งหนี้"
 msgid "Invoices issued to clients and follow-ups on unpaid amounts."
 msgstr "ใบแจ้งหนี้ที่ออกให้ลูกค้าและการติดตามยอดค้างชำระ"
 
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:295
+msgid "Invoices, receipts, and billing questions from clients and vendors."
+msgstr "ใบแจ้งหนี้, ใบเสร็จรับเงิน และคำถามเกี่ยวกับการเรียกเก็บเงินจากลูกค้าและผู้ขาย"
+
 #: ../../apps/site/src/components/landing/FAQSection.tsx:11
 #, fuzzy
 msgid "Is connecting my Gmail to Amarnai safe?"
@@ -2524,6 +2632,8 @@ msgstr "จัดเรียงโฟลเดอร์ได้ง่ายๆ
 msgid "Leads"
 msgstr "ผู้สนใจ"
 
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:197
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:206
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:503
 #, fuzzy
 msgid "Leave unsorted"
@@ -2544,6 +2654,10 @@ msgstr "ประกาศด้านกฎหมาย, ประกัน, �
 #, fuzzy
 msgid "List the kinds of emails that belong here: senders, topics, keywords. Aim for a full sentence."
 msgstr "ระบุประเภทอีเมลที่ควรอยู่ในหมวดหมู่นี้: ผู้ส่ง, หัวข้อ, คีย์เวิร์ด ควรระบุให้เป็นประโยคที่สมบูรณ์"
+
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:304
+msgid "List the senders, topics, and keywords that belong here. At least {minDescriptionLength} characters. ({descriptionLength}/{minDescriptionLength})"
+msgstr "ระบุผู้ส่ง หัวข้อ และคีย์เวิร์ดที่เกี่ยวข้อง อย่างน้อย {minDescriptionLength} ตัวอักษร ({descriptionLength}/{minDescriptionLength})"
 
 #: ../ui/src/emails/EmailRail.tsx:59
 #, fuzzy
@@ -2694,10 +2808,15 @@ msgstr "เธรดที่เกินขีดจำกัดของแผ
 msgid "Most popular"
 msgstr "ยอดนิยม"
 
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:384
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:497
 #, fuzzy
 msgid "Move them to"
 msgstr "ย้ายไปที่"
+
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:469
+msgid "Move threads to"
+msgstr "ย้ายเธรดไปที่"
 
 #: ../../apps/mobile/src/components/RerouteSheet.tsx:29
 #, fuzzy
@@ -2716,6 +2835,10 @@ msgstr "ย้ายไปโฟลเดอร์..."
 msgid "Move to…"
 msgstr "ย้ายไปที่..."
 
+#: ../ui/src/emails/MockEmailsPage.tsx:169
+msgid "Moved to {folderName}"
+msgstr "ย้ายไปยัง {folderName} แล้ว"
+
 #: ../../apps/site/src/components/demo/demo-seed.ts:370
 #, fuzzy
 msgid "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face."
@@ -2723,6 +2846,7 @@ msgstr "ในอีกไม่กี่วันข้างหน้า ก�
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:233
 #: ../../apps/mobile/app/(app)/account.tsx:116
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:269
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:409
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:15
 #, fuzzy
@@ -2763,6 +2887,7 @@ msgstr "ใบสมัครใหม่จาก Horemheb แห่ง Thebes"
 msgid "New business inquiries, proposals, pricing discussions, and prospective client outreach."
 msgstr "การสอบถามธุรกิจใหม่ ข้อเสนอ การปรึกษาเรื่องราคา และการติดต่อลูกค้าเป้าหมาย"
 
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:247
 #: ../ui/src/emails/EmailRail.tsx:97
 #: ../ui/src/emails/EmailRail.tsx:102
 #, fuzzy
@@ -2832,6 +2957,7 @@ msgstr "ยังไม่ได้กำหนดโฟลเดอร์"
 msgid "No folders match"
 msgstr "ไม่มีโฟลเดอร์ที่ตรงกัน"
 
+#: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:370
 #: ../../apps/mobile/src/components/emails/FolderFilterSheet.tsx:69
 #, fuzzy
 msgid "No folders yet"
@@ -2846,6 +2972,10 @@ msgstr "ยังไม่ได้เชื่อมต่อกล่องจ
 #, fuzzy
 msgid "No Gmail inbox connected. Connect your account to start syncing."
 msgstr "ยังไม่ได้เชื่อมต่อกล่องจดหมาย Gmail โปรดเชื่อมต่อบัญชีของคุณเพื่อเริ่มซิงค์"
+
+#: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:368
+msgid "No matching folders"
+msgstr "ไม่พบโฟลเดอร์ที่ตรงกัน"
 
 #: ../../apps/mobile/src/components/BlacklistSheet.tsx:146
 #, fuzzy
@@ -2898,6 +3028,8 @@ msgstr "ไม่มีเวิร์กสเปซ"
 msgid "None"
 msgstr "ไม่มี"
 
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:187
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:202
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:470
 #, fuzzy
 msgid "None (not connected)"
@@ -2993,6 +3125,10 @@ msgstr "AI จัดการอีเมลโอเพนซอร์ส เ�
 msgid "Operations"
 msgstr "การดำเนินงาน"
 
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:355
+msgid "Optional. Applied when generating draft replies for this folder."
+msgstr "ไม่บังคับ ใช้เมื่อสร้างฉบับร่างตอบกลับสำหรับโฟลเดอร์นี้"
+
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:456
 #, fuzzy
 msgid "Optional. Applied when generating draft replies for threads in this folder."
@@ -3020,6 +3156,7 @@ msgstr "ส่วนตัวแบบชำระเงินหรืออั
 msgid "Paid or upgraded workspace"
 msgstr "เวิร์กสเปซแบบชำระเงินหรืออัปเกรดแล้ว"
 
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:319
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:464
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:621
 #, fuzzy
@@ -3149,7 +3286,7 @@ msgstr "จดหมายโต้ตอบส่วนตัวและอี
 #. Screen heading for the email-sorting taxonomy. Not a billing or subscription plan.
 #. Sidebar nav label for the email-sorting taxonomy. Not a billing or subscription plan.
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:35
-#: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:264
+#: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:265
 #: ../../apps/site/src/components/demo/DemoTaxonomyCanvas.tsx:205
 #: ../../apps/site/src/components/landing/Footer.tsx:26
 #: ../../apps/site/src/components/landing/Nav.tsx:38
@@ -3310,6 +3447,7 @@ msgstr "เปิดใช้งานใหม่"
 msgid "Read-only · OAuth · revoke anytime"
 msgstr "อ่านอย่างเดียว · OAuth · เพิกถอนได้ทุกเมื่อ"
 
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:91
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:269
 #, fuzzy
 msgid "Receipts, payment confirmations, and billing questions from vendors."
@@ -3391,6 +3529,10 @@ msgstr "นำ {0} ออก"
 #, fuzzy
 msgid "Remove {email} from blacklist"
 msgstr "นำ {email} ออกจากบัญชีดำ"
+
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:429
+msgid "Remove its child folders before deleting this one."
+msgstr "ลบโฟลเดอร์ย่อยออกก่อนที่จะลบโฟลเดอร์นี้"
 
 #: ../../apps/web/src/app/(app)/settings/ResetWorkspaceSection.tsx:28
 #, fuzzy
@@ -3520,6 +3662,7 @@ msgstr "กำลังรีเซ็ต…"
 msgid "Resources"
 msgstr "แหล่งข้อมูล"
 
+#: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:341
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:331
 #, fuzzy
 msgid "Retry"
@@ -3554,6 +3697,10 @@ msgstr "ริบ-ฮัดดา,\n"
 msgid "Route now"
 msgstr "จัดเส้นทางเลย"
 
+#: ../ui/src/emails/MockEmailsPage.tsx:103
+msgid "Routing approved"
+msgstr "อนุมัติการจัดเส้นทางแล้ว"
+
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
 #, fuzzy
@@ -3574,6 +3721,7 @@ msgstr "เท่ากับรายเดือน"
 
 #: ../../apps/mobile/src/components/EditNameSheet.tsx:66
 #: ../../apps/mobile/src/components/RenameWorkspaceSheet.tsx:74
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:447
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:538
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:650
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:29
@@ -3596,6 +3744,10 @@ msgstr "ประหยัดเวลาคัดแยกอีเมลหล
 msgid "Save up to 20% annually"
 msgstr "ประหยัดสูงสุด 20% ต่อปี"
 
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:443
+msgid "Saving..."
+msgstr "กำลังบันทึก..."
+
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:73
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:538
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:650
@@ -3609,6 +3761,7 @@ msgstr "กำลังบันทึก..."
 msgid "Search {threadCount} threads"
 msgstr "ค้นหา {threadCount} เธรด"
 
+#: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:318
 #: ../ui/src/emails/ReroutePopover.tsx:88
 #, fuzzy
 msgid "Search folders"
@@ -3625,6 +3778,7 @@ msgid "Search threads…"
 msgstr "ค้นหาเธรด..."
 
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:270
+#: ../ui/src/emails/MockEmailsPage.tsx:234
 #, fuzzy
 msgid "Select a thread to preview"
 msgstr "เลือกเธรดเพื่อดูตัวอย่าง"
@@ -3795,6 +3949,7 @@ msgstr "โซเชียล"
 msgid "Something went wrong"
 msgstr "เกิดข้อผิดพลาด"
 
+#: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:207
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:79
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:85
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:89
@@ -4025,6 +4180,10 @@ msgstr "การยื่นภาษี หนังสือแจ้งจ�
 msgid "Taxes"
 msgstr "ภาษี"
 
+#: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:249
+msgid "Taxonomy applied"
+msgstr "ใช้ Taxonomy แล้ว"
+
 #: ../ui/src/pricing/planMessages.ts:66
 #, fuzzy
 msgid "Taxonomy nodes"
@@ -4036,6 +4195,10 @@ msgstr "โหนดการจัดหมวดหมู่"
 msgid "Team"
 msgstr "ทีม"
 
+#: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:230
+msgid "Template applied"
+msgstr "ใช้เทมเพลตแล้ว"
+
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1351
 #, fuzzy
 msgid "Templates"
@@ -4045,6 +4208,10 @@ msgstr "เทมเพลต"
 #, fuzzy
 msgid "Terms"
 msgstr "ข้อกำหนด"
+
+#: ../ui/src/emails/MockEmailsPage.tsx:145
+msgid "Thank you for your message. I'll follow up shortly."
+msgstr "ขอบคุณสำหรับข้อความของคุณ ฉันจะติดต่อกลับโดยเร็วที่สุด"
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:189
 #, fuzzy
@@ -4394,6 +4561,7 @@ msgstr "ยังไม่จัดประเภท"
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:292
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1253
 #: ../../apps/web/src/app/admin/waitlist/page.tsx:26
+#: ../ui/src/emails/MockEmailsPage.tsx:253
 #, fuzzy
 msgid "Undo"
 msgstr "เลิกทำ"
@@ -4402,6 +4570,11 @@ msgstr "เลิกทำ"
 #, fuzzy
 msgid "University"
 msgstr "มหาวิทยาลัย"
+
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:203
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:207
+msgid "Unknown"
+msgstr "ไม่ทราบ"
 
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1153
 #, fuzzy
@@ -4578,6 +4751,10 @@ msgstr "ยืนยันอีเมลของคุณ"
 #, fuzzy
 msgid "View draft reply"
 msgstr "ดูฉบับร่างตอบกลับ"
+
+#: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:303
+msgid "View only. Only workspace admins can edit the plan."
+msgstr "ดูได้อย่างเดียว ผู้ดูแลระบบพื้นที่ทำงานเท่านั้นที่สามารถแก้ไขแผนได้"
 
 #: ../../apps/mobile/src/components/RationaleCard.tsx:44
 #: ../../apps/mobile/src/components/ThreadRow.tsx:49
