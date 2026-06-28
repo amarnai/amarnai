@@ -53,8 +53,25 @@ vi.mock("@amarnai/ai", () => ({
   sortThreadByEmbedding: mockSortThreadByEmbedding,
   buildRoutingTelemetry: vi
     .fn()
-    .mockReturnValue({ v: 1, maxRawSim: 0, maxSubtreeScore: 0, thetaMin: 0.15, topRawSims: [] }),
+    .mockReturnValue({ v: 1, maxRawSim: 0, maxSubtreeScore: 0, thetaMin: 0.13, topRawSims: [] }),
   THETA_MIN: 0.15,
+  // Production routing config consumed by the worker (spread into the sort options
+  // and read for the telemetry threshold). Mirror the real shape.
+  CENTERED_ROUTING_CONFIG: {
+    thetaMin: 0.13,
+    lambdaDepthDecay: 1.0,
+    softmaxTemperature: 0.05,
+    thetaSpread: 0.1,
+    thetaDescent: 0.0,
+    crossBranchMargin: 0.05,
+    scaleInvariant: true,
+    meanCenter: true,
+  },
+  // Real classes so the worker's `err instanceof X` catch branches evaluate
+  // instead of throwing on an undefined mock export (same pattern as the gmail mock).
+  EmbeddingModelNotFoundError: class EmbeddingModelNotFoundError extends Error {},
+  LLMAuthenticationError: class LLMAuthenticationError extends Error {},
+  LLMRequestError: class LLMRequestError extends Error {},
   analyzeThreadTriage: mockAnalyzeThreadTriage,
   classifyTriageByEmbedding: mockClassifyTriageByEmbedding,
   snapshotToThreadMessages: mockSnapshotToThreadMessages,
