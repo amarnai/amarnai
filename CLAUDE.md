@@ -35,6 +35,7 @@ A key use case is bulk triage of an existing inbox: users may want to sort and c
 - Policy code decides final actions, not prompts.
 - Keep mock sorting available for deterministic testing.
 - Support local Ollama for dev and frontier LLMs for production through provider abstraction.
+- Tune and commit routing/AI constants for the production model configuration (frontier Gemini). Self-hosted deployments on other models set their own constants; do not tune shipped defaults against the offline CI model.
 
 ## Safety & Privacy
 
