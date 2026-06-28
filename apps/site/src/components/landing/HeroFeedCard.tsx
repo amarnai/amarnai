@@ -254,10 +254,10 @@ export function HeroFeedCard() {
       <div className="ld-feed-foot">
         <span className="ld-feed-foot-l">
           <span className="ld-feed-scan-dot" />
-          <Trans>Triaging 412 threads</Trans>
+          <Trans>412 threads</Trans>
         </span>
         <span className="ld-feed-foot-r">
-          <Trans>{filed} filed, {reviewCount} needs review</Trans>
+          <Trans>{filed} sorted · {reviewCount} to review</Trans>
         </span>
       </div>
     </div>

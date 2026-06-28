@@ -10,6 +10,13 @@ export const SUPPORTED_LOCALES = [
   "nl",
   "ja",
   "zh-CN",
+  "tr",
+  "id",
+  "pl",
+  "vi",
+  "ru",
+  "th",
+  "ko",
 ] as const;
 
 export type SupportedLocale = (typeof SUPPORTED_LOCALES)[number];
@@ -24,6 +31,13 @@ export const LOCALE_DISPLAY_NAMES: Record<SupportedLocale, string> = {
   nl: "Nederlands",
   ja: "日本語",
   "zh-CN": "中文（简体）",
+  tr: "Türkçe",
+  id: "Bahasa Indonesia",
+  pl: "Polski",
+  vi: "Tiếng Việt",
+  ru: "Русский",
+  th: "ไทย",
+  ko: "한국어",
 };
 
 // English names of each language, for use inside LLM prompts (where the
@@ -39,6 +53,13 @@ export const LOCALE_ENGLISH_LANGUAGE_NAMES: Record<SupportedLocale, string> = {
   nl: "Dutch",
   ja: "Japanese",
   "zh-CN": "Simplified Chinese",
+  tr: "Turkish",
+  id: "Indonesian",
+  pl: "Polish",
+  vi: "Vietnamese",
+  ru: "Russian",
+  th: "Thai",
+  ko: "Korean",
 };
 
 export function isSupportedLocale(locale: unknown): locale is SupportedLocale {

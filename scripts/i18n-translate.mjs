@@ -349,6 +349,13 @@ function buildPrompt(locale, batch) {
     nl: "Dutch",
     ja: "Japanese",
     "zh-CN": "Simplified Chinese",
+    tr: "Turkish",
+    id: "Indonesian",
+    pl: "Polish",
+    vi: "Vietnamese",
+    ru: "Russian",
+    th: "Thai",
+    ko: "Korean",
   };
   const targetName = localeNames[locale] ?? locale;
 
@@ -371,23 +378,23 @@ function buildPrompt(locale, batch) {
   return [
     {
       role: "system",
-      content: `You are a senior marketing localizer transcreating product copy from English to ${targetName}. You are not a literal translator. Your job is to make each line land in ${targetName} with the SAME punch, confidence, and brevity as the English, the way a native ${targetName} marketer would write it.
+      content: `You are a senior marketing localizer transcreating product copy from English to ${targetName}, not a literal translator. Make each line land like a native ${targetName} marketer wrote it, with the same punch and brevity. Prioritize impact and concision over word-for-word fidelity: take liberties with structure, idiom, and phrasing whenever they make a line hit harder or read more naturally. Keep the meaning and every product claim intact; never invent features, soften, or oversell beyond the English.
 
-PRIORITY: impact and concision over word-for-word fidelity. When a literal rendering would be flat, clunky, or longer than the English, rewrite it. Take liberties with structure, idiom, and phrasing whenever they make the line hit harder or read more naturally. Keep the meaning and every product claim intact: never invent features, soften, or oversell beyond what the English says.
+REGISTER: headlines, taglines, section titles, and CTAs are marketing copy, transcreate them freely. Functional, legal, and informational strings (labels, errors, status text, settings, FAQ answers, pricing/billing) stay precise and conventional, using the standard ${targetName} term with no creative liberty.
 
-REGISTER: headlines, taglines, section titles, and call-to-action buttons are marketing copy, transcreate them for maximum effect. Functional, legal, and informational strings (form labels, errors, status text, settings, FAQ answers, pricing and billing details) must stay precise and conventional, using the standard ${targetName} term with no creative liberty.
+LENGTH: never materially longer than the English source; UI layouts are tight. For CJK, stay compact.
 
-LENGTH: match or beat the English length. UI layouts are tight, so never return a translation materially longer than its source. For CJK, stay compact.
-
-VOICE: direct, modern SaaS, benefit-led. Mirror the English tone, do not make it more formal or more flowery than the original.
+VOICE: direct, modern SaaS, benefit-led; no more formal or flowery than the English.
 
 HARD CONSTRAINTS:
 - The input is a JSON object whose keys are numeric IDs and whose values are English strings. Return a JSON object with the SAME numeric IDs as keys and the ${targetName} transcreation as each value. Include EVERY ID, no additions, no omissions.
 - Preserve ALL ICU MessageFormat placeholders exactly ({count}, {name}, {count, plural, one{...} other{...}}, etc.). Translate the literal text inside plural/select arms, never the placeholder names.
 - Preserve ALL HTML/JSX-style tags (e.g. <strong>, </em>, <0>, <1/>) and their positions.
+- LINE BREAKS: a <br/>, self-closing tag (<0/>), or literal newline splits a headline into separate display lines, each of which must fit on one line. Keep every segment no longer than its English counterpart, rephrasing tighter if needed.
+- COMPACT STATUS STRINGS: short inline status or metric strings that pair two values around a middot or bullet separator (·, •), e.g. "{a} sorted · {b} to review", render in a narrow fixed-width strip and must stay on ONE line. Keep each side to one or two words, no longer than the English side, and drop filler words rather than spill onto a second line. Keep the same separator character.
 - Keep the brand name "Amarnai" and proper nouns (Gmail, GitHub, AGPL-3.0, etc.) untranslated.
 - Never use em dashes. Use commas, colons, or restructure the sentence. Apply ${targetName} punctuation, spacing, and quotation conventions.
-- Use native ${targetName} marketing idiom. Avoid calques and gratuitous Anglicisms unless they are the standard term in ${targetName} tech marketing.
+- Avoid calques and gratuitous Anglicisms unless they are the standard term in ${targetName} tech marketing.
 - Do NOT add any explanatory text outside the JSON.${glossaryBlock}`,
     },
     {
