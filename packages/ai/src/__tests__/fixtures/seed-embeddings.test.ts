@@ -50,6 +50,7 @@ import {
   ALL_EDGES_ORIGIN,
   TEST_EMAILS_ORIGIN,
 } from "./sorting-fixtures.js";
+import { ML_FLAT, ML_D3 } from "./multilingual/index.js";
 import type { TaxonomyNodeInput, TaxonomyEdgeInput } from "../../types.js";
 import type { EmbeddingProviderConfig } from "../../embedding/types.js";
 
@@ -80,6 +81,9 @@ const DATASETS: Array<{
 }> = [
   { nodes: ALL_NODES, edges: ALL_EDGES, emails: TEST_EMAILS },
   { nodes: ALL_NODES, edges: ALL_EDGES, emails: TEST_EMAILS_INTL },
+  // B6 multilingual sets (100 threads, 16 locales).
+  { nodes: ALL_NODES, edges: ALL_EDGES, emails: ML_FLAT },
+  { nodes: ALL_NODES_D3, edges: ALL_EDGES_D3, emails: ML_D3 },
   { nodes: ALL_NODES_D2, edges: ALL_EDGES_D2, emails: [D2_AMBIGUOUS_EMAIL] },
   { nodes: ALL_NODES_D3, edges: ALL_EDGES_D3, emails: TEST_EMAILS_D3 },
   { nodes: ALL_NODES_FM, edges: ALL_EDGES_FM, emails: TEST_EMAILS_FM },

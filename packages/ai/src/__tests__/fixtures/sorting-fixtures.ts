@@ -206,6 +206,13 @@ export type TestEmail = {
    * category and could divert a naive classifier from the real intent.
    */
   misleadingKeywords?: string[];
+  /**
+   * Train/test partition for constant tuning. "tune" fixtures are visible to the
+   * grid search; "holdout" fixtures are scored only after the config is chosen,
+   * so the reported holdout accuracy is not contaminated by the tuning it drove.
+   * Undefined fixtures predate the split and are treated as "tune".
+   */
+  split?: "tune" | "holdout";
 };
 
 const SENT_AT = new Date("2026-01-15T10:00:00Z");

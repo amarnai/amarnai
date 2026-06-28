@@ -21,6 +21,7 @@ import {
   ALL_NODES_D3, ALL_EDGES_D3, TEST_EMAILS_D3,
   type TestEmail,
 } from "./fixtures/sorting-fixtures.js";
+import { ML_FLAT, ML_D3 } from "./fixtures/multilingual/index.js";
 import type { AIProvider, TaxonomyNodeInput, TaxonomyEdgeInput } from "../types.js";
 
 const STUB_LLM: AIProvider = {
@@ -75,5 +76,44 @@ describe("embedding sorter — production centered config (gemini)", () => {
   it("holds flat English accuracy (no regression)", async () => {
     // 10/11; the lone unclassifiable off-topic thread is an accepted deferral.
     expect(await countCorrect(ALL_NODES, ALL_EDGES, TEST_EMAILS)).toBeGreaterThanOrEqual(10);
+  });
+
+  // ── B6: loose guards on the 100-thread multilingual set ──────────────────────
+  //
+  // LLM-generated fixtures are noisy, so these are tolerant floors that catch a
+  // real regression (e.g. centering or the descent gate breaking) without flaking
+  // on individual borderline threads. The "ambiguous" (difficulty "hard") threads
+  // are expected to defer, so they are excluded from the strict-correct floor.
+
+  async function tally(
+    nodes: TaxonomyNodeInput[],
+    edges: TaxonomyEdgeInput[],
+    emails: TestEmail[],
+  ): Promise<{ correct: number; okOrReview: number; total: number; nonHardCorrect: number; nonHardTotal: number }> {
+    let correct = 0, okOrReview = 0, nonHardCorrect = 0, nonHardTotal = 0;
+    for (const e of emails) {
+      const r = await sortThreadByEmbedding(ep, STUB_LLM, nodes as never, edges as never, e.messages, { ...CENTERED_ROUTING_CONFIG });
+      const isCorrect = r.finalNodeId === e.expectedFinalNodeId;
+      if (isCorrect) correct++;
+      if (isCorrect || (e.allowNeedsHumanReview && r.needsHumanReview)) okOrReview++;
+      if (e.difficulty !== "hard") {
+        nonHardTotal++;
+        if (isCorrect) nonHardCorrect++;
+      }
+    }
+    return { correct, okOrReview, total: emails.length, nonHardCorrect, nonHardTotal };
+  }
+
+  it("multilingual flat set: strong routing + near-total correct-or-defer", async () => {
+    const t = await tally(ALL_NODES, ALL_EDGES, ML_FLAT);
+    // Non-ambiguous threads route correctly at a high rate (currently ~95%).
+    expect(t.nonHardCorrect / t.nonHardTotal).toBeGreaterThanOrEqual(0.8);
+    // Almost everything either routes correctly or defers acceptably.
+    expect(t.okOrReview / t.total).toBeGreaterThanOrEqual(0.85);
+  });
+
+  it("multilingual deep set: descent gate holds under centering", async () => {
+    const t = await tally(ALL_NODES_D3, ALL_EDGES_D3, ML_D3);
+    expect(t.correct / t.total).toBeGreaterThanOrEqual(0.75);
   });
 });

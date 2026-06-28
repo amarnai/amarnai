@@ -26,6 +26,7 @@ import {
   THETA_SPREAD,
   THETA_DESCENT,
   CROSS_BRANCH_MARGIN,
+  CENTERED_ROUTING_CONFIG,
 } from "../embedding/sorter.js";
 import {
   makeRealEmbeddingProvider,
@@ -35,7 +36,6 @@ import {
   ALL_NODES,
   ALL_EDGES,
   TEST_EMAILS,
-  TEST_EMAILS_INTL,
   ALL_NODES_D3,
   ALL_EDGES_D3,
   TEST_EMAILS_D3,
@@ -44,6 +44,7 @@ import {
   TEST_EMAILS_FM,
   type TestEmail,
 } from "./fixtures/sorting-fixtures.js";
+import { ML_FLAT, ML_D3 } from "./fixtures/multilingual/index.js";
 import type { AIProvider, TaxonomyNodeInput, TaxonomyEdgeInput } from "../types.js";
 
 // ─── Datasets ─────────────────────────────────────────────────────────────────
@@ -61,14 +62,27 @@ type Dataset = {
 
 const DATASETS: Dataset[] = [
   { name: "flat-d1", nodes: ALL_NODES, edges: ALL_EDGES, emails: TEST_EMAILS },
-  // Multilingual threads with a redundant quoted reply tail, scored as their own
-  // slice so B4's effect on non-English routing is visible separately (flat taxonomy).
-  { name: "intl-d1", nodes: ALL_NODES, edges: ALL_EDGES, emails: TEST_EMAILS_INTL },
+  // B6 multilingual sets (16 locales), scored as their own slices so cross-lingual
+  // routing is visible separately. ml-flat routes against the flat taxonomy;
+  // ml-d3 against the depth-3 taxonomy.
+  { name: "ml-flat", nodes: ALL_NODES, edges: ALL_EDGES, emails: ML_FLAT },
   { name: "deep-d3", nodes: ALL_NODES_D3, edges: ALL_EDGES_D3, emails: TEST_EMAILS_D3 },
+  { name: "ml-d3", nodes: ALL_NODES_D3, edges: ALL_EDGES_D3, emails: ML_D3 },
   { name: "failure-modes", nodes: ALL_NODES_FM, edges: ALL_EDGES_FM, emails: TEST_EMAILS_FM },
 ];
 
+// Train/test split: the grid search only sees "tune" fixtures; "holdout" fixtures
+// are scored once at the chosen config so the reported holdout accuracy is not
+// contaminated by the tuning it drove. Fixtures with no split (legacy) are "tune".
+const isHoldout = (e: TestEmail): boolean => e.split === "holdout";
+const filterDatasets = (keep: (e: TestEmail) => boolean): Dataset[] =>
+  DATASETS.map((d) => ({ ...d, emails: d.emails.filter(keep) })).filter((d) => d.emails.length > 0);
+const TUNE_DATASETS: Dataset[] = filterDatasets((e) => !isHoldout(e));
+const HOLDOUT_DATASETS: Dataset[] = filterDatasets(isHoldout);
+
 const ALL_EMAILS: TestEmail[] = DATASETS.flatMap((d) => d.emails);
+const TUNE_EMAILS: TestEmail[] = TUNE_DATASETS.flatMap((d) => d.emails);
+const HOLDOUT_EMAILS: TestEmail[] = HOLDOUT_DATASETS.flatMap((d) => d.emails);
 
 // Opt-in: run the scale-invariant decision path (B-lite + folded-in A). The LLM
 // is stubbed here, so scale-invariant mode shows MORE review outcomes (every
@@ -143,6 +157,29 @@ type Config = {
   thetaDescent: number;
   crossBranchMargin: number;
 };
+
+/**
+ * The shipped config for the active mode: under mean-centering, production runs
+ * CENTERED_ROUTING_CONFIG (not the raw THETA_* defaults), so the benchmark's
+ * "reference" diagnostics and holdout numbers reflect what actually ships.
+ */
+const REFERENCE_CONFIG: Config = MEAN_CENTER
+  ? {
+      thetaMin: CENTERED_ROUTING_CONFIG.thetaMin,
+      lambdaDepthDecay: CENTERED_ROUTING_CONFIG.lambdaDepthDecay,
+      softmaxTemperature: CENTERED_ROUTING_CONFIG.softmaxTemperature,
+      thetaSpread: CENTERED_ROUTING_CONFIG.thetaSpread,
+      thetaDescent: CENTERED_ROUTING_CONFIG.thetaDescent,
+      crossBranchMargin: CENTERED_ROUTING_CONFIG.crossBranchMargin,
+    }
+  : {
+      thetaMin: THETA_MIN,
+      lambdaDepthDecay: LAMBDA_DEPTH_DECAY,
+      softmaxTemperature: SOFTMAX_TEMPERATURE,
+      thetaSpread: THETA_SPREAD,
+      thetaDescent: THETA_DESCENT,
+      crossBranchMargin: CROSS_BRANCH_MARGIN,
+    };
 
 type EmailOutcome = "correct" | "review_allowed" | "review_denied" | "wrong";
 
@@ -258,15 +295,8 @@ function configKey(c: Config): string {
   return [c.thetaMin, c.lambdaDepthDecay, c.softmaxTemperature, c.thetaSpread, c.thetaDescent, c.crossBranchMargin].join(",");
 }
 
-function isCurrentDefaults(c: Config): boolean {
-  return (
-    c.thetaMin === THETA_MIN &&
-    c.lambdaDepthDecay === LAMBDA_DEPTH_DECAY &&
-    c.softmaxTemperature === SOFTMAX_TEMPERATURE &&
-    c.thetaSpread === THETA_SPREAD &&
-    c.thetaDescent === THETA_DESCENT &&
-    c.crossBranchMargin === CROSS_BRANCH_MARGIN
-  );
+function isReferenceConfig(c: Config): boolean {
+  return configKey(c) === configKey(REFERENCE_CONFIG);
 }
 
 function fmt(n: number, width = 5): string {
@@ -356,15 +386,17 @@ async function main(): Promise<void> {
     `Datasets: ${DATASETS.map((d) => `${d.name} (${d.emails.length})`).join(", ")} ` +
     `= ${ALL_EMAILS.length} emails`
   );
-  console.log(`\nGrid search: ${total.toLocaleString()} combinations × ${ALL_EMAILS.length} fixtures\n`);
+  console.log(`Split:    ${TUNE_EMAILS.length} tune (grid search) / ${HOLDOUT_EMAILS.length} holdout (scored at chosen config)`);
+  console.log(`\nGrid search: ${total.toLocaleString()} combinations × ${TUNE_EMAILS.length} tune fixtures\n`);
   process.stdout.write("Progress: [");
 
   const DOT_INTERVAL = Math.max(1, Math.floor(total / 50));
   const results: BenchmarkResult[] = [];
 
+  // Grid search sees ONLY the tune split.
   for (let i = 0; i < configs.length; i++) {
     if (i % DOT_INTERVAL === 0) process.stdout.write(".");
-    const result = await runConfig(configs[i]!, embeddingProvider, DATASETS);
+    const result = await runConfig(configs[i]!, embeddingProvider, TUNE_DATASETS);
     results.push(result);
   }
 
@@ -381,10 +413,10 @@ async function main(): Promise<void> {
   // ── Print top 15 ────────────────────────────────────────────────────────────
 
   const maxScore =
-    ALL_EMAILS.filter((e) => e.difficulty === "easy").length * POINTS.correctEasy +
-    ALL_EMAILS.filter((e) => e.difficulty !== "easy").length * POINTS.correctOther;
+    TUNE_EMAILS.filter((e) => e.difficulty === "easy").length * POINTS.correctEasy +
+    TUNE_EMAILS.filter((e) => e.difficulty !== "easy").length * POINTS.correctOther;
 
-  console.log(`Max achievable score: ${maxScore}\n`);
+  console.log(`Max achievable tune score: ${maxScore}\n`);
   console.log(
     "Rank   Score  thetaMin  lambda  temp   spread  delta  cross  LLM%"
   );
@@ -392,8 +424,8 @@ async function main(): Promise<void> {
 
   for (let i = 0; i < Math.min(15, results.length); i++) {
     const { config: c, score, details } = results[i]!;
-    const llmPct = Math.round((details.filter((d) => d.llmCalled).length / ALL_EMAILS.length) * 100);
-    const mark = isCurrentDefaults(c) ? "  ← current defaults" : "";
+    const llmPct = Math.round((details.filter((d) => d.llmCalled).length / Math.max(1, TUNE_EMAILS.length)) * 100);
+    const mark = isReferenceConfig(c) ? "  ← shipped config" : "";
     console.log(
       `${String(i + 1).padStart(4)}  ${String(score.toFixed(1)).padStart(6)}` +
       `  ${fmt(c.thetaMin)}  ${fmt(c.lambdaDepthDecay)}  ${fmt(c.softmaxTemperature)}` +
@@ -402,31 +434,23 @@ async function main(): Promise<void> {
     );
   }
 
-  // ── Current defaults rank ────────────────────────────────────────────────────
+  // ── Shipped (reference) config rank ─────────────────────────────────────────
 
-  const currentDefaultsKey = configKey({
-    thetaMin: THETA_MIN,
-    lambdaDepthDecay: LAMBDA_DEPTH_DECAY,
-    softmaxTemperature: SOFTMAX_TEMPERATURE,
-    thetaSpread: THETA_SPREAD,
-    thetaDescent: THETA_DESCENT,
-    crossBranchMargin: CROSS_BRANCH_MARGIN,
-  });
-  const currentRank = results.findIndex((r) => configKey(r.config) === currentDefaultsKey);
+  const referenceKey = configKey(REFERENCE_CONFIG);
+  const currentRank = results.findIndex((r) => configKey(r.config) === referenceKey);
   console.log(
-    `\nCurrent defaults → rank ${currentRank + 1} / ${total.toLocaleString()} ` +
-    `(score: ${results[currentRank]?.score.toFixed(1)})`
+    `\nShipped config (${MEAN_CENTER ? "centered" : "raw"} defaults) → rank ${currentRank + 1} / ${total.toLocaleString()} ` +
+    `(tune score: ${results[currentRank]?.score.toFixed(1)})`
   );
 
-  // ── WS3 metrics for the CURRENT defaults ────────────────────────────────────
+  // ── Diagnostics for the SHIPPED config (on tune) ────────────────────────────
   //
-  // Report metrics on the current shipped constants (not the grid winner): this
-  // is the configuration actually running, so its per-source accuracy, escalation
-  // and fallback rates, and confusion are what we judge changes against. The
-  // failure-mode fixtures should appear here as non-correct under today's values.
+  // Report metrics on the configuration actually running (REFERENCE_CONFIG), not
+  // the grid winner: its per-source accuracy, escalation and fallback rates, and
+  // confusion are what we judge changes against.
 
   const current = results[currentRank]!;
-  console.log(`\n══ Current-defaults diagnostics (model: ${embeddingProvider.modelName}) ══`);
+  console.log(`\n══ Shipped-config diagnostics — TUNE (model: ${embeddingProvider.modelName}) ══`);
   printDatasetBreakdown(current.details);
   printDecisionSourceBreakdown(current.details);
   printConfusion(current.details);
@@ -442,6 +466,28 @@ async function main(): Promise<void> {
     console.log(
       `  ${sym} [${d.dataset.padEnd(14)}] ${d.emailId.padEnd(32)} → ${nodeName(d.got).padEnd(20)} (${pts})${llm}`
     );
+  }
+
+  // ── Holdout evaluation ──────────────────────────────────────────────────────
+  //
+  // Score the shipped config AND the grid winner on the holdout split (never seen
+  // by the grid). If the winner's holdout accuracy is much lower than its tune
+  // accuracy, the grid overfit; if shipped ≈ winner on holdout, the shipped
+  // constants generalise. This is the number to trust.
+
+  if (HOLDOUT_EMAILS.length > 0) {
+    const shippedHoldout = await runConfig(REFERENCE_CONFIG, embeddingProvider, HOLDOUT_DATASETS);
+    const winnerHoldout = await runConfig(best.config, embeddingProvider, HOLDOUT_DATASETS);
+    const acc = (ds: BenchmarkResult): string => {
+      const c = ds.details.filter((d) => d.outcome === "correct").length;
+      return `${c}/${ds.details.length} (${pct(c, ds.details.length)})`;
+    };
+    console.log(`\n══ HOLDOUT (${HOLDOUT_EMAILS.length} fixtures, never seen by the grid) ══`);
+    console.log(`  shipped config:   ${acc(shippedHoldout)} correct`);
+    console.log(`  grid winner:      ${acc(winnerHoldout)} correct`);
+    console.log("\n── Holdout per-dataset (shipped config) ──");
+    printDatasetBreakdown(shippedHoldout.details);
+    printConfusion(shippedHoldout.details);
   }
 
   // ── Recommendation ───────────────────────────────────────────────────────────

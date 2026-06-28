@@ -16,6 +16,13 @@ type GeminiEmbedResponse = {
 const GEMINI_API_BASE = "https://generativelanguage.googleapis.com/v1beta";
 
 /**
+ * Gemini's batchEmbedContents accepts at most 100 requests per call. Callers may
+ * pass more (taxonomy refresh, fixture seeding, backfill), so embed() chunks the
+ * input into batches of this size and concatenates the results in order.
+ */
+const MAX_BATCH = 100;
+
+/**
  * Thrown when the configured embedding model does not exist (HTTP 404). This is
  * a deployment misconfiguration, not a transient fault, so callers should fail
  * fast rather than retry.
@@ -54,6 +61,17 @@ export class GeminiEmbeddingProvider implements EmbeddingProvider {
   async embed(texts: string[]): Promise<number[][]> {
     if (texts.length === 0) return [];
 
+    const out: number[][] = [];
+    for (let start = 0; start < texts.length; start += MAX_BATCH) {
+      const chunk = texts.slice(start, start + MAX_BATCH);
+      const vectors = await this.embedChunk(chunk);
+      out.push(...vectors);
+    }
+    return out;
+  }
+
+  /** Embed a single batch (≤ MAX_BATCH texts) via batchEmbedContents. */
+  private async embedChunk(texts: string[]): Promise<number[][]> {
     const requests: GeminiEmbedRequest[] = texts.map((text) => ({
       model: `models/${this.apiModel}`,
       content: { parts: [{ text }] },
