@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { msg } from '@lingui/core/macro';
+import { useLingui } from '@lingui/react';
 import { colors, space, fontSize } from '@amarnai/tokens';
 import type { ApiClient } from '@amarnai/api-client';
 import { SheetLayout } from './SheetLayout';
@@ -24,6 +26,7 @@ export function RenameWorkspaceSheet({
   currentName,
   onRenamed,
 }: Props) {
+  const { i18n } = useLingui();
   const [name, setName] = useState(currentName);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -43,23 +46,23 @@ export function RenameWorkspaceSheet({
     setSaving(true);
     setError(null);
     try {
-      await client.updateWorkspace(workspaceId, trimmed);
+      await client.updateWorkspace(workspaceId, { name: trimmed });
       await onRenamed();
       onClose();
     } catch (err) {
-      setError(toUserMessage(err, 'Could not rename workspace. Please try again.'));
+      setError(toUserMessage(err, i18n._(msg`Could not rename workspace. Please try again.`)));
     } finally {
       setSaving(false);
     }
   }
 
   return (
-    <SheetLayout visible={visible} onClose={onClose} title="Workspace name" keyboardAvoiding>
+    <SheetLayout visible={visible} onClose={onClose} title={i18n._(msg`Workspace name`)} keyboardAvoiding>
       <View style={styles.body}>
         <FormInput
           value={name}
           onChangeText={(v) => { setName(v); setError(null); }}
-          placeholder="Workspace name"
+          placeholder={i18n._(msg`Workspace name`)}
           maxLength={100}
           editable={!saving}
           returnKeyType="done"
@@ -68,7 +71,7 @@ export function RenameWorkspaceSheet({
         {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
         <PrimaryButton
-          label="Save"
+          label={i18n._(msg`Save`)}
           onPress={() => void handleSave()}
           disabled={!dirty}
           loading={saving}

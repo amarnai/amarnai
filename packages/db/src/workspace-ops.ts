@@ -10,7 +10,13 @@ export class FreeWorkspaceLimitError extends Error {
 
 // Create a FREE workspace owned by userId. Throws FreeWorkspaceLimitError if
 // the user already owns one free workspace. Returns the new workspace id.
-export async function createFreeWorkspace(userId: string, name: string): Promise<string> {
+// `locale` seeds the workspace's language (UI + AI-generated taxonomy); callers
+// pass the creator's resolved locale, defaulting to the source locale.
+export async function createFreeWorkspace(
+  userId: string,
+  name: string,
+  locale = "en",
+): Promise<string> {
   const existingFree = await db.workspace.count({ where: { ownerUserId: userId, plan: "FREE" } });
   if (existingFree >= 1) throw new FreeWorkspaceLimitError();
 
@@ -18,6 +24,7 @@ export async function createFreeWorkspace(userId: string, name: string): Promise
     data: {
       name,
       ownerUserId: userId,
+      locale,
       members: { create: { userId, role: "OWNER" } },
     },
     select: { id: true },
@@ -45,6 +52,7 @@ export async function resetWorkspaceData(workspaceId: string): Promise<void> {
       },
     }),
     db.emailClassification.deleteMany({ where: { workspaceId } }),
+    db.taxonomyGenerationState.deleteMany({ where: { workspaceId } }),
     db.taxonomyEdge.deleteMany({ where: { workspaceId } }),
     db.taxonomyNode.deleteMany({ where: { workspaceId } }),
     db.emailMessage.deleteMany({ where: { workspaceId } }),
@@ -81,6 +89,7 @@ export async function deleteUserCascade(userId: string): Promise<void> {
     }),
     db.emailClassification.deleteMany({ where: { workspaceId: { in: workspaceIds } } }),
     db.auditLog.deleteMany({ where: { actorUserId: userId } }),
+    db.taxonomyGenerationState.deleteMany({ where: { workspaceId: { in: workspaceIds } } }),
     db.taxonomyEdge.deleteMany({ where: { workspaceId: { in: workspaceIds } } }),
     db.taxonomyNode.deleteMany({ where: { workspaceId: { in: workspaceIds } } }),
     db.tag.deleteMany({ where: { workspaceId: { in: workspaceIds } } }),
@@ -112,6 +121,7 @@ export async function deleteWorkspaceCascade(workspaceId: string): Promise<void>
     }),
     db.emailClassification.deleteMany({ where: { workspaceId } }),
     db.auditLog.deleteMany({ where: { workspaceId } }),
+    db.taxonomyGenerationState.deleteMany({ where: { workspaceId } }),
     db.taxonomyEdge.deleteMany({ where: { workspaceId } }),
     db.taxonomyNode.deleteMany({ where: { workspaceId } }),
     db.tag.deleteMany({ where: { workspaceId } }),

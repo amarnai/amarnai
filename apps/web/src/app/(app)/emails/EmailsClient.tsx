@@ -2,6 +2,9 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Trans } from "@lingui/react/macro";
+import { useLingui } from "@lingui/react";
+import { msg } from "@lingui/core/macro";
 import { api } from "@/lib/api";
 import type { SyncStatus } from "@/lib/api";
 import type { ActiveSelection, FolderItem, ThreadItem } from "@amarnai/ui/emails";
@@ -46,6 +49,7 @@ export function EmailsClient({
   unclassifiedCount,
 }: Props) {
   const router = useRouter();
+  const { _ } = useLingui();
   const now = useRef(new Date()).current;
 
   // Sync status (backfill progress, counts) starts from the server-rendered
@@ -263,7 +267,7 @@ export function EmailsClient({
         />
       ) : (
         <div className="em-preview-empty">
-          <span>Select a thread to preview</span>
+          <span><Trans>Select a thread to preview</Trans></span>
         </div>
       )}
 
@@ -285,10 +289,10 @@ export function EmailsClient({
                 triage.dismissToast();
               }}
             >
-              Undo
+              <Trans>Undo</Trans>
             </button>
           )}
-          <button type="button" className="em-toast-close" onClick={triage.dismissToast} aria-label="Dismiss">
+          <button type="button" className="em-toast-close" onClick={triage.dismissToast} aria-label={_(msg`Dismiss`)}>
             ×
           </button>
         </div>
@@ -298,7 +302,7 @@ export function EmailsClient({
     {unclassifiedCount > 0 && (
       <div style={{ position: "fixed", bottom: 16, right: 16, zIndex: 100 }}>
         <button type="button" className="btn-secondary" onClick={triage.handleReroute}>
-          Re-route {unclassifiedCount} unclassified
+          <Trans>Re-route {unclassifiedCount} unclassified</Trans>
         </button>
       </div>
     )}

@@ -2,6 +2,9 @@ import { useEffect, useMemo, useState } from 'react';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { ActivityIndicator, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Trans } from '@lingui/react/macro';
+import { useLingui } from '@lingui/react';
+import { msg } from '@lingui/core/macro';
 import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
 import { formatQuotaResetDate } from '@amarnai/shared';
 import { useSession } from '../../../src/auth/session';
@@ -19,6 +22,7 @@ import { BackHeader } from '../../../src/components/BackHeader';
 
 export default function ThreadDetailScreen() {
   const router = useRouter();
+  const { i18n } = useLingui();
   const { threadId } = useLocalSearchParams<{ threadId: string }>();
   const { workspaceId } = useSession();
   const triage = useTriage();
@@ -64,9 +68,9 @@ export default function ThreadDetailScreen() {
   if (!thread) {
     return (
       <ScreenContainer>
-        <BackHeader onBack={() => router.back()} title="Thread" />
+        <BackHeader onBack={() => router.back()} title={i18n._(msg`Thread`)} />
         <CenterView>
-          <Text style={styles.empty}>Thread not found</Text>
+          <Text style={styles.empty}><Trans>Thread not found</Trans></Text>
         </CenterView>
       </ScreenContainer>
     );
@@ -87,6 +91,9 @@ export default function ThreadDetailScreen() {
   const canDraft = gmailQuery.isFetched && thread.status !== 'unsorted' && !lastMsgIsOwn;
 
   const quotaExhausted = quota != null && quota.used >= quota.limit;
+  const draftResetDate = quota ? formatQuotaResetDate(quota.resetsAt) : '';
+  const draftRemaining = quota ? quota.limit - quota.used : 0;
+  const draftLimit = quota?.limit ?? 0;
 
   const handleMoveOpen = () => {
     triage.openRerouteFor(thread.id);
@@ -102,7 +109,7 @@ export default function ThreadDetailScreen() {
   };
 
   function handleDraftCopied() {
-    triage.showToast({ message: 'Draft shared' });
+    triage.showToast({ message: i18n._(msg`Draft shared`) });
   }
 
   function renderDraftBar() {
@@ -118,16 +125,20 @@ export default function ThreadDetailScreen() {
         >
           <View style={styles.draftBarInner}>
             <Text style={[styles.draftBarText, quotaExhausted && styles.draftBarTextDisabled]}>
-              {quotaExhausted ? 'No drafts remaining' : 'Generate draft reply'}
+              {quotaExhausted ? (
+                <Trans>No drafts remaining</Trans>
+              ) : (
+                <Trans>Generate draft reply</Trans>
+              )}
             </Text>
             {quota != null && !quotaExhausted && (
               <Text style={styles.draftBarSub}>
-                {quota.limit - quota.used} of {quota.limit} left · resets {formatQuotaResetDate(quota.resetsAt)}
+                <Trans>{draftRemaining} of {draftLimit} left · resets {draftResetDate}</Trans>
               </Text>
             )}
             {quotaExhausted && quota != null && (
               <Text style={styles.draftBarSub}>
-                Resets {formatQuotaResetDate(quota.resetsAt)}
+                <Trans>Resets {draftResetDate}</Trans>
               </Text>
             )}
           </View>
@@ -139,7 +150,7 @@ export default function ThreadDetailScreen() {
       return (
         <View style={[styles.draftBar, styles.draftBarLoading]}>
           <ActivityIndicator size="small" color={colors.accent} style={styles.draftBarSpinner} />
-          <Text style={styles.draftBarTextMuted}>Writing draft reply…</Text>
+          <Text style={styles.draftBarTextMuted}><Trans>Writing draft reply…</Trans></Text>
         </View>
       );
     }
@@ -151,7 +162,7 @@ export default function ThreadDetailScreen() {
           onPress={() => generate()}
           activeOpacity={0.8}
         >
-          <Text style={styles.draftBarTextError}>Draft failed · tap to retry</Text>
+          <Text style={styles.draftBarTextError}><Trans>Draft failed · tap to retry</Trans></Text>
         </TouchableOpacity>
       );
     }
@@ -164,7 +175,7 @@ export default function ThreadDetailScreen() {
           activeOpacity={0.8}
         >
           <View style={styles.draftBarDot} />
-          <Text style={styles.draftBarTextAccent}>View draft reply</Text>
+          <Text style={styles.draftBarTextAccent}><Trans>View draft reply</Trans></Text>
         </TouchableOpacity>
       );
     }
@@ -183,14 +194,14 @@ export default function ThreadDetailScreen() {
               style={styles.doneBtnActive}
               onPress={() => triage.handleUnmarkDone(thread.id)}
             >
-              <Text style={styles.doneBtnActiveText}>Done · undo</Text>
+              <Text style={styles.doneBtnActiveText}><Trans>Done · undo</Trans></Text>
             </TouchableOpacity>
           ) : (
             <TouchableOpacity
               style={styles.doneBtn}
               onPress={() => triage.handleMarkDone(thread.id)}
             >
-              <Text style={styles.doneBtnText}>Mark done</Text>
+              <Text style={styles.doneBtnText}><Trans>Mark done</Trans></Text>
             </TouchableOpacity>
           )}
         </View>

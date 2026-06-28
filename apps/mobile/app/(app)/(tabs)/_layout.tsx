@@ -1,8 +1,11 @@
 import { Tabs } from 'expo-router';
+import { msg } from '@lingui/core/macro';
+import { useLingui } from '@lingui/react';
 import { colors } from '@amarnai/tokens';
 import { NavIcon } from '../../../src/components/NavIcon';
 
 export default function TabsLayout() {
+  const { i18n } = useLingui();
   return (
     <Tabs
       screenOptions={{
@@ -22,21 +25,21 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="emails/index"
         options={{
-          title: 'Emails',
+          title: i18n._(msg`Emails`),
           tabBarIcon: ({ color, focused }) => <NavIcon name="emails" color={color} focused={focused} />,
         }}
       />
       <Tabs.Screen
         name="taxonomy/index"
         options={{
-          title: 'Plan',
+          title: i18n._(msg`Plan`),
           tabBarIcon: ({ color, focused }) => <NavIcon name="taxonomy" color={color} focused={focused} />,
         }}
       />
       <Tabs.Screen
         name="settings/index"
         options={{
-          title: 'Settings',
+          title: i18n._(msg`Settings`),
           tabBarIcon: ({ color, focused }) => <NavIcon name="settings" color={color} focused={focused} />,
         }}
       />

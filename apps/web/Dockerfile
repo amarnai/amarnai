@@ -1,4 +1,4 @@
-FROM node:22-alpine AS base
+FROM node:24-alpine AS base
 RUN corepack enable pnpm
 
 # ── Install dependencies (cached until any package.json changes) ──────────────
@@ -8,13 +8,19 @@ COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
 COPY apps/web/package.json     apps/web/
 COPY apps/api/package.json     apps/api/
 COPY apps/worker/package.json  apps/worker/
-COPY packages/ai/package.json      packages/ai/
-COPY packages/config/package.json  packages/config/
-COPY packages/db/package.json      packages/db/
-COPY packages/gmail/package.json   packages/gmail/
-COPY packages/queue/package.json   packages/queue/
-COPY packages/shared/package.json  packages/shared/
-COPY packages/ui/package.json      packages/ui/
+COPY packages/ai/package.json         packages/ai/
+COPY packages/api-client/package.json packages/api-client/
+COPY packages/auth/package.json       packages/auth/
+COPY packages/config/package.json     packages/config/
+COPY packages/core/package.json       packages/core/
+COPY packages/db/package.json         packages/db/
+COPY packages/email/package.json      packages/email/
+COPY packages/gmail/package.json      packages/gmail/
+COPY packages/i18n/package.json       packages/i18n/
+COPY packages/queue/package.json      packages/queue/
+COPY packages/shared/package.json     packages/shared/
+COPY packages/tokens/package.json     packages/tokens/
+COPY packages/ui/package.json         packages/ui/
 RUN pnpm install --frozen-lockfile
 
 # ── Build ─────────────────────────────────────────────────────────────────────
@@ -29,7 +35,7 @@ RUN pnpm --filter @amarnai/web build
 # ── Runtime ───────────────────────────────────────────────────────────────────
 # next build --output standalone produces a self-contained server.js.
 # No pnpm or node_modules copy needed — the traced deps are bundled inside.
-FROM node:22-alpine AS runner
+FROM node:24-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1

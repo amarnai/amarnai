@@ -1,4 +1,7 @@
 import { FlatList, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { Trans } from '@lingui/react/macro';
+import { useLingui } from '@lingui/react';
+import { msg } from '@lingui/core/macro';
 import { colors, space, fontSize } from '@amarnai/tokens';
 import type { FolderItem } from '@amarnai/core';
 import { SheetLayout } from './SheetLayout';
@@ -21,8 +24,9 @@ export function RerouteSheet({
   onSelect,
   onClose,
 }: RerouteSheetProps) {
+  const { i18n } = useLingui();
   return (
-    <SheetLayout visible={visible} onClose={onClose} title="Move to folder" handle>
+    <SheetLayout visible={visible} onClose={onClose} title={i18n._(msg`Move to folder`)} handle>
       <FlatList
         style={styles.list}
         data={folders}
@@ -38,11 +42,11 @@ export function RerouteSheet({
               <Text style={[styles.rowText, isCurrent && styles.rowTextCurrent]}>
                 {item.name}
               </Text>
-              {isCurrent ? <Text style={styles.currentTag}>Current</Text> : null}
+              {isCurrent ? <Text style={styles.currentTag}><Trans>Current</Trans></Text> : null}
             </TouchableOpacity>
           );
         }}
-        ListEmptyComponent={<Text style={styles.empty}>No folders available</Text>}
+        ListEmptyComponent={<Text style={styles.empty}><Trans>No folders available</Trans></Text>}
       />
     </SheetLayout>
   );

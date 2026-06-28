@@ -14,9 +14,15 @@ import { buildTaxonomyGenerationMessages, buildRepairMessage } from "./prompt.js
 
 export interface GenerateTaxonomyInput {
   profile: InboxProfile;
-  /** The matched template's transfer file — the seed AND the fallback. */
+  /** The matched template's transfer file in English — the structural seed
+   * shown to the model (which is told to write its output in targetLanguage). */
   seed: TaxonomyTransferFile;
   matchedTemplateName: string;
+  /** English name of the language the model must write names/descriptions in. */
+  targetLanguage: string;
+  /** The guaranteed fallback used when the model output is unusable. Should be
+   * the seed already localized to the target language; defaults to `seed`. */
+  fallbackSeed?: TaxonomyTransferFile;
   provider: AIProvider;
   /** Stable timestamp stamped into the file (we never trust the model's). */
   now: Date;
@@ -62,8 +68,14 @@ function coerceAndValidate(raw: string, now: Date): CoerceResult {
 export async function generateTaxonomyFromProfile(
   input: GenerateTaxonomyInput,
 ): Promise<GenerateTaxonomyResult> {
-  const { profile, seed, matchedTemplateName, provider, now } = input;
-  const messages = buildTaxonomyGenerationMessages(profile, seed, matchedTemplateName);
+  const { profile, seed, matchedTemplateName, targetLanguage, provider, now } = input;
+  const fallbackSeed = input.fallbackSeed ?? seed;
+  const messages = buildTaxonomyGenerationMessages(
+    profile,
+    seed,
+    matchedTemplateName,
+    targetLanguage,
+  );
 
   let raw = await provider.chat(messages);
   let result = coerceAndValidate(raw, now);
@@ -73,7 +85,7 @@ export async function generateTaxonomyFromProfile(
     const repairMessages = [
       ...messages,
       { role: "assistant" as const, content: raw },
-      buildRepairMessage(result.error),
+      buildRepairMessage(result.error, targetLanguage),
     ];
     raw = await provider.chat(repairMessages);
     result = coerceAndValidate(raw, now);
@@ -81,9 +93,9 @@ export async function generateTaxonomyFromProfile(
 
   if (result.ok) return { file: result.data, usedFallback: false };
 
-  // Guaranteed fallback: the seed template is always valid.
+  // Guaranteed fallback: the (localized) seed template is always valid.
   return {
-    file: { ...seed, amarnaiTaxonomyVersion: 1, exportedAt: now.toISOString() },
+    file: { ...fallbackSeed, amarnaiTaxonomyVersion: 1, exportedAt: now.toISOString() },
     usedFallback: true,
   };
 }

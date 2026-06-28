@@ -1,5 +1,6 @@
 "use client";
 
+import { Trans } from "@lingui/react/macro";
 import type { SyncInfo } from "./types.js";
 
 export interface BackfillCardProps {
@@ -14,15 +15,17 @@ export function BackfillCard({ syncInfo, upgradeHref = "#" }: BackfillCardProps)
     return (
       <>
         <div className="em-section-label">
-          <span>Backfill</span>
+          <span><Trans>Backfill</Trans></span>
         </div>
         <div className="em-backfill em-backfill--locked">
-          <div className="em-backfill-title">Bulk triage your inbox</div>
+          <div className="em-backfill-title"><Trans>Bulk triage your inbox</Trans></div>
           <div className="em-backfill-desc">
-            Sort thousands of historical emails automatically. Available on Pro and Business subscriptions.
+            <Trans>
+              Sort thousands of historical emails automatically. Available on Pro and Business subscriptions.
+            </Trans>
           </div>
           <a href={upgradeHref} className="em-backfill-upgrade-btn">
-            Upgrade your subscription
+            <Trans>Upgrade your subscription</Trans>
           </a>
         </div>
       </>
@@ -43,18 +46,20 @@ export function BackfillCard({ syncInfo, upgradeHref = "#" }: BackfillCardProps)
   return (
     <>
       <div className="em-section-label">
-        <span>Backfill</span>
+        <span><Trans>Backfill</Trans></span>
       </div>
       <div className="em-backfill">
         <div className="em-backfill-eyebrow">
           <span className="em-pulse" />
-          Sorting historical inbox
+          <Trans>Sorting historical inbox</Trans>
         </div>
-        <div className="em-backfill-title">Loading past threads…</div>
+        <div className="em-backfill-title"><Trans>Loading past threads…</Trans></div>
         <div className="em-backfill-desc">
-          {awaitingTaxonomy
-            ? "Set up at least 3 folders so we can start sorting."
-            : "New threads will appear as they are sorted."}
+          {awaitingTaxonomy ? (
+            <Trans>Set up at least 3 folders so we can start sorting.</Trans>
+          ) : (
+            <Trans>New threads will appear as they are sorted.</Trans>
+          )}
         </div>
         <div className="em-backfill-progress-track">
           <div className="em-backfill-progress-bar" style={{ width: `${percent}%` }} />

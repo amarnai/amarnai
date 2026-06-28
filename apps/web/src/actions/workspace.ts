@@ -4,12 +4,23 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { db, resetWorkspaceData, deleteWorkspaceCascade, createFreeWorkspace, FreeWorkspaceLimitError } from "@amarnai/db";
+import { isSupportedLocale, type SupportedLocale } from "@amarnai/i18n";
 import { requireUser } from "@/lib/session";
 import { getSelectedWorkspace } from "@/lib/workspace";
+import { getRequestLocale } from "@/lib/i18n-server";
 import { disconnectGmailBeforeDeletion } from "@/lib/gmail-teardown";
 import { apiFor } from "@/lib/api";
 
 const WORKSPACE_COOKIE = "amarnai-workspace";
+const LOCALE_COOKIE = "amarnai_locale";
+
+// The active workspace's language drives both the UI and AI-generated taxonomy.
+// proxy.ts resolves the UI locale from this cookie without a DB read, so we keep
+// it in sync whenever the active workspace (or its language) changes.
+async function setLocaleCookie(locale: string): Promise<void> {
+  const jar = await cookies();
+  jar.set(LOCALE_COOKIE, locale, { path: "/", maxAge: 60 * 60 * 24 * 365 });
+}
 
 export async function switchWorkspaceAction(workspaceId: string): Promise<void> {
   const user = await requireUser();
@@ -17,7 +28,7 @@ export async function switchWorkspaceAction(workspaceId: string): Promise<void> 
   // Allow both owners and team members to switch to any workspace they belong to.
   const member = await db.workspaceMember.findUnique({
     where: { workspaceId_userId: { workspaceId, userId: user.id } },
-    select: { role: true },
+    select: { role: true, workspace: { select: { locale: true } } },
   });
   if (!member) return;
 
@@ -28,6 +39,8 @@ export async function switchWorkspaceAction(workspaceId: string): Promise<void> 
     sameSite: "lax",
     maxAge: 60 * 60 * 24 * 365,
   });
+  // Follow the target workspace's language.
+  await setLocaleCookie(member.workspace.locale);
 
   redirect("/emails");
 }
@@ -63,9 +76,12 @@ export async function createWorkspaceAction(
   if (!trimmed) return { error: "Workspace name cannot be empty" };
   if (trimmed.length > 100) return { error: "Name must be 100 characters or fewer" };
 
+  // Seed the new workspace's language from the creator's current UI locale.
+  const locale = await getRequestLocale();
+
   let workspaceId: string;
   try {
-    workspaceId = await createFreeWorkspace(user.id, trimmed);
+    workspaceId = await createFreeWorkspace(user.id, trimmed, locale);
   } catch (err) {
     if (err instanceof FreeWorkspaceLimitError) return { error: err.message };
     throw err;
@@ -78,7 +94,31 @@ export async function createWorkspaceAction(
     sameSite: "lax",
     maxAge: 60 * 60 * 24 * 365,
   });
+  await setLocaleCookie(locale);
 
+  revalidatePath("/", "layout");
+  return { success: true };
+}
+
+// Change the active workspace's language — OWNER only. Updates the workspace row
+// and re-syncs the locale cookie so the UI switches immediately; the next
+// taxonomy generation will use the new language too.
+export async function setWorkspaceLocaleAction(
+  locale: SupportedLocale,
+): Promise<{ error?: string; success?: boolean }> {
+  if (!isSupportedLocale(locale)) return { error: "Unsupported locale" };
+
+  const user = await requireUser();
+  const workspace = await getSelectedWorkspace(user.id);
+
+  const member = await db.workspaceMember.findUnique({
+    where: { workspaceId_userId: { workspaceId: workspace.id, userId: user.id } },
+    select: { role: true },
+  });
+  if (member?.role !== "OWNER") return { error: "Only admins can change the language" };
+
+  await db.workspace.update({ where: { id: workspace.id }, data: { locale } });
+  await setLocaleCookie(locale);
   revalidatePath("/", "layout");
   return { success: true };
 }

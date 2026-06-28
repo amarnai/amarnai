@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Trans } from "@lingui/react/macro";
 
 const POLL_INTERVAL_MS = 5_000;
 // Must be >= CLASSIFY_STALE_MS in the API (currently 15 min) so the poller
@@ -44,7 +45,7 @@ export function ClassifyingRefresher({ active, onPoll }: { active: boolean; onPo
   if (timedOut) {
     return (
       <div className="error-box" style={{ marginBottom: 16 }}>
-        Sorting is taking longer than expected.{" "}
+        <Trans>Sorting is taking longer than expected.</Trans>{" "}
         <button
           onClick={() => {
             setTimedOut(false);
@@ -52,7 +53,7 @@ export function ClassifyingRefresher({ active, onPoll }: { active: boolean; onPo
             onPoll();
           }}
         >
-          Refresh
+          <Trans>Refresh</Trans>
         </button>
       </div>
     );

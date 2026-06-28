@@ -38,6 +38,27 @@ if [[ -n "$hits" ]]; then
   exit 1
 fi
 
+# ── i18n: auto-translate on string-touching commits ───────────────────────────
+# Runs only when staged files include translatable source (app/ui source dirs or
+# existing catalogs). Skips cleanly when the AI provider is not configured so
+# offline and keyless dev environments are never blocked.
+i18n_dirs_pattern="^(apps/site/src|apps/web/src|apps/mobile/(app|src)|packages/ui/src|packages/i18n/src/locales)"
+if echo "$staged" | grep -qE "$i18n_dirs_pattern"; then
+  echo "[pre-commit] Translatable source changed — running i18n pipeline..."
+  if ! pnpm i18n:extract; then
+    echo -e "${RED}[pre-commit] i18n extract failed. Fix errors or commit with --no-verify.${NC}"
+    exit 1
+  fi
+  # translate: non-fatal — missing provider skips gracefully (logs a warning).
+  pnpm i18n:translate || true
+  if ! pnpm i18n:compile; then
+    echo -e "${RED}[pre-commit] i18n compile failed. Fix errors or commit with --no-verify.${NC}"
+    exit 1
+  fi
+  # Stage any generated/updated catalog files so they're included in the commit.
+  git add packages/i18n/src/locales/
+fi
+
 # ── Lint & typecheck ──────────────────────────────────────────────────────────
 echo "[pre-commit] Running lint..."
 if ! pnpm lint; then

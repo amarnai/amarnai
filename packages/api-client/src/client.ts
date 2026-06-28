@@ -103,9 +103,10 @@ export function makeApiClient(transport: ApiTransport) {
     createWorkspace: (name: string) =>
       apiMutate<Workspace>("/workspaces", "POST", { name }),
 
-    // Rename a workspace (OWNER only). Returns the updated workspace.
-    updateWorkspace: (workspaceId: string, name: string) =>
-      apiMutate<Workspace>(`/workspaces/${workspaceId}`, "PATCH", { name }),
+    // Update a workspace's name and/or language (OWNER only). Returns the
+    // updated workspace.
+    updateWorkspace: (workspaceId: string, updates: { name?: string; locale?: string }) =>
+      apiMutate<Workspace>(`/workspaces/${workspaceId}`, "PATCH", updates),
 
     // Wipe a workspace's Gmail connection, synced emails, and taxonomy back to
     // Inbox (OWNER only). Keeps the workspace and its members.

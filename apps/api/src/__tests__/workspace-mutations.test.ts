@@ -108,6 +108,34 @@ describe("PATCH /workspaces/:id (rename)", () => {
 
     expect(res.status).toBe(400);
   });
+
+  it("updates the language when the user is OWNER", async () => {
+    asMember("OWNER");
+    vi.mocked(db.workspace.update).mockResolvedValue({ id: "ws1", locale: "fr" } as never);
+
+    const res = await app.request("/workspaces/ws1", jsonBody("PATCH", { locale: "fr" }));
+
+    expect(res.status).toBe(200);
+    expect(db.workspace.update).toHaveBeenCalledWith(
+      expect.objectContaining({ where: { id: "ws1" }, data: { locale: "fr" } }),
+    );
+  });
+
+  it("rejects an unsupported locale with 400 before any auth lookup", async () => {
+    const res = await app.request("/workspaces/ws1", jsonBody("PATCH", { locale: "xx" }));
+
+    expect(res.status).toBe(400);
+    expect(db.workspace.update).not.toHaveBeenCalled();
+  });
+
+  it("rejects a non-owner changing the language with 403", async () => {
+    asMember("MEMBER");
+
+    const res = await app.request("/workspaces/ws1", jsonBody("PATCH", { locale: "fr" }));
+
+    expect(res.status).toBe(403);
+    expect(db.workspace.update).not.toHaveBeenCalled();
+  });
 });
 
 describe("POST /workspaces/:id/reset", () => {
@@ -167,7 +195,8 @@ describe("POST /workspaces (create)", () => {
     const res = await app.request("/workspaces", jsonBody("POST", { name: "Acme" }));
 
     expect(res.status).toBe(201);
-    expect(createFreeWorkspace).toHaveBeenCalledWith(TEST_USER_ID, "Acme");
+    // Locale is seeded from Accept-Language; absent here, it defaults to "en".
+    expect(createFreeWorkspace).toHaveBeenCalledWith(TEST_USER_ID, "Acme", "en");
     expect(db.workspace.findUniqueOrThrow).toHaveBeenCalledWith(
       expect.objectContaining({ where: { id: "ws-new" } }),
     );
@@ -181,7 +210,19 @@ describe("POST /workspaces (create)", () => {
 
     await app.request("/workspaces", jsonBody("POST", { name: "  Acme  " }));
 
-    expect(createFreeWorkspace).toHaveBeenCalledWith(TEST_USER_ID, "Acme");
+    expect(createFreeWorkspace).toHaveBeenCalledWith(TEST_USER_ID, "Acme", "en");
+  });
+
+  it("seeds the workspace language from Accept-Language", async () => {
+    vi.mocked(createFreeWorkspace).mockResolvedValue("ws-new");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    vi.mocked(db.workspace.findUniqueOrThrow).mockResolvedValue(stubWorkspace as any);
+
+    const init = jsonBody("POST", { name: "Acme" });
+    (init.headers as Record<string, string>)["Accept-Language"] = "fr-FR,fr;q=0.9,en;q=0.8";
+    await app.request("/workspaces", init);
+
+    expect(createFreeWorkspace).toHaveBeenCalledWith(TEST_USER_ID, "Acme", "fr");
   });
 
   it("returns 409 when free workspace limit is reached", async () => {

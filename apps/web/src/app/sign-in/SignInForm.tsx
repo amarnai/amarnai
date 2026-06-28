@@ -4,11 +4,15 @@ import { useActionState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Suspense } from "react";
+import { useLingui } from "@lingui/react";
+import { Trans } from "@lingui/react/macro";
+import { msg } from "@lingui/core/macro";
 import { credentialsSignInAction } from "@/actions/auth";
 import { AuthShell } from "@/components/AuthShell";
 import { GoogleButton } from "@/components/GoogleButton";
 
 function SignInContent() {
+  const { _ } = useLingui();
   const searchParams = useSearchParams();
   const [state, action, pending] = useActionState(credentialsSignInAction, null);
 
@@ -17,19 +21,29 @@ function SignInContent() {
   const tokenError = searchParams.get("error") === "invalid_token";
 
   return (
-    <AuthShell title="Sign in" subtitle="AI email triage assistant">
-      {verified && <p className="auth-success">Email verified! Sign in to continue.</p>}
-      {passwordReset && (
-        <p className="auth-success">Password updated. Sign in with your new password.</p>
+    <AuthShell title={_( msg`Sign in`)} subtitle={_( msg`AI email triage assistant`)}>
+      {verified && (
+        <p className="auth-success">
+          <Trans>Email verified! Sign in to continue.</Trans>
+        </p>
       )}
-      {tokenError && <p className="auth-error">That link is invalid or has expired.</p>}
+      {passwordReset && (
+        <p className="auth-success">
+          <Trans>Password updated. Sign in with your new password.</Trans>
+        </p>
+      )}
+      {tokenError && (
+        <p className="auth-error">
+          <Trans>That link is invalid or has expired.</Trans>
+        </p>
+      )}
 
       <form action={action} className="auth-form">
         {state?.error && <p className="auth-error">{state.error}</p>}
 
         <div className="form-group">
           <label className="form-label" htmlFor="email">
-            Email
+            <Trans>Email</Trans>
           </label>
           <input
             id="email"
@@ -44,10 +58,10 @@ function SignInContent() {
         <div className="form-group">
           <div className="auth-label-row">
             <label className="form-label" htmlFor="password">
-              Password
+              <Trans>Password</Trans>
             </label>
             <Link href="/forgot-password" className="auth-link auth-forgot">
-              Forgot password?
+              <Trans>Forgot password?</Trans>
             </Link>
           </div>
           <input
@@ -61,21 +75,25 @@ function SignInContent() {
         </div>
 
         <button type="submit" disabled={pending} className="btn-primary auth-submit">
-          {pending ? "Signing in…" : "Sign in"}
+          {pending ? <Trans>Signing in…</Trans> : <Trans>Sign in</Trans>}
         </button>
       </form>
 
       <div className="auth-divider">
-        <span>or</span>
+        <span>
+          <Trans>or</Trans>
+        </span>
       </div>
 
       <GoogleButton />
 
       <p className="auth-switch">
-        Don&apos;t have an account?{" "}
-        <Link href="/sign-up" className="auth-link">
-          Sign up
-        </Link>
+        <Trans>
+          Don&apos;t have an account?{" "}
+          <Link href="/sign-up" className="auth-link">
+            Sign up
+          </Link>
+        </Trans>
       </p>
     </AuthShell>
   );

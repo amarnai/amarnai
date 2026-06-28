@@ -1,6 +1,9 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { Trans } from "@lingui/react/macro";
+import { useLingui } from "@lingui/react";
+import { msg } from "@lingui/core/macro";
 import { colors, radii, shadows } from "@amarnai/tokens";
 import {
   DEFAULT_PACKAGE,
@@ -28,6 +31,7 @@ export function AppDownloadBanner({
   packageName = DEFAULT_PACKAGE,
   appScheme = DEFAULT_SCHEME,
 }: AppDownloadBannerProps) {
+  const { i18n } = useLingui();
   // Default hidden so SSR and the first client render agree (no hydration
   // mismatch); eligibility is resolved in the effect below, client-only.
   const [visible, setVisible] = useState(false);
@@ -58,15 +62,24 @@ export function AppDownloadBanner({
   const openUrl = buildIntentUrl(playStoreUrl, packageName, appScheme);
 
   return (
-    <div role="region" aria-label="Get the Amarnai app" style={bannerStyle}>
+    <div role="region" aria-label={i18n._(msg`Get the Amarnai app`)} style={bannerStyle}>
       <div style={textStyle}>
-        <span style={titleStyle}>Amarnai for Android</span>
-        <span style={subtitleStyle}>Triage your inbox on the go.</span>
+        <span style={titleStyle}>
+          <Trans>Amarnai for Android</Trans>
+        </span>
+        <span style={subtitleStyle}>
+          <Trans>Triage your inbox on the go.</Trans>
+        </span>
       </div>
       <a href={openUrl} style={getButtonStyle} rel="noopener">
-        Get the app
+        <Trans>Get the app</Trans>
       </a>
-      <button type="button" onClick={dismiss} aria-label="Dismiss" style={closeStyle}>
+      <button
+        type="button"
+        onClick={dismiss}
+        aria-label={i18n._(msg`Dismiss`)}
+        style={closeStyle}
+      >
         &times;
       </button>
     </div>

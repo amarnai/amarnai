@@ -4,7 +4,8 @@ import type { InboxProfile, SenderCluster, TaxonomyTransferFile } from "@amarnai
 // fits a specific inbox. The model receives only aggregated, body-free signal
 // (sender domains, sender names, subject keywords, Gmail labels) plus the seed.
 
-const SYSTEM_PROMPT = `You are an email-organization assistant. Personalize a STARTING taxonomy of folders to fit a user's inbox, based on aggregated signal about who emails them and about what.
+function buildSystemPrompt(targetLanguage: string): string {
+  return `You are an email-organization assistant. Personalize a STARTING taxonomy of folders to fit a user's inbox, based on aggregated signal about who emails them and about what.
 
 You output a single JSON object describing a folder tree. The shape is exactly:
 {
@@ -18,21 +19,23 @@ You output a single JSON object describing a folder tree. The shape is exactly:
 }
 
 HARD RULES (violations are rejected):
+- LANGUAGE: Write every "name" and "description" value in ${targetLanguage}. Do NOT use English unless ${targetLanguage} is English. The single root node must still be named exactly "Inbox" (do not translate it). "ref" values MUST stay lowercase ASCII slugs (a-z, 0-9, hyphens) and must NEVER be translated — they are internal identifiers, never shown to the user.
 - Exactly ONE root node with "isRoot": true and "name": "Inbox". Every other node has "isRoot": false.
 - It must be a TREE: every non-root node is the target of EXACTLY ONE edge. No cycles. No orphans. The root is never an edge target.
-- Folder names: 3 to 40 characters, plain text (no HTML), must contain a letter or digit.
-- Every non-root folder needs a "description" of at least 30 non-whitespace characters, plain text, and DIFFERENT from its name.
-- Keep ONE catch-all leaf (set "isCatchAll": true on it, e.g. "Updates" or "Other") so automated/bulk mail has a home. Give it a normal description.
+- Folder names: plain text (no HTML), must contain a letter or digit. In Latin scripts use 3 to 40 characters; in Chinese or Japanese a natural 2-character name is fine.
+- Every non-root folder needs a plain-text "description", at most 300 characters, DIFFERENT from its name. In Latin scripts make it at least 30 characters; in Chinese or Japanese aim for a full sentence (about 12 characters or more).
+- Keep ONE catch-all leaf (set "isCatchAll": true on it, e.g. a folder meaning "Updates" or "Other") so automated/bulk mail has a home. Give it a normal description.
 - "instructions" and "draftPrompt" must be null; "examples" must be []. Set sensible "positionX"/"positionY" numbers (you may copy the seed's layout).
 
 GUIDANCE:
 - Build a TWO-LEVEL tree. Top level: 3 to 6 broad categories (the major areas or relationships in this inbox). Under each top-level category, add 2 to 5 specific sub-folders when the sender clusters show distinct recurring themes within it. If a category has no clear sub-themes, keep it a single leaf.
 - Do NOT nest deeper than two levels below "Inbox".
-- Start from the SEED taxonomy, which is already two-level. Keep the parts that fit, rename ones that nearly fit, add sub-folders for clear recurring themes in the signal, and drop branches with no support in the inbox.
+- Start from the SEED taxonomy, which is already two-level. Keep the parts that fit, rename ones that nearly fit, add sub-folders for clear recurring themes in the signal, and drop branches with no support in the inbox. The seed is shown in English; translate the parts you keep into ${targetLanguage}.
 - Name sub-folders after concrete recurring themes visible in the sender clusters (a frequent sender domain, a project, a keyword cluster), not generic buckets. Do not create a folder per sender.
 - Aim for about 8 to 12 leaf folders total. When in doubt, merge rather than split — a few well-supported folders beat many thin ones.
 - Do NOT invent folders to capture noise (newsletters, notifications, receipts). That is what the catch-all leaf is for.
 - Output ONLY the JSON object. No prose, no markdown fences.`;
+}
 
 /** Compact, ranked list rendering for a profile signal. */
 function renderTerms(label: string, terms: { term: string; count: number }[], limit: number): string {
@@ -83,6 +86,7 @@ export function buildTaxonomyGenerationMessages(
   profile: InboxProfile,
   seed: TaxonomyTransferFile,
   matchedTemplateName: string,
+  targetLanguage: string,
 ): Array<{ role: "system" | "user" | "assistant"; content: string }> {
   const user = `SEED taxonomy (closest match: "${matchedTemplateName}"), shown as a parent → child tree:
 ${renderSeed(seed)}
@@ -96,18 +100,21 @@ ${renderTerms("Gmail labels", profile.gmailLabels, 25)}
 SENDER CLUSTERS (top senders and the themes they email about; use these to name specific sub-folders):
 ${renderClusters(profile.senderClusters)}
 
-Produce the personalized taxonomy JSON now.`;
+Produce the personalized taxonomy JSON now, with all names and descriptions in ${targetLanguage}.`;
 
   return [
-    { role: "system", content: SYSTEM_PROMPT },
+    { role: "system", content: buildSystemPrompt(targetLanguage) },
     { role: "user", content: user },
   ];
 }
 
 /** Build a one-shot repair message appending the validation error. */
-export function buildRepairMessage(error: string): { role: "user"; content: string } {
+export function buildRepairMessage(
+  error: string,
+  targetLanguage: string,
+): { role: "user"; content: string } {
   return {
     role: "user",
-    content: `The taxonomy you returned was invalid: ${error}\n\nReturn a corrected JSON object that fixes this and obeys all HARD RULES. Output ONLY the JSON.`,
+    content: `The taxonomy you returned was invalid: ${error}\n\nReturn a corrected JSON object that fixes this and obeys all HARD RULES. Keep all names and descriptions in ${targetLanguage}; keep refs as lowercase ASCII slugs. Output ONLY the JSON.`,
   };
 }

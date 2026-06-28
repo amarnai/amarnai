@@ -11,6 +11,9 @@ import {
   View,
 } from 'react-native';
 import { Link, Redirect } from 'expo-router';
+import { Trans } from '@lingui/react/macro';
+import { msg } from '@lingui/core/macro';
+import { useLingui } from '@lingui/react';
 import { colors } from '@amarnai/tokens';
 import { PASSWORD_MIN_LENGTH } from '@amarnai/shared';
 import { useSession } from '../src/auth/session';
@@ -20,6 +23,7 @@ import { toUserMessage } from '../src/errors';
 
 export default function SignUpScreen() {
   const { status, emailVerified, signUp, signInWithGoogle } = useSession();
+  const { i18n } = useLingui();
   const passwordRef = useRef<TextInput>(null);
   const confirmRef = useRef<TextInput>(null);
 
@@ -47,7 +51,7 @@ export default function SignUpScreen() {
     if (!canSubmit) return;
     Keyboard.dismiss();
     if (password !== confirm) {
-      setError('Passwords do not match');
+      setError(i18n._(msg`Passwords do not match`));
       return;
     }
     setError(null);
@@ -55,7 +59,7 @@ export default function SignUpScreen() {
     try {
       await signUp(email.trim(), password);
     } catch (err) {
-      setError(toUserMessage(err, 'Sign-up failed. Please try again.'));
+      setError(toUserMessage(err, i18n._(msg`Sign-up failed. Please try again.`)));
     } finally {
       setSubmitting(false);
     }
@@ -69,7 +73,7 @@ export default function SignUpScreen() {
       await signInWithGoogle();
     } catch (err) {
       if (err instanceof Error && err.message === 'cancelled') return;
-      setError(toUserMessage(err, 'Google sign-in failed. Please try again.'));
+      setError(toUserMessage(err, i18n._(msg`Google sign-in failed. Please try again.`)));
     } finally {
       setGoogleSubmitting(false);
     }
@@ -87,11 +91,11 @@ export default function SignUpScreen() {
       >
         <View style={authStyles.form}>
           <Text style={authStyles.heading}>Amarnai</Text>
-          <Text style={authStyles.subheading}>Create an account to triage your inbox</Text>
+          <Text style={authStyles.subheading}><Trans>Create an account to triage your inbox</Trans></Text>
 
           <TextInput
             style={authStyles.input}
-            placeholder="Email"
+            placeholder={i18n._(msg`Email`)}
             placeholderTextColor={colors.ink4}
             autoCapitalize="none"
             autoCorrect={false}
@@ -108,7 +112,7 @@ export default function SignUpScreen() {
           <TextInput
             ref={passwordRef}
             style={authStyles.input}
-            placeholder={`Password (min ${PASSWORD_MIN_LENGTH} characters)`}
+            placeholder={i18n._(msg`Password (min ${PASSWORD_MIN_LENGTH} characters)`)}
             placeholderTextColor={colors.ink4}
             autoCapitalize="none"
             autoComplete="new-password"
@@ -124,7 +128,7 @@ export default function SignUpScreen() {
           <TextInput
             ref={confirmRef}
             style={authStyles.input}
-            placeholder="Confirm password"
+            placeholder={i18n._(msg`Confirm password`)}
             placeholderTextColor={colors.ink4}
             autoCapitalize="none"
             autoComplete="new-password"
@@ -147,7 +151,7 @@ export default function SignUpScreen() {
             {submitting ? (
               <ActivityIndicator color={colors.surface} />
             ) : (
-              <Text style={authStyles.buttonText}>Create account</Text>
+              <Text style={authStyles.buttonText}><Trans>Create account</Trans></Text>
             )}
           </TouchableOpacity>
 
@@ -159,8 +163,10 @@ export default function SignUpScreen() {
 
           <Link href="/sign-in" style={authStyles.switchLink} disabled={busy}>
             <Text style={authStyles.switchText}>
-              Already have an account?{' '}
-              <Text style={authStyles.switchTextStrong}>Sign in</Text>
+              <Trans>
+                Already have an account?{' '}
+                <Text style={authStyles.switchTextStrong}>Sign in</Text>
+              </Trans>
             </Text>
           </Link>
         </View>

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Trans } from '@lingui/react/macro';
 import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
 import type { ThreadMessage } from '@amarnai/core';
 
@@ -49,11 +50,11 @@ export function MessageCard({ message, defaultExpanded = false, loading = false 
           {message.bodyText ? (
             <Text style={styles.text}>{message.bodyText}</Text>
           ) : loading ? (
-            <Text style={styles.muted}>Loading…</Text>
+            <Text style={styles.muted}><Trans>Loading…</Trans></Text>
           ) : message.snippet ? (
             <Text style={styles.text}>{message.snippet}</Text>
           ) : (
-            <Text style={styles.muted}>(No body)</Text>
+            <Text style={styles.muted}><Trans>(No body)</Trans></Text>
           )}
           {message.attachments && message.attachments.length > 0 ? (
             <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.attachmentList} contentContainerStyle={styles.attachmentListContent}>

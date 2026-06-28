@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
       workspaceId: true,
       invitedEmail: true,
       expiresAt: true,
-      workspace: { select: { id: true, name: true } },
+      workspace: { select: { id: true, name: true, locale: true } },
     },
   });
 
@@ -75,6 +75,11 @@ export async function GET(req: NextRequest) {
     path: "/",
     httpOnly: true,
     sameSite: "lax",
+    maxAge: 60 * 60 * 24 * 365,
+  });
+  // Follow the joined workspace's language (cache for proxy.ts locale resolution).
+  response.cookies.set("amarnai_locale", invitation.workspace.locale, {
+    path: "/",
     maxAge: 60 * 60 * 24 * 365,
   });
 

@@ -1,5 +1,8 @@
 "use client";
 
+import { Trans } from "@lingui/react/macro";
+import { useLingui } from "@lingui/react";
+import { msg } from "@lingui/core/macro";
 import type { FolderItem } from "./types.js";
 import "./folder-tree.css";
 
@@ -30,6 +33,7 @@ export function FolderTree({
   onToggle,
   onSelect,
 }: FolderTreeProps) {
+  const { i18n } = useLingui();
   const q = query.trim().toLowerCase();
   const roots = folders.filter((f) => f.parentId === null);
 
@@ -44,7 +48,7 @@ export function FolderTree({
   if (!roots.length) {
     return (
       <div style={{ padding: "8px 14px", fontSize: 12, color: "var(--ink-4)" }}>
-        No folders defined
+        <Trans>No folders defined</Trans>
       </div>
     );
   }
@@ -82,7 +86,7 @@ export function FolderTree({
                   e.stopPropagation();
                   if (children.length) onToggle?.(root.id);
                 }}
-                aria-label={isOpen ? "Collapse" : "Expand"}
+                aria-label={isOpen ? i18n._(msg`Collapse`) : i18n._(msg`Expand`)}
                 tabIndex={-1}
               >
                 <svg

@@ -45,6 +45,8 @@ export type CurrentUser = {
   // True when the account has a password set (vs. federated Google-only). Used
   // to decide whether to prompt for a password on sensitive actions.
   hasPassword: boolean;
+  // UI display language (BCP 47 tag, e.g. "en", "fr", "pt-BR").
+  locale: string;
 };
 
 // Partial profile/preferences update for PATCH /auth/me. Only the provided
@@ -52,6 +54,7 @@ export type CurrentUser = {
 export type UpdateCurrentUserInput = {
   name?: string;
   lifecycleEmailsEnabled?: boolean;
+  locale?: string;
 };
 
 // Body-only inputs; workspaceId is carried in the URL path (differs from shared).
@@ -71,6 +74,8 @@ export type UpdateTaxonomyNodeInput = Partial<CreateTaxonomyNodeInput>;
 export type Workspace = {
   id: string;
   name: string;
+  // Workspace language (UI + AI-generated taxonomy), an i18n SupportedLocale code.
+  locale: string;
   plan: "FREE" | "PRO" | "BUSINESS";
   createdAt: string;
   updatedAt: string;

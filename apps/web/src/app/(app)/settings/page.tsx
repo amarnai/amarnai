@@ -5,15 +5,19 @@ import { db } from "@amarnai/db";
 import { assembleBillingState } from "@/lib/billing-state";
 import { GmailConnectionSection } from "./GmailConnectionSection";
 import { WorkspaceNameSection } from "./WorkspaceNameSection";
+import { WorkspaceLanguageSection } from "./WorkspaceLanguageSection";
 import { DeleteWorkspaceSection } from "./DeleteWorkspaceSection";
 import { ResetWorkspaceSection } from "./ResetWorkspaceSection";
 import { EmailBlacklistSection } from "./EmailBlacklistSection";
 import { TeamMembersSection } from "./TeamMembersSection";
 import { BillingSection } from "./BillingSection";
+import { Trans } from "@lingui/react/macro";
+import { initServerI18n } from "@/lib/i18n-server";
 
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 
 export default async function SettingsPage({ searchParams }: { searchParams: SearchParams }) {
+  await initServerI18n();
   const user = await requireUser();
   const workspace = await getSelectedWorkspace(user.id);
   const params = await searchParams;
@@ -99,11 +103,12 @@ export default async function SettingsPage({ searchParams }: { searchParams: Sea
 
   return (
     <>
-      <h1>Workspace Settings</h1>
+      <h1><Trans>Workspace Settings</Trans></h1>
 
       {isAdmin && (
         <>
           <WorkspaceNameSection currentName={workspace.name} />
+          <WorkspaceLanguageSection currentLocale={workspace.locale} />
           <GmailConnectionSection
             workspaceId={workspace.id}
             connection={connection}

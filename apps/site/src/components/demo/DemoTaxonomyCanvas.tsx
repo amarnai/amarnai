@@ -1,6 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Trans } from "@lingui/react/macro";
+import { useLingui } from "@lingui/react";
+import { msg } from "@lingui/core/macro";
 import {
   ReactFlow,
   ReactFlowProvider,
@@ -21,7 +24,7 @@ import "@xyflow/react/dist/style.css";
 import { TaxonomyNodeCardBase, taxonomyTokens } from "@amarnai/ui/taxonomy";
 import { SparkleIcon } from "@/components/landing/icons";
 import type { DemoNode, DemoNodeData } from "./demo-seed";
-import { DEMO_NODES, DEMO_EDGES, DEMO_NODE_DEPTH, DEMO_NODE_SIZE, DEMO_ARROW } from "./demo-seed";
+import { getDemoNodes, DEMO_EDGES, DEMO_NODE_DEPTH, DEMO_NODE_SIZE, DEMO_ARROW } from "./demo-seed";
 
 // Same bezier edge as the web taxonomy canvas, but the endpoints are derived
 // from the live node position plus the node's fixed size rather than React
@@ -74,9 +77,10 @@ const SETTLE = 420; // grace after the last level before re-enabling drag
 const ORDER_IN_DEPTH: Record<string, number> = (() => {
   const order: Record<string, number> = {};
   const seen: Record<number, number> = {};
-  for (const node of DEMO_NODES) {
-    const depth = DEMO_NODE_DEPTH[node.id] ?? 0;
-    order[node.id] = seen[depth] ?? 0;
+  // Object key order mirrors the taxonomy definition order (the depth map is
+  // built from it), so this preserves the original per-level entrance ordering.
+  for (const [id, depth] of Object.entries(DEMO_NODE_DEPTH)) {
+    order[id] = seen[depth] ?? 0;
     seen[depth] = (seen[depth] ?? 0) + 1;
   }
   return order;
@@ -101,7 +105,11 @@ function DemoNodeCard({ data }: NodeProps<DemoNode>) {
 const nodeTypes = { "demo-node": DemoNodeCard };
 
 function DemoCanvasInner() {
-  const [nodes, , onNodesChange] = useNodesState<DemoNode>(DEMO_NODES);
+  const { i18n, _ } = useLingui();
+  // The site renders one static page per locale, so the locale is fixed for this
+  // component's lifetime; building the nodes once from the active catalog is enough.
+  const [initialNodes] = useState<DemoNode[]>(() => getDemoNodes(i18n));
+  const [nodes, , onNodesChange] = useNodesState<DemoNode>(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(DEMO_EDGES);
 
   // -1 means "show everything" (the default, fully interactive state).
@@ -192,22 +200,22 @@ function DemoCanvasInner() {
     <>
       <div className="ld-frame-bar">
         <div className="ld-crumbs">
-          <span>Acme Workspace</span>
+          <span><Trans>Acme Workspace</Trans></span>
           <span className="ld-sep">/</span>
-          <span className="ld-here">Plan</span>
+          <span className="ld-here"><Trans>Plan</Trans></span>
         </div>
         <div className="ld-play-note">
-          Drag and connect. It&apos;s fully interactive.
+          <Trans>Drag and connect. It&apos;s fully interactive.</Trans>
         </div>
         <button
           type="button"
           className="ld-btn accent demo-generate-btn"
           onClick={runGenerate}
           disabled={generating}
-          aria-label="Generate plan from inbox"
+          aria-label={_(msg`Generate plan from inbox`)}
         >
           <SparkleIcon />
-          {generating ? "Generating…" : "Generate from inbox"}
+          {generating ? <Trans>Generating…</Trans> : <Trans>Generate from inbox</Trans>}
         </button>
       </div>
       <div className="ld-demo-stage">

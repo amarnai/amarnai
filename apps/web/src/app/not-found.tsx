@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
+import { Trans } from "@lingui/react/macro";
 
 export default function NotFound() {
   return (
@@ -23,17 +26,19 @@ export default function NotFound() {
           </div>
           <div className="page-404-card">
             <p className="page-404-code">404</p>
-            <h1 className="page-404-heading">This page wasn&apos;t found</h1>
+            <h1 className="page-404-heading"><Trans>This page wasn&apos;t found</Trans></h1>
             <p className="page-404-subtext">
-              King Aziru has consulted every clay tablet in his archive, but
-              this page does not appear to exist.
+              <Trans>
+                King Aziru has consulted every clay tablet in his archive, but
+                this page does not appear to exist.
+              </Trans>
             </p>
             <Link
               href="/"
               className="btn-primary"
               style={{ textDecoration: "none" }}
             >
-              Go home
+              <Trans>Go home</Trans>
             </Link>
           </div>
         </div>

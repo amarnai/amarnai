@@ -4,6 +4,8 @@ import { getStripe } from "@/lib/stripe";
 import { db, ensureInboxNode } from "@amarnai/db";
 import { switchWorkspaceAction } from "@/actions/workspace";
 import { WorkspaceSetupWaiting } from "./WorkspaceSetupWaiting";
+import { Trans } from "@lingui/react/macro";
+import { initServerI18n } from "@/lib/i18n-server";
 
 export const metadata = { title: "Upgrade Successful — Amarnai" };
 
@@ -24,6 +26,7 @@ export default async function UpgradeSuccessPage({
 }: {
   searchParams: SearchParams;
 }) {
+  await initServerI18n();
   const user = await requireUser();
   const { session_id } = await searchParams;
 
@@ -157,26 +160,30 @@ export default async function UpgradeSuccessPage({
           />
         </svg>
       </div>
-      <h1 className="upgrade-success-title">You&apos;re on {planLabel}</h1>
+      <h1 className="upgrade-success-title"><Trans>You&apos;re on {planLabel}</Trans></h1>
       <p className="upgrade-success-workspace">{workspace.name}</p>
       {isTrialing && workspace.trialEndsAt && (
         <p className="upgrade-success-body">
-          Your 14-day free trial runs until{" "}
-          <strong>{workspace.trialEndsAt.toLocaleDateString()}</strong>. You
-          won&apos;t be charged before then.
+          <Trans>
+            Your 14-day free trial runs until{" "}
+            <strong>{workspace.trialEndsAt.toLocaleDateString()}</strong>. You
+            won&apos;t be charged before then.
+          </Trans>
         </p>
       )}
       {!isTrialing && workspace.currentPeriodEnd && (
         <p className="upgrade-success-body">
-          Renews on{" "}
-          <strong>{workspace.currentPeriodEnd.toLocaleDateString()}</strong>.
+          <Trans>
+            Renews on{" "}
+            <strong>{workspace.currentPeriodEnd.toLocaleDateString()}</strong>.
+          </Trans>
         </p>
       )}
       {/* Switch the active-workspace cookie to the purchased workspace before
           navigating — a plain link to /emails would keep the previous selection. */}
       <form action={switchWorkspaceAction.bind(null, workspace.id)}>
         <button type="submit" className="btn-primary upgrade-success-cta">
-          Go to {workspace.name}
+          <Trans>Go to {workspace.name}</Trans>
         </button>
       </form>
     </div>

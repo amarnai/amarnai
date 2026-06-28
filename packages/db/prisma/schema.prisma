@@ -190,6 +190,7 @@ model User {
   // enforce the weekly cadence in a restart-safe, idempotent way.
   lifecycleEmailsEnabled   Boolean               @default(true)
   lifecycleEmailSentAt     DateTime?
+  locale                   String                @default("en")
 
   ownedWorkspaces          Workspace[]
   workspaceMemberships     WorkspaceMember[]
@@ -207,6 +208,7 @@ model Workspace {
   id                     String         @id @default(cuid())
   name                   String
   ownerUserId            String
+  locale                 String         @default("en")
   plan                   WorkspacePlan  @default(FREE)
   membersCanEditTaxonomy Boolean        @default(false)
   stripeCustomerId       String?

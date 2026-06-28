@@ -3,8 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --port 3002",
-    "build": "next build",
+    "dev": "next dev --webpack --port 3002",
+    "prebuild": "pnpm --filter @amarnai/i18n compile",
+    "build": "next build --webpack",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
     "start": "next start --port 3002",
@@ -12,15 +13,19 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@amarnai/i18n": "workspace:*",
     "@amarnai/ui": "workspace:*",
+    "@lingui/core": "^6.4.0",
+    "@lingui/react": "^6.4.0",
     "@opennextjs/cloudflare": "^1.19.11",
     "@xyflow/react": "^12.0.0",
-    "next": "^15.3.0",
+    "next": "^16.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "@types/node": "^22.0.0",
+    "@lingui/swc-plugin": "^6.4.0",
+    "@types/node": "^24.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "wrangler": "^4.93.0"

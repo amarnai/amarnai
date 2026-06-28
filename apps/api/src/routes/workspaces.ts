@@ -1,5 +1,6 @@
 import { Hono } from "hono";
 import { db, resetWorkspaceData, deleteWorkspaceCascade, createFreeWorkspace, FreeWorkspaceLimitError } from "@amarnai/db";
+import { isSupportedLocale, localeFromAcceptLanguage } from "@amarnai/i18n";
 import type { AppEnv } from "../env.js";
 import { disconnectGmail } from "../services/gmail-disconnect.js";
 
@@ -8,6 +9,7 @@ const workspaces = new Hono<AppEnv>();
 const workspaceSelect = {
   id: true,
   name: true,
+  locale: true,
   plan: true,
   createdAt: true,
   updatedAt: true,
@@ -60,9 +62,12 @@ workspaces.post("/workspaces", async (c) => {
   if (!name) return c.json({ error: "Workspace name cannot be empty" }, 400);
   if (name.length > 100) return c.json({ error: "Name must be 100 characters or fewer" }, 400);
 
+  // Seed the workspace language from the creator's browser/device locale.
+  const locale = localeFromAcceptLanguage(c.req.header("accept-language"));
+
   let workspaceId: string;
   try {
-    workspaceId = await createFreeWorkspace(userId, name);
+    workspaceId = await createFreeWorkspace(userId, name, locale);
   } catch (err) {
     if (err instanceof FreeWorkspaceLimitError) {
       return c.json({ error: err.message }, 409);
@@ -77,24 +82,45 @@ workspaces.post("/workspaces", async (c) => {
   return c.json(workspace, 201);
 });
 
-// Rename — OWNER only. Mirrors the web settings action's validation/messages.
+// Update name and/or language — OWNER only. Mirrors the web settings action's
+// validation/messages. The language drives both the UI and AI-generated
+// taxonomy for everyone in the workspace, so only the owner may change it.
 workspaces.patch("/workspaces/:workspaceId", async (c) => {
   const userId = c.get("userId") as string | undefined;
   if (!userId) return c.json({ error: "Unauthorized" }, 401);
   const workspaceId = c.req.param("workspaceId");
 
-  const body = (await c.req.json().catch(() => null)) as { name?: unknown } | null;
-  const name = typeof body?.name === "string" ? body.name.trim() : "";
-  if (!name) return c.json({ error: "Workspace name cannot be empty" }, 400);
-  if (name.length > 100) return c.json({ error: "Name must be 100 characters or fewer" }, 400);
+  const body = (await c.req.json().catch(() => null)) as
+    | { name?: unknown; locale?: unknown }
+    | null;
+
+  const data: { name?: string; locale?: string } = {};
+
+  if (body && "name" in body) {
+    const name = typeof body.name === "string" ? body.name.trim() : "";
+    if (!name) return c.json({ error: "Workspace name cannot be empty" }, 400);
+    if (name.length > 100) return c.json({ error: "Name must be 100 characters or fewer" }, 400);
+    data.name = name;
+  }
+
+  if (body && "locale" in body) {
+    if (!isSupportedLocale(body.locale)) {
+      return c.json({ error: "Unsupported locale" }, 400);
+    }
+    data.locale = body.locale;
+  }
+
+  if (Object.keys(data).length === 0) {
+    return c.json({ error: "Nothing to update" }, 400);
+  }
 
   if ((await ownerRole(workspaceId, userId)) !== "OWNER") {
-    return c.json({ error: "Only admins can rename the workspace" }, 403);
+    return c.json({ error: "Only admins can update the workspace" }, 403);
   }
 
   const updated = await db.workspace.update({
     where: { id: workspaceId },
-    data: { name },
+    data,
     select: workspaceSelect,
   });
   return c.json(updated);

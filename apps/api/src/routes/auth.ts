@@ -21,6 +21,7 @@ import {
   type GoogleUserInfo,
 } from "@amarnai/gmail";
 import { RegisterCredentialsSchema } from "@amarnai/shared";
+import { isSupportedLocale, localeFromAcceptLanguage } from "@amarnai/i18n";
 import { sendVerificationEmail, sendPasswordResetEmail } from "@amarnai/email";
 import { config } from "@amarnai/config";
 import { db, deleteUserCascade } from "@amarnai/db";
@@ -196,6 +197,8 @@ auth.post("/auth/google", async (c) => {
     gmailAccessToken: accessToken,
     gmailRefreshToken: refreshToken,
     grantedScopes,
+    // Seed the default workspace language from the caller's device locale.
+    locale: localeFromAcceptLanguage(c.req.header("accept-language")),
   });
 
   // First-time sign-up: kick off an immediate inbox sync and arm the Gmail push
@@ -254,6 +257,7 @@ const ME_SELECT = {
   // Presence only (never the hash): lets clients decide whether to prompt for a
   // password on sensitive actions like account deletion.
   credential: { select: { userId: true } },
+  locale: true,
 } as const;
 
 function toMeResponse(user: {
@@ -263,6 +267,7 @@ function toMeResponse(user: {
   emailVerified: Date | null;
   lifecycleEmailsEnabled: boolean;
   credential: { userId: string } | null;
+  locale: string;
 }) {
   return {
     userId: user.id,
@@ -271,6 +276,7 @@ function toMeResponse(user: {
     emailVerified: user.emailVerified !== null,
     lifecycleEmailsEnabled: user.lifecycleEmailsEnabled,
     hasPassword: user.credential != null,
+    locale: user.locale,
   };
 }
 
@@ -297,7 +303,7 @@ auth.patch("/auth/me", async (c) => {
   const body = await c.req.json().catch(() => null);
   if (!body || typeof body !== "object") return c.json({ error: "Invalid body" }, 400);
 
-  const data: { name?: string | null; lifecycleEmailsEnabled?: boolean } = {};
+  const data: { name?: string | null; lifecycleEmailsEnabled?: boolean; locale?: string } = {};
 
   if ("name" in body) {
     const name = typeof body.name === "string" ? body.name.trim() : "";
@@ -310,6 +316,13 @@ auth.patch("/auth/me", async (c) => {
       return c.json({ error: "lifecycleEmailsEnabled must be a boolean" }, 400);
     }
     data.lifecycleEmailsEnabled = body.lifecycleEmailsEnabled;
+  }
+
+  if ("locale" in body) {
+    if (!isSupportedLocale(body.locale)) {
+      return c.json({ error: "Unsupported locale" }, 400);
+    }
+    data.locale = body.locale;
   }
 
   const user = await db.user.update({ where: { id: userId }, data, select: ME_SELECT });

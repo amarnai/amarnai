@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, cleanup, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent, cleanup, waitFor } from "@/test-utils";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { WorkspaceChoiceModal } from "./WorkspaceChoiceModal";
 

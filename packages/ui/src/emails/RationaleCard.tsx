@@ -1,5 +1,8 @@
 "use client";
 
+import { Trans } from "@lingui/react/macro";
+import { useLingui } from "@lingui/react";
+import { msg } from "@lingui/core/macro";
 import { TAXONOMY_MIN_NON_ROOT_NODES } from "@amarnai/shared";
 import type { FolderItem } from "../folder-tree/types.js";
 import type { ThreadItem } from "./types.js";
@@ -30,6 +33,7 @@ export function RationaleCard({
   onApprove,
   onReroute,
 }: RationaleCardProps) {
+  const { i18n } = useLingui();
   const folder = folders.find((f) => f.id === thread.folderId);
   const unrouted = !folder;
   const confPct = Math.round(thread.confidence * 100);
@@ -41,11 +45,11 @@ export function RationaleCard({
     return (
       <div className="em-rationale-card sorting">
         <div className="em-rationale-header">
-          <span className="em-rationale-label">AI Routing</span>
+          <span className="em-rationale-label"><Trans>AI Routing</Trans></span>
         </div>
         <div className="em-rationale-dest">
           <span className="em-chip-spin" aria-hidden />
-          <span>Sorting…</span>
+          <span><Trans>Sorting…</Trans></span>
         </div>
       </div>
     );
@@ -60,19 +64,24 @@ export function RationaleCard({
     return (
       <div className="em-rationale-card unrouted">
         <div className="em-rationale-header">
-          <span className="em-rationale-label">AI Routing</span>
+          <span className="em-rationale-label"><Trans>AI Routing</Trans></span>
         </div>
         <div className="em-rationale-dest">
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
             <circle cx="6" cy="6" r="5" stroke="currentColor" strokeWidth="1.2" />
             <path d="M6 5.5v3M6 3.5h.01" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
           </svg>
-          <span>Waiting</span>
+          <span><Trans>Waiting</Trans></span>
         </div>
         <div className="em-rationale-reason em-rationale-reason--muted">
-          {taxonomyWeak
-            ? `This thread cannot be sorted yet. Add at least ${TAXONOMY_MIN_NON_ROOT_NODES} categories to your plan to begin routing.`
-            : "This thread is waiting to be routed. Use “Route now” to start sorting."}
+          {taxonomyWeak ? (
+            <Trans>
+              This thread cannot be sorted yet. Add at least{" "}
+              {TAXONOMY_MIN_NON_ROOT_NODES} categories to your plan to begin routing.
+            </Trans>
+          ) : (
+            <Trans>This thread is waiting to be routed. Use “Route now” to start sorting.</Trans>
+          )}
         </div>
       </div>
     );
@@ -81,8 +90,8 @@ export function RationaleCard({
   return (
     <div className={`em-rationale-card${unrouted ? " unrouted" : ""}`}>
       <div className="em-rationale-header">
-        <span className="em-rationale-label">AI Routing</span>
-        <span className="em-rationale-conf">{confPct}% confidence</span>
+        <span className="em-rationale-label"><Trans>AI Routing</Trans></span>
+        <span className="em-rationale-conf"><Trans>{confPct}% confidence</Trans></span>
       </div>
 
       <div className="em-rationale-dest">
@@ -96,7 +105,7 @@ export function RationaleCard({
             <path d="M1.2 3.2h2.4l.8-.9h4.4v5.6H1.2V3.2z" stroke="currentColor" strokeWidth="1.1" strokeLinejoin="round" />
           </svg>
         )}
-        <span>{folder?.name ?? "Unrouted"}</span>
+        <span>{folder?.name ?? i18n._(msg`Unrouted`)}</span>
       </div>
 
       {thread.isImportant && (
@@ -104,13 +113,13 @@ export function RationaleCard({
           <svg width="11" height="11" viewBox="0 0 14 14" fill="none" aria-hidden>
             <path d="M7 1.5l1.7 3.5 3.8.55-2.75 2.68.65 3.77L7 10.1l-3.42 1.9.65-3.77L1.5 5.55 5.3 5z" fill="currentColor" />
           </svg>
-          Gmail marked as important
+          <Trans>Gmail marked as important</Trans>
         </div>
       )}
 
       {isEmbeddingExplanation(decisionSource, thread.reasoning) ? (
         <div className="em-rationale-reason em-rationale-reason--muted">
-          Sorted automatically by content similarity.
+          <Trans>Sorted automatically by content similarity.</Trans>
         </div>
       ) : thread.reasoning ? (
         <div className="em-rationale-reason">{thread.reasoning}</div>
@@ -118,8 +127,9 @@ export function RationaleCard({
 
       {altFolder && thread.alternativeFolder && (
         <div className="em-rationale-alt">
-          Runner-up: <strong>{altFolder.name}</strong>{" "}
-          ({Math.round(thread.alternativeFolder.weight * 100)}%)
+          <Trans>
+            Runner-up: <strong>{altFolder.name}</strong> ({Math.round(thread.alternativeFolder.weight * 100)}%)
+          </Trans>
         </div>
       )}
 
@@ -129,7 +139,7 @@ export function RationaleCard({
             <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden style={{ verticalAlign: -1, marginRight: 4 }}>
               <path d="M1.5 5l2.2 2.5L8.5 2" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
-            Approve routing
+            <Trans>Approve routing</Trans>
           </button>
         )}
         {onReroute && (
@@ -138,7 +148,7 @@ export function RationaleCard({
             className="em-btn-secondary"
             onClick={(e) => onReroute(e.currentTarget)}
           >
-            Move to…
+            <Trans>Move to…</Trans>
           </button>
         )}
       </div>

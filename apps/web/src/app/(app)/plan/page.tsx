@@ -1,9 +1,12 @@
 import { requireUser, getUserWorkspaceRole } from "@/lib/session";
 import { getSelectedWorkspace } from "@/lib/workspace";
 import { apiFor, type TaxonomyNode, type TaxonomyEdge } from "@/lib/api";
+import { Trans } from "@lingui/react/macro";
+import { initServerI18n } from "@/lib/i18n-server";
 import { TaxonomyClient } from "./TaxonomyClient";
 
 export default async function TaxonomyPage() {
+  await initServerI18n();
   const user = await requireUser();
   const workspace = await getSelectedWorkspace(user.id);
 
@@ -37,7 +40,7 @@ export default async function TaxonomyPage() {
   return (
     <div className="taxonomy-shell">
       <div className="taxonomy-page-header">
-        <h1>Taxonomy</h1>
+        <h1><Trans>Plan</Trans></h1>
         {error && <div className="error-box">{error}</div>}
       </div>
       {!error && (

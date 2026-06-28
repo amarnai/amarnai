@@ -5,6 +5,7 @@ import { API_BASE_URL } from '../config';
 import { readUserIdFromAccessToken } from './jwt';
 import { secureTokenStore, type StoredTokens } from './tokenStore';
 import { makeMobileTransport } from './transport';
+import { resolveDeviceLocale } from '../i18n/LinguiProvider';
 import { requestGoogleAuth } from './googleAuth';
 import { confirmCheckout } from '../billing/api';
 import { getPendingCheckout, clearPendingCheckout } from '../billing/pendingCheckout';
@@ -34,6 +35,9 @@ interface SessionValue {
   // null until /auth/me resolves (or if it fails): treat null as "unknown" and
   // do not gate on it. false means the account exists but is not yet verified.
   emailVerified: boolean | null;
+  // Active workspace's language (UI + taxonomy). Follows the selected workspace;
+  // null until the workspace list resolves, so callers fall back to device locale.
+  locale: string | null;
   workspaceId: string | null;
   workspaces: Workspace[];
   // Bumped to force triage (folders + threads) to re-seed when the active
@@ -134,6 +138,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
           baseUrl: API_BASE_URL,
           tokenStore: secureTokenStore,
           onAuthFailure: () => signOutLocal.current(),
+          acceptLanguage: resolveDeviceLocale(),
         }),
       ),
     [],
@@ -297,12 +302,17 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     signOutLocal.current();
   }, []);
 
+  // The active workspace drives the language (UI + taxonomy). null when no
+  // workspace is selected yet, so SessionLocaleProvider falls back to device locale.
+  const locale = workspaces.find((ws) => ws.id === workspaceId)?.locale ?? null;
+
   const value = useMemo<SessionValue>(
     () => ({
       status,
       userId,
       user,
       emailVerified,
+      locale,
       workspaceId,
       workspaces,
       dataVersion,
@@ -322,6 +332,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       userId,
       user,
       emailVerified,
+      locale,
       workspaceId,
       workspaces,
       dataVersion,

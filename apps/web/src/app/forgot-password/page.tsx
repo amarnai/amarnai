@@ -2,20 +2,24 @@
 
 import { useActionState } from "react";
 import Link from "next/link";
+import { Trans } from "@lingui/react/macro";
+import { useLingui } from "@lingui/react";
+import { msg } from "@lingui/core/macro";
 import { forgotPasswordAction } from "@/actions/auth";
 import { AuthShell } from "@/components/AuthShell";
 
 export default function ForgotPasswordPage() {
+  const { _ } = useLingui();
   const [state, action, pending] = useActionState(forgotPasswordAction, null);
 
   return (
     <AuthShell
-      title="Reset password"
-      subtitle="Enter your email and we'll send you a reset link."
+      title={_( msg`Reset password`)}
+      subtitle={_( msg`Enter your email and we'll send you a reset link.`)}
     >
       {state?.success ? (
         <p className="auth-success">
-          If an account exists for that email, a reset link is on its way.
+          <Trans>If an account exists for that email, a reset link is on its way.</Trans>
         </p>
       ) : (
         <form action={action} className="auth-form">
@@ -23,7 +27,7 @@ export default function ForgotPasswordPage() {
 
           <div className="form-group">
             <label className="form-label" htmlFor="email">
-              Email
+              <Trans>Email</Trans>
             </label>
             <input
               id="email"
@@ -36,14 +40,14 @@ export default function ForgotPasswordPage() {
           </div>
 
           <button type="submit" disabled={pending} className="btn-primary auth-submit">
-            {pending ? "Sending…" : "Send reset link"}
+            {pending ? _( msg`Sending…`) : _( msg`Send reset link`)}
           </button>
         </form>
       )}
 
       <p className="auth-switch">
         <Link href="/sign-in" className="auth-link">
-          Back to sign in
+          <Trans>Back to sign in</Trans>
         </Link>
       </p>
     </AuthShell>

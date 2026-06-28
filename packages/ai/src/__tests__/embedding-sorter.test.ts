@@ -398,6 +398,64 @@ describe("embedding sorter — poor taxonomy fit routes to Inbox review", () => 
   });
 });
 
+// ─── Scenario 4b: Catch-all routing is localization-independent ────────────────
+//
+// The catch-all ("Updates / Other") is identified structurally by `isCatchAll`,
+// never by its name. Workspaces localize node names, so a name-based check would
+// silently break routing in non-English locales. This pins the guarantee: even
+// when the thread is a perfect semantic match for a catch-all whose name has been
+// translated, the sorter still excludes it from competition by the flag alone.
+
+describe("embedding sorter — localized catch-all is excluded by flag, not name", () => {
+  const messages = [msg("Notification", "Automated service update digest")];
+
+  // Catch-all with a non-English (French) name — routing must not depend on it.
+  const LOC_CATCH_ALL: TaxonomyNodeInput = {
+    ...n("updates_other", "Mises à jour / Autres", "Notifications automatisées et mises à jour de service."),
+    isCatchAll: true,
+  };
+  const LOC_INBOX = n("loc-inbox", "Boîte de réception", null, true);
+  const LOC_WORK = n("loc-work", "Travail", "Work projects, tasks, and deliverables");
+
+  const LOC_NODES = [LOC_INBOX, LOC_WORK, LOC_CATCH_ALL];
+  const LOC_EDGES = [
+    e("le-inbox-work", "loc-inbox", "loc-work"),
+    e("le-inbox-other", "loc-inbox", "updates_other"),
+  ];
+
+  // 2-D one-hot: Work=[1,0], catch-all=[0,1]. The thread vector points at the
+  // catch-all, so a name-blind-but-flag-aware sorter must still refuse to file
+  // there and fall back to Inbox review instead.
+  const table = buildTable(
+    [
+      { node: LOC_WORK, vec: [1, 0] },
+      { node: LOC_CATCH_ALL, vec: [0, 1] },
+    ],
+    messages,
+    [0, 1],
+    LOC_NODES,
+    LOC_EDGES
+  );
+
+  const embeddingProvider = makeMockEmbeddingProvider(table);
+  const llmProvider = makeMockLlmProvider("{}");
+
+  it("never routes to the catch-all even when it is the best semantic match", async () => {
+    const result = await sortThreadByEmbedding(
+      embeddingProvider,
+      llmProvider,
+      LOC_NODES,
+      LOC_EDGES,
+      messages
+    );
+    expect(result.finalNodeId).not.toBe("updates_other");
+    // Excluded from competition → no routable match → Inbox review.
+    expect(result.finalNodeId).toBeNull();
+    expect(result.needsHumanReview).toBe(true);
+    expect(result.decisionSource).toBe("inbox_fallback");
+  });
+});
+
 // ─── Scenario 5: Rival root branches trigger LLM ─────────────────────────────
 
 describe("embedding sorter — rival root branches trigger LLM resolver", () => {

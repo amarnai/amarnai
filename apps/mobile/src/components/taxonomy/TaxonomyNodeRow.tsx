@@ -1,5 +1,8 @@
 import { Ionicons } from '@expo/vector-icons';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Trans } from '@lingui/react/macro';
+import { useLingui } from '@lingui/react';
+import { msg } from '@lingui/core/macro';
 import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
 import { NavIcon } from '../NavIcon';
 import type { TaxonomyTreeRow } from '../../taxonomy/buildTree';
@@ -17,6 +20,7 @@ const INDENT_STEP = space.xl;
 
 export function TaxonomyNodeRow({ row, collapsed, flat, onToggle, onPress }: TaxonomyNodeRowProps) {
   const { node, depth, hasChildren, ignored } = row;
+  const { _ } = useLingui();
   const indent = flat ? 0 : depth * INDENT_STEP;
 
   return (
@@ -35,7 +39,7 @@ export function TaxonomyNodeRow({ row, collapsed, flat, onToggle, onPress }: Tax
       )}
 
       <Text style={[styles.name, node.isRoot && styles.nameRoot]} numberOfLines={1}>
-        {node.name}
+        {node.isRoot ? _(msg`Inbox`) : node.name}
       </Text>
 
       {node.isRoot ? (
@@ -44,7 +48,9 @@ export function TaxonomyNodeRow({ row, collapsed, flat, onToggle, onPress }: Tax
         </View>
       ) : ignored ? (
         <View style={[styles.tag, styles.tagIgnored]}>
-          <Text style={[styles.tagText, styles.tagIgnoredText]}>Ignored</Text>
+          <Text style={[styles.tagText, styles.tagIgnoredText]}>
+            <Trans>Ignored</Trans>
+          </Text>
         </View>
       ) : null}
 

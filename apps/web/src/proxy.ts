@@ -1,5 +1,22 @@
 import { auth } from "@/auth";
 import { NextResponse } from "next/server";
+import { matchLocale, isSupportedLocale } from "@amarnai/i18n";
+
+const LOCALE_COOKIE = "amarnai_locale";
+
+function resolveLocale(req: Parameters<Parameters<typeof auth>[0]>[0]): string {
+  // Explicit cookie override (manual switcher or prior detection) wins.
+  const cookieLocale = req.cookies.get(LOCALE_COOKIE)?.value;
+  if (cookieLocale && isSupportedLocale(cookieLocale)) return cookieLocale;
+
+  // Fall back to browser preference.
+  const acceptLanguage = req.headers.get("accept-language") ?? "";
+  const preferredLocales = acceptLanguage
+    .split(",")
+    .map((part) => part.split(";")[0]?.trim() ?? "")
+    .filter(Boolean);
+  return matchLocale(preferredLocales);
+}
 
 export default auth((req) => {
   const { pathname } = req.nextUrl;
@@ -35,7 +52,15 @@ export default auth((req) => {
     return NextResponse.redirect(new URL("/verify-email", req.url));
   }
 
-  return NextResponse.next();
+  // Propagate the resolved locale so server components and the LinguiClientProvider
+  // can read it without re-parsing the Accept-Language header. The header must be
+  // set on the forwarded *request* headers: `headers()` in a Server Component reads
+  // the incoming request, not the middleware response, so setting it on the response
+  // would leave the layout falling back to the source locale.
+  const locale = resolveLocale(req);
+  const requestHeaders = new Headers(req.headers);
+  requestHeaders.set("x-locale", locale);
+  return NextResponse.next({ request: { headers: requestHeaders } });
 });
 
 export const config = {

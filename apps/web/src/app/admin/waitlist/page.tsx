@@ -4,7 +4,9 @@ import { db } from "@amarnai/db";
 import { requireUser } from "@/lib/session";
 import { isWaitlistAdmin } from "@/lib/waitlist";
 import { toggleWaitlistInvitedAction } from "@/actions/waitlist";
-import { AuthShell } from "@/components/AuthShell";
+import { Trans } from "@lingui/react/macro";
+import { initServerI18n } from "@/lib/i18n-server";
+import { WaitlistShell } from "./WaitlistShell";
 
 type Entry = { id: string; email: string; createdAt: Date; invitedAt: Date | null };
 
@@ -21,7 +23,7 @@ function EntryRow({ entry }: { entry: Entry }) {
       <form action={toggleWaitlistInvitedAction}>
         <input type="hidden" name="id" value={entry.id} />
         <button type="submit" className="btn-ghost btn-sm">
-          {entry.invitedAt ? "Undo" : "Mark invited"}
+          {entry.invitedAt ? <Trans>Undo</Trans> : <Trans>Mark invited</Trans>}
         </button>
       </form>
     </li>
@@ -39,6 +41,7 @@ function EntryList({ entries }: { entries: Entry[] }) {
 }
 
 export default async function AdminWaitlistPage() {
+  await initServerI18n();
   const user = await requireUser();
   if (!isWaitlistAdmin(user.email)) notFound();
 
@@ -47,30 +50,30 @@ export default async function AdminWaitlistPage() {
   const invited = entries.filter((e) => e.invitedAt);
 
   return (
-    <AuthShell title="Waitlist" subtitle={`${pending.length} pending · ${invited.length} invited`}>
+    <WaitlistShell pendingCount={pending.length} invitedCount={invited.length}>
       <Link href="/emails" className="btn-ghost btn-sm" style={{ alignSelf: "flex-start" }}>
-        ← Back
+        <Trans>← Back</Trans>
       </Link>
       {entries.length === 0 ? (
-        <p className="auth-hint">No signups yet.</p>
+        <p className="auth-hint"><Trans>No signups yet.</Trans></p>
       ) : (
         <>
           {pending.length > 0 && (
             <>
-              <h2 className="form-label">Pending</h2>
+              <h2 className="form-label"><Trans>Pending</Trans></h2>
               <EntryList entries={pending} />
             </>
           )}
           {invited.length > 0 && (
             <>
               <h2 className="form-label" style={{ marginTop: "1.5rem" }}>
-                Invited
+                <Trans>Invited</Trans>
               </h2>
               <EntryList entries={invited} />
             </>
           )}
         </>
       )}
-    </AuthShell>
+    </WaitlistShell>
   );
 }

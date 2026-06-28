@@ -4,11 +4,41 @@ import { z } from "zod";
 
 const HTML_TAG_RE = /<[a-zA-Z][^>]*>/;
 
+const CJK_CHAR_RE =
+  /[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}]/gu;
+
+/**
+ * True when most of a string's non-whitespace characters are CJK
+ * (Chinese/Japanese/Korean). Length floors meant for space-delimited Latin
+ * scripts are too high for these scripts — natural folder names are often two
+ * ideographs and a single sentence carries far more meaning per character — so
+ * the name/description minimums are relaxed when this is true.
+ */
+export function isPredominantlyCJK(value: string): boolean {
+  const nonSpace = value.replace(/\s/g, "");
+  if (nonSpace.length === 0) return false;
+  const cjk = nonSpace.match(CJK_CHAR_RE)?.length ?? 0;
+  return cjk / nonSpace.length > 0.5;
+}
+
+/** Minimum trimmed character count for a folder name, by script. */
+export function minNodeNameLength(value: string): number {
+  return isPredominantlyCJK(value) ? 2 : 3;
+}
+
+/** Minimum non-whitespace character count for a description, by script. */
+export function minNodeDescriptionLength(value: string): number {
+  return isPredominantlyCJK(value) ? 12 : 30;
+}
+
 export const nodeNameSchema = z
   .string()
   .trim()
-  .min(3, "Name must be at least 3 characters")
   .max(40, "Name must be at most 40 characters")
+  .refine(
+    (v) => v.length >= minNodeNameLength(v),
+    "Name must be at least 3 characters (2 for Chinese/Japanese)"
+  )
   .refine(
     (v) => /[\p{L}\p{N}]/u.test(v),
     "Name must contain at least one letter or digit"
@@ -21,8 +51,8 @@ export const nodeDescriptionSchema = z
   .trim()
   .max(300, "Description must be at most 300 characters")
   .refine(
-    (v) => v.replace(/\s/g, "").length >= 30,
-    "Description must have at least 30 non-whitespace characters. Descriptions improve AI sorting quality."
+    (v) => v.replace(/\s/g, "").length >= minNodeDescriptionLength(v),
+    "Description must have at least 30 non-whitespace characters (12 for Chinese/Japanese). Descriptions improve AI sorting quality."
   )
   .refine(
     (v) => !HTML_TAG_RE.test(v),

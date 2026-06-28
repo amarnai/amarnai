@@ -1,5 +1,8 @@
 "use client";
 
+import { Trans } from "@lingui/react/macro";
+import { useLingui } from "@lingui/react";
+import { msg } from "@lingui/core/macro";
 import type { FolderItem } from "../folder-tree/types.js";
 import { FolderTree } from "../folder-tree/FolderTree.js";
 import type { ActiveSelection, ThreadItem, SyncInfo, QueueId } from "./types.js";
@@ -39,6 +42,7 @@ export function EmailRail({
   onNewFolder,
   upgradeHref,
 }: EmailRailProps) {
+  const { i18n } = useLingui();
 
   const folderCounts = buildFolderCounts(threads, folders);
   const activeId = active.kind === "folder" ? active.id : null;
@@ -47,12 +51,12 @@ export function EmailRail({
     <aside className="em-rail">
       <div className="em-rail-head">
         <div className="em-rail-head-top">
-          <h2>Mail</h2>
+          <h2><Trans>Mail</Trans></h2>
           {syncInfo?.pushEnabled && (
-            <Tooltip content="Gmail live sync active" placement="bottom">
+            <Tooltip content={i18n._(msg`Gmail live sync active`)} placement="bottom">
               <div className="em-sync-chip">
                 <span className="em-sync-dot" />
-                <span>Live</span>
+                <span><Trans>Live</Trans></span>
               </div>
             </Tooltip>
           )}
@@ -65,17 +69,17 @@ export function EmailRail({
           </svg>
           <input
             type="text"
-            placeholder="Filter queues & folders…"
+            placeholder={i18n._(msg`Filter queues & folders…`)}
             value={railQuery}
             onChange={(e) => onRailQueryChange(e.target.value)}
-            aria-label="Filter rail"
+            aria-label={i18n._(msg`Filter rail`)}
           />
         </div>
       </div>
 
       <div className="em-rail-scroll">
         <div className="em-section-label">
-          <span>Triage</span>
+          <span><Trans>Triage</Trans></span>
         </div>
 
         <QueueList
@@ -88,14 +92,14 @@ export function EmailRail({
         />
 
         <div className="em-section-label">
-          <span>Folders</span>
+          <span><Trans>Folders</Trans></span>
           {onNewFolder && (
-            <Tooltip content="New folder">
+            <Tooltip content={i18n._(msg`New folder`)}>
               <button
                 type="button"
                 className="em-add-btn"
                 onClick={onNewFolder}
-                aria-label="New folder"
+                aria-label={i18n._(msg`New folder`)}
               >
                 <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden>
                   <path d="M5 1.5v7M1.5 5h7" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />

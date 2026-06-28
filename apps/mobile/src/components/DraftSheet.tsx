@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { Linking, ScrollView, Share, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { Trans } from '@lingui/react/macro';
+import { useLingui } from '@lingui/react';
+import { msg } from '@lingui/core/macro';
 import { colors, fontSize, fontWeight, radii, space } from '@amarnai/tokens';
 import type { Draft, QuotaInfo } from '@amarnai/api-client';
 import { formatQuotaResetDate } from '@amarnai/shared';
@@ -27,11 +30,14 @@ export function DraftSheet({
   onRegenerate,
   onCopied,
 }: DraftSheetProps) {
+  const { i18n } = useLingui();
   const [shared, setShared] = useState(false);
 
   const isSent = draft.status === 'SENT';
   const quotaExhausted = quota != null && quota.used >= quota.limit;
   const resetDate = quota ? formatQuotaResetDate(quota.resetsAt) : null;
+  const remaining = quota ? quota.limit - quota.used : 0;
+  const limit = quota?.limit ?? 0;
 
   async function handleShare() {
     try {
@@ -54,7 +60,7 @@ export function DraftSheet({
   }
 
   return (
-    <SheetLayout visible={visible} onClose={onClose} title="Draft reply" handle>
+    <SheetLayout visible={visible} onClose={onClose} title={i18n._(msg`Draft reply`)} handle>
       <ScrollView
         style={styles.scroll}
         contentContainerStyle={styles.scrollContent}
@@ -78,7 +84,7 @@ export function DraftSheet({
               color={colors.bg}
             />
             <Text style={[styles.actionBtnText, styles.actionBtnTextPrimary]}>
-              {shared ? 'Shared' : 'Share / Copy'}
+              {shared ? <Trans>Shared</Trans> : <Trans>Share / Copy</Trans>}
             </Text>
           </TouchableOpacity>
 
@@ -88,7 +94,7 @@ export function DraftSheet({
             activeOpacity={0.75}
           >
             <Ionicons name="mail-outline" size={16} color={colors.ink2} />
-            <Text style={styles.actionBtnText}>Open in Gmail</Text>
+            <Text style={styles.actionBtnText}><Trans>Open in Gmail</Trans></Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -102,7 +108,7 @@ export function DraftSheet({
               color={colors.ink2}
             />
             <Text style={styles.actionBtnText}>
-              {isSent ? 'Mark as unsent' : 'Mark as sent'}
+              {isSent ? <Trans>Mark as unsent</Trans> : <Trans>Mark as sent</Trans>}
             </Text>
           </TouchableOpacity>
 
@@ -118,16 +124,18 @@ export function DraftSheet({
               color={quotaExhausted ? colors.ink5 : colors.ink2}
             />
             <Text style={[styles.actionBtnText, quotaExhausted && styles.actionBtnTextDisabled]}>
-              Regenerate
+              <Trans>Regenerate</Trans>
             </Text>
           </TouchableOpacity>
         </View>
 
         {quota != null && (
           <Text style={[styles.quota, quotaExhausted && styles.quotaExhausted]}>
-            {quotaExhausted
-              ? `No drafts remaining · resets ${resetDate}`
-              : `${quota.limit - quota.used} of ${quota.limit} remaining · resets ${resetDate}`}
+            {quotaExhausted ? (
+              <Trans>No drafts remaining · resets {resetDate}</Trans>
+            ) : (
+              <Trans>{remaining} of {limit} remaining · resets {resetDate}</Trans>
+            )}
           </Text>
         )}
       </ScrollView>

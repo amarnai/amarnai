@@ -1,6 +1,9 @@
 "use client";
 
 import { useState, useTransition, useRef } from "react";
+import { Trans } from "@lingui/react/macro";
+import { useLingui } from "@lingui/react";
+import { msg } from "@lingui/core/macro";
 
 const API_BASE =
   typeof window !== "undefined"
@@ -17,6 +20,7 @@ function isValidEmail(value: string): boolean {
 }
 
 export function EmailBlacklistSection({ workspaceId, initialEmails }: Props) {
+  const { _ } = useLingui();
   const [emails, setEmails] = useState<string[]>(initialEmails);
   const [input, setInput] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -26,11 +30,11 @@ export function EmailBlacklistSection({ workspaceId, initialEmails }: Props) {
   function handleAdd() {
     const email = input.trim().toLowerCase();
     if (!isValidEmail(email)) {
-      setError("Enter a valid email address.");
+      setError(_(msg`Enter a valid email address.`));
       return;
     }
     if (emails.includes(email)) {
-      setError("Already in the list.");
+      setError(_(msg`Already in the list.`));
       return;
     }
     setError(null);
@@ -52,7 +56,7 @@ export function EmailBlacklistSection({ workspaceId, initialEmails }: Props) {
         setEmails(updated.blacklistedSenderEmails);
       } catch {
         setEmails((prev) => prev.filter((e) => e !== email));
-        setError("Could not add email. Please try again.");
+        setError(_(msg`Could not add email. Please try again.`));
       }
     });
 
@@ -87,14 +91,16 @@ export function EmailBlacklistSection({ workspaceId, initialEmails }: Props) {
   return (
     <details className="settings-section settings-collapsible">
       <summary className="settings-collapsible-summary">
-        <h2>Sender Blacklist</h2>
+        <h2><Trans>Sender Blacklist</Trans></h2>
         {emails.length > 0 && (
           <span className="settings-collapsible-count">{emails.length}</span>
         )}
       </summary>
 
       <p className="settings-hint">
-        Threads from these senders will never be imported or sorted by Amarnai.
+        <Trans>
+          Threads from these senders will never be imported or sorted by Amarnai.
+        </Trans>
       </p>
 
       <div className="blacklist-input-row">
@@ -107,7 +113,7 @@ export function EmailBlacklistSection({ workspaceId, initialEmails }: Props) {
           onChange={(e) => { setInput(e.target.value); setError(null); }}
           onKeyDown={handleKeyDown}
           disabled={isPending}
-          aria-label="Email address to blacklist"
+          aria-label={_(msg`Email address to blacklist`)}
         />
         <button
           className="btn-secondary"
@@ -115,7 +121,7 @@ export function EmailBlacklistSection({ workspaceId, initialEmails }: Props) {
           onClick={handleAdd}
           disabled={isPending || input.trim() === ""}
         >
-          Add
+          <Trans>Add</Trans>
         </button>
       </div>
 
@@ -131,7 +137,7 @@ export function EmailBlacklistSection({ workspaceId, initialEmails }: Props) {
                 type="button"
                 onClick={() => handleRemove(email)}
                 disabled={isPending}
-                aria-label={`Remove ${email} from blacklist`}
+                aria-label={_(msg`Remove ${email} from blacklist`)}
               >
                 ×
               </button>

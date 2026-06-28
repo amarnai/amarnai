@@ -3,8 +3,6 @@ name: CI
 on:
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
 
 permissions:
   contents: read
@@ -22,7 +20,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile
@@ -40,7 +38,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile
@@ -59,7 +57,6 @@ jobs:
   parity-check:
     name: Web/Mobile parity
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -67,14 +64,14 @@ jobs:
 
       - name: Warn on web-only user-facing changes
         env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
-          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          BASE_SHA: ${{ github.event.before }}
+          HEAD_SHA: ${{ github.event.after }}
         run: |
           changed=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA")
           touched_web=$(echo "$changed" | grep -E '^(apps/web|packages/ui)/' || true)
           touched_mobile=$(echo "$changed" | grep -E '^apps/mobile/' || true)
           if [[ -n "$touched_web" && -z "$touched_mobile" ]]; then
-            echo "::warning title=Platform parity::This PR changes apps/web or packages/ui but not apps/mobile. If the change is user-facing, mirror it in the mobile app or record the gap in docs/platform-parity.md."
+            echo "::warning title=Platform parity::This push changes apps/web or packages/ui but not apps/mobile. If the change is user-facing, mirror it in the mobile app or record the gap in docs/platform-parity.md."
             echo "Web/UI files changed without a matching mobile change:"
             echo "$touched_web"
           else
@@ -94,7 +91,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile

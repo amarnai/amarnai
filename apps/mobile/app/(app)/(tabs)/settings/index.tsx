@@ -9,6 +9,10 @@ import {
   View,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { Trans } from '@lingui/react/macro';
+import { msg, plural } from '@lingui/core/macro';
+import { useLingui } from '@lingui/react';
+import type { MessageDescriptor } from '@lingui/core';
 import { colors, space, fontSize, fontWeight, radii } from '@amarnai/tokens';
 import type { GmailConnection, GmailSyncSettings, SyncStatus } from '@amarnai/api-client';
 import { useSession } from '../../../../src/auth/session';
@@ -24,17 +28,20 @@ import { GmailSettingsSheet } from '../../../../src/components/GmailSettingsShee
 import { SyncFiltersSheet } from '../../../../src/components/SyncFiltersSheet';
 import { BlacklistSheet } from '../../../../src/components/BlacklistSheet';
 import { RenameWorkspaceSheet } from '../../../../src/components/RenameWorkspaceSheet';
+import { WorkspaceLanguageSheet } from '../../../../src/components/WorkspaceLanguageSheet';
 import { CollaboratorsSheet } from '../../../../src/components/CollaboratorsSheet';
 import { toUserMessage } from '../../../../src/errors';
+import { LOCALE_DISPLAY_NAMES, isSupportedLocale } from '@amarnai/i18n';
 
-const PLAN_LABEL: Record<string, string> = {
-  FREE: 'Free',
-  PRO: 'Pro',
-  BUSINESS: 'Business',
+const PLAN_LABEL: Record<string, MessageDescriptor> = {
+  FREE: msg`Free`,
+  PRO: msg`Pro`,
+  BUSINESS: msg`Business`,
 };
 
 export default function SettingsScreen() {
   const router = useRouter();
+  const { i18n } = useLingui();
   const { user, userId, workspaceId, workspaces, client, switchWorkspace, refreshWorkspaces, bumpDataVersion } =
     useSession();
   const [pickerOpen, setPickerOpen] = useState(false);
@@ -89,33 +96,42 @@ export default function SettingsScreen() {
   const gmailSummary = gmailLoading
     ? '…'
     : !gmailConnection
-      ? 'Not connected'
+      ? i18n._(msg`Not connected`)
       : gmailConnection.status === 'DISCONNECTED'
-        ? 'Disconnected'
+        ? i18n._(msg`Disconnected`)
         : gmailConnection.gmailAddress;
   const blacklistCount = syncSettings?.blacklistedSenderEmails.length ?? 0;
   const blacklistSummary = gmailLoading
     ? '…'
     : blacklistCount === 0
-      ? 'None'
-      : `${blacklistCount} blocked`;
+      ? i18n._(msg`None`)
+      : i18n._(msg`${plural(blacklistCount, { one: '# blocked', other: '# blocked' })}`);
   const enabledFilters = [
-    syncSettings?.includeSpam ? 'Spam' : null,
-    syncSettings?.includePromotions ? 'Promotions' : null,
+    syncSettings?.includeSpam ? i18n._(msg`Spam`) : null,
+    syncSettings?.includePromotions ? i18n._(msg`Promotions`) : null,
   ].filter(Boolean);
   const syncFiltersSummary = gmailLoading
     ? '…'
     : enabledFilters.length > 0
       ? enabledFilters.join(', ')
-      : 'Default';
-  const planLabel = activeWorkspace
-    ? PLAN_LABEL[activeWorkspace.plan] ?? activeWorkspace.plan
-    : '';
+      : i18n._(msg`Default`);
+  const planDescriptor = activeWorkspace ? PLAN_LABEL[activeWorkspace.plan] : undefined;
+  const planLabel = planDescriptor
+    ? i18n._(planDescriptor)
+    : activeWorkspace?.plan ?? '';
   const members = activeWorkspace?.members ?? [];
-  const collaboratorsSummary = members.length <= 1 ? 'Just you' : `${members.length} people`;
+  const collaboratorsSummary =
+    members.length <= 1
+      ? i18n._(msg`Just you`)
+      : i18n._(msg`${plural(members.length, { one: '# person', other: '# people' })}`);
 
-  // ── Rename ────────────────────────────────────────────────────────────────
+  // ── Rename / Language ───────────────────────────────────────────────────────
   const [renameSheetOpen, setRenameSheetOpen] = useState(false);
+  const [languageSheetOpen, setLanguageSheetOpen] = useState(false);
+  const workspaceLocale = activeWorkspace?.locale ?? 'en';
+  const languageSummary = isSupportedLocale(workspaceLocale)
+    ? LOCALE_DISPLAY_NAMES[workspaceLocale]
+    : workspaceLocale;
 
   // ── Reset / Delete ──────────────────────────────────────────────────────────
   const [busy, setBusy] = useState(false);
@@ -123,12 +139,12 @@ export default function SettingsScreen() {
   const confirmReset = () => {
     if (!workspaceId) return;
     Alert.alert(
-      'Reset workspace?',
-      'This removes the Gmail connection, deletes all synced emails, and resets the plan to Inbox only. The workspace is kept. This cannot be undone.',
+      i18n._(msg`Reset workspace?`),
+      i18n._(msg`This removes the Gmail connection, deletes all synced emails, and resets the plan to Inbox only. The workspace is kept. This cannot be undone.`),
       [
-        { text: 'Cancel', style: 'cancel' },
+        { text: i18n._(msg`Cancel`), style: 'cancel' },
         {
-          text: 'Reset',
+          text: i18n._(msg`Reset`),
           style: 'destructive',
           onPress: () => {
             void (async () => {
@@ -138,7 +154,7 @@ export default function SettingsScreen() {
                 bumpDataVersion(); // remounts the app subtree to re-seed wiped data
               } catch (err) {
                 setBusy(false);
-                Alert.alert('Reset failed', toUserMessage(err, 'Could not reset workspace'));
+                Alert.alert(i18n._(msg`Reset failed`), toUserMessage(err, i18n._(msg`Could not reset workspace`)));
               }
             })();
           },
@@ -150,12 +166,12 @@ export default function SettingsScreen() {
   const confirmDelete = () => {
     if (!workspaceId) return;
     Alert.alert(
-      'Delete workspace?',
-      'Permanently delete this workspace and all of its data: emails, plan, settings, and Gmail connection. This cannot be undone.',
+      i18n._(msg`Delete workspace?`),
+      i18n._(msg`Permanently delete this workspace and all of its data: emails, plan, settings, and Gmail connection. This cannot be undone.`),
       [
-        { text: 'Cancel', style: 'cancel' },
+        { text: i18n._(msg`Cancel`), style: 'cancel' },
         {
-          text: 'Delete',
+          text: i18n._(msg`Delete`),
           style: 'destructive',
           onPress: () => {
             void (async () => {
@@ -165,7 +181,7 @@ export default function SettingsScreen() {
                 await refreshWorkspaces(); // active workspace repoints -> subtree remounts
               } catch (err) {
                 setBusy(false);
-                Alert.alert('Delete failed', toUserMessage(err, 'Could not delete workspace'));
+                Alert.alert(i18n._(msg`Delete failed`), toUserMessage(err, i18n._(msg`Could not delete workspace`)));
               }
             })();
           },
@@ -176,7 +192,7 @@ export default function SettingsScreen() {
 
   return (
     <ScreenContainer>
-      <AppHeader variant="title" title="Settings" />
+      <AppHeader variant="title" title={i18n._(msg`Settings`)} />
 
       <ScrollView contentContainerStyle={styles.content}>
         {/* Account card — entry point to the user's account screen. */}
@@ -199,14 +215,14 @@ export default function SettingsScreen() {
         </TouchableOpacity>
 
         {/* Workspace — switch, plus owner-only name and plan. */}
-        <SectionTitle>Workspace</SectionTitle>
+        <SectionTitle><Trans>Workspace</Trans></SectionTitle>
         <SettingsGroup>
           <SettingsRow onPress={() => setPickerOpen(true)}>
             <WorkspaceMark name={activeWorkspace?.name ?? '?'} size={20} />
             <Text style={[styles.linkLabel, styles.linkLabelGrow]} numberOfLines={1}>
-              {activeWorkspace?.name ?? 'No workspace'}
+              {activeWorkspace?.name ?? i18n._(msg`No workspace`)}
             </Text>
-            <Text style={styles.rowMeta}>Switch</Text>
+            <Text style={styles.rowMeta}><Trans>Switch</Trans></Text>
             <Ionicons name="chevron-forward" size={18} color={colors.ink4} />
           </SettingsRow>
 
@@ -214,23 +230,30 @@ export default function SettingsScreen() {
             <>
               <SettingsRow divider onPress={() => setRenameSheetOpen(true)}>
                 <Ionicons name="create-outline" size={20} color={colors.ink3} />
-                <Text style={styles.linkLabel}>Name</Text>
+                <Text style={styles.linkLabel}><Trans>Name</Trans></Text>
                 <Text style={styles.linkMeta} numberOfLines={1}>
                   {activeWorkspace?.name ?? ''}
                 </Text>
                 <Ionicons name="chevron-forward" size={18} color={colors.ink4} />
               </SettingsRow>
 
+              <SettingsRow divider onPress={() => setLanguageSheetOpen(true)}>
+                <Ionicons name="language-outline" size={20} color={colors.ink3} />
+                <Text style={styles.linkLabel}><Trans>Language</Trans></Text>
+                <Text style={styles.linkMeta} numberOfLines={1}>{languageSummary}</Text>
+                <Ionicons name="chevron-forward" size={18} color={colors.ink4} />
+              </SettingsRow>
+
               <SettingsRow divider onPress={() => setCollaboratorsSheetOpen(true)}>
                 <Ionicons name="people-outline" size={20} color={colors.ink3} />
-                <Text style={styles.linkLabel}>Collaborators</Text>
+                <Text style={styles.linkLabel}><Trans>Collaborators</Trans></Text>
                 <Text style={styles.linkMeta} numberOfLines={1}>{collaboratorsSummary}</Text>
                 <Ionicons name="chevron-forward" size={18} color={colors.ink4} />
               </SettingsRow>
 
               <SettingsRow divider onPress={() => router.push('/(app)/subscription')}>
                 <Ionicons name="card-outline" size={20} color={colors.ink3} />
-                <Text style={styles.linkLabel}>Subscription</Text>
+                <Text style={styles.linkLabel}><Trans>Subscription</Trans></Text>
                 <Text style={styles.linkMeta} numberOfLines={1}>{planLabel}</Text>
                 <Ionicons name="chevron-forward" size={18} color={colors.ink4} />
               </SettingsRow>
@@ -246,36 +269,36 @@ export default function SettingsScreen() {
             <SettingsGroup>
               <SettingsRow onPress={() => setGmailSheetOpen(true)} disabled={gmailLoading}>
                 <Ionicons name="mail-outline" size={20} color={colors.ink3} />
-                <Text style={styles.linkLabel}>Inbox</Text>
+                <Text style={styles.linkLabel}><Trans>Inbox</Trans></Text>
                 <Text style={styles.linkMeta} numberOfLines={1}>{gmailSummary}</Text>
                 <Ionicons name="chevron-forward" size={18} color={colors.ink4} />
               </SettingsRow>
 
               <SettingsRow divider onPress={() => setSyncFiltersSheetOpen(true)} disabled={gmailLoading}>
                 <Ionicons name="options-outline" size={20} color={colors.ink3} />
-                <Text style={styles.linkLabel}>Sync filters</Text>
+                <Text style={styles.linkLabel}><Trans>Sync filters</Trans></Text>
                 <Text style={styles.linkMeta} numberOfLines={1}>{syncFiltersSummary}</Text>
                 <Ionicons name="chevron-forward" size={18} color={colors.ink4} />
               </SettingsRow>
 
               <SettingsRow divider onPress={() => setBlacklistSheetOpen(true)} disabled={gmailLoading}>
                 <Ionicons name="ban-outline" size={20} color={colors.ink3} />
-                <Text style={styles.linkLabel}>Sender blacklist</Text>
+                <Text style={styles.linkLabel}><Trans>Sender blacklist</Trans></Text>
                 <Text style={styles.linkMeta} numberOfLines={1}>{blacklistSummary}</Text>
                 <Ionicons name="chevron-forward" size={18} color={colors.ink4} />
               </SettingsRow>
             </SettingsGroup>
 
-            <SectionTitle danger>Danger zone</SectionTitle>
+            <SectionTitle danger><Trans>Danger zone</Trans></SectionTitle>
             <SettingsGroup>
               <SettingsRow onPress={confirmReset} disabled={busy}>
                 <Ionicons name="refresh-outline" size={20} color={colors.danger} />
-                <Text style={[styles.linkLabel, styles.linkLabelGrow, styles.dangerLabel]}>Reset workspace</Text>
+                <Text style={[styles.linkLabel, styles.linkLabelGrow, styles.dangerLabel]}><Trans>Reset workspace</Trans></Text>
                 <Ionicons name="chevron-forward" size={18} color={colors.danger} />
               </SettingsRow>
               <SettingsRow divider onPress={confirmDelete} disabled={busy}>
                 <Ionicons name="trash-outline" size={20} color={colors.danger} />
-                <Text style={[styles.linkLabel, styles.linkLabelGrow, styles.dangerLabel]}>Delete workspace</Text>
+                <Text style={[styles.linkLabel, styles.linkLabelGrow, styles.dangerLabel]}><Trans>Delete workspace</Trans></Text>
                 <Ionicons name="chevron-forward" size={18} color={colors.danger} />
               </SettingsRow>
             </SettingsGroup>
@@ -312,6 +335,14 @@ export default function SettingsScreen() {
             client={client}
             currentName={activeWorkspace?.name ?? ''}
             onRenamed={refreshWorkspaces}
+          />
+          <WorkspaceLanguageSheet
+            visible={languageSheetOpen}
+            onClose={() => setLanguageSheetOpen(false)}
+            workspaceId={workspaceId}
+            client={client}
+            currentLocale={workspaceLocale}
+            onChanged={refreshWorkspaces}
           />
           <GmailSettingsSheet
             visible={gmailSheetOpen}

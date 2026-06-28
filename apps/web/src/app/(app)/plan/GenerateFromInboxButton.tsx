@@ -10,6 +10,9 @@ import { generationReasonText, transferToDisplayGraph } from "@amarnai/core/taxo
 import { Tooltip } from "@amarnai/ui";
 import { ReadOnlyTaxonomyCanvas } from "@amarnai/ui/taxonomy";
 import { api } from "@/lib/api";
+import { Trans } from "@lingui/react/macro";
+import { useLingui } from "@lingui/react";
+import { msg } from "@lingui/core/macro";
 
 type Phase = "idle" | "running" | "ready" | "insufficient" | "failed" | "error";
 
@@ -49,6 +52,7 @@ export function GenerateFromInboxButton({
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
 }) {
+  const { _ } = useLingui();
   const [internalOpen, setInternalOpen] = useState(defaultOpen);
   const open = controlledOpen !== undefined ? controlledOpen : internalOpen;
   function setOpen(v: boolean) {
@@ -84,12 +88,12 @@ export function GenerateFromInboxButton({
       if (s.status !== "RUNNING") stopPolling();
       return s.status;
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to load status");
+      setError(err instanceof Error ? err.message : _(msg`Failed to load status`));
       setPhase("error");
       stopPolling();
       return null;
     }
-  }, [workspaceId, applyStatus, stopPolling]);
+  }, [workspaceId, applyStatus, stopPolling, _]);
 
   const startPolling = useCallback(() => {
     stopPolling();
@@ -136,9 +140,9 @@ export function GenerateFromInboxButton({
         }
         return;
       }
-      throw new Error(body.error ?? `API error ${res.status}`);
+      throw new Error(body.error ?? _(msg`API error ${res.status}`));
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to start generation");
+      setError(err instanceof Error ? err.message : _(msg`Failed to start generation`));
       setPhase("error");
     }
   }
@@ -151,7 +155,7 @@ export function GenerateFromInboxButton({
       await onApply(status.proposal);
       setOpen(false);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to apply");
+      setError(err instanceof Error ? err.message : _(msg`Failed to apply`));
     } finally {
       setApplying(false);
     }
@@ -185,7 +189,7 @@ export function GenerateFromInboxButton({
       className={variant === "primary" ? "btn-primary" : "btn-ghost"}
       onClick={handleButtonClick}
       disabled={disabled}
-      aria-label="Generate plan from inbox"
+      aria-label={_(msg`Generate plan from inbox`)}
     >
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
         <path
@@ -195,7 +199,7 @@ export function GenerateFromInboxButton({
           strokeLinejoin="round"
         />
       </svg>
-      Generate from inbox
+      <Trans>Generate from inbox</Trans>
     </button>
   );
 
@@ -205,8 +209,8 @@ export function GenerateFromInboxButton({
         <Tooltip
           content={
             gmailConnected
-              ? "Generate a plan from your inbox"
-              : "Connect Gmail to generate a plan from your inbox"
+              ? _(msg`Generate a plan from your inbox`)
+              : _(msg`Connect Gmail to generate a plan from your inbox`)
           }
         >
           {triggerButton}
@@ -239,8 +243,8 @@ export function GenerateFromInboxButton({
 
             <div className="modal-main-col">
               <div className="modal-header">
-                <h2 className="modal-title">Generate from inbox</h2>
-                <button className="modal-close" aria-label="Close" onClick={() => setOpen(false)}>
+                <h2 className="modal-title"><Trans>Generate from inbox</Trans></h2>
+                <button className="modal-close" aria-label={_(msg`Close`)} onClick={() => setOpen(false)}>
                   ✕
                 </button>
               </div>
@@ -250,14 +254,16 @@ export function GenerateFromInboxButton({
 
                 {status?.importing && phase !== "running" && (
                   <p className="text-muted" style={{ marginBottom: 8 }}>
-                    Your inbox is still importing. You can generate now from what&apos;s loaded so far,
-                    but regenerating once the import finishes will give a more accurate fit.
+                    <Trans>
+                      Your inbox is still importing. You can generate now from what&apos;s loaded so far,
+                      but regenerating once the import finishes will give a more accurate fit.
+                    </Trans>
                   </p>
                 )}
 
                 {phase === "running" && (
                   <p className="text-muted">
-                    Analyzing your inbox and building a plan… this can take a moment.
+                    <Trans>Analyzing your inbox and building a plan… this can take a moment.</Trans>
                   </p>
                 )}
 
@@ -269,19 +275,21 @@ export function GenerateFromInboxButton({
 
                 {phase === "failed" && (
                   <p className="text-muted">
-                    Generation didn&apos;t complete.{" "}
+                    <Trans>Generation didn&apos;t complete.</Trans>{" "}
                     {eligibility?.nextEligibleAt
-                      ? `You can try again after ${new Date(eligibility.nextEligibleAt).toLocaleString()}, or start from a template.`
-                      : "You can try again shortly, or start from a template."}
+                      ? _(msg`You can try again after ${new Date(eligibility.nextEligibleAt).toLocaleString()}, or start from a template.`)
+                      : _(msg`You can try again shortly, or start from a template.`)}
                   </p>
                 )}
 
                 {(phase === "idle" || phase === "error") && (
                   <>
                     <p className="text-muted" style={{ marginBottom: 8 }}>
-                      Amarnai will analyze your senders, labels, and subject keywords (never message
-                      bodies) to suggest a personalized set of folders. You can review and edit before
-                      anything is applied.
+                      <Trans>
+                        Amarnai will analyze your senders, labels, and subject keywords (never message
+                        bodies) to suggest a personalized set of folders. You can review and edit before
+                        anything is applied.
+                      </Trans>
                     </p>
                     {!canGenerate && eligibility && (
                       <p className="text-muted">{generationReasonText(eligibility.reason, eligibility.nextEligibleAt)}</p>
@@ -292,7 +300,7 @@ export function GenerateFromInboxButton({
                 {phase === "ready" && displayGraph && (
                   <div>
                     <p className="alert alert-info">
-                      Applying replaces your current plan. You can fully edit it afterward.
+                      <Trans>Applying replaces your current plan. You can fully edit it afterward.</Trans>
                     </p>
                     <div style={{ height: 520 }}>
                       <ReadOnlyTaxonomyCanvas nodes={displayGraph.nodes} edges={displayGraph.edges} />
@@ -303,7 +311,7 @@ export function GenerateFromInboxButton({
 
               <div className="modal-footer">
               <button className="btn-ghost" onClick={() => setOpen(false)} disabled={applying}>
-                {phase === "ready" ? "Discard" : "Close"}
+                {phase === "ready" ? <Trans>Discard</Trans> : <Trans>Close</Trans>}
               </button>
 
               {showUseTemplate && (
@@ -314,31 +322,31 @@ export function GenerateFromInboxButton({
                     onUseTemplates();
                   }}
                 >
-                  Use a template
+                  <Trans>Use a template</Trans>
                 </button>
               )}
 
               {phase === "ready" && (
                 <button className="btn-primary" onClick={handleApply} disabled={applying}>
-                  {applying ? "Applying…" : "Apply"}
+                  {applying ? <Trans>Applying…</Trans> : <Trans>Apply</Trans>}
                 </button>
               )}
 
               {showGenerate && (
                 <button className="btn-primary" onClick={handleGenerate}>
-                  Generate
+                  <Trans>Generate</Trans>
                 </button>
               )}
 
               {phase === "ready" && canGenerate && (
                 <button className="btn-ghost" onClick={handleGenerate} disabled={applying}>
-                  Regenerate
+                  <Trans>Regenerate</Trans>
                 </button>
               )}
 
               {phase === "running" && (
                 <button className="btn-primary" disabled>
-                  Generating…
+                  <Trans>Generating…</Trans>
                 </button>
               )}
             </div>

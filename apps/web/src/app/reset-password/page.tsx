@@ -5,20 +5,24 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Suspense } from "react";
 import { PASSWORD_MIN_LENGTH } from "@amarnai/shared";
+import { Trans } from "@lingui/react/macro";
+import { useLingui } from "@lingui/react";
+import { msg } from "@lingui/core/macro";
 import { resetPasswordAction } from "@/actions/auth";
 import { AuthShell } from "@/components/AuthShell";
 
 function ResetPasswordForm() {
+  const { _ } = useLingui();
   const token = useSearchParams().get("token") ?? "";
   const [state, action, pending] = useActionState(resetPasswordAction, null);
 
   if (state?.success) {
     return (
       <>
-        <p className="auth-success">Password updated! You can now sign in.</p>
+        <p className="auth-success"><Trans>Password updated! You can now sign in.</Trans></p>
         <p className="auth-switch">
           <Link href="/sign-in" className="auth-link">
-            Go to sign in
+            <Trans>Go to sign in</Trans>
           </Link>
         </p>
       </>
@@ -26,7 +30,7 @@ function ResetPasswordForm() {
   }
 
   if (!token) {
-    return <p className="auth-error">Invalid or missing reset link.</p>;
+    return <p className="auth-error"><Trans>Invalid or missing reset link.</Trans></p>;
   }
 
   return (
@@ -36,7 +40,7 @@ function ResetPasswordForm() {
 
       <div className="form-group">
         <label className="form-label" htmlFor="password">
-          New password
+          <Trans>New password</Trans>
         </label>
         <input
           id="password"
@@ -47,19 +51,23 @@ function ResetPasswordForm() {
           minLength={PASSWORD_MIN_LENGTH}
           className="form-input"
         />
-        <p className="auth-hint">At least {PASSWORD_MIN_LENGTH} characters</p>
+        <p className="auth-hint"><Trans>At least {PASSWORD_MIN_LENGTH} characters</Trans></p>
       </div>
 
       <button type="submit" disabled={pending} className="btn-primary auth-submit">
-        {pending ? "Updating…" : "Set new password"}
+        {pending ? _( msg`Updating…`) : _( msg`Set new password`)}
       </button>
     </form>
   );
 }
 
 export default function ResetPasswordPage() {
+  const { _ } = useLingui();
   return (
-    <AuthShell title="New password" subtitle="Choose a new password for your account.">
+    <AuthShell
+      title={_( msg`New password`)}
+      subtitle={_( msg`Choose a new password for your account.`)}
+    >
       <Suspense>
         <ResetPasswordForm />
       </Suspense>

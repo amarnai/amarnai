@@ -9,6 +9,9 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useLingui } from '@lingui/react';
+import { msg } from '@lingui/core/macro';
+import { Trans, Plural } from '@lingui/react/macro';
 import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
 import type {
   CreateTaxonomyNodeInput,
@@ -16,6 +19,7 @@ import type {
   TaxonomyNode,
 } from '@amarnai/api-client';
 import { descendantIds } from '@amarnai/core/taxonomy';
+import { minNodeNameLength, minNodeDescriptionLength } from '@amarnai/shared';
 import { BottomSheet } from '../BottomSheet';
 import { NodePickerSheet, type NodePickerOption } from './NodePickerSheet';
 import type { ParentChange } from '../../data/taxonomyQueries';
@@ -46,12 +50,6 @@ interface NodeFormSheetProps {
   onClose: () => void;
 }
 
-const NONE_OPTION: NodePickerOption = {
-  id: null,
-  label: 'None (not connected)',
-  sublabel: 'Folder will be ignored until connected',
-};
-
 // Collapsible description-writing guidance, mirroring the web NodeForm's
 // DescriptionTips disclosure.
 function DescriptionTips() {
@@ -69,28 +67,37 @@ function DescriptionTips() {
           color={colors.accent}
         />
         <Text style={styles.tipsToggleText}>
-          {open ? 'Hide tips' : 'How to write a good description'}
+          {open ? (
+            <Trans>Hide tips</Trans>
+          ) : (
+            <Trans>How to write a good description</Trans>
+          )}
         </Text>
       </TouchableOpacity>
       {open ? (
         <View style={styles.tipsBox}>
           <Text style={styles.tipsText}>
-            Describe what kinds of emails belong here: who they come from and what
-            they are about. Be specific and use the actual names, topics, and words
-            that show up in those emails. Describe what the emails are, not what you
-            plan to do about them. The clearer your description, the more accurately
-            your email is sorted here.
+            <Trans>
+              Describe what kinds of emails belong here: who they come from and
+              what they are about. Be specific and use the actual names, topics,
+              and words that show up in those emails. Describe what the emails
+              are, not what you plan to do about them. The clearer your
+              description, the more accurately your email is sorted here.
+            </Trans>
           </Text>
           <View style={styles.tipsGood}>
             <Ionicons name="checkmark-circle" size={14} color={colors.okInk} />
             <Text style={styles.tipsGoodText}>
-              Receipts, payment confirmations, and billing questions from vendors.
+              <Trans>
+                Receipts, payment confirmations, and billing questions from
+                vendors.
+              </Trans>
             </Text>
           </View>
           <View style={styles.tipsBad}>
             <Ionicons name="close-circle" size={14} color={colors.dangerInk} />
             <Text style={styles.tipsBadText}>
-              Emails about my bills that I need to deal with.
+              <Trans>Emails about my bills that I need to deal with.</Trans>
             </Text>
           </View>
         </View>
@@ -115,6 +122,7 @@ export function NodeFormSheet({
   onClose,
 }: NodeFormSheetProps) {
   const { bottom } = useSafeAreaInsets();
+  const { _ } = useLingui();
   const isRoot = node?.isRoot ?? false;
   const rootNode = useMemo(() => nodes.find((n) => n.isRoot) ?? null, [nodes]);
 
@@ -152,8 +160,11 @@ export function NodeFormSheet({
     // currentParentId derives from node/edges; node id is the stable trigger.
   }, [visible, node?.id, mode, currentParentId, defaultParentId, rootNode?.id]);
 
-  const nameValid = name.trim().length >= 3 && name.trim().length <= 40;
-  const descriptionValid = isRoot || description.replace(/\s/g, '').length >= 30;
+  const nameValid =
+    name.trim().length >= minNodeNameLength(name) && name.trim().length <= 40;
+  const minDescriptionLength = minNodeDescriptionLength(description);
+  const descriptionLength = description.replace(/\s/g, '').length;
+  const descriptionValid = isRoot || descriptionLength >= minDescriptionLength;
   const canSave = !submitting && nameValid && descriptionValid;
 
   // Parent options exclude the node itself and its descendants (cycle guard;
@@ -166,27 +177,34 @@ export function NodeFormSheet({
       .filter((n) => !excluded.has(n.id))
       .map((n) => ({
         id: n.id,
-        label: n.name,
-        ...(n.isRoot ? { sublabel: 'Inbox (entry point)' } : {}),
+        label: n.isRoot ? _(msg`Inbox`) : n.name,
+        ...(n.isRoot ? { sublabel: _(msg`Inbox (entry point)`) } : {}),
       }));
-    return [...opts, NONE_OPTION];
-  }, [nodes, edges, node]);
+    return [
+      ...opts,
+      {
+        id: null,
+        label: _(msg`None (not connected)`),
+        sublabel: _(msg`Folder will be ignored until connected`),
+      },
+    ];
+  }, [nodes, edges, node, _]);
 
   const reassignOptions = useMemo<NodePickerOption[]>(() => {
     const opts: NodePickerOption[] = nodes
       .filter((n) => !n.isRoot && n.id !== node?.id)
       .map((n) => ({ id: n.id, label: n.name }));
-    return [{ id: null, label: 'Leave unsorted' }, ...opts];
-  }, [nodes, node]);
+    return [{ id: null, label: _(msg`Leave unsorted`) }, ...opts];
+  }, [nodes, node, _]);
 
   const parentLabel =
     parentId === null
-      ? 'None (not connected)'
-      : nodes.find((n) => n.id === parentId)?.name ?? 'Unknown';
+      ? _(msg`None (not connected)`)
+      : nodes.find((n) => n.id === parentId)?.name ?? _(msg`Unknown`);
   const reassignLabel =
     reassignTargetId === null
-      ? 'Leave unsorted'
-      : nodes.find((n) => n.id === reassignTargetId)?.name ?? 'Unknown';
+      ? _(msg`Leave unsorted`)
+      : nodes.find((n) => n.id === reassignTargetId)?.name ?? _(msg`Unknown`);
 
   function handleSubmit() {
     const desc = description.trim();
@@ -224,12 +242,12 @@ export function NodeFormSheet({
           <View style={styles.header}>
             <Text style={styles.title}>
               {readOnly
-                ? 'Folder'
+                ? _(msg`Folder`)
                 : mode === 'create'
-                  ? 'New folder'
+                  ? _(msg`New folder`)
                   : isRoot
-                    ? 'Edit inbox'
-                    : 'Edit folder'}
+                    ? _(msg`Edit inbox`)
+                    : _(msg`Edit folder`)}
             </Text>
             <TouchableOpacity onPress={onClose} hitSlop={8}>
               <Ionicons name="close" size={22} color={colors.ink3} />
@@ -247,13 +265,16 @@ export function NodeFormSheet({
                 </View>
               ) : null}
 
-              <Text style={styles.label}>Name{readOnly ? '' : ' *'}</Text>
+              <Text style={styles.label}>
+                <Trans>Name</Trans>
+                {readOnly ? '' : ' *'}
+              </Text>
               <TextInput
                 style={styles.input}
                 value={name}
                 onChangeText={setName}
                 editable={!readOnly}
-                placeholder="e.g. Invoices"
+                placeholder={_(msg`e.g. Invoices`)}
                 placeholderTextColor={colors.ink4}
                 maxLength={40}
                 autoCapitalize="sentences"
@@ -261,13 +282,18 @@ export function NodeFormSheet({
 
               {!isRoot ? (
                 <>
-                  <Text style={styles.label}>Description{readOnly ? '' : ' *'}</Text>
+                  <Text style={styles.label}>
+                    <Trans>Description</Trans>
+                    {readOnly ? '' : ' *'}
+                  </Text>
                   <TextInput
                     style={[styles.input, styles.textarea]}
                     value={description}
                     onChangeText={setDescription}
                     editable={!readOnly}
-                    placeholder="Invoices, receipts, and billing questions from clients and vendors."
+                    placeholder={_(
+                      msg`Invoices, receipts, and billing questions from clients and vendors.`,
+                    )}
                     placeholderTextColor={colors.ink4}
                     maxLength={300}
                     multiline
@@ -275,8 +301,11 @@ export function NodeFormSheet({
                   {!readOnly ? (
                     <>
                       <Text style={styles.hint}>
-                        List the senders, topics, and keywords that belong here. At least 30
-                        characters. ({description.replace(/\s/g, '').length}/30)
+                        <Trans>
+                          List the senders, topics, and keywords that belong
+                          here. At least {minDescriptionLength} characters. (
+                          {descriptionLength}/{minDescriptionLength})
+                        </Trans>
                       </Text>
                       <DescriptionTips />
                     </>
@@ -286,7 +315,9 @@ export function NodeFormSheet({
 
               {!isRoot ? (
                 <>
-                  <Text style={styles.label}>Parent</Text>
+                  <Text style={styles.label}>
+                    <Trans>Parent</Trans>
+                  </Text>
                   <TouchableOpacity
                     style={styles.select}
                     onPress={() => setParentPickerOpen(true)}
@@ -295,25 +326,36 @@ export function NodeFormSheet({
                     <Text style={styles.selectText} numberOfLines={1}>
                       {parentLabel}
                     </Text>
-                    {readOnly ? null : <Text style={styles.selectChevron}>Change</Text>}
+                    {readOnly ? null : (
+                      <Text style={styles.selectChevron}>
+                        <Trans>Change</Trans>
+                      </Text>
+                    )}
                   </TouchableOpacity>
                 </>
               ) : null}
 
-              <Text style={styles.label}>Draft style guidance</Text>
+              <Text style={styles.label}>
+                <Trans>Draft style guidance</Trans>
+              </Text>
               <TextInput
                 style={[styles.input, styles.textarea]}
                 value={draftPrompt}
                 onChangeText={setDraftPrompt}
                 editable={!readOnly}
-                placeholder="e.g. Reply formally. Keep responses under 3 sentences."
+                placeholder={_(
+                  msg`e.g. Reply formally. Keep responses under 3 sentences.`,
+                )}
                 placeholderTextColor={colors.ink4}
                 maxLength={500}
                 multiline
               />
               {!readOnly ? (
                 <Text style={styles.hint}>
-                  Optional. Applied when generating draft replies for this folder.
+                  <Trans>
+                    Optional. Applied when generating draft replies for this
+                    folder.
+                  </Trans>
                 </Text>
               ) : null}
 
@@ -322,7 +364,9 @@ export function NodeFormSheet({
                   style={styles.addChild}
                   onPress={() => onAddChild(node.id)}
                 >
-                  <Text style={styles.addChildText}>+ Add folder</Text>
+                  <Text style={styles.addChildText}>
+                    <Trans>+ Add folder</Trans>
+                  </Text>
                 </TouchableOpacity>
               ) : null}
 
@@ -330,16 +374,23 @@ export function NodeFormSheet({
                 confirmingDelete ? (
                   <View style={styles.deleteBlock}>
                     <Text style={styles.deleteWarn}>
-                      Deleting leaves {node?.threadCount} thread
-                      {node?.threadCount === 1 ? '' : 's'} without this folder.
+                      <Plural
+                        value={node?.threadCount ?? 0}
+                        one="Deleting leaves # thread without this folder."
+                        other="Deleting leaves # threads without this folder."
+                      />
                     </Text>
-                    <Text style={styles.label}>Move them to</Text>
+                    <Text style={styles.label}>
+                      <Trans>Move them to</Trans>
+                    </Text>
                     <TouchableOpacity
                       style={styles.select}
                       onPress={() => setReassignPickerOpen(true)}
                     >
                       <Text style={styles.selectText}>{reassignLabel}</Text>
-                      <Text style={styles.selectChevron}>Change</Text>
+                      <Text style={styles.selectChevron}>
+                        <Trans>Change</Trans>
+                      </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                       style={[styles.btn, styles.btnDanger]}
@@ -347,7 +398,11 @@ export function NodeFormSheet({
                       disabled={submitting}
                     >
                       <Text style={styles.btnDangerText}>
-                        {submitting ? 'Deleting...' : 'Confirm delete'}
+                        {submitting ? (
+                          <Trans>Deleting...</Trans>
+                        ) : (
+                          <Trans>Confirm delete</Trans>
+                        )}
                       </Text>
                     </TouchableOpacity>
                   </View>
@@ -363,7 +418,7 @@ export function NodeFormSheet({
                         nodeHasChildren && styles.deleteLinkTextDisabled,
                       ]}
                     >
-                      Delete folder
+                      <Trans>Delete folder</Trans>
                     </Text>
                   </TouchableOpacity>
                 )
@@ -371,7 +426,7 @@ export function NodeFormSheet({
 
               {!readOnly && mode === 'edit' && nodeHasChildren ? (
                 <Text style={styles.hint}>
-                  Remove its child folders before deleting this one.
+                  <Trans>Remove its child folders before deleting this one.</Trans>
                 </Text>
               ) : null}
             </ScrollView>
@@ -384,7 +439,13 @@ export function NodeFormSheet({
                   disabled={!canSave}
                 >
                   <Text style={styles.btnPrimaryText}>
-                    {submitting ? 'Saving...' : mode === 'create' ? 'Create' : 'Save'}
+                    {submitting ? (
+                      <Trans>Saving...</Trans>
+                    ) : mode === 'create' ? (
+                      <Trans>Create</Trans>
+                    ) : (
+                      <Trans>Save</Trans>
+                    )}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -394,7 +455,7 @@ export function NodeFormSheet({
 
       <NodePickerSheet
         visible={parentPickerOpen}
-        title="Choose parent"
+        title={_(msg`Choose parent`)}
         options={parentOptions}
         selectedId={parentId}
         onSelect={(id) => {
@@ -405,7 +466,7 @@ export function NodeFormSheet({
       />
       <NodePickerSheet
         visible={reassignPickerOpen}
-        title="Move threads to"
+        title={_(msg`Move threads to`)}
         options={reassignOptions}
         selectedId={reassignTargetId}
         onSelect={(id) => {

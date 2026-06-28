@@ -12,6 +12,9 @@ export interface MobileTransportDeps {
   // Called once when a refresh fails and the session is no longer valid, so the
   // session layer can flip to signed-out and route to the sign-in screen.
   onAuthFailure?: () => void;
+  // Device locale sent as Accept-Language so the API can seed a new workspace's
+  // language from the creator's device. Optional so tests need not provide it.
+  acceptLanguage?: string;
 }
 
 function toRecord(headers: RequestInit['headers']): Record<string, string> {
@@ -25,10 +28,15 @@ function toRecord(headers: RequestInit['headers']): Record<string, string> {
 
 // Build a fetch init with the bearer token applied. `next` is a Next.js-only
 // hint the api-client may attach; strip it so it never reaches RN fetch.
-function withAuth(init: TransportInit, accessToken: string | null): RequestInit {
+function withAuth(
+  init: TransportInit,
+  accessToken: string | null,
+  acceptLanguage?: string,
+): RequestInit {
   const { next: _next, headers, ...rest } = init;
   const merged: Record<string, string> = { ...toRecord(headers) };
   if (accessToken) merged['Authorization'] = `Bearer ${accessToken}`;
+  if (acceptLanguage && !merged['Accept-Language']) merged['Accept-Language'] = acceptLanguage;
   return { ...rest, headers: merged };
 }
 
@@ -93,12 +101,12 @@ export function makeMobileTransport(deps: MobileTransportDeps): ApiTransport {
     baseUrl,
     async fetch(url, init) {
       const tokens = await tokenStore.get();
-      const res = await doFetch(url, withAuth(init, tokens?.accessToken ?? null));
+      const res = await doFetch(url, withAuth(init, tokens?.accessToken ?? null, deps.acceptLanguage));
       if (res.status !== 401) return res;
 
       const newAccess = await refreshAccess();
       if (!newAccess) return res; // refresh failed -> return the original 401
-      return doFetch(url, withAuth(init, newAccess));
+      return doFetch(url, withAuth(init, newAccess, deps.acceptLanguage));
     },
   };
 }

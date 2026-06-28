@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { Trans } from "@lingui/react/macro";
 import { api, type GmailSyncSettings } from "@/lib/api";
 import { sweepInboxAction } from "@/actions/gmail";
 
@@ -46,9 +47,9 @@ export function GmailSyncSettingsSection({ workspaceId, initialSettings }: Props
 
   return (
     <div className="settings-subsection">
-      <h3>Sync filters</h3>
+      <h3><Trans>Sync filters</Trans></h3>
       <p className="settings-hint">
-        These settings control which Gmail threads are imported. Trash is always excluded.
+        <Trans>These settings control which Gmail threads are imported. Trash is always excluded.</Trans>
       </p>
 
       <label className="settings-toggle">
@@ -58,7 +59,7 @@ export function GmailSyncSettingsSection({ workspaceId, initialSettings }: Props
           onChange={() => handleToggle("includeSpam")}
           disabled={isPending}
         />
-        Include spam
+        <Trans>Include spam</Trans>
       </label>
 
       <label className="settings-toggle">
@@ -68,7 +69,7 @@ export function GmailSyncSettingsSection({ workspaceId, initialSettings }: Props
           onChange={() => handleToggle("includePromotions")}
           disabled={isPending}
         />
-        Include Promotions
+        <Trans>Include Promotions</Trans>
       </label>
 
       <label className="settings-toggle">
@@ -78,12 +79,14 @@ export function GmailSyncSettingsSection({ workspaceId, initialSettings }: Props
           onChange={() => handleToggle("routeBulkToOther")}
           disabled={isPending}
         />
-        Auto-file notifications to Updates / Other
+        <Trans>Auto-file notifications to Updates / Other</Trans>
       </label>
       <p className="settings-hint">
-        Detected notifications, newsletters, and service updates are filed to your
-        catch-all folder without using AI. Requires the <strong>Updates / Other</strong> folder
-        from a taxonomy template.
+        <Trans>
+          Detected notifications, newsletters, and service updates are filed to your
+          catch-all folder without using AI. Requires the <strong>Updates / Other</strong> folder
+          from a taxonomy template.
+        </Trans>
       </p>
 
       <div className="rescan-row">
@@ -93,22 +96,22 @@ export function GmailSyncSettingsSection({ workspaceId, initialSettings }: Props
           disabled={isPending || rescanState === "pending" || !isDirty}
           type="button"
         >
-          {rescanState === "pending" ? "Queuing rescan…" : "Rescan inbox"}
+          {rescanState === "pending" ? <Trans>Queuing rescan…</Trans> : <Trans>Rescan inbox</Trans>}
         </button>
         {rescanState === "done" && (
           <span className="rescan-feedback rescan-feedback-ok">
-            Rescan queued — threads will update shortly.
+            <Trans>Rescan queued: threads will update shortly.</Trans>
           </span>
         )}
         {rescanState === "error" && (
           <span className="rescan-feedback rescan-feedback-error">
-            Could not queue rescan. Please try again.
+            <Trans>Could not queue rescan. Please try again.</Trans>
           </span>
         )}
       </div>
 
       <p className="settings-hint">
-        Use "Rescan inbox" after changing filter settings to apply them to threads already in your inbox.
+        <Trans>Use &quot;Rescan inbox&quot; after changing filter settings to apply them to threads already in your inbox.</Trans>
       </p>
     </div>
   );

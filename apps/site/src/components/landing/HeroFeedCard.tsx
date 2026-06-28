@@ -1,7 +1,10 @@
 "use client";
 
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
-import { DEMO_THREADS, DEMO_FOLDERS } from "@/components/demo/demo-seed";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { Trans } from "@lingui/react/macro";
+import { useLingui } from "@lingui/react";
+import type { I18n } from "@lingui/core";
+import { getDemoThreads, getDemoFolders } from "@/components/demo/demo-seed";
 import { FolderIcon } from "@/components/landing/icons";
 
 type Tone = "ok" | "review" | "accent" | "neutral";
@@ -25,11 +28,14 @@ const THREAD_DISPLAY: Record<string, { hue: number; init: string }> = {
   t6: { hue: 280, init: "TM" },
 };
 
-function folderDest(folderId: string | null): string {
-  const folder = DEMO_FOLDERS.find(f => f.id === folderId);
+function folderDest(
+  folders: { id: string; name: string; parentId: string | null }[],
+  folderId: string | null,
+): string {
+  const folder = folders.find(f => f.id === folderId);
   if (!folder) return folderId ?? "";
   if (folder.parentId) {
-    const parent = DEMO_FOLDERS.find(f => f.id === folder.parentId);
+    const parent = folders.find(f => f.id === folder.parentId);
     if (parent) return `${parent.name} › ${folder.name}`;
   }
   return folder.name;
@@ -47,20 +53,25 @@ function threadTone(folderId: string | null, status: string | null): Tone {
 // review-status threads are shown confidently sorted in the hero.
 const HERO_REVIEW_ID = "t2";
 
-const POOL: PoolItem[] = DEMO_THREADS.map(t => {
-  const display = THREAD_DISPLAY[t.id] ?? { hue: 200, init: "??" };
-  const tone = t.id === HERO_REVIEW_ID
-    ? "review"
-    : threadTone(t.folderId, t.status === "review" ? "sorted" : t.status);
-  return {
-    from: t.messages[0]!.fromName,
-    init: display.init,
-    hue: display.hue,
-    subj: t.subject,
-    dest: folderDest(t.folderId),
-    tone,
-  };
-});
+// The feed copy (sender, subject, destination) is localized, so the pool is built
+// per render from the active catalog rather than once at module load.
+function buildPool(i18n: I18n): PoolItem[] {
+  const folders = getDemoFolders(i18n);
+  return getDemoThreads(i18n).map(t => {
+    const display = THREAD_DISPLAY[t.id] ?? { hue: 200, init: "??" };
+    const tone = t.id === HERO_REVIEW_ID
+      ? "review"
+      : threadTone(t.folderId, t.status === "review" ? "sorted" : t.status);
+    return {
+      from: t.messages[0]!.fromName,
+      init: display.init,
+      hue: display.hue,
+      subj: t.subject,
+      dest: folderDest(folders, t.folderId),
+      tone,
+    };
+  });
+}
 
 const MAX = 5;
 
@@ -76,7 +87,7 @@ function RouteChip({ tone, dest, resolved }: { tone: Tone; dest: string; resolve
     return (
       <span className="ld-route-chip ld-route-chip--sorting">
         <span className="ld-chip-spin" aria-hidden />
-        Sorting…
+        <Trans>Sorting…</Trans>
       </span>
     );
   }
@@ -89,18 +100,23 @@ function RouteChip({ tone, dest, resolved }: { tone: Tone; dest: string; resolve
   );
 }
 
-function seedRows(): FeedRow[] {
+function seedRows(pool: PoolItem[]): FeedRow[] {
   return Array.from({ length: MAX }, (_, i) => {
-    const item = POOL[i % POOL.length]!;
+    const item = pool[i % pool.length]!;
     return { id: `seed-${i}`, ...item, resolved: true, leaving: false, animateIn: false };
   });
 }
 
 export function HeroFeedCard() {
-  const [rows, setRows] = useState<FeedRow[]>(seedRows);
+  const { i18n } = useLingui();
+  const pool = useMemo(() => buildPool(i18n), [i18n]);
+  // Keep the latest pool reachable from the interval callback without re-arming it.
+  const poolRef = useRef(pool);
+  poolRef.current = pool;
+  const [rows, setRows] = useState<FeedRow[]>(() => seedRows(pool));
   const [filed, setFiled] = useState(5);
   const [reviewCount, setReviewCount] = useState(1);
-  const cursorRef = useRef(MAX % POOL.length);
+  const cursorRef = useRef(MAX % pool.length);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const runningRef = useRef(false);
   const cardRef = useRef<HTMLDivElement>(null);
@@ -118,7 +134,8 @@ export function HeroFeedCard() {
   }, []);
 
   const tick = useCallback(() => {
-    const item = POOL[cursorRef.current % POOL.length]!;
+    const pool = poolRef.current;
+    const item = pool[cursorRef.current % pool.length]!;
     cursorRef.current++;
     const newId = `row-${Date.now()}`;
 
@@ -198,7 +215,7 @@ export function HeroFeedCard() {
         </a>
         <span className="ld-feed-live">
           <span className="ld-feed-live-dot" />
-          Sorting live
+          <Trans>Sorting live</Trans>
         </span>
       </div>
 
@@ -237,10 +254,10 @@ export function HeroFeedCard() {
       <div className="ld-feed-foot">
         <span className="ld-feed-foot-l">
           <span className="ld-feed-scan-dot" />
-          Triaging 412 threads
+          <Trans>412 threads</Trans>
         </span>
         <span className="ld-feed-foot-r">
-          {filed} filed, {reviewCount} needs review
+          <Trans>{filed} sorted · {reviewCount} to review</Trans>
         </span>
       </div>
     </div>

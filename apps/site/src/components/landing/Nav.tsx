@@ -2,6 +2,9 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { Trans } from "@lingui/react/macro";
+import { useLingui } from "@lingui/react";
+import { msg } from "@lingui/core/macro";
 
 function scrollTo(id: string) {
   return (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -11,6 +14,7 @@ function scrollTo(id: string) {
 }
 
 export function Nav() {
+  const { _ } = useLingui();
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -24,18 +28,18 @@ export function Nav() {
   return (
     <header className={`ld-nav${scrolled ? " scrolled" : ""}`} id="nav">
       <div className="ld-nav-inner">
-        <a className="ld-brand" href="#top" onClick={scrollTo("top")} aria-label="Amarnai home">
+        <a className="ld-brand" href="#top" onClick={scrollTo("top")} aria-label={_(msg`Amarnai home`)}>
           <img src="/logo.png" alt="" aria-hidden="true" className="ld-brand-mark" />
           Amarnai
         </a>
 
         <nav className="ld-nav-links">
-          <a href="#how" onClick={scrollTo("how")}>How it works</a>
-          <a href="#taxonomy" onClick={scrollTo("taxonomy")}>Plan</a>
-          <a href="#triage" onClick={scrollTo("triage")}>Triage</a>
-          <a href="#faq" onClick={scrollTo("faq")}>FAQ</a>
+          <a href="#how" onClick={scrollTo("how")}><Trans>How it works</Trans></a>
+          <a href="#taxonomy" onClick={scrollTo("taxonomy")}><Trans>Plan</Trans></a>
+          <a href="#triage" onClick={scrollTo("triage")}><Trans>Triage</Trans></a>
+          <a href="#faq" onClick={scrollTo("faq")}><Trans>FAQ</Trans></a>
           <Link className="ld-btn ld-nav-cta accent" href="/pricing">
-            Pricing
+            <Trans>Pricing</Trans>
           </Link>
         </nav>
       </div>

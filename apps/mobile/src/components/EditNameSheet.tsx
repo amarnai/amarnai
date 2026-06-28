@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { msg } from '@lingui/core/macro';
+import { useLingui } from '@lingui/react';
 import { colors, space, fontSize } from '@amarnai/tokens';
 import type { ApiClient } from '@amarnai/api-client';
 import { SheetLayout } from './SheetLayout';
@@ -16,6 +18,7 @@ type Props = {
 };
 
 export function EditNameSheet({ visible, onClose, client, currentName, onSaved }: Props) {
+  const { i18n } = useLingui();
   const [name, setName] = useState(currentName ?? '');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -38,19 +41,19 @@ export function EditNameSheet({ visible, onClose, client, currentName, onSaved }
       await onSaved();
       onClose();
     } catch (err) {
-      setError(toUserMessage(err, 'Could not update name. Please try again.'));
+      setError(toUserMessage(err, i18n._(msg`Could not update name. Please try again.`)));
     } finally {
       setSaving(false);
     }
   }
 
   return (
-    <SheetLayout visible={visible} onClose={onClose} title="Display name" keyboardAvoiding>
+    <SheetLayout visible={visible} onClose={onClose} title={i18n._(msg`Display name`)} keyboardAvoiding>
       <View style={styles.body}>
         <FormInput
           value={name}
           onChangeText={(v) => { setName(v); setError(null); }}
-          placeholder="Your name"
+          placeholder={i18n._(msg`Your name`)}
           maxLength={100}
           editable={!saving}
           autoCapitalize="words"
@@ -60,7 +63,7 @@ export function EditNameSheet({ visible, onClose, client, currentName, onSaved }
         {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
         <PrimaryButton
-          label="Save"
+          label={i18n._(msg`Save`)}
           onPress={() => void handleSave()}
           disabled={!dirty}
           loading={saving}

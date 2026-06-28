@@ -1,6 +1,10 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { Trans } from "@lingui/react/macro";
+import { useLingui } from "@lingui/react";
+import { msg } from "@lingui/core/macro";
+import type { MessageDescriptor } from "@lingui/core";
 import { disconnectGmailAction, type DisconnectOutcome } from "@/actions/gmail";
 import type { GmailConnection, SyncStatus, GmailSyncSettings } from "@/lib/api";
 import { GmailSyncSettingsSection } from "./GmailSyncSettingsSection";
@@ -26,44 +30,44 @@ const GOOGLE_PERMISSIONS_URL = "https://myaccount.google.com/permissions";
 function GooglePermissionsLink() {
   return (
     <a href={GOOGLE_PERMISSIONS_URL} target="_blank" rel="noreferrer">
-      Google Account permissions
+      <Trans>Google Account permissions</Trans>
     </a>
   );
 }
 
-const ERROR_MESSAGES: Record<string, string> = {
+const ERROR_MESSAGES: Record<string, MessageDescriptor> = {
   access_denied:
-    "Access was denied. Grant read-only Gmail access to connect.",
+    msg`Access was denied. Grant read-only Gmail access to connect.`,
   invalid_callback:
-    "The authorization callback was incomplete. Please try again.",
+    msg`The authorization callback was incomplete. Please try again.`,
   invalid_state:
-    "The authorization request expired or was tampered with. Please try again.",
+    msg`The authorization request expired or was tampered with. Please try again.`,
   unauthorized:
-    "You do not have permission to connect a Gmail inbox to this workspace.",
+    msg`You do not have permission to connect a Gmail inbox to this workspace.`,
   token_exchange:
-    "Google could not complete the authorization. The link may have expired — please try again. If the problem persists, check that the Gmail callback URL is registered in Google Cloud Console.",
+    msg`Google could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the Gmail callback URL is registered in Google Cloud Console.`,
   insufficient_scope:
-    "Gmail read-only access was not granted. Please try again and approve the requested permission.",
+    msg`Gmail read-only access was not granted. Please try again and approve the requested permission.`,
   gmail_profile_fetch:
-    "Could not access your Gmail inbox. Make sure the Gmail API is enabled and the gmail.readonly scope is added to the OAuth consent screen in Google Cloud Console.",
+    msg`Could not access your Gmail inbox. Make sure the Gmail API is enabled and the gmail.readonly scope is added to the OAuth consent screen in Google Cloud Console.`,
   google_account_info:
-    "Could not verify your Google account. Please try again.",
+    msg`Could not verify your Google account. Please try again.`,
   db_upsert:
-    "The connection could not be saved due to a server error. Please try again.",
+    msg`The connection could not be saved due to a server error. Please try again.`,
 };
 
-function formatDate(iso: string | null): string {
-  if (!iso) return "Never";
+function formatDate(iso: string | null, never: string): string {
+  if (!iso) return never;
   return new Date(iso).toLocaleString();
 }
 
 const SYNC_BADGE: Record<
   "IDLE" | "SYNCING" | "ERROR",
-  { label: string; className: string }
+  { label: MessageDescriptor; className: string }
 > = {
-  IDLE:    { label: "Up to date",  className: "sync-badge sync-badge-idle" },
-  SYNCING: { label: "Syncing…",    className: "sync-badge sync-badge-syncing" },
-  ERROR:   { label: "Sync error",  className: "sync-badge sync-badge-error" },
+  IDLE:    { label: msg`Up to date`,  className: "sync-badge sync-badge-idle" },
+  SYNCING: { label: msg`Syncing…`,    className: "sync-badge sync-badge-syncing" },
+  ERROR:   { label: msg`Sync error`,  className: "sync-badge sync-badge-error" },
 };
 
 export function GmailConnectionSection({
@@ -73,6 +77,7 @@ export function GmailConnectionSection({
   syncSettings,
   connectError,
 }: Props) {
+  const { _ } = useLingui();
   const [isPending, startTransition] = useTransition();
   const [confirming, setConfirming] = useState(false);
   const [eraseData, setEraseData] = useState(false);
@@ -88,7 +93,9 @@ export function GmailConnectionSection({
   }
 
   const errorMessage = connectError
-    ? (ERROR_MESSAGES[connectError] ?? "Connection failed. Please try again.")
+    ? (ERROR_MESSAGES[connectError]
+        ? _(ERROR_MESSAGES[connectError])
+        : _(msg`Connection failed. Please try again.`))
     : null;
 
   const badge = syncStatus ? SYNC_BADGE[syncStatus.status] : null;
@@ -100,28 +107,28 @@ export function GmailConnectionSection({
   const sharedNames = alsoConnectedIn.map((w) => w.name).join(", ");
 
   const disconnectWarning = !sharedMailbox ? (
-    <>
+    <Trans>
       Stops syncing and revokes Amarnai&apos;s access to this mailbox. Synced
       email data is kept so you can reconnect later.
-    </>
+    </Trans>
   ) : isShared ? (
-    <>
+    <Trans>
       Disconnects this workspace. Amarnai keeps access because this mailbox is
       still connected in {sharedNames}.
-    </>
+    </Trans>
   ) : (
-    <>
+    <Trans>
       Disconnects this workspace. Amarnai keeps access because this mailbox is
       also connected elsewhere in Amarnai. To fully revoke access, remove
       Amarnai from your <GooglePermissionsLink />.
-    </>
+    </Trans>
   );
 
-  const erasedNote = outcome?.erased ? " Synced email data was erased." : null;
+  const erasedNote = outcome?.erased ? _(msg`Synced email data was erased.`) : null;
 
   return (
     <section className="settings-section">
-      <h2>Gmail Inbox</h2>
+      <h2><Trans>Gmail Inbox</Trans></h2>
 
       {errorMessage && (
         <div className="alert alert-error">{errorMessage}</div>
@@ -132,23 +139,23 @@ export function GmailConnectionSection({
           <div className="gmail-connection-status">
             <div className="gmail-address">{connection.gmailAddress}</div>
             <div className="gmail-meta" suppressHydrationWarning>
-              Last verified: {formatDate(connection.lastVerifiedAt)}
+              <Trans>Last verified: {formatDate(connection.lastVerifiedAt, _(msg`Never`))}</Trans>
             </div>
 
             {isShared && (
               <div className="alert alert-info">
-                This Gmail is also connected in {sharedNames}. Each workspace syncs and classifies it separately, which uses separate AI quota.
+                <Trans>This Gmail is also connected in {sharedNames}. Each workspace syncs and classifies it separately, which uses separate AI quota.</Trans>
               </div>
             )}
 
             {syncStatus !== null ? (
               <div className="sync-status-row">
-                <span className="sync-status-label">Inbox sync</span>
-                {badge && <span className={badge.className}>{badge.label}</span>}
+                <span className="sync-status-label"><Trans>Inbox sync</Trans></span>
+                {badge && <span className={badge.className}>{_(badge.label)}</span>}
                 <span className="sync-status-time" suppressHydrationWarning>
                   {syncStatus.lastSyncedAt
-                    ? `Last synced ${formatDate(syncStatus.lastSyncedAt)}`
-                    : "Not yet synced"}
+                    ? _(msg`Last synced ${formatDate(syncStatus.lastSyncedAt, _(msg`Never`))}`)
+                    : _(msg`Not yet synced`)}
                 </span>
                 {syncStatus.status === "ERROR" && syncStatus.errorMessage && (
                   <div className="sync-error-message">{syncStatus.errorMessage}</div>
@@ -156,8 +163,8 @@ export function GmailConnectionSection({
               </div>
             ) : (
               <div className="sync-status-row">
-                <span className="sync-status-label">Inbox sync</span>
-                <span className="sync-status-time">Waiting for first sync…</span>
+                <span className="sync-status-label"><Trans>Inbox sync</Trans></span>
+                <span className="sync-status-time"><Trans>Waiting for first sync…</Trans></span>
               </div>
             )}
 
@@ -168,7 +175,7 @@ export function GmailConnectionSection({
                 disabled={isPending}
                 type="button"
               >
-                Disconnect Gmail
+                <Trans>Disconnect Gmail</Trans>
               </button>
             ) : (
               <div className="account-delete-confirm">
@@ -180,7 +187,7 @@ export function GmailConnectionSection({
                     onChange={(e) => setEraseData(e.target.checked)}
                     disabled={isPending}
                   />
-                  Also erase synced email data
+                  <Trans>Also erase synced email data</Trans>
                 </label>
                 <div className="account-delete-actions">
                   <button
@@ -189,7 +196,7 @@ export function GmailConnectionSection({
                     onClick={handleDisconnect}
                     disabled={isPending}
                   >
-                    {isPending ? "Disconnecting…" : "Yes, disconnect"}
+                    {isPending ? <Trans>Disconnecting…</Trans> : <Trans>Yes, disconnect</Trans>}
                   </button>
                   <button
                     type="button"
@@ -197,7 +204,7 @@ export function GmailConnectionSection({
                     onClick={() => { setConfirming(false); setEraseData(false); }}
                     disabled={isPending}
                   >
-                    Cancel
+                    <Trans>Cancel</Trans>
                   </button>
                 </div>
               </div>
@@ -216,43 +223,49 @@ export function GmailConnectionSection({
             // Reports what the disconnect actually did, not what was predicted.
             outcome.sharedMailbox ? (
               <div className="alert alert-info">
-                Disconnected from this workspace.{erasedNote} Amarnai still has
-                access because this mailbox is connected in another workspace.
-                To fully revoke access, remove Amarnai from your{" "}
-                <GooglePermissionsLink />.
+                <Trans>
+                  Disconnected from this workspace. {erasedNote} Amarnai still has
+                  access because this mailbox is connected in another workspace.
+                  To fully revoke access, remove Amarnai from your{" "}
+                  <GooglePermissionsLink />.
+                </Trans>
               </div>
             ) : outcome.revoked ? (
               <div className="alert alert-success">
-                Disconnected. Amarnai&apos;s access to this mailbox was revoked
-                at Google.{erasedNote}
+                <Trans>
+                  Disconnected. Amarnai&apos;s access to this mailbox was revoked
+                  at Google. {erasedNote}
+                </Trans>
               </div>
             ) : (
               <div className="alert alert-info">
-                Disconnected.{erasedNote} Revocation at Google could not be
-                confirmed. You can remove Amarnai from your{" "}
-                <GooglePermissionsLink />.
+                <Trans>
+                  Disconnected. {erasedNote} Revocation at Google could not be
+                  confirmed. You can remove Amarnai from your{" "}
+                  <GooglePermissionsLink />.
+                </Trans>
               </div>
             )
           ) : (
             <div className="alert alert-error">
-              Disconnected. Amarnai is no longer syncing this inbox.
+              <Trans>Disconnected. Amarnai is no longer syncing this inbox.</Trans>
             </div>
           )}
           <a
             href={`/api/gmail/connect?workspaceId=${workspaceId}`}
             className="btn-primary"
           >
-            Reconnect Gmail
+            <Trans>Reconnect Gmail</Trans>
           </a>
         </div>
       ) : (
         <div className="gmail-connection-empty">
-          <p>No Gmail inbox connected to this workspace.</p>
+          <p><Trans>No Gmail inbox connected to this workspace.</Trans></p>
           <a
             href={`/api/gmail/connect?workspaceId=${workspaceId}`}
             className="btn-primary"
           >
-            Connect Gmail
+            <Trans>Connect Gmail</Trans>
           </a>
         </div>
       )}

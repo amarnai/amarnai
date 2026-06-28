@@ -1,4 +1,7 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Trans } from '@lingui/react/macro';
+import { useLingui } from '@lingui/react';
+import { msg } from '@lingui/core/macro';
 import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
 import type { FolderItem, ThreadItem } from '@amarnai/core';
 
@@ -20,6 +23,7 @@ export function RationaleCard({
   onApprove,
   onReroute,
 }: RationaleCardProps) {
+  const { i18n } = useLingui();
   const folder = folders.find((f) => f.id === thread.folderId);
   const unrouted = !folder;
   const confPct = Math.round(thread.confidence * 100);
@@ -27,8 +31,8 @@ export function RationaleCard({
   if (thread.isClassifying) {
     return (
       <View style={styles.card}>
-        <Text style={styles.label}>AI Routing</Text>
-        <Text style={styles.dest}>Sorting…</Text>
+        <Text style={styles.label}><Trans>AI Routing</Trans></Text>
+        <Text style={styles.dest}><Trans>Sorting…</Trans></Text>
       </View>
     );
   }
@@ -36,14 +40,14 @@ export function RationaleCard({
   if (thread.status === 'unrouted' || thread.status === 'unsorted') {
     return (
       <View style={styles.card}>
-        <Text style={styles.label}>AI Routing</Text>
-        <Text style={styles.dest}>Waiting</Text>
+        <Text style={styles.label}><Trans>AI Routing</Trans></Text>
+        <Text style={styles.dest}><Trans>Waiting</Trans></Text>
         <Text style={styles.reasonMuted}>
-          This thread is waiting to be routed.
+          <Trans>This thread is waiting to be routed.</Trans>
         </Text>
         <View style={styles.actions}>
           <TouchableOpacity style={styles.secondaryBtn} onPress={onReroute}>
-            <Text style={styles.secondaryBtnText}>Move to…</Text>
+            <Text style={styles.secondaryBtnText}><Trans>Move to…</Trans></Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -53,14 +57,14 @@ export function RationaleCard({
   return (
     <View style={styles.card}>
       <View style={styles.header}>
-        <Text style={styles.label}>AI Routing</Text>
-        {!unrouted ? <Text style={styles.conf}>{confPct}% confidence</Text> : null}
+        <Text style={styles.label}><Trans>AI Routing</Trans></Text>
+        {!unrouted ? <Text style={styles.conf}><Trans>{confPct}% confidence</Trans></Text> : null}
       </View>
 
-      <Text style={styles.dest}>{folder?.name ?? 'Unrouted'}</Text>
+      <Text style={styles.dest}>{folder?.name ?? i18n._(msg`Unrouted`)}</Text>
 
       {thread.isImportant ? (
-        <Text style={styles.important}>Gmail marked as important</Text>
+        <Text style={styles.important}><Trans>Gmail marked as important</Trans></Text>
       ) : null}
 
       {explanation ? <Text style={styles.reason}>{explanation}</Text> : null}
@@ -68,11 +72,11 @@ export function RationaleCard({
       <View style={styles.actions}>
         {thread.status !== 'sorted' && !unrouted ? (
           <TouchableOpacity style={styles.primaryBtn} onPress={onApprove}>
-            <Text style={styles.primaryBtnText}>Approve routing</Text>
+            <Text style={styles.primaryBtnText}><Trans>Approve routing</Trans></Text>
           </TouchableOpacity>
         ) : null}
         <TouchableOpacity style={styles.secondaryBtn} onPress={onReroute}>
-          <Text style={styles.secondaryBtnText}>Move to…</Text>
+          <Text style={styles.secondaryBtnText}><Trans>Move to…</Trans></Text>
         </TouchableOpacity>
       </View>
     </View>

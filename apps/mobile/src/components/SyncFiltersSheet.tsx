@@ -9,6 +9,9 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { Trans } from '@lingui/react/macro';
+import { msg } from '@lingui/core/macro';
+import { useLingui } from '@lingui/react';
 import { colors, space, fontSize, fontWeight, radii } from '@amarnai/tokens';
 import type { ApiClient, GmailSyncSettings } from '@amarnai/api-client';
 import { SheetLayout } from './SheetLayout';
@@ -30,6 +33,7 @@ export function SyncFiltersSheet({
   syncSettings,
   onChange,
 }: Props) {
+  const { i18n } = useLingui();
   const [updating, setUpdating] = useState(false);
   const [rescanning, setRescanning] = useState(false);
   const [rescanDone, setRescanDone] = useState(false);
@@ -68,7 +72,7 @@ export function SyncFiltersSheet({
       onChange(updated);
     } catch {
       setLocalSettings(previous);
-      Alert.alert('Update failed', 'Could not save filter setting. Please try again.');
+      Alert.alert(i18n._(msg`Update failed`), i18n._(msg`Could not save filter setting. Please try again.`));
     } finally {
       setUpdating(false);
     }
@@ -82,23 +86,23 @@ export function SyncFiltersSheet({
       setRescanDone(true);
       setInitialSettings(localSettings);
     } catch {
-      Alert.alert('Rescan failed', 'Could not queue rescan. Please try again.');
+      Alert.alert(i18n._(msg`Rescan failed`), i18n._(msg`Could not queue rescan. Please try again.`));
     } finally {
       setRescanning(false);
     }
   }
 
   return (
-    <SheetLayout visible={visible} onClose={onClose} title="Sync filters">
+    <SheetLayout visible={visible} onClose={onClose} title={i18n._(msg`Sync filters`)}>
       <ScrollView style={styles.body} contentContainerStyle={styles.bodyContent}>
           <Text style={styles.hint}>
-            Controls which Gmail threads are imported. Trash is always excluded.
+            <Trans>Controls which Gmail threads are imported. Trash is always excluded.</Trans>
           </Text>
 
           {localSettings ? (
             <>
               <View style={styles.toggleRow}>
-                <Text style={styles.toggleLabel}>Include spam</Text>
+                <Text style={styles.toggleLabel}><Trans>Include spam</Trans></Text>
                 <Switch
                   value={localSettings.includeSpam}
                   onValueChange={(v) => void handleToggle('includeSpam', v)}
@@ -109,7 +113,7 @@ export function SyncFiltersSheet({
               </View>
 
               <View style={styles.toggleRow}>
-                <Text style={styles.toggleLabel}>Include Promotions</Text>
+                <Text style={styles.toggleLabel}><Trans>Include Promotions</Trans></Text>
                 <Switch
                   value={localSettings.includePromotions}
                   onValueChange={(v) => void handleToggle('includePromotions', v)}
@@ -120,7 +124,7 @@ export function SyncFiltersSheet({
               </View>
 
               <View style={styles.toggleRow}>
-                <Text style={styles.toggleLabel}>Auto-file notifications to Updates / Other</Text>
+                <Text style={styles.toggleLabel}><Trans>Auto-file notifications to Updates / Other</Trans></Text>
                 <Switch
                   value={localSettings.routeBulkToOther}
                   onValueChange={(v) => void handleToggle('routeBulkToOther', v)}
@@ -130,10 +134,12 @@ export function SyncFiltersSheet({
                 />
               </View>
               <Text style={styles.hint}>
-                Detected notifications, newsletters, and service updates are filed to your
-                catch-all folder without using AI. Requires the{' '}
-                <Text style={styles.hintStrong}>Updates / Other</Text> folder from a taxonomy
-                template.
+                <Trans>
+                  Detected notifications, newsletters, and service updates are filed to your
+                  catch-all folder without using AI. Requires the{' '}
+                  <Text style={styles.hintStrong}>Updates / Other</Text> folder from a taxonomy
+                  template.
+                </Trans>
               </Text>
 
               <TouchableOpacity
@@ -144,22 +150,24 @@ export function SyncFiltersSheet({
                 {rescanning ? (
                   <ActivityIndicator size="small" color={colors.ink3} />
                 ) : (
-                  <Text style={styles.rescanBtnText}>Rescan inbox</Text>
+                  <Text style={styles.rescanBtnText}><Trans>Rescan inbox</Trans></Text>
                 )}
               </TouchableOpacity>
               {rescanDone ? (
                 <Text style={styles.rescanFeedback}>
-                  Rescan queued — threads will update shortly.
+                  <Trans>Rescan queued — threads will update shortly.</Trans>
                 </Text>
               ) : null}
               <Text style={styles.hint}>
-                Use "Rescan inbox" after changing filters to apply them to threads already in
-                your inbox.
+                <Trans>
+                  Use "Rescan inbox" after changing filters to apply them to threads already in
+                  your inbox.
+                </Trans>
               </Text>
             </>
           ) : (
             <Text style={styles.infoText}>
-              Connect a Gmail inbox to configure sync filters.
+              <Trans>Connect a Gmail inbox to configure sync filters.</Trans>
             </Text>
           )}
       </ScrollView>

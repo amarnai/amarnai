@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { Trans } from "@lingui/react/macro";
 
 export function WorkspaceSetupWaiting() {
   const router = useRouter();
@@ -14,7 +15,7 @@ export function WorkspaceSetupWaiting() {
   return (
     <div className="upgrade-success-page">
       <div className="upgrade-success-spinner" aria-hidden="true" />
-      <p className="upgrade-success-body">Setting up your workspace…</p>
+      <p className="upgrade-success-body"><Trans>Setting up your workspace…</Trans></p>
     </div>
   );
 }
