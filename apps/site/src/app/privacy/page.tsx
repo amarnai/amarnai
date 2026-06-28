@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description: "How Amarnai collects, uses, and protects your data.",
 };
 
-const LAST_UPDATED = "June 16, 2026";
+const LAST_UPDATED = "June 28, 2026";
 
 export default function PrivacyPage() {
   return (
@@ -118,6 +118,18 @@ export default function PrivacyPage() {
       <p>
         We do not share your email content or Gmail data with any third party except as
         described above to provide the Service.
+      </p>
+
+      <h2>Analytics</h2>
+      <p>
+        On our website (amarnai.com) we use a privacy-focused, cookieless analytics
+        service to understand how visitors find and use the site. It sets no cookies and
+        stores no information on your device, and it does not track you across other
+        websites. It collects only aggregated, anonymous statistics, such as pages
+        viewed, referring site, browser, operating system, device type, and approximate
+        country, derived without storing your IP address. This data cannot be used to
+        identify you. We process it on the basis of our legitimate interest in measuring
+        and improving the website. Analytics data is hosted in the European Union.
       </p>
 
       <h2>Data Retention</h2>
