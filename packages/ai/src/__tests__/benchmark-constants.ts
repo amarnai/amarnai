@@ -76,6 +76,9 @@ const ALL_EMAILS: TestEmail[] = DATASETS.flatMap((d) => d.emails);
 // count and escalation rate, not raw score; the reasoning benchmark (live LLM)
 // measures end-to-end accuracy.
 const SCALE_INVARIANT = process.env["BENCHMARK_SCALE_INVARIANT"] === "1";
+// Opt-in mean-centering (anisotropy correction). Production sets meanCenter: true;
+// the benchmark mirrors it so constants are tuned for the deployed configuration.
+const MEAN_CENTER = process.env["BENCHMARK_MEAN_CENTER"] === "1";
 
 /** Node id → display name, across every dataset, for readable confusion output. */
 const NODE_NAME = new Map<string, string>(
@@ -100,12 +103,17 @@ const BASE_STUB_LLM: AIProvider = {
 
 // ─── Search grid ──────────────────────────────────────────────────────────────
 
+// thetaMin/thetaDescent ranges span both the raw-cosine scale (~0.7-0.9, where
+// the legacy non-centered defaults live) and the mean-centered scale (~0.05-0.4),
+// so the same grid can tune either configuration. Mean-centering compresses the
+// absolute floor: correct nodes land at centered subtree scores ~0.17-0.38, so a
+// thetaMin around 0.05-0.13 is needed to admit them without admitting noise.
 const GRID = {
-  thetaMin:           [0.15, 0.20, 0.25, 0.30],
+  thetaMin:           [0.05, 0.10, 0.13, 0.15],
   lambdaDepthDecay:   [0.85, 0.90, 0.95, 1.00],
   softmaxTemperature: [0.05, 0.10, 0.15, 0.20],
-  thetaSpread:        [0.15, 0.20, 0.25, 0.30],
-  thetaDescent:       [0.00, 0.10, 0.20, 0.30],
+  thetaSpread:        [0.10, 0.15, 0.20, 0.25],
+  thetaDescent:       [0.00, 0.05, 0.10, 0.20],
   crossBranchMargin:  [0.05, 0.08, 0.10, 0.15],
 } as const;
 
@@ -199,7 +207,7 @@ async function runConfig(
         dataset.nodes,
         dataset.edges,
         email.messages,
-        { ...config, scaleInvariant: SCALE_INVARIANT }
+        { ...config, scaleInvariant: SCALE_INVARIANT, meanCenter: MEAN_CENTER }
       );
 
       // LLM escalation penalty
@@ -343,6 +351,7 @@ async function main(): Promise<void> {
 
   console.log(`\nEmbedding model: ${embeddingProvider.modelName}`);
   console.log(`Decision mode:   ${SCALE_INVARIANT ? "scale-invariant (B-lite + folded A)" : "legacy absolute thresholds"}`);
+  console.log(`Mean-centering:  ${MEAN_CENTER ? "on" : "off"}`);
   console.log(
     `Datasets: ${DATASETS.map((d) => `${d.name} (${d.emails.length})`).join(", ")} ` +
     `= ${ALL_EMAILS.length} emails`

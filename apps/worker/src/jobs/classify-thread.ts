@@ -7,7 +7,7 @@ import {
   createEmbeddingProvider,
   sortThreadByEmbedding,
   buildRoutingTelemetry,
-  THETA_MIN,
+  CENTERED_ROUTING_CONFIG,
   analyzeThreadTriage,
   classifyTriageByEmbedding,
   buildThreadEmbeddingText,
@@ -443,7 +443,11 @@ export function createClassifyThreadWorker(): Worker {
               {
                 ...(threadVector ? { precomputedThreadVector: threadVector } : {}),
                 llmMemoizer,
-                scaleInvariant: true,
+                // Production routing config: scale-invariant + mean-centering with
+                // constants tuned for Gemini. Centering corrects the embedding
+                // anisotropy (similarities bunch into a narrow high band) that
+                // otherwise collapses the routing margin. See sortThreadByEmbedding.
+                ...CENTERED_ROUTING_CONFIG,
                 // On the final retry, a thrown LLM error becomes an inbox
                 // fallback (→ NEEDS_REVIEW) instead of failing the job and
                 // stranding the thread as PENDING. Earlier attempts rethrow so
@@ -523,7 +527,9 @@ export function createClassifyThreadWorker(): Worker {
               // are already computed during sorting; persisting the trimmed
               // summary adds no compute and keeps the row small while enabling
               // post-hoc diagnosis and data-driven threshold tuning.
-              rawOutput: buildRoutingTelemetry(result, THETA_MIN),
+              // Telemetry threshold matches the routing config in use (centered
+              // similarities sit on a lower absolute scale than raw cosine).
+              rawOutput: buildRoutingTelemetry(result, CENTERED_ROUTING_CONFIG.thetaMin),
             },
             select: { id: true },
           });

@@ -20,6 +20,38 @@ export function cosineSimilarity(a: number[], b: number[]): number {
   return denom === 0 ? 0 : dot / denom;
 }
 
+// ─── Mean-centering (anisotropy correction) ─────────────────────────────────────
+
+/**
+ * Element-wise mean (centroid) of equal-length vectors. Returns [] for empty
+ * input. Vectors whose length differs from the first are skipped. Pure and
+ * deterministic.
+ */
+export function meanVector(vectors: ReadonlyArray<number[]>): number[] {
+  if (vectors.length === 0) return [];
+  const dim = vectors[0]!.length;
+  const sum = new Array<number>(dim).fill(0);
+  let n = 0;
+  for (const v of vectors) {
+    if (v.length !== dim) continue;
+    for (let i = 0; i < dim; i++) sum[i]! += v[i]!;
+    n++;
+  }
+  if (n === 0) return [];
+  for (let i = 0; i < dim; i++) sum[i]! /= n;
+  return sum;
+}
+
+/**
+ * `a - b` element-wise. Returns `a` unchanged when `b` is empty or the lengths
+ * differ, so centering degrades to a no-op rather than corrupting on a shape
+ * mismatch. Pure and deterministic.
+ */
+export function subtractVector(a: number[], b: number[]): number[] {
+  if (b.length === 0 || a.length !== b.length) return a;
+  return a.map((x, i) => x - b[i]!);
+}
+
 // ─── Softmax ───────────────────────────────────────────────────────────────────
 
 /**

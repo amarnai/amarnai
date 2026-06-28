@@ -28,6 +28,7 @@ export {
 } from "./embedding/math.js";
 export {
   sortThreadByEmbedding,
+  CENTERED_ROUTING_CONFIG,
   THETA_MIN,
   LAMBDA_DEPTH_DECAY,
   SOFTMAX_TEMPERATURE,

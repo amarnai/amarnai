@@ -48,6 +48,8 @@ import {
   hashEmbeddingInput,
   computeSubtreeScores,
   deriveBreadcrumb,
+  meanVector,
+  subtractVector,
 } from "./math.js";
 import { selectNodeFromCandidates } from "../selection/select-path.js";
 import type { EmbeddingProvider, EmbeddableNode, UpdatedNodeEmbedding } from "./types.js";
@@ -142,6 +144,30 @@ export const TOP_K_LLM_CANDIDATES = 5;
 export const CROSS_BRANCH_Z_MARGIN = 0.5;
 export const CROSS_BRANCH_Z_FLOOR = 0.0;
 export const SOLE_CHILD_Z_MARGIN = 0.5;
+
+// ─── Production routing config (Gemini + mean-centering) ────────────────────────
+//
+// Tuned for the deployed configuration: gemini-embedding-001 with scaleInvariant
+// and meanCenter on. Mean-centering compresses the absolute similarity scale, so
+// the quality floor (thetaMin) and spread threshold are lower than the raw-cosine
+// defaults above. Grid-searched on the labeled fixtures:
+//   BENCHMARK_EMBEDDING_MODEL=gemini-embedding-001@768 \
+//   BENCHMARK_SCALE_INVARIANT=1 BENCHMARK_MEAN_CENTER=1 \
+//   pnpm --filter @amarnai/ai benchmark:constants
+// Only thetaMin and thetaSpread differ from the raw defaults; the rest are listed
+// explicitly so the production config is self-contained and stable if the
+// raw-path defaults are ever changed. Self-hosted deployments on other embedding
+// models should re-tune (see CLAUDE.md).
+export const CENTERED_ROUTING_CONFIG = {
+  thetaMin: 0.13,
+  lambdaDepthDecay: LAMBDA_DEPTH_DECAY,
+  softmaxTemperature: SOFTMAX_TEMPERATURE,
+  thetaSpread: 0.1,
+  thetaDescent: THETA_DESCENT,
+  crossBranchMargin: CROSS_BRANCH_MARGIN,
+  scaleInvariant: true,
+  meanCenter: true,
+} as const;
 
 // ─── Result type ──────────────────────────────────────────────────────────────
 
@@ -395,6 +421,16 @@ export async function sortThreadByEmbedding(
     crossBranchZMargin?: number;
     crossBranchZFloor?: number;
     soleChildZMargin?: number;
+    /**
+     * Opt-in mean-centering of the similarity space. Gemini-class embeddings are
+     * anisotropic — every node similarity bunches into a narrow high band (~0.7-0.9),
+     * which collapses the margin between the correct node and its rivals. When true,
+     * the node-set centroid is subtracted from the thread and node vectors before
+     * cosine, removing the shared component and restoring the discriminative margin
+     * (empirically ~5x wider). Pure, deterministic, no extra embedding cost (the
+     * centroid is derived from node vectors already loaded). Default false.
+     */
+    meanCenter?: boolean;
     /** Pre-computed thread embedding vector. When provided, skips the internal embed call (Step 3). */
     precomputedThreadVector?: number[];
     /**
@@ -436,6 +472,7 @@ export async function sortThreadByEmbedding(
   const crossBranchZFloor = options?.crossBranchZFloor ?? CROSS_BRANCH_Z_FLOOR;
   const soleChildZMargin = options?.soleChildZMargin ?? SOLE_CHILD_Z_MARGIN;
   const llmMemoizer = options?.llmMemoizer;
+  const meanCenter = options?.meanCenter ?? false;
   const failOpenOnLlmError = options?.failOpenOnLlmError ?? false;
   const suppressLlmEscalation = options?.suppressLlmEscalation ?? false;
 
@@ -549,10 +586,32 @@ export async function sortThreadByEmbedding(
   }
 
   // ── Step 4: Raw cosine similarities ───────────────────────────────────────
+  //
+  // Optional mean-centering corrects embedding anisotropy: Gemini-class models
+  // pack every node similarity into a narrow high band, collapsing the margin
+  // between the correct node and its rivals. Subtracting the node-set centroid
+  // from the thread and node vectors before cosine removes that shared component
+  // and restores the discriminative margin. Derived from the node vectors already
+  // loaded above, so there is no extra embedding cost and the caches are untouched.
+
+  let queryVector = threadVector;
+  let simNodeVectors = nodeEmbeddings;
+  if (meanCenter) {
+    const realNodeVectors = [...nodeEmbeddings.values()].filter((v) => v.length > 0);
+    const centroid = meanVector(realNodeVectors);
+    if (centroid.length > 0) {
+      queryVector = subtractVector(threadVector, centroid);
+      const centered = new Map<string, number[]>();
+      for (const [nodeId, vector] of nodeEmbeddings) {
+        centered.set(nodeId, vector.length > 0 ? subtractVector(vector, centroid) : vector);
+      }
+      simNodeVectors = centered;
+    }
+  }
 
   const rawSims = new Map<string, number>();
-  for (const [nodeId, vector] of nodeEmbeddings) {
-    rawSims.set(nodeId, vector.length > 0 ? cosineSimilarity(threadVector, vector) : 0);
+  for (const [nodeId, vector] of simNodeVectors) {
+    rawSims.set(nodeId, vector.length > 0 ? cosineSimilarity(queryVector, vector) : 0);
   }
   const rawSimsRecord = Object.fromEntries(rawSims);
 
@@ -786,8 +845,14 @@ export async function sortThreadByEmbedding(
         currentNodeId = soleChildId;
       };
 
+      // Quality floor uses the subtree score under centering (see the
+      // multi-child descent gate below for the rationale); the relative
+      // dominance margin stays on the child's own similarity.
+      const soleChildQuality = meanCenter
+        ? (subtreeScores.get(soleChildId) ?? 0)
+        : soleChildRawSim;
       const childDominates =
-        soleChildRawSim >= thetaDescent &&
+        soleChildQuality >= thetaDescent &&
         (soleChildRawSim - parentRawSim) / sigmaSim > soleChildZMargin;
 
       if (childDominates) {
@@ -884,7 +949,16 @@ export async function sortThreadByEmbedding(
     //   spreadOk  — best child is meaningfully differentiated from its siblings
     //   descentOk — best child is relevant to the email in absolute terms
     const spreadOk = normalizedSpread > thetaSpread;
-    const descentOk = bestChildRawSim >= thetaDescent;
+    // Quality floor for descending into the best child. In the raw-cosine path
+    // this is the child's own similarity. Under mean-centering, broad intermediate
+    // nodes legitimately have low or negative centered similarity even when a
+    // strongly-matching leaf lives beneath them, so the floor is applied to the
+    // child's subtree score (its best reachable descendant) instead — otherwise
+    // descent halts at the root in deep taxonomies. Subtree ≥ rawSim always, so
+    // this never makes the non-centered path stricter; it is gated to centering to
+    // leave that path byte-identical.
+    const descentQuality = meanCenter ? bestChildSubtreeScore : bestChildRawSim;
+    const descentOk = descentQuality >= thetaDescent;
 
     if (spreadOk && descentOk) {
       // Mid-traversal cross-branch check: even when spread is sufficient to

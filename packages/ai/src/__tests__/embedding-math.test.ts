@@ -1,6 +1,8 @@
 import { describe, it, expect } from "vitest";
 import {
   cosineSimilarity,
+  meanVector,
+  subtractVector,
   softmax,
   buildNodeEmbeddingText,
   buildThreadEmbeddingText,
@@ -52,6 +54,55 @@ describe("cosineSimilarity", () => {
     const a = [1, 0];
     const b = [1, 1];
     expect(cosineSimilarity(a, b)).toBeCloseTo(Math.SQRT1_2, 5);
+  });
+});
+
+// ─── meanVector / subtractVector ───────────────────────────────────────────────
+
+describe("meanVector", () => {
+  it("empty input → []", () => {
+    expect(meanVector([])).toEqual([]);
+  });
+
+  it("element-wise centroid of equal-length vectors", () => {
+    expect(meanVector([[0, 0], [2, 4], [4, 8]])).toEqual([2, 4]);
+  });
+
+  it("single vector → itself", () => {
+    expect(meanVector([[1, 2, 3]])).toEqual([1, 2, 3]);
+  });
+
+  it("skips vectors whose length differs from the first", () => {
+    expect(meanVector([[2, 2], [4, 4], [1, 2, 3]])).toEqual([3, 3]);
+  });
+});
+
+describe("subtractVector", () => {
+  it("element-wise difference", () => {
+    expect(subtractVector([5, 7, 9], [1, 2, 3])).toEqual([4, 5, 6]);
+  });
+
+  it("empty subtrahend → returns a unchanged (no-op)", () => {
+    expect(subtractVector([1, 2], [])).toEqual([1, 2]);
+  });
+
+  it("length mismatch → returns a unchanged (no-op)", () => {
+    expect(subtractVector([1, 2, 3], [1, 2])).toEqual([1, 2, 3]);
+  });
+
+  it("centering increases the margin between two anisotropic vectors", () => {
+    // Two near-parallel unit-ish vectors sharing a large common component.
+    const common = [10, 10, 10];
+    const a = [10, 11, 10]; // leans dim 1
+    const b = [10, 10, 11]; // leans dim 2
+    const q = [10, 10.6, 10.4]; // closer to a
+    const rawMargin = cosineSimilarity(q, a) - cosineSimilarity(q, b);
+    const centroid = meanVector([a, b]);
+    void common;
+    const cenMargin =
+      cosineSimilarity(subtractVector(q, centroid), subtractVector(a, centroid)) -
+      cosineSimilarity(subtractVector(q, centroid), subtractVector(b, centroid));
+    expect(cenMargin).toBeGreaterThan(rawMargin);
   });
 });
 
