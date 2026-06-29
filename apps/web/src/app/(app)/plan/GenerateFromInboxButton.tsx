@@ -252,7 +252,7 @@ export function GenerateFromInboxButton({
               <div className="modal-body" style={phase !== "ready" ? { overflowY: "auto", maxHeight: "60vh" } : undefined}>
                 {error && <p className="form-error">{error}</p>}
 
-                {status?.importing && phase !== "running" && (
+                {status?.importing && phase !== "running" && canGenerate && (
                   <p className="text-muted" style={{ marginBottom: 8 }}>
                     <Trans>
                       Your inbox is still importing. You can generate now from what&apos;s loaded so far,

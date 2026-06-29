@@ -46,7 +46,7 @@ export function GenerateFromInboxSheet({
   return (
     <SheetLayout visible={visible} onClose={onClose} title={_(msg`Generate from inbox`)} handle>
       <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
-        {importing && !running ? (
+        {importing && !running && eligibility?.eligible ? (
           <Text style={[styles.muted, { marginBottom: space.md }]}>
             <Trans>
               Your inbox is still importing. You can generate now from what&apos;s loaded so far,
