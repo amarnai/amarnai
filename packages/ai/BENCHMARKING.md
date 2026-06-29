@@ -134,3 +134,121 @@ constant. The positive control `fm-swiftship-dispatch` (a genuine SwiftShip
 parcel) routes correctly, so the fix must gate low-confidence descents into
 single children, not block the leaf outright. Tracked as a follow-up; this
 benchmark is the instrument to validate the fix.
+
+# Self-route metric, persistence rule, and baseline (B1/B2 Session 1)
+
+This section is the measurement substrate and decision rules for evaluating the
+proposed B1 (sender/entity tie-breaker gate) and B2 (BM25 hybrid ranking)
+augmentations. It is model-pinned to production: all numbers below are on
+`gemini-embedding-001@768`, mean-centered, scale-invariant (the shipped
+`CENTERED_ROUTING_CONFIG`).
+
+## Scope
+
+We benchmark the sorting results our code produces **up to and including the
+escalation decision**: confident auto-routes, deliberate Inbox stops, and (for
+B1) local tie-resolutions. We do **not** grade the frontier LLM's answer on
+escalated threads — its accuracy is out of our control. An escalation is a
+hand-off (a cost), not a result we claim.
+
+## The self-route metric (primary view)
+
+Every thread falls in exactly one bucket (in the stubbed grid,
+`llmCalled ⟹ needsHumanReview`, and `correct ⟹ committed`, so these partition):
+
+- **committed** — we routed to a node (`needsHumanReview === false`).
+- **escalated** — handed to the LLM (`llmCalled`). A cost.
+- **declined** — sent to review without escalating (`needsHumanReview && !llmCalled`).
+
+Reported (overall + per slice) by `printSelfRouteBreakdown` in
+[src/__tests__/benchmark-constants.ts](src/__tests__/benchmark-constants.ts):
+
+- **coverage** = committed / N — how often we route to a node at all
+- **precision** = correct / committed — quality of the routes we commit to
+- **self-route** = correct / N (= coverage × precision) — the headline accuracy
+- **escalation** = escalated / N — the cost lever B1 targets
+- **decline** = declined / N — self-declined to review, no LLM
+
+The existing composite `POINTS` score is kept as a convenience sort only;
+decisions use the decomposition above, not the fused scalar.
+
+## Persistence test (the accuracy ratchet)
+
+No change (B1, B2, or a constant retune) is kept unless **proven to improve
+routing accuracy on the holdout split**. Default state is revert.
+
+- Judged on **holdout only**, on the **Gemini fixture only** (`qwen3` is CI-smoke
+  and can never justify a persistence decision).
+- Test: McNemar paired test on the change's **targeted** holdout subpopulation —
+  require p<0.05, ≥20 discordant pairs, net-positive flips, AND zero precision
+  regression on the general holdout.
+- The current holdout (37) is far too small for this; each feature must build its
+  own powered, targeted subpopulation first (see roadmap).
+
+## Decisions (Session 1, revisable)
+
+1. **Ratchet semantics:** a self-route gain may come from **coverage** (correctly
+   resolving would-be escalations locally) only under a **hard no-precision-
+   regression guard**, proven on a powered subpopulation. Coverage and precision
+   are reported separately so a coverage gain can never hide a precision drop.
+2. **Selection criterion:** coverage-vs-precision Pareto on holdout is primary;
+   the composite is convenience only, with `llmEscalation` to be raised from -0.2
+   to a documented cost weight when used.
+3. **Reasoning benchmark role:** retained as the realized-**cost** check (live
+   escalation count / tokens), not an accuracy gate.
+
+## Baseline (shipped `CENTERED_ROUTING_CONFIG`; holdout rebalanced — see assessment #1)
+
+Split after rebalance: **82 tune / 46 holdout**, every taxonomy shape now in both.
+Shipped config ranks 289/4096 on tune (score 432.6); holdout 37/46 (80%) vs grid
+winner 36/46 (78%), so the shipped constants still generalise.
+
+| Split | N | coverage | precision | self-route | escalation | decline |
+|---|---|---|---|---|---|---|
+| TUNE | 82 | 85% | 99% | 84% | 15% | 0% |
+| HOLDOUT | 46 | 80% | 100% | 80% | 15% | 4% |
+
+Per-slice self-route (HOLDOUT): flat-d1 75%, ml-flat 82%, deep-d3 100%, ml-d3
+100%, fwd 100%, **failure-modes 0%** (2 structural cases, both escalate).
+Precision is **100% on holdout** — zero misroutes; every loss is a hand-off
+(escalate/decline), not a wrong route. **Headroom for B1:** holdout escalation is
+15% (7/46), all on deliberately-ambiguous or structural fixtures; tune escalation
+is dominated by the multilingual customer-support cluster below.
+
+## Current-algorithm assessment (Session 1, Task D)
+
+Candidate adjustments from the baseline, independent of B1/B2. Tags:
+**data-artifact** / **tunable-constant** / **algorithm-change**.
+
+1. **[P1, data-artifact] Holdout was unrepresentative — RESOLVED.** The original
+   37 holdout fixtures had **zero** `deep-d3`, `failure-modes`, or `flat-d1`, so
+   persistence decisions were blind to deep-taxonomy and structural regressions.
+   Re-tagged 9 fixtures (4 flat-d1, 3 deep-d3, 2 failure-modes) into holdout →
+   now 82 tune / 46 holdout with every shape in both (no re-seed needed). Residual
+   caveat: `failure-modes` holdout is only 2 cases and `ml-d3` only 1, so those
+   slices stay statistically thin — grow them with new fixtures (+ re-seed) when a
+   change targets them.
+2. **[P1, algorithm-change] Off-topic quality gate miss.** `fm-offtopic-digest`
+   confidently routes to Community (`embedding_auto`) — the **only** true misroute
+   in 91 tune fixtures. The mean-centered gate doesn't catch off-topic mail
+   (a known, documented gap). Any fix must not regress the 90 correct routes;
+   power is low (few off-topic fixtures), so pair with more off-topic cases.
+3. **[P2, investigate → tunable-constant or node-text] Multilingual
+   customer-support under-routing.** ~10 non-English customer-support threads
+   escalate/decline instead of committing to Customer Support (precision stays
+   100% — pure coverage loss). Largest systematic coverage drag and measurable
+   (10+ cases). The 6-constant grid does not fix it (the grid winner escalates
+   *more* and is worse on holdout), so it likely needs a node-embedding-text
+   improvement or a targeted cross-branch/descent change; B1/B2 may also help.
+4. **[P3, data-artifact / metric] Off-topic fixtures expect a node, not null.**
+   Off-topic cases (`unclassifiable-off-topic`, `fm-offtopic-digest`) expect an
+   "Other / Needs Review" node or Inbox, but a correct decline yields `null` and
+   is scored as a miss. Decide whether a correct decline-to-review should be
+   credited, else the metric under-credits correct off-topic handling.
+5. **[P4, algorithm-change, documented] Single-child / specific-vendor leaf.**
+   `fm-generic-courier-tracking` — already a tracked follow-up (see the
+   single-child section above). Low priority here.
+
+Session 1 makes no algorithm change: none of the above is a high-confidence,
+broadly-applicable one-liner. Items 1 and 3 are the highest-value next steps and
+are scoped as their own work.

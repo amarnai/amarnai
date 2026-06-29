@@ -374,6 +374,76 @@ function printConfusion(details: EmailDetail[]): void {
   }
 }
 
+// ─── Self-route metric (primary view: results up to escalation) ────────────────
+//
+// Scope: we judge the sorting results our code produces ON ITS OWN, up to and
+// including the escalation decision. We do NOT grade the frontier LLM's answer on
+// escalated threads (out of our control). So each thread falls into exactly one
+// bucket:
+//
+//   committed  — we took responsibility for a destination node (needsHumanReview
+//                false: embedding_auto or embedding_inbox). This is a self-route.
+//   escalated  — handed to the LLM (llmCalled). A cost, not a result we claim.
+//   declined   — we sent it to review WITHOUT escalating (quality-gate / failure
+//                fallback: needsHumanReview && !llmCalled). A self-decision, but
+//                not a route to a node.
+//
+// (In the stub, llmCalled ⟹ needsHumanReview, and a correct route ⟹ committed,
+// so these three buckets partition every thread.)
+//
+// Reported numbers:
+//   coverage      = committed / N            — how often we route to a node at all
+//   precision     = correct  / committed     — quality of the routes we commit to
+//   self-route    = correct  / N             — coverage × precision; the headline
+//   escalation    = escalated / N            — the cost lever (B1 targets this)
+//   decline       = declined  / N            — self-declined to review, no LLM
+//
+// This refines the plan's "coverage = 1 − escalation rate" by separating
+// self-declines from escalations; both are "not a correct self-route", but they
+// have different cost (a decline is free, an escalation is not).
+
+type SelfRouteStats = {
+  n: number;
+  committed: number;
+  correct: number;
+  escalated: number;
+  declined: number;
+};
+
+function selfRouteStats(details: EmailDetail[]): SelfRouteStats {
+  return {
+    n: details.length,
+    committed: details.filter((d) => !d.needsHumanReview).length,
+    correct: details.filter((d) => d.outcome === "correct").length,
+    escalated: details.filter((d) => d.llmCalled).length,
+    declined: details.filter((d) => d.needsHumanReview && !d.llmCalled).length,
+  };
+}
+
+/** Headline self-route decomposition (overall + per dataset). The primary view. */
+function printSelfRouteBreakdown(label: string, details: EmailDetail[]): void {
+  const row = (name: string, s: SelfRouteStats): string =>
+    `${name.padEnd(14)}  ${String(s.n).padStart(4)}  ` +
+    `${pct(s.committed, s.n).padStart(5)}  ` +              // coverage
+    `${pct(s.correct, s.committed).padStart(5)}  ` +        // precision
+    `${pct(s.correct, s.n).padStart(5)}  ` +                // self-route
+    `${pct(s.escalated, s.n).padStart(5)}  ` +              // escalation
+    `${pct(s.declined, s.n).padStart(5)}`;                  // decline
+
+  console.log(`\n── Self-route metric — ${label} (results before escalation) ──────────────`);
+  console.log("slice            N  cover   prec   self    esc   decl");
+  console.log("─".repeat(56));
+  console.log(row("OVERALL", selfRouteStats(details)));
+  for (const dataset of DATASETS) {
+    const rows = details.filter((d) => d.dataset === dataset.name);
+    if (rows.length === 0) continue;
+    console.log(row(dataset.name, selfRouteStats(rows)));
+  }
+  console.log(
+    "  cover=committed/N  prec=correct/committed  self=correct/N  esc=llm/N  decl=review-no-llm/N"
+  );
+}
+
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
 async function main(): Promise<void> {
@@ -454,6 +524,7 @@ async function main(): Promise<void> {
 
   const current = results[currentRank]!;
   console.log(`\n══ Shipped-config diagnostics — TUNE (model: ${embeddingProvider.modelName}) ══`);
+  printSelfRouteBreakdown("TUNE", current.details);
   printDatasetBreakdown(current.details);
   printDecisionSourceBreakdown(current.details);
   printConfusion(current.details);
@@ -488,6 +559,7 @@ async function main(): Promise<void> {
     console.log(`\n══ HOLDOUT (${HOLDOUT_EMAILS.length} fixtures, never seen by the grid) ══`);
     console.log(`  shipped config:   ${acc(shippedHoldout)} correct`);
     console.log(`  grid winner:      ${acc(winnerHoldout)} correct`);
+    printSelfRouteBreakdown("HOLDOUT shipped", shippedHoldout.details);
     console.log("\n── Holdout per-dataset (shipped config) ──");
     printDatasetBreakdown(shippedHoldout.details);
     printConfusion(shippedHoldout.details);

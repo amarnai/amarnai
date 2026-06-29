@@ -378,6 +378,7 @@ export const TEST_EMAILS_D3: TestEmail[] = [
 
   {
     id: "d3-vendor-software-invoice",
+    split: "holdout",
     difficulty: "easy",
     messages: [
       {
@@ -428,6 +429,7 @@ export const TEST_EMAILS_D3: TestEmail[] = [
     // Expense reimbursement approval — contains invoice/payment/receipt language
     // that could point toward d3-invoices, but the context is employee expenses.
     id: "d3-expense-report-approved",
+    split: "holdout",
     difficulty: "medium",
     messages: [
       {
@@ -508,6 +510,7 @@ export const TEST_EMAILS_D3: TestEmail[] = [
     // transferred to an individual policy. Mentions employer/group scheme
     // (d3-hr distractor) but the ongoing relationship is now personal.
     id: "d3-individual-health-policy-renewal",
+    split: "holdout",
     difficulty: "hard",
     messages: [
       {
@@ -642,6 +645,7 @@ export const TEST_EMAILS_FM: TestEmail[] = [
   // landing in the SwiftShip leaf is wrong.
   {
     id: "fm-generic-courier-tracking",
+    split: "holdout",
     difficulty: "hard",
     messages: [
       {
@@ -684,6 +688,7 @@ export const TEST_EMAILS_FM: TestEmail[] = [
   // consistently is fine; review is acceptable. Inconsistent splitting is the failure.
   {
     id: "fm-payment-processed-ambiguous",
+    split: "holdout",
     difficulty: "hard",
     messages: [
       {
@@ -888,6 +893,7 @@ export const TEST_EMAILS: TestEmail[] = [
   },
   {
     id: "hr-job-application",
+    split: "holdout",
     difficulty: "easy",
     messages: [
       {
@@ -920,6 +926,7 @@ export const TEST_EMAILS: TestEmail[] = [
   },
   {
     id: "partnerships-cobrand-proposal",
+    split: "holdout",
     difficulty: "easy",
     messages: [
       {
@@ -955,6 +962,7 @@ export const TEST_EMAILS: TestEmail[] = [
   },
   {
     id: "product-feedback-hr-distractors",
+    split: "holdout",
     difficulty: "medium",
     messages: [
       {
@@ -1007,6 +1015,7 @@ export const TEST_EMAILS: TestEmail[] = [
   // ── Hard: clearly off-topic, should stay in Inbox ─────────────────────────────
   {
     id: "unclassifiable-off-topic",
+    split: "holdout",
     difficulty: "hard",
     messages: [
       {
