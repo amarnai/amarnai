@@ -48,3 +48,8 @@ packages/i18n/src/locales/**/messages.mjs
 /docs/
 tsconfig.tsbuildinfo
 *.tsbuildinfo
+
+# Claude Code — ignore local/runtime files, keep shared config (settings.json,
+# commands/, skills/, agents/) committable.
+.claude/settings.local.json
+.claude/*.lock
