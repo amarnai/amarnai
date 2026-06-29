@@ -1,6 +1,6 @@
 import type Stripe from "stripe";
 import { getStripe } from "@/lib/stripe";
-import { db, ensureInboxNode } from "@amarnai/db";
+import { db, ensureInboxTaxonomy } from "@amarnai/db";
 
 export interface ProvisionResult {
   workspaceId: string;
@@ -148,7 +148,7 @@ export async function provisionFromCheckoutSession(
   if (trialEndsAt !== null) {
     await db.user.update({ where: { id: meta.userId }, data: { trialUsed: true } });
   }
-  await ensureInboxNode(workspace.id);
+  await ensureInboxTaxonomy(workspace.id);
   await db.auditLog.create({
     data: {
       workspaceId: workspace.id,

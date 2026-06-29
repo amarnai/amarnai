@@ -18,6 +18,7 @@ const nodeSelect = {
   draftPrompt: true,
   examples: true,
   isRoot: true,
+  isCatchAll: true,
   positionX: true,
   positionY: true,
   createdAt: true,
@@ -212,6 +213,10 @@ taxonomyNodes.patch(
       return c.json({ error: "Cannot change isRoot" }, 400);
     }
 
+    if (typeof rawBody === "object" && rawBody !== null && "isCatchAll" in rawBody) {
+      return c.json({ error: "Cannot change isCatchAll" }, 400);
+    }
+
     const existing = await db.taxonomyNode.findUnique({
       where: { id: nodeId },
       select: { id: true, workspaceId: true, isRoot: true },
@@ -284,6 +289,7 @@ taxonomyNodes.delete(
         id: true,
         workspaceId: true,
         isRoot: true,
+        isCatchAll: true,
         _count: { select: { outgoingEdges: true, incomingEdges: true, classifications: true } },
       },
     });
@@ -293,6 +299,10 @@ taxonomyNodes.delete(
 
     if (existing.isRoot) {
       return c.json({ error: "Cannot delete the Inbox node" }, 422);
+    }
+
+    if (existing.isCatchAll) {
+      return c.json({ error: "Cannot delete the catch-all folder" }, 422);
     }
 
     if (existing._count.outgoingEdges > 0) {

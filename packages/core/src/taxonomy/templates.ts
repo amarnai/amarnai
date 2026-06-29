@@ -1,4 +1,10 @@
-import type { TaxonomyTransferFile } from "@amarnai/shared";
+import {
+  DEFAULT_CATCH_ALL_REF,
+  DEFAULT_CATCH_ALL_NAME,
+  DEFAULT_CATCH_ALL_DESCRIPTION,
+  DEFAULT_CATCH_ALL_POSITION,
+  type TaxonomyTransferFile,
+} from "@amarnai/shared";
 
 export type TaxonomyTemplate = {
   id: string;
@@ -670,22 +676,21 @@ const BASE_TEMPLATES: TaxonomyTemplate[] = [
 // (notifications, newsletters, service updates) is auto-filed here without an
 // LLM call; it is excluded from normal embedding/LLM routing (isCatchAll).
 const CATCH_ALL_NODE: TaxonomyTransferFile["nodes"][number] = {
-  ref: "updates_other",
-  name: "Updates / Other",
-  description:
-    "Automated notifications, newsletters, and service updates that don't fit another folder.",
+  ref: DEFAULT_CATCH_ALL_REF,
+  name: DEFAULT_CATCH_ALL_NAME,
+  description: DEFAULT_CATCH_ALL_DESCRIPTION,
   instructions: null,
   draftPrompt: null,
   examples: [],
   isRoot: false,
   isCatchAll: true,
-  positionX: 300,
-  positionY: 600,
+  positionX: DEFAULT_CATCH_ALL_POSITION.x,
+  positionY: DEFAULT_CATCH_ALL_POSITION.y,
 };
 
 const CATCH_ALL_EDGE: TaxonomyTransferFile["edges"][number] = {
   sourceRef: "root",
-  targetRef: "updates_other",
+  targetRef: DEFAULT_CATCH_ALL_REF,
 };
 
 export const TAXONOMY_TEMPLATES: TaxonomyTemplate[] = BASE_TEMPLATES.map((t) => ({

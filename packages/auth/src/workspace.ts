@@ -1,7 +1,8 @@
-import { db, ensureInboxNode } from "@amarnai/db";
+import { db, ensureInboxTaxonomy } from "@amarnai/db";
 
-// Returns the user's primary workspace, creating their first one (with an Inbox
-// taxonomy node and an OWNER membership) if they have none. Shared by the web
+// Returns the user's primary workspace, creating their first one (with the
+// mandatory Inbox + catch-all taxonomy and an OWNER membership) if they have
+// none. Shared by the web
 // app and the API sign-in flow so onboarding provisioning lives in one place.
 export async function getOrCreateDefaultWorkspace(userId: string, locale = "en") {
   // Prefer a workspace owned by this user.
@@ -32,6 +33,6 @@ export async function getOrCreateDefaultWorkspace(userId: string, locale = "en")
     },
     select: { id: true, name: true, locale: true, plan: true },
   });
-  await ensureInboxNode(created.id);
+  await ensureInboxTaxonomy(created.id);
   return created;
 }

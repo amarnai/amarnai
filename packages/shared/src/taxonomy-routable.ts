@@ -2,8 +2,10 @@
  * root before routing is attempted. */
 export const TAXONOMY_MIN_NON_ROOT_NODES = 3;
 
-/** Minimal node shape needed to evaluate taxonomy routability. */
-type RoutableNode = { id: string; isRoot: boolean; isCatchAll?: boolean };
+/** Minimal node shape needed to evaluate taxonomy routability. `isCatchAll` is
+ * required (not optional) so every caller is forced to select it — the catch-all
+ * is excluded from the routable count, and omitting it would silently overcount. */
+type RoutableNode = { id: string; isRoot: boolean; isCatchAll: boolean };
 
 /** Minimal edge shape: a directed parent -> child link. */
 type RoutableEdge = { sourceNodeId: string; targetNodeId: string };

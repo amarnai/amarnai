@@ -1,5 +1,5 @@
 import { db } from "./client.js";
-import { ensureInboxNode } from "./inbox.js";
+import { ensureInboxTaxonomy } from "./inbox.js";
 
 export class FreeWorkspaceLimitError extends Error {
   constructor() {
@@ -30,7 +30,7 @@ export async function createFreeWorkspace(
     select: { id: true },
   });
 
-  await ensureInboxNode(workspace.id);
+  await ensureInboxTaxonomy(workspace.id);
   return workspace.id;
 }
 
@@ -40,7 +40,7 @@ export async function createFreeWorkspace(
 // and must run BEFORE these, while the connection rows still exist.
 
 // Wipe a workspace's Gmail connection, synced email data, and taxonomy, then
-// restore the Inbox root. The workspace, its members, and the owner's account
+// restore the mandatory Inbox root + catch-all. The workspace, its members, and the owner's account
 // are kept. deleteMany on already-removed rows is a no-op, so this is safe to
 // run after a best-effort disconnect that may have removed some rows already.
 export async function resetWorkspaceData(workspaceId: string): Promise<void> {
@@ -64,7 +64,7 @@ export async function resetWorkspaceData(workspaceId: string): Promise<void> {
     db.gmailConnection.deleteMany({ where: { workspaceId } }),
   ]);
 
-  await ensureInboxNode(workspaceId);
+  await ensureInboxTaxonomy(workspaceId);
 }
 
 // Permanently delete a user account and everything they own, in FK-safe order.

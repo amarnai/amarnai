@@ -39,12 +39,24 @@ export function TaxonomyNodeRow({ row, collapsed, flat, onToggle, onPress }: Tax
       )}
 
       <Text style={[styles.name, node.isRoot && styles.nameRoot]} numberOfLines={1}>
-        {node.isRoot ? _(msg`Inbox`) : node.name}
+        {/* The inbox root and catch-all carry fixed, English-seeded names that
+            are localized here at the render edge (they are not user-editable). */}
+        {node.isRoot
+          ? _(msg`Inbox`)
+          : node.isCatchAll
+            ? _(msg`Updates / Other`)
+            : node.name}
       </Text>
 
       {node.isRoot ? (
         <View style={styles.entryIcon}>
           <NavIcon name="emails" color={colors.ink3} size={18} />
+        </View>
+      ) : node.isCatchAll ? (
+        <View style={[styles.tag, styles.tagCatchAll]}>
+          <Text style={[styles.tagText, styles.tagCatchAllText]}>
+            <Trans>Catch-all</Trans>
+          </Text>
         </View>
       ) : ignored ? (
         <View style={[styles.tag, styles.tagIgnored]}>
@@ -104,6 +116,12 @@ const styles = StyleSheet.create({
   },
   tagIgnoredText: {
     color: colors.warnInk,
+  },
+  tagCatchAll: {
+    backgroundColor: colors.tealSoft,
+  },
+  tagCatchAllText: {
+    color: colors.tealInk,
   },
   countText: {
     color: colors.ink3,

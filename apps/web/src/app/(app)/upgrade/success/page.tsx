@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/session";
 import { getStripe } from "@/lib/stripe";
-import { db, ensureInboxNode } from "@amarnai/db";
+import { db, ensureInboxTaxonomy } from "@amarnai/db";
 import { switchWorkspaceAction } from "@/actions/workspace";
 import { WorkspaceSetupWaiting } from "./WorkspaceSetupWaiting";
 import { Trans } from "@lingui/react/macro";
@@ -134,7 +134,7 @@ export default async function UpgradeSuccessPage({
           trialEndsAt: true,
         },
       });
-      await ensureInboxNode(created.id);
+      await ensureInboxTaxonomy(created.id);
       workspace = created;
     }
   }

@@ -9,6 +9,7 @@ type NodeInput = {
   id: string;
   name: string;
   isRoot: boolean;
+  isCatchAll?: boolean;
 };
 
 export type MockClassificationResult = {
@@ -35,8 +36,11 @@ export function mockClassify(
   messages: MessageInput[],
   nodes: NodeInput[]
 ): MockClassificationResult {
-  if (nodes.length === 0) {
-    throw new Error("No taxonomy nodes available for classification");
+  // The catch-all is excluded from competition (same as the real sorter and
+  // candidate-selector); it is only ever assigned by the automated-mail policy.
+  const pool = nodes.filter((n) => !n.isRoot && !n.isCatchAll);
+  if (pool.length === 0) {
+    throw new Error("No routable taxonomy nodes available for classification");
   }
 
   const text = messages
@@ -48,8 +52,6 @@ export function mockClassify(
   const isFinancial = FINANCIAL_KEYWORDS.some((kw) => text.includes(kw));
   const isPersonal = PERSONAL_KEYWORDS.some((kw) => text.includes(kw));
   const needsApproval = APPROVAL_KEYWORDS.some((kw) => text.includes(kw));
-
-  const pool = nodes.filter((n) => !n.isRoot);
 
   let bestNode = pool[0]!;
   let bestScore = -1;

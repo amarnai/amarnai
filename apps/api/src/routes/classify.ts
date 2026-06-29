@@ -4,6 +4,7 @@ import { db, countRecurringThreadSorts } from "@amarnai/db";
 import { getDraftQuotaWindowStart, getDraftQuotaResetsAt, getThreadSortLimit } from "@amarnai/shared";
 import { config } from "@amarnai/config";
 import { mockClassify } from "../services/mock-classifier.js";
+import { isWorkspaceTaxonomyRoutable } from "../services/taxonomy-routable.js";
 import { classifyThreadQueue } from "../queues.js";
 
 const params = z.object({
@@ -40,9 +41,10 @@ classify.post(
       return c.json({ error: "Thread not found" }, 404);
     }
 
-    const nodeCount = await db.taxonomyNode.count({ where: { workspaceId } });
-    if (nodeCount === 0) {
-      return c.json({ error: "No taxonomy nodes found for classification" }, 422);
+    // The root + catch-all are always present, so "has nodes" is meaningless;
+    // gate on a routable taxonomy (enough real folders reachable from the root).
+    if (!(await isWorkspaceTaxonomyRoutable(workspaceId))) {
+      return c.json({ error: "Taxonomy has too few folders for classification" }, 422);
     }
 
     if (config.billing.enforceThreadSortQuota) {
@@ -193,11 +195,13 @@ classify.post(
 
     const nodes = await db.taxonomyNode.findMany({
       where: { workspaceId },
-      select: { id: true, name: true, isRoot: true },
+      select: { id: true, name: true, isRoot: true, isCatchAll: true },
     });
 
-    if (nodes.length === 0) {
-      return c.json({ error: "No taxonomy nodes found for classification" }, 422);
+    // The catch-all is filtered out inside mockClassify; require at least one
+    // real (routable) folder before attempting a mock classification.
+    if (nodes.every((n) => n.isRoot || n.isCatchAll)) {
+      return c.json({ error: "Taxonomy has too few folders for classification" }, 422);
     }
 
     const result = mockClassify(thread.messages, nodes);

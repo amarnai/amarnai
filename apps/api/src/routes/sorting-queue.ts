@@ -3,28 +3,10 @@ import { z } from "zod";
 import { Job } from "bullmq";
 import { db } from "@amarnai/db";
 import { classifyThreadQueue } from "../queues.js";
-import { DEFAULT_GMAIL_SYNC_SETTINGS, isTaxonomyRoutable } from "@amarnai/shared";
+import { DEFAULT_GMAIL_SYNC_SETTINGS } from "@amarnai/shared";
 import { DEDUP_CLASSIFY_UNROUTED, DEDUP_CLASSIFY_UNCLASSIFIED } from "@amarnai/queue";
 import { resolveEmailAccountId } from "../services/email-account.js";
-
-/**
- * Whether the workspace taxonomy has enough non-root nodes reachable from the
- * root for routing to produce meaningful results. Orphaned nodes (not linked to
- * the root) are excluded, matching how the router enumerates candidate paths.
- */
-async function isWorkspaceTaxonomyRoutable(workspaceId: string): Promise<boolean> {
-  const [nodes, edges] = await Promise.all([
-    db.taxonomyNode.findMany({
-      where: { workspaceId },
-      select: { id: true, isRoot: true },
-    }),
-    db.taxonomyEdge.findMany({
-      where: { workspaceId },
-      select: { sourceNodeId: true, targetNodeId: true },
-    }),
-  ]);
-  return isTaxonomyRoutable(nodes, edges);
-}
+import { isWorkspaceTaxonomyRoutable } from "../services/taxonomy-routable.js";
 
 const workspaceParam = z.object({ workspaceId: z.string().min(1) });
 const threadParam = z.object({

@@ -99,6 +99,9 @@ export type TaxonomyNode = {
   draftPrompt: string | null;
   examples: string[];
   isRoot: boolean;
+  /** The non-routable catch-all destination ("Updates / Other"). Exactly one per
+   * workspace; cannot be deleted or have its flag changed. */
+  isCatchAll: boolean;
   positionX: number;
   positionY: number;
   createdAt: string;

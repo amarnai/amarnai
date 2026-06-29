@@ -40,8 +40,23 @@ function makeFile(overrides?: Partial<TaxonomyTransferFile>): TaxonomyTransferFi
         positionX: 100,
         positionY: 80,
       },
+      {
+        ref: "other",
+        name: "Updates / Other",
+        description: "Automated notifications and bulk mail that doesn't fit another folder.",
+        instructions: null,
+        draftPrompt: null,
+        examples: [],
+        isRoot: false,
+        isCatchAll: true,
+        positionX: 100,
+        positionY: 160,
+      },
     ],
-    edges: [{ sourceRef: "root", targetRef: "n1" }],
+    edges: [
+      { sourceRef: "root", targetRef: "n1" },
+      { sourceRef: "root", targetRef: "other" },
+    ],
     ...overrides,
   };
 }
@@ -320,6 +335,76 @@ describe("validateTaxonomyTransfer", () => {
     expect(result.ok === false && result.error).toMatch(/cycle/);
   });
 
+  it("rejects a taxonomy with no catch-all folder", () => {
+    const file = makeFile({
+      nodes: [
+        { ref: "root", name: "Inbox", description: null, instructions: null,
+          draftPrompt: null, examples: [], isRoot: true, positionX: 0, positionY: 0 },
+        { ref: "n1", name: "Invoices", description: VALID_DESCRIPTION, instructions: null,
+          draftPrompt: null, examples: [], isRoot: false, positionX: 100, positionY: 0 },
+      ],
+      edges: [{ sourceRef: "root", targetRef: "n1" }],
+    });
+    const result = validateTaxonomyTransfer(file);
+    expect(result.ok).toBe(false);
+    expect(result.ok === false && result.error).toMatch(/exactly one catch-all/);
+  });
+
+  it("rejects a taxonomy with more than one catch-all folder", () => {
+    const file = makeFile({
+      nodes: [
+        { ref: "root", name: "Inbox", description: null, instructions: null,
+          draftPrompt: null, examples: [], isRoot: true, positionX: 0, positionY: 0 },
+        { ref: "c1", name: "Updates", description: VALID_DESCRIPTION, instructions: null,
+          draftPrompt: null, examples: [], isRoot: false, isCatchAll: true, positionX: 100, positionY: 0 },
+        { ref: "c2", name: "Other", description: VALID_DESCRIPTION + " more", instructions: null,
+          draftPrompt: null, examples: [], isRoot: false, isCatchAll: true, positionX: 200, positionY: 0 },
+      ],
+      edges: [
+        { sourceRef: "root", targetRef: "c1" },
+        { sourceRef: "root", targetRef: "c2" },
+      ],
+    });
+    const result = validateTaxonomyTransfer(file);
+    expect(result.ok).toBe(false);
+    expect(result.ok === false && result.error).toMatch(/Found multiple/);
+  });
+
+  it("rejects a catch-all that is also the root", () => {
+    const file = makeFile({
+      nodes: [
+        { ref: "root", name: "Inbox", description: null, instructions: null,
+          draftPrompt: null, examples: [], isRoot: true, isCatchAll: true, positionX: 0, positionY: 0 },
+        { ref: "n1", name: "Invoices", description: VALID_DESCRIPTION, instructions: null,
+          draftPrompt: null, examples: [], isRoot: false, positionX: 100, positionY: 0 },
+      ],
+      edges: [{ sourceRef: "root", targetRef: "n1" }],
+    });
+    const result = validateTaxonomyTransfer(file);
+    expect(result.ok).toBe(false);
+    expect(result.ok === false && result.error).toMatch(/cannot also be the root/);
+  });
+
+  it("rejects a catch-all that has sub-folders (not a leaf)", () => {
+    const file = makeFile({
+      nodes: [
+        { ref: "root", name: "Inbox", description: null, instructions: null,
+          draftPrompt: null, examples: [], isRoot: true, positionX: 0, positionY: 0 },
+        { ref: "other", name: "Updates / Other", description: VALID_DESCRIPTION, instructions: null,
+          draftPrompt: null, examples: [], isRoot: false, isCatchAll: true, positionX: 100, positionY: 0 },
+        { ref: "child", name: "Receipts", description: VALID_DESCRIPTION + " extra", instructions: null,
+          draftPrompt: null, examples: [], isRoot: false, positionX: 200, positionY: 0 },
+      ],
+      edges: [
+        { sourceRef: "root", targetRef: "other" },
+        { sourceRef: "other", targetRef: "child" },
+      ],
+    });
+    const result = validateTaxonomyTransfer(file);
+    expect(result.ok).toBe(false);
+    expect(result.ok === false && result.error).toMatch(/must be a leaf/);
+  });
+
   it("does not pollute Object.prototype when ref is __proto__", () => {
     const file = makeFile({
       nodes: [
@@ -370,6 +455,21 @@ describe("serializeTaxonomy", () => {
       createdAt: NOW,
       updatedAt: NOW,
     },
+    {
+      id: "node_other",
+      workspaceId: "ws_1",
+      name: "Updates / Other",
+      description: "Automated notifications and bulk mail that doesn't fit another folder.",
+      instructions: null,
+      draftPrompt: null,
+      examples: [],
+      isRoot: false,
+      isCatchAll: true,
+      positionX: 100,
+      positionY: 160,
+      createdAt: NOW,
+      updatedAt: NOW,
+    },
   ];
 
   const edges: TaxonomyEdge[] = [
@@ -381,13 +481,21 @@ describe("serializeTaxonomy", () => {
       createdAt: NOW,
       updatedAt: NOW,
     },
+    {
+      id: "edge_2",
+      workspaceId: "ws_1",
+      sourceNodeId: "node_root",
+      targetNodeId: "node_other",
+      createdAt: NOW,
+      updatedAt: NOW,
+    },
   ];
 
   it("produces a valid file", () => {
     const file = serializeTaxonomy(nodes, edges);
     expect(file.amarnaiTaxonomyVersion).toBe(1);
-    expect(file.nodes).toHaveLength(2);
-    expect(file.edges).toHaveLength(1);
+    expect(file.nodes).toHaveLength(3);
+    expect(file.edges).toHaveLength(2);
   });
 
   it("uses node id as ref", () => {

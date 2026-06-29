@@ -5,7 +5,7 @@ vi.mock("@amarnai/db", () => ({
     user: { findUnique: vi.fn(), upsert: vi.fn() },
     gmailConnection: { upsert: vi.fn() },
   },
-  ensureInboxNode: vi.fn(),
+  ensureInboxTaxonomy: vi.fn(),
 }));
 
 vi.mock("@amarnai/gmail", () => ({

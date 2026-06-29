@@ -157,7 +157,7 @@ export default function TaxonomyScreen() {
     () =>
       nodes && edges
         ? countRoutableNonRootNodes(
-            nodes.map((n) => ({ id: n.id, isRoot: n.isRoot })),
+            nodes.map((n) => ({ id: n.id, isRoot: n.isRoot, isCatchAll: n.isCatchAll })),
             edges.map((e) => ({ sourceNodeId: e.sourceNodeId, targetNodeId: e.targetNodeId })),
           )
         : 0,
@@ -352,7 +352,11 @@ export default function TaxonomyScreen() {
               collapsed={collapsed.has(item.node.id)}
               flat={searching}
               onToggle={() => toggle(item.node.id)}
-              onPress={() => openNode(item.node)}
+              // The catch-all is a fixed node and is not editable, so tapping it
+              // does not open the edit form (matching the inbox root).
+              onPress={() => {
+                if (!item.node.isCatchAll) openNode(item.node);
+              }}
             />
           )}
           refreshControl={

@@ -16,6 +16,7 @@ vi.mock("@amarnai/db", () => ({
   db: {
     emailThread: { findFirst: vi.fn(), update: vi.fn() },
     taxonomyNode: { count: vi.fn(), findMany: vi.fn() },
+    taxonomyEdge: { findMany: vi.fn() },
     emailClassification: { create: vi.fn(), findFirst: vi.fn() },
     workspace: { findUnique: vi.fn() },
     workspaceMember: { findUnique: vi.fn() },
@@ -52,17 +53,28 @@ function post(path: string) {
   return app.request(path, authed({ method: "POST" }));
 }
 
+// A routable taxonomy: root + 3 real folders (>= TAXONOMY_MIN_NON_ROOT_NODES)
+// plus the mandatory catch-all (excluded from the routable count).
 const NODES = [
-  { id: "node-root", name: "Inbox", isRoot: true },
-  { id: "node-leaf", name: "Clients", isRoot: false },
+  { id: "node-root", name: "Inbox", isRoot: true, isCatchAll: false },
+  { id: "node-a", name: "Clients", isRoot: false, isCatchAll: false },
+  { id: "node-b", name: "Finance", isRoot: false, isCatchAll: false },
+  { id: "node-c", name: "Personal", isRoot: false, isCatchAll: false },
+  { id: "node-other", name: "Updates / Other", isRoot: false, isCatchAll: true },
+];
+const EDGES = [
+  { sourceNodeId: "node-root", targetNodeId: "node-a" },
+  { sourceNodeId: "node-root", targetNodeId: "node-b" },
+  { sourceNodeId: "node-root", targetNodeId: "node-c" },
+  { sourceNodeId: "node-root", targetNodeId: "node-other" },
 ];
 
 beforeEach(() => {
   vi.clearAllMocks();
   mockBilling.enforceThreadSortQuota = true;
   vi.mocked(db.workspaceMember.findUnique).mockResolvedValue({ userId: "test-user-1" } as never);
-  vi.mocked(db.taxonomyNode.count).mockResolvedValue(2 as never);
   vi.mocked(db.taxonomyNode.findMany).mockResolvedValue(NODES as never);
+  vi.mocked(db.taxonomyEdge.findMany).mockResolvedValue(EDGES as never);
   vi.mocked(db.emailThread.findFirst).mockResolvedValue(THREAD as never);
   vi.mocked(db.emailThread.update).mockResolvedValue({} as never);
   vi.mocked(db.emailClassification.create).mockResolvedValue({ id: "cls-1" } as never);
@@ -87,8 +99,14 @@ describe("POST /workspaces/:workspaceId/email-threads/:threadId/ai-classify", ()
     expect(res.status).toBe(404);
   });
 
-  it("returns 422 when no taxonomy nodes exist", async () => {
-    vi.mocked(db.taxonomyNode.count).mockResolvedValue(0 as never);
+  it("returns 422 when the taxonomy is not routable (only root + catch-all)", async () => {
+    vi.mocked(db.taxonomyNode.findMany).mockResolvedValue([
+      { id: "node-root", name: "Inbox", isRoot: true, isCatchAll: false },
+      { id: "node-other", name: "Updates / Other", isRoot: false, isCatchAll: true },
+    ] as never);
+    vi.mocked(db.taxonomyEdge.findMany).mockResolvedValue([
+      { sourceNodeId: "node-root", targetNodeId: "node-other" },
+    ] as never);
     const res = await post(`/workspaces/${WS_ID}/email-threads/${THREAD_ID}/ai-classify`);
     expect(res.status).toBe(422);
   });

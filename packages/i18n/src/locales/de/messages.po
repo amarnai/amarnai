@@ -13,7 +13,7 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:474
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:475
 #, fuzzy
 msgid " (Inbox)"
 msgstr " (Posteingang)"
@@ -42,7 +42,7 @@ msgid "{0, plural, one {# person} other {# people}}"
 msgstr "{0, plural, one {# Person} other {# Personen}}"
 
 #. placeholder {0}: node?.threadCount ?? 0
-#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:377
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:379
 #, fuzzy
 msgid "{0, plural, one {Deleting leaves # thread without this folder.} other {Deleting leaves # threads without this folder.}}"
 msgstr "{0, plural, one {Beim Löschen bleibt # Konversation ohne diesen Ordner.} other {Beim Löschen bleiben # Konversationen ohne diesen Ordner.}}"
@@ -93,7 +93,7 @@ msgstr "{0} von {1} verbleibend · Zurücksetzung am {quotaResetDate}"
 msgid "{blacklistCount, plural, one {# blocked} other {# blocked}}"
 msgstr "{blacklistCount, plural, one {# blockiert} other {# blockiert}}"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:489
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:490
 #, fuzzy
 msgid "{classificationCount, plural, one {Deleting this folder will leave # thread unsorted.} other {Deleting this folder will leave # threads unsorted.}}"
 msgstr "{classificationCount, plural, one {Beim Löschen dieses Ordners bleibt # Konversation unsortiert.} other {Beim Löschen dieses Ordners bleiben # Konversationen unsortiert.}}"
@@ -150,7 +150,7 @@ msgstr "{quotaRemaining} von {0} verbleibend · Setzt zurück {quotaResetDate}"
 msgid "{remaining} of {limit} remaining · resets {resetDate}"
 msgstr "{remaining} von {limit} übrig · zurückgesetzt am {resetDate}"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1410
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1415
 #, fuzzy
 msgid "{routableCount} of {TAXONOMY_MIN_NON_ROOT_NODES} folders connected to your inbox. Routing requires at least {TAXONOMY_MIN_NON_ROOT_NODES}."
 msgstr "{routableCount} von {TAXONOMY_MIN_NON_ROOT_NODES} Ordnern mit Ihrem Posteingang verbunden. Das Routing erfordert mindestens {TAXONOMY_MIN_NON_ROOT_NODES}."
@@ -193,12 +193,12 @@ msgstr "© 2026 Amarnai. Open Source unter AGPL-3.0-Lizenz."
 msgid "← Back"
 msgstr "← Zurück"
 
-#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:368
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:370
 #, fuzzy
 msgid "+ Add folder"
 msgstr "+ Ordner hinzufügen"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1251
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1256
 msgid "+ Add Folder"
 msgstr "+ Ordner hinzufügen"
 
@@ -339,7 +339,9 @@ msgstr "Eine neue Bewerbung von Horemheb aus Theben für die Position des Korres
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "Eine neue Bewerbung von Horemheb aus Theben für die Position des Obersten Korrespondenten ist eingegangen.\n\nBewerbung im Haus der Akten einsehen."
+msgstr "Eine neue Bewerbung von Horemheb aus Theben für die Position des Obersten Korrespondenten ist eingegangen.\n"
+"\n"
+"Bewerbung im Haus der Akten einsehen."
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:380
 #, fuzzy
@@ -352,7 +354,11 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "Abdi-Heba,\n\nIch bin in jener Woche nahe des Deltas. Treffen wir uns am zweiten Tag an der Wegstation; den Vormittag habe ich frei.\n\nBis dahin,"
+msgstr "Abdi-Heba,\n"
+"\n"
+"Ich bin in jener Woche nahe des Deltas. Treffen wir uns am zweiten Tag an der Wegstation; den Vormittag habe ich frei.\n"
+"\n"
+"Bis dahin,"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:33
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:37
@@ -396,7 +402,7 @@ msgstr "Aktive Projektkommunikation, Ergebnisse, Feedback und Freigaben von Kund
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1275
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1280
 #, fuzzy
 msgid "Add at least 3 connected folders to export"
 msgstr "Fügen Sie mindestens 3 verbundene Ordner zum Exportieren hinzu"
@@ -645,12 +651,17 @@ msgstr "Mindestens {PASSWORD_MIN_LENGTH} Zeichen"
 msgid "Auto-file notifications to Updates / Other"
 msgstr "Benachrichtigungen automatisch in Updates / Sonstiges verschieben"
 
+#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:37
+msgid "Automated and bulk mail that doesn't fit another folder lands here automatically. This is different from Needs review, which holds threads too ambiguous for the assistant to sort."
+msgstr "Automatisierte E-Mails und Massen-Mails, die keinem anderen Ordner zugeordnet werden konnten, landen hier automatisch. Im Gegensatz dazu enthält „Prüfung erforderlich“ Konversationen, die der Assistent nicht eindeutig zuordnen konnte."
+
 #: ../../apps/site/src/components/demo/demo-seed.ts:303
 #, fuzzy
 msgid "Automated notice from the Bureau of Royal Appointments. Subject and sender clearly indicate a new application for an open position."
 msgstr "Automatische Benachrichtigung vom Amt für Königliche Ernennungen. Betreff und Absender weisen eindeutig auf eine neue Bewerbung für eine offene Stelle hin."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:96
+#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:59
 msgid "Automated notifications, newsletters, and service updates that don't fit another folder."
 msgstr "Automatisierte Benachrichtigungen, Newsletter und Service-Updates, die nicht in einen anderen Ordner passen."
 
@@ -665,7 +676,11 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "Aziru,\n\nDeine Worte der Freundschaft erreichen uns wohl. Wir sind offen dafür, mehr von den Vorschlägen des Hauses Amurru zu hören. Sende deine Bedingungen mit dem nächsten Kurier.\n\nMit Grüßen,"
+msgstr "Aziru,\n"
+"\n"
+"Deine Worte der Freundschaft erreichen uns wohl. Wir sind offen dafür, mehr von den Vorschlägen des Hauses Amurru zu hören. Sende deine Bedingungen mit dem nächsten Kurier.\n"
+"\n"
+"Mit Grüßen,"
 
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
 #: ../../apps/site/src/app/[locale]/pricing/page.tsx:53
@@ -740,7 +755,7 @@ msgid "Browse emails easily through your folders. Generate draft replies and cop
 msgstr "Durchsuchen Sie Ihre E-Mails ganz einfach in Ihren Ordnern. Generieren Sie Entwürfe für Antworten und kopieren Sie diese in Gmail."
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:283
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1335
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1340
 #, fuzzy
 msgid "Browse templates"
 msgstr "Vorlagen durchsuchen"
@@ -802,13 +817,13 @@ msgstr "Kann ich Amarnai selbst hosten?"
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:93
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:245
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:147
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:527
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:541
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:653
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1549
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1577
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1618
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1705
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:528
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:542
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:654
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1554
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1582
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1623
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1710
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:64
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:207
 #: ../../apps/web/src/app/(app)/settings/ResetWorkspaceSection.tsx:68
@@ -842,8 +857,13 @@ msgstr "Abonnement kündigen?"
 msgid "Cancelling…"
 msgstr "Wird abgebrochen…"
 
-#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:331
-#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:392
+#: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:58
+#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:72
+msgid "Catch-all"
+msgstr "Catch-all"
+
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:333
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:394
 #, fuzzy
 msgid "Change"
 msgstr "Ändern"
@@ -862,7 +882,7 @@ msgstr "Posteingang prüfen"
 msgid "Checkout failed: {0}"
 msgstr "Kaufabwicklung fehlgeschlagen: {0}"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:635
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:636
 #, fuzzy
 msgid "Child folder"
 msgstr "Unterordner"
@@ -877,7 +897,7 @@ msgstr "Wählen Sie ein neues Passwort für Ihr Konto."
 msgid "Choose a subscription"
 msgstr "Abonnement auswählen"
 
-#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:458
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:460
 #, fuzzy
 msgid "Choose parent"
 msgstr "Übergeordneten Ordner wählen"
@@ -905,7 +925,7 @@ msgstr "Kunden"
 msgid "Close"
 msgstr "Schließen"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1474
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1479
 #, fuzzy
 msgid "Close panel"
 msgstr "Panel schließen"
@@ -950,11 +970,11 @@ msgstr "Alle Abonnements vergleichen"
 msgid "Confirm cancellation"
 msgstr "Kündigung bestätigen"
 
-#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:404
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:406
 msgid "Confirm delete"
 msgstr "Löschen bestätigen"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:519
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:520
 #, fuzzy
 msgid "Confirm Delete"
 msgstr "Löschen bestätigen"
@@ -1138,7 +1158,7 @@ msgstr "Erneuter Scan konnte nicht in die Warteschlange gestellt werden. Bitte v
 msgid "Could not reach the server. Please check your connection and try again."
 msgstr "Server nicht erreichbar. Bitte überprüfen Sie Ihre Verbindung und versuchen Sie es erneut."
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1146
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1149
 #, fuzzy
 msgid "Could not read file: invalid JSON."
 msgstr "Datei konnte nicht gelesen werden: Ungültiges JSON."
@@ -1210,8 +1230,8 @@ msgstr "Anfrage zur Ratsvorbereitung von einem bekannten königlichen Verbündet
 msgid "Courses"
 msgstr "Kurse"
 
-#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:445
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:538
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:447
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:539
 #, fuzzy
 msgid "Create"
 msgstr "Erstellen"
@@ -1236,7 +1256,7 @@ msgstr "Konto erstellen"
 msgid "Create an account to triage your inbox"
 msgstr "Konto erstellen, um Ihren Posteingang zu sortieren."
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:400
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:401
 #, fuzzy
 msgid "Create Folder"
 msgstr "Ordner erstellen"
@@ -1266,7 +1286,7 @@ msgstr "Wird erstellt…"
 #: ../../apps/mobile/src/components/RerouteSheet.tsx:45
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:107
 #: ../../apps/site/src/components/demo/demo-seed.ts:33
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1671
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1676
 #, fuzzy
 msgid "Current"
 msgstr "Aktuell"
@@ -1313,9 +1333,9 @@ msgstr "Kostenloser Standard-Workspace"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:174
 #: ../../apps/mobile/app/(app)/account.tsx:84
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:557
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:568
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:662
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:558
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:569
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:663
 #, fuzzy
 msgid "Delete"
 msgstr "Löschen"
@@ -1341,7 +1361,7 @@ msgstr "Löschen fehlgeschlagen"
 msgid "Delete failed. Please try again."
 msgstr "Löschen fehlgeschlagen. Bitte versuchen Sie es erneut."
 
-#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:421
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:423
 msgid "Delete folder"
 msgstr "Ordner löschen"
 
@@ -1356,20 +1376,20 @@ msgstr "Arbeitsbereich löschen"
 msgid "Delete workspace?"
 msgstr "Arbeitsbereich löschen?"
 
-#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:402
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:404
 msgid "Deleting..."
 msgstr "Wird gelöscht..."
 
 #: ../../apps/mobile/app/(app)/account.tsx:166
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:140
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:519
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:520
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:56
 #, fuzzy
 msgid "Deleting…"
 msgstr "Wird gelöscht…"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:80
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:252
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:253
 #, fuzzy
 msgid "Describe what kinds of emails belong here: who they come from and what they are about. Be specific and use the actual names, topics, and words that show up in those emails. Describe what the emails are, not what you plan to do about them. The clearer your description, the more accurately your email is sorted here."
 msgstr "Beschreiben Sie, welche Arten von E-Mails hierher gehören: von wem sie stammen und worum es in ihnen geht. Seien Sie spezifisch und verwenden Sie die tatsächlichen Namen, Themen und Wörter, die in diesen E-Mails vorkommen. Beschreiben Sie, was die E-Mails sind, nicht, was Sie damit vorhaben. Je klarer Ihre Beschreibung, desto genauer wird Ihre E-Mail hier sortiert."
@@ -1378,8 +1398,8 @@ msgstr "Beschreiben Sie, welche Arten von E-Mails hierher gehören: von wem sie 
 msgid "Describe your folders"
 msgstr "Beschreiben Sie Ihre Ordner"
 
-#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:286
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:422
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:288
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:423
 #, fuzzy
 msgid "Description"
 msgstr "Beschreibung"
@@ -1544,8 +1564,8 @@ msgstr "Entwurf einer Antwort"
 msgid "Draft shared"
 msgstr "Entwurf geteilt"
 
-#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:339
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:445
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:341
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:446
 #, fuzzy
 msgid "Draft style guidance"
 msgstr "Entwurfsstil-Anleitung"
@@ -1559,17 +1579,17 @@ msgstr "Entwurf erstellen…"
 msgid "Drag and connect. It's fully interactive."
 msgstr "Ziehen und verbinden. Voll interaktiv."
 
-#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:277
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:279
 msgid "e.g. Invoices"
 msgstr "z.B. Rechnungen"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:430
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:431
 #, fuzzy
 msgid "e.g. Invoices, receipts, payment confirmations, and billing questions from clients and vendors."
 msgstr "z.B. Rechnungen, Quittungen, Zahlungsbestätigungen und Abrechnungsfragen von Kunden und Lieferanten."
 
-#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:347
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:451
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:349
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:452
 #, fuzzy
 msgid "e.g. Reply formally. Keep responses under 3 sentences."
 msgstr "z.B. Formal antworten. Antworten auf unter 3 Sätze beschränken."
@@ -1579,21 +1599,21 @@ msgstr "z.B. Formal antworten. Antworten auf unter 3 Sätze beschränken."
 msgid "Earlier"
 msgstr "Früher"
 
-#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:250
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:252
 msgid "Edit folder"
 msgstr "Ordner bearbeiten"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:400
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:401
 #, fuzzy
 msgid "Edit Folder"
 msgstr "Ordner bearbeiten"
 
-#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:249
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:251
 #, fuzzy
 msgid "Edit inbox"
 msgstr "Posteingang bearbeiten"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:612
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:613
 msgid "Edit Path"
 msgstr "Pfad bearbeiten"
 
@@ -1653,7 +1673,7 @@ msgid "Emails"
 msgstr "E-Mails"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:100
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:280
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:281
 #, fuzzy
 msgid "Emails about my bills that I need to deal with."
 msgstr "E-Mails über meine Rechnungen, die ich bearbeiten muss."
@@ -1697,7 +1717,7 @@ msgstr "Geben Sie Ihre E-Mail-Adresse ein, und wir senden Ihnen einen Link zum Z
 msgid "Enter your email and we'll send you a reset link."
 msgstr "Geben Sie Ihre E-Mail-Adresse ein, und wir senden Ihnen einen Reset-Link."
 
-#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:43
+#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:69
 #, fuzzy
 msgid "Entry"
 msgstr "Eintrag"
@@ -1733,13 +1753,13 @@ msgstr "Ausklappen"
 msgid "Expenses"
 msgstr "Ausgaben"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1299
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1304
 #, fuzzy
 msgid "Export"
 msgstr "Exportieren"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1274
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1282
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1279
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1287
 #, fuzzy
 msgid "Export plan"
 msgstr "Exportplan"
@@ -1753,22 +1773,22 @@ msgstr "Externe Anbieter, Kunden und Agenturen, die professionell tätig sind."
 msgid "Failed to apply"
 msgstr "Anwenden fehlgeschlagen"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:978
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:981
 #, fuzzy
 msgid "Failed to create folder"
 msgstr "Ordner konnte nicht erstellt werden"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:919
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:920
 #, fuzzy
 msgid "Failed to create path"
 msgstr "Pfad konnte nicht erstellt werden"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1049
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1052
 #, fuzzy
 msgid "Failed to delete folder"
 msgstr "Ordner konnte nicht gelöscht werden"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1066
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1069
 #, fuzzy
 msgid "Failed to delete path"
 msgstr "Pfad konnte nicht gelöscht werden"
@@ -1778,12 +1798,12 @@ msgstr "Pfad konnte nicht gelöscht werden"
 msgid "Failed to load status"
 msgstr "Status konnte nicht geladen werden"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1107
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1110
 #, fuzzy
 msgid "Failed to redo"
 msgstr "Wiederholen fehlgeschlagen"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:896
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:897
 #, fuzzy
 msgid "Failed to save position"
 msgstr "Position konnte nicht gespeichert werden"
@@ -1793,17 +1813,17 @@ msgstr "Position konnte nicht gespeichert werden"
 msgid "Failed to start generation"
 msgstr "Generierung konnte nicht gestartet werden"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1088
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1091
 #, fuzzy
 msgid "Failed to undo"
 msgstr "Rückgängigmachen fehlgeschlagen"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1010
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1013
 #, fuzzy
 msgid "Failed to update folder"
 msgstr "Ordner konnte nicht aktualisiert werden"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1032
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1035
 msgid "Failed to update path"
 msgstr "Pfad konnte nicht aktualisiert werden"
 
@@ -1856,7 +1876,7 @@ msgstr "Ordner"
 
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:109
 #: ../../apps/mobile/src/components/emails/QueueChips.tsx:22
-#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:245
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:247
 #, fuzzy
 msgid "Folder"
 msgstr "Ordner"
@@ -1876,7 +1896,7 @@ msgstr "Ordner gelöscht"
 msgid "Folder updated"
 msgstr "Ordner aktualisiert"
 
-#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:188
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:190
 #, fuzzy
 msgid "Folder will be ignored until connected"
 msgstr "Ordner wird ignoriert, bis er verbunden ist."
@@ -2020,7 +2040,7 @@ msgstr "Entwurfsantwort generieren"
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:53
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:202
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:246
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1436
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1441
 #, fuzzy
 msgid "Generate from inbox"
 msgstr "Aus Posteingang generieren"
@@ -2155,7 +2175,11 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "Großer König,\n\nDie angeforderten Berichte werden vor der Ratsversammlung fertig sein. Ich werde meine Schreiber die Aufzeichnungen der östlichen Gebiete zusammenstellen und sie per Eilkurier vorausschicken.\n\nIn Brüderlichkeit,"
+msgstr "Großer König,\n"
+"\n"
+"Die angeforderten Berichte werden vor der Ratsversammlung fertig sein. Ich werde meine Schreiber die Aufzeichnungen der östlichen Gebiete zusammenstellen und sie per Eilkurier vorausschicken.\n"
+"\n"
+"In Brüderlichkeit,"
 
 #: ../../apps/site/src/components/landing/FinalCTASection.tsx:8
 #, fuzzy
@@ -2171,7 +2195,7 @@ msgid "Help requests, supply issues, and escalations from customers."
 msgstr "Hilfeanfragen, Lieferprobleme und Eskalationen von Kunden."
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:71
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:236
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:237
 #, fuzzy
 msgid "Hide tips"
 msgstr "Tipps ausblenden"
@@ -2226,7 +2250,7 @@ msgid "How it works"
 msgstr "So funktioniert's"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:73
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:236
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:237
 #, fuzzy
 msgid "How to write a good description"
 msgstr "Wie man eine gute Beschreibung schreibt"
@@ -2245,27 +2269,27 @@ msgstr "Wenn ein Konto für diese E-Mail-Adresse existiert, ist ein Reset-Link u
 msgid "If an account exists for that email, we've sent a reset link. Open it to choose a new password, then sign in."
 msgstr "Sofern ein Konto für diese E-Mail-Adresse existiert, haben wir einen Link zum Zurücksetzen des Passworts gesendet. Öffnen Sie ihn, um ein neues Passwort festzulegen, und melden Sie sich dann an."
 
-#: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:52
-#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:44
+#: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:64
+#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:75
 msgid "Ignored"
 msgstr "Ignoriert"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1324
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1329
 #, fuzzy
 msgid "Import"
 msgstr "Importieren"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1187
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1190
 #, fuzzy
 msgid "Import failed"
 msgstr "Import fehlgeschlagen"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1307
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1312
 #, fuzzy
 msgid "Import plan"
 msgstr "Plan importieren"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1302
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1307
 #, fuzzy
 msgid "Import plan (replaces current)"
 msgstr "Plan importieren (ersetzt den aktuellen)"
@@ -2282,24 +2306,24 @@ msgstr "Wichtig: Geben Sie die E-Mail-Adresse des Google-Kontos ein, mit dem Sie
 
 #. placeholder {0}: pendingImportFile.nodes.length
 #. placeholder {1}: pendingImportFile.edges.length
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1560
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1565
 #, fuzzy
 msgid "Importing will replace your current plan with <0>{0} folders</0> and <1>{1} paths</1> from the file. Threads that were sorted into removed folders will become unsorted. This cannot be undone."
 msgstr "Durch den Import wird Ihr aktueller Plan durch <0>{0} Ordner</0> und <1>{1} Pfade</1> aus der Datei ersetzt. Konversationen, die in entfernte Ordner sortiert wurden, werden unsortiert. Dies kann nicht rückgängig gemacht werden."
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:272
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:107
-#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:180
-#: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:42
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:182
+#: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:45
 #: ../../apps/site/src/components/demo/demo-seed.ts:28
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:150
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:473
-#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:40
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:474
+#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:49
 #, fuzzy
 msgid "Inbox"
 msgstr "Posteingang"
 
-#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:181
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:183
 msgid "Inbox (entry point)"
 msgstr "Posteingang (Einstiegspunkt)"
 
@@ -2364,12 +2388,12 @@ msgid "Invalid or missing reset link."
 msgstr "Ungültiger oder fehlender Rücksetzlink."
 
 #. placeholder {0}: validation.error
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1160
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1163
 #, fuzzy
 msgid "Invalid taxonomy file: {0}"
 msgstr "Ungültige Taxonomie-Datei: {0}"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1154
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1157
 #, fuzzy
 msgid "Invalid taxonomy file: {detail}"
 msgstr "Ungültige Taxonomie-Datei: {detail}"
@@ -2413,7 +2437,7 @@ msgstr "Rechnungen"
 msgid "Invoices issued to clients and follow-ups on unpaid amounts."
 msgstr "An Kunden ausgestellte Rechnungen und Nachverfolgung unbezahlter Beträge."
 
-#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:295
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:297
 #, fuzzy
 msgid "Invoices, receipts, and billing questions from clients and vendors."
 msgstr "Rechnungen, Belege und Abrechnungsfragen von Kunden und Lieferanten."
@@ -2511,9 +2535,9 @@ msgstr "Legen Sie Ordner an wie <0>Kunden</0>, <1>Investoren</1>, <2>Personal</2
 msgid "Leads"
 msgstr "Leads"
 
-#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:197
-#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:206
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:503
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:199
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:208
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:504
 #, fuzzy
 msgid "Leave unsorted"
 msgstr "Unsortiert lassen"
@@ -2529,7 +2553,7 @@ msgstr "Rechtliches"
 msgid "Legal, insurance, software subscriptions, and business administration notices."
 msgstr "Rechtliche Hinweise, Versicherungen, Software-Abonnements und Mitteilungen zur Geschäftsverwaltung."
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:435
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:436
 msgid "List the kinds of emails that belong here: senders, topics, keywords. Aim for a full sentence."
 msgstr "Listen Sie hier die Arten von E-Mails auf, die hierher gehören: Absender, Themen, Schlüsselwörter. Formulieren Sie einen vollständigen Satz."
 
@@ -2538,7 +2562,7 @@ msgstr "Listen Sie hier die Arten von E-Mails auf, die hierher gehören: Absende
 #~ msgid "List the kinds of emails that belong here: senders, topics, keywords. At least 30 characters."
 #~ msgstr "Listen Sie die Arten von E-Mails auf, die hierher gehören: Absender, Themen, Schlüsselwörter. Mindestens 30 Zeichen."
 
-#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:304
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:306
 #, fuzzy
 msgid "List the senders, topics, and keywords that belong here. At least {minDescriptionLength} characters. ({descriptionLength}/{minDescriptionLength})"
 msgstr "Führen Sie Absender, Themen und Schlüsselwörter auf, die hierher gehören. Mindestens {minDescriptionLength} Zeichen. ({descriptionLength}/{minDescriptionLength})"
@@ -2680,13 +2704,13 @@ msgstr "Weitere Konversationen über Ihr {plan}-Abonnementlimit hinaus werden ni
 msgid "Most popular"
 msgstr "Am beliebtesten"
 
-#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:384
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:497
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:386
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:498
 #, fuzzy
 msgid "Move them to"
 msgstr "Verschiebe sie nach"
 
-#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:469
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:471
 #, fuzzy
 msgid "Move threads to"
 msgstr "Konversationen verschieben nach"
@@ -2717,8 +2741,8 @@ msgstr "Meine Reisen führen mich in den kommenden Tagen in die Nähe des Deltas
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:233
 #: ../../apps/mobile/app/(app)/account.tsx:131
-#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:269
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:409
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:271
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:410
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:15
 #, fuzzy
 msgid "Name"
@@ -2756,7 +2780,7 @@ msgstr "Neue Bewerbung von Horemheb aus Theben."
 msgid "New business inquiries, proposals, pricing discussions, and prospective client outreach."
 msgstr "Neue Geschäftsanfragen, Angebote, Preisdiskussionen und Akquise potenzieller Kunden."
 
-#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:247
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:249
 #: ../ui/src/emails/EmailRail.tsx:95
 #: ../ui/src/emails/EmailRail.tsx:100
 msgid "New folder"
@@ -2819,7 +2843,7 @@ msgstr "Keine Ordner definiert"
 msgid "No folders match"
 msgstr "Keine passenden Ordner"
 
-#: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:370
+#: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:374
 #: ../../apps/mobile/src/components/emails/FolderFilterSheet.tsx:69
 msgid "No folders yet"
 msgstr "Noch keine Ordner"
@@ -2834,7 +2858,7 @@ msgstr "Kein Gmail-Posteingang mit diesem Workspace verbunden."
 msgid "No Gmail inbox connected. Connect your account to start syncing."
 msgstr "Kein Gmail-Postfach verbunden. Verbinden Sie Ihr Konto, um die Synchronisierung zu starten."
 
-#: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:368
+#: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:372
 #, fuzzy
 msgid "No matching folders"
 msgstr "Keine passenden Ordner"
@@ -2890,9 +2914,9 @@ msgstr "Kein Workspace"
 msgid "None"
 msgstr "Keine"
 
-#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:187
-#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:202
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:470
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:189
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:204
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:471
 #, fuzzy
 msgid "None (not connected)"
 msgstr "Keine (nicht verbunden)"
@@ -2980,12 +3004,12 @@ msgstr "Open-Source KI E-Mail-Vorsortierung. Gmail-fokussiert. Gehostet oder sel
 msgid "Operations"
 msgstr "Betrieb"
 
-#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:355
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:357
 #, fuzzy
 msgid "Optional. Applied when generating draft replies for this folder."
 msgstr "Optional. Wird beim Generieren von Antwortentwürfen für diesen Ordner angewendet."
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:456
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:457
 msgid "Optional. Applied when generating draft replies for threads in this folder."
 msgstr "Optional. Wird angewendet, wenn Entwurfsantworten für Konversationen in diesem Ordner generiert werden."
 
@@ -3010,9 +3034,9 @@ msgstr "Bezahlter oder aktualisierter Personal-Tarif"
 msgid "Paid or upgraded workspace"
 msgstr "Bezahlter oder aktualisierter Workspace"
 
-#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:319
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:464
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:621
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:321
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:465
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:622
 msgid "Parent"
 msgstr "Übergeordnet"
 
@@ -3148,7 +3172,7 @@ msgid "Plan"
 msgstr "Plan"
 
 #. “Plan” here is the email-sorting taxonomy, not a billing or subscription plan.
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1241
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1246
 msgid "Plan is view-only. Only workspace admins can edit it."
 msgstr "Der Plan ist schreibgeschützt. Nur Arbeitsbereichs-Admins können ihn bearbeiten."
 
@@ -3291,7 +3315,7 @@ msgid "Read-only · OAuth · revoke anytime"
 msgstr "Nur Lesezugriff · OAuth · Jederzeit widerrufbar"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:91
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:269
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:270
 #, fuzzy
 msgid "Receipts, payment confirmations, and billing questions from vendors."
 msgstr "Belege, Zahlungsbestätigungen und Rechnungsfragen von Anbietern."
@@ -3332,7 +3356,7 @@ msgstr "Recruiting"
 msgid "Redirecting…"
 msgstr "Weiterleiten…"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1262
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1267
 #, fuzzy
 msgid "Redo"
 msgstr "Wiederholen"
@@ -3369,7 +3393,7 @@ msgstr "{0} entfernen"
 msgid "Remove {email} from blacklist"
 msgstr "{email} von der Blacklist entfernen"
 
-#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:429
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:431
 msgid "Remove its child folders before deleting this one."
 msgstr "Entfernen Sie die Unterordner, bevor Sie diesen löschen."
 
@@ -3411,17 +3435,17 @@ msgstr "Monatliche Erneuerung am <0>{0}</0>."
 msgid "Renews on <0>{0}</0>."
 msgstr "Erneuert am <0>{0}</0>."
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1546
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1551
 #, fuzzy
 msgid "Replace plan?"
 msgstr "Plan ersetzen?"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1584
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1589
 #, fuzzy
 msgid "Replace taxonomy"
 msgstr "Taxonomie ersetzen"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1613
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1618
 #, fuzzy
 msgid "Replace with a template"
 msgstr "Mit einer Vorlage ersetzen"
@@ -3515,7 +3539,11 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "Rib-Hadda,\n\nWir haben deine Botschaft empfangen. Zusätzliches Getreide wurde aus den südlichen Lagern geordert und trifft vor dem Erntefest ein. Wir bitten dich um Geduld bis dahin.\n\nBleibe gesund,"
+msgstr "Rib-Hadda,\n"
+"\n"
+"Wir haben deine Botschaft empfangen. Zusätzliches Getreide wurde aus den südlichen Lagern geordert und trifft vor dem Erntefest ein. Wir bitten dich um Geduld bis dahin.\n"
+"\n"
+"Bleibe gesund,"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -3547,9 +3575,9 @@ msgstr "Wie beim Monatsabo"
 
 #: ../../apps/mobile/src/components/EditNameSheet.tsx:66
 #: ../../apps/mobile/src/components/RenameWorkspaceSheet.tsx:74
-#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:447
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:538
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:650
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:449
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:539
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:651
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:29
 msgid "Save"
 msgstr "Speichern"
@@ -3568,13 +3596,13 @@ msgstr "Sparen Sie jede Woche Stunden bei der Vorsortierung. Lassen Sie Amarnai 
 msgid "Save up to 20% annually"
 msgstr "Sparen Sie bis zu 20 % jährlich"
 
-#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:443
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:445
 msgid "Saving..."
 msgstr "Wird gespeichert..."
 
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:75
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:538
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:650
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:539
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:651
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:29
 #, fuzzy
 msgid "Saving…"
@@ -3848,12 +3876,12 @@ msgid "Start free"
 msgstr "Kostenlos starten"
 
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:52
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1614
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1619
 #, fuzzy
 msgid "Start from a template"
 msgstr "Von einer Vorlage starten"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1327
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1332
 #, fuzzy
 msgid "Start from a template (replaces current)"
 msgstr "Von einer Vorlage starten (ersetzt die aktuelle)"
@@ -4001,7 +4029,7 @@ msgstr "Team"
 msgid "Template applied"
 msgstr "Vorlage angewendet"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1351
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1356
 msgid "Templates"
 msgstr "Vorlagen"
 
@@ -4032,6 +4060,11 @@ msgstr "Der Autorisierungs-Callback war unvollständig. Bitte versuchen Sie es e
 #, fuzzy
 msgid "The authorization request expired or was tampered with. Please try again."
 msgstr "Die Autorisierungsanfrage ist abgelaufen oder wurde manipuliert. Bitte versuchen Sie es erneut."
+
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:432
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1234
+#~ msgid "The catch-all folder can't be deleted. Automated and bulk mail is filed here."
+#~ msgstr "Der Catch-all-Ordner kann nicht gelöscht werden. Automatisierte und Massen-Mails werden hier abgelegt."
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:56
 #, fuzzy
@@ -4088,12 +4121,12 @@ msgstr "Diese Kollaboratoren verlieren den Zugriff am {0}:"
 msgid "These settings control which Gmail threads are imported. Trash is always excluded."
 msgstr "Diese Einstellungen steuern, welche Gmail-Konversationen importiert werden. Der Papierkorb ist immer ausgeschlossen."
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1233
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1238
 #, fuzzy
 msgid "This folder has child folders. Remove their Paths first, then delete it."
 msgstr "Dieser Ordner hat Unterordner. Entfernen Sie zuerst deren Pfade, dann löschen Sie ihn."
 
-#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:32
+#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:34
 msgid "This folder is not reachable from the inbox and will not be used for routing."
 msgstr "Dieser Ordner ist vom Posteingang aus nicht erreichbar und wird nicht für die Weiterleitung verwendet."
 
@@ -4190,7 +4223,13 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "An meinen Bruder, den Großen König,\n\nDer Große Rat tritt zu Beginn von Shemu zusammen. Ich bitte Euch, eine vollständige Abrechnung der östlichen Gebiete zu erstellen und diese per Eilkurier vorauszuschicken, möglichst vor dem Neumond.\n\nUnsere Allianz ist stark. Zeigen wir dem Rat, dass sie es bleibt.\n\nTushratta, Großer König von Mitanni"
+msgstr "An meinen Bruder, den Großen König,\n"
+"\n"
+"Der Große Rat tritt zu Beginn von Shemu zusammen. Ich bitte Euch, eine vollständige Abrechnung der östlichen Gebiete zu erstellen und diese per Eilkurier vorauszuschicken, möglichst vor dem Neumond.\n"
+"\n"
+"Unsere Allianz ist stark. Zeigen wir dem Rat, dass sie es bleibt.\n"
+"\n"
+"Tushratta, Großer König von Mitanni"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:163
 #, fuzzy
@@ -4199,7 +4238,11 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "An das Büro für königliche Ernennungen,\n\nWir haben die Bewerbung von Horemheb aus Theben erhalten und werden seine Akten vor dem nächsten Neumond prüfen. Bitte informiert ihn, dass wir uns zu gegebener Zeit melden werden.\n\nDurch königlichen Erlass,"
+msgstr "An das Büro für königliche Ernennungen,\n"
+"\n"
+"Wir haben die Bewerbung von Horemheb aus Theben erhalten und werden seine Akten vor dem nächsten Neumond prüfen. Bitte informiert ihn, dass wir uns zu gegebener Zeit melden werden.\n"
+"\n"
+"Durch königlichen Erlass,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:274
 #, fuzzy
@@ -4210,7 +4253,13 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "An den Großen König,\n\nSeit vielen Jahren sind unsere Häuser wie Brüder. Ich schreibe nun, um vorzuschlagen, dass wir diese Freundschaft zum Wohle beider Völker formalisieren: einen Pakt des gegenseitigen Schutzes und der gemeinsamen Routen.\n\nIch bitte lediglich darum, dass Ihr meine Bedingungen anhört. Sendet eine Nachricht mit dem nächsten Kurier, und ich werde meinen Gesandten sogleich entsenden.\n\nAziru, Diener des Großen Königs, Herr von Amurru"
+msgstr "An den Großen König,\n"
+"\n"
+"Seit vielen Jahren sind unsere Häuser wie Brüder. Ich schreibe nun, um vorzuschlagen, dass wir diese Freundschaft zum Wohle beider Völker formalisieren: einen Pakt des gegenseitigen Schutzes und der gemeinsamen Routen.\n"
+"\n"
+"Ich bitte lediglich darum, dass Ihr meine Bedingungen anhört. Sendet eine Nachricht mit dem nächsten Kurier, und ich werde meinen Gesandten sogleich entsenden.\n"
+"\n"
+"Aziru, Diener des Großen Königs, Herr von Amurru"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:384
 #, fuzzy
@@ -4219,7 +4268,11 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "An den Großen König,\n\nMeine Reisen führen mich in den kommenden Tagen in die Nähe des Deltas. Falls der Große König eine Stunde erübrigen kann, würde ich die Gelegenheit begrüßen, von Angesicht zu Angesicht zu sprechen; manche Dinge lassen sich leichter sagen als schreiben.\n\nEuer Diener, Abdi-Heba, Gouverneur von Urushalim"
+msgstr "An den Großen König,\n"
+"\n"
+"Meine Reisen führen mich in den kommenden Tagen in die Nähe des Deltas. Falls der Große König eine Stunde erübrigen kann, würde ich die Gelegenheit begrüßen, von Angesicht zu Angesicht zu sprechen; manche Dinge lassen sich leichter sagen als schreiben.\n"
+"\n"
+"Euer Diener, Abdi-Heba, Gouverneur von Urushalim"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:153
 #, fuzzy
@@ -4228,7 +4281,11 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "An den Großen König, mein Bruder,\n\nDeine Worte haben mich erreicht. Das Gold wird vor dem Aufbruch des nächsten Boten entsandt. Wir schätzen die Bindung zwischen unseren Häusern und wünschen nicht, dass sie abkühlt.\n\nIn Freundschaft,"
+msgstr "An den Großen König, mein Bruder,\n"
+"\n"
+"Deine Worte haben mich erreicht. Das Gold wird vor dem Aufbruch des nächsten Boten entsandt. Wir schätzen die Bindung zwischen unseren Häusern und wünschen nicht, dass sie abkühlt.\n"
+"\n"
+"In Freundschaft,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:236
 #, fuzzy
@@ -4239,7 +4296,13 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "An den Großen König, mein Bruder,\n\nIch schreibe in Freundschaft, wie unsere Väter vor uns schrieben. Die dritte unter unserem Vertrag vereinbarte Goldlieferung ist nicht eingetroffen. Zwei Boten sind bereits vorbeigezogen, und wir warten immer noch.\n\nWir bitten Euch, sie ohne weitere Verzögerung zu entsenden, wie es der Bindung zwischen unseren Häusern geziemt.\n\nBurna-Buriash II, König von Babylon"
+msgstr "An den Großen König, mein Bruder,\n"
+"\n"
+"Ich schreibe in Freundschaft, wie unsere Väter vor uns schrieben. Die dritte unter unserem Vertrag vereinbarte Goldlieferung ist nicht eingetroffen. Zwei Boten sind bereits vorbeigezogen, und wir warten immer noch.\n"
+"\n"
+"Wir bitten Euch, sie ohne weitere Verzögerung zu entsenden, wie es der Bindung zwischen unseren Häusern geziemt.\n"
+"\n"
+"Burna-Buriash II, König von Babylon"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:346
 msgid "To the Great King, my lord, my sun,\n"
@@ -4249,7 +4312,13 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "An den Großen König, mein Herr, meine Sonne,\n\nDas Getreide, das Ihr letzten Monat sandtet, wurde dankbar empfangen, und ich lobte Euren Namen vor dem Volk. Doch ich muss erneut schreiben: Die dritte Lieferung ist nicht eingetroffen, und die Stadt wird unruhig.\n\nIch habe bereits siebenmal geschrieben. Ich möchte Euch nicht behelligen, doch was bleibt mir anderes übrig?\n\nEuer Diener, Rib-Hadda, Gouverneur von Byblos"
+msgstr "An den Großen König, mein Herr, meine Sonne,\n"
+"\n"
+"Das Getreide, das Ihr letzten Monat sandtet, wurde dankbar empfangen, und ich lobte Euren Namen vor dem Volk. Doch ich muss erneut schreiben: Die dritte Lieferung ist nicht eingetroffen, und die Stadt wird unruhig.\n"
+"\n"
+"Ich habe bereits siebenmal geschrieben. Ich möchte Euch nicht behelligen, doch was bleibt mir anderes übrig?\n"
+"\n"
+"Euer Diener, Rib-Hadda, Gouverneur von Byblos"
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:19
 #: ../ui/src/emails/ThreadList.tsx:15
@@ -4310,7 +4379,7 @@ msgid "Unclassified"
 msgstr "Unklassifiziert"
 
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:291
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1253
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1258
 #: ../../apps/web/src/app/admin/waitlist/page.tsx:26
 #: ../ui/src/emails/MockEmailsPage.tsx:250
 #, fuzzy
@@ -4321,12 +4390,12 @@ msgstr "Rückgängig machen"
 msgid "University"
 msgstr "Universität"
 
-#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:203
-#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:207
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:205
+#: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:209
 msgid "Unknown"
 msgstr "Unbekannt"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1153
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1156
 #, fuzzy
 msgid "unknown error"
 msgstr "unbekannter Fehler"
@@ -4386,7 +4455,9 @@ msgstr "Update fehlgeschlagen"
 msgid "Update payment method"
 msgstr "Zahlungsmethode aktualisieren"
 
+#: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:47
 #: ../ui/src/i18n/taxonomy-template-messages.ts:95
+#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:51
 #, fuzzy
 msgid "Updates / Other"
 msgstr "Updates / Sonstiges"
@@ -4455,7 +4526,7 @@ msgstr "Verwenden Sie „Posteingang erneut scannen“, nachdem Sie Filter geän
 msgid "Use a template"
 msgstr "Eine Vorlage verwenden"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1716
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1721
 #, fuzzy
 msgid "Use template"
 msgstr "Vorlage verwenden"
@@ -4556,7 +4627,7 @@ msgstr "Welches KI-Modell verwendet Amarnai?"
 msgid "What happens to threads Amarnai is unsure about?"
 msgstr "Was passiert mit Konversationen, bei denen sich Amarnai unsicher ist?"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:479
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:480
 #, fuzzy
 msgid "Where this folder sits. Folders with no parent stay disconnected and are ignored until connected."
 msgstr "Wo sich dieser Ordner befindet. Ordner ohne übergeordneten Ordner bleiben getrennt und werden ignoriert, bis sie verbunden werden."

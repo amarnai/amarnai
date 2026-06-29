@@ -72,8 +72,23 @@ function validFile() {
         positionX: 100,
         positionY: 80,
       },
+      {
+        ref: "other",
+        name: "Updates / Other",
+        description: "Automated notifications and bulk mail that doesn't fit another folder.",
+        instructions: null,
+        draftPrompt: null,
+        examples: [],
+        isRoot: false,
+        isCatchAll: true,
+        positionX: 100,
+        positionY: 160,
+      },
     ],
-    edges: [{ sourceRef: "root", targetRef: "n1" }],
+    edges: [
+      { sourceRef: "root", targetRef: "n1" },
+      { sourceRef: "root", targetRef: "other" },
+    ],
   };
 }
 
@@ -153,8 +168,8 @@ describe("POST /workspaces/:workspaceId/taxonomy-import", () => {
     expect(res.status).toBe(200);
     const body = await res.json() as { ok: boolean; nodeCount: number; edgeCount: number };
     expect(body.ok).toBe(true);
-    expect(body.nodeCount).toBe(2);
-    expect(body.edgeCount).toBe(1);
+    expect(body.nodeCount).toBe(3);
+    expect(body.edgeCount).toBe(2);
   });
 
   it("happy path: deletes existing edges before nodes", async () => {

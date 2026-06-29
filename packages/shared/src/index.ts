@@ -1,6 +1,7 @@
 export const APP_NAME = "Amarnai" as const;
 
 export * from "./taxonomy-routable.js";
+export * from "./taxonomy-defaults.js";
 
 export * from "./schemas/auth.js";
 export * from "./schemas/email-metadata.js";

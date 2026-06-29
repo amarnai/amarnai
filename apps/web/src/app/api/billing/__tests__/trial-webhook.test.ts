@@ -25,10 +25,10 @@ vi.mock("@amarnai/db", () => ({
     providerSyncState: { updateMany: vi.fn() },
     $transaction: vi.fn(),
   },
-  ensureInboxNode: vi.fn(),
+  ensureInboxTaxonomy: vi.fn(),
 }));
 
-import { db, ensureInboxNode } from "@amarnai/db";
+import { db, ensureInboxTaxonomy } from "@amarnai/db";
 import { POST } from "@/app/api/billing/webhook/route";
 
 const WEBHOOK_SECRET = "test_signing_secret_not_real";
@@ -194,7 +194,7 @@ beforeEach(() => {
   vi.mocked(db.user.update).mockResolvedValue({} as never);
   vi.mocked(db.workspaceMember.deleteMany).mockResolvedValue({ count: 0 } as never);
   vi.mocked(db.auditLog.create).mockResolvedValue({} as never);
-  vi.mocked(ensureInboxNode).mockResolvedValue(undefined as never);
+  vi.mocked(ensureInboxTaxonomy).mockResolvedValue(undefined as never);
 
   vi.spyOn(testStripe.subscriptions, "retrieve").mockResolvedValue(
     SUBSCRIPTION_WITH_TRIAL as never

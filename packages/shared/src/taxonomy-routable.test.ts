@@ -5,13 +5,13 @@ import {
   TAXONOMY_MIN_NON_ROOT_NODES,
 } from "./taxonomy-routable.js";
 
-type N = { id: string; isRoot: boolean };
+type N = { id: string; isRoot: boolean; isCatchAll: boolean };
 type E = { sourceNodeId: string; targetNodeId: string };
 
-const root: N = { id: "root", isRoot: true };
+const root: N = { id: "root", isRoot: true, isCatchAll: false };
 
 function node(id: string): N {
-  return { id, isRoot: false };
+  return { id, isRoot: false, isCatchAll: false };
 }
 
 function edge(source: string, target: string): E {

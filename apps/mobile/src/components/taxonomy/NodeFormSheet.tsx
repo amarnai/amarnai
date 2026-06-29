@@ -136,6 +136,8 @@ export function NodeFormSheet({
     () => (node ? edges.some((e) => e.sourceNodeId === node.id) : false),
     [edges, node],
   );
+  // A folder with child folders cannot be deleted until they are reparented.
+  const deleteBlocked = nodeHasChildren;
 
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -227,7 +229,7 @@ export function NodeFormSheet({
   }
 
   function handleDeletePress() {
-    if (nodeHasChildren) return;
+    if (deleteBlocked) return;
     if ((node?.threadCount ?? 0) > 0) {
       setConfirmingDelete(true);
     } else {
@@ -408,14 +410,14 @@ export function NodeFormSheet({
                   </View>
                 ) : (
                   <TouchableOpacity
-                    style={[styles.deleteLink, nodeHasChildren && styles.deleteLinkDisabled]}
+                    style={[styles.deleteLink, deleteBlocked && styles.deleteLinkDisabled]}
                     onPress={handleDeletePress}
-                    disabled={submitting || nodeHasChildren}
+                    disabled={submitting || deleteBlocked}
                   >
                     <Text
                       style={[
                         styles.deleteLinkText,
-                        nodeHasChildren && styles.deleteLinkTextDisabled,
+                        deleteBlocked && styles.deleteLinkTextDisabled,
                       ]}
                     >
                       <Trans>Delete folder</Trans>

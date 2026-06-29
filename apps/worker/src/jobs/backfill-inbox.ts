@@ -495,7 +495,7 @@ export function createBackfillInboxWorker(): Worker {
           const [taxonomyNodes, taxonomyEdges] = await Promise.all([
             db.taxonomyNode.findMany({
               where: { workspaceId },
-              select: { id: true, isRoot: true },
+              select: { id: true, isRoot: true, isCatchAll: true },
             }),
             db.taxonomyEdge.findMany({
               where: { workspaceId },

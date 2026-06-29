@@ -176,6 +176,27 @@ export function validateTaxonomyTransfer(
     return { ok: false, error: "Taxonomy contains a cycle" };
   }
 
+  // Exactly one catch-all, which must be a non-root leaf. The catch-all is the
+  // mandatory structural home for automated/bulk mail; it is excluded from
+  // routing, so a missing one silently breaks bulk filing and a non-leaf one
+  // would orphan its children from the router. The app guarantees one per
+  // workspace, and import/generation must preserve that. Checked last so a file
+  // with other structural problems reports those first.
+  const catchAllNodes = nodes.filter((n) => n.isCatchAll);
+  if (catchAllNodes.length === 0) {
+    return { ok: false, error: "Taxonomy must have exactly one catch-all folder (e.g. Updates / Other)" };
+  }
+  if (catchAllNodes.length > 1) {
+    return { ok: false, error: "Taxonomy must have exactly one catch-all folder. Found multiple." };
+  }
+  const catchAll = catchAllNodes[0]!;
+  if (catchAll.isRoot) {
+    return { ok: false, error: "The catch-all folder cannot also be the root (Inbox)" };
+  }
+  if (edges.some((e) => e.sourceRef === catchAll.ref)) {
+    return { ok: false, error: `Catch-all folder "${catchAll.name}" must be a leaf (it cannot have sub-folders)` };
+  }
+
   return { ok: true, data: file };
 }
 

@@ -131,6 +131,7 @@ function TaxonomyNodeCard({ data, selected }: NodeProps<RFNode>) {
       name={node.name}
       {...(node.description ? { description: node.description } : {})}
       isRoot={node.isRoot}
+      isCatchAll={node.isCatchAll}
       ignoredReason={ignoredReason}
       selected={selected}
     />
@@ -929,7 +930,9 @@ function TaxonomyCanvasInner({
     (_event, rfNode) => {
       if (readOnly) return;
       const found = dbNodes.find((n) => n.id === rfNode.id);
-      if (found && !found.isRoot) openPanel({ type: "edit-node", node: found });
+      // The inbox root and the catch-all are fixed nodes and are not editable.
+      if (found && !found.isRoot && !found.isCatchAll)
+        openPanel({ type: "edit-node", node: found });
     },
     [dbNodes, readOnly],
   );
@@ -1162,7 +1165,7 @@ function TaxonomyCanvasInner({
     }
 
     const currentlyRoutable = isTaxonomyRoutable(
-      rfNodes.map((n) => ({ id: n.id, isRoot: n.data.node.isRoot })),
+      rfNodes.map((n) => ({ id: n.id, isRoot: n.data.node.isRoot, isCatchAll: n.data.node.isCatchAll })),
       rfEdges.map((e) => ({ sourceNodeId: e.source, targetNodeId: e.target })),
     );
 
@@ -1216,7 +1219,7 @@ function TaxonomyCanvasInner({
   // ─── Render ───────────────────────────────────────────────────────────────
 
   const taxonomyIsRoutable = isTaxonomyRoutable(
-    rfNodes.map((n) => ({ id: n.id, isRoot: n.data.node.isRoot })),
+    rfNodes.map((n) => ({ id: n.id, isRoot: n.data.node.isRoot, isCatchAll: n.data.node.isCatchAll })),
     rfEdges.map((e) => ({ sourceNodeId: e.source, targetNodeId: e.target })),
   );
 
@@ -1224,6 +1227,8 @@ function TaxonomyCanvasInner({
     matchesTemplate(dbNodes, dbEdges, t),
   );
 
+  // The catch-all is not editable (its panel never opens), so the only
+  // delete-disabled reason left here is having child folders.
   let nodeDeleteDisabledReason: string | null = null;
   if (panel.type === "edit-node") {
     const nodeHasOutgoingEdges = dbEdges.some(
@@ -1385,7 +1390,7 @@ function TaxonomyCanvasInner({
         // routing threshold. Derived from live canvas state so the indicator
         // updates the moment an edge connects a node to the inbox.
         const routableCount = countRoutableNonRootNodes(
-          rfNodes.map((n) => ({ id: n.id, isRoot: n.data.node.isRoot })),
+          rfNodes.map((n) => ({ id: n.id, isRoot: n.data.node.isRoot, isCatchAll: n.data.node.isCatchAll })),
           rfEdges.map((e) => ({
             sourceNodeId: e.source,
             targetNodeId: e.target,

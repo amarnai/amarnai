@@ -11,7 +11,13 @@ import { generateTaxonomyFromProfile } from "./generate.js";
 const NOW = new Date("2026-06-24T12:00:00.000Z");
 
 function validFile(): TaxonomyTransferFile {
-  const node = (ref: string, name: string, description: string | null, isRoot = false) => ({
+  const node = (
+    ref: string,
+    name: string,
+    description: string | null,
+    isRoot = false,
+    isCatchAll = false,
+  ) => ({
     ref,
     name,
     description,
@@ -19,6 +25,7 @@ function validFile(): TaxonomyTransferFile {
     draftPrompt: null,
     examples: [],
     isRoot,
+    isCatchAll,
     positionX: 0,
     positionY: 0,
   });
@@ -30,11 +37,13 @@ function validFile(): TaxonomyTransferFile {
       node("a", "Clients", "Messages from and about active clients and their projects."),
       node("b", "Finance", "Invoices, payments, receipts, and other financial records."),
       node("c", "Personal", "Personal, non-work messages that still matter to you."),
+      node("updates_other", "Updates / Other", "Automated notifications and bulk mail that doesn't fit another folder.", false, true),
     ],
     edges: [
       { sourceRef: "root", targetRef: "a" },
       { sourceRef: "root", targetRef: "b" },
       { sourceRef: "root", targetRef: "c" },
+      { sourceRef: "root", targetRef: "updates_other" },
     ],
   };
 }
@@ -145,6 +154,49 @@ describe("generateTaxonomyFromProfile", () => {
       now: NOW,
     });
     expect(result.usedFallback).toBe(true);
+  });
+
+  it("designates a catch-all when the model omits it (no fallback)", async () => {
+    // Model returns a structurally fine tree but drops every isCatchAll flag.
+    const noCatchAll = validFile();
+    for (const n of noCatchAll.nodes) n.isCatchAll = false;
+    const provider = new MockProvider([JSON.stringify(noCatchAll)]);
+    const result = await generateTaxonomyFromProfile({
+      profile: PROFILE,
+      seed, // seed's catch-all ref is "updates_other"
+      matchedTemplateName: "Freelancer",
+      targetLanguage: "English",
+      provider,
+      now: NOW,
+    });
+    // Normalized in-place, not fallen back to the seed.
+    expect(result.usedFallback).toBe(false);
+    expect(provider.calls).toBe(1);
+    const catchAlls = result.file.nodes.filter((n) => n.isCatchAll);
+    expect(catchAlls).toHaveLength(1);
+    // Prefers the seed's catch-all ref when present in the output.
+    expect(catchAlls[0]!.ref).toBe("updates_other");
+    expect(validateTaxonomyTransfer(result.file).ok).toBe(true);
+  });
+
+  it("collapses multiple catch-alls down to exactly one", async () => {
+    const many = validFile();
+    // Flag two extra leaves as catch-all in addition to updates_other.
+    for (const n of many.nodes) {
+      if (n.ref === "a" || n.ref === "b") n.isCatchAll = true;
+    }
+    const provider = new MockProvider([JSON.stringify(many)]);
+    const result = await generateTaxonomyFromProfile({
+      profile: PROFILE,
+      seed,
+      matchedTemplateName: "Freelancer",
+      targetLanguage: "English",
+      provider,
+      now: NOW,
+    });
+    expect(result.usedFallback).toBe(false);
+    expect(result.file.nodes.filter((n) => n.isCatchAll)).toHaveLength(1);
+    expect(validateTaxonomyTransfer(result.file).ok).toBe(true);
   });
 
   it("stamps a fresh envelope (version + timestamp), ignoring the model's", async () => {

@@ -412,6 +412,16 @@ describe("PATCH /workspaces/:workspaceId/taxonomy-nodes/:nodeId", () => {
     expect(body.error).toMatch(/isRoot/i);
   });
 
+  it("returns 400 when body includes isCatchAll", async () => {
+    const res = await patch(
+      `/workspaces/${WS_ID}/taxonomy-nodes/${NODE_ID}`,
+      { isCatchAll: true }
+    );
+    expect(res.status).toBe(400);
+    const body = await res.json() as { error: string };
+    expect(body.error).toMatch(/isCatchAll/i);
+  });
+
   it("allows other field changes on the root node", async () => {
     const updated = { ...baseNode, name: "Renamed Root", isRoot: true };
     vi.mocked(db.taxonomyNode.findUnique).mockResolvedValue(
@@ -582,6 +592,17 @@ describe("DELETE /workspaces/:workspaceId/taxonomy-nodes/:nodeId", () => {
     expect(res.status).toBe(422);
     const body = await res.json() as { error: string };
     expect(body.error).toMatch(/inbox/i);
+  });
+
+  it("returns 422 when node is the catch-all folder", async () => {
+    vi.mocked(db.taxonomyNode.findUnique).mockResolvedValue(
+      { ...baseNode, isCatchAll: true, _count: { outgoingEdges: 0, incomingEdges: 1, classifications: 0 } } as never
+    );
+
+    const res = await del(`/workspaces/${WS_ID}/taxonomy-nodes/${NODE_ID}`);
+    expect(res.status).toBe(422);
+    const body = await res.json() as { error: string };
+    expect(body.error).toMatch(/catch-all/i);
   });
 
   it("returns 422 when node has outgoing edges", async () => {
