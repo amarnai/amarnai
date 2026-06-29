@@ -37,6 +37,7 @@ import {
   ALL_EDGES,
   TEST_EMAILS,
   TEST_EMAILS_INTL,
+  TEST_EMAILS_FWD,
   ALL_NODES_D2,
   ALL_EDGES_D2,
   D2_AMBIGUOUS_EMAIL,
@@ -84,6 +85,8 @@ const DATASETS: Array<{
   // B6 multilingual sets (100 threads, 16 locales).
   { nodes: ALL_NODES, edges: ALL_EDGES, emails: ML_FLAT },
   { nodes: ALL_NODES_D3, edges: ALL_EDGES_D3, emails: ML_D3 },
+  // B7 forwarded + reply-thread fixtures (flat taxonomy).
+  { nodes: ALL_NODES, edges: ALL_EDGES, emails: TEST_EMAILS_FWD },
   { nodes: ALL_NODES_D2, edges: ALL_EDGES_D2, emails: [D2_AMBIGUOUS_EMAIL] },
   { nodes: ALL_NODES_D3, edges: ALL_EDGES_D3, emails: TEST_EMAILS_D3 },
   { nodes: ALL_NODES_FM, edges: ALL_EDGES_FM, emails: TEST_EMAILS_FM },

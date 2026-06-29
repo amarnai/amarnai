@@ -1102,23 +1102,29 @@ export const TEST_EMAILS_INTL: TestEmail[] = [
   },
 
   {
-    // German — Finance with a long UNQUOTED, off-topic (HR/recruitment) tail
-    // introduced by "schrieb …:". The tail has no ">" markers, so the legacy
-    // English-only cleaner keeps it entirely and pollutes the vector toward HR;
-    // B4's structural detector strips it, leaving a clean Finance signal. This is
-    // the case that isolates B4's value on the production model — German Finance
-    // is known to clear the routing threshold on this taxonomy.
-    id: "de-finance-unquoted-offtopic-tail",
+    // German — Finance reply thread (multi-message). msg1 is the original
+    // invoice; msg2 is the reply quoting it. Under the positional rule msg2's
+    // redundant quoted tail is stripped (its content survives via msg1), and the
+    // thread routes to Finance.
+    id: "de-finance-reply-thread",
     difficulty: "medium",
     messages: [
       {
-        subject: "Zahlungsfrist und Bankverbindung für Rechnung INV-2026-0099",
+        subject: "Rechnung INV-2026-0099",
+        senderEmail: "rechnung@example.com",
+        senderName: "Rechnungsstelle",
+        bodyText:
+          "Guten Tag, anbei die Rechnung INV-2026-0099 über 4.800 EUR für das vierte Quartal. Die Zahlungsfrist beträgt 30 Tage; die Bankverbindung finden Sie auf der Rechnung.",
+        receivedAt: SENT_AT,
+      },
+      {
+        subject: "Re: Rechnung INV-2026-0099",
         senderEmail: "buchhaltung@kunde.de",
         senderName: "Buchhaltung",
         bodyText:
-          "Guten Tag, bitte bestätigen Sie die Zahlungsfrist und die Bankverbindung für die Rechnung INV-2026-0099 über 4.800 EUR, damit wir die Überweisung fristgerecht veranlassen können.\n\n" +
-          "Am 10. Januar 2026 um 09:00 schrieb Personalabteilung <personal@firma.de>:\n" +
-          "Vielen Dank für Ihre Bewerbung auf die Stelle als Softwareentwickler. Wir möchten Sie gerne zu einem Vorstellungsgespräch einladen. Bitte teilen Sie uns Ihre Verfügbarkeit für nächste Woche mit. Im Gespräch besprechen wir das Gehalt, den Urlaubsanspruch, die betriebliche Altersvorsorge und Ihren möglichen Eintrittstermin im Team.",
+          "Vielen Dank, wir bestätigen den Erhalt und werden die Überweisung fristgerecht veranlassen. Können Sie uns die Bankverbindung noch einmal zusenden?\n\n" +
+          "Am 10. Januar 2026 um 14:15 schrieb Rechnungsstelle <rechnung@example.com>:\n" +
+          "> Guten Tag, anbei die Rechnung INV-2026-0099 über 4.800 EUR für das vierte Quartal. Die Zahlungsfrist beträgt 30 Tage; die Bankverbindung finden Sie auf der Rechnung.",
         receivedAt: SENT_AT,
       },
     ],
@@ -1127,9 +1133,10 @@ export const TEST_EMAILS_INTL: TestEmail[] = [
   },
 
   {
-    // Inline quote preserved + trailing reply chain removed. The "> can you
-    // still reproduce…" line is an intentional inline quotation the author
-    // answers, and must survive cleaning; the "On … wrote:" tail must not.
+    // Single-message thread, so under the positional rule the tail is kept. The
+    // inline quote ("> can you still reproduce…") the author answers is part of
+    // the support signal; the trailing reply chain is same-domain, so keeping it
+    // does not change routing. Routes to Customer Support.
     id: "en-support-inline-quote",
     difficulty: "medium",
     messages: [
@@ -1149,5 +1156,132 @@ export const TEST_EMAILS_INTL: TestEmail[] = [
     ],
     expectedFinalNodeId: NODES.customerSupport.id,
     allowNeedsHumanReview: true,
+  },
+];
+
+// ─── Forwarded emails + reply threads (positional reply-tail rule, B7) ─────────
+//
+// The positional rule keeps the FIRST message's quoted block (a forward is often
+// only its forwarded content) and strips a non-first message's redundant tail.
+// The forward fixtures are single messages whose only routing signal lives in a
+// quoted block findReplyTailStart WOULD cut — so a regression that stripped them
+// would route to Inbox/needs-review. The reply-thread fixtures are multi-message,
+// where the latest reply's tail is stripped and its content survives via msg1.
+export const TEST_EMAILS_FWD: TestEmail[] = [
+  {
+    // English — forwarded HR/recruitment content under a contentless "FYI" intro.
+    id: "en-fwd-hr-quoted",
+    difficulty: "medium",
+    messages: [
+      {
+        subject: "Fwd: Application for Backend Engineer",
+        senderEmail: "manager@yourcompany.com",
+        senderName: "Hiring Manager",
+        bodyText:
+          "FYI\n\n" +
+          "On Mon, 5 Jan 2026 at 09:00, Recruiting <recruiting@firm.com> wrote:\n" +
+          "> We received your application for the Backend Engineer position and would like to invite you to an interview next week. Please share your availability so we can confirm the schedule, discuss the salary range and benefits, and plan your onboarding start date.",
+        receivedAt: SENT_AT,
+      },
+    ],
+    expectedFinalNodeId: NODES.hr.id,
+    allowNeedsHumanReview: true,
+    split: "holdout",
+  },
+  {
+    // French — forwarded legal/NDA content under a contentless "Pour information".
+    id: "fr-fwd-legal-quoted",
+    difficulty: "medium",
+    messages: [
+      {
+        subject: "Tr : Accord de confidentialité",
+        senderEmail: "direction@cliententreprise.fr",
+        senderName: "Direction",
+        bodyText:
+          "Pour information\n\n" +
+          "Le lun. 5 janv. 2026 à 09:00, Service Juridique <juridique@example.com> a écrit :\n" +
+          "> Veuillez trouver notre accord de confidentialité mutuel à examiner avant la signature. Merci de nous transmettre les éventuelles modifications de votre service juridique concernant les clauses de non-divulgation et de conformité réglementaire.",
+        receivedAt: SENT_AT,
+      },
+    ],
+    expectedFinalNodeId: NODES.legal.id,
+    allowNeedsHumanReview: true,
+    split: "holdout",
+  },
+  {
+    // Japanese — forwarded invoice under a contentless "ご確認ください。" intro.
+    id: "ja-fwd-finance-quoted",
+    difficulty: "medium",
+    messages: [
+      {
+        subject: "Fwd: 請求書 INV-2026-0210",
+        senderEmail: "manager@example.co.jp",
+        senderName: "経理マネージャー",
+        bodyText:
+          "ご確認ください。\n\n" +
+          "2026年1月5日 9:00 請求担当 <billing@example.com> が書きました:\n" +
+          "> 第4四半期分の請求書 INV-2026-0210（金額 480,000円）をお送りします。お支払い期限は30日以内です。お振込先は請求書に記載しております。ご不明点があればお知らせください。",
+        receivedAt: SENT_AT,
+      },
+    ],
+    expectedFinalNodeId: NODES.finance.id,
+    allowNeedsHumanReview: true,
+    split: "holdout",
+  },
+  {
+    // English — finance reply thread; msg2's redundant tail is stripped.
+    id: "en-reply-finance-thread",
+    difficulty: "medium",
+    messages: [
+      {
+        subject: "Invoice INV-2026-0310",
+        senderEmail: "billing@vendor.com",
+        senderName: "Vendor Billing",
+        bodyText:
+          "Please find invoice INV-2026-0310 for $3,200 attached. Payment terms are net 30; remit to the bank details on the invoice.",
+        receivedAt: SENT_AT,
+      },
+      {
+        subject: "Re: Invoice INV-2026-0310",
+        senderEmail: "ap@yourcompany.com",
+        senderName: "Accounts Payable",
+        bodyText:
+          "Thanks, we've scheduled the payment for next week and will confirm once the transfer is complete.\n\n" +
+          "On Mon, 5 Jan 2026 at 09:00, Vendor Billing <billing@vendor.com> wrote:\n" +
+          "> Please find invoice INV-2026-0310 for $3,200 attached. Payment terms are net 30; remit to the bank details on the invoice.",
+        receivedAt: SENT_AT,
+      },
+    ],
+    expectedFinalNodeId: NODES.finance.id,
+    allowNeedsHumanReview: true,
+    split: "tune",
+  },
+  {
+    // French — support reply thread; msg2's redundant tail is stripped.
+    id: "fr-reply-support-thread",
+    difficulty: "medium",
+    messages: [
+      {
+        subject: "Problème de connexion à mon compte",
+        senderEmail: "client@example.fr",
+        senderName: "Client",
+        bodyText:
+          "Bonjour, je n'arrive plus à me connecter à mon compte : le code de double authentification n'arrive jamais. Pouvez-vous m'aider ?",
+        receivedAt: SENT_AT,
+      },
+      {
+        subject: "Re: Problème de connexion à mon compte",
+        senderEmail: "client@example.fr",
+        senderName: "Client",
+        bodyText:
+          "J'ai essayé la réinitialisation du mot de passe mais le problème persiste, je ne reçois toujours pas le code. Merci de faire remonter le ticket au support technique.\n\n" +
+          "Le lun. 5 janv. 2026 à 09:00, Support <support@example.com> a écrit :\n" +
+          "> Merci de votre message. Avez-vous essayé de réinitialiser votre mot de passe ?",
+        receivedAt: SENT_AT,
+      },
+    ],
+    expectedFinalNodeId: NODES.customerSupport.id,
+    allowNeedsHumanReview: true,
+    split: "tune",
   },
 ];

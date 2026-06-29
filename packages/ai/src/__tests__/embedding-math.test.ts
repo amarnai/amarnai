@@ -547,6 +547,74 @@ describe("cleanForEmbedding", () => {
     const body = "Content.\n> trailing quote\n> more";
     expect(cleanForEmbedding(body)).toBe(cleanForEmbedding(body));
   });
+
+  // ── stripReplyTail option (positional rule) ──────────────────────────────────
+
+  it("default strips the reply tail (unchanged behavior)", () => {
+    const body =
+      "New question here.\n\nOn Mon, 5 Jan 2026 at 09:00, Jane <jane@example.com> wrote:\n> QUOTEONLYTOKEN previous message";
+    const cleaned = cleanForEmbedding(body);
+    expect(cleaned).toContain("New question here.");
+    expect(cleaned).not.toContain("QUOTEONLYTOKEN");
+  });
+
+  it("stripReplyTail: false keeps the quoted tail (forwarded/first-message case)", () => {
+    const body =
+      "FYI\n\nOn Mon, 5 Jan 2026 at 09:00, Jane <jane@example.com> wrote:\n> KEEPMETOKEN forwarded content";
+    const cleaned = cleanForEmbedding(body, { stripReplyTail: false });
+    expect(cleaned).toContain("KEEPMETOKEN forwarded content");
+  });
+
+  it("stripReplyTail: false still removes signatures and URL-only lines", () => {
+    const body = "Keep this body.\n-- \nJohn Smith\nSenior Engineer";
+    const cleaned = cleanForEmbedding(body, { stripReplyTail: false });
+    expect(cleaned).toContain("Keep this body.");
+    expect(cleaned).not.toContain("Senior Engineer");
+  });
+});
+
+// ─── buildThreadEmbeddingText — positional reply-tail handling (forwards) ──────
+//
+// The redundant quoted tail is stripped only from messages that have an earlier
+// message in the thread; the FIRST message is never stripped (a forward consists
+// of its quoted block, which is novel content, not a duplicate of an earlier
+// message). Distinguishing tokens are used so the assertions actually prove the
+// behavior — in a reply-to-forward the forwarded text appears twice, so a naive
+// "contains" check would be a false pass.
+
+describe("buildThreadEmbeddingText — positional reply-tail handling", () => {
+  it("single-message thread keeps its quoted/forwarded tail (forward case)", () => {
+    const forward =
+      "FYI\n\nOn Mon, 5 Jan 2026 at 09:00, Jane <jane@example.com> wrote:\n> FWDBODYTOKEN the forwarded content";
+    const text = buildThreadEmbeddingText([{ subject: "Fwd: stuff", bodyText: forward }]);
+    expect(text).toContain("FWDBODYTOKEN the forwarded content");
+  });
+
+  it("two-message reply thread: latest reply's tail is stripped, new content + first message kept", () => {
+    const original = "ALPHATOKEN the original request about pricing.";
+    const reply =
+      "BETATOKEN my answer to the request.\n\nOn Mon, 5 Jan 2026 at 09:00, Jane <jane@example.com> wrote:\n> ALPHATOKEN the original request about pricing.\n> QUOTEONLYTOKEN extra quoted line";
+    const text = buildThreadEmbeddingText([
+      { subject: "Pricing", bodyText: original },
+      { subject: "Re: Pricing", bodyText: reply },
+    ]);
+    expect(text).toContain("ALPHATOKEN"); // from message 1 (kept)
+    expect(text).toContain("BETATOKEN"); // latest message new content (kept)
+    expect(text).not.toContain("QUOTEONLYTOKEN"); // latest message tail (stripped)
+  });
+
+  it("first message keeps its own tail even in a multi-message thread", () => {
+    const firstWithTail =
+      "FIRSTONLYTOKEN intro.\n\nOn Sun, 4 Jan 2026 at 08:00, Bob <bob@example.com> wrote:\n> KEEPMETOKEN older forwarded content";
+    const reply = "SECONDTOKEN reply body.";
+    const text = buildThreadEmbeddingText([
+      { subject: "Fwd: x", bodyText: firstWithTail },
+      { subject: "Re: Fwd: x", bodyText: reply },
+    ]);
+    expect(text).toContain("FIRSTONLYTOKEN");
+    expect(text).toContain("KEEPMETOKEN"); // first message's tail is preserved
+    expect(text).toContain("SECONDTOKEN");
+  });
 });
 
 // ─── buildThreadEmbeddingText — budget allocation ─────────────────────────────

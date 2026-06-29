@@ -17,7 +17,7 @@ import { describe, it, expect } from "vitest";
 import { sortThreadByEmbedding, CENTERED_ROUTING_CONFIG } from "../embedding/sorter.js";
 import { makeRealEmbeddingProvider } from "./fixtures/real-embedding-table.js";
 import {
-  ALL_NODES, ALL_EDGES, TEST_EMAILS, TEST_EMAILS_INTL,
+  ALL_NODES, ALL_EDGES, TEST_EMAILS, TEST_EMAILS_INTL, TEST_EMAILS_FWD,
   ALL_NODES_D3, ALL_EDGES_D3, TEST_EMAILS_D3,
   type TestEmail,
 } from "./fixtures/sorting-fixtures.js";
@@ -115,5 +115,20 @@ describe("embedding sorter — production centered config (gemini)", () => {
   it("multilingual deep set: descent gate holds under centering", async () => {
     const t = await tally(ALL_NODES_D3, ALL_EDGES_D3, ML_D3);
     expect(t.correct / t.total).toBeGreaterThanOrEqual(0.75);
+  });
+
+  // ── B7: forwarded emails + reply threads (positional reply-tail rule) ─────────
+
+  it("forwarded emails route by their forwarded content (first message kept)", async () => {
+    // The fix's target: without keeping the first message, these forwards (whose
+    // only signal is a quoted block findReplyTailStart would cut) would route to
+    // Inbox/needs-review. They must route to their forwarded-content category.
+    const forwards = TEST_EMAILS_FWD.filter((e) => e.id.includes("-fwd-"));
+    expect(await countCorrect(ALL_NODES, ALL_EDGES, forwards)).toBe(forwards.length);
+  });
+
+  it("reply threads route correctly with the redundant tail stripped", async () => {
+    const replies = TEST_EMAILS_FWD.filter((e) => e.id.includes("-reply-"));
+    expect(await countCorrect(ALL_NODES, ALL_EDGES, replies)).toBe(replies.length);
   });
 });

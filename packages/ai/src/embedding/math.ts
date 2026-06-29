@@ -287,11 +287,21 @@ function findReplyTailStart(lines: string[]): number {
  * (no String.toLowerCase): case-insensitive matching uses the regex `i` flag,
  * whose Unicode case folding is locale-independent (no Turkish-i hazard).
  */
-export function cleanForEmbedding(body: string): string {
+export function cleanForEmbedding(
+  body: string,
+  options?: { stripReplyTail?: boolean }
+): string {
   // 1. Remove the redundant trailing reply chain (language-neutral, structural).
-  const lines = body.split("\n");
-  const cut = findReplyTailStart(lines);
-  if (cut >= 0) body = lines.slice(0, cut).join("\n");
+  //    Skipped when stripReplyTail is false: the caller knows this message has no
+  //    earlier message in the thread (the first message, e.g. a forward), so its
+  //    quoted block is novel content rather than a redundant copy of an earlier
+  //    message and must be kept. See buildThreadEmbeddingText.
+  const stripReplyTail = options?.stripReplyTail ?? true;
+  if (stripReplyTail) {
+    const lines = body.split("\n");
+    const cut = findReplyTailStart(lines);
+    if (cut >= 0) body = lines.slice(0, cut).join("\n");
+  }
 
   // 2a. RFC 3676 signature delimiter: "-- " (or "--") on its own line.
   body = body.replace(/\n--\s*\n[\s\S]*$/, "");
@@ -381,11 +391,21 @@ export function buildThreadEmbeddingText(
   const firstSubject = messages[0]?.subject;
   if (firstSubject) parts.push(`Subject: ${firstSubject}`);
 
+  // Positional reply-tail rule: a message's quoted tail is stripped only when an
+  // earlier message exists in the thread (the tail duplicates it). The FIRST
+  // message is never stripped — its quoted block is novel content, not a
+  // duplicate, which is exactly the forwarded-email case (a forward often is only
+  // its forwarded block). Keyed by reference; if the first message is later
+  // dropped by the budget, nothing is treated as first and all kept messages
+  // strip — acceptable, since its content is budget-dropped regardless.
+  const firstMsg = messages[0];
+
   if (messages.length === 1) {
     // Single message: flat format (backward-compatible with stored hashes).
+    // It is the first message, so its tail is kept (forward-safe).
     const msg = messages[0]!;
     if (msg.bodyText) {
-      parts.push(truncateToShare(cleanForEmbedding(msg.bodyText), latestBudget));
+      parts.push(truncateToShare(cleanForEmbedding(msg.bodyText, { stripReplyTail: false }), latestBudget));
     }
     if (msg.attachmentNames?.length) {
       parts.push(`Attachments: ${msg.attachmentNames.join(", ")}`);
@@ -397,7 +417,9 @@ export function buildThreadEmbeddingText(
 
     parts.push("[LATEST MESSAGE — primary classification signal]");
     if (latest.bodyText) {
-      parts.push(truncateToShare(cleanForEmbedding(latest.bodyText), latestBudget));
+      parts.push(
+        truncateToShare(cleanForEmbedding(latest.bodyText, { stripReplyTail: latest !== firstMsg }), latestBudget)
+      );
     }
     if (latest.attachmentNames?.length) {
       parts.push(`Attachments: ${latest.attachmentNames.join(", ")}`);
@@ -418,7 +440,9 @@ export function buildThreadEmbeddingText(
       parts.push("[EARLIER THREAD CONTEXT — secondary]");
       for (const msg of keptEarlier) {
         if (msg.bodyText) {
-          parts.push(truncateToShare(cleanForEmbedding(msg.bodyText), perEarlier));
+          parts.push(
+            truncateToShare(cleanForEmbedding(msg.bodyText, { stripReplyTail: msg !== firstMsg }), perEarlier)
+          );
         }
         if (msg.attachmentNames?.length) {
           parts.push(`Attachments: ${msg.attachmentNames.join(", ")}`);

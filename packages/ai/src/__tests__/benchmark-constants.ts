@@ -42,6 +42,7 @@ import {
   ALL_NODES_FM,
   ALL_EDGES_FM,
   TEST_EMAILS_FM,
+  TEST_EMAILS_FWD,
   type TestEmail,
 } from "./fixtures/sorting-fixtures.js";
 import { ML_FLAT, ML_D3 } from "./fixtures/multilingual/index.js";
@@ -68,6 +69,8 @@ const DATASETS: Dataset[] = [
   { name: "ml-flat", nodes: ALL_NODES, edges: ALL_EDGES, emails: ML_FLAT },
   { name: "deep-d3", nodes: ALL_NODES_D3, edges: ALL_EDGES_D3, emails: TEST_EMAILS_D3 },
   { name: "ml-d3", nodes: ALL_NODES_D3, edges: ALL_EDGES_D3, emails: ML_D3 },
+  // Forwarded emails + reply threads (positional reply-tail rule, flat taxonomy).
+  { name: "fwd", nodes: ALL_NODES, edges: ALL_EDGES, emails: TEST_EMAILS_FWD },
   { name: "failure-modes", nodes: ALL_NODES_FM, edges: ALL_EDGES_FM, emails: TEST_EMAILS_FM },
 ];
 
