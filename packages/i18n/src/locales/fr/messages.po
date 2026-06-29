@@ -82,6 +82,13 @@ msgstr "{0} sur {1} chargés"
 msgid "{0} of {1} remaining · resets {quotaResetDate}"
 msgstr "{0} sur {1} restants · réinitialisation {quotaResetDate}"
 
+#. placeholder {0}: loaded.toLocaleString()
+#. placeholder {1}: total.toLocaleString()
+#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:54
+#: ../ui/src/emails/BackfillCard.tsx:59
+#~ msgid "{0} of ~{1} threads · {percent}%"
+#~ msgstr ""
+
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:108
 msgid "{blacklistCount, plural, one {# blocked} other {# blocked}}"
 msgstr "{blacklistCount, plural, one {# bloqué} other {# bloqués}}"
@@ -122,6 +129,11 @@ msgstr "{folderCount, plural, one {# dossier} other {# dossiers}}"
 #, fuzzy
 msgid "{invitedCount} invited"
 msgstr "{invitedCount} invités"
+
+#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:50
+#: ../ui/src/emails/BackfillCard.tsx:49
+#~ msgid "{loaded, plural, one {# thread loaded} other {# threads loaded}}"
+#~ msgstr ""
 
 #: ../../apps/web/src/app/admin/waitlist/WaitlistShell.tsx:17
 #, fuzzy
@@ -326,9 +338,7 @@ msgstr "Une nouvelle candidature a été reçue de Horemheb de Thèbes pour le p
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "Nous avons reçu une nouvelle candidature de Horemheb de Thèbes pour le poste de Chef de la Correspondance.\n"
-"\n"
-"Consultez la candidature à la Maison des Archives."
+msgstr "Nous avons reçu une nouvelle candidature de Horemheb de Thèbes pour le poste de Chef de la Correspondance.\n\nConsultez la candidature à la Maison des Archives."
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:380
 #, fuzzy
@@ -341,11 +351,7 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "Abdi-Heba,\n"
-"\n"
-"Je serai près du Delta la même semaine. Retrouvons-nous au relais le deuxième jour ; je suis libre le matin.\n"
-"\n"
-"D'ici là,"
+msgstr "Abdi-Heba,\n\nJe serai près du Delta la même semaine. Retrouvons-nous au relais le deuxième jour ; je suis libre le matin.\n\nD'ici là,"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:33
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:37
@@ -454,7 +460,7 @@ msgstr "Routage IA"
 msgid "All"
 msgstr "Tout"
 
-#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:153
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:152
 #, fuzzy
 msgid "All folders"
 msgstr "Tous les dossiers"
@@ -658,11 +664,7 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "Aziru,\n"
-"\n"
-"Vos paroles d'amitié nous sont bien parvenues. Nous sommes disposés à entendre les propositions de la maison d'Amurru. Envoyez vos conditions par le prochain courrier.\n"
-"\n"
-"Avec nos salutations,"
+msgstr "Aziru,\n\nVos paroles d'amitié nous sont bien parvenues. Nous sommes disposés à entendre les propositions de la maison d'Amurru. Envoyez vos conditions par le prochain courrier.\n\nAvec nos salutations,"
 
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
 #: ../../apps/site/src/app/[locale]/pricing/page.tsx:53
@@ -684,8 +686,7 @@ msgstr "Retour à la liste"
 msgid "Back to sign in"
 msgstr "Retour à la connexion"
 
-#: ../ui/src/emails/BackfillCard.tsx:18
-#: ../ui/src/emails/BackfillCard.tsx:49
+#: ../ui/src/emails/BackfillCard.tsx:28
 #, fuzzy
 msgid "Backfill"
 msgstr "Remplir rétrospectivement"
@@ -750,8 +751,8 @@ msgstr "Élaborer un plan"
 
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
 #: ../ui/src/emails/BackfillCard.tsx:21
-msgid "Bulk triage your inbox"
-msgstr "Trier en masse votre boîte de réception"
+#~ msgid "Bulk triage your inbox"
+#~ msgstr "Trier en masse votre boîte de réception"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:308
 #, fuzzy
@@ -965,7 +966,7 @@ msgstr "Confirmer le mot de passe"
 msgid "Connect a Gmail inbox to configure sync filters."
 msgstr "Connectez une boîte de réception Gmail pour configurer les filtres de synchronisation."
 
-#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:201
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:334
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:268
@@ -993,7 +994,7 @@ msgstr "Connectez Gmail et Amarnai commence le tri en quelques minutes. La tarif
 msgid "Connect Gmail to generate a plan from your inbox"
 msgstr "Connectez Gmail pour générer un plan depuis votre boîte de réception"
 
-#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:180
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:179
 #, fuzzy
 msgid "Connect Gmail to start triaging"
 msgstr "Connectez Gmail pour commencer le tri"
@@ -1003,7 +1004,7 @@ msgstr "Connectez Gmail pour commencer le tri"
 msgid "Connect once, generate your plan once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
 msgstr "Connectez-vous une fois, générez votre plan une seule fois, et laissez Amarnai gérer les nouveaux courriels ainsi que les milliers de conversations déjà présentes dans votre boîte de réception."
 
-#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:183
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:182
 msgid "Connect your Gmail account to sync your inbox into Amarnai. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
 msgstr "Connectez votre compte Gmail pour synchroniser votre boîte de réception avec Amarnai. Amarnai se connecte avec <0>un accès en lecture seule</0> et <1>n'envoie, ne supprime ni ne modifie jamais rien</1>. Votre boîte de réception reste la vôtre."
 
@@ -1459,12 +1460,11 @@ msgstr "Déconnecte cet espace de travail. Amarnai garde l'accès car cette boî
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "Déconnecte cet espace de travail. Amarnai garde l'accès car cette boîte aux lettres est toujours connectée dans {sharedNames}."
 
-#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:42
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:48
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:295
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:294
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:52
 #: ../ui/src/AppDownloadBanner.tsx:80
-#: ../ui/src/emails/MockEmailsPage.tsx:256
+#: ../ui/src/emails/MockEmailsPage.tsx:253
 msgid "Dismiss"
 msgstr "Ignorer"
 
@@ -1822,12 +1822,12 @@ msgstr "FAQ"
 msgid "Filter by folder"
 msgstr "Filtrer par dossier"
 
-#: ../ui/src/emails/EmailRail.tsx:72
+#: ../ui/src/emails/EmailRail.tsx:70
 #, fuzzy
 msgid "Filter queues & folders…"
 msgstr "Filtrer les files d'attente et les dossiers…"
 
-#: ../ui/src/emails/EmailRail.tsx:75
+#: ../ui/src/emails/EmailRail.tsx:73
 msgid "Filter rail"
 msgstr "Volet de filtre"
 
@@ -1849,11 +1849,11 @@ msgstr "Signalé comme proposition d'alliance/introduction d'investisseur en fon
 msgid "Flight and hotel bookings, travel itineraries, visa applications, and trip confirmations."
 msgstr "Réservations de vols et d'hôtels, itinéraires de voyage, demandes de visa et confirmations de voyage."
 
-#: ../ui/src/emails/MockEmailsPage.tsx:159
+#: ../ui/src/emails/MockEmailsPage.tsx:157
 msgid "folder"
 msgstr "dossier"
 
-#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:110
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:109
 #: ../../apps/mobile/src/components/emails/QueueChips.tsx:22
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:245
 #, fuzzy
@@ -1880,11 +1880,11 @@ msgstr "Dossier mis à jour"
 msgid "Folder will be ignored until connected"
 msgstr "Le dossier sera ignoré tant qu'il ne sera pas connecté."
 
-#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:151
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:150
 msgid "Folder: {activeFolderName}"
 msgstr "Dossier : {activeFolderName}"
 
-#: ../ui/src/emails/EmailRail.tsx:95
+#: ../ui/src/emails/EmailRail.tsx:93
 #: ../ui/src/emails/ThreadList.tsx:111
 msgid "Folders"
 msgstr "Dossiers"
@@ -2087,7 +2087,7 @@ msgstr "Boîte de réception Gmail"
 msgid "Gmail label sync"
 msgstr "Synchronisation des étiquettes Gmail"
 
-#: ../ui/src/emails/EmailRail.tsx:56
+#: ../ui/src/emails/EmailRail.tsx:54
 #, fuzzy
 msgid "Gmail live sync active"
 msgstr "Synchronisation Gmail en temps réel active"
@@ -2154,11 +2154,7 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "Grand Roi,\n"
-"\n"
-"Les rapports que vous avez demandés seront prêts avant la réunion du conseil. Je ferai compiler les comptes des territoires de l'Est par mes scribes et les enverrai par courrier rapide.\n"
-"\n"
-"Fraternellement,"
+msgstr "Grand Roi,\n\nLes rapports que vous avez demandés seront prêts avant la réunion du conseil. Je ferai compiler les comptes des territoires de l'Est par mes scribes et les enverrai par courrier rapide.\n\nFraternellement,"
 
 #: ../../apps/site/src/components/landing/FinalCTASection.tsx:8
 #, fuzzy
@@ -2546,7 +2542,7 @@ msgstr "Listez les types d'e-mails qui appartiennent ici : expéditeurs, sujets,
 msgid "List the senders, topics, and keywords that belong here. At least {minDescriptionLength} characters. ({descriptionLength}/{minDescriptionLength})"
 msgstr "Listez les expéditeurs, sujets et mots-clés qui concernent ce dossier. Au moins {minDescriptionLength} caractères. ({descriptionLength}/{minDescriptionLength})"
 
-#: ../ui/src/emails/EmailRail.tsx:59
+#: ../ui/src/emails/EmailRail.tsx:57
 msgid "Live"
 msgstr "En direct"
 
@@ -2556,8 +2552,8 @@ msgstr "En direct"
 msgid "Load more"
 msgstr "Charger plus"
 
-#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:81
-#: ../ui/src/emails/BackfillCard.tsx:56
+#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
+#: ../ui/src/emails/BackfillCard.tsx:35
 msgid "Loading past threads…"
 msgstr "Chargement des conversations passées…"
 
@@ -2573,7 +2569,7 @@ msgid "Loading…"
 msgstr "Chargement…"
 
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:37
-#: ../ui/src/emails/EmailRail.tsx:54
+#: ../ui/src/emails/EmailRail.tsx:52
 msgid "Mail"
 msgstr "Courrier"
 
@@ -2709,7 +2705,7 @@ msgstr "Déplacer vers le dossier…"
 msgid "Move to…"
 msgstr "Déplacer vers…"
 
-#: ../ui/src/emails/MockEmailsPage.tsx:169
+#: ../ui/src/emails/MockEmailsPage.tsx:167
 #, fuzzy
 msgid "Moved to {folderName}"
 msgstr "Déplacé vers {folderName}"
@@ -2760,8 +2756,8 @@ msgid "New business inquiries, proposals, pricing discussions, and prospective c
 msgstr "Demandes de nouvelles affaires, propositions, discussions sur les prix et démarchage de clients potentiels."
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:247
-#: ../ui/src/emails/EmailRail.tsx:97
-#: ../ui/src/emails/EmailRail.tsx:102
+#: ../ui/src/emails/EmailRail.tsx:95
+#: ../ui/src/emails/EmailRail.tsx:100
 msgid "New folder"
 msgstr "Nouveau dossier"
 
@@ -2771,8 +2767,8 @@ msgstr "Nouveau dossier"
 msgid "New password"
 msgstr "Nouveau mot de passe"
 
-#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:87
-#: ../ui/src/emails/BackfillCard.tsx:61
+#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:42
+#: ../ui/src/emails/BackfillCard.tsx:40
 msgid "New threads will appear as they are sorted."
 msgstr "Les nouvelles conversations apparaîtront au fur et à mesure qu'elles sont triées."
 
@@ -2865,11 +2861,11 @@ msgstr "Aucune conversation ici."
 #~ msgid "No threads in {activeFolderName}"
 #~ msgstr "Aucune conversation dans {activeFolderName}"
 
-#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:118
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:117
 msgid "No threads in {folderName}"
 msgstr "Aucune conversation dans {folderName}"
 
-#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:116
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:115
 #, fuzzy
 msgid "No threads match your search"
 msgstr "Aucune conversation ne correspond à votre recherche"
@@ -2879,7 +2875,7 @@ msgstr "Aucune conversation ne correspond à votre recherche"
 msgid "No threads match your search."
 msgstr "Aucune conversation ne correspond à votre recherche."
 
-#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:119
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:118
 msgid "No threads yet"
 msgstr "Aucune conversation pour l'instant"
 
@@ -3175,6 +3171,11 @@ msgstr "Vous préférez l'auto-hébergement ? C'est open source :<0/> <1>clonez-
 msgid "Prepare your accounts before the council convenes."
 msgstr "Préparez vos comptes avant la convocation du conseil."
 
+#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:52
+#: ../ui/src/emails/BackfillCard.tsx:51
+#~ msgid "Preparing…"
+#~ msgstr ""
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:62
 #, fuzzy
 msgid "Press"
@@ -3260,7 +3261,7 @@ msgstr "Dossiers proposés. L'application remplace votre plan actuel ; tout est 
 msgid "Queuing rescan…"
 msgstr "Mise en file d'attente de la nouvelle analyse…"
 
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:305
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:304
 #, fuzzy
 msgid "Re-route {unclassifiedCount} unclassified"
 msgstr "Réacheminer {unclassifiedCount} non classés"
@@ -3510,11 +3511,7 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "Rib-Hadda,\n"
-"\n"
-"Nous vous avons entendu. Du grain supplémentaire a été commandé aux réserves du sud et arrivera avant la fête des moissons. Nous vous demandons de patienter jusque-là.\n"
-"\n"
-"Portez-vous bien,"
+msgstr "Rib-Hadda,\n\nNous vous avons entendu. Du grain supplémentaire a été commandé aux réserves du sud et arrivera avant la fête des moissons. Nous vous demandons de patienter jusque-là.\n\nPortez-vous bien,"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -3522,7 +3519,7 @@ msgstr "Rib-Hadda,\n"
 msgid "Route now"
 msgstr "Trier maintenant"
 
-#: ../ui/src/emails/MockEmailsPage.tsx:103
+#: ../ui/src/emails/MockEmailsPage.tsx:101
 msgid "Routing approved"
 msgstr "Routage approuvé"
 
@@ -3595,12 +3592,12 @@ msgstr "Rechercher des dossiers"
 msgid "Search threads"
 msgstr "Rechercher des conversations"
 
-#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:137
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:136
 msgid "Search threads…"
 msgstr "Rechercher des conversations…"
 
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:270
-#: ../ui/src/emails/MockEmailsPage.tsx:234
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:269
+#: ../ui/src/emails/MockEmailsPage.tsx:231
 #, fuzzy
 msgid "Select a thread to preview"
 msgstr "Sélectionner une conversation à prévisualiser"
@@ -3666,11 +3663,11 @@ msgstr "Session"
 msgid "Set new password"
 msgstr "Définir un nouveau mot de passe"
 
-#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:85
-#: ../ui/src/emails/BackfillCard.tsx:59
+#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:43
+#: ../ui/src/emails/BackfillCard.tsx:42
 #, fuzzy
-msgid "Set up at least 3 folders so we can start sorting."
-msgstr "Configurez au moins 3 dossiers pour que nous puissions commencer le tri."
+#~ msgid "Set up at least 3 folders so we can start sorting."
+#~ msgstr "Configurez au moins 3 dossiers pour que nous puissions commencer le tri."
 
 #: ../../apps/web/src/app/(app)/settings/WorkspaceLanguageSection.tsx:56
 msgid "Sets the language for this workspace, including the interface and AI-generated folders."
@@ -3777,8 +3774,8 @@ msgstr "Bientôt"
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:50
 #: ../ui/src/emails/BackfillCard.tsx:23
 #, fuzzy
-msgid "Sort thousands of historical emails automatically. Available on Pro and Business subscriptions."
-msgstr "Triez automatiquement des milliers d'e-mails historiques. Disponible avec les abonnements Pro et Business."
+#~ msgid "Sort thousands of historical emails automatically. Available on Pro and Business subscriptions."
+#~ msgstr "Triez automatiquement des milliers d'e-mails historiques. Disponible avec les abonnements Pro et Business."
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:10
 #: ../../apps/mobile/src/components/ThreadRow.tsx:51
@@ -3797,8 +3794,8 @@ msgstr "Trié automatiquement par similarité de contenu."
 msgid "Sorting"
 msgstr "Tri"
 
-#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:77
-#: ../ui/src/emails/BackfillCard.tsx:54
+#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:32
+#: ../ui/src/emails/BackfillCard.tsx:33
 msgid "Sorting historical inbox"
 msgstr "Tri de la boîte de réception historique"
 
@@ -4008,7 +4005,7 @@ msgstr "Modèles"
 msgid "Terms"
 msgstr "Conditions"
 
-#: ../ui/src/emails/MockEmailsPage.tsx:145
+#: ../ui/src/emails/MockEmailsPage.tsx:143
 #, fuzzy
 msgid "Thank you for your message. I'll follow up shortly."
 msgstr "Merci pour votre message. Je vous répondrai sous peu."
@@ -4189,13 +4186,7 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "À mon frère, le Grand Roi,\n"
-"\n"
-"Le grand conseil se réunit au début de Shemu. Je vous demande de préparer un compte rendu complet des territoires de l'Est et de l'envoyer par courrier rapide, si possible avant la nouvelle lune.\n"
-"\n"
-"Notre alliance est forte. Montrons au conseil qu'elle le reste.\n"
-"\n"
-"Tushratta, Grand Roi de Mitanni"
+msgstr "À mon frère, le Grand Roi,\n\nLe grand conseil se réunit au début de Shemu. Je vous demande de préparer un compte rendu complet des territoires de l'Est et de l'envoyer par courrier rapide, si possible avant la nouvelle lune.\n\nNotre alliance est forte. Montrons au conseil qu'elle le reste.\n\nTushratta, Grand Roi de Mitanni"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:163
 #, fuzzy
@@ -4204,11 +4195,7 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "Au Bureau des Nominations Royales,\n"
-"\n"
-"Nous avons reçu la candidature de Horemheb de Thèbes et examinerons son dossier avant la prochaine nouvelle lune. Veuillez l'informer que nous lui ferons part de notre décision en temps voulu.\n"
-"\n"
-"Par décret royal,"
+msgstr "Au Bureau des Nominations Royales,\n\nNous avons reçu la candidature de Horemheb de Thèbes et examinerons son dossier avant la prochaine nouvelle lune. Veuillez l'informer que nous lui ferons part de notre décision en temps voulu.\n\nPar décret royal,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:274
 #, fuzzy
@@ -4219,13 +4206,7 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "Au Grand Roi,\n"
-"\n"
-"Depuis de nombreuses années, nos maisons sont comme des frères. J'écris aujourd'hui pour proposer d'officialiser cette amitié au bénéfice de nos deux peuples : un pacte de protection mutuelle et de routes partagées.\n"
-"\n"
-"Je demande seulement que vous écoutiez mes conditions. Faites-moi part de votre réponse par le prochain courrier et j'enverrai mon émissaire aussitôt.\n"
-"\n"
-"Aziru, serviteur du Grand Roi, seigneur d'Amurru"
+msgstr "Au Grand Roi,\n\nDepuis de nombreuses années, nos maisons sont comme des frères. J'écris aujourd'hui pour proposer d'officialiser cette amitié au bénéfice de nos deux peuples : un pacte de protection mutuelle et de routes partagées.\n\nJe demande seulement que vous écoutiez mes conditions. Faites-moi part de votre réponse par le prochain courrier et j'enverrai mon émissaire aussitôt.\n\nAziru, serviteur du Grand Roi, seigneur d'Amurru"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:384
 #, fuzzy
@@ -4234,11 +4215,7 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "Au Grand Roi,\n"
-"\n"
-"Mes voyages me mèneront près du Delta dans les prochains jours. Si le Grand Roi a une heure à consacrer, j'aimerais avoir l'occasion de parler en personne ; certaines affaires sont plus faciles à dire qu'à écrire.\n"
-"\n"
-"Votre serviteur, Abdi-Heba, gouverneur d'Urushalim"
+msgstr "Au Grand Roi,\n\nMes voyages me mèneront près du Delta dans les prochains jours. Si le Grand Roi a une heure à consacrer, j'aimerais avoir l'occasion de parler en personne ; certaines affaires sont plus faciles à dire qu'à écrire.\n\nVotre serviteur, Abdi-Heba, gouverneur d'Urushalim"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:153
 #, fuzzy
@@ -4247,11 +4224,7 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "Au Grand Roi, mon frère,\n"
-"\n"
-"J'ai entendu vos paroles. L'or sera expédié avant le départ du prochain messager. Nous chérissons le lien entre nos maisons et ne voulons pas qu'il se refroidisse.\n"
-"\n"
-"En toute amitié,"
+msgstr "Au Grand Roi, mon frère,\n\nJ'ai entendu vos paroles. L'or sera expédié avant le départ du prochain messager. Nous chérissons le lien entre nos maisons et ne voulons pas qu'il se refroidisse.\n\nEn toute amitié,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:236
 #, fuzzy
@@ -4262,13 +4235,7 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "Au Grand Roi, mon frère,\n"
-"\n"
-"J'écris en ami, comme nos pères l'ont fait avant nous. Le troisième envoi d'or convenu par notre traité n'est pas arrivé. Deux messagers sont passés et nous attendons toujours.\n"
-"\n"
-"Nous vous demandons de l'expédier sans plus tarder, comme il sied au lien entre nos maisons.\n"
-"\n"
-"Burna-Buriash II, Roi de Babylone"
+msgstr "Au Grand Roi, mon frère,\n\nJ'écris en ami, comme nos pères l'ont fait avant nous. Le troisième envoi d'or convenu par notre traité n'est pas arrivé. Deux messagers sont passés et nous attendons toujours.\n\nNous vous demandons de l'expédier sans plus tarder, comme il sied au lien entre nos maisons.\n\nBurna-Buriash II, Roi de Babylone"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:346
 msgid "To the Great King, my lord, my sun,\n"
@@ -4278,13 +4245,7 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "Au Grand Roi, mon seigneur, mon soleil,\n"
-"\n"
-"Le grain que vous avez envoyé le mois dernier a été reçu avec gratitude et j'ai loué votre nom devant le peuple. Mais je dois écrire à nouveau : le troisième chargement n'est pas arrivé et la ville s'agite.\n"
-"\n"
-"J'ai écrit sept fois. Je ne souhaite pas vous importuner, mais que puis-je faire d'autre ?\n"
-"\n"
-"Votre serviteur, Rib-Hadda, gouverneur de Byblos"
+msgstr "Au Grand Roi, mon seigneur, mon soleil,\n\nLe grain que vous avez envoyé le mois dernier a été reçu avec gratitude et j'ai loué votre nom devant le peuple. Mais je dois écrire à nouveau : le troisième chargement n'est pas arrivé et la ville s'agite.\n\nJ'ai écrit sept fois. Je ne souhaite pas vous importuner, mais que puis-je faire d'autre ?\n\nVotre serviteur, Rib-Hadda, gouverneur de Byblos"
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:19
 #: ../ui/src/emails/ThreadList.tsx:15
@@ -4303,7 +4264,7 @@ msgstr "Voyages"
 
 #: ../../apps/site/src/components/landing/Footer.tsx:27
 #: ../../apps/site/src/components/landing/Nav.tsx:39
-#: ../ui/src/emails/EmailRail.tsx:82
+#: ../ui/src/emails/EmailRail.tsx:80
 #: ../ui/src/emails/ThreadListHeader.tsx:84
 #, fuzzy
 msgid "Triage"
@@ -4344,10 +4305,10 @@ msgstr "Indisponible"
 msgid "Unclassified"
 msgstr "Non classé"
 
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:292
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:291
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1253
 #: ../../apps/web/src/app/admin/waitlist/page.tsx:26
-#: ../ui/src/emails/MockEmailsPage.tsx:253
+#: ../ui/src/emails/MockEmailsPage.tsx:250
 #, fuzzy
 msgid "Undo"
 msgstr "Annuler"
@@ -4467,12 +4428,12 @@ msgstr "Mettre à niveau pour les charger"
 
 #: ../ui/src/emails/BackfillCard.tsx:28
 #, fuzzy
-msgid "Upgrade your subscription"
-msgstr "Mettre à niveau votre abonnement"
+#~ msgid "Upgrade your subscription"
+#~ msgstr "Mettre à niveau votre abonnement"
 
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:56
-msgid "Upgrade your subscription on the web app to enable backfill."
-msgstr "Mettez à niveau votre abonnement sur l'application web pour activer le remplissage historique."
+#~ msgid "Upgrade your subscription on the web app to enable backfill."
+#~ msgstr "Mettez à niveau votre abonnement sur l'application web pour activer le remplissage historique."
 
 #: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:114
 #, fuzzy
@@ -4771,6 +4732,11 @@ msgstr "Votre boîte de réception est toujours en cours d'importation. Vous pou
 #, fuzzy
 msgid "Your name"
 msgstr "Votre nom"
+
+#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:40
+#: ../ui/src/emails/BackfillCard.tsx:38
+msgid "Your past threads are being loaded and will appear shortly."
+msgstr "Vos anciennes conversations se chargent et s'afficheront bientôt."
 
 #: ../../apps/site/src/components/landing/TaxonomyDemoSection.tsx:12
 #, fuzzy

@@ -21,7 +21,6 @@ export interface MockEmailsPageProps {
   initialSelectedId?: string | null;
   syncInfo?: SyncInfo;
   workspaceEmail?: string | null;
-  upgradeHref?: string;
   /** Maps thread id → pre-written draft body for mock generation. */
   draftBodies?: Record<string, string>;
 }
@@ -33,7 +32,6 @@ export function MockEmailsPage({
   initialSelectedId = null,
   syncInfo = null,
   workspaceEmail,
-  upgradeHref,
   draftBodies,
 }: MockEmailsPageProps) {
   const { _ } = useLingui();
@@ -192,7 +190,6 @@ export function MockEmailsPage({
         onSelectActive={pushActive}
         onRailQueryChange={setRailQuery}
         onToggleFolder={toggleFolder}
-        upgradeHref={upgradeHref}
       />
 
       <ThreadList

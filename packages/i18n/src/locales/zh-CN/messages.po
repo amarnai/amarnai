@@ -82,6 +82,13 @@ msgstr "{0} / {1} 已加载"
 msgid "{0} of {1} remaining · resets {quotaResetDate}"
 msgstr "{0} / {1} 剩余 · {quotaResetDate} 重置"
 
+#. placeholder {0}: loaded.toLocaleString()
+#. placeholder {1}: total.toLocaleString()
+#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:54
+#: ../ui/src/emails/BackfillCard.tsx:59
+#~ msgid "{0} of ~{1} threads · {percent}%"
+#~ msgstr ""
+
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:108
 msgid "{blacklistCount, plural, one {# blocked} other {# blocked}}"
 msgstr "{blacklistCount, plural, one {# 已阻止} other {# 已阻止}}"
@@ -122,6 +129,11 @@ msgstr "{folderCount, plural, one {# 个文件夹} other {# 个文件夹}}"
 #, fuzzy
 msgid "{invitedCount} invited"
 msgstr "已邀请 {invitedCount} 人"
+
+#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:50
+#: ../ui/src/emails/BackfillCard.tsx:49
+#~ msgid "{loaded, plural, one {# thread loaded} other {# threads loaded}}"
+#~ msgstr ""
 
 #: ../../apps/web/src/app/admin/waitlist/WaitlistShell.tsx:17
 #, fuzzy
@@ -327,9 +339,7 @@ msgstr "收到赫伦希布（底比斯）的首席文书官职位申请。"
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "已收到底比斯的霍伦海布呈报的文书长职位申请。\n"
-"\n"
-"请在记录馆查看该申请。"
+msgstr "已收到底比斯的霍伦海布呈报的文书长职位申请。\n\n请在记录馆查看该申请。"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:380
 #, fuzzy
@@ -342,11 +352,7 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "阿卜迪-赫巴，\n"
-"\n"
-"同周我将行至三角洲附近。我们可在第二日于驿站会面；我可抽出上午时间。\n"
-"\n"
-"届时再叙，"
+msgstr "阿卜迪-赫巴，\n\n同周我将行至三角洲附近。我们可在第二日于驿站会面；我可抽出上午时间。\n\n届时再叙，"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:33
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:37
@@ -455,7 +461,7 @@ msgstr "AI 路由"
 msgid "All"
 msgstr "全部"
 
-#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:153
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:152
 #, fuzzy
 msgid "All folders"
 msgstr "所有文件夹"
@@ -659,11 +665,7 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "阿齐鲁，\n"
-"\n"
-"你的友谊之言我们已悉。阿穆鲁家族有何提议，我们愿闻其详。请速派下一信使呈上你的条件。\n"
-"\n"
-"此致，"
+msgstr "阿齐鲁，\n\n你的友谊之言我们已悉。阿穆鲁家族有何提议，我们愿闻其详。请速派下一信使呈上你的条件。\n\n此致，"
 
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
 #: ../../apps/site/src/app/[locale]/pricing/page.tsx:53
@@ -685,8 +687,7 @@ msgstr "返回列表"
 msgid "Back to sign in"
 msgstr "返回登录"
 
-#: ../ui/src/emails/BackfillCard.tsx:18
-#: ../ui/src/emails/BackfillCard.tsx:49
+#: ../ui/src/emails/BackfillCard.tsx:28
 #, fuzzy
 msgid "Backfill"
 msgstr "回填"
@@ -751,8 +752,8 @@ msgstr "构建计划"
 
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
 #: ../ui/src/emails/BackfillCard.tsx:21
-msgid "Bulk triage your inbox"
-msgstr "批量分类您的收件箱"
+#~ msgid "Bulk triage your inbox"
+#~ msgstr "批量分类您的收件箱"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:308
 #, fuzzy
@@ -966,7 +967,7 @@ msgstr "确认密码"
 msgid "Connect a Gmail inbox to configure sync filters."
 msgstr "连接 Gmail 收件箱以配置同步筛选条件。"
 
-#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:201
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:334
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:268
@@ -994,7 +995,7 @@ msgstr "连接 Gmail，Amarnai 即可在数分钟内开始整理。按工作区�
 msgid "Connect Gmail to generate a plan from your inbox"
 msgstr "连接 Gmail 以根据收件箱生成计划"
 
-#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:180
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:179
 #, fuzzy
 msgid "Connect Gmail to start triaging"
 msgstr "连接 Gmail 以开始分类"
@@ -1004,7 +1005,7 @@ msgstr "连接 Gmail 以开始分类"
 msgid "Connect once, generate your plan once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
 msgstr "只需连接一次，制定一次方案，Amarnai 即可处理新邮件，并整理您收件箱中已有的数千个会话。"
 
-#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:183
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:182
 msgid "Connect your Gmail account to sync your inbox into Amarnai. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
 msgstr "连接您的 Gmail 帐户以将您的收件箱同步到 Amarnai。Amarnai 以 <0>只读访问</0> 方式连接，且 <1>绝不会发送、删除或更改任何内容</1>。您的收件箱仍归您所有。"
 
@@ -1460,12 +1461,11 @@ msgstr "断开此工作区连接。Amarnai仍保留访问权限，因为此邮�
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "断开此工作区连接。Amarnai仍保留访问权限，因为此邮箱仍连接在{sharedNames}中。"
 
-#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:42
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:48
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:295
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:294
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:52
 #: ../ui/src/AppDownloadBanner.tsx:80
-#: ../ui/src/emails/MockEmailsPage.tsx:256
+#: ../ui/src/emails/MockEmailsPage.tsx:253
 msgid "Dismiss"
 msgstr "忽略"
 
@@ -1823,12 +1823,12 @@ msgstr "常见问题"
 msgid "Filter by folder"
 msgstr "按文件夹筛选"
 
-#: ../ui/src/emails/EmailRail.tsx:72
+#: ../ui/src/emails/EmailRail.tsx:70
 #, fuzzy
 msgid "Filter queues & folders…"
 msgstr "筛选队列和文件夹…"
 
-#: ../ui/src/emails/EmailRail.tsx:75
+#: ../ui/src/emails/EmailRail.tsx:73
 msgid "Filter rail"
 msgstr "筛选栏"
 
@@ -1850,11 +1850,11 @@ msgstr "基于措辞（“互惠互利”、“长期友谊”）被标记为联
 msgid "Flight and hotel bookings, travel itineraries, visa applications, and trip confirmations."
 msgstr "机票和酒店预订、旅行行程、签证申请和行程确认。"
 
-#: ../ui/src/emails/MockEmailsPage.tsx:159
+#: ../ui/src/emails/MockEmailsPage.tsx:157
 msgid "folder"
 msgstr "文件夹"
 
-#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:110
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:109
 #: ../../apps/mobile/src/components/emails/QueueChips.tsx:22
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:245
 #, fuzzy
@@ -1881,11 +1881,11 @@ msgstr "文件夹已更新"
 msgid "Folder will be ignored until connected"
 msgstr "此文件夹在连接前将被忽略"
 
-#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:151
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:150
 msgid "Folder: {activeFolderName}"
 msgstr "文件夹：{activeFolderName}"
 
-#: ../ui/src/emails/EmailRail.tsx:95
+#: ../ui/src/emails/EmailRail.tsx:93
 #: ../ui/src/emails/ThreadList.tsx:111
 msgid "Folders"
 msgstr "文件夹"
@@ -2088,7 +2088,7 @@ msgstr "Gmail 收件箱"
 msgid "Gmail label sync"
 msgstr "Gmail 标签同步"
 
-#: ../ui/src/emails/EmailRail.tsx:56
+#: ../ui/src/emails/EmailRail.tsx:54
 #, fuzzy
 msgid "Gmail live sync active"
 msgstr "Gmail 实时同步已启用"
@@ -2155,11 +2155,7 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "大王，\n"
-"\n"
-"你所要求之呈报，将在议会召开前备妥。我将命抄写员汇编东方领地的账目，并派快马先行送呈。\n"
-"\n"
-"兄弟情谊，"
+msgstr "大王，\n\n你所要求之呈报，将在议会召开前备妥。我将命抄写员汇编东方领地的账目，并派快马先行送呈。\n\n兄弟情谊，"
 
 #: ../../apps/site/src/components/landing/FinalCTASection.tsx:8
 #, fuzzy
@@ -2547,7 +2543,7 @@ msgstr "列出属于此处的电子邮件类型：发件人、主题、关键词
 msgid "List the senders, topics, and keywords that belong here. At least {minDescriptionLength} characters. ({descriptionLength}/{minDescriptionLength})"
 msgstr "在此处列出相关的发件人、主题和关键词。至少 {minDescriptionLength} 个字符。({descriptionLength}/{minDescriptionLength})"
 
-#: ../ui/src/emails/EmailRail.tsx:59
+#: ../ui/src/emails/EmailRail.tsx:57
 msgid "Live"
 msgstr "实时"
 
@@ -2557,8 +2553,8 @@ msgstr "实时"
 msgid "Load more"
 msgstr "加载更多"
 
-#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:81
-#: ../ui/src/emails/BackfillCard.tsx:56
+#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
+#: ../ui/src/emails/BackfillCard.tsx:35
 msgid "Loading past threads…"
 msgstr "正在加载过去的会话…"
 
@@ -2574,7 +2570,7 @@ msgid "Loading…"
 msgstr "加载中…"
 
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:37
-#: ../ui/src/emails/EmailRail.tsx:54
+#: ../ui/src/emails/EmailRail.tsx:52
 msgid "Mail"
 msgstr "邮件"
 
@@ -2710,7 +2706,7 @@ msgstr "移至文件夹…"
 msgid "Move to…"
 msgstr "移至…"
 
-#: ../ui/src/emails/MockEmailsPage.tsx:169
+#: ../ui/src/emails/MockEmailsPage.tsx:167
 #, fuzzy
 msgid "Moved to {folderName}"
 msgstr "已移动到 {folderName}"
@@ -2761,8 +2757,8 @@ msgid "New business inquiries, proposals, pricing discussions, and prospective c
 msgstr "新业务咨询、提案、定价讨论和潜在客户联系。"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:247
-#: ../ui/src/emails/EmailRail.tsx:97
-#: ../ui/src/emails/EmailRail.tsx:102
+#: ../ui/src/emails/EmailRail.tsx:95
+#: ../ui/src/emails/EmailRail.tsx:100
 msgid "New folder"
 msgstr "新建文件夹"
 
@@ -2772,8 +2768,8 @@ msgstr "新建文件夹"
 msgid "New password"
 msgstr "新密码"
 
-#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:87
-#: ../ui/src/emails/BackfillCard.tsx:61
+#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:42
+#: ../ui/src/emails/BackfillCard.tsx:40
 msgid "New threads will appear as they are sorted."
 msgstr "新会话将在分类后显示。"
 
@@ -2866,11 +2862,11 @@ msgstr "此处没有会话。"
 #~ msgid "No threads in {activeFolderName}"
 #~ msgstr "{activeFolderName} 中无会话"
 
-#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:118
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:117
 msgid "No threads in {folderName}"
 msgstr "在{folderName}中没有会话"
 
-#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:116
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:115
 #, fuzzy
 msgid "No threads match your search"
 msgstr "无会话符合您的搜索条件"
@@ -2880,7 +2876,7 @@ msgstr "无会话符合您的搜索条件"
 msgid "No threads match your search."
 msgstr "没有会话与您的搜索匹配。"
 
-#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:119
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:118
 msgid "No threads yet"
 msgstr "暂无会话"
 
@@ -3176,6 +3172,11 @@ msgstr "想自托管？它是开源的：<0/> <1>克隆并免费运行</1>。"
 msgid "Prepare your accounts before the council convenes."
 msgstr "在议会召开之前准备好您的账目。"
 
+#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:52
+#: ../ui/src/emails/BackfillCard.tsx:51
+#~ msgid "Preparing…"
+#~ msgstr ""
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:62
 #, fuzzy
 msgid "Press"
@@ -3262,7 +3263,7 @@ msgstr "建议文件夹。应用将替换您当前方案；之后您仍可编辑
 msgid "Queuing rescan…"
 msgstr "正在排队重新扫描…"
 
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:305
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:304
 #, fuzzy
 msgid "Re-route {unclassifiedCount} unclassified"
 msgstr "重新路由 {unclassifiedCount} 个未分类项"
@@ -3513,11 +3514,7 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "里布-哈达，\n"
-"\n"
-"你的呼吁，我们已收到。已从南方粮仓加订谷物，并将在丰收节前抵达。在此期间，请你耐心等候。\n"
-"\n"
-"保重，"
+msgstr "里布-哈达，\n\n你的呼吁，我们已收到。已从南方粮仓加订谷物，并将在丰收节前抵达。在此期间，请你耐心等候。\n\n保重，"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -3525,7 +3522,7 @@ msgstr "里布-哈达，\n"
 msgid "Route now"
 msgstr "立即路由"
 
-#: ../ui/src/emails/MockEmailsPage.tsx:103
+#: ../ui/src/emails/MockEmailsPage.tsx:101
 msgid "Routing approved"
 msgstr "路由已批准"
 
@@ -3598,12 +3595,12 @@ msgstr "搜索文件夹"
 msgid "Search threads"
 msgstr "搜索会话"
 
-#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:137
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:136
 msgid "Search threads…"
 msgstr "搜索会话…"
 
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:270
-#: ../ui/src/emails/MockEmailsPage.tsx:234
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:269
+#: ../ui/src/emails/MockEmailsPage.tsx:231
 #, fuzzy
 msgid "Select a thread to preview"
 msgstr "选择一个会话进行预览"
@@ -3669,11 +3666,11 @@ msgstr "会话"
 msgid "Set new password"
 msgstr "设置新密码"
 
-#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:85
-#: ../ui/src/emails/BackfillCard.tsx:59
+#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:43
+#: ../ui/src/emails/BackfillCard.tsx:42
 #, fuzzy
-msgid "Set up at least 3 folders so we can start sorting."
-msgstr "设置至少 3 个文件夹，以便我们开始分类。"
+#~ msgid "Set up at least 3 folders so we can start sorting."
+#~ msgstr "设置至少 3 个文件夹，以便我们开始分类。"
 
 #: ../../apps/web/src/app/(app)/settings/WorkspaceLanguageSection.tsx:56
 msgid "Sets the language for this workspace, including the interface and AI-generated folders."
@@ -3780,8 +3777,8 @@ msgstr "即将推出"
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:50
 #: ../ui/src/emails/BackfillCard.tsx:23
 #, fuzzy
-msgid "Sort thousands of historical emails automatically. Available on Pro and Business subscriptions."
-msgstr "自动分类数千封历史邮件。适用于专业版和商业版订阅。"
+#~ msgid "Sort thousands of historical emails automatically. Available on Pro and Business subscriptions."
+#~ msgstr "自动分类数千封历史邮件。适用于专业版和商业版订阅。"
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:10
 #: ../../apps/mobile/src/components/ThreadRow.tsx:51
@@ -3800,8 +3797,8 @@ msgstr "已根据内容相似度自动排序。"
 msgid "Sorting"
 msgstr "正在排序"
 
-#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:77
-#: ../ui/src/emails/BackfillCard.tsx:54
+#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:32
+#: ../ui/src/emails/BackfillCard.tsx:33
 msgid "Sorting historical inbox"
 msgstr "正在分类历史收件箱"
 
@@ -4011,7 +4008,7 @@ msgstr "模板"
 msgid "Terms"
 msgstr "术语"
 
-#: ../ui/src/emails/MockEmailsPage.tsx:145
+#: ../ui/src/emails/MockEmailsPage.tsx:143
 #, fuzzy
 msgid "Thank you for your message. I'll follow up shortly."
 msgstr "感谢您的留言。我将尽快回复。"
@@ -4192,13 +4189,7 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "致吾兄，大王，\n"
-"\n"
-"大议会将于谢穆月初召开。我请求你备妥东方领地的详尽账目，并请快马先行送呈，如可能，请在新月之前。\n"
-"\n"
-"吾等盟约坚固。愿我们向议会昭示其一如既往。\n"
-"\n"
-"图什拉塔，米坦尼大王"
+msgstr "致吾兄，大王，\n\n大议会将于谢穆月初召开。我请求你备妥东方领地的详尽账目，并请快马先行送呈，如可能，请在新月之前。\n\n吾等盟约坚固。愿我们向议会昭示其一如既往。\n\n图什拉塔，米坦尼大王"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:163
 #, fuzzy
@@ -4207,11 +4198,7 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "致王室任命局，\n"
-"\n"
-"我们已收到底比斯的霍伦海布之申请，并将在下一新月前审查其记录。请告知他，我们将在适当时候回复。\n"
-"\n"
-"奉谕，"
+msgstr "致王室任命局，\n\n我们已收到底比斯的霍伦海布之申请，并将在下一新月前审查其记录。请告知他，我们将在适当时候回复。\n\n奉谕，"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:274
 #, fuzzy
@@ -4222,13 +4209,7 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "致大王，\n"
-"\n"
-"多年以来，吾等两家情同手足。今特致函，愿将此友谊正式化，以惠及吾等两族：订立互助盟约，共享商道。\n"
-"\n"
-"我只恳请大王倾听我的条件。请速派下一信使回复，我将立即派遣使者前往。\n"
-"\n"
-"阿齐鲁，大王之仆，阿穆鲁之主"
+msgstr "致大王，\n\n多年以来，吾等两家情同手足。今特致函，愿将此友谊正式化，以惠及吾等两族：订立互助盟约，共享商道。\n\n我只恳请大王倾听我的条件。请速派下一信使回复，我将立即派遣使者前往。\n\n阿齐鲁，大王之仆，阿穆鲁之主"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:384
 #, fuzzy
@@ -4237,11 +4218,7 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "致大王，\n"
-"\n"
-"吾近期旅程将近三角洲一带。如大王能拨冗一小时，我愿与你面谈；有些事，口头陈述胜于笔墨。\n"
-"\n"
-"你的仆人，阿卜迪-赫巴，乌鲁沙利姆总督"
+msgstr "致大王，\n\n吾近期旅程将近三角洲一带。如大王能拨冗一小时，我愿与你面谈；有些事，口头陈述胜于笔墨。\n\n你的仆人，阿卜迪-赫巴，乌鲁沙利姆总督"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:153
 #, fuzzy
@@ -4250,11 +4227,7 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "致吾兄，大王，\n"
-"\n"
-"你之言语，我已听闻。黄金将在下一信使启程前发出。吾等珍视两家情谊，不愿其冷却。\n"
-"\n"
-"友谊长存，"
+msgstr "致吾兄，大王，\n\n你之言语，我已听闻。黄金将在下一信使启程前发出。吾等珍视两家情谊，不愿其冷却。\n\n友谊长存，"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:236
 #, fuzzy
@@ -4265,13 +4238,7 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "致吾兄，大王，\n"
-"\n"
-"我以友谊之名致函，正如我等父辈昔日所为。依照盟约，第三批黄金仍未抵达。两批信使已过，吾等仍在等候。\n"
-"\n"
-"吾等恳请你勿再延误，速将其发出，以维系吾等两家之盟谊。\n"
-"\n"
-"布尔那-布里亚什二世，巴比伦国王"
+msgstr "致吾兄，大王，\n\n我以友谊之名致函，正如我等父辈昔日所为。依照盟约，第三批黄金仍未抵达。两批信使已过，吾等仍在等候。\n\n吾等恳请你勿再延误，速将其发出，以维系吾等两家之盟谊。\n\n布尔那-布里亚什二世，巴比伦国王"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:346
 msgid "To the Great King, my lord, my sun,\n"
@@ -4281,13 +4248,7 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "致大王，吾主，吾日，\n"
-"\n"
-"上月你所赐谷物，吾等不胜感激，吾亦在民众面前颂扬大王之名。然我不得不再次致函：第三批谷物尚未抵达，城中民心骚动不安。\n"
-"\n"
-"我已七度致函。我实不愿劳烦大王，然此外我能奈何？\n"
-"\n"
-"你的仆人，里布-哈达，比布鲁斯总督"
+msgstr "致大王，吾主，吾日，\n\n上月你所赐谷物，吾等不胜感激，吾亦在民众面前颂扬大王之名。然我不得不再次致函：第三批谷物尚未抵达，城中民心骚动不安。\n\n我已七度致函。我实不愿劳烦大王，然此外我能奈何？\n\n你的仆人，里布-哈达，比布鲁斯总督"
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:19
 #: ../ui/src/emails/ThreadList.tsx:15
@@ -4306,7 +4267,7 @@ msgstr "旅行"
 
 #: ../../apps/site/src/components/landing/Footer.tsx:27
 #: ../../apps/site/src/components/landing/Nav.tsx:39
-#: ../ui/src/emails/EmailRail.tsx:82
+#: ../ui/src/emails/EmailRail.tsx:80
 #: ../ui/src/emails/ThreadListHeader.tsx:84
 #, fuzzy
 msgid "Triage"
@@ -4347,10 +4308,10 @@ msgstr "不可用"
 msgid "Unclassified"
 msgstr "未分类"
 
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:292
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:291
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1253
 #: ../../apps/web/src/app/admin/waitlist/page.tsx:26
-#: ../ui/src/emails/MockEmailsPage.tsx:253
+#: ../ui/src/emails/MockEmailsPage.tsx:250
 #, fuzzy
 msgid "Undo"
 msgstr "撤消"
@@ -4470,12 +4431,12 @@ msgstr "升级以加载它们"
 
 #: ../ui/src/emails/BackfillCard.tsx:28
 #, fuzzy
-msgid "Upgrade your subscription"
-msgstr "升级您的订阅"
+#~ msgid "Upgrade your subscription"
+#~ msgstr "升级您的订阅"
 
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:56
-msgid "Upgrade your subscription on the web app to enable backfill."
-msgstr "在网页应用中升级您的订阅以启用回填。"
+#~ msgid "Upgrade your subscription on the web app to enable backfill."
+#~ msgstr "在网页应用中升级您的订阅以启用回填。"
 
 #: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:114
 #, fuzzy
@@ -4774,6 +4735,11 @@ msgstr "您的收件箱仍在导入中。您可以根据目前已加载的内容
 #, fuzzy
 msgid "Your name"
 msgstr "您的姓名"
+
+#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:40
+#: ../ui/src/emails/BackfillCard.tsx:38
+msgid "Your past threads are being loaded and will appear shortly."
+msgstr "您的历史会话正在加载中，稍后会显示。"
 
 #: ../../apps/site/src/components/landing/TaxonomyDemoSection.tsx:12
 #, fuzzy

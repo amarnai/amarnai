@@ -181,6 +181,14 @@ export function createBackfillInboxWorker(): Worker {
         return;
       }
 
+      // The claim just flipped the status to RUNNING. Notify SSE subscribers now,
+      // before the first (latency-heavy) page fetch, so the loading card appears
+      // immediately in its "preparing" state rather than only once the first page
+      // of thread metadata has been pulled.
+      publishWorkspaceSynced(workspaceId).catch((err) => {
+        console.error("[backfill-inbox] Failed to publish synced event:", err instanceof Error ? err.message : err);
+      });
+
       // Post-claim read: now that we are the sole owner, the resume cursor and
       // generation are authoritative — no other worker can advance them until we
       // release. A chunk persists its cursor and clears started-at in one atomic
@@ -373,6 +381,12 @@ export function createBackfillInboxWorker(): Worker {
         // from the most recent page. Used to estimate how many sit beyond the cap.
         let resultSizeEstimate = 0;
 
+        // Gmail's estimate of the total matching threads, capped at the plan cap
+        // and floored at what we've already processed so the UI's loading bar can't
+        // exceed 100% or run backwards on estimate jitter.
+        const totalEstimateFor = (count: number) =>
+          Math.max(count, Math.min(resultSizeEstimate, cap.maxThreads));
+
         while (processedThisRun < BACKFILL_CHUNK_THREADS && processed < cap.maxThreads) {
           const page = await client.listThreadsPage({
             afterMs,
@@ -421,6 +435,20 @@ export function createBackfillInboxWorker(): Worker {
           pageToken = page.nextPageToken;
 
           if (disconnected) break;
+
+          // Notify SSE subscribers after each page so the thread list refreshes as
+          // history loads. We do NOT write backfillProcessedCount here: the count
+          // shown on the card is derived from the actual thread rows in
+          // sync-status (exact and live, including live-synced threads), and
+          // backfillProcessedCount stays in lockstep with the resume cursor, which
+          // only the chunk-end write advances. Skipped on the final page — the
+          // chunk-end / DONE write below publishes the settled state.
+          if (page.nextPageToken) {
+            publishWorkspaceSynced(workspaceId).catch((err) => {
+              console.error("[backfill-inbox] Failed to publish synced event:", err instanceof Error ? err.message : err);
+            });
+          }
+
           if (!page.nextPageToken) {
             exhausted = true;
             break;
@@ -519,10 +547,7 @@ export function createBackfillInboxWorker(): Worker {
 
         const done = exhausted || processed >= cap.maxThreads;
 
-        // Gmail's estimate of the total threads matching the backfill query,
-        // capped at the plan cap and floored at what we've already processed so the
-        // UI's loading bar can't exceed 100% or run backwards on estimate jitter.
-        const totalEstimate = Math.max(processed, Math.min(resultSizeEstimate, cap.maxThreads));
+        const totalEstimate = totalEstimateFor(processed);
 
         if (!done) {
           const res = await db.providerSyncState.updateMany({

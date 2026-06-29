@@ -85,6 +85,13 @@ msgstr "{0} dari {1} dimuat"
 msgid "{0} of {1} remaining · resets {quotaResetDate}"
 msgstr "{0} dari {1} tersisa · reset {quotaResetDate}"
 
+#. placeholder {0}: loaded.toLocaleString()
+#. placeholder {1}: total.toLocaleString()
+#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:54
+#: ../ui/src/emails/BackfillCard.tsx:59
+#~ msgid "{0} of ~{1} threads · {percent}%"
+#~ msgstr ""
+
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:108
 #, fuzzy
 msgid "{blacklistCount, plural, one {# blocked} other {# blocked}}"
@@ -129,6 +136,11 @@ msgstr "{folderCount, plural, one {# folder} other {# folder}}"
 #, fuzzy
 msgid "{invitedCount} invited"
 msgstr "{invitedCount} diundang"
+
+#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:50
+#: ../ui/src/emails/BackfillCard.tsx:49
+#~ msgid "{loaded, plural, one {# thread loaded} other {# threads loaded}}"
+#~ msgstr ""
 
 #: ../../apps/web/src/app/admin/waitlist/WaitlistShell.tsx:17
 #, fuzzy
@@ -340,9 +352,7 @@ msgstr "Lamaran baru telah diterima dari Horemheb dari Thebes untuk posisi Kepal
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "Lamaran baru telah diterima dari Horemheb dari Thebes untuk posisi Kepala Korespondensi.\n"
-"\n"
-"Lihat lamaran di Gedung Arsip."
+msgstr "Lamaran baru telah diterima dari Horemheb dari Thebes untuk posisi Kepala Korespondensi.\n\nLihat lamaran di Gedung Arsip."
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:380
 #, fuzzy
@@ -356,11 +366,7 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "Abdi-Heba,\n"
-"\n"
-"Saya akan berada di dekat Delta pada minggu yang sama. Mari kita bertemu di stasiun persinggahan pada hari kedua; saya bisa menyisihkan waktu pagi.\n"
-"\n"
-"Sampai jumpa,"
+msgstr "Abdi-Heba,\n\nSaya akan berada di dekat Delta pada minggu yang sama. Mari kita bertemu di stasiun persinggahan pada hari kedua; saya bisa menyisihkan waktu pagi.\n\nSampai jumpa,"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:33
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:37
@@ -471,7 +477,7 @@ msgstr "Perutean AI"
 msgid "All"
 msgstr "Semua"
 
-#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:153
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:152
 #, fuzzy
 msgid "All folders"
 msgstr "Semua folder"
@@ -687,11 +693,7 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "Aziru,\n"
-"\n"
-"Kata-kata persahabatan Anda telah kami terima dengan baik. Kami terbuka untuk mendengar lebih banyak tentang apa yang diusulkan oleh Wangsa Amurru. Kirimkan ketentuan Anda melalui kurir berikutnya.\n"
-"\n"
-"Dengan hormat,"
+msgstr "Aziru,\n\nKata-kata persahabatan Anda telah kami terima dengan baik. Kami terbuka untuk mendengar lebih banyak tentang apa yang diusulkan oleh Wangsa Amurru. Kirimkan ketentuan Anda melalui kurir berikutnya.\n\nDengan hormat,"
 
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
 #: ../../apps/site/src/app/[locale]/pricing/page.tsx:53
@@ -713,8 +715,7 @@ msgstr "Kembali ke daftar"
 msgid "Back to sign in"
 msgstr "Kembali ke Masuk"
 
-#: ../ui/src/emails/BackfillCard.tsx:18
-#: ../ui/src/emails/BackfillCard.tsx:49
+#: ../ui/src/emails/BackfillCard.tsx:28
 #, fuzzy
 msgid "Backfill"
 msgstr "Pengisian Ulang"
@@ -785,8 +786,8 @@ msgstr "Buat Paket"
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
 #: ../ui/src/emails/BackfillCard.tsx:21
 #, fuzzy
-msgid "Bulk triage your inbox"
-msgstr "Sortir massal kotak masuk Anda"
+#~ msgid "Bulk triage your inbox"
+#~ msgstr "Sortir massal kotak masuk Anda"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:308
 #, fuzzy
@@ -1010,7 +1011,7 @@ msgstr "Konfirmasi Kata Sandi"
 msgid "Connect a Gmail inbox to configure sync filters."
 msgstr "Hubungkan kotak masuk Gmail untuk mengonfigurasi filter sinkronisasi."
 
-#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:201
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:334
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:268
@@ -1039,7 +1040,7 @@ msgstr "Cukup hubungkan Gmail, Amarnai akan langsung menyortir dalam hitungan me
 msgid "Connect Gmail to generate a plan from your inbox"
 msgstr "Hubungkan Gmail untuk menyusun rencana dari kotak masuk Anda"
 
-#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:180
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:179
 #, fuzzy
 msgid "Connect Gmail to start triaging"
 msgstr "Hubungkan Gmail untuk mulai memilah"
@@ -1049,7 +1050,7 @@ msgstr "Hubungkan Gmail untuk mulai memilah"
 msgid "Connect once, generate your plan once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
 msgstr "Cukup hubungkan sekali, buat rencana sekali, dan biarkan Amarnai menangani email baru serta ribuan utas yang sudah ada di kotak masuk Anda."
 
-#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:183
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:182
 #, fuzzy
 msgid "Connect your Gmail account to sync your inbox into Amarnai. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
 msgstr "Hubungkan akun Gmail Anda untuk menyinkronkan kotak masuk Anda ke Amarnai. Amarnai terhubung dengan <0>akses baca-saja</0> dan <1>tidak pernah mengirim, menghapus, atau mengubah apa pun</1>. Kotak masuk Anda tetap milik Anda."
@@ -1522,12 +1523,11 @@ msgstr "Memutus sambungan ruang kerja ini. Amarnai tetap memiliki akses karena k
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "Memutus sambungan ruang kerja ini. Amarnai tetap memiliki akses karena kotak email ini masih terhubung di {sharedNames}."
 
-#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:42
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:48
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:295
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:294
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:52
 #: ../ui/src/AppDownloadBanner.tsx:80
-#: ../ui/src/emails/MockEmailsPage.tsx:256
+#: ../ui/src/emails/MockEmailsPage.tsx:253
 #, fuzzy
 msgid "Dismiss"
 msgstr "Tutup"
@@ -1904,12 +1904,12 @@ msgstr "FAQ"
 msgid "Filter by folder"
 msgstr "Filter berdasarkan folder"
 
-#: ../ui/src/emails/EmailRail.tsx:72
+#: ../ui/src/emails/EmailRail.tsx:70
 #, fuzzy
 msgid "Filter queues & folders…"
 msgstr "Filter antrean & folder…"
 
-#: ../ui/src/emails/EmailRail.tsx:75
+#: ../ui/src/emails/EmailRail.tsx:73
 #, fuzzy
 msgid "Filter rail"
 msgstr "Bilah filter"
@@ -1934,11 +1934,11 @@ msgstr "Ditandai sebagai perkenalan aliansi/investor berdasarkan bahasa yang dig
 msgid "Flight and hotel bookings, travel itineraries, visa applications, and trip confirmations."
 msgstr "Pemesanan penerbangan dan hotel, jadwal perjalanan, pengajuan visa, dan konfirmasi perjalanan."
 
-#: ../ui/src/emails/MockEmailsPage.tsx:159
+#: ../ui/src/emails/MockEmailsPage.tsx:157
 msgid "folder"
 msgstr "folder"
 
-#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:110
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:109
 #: ../../apps/mobile/src/components/emails/QueueChips.tsx:22
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:245
 #, fuzzy
@@ -1964,12 +1964,12 @@ msgstr "Folder diperbarui"
 msgid "Folder will be ignored until connected"
 msgstr "Folder akan diabaikan sampai terhubung"
 
-#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:151
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:150
 #, fuzzy
 msgid "Folder: {activeFolderName}"
 msgstr "Folder: {activeFolderName}"
 
-#: ../ui/src/emails/EmailRail.tsx:95
+#: ../ui/src/emails/EmailRail.tsx:93
 #: ../ui/src/emails/ThreadList.tsx:111
 #, fuzzy
 msgid "Folders"
@@ -2186,7 +2186,7 @@ msgstr "Kotak Masuk Gmail"
 msgid "Gmail label sync"
 msgstr "Sinkronisasi label Gmail"
 
-#: ../ui/src/emails/EmailRail.tsx:56
+#: ../ui/src/emails/EmailRail.tsx:54
 #, fuzzy
 msgid "Gmail live sync active"
 msgstr "Sinkronisasi langsung Gmail aktif"
@@ -2256,11 +2256,7 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "Baginda Raja,\n"
-"\n"
-"Laporan yang Paduka minta akan disiapkan sebelum dewan bersidang. Hamba akan meminta juru tulis hamba menyusun catatan wilayah timur dan mengirimkannya terlebih dahulu dengan kurir cepat.\n"
-"\n"
-"Dalam persaudaraan,"
+msgstr "Baginda Raja,\n\nLaporan yang Paduka minta akan disiapkan sebelum dewan bersidang. Hamba akan meminta juru tulis hamba menyusun catatan wilayah timur dan mengirimkannya terlebih dahulu dengan kurir cepat.\n\nDalam persaudaraan,"
 
 #: ../../apps/site/src/components/landing/FinalCTASection.tsx:8
 #, fuzzy
@@ -2663,7 +2659,7 @@ msgstr "Daftarkan jenis-jenis email yang termasuk di sini: pengirim, topik, kata
 msgid "List the senders, topics, and keywords that belong here. At least {minDescriptionLength} characters. ({descriptionLength}/{minDescriptionLength})"
 msgstr "Daftarkan pengirim, topik, dan kata kunci yang termasuk di sini. Minimal {minDescriptionLength} karakter. ({descriptionLength}/{minDescriptionLength})"
 
-#: ../ui/src/emails/EmailRail.tsx:59
+#: ../ui/src/emails/EmailRail.tsx:57
 #, fuzzy
 msgid "Live"
 msgstr "Aktif"
@@ -2674,8 +2670,8 @@ msgstr "Aktif"
 msgid "Load more"
 msgstr "Muat lebih banyak"
 
-#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:81
-#: ../ui/src/emails/BackfillCard.tsx:56
+#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
+#: ../ui/src/emails/BackfillCard.tsx:35
 #, fuzzy
 msgid "Loading past threads…"
 msgstr "Memuat utas sebelumnya..."
@@ -2692,7 +2688,7 @@ msgid "Loading…"
 msgstr "Memuat..."
 
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:37
-#: ../ui/src/emails/EmailRail.tsx:54
+#: ../ui/src/emails/EmailRail.tsx:52
 #, fuzzy
 msgid "Mail"
 msgstr "Email"
@@ -2839,7 +2835,7 @@ msgstr "Pindahkan ke folder…"
 msgid "Move to…"
 msgstr "Pindahkan ke…"
 
-#: ../ui/src/emails/MockEmailsPage.tsx:169
+#: ../ui/src/emails/MockEmailsPage.tsx:167
 msgid "Moved to {folderName}"
 msgstr "Dipindahkan ke {folderName}"
 
@@ -2892,8 +2888,8 @@ msgid "New business inquiries, proposals, pricing discussions, and prospective c
 msgstr "Pertanyaan bisnis baru, proposal, diskusi harga, dan penjangkauan calon klien."
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:247
-#: ../ui/src/emails/EmailRail.tsx:97
-#: ../ui/src/emails/EmailRail.tsx:102
+#: ../ui/src/emails/EmailRail.tsx:95
+#: ../ui/src/emails/EmailRail.tsx:100
 #, fuzzy
 msgid "New folder"
 msgstr "Folder baru"
@@ -2904,8 +2900,8 @@ msgstr "Folder baru"
 msgid "New password"
 msgstr "Kata sandi baru"
 
-#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:87
-#: ../ui/src/emails/BackfillCard.tsx:61
+#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:42
+#: ../ui/src/emails/BackfillCard.tsx:40
 #, fuzzy
 msgid "New threads will appear as they are sorted."
 msgstr "Thread baru akan muncul setelah disortir."
@@ -3001,12 +2997,12 @@ msgstr "Tidak ada thread"
 msgid "No threads here."
 msgstr "Tidak ada thread di sini."
 
-#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:118
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:117
 #, fuzzy
 msgid "No threads in {folderName}"
 msgstr "Tidak ada thread di {folderName}"
 
-#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:116
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:115
 #, fuzzy
 msgid "No threads match your search"
 msgstr "Tidak ada thread yang cocok dengan pencarian Anda"
@@ -3016,7 +3012,7 @@ msgstr "Tidak ada thread yang cocok dengan pencarian Anda"
 msgid "No threads match your search."
 msgstr "Tidak ada thread yang cocok dengan pencarian Anda."
 
-#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:119
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:118
 #, fuzzy
 msgid "No threads yet"
 msgstr "Belum ada thread"
@@ -3330,6 +3326,11 @@ msgstr "Lebih suka host sendiri? Ini sumber terbuka:<0/> <1>klon dan jalankan gr
 msgid "Prepare your accounts before the council convenes."
 msgstr "Siapkan akun Anda sebelum rapat dewan dimulai."
 
+#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:52
+#: ../ui/src/emails/BackfillCard.tsx:51
+#~ msgid "Preparing…"
+#~ msgstr ""
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:62
 #, fuzzy
 msgid "Press"
@@ -3421,7 +3422,7 @@ msgstr "Folder yang diusulkan. Menerapkan ini akan mengganti paket Anda saat ini
 msgid "Queuing rescan…"
 msgstr "Mengantrekan pemindaian ulang…"
 
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:305
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:304
 #, fuzzy
 msgid "Re-route {unclassifiedCount} unclassified"
 msgstr "Alihkan {unclassifiedCount} yang belum terklasifikasi"
@@ -3689,11 +3690,7 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "Rib-Hadda,\n"
-"\n"
-"Kami mengerti. Gandum tambahan telah dipesan dari gudang selatan dan akan tiba sebelum festival panen. Kami mohon kesabaran Anda hingga saat itu.\n"
-"\n"
-"Semoga sehat selalu,"
+msgstr "Rib-Hadda,\n\nKami mengerti. Gandum tambahan telah dipesan dari gudang selatan dan akan tiba sebelum festival panen. Kami mohon kesabaran Anda hingga saat itu.\n\nSemoga sehat selalu,"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -3701,7 +3698,7 @@ msgstr "Rib-Hadda,\n"
 msgid "Route now"
 msgstr "Arahkan Sekarang"
 
-#: ../ui/src/emails/MockEmailsPage.tsx:103
+#: ../ui/src/emails/MockEmailsPage.tsx:101
 msgid "Routing approved"
 msgstr "Perutean disetujui"
 
@@ -3776,13 +3773,13 @@ msgstr "Cari folder"
 msgid "Search threads"
 msgstr "Cari utas"
 
-#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:137
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:136
 #, fuzzy
 msgid "Search threads…"
 msgstr "Cari utas…"
 
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:270
-#: ../ui/src/emails/MockEmailsPage.tsx:234
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:269
+#: ../ui/src/emails/MockEmailsPage.tsx:231
 #, fuzzy
 msgid "Select a thread to preview"
 msgstr "Pilih utas untuk pratinjau"
@@ -3851,11 +3848,11 @@ msgstr "Sesi"
 msgid "Set new password"
 msgstr "Atur kata sandi baru"
 
-#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:85
-#: ../ui/src/emails/BackfillCard.tsx:59
+#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:43
+#: ../ui/src/emails/BackfillCard.tsx:42
 #, fuzzy
-msgid "Set up at least 3 folders so we can start sorting."
-msgstr "Siapkan setidaknya 3 folder agar kami bisa mulai mengelompokkan."
+#~ msgid "Set up at least 3 folders so we can start sorting."
+#~ msgstr "Siapkan setidaknya 3 folder agar kami bisa mulai mengelompokkan."
 
 #: ../../apps/web/src/app/(app)/settings/WorkspaceLanguageSection.tsx:56
 #, fuzzy
@@ -3972,8 +3969,8 @@ msgstr "Segera"
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:50
 #: ../ui/src/emails/BackfillCard.tsx:23
 #, fuzzy
-msgid "Sort thousands of historical emails automatically. Available on Pro and Business subscriptions."
-msgstr "Urutkan ribuan email historis secara otomatis. Tersedia dalam langganan Pro dan Business."
+#~ msgid "Sort thousands of historical emails automatically. Available on Pro and Business subscriptions."
+#~ msgstr "Urutkan ribuan email historis secara otomatis. Tersedia dalam langganan Pro dan Business."
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:10
 #: ../../apps/mobile/src/components/ThreadRow.tsx:51
@@ -3992,8 +3989,8 @@ msgstr "Diurutkan secara otomatis berdasarkan kemiripan konten."
 msgid "Sorting"
 msgstr "Mengurutkan"
 
-#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:77
-#: ../ui/src/emails/BackfillCard.tsx:54
+#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:32
+#: ../ui/src/emails/BackfillCard.tsx:33
 #, fuzzy
 msgid "Sorting historical inbox"
 msgstr "Mengurutkan kotak masuk historis"
@@ -4213,7 +4210,7 @@ msgstr "Template"
 msgid "Terms"
 msgstr "Ketentuan"
 
-#: ../ui/src/emails/MockEmailsPage.tsx:145
+#: ../ui/src/emails/MockEmailsPage.tsx:143
 msgid "Thank you for your message. I'll follow up shortly."
 msgstr "Terima kasih atas pesan Anda. Saya akan segera menindaklanjuti."
 
@@ -4404,13 +4401,7 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "Untuk saudaraku, Raja Agung,\n"
-"\n"
-"Dewan agung bersidang pada awal Shemu. Aku meminta Anda menyiapkan laporan lengkap wilayah timur dan mengirimkannya dengan kurir cepat, sebelum bulan baru jika memungkinkan.\n"
-"\n"
-"Aliansi kita kuat. Marilah kita tunjukkan kepada dewan bahwa itu tetap demikian.\n"
-"\n"
-"Tushratta, Raja Agung Mitanni"
+msgstr "Untuk saudaraku, Raja Agung,\n\nDewan agung bersidang pada awal Shemu. Aku meminta Anda menyiapkan laporan lengkap wilayah timur dan mengirimkannya dengan kurir cepat, sebelum bulan baru jika memungkinkan.\n\nAliansi kita kuat. Marilah kita tunjukkan kepada dewan bahwa itu tetap demikian.\n\nTushratta, Raja Agung Mitanni"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:163
 #, fuzzy
@@ -4419,11 +4410,7 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "Kepada Biro Penunjukan Kerajaan,\n"
-"\n"
-"Kami telah menerima permohonan dari Horemheb dari Thebes dan akan meninjau catatan rekam jejaknya sebelum bulan baru berikutnya. Harap beri tahu dia bahwa kami akan mengirimkan kabar pada waktunya.\n"
-"\n"
-"Berdasarkan keputusan kerajaan,"
+msgstr "Kepada Biro Penunjukan Kerajaan,\n\nKami telah menerima permohonan dari Horemheb dari Thebes dan akan meninjau catatan rekam jejaknya sebelum bulan baru berikutnya. Harap beri tahu dia bahwa kami akan mengirimkan kabar pada waktunya.\n\nBerdasarkan keputusan kerajaan,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:274
 #, fuzzy
@@ -4434,13 +4421,7 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "Kepada Raja Agung,\n"
-"\n"
-"Selama bertahun-tahun rumah kita telah seperti saudara. Saya menulis sekarang untuk mengusulkan agar kita meresmikan persahabatan ini demi kepentingan kedua bangsa kita: sebuah pakta perlindungan timbal balik dan rute bersama.\n"
-"\n"
-"Saya hanya meminta Anda mendengar syarat-syarat saya. Kirimkan pesan melalui kurir berikutnya dan saya akan segera mengirimkan utusan saya.\n"
-"\n"
-"Aziru, hamba Raja Agung, penguasa Amurru"
+msgstr "Kepada Raja Agung,\n\nSelama bertahun-tahun rumah kita telah seperti saudara. Saya menulis sekarang untuk mengusulkan agar kita meresmikan persahabatan ini demi kepentingan kedua bangsa kita: sebuah pakta perlindungan timbal balik dan rute bersama.\n\nSaya hanya meminta Anda mendengar syarat-syarat saya. Kirimkan pesan melalui kurir berikutnya dan saya akan segera mengirimkan utusan saya.\n\nAziru, hamba Raja Agung, penguasa Amurru"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:384
 #, fuzzy
@@ -4449,11 +4430,7 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "Kepada Raja Agung,\n"
-"\n"
-"Perjalanan saya membawa saya dekat Delta dalam beberapa hari mendatang. Jika Raja Agung memiliki waktu luang, saya akan menyambut kesempatan untuk berbicara tatap muka; ada hal-hal yang lebih mudah diucapkan daripada ditulis.\n"
-"\n"
-"Hambamu, Abdi-Heba, gubernur Urushalim"
+msgstr "Kepada Raja Agung,\n\nPerjalanan saya membawa saya dekat Delta dalam beberapa hari mendatang. Jika Raja Agung memiliki waktu luang, saya akan menyambut kesempatan untuk berbicara tatap muka; ada hal-hal yang lebih mudah diucapkan daripada ditulis.\n\nHambamu, Abdi-Heba, gubernur Urushalim"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:153
 #, fuzzy
@@ -4462,11 +4439,7 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "Kepada Raja Agung, saudaraku,\n"
-"\n"
-"Saya telah mendengar perkataan Anda. Emas akan dikirimkan sebelum utusan berikutnya berangkat. Kami menghargai ikatan antara rumah kita dan tidak ingin itu mendingin.\n"
-"\n"
-"Dalam persahabatan,"
+msgstr "Kepada Raja Agung, saudaraku,\n\nSaya telah mendengar perkataan Anda. Emas akan dikirimkan sebelum utusan berikutnya berangkat. Kami menghargai ikatan antara rumah kita dan tidak ingin itu mendingin.\n\nDalam persahabatan,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:236
 #, fuzzy
@@ -4477,13 +4450,7 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "Kepada Raja Agung, saudaraku,\n"
-"\n"
-"Saya menulis dalam persahabatan, sebagaimana para ayah kita menulis sebelumnya. Pengiriman emas ketiga yang disepakati dalam perjanjian kita belum tiba. Dua utusan telah berlalu dan kami masih menunggu.\n"
-"\n"
-"Kami meminta Anda mengirimkannya tanpa penundaan lebih lanjut, sebagaimana layaknya ikatan antara rumah kita.\n"
-"\n"
-"Burna-Buriash II, Raja Babilonia"
+msgstr "Kepada Raja Agung, saudaraku,\n\nSaya menulis dalam persahabatan, sebagaimana para ayah kita menulis sebelumnya. Pengiriman emas ketiga yang disepakati dalam perjanjian kita belum tiba. Dua utusan telah berlalu dan kami masih menunggu.\n\nKami meminta Anda mengirimkannya tanpa penundaan lebih lanjut, sebagaimana layaknya ikatan antara rumah kita.\n\nBurna-Buriash II, Raja Babilonia"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:346
 #, fuzzy
@@ -4494,13 +4461,7 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "Kepada Raja Agung, Tuanku, Matahariku,\n"
-"\n"
-"Gandum yang Anda kirim bulan lalu telah diterima dengan syukur dan saya memuji nama Anda di hadapan rakyat. Namun saya harus menulis lagi: pengiriman ketiga belum tiba dan kota menjadi gelisah.\n"
-"\n"
-"Saya telah menulis tujuh kali. Saya tidak ingin menyusahkan Anda, namun apa lagi yang bisa saya lakukan?\n"
-"\n"
-"Hambamu, Rib-Hadda, gubernur Byblos"
+msgstr "Kepada Raja Agung, Tuanku, Matahariku,\n\nGandum yang Anda kirim bulan lalu telah diterima dengan syukur dan saya memuji nama Anda di hadapan rakyat. Namun saya harus menulis lagi: pengiriman ketiga belum tiba dan kota menjadi gelisah.\n\nSaya telah menulis tujuh kali. Saya tidak ingin menyusahkan Anda, namun apa lagi yang bisa saya lakukan?\n\nHambamu, Rib-Hadda, gubernur Byblos"
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:19
 #: ../ui/src/emails/ThreadList.tsx:15
@@ -4520,7 +4481,7 @@ msgstr "Perjalanan"
 
 #: ../../apps/site/src/components/landing/Footer.tsx:27
 #: ../../apps/site/src/components/landing/Nav.tsx:39
-#: ../ui/src/emails/EmailRail.tsx:82
+#: ../ui/src/emails/EmailRail.tsx:80
 #: ../ui/src/emails/ThreadListHeader.tsx:84
 #, fuzzy
 msgid "Triage"
@@ -4563,10 +4524,10 @@ msgstr "Tidak tersedia"
 msgid "Unclassified"
 msgstr "Tidak Terklasifikasi"
 
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:292
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:291
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1253
 #: ../../apps/web/src/app/admin/waitlist/page.tsx:26
-#: ../ui/src/emails/MockEmailsPage.tsx:253
+#: ../ui/src/emails/MockEmailsPage.tsx:250
 #, fuzzy
 msgid "Undo"
 msgstr "Urungkan"
@@ -4692,13 +4653,13 @@ msgstr "Upgrade untuk memuatnya"
 
 #: ../ui/src/emails/BackfillCard.tsx:28
 #, fuzzy
-msgid "Upgrade your subscription"
-msgstr "Upgrade langganan Anda"
+#~ msgid "Upgrade your subscription"
+#~ msgstr "Upgrade langganan Anda"
 
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:56
 #, fuzzy
-msgid "Upgrade your subscription on the web app to enable backfill."
-msgstr "Upgrade langganan Anda di aplikasi web untuk mengaktifkan backfill."
+#~ msgid "Upgrade your subscription on the web app to enable backfill."
+#~ msgstr "Upgrade langganan Anda di aplikasi web untuk mengaktifkan backfill."
 
 #: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:114
 #, fuzzy
@@ -5013,6 +4974,11 @@ msgstr "Kotak masuk Anda masih dalam proses impor. Anda dapat mulai menghasilkan
 #, fuzzy
 msgid "Your name"
 msgstr "Nama Anda"
+
+#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:40
+#: ../ui/src/emails/BackfillCard.tsx:38
+msgid "Your past threads are being loaded and will appear shortly."
+msgstr "Riwayat obrolan Anda sedang dimuat dan akan segera muncul."
 
 #: ../../apps/site/src/components/landing/TaxonomyDemoSection.tsx:12
 #, fuzzy

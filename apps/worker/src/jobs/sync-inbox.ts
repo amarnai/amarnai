@@ -345,6 +345,22 @@ export function createSyncInboxWorker(): Worker {
         },
       });
 
+      // Kick off the historical backfill as early as possible — right after the
+      // sync-state row exists — so its loading card appears within seconds of
+      // connecting instead of waiting for this live sync's change discovery and
+      // classification to finish. Backfill and live sync are designed to coexist
+      // (continuation chunks already run alongside live syncs), and the dedup id
+      // collapses duplicate enqueues. Gated on resumability so a completed/active
+      // backfill is never restarted; per-plan caps are enforced by the job itself.
+      // isBackfillResumable also recovers stale RUNNING state (worker crash).
+      if (isBackfillResumable(syncState.backfillStatus, syncState.backfillStartedAt)) {
+        await backfillInboxQueue.add(
+          "backfill-inbox",
+          { workspaceId },
+          { deduplication: { id: `backfill-inbox_${workspaceId}` } }
+        );
+      }
+
       // ── 3. Discover changed thread IDs ──────────────────────────────────────
 
       const client = new GmailClient(connection.encryptedRefreshToken);
@@ -386,23 +402,8 @@ export function createSyncInboxWorker(): Worker {
           data: { historyId: newHistoryId, lastSyncedAt: new Date(), status: "IDLE" },
         });
 
-        // Trigger backfill when it hasn't completed (or failed) yet, regardless
-        // of taxonomy strength. With a routable taxonomy backfill classifies
-        // threads; without one it populates the inbox and leaves threads PENDING
-        // (backfill-inbox handles both cases). recoverFailedThreads below picks up
-        // previously-failed threads once the taxonomy is strong.
-        // Every plan backfills; per-plan thread/window limits are enforced by
-        // the backfill job via getBackfillCap.
-        // isBackfillResumable also recovers stale RUNNING state (worker crash).
-        if (
-          isBackfillResumable(syncState.backfillStatus, syncState.backfillStartedAt)
-        ) {
-          await backfillInboxQueue.add(
-            "backfill-inbox",
-            { workspaceId },
-            { deduplication: { id: `backfill-inbox_${workspaceId}` } }
-          );
-        }
+        // (The historical backfill was already enqueued right after the sync-state
+        // upsert above, so it starts in parallel rather than waiting on this path.)
 
         // The invalid-taxonomy bulk backlog (PENDING, never attempted) is NOT
         // auto-routed here — it waits for the user's "Route now" so bulk AI
@@ -675,22 +676,9 @@ export function createSyncInboxWorker(): Worker {
         console.error("[sync-inbox] Failed to publish synced event:", err instanceof Error ? err.message : err);
       });
 
-      // Trigger a historical backfill whenever it hasn't completed yet,
-      // regardless of taxonomy strength. With a routable taxonomy backfill
-      // classifies threads; without one it populates the inbox and leaves
-      // threads PENDING (backfill-inbox handles both cases).
-      // Every plan backfills; per-plan thread/window limits are enforced by the
-      // backfill job via getBackfillCap.
-      // isBackfillResumable also recovers stale RUNNING state (worker crash).
-      if (
-        isBackfillResumable(syncState.backfillStatus, syncState.backfillStartedAt)
-      ) {
-        await backfillInboxQueue.add(
-          "backfill-inbox",
-          { workspaceId },
-          { deduplication: { id: `backfill-inbox_${workspaceId}` } }
-        );
-      }
+      // (The historical backfill was already enqueued right after the sync-state
+      // upsert above, so it starts in parallel rather than waiting for this live
+      // sync to finish.)
 
       // ── 7. Recover deferred and failed threads ───────────────────────────────
       //

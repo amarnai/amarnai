@@ -36,7 +36,6 @@ export default function EmailsScreen() {
   const { workspaceId, client } = useSession();
 
   const [folderSheetOpen, setFolderSheetOpen] = useState(false);
-  const [backfillDismissed, setBackfillDismissed] = useState(false);
   const [planCapDismissed, setPlanCapDismissed] = useState(false);
   const [focused, setFocused] = useState(false);
 
@@ -217,11 +216,7 @@ export default function EmailsScreen() {
           total={triage.filteredTotal}
           listHeader={
             <>
-              <BackfillBanner
-                syncStatus={syncStatusQuery.data}
-                dismissed={backfillDismissed}
-                onDismiss={() => setBackfillDismissed(true)}
-              />
+              <BackfillBanner syncStatus={syncStatusQuery.data} />
               <PlanCapBanner
                 syncStatus={syncStatusQuery.data}
                 dismissed={planCapDismissed}

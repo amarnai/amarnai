@@ -75,6 +75,13 @@ msgstr "{0} of {1} loaded"
 msgid "{0} of {1} remaining · resets {quotaResetDate}"
 msgstr "{0} of {1} remaining · resets {quotaResetDate}"
 
+#. placeholder {0}: loaded.toLocaleString()
+#. placeholder {1}: total.toLocaleString()
+#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:54
+#: ../ui/src/emails/BackfillCard.tsx:59
+#~ msgid "{0} of ~{1} threads · {percent}%"
+#~ msgstr "{0} of ~{1} threads · {percent}%"
+
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:108
 msgid "{blacklistCount, plural, one {# blocked} other {# blocked}}"
 msgstr "{blacklistCount, plural, one {# blocked} other {# blocked}}"
@@ -111,6 +118,11 @@ msgstr "{folderCount, plural, one {# folder} other {# folders}}"
 #: ../../apps/web/src/app/admin/waitlist/WaitlistShell.tsx:17
 msgid "{invitedCount} invited"
 msgstr "{invitedCount} invited"
+
+#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:50
+#: ../ui/src/emails/BackfillCard.tsx:49
+#~ msgid "{loaded, plural, one {# thread loaded} other {# threads loaded}}"
+#~ msgstr "{loaded, plural, one {# thread loaded} other {# threads loaded}}"
 
 #: ../../apps/web/src/app/admin/waitlist/WaitlistShell.tsx:17
 msgid "{pendingCount} pending"
@@ -396,7 +408,7 @@ msgstr "AI Routing"
 msgid "All"
 msgstr "All"
 
-#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:153
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:152
 msgid "All folders"
 msgstr "All folders"
 
@@ -596,8 +608,7 @@ msgstr "Back to list"
 msgid "Back to sign in"
 msgstr "Back to sign in"
 
-#: ../ui/src/emails/BackfillCard.tsx:18
-#: ../ui/src/emails/BackfillCard.tsx:49
+#: ../ui/src/emails/BackfillCard.tsx:28
 msgid "Backfill"
 msgstr "Backfill"
 
@@ -654,8 +665,8 @@ msgstr "Build plan"
 
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
 #: ../ui/src/emails/BackfillCard.tsx:21
-msgid "Bulk triage your inbox"
-msgstr "Bulk triage your inbox"
+#~ msgid "Bulk triage your inbox"
+#~ msgstr "Bulk triage your inbox"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:308
 msgid "Bureau of Royal Appointments"
@@ -845,7 +856,7 @@ msgstr "Confirm password"
 msgid "Connect a Gmail inbox to configure sync filters."
 msgstr "Connect a Gmail inbox to configure sync filters."
 
-#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:201
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:334
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:268
@@ -869,7 +880,7 @@ msgstr "Connect Gmail and Amarnai starts sorting within minutes. Pricing is per 
 msgid "Connect Gmail to generate a plan from your inbox"
 msgstr "Connect Gmail to generate a plan from your inbox"
 
-#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:180
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:179
 msgid "Connect Gmail to start triaging"
 msgstr "Connect Gmail to start triaging"
 
@@ -877,7 +888,7 @@ msgstr "Connect Gmail to start triaging"
 msgid "Connect once, generate your plan once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
 msgstr "Connect once, generate your plan once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
 
-#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:183
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:182
 msgid "Connect your Gmail account to sync your inbox into Amarnai. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
 msgstr "Connect your Gmail account to sync your inbox into Amarnai. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
 
@@ -1267,12 +1278,11 @@ msgstr "Disconnects this workspace. Amarnai keeps access because this mailbox is
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 
-#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:42
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:48
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:295
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:294
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:52
 #: ../ui/src/AppDownloadBanner.tsx:80
-#: ../ui/src/emails/MockEmailsPage.tsx:256
+#: ../ui/src/emails/MockEmailsPage.tsx:253
 msgid "Dismiss"
 msgstr "Dismiss"
 
@@ -1585,11 +1595,11 @@ msgstr "FAQ"
 msgid "Filter by folder"
 msgstr "Filter by folder"
 
-#: ../ui/src/emails/EmailRail.tsx:72
+#: ../ui/src/emails/EmailRail.tsx:70
 msgid "Filter queues & folders…"
 msgstr "Filter queues & folders…"
 
-#: ../ui/src/emails/EmailRail.tsx:75
+#: ../ui/src/emails/EmailRail.tsx:73
 msgid "Filter rail"
 msgstr "Filter rail"
 
@@ -1609,11 +1619,11 @@ msgstr "Flagged as alliance/investor intro based on language (\"mutual benefit\"
 msgid "Flight and hotel bookings, travel itineraries, visa applications, and trip confirmations."
 msgstr "Flight and hotel bookings, travel itineraries, visa applications, and trip confirmations."
 
-#: ../ui/src/emails/MockEmailsPage.tsx:159
+#: ../ui/src/emails/MockEmailsPage.tsx:157
 msgid "folder"
 msgstr "folder"
 
-#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:110
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:109
 #: ../../apps/mobile/src/components/emails/QueueChips.tsx:22
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:245
 msgid "Folder"
@@ -1635,11 +1645,11 @@ msgstr "Folder updated"
 msgid "Folder will be ignored until connected"
 msgstr "Folder will be ignored until connected"
 
-#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:151
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:150
 msgid "Folder: {activeFolderName}"
 msgstr "Folder: {activeFolderName}"
 
-#: ../ui/src/emails/EmailRail.tsx:95
+#: ../ui/src/emails/EmailRail.tsx:93
 #: ../ui/src/emails/ThreadList.tsx:111
 msgid "Folders"
 msgstr "Folders"
@@ -1817,7 +1827,7 @@ msgstr "Gmail Inbox"
 msgid "Gmail label sync"
 msgstr "Gmail label sync"
 
-#: ../ui/src/emails/EmailRail.tsx:56
+#: ../ui/src/emails/EmailRail.tsx:54
 msgid "Gmail live sync active"
 msgstr "Gmail live sync active"
 
@@ -2213,7 +2223,7 @@ msgstr "List the kinds of emails that belong here: senders, topics, keywords. Ai
 msgid "List the senders, topics, and keywords that belong here. At least {minDescriptionLength} characters. ({descriptionLength}/{minDescriptionLength})"
 msgstr "List the senders, topics, and keywords that belong here. At least {minDescriptionLength} characters. ({descriptionLength}/{minDescriptionLength})"
 
-#: ../ui/src/emails/EmailRail.tsx:59
+#: ../ui/src/emails/EmailRail.tsx:57
 msgid "Live"
 msgstr "Live"
 
@@ -2222,8 +2232,8 @@ msgstr "Live"
 msgid "Load more"
 msgstr "Load more"
 
-#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:81
-#: ../ui/src/emails/BackfillCard.tsx:56
+#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
+#: ../ui/src/emails/BackfillCard.tsx:35
 msgid "Loading past threads…"
 msgstr "Loading past threads…"
 
@@ -2238,7 +2248,7 @@ msgid "Loading…"
 msgstr "Loading…"
 
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:37
-#: ../ui/src/emails/EmailRail.tsx:54
+#: ../ui/src/emails/EmailRail.tsx:52
 msgid "Mail"
 msgstr "Mail"
 
@@ -2359,7 +2369,7 @@ msgstr "Move to folder…"
 msgid "Move to…"
 msgstr "Move to…"
 
-#: ../ui/src/emails/MockEmailsPage.tsx:169
+#: ../ui/src/emails/MockEmailsPage.tsx:167
 msgid "Moved to {folderName}"
 msgstr "Moved to {folderName}"
 
@@ -2404,8 +2414,8 @@ msgid "New business inquiries, proposals, pricing discussions, and prospective c
 msgstr "New business inquiries, proposals, pricing discussions, and prospective client outreach."
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:247
-#: ../ui/src/emails/EmailRail.tsx:97
-#: ../ui/src/emails/EmailRail.tsx:102
+#: ../ui/src/emails/EmailRail.tsx:95
+#: ../ui/src/emails/EmailRail.tsx:100
 msgid "New folder"
 msgstr "New folder"
 
@@ -2414,8 +2424,8 @@ msgstr "New folder"
 msgid "New password"
 msgstr "New password"
 
-#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:87
-#: ../ui/src/emails/BackfillCard.tsx:61
+#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:42
+#: ../ui/src/emails/BackfillCard.tsx:40
 msgid "New threads will appear as they are sorted."
 msgstr "New threads will appear as they are sorted."
 
@@ -2497,11 +2507,11 @@ msgstr "No threads here."
 #~ msgid "No threads in {activeFolderName}"
 #~ msgstr "No threads in {activeFolderName}"
 
-#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:118
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:117
 msgid "No threads in {folderName}"
 msgstr "No threads in {folderName}"
 
-#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:116
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:115
 msgid "No threads match your search"
 msgstr "No threads match your search"
 
@@ -2509,7 +2519,7 @@ msgstr "No threads match your search"
 msgid "No threads match your search."
 msgstr "No threads match your search."
 
-#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:119
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:118
 msgid "No threads yet"
 msgstr "No threads yet"
 
@@ -2772,6 +2782,11 @@ msgstr "Prefer to self-host? It's open source:<0/> <1>clone it and run it free</
 msgid "Prepare your accounts before the council convenes."
 msgstr "Prepare your accounts before the council convenes."
 
+#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:52
+#: ../ui/src/emails/BackfillCard.tsx:51
+#~ msgid "Preparing…"
+#~ msgstr "Preparing…"
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:62
 msgid "Press"
 msgstr "Press"
@@ -2846,7 +2861,7 @@ msgstr "Proposed folders. Applying replaces your current plan; you can edit ever
 msgid "Queuing rescan…"
 msgstr "Queuing rescan…"
 
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:305
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:304
 msgid "Re-route {unclassifiedCount} unclassified"
 msgstr "Re-route {unclassifiedCount} unclassified"
 
@@ -3076,7 +3091,7 @@ msgstr "Rib-Hadda,\n"
 msgid "Route now"
 msgstr "Route now"
 
-#: ../ui/src/emails/MockEmailsPage.tsx:103
+#: ../ui/src/emails/MockEmailsPage.tsx:101
 msgid "Routing approved"
 msgstr "Routing approved"
 
@@ -3140,12 +3155,12 @@ msgstr "Search folders"
 msgid "Search threads"
 msgstr "Search threads"
 
-#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:137
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:136
 msgid "Search threads…"
 msgstr "Search threads…"
 
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:270
-#: ../ui/src/emails/MockEmailsPage.tsx:234
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:269
+#: ../ui/src/emails/MockEmailsPage.tsx:231
 msgid "Select a thread to preview"
 msgstr "Select a thread to preview"
 
@@ -3201,10 +3216,10 @@ msgstr "Session"
 msgid "Set new password"
 msgstr "Set new password"
 
-#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:85
-#: ../ui/src/emails/BackfillCard.tsx:59
-msgid "Set up at least 3 folders so we can start sorting."
-msgstr "Set up at least 3 folders so we can start sorting."
+#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:43
+#: ../ui/src/emails/BackfillCard.tsx:42
+#~ msgid "Set up at least 3 folders so we can start sorting."
+#~ msgstr "Set up at least 3 folders so we can start sorting."
 
 #: ../../apps/web/src/app/(app)/settings/WorkspaceLanguageSection.tsx:56
 msgid "Sets the language for this workspace, including the interface and AI-generated folders."
@@ -3300,8 +3315,8 @@ msgstr "Soon"
 
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:50
 #: ../ui/src/emails/BackfillCard.tsx:23
-msgid "Sort thousands of historical emails automatically. Available on Pro and Business subscriptions."
-msgstr "Sort thousands of historical emails automatically. Available on Pro and Business subscriptions."
+#~ msgid "Sort thousands of historical emails automatically. Available on Pro and Business subscriptions."
+#~ msgstr "Sort thousands of historical emails automatically. Available on Pro and Business subscriptions."
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:10
 #: ../../apps/mobile/src/components/ThreadRow.tsx:51
@@ -3317,8 +3332,8 @@ msgstr "Sorted automatically by content similarity."
 msgid "Sorting"
 msgstr "Sorting"
 
-#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:77
-#: ../ui/src/emails/BackfillCard.tsx:54
+#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:32
+#: ../ui/src/emails/BackfillCard.tsx:33
 msgid "Sorting historical inbox"
 msgstr "Sorting historical inbox"
 
@@ -3503,7 +3518,7 @@ msgstr "Templates"
 msgid "Terms"
 msgstr "Terms"
 
-#: ../ui/src/emails/MockEmailsPage.tsx:145
+#: ../ui/src/emails/MockEmailsPage.tsx:143
 msgid "Thank you for your message. I'll follow up shortly."
 msgstr "Thank you for your message. I'll follow up shortly."
 
@@ -3765,7 +3780,7 @@ msgstr "Travel"
 
 #: ../../apps/site/src/components/landing/Footer.tsx:27
 #: ../../apps/site/src/components/landing/Nav.tsx:39
-#: ../ui/src/emails/EmailRail.tsx:82
+#: ../ui/src/emails/EmailRail.tsx:80
 #: ../ui/src/emails/ThreadListHeader.tsx:84
 msgid "Triage"
 msgstr "Triage"
@@ -3800,10 +3815,10 @@ msgstr "Unavailable"
 msgid "Unclassified"
 msgstr "Unclassified"
 
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:292
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:291
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1253
 #: ../../apps/web/src/app/admin/waitlist/page.tsx:26
-#: ../ui/src/emails/MockEmailsPage.tsx:253
+#: ../ui/src/emails/MockEmailsPage.tsx:250
 msgid "Undo"
 msgstr "Undo"
 
@@ -3905,12 +3920,12 @@ msgid "Upgrade to load them"
 msgstr "Upgrade to load them"
 
 #: ../ui/src/emails/BackfillCard.tsx:28
-msgid "Upgrade your subscription"
-msgstr "Upgrade your subscription"
+#~ msgid "Upgrade your subscription"
+#~ msgstr "Upgrade your subscription"
 
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:56
-msgid "Upgrade your subscription on the web app to enable backfill."
-msgstr "Upgrade your subscription on the web app to enable backfill."
+#~ msgid "Upgrade your subscription on the web app to enable backfill."
+#~ msgstr "Upgrade your subscription on the web app to enable backfill."
 
 #: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:114
 msgid "Use \"Rescan inbox\" after changing filter settings to apply them to threads already in your inbox."
@@ -4167,6 +4182,11 @@ msgstr "Your inbox is still importing. You can generate now from what's loaded s
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:63
 msgid "Your name"
 msgstr "Your name"
+
+#: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:40
+#: ../ui/src/emails/BackfillCard.tsx:38
+msgid "Your past threads are being loaded and will appear shortly."
+msgstr "Your past threads are being loaded and will appear shortly."
 
 #: ../../apps/site/src/components/landing/TaxonomyDemoSection.tsx:12
 msgid "Your plan is a simple folder tree: your folders branching out from the inbox. Let Amarnai generate it from your inbox, start from a template, or draw it yourself. Then it walks the tree for every email that arrives."

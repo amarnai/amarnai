@@ -223,7 +223,6 @@ export function EmailsClient({
         onRailQueryChange={setRailQuery}
         onToggleFolder={toggleFolder}
         onNewFolder={() => router.push("/plan")}
-        upgradeHref="/upgrade"
       />
 
       <ThreadList

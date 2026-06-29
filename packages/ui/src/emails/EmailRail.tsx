@@ -25,7 +25,6 @@ export interface EmailRailProps {
   onRailQueryChange: (q: string) => void;
   onToggleFolder: (id: string) => void;
   onNewFolder?: (() => void) | undefined;
-  upgradeHref?: string | undefined;
 }
 
 export function EmailRail({
@@ -40,7 +39,6 @@ export function EmailRail({
   onRailQueryChange,
   onToggleFolder,
   onNewFolder,
-  upgradeHref,
 }: EmailRailProps) {
   const { i18n } = useLingui();
 
@@ -119,7 +117,7 @@ export function EmailRail({
           onSelect={(id) => onSelectActive({ kind: "folder", id })}
         />
 
-        <BackfillCard syncInfo={syncInfo} upgradeHref={upgradeHref} />
+        <BackfillCard syncInfo={syncInfo} />
       </div>
     </aside>
   );

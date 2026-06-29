@@ -3154,26 +3154,41 @@ a {
 
 .em-backfill-actions button:hover { background: var(--surface-2); }
 
-.em-backfill--locked {
-  border-style: dashed;
-}
-
-.em-backfill-upgrade-btn {
-  display: inline-block;
+.em-backfill-progress-track {
   margin-top: 10px;
-  padding: 5px 10px;
-  font-size: 11.5px;
-  font-weight: 500;
-  color: var(--accent-ink);
-  background: var(--accent-soft);
-  border: 1px solid var(--accent-soft);
-  border-radius: 6px;
-  text-decoration: none;
-  transition: background 0.15s;
+  height: 4px;
+  background: var(--line-2);
+  border-radius: 2px;
+  overflow: hidden;
 }
 
-.em-backfill-upgrade-btn:hover {
-  background: var(--accent-soft-hover, color-mix(in srgb, var(--accent) 20%, transparent));
+.em-backfill-progress-bar {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width 0.4s ease;
+  min-width: 4px;
+}
+
+/* Gmail's estimate not yet known: a slice slides across the track to signal
+   activity instead of showing a misleading 0% bar. */
+.em-backfill-progress-bar--indeterminate {
+  width: 40%;
+  min-width: 0;
+  transition: none;
+  animation: em-backfill-indeterminate 1.4s ease-in-out infinite;
+}
+
+@keyframes em-backfill-indeterminate {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(250%); }
+}
+
+.em-backfill-progress-label {
+  font-size: 10.5px;
+  color: var(--ink-4);
+  margin-top: 4px;
+  text-align: right;
 }
 
 /* ─── List pane ─────────────────────────────────────────────────────────────── */

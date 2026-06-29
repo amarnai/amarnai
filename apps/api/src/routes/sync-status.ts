@@ -50,7 +50,6 @@ syncStatus.get("/workspaces/:workspaceId/sync-status", async (c) => {
         backfillCapReached: true,
         backfillBeyondCount: true,
         backfillProcessedCount: true,
-        backfillTotalEstimate: true,
       },
     }),
     db.gmailSyncSettings.findUnique({
@@ -70,20 +69,17 @@ syncStatus.get("/workspaces/:workspaceId/sync-status", async (c) => {
     connection.gmailWatchExpiresAt != null && connection.gmailWatchExpiresAt > now;
 
   // Backfill loading progress is only meaningful while a backfill is running.
-  // While it is, report how many past threads have been fetched from Gmail so far
-  // (backfillLoadedThreads) versus the estimated total to fetch
-  // (backfillTotalThreads), so the card can render a bar that fills as the inbox
-  // history loads. Also report whether the taxonomy is too small to route any of
-  // them yet, which takes priority in the card's wording.
+  // While it is, report how many past threads the backfill has processed so far
+  // (backfillLoadedThreads) — used for telemetry/debugging; the card itself shows a
+  // count-less "loading" indicator since Gmail exposes no reliable total. Also
+  // report whether the taxonomy is too small to route any threads yet, which adapts
+  // the card wording.
   let backfillAwaitingTaxonomy = false;
   let backfillLoadedThreads = 0;
-  let backfillTotalThreads = 0;
+  const backfillTotalThreads = 0;
 
   if (state.backfillStatus === "RUNNING") {
     backfillLoadedThreads = state.backfillProcessedCount;
-    // The estimate is captured after the first chunk; until then it is 0. Never
-    // report a total below what has already loaded so the bar can't exceed 100%.
-    backfillTotalThreads = Math.max(state.backfillTotalEstimate, state.backfillProcessedCount);
 
     const [taxonomyNodes, taxonomyEdges] = await Promise.all([
       db.taxonomyNode.findMany({

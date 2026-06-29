@@ -1,74 +1,29 @@
-import { useEffect, useRef } from 'react';
-import { Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { useEffect, useRef, useState } from 'react';
+import { Animated, StyleSheet, Text, View } from 'react-native';
 import { Trans } from '@lingui/react/macro';
-import { useLingui } from '@lingui/react';
-import { msg } from '@lingui/core/macro';
 import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
 import type { SyncStatus } from '@amarnai/api-client';
 
 interface BackfillBannerProps {
   syncStatus: SyncStatus | null | undefined;
-  // When the FREE-plan upsell is dismissed, the screen hides it for the session.
-  dismissed?: boolean;
-  onDismiss?: () => void;
 }
 
 /**
  * Mobile equivalent of the web's BackfillCard (packages/ui/src/emails/BackfillCard.tsx).
- * FREE plans see an upgrade upsell; paid plans see a live "sorting in progress"
- * card while a historical backfill runs. All other states render nothing.
- * Billing is web-only, so the upsell points users to the web app rather than
- * linking to an in-app upgrade flow. The upsell is closable (session-scoped);
- * the "sorting in progress" card is transient state and is not dismissible.
+ * Shows a live "sorting in progress" card, on every plan, while a historical
+ * backfill runs (fetching past threads from Gmail happens regardless of plan or
+ * taxonomy). The taxonomy only gates sorting, so it just adapts the subtext. All
+ * other states render nothing. The card is transient state and not dismissible.
  */
-export function BackfillBanner({ syncStatus, dismissed, onDismiss }: BackfillBannerProps) {
-  const { i18n } = useLingui();
-
+export function BackfillBanner({ syncStatus }: BackfillBannerProps) {
   if (!syncStatus) return null;
-
-  if (syncStatus.workspacePlan === 'FREE') {
-    if (dismissed) return null;
-    return (
-      <View style={[styles.card, styles.cardLocked]}>
-        <View style={styles.titleRow}>
-          <Text style={[styles.title, styles.titleFlex]}>
-            <Trans>Bulk triage your inbox</Trans>
-          </Text>
-          {onDismiss ? (
-            <TouchableOpacity
-              onPress={onDismiss}
-              hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-              accessibilityLabel={i18n._(msg`Dismiss`)}
-              accessibilityRole="button"
-            >
-              <Ionicons name="close" size={18} color={colors.ink4} />
-            </TouchableOpacity>
-          ) : null}
-        </View>
-        <Text style={styles.desc}>
-          <Trans>
-            Sort thousands of historical emails automatically. Available on Pro and
-            Business subscriptions.
-          </Trans>
-        </Text>
-        <Text style={styles.note}>
-          <Trans>Upgrade your subscription on the web app to enable backfill.</Trans>
-        </Text>
-      </View>
-    );
-  }
-
   if (syncStatus.backfillStatus !== 'RUNNING') return null;
 
-  // Fetching past threads from Gmail happens regardless of the taxonomy, so the
-  // loading bar shows for the whole RUNNING phase. The taxonomy only gates sorting,
-  // so it just adapts the subtext. Cap at 99% — the card clears when backfill is DONE.
   const awaitingTaxonomy = syncStatus.backfillAwaitingTaxonomy ?? false;
-  const loaded = syncStatus.backfillLoadedThreads ?? 0;
-  const total = syncStatus.backfillTotalThreads ?? 0;
-  const percent = total > 0 ? Math.min(Math.round((loaded / total) * 100), 99) : 0;
 
+  // No count or percentage: Gmail exposes no reliable total, and a per-thread count
+  // would sit at zero during the initial page fetch. An indeterminate bar is honest
+  // and never misleads — it just signals activity.
   return (
     <View style={styles.card}>
       <View style={styles.eyebrowRow}>
@@ -82,15 +37,12 @@ export function BackfillBanner({ syncStatus, dismissed, onDismiss }: BackfillBan
       </Text>
       <Text style={styles.desc}>
         {awaitingTaxonomy ? (
-          <Trans>Set up at least 3 folders so we can start sorting.</Trans>
+          <Trans>Your past threads are being loaded and will appear shortly.</Trans>
         ) : (
           <Trans>New threads will appear as they are sorted.</Trans>
         )}
       </Text>
-      <View style={styles.progressTrack}>
-        <View style={[styles.progressBar, { width: `${percent}%` }]} />
-      </View>
-      <Text style={styles.progressLabel}>{percent}%</Text>
+      <IndeterminateBar />
     </View>
   );
 }
@@ -112,6 +64,38 @@ function PulseDot() {
   return <Animated.View style={[styles.pulse, { opacity }]} />;
 }
 
+/** A slice that slides across the track to signal activity before the estimate lands. */
+function IndeterminateBar() {
+  const [trackWidth, setTrackWidth] = useState(0);
+  const x = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    if (trackWidth === 0) return;
+    const loop = Animated.loop(
+      Animated.timing(x, { toValue: 1, duration: 1400, useNativeDriver: true }),
+    );
+    loop.start();
+    return () => loop.stop();
+  }, [x, trackWidth]);
+
+  const sliceWidth = Math.max(trackWidth * 0.4, 24);
+  const translateX = x.interpolate({
+    inputRange: [0, 1],
+    outputRange: [-sliceWidth, trackWidth],
+  });
+
+  return (
+    <View
+      style={styles.progressTrack}
+      onLayout={(e) => setTrackWidth(e.nativeEvent.layout.width)}
+    >
+      <Animated.View
+        style={[styles.progressBar, { width: sliceWidth, transform: [{ translateX }] }]}
+      />
+    </View>
+  );
+}
+
 const styles = StyleSheet.create({
   card: {
     marginHorizontal: space.xl,
@@ -122,15 +106,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.line2,
     borderRadius: radii.md,
-  },
-  cardLocked: {
-    borderStyle: 'dashed',
-  },
-  titleRow: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    justifyContent: 'space-between',
-    gap: space.md,
   },
   eyebrowRow: {
     flexDirection: 'row',
@@ -156,19 +131,11 @@ const styles = StyleSheet.create({
     color: colors.ink,
     marginTop: space.xs,
   },
-  titleFlex: {
-    flex: 1,
-  },
   desc: {
     fontSize: fontSize.sm,
     color: colors.ink3,
     marginTop: space.xxs,
     lineHeight: 18,
-  },
-  note: {
-    fontSize: fontSize.sm,
-    color: colors.accentInk,
-    marginTop: space.sm,
   },
   progressTrack: {
     marginTop: space.sm,
@@ -182,11 +149,5 @@ const styles = StyleSheet.create({
     backgroundColor: colors.accent,
     borderRadius: radii.full,
     minWidth: 4,
-  },
-  progressLabel: {
-    fontSize: fontSize.xs,
-    color: colors.ink4,
-    marginTop: space.xxs,
-    textAlign: 'right',
   },
 });

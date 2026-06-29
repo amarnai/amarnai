@@ -5,43 +5,22 @@ import type { SyncInfo } from "./types.js";
 
 export interface BackfillCardProps {
   syncInfo: SyncInfo;
-  upgradeHref?: string | undefined;
 }
 
-export function BackfillCard({ syncInfo, upgradeHref = "#" }: BackfillCardProps) {
+export function BackfillCard({ syncInfo }: BackfillCardProps) {
   if (!syncInfo) return null;
 
-  if (syncInfo.workspacePlan === "FREE") {
-    return (
-      <>
-        <div className="em-section-label">
-          <span><Trans>Backfill</Trans></span>
-        </div>
-        <div className="em-backfill em-backfill--locked">
-          <div className="em-backfill-title"><Trans>Bulk triage your inbox</Trans></div>
-          <div className="em-backfill-desc">
-            <Trans>
-              Sort thousands of historical emails automatically. Available on Pro and Business subscriptions.
-            </Trans>
-          </div>
-          <a href={upgradeHref} className="em-backfill-upgrade-btn">
-            <Trans>Upgrade your subscription</Trans>
-          </a>
-        </div>
-      </>
-    );
-  }
-
+  // The card shows for the whole RUNNING phase, on every plan: fetching past
+  // threads from Gmail happens regardless of plan or taxonomy. The taxonomy only
+  // gates sorting, so it just adapts the subtext (and is also surfaced by the top
+  // "build taxonomy" banner).
   if (syncInfo.backfillStatus !== "RUNNING") return null;
 
-  // Fetching past threads from Gmail happens regardless of the taxonomy, so the
-  // loading bar shows for the whole RUNNING phase. The taxonomy only gates
-  // sorting, so it just adapts the subtext (and is also surfaced by the top
-  // "build taxonomy" banner). Cap at 99% — the card clears when backfill is DONE.
+  // No count or percentage: Gmail exposes no reliable total for the backfill's
+  // filtered/windowed/capped query, and a per-thread "loaded" count would sit at
+  // zero during the (sometimes long) initial page fetch before any thread lands.
+  // An indeterminate bar is honest and never misleads — it just signals activity.
   const awaitingTaxonomy = syncInfo.backfillAwaitingTaxonomy ?? false;
-  const loaded = syncInfo.backfillLoadedThreads ?? 0;
-  const total = syncInfo.backfillTotalThreads ?? 0;
-  const percent = total > 0 ? Math.min(Math.round((loaded / total) * 100), 99) : 0;
 
   return (
     <>
@@ -56,15 +35,14 @@ export function BackfillCard({ syncInfo, upgradeHref = "#" }: BackfillCardProps)
         <div className="em-backfill-title"><Trans>Loading past threads…</Trans></div>
         <div className="em-backfill-desc">
           {awaitingTaxonomy ? (
-            <Trans>Set up at least 3 folders so we can start sorting.</Trans>
+            <Trans>Your past threads are being loaded and will appear shortly.</Trans>
           ) : (
             <Trans>New threads will appear as they are sorted.</Trans>
           )}
         </div>
         <div className="em-backfill-progress-track">
-          <div className="em-backfill-progress-bar" style={{ width: `${percent}%` }} />
+          <div className="em-backfill-progress-bar em-backfill-progress-bar--indeterminate" />
         </div>
-        <div className="em-backfill-progress-label">{percent}%</div>
       </div>
     </>
   );

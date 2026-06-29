@@ -81,6 +81,10 @@ vi.mock("bullmq", () => ({
 
 vi.mock("../redis.js", () => ({ redisConnection: {} }));
 
+vi.mock("../redis-publisher.js", () => ({
+  publishWorkspaceSynced: vi.fn().mockResolvedValue(undefined),
+}));
+
 // queues.js mock — use inline vi.fn() so there's no hoisting issue.
 vi.mock("../queues.js", () => ({
   classifyThreadQueue: { addBulk: vi.fn().mockResolvedValue([]) },
@@ -95,6 +99,7 @@ import { GmailAuthError } from "@amarnai/gmail";
 import { Worker } from "bullmq";
 import { classifyThreadQueue } from "../queues.js";
 import { DEDUP_CLASSIFY_UNROUTED } from "@amarnai/queue";
+import { publishWorkspaceSynced } from "../redis-publisher.js";
 import { createBackfillInboxWorker } from "../jobs/backfill-inbox.js";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -361,6 +366,62 @@ describe("createBackfillInboxWorker", () => {
     }).data;
     expect(doneData.backfillCapReached).toBe(false);
     expect(doneData.backfillBeyondCount).toBe(0);
+  });
+
+  // ── Loading-progress notifications (drive the backfill card) ─────────────────
+
+  it("(c4c) emits a synced event at claim time so the card appears immediately", async () => {
+    vi.mocked(db.providerSyncState.findUnique).mockResolvedValue({
+      backfillStatus: "PENDING",
+      backfillStartedAt: null,
+      backfillPageToken: null,
+      backfillProcessedCount: 0,
+      backfillGeneration: 0,
+    } as never);
+
+    // Empty inbox: no threads to process. The claim alone must still publish, so
+    // the RUNNING card shows up before any page is fetched.
+    mockListThreadsPage.mockResolvedValue({ threads: [], nextPageToken: undefined, resultSizeEstimate: 0 });
+
+    createBackfillInboxWorker();
+    await getProcessor()(makeJob({ workspaceId: WS_ID }));
+
+    expect(publishWorkspaceSynced).toHaveBeenCalledWith(WS_ID);
+  });
+
+  it("(c4d) publishes per page so the thread list refreshes as history loads", async () => {
+    vi.mocked(db.providerSyncState.findUnique).mockResolvedValue({
+      backfillStatus: "PENDING",
+      backfillStartedAt: null,
+      backfillPageToken: null,
+      backfillProcessedCount: 0,
+      backfillGeneration: 0,
+    } as never);
+
+    // Three full pages, the last with no next page → exhausted (single chunk).
+    const fullPage = () => Array.from({ length: 100 }, (_, i) => makeGmailThread({ id: `t-${i}` }));
+    mockListThreadsPage
+      .mockResolvedValueOnce({ threads: fullPage(), nextPageToken: "p2", resultSizeEstimate: 250 })
+      .mockResolvedValueOnce({ threads: fullPage(), nextPageToken: "p3", resultSizeEstimate: 250 })
+      .mockResolvedValueOnce({ threads: fullPage(), nextPageToken: undefined, resultSizeEstimate: 250 });
+    vi.mocked(db.emailThread.findUnique).mockResolvedValue(null);
+    mockGetThread.mockImplementation(async (id: string) => ({ id }));
+    vi.mocked(db.emailThread.upsert).mockResolvedValue({ id: "db-x" } as never);
+
+    createBackfillInboxWorker();
+    await getProcessor()(makeJob({ workspaceId: WS_ID }));
+
+    // Claim + a publish per non-final page + the final DONE publish: several
+    // refreshes across the chunk (not just one at the end).
+    expect(vi.mocked(publishWorkspaceSynced).mock.calls.length).toBeGreaterThanOrEqual(3);
+
+    // The card's count comes from live thread rows, not the worker counter, so the
+    // backfill must NOT write backfillProcessedCount mid-stream (that would drift
+    // from the resume cursor). It only appears on the chunk-end / DONE write.
+    const countWritesWithoutCursor = vi.mocked(db.providerSyncState.updateMany).mock.calls
+      .map((c) => c[0] as { data: Record<string, unknown> })
+      .filter((c) => c.data.backfillProcessedCount !== undefined && c.data.backfillPageToken === undefined && c.data.backfillStatus !== "DONE");
+    expect(countWritesWithoutCursor).toHaveLength(0);
   });
 
   // ── Chunked continuation ──────────────────────────────────────────────────────
