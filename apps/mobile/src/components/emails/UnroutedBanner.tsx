@@ -35,9 +35,9 @@ export function UnroutedBanner({ waitingCount, routableFolderCount, onRouteNow }
         <Text style={styles.warnText} numberOfLines={2}>
           {i18n._(
             msg`${plural(waitingCount, {
-              one: `# thread is waiting. Connect at least ${TAXONOMY_MIN_NON_ROOT_NODES} folders to begin sorting.`,
-              other: `# threads are waiting. Connect at least ${TAXONOMY_MIN_NON_ROOT_NODES} folders to begin sorting.`,
-            })}`,
+              one: '# thread is waiting.',
+              other: '# threads are waiting.',
+            })} Connect at least ${TAXONOMY_MIN_NON_ROOT_NODES} folders to begin sorting.`,
           )}
         </Text>
         <TouchableOpacity

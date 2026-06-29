@@ -1,26 +1,11 @@
-import { i18n, type Messages } from "@lingui/core";
+import { i18n } from "@lingui/core";
 import { type SupportedLocale, SOURCE_LOCALE } from "./locales.js";
 
 export { i18n };
 
-// Loads a compiled catalog without touching any shared i18n instance.
-// Server-side rendering must build a fresh, per-request i18n instance (so
-// concurrent requests/tenants never share an activated locale), so it needs
-// the raw messages rather than activating the singleton.
-export async function loadCatalog(locale: SupportedLocale): Promise<Messages> {
-  const { messages } = await import(
-    /* webpackMode: "lazy" */
-    `./locales/${locale}/messages.mjs`
-  );
-  return messages;
-}
-
-// Dynamic catalog loader for web (code-split per locale).
-// Mobile uses loadCatalogMobile() instead (static require-map).
-export async function activateLocale(locale: SupportedLocale): Promise<void> {
-  const messages = await loadCatalog(locale);
-  i18n.loadAndActivate({ locale, messages });
-}
+// Web/worker catalog loaders (dynamic, code-split) live in load-catalog.ts and
+// are re-exported from the package barrel. Metro resolves load-catalog.native.ts
+// instead, since it cannot transform their dynamic import.
 
 // Static require-map for React Native / Metro.
 // Metro cannot dynamic-import; all catalogs are bundled and switched at runtime.
@@ -34,7 +19,13 @@ export function registerMobileMessages(
 }
 
 export function activateLocaleMobile(locale: SupportedLocale): void {
-  const messages = (mobileMessages[locale] ?? mobileMessages[SOURCE_LOCALE]) as Record<string, string>;
-  if (!messages) return;
+  // Always activate, even when no catalog is registered (fall back to an empty
+  // map). Lingui's I18nProvider renders `null` and provides no context until
+  // `i18n.locale` is set, which would unmount the app subtree and make
+  // useLingui throw in nested layouts. With empty messages, macro strings fall
+  // back to their source English text.
+  const messages = (mobileMessages[locale] ??
+    mobileMessages[SOURCE_LOCALE] ??
+    {}) as Record<string, string>;
   i18n.loadAndActivate({ locale, messages });
 }

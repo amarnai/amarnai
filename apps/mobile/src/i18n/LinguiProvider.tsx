@@ -45,7 +45,9 @@ function registerAllCatalogs() {
         }
       })();
       /* eslint-enable @typescript-eslint/no-require-imports */
-      if (mod) registerMobileMessages(locale, mod);
+      // Compiled catalogs export a flat `messages` map (export const messages =
+      // ...); pass that, not the whole module namespace, to i18n.loadAndActivate.
+      if (mod?.messages) registerMobileMessages(locale, mod.messages);
     } catch {
       // Catalog not compiled yet — strings fall back to English source text.
     }
@@ -58,6 +60,13 @@ export function resolveDeviceLocale(): SupportedLocale {
   const deviceLocales = Localization.getLocales().map((l) => l.languageTag);
   return matchLocale(deviceLocales);
 }
+
+// Activate a locale synchronously at module load, before the first render.
+// I18nProvider renders `null` (and provides no context) until `i18n.locale` is
+// set; activating eagerly guarantees it renders its children with a valid
+// context on the very first pass, so nested layouts can call useLingui safely.
+// The provider's effect below re-activates once the session locale resolves.
+activateLocaleMobile(resolveDeviceLocale());
 
 export function LinguiProvider({
   locale,

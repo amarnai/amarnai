@@ -30,7 +30,7 @@ export default function TabsLayout() {
         }}
       />
       <Tabs.Screen
-        name="taxonomy/index"
+        name="plan/index"
         options={{
           title: i18n._(msg`Plan`),
           tabBarIcon: ({ color, focused }) => <NavIcon name="taxonomy" color={color} focused={focused} />,

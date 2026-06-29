@@ -30,7 +30,9 @@ config.resolver.resolveRequest = (context, moduleName, platform) => {
       return resolve(context, moduleName, platform);
     } catch {
       const base = moduleName.slice(0, -'.js'.length);
-      for (const ext of ['.ts', '.tsx']) {
+      // Prefer platform-native variants (e.g. load-catalog.native.ts) so Metro
+      // never pulls in web-only source such as the dynamic catalog import.
+      for (const ext of ['.native.ts', '.native.tsx', '.ts', '.tsx']) {
         try {
           return resolve(context, base + ext, platform);
         } catch {

@@ -1,3 +1,6 @@
+// Must run before any Lingui catalog message is formatted (installs the
+// Intl.PluralRules polyfill Hermes lacks). Keep this as the first import.
+import '../src/i18n/intl-polyfill';
 import { useEffect } from 'react';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';

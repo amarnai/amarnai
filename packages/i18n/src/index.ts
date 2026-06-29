@@ -1,4 +1,5 @@
-export { i18n, loadCatalog, activateLocale, activateLocaleMobile, registerMobileMessages } from "./i18n.js";
+export { i18n, activateLocaleMobile, registerMobileMessages } from "./i18n.js";
+export { loadCatalog, activateLocale } from "./load-catalog.js";
 export { translateSource } from "./translate-source.js";
 export {
   SUPPORTED_LOCALES,
