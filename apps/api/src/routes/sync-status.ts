@@ -78,6 +78,14 @@ syncStatus.get("/workspaces/:workspaceId/sync-status", async (c) => {
   let backfillLoadedThreads = 0;
   const backfillTotalThreads = 0;
 
+  // Threads whose embedding/LLM work is in flight on the async Batch API
+  // (BACKFILL_BATCH_MODE). Non-zero only on hosted batch backfills; drives the
+  // "Scheduled" indicator and persists after ingestion finishes until the
+  // batches settle (which can take hours).
+  const backfillScheduledThreads = await db.emailThread.count({
+    where: { workspaceId, triageStatus: "BATCH_PENDING" },
+  });
+
   if (state.backfillStatus === "RUNNING") {
     backfillLoadedThreads = state.backfillProcessedCount;
 
@@ -107,6 +115,7 @@ syncStatus.get("/workspaces/:workspaceId/sync-status", async (c) => {
     backfillLoadedThreads,
     backfillTotalThreads,
     backfillAwaitingTaxonomy,
+    backfillScheduledThreads,
     sortingPaused: syncSettings?.sortingPaused ?? false,
     workspacePlan: workspace?.plan ?? "FREE",
     pushEnabled,

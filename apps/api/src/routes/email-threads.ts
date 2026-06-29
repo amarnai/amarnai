@@ -170,9 +170,17 @@ emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
   // viewWhere: the active view (queue/folder) + search, but NOT the page cursor.
   // Drives the "X threads" count so it reflects the whole matching set, not the
   // loaded page.
+  // The "Pending" view includes batch-mode threads in flight (BATCH_PENDING),
+  // which render as "Sorting…" — they are pending sorting, so they belong here.
+  const statusWhere =
+    triageStatus === "PENDING"
+      ? { triageStatus: { in: ["PENDING", "BATCH_PENDING"] as ("PENDING" | "BATCH_PENDING")[] } }
+      : triageStatus
+        ? { triageStatus }
+        : {};
   const viewWhere = {
     ...baseWhere,
-    ...(triageStatus  ? { triageStatus }                                      : {}),
+    ...statusWhere,
     ...(importantOnly ? { gmailIsImportant: true }                            : {}),
     ...(nodeId        ? { classifications: { some: { finalNodeId: nodeId } } } : {}),
     ...searchWhere,
@@ -281,7 +289,8 @@ emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
   const byStatus = (s: string) => grouped.find((g) => g.triageStatus === s)?._count._all ?? 0;
   const counts = {
     total:           grouped.reduce((s, g) => s + g._count._all, 0),
-    PENDING:         byStatus("PENDING"),
+    // BATCH_PENDING (batch backfill, shown as "Sorting…") tallies under Pending.
+    PENDING:         byStatus("PENDING") + byStatus("BATCH_PENDING"),
     PENDING_WAITING: pendingWaitingCount,
     SORTED:          byStatus("SORTED"),
     NEEDS_REVIEW:    byStatus("NEEDS_REVIEW"),
@@ -298,6 +307,10 @@ emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
       // true whenever classifyingAt is set, regardless of staleness — the
       // thread has a classify job enqueued or in progress.
       isQueued: classifyingAt !== null,
+      // Owned by the async Batch-API backfill (BACKFILL_BATCH_MODE): its work is
+      // in flight on Gemini's Batch API and may take hours. Not time-boxed like
+      // isClassifying — drives the distinct "Scheduled" chip.
+      isScheduled: rest.triageStatus === "BATCH_PENDING",
       latestClassification: classifications[0] ?? null,
       hasDraft: drafts.some((d) => d.status === "PROPOSED"),
       isDrafting: deriveIsDrafting(drafts),
@@ -407,6 +420,7 @@ emailThreads.get(
       })),
       isClassifying: deriveIsClassifying(classifyingAt),
       isQueued: classifyingAt !== null,
+      isScheduled: rest.triageStatus === "BATCH_PENDING",
       latestClassification: classifications[0] ?? null,
       doneMark: resolvedByUserId && resolvedAt && resolvedByUser
         ? {

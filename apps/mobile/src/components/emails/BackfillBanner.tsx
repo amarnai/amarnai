@@ -17,9 +17,16 @@ interface BackfillBannerProps {
  */
 export function BackfillBanner({ syncStatus }: BackfillBannerProps) {
   if (!syncStatus) return null;
-  if (syncStatus.backfillStatus !== 'RUNNING') return null;
+
+  // Shows while ingestion runs, and also stays up once ingestion is done if
+  // threads are still in flight on the async Batch API (BACKFILL_BATCH_MODE) —
+  // those settle over hours, with batched-cadence copy.
+  const scheduledThreads = syncStatus.backfillScheduledThreads ?? 0;
+  const isRunning = syncStatus.backfillStatus === 'RUNNING';
+  if (!isRunning && scheduledThreads === 0) return null;
 
   const awaitingTaxonomy = syncStatus.backfillAwaitingTaxonomy ?? false;
+  const batched = scheduledThreads > 0;
 
   // No count or percentage: Gmail exposes no reliable total, and a per-thread count
   // would sit at zero during the initial page fetch. An indeterminate bar is honest
@@ -33,11 +40,17 @@ export function BackfillBanner({ syncStatus }: BackfillBannerProps) {
         </Text>
       </View>
       <Text style={styles.title}>
-        <Trans>Loading past threads…</Trans>
+        {isRunning ? (
+          <Trans>Loading past threads…</Trans>
+        ) : (
+          <Trans>Sorting your backlog…</Trans>
+        )}
       </Text>
       <Text style={styles.desc}>
         {awaitingTaxonomy ? (
           <Trans>Your past threads are being loaded and will appear shortly.</Trans>
+        ) : batched ? (
+          <Trans>Your backlog is being sorted in batches and will arrive over the next few hours.</Trans>
         ) : (
           <Trans>New threads will appear as they are sorted.</Trans>
         )}

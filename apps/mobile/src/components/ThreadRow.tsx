@@ -38,7 +38,11 @@ function confidenceDotColor(confidence: number): string {
 // mirroring the web row's status chip wording.
 function statusBadge(thread: ThreadItem): { label: MessageDescriptor; bg: string; fg: string } {
   if (thread.doneMark) return { label: msg`Done`, bg: colors.okSoft, fg: colors.okInk };
-  if (thread.isClassifying) return { label: msg`Sorting`, bg: colors.bgSunk, fg: colors.ink3 };
+  // Batch-API backfill threads (status "scheduled" / BATCH_PENDING) read as
+  // "Sorting" — queued for sorting, no distinct user-facing state.
+  if (thread.isClassifying || thread.status === 'scheduled') {
+    return { label: msg`Sorting`, bg: colors.bgSunk, fg: colors.ink3 };
+  }
   switch (thread.status) {
     case 'review':
       return { label: msg`Needs review`, bg: colors.warnSoft, fg: colors.warnInk };

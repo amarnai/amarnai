@@ -39,6 +39,7 @@ export function mapThreads(threads: EmailThreadSummary[]): ThreadItem[] {
     else if (t.triageStatus === "NEEDS_REVIEW")  status = "review";
     else if (t.triageStatus === "UNROUTED")      status = "unrouted";
     else if (t.triageStatus === "UNCLASSIFIED")  status = "unclassified";
+    else if (t.triageStatus === "BATCH_PENDING") status = "scheduled";
 
     const senders = t.messages
       .map((m) => m.senderName ?? m.senderEmail)
@@ -70,6 +71,7 @@ export function mapThreads(threads: EmailThreadSummary[]): ThreadItem[] {
       doneMark: t.doneMark ?? null,
       isImportant: t.gmailIsImportant,
       isClassifying: t.isClassifying,
+      isScheduled: t.isScheduled,
       attachmentCount: t.messages.reduce((sum, m) => sum + m.attachments.length, 0),
       messages: t.messages.map((m) => ({
         id: m.id,

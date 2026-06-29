@@ -6,7 +6,6 @@ import {
   createAIProvider,
   createEmbeddingProvider,
   sortThreadByEmbedding,
-  buildRoutingTelemetry,
   CENTERED_ROUTING_CONFIG,
   analyzeThreadTriage,
   classifyTriageByEmbedding,
@@ -17,7 +16,8 @@ import {
   LLMAuthenticationError,
   LLMRequestError,
 } from "@amarnai/ai";
-import type { EmbeddableNode, TriageMetadata, EmbeddingTriageResult, LlmCallMemoizer } from "@amarnai/ai";
+import type { EmbeddableNode, TriageMetadata, LlmCallMemoizer } from "@amarnai/ai";
+import { finalizeRouting } from "./finalize-classification.js";
 import { GmailClient, GmailAuthError, normalizeGmailThread } from "@amarnai/gmail";
 import {
   QUEUE_CLASSIFY_THREAD,
@@ -51,21 +51,6 @@ async function persistTriageMetadata(
       requiredAction: triage.requiredAction,
       sensitivity: triage.sensitivity,
       dueAt: triage.dueAt !== null ? new Date(triage.dueAt) : null,
-      suggestedNextStep: triage.suggestedNextStep,
-    },
-  });
-}
-
-/** Write the three embedding-computed triage fields onto an existing classification record. */
-async function persistEmbeddingTriage(
-  classificationId: string,
-  triage: EmbeddingTriageResult
-): Promise<void> {
-  await db.emailClassification.update({
-    where: { id: classificationId },
-    data: {
-      sensitivity: triage.sensitivity,
-      requiredAction: triage.requiredAction,
       suggestedNextStep: triage.suggestedNextStep,
     },
   });
@@ -470,119 +455,22 @@ export function createClassifyThreadWorker(): Worker {
 
           await job.updateProgress(70);
 
-          // ── 6. Persist updated node embedding cache ───────────────────────
-
-          if (result.updatedNodeEmbeddings.length > 0) {
-            await Promise.all(
-              result.updatedNodeEmbeddings.map((e) =>
-                db.taxonomyNode.update({
-                  where: { id: e.nodeId },
-                  data: {
-                    embeddingVector: e.embeddingVector,
-                    embeddingModel: e.embeddingModel,
-                    embeddingTextHash: e.embeddingTextHash,
-                    embeddingUpdatedAt: e.embeddingUpdatedAt,
-                  },
-                }),
-              ),
-            );
-          }
-
-          // ── 6b. Automated-mail policy (P2: embedding safety net) ──────────
-          //
-          // The LLM was suppressed for bulk/automated threads. If embeddings did
-          // NOT confidently place the thread in a real folder (anything other
-          // than embedding_auto), file it in the catch-all folder instead of
-          // leaving it for human review — at zero LLM cost. A confident
-          // embedding match to a real folder is kept (the safety net against a
-          // false-positive automation flag). If no catch-all node exists, the
-          // embedding result stands unchanged.
-          const catchAllNode = nodes.find((n) => n.isCatchAll);
-          const filedToCatchAll =
-            routeBulkAutomated && catchAllNode != null && result.decisionSource !== "embedding_auto";
-
-          const finalNodeId = filedToCatchAll ? catchAllNode!.id : result.finalNodeId;
-          const confidence = filedToCatchAll ? 1.0 : result.confidence;
-          const explanation = filedToCatchAll
-            ? `Auto-filed to "${catchAllNode!.name}" (automated/bulk mail).`
-            : result.explanation;
-          const needsHumanReview = filedToCatchAll ? false : result.needsHumanReview;
-          const decisionSource: string = filedToCatchAll ? "automated_bulk" : result.decisionSource;
-
-          // ── 7. Persist routing result + triage ────────────────────────────
-
-          const { id: classificationId } = await db.emailClassification.create({
-            data: {
-              workspaceId,
-              emailThreadId,
-              finalNodeId,
-              confidence,
-              explanation,
-              needsHumanReview,
-              source,
-              decisionSource,
-              modelProvider: aiProvider.providerName,
-              modelName: aiProvider.modelName,
-              // Compact routing telemetry (maxima + top-K node sims). The scores
-              // are already computed during sorting; persisting the trimmed
-              // summary adds no compute and keeps the row small while enabling
-              // post-hoc diagnosis and data-driven threshold tuning.
-              // Telemetry threshold matches the routing config in use (centered
-              // similarities sit on a lower absolute scale than raw cosine).
-              rawOutput: buildRoutingTelemetry(result, CENTERED_ROUTING_CONFIG.thetaMin),
-            },
-            select: { id: true },
+          // ── 6/7. Finalize routing (node-embed cache, automated-mail policy,
+          // classification + triage persist, status, push) — shared with the
+          // batch backfill path so the two never diverge. ───────────────────
+          await finalizeRouting({
+            workspaceId,
+            emailThreadId,
+            result,
+            nodes,
+            rootNodeId: rootNode?.id ?? null,
+            routeBulkAutomated,
+            source,
+            modelProvider: aiProvider.providerName,
+            modelName: aiProvider.modelName,
+            embeddingTriage,
+            subject: snapshot.subject,
           });
-
-          const isUnclassified = rootNode != null && finalNodeId === rootNode.id;
-          const triageStatus = isUnclassified
-            ? "UNCLASSIFIED"
-            : needsHumanReview
-              ? "NEEDS_REVIEW"
-              : "SORTED";
-          await db.emailThread.update({
-            where: { id: emailThreadId },
-            // Clear any prior failure markers — this thread classified
-            // successfully, so it is no longer eligible for failure recovery.
-            data: { triageStatus, classifyFailedAt: null, classifyAttempts: 0 },
-          });
-
-          // ── 7b. Push notification — thread needs attention ────────────────
-          //
-          // Fire-and-forget on the existing sort-completion path: when a sort
-          // lands on NEEDS_REVIEW the user has to make a call, so we nudge their
-          // registered devices. Tenant-scoped + rate-limited inside the notifier.
-          // Never awaited into the job result — a push failure must not fail or
-          // retry classification (which is the source of truth).
-          //
-          // Suppress the push when NEEDS_REVIEW came from an LLM-error fail-open
-          // (result.failedOpenOnError): an outage flips many threads to review at
-          // once, and pushing each would storm every user's devices for what is a
-          // transient infrastructure problem, not a real triage signal. The thread
-          // is still visible in-app and re-sorts cleanly once the provider recovers.
-          if (result.failedOpenOnError) {
-            console.warn(
-              `[classify-thread] workspace=${workspaceId} thread=${emailThreadId} fail-open to review on LLM error — suppressing needs-attention push`,
-            );
-          }
-          if (triageStatus === "NEEDS_REVIEW" && !result.failedOpenOnError) {
-            void notifyThreadNeedsAttention({
-              workspaceId,
-              emailThreadId,
-              subject: snapshot.subject,
-            }).catch((err) => {
-              console.error(
-                `[classify-thread] Push notify failed for thread ${emailThreadId}: ${err instanceof Error ? err.message : String(err)}`,
-              );
-            });
-          }
-
-          if (embeddingTriage !== null) {
-            await persistEmbeddingTriage(classificationId, embeddingTriage);
-            console.log(
-              `[classify-thread] Triage saved for thread ${emailThreadId}: sensitivity=${embeddingTriage.sensitivity}, requiredAction=${embeddingTriage.requiredAction}`
-            );
-          }
 
           await job.updateProgress(95);
         }

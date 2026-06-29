@@ -2,7 +2,8 @@ import { Hono } from "hono";
 import { z } from "zod";
 import { Job } from "bullmq";
 import { db } from "@amarnai/db";
-import { classifyThreadQueue } from "../queues.js";
+import { isBatchModeAvailable } from "@amarnai/ai";
+import { classifyThreadQueue, routeBacklogQueue } from "../queues.js";
 import { DEFAULT_GMAIL_SYNC_SETTINGS } from "@amarnai/shared";
 import { DEDUP_CLASSIFY_UNROUTED, DEDUP_CLASSIFY_UNCLASSIFIED } from "@amarnai/queue";
 import { resolveEmailAccountId } from "../services/email-account.js";
@@ -254,6 +255,37 @@ sortingQueue.post("/workspaces/:workspaceId/sorting-queue/route-unrouted", async
     return c.json({ error: "taxonomy_too_weak" }, 422);
   }
 
+  // If a backfill is still in flight, arm auto-routing so threads that arrive
+  // after this click are routed automatically instead of re-prompting the user.
+  // Cleared by the worker when the backfill reaches a terminal state.
+  await armAutoRouteBacklogIfBackfilling(workspaceId);
+
+  // Batch mode: don't enqueue per-thread online classify jobs — hand the whole
+  // backlog to the route-backlog worker, which embed-batches it (fetching bodies)
+  // through the Batch API. Works during or after a backfill.
+  if (isBatchModeAvailable()) {
+    // Claim the waiting backlog synchronously (PENDING/UNROUTED → BATCH_PENDING)
+    // so the "ready to route" count is already 0 on the next poll (no banner
+    // flash) and the threads immediately render as "Sorting…". The worker
+    // re-claims idempotently and embed-batches them.
+    const claimed = await db.emailThread.updateMany({
+      where: {
+        workspaceId,
+        triageStatus: { in: ["PENDING", "UNROUTED"] },
+        classifyingAt: null,
+        classifyFailedAt: null,
+        gmailIsTrash: false,
+      },
+      data: { triageStatus: "BATCH_PENDING" },
+    });
+    await routeBacklogQueue.add(
+      "route-backlog",
+      { workspaceId },
+      { deduplication: { id: `route_backlog_${workspaceId}` } },
+    );
+    return c.json({ queued: claimed.count, batched: true });
+  }
+
   const syncSettings = await db.gmailSyncSettings.findUnique({
     where: { workspaceId },
     select: { includeSpam: true, includePromotions: true },
@@ -266,11 +298,6 @@ sortingQueue.post("/workspaces/:workspaceId/sorting-queue/route-unrouted", async
     syncSettings,
     true
   );
-
-  // If a backfill is still in flight, arm auto-routing so threads that arrive
-  // after this click are routed automatically instead of re-prompting the user.
-  // Cleared by the worker when the backfill reaches a terminal state.
-  await armAutoRouteBacklogIfBackfilling(workspaceId);
 
   return c.json({ queued });
 });

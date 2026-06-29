@@ -71,7 +71,11 @@ export function ThreadRow({
   const chipLabel = thread.status === "review" ? i18n._(msg`Wants ${folderName}`) : folderName;
   const chipClass = thread.status === "review" ? "em-route-chip needs-review" : "em-route-chip";
   const isDone = !!thread.doneMark;
-  const isClassifying = thread.isClassifying;
+  // Batch-API backfill threads (status "scheduled" / BATCH_PENDING) are shown as
+  // "Sorting…" just like a live classify — they are queued for sorting, the user
+  // does not need a distinct state. Not time-boxed: the status drives it, so it
+  // persists through the (hours-long) batch turnaround.
+  const isClassifying = thread.isClassifying || thread.status === "scheduled";
   const markDoneLabel = isDone ? i18n._(msg`Mark as not done`) : i18n._(msg`Mark as done`);
   const openInGmailLabel = i18n._(msg`Open in Gmail`);
 

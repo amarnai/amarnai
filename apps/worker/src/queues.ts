@@ -5,12 +5,15 @@ import {
   QUEUE_BACKFILL_INBOX,
   QUEUE_LIFECYCLE_EMAIL,
   QUEUE_GENERATE_TAXONOMY,
+  QUEUE_BATCH_POLL,
+  QUEUE_ROUTE_BATCH,
+  QUEUE_ROUTE_BACKLOG,
 } from "@amarnai/queue";
 import { redisConnection } from "./redis.js";
 
 // Re-export so job files can import names and types from one place.
-export { QUEUE_SYNC_INBOX, QUEUE_CLASSIFY_THREAD, QUEUE_BACKFILL_INBOX, QUEUE_LIFECYCLE_EMAIL, QUEUE_GENERATE_TAXONOMY } from "@amarnai/queue";
-export type { SyncInboxJobData, ClassifyThreadJobData, ClassifyThreadSource, BackfillInboxJobData, LifecycleEmailJobData, GenerateTaxonomyJobData } from "@amarnai/queue";
+export { QUEUE_SYNC_INBOX, QUEUE_CLASSIFY_THREAD, QUEUE_BACKFILL_INBOX, QUEUE_LIFECYCLE_EMAIL, QUEUE_GENERATE_TAXONOMY, QUEUE_BATCH_POLL, QUEUE_ROUTE_BATCH, QUEUE_ROUTE_BACKLOG } from "@amarnai/queue";
+export type { SyncInboxJobData, ClassifyThreadJobData, ClassifyThreadSource, BackfillInboxJobData, LifecycleEmailJobData, GenerateTaxonomyJobData, BatchPollJobData, RouteBatchJobData, RouteBacklogJobData } from "@amarnai/queue";
 
 // ─── Queue instances ──────────────────────────────────────────────────────────
 
@@ -85,6 +88,50 @@ export const generateTaxonomyQueue = new Queue(QUEUE_GENERATE_TAXONOMY, {
   defaultJobOptions: {
     attempts: 3,
     backoff: { type: "exponential", delay: 10_000 },
+    removeOnComplete: { count: 50 },
+    removeOnFail: { count: 100 },
+  },
+});
+
+/**
+ * Watch a submitted Gemini batch (BACKFILL_BATCH_MODE). Re-enqueues itself with
+ * a delay until the batch settles. Few attempts: a genuinely failed poll surfaces
+ * via the AiBatchJob status + expiry, not BullMQ retries.
+ */
+export const batchPollQueue = new Queue(QUEUE_BATCH_POLL, {
+  connection: redisConnection,
+  defaultJobOptions: {
+    attempts: 3,
+    backoff: { type: "exponential", delay: 30_000 },
+    removeOnComplete: { count: 50 },
+    removeOnFail: { count: 200 },
+  },
+});
+
+/**
+ * Run the offline deferred-routing pass for a workspace's batch threads and
+ * submit LLM escalation batches. Idempotent on BatchThreadState status, so a
+ * retry re-processes only threads still in ROUTING.
+ */
+export const routeBatchQueue = new Queue(QUEUE_ROUTE_BATCH, {
+  connection: redisConnection,
+  defaultJobOptions: {
+    attempts: 3,
+    backoff: { type: "exponential", delay: 15_000 },
+    removeOnComplete: { count: 50 },
+    removeOnFail: { count: 200 },
+  },
+});
+
+/**
+ * Embed-batch the PENDING/UNROUTED backlog ("Route now" in batch mode). Few
+ * attempts; the job is self-continuing (re-enqueues until the backlog drains).
+ */
+export const routeBacklogQueue = new Queue(QUEUE_ROUTE_BACKLOG, {
+  connection: redisConnection,
+  defaultJobOptions: {
+    attempts: 2,
+    backoff: { type: "exponential", delay: 15_000 },
     removeOnComplete: { count: 50 },
     removeOnFail: { count: 100 },
   },

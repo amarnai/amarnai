@@ -4,6 +4,11 @@ import { GmailClient, GmailAuthError, GmailThreadMeta, normalizeGmailThread } fr
 import type { GmailSyncSettings } from "@amarnai/shared";
 import { isTaxonomyRoutable, getBackfillCap, BACKFILL_RUNNING_STALE_MS } from "@amarnai/shared";
 import {
+  isBatchModeAvailable,
+  buildThreadEmbeddingText,
+  snapshotToThreadMessages,
+} from "@amarnai/ai";
+import {
   classifyThreadQueue,
   backfillInboxQueue,
   QUEUE_BACKFILL_INBOX,
@@ -11,6 +16,8 @@ import {
 } from "../queues.js";
 import { redisConnection } from "../redis.js";
 import { publishWorkspaceSynced } from "../redis-publisher.js";
+import { submitEmbedBatch } from "./submit-embed-batch.js";
+import { submitBacklogBatch } from "./submit-backlog-batch.js";
 import {
   applyThreadFilter,
   computeThreadLabelFlags,
@@ -232,6 +239,15 @@ export function createBackfillInboxWorker(): Worker {
         let pageToken = claimed?.backfillPageToken ?? undefined;
         let processed = claimed?.backfillProcessedCount ?? 0;
 
+        // Async Batch-API backfill (hosted-only, config-gated). When on, this
+        // chunk's freshly-fetched threads are routed through a Gemini embedding
+        // batch instead of per-thread classify-thread jobs. We capture the embed
+        // text here (bodies are in hand) so no thread is re-fetched just to embed.
+        const batchMode = isBatchModeAvailable();
+        const batchInputs = batchMode
+          ? new Map<string, { embedText: string; messageCount: number }>()
+          : null;
+
         // ── Per-thread upsert: returns the EmailThread id to classify, or null ──
         //
         // Threads already present (picked up by a live sync) only have their label
@@ -364,6 +380,24 @@ export function createBackfillInboxWorker(): Worker {
               },
               select: { id: true },
             });
+          }
+
+          // Batch mode: build the embed text now, from the bodies just fetched,
+          // so the embed batch needs no second Gmail fetch. Built from the
+          // UNFILTERED rawSnapshot to match what classify-thread re-fetches at
+          // route time (so the §2b content-consistency hash is apples-to-apples).
+          // (Existing PENDING threads that skipped the full fetch above never
+          // reach here, so they fall back to the online classify path.)
+          if (batchInputs) {
+            const tmsgs = snapshotToThreadMessages(rawSnapshot);
+            const embedText = buildThreadEmbeddingText(
+              tmsgs.map((m) => ({
+                subject: m.subject,
+                bodyText: m.bodyText,
+                ...(m.attachmentNames?.length ? { attachmentNames: m.attachmentNames } : {}),
+              })),
+            );
+            batchInputs.set(emailThread.id, { embedText, messageCount: rawSnapshot.messageCount });
           }
 
           return emailThread.id;
@@ -506,28 +540,59 @@ export function createBackfillInboxWorker(): Worker {
           if (isTaxonomyRoutable(taxonomyNodes, taxonomyEdges)) {
             if (autoRouteBacklogArmed) {
               // User opted the arriving backlog into routing via "Route now".
-              // Route the whole never-attempted PENDING backlog (this run's
-              // upserts plus any orphaned) as REROUTE, matching the manual path.
-              await enqueueArmedBacklog(workspaceId);
+              if (batchMode) {
+                // Batch mode: embed-batch the waiting backlog (this chunk's
+                // upserts plus any orphaned PENDING) instead of online routing.
+                await submitBacklogBatch(workspaceId);
+              } else {
+                // Route the whole never-attempted PENDING backlog (this run's
+                // upserts plus any orphaned) as REROUTE, matching the manual path.
+                await enqueueArmedBacklog(workspaceId);
+              }
             } else if (upsertedEmailThreadIds.length > 0) {
-              const enqueuedAt = new Date();
-              await db.emailThread.updateMany({
-                where: { id: { in: upsertedEmailThreadIds } },
-                data: { classifyingAt: enqueuedAt },
-              });
+              // In batch mode, threads we captured embed text for go through the
+              // Gemini embedding batch; any upserted thread without captured text
+              // (existing PENDING re-enqueues) falls back to the online path.
+              const batchThreads = batchInputs
+                ? upsertedEmailThreadIds
+                    .filter((id) => batchInputs.has(id))
+                    .map((id) => {
+                      const b = batchInputs.get(id)!;
+                      return { emailThreadId: id, embedText: b.embedText, messageCount: b.messageCount };
+                    })
+                : [];
+              const onlineThreadIds = batchInputs
+                ? upsertedEmailThreadIds.filter((id) => !batchInputs.has(id))
+                : upsertedEmailThreadIds;
 
-              await classifyThreadQueue.addBulk(
-                upsertedEmailThreadIds.map((emailThreadId) => ({
-                  name: "classify-thread",
-                  // BACKFILL: the one-time historical allowance, exempt from the
-                  // monthly thread-sort quota.
-                  data: { workspaceId, emailThreadId, source: "BACKFILL" as const },
-                  opts: {
-                    deduplication: { id: `classify_backfill_${workspaceId}_${emailThreadId}` },
-                    priority: BACKFILL_CLASSIFY_PRIORITY,
-                  },
-                }))
-              );
+              if (batchThreads.length > 0) {
+                console.log(
+                  `[backfill-inbox] Workspace ${workspaceId} batch mode: submitting ${batchThreads.length} thread(s) to embed batch` +
+                    (onlineThreadIds.length > 0 ? `, ${onlineThreadIds.length} via online path` : ""),
+                );
+                await submitEmbedBatch({ workspaceId, emailAccountId, threads: batchThreads, now: new Date() });
+              }
+
+              if (onlineThreadIds.length > 0) {
+                const enqueuedAt = new Date();
+                await db.emailThread.updateMany({
+                  where: { id: { in: onlineThreadIds } },
+                  data: { classifyingAt: enqueuedAt },
+                });
+
+                await classifyThreadQueue.addBulk(
+                  onlineThreadIds.map((emailThreadId) => ({
+                    name: "classify-thread",
+                    // BACKFILL: the one-time historical allowance, exempt from the
+                    // monthly thread-sort quota.
+                    data: { workspaceId, emailThreadId, source: "BACKFILL" as const },
+                    opts: {
+                      deduplication: { id: `classify_backfill_${workspaceId}_${emailThreadId}` },
+                      priority: BACKFILL_CLASSIFY_PRIORITY,
+                    },
+                  }))
+                );
+              }
             }
           }
           // Taxonomy not routable → leave threads PENDING as the invalid-taxonomy

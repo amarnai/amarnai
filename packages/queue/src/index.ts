@@ -25,6 +25,15 @@ export const QUEUE_CLASSIFY_THREAD = "classify-thread";
 export const QUEUE_BACKFILL_INBOX = "backfill-inbox";
 export const QUEUE_LIFECYCLE_EMAIL = "lifecycle-email";
 export const QUEUE_GENERATE_TAXONOMY = "generate-taxonomy";
+// Async Batch-API backfill (BACKFILL_BATCH_MODE). `batch-poll` watches a Gemini
+// batch job until it settles; `route-batch` runs the offline routing pass over a
+// workspace's vector'd threads and submits LLM escalation batches.
+export const QUEUE_BATCH_POLL = "batch-poll";
+export const QUEUE_ROUTE_BATCH = "route-batch";
+// "Route now" in batch mode: embed-batch the PENDING/UNROUTED backlog (fetching
+// bodies) instead of enqueueing per-thread classify jobs. Works during or after
+// a backfill.
+export const QUEUE_ROUTE_BACKLOG = "route-backlog";
 
 // ─── Job data types ───────────────────────────────────────────────────────────
 
@@ -91,4 +100,35 @@ export type GenerateTaxonomyJobData = {
    * names/descriptions in this language. Optional for back-compat with jobs
    * enqueued before localization (the worker falls back to the source locale). */
   locale?: string;
+};
+
+/**
+ * Payload for a `batch-poll` job (BACKFILL_BATCH_MODE). Watches a single
+ * submitted Gemini batch (the `AiBatchJob` row) and re-enqueues itself with a
+ * delay until the batch settles, then hands off to `route-batch`.
+ */
+export type BatchPollJobData = {
+  workspaceId: string;
+  /** AiBatchJob.id — the local batch record (carries kind + providerJobId). */
+  batchJobId: string;
+};
+
+/**
+ * Payload for a `route-batch` job (BACKFILL_BATCH_MODE). Runs the offline
+ * deferred-routing pass over the workspace's BatchThreadState rows in ROUTING,
+ * finalizing non-escalating threads and submitting an LLM batch for escalations.
+ */
+export type RouteBatchJobData = {
+  workspaceId: string;
+  emailAccountId: string;
+};
+
+/**
+ * Payload for a `route-backlog` job (BACKFILL_BATCH_MODE). Embed-batches a chunk
+ * of the workspace's PENDING/UNROUTED backlog and re-enqueues itself until the
+ * backlog is drained. Triggered by "Route now" (and the armed backfill) when
+ * batch mode is on.
+ */
+export type RouteBacklogJobData = {
+  workspaceId: string;
 };

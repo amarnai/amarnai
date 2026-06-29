@@ -30,7 +30,8 @@ function baseFilter(
     case "all": return threads;
     case "sorted": return threads.filter((t) => t.status === "sorted");
     case "review": return threads.filter((t) => t.status === "review");
-    case "pending": return threads.filter((t) => t.status === "unsorted");
+    // "scheduled" = batch backfill in flight (shown as "Sorting…") — pending sorting.
+    case "pending": return threads.filter((t) => t.status === "unsorted" || t.status === "scheduled");
     case "important": return threads.filter((t) => t.isImportant);
     case "unrouted": return threads.filter((t) => t.status === "unrouted");
     case "unclassified": return threads.filter((t) => t.status === "unclassified");

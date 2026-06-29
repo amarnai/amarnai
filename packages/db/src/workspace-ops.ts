@@ -55,6 +55,9 @@ export async function resetWorkspaceData(workspaceId: string): Promise<void> {
     db.taxonomyGenerationState.deleteMany({ where: { workspaceId } }),
     db.taxonomyEdge.deleteMany({ where: { workspaceId } }),
     db.taxonomyNode.deleteMany({ where: { workspaceId } }),
+    // Batch-pipeline rows (FK to emailThread + workspace) before the threads they reference.
+    db.batchThreadState.deleteMany({ where: { workspaceId } }),
+    db.aiBatchJob.deleteMany({ where: { workspaceId } }),
     db.emailMessage.deleteMany({ where: { workspaceId } }),
     db.providerSyncState.deleteMany({ where: { emailAccount: { workspaceId } } }),
     db.emailAddressIdentity.deleteMany({ where: { emailAccount: { workspaceId } } }),
@@ -93,6 +96,9 @@ export async function deleteUserCascade(userId: string): Promise<void> {
     db.taxonomyEdge.deleteMany({ where: { workspaceId: { in: workspaceIds } } }),
     db.taxonomyNode.deleteMany({ where: { workspaceId: { in: workspaceIds } } }),
     db.tag.deleteMany({ where: { workspaceId: { in: workspaceIds } } }),
+    // Batch-pipeline rows (FK to emailThread + workspace) before the threads they reference.
+    db.batchThreadState.deleteMany({ where: { workspaceId: { in: workspaceIds } } }),
+    db.aiBatchJob.deleteMany({ where: { workspaceId: { in: workspaceIds } } }),
     db.emailMessage.deleteMany({ where: { workspaceId: { in: workspaceIds } } }),
     db.providerSyncState.deleteMany({ where: { emailAccount: { workspaceId: { in: workspaceIds } } } }),
     db.emailAddressIdentity.deleteMany({ where: { emailAccount: { workspaceId: { in: workspaceIds } } } }),
@@ -125,6 +131,9 @@ export async function deleteWorkspaceCascade(workspaceId: string): Promise<void>
     db.taxonomyEdge.deleteMany({ where: { workspaceId } }),
     db.taxonomyNode.deleteMany({ where: { workspaceId } }),
     db.tag.deleteMany({ where: { workspaceId } }),
+    // Batch-pipeline rows (FK to emailThread + workspace) before the threads they reference.
+    db.batchThreadState.deleteMany({ where: { workspaceId } }),
+    db.aiBatchJob.deleteMany({ where: { workspaceId } }),
     db.emailMessage.deleteMany({ where: { workspaceId } }),
     db.providerSyncState.deleteMany({ where: { emailAccount: { workspaceId } } }),
     db.emailAddressIdentity.deleteMany({ where: { emailAccount: { workspaceId } } }),

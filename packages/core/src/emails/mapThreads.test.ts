@@ -12,6 +12,7 @@ function makeThread(triageStatus: EmailThreadSummary["triageStatus"]): EmailThre
     triageStatus,
     isClassifying: false,
     isQueued: false,
+    isScheduled: false,
     createdAt: new Date().toISOString(),
     gmailIsImportant: false,
     messages: [],

@@ -1,5 +1,5 @@
 export type { AIProvider, AIProviderConfig, TaxonomyNodeInput, TaxonomyEdgeInput, ThreadMessage, LlmCallMemoizer } from "./types.js";
-export { getAIProviderConfig, getRoutingAIProviderConfig, getTaxonomyAIProviderConfig, getDraftAIProviderConfig, getEmbeddingProviderConfig } from "./config.js";
+export { getAIProviderConfig, getRoutingAIProviderConfig, getTaxonomyAIProviderConfig, getDraftAIProviderConfig, getEmbeddingProviderConfig, getBatchProviderConfig, isBatchModeAvailable } from "./config.js";
 export { createAIProvider } from "./providers/create-llm.js";
 export { LLMAuthenticationError, LLMRequestError } from "./providers/frontier.js";
 export { selectCandidateNodes, tokenize, MAX_CANDIDATE_PATHS } from "./selection/candidate-selector.js";
@@ -39,6 +39,24 @@ export {
 } from "./embedding/sorter.js";
 export type { EmbeddingSortResult, DecisionSource, CrossBranchSignal } from "./embedding/sorter.js";
 export { buildRoutingTelemetry, TELEMETRY_TOP_K } from "./embedding/telemetry.js";
+// ─── Batch API (BACKFILL_BATCH_MODE) ────────────────────────────────────────────
+export { createBatchProvider } from "./providers/create-batch.js";
+export { MockBatchProvider } from "./providers/batch-mock.js";
+export type { MockBatchOptions } from "./providers/batch-mock.js";
+export { createDeferredLlmContext, DeferLlmSignal } from "./batch/deferred-llm.js";
+export type { DeferredLlmContext, DeferredLlmRequest } from "./batch/deferred-llm.js";
+export type {
+  BatchProvider,
+  BatchProviderConfig,
+  BatchEmbedRequest,
+  BatchGenerateRequest,
+  BatchSubmitResult,
+  BatchPollStatus,
+  BatchEmbedResults,
+  BatchGenerateResults,
+  BatchEmbedResultItem,
+  BatchGenerateResultItem,
+} from "./batch/types.js";
 // ─── Automated-mail detection ───────────────────────────────────────────────────
 export {
   isAutomatedMessage,

@@ -9,13 +9,18 @@ import {
   createAIProvider,
   getRoutingAIProviderConfig,
   LLMAuthenticationError,
+  isBatchModeAvailable,
 } from "@amarnai/ai";
 import { createSyncInboxWorker } from "./jobs/sync-inbox.js";
 import { createClassifyThreadWorker } from "./jobs/classify-thread.js";
 import { createBackfillInboxWorker } from "./jobs/backfill-inbox.js";
 import { createLifecycleEmailWorker } from "./jobs/lifecycle-email.js";
 import { createGenerateTaxonomyWorker } from "./jobs/generate-taxonomy.js";
-import { syncInboxQueue, backfillInboxQueue, lifecycleEmailQueue, generateTaxonomyQueue } from "./queues.js";
+import { createBatchPollWorker } from "./jobs/batch-poll.js";
+import { createRouteBatchWorker } from "./jobs/route-batch.js";
+import { createRouteBacklogWorker } from "./jobs/route-backlog.js";
+import { recoverStalledBatches } from "./jobs/recover-batches.js";
+import { syncInboxQueue, backfillInboxQueue, lifecycleEmailQueue, generateTaxonomyQueue, batchPollQueue, routeBatchQueue, routeBacklogQueue } from "./queues.js";
 import { closePublisher } from "./redis-publisher.js";
 import { closeAiDedup } from "./ai-dedup.js";
 import { closePushBudget } from "./notifications/notify-threads.js";
@@ -240,6 +245,12 @@ async function preflightLLM(): Promise<void> {
 
 async function main(): Promise<void> {
   console.log("[worker] Starting…");
+  // Loud, unambiguous batch-mode status at boot — the flag is read from the
+  // process env at startup, so this is the source of truth for whether backfill
+  // (and "Route now") will batch.
+  console.log(
+    `[worker] BACKFILL_BATCH_MODE=${process.env["BACKFILL_BATCH_MODE"] ?? "(unset)"} → batch backfill ${isBatchModeAvailable() ? "ENABLED" : "disabled (synchronous path)"}`,
+  );
 
   // Verify the embedding model and LLM credentials before accepting any jobs.
   await preflightEmbeddingModel();
@@ -251,8 +262,13 @@ async function main(): Promise<void> {
   const backfillWorker = createBackfillInboxWorker();
   const lifecycleEmailWorker = createLifecycleEmailWorker();
   const generateTaxonomyWorker = createGenerateTaxonomyWorker();
+  // Async Batch-API backfill (BACKFILL_BATCH_MODE). Registered unconditionally —
+  // the queues stay idle unless backfill-inbox submits batches under the flag.
+  const batchPollWorker = createBatchPollWorker();
+  const routeBatchWorker = createRouteBatchWorker();
+  const routeBacklogWorker = createRouteBacklogWorker();
 
-  console.log("[worker] sync-inbox, classify-thread, backfill-inbox, lifecycle-email, and generate-taxonomy workers registered");
+  console.log("[worker] sync-inbox, classify-thread, backfill-inbox, lifecycle-email, generate-taxonomy, batch-poll, route-batch, and route-backlog workers registered");
 
   // Run immediately on startup so the first sync doesn't wait a full interval.
   await scheduleSyncJobs();
@@ -313,6 +329,19 @@ async function main(): Promise<void> {
     );
   }, 24 * 60 * 60 * 1000);
 
+  // ── Batch-API poll recovery ────────────────────────────────────────────────
+  // Resume polling for any non-terminal batch whose poll chain was dropped (a
+  // restart/deploy at the wrong moment). Runs on startup, then every 3 minutes so
+  // a stalled batch is picked up promptly without waiting for its hours-away
+  // expiry. No-op when batch mode is off (no batches exist).
+  await recoverStalledBatches().catch((err) =>
+    console.error("[batch-recovery] Failed:", err)
+  );
+
+  const batchRecoveryHandle = setInterval(() => {
+    recoverStalledBatches().catch((err) => console.error("[batch-recovery] Failed:", err));
+  }, 3 * 60 * 1000);
+
   // ── Graceful shutdown ──────────────────────────────────────────────────────
   //
   // On SIGTERM / SIGINT:
@@ -328,6 +357,7 @@ async function main(): Promise<void> {
     clearInterval(watchRenewalHandle);
     clearInterval(refreshReaperHandle);
     clearInterval(lifecycleEmailHandle);
+    clearInterval(batchRecoveryHandle);
 
     await Promise.all([
       syncWorker.close(),
@@ -335,6 +365,9 @@ async function main(): Promise<void> {
       backfillWorker.close(),
       lifecycleEmailWorker.close(),
       generateTaxonomyWorker.close(),
+      batchPollWorker.close(),
+      routeBatchWorker.close(),
+      routeBacklogWorker.close(),
     ]);
 
     await Promise.all([
@@ -342,6 +375,9 @@ async function main(): Promise<void> {
       backfillInboxQueue.close(),
       lifecycleEmailQueue.close(),
       generateTaxonomyQueue.close(),
+      batchPollQueue.close(),
+      routeBatchQueue.close(),
+      routeBacklogQueue.close(),
       closePublisher(),
       closeAiDedup(),
       closePushBudget(),

@@ -14,7 +14,7 @@ export type ActiveSelection =
 
 export type SegFilter = "all" | "unread" | "low";
 
-export type ThreadStatus = "sorted" | "review" | "unsorted" | "unrouted" | "unclassified";
+export type ThreadStatus = "sorted" | "review" | "unsorted" | "unrouted" | "unclassified" | "scheduled";
 
 export type ThreadMessage = {
   id: string;
@@ -54,6 +54,8 @@ export type ThreadItem = {
   doneMark: DoneMark | null;
   isImportant: boolean;
   isClassifying: boolean;
+  /** In flight on the async Batch API (BACKFILL_BATCH_MODE) — shows "Scheduled". */
+  isScheduled: boolean;
   attachmentCount: number;
 };
 
@@ -70,6 +72,8 @@ export type SyncInfo = {
   backfillLoadedThreads?: number;
   backfillTotalThreads?: number;
   backfillAwaitingTaxonomy?: boolean;
+  /** Threads in flight on the async Batch API (BACKFILL_BATCH_MODE). */
+  backfillScheduledThreads?: number;
   workspacePlan: "FREE" | "PRO" | "BUSINESS";
   pushEnabled: boolean;
 } | null;

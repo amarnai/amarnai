@@ -128,7 +128,8 @@ export type TriageStatus =
   | "NEEDS_REVIEW"
   | "UNROUTED"
   | "UNCLASSIFIED"
-  | "QUOTA_BLOCKED";
+  | "QUOTA_BLOCKED"
+  | "BATCH_PENDING";
 
 export type DoneMark = {
   userId: string;
@@ -194,6 +195,8 @@ export type EmailThreadSummary = {
   triageStatus: TriageStatus;
   isClassifying: boolean;
   isQueued: boolean;
+  /** In flight on the async Batch API (BACKFILL_BATCH_MODE) — shows "Scheduled". */
+  isScheduled: boolean;
   createdAt: string;
   gmailIsImportant: boolean;
   messages: Array<{
@@ -229,6 +232,8 @@ export type EmailThreadDetail = {
   triageStatus: TriageStatus;
   isClassifying: boolean;
   isQueued: boolean;
+  /** In flight on the async Batch API (BACKFILL_BATCH_MODE) — shows "Scheduled". */
+  isScheduled: boolean;
   createdAt: string;
   updatedAt: string;
   messages: Array<{
@@ -296,6 +301,10 @@ export type SyncStatus = {
   backfillLoadedThreads: number;
   backfillTotalThreads: number;
   backfillAwaitingTaxonomy: boolean;
+  // Threads whose embedding/LLM work is in flight on the async Batch API
+  // (BACKFILL_BATCH_MODE). Non-zero only on hosted batch backfills; persists
+  // after ingestion finishes until the batches settle (can take hours).
+  backfillScheduledThreads: number;
   sortingPaused: boolean;
   workspacePlan: "FREE" | "PRO" | "BUSINESS";
   pushEnabled: boolean;

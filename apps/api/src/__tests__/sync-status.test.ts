@@ -11,6 +11,7 @@ vi.mock("@amarnai/db", () => ({
     gmailSyncSettings: { findUnique: vi.fn() },
     taxonomyNode: { findMany: vi.fn() },
     taxonomyEdge: { findMany: vi.fn() },
+    emailThread: { count: vi.fn() },
   },
 }));
 
@@ -45,6 +46,8 @@ beforeEach(() => {
   vi.mocked(db.emailAccount.findUnique).mockResolvedValue({ id: "account-1" } as never);
   vi.mocked(db.gmailSyncSettings.findUnique).mockResolvedValue({ sortingPaused: false } as never);
   vi.mocked(db.workspace.findUnique).mockResolvedValue({ plan: "PRO" } as never);
+  // Count of BATCH_PENDING threads (BACKFILL_BATCH_MODE) — none by default.
+  vi.mocked(db.emailThread.count).mockResolvedValue(0 as never);
   // A routable taxonomy (3 non-root nodes linked to root) by default.
   vi.mocked(db.taxonomyNode.findMany).mockResolvedValue([
     { id: "root", isRoot: true, isCatchAll: false },

@@ -1,4 +1,5 @@
 import type { AIProviderConfig, EmbeddingProviderConfig } from "./types.js";
+import type { BatchProviderConfig } from "./batch/types.js";
 
 export function getAIProviderConfig(): AIProviderConfig {
   const cfg: AIProviderConfig = {
@@ -114,4 +115,54 @@ function parseDimensions(raw: string | undefined): number | undefined {
   if (!raw) return undefined;
   const n = Number(raw);
   return Number.isInteger(n) && n > 0 ? n : undefined;
+}
+
+/**
+ * Config for the async Batch-API provider (BACKFILL_BATCH_MODE). Composed from
+ * the embedding + routing-LLM env so it reuses the same models/keys/dimension.
+ * Resolves to "frontier" only when BOTH the embedding and LLM frontier providers
+ * are Gemini-capable; otherwise "mock" (tests/dev). Callers gate batch mode on
+ * `isBatchModeAvailable()` and fall back to the synchronous path when false.
+ */
+export function getBatchProviderConfig(): BatchProviderConfig {
+  const embed = getEmbeddingProviderConfig();
+  const llm = getRoutingAIProviderConfig();
+  const embedProvider = embed.frontier?.provider ?? "gemini";
+  const llmProvider = llm.frontier?.provider ?? "gemini";
+
+  const frontierReady =
+    embed.provider === "frontier" &&
+    llm.provider === "frontier" &&
+    embedProvider === "gemini" &&
+    llmProvider === "gemini" &&
+    !!embed.frontier?.apiKey &&
+    !!embed.frontier?.model &&
+    !!llm.frontier?.apiKey &&
+    !!llm.frontier?.model;
+
+  if (!frontierReady) return { provider: "mock" };
+
+  const embedDimensions = parseDimensions(process.env["FRONTIER_EMBEDDING_DIMENSIONS"]);
+  return {
+    provider: "frontier",
+    frontier: {
+      embedApiKey: embed.frontier!.apiKey!,
+      embedModel: embed.frontier!.model!,
+      ...(embedDimensions ? { embedDimensions } : {}),
+      ...(embed.frontier!.baseUrl ? { embedBaseUrl: embed.frontier!.baseUrl } : {}),
+      llmApiKey: llm.frontier!.apiKey!,
+      llmModel: llm.frontier!.model!,
+      ...(llm.frontier!.baseUrl ? { llmBaseUrl: llm.frontier!.baseUrl } : {}),
+    },
+  };
+}
+
+/**
+ * Whether async batch backfill should run. Gated on the BACKFILL_BATCH_MODE flag
+ * AND a Gemini-capable frontier config. Hosted-only, off by default; self-host /
+ * mock / Ollama fall through to the synchronous per-thread path.
+ */
+export function isBatchModeAvailable(): boolean {
+  if (process.env["BACKFILL_BATCH_MODE"] !== "true") return false;
+  return getBatchProviderConfig().provider === "frontier";
 }
