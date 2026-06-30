@@ -1,5 +1,5 @@
 import type { ThreadSnapshot, SnapshotMessage } from "@amarnai/ai";
-import { detectAutomatedThread, detectAutomatedThreadFromMeta } from "@amarnai/ai";
+import { detectAutomatedThread } from "@amarnai/ai";
 import type { GmailSyncSettings } from "@amarnai/shared";
 
 /** Gmail label IDs that are always excluded, regardless of user settings. */
@@ -7,7 +7,11 @@ const ALWAYS_EXCLUDED_LABELS = ["TRASH"] as const;
 
 // ─── Thread label flags ───────────────────────────────────────────────────────
 
-export type ThreadLabelFlags = {
+/**
+ * Label-derivable thread flags. Every field here is computed purely from Gmail
+ * label IDs, so both the full-fetch and metadata-only paths can produce them.
+ */
+export type MetaThreadLabelFlags = {
   /** True when ALL messages in the thread carry the SPAM label. */
   gmailIsSpam: boolean;
   /** True when ALL messages in the thread carry the CATEGORY_PROMOTIONS label. */
@@ -16,31 +20,45 @@ export type ThreadLabelFlags = {
   gmailIsTrash: boolean;
   /** True when ANY message in the thread carries Gmail's IMPORTANT label. */
   gmailIsImportant: boolean;
+};
+
+/**
+ * Full-fetch flags: the label-derivable flags plus `isAutomated`, which needs
+ * sender + header data and therefore can ONLY come from the full-fetch path.
+ * `isAutomated` is deliberately absent from {@link MetaThreadLabelFlags} so a
+ * categories-only computation can never be the source of an `isAutomated` write.
+ */
+export type ThreadLabelFlags = MetaThreadLabelFlags & {
   /** True when every message looks automated/bulk (notifications, newsletters, service mail). */
   isAutomated: boolean;
 };
 
-const CLEAN_FLAGS: ThreadLabelFlags = {
+const CLEAN_META_FLAGS: MetaThreadLabelFlags = {
   gmailIsSpam: false,
   gmailIsPromotions: false,
   gmailIsTrash: false,
   gmailIsImportant: false,
-  isAutomated: false,
 };
 
 /**
  * Computes per-thread label flags from a fully normalized snapshot.
  * A flag is true only when ALL messages carry that label.
  * Use this after calling normalizeGmailThread (format=full fetch).
+ *
+ * `selfEmail` is the mailbox owner's address, forwarded to the detector so the
+ * user's own replies do not defeat automated-mail detection.
  */
-export function computeThreadLabelFlags(messages: SnapshotMessage[]): ThreadLabelFlags {
-  if (messages.length === 0) return { ...CLEAN_FLAGS };
+export function computeThreadLabelFlags(
+  messages: SnapshotMessage[],
+  selfEmail?: string
+): ThreadLabelFlags {
+  if (messages.length === 0) return { ...CLEAN_META_FLAGS, isAutomated: false };
   return {
     gmailIsSpam:       messages.every((m) => (m.labelIds ?? []).includes("SPAM")),
     gmailIsPromotions: messages.every((m) => (m.labelIds ?? []).includes("CATEGORY_PROMOTIONS")),
     gmailIsTrash:      messages.every((m) => (m.labelIds ?? []).includes("TRASH")),
     gmailIsImportant:  messages.some((m)  => (m.labelIds ?? []).includes("IMPORTANT")),
-    isAutomated:       detectAutomatedThread(messages),
+    isAutomated:       detectAutomatedThread(messages, selfEmail),
   };
 }
 
@@ -48,15 +66,20 @@ export function computeThreadLabelFlags(messages: SnapshotMessage[]): ThreadLabe
  * Computes per-thread label flags from the per-message label ID arrays returned
  * by listThreadsPage (METADATA format). Avoids a full thread fetch for threads
  * that are already in the database.
+ *
+ * Returns ONLY label-derivable flags. It cannot see senders or headers, so it
+ * never produces `isAutomated`: doing so would downgrade a correct full-fetch
+ * verdict (e.g. a no-reply thread) to false. The detector's labels-only variant
+ * is still used by callers that want a category-based hint, but it must not feed
+ * an `isAutomated` write on the metadata refresh path.
  */
-export function computeThreadLabelFlagsFromMeta(messageLabelIds: string[][]): ThreadLabelFlags {
-  if (messageLabelIds.length === 0) return { ...CLEAN_FLAGS };
+export function computeThreadLabelFlagsFromMeta(messageLabelIds: string[][]): MetaThreadLabelFlags {
+  if (messageLabelIds.length === 0) return { ...CLEAN_META_FLAGS };
   return {
     gmailIsSpam:       messageLabelIds.every((labels) => labels.includes("SPAM")),
     gmailIsPromotions: messageLabelIds.every((labels) => labels.includes("CATEGORY_PROMOTIONS")),
     gmailIsTrash:      messageLabelIds.every((labels) => labels.includes("TRASH")),
     gmailIsImportant:  messageLabelIds.some((labels)  => labels.includes("IMPORTANT")),
-    isAutomated:       detectAutomatedThreadFromMeta(messageLabelIds),
   };
 }
 
@@ -65,7 +88,7 @@ export function computeThreadLabelFlagsFromMeta(messageLabelIds: string[][]): Th
  * based on its stored label flags and sender blacklist.
  */
 export function isThreadExcluded(
-  flags: ThreadLabelFlags,
+  flags: MetaThreadLabelFlags,
   settings: GmailSyncSettings,
   senderEmails?: string[]
 ): boolean {

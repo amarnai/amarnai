@@ -1,7 +1,6 @@
 import { describe, it, expect } from "vitest";
 import {
   detectAutomatedThread,
-  detectAutomatedThreadFromMeta,
   isAutomatedMessage,
 } from "../detection/automated-mail.js";
 import type { SnapshotMessage } from "../thread-snapshot.js";
@@ -103,24 +102,32 @@ describe("detectAutomatedThread", () => {
   it("does not false-positive on a 'reply@' style address", () => {
     expect(isAutomatedMessage(msg({ senderEmail: "reply@person.com" }))).toBe(false);
   });
+
+  it("ignores the owner's own reply to a no-reply notification (selfEmail)", () => {
+    const notification = msg({ providerMessageId: "m1", senderEmail: "no-reply@service.com" });
+    const ownReply = msg({ providerMessageId: "m2", senderEmail: "owner@gmail.com" });
+    // Without selfEmail the human reply defeats the every-message guard.
+    expect(detectAutomatedThread([notification, ownReply])).toBe(false);
+    // With selfEmail the owner's reply is excluded, so the thread is automated.
+    expect(detectAutomatedThread([notification, ownReply], "owner@gmail.com")).toBe(true);
+  });
+
+  it("matches selfEmail case-insensitively", () => {
+    const notification = msg({ providerMessageId: "m1", senderEmail: "no-reply@service.com" });
+    const ownReply = msg({ providerMessageId: "m2", senderEmail: "Owner@Gmail.com" });
+    expect(detectAutomatedThread([notification, ownReply], "owner@gmail.com")).toBe(true);
+  });
+
+  it("is not automated when only the owner's own messages remain", () => {
+    const ownOnly = msg({ senderEmail: "owner@gmail.com" });
+    expect(detectAutomatedThread([ownOnly], "owner@gmail.com")).toBe(false);
+  });
+
+  it("does NOT flag a genuine two-person thread even with selfEmail", () => {
+    const alice = msg({ providerMessageId: "m1", senderEmail: "alice@gmail.com" });
+    const ownReply = msg({ providerMessageId: "m2", senderEmail: "owner@gmail.com" });
+    // Excluding the owner must not turn a real correspondent into automated mail.
+    expect(detectAutomatedThread([alice, ownReply], "owner@gmail.com")).toBe(false);
+  });
 });
 
-describe("detectAutomatedThreadFromMeta", () => {
-  it("flags via bulk category labels only", () => {
-    expect(detectAutomatedThreadFromMeta([["CATEGORY_UPDATES"]])).toBe(true);
-    expect(detectAutomatedThreadFromMeta([["CATEGORY_PROMOTIONS"], ["CATEGORY_FORUMS"]])).toBe(true);
-  });
-
-  it("does NOT flag plain inbox mail (no header/sender signals available)", () => {
-    expect(detectAutomatedThreadFromMeta([["INBOX", "UNREAD"]])).toBe(false);
-  });
-
-  it("respects the IMPORTANT veto and the every guard", () => {
-    expect(detectAutomatedThreadFromMeta([["CATEGORY_UPDATES", "IMPORTANT"]])).toBe(false);
-    expect(detectAutomatedThreadFromMeta([["CATEGORY_UPDATES"], ["INBOX"]])).toBe(false);
-  });
-
-  it("is not automated for an empty list", () => {
-    expect(detectAutomatedThreadFromMeta([])).toBe(false);
-  });
-});

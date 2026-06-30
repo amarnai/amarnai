@@ -222,6 +222,10 @@ export function createBackfillInboxWorker(): Worker {
         const cap = getBackfillCap(workspace.plan, workspace.billingCycle);
 
         const client = new GmailClient(connection.encryptedRefreshToken);
+        // Mailbox owner's address — forwarded to the detector so the user's own
+        // replies do not defeat automated-mail detection. Captured here so the
+        // narrowing survives into the processThread closure below.
+        const selfEmail = connection.gmailAddress;
         const nowMs = Date.now();
         const afterMs = cap.windowDays === null ? 0 : nowMs - cap.windowDays * MS_PER_DAY;
 
@@ -267,7 +271,7 @@ export function createBackfillInboxWorker(): Worker {
           let snapshot: ReturnType<typeof applyThreadFilter>;
           try {
             rawSnapshot = normalizeGmailThread(rawFull);
-            labelFlags = computeThreadLabelFlags(rawSnapshot.messages);
+            labelFlags = computeThreadLabelFlags(rawSnapshot.messages, selfEmail);
             snapshot = applyThreadFilter(rawSnapshot, settings);
           } catch (err) {
             // Malformed thread data — permanent for this thread, never retryable.

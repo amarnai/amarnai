@@ -22,9 +22,6 @@ const BULK_CATEGORY_LABELS = [
   "CATEGORY_UPDATES",
 ];
 
-/** Labels that veto automation — a strong "this matters to the human" signal. */
-const HUMAN_VETO_LABELS = ["IMPORTANT", "CATEGORY_PERSONAL"];
-
 /** `Precedence` header values that indicate bulk/automated mail. */
 const BULK_PRECEDENCE = ["bulk", "list", "junk", "auto_reply"];
 
@@ -39,10 +36,6 @@ const NO_REPLY_LOCALPART =
 
 function hasBulkCategory(labelIds: readonly string[]): boolean {
   return labelIds.some((l) => BULK_CATEGORY_LABELS.includes(l));
-}
-
-function hasHumanVeto(labelIds: readonly string[]): boolean {
-  return labelIds.some((l) => HUMAN_VETO_LABELS.includes(l));
 }
 
 function senderIsNoReply(senderEmail: string): boolean {
@@ -91,24 +84,28 @@ function isStronglyAutomatedMessage(
  * - IMPORTANT vetoes ONLY weak (category-only) detections. Gmail's IMPORTANT is
  *   a noisy auto-heuristic that routinely flags bulk (Google's own notifications
  *   especially), so a strong machine-origin signal on every message overrides it.
+ *
+ * `selfEmail` is the mailbox owner's address. Their own sent messages are excluded
+ * before the every-message check: replying to a `no-reply@` notification must not
+ * make the thread look human (the user's reply is never automated, so a single
+ * reply would otherwise defeat detection on an otherwise-automated thread).
+ *
+ * Note: matching is on the `From` address only, so spoofed inbound mail forging
+ * the owner's address would also be excluded. The blast radius is limited to
+ * auto-filing into the visible catch-all folder (nothing is sent or deleted), so
+ * direction verification (e.g. the SENT label) is intentionally not done here.
  */
-export function detectAutomatedThread(messages: SnapshotMessage[]): boolean {
-  if (messages.length === 0) return false;
-  if (messages.some((m) => (m.labelIds ?? []).includes("CATEGORY_PERSONAL"))) return false;
-  if (!messages.every(isAutomatedMessage)) return false;
+export function detectAutomatedThread(messages: SnapshotMessage[], selfEmail?: string): boolean {
+  const self = selfEmail?.trim().toLowerCase();
+  const external = self
+    ? messages.filter((m) => m.senderEmail.trim().toLowerCase() !== self)
+    : messages;
 
-  const allStrong = messages.every(isStronglyAutomatedMessage);
-  if (!allStrong && messages.some((m) => (m.labelIds ?? []).includes("IMPORTANT"))) return false;
+  if (external.length === 0) return false;
+  if (external.some((m) => (m.labelIds ?? []).includes("CATEGORY_PERSONAL"))) return false;
+  if (!external.every(isAutomatedMessage)) return false;
+
+  const allStrong = external.every(isStronglyAutomatedMessage);
+  if (!allStrong && external.some((m) => (m.labelIds ?? []).includes("IMPORTANT"))) return false;
   return true;
-}
-
-/**
- * Labels-only variant for metadata-only paths (no headers, no sender parsing
- * available). Necessarily narrower: detects only via Gmail bulk categories,
- * with the same veto and `every` guards. Safe — it only ever under-detects.
- */
-export function detectAutomatedThreadFromMeta(messageLabelIds: string[][]): boolean {
-  if (messageLabelIds.length === 0) return false;
-  if (messageLabelIds.some((labels) => hasHumanVeto(labels))) return false;
-  return messageLabelIds.every((labels) => hasBulkCategory(labels));
 }

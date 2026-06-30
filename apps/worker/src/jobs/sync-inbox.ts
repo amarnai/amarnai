@@ -467,7 +467,7 @@ export function createSyncInboxWorker(): Worker {
         const rawSnapshot = normalizeGmailThread(rawThread);
         // Compute label flags from all messages (before filtering).
         // Stored on the thread so the API can filter at query time without re-fetching.
-        const labelFlags = computeThreadLabelFlags(rawSnapshot.messages);
+        const labelFlags = computeThreadLabelFlags(rawSnapshot.messages, connection.gmailAddress);
         const snapshot = applyThreadFilter(rawSnapshot, settings);
 
         if (snapshot === null) {
