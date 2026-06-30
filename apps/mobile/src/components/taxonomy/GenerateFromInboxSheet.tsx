@@ -2,6 +2,8 @@ import { ActivityIndicator, ScrollView, StyleSheet, Text, TouchableOpacity, View
 import { Trans } from '@lingui/react/macro';
 import { useLingui } from '@lingui/react';
 import { msg } from '@lingui/core/macro';
+import { useCallback } from 'react';
+import { translateSource } from '@amarnai/i18n';
 import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
 import type { TaxonomyTransferFile } from '@amarnai/shared';
 import type { TaxonomyGenerationStatusResult } from '@amarnai/api-client';
@@ -36,7 +38,11 @@ export function GenerateFromInboxSheet({
   onUseTemplates,
   onClose,
 }: Props) {
-  const { _ } = useLingui();
+  const { _, i18n } = useLingui();
+  const tReason = useCallback(
+    (s: string, v?: Record<string, unknown>) => translateSource(i18n, s, v),
+    [i18n],
+  );
   const status = generation?.status ?? 'IDLE';
   const eligibility = generation?.eligibility;
   const proposal = status === 'READY' ? generation?.proposal ?? null : null;
@@ -62,7 +68,7 @@ export function GenerateFromInboxSheet({
             <Text style={styles.muted}><Trans>Analyzing your inbox and building a plan…</Trans></Text>
           </View>
         ) : status === 'INSUFFICIENT' ? (
-          <Text style={styles.muted}>{reasonText('INBOX_TOO_SMALL')}</Text>
+          <Text style={styles.muted}>{reasonText('INBOX_TOO_SMALL', tReason)}</Text>
         ) : status === 'FAILED' ? (
           <Text style={styles.muted}>
             {eligibility?.nextEligibleAt ? (
@@ -103,7 +109,7 @@ export function GenerateFromInboxSheet({
             </Text>
             {eligibility && !eligibility.eligible ? (
               <Text style={styles.muted}>
-                {reasonText(eligibility.reason, eligibility.nextEligibleAt)}
+                {reasonText(eligibility.reason, tReason, eligibility.nextEligibleAt)}
               </Text>
             ) : null}
           </View>

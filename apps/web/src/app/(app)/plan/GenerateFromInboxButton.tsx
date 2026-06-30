@@ -13,6 +13,7 @@ import { api } from "@/lib/api";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
+import { translateSource } from "@amarnai/i18n";
 
 type Phase = "idle" | "running" | "ready" | "insufficient" | "failed" | "error";
 
@@ -52,7 +53,11 @@ export function GenerateFromInboxButton({
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
 }) {
-  const { _ } = useLingui();
+  const { _, i18n } = useLingui();
+  const tReason = useCallback(
+    (s: string, v?: Record<string, unknown>) => translateSource(i18n, s, v),
+    [i18n],
+  );
   const [internalOpen, setInternalOpen] = useState(defaultOpen);
   const open = controlledOpen !== undefined ? controlledOpen : internalOpen;
   function setOpen(v: boolean) {
@@ -136,7 +141,7 @@ export function GenerateFromInboxButton({
         // Limiter denial — refresh to get current eligibility, then show reason.
         await refresh();
         if (body.reason && body.reason !== "RUNNING") {
-          setError(generationReasonText(body.reason as GenerationEligibilityReason, body.nextEligibleAt));
+          setError(generationReasonText(body.reason as GenerationEligibilityReason, tReason, body.nextEligibleAt));
         }
         return;
       }
@@ -269,7 +274,7 @@ export function GenerateFromInboxButton({
 
                 {phase === "insufficient" && (
                   <p className="text-muted">
-                    {generationReasonText("INBOX_TOO_SMALL")}
+                    {generationReasonText("INBOX_TOO_SMALL", tReason)}
                   </p>
                 )}
 
@@ -292,7 +297,7 @@ export function GenerateFromInboxButton({
                       </Trans>
                     </p>
                     {!canGenerate && eligibility && (
-                      <p className="text-muted">{generationReasonText(eligibility.reason, eligibility.nextEligibleAt)}</p>
+                      <p className="text-muted">{generationReasonText(eligibility.reason, tReason, eligibility.nextEligibleAt)}</p>
                     )}
                   </>
                 )}

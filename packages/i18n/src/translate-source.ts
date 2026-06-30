@@ -11,6 +11,10 @@ import { generateMessageId } from "@lingui/message-utils/generateMessageId";
  * hash here with the same function so the lookup hits. Falls back to `source`
  * when the message is absent (untranslated locale, source locale, or unknown).
  */
-export function translateSource(i18n: I18n, source: string): string {
-  return i18n._({ id: generateMessageId(source), message: source });
+export function translateSource(
+  i18n: I18n,
+  source: string,
+  values?: Record<string, unknown>,
+): string {
+  return i18n._(generateMessageId(source), values, { message: source });
 }

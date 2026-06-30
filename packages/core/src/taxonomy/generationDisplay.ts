@@ -3,27 +3,51 @@ import type { TaxonomyTransferFile, GenerationEligibilityReason } from "@amarnai
 // Shared display helpers for the "Generate from inbox" UI, used by both web and
 // mobile so the copy and preview rendering stay identical across platforms.
 
-/** User-facing copy for each not-eligible reason. */
+/**
+ * Translate a plain English source string (with optional ICU placeholder
+ * values) against the active catalog. Callers pass `(s, v) => translateSource(i18n, s, v)`
+ * so this module stays free of any i18n library, mirroring localizeTemplate.
+ */
+export type GenerationTranslate = (
+  source: string,
+  values?: Record<string, unknown>,
+) => string;
+
+const identityTranslate: GenerationTranslate = (source) => source;
+
+/**
+ * User-facing copy for each not-eligible reason. English is the source of truth;
+ * pass `translate` to render in the user's locale. The English source strings
+ * here are mirrored as `msg` declarations in
+ * packages/ui/src/i18n/generation-reason-messages.ts so they land in the catalog.
+ */
 export function generationReasonText(
   reason: GenerationEligibilityReason,
+  translate: GenerationTranslate = identityTranslate,
   nextEligibleAt?: string | null,
 ): string {
   const when = nextEligibleAt ? new Date(nextEligibleAt).toLocaleString() : null;
   switch (reason) {
     case "INBOX_TOO_SMALL":
-      return "Your inbox doesn't have enough variety yet to personalize a taxonomy. Choose a template instead.";
+      return translate(
+        "Your inbox doesn't have enough variety yet to personalize a taxonomy. Choose a template instead.",
+      );
     case "IMPORTING":
-      return "Still importing your inbox. Check back once the import finishes.";
+      return translate("Still importing your inbox. Check back once the import finishes.");
     case "NO_NEW_MAIL":
-      return "No significant new mail since your last generation, so the result would be the same. Available again once your inbox grows.";
+      return translate(
+        "No significant new mail since your last generation, so the result would be the same. Available again once your inbox grows.",
+      );
     case "COOLDOWN":
-      return when ? `Recently attempted. Available again ${when}.` : "Recently attempted. Try again later.";
+      return when
+        ? translate("Recently attempted. Available again {when}.", { when })
+        : translate("Recently attempted. Try again later.");
     case "MONTHLY_CAP":
       return when
-        ? `You've used your generations for now. Available again ${when}.`
-        : "You've used your generations for now.";
+        ? translate("You've used your generations for now. Available again {when}.", { when })
+        : translate("You've used your generations for now.");
     default:
-      return "Generation isn't available right now.";
+      return translate("Generation isn't available right now.");
   }
 }
 
