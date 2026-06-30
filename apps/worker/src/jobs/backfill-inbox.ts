@@ -68,8 +68,7 @@ function isPermanentThreadFetchError(err: unknown): boolean {
 /**
  * Sort threads strictly by latestMessageAt descending (most recent first). When
  * the plan cap truncates the inbox, the kept set is the most recent threads —
- * matching what a user expects to see, and composing with the Free plan's 30-day
- * window. Read state is intentionally not a factor.
+ * matching what a user expects to see. Read state is intentionally not a factor.
  */
 function sortByPriority(threads: GmailThreadMeta[]): GmailThreadMeta[] {
   return [...threads].sort(
@@ -214,9 +213,9 @@ export function createBackfillInboxWorker(): Worker {
         // ── 5. Resolve the plan cap and resume cursor ──────────────────────────
         //
         // Thread count + look-back window come from the workspace plan + billing
-        // cycle (single source of truth in @amarnai/shared). Paid plans have no
-        // time window (windowDays === null → afterMs 0 → full history); Free is
-        // bounded to its 30-day / 500-thread cap. Large caps are processed across
+        // cycle (single source of truth in @amarnai/shared). No plan sets a time
+        // window (windowDays === null → afterMs 0 → full history); each is bounded
+        // only by its thread cap (Free 500). Large caps are processed across
         // multiple runs, resuming from the persisted pageToken / processed count.
 
         const cap = getBackfillCap(workspace.plan, workspace.billingCycle);

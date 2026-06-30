@@ -101,7 +101,7 @@ const PLAN_MESSAGES: Record<string, MessageDescriptor> = {
 
   // ── Initial-backfill cell values (deterministic from the shared caps) ──
   "Same as monthly": msg`Same as monthly`,
-  "500 threads or last 30 days": msg`500 threads or last 30 days`,
+  "500 threads": msg`500 threads`,
   "10,000 threads": msg`10,000 threads`,
   "50,000 threads": msg`50,000 threads`,
   "75,000 threads": msg`75,000 threads`,

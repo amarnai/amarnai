@@ -20,8 +20,8 @@ export interface PlanBackfillCaps {
 
 export const BACKFILL_CAPS: Record<string, PlanBackfillCaps> = {
   FREE: {
-    monthly: { maxThreads: 500, windowDays: 30 },
-    annual:  { maxThreads: 500, windowDays: 30 },
+    monthly: { maxThreads: 500, windowDays: null },
+    annual:  { maxThreads: 500, windowDays: null },
   },
   PRO: {
     monthly: { maxThreads: 10_000, windowDays: null },

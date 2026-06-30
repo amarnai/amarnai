@@ -281,7 +281,7 @@ describe("createBackfillInboxWorker", () => {
     );
   });
 
-  it("(c3) bounds the Free plan to a 30-day window", async () => {
+  it("(c3) scans full history for the Free plan (afterMs 0)", async () => {
     vi.mocked(db.workspace.findUnique).mockResolvedValue({
       ownerUserId: "user-1",
       plan: "FREE",
@@ -293,14 +293,12 @@ describe("createBackfillInboxWorker", () => {
     } as never);
     mockListThreadsPage.mockResolvedValue({ threads: [], nextPageToken: undefined });
 
-    const before = Date.now() - 30 * 24 * 60 * 60 * 1_000;
     createBackfillInboxWorker();
     await getProcessor()(makeJob({ workspaceId: WS_ID }));
-    const after = Date.now() - 30 * 24 * 60 * 60 * 1_000;
 
-    const arg = mockListThreadsPage.mock.calls[0]![0] as { afterMs: number };
-    expect(arg.afterMs).toBeGreaterThanOrEqual(before);
-    expect(arg.afterMs).toBeLessThanOrEqual(after);
+    expect(mockListThreadsPage).toHaveBeenCalledWith(
+      expect.objectContaining({ afterMs: 0 })
+    );
   });
 
   it("(c4) stops at the plan cap when more threads exist (Free → 500)", async () => {

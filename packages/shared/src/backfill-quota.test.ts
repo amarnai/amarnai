@@ -2,9 +2,9 @@ import { describe, it, expect } from "vitest";
 import { getBackfillCap, BACKFILL_CAPS } from "./backfill-quota.js";
 
 describe("getBackfillCap", () => {
-  it("returns the Free cap (500 threads, 30-day window) for both cycles", () => {
-    expect(getBackfillCap("FREE", "MONTHLY")).toEqual({ maxThreads: 500, windowDays: 30 });
-    expect(getBackfillCap("FREE", "ANNUAL")).toEqual({ maxThreads: 500, windowDays: 30 });
+  it("returns the Free cap (500 threads, full history) for both cycles", () => {
+    expect(getBackfillCap("FREE", "MONTHLY")).toEqual({ maxThreads: 500, windowDays: null });
+    expect(getBackfillCap("FREE", "ANNUAL")).toEqual({ maxThreads: 500, windowDays: null });
   });
 
   it("returns the Pro monthly cap (10,000 threads, full history)", () => {
