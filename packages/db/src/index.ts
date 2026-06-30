@@ -13,6 +13,7 @@ export {
   meterWindowStart,
   inboxKeyFor,
   getMeterUsed,
+  getBackfillGraceUsed,
   recordMeterUsage,
   resolveInboxQuota,
   ensureBackfillGrant,

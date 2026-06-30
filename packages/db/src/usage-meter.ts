@@ -38,6 +38,23 @@ export async function getMeterUsed(
 }
 
 /**
+ * Whether the inbox has already consumed its one grace re-import for the window
+ * (false if no BACKFILL meter row yet). Read-only. Used by the sync-status banner
+ * reconciliation to tell "still capped, retry available" (CAPPED) from "budget and
+ * grace both spent" (BLOCKED) without re-running the budget resolver.
+ */
+export async function getBackfillGraceUsed(
+  inboxKey: string,
+  windowStart: Date,
+): Promise<boolean> {
+  const row = await db.inboxUsageMeter.findUnique({
+    where: { inboxKey_kind_windowStart: { inboxKey, kind: MeterKind.BACKFILL, windowStart } },
+    select: { graceUsed: true },
+  });
+  return row?.graceUsed ?? false;
+}
+
+/**
  * Add `delta` to an inbox+kind meter for the window. Monotonic — never decrements.
  * `sizedForPlan` is recorded once (on create) for observability of which plan sized
  * the window. Safe to call repeatedly; concurrent callers may overshoot a soft cap,

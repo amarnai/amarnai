@@ -4,6 +4,7 @@ import {
   db,
   getInboxPlanCeiling,
   getMeterUsed,
+  getBackfillGraceUsed,
   inboxKeyFor,
   meterWindowStart,
   MeterKind,
@@ -74,26 +75,33 @@ syncStatus.get("/workspaces/:workspaceId/sync-status", async (c) => {
   if (!state) return c.json(null, 200);
 
   // `backfillCapReached` is a snapshot persisted by the backfill job at the moment
-  // the pooled budget was exhausted. It can go stale: when the monthly meter window
-  // rolls over the pool replenishes, and an upgrade raises the cap — but the flag is
-  // only recomputed on the next backfill run, which may never re-trigger. Re-validate
-  // it against the live pooled budget so we never show a "you hit your limit, upgrade"
-  // prompt while the inbox actually has room. (Read-only: getMeterUsed does not write.)
+  // the pooled budget was exhausted. It can drift from reality in BOTH directions, so
+  // re-validate it against the live pooled meter (read-only — getMeterUsed/
+  // getBackfillGraceUsed do not write):
+  //   - Too tight: the monthly window rolled over (pool replenished) or an upgrade
+  //     raised the cap. The flag is only recomputed on the next backfill run, which may
+  //     never re-trigger, so we'd otherwise show "you hit your limit, upgrade" while the
+  //     inbox actually has room. Relax it to NONE.
+  //   - Too loose: a row written before the backfillLimitState column existed reads
+  //     NONE while the inbox is genuinely at/over its pooled cap (the column defaulted
+  //     to NONE and a DONE backfill never re-derives it). The banner would stay hidden.
+  //     Engage it, deriving CAPPED vs BLOCKED from whether the grace re-import is spent.
   let backfillCapReached = state.backfillCapReached;
   let backfillBeyondCount = state.backfillBeyondCount;
   let backfillLimitState = state.backfillLimitState;
   if (backfillCapReached) {
     const ceiling = await getInboxPlanCeiling(connection.gmailAddress);
     const cap = getBackfillCap(ceiling.plan, ceiling.billingCycle).maxThreads;
-    const used = await getMeterUsed(
-      inboxKeyFor(connection.gmailAddress),
-      MeterKind.BACKFILL,
-      meterWindowStart(),
-    );
+    const inboxKey = inboxKeyFor(connection.gmailAddress);
+    const windowStart = meterWindowStart();
+    const used = await getMeterUsed(inboxKey, MeterKind.BACKFILL, windowStart);
     if (used < cap) {
       backfillCapReached = false;
       backfillBeyondCount = 0;
       backfillLimitState = "NONE";
+    } else if (backfillLimitState === "NONE") {
+      const graceUsed = await getBackfillGraceUsed(inboxKey, windowStart);
+      backfillLimitState = graceUsed ? "BLOCKED" : "CAPPED";
     }
   }
 
