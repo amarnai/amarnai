@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import {
   detectAutomatedThread,
   isAutomatedMessage,
+  senderIsNoReply,
 } from "../detection/automated-mail.js";
 import type { SnapshotMessage } from "../thread-snapshot.js";
 
@@ -128,6 +129,20 @@ describe("detectAutomatedThread", () => {
     const ownReply = msg({ providerMessageId: "m2", senderEmail: "owner@gmail.com" });
     // Excluding the owner must not turn a real correspondent into automated mail.
     expect(detectAutomatedThread([alice, ownReply], "owner@gmail.com")).toBe(false);
+  });
+});
+
+describe("senderIsNoReply", () => {
+  it("matches no-reply and notification local parts across domains", () => {
+    expect(senderIsNoReply("no-reply@accounts.google.com")).toBe(true);
+    expect(senderIsNoReply("noreply@crunchyroll.com")).toBe(true);
+    expect(senderIsNoReply("notifications@service.com")).toBe(true);
+    expect(senderIsNoReply("google-maps-noreply@google.com")).toBe(true);
+  });
+
+  it("does not match a human or a 'reply@' style address", () => {
+    expect(senderIsNoReply("bob@gmail.com")).toBe(false);
+    expect(senderIsNoReply("reply@person.com")).toBe(false);
   });
 });
 

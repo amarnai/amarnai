@@ -31,9 +31,9 @@ GUIDANCE:
 - Build a TWO-LEVEL tree. Top level: 3 to 6 broad categories (the major areas or relationships in this inbox). Under each top-level category, add 2 to 5 specific sub-folders when the sender clusters show distinct recurring themes within it. If a category has no clear sub-themes, keep it a single leaf.
 - Do NOT nest deeper than two levels below "Inbox".
 - Start from the SEED taxonomy, which is already two-level. Keep the parts that fit, rename ones that nearly fit, add sub-folders for clear recurring themes in the signal, and drop branches with no support in the inbox. The seed is shown in English; translate the parts you keep into ${targetLanguage}.
-- Name sub-folders after concrete recurring themes visible in the sender clusters (a frequent sender domain, a project, a keyword cluster), not generic buckets. Do not create a folder per sender.
+- Name sub-folders after concrete recurring themes visible in the sender clusters (a frequent sender domain, a project, a keyword cluster), not generic buckets. Do not create a folder per sender. Only create a folder for a theme the user actively engages with, or that spans multiple senders, or that the user must act on.
 - Aim for about 8 to 12 leaf folders total. When in doubt, merge rather than split — a few well-supported folders beat many thin ones.
-- Do NOT invent folders to capture noise (newsletters, notifications, receipts). That is what the catch-all leaf is for.
+- A high-volume stream from a SINGLE company that is automated or transactional (account notifications, security or sign-in alerts, OAuth or verification messages, receipts, order, subscription, or service updates, a single service's account notifications such as a streaming or SaaS account) belongs in the catch-all leaf, NOT its own folder, even when it is frequent in the signal. Do NOT invent folders to capture this kind of noise; that is what the catch-all leaf is for.
 - Output ONLY the JSON object. No prose, no markdown fences.`;
 }
 

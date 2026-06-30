@@ -43,6 +43,7 @@ export { buildRoutingTelemetry, TELEMETRY_TOP_K } from "./embedding/telemetry.js
 export {
   isAutomatedMessage,
   detectAutomatedThread,
+  senderIsNoReply,
 } from "./detection/automated-mail.js";
 // ─── Triage ───────────────────────────────────────────────────────────────────
 export { analyzeThreadTriage } from "./triage/analyze.js";

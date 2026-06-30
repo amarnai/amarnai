@@ -38,7 +38,7 @@ function hasBulkCategory(labelIds: readonly string[]): boolean {
   return labelIds.some((l) => BULK_CATEGORY_LABELS.includes(l));
 }
 
-function senderIsNoReply(senderEmail: string): boolean {
+export function senderIsNoReply(senderEmail: string): boolean {
   const localPart = senderEmail.split("@")[0] ?? "";
   return NO_REPLY_LOCALPART.test(localPart);
 }
