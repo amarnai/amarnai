@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import Image from "next/image";
 import { requireUser } from "@/lib/session";
 import { getStripe } from "@/lib/stripe";
 import { db, ensureInboxTaxonomy } from "@amarnai/db";
@@ -148,44 +149,61 @@ export default async function UpgradeSuccessPage({
 
   return (
     <div className="upgrade-success-page">
-      <div className="upgrade-success-check" aria-hidden="true">
-        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-          <circle cx="16" cy="16" r="16" fill="var(--accent)" />
-          <path
-            d="M9 16.5 13.5 21 23 11"
-            stroke="#fff"
-            strokeWidth="2.2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+      <div className="upgrade-success-stage">
+        <div className="upgrade-success-mascot">
+          <Image
+            src="/aziru-upgrade.png"
+            alt="King Aziru"
+            width={1254}
+            height={1254}
+            style={{ width: "100%", height: "auto" }}
+            priority
           />
-        </svg>
+        </div>
+        <div className="upgrade-success-card">
+          <div className="upgrade-success-badge" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 32 32" fill="none">
+              <circle cx="16" cy="16" r="16" fill="var(--accent)" />
+              <path
+                d="M9 16.5 13.5 21 23 11"
+                stroke="#fff"
+                strokeWidth="2.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            <Trans>Payment confirmed</Trans>
+          </div>
+          <h1 className="upgrade-success-title">
+            <Trans>You&apos;re on {planLabel}</Trans>
+          </h1>
+          <p className="upgrade-success-workspace">{workspace.name}</p>
+          {isTrialing && workspace.trialEndsAt && (
+            <p className="upgrade-success-body">
+              <Trans>
+                Your 14-day free trial runs until{" "}
+                <strong>{workspace.trialEndsAt.toLocaleDateString()}</strong>. You
+                won&apos;t be charged before then.
+              </Trans>
+            </p>
+          )}
+          {!isTrialing && workspace.currentPeriodEnd && (
+            <p className="upgrade-success-body">
+              <Trans>
+                Renews on{" "}
+                <strong>{workspace.currentPeriodEnd.toLocaleDateString()}</strong>.
+              </Trans>
+            </p>
+          )}
+          {/* Switch the active-workspace cookie to the purchased workspace before
+              navigating — a plain link to /emails would keep the previous selection. */}
+          <form action={switchWorkspaceAction.bind(null, workspace.id)}>
+            <button type="submit" className="btn-primary upgrade-success-cta">
+              <Trans>Go to {workspace.name}</Trans>
+            </button>
+          </form>
+        </div>
       </div>
-      <h1 className="upgrade-success-title"><Trans>You&apos;re on {planLabel}</Trans></h1>
-      <p className="upgrade-success-workspace">{workspace.name}</p>
-      {isTrialing && workspace.trialEndsAt && (
-        <p className="upgrade-success-body">
-          <Trans>
-            Your 14-day free trial runs until{" "}
-            <strong>{workspace.trialEndsAt.toLocaleDateString()}</strong>. You
-            won&apos;t be charged before then.
-          </Trans>
-        </p>
-      )}
-      {!isTrialing && workspace.currentPeriodEnd && (
-        <p className="upgrade-success-body">
-          <Trans>
-            Renews on{" "}
-            <strong>{workspace.currentPeriodEnd.toLocaleDateString()}</strong>.
-          </Trans>
-        </p>
-      )}
-      {/* Switch the active-workspace cookie to the purchased workspace before
-          navigating — a plain link to /emails would keep the previous selection. */}
-      <form action={switchWorkspaceAction.bind(null, workspace.id)}>
-        <button type="submit" className="btn-primary upgrade-success-cta">
-          <Trans>Go to {workspace.name}</Trans>
-        </button>
-      </form>
     </div>
   );
 }

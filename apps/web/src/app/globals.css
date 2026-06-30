@@ -5628,18 +5628,70 @@ a {
 /* ─── Upgrade success page ───────────────────────────────────────────────── */
 
 .upgrade-success-page {
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px 60px;
+}
+
+/* vertical stack: mascot on top, card below with overlap (mirrors .page-404-stage) */
+.upgrade-success-stage {
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
-  padding: 64px 24px;
-  gap: 12px;
-  max-width: 440px;
-  margin: 0 auto;
+  width: 100%;
+  max-width: 420px;
 }
 
-.upgrade-success-check {
-  margin-bottom: 4px;
+.upgrade-success-mascot {
+  width: 280px;
+  position: relative;
+  z-index: 1;
+  /* pull the card up over Aziru's lower body */
+  margin-bottom: -140px;
+  flex-shrink: 0;
+}
+
+.upgrade-success-mascot img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.upgrade-success-card {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-2);
+  /* top padding clears the overlap so content starts below Aziru's torso */
+  padding: 40px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.upgrade-success-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px 5px 8px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  margin-bottom: 2px;
+}
+
+.upgrade-success-badge svg {
+  display: block;
 }
 
 .upgrade-success-title {
@@ -5647,6 +5699,7 @@ a {
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--ink);
+  line-height: 1.25;
   margin: 0;
 }
 
@@ -5657,14 +5710,15 @@ a {
 }
 
 .upgrade-success-body {
-  font-size: 13.5px;
+  font-size: 14px;
   color: var(--ink-3);
-  line-height: 1.5;
+  line-height: 1.65;
+  max-width: 320px;
   margin: 0;
 }
 
 .upgrade-success-cta {
-  margin-top: 8px;
+  margin-top: 10px;
 }
 
 .upgrade-success-spinner {
@@ -5674,6 +5728,21 @@ a {
   border: 3px solid var(--line-2);
   border-top-color: var(--accent);
   animation: spin 0.8s linear infinite;
+}
+
+@media (max-width: 480px) {
+  .upgrade-success-mascot {
+    width: 220px;
+    margin-bottom: -110px;
+  }
+
+  .upgrade-success-card {
+    padding: 32px 28px;
+  }
+
+  .upgrade-success-title {
+    font-size: 20px;
+  }
 }
 
 @keyframes spin {
