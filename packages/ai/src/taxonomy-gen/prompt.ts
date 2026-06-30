@@ -34,10 +34,10 @@ HARD RULES (violations are rejected):
 - "instructions" and "draftPrompt" must be null; "examples" must be []. Set sensible "positionX"/"positionY" numbers (you may copy the seed's layout).
 
 GUIDANCE:
-- Build a TWO-LEVEL tree. Top level: ${band.minTopLevel} to ${band.maxTopLevel} broad categories (the major areas or relationships in this inbox). Under each top-level category, add 2 to 5 specific sub-folders when the sender clusters show distinct recurring themes within it. If a category has no clear sub-themes, keep it a single leaf.
+- Build a TWO-LEVEL tree. Top level: ${band.minTopLevel} to ${band.maxTopLevel} broad categories (the major areas or relationships in this inbox). Under each top-level category, add 2 to 4 sub-folders ONLY when the inbox shows distinct recurring themes within it. A category with a single theme should BE a single leaf — never nest one lone sub-folder under a category (no "Recruiting > Job Applications"; just "Job Search").
 - Do NOT nest deeper than two levels below "Inbox".
 - Start from the SEED taxonomy, which is already two-level. Keep the parts that fit, rename ones that nearly fit, add sub-folders for clear recurring themes in the signal, and drop branches with no support in the inbox. The seed is shown in English; translate the parts you keep into ${targetLanguage}.
-- Name sub-folders after concrete recurring themes visible in the sender clusters (a frequent sender domain, a project, a keyword cluster), not generic buckets. Do not create a folder per sender. Only create a folder for a theme the user actively engages with, or that spans multiple senders, or that the user must act on.
+- Name every folder after a TOPIC or ACTIVITY — what the mail is about, or what the user does with it — NOT after a sender, company, brand, or product. The sender clusters are EVIDENCE of which themes recur; use them to decide which themes exist, never as folder names (e.g. "Acme Corp" or "GitHub" as a folder is WRONG — use "Client Work", "Code Reviews"). Prefer a broader theme that spans several senders over one folder per sender or per tool. Only create a folder for a theme the user actively engages with, or that the user must act on.
 - This inbox's variety supports about ${band.minLeaves} to ${band.maxLeaves} leaf folders total — aim for that range. Every folder MUST map to a real theme in the signal: if you cannot reach ${band.minLeaves} well-supported folders, produce fewer rather than inventing generic buckets. When in doubt, merge rather than split — a few well-supported folders beat many thin ones.
 - A high-volume stream from a SINGLE company that is automated or transactional (account notifications, security or sign-in alerts, OAuth or verification messages, receipts, order, subscription, or service updates, a single service's account notifications such as a streaming or SaaS account) belongs in the catch-all leaf, NOT its own folder, even when it is frequent in the signal. Do NOT invent folders to capture this kind of noise; that is what the catch-all leaf is for.
 - Output ONLY the JSON object. No prose, no markdown fences.`;
@@ -103,7 +103,7 @@ ${renderTerms("Top sender names", profile.senderNames, 25)}
 ${renderTerms("Frequent subject keywords", profile.subjectKeywords, 40)}
 ${renderTerms("Gmail labels", profile.gmailLabels, 25)}
 
-SENDER CLUSTERS (top senders and the themes they email about; use these to name specific sub-folders):
+SENDER CLUSTERS (top senders and the themes they email about — use these as EVIDENCE of which themes recur, NOT as folder names; name folders by topic or activity, not by sender):
 ${renderClusters(profile.senderClusters)}
 
 Produce the personalized taxonomy JSON now, with all names and descriptions in ${targetLanguage}.`;
