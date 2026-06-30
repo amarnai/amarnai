@@ -54,7 +54,7 @@ export function PlanCapBanner({ syncStatus, dismissed, onDismiss }: PlanCapBanne
       </View>
       <TouchableOpacity style={styles.btn} onPress={() => router.push('/(app)/subscription')}>
         <Text style={styles.btnText}>
-          <Trans>Upgrade to load them</Trans>
+          <Trans>Upgrade to load the rest</Trans>
         </Text>
       </TouchableOpacity>
     </View>

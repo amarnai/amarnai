@@ -41,6 +41,13 @@ const envSchema = z.object({
   // Set to 'false' to disable per-workspace monthly thread-sort quotas.
   // Self-hosted deployments that manage their own AI costs should set this to false.
   ENFORCE_THREAD_SORT_QUOTA: z.string().transform((v) => v !== 'false').default('true'),
+  // Set to 'false' to disable the per-inbox backfill cap (pooled, with the grace
+  // re-import). Self-hosted deployments managing their own AI costs may turn this
+  // off to backfill unbounded history. Usage is still recorded for observability.
+  ENFORCE_BACKFILL_QUOTA: z.string().transform((v) => v !== 'false').default('true'),
+  // Set to 'false' to disable the per-inbox monthly taxonomy-generation backstop.
+  // Self-hosted deployments managing their own AI costs should set this to false.
+  ENFORCE_TAXONOMY_QUOTA: z.string().transform((v) => v !== 'false').default('true'),
   INTERNAL_API_SECRET: z.string().optional(),
   // Secret for signing per-user access tokens (mobile + future native clients).
   // Distinct from INTERNAL_API_SECRET (service-to-service) and AUTH_SECRET
@@ -165,6 +172,8 @@ export const config = {
   billing: {
     enforceDraftQuota: env.ENFORCE_DRAFT_QUOTA,
     enforceThreadSortQuota: env.ENFORCE_THREAD_SORT_QUOTA,
+    enforceBackfillQuota: env.ENFORCE_BACKFILL_QUOTA,
+    enforceTaxonomyQuota: env.ENFORCE_TAXONOMY_QUOTA,
   },
   internalApiSecret: env.INTERNAL_API_SECRET ?? 'dev-internal-secret',
   authJwtSecret: env.AUTH_JWT_SECRET ?? 'dev-auth-jwt-secret',

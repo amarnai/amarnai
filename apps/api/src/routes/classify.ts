@@ -1,7 +1,13 @@
 import { Hono } from "hono";
 import { z } from "zod";
-import { db, countRecurringThreadSorts } from "@amarnai/db";
-import { getDraftQuotaWindowStart, getDraftQuotaResetsAt, getThreadSortLimit } from "@amarnai/shared";
+import {
+  db,
+  getInboxPlanCeiling,
+  inboxKeyFor,
+  meterWindowStart,
+  getMeterUsed,
+} from "@amarnai/db";
+import { getDraftQuotaResetsAt, getThreadSortLimit } from "@amarnai/shared";
 import { config } from "@amarnai/config";
 import { mockClassify } from "../services/mock-classifier.js";
 import { isWorkspaceTaxonomyRoutable } from "../services/taxonomy-routable.js";
@@ -48,32 +54,31 @@ classify.post(
     }
 
     if (config.billing.enforceThreadSortQuota) {
-      const workspace = await db.workspace.findUnique({
-        where: { id: workspaceId },
-        select: { plan: true },
+      // Soft pre-check against the reset-immune, inbox-pooled meter (the worker
+      // re-checks authoritatively). Sized by the top plan among workspaces sharing
+      // this inbox. Skipped if there's no active connection — the sort can't run.
+      const connection = await db.gmailConnection.findUnique({
+        where: { workspaceId },
+        select: { gmailAddress: true, status: true },
       });
-      if (!workspace) {
-        return c.json({ error: "Workspace not found" }, 404);
-      }
+      if (connection && connection.status === "ACTIVE") {
+        const now = new Date();
+        const windowStart = meterWindowStart(now);
+        const { plan } = await getInboxPlanCeiling(connection.gmailAddress);
+        const limit = getThreadSortLimit(plan);
+        const used = await getMeterUsed(inboxKeyFor(connection.gmailAddress), "THREAD_SORT", windowStart);
 
-      const now = new Date();
-      const windowStart = getDraftQuotaWindowStart(now);
-      const limit = getThreadSortLimit(workspace.plan);
-
-      // Recurring sorts only — the one-time backfill is exempt from the monthly
-      // quota, so a first-month backfill never blocks a manual sort.
-      const used = await countRecurringThreadSorts(workspaceId, windowStart);
-
-      if (used >= limit) {
-        return c.json(
-          {
-            error: "Monthly thread-sort quota exceeded",
-            used,
-            limit,
-            resetsAt: getDraftQuotaResetsAt(now).toISOString(),
-          },
-          429
-        );
+        if (used >= limit) {
+          return c.json(
+            {
+              error: "Monthly thread-sort quota exceeded",
+              used,
+              limit,
+              resetsAt: getDraftQuotaResetsAt(now).toISOString(),
+            },
+            429
+          );
+        }
       }
     }
 

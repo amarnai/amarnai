@@ -1,8 +1,16 @@
 import { Hono } from "hono";
 import { z } from "zod";
-import { db, Prisma, getThreadSortUsage } from "@amarnai/db";
+import {
+  db,
+  getThreadSortUsage,
+  getInboxPlanCeiling,
+  inboxKeyFor,
+  meterWindowStart,
+  getMeterUsed,
+  recordMeterUsage,
+} from "@amarnai/db";
 import { createAIProvider, generateDraft, getDraftAIProviderConfig, type ThreadMessage } from "@amarnai/ai";
-import { getDraftLimit, getDraftQuotaWindowStart, getDraftQuotaResetsAt, getThreadSortLimit } from "@amarnai/shared";
+import { getDraftLimit, getDraftQuotaResetsAt, getThreadSortLimit } from "@amarnai/shared";
 import { config } from "@amarnai/config";
 import { GmailClient, normalizeGmailThread } from "@amarnai/gmail";
 
@@ -41,7 +49,6 @@ const drafts = new Hono();
 const DRAFT_GENERATING_STALE_MS = 5 * 60 * 1_000;
 
 // Statuses that represent a completed or in-progress generation and count toward quota.
-const QUOTA_COUNTED_STATUSES = ['PROPOSED', 'SENT', 'CREATED_IN_GMAIL', 'GENERATING'] as const;
 
 drafts.post(
   "/workspaces/:workspaceId/email-threads/:threadId/generate-draft",
@@ -151,6 +158,15 @@ drafts.post(
       return c.json({ error: "Workspace not found" }, 404);
     }
 
+    // Inbox-keyed draft meter context (reset-immune, pooled by inbox, sized by the
+    // top plan among workspaces sharing this inbox). Null for the mock/dev path
+    // (no Gmail connection), where the draft quota is not metered.
+    const draftInboxKey = gmailConnection ? inboxKeyFor(gmailConnection.gmailAddress) : null;
+    const draftWindowStart = meterWindowStart();
+    const draftPlan = gmailConnection
+      ? (await getInboxPlanCeiling(gmailConnection.gmailAddress)).plan
+      : workspace.plan;
+
     let provider;
     try {
       provider = createAIProvider(getDraftAIProviderConfig());
@@ -193,28 +209,31 @@ drafts.post(
       // bypass the limit (user at 3/3 frees a slot then immediately fills it).
       // The supersede happens after the new draft is committed (see below).
 
-      if (config.billing.enforceDraftQuota) {
-        const now = new Date();
-        const windowStart = getDraftQuotaWindowStart(now);
-        const limit = getDraftLimit(workspace.plan);
+      if (config.billing.enforceDraftQuota && draftInboxKey) {
+        const limit = getDraftLimit(draftPlan);
+        // Read the reset-immune, inbox-pooled draft meter. Recorded on the success
+        // transition below, so FAILED generations never burn allowance. Concurrent
+        // requests are serialized by the Workspace FOR UPDATE lock above; requests
+        // from a different workspace sharing the inbox may overshoot slightly
+        // (accepted soft cap).
+        const meterRow = await tx.inboxUsageMeter.findUnique({
+          where: {
+            inboxKey_kind_windowStart: {
+              inboxKey: draftInboxKey,
+              kind: "DRAFT",
+              windowStart: draftWindowStart,
+            },
+          },
+          select: { used: true },
+        });
+        const used = meterRow?.used ?? 0;
 
-        // Count non-FAILED drafts in the current calendar-month window.
-        // Stale GENERATING rows (server crashes) are excluded so a crash does
-        // not permanently burn the user's allowance.
-        const [{ count }] = await tx.$queryRaw<[{ count: bigint }]>`
-          SELECT COUNT(*) AS count FROM "Draft"
-          WHERE "workspaceId" = ${workspaceId}
-            AND "createdAt" >= ${windowStart}
-            AND status::text IN (${Prisma.join(QUOTA_COUNTED_STATUSES)})
-            AND NOT (status::text = 'GENERATING' AND "createdAt" <= ${staleThreshold})
-        `;
-
-        if (Number(count) >= limit) {
+        if (used >= limit) {
           return {
             kind: "quota_exceeded",
-            used: Number(count),
+            used,
             limit,
-            resetsAt: getDraftQuotaResetsAt(now),
+            resetsAt: getDraftQuotaResetsAt(new Date()),
           };
         }
       }
@@ -312,6 +331,18 @@ drafts.post(
       select: { id: true, subject: true, body: true, status: true, createdAt: true },
     });
 
+    // Record the successful generation against the reset-immune inbox meter. Only
+    // committed (non-FAILED) drafts count, so a failed LLM call never burns
+    // allowance. Runs regardless of the enforce flag (self-host observability).
+    if (draftInboxKey) {
+      await recordMeterUsage({
+        inboxKey: draftInboxKey,
+        kind: "DRAFT",
+        windowStart: draftWindowStart,
+        delta: 1,
+      });
+    }
+
     // Supersede the old PROPOSED draft now that the new one is committed.
     // Done after the transaction so the quota SQL never sees the slot freed.
     if (supersededId) {
@@ -340,29 +371,21 @@ drafts.get(
       return c.json({ error: "Invalid params" }, 400);
     }
 
-    const workspace = await db.workspace.findUnique({
-      where: { id: workspaceId },
-      select: { plan: true },
+    const connection = await db.gmailConnection.findUnique({
+      where: { workspaceId },
+      select: { gmailAddress: true },
     });
-    if (!workspace) {
-      return c.json({ error: "Workspace not found" }, 404);
-    }
 
     const now = new Date();
-    const windowStart = getDraftQuotaWindowStart(now);
-    const staleThreshold = new Date(now.getTime() - DRAFT_GENERATING_STALE_MS);
-    const limit = getDraftLimit(workspace.plan);
-
-    const [{ count }] = await db.$queryRaw<[{ count: bigint }]>`
-      SELECT COUNT(*) AS count FROM "Draft"
-      WHERE "workspaceId" = ${workspaceId}
-        AND "createdAt" >= ${windowStart}
-        AND status::text IN (${Prisma.join(QUOTA_COUNTED_STATUSES)})
-        AND NOT (status::text = 'GENERATING' AND "createdAt" <= ${staleThreshold})
-    `;
+    const windowStart = meterWindowStart(now);
+    const plan = connection ? (await getInboxPlanCeiling(connection.gmailAddress)).plan : "FREE";
+    const limit = getDraftLimit(plan);
+    const used = connection
+      ? await getMeterUsed(inboxKeyFor(connection.gmailAddress), "DRAFT", windowStart)
+      : 0;
 
     return c.json({
-      used: Number(count),
+      used,
       limit,
       resetsAt: getDraftQuotaResetsAt(now).toISOString(),
     });
@@ -385,25 +408,29 @@ drafts.get(
       return c.json({ error: "Invalid params" }, 400);
     }
 
-    const workspace = await db.workspace.findUnique({
-      where: { id: workspaceId },
-      select: { plan: true },
+    const connection = await db.gmailConnection.findUnique({
+      where: { workspaceId },
+      select: { gmailAddress: true },
     });
-    if (!workspace) {
-      return c.json({ error: "Workspace not found" }, 404);
-    }
 
     const now = new Date();
-    const windowStart = getDraftQuotaWindowStart(now);
-    const limit = getThreadSortLimit(workspace.plan);
+    const windowStart = meterWindowStart(now);
+    const plan = connection ? (await getInboxPlanCeiling(connection.gmailAddress)).plan : "FREE";
+    const limit = getThreadSortLimit(plan);
 
+    // "used"/"recurring" come from the reset-immune, inbox-pooled meter (what the
+    // limit enforces). "backfill" stays a per-workspace informational count of
+    // one-time historical sorts (exempt from the limit).
+    const used = connection
+      ? await getMeterUsed(inboxKeyFor(connection.gmailAddress), "THREAD_SORT", windowStart)
+      : 0;
     const usage = await getThreadSortUsage(workspaceId, windowStart);
 
     return c.json({
-      used: usage.recurring,
+      used,
       limit,
       resetsAt: getDraftQuotaResetsAt(now).toISOString(),
-      recurring: usage.recurring,
+      recurring: used,
       backfill: usage.backfill,
     });
   }

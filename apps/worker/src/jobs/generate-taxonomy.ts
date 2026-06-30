@@ -1,18 +1,26 @@
 import { Worker } from "bullmq";
-import { db, eligibleThreadWhere } from "@amarnai/db";
+import {
+  db,
+  eligibleThreadWhere,
+  getInboxPlanCeiling,
+  inboxKeyFor,
+  meterWindowStart,
+  getMeterUsed,
+  recordMeterUsage,
+} from "@amarnai/db";
 import {
   createAIProvider,
   getTaxonomyAIProviderConfig,
   generateTaxonomyFromProfile,
   senderIsNoReply,
 } from "@amarnai/ai";
+import { config } from "@amarnai/config";
 import { matchTemplateToProfile, layoutTaxonomyTransfer, localizeTransferFile } from "@amarnai/core/taxonomy";
 import { setupI18n } from "@lingui/core";
 import { loadCatalog, matchLocale, translateSource, LOCALE_ENGLISH_LANGUAGE_NAMES } from "@amarnai/i18n";
 import {
   computeGenerationEligibility,
   emailDomain,
-  GENERATION_WINDOW_MS,
   type InboxProfile,
   type ProfileTerm,
   type SenderCluster,
@@ -250,6 +258,10 @@ export async function runGenerateTaxonomyJob(
   };
 
   const state = await db.taxonomyGenerationState.findUnique({ where: { workspaceId } });
+  const connection = await db.gmailConnection.findUnique({
+    where: { workspaceId },
+    select: { gmailAddress: true },
+  });
 
   await setState(workspaceId, { status: "RUNNING" });
 
@@ -259,6 +271,23 @@ export async function runGenerateTaxonomyJob(
   // Re-check the full limiter at run time so a race (two requests slipping past
   // the API check) cannot double-spend. lastAttemptAt is the row's updatedAt.
   const now = new Date();
+  // Backstop quota counters now live on the reset-immune, inbox-pooled meter
+  // (calendar-month window) rather than on the reset-wiped TaxonomyGenerationState.
+  // The delta gate (lastGeneratedAt) and cooldown (lastOutcome) stay on the state
+  // row — those are workspace-local UX state and correctly reset. `recordWindow`
+  // is always the calendar month (usage recorded for observability); the cap is
+  // only ENFORCED when enforceTaxonomyQuota is on (self-host can opt out).
+  const recordWindow = connection ? meterWindowStart(now) : null;
+  const enforceTaxonomy = config.billing.enforceTaxonomyQuota;
+  const genWindowStart = enforceTaxonomy ? recordWindow : null;
+  const genInWindow =
+    connection && enforceTaxonomy && recordWindow
+      ? await getMeterUsed(inboxKeyFor(connection.gmailAddress), "TAXONOMY_GEN", recordWindow)
+      : 0;
+  const genPlan = connection
+    ? (await getInboxPlanCeiling(connection.gmailAddress)).plan
+    : workspace.plan;
+
   const eligibility = computeGenerationEligibility({
     lastOutcome: state?.lastOutcome ?? null,
     lastGeneratedAt: state?.lastGeneratedAt ?? null,
@@ -266,9 +295,9 @@ export async function runGenerateTaxonomyJob(
     lastAttemptAt: state?.updatedAt ?? null,
     currentEligibleCount: profile.eligibleThreadCount,
     currentSenderDomainCount: profile.senderDomains.length,
-    generationsWindowStart: state?.generationsWindowStart ?? null,
-    generationsInWindow: state?.generationsInWindow ?? 0,
-    plan: workspace.plan,
+    generationsWindowStart: genWindowStart,
+    generationsInWindow: genInWindow,
+    plan: genPlan,
     now,
   });
 
@@ -314,12 +343,18 @@ export async function runGenerateTaxonomyJob(
   // same convention as the templates so it renders cleanly on the canvas.
   const result = { ...generated, file: layoutTaxonomyTransfer(generated.file) };
 
-  // Roll the backstop window if it has expired, then count this run.
-  const windowActive =
-    state?.generationsWindowStart != null &&
-    now.getTime() - state.generationsWindowStart.getTime() < GENERATION_WINDOW_MS;
-  const generationsWindowStart = windowActive ? state!.generationsWindowStart! : now;
-  const generationsInWindow = (windowActive ? state!.generationsInWindow : 0) + 1;
+  // Count this generation against the reset-immune, inbox-pooled backstop meter.
+  // Always recorded (even when enforcement is off) for observability.
+  // (The delta-gate + cooldown fields below stay on the state row.)
+  if (connection && recordWindow) {
+    await recordMeterUsage({
+      inboxKey: inboxKeyFor(connection.gmailAddress),
+      kind: "TAXONOMY_GEN",
+      windowStart: recordWindow,
+      delta: 1,
+      sizedForPlan: genPlan,
+    });
+  }
 
   await setState(workspaceId, {
     status: "READY",
@@ -328,8 +363,6 @@ export async function runGenerateTaxonomyJob(
     lastGeneratedAt: now,
     threadCountAtLastGen: profile.eligibleThreadCount,
     lastOutcome: "SUCCESS",
-    generationsWindowStart,
-    generationsInWindow,
     modelProvider: provider.providerName,
     modelName: provider.modelName,
   });

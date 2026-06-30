@@ -2,6 +2,12 @@ import { vi, describe, it, expect, beforeEach } from "vitest";
 
 // ─── Mocks ────────────────────────────────────────────────────────────────────
 
+const { mockGetInboxPlanCeiling, mockResolveBackfillBudget, mockRecordMeterUsage } = vi.hoisted(() => ({
+  mockGetInboxPlanCeiling: vi.fn(),
+  mockResolveBackfillBudget: vi.fn(),
+  mockRecordMeterUsage: vi.fn(),
+}));
+
 vi.mock("@amarnai/db", () => ({
   db: {
     workspace: { findUnique: vi.fn() },
@@ -25,6 +31,15 @@ vi.mock("@amarnai/db", () => ({
       upsert: vi.fn(),
     },
   },
+  getInboxPlanCeiling: mockGetInboxPlanCeiling,
+  resolveBackfillBudget: mockResolveBackfillBudget,
+  recordMeterUsage: mockRecordMeterUsage,
+  inboxKeyFor: (a: string) => a,
+  meterWindowStart: () => new Date("2026-06-01T00:00:00Z"),
+}));
+
+vi.mock("@amarnai/config", () => ({
+  config: { billing: { enforceBackfillQuota: true } },
 }));
 
 const mockListThreadsPage = vi.fn();
@@ -187,6 +202,26 @@ beforeEach(() => {
   // Default: taxonomy is strong enough (3 non-root nodes all linked to root).
   vi.mocked(db.taxonomyNode.findMany).mockResolvedValue(makeNodes(3) as never);
   vi.mocked(db.taxonomyEdge.findMany).mockResolvedValue(makeEdges(3) as never);
+
+  // Usage-meter helpers. The plan ceiling mirrors the workspace plan the test set,
+  // and the pooled budget is faithful to the real single-workspace case: the meter
+  // tracks the cursor, so remaining budget = cap − processedSoFar. This makes
+  // runCeiling == the plan cap, reproducing the old `processed < cap.maxThreads`
+  // bound for every existing test (fresh and resume) with no per-test wiring.
+  mockGetInboxPlanCeiling.mockImplementation(async () => {
+    const ws = (await db.workspace.findUnique({ where: {} } as never)) as
+      | { plan?: string; billingCycle?: string | null }
+      | null;
+    return { plan: ws?.plan ?? "FREE", billingCycle: ws?.billingCycle ?? null };
+  });
+  mockResolveBackfillBudget.mockImplementation(async ({ cap }: { cap: number }) => {
+    const st = (await db.providerSyncState.findUnique({ where: {} } as never)) as
+      | { backfillProcessedCount?: number }
+      | null;
+    const processed = st?.backfillProcessedCount ?? 0;
+    return { effectiveBudget: Math.max(0, cap - processed), graceConsumed: false, blockedAwaitingWindow: false };
+  });
+  mockRecordMeterUsage.mockResolvedValue(undefined);
 });
 
 // ─── Tests ────────────────────────────────────────────────────────────────────

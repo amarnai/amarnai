@@ -10,7 +10,9 @@ const {
   mockSnapshotToThreadMessages,
   mockBuildThreadEmbeddingText,
   mockGetThread,
-  mockCountRecurringThreadSorts,
+  mockGetMeterUsed,
+  mockGetInboxPlanCeiling,
+  mockRecordMeterUsage,
   mockNotifyThreadNeedsAttention,
 } = vi.hoisted(() => ({
   mockEmbed: vi.fn(),
@@ -20,7 +22,9 @@ const {
   mockSnapshotToThreadMessages: vi.fn(),
   mockBuildThreadEmbeddingText: vi.fn(),
   mockGetThread: vi.fn(),
-  mockCountRecurringThreadSorts: vi.fn(),
+  mockGetMeterUsed: vi.fn(),
+  mockGetInboxPlanCeiling: vi.fn(),
+  mockRecordMeterUsage: vi.fn(),
   mockNotifyThreadNeedsAttention: vi.fn(),
 }));
 
@@ -37,9 +41,13 @@ vi.mock("@amarnai/db", () => ({
     gmailSyncSettings: { findUnique: vi.fn().mockResolvedValue(null) },
     taxonomyNode: { findMany: vi.fn() },
     taxonomyEdge: { findMany: vi.fn() },
-    emailClassification: { create: vi.fn(), findFirst: vi.fn() },
+    emailClassification: { create: vi.fn(), findFirst: vi.fn(), count: vi.fn() },
   },
-  countRecurringThreadSorts: mockCountRecurringThreadSorts,
+  getInboxPlanCeiling: mockGetInboxPlanCeiling,
+  inboxKeyFor: (a: string) => a,
+  meterWindowStart: () => new Date("2026-06-01T00:00:00Z"),
+  getMeterUsed: mockGetMeterUsed,
+  recordMeterUsage: mockRecordMeterUsage,
 }));
 
 // Quota enforcement is on by default; individual tests flip it as needed.
@@ -198,7 +206,11 @@ beforeEach(() => {
   // Quota enforcement on, FREE plan (limit 500), well under the cap by default.
   config.billing.enforceThreadSortQuota = true;
   vi.mocked(db.workspace.findUnique).mockResolvedValue({ plan: "FREE" } as never);
-  mockCountRecurringThreadSorts.mockResolvedValue(0);
+  mockGetInboxPlanCeiling.mockResolvedValue({ plan: "FREE", billingCycle: null });
+  mockGetMeterUsed.mockResolvedValue(0);
+  mockRecordMeterUsage.mockResolvedValue(undefined);
+  // No prior metered classification for this thread this window by default.
+  vi.mocked(db.emailClassification.count).mockResolvedValue(0 as never);
 
   vi.mocked(db.emailThread.findFirst).mockResolvedValue({
     providerThreadId: "gmail-t1",
@@ -206,6 +218,7 @@ beforeEach(() => {
   vi.mocked(db.gmailConnection.findUnique).mockResolvedValue({
     encryptedRefreshToken: "enc-token",
     status: "ACTIVE",
+    gmailAddress: "ben@gmail.com",
   } as never);
   vi.mocked(db.emailThread.update).mockResolvedValue({} as never);
   vi.mocked(db.taxonomyEdge.findMany).mockResolvedValue(makeEdges(3) as never);
@@ -440,8 +453,8 @@ describe("createClassifyThreadWorker — disconnect-awareness", () => {
 
 describe("createClassifyThreadWorker — monthly thread-sort quota", () => {
   it("defers the thread as QUOTA_BLOCKED and skips work when at the limit", async () => {
-    // FREE limit is 500; pretend 500 recurring threads already sorted this month.
-    mockCountRecurringThreadSorts.mockResolvedValue(500);
+    // FREE limit is 500; pretend the inbox meter is already at 500 this month.
+    mockGetMeterUsed.mockResolvedValue(500);
 
     createClassifyThreadWorker();
     const processor = getProcessor();
@@ -460,14 +473,15 @@ describe("createClassifyThreadWorker — monthly thread-sort quota", () => {
   });
 
   it("does not block BACKFILL sorts and never counts toward the quota", async () => {
-    mockCountRecurringThreadSorts.mockResolvedValue(10_000);
+    mockGetMeterUsed.mockResolvedValue(10_000);
 
     createClassifyThreadWorker();
     const processor = getProcessor();
     await processor(makeJob({ workspaceId: WS_ID, emailThreadId: THREAD_ID, source: "BACKFILL" }));
 
-    // Backfill is exempt: the count is never consulted and the thread is sorted.
-    expect(mockCountRecurringThreadSorts).not.toHaveBeenCalled();
+    // Backfill is exempt: the meter is never consulted or recorded, and the thread sorts.
+    expect(mockGetMeterUsed).not.toHaveBeenCalled();
+    expect(mockRecordMeterUsage).not.toHaveBeenCalled();
     expect(mockSortThreadByEmbedding).toHaveBeenCalledOnce();
     expect(db.emailClassification.create).toHaveBeenCalledWith(
       expect.objectContaining({ data: expect.objectContaining({ source: "BACKFILL" }) })
@@ -494,32 +508,37 @@ describe("createClassifyThreadWorker — monthly thread-sort quota", () => {
     );
   });
 
-  it("excludes the current thread from the count so re-sorts are not blocked", async () => {
-    mockCountRecurringThreadSorts.mockResolvedValue(0);
+  it("never blocks (or re-counts) a re-sort of a thread already counted this window", async () => {
+    // Inbox is AT the limit, but this thread was already metered this window
+    // (a prior recurring classification exists), so the re-sort must still run.
+    mockGetMeterUsed.mockResolvedValue(500);
+    vi.mocked(db.emailClassification.count).mockResolvedValue(1 as never);
 
     createClassifyThreadWorker();
     const processor = getProcessor();
     await processor(makeJob({ workspaceId: WS_ID, emailThreadId: THREAD_ID, source: "LIVE" }));
 
-    // The count helper must be asked to exclude this thread.
-    expect(mockCountRecurringThreadSorts).toHaveBeenCalledWith(
-      WS_ID,
-      expect.any(Date),
-      THREAD_ID
+    expect(db.emailThread.update).not.toHaveBeenCalledWith(
+      expect.objectContaining({ data: expect.objectContaining({ triageStatus: "QUOTA_BLOCKED" }) })
     );
     expect(mockSortThreadByEmbedding).toHaveBeenCalledOnce();
+    // Already counted → not re-recorded.
+    expect(mockRecordMeterUsage).not.toHaveBeenCalled();
   });
 
   it("skips the quota check entirely when enforcement is disabled (self-host)", async () => {
     config.billing.enforceThreadSortQuota = false;
-    mockCountRecurringThreadSorts.mockResolvedValue(10_000);
+    mockGetMeterUsed.mockResolvedValue(10_000);
 
     createClassifyThreadWorker();
     const processor = getProcessor();
     await processor(makeJob({ workspaceId: WS_ID, emailThreadId: THREAD_ID, source: "LIVE" }));
 
-    expect(mockCountRecurringThreadSorts).not.toHaveBeenCalled();
+    // Gate is skipped (meter never read), but the sort still runs and is recorded
+    // for observability.
+    expect(mockGetMeterUsed).not.toHaveBeenCalled();
     expect(mockSortThreadByEmbedding).toHaveBeenCalledOnce();
+    expect(mockRecordMeterUsage).toHaveBeenCalledOnce();
   });
 });
 

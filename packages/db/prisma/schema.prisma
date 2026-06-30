@@ -181,16 +181,16 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
-  trialUsed                Boolean               @default(false)
-  isSystemAdmin            Boolean               @default(false)
+  trialUsed     Boolean @default(false)
+  isSystemAdmin Boolean @default(false)
 
   // Weekly lifecycle reminder email. `lifecycleEmailsEnabled` is the opt-out
   // flag (flipped by the unsubscribe link or the in-app toggle).
   // `lifecycleEmailSentAt` is the last send, used by the worker's daily tick to
   // enforce the weekly cadence in a restart-safe, idempotent way.
-  lifecycleEmailsEnabled   Boolean               @default(true)
-  lifecycleEmailSentAt     DateTime?
-  locale                   String                @default("en")
+  lifecycleEmailsEnabled Boolean   @default(true)
+  lifecycleEmailSentAt   DateTime?
+  locale                 String    @default("en")
 
   ownedWorkspaces          Workspace[]
   workspaceMemberships     WorkspaceMember[]
@@ -205,38 +205,38 @@ model User {
 }
 
 model Workspace {
-  id                     String         @id @default(cuid())
+  id                     String        @id @default(cuid())
   name                   String
   ownerUserId            String
-  locale                 String         @default("en")
-  plan                   WorkspacePlan  @default(FREE)
-  membersCanEditTaxonomy Boolean        @default(false)
+  locale                 String        @default("en")
+  plan                   WorkspacePlan @default(FREE)
+  membersCanEditTaxonomy Boolean       @default(false)
   stripeCustomerId       String?
-  stripeSubscriptionId   String?        @unique
+  stripeSubscriptionId   String?       @unique
   stripePriceId          String?
   billingCycle           BillingCycle?
   trialEndsAt            DateTime?
   currentPeriodEnd       DateTime?
-  cancelAtPeriodEnd      Boolean        @default(false)
-  paymentFailed          Boolean        @default(false)
-  createdAt              DateTime       @default(now())
-  updatedAt              DateTime       @updatedAt
+  cancelAtPeriodEnd      Boolean       @default(false)
+  paymentFailed          Boolean       @default(false)
+  createdAt              DateTime      @default(now())
+  updatedAt              DateTime      @updatedAt
 
-  owner             User                  @relation(fields: [ownerUserId], references: [id])
-  members           WorkspaceMember[]
-  invitations       WorkspaceInvitation[]
-  emailAccounts     EmailAccount[]
-  gmailConnection   GmailConnection?
-  gmailSyncSettings GmailSyncSettings?
+  owner                   User                     @relation(fields: [ownerUserId], references: [id])
+  members                 WorkspaceMember[]
+  invitations             WorkspaceInvitation[]
+  emailAccounts           EmailAccount[]
+  gmailConnection         GmailConnection?
+  gmailSyncSettings       GmailSyncSettings?
   taxonomyGenerationState TaxonomyGenerationState?
-  taxonomyNodes     TaxonomyNode[]
-  taxonomyEdges   TaxonomyEdge[]
-  emailThreads    EmailThread[]
-  emailMessages   EmailMessage[]
-  tags            Tag[]
-  classifications EmailClassification[]
-  drafts          Draft[]
-  auditLogs       AuditLog[]
+  taxonomyNodes           TaxonomyNode[]
+  taxonomyEdges           TaxonomyEdge[]
+  emailThreads            EmailThread[]
+  emailMessages           EmailMessage[]
+  tags                    Tag[]
+  classifications         EmailClassification[]
+  drafts                  Draft[]
+  auditLogs               AuditLog[]
 }
 
 model WorkspaceMember {
@@ -253,16 +253,16 @@ model WorkspaceMember {
 }
 
 model WorkspaceInvitation {
-  id             String   @id @default(cuid())
-  workspaceId    String
-  invitedEmail   String
+  id              String   @id @default(cuid())
+  workspaceId     String
+  invitedEmail    String
   invitedByUserId String
-  token          String   @unique
-  expiresAt      DateTime
-  createdAt      DateTime @default(now())
+  token           String   @unique
+  expiresAt       DateTime
+  createdAt       DateTime @default(now())
 
-  workspace   Workspace @relation(fields: [workspaceId], references: [id])
-  invitedBy   User      @relation(fields: [invitedByUserId], references: [id])
+  workspace Workspace @relation(fields: [workspaceId], references: [id])
+  invitedBy User      @relation(fields: [invitedByUserId], references: [id])
 
   @@unique([workspaceId, invitedEmail])
 }
@@ -306,36 +306,36 @@ model EmailAddressIdentity {
 }
 
 model ProviderSyncState {
-  id                  String         @id @default(cuid())
-  emailAccountId      String         @unique
-  provider            Provider
-  historyId           String?
-  lastSyncedAt        DateTime?
-  status              SyncStatus     @default(IDLE)
-  errorMessage        String?
-  backfillStatus      BackfillStatus @default(PENDING)
-  backfillStartedAt   DateTime?
-  backfillSkipped     Int            @default(0)
-  backfillCompletedAt DateTime?
+  id                       String         @id @default(cuid())
+  emailAccountId           String         @unique
+  provider                 Provider
+  historyId                String?
+  lastSyncedAt             DateTime?
+  status                   SyncStatus     @default(IDLE)
+  errorMessage             String?
+  backfillStatus           BackfillStatus @default(PENDING)
+  backfillStartedAt        DateTime?
+  backfillSkipped          Int            @default(0)
+  backfillCompletedAt      DateTime?
   // Resumable-backfill cursor: Gmail threads.list pageToken to fetch next, and
   // the cumulative thread count processed so far toward the plan cap. Both reset
   // when a fresh backfill is requested (e.g. sweep) or on disconnect.
-  backfillPageToken      String?
-  backfillProcessedCount Int         @default(0)
+  backfillPageToken        String?
+  backfillProcessedCount   Int            @default(0)
   // Gmail's estimate of how many threads match the backfill query (capped at the
   // plan's thread cap), persisted so the UI can show a "loading past threads"
   // progress bar that fills as backfillProcessedCount approaches it. Approximate
   // (Gmail's resultSizeEstimate) and reset on a fresh backfill / disconnect.
-  backfillTotalEstimate  Int         @default(0)
+  backfillTotalEstimate    Int            @default(0)
   // Bumped whenever a fresh backfill is requested (e.g. sweep). A running chunk
   // records the generation it claimed under and only persists its progress while
   // that generation still matches, so a concurrent reset is never clobbered.
-  backfillGeneration     Int         @default(0)
+  backfillGeneration       Int            @default(0)
   // Armed by an explicit "Route now" click while a backfill is still in flight.
   // While armed, the sync/backfill backlog gates auto-enqueue newly-arrived
   // PENDING threads for routing instead of leaving them for another manual click.
   // Cleared when the backfill reaches a terminal state (DONE or ERROR).
-  autoRouteBacklogArmed  Boolean     @default(false)
+  autoRouteBacklogArmed    Boolean        @default(false)
   // The live/backfill boundary: set the first time the user explicitly starts
   // backfill routing. Null means routing has not been started — the import runs
   // automatically on connect but nothing is classified, and live sync leaves
@@ -343,40 +343,40 @@ model ProviderSyncState {
   // set, live sync resumes classifying new threads as LIVE.
   backfillRoutingStartedAt DateTime?
   // Set to true after a one-time pass that marks existing threads with gmailIsImportant.
-  importantBackfilled Boolean        @default(false)
+  importantBackfilled      Boolean        @default(false)
   // Whether the last backfill stopped because it hit the plan's thread cap (more
   // threads exist in Gmail than the plan ingests). Drives the "upgrade to load
   // more" banner. backfillBeyondCount is Gmail's estimate of how many threads
   // were left beyond the cap (approximate). Reset on a fresh backfill / upgrade.
-  backfillCapReached  Boolean        @default(false)
-  backfillBeyondCount Int            @default(0)
-  createdAt           DateTime       @default(now())
-  updatedAt           DateTime       @updatedAt
+  backfillCapReached       Boolean        @default(false)
+  backfillBeyondCount      Int            @default(0)
+  createdAt                DateTime       @default(now())
+  updatedAt                DateTime       @updatedAt
 
   emailAccount EmailAccount @relation(fields: [emailAccountId], references: [id])
 }
 
 model TaxonomyNode {
-  id          String   @id @default(cuid())
-  workspaceId String
-  name        String
-  description String?
-  instructions String?
-  draftPrompt String?
-  examples    Json     @default("[]")
-  isRoot      Boolean  @default(false)
+  id                 String    @id @default(cuid())
+  workspaceId        String
+  name               String
+  description        String?
+  instructions       String?
+  draftPrompt        String?
+  examples           Json      @default("[]")
+  isRoot             Boolean   @default(false)
   // A non-routable catch-all destination ("Updates / Other"). Excluded from
   // embedding/LLM competition; assigned only by the automated-mail policy.
-  isCatchAll  Boolean  @default(false)
-  positionX   Float    @default(0)
-  positionY   Float    @default(0)
+  isCatchAll         Boolean   @default(false)
+  positionX          Float     @default(0)
+  positionY          Float     @default(0)
   // Embedding cache — recomputed only when embeddingTextHash changes
-  embeddingVector    Float[]  @default([])
+  embeddingVector    Float[]   @default([])
   embeddingModel     String?
   embeddingTextHash  String?
   embeddingUpdatedAt DateTime?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
 
   workspace       Workspace             @relation(fields: [workspaceId], references: [id])
   outgoingEdges   TaxonomyEdge[]        @relation("SourceNode")
@@ -400,39 +400,39 @@ model TaxonomyEdge {
 }
 
 model EmailThread {
-  id               String        @id @default(cuid())
-  workspaceId      String
-  emailAccountId   String
-  provider         Provider
-  providerThreadId String
-  subject          String?
-  latestMessageAt  DateTime?
-  messageCount     Int           @default(0)
-  triageStatus     TriageStatus  @default(PENDING)
-  classifyingAt    DateTime?
+  id                String       @id @default(cuid())
+  workspaceId       String
+  emailAccountId    String
+  provider          Provider
+  providerThreadId  String
+  subject           String?
+  latestMessageAt   DateTime?
+  messageCount      Int          @default(0)
+  triageStatus      TriageStatus @default(PENDING)
+  classifyingAt     DateTime?
   // Set when a classify-thread job fails permanently (all retries exhausted).
   // Distinguishes a thread that was attempted and failed (eligible for
   // auto-recovery) from the invalid-taxonomy bulk backlog (never attempted,
   // stays behind the manual "Route now"). Cleared on a successful classify.
-  classifyFailedAt DateTime?
+  classifyFailedAt  DateTime?
   // Number of permanent classify failures; bounds auto-recovery retries so a
   // persistently failing thread is not re-enqueued forever.
-  classifyAttempts Int           @default(0)
+  classifyAttempts  Int          @default(0)
   // Gmail category flags — all messages in the thread have the respective label.
   // Used to filter threads at query time based on GmailSyncSettings.
   // gmailIsTrash is always filtered out; gmailIsSpam/Promotions depend on user settings.
-  gmailIsSpam        Boolean  @default(false)
-  gmailIsPromotions  Boolean  @default(false)
-  gmailIsTrash       Boolean  @default(false)
+  gmailIsSpam       Boolean      @default(false)
+  gmailIsPromotions Boolean      @default(false)
+  gmailIsTrash      Boolean      @default(false)
   // True when ANY message carries Gmail's IMPORTANT label (priority inbox signal).
-  gmailIsImportant   Boolean  @default(false)
+  gmailIsImportant  Boolean      @default(false)
   // True when every message looks automated/bulk (notifications, newsletters,
   // service mail). Computed at sync; drives the route-to-catch-all policy.
-  isAutomated        Boolean  @default(false)
-  resolvedByUserId   String?
-  resolvedAt         DateTime?
-  createdAt        DateTime      @default(now())
-  updatedAt        DateTime      @updatedAt
+  isAutomated       Boolean      @default(false)
+  resolvedByUserId  String?
+  resolvedAt        DateTime?
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
 
   workspace       Workspace             @relation(fields: [workspaceId], references: [id])
   emailAccount    EmailAccount          @relation(fields: [emailAccountId], references: [id])
@@ -509,12 +509,12 @@ model EmailTag {
 }
 
 model EmailClassification {
-  id                String            @id @default(cuid())
+  id                String               @id @default(cuid())
   workspaceId       String
   emailThreadId     String
   emailMessageId    String?
   finalNodeId       String?
-  path              Json              @default("[]")
+  path              Json                 @default("[]")
   confidence        Float
   explanation       String?
   priority          Priority?
@@ -531,7 +531,7 @@ model EmailClassification {
   modelName         String?
   promptVersion     String?
   rawOutput         Json?
-  createdAt         DateTime          @default(now())
+  createdAt         DateTime             @default(now())
 
   workspace    Workspace     @relation(fields: [workspaceId], references: [id])
   emailThread  EmailThread   @relation(fields: [emailThreadId], references: [id])
@@ -558,10 +558,10 @@ model Draft {
   createdAt        DateTime    @default(now())
   updatedAt        DateTime    @updatedAt
 
-  workspace      Workspace             @relation(fields: [workspaceId], references: [id])
-  emailThread    EmailThread           @relation(fields: [emailThreadId], references: [id])
-  emailMessage   EmailMessage?         @relation(fields: [emailMessageId], references: [id])
-  classification EmailClassification?  @relation(fields: [classificationId], references: [id])
+  workspace      Workspace            @relation(fields: [workspaceId], references: [id])
+  emailThread    EmailThread          @relation(fields: [emailThreadId], references: [id])
+  emailMessage   EmailMessage?        @relation(fields: [emailMessageId], references: [id])
+  classification EmailClassification? @relation(fields: [classificationId], references: [id])
 }
 
 model AuditLog {
@@ -659,17 +659,17 @@ model GmailConnection {
 }
 
 model GmailSyncSettings {
-  id                       String   @id @default(cuid())
-  workspaceId              String   @unique
-  includeSpam              Boolean  @default(false)
-  includePromotions        Boolean  @default(false)
-  sortingPaused            Boolean  @default(false)
+  id                      String   @id @default(cuid())
+  workspaceId             String   @unique
+  includeSpam             Boolean  @default(false)
+  includePromotions       Boolean  @default(false)
+  sortingPaused           Boolean  @default(false)
   // When true, threads detected as automated/bulk are auto-filed to the
   // taxonomy's catch-all folder without invoking the LLM.
-  routeBulkToOther         Boolean  @default(true)
-  blacklistedSenderEmails  String[] @default([])
-  createdAt                DateTime @default(now())
-  updatedAt                DateTime @updatedAt
+  routeBulkToOther        Boolean  @default(true)
+  blacklistedSenderEmails String[] @default([])
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
 
   workspace Workspace @relation(fields: [workspaceId], references: [id])
 }
@@ -687,28 +687,28 @@ enum TaxonomyGenerationStatus {
 }
 
 model TaxonomyGenerationState {
-  id          String                   @id @default(cuid())
-  workspaceId String                   @unique
-  status      TaxonomyGenerationStatus @default(IDLE)
+  id                     String                   @id @default(cuid())
+  workspaceId            String                   @unique
+  status                 TaxonomyGenerationStatus @default(IDLE)
   // The most recent generated TaxonomyTransferFile, awaiting user apply.
   // Null until the first READY result; cleared is not required (overwritten).
-  proposal          Json?
-  matchedTemplateId String?
+  proposal               Json?
+  matchedTemplateId      String?
   // Last successful generation: timestamp + the eligible-thread count at that
   // time. Drives the delta gate (regenerate only after enough new signal).
-  lastGeneratedAt      DateTime?
-  threadCountAtLastGen Int?
+  lastGeneratedAt        DateTime?
+  threadCountAtLastGen   Int?
   // Outcome of the last completed run (SUCCESS | INSUFFICIENT | FAILED).
   // Distinct from `status`, which is the live job state. Drives the cooldown.
-  lastOutcome String?
+  lastOutcome            String?
   // Rolling 30-day backstop quota window.
   generationsWindowStart DateTime?
-  generationsInWindow    Int       @default(0)
+  generationsInWindow    Int                      @default(0)
   // Cost attribution for the generation LLM call.
-  modelProvider String?
-  modelName     String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  modelProvider          String?
+  modelName              String?
+  createdAt              DateTime                 @default(now())
+  updatedAt              DateTime                 @updatedAt
 
   workspace Workspace @relation(fields: [workspaceId], references: [id])
 }
@@ -724,4 +724,64 @@ model WaitlistEntry {
   // allowlist and sent the invite. Tracked app-side only — Google has no API
   // for the test-user list, so this is manual bookkeeping.
   invitedAt DateTime?
+}
+
+// What a usage meter row counts. One meter family per cost driver.
+enum MeterKind {
+  THREAD_SORT
+  DRAFT
+  TAXONOMY_GEN
+  BACKFILL
+}
+
+// Reset-immune, inbox-keyed usage meter. Anti-abuse cost accounting lives here,
+// NOT on workspace-owned rows: a workspace reset / delete wipes EmailClassification,
+// Draft, ProviderSyncState, TaxonomyGenerationState — the rows the old per-tenant
+// quotas counted — which refunded already-spent LLM cost. This table is keyed only
+// on the normalized inbox address (see normalizeInboxKey) and has NO relation or FK
+// to Workspace/GmailConnection, so no `onDelete: Cascade` and no `where: { workspaceId }`
+// teardown can reach it. Usage is POOLED across every workspace/account that connects
+// the same inbox, sized by the top plan among them. One row per (inboxKey, kind, window).
+//
+// IMPORTANT: do not add this model to any teardown in packages/db/src/workspace-ops.ts,
+// and do not add a back-relation on Workspace/GmailConnection.
+model InboxUsageMeter {
+  id           String         @id @default(cuid())
+  // Normalized inbox identity (NOT a workspace/user). The pooling key.
+  inboxKey     String
+  kind         MeterKind
+  // Calendar-month UTC bucket start (getDraftQuotaWindowStart). BACKFILL uses the
+  // same monthly bucket so budget + grace replenish monthly.
+  windowStart  DateTime
+  // Monotonic consumption counter for this window. Never decremented.
+  used         Int            @default(0)
+  // BACKFILL only: the single per-(inboxKey, month) grace token. Once true, a reset
+  // re-import is blocked until the window rolls over.
+  graceUsed    Boolean        @default(false)
+  // Observability: the plan ceiling that first sized this window's budget.
+  sizedForPlan WorkspacePlan?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  @@unique([inboxKey, kind, windowStart])
+  @@index([inboxKey, kind])
+}
+
+// BACKFILL only: records that a specific workspace has already been granted its
+// one-time free import of this inbox. Distinguishes a genuinely-new sharing
+// workspace (allowed one import from the pool) from a reset-and-redo of a workspace
+// that already imported (which must draw from the shared grace token, not a fresh
+// allowance). Keyed on (inboxKey, workspaceId) as plain Strings — no relation/FK —
+// so it survives workspace reset, exactly like InboxUsageMeter.
+model InboxBackfillGrant {
+  id           String   @id @default(cuid())
+  inboxKey     String
+  // Attribution only — a plain String, NOT a relation (must survive reset).
+  workspaceId  String
+  // Threads consumed under this workspace's one-time free allowance.
+  freeConsumed Int      @default(0)
+  grantedAt    DateTime @default(now())
+
+  @@unique([inboxKey, workspaceId])
+  @@index([inboxKey])
 }

@@ -43,7 +43,7 @@ export function PlanCapBanner({ syncStatus }: Props) {
       </span>
       <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
         <Link href="/upgrade" className="btn-primary" style={{ whiteSpace: "nowrap" }}>
-          <Trans>Upgrade to load them</Trans>
+          <Trans>Upgrade to load the rest</Trans>
         </Link>
         <button
           type="button"

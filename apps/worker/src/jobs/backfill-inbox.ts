@@ -1,5 +1,13 @@
 import { Worker } from "bullmq";
-import { db } from "@amarnai/db";
+import {
+  db,
+  getInboxPlanCeiling,
+  resolveBackfillBudget,
+  recordMeterUsage,
+  inboxKeyFor,
+  meterWindowStart,
+} from "@amarnai/db";
+import { config } from "@amarnai/config";
 import { GmailClient, GmailAuthError, GmailThreadMeta, normalizeGmailThread } from "@amarnai/gmail";
 import type { GmailSyncSettings } from "@amarnai/shared";
 import { isTaxonomyRoutable, getBackfillCap, BACKFILL_RUNNING_STALE_MS } from "@amarnai/shared";
@@ -219,7 +227,22 @@ export function createBackfillInboxWorker(): Worker {
         // only by its thread cap (Free 500). Large caps are processed across
         // multiple runs, resuming from the persisted pageToken / processed count.
 
-        const cap = getBackfillCap(workspace.plan, workspace.billingCycle);
+        // Per-inbox pooled budget. The cap is sized by the TOP plan among all
+        // workspaces connected to this inbox (shared-mailbox feature), and the
+        // accounting lives in the reset-immune InboxUsageMeter rather than on the
+        // workspace's own (reset-wiped) ProviderSyncState. This is what bounds the
+        // reset → reconnect → re-import loop: a workspace that already imported this
+        // inbox draws from the shared pool, with a single grace re-import per month.
+        const inboxKey = inboxKeyFor(connection.gmailAddress);
+        const windowStart = meterWindowStart();
+        const enforceBackfill = config.billing.enforceBackfillQuota;
+        // When enforced, size by the TOP plan among workspaces sharing this inbox
+        // (pooled). When the self-host opt-out is set, fall back to this workspace's
+        // own plan and skip pooling/grace entirely (usage is still recorded below).
+        const ceiling = enforceBackfill
+          ? await getInboxPlanCeiling(connection.gmailAddress)
+          : { plan: workspace.plan, billingCycle: workspace.billingCycle };
+        const cap = getBackfillCap(ceiling.plan, ceiling.billingCycle);
 
         const client = new GmailClient(connection.encryptedRefreshToken);
         // Mailbox owner's address — forwarded to the detector so the user's own
@@ -231,6 +254,28 @@ export function createBackfillInboxWorker(): Worker {
 
         let pageToken = claimed?.backfillPageToken ?? undefined;
         let processed = claimed?.backfillProcessedCount ?? 0;
+
+        // Resolve how many more threads this inbox may import this month from the
+        // pooled, reset-immune budget (with the single grace re-import). runCeiling
+        // bounds THIS attempt: in a normal resume the meter tracks `processed`, so
+        // runCeiling ≈ cap; after a reset the cursor restarts at 0 while the meter
+        // remembers prior imports, so the grace budget is what's left.
+        const startProcessed = processed;
+        let runCeiling: number;
+        if (enforceBackfill) {
+          const budget = await resolveBackfillBudget({
+            inboxKey,
+            workspaceId,
+            cap: cap.maxThreads,
+            windowStart,
+            sizedForPlan: ceiling.plan,
+          });
+          runCeiling = startProcessed + budget.effectiveBudget;
+        } else {
+          // Self-host opt-out: bound only by this workspace's own plan cap (prior
+          // behavior), no pooling and no grace gate.
+          runCeiling = cap.maxThreads;
+        }
 
         // ── Per-thread upsert: returns the EmailThread id to classify, or null ──
         //
@@ -330,9 +375,9 @@ export function createBackfillInboxWorker(): Worker {
         // and floored at what we've already processed so the UI's loading bar can't
         // exceed 100% or run backwards on estimate jitter.
         const totalEstimateFor = (count: number) =>
-          Math.max(count, Math.min(resultSizeEstimate, cap.maxThreads));
+          Math.max(count, Math.min(resultSizeEstimate, runCeiling));
 
-        while (processedThisRun < BACKFILL_CHUNK_THREADS && processed < cap.maxThreads) {
+        while (processedThisRun < BACKFILL_CHUNK_THREADS && processed < runCeiling) {
           const page = await client.listThreadsPage({
             afterMs,
             pageToken,
@@ -346,8 +391,8 @@ export function createBackfillInboxWorker(): Worker {
             break;
           }
 
-          // Don't exceed the plan cap: only take as many threads as remain.
-          const remaining = cap.maxThreads - processed;
+          // Don't exceed the per-inbox budget: only take as many threads as remain.
+          const remaining = runCeiling - processed;
           const pageThreads = sortByPriority(page.threads).slice(0, remaining);
 
           for (let i = 0; i < pageThreads.length; i++) {
@@ -459,7 +504,7 @@ export function createBackfillInboxWorker(): Worker {
         // hold the dedup key) and runs regardless: it either resumes from the
         // cursor we just saved, or picks up the fresh post-reset state.
 
-        const done = exhausted || processed >= cap.maxThreads;
+        const done = exhausted || processed >= runCeiling;
 
         const totalEstimate = totalEstimateFor(processed);
 
@@ -475,6 +520,18 @@ export function createBackfillInboxWorker(): Worker {
               backfillSkipped: baseSkipped + runSkipped,
             },
           });
+          // Record imports against the reset-immune inbox meter, in lockstep with
+          // the (generation-guarded) cursor advance so a superseded run doesn't
+          // count and a retry that restarts the run doesn't double-count.
+          if (res.count > 0 && processedThisRun > 0) {
+            await recordMeterUsage({
+              inboxKey,
+              kind: "BACKFILL",
+              windowStart,
+              delta: processedThisRun,
+              sizedForPlan: ceiling.plan,
+            });
+          }
           await backfillInboxQueue.add("backfill-inbox", { workspaceId });
           await job.updateProgress(100);
           // Notify SSE subscribers so the backfill card's processed count and
@@ -525,10 +582,11 @@ export function createBackfillInboxWorker(): Worker {
           });
         }
 
-        // Cap-reached when we stopped because the plan cap was hit while Gmail
-        // still had more threads (not because the inbox was exhausted). The
-        // beyond-cap count is approximate (Gmail's resultSizeEstimate).
-        const capReached = !exhausted && processed >= cap.maxThreads;
+        // Cap-reached when we stopped because the per-inbox budget was hit while
+        // Gmail still had more threads (not because the inbox was exhausted). The
+        // beyond-cap count is approximate (Gmail's resultSizeEstimate). The UI turns
+        // this into an upgrade / refresh-on {date} prompt.
+        const capReached = !exhausted && processed >= runCeiling;
         const beyondCount = capReached ? Math.max(0, resultSizeEstimate - processed) : 0;
 
         const doneRes = await db.providerSyncState.updateMany({
@@ -558,6 +616,18 @@ export function createBackfillInboxWorker(): Worker {
           await backfillInboxQueue.add("backfill-inbox", { workspaceId });
           console.log(`[backfill-inbox] Workspace ${workspaceId}: superseded by a reset at completion — handing off`);
           return;
+        }
+
+        // Record this final run's imports against the reset-immune inbox meter
+        // (guarded by the DONE write above, so a superseded completion doesn't count).
+        if (processedThisRun > 0) {
+          await recordMeterUsage({
+            inboxKey,
+            kind: "BACKFILL",
+            windowStart,
+            delta: processedThisRun,
+            sizedForPlan: ceiling.plan,
+          });
         }
 
         // Final notify so the card flips out of its RUNNING state and the
