@@ -15,6 +15,7 @@ import {
 } from "../services/gmail-disconnect.js";
 import { syncInboxQueue } from "../services/queue-client.js";
 import { registerGmailWatch } from "../services/gmail-watch.js";
+import { recordAudit } from "../services/audit.js";
 
 const workspaceParam = z.object({ workspaceId: z.string().min(1) });
 
@@ -100,6 +101,15 @@ gmailConnection.post("/workspaces/:workspaceId/gmail-connection", async (c) => {
     return c.json({ error: "Gmail read access was not granted" }, 403);
   }
 
+  // Capture the inbox previously connected to this workspace (if any) so the
+  // audit entry below can flag a ROTATION — connecting a different inbox than was
+  // there before. The connect path was previously unaudited, leaving serial
+  // inbox rotation (reusing one paid workspace across many inboxes) invisible.
+  const priorConnection = await db.gmailConnection.findUnique({
+    where: { workspaceId },
+    select: { gmailAddress: true, status: true },
+  });
+
   try {
     // Redeem the serverAuthCode with the confidential Web client, then store the
     // server-refreshable refresh token it returns.
@@ -109,11 +119,26 @@ gmailConnection.post("/workspaces/:workspaceId/gmail-connection", async (c) => {
     if (!hasReadonly) {
       return c.json({ error: "Gmail read access was not granted" }, 403);
     }
-    await storeGmailConnection({
+    const { gmailAddress } = await storeGmailConnection({
       workspaceId,
       accessToken,
       refreshToken,
       grantedScopes,
+    });
+
+    // Audit the connect (best-effort; never blocks the response). `replacedAddress`
+    // is set only when a DIFFERENT inbox was connected before — the rotation signal.
+    const replacedAddress =
+      priorConnection?.gmailAddress && priorConnection.gmailAddress !== gmailAddress
+        ? priorConnection.gmailAddress
+        : null;
+    await recordAudit({
+      workspaceId,
+      actorType: "USER",
+      actorUserId: userId,
+      eventType: "gmail.connected",
+      entityType: "GmailConnection",
+      metadata: { gmailAddress, replacedAddress, priorStatus: priorConnection?.status ?? null },
     });
   } catch (err) {
     if (err instanceof GmailApiError) {
