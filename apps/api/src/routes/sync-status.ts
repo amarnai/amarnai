@@ -1,7 +1,14 @@
 import { Hono } from "hono";
 import { z } from "zod";
-import { db } from "@amarnai/db";
-import { isTaxonomyRoutable } from "@amarnai/shared";
+import {
+  db,
+  getInboxPlanCeiling,
+  getMeterUsed,
+  inboxKeyFor,
+  meterWindowStart,
+  MeterKind,
+} from "@amarnai/db";
+import { getBackfillCap, isTaxonomyRoutable } from "@amarnai/shared";
 
 const workspaceParam = z.object({ workspaceId: z.string().min(1) });
 
@@ -65,6 +72,28 @@ syncStatus.get("/workspaces/:workspaceId/sync-status", async (c) => {
 
   if (!state) return c.json(null, 200);
 
+  // `backfillCapReached` is a snapshot persisted by the backfill job at the moment
+  // the pooled budget was exhausted. It can go stale: when the monthly meter window
+  // rolls over the pool replenishes, and an upgrade raises the cap — but the flag is
+  // only recomputed on the next backfill run, which may never re-trigger. Re-validate
+  // it against the live pooled budget so we never show a "you hit your limit, upgrade"
+  // prompt while the inbox actually has room. (Read-only: getMeterUsed does not write.)
+  let backfillCapReached = state.backfillCapReached;
+  let backfillBeyondCount = state.backfillBeyondCount;
+  if (backfillCapReached) {
+    const ceiling = await getInboxPlanCeiling(connection.gmailAddress);
+    const cap = getBackfillCap(ceiling.plan, ceiling.billingCycle).maxThreads;
+    const used = await getMeterUsed(
+      inboxKeyFor(connection.gmailAddress),
+      MeterKind.BACKFILL,
+      meterWindowStart(),
+    );
+    if (used < cap) {
+      backfillCapReached = false;
+      backfillBeyondCount = 0;
+    }
+  }
+
   const now = new Date();
   const pushEnabled =
     connection.gmailWatchExpiresAt != null && connection.gmailWatchExpiresAt > now;
@@ -103,8 +132,8 @@ syncStatus.get("/workspaces/:workspaceId/sync-status", async (c) => {
     backfillStatus: state.backfillStatus,
     backfillSkipped: state.backfillSkipped,
     backfillCompletedAt: state.backfillCompletedAt?.toISOString() ?? null,
-    backfillCapReached: state.backfillCapReached,
-    backfillBeyondCount: state.backfillBeyondCount,
+    backfillCapReached,
+    backfillBeyondCount,
     backfillLoadedThreads,
     backfillTotalThreads,
     backfillAwaitingTaxonomy,

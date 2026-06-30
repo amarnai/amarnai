@@ -12,10 +12,15 @@ vi.mock("@amarnai/db", () => ({
     taxonomyNode: { findMany: vi.fn() },
     taxonomyEdge: { findMany: vi.fn() },
   },
+  getInboxPlanCeiling: vi.fn(),
+  getMeterUsed: vi.fn(),
+  inboxKeyFor: (addr: string) => addr,
+  meterWindowStart: () => new Date("2026-06-01T00:00:00Z"),
+  MeterKind: { BACKFILL: "BACKFILL" },
 }));
 
 import app from "../app.js";
-import { db } from "@amarnai/db";
+import { db, getInboxPlanCeiling, getMeterUsed } from "@amarnai/db";
 
 const WS = "ws-1";
 
@@ -46,6 +51,9 @@ beforeEach(() => {
   vi.mocked(db.emailAccount.findUnique).mockResolvedValue({ id: "account-1" } as never);
   vi.mocked(db.gmailSyncSettings.findUnique).mockResolvedValue({ sortingPaused: false } as never);
   vi.mocked(db.workspace.findUnique).mockResolvedValue({ plan: "PRO" } as never);
+  // Pooled inbox sized for PRO (monthly cap 10,000); meter empty by default.
+  vi.mocked(getInboxPlanCeiling).mockResolvedValue({ plan: "PRO", billingCycle: "MONTHLY" } as never);
+  vi.mocked(getMeterUsed).mockResolvedValue(0);
   // A routable taxonomy (3 non-root nodes linked to root) by default.
   vi.mocked(db.taxonomyNode.findMany).mockResolvedValue([
     { id: "root", isRoot: true, isCatchAll: false },
@@ -147,5 +155,48 @@ describe("GET /workspaces/:workspaceId/sync-status", () => {
     const res = await get();
     expect(res.status).toBe(200);
     expect(await res.json()).toBeNull();
+  });
+
+  it("suppresses a stale cap-reached flag when the pooled budget has room", async () => {
+    // Persisted snapshot says the cap was hit, but the live meter (used 0 < PRO cap
+    // 10,000) shows the pool replenished — the upgrade prompt would be wrong now.
+    vi.mocked(getMeterUsed).mockResolvedValue(0);
+    vi.mocked(db.providerSyncState.findUnique).mockResolvedValue({
+      status: "OK",
+      lastSyncedAt: null,
+      errorMessage: null,
+      backfillStatus: "DONE",
+      backfillSkipped: 0,
+      backfillCompletedAt: new Date(),
+      backfillCapReached: true,
+      backfillBeyondCount: 42,
+      backfillProcessedCount: 658,
+    } as never);
+
+    const res = await get();
+    const body = (await res.json()) as { backfillCapReached: boolean; backfillBeyondCount: number };
+    expect(body.backfillCapReached).toBe(false);
+    expect(body.backfillBeyondCount).toBe(0);
+  });
+
+  it("preserves cap-reached when the pooled budget is genuinely exhausted", async () => {
+    // Meter used (10,000) >= PRO cap (10,000): the pool really is spent this window.
+    vi.mocked(getMeterUsed).mockResolvedValue(10_000);
+    vi.mocked(db.providerSyncState.findUnique).mockResolvedValue({
+      status: "OK",
+      lastSyncedAt: null,
+      errorMessage: null,
+      backfillStatus: "DONE",
+      backfillSkipped: 0,
+      backfillCompletedAt: new Date(),
+      backfillCapReached: true,
+      backfillBeyondCount: 42,
+      backfillProcessedCount: 10_000,
+    } as never);
+
+    const res = await get();
+    const body = (await res.json()) as { backfillCapReached: boolean; backfillBeyondCount: number };
+    expect(body.backfillCapReached).toBe(true);
+    expect(body.backfillBeyondCount).toBe(42);
   });
 });

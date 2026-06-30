@@ -5,6 +5,7 @@ import { Trans } from '@lingui/react/macro';
 import { useLingui } from '@lingui/react';
 import { msg, plural } from '@lingui/core/macro';
 import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
+import { TOP_PLAN, getDraftQuotaResetsAt, formatQuotaResetDate } from '@amarnai/shared';
 import type { SyncStatus } from '@amarnai/api-client';
 
 interface PlanCapBannerProps {
@@ -16,8 +17,10 @@ interface PlanCapBannerProps {
 /**
  * Shown when the historical backfill stopped at the plan's thread cap with more
  * threads still in Gmail. Mirrors the web PlanCapBanner: surfaces the approximate
- * beyond-cap count and routes to the in-app upgrade flow (a higher plan re-runs
- * the backfill up to the larger cap). Dismissible for the session.
+ * beyond-cap count. Below the top tier it routes to the in-app upgrade flow (a
+ * higher plan re-runs the backfill up to the larger cap); at the top tier there is
+ * no higher plan, so it tells the user when the pooled monthly budget refreshes
+ * instead. Dismissible for the session.
  */
 export function PlanCapBanner({ syncStatus, dismissed, onDismiss }: PlanCapBannerProps) {
   const router = useRouter();
@@ -27,6 +30,8 @@ export function PlanCapBanner({ syncStatus, dismissed, onDismiss }: PlanCapBanne
 
   const count = syncStatus.backfillBeyondCount;
   const plan = syncStatus.workspacePlan;
+  const isTopPlan = plan === TOP_PLAN;
+  const refreshDate = formatQuotaResetDate(getDraftQuotaResetsAt().toISOString());
   const title =
     count > 0
       ? i18n._(
@@ -52,11 +57,17 @@ export function PlanCapBanner({ syncStatus, dismissed, onDismiss }: PlanCapBanne
           </TouchableOpacity>
         ) : null}
       </View>
-      <TouchableOpacity style={styles.btn} onPress={() => router.push('/(app)/subscription')}>
-        <Text style={styles.btnText}>
-          <Trans>Upgrade to load the rest</Trans>
+      {isTopPlan ? (
+        <Text style={styles.refreshNote}>
+          {i18n._(msg`Refresh after ${refreshDate} to load more.`)}
         </Text>
-      </TouchableOpacity>
+      ) : (
+        <TouchableOpacity style={styles.btn} onPress={() => router.push('/(app)/subscription')}>
+          <Text style={styles.btnText}>
+            <Trans>Upgrade to load the rest</Trans>
+          </Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 }
@@ -101,5 +112,10 @@ const styles = StyleSheet.create({
     fontSize: fontSize.sm,
     fontWeight: fontWeight.semibold,
     color: colors.surface,
+  },
+  refreshNote: {
+    marginTop: space.sm,
+    fontSize: fontSize.sm,
+    color: colors.ink3,
   },
 });
