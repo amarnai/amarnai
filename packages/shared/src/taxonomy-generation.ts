@@ -102,6 +102,54 @@ export interface InboxProfile {
   senderClusters: SenderCluster[];
 }
 
+// ─── Taxonomy size bands (variety-driven target) ───────────────────────────────
+//
+// The generated taxonomy should grow with the genuine variety of the inbox, not
+// be a fixed size. Left to itself the model anchors to a constant ~7-10 leaves
+// regardless of inbox breadth (measured: benchmark:taxonomy-gen against
+// gemini-2.5-flash), so a small inbox gets over-split into generic buckets and a
+// broad inbox is under-served. These bands give the prompt an explicit target
+// keyed to the inbox's variety.
+//
+// Variety is measured as the count of RECURRING sender domains (count >= 2), not
+// distinct domains: a flurry of one-off senders inflates the distinct count
+// without adding a real recurring theme, and would otherwise over-size the tree.
+
+/** Recurring sender domains (count >= 2) — the variety measure for sizing. */
+export function recurringDomainCount(profile: InboxProfile): number {
+  return profile.senderDomains.filter((d) => d.count >= 2).length;
+}
+
+/** Target taxonomy size for a variety tier. Soft targets for the prompt, not
+ *  hard validation limits — the model produces fewer when signal is thin. */
+export interface TaxonomySizeBand {
+  minTopLevel: number;
+  maxTopLevel: number;
+  minLeaves: number;
+  maxLeaves: number;
+}
+
+/**
+ * Variety tiers (upper recurring-domain bound, inclusive) and their target size.
+ * Tuned against the production model (gemini-2.5-flash) via benchmark:taxonomy-gen
+ * (June 2026). Self-hosted deployments on other models may retune these.
+ */
+export const TAXONOMY_SIZE_BANDS: Array<{ maxRecurringDomains: number; band: TaxonomySizeBand }> = [
+  { maxRecurringDomains: 10, band: { minTopLevel: 3, maxTopLevel: 4, minLeaves: 5, maxLeaves: 7 } },
+  { maxRecurringDomains: 25, band: { minTopLevel: 4, maxTopLevel: 5, minLeaves: 8, maxLeaves: 11 } },
+  {
+    maxRecurringDomains: Number.POSITIVE_INFINITY,
+    band: { minTopLevel: 5, maxTopLevel: 6, minLeaves: 11, maxLeaves: 14 },
+  },
+];
+
+/** Resolve the size band for an inbox profile from its recurring-domain variety. */
+export function taxonomySizeBandFor(profile: InboxProfile): TaxonomySizeBand {
+  const recurring = recurringDomainCount(profile);
+  const tier = TAXONOMY_SIZE_BANDS.find((t) => recurring <= t.maxRecurringDomains);
+  return (tier ?? TAXONOMY_SIZE_BANDS[TAXONOMY_SIZE_BANDS.length - 1]!).band;
+}
+
 export type GenerationEligibilityReason =
   | "OK"
   | "INBOX_TOO_SMALL"
