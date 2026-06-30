@@ -50,4 +50,15 @@ describe("computeThreadLabelFlags", () => {
     expect(computeThreadLabelFlags([notification, ownReply]).isAutomated).toBe(false);
     expect(computeThreadLabelFlags([notification, ownReply], "owner@gmail.com").isAutomated).toBe(true);
   });
+
+  it("flags a no-reply thread Gmail filed under Primary (CATEGORY_PERSONAL) as automated", () => {
+    // End-to-end guard for the sync/backfill path: a no-reply sender Gmail placed
+    // in Primary and flagged IMPORTANT must still yield isAutomated=true so the
+    // thread auto-files to catch-all.
+    expect(
+      computeThreadLabelFlags([
+        msg({ senderEmail: "no-reply@service.com", labelIds: ["INBOX", "CATEGORY_PERSONAL", "IMPORTANT"] }),
+      ]).isAutomated
+    ).toBe(true);
+  });
 });

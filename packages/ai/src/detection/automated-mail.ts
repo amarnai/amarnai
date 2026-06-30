@@ -13,6 +13,10 @@
  * This module is pure and side-effect free.
  */
 import type { SnapshotMessage } from "../thread-snapshot.js";
+import { subjectIsTransactionalAuto } from "./transactional-subjects.js";
+
+// Re-exported so existing importers (and the package index) keep their path.
+export { subjectIsTransactionalAuto };
 
 /** Gmail category labels that mark non-personal, bulk-ish mail. */
 const BULK_CATEGORY_LABELS = [
@@ -52,38 +56,55 @@ function headersIndicateBulk(h: SnapshotMessage["automatedHeaders"]): boolean {
   return false;
 }
 
-/** True when a single message looks automated (headers OR no-reply sender OR bulk category). */
+/** True when a single message looks automated (headers OR no-reply sender OR bulk category OR transactional subject). */
 export function isAutomatedMessage(
-  msg: Pick<SnapshotMessage, "senderEmail" | "labelIds" | "automatedHeaders">
+  msg: Pick<SnapshotMessage, "senderEmail" | "labelIds" | "automatedHeaders" | "subject">
 ): boolean {
   const labels = msg.labelIds ?? [];
   return (
     headersIndicateBulk(msg.automatedHeaders) ||
     senderIsNoReply(msg.senderEmail) ||
-    hasBulkCategory(labels)
+    hasBulkCategory(labels) ||
+    subjectIsTransactionalAuto(msg.subject)
   );
 }
 
 /**
- * Strong (machine-origin) automation evidence: bulk headers or a no-reply
- * sender. Excludes the weaker "Gmail bulk category" hint. A human mailbox
- * effectively never produces these, so they override Gmail's noisy IMPORTANT
- * auto-flag; a category-only signal does not.
+ * Strong (machine-origin) automation evidence: bulk headers, a no-reply sender,
+ * or a transactional-auto subject (OTP / unsubscribe confirmation). Excludes the
+ * weaker "Gmail bulk category" hint. A human mailbox effectively never produces
+ * these, so they override Gmail's noisy IMPORTANT / Primary auto-flags; a
+ * category-only signal does not. The transactional-subject case is strong on
+ * purpose: such mail lands in Primary + IMPORTANT, so a weak detection would be
+ * vetoed and the message would never auto-file.
  */
 function isStronglyAutomatedMessage(
-  msg: Pick<SnapshotMessage, "senderEmail" | "automatedHeaders">
+  msg: Pick<SnapshotMessage, "senderEmail" | "automatedHeaders" | "subject">
 ): boolean {
-  return headersIndicateBulk(msg.automatedHeaders) || senderIsNoReply(msg.senderEmail);
+  return (
+    headersIndicateBulk(msg.automatedHeaders) ||
+    senderIsNoReply(msg.senderEmail) ||
+    subjectIsTransactionalAuto(msg.subject)
+  );
 }
 
 /**
  * Full-fetch variant: a thread is automated only when it has messages and EVERY
- * message is automated, subject to two vetoes that protect genuine mail:
+ * message is automated, subject to Gmail human-priority vetoes that protect
+ * genuine mail — but ONLY for weak (category-only) detections:
  *
- * - CATEGORY_PERSONAL is a hard veto (Gmail explicitly classified it personal).
- * - IMPORTANT vetoes ONLY weak (category-only) detections. Gmail's IMPORTANT is
- *   a noisy auto-heuristic that routinely flags bulk (Google's own notifications
- *   especially), so a strong machine-origin signal on every message overrides it.
+ * - CATEGORY_PERSONAL and IMPORTANT both veto a weak detection (a thread that
+ *   looks automated solely because of a Gmail bulk category). Gmail's "Primary"
+ *   tab is CATEGORY_PERSONAL — the default bucket for anything not
+ *   Promotions/Social/Updates/Forums — and IMPORTANT is a noisy auto-heuristic;
+ *   neither is a reliable "this is real correspondence" signal on its own.
+ * - A STRONG machine-origin signal on every message (a no-reply sender or bulk
+ *   headers) overrides both vetoes. Such mail is effectively never genuine
+ *   personal correspondence, yet Gmail routinely files transactional no-reply
+ *   mail (account security, banking, identity) under Primary and/or flags it
+ *   IMPORTANT. Deferring to those hints would leave such mail unfiled, so a
+ *   strong signal wins. This is what guarantees every no-reply thread is
+ *   detected (and thus auto-filed to the catch-all folder).
  *
  * `selfEmail` is the mailbox owner's address. Their own sent messages are excluded
  * before the every-message check: replying to a `no-reply@` notification must not
@@ -102,10 +123,16 @@ export function detectAutomatedThread(messages: SnapshotMessage[], selfEmail?: s
     : messages;
 
   if (external.length === 0) return false;
-  if (external.some((m) => (m.labelIds ?? []).includes("CATEGORY_PERSONAL"))) return false;
   if (!external.every(isAutomatedMessage)) return false;
 
+  // Gmail's human-priority hints (Primary/CATEGORY_PERSONAL, IMPORTANT) only veto
+  // a weak (category-only) detection. A strong machine-origin signal on every
+  // message overrides them — see the doc comment above.
   const allStrong = external.every(isStronglyAutomatedMessage);
-  if (!allStrong && external.some((m) => (m.labelIds ?? []).includes("IMPORTANT"))) return false;
+  if (!allStrong) {
+    const hasLabel = (label: string) => external.some((m) => (m.labelIds ?? []).includes(label));
+    if (hasLabel("CATEGORY_PERSONAL")) return false;
+    if (hasLabel("IMPORTANT")) return false;
+  }
   return true;
 }

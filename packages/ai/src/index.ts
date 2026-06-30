@@ -44,6 +44,7 @@ export {
   isAutomatedMessage,
   detectAutomatedThread,
   senderIsNoReply,
+  subjectIsTransactionalAuto,
 } from "./detection/automated-mail.js";
 // ─── Triage ───────────────────────────────────────────────────────────────────
 export { analyzeThreadTriage } from "./triage/analyze.js";
