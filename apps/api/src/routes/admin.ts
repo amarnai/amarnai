@@ -56,6 +56,7 @@ admin.patch("/admin/workspaces/:workspaceId/plan", async (c) => {
               backfillGeneration: { increment: 1 },
               backfillCapReached: false,
               backfillBeyondCount: 0,
+              backfillLimitState: "NONE",
             },
           }),
         ]

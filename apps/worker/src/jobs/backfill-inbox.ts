@@ -263,6 +263,10 @@ export function createBackfillInboxWorker(): Worker {
         // remembers prior imports, so the grace budget is what's left.
         const startProcessed = processed;
         let runCeiling: number;
+        // Whether this import is drawing the grace (post-reset retry) allowance, and
+        // whether it's blocked outright. Used to pick the adaptive banner state below.
+        let usingGrace = false;
+        let blockedAwaitingWindow = false;
         if (enforceBackfill) {
           const budget = await resolveBackfillBudget({
             inboxKey,
@@ -271,6 +275,8 @@ export function createBackfillInboxWorker(): Worker {
             windowStart,
           });
           runCeiling = startProcessed + budget.effectiveBudget;
+          usingGrace = budget.usingGrace;
+          blockedAwaitingWindow = budget.blockedAwaitingWindow;
         } else {
           // Self-host opt-out: bound only by this workspace's own plan cap (prior
           // behavior), no pooling and no grace gate. Still record the grant so that
@@ -590,7 +596,19 @@ export function createBackfillInboxWorker(): Worker {
         // beyond-cap count is approximate (Gmail's resultSizeEstimate). The UI turns
         // this into an upgrade / refresh-on {date} prompt.
         const capReached = !exhausted && processed >= runCeiling;
-        const beyondCount = capReached ? Math.max(0, resultSizeEstimate - processed) : 0;
+
+        // Adaptive banner state (see BackfillLimitState):
+        //   BLOCKED       — this attempt couldn't import (budget + grace spent).
+        //   CAPPED_RETRY  — the grace re-import hit the cap with more email remaining.
+        //   CAPPED        — the initial import hit the cap with more email remaining.
+        //   NONE          — everything that fits was loaded; no banner.
+        const limitState: "NONE" | "CAPPED" | "CAPPED_RETRY" | "BLOCKED" = blockedAwaitingWindow
+          ? "BLOCKED"
+          : capReached
+            ? usingGrace
+              ? "CAPPED_RETRY"
+              : "CAPPED"
+            : "NONE";
 
         const doneRes = await db.providerSyncState.updateMany({
           where: { emailAccountId, backfillGeneration: claimedGeneration },
@@ -603,8 +621,11 @@ export function createBackfillInboxWorker(): Worker {
             // All threads loaded — the estimate now equals what we processed.
             backfillTotalEstimate: processed,
             backfillSkipped: baseSkipped + runSkipped,
-            backfillCapReached: capReached,
-            backfillBeyondCount: beyondCount,
+            // backfillCapReached stays the banner's show/hide gate; backfillLimitState
+            // selects which message. backfillBeyondCount is no longer surfaced.
+            backfillCapReached: limitState !== "NONE",
+            backfillBeyondCount: 0,
+            backfillLimitState: limitState,
             // Backfill finished — stop auto-routing arriving backlog. New live
             // threads still auto-route via the normal sync path.
             autoRouteBacklogArmed: false,

@@ -65,6 +65,7 @@ sweepInbox.post("/workspaces/:workspaceId/sweep-inbox", async (c) => {
       // Recompute the plan-cap state from scratch on the fresh scan.
       backfillCapReached: false,
       backfillBeyondCount: 0,
+      backfillLimitState: "NONE",
     },
   });
 

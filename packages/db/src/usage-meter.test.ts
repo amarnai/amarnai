@@ -26,38 +26,49 @@ beforeEach(() => {
 });
 
 describe("resolveBackfillBudget", () => {
-  it("first import (no meter, no grant): full cap, creates a grant, no grace", async () => {
+  it("first import (no meter, no grant): full cap, creates a grant, not using grace", async () => {
     vi.mocked(db.inboxUsageMeter.findUnique).mockResolvedValue(null as never);
 
     const r = await resolveBackfillBudget({ ...base, cap: 500 });
 
-    expect(r).toEqual({ effectiveBudget: 500, graceConsumed: false, blockedAwaitingWindow: false });
+    expect(r).toEqual({ effectiveBudget: 500, usingGrace: false, blockedAwaitingWindow: false });
     expect(db.inboxBackfillGrant.upsert).toHaveBeenCalledOnce();
-    expect(db.inboxUsageMeter.upsert).not.toHaveBeenCalled(); // grace not touched
+    expect(db.inboxUsageMeter.updateMany).not.toHaveBeenCalled(); // grace not touched
   });
 
-  it("resume with room left: budget is cap minus used, no grace", async () => {
+  it("resume with room left: budget is cap minus used, not using grace", async () => {
     vi.mocked(db.inboxUsageMeter.findUnique).mockResolvedValue({ used: 200, graceUsed: false } as never);
 
     const r = await resolveBackfillBudget({ ...base, cap: 500 });
 
     expect(r.effectiveBudget).toBe(300);
-    expect(r.graceConsumed).toBe(false);
+    expect(r.usingGrace).toBe(false);
   });
 
-  it("pool exhausted + existing grant (reset re-run): atomically claims the grace to lift the ceiling to 2x", async () => {
+  it("base cap hit + existing grant (reset re-run): atomically unlocks the grace, ceiling -> 2x", async () => {
     vi.mocked(db.inboxUsageMeter.findUnique).mockResolvedValue({ used: 500, graceUsed: false } as never);
     vi.mocked(db.inboxBackfillGrant.findUnique).mockResolvedValue({ id: "g1" } as never);
     vi.mocked(db.inboxUsageMeter.updateMany).mockResolvedValue({ count: 1 } as never); // wins the token
 
     const r = await resolveBackfillBudget({ ...base, cap: 500 });
 
-    expect(r).toEqual({ effectiveBudget: 500, graceConsumed: true, blockedAwaitingWindow: false });
+    expect(r).toEqual({ effectiveBudget: 500, usingGrace: true, blockedAwaitingWindow: false });
     // Grace claimed via a conditional update guarded on graceUsed=false (not a blind upsert).
     expect(db.inboxUsageMeter.updateMany).toHaveBeenCalledWith({
       where: { inboxKey: base.inboxKey, kind: "BACKFILL", windowStart: base.windowStart, graceUsed: false },
       data: { graceUsed: true },
     });
+  });
+
+  it("grace resume: a later chunk of the SAME re-import keeps its budget and does NOT re-claim (regression)", async () => {
+    // graceUsed already true, used between cap and 2x cap → still budget left, no new claim.
+    vi.mocked(db.inboxUsageMeter.findUnique).mockResolvedValue({ used: 600, graceUsed: true } as never);
+
+    const r = await resolveBackfillBudget({ ...base, cap: 500 });
+
+    expect(r).toEqual({ effectiveBudget: 400, usingGrace: true, blockedAwaitingWindow: false }); // 2*500 - 600
+    expect(db.inboxUsageMeter.updateMany).not.toHaveBeenCalled(); // grace already unlocked
+    expect(db.inboxBackfillGrant.findUnique).not.toHaveBeenCalled();
   });
 
   it("grace race: a concurrent run that LOSES the atomic claim gets no grace (bounds total to 2x)", async () => {
@@ -67,27 +78,26 @@ describe("resolveBackfillBudget", () => {
 
     const r = await resolveBackfillBudget({ ...base, cap: 500 });
 
-    expect(r).toEqual({ effectiveBudget: 0, graceConsumed: false, blockedAwaitingWindow: true });
+    expect(r).toEqual({ effectiveBudget: 0, usingGrace: false, blockedAwaitingWindow: true });
   });
 
-  it("pool exhausted + grace already used: blocked until the window rolls", async () => {
+  it("base + grace fully spent (used >= 2x cap): blocked until the window rolls", async () => {
     vi.mocked(db.inboxUsageMeter.findUnique).mockResolvedValue({ used: 1000, graceUsed: true } as never);
 
     const r = await resolveBackfillBudget({ ...base, cap: 500 });
 
-    expect(r).toEqual({ effectiveBudget: 0, graceConsumed: false, blockedAwaitingWindow: true });
+    expect(r).toEqual({ effectiveBudget: 0, usingGrace: true, blockedAwaitingWindow: true });
     expect(db.inboxBackfillGrant.findUnique).not.toHaveBeenCalled();
   });
 
-  it("pool exhausted + no grant (new workspace, pool drained): no free allowance, no grace", async () => {
+  it("base cap hit + no grant (new workspace, pool drained): no allowance, not grace-blocked", async () => {
     vi.mocked(db.inboxUsageMeter.findUnique).mockResolvedValue({ used: 500, graceUsed: false } as never);
     vi.mocked(db.inboxBackfillGrant.findUnique).mockResolvedValue(null as never);
 
     const r = await resolveBackfillBudget({ ...base, cap: 500 });
 
-    expect(r.effectiveBudget).toBe(0);
-    expect(r.graceConsumed).toBe(false);
-    expect(db.inboxUsageMeter.upsert).not.toHaveBeenCalled();
+    expect(r).toEqual({ effectiveBudget: 0, usingGrace: false, blockedAwaitingWindow: false });
+    expect(db.inboxUsageMeter.updateMany).not.toHaveBeenCalled();
   });
 
   it("total imports stay bounded by 2x cap across a normal import + one grace re-run", async () => {

@@ -390,8 +390,8 @@ msgstr "Abdi-Heba,\n"
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
 #, fuzzy
-msgid "About {count, plural, one {# more thread} other {# more threads}} beyond your {plan} subscription limit aren't loaded."
-msgstr "Sekitar {count, plural, one {# utas} other {# utas}} lebih dari batas langganan {plan} Anda tidak dimuat."
+#~ msgid "About {count, plural, one {# more thread} other {# more threads}} beyond your {plan} subscription limit aren't loaded."
+#~ msgstr "Sekitar {count, plural, one {# utas} other {# utas}} lebih dari batas langganan {plan} Anda tidak dimuat."
 
 #: ../../apps/web/src/app/sign-up/WaitlistForm.tsx:24
 #, fuzzy
@@ -1557,9 +1557,9 @@ msgstr "Memutus sambungan ruang kerja ini. Amarnai tetap memiliki akses karena k
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "Memutus sambungan ruang kerja ini. Amarnai tetap memiliki akses karena kotak email ini masih terhubung di {sharedNames}."
 
-#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:53
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:50
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:296
-#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:62
+#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:57
 #: ../ui/src/AppDownloadBanner.tsx:80
 #: ../ui/src/emails/MockEmailsPage.tsx:253
 #, fuzzy
@@ -2847,8 +2847,8 @@ msgstr "Bulanan"
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:43
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:46
 #, fuzzy
-msgid "More threads beyond your {plan} subscription limit aren't loaded."
-msgstr "Thread lain di luar batas langganan {plan} Anda tidak dimuat."
+#~ msgid "More threads beyond your {plan} subscription limit aren't loaded."
+#~ msgstr "Thread lain di luar batas langganan {plan} Anda tidak dimuat."
 
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:46
 #: ../ui/src/pricing/planMessages.ts:30
@@ -3578,8 +3578,8 @@ msgstr "Segarkan"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:62
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:51
-msgid "Refresh after {refreshDate} to load more."
-msgstr "Segarkan setelah {refreshDate} untuk memuat lebih banyak."
+#~ msgid "Refresh after {refreshDate} to load more."
+#~ msgstr "Segarkan setelah {refreshDate} untuk memuat lebih banyak."
 
 #: ../../apps/mobile/src/components/DraftSheet.tsx:127
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:348
@@ -4814,8 +4814,14 @@ msgstr "Upgrade ke {planName}"
 msgid "Upgrade to a Pro or Business subscription to invite collaborators."
 msgstr "Upgrade ke langganan Pro atau Bisnis untuk mengundang kolaborator."
 
-#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:67
-#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:55
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:60
+#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:50
+#, fuzzy
+msgid "Upgrade to import now"
+msgstr "Upgrade untuk mengimpor sekarang"
+
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:60
+#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:50
 msgid "Upgrade to load the rest"
 msgstr "Upgrade untuk memuat lebih banyak"
 
@@ -5121,6 +5127,11 @@ msgstr "Anda menggunakan {planLabel}"
 msgid "You're on the list!"
 msgstr "Anda sudah terdaftar!"
 
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:37
+#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:36
+msgid "You've used all of your {plan} plan's email imports this month, including one retry. Imports refresh {refreshDate}."
+msgstr "Semua kuota impor email bulanan paket {plan} Anda telah terpakai, termasuk satu kali percobaan ulang. Kuota impor akan diperbarui {refreshDate}."
+
 #: ../ui/src/i18n/generation-reason-messages.ts:20
 #, fuzzy
 msgid "You've used your generations for now."
@@ -5129,6 +5140,11 @@ msgstr "Jatah generasi Anda sudah habis untuk saat ini."
 #: ../ui/src/i18n/generation-reason-messages.ts:19
 msgid "You've used your generations for now. Available again {when}."
 msgstr "Jatah generasi Anda sudah habis untuk saat ini. Tersedia lagi {when}."
+
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:40
+#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:39
+msgid "Your {plan} plan finished importing your most recent emails. Older ones beyond its limit weren't loaded."
+msgstr "Paket {plan} Anda telah selesai mengimpor email terbaru Anda. Email lama yang melampaui batas tidak dimuat."
 
 #. placeholder {0}: workspace.trialEndsAt.toLocaleDateString()
 #: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:183
@@ -5176,6 +5192,11 @@ msgstr "Rencana Anda adalah pohon folder sederhana: folder Anda bercabang dari k
 #, fuzzy
 msgid "Your plan is a tree of folders (for example a Customers folder with Support and Billing beneath it), each described in plain language, and Amarnai walks that tree to route every thread to the folder that fits best. The fastest way to build it is to let Amarnai generate one for you: it reads your inbox and proposes a complete tree, named and described, that you can keep as-is or adjust. You can also start from one of our ready-made templates or build your own from scratch. No technical know-how required."
 msgstr "Rencana Anda adalah pohon folder (misalnya, folder Pelanggan dengan Support dan Penagihan di bawahnya), masing-masing dijelaskan dengan bahasa sederhana, dan Amarnai akan menelusuri pohon tersebut untuk mengarahkan setiap thread ke folder yang paling sesuai. Cara tercepat untuk membangunnya adalah dengan membiarkan Amarnai menghasilkannya untuk Anda: Amarnai akan membaca kotak masuk Anda dan mengusulkan pohon lengkap, lengkap dengan nama dan deskripsi, yang dapat Anda gunakan apa adanya atau sesuaikan. Anda juga dapat memulai dari salah satu template siap pakai kami atau membuatnya sendiri dari awal. Tidak diperlukan keahlian teknis."
+
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:39
+#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:38
+msgid "Your retry import finished and is still capped by your {plan} plan. Your next retry is available {refreshDate}."
+msgstr "Impor percobaan ulang Anda telah selesai dan masih dibatasi oleh paket {plan}. Percobaan ulang berikutnya tersedia {refreshDate}."
 
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:102
 #, fuzzy

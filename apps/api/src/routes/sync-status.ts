@@ -56,6 +56,7 @@ syncStatus.get("/workspaces/:workspaceId/sync-status", async (c) => {
         backfillCompletedAt: true,
         backfillCapReached: true,
         backfillBeyondCount: true,
+        backfillLimitState: true,
         backfillProcessedCount: true,
         backfillRoutingStartedAt: true,
       },
@@ -80,6 +81,7 @@ syncStatus.get("/workspaces/:workspaceId/sync-status", async (c) => {
   // prompt while the inbox actually has room. (Read-only: getMeterUsed does not write.)
   let backfillCapReached = state.backfillCapReached;
   let backfillBeyondCount = state.backfillBeyondCount;
+  let backfillLimitState = state.backfillLimitState;
   if (backfillCapReached) {
     const ceiling = await getInboxPlanCeiling(connection.gmailAddress);
     const cap = getBackfillCap(ceiling.plan, ceiling.billingCycle).maxThreads;
@@ -91,6 +93,7 @@ syncStatus.get("/workspaces/:workspaceId/sync-status", async (c) => {
     if (used < cap) {
       backfillCapReached = false;
       backfillBeyondCount = 0;
+      backfillLimitState = "NONE";
     }
   }
 
@@ -134,6 +137,7 @@ syncStatus.get("/workspaces/:workspaceId/sync-status", async (c) => {
     backfillCompletedAt: state.backfillCompletedAt?.toISOString() ?? null,
     backfillCapReached,
     backfillBeyondCount,
+    backfillLimitState,
     backfillLoadedThreads,
     backfillTotalThreads,
     backfillAwaitingTaxonomy,

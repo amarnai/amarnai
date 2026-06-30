@@ -390,8 +390,8 @@ msgstr "Abdi-Heba,\n"
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
 #, fuzzy
-msgid "About {count, plural, one {# more thread} other {# more threads}} beyond your {plan} subscription limit aren't loaded."
-msgstr "{plan} abonelik limitinizin üzerinde {count, plural, one {# ileti daha} other {# ileti daha}} yüklenmedi."
+#~ msgid "About {count, plural, one {# more thread} other {# more threads}} beyond your {plan} subscription limit aren't loaded."
+#~ msgstr "{plan} abonelik limitinizin üzerinde {count, plural, one {# ileti daha} other {# ileti daha}} yüklenmedi."
 
 #: ../../apps/web/src/app/sign-up/WaitlistForm.tsx:24
 #, fuzzy
@@ -1557,9 +1557,9 @@ msgstr "Bu çalışma alanının bağlantısı kesilir. Bu posta kutusu Amarnai'
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "Bu çalışma alanının bağlantısı kesilir. Bu posta kutusu hala {sharedNames} içinde bağlı olduğu için Amarnai'nin erişimi devam eder."
 
-#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:53
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:50
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:296
-#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:62
+#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:57
 #: ../ui/src/AppDownloadBanner.tsx:80
 #: ../ui/src/emails/MockEmailsPage.tsx:253
 #, fuzzy
@@ -2847,8 +2847,8 @@ msgstr "Aylık"
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:43
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:46
 #, fuzzy
-msgid "More threads beyond your {plan} subscription limit aren't loaded."
-msgstr "{plan} abonelik limitinizin üzerindeki ek ileti dizileri yüklenmiyor."
+#~ msgid "More threads beyond your {plan} subscription limit aren't loaded."
+#~ msgstr "{plan} abonelik limitinizin üzerindeki ek ileti dizileri yüklenmiyor."
 
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:46
 #: ../ui/src/pricing/planMessages.ts:30
@@ -3578,8 +3578,8 @@ msgstr "Yenile"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:62
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:51
-msgid "Refresh after {refreshDate} to load more."
-msgstr "Daha fazlasını yüklemek için {refreshDate} tarihinden sonra yenileyin."
+#~ msgid "Refresh after {refreshDate} to load more."
+#~ msgstr "Daha fazlasını yüklemek için {refreshDate} tarihinden sonra yenileyin."
 
 #: ../../apps/mobile/src/components/DraftSheet.tsx:127
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:348
@@ -4814,8 +4814,14 @@ msgstr "{planName} paketine yükselt"
 msgid "Upgrade to a Pro or Business subscription to invite collaborators."
 msgstr "İş birliği yapanları davet etmek için Pro veya Business aboneliğine yükseltin."
 
-#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:67
-#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:55
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:60
+#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:50
+#, fuzzy
+msgid "Upgrade to import now"
+msgstr "Hemen içe aktarmak için yükseltin"
+
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:60
+#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:50
 msgid "Upgrade to load the rest"
 msgstr "Kalanını yüklemek için yükseltin"
 
@@ -5121,6 +5127,11 @@ msgstr "{planLabel} planındasınız."
 msgid "You're on the list!"
 msgstr "Listedesiniz!"
 
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:37
+#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:36
+msgid "You've used all of your {plan} plan's email imports this month, including one retry. Imports refresh {refreshDate}."
+msgstr "{plan} planınızın bu ayki tüm e-posta içe aktarım haklarını, bir yeniden deneme dahil, kullandınız. İçe aktarımlar {refreshDate} tarihinde yenilenir."
+
 #: ../ui/src/i18n/generation-reason-messages.ts:20
 #, fuzzy
 msgid "You've used your generations for now."
@@ -5129,6 +5140,11 @@ msgstr "Üretim haklarınızı şimdilik kullandınız."
 #: ../ui/src/i18n/generation-reason-messages.ts:19
 msgid "You've used your generations for now. Available again {when}."
 msgstr "Üretim haklarınızı şimdilik kullandınız. {when} tekrar kullanılabilir."
+
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:40
+#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:39
+msgid "Your {plan} plan finished importing your most recent emails. Older ones beyond its limit weren't loaded."
+msgstr "{plan} planınız en yeni e-postalarınızı içe aktarmayı tamamladı. Limitinin üzerindeki eski e-postalar yüklenmedi."
 
 #. placeholder {0}: workspace.trialEndsAt.toLocaleDateString()
 #: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:183
@@ -5176,6 +5192,11 @@ msgstr "Planınız basit bir klasör ağacıdır: klasörleriniz gelen kutusunda
 #, fuzzy
 msgid "Your plan is a tree of folders (for example a Customers folder with Support and Billing beneath it), each described in plain language, and Amarnai walks that tree to route every thread to the folder that fits best. The fastest way to build it is to let Amarnai generate one for you: it reads your inbox and proposes a complete tree, named and described, that you can keep as-is or adjust. You can also start from one of our ready-made templates or build your own from scratch. No technical know-how required."
 msgstr "Planınız, her biri yalın bir dille açıklanmış klasörlerden oluşan bir ağaçtır (örneğin, altında Destek ve Faturalandırma olan bir Müşteriler klasörü). Amarnai, her iletiyi en uygun klasöre yönlendirmek için bu ağacı kullanır. Bunu oluşturmanın en hızlı yolu, Amarnai'nin sizin için bir tane oluşturmasına izin vermektir: gelen kutunuzu okur ve adlandırılmış, açıklanmış, olduğu gibi kullanabileceğiniz veya ayarlayabileceğiniz eksiksiz bir ağaç önerir. Hazır şablonlarımızdan birini kullanabilir veya sıfırdan kendinizinkini oluşturabilirsiniz. Teknik bilgi gerekmez."
+
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:39
+#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:38
+msgid "Your retry import finished and is still capped by your {plan} plan. Your next retry is available {refreshDate}."
+msgstr "Yeniden deneme içe aktarımınız tamamlandı ve hala {plan} planınızın limitiyle sınırlı. Bir sonraki yeniden denemeniz {refreshDate} tarihinde kullanılabilir."
 
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:102
 #, fuzzy

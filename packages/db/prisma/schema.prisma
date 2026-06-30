@@ -127,6 +127,14 @@ enum BackfillStatus {
   ERROR
 }
 
+// Import-limit state the last backfill ended in — drives the adaptive plan-cap banner.
+enum BackfillLimitState {
+  NONE
+  CAPPED
+  CAPPED_RETRY
+  BLOCKED
+}
+
 enum WorkspacePlan {
   FREE
   PRO
@@ -350,6 +358,12 @@ model ProviderSyncState {
   // were left beyond the cap (approximate). Reset on a fresh backfill / upgrade.
   backfillCapReached       Boolean        @default(false)
   backfillBeyondCount      Int            @default(0)
+  // Which import-limit state the last backfill ended in, for the adaptive banner:
+  //   NONE          — no limit hit (banner hidden)
+  //   CAPPED        — initial import hit the plan cap; more email exists (retry still available)
+  //   CAPPED_RETRY  — the grace re-import hit the cap; the monthly retry is now used
+  //   BLOCKED       — base + grace both spent; no import possible until the window rolls
+  backfillLimitState       BackfillLimitState @default(NONE)
   createdAt                DateTime       @default(now())
   updatedAt                DateTime       @updatedAt
 

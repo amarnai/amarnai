@@ -376,8 +376,8 @@ msgstr "Abdi-Heba,\n"
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
 #, fuzzy
-msgid "About {count, plural, one {# more thread} other {# more threads}} beyond your {plan} subscription limit aren't loaded."
-msgstr "Ongeveer {count, plural, one {# extra gesprek} other {# extra gesprekken}} buiten je {plan} abonnementslimiet zijn niet geladen."
+#~ msgid "About {count, plural, one {# more thread} other {# more threads}} beyond your {plan} subscription limit aren't loaded."
+#~ msgstr "Ongeveer {count, plural, one {# extra gesprek} other {# extra gesprekken}} buiten je {plan} abonnementslimiet zijn niet geladen."
 
 #: ../../apps/web/src/app/sign-up/WaitlistForm.tsx:24
 #, fuzzy
@@ -1494,9 +1494,9 @@ msgstr "Ontkoppelt deze werkruimte. Amarnai behoudt toegang omdat deze mailbox o
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "Ontkoppelt deze werkruimte. Amarnai behoudt toegang omdat deze mailbox nog steeds is verbonden in {sharedNames}."
 
-#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:53
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:50
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:296
-#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:62
+#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:57
 #: ../ui/src/AppDownloadBanner.tsx:80
 #: ../ui/src/emails/MockEmailsPage.tsx:253
 msgid "Dismiss"
@@ -2719,8 +2719,8 @@ msgstr "Maandelijks"
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:43
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:46
 #, fuzzy
-msgid "More threads beyond your {plan} subscription limit aren't loaded."
-msgstr "Meer gesprekken dan de limiet van uw {plan}-abonnement worden niet geladen."
+#~ msgid "More threads beyond your {plan} subscription limit aren't loaded."
+#~ msgstr "Meer gesprekken dan de limiet van uw {plan}-abonnement worden niet geladen."
 
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:46
 #: ../ui/src/pricing/planMessages.ts:30
@@ -3413,8 +3413,8 @@ msgstr "Vernieuwen"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:62
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:51
-msgid "Refresh after {refreshDate} to load more."
-msgstr "Vernieuw na {refreshDate} om meer te laden."
+#~ msgid "Refresh after {refreshDate} to load more."
+#~ msgstr "Vernieuw na {refreshDate} om meer te laden."
 
 #: ../../apps/mobile/src/components/DraftSheet.tsx:127
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:348
@@ -4595,8 +4595,14 @@ msgstr "Upgrade naar {planName}"
 msgid "Upgrade to a Pro or Business subscription to invite collaborators."
 msgstr "Upgrade naar een Pro- of Business-abonnement om samenwerkers uit te nodigen."
 
-#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:67
-#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:55
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:60
+#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:50
+#, fuzzy
+msgid "Upgrade to import now"
+msgstr "Upgrade nu om te importeren"
+
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:60
+#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:50
 msgid "Upgrade to load the rest"
 msgstr "Upgrade om de rest te laden"
 
@@ -4886,6 +4892,11 @@ msgstr "U gebruikt {planLabel}"
 msgid "You're on the list!"
 msgstr "Je staat op de lijst!"
 
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:37
+#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:36
+msgid "You've used all of your {plan} plan's email imports this month, including one retry. Imports refresh {refreshDate}."
+msgstr "Je hebt deze maand al je e-mailimports van het {plan}-abonnement verbruikt, inclusief één herhaalpoging. Nieuwe imports zijn beschikbaar op {refreshDate}."
+
 #: ../ui/src/i18n/generation-reason-messages.ts:20
 #, fuzzy
 msgid "You've used your generations for now."
@@ -4894,6 +4905,11 @@ msgstr "Je generaties zijn voor nu op."
 #: ../ui/src/i18n/generation-reason-messages.ts:19
 msgid "You've used your generations for now. Available again {when}."
 msgstr "Je generaties zijn voor nu op. Weer beschikbaar {when}."
+
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:40
+#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:39
+msgid "Your {plan} plan finished importing your most recent emails. Older ones beyond its limit weren't loaded."
+msgstr "Je {plan}-abonnement heeft de meest recente e-mails geïmporteerd. Oudere e-mails buiten de limiet zijn niet geladen."
 
 #. placeholder {0}: workspace.trialEndsAt.toLocaleDateString()
 #: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:183
@@ -4939,6 +4955,11 @@ msgstr "Je plan is een eenvoudige mapstructuur: je mappen vertakken vanuit de in
 #: ../../apps/site/src/components/landing/FAQSection.tsx:20
 msgid "Your plan is a tree of folders (for example a Customers folder with Support and Billing beneath it), each described in plain language, and Amarnai walks that tree to route every thread to the folder that fits best. The fastest way to build it is to let Amarnai generate one for you: it reads your inbox and proposes a complete tree, named and described, that you can keep as-is or adjust. You can also start from one of our ready-made templates or build your own from scratch. No technical know-how required."
 msgstr "Je plan is een boomstructuur van mappen (bijvoorbeeld een Klantenmap met daaronder Support en Facturatie), elk beschreven in duidelijke taal, en Amarnai doorloopt die boom om elk gesprek naar de best passende map te leiden. De snelste manier om dit op te zetten, is Amarnai er een voor je te laten genereren: het leest je inbox en stelt een complete, benoemde en beschreven boomstructuur voor, die je kunt gebruiken zoals deze is of kunt aanpassen. Je kunt ook beginnen met een van onze kant-en-klare sjablonen of je eigen structuur vanaf nul opbouwen. Geen technische kennis vereist."
+
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:39
+#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:38
+msgid "Your retry import finished and is still capped by your {plan} plan. Your next retry is available {refreshDate}."
+msgstr "Je herhaalde import is voltooid en is nog steeds beperkt door je {plan}-abonnement. De volgende herhaalpoging is beschikbaar op {refreshDate}."
 
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:102
 #, fuzzy

@@ -376,8 +376,8 @@ msgstr "阿卜迪-赫巴，\n"
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
 #, fuzzy
-msgid "About {count, plural, one {# more thread} other {# more threads}} beyond your {plan} subscription limit aren't loaded."
-msgstr "您的 {plan} 订阅限制之外的大约 {count, plural, one {# 条会话} other {# 条会话}} 未加载。"
+#~ msgid "About {count, plural, one {# more thread} other {# more threads}} beyond your {plan} subscription limit aren't loaded."
+#~ msgstr "您的 {plan} 订阅限制之外的大约 {count, plural, one {# 条会话} other {# 条会话}} 未加载。"
 
 #: ../../apps/web/src/app/sign-up/WaitlistForm.tsx:24
 #, fuzzy
@@ -1494,9 +1494,9 @@ msgstr "断开此工作区连接。Amarnai仍保留访问权限，因为此邮�
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "断开此工作区连接。Amarnai仍保留访问权限，因为此邮箱仍连接在{sharedNames}中。"
 
-#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:53
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:50
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:296
-#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:62
+#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:57
 #: ../ui/src/AppDownloadBanner.tsx:80
 #: ../ui/src/emails/MockEmailsPage.tsx:253
 msgid "Dismiss"
@@ -2719,8 +2719,8 @@ msgstr "每月"
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:43
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:46
 #, fuzzy
-msgid "More threads beyond your {plan} subscription limit aren't loaded."
-msgstr "超出您的 {plan} 订阅限制的更多会话未加载。"
+#~ msgid "More threads beyond your {plan} subscription limit aren't loaded."
+#~ msgstr "超出您的 {plan} 订阅限制的更多会话未加载。"
 
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:46
 #: ../ui/src/pricing/planMessages.ts:30
@@ -3414,8 +3414,8 @@ msgstr "刷新"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:62
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:51
-msgid "Refresh after {refreshDate} to load more."
-msgstr "{refreshDate} 后刷新以加载更多。"
+#~ msgid "Refresh after {refreshDate} to load more."
+#~ msgstr "{refreshDate} 后刷新以加载更多。"
 
 #: ../../apps/mobile/src/components/DraftSheet.tsx:127
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:348
@@ -4596,8 +4596,14 @@ msgstr "升级至{planName}"
 msgid "Upgrade to a Pro or Business subscription to invite collaborators."
 msgstr "升级到专业版或商业版订阅即可邀请协作者。"
 
-#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:67
-#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:55
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:60
+#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:50
+#, fuzzy
+msgid "Upgrade to import now"
+msgstr "升级导入"
+
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:60
+#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:50
 msgid "Upgrade to load the rest"
 msgstr "升级以加载更多"
 
@@ -4887,6 +4893,11 @@ msgstr "您当前使用的是 {planLabel}"
 msgid "You're on the list!"
 msgstr "您已在名单上！"
 
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:37
+#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:36
+msgid "You've used all of your {plan} plan's email imports this month, including one retry. Imports refresh {refreshDate}."
+msgstr "您本月已用完{plan}套餐的所有邮件导入额度，包括一次重试机会。导入额度将于{refreshDate}刷新。"
+
 #: ../ui/src/i18n/generation-reason-messages.ts:20
 #, fuzzy
 msgid "You've used your generations for now."
@@ -4895,6 +4906,11 @@ msgstr "您本期的生成次数已用完。"
 #: ../ui/src/i18n/generation-reason-messages.ts:19
 msgid "You've used your generations for now. Available again {when}."
 msgstr "您本期的生成次数已用完。{when}后即可再次使用。"
+
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:40
+#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:39
+msgid "Your {plan} plan finished importing your most recent emails. Older ones beyond its limit weren't loaded."
+msgstr "您的{plan}套餐已完成最近邮件的导入。超出额度的旧邮件未被加载。"
 
 #. placeholder {0}: workspace.trialEndsAt.toLocaleDateString()
 #: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:183
@@ -4940,6 +4956,11 @@ msgstr "你的方案是一个简单的文件夹树：从收件箱分支出你的
 #: ../../apps/site/src/components/landing/FAQSection.tsx:20
 msgid "Your plan is a tree of folders (for example a Customers folder with Support and Billing beneath it), each described in plain language, and Amarnai walks that tree to route every thread to the folder that fits best. The fastest way to build it is to let Amarnai generate one for you: it reads your inbox and proposes a complete tree, named and described, that you can keep as-is or adjust. You can also start from one of our ready-made templates or build your own from scratch. No technical know-how required."
 msgstr "你的方案是一个文件夹树（例如，一个客户文件夹下设有支持和账单子文件夹），每个文件夹都以通俗易懂的语言描述，Amarnai 会根据这个树结构将每个会话精准归类到最合适的文件夹。构建该树最快的方式是让 Amarnai 为你生成一个：它会读取你的收件箱并建议一个完整、已命名且带有描述的文件夹树，你可以直接使用或进行调整。你也可以从我们现成的模板开始，或者从头开始构建自己的文件夹树。无需任何技术知识。"
+
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:39
+#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:38
+msgid "Your retry import finished and is still capped by your {plan} plan. Your next retry is available {refreshDate}."
+msgstr "您的重试导入已完成，但仍受{plan}套餐的额度限制。您的下一次重试机会将于{refreshDate}可用。"
 
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:102
 #, fuzzy

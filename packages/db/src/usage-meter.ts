@@ -107,9 +107,13 @@ export async function ensureBackfillGrant(inboxKey: string, workspaceId: string)
 export interface BackfillBudget {
   /** Threads this run may still process for the inbox this window. */
   effectiveBudget: number;
-  /** True when this resolution consumed the single per-(inbox,month) grace token. */
-  graceConsumed: boolean;
-  /** True when budget is 0 because the grace was already spent (vs. simply within cap). */
+  /**
+   * True when this import is drawing on the grace (second-cap) allowance — i.e. a
+   * post-reset re-import. Stays true across all chunks of that re-import, not just
+   * the one that claimed the token. Drives the "retry" vs "initial" banner copy.
+   */
+  usingGrace: boolean;
+  /** True when budget is 0 because the per-inbox budget AND grace are both spent. */
   blockedAwaitingWindow: boolean;
 }
 
@@ -117,16 +121,19 @@ export interface BackfillBudget {
  * Resolve how many more historical threads a backfill run may import for an inbox,
  * enforcing the pooled per-inbox monthly cap with a single grace re-import:
  *
- *   - base budget = cap − used (shared across all workspaces on this inbox).
- *   - while base > 0: import from it (ensures a per-workspace grant exists so a later
- *     re-import by the SAME workspace is recognized as a re-run, not a fresh import).
- *   - when base is exhausted AND this workspace already imported before (grant exists):
- *     consume the one grace token to lift the ceiling to 2×cap for the rest of the month.
+ *   - effective ceiling = cap normally, or 2×cap once the grace has been unlocked.
+ *   - while used < ceiling: import the remainder (ensures a per-workspace grant so a
+ *     later post-reset re-import by the SAME workspace is recognized as a re-run).
+ *   - when the BASE cap is hit AND this workspace already imported (grant exists):
+ *     atomically unlock the grace, lifting the ceiling to 2×cap for the rest of the
+ *     month. The graceUsed flag stays set, so EVERY subsequent chunk of that re-import
+ *     keeps drawing the second cap (this is why the ceiling — not the one-shot token —
+ *     gates the budget; otherwise a multi-chunk PRO/BUSINESS re-import would stall
+ *     after its first chunk).
  *   - otherwise: 0 (blocked until the window rolls over).
  *
- * Total imports per inbox per month are therefore bounded by 2×cap. Idempotent and
- * resume-safe: budget is recomputed from the reset-immune meter on every run; the grant
- * upsert and graceUsed flag are set-once.
+ * Total imports per inbox per month are bounded by 2×cap. Idempotent and resume-safe:
+ * budget is recomputed from the reset-immune meter on every run.
  */
 export async function resolveBackfillBudget(params: {
   inboxKey: string;
@@ -143,16 +150,17 @@ export async function resolveBackfillBudget(params: {
   const used = meter?.used ?? 0;
   const graceUsed = meter?.graceUsed ?? false;
 
-  const base = Math.max(0, cap - used);
-  if (base > 0) {
-    // First import or resume: ensure the per-workspace grant exists so a later
-    // post-reset re-import by this workspace is recognized as a re-run.
+  // Once the grace is unlocked, the ceiling is 2×cap and stays there for the window,
+  // so resumes of the grace re-import keep their budget chunk after chunk.
+  const ceiling = graceUsed ? 2 * cap : cap;
+  const remaining = Math.max(0, ceiling - used);
+  if (remaining > 0) {
     await ensureBackfillGrant(inboxKey, workspaceId);
-    return { effectiveBudget: base, graceConsumed: false, blockedAwaitingWindow: false };
+    return { effectiveBudget: remaining, usingGrace: graceUsed, blockedAwaitingWindow: false };
   }
 
-  // Pool exhausted. The grace re-import is available only to a workspace that has
-  // already imported this inbox (a reset re-run), and only once per inbox per month.
+  // At the BASE cap (grace not yet unlocked): a workspace that already imported this
+  // inbox (a reset re-run) may unlock the one grace re-import for this window.
   if (!graceUsed) {
     const grant = await db.inboxBackfillGrant.findUnique({
       where: { inboxKey_workspaceId: { inboxKey, workspaceId } },
@@ -162,24 +170,22 @@ export async function resolveBackfillBudget(params: {
       // Claim the single grace token ATOMICALLY: only the run whose conditional
       // update flips graceUsed false->true wins it. Without this, two concurrent
       // backfills for the same inbox (e.g. two workspaces sharing it, on separate
-      // worker replicas) could each read graceUsed=false and both grant a 2x-cap
-      // budget, blowing past the 2x-cap/inbox/month bound. The row is guaranteed to
-      // exist here (used >= cap > 0 came from it). Mirrors the backfill claim guard.
+      // worker replicas) could each grant a 2×cap budget, blowing past the bound.
       const claim = await db.inboxUsageMeter.updateMany({
         where: { inboxKey, kind: "BACKFILL", windowStart, graceUsed: false },
         data: { graceUsed: true },
       });
       if (claim.count === 1) {
-        return {
-          effectiveBudget: Math.max(0, 2 * cap - used),
-          graceConsumed: true,
-          blockedAwaitingWindow: false,
-        };
+        return { effectiveBudget: Math.max(0, 2 * cap - used), usingGrace: true, blockedAwaitingWindow: false };
       }
       // Lost the race — another run already took this window's grace.
-      return { effectiveBudget: 0, graceConsumed: false, blockedAwaitingWindow: true };
+      return { effectiveBudget: 0, usingGrace: false, blockedAwaitingWindow: true };
     }
+    // No grant (a new workspace arriving after the pool is drained): no allowance,
+    // but not "blocked after grace" — it simply has no import budget here.
+    return { effectiveBudget: 0, usingGrace: false, blockedAwaitingWindow: false };
   }
 
-  return { effectiveBudget: 0, graceConsumed: false, blockedAwaitingWindow: graceUsed };
+  // graceUsed && used >= 2×cap: the full monthly allowance (base + grace) is spent.
+  return { effectiveBudget: 0, usingGrace: true, blockedAwaitingWindow: true };
 }

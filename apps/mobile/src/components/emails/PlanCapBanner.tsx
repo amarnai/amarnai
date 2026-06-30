@@ -3,7 +3,7 @@ import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { Trans } from '@lingui/react/macro';
 import { useLingui } from '@lingui/react';
-import { msg, plural } from '@lingui/core/macro';
+import { msg } from '@lingui/core/macro';
 import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
 import { TOP_PLAN, getDraftQuotaResetsAt, formatQuotaResetDate } from '@amarnai/shared';
 import type { SyncStatus } from '@amarnai/api-client';
@@ -15,32 +15,29 @@ interface PlanCapBannerProps {
 }
 
 /**
- * Shown when the historical backfill stopped at the plan's thread cap with more
- * threads still in Gmail. Mirrors the web PlanCapBanner: surfaces the approximate
- * beyond-cap count. Below the top tier it routes to the in-app upgrade flow (a
- * higher plan re-runs the backfill up to the larger cap); at the top tier there is
- * no higher plan, so it tells the user when the pooled monthly budget refreshes
- * instead. Dismissible for the session.
+ * Shown when the historical backfill couldn't load everything, with a message that
+ * adapts to WHY (backfillLimitState): initial import hit the plan cap (CAPPED), the
+ * one monthly grace re-import hit it too (CAPPED_RETRY), or the whole monthly
+ * allowance is spent until the window rolls (BLOCKED). Mirrors the web banner. Below
+ * the top tier it routes to the in-app upgrade flow; at the top tier the only lever
+ * is the monthly refresh. Dismissible for the session.
  */
 export function PlanCapBanner({ syncStatus, dismissed, onDismiss }: PlanCapBannerProps) {
   const router = useRouter();
   const { i18n } = useLingui();
 
-  if (!syncStatus || !syncStatus.backfillCapReached || dismissed) return null;
+  const state = syncStatus?.backfillLimitState;
+  if (!syncStatus || !state || state === 'NONE' || dismissed) return null;
 
-  const count = syncStatus.backfillBeyondCount;
   const plan = syncStatus.workspacePlan;
   const isTopPlan = plan === TOP_PLAN;
   const refreshDate = formatQuotaResetDate(getDraftQuotaResetsAt().toISOString());
   const title =
-    count > 0
-      ? i18n._(
-          msg`About ${plural(count, {
-            one: '# more thread',
-            other: '# more threads',
-          })} beyond your ${plan} subscription limit aren't loaded.`,
-        )
-      : i18n._(msg`More threads beyond your ${plan} subscription limit aren't loaded.`);
+    state === 'BLOCKED'
+      ? i18n._(msg`You've used all of your ${plan} plan's email imports this month, including one retry. Imports refresh ${refreshDate}.`)
+      : state === 'CAPPED_RETRY'
+        ? i18n._(msg`Your retry import finished and is still capped by your ${plan} plan. Your next retry is available ${refreshDate}.`)
+        : i18n._(msg`Your ${plan} plan finished importing your most recent emails. Older ones beyond its limit weren't loaded.`);
 
   return (
     <View style={[styles.card, styles.cardLocked]}>
@@ -57,17 +54,13 @@ export function PlanCapBanner({ syncStatus, dismissed, onDismiss }: PlanCapBanne
           </TouchableOpacity>
         ) : null}
       </View>
-      {isTopPlan ? (
-        <Text style={styles.refreshNote}>
-          {i18n._(msg`Refresh after ${refreshDate} to load more.`)}
-        </Text>
-      ) : (
+      {!isTopPlan ? (
         <TouchableOpacity style={styles.btn} onPress={() => router.push('/(app)/subscription')}>
           <Text style={styles.btnText}>
-            <Trans>Upgrade to load the rest</Trans>
+            {state === 'BLOCKED' ? <Trans>Upgrade to import now</Trans> : <Trans>Upgrade to load the rest</Trans>}
           </Text>
         </TouchableOpacity>
-      )}
+      ) : null}
     </View>
   );
 }
@@ -112,10 +105,5 @@ const styles = StyleSheet.create({
     fontSize: fontSize.sm,
     fontWeight: fontWeight.semibold,
     color: colors.surface,
-  },
-  refreshNote: {
-    marginTop: space.sm,
-    fontSize: fontSize.sm,
-    color: colors.ink3,
   },
 });

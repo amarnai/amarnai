@@ -390,8 +390,8 @@ msgstr "Abdi-Heba,\n"
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
 #, fuzzy
-msgid "About {count, plural, one {# more thread} other {# more threads}} beyond your {plan} subscription limit aren't loaded."
-msgstr "Khoảng {count, plural, one {# cuộc trò chuyện khác} other {# cuộc trò chuyện khác}} vượt quá giới hạn gói đăng ký {plan} của bạn chưa được tải."
+#~ msgid "About {count, plural, one {# more thread} other {# more threads}} beyond your {plan} subscription limit aren't loaded."
+#~ msgstr "Khoảng {count, plural, one {# cuộc trò chuyện khác} other {# cuộc trò chuyện khác}} vượt quá giới hạn gói đăng ký {plan} của bạn chưa được tải."
 
 #: ../../apps/web/src/app/sign-up/WaitlistForm.tsx:24
 #, fuzzy
@@ -1557,9 +1557,9 @@ msgstr "Ngắt kết nối không gian làm việc này. Amarnai vẫn giữ quy
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "Ngắt kết nối không gian làm việc này. Amarnai vẫn giữ quyền truy cập vì hộp thư này vẫn được kết nối trong {sharedNames}."
 
-#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:53
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:50
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:296
-#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:62
+#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:57
 #: ../ui/src/AppDownloadBanner.tsx:80
 #: ../ui/src/emails/MockEmailsPage.tsx:253
 #, fuzzy
@@ -2847,8 +2847,8 @@ msgstr "Hàng tháng"
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:43
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:46
 #, fuzzy
-msgid "More threads beyond your {plan} subscription limit aren't loaded."
-msgstr "Các luồng vượt quá giới hạn gói đăng ký {plan} của bạn sẽ không được tải."
+#~ msgid "More threads beyond your {plan} subscription limit aren't loaded."
+#~ msgstr "Các luồng vượt quá giới hạn gói đăng ký {plan} của bạn sẽ không được tải."
 
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:46
 #: ../ui/src/pricing/planMessages.ts:30
@@ -3578,8 +3578,8 @@ msgstr "Làm mới"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:62
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:51
-msgid "Refresh after {refreshDate} to load more."
-msgstr "Làm mới sau {refreshDate} để tải thêm."
+#~ msgid "Refresh after {refreshDate} to load more."
+#~ msgstr "Làm mới sau {refreshDate} để tải thêm."
 
 #: ../../apps/mobile/src/components/DraftSheet.tsx:127
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:348
@@ -4814,8 +4814,14 @@ msgstr "Nâng cấp lên gói {planName}"
 msgid "Upgrade to a Pro or Business subscription to invite collaborators."
 msgstr "Nâng cấp lên gói đăng ký Pro hoặc Business để mời cộng tác viên."
 
-#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:67
-#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:55
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:60
+#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:50
+#, fuzzy
+msgid "Upgrade to import now"
+msgstr "Nâng cấp để nhập ngay"
+
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:60
+#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:50
 msgid "Upgrade to load the rest"
 msgstr "Nâng cấp để xem tiếp"
 
@@ -5121,6 +5127,11 @@ msgstr "Bạn đang dùng gói {planLabel}"
 msgid "You're on the list!"
 msgstr "Bạn đã có tên trong danh sách!"
 
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:37
+#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:36
+msgid "You've used all of your {plan} plan's email imports this month, including one retry. Imports refresh {refreshDate}."
+msgstr "Bạn đã sử dụng hết lượt nhập email của gói {plan} trong tháng này, bao gồm cả một lần thử lại. Lượt nhập sẽ được làm mới vào {refreshDate}."
+
 #: ../ui/src/i18n/generation-reason-messages.ts:20
 #, fuzzy
 msgid "You've used your generations for now."
@@ -5129,6 +5140,11 @@ msgstr "Bạn đã dùng hết lượt tạo hiện có."
 #: ../ui/src/i18n/generation-reason-messages.ts:19
 msgid "You've used your generations for now. Available again {when}."
 msgstr "Bạn đã dùng hết lượt tạo hiện có. Sẽ khả dụng lại vào {when}."
+
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:40
+#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:39
+msgid "Your {plan} plan finished importing your most recent emails. Older ones beyond its limit weren't loaded."
+msgstr "Gói {plan} của bạn đã hoàn tất việc nhập các email gần đây nhất. Các email cũ hơn vượt quá giới hạn đã không được tải."
 
 #. placeholder {0}: workspace.trialEndsAt.toLocaleDateString()
 #: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:183
@@ -5176,6 +5192,11 @@ msgstr "Kế hoạch của bạn là một cây thư mục đơn giản: các th
 #, fuzzy
 msgid "Your plan is a tree of folders (for example a Customers folder with Support and Billing beneath it), each described in plain language, and Amarnai walks that tree to route every thread to the folder that fits best. The fastest way to build it is to let Amarnai generate one for you: it reads your inbox and proposes a complete tree, named and described, that you can keep as-is or adjust. You can also start from one of our ready-made templates or build your own from scratch. No technical know-how required."
 msgstr "Kế hoạch của bạn là một cây thư mục (ví dụ: thư mục Khách hàng với Hỗ trợ và Thanh toán bên dưới), mỗi thư mục được mô tả bằng ngôn ngữ tự nhiên, và Amarnai sẽ duyệt qua cây thư mục đó để định tuyến mọi cuộc hội thoại đến thư mục phù hợp nhất. Cách nhanh nhất để xây dựng là để Amarnai tạo cho bạn: nó đọc hộp thư đến của bạn và đề xuất một cây thư mục hoàn chỉnh, được đặt tên và mô tả, mà bạn có thể giữ nguyên hoặc điều chỉnh. Bạn cũng có thể bắt đầu từ một trong các mẫu có sẵn của chúng tôi hoặc tự xây dựng từ đầu. Không yêu cầu kiến thức kỹ thuật."
+
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:39
+#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:38
+msgid "Your retry import finished and is still capped by your {plan} plan. Your next retry is available {refreshDate}."
+msgstr "Lượt nhập thử lại của bạn đã hoàn tất và vẫn bị giới hạn bởi gói {plan}. Lần thử lại tiếp theo sẽ có vào {refreshDate}."
 
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:102
 #, fuzzy

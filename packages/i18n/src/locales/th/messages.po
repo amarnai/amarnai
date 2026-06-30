@@ -391,8 +391,8 @@ msgstr "อับดิ-เฮบา,\n"
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
 #, fuzzy
-msgid "About {count, plural, one {# more thread} other {# more threads}} beyond your {plan} subscription limit aren't loaded."
-msgstr "เธรดอีก {count, plural, one {# รายการ} other {# รายการ}} ที่เกินขีดจำกัดการสมัครสมาชิก {plan} ของคุณ ไม่ได้โหลด"
+#~ msgid "About {count, plural, one {# more thread} other {# more threads}} beyond your {plan} subscription limit aren't loaded."
+#~ msgstr "เธรดอีก {count, plural, one {# รายการ} other {# รายการ}} ที่เกินขีดจำกัดการสมัครสมาชิก {plan} ของคุณ ไม่ได้โหลด"
 
 #: ../../apps/web/src/app/sign-up/WaitlistForm.tsx:24
 #, fuzzy
@@ -1558,9 +1558,9 @@ msgstr "ยกเลิกการเชื่อมต่อเวิร์ก
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "ยกเลิกการเชื่อมต่อเวิร์กสเปซนี้ Amarnai ยังคงเข้าถึงได้ เนื่องจากกล่องจดหมายนี้ยังคงเชื่อมต่ออยู่ใน {sharedNames}"
 
-#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:53
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:50
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:296
-#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:62
+#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:57
 #: ../ui/src/AppDownloadBanner.tsx:80
 #: ../ui/src/emails/MockEmailsPage.tsx:253
 #, fuzzy
@@ -2848,8 +2848,8 @@ msgstr "รายเดือน"
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:43
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:46
 #, fuzzy
-msgid "More threads beyond your {plan} subscription limit aren't loaded."
-msgstr "เธรดที่เกินขีดจำกัดของแผน {plan} จะไม่ถูกโหลด"
+#~ msgid "More threads beyond your {plan} subscription limit aren't loaded."
+#~ msgstr "เธรดที่เกินขีดจำกัดของแผน {plan} จะไม่ถูกโหลด"
 
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:46
 #: ../ui/src/pricing/planMessages.ts:30
@@ -3579,8 +3579,8 @@ msgstr "รีเฟรช"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:62
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:51
-msgid "Refresh after {refreshDate} to load more."
-msgstr "รีเฟรชหลัง {refreshDate} เพื่อโหลดเพิ่มเติม"
+#~ msgid "Refresh after {refreshDate} to load more."
+#~ msgstr "รีเฟรชหลัง {refreshDate} เพื่อโหลดเพิ่มเติม"
 
 #: ../../apps/mobile/src/components/DraftSheet.tsx:127
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:348
@@ -4814,8 +4814,14 @@ msgstr "อัปเกรดเป็น {planName}"
 msgid "Upgrade to a Pro or Business subscription to invite collaborators."
 msgstr "อัปเกรดเป็นแพ็กเกจ Pro หรือ Business เพื่อเชิญผู้ทำงานร่วมกัน"
 
-#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:67
-#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:55
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:60
+#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:50
+#, fuzzy
+msgid "Upgrade to import now"
+msgstr "อัปเกรดเพื่อนำเข้าเลย"
+
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:60
+#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:50
 msgid "Upgrade to load the rest"
 msgstr "อัปเกรดเพื่อโหลดส่วนที่เหลือ"
 
@@ -5121,6 +5127,11 @@ msgstr "คุณใช้แผน {planLabel}"
 msgid "You're on the list!"
 msgstr "คุณอยู่ในรายชื่อแล้ว!"
 
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:37
+#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:36
+msgid "You've used all of your {plan} plan's email imports this month, including one retry. Imports refresh {refreshDate}."
+msgstr "คุณใช้โควตานำเข้าอีเมลทั้งหมดของแผน {plan} ประจำเดือนนี้แล้ว รวมถึงการนำเข้าซ้ำ 1 ครั้ง การนำเข้าจะรีเฟรชในวันที่ {refreshDate}"
+
 #: ../ui/src/i18n/generation-reason-messages.ts:20
 #, fuzzy
 msgid "You've used your generations for now."
@@ -5129,6 +5140,11 @@ msgstr "คุณใช้สิทธิ์การสร้างของค
 #: ../ui/src/i18n/generation-reason-messages.ts:19
 msgid "You've used your generations for now. Available again {when}."
 msgstr "คุณใช้สิทธิ์การสร้างของคุณครบแล้วสำหรับตอนนี้ จะพร้อมใช้งานอีกครั้ง {when}"
+
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:40
+#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:39
+msgid "Your {plan} plan finished importing your most recent emails. Older ones beyond its limit weren't loaded."
+msgstr "แผน {plan} ของคุณนำเข้าอีเมลล่าสุดเสร็จสมบูรณ์แล้ว อีเมลที่เก่ากว่าซึ่งเกินขีดจำกัดไม่ได้ถูกโหลด"
 
 #. placeholder {0}: workspace.trialEndsAt.toLocaleDateString()
 #: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:183
@@ -5176,6 +5192,11 @@ msgstr "แผนของคุณคือผังโฟลเดอร์ท
 #, fuzzy
 msgid "Your plan is a tree of folders (for example a Customers folder with Support and Billing beneath it), each described in plain language, and Amarnai walks that tree to route every thread to the folder that fits best. The fastest way to build it is to let Amarnai generate one for you: it reads your inbox and proposes a complete tree, named and described, that you can keep as-is or adjust. You can also start from one of our ready-made templates or build your own from scratch. No technical know-how required."
 msgstr "แผนของคุณคือผังโฟลเดอร์ (เช่น โฟลเดอร์ลูกค้าที่มีโฟลเดอร์ฝ่ายสนับสนุนและฝ่ายเรียกเก็บเงินอยู่ภายใต้) โดยแต่ละโฟลเดอร์จะถูกอธิบายด้วยภาษาที่เข้าใจง่าย และ Amarnai จะจัดเรียงเธรดทั้งหมดไปยังโฟลเดอร์ที่เหมาะสมที่สุด วิธีที่เร็วที่สุดในการสร้างแผนคือการให้ Amarnai สร้างให้คุณ: โดยจะอ่านกล่องจดหมายของคุณและเสนอผังโฟลเดอร์ที่สมบูรณ์ พร้อมชื่อและคำอธิบาย ซึ่งคุณสามารถใช้ได้ทันทีหรือปรับเปลี่ยนได้ คุณยังสามารถเริ่มต้นจากหนึ่งในเทมเพลตสำเร็จรูปของเรา หรือสร้างด้วยตัวเองตั้งแต่เริ่มต้น ไม่จำเป็นต้องมีความรู้ทางเทคนิค"
+
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:39
+#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:38
+msgid "Your retry import finished and is still capped by your {plan} plan. Your next retry is available {refreshDate}."
+msgstr "การนำเข้าซ้ำของคุณเสร็จสมบูรณ์แล้ว และยังคงอยู่ภายใต้ข้อจำกัดของแผน {plan} ของคุณ คุณจะสามารถนำเข้าซ้ำได้อีกครั้งในวันที่ {refreshDate}"
 
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:102
 #, fuzzy

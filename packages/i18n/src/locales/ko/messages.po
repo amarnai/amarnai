@@ -391,8 +391,8 @@ msgstr "압디-헤바님께,\n"
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
 #, fuzzy
-msgid "About {count, plural, one {# more thread} other {# more threads}} beyond your {plan} subscription limit aren't loaded."
-msgstr "약 {count, plural, one{#개의 추가 스레드} other{#개의 추가 스레드}}가 {plan} 구독 제한을 초과하여 로드되지 않았습니다."
+#~ msgid "About {count, plural, one {# more thread} other {# more threads}} beyond your {plan} subscription limit aren't loaded."
+#~ msgstr "약 {count, plural, one{#개의 추가 스레드} other{#개의 추가 스레드}}가 {plan} 구독 제한을 초과하여 로드되지 않았습니다."
 
 #: ../../apps/web/src/app/sign-up/WaitlistForm.tsx:24
 #, fuzzy
@@ -1558,9 +1558,9 @@ msgstr "이 작업 공간의 연결을 해제합니다. 이 메일함이 Amarnai
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "이 작업 공간의 연결을 해제합니다. 이 메일함은 {sharedNames}에 여전히 연결되어 있어 Amarnai는 계속 접근 권한을 가집니다."
 
-#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:53
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:50
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:296
-#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:62
+#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:57
 #: ../ui/src/AppDownloadBanner.tsx:80
 #: ../ui/src/emails/MockEmailsPage.tsx:253
 #, fuzzy
@@ -2848,8 +2848,8 @@ msgstr "월간"
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:43
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:46
 #, fuzzy
-msgid "More threads beyond your {plan} subscription limit aren't loaded."
-msgstr "{plan} 구독 한도를 초과하는 스레드는 더 이상 불러오지 않습니다."
+#~ msgid "More threads beyond your {plan} subscription limit aren't loaded."
+#~ msgstr "{plan} 구독 한도를 초과하는 스레드는 더 이상 불러오지 않습니다."
 
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:46
 #: ../ui/src/pricing/planMessages.ts:30
@@ -3579,8 +3579,8 @@ msgstr "새로 고침"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:62
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:51
-msgid "Refresh after {refreshDate} to load more."
-msgstr "{refreshDate} 이후 새로고침하여 더 불러오세요."
+#~ msgid "Refresh after {refreshDate} to load more."
+#~ msgstr "{refreshDate} 이후 새로고침하여 더 불러오세요."
 
 #: ../../apps/mobile/src/components/DraftSheet.tsx:127
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:348
@@ -4814,8 +4814,14 @@ msgstr "{planName}으로 업그레이드"
 msgid "Upgrade to a Pro or Business subscription to invite collaborators."
 msgstr "공동 작업자 초대를 위해 Pro 또는 Business 구독으로 업그레이드하세요."
 
-#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:67
-#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:55
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:60
+#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:50
+#, fuzzy
+msgid "Upgrade to import now"
+msgstr "지금 가져오려면 업그레이드하세요."
+
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:60
+#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:50
 msgid "Upgrade to load the rest"
 msgstr "나머지를 불러오려면 업그레이드하세요."
 
@@ -5121,6 +5127,11 @@ msgstr "{planLabel} 플랜입니다."
 msgid "You're on the list!"
 msgstr "대기 목록에 등록되었습니다!"
 
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:37
+#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:36
+msgid "You've used all of your {plan} plan's email imports this month, including one retry. Imports refresh {refreshDate}."
+msgstr "{plan} 플랜의 이번 달 이메일 가져오기 한도를 재시도 1회를 포함해 모두 소진했습니다. 가져오기 한도는 {refreshDate}에 갱신됩니다."
+
 #: ../ui/src/i18n/generation-reason-messages.ts:20
 #, fuzzy
 msgid "You've used your generations for now."
@@ -5129,6 +5140,11 @@ msgstr "지금은 생성 횟수를 모두 사용하셨습니다."
 #: ../ui/src/i18n/generation-reason-messages.ts:19
 msgid "You've used your generations for now. Available again {when}."
 msgstr "지금은 생성 횟수를 모두 사용하셨습니다. {when}에 다시 이용 가능합니다."
+
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:40
+#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:39
+msgid "Your {plan} plan finished importing your most recent emails. Older ones beyond its limit weren't loaded."
+msgstr "{plan} 플랜으로 가장 최신 이메일을 가져왔습니다. 한도를 초과한 이전 이메일은 로드되지 않았습니다."
 
 #. placeholder {0}: workspace.trialEndsAt.toLocaleDateString()
 #: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:183
@@ -5176,6 +5192,11 @@ msgstr "당신의 플랜은 받은 편지함에서 가지처럼 뻗어 나가는
 #, fuzzy
 msgid "Your plan is a tree of folders (for example a Customers folder with Support and Billing beneath it), each described in plain language, and Amarnai walks that tree to route every thread to the folder that fits best. The fastest way to build it is to let Amarnai generate one for you: it reads your inbox and proposes a complete tree, named and described, that you can keep as-is or adjust. You can also start from one of our ready-made templates or build your own from scratch. No technical know-how required."
 msgstr "당신의 플랜은 폴더 트리(예: 고객 폴더 아래에 지원 및 청구 폴더)로, 각 폴더는 쉬운 언어로 설명되며, Amarnai는 이 트리를 따라 모든 스레드를 가장 적합한 폴더로 라우팅합니다. 가장 빠르게 트리를 구축하는 방법은 Amarnai가 자동으로 생성하도록 하는 것입니다. Amarnai는 받은 편지함을 읽고 완전한 트리를 제안하며, 이 트리는 이름과 설명이 지정되어 있어 그대로 사용하거나 조정할 수 있습니다. 또한, 준비된 템플릿 중 하나에서 시작하거나 처음부터 직접 구축할 수도 있습니다. 기술적 지식은 필요하지 않습니다."
+
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:39
+#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:38
+msgid "Your retry import finished and is still capped by your {plan} plan. Your next retry is available {refreshDate}."
+msgstr "재시도 가져오기가 완료되었지만, {plan} 플랜 한도에 따라 제한됩니다. 다음 재시도는 {refreshDate}에 가능합니다."
 
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:102
 #, fuzzy

@@ -376,8 +376,8 @@ msgstr "アブディ＝ヘバ殿、\n"
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
 #, fuzzy
-msgid "About {count, plural, one {# more thread} other {# more threads}} beyond your {plan} subscription limit aren't loaded."
-msgstr "{plan} サブスクリプションの上限を超えた {count, plural, one {# 件のスレッド} other {# 件のスレッド}}は読み込まれていません。"
+#~ msgid "About {count, plural, one {# more thread} other {# more threads}} beyond your {plan} subscription limit aren't loaded."
+#~ msgstr "{plan} サブスクリプションの上限を超えた {count, plural, one {# 件のスレッド} other {# 件のスレッド}}は読み込まれていません。"
 
 #: ../../apps/web/src/app/sign-up/WaitlistForm.tsx:24
 #, fuzzy
@@ -1494,9 +1494,9 @@ msgstr "このワークスペースを切断します。このメールボック
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "このワークスペースを切断します。このメールボックスは{sharedNames}にも接続されているため、Amarnaiは引き続きアクセスします。"
 
-#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:53
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:50
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:296
-#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:62
+#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:57
 #: ../ui/src/AppDownloadBanner.tsx:80
 #: ../ui/src/emails/MockEmailsPage.tsx:253
 msgid "Dismiss"
@@ -2719,8 +2719,8 @@ msgstr "月額"
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:43
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:46
 #, fuzzy
-msgid "More threads beyond your {plan} subscription limit aren't loaded."
-msgstr "{plan}サブスクリプションの制限を超過しているため、これ以上のスレッドは読み込まれません。"
+#~ msgid "More threads beyond your {plan} subscription limit aren't loaded."
+#~ msgstr "{plan}サブスクリプションの制限を超過しているため、これ以上のスレッドは読み込まれません。"
 
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:46
 #: ../ui/src/pricing/planMessages.ts:30
@@ -3415,8 +3415,8 @@ msgstr "更新"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:62
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:51
-msgid "Refresh after {refreshDate} to load more."
-msgstr "{refreshDate}以降に更新すると、さらに読み込めます。"
+#~ msgid "Refresh after {refreshDate} to load more."
+#~ msgstr "{refreshDate}以降に更新すると、さらに読み込めます。"
 
 #: ../../apps/mobile/src/components/DraftSheet.tsx:127
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:348
@@ -4598,8 +4598,14 @@ msgstr "{planName}にアップグレード"
 msgid "Upgrade to a Pro or Business subscription to invite collaborators."
 msgstr "共同作業者を招待するには、ProまたはBusinessプランにアップグレードしてください。"
 
-#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:67
-#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:55
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:60
+#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:50
+#, fuzzy
+msgid "Upgrade to import now"
+msgstr "アップグレードして今すぐインポート"
+
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:60
+#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:50
 msgid "Upgrade to load the rest"
 msgstr "続きを読み込むにはアップグレード"
 
@@ -4889,6 +4895,11 @@ msgstr "あなたは{planLabel}をご利用中です"
 msgid "You're on the list!"
 msgstr "登録完了！"
 
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:37
+#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:36
+msgid "You've used all of your {plan} plan's email imports this month, including one retry. Imports refresh {refreshDate}."
+msgstr "{plan} プランの今月のメールインポートは、再試行1回分を含め、すべて使い切りました。インポートは{refreshDate}に更新されます。"
+
 #: ../ui/src/i18n/generation-reason-messages.ts:20
 #, fuzzy
 msgid "You've used your generations for now."
@@ -4897,6 +4908,11 @@ msgstr "今回の生成回数を使い切りました。"
 #: ../ui/src/i18n/generation-reason-messages.ts:19
 msgid "You've used your generations for now. Available again {when}."
 msgstr "今回の生成回数を使い切りました。{when}に再度ご利用いただけます。"
+
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:40
+#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:39
+msgid "Your {plan} plan finished importing your most recent emails. Older ones beyond its limit weren't loaded."
+msgstr "{plan} プランでの最新メールのインポートは完了しました。上限を超える古いメールはインポートされませんでした。"
 
 #. placeholder {0}: workspace.trialEndsAt.toLocaleDateString()
 #: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:183
@@ -4942,6 +4958,11 @@ msgstr "お客様のプランは、受信トレイから枝分かれするシン
 #: ../../apps/site/src/components/landing/FAQSection.tsx:20
 msgid "Your plan is a tree of folders (for example a Customers folder with Support and Billing beneath it), each described in plain language, and Amarnai walks that tree to route every thread to the folder that fits best. The fastest way to build it is to let Amarnai generate one for you: it reads your inbox and proposes a complete tree, named and described, that you can keep as-is or adjust. You can also start from one of our ready-made templates or build your own from scratch. No technical know-how required."
 msgstr "お客様のプランはフォルダーツリーです（例：顧客フォルダーの下にサポートや請求フォルダーなど）。各フォルダーは平易な言葉で説明され、Amarnaiはそのツリーをたどってすべてのスレッドを最適なフォルダーに振り分けます。最も速い構築方法は、Amarnaiに生成させることです。Amarnaiが受信トレイを読み取り、名前と説明付きの完全なツリーを提案します。これはそのまま使用することも調整することも可能です。また、既存のテンプレートから始めることも、ゼロからご自身で作成することもできます。技術的な知識は一切不要です。"
+
+#: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:39
+#: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:38
+msgid "Your retry import finished and is still capped by your {plan} plan. Your next retry is available {refreshDate}."
+msgstr "再試行インポートが完了しました。{plan}プランの制限は引き続き適用されます。次の再試行は{refreshDate}に利用可能になります。"
 
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:102
 #, fuzzy
