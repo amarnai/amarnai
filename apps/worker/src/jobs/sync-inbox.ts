@@ -23,6 +23,7 @@ import {
 import { redisConnection } from "../redis.js";
 import { publishWorkspaceSynced } from "../redis-publisher.js";
 import { applyThreadFilter, computeThreadLabelFlags } from "./filter-thread-messages.js";
+import { upsertEmailThread, upsertEmailMessages } from "./persist-thread.js";
 import { enqueueArmedBacklog } from "./route-armed-backlog.js";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -90,11 +91,13 @@ async function getChangedThreadIds(
   storedHistoryId: string | null
 ): Promise<{ changedThreadIds: string[]; newHistoryId: string }> {
   if (!storedHistoryId) {
-    const [profile, ids] = await Promise.all([
-      client.getProfile(),
-      client.listRecentThreadIds(50),
-    ]);
-    return { changedThreadIds: ids, newHistoryId: profile.historyId };
+    // First sync for this inbox: establish the history cursor at "now" and
+    // import nothing here. The historical backfill (enqueued in parallel) is the
+    // single source of imported threads, so it scans the full inbox newest-first
+    // up to the plan cap. Seeding recent threads here too would be a redundant,
+    // date-blind second importer. Deltas after this cursor arrive via listHistory.
+    const profile = await client.getProfile();
+    return { changedThreadIds: [], newHistoryId: profile.historyId };
   }
 
   try {
@@ -103,6 +106,10 @@ async function getChangedThreadIds(
   } catch (err) {
     if (err instanceof GmailHistoryCursorExpiredError) {
       console.warn("[sync-inbox] History cursor expired — performing full resync");
+      // Unlike the first-run branch, the seed is kept here on purpose: the cursor
+      // expired (>7-day gap) on an already-established inbox whose backfill is
+      // long DONE and will not re-run, so these 50 recent threads are genuine
+      // catch-up for changes missed during the gap, not a redundant import.
       const [profile, ids] = await Promise.all([
         client.getProfile(),
         client.listRecentThreadIds(50),
@@ -474,53 +481,28 @@ export function createSyncInboxWorker(): Worker {
           // Thread is fully excluded by current settings or always-excluded labels.
           // Persist the flags so the thread is hidden at query time, but don't
           // upsert messages and don't enqueue classification.
-          await db.emailThread.upsert({
-            where: {
-              emailAccountId_providerThreadId: {
-                emailAccountId,
-                providerThreadId: rawSnapshot.providerThreadId,
-              },
-            },
-            create: {
-              workspaceId,
-              emailAccountId,
-              provider: "GMAIL",
-              providerThreadId: rawSnapshot.providerThreadId,
-              subject: rawSnapshot.subject,
-              latestMessageAt: rawSnapshot.latestMessageAt,
-              messageCount: rawSnapshot.messageCount,
-              ...labelFlags,
-            },
-            update: labelFlags,
-            select: { id: true },
+          await upsertEmailThread({
+            workspaceId,
+            emailAccountId,
+            providerThreadId: rawSnapshot.providerThreadId,
+            subject: rawSnapshot.subject,
+            latestMessageAt: rawSnapshot.latestMessageAt,
+            messageCount: rawSnapshot.messageCount,
+            labelFlags,
+            updateContent: false,
           });
           continue;
         }
 
-        const emailThread = await db.emailThread.upsert({
-          where: {
-            emailAccountId_providerThreadId: {
-              emailAccountId,
-              providerThreadId: snapshot.providerThreadId,
-            },
-          },
-          create: {
-            workspaceId,
-            emailAccountId,
-            provider: "GMAIL",
-            providerThreadId: snapshot.providerThreadId,
-            subject: snapshot.subject,
-            latestMessageAt: snapshot.latestMessageAt,
-            messageCount: snapshot.messageCount,
-            ...labelFlags,
-          },
-          update: {
-            subject: snapshot.subject,
-            latestMessageAt: snapshot.latestMessageAt,
-            messageCount: snapshot.messageCount,
-            ...labelFlags,
-          },
-          select: { id: true },
+        const emailThreadId = await upsertEmailThread({
+          workspaceId,
+          emailAccountId,
+          providerThreadId: snapshot.providerThreadId,
+          subject: snapshot.subject,
+          latestMessageAt: snapshot.latestMessageAt,
+          messageCount: snapshot.messageCount,
+          labelFlags,
+          updateContent: true,
         });
 
         // Capture the thread's stored message IDs before we upsert/delete, so we
@@ -530,48 +512,19 @@ export function createSyncInboxWorker(): Worker {
         const priorMessageIds = new Set(
           (
             await db.emailMessage.findMany({
-              where: { emailThreadId: emailThread.id, emailAccountId },
+              where: { emailThreadId, emailAccountId },
               select: { providerMessageId: true },
             })
           ).map((m) => m.providerMessageId)
         );
 
         // Upsert messages — metadata only, body text is never persisted.
-        for (const msg of snapshot.messages) {
-          const snippet = msg.bodyExcerpt ? msg.bodyExcerpt.slice(0, 200) : null;
-          await db.emailMessage.upsert({
-            where: {
-              emailAccountId_providerMessageId: {
-                emailAccountId,
-                providerMessageId: msg.providerMessageId,
-              },
-            },
-            create: {
-              workspaceId,
-              emailAccountId,
-              emailThreadId: emailThread.id,
-              providerMessageId: msg.providerMessageId,
-              senderEmail: msg.senderEmail,
-              senderName: msg.senderName,
-              toEmails: msg.toEmails,
-              ccEmails: msg.ccEmails,
-              bccEmails: [],
-              subject: msg.subject,
-              snippet,
-              bodyText: null,
-              receivedAt: msg.receivedAt,
-              hasAttachments: msg.attachments.length > 0,
-              attachments: msg.attachments.map(({ filename, mimeType }) => ({ filename, mimeType })),
-            },
-            update: {
-              senderName: msg.senderName,
-              snippet,
-              hasAttachments: msg.attachments.length > 0,
-              attachments: msg.attachments.map(({ filename, mimeType }) => ({ filename, mimeType })),
-            },
-            select: { id: true },
-          });
-        }
+        await upsertEmailMessages({
+          workspaceId,
+          emailAccountId,
+          emailThreadId,
+          messages: snapshot.messages,
+        });
 
         // Remove messages that are no longer in the Gmail thread. This covers
         // drafts that were replaced by their sent counterpart (different message ID)
@@ -581,7 +534,7 @@ export function createSyncInboxWorker(): Worker {
         const rawMessageIds = rawSnapshot.messages.map((m) => m.providerMessageId);
         await db.emailMessage.deleteMany({
           where: {
-            emailThreadId: emailThread.id,
+            emailThreadId,
             emailAccountId,
             providerMessageId: { notIn: rawMessageIds },
           },
@@ -594,14 +547,14 @@ export function createSyncInboxWorker(): Worker {
         if (latestExternal) {
           await db.emailThread.updateMany({
             where: {
-              id: emailThread.id,
+              id: emailThreadId,
               resolvedAt: { not: null, lt: latestExternal },
             },
             data: { resolvedByUserId: null, resolvedAt: null },
           });
         }
 
-        upsertedEmailThreadIds.push(emailThread.id);
+        upsertedEmailThreadIds.push(emailThreadId);
 
         // Decide whether the message set changed. A new eligible message we just
         // stored, or a previously-stored message no longer present in Gmail
@@ -616,7 +569,7 @@ export function createSyncInboxWorker(): Worker {
           (id) => !rawMessageIdSet.has(id)
         );
         if (messageAdded || messageRemoved) {
-          threadsToClassify.push(emailThread.id);
+          threadsToClassify.push(emailThreadId);
         }
       }
 

@@ -93,6 +93,7 @@ vi.mock("../queues.js", () => ({
 
 import { db, countRecurringThreadSorts } from "@amarnai/db";
 import { Worker } from "bullmq";
+import { GmailHistoryCursorExpiredError } from "@amarnai/gmail";
 import { classifyThreadQueue } from "../queues.js";
 import { DEDUP_CLASSIFY_UNROUTED } from "@amarnai/queue";
 import { createSyncInboxWorker } from "../jobs/sync-inbox.js";
@@ -738,5 +739,65 @@ describe("createSyncInboxWorker — disconnect-awareness", () => {
 
     const { backfillInboxQueue } = await import("../queues.js");
     expect(vi.mocked(backfillInboxQueue.add)).not.toHaveBeenCalled();
+  });
+});
+
+describe("createSyncInboxWorker — first-run bootstrap", () => {
+  it("on first sync (no cursor) establishes the historyId only and imports zero threads", async () => {
+    // No stored cursor yet → first run. backfill is PENDING (resumable) so the
+    // historical import is the single source of threads.
+    vi.mocked(db.providerSyncState.upsert).mockResolvedValue({
+      historyId: null,
+      backfillStatus: "PENDING",
+      backfillStartedAt: null,
+      backfillRoutingStartedAt: null,
+      importantBackfilled: true,
+    } as never);
+
+    createSyncInboxWorker();
+    await getProcessor()(makeJob({ workspaceId: WS_ID }));
+
+    // The date-blind 50-thread seed must NOT run on first sync.
+    expect(mockListRecentThreadIds).not.toHaveBeenCalled();
+    // Cursor is established from the profile, with no threads fetched or upserted.
+    expect(mockGetProfile).toHaveBeenCalled();
+    expect(mockGetThread).not.toHaveBeenCalled();
+    expect(vi.mocked(db.emailThread.upsert)).not.toHaveBeenCalled();
+
+    // The cursor is advanced to the profile's historyId.
+    const cursorWrite = vi.mocked(db.providerSyncState.update).mock.calls.find(
+      (c) => (c[0] as { data: { historyId?: string } }).data?.historyId === "hist-2"
+    );
+    expect(cursorWrite).toBeDefined();
+
+    // The historical backfill is enqueued as the single importer.
+    const { backfillInboxQueue } = await import("../queues.js");
+    expect(vi.mocked(backfillInboxQueue.add)).toHaveBeenCalledWith(
+      "backfill-inbox",
+      { workspaceId: WS_ID },
+      expect.objectContaining({ deduplication: { id: `backfill-inbox_${WS_ID}` } })
+    );
+  });
+
+  it("on a cursor-expired resync still seeds the 50 most-recent threads (gap catch-up)", async () => {
+    // Established inbox: cursor exists but Gmail rejects it as expired. backfill is
+    // long DONE and will not re-run, so the seed is intentionally kept here.
+    vi.mocked(db.providerSyncState.upsert).mockResolvedValue({
+      historyId: "hist-old",
+      backfillStatus: "DONE",
+      backfillStartedAt: null,
+      backfillRoutingStartedAt: new Date(),
+      importantBackfilled: true,
+    } as never);
+    mockListHistory.mockRejectedValue(new GmailHistoryCursorExpiredError("expired"));
+    mockListRecentThreadIds.mockResolvedValue(["gmail-t1"]);
+
+    createSyncInboxWorker();
+    await getProcessor()(makeJob({ workspaceId: WS_ID }));
+
+    // The seed runs and the recovered thread is fetched + upserted (catch-up).
+    expect(mockListRecentThreadIds).toHaveBeenCalledWith(50);
+    expect(mockGetThread).toHaveBeenCalledWith("gmail-t1");
+    expect(vi.mocked(db.emailThread.upsert)).toHaveBeenCalled();
   });
 });

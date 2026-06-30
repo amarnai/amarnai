@@ -16,6 +16,7 @@ import {
   computeThreadLabelFlagsFromMeta,
   isThreadExcluded,
 } from "./filter-thread-messages.js";
+import { upsertEmailThread, upsertEmailMessages } from "./persist-thread.js";
 import { enqueueArmedBacklog } from "./route-armed-backlog.js";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -280,92 +281,38 @@ export function createBackfillInboxWorker(): Worker {
           if (snapshot === null) {
             // Fully excluded — persist with flags so query-time filtering works,
             // but don't upsert messages and don't enqueue classification.
-            await db.emailThread.upsert({
-              where: {
-                emailAccountId_providerThreadId: {
-                  emailAccountId,
-                  providerThreadId: rawSnapshot.providerThreadId,
-                },
-              },
-              create: {
-                workspaceId,
-                emailAccountId,
-                provider: "GMAIL",
-                providerThreadId: rawSnapshot.providerThreadId,
-                subject: rawSnapshot.subject,
-                latestMessageAt: rawSnapshot.latestMessageAt,
-                messageCount: rawSnapshot.messageCount,
-                ...labelFlags,
-              },
-              update: labelFlags,
-              select: { id: true },
+            await upsertEmailThread({
+              workspaceId,
+              emailAccountId,
+              providerThreadId: rawSnapshot.providerThreadId,
+              subject: rawSnapshot.subject,
+              latestMessageAt: rawSnapshot.latestMessageAt,
+              messageCount: rawSnapshot.messageCount,
+              labelFlags,
+              updateContent: false,
             });
             return null;
           }
 
-          const emailThread = await db.emailThread.upsert({
-            where: {
-              emailAccountId_providerThreadId: {
-                emailAccountId,
-                providerThreadId: snapshot.providerThreadId,
-              },
-            },
-            create: {
-              workspaceId,
-              emailAccountId,
-              provider: "GMAIL",
-              providerThreadId: snapshot.providerThreadId,
-              subject: snapshot.subject,
-              latestMessageAt: snapshot.latestMessageAt,
-              messageCount: snapshot.messageCount,
-              ...labelFlags,
-            },
-            update: {
-              subject: snapshot.subject,
-              latestMessageAt: snapshot.latestMessageAt,
-              messageCount: snapshot.messageCount,
-              ...labelFlags,
-            },
-            select: { id: true },
+          const emailThreadId = await upsertEmailThread({
+            workspaceId,
+            emailAccountId,
+            providerThreadId: snapshot.providerThreadId,
+            subject: snapshot.subject,
+            latestMessageAt: snapshot.latestMessageAt,
+            messageCount: snapshot.messageCount,
+            labelFlags,
+            updateContent: true,
           });
 
-          for (const msg of snapshot.messages) {
-            const snippet = msg.bodyExcerpt ? msg.bodyExcerpt.slice(0, 200) : null;
-            await db.emailMessage.upsert({
-              where: {
-                emailAccountId_providerMessageId: {
-                  emailAccountId,
-                  providerMessageId: msg.providerMessageId,
-                },
-              },
-              create: {
-                workspaceId,
-                emailAccountId,
-                emailThreadId: emailThread.id,
-                providerMessageId: msg.providerMessageId,
-                senderEmail: msg.senderEmail,
-                senderName: msg.senderName,
-                toEmails: msg.toEmails,
-                ccEmails: msg.ccEmails,
-                bccEmails: [],
-                subject: msg.subject,
-                snippet,
-                bodyText: null,
-                receivedAt: msg.receivedAt,
-                hasAttachments: msg.attachments.length > 0,
-                attachments: msg.attachments.map(({ filename, mimeType }) => ({ filename, mimeType })),
-              },
-              update: {
-                senderName: msg.senderName,
-                snippet,
-                hasAttachments: msg.attachments.length > 0,
-                attachments: msg.attachments.map(({ filename, mimeType }) => ({ filename, mimeType })),
-              },
-              select: { id: true },
-            });
-          }
+          await upsertEmailMessages({
+            workspaceId,
+            emailAccountId,
+            emailThreadId,
+            messages: snapshot.messages,
+          });
 
-          return emailThread.id;
+          return emailThreadId;
         }
 
         // ── 6. Process pages until the chunk budget or the plan cap is reached ──
