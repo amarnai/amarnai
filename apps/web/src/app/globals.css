@@ -4585,6 +4585,22 @@ a {
   opacity: 0.6;
 }
 
+/* Bare X icon (not the button component) for dismissing the plan-cap banner. */
+.plan-cap-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--ink-3);
+  transition: color 0.12s;
+}
+.plan-cap-close:hover {
+  color: var(--accent);
+}
+
 /* ─── Pricing plans ──────────────────────────────────────────────────────── */
 
 .plans {
