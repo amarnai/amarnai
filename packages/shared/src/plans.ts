@@ -100,7 +100,7 @@ export const PLANS: Plan[] = [
     highlights: [
       "1 free Personal workspace",
       "500 threads sorted / month",
-      "Up to 12 taxonomy nodes",
+      "Up to 12 plan nodes",
       "3 AI drafts / month",
     ],
     cta: { label: "Start free", kind: "secondary" },
@@ -116,9 +116,9 @@ export const PLANS: Plan[] = [
     highlights: [
       "Up to 10 collaborators",
       "10,000 threads sorted / month",
-      "Unlimited taxonomy nodes",
+      "Unlimited plan nodes",
       "200 AI drafts / month, pooled",
-      "Shared taxonomy + review queue",
+      "Shared plan + review queue",
     ],
     cta: { label: "Start 14-day trial", kind: "primary" },
   },
@@ -187,7 +187,7 @@ export const FEATURE_GROUPS: FeatureGroup[] = [
         values: ["3 / month", "200 / month, pooled", "1,000 / month, pooled"],
       },
       {
-        label: "Taxonomy nodes",
+        label: "Plan nodes",
         values: ["12", { note: "Unlimited" }, { note: "Unlimited" }],
       },
     ],
@@ -195,7 +195,7 @@ export const FEATURE_GROUPS: FeatureGroup[] = [
   {
     name: "Triage & review",
     rows: [
-      { label: "Shared taxonomy", values: [false, true, true] },
+      { label: "Shared plan", values: [false, true, true] },
       { label: "Review queue", values: [false, "Basic", "Advanced"] },
       {
         label: "AI metadata",
@@ -289,13 +289,13 @@ export const PLAN_FEATURES: PlanFeature[] = [
   },
   {
     id: "taxonomy_nodes",
-    label: "Taxonomy nodes",
+    label: "Plan nodes",
     showInCard: true,
     values: { free: "12", pro: "Unlimited", business: "Unlimited" },
   },
   {
     id: "shared_taxonomy",
-    label: "Shared taxonomy",
+    label: "Shared plan",
     showInCard: true,
     values: { free: false, pro: true, business: true },
   },
