@@ -65,7 +65,10 @@ const EN: SubjectRules = {
     /\b(verification|security|login|access|auth(?:entication)?|one[- ]?time)\s+codes?\b/i,
     /\b(one[- ]?time\s+(?:passcode|password|pin)|otp|passcode|2fa|two[- ]?factor)\b/i,
     /\bverify your (?:email|account|identity|sign[- ]?in)\b/i,
-    // ── Unsubscribe confirmations (NOT a bare "unsubscribe" — that appears in live marketing) ──
+    // ── Unsubscribe confirmations. A substring "unsubscribe" is NOT matched (it
+    //    appears in live marketing); only confirmation phrasings, plus the exact
+    //    one-word subject Gmail generates for a one-click unsubscribe. ──
+    /^\s*unsubscribe\s*$/i,
     /you('?ve| have)\s+(?:been\s+)?unsubscrib/i,
     /successfully\s+unsubscrib/i,
     /unsubscrib\w*\s+(?:confirmed|successful|confirmation)/i,
@@ -82,10 +85,15 @@ const EN: SubjectRules = {
     /\border\s+#?\w+\s+(?:confirmed|placed)\b/i,
     /\bpayment (?:received|confirmed|successful)\b/i,
     /\bthank(?:s| you) for your (?:order|purchase|payment)\b/i,
-    // ── Account sign-in / new-device alerts (routine only; compromise vetoed below) ──
-    /\bnew (?:sign[- ]?in|login)\b/i,
+    // ── Account sign-in / new-device alerts (routine only; compromise vetoed below).
+    //    Routed on the SUBJECT's framing: a benign "confirm your login" files even
+    //    if the body mentions suspicious activity; a subject that itself says
+    //    suspicious/unusual/unauthorized is held by the veto. ──
+    /\bnew (?:\S+\s+){0,2}(?:sign[- ]?in|login)\b/i,
     /\b(?:signed|logged) in to your\b/i,
     /\bnew device\b[^\n]*\b(?:sign(?:ed)?[- ]?in|log(?:ged)?[- ]?in|access)/i,
+    /\b(?:confirm|verify|review|approve) your (?:\S+\s+){0,3}(?:login|log[- ]?in|sign[- ]?in)\b/i,
+    /\b(?:login|sign[- ]?in|log[- ]?in)\s+(?:detected|alert|notification|activity)\b/i,
     // ── "Document/statement ready" availability (informational; payment demands vetoed below) ──
     /\byour (?:\w+\s+){0,2}(?:statement|tax document|document|report)\b[^\n]*\b(?:is ready|is available|now available|ready to view|available to view)\b/i,
     // ── Calendar event notifications (Google Calendar templated subject prefixes) ──
@@ -140,9 +148,11 @@ const FR: SubjectRules = {
     accented("\\bpaiement (?:reçu|confirmé|accepté)\\b"),
     accented("\\bmerci pour votre (?:commande|achat|paiement|réservation)\\b"),
     // ── Alertes de connexion / nouvel appareil (routine ; compromission vétoée) ──
-    accented("\\bnouvelle connexion\\b"),
+    accented("\\bnouvelle (?:\\S+\\s+){0,2}connexion\\b"),
     accented("\\bconnexion à votre compte\\b"),
     accented("\\bnouvel appareil\\b"),
+    accented("\\b(?:confirmez|vérifiez) (?:votre|une) (?:\\S+\\s+){0,3}connexion\\b"),
+    accented("\\bconnexion détectée\\b"),
     // ── Document / relevé disponible (informationnel ; facture/demande de paiement exclue) ──
     accented("\\bvotre (?:\\S+\\s+){0,2}(?:relevé|document|rapport|attestation)\\b[^\\n]*\\b(?:est (?:disponible|prêt|prête)|maintenant disponible|disponible)\\b"),
     // ── Notifications d'agenda (préfixes Google Agenda localisés) ──
@@ -188,6 +198,8 @@ const ES: SubjectRules = {
     accented("\\bnuevo inicio de sesión\\b"),
     accented("\\binicio de sesión en (?:tu|su) cuenta\\b"),
     accented("\\bnuevo dispositivo\\b"),
+    accented("\\b(?:confirma|verifica) (?:tu|su) (?:\\S+\\s+){0,3}(?:inicio de sesión|acceso)\\b"),
+    accented("\\b(?:inicio de sesión|acceso) detectad[oa]\\b"),
     // ── Documento / extracto disponible (informativo; factura excluida) ──
     accented("\\b(?:tu|su) (?:\\S+\\s+){0,2}(?:estado de cuenta|extracto|documento|informe)\\b[^\\n]*\\b(?:está (?:disponible|list[oa])|ya disponible|disponible)\\b"),
     // ── Notificaciones de calendario (prefijos de Google Calendar) ──
@@ -230,6 +242,8 @@ const DE: SubjectRules = {
     accented("\\bneue anmeldung\\b"),
     accented("\\banmeldung (?:bei|in) (?:ihrem|deinem) konto\\b"),
     accented("\\bneues gerät\\b"),
+    accented("\\b(?:bestätigen sie|bestätige) (?:ihre|deine) (?:\\S+\\s+){0,3}anmeldung\\b"),
+    accented("\\banmeldung erkannt\\b"),
     // ── Dokument / Kontoauszug verfügbar (informativ; Rechnung ausgeschlossen) ──
     accented("\\b(?:ihr|dein) (?:\\S+\\s+){0,2}(?:kontoauszug|auszug|dokument|bericht)\\b[^\\n]*\\b(?:ist (?:verfügbar|bereit)|jetzt verfügbar|steht (?:bereit|zur verfügung))\\b"),
     // ── Kalenderbenachrichtigungen (Google-Kalender-Präfixe) ──
@@ -274,6 +288,8 @@ const IT: SubjectRules = {
     accented("\\bnuovo accesso\\b"),
     accented("\\baccesso al tuo account\\b"),
     accented("\\bnuovo dispositivo\\b"),
+    accented("\\b(?:conferma|verifica) (?:il tuo|la tua) (?:\\S+\\s+){0,3}(?:accesso|login)\\b"),
+    accented("\\baccesso rilevato\\b"),
     // ── Documento / estratto conto disponibile (informativo; fattura esclusa) ──
     accented("\\b(?:il tuo|la tua) (?:\\S+\\s+){0,2}(?:estratto conto|estratto|documento|rapporto|report)\\b[^\\n]*\\b(?:è (?:disponibile|pront[oa])|ora disponibile|disponibile)\\b"),
     // ── Notifiche del calendario (prefissi di Google Calendar) ──
@@ -318,6 +334,8 @@ const PT: SubjectRules = {
     accented("\\bnovo (?:login|acesso)\\b"),
     accented("\\bacesso à sua conta\\b"),
     accented("\\bnovo dispositivo\\b"),
+    accented("\\b(?:confirme|verifique) (?:seu|sua) (?:\\S+\\s+){0,3}(?:login|acesso)\\b"),
+    accented("\\b(?:login|acesso) detectado\\b"),
     // ── Documento / extrato disponível (informativo; fatura excluída) ──
     accented("\\b(?:seu|sua) (?:\\S+\\s+){0,2}(?:extrato|documento|relatório|demonstrativo)\\b[^\\n]*\\b(?:está disponível|já disponível|disponível|pronto)\\b"),
     // ── Notificações de agenda (prefixos do Google Agenda) ──

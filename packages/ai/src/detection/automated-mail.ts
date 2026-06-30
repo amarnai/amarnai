@@ -111,6 +111,12 @@ function isStronglyAutomatedMessage(
  * make the thread look human (the user's reply is never automated, so a single
  * reply would otherwise defeat detection on an otherwise-automated thread).
  *
+ * A thread consisting ONLY of the owner's own messages is normally human (sent
+ * mail) and not automated — except when every such message is itself STRONGLY
+ * automated, e.g. Gmail's one-click "unsubscribe" message, which Gmail sends from
+ * the user's own address with the subject literally "unsubscribe". Requiring a
+ * strong signal on every message keeps genuine sent mail from being auto-filed.
+ *
  * Note: matching is on the `From` address only, so spoofed inbound mail forging
  * the owner's address would also be excluded. The blast radius is limited to
  * auto-filing into the visible catch-all folder (nothing is sent or deleted), so
@@ -122,7 +128,12 @@ export function detectAutomatedThread(messages: SnapshotMessage[], selfEmail?: s
     ? messages.filter((m) => m.senderEmail.trim().toLowerCase() !== self)
     : messages;
 
-  if (external.length === 0) return false;
+  if (external.length === 0) {
+    // Entirely the owner's own messages: human sent mail, UNLESS every message is
+    // strongly automated (Gmail-generated mail sent on the user's behalf). See the
+    // doc comment above.
+    return messages.length > 0 && messages.every(isStronglyAutomatedMessage);
+  }
   if (!external.every(isAutomatedMessage)) return false;
 
   // Gmail's human-priority hints (Primary/CATEGORY_PERSONAL, IMPORTANT) only veto

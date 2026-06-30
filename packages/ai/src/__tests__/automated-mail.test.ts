@@ -369,6 +369,53 @@ describe("detectAutomatedThread — transactional subjects (OTP / unsubscribe)",
   });
 });
 
+// Regression: real threads that wrongly reached NEEDS_REVIEW instead of catch-all.
+describe("detectAutomatedThread — regression: catch-all misses", () => {
+  it("auto-files Gmail's one-click 'unsubscribe' message sent from the owner's own address", () => {
+    const m = msg({ senderEmail: "owner@gmail.com", subject: "unsubscribe", labelIds: ["SENT"] });
+    expect(detectAutomatedThread([m], "owner@gmail.com")).toBe(true);
+  });
+
+  it("does NOT auto-file an ordinary self-sent message", () => {
+    const m = msg({ senderEmail: "owner@gmail.com", subject: "lunch plans", labelIds: ["SENT"] });
+    expect(detectAutomatedThread([m], "owner@gmail.com")).toBe(false);
+  });
+
+  it("auto-files a 'Confirm your new <brand> login' notice in Primary + IMPORTANT", () => {
+    const m = msg({
+      senderEmail: "hello@info.crunchyroll.com",
+      subject: "Confirm your new Crunchyroll login",
+      labelIds: ["INBOX", "CATEGORY_PERSONAL", "IMPORTANT"],
+    });
+    expect(detectAutomatedThread([m])).toBe(true);
+  });
+
+  const LOGIN_NOTICES = [
+    "Confirm your new Crunchyroll login",
+    "Confirm your login",
+    "Verify your sign-in",
+    "New login detected",
+    "New Crunchyroll login",
+    "Login activity on your account",
+  ];
+  it.each(LOGIN_NOTICES)("matches login-notice subject %j", (s) => {
+    expect(subjectIsTransactionalAuto(s)).toBe(true);
+  });
+
+  const BARE_UNSUB = ["unsubscribe", "Unsubscribe", "  unsubscribe  "];
+  it.each(BARE_UNSUB)("matches the exact one-word unsubscribe subject %j", (s) => {
+    expect(subjectIsTransactionalAuto(s)).toBe(true);
+  });
+
+  it("does NOT match 'unsubscribe' as a substring of a marketing subject", () => {
+    expect(subjectIsTransactionalAuto("Unsubscribe to stop receiving these emails")).toBe(false);
+  });
+
+  it("still vetoes a login subject that itself says suspicious (subject-level)", () => {
+    expect(subjectIsTransactionalAuto("Suspicious login: confirm your sign-in")).toBe(false);
+  });
+});
+
 // Language-agnostic signals must fire regardless of which locales are populated.
 describe("subjectIsTransactionalAuto — language-agnostic", () => {
   it("matches a subject that is only a 5-8 digit code", () => {
@@ -406,6 +453,7 @@ describe("subjectIsTransactionalAuto — French (fr)", () => {
     "Merci pour votre commande",
     "Nouvelle connexion à votre compte",
     "Connexion à votre compte depuis un nouvel appareil",
+    "Confirmez votre nouvelle connexion",
     "Votre relevé est disponible",
     "Votre relevé mensuel est maintenant disponible",
     "Invitation : Réunion d'équipe",
@@ -479,6 +527,7 @@ describe.each([
       "Pago recibido",
       "Gracias por tu compra",
       "Nuevo inicio de sesión en tu cuenta",
+      "Confirma tu inicio de sesión",
       "Tu extracto está disponible",
       "Invitación: Reunión de equipo",
     ],
@@ -506,6 +555,7 @@ describe.each([
       "Zahlung erhalten",
       "Vielen Dank für Ihre Bestellung",
       "Neue Anmeldung",
+      "Bestätigen Sie Ihre Anmeldung",
       "Ihr Kontoauszug ist verfügbar",
       "Einladung: Team-Meeting",
     ],
@@ -533,6 +583,7 @@ describe.each([
       "Pagamento ricevuto",
       "Grazie per il tuo ordine",
       "Nuovo accesso",
+      "Conferma il tuo accesso",
       "Il tuo estratto conto è disponibile",
       "Invito: Riunione del team",
     ],
@@ -560,6 +611,7 @@ describe.each([
       "Pagamento recebido",
       "Obrigado pela sua compra",
       "Novo login",
+      "Confirme seu login",
       "Seu extrato está disponível",
       "Convite: Reunião de equipe",
     ],
