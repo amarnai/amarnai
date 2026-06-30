@@ -3,6 +3,7 @@ import {
   db,
   getInboxPlanCeiling,
   resolveBackfillBudget,
+  ensureBackfillGrant,
   recordMeterUsage,
   inboxKeyFor,
   meterWindowStart,
@@ -268,12 +269,14 @@ export function createBackfillInboxWorker(): Worker {
             workspaceId,
             cap: cap.maxThreads,
             windowStart,
-            sizedForPlan: ceiling.plan,
           });
           runCeiling = startProcessed + budget.effectiveBudget;
         } else {
           // Self-host opt-out: bound only by this workspace's own plan cap (prior
-          // behavior), no pooling and no grace gate.
+          // behavior), no pooling and no grace gate. Still record the grant so that
+          // re-enabling enforcement later never strands this workspace (it stays
+          // grace-eligible rather than blocked).
+          await ensureBackfillGrant(inboxKey, workspaceId);
           runCeiling = cap.maxThreads;
         }
 

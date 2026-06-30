@@ -2,10 +2,7 @@ import { vi, describe, it, expect, beforeEach } from "vitest";
 import { authed } from "./helpers.js";
 
 const mockBilling = vi.hoisted(() => ({ enforceThreadSortQuota: true }));
-const { mockGetInboxPlanCeiling, mockGetMeterUsed } = vi.hoisted(() => ({
-  mockGetInboxPlanCeiling: vi.fn(),
-  mockGetMeterUsed: vi.fn(),
-}));
+const { mockResolveInboxQuota } = vi.hoisted(() => ({ mockResolveInboxQuota: vi.fn() }));
 
 vi.mock("@amarnai/config", () => ({
   config: {
@@ -27,10 +24,7 @@ vi.mock("@amarnai/db", () => ({
     gmailConnection: { findUnique: vi.fn() },
     $queryRaw: vi.fn(),
   },
-  getInboxPlanCeiling: mockGetInboxPlanCeiling,
-  inboxKeyFor: (a: string) => a,
-  meterWindowStart: () => new Date("2026-06-01T00:00:00Z"),
-  getMeterUsed: mockGetMeterUsed,
+  resolveInboxQuota: mockResolveInboxQuota,
 }));
 
 vi.mock("../queues.js", () => ({
@@ -93,8 +87,12 @@ beforeEach(() => {
     gmailAddress: "ben@gmail.com",
     status: "ACTIVE",
   } as never);
-  mockGetInboxPlanCeiling.mockResolvedValue({ plan: "FREE", billingCycle: null });
-  mockGetMeterUsed.mockResolvedValue(0);
+  mockResolveInboxQuota.mockResolvedValue({
+    inboxKey: "ben@gmail.com",
+    windowStart: new Date("2026-06-01T00:00:00Z"),
+    plan: "FREE",
+    used: 0,
+  });
 });
 
 // ─── ai-classify ──────────────────────────────────────────────────────────────
@@ -158,7 +156,7 @@ describe("POST /workspaces/:workspaceId/email-threads/:threadId/ai-classify", ()
 describe("POST /workspaces/:workspaceId/email-threads/:threadId/ai-classify — quota", () => {
   it("allows the request when usage is below the limit", async () => {
     // 499 of 500 FREE-plan slots used — one remaining.
-    mockGetMeterUsed.mockResolvedValue(499);
+    mockResolveInboxQuota.mockResolvedValue({ inboxKey: "ben@gmail.com", windowStart: new Date(), plan: "FREE", used: 499 });
     const res = await post(`/workspaces/${WS_ID}/email-threads/${THREAD_ID}/ai-classify`);
     expect(res.status).toBe(202);
     expect(classifyThreadQueue.add).toHaveBeenCalledOnce();
@@ -166,7 +164,7 @@ describe("POST /workspaces/:workspaceId/email-threads/:threadId/ai-classify — 
 
   it("returns 429 with quota details when the monthly limit is reached", async () => {
     // 500 of 500 — at the FREE limit.
-    mockGetMeterUsed.mockResolvedValue(500);
+    mockResolveInboxQuota.mockResolvedValue({ inboxKey: "ben@gmail.com", windowStart: new Date(), plan: "FREE", used: 500 });
     const res = await post(`/workspaces/${WS_ID}/email-threads/${THREAD_ID}/ai-classify`);
     expect(res.status).toBe(429);
     const body = await res.json() as Record<string, unknown>;
@@ -177,16 +175,15 @@ describe("POST /workspaces/:workspaceId/email-threads/:threadId/ai-classify — 
   });
 
   it("does not stamp classifyingAt or enqueue a job when quota is exceeded", async () => {
-    mockGetMeterUsed.mockResolvedValue(500);
+    mockResolveInboxQuota.mockResolvedValue({ inboxKey: "ben@gmail.com", windowStart: new Date(), plan: "FREE", used: 500 });
     await post(`/workspaces/${WS_ID}/email-threads/${THREAD_ID}/ai-classify`);
     expect(db.emailThread.update).not.toHaveBeenCalled();
     expect(classifyThreadQueue.add).not.toHaveBeenCalled();
   });
 
   it("uses the inbox plan-ceiling limit (PRO allows 10 000 threads per month)", async () => {
-    mockGetInboxPlanCeiling.mockResolvedValue({ plan: "PRO", billingCycle: "MONTHLY" });
     // 500 used — over the FREE limit but under the PRO limit of 10 000.
-    mockGetMeterUsed.mockResolvedValue(500);
+    mockResolveInboxQuota.mockResolvedValue({ inboxKey: "ben@gmail.com", windowStart: new Date(), plan: "PRO", used: 500 });
     const res = await post(`/workspaces/${WS_ID}/email-threads/${THREAD_ID}/ai-classify`);
     expect(res.status).toBe(202);
   });
@@ -195,19 +192,18 @@ describe("POST /workspaces/:workspaceId/email-threads/:threadId/ai-classify — 
     // No inbox to meter against → the soft pre-check is skipped (the worker is
     // authoritative); the sort proceeds.
     vi.mocked(db.gmailConnection.findUnique).mockResolvedValue(null);
-    mockGetMeterUsed.mockResolvedValue(500);
     const res = await post(`/workspaces/${WS_ID}/email-threads/${THREAD_ID}/ai-classify`);
     expect(res.status).toBe(202);
-    expect(mockGetMeterUsed).not.toHaveBeenCalled();
+    expect(mockResolveInboxQuota).not.toHaveBeenCalled();
   });
 
   it("skips the quota check entirely when enforcement is disabled", async () => {
     mockBilling.enforceThreadSortQuota = false;
     // Usage at the FREE limit — should still proceed because enforcement is off.
-    mockGetMeterUsed.mockResolvedValue(500);
+    mockResolveInboxQuota.mockResolvedValue({ inboxKey: "ben@gmail.com", windowStart: new Date(), plan: "FREE", used: 500 });
     const res = await post(`/workspaces/${WS_ID}/email-threads/${THREAD_ID}/ai-classify`);
     expect(res.status).toBe(202);
-    expect(mockGetMeterUsed).not.toHaveBeenCalled();
+    expect(mockResolveInboxQuota).not.toHaveBeenCalled();
   });
 });
 

@@ -1,13 +1,5 @@
 import { Worker } from "bullmq";
-import {
-  db,
-  eligibleThreadWhere,
-  getInboxPlanCeiling,
-  inboxKeyFor,
-  meterWindowStart,
-  getMeterUsed,
-  recordMeterUsage,
-} from "@amarnai/db";
+import { db, eligibleThreadWhere, resolveInboxQuota, recordMeterUsage } from "@amarnai/db";
 import {
   createAIProvider,
   getTaxonomyAIProviderConfig,
@@ -277,16 +269,13 @@ export async function runGenerateTaxonomyJob(
   // row — those are workspace-local UX state and correctly reset. `recordWindow`
   // is always the calendar month (usage recorded for observability); the cap is
   // only ENFORCED when enforceTaxonomyQuota is on (self-host can opt out).
-  const recordWindow = connection ? meterWindowStart(now) : null;
+  const quota = connection ? await resolveInboxQuota(connection.gmailAddress, "TAXONOMY_GEN", now) : null;
   const enforceTaxonomy = config.billing.enforceTaxonomyQuota;
-  const genWindowStart = enforceTaxonomy ? recordWindow : null;
-  const genInWindow =
-    connection && enforceTaxonomy && recordWindow
-      ? await getMeterUsed(inboxKeyFor(connection.gmailAddress), "TAXONOMY_GEN", recordWindow)
-      : 0;
-  const genPlan = connection
-    ? (await getInboxPlanCeiling(connection.gmailAddress)).plan
-    : workspace.plan;
+  const genPlan = quota?.plan ?? workspace.plan;
+  // The cap is only ENFORCED when the flag is on; a null window makes the backstop
+  // branch in computeGenerationEligibility inert. Usage is still recorded below.
+  const genWindowStart = enforceTaxonomy ? quota?.windowStart ?? null : null;
+  const genInWindow = enforceTaxonomy ? quota?.used ?? 0 : 0;
 
   const eligibility = computeGenerationEligibility({
     lastOutcome: state?.lastOutcome ?? null,
@@ -346,11 +335,11 @@ export async function runGenerateTaxonomyJob(
   // Count this generation against the reset-immune, inbox-pooled backstop meter.
   // Always recorded (even when enforcement is off) for observability.
   // (The delta-gate + cooldown fields below stay on the state row.)
-  if (connection && recordWindow) {
+  if (quota) {
     await recordMeterUsage({
-      inboxKey: inboxKeyFor(connection.gmailAddress),
+      inboxKey: quota.inboxKey,
       kind: "TAXONOMY_GEN",
-      windowStart: recordWindow,
+      windowStart: quota.windowStart,
       delta: 1,
       sizedForPlan: genPlan,
     });

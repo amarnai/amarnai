@@ -3,10 +3,8 @@ import { z } from "zod";
 import {
   db,
   getThreadSortUsage,
-  getInboxPlanCeiling,
-  inboxKeyFor,
+  resolveInboxQuota,
   meterWindowStart,
-  getMeterUsed,
   recordMeterUsage,
 } from "@amarnai/db";
 import { createAIProvider, generateDraft, getDraftAIProviderConfig, type ThreadMessage } from "@amarnai/ai";
@@ -160,12 +158,11 @@ drafts.post(
 
     // Inbox-keyed draft meter context (reset-immune, pooled by inbox, sized by the
     // top plan among workspaces sharing this inbox). Null for the mock/dev path
-    // (no Gmail connection), where the draft quota is not metered.
-    const draftInboxKey = gmailConnection ? inboxKeyFor(gmailConnection.gmailAddress) : null;
-    const draftWindowStart = meterWindowStart();
-    const draftPlan = gmailConnection
-      ? (await getInboxPlanCeiling(gmailConnection.gmailAddress)).plan
-      : workspace.plan;
+    // (no Gmail connection), where the draft quota is not metered. `used` here is
+    // ignored — the gate re-reads it transactionally under the workspace lock below.
+    const draftQuota = gmailConnection
+      ? await resolveInboxQuota(gmailConnection.gmailAddress, "DRAFT")
+      : null;
 
     let provider;
     try {
@@ -209,8 +206,8 @@ drafts.post(
       // bypass the limit (user at 3/3 frees a slot then immediately fills it).
       // The supersede happens after the new draft is committed (see below).
 
-      if (config.billing.enforceDraftQuota && draftInboxKey) {
-        const limit = getDraftLimit(draftPlan);
+      if (config.billing.enforceDraftQuota && draftQuota) {
+        const limit = getDraftLimit(draftQuota.plan);
         // Read the reset-immune, inbox-pooled draft meter. Recorded on the success
         // transition below, so FAILED generations never burn allowance. Concurrent
         // requests are serialized by the Workspace FOR UPDATE lock above; requests
@@ -219,9 +216,9 @@ drafts.post(
         const meterRow = await tx.inboxUsageMeter.findUnique({
           where: {
             inboxKey_kind_windowStart: {
-              inboxKey: draftInboxKey,
+              inboxKey: draftQuota.inboxKey,
               kind: "DRAFT",
-              windowStart: draftWindowStart,
+              windowStart: draftQuota.windowStart,
             },
           },
           select: { used: true },
@@ -334,11 +331,11 @@ drafts.post(
     // Record the successful generation against the reset-immune inbox meter. Only
     // committed (non-FAILED) drafts count, so a failed LLM call never burns
     // allowance. Runs regardless of the enforce flag (self-host observability).
-    if (draftInboxKey) {
+    if (draftQuota) {
       await recordMeterUsage({
-        inboxKey: draftInboxKey,
+        inboxKey: draftQuota.inboxKey,
         kind: "DRAFT",
-        windowStart: draftWindowStart,
+        windowStart: draftQuota.windowStart,
         delta: 1,
       });
     }
@@ -377,15 +374,11 @@ drafts.get(
     });
 
     const now = new Date();
-    const windowStart = meterWindowStart(now);
-    const plan = connection ? (await getInboxPlanCeiling(connection.gmailAddress)).plan : "FREE";
-    const limit = getDraftLimit(plan);
-    const used = connection
-      ? await getMeterUsed(inboxKeyFor(connection.gmailAddress), "DRAFT", windowStart)
-      : 0;
+    const quota = connection ? await resolveInboxQuota(connection.gmailAddress, "DRAFT", now) : null;
+    const limit = getDraftLimit(quota?.plan ?? "FREE");
 
     return c.json({
-      used,
+      used: quota?.used ?? 0,
       limit,
       resetsAt: getDraftQuotaResetsAt(now).toISOString(),
     });
@@ -414,17 +407,14 @@ drafts.get(
     });
 
     const now = new Date();
-    const windowStart = meterWindowStart(now);
-    const plan = connection ? (await getInboxPlanCeiling(connection.gmailAddress)).plan : "FREE";
-    const limit = getThreadSortLimit(plan);
+    const quota = connection ? await resolveInboxQuota(connection.gmailAddress, "THREAD_SORT", now) : null;
+    const limit = getThreadSortLimit(quota?.plan ?? "FREE");
 
     // "used"/"recurring" come from the reset-immune, inbox-pooled meter (what the
     // limit enforces). "backfill" stays a per-workspace informational count of
     // one-time historical sorts (exempt from the limit).
-    const used = connection
-      ? await getMeterUsed(inboxKeyFor(connection.gmailAddress), "THREAD_SORT", windowStart)
-      : 0;
-    const usage = await getThreadSortUsage(workspaceId, windowStart);
+    const used = quota?.used ?? 0;
+    const usage = await getThreadSortUsage(workspaceId, quota?.windowStart ?? meterWindowStart(now));
 
     return c.json({
       used,

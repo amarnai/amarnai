@@ -14,7 +14,10 @@ export {
   inboxKeyFor,
   getMeterUsed,
   recordMeterUsage,
+  resolveInboxQuota,
+  ensureBackfillGrant,
   resolveBackfillBudget,
+  type InboxQuota,
   type BackfillBudget,
 } from "./usage-meter.js";
 export { Prisma, PrismaClient, WorkspacePlan, BillingCycle } from "@prisma/client";

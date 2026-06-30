@@ -1,6 +1,7 @@
 import { MeterKind, WorkspacePlan } from "@prisma/client";
 import { normalizeInboxKey, getDraftQuotaWindowStart } from "@amarnai/shared";
 import { db } from "./client.js";
+import { getInboxPlanCeiling } from "./inbox-entitlement.js";
 
 // Reset-immune, inbox-keyed usage accounting. This is the single place that reads
 // and writes InboxUsageMeter / InboxBackfillGrant so the four cost meters (backfill,
@@ -58,6 +59,51 @@ export async function recordMeterUsage(params: {
   });
 }
 
+export interface InboxQuota {
+  /** Normalized inbox identity — the pooling/meter key. */
+  inboxKey: string;
+  /** Calendar-month UTC window bucket. */
+  windowStart: Date;
+  /** Top plan among workspaces sharing this inbox — sizes the per-kind limit. */
+  plan: WorkspacePlan;
+  /** Usage recorded for this inbox+kind in the current window. */
+  used: number;
+}
+
+/**
+ * Resolve the inbox-keyed quota context for a connected inbox: the meter key, the
+ * window, the pooled plan ceiling, and current usage. The single source for the
+ * read pattern shared by every quota gate (thread-sort, draft, taxonomy) so the
+ * keying and window logic never drift between call sites. Callers map `plan` to a
+ * limit via the per-kind get*Limit helper and compare against `used`.
+ */
+export async function resolveInboxQuota(
+  gmailAddress: string,
+  kind: MeterKind,
+  now?: Date,
+): Promise<InboxQuota> {
+  const inboxKey = inboxKeyFor(gmailAddress);
+  const windowStart = meterWindowStart(now);
+  const { plan } = await getInboxPlanCeiling(gmailAddress);
+  const used = await getMeterUsed(inboxKey, kind, windowStart);
+  return { inboxKey, windowStart, plan, used };
+}
+
+/**
+ * Record that a workspace has been granted its one-time free import of this inbox.
+ * Idempotent. Called both inside the enforced budget path and when enforcement is
+ * OFF, so toggling ENFORCE_BACKFILL_QUOTA never strands a workspace: a workspace
+ * that imported under enforcement-off still has a grant and stays grace-eligible
+ * (rather than blocked) if enforcement is later turned on.
+ */
+export async function ensureBackfillGrant(inboxKey: string, workspaceId: string): Promise<void> {
+  await db.inboxBackfillGrant.upsert({
+    where: { inboxKey_workspaceId: { inboxKey, workspaceId } },
+    create: { inboxKey, workspaceId },
+    update: {},
+  });
+}
+
 export interface BackfillBudget {
   /** Threads this run may still process for the inbox this window. */
   effectiveBudget: number;
@@ -87,9 +133,8 @@ export async function resolveBackfillBudget(params: {
   workspaceId: string;
   cap: number;
   windowStart: Date;
-  sizedForPlan: WorkspacePlan;
 }): Promise<BackfillBudget> {
-  const { inboxKey, workspaceId, cap, windowStart, sizedForPlan } = params;
+  const { inboxKey, workspaceId, cap, windowStart } = params;
 
   const meter = await db.inboxUsageMeter.findUnique({
     where: { inboxKey_kind_windowStart: { inboxKey, kind: "BACKFILL", windowStart } },
@@ -102,11 +147,7 @@ export async function resolveBackfillBudget(params: {
   if (base > 0) {
     // First import or resume: ensure the per-workspace grant exists so a later
     // post-reset re-import by this workspace is recognized as a re-run.
-    await db.inboxBackfillGrant.upsert({
-      where: { inboxKey_workspaceId: { inboxKey, workspaceId } },
-      create: { inboxKey, workspaceId },
-      update: {},
-    });
+    await ensureBackfillGrant(inboxKey, workspaceId);
     return { effectiveBudget: base, graceConsumed: false, blockedAwaitingWindow: false };
   }
 
@@ -118,16 +159,25 @@ export async function resolveBackfillBudget(params: {
       select: { id: true },
     });
     if (grant) {
-      await db.inboxUsageMeter.upsert({
-        where: { inboxKey_kind_windowStart: { inboxKey, kind: "BACKFILL", windowStart } },
-        create: { inboxKey, kind: "BACKFILL", windowStart, used, graceUsed: true, sizedForPlan },
-        update: { graceUsed: true },
+      // Claim the single grace token ATOMICALLY: only the run whose conditional
+      // update flips graceUsed false->true wins it. Without this, two concurrent
+      // backfills for the same inbox (e.g. two workspaces sharing it, on separate
+      // worker replicas) could each read graceUsed=false and both grant a 2x-cap
+      // budget, blowing past the 2x-cap/inbox/month bound. The row is guaranteed to
+      // exist here (used >= cap > 0 came from it). Mirrors the backfill claim guard.
+      const claim = await db.inboxUsageMeter.updateMany({
+        where: { inboxKey, kind: "BACKFILL", windowStart, graceUsed: false },
+        data: { graceUsed: true },
       });
-      return {
-        effectiveBudget: Math.max(0, 2 * cap - used),
-        graceConsumed: true,
-        blockedAwaitingWindow: false,
-      };
+      if (claim.count === 1) {
+        return {
+          effectiveBudget: Math.max(0, 2 * cap - used),
+          graceConsumed: true,
+          blockedAwaitingWindow: false,
+        };
+      }
+      // Lost the race — another run already took this window's grace.
+      return { effectiveBudget: 0, graceConsumed: false, blockedAwaitingWindow: true };
     }
   }
 

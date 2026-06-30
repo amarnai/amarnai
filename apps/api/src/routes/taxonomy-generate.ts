@@ -1,13 +1,6 @@
 import { Hono } from "hono";
 import { z } from "zod";
-import {
-  db,
-  eligibleThreadWhere,
-  getInboxPlanCeiling,
-  inboxKeyFor,
-  meterWindowStart,
-  getMeterUsed,
-} from "@amarnai/db";
+import { db, eligibleThreadWhere, resolveInboxQuota } from "@amarnai/db";
 import {
   computeGenerationEligibility,
   emailDomain,
@@ -59,14 +52,12 @@ async function evaluate(workspaceId: string): Promise<EvalResult> {
   // path (generation can't run without an inbox anyway).
   const now = new Date();
   const enforceTaxonomy = config.billing.enforceTaxonomyQuota;
-  const genWindowStart = connection && enforceTaxonomy ? meterWindowStart(now) : null;
-  const genInWindow =
-    connection && enforceTaxonomy && genWindowStart
-      ? await getMeterUsed(inboxKeyFor(connection.gmailAddress), "TAXONOMY_GEN", genWindowStart)
-      : 0;
-  const genPlan = connection
-    ? (await getInboxPlanCeiling(connection.gmailAddress)).plan
-    : workspace?.plan ?? "FREE";
+  const quota = connection ? await resolveInboxQuota(connection.gmailAddress, "TAXONOMY_GEN", now) : null;
+  const genPlan = quota?.plan ?? workspace?.plan ?? "FREE";
+  // The cap is only ENFORCED when the flag is on (self-host can opt out); a null
+  // window makes computeGenerationEligibility skip the backstop branch.
+  const genWindowStart = enforceTaxonomy ? quota?.windowStart ?? null : null;
+  const genInWindow = enforceTaxonomy ? quota?.used ?? 0 : 0;
 
   const settings = {
     includeSpam: settingsRow?.includeSpam ?? false,

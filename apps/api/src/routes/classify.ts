@@ -1,12 +1,6 @@
 import { Hono } from "hono";
 import { z } from "zod";
-import {
-  db,
-  getInboxPlanCeiling,
-  inboxKeyFor,
-  meterWindowStart,
-  getMeterUsed,
-} from "@amarnai/db";
+import { db, resolveInboxQuota } from "@amarnai/db";
 import { getDraftQuotaResetsAt, getThreadSortLimit } from "@amarnai/shared";
 import { config } from "@amarnai/config";
 import { mockClassify } from "../services/mock-classifier.js";
@@ -63,10 +57,8 @@ classify.post(
       });
       if (connection && connection.status === "ACTIVE") {
         const now = new Date();
-        const windowStart = meterWindowStart(now);
-        const { plan } = await getInboxPlanCeiling(connection.gmailAddress);
+        const { plan, used } = await resolveInboxQuota(connection.gmailAddress, "THREAD_SORT", now);
         const limit = getThreadSortLimit(plan);
-        const used = await getMeterUsed(inboxKeyFor(connection.gmailAddress), "THREAD_SORT", windowStart);
 
         if (used >= limit) {
           return c.json(
