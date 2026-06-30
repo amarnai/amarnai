@@ -5256,12 +5256,18 @@ a {
 .modal-illo-col {
   width: 180px;
   flex-shrink: 0;
+  /* Don't stretch to the modal's height: otherwise the image box grows with the
+     text and object-fit crops the (square) illustration by a varying amount. */
+  align-self: flex-start;
   padding: 20px 0 20px 20px;
 }
 
 .modal-illo-col img {
   width: 100%;
-  height: 100%;
+  /* Keep a fixed square box matching the source art so the image is always the
+     same size and never cropped, regardless of how long the modal text is. */
+  aspect-ratio: 1 / 1;
+  height: auto;
   border-radius: var(--r-md);
   object-fit: cover;
   object-position: top center;
