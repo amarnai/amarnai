@@ -73,7 +73,7 @@ export function SuggestedDraftCard({ draft, onToggleSent, onRegenerate, quota }:
             {isSent ? <Trans>Mark as unsent</Trans> : <Trans>Mark as sent</Trans>}
           </button>
           {onRegenerate && (
-            <Tooltip content={quotaExhausted ? i18n._(msg`No drafts remaining this month`) : i18n._(msg`Generate a new draft — uses one from your monthly allowance`)}>
+            <Tooltip content={quotaExhausted ? i18n._(msg`No drafts remaining this month`) : i18n._(msg`Generate a new draft. Uses one from your monthly allowance`)}>
               <button
                 type="button"
                 className="em-btn ghost"

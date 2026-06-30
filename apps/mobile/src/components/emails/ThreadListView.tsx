@@ -11,6 +11,10 @@ import { DATE_SECTION_LABELS } from './queueLabels';
 interface ThreadListViewProps {
   threads: ThreadItem[];
   emptyText?: string;
+  // True while the historical backfill is still fetching past threads from
+  // Gmail. When the list is empty because of this, show a loading state with a
+  // spinner instead of the empty message.
+  backfilling?: boolean;
   onRefresh: () => Promise<void>;
   onThreadPress: (threadId: string) => void;
   // Rendered inside the scroll area, above the threads, so it scrolls with the
@@ -28,6 +32,7 @@ interface ThreadListViewProps {
 export function ThreadListView({
   threads,
   emptyText,
+  backfilling,
   onRefresh,
   onThreadPress,
   listHeader,
@@ -104,7 +109,16 @@ export function ThreadListView({
       }
       ListEmptyComponent={
         <View style={styles.emptyContainer}>
-          <Text style={styles.emptyText}>{resolvedEmptyText}</Text>
+          {backfilling ? (
+            <View style={styles.emptyLoading}>
+              <ActivityIndicator color={colors.ink3} size="small" />
+              <Text style={styles.emptyText}>
+                <Trans>Loading past threads…</Trans>
+              </Text>
+            </View>
+          ) : (
+            <Text style={styles.emptyText}>{resolvedEmptyText}</Text>
+          )}
         </View>
       }
       stickySectionHeadersEnabled={false}
@@ -132,6 +146,11 @@ const styles = StyleSheet.create({
   },
   emptyContainer: {
     alignItems: 'center',
+  },
+  emptyLoading: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: space.sm,
   },
   emptyText: {
     fontSize: fontSize.md,

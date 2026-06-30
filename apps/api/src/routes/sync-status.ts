@@ -50,6 +50,7 @@ syncStatus.get("/workspaces/:workspaceId/sync-status", async (c) => {
         backfillCapReached: true,
         backfillBeyondCount: true,
         backfillProcessedCount: true,
+        backfillRoutingStartedAt: true,
       },
     }),
     db.gmailSyncSettings.findUnique({
@@ -107,6 +108,9 @@ syncStatus.get("/workspaces/:workspaceId/sync-status", async (c) => {
     backfillLoadedThreads,
     backfillTotalThreads,
     backfillAwaitingTaxonomy,
+    // Whether the user has started backfill routing. Until then the import runs
+    // but nothing is classified; clients surface the "Start sorting" action.
+    backfillRoutingStarted: state.backfillRoutingStartedAt != null,
     sortingPaused: syncSettings?.sortingPaused ?? false,
     workspacePlan: workspace?.plan ?? "FREE",
     pushEnabled,

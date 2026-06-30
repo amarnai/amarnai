@@ -10,20 +10,27 @@ import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
 interface UnroutedBannerProps {
   waitingCount: number;
   routableFolderCount: number;
+  /** True once the user has started backfill routing (from sync-status). */
+  routingStarted: boolean;
   onRouteNow: () => void;
 }
 
-export function UnroutedBanner({ waitingCount, routableFolderCount, onRouteNow }: UnroutedBannerProps) {
+export function UnroutedBanner({ waitingCount, routableFolderCount, routingStarted, onRouteNow }: UnroutedBannerProps) {
   const router = useRouter();
   const { i18n } = useLingui();
   const [routing, setRouting] = useState(false);
+  // Optimistic: hide immediately on press so the banner does not linger while the
+  // in-flight import keeps committing PENDING threads (sync-status confirms it on
+  // its next poll via routingStarted).
+  const [started, setStarted] = useState(false);
 
   if (waitingCount === 0) return null;
 
   const taxonomyWeak = routableFolderCount < TAXONOMY_MIN_NON_ROOT_NODES;
 
-  async function handleRouteNow() {
+  async function handleStartSorting() {
     setRouting(true);
+    setStarted(true);
     onRouteNow();
     // optimistic: reset after a short delay (the handler is fire-and-forget)
     setTimeout(() => setRouting(false), 2000);
@@ -52,23 +59,28 @@ export function UnroutedBanner({ waitingCount, routableFolderCount, onRouteNow }
     );
   }
 
+  // Routing already started: the armed sweep routes whatever the in-flight import
+  // commits next, so the start CTA is done — hide it instead of letting newly
+  // imported PENDING threads keep it on screen until the import finishes.
+  if (routingStarted || started) return null;
+
   return (
     <View style={[styles.banner, styles.bannerOk]}>
       <Text style={styles.okText}>
         {i18n._(
           msg`${plural(waitingCount, {
-            one: '# thread is ready to route.',
-            other: '# threads are ready to route.',
+            one: '# thread is ready to sort into your folders.',
+            other: '# threads are ready to sort into your folders.',
           })}`,
         )}
       </Text>
       <TouchableOpacity
         style={styles.btnOk}
-        onPress={handleRouteNow}
+        onPress={handleStartSorting}
         disabled={routing}
       >
         <Text style={styles.btnOkText}>
-          {routing ? <Trans>Routing…</Trans> : <Trans>Route now</Trans>}
+          {routing ? <Trans>Starting…</Trans> : <Trans>Start sorting</Trans>}
         </Text>
       </TouchableOpacity>
     </View>

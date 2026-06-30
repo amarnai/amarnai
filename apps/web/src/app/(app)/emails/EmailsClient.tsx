@@ -202,6 +202,7 @@ export function EmailsClient({
       workspaceId={workspaceId}
       waitingCount={triage.serverWaitingCount}
       routableNodeCount={routableNodeCount}
+      routingStarted={syncStatus?.backfillRoutingStarted ?? false}
       onRouted={triage.markWaitingClassifying}
     />
     <PlanCapBanner syncStatus={syncStatus} />
@@ -245,6 +246,7 @@ export function EmailsClient({
         loadingMore={triage.loadingMore}
         onLoadMore={triage.loadMore}
         total={triage.filteredTotal}
+        backfilling={syncStatus?.backfillStatus === "RUNNING"}
       />
 
       {selectedThread ? (

@@ -336,6 +336,12 @@ model ProviderSyncState {
   // PENDING threads for routing instead of leaving them for another manual click.
   // Cleared when the backfill reaches a terminal state (DONE or ERROR).
   autoRouteBacklogArmed  Boolean     @default(false)
+  // The live/backfill boundary: set the first time the user explicitly starts
+  // backfill routing. Null means routing has not been started — the import runs
+  // automatically on connect but nothing is classified, and live sync leaves
+  // newly-arrived threads PENDING (they are swept as BACKFILL on start). Once
+  // set, live sync resumes classifying new threads as LIVE.
+  backfillRoutingStartedAt DateTime?
   // Set to true after a one-time pass that marks existing threads with gmailIsImportant.
   importantBackfilled Boolean        @default(false)
   // Whether the last backfill stopped because it hit the plan's thread cap (more

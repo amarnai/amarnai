@@ -64,6 +64,10 @@ export interface ThreadListProps {
   loadingMore?: boolean;
   onLoadMore?: () => void;
   total?: number;
+  // True while the historical backfill is still fetching past threads from
+  // Gmail. When the list is empty because of this, show a loading state
+  // instead of the "no threads" empty message.
+  backfilling?: boolean;
 }
 
 export function ThreadList({
@@ -86,6 +90,7 @@ export function ThreadList({
   loadingMore,
   onLoadMore,
   total,
+  backfilling,
 }: ThreadListProps) {
   // The list is already filtered server-side (active view + search), so render
   // the loaded threads directly. `total` is the server count for "X threads".
@@ -131,6 +136,11 @@ export function ThreadList({
           <div className="em-empty">
             {query ? (
               <Trans>No threads match your search.</Trans>
+            ) : backfilling ? (
+              <span className="em-empty-loading">
+                <span className="em-chip-spin" aria-hidden />
+                <Trans>Loading past threads…</Trans>
+              </span>
             ) : (
               <Trans>No threads here.</Trans>
             )}

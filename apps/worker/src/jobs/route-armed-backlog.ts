@@ -8,15 +8,18 @@ import { classifyThreadQueue } from "../queues.js";
  * null), and not already queued (classifyingAt null).
  *
  * Called only while ProviderSyncState.autoRouteBacklogArmed is set — i.e. the user
- * clicked "Route now" while a backfill was still in flight, opting the arriving
- * historical backlog into automatic routing until the backfill completes. This
- * closes the race where a backfill chunk leaves threads PENDING around the same
- * time as the click, which would otherwise re-surface the "Route now" banner.
+ * started backfill routing while a backfill was still in flight, opting the
+ * arriving historical backlog into automatic routing until the backfill completes.
+ * This closes the race where a backfill chunk leaves threads PENDING around the
+ * same time as the start, which would otherwise re-surface the start banner.
  *
- * Tagged REROUTE and dedup-keyed identically to the manual "Route now" path
- * (DEDUP_CLASSIFY_UNROUTED) so a thread already queued by that path is never
- * double-enqueued. The caller gates on a strong taxonomy and sorting not being
- * paused — the conditions under which routing can actually succeed.
+ * Tagged BACKFILL — arming only happens during an active (initial) backfill, so
+ * this sweep is part of the one-time historical allowance, exempt from the monthly
+ * thread-sort quota, matching the manual start path. Dedup-keyed identically to
+ * the manual start path (DEDUP_CLASSIFY_UNROUTED) so a thread already queued by
+ * that path is never double-enqueued. The caller gates on a strong taxonomy and
+ * sorting not being paused — the conditions under which routing can actually
+ * succeed.
  *
  * Returns the number of threads enqueued.
  */
@@ -43,7 +46,7 @@ export async function enqueueArmedBacklog(workspaceId: string): Promise<number> 
   await classifyThreadQueue.addBulk(
     backlog.map(({ id: emailThreadId }) => ({
       name: "classify-thread",
-      data: { workspaceId, emailThreadId, source: "REROUTE" as const },
+      data: { workspaceId, emailThreadId, source: "BACKFILL" as const },
       opts: {
         deduplication: { id: `${DEDUP_CLASSIFY_UNROUTED}_${workspaceId}_${emailThreadId}` },
         priority: 5,

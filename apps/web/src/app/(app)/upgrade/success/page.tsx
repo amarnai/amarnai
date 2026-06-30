@@ -7,7 +7,7 @@ import { WorkspaceSetupWaiting } from "./WorkspaceSetupWaiting";
 import { Trans } from "@lingui/react/macro";
 import { initServerI18n } from "@/lib/i18n-server";
 
-export const metadata = { title: "Upgrade Successful — Amarnai" };
+export const metadata = { title: "Upgrade Successful | Amarnai" };
 
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 

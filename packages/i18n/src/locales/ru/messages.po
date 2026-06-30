@@ -72,8 +72,8 @@ msgstr "{0} / {1} осталось · обновится {2}"
 #. placeholder {0}: threads.length.toLocaleString()
 #. placeholder {1}: (total ?? 0).toLocaleString()
 #. placeholder {1}: viewCount.toLocaleString()
-#: ../../apps/mobile/src/components/emails/ThreadListView.tsx:76
-#: ../ui/src/emails/ThreadList.tsx:168
+#: ../../apps/mobile/src/components/emails/ThreadListView.tsx:81
+#: ../ui/src/emails/ThreadList.tsx:178
 #, fuzzy
 msgid "{0} of {1} loaded"
 msgstr "{0} из {1} загружено"
@@ -176,10 +176,15 @@ msgstr "{unreadCount} непрочитано"
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:59
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:65
 #, fuzzy
-msgid "{waitingCount, plural, one {# thread is ready to route.} other {# threads are ready to route.}}"
-msgstr "{waitingCount, plural, one {# поток готов к маршрутизации.} other {# потоков готовы к маршрутизации.}}"
+#~ msgid "{waitingCount, plural, one {# thread is ready to route.} other {# threads are ready to route.}}"
+#~ msgstr "{waitingCount, plural, one {# поток готов к маршрутизации.} other {# потоков готовы к маршрутизации.}}"
 
-#: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:38
+#: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
+#: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:77
+msgid "{waitingCount, plural, one {# thread is ready to sort into your folders.} other {# threads are ready to sort into your folders.}}"
+msgstr "{waitingCount, plural, one {# поток готов к сортировке по папкам.} other {# потоков готовы к сортировке по папкам.}}"
+
+#: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:45
 #, fuzzy
 msgid "{waitingCount, plural, one {# thread is waiting to be routed. Set up your folders to start sorting.} other {# threads are waiting to be routed. Set up your folders to start sorting.}}"
 msgstr "{waitingCount, plural, one {# поток ожидает маршрутизации. Настройте папки для начала сортировки.} other {# потоков ожидают маршрутизации. Настройте папки для начала сортировки.}}"
@@ -189,7 +194,7 @@ msgstr "{waitingCount, plural, one {# поток ожидает маршрути
 #~ msgid "{waitingCount, plural, one {# thread is waiting. Connect at least {TAXONOMY_MIN_NON_ROOT_NODES} folders to begin sorting.} other {# threads are waiting. Connect at least {TAXONOMY_MIN_NON_ROOT_NODES} folders to begin sorting.}}"
 #~ msgstr "{waitingCount, plural, one {# поток ожидает. Подключите минимум {TAXONOMY_MIN_NON_ROOT_NODES} папок, чтобы начать сортировку.} other {# потоков ожидают. Подключите минимум {TAXONOMY_MIN_NON_ROOT_NODES} папок, чтобы начать сортировку.}}"
 
-#: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:37
+#: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:44
 msgid "{waitingCount, plural, one {# thread is waiting.} other {# threads are waiting.}} Connect at least {TAXONOMY_MIN_NON_ROOT_NODES} folders to begin sorting."
 msgstr "{waitingCount, plural, one {# поток ожидает.} other {# потоков ожидают.}} Подключите минимум {TAXONOMY_MIN_NON_ROOT_NODES} папок для начала сортировки."
 
@@ -356,9 +361,7 @@ msgstr "Получена новая заявка от Хоремхеба из Ф
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "Получена новая заявка от Хоремхеба из Фив на должность Главы корреспонденции.\n"
-"\n"
-"Просмотреть заявку можно в Доме Архивов."
+msgstr "Получена новая заявка от Хоремхеба из Фив на должность Главы корреспонденции.\n\nПросмотреть заявку можно в Доме Архивов."
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:380
 #, fuzzy
@@ -372,11 +375,7 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "Абди-Хеба,\n"
-"\n"
-"Я буду рядом с Дельтой на той же неделе. Давай встретимся на станции отдыха на второй день; я смогу выделить утро.\n"
-"\n"
-"До встречи,"
+msgstr "Абди-Хеба,\n\nЯ буду рядом с Дельтой на той же неделе. Давай встретимся на станции отдыха на второй день; я смогу выделить утро.\n\nДо встречи,"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:33
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:37
@@ -708,11 +707,7 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "Азиру,\n"
-"\n"
-"Ваши слова дружбы дошли до нас. Мы готовы выслушать подробности предложений дома Амурру. Передайте ваши условия со следующим курьером.\n"
-"\n"
-"С уважением,"
+msgstr "Азиру,\n\nВаши слова дружбы дошли до нас. Мы готовы выслушать подробности предложений дома Амурру. Передайте ваши условия со следующим курьером.\n\nС уважением,"
 
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
 #: ../../apps/site/src/app/[locale]/pricing/page.tsx:53
@@ -797,7 +792,7 @@ msgstr "Легко просматривайте письма в папках. Г
 msgid "Browse templates"
 msgstr "Просмотреть шаблоны"
 
-#: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:48
+#: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:55
 #, fuzzy
 msgid "Build plan"
 msgstr "Создать план"
@@ -1036,7 +1031,7 @@ msgstr "Подтвердите пароль"
 msgid "Connect a Gmail inbox to configure sync filters."
 msgstr "Подключите почтовый ящик Gmail, чтобы настроить фильтры синхронизации."
 
-#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:201
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:334
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:268
@@ -1065,7 +1060,7 @@ msgstr "Подключите Gmail, и Amarnai начнет сортировку
 msgid "Connect Gmail to generate a plan from your inbox"
 msgstr "Подключите Gmail, чтобы сгенерировать план на основе вашей почты"
 
-#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:179
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:180
 #, fuzzy
 msgid "Connect Gmail to start triaging"
 msgstr "Подключите Gmail, чтобы начать разбирать почту"
@@ -1075,7 +1070,7 @@ msgstr "Подключите Gmail, чтобы начать разбирать �
 msgid "Connect once, generate your plan once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
 msgstr "Подключите один раз, создайте план один раз, и Amarnai займется новой почтой и тысячами уже имеющихся в вашем ящике цепочек."
 
-#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:182
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:183
 #, fuzzy
 msgid "Connect your Gmail account to sync your inbox into Amarnai. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
 msgstr "Подключите аккаунт Gmail, чтобы синхронизировать свою почту с Amarnai. Amarnai подключается с <0>доступом только для чтения</0> и <1>никогда не отправляет, не удаляет и не изменяет ничего</1>. Ваша почта остается вашей."
@@ -1549,7 +1544,7 @@ msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is 
 msgstr "Отключает это рабочее пространство. Amarnai сохраняет доступ, так как этот ящик всё ещё подключен в {sharedNames}."
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:48
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:294
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:296
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:52
 #: ../ui/src/AppDownloadBanner.tsx:80
 #: ../ui/src/emails/MockEmailsPage.tsx:253
@@ -1734,7 +1729,7 @@ msgstr "Письмо отправлено"
 msgid "Email support"
 msgstr "Поддержка по email"
 
-#: ../ui/src/emails/ThreadList.tsx:129
+#: ../ui/src/emails/ThreadList.tsx:134
 msgid "Email threads"
 msgstr "Потоки писем"
 
@@ -1995,7 +1990,7 @@ msgid "Folder: {activeFolderName}"
 msgstr "Папка: {activeFolderName}"
 
 #: ../ui/src/emails/EmailRail.tsx:93
-#: ../ui/src/emails/ThreadList.tsx:111
+#: ../ui/src/emails/ThreadList.tsx:116
 #, fuzzy
 msgid "Folders"
 msgstr "Папки"
@@ -2117,8 +2112,12 @@ msgstr "Сгенерировать"
 
 #: ../ui/src/emails/SuggestedDraftCard.tsx:76
 #, fuzzy
-msgid "Generate a new draft — uses one from your monthly allowance"
-msgstr "Сгенерировать новый черновик (использует одну попытку из вашего месячного лимита)."
+#~ msgid "Generate a new draft — uses one from your monthly allowance"
+#~ msgstr "Сгенерировать новый черновик (использует одну попытку из вашего месячного лимита)."
+
+#: ../ui/src/emails/SuggestedDraftCard.tsx:76
+msgid "Generate a new draft. Uses one from your monthly allowance"
+msgstr "Создать новый черновик. Списывается с месячного лимита."
 
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:212
 #, fuzzy
@@ -2134,7 +2133,7 @@ msgstr "Сгенерировать черновик ответа"
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:47
 #: ../../apps/site/src/components/demo/DemoTaxonomyCanvas.tsx:218
-#: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:53
+#: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:60
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:202
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:246
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1441
@@ -2281,11 +2280,7 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "Великий Царь,\n"
-"\n"
-"Отчеты, которые Вы запросили, будут подготовлены до созыва совета. Мои писцы составят сводки по восточным территориям и отправят их вперед с быстрым курьером.\n"
-"\n"
-"С братством,"
+msgstr "Великий Царь,\n\nОтчеты, которые Вы запросили, будут подготовлены до созыва совета. Мои писцы составят сводки по восточным территориям и отправят их вперед с быстрым курьером.\n\nС братством,"
 
 #: ../../apps/site/src/components/landing/FinalCTASection.tsx:8
 #, fuzzy
@@ -2693,14 +2688,16 @@ msgstr "Перечислите отправителей, темы и ключе�
 msgid "Live"
 msgstr "Активно"
 
-#: ../../apps/mobile/src/components/emails/ThreadListView.tsx:90
-#: ../ui/src/emails/ThreadList.tsx:179
+#: ../../apps/mobile/src/components/emails/ThreadListView.tsx:95
+#: ../ui/src/emails/ThreadList.tsx:189
 #, fuzzy
 msgid "Load more"
 msgstr "Загрузить ещё"
 
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
+#: ../../apps/mobile/src/components/emails/ThreadListView.tsx:116
 #: ../ui/src/emails/BackfillCard.tsx:35
+#: ../ui/src/emails/ThreadList.tsx:142
 #, fuzzy
 msgid "Loading past threads…"
 msgstr "Загрузка прошлых цепочек…"
@@ -2711,7 +2708,7 @@ msgstr "Загрузка прошлых цепочек…"
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:158
 #: ../../apps/web/src/app/loading.tsx:6
 #: ../ui/src/emails/MessageCard.tsx:60
-#: ../ui/src/emails/ThreadList.tsx:179
+#: ../ui/src/emails/ThreadList.tsx:189
 #, fuzzy
 msgid "Loading…"
 msgstr "Загрузка…"
@@ -3016,12 +3013,12 @@ msgstr "Заблокированных отправителей пока нет.
 msgid "No signups yet."
 msgstr "Пока нет регистраций."
 
-#: ../../apps/mobile/src/components/emails/ThreadListView.tsx:41
+#: ../../apps/mobile/src/components/emails/ThreadListView.tsx:46
 #, fuzzy
 msgid "No threads"
 msgstr "Нет потоков"
 
-#: ../ui/src/emails/ThreadList.tsx:135
+#: ../ui/src/emails/ThreadList.tsx:145
 #, fuzzy
 msgid "No threads here."
 msgstr "Здесь нет потоков."
@@ -3036,7 +3033,7 @@ msgstr "Нет потоков в папке «{folderName}»"
 msgid "No threads match your search"
 msgstr "Нет потоков, соответствующих вашему запросу"
 
-#: ../ui/src/emails/ThreadList.tsx:133
+#: ../ui/src/emails/ThreadList.tsx:138
 #, fuzzy
 msgid "No threads match your search."
 msgstr "Нет потоков, соответствующих вашему запросу."
@@ -3451,7 +3448,7 @@ msgstr "Предлагаемые папки. Применение заменит
 msgid "Queuing rescan…"
 msgstr "Повторное сканирование в очереди…"
 
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:304
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:306
 #, fuzzy
 msgid "Re-route {unclassifiedCount} unclassified"
 msgstr "Перенаправить {unclassifiedCount} неклассифицированных"
@@ -3635,13 +3632,17 @@ msgstr "Пересканировать папку «Входящие»"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:158
 #, fuzzy
-msgid "Rescan queued — threads will update shortly."
-msgstr "Пересканирование в очереди — цепочки сообщений скоро обновятся."
+#~ msgid "Rescan queued — threads will update shortly."
+#~ msgstr "Пересканирование в очереди — цепочки сообщений скоро обновятся."
 
 #: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:103
 #, fuzzy
 msgid "Rescan queued: threads will update shortly."
 msgstr "Пересканирование в очереди: цепочки сообщений скоро обновятся."
+
+#: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:158
+msgid "Rescan queued. Threads will update shortly."
+msgstr "Повторное сканирование в очереди. Темы скоро обновятся."
 
 #: ../../apps/mobile/app/verify-email.tsx:109
 #, fuzzy
@@ -3719,17 +3720,13 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "Риб-Хадда,\n"
-"\n"
-"Мы вас услышали. Дополнительное зерно заказано с южных складов и прибудет до праздника урожая. Просим проявить терпение до этого момента.\n"
-"\n"
-"Будьте здоровы,"
+msgstr "Риб-Хадда,\n\nМы вас услышали. Дополнительное зерно заказано с южных складов и прибудет до праздника урожая. Просим проявить терпение до этого момента.\n\nБудьте здоровы,"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
 #, fuzzy
-msgid "Route now"
-msgstr "Маршрутизировать сейчас"
+#~ msgid "Route now"
+#~ msgstr "Маршрутизировать сейчас"
 
 #: ../ui/src/emails/MockEmailsPage.tsx:101
 msgid "Routing approved"
@@ -3738,8 +3735,8 @@ msgstr "Маршрутизация одобрена"
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
 #, fuzzy
-msgid "Routing…"
-msgstr "Маршрутизация…"
+#~ msgid "Routing…"
+#~ msgstr "Маршрутизация…"
 
 #. placeholder {0}: altFolder.name
 #. placeholder {1}: Math.round(thread.alternativeFolder.weight * 100)
@@ -3811,7 +3808,7 @@ msgstr "Поиск цепочек"
 msgid "Search threads…"
 msgstr "Поиск цепочек…"
 
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:269
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:271
 #: ../ui/src/emails/MockEmailsPage.tsx:231
 #, fuzzy
 msgid "Select a thread to preview"
@@ -4087,10 +4084,17 @@ msgstr "Начать с шаблона"
 msgid "Start from a template (replaces current)"
 msgstr "Начать с шаблона (заменит текущий)"
 
+#: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:83
 #: ../../apps/site/src/components/landing/HeroSection.tsx:27
+#: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:90
 #, fuzzy
 msgid "Start sorting"
 msgstr "Начать сортировку"
+
+#: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:83
+#: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:90
+msgid "Starting…"
+msgstr "Запуск…"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:49
 #, fuzzy
@@ -4390,8 +4394,12 @@ msgstr "Цепочки писем, которые Amarnai успешно мар�
 
 #: ../ui/src/emails/queueLabels.ts:19
 #, fuzzy
-msgid "Threads flagged for review — Amarnai wasn't confident enough to sort automatically."
-msgstr "Цепочки писем, отмеченные для проверки: Amarnai не был достаточно уверен для автоматической сортировки."
+#~ msgid "Threads flagged for review — Amarnai wasn't confident enough to sort automatically."
+#~ msgstr "Цепочки писем, отмеченные для проверки: Amarnai не был достаточно уверен для автоматической сортировки."
+
+#: ../ui/src/emails/queueLabels.ts:19
+msgid "Threads flagged for review. Amarnai wasn't confident enough to sort automatically."
+msgstr "Темы отправлены на проверку. Amarnai не отсортировал их автоматически из-за недостаточной уверенности."
 
 #: ../../apps/mobile/src/components/BlacklistSheet.tsx:94
 #: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:101
@@ -4439,13 +4447,7 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "Моему брату, Великому Царю,\n"
-"\n"
-"Великий совет созывается в начале Шему. Прошу тебя подготовить полный отчет по восточным территориям и отправить его вперед быстрым курьером, если возможно, до новолуния.\n"
-"\n"
-"Наш союз крепок. Покажем совету, что он остается таковым.\n"
-"\n"
-"Тушратта, Великий Царь Митанни"
+msgstr "Моему брату, Великому Царю,\n\nВеликий совет созывается в начале Шему. Прошу тебя подготовить полный отчет по восточным территориям и отправить его вперед быстрым курьером, если возможно, до новолуния.\n\nНаш союз крепок. Покажем совету, что он остается таковым.\n\nТушратта, Великий Царь Митанни"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:163
 #, fuzzy
@@ -4454,11 +4456,7 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "В Бюро по царским назначениям,\n"
-"\n"
-"Мы получили заявление от Горемхеба из Фив и рассмотрим его досье до следующего новолуния. Прошу вас сообщить ему, что мы отправим весть в должное время.\n"
-"\n"
-"Царским указом,"
+msgstr "В Бюро по царским назначениям,\n\nМы получили заявление от Горемхеба из Фив и рассмотрим его досье до следующего новолуния. Прошу вас сообщить ему, что мы отправим весть в должное время.\n\nЦарским указом,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:274
 #, fuzzy
@@ -4469,13 +4467,7 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "Великому Царю,\n"
-"\n"
-"Многие годы наши дома были как братья. Пишу сейчас, чтобы предложить официально оформить эту дружбу на благо обоих наших народов: пакт о взаимной защите и общих маршрутах.\n"
-"\n"
-"Прошу лишь, чтобы ты выслушал мои условия. Пришли весть со следующим курьером, и я немедленно отправлю моего посланника.\n"
-"\n"
-"Азиру, слуга Великого Царя, владыка Амурру"
+msgstr "Великому Царю,\n\nМногие годы наши дома были как братья. Пишу сейчас, чтобы предложить официально оформить эту дружбу на благо обоих наших народов: пакт о взаимной защите и общих маршрутах.\n\nПрошу лишь, чтобы ты выслушал мои условия. Пришли весть со следующим курьером, и я немедленно отправлю моего посланника.\n\nАзиру, слуга Великого Царя, владыка Амурру"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:384
 #, fuzzy
@@ -4484,11 +4476,7 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "Великому Царю,\n"
-"\n"
-"Мои странствия приведут меня к Дельте в ближайшие дни. Если у Великого Царя найдется свободный час, я бы приветствовал возможность поговорить лицом к лицу; есть вопросы, которые легче сказать, чем написать.\n"
-"\n"
-"Твой слуга, Абди-Хеба, наместник Урушалима"
+msgstr "Великому Царю,\n\nМои странствия приведут меня к Дельте в ближайшие дни. Если у Великого Царя найдется свободный час, я бы приветствовал возможность поговорить лицом к лицу; есть вопросы, которые легче сказать, чем написать.\n\nТвой слуга, Абди-Хеба, наместник Урушалима"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:153
 #, fuzzy
@@ -4497,11 +4485,7 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "Великому Царю, моему брату,\n"
-"\n"
-"Я слышал твои слова. Золото будет отправлено до отбытия следующего посланника. Мы ценим связь между нашими домами и не хотим, чтобы она остыла.\n"
-"\n"
-"В дружбе,"
+msgstr "Великому Царю, моему брату,\n\nЯ слышал твои слова. Золото будет отправлено до отбытия следующего посланника. Мы ценим связь между нашими домами и не хотим, чтобы она остыла.\n\nВ дружбе,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:236
 #, fuzzy
@@ -4512,13 +4496,7 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "Великому Царю, моему брату,\n"
-"\n"
-"Я пишу в дружбе, как наши отцы писали до нас. Третья партия золота, согласованная по нашему договору, не прибыла. Два посланника прошли, и мы все еще ждем.\n"
-"\n"
-"Просим вас отправить ее без дальнейших задержек, как подобает связи между нашими домами.\n"
-"\n"
-"Бурна-Буриаш II, Царь Вавилона"
+msgstr "Великому Царю, моему брату,\n\nЯ пишу в дружбе, как наши отцы писали до нас. Третья партия золота, согласованная по нашему договору, не прибыла. Два посланника прошли, и мы все еще ждем.\n\nПросим вас отправить ее без дальнейших задержек, как подобает связи между нашими домами.\n\nБурна-Буриаш II, Царь Вавилона"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:346
 #, fuzzy
@@ -4529,13 +4507,7 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "Великому Царю, моему господину, моему солнцу,\n"
-"\n"
-"Зерно, которое вы прислали в прошлом месяце, было получено с благодарностью, и я восхвалял ваше имя перед народом. Но я должен написать снова: третья партия не прибыла, и город становится беспокойным.\n"
-"\n"
-"Я писал семь раз. Я не хочу беспокоить вас, но что еще я могу сделать?\n"
-"\n"
-"Твой слуга, Риб-Хадда, наместник Библа"
+msgstr "Великому Царю, моему господину, моему солнцу,\n\nЗерно, которое вы прислали в прошлом месяце, было получено с благодарностью, и я восхвалял ваше имя перед народом. Но я должен написать снова: третья партия не прибыла, и город становится беспокойным.\n\nЯ писал семь раз. Я не хочу беспокоить вас, но что еще я могу сделать?\n\nТвой слуга, Риб-Хадда, наместник Библа"
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:19
 #: ../ui/src/emails/ThreadList.tsx:15
@@ -4543,7 +4515,7 @@ msgstr "Великому Царю, моему господину, моему с�
 msgid "Today"
 msgstr "Сегодня"
 
-#: ../ui/src/emails/ThreadList.tsx:106
+#: ../ui/src/emails/ThreadList.tsx:111
 #, fuzzy
 msgid "Toggle folders"
 msgstr "Переключить папки"
@@ -4598,7 +4570,7 @@ msgstr "Недоступно"
 msgid "Unclassified"
 msgstr "Неклассифицированные"
 
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:291
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:293
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1258
 #: ../../apps/web/src/app/admin/waitlist/page.tsx:26
 #: ../ui/src/emails/MockEmailsPage.tsx:250

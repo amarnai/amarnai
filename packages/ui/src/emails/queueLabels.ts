@@ -16,7 +16,7 @@ export const QUEUE_LABELS: Record<string, { name: MessageDescriptor; desc: Messa
   },
   review: {
     name: msg`Needs review`,
-    desc: msg`Threads flagged for review — Amarnai wasn't confident enough to sort automatically.`,
+    desc: msg`Threads flagged for review. Amarnai wasn't confident enough to sort automatically.`,
   },
   pending: {
     name: msg`Pending`,

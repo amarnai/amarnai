@@ -158,6 +158,7 @@ export default function EmailsScreen() {
       <UnroutedBanner
         waitingCount={triage.serverWaitingCount}
         routableFolderCount={triage.folders.length}
+        routingStarted={syncStatusQuery.data?.backfillRoutingStarted ?? false}
         onRouteNow={handleRouteNow}
       />
 
@@ -208,6 +209,7 @@ export default function EmailsScreen() {
         <ThreadListView
           threads={triage.filteredThreads}
           emptyText={emptyText}
+          backfilling={syncStatusQuery.data?.backfillStatus === 'RUNNING'}
           onRefresh={triage.refresh}
           onThreadPress={handleThreadPress}
           hasMore={triage.hasMore}

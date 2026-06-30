@@ -193,7 +193,8 @@ async function enqueueThreadsForRouting(
   statuses: ("PENDING" | "UNROUTED" | "UNCLASSIFIED")[],
   dedupPrefix: string,
   syncSettings: { includeSpam: boolean; includePromotions: boolean } | null,
-  applyInboxFilter: boolean
+  applyInboxFilter: boolean,
+  source: "BACKFILL" | "REROUTE"
 ): Promise<number> {
   const where = {
     workspaceId,
@@ -220,7 +221,7 @@ async function enqueueThreadsForRouting(
   await classifyThreadQueue.addBulk(
     threads.map(({ id: emailThreadId }) => ({
       name: "classify-thread",
-      data: { workspaceId, emailThreadId, source: "REROUTE" as const },
+      data: { workspaceId, emailThreadId, source },
       opts: {
         deduplication: { id: `${dedupPrefix}_${workspaceId}_${emailThreadId}` },
         priority: 5,
@@ -234,15 +235,19 @@ async function enqueueThreadsForRouting(
 /**
  * POST /workspaces/:workspaceId/sorting-queue/route-unrouted
  *
- * Manually starts routing for all threads waiting to be sorted. The waiting set
- * is every inbox-visible thread still PENDING (synced while the taxonomy was too
- * weak to route) plus any legacy UNROUTED threads. Requires a strong taxonomy
- * (enough non-root nodes reachable from the root). Returns 422 with
- * `{ error: "taxonomy_too_weak" }` if the taxonomy is insufficient.
+ * Starts backfill routing: routes all threads waiting to be sorted. The waiting
+ * set is every inbox-visible thread still PENDING (imported while routing had not
+ * started, or synced while the taxonomy was too weak) plus any legacy UNROUTED
+ * threads. Requires a strong taxonomy (enough non-root nodes reachable from the
+ * root). Returns 422 with `{ error: "taxonomy_too_weak" }` if the taxonomy is
+ * insufficient.
  *
- * This is the only path that routes the historical backlog — background sync
- * never auto-routes waiting threads, so bulk AI routing only happens on explicit
- * user action.
+ * This is the only path that routes the historical backlog — neither the import
+ * nor background sync auto-routes waiting threads, so bulk AI routing only happens
+ * on explicit user action. The first start records the live/backfill boundary
+ * (backfillRoutingStartedAt) and routes the waiting set as BACKFILL (the one-time
+ * quota-exempt allowance). Later calls — re-routing after taxonomy edits — route
+ * as REROUTE, which counts against the monthly quota.
  */
 sortingQueue.post("/workspaces/:workspaceId/sorting-queue/route-unrouted", async (c) => {
   const parsed = workspaceParam.safeParse({ workspaceId: c.req.param("workspaceId") });
@@ -259,12 +264,17 @@ sortingQueue.post("/workspaces/:workspaceId/sorting-queue/route-unrouted", async
     select: { includeSpam: true, includePromotions: true },
   });
 
+  // First start of backfill routing? Stamp the boundary and route the waiting set
+  // as the quota-exempt BACKFILL allowance. Once started, re-routes cost quota.
+  const firstStart = await markBackfillRoutingStarted(workspaceId);
+
   const queued = await enqueueThreadsForRouting(
     workspaceId,
     ["PENDING", "UNROUTED"],
     DEDUP_CLASSIFY_UNROUTED,
     syncSettings,
-    true
+    true,
+    firstStart ? "BACKFILL" : "REROUTE"
   );
 
   // If a backfill is still in flight, arm auto-routing so threads that arrive
@@ -274,6 +284,24 @@ sortingQueue.post("/workspaces/:workspaceId/sorting-queue/route-unrouted", async
 
   return c.json({ queued });
 });
+
+/**
+ * Record the live/backfill boundary the first time the user starts backfill
+ * routing. Returns true if this call set it (a first start), false if it was
+ * already set. No-op-safe when no sync state exists yet (returns false).
+ */
+async function markBackfillRoutingStarted(workspaceId: string): Promise<boolean> {
+  const emailAccountId = await resolveEmailAccountId(workspaceId);
+  if (!emailAccountId) return false;
+
+  // Conditional update: only the first start (still null) writes the timestamp,
+  // so the BACKFILL allowance is claimed exactly once even under concurrent calls.
+  const { count } = await db.providerSyncState.updateMany({
+    where: { emailAccountId, backfillRoutingStartedAt: null },
+    data: { backfillRoutingStartedAt: new Date() },
+  });
+  return count > 0;
+}
 
 /**
  * When a backfill has not yet finished, set ProviderSyncState.autoRouteBacklogArmed
@@ -309,7 +337,8 @@ sortingQueue.post("/workspaces/:workspaceId/sorting-queue/reroute-unclassified",
     ["UNCLASSIFIED"],
     DEDUP_CLASSIFY_UNCLASSIFIED,
     null,
-    false
+    false,
+    "REROUTE"
   );
 
   return c.json({ queued });

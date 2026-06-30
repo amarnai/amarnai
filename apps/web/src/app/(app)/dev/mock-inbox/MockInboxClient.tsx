@@ -151,7 +151,7 @@ export function MockInboxClient({ workspaceId, threads }: Props) {
               Thread <span className="required">*</span>
             </label>
             {threads.length === 0 ? (
-              <p style={{ fontSize: 13, color: "var(--color-subtle)" }}>No threads available — create one first.</p>
+              <p style={{ fontSize: 13, color: "var(--color-subtle)" }}>No threads available. Create one first.</p>
             ) : (
               <select
                 className="form-select"

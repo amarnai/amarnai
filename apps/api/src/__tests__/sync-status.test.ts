@@ -24,6 +24,7 @@ type SyncStatusBody = {
   backfillLoadedThreads: number;
   backfillTotalThreads: number;
   backfillAwaitingTaxonomy: boolean;
+  backfillRoutingStarted: boolean;
 };
 
 function get() {
@@ -81,6 +82,26 @@ describe("GET /workspaces/:workspaceId/sync-status", () => {
     // The card is count-less; no reliable total exists, so there is no denominator.
     expect(body.backfillTotalThreads).toBe(0);
     expect(body.backfillAwaitingTaxonomy).toBe(false);
+    // No boundary stamped yet → the user has not started backfill routing.
+    expect(body.backfillRoutingStarted).toBe(false);
+  });
+
+  it("reports backfillRoutingStarted once the boundary is stamped", async () => {
+    vi.mocked(db.providerSyncState.findUnique).mockResolvedValue({
+      status: "OK",
+      lastSyncedAt: null,
+      errorMessage: null,
+      backfillStatus: "RUNNING",
+      backfillSkipped: 0,
+      backfillCompletedAt: null,
+      backfillCapReached: false,
+      backfillBeyondCount: 0,
+      backfillProcessedCount: 50,
+      backfillRoutingStartedAt: new Date(),
+    } as never);
+
+    const body = await getBody();
+    expect(body.backfillRoutingStarted).toBe(true);
   });
 
   it("flags awaiting-taxonomy while running with an unroutable taxonomy", async () => {

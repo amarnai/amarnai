@@ -9,20 +9,27 @@ type Props = {
   workspaceId: string;
   waitingCount: number;
   routableNodeCount: number;
+  /** True once the user has started backfill routing (from sync-status). */
+  routingStarted: boolean;
   onRouted: () => void;
 };
 
-export function UnroutedBanner({ workspaceId, waitingCount, routableNodeCount, onRouted }: Props) {
+export function UnroutedBanner({ workspaceId, waitingCount, routableNodeCount, routingStarted, onRouted }: Props) {
   const [routing, setRouting] = useState(false);
+  // Optimistic: hide immediately on click so the banner does not linger while the
+  // in-flight import keeps committing PENDING threads (sync-status confirms it on
+  // its next poll via routingStarted).
+  const [started, setStarted] = useState(false);
 
   if (waitingCount === 0) return null;
 
   const taxonomyWeak = routableNodeCount < TAXONOMY_MIN_NON_ROOT_NODES;
 
-  async function handleRouteNow() {
+  async function handleStartSorting() {
     setRouting(true);
     try {
       await api.routeUnrouted(workspaceId);
+      setStarted(true);
       onRouted();
     } catch {
       // non-fatal — user can retry
@@ -56,6 +63,11 @@ export function UnroutedBanner({ workspaceId, waitingCount, routableNodeCount, o
     );
   }
 
+  // Routing already started: the armed sweep routes whatever the in-flight import
+  // commits next, so the start CTA is done — hide it instead of letting newly
+  // imported PENDING threads keep it on screen until the import finishes.
+  if (routingStarted || started) return null;
+
   return (
     <div
       className="success-box"
@@ -64,8 +76,8 @@ export function UnroutedBanner({ workspaceId, waitingCount, routableNodeCount, o
       <span suppressHydrationWarning>
         <Plural
           value={waitingCount}
-          one="# thread is ready to route."
-          other="# threads are ready to route."
+          one="# thread is ready to sort into your folders."
+          other="# threads are ready to sort into your folders."
         />
       </span>
       <button
@@ -73,9 +85,9 @@ export function UnroutedBanner({ workspaceId, waitingCount, routableNodeCount, o
         className="btn-primary"
         style={{ whiteSpace: "nowrap", flexShrink: 0 }}
         disabled={routing}
-        onClick={handleRouteNow}
+        onClick={handleStartSorting}
       >
-        {routing ? <Trans>Routing…</Trans> : <Trans>Route now</Trans>}
+        {routing ? <Trans>Starting…</Trans> : <Trans>Start sorting</Trans>}
       </button>
     </div>
   );

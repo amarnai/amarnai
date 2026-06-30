@@ -72,7 +72,7 @@ export function GmailDebugPanel({ workspaceId }: Props) {
 
   const DECISION_SOURCE_LABELS: Record<string, { label: string; color: string }> = {
     embedding_auto:  { label: "Embedding auto-routing",   color: "var(--color-success, #16a34a)" },
-    embedding_inbox: { label: "Embedding — stayed in Inbox", color: "var(--color-subtle)" },
+    embedding_inbox: { label: "Embedding: stayed in Inbox", color: "var(--color-subtle)" },
     llm:             { label: "LLM fallback",              color: "var(--color-warning, #d97706)" },
     inbox_fallback:  { label: "Inbox fallback (failure)",  color: "var(--color-error, #dc2626)" },
   };

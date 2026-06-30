@@ -224,7 +224,7 @@ describe("createBackfillInboxWorker", () => {
     expect(classifyThreadQueue.addBulk).not.toHaveBeenCalled();
   });
 
-  it("(b) enqueues classify jobs strictly by recency, ignoring read state", async () => {
+  it("(b) imports threads strictly by recency and does not route them (import-only)", async () => {
     vi.mocked(db.providerSyncState.findUnique).mockResolvedValue({
       backfillStatus: "PENDING",
       backfillStartedAt: null,
@@ -252,18 +252,16 @@ describe("createBackfillInboxWorker", () => {
     const processor = getProcessor();
     await processor(makeJob({ workspaceId: WS_ID }));
 
-    expect(classifyThreadQueue.addBulk).toHaveBeenCalledOnce();
-    const bulkJobs = vi.mocked(classifyThreadQueue.addBulk).mock.calls[0]![0] as Array<{
-      opts: { priority: number };
-      data: { emailThreadId: string };
-    }>;
+    // Import-only: the backfill never routes on its own. Bulk AI routing waits for
+    // the user's explicit start (which arms the sweep), so nothing is classified.
+    expect(classifyThreadQueue.addBulk).not.toHaveBeenCalled();
 
-    // All jobs should have backfill priority (10).
-    expect(bulkJobs.every((j) => j.opts.priority === 10)).toBe(true);
-
-    // Strict recency: read-new (1d) → unread-mid (5d) → read-old (10d).
-    const orderedIds = bulkJobs.map((j) => j.data.emailThreadId);
-    expect(orderedIds).toEqual(["db-read-new", "db-unread-mid", "db-read-old"]);
+    // Strict recency drives the import (and thus which threads survive the cap):
+    // read-new (1d) → unread-mid (5d) → read-old (10d).
+    const importOrder = vi.mocked(db.emailThread.upsert).mock.calls.map(
+      (c) => (c[0] as { create: { providerThreadId: string } }).create.providerThreadId
+    );
+    expect(importOrder).toEqual(["read-new", "unread-mid", "read-old"]);
   });
 
   // ── Plan-derived caps ───────────────────────────────────────────────────────
@@ -531,10 +529,10 @@ describe("createBackfillInboxWorker", () => {
     const doneData = (doneCall![0] as { data: { backfillSkipped: number } }).data;
     expect(doneData.backfillSkipped).toBe(1);
 
-    // The good thread was still enqueued for classification.
-    expect(classifyThreadQueue.addBulk).toHaveBeenCalledOnce();
-    const [bulkJobs] = vi.mocked(classifyThreadQueue.addBulk).mock.calls[0]!;
-    expect((bulkJobs as unknown[]).length).toBe(1);
+    // The good thread was still imported (upserted); the bad one was skipped.
+    expect(db.emailThread.upsert).toHaveBeenCalledOnce();
+    // Import-only: nothing is routed (not armed).
+    expect(classifyThreadQueue.addBulk).not.toHaveBeenCalled();
   });
 
   it("(g) aborts with ERROR (not skip) on a transient fetch error", async () => {
@@ -708,7 +706,7 @@ describe("createBackfillInboxWorker", () => {
     expect(classifyThreadQueue.addBulk).not.toHaveBeenCalled();
   });
 
-  it("(e) enqueues classify jobs when routable count equals the threshold", async () => {
+  it("(e) does not route imported threads when not armed, even with a routable taxonomy", async () => {
     vi.mocked(db.providerSyncState.findUnique).mockResolvedValue({
       backfillStatus: "PENDING",
       backfillStartedAt: null,
@@ -724,19 +722,20 @@ describe("createBackfillInboxWorker", () => {
     const processor = getProcessor();
     await processor(makeJob({ workspaceId: WS_ID }));
 
-    expect(classifyThreadQueue.addBulk).toHaveBeenCalledOnce();
-    const [bulkJobs] = vi.mocked(classifyThreadQueue.addBulk).mock.calls[0]!;
+    // Imported (upserted) but left PENDING: routing only happens on the user's
+    // explicit start, never automatically during the import.
+    expect(db.emailThread.upsert).toHaveBeenCalledOnce();
+    expect(classifyThreadQueue.addBulk).not.toHaveBeenCalled();
     const calls = vi.mocked(db.emailThread.updateMany).mock.calls;
     const unroutedCall = calls.find(
       (c) => (c[0] as { data: { triageStatus?: string } }).data?.triageStatus === "UNROUTED"
     );
     expect(unroutedCall).toBeUndefined();
-    expect((bulkJobs as unknown[]).length).toBeGreaterThan(0);
   });
 
   // ── Auto-route-backlog arming ───────────────────────────────────────────────
 
-  it("(arm) routes the never-attempted backlog as REROUTE when armed", async () => {
+  it("(arm) routes the never-attempted backlog as BACKFILL when armed", async () => {
     vi.mocked(db.providerSyncState.findUnique).mockResolvedValue({
       backfillStatus: "PENDING",
       backfillStartedAt: null,
@@ -759,8 +758,9 @@ describe("createBackfillInboxWorker", () => {
     expect(classifyThreadQueue.addBulk).toHaveBeenCalledOnce();
     const [jobs] = vi.mocked(classifyThreadQueue.addBulk).mock.calls[0]!;
     const typed = jobs as Array<{ data: { source: string }; opts: { deduplication?: { id?: string } } }>;
-    // Routed as REROUTE (the manual "Route now" attribution), not BACKFILL.
-    expect(typed.every((j) => j.data.source === "REROUTE")).toBe(true);
+    // Arming only happens during the initial (quota-exempt) backfill window, so the
+    // swept backlog is attributed BACKFILL, matching the manual start path.
+    expect(typed.every((j) => j.data.source === "BACKFILL")).toBe(true);
     expect(typed.map((j) => j.data.source)).toHaveLength(2);
     for (const job of typed) {
       expect(job.opts.deduplication?.id).toMatch(new RegExp(`^${DEDUP_CLASSIFY_UNROUTED}_`));

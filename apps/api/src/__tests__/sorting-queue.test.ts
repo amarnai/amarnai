@@ -159,6 +159,46 @@ describe("POST /workspaces/:workspaceId/sorting-queue/route-unrouted", () => {
     }
   });
 
+  it("first start stamps the live/backfill boundary and routes as BACKFILL", async () => {
+    vi.mocked(db.emailThread.findMany).mockResolvedValue([{ id: "t1" }] as never);
+    // The boundary update writes one row → this is a first start.
+    vi.mocked(db.providerSyncState.updateMany).mockResolvedValue({ count: 1 } as never);
+
+    const res = await post(`/workspaces/${WS_ID}/sorting-queue/route-unrouted`);
+    expect(res.status).toBe(200);
+
+    // The boundary is stamped exactly once, guarded on it still being null.
+    expect(db.providerSyncState.updateMany).toHaveBeenCalledWith({
+      where: { emailAccountId: "acct-1", backfillRoutingStartedAt: null },
+      data: { backfillRoutingStartedAt: expect.any(Date) },
+    });
+
+    // The initial sweep is the quota-exempt BACKFILL allowance.
+    const [jobs] = vi.mocked(classifyThreadQueue.addBulk).mock.calls[0]!;
+    for (const job of jobs) {
+      expect((job.data as { source?: string }).source).toBe("BACKFILL");
+    }
+  });
+
+  it("routes as REROUTE once backfill routing has already been started", async () => {
+    vi.mocked(db.emailThread.findMany).mockResolvedValue([{ id: "t1" }] as never);
+    // Boundary already set → the guarded update writes zero rows (not a first
+    // start); the arm update still writes one. Branch on the where clause.
+    vi.mocked(db.providerSyncState.updateMany).mockImplementation((args: unknown) => {
+      const where = (args as { where?: { backfillRoutingStartedAt?: unknown } }).where;
+      const count = where && "backfillRoutingStartedAt" in where ? 0 : 1;
+      return Promise.resolve({ count }) as never;
+    });
+
+    const res = await post(`/workspaces/${WS_ID}/sorting-queue/route-unrouted`);
+    expect(res.status).toBe(200);
+
+    const [jobs] = vi.mocked(classifyThreadQueue.addBulk).mock.calls[0]!;
+    for (const job of jobs) {
+      expect((job.data as { source?: string }).source).toBe("REROUTE");
+    }
+  });
+
   it("excludes threads that already have classifyingAt set", async () => {
     // findMany respects the classifyingAt: null filter in the where clause —
     // returning empty simulates all threads already being in-progress.

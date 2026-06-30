@@ -155,7 +155,7 @@ export function SyncFiltersSheet({
               </TouchableOpacity>
               {rescanDone ? (
                 <Text style={styles.rescanFeedback}>
-                  <Trans>Rescan queued — threads will update shortly.</Trans>
+                  <Trans>Rescan queued. Threads will update shortly.</Trans>
                 </Text>
               ) : null}
               <Text style={styles.hint}>

@@ -33,7 +33,7 @@ function confirmationPage(ok: boolean): NextResponse {
     : "This unsubscribe link is invalid or has expired. You can manage email reminders in your account settings.";
   const html = `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${heading} — Amarnai</title></head>
+<title>${heading} | Amarnai</title></head>
 <body style="margin:0;background:${colors.bg};font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
   <div style="max-width:480px;margin:48px auto;padding:0 16px;">
     <div style="background:${colors.surface};border:1px solid ${colors.line};border-radius:12px;padding:28px;">

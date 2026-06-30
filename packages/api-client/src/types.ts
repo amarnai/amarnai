@@ -296,6 +296,9 @@ export type SyncStatus = {
   backfillLoadedThreads: number;
   backfillTotalThreads: number;
   backfillAwaitingTaxonomy: boolean;
+  // Whether the user has started backfill routing. Until then the import runs but
+  // nothing is classified; clients surface the "Start sorting" action.
+  backfillRoutingStarted: boolean;
   sortingPaused: boolean;
   workspacePlan: "FREE" | "PRO" | "BUSINESS";
   pushEnabled: boolean;

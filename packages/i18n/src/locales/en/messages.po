@@ -64,8 +64,8 @@ msgstr "{0} / {1} left · resets {2}"
 #. placeholder {0}: threads.length.toLocaleString()
 #. placeholder {1}: (total ?? 0).toLocaleString()
 #. placeholder {1}: viewCount.toLocaleString()
-#: ../../apps/mobile/src/components/emails/ThreadListView.tsx:76
-#: ../ui/src/emails/ThreadList.tsx:168
+#: ../../apps/mobile/src/components/emails/ThreadListView.tsx:81
+#: ../ui/src/emails/ThreadList.tsx:178
 msgid "{0} of {1} loaded"
 msgstr "{0} of {1} loaded"
 
@@ -151,10 +151,15 @@ msgstr "{unreadCount} unread"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:59
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:65
-msgid "{waitingCount, plural, one {# thread is ready to route.} other {# threads are ready to route.}}"
-msgstr "{waitingCount, plural, one {# thread is ready to route.} other {# threads are ready to route.}}"
+#~ msgid "{waitingCount, plural, one {# thread is ready to route.} other {# threads are ready to route.}}"
+#~ msgstr "{waitingCount, plural, one {# thread is ready to route.} other {# threads are ready to route.}}"
 
-#: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:38
+#: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
+#: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:77
+msgid "{waitingCount, plural, one {# thread is ready to sort into your folders.} other {# threads are ready to sort into your folders.}}"
+msgstr "{waitingCount, plural, one {# thread is ready to sort into your folders.} other {# threads are ready to sort into your folders.}}"
+
+#: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:45
 msgid "{waitingCount, plural, one {# thread is waiting to be routed. Set up your folders to start sorting.} other {# threads are waiting to be routed. Set up your folders to start sorting.}}"
 msgstr "{waitingCount, plural, one {# thread is waiting to be routed. Set up your folders to start sorting.} other {# threads are waiting to be routed. Set up your folders to start sorting.}}"
 
@@ -162,7 +167,7 @@ msgstr "{waitingCount, plural, one {# thread is waiting to be routed. Set up you
 #~ msgid "{waitingCount, plural, one {# thread is waiting. Connect at least {TAXONOMY_MIN_NON_ROOT_NODES} folders to begin sorting.} other {# threads are waiting. Connect at least {TAXONOMY_MIN_NON_ROOT_NODES} folders to begin sorting.}}"
 #~ msgstr "{waitingCount, plural, one {# thread is waiting. Connect at least {TAXONOMY_MIN_NON_ROOT_NODES} folders to begin sorting.} other {# threads are waiting. Connect at least {TAXONOMY_MIN_NON_ROOT_NODES} folders to begin sorting.}}"
 
-#: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:37
+#: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:44
 msgid "{waitingCount, plural, one {# thread is waiting.} other {# threads are waiting.}} Connect at least {TAXONOMY_MIN_NON_ROOT_NODES} folders to begin sorting."
 msgstr "{waitingCount, plural, one {# thread is waiting.} other {# threads are waiting.}} Connect at least {TAXONOMY_MIN_NON_ROOT_NODES} folders to begin sorting."
 
@@ -668,7 +673,7 @@ msgstr "Browse emails easily through your folders. Generate draft replies and co
 msgid "Browse templates"
 msgstr "Browse templates"
 
-#: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:48
+#: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:55
 msgid "Build plan"
 msgstr "Build plan"
 
@@ -870,7 +875,7 @@ msgstr "Confirm password"
 msgid "Connect a Gmail inbox to configure sync filters."
 msgstr "Connect a Gmail inbox to configure sync filters."
 
-#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:201
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:334
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:268
@@ -894,7 +899,7 @@ msgstr "Connect Gmail and Amarnai starts sorting within minutes. Pricing is per 
 msgid "Connect Gmail to generate a plan from your inbox"
 msgstr "Connect Gmail to generate a plan from your inbox"
 
-#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:179
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:180
 msgid "Connect Gmail to start triaging"
 msgstr "Connect Gmail to start triaging"
 
@@ -902,7 +907,7 @@ msgstr "Connect Gmail to start triaging"
 msgid "Connect once, generate your plan once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
 msgstr "Connect once, generate your plan once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
 
-#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:182
+#: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:183
 msgid "Connect your Gmail account to sync your inbox into Amarnai. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
 msgstr "Connect your Gmail account to sync your inbox into Amarnai. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
 
@@ -1293,7 +1298,7 @@ msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is 
 msgstr "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:48
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:294
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:296
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:52
 #: ../ui/src/AppDownloadBanner.tsx:80
 #: ../ui/src/emails/MockEmailsPage.tsx:253
@@ -1451,7 +1456,7 @@ msgstr "Email sent"
 msgid "Email support"
 msgstr "Email support"
 
-#: ../ui/src/emails/ThreadList.tsx:129
+#: ../ui/src/emails/ThreadList.tsx:134
 msgid "Email threads"
 msgstr "Email threads"
 
@@ -1664,7 +1669,7 @@ msgid "Folder: {activeFolderName}"
 msgstr "Folder: {activeFolderName}"
 
 #: ../ui/src/emails/EmailRail.tsx:93
-#: ../ui/src/emails/ThreadList.tsx:111
+#: ../ui/src/emails/ThreadList.tsx:116
 msgid "Folders"
 msgstr "Folders"
 
@@ -1763,8 +1768,12 @@ msgid "Generate"
 msgstr "Generate"
 
 #: ../ui/src/emails/SuggestedDraftCard.tsx:76
-msgid "Generate a new draft — uses one from your monthly allowance"
-msgstr "Generate a new draft — uses one from your monthly allowance"
+#~ msgid "Generate a new draft — uses one from your monthly allowance"
+#~ msgstr "Generate a new draft — uses one from your monthly allowance"
+
+#: ../ui/src/emails/SuggestedDraftCard.tsx:76
+msgid "Generate a new draft. Uses one from your monthly allowance"
+msgstr "Generate a new draft. Uses one from your monthly allowance"
 
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:212
 msgid "Generate a plan from your inbox"
@@ -1778,7 +1787,7 @@ msgstr "Generate draft reply"
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:47
 #: ../../apps/site/src/components/demo/DemoTaxonomyCanvas.tsx:218
-#: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:53
+#: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:60
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:202
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:246
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1441
@@ -2241,13 +2250,15 @@ msgstr "List the senders, topics, and keywords that belong here. At least {minDe
 msgid "Live"
 msgstr "Live"
 
-#: ../../apps/mobile/src/components/emails/ThreadListView.tsx:90
-#: ../ui/src/emails/ThreadList.tsx:179
+#: ../../apps/mobile/src/components/emails/ThreadListView.tsx:95
+#: ../ui/src/emails/ThreadList.tsx:189
 msgid "Load more"
 msgstr "Load more"
 
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
+#: ../../apps/mobile/src/components/emails/ThreadListView.tsx:116
 #: ../ui/src/emails/BackfillCard.tsx:35
+#: ../ui/src/emails/ThreadList.tsx:142
 msgid "Loading past threads…"
 msgstr "Loading past threads…"
 
@@ -2257,7 +2268,7 @@ msgstr "Loading past threads…"
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:158
 #: ../../apps/web/src/app/loading.tsx:6
 #: ../ui/src/emails/MessageCard.tsx:60
-#: ../ui/src/emails/ThreadList.tsx:179
+#: ../ui/src/emails/ThreadList.tsx:189
 msgid "Loading…"
 msgstr "Loading…"
 
@@ -2509,11 +2520,11 @@ msgstr "No senders blocked yet."
 msgid "No signups yet."
 msgstr "No signups yet."
 
-#: ../../apps/mobile/src/components/emails/ThreadListView.tsx:41
+#: ../../apps/mobile/src/components/emails/ThreadListView.tsx:46
 msgid "No threads"
 msgstr "No threads"
 
-#: ../ui/src/emails/ThreadList.tsx:135
+#: ../ui/src/emails/ThreadList.tsx:145
 msgid "No threads here."
 msgstr "No threads here."
 
@@ -2529,7 +2540,7 @@ msgstr "No threads in {folderName}"
 msgid "No threads match your search"
 msgstr "No threads match your search"
 
-#: ../ui/src/emails/ThreadList.tsx:133
+#: ../ui/src/emails/ThreadList.tsx:138
 msgid "No threads match your search."
 msgstr "No threads match your search."
 
@@ -2875,7 +2886,7 @@ msgstr "Proposed folders. Applying replaces your current plan; you can edit ever
 msgid "Queuing rescan…"
 msgstr "Queuing rescan…"
 
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:304
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:306
 msgid "Re-route {unclassifiedCount} unclassified"
 msgstr "Re-route {unclassifiedCount} unclassified"
 
@@ -3025,12 +3036,16 @@ msgid "Rescan inbox"
 msgstr "Rescan inbox"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:158
-msgid "Rescan queued — threads will update shortly."
-msgstr "Rescan queued — threads will update shortly."
+#~ msgid "Rescan queued — threads will update shortly."
+#~ msgstr "Rescan queued — threads will update shortly."
 
 #: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:103
 msgid "Rescan queued: threads will update shortly."
 msgstr "Rescan queued: threads will update shortly."
+
+#: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:158
+msgid "Rescan queued. Threads will update shortly."
+msgstr "Rescan queued. Threads will update shortly."
 
 #: ../../apps/mobile/app/verify-email.tsx:109
 msgid "Resend email"
@@ -3102,8 +3117,8 @@ msgstr "Rib-Hadda,\n"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
-msgid "Route now"
-msgstr "Route now"
+#~ msgid "Route now"
+#~ msgstr "Route now"
 
 #: ../ui/src/emails/MockEmailsPage.tsx:101
 msgid "Routing approved"
@@ -3111,8 +3126,8 @@ msgstr "Routing approved"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
-msgid "Routing…"
-msgstr "Routing…"
+#~ msgid "Routing…"
+#~ msgstr "Routing…"
 
 #. placeholder {0}: altFolder.name
 #. placeholder {1}: Math.round(thread.alternativeFolder.weight * 100)
@@ -3173,7 +3188,7 @@ msgstr "Search threads"
 msgid "Search threads…"
 msgstr "Search threads…"
 
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:269
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:271
 #: ../ui/src/emails/MockEmailsPage.tsx:231
 msgid "Select a thread to preview"
 msgstr "Select a thread to preview"
@@ -3399,9 +3414,16 @@ msgstr "Start from a template"
 msgid "Start from a template (replaces current)"
 msgstr "Start from a template (replaces current)"
 
+#: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:83
 #: ../../apps/site/src/components/landing/HeroSection.tsx:27
+#: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:90
 msgid "Start sorting"
 msgstr "Start sorting"
+
+#: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:83
+#: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:90
+msgid "Starting…"
+msgstr "Starting…"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:49
 msgid "Startup Founder"
@@ -3651,8 +3673,12 @@ msgid "Threads Amarnai has successfully routed to a folder."
 msgstr "Threads Amarnai has successfully routed to a folder."
 
 #: ../ui/src/emails/queueLabels.ts:19
-msgid "Threads flagged for review — Amarnai wasn't confident enough to sort automatically."
-msgstr "Threads flagged for review — Amarnai wasn't confident enough to sort automatically."
+#~ msgid "Threads flagged for review — Amarnai wasn't confident enough to sort automatically."
+#~ msgstr "Threads flagged for review — Amarnai wasn't confident enough to sort automatically."
+
+#: ../ui/src/emails/queueLabels.ts:19
+msgid "Threads flagged for review. Amarnai wasn't confident enough to sort automatically."
+msgstr "Threads flagged for review. Amarnai wasn't confident enough to sort automatically."
 
 #: ../../apps/mobile/src/components/BlacklistSheet.tsx:94
 #: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:101
@@ -3789,7 +3815,7 @@ msgstr "To the Great King, my lord, my sun,\n"
 msgid "Today"
 msgstr "Today"
 
-#: ../ui/src/emails/ThreadList.tsx:106
+#: ../ui/src/emails/ThreadList.tsx:111
 msgid "Toggle folders"
 msgstr "Toggle folders"
 
@@ -3834,7 +3860,7 @@ msgstr "Unavailable"
 msgid "Unclassified"
 msgstr "Unclassified"
 
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:291
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:293
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1258
 #: ../../apps/web/src/app/admin/waitlist/page.tsx:26
 #: ../ui/src/emails/MockEmailsPage.tsx:250

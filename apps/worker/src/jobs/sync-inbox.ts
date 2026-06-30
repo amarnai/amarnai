@@ -340,10 +340,17 @@ export function createSyncInboxWorker(): Worker {
           historyId: true,
           backfillStatus: true,
           backfillStartedAt: true,
+          backfillRoutingStartedAt: true,
           importantBackfilled: true,
           autoRouteBacklogArmed: true,
         },
       });
+
+      // Live sorting only kicks in once the user has explicitly started backfill
+      // routing. Before that, the import runs but new threads are left PENDING so
+      // they are swept as BACKFILL (quota-exempt) when routing starts, never as
+      // quota-consuming LIVE.
+      const routingStarted = syncState.backfillRoutingStartedAt != null;
 
       // Kick off the historical backfill as early as possible — right after the
       // sync-state row exists — so its loading card appears within seconds of
@@ -634,7 +641,7 @@ export function createSyncInboxWorker(): Worker {
       // permanently if addBulk then failed.
 
       if (threadsToClassify.length > 0) {
-        if (!sortingPaused && taxonomyStrong) {
+        if (!sortingPaused && taxonomyStrong && routingStarted) {
           await db.emailThread.updateMany({
             where: { id: { in: threadsToClassify } },
             data: { classifyingAt: new Date() },
@@ -651,10 +658,12 @@ export function createSyncInboxWorker(): Worker {
             }))
           );
         }
-        // taxonomy not routable or sorting paused → leave PENDING. The bulk
-        // backlog waits for "Route now"; the resume endpoint re-enqueues on
-        // resume. (Never-attempted threads have no classifyFailedAt, so
-        // recoverFailedThreads deliberately does not touch them.)
+        // Sorting paused, taxonomy not routable, or routing not yet started →
+        // leave PENDING. Before the user starts backfill routing, new threads are
+        // part of the historical backlog and are swept as BACKFILL on start; after
+        // that the bulk backlog waits for the start action and the resume endpoint
+        // re-enqueues on resume. (Never-attempted threads have no classifyFailedAt,
+        // so recoverFailedThreads deliberately does not touch them.)
       }
 
       // ── 6. Advance sync cursor ───────────────────────────────────────────────

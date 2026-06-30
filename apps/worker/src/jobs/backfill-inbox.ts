@@ -4,7 +4,6 @@ import { GmailClient, GmailAuthError, GmailThreadMeta, normalizeGmailThread } fr
 import type { GmailSyncSettings } from "@amarnai/shared";
 import { isTaxonomyRoutable, getBackfillCap, BACKFILL_RUNNING_STALE_MS } from "@amarnai/shared";
 import {
-  classifyThreadQueue,
   backfillInboxQueue,
   QUEUE_BACKFILL_INBOX,
   type BackfillInboxJobData,
@@ -20,9 +19,6 @@ import {
 import { enqueueArmedBacklog } from "./route-armed-backlog.js";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
-
-/** BullMQ priority for backfill classify jobs — higher number = lower priority. */
-const BACKFILL_CLASSIFY_PRIORITY = 10;
 
 const MS_PER_DAY = 24 * 60 * 60 * 1_000;
 
@@ -371,7 +367,6 @@ export function createBackfillInboxWorker(): Worker {
 
         // ── 6. Process pages until the chunk budget or the plan cap is reached ──
 
-        const upsertedEmailThreadIds: string[] = [];
         const baseSkipped = claimed?.backfillSkipped ?? 0;
         let runSkipped = 0;
         let processedThisRun = 0;
@@ -407,8 +402,7 @@ export function createBackfillInboxWorker(): Worker {
 
           for (let i = 0; i < pageThreads.length; i++) {
             try {
-              const id = await processThread(pageThreads[i]!);
-              if (id) upsertedEmailThreadIds.push(id);
+              await processThread(pageThreads[i]!);
             } catch (err) {
               // Permanent per-thread failure: skip it and keep going so one bad
               // thread can never stall the backfill. Anything else propagates.
@@ -480,18 +474,16 @@ export function createBackfillInboxWorker(): Worker {
 
         await job.updateProgress(60);
 
-        // ── 8. Enqueue classify-thread jobs for threads upserted this run ───────
+        // ── 8. Route the imported backlog only after the user has started ───────
         //
-        // Deduplication (not a fixed jobId) lets a previously-failed classify job
-        // for a thread be re-enqueued — dedup keys clear on completion/failure.
-        // Stamp classifyingAt first so the UI shows the threads as queued. Skip
+        // The import never routes on its own: bulk AI routing is an explicit user
+        // action ("Start sorting"). Only when armed — the user started backfill
+        // routing while this import is still in flight — do we sweep the
+        // never-attempted PENDING backlog (this run's upserts plus any orphaned)
+        // as BACKFILL, so threads a chunk commits around the click are routed too.
+        // Otherwise threads stay PENDING and wait for the start action. Skipped
         // when sorting is paused; threads stay PENDING for the resume flow.
-
-        // When armed, also sweep any orphaned never-attempted PENDING backlog (not
-        // just this run's upserted threads) so a chunk that committed PENDING
-        // around the "Route now" click does not re-surface the banner. Run this
-        // even when this chunk upserted nothing.
-        if (!sortingPaused && (upsertedEmailThreadIds.length > 0 || autoRouteBacklogArmed)) {
+        if (!sortingPaused && autoRouteBacklogArmed) {
           const [taxonomyNodes, taxonomyEdges] = await Promise.all([
             db.taxonomyNode.findMany({
               where: { workspaceId },
@@ -504,36 +496,8 @@ export function createBackfillInboxWorker(): Worker {
           ]);
 
           if (isTaxonomyRoutable(taxonomyNodes, taxonomyEdges)) {
-            if (autoRouteBacklogArmed) {
-              // User opted the arriving backlog into routing via "Route now".
-              // Route the whole never-attempted PENDING backlog (this run's
-              // upserts plus any orphaned) as REROUTE, matching the manual path.
-              await enqueueArmedBacklog(workspaceId);
-            } else if (upsertedEmailThreadIds.length > 0) {
-              const enqueuedAt = new Date();
-              await db.emailThread.updateMany({
-                where: { id: { in: upsertedEmailThreadIds } },
-                data: { classifyingAt: enqueuedAt },
-              });
-
-              await classifyThreadQueue.addBulk(
-                upsertedEmailThreadIds.map((emailThreadId) => ({
-                  name: "classify-thread",
-                  // BACKFILL: the one-time historical allowance, exempt from the
-                  // monthly thread-sort quota.
-                  data: { workspaceId, emailThreadId, source: "BACKFILL" as const },
-                  opts: {
-                    deduplication: { id: `classify_backfill_${workspaceId}_${emailThreadId}` },
-                    priority: BACKFILL_CLASSIFY_PRIORITY,
-                  },
-                }))
-              );
-            }
+            await enqueueArmedBacklog(workspaceId);
           }
-          // Taxonomy not routable → leave threads PENDING as the invalid-taxonomy
-          // bulk backlog. They wait for the user's "Route now" once a valid
-          // taxonomy exists (recoverFailedThreads does not touch never-attempted
-          // threads).
         }
 
         // ── 9. More to do? Persist the cursor and re-enqueue a continuation ─────

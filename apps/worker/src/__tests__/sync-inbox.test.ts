@@ -154,6 +154,10 @@ beforeEach(() => {
     historyId: "hist-1",
     backfillStatus: "DONE",
     backfillStartedAt: null,
+    // Steady state: the user has already started backfill routing, so live sync
+    // classifies new threads as LIVE. Tests that exercise the pre-start window
+    // override this with backfillRoutingStartedAt: null.
+    backfillRoutingStartedAt: new Date(),
     importantBackfilled: true,
   } as never);
   vi.mocked(db.providerSyncState.update).mockResolvedValue({} as never);
@@ -225,6 +229,32 @@ describe("createSyncInboxWorker — taxonomy gate", () => {
       (c) => (c[0] as { data: { triageStatus?: string } }).data?.triageStatus === "UNROUTED"
     );
     expect(unroutedCall).toBeUndefined();
+  });
+
+  it("leaves new threads PENDING and does not classify before backfill routing has started", async () => {
+    // Taxonomy is strong and sorting is not paused, but the user has not started
+    // backfill routing yet. New live threads must stay PENDING (import-only) so
+    // they are swept as BACKFILL on start, never charged to quota as LIVE.
+    vi.mocked(db.providerSyncState.upsert).mockResolvedValue({
+      historyId: "hist-1",
+      backfillStatus: "RUNNING",
+      backfillStartedAt: new Date(),
+      backfillRoutingStartedAt: null,
+      importantBackfilled: true,
+    } as never);
+
+    createSyncInboxWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID }));
+
+    expect(classifyThreadQueue.addBulk).not.toHaveBeenCalled();
+    // No classifyingAt stamp either — the thread is simply imported and left PENDING.
+    const classifyingStamp = vi
+      .mocked(db.emailThread.updateMany)
+      .mock.calls.find(
+        (c) => (c[0] as { data?: { classifyingAt?: unknown } }).data?.classifyingAt != null
+      );
+    expect(classifyingStamp).toBeUndefined();
   });
 
   it("does not re-classify a thread when only a label changed (message set unchanged)", async () => {
@@ -562,7 +592,7 @@ describe("createSyncInboxWorker — armed backlog recovery", () => {
     });
   }
 
-  it("routes the never-attempted backlog as REROUTE when armed", async () => {
+  it("routes the never-attempted backlog as BACKFILL when armed", async () => {
     armedSyncState();
     withBacklogThread("bk-1");
 
@@ -572,7 +602,9 @@ describe("createSyncInboxWorker — armed backlog recovery", () => {
     const recovery = armedBacklogCall();
     expect(recovery).toBeDefined();
     const jobs = recovery![0] as Array<{ data: { source?: string } }>;
-    expect(jobs[0]!.data.source).toBe("REROUTE");
+    // Arming happens during the initial (quota-exempt) backfill, so the swept
+    // backlog is attributed BACKFILL, matching the manual start path.
+    expect(jobs[0]!.data.source).toBe("BACKFILL");
   });
 
   it("does not route the backlog when not armed", async () => {

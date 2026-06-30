@@ -6,7 +6,7 @@ import type { PlanId, BillingCycle } from "@amarnai/ui";
 import { Trans } from "@lingui/react/macro";
 import { initServerI18n } from "@/lib/i18n-server";
 
-export const metadata = { title: "Upgrade — Amarnai" };
+export const metadata = { title: "Upgrade | Amarnai" };
 
 const planIdMap: Record<string, PlanId> = {
   FREE: "free",

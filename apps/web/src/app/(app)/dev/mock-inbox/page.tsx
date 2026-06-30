@@ -38,7 +38,7 @@ export default async function MockInboxPage() {
     <>
       <h1>Mock Inbox</h1>
       <p style={{ color: "var(--color-muted)", marginBottom: 24, fontSize: 13 }}>
-        Dev tool — simulate incoming email events without Gmail OAuth or real AI calls.
+        Dev tool: simulate incoming email events without Gmail OAuth or real AI calls.
       </p>
       <MockInboxClient workspaceId={workspace.id} threads={threads} />
     </>
