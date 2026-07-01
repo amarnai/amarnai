@@ -30,6 +30,21 @@
   box-shadow: var(--shadow-1);
 }
 
+/* Dark theme: the default surface/border sit too close to the canvas
+   background, so node cards read as barely-there. Lift every card onto the
+   raised surface; for unselected cards also brighten the border and lean on
+   a stronger shadow so each node stands off the canvas. Selected cards keep
+   their primary border + focus ring (excluded via :not(.selected) so this
+   higher-specificity rule doesn't override the selected state). */
+html[data-theme="dark"] .taxonomy-node-card {
+  background: var(--surface-2);
+}
+
+html[data-theme="dark"] .taxonomy-node-card:not(.selected) {
+  border-color: var(--line-3);
+  box-shadow: var(--shadow-2);
+}
+
 .taxonomy-node-card.unreachable {
   opacity: 0.45;
 }
@@ -58,6 +73,28 @@
 .badge-unreachable {
   background: var(--color-destructive-bg);
   color: var(--color-destructive-text);
+}
+
+/* ─── Controls (dark theme) ───────────────────────────────────────────────── */
+/* React Flow ships white control buttons with dark icons, which glare against
+   the dark canvas. Recolor them onto the raised surface with themed borders
+   and icons so the zoom/fit/lock cluster matches the rest of the UI. */
+html[data-theme="dark"] .react-flow__controls {
+  box-shadow: var(--shadow-2);
+}
+
+html[data-theme="dark"] .react-flow__controls-button {
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-foreground);
+}
+
+html[data-theme="dark"] .react-flow__controls-button:hover {
+  background: var(--color-border-light);
+}
+
+html[data-theme="dark"] .react-flow__controls-button svg {
+  fill: var(--color-foreground);
 }
 
 /* ─── Responsive ──────────────────────────────────────────────────────────── */
