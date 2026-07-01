@@ -72,7 +72,7 @@ msgstr "剩余 {0} / {1} · 重置于 {2}"
 #. placeholder {1}: (total ?? 0).toLocaleString()
 #. placeholder {1}: viewCount.toLocaleString()
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:81
-#: ../ui/src/emails/ThreadList.tsx:178
+#: ../ui/src/emails/ThreadList.tsx:217
 msgid "{0} of {1} loaded"
 msgstr "{0} / {1} 已加载"
 
@@ -1548,7 +1548,7 @@ msgid "Don't have an account? <0>Sign up</0>"
 msgstr "没有账户？<0>注册</0>"
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:40
-#: ../ui/src/emails/ThreadRow.tsx:101
+#: ../ui/src/emails/ThreadRow.tsx:141
 #, fuzzy
 msgid "Done"
 msgstr "完成"
@@ -1561,7 +1561,7 @@ msgstr "完成 · 撤消"
 msgid "Downgrade to {planName}"
 msgstr "降级至 {planName}"
 
-#: ../ui/src/emails/ThreadRow.tsx:124
+#: ../ui/src/emails/ThreadRow.tsx:182
 #, fuzzy
 msgid "draft"
 msgstr "草稿"
@@ -1596,7 +1596,7 @@ msgid "Draft style guidance"
 msgstr "草稿风格指南"
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:84
-#: ../ui/src/emails/ThreadRow.tsx:123
+#: ../ui/src/emails/ThreadRow.tsx:176
 msgid "Drafting…"
 msgstr "正在起草…"
 
@@ -1683,8 +1683,8 @@ msgid "Email support"
 msgstr "邮件支持"
 
 #: ../ui/src/emails/ThreadList.tsx:134
-msgid "Email threads"
-msgstr "电子邮件会话"
+#~ msgid "Email threads"
+#~ msgstr "电子邮件会话"
 
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:27
 #, fuzzy
@@ -1931,7 +1931,7 @@ msgid "Folder: {activeFolderName}"
 msgstr "文件夹：{activeFolderName}"
 
 #: ../ui/src/emails/EmailRail.tsx:93
-#: ../ui/src/emails/ThreadList.tsx:116
+#: ../ui/src/emails/ThreadList.tsx:130
 msgid "Folders"
 msgstr "文件夹"
 
@@ -2610,7 +2610,7 @@ msgid "Live"
 msgstr "实时"
 
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:95
-#: ../ui/src/emails/ThreadList.tsx:189
+#: ../ui/src/emails/ThreadList.tsx:228
 #, fuzzy
 msgid "Load more"
 msgstr "加载更多"
@@ -2618,7 +2618,7 @@ msgstr "加载更多"
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:116
 #: ../ui/src/emails/BackfillCard.tsx:35
-#: ../ui/src/emails/ThreadList.tsx:142
+#: ../ui/src/emails/ThreadList.tsx:173
 msgid "Loading past threads…"
 msgstr "正在加载过去的会话…"
 
@@ -2628,7 +2628,7 @@ msgstr "正在加载过去的会话…"
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:158
 #: ../../apps/web/src/app/loading.tsx:6
 #: ../ui/src/emails/MessageCard.tsx:60
-#: ../ui/src/emails/ThreadList.tsx:189
+#: ../ui/src/emails/ThreadList.tsx:228
 #, fuzzy
 msgid "Loading…"
 msgstr "加载中…"
@@ -2657,12 +2657,12 @@ msgid "Manager emails: one-on-ones, performance reviews, and feedback."
 msgstr "经理邮件：一对一会议、绩效评估和反馈。"
 
 #: ../ui/src/emails/PreviewDoneBar.tsx:23
-#: ../ui/src/emails/ThreadRow.tsx:75
+#: ../ui/src/emails/ThreadRow.tsx:106
 #, fuzzy
 msgid "Mark as done"
 msgstr "标记为完成"
 
-#: ../ui/src/emails/ThreadRow.tsx:75
+#: ../ui/src/emails/ThreadRow.tsx:105
 #, fuzzy
 msgid "Mark as not done"
 msgstr "标记为未完成"
@@ -2921,7 +2921,7 @@ msgstr "暂无注册。"
 msgid "No threads"
 msgstr "无会话"
 
-#: ../ui/src/emails/ThreadList.tsx:145
+#: ../ui/src/emails/ThreadList.tsx:176
 msgid "No threads here."
 msgstr "此处没有会话。"
 
@@ -2939,7 +2939,7 @@ msgstr "在{folderName}中没有会话"
 msgid "No threads match your search"
 msgstr "无会话符合您的搜索条件"
 
-#: ../ui/src/emails/ThreadList.tsx:138
+#: ../ui/src/emails/ThreadList.tsx:169
 #, fuzzy
 msgid "No threads match your search."
 msgstr "没有会话与您的搜索匹配。"
@@ -3014,7 +3014,7 @@ msgstr "只有工作区所有者才能管理账单。"
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:248
 #: ../ui/src/emails/ThreadPreview.tsx:115
 #: ../ui/src/emails/ThreadPreview.tsx:121
-#: ../ui/src/emails/ThreadRow.tsx:76
+#: ../ui/src/emails/ThreadRow.tsx:107
 #, fuzzy
 msgid "Open in Gmail"
 msgstr "在 Gmail 中打开"
@@ -3930,7 +3930,7 @@ msgstr "分类量"
 #: ../../apps/mobile/src/components/RationaleCard.tsx:35
 #: ../../apps/site/src/components/landing/HeroFeedCard.tsx:90
 #: ../ui/src/emails/RationaleCard.tsx:52
-#: ../ui/src/emails/ThreadRow.tsx:107
+#: ../ui/src/emails/ThreadRow.tsx:147
 msgid "Sorting…"
 msgstr "正在排序…"
 
@@ -4449,7 +4449,7 @@ msgstr "致大王，吾主，吾日，\n"
 msgid "Today"
 msgstr "今天"
 
-#: ../ui/src/emails/ThreadList.tsx:111
+#: ../ui/src/emails/ThreadList.tsx:114
 #, fuzzy
 msgid "Toggle folders"
 msgstr "切换文件夹"
@@ -4497,7 +4497,7 @@ msgid "Unavailable"
 msgstr "不可用"
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:46
-#: ../ui/src/emails/ThreadRow.tsx:112
+#: ../ui/src/emails/ThreadRow.tsx:155
 msgid "Unclassified"
 msgstr "未分类"
 
@@ -4714,7 +4714,7 @@ msgstr "仅限查看。只有工作区管理员才能编辑方案。"
 #: ../../apps/mobile/src/components/RationaleCard.tsx:44
 #: ../../apps/mobile/src/components/ThreadRow.tsx:49
 #: ../ui/src/emails/RationaleCard.tsx:74
-#: ../ui/src/emails/ThreadRow.tsx:110
+#: ../ui/src/emails/ThreadRow.tsx:151
 msgid "Waiting"
 msgstr "等待中"
 
@@ -4732,7 +4732,7 @@ msgstr "等待验证…"
 msgid "Waitlist"
 msgstr "候补名单"
 
-#: ../ui/src/emails/ThreadRow.tsx:71
+#: ../ui/src/emails/ThreadRow.tsx:99
 msgid "Wants {folderName}"
 msgstr "想要 {folderName}"
 

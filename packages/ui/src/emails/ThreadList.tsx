@@ -17,7 +17,10 @@ const DATE_GROUP_LABELS: Record<DateGroupKey, MessageDescriptor> = {
   earlier: msg`Earlier`,
 };
 
-function groupByDate(threads: ThreadItem[], now: Date): { key: DateGroupKey; items: ThreadItem[] }[] {
+function groupByDate(
+  threads: ThreadItem[],
+  now: Date,
+): { key: DateGroupKey; items: ThreadItem[] }[] {
   const today = now.toISOString().slice(0, 10);
   const yesterday = new Date(now);
   yesterday.setDate(yesterday.getDate() - 1);
@@ -110,12 +113,40 @@ export function ThreadList({
             aria-pressed={railOpen}
             aria-label={i18n._(msg`Toggle folders`)}
           >
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
-              <path d="M1 2h4.5l1 1.5H11a.5.5 0 01.5.5v5.5a.5.5 0 01-.5.5H1a.5.5 0 01-.5-.5V2.5A.5.5 0 011 2z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" />
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 12 12"
+              fill="none"
+              aria-hidden
+            >
+              <path
+                d="M1 2h4.5l1 1.5H11a.5.5 0 01.5.5v5.5a.5.5 0 01-.5.5H1a.5.5 0 01-.5-.5V2.5A.5.5 0 011 2z"
+                stroke="currentColor"
+                strokeWidth="1.2"
+                strokeLinejoin="round"
+              />
             </svg>
             <Trans>Folders</Trans>
-            <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden style={{ marginLeft: 2, transition: "transform 0.18s ease", transform: railOpen ? "rotate(180deg)" : "rotate(0deg)" }}>
-              <path d="M2 3.5l3 3 3-3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+            <svg
+              width="10"
+              height="10"
+              viewBox="0 0 10 10"
+              fill="none"
+              aria-hidden
+              style={{
+                marginLeft: 2,
+                transition: "transform 0.18s ease",
+                transform: railOpen ? "rotate(180deg)" : "rotate(0deg)",
+              }}
+            >
+              <path
+                d="M2 3.5l3 3 3-3"
+                stroke="currentColor"
+                strokeWidth="1.3"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
           </button>
         </div>
@@ -131,7 +162,7 @@ export function ThreadList({
         searchRef={searchRef}
       />
 
-      <div className="em-list-scroll" role="grid" aria-label={i18n._(msg`Email threads`)}>
+      <div className="em-list-scroll">
         {threads.length === 0 && (
           <div className="em-empty">
             {query ? (
@@ -149,23 +180,31 @@ export function ThreadList({
 
         {groups.map((group) => (
           <div key={group.key} className="em-group">
-            <div className="em-group-label">{i18n._(DATE_GROUP_LABELS[group.key])}</div>
-            {group.items.map((thread) => {
-              const folder = folders.find((f) => f.id === thread.folderId);
-              return (
-                <ThreadRow
-                  key={thread.id}
-                  thread={thread}
-                  folder={folder}
-                  active={active}
-                  selected={thread.id === selectedId}
-                  workspaceEmail={workspaceEmail}
-                  onSelect={() => onSelectThread(thread.id)}
-                  onMarkDone={() => onMarkDone(thread.id)}
-                  onUnmarkDone={() => onUnmarkDone(thread.id)}
-                />
-              );
-            })}
+            <div className="em-group-label">
+              {i18n._(DATE_GROUP_LABELS[group.key])}
+            </div>
+            <div
+              className="em-group-list"
+              role="list"
+              aria-label={i18n._(DATE_GROUP_LABELS[group.key])}
+            >
+              {group.items.map((thread) => {
+                const folder = folders.find((f) => f.id === thread.folderId);
+                return (
+                  <ThreadRow
+                    key={thread.id}
+                    thread={thread}
+                    folder={folder}
+                    active={active}
+                    selected={thread.id === selectedId}
+                    workspaceEmail={workspaceEmail}
+                    onSelect={() => onSelectThread(thread.id)}
+                    onMarkDone={() => onMarkDone(thread.id)}
+                    onUnmarkDone={() => onUnmarkDone(thread.id)}
+                  />
+                );
+              })}
+            </div>
           </div>
         ))}
 
