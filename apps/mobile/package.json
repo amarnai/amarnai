@@ -5,6 +5,7 @@
   "main": "expo-router/entry",
   "scripts": {
     "start": "expo start --dev-client",
+    "eas-build-post-install": "pnpm --filter @amarnai/i18n compile",
     "android": "expo run:android",
     "build": "eas build --platform android --profile production --local",
     "build:cloud": "eas build --platform android --profile production --no-wait",
