@@ -4,7 +4,8 @@
   "scripts": {
     "dev": "turbo dev",
     "mobile": "pnpm --filter @amarnai/mobile start",
-    "mobile:build": "pnpm --filter @amarnai/mobile android",
+    "mobile:android": "pnpm --filter @amarnai/mobile android",
+    "mobile:build": "pnpm --filter @amarnai/mobile build",
     "lint": "turbo lint",
     "typecheck": "turbo typecheck",
     "test": "turbo test",
