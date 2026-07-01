@@ -74,7 +74,9 @@ export function TaxonomyNodeCardBase({
         )}
         {ignored && <span className="badge badge-unreachable"><Trans>Ignored</Trans></span>}
       </div>
-      <Handle type="source" position={Position.Right} />
+      {/* The catch-all must stay a leaf (it is excluded from routing), so it
+          can never be the source of a path: no outgoing handle. */}
+      {!isCatchAll && <Handle type="source" position={Position.Right} />}
     </div>
   );
 

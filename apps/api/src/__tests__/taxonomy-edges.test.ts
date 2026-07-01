@@ -46,6 +46,7 @@ const nodeA = { id: NODE_A, workspaceId: WS_ID, isRoot: false };
 const nodeB = { id: NODE_B, workspaceId: WS_ID, isRoot: false };
 const nodeC = { id: NODE_C, workspaceId: WS_ID, isRoot: false };
 const rootNode = { id: "root-1", workspaceId: WS_ID, isRoot: true };
+const catchAllNode = { id: "catch-all-1", workspaceId: WS_ID, isRoot: false, isCatchAll: true };
 
 function post(path: string, body: unknown) {
   return app.request(path, authed({
@@ -192,6 +193,21 @@ describe("POST /workspaces/:workspaceId/taxonomy-edges", () => {
     expect(res.status).toBe(422);
     const body = (await res.json()) as { error: string };
     expect(body.error).toMatch(/root/i);
+  });
+
+  it("returns 422 when the source is the catch-all (it must stay a leaf)", async () => {
+    vi.mocked(db.workspace.findUnique).mockResolvedValue({ id: WS_ID } as never);
+    vi.mocked(db.taxonomyNode.findUnique)
+      .mockResolvedValueOnce(catchAllNode as never) // source
+      .mockResolvedValueOnce(nodeB as never);       // target
+
+    const res = await post(`/workspaces/${WS_ID}/taxonomy-edges`, {
+      sourceNodeId: catchAllNode.id,
+      targetNodeId: NODE_B,
+    });
+    expect(res.status).toBe(422);
+    const body = (await res.json()) as { error: string };
+    expect(body.error).toMatch(/catch-all/i);
   });
 
   it("returns 422 when a duplicate edge already exists", async () => {
@@ -367,6 +383,18 @@ describe("PATCH /workspaces/:workspaceId/taxonomy-edges/:edgeId", () => {
     expect(res.status).toBe(404);
     const body = (await res.json()) as { error: string };
     expect(body.error).toMatch(/source/i);
+  });
+
+  it("returns 422 when re-parenting onto the catch-all (it must stay a leaf)", async () => {
+    vi.mocked(db.taxonomyEdge.findUnique).mockResolvedValue(baseEdge as never);
+    vi.mocked(db.taxonomyNode.findUnique).mockResolvedValue(catchAllNode as never);
+
+    const res = await patch(`/workspaces/${WS_ID}/taxonomy-edges/${EDGE_ID}`, {
+      newSourceNodeId: catchAllNode.id,
+    });
+    expect(res.status).toBe(422);
+    const body = (await res.json()) as { error: string };
+    expect(body.error).toMatch(/catch-all/i);
   });
 
   it("returns 422 when re-parenting would create a duplicate edge", async () => {

@@ -117,7 +117,7 @@ taxonomyEdges.post("/workspaces/:workspaceId/taxonomy-edges", async (c) => {
   const [sourceNode, targetNode] = await Promise.all([
     db.taxonomyNode.findUnique({
       where: { id: d.sourceNodeId },
-      select: { id: true, workspaceId: true, isRoot: true },
+      select: { id: true, workspaceId: true, isRoot: true, isCatchAll: true },
     }),
     db.taxonomyNode.findUnique({
       where: { id: d.targetNodeId },
@@ -130,6 +130,12 @@ taxonomyEdges.post("/workspaces/:workspaceId/taxonomy-edges", async (c) => {
   }
   if (!targetNode || targetNode.workspaceId !== workspaceId) {
     return c.json({ error: "Target node not found" }, 404);
+  }
+  // The catch-all is excluded from routing and must remain a leaf; a child under
+  // it would be orphaned from the router. Mirrors the import-time check in
+  // packages/shared/src/schemas/taxonomy-transfer.ts.
+  if (sourceNode.isCatchAll) {
+    return c.json({ error: "The catch-all folder must be a leaf (it cannot have sub-folders)" }, 422);
   }
   if (targetNode.isRoot) {
     return c.json({ error: "Cannot create an edge targeting the root node" }, 422);
@@ -211,10 +217,15 @@ taxonomyEdges.patch(
 
     const newSource = await db.taxonomyNode.findUnique({
       where: { id: newSourceNodeId },
-      select: { id: true, workspaceId: true },
+      select: { id: true, workspaceId: true, isCatchAll: true },
     });
     if (!newSource || newSource.workspaceId !== workspaceId) {
       return c.json({ error: "New source node not found" }, 404);
+    }
+    // The catch-all must stay a leaf (it is excluded from routing); it cannot
+    // become a parent by re-pointing an existing edge either.
+    if (newSource.isCatchAll) {
+      return c.json({ error: "The catch-all folder must be a leaf (it cannot have sub-folders)" }, 422);
     }
 
     const duplicate = await db.taxonomyEdge.findFirst({

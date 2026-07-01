@@ -378,11 +378,12 @@ function NodeForm({
   const currentParentId = currentEdge?.sourceNodeId ?? null;
 
   // Parent options exclude the folder itself and its descendants (cycle guard;
-  // the server would reject re-parenting a folder under its own subtree).
+  // the server would reject re-parenting a folder under its own subtree), and
+  // the catch-all, which must stay a leaf (it is excluded from routing).
   const excluded = node
     ? new Set<string>([node.id, ...descendantIds(edges, node.id)])
     : new Set<string>();
-  const parentOptions = nodes.filter((n) => !excluded.has(n.id));
+  const parentOptions = nodes.filter((n) => !excluded.has(n.id) && !n.isCatchAll);
 
   const [name, setName] = useState(node?.name ?? "");
   const nameValid =
@@ -662,11 +663,13 @@ function EdgeForm({
               value={sourceNodeId}
               onChange={(e) => setSourceNodeId(e.target.value)}
             >
-              {nodes.map((n) => (
-                <option key={n.id} value={n.id}>
-                  {n.name}
-                </option>
-              ))}
+              {nodes
+                .filter((n) => !n.isCatchAll || n.id === edge.sourceNodeId)
+                .map((n) => (
+                  <option key={n.id} value={n.id}>
+                    {n.name}
+                  </option>
+                ))}
             </select>
           </div>
           <div className="form-group">
@@ -952,6 +955,9 @@ function TaxonomyCanvasInner({
       if (readOnly) return;
       if (!connection.source || !connection.target) return;
       if (dbNodes.find((n) => n.id === connection.target && n.isRoot)) return;
+      // The catch-all must stay a leaf (it is excluded from routing), so it
+      // cannot be the source of a path. The server rejects this too.
+      if (dbNodes.find((n) => n.id === connection.source && n.isCatchAll)) return;
       try {
         await createTaxonomyEdgeAction(workspaceId, {
           sourceNodeId: connection.source,

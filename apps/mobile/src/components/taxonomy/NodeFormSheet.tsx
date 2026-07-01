@@ -170,13 +170,14 @@ export function NodeFormSheet({
   const canSave = !submitting && nameValid && descriptionValid;
 
   // Parent options exclude the node itself and its descendants (cycle guard;
-  // server is the final authority). Root is offered as a top-level parent.
+  // server is the final authority), and the catch-all, which must stay a leaf
+  // (it is excluded from routing). Root is offered as a top-level parent.
   const parentOptions = useMemo<NodePickerOption[]>(() => {
     const excluded = node
       ? new Set<string>([node.id, ...descendantIds(edges, node.id)])
       : new Set<string>();
     const opts: NodePickerOption[] = nodes
-      .filter((n) => !excluded.has(n.id))
+      .filter((n) => !excluded.has(n.id) && !n.isCatchAll)
       .map((n) => ({
         id: n.id,
         label: n.isRoot ? _(msg`Inbox`) : n.name,
