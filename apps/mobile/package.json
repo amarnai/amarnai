@@ -6,8 +6,8 @@
   "scripts": {
     "start": "expo start --dev-client",
     "android": "expo run:android",
-    "build": "eas build --platform android --profile production --no-wait",
-    "build:local": "eas build --platform android --profile production --local",
+    "build": "eas build --platform android --profile production --local",
+    "build:cloud": "eas build --platform android --profile production --no-wait",
     "lint": "eslint app src",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
