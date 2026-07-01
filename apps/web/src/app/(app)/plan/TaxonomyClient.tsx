@@ -33,12 +33,13 @@ import {
   type UpdateTaxonomyEdgeInput,
 } from "@/lib/api";
 import {
-  createTaxonomyNodeAction,
-  updateTaxonomyNodeAction,
-  deleteTaxonomyNodeAction,
-  createTaxonomyEdgeAction,
-  updateTaxonomyEdgeAction,
-  deleteTaxonomyEdgeAction,
+  createTaxonomyNodeAction as createTaxonomyNodeActionRaw,
+  updateTaxonomyNodeAction as updateTaxonomyNodeActionRaw,
+  deleteTaxonomyNodeAction as deleteTaxonomyNodeActionRaw,
+  createTaxonomyEdgeAction as createTaxonomyEdgeActionRaw,
+  updateTaxonomyEdgeAction as updateTaxonomyEdgeActionRaw,
+  deleteTaxonomyEdgeAction as deleteTaxonomyEdgeActionRaw,
+  type ActionResult,
 } from "@/actions/taxonomy";
 import {
   computeIgnoredReasons,
@@ -77,6 +78,40 @@ import { translateSource } from "@amarnai/i18n";
 function nodeById(nodes: TaxonomyNode[], id: string): TaxonomyNode | undefined {
   return nodes.find((n) => n.id === id);
 }
+
+// The taxonomy Server Actions return a result union instead of throwing, so
+// their validation messages (e.g. "This node already has a parent") survive
+// Next.js's production redaction of errors thrown across the action boundary.
+// unwrap re-throws here on the client — where the message is NOT redacted — so
+// the existing try/catch handlers can show it inline via setFormError/setApiError.
+function unwrap<T>(res: ActionResult<T>): T {
+  if (!res.ok) throw new Error(res.error);
+  return res.data;
+}
+
+const createTaxonomyNodeAction = (
+  ...args: Parameters<typeof createTaxonomyNodeActionRaw>
+) => createTaxonomyNodeActionRaw(...args).then(unwrap);
+
+const updateTaxonomyNodeAction = (
+  ...args: Parameters<typeof updateTaxonomyNodeActionRaw>
+) => updateTaxonomyNodeActionRaw(...args).then(unwrap);
+
+const deleteTaxonomyNodeAction = (
+  ...args: Parameters<typeof deleteTaxonomyNodeActionRaw>
+) => deleteTaxonomyNodeActionRaw(...args).then(unwrap);
+
+const createTaxonomyEdgeAction = (
+  ...args: Parameters<typeof createTaxonomyEdgeActionRaw>
+) => createTaxonomyEdgeActionRaw(...args).then(unwrap);
+
+const updateTaxonomyEdgeAction = (
+  ...args: Parameters<typeof updateTaxonomyEdgeActionRaw>
+) => updateTaxonomyEdgeActionRaw(...args).then(unwrap);
+
+const deleteTaxonomyEdgeAction = (
+  ...args: Parameters<typeof deleteTaxonomyEdgeActionRaw>
+) => deleteTaxonomyEdgeActionRaw(...args).then(unwrap);
 
 
 // ─── React Flow node/edge converters ──────────────────────────────────────────

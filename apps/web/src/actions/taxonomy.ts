@@ -13,12 +13,21 @@ import type {
 const API_BASE = process.env["API_URL"] ?? "http://localhost:3001";
 const INTERNAL_SECRET = process.env["INTERNAL_API_SECRET"] ?? "dev-internal-secret";
 
+// Expected failures (validation 422s, not-found, etc.) are returned, not
+// thrown. A throw that escapes a Server Action is redacted by Next.js in
+// production — the client only receives a generic "digest" error and the real
+// message is lost, so inline validation messages never reach the UI. Returning
+// the message lets the client surface it; the caller unwraps it client-side.
+export type ActionResult<T> =
+  | { ok: true; data: T }
+  | { ok: false; error: string };
+
 async function apiCall<T>(
   path: string,
   method: "POST" | "PATCH" | "DELETE",
   userId: string,
   body?: unknown
-): Promise<T> {
+): Promise<ActionResult<T>> {
   const res = await fetch(`${API_BASE}${path}`, {
     method,
     headers: {
@@ -31,15 +40,15 @@ async function apiCall<T>(
   });
   if (!res.ok) {
     const err = (await res.json().catch(() => ({}))) as { error?: string };
-    throw new Error(err.error ?? `API error ${res.status}`);
+    return { ok: false, error: err.error ?? `API error ${res.status}` };
   }
-  return res.json() as Promise<T>;
+  return { ok: true, data: (await res.json()) as T };
 }
 
 export async function createTaxonomyNodeAction(
   workspaceId: string,
   data: CreateTaxonomyNodeInput
-): Promise<TaxonomyNode> {
+): Promise<ActionResult<TaxonomyNode>> {
   const user = await requireUser();
   await assertTaxonomyEditor(workspaceId, user.id);
   return apiCall<TaxonomyNode>(
@@ -54,7 +63,7 @@ export async function updateTaxonomyNodeAction(
   workspaceId: string,
   nodeId: string,
   data: UpdateTaxonomyNodeInput
-): Promise<TaxonomyNode> {
+): Promise<ActionResult<TaxonomyNode>> {
   const user = await requireUser();
   await assertTaxonomyEditor(workspaceId, user.id);
   return apiCall<TaxonomyNode>(
@@ -69,7 +78,7 @@ export async function deleteTaxonomyNodeAction(
   workspaceId: string,
   nodeId: string,
   moveToNodeId?: string
-): Promise<{ ok: boolean }> {
+): Promise<ActionResult<{ ok: boolean }>> {
   const user = await requireUser();
   await assertTaxonomyEditor(workspaceId, user.id);
   return apiCall<{ ok: boolean }>(
@@ -83,7 +92,7 @@ export async function deleteTaxonomyNodeAction(
 export async function createTaxonomyEdgeAction(
   workspaceId: string,
   data: CreateTaxonomyEdgeInput
-): Promise<TaxonomyEdge> {
+): Promise<ActionResult<TaxonomyEdge>> {
   const user = await requireUser();
   await assertTaxonomyEditor(workspaceId, user.id);
   return apiCall<TaxonomyEdge>(
@@ -98,7 +107,7 @@ export async function updateTaxonomyEdgeAction(
   workspaceId: string,
   edgeId: string,
   data: UpdateTaxonomyEdgeInput
-): Promise<TaxonomyEdge> {
+): Promise<ActionResult<TaxonomyEdge>> {
   const user = await requireUser();
   await assertTaxonomyEditor(workspaceId, user.id);
   return apiCall<TaxonomyEdge>(
@@ -112,7 +121,7 @@ export async function updateTaxonomyEdgeAction(
 export async function deleteTaxonomyEdgeAction(
   workspaceId: string,
   edgeId: string
-): Promise<{ ok: boolean }> {
+): Promise<ActionResult<{ ok: boolean }>> {
   const user = await requireUser();
   await assertTaxonomyEditor(workspaceId, user.id);
   return apiCall<{ ok: boolean }>(
