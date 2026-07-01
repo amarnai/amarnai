@@ -32,7 +32,7 @@ export function EmailsDemoSection() {
         <div className="ld-app-frame ld-reveal">
           <div className="ld-frame-bar">
             <div className="ld-crumbs">
-              <span><Trans>Acme Workspace</Trans></span>
+              <span><Trans>Workspace</Trans></span>
               <span className="ld-sep">/</span>
               <span className="ld-here"><Trans>Mail</Trans></span>
             </div>
