@@ -4,6 +4,12 @@ dist/
 web-build/
 *.orig.*
 
+# Build artifacts (app bundles / apks produced by eas build --local)
+*.aab
+*.apk
+build-*.aab
+build-*.apk
+
 # Play Store / signing credentials (never commit)
 play-service-account.json
 *.keystore
