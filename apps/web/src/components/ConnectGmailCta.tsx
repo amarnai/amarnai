@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Trans } from "@lingui/react/macro";
+import { GoogleGIcon } from "@/components/GoogleGIcon";
 
 type Props = {
   workspaceId: string;
@@ -50,6 +51,7 @@ export function ConnectGmailCta({ workspaceId, reconnect = false }: Props) {
             href={`/api/gmail/connect?workspaceId=${workspaceId}`}
             className="btn-primary connect-gmail-cta-btn"
           >
+            <GoogleGIcon variant="mono" size={16} />
             {reconnect ? <Trans>Reconnect Gmail</Trans> : <Trans>Connect Gmail</Trans>}
           </a>
         </div>

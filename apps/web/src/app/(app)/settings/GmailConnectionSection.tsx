@@ -8,6 +8,7 @@ import type { MessageDescriptor } from "@lingui/core";
 import { disconnectGmailAction, type DisconnectOutcome } from "@/actions/gmail";
 import type { GmailConnection, SyncStatus, GmailSyncSettings } from "@/lib/api";
 import { GmailSyncSettingsSection } from "./GmailSyncSettingsSection";
+import { GoogleGIcon } from "@/components/GoogleGIcon";
 
 const DEFAULT_SYNC_SETTINGS: GmailSyncSettings = {
   includeSpam: false,
@@ -255,6 +256,7 @@ export function GmailConnectionSection({
             href={`/api/gmail/connect?workspaceId=${workspaceId}`}
             className="btn-primary"
           >
+            <GoogleGIcon variant="mono" size={16} />
             <Trans>Reconnect Gmail</Trans>
           </a>
         </div>
@@ -265,6 +267,7 @@ export function GmailConnectionSection({
             href={`/api/gmail/connect?workspaceId=${workspaceId}`}
             className="btn-primary"
           >
+            <GoogleGIcon variant="mono" size={16} />
             <Trans>Connect Gmail</Trans>
           </a>
         </div>
