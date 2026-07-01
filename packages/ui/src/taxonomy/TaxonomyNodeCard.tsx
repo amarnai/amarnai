@@ -8,6 +8,7 @@ import type { TaxonomyNode } from "@amarnai/shared";
 import type { IgnoredReason } from "@amarnai/core/taxonomy";
 import { Tooltip } from "../Tooltip.js";
 import { Glyph, NavGlyph, FOLDER_GLYPH } from "../icons/glyphs.js";
+import "./taxonomy-node-card.css";
 
 export type TaxonomyNodeData = { node: TaxonomyNode; ignoredReason: IgnoredReason };
 export type TaxonomyRFNode = Node<TaxonomyNodeData, "taxonomy">;

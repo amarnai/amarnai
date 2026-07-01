@@ -1,0 +1,111 @@
+/* ─── Taxonomy node card ──────────────────────────────────────────────────── */
+/* Single source of truth for the node card, imported by TaxonomyNodeCard so    */
+/* the styles travel with the component to every surface that renders it (the   */
+/* web plan canvas, the site demo, and the read-only canvas). Requires the      */
+/* consuming app to provide Amarnai CSS custom properties.                      */
+
+.taxonomy-node-card {
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  min-width: 160px;
+  max-width: 220px;
+  cursor: default;
+  box-shadow: var(--shadow-1);
+}
+
+/* Dark theme: the default surface/border sit too close to the canvas
+   background, so node cards read as barely-there. Lift every card onto the
+   raised surface; for unselected cards lean on a stronger shadow and a
+   warm accent-tinted border (same luminance as a neutral line, so it pops
+   without glare) to give nodes a terracotta identity that ties into the
+   accent family. Selected cards keep their brighter primary border + focus
+   ring (excluded via :not(.selected) so this higher-specificity rule doesn't
+   override the selected state, which stays the clear emphasis). */
+html[data-theme="dark"] .taxonomy-node-card {
+  background: var(--surface-2);
+}
+
+html[data-theme="dark"] .taxonomy-node-card:not(.selected) {
+  border-color: var(--accent-line);
+  box-shadow: var(--shadow-2);
+}
+
+.taxonomy-node-card.selected {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px var(--color-primary-ring);
+}
+
+.taxonomy-node-card.unreachable {
+  opacity: 0.45;
+}
+
+.taxonomy-node-card .node-name {
+  display: flex;
+  /* Pin the folder glyph to the first line so it stays inline when a long
+     title wraps (nowrap keeps the label from dropping below the icon). */
+  align-items: flex-start;
+  flex-wrap: nowrap;
+  gap: 6px;
+  font-size: 13px;
+  line-height: 1.35;
+  font-weight: 600;
+  color: var(--color-foreground);
+  margin-bottom: 5px;
+}
+
+.taxonomy-node-card .node-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* Match the label's first-line box height so the glyph centers on line 1. */
+  height: calc(13px * 1.35);
+  color: var(--color-muted);
+  flex-shrink: 0;
+}
+
+.taxonomy-node-card .node-label {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.taxonomy-node-card .node-description {
+  font-size: 11px;
+  color: var(--color-muted);
+  margin-bottom: 5px;
+}
+
+.taxonomy-node-card .node-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.badge-unreachable {
+  background: var(--color-destructive-bg);
+  color: var(--color-destructive-text);
+}
+
+/* ─── Canvas controls (dark theme) ────────────────────────────────────────── */
+/* React Flow ships white control buttons with dark icons, which glare against
+   the dark canvas. Recolor them onto the raised surface with themed borders
+   and icons so the zoom/fit/lock cluster matches the rest of the UI. Lives
+   here so it loads on every canvas that renders node cards. */
+html[data-theme="dark"] .react-flow__controls {
+  box-shadow: var(--shadow-2);
+}
+
+html[data-theme="dark"] .react-flow__controls-button {
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-foreground);
+}
+
+html[data-theme="dark"] .react-flow__controls-button:hover {
+  background: var(--color-border-light);
+}
+
+html[data-theme="dark"] .react-flow__controls-button svg {
+  fill: var(--color-foreground);
+}

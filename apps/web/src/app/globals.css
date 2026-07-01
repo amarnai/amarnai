@@ -2337,25 +2337,12 @@ a {
   min-width: 0;
 }
 
-/* React Flow ships white control buttons with dark icons, which glare against
-   the dark canvas. Recolor them onto the raised surface with themed borders
-   and icons so the zoom/fit/lock cluster matches the rest of the UI. */
-html[data-theme="dark"] .react-flow__controls {
-  box-shadow: var(--shadow-2);
-}
-
-html[data-theme="dark"] .react-flow__controls-button {
-  background: var(--surface-2);
-  border-bottom: 1px solid var(--color-border);
-  color: var(--color-foreground);
-}
-
-html[data-theme="dark"] .react-flow__controls-button:hover {
-  background: var(--color-border-light);
-}
-
-html[data-theme="dark"] .react-flow__controls-button svg {
-  fill: var(--color-foreground);
+/* Node cards on the plan canvas are clickable (open the side panel); the shared
+   card styles default to cursor:default for read-only surfaces, so opt in to a
+   pointer here. Card visuals and the dark-theme control theming come from the
+   shared taxonomy-node-card.css that ships with the component. */
+.taxonomy-canvas-wrap .taxonomy-node-card {
+  cursor: pointer;
 }
 
 .taxonomy-panel {
@@ -2387,75 +2374,13 @@ html[data-theme="dark"] .react-flow__controls-button svg {
   background: var(--color-hover);
 }
 
-.taxonomy-node-card {
-  background: var(--color-surface);
-  border: 1.5px solid var(--color-border);
-  border-radius: 8px;
-  padding: 10px 14px;
-  min-width: 160px;
-  max-width: 220px;
-  cursor: pointer;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-}
-
-.taxonomy-node-card.selected {
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 2px var(--color-primary-ring);
-}
-
-.taxonomy-node-card.unreachable {
-  opacity: 0.45;
-}
-
-.badge-unreachable {
-  background: var(--color-destructive-bg);
-  color: var(--color-destructive-text);
-}
-
+/* Node card visuals (base, dark, selected, unreachable, node-name/icon/label,
+   badges, badge-unreachable) live in the shared taxonomy-node-card.css that
+   ships with TaxonomyNodeCard, so they stay identical across the plan canvas,
+   the site demo, and the read-only canvas. */
 .badge-warning {
   background: var(--color-warning-bg);
   color: var(--color-warning-text);
-}
-
-.taxonomy-node-card .node-name {
-  display: flex;
-  /* Pin the folder glyph to the first line so it stays inline when a long
-     title wraps (nowrap keeps the label from dropping below the icon). */
-  align-items: flex-start;
-  flex-wrap: nowrap;
-  gap: 6px;
-  font-size: 13px;
-  line-height: 1.35;
-  font-weight: 600;
-  color: var(--color-foreground);
-  margin-bottom: 5px;
-}
-
-.taxonomy-node-card .node-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  /* Match the label's first-line box height so the glyph centers on line 1. */
-  height: calc(13px * 1.35);
-  color: var(--color-muted);
-  flex-shrink: 0;
-}
-
-.taxonomy-node-card .node-label {
-  min-width: 0;
-  overflow-wrap: anywhere;
-}
-
-.taxonomy-node-card .node-description {
-  font-size: 11px;
-  color: var(--color-muted);
-  margin-bottom: 5px;
-}
-
-.taxonomy-node-card .node-badges {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
 }
 
 .panel-inner {

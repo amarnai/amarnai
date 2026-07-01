@@ -982,62 +982,7 @@ body {
   min-width: 0;
 }
 
-.taxonomy-node-card {
-  background: var(--color-surface);
-  border: 1.5px solid var(--color-border);
-  border-radius: 8px;
-  padding: 10px 14px;
-  min-width: 160px;
-  max-width: 220px;
-  cursor: default;
-  box-shadow: var(--shadow-1);
-}
-
-.taxonomy-node-card.unreachable { opacity: 0.45; }
-
-.taxonomy-node-card .node-name {
-  display: flex;
-  /* Pin the folder glyph to the first line so it stays inline when a long
-     title wraps (nowrap keeps the label from dropping below the icon). */
-  align-items: flex-start;
-  flex-wrap: nowrap;
-  gap: 6px;
-  font-size: 13px;
-  line-height: 1.35;
-  font-weight: 600;
-  color: var(--color-foreground);
-  margin-bottom: 5px;
-}
-
-.taxonomy-node-card .node-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  /* Match the label's first-line box height so the glyph centers on line 1. */
-  height: calc(13px * 1.35);
-  color: var(--color-muted);
-  flex-shrink: 0;
-}
-
-.taxonomy-node-card .node-label {
-  min-width: 0;
-  overflow-wrap: anywhere;
-}
-
-.taxonomy-node-card .node-description {
-  font-size: 11px;
-  color: var(--color-muted);
-  margin-bottom: 5px;
-}
-
-.taxonomy-node-card .node-badges {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-}
-
-.badge-unreachable {
-  background: var(--color-destructive-bg);
-  color: var(--color-destructive-text);
-}
+/* Node card visuals (base, unreachable, node-name/icon/label, badges,
+   badge-unreachable) ship with TaxonomyNodeCard via the shared
+   taxonomy-node-card.css, so the demo matches the app's plan canvas. */
 
