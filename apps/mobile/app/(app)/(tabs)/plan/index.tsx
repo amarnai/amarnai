@@ -306,7 +306,11 @@ export default function TaxonomyScreen() {
       ) : null}
 
       {!loading && !loadError && routableCount < TAXONOMY_MIN_NON_ROOT_NODES ? (
-        <RoutingIndicator count={routableCount} min={TAXONOMY_MIN_NON_ROOT_NODES} />
+        <RoutingIndicator
+          count={routableCount}
+          min={TAXONOMY_MIN_NON_ROOT_NODES}
+          {...(readOnly ? {} : { onGenerate: handleOpenGenerate })}
+        />
       ) : null}
 
       <View style={styles.searchWrap}>
