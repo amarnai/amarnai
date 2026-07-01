@@ -1,12 +1,13 @@
 import { Hono } from "hono";
 import { z } from "zod";
-import { db, eligibleThreadWhere } from "@amarnai/db";
+import { db, eligibleThreadWhere, resolveInboxQuota } from "@amarnai/db";
 import {
   computeGenerationEligibility,
   emailDomain,
   isGenerationRunningFresh,
   type GenerationEligibility,
 } from "@amarnai/shared";
+import { config } from "@amarnai/config";
 import type { AppEnv } from "../env.js";
 import { isTaxonomyEditor } from "../services/taxonomy-permission.js";
 import { generateTaxonomyQueue } from "../services/queue-client.js";
@@ -34,7 +35,7 @@ interface EvalResult {
  * rare over-estimate here never costs money.
  */
 async function evaluate(workspaceId: string): Promise<EvalResult> {
-  const [workspace, settingsRow, state, syncState] = await Promise.all([
+  const [workspace, settingsRow, state, syncState, connection] = await Promise.all([
     db.workspace.findUnique({ where: { id: workspaceId }, select: { plan: true } }),
     db.gmailSyncSettings.findUnique({ where: { workspaceId } }),
     db.taxonomyGenerationState.findUnique({ where: { workspaceId } }),
@@ -42,7 +43,21 @@ async function evaluate(workspaceId: string): Promise<EvalResult> {
       where: { emailAccount: { workspaceId } },
       select: { backfillStatus: true },
     }),
+    db.gmailConnection.findUnique({ where: { workspaceId }, select: { gmailAddress: true } }),
   ]);
+
+  // Backstop quota counters come from the reset-immune, inbox-pooled meter
+  // (calendar-month window), sized by the top plan among workspaces sharing the
+  // inbox. Falls back to the workspace plan with no window for the no-connection
+  // path (generation can't run without an inbox anyway).
+  const now = new Date();
+  const enforceTaxonomy = config.billing.enforceTaxonomyQuota;
+  const quota = connection ? await resolveInboxQuota(connection.gmailAddress, "TAXONOMY_GEN", now) : null;
+  const genPlan = quota?.plan ?? workspace?.plan ?? "FREE";
+  // The cap is only ENFORCED when the flag is on (self-host can opt out); a null
+  // window makes computeGenerationEligibility skip the backstop branch.
+  const genWindowStart = enforceTaxonomy ? quota?.windowStart ?? null : null;
+  const genInWindow = enforceTaxonomy ? quota?.used ?? 0 : 0;
 
   const settings = {
     includeSpam: settingsRow?.includeSpam ?? false,
@@ -72,10 +87,10 @@ async function evaluate(workspaceId: string): Promise<EvalResult> {
     lastAttemptAt: state?.updatedAt ?? null,
     currentEligibleCount: eligibleThreadCount,
     currentSenderDomainCount: domainCount,
-    generationsWindowStart: state?.generationsWindowStart ?? null,
-    generationsInWindow: state?.generationsInWindow ?? 0,
-    plan: workspace?.plan ?? "FREE",
-    now: new Date(),
+    generationsWindowStart: genWindowStart,
+    generationsInWindow: genInWindow,
+    plan: genPlan,
+    now,
   });
 
   const importing =

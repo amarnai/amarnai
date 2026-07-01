@@ -1,7 +1,14 @@
 import { Worker, UnrecoverableError } from "bullmq";
-import { db, countRecurringThreadSorts } from "@amarnai/db";
+import {
+  db,
+  getInboxPlanCeiling,
+  inboxKeyFor,
+  meterWindowStart,
+  getMeterUsed,
+  recordMeterUsage,
+} from "@amarnai/db";
 import { config } from "@amarnai/config";
-import { getThreadSortLimit, getDraftQuotaWindowStart } from "@amarnai/shared";
+import { getThreadSortLimit } from "@amarnai/shared";
 import {
   createAIProvider,
   createEmbeddingProvider,
@@ -126,7 +133,7 @@ export function createClassifyThreadWorker(): Worker {
         }),
         db.gmailConnection.findUnique({
           where: { workspaceId },
-          select: { encryptedRefreshToken: true, status: true },
+          select: { encryptedRefreshToken: true, status: true, gmailAddress: true },
         }),
         db.gmailSyncSettings.findUnique({
           where: { workspaceId },
@@ -161,26 +168,39 @@ export function createClassifyThreadWorker(): Worker {
         // thread already counted this month is never blocked. Concurrent workers
         // can overshoot the limit slightly (check-then-act race); accepted as a
         // soft cap. The finally block clears the enqueue-time classifyingAt.
-        if (
-          !triageOnly &&
-          config.billing.enforceThreadSortQuota &&
-          source !== "BACKFILL" &&
-          !routeBulkAutomated
-        ) {
-          const workspace = await db.workspace.findUnique({
-            where: { id: workspaceId },
-            select: { plan: true },
-          });
-          if (workspace) {
-            const limit = getThreadSortLimit(workspace.plan);
-            const used = await countRecurringThreadSorts(
-              workspaceId,
-              getDraftQuotaWindowStart(),
-              emailThreadId,
-            );
+        // A billable, metered sort: a real embedding/LLM classification that the
+        // monthly quota counts. BACKFILL is exempt (one-time allowance) and
+        // automated/bulk mail is filed without an LLM call, so neither counts.
+        const meteredSort = !triageOnly && source !== "BACKFILL" && !routeBulkAutomated;
+        const inboxKey = inboxKeyFor(connection.gmailAddress);
+        const meterWindow = meterWindowStart();
+
+        // The quota counts DISTINCT threads. A re-sort of a thread already counted
+        // this window is free — never blocked, never re-counted — so we check first
+        // and skip both the gate and the record below for it.
+        let alreadyCountedThisWindow = false;
+        if (meteredSort) {
+          alreadyCountedThisWindow =
+            (await db.emailClassification.count({
+              where: {
+                emailThreadId,
+                source: { notIn: ["BACKFILL", "MOVE"] },
+                createdAt: { gte: meterWindow },
+              },
+            })) > 0;
+
+          // Gate against the reset-immune, inbox-pooled meter (sized by the top plan
+          // among workspaces sharing this inbox). Over the limit → defer as
+          // QUOTA_BLOCKED (re-enqueued on month rollover or plan upgrade; excluded
+          // from stuck-recovery and resume). Concurrent workers may overshoot
+          // slightly (check-then-act); accepted as a soft cap.
+          if (config.billing.enforceThreadSortQuota && !alreadyCountedThisWindow) {
+            const { plan } = await getInboxPlanCeiling(connection.gmailAddress);
+            const limit = getThreadSortLimit(plan);
+            const used = await getMeterUsed(inboxKey, "THREAD_SORT", meterWindow);
             if (used >= limit) {
               console.log(
-                `[classify-thread] Workspace ${workspaceId} at thread-sort quota (${used}/${limit}) — deferring thread ${emailThreadId} as QUOTA_BLOCKED`,
+                `[classify-thread] Inbox ${inboxKey} at thread-sort quota (${used}/${limit}) — deferring thread ${emailThreadId} as QUOTA_BLOCKED`,
               );
               await db.emailThread.update({
                 where: { id: emailThreadId },
@@ -533,6 +553,21 @@ export function createClassifyThreadWorker(): Worker {
             },
             select: { id: true },
           });
+
+          // Record one distinct-thread sort against the reset-immune inbox meter,
+          // the first time this thread is metered this window. Runs unconditionally
+          // (independent of the enforce flag) so self-host gets usage observability.
+          if (meteredSort && !alreadyCountedThisWindow) {
+            await recordMeterUsage({
+              inboxKey,
+              kind: "THREAD_SORT",
+              windowStart: meterWindow,
+              delta: 1,
+            });
+            // Only count once per thread per window even if it re-sorts later in
+            // this same job lifetime.
+            alreadyCountedThisWindow = true;
+          }
 
           const isUnclassified = rootNode != null && finalNodeId === rootNode.id;
           const triageStatus = isUnclassified

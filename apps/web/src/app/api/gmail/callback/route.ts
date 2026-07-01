@@ -87,6 +87,13 @@ export async function GET(req: NextRequest) {
     return NextResponse.redirect(settingsUrl);
   }
 
+  // Prior inbox on this workspace (if any) so the audit below can flag a ROTATION
+  // — connecting a different inbox than was there before.
+  const priorConnection = await db.gmailConnection.findUnique({
+    where: { workspaceId },
+    select: { gmailAddress: true, status: true },
+  });
+
   // ── Step 3: persist the connection ───────────────────────────────────────────
   // googleSubjectId is intentionally omitted: Google's tokeninfo endpoints do not
   // reliably return a stable account ID for gmail.readonly-only access tokens
@@ -116,6 +123,31 @@ export async function GET(req: NextRequest) {
     settingsUrl.searchParams.set("gmail_error", "db_upsert");
     return NextResponse.redirect(settingsUrl);
   }
+
+  // Audit the connect (best-effort) so web inbox rotation is observable, matching
+  // the API connect path. `replacedAddress` is set only on a real inbox swap.
+  const replacedAddress =
+    priorConnection?.gmailAddress && priorConnection.gmailAddress !== profile.emailAddress
+      ? priorConnection.gmailAddress
+      : null;
+  await db.auditLog
+    .create({
+      data: {
+        workspaceId,
+        actorType: "USER",
+        actorUserId: user.id,
+        eventType: "gmail.connected",
+        entityType: "GmailConnection",
+        metadata: {
+          gmailAddress: profile.emailAddress,
+          replacedAddress,
+          priorStatus: priorConnection?.status ?? null,
+        },
+      },
+    })
+    .catch((err) =>
+      console.error("[gmail/callback] audit:", err instanceof Error ? err.message : err),
+    );
 
   // ── Step 4: trigger an immediate inbox sync and register push watch ──────────
   // Both are fire-and-forget. Failures are non-fatal — the polling scheduler

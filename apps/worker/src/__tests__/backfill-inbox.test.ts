@@ -2,6 +2,12 @@ import { vi, describe, it, expect, beforeEach } from "vitest";
 
 // ─── Mocks ────────────────────────────────────────────────────────────────────
 
+const { mockGetInboxPlanCeiling, mockResolveBackfillBudget, mockRecordMeterUsage } = vi.hoisted(() => ({
+  mockGetInboxPlanCeiling: vi.fn(),
+  mockResolveBackfillBudget: vi.fn(),
+  mockRecordMeterUsage: vi.fn(),
+}));
+
 vi.mock("@amarnai/db", () => ({
   db: {
     workspace: { findUnique: vi.fn() },
@@ -25,6 +31,15 @@ vi.mock("@amarnai/db", () => ({
       upsert: vi.fn(),
     },
   },
+  getInboxPlanCeiling: mockGetInboxPlanCeiling,
+  resolveBackfillBudget: mockResolveBackfillBudget,
+  recordMeterUsage: mockRecordMeterUsage,
+  inboxKeyFor: (a: string) => a,
+  meterWindowStart: () => new Date("2026-06-01T00:00:00Z"),
+}));
+
+vi.mock("@amarnai/config", () => ({
+  config: { billing: { enforceBackfillQuota: true } },
 }));
 
 const mockListThreadsPage = vi.fn();
@@ -187,6 +202,26 @@ beforeEach(() => {
   // Default: taxonomy is strong enough (3 non-root nodes all linked to root).
   vi.mocked(db.taxonomyNode.findMany).mockResolvedValue(makeNodes(3) as never);
   vi.mocked(db.taxonomyEdge.findMany).mockResolvedValue(makeEdges(3) as never);
+
+  // Usage-meter helpers. The plan ceiling mirrors the workspace plan the test set,
+  // and the pooled budget is faithful to the real single-workspace case: the meter
+  // tracks the cursor, so remaining budget = cap − processedSoFar. This makes
+  // runCeiling == the plan cap, reproducing the old `processed < cap.maxThreads`
+  // bound for every existing test (fresh and resume) with no per-test wiring.
+  mockGetInboxPlanCeiling.mockImplementation(async () => {
+    const ws = (await db.workspace.findUnique({ where: {} } as never)) as
+      | { plan?: string; billingCycle?: string | null }
+      | null;
+    return { plan: ws?.plan ?? "FREE", billingCycle: ws?.billingCycle ?? null };
+  });
+  mockResolveBackfillBudget.mockImplementation(async ({ cap }: { cap: number }) => {
+    const st = (await db.providerSyncState.findUnique({ where: {} } as never)) as
+      | { backfillProcessedCount?: number }
+      | null;
+    const processed = st?.backfillProcessedCount ?? 0;
+    return { effectiveBudget: Math.max(0, cap - processed), usingGrace: false, blockedAwaitingWindow: false };
+  });
+  mockRecordMeterUsage.mockResolvedValue(undefined);
 });
 
 // ─── Tests ────────────────────────────────────────────────────────────────────
@@ -330,12 +365,68 @@ describe("createBackfillInboxWorker", () => {
     );
     expect(doneCall).toBeDefined();
     const doneData = (doneCall![0] as {
-      data: { backfillProcessedCount: number; backfillCapReached: boolean; backfillBeyondCount: number };
+      data: {
+        backfillProcessedCount: number;
+        backfillCapReached: boolean;
+        backfillBeyondCount: number;
+        backfillLimitState: string;
+      };
     }).data;
     expect(doneData.backfillProcessedCount).toBe(500);
-    // Cap hit with more threads remaining → flag set, ~700 (1200 - 500) beyond.
+    // Initial import hit the cap with more email remaining → CAPPED (no grace yet).
     expect(doneData.backfillCapReached).toBe(true);
-    expect(doneData.backfillBeyondCount).toBe(700);
+    expect(doneData.backfillLimitState).toBe("CAPPED");
+    expect(doneData.backfillBeyondCount).toBe(0); // count no longer surfaced
+  });
+
+  it("(c4-retry) flags CAPPED_RETRY when the grace re-import hits the cap", async () => {
+    vi.mocked(db.providerSyncState.findUnique).mockResolvedValue({
+      backfillStatus: "PENDING",
+      backfillStartedAt: null,
+    } as never);
+    // This run is drawing the grace allowance and still hits the cap.
+    mockResolveBackfillBudget.mockResolvedValue({
+      effectiveBudget: 500,
+      usingGrace: true,
+      blockedAwaitingWindow: false,
+    });
+    const fullPage = Array.from({ length: 100 }, (_, i) => makeGmailThread({ id: `t-${i}` }));
+    mockListThreadsPage.mockResolvedValue({ threads: fullPage, nextPageToken: "more", resultSizeEstimate: 1200 });
+    vi.mocked(db.emailThread.findUnique).mockResolvedValue(null);
+    mockGetThread.mockImplementation(async (id: string) => ({ id }));
+    vi.mocked(db.emailThread.upsert).mockResolvedValue({ id: "db-x" } as never);
+
+    createBackfillInboxWorker();
+    await getProcessor()(makeJob({ workspaceId: WS_ID }));
+
+    const doneCall = vi.mocked(db.providerSyncState.updateMany).mock.calls.find(
+      (c) => (c[0] as { data: { backfillStatus?: string } }).data?.backfillStatus === "DONE"
+    );
+    expect((doneCall![0] as { data: { backfillLimitState: string } }).data.backfillLimitState).toBe("CAPPED_RETRY");
+  });
+
+  it("(c4-blocked) flags BLOCKED when budget + grace are both spent", async () => {
+    vi.mocked(db.providerSyncState.findUnique).mockResolvedValue({
+      backfillStatus: "PENDING",
+      backfillStartedAt: null,
+    } as never);
+    mockResolveBackfillBudget.mockResolvedValue({
+      effectiveBudget: 0,
+      usingGrace: true,
+      blockedAwaitingWindow: true,
+    });
+
+    createBackfillInboxWorker();
+    await getProcessor()(makeJob({ workspaceId: WS_ID }));
+
+    // Budget 0 → no page loop; straight to DONE flagged BLOCKED.
+    expect(mockListThreadsPage).not.toHaveBeenCalled();
+    const doneCall = vi.mocked(db.providerSyncState.updateMany).mock.calls.find(
+      (c) => (c[0] as { data: { backfillStatus?: string } }).data?.backfillStatus === "DONE"
+    );
+    const data = (doneCall![0] as { data: { backfillLimitState: string; backfillCapReached: boolean } }).data;
+    expect(data.backfillLimitState).toBe("BLOCKED");
+    expect(data.backfillCapReached).toBe(true);
   });
 
   it("(c4b) does not flag cap-reached when the inbox is exhausted", async () => {

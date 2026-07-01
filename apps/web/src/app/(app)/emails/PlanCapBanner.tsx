@@ -4,7 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
-import { msg, plural } from "@lingui/core/macro";
+import { msg } from "@lingui/core/macro";
+import { TOP_PLAN, getDraftQuotaResetsAt, formatQuotaResetDate } from "@amarnai/shared";
 import type { SyncStatus } from "@/lib/api";
 
 type Props = {
@@ -12,39 +13,43 @@ type Props = {
 };
 
 /**
- * Shown when the historical backfill stopped at the plan's thread cap with more
- * threads still in Gmail. Surfaces the approximate beyond-cap count and points to
- * the upgrade flow (a higher plan re-runs the backfill up to the larger cap).
- * Dismissible for the session.
+ * Shown when the historical backfill couldn't load everything, with a message that
+ * adapts to WHY (see backfillLimitState): the initial import hit the plan cap
+ * (CAPPED), the one monthly grace re-import hit it too (CAPPED_RETRY), or the whole
+ * monthly allowance is spent so nothing more can import until the window rolls
+ * (BLOCKED). Below the top tier, upgrading raises the cap; at the top tier the only
+ * lever is the monthly refresh. Dismissible for the session.
  */
 export function PlanCapBanner({ syncStatus }: Props) {
   const { _ } = useLingui();
   const [dismissed, setDismissed] = useState(false);
 
-  if (!syncStatus || !syncStatus.backfillCapReached || dismissed) return null;
+  const state = syncStatus?.backfillLimitState;
+  if (!syncStatus || !state || state === "NONE" || dismissed) return null;
 
-  const count = syncStatus.backfillBeyondCount;
   const plan = syncStatus.workspacePlan;
+  const isTopPlan = plan === TOP_PLAN;
+  const refreshDate = formatQuotaResetDate(getDraftQuotaResetsAt().toISOString());
+
+  const message =
+    state === "BLOCKED"
+      ? _(msg`You've used all of your ${plan} plan's email imports this month, including one retry. Imports refresh ${refreshDate}.`)
+      : state === "CAPPED_RETRY"
+        ? _(msg`Your retry import finished and is still capped by your ${plan} plan. Your next retry is available ${refreshDate}.`)
+        : _(msg`Your ${plan} plan finished importing your most recent emails. Older ones beyond its limit weren't loaded.`);
 
   return (
     <div
       className="warning-box"
       style={{ margin: "12px 16px 0", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}
     >
-      <span>
-        {count > 0
-          ? _(
-              msg`About ${plural(count, {
-                one: "# more thread",
-                other: "# more threads",
-              })} beyond your ${plan} subscription limit aren't loaded.`
-            )
-          : _(msg`More threads beyond your ${plan} subscription limit aren't loaded.`)}
-      </span>
+      <span>{message}</span>
       <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
-        <Link href="/upgrade" className="btn-primary" style={{ whiteSpace: "nowrap" }}>
-          <Trans>Upgrade to load them</Trans>
-        </Link>
+        {!isTopPlan && (
+          <Link href="/upgrade" className="btn-primary" style={{ whiteSpace: "nowrap" }}>
+            {state === "BLOCKED" ? <Trans>Upgrade to import now</Trans> : <Trans>Upgrade to load the rest</Trans>}
+          </Link>
+        )}
         <button
           type="button"
           className="plan-cap-close"

@@ -100,6 +100,7 @@ export async function provisionFromCheckoutSession(
           backfillGeneration: { increment: 1 },
           backfillCapReached: false,
           backfillBeyondCount: 0,
+          backfillLimitState: "NONE",
         },
       }),
       ...(trialEndsAt !== null

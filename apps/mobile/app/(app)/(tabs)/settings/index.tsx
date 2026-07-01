@@ -14,6 +14,7 @@ import { msg, plural } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
 import type { MessageDescriptor } from '@lingui/core';
 import { colors, space, fontSize, fontWeight, radii } from '@amarnai/tokens';
+import { getDraftQuotaResetsAt, formatQuotaResetDate } from '@amarnai/shared';
 import type { GmailConnection, GmailSyncSettings, SyncStatus } from '@amarnai/api-client';
 import { useSession } from '../../../../src/auth/session';
 import { AppHeader } from '../../../../src/components/AppHeader';
@@ -138,9 +139,10 @@ export default function SettingsScreen() {
 
   const confirmReset = () => {
     if (!workspaceId) return;
+    const allowanceResetsAt = formatQuotaResetDate(getDraftQuotaResetsAt(new Date()).toISOString());
     Alert.alert(
       i18n._(msg`Reset workspace?`),
-      i18n._(msg`This removes the Gmail connection, deletes all synced emails, and resets the plan to Inbox only. The workspace is kept. This cannot be undone.`),
+      i18n._(msg`This removes the Gmail connection, deletes all synced emails, and resets the taxonomy to Inbox only. The workspace is kept; this cannot be undone. Re-importing this inbox uses your monthly import allowance; if it runs out, you can import again after ${allowanceResetsAt} or by upgrading.`),
       [
         { text: i18n._(msg`Cancel`), style: 'cancel' },
         {

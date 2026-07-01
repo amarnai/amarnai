@@ -5,6 +5,13 @@
 export type BillingPlan = "FREE" | "PRO" | "BUSINESS";
 export type BillingCycleValue = "MONTHLY" | "ANNUAL";
 
+/**
+ * The highest-tier plan. At this tier there is no higher plan to raise the
+ * backfill cap, so the cap-reached prompt offers a monthly refresh (the pooled
+ * budget replenishes each window) instead of an upgrade CTA.
+ */
+export const TOP_PLAN: BillingPlan = "BUSINESS";
+
 export interface BillingMember {
   name: string | null;
   email: string;

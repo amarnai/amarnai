@@ -2,6 +2,7 @@ import { vi, describe, it, expect, beforeEach } from "vitest";
 import { authed } from "./helpers.js";
 
 const mockBilling = vi.hoisted(() => ({ enforceThreadSortQuota: true }));
+const { mockResolveInboxQuota } = vi.hoisted(() => ({ mockResolveInboxQuota: vi.fn() }));
 
 vi.mock("@amarnai/config", () => ({
   config: {
@@ -20,9 +21,10 @@ vi.mock("@amarnai/db", () => ({
     emailClassification: { create: vi.fn(), findFirst: vi.fn() },
     workspace: { findUnique: vi.fn() },
     workspaceMember: { findUnique: vi.fn() },
+    gmailConnection: { findUnique: vi.fn() },
     $queryRaw: vi.fn(),
   },
-  countRecurringThreadSorts: vi.fn(),
+  resolveInboxQuota: mockResolveInboxQuota,
 }));
 
 vi.mock("../queues.js", () => ({
@@ -30,7 +32,7 @@ vi.mock("../queues.js", () => ({
 }));
 
 import app from "../app.js";
-import { db, countRecurringThreadSorts } from "@amarnai/db";
+import { db } from "@amarnai/db";
 import { classifyThreadQueue } from "../queues.js";
 
 const WS_ID = "ws-1";
@@ -80,9 +82,17 @@ beforeEach(() => {
   vi.mocked(db.emailClassification.create).mockResolvedValue({ id: "cls-1" } as never);
   vi.mocked(db.emailClassification.findFirst).mockResolvedValue({ id: "cls-existing" } as never);
   vi.mocked(classifyThreadQueue.add).mockResolvedValue({} as never);
-  // Default workspace: FREE plan, 0 recurring threads sorted this month (well under the 500 limit).
-  vi.mocked(db.workspace.findUnique).mockResolvedValue({ plan: "FREE" } as never);
-  vi.mocked(countRecurringThreadSorts).mockResolvedValue(0);
+  // Default: active inbox on FREE plan, 0 threads sorted this month (well under 500).
+  vi.mocked(db.gmailConnection.findUnique).mockResolvedValue({
+    gmailAddress: "ben@gmail.com",
+    status: "ACTIVE",
+  } as never);
+  mockResolveInboxQuota.mockResolvedValue({
+    inboxKey: "ben@gmail.com",
+    windowStart: new Date("2026-06-01T00:00:00Z"),
+    plan: "FREE",
+    used: 0,
+  });
 });
 
 // ─── ai-classify ──────────────────────────────────────────────────────────────
@@ -146,7 +156,7 @@ describe("POST /workspaces/:workspaceId/email-threads/:threadId/ai-classify", ()
 describe("POST /workspaces/:workspaceId/email-threads/:threadId/ai-classify — quota", () => {
   it("allows the request when usage is below the limit", async () => {
     // 499 of 500 FREE-plan slots used — one remaining.
-    vi.mocked(countRecurringThreadSorts).mockResolvedValue(499);
+    mockResolveInboxQuota.mockResolvedValue({ inboxKey: "ben@gmail.com", windowStart: new Date(), plan: "FREE", used: 499 });
     const res = await post(`/workspaces/${WS_ID}/email-threads/${THREAD_ID}/ai-classify`);
     expect(res.status).toBe(202);
     expect(classifyThreadQueue.add).toHaveBeenCalledOnce();
@@ -154,7 +164,7 @@ describe("POST /workspaces/:workspaceId/email-threads/:threadId/ai-classify — 
 
   it("returns 429 with quota details when the monthly limit is reached", async () => {
     // 500 of 500 — at the FREE limit.
-    vi.mocked(countRecurringThreadSorts).mockResolvedValue(500);
+    mockResolveInboxQuota.mockResolvedValue({ inboxKey: "ben@gmail.com", windowStart: new Date(), plan: "FREE", used: 500 });
     const res = await post(`/workspaces/${WS_ID}/email-threads/${THREAD_ID}/ai-classify`);
     expect(res.status).toBe(429);
     const body = await res.json() as Record<string, unknown>;
@@ -165,34 +175,35 @@ describe("POST /workspaces/:workspaceId/email-threads/:threadId/ai-classify — 
   });
 
   it("does not stamp classifyingAt or enqueue a job when quota is exceeded", async () => {
-    vi.mocked(countRecurringThreadSorts).mockResolvedValue(500);
+    mockResolveInboxQuota.mockResolvedValue({ inboxKey: "ben@gmail.com", windowStart: new Date(), plan: "FREE", used: 500 });
     await post(`/workspaces/${WS_ID}/email-threads/${THREAD_ID}/ai-classify`);
     expect(db.emailThread.update).not.toHaveBeenCalled();
     expect(classifyThreadQueue.add).not.toHaveBeenCalled();
   });
 
-  it("uses the plan-specific limit (PRO allows 10 000 threads per month)", async () => {
-    vi.mocked(db.workspace.findUnique).mockResolvedValue({ plan: "PRO" } as never);
+  it("uses the inbox plan-ceiling limit (PRO allows 10 000 threads per month)", async () => {
     // 500 used — over the FREE limit but under the PRO limit of 10 000.
-    vi.mocked(countRecurringThreadSorts).mockResolvedValue(500);
+    mockResolveInboxQuota.mockResolvedValue({ inboxKey: "ben@gmail.com", windowStart: new Date(), plan: "PRO", used: 500 });
     const res = await post(`/workspaces/${WS_ID}/email-threads/${THREAD_ID}/ai-classify`);
     expect(res.status).toBe(202);
   });
 
-  it("returns 404 if workspace is not found during quota check", async () => {
-    vi.mocked(db.workspace.findUnique).mockResolvedValue(null);
+  it("skips the quota check when there is no active Gmail connection", async () => {
+    // No inbox to meter against → the soft pre-check is skipped (the worker is
+    // authoritative); the sort proceeds.
+    vi.mocked(db.gmailConnection.findUnique).mockResolvedValue(null);
     const res = await post(`/workspaces/${WS_ID}/email-threads/${THREAD_ID}/ai-classify`);
-    expect(res.status).toBe(404);
+    expect(res.status).toBe(202);
+    expect(mockResolveInboxQuota).not.toHaveBeenCalled();
   });
 
   it("skips the quota check entirely when enforcement is disabled", async () => {
     mockBilling.enforceThreadSortQuota = false;
     // Usage at the FREE limit — should still proceed because enforcement is off.
-    vi.mocked(countRecurringThreadSorts).mockResolvedValue(500);
+    mockResolveInboxQuota.mockResolvedValue({ inboxKey: "ben@gmail.com", windowStart: new Date(), plan: "FREE", used: 500 });
     const res = await post(`/workspaces/${WS_ID}/email-threads/${THREAD_ID}/ai-classify`);
     expect(res.status).toBe(202);
-    expect(db.workspace.findUnique).not.toHaveBeenCalled();
-    expect(countRecurringThreadSorts).not.toHaveBeenCalled();
+    expect(mockResolveInboxQuota).not.toHaveBeenCalled();
   });
 });
 

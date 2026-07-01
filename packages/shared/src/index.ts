@@ -11,6 +11,7 @@ export * from "./schemas/tag.js";
 export * from "./schemas/classification.js";
 export * from "./schemas/gmail-sync-settings.js";
 export * from "./schemas/push-device.js";
+export * from "./inbox-key.js";
 export * from "./draft-quota.js";
 export * from "./collaborator-quota.js";
 export * from "./thread-sort-quota.js";

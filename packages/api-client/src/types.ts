@@ -279,6 +279,12 @@ export type DisconnectResult = {
 
 export type BackfillStatus = "PENDING" | "RUNNING" | "DONE" | "ERROR";
 
+// Which import-limit state the last backfill ended in — selects the plan-cap banner
+// message. NONE = no banner; CAPPED = initial import hit the plan cap (more email
+// remains, retry still available); CAPPED_RETRY = the grace re-import hit the cap
+// (monthly retry now used); BLOCKED = base + grace both spent (no import until roll).
+export type BackfillLimitState = "NONE" | "CAPPED" | "CAPPED_RETRY" | "BLOCKED";
+
 export type SyncStatus = {
   status: "IDLE" | "SYNCING" | "ERROR";
   lastSyncedAt: string | null;
@@ -290,6 +296,8 @@ export type SyncStatus = {
   // still in Gmail; backfillBeyondCount is the approximate number left behind.
   backfillCapReached: boolean;
   backfillBeyondCount: number;
+  // Which limit state the banner should reflect (see BackfillLimitState).
+  backfillLimitState: BackfillLimitState;
   // Backfill loading progress (only meaningful while backfillStatus is RUNNING):
   // past threads fetched from Gmail so far vs. the estimated total to fetch, plus
   // whether the taxonomy is currently too small to route any of them.

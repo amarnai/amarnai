@@ -3,11 +3,14 @@
 import { useState } from "react";
 import { resetWorkspaceAction } from "@/actions/workspace";
 import { Trans } from "@lingui/react/macro";
+import { getDraftQuotaResetsAt, formatQuotaResetDate } from "@amarnai/shared";
 
 export function ResetWorkspaceSection({ workspaceId }: { workspaceId: string }) {
   const [confirming, setConfirming] = useState(false);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // Date the monthly import allowance next refreshes (calendar-month rollover).
+  const allowanceResetsAt = formatQuotaResetDate(getDraftQuotaResetsAt(new Date()).toISOString());
 
   async function handleReset() {
     setPending(true);
@@ -47,7 +50,9 @@ export function ResetWorkspaceSection({ workspaceId }: { workspaceId: string }) 
           <p className="account-danger-warning">
             <Trans>
               The Gmail connection, all synced emails, and the taxonomy will be
-              permanently deleted.
+              permanently deleted. Re-importing this inbox uses your monthly
+              import allowance; if it runs out, you can import again after{" "}
+              {allowanceResetsAt} or by upgrading.
             </Trans>
           </p>
           <div className="account-delete-actions">
