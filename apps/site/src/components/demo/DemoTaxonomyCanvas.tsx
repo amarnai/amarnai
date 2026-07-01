@@ -21,7 +21,8 @@ import {
   type Connection,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import { TaxonomyNodeCardBase, taxonomyTokens } from "@amarnai/ui/taxonomy";
+import { TaxonomyNodeCardBase, readEdgeColors } from "@amarnai/ui/taxonomy";
+import { useTheme } from "@amarnai/ui";
 import { SparkleIcon } from "@/components/landing/icons";
 import type { DemoNode, DemoNodeData } from "./demo-seed";
 import { getDemoNodes, DEMO_EDGES, DEMO_NODE_DEPTH, DEMO_NODE_SIZE, DEMO_ARROW } from "./demo-seed";
@@ -60,7 +61,7 @@ function DemoTaxonomyEdge({ id, source, target, markerEnd }: EdgeProps) {
       id={id}
       path={edgePath}
       {...(markerEnd !== undefined ? { markerEnd } : {})}
-      style={{ stroke: taxonomyTokens.edgeDefault, strokeWidth: 1.5 }}
+      style={{ stroke: readEdgeColors().default, strokeWidth: 1.5 }}
     />
   );
 }
@@ -106,6 +107,10 @@ const nodeTypes = { "demo-node": DemoNodeCard };
 
 function DemoCanvasInner() {
   const { i18n, _ } = useLingui();
+  // Subscribe to the active theme so edge marker/stroke colors re-resolve from
+  // the themed --rf-edge-* vars when the user toggles light/dark.
+  useTheme();
+  const edgeColor = readEdgeColors().default;
   // The site renders one static page per locale, so the locale is fixed for this
   // component's lifetime; building the nodes once from the active catalog is enough.
   const [initialNodes] = useState<DemoNode[]>(() => getDemoNodes(i18n));
@@ -192,9 +197,16 @@ function DemoCanvasInner() {
       const entering = revealDepth >= 0 && generating && td === revealDepth && revealDepth > 0;
       // Base edges never carry a className, so omitting it (rather than setting
       // undefined) is enough to clear the enter animation once a level settles.
-      return { ...e, hidden, ...(entering ? { className: "demo-edge-enter" } : {}) };
+      // Recolor the arrowhead to the themed edge color (the stroke is handled in
+      // DemoTaxonomyEdge); the static DEMO_ARROW color is just the initial value.
+      return {
+        ...e,
+        hidden,
+        markerEnd: { ...DEMO_ARROW, color: edgeColor },
+        ...(entering ? { className: "demo-edge-enter" } : {}),
+      };
     });
-  }, [edges, revealDepth, generating]);
+  }, [edges, revealDepth, generating, edgeColor]);
 
   return (
     <>

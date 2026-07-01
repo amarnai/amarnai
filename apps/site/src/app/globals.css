@@ -44,6 +44,11 @@
   --accent-soft: oklch(96% 0.025 40);
   --accent-line: oklch(87% 0.05 40);
 
+  /* Taxonomy demo edge stroke/marker. Resolved in JS (readEdgeColors) since
+     ReactFlow draws with concrete colors, so it cannot use var() at draw time.
+     Mirrors the web app's --rf-edge-default. */
+  --rf-edge-default: #94a3b8;
+
   --r-sm: 8px;
   --r-md: 12px;
   --r-lg: 16px;
@@ -141,6 +146,10 @@ html[data-theme="dark"] {
   --accent-soft: oklch(28% 0.045 40);
   --accent-line: oklch(40% 0.06 40);
   --color-primary-hover: oklch(66% 0.15 40);
+
+  /* Taxonomy demo edge — muted terracotta so it shares the warm accent family
+     with the node borders on dark. Mirrors the web app's dark --rf-edge-default. */
+  --rf-edge-default: #b06c54;
 
   /* Shadows (near-black on dark) */
   --shadow-1: 0 1px 1px oklch(0% 0 0 / 0.30), 0 2px 6px oklch(0% 0 0 / 0.35);

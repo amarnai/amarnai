@@ -32,16 +32,18 @@
 
 /* Dark theme: the default surface/border sit too close to the canvas
    background, so node cards read as barely-there. Lift every card onto the
-   raised surface; for unselected cards also brighten the border and lean on
-   a stronger shadow so each node stands off the canvas. Selected cards keep
-   their primary border + focus ring (excluded via :not(.selected) so this
-   higher-specificity rule doesn't override the selected state). */
+   raised surface; for unselected cards lean on a stronger shadow and a
+   warm accent-tinted border (same luminance as a neutral line, so it pops
+   without glare) to give nodes a terracotta identity that ties into the
+   accent family. Selected cards keep their brighter primary border + focus
+   ring (excluded via :not(.selected) so this higher-specificity rule doesn't
+   override the selected state, which stays the clear emphasis). */
 html[data-theme="dark"] .taxonomy-node-card {
   background: var(--surface-2);
 }
 
 html[data-theme="dark"] .taxonomy-node-card:not(.selected) {
-  border-color: var(--line-3);
+  border-color: var(--accent-line);
   box-shadow: var(--shadow-2);
 }
 

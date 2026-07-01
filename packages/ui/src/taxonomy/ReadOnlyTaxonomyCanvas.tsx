@@ -16,7 +16,8 @@ import {
   type TaxonomyRFNode,
 } from "./TaxonomyNodeCard.js";
 import { TaxonomyEdgeRenderer } from "./TaxonomyEdge.js";
-import { taxonomyTokens } from "./tokens.js";
+import { readEdgeColors } from "./tokens.js";
+import { useTheme } from "../theme/useTheme.js";
 import "./taxonomy-canvas.css";
 
 const nodeTypes = { taxonomy: TaxonomyNodeCard };
@@ -33,6 +34,7 @@ function toRFNode(n: TaxonomyNode, ignoredReason: IgnoredReason): TaxonomyRFNode
 
 function toRFEdge(e: TaxonomyEdge, ignoredMap: Map<string, IgnoredReason>): Edge {
   const targetIgnored = ignoredMap.has(e.targetNodeId);
+  const colors = readEdgeColors();
   return {
     id: e.id,
     source: e.sourceNodeId,
@@ -40,7 +42,7 @@ function toRFEdge(e: TaxonomyEdge, ignoredMap: Map<string, IgnoredReason>): Edge
     type: "taxonomy-edge",
     markerEnd: {
       type: MarkerType.ArrowClosed,
-      color: targetIgnored ? taxonomyTokens.accent : taxonomyTokens.edgeDefault,
+      color: targetIgnored ? colors.warn : colors.default,
     },
     data: { targetIgnored },
   };
@@ -53,6 +55,9 @@ function ReadOnlyTaxonomyCanvasInner({
   nodes: TaxonomyNode[];
   edges: TaxonomyEdge[];
 }) {
+  // Re-render on theme change so edge markers/strokes re-read the themed
+  // --rf-edge-* vars (readEdgeColors reads them at render time).
+  useTheme();
   const ignoredMap = computeIgnoredReasons(nodes, edges);
   const rfNodes = nodes.map((n) => toRFNode(n, ignoredMap.get(n.id) ?? null));
   const rfEdges = edges.map((e) => toRFEdge(e, ignoredMap));

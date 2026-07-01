@@ -54,7 +54,7 @@ import {
   type GraphSnapshot,
 } from "./useTaxonomyHistory";
 import { GenerateFromInboxButton, startGmailConnect } from "./GenerateFromInboxButton";
-import { TaxonomyNodeCardBase } from "@amarnai/ui/taxonomy";
+import { TaxonomyNodeCardBase, readEdgeColors } from "@amarnai/ui/taxonomy";
 import { Tooltip } from "@amarnai/ui";
 import {
   TAXONOMY_MIN_NON_ROOT_NODES,
@@ -96,30 +96,6 @@ function toRFNode(n: TaxonomyNode, ignoredReason: IgnoredReason): RFNode {
 function toRFNodes(nodes: TaxonomyNode[], edges: TaxonomyEdge[]): RFNode[] {
   const ignoredMap = computeIgnoredReasons(nodes, edges);
   return nodes.map((n) => toRFNode(n, ignoredMap.get(n.id) ?? null));
-}
-
-// Edge colors are resolved from CSS vars (--rf-edge-*) so they follow the
-// active theme. ReactFlow draws markers/strokes with concrete color strings
-// (no var() at draw time), so we read the resolved values here. Falls back to
-// the light values during SSR, where `document` is unavailable.
-const EDGE_COLOR_FALLBACK = {
-  default: "#94a3b8",
-  selected: "#c2683f",
-  warn: "#d4a017",
-  warnSelected: "#b5890e",
-} as const;
-
-function readEdgeColors() {
-  if (typeof document === "undefined") return EDGE_COLOR_FALLBACK;
-  const cs = getComputedStyle(document.documentElement);
-  const read = (name: string, fb: string) =>
-    cs.getPropertyValue(name).trim() || fb;
-  return {
-    default: read("--rf-edge-default", EDGE_COLOR_FALLBACK.default),
-    selected: read("--rf-edge-selected", EDGE_COLOR_FALLBACK.selected),
-    warn: read("--rf-edge-warn", EDGE_COLOR_FALLBACK.warn),
-    warnSelected: read("--rf-edge-warn-selected", EDGE_COLOR_FALLBACK.warnSelected),
-  };
 }
 
 function toRFEdge(

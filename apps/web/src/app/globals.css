@@ -222,7 +222,11 @@ html[data-theme="dark"] {
   --color-destructive-text: oklch(82% 0.09 25);
 
   /* ── ReactFlow taxonomy edges (brightened for dark) ── */
-  --rf-edge-default:       #9aa4b2;
+  /* Default edge is a muted terracotta (oklch ~60% 0.095 h40) so the graph's
+     connections share the warm accent family with the node borders, while
+     staying dimmer than the brighter selected edge below so selection still
+     reads. Warn edges stay amber — that's a semantic signal, not decoration. */
+  --rf-edge-default:       #b06c54;
   --rf-edge-selected:      #d07b4e;
   --rf-edge-warn:          #e2b84e;
   --rf-edge-warn-selected: #caa033;

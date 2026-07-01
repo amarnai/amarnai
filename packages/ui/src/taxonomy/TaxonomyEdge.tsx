@@ -1,7 +1,7 @@
 "use client";
 
 import { BaseEdge, getBezierPath, type EdgeProps } from "@xyflow/react";
-import { taxonomyTokens } from "./tokens.js";
+import { readEdgeColors } from "./tokens.js";
 
 type TaxonomyEdgeData = { targetIgnored: boolean };
 
@@ -27,9 +27,8 @@ export function TaxonomyEdgeRenderer({
 
   const targetIgnored =
     (data as TaxonomyEdgeData | undefined)?.targetIgnored ?? false;
-  const strokeColor = targetIgnored
-    ? taxonomyTokens.accent
-    : taxonomyTokens.edgeDefault;
+  const colors = readEdgeColors();
+  const strokeColor = targetIgnored ? colors.warn : colors.default;
 
   return (
     <BaseEdge
