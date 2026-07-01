@@ -52,10 +52,27 @@ html[data-theme="dark"] .taxonomy-node-card:not(.selected) {
 }
 
 .taxonomy-node-card .node-name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   font-size: 13px;
   font-weight: 600;
   color: var(--color-foreground);
   margin-bottom: 5px;
+}
+
+.taxonomy-node-card .node-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-muted);
+  flex-shrink: 0;
+}
+
+.taxonomy-node-card .node-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .taxonomy-node-card .node-description {

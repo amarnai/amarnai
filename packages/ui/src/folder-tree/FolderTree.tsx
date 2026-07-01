@@ -1,11 +1,10 @@
 "use client";
 
 import { Trans } from "@lingui/react/macro";
+import { Glyph, FOLDER_GLYPH, MUTE_GLYPH } from "../icons/glyphs.js";
 import type { FolderItem } from "./types.js";
 import "./folder-tree.css";
 
-const FOLDER_SVG = `<path d="M1.2 3.2h2.4l.8-.9h4.4v5.6H1.2V3.2z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/>`;
-const MUTE_SVG = `<path d="M4 5.5v3h2L9 11V3L6 5.5H4z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>`;
 const TWIRL_SVG = `<path d="M2.8 1.8l3 2.2-3 2.2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>`;
 
 export interface FolderTreeProps {
@@ -93,16 +92,7 @@ export function FolderTree({
                 />
               </span>
               <span className="em-folder-icon">
-                <svg
-                  width="12"
-                  height="12"
-                  viewBox="0 0 12 12"
-                  fill="none"
-                  aria-hidden
-                  dangerouslySetInnerHTML={{
-                    __html: root.ignored ? MUTE_SVG : FOLDER_SVG,
-                  }}
-                />
+                <Glyph svg={root.ignored ? MUTE_GLYPH : FOLDER_GLYPH} />
               </span>
               <span className="em-tree-name">{root.name}</span>
               <span className="em-tree-count">{count || ""}</span>
@@ -135,16 +125,7 @@ export function FolderTree({
                     >
                       <span className="em-twirl empty" />
                       <span className="em-folder-icon">
-                        <svg
-                          width="12"
-                          height="12"
-                          viewBox="0 0 12 12"
-                          fill="none"
-                          aria-hidden
-                          dangerouslySetInnerHTML={{
-                            __html: child.ignored ? MUTE_SVG : FOLDER_SVG,
-                          }}
-                        />
+                        <Glyph svg={child.ignored ? MUTE_GLYPH : FOLDER_GLYPH} />
                       </span>
                       <span className="em-tree-name">{child.name}</span>
                       <span className="em-tree-count">{cCount || ""}</span>

@@ -7,69 +7,13 @@ import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
 import type { MessageDescriptor } from "@lingui/core";
-import { navIconDefs, type NavIconName, type IconShape } from "@amarnai/tokens";
+import { NavGlyph } from "@amarnai/ui";
 import { userInitials, workspaceInitials, workspaceHue } from "@amarnai/core";
 
 function HamburgerIcon() {
   return (
     <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
       <path d="M2.5 4.5h13M2.5 9h13M2.5 13.5h13" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-function renderShape(shape: IconShape, i: number) {
-  if ("fill" in shape && shape.fill) {
-    return (
-      <path
-        key={i}
-        d={shape.d}
-        fill={shape.fill}
-        fillRule={shape.fillRule}
-      />
-    );
-  }
-  const s = shape as Extract<IconShape, { stroke: string }>;
-  if (s.kind === "rect") {
-    return (
-      <rect
-        key={i}
-        x={s.x}
-        y={s.y}
-        width={s.w}
-        height={s.h}
-        rx={s.rx}
-        stroke={s.stroke}
-        strokeWidth={s.strokeWidth}
-        fill="none"
-      />
-    );
-  }
-  return (
-    <path
-      key={i}
-      d={s.d}
-      stroke={s.stroke}
-      strokeWidth={s.strokeWidth}
-      strokeLinecap={s.strokeLinecap as React.SVGAttributes<SVGPathElement>["strokeLinecap"]}
-      strokeLinejoin={s.strokeLinejoin as React.SVGAttributes<SVGPathElement>["strokeLinejoin"]}
-      fill="none"
-    />
-  );
-}
-
-function NavIcon({ name }: { name: NavIconName }) {
-  const def = navIconDefs[name];
-  return (
-    <svg
-      width="16"
-      height="16"
-      viewBox={def.viewBox}
-      fill="none"
-      aria-hidden="true"
-      className="nav-icon"
-    >
-      {def.shapes.map((shape, i) => renderShape(shape, i))}
     </svg>
   );
 }
@@ -83,7 +27,7 @@ const isGmailDebugEnabled =
   process.env.NEXT_PUBLIC_ENABLE_GMAIL_DEBUG_TOOLS === "true";
 
 const NAV: { href: string; label: MessageDescriptor; icon: React.ReactNode }[] = [
-  { href: "/emails", label: msg`Emails`, icon: <NavIcon name="emails" /> },
+  { href: "/emails", label: msg`Emails`, icon: <NavGlyph name="emails" className="nav-icon" /> },
   {
     href: "/plan",
     label: msg({
@@ -91,9 +35,9 @@ const NAV: { href: string; label: MessageDescriptor; icon: React.ReactNode }[] =
       comment:
         "Sidebar nav label for the email-sorting taxonomy. Not a billing or subscription plan.",
     }),
-    icon: <NavIcon name="taxonomy" />,
+    icon: <NavGlyph name="taxonomy" className="nav-icon" />,
   },
-  { href: "/settings", label: msg`Settings`, icon: <NavIcon name="settings" /> },
+  { href: "/settings", label: msg`Settings`, icon: <NavGlyph name="settings" className="nav-icon" /> },
   ...(isDevEnabled ? [{ href: "/dev/mock-inbox", label: msg`Mock Inbox`, icon: null }] : []),
   ...(isGmailDebugEnabled
     ? [{ href: "/dev/gmail-sort-tester", label: msg`Gmail Sort Tester`, icon: null }]

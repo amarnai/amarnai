@@ -19,6 +19,8 @@ export type {
 } from "./plans.js";
 export { OptionCards } from "./OptionCards.js";
 export type { OptionCardItem } from "./OptionCards.js";
+export { Glyph, NavGlyph, FOLDER_GLYPH, MUTE_GLYPH } from "./icons/glyphs.js";
+export type { GlyphProps, NavGlyphProps } from "./icons/glyphs.js";
 export { AppDownloadBanner } from "./AppDownloadBanner.js";
 export type { AppDownloadBannerProps } from "./AppDownloadBanner.js";
 export { ThemeProvider, ThemeContext } from "./theme/ThemeProvider.js";

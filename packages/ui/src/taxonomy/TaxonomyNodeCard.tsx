@@ -7,6 +7,7 @@ import { msg } from "@lingui/core/macro";
 import type { TaxonomyNode } from "@amarnai/shared";
 import type { IgnoredReason } from "@amarnai/core/taxonomy";
 import { Tooltip } from "../Tooltip.js";
+import { Glyph, NavGlyph, FOLDER_GLYPH } from "../icons/glyphs.js";
 
 export type TaxonomyNodeData = { node: TaxonomyNode; ignoredReason: IgnoredReason };
 export type TaxonomyRFNode = Node<TaxonomyNodeData, "taxonomy">;
@@ -45,13 +46,20 @@ export function TaxonomyNodeCardBase({
       {/* The inbox root and catch-all carry fixed, English-seeded copy that is
           localized here at the render edge (they are never user-editable). */}
       <div className="node-name">
-        {isRoot ? (
-          <Trans>Inbox</Trans>
-        ) : isCatchAll ? (
-          <Trans>Updates / Other</Trans>
-        ) : (
-          name
-        )}
+        {/* The inbox root is the mailbox itself; every other node is a folder
+            (catch-all included), matching the folder icon on the emails page. */}
+        <span className="node-icon" aria-hidden>
+          {isRoot ? <NavGlyph name="emails" size={13} /> : <Glyph svg={FOLDER_GLYPH} />}
+        </span>
+        <span className="node-label">
+          {isRoot ? (
+            <Trans>Inbox</Trans>
+          ) : isCatchAll ? (
+            <Trans>Updates / Other</Trans>
+          ) : (
+            name
+          )}
+        </span>
       </div>
       {(isCatchAll || description) && (
         <div className="node-description">
