@@ -405,6 +405,26 @@ describe("validateTaxonomyTransfer", () => {
     expect(result.ok === false && result.error).toMatch(/must be a leaf/);
   });
 
+  it("rejects a catch-all connected to a non-root parent", () => {
+    const file = makeFile({
+      nodes: [
+        { ref: "root", name: "Inbox", description: null, instructions: null,
+          draftPrompt: null, examples: [], isRoot: true, positionX: 0, positionY: 0 },
+        { ref: "n1", name: "Invoices", description: VALID_DESCRIPTION, instructions: null,
+          draftPrompt: null, examples: [], isRoot: false, positionX: 100, positionY: 0 },
+        { ref: "other", name: "Updates / Other", description: VALID_DESCRIPTION + " extra", instructions: null,
+          draftPrompt: null, examples: [], isRoot: false, isCatchAll: true, positionX: 200, positionY: 0 },
+      ],
+      edges: [
+        { sourceRef: "root", targetRef: "n1" },
+        { sourceRef: "n1", targetRef: "other" }, // catch-all nested under a folder, not the inbox
+      ],
+    });
+    const result = validateTaxonomyTransfer(file);
+    expect(result.ok).toBe(false);
+    expect(result.ok === false && result.error).toMatch(/directly to the Inbox/);
+  });
+
   it("does not pollute Object.prototype when ref is __proto__", () => {
     const file = makeFile({
       nodes: [

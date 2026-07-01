@@ -121,7 +121,7 @@ taxonomyEdges.post("/workspaces/:workspaceId/taxonomy-edges", async (c) => {
     }),
     db.taxonomyNode.findUnique({
       where: { id: d.targetNodeId },
-      select: { id: true, workspaceId: true, isRoot: true },
+      select: { id: true, workspaceId: true, isRoot: true, isCatchAll: true },
     }),
   ]);
 
@@ -139,6 +139,10 @@ taxonomyEdges.post("/workspaces/:workspaceId/taxonomy-edges", async (c) => {
   }
   if (targetNode.isRoot) {
     return c.json({ error: "Cannot create an edge targeting the root node" }, 422);
+  }
+  // The catch-all hangs directly off the inbox: its only parent may be the root.
+  if (targetNode.isCatchAll && !sourceNode.isRoot) {
+    return c.json({ error: "The catch-all folder can only be connected directly to the Inbox" }, 422);
   }
 
   const duplicate = await db.taxonomyEdge.findFirst({
@@ -201,7 +205,13 @@ taxonomyEdges.patch(
 
     const existing = await db.taxonomyEdge.findUnique({
       where: { id: edgeId },
-      select: { id: true, workspaceId: true, sourceNodeId: true, targetNodeId: true },
+      select: {
+        id: true,
+        workspaceId: true,
+        sourceNodeId: true,
+        targetNodeId: true,
+        targetNode: { select: { isCatchAll: true } },
+      },
     });
     if (!existing || existing.workspaceId !== workspaceId) {
       return c.json({ error: "Edge not found" }, 404);
@@ -217,7 +227,7 @@ taxonomyEdges.patch(
 
     const newSource = await db.taxonomyNode.findUnique({
       where: { id: newSourceNodeId },
-      select: { id: true, workspaceId: true, isCatchAll: true },
+      select: { id: true, workspaceId: true, isRoot: true, isCatchAll: true },
     });
     if (!newSource || newSource.workspaceId !== workspaceId) {
       return c.json({ error: "New source node not found" }, 404);
@@ -226,6 +236,11 @@ taxonomyEdges.patch(
     // become a parent by re-pointing an existing edge either.
     if (newSource.isCatchAll) {
       return c.json({ error: "The catch-all folder must be a leaf (it cannot have sub-folders)" }, 422);
+    }
+    // The catch-all hangs directly off the inbox: its incoming edge cannot be
+    // re-pointed to a non-root parent.
+    if (existing.targetNode.isCatchAll && !newSource.isRoot) {
+      return c.json({ error: "The catch-all folder can only be connected directly to the Inbox" }, 422);
     }
 
     const duplicate = await db.taxonomyEdge.findFirst({
@@ -267,10 +282,22 @@ taxonomyEdges.delete(
 
     const existing = await db.taxonomyEdge.findUnique({
       where: { id: edgeId },
-      select: { id: true, workspaceId: true },
+      select: {
+        id: true,
+        workspaceId: true,
+        targetNode: { select: { isCatchAll: true } },
+      },
     });
     if (!existing || existing.workspaceId !== workspaceId) {
       return c.json({ error: "Edge not found" }, 404);
+    }
+
+    // The catch-all is seeded with a single incoming edge from the inbox so it
+    // is never unreachable (packages/db/src/inbox.ts). Deleting that edge would
+    // orphan it while it still silently receives all automated/bulk mail, so
+    // its incoming edge is not deletable.
+    if (existing.targetNode.isCatchAll) {
+      return c.json({ error: "Cannot disconnect the catch-all folder from the inbox" }, 422);
     }
 
     await db.taxonomyEdge.delete({ where: { id: edgeId } });

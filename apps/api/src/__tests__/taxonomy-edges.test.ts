@@ -38,6 +38,9 @@ const baseEdge = {
   workspaceId: WS_ID,
   sourceNodeId: NODE_A,
   targetNodeId: NODE_B,
+  // Relation loaded by the DELETE/PATCH handlers to enforce catch-all rules.
+  // baseEdge targets NODE_B, a normal folder, so isCatchAll is false.
+  targetNode: { isCatchAll: false },
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
 };
@@ -208,6 +211,21 @@ describe("POST /workspaces/:workspaceId/taxonomy-edges", () => {
     expect(res.status).toBe(422);
     const body = (await res.json()) as { error: string };
     expect(body.error).toMatch(/catch-all/i);
+  });
+
+  it("returns 422 when a non-root node targets the catch-all", async () => {
+    vi.mocked(db.workspace.findUnique).mockResolvedValue({ id: WS_ID } as never);
+    vi.mocked(db.taxonomyNode.findUnique)
+      .mockResolvedValueOnce(nodeA as never)         // source (non-root)
+      .mockResolvedValueOnce(catchAllNode as never); // target (catch-all)
+
+    const res = await post(`/workspaces/${WS_ID}/taxonomy-edges`, {
+      sourceNodeId: NODE_A,
+      targetNodeId: catchAllNode.id,
+    });
+    expect(res.status).toBe(422);
+    const body = (await res.json()) as { error: string };
+    expect(body.error).toMatch(/directly to the Inbox/i);
   });
 
   it("returns 422 when a duplicate edge already exists", async () => {
@@ -397,6 +415,20 @@ describe("PATCH /workspaces/:workspaceId/taxonomy-edges/:edgeId", () => {
     expect(body.error).toMatch(/catch-all/i);
   });
 
+  it("returns 422 when re-pointing the catch-all's edge to a non-root parent", async () => {
+    vi.mocked(db.taxonomyEdge.findUnique).mockResolvedValue(
+      { ...baseEdge, targetNode: { isCatchAll: true } } as never
+    );
+    vi.mocked(db.taxonomyNode.findUnique).mockResolvedValue(nodeC as never); // non-root
+
+    const res = await patch(`/workspaces/${WS_ID}/taxonomy-edges/${EDGE_ID}`, {
+      newSourceNodeId: NODE_C,
+    });
+    expect(res.status).toBe(422);
+    const body = (await res.json()) as { error: string };
+    expect(body.error).toMatch(/directly to the Inbox/i);
+  });
+
   it("returns 422 when re-parenting would create a duplicate edge", async () => {
     vi.mocked(db.taxonomyEdge.findUnique).mockResolvedValue(baseEdge as never);
     vi.mocked(db.taxonomyNode.findUnique).mockResolvedValue(nodeC as never);
@@ -430,13 +462,27 @@ describe("PATCH /workspaces/:workspaceId/taxonomy-edges/:edgeId", () => {
 
 describe("DELETE /workspaces/:workspaceId/taxonomy-edges/:edgeId", () => {
   it("deletes an edge", async () => {
-    vi.mocked(db.taxonomyEdge.findUnique).mockResolvedValue(baseEdge as never);
+    vi.mocked(db.taxonomyEdge.findUnique).mockResolvedValue(
+      { ...baseEdge, targetNode: { isCatchAll: false } } as never
+    );
     vi.mocked(db.taxonomyEdge.delete).mockResolvedValue(baseEdge as never);
 
     const res = await del(`/workspaces/${WS_ID}/taxonomy-edges/${EDGE_ID}`);
     expect(res.status).toBe(200);
     const body = (await res.json()) as { ok: boolean };
     expect(body.ok).toBe(true);
+  });
+
+  it("returns 422 when deleting the catch-all's incoming edge", async () => {
+    vi.mocked(db.taxonomyEdge.findUnique).mockResolvedValue(
+      { ...baseEdge, targetNode: { isCatchAll: true } } as never
+    );
+
+    const res = await del(`/workspaces/${WS_ID}/taxonomy-edges/${EDGE_ID}`);
+    expect(res.status).toBe(422);
+    const body = (await res.json()) as { error: string };
+    expect(body.error).toMatch(/catch-all/i);
+    expect(vi.mocked(db.taxonomyEdge.delete)).not.toHaveBeenCalled();
   });
 
   it("returns 404 when edge does not exist", async () => {

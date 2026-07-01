@@ -958,6 +958,13 @@ function TaxonomyCanvasInner({
       // The catch-all must stay a leaf (it is excluded from routing), so it
       // cannot be the source of a path. The server rejects this too.
       if (dbNodes.find((n) => n.id === connection.source && n.isCatchAll)) return;
+      // The catch-all hangs directly off the inbox: only the root may connect
+      // to it. The server rejects a non-root parent too.
+      if (
+        dbNodes.find((n) => n.id === connection.target && n.isCatchAll) &&
+        !dbNodes.find((n) => n.id === connection.source && n.isRoot)
+      )
+        return;
       try {
         await createTaxonomyEdgeAction(workspaceId, {
           sourceNodeId: connection.source,
@@ -993,9 +1000,15 @@ function TaxonomyCanvasInner({
     (_event, rfEdge) => {
       if (readOnly) return;
       const found = dbEdges.find((e) => e.id === rfEdge.id);
-      if (found) openPanel({ type: "edit-edge", edge: found });
+      if (!found) return;
+      // The catch-all's incoming edge is fixed (it must stay reachable from the
+      // inbox and is not re-parentable or deletable), so its Edit Path panel
+      // never opens.
+      if (dbNodes.find((n) => n.id === found.targetNodeId && n.isCatchAll))
+        return;
+      openPanel({ type: "edit-edge", edge: found });
     },
-    [dbEdges, readOnly],
+    [dbEdges, dbNodes, readOnly],
   );
 
   // ─── Node mutations ───────────────────────────────────────────────────────

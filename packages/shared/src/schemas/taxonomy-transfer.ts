@@ -196,6 +196,13 @@ export function validateTaxonomyTransfer(
   if (edges.some((e) => e.sourceRef === catchAll.ref)) {
     return { ok: false, error: `Catch-all folder "${catchAll.name}" must be a leaf (it cannot have sub-folders)` };
   }
+  // The catch-all hangs directly off the inbox: its only parent may be the
+  // root. Nesting it under another folder would let that folder's own
+  // reachability decide whether the catch-all is orphaned, even though it
+  // still receives all automated/bulk mail.
+  if (edges.some((e) => e.targetRef === catchAll.ref && e.sourceRef !== rootRef)) {
+    return { ok: false, error: `Catch-all folder "${catchAll.name}" can only be connected directly to the Inbox` };
+  }
 
   return { ok: true, data: file };
 }
