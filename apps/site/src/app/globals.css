@@ -1,3 +1,10 @@
+/* THEME CONTRACT — the color custom properties in `:root` are the theme
+   interface. `:root` is the default (light) theme; each additional theme
+   re-declares the same literal-valued vars in an `html[data-theme="<id>"]`
+   block below. Never hardcode a literal color in a rule: add a semantic var
+   here and define it in every theme block. Aliases written as `var(--x)`
+   auto-flip. Enforced by theme-parity.test.ts. */
+
 :root {
   --brand-ink:       #1E3A5F;
   --brand-gold:      #D4A017;
@@ -88,6 +95,90 @@
   --node-category-text: var(--accent-ink);
   --node-rule-bg:       var(--warn-soft);
   --node-rule-text:     var(--warn-ink);
+
+  /* Themed tints referenced from @amarnai/ui emails CSS. */
+  --sync-glow:     oklch(72% 0.13 145 / 0.18);
+  --teal-hover-bg: oklch(93% 0.04 190);
+  --toast-accent:  oklch(78% 0.05 40);
+}
+
+/* ─── Dark theme ─────────────────────────────────────────────────────────────
+   Warm charcoal, matched to apps/web. Re-declares every literal-valued var
+   from the contract above (including the brand hex, so the `var(--brand-*)`
+   aliases inherit). Keep in lockstep with any future theme — theme-parity.test.
+   ────────────────────────────────────────────────────────────────────────── */
+
+html[data-theme="dark"] {
+  /* Brand base (drives --color-bg/-foreground/-primary/-accent via aliases) */
+  --brand-ink:       oklch(70% 0.09 255);
+  --brand-gold:      oklch(80% 0.13 85);
+  --brand-parchment: oklch(16% 0.006 80);
+  --brand-carbon:    oklch(92% 0.008 80);
+  --color-muted:     oklch(64% 0.008 80);
+
+  /* Surfaces */
+  --surface:   oklch(20% 0.007 80);
+  --surface-2: oklch(23% 0.006 80);
+  --bg:        oklch(16% 0.006 80);
+  --bg-soft:   oklch(14% 0.006 80);
+  --bg-sunk:   oklch(12% 0.007 80);
+
+  /* Ink */
+  --ink:   oklch(92% 0.008 80);
+  --ink-2: oklch(78% 0.008 80);
+  --ink-3: oklch(64% 0.008 80);
+  --ink-4: oklch(50% 0.007 80);
+  --ink-5: oklch(40% 0.006 80);
+
+  /* Lines */
+  --line:   oklch(26% 0.006 80);
+  --line-2: oklch(32% 0.007 80);
+  --line-3: oklch(40% 0.008 80);
+
+  /* Accent — terracotta */
+  --accent:      oklch(60% 0.145 40);
+  --accent-ink:  oklch(80% 0.07 40);
+  --accent-soft: oklch(28% 0.045 40);
+  --accent-line: oklch(40% 0.06 40);
+  --color-primary-hover: oklch(66% 0.15 40);
+
+  /* Shadows (near-black on dark) */
+  --shadow-1: 0 1px 1px oklch(0% 0 0 / 0.30), 0 2px 6px oklch(0% 0 0 / 0.35);
+  --shadow-2: 0 1px 2px oklch(0% 0 0 / 0.40), 0 8px 24px oklch(0% 0 0 / 0.45);
+  --shadow-3: 0 2px 4px oklch(0% 0 0 / 0.40), 0 18px 48px oklch(0% 0 0 / 0.55);
+
+  /* Ok */
+  --ok:      oklch(64% 0.13 145);
+  --ok-ink:  oklch(80% 0.08 145);
+  --ok-soft: oklch(27% 0.04 145);
+  --ok-line: oklch(40% 0.055 145);
+
+  /* Teal */
+  --teal:      oklch(60% 0.12 190);
+  --teal-soft: oklch(27% 0.04 190);
+  --teal-line: oklch(40% 0.05 190);
+  --teal-ink:  oklch(80% 0.07 190);
+
+  /* Warn */
+  --warn:      oklch(76% 0.12 65);
+  --warn-ink:  oklch(82% 0.08 65);
+  --warn-soft: oklch(28% 0.04 65);
+  --warn-line: oklch(42% 0.06 65);
+
+  /* Danger */
+  --danger:      oklch(60% 0.17 25);
+  --danger-soft: oklch(28% 0.05 25);
+  --danger-line: oklch(42% 0.07 25);
+
+  /* Literal-valued semantic aliases (do not reference a token) */
+  --color-border-light:     oklch(30% 0.006 80);
+  --color-success-text:     oklch(80% 0.08 145);
+  --color-destructive-text: oklch(82% 0.09 25);
+
+  /* Themed tints (emails) */
+  --sync-glow:     oklch(64% 0.13 145 / 0.30);
+  --teal-hover-bg: oklch(30% 0.05 190);
+  --toast-accent:  oklch(80% 0.07 40);
 }
 
 *,
@@ -889,7 +980,7 @@ body {
   min-width: 160px;
   max-width: 220px;
   cursor: default;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  box-shadow: var(--shadow-1);
 }
 
 .taxonomy-node-card.unreachable { opacity: 0.45; }

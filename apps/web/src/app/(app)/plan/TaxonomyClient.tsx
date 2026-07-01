@@ -24,7 +24,7 @@ import {
   type NodeMouseHandler,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import { tokens } from "@/lib/tokens";
+import { useTheme } from "@amarnai/ui";
 import {
   api,
   type TaxonomyNode,
@@ -98,11 +98,36 @@ function toRFNodes(nodes: TaxonomyNode[], edges: TaxonomyEdge[]): RFNode[] {
   return nodes.map((n) => toRFNode(n, ignoredMap.get(n.id) ?? null));
 }
 
+// Edge colors are resolved from CSS vars (--rf-edge-*) so they follow the
+// active theme. ReactFlow draws markers/strokes with concrete color strings
+// (no var() at draw time), so we read the resolved values here. Falls back to
+// the light values during SSR, where `document` is unavailable.
+const EDGE_COLOR_FALLBACK = {
+  default: "#94a3b8",
+  selected: "#c2683f",
+  warn: "#d4a017",
+  warnSelected: "#b5890e",
+} as const;
+
+function readEdgeColors() {
+  if (typeof document === "undefined") return EDGE_COLOR_FALLBACK;
+  const cs = getComputedStyle(document.documentElement);
+  const read = (name: string, fb: string) =>
+    cs.getPropertyValue(name).trim() || fb;
+  return {
+    default: read("--rf-edge-default", EDGE_COLOR_FALLBACK.default),
+    selected: read("--rf-edge-selected", EDGE_COLOR_FALLBACK.selected),
+    warn: read("--rf-edge-warn", EDGE_COLOR_FALLBACK.warn),
+    warnSelected: read("--rf-edge-warn-selected", EDGE_COLOR_FALLBACK.warnSelected),
+  };
+}
+
 function toRFEdge(
   e: TaxonomyEdge,
   ignoredReasonsMap: Map<string, IgnoredReason>,
 ): Edge {
   const targetIgnored = ignoredReasonsMap.has(e.targetNodeId);
+  const colors = readEdgeColors();
   return {
     id: e.id,
     source: e.sourceNodeId,
@@ -110,7 +135,7 @@ function toRFEdge(
     type: "taxonomy-edge",
     markerEnd: {
       type: MarkerType.ArrowClosed,
-      color: targetIgnored ? tokens.accent : tokens.edgeDefault,
+      color: targetIgnored ? colors.warn : colors.default,
     },
     data: { targetIgnored },
   };
@@ -168,14 +193,15 @@ function TaxonomyEdge({
   const targetIgnored =
     (data as RFEdgeData | undefined)?.targetIgnored ?? false;
   const isWarning = targetIgnored;
+  const colors = readEdgeColors();
   const strokeColor =
     isWarning && selected
-      ? tokens.accentDim
+      ? colors.warnSelected
       : selected
-        ? tokens.primary
+        ? colors.selected
         : isWarning
-          ? tokens.accent
-          : tokens.edgeDefault;
+          ? colors.warn
+          : colors.default;
 
   return (
     <BaseEdge
@@ -807,6 +833,13 @@ function TaxonomyCanvasInner({
     edges: initialEdges,
   });
   const { screenToFlowPosition } = useReactFlow();
+  const { resolved: resolvedTheme } = useTheme();
+
+  // Edges bake in theme-resolved colors (ReactFlow markers can't read CSS vars
+  // live), so rebuild them from the current data whenever the theme changes.
+  useEffect(() => {
+    setRfEdges(toRFEdges(dbEdges, dbNodes));
+  }, [resolvedTheme, dbEdges, dbNodes, setRfEdges]);
 
   // Reset history when workspace changes (safety guard if component is reused).
   // Intentionally depends only on workspaceId — initialNodes/initialEdges are

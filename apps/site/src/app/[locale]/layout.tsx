@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { AppDownloadBanner } from "@amarnai/ui";
+import { AppDownloadBanner, ThemeProvider } from "@amarnai/ui";
 import {
   SUPPORTED_LOCALES,
   isSupportedLocale,
@@ -63,9 +63,11 @@ export default async function LocaleLayout({
   const i18n = await initServerI18n(validLocale);
 
   return (
-    <LinguiSiteProvider locale={validLocale} messages={i18n.messages}>
-      <AppDownloadBanner playStoreUrl={process.env.NEXT_PUBLIC_PLAY_STORE_URL} />
-      {children}
-    </LinguiSiteProvider>
+    <ThemeProvider>
+      <LinguiSiteProvider locale={validLocale} messages={i18n.messages}>
+        <AppDownloadBanner playStoreUrl={process.env.NEXT_PUBLIC_PLAY_STORE_URL} />
+        {children}
+      </LinguiSiteProvider>
+    </ThemeProvider>
   );
 }

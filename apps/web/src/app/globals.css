@@ -1,6 +1,14 @@
 /* ─── Design tokens ──────────────────────────────────────────────────────────
    Warm-neutral surfaces + terracotta accent. Raw values live here only;
    semantic aliases below bridge to existing component class names.
+
+   THEME CONTRACT — the color custom properties below are the theme interface.
+   `:root` holds the default (light) theme. Each additional theme re-declares
+   the same themeable vars inside an `html[data-theme="<id>"]` block further
+   down. NEVER hardcode a literal color in a rule: add a semantic var here and
+   define it in every theme block. Aliases written as `var(--x)` auto-flip and
+   need no re-declaration; only literal-valued vars do. The theme-parity test
+   (theme-parity.test.ts) fails CI if any theme block drifts from the others.
    ────────────────────────────────────────────────────────────────────────── */
 
 :root {
@@ -131,6 +139,101 @@
   --node-category-text: var(--accent-ink);
   --node-rule-bg:       var(--warn-soft);
   --node-rule-text:     var(--warn-ink);
+
+  /* ReactFlow taxonomy edges — resolved in JS (getComputedStyle), so they
+     cannot use var() at draw time; kept as concrete values per theme. */
+  --rf-edge-default:       #94a3b8;
+  --rf-edge-selected:      #c2683f;
+  --rf-edge-warn:          #d4a017;
+  --rf-edge-warn-selected: #b5890e;
+
+  /* Themed tints referenced from packages/ui CSS (emails). */
+  --sync-glow:     oklch(72% 0.13 145 / 0.18);
+  --teal-hover-bg: oklch(93% 0.04 190);
+  --toast-accent:  oklch(78% 0.05 40);
+
+  /* Constant: text/icon color on a filled accent surface (accent stays
+     mid-lightness in every shipped theme, so white reads in both). */
+  --accent-on: #fff;
+}
+
+/* ─── Dark theme ─────────────────────────────────────────────────────────────
+   Warm charcoal. Re-declares every themeable (literal-valued) var from the
+   contract above. Alias vars written as `var(--x)` inherit automatically.
+   Keep this block's var set in lockstep with any future theme block — enforced
+   by theme-parity.test.ts.
+   ────────────────────────────────────────────────────────────────────────── */
+
+html[data-theme="dark"] {
+  /* ── Surfaces (canvas darkest, surfaces lighter as they rise) ── */
+  --bg:        oklch(16% 0.006 80);
+  --bg-soft:   oklch(14% 0.006 80);
+  --bg-sunk:   oklch(12% 0.007 80);
+  --surface:   oklch(20% 0.007 80);
+  --surface-2: oklch(23% 0.006 80);
+
+  /* ── Ink scale (warm near-white → mid gray) ── */
+  --ink:   oklch(92% 0.008 80);
+  --ink-2: oklch(78% 0.008 80);
+  --ink-3: oklch(64% 0.008 80);
+  --ink-4: oklch(50% 0.007 80);
+  --ink-5: oklch(40% 0.006 80);
+
+  /* ── Lines / borders ── */
+  --line:   oklch(26% 0.006 80);
+  --line-2: oklch(32% 0.007 80);
+  --line-3: oklch(40% 0.008 80);
+
+  /* ── Accent — terracotta ── */
+  --accent:      oklch(60% 0.145 40);
+  --accent-ink:  oklch(80% 0.07 40);
+  --accent-soft: oklch(28% 0.045 40);
+  --accent-line: oklch(40% 0.06 40);
+
+  /* ── Teal ── */
+  --teal:      oklch(60% 0.12 190);
+  --teal-soft: oklch(27% 0.04 190);
+  --teal-line: oklch(40% 0.05 190);
+  --teal-ink:  oklch(80% 0.07 190);
+
+  /* ── State: ok / warn / danger ── */
+  --ok:          oklch(64% 0.13 145);
+  --ok-ink:      oklch(80% 0.08 145);
+  --ok-soft:     oklch(27% 0.04 145);
+  --ok-line:     oklch(40% 0.055 145);
+  --warn:        oklch(76% 0.12 65);
+  --warn-ink:    oklch(82% 0.08 65);
+  --warn-soft:   oklch(28% 0.04 65);
+  --warn-line:   oklch(42% 0.06 65);
+  --danger:      oklch(60% 0.17 25);
+  --danger-soft: oklch(28% 0.05 25);
+  --danger-line: oklch(42% 0.07 25);
+
+  /* ── Shadows (light warm shadows vanish on dark; use near-black) ── */
+  --shadow-1: 0 1px 1px oklch(0% 0 0 / 0.30), 0 2px 6px oklch(0% 0 0 / 0.35);
+  --shadow-2: 0 1px 2px oklch(0% 0 0 / 0.40), 0 8px 24px oklch(0% 0 0 / 0.45);
+  --shadow-3: 0 2px 4px oklch(0% 0 0 / 0.40), 0 18px 48px oklch(0% 0 0 / 0.55);
+
+  /* ── Literal-valued semantic aliases (do not reference a token) ── */
+  --color-border-light:  oklch(30% 0.006 80);
+  --color-primary-hover: oklch(66% 0.15 40);
+  --color-primary-ring:  oklch(70% 0.14 40 / 0.35);
+  --color-success-text:  oklch(80% 0.08 145);
+  --color-destructive-text: oklch(82% 0.09 25);
+
+  /* ── ReactFlow taxonomy edges (brightened for dark) ── */
+  --rf-edge-default:       #9aa4b2;
+  --rf-edge-selected:      #d07b4e;
+  --rf-edge-warn:          #e2b84e;
+  --rf-edge-warn-selected: #caa033;
+
+  /* ── Themed tints (emails) ── */
+  --sync-glow:     oklch(64% 0.13 145 / 0.30);
+  --teal-hover-bg: oklch(30% 0.05 190);
+  --toast-accent:  oklch(80% 0.07 40);
+
+  /* Constant across themes; declared here to satisfy theme parity. */
+  --accent-on: #fff;
 }
 
 *,
@@ -385,7 +488,7 @@ body {
   font-family: inherit;
   font-weight: 500;
   background: var(--accent);
-  color: #fff;
+  color: var(--accent-on);
   border: 1px solid var(--accent);
   border-radius: 5px;
   cursor: pointer;
@@ -927,7 +1030,7 @@ h2 {
   gap: 5px;
   padding: 8px 16px;
   background: var(--accent);
-  color: #fff;
+  color: var(--accent-on);
   border: none;
   border-radius: 9px;
   font-family: inherit;
@@ -1294,7 +1397,7 @@ h2 {
 .backfill-banner-error {
   background: var(--color-destructive-bg);
   color: var(--color-destructive-text);
-  border-color: #fca5a5;
+  border-color: var(--danger-line);
 }
 
 .backfill-banner-success {
@@ -1378,6 +1481,17 @@ a {
   font-size: 15px;
   font-weight: 600;
   margin: 0 0 16px;
+}
+
+/* Compact single-row section (label left, control right), e.g. Appearance. */
+.settings-inline-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.settings-inline-row h2 {
+  margin: 0;
 }
 
 .settings-section-danger {
@@ -1925,8 +2039,8 @@ a {
 }
 
 .alert-error {
-  background: #fee2e2;
-  color: #991b1b;
+  background: var(--color-destructive-bg);
+  color: var(--color-destructive-text);
 }
 
 .alert-info {
@@ -1963,8 +2077,8 @@ a {
 .sync-error-message {
   width: 100%;
   font-size: 12px;
-  color: #991b1b;
-  background: #fee2e2;
+  color: var(--color-destructive-text);
+  background: var(--color-destructive-bg);
   border-radius: 4px;
   padding: 6px 10px;
   margin-top: 2px;
@@ -1986,13 +2100,13 @@ a {
 }
 
 .sync-badge-syncing {
-  background: #dbeafe;
-  color: #1e40af;
+  background: var(--teal-soft);
+  color: var(--teal-ink);
 }
 
 .sync-badge-error {
-  background: #fee2e2;
-  color: #991b1b;
+  background: var(--color-destructive-bg);
+  color: var(--color-destructive-text);
 }
 
 /* ─── Folders divider (shared) ───────────────────────────────────────────── */
@@ -2759,7 +2873,7 @@ a {
 .filter-pill-active {
   background: var(--color-primary);
   border-color: var(--color-primary);
-  color: #fff;
+  color: var(--accent-on);
 }
 
 .filter-pill-active:hover {
@@ -5208,7 +5322,7 @@ a {
   gap: 6px;
   padding: 8px 18px;
   background: linear-gradient(135deg, var(--accent) 0%, oklch(52% 0.16 30) 100%);
-  color: #fff;
+  color: var(--accent-on);
   border: none;
   border-radius: 9px;
   font-family: inherit;
@@ -5413,7 +5527,7 @@ a {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #fff;
+  background: var(--accent-on);
 }
 
 .option-card-text {

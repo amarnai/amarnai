@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
+import { ThemeToggle } from "@amarnai/ui";
 
 function scrollTo(id: string) {
   return (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -38,6 +39,7 @@ export function Nav() {
           <a href="#taxonomy" onClick={scrollTo("taxonomy")}><Trans>Plan</Trans></a>
           <a href="#triage" onClick={scrollTo("triage")}><Trans>Triage</Trans></a>
           <a href="#faq" onClick={scrollTo("faq")}><Trans>FAQ</Trans></a>
+          <ThemeToggle className="theme-toggle--nav" />
           <Link className="ld-btn ld-nav-cta accent" href="/pricing">
             <Trans>Pricing</Trans>
           </Link>

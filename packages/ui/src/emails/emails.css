@@ -64,7 +64,7 @@
   height: 6px;
   border-radius: 50%;
   background: var(--ok);
-  box-shadow: 0 0 0 2.5px oklch(72% 0.13 145 / 0.18);
+  box-shadow: 0 0 0 2.5px var(--sync-glow);
   flex-shrink: 0;
 }
 
@@ -1243,7 +1243,7 @@
   transition: background 0.12s, border-color 0.12s;
 }
 
-.em-draft-cta:hover { background: oklch(93% 0.04 190); border-color: var(--teal); }
+.em-draft-cta:hover { background: var(--teal-hover-bg); border-color: var(--teal); }
 
 .em-draft-cta-glyph { display: flex; align-items: center; opacity: 0.75; }
 
@@ -1373,7 +1373,7 @@
 }
 
 .em-toast button {
-  color: oklch(78% 0.05 40);
+  color: var(--toast-accent);
   font-family: var(--f-mono);
   font-size: 11px;
   letter-spacing: 0.04em;
@@ -1437,7 +1437,7 @@
   .em-grid[data-mobile-view="list"][data-rail-open="true"] .em-rail {
     max-height: 300px;
     border-bottom: 1px solid var(--line);
-    box-shadow: 0 6px 18px oklch(20% 0.01 80 / 0.09);
+    box-shadow: var(--shadow-3);
   }
 
   /* List header: sits below the drawer */

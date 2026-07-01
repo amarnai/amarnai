@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
-import { AppDownloadBanner } from "@amarnai/ui";
+import { AppDownloadBanner, ThemeProvider, THEME_INIT_SCRIPT } from "@amarnai/ui";
 import type { SupportedLocale } from "@amarnai/i18n";
 import { initServerI18n } from "@/lib/i18n-server";
 import { LinguiClientProvider } from "@/components/LinguiClientProvider";
 import "./globals.css";
+import "@amarnai/ui/theme/styles";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-geist-sans" });
 const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" });
@@ -33,10 +34,15 @@ export default async function RootLayout({
   return (
     <html lang={locale} className={`${geist.variable} ${geistMono.variable}`} suppressHydrationWarning>
       <body suppressHydrationWarning>
-        <LinguiClientProvider locale={locale}>
-          <AppDownloadBanner playStoreUrl={process.env.NEXT_PUBLIC_PLAY_STORE_URL} />
-          {children}
-        </LinguiClientProvider>
+        {/* Resolve and apply the theme before first paint to avoid a flash.
+            Runs synchronously as the first thing in <body>. */}
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+        <ThemeProvider>
+          <LinguiClientProvider locale={locale}>
+            <AppDownloadBanner playStoreUrl={process.env.NEXT_PUBLIC_PLAY_STORE_URL} />
+            {children}
+          </LinguiClientProvider>
+        </ThemeProvider>
         {process.env.NEXT_PUBLIC_UMAMI_SRC && process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID && (
           <Script
             src={process.env.NEXT_PUBLIC_UMAMI_SRC}

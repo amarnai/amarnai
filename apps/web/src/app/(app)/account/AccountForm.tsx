@@ -10,6 +10,7 @@ import {
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
+import { AppearanceSection } from "./AppearanceSection";
 
 export function AccountForm({
   currentName,
@@ -98,6 +99,8 @@ export function AccountForm({
           </button>
         </form>
       </section>
+
+      <AppearanceSection />
 
       <section className="settings-section settings-section-danger">
         <h2><Trans>Danger zone</Trans></h2>
