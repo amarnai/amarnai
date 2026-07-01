@@ -20,7 +20,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html className={`${geist.variable} ${geistMono.variable}`} suppressHydrationWarning>
+    // The site is a static export, so the root layout can't read the `[locale]`
+    // route param. Default to the source locale here to satisfy html-has-lang;
+    // LinguiSiteProvider corrects `<html lang>` to the active locale on the client.
+    <html lang="en" className={`${geist.variable} ${geistMono.variable}`} suppressHydrationWarning>
       <body suppressHydrationWarning>
         {/* Apply the theme before first paint to avoid a flash. */}
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />

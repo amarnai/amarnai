@@ -233,7 +233,8 @@ export function HeroFeedCard() {
           >
             <span
               className="ld-feed-ava"
-              style={{ background: `oklch(62% 0.11 ${row.hue})` }}
+              // 54% lightness keeps the white initials at WCAG AA 4.5:1 across hues.
+              style={{ background: `oklch(54% 0.11 ${row.hue})` }}
             >
               {row.init}
             </span>

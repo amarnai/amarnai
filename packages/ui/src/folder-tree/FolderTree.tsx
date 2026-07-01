@@ -1,8 +1,6 @@
 "use client";
 
 import { Trans } from "@lingui/react/macro";
-import { useLingui } from "@lingui/react";
-import { msg } from "@lingui/core/macro";
 import type { FolderItem } from "./types.js";
 import "./folder-tree.css";
 
@@ -33,7 +31,6 @@ export function FolderTree({
   onToggle,
   onSelect,
 }: FolderTreeProps) {
-  const { i18n } = useLingui();
   const q = query.trim().toLowerCase();
   const roots = folders.filter((f) => f.parentId === null);
 
@@ -64,9 +61,12 @@ export function FolderTree({
 
         return (
           <div key={root.id}>
-            <div
-              role="button"
-              tabIndex={0}
+            {/* A single native button per row: selecting a root also toggles
+                its children. The twirl is a decorative marker rather than a
+                nested button, so the row stays a single interactive control
+                (avoids the nested-interactive a11y violation). */}
+            <button
+              type="button"
               className={[
                 "em-tree-item",
                 isActive ? "active" : "",
@@ -76,18 +76,12 @@ export function FolderTree({
               ]
                 .filter(Boolean)
                 .join(" ")}
+              aria-expanded={children.length ? isOpen : undefined}
               onClick={() => { onSelect?.(root.id); if (children.length) onToggle?.(root.id); }}
-              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { onSelect?.(root.id); if (children.length) onToggle?.(root.id); } }}
             >
-              <button
-                type="button"
+              <span
                 className={`em-twirl${!children.length ? " empty" : ""}${isOpen ? " open" : ""}`}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  if (children.length) onToggle?.(root.id);
-                }}
-                aria-label={isOpen ? i18n._(msg`Collapse`) : i18n._(msg`Expand`)}
-                tabIndex={-1}
+                aria-hidden
               >
                 <svg
                   width="8"
@@ -97,7 +91,7 @@ export function FolderTree({
                   aria-hidden
                   dangerouslySetInnerHTML={{ __html: TWIRL_SVG }}
                 />
-              </button>
+              </span>
               <span className="em-folder-icon">
                 <svg
                   width="12"
@@ -112,7 +106,7 @@ export function FolderTree({
               </span>
               <span className="em-tree-name">{root.name}</span>
               <span className="em-tree-count">{count || ""}</span>
-            </div>
+            </button>
 
             {children.length > 0 && isOpen && (
               <div className="em-tree-children">

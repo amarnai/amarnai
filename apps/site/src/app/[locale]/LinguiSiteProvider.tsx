@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { I18nProvider } from "@lingui/react";
 import { setupI18n, type Messages } from "@lingui/core";
 import { type SupportedLocale } from "@amarnai/i18n";
@@ -29,6 +29,13 @@ export function LinguiSiteProvider({
   if (i18n.locale !== locale) {
     i18n.loadAndActivate({ locale, messages });
   }
+
+  // The static-export root layout renders `<html lang="en">` unconditionally
+  // (it can't read the route param). Correct it to the active locale so the
+  // document language matches the rendered content on non-English pages.
+  useEffect(() => {
+    document.documentElement.lang = locale;
+  }, [locale]);
 
   return <I18nProvider i18n={i18n}>{children}</I18nProvider>;
 }
