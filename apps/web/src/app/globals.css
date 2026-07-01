@@ -2418,10 +2418,32 @@ html[data-theme="dark"] .react-flow__controls-button svg {
 }
 
 .taxonomy-node-card .node-name {
+  display: flex;
+  /* Pin the folder glyph to the first line so it stays inline when a long
+     title wraps (nowrap keeps the label from dropping below the icon). */
+  align-items: flex-start;
+  flex-wrap: nowrap;
+  gap: 6px;
   font-size: 13px;
+  line-height: 1.35;
   font-weight: 600;
   color: var(--color-foreground);
   margin-bottom: 5px;
+}
+
+.taxonomy-node-card .node-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* Match the label's first-line box height so the glyph centers on line 1. */
+  height: calc(13px * 1.35);
+  color: var(--color-muted);
+  flex-shrink: 0;
+}
+
+.taxonomy-node-card .node-label {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .taxonomy-node-card .node-description {

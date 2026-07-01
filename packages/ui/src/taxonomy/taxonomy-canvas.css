@@ -53,9 +53,10 @@ html[data-theme="dark"] .taxonomy-node-card:not(.selected) {
 
 .taxonomy-node-card .node-name {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 6px;
   font-size: 13px;
+  line-height: 1.35;
   font-weight: 600;
   color: var(--color-foreground);
   margin-bottom: 5px;
@@ -65,6 +66,9 @@ html[data-theme="dark"] .taxonomy-node-card:not(.selected) {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  /* Match the label's first-line box height so the glyph stays inline
+     with the first line when the title wraps. */
+  height: calc(13px * 1.35);
   color: var(--color-muted);
   flex-shrink: 0;
 }
