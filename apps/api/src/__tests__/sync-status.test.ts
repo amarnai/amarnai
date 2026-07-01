@@ -272,4 +272,47 @@ describe("GET /workspaces/:workspaceId/sync-status", () => {
     const body = (await res.json()) as { backfillLimitState: string };
     expect(body.backfillLimitState).toBe("CAPPED");
   });
+
+  it("neutralizes every import/backfill signal when the connection is disconnected", async () => {
+    // A disconnected inbox can no longer import, and no upgrade can resume it. Even
+    // with a persisted RUNNING + capped state, the response must report nothing that
+    // would surface the "loading past threads", plan-cap ("upgrade to load the rest"),
+    // or routing banners — only the DisconnectedBanner (driven by the connection query)
+    // should show.
+    vi.mocked(db.gmailConnection.findUnique).mockResolvedValue({
+      googleSubjectId: "sub-1",
+      gmailAddress: "a@gmail.com",
+      gmailWatchExpiresAt: new Date(Date.now() + 60_000),
+      status: "DISCONNECTED",
+    } as never);
+    vi.mocked(getMeterUsed).mockResolvedValue(20_000);
+    vi.mocked(db.providerSyncState.findUnique).mockResolvedValue({
+      status: "OK",
+      lastSyncedAt: null,
+      errorMessage: null,
+      backfillStatus: "RUNNING",
+      backfillSkipped: 0,
+      backfillCompletedAt: null,
+      backfillCapReached: true,
+      backfillBeyondCount: 42,
+      backfillLimitState: "CAPPED",
+      backfillProcessedCount: 10_000,
+      backfillRoutingStartedAt: new Date(),
+    } as never);
+
+    const res = await get();
+    expect(res.status).toBe(200);
+    const body = (await res.json()) as {
+      backfillStatus: string;
+      backfillLimitState: string;
+      backfillCapReached: boolean;
+      backfillBeyondCount: number;
+      backfillRoutingStarted: boolean;
+    };
+    expect(body.backfillStatus).not.toBe("RUNNING");
+    expect(body.backfillLimitState).toBe("NONE");
+    expect(body.backfillCapReached).toBe(false);
+    expect(body.backfillBeyondCount).toBe(0);
+    expect(body.backfillRoutingStarted).toBe(false);
+  });
 });

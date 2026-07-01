@@ -7,6 +7,7 @@ import { msg } from '@lingui/core/macro';
 import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
 import { TOP_PLAN, getDraftQuotaResetsAt, formatQuotaResetDate } from '@amarnai/shared';
 import type { SyncStatus } from '@amarnai/api-client';
+import { BannerActionButton } from '../BannerActionButton';
 
 interface PlanCapBannerProps {
   syncStatus: SyncStatus | null | undefined;
@@ -55,11 +56,9 @@ export function PlanCapBanner({ syncStatus, dismissed, onDismiss }: PlanCapBanne
         ) : null}
       </View>
       {!isTopPlan ? (
-        <TouchableOpacity style={styles.btn} onPress={() => router.push('/(app)/subscription')}>
-          <Text style={styles.btnText}>
-            {state === 'BLOCKED' ? <Trans>Upgrade to import now</Trans> : <Trans>Upgrade to load the rest</Trans>}
-          </Text>
-        </TouchableOpacity>
+        <BannerActionButton onPress={() => router.push('/(app)/subscription')}>
+          {state === 'BLOCKED' ? <Trans>Upgrade to import now</Trans> : <Trans>Upgrade to load the rest</Trans>}
+        </BannerActionButton>
       ) : null}
     </View>
   );
@@ -71,6 +70,7 @@ const styles = StyleSheet.create({
     marginTop: space.md,
     paddingHorizontal: space.lg,
     paddingVertical: space.md,
+    gap: space.sm,
     backgroundColor: colors.surface,
     borderWidth: 1,
     borderColor: colors.line2,
@@ -92,18 +92,5 @@ const styles = StyleSheet.create({
   },
   titleFlex: {
     flex: 1,
-  },
-  btn: {
-    alignSelf: 'flex-start',
-    marginTop: space.sm,
-    backgroundColor: colors.accent,
-    borderRadius: radii.sm,
-    paddingHorizontal: space.md,
-    paddingVertical: space.xs,
-  },
-  btnText: {
-    fontSize: fontSize.sm,
-    fontWeight: fontWeight.semibold,
-    color: colors.surface,
   },
 });

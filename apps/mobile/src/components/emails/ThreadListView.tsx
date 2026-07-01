@@ -145,6 +145,13 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
   },
   emptyContainer: {
+    // Fill the space left below the list header and center the message within
+    // it. The centering lives here (not on emptyContent) so the header banners
+    // stay pinned at the top and stretch full-width; putting justify/align on
+    // the content container would center AND shrink the headers to their text
+    // width, clipping them mid-screen.
+    flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
   },
   emptyLoading: {
@@ -159,8 +166,6 @@ const styles = StyleSheet.create({
   },
   emptyContent: {
     flexGrow: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   footer: {
     paddingVertical: space.lg,

@@ -1,7 +1,7 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { StyleSheet, Text, View } from 'react-native';
 import { Trans } from '@lingui/react/macro';
 import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
+import { BannerActionButton } from '../BannerActionButton';
 
 interface RoutingIndicatorProps {
   count: number;
@@ -28,12 +28,9 @@ export function RoutingIndicator({ count, min, onGenerate }: RoutingIndicatorPro
         </Text>
       </View>
       {onGenerate ? (
-        <TouchableOpacity style={styles.generateBtn} onPress={onGenerate}>
-          <Ionicons name="color-wand-outline" size={16} color={colors.surface} />
-          <Text style={styles.generateBtnText}>
-            <Trans>Generate from inbox</Trans>
-          </Text>
-        </TouchableOpacity>
+        <BannerActionButton icon="color-wand-outline" onPress={onGenerate}>
+          <Trans>Generate from inbox</Trans>
+        </BannerActionButton>
       ) : null}
     </View>
   );
@@ -71,19 +68,5 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: fontSize.sm,
     color: colors.warnInk,
-  },
-  generateBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: space.sm,
-    backgroundColor: colors.accent,
-    borderRadius: radii.md,
-    paddingVertical: space.md,
-  },
-  generateBtnText: {
-    color: colors.surface,
-    fontSize: fontSize.md,
-    fontWeight: fontWeight.semibold,
   },
 });

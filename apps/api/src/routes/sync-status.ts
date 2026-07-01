@@ -31,10 +31,23 @@ syncStatus.get("/workspaces/:workspaceId/sync-status", async (c) => {
   // Resolve the GmailConnection → EmailAccount → ProviderSyncState chain.
   const connection = await db.gmailConnection.findUnique({
     where: { workspaceId },
-    select: { googleSubjectId: true, gmailAddress: true, gmailWatchExpiresAt: true },
+    select: {
+      googleSubjectId: true,
+      gmailAddress: true,
+      gmailWatchExpiresAt: true,
+      status: true,
+    },
   });
 
   if (!connection) return c.json(null, 200);
+
+  // A disconnected inbox is no longer importing, and no upgrade can resume it —
+  // the token is gone. Suppress every import/backfill/plan-cap signal so the
+  // "loading past threads", "finished importing… upgrade to load the rest", and
+  // routing banners never show for a dead connection. The separate connection
+  // query drives the DisconnectedBanner (reconnect CTA), which is the only
+  // relevant message in this state.
+  const disconnected = connection.status === "DISCONNECTED";
 
   const providerAccountId = connection.googleSubjectId ?? connection.gmailAddress;
 
@@ -140,18 +153,18 @@ syncStatus.get("/workspaces/:workspaceId/sync-status", async (c) => {
     status: state.status,
     lastSyncedAt: state.lastSyncedAt?.toISOString() ?? null,
     errorMessage: state.errorMessage,
-    backfillStatus: state.backfillStatus,
+    backfillStatus: disconnected ? "DONE" : state.backfillStatus,
     backfillSkipped: state.backfillSkipped,
     backfillCompletedAt: state.backfillCompletedAt?.toISOString() ?? null,
-    backfillCapReached,
-    backfillBeyondCount,
-    backfillLimitState,
+    backfillCapReached: disconnected ? false : backfillCapReached,
+    backfillBeyondCount: disconnected ? 0 : backfillBeyondCount,
+    backfillLimitState: disconnected ? "NONE" : backfillLimitState,
     backfillLoadedThreads,
     backfillTotalThreads,
     backfillAwaitingTaxonomy,
     // Whether the user has started backfill routing. Until then the import runs
     // but nothing is classified; clients surface the "Start sorting" action.
-    backfillRoutingStarted: state.backfillRoutingStartedAt != null,
+    backfillRoutingStarted: disconnected ? false : state.backfillRoutingStartedAt != null,
     sortingPaused: syncSettings?.sortingPaused ?? false,
     workspacePlan: workspace?.plan ?? "FREE",
     pushEnabled,
