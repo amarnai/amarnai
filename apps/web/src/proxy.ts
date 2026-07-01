@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 import { matchLocale, isSupportedLocale } from "@amarnai/i18n";
+import { buildContentSecurityPolicy, cspHeaderName, generateCspNonce } from "@/lib/csp";
 
 const LOCALE_COOKIE = "amarnai_locale";
 
@@ -60,6 +61,22 @@ export default auth((req) => {
   const locale = resolveLocale(req);
   const requestHeaders = new Headers(req.headers);
   requestHeaders.set("x-locale", locale);
+
+  // The CSP is only meaningful for HTML document responses — the redirects above have
+  // empty bodies and API routes return JSON, neither of which executes scripts. Set it
+  // (and forward the nonce) only here. The nonce goes on the request headers as
+  // `x-nonce` (read by layout.tsx) and inside the request-side CSP header that Next.js
+  // parses to nonce its own bundled scripts.
+  if (!pathname.startsWith("/api")) {
+    const nonce = generateCspNonce();
+    const csp = buildContentSecurityPolicy(nonce);
+    requestHeaders.set("x-nonce", nonce);
+    requestHeaders.set("Content-Security-Policy", csp);
+    const res = NextResponse.next({ request: { headers: requestHeaders } });
+    res.headers.set(cspHeaderName(), csp);
+    return res;
+  }
+
   return NextResponse.next({ request: { headers: requestHeaders } });
 });
 

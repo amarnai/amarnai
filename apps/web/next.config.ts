@@ -22,6 +22,30 @@ const config: NextConfig = {
     };
     return config;
   },
+  // The full Content-Security-Policy (including `frame-ancestors 'none'`) is built
+  // per request in src/proxy.ts because it carries a per-request nonce. X-Frame-Options
+  // stays here as the static clickjacking fallback for asset routes the proxy matcher
+  // skips and for browsers that don't honour `frame-ancestors`.
+  async headers() {
+    const securityHeaders = [
+      { key: "X-Frame-Options", value: "DENY" },
+    ];
+
+    // Strict-Transport-Security forces HTTPS on subsequent visits and blocks
+    // protocol-downgrade attacks. Browsers only honor it on HTTPS responses, so
+    // it is gated to production to avoid caching a policy against local HTTP dev.
+    // Host-scoped on purpose: no `includeSubDomains` (a self-hoster may run
+    // non-TLS sibling services on the same parent domain) and no `preload` (a
+    // hard-to-reverse commitment). Hosted deployments can widen this at the edge.
+    if (process.env.NODE_ENV === "production") {
+      securityHeaders.push({
+        key: "Strict-Transport-Security",
+        value: "max-age=63072000",
+      });
+    }
+
+    return [{ source: "/:path*", headers: securityHeaders }];
+  },
 };
 
 export default config;

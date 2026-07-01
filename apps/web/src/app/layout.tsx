@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { headers } from "next/headers";
 import Script from "next/script";
 import { AppDownloadBanner, ThemeProvider, THEME_INIT_SCRIPT } from "@amarnai/ui";
 import type { SupportedLocale } from "@amarnai/i18n";
@@ -31,12 +32,22 @@ export default async function RootLayout({
   const i18n = await initServerI18n();
   const locale = i18n.locale as SupportedLocale;
 
+  // Per-request CSP nonce set by proxy.ts. Attached to the inline theme script (and
+  // the analytics script) so they satisfy the nonce-based script-src policy.
+  const nonce = (await headers()).get("x-nonce") ?? undefined;
+
   return (
     <html lang={locale} className={`${geist.variable} ${geistMono.variable}`} suppressHydrationWarning>
       <body suppressHydrationWarning>
         {/* Resolve and apply the theme before first paint to avoid a flash.
-            Runs synchronously as the first thing in <body>. */}
-        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+            Runs synchronously as the first thing in <body>.
+            suppressHydrationWarning: browsers blank the `nonce` attribute in the live
+            DOM after applying CSP, so it never matches the server value at hydration. */}
+        <script
+          nonce={nonce}
+          suppressHydrationWarning
+          dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }}
+        />
         <ThemeProvider>
           <LinguiClientProvider locale={locale}>
             <AppDownloadBanner playStoreUrl={process.env.NEXT_PUBLIC_PLAY_STORE_URL} />
@@ -47,6 +58,7 @@ export default async function RootLayout({
           <Script
             src={process.env.NEXT_PUBLIC_UMAMI_SRC}
             data-website-id={process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID}
+            nonce={nonce}
             strategy="afterInteractive"
           />
         )}
