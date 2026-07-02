@@ -51,7 +51,23 @@ const PUBLIC_PATHS = new Set([
 
 const app = new Hono<AppEnv>();
 
-app.use("*", cors({ origin: process.env["CORS_ORIGIN"] ?? "http://localhost:3000" }));
+// CORS: allow the configured web origin plus the browser extension. The
+// extension (side panel + service worker) calls the API from a
+// chrome-extension:// origin whose id differs between the unpacked dev build and
+// the re-signed Web Store build, so we match the scheme rather than a fixed id.
+// Auth is by bearer token in the Authorization header (no cookies), so CORS is
+// not the security boundary here; the per-route token check is.
+const WEB_ORIGIN = process.env["CORS_ORIGIN"] ?? "http://localhost:3000";
+app.use(
+  "*",
+  cors({
+    origin: (origin) => {
+      if (origin === WEB_ORIGIN) return origin;
+      if (origin.startsWith("chrome-extension://")) return origin;
+      return null;
+    },
+  }),
+);
 
 // Per-IP rate limiting on the public auth endpoints (the only token-less surface).
 // Login is the tightest since it is the password brute-force target; refresh is

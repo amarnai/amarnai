@@ -1,16 +1,16 @@
-type Props = {
+export interface GoogleGIconProps {
   /**
    * "color" — the four-color Google G, for light/white surfaces.
    * "mono" — a single-color G that inherits `currentColor`, for colored
-   * surfaces (e.g. the clay `.btn-primary` connect CTA) where Google's
-   * branding guidelines forbid the four-color mark.
+   * surfaces (e.g. a clay/accent connect CTA) where Google's branding
+   * guidelines forbid the four-color mark.
    */
   variant?: "color" | "mono";
   size?: number;
   className?: string;
-};
+}
 
-export function GoogleGIcon({ variant = "color", size = 18, className }: Props) {
+export function GoogleGIcon({ variant = "color", size = 18, className }: GoogleGIconProps) {
   if (variant === "mono") {
     return (
       <svg

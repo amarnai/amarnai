@@ -4,6 +4,7 @@ import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
 import { useSession } from "../auth/session";
 import { GoogleAuthCancelledError } from "../auth/googleAuth";
+import { GoogleGIcon } from "@amarnai/ui";
 
 // Shown in place of the triage panel when the workspace's Gmail connection is
 // DISCONNECTED (revoked or token expired). Mirrors the web ConnectGmailCta: the
@@ -18,7 +19,7 @@ export function ReconnectGmailCta({
   onReconnected: () => void;
 }) {
   const { _ } = useLingui();
-  const { reconnectGmail } = useSession();
+  const { reconnectGmail, signOut } = useSession();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -60,7 +61,11 @@ export function ReconnectGmailCta({
         onClick={onReconnect}
         disabled={busy}
       >
+        <GoogleGIcon variant="mono" size={16} />
         {busy ? <Trans>Reconnecting…</Trans> : <Trans>Reconnect Gmail</Trans>}
+      </button>
+      <button type="button" className="ax-linkbtn" onClick={() => void signOut()}>
+        <Trans>Sign out</Trans>
       </button>
     </div>
   );

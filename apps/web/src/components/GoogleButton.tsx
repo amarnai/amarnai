@@ -3,7 +3,7 @@
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
 import { googleSignInAction } from "@/actions/auth";
-import { GoogleGIcon } from "@/components/GoogleGIcon";
+import { GoogleGIcon } from "@amarnai/ui";
 
 export function GoogleButton({ label }: { label?: string }) {
   const { _ } = useLingui();

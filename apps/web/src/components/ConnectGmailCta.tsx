@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Trans } from "@lingui/react/macro";
-import { GoogleGIcon } from "@/components/GoogleGIcon";
+import { GoogleGIcon } from "@amarnai/ui";
 
 type Props = {
   workspaceId: string;

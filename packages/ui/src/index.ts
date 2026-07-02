@@ -21,6 +21,8 @@ export { OptionCards } from "./OptionCards.js";
 export type { OptionCardItem } from "./OptionCards.js";
 export { Glyph, NavGlyph, FOLDER_GLYPH, MUTE_GLYPH } from "./icons/glyphs.js";
 export type { GlyphProps, NavGlyphProps } from "./icons/glyphs.js";
+export { GoogleGIcon } from "./icons/GoogleGIcon.js";
+export type { GoogleGIconProps } from "./icons/GoogleGIcon.js";
 export { AppDownloadBanner } from "./AppDownloadBanner.js";
 export type { AppDownloadBannerProps } from "./AppDownloadBanner.js";
 export { ThemeProvider, ThemeContext } from "./theme/ThemeProvider.js";

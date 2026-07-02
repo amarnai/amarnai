@@ -8,7 +8,7 @@ import type { MessageDescriptor } from "@lingui/core";
 import { disconnectGmailAction, type DisconnectOutcome } from "@/actions/gmail";
 import type { GmailConnection, SyncStatus, GmailSyncSettings } from "@/lib/api";
 import { GmailSyncSettingsSection } from "./GmailSyncSettingsSection";
-import { GoogleGIcon } from "@/components/GoogleGIcon";
+import { GoogleGIcon } from "@amarnai/ui";
 
 const DEFAULT_SYNC_SETTINGS: GmailSyncSettings = {
   includeSpam: false,

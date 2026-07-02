@@ -264,6 +264,7 @@ body {
   padding: var(--space-md) var(--space-lg);
   cursor: pointer;
   border: 1px solid transparent;
+  text-decoration: none;
   transition: background 0.14s, border-color 0.14s, opacity 0.14s;
 }
 
@@ -300,6 +301,23 @@ body {
 
 .ax-btn-google:hover:not(:disabled) {
   background: var(--bg-sunk);
+}
+
+/* Muted text button for secondary escape hatches (e.g. sign out on the
+   connect/reconnect dead-end screens). No underline, per button convention. */
+.ax-linkbtn {
+  background: none;
+  border: none;
+  color: var(--ink-3);
+  font-size: var(--fs-sm);
+  cursor: pointer;
+  padding: var(--space-xs);
+  text-decoration: none;
+  transition: color 0.14s;
+}
+
+.ax-linkbtn:hover {
+  color: var(--ink);
 }
 
 .ax-sort-now {
