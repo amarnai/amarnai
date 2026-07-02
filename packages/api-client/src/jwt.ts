@@ -2,36 +2,37 @@
 //
 // The API is the only authority on token validity; the client just needs the
 // user id for the api-client methods that take it explicitly (markThreadDone,
-// etc.). Dependency-free base64url decode so this works the same on Hermes and
-// in Node tests, without relying on a global atob.
+// etc.). Dependency-free base64url decode (no reliance on a global atob) so it
+// behaves identically across every host: React Native's Hermes, the extension
+// panel/worker, and Node tests.
 export function readUserIdFromAccessToken(accessToken: string): string | null {
   const payload = decodeJwtPayload(accessToken);
-  const sub = payload?.['sub'];
-  return typeof sub === 'string' && sub.length > 0 ? sub : null;
+  const sub = payload?.["sub"];
+  return typeof sub === "string" && sub.length > 0 ? sub : null;
 }
 
 function decodeJwtPayload(token: string): Record<string, unknown> | null {
-  const parts = token.split('.');
+  const parts = token.split(".");
   if (parts.length !== 3) return null;
   try {
     const json = base64UrlDecode(parts[1]!);
     const value: unknown = JSON.parse(json);
-    return typeof value === 'object' && value !== null ? (value as Record<string, unknown>) : null;
+    return typeof value === "object" && value !== null ? (value as Record<string, unknown>) : null;
   } catch {
     return null;
   }
 }
 
-const B64_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+const B64_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
 function base64UrlDecode(input: string): string {
   // base64url -> base64, then decode bytes to a UTF-8 string.
-  const b64 = input.replace(/-/g, '+').replace(/_/g, '/');
+  const b64 = input.replace(/-/g, "+").replace(/_/g, "/");
   const bytes: number[] = [];
   let buffer = 0;
   let bits = 0;
   for (const ch of b64) {
-    if (ch === '=') break;
+    if (ch === "=") break;
     const idx = B64_ALPHABET.indexOf(ch);
     if (idx === -1) continue;
     buffer = (buffer << 6) | idx;
@@ -45,7 +46,7 @@ function base64UrlDecode(input: string): string {
 }
 
 function utf8Decode(bytes: number[]): string {
-  let out = '';
+  let out = "";
   let i = 0;
   while (i < bytes.length) {
     const b0 = bytes[i++]!;

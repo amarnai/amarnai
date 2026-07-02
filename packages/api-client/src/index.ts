@@ -3,6 +3,7 @@ export { makeApiClient } from "./client.js";
 export type { ApiClient } from "./client.js";
 export { makeBearerTransport } from "./bearer-transport.js";
 export type { BearerTransportDeps, StoredTokens, TokenStore } from "./bearer-transport.js";
+export { readUserIdFromAccessToken } from "./jwt.js";
 export type {
   Workspace,
   TaxonomyNode,

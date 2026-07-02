@@ -5,9 +5,11 @@
   "type": "module",
   "scripts": {
     "prebuild": "pnpm --filter @amarnai/i18n compile",
-    "build": "vite build && vite build -c vite.sw.config.ts",
-    "dev": "vite build --watch",
-    "dev:sw": "vite build --watch -c vite.sw.config.ts",
+    "build": "vite build --mode development && vite build -c vite.sw.config.ts --mode development",
+    "prebuild:prod": "pnpm --filter @amarnai/i18n compile",
+    "build:prod": "vite build --mode production && vite build -c vite.sw.config.ts --mode production",
+    "dev": "vite build --watch --mode development",
+    "dev:sw": "vite build --watch -c vite.sw.config.ts --mode development",
     "lint": "eslint src",
     "typecheck": "tsc --noEmit",
     "test": "vitest run"

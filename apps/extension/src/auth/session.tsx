@@ -8,9 +8,14 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { makeApiClient, makeBearerTransport, type ApiClient, type Workspace } from "@amarnai/api-client";
+import {
+  makeApiClient,
+  makeBearerTransport,
+  readUserIdFromAccessToken,
+  type ApiClient,
+  type Workspace,
+} from "@amarnai/api-client";
 import { API_BASE_URL } from "../config";
-import { readUserIdFromAccessToken } from "./jwt";
 import { extensionTokenStore, type StoredTokens } from "./tokenStore";
 import { requestGoogleAuth } from "./googleAuth";
 
