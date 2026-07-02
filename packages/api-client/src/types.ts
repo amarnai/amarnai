@@ -253,6 +253,9 @@ export type EmailThreadDetail = {
 export type ConnectGmailInput = {
   serverAuthCode: string;
   scope: string;
+  // Set by the browser extension: the chromiumapp.org redirect its code was
+  // minted for. Omitted by mobile (server-auth code redeemed with no redirect).
+  redirectUri?: string;
 };
 
 export type GmailConnection = {

@@ -3,6 +3,7 @@ import { z } from "zod";
 import { db } from "@amarnai/db";
 import {
   parseGrantedScopes,
+  exchangeAuthCode,
   exchangeServerAuthCode,
   GmailApiError,
 } from "@amarnai/gmail";
@@ -68,10 +69,14 @@ gmailConnection.get("/workspaces/:workspaceId/gmail-connection", async (c) => {
   });
 });
 
-// One-time serverAuthCode from the mobile Google Sign-In (offlineAccess, Web client).
+// One-time auth code from a Google Sign-In. Mobile sends a serverAuthCode minted
+// against the Web client directly (no redirect). The browser extension runs the
+// code flow via chrome.identity and sends the chromiumapp.org redirectUri its
+// code was minted for — the code must be redeemed against that exact redirect.
 const connectBody = z.object({
   serverAuthCode: z.string().min(1),
   scope: z.string().min(1),
+  redirectUri: z.string().min(1).optional(),
 });
 
 // Connect or reconnect Gmail for an existing workspace. Owner-only.
@@ -94,7 +99,7 @@ gmailConnection.post("/workspaces/:workspaceId/gmail-connection", async (c) => {
   const bodyParsed = connectBody.safeParse(body);
   if (!bodyParsed.success) return c.json({ error: "Invalid request" }, 400);
 
-  const { serverAuthCode, scope } = bodyParsed.data;
+  const { serverAuthCode, scope, redirectUri } = bodyParsed.data;
   // Early check on the client-claimed scope; the authoritative check is on the
   // scope Google returns from the exchange below.
   if (!parseGrantedScopes(scope).hasReadonly) {
@@ -111,10 +116,13 @@ gmailConnection.post("/workspaces/:workspaceId/gmail-connection", async (c) => {
   });
 
   try {
-    // Redeem the serverAuthCode with the confidential Web client, then store the
-    // server-refreshable refresh token it returns.
-    const { accessToken, refreshToken, scope: grantedScope } =
-      await exchangeServerAuthCode(serverAuthCode);
+    // Redeem the code with the confidential Web client, then store the
+    // server-refreshable refresh token it returns. Extension codes carry the
+    // chromiumapp.org redirect they were minted for; mobile server-auth codes
+    // have none (redeemed against the webClientId directly). Mirrors /auth/google.
+    const { accessToken, refreshToken, scope: grantedScope } = redirectUri
+      ? await exchangeAuthCode(serverAuthCode, redirectUri)
+      : await exchangeServerAuthCode(serverAuthCode);
     const { scopes: grantedScopes, hasReadonly } = parseGrantedScopes(grantedScope);
     if (!hasReadonly) {
       return c.json({ error: "Gmail read access was not granted" }, 403);

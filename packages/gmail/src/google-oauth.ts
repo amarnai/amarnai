@@ -87,7 +87,9 @@ export async function exchangeAuthCode(
     // "redirect_uri_mismatch" — never tokens or secrets.
     type ErrorBody = { error?: string; error_description?: string };
     const body = (await res.json().catch(() => ({}))) as ErrorBody;
-    devLog("token_exchange", res.status, body.error);
+    // Log both the error code and description so the reason is visible in dev logs.
+    const detail = body.error_description ? ` — ${body.error_description}` : "";
+    devLog("token_exchange", res.status, `${body.error ?? "unknown"}${detail}`);
     throw new GmailApiError(`Token exchange failed: ${res.status}`, res.status, body.error);
   }
 

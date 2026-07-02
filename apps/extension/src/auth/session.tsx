@@ -47,6 +47,11 @@ interface SessionValue {
   // Runs the Google OAuth flow and provisions/signs in via /auth/google. Throws
   // GoogleAuthCancelledError on dismiss, and a user-facing message otherwise.
   signInWithGoogle(): Promise<void>;
+  // Re-runs the Gmail OAuth grant and reconnects the given workspace (not the
+  // default one), reactivating a DISCONNECTED connection. Unlike signInWithGoogle
+  // it leaves the session tokens untouched — the user is already signed in.
+  // Throws GoogleAuthCancelledError on dismiss.
+  reconnectGmail(targetWorkspaceId: string): Promise<void>;
   signOut(): Promise<void>;
 }
 
@@ -179,6 +184,23 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     await bootstrap(tokens.accessToken);
   }, [bootstrap]);
 
+  const reconnectGmail = useCallback(
+    async (targetWorkspaceId: string) => {
+      const authResult = await requestGoogleAuth(); // throws GoogleAuthCancelledError on dismiss
+      // Reconnect THIS workspace via the workspace-scoped endpoint. /auth/google
+      // cannot be used here: it always targets the user's oldest-owned workspace
+      // (getOrCreateDefaultWorkspace), so it would reactivate the wrong workspace
+      // and leave the viewed one DISCONNECTED. connectGmail redeems the extension's
+      // chromiumapp.org code via the redirectUri branch (mirrors /auth/google).
+      // Leaves the session tokens untouched — we're already signed in.
+      await client.connectGmail(targetWorkspaceId, authResult);
+      // Refresh workspaces to pick up the now-ACTIVE connection, staying on the
+      // workspace the user was viewing.
+      await refreshWorkspaces(targetWorkspaceId);
+    },
+    [client, refreshWorkspaces],
+  );
+
   const signOut = useCallback(async () => {
     const tokens = await extensionTokenStore.get();
     if (tokens?.refreshToken) {
@@ -208,6 +230,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       refreshWorkspaces,
       signIn,
       signInWithGoogle,
+      reconnectGmail,
       signOut,
     }),
     [
@@ -223,6 +246,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       refreshWorkspaces,
       signIn,
       signInWithGoogle,
+      reconnectGmail,
       signOut,
     ],
   );

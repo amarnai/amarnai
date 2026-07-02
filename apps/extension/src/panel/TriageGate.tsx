@@ -3,6 +3,7 @@ import { Trans } from "@lingui/react/macro";
 import { mapFolders, mapThreads, type FolderItem, type ThreadItem } from "@amarnai/core";
 import type { ApiClient, FilterCounts, SyncStatus } from "@amarnai/api-client";
 import { EmailsPanel } from "./EmailsPanel";
+import { ReconnectGmailCta } from "./ReconnectGmailCta";
 
 type Seed = {
   folders: FolderItem[];
@@ -13,6 +14,10 @@ type Seed = {
   syncStatus: SyncStatus | null;
   gmailAddress: string | null;
   workspaceEmail: string | null;
+  // ACTIVE, DISCONNECTED, or null when no connection record exists yet. A record
+  // can exist but be DISCONNECTED (revoked or token expired) — only ACTIVE is
+  // actually syncing. Mirrors the web emails page gate.
+  gmailStatus: "ACTIVE" | "DISCONNECTED" | null;
 };
 
 // Loads the triage seed (taxonomy + threads + gmail connection + sync status)
@@ -31,6 +36,8 @@ export function TriageGate({
 }) {
   const [seed, setSeed] = useState<Seed | null>(null);
   const [failed, setFailed] = useState(false);
+  // Bumped after a successful reconnect to re-run the loader and re-check status.
+  const [reloadKey, setReloadKey] = useState(0);
 
   useEffect(() => {
     let cancelled = false;
@@ -56,6 +63,7 @@ export function TriageGate({
           syncStatus,
           gmailAddress: connection?.gmailAddress ?? null,
           workspaceEmail: connection?.gmailAddress ?? null,
+          gmailStatus: connection?.status ?? null,
         });
       } catch {
         if (!cancelled) setFailed(true);
@@ -65,7 +73,7 @@ export function TriageGate({
     return () => {
       cancelled = true;
     };
-  }, [api, workspaceId]);
+  }, [api, workspaceId, reloadKey]);
 
   if (failed) {
     return (
@@ -80,6 +88,17 @@ export function TriageGate({
       <div className="ax-center">
         <span className="ax-spinner" aria-label="Loading" />
       </div>
+    );
+  }
+
+  // A DISCONNECTED (or missing) connection is not syncing this inbox. Prompt to
+  // reconnect instead of showing a stale thread list. Mirrors the web gate.
+  if (seed.gmailStatus !== "ACTIVE") {
+    return (
+      <ReconnectGmailCta
+        workspaceId={workspaceId}
+        onReconnected={() => setReloadKey((k) => k + 1)}
+      />
     );
   }
 

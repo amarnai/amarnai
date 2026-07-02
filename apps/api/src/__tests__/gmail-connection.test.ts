@@ -76,6 +76,7 @@ vi.mock("@amarnai/gmail", () => ({
   },
   fetchGmailProfile: vi.fn(),
   exchangeServerAuthCode: vi.fn(),
+  exchangeAuthCode: vi.fn(),
   encrypt: vi.fn(),
   GmailApiError: class GmailApiError extends Error {
     status: number;
@@ -109,6 +110,7 @@ import {
   GmailClient,
   fetchGmailProfile,
   exchangeServerAuthCode,
+  exchangeAuthCode,
   GmailApiError,
   encrypt,
 } from "@amarnai/gmail";
@@ -146,6 +148,12 @@ beforeEach(() => {
   mockRevokeGoogleToken.mockResolvedValue(true);
   vi.mocked(fetchGmailProfile).mockResolvedValue({ emailAddress: "user@gmail.com" } as never);
   vi.mocked(exchangeServerAuthCode).mockResolvedValue({
+    accessToken: "google-at",
+    refreshToken: "google-rt",
+    scope: `openid email ${GMAIL_SCOPE}`,
+    expiresAt: new Date("2030-01-01T00:00:00.000Z"),
+  });
+  vi.mocked(exchangeAuthCode).mockResolvedValue({
     accessToken: "google-at",
     refreshToken: "google-rt",
     scope: `openid email ${GMAIL_SCOPE}`,
@@ -327,6 +335,27 @@ describe("POST /workspaces/:workspaceId/gmail-connection", () => {
       "sync-inbox",
       { workspaceId: WS_ID },
       { deduplication: { id: `sync-inbox_${WS_ID}` } }
+    );
+  });
+
+  it("redeems against the redirect URI when the extension supplies one", async () => {
+    // The browser extension's code is minted for its chromiumapp.org redirect and
+    // must be redeemed with exchangeAuthCode(code, redirectUri), not the redirect-
+    // less server-auth path used by mobile.
+    const res = await connect({
+      ...VALID_CONNECT_BODY,
+      redirectUri: "https://ext-id.chromiumapp.org/",
+    });
+    expect(res.status).toBe(201);
+    expect(vi.mocked(exchangeAuthCode)).toHaveBeenCalledWith(
+      "auth-code-123",
+      "https://ext-id.chromiumapp.org/"
+    );
+    expect(vi.mocked(exchangeServerAuthCode)).not.toHaveBeenCalled();
+    expect(vi.mocked(db.gmailConnection.upsert)).toHaveBeenCalledWith(
+      expect.objectContaining({
+        create: expect.objectContaining({ status: "ACTIVE" }),
+      })
     );
   });
 

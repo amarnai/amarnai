@@ -28,9 +28,18 @@ function getClient(): Redis {
       enableOfflineQueue: false,
       maxRetriesPerRequest: 1,
       connectTimeout: 1000,
+      // Keep trying to (re)connect in the background so the limiter self-heals
+      // after Redis restarts. Capped backoff; the status guard fails open until ready.
+      retryStrategy: (times) => Math.min(times * 200, 2000),
     });
     // Swallow connection errors here; the middleware fails open on rejection.
     client.on("error", () => undefined);
+    // Warm the connection now instead of on the first command. With lazyConnect
+    // the socket connects only when a command is issued, but enableOfflineQueue is
+    // false, so that first command is rejected mid-handshake ("Stream isn't
+    // writeable"). Connecting eagerly lets the status guard below fail open
+    // quietly during warmup rather than throwing on real traffic.
+    client.connect().catch(() => undefined);
   }
   return client;
 }
@@ -71,10 +80,15 @@ export function rateLimit(opts: {
 }): MiddlewareHandler {
   return async (c, next) => {
     if (DISABLED) return next();
+    const store = getClient();
+    // Fail open quietly while the connection is warming up or Redis is down.
+    // Issuing a command in a non-ready state throws immediately (the offline
+    // queue is disabled), so guard instead of catching a noisy exception.
+    if (store.status !== "ready") return next();
     const key = `ratelimit:${opts.prefix}:${clientIp(c)}`;
     try {
       const { allowed, retryAfter } = await checkRateLimit(
-        getClient(),
+        store,
         key,
         opts.limit,
         opts.windowSeconds
