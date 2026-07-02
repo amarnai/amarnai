@@ -9,7 +9,7 @@ import { api } from "@/lib/api";
 import type { SyncStatus } from "@/lib/api";
 import type { ActiveSelection, FolderItem, ThreadItem } from "@amarnai/ui/emails";
 import type { FilterCounts } from "@amarnai/api-client";
-import { EmailRail, ThreadList, ReroutePopover } from "@amarnai/ui/emails";
+import { ColumnResizeHandle, EmailRail, ThreadList, ReroutePopover } from "@amarnai/ui/emails";
 import { useEmailTriage } from "@amarnai/core/emails";
 import { ThreadPreview } from "./ThreadPreview";
 import { useThreadKeyboard } from "./useThreadKeyboard";
@@ -225,6 +225,7 @@ export function EmailsClient({
         onToggleFolder={toggleFolder}
         onNewFolder={() => router.push("/plan")}
       />
+      <ColumnResizeHandle column="rail" />
 
       <ThreadList
         threads={triage.threads}
@@ -248,6 +249,7 @@ export function EmailsClient({
         total={triage.filteredTotal}
         backfilling={syncStatus?.backfillStatus === "RUNNING"}
       />
+      <ColumnResizeHandle column="list" />
 
       {selectedThread ? (
         <ThreadPreview

@@ -7,6 +7,7 @@ import { msg } from "@lingui/core/macro";
 import type { FolderItem } from "../folder-tree/types.js";
 import type { ActiveSelection, ThreadItem, DraftItem, SyncInfo } from "./types.js";
 import { filterThreads } from "./selection.js";
+import { ColumnResizeHandle } from "./ColumnResizeHandle.js";
 import { EmailRail } from "./EmailRail.js";
 import { ThreadList } from "./ThreadList.js";
 import { ThreadPreview } from "./ThreadPreview.js";
@@ -191,6 +192,7 @@ export function MockEmailsPage({
         onRailQueryChange={setRailQuery}
         onToggleFolder={toggleFolder}
       />
+      <ColumnResizeHandle column="rail" />
 
       <ThreadList
         threads={threads}
@@ -209,6 +211,7 @@ export function MockEmailsPage({
         railOpen={railOpen}
         onToggleRail={() => setRailOpen((v) => !v)}
       />
+      <ColumnResizeHandle column="list" />
 
       {selectedThread ? (
         <ThreadPreview

@@ -37,8 +37,12 @@ body {
   min-height: 0;
 }
 
-/* The reused emails grid must fill the space under the header. */
+/* The reused emails grid must fill the space under the header. The panel gets
+   narrower default column widths than the web app so the thread preview keeps
+   room at side-panel widths; users can still drag the resize handles. */
 .ax-panel .em-grid {
+  --em-rail-w: 200px;
+  --em-list-w: 300px;
   flex: 1;
   min-height: 0;
 }

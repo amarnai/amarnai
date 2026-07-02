@@ -9,17 +9,79 @@
 }
 
 .em-grid {
+  /* Surface-specific defaults: consumers re-declare these two variables to
+     change their default column widths (the extension panel does); the
+     ColumnResizeHandle sets them inline when the user drags. The clamp()
+     bounds keep any width — default or stored — sane at narrow viewports. */
+  --em-rail-w: 260px;
+  --em-list-w: 440px;
   display: grid;
-  grid-template-columns: 260px 440px 1fr;
+  grid-template-columns:
+    clamp(180px, var(--em-rail-w), 26%)
+    clamp(260px, var(--em-list-w), 44%)
+    minmax(0, 1fr);
   flex: 1;
   min-height: 0;
   overflow: hidden;
   height: 100%;
 }
 
+/* ─── Column resize handles ───────────────────────────────────────────────── */
+
+/* The three columns are placed explicitly (grid-area on .em-rail,
+   .em-list-col, .em-preview-col, .em-preview-empty) so the handles can share
+   their cells without displacing auto-placement. */
+
+.em-col-resizer {
+  grid-row: 1;
+  justify-self: end;
+  position: relative;
+  z-index: 5;
+  width: 9px;
+  margin-right: -5px; /* straddle the column border */
+  cursor: col-resize;
+  touch-action: none;
+}
+
+.em-col-resizer[data-column="rail"] { grid-column: 1; }
+.em-col-resizer[data-column="list"] { grid-column: 2; }
+
+.em-col-resizer::after {
+  content: "";
+  position: absolute;
+  inset: 0 3.5px;
+  background: transparent;
+  transition: background 0.12s;
+}
+
+.em-col-resizer:hover::after,
+.em-col-resizer:focus-visible::after {
+  background: var(--accent-line);
+}
+
+.em-col-resizer[data-dragging="true"]::after {
+  background: var(--accent);
+}
+
+.em-col-resizer:focus-visible {
+  outline: none;
+}
+
+/* Keep drags smooth: no text selection, and embedded message iframes must not
+   swallow the captured pointer's events mid-drag. */
+.em-grid[data-col-resizing] {
+  cursor: col-resize;
+  user-select: none;
+}
+
+.em-grid[data-col-resizing] iframe {
+  pointer-events: none;
+}
+
 /* ─── Rail ────────────────────────────────────────────────────────────────── */
 
 .em-rail {
+  grid-area: 1 / 1;
   background: var(--bg-soft);
   border-right: 1px solid var(--line);
   display: flex;
@@ -365,6 +427,7 @@
 /* ─── Thread list column ──────────────────────────────────────────────────── */
 
 .em-list-col {
+  grid-area: 1 / 2;
   display: flex;
   flex-direction: column;
   border-right: 1px solid var(--line);
@@ -826,6 +889,7 @@
 /* ─── Preview column ──────────────────────────────────────────────────────── */
 
 .em-preview-col {
+  grid-area: 1 / 3;
   background: var(--bg);
   display: flex;
   flex-direction: column;
@@ -896,6 +960,7 @@
 .em-preview-done-bar.is-done:hover { color: var(--ink-3); }
 
 .em-preview-empty {
+  grid-area: 1 / 3;
   flex: 1;
   display: flex;
   align-items: center;
@@ -1403,6 +1468,11 @@
     grid-template-columns: unset;
     height: 100%;
     overflow: hidden;
+  }
+
+  /* Column resizing is a desktop-layout affordance */
+  .em-col-resizer {
+    display: none;
   }
 
   /* ── List view: toggle → folders drawer → header → thread scroll ──────── */

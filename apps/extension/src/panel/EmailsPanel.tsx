@@ -4,7 +4,7 @@ import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
 import type { ApiClient, FilterCounts, SyncStatus } from "@amarnai/api-client";
 import type { ActiveSelection, FolderItem, ThreadItem } from "@amarnai/ui/emails";
-import { EmailRail, ThreadList, ReroutePopover } from "@amarnai/ui/emails";
+import { ColumnResizeHandle, EmailRail, ThreadList, ReroutePopover } from "@amarnai/ui/emails";
 import { useEmailTriage } from "@amarnai/core/emails";
 import { useWorkspaceEvents } from "../realtime/useWorkspaceEvents";
 import { ThreadPreviewPane } from "./ThreadPreviewPane";
@@ -149,6 +149,7 @@ export function EmailsPanel({
           onRailQueryChange={setRailQuery}
           onToggleFolder={toggleFolder}
         />
+        <ColumnResizeHandle column="rail" />
 
         <ThreadList
           threads={triage.threads}
@@ -172,6 +173,7 @@ export function EmailsPanel({
           total={triage.filteredTotal}
           backfilling={syncStatus?.backfillStatus === "RUNNING"}
         />
+        <ColumnResizeHandle column="list" />
 
         {selectedThread ? (
           <ThreadPreviewPane
