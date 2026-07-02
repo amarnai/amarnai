@@ -8,6 +8,7 @@
     "build": "vite build --mode development && vite build -c vite.sw.config.ts --mode development",
     "prebuild:prod": "pnpm --filter @amarnai/i18n compile",
     "build:prod": "vite build --mode production && vite build -c vite.sw.config.ts --mode production",
+    "package": "pnpm build:prod && rm -f amarnai-extension.zip && cd dist && zip -r ../amarnai-extension.zip .",
     "dev": "vite build --watch --mode development",
     "dev:sw": "vite build --watch -c vite.sw.config.ts --mode development",
     "lint": "eslint src",

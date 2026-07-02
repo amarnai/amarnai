@@ -13,8 +13,13 @@ process.env["LINGUI_CONFIG"] = path.resolve(
 
 // Emits dist/manifest.json generated from the environment (see manifest.config.ts).
 // This replaces a static public/manifest.json so host_permissions always matches
-// VITE_API_URL and the prod build can inject a pinned extension key.
-function emitManifest(env: Record<string, string>): Plugin {
+// VITE_API_URL.
+//
+// The top-level "key" (from EXTENSION_KEY) is injected only for non-production
+// builds. It pins a stable ID for *unpacked* loads, but the Chrome Web Store
+// rejects any package that contains "key" (it re-signs and assigns the canonical
+// ID itself), so a production/store build must omit it.
+function emitManifest(env: Record<string, string>, mode: string): Plugin {
   return {
     name: "amarnai-emit-manifest",
     generateBundle() {
@@ -24,7 +29,10 @@ function emitManifest(env: Record<string, string>): Plugin {
         source: JSON.stringify(
           buildManifest({
             apiUrl: env["VITE_API_URL"] ?? "http://localhost:3001",
-            key: env["EXTENSION_KEY"] || undefined,
+            key:
+              mode === "production"
+                ? undefined
+                : env["EXTENSION_KEY"] || undefined,
           }),
           null,
           2,
@@ -46,7 +54,7 @@ export default defineConfig(({ mode }) => {
       react({
         babel: { plugins: ["@lingui/babel-plugin-lingui-macro"] },
       }),
-      emitManifest(env),
+      emitManifest(env, mode),
     ],
     resolve: {
       alias: {

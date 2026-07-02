@@ -27,9 +27,12 @@ pnpm extension:build:prod   # store build (production mode, reads .env.productio
 
 Both produce `dist/` with `index.html`, `service-worker.js`, `manifest.json`, and
 icons. `manifest.json` is **generated** at build time from the environment (see
-`manifest.config.ts`) — `host_permissions` is derived from `VITE_API_URL`,
-`version` from `package.json`, and the top-level `"key"` from `EXTENSION_KEY`, so
-there is no static manifest to hand-edit. The mode selects the env file, so a
+`manifest.config.ts`) — `host_permissions` is derived from `VITE_API_URL` and
+`version` from `package.json`, so there is no static manifest to hand-edit. The
+top-level `"key"` (from `EXTENSION_KEY`) is injected **only for non-production
+builds**: it pins a stable ID for unpacked loads, but the Chrome Web Store
+rejects any package that contains `"key"` (it re-signs and assigns the canonical
+ID itself), so a `build:prod` / store package always omits it. The mode selects the env file, so a
 local build never picks up prod values (and vice versa). Load `dist/` via
 `chrome://extensions` → Developer mode → **Load unpacked** → select
 `apps/extension/dist`.
@@ -53,8 +56,10 @@ mode, so a store build reads `.env.production`. Set:
 - `VITE_WEB_APP_URL` — web app origin (sign-up + connect-Gmail links out).
 - `VITE_GOOGLE_WEB_CLIENT_ID` — the Google OAuth **Web** client id, for the
   "Sign in with Google" button.
-- `EXTENSION_KEY` — *(optional, prod only)* base64 DER public key that pins a
-  stable extension ID; injected as the manifest's top-level `"key"`. See below.
+- `EXTENSION_KEY` — *(optional, non-production builds)* base64 DER public key
+  that pins a stable extension ID for unpacked loads; injected as the manifest's
+  top-level `"key"`. Production/store builds omit it (the Web Store rejects
+  `"key"` and assigns the canonical ID by re-signing). See below.
 
 ## Deployment prerequisites (Google sign-in)
 
@@ -68,15 +73,16 @@ resulting code against that redirect (`/auth/google` with `redirectUri`).
    openssl genrsa 2048 > key.pem                       # keep private, gitignored
    openssl rsa -in key.pem -pubout -outform DER | openssl base64 -A
    ```
-   Put that base64 string in `EXTENSION_KEY` (in `.env` / `.env.production`); the
-   build injects it as the manifest's top-level `"key"`. `key.pem` is gitignored
-   and must never be committed. With `EXTENSION_KEY` unset (a fresh checkout), the
+   Put that base64 string in `EXTENSION_KEY` (in `.env`); non-production builds
+   inject it as the manifest's top-level `"key"`. `key.pem` is gitignored and
+   must never be committed. With `EXTENSION_KEY` unset (a fresh checkout), the
    manifest omits `key` and Chrome assigns a per-machine ID.
 
-   Note: when you publish to the Chrome Web Store, the store re-signs the package
-   and assigns the canonical ID for the listing — set `EXTENSION_KEY` to the key
-   that matches that published ID so dev, side-loaded, and store builds share one
-   ID (and one OAuth redirect).
+   Note: a production/store package never contains `"key"` (the Web Store rejects
+   it and re-signs to assign the canonical ID). To make your unpacked dev builds
+   share the store's ID (and one OAuth redirect), publish first, read the
+   store-assigned ID, then set `EXTENSION_KEY` in `.env` to the key that matches
+   it — dev and side-loaded builds then resolve to the same ID as the listing.
 2. **Register the redirect URI.** In Google Cloud Console, add
    `https://<extension-id>.chromiumapp.org/` to the authorized redirect URIs of
    the Web OAuth client used by `AUTH_GOOGLE_ID`.
