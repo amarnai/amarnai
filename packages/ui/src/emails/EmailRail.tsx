@@ -76,48 +76,57 @@ export function EmailRail({
       </div>
 
       <div className="em-rail-scroll">
-        <div className="em-section-label">
-          <span><Trans>Triage</Trans></span>
+        {/* Section wrappers group each label with its list. They are transparent
+            (display: contents) in the web layout, so the rail is unchanged there;
+            the extension's narrow panel grids them into side-by-side columns. */}
+        <div className="em-rail-section em-rail-section--triage">
+          <div className="em-section-label">
+            <span><Trans>Triage</Trans></span>
+          </div>
+
+          <QueueList
+            threads={threads}
+            folders={folders}
+            active={active}
+            railQuery={railQuery}
+            queueCounts={queueCounts}
+            onSelect={onSelectActive}
+          />
         </div>
 
-        <QueueList
-          threads={threads}
-          folders={folders}
-          active={active}
-          railQuery={railQuery}
-          queueCounts={queueCounts}
-          onSelect={onSelectActive}
-        />
+        <div className="em-rail-section em-rail-section--folders">
+          <div className="em-section-label">
+            <span><Trans>Folders</Trans></span>
+            {onNewFolder && (
+              <Tooltip content={i18n._(msg`New folder`)}>
+                <button
+                  type="button"
+                  className="em-add-btn"
+                  onClick={onNewFolder}
+                  aria-label={i18n._(msg`New folder`)}
+                >
+                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden>
+                    <path d="M5 1.5v7M1.5 5h7" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
+                  </svg>
+                </button>
+              </Tooltip>
+            )}
+          </div>
 
-        <div className="em-section-label">
-          <span><Trans>Folders</Trans></span>
-          {onNewFolder && (
-            <Tooltip content={i18n._(msg`New folder`)}>
-              <button
-                type="button"
-                className="em-add-btn"
-                onClick={onNewFolder}
-                aria-label={i18n._(msg`New folder`)}
-              >
-                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden>
-                  <path d="M5 1.5v7M1.5 5h7" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
-                </svg>
-              </button>
-            </Tooltip>
-          )}
+          <FolderTree
+            folders={folders}
+            counts={folderCounts}
+            activeId={activeId}
+            openIds={openFolderIds}
+            query={railQuery}
+            onToggle={onToggleFolder}
+            onSelect={(id) => onSelectActive({ kind: "folder", id })}
+          />
         </div>
 
-        <FolderTree
-          folders={folders}
-          counts={folderCounts}
-          activeId={activeId}
-          openIds={openFolderIds}
-          query={railQuery}
-          onToggle={onToggleFolder}
-          onSelect={(id) => onSelectActive({ kind: "folder", id })}
-        />
-
-        <BackfillCard syncInfo={syncInfo} />
+        <div className="em-rail-section em-rail-section--backfill">
+          <BackfillCard syncInfo={syncInfo} />
+        </div>
       </div>
     </aside>
   );

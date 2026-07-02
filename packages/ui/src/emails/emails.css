@@ -173,6 +173,13 @@
   gap: 2px;
 }
 
+/* Section wrappers (Triage / Folders / Backfill) are transparent by default so
+   the rail lays out exactly as its flat list of labels + items. The extension's
+   narrow panel overrides this to place Triage and Folders side by side. */
+.em-rail-section {
+  display: contents;
+}
+
 .em-section-label {
   font-family: var(--f-mono);
   text-transform: uppercase;

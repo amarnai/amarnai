@@ -47,6 +47,28 @@ body {
   min-height: 0;
 }
 
+/* In the narrow panel the rail is a full-width drawer, so stacking Triage above
+   Folders wastes vertical space. Grid the two sections into side-by-side columns;
+   the Backfill card (when present) spans the full width below them. */
+.ax-panel .em-rail-scroll {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-content: start;
+  column-gap: var(--space-md);
+  row-gap: 0;
+}
+
+.ax-panel .em-rail-section {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.ax-panel .em-rail-section--backfill {
+  grid-column: 1 / -1;
+}
+
 /* ─── Centered states (loading / error) ─────────────────────────────────── */
 
 .ax-center {
