@@ -228,6 +228,10 @@ msgstr "+ 폴더 추가"
 msgid "+ New workspace"
 msgstr "+ 새 워크스페이스"
 
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:55
+msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your Gmail account to get started. Amarnai connects with <1>read-only access</1> and <2>never sends, deletes, or changes anything</2>. Your inbox stays yours."
+msgstr "<0>King Aziru</0>가 이메일 스레드를 정리해 드립니다. 시작하려면 Gmail 계정을 연결하세요. Amarnai는 <1>읽기 전용 액세스</1>로 연결되며 <2>어떠한 이메일도 전송, 삭제, 변경하지 않습니다</2>. 받은편지함은 온전히 회원님의 것입니다."
+
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:47
 #, fuzzy
 msgid "${price}/mo"
@@ -576,8 +580,16 @@ msgstr "Amarnai 홈"
 msgid "Amarnai is in closed beta"
 msgstr "Amarnai는 비공개 베타 서비스 중입니다."
 
+#: ../../apps/web/src/components/AziruIntroDialog.tsx:60
+msgid "Amarnai is named after the <0>Amarna Letters</0>: clay cuneiform tablets used for diplomatic correspondence with the Egyptian pharaohs during the Bronze Age. One sender of these letters was Aziru, king of Amurru, a resourceful ruler and shrewd diplomat who navigated the rivalry between Egypt and the Hittites. Thousands of years later, he has found a new calling: helping folks like you bring order to their emails."
+msgstr "Amarnai는 <0>아마르나 서한</0>에서 이름을 따왔습니다. 이는 청동기 시대 이집트 파라오들과의 외교 서신에 사용되었던 점토 설형문자 점토판입니다. 이 서한을 보낸 사람 중 한 명은 아무르의 왕이자 이집트와 히타이트 간의 경쟁을 헤쳐나간 수완 좋은 통치자이자 노련한 외교관인 Aziru였습니다. 수천 년이 지난 지금, 그는 새로운 소명을 찾았습니다. 바로 회원님처럼 이메일을 깔끔하게 정리하도록 돕는 것입니다."
+
+#: ../../apps/web/src/components/AziruIntroDialog.tsx:63
+#~ msgid "Amarnai is named after the Amarna Letters: clay cuneiform tablets used for diplomatic correspondence with the Egyptian pharaohs during the Bronze Age. One sender of these letters was Aziru, king of Amurru, a resourceful ruler and shrewd diplomat who navigated the rivalry between Egypt and the Hittites. Thousands of years later, he has found a new calling: helping folks like you bring order to their emails."
+#~ msgstr ""
+
 #: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:51
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:35
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:49
 #, fuzzy
 msgid "Amarnai is no longer syncing this inbox. Reconnect your Gmail account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
 msgstr "Amarnai는 더 이상 이 받은편지함을 동기화하지 않습니다. Gmail 계정을 다시 연결하여 이메일 스레드 정렬을 다시 시작하세요. 접근 권한은 <0>읽기 전용</0>으로 유지되며, 받은편지함은 사용자에게 속해 있습니다."
@@ -1010,6 +1022,7 @@ msgstr "클라이언트"
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:252
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:319
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:128
+#: ../../apps/web/src/components/AziruIntroDialog.tsx:39
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:117
 #, fuzzy
 msgid "Close"
@@ -1086,7 +1099,7 @@ msgstr "동기화 필터를 설정하려면 Gmail 받은 편지함을 연결하�
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:361
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:271
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:55
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:76
 #, fuzzy
 msgid "Connect Gmail"
 msgstr "Gmail 연결"
@@ -1134,7 +1147,7 @@ msgstr "정리를 시작하려면 Gmail 계정을 연결하세요."
 msgid "Connect your Gmail account to sync your inbox into Amarnai. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
 msgstr "Gmail 계정을 연결하여 받은 편지함을 Amarnai에 동기화하세요. Amarnai는 <0>읽기 전용 액세스</0>로 연결되며 <1>어떤 것도 보내거나, 삭제하거나, 변경하지 않습니다</1>. 받은 편지함은 안전하게 보호됩니다."
 
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:30
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:44
 #, fuzzy
 msgid "Connect your Gmail inbox"
 msgstr "Gmail 받은 편지함 연결"
@@ -2702,8 +2715,8 @@ msgstr "King Aziru가 보관소의 모든 점토판을 찾아보았지만, 이 �
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:41
 #, fuzzy
-msgid "King Aziru is ready to sort your email threads. Connect your Gmail account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
-msgstr "King Aziru가 이메일 스레드를 분류할 준비를 마쳤습니다. 시작하려면 Gmail 계정을 연결하세요. Amarnai는 <0>읽기 전용 액세스</0>로 연결되며 <1>어떠한 이메일도 보내거나, 삭제하거나, 변경하지 않습니다</1>. 받은 편지함은 온전히 당신의 것입니다."
+#~ msgid "King Aziru is ready to sort your email threads. Connect your Gmail account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
+#~ msgstr "King Aziru가 이메일 스레드를 분류할 준비를 마쳤습니다. 시작하려면 Gmail 계정을 연결하세요. Amarnai는 <0>읽기 전용 액세스</0>로 연결되며 <1>어떠한 이메일도 보내거나, 삭제하거나, 변경하지 않습니다</1>. 받은 편지함은 온전히 당신의 것입니다."
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:244
 #: ../../apps/web/src/app/(app)/settings/WorkspaceLanguageSection.tsx:37
@@ -3612,13 +3625,13 @@ msgstr "재연결 실패. 다시 시도해 주세요."
 #: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:65
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:260
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:55
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:76
 #, fuzzy
 msgid "Reconnect Gmail"
 msgstr "Gmail 다시 연결"
 
 #: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:48
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:28
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:42
 #, fuzzy
 msgid "Reconnect your Gmail inbox"
 msgstr "Gmail 받은편지함 다시 연결"
@@ -5098,6 +5111,11 @@ msgstr "Amarnai가 확실하지 않은 스레드는 어떻게 되나요?"
 #, fuzzy
 msgid "Where this folder sits. Folders with no parent stay disconnected and are ignored until connected."
 msgstr "이 폴더의 위치입니다. 상위 폴더가 없는 폴더는 연결될 때까지 연결이 끊어진 상태로 무시됩니다."
+
+#: ../../apps/web/src/components/AziruIntroDialog.tsx:46
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:28
+msgid "Who is king Aziru?"
+msgstr "King Aziru는 누구인가요?"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:36
 #, fuzzy

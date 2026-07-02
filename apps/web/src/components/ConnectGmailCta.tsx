@@ -1,6 +1,12 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import { Trans } from "@lingui/react/macro";
+import { useLingui } from "@lingui/react";
+import { msg } from "@lingui/core/macro";
 import { GoogleGIcon } from "@amarnai/ui";
+import { AziruIntroDialog } from "./AziruIntroDialog";
 
 type Props = {
   workspaceId: string;
@@ -9,10 +15,18 @@ type Props = {
 };
 
 export function ConnectGmailCta({ workspaceId, reconnect = false }: Props) {
+  const { _ } = useLingui();
+  const [showAziru, setShowAziru] = useState(false);
+
   return (
     <div className="connect-gmail-cta-wrap">
       <div className="connect-gmail-cta">
-        <div className="connect-gmail-cta-mascot">
+        <button
+          type="button"
+          className="connect-gmail-cta-mascot"
+          onClick={() => setShowAziru(true)}
+          aria-label={_(msg`Who is king Aziru?`)}
+        >
           <Image
             src="/aziru-safe.png"
             alt="King Aziru"
@@ -21,7 +35,7 @@ export function ConnectGmailCta({ workspaceId, reconnect = false }: Props) {
             priority
             style={{ width: 240, height: "auto" }}
           />
-        </div>
+        </button>
         <div className="connect-gmail-cta-body">
           <p className="connect-gmail-cta-title">
             {reconnect ? (
@@ -39,8 +53,15 @@ export function ConnectGmailCta({ workspaceId, reconnect = false }: Props) {
               </Trans>
             ) : (
               <Trans>
-                King Aziru is ready to sort your email threads. Connect your
-                Gmail account to get started. Amarnai connects with{" "}
+                <button
+                  type="button"
+                  className="aziru-easter-egg-link"
+                  onClick={() => setShowAziru(true)}
+                >
+                  King Aziru
+                </button>{" "}
+                is ready to sort your email threads. Connect your Gmail account to
+                get started. Amarnai connects with{" "}
                 <strong>read-only access</strong> and{" "}
                 <strong>never sends, deletes, or changes anything</strong>. Your
                 inbox stays yours.
@@ -56,6 +77,7 @@ export function ConnectGmailCta({ workspaceId, reconnect = false }: Props) {
           </a>
         </div>
       </div>
+      {showAziru && <AziruIntroDialog onClose={() => setShowAziru(false)} />}
     </div>
   );
 }

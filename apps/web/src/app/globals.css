@@ -1968,6 +1968,71 @@ a {
   display: flex;
   align-items: flex-end;
   filter: drop-shadow(0 8px 24px oklch(20% 0.01 80 / 0.10));
+  /* Button reset: the mascot is a clickable branding easter egg. */
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  border-radius: var(--r-lg);
+}
+
+.connect-gmail-cta-mascot:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+/* Inline "King Aziru" trigger inside the CTA description. Slightly bolder and
+   accent-colored to hint it is clickable (opens the branding easter egg). */
+.aziru-easter-egg-link {
+  border: none;
+  background: none;
+  padding: 0;
+  font: inherit;
+  font-weight: 700;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.aziru-easter-egg-link:hover {
+  color: var(--accent);
+}
+
+/* Vertical branding easter-egg dialog: centered title, image, then the story. */
+.aziru-intro-modal {
+  position: relative;
+  max-width: 440px;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+  padding: 28px 24px 24px;
+}
+
+.aziru-intro-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+
+.aziru-intro-image img {
+  width: 300px;
+  height: auto;
+  border-radius: var(--r-lg);
+  display: block;
+  filter: drop-shadow(0 8px 24px oklch(20% 0.01 80 / 0.10));
+}
+
+.aziru-intro-text {
+  font-size: 14px;
+  line-height: 1.6;
+  /* Left-align the paragraph: centered body text of this length is hard to read.
+     Title and image stay centered via the modal's text-align. */
+  text-align: left;
+}
+
+/* The global `* { font: inherit }` reset strips the browser default italic from
+   <em>, so restore it for the emphasized "Amarna Letters" in the story. */
+.aziru-intro-text em {
+  font-style: italic;
 }
 
 .connect-gmail-cta-body {

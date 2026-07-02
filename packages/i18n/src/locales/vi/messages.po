@@ -228,6 +228,10 @@ msgstr "+ Thêm thư mục"
 msgid "+ New workspace"
 msgstr "+ Không gian làm việc mới"
 
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:55
+msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your Gmail account to get started. Amarnai connects with <1>read-only access</1> and <2>never sends, deletes, or changes anything</2>. Your inbox stays yours."
+msgstr "<0>King Aziru</0> sẵn sàng giúp bạn sắp xếp các chuỗi email. Kết nối tài khoản Gmail để bắt đầu. Amarnai kết nối với <1>quyền truy cập chỉ đọc</1> và <2>không bao giờ gửi, xóa hay thay đổi bất cứ điều gì</2>. Hộp thư của bạn luôn thuộc về bạn."
+
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:47
 #, fuzzy
 msgid "${price}/mo"
@@ -575,8 +579,16 @@ msgstr "Trang chủ Amarnai"
 msgid "Amarnai is in closed beta"
 msgstr "Amarnai đang ở giai đoạn beta kín."
 
+#: ../../apps/web/src/components/AziruIntroDialog.tsx:60
+msgid "Amarnai is named after the <0>Amarna Letters</0>: clay cuneiform tablets used for diplomatic correspondence with the Egyptian pharaohs during the Bronze Age. One sender of these letters was Aziru, king of Amurru, a resourceful ruler and shrewd diplomat who navigated the rivalry between Egypt and the Hittites. Thousands of years later, he has found a new calling: helping folks like you bring order to their emails."
+msgstr "Amarnai được đặt tên theo <0>các bức thư Amarna</0>: những bản chữ hình nêm bằng đất sét dùng trong thư tín ngoại giao với các pharaoh Ai Cập vào Thời kỳ đồ đồng. Một trong những người gửi thư là Aziru, vua xứ Amurru – một vị vua tháo vát và nhà ngoại giao sắc sảo, người đã khéo léo xử lý sự cạnh tranh giữa Ai Cập và người Hittite. Hàng ngàn năm sau, ông đã tìm thấy sứ mệnh mới: giúp những người như bạn sắp xếp email của mình một cách có trật tự."
+
+#: ../../apps/web/src/components/AziruIntroDialog.tsx:63
+#~ msgid "Amarnai is named after the Amarna Letters: clay cuneiform tablets used for diplomatic correspondence with the Egyptian pharaohs during the Bronze Age. One sender of these letters was Aziru, king of Amurru, a resourceful ruler and shrewd diplomat who navigated the rivalry between Egypt and the Hittites. Thousands of years later, he has found a new calling: helping folks like you bring order to their emails."
+#~ msgstr ""
+
 #: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:51
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:35
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:49
 #, fuzzy
 msgid "Amarnai is no longer syncing this inbox. Reconnect your Gmail account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
 msgstr "Amarnai đã ngừng đồng bộ hộp thư này. Vui lòng kết nối lại tài khoản Gmail để tiếp tục sắp xếp các cuộc trò chuyện email của bạn. Quyền truy cập vẫn <0>chỉ đọc</0>, và hộp thư của bạn vẫn thuộc về bạn."
@@ -1009,6 +1021,7 @@ msgstr "Khách hàng"
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:252
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:319
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:128
+#: ../../apps/web/src/components/AziruIntroDialog.tsx:39
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:117
 #, fuzzy
 msgid "Close"
@@ -1085,7 +1098,7 @@ msgstr "Kết nối hộp thư đến Gmail để cấu hình bộ lọc đồng
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:361
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:271
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:55
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:76
 #, fuzzy
 msgid "Connect Gmail"
 msgstr "Kết nối Gmail"
@@ -1133,7 +1146,7 @@ msgstr "Kết nối tài khoản Gmail của bạn để bắt đầu phân lo�
 msgid "Connect your Gmail account to sync your inbox into Amarnai. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
 msgstr "Kết nối tài khoản Gmail của bạn để đồng bộ hộp thư đến vào Amarnai. Amarnai kết nối với <0>quyền truy cập chỉ đọc</0> và <1>không bao giờ gửi, xóa hoặc thay đổi bất kỳ điều gì</1>. Hộp thư của bạn luôn thuộc về bạn."
 
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:30
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:44
 #, fuzzy
 msgid "Connect your Gmail inbox"
 msgstr "Kết nối hộp thư đến Gmail của bạn"
@@ -2701,8 +2714,8 @@ msgstr "King Aziru đã tra cứu mọi phiến đất sét trong kho lưu trữ
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:41
 #, fuzzy
-msgid "King Aziru is ready to sort your email threads. Connect your Gmail account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
-msgstr "King Aziru đã sẵn sàng sắp xếp các luồng email của bạn. Hãy kết nối tài khoản Gmail của bạn để bắt đầu. Amarnai kết nối với <0>quyền truy cập chỉ đọc</0> và <1>không bao giờ gửi, xóa hoặc thay đổi bất cứ điều gì</1>. Hộp thư đến của bạn vẫn là của bạn."
+#~ msgid "King Aziru is ready to sort your email threads. Connect your Gmail account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
+#~ msgstr "King Aziru đã sẵn sàng sắp xếp các luồng email của bạn. Hãy kết nối tài khoản Gmail của bạn để bắt đầu. Amarnai kết nối với <0>quyền truy cập chỉ đọc</0> và <1>không bao giờ gửi, xóa hoặc thay đổi bất cứ điều gì</1>. Hộp thư đến của bạn vẫn là của bạn."
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:244
 #: ../../apps/web/src/app/(app)/settings/WorkspaceLanguageSection.tsx:37
@@ -3611,13 +3624,13 @@ msgstr "Kết nối lại thất bại. Vui lòng thử lại."
 #: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:65
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:260
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:55
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:76
 #, fuzzy
 msgid "Reconnect Gmail"
 msgstr "Kết nối lại Gmail"
 
 #: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:48
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:28
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:42
 #, fuzzy
 msgid "Reconnect your Gmail inbox"
 msgstr "Kết nối lại hộp thư đến Gmail của bạn"
@@ -5098,6 +5111,11 @@ msgstr "Điều gì sẽ xảy ra với các cuộc trò chuyện mà Amarnai kh
 #, fuzzy
 msgid "Where this folder sits. Folders with no parent stay disconnected and are ignored until connected."
 msgstr "Vị trí của thư mục này. Các thư mục không có thư mục cha sẽ bị ngắt kết nối và bỏ qua cho đến khi được kết nối."
+
+#: ../../apps/web/src/components/AziruIntroDialog.tsx:46
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:28
+msgid "Who is king Aziru?"
+msgstr "King Aziru là ai?"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:36
 #, fuzzy

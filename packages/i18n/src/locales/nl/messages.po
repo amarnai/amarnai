@@ -217,6 +217,10 @@ msgstr "+ Map toevoegen"
 msgid "+ New workspace"
 msgstr "+ Nieuwe werkruimte"
 
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:55
+msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your Gmail account to get started. Amarnai connects with <1>read-only access</1> and <2>never sends, deletes, or changes anything</2>. Your inbox stays yours."
+msgstr "<0>King Aziru</0> staat klaar om je e-mailgesprekken te sorteren. Koppel je Gmail-account om te beginnen. Amarnai heeft <1>alleen-lezen toegang</1> en <2>verstuurt, verwijdert of wijzigt nooit iets</2>. Je inbox blijft van jou."
+
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:47
 #, fuzzy
 msgid "${price}/mo"
@@ -556,8 +560,16 @@ msgstr "Amarnai startpagina"
 msgid "Amarnai is in closed beta"
 msgstr "Amarnai is in gesloten bèta"
 
+#: ../../apps/web/src/components/AziruIntroDialog.tsx:60
+msgid "Amarnai is named after the <0>Amarna Letters</0>: clay cuneiform tablets used for diplomatic correspondence with the Egyptian pharaohs during the Bronze Age. One sender of these letters was Aziru, king of Amurru, a resourceful ruler and shrewd diplomat who navigated the rivalry between Egypt and the Hittites. Thousands of years later, he has found a new calling: helping folks like you bring order to their emails."
+msgstr "Amarnai is vernoemd naar de <0>Amarna-brieven</0>: kleitabletten in spijkerschrift, gebruikt voor diplomatieke correspondentie met de Egyptische farao's tijdens de Bronstijd. Een van de afzenders van deze brieven was Aziru, koning van Amurru, een vindingrijke heerser en scherpzinnige diplomaat die slim navigeerde tussen Egypte en de Hettieten. Duizenden jaren later heeft hij een nieuwe roeping gevonden: mensen zoals jij helpen hun e-mails te ordenen."
+
+#: ../../apps/web/src/components/AziruIntroDialog.tsx:63
+#~ msgid "Amarnai is named after the Amarna Letters: clay cuneiform tablets used for diplomatic correspondence with the Egyptian pharaohs during the Bronze Age. One sender of these letters was Aziru, king of Amurru, a resourceful ruler and shrewd diplomat who navigated the rivalry between Egypt and the Hittites. Thousands of years later, he has found a new calling: helping folks like you bring order to their emails."
+#~ msgstr ""
+
 #: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:51
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:35
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:49
 #, fuzzy
 msgid "Amarnai is no longer syncing this inbox. Reconnect your Gmail account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
 msgstr "Amarnai synchroniseert dit postvak in niet langer. Koppel je Gmail-account opnieuw om door te gaan met het sorteren van je e-mailgesprekken. De toegang blijft <0>alleen-lezen</0>, en je postvak in blijft van jou."
@@ -969,6 +981,7 @@ msgstr "Klanten"
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:252
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:319
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:128
+#: ../../apps/web/src/components/AziruIntroDialog.tsx:39
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:117
 #, fuzzy
 msgid "Close"
@@ -1041,7 +1054,7 @@ msgstr "Koppel een Gmail-inbox om synchronisatiefilters in te stellen."
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:361
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:271
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:55
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:76
 #, fuzzy
 msgid "Connect Gmail"
 msgstr "Gmail verbinden"
@@ -1088,7 +1101,7 @@ msgstr "Koppel je Gmail-account om te beginnen met triageren."
 msgid "Connect your Gmail account to sync your inbox into Amarnai. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
 msgstr "Verbind je Gmail-account om je inbox te synchroniseren met Amarnai. Amarnai maakt verbinding met <0>alleen-lezen toegang</0> en <1>verstuurt, verwijdert of wijzigt nooit iets</1>. Je inbox blijft van jou."
 
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:30
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:44
 #, fuzzy
 msgid "Connect your Gmail inbox"
 msgstr "Verbind je Gmail-inbox"
@@ -2582,8 +2595,8 @@ msgid "King Aziru has consulted every clay tablet in his archive, but this page 
 msgstr "Koning Aziru heeft elke kleitablet in zijn archief geraadpleegd, maar deze pagina lijkt niet te bestaan."
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:41
-msgid "King Aziru is ready to sort your email threads. Connect your Gmail account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
-msgstr "Koning Aziru staat klaar om uw e-mailgesprekken te sorteren. Verbind uw Gmail-account om te beginnen. Amarnai maakt verbinding met <0>alleen-lezen toegang</0> en <1>verzendt, verwijdert of wijzigt nooit iets</1>. Uw inbox blijft van u."
+#~ msgid "King Aziru is ready to sort your email threads. Connect your Gmail account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
+#~ msgstr "Koning Aziru staat klaar om uw e-mailgesprekken te sorteren. Verbind uw Gmail-account om te beginnen. Amarnai maakt verbinding met <0>alleen-lezen toegang</0> en <1>verzendt, verwijdert of wijzigt nooit iets</1>. Uw inbox blijft van u."
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:244
 #: ../../apps/web/src/app/(app)/settings/WorkspaceLanguageSection.tsx:37
@@ -3452,13 +3465,13 @@ msgstr "Herverbinden mislukt. Probeer het opnieuw."
 #: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:65
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:260
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:55
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:76
 #, fuzzy
 msgid "Reconnect Gmail"
 msgstr "Gmail opnieuw verbinden"
 
 #: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:48
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:28
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:42
 #, fuzzy
 msgid "Reconnect your Gmail inbox"
 msgstr "Uw Gmail-inbox opnieuw verbinden"
@@ -4876,6 +4889,11 @@ msgstr "Wat gebeurt er met gesprekken waar Amarnai onzeker over is?"
 #, fuzzy
 msgid "Where this folder sits. Folders with no parent stay disconnected and are ignored until connected."
 msgstr "Waar deze map zich bevindt. Mappen zonder bovenliggende map blijven ontkoppeld en worden genegeerd totdat ze zijn verbonden."
+
+#: ../../apps/web/src/components/AziruIntroDialog.tsx:46
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:28
+msgid "Who is king Aziru?"
+msgstr "Wie is koning Aziru?"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:36
 #, fuzzy
