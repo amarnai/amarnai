@@ -34,7 +34,8 @@ no-framework setup).
 
 ## Configuration
 
-Copy `.env.example` to `.env.development` / `.env.production` and set:
+Copy `.env.example` to `.env` (Vite loads it in every mode, so `pnpm dev` and
+`pnpm build` share the same values) and set:
 
 - `VITE_API_URL` — API origin. **Must** also be listed in
   `manifest.json` `host_permissions`, or the panel's fetches/SSE are CORS-blocked.
