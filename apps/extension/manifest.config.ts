@@ -29,9 +29,9 @@ export function buildManifest({
 
   return {
     manifest_version: 3,
-    name: "Amarnai for Gmail",
+    name: "Amarnai: AI Triage for Gmail",
     description:
-      "See how Amarnai sorts your Gmail, generate replies, and jump to any thread — without leaving Gmail.",
+      "Amarnai sorts your Gmail, drafts replies for your approval, and takes you to any thread without leaving the tab.",
     ...(key ? { key } : {}),
     version,
     minimum_chrome_version: "116",
