@@ -452,7 +452,7 @@ msgstr "Geavanceerde beoordelingswachtrij"
 msgid "AI drafts"
 msgstr "AI-concepten"
 
-#: ../../apps/site/src/app/[locale]/page.tsx:37
+#: ../../apps/site/src/lib/seo.ts:46
 msgid "ai email triage"
 msgstr "AI e-mailtriage"
 
@@ -556,9 +556,19 @@ msgstr "Amarnai synchroniseert dit postvak in niet langer. Koppel je Gmail-accou
 msgid "Amarnai is open source under AGPL-3.0. Clone it, bring your own keys, and run every tier free on your own infrastructure."
 msgstr "Amarnai is open source onder AGPL-3.0. Kloon het, gebruik je eigen sleutels en draai alle niveaus gratis op je eigen infrastructuur."
 
+#: ../../apps/site/src/lib/seo.ts:60
+#, fuzzy
+msgid "Amarnai reads your Gmail, sorts every thread into the folders you define, and drafts replies for your approval. Reach inbox zero without the busywork."
+msgstr "Amarnai leest je Gmail, sorteert elk gesprek in de door jou gedefinieerde mappen en stelt antwoorden op ter goedkeuring. Bereik inbox zero zonder het gedoe."
+
+#: ../../apps/site/src/lib/seo.ts:43
+#, fuzzy
+msgid "Amarnai sorts your Gmail into the folders you define, drafts replies for your approval, and explains every call so you reach inbox zero faster."
+msgstr "Amarnai sorteert je Gmail in de door jou gedefinieerde mappen, stelt antwoorden op ter goedkeuring en licht elke actie toe, zodat je sneller inbox zero bereikt."
+
 #: ../../apps/site/src/app/[locale]/page.tsx:50
-msgid "Amarnai sorts your Gmail threads into folders you define, drafts replies for your approval, and explains every decision. Open-source and self-hostable."
-msgstr "Amarnai sorteert je Gmail-gesprekken in mappen die je zelf definieert, stelt antwoorden op ter goedkeuring en licht elke beslissing toe. Open source en self-hostable."
+#~ msgid "Amarnai sorts your Gmail threads into folders you define, drafts replies for your approval, and explains every decision. Open-source and self-hostable."
+#~ msgstr "Amarnai sorteert je Gmail-gesprekken in mappen die je zelf definieert, stelt antwoorden op ter goedkeuring en licht elke beslissing toe. Open source en self-hostable."
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:104
 msgid "Amarnai will analyze your senders, labels, and subject keywords (never message bodies) to suggest a personalized set of folders. Review and edit before anything is applied."
@@ -570,8 +580,13 @@ msgid "Amarnai will analyze your senders, labels, and subject keywords (never me
 msgstr "Amarnai analyseert je afzenders, labels en trefwoorden in onderwerpen (nooit de inhoud van berichten) om een gepersonaliseerde set mappen voor te stellen. Je kunt dit bekijken en bewerken voordat iets wordt toegepast."
 
 #: ../../apps/site/src/app/[locale]/page.tsx:29
-msgid "Amarnai: AI email triage"
-msgstr "Amarnai: AI e-mailtriage"
+#~ msgid "Amarnai: AI email triage"
+#~ msgstr "Amarnai: AI e-mailtriage"
+
+#: ../../apps/site/src/lib/seo.ts:37
+#, fuzzy
+msgid "Amarnai: AI email triage for Gmail"
+msgstr "Amarnai: AI e-mailtriage voor Gmail"
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:68
 msgid "Analyzing your inbox and building a plan…"
@@ -700,7 +715,7 @@ msgstr "Aziru,\n"
 "Met vriendelijke groet,"
 
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
-#: ../../apps/site/src/app/[locale]/pricing/page.tsx:53
+#: ../../apps/site/src/components/pricing/PricingContent.tsx:25
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:222
 #: ../ui/src/emails/ThreadPreview.tsx:92
 #, fuzzy
@@ -1664,7 +1679,7 @@ msgstr "E-mailadres om te blokkeren"
 msgid "Email address to invite"
 msgstr "E-mailadres om uit te nodigen"
 
-#: ../../apps/site/src/app/[locale]/page.tsx:39
+#: ../../apps/site/src/lib/seo.ts:48
 #, fuzzy
 msgid "email organizer"
 msgstr "e-mailorganizer"
@@ -1747,7 +1762,7 @@ msgstr "Voer je e-mailadres in en we sturen je een resetlink."
 msgid "Entry"
 msgstr "Invoer"
 
-#: ../../apps/site/src/app/[locale]/pricing/page.tsx:59
+#: ../../apps/site/src/components/pricing/PricingContent.tsx:31
 #, fuzzy
 msgid "Every account starts with a free Personal workspace, no card required. Create more or upgrade whenever your needs grow."
 msgstr "Elk account begint met een gratis Persoonlijke werkruimte, geen creditcard nodig. Creëer meer of upgrade wanneer je behoeften groeien."
@@ -2120,7 +2135,7 @@ msgstr "Download de Amarnai-app"
 msgid "Get the app"
 msgstr "Download de app"
 
-#: ../../apps/site/src/app/[locale]/page.tsx:38
+#: ../../apps/site/src/lib/seo.ts:47
 #, fuzzy
 msgid "gmail ai assistant"
 msgstr "Gmail AI-assistent"
@@ -2368,7 +2383,7 @@ msgstr "Postvak IN (toegangspunt)"
 msgid "Inbox sync"
 msgstr "Inbox synchroniseren"
 
-#: ../../apps/site/src/app/[locale]/page.tsx:40
+#: ../../apps/site/src/lib/seo.ts:49
 msgid "inbox zero"
 msgstr "inbox zero"
 
@@ -3025,7 +3040,7 @@ msgstr "Openen in Gmail"
 msgid "Open navigation"
 msgstr "Navigatie openen"
 
-#: ../../apps/site/src/app/[locale]/page.tsx:41
+#: ../../apps/site/src/lib/seo.ts:50
 #, fuzzy
 msgid "open source email ai"
 msgstr "open source e-mail-AI"
@@ -3037,8 +3052,8 @@ msgstr "Open-source en controleerbaar"
 
 #: ../../apps/site/src/app/[locale]/page.tsx:34
 #, fuzzy
-msgid "Open-source AI email triage for Gmail. Sort threads into folders you define, draft replies with AI, and reach inbox zero, hosted or self-hosted."
-msgstr "Open-source AI-e-mailtriage voor Gmail. Sorteer gesprekken in mappen die je zelf definieert, stel antwoorden op met AI en bereik inbox zero, gehost of self-hosted."
+#~ msgid "Open-source AI email triage for Gmail. Sort threads into folders you define, draft replies with AI, and reach inbox zero, hosted or self-hosted."
+#~ msgstr "Open-source AI-e-mailtriage voor Gmail. Sorteer gesprekken in mappen die je zelf definieert, stel antwoorden op met AI en bereik inbox zero, gehost of self-hosted."
 
 #: ../../apps/site/src/components/landing/Footer.tsx:15
 msgid "Open-source AI email triage. Gmail-first. Hosted or self-hosted. Your call."
@@ -3260,7 +3275,7 @@ msgstr "Bereid uw rekeningen voor voordat de raad bijeenkomt."
 msgid "Press"
 msgstr "Pers"
 
-#: ../../apps/site/src/app/[locale]/pricing/page.tsx:56
+#: ../../apps/site/src/components/pricing/PricingContent.tsx:28
 #, fuzzy
 msgid "Priced per workspace. Sort as much as you like."
 msgstr "Prijs per werkruimte. Sorteer onbeperkt."
@@ -3271,7 +3286,7 @@ msgstr "Prijs per werkruimte. Sorteer onbeperkt."
 msgid "Pricing"
 msgstr "Prijzen"
 
-#: ../../apps/site/src/app/[locale]/pricing/page.tsx:22
+#: ../../apps/site/src/lib/seo.ts:80
 #, fuzzy
 msgid "Pricing | Amarnai"
 msgstr "Prijzen | Amarnai"
@@ -3716,7 +3731,7 @@ msgstr "Kies een abonnement om te vergelijken"
 msgid "Self-host guide"
 msgstr "Handleiding zelf hosten"
 
-#: ../../apps/site/src/app/[locale]/page.tsx:42
+#: ../../apps/site/src/lib/seo.ts:51
 msgid "self-hosted email assistant"
 msgstr "self-hosted e-mailassistent"
 
@@ -3856,7 +3871,7 @@ msgstr "Registreren mislukt. Probeer het opnieuw."
 msgid "Signing in…"
 msgstr "Bezig met inloggen…"
 
-#: ../../apps/site/src/app/[locale]/pricing/page.tsx:24
+#: ../../apps/site/src/lib/seo.ts:86
 #, fuzzy
 msgid "Simple per-workspace pricing. Start free, upgrade or create additional workspaces as you need."
 msgstr "Duidelijke prijzen per workspace. Begin gratis, upgrade of creëer extra workspaces wanneer nodig."

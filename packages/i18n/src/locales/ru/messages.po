@@ -465,7 +465,7 @@ msgstr "Расширенная очередь проверки"
 msgid "AI drafts"
 msgstr "Черновики ИИ"
 
-#: ../../apps/site/src/app/[locale]/page.tsx:37
+#: ../../apps/site/src/lib/seo.ts:46
 #, fuzzy
 msgid "ai email triage"
 msgstr "ИИ-сортировка почты"
@@ -575,10 +575,19 @@ msgstr "Amarnai больше не синхронизирует этот почт
 msgid "Amarnai is open source under AGPL-3.0. Clone it, bring your own keys, and run every tier free on your own infrastructure."
 msgstr "Amarnai — проект с открытым исходным кодом по лицензии AGPL-3.0. Клонируйте его, используйте свои ключи и запускайте любой уровень бесплатно на собственной инфраструктуре."
 
+#: ../../apps/site/src/lib/seo.ts:60
+#, fuzzy
+msgid "Amarnai reads your Gmail, sorts every thread into the folders you define, and drafts replies for your approval. Reach inbox zero without the busywork."
+msgstr "Amarnai сканирует вашу почту Gmail, распределяет всю переписку по заданным вами папкам и составляет черновики ответов для утверждения. Добейтесь Inbox Zero, не тратя время на рутину."
+
+#: ../../apps/site/src/lib/seo.ts:43
+msgid "Amarnai sorts your Gmail into the folders you define, drafts replies for your approval, and explains every call so you reach inbox zero faster."
+msgstr "Amarnai сортирует почту Gmail по заданным вами папкам, составляет черновики ответов для утверждения и поясняет каждое свое действие, чтобы вы быстрее достигали Inbox Zero."
+
 #: ../../apps/site/src/app/[locale]/page.tsx:50
 #, fuzzy
-msgid "Amarnai sorts your Gmail threads into folders you define, drafts replies for your approval, and explains every decision. Open-source and self-hostable."
-msgstr "Amarnai сортирует цепочки писем Gmail по заданным вами папкам, готовит черновики ответов для утверждения и объясняет каждое решение. Проект с открытым исходным кодом и возможностью самостоятельного хостинга."
+#~ msgid "Amarnai sorts your Gmail threads into folders you define, drafts replies for your approval, and explains every decision. Open-source and self-hostable."
+#~ msgstr "Amarnai сортирует цепочки писем Gmail по заданным вами папкам, готовит черновики ответов для утверждения и объясняет каждое решение. Проект с открытым исходным кодом и возможностью самостоятельного хостинга."
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:104
 #, fuzzy
@@ -592,8 +601,12 @@ msgstr "Amarnai проанализирует ваших отправителей
 
 #: ../../apps/site/src/app/[locale]/page.tsx:29
 #, fuzzy
-msgid "Amarnai: AI email triage"
-msgstr "Amarnai: ИИ-сортировка почты"
+#~ msgid "Amarnai: AI email triage"
+#~ msgstr "Amarnai: ИИ-сортировка почты"
+
+#: ../../apps/site/src/lib/seo.ts:37
+msgid "Amarnai: AI email triage for Gmail"
+msgstr "Amarnai: ИИ для разбора почты Gmail"
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:68
 #, fuzzy
@@ -728,7 +741,7 @@ msgstr "Азиру,\n"
 "С уважением,"
 
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
-#: ../../apps/site/src/app/[locale]/pricing/page.tsx:53
+#: ../../apps/site/src/components/pricing/PricingContent.tsx:25
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:222
 #: ../ui/src/emails/ThreadPreview.tsx:92
 #, fuzzy
@@ -1736,7 +1749,7 @@ msgstr "Адрес эл. почты в черный список"
 msgid "Email address to invite"
 msgstr "Адрес эл. почты для приглашения"
 
-#: ../../apps/site/src/app/[locale]/page.tsx:39
+#: ../../apps/site/src/lib/seo.ts:48
 #, fuzzy
 msgid "email organizer"
 msgstr "Организатор почты"
@@ -1823,7 +1836,7 @@ msgstr "Введите свой email, и мы отправим вам ссыл�
 msgid "Entry"
 msgstr "Запись"
 
-#: ../../apps/site/src/app/[locale]/pricing/page.tsx:59
+#: ../../apps/site/src/components/pricing/PricingContent.tsx:31
 #, fuzzy
 msgid "Every account starts with a free Personal workspace, no card required. Create more or upgrade whenever your needs grow."
 msgstr "Каждый аккаунт начинается с бесплатного персонального рабочего пространства, карта не требуется. Создавайте больше или обновляйтесь по мере роста ваших потребностей."
@@ -2217,7 +2230,7 @@ msgstr "Получить приложение Amarnai"
 msgid "Get the app"
 msgstr "Получить приложение"
 
-#: ../../apps/site/src/app/[locale]/page.tsx:38
+#: ../../apps/site/src/lib/seo.ts:47
 #, fuzzy
 msgid "gmail ai assistant"
 msgstr "ИИ-ассистент Gmail"
@@ -2480,7 +2493,7 @@ msgstr "Входящие (точка входа)"
 msgid "Inbox sync"
 msgstr "Синхронизация входящих"
 
-#: ../../apps/site/src/app/[locale]/page.tsx:40
+#: ../../apps/site/src/lib/seo.ts:49
 #, fuzzy
 msgid "inbox zero"
 msgstr "Inbox Zero"
@@ -3170,7 +3183,7 @@ msgstr "Открыть в Gmail"
 msgid "Open navigation"
 msgstr "Открыть навигацию"
 
-#: ../../apps/site/src/app/[locale]/page.tsx:41
+#: ../../apps/site/src/lib/seo.ts:50
 #, fuzzy
 msgid "open source email ai"
 msgstr "ИИ для почты с открытым исходным кодом"
@@ -3182,8 +3195,8 @@ msgstr "Открытый код и возможность аудита"
 
 #: ../../apps/site/src/app/[locale]/page.tsx:34
 #, fuzzy
-msgid "Open-source AI email triage for Gmail. Sort threads into folders you define, draft replies with AI, and reach inbox zero, hosted or self-hosted."
-msgstr "ИИ для сортировки почты Gmail с открытым исходным кодом. Сортируйте переписки по своим папкам, создавайте черновики ответов с помощью ИИ и достигайте Inbox Zero. Облачный или с самостоятельным размещением."
+#~ msgid "Open-source AI email triage for Gmail. Sort threads into folders you define, draft replies with AI, and reach inbox zero, hosted or self-hosted."
+#~ msgstr "ИИ для сортировки почты Gmail с открытым исходным кодом. Сортируйте переписки по своим папкам, создавайте черновики ответов с помощью ИИ и достигайте Inbox Zero. Облачный или с самостоятельным размещением."
 
 #: ../../apps/site/src/components/landing/Footer.tsx:15
 #, fuzzy
@@ -3414,7 +3427,7 @@ msgstr "Подготовьте свои аккаунты до созыва со�
 msgid "Press"
 msgstr "Пресса"
 
-#: ../../apps/site/src/app/[locale]/pricing/page.tsx:56
+#: ../../apps/site/src/components/pricing/PricingContent.tsx:28
 #, fuzzy
 msgid "Priced per workspace. Sort as much as you like."
 msgstr "Стоимость за рабочую область. Сортируйте сколько угодно."
@@ -3425,7 +3438,7 @@ msgstr "Стоимость за рабочую область. Сортируй�
 msgid "Pricing"
 msgstr "Цены"
 
-#: ../../apps/site/src/app/[locale]/pricing/page.tsx:22
+#: ../../apps/site/src/lib/seo.ts:80
 #, fuzzy
 msgid "Pricing | Amarnai"
 msgstr "Цены | Amarnai"
@@ -3894,7 +3907,7 @@ msgstr "Выберите тарифный план для сравнения"
 msgid "Self-host guide"
 msgstr "Руководство по самохостингу"
 
-#: ../../apps/site/src/app/[locale]/page.tsx:42
+#: ../../apps/site/src/lib/seo.ts:51
 #, fuzzy
 msgid "self-hosted email assistant"
 msgstr "почтовый ассистент с самохостингом"
@@ -4044,7 +4057,7 @@ msgstr "Ошибка регистрации. Пожалуйста, попроб�
 msgid "Signing in…"
 msgstr "Вход…"
 
-#: ../../apps/site/src/app/[locale]/pricing/page.tsx:24
+#: ../../apps/site/src/lib/seo.ts:86
 #, fuzzy
 msgid "Simple per-workspace pricing. Start free, upgrade or create additional workspaces as you need."
 msgstr "Простое ценообразование за рабочее пространство. Начните бесплатно, расширяйте тариф или создавайте новые рабочие пространства по мере необходимости."

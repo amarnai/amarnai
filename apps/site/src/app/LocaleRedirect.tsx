@@ -2,15 +2,15 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { matchLocale } from "@amarnai/i18n";
+import { matchLocale, SOURCE_LOCALE } from "@amarnai/i18n";
 
 const STORAGE_KEY = "amarnai_locale";
 
-// Redirects a non-localized route (e.g. `/` or `/pricing`) to its localized
-// equivalent (`/{locale}` or `/{locale}/pricing`), detecting the locale from the
-// stored preference or the browser. `path` is the suffix after the locale segment
-// (default ""), letting other non-locale entry points reuse this component
-// instead of maintaining a second, unlocalized copy of the page.
+// Redirects an unmatched route (via not-found) to the correct localized route,
+// detecting the locale from the stored preference or the browser. The source
+// locale maps to the bare path (`/`, `/pricing`) rather than `/{locale}`, since
+// `/en` is not generated; other locales map to `/{locale}{path}`. `path` is the
+// suffix after the locale segment (default "").
 export function LocaleRedirect({ path = "" }: { path?: string }) {
   const router = useRouter();
 
@@ -23,7 +23,8 @@ export function LocaleRedirect({ path = "" }: { path?: string }) {
         ? [...navigator.languages]
         : [navigator.language];
     const locale = matchLocale(preferredLocales);
-    router.replace(`/${locale}${path}`);
+    const prefix = locale === SOURCE_LOCALE ? "" : `/${locale}`;
+    router.replace(`${prefix}${path}` || "/");
   }, [router, path]);
 
   return null;

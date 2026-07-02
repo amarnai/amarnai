@@ -452,7 +452,7 @@ msgstr "高度なレビューキュー"
 msgid "AI drafts"
 msgstr "AIによる下書き"
 
-#: ../../apps/site/src/app/[locale]/page.tsx:37
+#: ../../apps/site/src/lib/seo.ts:46
 msgid "ai email triage"
 msgstr "AIメール選別"
 
@@ -556,9 +556,19 @@ msgstr "Amarnai はこの受信トレイを同期していません。メール�
 msgid "Amarnai is open source under AGPL-3.0. Clone it, bring your own keys, and run every tier free on your own infrastructure."
 msgstr "AmarnaiはAGPL-3.0ライセンスの下でオープンソースです。クローンし、独自のキーを持ち込み、ご自身のインフラで全ティアを無料で実行できます。"
 
+#: ../../apps/site/src/lib/seo.ts:60
+#, fuzzy
+msgid "Amarnai reads your Gmail, sorts every thread into the folders you define, and drafts replies for your approval. Reach inbox zero without the busywork."
+msgstr "AmarnaiはGmailを読み込み、スレッドを定義済みフォルダに自動分類。承認用の返信下書きも作成します。面倒な作業なしで、Inbox Zeroを達成。"
+
+#: ../../apps/site/src/lib/seo.ts:43
+#, fuzzy
+msgid "Amarnai sorts your Gmail into the folders you define, drafts replies for your approval, and explains every call so you reach inbox zero faster."
+msgstr "AmarnaiはGmailのスレッドを定義済みフォルダに分類し、承認用の返信下書きを作成。すべての判断理由を説明するので、より速くInbox Zeroを達成できます。"
+
 #: ../../apps/site/src/app/[locale]/page.tsx:50
-msgid "Amarnai sorts your Gmail threads into folders you define, drafts replies for your approval, and explains every decision. Open-source and self-hostable."
-msgstr "Amarnaiは、あなたが定義したフォルダーにGmailスレッドを振り分け、承認のための返信の下書きを作成し、すべての決定を説明します。オープンソースでセルフホスト可能です。"
+#~ msgid "Amarnai sorts your Gmail threads into folders you define, drafts replies for your approval, and explains every decision. Open-source and self-hostable."
+#~ msgstr "Amarnaiは、あなたが定義したフォルダーにGmailスレッドを振り分け、承認のための返信の下書きを作成し、すべての決定を説明します。オープンソースでセルフホスト可能です。"
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:104
 msgid "Amarnai will analyze your senders, labels, and subject keywords (never message bodies) to suggest a personalized set of folders. Review and edit before anything is applied."
@@ -570,8 +580,13 @@ msgid "Amarnai will analyze your senders, labels, and subject keywords (never me
 msgstr "Amarnai は、送信者、ラベル、件名のキーワード（メッセージ本文は対象外）を分析し、パーソナライズされたフォルダのセットを提案します。適用前に確認・編集できます。"
 
 #: ../../apps/site/src/app/[locale]/page.tsx:29
-msgid "Amarnai: AI email triage"
-msgstr "Amarnai: AIメール選別"
+#~ msgid "Amarnai: AI email triage"
+#~ msgstr "Amarnai: AIメール選別"
+
+#: ../../apps/site/src/lib/seo.ts:37
+#, fuzzy
+msgid "Amarnai: AI email triage for Gmail"
+msgstr "Amarnai: Gmail用AIメールトリアージ"
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:68
 msgid "Analyzing your inbox and building a plan…"
@@ -700,7 +715,7 @@ msgstr "アジル殿、\n"
 "敬具、"
 
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
-#: ../../apps/site/src/app/[locale]/pricing/page.tsx:53
+#: ../../apps/site/src/components/pricing/PricingContent.tsx:25
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:222
 #: ../ui/src/emails/ThreadPreview.tsx:92
 #, fuzzy
@@ -1664,7 +1679,7 @@ msgstr "ブラックリストに登録するメールアドレス"
 msgid "Email address to invite"
 msgstr "招待するメールアドレス"
 
-#: ../../apps/site/src/app/[locale]/page.tsx:39
+#: ../../apps/site/src/lib/seo.ts:48
 #, fuzzy
 msgid "email organizer"
 msgstr "メール整理ツール"
@@ -1747,7 +1762,7 @@ msgstr "メールアドレスを入力してください。リセットリンク
 msgid "Entry"
 msgstr "エントリ"
 
-#: ../../apps/site/src/app/[locale]/pricing/page.tsx:59
+#: ../../apps/site/src/components/pricing/PricingContent.tsx:31
 #, fuzzy
 msgid "Every account starts with a free Personal workspace, no card required. Create more or upgrade whenever your needs grow."
 msgstr "すべてのアカウントは無料のパーソナルワークスペースからスタート。カード情報は不要です。必要に応じて、さらにワークスペースを作成したりアップグレードできます。"
@@ -2120,7 +2135,7 @@ msgstr "Amarnaiアプリを入手"
 msgid "Get the app"
 msgstr "アプリを入手"
 
-#: ../../apps/site/src/app/[locale]/page.tsx:38
+#: ../../apps/site/src/lib/seo.ts:47
 #, fuzzy
 msgid "gmail ai assistant"
 msgstr "Gmail AIアシスタント"
@@ -2368,7 +2383,7 @@ msgstr "受信トレイ (エントリポイント)"
 msgid "Inbox sync"
 msgstr "受信トレイの同期"
 
-#: ../../apps/site/src/app/[locale]/page.tsx:40
+#: ../../apps/site/src/lib/seo.ts:49
 msgid "inbox zero"
 msgstr "インボックスゼロ"
 
@@ -3025,7 +3040,7 @@ msgstr "Gmailで開く"
 msgid "Open navigation"
 msgstr "ナビゲーションを開く"
 
-#: ../../apps/site/src/app/[locale]/page.tsx:41
+#: ../../apps/site/src/lib/seo.ts:50
 #, fuzzy
 msgid "open source email ai"
 msgstr "オープンソースのメールAI"
@@ -3037,8 +3052,8 @@ msgstr "オープンソース＆監査可能"
 
 #: ../../apps/site/src/app/[locale]/page.tsx:34
 #, fuzzy
-msgid "Open-source AI email triage for Gmail. Sort threads into folders you define, draft replies with AI, and reach inbox zero, hosted or self-hosted."
-msgstr "Gmail向けオープンソースAIメールトリアージ。定義したフォルダーにスレッドを分類し、AIで返信を作成。ホスト型でもセルフホスト型でも、インボックスゼロを実現します。"
+#~ msgid "Open-source AI email triage for Gmail. Sort threads into folders you define, draft replies with AI, and reach inbox zero, hosted or self-hosted."
+#~ msgstr "Gmail向けオープンソースAIメールトリアージ。定義したフォルダーにスレッドを分類し、AIで返信を作成。ホスト型でもセルフホスト型でも、インボックスゼロを実現します。"
 
 #: ../../apps/site/src/components/landing/Footer.tsx:15
 msgid "Open-source AI email triage. Gmail-first. Hosted or self-hosted. Your call."
@@ -3261,7 +3276,7 @@ msgstr "評議会招集前に会計を準備してください。"
 msgid "Press"
 msgstr "プレス"
 
-#: ../../apps/site/src/app/[locale]/pricing/page.tsx:56
+#: ../../apps/site/src/components/pricing/PricingContent.tsx:28
 #, fuzzy
 msgid "Priced per workspace. Sort as much as you like."
 msgstr "ワークスペースごとの料金です。無制限に分類できます。"
@@ -3272,7 +3287,7 @@ msgstr "ワークスペースごとの料金です。無制限に分類できま
 msgid "Pricing"
 msgstr "料金"
 
-#: ../../apps/site/src/app/[locale]/pricing/page.tsx:22
+#: ../../apps/site/src/lib/seo.ts:80
 #, fuzzy
 msgid "Pricing | Amarnai"
 msgstr "料金 | Amarnai"
@@ -3719,7 +3734,7 @@ msgstr "比較するプランを選択"
 msgid "Self-host guide"
 msgstr "セルフホストガイド"
 
-#: ../../apps/site/src/app/[locale]/page.tsx:42
+#: ../../apps/site/src/lib/seo.ts:51
 msgid "self-hosted email assistant"
 msgstr "セルフホスト型メールアシスタント"
 
@@ -3859,7 +3874,7 @@ msgstr "新規登録に失敗しました。もう一度お試しください。
 msgid "Signing in…"
 msgstr "サインイン中…"
 
-#: ../../apps/site/src/app/[locale]/pricing/page.tsx:24
+#: ../../apps/site/src/lib/seo.ts:86
 #, fuzzy
 msgid "Simple per-workspace pricing. Start free, upgrade or create additional workspaces as you need."
 msgstr "シンプルなワークスペース別料金。無料から開始し、必要に応じてアップグレードやワークスペースの追加が可能です。"

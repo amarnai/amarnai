@@ -452,7 +452,7 @@ msgstr "高级审阅队列"
 msgid "AI drafts"
 msgstr "AI 草稿"
 
-#: ../../apps/site/src/app/[locale]/page.tsx:37
+#: ../../apps/site/src/lib/seo.ts:46
 msgid "ai email triage"
 msgstr "AI 邮件智能分拣"
 
@@ -556,9 +556,19 @@ msgstr "Amarnai 不再同步此收件箱。请重新连接您的 Gmail 账号以
 msgid "Amarnai is open source under AGPL-3.0. Clone it, bring your own keys, and run every tier free on your own infrastructure."
 msgstr "Amarnai 遵循 AGPL-3.0 协议开源。克隆代码、自带密钥，即可在您自己的基础设施上免费运行所有版本。"
 
+#: ../../apps/site/src/lib/seo.ts:60
+#, fuzzy
+msgid "Amarnai reads your Gmail, sorts every thread into the folders you define, and drafts replies for your approval. Reach inbox zero without the busywork."
+msgstr "Amarnai 读取您的 Gmail，将所有会话分类到您定义的文件夹，并草拟回复供您审批。告别繁琐，轻松实现零收件箱。"
+
+#: ../../apps/site/src/lib/seo.ts:43
+#, fuzzy
+msgid "Amarnai sorts your Gmail into the folders you define, drafts replies for your approval, and explains every call so you reach inbox zero faster."
+msgstr "Amarnai 将您的 Gmail 分类到您定义的文件夹中，草拟回复供您审批，并解释每一次操作，助您更快实现零收件箱。"
+
 #: ../../apps/site/src/app/[locale]/page.tsx:50
-msgid "Amarnai sorts your Gmail threads into folders you define, drafts replies for your approval, and explains every decision. Open-source and self-hostable."
-msgstr "Amarnai 将您的 Gmail 会话分拣到您定义的文件夹，为您起草回复供您批准，并解释每项决策。开源且支持自托管。"
+#~ msgid "Amarnai sorts your Gmail threads into folders you define, drafts replies for your approval, and explains every decision. Open-source and self-hostable."
+#~ msgstr "Amarnai 将您的 Gmail 会话分拣到您定义的文件夹，为您起草回复供您批准，并解释每项决策。开源且支持自托管。"
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:104
 msgid "Amarnai will analyze your senders, labels, and subject keywords (never message bodies) to suggest a personalized set of folders. Review and edit before anything is applied."
@@ -570,8 +580,13 @@ msgid "Amarnai will analyze your senders, labels, and subject keywords (never me
 msgstr "Amarnai 将分析您的发件人、标签和主题关键词（绝不分析邮件正文）以建议一组个性化文件夹。您可以在应用之前进行审核和编辑。"
 
 #: ../../apps/site/src/app/[locale]/page.tsx:29
-msgid "Amarnai: AI email triage"
-msgstr "Amarnai：AI 邮件智能分拣"
+#~ msgid "Amarnai: AI email triage"
+#~ msgstr "Amarnai：AI 邮件智能分拣"
+
+#: ../../apps/site/src/lib/seo.ts:37
+#, fuzzy
+msgid "Amarnai: AI email triage for Gmail"
+msgstr "Amarnai：适用于 Gmail 的 AI 邮件智能分流"
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:68
 msgid "Analyzing your inbox and building a plan…"
@@ -700,7 +715,7 @@ msgstr "阿齐鲁，\n"
 "此致，"
 
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
-#: ../../apps/site/src/app/[locale]/pricing/page.tsx:53
+#: ../../apps/site/src/components/pricing/PricingContent.tsx:25
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:222
 #: ../ui/src/emails/ThreadPreview.tsx:92
 #, fuzzy
@@ -1664,7 +1679,7 @@ msgstr "要加入黑名单的电子邮件地址"
 msgid "Email address to invite"
 msgstr "要邀请的电子邮件地址"
 
-#: ../../apps/site/src/app/[locale]/page.tsx:39
+#: ../../apps/site/src/lib/seo.ts:48
 #, fuzzy
 msgid "email organizer"
 msgstr "邮件整理工具"
@@ -1747,7 +1762,7 @@ msgstr "输入您的电子邮件，我们将向您发送重置链接。"
 msgid "Entry"
 msgstr "入口"
 
-#: ../../apps/site/src/app/[locale]/pricing/page.tsx:59
+#: ../../apps/site/src/components/pricing/PricingContent.tsx:31
 #, fuzzy
 msgid "Every account starts with a free Personal workspace, no card required. Create more or upgrade whenever your needs grow."
 msgstr "每个账户均享免费个人工作区，无需绑定银行卡。可随时创建更多工作区或升级，以满足不断增长的需求。"
@@ -2120,7 +2135,7 @@ msgstr "获取 Amarnai 应用"
 msgid "Get the app"
 msgstr "获取应用"
 
-#: ../../apps/site/src/app/[locale]/page.tsx:38
+#: ../../apps/site/src/lib/seo.ts:47
 #, fuzzy
 msgid "gmail ai assistant"
 msgstr "Gmail AI 助手"
@@ -2368,7 +2383,7 @@ msgstr "收件箱（入口点）"
 msgid "Inbox sync"
 msgstr "收件箱同步"
 
-#: ../../apps/site/src/app/[locale]/page.tsx:40
+#: ../../apps/site/src/lib/seo.ts:49
 msgid "inbox zero"
 msgstr "收件箱清零"
 
@@ -3025,7 +3040,7 @@ msgstr "在 Gmail 中打开"
 msgid "Open navigation"
 msgstr "打开导航"
 
-#: ../../apps/site/src/app/[locale]/page.tsx:41
+#: ../../apps/site/src/lib/seo.ts:50
 #, fuzzy
 msgid "open source email ai"
 msgstr "开源邮件AI"
@@ -3037,8 +3052,8 @@ msgstr "开源且可审计"
 
 #: ../../apps/site/src/app/[locale]/page.tsx:34
 #, fuzzy
-msgid "Open-source AI email triage for Gmail. Sort threads into folders you define, draft replies with AI, and reach inbox zero, hosted or self-hosted."
-msgstr "专为 Gmail 设计的开源 AI 邮件分类助手。将会话归类到您定义的文件夹，通过 AI 起草回复，实现收件箱清零。支持托管或自托管。"
+#~ msgid "Open-source AI email triage for Gmail. Sort threads into folders you define, draft replies with AI, and reach inbox zero, hosted or self-hosted."
+#~ msgstr "专为 Gmail 设计的开源 AI 邮件分类助手。将会话归类到您定义的文件夹，通过 AI 起草回复，实现收件箱清零。支持托管或自托管。"
 
 #: ../../apps/site/src/components/landing/Footer.tsx:15
 msgid "Open-source AI email triage. Gmail-first. Hosted or self-hosted. Your call."
@@ -3260,7 +3275,7 @@ msgstr "在议会召开之前准备好您的账目。"
 msgid "Press"
 msgstr "媒体"
 
-#: ../../apps/site/src/app/[locale]/pricing/page.tsx:56
+#: ../../apps/site/src/components/pricing/PricingContent.tsx:28
 #, fuzzy
 msgid "Priced per workspace. Sort as much as you like."
 msgstr "按工作区计费。可随意分类。"
@@ -3271,7 +3286,7 @@ msgstr "按工作区计费。可随意分类。"
 msgid "Pricing"
 msgstr "定价"
 
-#: ../../apps/site/src/app/[locale]/pricing/page.tsx:22
+#: ../../apps/site/src/lib/seo.ts:80
 #, fuzzy
 msgid "Pricing | Amarnai"
 msgstr "定价 | Amarnai"
@@ -3717,7 +3732,7 @@ msgstr "选择方案进行比较"
 msgid "Self-host guide"
 msgstr "自托管指南"
 
-#: ../../apps/site/src/app/[locale]/page.tsx:42
+#: ../../apps/site/src/lib/seo.ts:51
 msgid "self-hosted email assistant"
 msgstr "自托管邮件助手"
 
@@ -3857,7 +3872,7 @@ msgstr "注册失败。请重试。"
 msgid "Signing in…"
 msgstr "正在登录…"
 
-#: ../../apps/site/src/app/[locale]/pricing/page.tsx:24
+#: ../../apps/site/src/lib/seo.ts:86
 #, fuzzy
 msgid "Simple per-workspace pricing. Start free, upgrade or create additional workspaces as you need."
 msgstr "按工作区简单定价。免费体验，按需升级或创建更多工作区。"

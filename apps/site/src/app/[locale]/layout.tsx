@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { AppDownloadBanner, ThemeProvider } from "@amarnai/ui";
 import {
   SUPPORTED_LOCALES,
   isSupportedLocale,
@@ -7,12 +6,16 @@ import {
   type SupportedLocale,
 } from "@amarnai/i18n";
 import { initServerI18n } from "@/lib/i18n-server";
-import { LinguiSiteProvider } from "./LinguiSiteProvider";
-import "../landing.css";
+import { SiteProviders } from "../SiteProviders";
+import { SourceLocaleRedirect } from "../SourceLocaleRedirect";
 
 export const dynamicParams = false;
 
 export function generateStaticParams() {
+  // `output: export` requires every `[locale]` param to be generated. The source
+  // locale is served at the bare path, so its `/{locale}/*` routes are emitted as
+  // thin redirect shells (see the source-locale branch below) rather than being
+  // omitted, which would make `/en` a hard export error instead of a redirect.
   return SUPPORTED_LOCALES.map((locale) => ({ locale }));
 }
 
@@ -28,16 +31,10 @@ export async function generateMetadata({
     ? locale
     : SOURCE_LOCALE;
 
-  const alternates = Object.fromEntries(
-    SUPPORTED_LOCALES.map((l) => [l, `${BASE_URL}/${l}`])
-  );
-
+  // Canonical and hreflang alternates are set per-page (see lib/seo.ts); the
+  // layout only supplies metadataBase and the shared OpenGraph fields.
   return {
     metadataBase: new URL(BASE_URL),
-    alternates: {
-      canonical: `${BASE_URL}/${validLocale}`,
-      languages: alternates,
-    },
     openGraph: {
       type: "website",
       siteName: "Amarnai",
@@ -58,16 +55,20 @@ export default async function LocaleLayout({
     ? locale
     : SOURCE_LOCALE;
 
+  // The source locale is served at the bare path, so `/{SOURCE_LOCALE}/*` is only
+  // a redirect shell that forwards to the bare equivalent (`/en/pricing` ->
+  // `/pricing`). It exists solely to satisfy `output: export`'s all-params rule.
+  if (validLocale === SOURCE_LOCALE) {
+    return <SourceLocaleRedirect />;
+  }
+
   // Activate Lingui for this render's server components, and reuse the loaded
   // catalog for the client provider so both render in the right locale.
   const i18n = await initServerI18n(validLocale);
 
   return (
-    <ThemeProvider>
-      <LinguiSiteProvider locale={validLocale} messages={i18n.messages}>
-        <AppDownloadBanner playStoreUrl={process.env.NEXT_PUBLIC_PLAY_STORE_URL} />
-        {children}
-      </LinguiSiteProvider>
-    </ThemeProvider>
+    <SiteProviders locale={validLocale} messages={i18n.messages}>
+      {children}
+    </SiteProviders>
   );
 }

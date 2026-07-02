@@ -465,7 +465,7 @@ msgstr "Antrean peninjauan lanjutan"
 msgid "AI drafts"
 msgstr "Draf AI"
 
-#: ../../apps/site/src/app/[locale]/page.tsx:37
+#: ../../apps/site/src/lib/seo.ts:46
 #, fuzzy
 msgid "ai email triage"
 msgstr "triage email AI"
@@ -575,10 +575,19 @@ msgstr "Amarnai tidak lagi menyinkronkan kotak masuk ini. Sambungkan kembali aku
 msgid "Amarnai is open source under AGPL-3.0. Clone it, bring your own keys, and run every tier free on your own infrastructure."
 msgstr "Amarnai adalah sumber terbuka di bawah AGPL-3.0. Kloning, gunakan kunci Anda sendiri, dan jalankan setiap tingkat secara gratis di infrastruktur Anda sendiri."
 
+#: ../../apps/site/src/lib/seo.ts:60
+#, fuzzy
+msgid "Amarnai reads your Gmail, sorts every thread into the folders you define, and drafts replies for your approval. Reach inbox zero without the busywork."
+msgstr "Amarnai membaca Gmail Anda, menyortir semua percakapan ke folder yang Anda tentukan, dan menyusun draf balasan untuk persetujuan Anda. Capai inbox zero tanpa repot."
+
+#: ../../apps/site/src/lib/seo.ts:43
+msgid "Amarnai sorts your Gmail into the folders you define, drafts replies for your approval, and explains every call so you reach inbox zero faster."
+msgstr "Amarnai menyortir Gmail Anda ke folder yang Anda tentukan, menyusun draf balasan untuk persetujuan Anda, dan menjelaskan setiap keputusan agar Anda mencapai inbox zero lebih cepat."
+
 #: ../../apps/site/src/app/[locale]/page.tsx:50
 #, fuzzy
-msgid "Amarnai sorts your Gmail threads into folders you define, drafts replies for your approval, and explains every decision. Open-source and self-hostable."
-msgstr "Amarnai menyortir utas Gmail Anda ke dalam folder yang Anda tentukan, menyusun draf balasan untuk persetujuan Anda, dan menjelaskan setiap keputusan. Sumber terbuka dan dapat di-hosting sendiri."
+#~ msgid "Amarnai sorts your Gmail threads into folders you define, drafts replies for your approval, and explains every decision. Open-source and self-hostable."
+#~ msgstr "Amarnai menyortir utas Gmail Anda ke dalam folder yang Anda tentukan, menyusun draf balasan untuk persetujuan Anda, dan menjelaskan setiap keputusan. Sumber terbuka dan dapat di-hosting sendiri."
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:104
 #, fuzzy
@@ -592,8 +601,12 @@ msgstr "Amarnai akan menganalisis pengirim, label, dan kata kunci subjek Anda (b
 
 #: ../../apps/site/src/app/[locale]/page.tsx:29
 #, fuzzy
-msgid "Amarnai: AI email triage"
-msgstr "Amarnai: Triage email AI"
+#~ msgid "Amarnai: AI email triage"
+#~ msgstr "Amarnai: Triage email AI"
+
+#: ../../apps/site/src/lib/seo.ts:37
+msgid "Amarnai: AI email triage for Gmail"
+msgstr "Amarnai: Triase email AI untuk Gmail"
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:68
 #, fuzzy
@@ -728,7 +741,7 @@ msgstr "Aziru,\n"
 "Dengan hormat,"
 
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
-#: ../../apps/site/src/app/[locale]/pricing/page.tsx:53
+#: ../../apps/site/src/components/pricing/PricingContent.tsx:25
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:222
 #: ../ui/src/emails/ThreadPreview.tsx:92
 #, fuzzy
@@ -1736,7 +1749,7 @@ msgstr "Alamat email yang diblacklist"
 msgid "Email address to invite"
 msgstr "Alamat email untuk diundang"
 
-#: ../../apps/site/src/app/[locale]/page.tsx:39
+#: ../../apps/site/src/lib/seo.ts:48
 #, fuzzy
 msgid "email organizer"
 msgstr "Pengatur email"
@@ -1823,7 +1836,7 @@ msgstr "Masukkan email Anda dan kami akan mengirimkan tautan reset."
 msgid "Entry"
 msgstr "Entri"
 
-#: ../../apps/site/src/app/[locale]/pricing/page.tsx:59
+#: ../../apps/site/src/components/pricing/PricingContent.tsx:31
 #, fuzzy
 msgid "Every account starts with a free Personal workspace, no card required. Create more or upgrade whenever your needs grow."
 msgstr "Setiap akun dimulai dengan ruang kerja Personal gratis, tanpa perlu kartu. Buat lebih banyak atau tingkatkan kapan pun kebutuhan Anda berkembang."
@@ -2217,7 +2230,7 @@ msgstr "Dapatkan aplikasi Amarnai"
 msgid "Get the app"
 msgstr "Dapatkan aplikasi"
 
-#: ../../apps/site/src/app/[locale]/page.tsx:38
+#: ../../apps/site/src/lib/seo.ts:47
 #, fuzzy
 msgid "gmail ai assistant"
 msgstr "Asisten AI Gmail"
@@ -2480,7 +2493,7 @@ msgstr "Kotak Masuk (titik masuk)"
 msgid "Inbox sync"
 msgstr "Sinkronisasi Kotak Masuk"
 
-#: ../../apps/site/src/app/[locale]/page.tsx:40
+#: ../../apps/site/src/lib/seo.ts:49
 #, fuzzy
 msgid "inbox zero"
 msgstr "kotak masuk nol"
@@ -3170,7 +3183,7 @@ msgstr "Buka di Gmail"
 msgid "Open navigation"
 msgstr "Buka navigasi"
 
-#: ../../apps/site/src/app/[locale]/page.tsx:41
+#: ../../apps/site/src/lib/seo.ts:50
 #, fuzzy
 msgid "open source email ai"
 msgstr "AI email sumber terbuka"
@@ -3182,8 +3195,8 @@ msgstr "Sumber terbuka & dapat diaudit"
 
 #: ../../apps/site/src/app/[locale]/page.tsx:34
 #, fuzzy
-msgid "Open-source AI email triage for Gmail. Sort threads into folders you define, draft replies with AI, and reach inbox zero, hosted or self-hosted."
-msgstr "Triage email AI sumber terbuka untuk Gmail. Sortir utas ke folder pilihan Anda, susun draf balasan dengan AI, dan capai inbox zero, baik dihosting atau di-host sendiri."
+#~ msgid "Open-source AI email triage for Gmail. Sort threads into folders you define, draft replies with AI, and reach inbox zero, hosted or self-hosted."
+#~ msgstr "Triage email AI sumber terbuka untuk Gmail. Sortir utas ke folder pilihan Anda, susun draf balasan dengan AI, dan capai inbox zero, baik dihosting atau di-host sendiri."
 
 #: ../../apps/site/src/components/landing/Footer.tsx:15
 #, fuzzy
@@ -3414,7 +3427,7 @@ msgstr "Siapkan akun Anda sebelum rapat dewan dimulai."
 msgid "Press"
 msgstr "Pers"
 
-#: ../../apps/site/src/app/[locale]/pricing/page.tsx:56
+#: ../../apps/site/src/components/pricing/PricingContent.tsx:28
 #, fuzzy
 msgid "Priced per workspace. Sort as much as you like."
 msgstr "Harga per ruang kerja. Urutkan sebanyak yang Anda mau."
@@ -3425,7 +3438,7 @@ msgstr "Harga per ruang kerja. Urutkan sebanyak yang Anda mau."
 msgid "Pricing"
 msgstr "Harga"
 
-#: ../../apps/site/src/app/[locale]/pricing/page.tsx:22
+#: ../../apps/site/src/lib/seo.ts:80
 #, fuzzy
 msgid "Pricing | Amarnai"
 msgstr "Harga | Amarnai"
@@ -3894,7 +3907,7 @@ msgstr "Pilih paket untuk dibandingkan"
 msgid "Self-host guide"
 msgstr "Panduan hosting mandiri"
 
-#: ../../apps/site/src/app/[locale]/page.tsx:42
+#: ../../apps/site/src/lib/seo.ts:51
 #, fuzzy
 msgid "self-hosted email assistant"
 msgstr "asisten email hosting mandiri"
@@ -4044,7 +4057,7 @@ msgstr "Gagal mendaftar. Silakan coba lagi."
 msgid "Signing in…"
 msgstr "Masuk…"
 
-#: ../../apps/site/src/app/[locale]/pricing/page.tsx:24
+#: ../../apps/site/src/lib/seo.ts:86
 #, fuzzy
 msgid "Simple per-workspace pricing. Start free, upgrade or create additional workspaces as you need."
 msgstr "Harga per ruang kerja yang sederhana. Mulai gratis, tingkatkan, atau buat ruang kerja tambahan sesuai kebutuhan Anda."

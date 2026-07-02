@@ -465,7 +465,7 @@ msgstr "Gelişmiş inceleme kuyruğu"
 msgid "AI drafts"
 msgstr "Yapay zeka taslakları"
 
-#: ../../apps/site/src/app/[locale]/page.tsx:37
+#: ../../apps/site/src/lib/seo.ts:46
 #, fuzzy
 msgid "ai email triage"
 msgstr "YZ e-posta önceliklendirme"
@@ -575,10 +575,19 @@ msgstr "Amarnai bu gelen kutusunu artık senkronize etmiyor. E-posta ileti dizil
 msgid "Amarnai is open source under AGPL-3.0. Clone it, bring your own keys, and run every tier free on your own infrastructure."
 msgstr "Amarnai, AGPL-3.0 lisansı altında açık kaynaklıdır. Klonlayın, kendi anahtarlarınızı kullanın ve tüm katmanları kendi altyapınızda ücretsiz çalıştırın."
 
+#: ../../apps/site/src/lib/seo.ts:60
+#, fuzzy
+msgid "Amarnai reads your Gmail, sorts every thread into the folders you define, and drafts replies for your approval. Reach inbox zero without the busywork."
+msgstr "Amarnai Gmail'inizi okur, e-posta dizilerini belirlediğiniz klasörlere ayırır ve onayınız için yanıt taslakları hazırlar. Gereksiz iş yükü olmadan gelen kutunuzu sıfırlayın."
+
+#: ../../apps/site/src/lib/seo.ts:43
+msgid "Amarnai sorts your Gmail into the folders you define, drafts replies for your approval, and explains every call so you reach inbox zero faster."
+msgstr "Amarnai Gmail'inizi belirlediğiniz klasörlere ayırır, onayınız için yanıt taslakları hazırlar ve aldığı her kararı açıklar. Böylece gelen kutunuzu daha hızlı sıfırlarsınız."
+
 #: ../../apps/site/src/app/[locale]/page.tsx:50
 #, fuzzy
-msgid "Amarnai sorts your Gmail threads into folders you define, drafts replies for your approval, and explains every decision. Open-source and self-hostable."
-msgstr "Amarnai, Gmail ileti dizilerinizi belirlediğiniz klasörlere ayırır, onayınız için yanıt taslakları hazırlar ve her kararını açıklar. Açık kaynaklı ve kendi kendine barındırılabilir."
+#~ msgid "Amarnai sorts your Gmail threads into folders you define, drafts replies for your approval, and explains every decision. Open-source and self-hostable."
+#~ msgstr "Amarnai, Gmail ileti dizilerinizi belirlediğiniz klasörlere ayırır, onayınız için yanıt taslakları hazırlar ve her kararını açıklar. Açık kaynaklı ve kendi kendine barındırılabilir."
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:104
 #, fuzzy
@@ -592,8 +601,12 @@ msgstr "Amarnai, göndericilerinizi, etiketlerinizi ve konu anahtar kelimelerini
 
 #: ../../apps/site/src/app/[locale]/page.tsx:29
 #, fuzzy
-msgid "Amarnai: AI email triage"
-msgstr "Amarnai: Yapay Zeka Destekli E-posta Tasnifi"
+#~ msgid "Amarnai: AI email triage"
+#~ msgstr "Amarnai: Yapay Zeka Destekli E-posta Tasnifi"
+
+#: ../../apps/site/src/lib/seo.ts:37
+msgid "Amarnai: AI email triage for Gmail"
+msgstr "Amarnai: Gmail için Yapay Zeka Destekli E-posta Yönetimi"
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:68
 #, fuzzy
@@ -728,7 +741,7 @@ msgstr "Aziru,\n"
 "Saygılarımızla,"
 
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
-#: ../../apps/site/src/app/[locale]/pricing/page.tsx:53
+#: ../../apps/site/src/components/pricing/PricingContent.tsx:25
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:222
 #: ../ui/src/emails/ThreadPreview.tsx:92
 #, fuzzy
@@ -1736,7 +1749,7 @@ msgstr "Kara listeye alınacak e-posta adresi"
 msgid "Email address to invite"
 msgstr "Davet edilecek e-posta adresi"
 
-#: ../../apps/site/src/app/[locale]/page.tsx:39
+#: ../../apps/site/src/lib/seo.ts:48
 #, fuzzy
 msgid "email organizer"
 msgstr "E-posta düzenleyici"
@@ -1823,7 +1836,7 @@ msgstr "E-posta adresinizi girin, size sıfırlama bağlantısı gönderelim."
 msgid "Entry"
 msgstr "Giriş"
 
-#: ../../apps/site/src/app/[locale]/pricing/page.tsx:59
+#: ../../apps/site/src/components/pricing/PricingContent.tsx:31
 #, fuzzy
 msgid "Every account starts with a free Personal workspace, no card required. Create more or upgrade whenever your needs grow."
 msgstr "Her hesap ücretsiz bir Kişisel çalışma alanıyla başlar, kart gerekmez. İhtiyaçlarınız arttığında daha fazlasını oluşturun veya yükseltin."
@@ -2217,7 +2230,7 @@ msgstr "Amarnai uygulamasını indirin"
 msgid "Get the app"
 msgstr "Uygulamayı indirin"
 
-#: ../../apps/site/src/app/[locale]/page.tsx:38
+#: ../../apps/site/src/lib/seo.ts:47
 #, fuzzy
 msgid "gmail ai assistant"
 msgstr "gmail yapay zeka asistanı"
@@ -2480,7 +2493,7 @@ msgstr "Gelen Kutusu (giriş noktası)"
 msgid "Inbox sync"
 msgstr "Gelen kutusu senkronizasyonu"
 
-#: ../../apps/site/src/app/[locale]/page.tsx:40
+#: ../../apps/site/src/lib/seo.ts:49
 #, fuzzy
 msgid "inbox zero"
 msgstr "Gelen kutusu sıfır"
@@ -3170,7 +3183,7 @@ msgstr "Gmail'de Aç"
 msgid "Open navigation"
 msgstr "Navigasyonu aç"
 
-#: ../../apps/site/src/app/[locale]/page.tsx:41
+#: ../../apps/site/src/lib/seo.ts:50
 #, fuzzy
 msgid "open source email ai"
 msgstr "açık kaynak e-posta yapay zekası"
@@ -3182,8 +3195,8 @@ msgstr "Açık kaynak ve denetlenebilir"
 
 #: ../../apps/site/src/app/[locale]/page.tsx:34
 #, fuzzy
-msgid "Open-source AI email triage for Gmail. Sort threads into folders you define, draft replies with AI, and reach inbox zero, hosted or self-hosted."
-msgstr "Gmail için açık kaynaklı yapay zeka destekli e-posta tasnifi. Yazışmaları tanımladığınız klasörlere ayırın, yapay zeka ile yanıt taslakları oluşturun ve gelen kutusu sıfıra ulaşın; barındırılan veya kendi sunucunuzda."
+#~ msgid "Open-source AI email triage for Gmail. Sort threads into folders you define, draft replies with AI, and reach inbox zero, hosted or self-hosted."
+#~ msgstr "Gmail için açık kaynaklı yapay zeka destekli e-posta tasnifi. Yazışmaları tanımladığınız klasörlere ayırın, yapay zeka ile yanıt taslakları oluşturun ve gelen kutusu sıfıra ulaşın; barındırılan veya kendi sunucunuzda."
 
 #: ../../apps/site/src/components/landing/Footer.tsx:15
 #, fuzzy
@@ -3414,7 +3427,7 @@ msgstr "Konsey toplanmadan önce hesaplarınızı hazırlayın."
 msgid "Press"
 msgstr "Basın"
 
-#: ../../apps/site/src/app/[locale]/pricing/page.tsx:56
+#: ../../apps/site/src/components/pricing/PricingContent.tsx:28
 #, fuzzy
 msgid "Priced per workspace. Sort as much as you like."
 msgstr "Çalışma alanı başına fiyatlandırılır. İstediğiniz kadar sıralayın."
@@ -3425,7 +3438,7 @@ msgstr "Çalışma alanı başına fiyatlandırılır. İstediğiniz kadar sıra
 msgid "Pricing"
 msgstr "Fiyatlandırma"
 
-#: ../../apps/site/src/app/[locale]/pricing/page.tsx:22
+#: ../../apps/site/src/lib/seo.ts:80
 #, fuzzy
 msgid "Pricing | Amarnai"
 msgstr "Fiyatlandırma | Amarnai"
@@ -3894,7 +3907,7 @@ msgstr "Karşılaştırmak için plan seçin"
 msgid "Self-host guide"
 msgstr "Kendi sunucunuzda barındırma rehberi"
 
-#: ../../apps/site/src/app/[locale]/page.tsx:42
+#: ../../apps/site/src/lib/seo.ts:51
 #, fuzzy
 msgid "self-hosted email assistant"
 msgstr "kendi sunucunuzda barındırılan e-posta asistanı"
@@ -4044,7 +4057,7 @@ msgstr "Kaydolma başarısız. Lütfen tekrar deneyin."
 msgid "Signing in…"
 msgstr "Giriş yapılıyor…"
 
-#: ../../apps/site/src/app/[locale]/pricing/page.tsx:24
+#: ../../apps/site/src/lib/seo.ts:86
 #, fuzzy
 msgid "Simple per-workspace pricing. Start free, upgrade or create additional workspaces as you need."
 msgstr "Basit çalışma alanı fiyatlandırması. Ücretsiz başlayın, ihtiyacınıza göre yükseltin veya yeni çalışma alanları oluşturun."
