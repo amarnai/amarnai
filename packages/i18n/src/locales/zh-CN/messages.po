@@ -141,6 +141,7 @@ msgid "{pendingCount} pending"
 msgstr "{pendingCount} 待处理"
 
 #. placeholder {0}: draftQuota.limit
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:280
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:309
 #, fuzzy
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
@@ -352,9 +353,7 @@ msgstr "收到赫伦希布（底比斯）的首席文书官职位申请。"
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "已收到底比斯的霍伦海布呈报的文书长职位申请。\n"
-"\n"
-"请在记录馆查看该申请。"
+msgstr "已收到底比斯的霍伦海布呈报的文书长职位申请。\n\n请在记录馆查看该申请。"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:380
 #, fuzzy
@@ -367,11 +366,7 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "阿卜迪-赫巴，\n"
-"\n"
-"同周我将行至三角洲附近。我们可在第二日于驿站会面；我可抽出上午时间。\n"
-"\n"
-"届时再叙，"
+msgstr "阿卜迪-赫巴，\n\n同周我将行至三角洲附近。我们可在第二日于驿站会面；我可抽出上午时间。\n\n届时再叙，"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
@@ -708,12 +703,9 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "阿齐鲁，\n"
-"\n"
-"你的友谊之言我们已悉。阿穆鲁家族有何提议，我们愿闻其详。请速派下一信使呈上你的条件。\n"
-"\n"
-"此致，"
+msgstr "阿齐鲁，\n\n你的友谊之言我们已悉。阿穆鲁家族有何提议，我们愿闻其详。请速派下一信使呈上你的条件。\n\n此致，"
 
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:215
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:25
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:222
@@ -722,6 +714,7 @@ msgstr "阿齐鲁，\n"
 msgid "Back"
 msgstr "返回"
 
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:211
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:217
 #: ../ui/src/emails/ThreadPreview.tsx:87
 #, fuzzy
@@ -1046,6 +1039,10 @@ msgstr "连接 Gmail 账户"
 msgid "Connect Gmail and Amarnai starts sorting within minutes. Pricing is per workspace. Sort as much mail as you like, with backfill of your whole history included."
 msgstr "连接 Gmail，Amarnai 即可在数分钟内开始整理。按工作区计费，不限邮件整理量，包含全部历史邮件回溯。"
 
+#: ../../apps/extension/src/App.tsx:38
+msgid "Connect Gmail on the web"
+msgstr "连接 Gmail 网页版"
+
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:218
 #, fuzzy
 msgid "Connect Gmail to generate a plan from your inbox"
@@ -1060,6 +1057,11 @@ msgstr "连接 Gmail 以开始分类"
 #, fuzzy
 msgid "Connect once, generate your plan once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
 msgstr "只需连接一次，制定一次方案，Amarnai 即可处理新邮件，并整理您收件箱中已有的数千个会话。"
+
+#: ../../apps/extension/src/App.tsx:36
+#, fuzzy
+msgid "Connect your Gmail account to start triaging."
+msgstr "连接您的 Gmail 账号，即可开始分类处理。"
 
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:183
 msgid "Connect your Gmail account to sync your inbox into Amarnai. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
@@ -1251,6 +1253,10 @@ msgstr "无法升级"
 #, fuzzy
 msgid "Could not verify your Google account. Please try again."
 msgstr "无法验证您的 Google 账户。请重试。"
+
+#: ../../apps/extension/src/panel/TriageGate.tsx:73
+msgid "Couldn't load your inbox. Check your connection and reopen the panel."
+msgstr "无法加载收件箱。请检查您的网络连接并重新打开面板。"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:401
 #, fuzzy
@@ -1521,6 +1527,7 @@ msgstr "断开此工作区连接。Amarnai仍保留访问权限，因为此邮�
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "断开此工作区连接。Amarnai仍保留访问权限，因为此邮箱仍连接在{sharedNames}中。"
 
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:226
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:296
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:57
@@ -1589,6 +1596,7 @@ msgstr "草稿"
 msgid "Draft failed · tap to retry"
 msgstr "草稿失败 · 轻触重试"
 
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:295
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:325
 #, fuzzy
 msgid "Draft generation failed. Try again."
@@ -1657,6 +1665,7 @@ msgstr "编辑收件箱"
 msgid "Edit Path"
 msgstr "编辑路径"
 
+#: ../../apps/extension/src/auth/SignInScreen.tsx:59
 #: ../../apps/mobile/app/(app)/account.tsx:139
 #: ../../apps/mobile/app/forgot-password.tsx:85
 #: ../../apps/mobile/app/sign-in.tsx:89
@@ -2072,6 +2081,7 @@ msgstr "生成新草稿。占用一次月用量。"
 msgid "Generate a plan from your inbox"
 msgstr "根据收件箱生成方案"
 
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:274
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:131
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:303
 #: ../ui/src/emails/ThreadPreview.tsx:162
@@ -2212,6 +2222,7 @@ msgstr "Google 账号权限"
 msgid "Google could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the Gmail callback URL is registered in Google Cloud Console."
 msgstr "Google 无法完成授权。链接可能已过期：请重试。如果问题仍然存在，请检查 Gmail 回调 URL 是否已在 Google Cloud Console 中注册。"
 
+#: ../../apps/extension/src/auth/SignInScreen.tsx:40
 #: ../../apps/mobile/app/sign-in.tsx:65
 #: ../../apps/mobile/app/sign-up.tsx:76
 #, fuzzy
@@ -2224,11 +2235,7 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "大王，\n"
-"\n"
-"你所要求之呈报，将在议会召开前备妥。我将命抄写员汇编东方领地的账目，并派快马先行送呈。\n"
-"\n"
-"兄弟情谊，"
+msgstr "大王，\n\n你所要求之呈报，将在议会召开前备妥。我将命抄写员汇编东方领地的账目，并派快马先行送呈。\n\n兄弟情谊，"
 
 #: ../../apps/site/src/components/landing/FinalCTASection.tsx:8
 #, fuzzy
@@ -2853,6 +2860,11 @@ msgstr "新密码"
 msgid "New threads will appear as they are sorted."
 msgstr "新会话将在分类后显示。"
 
+#: ../../apps/extension/src/auth/SignInScreen.tsx:93
+#, fuzzy
+msgid "New to Amarnai? <0>Create an account</0>"
+msgstr "Amarnai 新用户？<0>创建账号</0>"
+
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:162
 msgid "New workspace"
 msgstr "新建工作区"
@@ -2866,6 +2878,7 @@ msgstr "新工作区名称"
 msgid "No drafts remaining"
 msgstr "没有剩余草稿"
 
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:279
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:308
 #: ../ui/src/emails/SuggestedDraftCard.tsx:97
 #, fuzzy
@@ -3025,6 +3038,7 @@ msgstr "与一位已知城市总督关于反复出现的供应问题的进行中
 msgid "Only the workspace owner can manage billing."
 msgstr "只有工作区所有者才能管理账单。"
 
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:224
 #: ../../apps/mobile/src/components/DraftSheet.tsx:97
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:242
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:248
@@ -3073,6 +3087,7 @@ msgstr "可选。为本文件夹生成草稿回复时应用。"
 msgid "Optional. Applied when generating draft replies for threads in this folder."
 msgstr "可选。在此文件夹中为会话生成草稿回复时应用。"
 
+#: ../../apps/extension/src/auth/SignInScreen.tsx:86
 #: ../../apps/mobile/src/auth/GoogleSignInButton.tsx:17
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:84
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:58
@@ -3109,6 +3124,7 @@ msgstr "合作伙伴"
 msgid "Passing through the Delta: free to meet?"
 msgstr "途经三角洲：方便会面吗？"
 
+#: ../../apps/extension/src/auth/SignInScreen.tsx:69
 #: ../../apps/mobile/app/sign-in.tsx:106
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:61
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:38
@@ -3606,6 +3622,7 @@ msgstr "正在重置…"
 msgid "Resources"
 msgstr "资源"
 
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:297
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:345
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:331
 #, fuzzy
@@ -3627,11 +3644,7 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "里布-哈达，\n"
-"\n"
-"你的呼吁，我们已收到。已从南方粮仓加订谷物，并将在丰收节前抵达。在此期间，请你耐心等候。\n"
-"\n"
-"保重，"
+msgstr "里布-哈达，\n\n你的呼吁，我们已收到。已从南方粮仓加订谷物，并将在丰收节前抵达。在此期间，请你耐心等候。\n\n保重，"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -3716,6 +3729,11 @@ msgstr "搜索会话"
 msgid "Search threads…"
 msgstr "搜索会话…"
 
+#: ../../apps/extension/src/auth/SignInScreen.tsx:54
+msgid "See how your inbox is sorted, right next to Gmail."
+msgstr "在 Gmail 旁，直观查看收件箱分类。"
+
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:197
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:271
 #: ../ui/src/emails/MockEmailsPage.tsx:231
 #, fuzzy
@@ -3831,6 +3849,7 @@ msgstr "共享套餐 + 复审队列"
 #~ msgid "Shared taxonomy + review queue"
 #~ msgstr "共享分类法 + 审阅队列"
 
+#: ../../apps/extension/src/auth/SignInScreen.tsx:82
 #: ../../apps/mobile/app/sign-in.tsx:133
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:24
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:78
@@ -3843,10 +3862,16 @@ msgstr "登录"
 msgid "Sign in to triage your inbox"
 msgstr "登录，高效管理收件箱"
 
+#: ../../apps/extension/src/auth/SignInScreen.tsx:89
+#, fuzzy
+msgid "Sign in with Google"
+msgstr "使用 Google 登录"
+
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:363
 msgid "Sign in with Google. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
 msgstr "使用 Google 登录。Amarnai 会同步您的会话和标签。它绝不会代表您发送或删除邮件。"
 
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:34
 #: ../../apps/mobile/app/(app)/account.tsx:122
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:98
 #: ../../apps/web/src/app/verify-email/page.tsx:42
@@ -3858,6 +3883,7 @@ msgstr "退出"
 msgid "Sign up with Google"
 msgstr "用 Google 注册"
 
+#: ../../apps/extension/src/auth/SignInScreen.tsx:25
 #: ../../apps/mobile/app/sign-in.tsx:51
 #, fuzzy
 msgid "Sign-in failed. Please try again."
@@ -3899,6 +3925,10 @@ msgstr "出错了。请重试。"
 #: ../ui/src/pricing/planMessages.ts:97
 msgid "Soon"
 msgstr "即将推出"
+
+#: ../../apps/extension/src/panel/SortNowButton.tsx:28
+msgid "Sort now"
+msgstr "立即分类"
 
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:50
 #: ../ui/src/emails/BackfillCard.tsx:23
@@ -3943,6 +3973,7 @@ msgstr "实时分类"
 msgid "Sorting volume"
 msgstr "分类量"
 
+#: ../../apps/extension/src/panel/SortNowButton.tsx:28
 #: ../../apps/mobile/src/components/RationaleCard.tsx:35
 #: ../../apps/site/src/components/landing/HeroFeedCard.tsx:90
 #: ../ui/src/emails/RationaleCard.tsx:52
@@ -4288,6 +4319,11 @@ msgstr "这将移除 Gmail 连接、删除所有已同步的电子邮件，并�
 msgid "This thread cannot be sorted yet. Add at least {TAXONOMY_MIN_NON_ROOT_NODES} categories to your plan to begin routing."
 msgstr "此会话尚未排序。请至少添加 {TAXONOMY_MIN_NON_ROOT_NODES} 个类别到您的计划以开始路由。"
 
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:241
+#, fuzzy
+msgid "This thread hasn't been sorted yet."
+msgstr "此会话尚未分类。"
+
 #: ../../apps/mobile/src/components/RationaleCard.tsx:46
 msgid "This thread is waiting to be routed."
 msgstr "此会话正在等待路由。"
@@ -4362,13 +4398,7 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "致吾兄，大王，\n"
-"\n"
-"大议会将于谢穆月初召开。我请求你备妥东方领地的详尽账目，并请快马先行送呈，如可能，请在新月之前。\n"
-"\n"
-"吾等盟约坚固。愿我们向议会昭示其一如既往。\n"
-"\n"
-"图什拉塔，米坦尼大王"
+msgstr "致吾兄，大王，\n\n大议会将于谢穆月初召开。我请求你备妥东方领地的详尽账目，并请快马先行送呈，如可能，请在新月之前。\n\n吾等盟约坚固。愿我们向议会昭示其一如既往。\n\n图什拉塔，米坦尼大王"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:163
 #, fuzzy
@@ -4377,11 +4407,7 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "致王室任命局，\n"
-"\n"
-"我们已收到底比斯的霍伦海布之申请，并将在下一新月前审查其记录。请告知他，我们将在适当时候回复。\n"
-"\n"
-"奉谕，"
+msgstr "致王室任命局，\n\n我们已收到底比斯的霍伦海布之申请，并将在下一新月前审查其记录。请告知他，我们将在适当时候回复。\n\n奉谕，"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:274
 #, fuzzy
@@ -4392,13 +4418,7 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "致大王，\n"
-"\n"
-"多年以来，吾等两家情同手足。今特致函，愿将此友谊正式化，以惠及吾等两族：订立互助盟约，共享商道。\n"
-"\n"
-"我只恳请大王倾听我的条件。请速派下一信使回复，我将立即派遣使者前往。\n"
-"\n"
-"阿齐鲁，大王之仆，阿穆鲁之主"
+msgstr "致大王，\n\n多年以来，吾等两家情同手足。今特致函，愿将此友谊正式化，以惠及吾等两族：订立互助盟约，共享商道。\n\n我只恳请大王倾听我的条件。请速派下一信使回复，我将立即派遣使者前往。\n\n阿齐鲁，大王之仆，阿穆鲁之主"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:384
 #, fuzzy
@@ -4407,11 +4427,7 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "致大王，\n"
-"\n"
-"吾近期旅程将近三角洲一带。如大王能拨冗一小时，我愿与你面谈；有些事，口头陈述胜于笔墨。\n"
-"\n"
-"你的仆人，阿卜迪-赫巴，乌鲁沙利姆总督"
+msgstr "致大王，\n\n吾近期旅程将近三角洲一带。如大王能拨冗一小时，我愿与你面谈；有些事，口头陈述胜于笔墨。\n\n你的仆人，阿卜迪-赫巴，乌鲁沙利姆总督"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:153
 #, fuzzy
@@ -4420,11 +4436,7 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "致吾兄，大王，\n"
-"\n"
-"你之言语，我已听闻。黄金将在下一信使启程前发出。吾等珍视两家情谊，不愿其冷却。\n"
-"\n"
-"友谊长存，"
+msgstr "致吾兄，大王，\n\n你之言语，我已听闻。黄金将在下一信使启程前发出。吾等珍视两家情谊，不愿其冷却。\n\n友谊长存，"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:236
 #, fuzzy
@@ -4435,13 +4447,7 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "致吾兄，大王，\n"
-"\n"
-"我以友谊之名致函，正如我等父辈昔日所为。依照盟约，第三批黄金仍未抵达。两批信使已过，吾等仍在等候。\n"
-"\n"
-"吾等恳请你勿再延误，速将其发出，以维系吾等两家之盟谊。\n"
-"\n"
-"布尔那-布里亚什二世，巴比伦国王"
+msgstr "致吾兄，大王，\n\n我以友谊之名致函，正如我等父辈昔日所为。依照盟约，第三批黄金仍未抵达。两批信使已过，吾等仍在等候。\n\n吾等恳请你勿再延误，速将其发出，以维系吾等两家之盟谊。\n\n布尔那-布里亚什二世，巴比伦国王"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:346
 msgid "To the Great King, my lord, my sun,\n"
@@ -4451,13 +4457,7 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "致大王，吾主，吾日，\n"
-"\n"
-"上月你所赐谷物，吾等不胜感激，吾亦在民众面前颂扬大王之名。然我不得不再次致函：第三批谷物尚未抵达，城中民心骚动不安。\n"
-"\n"
-"我已七度致函。我实不愿劳烦大王，然此外我能奈何？\n"
-"\n"
-"你的仆人，里布-哈达，比布鲁斯总督"
+msgstr "致大王，吾主，吾日，\n\n上月你所赐谷物，吾等不胜感激，吾亦在民众面前颂扬大王之名。然我不得不再次致函：第三批谷物尚未抵达，城中民心骚动不安。\n\n我已七度致函。我实不愿劳烦大王，然此外我能奈何？\n\n你的仆人，里布-哈达，比布鲁斯总督"
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:19
 #: ../ui/src/emails/ThreadList.tsx:15
@@ -4517,6 +4517,7 @@ msgstr "不可用"
 msgid "Unclassified"
 msgstr "未分类"
 
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:219
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:293
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1321
 #: ../../apps/web/src/app/admin/waitlist/page.tsx:26
@@ -4799,6 +4800,7 @@ msgstr "工作"
 msgid "Working Professional"
 msgstr "职场人士"
 
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:21
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:220
 #: ../../apps/site/src/components/demo/DemoTaxonomyCanvas.tsx:218
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:35
@@ -4845,6 +4847,7 @@ msgstr "工作区类型"
 msgid "Workspaces included"
 msgstr "包含的工作区"
 
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:289
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:153
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:319
 #: ../ui/src/emails/ThreadPreview.tsx:169

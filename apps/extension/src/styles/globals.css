@@ -1,0 +1,296 @@
+@import "./tokens.css";
+
+/* ─── Panel base ─────────────────────────────────────────────────────────── */
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  /* The panel floor is ~320px; keep everything inside it. */
+  min-width: 0;
+  overflow: hidden;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+}
+
+.ax-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+/* The reused emails grid must fill the space under the header. */
+.ax-panel .em-grid {
+  flex: 1;
+  min-height: 0;
+}
+
+/* ─── Centered states (loading / error) ─────────────────────────────────── */
+
+.ax-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-lg);
+  padding: var(--space-xxl);
+  text-align: center;
+}
+
+.ax-muted {
+  color: var(--ink-3);
+  font-size: var(--fs-md);
+  line-height: 1.5;
+}
+
+.ax-noworkspace {
+  gap: var(--space-xl);
+}
+
+.ax-spinner {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid var(--line-2);
+  border-top-color: var(--accent);
+  animation: ax-spin 0.7s linear infinite;
+}
+
+@keyframes ax-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ax-spinner {
+    animation-duration: 1.6s;
+  }
+}
+
+/* ─── Header ─────────────────────────────────────────────────────────────── */
+
+.ax-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md) var(--space-lg);
+  border-bottom: 1px solid var(--line);
+  background: var(--bg-soft);
+  flex-shrink: 0;
+}
+
+.ax-ws-name {
+  font-weight: 600;
+  font-size: var(--fs-md);
+  color: var(--ink);
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ax-ws-select {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--fs-md);
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-sm);
+  padding: var(--space-xs) var(--space-md);
+}
+
+.ax-header-signout {
+  border: none;
+  background: transparent;
+  color: var(--ink-3);
+  font-size: var(--fs-sm);
+  cursor: pointer;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--r-sm);
+  flex-shrink: 0;
+}
+
+.ax-header-signout:hover {
+  color: var(--ink);
+  background: var(--bg-sunk);
+}
+
+/* ─── Buttons ────────────────────────────────────────────────────────────── */
+
+.ax-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  font-size: var(--fs-md);
+  font-weight: 500;
+  border-radius: var(--r-sm);
+  padding: var(--space-md) var(--space-lg);
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background 0.14s, border-color 0.14s, opacity 0.14s;
+}
+
+.ax-btn:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.ax-btn-primary {
+  background: var(--accent);
+  color: var(--on-accent, #fff);
+}
+
+.ax-btn-primary:hover:not(:disabled) {
+  background: var(--accent-ink);
+}
+
+.ax-btn-secondary {
+  background: var(--surface);
+  color: var(--ink);
+  border-color: var(--line-2);
+}
+
+.ax-btn-secondary:hover:not(:disabled) {
+  background: var(--bg-sunk);
+}
+
+.ax-btn-google {
+  background: var(--surface);
+  color: var(--ink);
+  border-color: var(--line-3);
+  width: 100%;
+}
+
+.ax-btn-google:hover:not(:disabled) {
+  background: var(--bg-sunk);
+}
+
+.ax-open-gmail,
+.ax-sort-now {
+  font-size: var(--fs-sm);
+  padding: var(--space-xs) var(--space-md);
+}
+
+.ax-sort-now-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  padding: var(--space-lg);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--bg-soft);
+  color: var(--ink-2);
+  font-size: var(--fs-md);
+}
+
+/* ─── Auth screen ────────────────────────────────────────────────────────── */
+
+.ax-auth {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  padding: var(--space-xxl) var(--space-xl);
+  overflow-y: auto;
+}
+
+.ax-auth-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.ax-auth-title {
+  font-size: var(--fs-xxl);
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.ax-auth-tagline {
+  color: var(--ink-3);
+  font-size: var(--fs-md);
+  line-height: 1.5;
+  margin: 0 0 var(--space-md);
+}
+
+.ax-auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.ax-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.ax-field > span {
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+  font-weight: 500;
+}
+
+.ax-field input {
+  font-size: var(--fs-md);
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-sm);
+  padding: var(--space-md);
+}
+
+.ax-field input:focus {
+  outline: none;
+  border-color: var(--accent-line);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.ax-auth-error {
+  color: var(--danger);
+  font-size: var(--fs-sm);
+  margin: 0;
+}
+
+.ax-auth-divider {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  color: var(--ink-4);
+  font-size: var(--fs-sm);
+}
+
+.ax-auth-divider::before,
+.ax-auth-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+.ax-auth-footer {
+  font-size: var(--fs-sm);
+  color: var(--ink-3);
+  text-align: center;
+  margin: var(--space-md) 0 0;
+}
+
+.ax-auth-footer a {
+  color: var(--accent-ink);
+  text-decoration: none;
+}
+
+.ax-auth-footer a:hover {
+  text-decoration: underline;
+}

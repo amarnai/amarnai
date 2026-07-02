@@ -16,6 +16,7 @@ vi.mock("@amarnai/gmail", () => {
     fetchGmailProfile: vi.fn(),
     fetchGoogleUserInfo: vi.fn(),
     exchangeServerAuthCode: vi.fn(),
+    exchangeAuthCode: vi.fn(),
     GMAIL_READONLY_SCOPE,
     parseGrantedScopes: (scope: string) => {
       const scopes = scope.split(" ");
@@ -53,6 +54,7 @@ import {
   fetchGmailProfile,
   fetchGoogleUserInfo,
   exchangeServerAuthCode,
+  exchangeAuthCode,
   GmailApiError,
 } from "@amarnai/gmail";
 import { provisionGoogleUser } from "@amarnai/auth";
@@ -83,6 +85,12 @@ beforeEach(() => {
     scope: `openid email ${GMAIL_SCOPE}`,
     expiresAt: new Date("2030-01-01T00:00:00.000Z"),
   });
+  vi.mocked(exchangeAuthCode).mockResolvedValue({
+    accessToken: "google-at",
+    refreshToken: "google-rt",
+    scope: `openid email ${GMAIL_SCOPE}`,
+    expiresAt: new Date("2030-01-01T00:00:00.000Z"),
+  });
   vi.mocked(fetchGmailProfile).mockResolvedValue({ emailAddress: "a@b.com" } as never);
   vi.mocked(fetchGoogleUserInfo).mockResolvedValue({ name: "Test G", picture: "http://img/p.png" });
   vi.mocked(provisionGoogleUser).mockResolvedValue({
@@ -103,6 +111,7 @@ describe("POST /auth/google", () => {
       refreshTokenExpiresAt: "2030-01-01T00:00:00.000Z",
     });
     expect(exchangeServerAuthCode).toHaveBeenCalledWith("auth-code-123");
+    expect(exchangeAuthCode).not.toHaveBeenCalled();
     expect(provisionGoogleUser).toHaveBeenCalledWith(
       expect.objectContaining({
         email: "a@b.com",
@@ -160,6 +169,22 @@ describe("POST /auth/google", () => {
     vi.mocked(fetchGmailProfile).mockRejectedValue(new Error("profile fetch failed"));
     const res = await post(VALID_BODY);
     expect(res.status).toBe(502);
+    expect(provisionGoogleUser).not.toHaveBeenCalled();
+  });
+
+  it("redeems with the redirect URI when the extension supplies one", async () => {
+    const redirectUri = "https://abcdefghijklmnop.chromiumapp.org/";
+    const res = await post({ ...VALID_BODY, redirectUri });
+    expect(res.status).toBe(200);
+    expect(exchangeAuthCode).toHaveBeenCalledWith("auth-code-123", redirectUri);
+    expect(exchangeServerAuthCode).not.toHaveBeenCalled();
+  });
+
+  it("rejects a non-URL redirectUri with 400 and redeems nothing", async () => {
+    const res = await post({ ...VALID_BODY, redirectUri: "not-a-url" });
+    expect(res.status).toBe(400);
+    expect(exchangeAuthCode).not.toHaveBeenCalled();
+    expect(exchangeServerAuthCode).not.toHaveBeenCalled();
     expect(provisionGoogleUser).not.toHaveBeenCalled();
   });
 });

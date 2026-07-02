@@ -18,6 +18,7 @@ import {
   fetchGoogleUserInfo,
   parseGrantedScopes,
   exchangeServerAuthCode,
+  exchangeAuthCode,
   type GoogleUserInfo,
 } from "@amarnai/gmail";
 import { RegisterCredentialsSchema } from "@amarnai/shared";
@@ -46,9 +47,15 @@ const forgotPasswordSchema = z.object({
 // Native clients run Google Sign-In with offlineAccess against the Web client and
 // send the resulting one-time serverAuthCode here. The API redeems it server-side
 // with the Web client secret, yielding a server-refreshable refresh token.
+//
+// The browser extension runs the OAuth code flow via chrome.identity and its code
+// must be redeemed against the redirect URI it was minted for
+// (https://<extension-id>.chromiumapp.org/). When `redirectUri` is present the
+// code is redeemed with it; when absent the mobile server-auth-code path is used.
 const googleSchema = z.object({
   serverAuthCode: z.string().min(1),
   scope: z.string().min(1),
+  redirectUri: z.string().url().optional(),
 });
 
 const auth = new Hono<AppEnv>();
@@ -152,7 +159,7 @@ auth.post("/auth/google", async (c) => {
   const parsed = googleSchema.safeParse(body);
   if (!parsed.success) return c.json({ error: "Invalid request" }, 400);
 
-  const { serverAuthCode, scope } = parsed.data;
+  const { serverAuthCode, scope, redirectUri } = parsed.data;
 
   // Early check on the client-claimed scope to avoid redeeming a code that did
   // not include read access. The authoritative scope check is on tokens.scope below.
@@ -160,14 +167,17 @@ auth.post("/auth/google", async (c) => {
     return c.json({ error: "Gmail read access was not granted" }, 403);
   }
 
-  // Redeem the serverAuthCode with the confidential Web client. The resulting
-  // refresh token is server-refreshable (unlike an on-device Android token).
+  // Redeem the code with the confidential Web client. The resulting refresh token
+  // is server-refreshable (unlike an on-device Android token). Extension codes
+  // carry the chromiumapp.org redirect they were minted for; mobile server-auth
+  // codes have no redirect (redeemed against the webClientId directly).
   let accessToken: string;
   let refreshToken: string;
   let grantedScope: string;
   try {
-    ({ accessToken, refreshToken, scope: grantedScope } =
-      await exchangeServerAuthCode(serverAuthCode));
+    ({ accessToken, refreshToken, scope: grantedScope } = redirectUri
+      ? await exchangeAuthCode(serverAuthCode, redirectUri)
+      : await exchangeServerAuthCode(serverAuthCode));
   } catch (err) {
     console.error("[auth/google] exchange:", err instanceof Error ? err.message : err);
     return c.json({ error: "Could not complete Google sign-in" }, 502);

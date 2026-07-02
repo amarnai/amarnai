@@ -1,0 +1,257 @@
+/*
+ * Design tokens — SYNCED COPY of the token + base block from
+ * apps/web/src/app/globals.css (lines 1-262: :root, dark theme, body).
+ * @amarnai/ui emails components reference these CSS custom properties but
+ * the definitions live only in the web app, so the extension ships its own
+ * copy. Keep in sync until the block is extracted into a shared package
+ * (see apps/extension/README + plan risk #1). Do not edit values here.
+ */
+:root {
+  /* ── Surfaces ── */
+  --bg:        oklch(98.4% 0.006 80);   /* warm page canvas */
+  --bg-soft:   oklch(97.0% 0.008 80);   /* sidebar, inset areas */
+  --bg-sunk:   oklch(95.5% 0.009 80);   /* progress bars, deep insets */
+  --surface:   #ffffff;
+  --surface-2: oklch(99.0% 0.004 80);
+
+  /* ── Ink scale (warm near-blacks / grays) ── */
+  --ink:   oklch(22% 0.012 80);
+  --ink-2: oklch(38% 0.010 80);
+  --ink-3: oklch(54% 0.009 80);
+  --ink-4: oklch(70% 0.006 80);
+  --ink-5: oklch(82% 0.005 80);
+
+  /* ── Lines / borders ── */
+  --line:   oklch(93% 0.005 80);
+  --line-2: oklch(88% 0.006 80);
+  --line-3: oklch(80% 0.008 80);
+
+  /* ── Accent — terracotta ── */
+  --accent:      oklch(56% 0.14 40);
+  --accent-ink:  oklch(34% 0.10 40);
+  --accent-soft: oklch(96% 0.025 40);
+  --accent-line: oklch(87% 0.05 40);
+
+  /* ── Teal — AI generation actions ── */
+  --teal:      oklch(57% 0.13 190);
+  --teal-soft: oklch(95.5% 0.025 190);
+  --teal-line: oklch(86% 0.055 190);
+  --teal-ink:  oklch(34% 0.09 190);
+
+  /* ── State: ok / warn / danger ── */
+  --ok:          oklch(58% 0.12 145);
+  --ok-ink:      oklch(40% 0.10 145);
+  --ok-soft:     oklch(96% 0.03 145);
+  --ok-line:     oklch(86% 0.06 145);
+  --warn:        oklch(72% 0.12 65);
+  --warn-ink:    oklch(45% 0.09 55);
+  --warn-soft:   oklch(96% 0.028 75);
+  --warn-line:   oklch(86% 0.06 65);
+  --danger:      oklch(50% 0.16 25);
+  --danger-soft: oklch(96.5% 0.02 25);
+  --danger-line: oklch(86% 0.06 25);
+
+  /* ── Radius & shadow ── */
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 16px;
+  --r-xl: 22px;
+  --r-full: 9999px;
+  --shadow-1: 0 1px 1px oklch(20% 0.01 80 / 0.04), 0 2px 6px oklch(20% 0.01 80 / 0.045);
+  --shadow-2: 0 1px 2px oklch(20% 0.01 80 / 0.06), 0 8px 24px oklch(20% 0.01 80 / 0.08);
+  --shadow-3: 0 2px 4px oklch(20% 0.01 80 / 0.06), 0 18px 48px oklch(20% 0.01 80 / 0.12);
+
+  /* ── Spacing scale (shared with @amarnai/tokens `space`; locked by tokens.test) ── */
+  --space-xxs: 2px;
+  --space-xs:  4px;
+  --space-sm:  6px;
+  --space-md:  8px;
+  --space-lg:  12px;
+  --space-xl:  16px;
+  --space-xxl: 24px;
+
+  /* ── Type scale (shared with @amarnai/tokens `fontSize`; locked by tokens.test) ── */
+  --fs-xs:   11px;
+  --fs-sm:   12px;
+  --fs-base: 13px;
+  --fs-md:   14px;
+  --fs-lg:   15px;
+  --fs-xl:   16px;
+  --fs-xxl:  18px;
+  --fs-display: 32px;
+
+  /* ── Typography ── */
+  --f-sans: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: var(--font-geist-mono), ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  /* ── Semantic aliases (used by existing component classes below) ── */
+  --color-bg:           var(--bg);
+  --color-surface:      var(--surface);
+  --color-bg-subtle:    var(--bg-soft);
+  --color-border:       var(--line);
+  --color-border-input: var(--line-2);
+  --color-border-light: oklch(95% 0.005 80);
+
+  --color-foreground:     var(--ink);
+  --color-text-secondary: var(--ink-2);
+  --color-muted:          var(--ink-3);
+  --color-subtle:         var(--ink-3);
+
+  --color-primary:       var(--accent);
+  --color-primary-hover: oklch(51% 0.15 40);
+  --color-primary-ring:  oklch(58% 0.14 40 / 0.18);
+  --color-accent:        var(--accent);
+
+  /* Ink tints (active states, tags, edge labels) */
+  --ink-tint-bg:     var(--accent-soft);
+  --ink-tint-text:   var(--accent-ink);
+  --ink-tint-border: var(--accent-line);
+  --color-active-bg: var(--accent-soft);
+
+  /* Sidebar — light warm-neutral */
+  --sidebar-bg:               var(--bg-soft);
+  --sidebar-fg:               var(--ink-2);
+  --sidebar-fg-muted:         var(--ink-3);
+  --sidebar-active-indicator: var(--accent);
+
+  /* State */
+  --color-success:          var(--ok);
+  --color-success-bg:       var(--ok-soft);
+  --color-success-text:     oklch(35% 0.10 145);
+  --color-warning:          var(--warn);
+  --color-warning-bg:       var(--warn-soft);
+  --color-warning-text:     var(--warn-ink);
+  --color-warning-border:   var(--warn-line);
+  --color-destructive:      var(--danger);
+  --color-destructive-bg:   var(--danger-soft);
+  --color-destructive-text: oklch(35% 0.14 25);
+  --color-review:           var(--danger);
+  --color-low-confidence:   var(--warn);
+  --color-high-risk:        var(--danger);
+
+  /* Taxonomy node kind chips */
+  --node-category-bg:   var(--accent-soft);
+  --node-category-text: var(--accent-ink);
+  --node-rule-bg:       var(--warn-soft);
+  --node-rule-text:     var(--warn-ink);
+
+  /* ReactFlow taxonomy edges — resolved in JS (getComputedStyle), so they
+     cannot use var() at draw time; kept as concrete values per theme. */
+  --rf-edge-default:       #94a3b8;
+  --rf-edge-selected:      #c2683f;
+  --rf-edge-warn:          #d4a017;
+  --rf-edge-warn-selected: #b5890e;
+
+  /* Themed tints referenced from packages/ui CSS (emails). */
+  --sync-glow:     oklch(72% 0.13 145 / 0.18);
+  --teal-hover-bg: oklch(93% 0.04 190);
+  --toast-accent:  oklch(78% 0.05 40);
+
+  /* Constant: text/icon color on a filled accent surface (accent stays
+     mid-lightness in every shipped theme, so white reads in both). */
+  --accent-on: #fff;
+}
+
+/* ─── Dark theme ─────────────────────────────────────────────────────────────
+   Warm charcoal. Re-declares every themeable (literal-valued) var from the
+   contract above. Alias vars written as `var(--x)` inherit automatically.
+   Keep this block's var set in lockstep with any future theme block — enforced
+   by theme-parity.test.ts.
+   ────────────────────────────────────────────────────────────────────────── */
+
+html[data-theme="dark"] {
+  /* ── Surfaces (canvas darkest, surfaces lighter as they rise) ── */
+  --bg:        oklch(16% 0.006 80);
+  --bg-soft:   oklch(14% 0.006 80);
+  --bg-sunk:   oklch(12% 0.007 80);
+  --surface:   oklch(20% 0.007 80);
+  --surface-2: oklch(23% 0.006 80);
+
+  /* ── Ink scale (warm near-white → mid gray) ── */
+  --ink:   oklch(92% 0.008 80);
+  --ink-2: oklch(78% 0.008 80);
+  --ink-3: oklch(64% 0.008 80);
+  --ink-4: oklch(50% 0.007 80);
+  --ink-5: oklch(40% 0.006 80);
+
+  /* ── Lines / borders ── */
+  --line:   oklch(26% 0.006 80);
+  --line-2: oklch(32% 0.007 80);
+  --line-3: oklch(40% 0.008 80);
+
+  /* ── Accent — terracotta ── */
+  --accent:      oklch(60% 0.145 40);
+  --accent-ink:  oklch(80% 0.07 40);
+  --accent-soft: oklch(28% 0.045 40);
+  --accent-line: oklch(40% 0.06 40);
+
+  /* ── Teal ── */
+  --teal:      oklch(60% 0.12 190);
+  --teal-soft: oklch(27% 0.04 190);
+  --teal-line: oklch(40% 0.05 190);
+  --teal-ink:  oklch(80% 0.07 190);
+
+  /* ── State: ok / warn / danger ── */
+  --ok:          oklch(64% 0.13 145);
+  --ok-ink:      oklch(80% 0.08 145);
+  --ok-soft:     oklch(27% 0.04 145);
+  --ok-line:     oklch(40% 0.055 145);
+  --warn:        oklch(76% 0.12 65);
+  --warn-ink:    oklch(82% 0.08 65);
+  --warn-soft:   oklch(28% 0.04 65);
+  --warn-line:   oklch(42% 0.06 65);
+  --danger:      oklch(60% 0.17 25);
+  --danger-soft: oklch(28% 0.05 25);
+  --danger-line: oklch(42% 0.07 25);
+
+  /* ── Shadows (light warm shadows vanish on dark; use near-black) ── */
+  --shadow-1: 0 1px 1px oklch(0% 0 0 / 0.30), 0 2px 6px oklch(0% 0 0 / 0.35);
+  --shadow-2: 0 1px 2px oklch(0% 0 0 / 0.40), 0 8px 24px oklch(0% 0 0 / 0.45);
+  --shadow-3: 0 2px 4px oklch(0% 0 0 / 0.40), 0 18px 48px oklch(0% 0 0 / 0.55);
+
+  /* ── Literal-valued semantic aliases (do not reference a token) ── */
+  --color-border-light:  oklch(30% 0.006 80);
+  --color-primary-hover: oklch(66% 0.15 40);
+  --color-primary-ring:  oklch(70% 0.14 40 / 0.35);
+  --color-success-text:  oklch(80% 0.08 145);
+  --color-destructive-text: oklch(82% 0.09 25);
+
+  /* ── ReactFlow taxonomy edges (brightened for dark) ── */
+  /* Default edge is a muted terracotta (oklch ~60% 0.095 h40) so the graph's
+     connections share the warm accent family with the node borders, while
+     staying dimmer than the brighter selected edge below so selection still
+     reads. Warn edges stay amber — that's a semantic signal, not decoration. */
+  --rf-edge-default:       #b06c54;
+  --rf-edge-selected:      #d07b4e;
+  --rf-edge-warn:          #e2b84e;
+  --rf-edge-warn-selected: #caa033;
+
+  /* ── Themed tints (emails) ── */
+  --sync-glow:     oklch(64% 0.13 145 / 0.30);
+  --teal-hover-bg: oklch(30% 0.05 190);
+  --toast-accent:  oklch(80% 0.07 40);
+
+  /* Constant across themes; declared here to satisfy theme parity. */
+  --accent-on: #fff;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font: inherit;
+}
+
+body {
+  font-family: var(--f-sans);
+  font-feature-settings: "ss01", "cv11";
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--color-foreground);
+  background: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  min-height: 100vh;
+}

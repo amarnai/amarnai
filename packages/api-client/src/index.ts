@@ -1,6 +1,8 @@
 export type { ApiTransport, TransportInit } from "./transport.js";
 export { makeApiClient } from "./client.js";
 export type { ApiClient } from "./client.js";
+export { makeBearerTransport } from "./bearer-transport.js";
+export type { BearerTransportDeps, StoredTokens, TokenStore } from "./bearer-transport.js";
 export type {
   Workspace,
   TaxonomyNode,

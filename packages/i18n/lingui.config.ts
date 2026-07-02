@@ -14,6 +14,7 @@ export default defineConfig({
         "<rootDir>/../../apps/web/src",
         "<rootDir>/../../apps/mobile/app",
         "<rootDir>/../../apps/mobile/src",
+        "<rootDir>/../../apps/extension/src",
         "<rootDir>/../../packages/ui/src",
       ],
     },

@@ -129,6 +129,7 @@ msgid "{pendingCount} pending"
 msgstr "{pendingCount} pending"
 
 #. placeholder {0}: draftQuota.limit
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:280
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:309
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
 msgstr "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
@@ -625,6 +626,7 @@ msgstr "Aziru,\n"
 "\n"
 "With regards,"
 
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:215
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:25
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:222
@@ -632,6 +634,7 @@ msgstr "Aziru,\n"
 msgid "Back"
 msgstr "Back"
 
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:211
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:217
 #: ../ui/src/emails/ThreadPreview.tsx:87
 msgid "Back to list"
@@ -919,6 +922,10 @@ msgstr "Connect Gmail account button"
 msgid "Connect Gmail and Amarnai starts sorting within minutes. Pricing is per workspace. Sort as much mail as you like, with backfill of your whole history included."
 msgstr "Connect Gmail and Amarnai starts sorting within minutes. Pricing is per workspace. Sort as much mail as you like, with backfill of your whole history included."
 
+#: ../../apps/extension/src/App.tsx:38
+msgid "Connect Gmail on the web"
+msgstr "Connect Gmail on the web"
+
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:218
 msgid "Connect Gmail to generate a plan from your inbox"
 msgstr "Connect Gmail to generate a plan from your inbox"
@@ -930,6 +937,10 @@ msgstr "Connect Gmail to start triaging"
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:403
 msgid "Connect once, generate your plan once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
 msgstr "Connect once, generate your plan once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
+
+#: ../../apps/extension/src/App.tsx:36
+msgid "Connect your Gmail account to start triaging."
+msgstr "Connect your Gmail account to start triaging."
 
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:183
 msgid "Connect your Gmail account to sync your inbox into Amarnai. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
@@ -1093,6 +1104,10 @@ msgstr "Could not upgrade"
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:55
 msgid "Could not verify your Google account. Please try again."
 msgstr "Could not verify your Google account. Please try again."
+
+#: ../../apps/extension/src/panel/TriageGate.tsx:73
+msgid "Couldn't load your inbox. Check your connection and reopen the panel."
+msgstr "Couldn't load your inbox. Check your connection and reopen the panel."
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:401
 msgid "Council convening: season of Shemu"
@@ -1325,6 +1340,7 @@ msgstr "Disconnects this workspace. Amarnai keeps access because this mailbox is
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:226
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:296
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:57
@@ -1387,6 +1403,7 @@ msgstr "Draft"
 msgid "Draft failed · tap to retry"
 msgstr "Draft failed · tap to retry"
 
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:295
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:325
 msgid "Draft generation failed. Try again."
 msgstr "Draft generation failed. Try again."
@@ -1449,6 +1466,7 @@ msgstr "Edit inbox"
 msgid "Edit Path"
 msgstr "Edit Path"
 
+#: ../../apps/extension/src/auth/SignInScreen.tsx:59
 #: ../../apps/mobile/app/(app)/account.tsx:139
 #: ../../apps/mobile/app/forgot-password.tsx:85
 #: ../../apps/mobile/app/sign-in.tsx:89
@@ -1807,6 +1825,7 @@ msgstr "Generate a new draft. Uses one from your monthly allowance"
 msgid "Generate a plan from your inbox"
 msgstr "Generate a plan from your inbox"
 
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:274
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:131
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:303
 #: ../ui/src/emails/ThreadPreview.tsx:162
@@ -1929,6 +1948,7 @@ msgstr "Google Account permissions"
 msgid "Google could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the Gmail callback URL is registered in Google Cloud Console."
 msgstr "Google could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the Gmail callback URL is registered in Google Cloud Console."
 
+#: ../../apps/extension/src/auth/SignInScreen.tsx:40
 #: ../../apps/mobile/app/sign-in.tsx:65
 #: ../../apps/mobile/app/sign-up.tsx:76
 msgid "Google sign-in failed. Please try again."
@@ -2491,6 +2511,10 @@ msgstr "New password"
 msgid "New threads will appear as they are sorted."
 msgstr "New threads will appear as they are sorted."
 
+#: ../../apps/extension/src/auth/SignInScreen.tsx:93
+msgid "New to Amarnai? <0>Create an account</0>"
+msgstr "New to Amarnai? <0>Create an account</0>"
+
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:162
 msgid "New workspace"
 msgstr "New workspace"
@@ -2503,6 +2527,7 @@ msgstr "New workspace name"
 msgid "No drafts remaining"
 msgstr "No drafts remaining"
 
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:279
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:308
 #: ../ui/src/emails/SuggestedDraftCard.tsx:97
 msgid "No drafts remaining · resets {quotaResetDate}"
@@ -2644,6 +2669,7 @@ msgstr "Ongoing thread with a known city governor raising a recurring supply iss
 msgid "Only the workspace owner can manage billing."
 msgstr "Only the workspace owner can manage billing."
 
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:224
 #: ../../apps/mobile/src/components/DraftSheet.tsx:97
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:242
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:248
@@ -2685,6 +2711,7 @@ msgstr "Optional. Applied when generating draft replies for this folder."
 msgid "Optional. Applied when generating draft replies for threads in this folder."
 msgstr "Optional. Applied when generating draft replies for threads in this folder."
 
+#: ../../apps/extension/src/auth/SignInScreen.tsx:86
 #: ../../apps/mobile/src/auth/GoogleSignInButton.tsx:17
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:84
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:58
@@ -2718,6 +2745,7 @@ msgstr "Partners"
 msgid "Passing through the Delta: free to meet?"
 msgstr "Passing through the Delta: free to meet?"
 
+#: ../../apps/extension/src/auth/SignInScreen.tsx:69
 #: ../../apps/mobile/app/sign-in.tsx:106
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:61
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:38
@@ -3152,6 +3180,7 @@ msgstr "Resetting…"
 msgid "Resources"
 msgstr "Resources"
 
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:297
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:345
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:331
 msgid "Retry"
@@ -3250,6 +3279,11 @@ msgstr "Search threads"
 msgid "Search threads…"
 msgstr "Search threads…"
 
+#: ../../apps/extension/src/auth/SignInScreen.tsx:54
+msgid "See how your inbox is sorted, right next to Gmail."
+msgstr "See how your inbox is sorted, right next to Gmail."
+
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:197
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:271
 #: ../ui/src/emails/MockEmailsPage.tsx:231
 msgid "Select a thread to preview"
@@ -3350,6 +3384,7 @@ msgstr "Shared plan + review queue"
 #~ msgid "Shared taxonomy + review queue"
 #~ msgstr "Shared taxonomy + review queue"
 
+#: ../../apps/extension/src/auth/SignInScreen.tsx:82
 #: ../../apps/mobile/app/sign-in.tsx:133
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:24
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:78
@@ -3360,10 +3395,15 @@ msgstr "Sign in"
 msgid "Sign in to triage your inbox"
 msgstr "Sign in to triage your inbox"
 
+#: ../../apps/extension/src/auth/SignInScreen.tsx:89
+msgid "Sign in with Google"
+msgstr "Sign in with Google"
+
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:363
 msgid "Sign in with Google. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
 msgstr "Sign in with Google. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
 
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:34
 #: ../../apps/mobile/app/(app)/account.tsx:122
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:98
 #: ../../apps/web/src/app/verify-email/page.tsx:42
@@ -3374,6 +3414,7 @@ msgstr "Sign out"
 msgid "Sign up with Google"
 msgstr "Sign up with Google"
 
+#: ../../apps/extension/src/auth/SignInScreen.tsx:25
 #: ../../apps/mobile/app/sign-in.tsx:51
 msgid "Sign-in failed. Please try again."
 msgstr "Sign-in failed. Please try again."
@@ -3412,6 +3453,10 @@ msgstr "Something went wrong. Please try again."
 msgid "Soon"
 msgstr "Soon"
 
+#: ../../apps/extension/src/panel/SortNowButton.tsx:28
+msgid "Sort now"
+msgstr "Sort now"
+
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:50
 #: ../ui/src/emails/BackfillCard.tsx:23
 #~ msgid "Sort thousands of historical emails automatically. Available on Pro and Business subscriptions."
@@ -3448,6 +3493,7 @@ msgstr "Sorting live"
 msgid "Sorting volume"
 msgstr "Sorting volume"
 
+#: ../../apps/extension/src/panel/SortNowButton.tsx:28
 #: ../../apps/mobile/src/components/RationaleCard.tsx:35
 #: ../../apps/site/src/components/landing/HeroFeedCard.tsx:90
 #: ../ui/src/emails/RationaleCard.tsx:52
@@ -3751,6 +3797,10 @@ msgstr "This removes the Gmail connection, deletes all synced emails, and resets
 msgid "This thread cannot be sorted yet. Add at least {TAXONOMY_MIN_NON_ROOT_NODES} categories to your plan to begin routing."
 msgstr "This thread cannot be sorted yet. Add at least {TAXONOMY_MIN_NON_ROOT_NODES} categories to your plan to begin routing."
 
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:241
+msgid "This thread hasn't been sorted yet."
+msgstr "This thread hasn't been sorted yet."
+
 #: ../../apps/mobile/src/components/RationaleCard.tsx:46
 msgid "This thread is waiting to be routed."
 msgstr "This thread is waiting to be routed."
@@ -3959,6 +4009,7 @@ msgstr "Unavailable"
 msgid "Unclassified"
 msgstr "Unclassified"
 
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:219
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:293
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1321
 #: ../../apps/web/src/app/admin/waitlist/page.tsx:26
@@ -4206,6 +4257,7 @@ msgstr "Work"
 msgid "Working Professional"
 msgstr "Working Professional"
 
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:21
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:220
 #: ../../apps/site/src/components/demo/DemoTaxonomyCanvas.tsx:218
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:35
@@ -4246,6 +4298,7 @@ msgstr "Workspace type"
 msgid "Workspaces included"
 msgstr "Workspaces included"
 
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:289
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:153
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:319
 #: ../ui/src/emails/ThreadPreview.tsx:169
