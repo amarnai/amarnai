@@ -129,7 +129,7 @@ msgid "{pendingCount} pending"
 msgstr "{pendingCount} pending"
 
 #. placeholder {0}: draftQuota.limit
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:280
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:300
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:309
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
 msgstr "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
@@ -344,6 +344,14 @@ msgstr "Access was denied. Grant read-only Gmail access to connect."
 #: ../../apps/mobile/app/(app)/account.tsx:105
 msgid "Account"
 msgstr "Account"
+
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:102
+msgid "Account menu"
+msgstr "Account menu"
+
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:116
+msgid "Account settings"
+msgstr "Account settings"
 
 #: ../../apps/web/src/app/(app)/account/page.tsx:23
 msgid "Account Settings"
@@ -1403,7 +1411,7 @@ msgstr "Draft"
 msgid "Draft failed · tap to retry"
 msgstr "Draft failed · tap to retry"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:295
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:315
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:325
 msgid "Draft generation failed. Try again."
 msgstr "Draft generation failed. Try again."
@@ -1825,7 +1833,7 @@ msgstr "Generate a new draft. Uses one from your monthly allowance"
 msgid "Generate a plan from your inbox"
 msgstr "Generate a plan from your inbox"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:274
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:294
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:131
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:303
 #: ../ui/src/emails/ThreadPreview.tsx:162
@@ -2527,7 +2535,7 @@ msgstr "New workspace name"
 msgid "No drafts remaining"
 msgstr "No drafts remaining"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:279
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:299
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:308
 #: ../ui/src/emails/SuggestedDraftCard.tsx:97
 msgid "No drafts remaining · resets {quotaResetDate}"
@@ -2669,7 +2677,7 @@ msgstr "Ongoing thread with a known city governor raising a recurring supply iss
 msgid "Only the workspace owner can manage billing."
 msgstr "Only the workspace owner can manage billing."
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:224
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:244
 #: ../../apps/mobile/src/components/DraftSheet.tsx:97
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:242
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:248
@@ -2845,6 +2853,8 @@ msgstr "Personal correspondence and non-academic emails for everyday life."
 
 #. Screen heading for the email-sorting taxonomy. Not a billing or subscription plan.
 #. Sidebar nav label for the email-sorting taxonomy. Not a billing or subscription plan.
+#. Sidebar nav label for the email-sorting taxonomy. Not a billing or subscription plan.
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:42
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:35
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:265
 #: ../../apps/site/src/components/demo/DemoTaxonomyCanvas.tsx:220
@@ -3188,7 +3198,7 @@ msgstr "Resize the thread list"
 msgid "Resources"
 msgstr "Resources"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:297
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:317
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:345
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:331
 msgid "Retry"
@@ -3362,6 +3372,7 @@ msgstr "Sets the language for this workspace, including the interface and AI-gen
 msgid "Setting up your workspace…"
 msgstr "Setting up your workspace…"
 
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:51
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:42
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:197
 #: ../../apps/web/src/components/Sidebar.tsx:40
@@ -3411,7 +3422,7 @@ msgstr "Sign in with Google"
 msgid "Sign in with Google. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
 msgstr "Sign in with Google. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:34
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:127
 #: ../../apps/mobile/app/(app)/account.tsx:122
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:98
 #: ../../apps/web/src/app/verify-email/page.tsx:42
@@ -3805,7 +3816,7 @@ msgstr "This removes the Gmail connection, deletes all synced emails, and resets
 msgid "This thread cannot be sorted yet. Add at least {TAXONOMY_MIN_NON_ROOT_NODES} categories to your plan to begin routing."
 msgstr "This thread cannot be sorted yet. Add at least {TAXONOMY_MIN_NON_ROOT_NODES} categories to your plan to begin routing."
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:241
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:261
 msgid "This thread hasn't been sorted yet."
 msgstr "This thread hasn't been sorted yet."
 
@@ -4265,7 +4276,7 @@ msgstr "Work"
 msgid "Working Professional"
 msgstr "Working Professional"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:21
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:60
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:220
 #: ../../apps/site/src/components/demo/DemoTaxonomyCanvas.tsx:218
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:35
@@ -4294,6 +4305,10 @@ msgstr "Workspace name cannot be empty"
 msgid "Workspace name updated."
 msgstr "Workspace name updated."
 
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:48
+msgid "Workspace settings"
+msgstr "Workspace settings"
+
 #: ../../apps/web/src/app/(app)/settings/page.tsx:106
 msgid "Workspace Settings"
 msgstr "Workspace Settings"
@@ -4306,7 +4321,7 @@ msgstr "Workspace type"
 msgid "Workspaces included"
 msgstr "Workspaces included"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:289
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:309
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:153
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:319
 #: ../ui/src/emails/ThreadPreview.tsx:169

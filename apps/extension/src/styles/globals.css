@@ -101,6 +101,7 @@ body {
   border-bottom: 1px solid var(--line);
   background: var(--bg-soft);
   flex-shrink: 0;
+  container-type: inline-size;
 }
 
 .ax-ws-name {
@@ -124,19 +125,92 @@ body {
   padding: var(--space-xs) var(--space-md);
 }
 
-.ax-header-signout {
-  border: none;
-  background: transparent;
-  color: var(--ink-3);
-  font-size: var(--fs-sm);
-  cursor: pointer;
-  padding: var(--space-xs) var(--space-sm);
+/* Icon links out to the web app (plan, workspace settings). */
+.ax-header-iconbtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
   border-radius: var(--r-sm);
+  color: var(--ink-3);
   flex-shrink: 0;
+  text-decoration: none;
 }
 
-.ax-header-signout:hover {
+.ax-header-iconbtn:hover {
   color: var(--ink);
+}
+
+/* Spelled-out labels next to the icon links, only when the panel is wide
+   enough that they don't crowd the workspace switcher. */
+.ax-iconbtn-label {
+  display: none;
+}
+
+@container (min-width: 420px) {
+  .ax-header-iconbtn {
+    width: auto;
+    gap: var(--space-xs);
+    padding: 0 var(--space-sm);
+  }
+
+  .ax-iconbtn-label {
+    display: inline;
+    font-size: var(--fs-sm);
+  }
+}
+
+.ax-user-menu {
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+}
+
+.ax-avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: none;
+  background: var(--avatar-grad);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.6875rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+}
+
+.ax-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + var(--space-xs));
+  min-width: 160px;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-xs);
+  background: var(--surface);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-sm);
+  box-shadow: var(--shadow-2);
+  z-index: 30;
+}
+
+.ax-menu-item {
+  border: none;
+  background: transparent;
+  color: var(--ink);
+  font-size: var(--fs-sm);
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--r-sm);
+}
+
+.ax-menu-item:hover {
   background: var(--bg-sunk);
 }
 
@@ -191,10 +265,18 @@ body {
   background: var(--bg-sunk);
 }
 
-.ax-open-gmail,
 .ax-sort-now {
   font-size: var(--fs-sm);
   padding: var(--space-xs) var(--space-md);
+}
+
+.ax-open-gmail-row {
+  padding: 0 22px 12px;
+}
+
+.ax-open-gmail {
+  width: 100%;
+  font-size: var(--fs-sm);
 }
 
 .ax-sort-now-wrap {
