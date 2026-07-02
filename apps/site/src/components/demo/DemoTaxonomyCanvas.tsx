@@ -114,7 +114,7 @@ function DemoCanvasInner() {
   // The site renders one static page per locale, so the locale is fixed for this
   // component's lifetime; building the nodes once from the active catalog is enough.
   const [initialNodes] = useState<DemoNode[]>(() => getDemoNodes(i18n));
-  const [nodes, , onNodesChange] = useNodesState<DemoNode>(initialNodes);
+  const [nodes, setNodes, onNodesChange] = useNodesState<DemoNode>(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(DEMO_EDGES);
 
   // -1 means "show everything" (the default, fully interactive state).
@@ -136,6 +136,9 @@ function DemoCanvasInner() {
     clearTimers();
     setGenerating(true);
     setRevealDepth(0);
+    // Snap every node back to its seeded position so a run always unfolds from
+    // the same layout, discarding any dragging the user did beforehand.
+    setNodes(initialNodes);
 
     timers.current.push(
       setTimeout(() => setRevealDepth(1), HOLD_INBOX),
@@ -152,7 +155,7 @@ function DemoCanvasInner() {
         );
       }, HOLD_INBOX + HOLD_CHILDREN),
     );
-  }, [clearTimers]);
+  }, [clearTimers, setNodes, initialNodes]);
 
   const onConnect = useCallback(
     (connection: Connection) => {
