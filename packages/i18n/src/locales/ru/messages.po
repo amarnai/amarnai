@@ -69,6 +69,13 @@ msgstr "{0} / {1} · обновится {2}"
 msgid "{0} / {1} left · resets {2}"
 msgstr "{0} / {1} осталось · обновится {2}"
 
+#. placeholder {0}: d.assignedBy
+#: ../../apps/extension/src/panel/notificationText.ts:15
+#: ../../apps/mobile/src/data/notificationView.ts:23
+#: ../../apps/web/src/lib/notifications.ts:23
+msgid "{0} assigned you a thread"
+msgstr "{0} назначил вам тему"
+
 #. placeholder {0}: threads.length.toLocaleString()
 #. placeholder {1}: (total ?? 0).toLocaleString()
 #. placeholder {1}: viewCount.toLocaleString()
@@ -101,12 +108,12 @@ msgstr "{blacklistCount, plural, one {# заблокировано} other {# з�
 #: ../../apps/mobile/src/data/notificationView.ts:28
 #: ../../apps/web/src/lib/notifications.ts:29
 #, fuzzy
-msgid "{by} assigned you a thread"
-msgstr "{by} назначил вам ветку"
+#~ msgid "{by} assigned you a thread"
+#~ msgstr "{by} назначил вам ветку"
 
 #: ../../apps/extension/src/panel/notificationText.ts:17
-msgid "{by} assigned you: {subject}"
-msgstr "{by} назначил вам: {subject}"
+#~ msgid "{by} assigned you: {subject}"
+#~ msgstr "{by} назначил вам: {subject}"
 
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:528
 #, fuzzy
@@ -1702,8 +1709,8 @@ msgstr "Отключает это рабочее пространство. Amarn
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:367
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:57
 #: ../../apps/web/src/components/JoinedWorkspaceToast.tsx:46
-#: ../../apps/web/src/components/NotificationBell.tsx:195
-#: ../../apps/web/src/components/NotificationBell.tsx:196
+#: ../../apps/web/src/components/NotificationBell.tsx:192
+#: ../../apps/web/src/components/NotificationBell.tsx:193
 #: ../ui/src/AppDownloadBanner.tsx:80
 #: ../ui/src/emails/MockEmailsPage.tsx:256
 #, fuzzy
@@ -2880,7 +2887,7 @@ msgstr "Загрузить ещё"
 msgid "Loading past threads…"
 msgstr "Загрузка прошлых цепочек…"
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:123
+#: ../../apps/extension/src/panel/NotificationBell.tsx:122
 #: ../../apps/mobile/app/(app)/notifications.tsx:301
 #: ../../apps/mobile/src/components/MessageCard.tsx:53
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:73
@@ -2890,7 +2897,7 @@ msgstr "Загрузка прошлых цепочек…"
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:137
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:158
 #: ../../apps/web/src/app/loading.tsx:6
-#: ../../apps/web/src/components/NotificationBell.tsx:177
+#: ../../apps/web/src/components/NotificationBell.tsx:174
 #: ../ui/src/emails/MessageCard.tsx:60
 #: ../ui/src/emails/ThreadList.tsx:238
 #, fuzzy
@@ -2908,9 +2915,9 @@ msgstr "Почта"
 msgid "Manage"
 msgstr "Управление"
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:145
+#: ../../apps/extension/src/panel/NotificationBell.tsx:144
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:79
-#: ../../apps/web/src/components/NotificationBell.tsx:208
+#: ../../apps/web/src/components/NotificationBell.tsx:205
 msgid "Manage notifications"
 msgstr "Управление уведомлениями"
 
@@ -3137,9 +3144,9 @@ msgstr "Новые деловые запросы, предложения, обс
 msgid "New folder"
 msgstr "Новая папка"
 
-#: ../../apps/extension/src/panel/notificationText.ts:22
-#: ../../apps/mobile/src/data/notificationView.ts:33
-#: ../../apps/web/src/lib/notifications.ts:34
+#: ../../apps/extension/src/panel/notificationText.ts:18
+#: ../../apps/mobile/src/data/notificationView.ts:28
+#: ../../apps/web/src/lib/notifications.ts:28
 msgid "New notification"
 msgstr "Новое уведомление"
 
@@ -3241,11 +3248,11 @@ msgstr "Нет участников"
 msgid "No members available"
 msgstr "Нет доступных участников"
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:128
+#: ../../apps/extension/src/panel/NotificationBell.tsx:127
 #: ../../apps/mobile/app/(app)/notifications.tsx:294
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:73
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:216
-#: ../../apps/web/src/components/NotificationBell.tsx:180
+#: ../../apps/web/src/components/NotificationBell.tsx:177
 msgid "No notifications yet"
 msgstr "Уведомлений пока нет"
 
@@ -3341,22 +3348,22 @@ msgstr "Не задано"
 msgid "Not yet synced"
 msgstr "Ещё не синхронизировано"
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:40
-#: ../../apps/extension/src/panel/NotificationBell.tsx:116
-#: ../../apps/extension/src/panel/NotificationBell.tsx:118
+#: ../../apps/extension/src/panel/NotificationBell.tsx:39
+#: ../../apps/extension/src/panel/NotificationBell.tsx:115
+#: ../../apps/extension/src/panel/NotificationBell.tsx:117
 #: ../../apps/mobile/app/(app)/account.tsx:145
 #: ../../apps/mobile/app/(app)/notifications.tsx:256
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:49
 #: ../../apps/web/src/app/(app)/notifications/page.tsx:16
-#: ../../apps/web/src/components/NotificationBell.tsx:154
-#: ../../apps/web/src/components/NotificationBell.tsx:169
-#: ../../apps/web/src/components/NotificationBell.tsx:173
+#: ../../apps/web/src/components/NotificationBell.tsx:151
+#: ../../apps/web/src/components/NotificationBell.tsx:166
+#: ../../apps/web/src/components/NotificationBell.tsx:170
 #, fuzzy
 msgid "Notifications"
 msgstr "Уведомления"
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:101
-#: ../../apps/web/src/components/NotificationBell.tsx:153
+#: ../../apps/extension/src/panel/NotificationBell.tsx:100
+#: ../../apps/web/src/components/NotificationBell.tsx:150
 msgid "Notifications, {unread} unread"
 msgstr "Уведомления, {unread} непрочитанн{unread, plural, one{ое} few{ых} many{ых} other{ых}}"
 
@@ -5437,9 +5444,9 @@ msgstr "Вы можете повторить попытку в ближайше�
 msgid "You do not have permission to connect a Gmail inbox to this workspace."
 msgstr "У вас нет разрешения на подключение почтового ящика Gmail к этому рабочему пространству."
 
-#: ../../apps/extension/src/panel/notificationText.ts:19
-#: ../../apps/mobile/src/data/notificationView.ts:29
-#: ../../apps/web/src/lib/notifications.ts:30
+#: ../../apps/extension/src/panel/notificationText.ts:16
+#: ../../apps/mobile/src/data/notificationView.ts:24
+#: ../../apps/web/src/lib/notifications.ts:24
 msgid "You were assigned a thread"
 msgstr "Вам назначили ветку"
 

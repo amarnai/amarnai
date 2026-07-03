@@ -1,23 +1,19 @@
 import { msg } from "@lingui/core/macro";
 import type { I18n } from "@lingui/core";
-import type { NotificationItem } from "@amarnai/api-client";
+import { interpretNotification, type NotificationItem } from "@amarnai/api-client";
 
-// Maps a notification's type + params to a localized one-line title. Mirrors the
-// web/mobile renderers; kept per-platform because the Lingui catalogs differ.
-// Add a case per producer; unknown types get a neutral fallback.
-function str(v: unknown): string | null {
-  return typeof v === "string" && v.length > 0 ? v : null;
-}
-
+// Maps a notification's type + params to a localized one-line title. The type +
+// param plumbing lives in the shared `interpretNotification`; this only maps the
+// descriptor to localized copy, so the Lingui catalog stays per-app. The side
+// panel's pop-up is title-only (like the web bell), so the subject is not
+// inlined here — it surfaces on the web app's full notifications page.
 export function notificationTitle(n: NotificationItem, i18n: I18n): string {
-  switch (n.type) {
-    case "thread_assigned": {
-      const by = str(n.params["assignedByName"]) ?? str(n.params["assignedByEmail"]);
-      const subject = str(n.params["subject"]);
-      if (by && subject) return i18n._(msg`${by} assigned you: ${subject}`);
-      if (by) return i18n._(msg`${by} assigned you a thread`);
-      return i18n._(msg`You were assigned a thread`);
-    }
+  const d = interpretNotification(n);
+  switch (d.kind) {
+    case "thread_assigned":
+      return d.assignedBy
+        ? i18n._(msg`${d.assignedBy} assigned you a thread`)
+        : i18n._(msg`You were assigned a thread`);
     default:
       return i18n._(msg`New notification`);
   }

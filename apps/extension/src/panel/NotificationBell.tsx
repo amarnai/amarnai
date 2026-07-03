@@ -2,14 +2,13 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
-import type { NotificationItem } from "@amarnai/api-client";
+import {
+  NOTIFICATION_POLL_INTERVAL_MS,
+  type NotificationItem,
+} from "@amarnai/api-client";
 import { useSession } from "../auth/session";
 import { WEB_APP_URL } from "../config";
 import { notificationTitle } from "./notificationText";
-
-// Poll cadence for the unread badge. Push covers real-time on mobile; here a
-// light foreground poll keeps the badge fresh without a per-user SSE channel.
-const POLL_MS = 60_000;
 
 // "Manage notifications" opens the web app's notifications page in a new tab.
 const MANAGE_URL = `${WEB_APP_URL}/notifications`;
@@ -55,7 +54,7 @@ export function NotificationBell() {
   useEffect(() => {
     if (!signedIn) return;
     refreshCount();
-    const interval = setInterval(refreshCount, POLL_MS);
+    const interval = setInterval(refreshCount, NOTIFICATION_POLL_INTERVAL_MS);
     return () => clearInterval(interval);
   }, [signedIn, refreshCount]);
 

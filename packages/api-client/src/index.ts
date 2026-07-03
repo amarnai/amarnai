@@ -4,6 +4,11 @@ export type { ApiClient } from "./client.js";
 export { makeBearerTransport } from "./bearer-transport.js";
 export type { BearerTransportDeps, StoredTokens, TokenStore } from "./bearer-transport.js";
 export { readUserIdFromAccessToken } from "./jwt.js";
+export {
+  interpretNotification,
+  NOTIFICATION_POLL_INTERVAL_MS,
+} from "./notifications.js";
+export type { NotificationDescriptor } from "./notifications.js";
 export type {
   Workspace,
   TaxonomyNode,

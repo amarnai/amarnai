@@ -6,15 +6,12 @@ import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
 import { api } from "@/lib/api";
-import type { NotificationItem } from "@amarnai/api-client";
+import {
+  NOTIFICATION_POLL_INTERVAL_MS,
+  type NotificationItem,
+} from "@amarnai/api-client";
 import { describeNotification } from "@/lib/notifications";
 import { switchWorkspaceAction } from "@/actions/workspace";
-
-// Poll the unread count on this cadence and whenever the tab regains focus. The
-// badge is not latency-critical (push covers real-time on mobile), so a light
-// poll avoids a per-user SSE channel. Reserved channel for a later SSE upgrade:
-// user:{userId}:notifications.
-const POLL_MS = 60_000;
 
 function str(v: unknown): string | null {
   return typeof v === "string" && v.length > 0 ? v : null;
@@ -62,7 +59,7 @@ export function NotificationBell({ currentWorkspaceId }: { currentWorkspaceId: s
   // Poll the count + refresh when the tab regains focus.
   useEffect(() => {
     refreshCount();
-    const interval = setInterval(refreshCount, POLL_MS);
+    const interval = setInterval(refreshCount, NOTIFICATION_POLL_INTERVAL_MS);
     function onVisible() {
       if (document.visibilityState === "visible") refreshCount();
     }

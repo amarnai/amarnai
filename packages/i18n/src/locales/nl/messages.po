@@ -68,6 +68,14 @@ msgstr "{0} / {1} · reset op {2}"
 msgid "{0} / {1} left · resets {2}"
 msgstr "{0} / {1} over · reset op {2}"
 
+#. placeholder {0}: d.assignedBy
+#: ../../apps/extension/src/panel/notificationText.ts:15
+#: ../../apps/mobile/src/data/notificationView.ts:23
+#: ../../apps/web/src/lib/notifications.ts:23
+#, fuzzy
+msgid "{0} assigned you a thread"
+msgstr "{0} heeft je een gesprek toegewezen"
+
 #. placeholder {0}: threads.length.toLocaleString()
 #. placeholder {1}: (total ?? 0).toLocaleString()
 #. placeholder {1}: viewCount.toLocaleString()
@@ -97,12 +105,12 @@ msgstr "{blacklistCount, plural, one {# geblokkeerd} other {# geblokkeerd}}"
 #: ../../apps/mobile/src/data/notificationView.ts:28
 #: ../../apps/web/src/lib/notifications.ts:29
 #, fuzzy
-msgid "{by} assigned you a thread"
-msgstr "{by} heeft je een gesprek toegewezen"
+#~ msgid "{by} assigned you a thread"
+#~ msgstr "{by} heeft je een gesprek toegewezen"
 
 #: ../../apps/extension/src/panel/notificationText.ts:17
-msgid "{by} assigned you: {subject}"
-msgstr "{by} heeft je toegewezen: {subject}"
+#~ msgid "{by} assigned you: {subject}"
+#~ msgstr "{by} heeft je toegewezen: {subject}"
 
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:528
 #, fuzzy
@@ -1641,8 +1649,8 @@ msgstr "Ontkoppelt deze werkruimte. Amarnai behoudt toegang omdat deze mailbox n
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:367
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:57
 #: ../../apps/web/src/components/JoinedWorkspaceToast.tsx:46
-#: ../../apps/web/src/components/NotificationBell.tsx:195
-#: ../../apps/web/src/components/NotificationBell.tsx:196
+#: ../../apps/web/src/components/NotificationBell.tsx:192
+#: ../../apps/web/src/components/NotificationBell.tsx:193
 #: ../ui/src/AppDownloadBanner.tsx:80
 #: ../ui/src/emails/MockEmailsPage.tsx:256
 msgid "Dismiss"
@@ -2764,7 +2772,7 @@ msgstr "Laad meer"
 msgid "Loading past threads…"
 msgstr "Oude gesprekken laden…"
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:123
+#: ../../apps/extension/src/panel/NotificationBell.tsx:122
 #: ../../apps/mobile/app/(app)/notifications.tsx:301
 #: ../../apps/mobile/src/components/MessageCard.tsx:53
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:73
@@ -2774,7 +2782,7 @@ msgstr "Oude gesprekken laden…"
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:137
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:158
 #: ../../apps/web/src/app/loading.tsx:6
-#: ../../apps/web/src/components/NotificationBell.tsx:177
+#: ../../apps/web/src/components/NotificationBell.tsx:174
 #: ../ui/src/emails/MessageCard.tsx:60
 #: ../ui/src/emails/ThreadList.tsx:238
 #, fuzzy
@@ -2791,9 +2799,9 @@ msgstr "Mail"
 msgid "Manage"
 msgstr "Beheren"
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:145
+#: ../../apps/extension/src/panel/NotificationBell.tsx:144
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:79
-#: ../../apps/web/src/components/NotificationBell.tsx:208
+#: ../../apps/web/src/components/NotificationBell.tsx:205
 #, fuzzy
 msgid "Manage notifications"
 msgstr "Meldingen beheren"
@@ -3009,9 +3017,9 @@ msgstr "Nieuwe zakelijke aanvragen, voorstellen, prijsbesprekingen en contact me
 msgid "New folder"
 msgstr "Nieuwe map"
 
-#: ../../apps/extension/src/panel/notificationText.ts:22
-#: ../../apps/mobile/src/data/notificationView.ts:33
-#: ../../apps/web/src/lib/notifications.ts:34
+#: ../../apps/extension/src/panel/notificationText.ts:18
+#: ../../apps/mobile/src/data/notificationView.ts:28
+#: ../../apps/web/src/lib/notifications.ts:28
 msgid "New notification"
 msgstr "Nieuwe melding"
 
@@ -3108,11 +3116,11 @@ msgstr "Geen leden"
 msgid "No members available"
 msgstr "Geen leden beschikbaar"
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:128
+#: ../../apps/extension/src/panel/NotificationBell.tsx:127
 #: ../../apps/mobile/app/(app)/notifications.tsx:294
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:73
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:216
-#: ../../apps/web/src/components/NotificationBell.tsx:180
+#: ../../apps/web/src/components/NotificationBell.tsx:177
 #, fuzzy
 msgid "No notifications yet"
 msgstr "Nog geen meldingen"
@@ -3206,22 +3214,22 @@ msgstr "Niet ingesteld"
 msgid "Not yet synced"
 msgstr "Nog niet gesynchroniseerd"
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:40
-#: ../../apps/extension/src/panel/NotificationBell.tsx:116
-#: ../../apps/extension/src/panel/NotificationBell.tsx:118
+#: ../../apps/extension/src/panel/NotificationBell.tsx:39
+#: ../../apps/extension/src/panel/NotificationBell.tsx:115
+#: ../../apps/extension/src/panel/NotificationBell.tsx:117
 #: ../../apps/mobile/app/(app)/account.tsx:145
 #: ../../apps/mobile/app/(app)/notifications.tsx:256
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:49
 #: ../../apps/web/src/app/(app)/notifications/page.tsx:16
-#: ../../apps/web/src/components/NotificationBell.tsx:154
-#: ../../apps/web/src/components/NotificationBell.tsx:169
-#: ../../apps/web/src/components/NotificationBell.tsx:173
+#: ../../apps/web/src/components/NotificationBell.tsx:151
+#: ../../apps/web/src/components/NotificationBell.tsx:166
+#: ../../apps/web/src/components/NotificationBell.tsx:170
 #, fuzzy
 msgid "Notifications"
 msgstr "Meldingen"
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:101
-#: ../../apps/web/src/components/NotificationBell.tsx:153
+#: ../../apps/extension/src/panel/NotificationBell.tsx:100
+#: ../../apps/web/src/components/NotificationBell.tsx:150
 #, fuzzy
 msgid "Notifications, {unread} unread"
 msgstr "Meldingen, {unread} ongelezen"
@@ -5216,9 +5224,9 @@ msgstr "U kunt het binnenkort opnieuw proberen, of beginnen met een sjabloon."
 msgid "You do not have permission to connect a Gmail inbox to this workspace."
 msgstr "U heeft geen toestemming om een Gmail-inbox aan deze werkruimte te koppelen."
 
-#: ../../apps/extension/src/panel/notificationText.ts:19
-#: ../../apps/mobile/src/data/notificationView.ts:29
-#: ../../apps/web/src/lib/notifications.ts:30
+#: ../../apps/extension/src/panel/notificationText.ts:16
+#: ../../apps/mobile/src/data/notificationView.ts:24
+#: ../../apps/web/src/lib/notifications.ts:24
 msgid "You were assigned a thread"
 msgstr "Je kreeg een gesprek toegewezen"
 
