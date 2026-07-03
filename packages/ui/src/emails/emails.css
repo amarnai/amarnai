@@ -958,8 +958,6 @@
   cursor: pointer;
   color: var(--ok);
   transition: color 0.1s;
-  margin-top: 8px;
-  margin-bottom: 2px;
 }
 
 .em-preview-done-bar:hover { color: var(--ok-ink); }
@@ -1654,12 +1652,14 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   font-family: inherit;
+  font-size: 11px;
+  padding: 2px 8px 2px 6px;
   text-transform: none;
   letter-spacing: 0;
   cursor: default;
 }
 
-button.em-pill--assignee { cursor: pointer; }
+button.em-pill--assignee { cursor: pointer; appearance: none; }
 button.em-pill--assignee:hover { background: var(--accent-bg); }
 
 /* Person-plus affordance in the row actions, mirroring .em-done-btn. */

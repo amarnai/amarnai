@@ -178,18 +178,13 @@ export function NotificationsClient() {
 
         {selectedCount > 0 && (
           <div className="notif-mgr-batch">
-            <button type="button" className="notif-mgr-batch-btn" disabled={busy} onClick={() => applyRead(selectedIds, true)}>
+            <button type="button" className="btn-ghost" disabled={busy} onClick={() => applyRead(selectedIds, true)}>
               <Trans>Mark read</Trans>
             </button>
-            <button type="button" className="notif-mgr-batch-btn" disabled={busy} onClick={() => applyRead(selectedIds, false)}>
+            <button type="button" className="btn-ghost" disabled={busy} onClick={() => applyRead(selectedIds, false)}>
               <Trans>Mark unread</Trans>
             </button>
-            <button
-              type="button"
-              className="notif-mgr-batch-btn notif-mgr-batch-btn--danger"
-              disabled={busy}
-              onClick={() => applyDelete(selectedIds)}
-            >
+            <button type="button" className="btn-danger" disabled={busy} onClick={() => applyDelete(selectedIds)}>
               <Trans>Delete</Trans>
             </button>
           </div>
@@ -197,7 +192,7 @@ export function NotificationsClient() {
       </div>
 
       {/* List */}
-      <div className="notif-mgr-list notif-page-list">
+      <div className="notif-mgr-list">
         {loading && <div className="notif-mgr-empty"><Trans>Loading…</Trans></div>}
         {!loading && items.length === 0 && (
           <div className="notif-mgr-empty"><Trans>No notifications yet</Trans></div>
@@ -274,9 +269,11 @@ export function NotificationsClient() {
           })}
 
         {!loading && nextCursor && (
-          <button type="button" className="notif-mgr-loadmore" onClick={loadMore} disabled={loadingMore}>
-            {loadingMore ? <Trans>Loading…</Trans> : <Trans>Load more</Trans>}
-          </button>
+          <div className="notif-mgr-footer">
+            <button type="button" className="btn-ghost" onClick={loadMore} disabled={loadingMore}>
+              {loadingMore ? <Trans>Loading…</Trans> : <Trans>Load more</Trans>}
+            </button>
+          </div>
         )}
       </div>
     </div>

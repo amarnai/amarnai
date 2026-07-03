@@ -588,19 +588,15 @@ body {
 .notif-panel-manage:hover { background: var(--bg-soft); }
 
 /* ─── Notifications page ────────────────────────────────────────────────────── */
+/* Matches the emails list treatment (row density, dividers, hover/selected) and
+   the app card + .btn-* system, so the surface reads as part of the product. */
 
 .notif-page {
-  max-width: 640px;
-  margin-top: 16px;
+  max-width: 680px;
   border: 1px solid var(--line-2);
-  border-radius: var(--r-lg);
+  border-radius: 10px;
   overflow: hidden;
   background: var(--surface);
-}
-
-/* On the page the list grows with content; only the pop-up caps its height. */
-.notif-page-list {
-  max-height: none;
 }
 
 .notif-mgr-toolbar {
@@ -609,15 +605,15 @@ body {
   justify-content: space-between;
   gap: 12px;
   flex-wrap: wrap;
-  padding: 10px 16px;
+  padding: 12px 18px;
   border-bottom: 1px solid var(--line);
 }
 
 .notif-mgr-selectall {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 0.8125rem;
+  gap: 9px;
+  font-size: 13px;
   color: var(--ink-2);
   cursor: pointer;
 }
@@ -632,55 +628,40 @@ body {
   gap: 6px;
 }
 
-.notif-mgr-batch-btn {
-  font-family: inherit;
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: var(--ink-2);
-  background: var(--surface);
-  border: 1px solid var(--line-2);
-  border-radius: var(--r-sm);
-  padding: 5px 10px;
-  cursor: pointer;
-  transition: background 0.1s, color 0.1s, border-color 0.1s;
-}
-
-.notif-mgr-batch-btn:hover:not(:disabled) { background: var(--bg-soft); color: var(--ink); }
-.notif-mgr-batch-btn:disabled { opacity: 0.5; cursor: default; }
-.notif-mgr-batch-btn--danger { color: var(--danger); }
-.notif-mgr-batch-btn--danger:hover:not(:disabled) {
-  background: var(--danger-soft, var(--bg-soft));
-  border-color: var(--danger);
-}
-
-.notif-mgr-list {
-  overflow-y: auto;
-  padding: 6px 0;
-  min-height: 120px;
-}
-
 .notif-mgr-empty {
-  padding: 32px 16px;
-  font-size: 0.8125rem;
+  padding: 40px 18px;
+  font-size: 13px;
   color: var(--ink-4);
   text-align: center;
 }
 
 .notif-mgr-item {
+  position: relative;
   display: flex;
   align-items: flex-start;
-  gap: 10px;
-  padding: 10px 16px;
+  gap: 12px;
+  padding: 12px 18px;
   border-bottom: 1px solid var(--line);
+  transition: background 0.08s;
 }
 
 .notif-mgr-item:last-of-type { border-bottom: none; }
-.notif-mgr-item.is-selected { background: var(--accent-soft); }
 .notif-mgr-item:hover { background: var(--bg-soft); }
-.notif-mgr-item.is-selected:hover { background: var(--accent-bg); }
+.notif-mgr-item.is-selected { background: var(--accent-soft); }
+
+/* Accent spine on selected rows — mirrors the emails list's selected thread. */
+.notif-mgr-item.is-selected::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--accent);
+}
 
 .notif-mgr-item-check {
-  margin-top: 3px;
+  margin-top: 2px;
   cursor: pointer;
   flex-shrink: 0;
 }
@@ -693,10 +674,11 @@ body {
 .notif-mgr-item-title {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
   width: 100%;
   font-family: inherit;
-  font-size: 0.8125rem;
+  font-size: 13px;
+  line-height: 1.35;
   color: var(--ink-2);
   background: none;
   border: none;
@@ -705,7 +687,7 @@ body {
 }
 
 .notif-mgr-item-title[data-collapsible="true"] { cursor: pointer; }
-.notif-mgr-item.is-unread .notif-mgr-item-title { color: var(--ink); font-weight: 500; }
+.notif-mgr-item.is-unread .notif-mgr-item-title { color: var(--ink); font-weight: 600; }
 
 .notif-mgr-item-text {
   flex: 1;
@@ -717,8 +699,8 @@ body {
 
 .notif-mgr-unread-dot {
   flex-shrink: 0;
-  width: 7px;
-  height: 7px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   background: var(--accent);
 }
@@ -726,10 +708,12 @@ body {
 .notif-mgr-item-body {
   margin-top: 6px;
   padding: 8px 10px;
-  font-size: 0.8125rem;
+  font-size: 12px;
+  line-height: 1.45;
   color: var(--ink-3);
   background: var(--bg-soft);
-  border-radius: var(--r-sm);
+  border: 1px solid var(--line);
+  border-radius: 6px;
   white-space: pre-wrap;
   word-break: break-word;
 }
@@ -739,15 +723,18 @@ body {
   align-items: center;
   gap: 2px;
   flex-shrink: 0;
+  padding-top: 1px;
 }
 
+/* Muted row-action icons that intensify on hover — same idiom as the emails
+   thread-row actions. */
 .notif-mgr-icon-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
-  border-radius: var(--r-sm);
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
   border: none;
   background: none;
   color: var(--ink-3);
@@ -755,27 +742,16 @@ body {
   transition: background 0.1s, color 0.1s;
 }
 
-.notif-mgr-icon-btn:hover:not(:disabled) { background: var(--surface); color: var(--ink); }
+.notif-mgr-icon-btn:hover:not(:disabled) { background: var(--bg-soft); color: var(--ink); }
 .notif-mgr-icon-btn:disabled { opacity: 0.5; cursor: default; }
 .notif-mgr-icon-btn--danger:hover:not(:disabled) { color: var(--danger); }
 
-.notif-mgr-loadmore {
-  display: block;
-  width: calc(100% - 32px);
-  margin: 10px 16px;
-  padding: 8px;
-  font-family: inherit;
-  font-size: 0.8125rem;
-  font-weight: 500;
-  color: var(--ink-2);
-  background: var(--surface);
-  border: 1px solid var(--line-2);
-  border-radius: var(--r-sm);
-  cursor: pointer;
+.notif-mgr-footer {
+  display: flex;
+  justify-content: center;
+  padding: 12px 18px;
+  border-top: 1px solid var(--line);
 }
-
-.notif-mgr-loadmore:hover:not(:disabled) { background: var(--bg-soft); color: var(--ink); }
-.notif-mgr-loadmore:disabled { opacity: 0.6; cursor: default; }
 
 .ws-create-form {
   padding: 10px 12px 12px;
@@ -3050,6 +3026,21 @@ a {
   margin: 0;
 }
 
+/* Notices shown above the form (direct children of the card) keep the same 16px
+   rhythm as the form; the in-form error stays flush because the form's gap spaces it. */
+.auth-card > .auth-success,
+.auth-card > .auth-error {
+  margin-bottom: 16px;
+}
+
+/* The first element after the title (notice or form) needs breathing room to match
+   that rhythm; the subtitle keeps its own tight pairing with the title. */
+.auth-title + .auth-success,
+.auth-title + .auth-error,
+.auth-title + .auth-form {
+  margin-top: 10px;
+}
+
 .auth-form .form-input {
   padding: 9px 12px;
   border-radius: 8px;
@@ -4257,8 +4248,6 @@ a {
   cursor: pointer;
   color: var(--ok-ink);
   transition: color 0.1s;
-  margin-top: 8px;
-  margin-bottom: 2px;
 }
 
 .em-preview-done-bar:hover { color: var(--ok-ink); }
