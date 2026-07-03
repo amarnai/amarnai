@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { auth } from "@/auth";
+import { getSessionUser } from "@/lib/session";
 import { SignUpForm } from "./SignUpForm";
 
 export default async function SignUpPage({
@@ -8,8 +8,8 @@ export default async function SignUpPage({
   searchParams: Promise<{ email?: string; invite?: string }>;
 }) {
   const { email, invite } = await searchParams;
-  const session = await auth();
-  if (session?.user?.id) redirect("/emails");
+  const user = await getSessionUser();
+  if (user) redirect("/emails");
 
   return <SignUpForm defaultEmail={email} invited={invite === "1"} />;
 }

@@ -1,4 +1,5 @@
 import "server-only";
+import { cache } from "react";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { db } from "@amarnai/db";
@@ -12,17 +13,39 @@ export type AuthUser = {
 
 export type WorkspaceRole = "OWNER" | "ADMIN" | "MEMBER";
 
-export async function requireUser(): Promise<AuthUser> {
+/**
+ * Resolve the signed-in user, but only if their session id still maps to a real
+ * User row; otherwise null.
+ *
+ * The JWT caches userId and does not re-validate it once set, so a session can
+ * outlive its User row (a deleted user, or a reset dev DB). Every "am I signed
+ * in?" decision must agree on this, or guards fight each other: without the DB
+ * check, requireUser would bounce a stale session to /sign-in while the sign-in
+ * page would bounce it straight back to /emails, looping forever. Cached so the
+ * lookup runs at most once per request.
+ */
+export const getSessionUser = cache(async function getSessionUser(): Promise<AuthUser | null> {
   const session = await auth();
-  if (!session?.user?.id || !session.user.email) {
-    redirect("/sign-in");
-  }
+  if (!session?.user?.id || !session.user.email) return null;
+
+  const dbUser = await db.user.findUnique({
+    where: { id: session.user.id },
+    select: { id: true },
+  });
+  if (!dbUser) return null;
+
   return {
     id: session.user.id,
     email: session.user.email,
     name: session.user.name,
     image: session.user.image,
   };
+});
+
+export async function requireUser(): Promise<AuthUser> {
+  const user = await getSessionUser();
+  if (!user) redirect("/sign-in");
+  return user;
 }
 
 export { getOrCreateDefaultWorkspace } from "@/lib/workspace";

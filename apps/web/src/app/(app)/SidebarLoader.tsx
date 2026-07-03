@@ -1,14 +1,17 @@
-import { auth } from "@/auth";
 import { db } from "@amarnai/db";
 import { Sidebar } from "@/components/Sidebar";
+import { getSessionUser } from "@/lib/session";
 import { getSelectedWorkspace } from "@/lib/workspace";
 
 export async function SidebarLoader() {
-  const session = await auth();
-  const userId = session?.user?.id;
+  // getSessionUser only resolves when the session id maps to a real User row, so
+  // a stale JWT (deleted user, or a reset dev DB) can't reach workspace
+  // provisioning and trip a foreign-key violation.
+  const sessionUser = await getSessionUser();
+  const userId = sessionUser?.id;
 
-  const user = session?.user
-    ? { email: session.user.email ?? "", name: session.user.name ?? null }
+  const user = sessionUser
+    ? { email: sessionUser.email, name: sessionUser.name ?? null }
     : null;
 
   let workspace: { id: string; name: string } | null = null;
