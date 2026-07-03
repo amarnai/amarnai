@@ -26,4 +26,8 @@ export const QUEUE_LABELS: Record<string, { name: MessageDescriptor; desc: Messa
     name: msg`Important`,
     desc: msg`Threads Gmail has flagged as important.`,
   },
+  assigned: {
+    name: msg`Assigned`,
+    desc: msg`Threads assigned to you.`,
+  },
 };

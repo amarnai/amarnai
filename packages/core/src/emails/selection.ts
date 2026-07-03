@@ -1,9 +1,12 @@
 import type { FilterCounts } from "@amarnai/api-client";
 import type { FolderItem, QueueId, ActiveSelection, SegFilter, ThreadItem } from "./types.js";
 
+// Ordered action-first: views that require the user to act (Assigned, Needs
+// review) come first, then lifecycle state (Pending, Sorted), then the passive
+// Gmail flag (Important) last.
 export const QUEUES: { id: QueueId; name: string; warn?: boolean; desc: string }[] = [
   { id: "all", name: "All", desc: "Every thread in your inbox." },
-  { id: "sorted", name: "Sorted", desc: "Threads Amarnai has successfully routed to a folder." },
+  { id: "assigned", name: "Assigned", desc: "Threads assigned to you." },
   {
     id: "review",
     name: "Needs review",
@@ -11,6 +14,7 @@ export const QUEUES: { id: QueueId; name: string; warn?: boolean; desc: string }
     desc: "Threads flagged for review — Amarnai wasn't confident enough to sort automatically.",
   },
   { id: "pending", name: "Pending", desc: "Threads that haven't been sorted yet." },
+  { id: "sorted", name: "Sorted", desc: "Threads Amarnai has successfully routed to a folder." },
   { id: "important", name: "Important", desc: "Threads Gmail has flagged as important." },
 ];
 
@@ -32,6 +36,11 @@ function baseFilter(
     case "review": return threads.filter((t) => t.status === "review");
     case "pending": return threads.filter((t) => t.status === "unsorted");
     case "important": return threads.filter((t) => t.isImportant);
+    // The authoritative "assigned to me" filter is applied server-side (it needs
+    // the current user id, which this pure helper doesn't have). This client-side
+    // fallback — used only for counts when the server total is absent — matches
+    // any assigned thread among those loaded.
+    case "assigned": return threads.filter((t) => t.assignment != null);
     case "unrouted": return threads.filter((t) => t.status === "unrouted");
     case "unclassified": return threads.filter((t) => t.status === "unclassified");
   }
@@ -105,6 +114,7 @@ export function queueCountsFromServer(counts: FilterCounts): Partial<Record<Queu
     review:       counts.NEEDS_REVIEW,
     pending:      counts.PENDING,
     important:    counts.important,
+    assigned:     counts.assigned,
     unrouted:     counts.UNROUTED,
     unclassified: counts.UNCLASSIFIED,
   };

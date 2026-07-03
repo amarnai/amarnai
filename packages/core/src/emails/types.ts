@@ -6,7 +6,7 @@ export type FolderItem = {
   ignored: boolean;
 };
 
-export type QueueId = "all" | "sorted" | "review" | "pending" | "important" | "unrouted" | "unclassified";
+export type QueueId = "all" | "sorted" | "review" | "pending" | "important" | "assigned" | "unrouted" | "unclassified";
 
 export type ActiveSelection =
   | { kind: "queue"; id: QueueId }

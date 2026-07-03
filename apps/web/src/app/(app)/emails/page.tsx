@@ -26,13 +26,14 @@ export default async function EmailsPage({ searchParams }: PageProps) {
 
   // Initial fetch is scoped to the active view (queue/folder) from the URL, so
   // the server-rendered list, count, and the client view-model all start in sync.
-  const initialFilters: { nodeId?: string; status?: string; important?: boolean } =
+  const initialFilters: { nodeId?: string; status?: string; important?: boolean; assigned?: boolean } =
     f
       ? { nodeId: f }
       : q === "sorted"       ? { status: "SORTED" }
       : q === "review"       ? { status: "NEEDS_REVIEW" }
       : q === "pending"      ? { status: "PENDING" }
       : q === "important"    ? { important: true }
+      : q === "assigned"     ? { assigned: true }
       : q === "unrouted"     ? { status: "UNROUTED" }
       : q === "unclassified" ? { status: "UNCLASSIFIED" }
       : {};

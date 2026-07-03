@@ -176,7 +176,7 @@ msgid "{routableCount} of {TAXONOMY_MIN_NON_ROOT_NODES} folders connected to you
 msgstr "เชื่อมต่อโฟลเดอร์ {routableCount} จาก {TAXONOMY_MIN_NON_ROOT_NODES} รายการเข้ากับกล่องขาเข้าของคุณ การจัดเส้นทางต้องใช้โฟลเดอร์อย่างน้อย {TAXONOMY_MIN_NON_ROOT_NODES} รายการ"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:269
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:176
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:185
 msgid "{selectedCount} selected"
 msgstr "{selectedCount} รายการที่เลือก"
 
@@ -752,6 +752,10 @@ msgstr "มอบหมายให้"
 #, fuzzy
 msgid "Assign to a member"
 msgstr "มอบหมายให้สมาชิก"
+
+#: ../ui/src/emails/queueLabels.ts:30
+msgid "Assigned"
+msgstr "มอบหมายแล้ว"
 
 #: ../ui/src/emails/TriageBar.tsx:70
 #, fuzzy
@@ -1529,9 +1533,9 @@ msgstr "เวิร์กสเปซฟรีเริ่มต้น"
 #: ../../apps/mobile/app/(app)/notifications.tsx:142
 #: ../../apps/mobile/app/(app)/notifications.tsx:231
 #: ../../apps/mobile/app/(app)/notifications.tsx:317
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:188
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:261
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:262
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:197
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:270
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:271
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:596
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:607
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:703
@@ -1701,7 +1705,7 @@ msgstr "ยกเลิกการเชื่อมต่อเวิร์ก
 
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:228
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:343
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:367
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:57
 #: ../../apps/web/src/components/JoinedWorkspaceToast.tsx:46
 #: ../ui/src/AppDownloadBanner.tsx:80
@@ -2870,7 +2874,7 @@ msgstr "สด"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:294
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:95
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:274
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:283
 #: ../ui/src/emails/ThreadList.tsx:238
 #, fuzzy
 msgid "Load more"
@@ -2888,13 +2892,13 @@ msgstr "กำลังโหลดเธรดเก่า..."
 #: ../../apps/mobile/app/(app)/notifications.tsx:294
 #: ../../apps/mobile/src/components/MessageCard.tsx:53
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:57
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:196
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:274
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:205
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:283
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:121
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:137
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:158
 #: ../../apps/web/src/app/loading.tsx:6
-#: ../../apps/web/src/components/NotificationBell.tsx:149
+#: ../../apps/web/src/components/NotificationBell.tsx:158
 #: ../ui/src/emails/MessageCard.tsx:60
 #: ../ui/src/emails/ThreadList.tsx:238
 #, fuzzy
@@ -2914,7 +2918,7 @@ msgstr "จัดการ"
 
 #: ../../apps/extension/src/panel/NotificationBell.tsx:145
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:63
-#: ../../apps/web/src/components/NotificationBell.tsx:170
+#: ../../apps/web/src/components/NotificationBell.tsx:179
 msgid "Manage notifications"
 msgstr "จัดการการแจ้งเตือน"
 
@@ -2945,8 +2949,8 @@ msgid "Mark as not done"
 msgstr "ทำเครื่องหมายว่ายังไม่เสร็จสิ้น"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:208
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:240
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:241
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:249
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:250
 msgid "Mark as read"
 msgstr "ทำเครื่องหมายว่าอ่านแล้ว"
 
@@ -2957,8 +2961,8 @@ msgid "Mark as sent"
 msgstr "ทำเครื่องหมายว่าส่งแล้ว"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:208
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:240
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:241
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:249
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:250
 msgid "Mark as unread"
 msgstr "ทำเครื่องหมายว่ายังไม่ได้อ่าน"
 
@@ -2979,13 +2983,13 @@ msgstr "ทำเครื่องหมายว่าเสร็จ"
 #~ msgstr "ทำเครื่องหมายว่าได้รับเชิญ"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:307
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:182
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:191
 #, fuzzy
 msgid "Mark read"
 msgstr "ทำเครื่องหมายว่าอ่านแล้ว"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:312
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:185
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:194
 msgid "Mark unread"
 msgstr "ทำเครื่องหมายว่ายังไม่ได้อ่าน"
 
@@ -3244,8 +3248,8 @@ msgstr "ไม่มีสมาชิกที่ใช้งานได้"
 #: ../../apps/extension/src/panel/NotificationBell.tsx:128
 #: ../../apps/mobile/app/(app)/notifications.tsx:287
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:57
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:198
-#: ../../apps/web/src/components/NotificationBell.tsx:152
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:207
+#: ../../apps/web/src/components/NotificationBell.tsx:161
 msgid "No notifications yet"
 msgstr "ยังไม่มีการแจ้งเตือน"
 
@@ -3347,16 +3351,16 @@ msgstr "ยังไม่ได้ซิงค์"
 #: ../../apps/mobile/app/(app)/account.tsx:145
 #: ../../apps/mobile/app/(app)/notifications.tsx:249
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:43
-#: ../../apps/web/src/app/(app)/notifications/page.tsx:12
-#: ../../apps/web/src/components/NotificationBell.tsx:126
-#: ../../apps/web/src/components/NotificationBell.tsx:141
-#: ../../apps/web/src/components/NotificationBell.tsx:145
+#: ../../apps/web/src/app/(app)/notifications/page.tsx:16
+#: ../../apps/web/src/components/NotificationBell.tsx:135
+#: ../../apps/web/src/components/NotificationBell.tsx:150
+#: ../../apps/web/src/components/NotificationBell.tsx:154
 #, fuzzy
 msgid "Notifications"
 msgstr "การแจ้งเตือน"
 
 #: ../../apps/extension/src/panel/NotificationBell.tsx:101
-#: ../../apps/web/src/components/NotificationBell.tsx:125
+#: ../../apps/web/src/components/NotificationBell.tsx:134
 msgid "Notifications, {unread} unread"
 msgstr "การแจ้งเตือน, {unread} ที่ยังไม่ได้อ่าน"
 
@@ -3397,8 +3401,8 @@ msgid "open source email ai"
 msgstr "AI จัดการอีเมลโอเพนซอร์ส"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:221
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:250
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:251
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:259
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:260
 msgid "Open thread"
 msgstr "เปิดชุดข้อความ"
 
@@ -3730,7 +3734,7 @@ msgstr "โฟลเดอร์ที่เสนอ การนำไปใ�
 msgid "Queuing rescan…"
 msgstr "กำลังจัดคิวสแกนใหม่…"
 
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:353
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:377
 #, fuzzy
 msgid "Re-route {unclassifiedCount} unclassified"
 msgstr "เปลี่ยนเส้นทาง {unclassifiedCount} รายการที่ยังไม่ได้จัดประเภท"
@@ -4134,20 +4138,20 @@ msgid "Select"
 msgstr "เลือก"
 
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:199
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:310
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:334
 #: ../ui/src/emails/MockEmailsPage.tsx:234
 #, fuzzy
 msgid "Select a thread to preview"
 msgstr "เลือกเธรดเพื่อดูตัวอย่าง"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:269
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:174
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:176
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:183
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:185
 #, fuzzy
 msgid "Select all"
 msgstr "เลือกทั้งหมด"
 
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:216
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:225
 msgid "Select notification"
 msgstr "เลือกการแจ้งเตือน"
 
@@ -4807,6 +4811,10 @@ msgstr "ไม่พบเธรด"
 msgid "Threads Amarnai has successfully routed to a folder."
 msgstr "เธรดที่ Amarnai จัดเส้นทางไปยังโฟลเดอร์สำเร็จแล้ว"
 
+#: ../ui/src/emails/queueLabels.ts:31
+msgid "Threads assigned to you."
+msgstr "เธรดที่มอบหมายให้คุณ"
+
 #: ../ui/src/emails/queueLabels.ts:19
 #, fuzzy
 #~ msgid "Threads flagged for review — Amarnai wasn't confident enough to sort automatically."
@@ -5026,7 +5034,7 @@ msgid "Unclassified"
 msgstr "ยังไม่จัดประเภท"
 
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:221
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:340
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:364
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1321
 #: ../ui/src/emails/MockEmailsPage.tsx:253
 #, fuzzy

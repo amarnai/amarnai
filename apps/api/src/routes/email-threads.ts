@@ -3,6 +3,7 @@ import { z } from "zod";
 import { db } from "@amarnai/db";
 import { DEFAULT_GMAIL_SYNC_SETTINGS } from "@amarnai/shared";
 import { GmailClient, normalizeGmailThread } from "@amarnai/gmail";
+import type { AppEnv } from "../env.js";
 
 const workspaceParam = z.object({ workspaceId: z.string().min(1) });
 const threadParam = z.object({
@@ -91,7 +92,7 @@ function buildCursorWhere(cursor: PageCursor) {
 
 // ─────────────────────────────────────────────────────────────────────────────
 
-const emailThreads = new Hono();
+const emailThreads = new Hono<AppEnv>();
 
 emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
   const parsed = workspaceParam.safeParse({
@@ -108,7 +109,12 @@ emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
   const rawCursor  = c.req.query("cursor");
   const rawLimit   = c.req.query("limit");
   const rawImportant = c.req.query("important");
+  const rawAssigned  = c.req.query("assigned");
   const rawQuery   = c.req.query("q");
+
+  // The authenticated user (guaranteed by requireWorkspaceMember). Drives the
+  // "Assigned" view/count, which is scoped to threads assigned to this user.
+  const currentUserId = c.get("userId") as string;
 
   const nodeId = rawNodeId && rawNodeId.length > 0 ? rawNodeId : null;
   const triageStatus: TriageStatusValue | null =
@@ -116,6 +122,7 @@ emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
       ? (rawStatus as TriageStatusValue)
       : null;
   const importantOnly = rawImportant === "true";
+  const assignedOnly = rawAssigned === "true";
   const search = (rawQuery ?? "").trim().slice(0, MAX_SEARCH_LEN);
   const cursor  = rawCursor ? decodeCursor(rawCursor) : null;
   const limit   = Math.min(
@@ -174,6 +181,7 @@ emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
     ...baseWhere,
     ...(triageStatus  ? { triageStatus }                                      : {}),
     ...(importantOnly ? { gmailIsImportant: true }                            : {}),
+    ...(assignedOnly  ? { assignedToUserId: currentUserId }                   : {}),
     ...(nodeId        ? { classifications: { some: { finalNodeId: nodeId } } } : {}),
     ...searchWhere,
   };
@@ -247,7 +255,7 @@ emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
   // inbox), not the current page, so the queue pills show true totals regardless
   // of how many threads are loaded. `important` is orthogonal to triageStatus, so
   // it needs its own count.
-  const [rawThreads, grouped, importantCount, pendingWaitingCount, filteredTotal] = await Promise.all([
+  const [rawThreads, grouped, importantCount, assignedCount, pendingWaitingCount, filteredTotal] = await Promise.all([
     db.emailThread.findMany({
       where: fullWhere,
       orderBy: [
@@ -263,6 +271,9 @@ emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
       _count: { _all: true },
     }),
     db.emailThread.count({ where: { ...baseWhere, gmailIsImportant: true } }),
+    // Threads assigned to the current user — drives the "Assigned" pill. Scoped
+    // per-user (unlike the status pills), so it counts only this member's queue.
+    db.emailThread.count({ where: { ...baseWhere, assignedToUserId: currentUserId } }),
     // Threads waiting to be routed but not yet enqueued — drives the "Route now"
     // banner so it hides once sorting begins. The Pending pill uses the full
     // PENDING count from groupBy (which includes threads currently being sorted).
@@ -293,6 +304,7 @@ emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
     UNROUTED:        byStatus("UNROUTED"),
     UNCLASSIFIED:    byStatus("UNCLASSIFIED"),
     important:       importantCount,
+    assigned:        assignedCount,
   };
 
   const threads = pageThreads.map((thread) => {

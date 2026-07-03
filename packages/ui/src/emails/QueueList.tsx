@@ -12,6 +12,7 @@ const ICON_SVG: Record<string, string> = {
   review: `<circle cx="7" cy="7" r="5.3" stroke="currentColor" stroke-width="1.3"/><path d="M7 4.4v3M7 9.6h.01" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>`,
   pending: `<circle cx="7" cy="7" r="5.3" stroke="currentColor" stroke-width="1.3"/><path d="M7 4v3.2l2 1.2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>`,
   important: `<path d="M7 2l1.4 3h3.1l-2.5 1.9 1 3.1L7 8.2l-3 1.8 1-3.1L2.5 5H5.6z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>`,
+  assigned: `<circle cx="7" cy="4.6" r="2.4" stroke="currentColor" stroke-width="1.3"/><path d="M2.6 11.8c0-2.4 2-3.9 4.4-3.9s4.4 1.5 4.4 3.9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>`,
 };
 
 export interface QueueListProps {

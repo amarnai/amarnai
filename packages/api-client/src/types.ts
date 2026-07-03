@@ -192,6 +192,8 @@ export type FilterCounts = {
   UNCLASSIFIED: number;
   // Count of Gmail-important threads (orthogonal to triageStatus).
   important: number;
+  // Count of threads assigned to the current user (orthogonal to triageStatus).
+  assigned: number;
 };
 
 export type EmailThreadSummary = {

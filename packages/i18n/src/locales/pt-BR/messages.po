@@ -168,7 +168,7 @@ msgid "{routableCount} of {TAXONOMY_MIN_NON_ROOT_NODES} folders connected to you
 msgstr "{routableCount} de {TAXONOMY_MIN_NON_ROOT_NODES} pastas conectadas à sua caixa de entrada. O roteamento requer no mínimo {TAXONOMY_MIN_NON_ROOT_NODES}."
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:269
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:176
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:185
 msgid "{selectedCount} selected"
 msgstr "{selectedCount} selecionados"
 
@@ -728,6 +728,10 @@ msgstr "Atribuir a"
 #, fuzzy
 msgid "Assign to a member"
 msgstr "Atribuir a um membro"
+
+#: ../ui/src/emails/queueLabels.ts:30
+msgid "Assigned"
+msgstr "Atribuído"
 
 #: ../ui/src/emails/TriageBar.tsx:70
 #, fuzzy
@@ -1472,9 +1476,9 @@ msgstr "Workspace gratuito padrão"
 #: ../../apps/mobile/app/(app)/notifications.tsx:142
 #: ../../apps/mobile/app/(app)/notifications.tsx:231
 #: ../../apps/mobile/app/(app)/notifications.tsx:317
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:188
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:261
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:262
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:197
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:270
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:271
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:596
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:607
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:703
@@ -1639,7 +1643,7 @@ msgstr "Desconecta este espaço de trabalho. Amarnai mantém o acesso porque est
 
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:228
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:343
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:367
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:57
 #: ../../apps/web/src/components/JoinedWorkspaceToast.tsx:46
 #: ../ui/src/AppDownloadBanner.tsx:80
@@ -2754,7 +2758,7 @@ msgstr "Ao vivo"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:294
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:95
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:274
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:283
 #: ../ui/src/emails/ThreadList.tsx:238
 #, fuzzy
 msgid "Load more"
@@ -2771,13 +2775,13 @@ msgstr "Carregando conversas anteriores…"
 #: ../../apps/mobile/app/(app)/notifications.tsx:294
 #: ../../apps/mobile/src/components/MessageCard.tsx:53
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:57
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:196
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:274
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:205
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:283
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:121
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:137
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:158
 #: ../../apps/web/src/app/loading.tsx:6
-#: ../../apps/web/src/components/NotificationBell.tsx:149
+#: ../../apps/web/src/components/NotificationBell.tsx:158
 #: ../ui/src/emails/MessageCard.tsx:60
 #: ../ui/src/emails/ThreadList.tsx:238
 #, fuzzy
@@ -2796,7 +2800,7 @@ msgstr "Gerenciar"
 
 #: ../../apps/extension/src/panel/NotificationBell.tsx:145
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:63
-#: ../../apps/web/src/components/NotificationBell.tsx:170
+#: ../../apps/web/src/components/NotificationBell.tsx:179
 #, fuzzy
 msgid "Manage notifications"
 msgstr "Gerenciar notificações"
@@ -2826,8 +2830,8 @@ msgid "Mark as not done"
 msgstr "Marcar como não concluído"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:208
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:240
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:241
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:249
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:250
 msgid "Mark as read"
 msgstr "Marcar como lida"
 
@@ -2838,8 +2842,8 @@ msgid "Mark as sent"
 msgstr "Marcar como enviado"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:208
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:240
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:241
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:249
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:250
 #, fuzzy
 msgid "Mark as unread"
 msgstr "Marcar como não lida"
@@ -2859,13 +2863,13 @@ msgstr "Marcar como concluído"
 #~ msgstr "Marcar como convidado"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:307
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:182
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:191
 #, fuzzy
 msgid "Mark read"
 msgstr "Marcar lida"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:312
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:185
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:194
 msgid "Mark unread"
 msgstr "Marcar não lida"
 
@@ -3110,8 +3114,8 @@ msgstr "Nenhum membro disponível"
 #: ../../apps/extension/src/panel/NotificationBell.tsx:128
 #: ../../apps/mobile/app/(app)/notifications.tsx:287
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:57
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:198
-#: ../../apps/web/src/components/NotificationBell.tsx:152
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:207
+#: ../../apps/web/src/components/NotificationBell.tsx:161
 #, fuzzy
 msgid "No notifications yet"
 msgstr "Ainda sem notificações"
@@ -3211,16 +3215,16 @@ msgstr "Ainda não sincronizado"
 #: ../../apps/mobile/app/(app)/account.tsx:145
 #: ../../apps/mobile/app/(app)/notifications.tsx:249
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:43
-#: ../../apps/web/src/app/(app)/notifications/page.tsx:12
-#: ../../apps/web/src/components/NotificationBell.tsx:126
-#: ../../apps/web/src/components/NotificationBell.tsx:141
-#: ../../apps/web/src/components/NotificationBell.tsx:145
+#: ../../apps/web/src/app/(app)/notifications/page.tsx:16
+#: ../../apps/web/src/components/NotificationBell.tsx:135
+#: ../../apps/web/src/components/NotificationBell.tsx:150
+#: ../../apps/web/src/components/NotificationBell.tsx:154
 #, fuzzy
 msgid "Notifications"
 msgstr "Notificações"
 
 #: ../../apps/extension/src/panel/NotificationBell.tsx:101
-#: ../../apps/web/src/components/NotificationBell.tsx:125
+#: ../../apps/web/src/components/NotificationBell.tsx:134
 #, fuzzy
 msgid "Notifications, {unread} unread"
 msgstr "Notificações, {unread} não lidas"
@@ -3259,8 +3263,8 @@ msgid "open source email ai"
 msgstr "IA de e-mail de código aberto"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:221
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:250
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:251
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:259
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:260
 msgid "Open thread"
 msgstr "Abrir conversa"
 
@@ -3579,7 +3583,7 @@ msgstr "Pastas propostas. A aplicação substitui seu plano atual; você pode ed
 msgid "Queuing rescan…"
 msgstr "Enfileirando nova verificação…"
 
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:353
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:377
 #, fuzzy
 msgid "Re-route {unclassifiedCount} unclassified"
 msgstr "Reencaminhar {unclassifiedCount} não classificados"
@@ -3966,20 +3970,20 @@ msgid "Select"
 msgstr "Selecionar"
 
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:199
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:310
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:334
 #: ../ui/src/emails/MockEmailsPage.tsx:234
 #, fuzzy
 msgid "Select a thread to preview"
 msgstr "Selecione uma conversa para pré-visualizar"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:269
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:174
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:176
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:183
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:185
 #, fuzzy
 msgid "Select all"
 msgstr "Selecionar todos"
 
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:216
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:225
 msgid "Select notification"
 msgstr "Selecionar notificação"
 
@@ -4616,6 +4620,11 @@ msgstr "Conversa não encontrada"
 msgid "Threads Amarnai has successfully routed to a folder."
 msgstr "Conversas que Amarnai encaminhou com sucesso para uma pasta."
 
+#: ../ui/src/emails/queueLabels.ts:31
+#, fuzzy
+msgid "Threads assigned to you."
+msgstr "Conversas atribuídas a você."
+
 #: ../ui/src/emails/queueLabels.ts:19
 #~ msgid "Threads flagged for review — Amarnai wasn't confident enough to sort automatically."
 #~ msgstr "Conversas sinalizadas para revisão — Amarnai não estava confiante o suficiente para classificar automaticamente."
@@ -4828,7 +4837,7 @@ msgid "Unclassified"
 msgstr "Não classificado"
 
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:221
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:340
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:364
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1321
 #: ../ui/src/emails/MockEmailsPage.tsx:253
 #, fuzzy
