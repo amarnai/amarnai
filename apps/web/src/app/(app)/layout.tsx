@@ -1,4 +1,5 @@
 import { SidebarLoader } from "./SidebarLoader";
+import { JoinedWorkspaceToast } from "@/components/JoinedWorkspaceToast";
 
 export default function AppLayout({
   children,
@@ -9,6 +10,7 @@ export default function AppLayout({
     <div className="shell">
       <SidebarLoader />
       <main className="main" suppressHydrationWarning>{children}</main>
+      <JoinedWorkspaceToast />
     </div>
   );
 }

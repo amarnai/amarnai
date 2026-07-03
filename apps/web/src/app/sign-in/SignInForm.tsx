@@ -7,7 +7,7 @@ import { Suspense } from "react";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { msg } from "@lingui/core/macro";
-import { credentialsSignInAction } from "@/actions/auth";
+import { credentialsSignInAction, signOutAction } from "@/actions/auth";
 import { AuthShell } from "@/components/AuthShell";
 import { GoogleButton } from "@/components/GoogleButton";
 
@@ -18,7 +18,12 @@ function SignInContent() {
 
   const verified = searchParams.get("verified") === "1";
   const passwordReset = searchParams.get("password_reset") === "1";
-  const tokenError = searchParams.get("error") === "invalid_token";
+  const errorParam = searchParams.get("error");
+  const tokenError = errorParam === "invalid_token";
+  const invalidInvite = errorParam === "invalid_invite";
+  const wrongAccount = errorParam === "invite_wrong_account";
+  const inviteEmail = searchParams.get("email");
+  const invitePrompt = searchParams.get("invite") === "1";
 
   return (
     <AuthShell title={_( msg`Sign in`)} subtitle={_( msg`AI email triage assistant`)}>
@@ -31,6 +36,30 @@ function SignInContent() {
         <p className="auth-success">
           <Trans>Password updated. Sign in with your new password.</Trans>
         </p>
+      )}
+      {invitePrompt && (
+        <p className="auth-success">
+          <Trans>Sign in to accept your workspace invitation.</Trans>
+        </p>
+      )}
+      {invalidInvite && (
+        <p className="auth-error">
+          <Trans>That invitation link is invalid or has expired.</Trans>
+        </p>
+      )}
+      {wrongAccount && (
+        <div className="auth-error">
+          {inviteEmail ? (
+            <Trans>This invitation was sent to {inviteEmail}. Sign in with that account to accept it.</Trans>
+          ) : (
+            <Trans>This invitation was sent to a different account. Sign in with that account to accept it.</Trans>
+          )}
+          <form action={signOutAction}>
+            <button type="submit" className="auth-link">
+              <Trans>Sign out of the current account</Trans>
+            </button>
+          </form>
+        </div>
       )}
       {tokenError && (
         <p className="auth-error">

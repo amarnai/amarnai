@@ -10,12 +10,23 @@ import { registerAction } from "@/actions/auth";
 import { AuthShell } from "@/components/AuthShell";
 import { GoogleButton } from "@/components/GoogleButton";
 
-export function SignUpForm() {
+export function SignUpForm({
+  defaultEmail,
+  invited = false,
+}: {
+  defaultEmail?: string | undefined;
+  invited?: boolean;
+}) {
   const { _ } = useLingui();
   const [state, action, pending] = useActionState(registerAction, null);
 
   return (
     <AuthShell title={_( msg`Create your account`)}>
+      {invited && (
+        <p className="auth-success">
+          <Trans>Create your account to accept your workspace invitation.</Trans>
+        </p>
+      )}
       <form action={action} className="auth-form">
         {state?.error && <p className="auth-error">{state.error}</p>}
 
@@ -29,6 +40,7 @@ export function SignUpForm() {
             type="email"
             autoComplete="email"
             required
+            defaultValue={defaultEmail}
             className="form-input"
           />
         </div>
