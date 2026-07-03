@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { db } from "@amarnai/db";
+import { INVITE_COOKIE } from "@/lib/invite-redirect";
+
+// Long enough to sign in, or sign up and verify an email, before resuming.
+const INVITE_COOKIE_MAX_AGE = 60 * 60;
 
 export async function GET(req: NextRequest) {
   const token = req.nextUrl.searchParams.get("token");
@@ -26,23 +30,47 @@ export async function GET(req: NextRequest) {
     return NextResponse.redirect(`${appUrl}/sign-in?error=invalid_invite`);
   }
 
+  const acceptPath = `/api/workspace-invite/accept?token=${token}`;
   const session = await auth();
 
   if (!session?.user?.id || !session.user.email) {
-    // Preserve the token through sign-in via callbackUrl.
-    const callbackUrl = encodeURIComponent(
-      `/api/workspace-invite/accept?token=${token}`
-    );
-    return NextResponse.redirect(`${appUrl}/sign-in?callbackUrl=${callbackUrl}`);
+    // Send the invitee straight to sign-up (email prefilled) when they have no
+    // account yet, otherwise to sign-in. Emails are stored as-entered, so match
+    // case-insensitively. Either way, remember the invite so the auth flow can
+    // resume acceptance afterwards (the emailed verification link carries no
+    // query context, so a cookie is the only thing that survives that round-trip).
+    const existingUser = await db.user.findFirst({
+      where: { email: { equals: invitation.invitedEmail, mode: "insensitive" } },
+      select: { id: true },
+    });
+    const dest = existingUser
+      ? `${appUrl}/sign-in?invite=1`
+      : `${appUrl}/sign-up?invite=1&email=${encodeURIComponent(invitation.invitedEmail)}`;
+    const res = NextResponse.redirect(dest);
+    res.cookies.set(INVITE_COOKIE, acceptPath, {
+      path: "/",
+      httpOnly: true,
+      sameSite: "lax",
+      maxAge: INVITE_COOKIE_MAX_AGE,
+    });
+    return res;
   }
 
   const { id: userId, email: userEmail } = session.user as { id: string; email: string };
 
   // Verify the signed-in user's email matches the invitation.
   if (userEmail.toLowerCase() !== invitation.invitedEmail.toLowerCase()) {
-    return NextResponse.redirect(
+    // Keep the invite pending so switching to the invited account resumes it.
+    const res = NextResponse.redirect(
       `${appUrl}/sign-in?error=invite_wrong_account&email=${encodeURIComponent(invitation.invitedEmail)}`
     );
+    res.cookies.set(INVITE_COOKIE, acceptPath, {
+      path: "/",
+      httpOnly: true,
+      sameSite: "lax",
+      maxAge: INVITE_COOKIE_MAX_AGE,
+    });
+    return res;
   }
 
   // Check if already a member (idempotent).
@@ -82,6 +110,8 @@ export async function GET(req: NextRequest) {
     path: "/",
     maxAge: 60 * 60 * 24 * 365,
   });
+  // The invite is consumed — clear the pending-invite cookie if one was set.
+  response.cookies.delete(INVITE_COOKIE);
 
   return response;
 }

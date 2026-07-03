@@ -36,7 +36,14 @@ export default auth((req) => {
     // web cookie session. Each route enforces auth + ownership on its own.
     pathname.startsWith("/api/billing/");
 
-  if (!isSignedIn && !isPublic) {
+  // The invite-accept route authenticates itself: it routes a logged-out invitee
+  // to sign-up (or sign-in) and remembers the invite. It must therefore run for
+  // logged-out users rather than being bounced to a bare /sign-in. It is NOT in
+  // `isPublic` because a signed-in but unverified user must still be gated to
+  // /verify-email below (accepting an invite proves email ownership).
+  const isInviteAccept = pathname.startsWith("/api/workspace-invite");
+
+  if (!isSignedIn && !isPublic && !isInviteAccept) {
     return NextResponse.redirect(new URL("/sign-in", req.url));
   }
 

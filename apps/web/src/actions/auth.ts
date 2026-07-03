@@ -12,19 +12,29 @@ import {
   checkUserPassword,
 } from "@amarnai/auth";
 import { RegisterCredentialsSchema, PasswordSchema } from "@amarnai/shared";
+import { cookies } from "next/headers";
 import { requireUser } from "@/lib/session";
 import { sendVerificationEmail, sendPasswordResetEmail } from "@/lib/email";
 import { disconnectGmailBeforeDeletion } from "@/lib/gmail-teardown";
-import { isWaitlistMode } from "@/lib/waitlist";
+import { INVITE_COOKIE, sanitizeInvitePath } from "@/lib/invite-redirect";
 
 // ─── Sign in / out ───────────────────────────────────────────────────────────
+
+// If a workspace invite is pending (cookie set by the accept route), resume it
+// after auth; otherwise land on the app home. The cookie is left in place — it
+// is cleared by the accept route on success, or by the verify-email route, so an
+// unverified user bounced to /verify-email still resumes once they verify.
+async function postAuthRedirect(): Promise<string> {
+  const store = await cookies();
+  return sanitizeInvitePath(store.get(INVITE_COOKIE)?.value);
+}
 
 export async function signOutAction() {
   await signOut({ redirectTo: "/sign-in" });
 }
 
 export async function googleSignInAction() {
-  await signIn("google", { redirectTo: "/emails" });
+  await signIn("google", { redirectTo: await postAuthRedirect() });
 }
 
 export async function credentialsSignInAction(
@@ -35,7 +45,7 @@ export async function credentialsSignInAction(
     await signIn("credentials", {
       email: formData.get("email"),
       password: formData.get("password"),
-      redirectTo: "/emails",
+      redirectTo: await postAuthRedirect(),
     });
   } catch (err) {
     // Re-throw NEXT_REDIRECT so Next.js handles it as a navigation.
@@ -51,12 +61,6 @@ export async function registerAction(
   _prev: { error?: string } | null,
   formData: FormData
 ): Promise<{ error?: string }> {
-  // The sign-up page renders the waitlist instead of this form in waitlist
-  // mode, but the server must enforce its own policy.
-  if (isWaitlistMode()) {
-    return { error: "Sign-ups are currently invite-only. Join the waitlist to get access." };
-  }
-
   const parsed = RegisterCredentialsSchema.safeParse({
     email: formData.get("email"),
     password: formData.get("password"),

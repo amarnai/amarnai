@@ -3,6 +3,7 @@ import { db } from "@amarnai/db";
 import { auth, unstable_update } from "@/auth";
 import { getOrCreateDefaultWorkspace } from "@/lib/workspace";
 import { sendWelcomeEmail } from "@/lib/email";
+import { INVITE_COOKIE, sanitizeInvitePath } from "@/lib/invite-redirect";
 
 export async function GET(req: NextRequest) {
   const token = req.nextUrl.searchParams.get("token");
@@ -57,7 +58,11 @@ export async function GET(req: NextRequest) {
   const session = await auth();
   if (session?.user?.id === record.userId) {
     await unstable_update({});
-    return NextResponse.redirect(new URL("/emails", baseUrl));
+    // Resume a pending workspace invite if one was started in this browser.
+    const target = sanitizeInvitePath(req.cookies.get(INVITE_COOKIE)?.value);
+    const res = NextResponse.redirect(new URL(target, baseUrl));
+    res.cookies.delete(INVITE_COOKIE);
+    return res;
   }
 
   signInUrl.searchParams.set("verified", "1");
