@@ -175,8 +175,8 @@ msgstr "{remaining} dari {limit} tersisa · reset {resetDate}"
 msgid "{routableCount} of {TAXONOMY_MIN_NON_ROOT_NODES} folders connected to your inbox. Routing requires at least {TAXONOMY_MIN_NON_ROOT_NODES}."
 msgstr "{routableCount} dari {TAXONOMY_MIN_NON_ROOT_NODES} folder terhubung ke kotak masuk Anda. Routing memerlukan setidaknya {TAXONOMY_MIN_NON_ROOT_NODES}."
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:269
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:185
+#: ../../apps/mobile/app/(app)/notifications.tsx:276
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:194
 msgid "{selectedCount} selected"
 msgstr "{selectedCount} terpilih"
 
@@ -386,9 +386,7 @@ msgstr "Lamaran baru telah diterima dari Horemheb dari Thebes untuk posisi Kepal
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "Lamaran baru telah diterima dari Horemheb dari Thebes untuk posisi Kepala Korespondensi.\n"
-"\n"
-"Lihat lamaran di Gedung Arsip."
+msgstr "Lamaran baru telah diterima dari Horemheb dari Thebes untuk posisi Kepala Korespondensi.\n\nLihat lamaran di Gedung Arsip."
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:384
 #, fuzzy
@@ -402,11 +400,7 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "Abdi-Heba,\n"
-"\n"
-"Saya akan berada di dekat Delta pada minggu yang sama. Mari kita bertemu di stasiun persinggahan pada hari kedua; saya bisa menyisihkan waktu pagi.\n"
-"\n"
-"Sampai jumpa,"
+msgstr "Abdi-Heba,\n\nSaya akan berada di dekat Delta pada minggu yang sama. Mari kita bertemu di stasiun persinggahan pada hari kedua; saya bisa menyisihkan waktu pagi.\n\nSampai jumpa,"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
@@ -758,8 +752,12 @@ msgstr "Ditugaskan"
 
 #: ../ui/src/emails/TriageBar.tsx:70
 #, fuzzy
-msgid "Assigned · {assigneeName}"
-msgstr "Ditugaskan · {assigneeName}"
+#~ msgid "Assigned · {assigneeName}"
+#~ msgstr "Ditugaskan · {assigneeName}"
+
+#: ../ui/src/emails/TriageBar.tsx:70
+msgid "Assigned to {assigneeName}"
+msgstr "Ditugaskan ke {assigneeName}"
 
 #: ../ui/src/emails/ThreadRow.tsx:174
 #: ../ui/src/emails/TriageBar.tsx:62
@@ -811,11 +809,7 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "Aziru,\n"
-"\n"
-"Kata-kata persahabatan Anda telah kami terima dengan baik. Kami terbuka untuk mendengar lebih banyak tentang apa yang diusulkan oleh Wangsa Amurru. Kirimkan ketentuan Anda melalui kurir berikutnya.\n"
-"\n"
-"Dengan hormat,"
+msgstr "Aziru,\n\nKata-kata persahabatan Anda telah kami terima dengan baik. Kami terbuka untuk mendengar lebih banyak tentang apa yang diusulkan oleh Wangsa Amurru. Kirimkan ketentuan Anda melalui kurir berikutnya.\n\nDengan hormat,"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:215
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
@@ -1530,11 +1524,11 @@ msgstr "Ruang kerja gratis bawaan"
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:176
 #: ../../apps/mobile/app/(app)/account.tsx:84
 #: ../../apps/mobile/app/(app)/notifications.tsx:142
-#: ../../apps/mobile/app/(app)/notifications.tsx:231
-#: ../../apps/mobile/app/(app)/notifications.tsx:317
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:197
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:270
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:271
+#: ../../apps/mobile/app/(app)/notifications.tsx:238
+#: ../../apps/mobile/app/(app)/notifications.tsx:324
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:206
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:279
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:280
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:596
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:607
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:703
@@ -1704,9 +1698,12 @@ msgstr "Memutus sambungan ruang kerja ini. Amarnai tetap memiliki akses karena k
 
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:228
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
+#: ../../apps/mobile/src/components/NotificationsSheet.tsx:65
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:367
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:57
 #: ../../apps/web/src/components/JoinedWorkspaceToast.tsx:46
+#: ../../apps/web/src/components/NotificationBell.tsx:195
+#: ../../apps/web/src/components/NotificationBell.tsx:196
 #: ../ui/src/AppDownloadBanner.tsx:80
 #: ../ui/src/emails/MockEmailsPage.tsx:256
 #, fuzzy
@@ -1744,7 +1741,7 @@ msgstr "Belum punya akun? <0>Buat akun</0>"
 msgid "Don't have an account? <0>Sign up</0>"
 msgstr "Belum punya akun? <0>Daftar</0>"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:254
+#: ../../apps/mobile/app/(app)/notifications.tsx:261
 #: ../../apps/mobile/src/components/ThreadRow.tsx:40
 #: ../ui/src/emails/ThreadRow.tsx:166
 #, fuzzy
@@ -2451,11 +2448,7 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "Baginda Raja,\n"
-"\n"
-"Laporan yang Paduka minta akan disiapkan sebelum dewan bersidang. Hamba akan meminta juru tulis hamba menyusun catatan wilayah timur dan mengirimkannya terlebih dahulu dengan kurir cepat.\n"
-"\n"
-"Dalam persaudaraan,"
+msgstr "Baginda Raja,\n\nLaporan yang Paduka minta akan disiapkan sebelum dewan bersidang. Hamba akan meminta juru tulis hamba menyusun catatan wilayah timur dan mengirimkannya terlebih dahulu dengan kurir cepat.\n\nDalam persaudaraan,"
 
 #: ../../apps/site/src/components/landing/FinalCTASection.tsx:8
 #, fuzzy
@@ -2871,9 +2864,9 @@ msgstr "Daftarkan pengirim, topik, dan kata kunci yang termasuk di sini. Minimal
 msgid "Live"
 msgstr "Aktif"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:294
+#: ../../apps/mobile/app/(app)/notifications.tsx:301
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:95
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:283
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:292
 #: ../ui/src/emails/ThreadList.tsx:238
 #, fuzzy
 msgid "Load more"
@@ -2888,16 +2881,16 @@ msgid "Loading past threads…"
 msgstr "Memuat utas sebelumnya..."
 
 #: ../../apps/extension/src/panel/NotificationBell.tsx:123
-#: ../../apps/mobile/app/(app)/notifications.tsx:294
+#: ../../apps/mobile/app/(app)/notifications.tsx:301
 #: ../../apps/mobile/src/components/MessageCard.tsx:53
-#: ../../apps/mobile/src/components/NotificationsSheet.tsx:57
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:205
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:283
+#: ../../apps/mobile/src/components/NotificationsSheet.tsx:73
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:214
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:292
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:121
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:137
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:158
 #: ../../apps/web/src/app/loading.tsx:6
-#: ../../apps/web/src/components/NotificationBell.tsx:158
+#: ../../apps/web/src/components/NotificationBell.tsx:177
 #: ../ui/src/emails/MessageCard.tsx:60
 #: ../ui/src/emails/ThreadList.tsx:238
 #, fuzzy
@@ -2916,8 +2909,8 @@ msgid "Manage"
 msgstr "Kelola"
 
 #: ../../apps/extension/src/panel/NotificationBell.tsx:145
-#: ../../apps/mobile/src/components/NotificationsSheet.tsx:63
-#: ../../apps/web/src/components/NotificationBell.tsx:179
+#: ../../apps/mobile/src/components/NotificationsSheet.tsx:79
+#: ../../apps/web/src/components/NotificationBell.tsx:208
 msgid "Manage notifications"
 msgstr "Kelola notifikasi"
 
@@ -2947,9 +2940,9 @@ msgstr "Tandai sebagai selesai"
 msgid "Mark as not done"
 msgstr "Tandai sebagai belum selesai"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:208
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:249
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:250
+#: ../../apps/mobile/app/(app)/notifications.tsx:215
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:258
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:259
 msgid "Mark as read"
 msgstr "Tandai sudah dibaca"
 
@@ -2959,9 +2952,9 @@ msgstr "Tandai sudah dibaca"
 msgid "Mark as sent"
 msgstr "Tandai sebagai terkirim"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:208
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:249
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:250
+#: ../../apps/mobile/app/(app)/notifications.tsx:215
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:258
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:259
 msgid "Mark as unread"
 msgstr "Tandai belum dibaca"
 
@@ -2981,14 +2974,14 @@ msgstr "Tandai selesai"
 #~ msgid "Mark invited"
 #~ msgstr "Tandai diundang"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:307
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:191
+#: ../../apps/mobile/app/(app)/notifications.tsx:314
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:200
 #, fuzzy
 msgid "Mark read"
 msgstr "Tandai dibaca"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:312
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:194
+#: ../../apps/mobile/app/(app)/notifications.tsx:319
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:203
 msgid "Mark unread"
 msgstr "Tandai belum dibaca"
 
@@ -2999,8 +2992,12 @@ msgstr "Ditandai sebagai selesai"
 
 #: ../ui/src/emails/PreviewDoneBar.tsx:21
 #, fuzzy
-msgid "Marked as done · {doneByName}"
-msgstr "Ditandai sebagai selesai · {doneByName}"
+#~ msgid "Marked as done · {doneByName}"
+#~ msgstr "Ditandai sebagai selesai · {doneByName}"
+
+#: ../ui/src/emails/PreviewDoneBar.tsx:21
+msgid "Marked as done by {doneByName}"
+msgstr "Ditandai selesai oleh {doneByName}"
 
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:198
 #, fuzzy
@@ -3245,10 +3242,10 @@ msgid "No members available"
 msgstr "Tidak ada anggota yang tersedia"
 
 #: ../../apps/extension/src/panel/NotificationBell.tsx:128
-#: ../../apps/mobile/app/(app)/notifications.tsx:287
-#: ../../apps/mobile/src/components/NotificationsSheet.tsx:57
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:207
-#: ../../apps/web/src/components/NotificationBell.tsx:161
+#: ../../apps/mobile/app/(app)/notifications.tsx:294
+#: ../../apps/mobile/src/components/NotificationsSheet.tsx:73
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:216
+#: ../../apps/web/src/components/NotificationBell.tsx:180
 msgid "No notifications yet"
 msgstr "Belum ada notifikasi"
 
@@ -3348,18 +3345,18 @@ msgstr "Belum disinkronkan"
 #: ../../apps/extension/src/panel/NotificationBell.tsx:116
 #: ../../apps/extension/src/panel/NotificationBell.tsx:118
 #: ../../apps/mobile/app/(app)/account.tsx:145
-#: ../../apps/mobile/app/(app)/notifications.tsx:249
-#: ../../apps/mobile/src/components/NotificationsSheet.tsx:43
+#: ../../apps/mobile/app/(app)/notifications.tsx:256
+#: ../../apps/mobile/src/components/NotificationsSheet.tsx:49
 #: ../../apps/web/src/app/(app)/notifications/page.tsx:16
-#: ../../apps/web/src/components/NotificationBell.tsx:135
-#: ../../apps/web/src/components/NotificationBell.tsx:150
 #: ../../apps/web/src/components/NotificationBell.tsx:154
+#: ../../apps/web/src/components/NotificationBell.tsx:169
+#: ../../apps/web/src/components/NotificationBell.tsx:173
 #, fuzzy
 msgid "Notifications"
 msgstr "Notifikasi"
 
 #: ../../apps/extension/src/panel/NotificationBell.tsx:101
-#: ../../apps/web/src/components/NotificationBell.tsx:134
+#: ../../apps/web/src/components/NotificationBell.tsx:153
 msgid "Notifications, {unread} unread"
 msgstr "Notifikasi, {unread} belum dibaca"
 
@@ -3399,9 +3396,9 @@ msgstr "Buka navigasi"
 msgid "open source email ai"
 msgstr "AI email sumber terbuka"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:221
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:259
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:260
+#: ../../apps/mobile/app/(app)/notifications.tsx:228
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:268
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:269
 msgid "Open thread"
 msgstr "Buka utas"
 
@@ -4036,11 +4033,7 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "Rib-Hadda,\n"
-"\n"
-"Kami mengerti. Gandum tambahan telah dipesan dari gudang selatan dan akan tiba sebelum festival panen. Kami mohon kesabaran Anda hingga saat itu.\n"
-"\n"
-"Semoga sehat selalu,"
+msgstr "Rib-Hadda,\n\nKami mengerti. Gandum tambahan telah dipesan dari gudang selatan dan akan tiba sebelum festival panen. Kami mohon kesabaran Anda hingga saat itu.\n\nSemoga sehat selalu,"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -4132,7 +4125,7 @@ msgstr "Cari utas…"
 msgid "See how your inbox is sorted, right next to Gmail."
 msgstr "Lihat kotak masuk Anda tersortir, langsung di Gmail."
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:254
+#: ../../apps/mobile/app/(app)/notifications.tsx:261
 msgid "Select"
 msgstr "Pilih"
 
@@ -4143,14 +4136,14 @@ msgstr "Pilih"
 msgid "Select a thread to preview"
 msgstr "Pilih utas untuk pratinjau"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:269
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:183
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:185
+#: ../../apps/mobile/app/(app)/notifications.tsx:276
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:192
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:194
 #, fuzzy
 msgid "Select all"
 msgstr "Pilih semua"
 
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:225
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:234
 msgid "Select notification"
 msgstr "Pilih notifikasi"
 
@@ -4869,13 +4862,7 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "Untuk saudaraku, Raja Agung,\n"
-"\n"
-"Dewan agung bersidang pada awal Shemu. Aku meminta Anda menyiapkan laporan lengkap wilayah timur dan mengirimkannya dengan kurir cepat, sebelum bulan baru jika memungkinkan.\n"
-"\n"
-"Aliansi kita kuat. Marilah kita tunjukkan kepada dewan bahwa itu tetap demikian.\n"
-"\n"
-"Tushratta, Raja Agung Mitanni"
+msgstr "Untuk saudaraku, Raja Agung,\n\nDewan agung bersidang pada awal Shemu. Aku meminta Anda menyiapkan laporan lengkap wilayah timur dan mengirimkannya dengan kurir cepat, sebelum bulan baru jika memungkinkan.\n\nAliansi kita kuat. Marilah kita tunjukkan kepada dewan bahwa itu tetap demikian.\n\nTushratta, Raja Agung Mitanni"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:163
 #, fuzzy
@@ -4884,11 +4871,7 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "Kepada Biro Penunjukan Kerajaan,\n"
-"\n"
-"Kami telah menerima permohonan dari Horemheb dari Thebes dan akan meninjau catatan rekam jejaknya sebelum bulan baru berikutnya. Harap beri tahu dia bahwa kami akan mengirimkan kabar pada waktunya.\n"
-"\n"
-"Berdasarkan keputusan kerajaan,"
+msgstr "Kepada Biro Penunjukan Kerajaan,\n\nKami telah menerima permohonan dari Horemheb dari Thebes dan akan meninjau catatan rekam jejaknya sebelum bulan baru berikutnya. Harap beri tahu dia bahwa kami akan mengirimkan kabar pada waktunya.\n\nBerdasarkan keputusan kerajaan,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:275
 #, fuzzy
@@ -4899,13 +4882,7 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "Kepada Raja Agung,\n"
-"\n"
-"Selama bertahun-tahun rumah kita telah seperti saudara. Saya menulis sekarang untuk mengusulkan agar kita meresmikan persahabatan ini demi kepentingan kedua bangsa kita: sebuah pakta perlindungan timbal balik dan rute bersama.\n"
-"\n"
-"Saya hanya meminta Anda mendengar syarat-syarat saya. Kirimkan pesan melalui kurir berikutnya dan saya akan segera mengirimkan utusan saya.\n"
-"\n"
-"Aziru, hamba Raja Agung, penguasa Amurru"
+msgstr "Kepada Raja Agung,\n\nSelama bertahun-tahun rumah kita telah seperti saudara. Saya menulis sekarang untuk mengusulkan agar kita meresmikan persahabatan ini demi kepentingan kedua bangsa kita: sebuah pakta perlindungan timbal balik dan rute bersama.\n\nSaya hanya meminta Anda mendengar syarat-syarat saya. Kirimkan pesan melalui kurir berikutnya dan saya akan segera mengirimkan utusan saya.\n\nAziru, hamba Raja Agung, penguasa Amurru"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:388
 #, fuzzy
@@ -4914,11 +4891,7 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "Kepada Raja Agung,\n"
-"\n"
-"Perjalanan saya membawa saya dekat Delta dalam beberapa hari mendatang. Jika Raja Agung memiliki waktu luang, saya akan menyambut kesempatan untuk berbicara tatap muka; ada hal-hal yang lebih mudah diucapkan daripada ditulis.\n"
-"\n"
-"Hambamu, Abdi-Heba, gubernur Urushalim"
+msgstr "Kepada Raja Agung,\n\nPerjalanan saya membawa saya dekat Delta dalam beberapa hari mendatang. Jika Raja Agung memiliki waktu luang, saya akan menyambut kesempatan untuk berbicara tatap muka; ada hal-hal yang lebih mudah diucapkan daripada ditulis.\n\nHambamu, Abdi-Heba, gubernur Urushalim"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:153
 #, fuzzy
@@ -4927,11 +4900,7 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "Kepada Raja Agung, saudaraku,\n"
-"\n"
-"Saya telah mendengar perkataan Anda. Emas akan dikirimkan sebelum utusan berikutnya berangkat. Kami menghargai ikatan antara rumah kita dan tidak ingin itu mendingin.\n"
-"\n"
-"Dalam persahabatan,"
+msgstr "Kepada Raja Agung, saudaraku,\n\nSaya telah mendengar perkataan Anda. Emas akan dikirimkan sebelum utusan berikutnya berangkat. Kami menghargai ikatan antara rumah kita dan tidak ingin itu mendingin.\n\nDalam persahabatan,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:236
 #, fuzzy
@@ -4942,13 +4911,7 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "Kepada Raja Agung, saudaraku,\n"
-"\n"
-"Saya menulis dalam persahabatan, sebagaimana para ayah kita menulis sebelumnya. Pengiriman emas ketiga yang disepakati dalam perjanjian kita belum tiba. Dua utusan telah berlalu dan kami masih menunggu.\n"
-"\n"
-"Kami meminta Anda mengirimkannya tanpa penundaan lebih lanjut, sebagaimana layaknya ikatan antara rumah kita.\n"
-"\n"
-"Burna-Buriash II, Raja Babilonia"
+msgstr "Kepada Raja Agung, saudaraku,\n\nSaya menulis dalam persahabatan, sebagaimana para ayah kita menulis sebelumnya. Pengiriman emas ketiga yang disepakati dalam perjanjian kita belum tiba. Dua utusan telah berlalu dan kami masih menunggu.\n\nKami meminta Anda mengirimkannya tanpa penundaan lebih lanjut, sebagaimana layaknya ikatan antara rumah kita.\n\nBurna-Buriash II, Raja Babilonia"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:349
 #, fuzzy
@@ -4959,13 +4922,7 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "Kepada Raja Agung, Tuanku, Matahariku,\n"
-"\n"
-"Gandum yang Anda kirim bulan lalu telah diterima dengan syukur dan saya memuji nama Anda di hadapan rakyat. Namun saya harus menulis lagi: pengiriman ketiga belum tiba dan kota menjadi gelisah.\n"
-"\n"
-"Saya telah menulis tujuh kali. Saya tidak ingin menyusahkan Anda, namun apa lagi yang bisa saya lakukan?\n"
-"\n"
-"Hambamu, Rib-Hadda, gubernur Byblos"
+msgstr "Kepada Raja Agung, Tuanku, Matahariku,\n\nGandum yang Anda kirim bulan lalu telah diterima dengan syukur dan saya memuji nama Anda di hadapan rakyat. Namun saya harus menulis lagi: pengiriman ketiga belum tiba dan kota menjadi gelisah.\n\nSaya telah menulis tujuh kali. Saya tidak ingin menyusahkan Anda, namun apa lagi yang bisa saya lakukan?\n\nHambamu, Rib-Hadda, gubernur Byblos"
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:19
 #: ../ui/src/emails/ThreadList.tsx:15

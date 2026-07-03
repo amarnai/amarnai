@@ -167,8 +167,8 @@ msgstr "{remaining} de {limit} restantes · se reinicia el {resetDate}"
 msgid "{routableCount} of {TAXONOMY_MIN_NON_ROOT_NODES} folders connected to your inbox. Routing requires at least {TAXONOMY_MIN_NON_ROOT_NODES}."
 msgstr "{routableCount} de {TAXONOMY_MIN_NON_ROOT_NODES} carpetas conectadas a tu bandeja de entrada. El enrutamiento requiere al menos {TAXONOMY_MIN_NON_ROOT_NODES}."
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:269
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:185
+#: ../../apps/mobile/app/(app)/notifications.tsx:276
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:194
 msgid "{selectedCount} selected"
 msgstr "{selectedCount} seleccionados"
 
@@ -373,9 +373,7 @@ msgstr "Se ha recibido una nueva solicitud de Horemheb de Tebas para el puesto d
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "Se ha recibido una nueva solicitud de Horemheb de Tebas para el cargo de Jefe de Correspondencia.\n"
-"\n"
-"Consulte la solicitud en la Casa de los Registros."
+msgstr "Se ha recibido una nueva solicitud de Horemheb de Tebas para el cargo de Jefe de Correspondencia.\n\nConsulte la solicitud en la Casa de los Registros."
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:384
 #, fuzzy
@@ -388,11 +386,7 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "Abdi-Heba,\n"
-"\n"
-"Estaré cerca del Delta esa misma semana. Encontrémonos en la posta el segundo día; puedo dedicar la mañana.\n"
-"\n"
-"Hasta entonces,"
+msgstr "Abdi-Heba,\n\nEstaré cerca del Delta esa misma semana. Encontrémonos en la posta el segundo día; puedo dedicar la mañana.\n\nHasta entonces,"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
@@ -735,8 +729,12 @@ msgstr "Asignadas"
 
 #: ../ui/src/emails/TriageBar.tsx:70
 #, fuzzy
-msgid "Assigned · {assigneeName}"
-msgstr "Asignado · {assigneeName}"
+#~ msgid "Assigned · {assigneeName}"
+#~ msgstr "Asignado · {assigneeName}"
+
+#: ../ui/src/emails/TriageBar.tsx:70
+msgid "Assigned to {assigneeName}"
+msgstr "Asignado a {assigneeName}"
 
 #: ../ui/src/emails/ThreadRow.tsx:174
 #: ../ui/src/emails/TriageBar.tsx:62
@@ -785,11 +783,7 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "Aziru,\n"
-"\n"
-"Sus palabras de amistad nos llegan bien. Estamos dispuestos a escuchar más de lo que propone la casa de Amurru. Envíe sus condiciones con el próximo mensajero.\n"
-"\n"
-"Con nuestros respetos,"
+msgstr "Aziru,\n\nSus palabras de amistad nos llegan bien. Estamos dispuestos a escuchar más de lo que propone la casa de Amurru. Envíe sus condiciones con el próximo mensajero.\n\nCon nuestros respetos,"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:215
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
@@ -1474,11 +1468,11 @@ msgstr "Espacio de trabajo gratuito predeterminado"
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:176
 #: ../../apps/mobile/app/(app)/account.tsx:84
 #: ../../apps/mobile/app/(app)/notifications.tsx:142
-#: ../../apps/mobile/app/(app)/notifications.tsx:231
-#: ../../apps/mobile/app/(app)/notifications.tsx:317
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:197
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:270
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:271
+#: ../../apps/mobile/app/(app)/notifications.tsx:238
+#: ../../apps/mobile/app/(app)/notifications.tsx:324
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:206
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:279
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:280
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:596
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:607
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:703
@@ -1643,9 +1637,12 @@ msgstr "Desconecta este espacio de trabajo. Amarnai mantiene el acceso porque es
 
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:228
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
+#: ../../apps/mobile/src/components/NotificationsSheet.tsx:65
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:367
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:57
 #: ../../apps/web/src/components/JoinedWorkspaceToast.tsx:46
+#: ../../apps/web/src/components/NotificationBell.tsx:195
+#: ../../apps/web/src/components/NotificationBell.tsx:196
 #: ../ui/src/AppDownloadBanner.tsx:80
 #: ../ui/src/emails/MockEmailsPage.tsx:256
 msgid "Dismiss"
@@ -1684,7 +1681,7 @@ msgstr "¿No tienes cuenta? <0>Crea una</0>"
 msgid "Don't have an account? <0>Sign up</0>"
 msgstr "¿No tienes una cuenta? <0>Regístrate</0>"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:254
+#: ../../apps/mobile/app/(app)/notifications.tsx:261
 #: ../../apps/mobile/src/components/ThreadRow.tsx:40
 #: ../ui/src/emails/ThreadRow.tsx:166
 #, fuzzy
@@ -2351,11 +2348,7 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "Gran Rey,\n"
-"\n"
-"Los informes que solicitó serán preparados antes de que el consejo se reúna. Haré que mis escribas compilen los registros de los territorios orientales y los envíen con antelación por mensajero rápido.\n"
-"\n"
-"En hermandad,"
+msgstr "Gran Rey,\n\nLos informes que solicitó serán preparados antes de que el consejo se reúna. Haré que mis escribas compilen los registros de los territorios orientales y los envíen con antelación por mensajero rápido.\n\nEn hermandad,"
 
 #: ../../apps/site/src/components/landing/FinalCTASection.tsx:8
 #, fuzzy
@@ -2756,9 +2749,9 @@ msgstr "Enumera los remitentes, temas y palabras clave que pertenecen aquí. Mí
 msgid "Live"
 msgstr "En vivo"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:294
+#: ../../apps/mobile/app/(app)/notifications.tsx:301
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:95
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:283
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:292
 #: ../ui/src/emails/ThreadList.tsx:238
 #, fuzzy
 msgid "Load more"
@@ -2772,16 +2765,16 @@ msgid "Loading past threads…"
 msgstr "Cargando conversaciones anteriores…"
 
 #: ../../apps/extension/src/panel/NotificationBell.tsx:123
-#: ../../apps/mobile/app/(app)/notifications.tsx:294
+#: ../../apps/mobile/app/(app)/notifications.tsx:301
 #: ../../apps/mobile/src/components/MessageCard.tsx:53
-#: ../../apps/mobile/src/components/NotificationsSheet.tsx:57
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:205
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:283
+#: ../../apps/mobile/src/components/NotificationsSheet.tsx:73
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:214
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:292
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:121
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:137
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:158
 #: ../../apps/web/src/app/loading.tsx:6
-#: ../../apps/web/src/components/NotificationBell.tsx:158
+#: ../../apps/web/src/components/NotificationBell.tsx:177
 #: ../ui/src/emails/MessageCard.tsx:60
 #: ../ui/src/emails/ThreadList.tsx:238
 #, fuzzy
@@ -2799,8 +2792,8 @@ msgid "Manage"
 msgstr "Gestionar"
 
 #: ../../apps/extension/src/panel/NotificationBell.tsx:145
-#: ../../apps/mobile/src/components/NotificationsSheet.tsx:63
-#: ../../apps/web/src/components/NotificationBell.tsx:179
+#: ../../apps/mobile/src/components/NotificationsSheet.tsx:79
+#: ../../apps/web/src/components/NotificationBell.tsx:208
 #, fuzzy
 msgid "Manage notifications"
 msgstr "Gestionar notificaciones"
@@ -2829,9 +2822,9 @@ msgstr "Marcar como hecho"
 msgid "Mark as not done"
 msgstr "Marcar como no hecho"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:208
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:249
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:250
+#: ../../apps/mobile/app/(app)/notifications.tsx:215
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:258
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:259
 msgid "Mark as read"
 msgstr "Marcar como leído"
 
@@ -2841,9 +2834,9 @@ msgstr "Marcar como leído"
 msgid "Mark as sent"
 msgstr "Marcar como enviado"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:208
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:249
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:250
+#: ../../apps/mobile/app/(app)/notifications.tsx:215
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:258
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:259
 #, fuzzy
 msgid "Mark as unread"
 msgstr "Marcar como no leído"
@@ -2862,14 +2855,14 @@ msgstr "Marcar como hecho"
 #~ msgid "Mark invited"
 #~ msgstr "Marcar como invitado"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:307
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:191
+#: ../../apps/mobile/app/(app)/notifications.tsx:314
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:200
 #, fuzzy
 msgid "Mark read"
 msgstr "Marcar leído"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:312
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:194
+#: ../../apps/mobile/app/(app)/notifications.tsx:319
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:203
 msgid "Mark unread"
 msgstr "Marcar no leído"
 
@@ -2879,8 +2872,12 @@ msgid "Marked as done"
 msgstr "Marcado como hecho"
 
 #: ../ui/src/emails/PreviewDoneBar.tsx:21
-msgid "Marked as done · {doneByName}"
-msgstr "Marcado como hecho · {doneByName}"
+#~ msgid "Marked as done · {doneByName}"
+#~ msgstr "Marcado como hecho · {doneByName}"
+
+#: ../ui/src/emails/PreviewDoneBar.tsx:21
+msgid "Marked as done by {doneByName}"
+msgstr "Marcado como completado por {doneByName}"
 
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:198
 #, fuzzy
@@ -3112,10 +3109,10 @@ msgid "No members available"
 msgstr "No hay miembros disponibles"
 
 #: ../../apps/extension/src/panel/NotificationBell.tsx:128
-#: ../../apps/mobile/app/(app)/notifications.tsx:287
-#: ../../apps/mobile/src/components/NotificationsSheet.tsx:57
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:207
-#: ../../apps/web/src/components/NotificationBell.tsx:161
+#: ../../apps/mobile/app/(app)/notifications.tsx:294
+#: ../../apps/mobile/src/components/NotificationsSheet.tsx:73
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:216
+#: ../../apps/web/src/components/NotificationBell.tsx:180
 #, fuzzy
 msgid "No notifications yet"
 msgstr "Aún no hay notificaciones"
@@ -3213,18 +3210,18 @@ msgstr "Aún no sincronizado"
 #: ../../apps/extension/src/panel/NotificationBell.tsx:116
 #: ../../apps/extension/src/panel/NotificationBell.tsx:118
 #: ../../apps/mobile/app/(app)/account.tsx:145
-#: ../../apps/mobile/app/(app)/notifications.tsx:249
-#: ../../apps/mobile/src/components/NotificationsSheet.tsx:43
+#: ../../apps/mobile/app/(app)/notifications.tsx:256
+#: ../../apps/mobile/src/components/NotificationsSheet.tsx:49
 #: ../../apps/web/src/app/(app)/notifications/page.tsx:16
-#: ../../apps/web/src/components/NotificationBell.tsx:135
-#: ../../apps/web/src/components/NotificationBell.tsx:150
 #: ../../apps/web/src/components/NotificationBell.tsx:154
+#: ../../apps/web/src/components/NotificationBell.tsx:169
+#: ../../apps/web/src/components/NotificationBell.tsx:173
 #, fuzzy
 msgid "Notifications"
 msgstr "Notificaciones"
 
 #: ../../apps/extension/src/panel/NotificationBell.tsx:101
-#: ../../apps/web/src/components/NotificationBell.tsx:134
+#: ../../apps/web/src/components/NotificationBell.tsx:153
 #, fuzzy
 msgid "Notifications, {unread} unread"
 msgstr "Notificaciones, {unread} sin leer"
@@ -3262,9 +3259,9 @@ msgstr "Abrir navegación"
 msgid "open source email ai"
 msgstr "IA de email de código abierto"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:221
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:259
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:260
+#: ../../apps/mobile/app/(app)/notifications.tsx:228
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:268
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:269
 msgid "Open thread"
 msgstr "Abrir conversación"
 
@@ -3872,11 +3869,7 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "Rib-Hadda,\n"
-"\n"
-"Te escuchamos. Se ha solicitado grano adicional de los depósitos del sur y llegará antes del festival de la cosecha. Pedimos tu paciencia hasta entonces.\n"
-"\n"
-"Que estés bien,"
+msgstr "Rib-Hadda,\n\nTe escuchamos. Se ha solicitado grano adicional de los depósitos del sur y llegará antes del festival de la cosecha. Pedimos tu paciencia hasta entonces.\n\nQue estés bien,"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -3965,7 +3958,7 @@ msgstr "Buscar conversaciones…"
 msgid "See how your inbox is sorted, right next to Gmail."
 msgstr "Mira cómo se organiza tu bandeja de entrada, directamente en Gmail."
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:254
+#: ../../apps/mobile/app/(app)/notifications.tsx:261
 msgid "Select"
 msgstr "Seleccionar"
 
@@ -3976,14 +3969,14 @@ msgstr "Seleccionar"
 msgid "Select a thread to preview"
 msgstr "Seleccionar una conversación para previsualizar"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:269
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:183
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:185
+#: ../../apps/mobile/app/(app)/notifications.tsx:276
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:192
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:194
 #, fuzzy
 msgid "Select all"
 msgstr "Seleccionar todo"
 
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:225
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:234
 msgid "Select notification"
 msgstr "Seleccionar notificación"
 
@@ -4676,13 +4669,7 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "A mi hermano, el Gran Rey,\n"
-"\n"
-"El gran consejo se reúne al comienzo de Shemu. Pido que prepares un informe completo de los territorios orientales y lo envíes con antelación por mensajero rápido, antes de la luna nueva si es posible.\n"
-"\n"
-"Nuestra alianza es fuerte. Mostremos al consejo que así permanece.\n"
-"\n"
-"Tushratta, Gran Rey de Mitanni"
+msgstr "A mi hermano, el Gran Rey,\n\nEl gran consejo se reúne al comienzo de Shemu. Pido que prepares un informe completo de los territorios orientales y lo envíes con antelación por mensajero rápido, antes de la luna nueva si es posible.\n\nNuestra alianza es fuerte. Mostremos al consejo que así permanece.\n\nTushratta, Gran Rey de Mitanni"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:163
 #, fuzzy
@@ -4691,11 +4678,7 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "A la Oficina de Nombramientos Reales,\n"
-"\n"
-"Hemos recibido la solicitud de Horemheb de Tebas y revisaremos su historial antes de la próxima luna nueva. Infórmele, por favor, de que enviaremos noticias a su debido tiempo.\n"
-"\n"
-"Por decreto real,"
+msgstr "A la Oficina de Nombramientos Reales,\n\nHemos recibido la solicitud de Horemheb de Tebas y revisaremos su historial antes de la próxima luna nueva. Infórmele, por favor, de que enviaremos noticias a su debido tiempo.\n\nPor decreto real,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:275
 #, fuzzy
@@ -4706,13 +4689,7 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "Al Gran Rey,\n"
-"\n"
-"Durante muchos años, nuestras casas han sido como hermanas. Escribo ahora para proponer que formalicemos esta amistad en beneficio de nuestros dos pueblos: un pacto de protección mutua y rutas compartidas.\n"
-"\n"
-"Solo pido que escuche mis condiciones. Envíe un mensaje con el próximo mensajero y enviaré a mi enviado de inmediato.\n"
-"\n"
-"Aziru, siervo del Gran Rey, señor de Amurru"
+msgstr "Al Gran Rey,\n\nDurante muchos años, nuestras casas han sido como hermanas. Escribo ahora para proponer que formalicemos esta amistad en beneficio de nuestros dos pueblos: un pacto de protección mutua y rutas compartidas.\n\nSolo pido que escuche mis condiciones. Envíe un mensaje con el próximo mensajero y enviaré a mi enviado de inmediato.\n\nAziru, siervo del Gran Rey, señor de Amurru"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:388
 #, fuzzy
@@ -4721,11 +4698,7 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "Al Gran Rey,\n"
-"\n"
-"Mis viajes me acercan al Delta en los próximos días. Si el Gran Rey tiene una hora libre, agradecería la oportunidad de hablar cara a cara; hay asuntos más fáciles de decir que de escribir.\n"
-"\n"
-"Su siervo, Abdi-Heba, gobernador de Urushalim"
+msgstr "Al Gran Rey,\n\nMis viajes me acercan al Delta en los próximos días. Si el Gran Rey tiene una hora libre, agradecería la oportunidad de hablar cara a cara; hay asuntos más fáciles de decir que de escribir.\n\nSu siervo, Abdi-Heba, gobernador de Urushalim"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:153
 #, fuzzy
@@ -4734,11 +4707,7 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "Al Gran Rey, mi hermano,\n"
-"\n"
-"He oído tus palabras. El oro será enviado antes de que parta el próximo mensajero. Valoramos el lazo entre nuestras casas y no deseamos que se enfríe.\n"
-"\n"
-"En amistad,"
+msgstr "Al Gran Rey, mi hermano,\n\nHe oído tus palabras. El oro será enviado antes de que parta el próximo mensajero. Valoramos el lazo entre nuestras casas y no deseamos que se enfríe.\n\nEn amistad,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:236
 #, fuzzy
@@ -4749,13 +4718,7 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "Al Gran Rey, mi hermano,\n"
-"\n"
-"Escribo en amistad, como escribieron nuestros padres antes que nosotros. El tercer cargamento de oro acordado en nuestro tratado no ha llegado. Dos mensajeros han pasado y aún esperamos.\n"
-"\n"
-"Pedimos que lo envíe sin más demora, como corresponde al lazo entre nuestras casas.\n"
-"\n"
-"Burna-Buriash II, Rey de Babilonia"
+msgstr "Al Gran Rey, mi hermano,\n\nEscribo en amistad, como escribieron nuestros padres antes que nosotros. El tercer cargamento de oro acordado en nuestro tratado no ha llegado. Dos mensajeros han pasado y aún esperamos.\n\nPedimos que lo envíe sin más demora, como corresponde al lazo entre nuestras casas.\n\nBurna-Buriash II, Rey de Babilonia"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:349
 msgid "To the Great King, my lord, my sun,\n"
@@ -4765,13 +4728,7 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "Al Gran Rey, mi señor, mi sol,\n"
-"\n"
-"El grano que enviaste el mes pasado fue recibido con gratitud y alabé tu nombre ante el pueblo. Pero debo escribir de nuevo: el tercer envío no ha llegado y la ciudad se agita.\n"
-"\n"
-"He escrito siete veces. No deseo molestarte, pero ¿qué más puedo hacer?\n"
-"\n"
-"Tu siervo, Rib-Hadda, gobernador de Byblos"
+msgstr "Al Gran Rey, mi señor, mi sol,\n\nEl grano que enviaste el mes pasado fue recibido con gratitud y alabé tu nombre ante el pueblo. Pero debo escribir de nuevo: el tercer envío no ha llegado y la ciudad se agita.\n\nHe escrito siete veces. No deseo molestarte, pero ¿qué más puedo hacer?\n\nTu siervo, Rib-Hadda, gobernador de Byblos"
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:19
 #: ../ui/src/emails/ThreadList.tsx:15

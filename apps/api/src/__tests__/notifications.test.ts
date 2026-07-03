@@ -36,6 +36,60 @@ describe("GET /notifications", () => {
       expect.objectContaining({ where: expect.objectContaining({ userId: TEST_USER_ID }) }),
     );
   });
+
+  it("does not filter dismissed rows by default (full feed)", async () => {
+    vi.mocked(db.notification.findMany).mockResolvedValue([] as never);
+
+    await app.request("/notifications", authed());
+
+    const where = vi.mocked(db.notification.findMany).mock.calls[0]?.[0]?.where;
+    expect(where).not.toHaveProperty("dismissedAt");
+  });
+
+  it("hides dismissed rows when undismissed=1 (pop-up feed)", async () => {
+    vi.mocked(db.notification.findMany).mockResolvedValue([] as never);
+
+    await app.request("/notifications?undismissed=1", authed());
+
+    expect(db.notification.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({ userId: TEST_USER_ID, dismissedAt: null }),
+      }),
+    );
+  });
+});
+
+describe("POST /notifications/dismiss", () => {
+  it("stamps dismissedAt and readAt, scoped to the user", async () => {
+    vi.mocked(db.notification.updateMany).mockResolvedValue({ count: 2 } as never);
+
+    const res = await app.request(
+      "/notifications/dismiss",
+      authed({ method: "POST", body: JSON.stringify({ ids: ["n1", "n2"] }) }),
+    );
+
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({ ok: true, dismissed: 2 });
+    // First: dismiss the still-undismissed rows.
+    expect(db.notification.updateMany).toHaveBeenNthCalledWith(1, {
+      where: { id: { in: ["n1", "n2"] }, userId: TEST_USER_ID, dismissedAt: null },
+      data: { dismissedAt: expect.any(Date) },
+    });
+    // Then: seen-implies-read on any still-unread rows.
+    expect(db.notification.updateMany).toHaveBeenNthCalledWith(2, {
+      where: { id: { in: ["n1", "n2"] }, userId: TEST_USER_ID, readAt: null },
+      data: { readAt: expect.any(Date) },
+    });
+  });
+
+  it("rejects an empty id list", async () => {
+    const res = await app.request(
+      "/notifications/dismiss",
+      authed({ method: "POST", body: JSON.stringify({ ids: [] }) }),
+    );
+    expect(res.status).toBe(400);
+    expect(db.notification.updateMany).not.toHaveBeenCalled();
+  });
 });
 
 describe("GET /notifications/unread-count", () => {

@@ -18,7 +18,7 @@ export function PreviewDoneBar({ isDone, doneMark, onMark, onUnmark, showDoneBy 
   const label =
     isDone && doneMark
       ? showDoneBy
-        ? i18n._(msg`Marked as done · ${doneByName}`)
+        ? i18n._(msg`Marked as done by ${doneByName}`)
         : i18n._(msg`Marked as done`)
       : i18n._(msg`Mark as done`);
   return (

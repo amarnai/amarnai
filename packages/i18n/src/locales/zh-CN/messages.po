@@ -167,8 +167,8 @@ msgstr "剩余 {remaining} / {limit} · {resetDate} 重置"
 msgid "{routableCount} of {TAXONOMY_MIN_NON_ROOT_NODES} folders connected to your inbox. Routing requires at least {TAXONOMY_MIN_NON_ROOT_NODES}."
 msgstr "您的收件箱已连接 {routableCount} / {TAXONOMY_MIN_NON_ROOT_NODES} 个文件夹。路由至少需要 {TAXONOMY_MIN_NON_ROOT_NODES} 个文件夹。"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:269
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:185
+#: ../../apps/mobile/app/(app)/notifications.tsx:276
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:194
 msgid "{selectedCount} selected"
 msgstr "{selectedCount} 已选中"
 
@@ -373,9 +373,7 @@ msgstr "收到赫伦希布（底比斯）的首席文书官职位申请。"
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "已收到底比斯的霍伦海布呈报的文书长职位申请。\n"
-"\n"
-"请在记录馆查看该申请。"
+msgstr "已收到底比斯的霍伦海布呈报的文书长职位申请。\n\n请在记录馆查看该申请。"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:384
 #, fuzzy
@@ -388,11 +386,7 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "阿卜迪-赫巴，\n"
-"\n"
-"同周我将行至三角洲附近。我们可在第二日于驿站会面；我可抽出上午时间。\n"
-"\n"
-"届时再叙，"
+msgstr "阿卜迪-赫巴，\n\n同周我将行至三角洲附近。我们可在第二日于驿站会面；我可抽出上午时间。\n\n届时再叙，"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
@@ -735,8 +729,12 @@ msgstr "已指派"
 
 #: ../ui/src/emails/TriageBar.tsx:70
 #, fuzzy
-msgid "Assigned · {assigneeName}"
-msgstr "已分配 · {assigneeName}"
+#~ msgid "Assigned · {assigneeName}"
+#~ msgstr "已分配 · {assigneeName}"
+
+#: ../ui/src/emails/TriageBar.tsx:70
+msgid "Assigned to {assigneeName}"
+msgstr "分配给 {assigneeName}"
 
 #: ../ui/src/emails/ThreadRow.tsx:174
 #: ../ui/src/emails/TriageBar.tsx:62
@@ -785,11 +783,7 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "阿齐鲁，\n"
-"\n"
-"你的友谊之言我们已悉。阿穆鲁家族有何提议，我们愿闻其详。请速派下一信使呈上你的条件。\n"
-"\n"
-"此致，"
+msgstr "阿齐鲁，\n\n你的友谊之言我们已悉。阿穆鲁家族有何提议，我们愿闻其详。请速派下一信使呈上你的条件。\n\n此致，"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:215
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
@@ -1474,11 +1468,11 @@ msgstr "默认免费工作区"
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:176
 #: ../../apps/mobile/app/(app)/account.tsx:84
 #: ../../apps/mobile/app/(app)/notifications.tsx:142
-#: ../../apps/mobile/app/(app)/notifications.tsx:231
-#: ../../apps/mobile/app/(app)/notifications.tsx:317
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:197
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:270
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:271
+#: ../../apps/mobile/app/(app)/notifications.tsx:238
+#: ../../apps/mobile/app/(app)/notifications.tsx:324
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:206
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:279
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:280
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:596
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:607
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:703
@@ -1643,9 +1637,12 @@ msgstr "断开此工作区连接。Amarnai仍保留访问权限，因为此邮�
 
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:228
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
+#: ../../apps/mobile/src/components/NotificationsSheet.tsx:65
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:367
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:57
 #: ../../apps/web/src/components/JoinedWorkspaceToast.tsx:46
+#: ../../apps/web/src/components/NotificationBell.tsx:195
+#: ../../apps/web/src/components/NotificationBell.tsx:196
 #: ../ui/src/AppDownloadBanner.tsx:80
 #: ../ui/src/emails/MockEmailsPage.tsx:256
 msgid "Dismiss"
@@ -1684,7 +1681,7 @@ msgstr "没有账户？<0>立即注册</0>"
 msgid "Don't have an account? <0>Sign up</0>"
 msgstr "没有账户？<0>注册</0>"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:254
+#: ../../apps/mobile/app/(app)/notifications.tsx:261
 #: ../../apps/mobile/src/components/ThreadRow.tsx:40
 #: ../ui/src/emails/ThreadRow.tsx:166
 #, fuzzy
@@ -2351,11 +2348,7 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "大王，\n"
-"\n"
-"你所要求之呈报，将在议会召开前备妥。我将命抄写员汇编东方领地的账目，并派快马先行送呈。\n"
-"\n"
-"兄弟情谊，"
+msgstr "大王，\n\n你所要求之呈报，将在议会召开前备妥。我将命抄写员汇编东方领地的账目，并派快马先行送呈。\n\n兄弟情谊，"
 
 #: ../../apps/site/src/components/landing/FinalCTASection.tsx:8
 #, fuzzy
@@ -2756,9 +2749,9 @@ msgstr "在此处列出相关的发件人、主题和关键词。至少 {minDesc
 msgid "Live"
 msgstr "实时"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:294
+#: ../../apps/mobile/app/(app)/notifications.tsx:301
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:95
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:283
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:292
 #: ../ui/src/emails/ThreadList.tsx:238
 #, fuzzy
 msgid "Load more"
@@ -2772,16 +2765,16 @@ msgid "Loading past threads…"
 msgstr "正在加载过去的会话…"
 
 #: ../../apps/extension/src/panel/NotificationBell.tsx:123
-#: ../../apps/mobile/app/(app)/notifications.tsx:294
+#: ../../apps/mobile/app/(app)/notifications.tsx:301
 #: ../../apps/mobile/src/components/MessageCard.tsx:53
-#: ../../apps/mobile/src/components/NotificationsSheet.tsx:57
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:205
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:283
+#: ../../apps/mobile/src/components/NotificationsSheet.tsx:73
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:214
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:292
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:121
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:137
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:158
 #: ../../apps/web/src/app/loading.tsx:6
-#: ../../apps/web/src/components/NotificationBell.tsx:158
+#: ../../apps/web/src/components/NotificationBell.tsx:177
 #: ../ui/src/emails/MessageCard.tsx:60
 #: ../ui/src/emails/ThreadList.tsx:238
 #, fuzzy
@@ -2799,8 +2792,8 @@ msgid "Manage"
 msgstr "管理"
 
 #: ../../apps/extension/src/panel/NotificationBell.tsx:145
-#: ../../apps/mobile/src/components/NotificationsSheet.tsx:63
-#: ../../apps/web/src/components/NotificationBell.tsx:179
+#: ../../apps/mobile/src/components/NotificationsSheet.tsx:79
+#: ../../apps/web/src/components/NotificationBell.tsx:208
 #, fuzzy
 msgid "Manage notifications"
 msgstr "管理通知"
@@ -2829,9 +2822,9 @@ msgstr "标记为完成"
 msgid "Mark as not done"
 msgstr "标记为未完成"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:208
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:249
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:250
+#: ../../apps/mobile/app/(app)/notifications.tsx:215
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:258
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:259
 msgid "Mark as read"
 msgstr "标记为已读"
 
@@ -2841,9 +2834,9 @@ msgstr "标记为已读"
 msgid "Mark as sent"
 msgstr "标记为已发送"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:208
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:249
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:250
+#: ../../apps/mobile/app/(app)/notifications.tsx:215
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:258
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:259
 #, fuzzy
 msgid "Mark as unread"
 msgstr "标记为未读"
@@ -2862,14 +2855,14 @@ msgstr "标记为完成"
 #~ msgid "Mark invited"
 #~ msgstr "标记为已邀请"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:307
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:191
+#: ../../apps/mobile/app/(app)/notifications.tsx:314
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:200
 #, fuzzy
 msgid "Mark read"
 msgstr "标为已读"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:312
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:194
+#: ../../apps/mobile/app/(app)/notifications.tsx:319
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:203
 msgid "Mark unread"
 msgstr "标为未读"
 
@@ -2879,8 +2872,12 @@ msgid "Marked as done"
 msgstr "已标记为完成"
 
 #: ../ui/src/emails/PreviewDoneBar.tsx:21
-msgid "Marked as done · {doneByName}"
-msgstr "已标记为完成 · {doneByName}"
+#~ msgid "Marked as done · {doneByName}"
+#~ msgstr "已标记为完成 · {doneByName}"
+
+#: ../ui/src/emails/PreviewDoneBar.tsx:21
+msgid "Marked as done by {doneByName}"
+msgstr "由 {doneByName} 标记为完成"
 
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:198
 #, fuzzy
@@ -3112,10 +3109,10 @@ msgid "No members available"
 msgstr "无可用成员"
 
 #: ../../apps/extension/src/panel/NotificationBell.tsx:128
-#: ../../apps/mobile/app/(app)/notifications.tsx:287
-#: ../../apps/mobile/src/components/NotificationsSheet.tsx:57
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:207
-#: ../../apps/web/src/components/NotificationBell.tsx:161
+#: ../../apps/mobile/app/(app)/notifications.tsx:294
+#: ../../apps/mobile/src/components/NotificationsSheet.tsx:73
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:216
+#: ../../apps/web/src/components/NotificationBell.tsx:180
 #, fuzzy
 msgid "No notifications yet"
 msgstr "暂无通知"
@@ -3213,18 +3210,18 @@ msgstr "尚未同步"
 #: ../../apps/extension/src/panel/NotificationBell.tsx:116
 #: ../../apps/extension/src/panel/NotificationBell.tsx:118
 #: ../../apps/mobile/app/(app)/account.tsx:145
-#: ../../apps/mobile/app/(app)/notifications.tsx:249
-#: ../../apps/mobile/src/components/NotificationsSheet.tsx:43
+#: ../../apps/mobile/app/(app)/notifications.tsx:256
+#: ../../apps/mobile/src/components/NotificationsSheet.tsx:49
 #: ../../apps/web/src/app/(app)/notifications/page.tsx:16
-#: ../../apps/web/src/components/NotificationBell.tsx:135
-#: ../../apps/web/src/components/NotificationBell.tsx:150
 #: ../../apps/web/src/components/NotificationBell.tsx:154
+#: ../../apps/web/src/components/NotificationBell.tsx:169
+#: ../../apps/web/src/components/NotificationBell.tsx:173
 #, fuzzy
 msgid "Notifications"
 msgstr "通知"
 
 #: ../../apps/extension/src/panel/NotificationBell.tsx:101
-#: ../../apps/web/src/components/NotificationBell.tsx:134
+#: ../../apps/web/src/components/NotificationBell.tsx:153
 #, fuzzy
 msgid "Notifications, {unread} unread"
 msgstr "通知，{unread} 条未读"
@@ -3262,9 +3259,9 @@ msgstr "打开导航"
 msgid "open source email ai"
 msgstr "开源邮件AI"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:221
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:259
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:260
+#: ../../apps/mobile/app/(app)/notifications.tsx:228
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:268
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:269
 msgid "Open thread"
 msgstr "打开会话"
 
@@ -3871,11 +3868,7 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "里布-哈达，\n"
-"\n"
-"你的呼吁，我们已收到。已从南方粮仓加订谷物，并将在丰收节前抵达。在此期间，请你耐心等候。\n"
-"\n"
-"保重，"
+msgstr "里布-哈达，\n\n你的呼吁，我们已收到。已从南方粮仓加订谷物，并将在丰收节前抵达。在此期间，请你耐心等候。\n\n保重，"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -3964,7 +3957,7 @@ msgstr "搜索会话…"
 msgid "See how your inbox is sorted, right next to Gmail."
 msgstr "在 Gmail 旁，直观查看收件箱分类。"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:254
+#: ../../apps/mobile/app/(app)/notifications.tsx:261
 msgid "Select"
 msgstr "选择"
 
@@ -3975,14 +3968,14 @@ msgstr "选择"
 msgid "Select a thread to preview"
 msgstr "选择一个会话进行预览"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:269
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:183
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:185
+#: ../../apps/mobile/app/(app)/notifications.tsx:276
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:192
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:194
 #, fuzzy
 msgid "Select all"
 msgstr "全选"
 
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:225
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:234
 msgid "Select notification"
 msgstr "选择通知"
 
@@ -4675,13 +4668,7 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "致吾兄，大王，\n"
-"\n"
-"大议会将于谢穆月初召开。我请求你备妥东方领地的详尽账目，并请快马先行送呈，如可能，请在新月之前。\n"
-"\n"
-"吾等盟约坚固。愿我们向议会昭示其一如既往。\n"
-"\n"
-"图什拉塔，米坦尼大王"
+msgstr "致吾兄，大王，\n\n大议会将于谢穆月初召开。我请求你备妥东方领地的详尽账目，并请快马先行送呈，如可能，请在新月之前。\n\n吾等盟约坚固。愿我们向议会昭示其一如既往。\n\n图什拉塔，米坦尼大王"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:163
 #, fuzzy
@@ -4690,11 +4677,7 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "致王室任命局，\n"
-"\n"
-"我们已收到底比斯的霍伦海布之申请，并将在下一新月前审查其记录。请告知他，我们将在适当时候回复。\n"
-"\n"
-"奉谕，"
+msgstr "致王室任命局，\n\n我们已收到底比斯的霍伦海布之申请，并将在下一新月前审查其记录。请告知他，我们将在适当时候回复。\n\n奉谕，"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:275
 #, fuzzy
@@ -4705,13 +4688,7 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "致大王，\n"
-"\n"
-"多年以来，吾等两家情同手足。今特致函，愿将此友谊正式化，以惠及吾等两族：订立互助盟约，共享商道。\n"
-"\n"
-"我只恳请大王倾听我的条件。请速派下一信使回复，我将立即派遣使者前往。\n"
-"\n"
-"阿齐鲁，大王之仆，阿穆鲁之主"
+msgstr "致大王，\n\n多年以来，吾等两家情同手足。今特致函，愿将此友谊正式化，以惠及吾等两族：订立互助盟约，共享商道。\n\n我只恳请大王倾听我的条件。请速派下一信使回复，我将立即派遣使者前往。\n\n阿齐鲁，大王之仆，阿穆鲁之主"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:388
 #, fuzzy
@@ -4720,11 +4697,7 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "致大王，\n"
-"\n"
-"吾近期旅程将近三角洲一带。如大王能拨冗一小时，我愿与你面谈；有些事，口头陈述胜于笔墨。\n"
-"\n"
-"你的仆人，阿卜迪-赫巴，乌鲁沙利姆总督"
+msgstr "致大王，\n\n吾近期旅程将近三角洲一带。如大王能拨冗一小时，我愿与你面谈；有些事，口头陈述胜于笔墨。\n\n你的仆人，阿卜迪-赫巴，乌鲁沙利姆总督"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:153
 #, fuzzy
@@ -4733,11 +4706,7 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "致吾兄，大王，\n"
-"\n"
-"你之言语，我已听闻。黄金将在下一信使启程前发出。吾等珍视两家情谊，不愿其冷却。\n"
-"\n"
-"友谊长存，"
+msgstr "致吾兄，大王，\n\n你之言语，我已听闻。黄金将在下一信使启程前发出。吾等珍视两家情谊，不愿其冷却。\n\n友谊长存，"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:236
 #, fuzzy
@@ -4748,13 +4717,7 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "致吾兄，大王，\n"
-"\n"
-"我以友谊之名致函，正如我等父辈昔日所为。依照盟约，第三批黄金仍未抵达。两批信使已过，吾等仍在等候。\n"
-"\n"
-"吾等恳请你勿再延误，速将其发出，以维系吾等两家之盟谊。\n"
-"\n"
-"布尔那-布里亚什二世，巴比伦国王"
+msgstr "致吾兄，大王，\n\n我以友谊之名致函，正如我等父辈昔日所为。依照盟约，第三批黄金仍未抵达。两批信使已过，吾等仍在等候。\n\n吾等恳请你勿再延误，速将其发出，以维系吾等两家之盟谊。\n\n布尔那-布里亚什二世，巴比伦国王"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:349
 msgid "To the Great King, my lord, my sun,\n"
@@ -4764,13 +4727,7 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "致大王，吾主，吾日，\n"
-"\n"
-"上月你所赐谷物，吾等不胜感激，吾亦在民众面前颂扬大王之名。然我不得不再次致函：第三批谷物尚未抵达，城中民心骚动不安。\n"
-"\n"
-"我已七度致函。我实不愿劳烦大王，然此外我能奈何？\n"
-"\n"
-"你的仆人，里布-哈达，比布鲁斯总督"
+msgstr "致大王，吾主，吾日，\n\n上月你所赐谷物，吾等不胜感激，吾亦在民众面前颂扬大王之名。然我不得不再次致函：第三批谷物尚未抵达，城中民心骚动不安。\n\n我已七度致函。我实不愿劳烦大王，然此外我能奈何？\n\n你的仆人，里布-哈达，比布鲁斯总督"
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:19
 #: ../ui/src/emails/ThreadList.tsx:15

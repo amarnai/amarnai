@@ -307,10 +307,18 @@ export function makeApiClient(transport: ApiTransport) {
       ),
 
     // ── Notifications (user-scoped) ────────────────────────────────────────────
-    notifications: (cursor?: string, limit?: number) => {
+    // `undismissedOnly` powers the bell pop-up feed: it hides notifications the
+    // user has already dealt with. The full notifications page omits it and gets
+    // everything, dismissed rows included.
+    notifications: (
+      cursor?: string,
+      limit?: number,
+      opts?: { undismissedOnly?: boolean }
+    ) => {
       const qs = new URLSearchParams();
       if (cursor) qs.set("cursor", cursor);
       if (limit !== undefined) qs.set("limit", String(limit));
+      if (opts?.undismissedOnly) qs.set("undismissed", "1");
       const suffix = qs.toString() ? `?${qs.toString()}` : "";
       return apiFetch<NotificationListResult>(`/notifications${suffix}`);
     },
@@ -328,6 +336,12 @@ export function makeApiClient(transport: ApiTransport) {
     // ignored server-side. Used by the notifications manager (per-row + batch).
     updateNotifications: (ids: string[], read: boolean) =>
       apiMutate<{ ok: boolean; updated: number }>("/notifications/update", "POST", { ids, read }),
+
+    // Batch dismiss: mark as dealt-with so they leave the bell pop-up feed
+    // (they remain on the full notifications page). Accepts one id or a
+    // selection; foreign ids are ignored server-side.
+    dismissNotifications: (ids: string[]) =>
+      apiMutate<{ ok: boolean; dismissed: number }>("/notifications/dismiss", "POST", { ids }),
 
     // Batch delete. Accepts one id or a selection; foreign ids are ignored.
     deleteNotifications: (ids: string[]) =>

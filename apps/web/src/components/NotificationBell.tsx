@@ -34,6 +34,14 @@ function BellIcon() {
   );
 }
 
+function DismissIcon() {
+  return (
+    <svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden>
+      <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 export function NotificationBell({ currentWorkspaceId }: { currentWorkspaceId: string | null }) {
   const router = useRouter();
   const { i18n } = useLingui();
@@ -89,7 +97,7 @@ export function NotificationBell({ currentWorkspaceId }: { currentWorkspaceId: s
       // Load the feed and mark everything read on open. The badge clears
       // immediately; the server call is best-effort.
       setLoading(true);
-      api.notifications(undefined, 30)
+      api.notifications(undefined, 30, { undismissedOnly: true })
         .then(({ notifications }) => setItems(notifications))
         .catch(() => {})
         .finally(() => setLoading(false));
@@ -100,8 +108,19 @@ export function NotificationBell({ currentWorkspaceId }: { currentWorkspaceId: s
     }
   }
 
+  // Drop a notification from the pop-up feed and persist the dismissal. The row
+  // leaves the local list immediately; the server call is best-effort. Dismissed
+  // notifications stay on the full notifications page.
+  function dismiss(id: string) {
+    setItems((prev) => prev.filter((n) => n.id !== id));
+    api.dismissNotifications([id]).catch(() => {});
+  }
+
   function openNotification(n: NotificationItem) {
     setOpen(false);
+    // Clicking through counts as dealing with it: dismiss so it won't reappear
+    // in the pop-up on next open.
+    dismiss(n.id);
     const threadId = str(n.params["threadId"]);
     if (!threadId) return;
     const target = `/emails?t=${encodeURIComponent(threadId)}`;
@@ -161,14 +180,24 @@ export function NotificationBell({ currentWorkspaceId }: { currentWorkspaceId: s
               <div className="notif-panel-empty"><Trans>No notifications yet</Trans></div>
             )}
             {!loading && items.map((n) => (
-              <button
-                key={n.id}
-                type="button"
-                className={`notif-item${n.readAt ? "" : " is-unread"}`}
-                onClick={() => openNotification(n)}
-              >
-                <span className="notif-item-text">{describeNotification(n, i18n).title}</span>
-              </button>
+              <div key={n.id} className={`notif-item${n.readAt ? "" : " is-unread"}`}>
+                <button
+                  type="button"
+                  className="notif-item-main"
+                  onClick={() => openNotification(n)}
+                >
+                  <span className="notif-item-text">{describeNotification(n, i18n).title}</span>
+                </button>
+                <button
+                  type="button"
+                  className="notif-item-dismiss"
+                  onClick={() => dismiss(n.id)}
+                  aria-label={_(msg`Dismiss`)}
+                  title={_(msg`Dismiss`)}
+                >
+                  <DismissIcon />
+                </button>
+              </div>
             ))}
           </div>
           <button

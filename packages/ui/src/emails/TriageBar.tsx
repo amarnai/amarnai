@@ -67,7 +67,7 @@ export function TriageBar({
             <path d="M2 10.2c0-2.1 1.8-3.4 4-3.4s4 1.3 4 3.4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
           </svg>
           {assignment
-            ? i18n._(msg`Assigned · ${assigneeName}`)
+            ? i18n._(msg`Assigned to ${assigneeName}`)
             : i18n._(msg`Assign`)}
         </button>
       )}

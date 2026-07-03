@@ -77,7 +77,7 @@ export function NotificationBell() {
     if (next) {
       setLoading(true);
       client
-        .notifications(undefined, 30)
+        .notifications(undefined, 30, { undismissedOnly: true })
         .then(({ notifications }) => setItems(notifications))
         .catch(() => {})
         .finally(() => setLoading(false));

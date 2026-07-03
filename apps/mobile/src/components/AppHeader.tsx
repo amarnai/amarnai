@@ -40,7 +40,7 @@ function WorkspaceHeader({ paddingTop }: { paddingTop: number }) {
   const [pickerOpen, setPickerOpen] = useState(false);
   const [newWorkspaceOpen, setNewWorkspaceOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
-  const { unread, items, loading, load, markAllRead } = useNotifications();
+  const { unread, items, loading, load, markAllRead, dismiss } = useNotifications();
 
   const active = workspaces.find((w) => w.id === workspaceId) ?? null;
 
@@ -86,6 +86,7 @@ function WorkspaceHeader({ paddingTop }: { paddingTop: number }) {
         items={items}
         loading={loading}
         onClose={() => setNotificationsOpen(false)}
+        onDismiss={dismiss}
         onManage={() => {
           setNotificationsOpen(false);
           router.push('/notifications');

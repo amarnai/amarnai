@@ -167,8 +167,8 @@ msgstr "{limit} 件中 {remaining} 件利用可能 · {resetDate} にリセッ�
 msgid "{routableCount} of {TAXONOMY_MIN_NON_ROOT_NODES} folders connected to your inbox. Routing requires at least {TAXONOMY_MIN_NON_ROOT_NODES}."
 msgstr "受信トレイに接続されているフォルダは {TAXONOMY_MIN_NON_ROOT_NODES} 件中 {routableCount} 件です。ルーティングには少なくとも {TAXONOMY_MIN_NON_ROOT_NODES} 件が必要です。"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:269
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:185
+#: ../../apps/mobile/app/(app)/notifications.tsx:276
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:194
 msgid "{selectedCount} selected"
 msgstr "{selectedCount} 件選択済み"
 
@@ -373,9 +373,7 @@ msgstr "「通信長」の職に、テベスのホルエムヘブ氏から新規
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "テーベのホレムヘブより、通信長官職への応募がありました。\n"
-"\n"
-"応募書類は記録の館でご確認ください。"
+msgstr "テーベのホレムヘブより、通信長官職への応募がありました。\n\n応募書類は記録の館でご確認ください。"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:384
 #, fuzzy
@@ -388,11 +386,7 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "アブディ＝ヘバ殿、\n"
-"\n"
-"同週にデルタ地方近郊に参ります。二日目の午前中でしたら、宿駅でお会いできます。\n"
-"\n"
-"ではまた、"
+msgstr "アブディ＝ヘバ殿、\n\n同週にデルタ地方近郊に参ります。二日目の午前中でしたら、宿駅でお会いできます。\n\nではまた、"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
@@ -735,8 +729,12 @@ msgstr "アサイン済み"
 
 #: ../ui/src/emails/TriageBar.tsx:70
 #, fuzzy
-msgid "Assigned · {assigneeName}"
-msgstr "担当者 · {assigneeName}"
+#~ msgid "Assigned · {assigneeName}"
+#~ msgstr "担当者 · {assigneeName}"
+
+#: ../ui/src/emails/TriageBar.tsx:70
+msgid "Assigned to {assigneeName}"
+msgstr "{assigneeName}が担当"
 
 #: ../ui/src/emails/ThreadRow.tsx:174
 #: ../ui/src/emails/TriageBar.tsx:62
@@ -785,11 +783,7 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "アジル殿、\n"
-"\n"
-"貴殿の友情の言葉、謹んで拝聴いたしました。アムル家のご提案、ぜひ詳しくお聞かせください。次回の使者にて、条件をご送付ください。\n"
-"\n"
-"敬具、"
+msgstr "アジル殿、\n\n貴殿の友情の言葉、謹んで拝聴いたしました。アムル家のご提案、ぜひ詳しくお聞かせください。次回の使者にて、条件をご送付ください。\n\n敬具、"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:215
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
@@ -1474,11 +1468,11 @@ msgstr "デフォルトの無料ワークスペース"
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:176
 #: ../../apps/mobile/app/(app)/account.tsx:84
 #: ../../apps/mobile/app/(app)/notifications.tsx:142
-#: ../../apps/mobile/app/(app)/notifications.tsx:231
-#: ../../apps/mobile/app/(app)/notifications.tsx:317
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:197
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:270
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:271
+#: ../../apps/mobile/app/(app)/notifications.tsx:238
+#: ../../apps/mobile/app/(app)/notifications.tsx:324
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:206
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:279
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:280
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:596
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:607
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:703
@@ -1643,9 +1637,12 @@ msgstr "このワークスペースを切断します。このメールボック
 
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:228
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
+#: ../../apps/mobile/src/components/NotificationsSheet.tsx:65
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:367
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:57
 #: ../../apps/web/src/components/JoinedWorkspaceToast.tsx:46
+#: ../../apps/web/src/components/NotificationBell.tsx:195
+#: ../../apps/web/src/components/NotificationBell.tsx:196
 #: ../ui/src/AppDownloadBanner.tsx:80
 #: ../ui/src/emails/MockEmailsPage.tsx:256
 msgid "Dismiss"
@@ -1684,7 +1681,7 @@ msgstr "アカウントをお持ちでないですか？<0>アカウントを作
 msgid "Don't have an account? <0>Sign up</0>"
 msgstr "アカウントをお持ちではありませんか？ <0>サインアップ</0>"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:254
+#: ../../apps/mobile/app/(app)/notifications.tsx:261
 #: ../../apps/mobile/src/components/ThreadRow.tsx:40
 #: ../ui/src/emails/ThreadRow.tsx:166
 #, fuzzy
@@ -2351,11 +2348,7 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "大王陛下、\n"
-"\n"
-"ご依頼の報告書は、評議会開催前に準備いたします。東方領土の記録は書記官にまとめさせ、速使にて先行してお送りいたします。\n"
-"\n"
-"敬具、"
+msgstr "大王陛下、\n\nご依頼の報告書は、評議会開催前に準備いたします。東方領土の記録は書記官にまとめさせ、速使にて先行してお送りいたします。\n\n敬具、"
 
 #: ../../apps/site/src/components/landing/FinalCTASection.tsx:8
 #, fuzzy
@@ -2756,9 +2749,9 @@ msgstr "ここに該当する送信者、件名、キーワードを記載して
 msgid "Live"
 msgstr "ライブ"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:294
+#: ../../apps/mobile/app/(app)/notifications.tsx:301
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:95
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:283
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:292
 #: ../ui/src/emails/ThreadList.tsx:238
 #, fuzzy
 msgid "Load more"
@@ -2772,16 +2765,16 @@ msgid "Loading past threads…"
 msgstr "過去のスレッドを読み込み中…"
 
 #: ../../apps/extension/src/panel/NotificationBell.tsx:123
-#: ../../apps/mobile/app/(app)/notifications.tsx:294
+#: ../../apps/mobile/app/(app)/notifications.tsx:301
 #: ../../apps/mobile/src/components/MessageCard.tsx:53
-#: ../../apps/mobile/src/components/NotificationsSheet.tsx:57
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:205
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:283
+#: ../../apps/mobile/src/components/NotificationsSheet.tsx:73
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:214
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:292
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:121
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:137
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:158
 #: ../../apps/web/src/app/loading.tsx:6
-#: ../../apps/web/src/components/NotificationBell.tsx:158
+#: ../../apps/web/src/components/NotificationBell.tsx:177
 #: ../ui/src/emails/MessageCard.tsx:60
 #: ../ui/src/emails/ThreadList.tsx:238
 #, fuzzy
@@ -2799,8 +2792,8 @@ msgid "Manage"
 msgstr "管理"
 
 #: ../../apps/extension/src/panel/NotificationBell.tsx:145
-#: ../../apps/mobile/src/components/NotificationsSheet.tsx:63
-#: ../../apps/web/src/components/NotificationBell.tsx:179
+#: ../../apps/mobile/src/components/NotificationsSheet.tsx:79
+#: ../../apps/web/src/components/NotificationBell.tsx:208
 #, fuzzy
 msgid "Manage notifications"
 msgstr "通知を管理"
@@ -2829,9 +2822,9 @@ msgstr "完了としてマーク"
 msgid "Mark as not done"
 msgstr "未完了としてマーク"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:208
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:249
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:250
+#: ../../apps/mobile/app/(app)/notifications.tsx:215
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:258
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:259
 msgid "Mark as read"
 msgstr "既読にする"
 
@@ -2841,9 +2834,9 @@ msgstr "既読にする"
 msgid "Mark as sent"
 msgstr "送信済みとしてマーク"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:208
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:249
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:250
+#: ../../apps/mobile/app/(app)/notifications.tsx:215
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:258
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:259
 #, fuzzy
 msgid "Mark as unread"
 msgstr "未読にする"
@@ -2862,14 +2855,14 @@ msgstr "完了としてマーク"
 #~ msgid "Mark invited"
 #~ msgstr "招待済みとしてマーク"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:307
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:191
+#: ../../apps/mobile/app/(app)/notifications.tsx:314
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:200
 #, fuzzy
 msgid "Mark read"
 msgstr "既読にする"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:312
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:194
+#: ../../apps/mobile/app/(app)/notifications.tsx:319
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:203
 msgid "Mark unread"
 msgstr "未読にする"
 
@@ -2879,8 +2872,12 @@ msgid "Marked as done"
 msgstr "完了としてマーク済み"
 
 #: ../ui/src/emails/PreviewDoneBar.tsx:21
-msgid "Marked as done · {doneByName}"
-msgstr "完了としてマーク済み · {doneByName}"
+#~ msgid "Marked as done · {doneByName}"
+#~ msgstr "完了としてマーク済み · {doneByName}"
+
+#: ../ui/src/emails/PreviewDoneBar.tsx:21
+msgid "Marked as done by {doneByName}"
+msgstr "{doneByName}が完了済み"
 
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:198
 #, fuzzy
@@ -3112,10 +3109,10 @@ msgid "No members available"
 msgstr "利用可能なメンバーがいません"
 
 #: ../../apps/extension/src/panel/NotificationBell.tsx:128
-#: ../../apps/mobile/app/(app)/notifications.tsx:287
-#: ../../apps/mobile/src/components/NotificationsSheet.tsx:57
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:207
-#: ../../apps/web/src/components/NotificationBell.tsx:161
+#: ../../apps/mobile/app/(app)/notifications.tsx:294
+#: ../../apps/mobile/src/components/NotificationsSheet.tsx:73
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:216
+#: ../../apps/web/src/components/NotificationBell.tsx:180
 #, fuzzy
 msgid "No notifications yet"
 msgstr "まだ通知がありません"
@@ -3213,18 +3210,18 @@ msgstr "まだ同期されていません"
 #: ../../apps/extension/src/panel/NotificationBell.tsx:116
 #: ../../apps/extension/src/panel/NotificationBell.tsx:118
 #: ../../apps/mobile/app/(app)/account.tsx:145
-#: ../../apps/mobile/app/(app)/notifications.tsx:249
-#: ../../apps/mobile/src/components/NotificationsSheet.tsx:43
+#: ../../apps/mobile/app/(app)/notifications.tsx:256
+#: ../../apps/mobile/src/components/NotificationsSheet.tsx:49
 #: ../../apps/web/src/app/(app)/notifications/page.tsx:16
-#: ../../apps/web/src/components/NotificationBell.tsx:135
-#: ../../apps/web/src/components/NotificationBell.tsx:150
 #: ../../apps/web/src/components/NotificationBell.tsx:154
+#: ../../apps/web/src/components/NotificationBell.tsx:169
+#: ../../apps/web/src/components/NotificationBell.tsx:173
 #, fuzzy
 msgid "Notifications"
 msgstr "通知"
 
 #: ../../apps/extension/src/panel/NotificationBell.tsx:101
-#: ../../apps/web/src/components/NotificationBell.tsx:134
+#: ../../apps/web/src/components/NotificationBell.tsx:153
 #, fuzzy
 msgid "Notifications, {unread} unread"
 msgstr "通知、未読{unread}件"
@@ -3262,9 +3259,9 @@ msgstr "ナビゲーションを開く"
 msgid "open source email ai"
 msgstr "オープンソースのメールAI"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:221
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:259
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:260
+#: ../../apps/mobile/app/(app)/notifications.tsx:228
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:268
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:269
 msgid "Open thread"
 msgstr "スレッドを開く"
 
@@ -3873,11 +3870,7 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "リブ＝ハッダ殿、\n"
-"\n"
-"お申し出、拝承いたしました。南の倉庫から追加の穀物を発注済みです。収穫祭までには到着する予定ですので、それまでご辛抱いただけますようお願い申し上げます。\n"
-"\n"
-"ご健勝を祈ります、"
+msgstr "リブ＝ハッダ殿、\n\nお申し出、拝承いたしました。南の倉庫から追加の穀物を発注済みです。収穫祭までには到着する予定ですので、それまでご辛抱いただけますようお願い申し上げます。\n\nご健勝を祈ります、"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -3966,7 +3959,7 @@ msgstr "スレッドを検索…"
 msgid "See how your inbox is sorted, right next to Gmail."
 msgstr "Gmailの隣で、受信トレイのソート状況を確認できます。"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:254
+#: ../../apps/mobile/app/(app)/notifications.tsx:261
 msgid "Select"
 msgstr "選択"
 
@@ -3977,14 +3970,14 @@ msgstr "選択"
 msgid "Select a thread to preview"
 msgstr "スレッドを選択してプレビュー"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:269
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:183
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:185
+#: ../../apps/mobile/app/(app)/notifications.tsx:276
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:192
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:194
 #, fuzzy
 msgid "Select all"
 msgstr "すべて選択"
 
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:225
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:234
 msgid "Select notification"
 msgstr "通知を選択"
 
@@ -4677,13 +4670,7 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "我が兄弟、大王陛下へ、\n"
-"\n"
-"大評議会はシェムの月の初めに招集されます。東方領土の全会計を準備し、可能であれば新月前に速使にて先行して送っていただくようお願いいたします。\n"
-"\n"
-"我らの同盟は強固です。評議会にその事実を示しましょう。\n"
-"\n"
-"トゥシュラッタ、ミタンニの大王"
+msgstr "我が兄弟、大王陛下へ、\n\n大評議会はシェムの月の初めに招集されます。東方領土の全会計を準備し、可能であれば新月前に速使にて先行して送っていただくようお願いいたします。\n\n我らの同盟は強固です。評議会にその事実を示しましょう。\n\nトゥシュラッタ、ミタンニの大王"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:163
 #, fuzzy
@@ -4692,11 +4679,7 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "王室任命局殿、\n"
-"\n"
-"テーベのホレムヘブ氏からの応募を受理いたしました。次回の新月までに彼の記録を審査いたします。追って通知する旨、彼にお伝えください。\n"
-"\n"
-"王命により、"
+msgstr "王室任命局殿、\n\nテーベのホレムヘブ氏からの応募を受理いたしました。次回の新月までに彼の記録を審査いたします。追って通知する旨、彼にお伝えください。\n\n王命により、"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:275
 #, fuzzy
@@ -4707,13 +4690,7 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "大王陛下へ、\n"
-"\n"
-"長年にわたり、我らの家門は兄弟の如き関係にありました。今、我ら両国民の利益のため、この友好関係を正式なものとすることを提案いたします。相互防衛と通商路共有の協定です。\n"
-"\n"
-"どうか私の条件をお聞き入れください。次回の使者にてご返答いただければ、直ちに私の使節を派遣いたします。\n"
-"\n"
-"アジル、大王陛下の僕、アムルの領主"
+msgstr "大王陛下へ、\n\n長年にわたり、我らの家門は兄弟の如き関係にありました。今、我ら両国民の利益のため、この友好関係を正式なものとすることを提案いたします。相互防衛と通商路共有の協定です。\n\nどうか私の条件をお聞き入れください。次回の使者にてご返答いただければ、直ちに私の使節を派遣いたします。\n\nアジル、大王陛下の僕、アムルの領主"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:388
 #, fuzzy
@@ -4722,11 +4699,7 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "大王陛下へ、\n"
-"\n"
-"近々、私の旅路がデルタ地方の近くを通ります。もし大王陛下に一時間ほどお時間がありましたら、直接お話しする機会を賜りたく存じます。書面では伝えにくい事柄もございますゆえ。\n"
-"\n"
-"陛下の僕、ウルシャリム総督アブディ＝ヘバ"
+msgstr "大王陛下へ、\n\n近々、私の旅路がデルタ地方の近くを通ります。もし大王陛下に一時間ほどお時間がありましたら、直接お話しする機会を賜りたく存じます。書面では伝えにくい事柄もございますゆえ。\n\n陛下の僕、ウルシャリム総督アブディ＝ヘバ"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:153
 #, fuzzy
@@ -4735,11 +4708,7 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "我が兄弟、大王陛下へ、\n"
-"\n"
-"貴殿の言葉、確かに承知いたしました。黄金は、次の使者が旅立つ前に発送いたします。我らの家門間の絆を大切にしており、それが冷え込むことは望みません。\n"
-"\n"
-"友情を込めて、"
+msgstr "我が兄弟、大王陛下へ、\n\n貴殿の言葉、確かに承知いたしました。黄金は、次の使者が旅立つ前に発送いたします。我らの家門間の絆を大切にしており、それが冷え込むことは望みません。\n\n友情を込めて、"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:236
 #, fuzzy
@@ -4750,13 +4719,7 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "我が兄弟、大王陛下へ、\n"
-"\n"
-"我らの父祖がそうであったように、友情を込めて筆を執ります。我が条約で合意された第三の黄金の積荷が未だ到着しておりません。使者が二人も行き来したにもかかわらず、未だ我々は待ち続けております。\n"
-"\n"
-"我らの家門間の絆にふさわしく、これ以上の遅延なく発送していただくようお願いいたします。\n"
-"\n"
-"ブルナ＝ブリアシュ2世、バビロンの王"
+msgstr "我が兄弟、大王陛下へ、\n\n我らの父祖がそうであったように、友情を込めて筆を執ります。我が条約で合意された第三の黄金の積荷が未だ到着しておりません。使者が二人も行き来したにもかかわらず、未だ我々は待ち続けております。\n\n我らの家門間の絆にふさわしく、これ以上の遅延なく発送していただくようお願いいたします。\n\nブルナ＝ブリアシュ2世、バビロンの王"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:349
 msgid "To the Great King, my lord, my sun,\n"
@@ -4766,13 +4729,7 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "大王陛下、我が主、我が太陽よ、\n"
-"\n"
-"先月お送りいただいた穀物は感謝をもって受け取られ、私は民衆の前で陛下の御名を称えました。しかし、再び筆を執らざるを得ません。第三便が到着せず、都は不穏な空気に包まれております。\n"
-"\n"
-"すでに七度も書簡を送りました。陛下にご迷惑をおかけしたくはありませんが、他に何をすればよろしいのでしょうか？\n"
-"\n"
-"陛下の僕、ビブロス総督リブ＝ハッダ"
+msgstr "大王陛下、我が主、我が太陽よ、\n\n先月お送りいただいた穀物は感謝をもって受け取られ、私は民衆の前で陛下の御名を称えました。しかし、再び筆を執らざるを得ません。第三便が到着せず、都は不穏な空気に包まれております。\n\nすでに七度も書簡を送りました。陛下にご迷惑をおかけしたくはありませんが、他に何をすればよろしいのでしょうか？\n\n陛下の僕、ビブロス総督リブ＝ハッダ"
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:19
 #: ../ui/src/emails/ThreadList.tsx:15

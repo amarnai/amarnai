@@ -621,12 +621,19 @@ model Notification {
   type        String
   params      Json      @default("{}")
   readAt      DateTime?
+  // Set when the recipient has dealt with the notification (clicked through or
+  // explicitly dismissed). Independent of readAt: readAt clears the bell badge
+  // ("seen"), dismissedAt removes the row from the bell pop-up feed ("dealt
+  // with"). Dismissed rows still appear on the full notifications page, which is
+  // the archive. Nulls sort as not-yet-dismissed.
+  dismissedAt DateTime?
   createdAt   DateTime  @default(now())
 
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   workspace Workspace @relation(fields: [workspaceId], references: [id])
 
-  // Unread-count lookups and feed pagination / retention pruning.
+  // Unread-count lookups and feed pagination / retention pruning. The pop-up
+  // feed additionally filters dismissedAt IS NULL within the createdAt ordering.
   @@index([userId, readAt])
   @@index([userId, createdAt])
 }

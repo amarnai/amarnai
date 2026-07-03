@@ -11,6 +11,13 @@ import type { AppEnv } from "../env.js";
 const listQuery = z.object({
   cursor: z.string().min(1).optional(),
   limit: z.coerce.number().int().min(1).max(50).optional(),
+  // When set, hide notifications the user has dealt with (dismissed). The bell
+  // pop-up passes this to show only the "fresh" feed; the full notifications
+  // page omits it and receives everything, dismissed rows included.
+  undismissed: z
+    .union([z.literal("1"), z.literal("true")])
+    .optional()
+    .transform((v) => v !== undefined),
 });
 
 const idParam = z.object({ id: z.string().min(1) });
@@ -24,6 +31,7 @@ notifications.get("/notifications", async (c) => {
   const parsed = listQuery.safeParse({
     cursor: c.req.query("cursor"),
     limit: c.req.query("limit"),
+    undismissed: c.req.query("undismissed"),
   });
   if (!parsed.success) return c.json({ error: "Invalid query" }, 400);
 
@@ -36,6 +44,7 @@ notifications.get("/notifications", async (c) => {
   const rows = await db.notification.findMany({
     where: {
       userId,
+      ...(parsed.data.undismissed ? { dismissedAt: null } : {}),
       ...(cursor
         ? {
             OR: [
@@ -53,6 +62,7 @@ notifications.get("/notifications", async (c) => {
       type: true,
       params: true,
       readAt: true,
+      dismissedAt: true,
       createdAt: true,
     },
   });
@@ -71,6 +81,7 @@ notifications.get("/notifications", async (c) => {
       type: n.type,
       params: n.params,
       readAt: n.readAt ? n.readAt.toISOString() : null,
+      dismissedAt: n.dismissedAt ? n.dismissedAt.toISOString() : null,
       createdAt: n.createdAt.toISOString(),
     })),
     nextCursor,
@@ -137,6 +148,39 @@ notifications.post("/notifications/update", async (c) => {
     data: { readAt: read ? new Date() : null },
   });
   return c.json({ ok: true, updated: result.count });
+});
+
+// ─── POST /notifications/dismiss ───────────────────────────────────────────────
+// Mark notifications as dealt-with so they drop out of the bell pop-up feed. Does
+// NOT delete them: dismissed rows still show on the full notifications page (the
+// archive). Called when the user clicks a notification through to its thread or
+// explicitly dismisses it from the pop-up. Dismissing also stamps readAt on any
+// still-unread rows, since dealing with a notification implies having seen it —
+// this keeps the badge and the pop-up consistent for notifications dismissed
+// before the pop-up's mark-all-read runs (e.g. an informational item cleared via
+// its dismiss control). Idempotent and owner-scoped: foreign ids match no rows.
+
+const dismissInput = z.object({
+  ids: z.array(z.string().min(1)).min(1).max(200),
+});
+
+notifications.post("/notifications/dismiss", async (c) => {
+  const body = await c.req.json().catch(() => null);
+  const parsed = dismissInput.safeParse(body);
+  if (!parsed.success) return c.json({ error: "Invalid body" }, 400);
+
+  const userId = c.get("userId");
+  const now = new Date();
+  const result = await db.notification.updateMany({
+    where: { id: { in: parsed.data.ids }, userId, dismissedAt: null },
+    data: { dismissedAt: now },
+  });
+  // Seen-implies-read: stamp readAt on any of these rows still unread.
+  await db.notification.updateMany({
+    where: { id: { in: parsed.data.ids }, userId, readAt: null },
+    data: { readAt: now },
+  });
+  return c.json({ ok: true, dismissed: result.count });
 });
 
 // ─── POST /notifications/delete ────────────────────────────────────────────────

@@ -16,6 +16,8 @@ interface UseNotifications {
   load: () => void;
   /** Mark everything read and clear the badge (call on sheet open). */
   markAllRead: () => void;
+  /** Drop a notification from the pop-up feed and persist the dismissal. */
+  dismiss: (id: string) => void;
   refreshCount: () => void;
 }
 
@@ -50,7 +52,7 @@ export function useNotifications(): UseNotifications {
 
   const load = useCallback(() => {
     setLoading(true);
-    client.notifications(undefined, 30)
+    client.notifications(undefined, 30, { undismissedOnly: true })
       .then(({ notifications }) => setItems(notifications))
       .catch(() => {})
       .finally(() => setLoading(false));
@@ -61,5 +63,12 @@ export function useNotifications(): UseNotifications {
     client.markAllNotificationsRead().catch(() => {});
   }, [client]);
 
-  return { unread, items, loading, load, markAllRead, refreshCount };
+  // Drop from the pop-up feed and persist. The row stays on the full
+  // notifications page (the archive); the server call is best-effort.
+  const dismiss = useCallback((id: string) => {
+    setItems((prev) => prev.filter((n) => n.id !== id));
+    client.dismissNotifications([id]).catch(() => {});
+  }, [client]);
+
+  return { unread, items, loading, load, markAllRead, dismiss, refreshCount };
 }

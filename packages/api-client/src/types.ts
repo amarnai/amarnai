@@ -275,6 +275,10 @@ export type NotificationItem = {
   type: string;
   params: Record<string, unknown>;
   readAt: string | null;
+  // Set once the recipient has dealt with the notification (clicked through or
+  // dismissed). Dismissed rows are hidden from the bell pop-up but still listed
+  // on the full notifications page. Independent of readAt.
+  dismissedAt: string | null;
   createdAt: string;
 };
 

@@ -145,6 +145,13 @@ export default function NotificationsScreen() {
 
   function openThread(n: NotificationItem, threadId: string) {
     if (!n.readAt) applyRead([n.id], true);
+    // Opening the thread deals with the notification: dismiss it so it drops out
+    // of the bell pop-up. The row stays on this page (the full archive).
+    if (!n.dismissedAt) {
+      const at = new Date().toISOString();
+      setItems((prev) => prev.map((it) => (it.id === n.id ? { ...it, dismissedAt: at } : it)));
+      client.dismissNotifications([n.id]).catch(() => {});
+    }
     if (n.workspaceId !== workspaceId) switchWorkspace(n.workspaceId);
     router.push(`/thread/${threadId}`);
   }

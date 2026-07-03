@@ -156,6 +156,15 @@ export function NotificationsClient({ currentWorkspaceId }: { currentWorkspaceId
 
   function openThread(n: NotificationItem, threadId: string) {
     if (!n.readAt) applyRead([n.id], true);
+    // Opening the thread deals with the notification: dismiss it so it drops out
+    // of the bell pop-up. The row stays on this page (the full archive); the
+    // dismiss call is best-effort.
+    if (!n.dismissedAt) {
+      setItems((prev) =>
+        prev.map((it) => (it.id === n.id ? { ...it, dismissedAt: new Date().toISOString() } : it))
+      );
+      api.dismissNotifications([n.id]).catch(() => {});
+    }
     const target = `/emails?t=${encodeURIComponent(threadId)}`;
     // Deep-link into the notification's own workspace: switch first when it
     // differs from the selected one (server action sets the cookie then redirects
