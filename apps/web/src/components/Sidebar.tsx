@@ -134,7 +134,7 @@ export function Sidebar({
           <Image src="/logo.png" alt="" width={22} height={22} />
           Amarnai
         </span>
-        <NotificationBell />
+        <NotificationBell currentWorkspaceId={workspace?.id ?? null} />
       </div>
       <div
         className="ws-switcher"

@@ -197,7 +197,7 @@ export default async function UpgradeSuccessPage({
           )}
           {/* Switch the active-workspace cookie to the purchased workspace before
               navigating — a plain link to /emails would keep the previous selection. */}
-          <form action={switchWorkspaceAction.bind(null, workspace.id)}>
+          <form action={switchWorkspaceAction.bind(null, workspace.id, "/emails")}>
             <button type="submit" className="btn-primary upgrade-success-cta">
               <Trans>Go to {workspace.name}</Trans>
             </button>

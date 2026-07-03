@@ -24,6 +24,7 @@ type TriageActions = Pick<
   | 'setQuery'
   | 'syncThreads'
   | 'refresh'
+  | 'loadThread'
   | 'loadMore'
   | 'handleApprove'
   | 'handleMarkDone'
@@ -148,6 +149,7 @@ function TriageInner({
       setQuery: triage.setQuery,
       syncThreads: triage.syncThreads,
       refresh: triage.refresh,
+      loadThread: triage.loadThread,
       loadMore: triage.loadMore,
       handleApprove: triage.handleApprove,
       handleMarkDone: triage.handleMarkDone,
@@ -172,6 +174,7 @@ function TriageInner({
       triage.setQuery,
       triage.syncThreads,
       triage.refresh,
+      triage.loadThread,
       triage.loadMore,
       triage.handleApprove,
       triage.handleMarkDone,

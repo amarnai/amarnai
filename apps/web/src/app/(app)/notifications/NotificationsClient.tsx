@@ -8,6 +8,7 @@ import { msg } from "@lingui/core/macro";
 import { api } from "@/lib/api";
 import type { NotificationItem } from "@amarnai/api-client";
 import { describeNotification } from "@/lib/notifications";
+import { switchWorkspaceAction } from "@/actions/workspace";
 
 const PAGE_SIZE = 30;
 
@@ -67,7 +68,7 @@ function ChevronIcon({ open }: { open: boolean }) {
   );
 }
 
-export function NotificationsClient() {
+export function NotificationsClient({ currentWorkspaceId }: { currentWorkspaceId: string }) {
   const router = useRouter();
   const { i18n, _ } = useLingui();
   const [items, setItems] = useState<NotificationItem[]>([]);
@@ -155,7 +156,15 @@ export function NotificationsClient() {
 
   function openThread(n: NotificationItem, threadId: string) {
     if (!n.readAt) applyRead([n.id], true);
-    router.push(`/emails?t=${encodeURIComponent(threadId)}`);
+    const target = `/emails?t=${encodeURIComponent(threadId)}`;
+    // Deep-link into the notification's own workspace: switch first when it
+    // differs from the selected one (server action sets the cookie then redirects
+    // to the thread), otherwise a soft push suffices.
+    if (n.workspaceId !== currentWorkspaceId) {
+      void switchWorkspaceAction(n.workspaceId, target);
+    } else {
+      router.push(target);
+    }
   }
 
   const selectedIds = Array.from(selected);

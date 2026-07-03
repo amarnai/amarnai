@@ -236,6 +236,7 @@ export type EmailThreadListResult = {
 export type EmailThreadDetail = {
   id: string;
   subject: string | null;
+  providerThreadId: string;
   latestMessageAt: string | null;
   messageCount: number;
   triageStatus: TriageStatus;
@@ -243,6 +244,9 @@ export type EmailThreadDetail = {
   isQueued: boolean;
   createdAt: string;
   updatedAt: string;
+  gmailIsImportant: boolean;
+  hasDraft: boolean;
+  isDrafting: boolean;
   messages: Array<{
     id: string;
     senderEmail: string;

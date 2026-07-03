@@ -8,6 +8,7 @@ import { msg } from "@lingui/core/macro";
 import { api } from "@/lib/api";
 import type { NotificationItem } from "@amarnai/api-client";
 import { describeNotification } from "@/lib/notifications";
+import { switchWorkspaceAction } from "@/actions/workspace";
 
 // Poll the unread count on this cadence and whenever the tab regains focus. The
 // badge is not latency-critical (push covers real-time on mobile), so a light
@@ -33,7 +34,7 @@ function BellIcon() {
   );
 }
 
-export function NotificationBell() {
+export function NotificationBell({ currentWorkspaceId }: { currentWorkspaceId: string | null }) {
   const router = useRouter();
   const { i18n } = useLingui();
   const { _ } = useLingui();
@@ -102,8 +103,16 @@ export function NotificationBell() {
   function openNotification(n: NotificationItem) {
     setOpen(false);
     const threadId = str(n.params["threadId"]);
-    if (threadId) {
-      router.push(`/emails?t=${encodeURIComponent(threadId)}`);
+    if (!threadId) return;
+    const target = `/emails?t=${encodeURIComponent(threadId)}`;
+    // The thread lives in the notification's workspace, which may not be the one
+    // currently selected. When it differs, switch first (server action: sets the
+    // workspace cookie, then redirects to the thread) so the emails page renders
+    // the right inbox. Same workspace: a soft push is enough.
+    if (currentWorkspaceId && n.workspaceId !== currentWorkspaceId) {
+      void switchWorkspaceAction(n.workspaceId, target);
+    } else {
+      router.push(target);
     }
   }
 

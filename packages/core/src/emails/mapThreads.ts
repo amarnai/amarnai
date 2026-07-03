@@ -1,5 +1,6 @@
 import type {
   EmailThreadSummary,
+  EmailThreadDetail,
   TaxonomyNode,
   TaxonomyEdge,
 } from "@amarnai/api-client";
@@ -27,6 +28,55 @@ export function mapFolders(
         ignored: false,
       };
     });
+}
+
+// Map a single-thread detail response onto the list view-model item, reusing the
+// summary mapping. Used to inject a thread that isn't in the current list (e.g.
+// opened from a notification deep-link) so the preview can render it.
+export function mapThreadDetail(detail: EmailThreadDetail): ThreadItem {
+  const summary: EmailThreadSummary = {
+    id: detail.id,
+    subject: detail.subject,
+    providerThreadId: detail.providerThreadId,
+    latestMessageAt: detail.latestMessageAt,
+    messageCount: detail.messageCount,
+    triageStatus: detail.triageStatus,
+    isClassifying: detail.isClassifying,
+    isQueued: detail.isQueued,
+    createdAt: detail.createdAt,
+    gmailIsImportant: detail.gmailIsImportant,
+    // The detail endpoint returns messages oldest-first; the summary mapping
+    // expects newest-first (it reads messages[0] for the snippet), so reverse.
+    messages: detail.messages
+      .map((m) => ({
+        id: m.id,
+        senderEmail: m.senderEmail,
+        senderName: m.senderName,
+        snippet: m.snippet,
+        receivedAt: m.receivedAt,
+        hasAttachments: m.hasAttachments,
+        attachments: m.attachments,
+      }))
+      .reverse(),
+    tags: detail.tags,
+    // The summary carries only the fields mapThreads reads (finalNode, confidence);
+    // the detail's Classification is wider, so project it down.
+    latestClassification: detail.latestClassification
+      ? {
+          id: detail.latestClassification.id,
+          priority: detail.latestClassification.priority ?? "",
+          urgency: detail.latestClassification.urgency ?? "",
+          confidence: detail.latestClassification.confidence,
+          needsHumanReview: detail.latestClassification.needsHumanReview,
+          finalNode: detail.latestClassification.finalNode,
+        }
+      : null,
+    hasDraft: detail.hasDraft,
+    isDrafting: detail.isDrafting,
+    doneMark: detail.doneMark,
+    assignment: detail.assignment,
+  };
+  return mapThreads([summary])[0]!;
 }
 
 export function mapThreads(threads: EmailThreadSummary[]): ThreadItem[] {

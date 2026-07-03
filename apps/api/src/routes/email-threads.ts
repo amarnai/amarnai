@@ -362,12 +362,14 @@ emailThreads.get(
       select: {
         id: true,
         subject: true,
+        providerThreadId: true,
         latestMessageAt: true,
         messageCount: true,
         triageStatus: true,
         classifyingAt: true,
         createdAt: true,
         updatedAt: true,
+        gmailIsImportant: true,
         resolvedByUserId: true,
         resolvedAt: true,
         resolvedByUser: {
@@ -426,6 +428,11 @@ emailThreads.get(
             },
           },
         },
+        drafts: {
+          where: { status: { in: ["PROPOSED", "GENERATING"] as ("PROPOSED" | "GENERATING")[] } },
+          take: 2,
+          select: { id: true, status: true, createdAt: true },
+        },
       },
     });
 
@@ -434,7 +441,7 @@ emailThreads.get(
     }
 
     const {
-      classifications, classifyingAt,
+      classifications, classifyingAt, drafts,
       resolvedByUserId, resolvedAt, resolvedByUser,
       assignedToUserId, assignedAt, assignedToUser,
       messages, ...rest
@@ -447,6 +454,8 @@ emailThreads.get(
       })),
       isClassifying: deriveIsClassifying(classifyingAt),
       isQueued: classifyingAt !== null,
+      hasDraft: drafts.some((d) => d.status === "PROPOSED"),
+      isDrafting: deriveIsDrafting(drafts),
       latestClassification: classifications[0] ?? null,
       doneMark: resolvedByUserId && resolvedAt && resolvedByUser
         ? {

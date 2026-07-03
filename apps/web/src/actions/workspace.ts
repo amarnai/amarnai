@@ -22,7 +22,10 @@ async function setLocaleCookie(locale: string): Promise<void> {
   jar.set(LOCALE_COOKIE, locale, { path: "/", maxAge: 60 * 60 * 24 * 365 });
 }
 
-export async function switchWorkspaceAction(workspaceId: string): Promise<void> {
+export async function switchWorkspaceAction(
+  workspaceId: string,
+  redirectTo?: string,
+): Promise<void> {
   const user = await requireUser();
 
   // Allow both owners and team members to switch to any workspace they belong to.
@@ -42,7 +45,11 @@ export async function switchWorkspaceAction(workspaceId: string): Promise<void> 
   // Follow the target workspace's language.
   await setLocaleCookie(member.workspace.locale);
 
-  redirect("/emails");
+  // Only honour same-origin internal paths to avoid an open redirect; anything
+  // else (or nothing) falls back to the emails list. Used to deep-link into a
+  // specific thread after switching (e.g. opening a cross-workspace notification).
+  const target = redirectTo && redirectTo.startsWith("/") ? redirectTo : "/emails";
+  redirect(target);
 }
 
 export async function updateWorkspaceNameAction(

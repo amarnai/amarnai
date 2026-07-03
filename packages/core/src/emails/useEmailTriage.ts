@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { ApiClient, FilterCounts } from "@amarnai/api-client";
 import type { ActiveSelection, FolderItem, ThreadItem, MemberItem } from "./types.js";
 import { queueCountsFromServer } from "./selection.js";
-import { mapThreads } from "./mapThreads.js";
+import { mapThreads, mapThreadDetail } from "./mapThreads.js";
 import { mergeThreads } from "./mergeThreads.js";
 import { appendThreads } from "./appendThreads.js";
 
@@ -31,7 +31,7 @@ export type UseEmailTriageOptions = {
 };
 
 const EMPTY_COUNTS: FilterCounts = {
-  total: 0, PENDING: 0, PENDING_WAITING: 0, NEEDS_REVIEW: 0, SORTED: 0, UNROUTED: 0, UNCLASSIFIED: 0, important: 0,
+  total: 0, PENDING: 0, PENDING_WAITING: 0, NEEDS_REVIEW: 0, SORTED: 0, UNROUTED: 0, UNCLASSIFIED: 0, important: 0, assigned: 0,
 };
 
 // Auto-load successive pages up to this many threads so a normal inbox fills in
@@ -42,7 +42,7 @@ const AUTO_LOAD_CAP = 200;
 // Debounce window for search input before hitting the server.
 const SEARCH_DEBOUNCE_MS = 300;
 
-type ViewParams = { nodeId?: string; status?: string; important?: boolean; q?: string };
+type ViewParams = { nodeId?: string; status?: string; important?: boolean; assigned?: boolean; q?: string };
 
 // Translate the active view (queue or folder) + search term into the server-side
 // filter params, so the list, count, and search all come from one query.
@@ -55,6 +55,7 @@ function viewParams(active: ActiveSelection, query: string): ViewParams {
     case "review":       return { ...base, status: "NEEDS_REVIEW" };
     case "pending":      return { ...base, status: "PENDING" };
     case "important":    return { ...base, important: true };
+    case "assigned":     return { ...base, assigned: true };
     case "unrouted":     return { ...base, status: "UNROUTED" };
     case "unclassified": return { ...base, status: "UNCLASSIFIED" };
     case "all":
@@ -174,6 +175,22 @@ export function useEmailTriage(options: UseEmailTriageOptions) {
       })
       .catch(() => {});
   }, [api, workspaceId, syncThreads]);
+
+  // Fetch a single thread by id and insert it into the list if it isn't already
+  // loaded. Lets a deep-link (e.g. opening a thread from a notification) render
+  // its preview even when the thread falls outside the current view or page.
+  // No-op when the thread is already present.
+  const loadThread = useCallback((threadId: string) => {
+    if (threadsRef.current.some((t) => t.id === threadId)) return Promise.resolve();
+    return api
+      .emailThread(workspaceId, threadId)
+      .then((detail) => {
+        setThreads((prev) =>
+          prev.some((t) => t.id === threadId) ? prev : [mapThreadDetail(detail), ...prev]
+        );
+      })
+      .catch(() => {});
+  }, [api, workspaceId]);
 
   // ─── Pagination ──────────────────────────────────────────────────────────────
 
@@ -480,6 +497,7 @@ export function useEmailTriage(options: UseEmailTriageOptions) {
     // thread sync
     syncThreads,
     refresh,
+    loadThread,
     // pagination + counts
     hasMore,
     loadingMore,

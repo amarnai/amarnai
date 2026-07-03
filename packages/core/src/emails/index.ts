@@ -22,7 +22,7 @@ export {
   queueCountsFromServer,
 } from "./selection.js";
 
-export { mapThreads, mapFolders } from "./mapThreads.js";
+export { mapThreads, mapThreadDetail, mapFolders } from "./mapThreads.js";
 export { mergeThreads } from "./mergeThreads.js";
 export { appendThreads } from "./appendThreads.js";
 export {

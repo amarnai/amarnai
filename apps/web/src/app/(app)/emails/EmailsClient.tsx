@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
@@ -112,6 +112,26 @@ export function EmailsClient({
 
   const { active, selectedId, selectedThread, folders, toast } = triage;
 
+  // Open a thread's preview when the URL carries a `?t=` param. This covers deep
+  // links from outside the page — e.g. clicking a thread-assignment notification
+  // in the bell pop-up. Such a click is a soft navigation that updates the search
+  // params without remounting this client, so the selection must be synced here
+  // rather than only from the initial server props. The thread is fetched on
+  // demand when it isn't already in the loaded list, so the preview opens even
+  // for threads outside the current view or page.
+  const searchParams = useSearchParams();
+  const tParam = searchParams.get("t");
+  useEffect(() => {
+    if (!tParam) return;
+    if (tParam !== triage.selectedId) {
+      triage.setSelectedId(tParam);
+      setMobileView("preview");
+    }
+    void triage.loadThread(tParam);
+    // Keyed on the target thread only; in-list taps already keep selection and
+    // URL in sync via selectThread, and triage's setters/loadThread are stable.
+  }, [tParam]);
+
   function pushActive(a: ActiveSelection) {
     triage.setActive(a);
     triage.setSelectedId(null);
@@ -134,6 +154,10 @@ export function EmailsClient({
   function closePreview() {
     triage.setSelectedId(null);
     setMobileView("list");
+    // Drop the `?t=` param so a refresh (or the deep-link effect above) does not
+    // reopen a preview the user just closed.
+    const param = active.kind === "queue" ? `?q=${active.id}` : `?f=${active.id}`;
+    router.replace(`/emails${param}`, { scroll: false });
   }
 
   function toggleFolder(id: string) {
