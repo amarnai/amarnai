@@ -24,7 +24,6 @@ import {
 import { RegisterCredentialsSchema } from "@amarnai/shared";
 import { isSupportedLocale, localeFromAcceptLanguage } from "@amarnai/i18n";
 import { sendVerificationEmail, sendPasswordResetEmail } from "@amarnai/email";
-import { config } from "@amarnai/config";
 import { db, deleteUserCascade } from "@amarnai/db";
 import type { AppEnv } from "../env.js";
 import { syncInboxQueue } from "../services/queue-client.js";
@@ -101,11 +100,6 @@ auth.post("/auth/login", async (c) => {
 // unverified state (the client gates app access on /auth/me's emailVerified).
 // Mirrors the web register action's policy via the shared registerWithPassword.
 auth.post("/auth/register", async (c) => {
-  // Self-serve sign-up policy: honor the same waitlist switch the web enforces.
-  if (config.waitlistMode) {
-    return c.json({ error: "Sign-ups are currently invite-only." }, 403);
-  }
-
   const body = await c.req.json().catch(() => null);
   const parsed = RegisterCredentialsSchema.safeParse(body);
   if (!parsed.success) {

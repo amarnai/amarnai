@@ -80,8 +80,8 @@ async function login(email: string, password: string): Promise<StoredTokens> {
   });
   if (res.ok) return (await res.json()) as StoredTokens;
   if (res.status === 401) throw new Error('Invalid email or password');
-  // Other failures (e.g. 403 waitlist, 400 validation) carry a user-facing
-  // message from the API; surface it verbatim so the cause is explicit.
+  // Other failures (e.g. 400 validation) carry a user-facing message from the
+  // API; surface it verbatim so the cause is explicit.
   const body = (await res.json().catch(() => null)) as { error?: string } | null;
   throw new Error(body?.error ?? 'Sign-in failed. Please try again.');
 }
@@ -93,8 +93,8 @@ async function register(email: string, password: string): Promise<StoredTokens> 
     body: JSON.stringify({ email, password }),
   });
   if (res.ok) return (await res.json()) as StoredTokens;
-  // 409 (taken / Google-only), 403 (waitlist), and 400 (validation) all carry a
-  // user-facing message from the API; surface it verbatim.
+  // 409 (taken / Google-only) and 400 (validation) all carry a user-facing
+  // message from the API; surface it verbatim.
   const body = (await res.json().catch(() => null)) as { error?: string } | null;
   throw new Error(body?.error ?? 'Sign-up failed. Please try again.');
 }

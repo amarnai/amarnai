@@ -56,9 +56,6 @@ const envSchema = z.object({
   // Set to 'true' to turn off per-IP rate limiting on the /auth/* endpoints.
   // Intended only for self-host setups that throttle at the proxy layer.
   AUTH_RATE_LIMIT_DISABLED: boolStr,
-  // When 'true', self-serve sign-up is closed (invite-only / waitlist). Read by
-  // the API /auth/register endpoint so the signup policy matches the web app.
-  WAITLIST_MODE: boolStr,
   // Gmail Push Notifications via Google Cloud Pub/Sub.
   // When set, Gmail pushes change notifications in real time instead of waiting
   // for the polling interval. Both vars must be set together.
@@ -180,7 +177,6 @@ export const config = {
   authRateLimit: {
     disabled: env.AUTH_RATE_LIMIT_DISABLED,
   },
-  waitlistMode: env.WAITLIST_MODE,
   gmail: {
     pubsubTopic: env.GMAIL_PUBSUB_TOPIC,
     webhookSecret: env.GMAIL_PUBSUB_WEBHOOK_SECRET,

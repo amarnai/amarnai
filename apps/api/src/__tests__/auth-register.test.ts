@@ -1,4 +1,4 @@
-import { vi, describe, it, expect, beforeEach, afterEach } from "vitest";
+import { vi, describe, it, expect, beforeEach } from "vitest";
 
 vi.mock("@amarnai/db", () => ({ db: {} }));
 
@@ -46,7 +46,6 @@ vi.mock("../services/queue-client.js", () => ({
 }));
 
 import app from "../app.js";
-import { config } from "@amarnai/config";
 import { registerWithPassword } from "@amarnai/auth";
 import { sendVerificationEmail } from "@amarnai/email";
 
@@ -66,11 +65,6 @@ const TOKEN_PAIR = {
 
 beforeEach(() => {
   vi.clearAllMocks();
-  config.waitlistMode = false;
-});
-
-afterEach(() => {
-  config.waitlistMode = false;
 });
 
 describe("POST /auth/register", () => {
@@ -135,15 +129,5 @@ describe("POST /auth/register", () => {
 
     expect(res.status).toBe(400);
     expect(registerWithPassword).not.toHaveBeenCalled();
-  });
-
-  it("blocks sign-up with 403 in waitlist mode", async () => {
-    config.waitlistMode = true;
-
-    const res = await post({ email: "a@b.com", password: "password123456" });
-
-    expect(res.status).toBe(403);
-    expect(registerWithPassword).not.toHaveBeenCalled();
-    expect(sendVerificationEmail).not.toHaveBeenCalled();
   });
 });
