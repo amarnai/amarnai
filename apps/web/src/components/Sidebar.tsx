@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
@@ -130,8 +131,7 @@ export function Sidebar({
       <div className="sidebar-top">
       <div className="sidebar-brand-row">
         <span className="sidebar-brand">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo.png" alt="" width={22} height={22} />
+          <Image src="/logo.png" alt="" width={22} height={22} />
           Amarnai
         </span>
         <NotificationBell />
