@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import { z } from "zod";
-import { db, createNotification } from "@amarnai/db";
+import { db, createNotification, deleteThreadAssignedNotifications } from "@amarnai/db";
 import type { AppEnv } from "../env.js";
 import { recordAudit } from "../services/audit.js";
 import { pushNotificationQueue } from "../queues.js";
@@ -55,9 +55,10 @@ assignThread.post(
 
     const thread = await db.emailThread.findFirst({
       where: { id: threadId, workspaceId },
-      select: { id: true, subject: true },
+      select: { id: true, subject: true, assignedToUserId: true },
     });
     if (!thread) return c.json({ error: "Thread not found" }, 404);
+    const previousAssigneeUserId = thread.assignedToUserId;
 
     // The assignee must belong to this workspace.
     const assigneeMember = await db.workspaceMember.findUnique({
@@ -92,6 +93,27 @@ assignThread.post(
       entityId: threadId,
       metadata: { assigneeUserId },
     });
+
+    // Clear the previous assignee's stale "thread_assigned" notifications for
+    // this thread. This runs on every assignment change — reassignment to
+    // someone else, or re-assignment to the same person before a fresh
+    // notification is created below — so a user never keeps a notice for an
+    // assignment they no longer hold, and re-assigning the same person does not
+    // stack duplicates. Best-effort: never fail the assignment.
+    if (previousAssigneeUserId) {
+      try {
+        await deleteThreadAssignedNotifications({
+          userId: previousAssigneeUserId,
+          workspaceId,
+          threadId,
+        });
+      } catch (err) {
+        console.error(
+          "[assign-thread] Failed to clear previous notifications:",
+          err instanceof Error ? err.message : err
+        );
+      }
+    }
 
     // Notify the assignee — but never when you assign yourself (you already
     // know). Both the in-app notification and the push are best-effort and must
@@ -190,6 +212,24 @@ assignThread.delete(
       entityId: threadId,
       metadata: { previousAssigneeUserId: thread.assignedToUserId },
     });
+
+    // The assignment is gone, so the assignee's "thread_assigned" notification
+    // for this thread is now stale and must disappear. Best-effort: never fail
+    // the unassignment.
+    if (thread.assignedToUserId) {
+      try {
+        await deleteThreadAssignedNotifications({
+          userId: thread.assignedToUserId,
+          workspaceId,
+          threadId,
+        });
+      } catch (err) {
+        console.error(
+          "[assign-thread] Failed to clear notifications on unassign:",
+          err instanceof Error ? err.message : err
+        );
+      }
+    }
 
     return c.json({ ok: true, assignment: null });
   }

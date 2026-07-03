@@ -7,7 +7,12 @@ export {
   type ThreadSortUsage,
 } from "./thread-sort-usage.js";
 export { eligibleThreadWhere } from "./eligible-threads.js";
-export { createNotification, type CreateNotificationInput } from "./notifications.js";
+export {
+  createNotification,
+  type CreateNotificationInput,
+  deleteThreadAssignedNotifications,
+  type DeleteThreadAssignedNotificationsInput,
+} from "./notifications.js";
 export { getInboxPlanCeiling, type InboxPlanCeiling } from "./inbox-entitlement.js";
 export {
   MeterKind,

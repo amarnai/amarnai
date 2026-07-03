@@ -4,6 +4,7 @@ import { authed, TEST_USER_ID } from "./helpers.js";
 // createNotification and the push queue are best-effort side effects; mock them
 // so we can assert they fire (or don't) without a DB or Redis.
 const createNotification = vi.fn().mockResolvedValue(undefined);
+const deleteThreadAssignedNotifications = vi.fn().mockResolvedValue(undefined);
 
 vi.mock("@amarnai/db", () => ({
   db: {
@@ -22,6 +23,8 @@ vi.mock("@amarnai/db", () => ({
     },
   },
   createNotification: (...args: unknown[]) => createNotification(...args),
+  deleteThreadAssignedNotifications: (...args: unknown[]) =>
+    deleteThreadAssignedNotifications(...args),
 }));
 
 const queueAdd = vi.fn().mockResolvedValue(undefined);
@@ -65,6 +68,7 @@ function userLookup(): any {
 beforeEach(() => {
   vi.clearAllMocks();
   createNotification.mockClear();
+  deleteThreadAssignedNotifications.mockClear();
   queueAdd.mockClear();
   vi.mocked(db.emailThread.findFirst).mockResolvedValue(BASE_THREAD as never);
   vi.mocked(db.emailThread.update).mockResolvedValue({} as never);
@@ -127,6 +131,45 @@ describe("POST /workspaces/:workspaceId/email-threads/:threadId/assignee", () =>
     expect(queueAdd).toHaveBeenCalledWith(
       "thread_assigned",
       expect.objectContaining({ kind: "thread_assigned", assigneeUserId: ASSIGNEE_ID, assignedByUserId: TEST_USER_ID }),
+    );
+  });
+
+  it("does NOT clear notifications on a fresh assign with no prior assignee", async () => {
+    await assignReq({ assigneeUserId: ASSIGNEE_ID });
+
+    expect(deleteThreadAssignedNotifications).not.toHaveBeenCalled();
+  });
+
+  it("clears the previous assignee's stale notifications when reassigning", async () => {
+    const PREVIOUS_ID = "user-c";
+    vi.mocked(db.emailThread.findFirst).mockResolvedValue(
+      { ...BASE_THREAD, assignedToUserId: PREVIOUS_ID } as never,
+    );
+
+    await assignReq({ assigneeUserId: ASSIGNEE_ID });
+
+    // The old assignee's notice for this thread must disappear...
+    expect(deleteThreadAssignedNotifications).toHaveBeenCalledWith(
+      expect.objectContaining({ userId: PREVIOUS_ID, workspaceId: WS_ID, threadId: THREAD_ID }),
+    );
+    // ...while the new assignee gets a fresh one.
+    expect(createNotification).toHaveBeenCalledWith(
+      expect.objectContaining({ userId: ASSIGNEE_ID, type: "thread_assigned" }),
+    );
+  });
+
+  it("clears then re-creates when re-assigning the same person (no stacking)", async () => {
+    vi.mocked(db.emailThread.findFirst).mockResolvedValue(
+      { ...BASE_THREAD, assignedToUserId: ASSIGNEE_ID } as never,
+    );
+
+    await assignReq({ assigneeUserId: ASSIGNEE_ID });
+
+    expect(deleteThreadAssignedNotifications).toHaveBeenCalledWith(
+      expect.objectContaining({ userId: ASSIGNEE_ID, threadId: THREAD_ID }),
+    );
+    expect(createNotification).toHaveBeenCalledWith(
+      expect.objectContaining({ userId: ASSIGNEE_ID, type: "thread_assigned" }),
     );
   });
 
@@ -196,5 +239,33 @@ describe("DELETE /workspaces/:workspaceId/email-threads/:threadId/assignee", () 
         data: expect.objectContaining({ assignedToUserId: null, assignedByUserId: null, assignedAt: null }),
       }),
     );
+  });
+
+  it("clears the former assignee's stale notification on unassign", async () => {
+    vi.mocked(db.emailThread.findFirst).mockResolvedValue(
+      { id: THREAD_ID, assignedToUserId: ASSIGNEE_ID } as never,
+    );
+
+    await app.request(
+      `/workspaces/${WS_ID}/email-threads/${THREAD_ID}/assignee`,
+      authed({ method: "DELETE" }),
+    );
+
+    expect(deleteThreadAssignedNotifications).toHaveBeenCalledWith(
+      expect.objectContaining({ userId: ASSIGNEE_ID, workspaceId: WS_ID, threadId: THREAD_ID }),
+    );
+  });
+
+  it("does not attempt to clear notifications when nothing was assigned", async () => {
+    vi.mocked(db.emailThread.findFirst).mockResolvedValue(
+      { id: THREAD_ID, assignedToUserId: null } as never,
+    );
+
+    await app.request(
+      `/workspaces/${WS_ID}/email-threads/${THREAD_ID}/assignee`,
+      authed({ method: "DELETE" }),
+    );
+
+    expect(deleteThreadAssignedNotifications).not.toHaveBeenCalled();
   });
 });

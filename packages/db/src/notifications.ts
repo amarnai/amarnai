@@ -44,3 +44,40 @@ export async function createNotification(input: CreateNotificationInput): Promis
     where: { userId: input.userId, createdAt: { lt: cutoff } },
   });
 }
+
+export interface DeleteThreadAssignedNotificationsInput {
+  /** Recipient whose stale assignment notifications should be removed. */
+  userId: string;
+  /** Workspace scope. */
+  workspaceId: string;
+  /** Thread the notifications point at (matched inside `params`). */
+  threadId: string;
+}
+
+/**
+ * Remove a recipient's "thread_assigned" notifications for a single thread.
+ *
+ * Enforces the invariant that at most one active assignment notification exists
+ * per (thread, recipient), reflecting the *current* assignment. Callers run this
+ * whenever a thread's assignment moves away from a user — on explicit unassign,
+ * on reassignment to someone else, and on re-assignment to the same user before
+ * a fresh notification is created — so a user never accumulates stale "you were
+ * assigned this thread" notices for an assignment they no longer hold.
+ *
+ * `threadId` lives inside the JSON `params`; there is no index on it, so this is
+ * a scan over the recipient's own (already retention-bounded) rows. Like
+ * `createNotification`, treat this as best-effort and do not fail the caller's
+ * critical path if it throws.
+ */
+export async function deleteThreadAssignedNotifications(
+  input: DeleteThreadAssignedNotificationsInput
+): Promise<void> {
+  await db.notification.deleteMany({
+    where: {
+      userId: input.userId,
+      workspaceId: input.workspaceId,
+      type: "thread_assigned",
+      params: { path: ["threadId"], equals: input.threadId },
+    },
+  });
+}
