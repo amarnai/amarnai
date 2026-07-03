@@ -25,13 +25,13 @@ msgid "(No body)"
 msgstr "(本文なし)"
 
 #. placeholder {0}: thread.attachmentCount
-#: ../../apps/mobile/src/components/ThreadRow.tsx:96
+#: ../../apps/mobile/src/components/ThreadRow.tsx:106
 #, fuzzy
 msgid "{0, plural, one {# file} other {# files}}"
 msgstr "{0, plural, one {# ファイル} other {# ファイル}}"
 
 #. placeholder {0}: thread.messageCount
-#: ../../apps/mobile/src/components/ThreadRow.tsx:101
+#: ../../apps/mobile/src/components/ThreadRow.tsx:111
 msgid "{0, plural, one {# message} other {# messages}}"
 msgstr "{0, plural, one {# メッセージ} other {# メッセージ}}"
 
@@ -72,7 +72,7 @@ msgstr "{0} / {1} 残り · {2} にリセット"
 #. placeholder {1}: (total ?? 0).toLocaleString()
 #. placeholder {1}: viewCount.toLocaleString()
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:81
-#: ../ui/src/emails/ThreadList.tsx:217
+#: ../ui/src/emails/ThreadList.tsx:227
 msgid "{0} of {1} loaded"
 msgstr "読み込み済み: {0}/{1}"
 
@@ -93,6 +93,17 @@ msgstr "残り {0}/{1} · {quotaResetDate} にリセット"
 msgid "{blacklistCount, plural, one {# blocked} other {# blocked}}"
 msgstr "{blacklistCount, plural, one {#件ブロック済み} other {#件ブロック済み}}"
 
+#: ../../apps/extension/src/panel/notificationText.ts:18
+#: ../../apps/mobile/src/data/notificationView.ts:28
+#: ../../apps/web/src/lib/notifications.ts:29
+#, fuzzy
+msgid "{by} assigned you a thread"
+msgstr "{by}がスレッドを割り当てました"
+
+#: ../../apps/extension/src/panel/notificationText.ts:17
+msgid "{by} assigned you: {subject}"
+msgstr "{by}が{subject}を割り当てました"
+
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:528
 #, fuzzy
 msgid "{classificationCount, plural, one {Deleting this folder will leave # thread unsorted.} other {Deleting this folder will leave # threads unsorted.}}"
@@ -108,7 +119,7 @@ msgstr "{collaboratorCount} / {collaboratorLimit} 追加済み"
 msgid "{confPct}% confidence"
 msgstr "確信度 {confPct}%"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:136
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:150
 msgid "{draftRemaining} of {draftLimit} left · resets {draftResetDate}"
 msgstr "{draftLimit} 件中 {draftRemaining} 件利用可能 · {draftResetDate} にリセット"
 
@@ -142,7 +153,7 @@ msgstr "{pendingCount} 保留中"
 
 #. placeholder {0}: draftQuota.limit
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:300
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:309
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:320
 #, fuzzy
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
 msgstr "{0} 中 {quotaRemaining} 残り · {quotaResetDate} にリセット"
@@ -155,6 +166,11 @@ msgstr "{limit} 件中 {remaining} 件利用可能 · {resetDate} にリセッ�
 #, fuzzy
 msgid "{routableCount} of {TAXONOMY_MIN_NON_ROOT_NODES} folders connected to your inbox. Routing requires at least {TAXONOMY_MIN_NON_ROOT_NODES}."
 msgstr "受信トレイに接続されているフォルダは {TAXONOMY_MIN_NON_ROOT_NODES} 件中 {routableCount} 件です。ルーティングには少なくとも {TAXONOMY_MIN_NON_ROOT_NODES} 件が必要です。"
+
+#: ../../apps/mobile/app/(app)/notifications.tsx:269
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:176
+msgid "{selectedCount} selected"
+msgstr "{selectedCount} 件選択済み"
 
 #: ../ui/src/emails/ThreadListHeader.tsx:113
 #, fuzzy
@@ -212,7 +228,7 @@ msgstr "フォルダーを追加"
 msgid "+ Add Folder"
 msgstr "+ フォルダを追加"
 
-#: ../../apps/web/src/components/Sidebar.tsx:176
+#: ../../apps/web/src/components/Sidebar.tsx:187
 #, fuzzy
 msgid "+ New workspace"
 msgstr "+ 新しいワークスペース"
@@ -347,12 +363,12 @@ msgstr "月500スレッドを自動振り分け"
 msgid "75,000 threads"
 msgstr "75,000スレッド"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:298
+#: ../../apps/site/src/components/demo/demo-seed.ts:300
 #, fuzzy
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence."
 msgstr "「通信長」の職に、テベスのホルエムヘブ氏から新規応募がありました。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:312
+#: ../../apps/site/src/components/demo/demo-seed.ts:314
 #, fuzzy
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
@@ -361,7 +377,7 @@ msgstr "テーベのホレムヘブより、通信長官職への応募があり
 "\n"
 "応募書類は記録の館でご確認ください。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:380
+#: ../../apps/site/src/components/demo/demo-seed.ts:384
 #, fuzzy
 msgid "Abdi-Heba of Urushalim"
 msgstr "ウプサリムのアブディ・ヘバ"
@@ -398,12 +414,12 @@ msgstr "アクセスが拒否されました。接続するには読み取り専
 msgid "Account"
 msgstr "アカウント"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:102
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:105
 #, fuzzy
 msgid "Account menu"
 msgstr "アカウントメニュー"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:116
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:119
 msgid "Account settings"
 msgstr "アカウント設定"
 
@@ -518,7 +534,7 @@ msgstr "すべてのワークスペースデータは完全に削除されます
 msgid "All your workspaces, emails, and settings will be deleted permanently."
 msgstr "すべてのワークスペース、メール、設定が完全に削除されます。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:255
+#: ../../apps/site/src/components/demo/demo-seed.ts:256
 msgid "Alliance proposal: house of Amurru"
 msgstr "アムル家との同盟提案"
 
@@ -647,7 +663,7 @@ msgstr "APIエラー {0}"
 msgid "Appearance"
 msgstr "表示"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:293
+#: ../../apps/site/src/components/demo/demo-seed.ts:295
 #, fuzzy
 msgid "Application: Chief of Correspondence"
 msgstr "応募：通信長"
@@ -690,6 +706,40 @@ msgstr "適用中…"
 msgid "Approve routing"
 msgstr "ルーティングを承認"
 
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:233
+#: ../ui/src/emails/TriageBar.tsx:71
+#, fuzzy
+msgid "Assign"
+msgstr "割り当てる"
+
+#: ../ui/src/emails/AssigneePicker.tsx:85
+#, fuzzy
+msgid "Assign thread"
+msgstr "スレッドを割り当てる"
+
+#: ../../apps/mobile/src/components/AssigneeSheet.tsx:39
+#, fuzzy
+msgid "Assign to"
+msgstr "割り当て先"
+
+#: ../ui/src/emails/ThreadRow.tsx:260
+#: ../ui/src/emails/ThreadRow.tsx:264
+#: ../ui/src/emails/TriageBar.tsx:63
+#, fuzzy
+msgid "Assign to a member"
+msgstr "メンバーに割り当てる"
+
+#: ../ui/src/emails/TriageBar.tsx:70
+#, fuzzy
+msgid "Assigned · {assigneeName}"
+msgstr "担当者 · {assigneeName}"
+
+#: ../ui/src/emails/ThreadRow.tsx:174
+#: ../ui/src/emails/TriageBar.tsx:62
+#, fuzzy
+msgid "Assigned to {assigneeName}. Change assignee"
+msgstr "{assigneeName}が担当。担当者を変更"
+
 #: ../../apps/web/src/app/reset-password/page.tsx:54
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:49
 msgid "At least {PASSWORD_MIN_LENGTH} characters"
@@ -710,7 +760,7 @@ msgstr "通知を「アップデート/その他」に自動分類する"
 msgid "Automated and bulk mail that doesn't fit another folder lands here automatically. This is different from Needs review, which holds threads too ambiguous for the assistant to sort."
 msgstr "他のフォルダに振り分けられない自動メールや一括送信メールは、ここに自動的に振り分けられます。これは、アシスタントが振り分けるには曖昧すぎるスレッドが格納される「要確認」とは異なります。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:303
+#: ../../apps/site/src/components/demo/demo-seed.ts:305
 #, fuzzy
 msgid "Automated notice from the Bureau of Royal Appointments. Subject and sender clearly indicate a new application for an open position."
 msgstr "王室任命局からの自動通知です。件名と送信者から、空席の職への新規応募であることが明確に示されています。"
@@ -720,7 +770,7 @@ msgstr "王室任命局からの自動通知です。件名と送信者から、
 msgid "Automated notifications, newsletters, and service updates that don't fit another folder."
 msgstr "他のフォルダに属さない自動通知、ニュースレター、サービス更新。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:270
+#: ../../apps/site/src/components/demo/demo-seed.ts:271
 #, fuzzy
 msgid "Aziru of Amurru"
 msgstr "アムルのアジル"
@@ -740,14 +790,14 @@ msgstr "アジル殿、\n"
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:215
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:25
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:222
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:228
 #: ../ui/src/emails/ThreadPreview.tsx:92
 #, fuzzy
 msgid "Back"
 msgstr "戻る"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:211
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:217
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:223
 #: ../ui/src/emails/ThreadPreview.tsx:87
 #, fuzzy
 msgid "Back to list"
@@ -827,7 +877,7 @@ msgstr "プラン作成"
 #~ msgid "Bulk triage your inbox"
 #~ msgstr "受信トレイを一括でトリアージ"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:308
+#: ../../apps/site/src/components/demo/demo-seed.ts:310
 #, fuzzy
 msgid "Bureau of Royal Appointments"
 msgstr "王室任命局"
@@ -871,6 +921,7 @@ msgstr "Amarnaiをセルフホストできますか？"
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:147
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:174
 #: ../../apps/mobile/app/(app)/account.tsx:82
+#: ../../apps/mobile/app/(app)/notifications.tsx:141
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:93
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:245
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:150
@@ -992,8 +1043,8 @@ msgstr "閉じる"
 msgid "Close panel"
 msgstr "パネルを閉じる"
 
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:225
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:229
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:231
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:235
 #: ../ui/src/emails/ThreadPreview.tsx:97
 #: ../ui/src/emails/ThreadPreview.tsx:101
 #, fuzzy
@@ -1292,12 +1343,12 @@ msgstr "Googleアカウントを確認できませんでした。もう一度お
 msgid "Couldn't load your inbox. Check your connection and reopen the panel."
 msgstr "受信トレイの読み込みに失敗しました。接続を確認し、パネルを再度開いてください。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:401
+#: ../../apps/site/src/components/demo/demo-seed.ts:406
 #, fuzzy
 msgid "Council convening: season of Shemu"
 msgstr "評議会招集：シェム期"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:411
+#: ../../apps/site/src/components/demo/demo-seed.ts:416
 #, fuzzy
 msgid "Council preparation request from a known royal ally. Sender domain and context clearly match the Current investors folder."
 msgstr "既知の王室同盟者からの評議会準備要請です。送信者ドメインとコンテキストは「現在の投資家」フォルダと一致します。"
@@ -1359,6 +1410,7 @@ msgstr "アカウント作成中…"
 msgid "Creating…"
 msgstr "作成中…"
 
+#: ../../apps/mobile/src/components/AssigneeSheet.tsx:63
 #: ../../apps/mobile/src/components/RerouteSheet.tsx:45
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:107
 #: ../../apps/site/src/components/demo/demo-seed.ts:33
@@ -1413,12 +1465,23 @@ msgstr "デフォルトの無料ワークスペース"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:176
 #: ../../apps/mobile/app/(app)/account.tsx:84
+#: ../../apps/mobile/app/(app)/notifications.tsx:142
+#: ../../apps/mobile/app/(app)/notifications.tsx:231
+#: ../../apps/mobile/app/(app)/notifications.tsx:317
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:193
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:266
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:267
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:596
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:607
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:703
 #, fuzzy
 msgid "Delete"
 msgstr "削除"
+
+#. placeholder {0}: ids.length
+#: ../../apps/mobile/app/(app)/notifications.tsx:139
+msgid "Delete {0} notifications?"
+msgstr "{0}件の通知を削除しますか？"
 
 #: ../../apps/mobile/app/(app)/account.tsx:166
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:119
@@ -1444,6 +1507,15 @@ msgstr "削除に失敗しました。もう一度お試しください。"
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:424
 msgid "Delete folder"
 msgstr "フォルダーを削除"
+
+#: ../../apps/mobile/app/(app)/notifications.tsx:140
+#, fuzzy
+msgid "Delete notifications"
+msgstr "通知を削除"
+
+#: ../../apps/mobile/app/(app)/notifications.tsx:138
+msgid "Delete this notification?"
+msgstr "この通知を削除しますか？"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:303
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:26
@@ -1563,7 +1635,7 @@ msgstr "このワークスペースを切断します。このメールボック
 
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:228
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:298
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:343
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:57
 #: ../ui/src/AppDownloadBanner.tsx:80
 #: ../ui/src/emails/MockEmailsPage.tsx:256
@@ -1603,13 +1675,14 @@ msgstr "アカウントをお持ちでないですか？<0>アカウントを作
 msgid "Don't have an account? <0>Sign up</0>"
 msgstr "アカウントをお持ちではありませんか？ <0>サインアップ</0>"
 
+#: ../../apps/mobile/app/(app)/notifications.tsx:254
 #: ../../apps/mobile/src/components/ThreadRow.tsx:40
-#: ../ui/src/emails/ThreadRow.tsx:141
+#: ../ui/src/emails/ThreadRow.tsx:166
 #, fuzzy
 msgid "Done"
 msgstr "完了"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:197
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:211
 msgid "Done · undo"
 msgstr "完了 · 元に戻す"
 
@@ -1617,21 +1690,21 @@ msgstr "完了 · 元に戻す"
 msgid "Downgrade to {planName}"
 msgstr "{planName}にダウングレード"
 
-#: ../ui/src/emails/ThreadRow.tsx:182
+#: ../ui/src/emails/ThreadRow.tsx:228
 #, fuzzy
 msgid "draft"
 msgstr "下書き"
 
-#: ../../apps/mobile/src/components/ThreadRow.tsx:88
+#: ../../apps/mobile/src/components/ThreadRow.tsx:98
 msgid "Draft"
 msgstr "下書き"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:165
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:179
 msgid "Draft failed · tap to retry"
 msgstr "下書きの送信に失敗しました · タップして再試行"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:315
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:325
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:336
 #, fuzzy
 msgid "Draft generation failed. Try again."
 msgstr "下書きの生成に失敗しました。もう一度お試しください。"
@@ -1642,7 +1715,7 @@ msgstr "下書きの生成に失敗しました。もう一度お試しくださ
 msgid "Draft reply"
 msgstr "返信の下書き"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:112
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:126
 msgid "Draft shared"
 msgstr "下書きを共有しました"
 
@@ -1652,8 +1725,8 @@ msgstr "下書きを共有しました"
 msgid "Draft style guidance"
 msgstr "下書きのスタイルガイド"
 
-#: ../../apps/mobile/src/components/ThreadRow.tsx:84
-#: ../ui/src/emails/ThreadRow.tsx:176
+#: ../../apps/mobile/src/components/ThreadRow.tsx:94
+#: ../ui/src/emails/ThreadRow.tsx:222
 msgid "Drafting…"
 msgstr "下書き作成中…"
 
@@ -1750,7 +1823,7 @@ msgid "Email verified! Sign in to continue."
 msgstr "メールアドレスが確認されました！サインインして続行してください。"
 
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:28
-#: ../../apps/web/src/components/Sidebar.tsx:30
+#: ../../apps/web/src/components/Sidebar.tsx:32
 #, fuzzy
 msgid "Emails"
 msgstr "メール"
@@ -1944,7 +2017,7 @@ msgstr "財務"
 msgid "Find and draft"
 msgstr "検索と下書き作成"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:265
+#: ../../apps/site/src/components/demo/demo-seed.ts:266
 msgid "Flagged as alliance/investor intro based on language (\"mutual benefit\", \"long-standing friendship\"). Confidence is moderate; Aziru has been known to send similar overtures to multiple courts."
 msgstr "「相互利益」「長年の友情」といった文言から、同盟／投資家紹介としてフラグ付けされました。アジルは複数の宮廷に同様の提案を送っているため、信頼度は中程度です。"
 
@@ -1989,7 +2062,7 @@ msgid "Folder: {activeFolderName}"
 msgstr "フォルダ: {activeFolderName}"
 
 #: ../ui/src/emails/EmailRail.tsx:99
-#: ../ui/src/emails/ThreadList.tsx:130
+#: ../ui/src/emails/ThreadList.tsx:136
 msgid "Folders"
 msgstr "フォルダ"
 
@@ -2029,7 +2102,7 @@ msgstr "大規模組織や、大量のメールを扱うチーム向け。"
 msgid "For larger organizations."
 msgstr "大規模組織向け。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:260
+#: ../../apps/site/src/components/demo/demo-seed.ts:261
 msgid "For many years our houses have been as brothers. I write now to propose that we formalise this friendship for the benefit of both our peoples."
 msgstr "長年にわたり、我々の家は兄弟のようでした。両国民の利益のため、この友情を正式なものとすることを提案したく筆を取りました。"
 
@@ -2116,8 +2189,8 @@ msgid "Generate a plan from your inbox"
 msgstr "受信トレイからプランを生成"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:294
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:131
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:303
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:145
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:314
 #: ../ui/src/emails/ThreadPreview.tsx:162
 #, fuzzy
 msgid "Generate draft reply"
@@ -2216,7 +2289,7 @@ msgstr "Gmailで重要としてマーク済み"
 msgid "Gmail read-only access was not granted. Please try again and approve the requested permission."
 msgstr "Gmailの読み取り専用アクセスが許可されませんでした。もう一度お試しになり、要求された権限を承認してください。"
 
-#: ../../apps/web/src/components/Sidebar.tsx:43
+#: ../../apps/web/src/components/Sidebar.tsx:45
 #, fuzzy
 msgid "Gmail Sort Tester"
 msgstr "Gmailソートテスター"
@@ -2349,7 +2422,7 @@ msgstr "仕組み"
 msgid "How to write a good description"
 msgstr "良い説明の書き方"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:273
+#: ../../apps/site/src/components/demo/demo-seed.ts:274
 msgid "I write to propose that we formalise our friendship."
 msgstr "もって友情を正式なものとすることを提案します。"
 
@@ -2449,7 +2522,7 @@ msgstr "スパムを含める"
 msgid "Included"
 msgstr "含まれる"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:375
+#: ../../apps/site/src/components/demo/demo-seed.ts:379
 msgid "Informal message with no clear category: personal visit or political audience? Tone is personal but sender is a known vassal governor. Routed to Other with low confidence."
 msgstr "明確なカテゴリのない非公式メッセージ：個人的な訪問か、政治的な謁見か？個人的なトーンですが、送信者は既知の属国総督です。「その他」に低確度でルーティングされました。"
 
@@ -2670,8 +2743,10 @@ msgstr "ここに該当する送信者、件名、キーワードを記載して
 msgid "Live"
 msgstr "ライブ"
 
+#: ../../apps/mobile/app/(app)/notifications.tsx:294
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:95
-#: ../ui/src/emails/ThreadList.tsx:228
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:278
+#: ../ui/src/emails/ThreadList.tsx:238
 #, fuzzy
 msgid "Load more"
 msgstr "さらに読み込む"
@@ -2679,17 +2754,23 @@ msgstr "さらに読み込む"
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:116
 #: ../ui/src/emails/BackfillCard.tsx:35
-#: ../ui/src/emails/ThreadList.tsx:173
+#: ../ui/src/emails/ThreadList.tsx:179
 msgid "Loading past threads…"
 msgstr "過去のスレッドを読み込み中…"
 
+#: ../../apps/extension/src/panel/NotificationBell.tsx:123
+#: ../../apps/mobile/app/(app)/notifications.tsx:294
 #: ../../apps/mobile/src/components/MessageCard.tsx:53
+#: ../../apps/mobile/src/components/NotificationsSheet.tsx:57
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:201
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:278
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:121
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:137
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:158
 #: ../../apps/web/src/app/loading.tsx:6
+#: ../../apps/web/src/components/NotificationBell.tsx:149
 #: ../ui/src/emails/MessageCard.tsx:60
-#: ../ui/src/emails/ThreadList.tsx:228
+#: ../ui/src/emails/ThreadList.tsx:238
 #, fuzzy
 msgid "Loading…"
 msgstr "読み込み中…"
@@ -2703,6 +2784,13 @@ msgstr "メール"
 #, fuzzy
 msgid "Manage"
 msgstr "管理"
+
+#: ../../apps/extension/src/panel/NotificationBell.tsx:145
+#: ../../apps/mobile/src/components/NotificationsSheet.tsx:63
+#: ../../apps/web/src/components/NotificationBell.tsx:170
+#, fuzzy
+msgid "Manage notifications"
+msgstr "通知を管理"
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:303
 msgid "Manage payment method"
@@ -2718,15 +2806,21 @@ msgid "Manager emails: one-on-ones, performance reviews, and feedback."
 msgstr "マネージャーからのメール：1対1面談、パフォーマンスレビュー、フィードバック。"
 
 #: ../ui/src/emails/PreviewDoneBar.tsx:23
-#: ../ui/src/emails/ThreadRow.tsx:106
+#: ../ui/src/emails/ThreadRow.tsx:124
 #, fuzzy
 msgid "Mark as done"
 msgstr "完了としてマーク"
 
-#: ../ui/src/emails/ThreadRow.tsx:105
+#: ../ui/src/emails/ThreadRow.tsx:123
 #, fuzzy
 msgid "Mark as not done"
 msgstr "未完了としてマーク"
+
+#: ../../apps/mobile/app/(app)/notifications.tsx:208
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:245
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:246
+msgid "Mark as read"
+msgstr "既読にする"
 
 #: ../../apps/mobile/src/components/DraftSheet.tsx:111
 #: ../ui/src/emails/SuggestedDraftCard.tsx:73
@@ -2734,12 +2828,19 @@ msgstr "未完了としてマーク"
 msgid "Mark as sent"
 msgstr "送信済みとしてマーク"
 
+#: ../../apps/mobile/app/(app)/notifications.tsx:208
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:245
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:246
+#, fuzzy
+msgid "Mark as unread"
+msgstr "未読にする"
+
 #: ../../apps/mobile/src/components/DraftSheet.tsx:111
 #: ../ui/src/emails/SuggestedDraftCard.tsx:73
 msgid "Mark as unsent"
 msgstr "未送信としてマーク"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:204
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:218
 msgid "Mark done"
 msgstr "完了としてマーク"
 
@@ -2747,6 +2848,17 @@ msgstr "完了としてマーク"
 #, fuzzy
 msgid "Mark invited"
 msgstr "招待済みとしてマーク"
+
+#: ../../apps/mobile/app/(app)/notifications.tsx:307
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:182
+#, fuzzy
+msgid "Mark read"
+msgstr "既読にする"
+
+#: ../../apps/mobile/app/(app)/notifications.tsx:312
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:185
+msgid "Mark unread"
+msgstr "未読にする"
 
 #: ../ui/src/emails/PreviewDoneBar.tsx:22
 #, fuzzy
@@ -2776,7 +2888,7 @@ msgstr "メンバー"
 msgid "Messages from paying customers and account holders."
 msgstr "有料顧客およびアカウント所有者からのメッセージ。"
 
-#: ../../apps/web/src/components/Sidebar.tsx:41
+#: ../../apps/web/src/components/Sidebar.tsx:43
 #, fuzzy
 msgid "Mock Inbox"
 msgstr "模擬受信トレイ"
@@ -2836,7 +2948,7 @@ msgstr "移動先…"
 msgid "Moved to {folderName}"
 msgstr "「{folderName}」に移動しました"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:370
+#: ../../apps/site/src/components/demo/demo-seed.ts:374
 msgid "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face."
 msgstr "数日中に旅路がデルタの近くを通ります。もし偉大なる王に時間がございましたら、直接お話しする機会をいただければ幸いです。"
 
@@ -2872,7 +2984,7 @@ msgstr "しない"
 msgid "Never auto-sends · Encrypted at rest · Minimal data"
 msgstr "自動送信なし・保存データは暗号化・最小限のデータのみ"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:311
+#: ../../apps/site/src/components/demo/demo-seed.ts:313
 #, fuzzy
 msgid "New application from Horemheb of Thebes."
 msgstr "テベスのホルエムヘブ氏からの新規応募。"
@@ -2886,6 +2998,12 @@ msgstr "新規事業に関する問い合わせ、提案、価格交渉、見込
 #: ../ui/src/emails/EmailRail.tsx:106
 msgid "New folder"
 msgstr "新しいフォルダ"
+
+#: ../../apps/extension/src/panel/notificationText.ts:22
+#: ../../apps/mobile/src/data/notificationView.ts:33
+#: ../../apps/web/src/lib/notifications.ts:34
+msgid "New notification"
+msgstr "新着通知"
 
 #: ../../apps/web/src/app/reset-password/page.tsx:43
 #: ../../apps/web/src/app/reset-password/page.tsx:68
@@ -2912,12 +3030,12 @@ msgstr "新規ワークスペース"
 msgid "New workspace name"
 msgstr "新しいワークスペース名"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:129
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:143
 msgid "No drafts remaining"
 msgstr "残りの下書きはありません"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:299
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:308
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:319
 #: ../ui/src/emails/SuggestedDraftCard.tsx:97
 #, fuzzy
 msgid "No drafts remaining · resets {quotaResetDate}"
@@ -2970,6 +3088,25 @@ msgstr "Gmail受信トレイが接続されていません。同期を開始す�
 msgid "No matching folders"
 msgstr "一致するフォルダーはありません"
 
+#: ../ui/src/emails/AssigneePicker.tsx:91
+#, fuzzy
+msgid "No members"
+msgstr "メンバーなし"
+
+#: ../../apps/mobile/src/components/AssigneeSheet.tsx:67
+#, fuzzy
+msgid "No members available"
+msgstr "利用可能なメンバーがいません"
+
+#: ../../apps/extension/src/panel/NotificationBell.tsx:128
+#: ../../apps/mobile/app/(app)/notifications.tsx:287
+#: ../../apps/mobile/src/components/NotificationsSheet.tsx:57
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:203
+#: ../../apps/web/src/components/NotificationBell.tsx:152
+#, fuzzy
+msgid "No notifications yet"
+msgstr "まだ通知がありません"
+
 #: ../../apps/mobile/src/components/BlacklistSheet.tsx:146
 msgid "No senders blocked yet."
 msgstr "まだ差出人はブロックされていません。"
@@ -2988,7 +3125,7 @@ msgstr "まだサインアップはありません。"
 msgid "No threads"
 msgstr "スレッドがありません"
 
-#: ../ui/src/emails/ThreadList.tsx:176
+#: ../ui/src/emails/ThreadList.tsx:182
 msgid "No threads here."
 msgstr "ここにスレッドはありません。"
 
@@ -3006,7 +3143,7 @@ msgstr "{folderName}にスレッドはありません"
 msgid "No threads match your search"
 msgstr "検索結果にスレッドがありません"
 
-#: ../ui/src/emails/ThreadList.tsx:169
+#: ../ui/src/emails/ThreadList.tsx:175
 #, fuzzy
 msgid "No threads match your search."
 msgstr "検索条件に一致するスレッドはありません。"
@@ -3016,7 +3153,7 @@ msgid "No threads yet"
 msgstr "まだスレッドがありません"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:225
-#: ../../apps/web/src/components/Sidebar.tsx:142
+#: ../../apps/web/src/components/Sidebar.tsx:153
 #, fuzzy
 msgid "No workspace"
 msgstr "ワークスペースなし"
@@ -3059,16 +3196,31 @@ msgstr "未設定"
 msgid "Not yet synced"
 msgstr "まだ同期されていません"
 
+#: ../../apps/extension/src/panel/NotificationBell.tsx:40
+#: ../../apps/extension/src/panel/NotificationBell.tsx:116
+#: ../../apps/extension/src/panel/NotificationBell.tsx:118
 #: ../../apps/mobile/app/(app)/account.tsx:145
+#: ../../apps/mobile/app/(app)/notifications.tsx:249
+#: ../../apps/mobile/src/components/NotificationsSheet.tsx:43
+#: ../../apps/web/src/app/(app)/notifications/page.tsx:12
+#: ../../apps/web/src/components/NotificationBell.tsx:126
+#: ../../apps/web/src/components/NotificationBell.tsx:141
+#: ../../apps/web/src/components/NotificationBell.tsx:145
 #, fuzzy
 msgid "Notifications"
 msgstr "通知"
+
+#: ../../apps/extension/src/panel/NotificationBell.tsx:101
+#: ../../apps/web/src/components/NotificationBell.tsx:125
+#, fuzzy
+msgid "Notifications, {unread} unread"
+msgstr "通知、未読{unread}件"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:68
 msgid "Official university emails: registrar, student services, and housing."
 msgstr "大学からの公式メール：教務課、学生サービス、住居。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:337
+#: ../../apps/site/src/components/demo/demo-seed.ts:340
 msgid "Ongoing thread with a known city governor raising a recurring supply issue. Escalatory tone and repeated follow-ups match the Support folder."
 msgstr "既知の都市総督との、繰り返される供給問題に関する進行中のスレッドです。エスカレートするトーンと繰り返されるフォローアップが「サポート」フォルダと一致します。"
 
@@ -3078,16 +3230,16 @@ msgstr "ワークスペースのオーナーのみが請求を管理できます
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:244
 #: ../../apps/mobile/src/components/DraftSheet.tsx:97
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:242
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:248
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:254
 #: ../ui/src/emails/ThreadPreview.tsx:115
 #: ../ui/src/emails/ThreadPreview.tsx:121
-#: ../ui/src/emails/ThreadRow.tsx:107
+#: ../ui/src/emails/ThreadRow.tsx:125
 #, fuzzy
 msgid "Open in Gmail"
 msgstr "Gmailで開く"
 
-#: ../../apps/web/src/components/Sidebar.tsx:112
+#: ../../apps/web/src/components/Sidebar.tsx:114
 #, fuzzy
 msgid "Open navigation"
 msgstr "ナビゲーションを開く"
@@ -3096,6 +3248,12 @@ msgstr "ナビゲーションを開く"
 #, fuzzy
 msgid "open source email ai"
 msgstr "オープンソースのメールAI"
+
+#: ../../apps/mobile/app/(app)/notifications.tsx:221
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:255
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:256
+msgid "Open thread"
+msgstr "スレッドを開く"
 
 #: ../../apps/site/src/components/landing/HeroSection.tsx:58
 #, fuzzy
@@ -3157,8 +3315,8 @@ msgstr "親"
 msgid "Partners"
 msgstr "パートナー"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:365
-#: ../../apps/site/src/components/demo/demo-seed.ts:383
+#: ../../apps/site/src/components/demo/demo-seed.ts:369
+#: ../../apps/site/src/components/demo/demo-seed.ts:387
 msgid "Passing through the Delta: free to meet?"
 msgstr "デルタ通過中：面会可能か？"
 
@@ -3280,14 +3438,14 @@ msgstr "日常生活に関する個人的なやり取りや非学術的なメー
 #. Screen heading for the email-sorting taxonomy. Not a billing or subscription plan.
 #. Sidebar nav label for the email-sorting taxonomy. Not a billing or subscription plan.
 #. Sidebar nav label for the email-sorting taxonomy. Not a billing or subscription plan.
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:42
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:43
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:35
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:265
 #: ../../apps/site/src/components/demo/DemoTaxonomyCanvas.tsx:220
 #: ../../apps/site/src/components/landing/Footer.tsx:26
 #: ../../apps/site/src/components/landing/Nav.tsx:39
 #: ../../apps/web/src/app/(app)/plan/page.tsx:43
-#: ../../apps/web/src/components/Sidebar.tsx:33
+#: ../../apps/web/src/components/Sidebar.tsx:35
 msgid "Plan"
 msgstr "プラン"
 
@@ -3318,7 +3476,7 @@ msgstr "セルフホストをご希望ですか？"
 msgid "Prefer to self-host? It's open source:<0/> <1>clone it and run it free</1>."
 msgstr "セルフホストをご希望ですか？オープンソースなので、<0/> <1>クローンして無料で実行できます</1>。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:419
+#: ../../apps/site/src/components/demo/demo-seed.ts:424
 msgid "Prepare your accounts before the council convenes."
 msgstr "評議会招集前に会計を準備してください。"
 
@@ -3413,7 +3571,7 @@ msgstr "提案フォルダを適用すると、現在のプランは上書きさ
 msgid "Queuing rescan…"
 msgstr "再スキャンをキューに入れています…"
 
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:308
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:353
 #, fuzzy
 msgid "Re-route {unclassifiedCount} unclassified"
 msgstr "{unclassifiedCount}件の未分類を再ルーティング"
@@ -3422,7 +3580,7 @@ msgstr "{unclassifiedCount}件の未分類を再ルーティング"
 msgid "Re-route thread"
 msgstr "スレッドを再ルーティング"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:327
+#: ../../apps/site/src/components/demo/demo-seed.ts:330
 #, fuzzy
 msgid "Re: Grain shipment: third delay this season"
 msgstr "件名：穀物輸送：今期3度目の遅延"
@@ -3658,7 +3816,7 @@ msgstr "ワークスペースをリセット"
 msgid "Reset workspace?"
 msgstr "ワークスペースをリセットしますか？"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:141
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:155
 msgid "Resets {draftResetDate}"
 msgstr "{draftResetDate} にリセット"
 
@@ -3683,7 +3841,7 @@ msgstr "リソース"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:317
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:345
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:331
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:342
 #, fuzzy
 msgid "Retry"
 msgstr "再試行"
@@ -3692,7 +3850,7 @@ msgstr "再試行"
 msgid "Review queue"
 msgstr "レビューキュー"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:342
+#: ../../apps/site/src/components/demo/demo-seed.ts:345
 #, fuzzy
 msgid "Rib-Hadda of Byblos"
 msgstr "ビブロス出身のリブ・ハッダ"
@@ -3796,12 +3954,27 @@ msgstr "スレッドを検索…"
 msgid "See how your inbox is sorted, right next to Gmail."
 msgstr "Gmailの隣で、受信トレイのソート状況を確認できます。"
 
+#: ../../apps/mobile/app/(app)/notifications.tsx:254
+msgid "Select"
+msgstr "選択"
+
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:199
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:273
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:310
 #: ../ui/src/emails/MockEmailsPage.tsx:234
 #, fuzzy
 msgid "Select a thread to preview"
 msgstr "スレッドを選択してプレビュー"
+
+#: ../../apps/mobile/app/(app)/notifications.tsx:269
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:174
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:176
+#, fuzzy
+msgid "Select all"
+msgstr "すべて選択"
+
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:221
+msgid "Select notification"
+msgstr "通知を選択"
 
 #: ../ui/src/PricingPlans.tsx:313
 #, fuzzy
@@ -3879,10 +4052,10 @@ msgstr "インターフェースやAI生成フォルダを含む、このワー�
 msgid "Setting up your workspace…"
 msgstr "ワークスペースを設定中…"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:51
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:52
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:42
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:197
-#: ../../apps/web/src/components/Sidebar.tsx:40
+#: ../../apps/web/src/components/Sidebar.tsx:42
 msgid "Settings"
 msgstr "設定"
 
@@ -3937,7 +4110,7 @@ msgstr "Googleでサインイン。Amarnaiはスレッドとラベルを同期�
 
 #: ../../apps/extension/src/App.tsx:46
 #: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:68
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:127
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:130
 #: ../../apps/mobile/app/(app)/account.tsx:122
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:98
 #: ../../apps/web/src/app/verify-email/page.tsx:42
@@ -4043,7 +4216,7 @@ msgstr "ソート量"
 #: ../../apps/mobile/src/components/RationaleCard.tsx:35
 #: ../../apps/site/src/components/landing/HeroFeedCard.tsx:90
 #: ../ui/src/emails/RationaleCard.tsx:52
-#: ../ui/src/emails/ThreadRow.tsx:147
+#: ../ui/src/emails/ThreadRow.tsx:193
 msgid "Sorting…"
 msgstr "ソート中…"
 
@@ -4296,12 +4469,12 @@ msgstr "サーバーエラーのため、接続を保存できませんでした
 msgid "The Gmail connection, all synced emails, and the taxonomy will be permanently deleted. Re-importing this inbox uses your monthly import allowance; if it runs out, you can import again after {allowanceResetsAt} or by upgrading."
 msgstr "Gmail連携、同期されたすべてのメール、およびタクソノミーは完全に削除されます。この受信トレイを再インポートすると月間インポート枠を消費し、枠がなくなると、{allowanceResetsAt}以降に再度インポートするか、アップグレードによって対応できます。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:332
+#: ../../apps/site/src/components/demo/demo-seed.ts:335
 #, fuzzy
 msgid "The grain you sent last month was received with gratitude. But I must write again: the third shipment has not arrived and the city grows restless."
 msgstr "先月お送りいただいた穀物は感謝をもって受け取りました。しかし、再度ご連絡いたします：第3便が未着のため、民衆が落ち着きを失いつつあります。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:406
+#: ../../apps/site/src/components/demo/demo-seed.ts:411
 #, fuzzy
 msgid "The great council convenes at the start of Shemu. I ask that you prepare a full accounting of the eastern territories and send it ahead by fast courier."
 msgstr "シェムの始まりに大評議会が招集される。東方領土の会計報告書を全て作成し、早馬で事前に送ってほしい。"
@@ -4316,7 +4489,7 @@ msgstr "我が条約で取り決められた第三回の金貨輸送隊が未だ
 msgid "The third gold consignment is overdue."
 msgstr "第三回の金貨輸送隊が延滞している。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:345
+#: ../../apps/site/src/components/demo/demo-seed.ts:348
 msgid "The third grain shipment has not arrived."
 msgstr "第三回の穀物輸送便が未着だ。"
 
@@ -4399,12 +4572,12 @@ msgstr "このスレッドはルーティング待ちです。"
 msgid "This thread is waiting to be routed. Use “Route now” to start sorting."
 msgstr "このスレッドはルーティング待ちです。「今すぐルーティング」を使用してソートを開始してください。"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:71
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:85
 #, fuzzy
 msgid "Thread"
 msgstr "スレッド"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:73
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:87
 msgid "Thread not found"
 msgstr "スレッドが見つかりません"
 
@@ -4455,7 +4628,7 @@ msgstr "まだソートされていないスレッド。"
 msgid "Three steps. Then it sorts every email for you."
 msgstr "たった3ステップ。あとはすべてのメールを自動仕分け。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:420
+#: ../../apps/site/src/components/demo/demo-seed.ts:425
 #, fuzzy
 msgid "To my brother, the Great King,\n"
 "\n"
@@ -4485,7 +4658,7 @@ msgstr "王室任命局殿、\n"
 "\n"
 "王命により、"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:274
+#: ../../apps/site/src/components/demo/demo-seed.ts:275
 #, fuzzy
 msgid "To the Great King,\n"
 "\n"
@@ -4502,7 +4675,7 @@ msgstr "大王陛下へ、\n"
 "\n"
 "アジル、大王陛下の僕、アムルの領主"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:384
+#: ../../apps/site/src/components/demo/demo-seed.ts:388
 #, fuzzy
 msgid "To the Great King,\n"
 "\n"
@@ -4545,7 +4718,7 @@ msgstr "我が兄弟、大王陛下へ、\n"
 "\n"
 "ブルナ＝ブリアシュ2世、バビロンの王"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:346
+#: ../../apps/site/src/components/demo/demo-seed.ts:349
 msgid "To the Great King, my lord, my sun,\n"
 "\n"
 "The grain you sent last month was received with gratitude and I praised your name before the people. But I must write again: the third shipment has not arrived and the city grows restless.\n"
@@ -4567,7 +4740,7 @@ msgstr "大王陛下、我が主、我が太陽よ、\n"
 msgid "Today"
 msgstr "今日"
 
-#: ../ui/src/emails/ThreadList.tsx:114
+#: ../ui/src/emails/ThreadList.tsx:120
 #, fuzzy
 msgid "Toggle folders"
 msgstr "フォルダーを切り替える"
@@ -4603,10 +4776,15 @@ msgstr "外出先でも受信トレイを整理。"
 msgid "Try Amarnai"
 msgstr "Amarnaiを試す"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:416
+#: ../../apps/site/src/components/demo/demo-seed.ts:421
 #, fuzzy
 msgid "Tushratta of Mitanni"
 msgstr "ミタンニのトゥシュラッタ"
+
+#: ../../apps/mobile/src/components/AssigneeSheet.tsx:32
+#: ../ui/src/emails/AssigneePicker.tsx:31
+msgid "Unassign"
+msgstr "割り当てを解除"
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:151
 #: ../../apps/mobile/app/(app)/subscription.tsx:156
@@ -4615,12 +4793,12 @@ msgid "Unavailable"
 msgstr "利用不可"
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:46
-#: ../ui/src/emails/ThreadRow.tsx:155
+#: ../ui/src/emails/ThreadRow.tsx:201
 msgid "Unclassified"
 msgstr "未分類"
 
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:221
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:295
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:340
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1321
 #: ../../apps/web/src/app/admin/waitlist/page.tsx:26
 #: ../ui/src/emails/MockEmailsPage.tsx:253
@@ -4820,7 +4998,7 @@ msgstr "確認メールを送信しました。受信トレイをご確認くだ
 msgid "Verify your email"
 msgstr "メールアドレスを確認"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:178
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:192
 #, fuzzy
 msgid "View draft reply"
 msgstr "下書きの返信を表示"
@@ -4833,7 +5011,7 @@ msgstr "閲覧のみ。ワークスペース管理者のみがプランを編集
 #: ../../apps/mobile/src/components/RationaleCard.tsx:44
 #: ../../apps/mobile/src/components/ThreadRow.tsx:49
 #: ../ui/src/emails/RationaleCard.tsx:74
-#: ../ui/src/emails/ThreadRow.tsx:151
+#: ../ui/src/emails/ThreadRow.tsx:197
 msgid "Waiting"
 msgstr "待機中"
 
@@ -4851,7 +5029,7 @@ msgstr "認証待ち…"
 msgid "Waitlist"
 msgstr "順番待ちリスト"
 
-#: ../ui/src/emails/ThreadRow.tsx:99
+#: ../ui/src/emails/ThreadRow.tsx:117
 msgid "Wants {folderName}"
 msgstr "{folderName}を希望"
 
@@ -4907,7 +5085,7 @@ msgstr "仕事"
 msgid "Working Professional"
 msgstr "社会人"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:60
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:61
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:220
 #: ../../apps/site/src/components/demo/DemoTaxonomyCanvas.tsx:218
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:35
@@ -4940,7 +5118,7 @@ msgstr "ワークスペース名を空にすることはできません"
 msgid "Workspace name updated."
 msgstr "ワークスペース名を更新しました。"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:48
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:49
 msgid "Workspace settings"
 msgstr "ワークスペース設定"
 
@@ -4959,8 +5137,8 @@ msgid "Workspaces included"
 msgstr "含まれるワークスペース"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:309
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:153
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:319
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:167
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:330
 #: ../ui/src/emails/ThreadPreview.tsx:169
 #, fuzzy
 msgid "Writing draft reply…"
@@ -5044,6 +5222,12 @@ msgstr "まもなく再試行するか、テンプレートから開始できま
 #, fuzzy
 msgid "You do not have permission to connect a Gmail inbox to this workspace."
 msgstr "このワークスペースにGmail受信トレイを接続する権限がありません。"
+
+#: ../../apps/extension/src/panel/notificationText.ts:19
+#: ../../apps/mobile/src/data/notificationView.ts:29
+#: ../../apps/web/src/lib/notifications.ts:30
+msgid "You were assigned a thread"
+msgstr "スレッドが割り当てられました"
 
 #: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:178
 #, fuzzy

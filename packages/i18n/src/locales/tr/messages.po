@@ -25,13 +25,13 @@ msgid "(No body)"
 msgstr "(İçerik yok)"
 
 #. placeholder {0}: thread.attachmentCount
-#: ../../apps/mobile/src/components/ThreadRow.tsx:96
+#: ../../apps/mobile/src/components/ThreadRow.tsx:106
 #, fuzzy
 msgid "{0, plural, one {# file} other {# files}}"
 msgstr "{0, plural, one {# dosya} other {# dosya}}"
 
 #. placeholder {0}: thread.messageCount
-#: ../../apps/mobile/src/components/ThreadRow.tsx:101
+#: ../../apps/mobile/src/components/ThreadRow.tsx:111
 #, fuzzy
 msgid "{0, plural, one {# message} other {# messages}}"
 msgstr "{0, plural, one {# mesaj} other {# mesaj}}"
@@ -73,7 +73,7 @@ msgstr "{0} / {1} kaldı · sıfırlanır {2}"
 #. placeholder {1}: (total ?? 0).toLocaleString()
 #. placeholder {1}: viewCount.toLocaleString()
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:81
-#: ../ui/src/emails/ThreadList.tsx:217
+#: ../ui/src/emails/ThreadList.tsx:227
 #, fuzzy
 msgid "{0} of {1} loaded"
 msgstr "{0} / {1} yüklendi"
@@ -97,6 +97,17 @@ msgstr "{0} / {1} kaldı · sıfırlanır {quotaResetDate}"
 msgid "{blacklistCount, plural, one {# blocked} other {# blocked}}"
 msgstr "{blacklistCount, plural, one {# engellendi} other {# engellendi}}"
 
+#: ../../apps/extension/src/panel/notificationText.ts:18
+#: ../../apps/mobile/src/data/notificationView.ts:28
+#: ../../apps/web/src/lib/notifications.ts:29
+#, fuzzy
+msgid "{by} assigned you a thread"
+msgstr "{by} size bir konu atadı."
+
+#: ../../apps/extension/src/panel/notificationText.ts:17
+msgid "{by} assigned you: {subject}"
+msgstr "{by} size atadı: {subject}"
+
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:528
 #, fuzzy
 msgid "{classificationCount, plural, one {Deleting this folder will leave # thread unsorted.} other {Deleting this folder will leave # threads unsorted.}}"
@@ -113,7 +124,7 @@ msgstr "{collaboratorCount} / {collaboratorLimit} eklendi"
 msgid "{confPct}% confidence"
 msgstr "%{confPct} güven"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:136
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:150
 #, fuzzy
 msgid "{draftRemaining} of {draftLimit} left · resets {draftResetDate}"
 msgstr "{draftRemaining} / {draftLimit} taslak kaldı · sıfırlanır {draftResetDate}"
@@ -149,7 +160,7 @@ msgstr "{pendingCount} beklemede"
 
 #. placeholder {0}: draftQuota.limit
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:300
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:309
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:320
 #, fuzzy
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
 msgstr "{quotaRemaining} / {0} kaldı · sıfırlanır {quotaResetDate}"
@@ -163,6 +174,11 @@ msgstr "{remaining} / {limit} kaldı · sıfırlanır {resetDate}"
 #, fuzzy
 msgid "{routableCount} of {TAXONOMY_MIN_NON_ROOT_NODES} folders connected to your inbox. Routing requires at least {TAXONOMY_MIN_NON_ROOT_NODES}."
 msgstr "Gelen kutunuza {routableCount} / {TAXONOMY_MIN_NON_ROOT_NODES} klasör bağlı. Yönlendirme için en az {TAXONOMY_MIN_NON_ROOT_NODES} klasör gerekir."
+
+#: ../../apps/mobile/app/(app)/notifications.tsx:269
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:176
+msgid "{selectedCount} selected"
+msgstr "{selectedCount} seçili"
 
 #: ../ui/src/emails/ThreadListHeader.tsx:113
 #, fuzzy
@@ -223,7 +239,7 @@ msgstr "+ Klasör ekle"
 msgid "+ Add Folder"
 msgstr "+ Klasör Ekle"
 
-#: ../../apps/web/src/components/Sidebar.tsx:176
+#: ../../apps/web/src/components/Sidebar.tsx:187
 #, fuzzy
 msgid "+ New workspace"
 msgstr "+ Yeni çalışma alanı"
@@ -360,12 +376,12 @@ msgstr "Ayda 500 sıralanmış ileti"
 msgid "75,000 threads"
 msgstr "75.000 ileti"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:298
+#: ../../apps/site/src/components/demo/demo-seed.ts:300
 #, fuzzy
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence."
 msgstr "Thebes'li Horemheb'den Yazışma Şefi pozisyonu için yeni bir başvuru alındı."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:312
+#: ../../apps/site/src/components/demo/demo-seed.ts:314
 #, fuzzy
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
@@ -374,7 +390,7 @@ msgstr "Thebes'li Horemheb'den Yazışma Şefi pozisyonu için yeni bir başvuru
 "\n"
 "Başvuruyu Kayıtlar Evi'nde görüntüleyin."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:380
+#: ../../apps/site/src/components/demo/demo-seed.ts:384
 #, fuzzy
 msgid "Abdi-Heba of Urushalim"
 msgstr "Urushalim'li Abdi-Heba"
@@ -413,12 +429,12 @@ msgstr "Erişim reddedildi. Bağlanmak için salt okunur Gmail erişimi verin."
 msgid "Account"
 msgstr "Hesap"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:102
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:105
 #, fuzzy
 msgid "Account menu"
 msgstr "Hesap menüsü"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:116
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:119
 msgid "Account settings"
 msgstr "Hesap ayarları"
 
@@ -535,7 +551,7 @@ msgstr "Tüm çalışma alanı verileri kalıcı olarak silinecektir."
 msgid "All your workspaces, emails, and settings will be deleted permanently."
 msgstr "Tüm çalışma alanlarınız, e-postalarınız ve ayarlarınız kalıcı olarak silinecektir."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:255
+#: ../../apps/site/src/components/demo/demo-seed.ts:256
 #, fuzzy
 msgid "Alliance proposal: house of Amurru"
 msgstr "İttifak teklifi: Amurru hanedanı"
@@ -669,7 +685,7 @@ msgstr "API hatası {0}"
 msgid "Appearance"
 msgstr "Görünüm"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:293
+#: ../../apps/site/src/components/demo/demo-seed.ts:295
 #, fuzzy
 msgid "Application: Chief of Correspondence"
 msgstr "Başvuru: Yazışma Şefi"
@@ -713,6 +729,40 @@ msgstr "Uygulanıyor…"
 msgid "Approve routing"
 msgstr "Yönlendirmeyi onayla"
 
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:233
+#: ../ui/src/emails/TriageBar.tsx:71
+#, fuzzy
+msgid "Assign"
+msgstr "Ata"
+
+#: ../ui/src/emails/AssigneePicker.tsx:85
+#, fuzzy
+msgid "Assign thread"
+msgstr "Konuyu Ata"
+
+#: ../../apps/mobile/src/components/AssigneeSheet.tsx:39
+#, fuzzy
+msgid "Assign to"
+msgstr "Şuraya ata"
+
+#: ../ui/src/emails/ThreadRow.tsx:260
+#: ../ui/src/emails/ThreadRow.tsx:264
+#: ../ui/src/emails/TriageBar.tsx:63
+#, fuzzy
+msgid "Assign to a member"
+msgstr "Bir üyeye ata"
+
+#: ../ui/src/emails/TriageBar.tsx:70
+#, fuzzy
+msgid "Assigned · {assigneeName}"
+msgstr "Atandı · {assigneeName}"
+
+#: ../ui/src/emails/ThreadRow.tsx:174
+#: ../ui/src/emails/TriageBar.tsx:62
+#, fuzzy
+msgid "Assigned to {assigneeName}. Change assignee"
+msgstr "{assigneeName} kişisine atandı. Atananı değiştir."
+
 #: ../../apps/web/src/app/reset-password/page.tsx:54
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:49
 msgid "At least {PASSWORD_MIN_LENGTH} characters"
@@ -734,7 +784,7 @@ msgstr "Bildirimleri Güncellemeler / Diğer'e otomatik olarak dosyala."
 msgid "Automated and bulk mail that doesn't fit another folder lands here automatically. This is different from Needs review, which holds threads too ambiguous for the assistant to sort."
 msgstr "Başka bir klasöre uymayan otomatik ve toplu e-postalar doğrudan buraya gelir. Burası, asistanın sıralayamadığı belirsiz konuşmaları barındıran 'İncelemeye Alınması Gerekenler' klasöründen farklıdır."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:303
+#: ../../apps/site/src/components/demo/demo-seed.ts:305
 #, fuzzy
 msgid "Automated notice from the Bureau of Royal Appointments. Subject and sender clearly indicate a new application for an open position."
 msgstr "Kraliyet Atamaları Bürosu'ndan otomatik bildirim. Konu ve gönderici, açık bir pozisyona yeni bir başvuru olduğunu açıkça belirtiyor."
@@ -745,7 +795,7 @@ msgstr "Kraliyet Atamaları Bürosu'ndan otomatik bildirim. Konu ve gönderici, 
 msgid "Automated notifications, newsletters, and service updates that don't fit another folder."
 msgstr "Başka bir klasöre uymayan otomatik bildirimler, bültenler ve hizmet güncellemeleri."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:270
+#: ../../apps/site/src/components/demo/demo-seed.ts:271
 #, fuzzy
 msgid "Aziru of Amurru"
 msgstr "Amurru'lu Aziru"
@@ -766,14 +816,14 @@ msgstr "Aziru,\n"
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:215
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:25
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:222
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:228
 #: ../ui/src/emails/ThreadPreview.tsx:92
 #, fuzzy
 msgid "Back"
 msgstr "Geri"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:211
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:217
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:223
 #: ../ui/src/emails/ThreadPreview.tsx:87
 #, fuzzy
 msgid "Back to list"
@@ -859,7 +909,7 @@ msgstr "Plan oluştur"
 #~ msgid "Bulk triage your inbox"
 #~ msgstr "Gelen kutunuzu topluca ayıklayın"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:308
+#: ../../apps/site/src/components/demo/demo-seed.ts:310
 #, fuzzy
 msgid "Bureau of Royal Appointments"
 msgstr "Kraliyet Atamaları Bürosu"
@@ -906,6 +956,7 @@ msgstr "Amarnai'yi kendi sunucumda barındırabilir miyim?"
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:147
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:174
 #: ../../apps/mobile/app/(app)/account.tsx:82
+#: ../../apps/mobile/app/(app)/notifications.tsx:141
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:93
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:245
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:150
@@ -1032,8 +1083,8 @@ msgstr "Kapat"
 msgid "Close panel"
 msgstr "Paneli kapat"
 
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:225
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:229
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:231
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:235
 #: ../ui/src/emails/ThreadPreview.tsx:97
 #: ../ui/src/emails/ThreadPreview.tsx:101
 #, fuzzy
@@ -1344,12 +1395,12 @@ msgstr "Google hesabınız doğrulanamadı. Lütfen tekrar deneyin."
 msgid "Couldn't load your inbox. Check your connection and reopen the panel."
 msgstr "Gelen kutun yüklenemedi. Bağlantını kontrol et ve paneli yeniden aç."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:401
+#: ../../apps/site/src/components/demo/demo-seed.ts:406
 #, fuzzy
 msgid "Council convening: season of Shemu"
 msgstr "Konsey toplanıyor: Shemu mevsimi"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:411
+#: ../../apps/site/src/components/demo/demo-seed.ts:416
 #, fuzzy
 msgid "Council preparation request from a known royal ally. Sender domain and context clearly match the Current investors folder."
 msgstr "Bilinen bir kraliyet müttefikinden konsey hazırlık talebi. Gönderen alan adı ve bağlam, Mevcut yatırımcılar klasörüyle açıkça eşleşiyor."
@@ -1413,6 +1464,7 @@ msgstr "Hesap oluşturuluyor…"
 msgid "Creating…"
 msgstr "Oluşturuluyor…"
 
+#: ../../apps/mobile/src/components/AssigneeSheet.tsx:63
 #: ../../apps/mobile/src/components/RerouteSheet.tsx:45
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:107
 #: ../../apps/site/src/components/demo/demo-seed.ts:33
@@ -1469,12 +1521,23 @@ msgstr "Varsayılan ücretsiz çalışma alanı"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:176
 #: ../../apps/mobile/app/(app)/account.tsx:84
+#: ../../apps/mobile/app/(app)/notifications.tsx:142
+#: ../../apps/mobile/app/(app)/notifications.tsx:231
+#: ../../apps/mobile/app/(app)/notifications.tsx:317
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:193
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:266
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:267
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:596
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:607
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:703
 #, fuzzy
 msgid "Delete"
 msgstr "Sil"
+
+#. placeholder {0}: ids.length
+#: ../../apps/mobile/app/(app)/notifications.tsx:139
+msgid "Delete {0} notifications?"
+msgstr "{0} bildirim silinsin mi?"
 
 #: ../../apps/mobile/app/(app)/account.tsx:166
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:119
@@ -1501,6 +1564,15 @@ msgstr "Silme başarısız oldu. Lütfen tekrar deneyin."
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:424
 msgid "Delete folder"
 msgstr "Klasörü sil"
+
+#: ../../apps/mobile/app/(app)/notifications.tsx:140
+#, fuzzy
+msgid "Delete notifications"
+msgstr "Bildirimleri Sil"
+
+#: ../../apps/mobile/app/(app)/notifications.tsx:138
+msgid "Delete this notification?"
+msgstr "Bu bildirim silinsin mi?"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:303
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:26
@@ -1624,7 +1696,7 @@ msgstr "Bu çalışma alanının bağlantısı kesilir. Bu posta kutusu hala {sh
 
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:228
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:298
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:343
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:57
 #: ../ui/src/AppDownloadBanner.tsx:80
 #: ../ui/src/emails/MockEmailsPage.tsx:256
@@ -1663,13 +1735,14 @@ msgstr "Hesabın yok mu? <0>Bir hesap oluştur</0>"
 msgid "Don't have an account? <0>Sign up</0>"
 msgstr "Hesabın yok mu? <0>Kaydol</0>"
 
+#: ../../apps/mobile/app/(app)/notifications.tsx:254
 #: ../../apps/mobile/src/components/ThreadRow.tsx:40
-#: ../ui/src/emails/ThreadRow.tsx:141
+#: ../ui/src/emails/ThreadRow.tsx:166
 #, fuzzy
 msgid "Done"
 msgstr "Tamamlandı"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:197
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:211
 #, fuzzy
 msgid "Done · undo"
 msgstr "Tamamlandı · geri al"
@@ -1679,23 +1752,23 @@ msgstr "Tamamlandı · geri al"
 msgid "Downgrade to {planName}"
 msgstr "{planName} planına düşür"
 
-#: ../ui/src/emails/ThreadRow.tsx:182
+#: ../ui/src/emails/ThreadRow.tsx:228
 #, fuzzy
 msgid "draft"
 msgstr "taslak"
 
-#: ../../apps/mobile/src/components/ThreadRow.tsx:88
+#: ../../apps/mobile/src/components/ThreadRow.tsx:98
 #, fuzzy
 msgid "Draft"
 msgstr "Taslak"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:165
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:179
 #, fuzzy
 msgid "Draft failed · tap to retry"
 msgstr "Taslak oluşturulamadı · yeniden denemek için dokunun"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:315
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:325
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:336
 #, fuzzy
 msgid "Draft generation failed. Try again."
 msgstr "Taslak oluşturulamadı. Tekrar deneyin."
@@ -1707,7 +1780,7 @@ msgstr "Taslak oluşturulamadı. Tekrar deneyin."
 msgid "Draft reply"
 msgstr "Yanıt taslağı"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:112
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:126
 #, fuzzy
 msgid "Draft shared"
 msgstr "Taslak paylaşıldı"
@@ -1718,8 +1791,8 @@ msgstr "Taslak paylaşıldı"
 msgid "Draft style guidance"
 msgstr "Taslak stil yönergeleri"
 
-#: ../../apps/mobile/src/components/ThreadRow.tsx:84
-#: ../ui/src/emails/ThreadRow.tsx:176
+#: ../../apps/mobile/src/components/ThreadRow.tsx:94
+#: ../ui/src/emails/ThreadRow.tsx:222
 #, fuzzy
 msgid "Drafting…"
 msgstr "Taslak Oluşturuluyor…"
@@ -1821,7 +1894,7 @@ msgid "Email verified! Sign in to continue."
 msgstr "E-posta doğrulandı! Devam etmek için giriş yapın."
 
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:28
-#: ../../apps/web/src/components/Sidebar.tsx:30
+#: ../../apps/web/src/components/Sidebar.tsx:32
 #, fuzzy
 msgid "Emails"
 msgstr "E-postalar"
@@ -2026,7 +2099,7 @@ msgstr "Finans"
 msgid "Find and draft"
 msgstr "Bul ve Taslak Oluştur"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:265
+#: ../../apps/site/src/components/demo/demo-seed.ts:266
 #, fuzzy
 msgid "Flagged as alliance/investor intro based on language (\"mutual benefit\", \"long-standing friendship\"). Confidence is moderate; Aziru has been known to send similar overtures to multiple courts."
 msgstr "Dildeki ifadeler (\"karşılıklı yarar\", \"köklü dostluk\") nedeniyle ittifak/yatırımcı tanıtımı olarak işaretlendi. Güvenilirlik orta düzeyde; Aziru'nun birden fazla saraya benzer teklifler gönderdiği bilinmektedir."
@@ -2072,7 +2145,7 @@ msgid "Folder: {activeFolderName}"
 msgstr "Klasör: {activeFolderName}"
 
 #: ../ui/src/emails/EmailRail.tsx:99
-#: ../ui/src/emails/ThreadList.tsx:130
+#: ../ui/src/emails/ThreadList.tsx:136
 #, fuzzy
 msgid "Folders"
 msgstr "Klasörler"
@@ -2113,7 +2186,7 @@ msgstr "Daha büyük kuruluşlar ve yoğun çalışan ekipler için."
 msgid "For larger organizations."
 msgstr "Daha büyük kuruluşlar için."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:260
+#: ../../apps/site/src/components/demo/demo-seed.ts:261
 #, fuzzy
 msgid "For many years our houses have been as brothers. I write now to propose that we formalise this friendship for the benefit of both our peoples."
 msgstr "Hanelerimiz uzun yıllardır kardeş gibidir. Şimdi, bu dostluğu iki halkımızın da yararına resmileştirmeyi teklif etmek için yazıyorum."
@@ -2207,8 +2280,8 @@ msgid "Generate a plan from your inbox"
 msgstr "Gelen kutunuzdan plan oluştur"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:294
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:131
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:303
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:145
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:314
 #: ../ui/src/emails/ThreadPreview.tsx:162
 #, fuzzy
 msgid "Generate draft reply"
@@ -2314,7 +2387,7 @@ msgstr "Gmail önemli olarak işaretlendi"
 msgid "Gmail read-only access was not granted. Please try again and approve the requested permission."
 msgstr "Gmail salt okunur erişim izni verilmedi. Lütfen tekrar deneyin ve istenen izni onaylayın."
 
-#: ../../apps/web/src/components/Sidebar.tsx:43
+#: ../../apps/web/src/components/Sidebar.tsx:45
 #, fuzzy
 msgid "Gmail Sort Tester"
 msgstr "Gmail Sıralama Test Aracı"
@@ -2454,7 +2527,7 @@ msgstr "Nasıl çalışır"
 msgid "How to write a good description"
 msgstr "İyi bir açıklama nasıl yazılır"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:273
+#: ../../apps/site/src/components/demo/demo-seed.ts:274
 #, fuzzy
 msgid "I write to propose that we formalise our friendship."
 msgstr "Dostluğumuzu resmileştirmeyi teklif ediyorum."
@@ -2559,7 +2632,7 @@ msgstr "Spam'i Dahil Et"
 msgid "Included"
 msgstr "Dahil Edildi"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:375
+#: ../../apps/site/src/components/demo/demo-seed.ts:379
 #, fuzzy
 msgid "Informal message with no clear category: personal visit or political audience? Tone is personal but sender is a known vassal governor. Routed to Other with low confidence."
 msgstr "Net bir kategorisi olmayan gayri resmi mesaj: kişisel ziyaret mi yoksa siyasi bir görüşme mi? Tonu kişisel olsa da gönderen bilinen bir vasal vali. Düşük güvenle Diğer kategorisine yönlendirildi."
@@ -2785,8 +2858,10 @@ msgstr "Buraya ait gönderenleri, konuları ve anahtar kelimeleri listeleyin. En
 msgid "Live"
 msgstr "Canlı"
 
+#: ../../apps/mobile/app/(app)/notifications.tsx:294
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:95
-#: ../ui/src/emails/ThreadList.tsx:228
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:278
+#: ../ui/src/emails/ThreadList.tsx:238
 #, fuzzy
 msgid "Load more"
 msgstr "Daha fazla yükle"
@@ -2794,18 +2869,24 @@ msgstr "Daha fazla yükle"
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:116
 #: ../ui/src/emails/BackfillCard.tsx:35
-#: ../ui/src/emails/ThreadList.tsx:173
+#: ../ui/src/emails/ThreadList.tsx:179
 #, fuzzy
 msgid "Loading past threads…"
 msgstr "Geçmiş yazışmalar yükleniyor…"
 
+#: ../../apps/extension/src/panel/NotificationBell.tsx:123
+#: ../../apps/mobile/app/(app)/notifications.tsx:294
 #: ../../apps/mobile/src/components/MessageCard.tsx:53
+#: ../../apps/mobile/src/components/NotificationsSheet.tsx:57
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:201
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:278
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:121
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:137
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:158
 #: ../../apps/web/src/app/loading.tsx:6
+#: ../../apps/web/src/components/NotificationBell.tsx:149
 #: ../ui/src/emails/MessageCard.tsx:60
-#: ../ui/src/emails/ThreadList.tsx:228
+#: ../ui/src/emails/ThreadList.tsx:238
 #, fuzzy
 msgid "Loading…"
 msgstr "Yükleniyor…"
@@ -2820,6 +2901,12 @@ msgstr "E-posta"
 #, fuzzy
 msgid "Manage"
 msgstr "Yönet"
+
+#: ../../apps/extension/src/panel/NotificationBell.tsx:145
+#: ../../apps/mobile/src/components/NotificationsSheet.tsx:63
+#: ../../apps/web/src/components/NotificationBell.tsx:170
+msgid "Manage notifications"
+msgstr "Bildirimleri Yönet"
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:303
 #, fuzzy
@@ -2837,15 +2924,21 @@ msgid "Manager emails: one-on-ones, performance reviews, and feedback."
 msgstr "Yönetici e-postaları: bire bir görüşmeler, performans değerlendirmeleri ve geri bildirimler."
 
 #: ../ui/src/emails/PreviewDoneBar.tsx:23
-#: ../ui/src/emails/ThreadRow.tsx:106
+#: ../ui/src/emails/ThreadRow.tsx:124
 #, fuzzy
 msgid "Mark as done"
 msgstr "Tamamlandı olarak işaretle"
 
-#: ../ui/src/emails/ThreadRow.tsx:105
+#: ../ui/src/emails/ThreadRow.tsx:123
 #, fuzzy
 msgid "Mark as not done"
 msgstr "Tamamlanmadı olarak işaretle"
+
+#: ../../apps/mobile/app/(app)/notifications.tsx:208
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:245
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:246
+msgid "Mark as read"
+msgstr "Okundu Olarak İşaretle"
 
 #: ../../apps/mobile/src/components/DraftSheet.tsx:111
 #: ../ui/src/emails/SuggestedDraftCard.tsx:73
@@ -2853,13 +2946,19 @@ msgstr "Tamamlanmadı olarak işaretle"
 msgid "Mark as sent"
 msgstr "Gönderildi olarak işaretle"
 
+#: ../../apps/mobile/app/(app)/notifications.tsx:208
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:245
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:246
+msgid "Mark as unread"
+msgstr "Okunmadı Olarak İşaretle"
+
 #: ../../apps/mobile/src/components/DraftSheet.tsx:111
 #: ../ui/src/emails/SuggestedDraftCard.tsx:73
 #, fuzzy
 msgid "Mark as unsent"
 msgstr "Gönderilmedi olarak işaretle"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:204
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:218
 #, fuzzy
 msgid "Mark done"
 msgstr "Tamamlandı olarak işaretle"
@@ -2868,6 +2967,17 @@ msgstr "Tamamlandı olarak işaretle"
 #, fuzzy
 msgid "Mark invited"
 msgstr "Davet edildi olarak işaretle"
+
+#: ../../apps/mobile/app/(app)/notifications.tsx:307
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:182
+#, fuzzy
+msgid "Mark read"
+msgstr "Okundu İşaretle"
+
+#: ../../apps/mobile/app/(app)/notifications.tsx:312
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:185
+msgid "Mark unread"
+msgstr "Okunmadı İşaretle"
 
 #: ../ui/src/emails/PreviewDoneBar.tsx:22
 #, fuzzy
@@ -2900,7 +3010,7 @@ msgstr "Üye"
 msgid "Messages from paying customers and account holders."
 msgstr "Ücretli müşterilerden ve hesap sahiplerinden gelen mesajlar."
 
-#: ../../apps/web/src/components/Sidebar.tsx:41
+#: ../../apps/web/src/components/Sidebar.tsx:43
 #, fuzzy
 msgid "Mock Inbox"
 msgstr "Örnek Gelen Kutusu"
@@ -2962,7 +3072,7 @@ msgstr "Şuraya taşı…"
 msgid "Moved to {folderName}"
 msgstr "{folderName} klasörüne taşındı"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:370
+#: ../../apps/site/src/components/demo/demo-seed.ts:374
 #, fuzzy
 msgid "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face."
 msgstr "Seyahatlerim önümüzdeki günlerde beni Delta bölgesine yaklaştıracak. Ulu Kral'ın ayıracak bir saati olursa, yüz yüze konuşma fırsatını memnuniyetle karşılarım."
@@ -3000,7 +3110,7 @@ msgstr "Asla"
 msgid "Never auto-sends · Encrypted at rest · Minimal data"
 msgstr "Asla otomatik göndermez · Depolanırken şifrelidir · Minimum veri"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:311
+#: ../../apps/site/src/components/demo/demo-seed.ts:313
 #, fuzzy
 msgid "New application from Horemheb of Thebes."
 msgstr "Thebesli Horemheb'den yeni başvuru."
@@ -3016,6 +3126,12 @@ msgstr "Yeni iş sorguları, teklifler, fiyatlandırma görüşmeleri ve potansi
 #, fuzzy
 msgid "New folder"
 msgstr "Yeni klasör"
+
+#: ../../apps/extension/src/panel/notificationText.ts:22
+#: ../../apps/mobile/src/data/notificationView.ts:33
+#: ../../apps/web/src/lib/notifications.ts:34
+msgid "New notification"
+msgstr "Yeni bildirim"
 
 #: ../../apps/web/src/app/reset-password/page.tsx:43
 #: ../../apps/web/src/app/reset-password/page.tsx:68
@@ -3043,13 +3159,13 @@ msgstr "Yeni çalışma alanı"
 msgid "New workspace name"
 msgstr "Yeni çalışma alanı adı"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:129
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:143
 #, fuzzy
 msgid "No drafts remaining"
 msgstr "Kalan taslak yok"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:299
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:308
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:319
 #: ../ui/src/emails/SuggestedDraftCard.tsx:97
 #, fuzzy
 msgid "No drafts remaining · resets {quotaResetDate}"
@@ -3105,6 +3221,24 @@ msgstr "Bağlı bir Gmail gelen kutusu yok. Senkronizasyonu başlatmak için hes
 msgid "No matching folders"
 msgstr "Eşleşen klasör yok"
 
+#: ../ui/src/emails/AssigneePicker.tsx:91
+#, fuzzy
+msgid "No members"
+msgstr "Üye yok"
+
+#: ../../apps/mobile/src/components/AssigneeSheet.tsx:67
+#, fuzzy
+msgid "No members available"
+msgstr "Üye bulunamadı"
+
+#: ../../apps/extension/src/panel/NotificationBell.tsx:128
+#: ../../apps/mobile/app/(app)/notifications.tsx:287
+#: ../../apps/mobile/src/components/NotificationsSheet.tsx:57
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:203
+#: ../../apps/web/src/components/NotificationBell.tsx:152
+msgid "No notifications yet"
+msgstr "Henüz bildirim yok"
+
 #: ../../apps/mobile/src/components/BlacklistSheet.tsx:146
 #, fuzzy
 msgid "No senders blocked yet."
@@ -3124,7 +3258,7 @@ msgstr "Henüz kayıt yok."
 msgid "No threads"
 msgstr "İleti dizisi yok"
 
-#: ../ui/src/emails/ThreadList.tsx:176
+#: ../ui/src/emails/ThreadList.tsx:182
 #, fuzzy
 msgid "No threads here."
 msgstr "Burada ileti dizisi yok."
@@ -3139,7 +3273,7 @@ msgstr "{folderName} içinde ileti dizisi yok"
 msgid "No threads match your search"
 msgstr "Arama kriterlerinize uygun ileti dizisi yok"
 
-#: ../ui/src/emails/ThreadList.tsx:169
+#: ../ui/src/emails/ThreadList.tsx:175
 #, fuzzy
 msgid "No threads match your search."
 msgstr "Arama kriterlerinize uygun ileti dizisi yok."
@@ -3150,7 +3284,7 @@ msgid "No threads yet"
 msgstr "Henüz ileti dizisi yok"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:225
-#: ../../apps/web/src/components/Sidebar.tsx:142
+#: ../../apps/web/src/components/Sidebar.tsx:153
 #, fuzzy
 msgid "No workspace"
 msgstr "Çalışma alanı yok"
@@ -3197,17 +3331,31 @@ msgstr "Ayarlanmadı"
 msgid "Not yet synced"
 msgstr "Henüz senkronize edilmedi"
 
+#: ../../apps/extension/src/panel/NotificationBell.tsx:40
+#: ../../apps/extension/src/panel/NotificationBell.tsx:116
+#: ../../apps/extension/src/panel/NotificationBell.tsx:118
 #: ../../apps/mobile/app/(app)/account.tsx:145
+#: ../../apps/mobile/app/(app)/notifications.tsx:249
+#: ../../apps/mobile/src/components/NotificationsSheet.tsx:43
+#: ../../apps/web/src/app/(app)/notifications/page.tsx:12
+#: ../../apps/web/src/components/NotificationBell.tsx:126
+#: ../../apps/web/src/components/NotificationBell.tsx:141
+#: ../../apps/web/src/components/NotificationBell.tsx:145
 #, fuzzy
 msgid "Notifications"
 msgstr "Bildirimler"
+
+#: ../../apps/extension/src/panel/NotificationBell.tsx:101
+#: ../../apps/web/src/components/NotificationBell.tsx:125
+msgid "Notifications, {unread} unread"
+msgstr "Bildirimler, {unread} okunmamış"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:68
 #, fuzzy
 msgid "Official university emails: registrar, student services, and housing."
 msgstr "Resmi üniversite e-postaları: öğrenci işleri, öğrenci hizmetleri ve barınma."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:337
+#: ../../apps/site/src/components/demo/demo-seed.ts:340
 #, fuzzy
 msgid "Ongoing thread with a known city governor raising a recurring supply issue. Escalatory tone and repeated follow-ups match the Support folder."
 msgstr "Tanınmış bir şehir valisiyle devam eden yazışma, tekrarlayan bir tedarik sorununu dile getiriyor. Yükselen ton ve tekrarlanan takipler Destek klasörüne uygun."
@@ -3219,16 +3367,16 @@ msgstr "Faturalandırmayı yalnızca çalışma alanı sahibi yönetebilir."
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:244
 #: ../../apps/mobile/src/components/DraftSheet.tsx:97
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:242
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:248
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:254
 #: ../ui/src/emails/ThreadPreview.tsx:115
 #: ../ui/src/emails/ThreadPreview.tsx:121
-#: ../ui/src/emails/ThreadRow.tsx:107
+#: ../ui/src/emails/ThreadRow.tsx:125
 #, fuzzy
 msgid "Open in Gmail"
 msgstr "Gmail'de Aç"
 
-#: ../../apps/web/src/components/Sidebar.tsx:112
+#: ../../apps/web/src/components/Sidebar.tsx:114
 #, fuzzy
 msgid "Open navigation"
 msgstr "Navigasyonu aç"
@@ -3237,6 +3385,12 @@ msgstr "Navigasyonu aç"
 #, fuzzy
 msgid "open source email ai"
 msgstr "açık kaynak e-posta yapay zekası"
+
+#: ../../apps/mobile/app/(app)/notifications.tsx:221
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:255
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:256
+msgid "Open thread"
+msgstr "Konuyu Aç"
 
 #: ../../apps/site/src/components/landing/HeroSection.tsx:58
 #, fuzzy
@@ -3302,8 +3456,8 @@ msgstr "Ana"
 msgid "Partners"
 msgstr "Ortaklar"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:365
-#: ../../apps/site/src/components/demo/demo-seed.ts:383
+#: ../../apps/site/src/components/demo/demo-seed.ts:369
+#: ../../apps/site/src/components/demo/demo-seed.ts:387
 #, fuzzy
 msgid "Passing through the Delta: free to meet?"
 msgstr "Delta'dan geçerken: buluşmaya müsait misin?"
@@ -3425,14 +3579,14 @@ msgstr "Günlük hayata dair kişisel yazışmalar ve akademik olmayan e-postala
 #. Screen heading for the email-sorting taxonomy. Not a billing or subscription plan.
 #. Sidebar nav label for the email-sorting taxonomy. Not a billing or subscription plan.
 #. Sidebar nav label for the email-sorting taxonomy. Not a billing or subscription plan.
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:42
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:43
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:35
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:265
 #: ../../apps/site/src/components/demo/DemoTaxonomyCanvas.tsx:220
 #: ../../apps/site/src/components/landing/Footer.tsx:26
 #: ../../apps/site/src/components/landing/Nav.tsx:39
 #: ../../apps/web/src/app/(app)/plan/page.tsx:43
-#: ../../apps/web/src/components/Sidebar.tsx:33
+#: ../../apps/web/src/components/Sidebar.tsx:35
 #, fuzzy
 msgid "Plan"
 msgstr "Plan"
@@ -3466,7 +3620,7 @@ msgstr "Kendi sunucunuzda mı barındırmak istersiniz?"
 msgid "Prefer to self-host? It's open source:<0/> <1>clone it and run it free</1>."
 msgstr "Kendi sunucunuzda mı barındırmak istersiniz? Açık kaynak:<0/> <1>klonlayın ve ücretsiz çalıştırın</1>."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:419
+#: ../../apps/site/src/components/demo/demo-seed.ts:424
 #, fuzzy
 msgid "Prepare your accounts before the council convenes."
 msgstr "Konsey toplanmadan önce hesaplarınızı hazırlayın."
@@ -3567,7 +3721,7 @@ msgstr "Önerilen klasörler. Uygulamak mevcut planınızı değiştirir; her ş
 msgid "Queuing rescan…"
 msgstr "Yeniden tarama sıraya alınıyor…"
 
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:308
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:353
 #, fuzzy
 msgid "Re-route {unclassifiedCount} unclassified"
 msgstr "{unclassifiedCount} sınıflandırılmamışı yeniden yönlendir"
@@ -3577,7 +3731,7 @@ msgstr "{unclassifiedCount} sınıflandırılmamışı yeniden yönlendir"
 msgid "Re-route thread"
 msgstr "İleti dizisini yeniden yönlendir"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:327
+#: ../../apps/site/src/components/demo/demo-seed.ts:330
 #, fuzzy
 msgid "Re: Grain shipment: third delay this season"
 msgstr "Hk: Tahıl sevkiyatı: Bu sezon üçüncü gecikme"
@@ -3822,7 +3976,7 @@ msgstr "Çalışma alanını sıfırla"
 msgid "Reset workspace?"
 msgstr "Çalışma alanı sıfırlansın mı?"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:141
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:155
 #, fuzzy
 msgid "Resets {draftResetDate}"
 msgstr "{draftResetDate} tarihinde sıfırlanır."
@@ -3848,7 +4002,7 @@ msgstr "Kaynaklar"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:317
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:345
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:331
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:342
 #, fuzzy
 msgid "Retry"
 msgstr "Tekrar Dene"
@@ -3858,7 +4012,7 @@ msgstr "Tekrar Dene"
 msgid "Review queue"
 msgstr "İnceleme kuyruğu"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:342
+#: ../../apps/site/src/components/demo/demo-seed.ts:345
 #, fuzzy
 msgid "Rib-Hadda of Byblos"
 msgstr "Bybloslu Rib-Hadda"
@@ -3966,12 +4120,27 @@ msgstr "İletiler aranıyor…"
 msgid "See how your inbox is sorted, right next to Gmail."
 msgstr "Gelen kutunun nasıl sıralandığını Gmail'in hemen yanında gör."
 
+#: ../../apps/mobile/app/(app)/notifications.tsx:254
+msgid "Select"
+msgstr "Seç"
+
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:199
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:273
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:310
 #: ../ui/src/emails/MockEmailsPage.tsx:234
 #, fuzzy
 msgid "Select a thread to preview"
 msgstr "Önizlemek için bir ileti seçin"
+
+#: ../../apps/mobile/app/(app)/notifications.tsx:269
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:174
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:176
+#, fuzzy
+msgid "Select all"
+msgstr "Tümünü Seç"
+
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:221
+msgid "Select notification"
+msgstr "Bildirimi Seç"
 
 #: ../ui/src/PricingPlans.tsx:313
 #, fuzzy
@@ -4053,10 +4222,10 @@ msgstr "Bu çalışma alanı için arayüz ve yapay zeka tarafından oluşturula
 msgid "Setting up your workspace…"
 msgstr "Çalışma alanınız kuruluyor…"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:51
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:52
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:42
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:197
-#: ../../apps/web/src/components/Sidebar.tsx:40
+#: ../../apps/web/src/components/Sidebar.tsx:42
 #, fuzzy
 msgid "Settings"
 msgstr "Ayarlar"
@@ -4114,7 +4283,7 @@ msgstr "Google ile giriş yapın. Amarnai ileti ve etiketlerinizi senkronize ede
 
 #: ../../apps/extension/src/App.tsx:46
 #: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:68
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:127
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:130
 #: ../../apps/mobile/app/(app)/account.tsx:122
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:98
 #: ../../apps/web/src/app/verify-email/page.tsx:42
@@ -4226,7 +4395,7 @@ msgstr "Sıralama hacmi"
 #: ../../apps/mobile/src/components/RationaleCard.tsx:35
 #: ../../apps/site/src/components/landing/HeroFeedCard.tsx:90
 #: ../ui/src/emails/RationaleCard.tsx:52
-#: ../ui/src/emails/ThreadRow.tsx:147
+#: ../ui/src/emails/ThreadRow.tsx:193
 #, fuzzy
 msgid "Sorting…"
 msgstr "Sıralanıyor…"
@@ -4486,12 +4655,12 @@ msgstr "Sunucu hatası nedeniyle bağlantı kaydedilemedi. Lütfen tekrar deneyi
 msgid "The Gmail connection, all synced emails, and the taxonomy will be permanently deleted. Re-importing this inbox uses your monthly import allowance; if it runs out, you can import again after {allowanceResetsAt} or by upgrading."
 msgstr "Gmail bağlantısı, senkronize edilmiş tüm e-postalar ve taksonomi kalıcı olarak silinecektir. Bu gelen kutusunu yeniden içe aktarmak, aylık içe aktarma kotanızı kullanır; eğer biterse, {allowanceResetsAt} tarihinden sonra veya yükselterek tekrar içe aktarabilirsiniz."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:332
+#: ../../apps/site/src/components/demo/demo-seed.ts:335
 #, fuzzy
 msgid "The grain you sent last month was received with gratitude. But I must write again: the third shipment has not arrived and the city grows restless."
 msgstr "Geçen ay gönderdiğiniz zahire minnetle kabul edildi. Ancak bir kez daha yazmalıyım: üçüncü sevkiyat ulaşmadı ve şehirde huzursuzluk artıyor."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:406
+#: ../../apps/site/src/components/demo/demo-seed.ts:411
 #, fuzzy
 msgid "The great council convenes at the start of Shemu. I ask that you prepare a full accounting of the eastern territories and send it ahead by fast courier."
 msgstr "Büyük konsey Şemu'nun başında toplanacak. Doğu topraklarının tam bir dökümünü hazırlayıp hızlı bir kuryeyle önceden göndermenizi rica ederim."
@@ -4506,7 +4675,7 @@ msgstr "Antlaşmamızda kararlaştırılan üçüncü altın sevkiyatı henüz g
 msgid "The third gold consignment is overdue."
 msgstr "Üçüncü altın sevkiyatı gecikti."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:345
+#: ../../apps/site/src/components/demo/demo-seed.ts:348
 #, fuzzy
 msgid "The third grain shipment has not arrived."
 msgstr "Üçüncü zahire sevkiyatı ulaşmadı."
@@ -4593,12 +4762,12 @@ msgstr "Bu e-posta dizisi yönlendirilmeyi bekliyor."
 msgid "This thread is waiting to be routed. Use “Route now” to start sorting."
 msgstr "Bu e-posta dizisi yönlendirilmeyi bekliyor. Sıralamaya başlamak için “Şimdi yönlendir” seçeneğini kullanın."
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:71
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:85
 #, fuzzy
 msgid "Thread"
 msgstr "E-posta Dizisi"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:73
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:87
 #, fuzzy
 msgid "Thread not found"
 msgstr "E-posta dizisi bulunamadı"
@@ -4654,7 +4823,7 @@ msgstr "Henüz sıralanmamış ileti dizileri."
 msgid "Three steps. Then it sorts every email for you."
 msgstr "Üç adım. Tüm e-postalarınız otomatik sıralanır."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:420
+#: ../../apps/site/src/components/demo/demo-seed.ts:425
 #, fuzzy
 msgid "To my brother, the Great King,\n"
 "\n"
@@ -4684,7 +4853,7 @@ msgstr "Kraliyet Atama Bürosu'na,\n"
 "\n"
 "Kraliyet fermanıyla,"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:274
+#: ../../apps/site/src/components/demo/demo-seed.ts:275
 #, fuzzy
 msgid "To the Great King,\n"
 "\n"
@@ -4701,7 +4870,7 @@ msgstr "Büyük Kral'a,\n"
 "\n"
 "Amurru lordu, Büyük Kral'ın hizmetkarı Aziru"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:384
+#: ../../apps/site/src/components/demo/demo-seed.ts:388
 #, fuzzy
 msgid "To the Great King,\n"
 "\n"
@@ -4744,7 +4913,7 @@ msgstr "Büyük Kral kardeşim,\n"
 "\n"
 "Babil Kralı II. Burna-Buriash"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:346
+#: ../../apps/site/src/components/demo/demo-seed.ts:349
 #, fuzzy
 msgid "To the Great King, my lord, my sun,\n"
 "\n"
@@ -4767,7 +4936,7 @@ msgstr "Büyük Kral'ım, efendim, güneşim,\n"
 msgid "Today"
 msgstr "Bugün"
 
-#: ../ui/src/emails/ThreadList.tsx:114
+#: ../ui/src/emails/ThreadList.tsx:120
 #, fuzzy
 msgid "Toggle folders"
 msgstr "Klasörleri Aç/Kapat"
@@ -4805,10 +4974,15 @@ msgstr "Anında gelen kutusu ayıklama."
 msgid "Try Amarnai"
 msgstr "Amarnai'yi Dene"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:416
+#: ../../apps/site/src/components/demo/demo-seed.ts:421
 #, fuzzy
 msgid "Tushratta of Mitanni"
 msgstr "Mitannili Tuşratta"
+
+#: ../../apps/mobile/src/components/AssigneeSheet.tsx:32
+#: ../ui/src/emails/AssigneePicker.tsx:31
+msgid "Unassign"
+msgstr "Atamayı Kaldır"
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:151
 #: ../../apps/mobile/app/(app)/subscription.tsx:156
@@ -4817,13 +4991,13 @@ msgid "Unavailable"
 msgstr "Mevcut Değil"
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:46
-#: ../ui/src/emails/ThreadRow.tsx:155
+#: ../ui/src/emails/ThreadRow.tsx:201
 #, fuzzy
 msgid "Unclassified"
 msgstr "Sınıflandırılmamış"
 
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:221
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:295
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:340
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1321
 #: ../../apps/web/src/app/admin/waitlist/page.tsx:26
 #: ../ui/src/emails/MockEmailsPage.tsx:253
@@ -5033,7 +5207,7 @@ msgstr "Doğrulama e-postası gönderildi. Gelen kutunuzu kontrol edin."
 msgid "Verify your email"
 msgstr "E-postanı doğrula"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:178
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:192
 #, fuzzy
 msgid "View draft reply"
 msgstr "Taslak yanıtı görüntüle"
@@ -5045,7 +5219,7 @@ msgstr "Yalnızca görüntüleme. Planı yalnızca çalışma alanı yöneticile
 #: ../../apps/mobile/src/components/RationaleCard.tsx:44
 #: ../../apps/mobile/src/components/ThreadRow.tsx:49
 #: ../ui/src/emails/RationaleCard.tsx:74
-#: ../ui/src/emails/ThreadRow.tsx:151
+#: ../ui/src/emails/ThreadRow.tsx:197
 #, fuzzy
 msgid "Waiting"
 msgstr "Bekleniyor"
@@ -5065,7 +5239,7 @@ msgstr "Doğrulama bekleniyor…"
 msgid "Waitlist"
 msgstr "Bekleme Listesi"
 
-#: ../ui/src/emails/ThreadRow.tsx:99
+#: ../ui/src/emails/ThreadRow.tsx:117
 #, fuzzy
 msgid "Wants {folderName}"
 msgstr "{folderName} istiyor"
@@ -5127,7 +5301,7 @@ msgstr "İş"
 msgid "Working Professional"
 msgstr "Çalışan Profesyonel"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:60
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:61
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:220
 #: ../../apps/site/src/components/demo/DemoTaxonomyCanvas.tsx:218
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:35
@@ -5161,7 +5335,7 @@ msgstr "Çalışma alanı adı boş olamaz"
 msgid "Workspace name updated."
 msgstr "Çalışma alanı adı güncellendi."
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:48
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:49
 msgid "Workspace settings"
 msgstr "Çalışma alanı ayarları"
 
@@ -5181,8 +5355,8 @@ msgid "Workspaces included"
 msgstr "Çalışma Alanları Dahil"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:309
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:153
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:319
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:167
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:330
 #: ../ui/src/emails/ThreadPreview.tsx:169
 #, fuzzy
 msgid "Writing draft reply…"
@@ -5269,6 +5443,12 @@ msgstr "Kısa süre sonra tekrar deneyebilir veya bir şablondan başlayabilirsi
 #, fuzzy
 msgid "You do not have permission to connect a Gmail inbox to this workspace."
 msgstr "Bu çalışma alanına bir Gmail gelen kutusu bağlamak için izniniz yok."
+
+#: ../../apps/extension/src/panel/notificationText.ts:19
+#: ../../apps/mobile/src/data/notificationView.ts:29
+#: ../../apps/web/src/lib/notifications.ts:30
+msgid "You were assigned a thread"
+msgstr "Size bir konu atandı"
 
 #: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:178
 #, fuzzy

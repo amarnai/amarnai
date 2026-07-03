@@ -20,6 +20,7 @@ function HamburgerIcon() {
 
 import { switchWorkspaceAction } from "@/actions/workspace";
 import { CreateWorkspaceDialog } from "@/components/CreateWorkspaceDialog";
+import { NotificationBell } from "@/components/NotificationBell";
 
 const isDevEnabled = process.env.NEXT_PUBLIC_ENABLE_DEV_TOOLS === "true";
 
@@ -124,11 +125,21 @@ export function Sidebar({
       )}
 
     <aside className={`sidebar${mobileOpen ? " mobile-open" : ""}`}>
-      {/* Workspace switcher — top of sidebar, replaces brand header */}
+      {/* Brand + notification bell, then the workspace switcher on its own
+          full-width row so long workspace names are not truncated. */}
+      <div className="sidebar-top">
+      <div className="sidebar-brand-row">
+        <span className="sidebar-brand">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo.png" alt="" width={22} height={22} />
+          Amarnai
+        </span>
+        <NotificationBell />
+      </div>
       <div
         className="ws-switcher"
         ref={dropdownRef}
-        style={{ marginBottom: 8 }}
+        style={{ minWidth: 0 }}
       >
         <button
           className="ws-switcher-btn ws-switcher-btn--header"
@@ -177,6 +188,7 @@ export function Sidebar({
             </button>
           </div>
         )}
+      </div>
       </div>
 
       {/* Nav */}

@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { colors, space, fontSize, fontWeight } from '@amarnai/tokens';
 import { useSession } from '../auth/session';
+import { useNotifications } from '../data/useNotifications';
 import { WorkspaceMark } from './WorkspaceMark';
 import { WorkspacePicker } from './WorkspacePicker';
 import { NewWorkspaceSheet } from './NewWorkspaceSheet';
+import { NotificationsSheet } from './NotificationsSheet';
 
 type AppHeaderProps = { variant: 'workspace' } | { variant: 'title'; title: string };
 
@@ -32,11 +35,20 @@ export function AppHeader(props: AppHeaderProps) {
 }
 
 function WorkspaceHeader({ paddingTop }: { paddingTop: number }) {
+  const router = useRouter();
   const { workspaceId, workspaces, switchWorkspace } = useSession();
   const [pickerOpen, setPickerOpen] = useState(false);
   const [newWorkspaceOpen, setNewWorkspaceOpen] = useState(false);
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const { unread, items, loading, load, markAllRead } = useNotifications();
 
   const active = workspaces.find((w) => w.id === workspaceId) ?? null;
+
+  function openNotifications() {
+    load();
+    markAllRead();
+    setNotificationsOpen(true);
+  }
 
   return (
     <View style={[styles.bar, { paddingTop }]}>
@@ -53,6 +65,32 @@ function WorkspaceHeader({ paddingTop }: { paddingTop: number }) {
         </Text>
         <Ionicons name="chevron-down" size={16} color={colors.ink3} />
       </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.bellBtn}
+        onPress={openNotifications}
+        accessibilityRole="button"
+        accessibilityLabel="Notifications"
+        hitSlop={8}
+      >
+        <Ionicons name="notifications-outline" size={22} color={colors.ink2} />
+        {unread > 0 ? (
+          <View style={styles.bellBadge}>
+            <Text style={styles.bellBadgeText}>{unread > 9 ? '9+' : String(unread)}</Text>
+          </View>
+        ) : null}
+      </TouchableOpacity>
+
+      <NotificationsSheet
+        visible={notificationsOpen}
+        items={items}
+        loading={loading}
+        onClose={() => setNotificationsOpen(false)}
+        onManage={() => {
+          setNotificationsOpen(false);
+          router.push('/notifications');
+        }}
+      />
 
       <WorkspacePicker
         visible={pickerOpen}
@@ -98,6 +136,27 @@ const styles = StyleSheet.create({
     fontSize: fontSize.xl,
     fontWeight: fontWeight.semibold,
     color: colors.ink,
+  },
+  bellBtn: {
+    marginLeft: space.md,
+    padding: space.xs,
+  },
+  bellBadge: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    minWidth: 16,
+    height: 16,
+    paddingHorizontal: 3,
+    borderRadius: 8,
+    backgroundColor: colors.danger,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  bellBadgeText: {
+    color: '#fff',
+    fontSize: 9,
+    fontWeight: fontWeight.semibold,
   },
   title: {
     fontSize: fontSize.xxl,

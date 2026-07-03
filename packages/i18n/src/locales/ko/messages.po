@@ -25,13 +25,13 @@ msgid "(No body)"
 msgstr "(내용 없음)"
 
 #. placeholder {0}: thread.attachmentCount
-#: ../../apps/mobile/src/components/ThreadRow.tsx:96
+#: ../../apps/mobile/src/components/ThreadRow.tsx:106
 #, fuzzy
 msgid "{0, plural, one {# file} other {# files}}"
 msgstr "{0, plural, one {#개 파일} other {#개 파일}}"
 
 #. placeholder {0}: thread.messageCount
-#: ../../apps/mobile/src/components/ThreadRow.tsx:101
+#: ../../apps/mobile/src/components/ThreadRow.tsx:111
 #, fuzzy
 msgid "{0, plural, one {# message} other {# messages}}"
 msgstr "{0, plural, one {#개 메시지} other {#개 메시지}}"
@@ -73,7 +73,7 @@ msgstr "{0} / {1} 남음 · {2} 초기화"
 #. placeholder {1}: (total ?? 0).toLocaleString()
 #. placeholder {1}: viewCount.toLocaleString()
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:81
-#: ../ui/src/emails/ThreadList.tsx:217
+#: ../ui/src/emails/ThreadList.tsx:227
 #, fuzzy
 msgid "{0} of {1} loaded"
 msgstr "{1}개 중 {0}개 로드됨"
@@ -97,6 +97,17 @@ msgstr "{1}개 중 {0}개 남음 · {quotaResetDate} 초기화"
 msgid "{blacklistCount, plural, one {# blocked} other {# blocked}}"
 msgstr "{blacklistCount, plural, one {#개 차단됨} other {#개 차단됨}}"
 
+#: ../../apps/extension/src/panel/notificationText.ts:18
+#: ../../apps/mobile/src/data/notificationView.ts:28
+#: ../../apps/web/src/lib/notifications.ts:29
+#, fuzzy
+msgid "{by} assigned you a thread"
+msgstr "{by} 님이 스레드를 할당했습니다."
+
+#: ../../apps/extension/src/panel/notificationText.ts:17
+msgid "{by} assigned you: {subject}"
+msgstr "{by} 님이 할당함: {subject}"
+
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:528
 #, fuzzy
 msgid "{classificationCount, plural, one {Deleting this folder will leave # thread unsorted.} other {Deleting this folder will leave # threads unsorted.}}"
@@ -113,7 +124,7 @@ msgstr "{collaboratorCount} / {collaboratorLimit} 추가됨"
 msgid "{confPct}% confidence"
 msgstr "정확도 {confPct}%"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:136
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:150
 #, fuzzy
 msgid "{draftRemaining} of {draftLimit} left · resets {draftResetDate}"
 msgstr "{draftLimit}개 중 {draftRemaining}개 남음 · {draftResetDate} 초기화"
@@ -149,7 +160,7 @@ msgstr "{pendingCount}명 대기 중"
 
 #. placeholder {0}: draftQuota.limit
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:300
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:309
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:320
 #, fuzzy
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
 msgstr "{0}개 중 {quotaRemaining}개 남음 · {quotaResetDate} 초기화"
@@ -163,6 +174,11 @@ msgstr "{limit}개 중 {remaining}개 남음 · {resetDate} 초기화"
 #, fuzzy
 msgid "{routableCount} of {TAXONOMY_MIN_NON_ROOT_NODES} folders connected to your inbox. Routing requires at least {TAXONOMY_MIN_NON_ROOT_NODES}."
 msgstr "받은편지함에 {TAXONOMY_MIN_NON_ROOT_NODES}개 폴더 중 {routableCount}개가 연결되었습니다. 라우팅하려면 최소 {TAXONOMY_MIN_NON_ROOT_NODES}개가 필요합니다."
+
+#: ../../apps/mobile/app/(app)/notifications.tsx:269
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:176
+msgid "{selectedCount} selected"
+msgstr "{selectedCount}개 선택됨"
 
 #: ../ui/src/emails/ThreadListHeader.tsx:113
 #, fuzzy
@@ -223,7 +239,7 @@ msgstr "+ 폴더 추가"
 msgid "+ Add Folder"
 msgstr "+ 폴더 추가"
 
-#: ../../apps/web/src/components/Sidebar.tsx:176
+#: ../../apps/web/src/components/Sidebar.tsx:187
 #, fuzzy
 msgid "+ New workspace"
 msgstr "+ 새 워크스페이스"
@@ -361,12 +377,12 @@ msgstr "분류된 스레드 500개/월"
 msgid "75,000 threads"
 msgstr "스레드 75,000개"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:298
+#: ../../apps/site/src/components/demo/demo-seed.ts:300
 #, fuzzy
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence."
 msgstr "테베의 호렘헤브님으로부터 서신 관리 책임자 직책에 대한 새로운 지원서가 접수되었습니다."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:312
+#: ../../apps/site/src/components/demo/demo-seed.ts:314
 #, fuzzy
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
@@ -375,7 +391,7 @@ msgstr "테베의 호렘헤브님으로부터 서신 관리 책임자 직책에 
 "\n"
 "지원서는 기록 보관소에서 확인할 수 있습니다."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:380
+#: ../../apps/site/src/components/demo/demo-seed.ts:384
 #, fuzzy
 msgid "Abdi-Heba of Urushalim"
 msgstr "우루샬림의 압디-헤바"
@@ -414,12 +430,12 @@ msgstr "액세스가 거부되었습니다. 연결하려면 Gmail 읽기 전용 
 msgid "Account"
 msgstr "계정"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:102
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:105
 #, fuzzy
 msgid "Account menu"
 msgstr "계정 메뉴"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:116
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:119
 msgid "Account settings"
 msgstr "계정 설정"
 
@@ -536,7 +552,7 @@ msgstr "모든 작업 공간 데이터가 영구적으로 삭제됩니다."
 msgid "All your workspaces, emails, and settings will be deleted permanently."
 msgstr "모든 작업 공간, 이메일, 설정이 영구적으로 삭제됩니다."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:255
+#: ../../apps/site/src/components/demo/demo-seed.ts:256
 #, fuzzy
 msgid "Alliance proposal: house of Amurru"
 msgstr "동맹 제안: 아무르 가문"
@@ -670,7 +686,7 @@ msgstr "API 오류 {0}"
 msgid "Appearance"
 msgstr "화면 표시"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:293
+#: ../../apps/site/src/components/demo/demo-seed.ts:295
 #, fuzzy
 msgid "Application: Chief of Correspondence"
 msgstr "지원: 통신부장"
@@ -714,6 +730,40 @@ msgstr "적용 중…"
 msgid "Approve routing"
 msgstr "라우팅 승인"
 
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:233
+#: ../ui/src/emails/TriageBar.tsx:71
+#, fuzzy
+msgid "Assign"
+msgstr "할당"
+
+#: ../ui/src/emails/AssigneePicker.tsx:85
+#, fuzzy
+msgid "Assign thread"
+msgstr "스레드 할당"
+
+#: ../../apps/mobile/src/components/AssigneeSheet.tsx:39
+#, fuzzy
+msgid "Assign to"
+msgstr "할당 대상"
+
+#: ../ui/src/emails/ThreadRow.tsx:260
+#: ../ui/src/emails/ThreadRow.tsx:264
+#: ../ui/src/emails/TriageBar.tsx:63
+#, fuzzy
+msgid "Assign to a member"
+msgstr "멤버에게 할당"
+
+#: ../ui/src/emails/TriageBar.tsx:70
+#, fuzzy
+msgid "Assigned · {assigneeName}"
+msgstr "할당됨 · {assigneeName}"
+
+#: ../ui/src/emails/ThreadRow.tsx:174
+#: ../ui/src/emails/TriageBar.tsx:62
+#, fuzzy
+msgid "Assigned to {assigneeName}. Change assignee"
+msgstr "{assigneeName} 님에게 할당됨. 담당자 변경"
+
 #: ../../apps/web/src/app/reset-password/page.tsx:54
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:49
 msgid "At least {PASSWORD_MIN_LENGTH} characters"
@@ -735,7 +785,7 @@ msgstr "알림을 업데이트/기타 폴더로 자동 분류"
 msgid "Automated and bulk mail that doesn't fit another folder lands here automatically. This is different from Needs review, which holds threads too ambiguous for the assistant to sort."
 msgstr "다른 폴더에 분류되지 않는 자동 발송 및 대량 메일은 자동으로 이곳에 보관됩니다. 이 폴더는 비서가 분류하기에 모호한 스레드를 보관하는 '검토 필요' 폴더와는 다릅니다."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:303
+#: ../../apps/site/src/components/demo/demo-seed.ts:305
 #, fuzzy
 msgid "Automated notice from the Bureau of Royal Appointments. Subject and sender clearly indicate a new application for an open position."
 msgstr "왕실 임명국에서 보낸 자동 알림. 제목과 발신자는 공개 채용 포지션에 대한 새로운 지원서를 명확히 나타냅니다."
@@ -746,7 +796,7 @@ msgstr "왕실 임명국에서 보낸 자동 알림. 제목과 발신자는 공�
 msgid "Automated notifications, newsletters, and service updates that don't fit another folder."
 msgstr "다른 폴더에 속하지 않는 자동 알림, 뉴스레터 및 서비스 업데이트."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:270
+#: ../../apps/site/src/components/demo/demo-seed.ts:271
 #, fuzzy
 msgid "Aziru of Amurru"
 msgstr "아무르의 아지루"
@@ -767,14 +817,14 @@ msgstr "아지루,\n"
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:215
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:25
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:222
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:228
 #: ../ui/src/emails/ThreadPreview.tsx:92
 #, fuzzy
 msgid "Back"
 msgstr "뒤로"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:211
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:217
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:223
 #: ../ui/src/emails/ThreadPreview.tsx:87
 #, fuzzy
 msgid "Back to list"
@@ -860,7 +910,7 @@ msgstr "플랜 만들기"
 #~ msgid "Bulk triage your inbox"
 #~ msgstr "받은편지함 일괄 정리"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:308
+#: ../../apps/site/src/components/demo/demo-seed.ts:310
 #, fuzzy
 msgid "Bureau of Royal Appointments"
 msgstr "왕실 임명국"
@@ -907,6 +957,7 @@ msgstr "Amarnai를 자체 호스팅할 수 있나요?"
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:147
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:174
 #: ../../apps/mobile/app/(app)/account.tsx:82
+#: ../../apps/mobile/app/(app)/notifications.tsx:141
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:93
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:245
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:150
@@ -1033,8 +1084,8 @@ msgstr "닫기"
 msgid "Close panel"
 msgstr "패널 닫기"
 
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:225
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:229
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:231
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:235
 #: ../ui/src/emails/ThreadPreview.tsx:97
 #: ../ui/src/emails/ThreadPreview.tsx:101
 #, fuzzy
@@ -1345,12 +1396,12 @@ msgstr "Google 계정을 확인할 수 없습니다. 다시 시도해 주세요.
 msgid "Couldn't load your inbox. Check your connection and reopen the panel."
 msgstr "받은편지함을 불러올 수 없습니다. 인터넷 연결을 확인하고 패널을 다시 여세요."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:401
+#: ../../apps/site/src/components/demo/demo-seed.ts:406
 #, fuzzy
 msgid "Council convening: season of Shemu"
 msgstr "의회 소집: 셰무의 계절"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:411
+#: ../../apps/site/src/components/demo/demo-seed.ts:416
 #, fuzzy
 msgid "Council preparation request from a known royal ally. Sender domain and context clearly match the Current investors folder."
 msgstr "알려진 왕실 동맹의 의회 준비 요청입니다. 발신자 도메인과 컨텍스트가 '현재 투자자' 폴더와 명확히 일치합니다."
@@ -1414,6 +1465,7 @@ msgstr "계정 생성 중..."
 msgid "Creating…"
 msgstr "생성 중..."
 
+#: ../../apps/mobile/src/components/AssigneeSheet.tsx:63
 #: ../../apps/mobile/src/components/RerouteSheet.tsx:45
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:107
 #: ../../apps/site/src/components/demo/demo-seed.ts:33
@@ -1470,12 +1522,23 @@ msgstr "기본 무료 워크스페이스"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:176
 #: ../../apps/mobile/app/(app)/account.tsx:84
+#: ../../apps/mobile/app/(app)/notifications.tsx:142
+#: ../../apps/mobile/app/(app)/notifications.tsx:231
+#: ../../apps/mobile/app/(app)/notifications.tsx:317
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:193
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:266
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:267
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:596
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:607
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:703
 #, fuzzy
 msgid "Delete"
 msgstr "삭제"
+
+#. placeholder {0}: ids.length
+#: ../../apps/mobile/app/(app)/notifications.tsx:139
+msgid "Delete {0} notifications?"
+msgstr "{0}개의 알림을 삭제하시겠어요?"
 
 #: ../../apps/mobile/app/(app)/account.tsx:166
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:119
@@ -1502,6 +1565,15 @@ msgstr "삭제 실패. 다시 시도해 주세요."
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:424
 msgid "Delete folder"
 msgstr "폴더 삭제"
+
+#: ../../apps/mobile/app/(app)/notifications.tsx:140
+#, fuzzy
+msgid "Delete notifications"
+msgstr "알림 삭제"
+
+#: ../../apps/mobile/app/(app)/notifications.tsx:138
+msgid "Delete this notification?"
+msgstr "이 알림을 삭제하시겠어요?"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:303
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:26
@@ -1625,7 +1697,7 @@ msgstr "이 작업 공간의 연결을 해제합니다. 이 메일함은 {shared
 
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:228
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:298
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:343
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:57
 #: ../ui/src/AppDownloadBanner.tsx:80
 #: ../ui/src/emails/MockEmailsPage.tsx:256
@@ -1664,13 +1736,14 @@ msgstr "계정이 없으신가요? <0>계정 만들기</0>"
 msgid "Don't have an account? <0>Sign up</0>"
 msgstr "계정이 없으신가요? <0>가입하기</0>"
 
+#: ../../apps/mobile/app/(app)/notifications.tsx:254
 #: ../../apps/mobile/src/components/ThreadRow.tsx:40
-#: ../ui/src/emails/ThreadRow.tsx:141
+#: ../ui/src/emails/ThreadRow.tsx:166
 #, fuzzy
 msgid "Done"
 msgstr "완료"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:197
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:211
 #, fuzzy
 msgid "Done · undo"
 msgstr "완료 · 실행 취소"
@@ -1680,23 +1753,23 @@ msgstr "완료 · 실행 취소"
 msgid "Downgrade to {planName}"
 msgstr "{planName}(으)로 다운그레이드"
 
-#: ../ui/src/emails/ThreadRow.tsx:182
+#: ../ui/src/emails/ThreadRow.tsx:228
 #, fuzzy
 msgid "draft"
 msgstr "초안"
 
-#: ../../apps/mobile/src/components/ThreadRow.tsx:88
+#: ../../apps/mobile/src/components/ThreadRow.tsx:98
 #, fuzzy
 msgid "Draft"
 msgstr "초안"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:165
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:179
 #, fuzzy
 msgid "Draft failed · tap to retry"
 msgstr "초안 실패 · 탭하여 다시 시도"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:315
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:325
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:336
 #, fuzzy
 msgid "Draft generation failed. Try again."
 msgstr "초안 생성에 실패했습니다. 다시 시도해 주세요."
@@ -1708,7 +1781,7 @@ msgstr "초안 생성에 실패했습니다. 다시 시도해 주세요."
 msgid "Draft reply"
 msgstr "초안 답장"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:112
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:126
 #, fuzzy
 msgid "Draft shared"
 msgstr "초안 공유됨"
@@ -1719,8 +1792,8 @@ msgstr "초안 공유됨"
 msgid "Draft style guidance"
 msgstr "초안 작성 지침"
 
-#: ../../apps/mobile/src/components/ThreadRow.tsx:84
-#: ../ui/src/emails/ThreadRow.tsx:176
+#: ../../apps/mobile/src/components/ThreadRow.tsx:94
+#: ../ui/src/emails/ThreadRow.tsx:222
 #, fuzzy
 msgid "Drafting…"
 msgstr "초안 작성 중..."
@@ -1822,7 +1895,7 @@ msgid "Email verified! Sign in to continue."
 msgstr "이메일이 인증되었습니다! 로그인하여 계속 진행하세요."
 
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:28
-#: ../../apps/web/src/components/Sidebar.tsx:30
+#: ../../apps/web/src/components/Sidebar.tsx:32
 #, fuzzy
 msgid "Emails"
 msgstr "이메일"
@@ -2027,7 +2100,7 @@ msgstr "재무"
 msgid "Find and draft"
 msgstr "찾기 및 초안 작성"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:265
+#: ../../apps/site/src/components/demo/demo-seed.ts:266
 #, fuzzy
 msgid "Flagged as alliance/investor intro based on language (\"mutual benefit\", \"long-standing friendship\"). Confidence is moderate; Aziru has been known to send similar overtures to multiple courts."
 msgstr "언어(예: '상호 이익', '오랜 우정')를 기반으로 동맹/투자자 소개로 플래그 지정됨. 신뢰도는 중간 수준입니다. Aziru는 여러 법원에 유사한 제안을 보낸 것으로 알려져 있습니다."
@@ -2073,7 +2146,7 @@ msgid "Folder: {activeFolderName}"
 msgstr "폴더: {activeFolderName}"
 
 #: ../ui/src/emails/EmailRail.tsx:99
-#: ../ui/src/emails/ThreadList.tsx:130
+#: ../ui/src/emails/ThreadList.tsx:136
 #, fuzzy
 msgid "Folders"
 msgstr "폴더"
@@ -2114,7 +2187,7 @@ msgstr "대규모 조직 및 처리량이 많은 팀을 위해."
 msgid "For larger organizations."
 msgstr "대규모 조직을 위해."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:260
+#: ../../apps/site/src/components/demo/demo-seed.ts:261
 #, fuzzy
 msgid "For many years our houses have been as brothers. I write now to propose that we formalise this friendship for the benefit of both our peoples."
 msgstr "수년 동안 우리 가문은 형제처럼 지내왔습니다. 이제 우리 두 민족의 이익을 위해 이 우정을 공식화할 것을 제안합니다."
@@ -2208,8 +2281,8 @@ msgid "Generate a plan from your inbox"
 msgstr "받은 편지함에서 계획 생성"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:294
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:131
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:303
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:145
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:314
 #: ../ui/src/emails/ThreadPreview.tsx:162
 #, fuzzy
 msgid "Generate draft reply"
@@ -2315,7 +2388,7 @@ msgstr "Gmail에서 중요 표시됨"
 msgid "Gmail read-only access was not granted. Please try again and approve the requested permission."
 msgstr "Gmail 읽기 전용 액세스 권한이 부여되지 않았습니다. 다시 시도하여 요청된 권한을 승인해 주세요."
 
-#: ../../apps/web/src/components/Sidebar.tsx:43
+#: ../../apps/web/src/components/Sidebar.tsx:45
 #, fuzzy
 msgid "Gmail Sort Tester"
 msgstr "Gmail 분류 테스터"
@@ -2455,7 +2528,7 @@ msgstr "작동 방식"
 msgid "How to write a good description"
 msgstr "설명 잘 쓰는 법"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:273
+#: ../../apps/site/src/components/demo/demo-seed.ts:274
 #, fuzzy
 msgid "I write to propose that we formalise our friendship."
 msgstr "저희 우정을 공식화하자고 제안합니다."
@@ -2560,7 +2633,7 @@ msgstr "스팸 포함"
 msgid "Included"
 msgstr "포함됨"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:375
+#: ../../apps/site/src/components/demo/demo-seed.ts:379
 #, fuzzy
 msgid "Informal message with no clear category: personal visit or political audience? Tone is personal but sender is a known vassal governor. Routed to Other with low confidence."
 msgstr "명확한 카테고리가 없는 비공식 메시지: 개인 방문인가, 정치적 알현인가? 어조는 사적이지만, 발신자는 잘 알려진 봉신 통치자입니다. 신뢰도가 낮아 '기타'로 분류되었습니다."
@@ -2786,8 +2859,10 @@ msgstr "여기에 속하는 발신자, 주제, 키워드를 나열하세요. 최
 msgid "Live"
 msgstr "실시간"
 
+#: ../../apps/mobile/app/(app)/notifications.tsx:294
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:95
-#: ../ui/src/emails/ThreadList.tsx:228
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:278
+#: ../ui/src/emails/ThreadList.tsx:238
 #, fuzzy
 msgid "Load more"
 msgstr "더 보기"
@@ -2795,18 +2870,24 @@ msgstr "더 보기"
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:116
 #: ../ui/src/emails/BackfillCard.tsx:35
-#: ../ui/src/emails/ThreadList.tsx:173
+#: ../ui/src/emails/ThreadList.tsx:179
 #, fuzzy
 msgid "Loading past threads…"
 msgstr "이전 스레드를 불러오는 중…"
 
+#: ../../apps/extension/src/panel/NotificationBell.tsx:123
+#: ../../apps/mobile/app/(app)/notifications.tsx:294
 #: ../../apps/mobile/src/components/MessageCard.tsx:53
+#: ../../apps/mobile/src/components/NotificationsSheet.tsx:57
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:201
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:278
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:121
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:137
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:158
 #: ../../apps/web/src/app/loading.tsx:6
+#: ../../apps/web/src/components/NotificationBell.tsx:149
 #: ../ui/src/emails/MessageCard.tsx:60
-#: ../ui/src/emails/ThreadList.tsx:228
+#: ../ui/src/emails/ThreadList.tsx:238
 #, fuzzy
 msgid "Loading…"
 msgstr "불러오는 중…"
@@ -2821,6 +2902,12 @@ msgstr "메일"
 #, fuzzy
 msgid "Manage"
 msgstr "관리"
+
+#: ../../apps/extension/src/panel/NotificationBell.tsx:145
+#: ../../apps/mobile/src/components/NotificationsSheet.tsx:63
+#: ../../apps/web/src/components/NotificationBell.tsx:170
+msgid "Manage notifications"
+msgstr "알림 관리"
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:303
 #, fuzzy
@@ -2838,15 +2925,21 @@ msgid "Manager emails: one-on-ones, performance reviews, and feedback."
 msgstr "관리자 이메일: 일대일 면담, 성과 평가 및 피드백."
 
 #: ../ui/src/emails/PreviewDoneBar.tsx:23
-#: ../ui/src/emails/ThreadRow.tsx:106
+#: ../ui/src/emails/ThreadRow.tsx:124
 #, fuzzy
 msgid "Mark as done"
 msgstr "완료로 표시"
 
-#: ../ui/src/emails/ThreadRow.tsx:105
+#: ../ui/src/emails/ThreadRow.tsx:123
 #, fuzzy
 msgid "Mark as not done"
 msgstr "미완료로 표시"
+
+#: ../../apps/mobile/app/(app)/notifications.tsx:208
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:245
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:246
+msgid "Mark as read"
+msgstr "읽음으로 표시"
 
 #: ../../apps/mobile/src/components/DraftSheet.tsx:111
 #: ../ui/src/emails/SuggestedDraftCard.tsx:73
@@ -2854,13 +2947,19 @@ msgstr "미완료로 표시"
 msgid "Mark as sent"
 msgstr "보낸 것으로 표시"
 
+#: ../../apps/mobile/app/(app)/notifications.tsx:208
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:245
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:246
+msgid "Mark as unread"
+msgstr "안 읽음으로 표시"
+
 #: ../../apps/mobile/src/components/DraftSheet.tsx:111
 #: ../ui/src/emails/SuggestedDraftCard.tsx:73
 #, fuzzy
 msgid "Mark as unsent"
 msgstr "보내지 않은 것으로 표시"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:204
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:218
 #, fuzzy
 msgid "Mark done"
 msgstr "완료 표시"
@@ -2869,6 +2968,17 @@ msgstr "완료 표시"
 #, fuzzy
 msgid "Mark invited"
 msgstr "초대 완료로 표시"
+
+#: ../../apps/mobile/app/(app)/notifications.tsx:307
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:182
+#, fuzzy
+msgid "Mark read"
+msgstr "읽음으로 표시"
+
+#: ../../apps/mobile/app/(app)/notifications.tsx:312
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:185
+msgid "Mark unread"
+msgstr "안 읽음으로 표시"
 
 #: ../ui/src/emails/PreviewDoneBar.tsx:22
 #, fuzzy
@@ -2901,7 +3011,7 @@ msgstr "회원"
 msgid "Messages from paying customers and account holders."
 msgstr "유료 고객 및 계정 보유자의 메시지."
 
-#: ../../apps/web/src/components/Sidebar.tsx:41
+#: ../../apps/web/src/components/Sidebar.tsx:43
 #, fuzzy
 msgid "Mock Inbox"
 msgstr "모의 받은 편지함"
@@ -2963,7 +3073,7 @@ msgstr "다음으로 이동…"
 msgid "Moved to {folderName}"
 msgstr "{folderName}으로 이동됨"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:370
+#: ../../apps/site/src/components/demo/demo-seed.ts:374
 #, fuzzy
 msgid "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face."
 msgstr "며칠 내로 제 여정이 델타 지역 근처를 지나게 됩니다. 위대하신 왕께서 한 시간 정도 시간을 할애해 주신다면, 직접 대면하여 이야기 나눌 기회를 기꺼이 받아들이겠습니다."
@@ -3001,7 +3111,7 @@ msgstr "안 함"
 msgid "Never auto-sends · Encrypted at rest · Minimal data"
 msgstr "자동 발송 안 함 · 저장 데이터 암호화 · 최소한의 데이터"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:311
+#: ../../apps/site/src/components/demo/demo-seed.ts:313
 #, fuzzy
 msgid "New application from Horemheb of Thebes."
 msgstr "테베의 호렘헤브에게서 온 새 신청서"
@@ -3017,6 +3127,12 @@ msgstr "신규 사업 문의, 제안서, 가격 논의 및 잠재 고객 발굴 
 #, fuzzy
 msgid "New folder"
 msgstr "새 폴더"
+
+#: ../../apps/extension/src/panel/notificationText.ts:22
+#: ../../apps/mobile/src/data/notificationView.ts:33
+#: ../../apps/web/src/lib/notifications.ts:34
+msgid "New notification"
+msgstr "새 알림"
 
 #: ../../apps/web/src/app/reset-password/page.tsx:43
 #: ../../apps/web/src/app/reset-password/page.tsx:68
@@ -3044,13 +3160,13 @@ msgstr "새 워크스페이스"
 msgid "New workspace name"
 msgstr "새 워크스페이스 이름"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:129
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:143
 #, fuzzy
 msgid "No drafts remaining"
 msgstr "남은 초안 없음"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:299
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:308
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:319
 #: ../ui/src/emails/SuggestedDraftCard.tsx:97
 #, fuzzy
 msgid "No drafts remaining · resets {quotaResetDate}"
@@ -3106,6 +3222,24 @@ msgstr "연결된 Gmail 받은 편지함이 없습니다. 계정을 연결하여
 msgid "No matching folders"
 msgstr "일치하는 폴더 없음"
 
+#: ../ui/src/emails/AssigneePicker.tsx:91
+#, fuzzy
+msgid "No members"
+msgstr "멤버 없음"
+
+#: ../../apps/mobile/src/components/AssigneeSheet.tsx:67
+#, fuzzy
+msgid "No members available"
+msgstr "사용 가능한 멤버 없음"
+
+#: ../../apps/extension/src/panel/NotificationBell.tsx:128
+#: ../../apps/mobile/app/(app)/notifications.tsx:287
+#: ../../apps/mobile/src/components/NotificationsSheet.tsx:57
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:203
+#: ../../apps/web/src/components/NotificationBell.tsx:152
+msgid "No notifications yet"
+msgstr "아직 알림 없음"
+
 #: ../../apps/mobile/src/components/BlacklistSheet.tsx:146
 #, fuzzy
 msgid "No senders blocked yet."
@@ -3125,7 +3259,7 @@ msgstr "아직 가입자가 없습니다."
 msgid "No threads"
 msgstr "스레드 없음"
 
-#: ../ui/src/emails/ThreadList.tsx:176
+#: ../ui/src/emails/ThreadList.tsx:182
 #, fuzzy
 msgid "No threads here."
 msgstr "여기에 스레드가 없습니다."
@@ -3140,7 +3274,7 @@ msgstr "{folderName}에 스레드 없음"
 msgid "No threads match your search"
 msgstr "검색과 일치하는 스레드 없음"
 
-#: ../ui/src/emails/ThreadList.tsx:169
+#: ../ui/src/emails/ThreadList.tsx:175
 #, fuzzy
 msgid "No threads match your search."
 msgstr "검색과 일치하는 스레드가 없습니다."
@@ -3151,7 +3285,7 @@ msgid "No threads yet"
 msgstr "아직 스레드 없음"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:225
-#: ../../apps/web/src/components/Sidebar.tsx:142
+#: ../../apps/web/src/components/Sidebar.tsx:153
 #, fuzzy
 msgid "No workspace"
 msgstr "워크스페이스 없음"
@@ -3198,17 +3332,31 @@ msgstr "설정되지 않음"
 msgid "Not yet synced"
 msgstr "아직 동기화되지 않음"
 
+#: ../../apps/extension/src/panel/NotificationBell.tsx:40
+#: ../../apps/extension/src/panel/NotificationBell.tsx:116
+#: ../../apps/extension/src/panel/NotificationBell.tsx:118
 #: ../../apps/mobile/app/(app)/account.tsx:145
+#: ../../apps/mobile/app/(app)/notifications.tsx:249
+#: ../../apps/mobile/src/components/NotificationsSheet.tsx:43
+#: ../../apps/web/src/app/(app)/notifications/page.tsx:12
+#: ../../apps/web/src/components/NotificationBell.tsx:126
+#: ../../apps/web/src/components/NotificationBell.tsx:141
+#: ../../apps/web/src/components/NotificationBell.tsx:145
 #, fuzzy
 msgid "Notifications"
 msgstr "알림"
+
+#: ../../apps/extension/src/panel/NotificationBell.tsx:101
+#: ../../apps/web/src/components/NotificationBell.tsx:125
+msgid "Notifications, {unread} unread"
+msgstr "알림, 읽지 않음 {unread}개"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:68
 #, fuzzy
 msgid "Official university emails: registrar, student services, and housing."
 msgstr "공식 대학 이메일: 교무처, 학생 서비스, 기숙사 관련."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:337
+#: ../../apps/site/src/components/demo/demo-seed.ts:340
 #, fuzzy
 msgid "Ongoing thread with a known city governor raising a recurring supply issue. Escalatory tone and repeated follow-ups match the Support folder."
 msgstr "잘 알려진 도시 시장과의 반복되는 공급 문제 스레드. 격화되는 어조와 잦은 후속 조치는 지원 폴더에 적합합니다."
@@ -3220,16 +3368,16 @@ msgstr "워크스페이스 소유자만 결제를 관리할 수 있습니다."
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:244
 #: ../../apps/mobile/src/components/DraftSheet.tsx:97
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:242
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:248
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:254
 #: ../ui/src/emails/ThreadPreview.tsx:115
 #: ../ui/src/emails/ThreadPreview.tsx:121
-#: ../ui/src/emails/ThreadRow.tsx:107
+#: ../ui/src/emails/ThreadRow.tsx:125
 #, fuzzy
 msgid "Open in Gmail"
 msgstr "Gmail에서 열기"
 
-#: ../../apps/web/src/components/Sidebar.tsx:112
+#: ../../apps/web/src/components/Sidebar.tsx:114
 #, fuzzy
 msgid "Open navigation"
 msgstr "내비게이션 열기"
@@ -3238,6 +3386,12 @@ msgstr "내비게이션 열기"
 #, fuzzy
 msgid "open source email ai"
 msgstr "오픈 소스 이메일 AI"
+
+#: ../../apps/mobile/app/(app)/notifications.tsx:221
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:255
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:256
+msgid "Open thread"
+msgstr "스레드 열기"
 
 #: ../../apps/site/src/components/landing/HeroSection.tsx:58
 #, fuzzy
@@ -3303,8 +3457,8 @@ msgstr "상위"
 msgid "Partners"
 msgstr "파트너"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:365
-#: ../../apps/site/src/components/demo/demo-seed.ts:383
+#: ../../apps/site/src/components/demo/demo-seed.ts:369
+#: ../../apps/site/src/components/demo/demo-seed.ts:387
 #, fuzzy
 msgid "Passing through the Delta: free to meet?"
 msgstr "델타 지역을 지나는 중: 만날 시간 되시나요?"
@@ -3426,14 +3580,14 @@ msgstr "일상생활 관련 개인 서신 및 비학업용 이메일."
 #. Screen heading for the email-sorting taxonomy. Not a billing or subscription plan.
 #. Sidebar nav label for the email-sorting taxonomy. Not a billing or subscription plan.
 #. Sidebar nav label for the email-sorting taxonomy. Not a billing or subscription plan.
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:42
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:43
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:35
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:265
 #: ../../apps/site/src/components/demo/DemoTaxonomyCanvas.tsx:220
 #: ../../apps/site/src/components/landing/Footer.tsx:26
 #: ../../apps/site/src/components/landing/Nav.tsx:39
 #: ../../apps/web/src/app/(app)/plan/page.tsx:43
-#: ../../apps/web/src/components/Sidebar.tsx:33
+#: ../../apps/web/src/components/Sidebar.tsx:35
 #, fuzzy
 msgid "Plan"
 msgstr "플랜"
@@ -3467,7 +3621,7 @@ msgstr "직접 호스팅하시겠습니까?"
 msgid "Prefer to self-host? It's open source:<0/> <1>clone it and run it free</1>."
 msgstr "직접 호스팅하시겠습니까? 오픈 소스입니다:<0/> <1>클론하여 무료로 실행하세요</1>."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:419
+#: ../../apps/site/src/components/demo/demo-seed.ts:424
 #, fuzzy
 msgid "Prepare your accounts before the council convenes."
 msgstr "이사회 소집 전에 계정을 준비하세요."
@@ -3568,7 +3722,7 @@ msgstr "제안된 폴더. 적용하면 현재 플랜이 대체됩니다. 나중�
 msgid "Queuing rescan…"
 msgstr "재스캔 대기 중…"
 
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:308
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:353
 #, fuzzy
 msgid "Re-route {unclassifiedCount} unclassified"
 msgstr "미분류 항목 {unclassifiedCount}개 재경로 지정"
@@ -3578,7 +3732,7 @@ msgstr "미분류 항목 {unclassifiedCount}개 재경로 지정"
 msgid "Re-route thread"
 msgstr "스레드 재경로 지정"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:327
+#: ../../apps/site/src/components/demo/demo-seed.ts:330
 #, fuzzy
 msgid "Re: Grain shipment: third delay this season"
 msgstr "Re: 곡물 운송: 이번 시즌 세 번째 지연"
@@ -3823,7 +3977,7 @@ msgstr "워크스페이스 재설정"
 msgid "Reset workspace?"
 msgstr "워크스페이스 재설정?"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:141
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:155
 #, fuzzy
 msgid "Resets {draftResetDate}"
 msgstr "{draftResetDate}에 재설정됩니다."
@@ -3849,7 +4003,7 @@ msgstr "자료"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:317
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:345
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:331
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:342
 #, fuzzy
 msgid "Retry"
 msgstr "다시 시도"
@@ -3859,7 +4013,7 @@ msgstr "다시 시도"
 msgid "Review queue"
 msgstr "검토 대기열"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:342
+#: ../../apps/site/src/components/demo/demo-seed.ts:345
 #, fuzzy
 msgid "Rib-Hadda of Byblos"
 msgstr "비블로스의 립-하따"
@@ -3967,12 +4121,27 @@ msgstr "스레드 검색…"
 msgid "See how your inbox is sorted, right next to Gmail."
 msgstr "Gmail 바로 옆에서 내 받은편지함 정리 상태를 확인하세요."
 
+#: ../../apps/mobile/app/(app)/notifications.tsx:254
+msgid "Select"
+msgstr "선택"
+
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:199
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:273
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:310
 #: ../ui/src/emails/MockEmailsPage.tsx:234
 #, fuzzy
 msgid "Select a thread to preview"
 msgstr "미리 보려면 스레드를 선택하세요."
+
+#: ../../apps/mobile/app/(app)/notifications.tsx:269
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:174
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:176
+#, fuzzy
+msgid "Select all"
+msgstr "모두 선택"
+
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:221
+msgid "Select notification"
+msgstr "알림 선택"
 
 #: ../ui/src/PricingPlans.tsx:313
 #, fuzzy
@@ -4054,10 +4223,10 @@ msgstr "이 작업 공간의 언어를 설정합니다(인터페이스 및 AI �
 msgid "Setting up your workspace…"
 msgstr "작업 공간 설정 중…"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:51
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:52
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:42
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:197
-#: ../../apps/web/src/components/Sidebar.tsx:40
+#: ../../apps/web/src/components/Sidebar.tsx:42
 #, fuzzy
 msgid "Settings"
 msgstr "설정"
@@ -4115,7 +4284,7 @@ msgstr "Google로 로그인하세요. Amarnai는 스레드와 라벨을 동기�
 
 #: ../../apps/extension/src/App.tsx:46
 #: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:68
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:127
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:130
 #: ../../apps/mobile/app/(app)/account.tsx:122
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:98
 #: ../../apps/web/src/app/verify-email/page.tsx:42
@@ -4227,7 +4396,7 @@ msgstr "분류량"
 #: ../../apps/mobile/src/components/RationaleCard.tsx:35
 #: ../../apps/site/src/components/landing/HeroFeedCard.tsx:90
 #: ../ui/src/emails/RationaleCard.tsx:52
-#: ../ui/src/emails/ThreadRow.tsx:147
+#: ../ui/src/emails/ThreadRow.tsx:193
 #, fuzzy
 msgid "Sorting…"
 msgstr "분류 중…"
@@ -4487,12 +4656,12 @@ msgstr "서버 오류로 인해 연결을 저장할 수 없었습니다. 다시 
 msgid "The Gmail connection, all synced emails, and the taxonomy will be permanently deleted. Re-importing this inbox uses your monthly import allowance; if it runs out, you can import again after {allowanceResetsAt} or by upgrading."
 msgstr "Gmail 연결, 동기화된 모든 이메일 및 분류 체계가 영구적으로 삭제됩니다. 받은 편지함 재가져오기는 월별 허용량에 포함되며, 소진 시 {allowanceResetsAt} 이후 또는 업그레이드를 통해 다시 가져올 수 있습니다."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:332
+#: ../../apps/site/src/components/demo/demo-seed.ts:335
 #, fuzzy
 msgid "The grain you sent last month was received with gratitude. But I must write again: the third shipment has not arrived and the city grows restless."
 msgstr "지난달 보내주신 곡물은 감사히 받았습니다. 허나 다시 서신을 보냅니다. 세 번째 선적분이 도착하지 않아 도시는 동요하고 있습니다."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:406
+#: ../../apps/site/src/components/demo/demo-seed.ts:411
 #, fuzzy
 msgid "The great council convenes at the start of Shemu. I ask that you prepare a full accounting of the eastern territories and send it ahead by fast courier."
 msgstr "셰무(Shemu) 초에 대의회가 열립니다. 동부 영토의 전체 회계 보고서를 준비하여 빠른 전령으로 미리 보내주십시오."
@@ -4507,7 +4676,7 @@ msgstr "조약에 따라 약속된 세 번째 금 운송분이 아직 도착하�
 msgid "The third gold consignment is overdue."
 msgstr "세 번째 금 운송분은 기한이 지났습니다."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:345
+#: ../../apps/site/src/components/demo/demo-seed.ts:348
 #, fuzzy
 msgid "The third grain shipment has not arrived."
 msgstr "세 번째 곡물 선적분이 아직 도착하지 않았습니다."
@@ -4594,12 +4763,12 @@ msgstr "이 스레드는 분류 대기 중입니다."
 msgid "This thread is waiting to be routed. Use “Route now” to start sorting."
 msgstr "이 스레드는 분류 대기 중입니다. 지금 분류를 시작하려면 '지금 분류'를 사용하세요."
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:71
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:85
 #, fuzzy
 msgid "Thread"
 msgstr "스레드"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:73
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:87
 #, fuzzy
 msgid "Thread not found"
 msgstr "스레드를 찾을 수 없습니다."
@@ -4655,7 +4824,7 @@ msgstr "아직 정리되지 않은 스레드."
 msgid "Three steps. Then it sorts every email for you."
 msgstr "세 단계만 거치면 모든 이메일이 자동으로 분류됩니다."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:420
+#: ../../apps/site/src/components/demo/demo-seed.ts:425
 #, fuzzy
 msgid "To my brother, the Great King,\n"
 "\n"
@@ -4685,7 +4854,7 @@ msgstr "왕실 임명국 귀하,\n"
 "\n"
 "왕실 칙령에 따라,"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:274
+#: ../../apps/site/src/components/demo/demo-seed.ts:275
 #, fuzzy
 msgid "To the Great King,\n"
 "\n"
@@ -4702,7 +4871,7 @@ msgstr "대왕께,\n"
 "\n"
 "대왕의 종, 아무르의 영주 아지루"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:384
+#: ../../apps/site/src/components/demo/demo-seed.ts:388
 #, fuzzy
 msgid "To the Great King,\n"
 "\n"
@@ -4745,7 +4914,7 @@ msgstr "내 형제이신 대왕께,\n"
 "\n"
 "바빌론의 왕 부르나-부리아쉬 2세"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:346
+#: ../../apps/site/src/components/demo/demo-seed.ts:349
 #, fuzzy
 msgid "To the Great King, my lord, my sun,\n"
 "\n"
@@ -4768,7 +4937,7 @@ msgstr "대왕, 저의 주인이시여, 저의 태양이시여,\n"
 msgid "Today"
 msgstr "오늘"
 
-#: ../ui/src/emails/ThreadList.tsx:114
+#: ../ui/src/emails/ThreadList.tsx:120
 #, fuzzy
 msgid "Toggle folders"
 msgstr "폴더 전환"
@@ -4805,10 +4974,15 @@ msgstr "이동 중에도 받은편지함을 간편하게 분류하세요."
 msgid "Try Amarnai"
 msgstr "Amarnai 사용해보기"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:416
+#: ../../apps/site/src/components/demo/demo-seed.ts:421
 #, fuzzy
 msgid "Tushratta of Mitanni"
 msgstr "미탄니의 투슈라타"
+
+#: ../../apps/mobile/src/components/AssigneeSheet.tsx:32
+#: ../ui/src/emails/AssigneePicker.tsx:31
+msgid "Unassign"
+msgstr "할당 해제"
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:151
 #: ../../apps/mobile/app/(app)/subscription.tsx:156
@@ -4817,13 +4991,13 @@ msgid "Unavailable"
 msgstr "이용 불가"
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:46
-#: ../ui/src/emails/ThreadRow.tsx:155
+#: ../ui/src/emails/ThreadRow.tsx:201
 #, fuzzy
 msgid "Unclassified"
 msgstr "미분류"
 
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:221
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:295
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:340
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1321
 #: ../../apps/web/src/app/admin/waitlist/page.tsx:26
 #: ../ui/src/emails/MockEmailsPage.tsx:253
@@ -5033,7 +5207,7 @@ msgstr "인증 이메일이 전송되었습니다. 받은편지함을 확인하�
 msgid "Verify your email"
 msgstr "이메일 인증"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:178
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:192
 #, fuzzy
 msgid "View draft reply"
 msgstr "초안 답장 보기"
@@ -5045,7 +5219,7 @@ msgstr "보기 전용. 워크스페이스 관리자만 플랜을 편집할 수 �
 #: ../../apps/mobile/src/components/RationaleCard.tsx:44
 #: ../../apps/mobile/src/components/ThreadRow.tsx:49
 #: ../ui/src/emails/RationaleCard.tsx:74
-#: ../ui/src/emails/ThreadRow.tsx:151
+#: ../ui/src/emails/ThreadRow.tsx:197
 #, fuzzy
 msgid "Waiting"
 msgstr "대기 중"
@@ -5065,7 +5239,7 @@ msgstr "인증 대기 중…"
 msgid "Waitlist"
 msgstr "대기 목록"
 
-#: ../ui/src/emails/ThreadRow.tsx:99
+#: ../ui/src/emails/ThreadRow.tsx:117
 #, fuzzy
 msgid "Wants {folderName}"
 msgstr "{folderName}을(를) 원함"
@@ -5127,7 +5301,7 @@ msgstr "업무"
 msgid "Working Professional"
 msgstr "직장인"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:60
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:61
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:220
 #: ../../apps/site/src/components/demo/DemoTaxonomyCanvas.tsx:218
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:35
@@ -5161,7 +5335,7 @@ msgstr "워크스페이스 이름은 비워둘 수 없습니다."
 msgid "Workspace name updated."
 msgstr "워크스페이스 이름이 업데이트되었습니다."
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:48
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:49
 msgid "Workspace settings"
 msgstr "워크스페이스 설정"
 
@@ -5181,8 +5355,8 @@ msgid "Workspaces included"
 msgstr "워크스페이스 포함"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:309
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:153
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:319
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:167
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:330
 #: ../ui/src/emails/ThreadPreview.tsx:169
 #, fuzzy
 msgid "Writing draft reply…"
@@ -5269,6 +5443,12 @@ msgstr "잠시 후 다시 시도하거나, 템플릿에서 시작할 수 있습�
 #, fuzzy
 msgid "You do not have permission to connect a Gmail inbox to this workspace."
 msgstr "이 워크스페이스에 Gmail 받은 편지함을 연결할 권한이 없습니다."
+
+#: ../../apps/extension/src/panel/notificationText.ts:19
+#: ../../apps/mobile/src/data/notificationView.ts:29
+#: ../../apps/web/src/lib/notifications.ts:30
+msgid "You were assigned a thread"
+msgstr "스레드가 할당되었습니다."
 
 #: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:178
 #, fuzzy

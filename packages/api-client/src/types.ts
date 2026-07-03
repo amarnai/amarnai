@@ -137,6 +137,15 @@ export type DoneMark = {
   resolvedAt: string;
 };
 
+// Thread assignment (ownership). Same person shape as DoneMark but a distinct
+// concept: who should handle the thread, independent of who marked it done.
+export type ThreadAssignment = {
+  userId: string;
+  userName: string | null;
+  userEmail: string;
+  assignedAt: string;
+};
+
 export type EmailTag = {
   id: string;
   source: string;
@@ -210,6 +219,7 @@ export type EmailThreadSummary = {
   hasDraft: boolean;
   isDrafting: boolean;
   doneMark: DoneMark | null;
+  assignment: ThreadAssignment | null;
 };
 
 export type EmailThreadListResult = {
@@ -246,7 +256,28 @@ export type EmailThreadDetail = {
   latestClassification: Classification | null;
   tags: EmailTag[];
   doneMark: DoneMark | null;
+  assignment: ThreadAssignment | null;
 };
+
+// ── Notifications ──────────────────────────────────────────────────────────────
+
+// Generic in-app notification. `type` + `params` are producer-defined; the
+// client maps them to localized display text at render time.
+export type NotificationItem = {
+  id: string;
+  workspaceId: string;
+  type: string;
+  params: Record<string, unknown>;
+  readAt: string | null;
+  createdAt: string;
+};
+
+export type NotificationListResult = {
+  notifications: NotificationItem[];
+  nextCursor: string | null;
+};
+
+export type UnreadCountResult = { count: number };
 
 // ── Gmail ─────────────────────────────────────────────────────────────────────
 

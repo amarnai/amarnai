@@ -25,13 +25,13 @@ msgid "(No body)"
 msgstr "(Sin cuerpo)"
 
 #. placeholder {0}: thread.attachmentCount
-#: ../../apps/mobile/src/components/ThreadRow.tsx:96
+#: ../../apps/mobile/src/components/ThreadRow.tsx:106
 #, fuzzy
 msgid "{0, plural, one {# file} other {# files}}"
 msgstr "{0, plural, one {# archivo} other {# archivos}}"
 
 #. placeholder {0}: thread.messageCount
-#: ../../apps/mobile/src/components/ThreadRow.tsx:101
+#: ../../apps/mobile/src/components/ThreadRow.tsx:111
 msgid "{0, plural, one {# message} other {# messages}}"
 msgstr "{0, plural, one {# mensaje} other {# mensajes}}"
 
@@ -72,7 +72,7 @@ msgstr "{0} / {1} restantes · se restablece {2}"
 #. placeholder {1}: (total ?? 0).toLocaleString()
 #. placeholder {1}: viewCount.toLocaleString()
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:81
-#: ../ui/src/emails/ThreadList.tsx:217
+#: ../ui/src/emails/ThreadList.tsx:227
 msgid "{0} of {1} loaded"
 msgstr "{0} de {1} cargados"
 
@@ -93,6 +93,17 @@ msgstr "{0} de {1} restantes · se reinicia {quotaResetDate}"
 msgid "{blacklistCount, plural, one {# blocked} other {# blocked}}"
 msgstr "{blacklistCount, plural, one {# bloqueado} other {# bloqueados}}"
 
+#: ../../apps/extension/src/panel/notificationText.ts:18
+#: ../../apps/mobile/src/data/notificationView.ts:28
+#: ../../apps/web/src/lib/notifications.ts:29
+#, fuzzy
+msgid "{by} assigned you a thread"
+msgstr "{by} te asignó una conversación"
+
+#: ../../apps/extension/src/panel/notificationText.ts:17
+msgid "{by} assigned you: {subject}"
+msgstr "{by} te asignó: {subject}"
+
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:528
 #, fuzzy
 msgid "{classificationCount, plural, one {Deleting this folder will leave # thread unsorted.} other {Deleting this folder will leave # threads unsorted.}}"
@@ -108,7 +119,7 @@ msgstr "{collaboratorCount} / {collaboratorLimit} añadidos"
 msgid "{confPct}% confidence"
 msgstr "{confPct}% de confianza"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:136
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:150
 msgid "{draftRemaining} of {draftLimit} left · resets {draftResetDate}"
 msgstr "{draftRemaining} de {draftLimit} restantes · se reinicia el {draftResetDate}"
 
@@ -142,7 +153,7 @@ msgstr "{pendingCount} pendientes"
 
 #. placeholder {0}: draftQuota.limit
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:300
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:309
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:320
 #, fuzzy
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
 msgstr "{quotaRemaining} de {0} restantes · se restablece {quotaResetDate}"
@@ -155,6 +166,11 @@ msgstr "{remaining} de {limit} restantes · se reinicia el {resetDate}"
 #, fuzzy
 msgid "{routableCount} of {TAXONOMY_MIN_NON_ROOT_NODES} folders connected to your inbox. Routing requires at least {TAXONOMY_MIN_NON_ROOT_NODES}."
 msgstr "{routableCount} de {TAXONOMY_MIN_NON_ROOT_NODES} carpetas conectadas a tu bandeja de entrada. El enrutamiento requiere al menos {TAXONOMY_MIN_NON_ROOT_NODES}."
+
+#: ../../apps/mobile/app/(app)/notifications.tsx:269
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:176
+msgid "{selectedCount} selected"
+msgstr "{selectedCount} seleccionados"
 
 #: ../ui/src/emails/ThreadListHeader.tsx:113
 #, fuzzy
@@ -212,7 +228,7 @@ msgstr "+ Agregar carpeta"
 msgid "+ Add Folder"
 msgstr "+ Añadir carpeta"
 
-#: ../../apps/web/src/components/Sidebar.tsx:176
+#: ../../apps/web/src/components/Sidebar.tsx:187
 #, fuzzy
 msgid "+ New workspace"
 msgstr "+ Nuevo espacio de trabajo"
@@ -347,12 +363,12 @@ msgstr "500 conversaciones clasificadas / mes"
 msgid "75,000 threads"
 msgstr "75.000 conversaciones"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:298
+#: ../../apps/site/src/components/demo/demo-seed.ts:300
 #, fuzzy
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence."
 msgstr "Se ha recibido una nueva solicitud de Horemheb de Tebas para el puesto de Jefe de Correspondencia."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:312
+#: ../../apps/site/src/components/demo/demo-seed.ts:314
 #, fuzzy
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
@@ -361,7 +377,7 @@ msgstr "Se ha recibido una nueva solicitud de Horemheb de Tebas para el cargo de
 "\n"
 "Consulte la solicitud en la Casa de los Registros."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:380
+#: ../../apps/site/src/components/demo/demo-seed.ts:384
 #, fuzzy
 msgid "Abdi-Heba of Urushalim"
 msgstr "Abdi-Heba de Urushalim"
@@ -398,12 +414,12 @@ msgstr "Acceso denegado. Concede acceso de solo lectura a Gmail para conectar."
 msgid "Account"
 msgstr "Cuenta"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:102
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:105
 #, fuzzy
 msgid "Account menu"
 msgstr "Menú de la cuenta"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:116
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:119
 msgid "Account settings"
 msgstr "Ajustes de la cuenta"
 
@@ -518,7 +534,7 @@ msgstr "Todos los datos del espacio de trabajo se eliminarán permanentemente."
 msgid "All your workspaces, emails, and settings will be deleted permanently."
 msgstr "Todos tus espacios de trabajo, correos electrónicos y configuraciones se eliminarán permanentemente."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:255
+#: ../../apps/site/src/components/demo/demo-seed.ts:256
 msgid "Alliance proposal: house of Amurru"
 msgstr "Propuesta de alianza: casa de Amurru"
 
@@ -647,7 +663,7 @@ msgstr "Error de API {0}"
 msgid "Appearance"
 msgstr "Apariencia"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:293
+#: ../../apps/site/src/components/demo/demo-seed.ts:295
 #, fuzzy
 msgid "Application: Chief of Correspondence"
 msgstr "Solicitud: Jefe de Correspondencia"
@@ -690,6 +706,40 @@ msgstr "Aplicando…"
 msgid "Approve routing"
 msgstr "Aprobar enrutamiento"
 
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:233
+#: ../ui/src/emails/TriageBar.tsx:71
+#, fuzzy
+msgid "Assign"
+msgstr "Asignar"
+
+#: ../ui/src/emails/AssigneePicker.tsx:85
+#, fuzzy
+msgid "Assign thread"
+msgstr "Asignar conversación"
+
+#: ../../apps/mobile/src/components/AssigneeSheet.tsx:39
+#, fuzzy
+msgid "Assign to"
+msgstr "Asignar a"
+
+#: ../ui/src/emails/ThreadRow.tsx:260
+#: ../ui/src/emails/ThreadRow.tsx:264
+#: ../ui/src/emails/TriageBar.tsx:63
+#, fuzzy
+msgid "Assign to a member"
+msgstr "Asignar a un miembro"
+
+#: ../ui/src/emails/TriageBar.tsx:70
+#, fuzzy
+msgid "Assigned · {assigneeName}"
+msgstr "Asignado · {assigneeName}"
+
+#: ../ui/src/emails/ThreadRow.tsx:174
+#: ../ui/src/emails/TriageBar.tsx:62
+#, fuzzy
+msgid "Assigned to {assigneeName}. Change assignee"
+msgstr "Asignado a {assigneeName}. Cambiar asignado"
+
 #: ../../apps/web/src/app/reset-password/page.tsx:54
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:49
 msgid "At least {PASSWORD_MIN_LENGTH} characters"
@@ -710,7 +760,7 @@ msgstr "Archivar automáticamente notificaciones en Actualizaciones / Otros"
 msgid "Automated and bulk mail that doesn't fit another folder lands here automatically. This is different from Needs review, which holds threads too ambiguous for the assistant to sort."
 msgstr "El correo automatizado y masivo que no encaja en otra carpeta se archiva aquí automáticamente. Se diferencia de 'Necesita revisión', que contiene conversaciones demasiado ambiguas para que el asistente las clasifique."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:303
+#: ../../apps/site/src/components/demo/demo-seed.ts:305
 #, fuzzy
 msgid "Automated notice from the Bureau of Royal Appointments. Subject and sender clearly indicate a new application for an open position."
 msgstr "Aviso automático de la Oficina Real de Nombramientos. El asunto y el remitente indican claramente una nueva solicitud para un puesto vacante."
@@ -720,7 +770,7 @@ msgstr "Aviso automático de la Oficina Real de Nombramientos. El asunto y el re
 msgid "Automated notifications, newsletters, and service updates that don't fit another folder."
 msgstr "Notificaciones automatizadas, boletines y actualizaciones de servicio que no encajan en otra carpeta."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:270
+#: ../../apps/site/src/components/demo/demo-seed.ts:271
 #, fuzzy
 msgid "Aziru of Amurru"
 msgstr "Aziru de Amurru"
@@ -740,14 +790,14 @@ msgstr "Aziru,\n"
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:215
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:25
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:222
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:228
 #: ../ui/src/emails/ThreadPreview.tsx:92
 #, fuzzy
 msgid "Back"
 msgstr "Volver"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:211
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:217
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:223
 #: ../ui/src/emails/ThreadPreview.tsx:87
 #, fuzzy
 msgid "Back to list"
@@ -827,7 +877,7 @@ msgstr "Crear plan"
 #~ msgid "Bulk triage your inbox"
 #~ msgstr "Clasifica masivamente tu bandeja de entrada"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:308
+#: ../../apps/site/src/components/demo/demo-seed.ts:310
 #, fuzzy
 msgid "Bureau of Royal Appointments"
 msgstr "Oficina Real de Nombramientos"
@@ -871,6 +921,7 @@ msgstr "¿Puedo autoalojar Amarnai?"
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:147
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:174
 #: ../../apps/mobile/app/(app)/account.tsx:82
+#: ../../apps/mobile/app/(app)/notifications.tsx:141
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:93
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:245
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:150
@@ -992,8 +1043,8 @@ msgstr "Cerrar"
 msgid "Close panel"
 msgstr "Cerrar panel"
 
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:225
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:229
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:231
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:235
 #: ../ui/src/emails/ThreadPreview.tsx:97
 #: ../ui/src/emails/ThreadPreview.tsx:101
 #, fuzzy
@@ -1292,12 +1343,12 @@ msgstr "No se pudo verificar tu cuenta de Google. Inténtalo de nuevo."
 msgid "Couldn't load your inbox. Check your connection and reopen the panel."
 msgstr "No se pudo cargar tu bandeja de entrada. Verifica tu conexión y vuelve a abrir el panel."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:401
+#: ../../apps/site/src/components/demo/demo-seed.ts:406
 #, fuzzy
 msgid "Council convening: season of Shemu"
 msgstr "Convocatoria del consejo: temporada de Shemu"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:411
+#: ../../apps/site/src/components/demo/demo-seed.ts:416
 #, fuzzy
 msgid "Council preparation request from a known royal ally. Sender domain and context clearly match the Current investors folder."
 msgstr "Solicitud de preparación del consejo de un aliado real conocido. El dominio del remitente y el contexto coinciden claramente con la carpeta Inversores actuales."
@@ -1359,6 +1410,7 @@ msgstr "Creando cuenta…"
 msgid "Creating…"
 msgstr "Creando…"
 
+#: ../../apps/mobile/src/components/AssigneeSheet.tsx:63
 #: ../../apps/mobile/src/components/RerouteSheet.tsx:45
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:107
 #: ../../apps/site/src/components/demo/demo-seed.ts:33
@@ -1413,12 +1465,23 @@ msgstr "Espacio de trabajo gratuito predeterminado"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:176
 #: ../../apps/mobile/app/(app)/account.tsx:84
+#: ../../apps/mobile/app/(app)/notifications.tsx:142
+#: ../../apps/mobile/app/(app)/notifications.tsx:231
+#: ../../apps/mobile/app/(app)/notifications.tsx:317
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:193
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:266
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:267
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:596
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:607
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:703
 #, fuzzy
 msgid "Delete"
 msgstr "Eliminar"
+
+#. placeholder {0}: ids.length
+#: ../../apps/mobile/app/(app)/notifications.tsx:139
+msgid "Delete {0} notifications?"
+msgstr "¿Eliminar {0} notificaciones?"
 
 #: ../../apps/mobile/app/(app)/account.tsx:166
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:119
@@ -1444,6 +1507,15 @@ msgstr "Error al eliminar. Inténtalo de nuevo."
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:424
 msgid "Delete folder"
 msgstr "Eliminar carpeta"
+
+#: ../../apps/mobile/app/(app)/notifications.tsx:140
+#, fuzzy
+msgid "Delete notifications"
+msgstr "Eliminar notificaciones"
+
+#: ../../apps/mobile/app/(app)/notifications.tsx:138
+msgid "Delete this notification?"
+msgstr "¿Eliminar esta notificación?"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:303
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:26
@@ -1563,7 +1635,7 @@ msgstr "Desconecta este espacio de trabajo. Amarnai mantiene el acceso porque es
 
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:228
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:298
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:343
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:57
 #: ../ui/src/AppDownloadBanner.tsx:80
 #: ../ui/src/emails/MockEmailsPage.tsx:256
@@ -1603,13 +1675,14 @@ msgstr "¿No tienes cuenta? <0>Crea una</0>"
 msgid "Don't have an account? <0>Sign up</0>"
 msgstr "¿No tienes una cuenta? <0>Regístrate</0>"
 
+#: ../../apps/mobile/app/(app)/notifications.tsx:254
 #: ../../apps/mobile/src/components/ThreadRow.tsx:40
-#: ../ui/src/emails/ThreadRow.tsx:141
+#: ../ui/src/emails/ThreadRow.tsx:166
 #, fuzzy
 msgid "Done"
 msgstr "Hecho"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:197
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:211
 msgid "Done · undo"
 msgstr "Hecho · deshacer"
 
@@ -1617,21 +1690,21 @@ msgstr "Hecho · deshacer"
 msgid "Downgrade to {planName}"
 msgstr "Cambiar a {planName}"
 
-#: ../ui/src/emails/ThreadRow.tsx:182
+#: ../ui/src/emails/ThreadRow.tsx:228
 #, fuzzy
 msgid "draft"
 msgstr "borrador"
 
-#: ../../apps/mobile/src/components/ThreadRow.tsx:88
+#: ../../apps/mobile/src/components/ThreadRow.tsx:98
 msgid "Draft"
 msgstr "Borrador"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:165
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:179
 msgid "Draft failed · tap to retry"
 msgstr "Borrador fallido · tocar para reintentar"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:315
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:325
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:336
 #, fuzzy
 msgid "Draft generation failed. Try again."
 msgstr "Error al generar borrador. Inténtalo de nuevo."
@@ -1642,7 +1715,7 @@ msgstr "Error al generar borrador. Inténtalo de nuevo."
 msgid "Draft reply"
 msgstr "Borrador de respuesta"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:112
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:126
 msgid "Draft shared"
 msgstr "Borrador compartido"
 
@@ -1652,8 +1725,8 @@ msgstr "Borrador compartido"
 msgid "Draft style guidance"
 msgstr "Guía de estilo del borrador"
 
-#: ../../apps/mobile/src/components/ThreadRow.tsx:84
-#: ../ui/src/emails/ThreadRow.tsx:176
+#: ../../apps/mobile/src/components/ThreadRow.tsx:94
+#: ../ui/src/emails/ThreadRow.tsx:222
 msgid "Drafting…"
 msgstr "Redactando…"
 
@@ -1750,7 +1823,7 @@ msgid "Email verified! Sign in to continue."
 msgstr "¡Correo electrónico verificado! Inicia sesión para continuar."
 
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:28
-#: ../../apps/web/src/components/Sidebar.tsx:30
+#: ../../apps/web/src/components/Sidebar.tsx:32
 #, fuzzy
 msgid "Emails"
 msgstr "Correos electrónicos"
@@ -1944,7 +2017,7 @@ msgstr "Finanzas"
 msgid "Find and draft"
 msgstr "Encuentra y redacta"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:265
+#: ../../apps/site/src/components/demo/demo-seed.ts:266
 msgid "Flagged as alliance/investor intro based on language (\"mutual benefit\", \"long-standing friendship\"). Confidence is moderate; Aziru has been known to send similar overtures to multiple courts."
 msgstr "Marcado como introducción de alianza/inversor basado en el lenguaje (\"beneficio mutuo\", \"amistad duradera\"). La confianza es moderada; se sabe que Aziru ha enviado acercamientos similares a múltiples cortes."
 
@@ -1989,7 +2062,7 @@ msgid "Folder: {activeFolderName}"
 msgstr "Carpeta: {activeFolderName}"
 
 #: ../ui/src/emails/EmailRail.tsx:99
-#: ../ui/src/emails/ThreadList.tsx:130
+#: ../ui/src/emails/ThreadList.tsx:136
 msgid "Folders"
 msgstr "Carpetas"
 
@@ -2029,7 +2102,7 @@ msgstr "Para organizaciones más grandes y equipos con alto volumen."
 msgid "For larger organizations."
 msgstr "Para organizaciones más grandes."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:260
+#: ../../apps/site/src/components/demo/demo-seed.ts:261
 msgid "For many years our houses have been as brothers. I write now to propose that we formalise this friendship for the benefit of both our peoples."
 msgstr "Durante muchos años, nuestras casas han sido como hermanas. Escribo ahora para proponer que formalicemos esta amistad para beneficio de ambos pueblos."
 
@@ -2116,8 +2189,8 @@ msgid "Generate a plan from your inbox"
 msgstr "Generar un plan desde tu bandeja de entrada"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:294
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:131
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:303
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:145
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:314
 #: ../ui/src/emails/ThreadPreview.tsx:162
 #, fuzzy
 msgid "Generate draft reply"
@@ -2216,7 +2289,7 @@ msgstr "Gmail marcado como importante"
 msgid "Gmail read-only access was not granted. Please try again and approve the requested permission."
 msgstr "No se concedió el acceso de solo lectura a Gmail. Inténtalo de nuevo y aprueba el permiso solicitado."
 
-#: ../../apps/web/src/components/Sidebar.tsx:43
+#: ../../apps/web/src/components/Sidebar.tsx:45
 #, fuzzy
 msgid "Gmail Sort Tester"
 msgstr "Probador de clasificación de Gmail"
@@ -2349,7 +2422,7 @@ msgstr "Cómo funciona"
 msgid "How to write a good description"
 msgstr "Cómo escribir una buena descripción"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:273
+#: ../../apps/site/src/components/demo/demo-seed.ts:274
 msgid "I write to propose that we formalise our friendship."
 msgstr "Escribo para proponer que formalicemos nuestra amistad."
 
@@ -2449,7 +2522,7 @@ msgstr "Incluir spam"
 msgid "Included"
 msgstr "Incluido"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:375
+#: ../../apps/site/src/components/demo/demo-seed.ts:379
 msgid "Informal message with no clear category: personal visit or political audience? Tone is personal but sender is a known vassal governor. Routed to Other with low confidence."
 msgstr "Mensaje informal sin categoría clara: ¿visita personal o audiencia política? El tono es personal, pero el remitente es un gobernador vasallo conocido. Dirigido a Otros con baja confianza."
 
@@ -2670,8 +2743,10 @@ msgstr "Enumera los remitentes, temas y palabras clave que pertenecen aquí. Mí
 msgid "Live"
 msgstr "En vivo"
 
+#: ../../apps/mobile/app/(app)/notifications.tsx:294
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:95
-#: ../ui/src/emails/ThreadList.tsx:228
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:278
+#: ../ui/src/emails/ThreadList.tsx:238
 #, fuzzy
 msgid "Load more"
 msgstr "Cargar más"
@@ -2679,17 +2754,23 @@ msgstr "Cargar más"
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:116
 #: ../ui/src/emails/BackfillCard.tsx:35
-#: ../ui/src/emails/ThreadList.tsx:173
+#: ../ui/src/emails/ThreadList.tsx:179
 msgid "Loading past threads…"
 msgstr "Cargando conversaciones anteriores…"
 
+#: ../../apps/extension/src/panel/NotificationBell.tsx:123
+#: ../../apps/mobile/app/(app)/notifications.tsx:294
 #: ../../apps/mobile/src/components/MessageCard.tsx:53
+#: ../../apps/mobile/src/components/NotificationsSheet.tsx:57
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:201
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:278
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:121
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:137
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:158
 #: ../../apps/web/src/app/loading.tsx:6
+#: ../../apps/web/src/components/NotificationBell.tsx:149
 #: ../ui/src/emails/MessageCard.tsx:60
-#: ../ui/src/emails/ThreadList.tsx:228
+#: ../ui/src/emails/ThreadList.tsx:238
 #, fuzzy
 msgid "Loading…"
 msgstr "Cargando…"
@@ -2703,6 +2784,13 @@ msgstr "Correo"
 #, fuzzy
 msgid "Manage"
 msgstr "Gestionar"
+
+#: ../../apps/extension/src/panel/NotificationBell.tsx:145
+#: ../../apps/mobile/src/components/NotificationsSheet.tsx:63
+#: ../../apps/web/src/components/NotificationBell.tsx:170
+#, fuzzy
+msgid "Manage notifications"
+msgstr "Gestionar notificaciones"
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:303
 msgid "Manage payment method"
@@ -2718,15 +2806,21 @@ msgid "Manager emails: one-on-ones, performance reviews, and feedback."
 msgstr "Correos electrónicos del gerente: reuniones individuales, evaluaciones de desempeño y comentarios."
 
 #: ../ui/src/emails/PreviewDoneBar.tsx:23
-#: ../ui/src/emails/ThreadRow.tsx:106
+#: ../ui/src/emails/ThreadRow.tsx:124
 #, fuzzy
 msgid "Mark as done"
 msgstr "Marcar como hecho"
 
-#: ../ui/src/emails/ThreadRow.tsx:105
+#: ../ui/src/emails/ThreadRow.tsx:123
 #, fuzzy
 msgid "Mark as not done"
 msgstr "Marcar como no hecho"
+
+#: ../../apps/mobile/app/(app)/notifications.tsx:208
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:245
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:246
+msgid "Mark as read"
+msgstr "Marcar como leído"
 
 #: ../../apps/mobile/src/components/DraftSheet.tsx:111
 #: ../ui/src/emails/SuggestedDraftCard.tsx:73
@@ -2734,12 +2828,19 @@ msgstr "Marcar como no hecho"
 msgid "Mark as sent"
 msgstr "Marcar como enviado"
 
+#: ../../apps/mobile/app/(app)/notifications.tsx:208
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:245
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:246
+#, fuzzy
+msgid "Mark as unread"
+msgstr "Marcar como no leído"
+
 #: ../../apps/mobile/src/components/DraftSheet.tsx:111
 #: ../ui/src/emails/SuggestedDraftCard.tsx:73
 msgid "Mark as unsent"
 msgstr "Marcar como no enviado"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:204
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:218
 msgid "Mark done"
 msgstr "Marcar como hecho"
 
@@ -2747,6 +2848,17 @@ msgstr "Marcar como hecho"
 #, fuzzy
 msgid "Mark invited"
 msgstr "Marcar como invitado"
+
+#: ../../apps/mobile/app/(app)/notifications.tsx:307
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:182
+#, fuzzy
+msgid "Mark read"
+msgstr "Marcar leído"
+
+#: ../../apps/mobile/app/(app)/notifications.tsx:312
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:185
+msgid "Mark unread"
+msgstr "Marcar no leído"
 
 #: ../ui/src/emails/PreviewDoneBar.tsx:22
 #, fuzzy
@@ -2776,7 +2888,7 @@ msgstr "Miembro"
 msgid "Messages from paying customers and account holders."
 msgstr "Mensajes de clientes de pago y titulares de cuenta."
 
-#: ../../apps/web/src/components/Sidebar.tsx:41
+#: ../../apps/web/src/components/Sidebar.tsx:43
 #, fuzzy
 msgid "Mock Inbox"
 msgstr "Bandeja de entrada de prueba"
@@ -2836,7 +2948,7 @@ msgstr "Mover a…"
 msgid "Moved to {folderName}"
 msgstr "Movido a {folderName}"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:370
+#: ../../apps/site/src/components/demo/demo-seed.ts:374
 msgid "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face."
 msgstr "Mis viajes me acercan al Delta en los próximos días. Si el Gran Rey tiene una hora libre, agradecería la oportunidad de hablar cara a cara."
 
@@ -2872,7 +2984,7 @@ msgstr "Nunca"
 msgid "Never auto-sends · Encrypted at rest · Minimal data"
 msgstr "Nunca autoenvía · Cifrado en reposo · Datos mínimos"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:311
+#: ../../apps/site/src/components/demo/demo-seed.ts:313
 #, fuzzy
 msgid "New application from Horemheb of Thebes."
 msgstr "Nueva solicitud de Horemheb de Tebas."
@@ -2886,6 +2998,12 @@ msgstr "Consultas de nuevos negocios, propuestas, discusiones de precios y conta
 #: ../ui/src/emails/EmailRail.tsx:106
 msgid "New folder"
 msgstr "Nueva carpeta"
+
+#: ../../apps/extension/src/panel/notificationText.ts:22
+#: ../../apps/mobile/src/data/notificationView.ts:33
+#: ../../apps/web/src/lib/notifications.ts:34
+msgid "New notification"
+msgstr "Nueva notificación"
 
 #: ../../apps/web/src/app/reset-password/page.tsx:43
 #: ../../apps/web/src/app/reset-password/page.tsx:68
@@ -2912,12 +3030,12 @@ msgstr "Nuevo espacio de trabajo"
 msgid "New workspace name"
 msgstr "Nuevo nombre de espacio de trabajo"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:129
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:143
 msgid "No drafts remaining"
 msgstr "No quedan borradores"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:299
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:308
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:319
 #: ../ui/src/emails/SuggestedDraftCard.tsx:97
 #, fuzzy
 msgid "No drafts remaining · resets {quotaResetDate}"
@@ -2970,6 +3088,25 @@ msgstr "Bandeja de entrada de Gmail no conectada. Conecta tu cuenta para empezar
 msgid "No matching folders"
 msgstr "No hay carpetas coincidentes"
 
+#: ../ui/src/emails/AssigneePicker.tsx:91
+#, fuzzy
+msgid "No members"
+msgstr "Sin miembros"
+
+#: ../../apps/mobile/src/components/AssigneeSheet.tsx:67
+#, fuzzy
+msgid "No members available"
+msgstr "No hay miembros disponibles"
+
+#: ../../apps/extension/src/panel/NotificationBell.tsx:128
+#: ../../apps/mobile/app/(app)/notifications.tsx:287
+#: ../../apps/mobile/src/components/NotificationsSheet.tsx:57
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:203
+#: ../../apps/web/src/components/NotificationBell.tsx:152
+#, fuzzy
+msgid "No notifications yet"
+msgstr "Aún no hay notificaciones"
+
 #: ../../apps/mobile/src/components/BlacklistSheet.tsx:146
 msgid "No senders blocked yet."
 msgstr "Aún no hay remitentes bloqueados."
@@ -2988,7 +3125,7 @@ msgstr "Todavía no hay registros."
 msgid "No threads"
 msgstr "No hay conversaciones"
 
-#: ../ui/src/emails/ThreadList.tsx:176
+#: ../ui/src/emails/ThreadList.tsx:182
 msgid "No threads here."
 msgstr "No hay conversaciones aquí."
 
@@ -3006,7 +3143,7 @@ msgstr "No hay conversaciones en {folderName}"
 msgid "No threads match your search"
 msgstr "Ninguna conversación coincide con tu búsqueda"
 
-#: ../ui/src/emails/ThreadList.tsx:169
+#: ../ui/src/emails/ThreadList.tsx:175
 #, fuzzy
 msgid "No threads match your search."
 msgstr "Ninguna conversación coincide con tu búsqueda."
@@ -3016,7 +3153,7 @@ msgid "No threads yet"
 msgstr "Aún no hay conversaciones"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:225
-#: ../../apps/web/src/components/Sidebar.tsx:142
+#: ../../apps/web/src/components/Sidebar.tsx:153
 #, fuzzy
 msgid "No workspace"
 msgstr "Sin espacio de trabajo"
@@ -3059,16 +3196,31 @@ msgstr "No configurado"
 msgid "Not yet synced"
 msgstr "Aún no sincronizado"
 
+#: ../../apps/extension/src/panel/NotificationBell.tsx:40
+#: ../../apps/extension/src/panel/NotificationBell.tsx:116
+#: ../../apps/extension/src/panel/NotificationBell.tsx:118
 #: ../../apps/mobile/app/(app)/account.tsx:145
+#: ../../apps/mobile/app/(app)/notifications.tsx:249
+#: ../../apps/mobile/src/components/NotificationsSheet.tsx:43
+#: ../../apps/web/src/app/(app)/notifications/page.tsx:12
+#: ../../apps/web/src/components/NotificationBell.tsx:126
+#: ../../apps/web/src/components/NotificationBell.tsx:141
+#: ../../apps/web/src/components/NotificationBell.tsx:145
 #, fuzzy
 msgid "Notifications"
 msgstr "Notificaciones"
+
+#: ../../apps/extension/src/panel/NotificationBell.tsx:101
+#: ../../apps/web/src/components/NotificationBell.tsx:125
+#, fuzzy
+msgid "Notifications, {unread} unread"
+msgstr "Notificaciones, {unread} sin leer"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:68
 msgid "Official university emails: registrar, student services, and housing."
 msgstr "Correos electrónicos universitarios oficiales: registro, servicios estudiantiles y vivienda."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:337
+#: ../../apps/site/src/components/demo/demo-seed.ts:340
 msgid "Ongoing thread with a known city governor raising a recurring supply issue. Escalatory tone and repeated follow-ups match the Support folder."
 msgstr "Conversación en curso con un gobernador de ciudad conocido planteando un problema de suministro recurrente. El tono escalatorio y los seguimientos repetidos coinciden con la carpeta de Soporte."
 
@@ -3078,16 +3230,16 @@ msgstr "Solo el propietario del espacio de trabajo puede gestionar la facturaci�
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:244
 #: ../../apps/mobile/src/components/DraftSheet.tsx:97
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:242
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:248
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:254
 #: ../ui/src/emails/ThreadPreview.tsx:115
 #: ../ui/src/emails/ThreadPreview.tsx:121
-#: ../ui/src/emails/ThreadRow.tsx:107
+#: ../ui/src/emails/ThreadRow.tsx:125
 #, fuzzy
 msgid "Open in Gmail"
 msgstr "Abrir en Gmail"
 
-#: ../../apps/web/src/components/Sidebar.tsx:112
+#: ../../apps/web/src/components/Sidebar.tsx:114
 #, fuzzy
 msgid "Open navigation"
 msgstr "Abrir navegación"
@@ -3096,6 +3248,12 @@ msgstr "Abrir navegación"
 #, fuzzy
 msgid "open source email ai"
 msgstr "IA de email de código abierto"
+
+#: ../../apps/mobile/app/(app)/notifications.tsx:221
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:255
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:256
+msgid "Open thread"
+msgstr "Abrir conversación"
 
 #: ../../apps/site/src/components/landing/HeroSection.tsx:58
 #, fuzzy
@@ -3157,8 +3315,8 @@ msgstr "Padre"
 msgid "Partners"
 msgstr "Socios"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:365
-#: ../../apps/site/src/components/demo/demo-seed.ts:383
+#: ../../apps/site/src/components/demo/demo-seed.ts:369
+#: ../../apps/site/src/components/demo/demo-seed.ts:387
 msgid "Passing through the Delta: free to meet?"
 msgstr "De paso por el Delta: ¿libre para reunirse?"
 
@@ -3280,14 +3438,14 @@ msgstr "Correspondencia personal y correos electrónicos no académicos para la 
 #. Screen heading for the email-sorting taxonomy. Not a billing or subscription plan.
 #. Sidebar nav label for the email-sorting taxonomy. Not a billing or subscription plan.
 #. Sidebar nav label for the email-sorting taxonomy. Not a billing or subscription plan.
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:42
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:43
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:35
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:265
 #: ../../apps/site/src/components/demo/DemoTaxonomyCanvas.tsx:220
 #: ../../apps/site/src/components/landing/Footer.tsx:26
 #: ../../apps/site/src/components/landing/Nav.tsx:39
 #: ../../apps/web/src/app/(app)/plan/page.tsx:43
-#: ../../apps/web/src/components/Sidebar.tsx:33
+#: ../../apps/web/src/components/Sidebar.tsx:35
 msgid "Plan"
 msgstr "Plan"
 
@@ -3318,7 +3476,7 @@ msgstr "¿Prefieres autoalojarlo?"
 msgid "Prefer to self-host? It's open source:<0/> <1>clone it and run it free</1>."
 msgstr "¿Prefieres autoalojarlo? Es de código abierto:<0/> <1>clónalo y ejecútalo gratis</1>."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:419
+#: ../../apps/site/src/components/demo/demo-seed.ts:424
 msgid "Prepare your accounts before the council convenes."
 msgstr "Prepare sus cuentas antes de que el consejo se reúna."
 
@@ -3413,7 +3571,7 @@ msgstr "Carpetas sugeridas. Al aplicar, se reemplazará tu plan actual; podrás 
 msgid "Queuing rescan…"
 msgstr "Poniendo en cola el reescaneo…"
 
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:308
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:353
 #, fuzzy
 msgid "Re-route {unclassifiedCount} unclassified"
 msgstr "Redirigir {unclassifiedCount} no clasificados"
@@ -3422,7 +3580,7 @@ msgstr "Redirigir {unclassifiedCount} no clasificados"
 msgid "Re-route thread"
 msgstr "Re-encaminar conversación"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:327
+#: ../../apps/site/src/components/demo/demo-seed.ts:330
 msgid "Re: Grain shipment: third delay this season"
 msgstr "Re: Envío de grano: tercer retraso esta temporada"
 
@@ -3657,7 +3815,7 @@ msgstr "Restablecer espacio de trabajo"
 msgid "Reset workspace?"
 msgstr "¿Restablecer espacio de trabajo?"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:141
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:155
 msgid "Resets {draftResetDate}"
 msgstr "Se reinicia el {draftResetDate}"
 
@@ -3682,7 +3840,7 @@ msgstr "Recursos"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:317
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:345
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:331
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:342
 #, fuzzy
 msgid "Retry"
 msgstr "Reintentar"
@@ -3691,7 +3849,7 @@ msgstr "Reintentar"
 msgid "Review queue"
 msgstr "Cola de revisión"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:342
+#: ../../apps/site/src/components/demo/demo-seed.ts:345
 #, fuzzy
 msgid "Rib-Hadda of Byblos"
 msgstr "Rib-Hadda de Biblos"
@@ -3795,12 +3953,27 @@ msgstr "Buscar conversaciones…"
 msgid "See how your inbox is sorted, right next to Gmail."
 msgstr "Mira cómo se organiza tu bandeja de entrada, directamente en Gmail."
 
+#: ../../apps/mobile/app/(app)/notifications.tsx:254
+msgid "Select"
+msgstr "Seleccionar"
+
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:199
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:273
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:310
 #: ../ui/src/emails/MockEmailsPage.tsx:234
 #, fuzzy
 msgid "Select a thread to preview"
 msgstr "Seleccionar una conversación para previsualizar"
+
+#: ../../apps/mobile/app/(app)/notifications.tsx:269
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:174
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:176
+#, fuzzy
+msgid "Select all"
+msgstr "Seleccionar todo"
+
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:221
+msgid "Select notification"
+msgstr "Seleccionar notificación"
 
 #: ../ui/src/PricingPlans.tsx:313
 #, fuzzy
@@ -3878,10 +4051,10 @@ msgstr "Establece el idioma para este espacio de trabajo, incluyendo la interfaz
 msgid "Setting up your workspace…"
 msgstr "Configurando tu espacio de trabajo…"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:51
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:52
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:42
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:197
-#: ../../apps/web/src/components/Sidebar.tsx:40
+#: ../../apps/web/src/components/Sidebar.tsx:42
 msgid "Settings"
 msgstr "Configuración"
 
@@ -3936,7 +4109,7 @@ msgstr "Inicia sesión con Google. Amarnai sincroniza tus conversaciones y etiqu
 
 #: ../../apps/extension/src/App.tsx:46
 #: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:68
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:127
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:130
 #: ../../apps/mobile/app/(app)/account.tsx:122
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:98
 #: ../../apps/web/src/app/verify-email/page.tsx:42
@@ -4042,7 +4215,7 @@ msgstr "Volumen de clasificación"
 #: ../../apps/mobile/src/components/RationaleCard.tsx:35
 #: ../../apps/site/src/components/landing/HeroFeedCard.tsx:90
 #: ../ui/src/emails/RationaleCard.tsx:52
-#: ../ui/src/emails/ThreadRow.tsx:147
+#: ../ui/src/emails/ThreadRow.tsx:193
 msgid "Sorting…"
 msgstr "Clasificando…"
 
@@ -4295,12 +4468,12 @@ msgstr "La conexión no pudo guardarse debido a un error del servidor. Por favor
 msgid "The Gmail connection, all synced emails, and the taxonomy will be permanently deleted. Re-importing this inbox uses your monthly import allowance; if it runs out, you can import again after {allowanceResetsAt} or by upgrading."
 msgstr "La conexión de Gmail, todos los correos electrónicos sincronizados y la taxonomía se eliminarán permanentemente. La reimportación de esta bandeja de entrada consume tu asignación mensual de importación; si se agota, podrás importar de nuevo después de {allowanceResetsAt} o actualizando tu plan."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:332
+#: ../../apps/site/src/components/demo/demo-seed.ts:335
 #, fuzzy
 msgid "The grain you sent last month was received with gratitude. But I must write again: the third shipment has not arrived and the city grows restless."
 msgstr "El grano que envió el mes pasado fue recibido con gratitud. Pero debo escribir de nuevo: el tercer envío no ha llegado y la ciudad se inquieta."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:406
+#: ../../apps/site/src/components/demo/demo-seed.ts:411
 #, fuzzy
 msgid "The great council convenes at the start of Shemu. I ask that you prepare a full accounting of the eastern territories and send it ahead by fast courier."
 msgstr "El gran consejo se reúne al comienzo de Shemu. Pido que prepare una contabilidad completa de los territorios del este y la envíe con antelación por mensajero rápido."
@@ -4315,7 +4488,7 @@ msgstr "El tercer envío de oro acordado bajo nuestro tratado no ha llegado. Dos
 msgid "The third gold consignment is overdue."
 msgstr "La tercera remesa de oro está retrasada."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:345
+#: ../../apps/site/src/components/demo/demo-seed.ts:348
 msgid "The third grain shipment has not arrived."
 msgstr "El tercer cargamento de grano no ha llegado."
 
@@ -4398,12 +4571,12 @@ msgstr "Esta conversación está esperando ser enrutada."
 msgid "This thread is waiting to be routed. Use “Route now” to start sorting."
 msgstr "Esta conversación está esperando ser encaminada. Usa “Encaminar ahora” para empezar a clasificar."
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:71
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:85
 #, fuzzy
 msgid "Thread"
 msgstr "Conversación"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:73
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:87
 msgid "Thread not found"
 msgstr "Conversación no encontrada"
 
@@ -4454,7 +4627,7 @@ msgstr "Conversaciones que aún no se han clasificado."
 msgid "Three steps. Then it sorts every email for you."
 msgstr "Tres pasos. Luego, clasifica cada email por ti."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:420
+#: ../../apps/site/src/components/demo/demo-seed.ts:425
 #, fuzzy
 msgid "To my brother, the Great King,\n"
 "\n"
@@ -4484,7 +4657,7 @@ msgstr "A la Oficina de Nombramientos Reales,\n"
 "\n"
 "Por decreto real,"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:274
+#: ../../apps/site/src/components/demo/demo-seed.ts:275
 #, fuzzy
 msgid "To the Great King,\n"
 "\n"
@@ -4501,7 +4674,7 @@ msgstr "Al Gran Rey,\n"
 "\n"
 "Aziru, siervo del Gran Rey, señor de Amurru"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:384
+#: ../../apps/site/src/components/demo/demo-seed.ts:388
 #, fuzzy
 msgid "To the Great King,\n"
 "\n"
@@ -4544,7 +4717,7 @@ msgstr "Al Gran Rey, mi hermano,\n"
 "\n"
 "Burna-Buriash II, Rey de Babilonia"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:346
+#: ../../apps/site/src/components/demo/demo-seed.ts:349
 msgid "To the Great King, my lord, my sun,\n"
 "\n"
 "The grain you sent last month was received with gratitude and I praised your name before the people. But I must write again: the third shipment has not arrived and the city grows restless.\n"
@@ -4566,7 +4739,7 @@ msgstr "Al Gran Rey, mi señor, mi sol,\n"
 msgid "Today"
 msgstr "Hoy"
 
-#: ../ui/src/emails/ThreadList.tsx:114
+#: ../ui/src/emails/ThreadList.tsx:120
 #, fuzzy
 msgid "Toggle folders"
 msgstr "Alternar carpetas"
@@ -4602,10 +4775,15 @@ msgstr "Organiza tu bandeja de entrada desde cualquier lugar."
 msgid "Try Amarnai"
 msgstr "Prueba Amarnai"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:416
+#: ../../apps/site/src/components/demo/demo-seed.ts:421
 #, fuzzy
 msgid "Tushratta of Mitanni"
 msgstr "Tushratta de Mitanni"
+
+#: ../../apps/mobile/src/components/AssigneeSheet.tsx:32
+#: ../ui/src/emails/AssigneePicker.tsx:31
+msgid "Unassign"
+msgstr "Desasignar"
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:151
 #: ../../apps/mobile/app/(app)/subscription.tsx:156
@@ -4614,12 +4792,12 @@ msgid "Unavailable"
 msgstr "No disponible"
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:46
-#: ../ui/src/emails/ThreadRow.tsx:155
+#: ../ui/src/emails/ThreadRow.tsx:201
 msgid "Unclassified"
 msgstr "Sin clasificar"
 
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:221
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:295
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:340
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1321
 #: ../../apps/web/src/app/admin/waitlist/page.tsx:26
 #: ../ui/src/emails/MockEmailsPage.tsx:253
@@ -4819,7 +4997,7 @@ msgstr "Correo de verificación enviado. Revisa tu bandeja de entrada."
 msgid "Verify your email"
 msgstr "Verifica tu correo electrónico"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:178
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:192
 #, fuzzy
 msgid "View draft reply"
 msgstr "Ver respuesta en borrador"
@@ -4832,7 +5010,7 @@ msgstr "Solo lectura. Solo los administradores del espacio de trabajo pueden edi
 #: ../../apps/mobile/src/components/RationaleCard.tsx:44
 #: ../../apps/mobile/src/components/ThreadRow.tsx:49
 #: ../ui/src/emails/RationaleCard.tsx:74
-#: ../ui/src/emails/ThreadRow.tsx:151
+#: ../ui/src/emails/ThreadRow.tsx:197
 msgid "Waiting"
 msgstr "Esperando"
 
@@ -4850,7 +5028,7 @@ msgstr "Esperando verificación…"
 msgid "Waitlist"
 msgstr "Lista de espera"
 
-#: ../ui/src/emails/ThreadRow.tsx:99
+#: ../ui/src/emails/ThreadRow.tsx:117
 msgid "Wants {folderName}"
 msgstr "Quiere {folderName}"
 
@@ -4906,7 +5084,7 @@ msgstr "Trabajo"
 msgid "Working Professional"
 msgstr "Profesional en activo"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:60
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:61
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:220
 #: ../../apps/site/src/components/demo/DemoTaxonomyCanvas.tsx:218
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:35
@@ -4939,7 +5117,7 @@ msgstr "El nombre del espacio de trabajo no puede estar vacío"
 msgid "Workspace name updated."
 msgstr "Nombre del espacio de trabajo actualizado."
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:48
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:49
 msgid "Workspace settings"
 msgstr "Configuración del espacio de trabajo"
 
@@ -4958,8 +5136,8 @@ msgid "Workspaces included"
 msgstr "Espacios de trabajo incluidos"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:309
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:153
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:319
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:167
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:330
 #: ../ui/src/emails/ThreadPreview.tsx:169
 #, fuzzy
 msgid "Writing draft reply…"
@@ -5043,6 +5221,12 @@ msgstr "Puedes intentarlo de nuevo en breve, o empezar desde una plantilla."
 #, fuzzy
 msgid "You do not have permission to connect a Gmail inbox to this workspace."
 msgstr "No tienes permiso para conectar una bandeja de entrada de Gmail a este espacio de trabajo."
+
+#: ../../apps/extension/src/panel/notificationText.ts:19
+#: ../../apps/mobile/src/data/notificationView.ts:29
+#: ../../apps/web/src/lib/notifications.ts:30
+msgid "You were assigned a thread"
+msgstr "Te asignaron una conversación"
 
 #: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:178
 #, fuzzy

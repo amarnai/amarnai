@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { ApiClient, FilterCounts } from "@amarnai/api-client";
-import type { ActiveSelection, FolderItem, ThreadItem } from "./types.js";
+import type { ActiveSelection, FolderItem, ThreadItem, MemberItem } from "./types.js";
 import { queueCountsFromServer } from "./selection.js";
 import { mapThreads } from "./mapThreads.js";
 import { mergeThreads } from "./mergeThreads.js";
@@ -292,6 +292,40 @@ export function useEmailTriage(options: UseEmailTriageOptions) {
       });
   }, [api, workspaceId, currentUserId]);
 
+  // ─── Assign ────────────────────────────────────────────────────────────────
+  //
+  // Set the assignee to `member`, or clear it when `member` is null. The
+  // member's real name/email is available on the client, so the optimistic
+  // assignment shows the right label immediately: unlike the done mark, we
+  // don't need to wait for the server to learn who it is.
+
+  const handleAssign = useCallback((threadId: string, member: MemberItem | null) => {
+    const prev = threadsRef.current.find((t) => t.id === threadId);
+    const optimistic = member
+      ? {
+          userId: member.userId,
+          userName: member.name,
+          userEmail: member.email,
+          assignedAt: new Date().toISOString(),
+        }
+      : null;
+    setThreads((ts) =>
+      ts.map((t) => (t.id === threadId ? { ...t, assignment: optimistic } : t))
+    );
+    const request = member
+      ? api.assignThread(workspaceId, threadId, member.userId).then(({ assignment }) => assignment)
+      : api.unassignThread(workspaceId, threadId).then(() => null);
+    request
+      .then((assignment) => {
+        setThreads((ts) =>
+          ts.map((t) => (t.id === threadId ? { ...t, assignment } : t))
+        );
+      })
+      .catch(() => {
+        if (prev) setThreads((ts) => ts.map((t) => (t.id === threadId ? prev : t)));
+      });
+  }, [api, workspaceId]);
+
   // ─── Reroute ─────────────────────────────────────────────────────────────────
 
   const openRerouteFor = useCallback((threadId: string) => {
@@ -458,6 +492,7 @@ export function useEmailTriage(options: UseEmailTriageOptions) {
     handleApprove,
     handleMarkDone,
     handleUnmarkDone,
+    handleAssign,
     openRerouteFor,
     closeReroute,
     commitReroute,

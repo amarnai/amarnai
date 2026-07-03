@@ -7,9 +7,9 @@ import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
 import { api } from "@/lib/api";
 import type { SyncStatus } from "@/lib/api";
-import type { ActiveSelection, FolderItem, ThreadItem } from "@amarnai/ui/emails";
+import type { ActiveSelection, FolderItem, ThreadItem, MemberItem } from "@amarnai/ui/emails";
 import type { FilterCounts } from "@amarnai/api-client";
-import { ColumnResizeHandle, EmailRail, ThreadList, ReroutePopover } from "@amarnai/ui/emails";
+import { ColumnResizeHandle, EmailRail, ThreadList, ReroutePopover, AssigneePicker } from "@amarnai/ui/emails";
 import { useEmailTriage } from "@amarnai/core/emails";
 import { ThreadPreview } from "./ThreadPreview";
 import { useThreadKeyboard } from "./useThreadKeyboard";
@@ -31,6 +31,7 @@ type Props = {
   workspaceEmail: string | null;
   routableNodeCount: number;
   unclassifiedCount: number;
+  members: MemberItem[];
 };
 
 export function EmailsClient({
@@ -47,6 +48,7 @@ export function EmailsClient({
   workspaceEmail,
   routableNodeCount,
   unclassifiedCount,
+  members,
 }: Props) {
   const router = useRouter();
   const { _ } = useLingui();
@@ -100,7 +102,13 @@ export function EmailsClient({
   const [railQuery, setRailQuery] = useState("");
   const [openFolderIds, setOpenFolderIds] = useState<Set<string>>(new Set());
   const [rerouteAnchor, setRerouteAnchor] = useState<HTMLElement | null>(null);
+  const [assignAnchor, setAssignAnchor] = useState<HTMLElement | null>(null);
+  const [assignThreadId, setAssignThreadId] = useState<string | null>(null);
   const searchRef = useRef<HTMLInputElement>(null);
+
+  // Assign is offered only when there is at least one other member to hand a
+  // thread to — i.e. the workspace has ≥2 members total.
+  const canAssign = members.length >= 2;
 
   const { active, selectedId, selectedThread, folders, toast } = triage;
 
@@ -153,6 +161,30 @@ export function EmailsClient({
     setRerouteAnchor(null);
     triage.commitReroute(folderId);
   }
+
+  // ─── Assign (DOM anchor + target thread live here; commit goes to the hook) ───
+
+  function openAssignFor(threadId: string, anchor: HTMLElement) {
+    setAssignThreadId(threadId);
+    setAssignAnchor(anchor);
+  }
+
+  function closeAssign() {
+    setAssignAnchor(null);
+    setAssignThreadId(null);
+  }
+
+  function commitAssign(userId: string | null) {
+    if (assignThreadId) {
+      const member = userId ? members.find((m) => m.userId === userId) ?? null : null;
+      triage.handleAssign(assignThreadId, member);
+    }
+    closeAssign();
+  }
+
+  const assignThread = assignThreadId
+    ? triage.threads.find((t) => t.id === assignThreadId) ?? null
+    : null;
 
   // ─── New folder ──────────────────────────────────────────────────────────────
 
@@ -241,6 +273,8 @@ export function EmailsClient({
         searchRef={searchRef}
         onMarkDone={triage.handleMarkDone}
         onUnmarkDone={triage.handleUnmarkDone}
+        canAssign={canAssign}
+        onOpenAssign={openAssignFor}
         railOpen={railOpen}
         onToggleRail={() => setRailOpen((v) => !v)}
         hasMore={triage.hasMore}
@@ -267,6 +301,9 @@ export function EmailsClient({
           onDraftSentToggled={triage.handleDraftSentToggled}
           onMarkDone={triage.handleMarkDone}
           onUnmarkDone={triage.handleUnmarkDone}
+          members={members}
+          canAssign={canAssign}
+          onOpenAssign={openAssignFor}
         />
       ) : (
         <div className="em-preview-empty">
@@ -279,6 +316,14 @@ export function EmailsClient({
         anchor={rerouteAnchor}
         onCommit={commitReroute}
         onClose={closeReroute}
+      />
+
+      <AssigneePicker
+        members={members}
+        assignedUserId={assignThread?.assignment?.userId ?? null}
+        anchor={assignAnchor}
+        onCommit={commitAssign}
+        onClose={closeAssign}
       />
 
       {toast && (

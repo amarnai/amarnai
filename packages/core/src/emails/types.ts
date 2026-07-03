@@ -33,6 +33,21 @@ export type DoneMark = {
   resolvedAt: string;
 };
 
+export type ThreadAssignment = {
+  userId: string;
+  userName: string | null;
+  userEmail: string;
+  assignedAt: string;
+};
+
+// A workspace member as seen by the assignment UI. `userId` is the User id used
+// as the assignee id in the API.
+export type MemberItem = {
+  userId: string;
+  name: string | null;
+  email: string;
+};
+
 export type ThreadItem = {
   id: string;
   subject: string;
@@ -52,6 +67,7 @@ export type ThreadItem = {
   isDrafting: boolean;
   lastSenderEmail: string | null;
   doneMark: DoneMark | null;
+  assignment: ThreadAssignment | null;
   isImportant: boolean;
   isClassifying: boolean;
   attachmentCount: number;

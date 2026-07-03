@@ -25,13 +25,13 @@ msgid "(No body)"
 msgstr "(无正文)"
 
 #. placeholder {0}: thread.attachmentCount
-#: ../../apps/mobile/src/components/ThreadRow.tsx:96
+#: ../../apps/mobile/src/components/ThreadRow.tsx:106
 #, fuzzy
 msgid "{0, plural, one {# file} other {# files}}"
 msgstr "{0, plural, one {# 个文件} other {# 个文件}}"
 
 #. placeholder {0}: thread.messageCount
-#: ../../apps/mobile/src/components/ThreadRow.tsx:101
+#: ../../apps/mobile/src/components/ThreadRow.tsx:111
 msgid "{0, plural, one {# message} other {# messages}}"
 msgstr "{0, plural, one {# 条消息} other {# 条消息}}"
 
@@ -72,7 +72,7 @@ msgstr "剩余 {0} / {1} · 重置于 {2}"
 #. placeholder {1}: (total ?? 0).toLocaleString()
 #. placeholder {1}: viewCount.toLocaleString()
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:81
-#: ../ui/src/emails/ThreadList.tsx:217
+#: ../ui/src/emails/ThreadList.tsx:227
 msgid "{0} of {1} loaded"
 msgstr "{0} / {1} 已加载"
 
@@ -93,6 +93,17 @@ msgstr "{0} / {1} 剩余 · {quotaResetDate} 重置"
 msgid "{blacklistCount, plural, one {# blocked} other {# blocked}}"
 msgstr "{blacklistCount, plural, one {# 已阻止} other {# 已阻止}}"
 
+#: ../../apps/extension/src/panel/notificationText.ts:18
+#: ../../apps/mobile/src/data/notificationView.ts:28
+#: ../../apps/web/src/lib/notifications.ts:29
+#, fuzzy
+msgid "{by} assigned you a thread"
+msgstr "{by} 将一个会话分配给您"
+
+#: ../../apps/extension/src/panel/notificationText.ts:17
+msgid "{by} assigned you: {subject}"
+msgstr "{by} 分配给您：{subject}"
+
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:528
 #, fuzzy
 msgid "{classificationCount, plural, one {Deleting this folder will leave # thread unsorted.} other {Deleting this folder will leave # threads unsorted.}}"
@@ -108,7 +119,7 @@ msgstr "已添加 {collaboratorCount} / {collaboratorLimit}"
 msgid "{confPct}% confidence"
 msgstr "{confPct}% 置信度"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:136
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:150
 msgid "{draftRemaining} of {draftLimit} left · resets {draftResetDate}"
 msgstr "剩余 {draftRemaining} / {draftLimit} · {draftResetDate} 重置"
 
@@ -142,7 +153,7 @@ msgstr "{pendingCount} 待处理"
 
 #. placeholder {0}: draftQuota.limit
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:300
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:309
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:320
 #, fuzzy
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
 msgstr "剩余 {quotaRemaining} / {0} · 重置于 {quotaResetDate}"
@@ -155,6 +166,11 @@ msgstr "剩余 {remaining} / {limit} · {resetDate} 重置"
 #, fuzzy
 msgid "{routableCount} of {TAXONOMY_MIN_NON_ROOT_NODES} folders connected to your inbox. Routing requires at least {TAXONOMY_MIN_NON_ROOT_NODES}."
 msgstr "您的收件箱已连接 {routableCount} / {TAXONOMY_MIN_NON_ROOT_NODES} 个文件夹。路由至少需要 {TAXONOMY_MIN_NON_ROOT_NODES} 个文件夹。"
+
+#: ../../apps/mobile/app/(app)/notifications.tsx:269
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:176
+msgid "{selectedCount} selected"
+msgstr "{selectedCount} 已选中"
 
 #: ../ui/src/emails/ThreadListHeader.tsx:113
 #, fuzzy
@@ -212,7 +228,7 @@ msgstr "+ 添加文件夹"
 msgid "+ Add Folder"
 msgstr "+ 添加文件夹"
 
-#: ../../apps/web/src/components/Sidebar.tsx:176
+#: ../../apps/web/src/components/Sidebar.tsx:187
 #, fuzzy
 msgid "+ New workspace"
 msgstr "+ 新建工作区"
@@ -347,12 +363,12 @@ msgstr "每月分拣 500 个会话"
 msgid "75,000 threads"
 msgstr "75,000 个会话"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:298
+#: ../../apps/site/src/components/demo/demo-seed.ts:300
 #, fuzzy
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence."
 msgstr "收到赫伦希布（底比斯）的首席文书官职位申请。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:312
+#: ../../apps/site/src/components/demo/demo-seed.ts:314
 #, fuzzy
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
@@ -361,7 +377,7 @@ msgstr "已收到底比斯的霍伦海布呈报的文书长职位申请。\n"
 "\n"
 "请在记录馆查看该申请。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:380
+#: ../../apps/site/src/components/demo/demo-seed.ts:384
 #, fuzzy
 msgid "Abdi-Heba of Urushalim"
 msgstr "乌鲁沙林的阿布迪赫巴"
@@ -398,12 +414,12 @@ msgstr "访问被拒绝。请授予只读 Gmail 访问权限以进行连接。"
 msgid "Account"
 msgstr "账户"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:102
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:105
 #, fuzzy
 msgid "Account menu"
 msgstr "账户菜单"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:116
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:119
 msgid "Account settings"
 msgstr "账户设置"
 
@@ -518,7 +534,7 @@ msgstr "所有工作区数据将被永久删除。"
 msgid "All your workspaces, emails, and settings will be deleted permanently."
 msgstr "您的所有工作区、电子邮件和设置将被永久删除。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:255
+#: ../../apps/site/src/components/demo/demo-seed.ts:256
 msgid "Alliance proposal: house of Amurru"
 msgstr "结盟提议：阿摩利家族"
 
@@ -647,7 +663,7 @@ msgstr "API 错误 {0}"
 msgid "Appearance"
 msgstr "外观"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:293
+#: ../../apps/site/src/components/demo/demo-seed.ts:295
 #, fuzzy
 msgid "Application: Chief of Correspondence"
 msgstr "申请：首席文书官"
@@ -690,6 +706,40 @@ msgstr "正在应用…"
 msgid "Approve routing"
 msgstr "批准路由"
 
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:233
+#: ../ui/src/emails/TriageBar.tsx:71
+#, fuzzy
+msgid "Assign"
+msgstr "分配"
+
+#: ../ui/src/emails/AssigneePicker.tsx:85
+#, fuzzy
+msgid "Assign thread"
+msgstr "分配会话"
+
+#: ../../apps/mobile/src/components/AssigneeSheet.tsx:39
+#, fuzzy
+msgid "Assign to"
+msgstr "分配给"
+
+#: ../ui/src/emails/ThreadRow.tsx:260
+#: ../ui/src/emails/ThreadRow.tsx:264
+#: ../ui/src/emails/TriageBar.tsx:63
+#, fuzzy
+msgid "Assign to a member"
+msgstr "分配给成员"
+
+#: ../ui/src/emails/TriageBar.tsx:70
+#, fuzzy
+msgid "Assigned · {assigneeName}"
+msgstr "已分配 · {assigneeName}"
+
+#: ../ui/src/emails/ThreadRow.tsx:174
+#: ../ui/src/emails/TriageBar.tsx:62
+#, fuzzy
+msgid "Assigned to {assigneeName}. Change assignee"
+msgstr "已分配给 {assigneeName}。更改分配人"
+
 #: ../../apps/web/src/app/reset-password/page.tsx:54
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:49
 msgid "At least {PASSWORD_MIN_LENGTH} characters"
@@ -710,7 +760,7 @@ msgstr "将通知自动归档到“更新/其他”"
 msgid "Automated and bulk mail that doesn't fit another folder lands here automatically. This is different from Needs review, which holds threads too ambiguous for the assistant to sort."
 msgstr "不适合其他文件夹的自动邮件和批量邮件会自动归档到这里。这与“待审核”不同，“待审核”文件夹则收录助手无法明确分类的会话。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:303
+#: ../../apps/site/src/components/demo/demo-seed.ts:305
 #, fuzzy
 msgid "Automated notice from the Bureau of Royal Appointments. Subject and sender clearly indicate a new application for an open position."
 msgstr "来自皇家任命局的自动通知。主题和发件人清楚表明有新的空缺职位申请。"
@@ -720,7 +770,7 @@ msgstr "来自皇家任命局的自动通知。主题和发件人清楚表明有
 msgid "Automated notifications, newsletters, and service updates that don't fit another folder."
 msgstr "不属于其他文件夹的自动通知、新闻通讯和服务更新。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:270
+#: ../../apps/site/src/components/demo/demo-seed.ts:271
 #, fuzzy
 msgid "Aziru of Amurru"
 msgstr "阿摩利的阿齐鲁"
@@ -740,14 +790,14 @@ msgstr "阿齐鲁，\n"
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:215
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:25
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:222
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:228
 #: ../ui/src/emails/ThreadPreview.tsx:92
 #, fuzzy
 msgid "Back"
 msgstr "返回"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:211
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:217
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:223
 #: ../ui/src/emails/ThreadPreview.tsx:87
 #, fuzzy
 msgid "Back to list"
@@ -827,7 +877,7 @@ msgstr "构建计划"
 #~ msgid "Bulk triage your inbox"
 #~ msgstr "批量分类您的收件箱"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:308
+#: ../../apps/site/src/components/demo/demo-seed.ts:310
 #, fuzzy
 msgid "Bureau of Royal Appointments"
 msgstr "皇家任命局"
@@ -871,6 +921,7 @@ msgstr "我能自托管 Amarnai 吗？"
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:147
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:174
 #: ../../apps/mobile/app/(app)/account.tsx:82
+#: ../../apps/mobile/app/(app)/notifications.tsx:141
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:93
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:245
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:150
@@ -992,8 +1043,8 @@ msgstr "关闭"
 msgid "Close panel"
 msgstr "关闭面板"
 
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:225
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:229
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:231
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:235
 #: ../ui/src/emails/ThreadPreview.tsx:97
 #: ../ui/src/emails/ThreadPreview.tsx:101
 #, fuzzy
@@ -1292,12 +1343,12 @@ msgstr "无法验证您的 Google 账户。请重试。"
 msgid "Couldn't load your inbox. Check your connection and reopen the panel."
 msgstr "无法加载收件箱。请检查您的网络连接并重新打开面板。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:401
+#: ../../apps/site/src/components/demo/demo-seed.ts:406
 #, fuzzy
 msgid "Council convening: season of Shemu"
 msgstr "议会召开：收获季"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:411
+#: ../../apps/site/src/components/demo/demo-seed.ts:416
 #, fuzzy
 msgid "Council preparation request from a known royal ally. Sender domain and context clearly match the Current investors folder."
 msgstr "来自已知王室盟友的议会准备请求。发件人域名和上下文与“现有投资者”文件夹明确匹配。"
@@ -1359,6 +1410,7 @@ msgstr "正在创建账户…"
 msgid "Creating…"
 msgstr "正在创建…"
 
+#: ../../apps/mobile/src/components/AssigneeSheet.tsx:63
 #: ../../apps/mobile/src/components/RerouteSheet.tsx:45
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:107
 #: ../../apps/site/src/components/demo/demo-seed.ts:33
@@ -1413,12 +1465,23 @@ msgstr "默认免费工作区"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:176
 #: ../../apps/mobile/app/(app)/account.tsx:84
+#: ../../apps/mobile/app/(app)/notifications.tsx:142
+#: ../../apps/mobile/app/(app)/notifications.tsx:231
+#: ../../apps/mobile/app/(app)/notifications.tsx:317
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:193
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:266
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:267
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:596
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:607
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:703
 #, fuzzy
 msgid "Delete"
 msgstr "删除"
+
+#. placeholder {0}: ids.length
+#: ../../apps/mobile/app/(app)/notifications.tsx:139
+msgid "Delete {0} notifications?"
+msgstr "删除 {0} 条通知？"
 
 #: ../../apps/mobile/app/(app)/account.tsx:166
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:119
@@ -1444,6 +1507,15 @@ msgstr "删除失败。请重试。"
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:424
 msgid "Delete folder"
 msgstr "删除文件夹"
+
+#: ../../apps/mobile/app/(app)/notifications.tsx:140
+#, fuzzy
+msgid "Delete notifications"
+msgstr "删除通知"
+
+#: ../../apps/mobile/app/(app)/notifications.tsx:138
+msgid "Delete this notification?"
+msgstr "删除此通知？"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:303
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:26
@@ -1563,7 +1635,7 @@ msgstr "断开此工作区连接。Amarnai仍保留访问权限，因为此邮�
 
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:228
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:298
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:343
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:57
 #: ../ui/src/AppDownloadBanner.tsx:80
 #: ../ui/src/emails/MockEmailsPage.tsx:256
@@ -1603,13 +1675,14 @@ msgstr "没有账户？<0>立即注册</0>"
 msgid "Don't have an account? <0>Sign up</0>"
 msgstr "没有账户？<0>注册</0>"
 
+#: ../../apps/mobile/app/(app)/notifications.tsx:254
 #: ../../apps/mobile/src/components/ThreadRow.tsx:40
-#: ../ui/src/emails/ThreadRow.tsx:141
+#: ../ui/src/emails/ThreadRow.tsx:166
 #, fuzzy
 msgid "Done"
 msgstr "完成"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:197
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:211
 msgid "Done · undo"
 msgstr "完成 · 撤消"
 
@@ -1617,21 +1690,21 @@ msgstr "完成 · 撤消"
 msgid "Downgrade to {planName}"
 msgstr "降级至 {planName}"
 
-#: ../ui/src/emails/ThreadRow.tsx:182
+#: ../ui/src/emails/ThreadRow.tsx:228
 #, fuzzy
 msgid "draft"
 msgstr "草稿"
 
-#: ../../apps/mobile/src/components/ThreadRow.tsx:88
+#: ../../apps/mobile/src/components/ThreadRow.tsx:98
 msgid "Draft"
 msgstr "草稿"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:165
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:179
 msgid "Draft failed · tap to retry"
 msgstr "草稿失败 · 轻触重试"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:315
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:325
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:336
 #, fuzzy
 msgid "Draft generation failed. Try again."
 msgstr "草稿生成失败。请重试。"
@@ -1642,7 +1715,7 @@ msgstr "草稿生成失败。请重试。"
 msgid "Draft reply"
 msgstr "回复草稿"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:112
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:126
 msgid "Draft shared"
 msgstr "草稿已分享"
 
@@ -1652,8 +1725,8 @@ msgstr "草稿已分享"
 msgid "Draft style guidance"
 msgstr "草稿风格指南"
 
-#: ../../apps/mobile/src/components/ThreadRow.tsx:84
-#: ../ui/src/emails/ThreadRow.tsx:176
+#: ../../apps/mobile/src/components/ThreadRow.tsx:94
+#: ../ui/src/emails/ThreadRow.tsx:222
 msgid "Drafting…"
 msgstr "正在起草…"
 
@@ -1750,7 +1823,7 @@ msgid "Email verified! Sign in to continue."
 msgstr "电子邮件已验证！请登录以继续。"
 
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:28
-#: ../../apps/web/src/components/Sidebar.tsx:30
+#: ../../apps/web/src/components/Sidebar.tsx:32
 #, fuzzy
 msgid "Emails"
 msgstr "电子邮件"
@@ -1944,7 +2017,7 @@ msgstr "财务"
 msgid "Find and draft"
 msgstr "查找并起草"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:265
+#: ../../apps/site/src/components/demo/demo-seed.ts:266
 msgid "Flagged as alliance/investor intro based on language (\"mutual benefit\", \"long-standing friendship\"). Confidence is moderate; Aziru has been known to send similar overtures to multiple courts."
 msgstr "基于措辞（“互惠互利”、“长期友谊”）被标记为联盟/投资者介绍。置信度中等；阿齐鲁曾向多个宫廷发出过类似提议。"
 
@@ -1989,7 +2062,7 @@ msgid "Folder: {activeFolderName}"
 msgstr "文件夹：{activeFolderName}"
 
 #: ../ui/src/emails/EmailRail.tsx:99
-#: ../ui/src/emails/ThreadList.tsx:130
+#: ../ui/src/emails/ThreadList.tsx:136
 msgid "Folders"
 msgstr "文件夹"
 
@@ -2029,7 +2102,7 @@ msgstr "适用于大型组织和高邮件量团队。"
 msgid "For larger organizations."
 msgstr "适用于大型组织。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:260
+#: ../../apps/site/src/components/demo/demo-seed.ts:261
 msgid "For many years our houses have been as brothers. I write now to propose that we formalise this friendship for the benefit of both our peoples."
 msgstr "多年来，我们两家亲如兄弟。我现在写信提议，为了我们两国人民的福祉，将这份友谊正式化。"
 
@@ -2116,8 +2189,8 @@ msgid "Generate a plan from your inbox"
 msgstr "根据收件箱生成方案"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:294
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:131
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:303
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:145
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:314
 #: ../ui/src/emails/ThreadPreview.tsx:162
 #, fuzzy
 msgid "Generate draft reply"
@@ -2216,7 +2289,7 @@ msgstr "Gmail 已标记为重要"
 msgid "Gmail read-only access was not granted. Please try again and approve the requested permission."
 msgstr "未授予 Gmail 只读访问权限。请重试并批准请求的权限。"
 
-#: ../../apps/web/src/components/Sidebar.tsx:43
+#: ../../apps/web/src/components/Sidebar.tsx:45
 #, fuzzy
 msgid "Gmail Sort Tester"
 msgstr "Gmail 分类测试器"
@@ -2349,7 +2422,7 @@ msgstr "工作原理"
 msgid "How to write a good description"
 msgstr "如何写出好的描述"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:273
+#: ../../apps/site/src/components/demo/demo-seed.ts:274
 msgid "I write to propose that we formalise our friendship."
 msgstr "我写信提议，我们将友谊正式化。"
 
@@ -2449,7 +2522,7 @@ msgstr "包含垃圾邮件"
 msgid "Included"
 msgstr "包含"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:375
+#: ../../apps/site/src/components/demo/demo-seed.ts:379
 msgid "Informal message with no clear category: personal visit or political audience? Tone is personal but sender is a known vassal governor. Routed to Other with low confidence."
 msgstr "无明确类别的非正式信息：私人拜访还是政治会面？语气私人化，但发件人是已知的藩属总督。以低置信度路由到“其他”。"
 
@@ -2670,8 +2743,10 @@ msgstr "在此处列出相关的发件人、主题和关键词。至少 {minDesc
 msgid "Live"
 msgstr "实时"
 
+#: ../../apps/mobile/app/(app)/notifications.tsx:294
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:95
-#: ../ui/src/emails/ThreadList.tsx:228
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:278
+#: ../ui/src/emails/ThreadList.tsx:238
 #, fuzzy
 msgid "Load more"
 msgstr "加载更多"
@@ -2679,17 +2754,23 @@ msgstr "加载更多"
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:116
 #: ../ui/src/emails/BackfillCard.tsx:35
-#: ../ui/src/emails/ThreadList.tsx:173
+#: ../ui/src/emails/ThreadList.tsx:179
 msgid "Loading past threads…"
 msgstr "正在加载过去的会话…"
 
+#: ../../apps/extension/src/panel/NotificationBell.tsx:123
+#: ../../apps/mobile/app/(app)/notifications.tsx:294
 #: ../../apps/mobile/src/components/MessageCard.tsx:53
+#: ../../apps/mobile/src/components/NotificationsSheet.tsx:57
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:201
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:278
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:121
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:137
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:158
 #: ../../apps/web/src/app/loading.tsx:6
+#: ../../apps/web/src/components/NotificationBell.tsx:149
 #: ../ui/src/emails/MessageCard.tsx:60
-#: ../ui/src/emails/ThreadList.tsx:228
+#: ../ui/src/emails/ThreadList.tsx:238
 #, fuzzy
 msgid "Loading…"
 msgstr "加载中…"
@@ -2703,6 +2784,13 @@ msgstr "邮件"
 #, fuzzy
 msgid "Manage"
 msgstr "管理"
+
+#: ../../apps/extension/src/panel/NotificationBell.tsx:145
+#: ../../apps/mobile/src/components/NotificationsSheet.tsx:63
+#: ../../apps/web/src/components/NotificationBell.tsx:170
+#, fuzzy
+msgid "Manage notifications"
+msgstr "管理通知"
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:303
 msgid "Manage payment method"
@@ -2718,15 +2806,21 @@ msgid "Manager emails: one-on-ones, performance reviews, and feedback."
 msgstr "经理邮件：一对一会议、绩效评估和反馈。"
 
 #: ../ui/src/emails/PreviewDoneBar.tsx:23
-#: ../ui/src/emails/ThreadRow.tsx:106
+#: ../ui/src/emails/ThreadRow.tsx:124
 #, fuzzy
 msgid "Mark as done"
 msgstr "标记为完成"
 
-#: ../ui/src/emails/ThreadRow.tsx:105
+#: ../ui/src/emails/ThreadRow.tsx:123
 #, fuzzy
 msgid "Mark as not done"
 msgstr "标记为未完成"
+
+#: ../../apps/mobile/app/(app)/notifications.tsx:208
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:245
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:246
+msgid "Mark as read"
+msgstr "标记为已读"
 
 #: ../../apps/mobile/src/components/DraftSheet.tsx:111
 #: ../ui/src/emails/SuggestedDraftCard.tsx:73
@@ -2734,12 +2828,19 @@ msgstr "标记为未完成"
 msgid "Mark as sent"
 msgstr "标记为已发送"
 
+#: ../../apps/mobile/app/(app)/notifications.tsx:208
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:245
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:246
+#, fuzzy
+msgid "Mark as unread"
+msgstr "标记为未读"
+
 #: ../../apps/mobile/src/components/DraftSheet.tsx:111
 #: ../ui/src/emails/SuggestedDraftCard.tsx:73
 msgid "Mark as unsent"
 msgstr "标记为未发送"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:204
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:218
 msgid "Mark done"
 msgstr "标记为完成"
 
@@ -2747,6 +2848,17 @@ msgstr "标记为完成"
 #, fuzzy
 msgid "Mark invited"
 msgstr "标记为已邀请"
+
+#: ../../apps/mobile/app/(app)/notifications.tsx:307
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:182
+#, fuzzy
+msgid "Mark read"
+msgstr "标为已读"
+
+#: ../../apps/mobile/app/(app)/notifications.tsx:312
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:185
+msgid "Mark unread"
+msgstr "标为未读"
 
 #: ../ui/src/emails/PreviewDoneBar.tsx:22
 #, fuzzy
@@ -2776,7 +2888,7 @@ msgstr "成员"
 msgid "Messages from paying customers and account holders."
 msgstr "来自付费客户和账户持有人的消息。"
 
-#: ../../apps/web/src/components/Sidebar.tsx:41
+#: ../../apps/web/src/components/Sidebar.tsx:43
 #, fuzzy
 msgid "Mock Inbox"
 msgstr "模拟收件箱"
@@ -2836,7 +2948,7 @@ msgstr "移至…"
 msgid "Moved to {folderName}"
 msgstr "已移动到 {folderName}"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:370
+#: ../../apps/site/src/components/demo/demo-seed.ts:374
 msgid "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face."
 msgstr "未来几天我的行程将经过三角洲附近。如果伟大君王能抽出一点时间，我将非常乐意面谈。"
 
@@ -2872,7 +2984,7 @@ msgstr "从不"
 msgid "Never auto-sends · Encrypted at rest · Minimal data"
 msgstr "绝不自动发送 ・ 静态加密 ・ 最少数据"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:311
+#: ../../apps/site/src/components/demo/demo-seed.ts:313
 #, fuzzy
 msgid "New application from Horemheb of Thebes."
 msgstr "赫伦希布（底比斯）的新申请。"
@@ -2886,6 +2998,12 @@ msgstr "新业务咨询、提案、定价讨论和潜在客户联系。"
 #: ../ui/src/emails/EmailRail.tsx:106
 msgid "New folder"
 msgstr "新建文件夹"
+
+#: ../../apps/extension/src/panel/notificationText.ts:22
+#: ../../apps/mobile/src/data/notificationView.ts:33
+#: ../../apps/web/src/lib/notifications.ts:34
+msgid "New notification"
+msgstr "新通知"
 
 #: ../../apps/web/src/app/reset-password/page.tsx:43
 #: ../../apps/web/src/app/reset-password/page.tsx:68
@@ -2912,12 +3030,12 @@ msgstr "新建工作区"
 msgid "New workspace name"
 msgstr "新工作区名称"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:129
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:143
 msgid "No drafts remaining"
 msgstr "没有剩余草稿"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:299
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:308
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:319
 #: ../ui/src/emails/SuggestedDraftCard.tsx:97
 #, fuzzy
 msgid "No drafts remaining · resets {quotaResetDate}"
@@ -2970,6 +3088,25 @@ msgstr "未连接 Gmail 收件箱。请连接您的账户以开始同步。"
 msgid "No matching folders"
 msgstr "无匹配文件夹"
 
+#: ../ui/src/emails/AssigneePicker.tsx:91
+#, fuzzy
+msgid "No members"
+msgstr "无成员"
+
+#: ../../apps/mobile/src/components/AssigneeSheet.tsx:67
+#, fuzzy
+msgid "No members available"
+msgstr "无可用成员"
+
+#: ../../apps/extension/src/panel/NotificationBell.tsx:128
+#: ../../apps/mobile/app/(app)/notifications.tsx:287
+#: ../../apps/mobile/src/components/NotificationsSheet.tsx:57
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:203
+#: ../../apps/web/src/components/NotificationBell.tsx:152
+#, fuzzy
+msgid "No notifications yet"
+msgstr "暂无通知"
+
 #: ../../apps/mobile/src/components/BlacklistSheet.tsx:146
 msgid "No senders blocked yet."
 msgstr "暂无已屏蔽发件人。"
@@ -2988,7 +3125,7 @@ msgstr "暂无注册。"
 msgid "No threads"
 msgstr "无会话"
 
-#: ../ui/src/emails/ThreadList.tsx:176
+#: ../ui/src/emails/ThreadList.tsx:182
 msgid "No threads here."
 msgstr "此处没有会话。"
 
@@ -3006,7 +3143,7 @@ msgstr "在{folderName}中没有会话"
 msgid "No threads match your search"
 msgstr "无会话符合您的搜索条件"
 
-#: ../ui/src/emails/ThreadList.tsx:169
+#: ../ui/src/emails/ThreadList.tsx:175
 #, fuzzy
 msgid "No threads match your search."
 msgstr "没有会话与您的搜索匹配。"
@@ -3016,7 +3153,7 @@ msgid "No threads yet"
 msgstr "暂无会话"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:225
-#: ../../apps/web/src/components/Sidebar.tsx:142
+#: ../../apps/web/src/components/Sidebar.tsx:153
 #, fuzzy
 msgid "No workspace"
 msgstr "无工作区"
@@ -3059,16 +3196,31 @@ msgstr "未设置"
 msgid "Not yet synced"
 msgstr "尚未同步"
 
+#: ../../apps/extension/src/panel/NotificationBell.tsx:40
+#: ../../apps/extension/src/panel/NotificationBell.tsx:116
+#: ../../apps/extension/src/panel/NotificationBell.tsx:118
 #: ../../apps/mobile/app/(app)/account.tsx:145
+#: ../../apps/mobile/app/(app)/notifications.tsx:249
+#: ../../apps/mobile/src/components/NotificationsSheet.tsx:43
+#: ../../apps/web/src/app/(app)/notifications/page.tsx:12
+#: ../../apps/web/src/components/NotificationBell.tsx:126
+#: ../../apps/web/src/components/NotificationBell.tsx:141
+#: ../../apps/web/src/components/NotificationBell.tsx:145
 #, fuzzy
 msgid "Notifications"
 msgstr "通知"
+
+#: ../../apps/extension/src/panel/NotificationBell.tsx:101
+#: ../../apps/web/src/components/NotificationBell.tsx:125
+#, fuzzy
+msgid "Notifications, {unread} unread"
+msgstr "通知，{unread} 条未读"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:68
 msgid "Official university emails: registrar, student services, and housing."
 msgstr "大学官方邮件：注册办公室、学生服务和住宿。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:337
+#: ../../apps/site/src/components/demo/demo-seed.ts:340
 msgid "Ongoing thread with a known city governor raising a recurring supply issue. Escalatory tone and repeated follow-ups match the Support folder."
 msgstr "与一位已知城市总督关于反复出现的供应问题的进行中的会话。升级的语气和反复的跟进与“支持”文件夹匹配。"
 
@@ -3078,16 +3230,16 @@ msgstr "只有工作区所有者才能管理账单。"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:244
 #: ../../apps/mobile/src/components/DraftSheet.tsx:97
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:242
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:248
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:254
 #: ../ui/src/emails/ThreadPreview.tsx:115
 #: ../ui/src/emails/ThreadPreview.tsx:121
-#: ../ui/src/emails/ThreadRow.tsx:107
+#: ../ui/src/emails/ThreadRow.tsx:125
 #, fuzzy
 msgid "Open in Gmail"
 msgstr "在 Gmail 中打开"
 
-#: ../../apps/web/src/components/Sidebar.tsx:112
+#: ../../apps/web/src/components/Sidebar.tsx:114
 #, fuzzy
 msgid "Open navigation"
 msgstr "打开导航"
@@ -3096,6 +3248,12 @@ msgstr "打开导航"
 #, fuzzy
 msgid "open source email ai"
 msgstr "开源邮件AI"
+
+#: ../../apps/mobile/app/(app)/notifications.tsx:221
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:255
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:256
+msgid "Open thread"
+msgstr "打开会话"
 
 #: ../../apps/site/src/components/landing/HeroSection.tsx:58
 #, fuzzy
@@ -3157,8 +3315,8 @@ msgstr "父级"
 msgid "Partners"
 msgstr "合作伙伴"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:365
-#: ../../apps/site/src/components/demo/demo-seed.ts:383
+#: ../../apps/site/src/components/demo/demo-seed.ts:369
+#: ../../apps/site/src/components/demo/demo-seed.ts:387
 msgid "Passing through the Delta: free to meet?"
 msgstr "途经三角洲：方便会面吗？"
 
@@ -3279,14 +3437,14 @@ msgstr "个人通信和日常生活中的非学术邮件。"
 #. Screen heading for the email-sorting taxonomy. Not a billing or subscription plan.
 #. Sidebar nav label for the email-sorting taxonomy. Not a billing or subscription plan.
 #. Sidebar nav label for the email-sorting taxonomy. Not a billing or subscription plan.
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:42
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:43
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:35
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:265
 #: ../../apps/site/src/components/demo/DemoTaxonomyCanvas.tsx:220
 #: ../../apps/site/src/components/landing/Footer.tsx:26
 #: ../../apps/site/src/components/landing/Nav.tsx:39
 #: ../../apps/web/src/app/(app)/plan/page.tsx:43
-#: ../../apps/web/src/components/Sidebar.tsx:33
+#: ../../apps/web/src/components/Sidebar.tsx:35
 msgid "Plan"
 msgstr "方案"
 
@@ -3317,7 +3475,7 @@ msgstr "想自托管？"
 msgid "Prefer to self-host? It's open source:<0/> <1>clone it and run it free</1>."
 msgstr "想自托管？它是开源的：<0/> <1>克隆并免费运行</1>。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:419
+#: ../../apps/site/src/components/demo/demo-seed.ts:424
 msgid "Prepare your accounts before the council convenes."
 msgstr "在议会召开之前准备好您的账目。"
 
@@ -3412,7 +3570,7 @@ msgstr "建议文件夹。应用将替换您当前方案；之后您仍可编辑
 msgid "Queuing rescan…"
 msgstr "正在排队重新扫描…"
 
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:308
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:353
 #, fuzzy
 msgid "Re-route {unclassifiedCount} unclassified"
 msgstr "重新路由 {unclassifiedCount} 个未分类项"
@@ -3421,7 +3579,7 @@ msgstr "重新路由 {unclassifiedCount} 个未分类项"
 msgid "Re-route thread"
 msgstr "重新路由会话"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:327
+#: ../../apps/site/src/components/demo/demo-seed.ts:330
 #, fuzzy
 msgid "Re: Grain shipment: third delay this season"
 msgstr "关于：谷物运输：本季第三次延误"
@@ -3656,7 +3814,7 @@ msgstr "重置工作区"
 msgid "Reset workspace?"
 msgstr "重置工作区？"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:141
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:155
 msgid "Resets {draftResetDate}"
 msgstr "{draftResetDate} 重置"
 
@@ -3681,7 +3839,7 @@ msgstr "资源"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:317
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:345
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:331
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:342
 #, fuzzy
 msgid "Retry"
 msgstr "重试"
@@ -3690,7 +3848,7 @@ msgstr "重试"
 msgid "Review queue"
 msgstr "审阅队列"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:342
+#: ../../apps/site/src/components/demo/demo-seed.ts:345
 #, fuzzy
 msgid "Rib-Hadda of Byblos"
 msgstr "比布鲁斯的瑞布哈达"
@@ -3794,12 +3952,27 @@ msgstr "搜索会话…"
 msgid "See how your inbox is sorted, right next to Gmail."
 msgstr "在 Gmail 旁，直观查看收件箱分类。"
 
+#: ../../apps/mobile/app/(app)/notifications.tsx:254
+msgid "Select"
+msgstr "选择"
+
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:199
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:273
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:310
 #: ../ui/src/emails/MockEmailsPage.tsx:234
 #, fuzzy
 msgid "Select a thread to preview"
 msgstr "选择一个会话进行预览"
+
+#: ../../apps/mobile/app/(app)/notifications.tsx:269
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:174
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:176
+#, fuzzy
+msgid "Select all"
+msgstr "全选"
+
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:221
+msgid "Select notification"
+msgstr "选择通知"
 
 #: ../ui/src/PricingPlans.tsx:313
 #, fuzzy
@@ -3877,10 +4050,10 @@ msgstr "设置此工作区的语言，包括界面和 AI 生成的文件夹。"
 msgid "Setting up your workspace…"
 msgstr "正在设置您的工作区…"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:51
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:52
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:42
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:197
-#: ../../apps/web/src/components/Sidebar.tsx:40
+#: ../../apps/web/src/components/Sidebar.tsx:42
 msgid "Settings"
 msgstr "设置"
 
@@ -3935,7 +4108,7 @@ msgstr "使用 Google 登录。Amarnai 会同步您的会话和标签。它绝�
 
 #: ../../apps/extension/src/App.tsx:46
 #: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:68
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:127
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:130
 #: ../../apps/mobile/app/(app)/account.tsx:122
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:98
 #: ../../apps/web/src/app/verify-email/page.tsx:42
@@ -4041,7 +4214,7 @@ msgstr "分类量"
 #: ../../apps/mobile/src/components/RationaleCard.tsx:35
 #: ../../apps/site/src/components/landing/HeroFeedCard.tsx:90
 #: ../ui/src/emails/RationaleCard.tsx:52
-#: ../ui/src/emails/ThreadRow.tsx:147
+#: ../ui/src/emails/ThreadRow.tsx:193
 msgid "Sorting…"
 msgstr "正在排序…"
 
@@ -4294,12 +4467,12 @@ msgstr "由于服务器错误，无法保存连接。请重试。"
 msgid "The Gmail connection, all synced emails, and the taxonomy will be permanently deleted. Re-importing this inbox uses your monthly import allowance; if it runs out, you can import again after {allowanceResetsAt} or by upgrading."
 msgstr "Gmail 连接、所有已同步的电子邮件和分类体系将被永久删除。重新导入此收件箱将占用您的每月导入额度；如果额度用完，您可以在 {allowanceResetsAt} 之后或升级后再次导入。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:332
+#: ../../apps/site/src/components/demo/demo-seed.ts:335
 #, fuzzy
 msgid "The grain you sent last month was received with gratitude. But I must write again: the third shipment has not arrived and the city grows restless."
 msgstr "上月您送来的谷物已收到，不胜感激。但我必须再次写信：第三批货物尚未抵达，城市居民日渐不安。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:406
+#: ../../apps/site/src/components/demo/demo-seed.ts:411
 #, fuzzy
 msgid "The great council convenes at the start of Shemu. I ask that you prepare a full accounting of the eastern territories and send it ahead by fast courier."
 msgstr "示姆季初大议会召开。请备妥东部领地详细账目，速派信使提前送达。"
@@ -4314,7 +4487,7 @@ msgstr "依条约议定的第三批黄金至今未到。两名信使往返，吾
 msgid "The third gold consignment is overdue."
 msgstr "第三批黄金已逾期。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:345
+#: ../../apps/site/src/components/demo/demo-seed.ts:348
 msgid "The third grain shipment has not arrived."
 msgstr "第三批谷物未到。"
 
@@ -4397,12 +4570,12 @@ msgstr "此会话正在等待路由。"
 msgid "This thread is waiting to be routed. Use “Route now” to start sorting."
 msgstr "此会话正在等待路由。使用“立即路由”开始排序。"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:71
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:85
 #, fuzzy
 msgid "Thread"
 msgstr "会话"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:73
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:87
 msgid "Thread not found"
 msgstr "未找到会话"
 
@@ -4453,7 +4626,7 @@ msgstr "尚未排序的会话。"
 msgid "Three steps. Then it sorts every email for you."
 msgstr "简单三步，即可帮你分类所有邮件。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:420
+#: ../../apps/site/src/components/demo/demo-seed.ts:425
 #, fuzzy
 msgid "To my brother, the Great King,\n"
 "\n"
@@ -4483,7 +4656,7 @@ msgstr "致王室任命局，\n"
 "\n"
 "奉谕，"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:274
+#: ../../apps/site/src/components/demo/demo-seed.ts:275
 #, fuzzy
 msgid "To the Great King,\n"
 "\n"
@@ -4500,7 +4673,7 @@ msgstr "致大王，\n"
 "\n"
 "阿齐鲁，大王之仆，阿穆鲁之主"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:384
+#: ../../apps/site/src/components/demo/demo-seed.ts:388
 #, fuzzy
 msgid "To the Great King,\n"
 "\n"
@@ -4543,7 +4716,7 @@ msgstr "致吾兄，大王，\n"
 "\n"
 "布尔那-布里亚什二世，巴比伦国王"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:346
+#: ../../apps/site/src/components/demo/demo-seed.ts:349
 msgid "To the Great King, my lord, my sun,\n"
 "\n"
 "The grain you sent last month was received with gratitude and I praised your name before the people. But I must write again: the third shipment has not arrived and the city grows restless.\n"
@@ -4565,7 +4738,7 @@ msgstr "致大王，吾主，吾日，\n"
 msgid "Today"
 msgstr "今天"
 
-#: ../ui/src/emails/ThreadList.tsx:114
+#: ../ui/src/emails/ThreadList.tsx:120
 #, fuzzy
 msgid "Toggle folders"
 msgstr "切换文件夹"
@@ -4601,10 +4774,15 @@ msgstr "随时随地，高效管理收件箱。"
 msgid "Try Amarnai"
 msgstr "试用 Amarnai"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:416
+#: ../../apps/site/src/components/demo/demo-seed.ts:421
 #, fuzzy
 msgid "Tushratta of Mitanni"
 msgstr "米坦尼的图什拉塔"
+
+#: ../../apps/mobile/src/components/AssigneeSheet.tsx:32
+#: ../ui/src/emails/AssigneePicker.tsx:31
+msgid "Unassign"
+msgstr "取消分配"
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:151
 #: ../../apps/mobile/app/(app)/subscription.tsx:156
@@ -4613,12 +4791,12 @@ msgid "Unavailable"
 msgstr "不可用"
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:46
-#: ../ui/src/emails/ThreadRow.tsx:155
+#: ../ui/src/emails/ThreadRow.tsx:201
 msgid "Unclassified"
 msgstr "未分类"
 
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:221
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:295
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:340
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1321
 #: ../../apps/web/src/app/admin/waitlist/page.tsx:26
 #: ../ui/src/emails/MockEmailsPage.tsx:253
@@ -4818,7 +4996,7 @@ msgstr "验证邮件已发送。请检查您的收件箱。"
 msgid "Verify your email"
 msgstr "验证您的邮箱"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:178
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:192
 #, fuzzy
 msgid "View draft reply"
 msgstr "查看草稿回复"
@@ -4831,7 +5009,7 @@ msgstr "仅限查看。只有工作区管理员才能编辑方案。"
 #: ../../apps/mobile/src/components/RationaleCard.tsx:44
 #: ../../apps/mobile/src/components/ThreadRow.tsx:49
 #: ../ui/src/emails/RationaleCard.tsx:74
-#: ../ui/src/emails/ThreadRow.tsx:151
+#: ../ui/src/emails/ThreadRow.tsx:197
 msgid "Waiting"
 msgstr "等待中"
 
@@ -4849,7 +5027,7 @@ msgstr "等待验证…"
 msgid "Waitlist"
 msgstr "候补名单"
 
-#: ../ui/src/emails/ThreadRow.tsx:99
+#: ../ui/src/emails/ThreadRow.tsx:117
 msgid "Wants {folderName}"
 msgstr "想要 {folderName}"
 
@@ -4905,7 +5083,7 @@ msgstr "工作"
 msgid "Working Professional"
 msgstr "职场人士"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:60
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:61
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:220
 #: ../../apps/site/src/components/demo/DemoTaxonomyCanvas.tsx:218
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:35
@@ -4938,7 +5116,7 @@ msgstr "工作区名称不能为空"
 msgid "Workspace name updated."
 msgstr "工作区名称已更新。"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:48
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:49
 msgid "Workspace settings"
 msgstr "工作区设置"
 
@@ -4957,8 +5135,8 @@ msgid "Workspaces included"
 msgstr "包含的工作区"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:309
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:153
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:319
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:167
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:330
 #: ../ui/src/emails/ThreadPreview.tsx:169
 #, fuzzy
 msgid "Writing draft reply…"
@@ -5042,6 +5220,12 @@ msgstr "您可以稍后重试，或者从模板开始。"
 #, fuzzy
 msgid "You do not have permission to connect a Gmail inbox to this workspace."
 msgstr "您没有权限将 Gmail 收件箱连接到此工作区。"
+
+#: ../../apps/extension/src/panel/notificationText.ts:19
+#: ../../apps/mobile/src/data/notificationView.ts:29
+#: ../../apps/web/src/lib/notifications.ts:30
+msgid "You were assigned a thread"
+msgstr "您被分配了一个会话"
 
 #: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:178
 #, fuzzy

@@ -5,12 +5,13 @@ import {
   QUEUE_BACKFILL_INBOX,
   QUEUE_LIFECYCLE_EMAIL,
   QUEUE_GENERATE_TAXONOMY,
+  QUEUE_PUSH_NOTIFICATION,
 } from "@amarnai/queue";
 import { redisConnection } from "./redis.js";
 
 // Re-export so job files can import names and types from one place.
-export { QUEUE_SYNC_INBOX, QUEUE_CLASSIFY_THREAD, QUEUE_BACKFILL_INBOX, QUEUE_LIFECYCLE_EMAIL, QUEUE_GENERATE_TAXONOMY } from "@amarnai/queue";
-export type { SyncInboxJobData, ClassifyThreadJobData, ClassifyThreadSource, BackfillInboxJobData, LifecycleEmailJobData, GenerateTaxonomyJobData } from "@amarnai/queue";
+export { QUEUE_SYNC_INBOX, QUEUE_CLASSIFY_THREAD, QUEUE_BACKFILL_INBOX, QUEUE_LIFECYCLE_EMAIL, QUEUE_GENERATE_TAXONOMY, QUEUE_PUSH_NOTIFICATION } from "@amarnai/queue";
+export type { SyncInboxJobData, ClassifyThreadJobData, ClassifyThreadSource, BackfillInboxJobData, LifecycleEmailJobData, GenerateTaxonomyJobData, PushNotificationJobData } from "@amarnai/queue";
 
 // ─── Queue instances ──────────────────────────────────────────────────────────
 
@@ -87,5 +88,21 @@ export const generateTaxonomyQueue = new Queue(QUEUE_GENERATE_TAXONOMY, {
     backoff: { type: "exponential", delay: 10_000 },
     removeOnComplete: { count: 50 },
     removeOnFail: { count: 100 },
+  },
+});
+
+/**
+ * Enqueue a push notification (currently only thread-assignment pushes). Two
+ * attempts: a duplicate push on retry is tolerable and budget-capped, and the
+ * job re-reads the thread and no-ops if the assignment changed, so most retries
+ * self-suppress.
+ */
+export const pushNotificationQueue = new Queue(QUEUE_PUSH_NOTIFICATION, {
+  connection: redisConnection,
+  defaultJobOptions: {
+    attempts: 2,
+    backoff: { type: "exponential", delay: 10_000 },
+    removeOnComplete: { count: 100 },
+    removeOnFail: { count: 500 },
   },
 });

@@ -1,3 +1,4 @@
+import { db } from "@amarnai/db";
 import { requireUser } from "@/lib/session";
 import { getSelectedWorkspace } from "@/lib/workspace";
 import { apiFor } from "@/lib/api";
@@ -113,6 +114,20 @@ export default async function EmailsPage({ searchParams }: PageProps) {
 
   const initialSelectedId = t ?? null;
 
+  // Workspace members drive the assignment picker. Fetched directly here (server
+  // component) rather than via a dedicated endpoint — the member list is small
+  // and already workspace-scoped.
+  const memberRows = await db.workspaceMember.findMany({
+    where: { workspaceId: workspace.id },
+    select: { user: { select: { id: true, email: true, name: true } } },
+    orderBy: { createdAt: "asc" },
+  });
+  const members = memberRows.map((m) => ({
+    userId: m.user.id,
+    name: m.user.name,
+    email: m.user.email,
+  }));
+
   return (
     <>
       {error && (
@@ -134,6 +149,7 @@ export default async function EmailsPage({ searchParams }: PageProps) {
         workspaceEmail={workspaceEmail}
         routableNodeCount={routableNodeCount}
         unclassifiedCount={unclassifiedCount}
+        members={members}
       />
     </>
   );

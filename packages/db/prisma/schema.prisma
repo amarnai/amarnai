@@ -210,6 +210,9 @@ model User {
   refreshTokens            RefreshToken[]
   pushDevices              PushDevice[]
   resolvedThreads          EmailThread[]         @relation("ResolvedByUser")
+  assignedThreads          EmailThread[]         @relation("AssignedToUser")
+  assignedByThreads        EmailThread[]         @relation("AssignedByUser")
+  notifications            Notification[]
 }
 
 model Workspace {
@@ -245,6 +248,7 @@ model Workspace {
   classifications         EmailClassification[]
   drafts                  Draft[]
   auditLogs               AuditLog[]
+  notifications           Notification[]
 }
 
 model WorkspaceMember {
@@ -445,12 +449,21 @@ model EmailThread {
   isAutomated       Boolean      @default(false)
   resolvedByUserId  String?
   resolvedAt        DateTime?
+  // Assignment (thread ownership): who should handle this thread. Independent of
+  // the resolved/"done" mark above — assignment is ownership, resolved is
+  // completion, and the two can be different people. assignedByUserId records the
+  // actor who set the assignment (audit/attribution); it is never client-supplied.
+  assignedToUserId  String?
+  assignedByUserId  String?
+  assignedAt        DateTime?
   createdAt         DateTime     @default(now())
   updatedAt         DateTime     @updatedAt
 
   workspace       Workspace             @relation(fields: [workspaceId], references: [id])
   emailAccount    EmailAccount          @relation(fields: [emailAccountId], references: [id])
   resolvedByUser  User?                 @relation("ResolvedByUser", fields: [resolvedByUserId], references: [id])
+  assignedToUser  User?                 @relation("AssignedToUser", fields: [assignedToUserId], references: [id])
+  assignedByUser  User?                 @relation("AssignedByUser", fields: [assignedByUserId], references: [id])
   messages        EmailMessage[]
   tags            EmailTag[]
   classifications EmailClassification[]
@@ -459,6 +472,8 @@ model EmailThread {
   @@unique([emailAccountId, providerThreadId])
   // Supports the recoverFailedThreads sweep: PENDING threads that have failed.
   @@index([workspaceId, triageStatus, classifyFailedAt])
+  // Supports a future "assigned to me" filter within a workspace.
+  @@index([workspaceId, assignedToUserId])
 }
 
 model EmailMessage {
@@ -591,6 +606,29 @@ model AuditLog {
 
   workspace Workspace @relation(fields: [workspaceId], references: [id])
   actor     User?     @relation(fields: [actorUserId], references: [id])
+}
+
+// Generic, feature-agnostic in-app notification. `type` is a free-form string
+// (not an enum) so new producers can be added without a migration, and `params`
+// holds structured, localization-neutral data — display text is rendered on the
+// client from type+params at render time, never stored here (localize-at-edges).
+// Recipient-scoped by userId; workspaceId lets the client deep-link into the
+// right workspace. Kept lean: rows are pruned past a retention window at insert.
+model Notification {
+  id          String    @id @default(cuid())
+  userId      String
+  workspaceId String
+  type        String
+  params      Json      @default("{}")
+  readAt      DateTime?
+  createdAt   DateTime  @default(now())
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  workspace Workspace @relation(fields: [workspaceId], references: [id])
+
+  // Unread-count lookups and feed pagination / retention pruning.
+  @@index([userId, readAt])
+  @@index([userId, createdAt])
 }
 
 model UserCredential {

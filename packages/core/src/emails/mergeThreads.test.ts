@@ -22,6 +22,7 @@ function makeThread(id: string, overrides: Partial<ThreadItem> = {}): ThreadItem
     isDrafting: false,
     lastSenderEmail: null,
     doneMark: null,
+    assignment: null,
     isImportant: false,
     isClassifying: false,
     attachmentCount: 0,

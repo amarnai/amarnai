@@ -18,6 +18,9 @@ import type {
   EmailThreadDetail,
   TriageStatus,
   DoneMark,
+  ThreadAssignment,
+  NotificationListResult,
+  UnreadCountResult,
   Draft,
   GenerateDraftResult,
   MockInboxEventInput,
@@ -286,6 +289,48 @@ export function makeApiClient(transport: ApiTransport) {
         "DELETE",
         { userId }
       ),
+
+    // Assign a thread to a workspace member (set/replace). The server validates
+    // that assigneeUserId is a member and records the actor from auth context.
+    assignThread: (workspaceId: string, threadId: string, assigneeUserId: string) =>
+      apiMutate<{ ok: boolean; assignment: ThreadAssignment }>(
+        `/workspaces/${workspaceId}/email-threads/${threadId}/assignee`,
+        "POST",
+        { assigneeUserId }
+      ),
+
+    unassignThread: (workspaceId: string, threadId: string) =>
+      apiMutate<{ ok: boolean; assignment: null }>(
+        `/workspaces/${workspaceId}/email-threads/${threadId}/assignee`,
+        "DELETE"
+      ),
+
+    // ── Notifications (user-scoped) ────────────────────────────────────────────
+    notifications: (cursor?: string, limit?: number) => {
+      const qs = new URLSearchParams();
+      if (cursor) qs.set("cursor", cursor);
+      if (limit !== undefined) qs.set("limit", String(limit));
+      const suffix = qs.toString() ? `?${qs.toString()}` : "";
+      return apiFetch<NotificationListResult>(`/notifications${suffix}`);
+    },
+
+    notificationsUnreadCount: () =>
+      apiFetch<UnreadCountResult>("/notifications/unread-count"),
+
+    markNotificationRead: (id: string) =>
+      apiMutate<OkResult>(`/notifications/${id}/read`, "POST"),
+
+    markAllNotificationsRead: () =>
+      apiMutate<{ ok: boolean; updated: number }>("/notifications/read-all", "POST"),
+
+    // Batch mark read/unread. Accepts one id or a selection; foreign ids are
+    // ignored server-side. Used by the notifications manager (per-row + batch).
+    updateNotifications: (ids: string[], read: boolean) =>
+      apiMutate<{ ok: boolean; updated: number }>("/notifications/update", "POST", { ids, read }),
+
+    // Batch delete. Accepts one id or a selection; foreign ids are ignored.
+    deleteNotifications: (ids: string[]) =>
+      apiMutate<{ ok: boolean; deleted: number }>("/notifications/delete", "POST", { ids }),
 
     aiClassify: (workspaceId: string, threadId: string) =>
       apiMutate<QueuedResult>(

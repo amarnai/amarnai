@@ -199,6 +199,11 @@ emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
     resolvedByUser: {
       select: { id: true, email: true, name: true },
     },
+    assignedToUserId: true,
+    assignedAt: true,
+    assignedToUser: {
+      select: { id: true, email: true, name: true },
+    },
     messages: {
       orderBy: { receivedAt: "desc" } as const,
       select: {
@@ -291,7 +296,12 @@ emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
   };
 
   const threads = pageThreads.map((thread) => {
-    const { classifications, classifyingAt, drafts, resolvedByUserId, resolvedAt, resolvedByUser, ...rest } = thread;
+    const {
+      classifications, classifyingAt, drafts,
+      resolvedByUserId, resolvedAt, resolvedByUser,
+      assignedToUserId, assignedAt, assignedToUser,
+      ...rest
+    } = thread;
     return {
       ...rest,
       isClassifying: deriveIsClassifying(classifyingAt),
@@ -307,6 +317,14 @@ emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
             userEmail: resolvedByUser.email,
             userName: resolvedByUser.name,
             resolvedAt: resolvedAt.toISOString(),
+          }
+        : null,
+      assignment: assignedToUserId && assignedAt && assignedToUser
+        ? {
+            userId: assignedToUserId,
+            userEmail: assignedToUser.email,
+            userName: assignedToUser.name,
+            assignedAt: assignedAt.toISOString(),
           }
         : null,
     };
@@ -341,6 +359,11 @@ emailThreads.get(
         resolvedByUserId: true,
         resolvedAt: true,
         resolvedByUser: {
+          select: { id: true, email: true, name: true },
+        },
+        assignedToUserId: true,
+        assignedAt: true,
+        assignedToUser: {
           select: { id: true, email: true, name: true },
         },
         messages: {
@@ -398,7 +421,12 @@ emailThreads.get(
       return c.json({ error: "Thread not found" }, 404);
     }
 
-    const { classifications, classifyingAt, resolvedByUserId, resolvedAt, resolvedByUser, messages, ...rest } = thread;
+    const {
+      classifications, classifyingAt,
+      resolvedByUserId, resolvedAt, resolvedByUser,
+      assignedToUserId, assignedAt, assignedToUser,
+      messages, ...rest
+    } = thread;
     return c.json({
       ...rest,
       messages: messages.map((m) => ({
@@ -414,6 +442,14 @@ emailThreads.get(
             userEmail: resolvedByUser.email,
             userName: resolvedByUser.name,
             resolvedAt: resolvedAt.toISOString(),
+          }
+        : null,
+      assignment: assignedToUserId && assignedAt && assignedToUser
+        ? {
+            userId: assignedToUserId,
+            userEmail: assignedToUser.email,
+            userName: assignedToUser.name,
+            assignedAt: assignedAt.toISOString(),
           }
         : null,
     });

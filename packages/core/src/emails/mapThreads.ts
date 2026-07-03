@@ -68,6 +68,7 @@ export function mapThreads(threads: EmailThreadSummary[]): ThreadItem[] {
         ? (t.messages[t.messages.length - 1]?.senderEmail ?? null)
         : null,
       doneMark: t.doneMark ?? null,
+      assignment: t.assignment ?? null,
       isImportant: t.gmailIsImportant,
       isClassifying: t.isClassifying,
       attachmentCount: t.messages.reduce((sum, m) => sum + m.attachments.length, 0),

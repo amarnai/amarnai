@@ -25,13 +25,13 @@ msgid "(No body)"
 msgstr "(Không có nội dung)"
 
 #. placeholder {0}: thread.attachmentCount
-#: ../../apps/mobile/src/components/ThreadRow.tsx:96
+#: ../../apps/mobile/src/components/ThreadRow.tsx:106
 #, fuzzy
 msgid "{0, plural, one {# file} other {# files}}"
 msgstr "{0, plural, one {# tệp} other {# tệp}}"
 
 #. placeholder {0}: thread.messageCount
-#: ../../apps/mobile/src/components/ThreadRow.tsx:101
+#: ../../apps/mobile/src/components/ThreadRow.tsx:111
 #, fuzzy
 msgid "{0, plural, one {# message} other {# messages}}"
 msgstr "{0, plural, one {# tin nhắn} other {# tin nhắn}}"
@@ -73,7 +73,7 @@ msgstr "{0} / {1} còn lại · đặt lại {2}"
 #. placeholder {1}: (total ?? 0).toLocaleString()
 #. placeholder {1}: viewCount.toLocaleString()
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:81
-#: ../ui/src/emails/ThreadList.tsx:217
+#: ../ui/src/emails/ThreadList.tsx:227
 #, fuzzy
 msgid "{0} of {1} loaded"
 msgstr "Đã tải {0} trên {1}"
@@ -97,6 +97,17 @@ msgstr "Còn {0} trên {1} · đặt lại {quotaResetDate}"
 msgid "{blacklistCount, plural, one {# blocked} other {# blocked}}"
 msgstr "{blacklistCount, plural, one {# bị chặn} other {# bị chặn}}"
 
+#: ../../apps/extension/src/panel/notificationText.ts:18
+#: ../../apps/mobile/src/data/notificationView.ts:28
+#: ../../apps/web/src/lib/notifications.ts:29
+#, fuzzy
+msgid "{by} assigned you a thread"
+msgstr "{by} đã giao cho bạn một chủ đề"
+
+#: ../../apps/extension/src/panel/notificationText.ts:17
+msgid "{by} assigned you: {subject}"
+msgstr "{by} đã giao cho bạn: {subject}"
+
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:528
 #, fuzzy
 msgid "{classificationCount, plural, one {Deleting this folder will leave # thread unsorted.} other {Deleting this folder will leave # threads unsorted.}}"
@@ -113,7 +124,7 @@ msgstr "Đã thêm {collaboratorCount} / {collaboratorLimit}"
 msgid "{confPct}% confidence"
 msgstr "Độ tin cậy {confPct}%"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:136
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:150
 #, fuzzy
 msgid "{draftRemaining} of {draftLimit} left · resets {draftResetDate}"
 msgstr "Còn {draftRemaining} trên {draftLimit} · đặt lại {draftResetDate}"
@@ -149,7 +160,7 @@ msgstr "{pendingCount} đang chờ"
 
 #. placeholder {0}: draftQuota.limit
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:300
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:309
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:320
 #, fuzzy
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
 msgstr "Còn {quotaRemaining} trên {0} · đặt lại {quotaResetDate}"
@@ -163,6 +174,11 @@ msgstr "Còn {remaining} trên {limit} · đặt lại {resetDate}"
 #, fuzzy
 msgid "{routableCount} of {TAXONOMY_MIN_NON_ROOT_NODES} folders connected to your inbox. Routing requires at least {TAXONOMY_MIN_NON_ROOT_NODES}."
 msgstr "{routableCount} trên {TAXONOMY_MIN_NON_ROOT_NODES} thư mục đã kết nối với hộp thư đến của bạn. Cần ít nhất {TAXONOMY_MIN_NON_ROOT_NODES} thư mục để định tuyến."
+
+#: ../../apps/mobile/app/(app)/notifications.tsx:269
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:176
+msgid "{selectedCount} selected"
+msgstr "{selectedCount} đã chọn"
 
 #: ../ui/src/emails/ThreadListHeader.tsx:113
 #, fuzzy
@@ -223,7 +239,7 @@ msgstr "+ Thêm thư mục"
 msgid "+ Add Folder"
 msgstr "+ Thêm thư mục"
 
-#: ../../apps/web/src/components/Sidebar.tsx:176
+#: ../../apps/web/src/components/Sidebar.tsx:187
 #, fuzzy
 msgid "+ New workspace"
 msgstr "+ Không gian làm việc mới"
@@ -360,12 +376,12 @@ msgstr "500 cuộc trò chuyện được phân loại / tháng"
 msgid "75,000 threads"
 msgstr "75.000 cuộc trò chuyện"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:298
+#: ../../apps/site/src/components/demo/demo-seed.ts:300
 #, fuzzy
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence."
 msgstr "Đã nhận được hồ sơ ứng tuyển mới từ Horemheb của Thebes cho vị trí Trưởng phòng Thư tín."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:312
+#: ../../apps/site/src/components/demo/demo-seed.ts:314
 #, fuzzy
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
@@ -374,7 +390,7 @@ msgstr "Đã nhận được hồ sơ ứng tuyển mới từ Horemheb của Th
 "\n"
 "Xem hồ sơ trong Nhà Lưu trữ."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:380
+#: ../../apps/site/src/components/demo/demo-seed.ts:384
 #, fuzzy
 msgid "Abdi-Heba of Urushalim"
 msgstr "Abdi-Heba của Urushalim"
@@ -413,12 +429,12 @@ msgstr "Quyền truy cập đã bị từ chối. Cấp quyền truy cập Gmail
 msgid "Account"
 msgstr "Tài khoản"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:102
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:105
 #, fuzzy
 msgid "Account menu"
 msgstr "Menu tài khoản"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:116
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:119
 msgid "Account settings"
 msgstr "Cài đặt tài khoản"
 
@@ -535,7 +551,7 @@ msgstr "Toàn bộ dữ liệu không gian làm việc sẽ bị xóa vĩnh vi�
 msgid "All your workspaces, emails, and settings will be deleted permanently."
 msgstr "Toàn bộ không gian làm việc, email và cài đặt của bạn sẽ bị xóa vĩnh viễn."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:255
+#: ../../apps/site/src/components/demo/demo-seed.ts:256
 #, fuzzy
 msgid "Alliance proposal: house of Amurru"
 msgstr "Đề nghị liên minh: Gia tộc Amurru"
@@ -669,7 +685,7 @@ msgstr "Lỗi API {0}"
 msgid "Appearance"
 msgstr "Giao diện"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:293
+#: ../../apps/site/src/components/demo/demo-seed.ts:295
 #, fuzzy
 msgid "Application: Chief of Correspondence"
 msgstr "Ứng tuyển: Chánh văn phòng"
@@ -713,6 +729,40 @@ msgstr "Đang áp dụng…"
 msgid "Approve routing"
 msgstr "Duyệt phân loại"
 
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:233
+#: ../ui/src/emails/TriageBar.tsx:71
+#, fuzzy
+msgid "Assign"
+msgstr "Giao"
+
+#: ../ui/src/emails/AssigneePicker.tsx:85
+#, fuzzy
+msgid "Assign thread"
+msgstr "Giao chủ đề"
+
+#: ../../apps/mobile/src/components/AssigneeSheet.tsx:39
+#, fuzzy
+msgid "Assign to"
+msgstr "Giao cho"
+
+#: ../ui/src/emails/ThreadRow.tsx:260
+#: ../ui/src/emails/ThreadRow.tsx:264
+#: ../ui/src/emails/TriageBar.tsx:63
+#, fuzzy
+msgid "Assign to a member"
+msgstr "Giao cho một thành viên"
+
+#: ../ui/src/emails/TriageBar.tsx:70
+#, fuzzy
+msgid "Assigned · {assigneeName}"
+msgstr "Đã giao · {assigneeName}"
+
+#: ../ui/src/emails/ThreadRow.tsx:174
+#: ../ui/src/emails/TriageBar.tsx:62
+#, fuzzy
+msgid "Assigned to {assigneeName}. Change assignee"
+msgstr "Đã giao cho {assigneeName}. Thay đổi người được giao"
+
 #: ../../apps/web/src/app/reset-password/page.tsx:54
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:49
 msgid "At least {PASSWORD_MIN_LENGTH} characters"
@@ -734,7 +784,7 @@ msgstr "Tự động phân loại thông báo vào Cập nhật / Khác"
 msgid "Automated and bulk mail that doesn't fit another folder lands here automatically. This is different from Needs review, which holds threads too ambiguous for the assistant to sort."
 msgstr "Thư tự động và thư hàng loạt không thuộc thư mục nào khác sẽ tự động chuyển đến đây. Thư mục này khác với <em>Cần xem lại</em>, nơi chứa các cuộc hội thoại quá mơ hồ để trợ lý có thể sắp xếp."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:303
+#: ../../apps/site/src/components/demo/demo-seed.ts:305
 #, fuzzy
 msgid "Automated notice from the Bureau of Royal Appointments. Subject and sender clearly indicate a new application for an open position."
 msgstr "Thông báo tự động từ Cục Bổ nhiệm Hoàng gia. Chủ đề và người gửi cho thấy đây là đơn ứng tuyển mới cho một vị trí đang tuyển."
@@ -745,7 +795,7 @@ msgstr "Thông báo tự động từ Cục Bổ nhiệm Hoàng gia. Chủ đề
 msgid "Automated notifications, newsletters, and service updates that don't fit another folder."
 msgstr "Thông báo tự động, bản tin và cập nhật dịch vụ không thuộc thư mục nào khác."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:270
+#: ../../apps/site/src/components/demo/demo-seed.ts:271
 #, fuzzy
 msgid "Aziru of Amurru"
 msgstr "Aziru xứ Amurru"
@@ -766,14 +816,14 @@ msgstr "Aziru,\n"
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:215
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:25
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:222
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:228
 #: ../ui/src/emails/ThreadPreview.tsx:92
 #, fuzzy
 msgid "Back"
 msgstr "Quay lại"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:211
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:217
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:223
 #: ../ui/src/emails/ThreadPreview.tsx:87
 #, fuzzy
 msgid "Back to list"
@@ -859,7 +909,7 @@ msgstr "Tạo gói"
 #~ msgid "Bulk triage your inbox"
 #~ msgstr "Sắp xếp hộp thư đến hàng loạt"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:308
+#: ../../apps/site/src/components/demo/demo-seed.ts:310
 #, fuzzy
 msgid "Bureau of Royal Appointments"
 msgstr "Cục Bổ nhiệm Hoàng gia"
@@ -906,6 +956,7 @@ msgstr "Tôi có thể tự lưu trữ Amarnai không?"
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:147
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:174
 #: ../../apps/mobile/app/(app)/account.tsx:82
+#: ../../apps/mobile/app/(app)/notifications.tsx:141
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:93
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:245
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:150
@@ -1032,8 +1083,8 @@ msgstr "Đóng"
 msgid "Close panel"
 msgstr "Đóng bảng điều khiển"
 
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:225
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:229
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:231
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:235
 #: ../ui/src/emails/ThreadPreview.tsx:97
 #: ../ui/src/emails/ThreadPreview.tsx:101
 #, fuzzy
@@ -1344,12 +1395,12 @@ msgstr "Không thể xác minh tài khoản Google của bạn. Vui lòng thử 
 msgid "Couldn't load your inbox. Check your connection and reopen the panel."
 msgstr "Không thể tải hộp thư đến của bạn. Kiểm tra kết nối và mở lại bảng điều khiển."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:401
+#: ../../apps/site/src/components/demo/demo-seed.ts:406
 #, fuzzy
 msgid "Council convening: season of Shemu"
 msgstr "Triệu tập Hội đồng: mùa Shemu"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:411
+#: ../../apps/site/src/components/demo/demo-seed.ts:416
 #, fuzzy
 msgid "Council preparation request from a known royal ally. Sender domain and context clearly match the Current investors folder."
 msgstr "Yêu cầu chuẩn bị Hội đồng từ một đồng minh hoàng gia đã biết. Tên miền người gửi và ngữ cảnh khớp rõ ràng với thư mục Nhà đầu tư hiện tại."
@@ -1413,6 +1464,7 @@ msgstr "Đang tạo tài khoản…"
 msgid "Creating…"
 msgstr "Đang tạo…"
 
+#: ../../apps/mobile/src/components/AssigneeSheet.tsx:63
 #: ../../apps/mobile/src/components/RerouteSheet.tsx:45
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:107
 #: ../../apps/site/src/components/demo/demo-seed.ts:33
@@ -1469,12 +1521,23 @@ msgstr "Không gian làm việc miễn phí mặc định"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:176
 #: ../../apps/mobile/app/(app)/account.tsx:84
+#: ../../apps/mobile/app/(app)/notifications.tsx:142
+#: ../../apps/mobile/app/(app)/notifications.tsx:231
+#: ../../apps/mobile/app/(app)/notifications.tsx:317
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:193
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:266
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:267
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:596
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:607
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:703
 #, fuzzy
 msgid "Delete"
 msgstr "Xóa"
+
+#. placeholder {0}: ids.length
+#: ../../apps/mobile/app/(app)/notifications.tsx:139
+msgid "Delete {0} notifications?"
+msgstr "Xóa {0} thông báo?"
 
 #: ../../apps/mobile/app/(app)/account.tsx:166
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:119
@@ -1501,6 +1564,15 @@ msgstr "Xóa không thành công. Vui lòng thử lại."
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:424
 msgid "Delete folder"
 msgstr "Xóa thư mục"
+
+#: ../../apps/mobile/app/(app)/notifications.tsx:140
+#, fuzzy
+msgid "Delete notifications"
+msgstr "Xóa thông báo"
+
+#: ../../apps/mobile/app/(app)/notifications.tsx:138
+msgid "Delete this notification?"
+msgstr "Xóa thông báo này?"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:303
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:26
@@ -1624,7 +1696,7 @@ msgstr "Ngắt kết nối không gian làm việc này. Amarnai vẫn giữ quy
 
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:228
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:298
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:343
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:57
 #: ../ui/src/AppDownloadBanner.tsx:80
 #: ../ui/src/emails/MockEmailsPage.tsx:256
@@ -1663,13 +1735,14 @@ msgstr "Chưa có tài khoản? <0>Tạo ngay</0>"
 msgid "Don't have an account? <0>Sign up</0>"
 msgstr "Chưa có tài khoản? <0>Đăng ký</0>"
 
+#: ../../apps/mobile/app/(app)/notifications.tsx:254
 #: ../../apps/mobile/src/components/ThreadRow.tsx:40
-#: ../ui/src/emails/ThreadRow.tsx:141
+#: ../ui/src/emails/ThreadRow.tsx:166
 #, fuzzy
 msgid "Done"
 msgstr "Hoàn tất"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:197
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:211
 #, fuzzy
 msgid "Done · undo"
 msgstr "Hoàn tất · hoàn tác"
@@ -1679,23 +1752,23 @@ msgstr "Hoàn tất · hoàn tác"
 msgid "Downgrade to {planName}"
 msgstr "Hạ cấp xuống {planName}"
 
-#: ../ui/src/emails/ThreadRow.tsx:182
+#: ../ui/src/emails/ThreadRow.tsx:228
 #, fuzzy
 msgid "draft"
 msgstr "bản nháp"
 
-#: ../../apps/mobile/src/components/ThreadRow.tsx:88
+#: ../../apps/mobile/src/components/ThreadRow.tsx:98
 #, fuzzy
 msgid "Draft"
 msgstr "Bản nháp"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:165
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:179
 #, fuzzy
 msgid "Draft failed · tap to retry"
 msgstr "Bản nháp thất bại · chạm để thử lại"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:315
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:325
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:336
 #, fuzzy
 msgid "Draft generation failed. Try again."
 msgstr "Tạo bản nháp thất bại. Vui lòng thử lại."
@@ -1707,7 +1780,7 @@ msgstr "Tạo bản nháp thất bại. Vui lòng thử lại."
 msgid "Draft reply"
 msgstr "Trả lời nháp"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:112
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:126
 #, fuzzy
 msgid "Draft shared"
 msgstr "Bản nháp đã được chia sẻ"
@@ -1718,8 +1791,8 @@ msgstr "Bản nháp đã được chia sẻ"
 msgid "Draft style guidance"
 msgstr "Hướng dẫn phong cách bản nháp"
 
-#: ../../apps/mobile/src/components/ThreadRow.tsx:84
-#: ../ui/src/emails/ThreadRow.tsx:176
+#: ../../apps/mobile/src/components/ThreadRow.tsx:94
+#: ../ui/src/emails/ThreadRow.tsx:222
 #, fuzzy
 msgid "Drafting…"
 msgstr "Đang soạn nháp…"
@@ -1821,7 +1894,7 @@ msgid "Email verified! Sign in to continue."
 msgstr "Email đã được xác minh! Đăng nhập để tiếp tục."
 
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:28
-#: ../../apps/web/src/components/Sidebar.tsx:30
+#: ../../apps/web/src/components/Sidebar.tsx:32
 #, fuzzy
 msgid "Emails"
 msgstr "Email"
@@ -2026,7 +2099,7 @@ msgstr "Tài chính"
 msgid "Find and draft"
 msgstr "Tìm và soạn thảo"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:265
+#: ../../apps/site/src/components/demo/demo-seed.ts:266
 #, fuzzy
 msgid "Flagged as alliance/investor intro based on language (\"mutual benefit\", \"long-standing friendship\"). Confidence is moderate; Aziru has been known to send similar overtures to multiple courts."
 msgstr "Được gắn cờ là lời giới thiệu liên minh/nhà đầu tư dựa trên ngôn ngữ (\"lợi ích chung\", \"tình hữu nghị lâu đời\"). Độ tin cậy trung bình; Aziru được biết là đã gửi những lời mời tương tự đến nhiều triều đình."
@@ -2072,7 +2145,7 @@ msgid "Folder: {activeFolderName}"
 msgstr "Thư mục: {activeFolderName}"
 
 #: ../ui/src/emails/EmailRail.tsx:99
-#: ../ui/src/emails/ThreadList.tsx:130
+#: ../ui/src/emails/ThreadList.tsx:136
 #, fuzzy
 msgid "Folders"
 msgstr "Thư mục"
@@ -2113,7 +2186,7 @@ msgstr "Dành cho các tổ chức lớn và nhóm có khối lượng công vi�
 msgid "For larger organizations."
 msgstr "Dành cho các tổ chức lớn."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:260
+#: ../../apps/site/src/components/demo/demo-seed.ts:261
 #, fuzzy
 msgid "For many years our houses have been as brothers. I write now to propose that we formalise this friendship for the benefit of both our peoples."
 msgstr "Trong nhiều năm, các gia tộc chúng ta đã như anh em. Tôi viết thư này để đề xuất chúng ta chính thức hóa tình hữu nghị này vì lợi ích của cả hai dân tộc."
@@ -2207,8 +2280,8 @@ msgid "Generate a plan from your inbox"
 msgstr "Tạo kế hoạch từ hộp thư đến của bạn"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:294
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:131
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:303
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:145
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:314
 #: ../ui/src/emails/ThreadPreview.tsx:162
 #, fuzzy
 msgid "Generate draft reply"
@@ -2314,7 +2387,7 @@ msgstr "Gmail đánh dấu là quan trọng"
 msgid "Gmail read-only access was not granted. Please try again and approve the requested permission."
 msgstr "Quyền truy cập chỉ đọc Gmail không được cấp. Vui lòng thử lại và phê duyệt quyền đã yêu cầu."
 
-#: ../../apps/web/src/components/Sidebar.tsx:43
+#: ../../apps/web/src/components/Sidebar.tsx:45
 #, fuzzy
 msgid "Gmail Sort Tester"
 msgstr "Công cụ kiểm tra sắp xếp Gmail"
@@ -2454,7 +2527,7 @@ msgstr "Cách thức hoạt động"
 msgid "How to write a good description"
 msgstr "Cách viết mô tả hay"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:273
+#: ../../apps/site/src/components/demo/demo-seed.ts:274
 #, fuzzy
 msgid "I write to propose that we formalise our friendship."
 msgstr "Tôi viết thư này để đề xuất chúng ta chính thức hóa tình bạn."
@@ -2559,7 +2632,7 @@ msgstr "Bao gồm thư rác"
 msgid "Included"
 msgstr "Đã bao gồm"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:375
+#: ../../apps/site/src/components/demo/demo-seed.ts:379
 #, fuzzy
 msgid "Informal message with no clear category: personal visit or political audience? Tone is personal but sender is a known vassal governor. Routed to Other with low confidence."
 msgstr "Tin nhắn không trang trọng, không có danh mục rõ ràng: chuyến thăm cá nhân hay buổi tiếp kiến chính trị? Giọng điệu mang tính cá nhân nhưng người gửi là một thống đốc chư hầu đã biết. Được chuyển đến mục Khác với độ tin cậy thấp."
@@ -2785,8 +2858,10 @@ msgstr "Liệt kê người gửi, chủ đề và từ khóa thuộc về đây
 msgid "Live"
 msgstr "Hoạt động"
 
+#: ../../apps/mobile/app/(app)/notifications.tsx:294
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:95
-#: ../ui/src/emails/ThreadList.tsx:228
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:278
+#: ../ui/src/emails/ThreadList.tsx:238
 #, fuzzy
 msgid "Load more"
 msgstr "Tải thêm"
@@ -2794,18 +2869,24 @@ msgstr "Tải thêm"
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:116
 #: ../ui/src/emails/BackfillCard.tsx:35
-#: ../ui/src/emails/ThreadList.tsx:173
+#: ../ui/src/emails/ThreadList.tsx:179
 #, fuzzy
 msgid "Loading past threads…"
 msgstr "Đang tải các luồng thư cũ…"
 
+#: ../../apps/extension/src/panel/NotificationBell.tsx:123
+#: ../../apps/mobile/app/(app)/notifications.tsx:294
 #: ../../apps/mobile/src/components/MessageCard.tsx:53
+#: ../../apps/mobile/src/components/NotificationsSheet.tsx:57
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:201
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:278
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:121
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:137
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:158
 #: ../../apps/web/src/app/loading.tsx:6
+#: ../../apps/web/src/components/NotificationBell.tsx:149
 #: ../ui/src/emails/MessageCard.tsx:60
-#: ../ui/src/emails/ThreadList.tsx:228
+#: ../ui/src/emails/ThreadList.tsx:238
 #, fuzzy
 msgid "Loading…"
 msgstr "Đang tải…"
@@ -2820,6 +2901,12 @@ msgstr "Email"
 #, fuzzy
 msgid "Manage"
 msgstr "Quản lý"
+
+#: ../../apps/extension/src/panel/NotificationBell.tsx:145
+#: ../../apps/mobile/src/components/NotificationsSheet.tsx:63
+#: ../../apps/web/src/components/NotificationBell.tsx:170
+msgid "Manage notifications"
+msgstr "Quản lý thông báo"
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:303
 #, fuzzy
@@ -2837,15 +2924,21 @@ msgid "Manager emails: one-on-ones, performance reviews, and feedback."
 msgstr "Email quản lý: các cuộc họp 1-1, đánh giá hiệu suất và phản hồi."
 
 #: ../ui/src/emails/PreviewDoneBar.tsx:23
-#: ../ui/src/emails/ThreadRow.tsx:106
+#: ../ui/src/emails/ThreadRow.tsx:124
 #, fuzzy
 msgid "Mark as done"
 msgstr "Đánh dấu đã hoàn thành"
 
-#: ../ui/src/emails/ThreadRow.tsx:105
+#: ../ui/src/emails/ThreadRow.tsx:123
 #, fuzzy
 msgid "Mark as not done"
 msgstr "Đánh dấu chưa hoàn thành"
+
+#: ../../apps/mobile/app/(app)/notifications.tsx:208
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:245
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:246
+msgid "Mark as read"
+msgstr "Đánh dấu đã đọc"
 
 #: ../../apps/mobile/src/components/DraftSheet.tsx:111
 #: ../ui/src/emails/SuggestedDraftCard.tsx:73
@@ -2853,13 +2946,19 @@ msgstr "Đánh dấu chưa hoàn thành"
 msgid "Mark as sent"
 msgstr "Đánh dấu đã gửi"
 
+#: ../../apps/mobile/app/(app)/notifications.tsx:208
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:245
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:246
+msgid "Mark as unread"
+msgstr "Đánh dấu chưa đọc"
+
 #: ../../apps/mobile/src/components/DraftSheet.tsx:111
 #: ../ui/src/emails/SuggestedDraftCard.tsx:73
 #, fuzzy
 msgid "Mark as unsent"
 msgstr "Đánh dấu chưa gửi"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:204
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:218
 #, fuzzy
 msgid "Mark done"
 msgstr "Đánh dấu hoàn thành"
@@ -2868,6 +2967,17 @@ msgstr "Đánh dấu hoàn thành"
 #, fuzzy
 msgid "Mark invited"
 msgstr "Đánh dấu đã mời"
+
+#: ../../apps/mobile/app/(app)/notifications.tsx:307
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:182
+#, fuzzy
+msgid "Mark read"
+msgstr "Đánh dấu đã đọc"
+
+#: ../../apps/mobile/app/(app)/notifications.tsx:312
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:185
+msgid "Mark unread"
+msgstr "Đánh dấu chưa đọc"
 
 #: ../ui/src/emails/PreviewDoneBar.tsx:22
 #, fuzzy
@@ -2900,7 +3010,7 @@ msgstr "Thành viên"
 msgid "Messages from paying customers and account holders."
 msgstr "Tin nhắn từ khách hàng trả phí và chủ tài khoản."
 
-#: ../../apps/web/src/components/Sidebar.tsx:41
+#: ../../apps/web/src/components/Sidebar.tsx:43
 #, fuzzy
 msgid "Mock Inbox"
 msgstr "Hộp thư đến mô phỏng"
@@ -2962,7 +3072,7 @@ msgstr "Chuyển đến…"
 msgid "Moved to {folderName}"
 msgstr "Đã chuyển đến {folderName}"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:370
+#: ../../apps/site/src/components/demo/demo-seed.ts:374
 #, fuzzy
 msgid "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face."
 msgstr "Hạ thần sẽ đến gần khu vực Đồng bằng trong vài ngày tới. Nếu Đức Vua vĩ đại có thể dành một giờ rảnh rỗi, hạ thần rất mong có cơ hội được diện kiến trực tiếp."
@@ -3000,7 +3110,7 @@ msgstr "Không bao giờ"
 msgid "Never auto-sends · Encrypted at rest · Minimal data"
 msgstr "Không tự động gửi · Mã hóa dữ liệu lưu trữ · Dữ liệu tối thiểu"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:311
+#: ../../apps/site/src/components/demo/demo-seed.ts:313
 #, fuzzy
 msgid "New application from Horemheb of Thebes."
 msgstr "Đơn đăng ký mới từ Horemheb xứ Thebes."
@@ -3016,6 +3126,12 @@ msgstr "Yêu cầu kinh doanh mới, đề xuất, thảo luận về giá và t
 #, fuzzy
 msgid "New folder"
 msgstr "Thư mục mới"
+
+#: ../../apps/extension/src/panel/notificationText.ts:22
+#: ../../apps/mobile/src/data/notificationView.ts:33
+#: ../../apps/web/src/lib/notifications.ts:34
+msgid "New notification"
+msgstr "Thông báo mới"
 
 #: ../../apps/web/src/app/reset-password/page.tsx:43
 #: ../../apps/web/src/app/reset-password/page.tsx:68
@@ -3043,13 +3159,13 @@ msgstr "Không gian làm việc mới"
 msgid "New workspace name"
 msgstr "Tên không gian làm việc mới"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:129
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:143
 #, fuzzy
 msgid "No drafts remaining"
 msgstr "Không còn bản nháp nào"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:299
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:308
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:319
 #: ../ui/src/emails/SuggestedDraftCard.tsx:97
 #, fuzzy
 msgid "No drafts remaining · resets {quotaResetDate}"
@@ -3105,6 +3221,24 @@ msgstr "Chưa có hộp thư đến Gmail được kết nối. Kết nối tài
 msgid "No matching folders"
 msgstr "Không tìm thấy thư mục phù hợp"
 
+#: ../ui/src/emails/AssigneePicker.tsx:91
+#, fuzzy
+msgid "No members"
+msgstr "Không có thành viên"
+
+#: ../../apps/mobile/src/components/AssigneeSheet.tsx:67
+#, fuzzy
+msgid "No members available"
+msgstr "Không có thành viên khả dụng"
+
+#: ../../apps/extension/src/panel/NotificationBell.tsx:128
+#: ../../apps/mobile/app/(app)/notifications.tsx:287
+#: ../../apps/mobile/src/components/NotificationsSheet.tsx:57
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:203
+#: ../../apps/web/src/components/NotificationBell.tsx:152
+msgid "No notifications yet"
+msgstr "Chưa có thông báo nào"
+
 #: ../../apps/mobile/src/components/BlacklistSheet.tsx:146
 #, fuzzy
 msgid "No senders blocked yet."
@@ -3124,7 +3258,7 @@ msgstr "Chưa có lượt đăng ký nào."
 msgid "No threads"
 msgstr "Không có luồng nào"
 
-#: ../ui/src/emails/ThreadList.tsx:176
+#: ../ui/src/emails/ThreadList.tsx:182
 #, fuzzy
 msgid "No threads here."
 msgstr "Không có luồng nào ở đây."
@@ -3139,7 +3273,7 @@ msgstr "Không có luồng nào trong {folderName}"
 msgid "No threads match your search"
 msgstr "Không có luồng nào khớp với tìm kiếm của bạn"
 
-#: ../ui/src/emails/ThreadList.tsx:169
+#: ../ui/src/emails/ThreadList.tsx:175
 #, fuzzy
 msgid "No threads match your search."
 msgstr "Không có luồng nào khớp với tìm kiếm của bạn."
@@ -3150,7 +3284,7 @@ msgid "No threads yet"
 msgstr "Chưa có luồng nào"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:225
-#: ../../apps/web/src/components/Sidebar.tsx:142
+#: ../../apps/web/src/components/Sidebar.tsx:153
 #, fuzzy
 msgid "No workspace"
 msgstr "Không có không gian làm việc"
@@ -3197,17 +3331,31 @@ msgstr "Chưa đặt"
 msgid "Not yet synced"
 msgstr "Chưa đồng bộ"
 
+#: ../../apps/extension/src/panel/NotificationBell.tsx:40
+#: ../../apps/extension/src/panel/NotificationBell.tsx:116
+#: ../../apps/extension/src/panel/NotificationBell.tsx:118
 #: ../../apps/mobile/app/(app)/account.tsx:145
+#: ../../apps/mobile/app/(app)/notifications.tsx:249
+#: ../../apps/mobile/src/components/NotificationsSheet.tsx:43
+#: ../../apps/web/src/app/(app)/notifications/page.tsx:12
+#: ../../apps/web/src/components/NotificationBell.tsx:126
+#: ../../apps/web/src/components/NotificationBell.tsx:141
+#: ../../apps/web/src/components/NotificationBell.tsx:145
 #, fuzzy
 msgid "Notifications"
 msgstr "Thông báo"
+
+#: ../../apps/extension/src/panel/NotificationBell.tsx:101
+#: ../../apps/web/src/components/NotificationBell.tsx:125
+msgid "Notifications, {unread} unread"
+msgstr "Thông báo, {unread} chưa đọc"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:68
 #, fuzzy
 msgid "Official university emails: registrar, student services, and housing."
 msgstr "Email chính thức từ trường đại học: phòng đăng ký, dịch vụ sinh viên và nhà ở."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:337
+#: ../../apps/site/src/components/demo/demo-seed.ts:340
 #, fuzzy
 msgid "Ongoing thread with a known city governor raising a recurring supply issue. Escalatory tone and repeated follow-ups match the Support folder."
 msgstr "Cuộc trò chuyện đang diễn ra với một thống đốc thành phố quen thuộc về vấn đề cung ứng định kỳ. Tông giọng leo thang và các lần theo dõi lặp lại phù hợp với thư mục Hỗ trợ."
@@ -3219,16 +3367,16 @@ msgstr "Chỉ chủ sở hữu không gian làm việc mới có thể quản l�
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:244
 #: ../../apps/mobile/src/components/DraftSheet.tsx:97
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:242
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:248
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:254
 #: ../ui/src/emails/ThreadPreview.tsx:115
 #: ../ui/src/emails/ThreadPreview.tsx:121
-#: ../ui/src/emails/ThreadRow.tsx:107
+#: ../ui/src/emails/ThreadRow.tsx:125
 #, fuzzy
 msgid "Open in Gmail"
 msgstr "Mở trong Gmail"
 
-#: ../../apps/web/src/components/Sidebar.tsx:112
+#: ../../apps/web/src/components/Sidebar.tsx:114
 #, fuzzy
 msgid "Open navigation"
 msgstr "Mở điều hướng"
@@ -3237,6 +3385,12 @@ msgstr "Mở điều hướng"
 #, fuzzy
 msgid "open source email ai"
 msgstr "AI email nguồn mở"
+
+#: ../../apps/mobile/app/(app)/notifications.tsx:221
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:255
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:256
+msgid "Open thread"
+msgstr "Mở chủ đề"
 
 #: ../../apps/site/src/components/landing/HeroSection.tsx:58
 #, fuzzy
@@ -3302,8 +3456,8 @@ msgstr "Mẹ"
 msgid "Partners"
 msgstr "Đối tác"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:365
-#: ../../apps/site/src/components/demo/demo-seed.ts:383
+#: ../../apps/site/src/components/demo/demo-seed.ts:369
+#: ../../apps/site/src/components/demo/demo-seed.ts:387
 #, fuzzy
 msgid "Passing through the Delta: free to meet?"
 msgstr "Đang đi qua Đồng bằng: có rảnh gặp mặt không?"
@@ -3425,14 +3579,14 @@ msgstr "Thư từ cá nhân và email phi học thuật cho cuộc sống hàng 
 #. Screen heading for the email-sorting taxonomy. Not a billing or subscription plan.
 #. Sidebar nav label for the email-sorting taxonomy. Not a billing or subscription plan.
 #. Sidebar nav label for the email-sorting taxonomy. Not a billing or subscription plan.
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:42
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:43
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:35
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:265
 #: ../../apps/site/src/components/demo/DemoTaxonomyCanvas.tsx:220
 #: ../../apps/site/src/components/landing/Footer.tsx:26
 #: ../../apps/site/src/components/landing/Nav.tsx:39
 #: ../../apps/web/src/app/(app)/plan/page.tsx:43
-#: ../../apps/web/src/components/Sidebar.tsx:33
+#: ../../apps/web/src/components/Sidebar.tsx:35
 #, fuzzy
 msgid "Plan"
 msgstr "Kế hoạch"
@@ -3466,7 +3620,7 @@ msgstr "Bạn muốn tự host?"
 msgid "Prefer to self-host? It's open source:<0/> <1>clone it and run it free</1>."
 msgstr "Bạn muốn tự host? Đây là mã nguồn mở:<0/> <1>clone và chạy miễn phí</1>."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:419
+#: ../../apps/site/src/components/demo/demo-seed.ts:424
 #, fuzzy
 msgid "Prepare your accounts before the council convenes."
 msgstr "Chuẩn bị tài khoản của bạn trước khi hội đồng nhóm họp."
@@ -3567,7 +3721,7 @@ msgstr "Thư mục đề xuất. Áp dụng sẽ thay thế kế hoạch hiện 
 msgid "Queuing rescan…"
 msgstr "Đang xếp hàng quét lại…"
 
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:308
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:353
 #, fuzzy
 msgid "Re-route {unclassifiedCount} unclassified"
 msgstr "Chuyển hướng {unclassifiedCount} mục chưa phân loại"
@@ -3577,7 +3731,7 @@ msgstr "Chuyển hướng {unclassifiedCount} mục chưa phân loại"
 msgid "Re-route thread"
 msgstr "Chuyển hướng chuỗi thư"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:327
+#: ../../apps/site/src/components/demo/demo-seed.ts:330
 #, fuzzy
 msgid "Re: Grain shipment: third delay this season"
 msgstr "Re: Lô hàng ngũ cốc: lần trì hoãn thứ ba trong mùa này"
@@ -3822,7 +3976,7 @@ msgstr "Đặt lại không gian làm việc"
 msgid "Reset workspace?"
 msgstr "Đặt lại không gian làm việc?"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:141
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:155
 #, fuzzy
 msgid "Resets {draftResetDate}"
 msgstr "Đặt lại vào {draftResetDate}"
@@ -3848,7 +4002,7 @@ msgstr "Tài nguyên"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:317
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:345
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:331
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:342
 #, fuzzy
 msgid "Retry"
 msgstr "Thử lại"
@@ -3858,7 +4012,7 @@ msgstr "Thử lại"
 msgid "Review queue"
 msgstr "Hàng chờ xem xét"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:342
+#: ../../apps/site/src/components/demo/demo-seed.ts:345
 #, fuzzy
 msgid "Rib-Hadda of Byblos"
 msgstr "Rib-Hadda của Byblos"
@@ -3966,12 +4120,27 @@ msgstr "Tìm kiếm luồng..."
 msgid "See how your inbox is sorted, right next to Gmail."
 msgstr "Xem hộp thư đến được phân loại như thế nào, ngay cạnh Gmail."
 
+#: ../../apps/mobile/app/(app)/notifications.tsx:254
+msgid "Select"
+msgstr "Chọn"
+
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:199
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:273
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:310
 #: ../ui/src/emails/MockEmailsPage.tsx:234
 #, fuzzy
 msgid "Select a thread to preview"
 msgstr "Chọn một luồng để xem trước"
+
+#: ../../apps/mobile/app/(app)/notifications.tsx:269
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:174
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:176
+#, fuzzy
+msgid "Select all"
+msgstr "Chọn tất cả"
+
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:221
+msgid "Select notification"
+msgstr "Chọn thông báo"
 
 #: ../ui/src/PricingPlans.tsx:313
 #, fuzzy
@@ -4053,10 +4222,10 @@ msgstr "Đặt ngôn ngữ cho không gian làm việc này, bao gồm giao di�
 msgid "Setting up your workspace…"
 msgstr "Đang thiết lập không gian làm việc của bạn..."
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:51
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:52
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:42
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:197
-#: ../../apps/web/src/components/Sidebar.tsx:40
+#: ../../apps/web/src/components/Sidebar.tsx:42
 #, fuzzy
 msgid "Settings"
 msgstr "Cài đặt"
@@ -4114,7 +4283,7 @@ msgstr "Đăng nhập bằng Google. Amarnai đồng bộ hóa các luồng và 
 
 #: ../../apps/extension/src/App.tsx:46
 #: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:68
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:127
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:130
 #: ../../apps/mobile/app/(app)/account.tsx:122
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:98
 #: ../../apps/web/src/app/verify-email/page.tsx:42
@@ -4226,7 +4395,7 @@ msgstr "Khối lượng sắp xếp"
 #: ../../apps/mobile/src/components/RationaleCard.tsx:35
 #: ../../apps/site/src/components/landing/HeroFeedCard.tsx:90
 #: ../ui/src/emails/RationaleCard.tsx:52
-#: ../ui/src/emails/ThreadRow.tsx:147
+#: ../ui/src/emails/ThreadRow.tsx:193
 #, fuzzy
 msgid "Sorting…"
 msgstr "Đang sắp xếp…"
@@ -4486,12 +4655,12 @@ msgstr "Không thể lưu kết nối do lỗi máy chủ. Vui lòng thử lại
 msgid "The Gmail connection, all synced emails, and the taxonomy will be permanently deleted. Re-importing this inbox uses your monthly import allowance; if it runs out, you can import again after {allowanceResetsAt} or by upgrading."
 msgstr "Kết nối Gmail, tất cả email đã đồng bộ và hệ thống phân loại sẽ bị xóa vĩnh viễn. Việc nhập lại hộp thư này sẽ dùng đến hạn mức nhập hàng tháng của bạn; nếu hết, bạn có thể nhập lại sau {allowanceResetsAt} hoặc bằng cách nâng cấp gói."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:332
+#: ../../apps/site/src/components/demo/demo-seed.ts:335
 #, fuzzy
 msgid "The grain you sent last month was received with gratitude. But I must write again: the third shipment has not arrived and the city grows restless."
 msgstr "Số ngũ cốc người gửi tháng trước đã được nhận với lòng biết ơn. Nhưng ta phải viết lại: chuyến hàng thứ ba vẫn chưa đến và thành phố đang dần náo động."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:406
+#: ../../apps/site/src/components/demo/demo-seed.ts:411
 #, fuzzy
 msgid "The great council convenes at the start of Shemu. I ask that you prepare a full accounting of the eastern territories and send it ahead by fast courier."
 msgstr "Đại hội đồng triệu tập vào đầu Shemu. Ta yêu cầu ngươi chuẩn bị đầy đủ báo cáo về các vùng lãnh thổ phía đông và gửi trước bằng chuyển phát nhanh."
@@ -4506,7 +4675,7 @@ msgstr "Lô vàng thứ ba theo thỏa thuận trong hiệp ước của chúng 
 msgid "The third gold consignment is overdue."
 msgstr "Lô vàng thứ ba đã quá hạn."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:345
+#: ../../apps/site/src/components/demo/demo-seed.ts:348
 #, fuzzy
 msgid "The third grain shipment has not arrived."
 msgstr "Chuyến hàng ngũ cốc thứ ba vẫn chưa đến."
@@ -4593,12 +4762,12 @@ msgstr "Luồng này đang chờ được định tuyến."
 msgid "This thread is waiting to be routed. Use “Route now” to start sorting."
 msgstr "Luồng này đang chờ được định tuyến. Sử dụng “Định tuyến ngay” để bắt đầu sắp xếp."
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:71
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:85
 #, fuzzy
 msgid "Thread"
 msgstr "Luồng"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:73
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:87
 #, fuzzy
 msgid "Thread not found"
 msgstr "Không tìm thấy luồng"
@@ -4654,7 +4823,7 @@ msgstr "Email chưa được phân loại."
 msgid "Three steps. Then it sorts every email for you."
 msgstr "Chỉ 3 bước. Mọi email được sắp xếp tự động cho bạn."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:420
+#: ../../apps/site/src/components/demo/demo-seed.ts:425
 #, fuzzy
 msgid "To my brother, the Great King,\n"
 "\n"
@@ -4684,7 +4853,7 @@ msgstr "Gửi Cục Bổ nhiệm Hoàng gia,\n"
 "\n"
 "Theo sắc lệnh hoàng gia,"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:274
+#: ../../apps/site/src/components/demo/demo-seed.ts:275
 #, fuzzy
 msgid "To the Great King,\n"
 "\n"
@@ -4701,7 +4870,7 @@ msgstr "Gửi Đại Vương,\n"
 "\n"
 "Aziru, bầy tôi của Đại Vương, chúa tể Amurru"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:384
+#: ../../apps/site/src/components/demo/demo-seed.ts:388
 #, fuzzy
 msgid "To the Great King,\n"
 "\n"
@@ -4744,7 +4913,7 @@ msgstr "Gửi Đại Vương, huynh đệ của ta,\n"
 "\n"
 "Burna-Buriash II, Vua Babylon"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:346
+#: ../../apps/site/src/components/demo/demo-seed.ts:349
 #, fuzzy
 msgid "To the Great King, my lord, my sun,\n"
 "\n"
@@ -4767,7 +4936,7 @@ msgstr "Gửi Đại Vương, chúa tể của thần, mặt trời của thần
 msgid "Today"
 msgstr "Hôm nay"
 
-#: ../ui/src/emails/ThreadList.tsx:114
+#: ../ui/src/emails/ThreadList.tsx:120
 #, fuzzy
 msgid "Toggle folders"
 msgstr "Hiện/ẩn thư mục"
@@ -4805,10 +4974,15 @@ msgstr "Sắp xếp hộp thư đến của bạn mọi lúc, mọi nơi."
 msgid "Try Amarnai"
 msgstr "Dùng thử Amarnai"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:416
+#: ../../apps/site/src/components/demo/demo-seed.ts:421
 #, fuzzy
 msgid "Tushratta of Mitanni"
 msgstr "Tushratta xứ Mitanni"
+
+#: ../../apps/mobile/src/components/AssigneeSheet.tsx:32
+#: ../ui/src/emails/AssigneePicker.tsx:31
+msgid "Unassign"
+msgstr "Bỏ giao"
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:151
 #: ../../apps/mobile/app/(app)/subscription.tsx:156
@@ -4817,13 +4991,13 @@ msgid "Unavailable"
 msgstr "Không khả dụng"
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:46
-#: ../ui/src/emails/ThreadRow.tsx:155
+#: ../ui/src/emails/ThreadRow.tsx:201
 #, fuzzy
 msgid "Unclassified"
 msgstr "Chưa được phân loại"
 
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:221
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:295
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:340
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1321
 #: ../../apps/web/src/app/admin/waitlist/page.tsx:26
 #: ../ui/src/emails/MockEmailsPage.tsx:253
@@ -5033,7 +5207,7 @@ msgstr "Đã gửi email xác minh. Hãy kiểm tra hộp thư của bạn."
 msgid "Verify your email"
 msgstr "Xác minh email của bạn"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:178
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:192
 #, fuzzy
 msgid "View draft reply"
 msgstr "Xem bản nháp phản hồi"
@@ -5045,7 +5219,7 @@ msgstr "Chỉ xem. Chỉ quản trị viên không gian làm việc mới có th
 #: ../../apps/mobile/src/components/RationaleCard.tsx:44
 #: ../../apps/mobile/src/components/ThreadRow.tsx:49
 #: ../ui/src/emails/RationaleCard.tsx:74
-#: ../ui/src/emails/ThreadRow.tsx:151
+#: ../ui/src/emails/ThreadRow.tsx:197
 #, fuzzy
 msgid "Waiting"
 msgstr "Đang chờ"
@@ -5065,7 +5239,7 @@ msgstr "Đang chờ xác minh…"
 msgid "Waitlist"
 msgstr "Danh sách chờ"
 
-#: ../ui/src/emails/ThreadRow.tsx:99
+#: ../ui/src/emails/ThreadRow.tsx:117
 #, fuzzy
 msgid "Wants {folderName}"
 msgstr "Muốn {folderName}"
@@ -5127,7 +5301,7 @@ msgstr "Công việc"
 msgid "Working Professional"
 msgstr "Chuyên gia làm việc"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:60
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:61
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:220
 #: ../../apps/site/src/components/demo/DemoTaxonomyCanvas.tsx:218
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:35
@@ -5161,7 +5335,7 @@ msgstr "Tên không gian làm việc không được để trống"
 msgid "Workspace name updated."
 msgstr "Đã cập nhật tên không gian làm việc."
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:48
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:49
 msgid "Workspace settings"
 msgstr "Cài đặt không gian làm việc"
 
@@ -5181,8 +5355,8 @@ msgid "Workspaces included"
 msgstr "Không gian làm việc bao gồm"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:309
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:153
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:319
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:167
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:330
 #: ../ui/src/emails/ThreadPreview.tsx:169
 #, fuzzy
 msgid "Writing draft reply…"
@@ -5269,6 +5443,12 @@ msgstr "Bạn có thể thử lại trong thời gian ngắn, hoặc bắt đầ
 #, fuzzy
 msgid "You do not have permission to connect a Gmail inbox to this workspace."
 msgstr "Bạn không có quyền kết nối hộp thư Gmail vào không gian làm việc này."
+
+#: ../../apps/extension/src/panel/notificationText.ts:19
+#: ../../apps/mobile/src/data/notificationView.ts:29
+#: ../../apps/web/src/lib/notifications.ts:30
+msgid "You were assigned a thread"
+msgstr "Bạn đã được giao một chủ đề"
 
 #: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:178
 #, fuzzy

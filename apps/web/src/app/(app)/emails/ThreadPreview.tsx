@@ -6,8 +6,8 @@ import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
 import { api } from "@/lib/api";
 import type { Draft } from "@/lib/api";
-import type { FolderItem, ThreadItem } from "@amarnai/ui/emails";
-import { RationaleCard, MessageCard, SuggestedDraftCard, PreviewDoneBar } from "@amarnai/ui/emails";
+import type { FolderItem, ThreadItem, MemberItem } from "@amarnai/ui/emails";
+import { RationaleCard, MessageCard, SuggestedDraftCard, TriageBar } from "@amarnai/ui/emails";
 import { Tooltip } from "@amarnai/ui";
 import { formatQuotaResetDate } from "@amarnai/shared";
 
@@ -28,6 +28,9 @@ type Props = {
   onDraftSentToggled: (threadId: string, sent: boolean) => void;
   onMarkDone: (threadId: string) => void;
   onUnmarkDone: (threadId: string) => void;
+  members: MemberItem[];
+  canAssign: boolean;
+  onOpenAssign: (threadId: string, anchor: HTMLElement) => void;
 };
 
 export function ThreadPreview({
@@ -45,6 +48,9 @@ export function ThreadPreview({
   onDraftSentToggled,
   onMarkDone,
   onUnmarkDone,
+  members,
+  canAssign,
+  onOpenAssign,
 }: Props) {
   const { _ } = useLingui();
   const [reasoning, setReasoning] = useState<string | null>(thread.reasoning);
@@ -254,11 +260,16 @@ export function ThreadPreview({
           </Tooltip>
         </h2>
 
-        <PreviewDoneBar
+        <TriageBar
           isDone={isDone}
           doneMark={thread.doneMark}
           onMark={() => onMarkDone(thread.id)}
           onUnmark={() => onUnmarkDone(thread.id)}
+          assignment={thread.assignment}
+          canAssign={canAssign}
+          {...(members.length > 0
+            ? { onOpenAssign: (anchor: HTMLElement) => onOpenAssign(thread.id, anchor) }
+            : {})}
         />
 
         <RationaleCard

@@ -5,6 +5,8 @@ export type {
   ThreadStatus,
   ThreadMessage,
   DoneMark,
+  ThreadAssignment,
+  MemberItem,
   ThreadItem,
   DraftItem,
   SyncInfo,
@@ -21,6 +23,9 @@ export { ThreadRow } from "./ThreadRow.js";
 export { ThreadList } from "./ThreadList.js";
 export { RationaleCard } from "./RationaleCard.js";
 export { PreviewDoneBar } from "./PreviewDoneBar.js";
+export { TriageBar } from "./TriageBar.js";
+export { AssigneePicker } from "./AssigneePicker.js";
+export type { AssigneePickerProps } from "./AssigneePicker.js";
 export { MessageCard } from "./MessageCard.js";
 export { SuggestedDraftCard } from "./SuggestedDraftCard.js";
 export { ReroutePopover } from "./ReroutePopover.js";

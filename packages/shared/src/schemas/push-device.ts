@@ -21,5 +21,10 @@ export type RegisterPushDeviceInput = z.infer<typeof RegisterPushDeviceSchema>;
 // (open the thread, mark reviewed in Amarnai state) and perform no Gmail writes.
 export const PUSH_CATEGORY_THREAD_NEEDS_ATTENTION = "thread_needs_attention" as const;
 
+// Android notification category id for a "you were assigned a thread" push.
+// Shared between the worker (sets it on the emitted push) and the mobile app
+// (registers the matching category). Tapping it deep-links to the thread.
+export const PUSH_CATEGORY_THREAD_ASSIGNED = "thread_assigned" as const;
+
 // Android notification channel id for triage pushes.
 export const PUSH_CHANNEL_TRIAGE = "triage" as const;

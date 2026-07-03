@@ -42,6 +42,18 @@ const CLIP_ICO = (
   </svg>
 );
 
+const PERSON_ICO = (
+  <svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden>
+    <circle cx="6" cy="3.6" r="2.1" stroke="currentColor" strokeWidth="1.2" />
+    <path
+      d="M2 10.2c0-2.1 1.8-3.4 4-3.4s4 1.3 4 3.4"
+      stroke="currentColor"
+      strokeWidth="1.2"
+      strokeLinecap="round"
+    />
+  </svg>
+);
+
 function fmtTime(d: Date, today: string): string {
   const ds = d.toISOString().slice(0, 10);
   if (ds === today) {
@@ -67,6 +79,10 @@ export interface ThreadRowProps {
   onSelect: () => void;
   onMarkDone: () => void;
   onUnmarkDone: () => void;
+  /** True when the workspace has ≥2 members (assign affordances are shown). */
+  canAssign?: boolean;
+  /** Open the member picker anchored to the passed element. */
+  onOpenAssign?: (anchor: HTMLElement) => void;
 }
 
 export function ThreadRow({
@@ -78,6 +94,8 @@ export function ThreadRow({
   onSelect,
   onMarkDone,
   onUnmarkDone,
+  canAssign,
+  onOpenAssign,
 }: ThreadRowProps) {
   const { i18n } = useLingui();
   const today = new Date().toISOString().slice(0, 10);
@@ -105,6 +123,13 @@ export function ThreadRow({
     ? i18n._(msg`Mark as not done`)
     : i18n._(msg`Mark as done`);
   const openInGmailLabel = i18n._(msg`Open in Gmail`);
+
+  const assignment = thread.assignment;
+  const assigneeName = assignment ? (assignment.userName ?? assignment.userEmail) : "";
+  // The picker is only reachable when the parent wired a handler. An existing
+  // assignment chip is always shown; the "assign" affordance for an unassigned
+  // thread appears only when canAssign (workspace has ≥2 members).
+  const assignInteractive = !!onOpenAssign;
 
   const classes = [
     "em-thread-row",
@@ -140,6 +165,27 @@ export function ThreadRow({
               {CHECK_ICO}
               <Trans>Done</Trans>
             </span>
+          )}
+          {assignment && (
+            assignInteractive ? (
+              <button
+                type="button"
+                className="em-pill em-pill--assignee"
+                aria-label={i18n._(msg`Assigned to ${assigneeName}. Change assignee`)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onOpenAssign?.(e.currentTarget);
+                }}
+              >
+                {PERSON_ICO}
+                {assigneeName}
+              </button>
+            ) : (
+              <span className="em-pill em-pill--assignee">
+                {PERSON_ICO}
+                {assigneeName}
+              </span>
+            )
           )}
           {isClassifying ? (
             <span className="em-route-chip sorting">
@@ -210,6 +256,21 @@ export function ThreadRow({
           {fmtTime(thread.latestAt, today)}
         </div>
         <div className="em-thread-actions">
+          {assignInteractive && canAssign && !assignment && (
+            <Tooltip content={i18n._(msg`Assign to a member`)}>
+              <button
+                type="button"
+                className="em-assign-row-btn"
+                aria-label={i18n._(msg`Assign to a member`)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onOpenAssign?.(e.currentTarget);
+                }}
+              >
+                {PERSON_ICO}
+              </button>
+            </Tooltip>
+          )}
           <Tooltip content={markDoneLabel}>
             <button
               type="button"

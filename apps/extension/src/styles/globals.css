@@ -157,7 +157,9 @@ body {
   padding: var(--space-xs) var(--space-md);
 }
 
-/* Icon links out to the web app (plan, workspace settings). */
+/* Shared by the icon links out to the web app (plan, workspace settings) and
+   the notification bell <button>. The button resets keep the <button> visually
+   identical to the <a> links (no native chrome). */
 .ax-header-iconbtn {
   display: inline-flex;
   align-items: center;
@@ -168,6 +170,11 @@ body {
   color: var(--ink-3);
   flex-shrink: 0;
   text-decoration: none;
+  border: none;
+  background: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
 }
 
 .ax-header-iconbtn:hover {
@@ -196,6 +203,102 @@ body {
     display: inline;
     font-size: var(--fs-sm);
   }
+}
+
+/* ─── Notification bell + pop-up ─────────────────────────────────────────── */
+
+.ax-notif {
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+}
+
+/* Anchors the unread badge to the bell glyph, so it stays put when the button
+   widens to show the "Notifications" label at wide panel widths (like Plan and
+   Settings). */
+.ax-notif-icon {
+  position: relative;
+  display: inline-flex;
+}
+
+.ax-notif-badge {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  min-width: 14px;
+  height: 14px;
+  padding: 0 3px;
+  border-radius: 999px;
+  background: var(--danger);
+  color: #fff;
+  font-size: 8px;
+  font-weight: 600;
+  line-height: 14px;
+  text-align: center;
+}
+
+.ax-notif-panel {
+  position: absolute;
+  top: calc(100% + var(--space-xs));
+  right: 0;
+  width: 260px;
+  max-width: calc(100vw - var(--space-lg) * 2);
+  background: var(--surface);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-2);
+  z-index: 40;
+  overflow: hidden;
+}
+
+.ax-notif-header {
+  padding: var(--space-sm) var(--space-md);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--ink);
+  border-bottom: 1px solid var(--line);
+}
+
+.ax-notif-list {
+  max-height: 280px;
+  overflow-y: auto;
+  padding: var(--space-xs) 0;
+}
+
+.ax-notif-item {
+  padding: var(--space-sm) var(--space-md);
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ax-notif-item.is-unread {
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+}
+
+.ax-notif-empty {
+  padding: var(--space-lg) var(--space-md);
+  font-size: var(--fs-sm);
+  color: var(--ink-4);
+  text-align: center;
+}
+
+.ax-notif-manage {
+  display: block;
+  padding: var(--space-sm) var(--space-md);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--accent-ink);
+  text-align: center;
+  text-decoration: none;
+  border-top: 1px solid var(--line);
+}
+
+.ax-notif-manage:hover {
+  background: var(--bg-sunk);
 }
 
 .ax-user-menu {

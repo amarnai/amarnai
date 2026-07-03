@@ -55,6 +55,9 @@ function statusBadge(thread: ThreadItem): { label: MessageDescriptor; bg: string
 export function ThreadRow({ thread, onPress }: ThreadRowProps) {
   const { i18n } = useLingui();
   const badge = statusBadge(thread);
+  const assigneeName = thread.assignment
+    ? (thread.assignment.userName ?? thread.assignment.userEmail)
+    : null;
 
   return (
     <TouchableOpacity style={styles.row} onPress={onPress}>
@@ -79,6 +82,13 @@ export function ThreadRow({ thread, onPress }: ThreadRowProps) {
         <View style={[styles.badge, { backgroundColor: badge.bg }]}>
           <Text style={[styles.badgeText, { color: badge.fg }]}>{i18n._(badge.label)}</Text>
         </View>
+        {assigneeName ? (
+          <View style={[styles.draftPill, styles.assigneePill]}>
+            <Text style={[styles.draftPillText, styles.assigneePillText]} numberOfLines={1}>
+              {assigneeName}
+            </Text>
+          </View>
+        ) : null}
         {thread.isDrafting ? (
           <View style={styles.draftPill}>
             <Text style={styles.draftPillText}><Trans>Drafting…</Trans></Text>
@@ -175,6 +185,13 @@ const styles = StyleSheet.create({
   },
   draftPillAccent: {
     backgroundColor: colors.accentSoft,
+  },
+  assigneePill: {
+    backgroundColor: colors.accentSoft,
+    maxWidth: 140,
+  },
+  assigneePillText: {
+    color: colors.accentInk,
   },
   draftPillText: {
     fontSize: fontSize.xs,

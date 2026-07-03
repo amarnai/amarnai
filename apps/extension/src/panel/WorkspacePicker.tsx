@@ -6,6 +6,7 @@ import { NavGlyph } from "@amarnai/ui";
 import { userInitials } from "@amarnai/core";
 import { useSession } from "../auth/session";
 import { WEB_APP_URL } from "../config";
+import { NotificationBell } from "./NotificationBell";
 
 // Slim panel header: workspace switcher, links out to the web app (plan and
 // workspace settings), and the user menu (account settings, sign out). At
@@ -68,6 +69,8 @@ export function PanelHeader() {
       ) : (
         <span className="ax-ws-name">{active?.name ?? "Amarnai"}</span>
       )}
+
+      <NotificationBell />
 
       <a
         className="ax-header-iconbtn"

@@ -29,6 +29,8 @@ import { folderCountsRoute } from "./routes/folder-counts.js";
 import { sortingQueueRoute } from "./routes/sorting-queue.js";
 import { draftsRoute } from "./routes/drafts.js";
 import { resolveThreadRoute } from "./routes/resolve-thread.js";
+import { assignThreadRoute } from "./routes/assign-thread.js";
+import { notificationsRoute } from "./routes/notifications.js";
 import { gmailWebhookRoute } from "./routes/gmail-webhook.js";
 import { gmailWatchRoute } from "./routes/gmail-watch.js";
 import { workspaceEventsRoute } from "./routes/workspace-events.js";
@@ -154,6 +156,10 @@ app.route("/", folderCountsRoute);
 app.route("/", sortingQueueRoute);
 app.route("/", draftsRoute);
 app.route("/", resolveThreadRoute);
+app.route("/", assignThreadRoute);
+// User-scoped (not under the /workspaces/:workspaceId/* membership guard):
+// tenancy is enforced inside the route by filtering on the authenticated user.
+app.route("/", notificationsRoute);
 app.route("/", gmailWebhookRoute);
 app.route("/", gmailWatchRoute);
 app.route("/", workspaceEventsRoute);

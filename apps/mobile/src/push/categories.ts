@@ -1,6 +1,10 @@
 import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
-import { PUSH_CATEGORY_THREAD_NEEDS_ATTENTION, PUSH_CHANNEL_TRIAGE } from '@amarnai/shared';
+import {
+  PUSH_CATEGORY_THREAD_NEEDS_ATTENTION,
+  PUSH_CATEGORY_THREAD_ASSIGNED,
+  PUSH_CHANNEL_TRIAGE,
+} from '@amarnai/shared';
 
 // Inline notification action ids for the "thread needs attention" category.
 //
@@ -30,6 +34,17 @@ export async function registerNotificationCategories(): Promise<void> {
       // Resolves the thread in Amarnai state without opening the app. This is an
       // Amarnai-internal status change only — it does NOT touch Gmail.
       options: { opensAppToForeground: false },
+    },
+  ]);
+
+  // "Assigned to you" category. A single Open action — tapping deep-links to the
+  // thread via the same default-action path in handleNotificationResponse. No
+  // mark-reviewed here: assignment is about ownership, not completion.
+  await Notifications.setNotificationCategoryAsync(PUSH_CATEGORY_THREAD_ASSIGNED, [
+    {
+      identifier: THREAD_ACTION_OPEN,
+      buttonTitle: 'Open',
+      options: { opensAppToForeground: true },
     },
   ]);
 

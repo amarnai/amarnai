@@ -72,7 +72,7 @@ Amarnai uses Lingui v5 for i18n across `apps/web`, `apps/site`, and `apps/mobile
 - Write copy that is self-contained and unambiguous. Avoid idioms, wordplay, and split sentences across multiple macros.
 - Settle on the final English text before wrapping. Changing a wrapped string creates a new catalog key and orphans the old translation.
 
-**Pipeline:** `pnpm i18n:extract` then `pnpm i18n:translate` then `pnpm i18n:compile`. The pre-commit hook runs this automatically when string-touching files are staged.
+**Pipeline (hook-owned — do not run manually):** the pre-commit hook runs `pnpm i18n:extract` → `pnpm i18n:translate` → `pnpm i18n:compile` automatically when string-touching files are staged. Just wrap strings in macros; the hook handles the rest at commit time. Only run `pnpm i18n:compile` by hand if you need compiled catalogs before committing (e.g. to verify new strings render).
 
 ## Standards
 

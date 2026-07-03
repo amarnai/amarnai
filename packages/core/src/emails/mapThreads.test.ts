@@ -20,6 +20,7 @@ function makeThread(triageStatus: EmailThreadSummary["triageStatus"]): EmailThre
     hasDraft: false,
     isDrafting: false,
     doneMark: null,
+    assignment: null,
   };
 }
 

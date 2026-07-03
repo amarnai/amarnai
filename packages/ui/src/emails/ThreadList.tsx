@@ -58,6 +58,10 @@ export interface ThreadListProps {
   searchRef?: React.RefObject<HTMLInputElement | null> | undefined;
   onMarkDone: (threadId: string) => void;
   onUnmarkDone: (threadId: string) => void;
+  /** True when the workspace has ≥2 members (assign affordances are shown). */
+  canAssign?: boolean;
+  /** Open the member picker for a thread, anchored to the passed element. */
+  onOpenAssign?: (threadId: string, anchor: HTMLElement) => void;
   railOpen?: boolean;
   onToggleRail?: () => void;
   // Pagination: a footer shows "X of Y loaded" with an explicit Load more button,
@@ -87,6 +91,8 @@ export function ThreadList({
   searchRef,
   onMarkDone,
   onUnmarkDone,
+  canAssign,
+  onOpenAssign,
   railOpen,
   onToggleRail,
   hasMore,
@@ -201,6 +207,10 @@ export function ThreadList({
                     onSelect={() => onSelectThread(thread.id)}
                     onMarkDone={() => onMarkDone(thread.id)}
                     onUnmarkDone={() => onUnmarkDone(thread.id)}
+                    {...(canAssign !== undefined ? { canAssign } : {})}
+                    {...(onOpenAssign
+                      ? { onOpenAssign: (anchor: HTMLElement) => onOpenAssign(thread.id, anchor) }
+                      : {})}
                   />
                 );
               })}

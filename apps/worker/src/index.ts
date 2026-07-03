@@ -15,10 +15,12 @@ import { createClassifyThreadWorker } from "./jobs/classify-thread.js";
 import { createBackfillInboxWorker } from "./jobs/backfill-inbox.js";
 import { createLifecycleEmailWorker } from "./jobs/lifecycle-email.js";
 import { createGenerateTaxonomyWorker } from "./jobs/generate-taxonomy.js";
-import { syncInboxQueue, backfillInboxQueue, lifecycleEmailQueue, generateTaxonomyQueue } from "./queues.js";
+import { createPushNotificationWorker } from "./jobs/push-notification.js";
+import { syncInboxQueue, backfillInboxQueue, lifecycleEmailQueue, generateTaxonomyQueue, pushNotificationQueue } from "./queues.js";
 import { closePublisher } from "./redis-publisher.js";
 import { closeAiDedup } from "./ai-dedup.js";
 import { closePushBudget } from "./notifications/notify-threads.js";
+import { closeAssignPushBudget } from "./notifications/notify-thread-assigned.js";
 
 // ─── Watch renewal ────────────────────────────────────────────────────────────
 
@@ -251,8 +253,9 @@ async function main(): Promise<void> {
   const backfillWorker = createBackfillInboxWorker();
   const lifecycleEmailWorker = createLifecycleEmailWorker();
   const generateTaxonomyWorker = createGenerateTaxonomyWorker();
+  const pushNotificationWorker = createPushNotificationWorker();
 
-  console.log("[worker] sync-inbox, classify-thread, backfill-inbox, lifecycle-email, and generate-taxonomy workers registered");
+  console.log("[worker] sync-inbox, classify-thread, backfill-inbox, lifecycle-email, generate-taxonomy, and push-notification workers registered");
 
   // Run immediately on startup so the first sync doesn't wait a full interval.
   await scheduleSyncJobs();
@@ -335,6 +338,7 @@ async function main(): Promise<void> {
       backfillWorker.close(),
       lifecycleEmailWorker.close(),
       generateTaxonomyWorker.close(),
+      pushNotificationWorker.close(),
     ]);
 
     await Promise.all([
@@ -342,9 +346,11 @@ async function main(): Promise<void> {
       backfillInboxQueue.close(),
       lifecycleEmailQueue.close(),
       generateTaxonomyQueue.close(),
+      pushNotificationQueue.close(),
       closePublisher(),
       closeAiDedup(),
       closePushBudget(),
+      closeAssignPushBudget(),
     ]);
 
     await db.$disconnect();

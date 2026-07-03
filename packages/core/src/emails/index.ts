@@ -6,6 +6,8 @@ export type {
   ThreadStatus,
   ThreadMessage,
   DoneMark,
+  ThreadAssignment,
+  MemberItem,
   ThreadItem,
   DraftItem,
   SyncInfo,

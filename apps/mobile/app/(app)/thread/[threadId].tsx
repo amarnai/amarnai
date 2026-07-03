@@ -14,6 +14,7 @@ import { useThreadDraft } from '../../../src/data/useThreadDraft';
 import { RationaleCard } from '../../../src/components/RationaleCard';
 import { MessageCard } from '../../../src/components/MessageCard';
 import { RerouteSheet } from '../../../src/components/RerouteSheet';
+import { AssigneeSheet } from '../../../src/components/AssigneeSheet';
 import { DraftSheet } from '../../../src/components/DraftSheet';
 import { Toast } from '../../../src/components/Toast';
 import { ScreenContainer } from '../../../src/components/ScreenContainer';
@@ -24,13 +25,26 @@ export default function ThreadDetailScreen() {
   const router = useRouter();
   const { i18n } = useLingui();
   const { threadId } = useLocalSearchParams<{ threadId: string }>();
-  const { workspaceId } = useSession();
+  const { workspaceId, workspaces } = useSession();
   const triage = useTriage();
   const { setSelectedId } = triage;
   const { bottom } = useSafeAreaInsets();
 
   const [rerouteOpen, setRerouteOpen] = useState(false);
+  const [assigneeOpen, setAssigneeOpen] = useState(false);
   const [draftSheetOpen, setDraftSheetOpen] = useState(false);
+
+  // Members of the active workspace drive the assignee picker. Assignment is
+  // offered only when there is more than one member.
+  const members = useMemo(() => {
+    const ws = workspaces.find((w) => w.id === workspaceId);
+    return (ws?.members ?? []).map((m) => ({
+      userId: m.user.id,
+      name: m.user.name,
+      email: m.user.email,
+    }));
+  }, [workspaces, workspaceId]);
+  const canAssign = members.length >= 2;
 
   // Drive the shared selection from the route param so the screen is self-contained
   // (works via deep link or back navigation, not only a list tap).
@@ -204,6 +218,21 @@ export default function ThreadDetailScreen() {
               <Text style={styles.doneBtnText}><Trans>Mark done</Trans></Text>
             </TouchableOpacity>
           )}
+          {thread.assignment ? (
+            <TouchableOpacity
+              style={styles.assignBtnActive}
+              onPress={() => canAssign && setAssigneeOpen(true)}
+              disabled={!canAssign}
+            >
+              <Text style={styles.assignBtnActiveText} numberOfLines={1}>
+                {thread.assignment.userName ?? thread.assignment.userEmail}
+              </Text>
+            </TouchableOpacity>
+          ) : canAssign ? (
+            <TouchableOpacity style={styles.assignBtn} onPress={() => setAssigneeOpen(true)}>
+              <Text style={styles.assignBtnText}><Trans>Assign</Trans></Text>
+            </TouchableOpacity>
+          ) : null}
         </View>
 
         <RationaleCard
@@ -237,6 +266,18 @@ export default function ThreadDetailScreen() {
         currentFolderId={thread.folderId}
         onSelect={handleMoveSelect}
         onClose={handleMoveClose}
+      />
+
+      <AssigneeSheet
+        visible={assigneeOpen}
+        members={members}
+        currentAssigneeId={thread.assignment?.userId ?? null}
+        onSelect={(userId) => {
+          const member = userId ? members.find((m) => m.userId === userId) ?? null : null;
+          triage.handleAssign(thread.id, member);
+          setAssigneeOpen(false);
+        }}
+        onClose={() => setAssigneeOpen(false)}
       />
 
       {draftState === 'ready' && draft && (
@@ -276,8 +317,34 @@ const styles = StyleSheet.create({
   },
   doneBar: {
     flexDirection: 'row',
+    alignItems: 'center',
+    gap: space.md,
     paddingHorizontal: space.xl,
     paddingTop: space.lg,
+  },
+  assignBtn: {
+    borderWidth: 1,
+    borderColor: colors.accentLine,
+    borderRadius: radii.full,
+    paddingHorizontal: space.lg,
+    paddingVertical: space.sm,
+  },
+  assignBtnText: {
+    fontSize: fontSize.md,
+    fontWeight: fontWeight.medium,
+    color: colors.accentInk,
+  },
+  assignBtnActive: {
+    backgroundColor: colors.accentSoft,
+    borderRadius: radii.full,
+    paddingHorizontal: space.lg,
+    paddingVertical: space.sm,
+    flexShrink: 1,
+  },
+  assignBtnActiveText: {
+    fontSize: fontSize.md,
+    fontWeight: fontWeight.semibold,
+    color: colors.accentInk,
   },
   doneBtn: {
     borderWidth: 1,

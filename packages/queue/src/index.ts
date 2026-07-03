@@ -25,6 +25,7 @@ export const QUEUE_CLASSIFY_THREAD = "classify-thread";
 export const QUEUE_BACKFILL_INBOX = "backfill-inbox";
 export const QUEUE_LIFECYCLE_EMAIL = "lifecycle-email";
 export const QUEUE_GENERATE_TAXONOMY = "generate-taxonomy";
+export const QUEUE_PUSH_NOTIFICATION = "push-notification";
 
 // ─── Job data types ───────────────────────────────────────────────────────────
 
@@ -91,4 +92,22 @@ export type GenerateTaxonomyJobData = {
    * names/descriptions in this language. Optional for back-compat with jobs
    * enqueued before localization (the worker falls back to the source locale). */
   locale?: string;
+};
+
+/**
+ * Payload for a `push-notification` job. A discriminated union keyed on `kind`
+ * so future push producers extend it without a new queue. The worker re-reads
+ * the underlying entity and no-ops if state changed since enqueue, making retries
+ * idempotent. Today the only kind is a thread assignment addressed to the
+ * assignee (never the actor who assigned).
+ */
+export type PushNotificationJobData = {
+  kind: "thread_assigned";
+  workspaceId: string;
+  /** Internal EmailThread.id. */
+  emailThreadId: string;
+  /** Recipient: the user the thread was assigned to. */
+  assigneeUserId: string;
+  /** Actor who made the assignment (for auditing; never pushed to). */
+  assignedByUserId: string;
 };

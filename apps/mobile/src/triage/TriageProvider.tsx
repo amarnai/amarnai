@@ -28,6 +28,7 @@ type TriageActions = Pick<
   | 'handleApprove'
   | 'handleMarkDone'
   | 'handleUnmarkDone'
+  | 'handleAssign'
   | 'openRerouteFor'
   | 'closeReroute'
   | 'commitReroute'
@@ -151,6 +152,7 @@ function TriageInner({
       handleApprove: triage.handleApprove,
       handleMarkDone: triage.handleMarkDone,
       handleUnmarkDone: triage.handleUnmarkDone,
+      handleAssign: triage.handleAssign,
       openRerouteFor: triage.openRerouteFor,
       closeReroute: triage.closeReroute,
       commitReroute: triage.commitReroute,
@@ -174,6 +176,7 @@ function TriageInner({
       triage.handleApprove,
       triage.handleMarkDone,
       triage.handleUnmarkDone,
+      triage.handleAssign,
       triage.openRerouteFor,
       triage.closeReroute,
       triage.commitReroute,
