@@ -616,6 +616,15 @@ msgstr "Amarnai는 더 이상 이 받은편지함을 동기화하지 않습니�
 msgid "Amarnai is open source under AGPL-3.0. Clone it, bring your own keys, and run every tier free on your own infrastructure."
 msgstr "Amarnai는 AGPL-3.0에 따라 오픈 소스로 제공됩니다. 클론하여 고유 키를 가져와 모든 티어를 자체 인프라에서 무료로 실행하세요."
 
+#: ../../apps/extension/src/platform/HostPermissionGate.tsx:34
+#, fuzzy
+msgid "Amarnai needs access to its server and Gmail to show your inbox."
+msgstr "Amarnai는 받은 편지함을 표시하기 위해 자체 서버 및 Gmail 접근 권한이 필요합니다."
+
+#: ../../apps/extension/src/auth/SignInScreen.tsx:12
+msgid "Amarnai needs access to its server and Gmail to work. Please allow access and try again."
+msgstr "Amarnai는 정상적인 작동을 위해 자체 서버 및 Gmail 접근 권한이 필요합니다. 접근을 허용하고 다시 시도해 주세요."
+
 #: ../../apps/site/src/lib/seo.ts:60
 #, fuzzy
 msgid "Amarnai reads your Gmail, sorts every thread into the folders you define, and drafts replies for your approval. Reach inbox zero without the busywork."
@@ -1150,7 +1159,7 @@ msgstr "비밀번호 확인"
 msgid "Connect a Gmail inbox to configure sync filters."
 msgstr "동기화 필터를 설정하려면 Gmail 받은 편지함을 연결하세요."
 
-#: ../../apps/extension/src/App.tsx:43
+#: ../../apps/extension/src/App.tsx:46
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:361
@@ -1194,7 +1203,7 @@ msgstr "Gmail을 연결하고 분류를 시작하세요."
 msgid "Connect once, generate your plan once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
 msgstr "한 번 연결하고 계획을 한 번 생성하면, Amarnai가 새 메일과 받은 편지함에 이미 쌓여있는 수많은 스레드를 처리합니다."
 
-#: ../../apps/extension/src/App.tsx:40
+#: ../../apps/extension/src/App.tsx:43
 msgid "Connect your Gmail account to start triaging."
 msgstr "정리를 시작하려면 Gmail 계정을 연결하세요."
 
@@ -1855,7 +1864,7 @@ msgstr "받은 편지함 편집"
 msgid "Edit Path"
 msgstr "경로 편집"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:59
+#: ../../apps/extension/src/auth/SignInScreen.tsx:74
 #: ../../apps/mobile/app/(app)/account.tsx:139
 #: ../../apps/mobile/app/forgot-password.tsx:85
 #: ../../apps/mobile/app/sign-in.tsx:89
@@ -2442,12 +2451,16 @@ msgstr "Google 계정 권한"
 msgid "Google could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the Gmail callback URL is registered in Google Cloud Console."
 msgstr "Google에서 인증을 완료할 수 없습니다. 링크가 만료되었을 수 있으니 다시 시도해 주세요. 문제가 계속되면 Google Cloud Console에서 Gmail 콜백 URL이 등록되었는지 확인해 주세요."
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:40
+#: ../../apps/extension/src/auth/SignInScreen.tsx:55
 #: ../../apps/mobile/app/sign-in.tsx:65
 #: ../../apps/mobile/app/sign-up.tsx:76
 #, fuzzy
 msgid "Google sign-in failed. Please try again."
 msgstr "Google 로그인에 실패했습니다. 다시 시도해 주세요."
+
+#: ../../apps/extension/src/platform/HostPermissionGate.tsx:36
+msgid "Grant access"
+msgstr "접근 허용"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:178
 #, fuzzy
@@ -3163,7 +3176,7 @@ msgstr "새 비밀번호"
 msgid "New threads will appear as they are sorted."
 msgstr "새 스레드는 정리되는 대로 표시됩니다."
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:93
+#: ../../apps/extension/src/auth/SignInScreen.tsx:108
 msgid "New to Amarnai? <0>Create an account</0>"
 msgstr "Amarnai가 처음이신가요? <0>계정 만들기</0>"
 
@@ -3439,7 +3452,7 @@ msgstr "선택 사항. 이 폴더에 대한 답장 초안 생성 시 적용됩�
 msgid "Optional. Applied when generating draft replies for threads in this folder."
 msgstr "선택 사항. 이 폴더의 스레드에 대한 답장 초안을 생성할 때 적용됩니다."
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:86
+#: ../../apps/extension/src/auth/SignInScreen.tsx:101
 #: ../../apps/mobile/src/auth/GoogleSignInButton.tsx:17
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:113
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:70
@@ -3480,7 +3493,7 @@ msgstr "파트너"
 msgid "Passing through the Delta: free to meet?"
 msgstr "델타 지역을 지나는 중: 만날 시간 되시나요?"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:69
+#: ../../apps/extension/src/auth/SignInScreen.tsx:84
 #: ../../apps/mobile/app/sign-in.tsx:106
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:90
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:50
@@ -4129,7 +4142,7 @@ msgstr "스레드 검색"
 msgid "Search threads…"
 msgstr "스레드 검색…"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:54
+#: ../../apps/extension/src/auth/SignInScreen.tsx:69
 msgid "See how your inbox is sorted, right next to Gmail."
 msgstr "Gmail 바로 옆에서 내 받은편지함 정리 상태를 확인하세요."
 
@@ -4272,7 +4285,7 @@ msgstr "공유 플랜 + 검토 큐"
 #~ msgid "Shared taxonomy + review queue"
 #~ msgstr "공유 분류 체계 + 검토 대기열"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:82
+#: ../../apps/extension/src/auth/SignInScreen.tsx:97
 #: ../../apps/mobile/app/sign-in.tsx:133
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:29
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:107
@@ -4289,7 +4302,7 @@ msgstr "워크스페이스 초대를 수락하려면 로그인하세요."
 msgid "Sign in to triage your inbox"
 msgstr "수신함을 정리하려면 로그인하세요."
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:89
+#: ../../apps/extension/src/auth/SignInScreen.tsx:104
 msgid "Sign in with Google"
 msgstr "Google로 로그인"
 
@@ -4298,7 +4311,7 @@ msgstr "Google로 로그인"
 msgid "Sign in with Google. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
 msgstr "Google로 로그인하세요. Amarnai는 스레드와 라벨을 동기화합니다. 사용자를 대신하여 메일을 보내거나 삭제하지 않습니다."
 
-#: ../../apps/extension/src/App.tsx:46
+#: ../../apps/extension/src/App.tsx:49
 #: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:68
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:130
 #: ../../apps/mobile/app/(app)/account.tsx:122
@@ -4317,7 +4330,7 @@ msgstr "현재 계정에서 로그아웃"
 msgid "Sign up with Google"
 msgstr "Google로 가입"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:25
+#: ../../apps/extension/src/auth/SignInScreen.tsx:35
 #: ../../apps/mobile/app/sign-in.tsx:51
 #, fuzzy
 msgid "Sign-in failed. Please try again."

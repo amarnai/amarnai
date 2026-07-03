@@ -1,7 +1,14 @@
 import { defineConfig, loadEnv, type Plugin } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "node:path";
-import { buildManifest } from "./manifest.config";
+import { buildManifest, type BrowserTarget } from "./manifest.config";
+
+// Build target selected via EXT_BROWSER (a build-target flag, deliberately not in
+// .env — it is not configuration). Firefox output goes to dist-firefox/ so the
+// Chrome build in dist/ is never touched. Shared by this config and vite.sw.config.ts.
+export const EXT_BROWSER: BrowserTarget =
+  process.env["EXT_BROWSER"] === "firefox" ? "firefox" : "chrome";
+export const OUT_DIR = EXT_BROWSER === "firefox" ? "dist-firefox" : "dist";
 
 // The Lingui config lives in packages/i18n, not in this app. Point the macro
 // plugin (via @lingui/conf) at it explicitly so it resolves at build time,
@@ -33,6 +40,7 @@ function emitManifest(env: Record<string, string>, mode: string): Plugin {
               mode === "production"
                 ? undefined
                 : env["EXTENSION_KEY"] || undefined,
+            browser: EXT_BROWSER,
           }),
           null,
           2,
@@ -62,7 +70,7 @@ export default defineConfig(({ mode }) => {
       },
     },
     build: {
-      outDir: "dist",
+      outDir: OUT_DIR,
       emptyOutDir: true,
       rollupOptions: {
         input: {

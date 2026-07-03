@@ -615,6 +615,15 @@ msgstr "Amarnai nie synchronizuje już tej skrzynki odbiorczej. Ponownie połąc
 msgid "Amarnai is open source under AGPL-3.0. Clone it, bring your own keys, and run every tier free on your own infrastructure."
 msgstr "Amarnai jest oprogramowaniem open source na licencji AGPL-3.0. Sklonuj je, użyj własnych kluczy i uruchom każdą wersję za darmo na własnej infrastrukturze."
 
+#: ../../apps/extension/src/platform/HostPermissionGate.tsx:34
+#, fuzzy
+msgid "Amarnai needs access to its server and Gmail to show your inbox."
+msgstr "Amarnai potrzebuje dostępu do swojego serwera i Gmaila, aby wyświetlić Twoją skrzynkę odbiorczą."
+
+#: ../../apps/extension/src/auth/SignInScreen.tsx:12
+msgid "Amarnai needs access to its server and Gmail to work. Please allow access and try again."
+msgstr "Amarnai potrzebuje dostępu do swojego serwera i Gmaila, aby działać. Prosimy o zezwolenie na dostęp i spróbowanie ponownie."
+
 #: ../../apps/site/src/lib/seo.ts:60
 #, fuzzy
 msgid "Amarnai reads your Gmail, sorts every thread into the folders you define, and drafts replies for your approval. Reach inbox zero without the busywork."
@@ -1149,7 +1158,7 @@ msgstr "Potwierdź hasło"
 msgid "Connect a Gmail inbox to configure sync filters."
 msgstr "Podłącz skrzynkę Gmail, aby skonfigurować filtry synchronizacji."
 
-#: ../../apps/extension/src/App.tsx:43
+#: ../../apps/extension/src/App.tsx:46
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:361
@@ -1193,7 +1202,7 @@ msgstr "Połącz Gmail, by rozpocząć porządkowanie"
 msgid "Connect once, generate your plan once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
 msgstr "Połącz raz, wygeneruj plan raz, a Amarnai zajmie się nowymi wiadomościami i tysiącami wątków, które już masz w skrzynce odbiorczej."
 
-#: ../../apps/extension/src/App.tsx:40
+#: ../../apps/extension/src/App.tsx:43
 msgid "Connect your Gmail account to start triaging."
 msgstr "Połącz swoje konto Gmail, aby rozpocząć sortowanie."
 
@@ -1854,7 +1863,7 @@ msgstr "Edytuj skrzynkę odbiorczą"
 msgid "Edit Path"
 msgstr "Edytuj ścieżkę"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:59
+#: ../../apps/extension/src/auth/SignInScreen.tsx:74
 #: ../../apps/mobile/app/(app)/account.tsx:139
 #: ../../apps/mobile/app/forgot-password.tsx:85
 #: ../../apps/mobile/app/sign-in.tsx:89
@@ -2441,12 +2450,16 @@ msgstr "Uprawnienia konta Google."
 msgid "Google could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the Gmail callback URL is registered in Google Cloud Console."
 msgstr "Google nie mógł dokończyć autoryzacji. Link mógł wygasnąć: spróbuj ponownie. Jeśli problem będzie się powtarzał, sprawdź, czy adres URL zwrotny Gmaila jest zarejestrowany w Google Cloud Console."
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:40
+#: ../../apps/extension/src/auth/SignInScreen.tsx:55
 #: ../../apps/mobile/app/sign-in.tsx:65
 #: ../../apps/mobile/app/sign-up.tsx:76
 #, fuzzy
 msgid "Google sign-in failed. Please try again."
 msgstr "Logowanie przez Google nie powiodło się. Spróbuj ponownie."
+
+#: ../../apps/extension/src/platform/HostPermissionGate.tsx:36
+msgid "Grant access"
+msgstr "Przyznaj dostęp"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:178
 #, fuzzy
@@ -3162,7 +3175,7 @@ msgstr "Nowe hasło"
 msgid "New threads will appear as they are sorted."
 msgstr "Nowe wątki pojawią się po posortowaniu."
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:93
+#: ../../apps/extension/src/auth/SignInScreen.tsx:108
 msgid "New to Amarnai? <0>Create an account</0>"
 msgstr "Nie masz jeszcze konta Amarnai? <0>Utwórz konto</0>"
 
@@ -3438,7 +3451,7 @@ msgstr "Opcjonalne. Stosowane podczas generowania propozycji odpowiedzi dla tego
 msgid "Optional. Applied when generating draft replies for threads in this folder."
 msgstr "Opcjonalne. Stosowane podczas generowania propozycji odpowiedzi dla wątków w tym folderze."
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:86
+#: ../../apps/extension/src/auth/SignInScreen.tsx:101
 #: ../../apps/mobile/src/auth/GoogleSignInButton.tsx:17
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:113
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:70
@@ -3479,7 +3492,7 @@ msgstr "Partnerzy"
 msgid "Passing through the Delta: free to meet?"
 msgstr "Przejeżdżam przez Deltę: masz czas na spotkanie?"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:69
+#: ../../apps/extension/src/auth/SignInScreen.tsx:84
 #: ../../apps/mobile/app/sign-in.tsx:106
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:90
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:50
@@ -4128,7 +4141,7 @@ msgstr "Szukaj wątków"
 msgid "Search threads…"
 msgstr "Szukaj wątków..."
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:54
+#: ../../apps/extension/src/auth/SignInScreen.tsx:69
 msgid "See how your inbox is sorted, right next to Gmail."
 msgstr "Zobacz, jak sortuje się Twoja skrzynka, prosto w Gmailu."
 
@@ -4271,7 +4284,7 @@ msgstr "Plan współdzielony + kolejka recenzji"
 #~ msgid "Shared taxonomy + review queue"
 #~ msgstr "Wspólna taksonomia + kolejka przeglądu"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:82
+#: ../../apps/extension/src/auth/SignInScreen.tsx:97
 #: ../../apps/mobile/app/sign-in.tsx:133
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:29
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:107
@@ -4288,7 +4301,7 @@ msgstr "Zaloguj się, aby zaakceptować zaproszenie do obszaru roboczego."
 msgid "Sign in to triage your inbox"
 msgstr "Zaloguj się, aby uporządkować swoją skrzynkę odbiorczą."
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:89
+#: ../../apps/extension/src/auth/SignInScreen.tsx:104
 msgid "Sign in with Google"
 msgstr "Zaloguj się przez Google"
 
@@ -4297,7 +4310,7 @@ msgstr "Zaloguj się przez Google"
 msgid "Sign in with Google. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
 msgstr "Zaloguj się przez Google. Amarnai synchronizuje Twoje wątki i etykiety. Nigdy nie wysyła ani nie usuwa wiadomości w Twoim imieniu."
 
-#: ../../apps/extension/src/App.tsx:46
+#: ../../apps/extension/src/App.tsx:49
 #: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:68
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:130
 #: ../../apps/mobile/app/(app)/account.tsx:122
@@ -4316,7 +4329,7 @@ msgstr "Wyloguj się z bieżącego konta"
 msgid "Sign up with Google"
 msgstr "Zarejestruj się przez Google"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:25
+#: ../../apps/extension/src/auth/SignInScreen.tsx:35
 #: ../../apps/mobile/app/sign-in.tsx:51
 #, fuzzy
 msgid "Sign-in failed. Please try again."

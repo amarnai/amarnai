@@ -529,6 +529,14 @@ msgstr "Amarnai is no longer syncing this inbox. Reconnect your Gmail account to
 msgid "Amarnai is open source under AGPL-3.0. Clone it, bring your own keys, and run every tier free on your own infrastructure."
 msgstr "Amarnai is open source under AGPL-3.0. Clone it, bring your own keys, and run every tier free on your own infrastructure."
 
+#: ../../apps/extension/src/platform/HostPermissionGate.tsx:34
+msgid "Amarnai needs access to its server and Gmail to show your inbox."
+msgstr "Amarnai needs access to its server and Gmail to show your inbox."
+
+#: ../../apps/extension/src/auth/SignInScreen.tsx:12
+msgid "Amarnai needs access to its server and Gmail to work. Please allow access and try again."
+msgstr "Amarnai needs access to its server and Gmail to work. Please allow access and try again."
+
 #: ../../apps/site/src/lib/seo.ts:60
 msgid "Amarnai reads your Gmail, sorts every thread into the folders you define, and drafts replies for your approval. Reach inbox zero without the busywork."
 msgstr "Amarnai reads your Gmail, sorts every thread into the folders you define, and drafts replies for your approval. Reach inbox zero without the busywork."
@@ -983,7 +991,7 @@ msgstr "Confirm password"
 msgid "Connect a Gmail inbox to configure sync filters."
 msgstr "Connect a Gmail inbox to configure sync filters."
 
-#: ../../apps/extension/src/App.tsx:43
+#: ../../apps/extension/src/App.tsx:46
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:361
@@ -1020,7 +1028,7 @@ msgstr "Connect Gmail to start triaging"
 msgid "Connect once, generate your plan once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
 msgstr "Connect once, generate your plan once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
 
-#: ../../apps/extension/src/App.tsx:40
+#: ../../apps/extension/src/App.tsx:43
 msgid "Connect your Gmail account to start triaging."
 msgstr "Connect your Gmail account to start triaging."
 
@@ -1577,7 +1585,7 @@ msgstr "Edit inbox"
 msgid "Edit Path"
 msgstr "Edit Path"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:59
+#: ../../apps/extension/src/auth/SignInScreen.tsx:74
 #: ../../apps/mobile/app/(app)/account.tsx:139
 #: ../../apps/mobile/app/forgot-password.tsx:85
 #: ../../apps/mobile/app/sign-in.tsx:89
@@ -2059,11 +2067,15 @@ msgstr "Google Account permissions"
 msgid "Google could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the Gmail callback URL is registered in Google Cloud Console."
 msgstr "Google could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the Gmail callback URL is registered in Google Cloud Console."
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:40
+#: ../../apps/extension/src/auth/SignInScreen.tsx:55
 #: ../../apps/mobile/app/sign-in.tsx:65
 #: ../../apps/mobile/app/sign-up.tsx:76
 msgid "Google sign-in failed. Please try again."
 msgstr "Google sign-in failed. Please try again."
+
+#: ../../apps/extension/src/platform/HostPermissionGate.tsx:36
+msgid "Grant access"
+msgstr "Grant access"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:178
 msgid "Great King,\n"
@@ -2672,7 +2684,7 @@ msgstr "New password"
 msgid "New threads will appear as they are sorted."
 msgstr "New threads will appear as they are sorted."
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:93
+#: ../../apps/extension/src/auth/SignInScreen.tsx:108
 msgid "New to Amarnai? <0>Create an account</0>"
 msgstr "New to Amarnai? <0>Create an account</0>"
 
@@ -2908,7 +2920,7 @@ msgstr "Optional. Applied when generating draft replies for this folder."
 msgid "Optional. Applied when generating draft replies for threads in this folder."
 msgstr "Optional. Applied when generating draft replies for threads in this folder."
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:86
+#: ../../apps/extension/src/auth/SignInScreen.tsx:101
 #: ../../apps/mobile/src/auth/GoogleSignInButton.tsx:17
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:113
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:70
@@ -2942,7 +2954,7 @@ msgstr "Partners"
 msgid "Passing through the Delta: free to meet?"
 msgstr "Passing through the Delta: free to meet?"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:69
+#: ../../apps/extension/src/auth/SignInScreen.tsx:84
 #: ../../apps/mobile/app/sign-in.tsx:106
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:90
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:50
@@ -3492,7 +3504,7 @@ msgstr "Search threads"
 msgid "Search threads…"
 msgstr "Search threads…"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:54
+#: ../../apps/extension/src/auth/SignInScreen.tsx:69
 msgid "See how your inbox is sorted, right next to Gmail."
 msgstr "See how your inbox is sorted, right next to Gmail."
 
@@ -3612,7 +3624,7 @@ msgstr "Shared plan + review queue"
 #~ msgid "Shared taxonomy + review queue"
 #~ msgstr "Shared taxonomy + review queue"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:82
+#: ../../apps/extension/src/auth/SignInScreen.tsx:97
 #: ../../apps/mobile/app/sign-in.tsx:133
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:29
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:107
@@ -3627,7 +3639,7 @@ msgstr "Sign in to accept your workspace invitation."
 msgid "Sign in to triage your inbox"
 msgstr "Sign in to triage your inbox"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:89
+#: ../../apps/extension/src/auth/SignInScreen.tsx:104
 msgid "Sign in with Google"
 msgstr "Sign in with Google"
 
@@ -3635,7 +3647,7 @@ msgstr "Sign in with Google"
 msgid "Sign in with Google. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
 msgstr "Sign in with Google. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
 
-#: ../../apps/extension/src/App.tsx:46
+#: ../../apps/extension/src/App.tsx:49
 #: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:68
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:130
 #: ../../apps/mobile/app/(app)/account.tsx:122
@@ -3652,7 +3664,7 @@ msgstr "Sign out of the current account"
 msgid "Sign up with Google"
 msgstr "Sign up with Google"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:25
+#: ../../apps/extension/src/auth/SignInScreen.tsx:35
 #: ../../apps/mobile/app/sign-in.tsx:51
 msgid "Sign-in failed. Please try again."
 msgstr "Sign-in failed. Please try again."

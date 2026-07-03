@@ -1,4 +1,5 @@
 import { GOOGLE_WEB_CLIENT_ID } from "../config";
+import { ext } from "../platform/ext";
 
 // Scopes requested for Google sign-in. gmail.readonly is the triage scope
 // (single source of truth server-side); openid+email+profile let the API read
@@ -23,10 +24,11 @@ export interface GoogleAuthResult {
   redirectUri: string;
 }
 
-// Runs the Google OAuth *code* flow via chrome.identity.launchWebAuthFlow and
-// returns the authorization code for the API to redeem. The code must be
-// redeemed against this exact redirect URI (https://<ext-id>.chromiumapp.org/),
-// which is why we send it to /auth/google alongside the code.
+// Runs the Google OAuth *code* flow via identity.launchWebAuthFlow and returns
+// the authorization code for the API to redeem. The code must be redeemed against
+// this exact redirect URI (Chrome: https://<ext-id>.chromiumapp.org/, Firefox:
+// https://<hash>.extensions.allizom.org/), which is why we send it to
+// /auth/google alongside the code.
 //
 // prompt=consent + access_type=offline are mandatory: Google only returns a
 // refresh token when it (re)shows consent, and the API's exchangeAuthCode throws
@@ -37,7 +39,7 @@ export async function requestGoogleAuth(): Promise<GoogleAuthResult> {
     throw new Error("VITE_GOOGLE_WEB_CLIENT_ID is not configured");
   }
 
-  const redirectUri = chrome.identity.getRedirectURL();
+  const redirectUri = ext.identity.getRedirectURL();
   const authUrl =
     "https://accounts.google.com/o/oauth2/v2/auth?" +
     new URLSearchParams({
@@ -51,9 +53,9 @@ export async function requestGoogleAuth(): Promise<GoogleAuthResult> {
 
   let resultUrl: string | undefined;
   try {
-    resultUrl = await chrome.identity.launchWebAuthFlow({ url: authUrl, interactive: true });
+    resultUrl = await ext.identity.launchWebAuthFlow({ url: authUrl, interactive: true });
   } catch {
-    // Chrome rejects (or resolves undefined) when the user closes the window.
+    // Both browsers reject (or resolve undefined) when the user closes the window.
     throw new GoogleAuthCancelledError();
   }
   if (!resultUrl) throw new GoogleAuthCancelledError();

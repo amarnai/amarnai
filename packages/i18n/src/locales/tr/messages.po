@@ -615,6 +615,15 @@ msgstr "Amarnai bu gelen kutusunu artık senkronize etmiyor. E-posta ileti dizil
 msgid "Amarnai is open source under AGPL-3.0. Clone it, bring your own keys, and run every tier free on your own infrastructure."
 msgstr "Amarnai, AGPL-3.0 lisansı altında açık kaynaklıdır. Klonlayın, kendi anahtarlarınızı kullanın ve tüm katmanları kendi altyapınızda ücretsiz çalıştırın."
 
+#: ../../apps/extension/src/platform/HostPermissionGate.tsx:34
+#, fuzzy
+msgid "Amarnai needs access to its server and Gmail to show your inbox."
+msgstr "Amarnai'nin gelen kutunuzu göstermek için sunucusuna ve Gmail'e erişime ihtiyacı var."
+
+#: ../../apps/extension/src/auth/SignInScreen.tsx:12
+msgid "Amarnai needs access to its server and Gmail to work. Please allow access and try again."
+msgstr "Amarnai'nin çalışması için sunucusuna ve Gmail'e erişime ihtiyacı var. Lütfen erişime izin verin ve tekrar deneyin."
+
 #: ../../apps/site/src/lib/seo.ts:60
 #, fuzzy
 msgid "Amarnai reads your Gmail, sorts every thread into the folders you define, and drafts replies for your approval. Reach inbox zero without the busywork."
@@ -1149,7 +1158,7 @@ msgstr "Parolayı onayla"
 msgid "Connect a Gmail inbox to configure sync filters."
 msgstr "Senkronizasyon filtrelerini yapılandırmak için bir Gmail gelen kutusu bağlayın."
 
-#: ../../apps/extension/src/App.tsx:43
+#: ../../apps/extension/src/App.tsx:46
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:361
@@ -1193,7 +1202,7 @@ msgstr "Ayıklamaya başlamak için Gmail'i bağlayın."
 msgid "Connect once, generate your plan once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
 msgstr "Bir kez bağlanın, planınızı bir kez oluşturun ve Amarnai'nin yeni e-postaları ve gelen kutunuzda zaten bulunan binlerce ileti dizisini halletmesine izin verin."
 
-#: ../../apps/extension/src/App.tsx:40
+#: ../../apps/extension/src/App.tsx:43
 msgid "Connect your Gmail account to start triaging."
 msgstr "E-postalarını düzenlemeye başlamak için Gmail hesabını bağla."
 
@@ -1854,7 +1863,7 @@ msgstr "Gelen kutusunu düzenle"
 msgid "Edit Path"
 msgstr "Yolu Düzenle"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:59
+#: ../../apps/extension/src/auth/SignInScreen.tsx:74
 #: ../../apps/mobile/app/(app)/account.tsx:139
 #: ../../apps/mobile/app/forgot-password.tsx:85
 #: ../../apps/mobile/app/sign-in.tsx:89
@@ -2441,12 +2450,16 @@ msgstr "Google Hesabı izinleri"
 msgid "Google could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the Gmail callback URL is registered in Google Cloud Console."
 msgstr "Google yetkilendirmeyi tamamlayamadı. Bağlantının süresi dolmuş olabilir: lütfen tekrar deneyin. Sorun devam ederse, Gmail geri çağırma URL'sinin Google Cloud Console'da kayıtlı olduğundan emin olun."
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:40
+#: ../../apps/extension/src/auth/SignInScreen.tsx:55
 #: ../../apps/mobile/app/sign-in.tsx:65
 #: ../../apps/mobile/app/sign-up.tsx:76
 #, fuzzy
 msgid "Google sign-in failed. Please try again."
 msgstr "Google ile oturum açma başarısız oldu. Lütfen tekrar deneyin."
+
+#: ../../apps/extension/src/platform/HostPermissionGate.tsx:36
+msgid "Grant access"
+msgstr "Erişim İzni Ver"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:178
 #, fuzzy
@@ -3162,7 +3175,7 @@ msgstr "Yeni parola"
 msgid "New threads will appear as they are sorted."
 msgstr "Yeni ileti dizileri sıralandıkça görünecektir."
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:93
+#: ../../apps/extension/src/auth/SignInScreen.tsx:108
 msgid "New to Amarnai? <0>Create an account</0>"
 msgstr "Amarnai'ye yeni misin? <0>Hesap oluştur</0>"
 
@@ -3438,7 +3451,7 @@ msgstr "İsteğe bağlı. Bu klasör için taslak yanıtlar oluşturulurken uygu
 msgid "Optional. Applied when generating draft replies for threads in this folder."
 msgstr "İsteğe bağlı. Bu klasördeki yazışmalar için yanıt taslakları oluşturulurken uygulanır."
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:86
+#: ../../apps/extension/src/auth/SignInScreen.tsx:101
 #: ../../apps/mobile/src/auth/GoogleSignInButton.tsx:17
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:113
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:70
@@ -3479,7 +3492,7 @@ msgstr "Ortaklar"
 msgid "Passing through the Delta: free to meet?"
 msgstr "Delta'dan geçerken: buluşmaya müsait misin?"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:69
+#: ../../apps/extension/src/auth/SignInScreen.tsx:84
 #: ../../apps/mobile/app/sign-in.tsx:106
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:90
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:50
@@ -4128,7 +4141,7 @@ msgstr "İletileri ara"
 msgid "Search threads…"
 msgstr "İletiler aranıyor…"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:54
+#: ../../apps/extension/src/auth/SignInScreen.tsx:69
 msgid "See how your inbox is sorted, right next to Gmail."
 msgstr "Gelen kutunun nasıl sıralandığını Gmail'in hemen yanında gör."
 
@@ -4271,7 +4284,7 @@ msgstr "Paylaşılan plan + inceleme kuyruğu"
 #~ msgid "Shared taxonomy + review queue"
 #~ msgstr "Paylaşılan taksonomi + inceleme kuyruğu"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:82
+#: ../../apps/extension/src/auth/SignInScreen.tsx:97
 #: ../../apps/mobile/app/sign-in.tsx:133
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:29
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:107
@@ -4288,7 +4301,7 @@ msgstr "Çalışma alanı davetini kabul etmek için giriş yap."
 msgid "Sign in to triage your inbox"
 msgstr "Gelen kutunuzu tasnif etmek için giriş yapın"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:89
+#: ../../apps/extension/src/auth/SignInScreen.tsx:104
 msgid "Sign in with Google"
 msgstr "Google ile oturum aç"
 
@@ -4297,7 +4310,7 @@ msgstr "Google ile oturum aç"
 msgid "Sign in with Google. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
 msgstr "Google ile giriş yapın. Amarnai ileti ve etiketlerinizi senkronize eder. Adınıza asla e-posta göndermez veya silmez."
 
-#: ../../apps/extension/src/App.tsx:46
+#: ../../apps/extension/src/App.tsx:49
 #: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:68
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:130
 #: ../../apps/mobile/app/(app)/account.tsx:122
@@ -4316,7 +4329,7 @@ msgstr "Mevcut hesaptan çıkış yap."
 msgid "Sign up with Google"
 msgstr "Google ile kaydol"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:25
+#: ../../apps/extension/src/auth/SignInScreen.tsx:35
 #: ../../apps/mobile/app/sign-in.tsx:51
 #, fuzzy
 msgid "Sign-in failed. Please try again."

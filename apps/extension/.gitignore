@@ -4,6 +4,8 @@ key.pem
 
 # Build output (also covered by the root .gitignore).
 dist/
+# Firefox build output (root .gitignore's `dist/` pattern does not match this).
+dist-firefox/
 
-# Chrome Web Store upload package (produced by `zip -r ../amarnai-extension.zip .`).
+# Store upload packages (Chrome + Firefox zips).
 *.zip

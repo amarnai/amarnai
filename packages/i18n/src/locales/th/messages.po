@@ -616,6 +616,15 @@ msgstr "Amarnai ไม่ซิงค์กล่องขาเข้านี�
 msgid "Amarnai is open source under AGPL-3.0. Clone it, bring your own keys, and run every tier free on your own infrastructure."
 msgstr "Amarnai เป็นโอเพนซอร์สภายใต้ AGPL-3.0 คุณสามารถโคลน ใช้คีย์ของคุณเอง และรันทุกระดับได้ฟรีบนโครงสร้างพื้นฐานของคุณเอง"
 
+#: ../../apps/extension/src/platform/HostPermissionGate.tsx:34
+#, fuzzy
+msgid "Amarnai needs access to its server and Gmail to show your inbox."
+msgstr "Amarnai ต้องการเข้าถึงเซิร์ฟเวอร์และ Gmail เพื่อแสดงกล่องจดหมายของคุณ"
+
+#: ../../apps/extension/src/auth/SignInScreen.tsx:12
+msgid "Amarnai needs access to its server and Gmail to work. Please allow access and try again."
+msgstr "Amarnai ต้องการเข้าถึงเซิร์ฟเวอร์และ Gmail เพื่อให้ทำงานได้ โปรดอนุญาตการเข้าถึงแล้วลองอีกครั้ง"
+
 #: ../../apps/site/src/lib/seo.ts:60
 #, fuzzy
 msgid "Amarnai reads your Gmail, sorts every thread into the folders you define, and drafts replies for your approval. Reach inbox zero without the busywork."
@@ -1150,7 +1159,7 @@ msgstr "ยืนยันรหัสผ่าน"
 msgid "Connect a Gmail inbox to configure sync filters."
 msgstr "เชื่อมต่อกล่องจดหมาย Gmail เพื่อตั้งค่าตัวกรองการซิงค์"
 
-#: ../../apps/extension/src/App.tsx:43
+#: ../../apps/extension/src/App.tsx:46
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:361
@@ -1194,7 +1203,7 @@ msgstr "เชื่อมต่อ Gmail เพื่อเริ่มคั�
 msgid "Connect once, generate your plan once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
 msgstr "เชื่อมต่อเพียงครั้งเดียว สร้างแผนเพียงครั้งเดียว แล้วปล่อยให้ Amarnai จัดการอีเมลใหม่และเธรดนับพันที่มีอยู่ในกล่องจดหมายของคุณ"
 
-#: ../../apps/extension/src/App.tsx:40
+#: ../../apps/extension/src/App.tsx:43
 msgid "Connect your Gmail account to start triaging."
 msgstr "เชื่อมต่อบัญชี Gmail ของคุณเพื่อเริ่มคัดแยก"
 
@@ -1855,7 +1864,7 @@ msgstr "แก้ไขกล่องขาเข้า"
 msgid "Edit Path"
 msgstr "แก้ไขเส้นทาง"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:59
+#: ../../apps/extension/src/auth/SignInScreen.tsx:74
 #: ../../apps/mobile/app/(app)/account.tsx:139
 #: ../../apps/mobile/app/forgot-password.tsx:85
 #: ../../apps/mobile/app/sign-in.tsx:89
@@ -2442,12 +2451,16 @@ msgstr "สิทธิ์การเข้าถึงบัญชี Google"
 msgid "Google could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the Gmail callback URL is registered in Google Cloud Console."
 msgstr "Google ไม่สามารถดำเนินการตรวจสอบสิทธิ์ให้เสร็จสมบูรณ์ได้ ลิงก์อาจหมดอายุแล้ว: โปรดลองอีกครั้ง หากปัญหายังคงอยู่ โปรดตรวจสอบว่า URL การเรียกกลับของ Gmail ได้รับการลงทะเบียนใน Google Cloud Console แล้ว"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:40
+#: ../../apps/extension/src/auth/SignInScreen.tsx:55
 #: ../../apps/mobile/app/sign-in.tsx:65
 #: ../../apps/mobile/app/sign-up.tsx:76
 #, fuzzy
 msgid "Google sign-in failed. Please try again."
 msgstr "การลงชื่อเข้าใช้ด้วย Google ล้มเหลว โปรดลองอีกครั้ง"
+
+#: ../../apps/extension/src/platform/HostPermissionGate.tsx:36
+msgid "Grant access"
+msgstr "อนุญาตการเข้าถึง"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:178
 #, fuzzy
@@ -3163,7 +3176,7 @@ msgstr "รหัสผ่านใหม่"
 msgid "New threads will appear as they are sorted."
 msgstr "เธรดใหม่จะปรากฏเมื่อจัดเรียงแล้ว"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:93
+#: ../../apps/extension/src/auth/SignInScreen.tsx:108
 msgid "New to Amarnai? <0>Create an account</0>"
 msgstr "ยังไม่เคยใช้ Amarnai ใช่ไหม? <0>สร้างบัญชี</0>"
 
@@ -3439,7 +3452,7 @@ msgstr "ไม่บังคับ ใช้เมื่อสร้างฉ�
 msgid "Optional. Applied when generating draft replies for threads in this folder."
 msgstr "ไม่บังคับ ใช้เมื่อสร้างร่างอีเมลตอบกลับสำหรับการสนทนาในโฟลเดอร์นี้"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:86
+#: ../../apps/extension/src/auth/SignInScreen.tsx:101
 #: ../../apps/mobile/src/auth/GoogleSignInButton.tsx:17
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:113
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:70
@@ -3480,7 +3493,7 @@ msgstr "พาร์ทเนอร์"
 msgid "Passing through the Delta: free to meet?"
 msgstr "ผ่านมาแถว Delta: ว่างเจอกันไหม?"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:69
+#: ../../apps/extension/src/auth/SignInScreen.tsx:84
 #: ../../apps/mobile/app/sign-in.tsx:106
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:90
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:50
@@ -4129,7 +4142,7 @@ msgstr "ค้นหาเธรด"
 msgid "Search threads…"
 msgstr "ค้นหาเธรด..."
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:54
+#: ../../apps/extension/src/auth/SignInScreen.tsx:69
 msgid "See how your inbox is sorted, right next to Gmail."
 msgstr "เห็นการจัดเรียงกล่องจดหมายของคุณได้ข้าง Gmail"
 
@@ -4272,7 +4285,7 @@ msgstr "แผนแชร์ + คิวตรวจสอบ"
 #~ msgid "Shared taxonomy + review queue"
 #~ msgstr "รูปแบบการจัดหมวดหมู่ที่แชร์ + คิวตรวจสอบ"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:82
+#: ../../apps/extension/src/auth/SignInScreen.tsx:97
 #: ../../apps/mobile/app/sign-in.tsx:133
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:29
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:107
@@ -4289,7 +4302,7 @@ msgstr "ลงชื่อเข้าใช้เพื่อตอบรับ
 msgid "Sign in to triage your inbox"
 msgstr "ลงชื่อเข้าใช้เพื่อคัดแยกกล่องขาเข้าของคุณ"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:89
+#: ../../apps/extension/src/auth/SignInScreen.tsx:104
 msgid "Sign in with Google"
 msgstr "ลงชื่อเข้าใช้ด้วย Google"
 
@@ -4298,7 +4311,7 @@ msgstr "ลงชื่อเข้าใช้ด้วย Google"
 msgid "Sign in with Google. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
 msgstr "ลงชื่อเข้าใช้ด้วย Google Amarnai จะซิงค์เธรดและป้ายกำกับของคุณ และจะไม่ส่งหรือลบในนามของคุณ"
 
-#: ../../apps/extension/src/App.tsx:46
+#: ../../apps/extension/src/App.tsx:49
 #: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:68
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:130
 #: ../../apps/mobile/app/(app)/account.tsx:122
@@ -4317,7 +4330,7 @@ msgstr "ลงชื่อออกจากบัญชีปัจจุบั
 msgid "Sign up with Google"
 msgstr "ลงทะเบียนด้วย Google"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:25
+#: ../../apps/extension/src/auth/SignInScreen.tsx:35
 #: ../../apps/mobile/app/sign-in.tsx:51
 #, fuzzy
 msgid "Sign-in failed. Please try again."

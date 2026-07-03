@@ -615,6 +615,15 @@ msgstr "Amarnai đã ngừng đồng bộ hộp thư này. Vui lòng kết nối
 msgid "Amarnai is open source under AGPL-3.0. Clone it, bring your own keys, and run every tier free on your own infrastructure."
 msgstr "Amarnai là mã nguồn mở theo AGPL-3.0. Hãy nhân bản, sử dụng khóa riêng và vận hành mọi tính năng miễn phí trên hạ tầng của bạn."
 
+#: ../../apps/extension/src/platform/HostPermissionGate.tsx:34
+#, fuzzy
+msgid "Amarnai needs access to its server and Gmail to show your inbox."
+msgstr "Amarnai cần quyền truy cập vào máy chủ và Gmail để hiển thị hộp thư đến của bạn."
+
+#: ../../apps/extension/src/auth/SignInScreen.tsx:12
+msgid "Amarnai needs access to its server and Gmail to work. Please allow access and try again."
+msgstr "Amarnai cần quyền truy cập vào máy chủ và Gmail để hoạt động. Vui lòng cấp quyền truy cập và thử lại."
+
 #: ../../apps/site/src/lib/seo.ts:60
 #, fuzzy
 msgid "Amarnai reads your Gmail, sorts every thread into the folders you define, and drafts replies for your approval. Reach inbox zero without the busywork."
@@ -1149,7 +1158,7 @@ msgstr "Xác nhận mật khẩu"
 msgid "Connect a Gmail inbox to configure sync filters."
 msgstr "Kết nối hộp thư đến Gmail để cấu hình bộ lọc đồng bộ hóa."
 
-#: ../../apps/extension/src/App.tsx:43
+#: ../../apps/extension/src/App.tsx:46
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:361
@@ -1193,7 +1202,7 @@ msgstr "Kết nối Gmail để bắt đầu phân loại"
 msgid "Connect once, generate your plan once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
 msgstr "Chỉ cần kết nối và tạo kế hoạch một lần, Amarnai sẽ tự động xử lý thư mới cũng như hàng ngàn email hiện có trong hộp thư của bạn."
 
-#: ../../apps/extension/src/App.tsx:40
+#: ../../apps/extension/src/App.tsx:43
 msgid "Connect your Gmail account to start triaging."
 msgstr "Kết nối tài khoản Gmail của bạn để bắt đầu phân loại."
 
@@ -1854,7 +1863,7 @@ msgstr "Chỉnh sửa hộp thư đến"
 msgid "Edit Path"
 msgstr "Sửa đường dẫn"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:59
+#: ../../apps/extension/src/auth/SignInScreen.tsx:74
 #: ../../apps/mobile/app/(app)/account.tsx:139
 #: ../../apps/mobile/app/forgot-password.tsx:85
 #: ../../apps/mobile/app/sign-in.tsx:89
@@ -2441,12 +2450,16 @@ msgstr "Quyền tài khoản Google"
 msgid "Google could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the Gmail callback URL is registered in Google Cloud Console."
 msgstr "Google không thể hoàn tất ủy quyền. Liên kết có thể đã hết hạn: vui lòng thử lại. Nếu sự cố vẫn tiếp diễn, hãy kiểm tra xem URL gọi lại của Gmail đã được đăng ký trong Google Cloud Console chưa."
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:40
+#: ../../apps/extension/src/auth/SignInScreen.tsx:55
 #: ../../apps/mobile/app/sign-in.tsx:65
 #: ../../apps/mobile/app/sign-up.tsx:76
 #, fuzzy
 msgid "Google sign-in failed. Please try again."
 msgstr "Đăng nhập Google thất bại. Vui lòng thử lại."
+
+#: ../../apps/extension/src/platform/HostPermissionGate.tsx:36
+msgid "Grant access"
+msgstr "Cấp quyền truy cập"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:178
 #, fuzzy
@@ -3162,7 +3175,7 @@ msgstr "Mật khẩu mới"
 msgid "New threads will appear as they are sorted."
 msgstr "Các luồng mới sẽ xuất hiện khi chúng được sắp xếp."
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:93
+#: ../../apps/extension/src/auth/SignInScreen.tsx:108
 msgid "New to Amarnai? <0>Create an account</0>"
 msgstr "Bạn mới dùng Amarnai? <0>Tạo tài khoản</0>"
 
@@ -3438,7 +3451,7 @@ msgstr "Tùy chọn. Được áp dụng khi tạo thư nháp phản hồi cho t
 msgid "Optional. Applied when generating draft replies for threads in this folder."
 msgstr "Tùy chọn. Được áp dụng khi tạo bản nháp trả lời cho các cuộc trò chuyện trong thư mục này."
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:86
+#: ../../apps/extension/src/auth/SignInScreen.tsx:101
 #: ../../apps/mobile/src/auth/GoogleSignInButton.tsx:17
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:113
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:70
@@ -3479,7 +3492,7 @@ msgstr "Đối tác"
 msgid "Passing through the Delta: free to meet?"
 msgstr "Đang đi qua Đồng bằng: có rảnh gặp mặt không?"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:69
+#: ../../apps/extension/src/auth/SignInScreen.tsx:84
 #: ../../apps/mobile/app/sign-in.tsx:106
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:90
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:50
@@ -4128,7 +4141,7 @@ msgstr "Tìm kiếm luồng"
 msgid "Search threads…"
 msgstr "Tìm kiếm luồng..."
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:54
+#: ../../apps/extension/src/auth/SignInScreen.tsx:69
 msgid "See how your inbox is sorted, right next to Gmail."
 msgstr "Xem hộp thư đến được phân loại như thế nào, ngay cạnh Gmail."
 
@@ -4271,7 +4284,7 @@ msgstr "Gói chia sẻ + hàng chờ đánh giá"
 #~ msgid "Shared taxonomy + review queue"
 #~ msgstr "Hệ thống phân loại chung + hàng đợi xem xét"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:82
+#: ../../apps/extension/src/auth/SignInScreen.tsx:97
 #: ../../apps/mobile/app/sign-in.tsx:133
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:29
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:107
@@ -4288,7 +4301,7 @@ msgstr "Đăng nhập để chấp nhận lời mời tham gia không gian làm 
 msgid "Sign in to triage your inbox"
 msgstr "Đăng nhập để sàng lọc hộp thư đến"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:89
+#: ../../apps/extension/src/auth/SignInScreen.tsx:104
 msgid "Sign in with Google"
 msgstr "Đăng nhập bằng Google"
 
@@ -4297,7 +4310,7 @@ msgstr "Đăng nhập bằng Google"
 msgid "Sign in with Google. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
 msgstr "Đăng nhập bằng Google. Amarnai đồng bộ hóa các luồng và nhãn của bạn. Amarnai không bao giờ gửi hoặc xóa email thay mặt bạn."
 
-#: ../../apps/extension/src/App.tsx:46
+#: ../../apps/extension/src/App.tsx:49
 #: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:68
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:130
 #: ../../apps/mobile/app/(app)/account.tsx:122
@@ -4316,7 +4329,7 @@ msgstr "Đăng xuất khỏi tài khoản hiện tại"
 msgid "Sign up with Google"
 msgstr "Đăng ký bằng Google"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:25
+#: ../../apps/extension/src/auth/SignInScreen.tsx:35
 #: ../../apps/mobile/app/sign-in.tsx:51
 #, fuzzy
 msgid "Sign-in failed. Please try again."

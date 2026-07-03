@@ -31,6 +31,13 @@ const chromeStub = {
     setPanelBehavior: vi.fn(async () => {}),
     setOptions: vi.fn(async () => {}),
   },
+  action: {
+    onClicked: { addListener: vi.fn() },
+  },
+  permissions: {
+    request: vi.fn(async () => true),
+    contains: vi.fn(async () => true),
+  },
 } as unknown as typeof chrome;
 
 globalThis.chrome = chromeStub;

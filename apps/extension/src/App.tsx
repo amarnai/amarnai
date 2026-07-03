@@ -3,6 +3,7 @@ import { SessionProvider, useSession } from "./auth/session";
 import { LinguiProvider } from "./i18n/LinguiProvider";
 import { SignInScreen } from "./auth/SignInScreen";
 import { TriageGate } from "./panel/TriageGate";
+import { HostPermissionGate } from "./platform/HostPermissionGate";
 import { GoogleGIcon } from "@amarnai/ui";
 import { WEB_APP_URL } from "./config";
 import type { SupportedLocale } from "@amarnai/i18n";
@@ -23,7 +24,9 @@ function Gate() {
       ) : !workspaceId || !userId ? (
         <NoWorkspace />
       ) : (
-        <TriageGate api={client} workspaceId={workspaceId} currentUserId={userId} />
+        <HostPermissionGate>
+          <TriageGate api={client} workspaceId={workspaceId} currentUserId={userId} />
+        </HostPermissionGate>
       )}
     </LinguiProvider>
   );

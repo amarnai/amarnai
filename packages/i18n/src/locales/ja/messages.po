@@ -597,6 +597,15 @@ msgstr "Amarnai はこの受信トレイを同期していません。メール�
 msgid "Amarnai is open source under AGPL-3.0. Clone it, bring your own keys, and run every tier free on your own infrastructure."
 msgstr "AmarnaiはAGPL-3.0ライセンスの下でオープンソースです。クローンし、独自のキーを持ち込み、ご自身のインフラで全ティアを無料で実行できます。"
 
+#: ../../apps/extension/src/platform/HostPermissionGate.tsx:34
+#, fuzzy
+msgid "Amarnai needs access to its server and Gmail to show your inbox."
+msgstr "Amarnaiが受信トレイを表示するには、サーバーとGmailへのアクセスが必要です。"
+
+#: ../../apps/extension/src/auth/SignInScreen.tsx:12
+msgid "Amarnai needs access to its server and Gmail to work. Please allow access and try again."
+msgstr "Amarnaiの動作には、サーバーとGmailへのアクセスが必要です。アクセスを許可し、もう一度お試しください。"
+
 #: ../../apps/site/src/lib/seo.ts:60
 #, fuzzy
 msgid "Amarnai reads your Gmail, sorts every thread into the folders you define, and drafts replies for your approval. Reach inbox zero without the busywork."
@@ -1106,7 +1115,7 @@ msgstr "パスワードを再入力"
 msgid "Connect a Gmail inbox to configure sync filters."
 msgstr "同期フィルターを設定するには、Gmail受信トレイを接続してください。"
 
-#: ../../apps/extension/src/App.tsx:43
+#: ../../apps/extension/src/App.tsx:46
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:361
@@ -1149,7 +1158,7 @@ msgstr "トリアージを開始するにはGmailに接続"
 msgid "Connect once, generate your plan once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
 msgstr "連携とプラン作成は一度きり。新着メールから受信箱に眠る何千ものスレッドまで、Amarnaiがすべて処理します。"
 
-#: ../../apps/extension/src/App.tsx:40
+#: ../../apps/extension/src/App.tsx:43
 #, fuzzy
 msgid "Connect your Gmail account to start triaging."
 msgstr "Gmailアカウントを連携して、トリアージを開始。"
@@ -1786,7 +1795,7 @@ msgstr "受信トレイを編集"
 msgid "Edit Path"
 msgstr "パスを編集"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:59
+#: ../../apps/extension/src/auth/SignInScreen.tsx:74
 #: ../../apps/mobile/app/(app)/account.tsx:139
 #: ../../apps/mobile/app/forgot-password.tsx:85
 #: ../../apps/mobile/app/sign-in.tsx:89
@@ -2343,12 +2352,17 @@ msgstr "Googleアカウントの権限"
 msgid "Google could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the Gmail callback URL is registered in Google Cloud Console."
 msgstr "Googleは認証を完了できませんでした。リンクの有効期限が切れている可能性があります。もう一度お試しください。問題が解決しない場合は、GmailコールバックURLがGoogle Cloud Consoleに登録されていることを確認してください。"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:40
+#: ../../apps/extension/src/auth/SignInScreen.tsx:55
 #: ../../apps/mobile/app/sign-in.tsx:65
 #: ../../apps/mobile/app/sign-up.tsx:76
 #, fuzzy
 msgid "Google sign-in failed. Please try again."
 msgstr "Googleサインインに失敗しました。もう一度お試しください。"
+
+#: ../../apps/extension/src/platform/HostPermissionGate.tsx:36
+#, fuzzy
+msgid "Grant access"
+msgstr "アクセスを許可"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:178
 msgid "Great King,\n"
@@ -3034,7 +3048,7 @@ msgstr "新しいパスワード"
 msgid "New threads will appear as they are sorted."
 msgstr "新しいスレッドは、仕分けされ次第表示されます。"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:93
+#: ../../apps/extension/src/auth/SignInScreen.tsx:108
 #, fuzzy
 msgid "New to Amarnai? <0>Create an account</0>"
 msgstr "Amarnaiが初めてですか？ <0>アカウントを作成</0>"
@@ -3301,7 +3315,7 @@ msgstr "任意。このフォルダーの下書き返信を生成する際に適
 msgid "Optional. Applied when generating draft replies for threads in this folder."
 msgstr "オプション。このフォルダのスレッドの下書き返信を作成する際に適用されます。"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:86
+#: ../../apps/extension/src/auth/SignInScreen.tsx:101
 #: ../../apps/mobile/src/auth/GoogleSignInButton.tsx:17
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:113
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:70
@@ -3338,7 +3352,7 @@ msgstr "パートナー"
 msgid "Passing through the Delta: free to meet?"
 msgstr "デルタ通過中：面会可能か？"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:69
+#: ../../apps/extension/src/auth/SignInScreen.tsx:84
 #: ../../apps/mobile/app/sign-in.tsx:106
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:90
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:50
@@ -3963,7 +3977,7 @@ msgstr "スレッドを検索"
 msgid "Search threads…"
 msgstr "スレッドを検索…"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:54
+#: ../../apps/extension/src/auth/SignInScreen.tsx:69
 msgid "See how your inbox is sorted, right next to Gmail."
 msgstr "Gmailの隣で、受信トレイのソート状況を確認できます。"
 
@@ -4099,7 +4113,7 @@ msgstr "共有プラン＋レビューキュー"
 #~ msgid "Shared taxonomy + review queue"
 #~ msgstr "共有タクソノミー + レビューキュー"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:82
+#: ../../apps/extension/src/auth/SignInScreen.tsx:97
 #: ../../apps/mobile/app/sign-in.tsx:133
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:29
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:107
@@ -4116,7 +4130,7 @@ msgstr "ワークスペースへの招待を承諾するには、ログインし
 msgid "Sign in to triage your inbox"
 msgstr "受信トレイを管理するためサインイン"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:89
+#: ../../apps/extension/src/auth/SignInScreen.tsx:104
 #, fuzzy
 msgid "Sign in with Google"
 msgstr "Googleでサインイン"
@@ -4125,7 +4139,7 @@ msgstr "Googleでサインイン"
 msgid "Sign in with Google. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
 msgstr "Googleでサインイン。Amarnaiはスレッドとラベルを同期しますが、あなたに代わってメールを送信したり削除したりすることはありません。"
 
-#: ../../apps/extension/src/App.tsx:46
+#: ../../apps/extension/src/App.tsx:49
 #: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:68
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:130
 #: ../../apps/mobile/app/(app)/account.tsx:122
@@ -4144,7 +4158,7 @@ msgstr "現在のアカウントからログアウト"
 msgid "Sign up with Google"
 msgstr "Googleでサインアップ"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:25
+#: ../../apps/extension/src/auth/SignInScreen.tsx:35
 #: ../../apps/mobile/app/sign-in.tsx:51
 #, fuzzy
 msgid "Sign-in failed. Please try again."
