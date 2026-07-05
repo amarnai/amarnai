@@ -397,7 +397,7 @@ export function HowItWorksSection() {
       <div className="ld-wrap">
         <div className="ld-section-head ld-reveal">
           <h2 className="ld-section-h">
-            <Trans>Three steps. Then it sorts every email for you.</Trans>
+            <Trans>Three steps to a sorted inbox.</Trans>
           </h2>
           <p className="ld-section-lede">
             <Trans>

@@ -106,7 +106,7 @@ export function EmailsDemoSection() {
         <div className="ld-demo-head ld-reveal">
           <div className="ld-copy">
             <h2 className="ld-section-h">
-              <Trans>Every email goes where it belongs. Right beside your inbox.</Trans>
+              <Trans>Every email goes where it belongs.</Trans>
             </h2>
             <p className="ld-section-lede">
               <Trans>
@@ -115,9 +115,6 @@ export function EmailsDemoSection() {
                 click away, ready for your edits and never sent without them.
               </Trans>
             </p>
-          </div>
-          <div className="ld-play-note">
-            <Trans>Click folders &amp; threads, then generate a draft.</Trans>
           </div>
         </div>
 
