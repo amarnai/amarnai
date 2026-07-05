@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
@@ -69,9 +70,12 @@ export function ReroutePopover({ folders, anchor, onCommit, onClose }: ReroutePo
     }
   }
 
-  if (!anchor) return null;
+  if (!anchor || typeof document === "undefined") return null;
 
-  return (
+  // Portaled to <body>: the panel is position:fixed and placed with viewport
+  // coordinates, and .em-shell is a size container whose layout containment
+  // would otherwise become the panel's containing block.
+  return createPortal(
     <div ref={panelRef} className="em-reroute-panel" role="dialog" aria-label={i18n._(msg`Re-route thread`)}>
       <div className="em-reroute-search">
         <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden>
@@ -108,6 +112,7 @@ export function ReroutePopover({ folders, anchor, onCommit, onClose }: ReroutePo
           </li>
         ))}
       </ul>
-    </div>
+    </div>,
+    document.body,
   );
 }

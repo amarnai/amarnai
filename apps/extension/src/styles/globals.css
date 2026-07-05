@@ -35,6 +35,11 @@ body {
   flex-direction: column;
   height: 100%;
   min-height: 0;
+  /* The reused emails grid switches to its compact (stacked, list<->preview)
+     layout via a `@container emails` query in emails.css, keyed on the width
+     of its surface. The panel is that surface, so it must be the named
+     container — the grid is a direct child here, not inside .ax-header. */
+  container: emails / inline-size;
 }
 
 /* The reused emails grid must fill the space under the header. The panel gets

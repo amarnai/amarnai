@@ -407,9 +407,7 @@ msgstr "Thebes'li Horemheb'den Yazışma Şefi pozisyonu için yeni bir başvuru
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "Thebes'li Horemheb'den Yazışma Şefi pozisyonu için yeni bir başvuru alındı.\n"
-"\n"
-"Başvuruyu Kayıtlar Evi'nde görüntüleyin."
+msgstr "Thebes'li Horemheb'den Yazışma Şefi pozisyonu için yeni bir başvuru alındı.\n\nBaşvuruyu Kayıtlar Evi'nde görüntüleyin."
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:384
 #, fuzzy
@@ -423,11 +421,7 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "Abdi-Heba,\n"
-"\n"
-"Aynı hafta Delta yakınında olacağım. İkinci gün menzil istasyonunda buluşalım; sabahı ayırabilirim.\n"
-"\n"
-"O zamana dek,"
+msgstr "Abdi-Heba,\n\nAynı hafta Delta yakınında olacağım. İkinci gün menzil istasyonunda buluşalım; sabahı ayırabilirim.\n\nO zamana dek,"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
@@ -486,6 +480,15 @@ msgstr "Ekle"
 #, fuzzy
 msgid "Add at least 3 connected folders to export"
 msgstr "Dışa aktarmak için en az 3 bağlı klasör ekleyin."
+
+#: ../../apps/site/src/components/landing/InstallExtensionButton.tsx:65
+#, fuzzy
+msgid "Add to Chrome"
+msgstr "Chrome'a Ekle"
+
+#: ../../apps/site/src/components/landing/InstallExtensionButton.tsx:63
+msgid "Add to Firefox"
+msgstr "Firefox'a Ekle"
 
 #: ../../apps/mobile/src/components/CollaboratorsSheet.tsx:58
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:42
@@ -787,7 +790,7 @@ msgstr "Yönlendirmeyi onayla"
 msgid "Assign"
 msgstr "Ata"
 
-#: ../ui/src/emails/AssigneePicker.tsx:85
+#: ../ui/src/emails/AssigneePicker.tsx:89
 #, fuzzy
 msgid "Assign thread"
 msgstr "Konuyu Ata"
@@ -868,11 +871,7 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "Aziru,\n"
-"\n"
-"Dostluk sözleriniz bize ulaştı. Amurru hanedanının ne önerdiğini daha fazla duymaya açığız. Koşullarınızı bir sonraki kurye ile gönderin.\n"
-"\n"
-"Saygılarımızla,"
+msgstr "Aziru,\n\nDostluk sözleriniz bize ulaştı. Amurru hanedanının ne önerdiğini daha fazla duymaya açığız. Koşullarınızı bir sonraki kurye ile gönderin.\n\nSaygılarımızla,"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:217
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
@@ -958,6 +957,10 @@ msgstr "E-postalarınızı klasörlerinizde kolayca görüntüleyin. Taslak yan�
 #, fuzzy
 msgid "Browse templates"
 msgstr "Şablonlara göz at"
+
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:156
+msgid "Browser extension"
+msgstr "Tarayıcı uzantısı"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:55
 #, fuzzy
@@ -1113,11 +1116,16 @@ msgstr "Bir abonelik seçin"
 #~ msgid "Choose a theme, or follow your system setting. Saved on this device."
 #~ msgstr "Bir tema seçin veya sistem ayarınızı kullanın. Bu cihaza kaydedildi."
 
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:143
+#, fuzzy
+msgid "Choose how to preview Amarnai"
+msgstr "Amarnai'yi nasıl önizleyeceğinizi seçin"
+
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:461
 msgid "Choose parent"
 msgstr "Üst klasör seç"
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:40
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:120
 #, fuzzy
 msgid "Click folders & threads, then generate a draft."
 msgstr "Klasörlere ve konuşmalara tıklayın, ardından bir taslak oluşturun."
@@ -1229,7 +1237,7 @@ msgstr "Gmail hesabını bağla"
 msgid "Connect Gmail account button"
 msgstr "Gmail hesabını bağla düğmesi"
 
-#: ../../apps/site/src/components/landing/FinalCTASection.tsx:10
+#: ../../apps/site/src/components/landing/FinalCTASection.tsx:11
 #, fuzzy
 msgid "Connect Gmail and Amarnai starts sorting within minutes. Pricing is per workspace. Sort as much mail as you like, with backfill of your whole history included."
 msgstr "Gmail'i bağlayın, Amarnai dakikalar içinde sıralamaya başlasın. Fiyatlandırma çalışma alanı başınadır. Geçmişinizin tamamı dahil, dilediğiniz kadar e-postayı sıralayın."
@@ -1776,7 +1784,7 @@ msgstr "Bu çalışma alanının bağlantısı kesilir. Bu posta kutusu hala {sh
 #: ../../apps/web/src/components/NotificationBell.tsx:179
 #: ../../apps/web/src/components/NotificationBell.tsx:180
 #: ../ui/src/AppDownloadBanner.tsx:80
-#: ../ui/src/emails/MockEmailsPage.tsx:261
+#: ../ui/src/emails/MockEmailsPage.tsx:270
 #, fuzzy
 msgid "Dismiss"
 msgstr "Kapat"
@@ -1878,6 +1886,11 @@ msgstr "Taslak Oluşturuluyor…"
 #, fuzzy
 msgid "Drag and connect. It's fully interactive."
 msgstr "Sürükle ve bağla. Tamamen etkileşimli."
+
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:186
+#, fuzzy
+msgid "Drag to resize"
+msgstr "Yeniden boyutlandırmak için sürükleyin"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:280
 msgid "e.g. Invoices"
@@ -2035,15 +2048,19 @@ msgstr "Her hesap ücretsiz bir Kişisel çalışma alanıyla başlar, kart gere
 
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:20
 #, fuzzy
-msgid "Every email goes where it belongs."
-msgstr "Her e-posta ait olduğu yere gider."
+#~ msgid "Every email goes where it belongs."
+#~ msgstr "Her e-posta ait olduğu yere gider."
+
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:109
+msgid "Every email goes where it belongs. Right beside your inbox."
+msgstr "Her e-posta ait olduğu yere. Gelen kutunuzun yanı başına."
 
 #: ../ui/src/emails/queueLabels.ts:11
 #, fuzzy
 msgid "Every thread in your inbox."
 msgstr "Gelen kutunuzdaki her konuşma."
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:23
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:112
 #, fuzzy
 msgid "Every thread lands in one of your folders, exactly where you would expect to find it. When a reply is needed, a draft is one click away, ready for your edits and never sent without them."
 msgstr "Her konuşma, tam da beklediğiniz gibi, klasörlerinizden birine düşer. Bir yanıt gerektiğinde, taslak tek tıkla hazır olur, düzenlemelerinizi bekler ve onlarsız asla gönderilmez."
@@ -2186,7 +2203,7 @@ msgstr "Dildeki ifadeler (\"karşılıklı yarar\", \"köklü dostluk\") nedeniy
 msgid "Flight and hotel bookings, travel itineraries, visa applications, and trip confirmations."
 msgstr "Uçuş ve otel rezervasyonları, seyahat programları, vize başvuruları ve seyahat onayları."
 
-#: ../ui/src/emails/MockEmailsPage.tsx:162
+#: ../ui/src/emails/MockEmailsPage.tsx:171
 msgid "folder"
 msgstr "klasör"
 
@@ -2529,13 +2546,9 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "Ulu Kralım,\n"
-"\n"
-"İstediğiniz raporlar konsey toplanmadan önce hazırlanacaktır. Katiplerime doğu topraklarının hesaplarını derletecek ve hızlı kurye ile önceden göndereceğim.\n"
-"\n"
-"Kardeşlik içerisinde,"
+msgstr "Ulu Kralım,\n\nİstediğiniz raporlar konsey toplanmadan önce hazırlanacaktır. Katiplerime doğu topraklarının hesaplarını derletecek ve hızlı kurye ile önceden göndereceğim.\n\nKardeşlik içerisinde,"
 
-#: ../../apps/site/src/components/landing/FinalCTASection.tsx:8
+#: ../../apps/site/src/components/landing/FinalCTASection.tsx:9
 #, fuzzy
 msgid "Hand the sorting to Amarnai."
 msgstr "Sıralama işini Amarnai'ye bırakın."
@@ -2993,7 +3006,6 @@ msgstr "Geçmiş yazışmalar yükleniyor…"
 msgid "Loading…"
 msgstr "Yükleniyor…"
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:37
 #: ../ui/src/emails/EmailRail.tsx:52
 #, fuzzy
 msgid "Mail"
@@ -3179,7 +3191,7 @@ msgstr "İletileri şuraya taşı"
 msgid "Move to folder"
 msgstr "Klasöre taşı"
 
-#: ../ui/src/emails/ReroutePopover.tsx:84
+#: ../ui/src/emails/ReroutePopover.tsx:88
 #, fuzzy
 msgid "Move to folder…"
 msgstr "Klasöre taşı…"
@@ -3191,7 +3203,7 @@ msgstr "Klasöre taşı…"
 msgid "Move to…"
 msgstr "Şuraya taşı…"
 
-#: ../ui/src/emails/MockEmailsPage.tsx:172
+#: ../ui/src/emails/MockEmailsPage.tsx:181
 msgid "Moved to {folderName}"
 msgstr "{folderName} klasörüne taşındı"
 
@@ -3315,7 +3327,7 @@ msgstr "Kalan taslak yok · {resetDate} tarihinde sıfırlanır"
 msgid "No drafts remaining this month"
 msgstr "Bu ay kalan taslak yok"
 
-#: ../../apps/site/src/components/landing/HeroSection.tsx:66
+#: ../../apps/site/src/components/landing/HeroSection.tsx:68
 #, fuzzy
 msgid "No email bodies stored"
 msgstr "E-posta gövdeleri depolanmaz"
@@ -3330,7 +3342,7 @@ msgstr "Kullanılabilir klasör yok"
 msgid "No folders defined"
 msgstr "Tanımlanmış klasör yok"
 
-#: ../ui/src/emails/ReroutePopover.tsx:94
+#: ../ui/src/emails/ReroutePopover.tsx:98
 #, fuzzy
 msgid "No folders match"
 msgstr "Eşleşen klasör yok"
@@ -3355,7 +3367,7 @@ msgstr "Bağlı bir Gmail gelen kutusu yok. Senkronizasyonu başlatmak için hes
 msgid "No matching folders"
 msgstr "Eşleşen klasör yok"
 
-#: ../ui/src/emails/AssigneePicker.tsx:91
+#: ../ui/src/emails/AssigneePicker.tsx:95
 #, fuzzy
 msgid "No members"
 msgstr "Üye yok"
@@ -3532,7 +3544,7 @@ msgstr "açık kaynak e-posta yapay zekası"
 #~ msgid "Open thread"
 #~ msgstr "Konuyu Aç"
 
-#: ../../apps/site/src/components/landing/HeroSection.tsx:58
+#: ../../apps/site/src/components/landing/HeroSection.tsx:60
 #, fuzzy
 msgid "Open-source & auditable"
 msgstr "Açık kaynak ve denetlenebilir"
@@ -3754,7 +3766,7 @@ msgstr "Lütfen tekrar deneyin."
 msgid "Prefer to self-host?"
 msgstr "Kendi sunucunuzda mı barındırmak istersiniz?"
 
-#: ../../apps/site/src/components/landing/FinalCTASection.tsx:25
+#: ../../apps/site/src/components/landing/FinalCTASection.tsx:29
 #, fuzzy
 msgid "Prefer to self-host? It's open source:<0/> <1>clone it and run it free</1>."
 msgstr "Kendi sunucunuzda mı barındırmak istersiniz? Açık kaynak:<0/> <1>klonlayın ve ücretsiz çalıştırın</1>."
@@ -3795,6 +3807,10 @@ msgstr "Fiyatlandırma | Amarnai"
 msgid "Pricing is per workspace, billed monthly or annually. Every account starts with a free Personal workspace, no card required. The paid Pro and Business subscriptions add higher limits and include a 14-day trial. See the pricing page for current details."
 msgstr "Fiyatlandırma çalışma alanı başına aylık veya yıllık olarak faturalandırılır. Her hesap ücretsiz bir Kişisel çalışma alanı ile başlar, kart gerekmez. Ücretli Pro ve Business abonelikleri daha yüksek limitler sunar ve 14 günlük deneme süresi içerir. Güncel ayrıntılar için fiyatlandırma sayfasını ziyaret edin."
 
+#: ../../apps/site/src/components/landing/GmailInboxMock.tsx:47
+msgid "Primary"
+msgstr "Birincil"
+
 #: ../ui/src/pricing/planMessages.ts:100
 #, fuzzy
 msgid "Priority support"
@@ -3805,7 +3821,7 @@ msgstr "Öncelikli destek"
 msgid "Privacy"
 msgstr "Gizlilik"
 
-#: ../../apps/site/src/components/landing/HeroSection.tsx:38
+#: ../../apps/site/src/components/landing/HeroSection.tsx:40
 #, fuzzy
 msgid "Privacy by design"
 msgstr "Tasarım gereği gizlilik"
@@ -3846,6 +3862,7 @@ msgid "Projects"
 msgstr "Projeler"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:112
+#: ../../apps/site/src/components/landing/GmailInboxMock.tsx:50
 #, fuzzy
 msgid "Promotions"
 msgstr "Promosyonlar"
@@ -3865,7 +3882,7 @@ msgstr "Yeniden tarama sıraya alınıyor…"
 msgid "Re-route {unclassifiedCount} unclassified"
 msgstr "{unclassifiedCount} sınıflandırılmamışı yeniden yönlendir"
 
-#: ../ui/src/emails/ReroutePopover.tsx:75
+#: ../ui/src/emails/ReroutePopover.tsx:79
 #, fuzzy
 msgid "Re-route thread"
 msgstr "İleti dizisini yeniden yönlendir"
@@ -4140,6 +4157,11 @@ msgstr "Sıfırlanıyor…"
 msgid "Resize the folder sidebar"
 msgstr "Klasör kenar çubuğunu boyutlandır"
 
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:171
+#, fuzzy
+msgid "Resize the split between the inbox and Amarnai"
+msgstr "Gelen kutusu ile Amarnai arasındaki bölmeyi yeniden boyutlandırın"
+
 #: ../ui/src/emails/ColumnResizeHandle.tsx:32
 msgid "Resize the thread list"
 msgstr "Konu listesini boyutlandır"
@@ -4173,11 +4195,7 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "Rib-Hadda,\n"
-"\n"
-"Seni duyuyoruz. Güneydeki depolardan ek tahıl sipariş edildi ve hasat festivalinden önce ulaşacak. O zamana kadar sabrınızı rica ediyoruz.\n"
-"\n"
-"Esen kal,"
+msgstr "Rib-Hadda,\n\nSeni duyuyoruz. Güneydeki depolardan ek tahıl sipariş edildi ve hasat festivalinden önce ulaşacak. O zamana kadar sabrınızı rica ediyoruz.\n\nEsen kal,"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -4185,7 +4203,7 @@ msgstr "Rib-Hadda,\n"
 #~ msgid "Route now"
 #~ msgstr "Şimdi yönlendir"
 
-#: ../ui/src/emails/MockEmailsPage.tsx:102
+#: ../ui/src/emails/MockEmailsPage.tsx:111
 msgid "Routing approved"
 msgstr "Yönlendirme onaylandı"
 
@@ -4222,7 +4240,7 @@ msgstr "Kaydet"
 msgid "Save changes"
 msgstr "Değişiklikleri kaydet"
 
-#: ../../apps/site/src/components/landing/HeroSection.tsx:19
+#: ../../apps/site/src/components/landing/HeroSection.tsx:20
 #, fuzzy
 msgid "Save hours of triage every week. Let Amarnai sort your inbox, filing every email, old and new, where it belongs."
 msgstr "Her hafta saatler süren ön eleme derdinden kurtulun. Amarnai, gelen kutunuzu düzenlesin, eski ve yeni tüm e-postaları ait oldukları yere dosyalasın."
@@ -4259,10 +4277,14 @@ msgid "Search {threadCount} threads"
 msgstr "{threadCount} iletiyi ara"
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:322
-#: ../ui/src/emails/ReroutePopover.tsx:88
+#: ../ui/src/emails/ReroutePopover.tsx:92
 #, fuzzy
 msgid "Search folders"
 msgstr "Klasörlerde ara"
+
+#: ../../apps/site/src/components/landing/GmailInboxMock.tsx:40
+msgid "Search mail"
+msgstr "E-posta ara"
 
 #: ../ui/src/emails/ThreadListHeader.tsx:107
 #, fuzzy
@@ -4284,7 +4306,7 @@ msgstr "Seç"
 
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:201
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:336
-#: ../ui/src/emails/MockEmailsPage.tsx:239
+#: ../ui/src/emails/MockEmailsPage.tsx:248
 #, fuzzy
 msgid "Select a thread to preview"
 msgstr "Önizlemek için bir ileti seçin"
@@ -4483,6 +4505,7 @@ msgstr "Giriş yapılıyor…"
 msgid "Simple per-workspace pricing. Start free, upgrade or create additional workspaces as you need."
 msgstr "Basit çalışma alanı fiyatlandırması. Ücretsiz başlayın, ihtiyacınıza göre yükseltin veya yeni çalışma alanları oluşturun."
 
+#: ../../apps/site/src/components/landing/GmailInboxMock.tsx:53
 #: ../ui/src/i18n/taxonomy-template-messages.ts:76
 #, fuzzy
 msgid "Social"
@@ -4603,7 +4626,7 @@ msgid "Start from a template (replaces current)"
 msgstr "Şablondan başlat (mevcutu değiştirir)"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:83
-#: ../../apps/site/src/components/landing/HeroSection.tsx:27
+#: ../../apps/site/src/components/landing/HeroSection.tsx:28
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:90
 #, fuzzy
 msgid "Start sorting"
@@ -4623,7 +4646,7 @@ msgstr "Startup Kurucusu"
 msgid "Still importing your inbox. Check back once the import finishes."
 msgstr "Gelen kutunuz hala içe aktarılıyor. İçe aktarma tamamlandığında tekrar kontrol edin."
 
-#: ../../apps/site/src/components/landing/HeroSection.tsx:12
+#: ../../apps/site/src/components/landing/HeroSection.tsx:13
 #, fuzzy
 msgid "Stop sorting email.<0/><1>Sort it once.</1>"
 msgstr "E-posta sıralamaya son.<0/><1>Bir kez sıralayın.</1>"
@@ -4716,8 +4739,8 @@ msgstr "Senkronizasyon filtreleri"
 
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:44
 #, fuzzy
-msgid "Synced 2m ago"
-msgstr "2 dak. önce senkronize edildi"
+#~ msgid "Synced 2m ago"
+#~ msgstr "2 dak. önce senkronize edildi"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:128
 #, fuzzy
@@ -4778,7 +4801,7 @@ msgstr "Şablonlar"
 msgid "Terms"
 msgstr "Şartlar"
 
-#: ../ui/src/emails/MockEmailsPage.tsx:148
+#: ../ui/src/emails/MockEmailsPage.tsx:157
 msgid "Thank you for your message. I'll follow up shortly."
 msgstr "Mesajınız için teşekkürler. Yakında dönüş yapacağım."
 
@@ -5019,13 +5042,7 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "Büyük Kral kardeşim,\n"
-"\n"
-"Büyük konsey Şemu'nun başında toplanacak. Doğu topraklarının tam bir muhasebesini hazırlamanızı ve mümkünse yeni aydan önce hızlı bir kurye ile göndermenizi rica ediyorum.\n"
-"\n"
-"İttifakımız güçlüdür. Konseye bunun böyle kaldığını gösterelim.\n"
-"\n"
-"Mitanni Büyük Kralı Tuşratta"
+msgstr "Büyük Kral kardeşim,\n\nBüyük konsey Şemu'nun başında toplanacak. Doğu topraklarının tam bir muhasebesini hazırlamanızı ve mümkünse yeni aydan önce hızlı bir kurye ile göndermenizi rica ediyorum.\n\nİttifakımız güçlüdür. Konseye bunun böyle kaldığını gösterelim.\n\nMitanni Büyük Kralı Tuşratta"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:163
 #, fuzzy
@@ -5034,11 +5051,7 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "Kraliyet Atama Bürosu'na,\n"
-"\n"
-"Thebesli Horemheb'in başvurusunu aldık ve sonraki yeni aydan önce sicilini gözden geçireceğiz. Lütfen kendisine zamanı geldiğinde haber vereceğimizi bildirin.\n"
-"\n"
-"Kraliyet fermanıyla,"
+msgstr "Kraliyet Atama Bürosu'na,\n\nThebesli Horemheb'in başvurusunu aldık ve sonraki yeni aydan önce sicilini gözden geçireceğiz. Lütfen kendisine zamanı geldiğinde haber vereceğimizi bildirin.\n\nKraliyet fermanıyla,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:275
 #, fuzzy
@@ -5049,13 +5062,7 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "Büyük Kral'a,\n"
-"\n"
-"Yıllardır hanelerimiz kardeş gibidir. Şimdi, bu dostluğumuzu her iki halkımızın da yararına resmileştirmeyi teklif etmek için yazıyorum: karşılıklı koruma ve ortak ticaret yolları anlaşması.\n"
-"\n"
-"Sadece şartlarımı dinlemenizi rica ediyorum. Sonraki kurye ile haber gönderin, elçimi derhal yola çıkaracağım.\n"
-"\n"
-"Amurru lordu, Büyük Kral'ın hizmetkarı Aziru"
+msgstr "Büyük Kral'a,\n\nYıllardır hanelerimiz kardeş gibidir. Şimdi, bu dostluğumuzu her iki halkımızın da yararına resmileştirmeyi teklif etmek için yazıyorum: karşılıklı koruma ve ortak ticaret yolları anlaşması.\n\nSadece şartlarımı dinlemenizi rica ediyorum. Sonraki kurye ile haber gönderin, elçimi derhal yola çıkaracağım.\n\nAmurru lordu, Büyük Kral'ın hizmetkarı Aziru"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:388
 #, fuzzy
@@ -5064,11 +5071,7 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "Büyük Kral'a,\n"
-"\n"
-"Yolculuklarım beni önümüzdeki günlerde Delta'ya yakın bir yere getirecek. Büyük Kral'ın ayıracak bir saati varsa, yüz yüze konuşma fırsatını memnuniyetle karşılarım; yazmaktan daha kolay anlatılacak meseleler var.\n"
-"\n"
-"Kulunuz, Urushalim Valisi Abdi-Heba"
+msgstr "Büyük Kral'a,\n\nYolculuklarım beni önümüzdeki günlerde Delta'ya yakın bir yere getirecek. Büyük Kral'ın ayıracak bir saati varsa, yüz yüze konuşma fırsatını memnuniyetle karşılarım; yazmaktan daha kolay anlatılacak meseleler var.\n\nKulunuz, Urushalim Valisi Abdi-Heba"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:153
 #, fuzzy
@@ -5077,11 +5080,7 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "Büyük Kral kardeşim,\n"
-"\n"
-"Sözlerinizi duydum. Altın, bir sonraki elçi ayrılmadan önce gönderilecektir. Hanelerimiz arasındaki bağı değerli buluyoruz ve soğumasını istemiyoruz.\n"
-"\n"
-"Dostlukla,"
+msgstr "Büyük Kral kardeşim,\n\nSözlerinizi duydum. Altın, bir sonraki elçi ayrılmadan önce gönderilecektir. Hanelerimiz arasındaki bağı değerli buluyoruz ve soğumasını istemiyoruz.\n\nDostlukla,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:236
 #, fuzzy
@@ -5092,13 +5091,7 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "Büyük Kral kardeşim,\n"
-"\n"
-"Atalarımızın yazdığı gibi, dostlukla yazıyorum. Antlaşmamız kapsamında üzerinde anlaşılan üçüncü altın sevkiyatı gelmedi. İki elçi geçti ve hâlâ bekliyoruz.\n"
-"\n"
-"Hanelerimiz arasındaki bağa yakışır şekilde, gecikmeksizin göndermenizi rica ediyoruz.\n"
-"\n"
-"Babil Kralı II. Burna-Buriash"
+msgstr "Büyük Kral kardeşim,\n\nAtalarımızın yazdığı gibi, dostlukla yazıyorum. Antlaşmamız kapsamında üzerinde anlaşılan üçüncü altın sevkiyatı gelmedi. İki elçi geçti ve hâlâ bekliyoruz.\n\nHanelerimiz arasındaki bağa yakışır şekilde, gecikmeksizin göndermenizi rica ediyoruz.\n\nBabil Kralı II. Burna-Buriash"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:349
 #, fuzzy
@@ -5109,13 +5102,7 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "Büyük Kral'ım, efendim, güneşim,\n"
-"\n"
-"Geçen ay gönderdiğiniz tahıl şükranla alındı ve adınızı halkın önünde övdüm. Ancak tekrar yazmak zorundayım: üçüncü sevkiyat gelmedi ve şehir huzursuzlanıyor.\n"
-"\n"
-"Yedi kez yazdım. Sizi rahatsız etmek istemem ama başka ne yapabilirim?\n"
-"\n"
-"Kulunuz, Byblos Valisi Rib-Hadda"
+msgstr "Büyük Kral'ım, efendim, güneşim,\n\nGeçen ay gönderdiğiniz tahıl şükranla alındı ve adınızı halkın önünde övdüm. Ancak tekrar yazmak zorundayım: üçüncü sevkiyat gelmedi ve şehir huzursuzlanıyor.\n\nYedi kez yazdım. Sizi rahatsız etmek istemem ama başka ne yapabilirim?\n\nKulunuz, Byblos Valisi Rib-Hadda"
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:19
 #: ../ui/src/emails/ThreadList.tsx:15
@@ -5165,7 +5152,7 @@ msgstr "Anında gelen kutusu ayıklama."
 #~ msgid "Triaging 412 threads"
 #~ msgstr "412 ileti dizisi ayıklanıyor"
 
-#: ../../apps/site/src/components/landing/FinalCTASection.tsx:17
+#: ../../apps/site/src/components/landing/FinalCTASection.tsx:19
 #, fuzzy
 msgid "Try Amarnai"
 msgstr "Amarnai'yi Dene"
@@ -5176,7 +5163,7 @@ msgid "Tushratta of Mitanni"
 msgstr "Mitannili Tuşratta"
 
 #: ../../apps/mobile/src/components/AssigneeSheet.tsx:32
-#: ../ui/src/emails/AssigneePicker.tsx:31
+#: ../ui/src/emails/AssigneePicker.tsx:32
 msgid "Unassign"
 msgstr "Atamayı Kaldır"
 
@@ -5195,7 +5182,7 @@ msgstr "Sınıflandırılmamış"
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:223
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:366
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1321
-#: ../ui/src/emails/MockEmailsPage.tsx:258
+#: ../ui/src/emails/MockEmailsPage.tsx:267
 #, fuzzy
 msgid "Undo"
 msgstr "Geri Al"
@@ -5499,7 +5486,6 @@ msgstr "Çalışan Profesyonel"
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:61
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:220
 #: ../../apps/site/src/components/demo/DemoTaxonomyCanvas.tsx:218
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:35
 #: ../ui/src/emails/ThreadListHeader.tsx:63
 #: ../ui/src/pricing/planMessages.ts:53
 #, fuzzy
@@ -5608,7 +5594,7 @@ msgstr "Evet. Bir iletiyi açın, Taslak yanıt oluştur'a tıklayın; Amarnai'd
 msgid "Yesterday"
 msgstr "Dün"
 
-#: ../../apps/site/src/components/landing/HeroSection.tsx:44
+#: ../../apps/site/src/components/landing/HeroSection.tsx:46
 #, fuzzy
 msgid "You approve every action"
 msgstr "Her eylemi siz onaylarsınız."
@@ -5685,7 +5671,7 @@ msgstr "14 günlük ücretsiz deneme süreniz <0>{0}</0> tarihine kadar devam ed
 msgid "Your free trial will end immediately and your workspace will be downgraded to the free tier."
 msgstr "Ücretsiz deneme süreniz hemen sona erecek ve çalışma alanınız ücretsiz sürüme düşürülecektir."
 
-#: ../../apps/site/src/components/landing/HeroSection.tsx:51
+#: ../../apps/site/src/components/landing/HeroSection.tsx:53
 #, fuzzy
 msgid "Your Gmail stays yours"
 msgstr "Gmail'iniz size ait kalır."

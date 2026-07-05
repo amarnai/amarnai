@@ -24,6 +24,14 @@ export interface MockEmailsPageProps {
   workspaceEmail?: string | null;
   /** Maps thread id → pre-written draft body for mock generation. */
   draftBodies?: Record<string, string>;
+  /**
+   * Whether the folder rail starts open. Only affects the compact (≤640px)
+   * layout, where the rail is a drawer over the list; in the wide layout the
+   * rail is always a visible column. Defaults to open to match a fresh desktop
+   * view; narrow surfaces (the extension-style panel demo) pass false so the
+   * thread list is visible first, as the real side panel does.
+   */
+  initialRailOpen?: boolean;
 }
 
 export function MockEmailsPage({
@@ -34,6 +42,7 @@ export function MockEmailsPage({
   syncInfo = null,
   workspaceEmail,
   draftBodies,
+  initialRailOpen = true,
 }: MockEmailsPageProps) {
   const { _ } = useLingui();
   const now = useRef(new Date()).current;
@@ -45,7 +54,7 @@ export function MockEmailsPage({
   const [mobileView, setMobileView] = useState<"list" | "preview">(
     initialSelectedId ? "preview" : "list"
   );
-  const [railOpen, setRailOpen] = useState(true);
+  const [railOpen, setRailOpen] = useState(initialRailOpen);
   const [query, setQuery] = useState("");
   const [railQuery, setRailQuery] = useState("");
   const [openFolderIds, setOpenFolderIds] = useState<Set<string>>(new Set());

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Trans } from "@lingui/react/macro";
 import { HeroFeedCard } from "./HeroFeedCard";
+import { InstallExtensionButton } from "./InstallExtensionButton";
 
 export function HeroSection() {
   return (
@@ -26,6 +27,7 @@ export function HeroSection() {
               <Link className="ld-btn accent lg" href="/pricing">
                 <Trans>Start sorting</Trans>
               </Link>
+              <InstallExtensionButton variant="secondary" />
             </div>
           </div>
 

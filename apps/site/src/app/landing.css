@@ -162,14 +162,7 @@
   margin-bottom: 32px;
 }
 
-.ld-cta-row { display: flex; align-items: center; gap: 12px; }
-
-.ld-cta-note {
-  font-size: 12.5px;
-  font-weight: 450;
-  color: var(--ink-3);
-  margin-top: 12px;
-}
+.ld-cta-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 
 /* ─── Hero taxonomy card ──────────────────────────────────────────────────── */
 
@@ -721,27 +714,6 @@
 .ld-crumbs .ld-sep { opacity: 0.5; }
 .ld-crumbs .ld-here { color: var(--ink-2); font-weight: 600; }
 
-.ld-sync-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 3px 9px;
-  border-radius: 999px;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  font-size: 11px;
-  color: var(--ink-3);
-}
-
-.ld-sync-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--ok);
-  box-shadow: 0 0 0 2.5px var(--ok-soft);
-  flex-shrink: 0;
-}
-
 .ld-demo-stage {
   height: 560px;
   overflow: hidden;
@@ -750,6 +722,391 @@
 
 /* Emails demo needs full height */
 .ld-demo-stage.emails { height: 620px; }
+
+/* ─── Browser demo frame (emails section) ─────────────────────────────────── */
+
+/* Chrome bar: traffic lights left, URL pill centered, mode toggle right. The
+   1fr side columns keep the pill centered regardless of toggle width. */
+.ld-browser-bar {
+  display: grid;
+  grid-template-columns: 1fr minmax(0, 340px) 1fr;
+  align-items: center;
+  gap: 14px;
+  padding: 9px 16px;
+  background: var(--bg-soft);
+  border-bottom: 1px solid var(--line);
+}
+
+.ld-traffic {
+  display: flex;
+  gap: 6px;
+  justify-self: start;
+}
+
+.ld-traffic span { width: 11px; height: 11px; border-radius: 50%; }
+.ld-traffic span:nth-child(1) { background: oklch(72% 0.14 25); }
+.ld-traffic span:nth-child(2) { background: oklch(80% 0.13 85); }
+.ld-traffic span:nth-child(3) { background: oklch(74% 0.13 145); }
+
+.ld-url-pill {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-width: 0;
+  padding: 5px 14px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-family: var(--f-mono);
+  font-size: 11.5px;
+  color: var(--ink-2);
+}
+
+.ld-url-pill svg { flex-shrink: 0; color: var(--ink-4); }
+
+.ld-url-pill span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ld-seg {
+  justify-self: end;
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+  background: var(--surface);
+  border: 1px solid var(--line-2);
+  border-radius: 999px;
+}
+
+.ld-seg button {
+  appearance: none;
+  border: none;
+  background: transparent;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 550;
+  color: var(--ink-3);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.12s, color 0.12s;
+}
+
+.ld-seg button:hover { color: var(--ink); }
+
+.ld-seg button[aria-pressed="true"] {
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  box-shadow: inset 0 0 0 1px var(--accent-line);
+}
+
+/* Split stage: static Gmail pane | divider | live workspace pane. In web mode
+   the Gmail pane and divider are hidden so the workspace fills the frame; the
+   workspace stays mounted across modes and keeps its state. */
+.ld-split-stage {
+  --ld-gmail-w: 52%;
+  display: flex;
+}
+
+.ld-gmail-pane {
+  flex: 0 0 var(--ld-gmail-w);
+  min-width: 0;
+  border-right: 1px solid var(--line);
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+}
+
+.ld-app-pane { flex: 1; min-width: 0; }
+
+.ld-browser-frame[data-mode="web"] .ld-gmail-pane,
+.ld-browser-frame[data-mode="web"] .ld-split-divider { display: none; }
+
+/* Resize seam where the Amarnai side panel docks against the Gmail inbox.
+   At rest it reads as the panel's own edge: a hairline border matching the
+   pane divider, with a slim grab handle that only firms up on hover/drag.
+   No two-way chevrons or standing caption, so it doesn't look like a
+   before/after comparison slider. */
+.ld-split-divider {
+  flex: none;
+  width: 12px;
+  margin-inline: -6px;
+  position: relative;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: col-resize;
+  touch-action: none;
+}
+
+/* The panel's edge, running the full height. Quiet by default. */
+.ld-split-divider::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  transform: translateX(-50%);
+  background: var(--line);
+  transition: background 0.12s, width 0.12s;
+}
+
+/* Slim vertical grab handle centered on the seam. */
+.ld-split-grip {
+  position: relative;
+  z-index: 1;
+  width: 4px;
+  height: 30px;
+  border-radius: 999px;
+  background: var(--line);
+  transition: background 0.12s, height 0.12s;
+}
+
+/* "Drag to resize" caption: a small pill beside the handle, fading in on
+   hover/drag so it stays out of the way in the default view. */
+.ld-split-hint {
+  position: absolute;
+  top: calc(50% + 28px);
+  left: 50%;
+  transform: translateX(-50%) translateY(2px);
+  white-space: nowrap;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--surface);
+  font-size: 10.5px;
+  font-weight: 550;
+  letter-spacing: 0.01em;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.14s, transform 0.14s;
+}
+
+.ld-split-divider:hover .ld-split-grip,
+.ld-split-divider:focus-visible .ld-split-grip {
+  background: var(--accent);
+  height: 38px;
+}
+
+.ld-split-divider:hover::before,
+.ld-split-divider:focus-visible::before {
+  background: var(--accent-line);
+  width: 2px;
+}
+
+.ld-split-divider:hover .ld-split-hint,
+.ld-split-divider:focus-visible .ld-split-hint {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.ld-split-divider:focus-visible { outline: none; }
+
+.ld-split-stage[data-resizing] { cursor: col-resize; user-select: none; }
+.ld-split-stage[data-resizing] .ld-split-divider::before {
+  background: var(--accent-line);
+  width: 2px;
+}
+.ld-split-stage[data-resizing] .ld-split-grip {
+  background: var(--accent);
+  height: 38px;
+}
+.ld-split-stage[data-resizing] .ld-split-hint { opacity: 1; transform: translateX(-50%) translateY(0); }
+.ld-split-stage[data-resizing] .ld-app-pane,
+.ld-split-stage[data-resizing] .ld-gmail-pane { pointer-events: none; }
+
+/* Pre-hydration fallback: on narrow viewports the frame is guaranteed to be
+   below the split threshold, so hide the split and toggle without waiting for
+   JS. Once mounted, the ResizeObserver keys the mode off the frame's own
+   rendered width, so a narrow panel on a wide viewport is also handled. */
+@media (max-width: 780px) {
+  .ld-browser-frame .ld-gmail-pane,
+  .ld-browser-frame .ld-split-divider,
+  .ld-browser-frame .ld-seg { display: none; }
+
+  /* Browser extensions can't be installed on mobile; hide the CTA there. */
+  .ld-ext-btn { display: none; }
+}
+
+/* ─── Gmail inbox mock ────────────────────────────────────────────────────── */
+
+.ld-gmail {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.ld-gmail-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  flex-shrink: 0;
+}
+
+.ld-gmail-burger { display: flex; flex-direction: column; gap: 3px; }
+
+.ld-gmail-burger span {
+  width: 14px;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--ink-3);
+}
+
+.ld-gmail-logo {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink-2);
+  letter-spacing: -0.01em;
+}
+
+.ld-gmail-search {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: var(--bg-soft);
+  border-radius: 999px;
+  font-size: 12px;
+  color: var(--ink-4);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.ld-gmail-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  font-size: 11px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ld-gmail-tabs {
+  display: flex;
+  padding: 0 8px;
+  border-bottom: 1px solid var(--line);
+  flex-shrink: 0;
+}
+
+.ld-gmail-tab {
+  padding: 9px 14px;
+  font-size: 12.5px;
+  color: var(--ink-3);
+}
+
+.ld-gmail-tab.active {
+  color: var(--accent-ink);
+  font-weight: 600;
+  box-shadow: inset 0 -2px 0 var(--accent);
+}
+
+.ld-gmail-list {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.ld-gmail-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 42px;
+  padding: 0 16px;
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 12.5px;
+}
+
+.ld-gmail-check {
+  width: 12px;
+  height: 12px;
+  border: 1.5px solid var(--line-3);
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.ld-gmail-star { color: var(--line-3); flex-shrink: 0; }
+
+.ld-gmail-sender {
+  width: 132px;
+  flex-shrink: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--ink-2);
+}
+
+.ld-gmail-line {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ld-gmail-subject { color: var(--ink-2); }
+.ld-gmail-snippet { color: var(--ink-4); }
+
+.ld-gmail-time {
+  flex-shrink: 0;
+  font-size: 11px;
+  color: var(--ink-4);
+}
+
+.ld-gmail-row.unread .ld-gmail-sender,
+.ld-gmail-row.unread .ld-gmail-subject {
+  font-weight: 650;
+  color: var(--ink);
+}
+
+.ld-gmail-row.unread .ld-gmail-time {
+  color: var(--accent-ink);
+  font-weight: 600;
+}
+
+/* Filler rows: grey bars fading toward the bottom of the pane. */
+.ld-gmail-more {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  mask-image: linear-gradient(to bottom, black 20%, transparent 92%);
+}
+
+.ld-skel-sender,
+.ld-skel-line,
+.ld-skel-time {
+  height: 8px;
+  border-radius: 4px;
+  background: var(--line);
+}
+
+.ld-skel-sender { width: 90px; flex-shrink: 0; }
+.ld-skel-line { flex: 1; max-width: 60%; }
+.ld-skel-time { width: 26px; flex-shrink: 0; margin-left: auto; }
+
+.ld-gmail-skel:nth-child(2n) .ld-skel-line { max-width: 44%; }
+.ld-gmail-skel:nth-child(3n) .ld-skel-line { max-width: 72%; }
 
 /* "Generate from inbox" lives in the frame bar, right-aligned opposite the
    breadcrumb (the bar uses justify-content: space-between). */
@@ -915,6 +1272,14 @@
   color: var(--ink-3);
   line-height: 1.65;
   margin-bottom: 28px;
+}
+
+.ld-final-cta-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
 .ld-final-note {

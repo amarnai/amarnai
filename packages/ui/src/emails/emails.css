@@ -6,6 +6,13 @@
   flex-direction: column;
   height: 100%;
   overflow: hidden;
+  /* Size container for the compact-layout rules below. Every surface that
+     renders .em-grid must wrap it in .em-shell, or the compact layout never
+     triggers. NOTE: layout containment makes this element the containing
+     block for position:fixed descendants — anything inside the grid that
+     positions itself with viewport coordinates must portal to <body>
+     (ReroutePopover and AssigneePicker do). */
+  container: emails / inline-size;
 }
 
 .em-grid {
@@ -15,6 +22,7 @@
      bounds keep any width — default or stored — sane at narrow viewports. */
   --em-rail-w: 260px;
   --em-list-w: 440px;
+  position: relative; /* containing block for the toast */
   display: grid;
   grid-template-columns:
     clamp(180px, var(--em-rail-w), 26%)
@@ -1432,7 +1440,11 @@
   box-shadow: var(--shadow-2);
   animation: em-toast-in 0.18s ease-out;
   white-space: nowrap;
-  position: fixed;
+  /* Anchored to the emails grid, not the viewport, so it stays inside the
+     surface when the grid is embedded (landing demo, extension panel) and
+     is unaffected by whether the engine lets the .em-shell container's
+     layout containment capture fixed-position descendants. */
+  position: absolute;
   bottom: 18px;
   left: 50%;
   transform: translateX(-50%);
@@ -1462,12 +1474,17 @@
 
 /* ─── Responsive ──────────────────────────────────────────────────────────── */
 
-/* Mobile-only email controls — hidden on desktop */
+/* Compact-only email controls — hidden in the wide 3-column layout */
 .em-back-btn     { display: none; }
 .em-rail-toggle-btn { display: none; }
 .em-nav-toggle   { display: none; }
 
-@media (max-width: 640px) {
+/* The compact (stacked, panel-switching) layout is driven by the width of the
+   .em-shell container, not the viewport, so the grid also adapts when it is
+   embedded in a narrow pane (extension side panel, landing-page split demo).
+   In the app the shell fills the main content area, so this matches the old
+   viewport breakpoint on phones. */
+@container emails (max-width: 640px) {
   /* em-grid: flex column for panel switching */
   .em-grid {
     display: flex;
