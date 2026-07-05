@@ -181,6 +181,19 @@ body {
   color: var(--ink);
 }
 
+/* Size the shared ThemeToggle to match the header icon links: 28px box,
+   16px glyph, --ink-3 — instead of its default 36px/18px nav sizing. */
+.theme-toggle--panel {
+  width: 28px;
+  height: 28px;
+  color: var(--ink-3);
+}
+
+.theme-toggle--panel svg {
+  width: 16px;
+  height: 16px;
+}
+
 .ax-header-iconbtn:focus,
 .ax-header-iconbtn:focus-visible {
   outline: none;

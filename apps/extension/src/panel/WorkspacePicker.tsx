@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
-import { NavGlyph } from "@amarnai/ui";
+import { NavGlyph, ThemeToggle } from "@amarnai/ui";
 import { userInitials } from "@amarnai/core";
 import { useSession } from "../auth/session";
 import { WEB_APP_URL } from "../config";
@@ -94,6 +94,8 @@ export function PanelHeader() {
         <NavGlyph name="settings" />
         <span className="ax-iconbtn-label">{settingsShortLabel}</span>
       </a>
+
+      <ThemeToggle className="theme-toggle--panel" />
 
       <div className="ax-user-menu" ref={menuRef}>
         <button

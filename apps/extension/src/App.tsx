@@ -10,7 +10,7 @@ import { TriageGate } from "./panel/TriageGate";
 import { HostPermissionGate } from "./platform/HostPermissionGate";
 import { ensureHostPermissions } from "./platform/permissions";
 import { currentBrowser, extensionVersion } from "./platform/ext";
-import { GoogleGIcon } from "@amarnai/ui";
+import { GoogleGIcon, ThemeProvider } from "@amarnai/ui";
 import type { SupportedLocale } from "@amarnai/i18n";
 
 function Gate() {
@@ -101,8 +101,10 @@ function NoWorkspace() {
 
 export function App() {
   return (
-    <SessionProvider>
-      <Gate />
-    </SessionProvider>
+    <ThemeProvider>
+      <SessionProvider>
+        <Gate />
+      </SessionProvider>
+    </ThemeProvider>
   );
 }

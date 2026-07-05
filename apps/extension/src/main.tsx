@@ -9,7 +9,13 @@ import "@fontsource-variable/geist-mono/wght.css";
 import "./styles/globals.css";
 import "@amarnai/ui/theme/styles";
 import "@amarnai/ui/emails/styles";
+import { applyStoredThemeSync } from "@amarnai/ui";
 import { App } from "./App";
+
+// Set data-theme from stored preference (or the OS) before React mounts, so the
+// panel opens in the right theme with no light flash. ThemeProvider re-syncs
+// from the same storage on mount.
+applyStoredThemeSync();
 
 const container = document.getElementById("root");
 if (!container) throw new Error("#root not found");
