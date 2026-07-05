@@ -14,6 +14,7 @@ import {
 } from "@amarnai/auth";
 import { RegisterCredentialsSchema, PasswordSchema } from "@amarnai/shared";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/session";
 import { sendVerificationEmail, sendPasswordResetEmail } from "@/lib/email";
 import { disconnectGmailBeforeDeletion } from "@/lib/gmail-teardown";
@@ -107,7 +108,15 @@ export async function resendVerificationAction(): Promise<{ error?: string; succ
   });
 
   if (!dbUser) return { error: "User not found" };
-  if (dbUser.emailVerified) return { error: "Email is already verified" };
+
+  // Stale session: the DB says verified (link clicked in another browser or
+  // device) but this JWT still carries isEmailVerified: false, so the middleware
+  // keeps gating the user here. Refresh the token from the DB and send them into
+  // the app instead of dead-ending on an error.
+  if (dbUser.emailVerified) {
+    await unstable_update({});
+    redirect(await postAuthRedirect());
+  }
 
   const last = dbUser.verificationTokens[0];
   if (last && Date.now() - last.createdAt.getTime() < 60_000) {
