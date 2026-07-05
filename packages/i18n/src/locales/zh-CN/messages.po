@@ -41,6 +41,19 @@ msgstr "{0, plural, one {# 条消息} other {# 条消息}}"
 msgid "{0, plural, one {# person} other {# people}}"
 msgstr "{0, plural, one {# 人} other {# 人}}"
 
+#. placeholder {0}: d.processed
+#: ../../apps/mobile/src/data/notificationView.ts:73
+#: ../../apps/web/src/lib/notifications.ts:92
+#, fuzzy
+msgid "{0, plural, one {# thread imported.} other {# threads imported.}}"
+msgstr "{0, plural, one {# 会话已导入。} other {# 个会话已导入。}}"
+
+#. placeholder {0}: d.processed
+#: ../../apps/mobile/src/data/notificationView.ts:67
+#: ../../apps/web/src/lib/notifications.ts:86
+msgid "{0, plural, one {# thread imported.} other {# threads imported.}} Your plan's import limit was reached."
+msgstr "{0, plural, one {# 会话已导入。} other {# 个会话已导入。}} 您的套餐已达到导入上限。"
+
 #. placeholder {0}: node?.threadCount ?? 0
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:380
 #, fuzzy
@@ -70,8 +83,8 @@ msgstr "剩余 {0} / {1} · 重置于 {2}"
 
 #. placeholder {0}: d.assignedBy
 #: ../../apps/extension/src/panel/notificationText.ts:15
-#: ../../apps/mobile/src/data/notificationView.ts:23
-#: ../../apps/web/src/lib/notifications.ts:43
+#: ../../apps/mobile/src/data/notificationView.ts:34
+#: ../../apps/web/src/lib/notifications.ts:54
 #, fuzzy
 msgid "{0} assigned you a thread"
 msgstr "{0} 给你指派了一个会话"
@@ -175,8 +188,8 @@ msgstr "剩余 {remaining} / {limit} · {resetDate} 重置"
 msgid "{routableCount} of {TAXONOMY_MIN_NON_ROOT_NODES} folders connected to your inbox. Routing requires at least {TAXONOMY_MIN_NON_ROOT_NODES}."
 msgstr "您的收件箱已连接 {routableCount} / {TAXONOMY_MIN_NON_ROOT_NODES} 个文件夹。路由至少需要 {TAXONOMY_MIN_NON_ROOT_NODES} 个文件夹。"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:276
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:207
+#: ../../apps/mobile/app/(app)/notifications.tsx:293
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:186
 msgid "{selectedCount} selected"
 msgstr "{selectedCount} 已选中"
 
@@ -381,7 +394,9 @@ msgstr "收到赫伦希布（底比斯）的首席文书官职位申请。"
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "已收到底比斯的霍伦海布呈报的文书长职位申请。\n\n请在记录馆查看该申请。"
+msgstr "已收到底比斯的霍伦海布呈报的文书长职位申请。\n"
+"\n"
+"请在记录馆查看该申请。"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:384
 #, fuzzy
@@ -394,7 +409,11 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "阿卜迪-赫巴，\n\n同周我将行至三角洲附近。我们可在第二日于驿站会面；我可抽出上午时间。\n\n届时再叙，"
+msgstr "阿卜迪-赫巴，\n"
+"\n"
+"同周我将行至三角洲附近。我们可在第二日于驿站会面；我可抽出上午时间。\n"
+"\n"
+"届时再叙，"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
@@ -596,6 +615,27 @@ msgstr "Amarnai 不再同步此收件箱。请重新连接您的 Gmail 账号以
 #, fuzzy
 msgid "Amarnai is open source under AGPL-3.0. Clone it, bring your own keys, and run every tier free on your own infrastructure."
 msgstr "Amarnai 遵循 AGPL-3.0 协议开源。克隆代码、自带密钥，即可在您自己的基础设施上免费运行所有版本。"
+
+#. placeholder {0}: d.gmailAddress
+#: ../../apps/web/src/lib/notifications.ts:74
+#, fuzzy
+msgid "Amarnai lost access to {0}. Click to reconnect your Google account."
+msgstr "Amarnai 无法访问 {0}。点击重新连接您的 Google 账户。"
+
+#. placeholder {0}: d.gmailAddress
+#: ../../apps/mobile/src/data/notificationView.ts:55
+#, fuzzy
+msgid "Amarnai lost access to {0}. Tap to reconnect your Google account."
+msgstr "Amarnai 无法访问 {0}。点按重新连接您的 Google 账户。"
+
+#: ../../apps/web/src/lib/notifications.ts:75
+#, fuzzy
+msgid "Amarnai lost access to your inbox. Click to reconnect your Google account."
+msgstr "Amarnai 无法访问您的收件箱。点击重新连接您的 Google 账户。"
+
+#: ../../apps/mobile/src/data/notificationView.ts:56
+msgid "Amarnai lost access to your inbox. Tap to reconnect your Google account."
+msgstr "Amarnai 无法访问您的收件箱。点按重新连接您的 Google 账户。"
 
 #: ../../apps/extension/src/platform/HostPermissionGate.tsx:34
 #, fuzzy
@@ -802,7 +842,11 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "阿齐鲁，\n\n你的友谊之言我们已悉。阿穆鲁家族有何提议，我们愿闻其详。请速派下一信使呈上你的条件。\n\n此致，"
+msgstr "阿齐鲁，\n"
+"\n"
+"你的友谊之言我们已悉。阿穆鲁家族有何提议，我们愿闻其详。请速派下一信使呈上你的条件。\n"
+"\n"
+"此致，"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:217
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
@@ -938,7 +982,7 @@ msgstr "我能自托管 Amarnai 吗？"
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:147
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:174
 #: ../../apps/mobile/app/(app)/account.tsx:82
-#: ../../apps/mobile/app/(app)/notifications.tsx:141
+#: ../../apps/mobile/app/(app)/notifications.tsx:145
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:93
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:245
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:150
@@ -1495,12 +1539,12 @@ msgstr "默认免费工作区"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:176
 #: ../../apps/mobile/app/(app)/account.tsx:84
-#: ../../apps/mobile/app/(app)/notifications.tsx:142
-#: ../../apps/mobile/app/(app)/notifications.tsx:238
-#: ../../apps/mobile/app/(app)/notifications.tsx:324
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:219
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:303
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:304
+#: ../../apps/mobile/app/(app)/notifications.tsx:146
+#: ../../apps/mobile/app/(app)/notifications.tsx:255
+#: ../../apps/mobile/app/(app)/notifications.tsx:341
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:198
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:271
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:272
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:596
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:607
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:703
@@ -1509,7 +1553,7 @@ msgid "Delete"
 msgstr "删除"
 
 #. placeholder {0}: ids.length
-#: ../../apps/mobile/app/(app)/notifications.tsx:139
+#: ../../apps/mobile/app/(app)/notifications.tsx:143
 msgid "Delete {0} notifications?"
 msgstr "删除 {0} 条通知？"
 
@@ -1538,12 +1582,12 @@ msgstr "删除失败。请重试。"
 msgid "Delete folder"
 msgstr "删除文件夹"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:140
+#: ../../apps/mobile/app/(app)/notifications.tsx:144
 #, fuzzy
 msgid "Delete notifications"
 msgstr "删除通知"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:138
+#: ../../apps/mobile/app/(app)/notifications.tsx:142
 msgid "Delete this notification?"
 msgstr "删除此通知？"
 
@@ -1669,8 +1713,8 @@ msgstr "断开此工作区连接。Amarnai仍保留访问权限，因为此邮�
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:369
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:57
 #: ../../apps/web/src/components/JoinedWorkspaceToast.tsx:46
-#: ../../apps/web/src/components/NotificationBell.tsx:199
-#: ../../apps/web/src/components/NotificationBell.tsx:200
+#: ../../apps/web/src/components/NotificationBell.tsx:179
+#: ../../apps/web/src/components/NotificationBell.tsx:180
 #: ../ui/src/AppDownloadBanner.tsx:80
 #: ../ui/src/emails/MockEmailsPage.tsx:261
 msgid "Dismiss"
@@ -1709,7 +1753,7 @@ msgstr "没有账户？<0>立即注册</0>"
 msgid "Don't have an account? <0>Sign up</0>"
 msgstr "没有账户？<0>注册</0>"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:261
+#: ../../apps/mobile/app/(app)/notifications.tsx:278
 #: ../../apps/mobile/src/components/ThreadRow.tsx:35
 #: ../ui/src/emails/ThreadRow.tsx:180
 #, fuzzy
@@ -2291,6 +2335,13 @@ msgstr "获取应用"
 msgid "gmail ai assistant"
 msgstr "Gmail AI 助手"
 
+#: ../../apps/extension/src/panel/notificationText.ts:18
+#: ../../apps/mobile/src/data/notificationView.ts:53
+#: ../../apps/web/src/lib/notifications.ts:72
+#, fuzzy
+msgid "Gmail disconnected"
+msgstr "Gmail 已断开连接"
+
 #: ../../apps/mobile/src/components/emails/DisconnectedBanner.tsx:39
 msgid "Gmail disconnected. Amarnai stopped syncing this inbox, so new mail will not appear until you reconnect."
 msgstr "Gmail 已断开连接。Amarnai 已停止同步此收件箱，因此在您重新连接之前，新邮件不会显示。"
@@ -2381,7 +2432,11 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "大王，\n\n你所要求之呈报，将在议会召开前备妥。我将命抄写员汇编东方领地的账目，并派快马先行送呈。\n\n兄弟情谊，"
+msgstr "大王，\n"
+"\n"
+"你所要求之呈报，将在议会召开前备妥。我将命抄写员汇编东方领地的账目，并派快马先行送呈。\n"
+"\n"
+"兄弟情谊，"
 
 #: ../../apps/site/src/components/landing/FinalCTASection.tsx:8
 #, fuzzy
@@ -2529,6 +2584,12 @@ msgstr "收件箱"
 msgid "Inbox (entry point)"
 msgstr "收件箱（入口点）"
 
+#: ../../apps/extension/src/panel/notificationText.ts:20
+#: ../../apps/mobile/src/data/notificationView.ts:61
+#: ../../apps/web/src/lib/notifications.ts:80
+msgid "Inbox import complete"
+msgstr "收件箱导入完成"
+
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:145
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:154
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:167
@@ -2566,8 +2627,8 @@ msgstr "无明确类别的非正式信息：私人拜访还是政治会面？语
 msgid "Initial backfill"
 msgstr "初始回填"
 
-#: ../../apps/mobile/src/data/notificationView.ts:32
-#: ../../apps/web/src/lib/notifications.ts:49
+#: ../../apps/mobile/src/data/notificationView.ts:47
+#: ../../apps/web/src/lib/notifications.ts:65
 #, fuzzy
 msgid "Install the Amarnai browser extension"
 msgstr "安装 Amarnai 浏览器扩展程序"
@@ -2788,9 +2849,9 @@ msgstr "在此处列出相关的发件人、主题和关键词。至少 {minDesc
 msgid "Live"
 msgstr "实时"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:301
+#: ../../apps/mobile/app/(app)/notifications.tsx:318
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:101
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:316
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:284
 #: ../ui/src/emails/ThreadList.tsx:242
 #, fuzzy
 msgid "Load more"
@@ -2804,16 +2865,16 @@ msgid "Loading past threads…"
 msgstr "正在加载过去的会话…"
 
 #: ../../apps/extension/src/panel/NotificationBell.tsx:133
-#: ../../apps/mobile/app/(app)/notifications.tsx:301
+#: ../../apps/mobile/app/(app)/notifications.tsx:318
 #: ../../apps/mobile/src/components/MessageCard.tsx:53
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:73
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:227
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:316
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:206
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:284
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:121
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:137
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:158
 #: ../../apps/web/src/app/loading.tsx:6
-#: ../../apps/web/src/components/NotificationBell.tsx:181
+#: ../../apps/web/src/components/NotificationBell.tsx:161
 #: ../ui/src/emails/MessageCard.tsx:60
 #: ../ui/src/emails/ThreadList.tsx:242
 #, fuzzy
@@ -2832,7 +2893,7 @@ msgstr "管理"
 
 #: ../../apps/extension/src/panel/NotificationBell.tsx:155
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:79
-#: ../../apps/web/src/components/NotificationBell.tsx:212
+#: ../../apps/web/src/components/NotificationBell.tsx:192
 #, fuzzy
 msgid "Manage notifications"
 msgstr "管理通知"
@@ -2870,9 +2931,9 @@ msgstr "标记为重要"
 msgid "Mark as not done"
 msgstr "标记为未完成"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:215
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:271
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:272
+#: ../../apps/mobile/app/(app)/notifications.tsx:232
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:250
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:251
 msgid "Mark as read"
 msgstr "标记为已读"
 
@@ -2882,9 +2943,9 @@ msgstr "标记为已读"
 msgid "Mark as sent"
 msgstr "标记为已发送"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:215
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:271
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:272
+#: ../../apps/mobile/app/(app)/notifications.tsx:232
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:250
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:251
 #, fuzzy
 msgid "Mark as unread"
 msgstr "标记为未读"
@@ -2903,14 +2964,14 @@ msgstr "标记为完成"
 #~ msgid "Mark invited"
 #~ msgstr "标记为已邀请"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:314
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:213
+#: ../../apps/mobile/app/(app)/notifications.tsx:331
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:192
 #, fuzzy
 msgid "Mark read"
 msgstr "标为已读"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:319
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:216
+#: ../../apps/mobile/app/(app)/notifications.tsx:336
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:195
 msgid "Mark unread"
 msgstr "标为未读"
 
@@ -2963,6 +3024,14 @@ msgstr "模型质量"
 #, fuzzy
 msgid "Monthly"
 msgstr "每月"
+
+#: ../../apps/extension/src/panel/notificationText.ts:22
+#: ../../apps/mobile/src/data/notificationView.ts:85
+#: ../../apps/mobile/src/data/notificationView.ts:90
+#: ../../apps/web/src/lib/notifications.ts:104
+#: ../../apps/web/src/lib/notifications.ts:109
+msgid "Monthly sorting limit reached"
+msgstr "每月整理上限已达到"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:43
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:46
@@ -3051,15 +3120,27 @@ msgstr "赫伦希布（底比斯）的新申请。"
 msgid "New business inquiries, proposals, pricing discussions, and prospective client outreach."
 msgstr "新业务咨询、提案、定价讨论和潜在客户联系。"
 
+#: ../../apps/mobile/src/data/notificationView.ts:91
+#: ../../apps/web/src/lib/notifications.ts:110
+#, fuzzy
+msgid "New emails will wait until next month. Upgrade your plan for a higher limit."
+msgstr "新邮件将等到下月。升级您的套餐以提高上限。"
+
+#: ../../apps/mobile/src/data/notificationView.ts:86
+#: ../../apps/web/src/lib/notifications.ts:105
+#, fuzzy
+msgid "New emails will wait until your limit resets next month."
+msgstr "新邮件将等到您的上限在下个月重置。"
+
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:250
 #: ../ui/src/emails/EmailRail.tsx:101
 #: ../ui/src/emails/EmailRail.tsx:106
 msgid "New folder"
 msgstr "新建文件夹"
 
-#: ../../apps/extension/src/panel/notificationText.ts:18
-#: ../../apps/mobile/src/data/notificationView.ts:37
-#: ../../apps/web/src/lib/notifications.ts:55
+#: ../../apps/extension/src/panel/notificationText.ts:24
+#: ../../apps/mobile/src/data/notificationView.ts:95
+#: ../../apps/web/src/lib/notifications.ts:114
 msgid "New notification"
 msgstr "新通知"
 
@@ -3157,10 +3238,10 @@ msgid "No members available"
 msgstr "无可用成员"
 
 #: ../../apps/extension/src/panel/NotificationBell.tsx:138
-#: ../../apps/mobile/app/(app)/notifications.tsx:294
+#: ../../apps/mobile/app/(app)/notifications.tsx:311
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:73
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:229
-#: ../../apps/web/src/components/NotificationBell.tsx:184
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:208
+#: ../../apps/web/src/components/NotificationBell.tsx:164
 #, fuzzy
 msgid "No notifications yet"
 msgstr "暂无通知"
@@ -3258,18 +3339,18 @@ msgstr "尚未同步"
 #: ../../apps/extension/src/panel/NotificationBell.tsx:125
 #: ../../apps/extension/src/panel/NotificationBell.tsx:128
 #: ../../apps/mobile/app/(app)/account.tsx:145
-#: ../../apps/mobile/app/(app)/notifications.tsx:256
+#: ../../apps/mobile/app/(app)/notifications.tsx:273
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:49
 #: ../../apps/web/src/app/(app)/notifications/page.tsx:16
-#: ../../apps/web/src/components/NotificationBell.tsx:158
-#: ../../apps/web/src/components/NotificationBell.tsx:173
-#: ../../apps/web/src/components/NotificationBell.tsx:177
+#: ../../apps/web/src/components/NotificationBell.tsx:138
+#: ../../apps/web/src/components/NotificationBell.tsx:153
+#: ../../apps/web/src/components/NotificationBell.tsx:157
 #, fuzzy
 msgid "Notifications"
 msgstr "通知"
 
 #: ../../apps/extension/src/panel/NotificationBell.tsx:107
-#: ../../apps/web/src/components/NotificationBell.tsx:157
+#: ../../apps/web/src/components/NotificationBell.tsx:137
 #, fuzzy
 msgid "Notifications, {unread} unread"
 msgstr "通知，{unread} 条未读"
@@ -3286,8 +3367,9 @@ msgstr "与一位已知城市总督关于反复出现的供应问题的进行中
 msgid "Only the workspace owner can manage billing."
 msgstr "只有工作区所有者才能管理账单。"
 
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:292
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:293
+#: ../../apps/mobile/app/(app)/notifications.tsx:245
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:260
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:261
 msgid "Open"
 msgstr "打开"
 
@@ -3315,8 +3397,8 @@ msgstr "开源邮件AI"
 #: ../../apps/mobile/app/(app)/notifications.tsx:228
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:281
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:282
-msgid "Open thread"
-msgstr "打开会话"
+#~ msgid "Open thread"
+#~ msgstr "打开会话"
 
 #: ../../apps/site/src/components/landing/HeroSection.tsx:58
 #, fuzzy
@@ -3931,7 +4013,11 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "里布-哈达，\n\n你的呼吁，我们已收到。已从南方粮仓加订谷物，并将在丰收节前抵达。在此期间，请你耐心等候。\n\n保重，"
+msgstr "里布-哈达，\n"
+"\n"
+"你的呼吁，我们已收到。已从南方粮仓加订谷物，并将在丰收节前抵达。在此期间，请你耐心等候。\n"
+"\n"
+"保重，"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -3980,12 +4066,12 @@ msgstr "保存更改"
 msgid "Save hours of triage every week. Let Amarnai sort your inbox, filing every email, old and new, where it belongs."
 msgstr "每周节省数小时分类整理时间。让 Amarnai 助您整理收件箱，将每封邮件（无论新旧）归入其应属之处。"
 
-#: ../../apps/web/src/lib/notifications.ts:50
+#: ../../apps/web/src/lib/notifications.ts:66
 #, fuzzy
 msgid "Save time by triaging your inbox without leaving Gmail."
 msgstr "无需离开 Gmail，即可高效处理收件箱，节省时间。"
 
-#: ../../apps/mobile/src/data/notificationView.ts:33
+#: ../../apps/mobile/src/data/notificationView.ts:48
 #, fuzzy
 msgid "Save time by triaging your inbox without leaving Gmail. The extension runs in your desktop browser."
 msgstr "无需离开 Gmail，即可高效处理收件箱，节省时间。该扩展在您的桌面浏览器中运行。"
@@ -4030,7 +4116,7 @@ msgstr "搜索会话…"
 msgid "See how your inbox is sorted, right next to Gmail."
 msgstr "在 Gmail 旁，直观查看收件箱分类。"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:261
+#: ../../apps/mobile/app/(app)/notifications.tsx:278
 msgid "Select"
 msgstr "选择"
 
@@ -4041,14 +4127,14 @@ msgstr "选择"
 msgid "Select a thread to preview"
 msgstr "选择一个会话进行预览"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:276
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:205
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:207
+#: ../../apps/mobile/app/(app)/notifications.tsx:293
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:184
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:186
 #, fuzzy
 msgid "Select all"
 msgstr "全选"
 
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:247
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:226
 msgid "Select notification"
 msgstr "选择通知"
 
@@ -4746,7 +4832,13 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "致吾兄，大王，\n\n大议会将于谢穆月初召开。我请求你备妥东方领地的详尽账目，并请快马先行送呈，如可能，请在新月之前。\n\n吾等盟约坚固。愿我们向议会昭示其一如既往。\n\n图什拉塔，米坦尼大王"
+msgstr "致吾兄，大王，\n"
+"\n"
+"大议会将于谢穆月初召开。我请求你备妥东方领地的详尽账目，并请快马先行送呈，如可能，请在新月之前。\n"
+"\n"
+"吾等盟约坚固。愿我们向议会昭示其一如既往。\n"
+"\n"
+"图什拉塔，米坦尼大王"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:163
 #, fuzzy
@@ -4755,7 +4847,11 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "致王室任命局，\n\n我们已收到底比斯的霍伦海布之申请，并将在下一新月前审查其记录。请告知他，我们将在适当时候回复。\n\n奉谕，"
+msgstr "致王室任命局，\n"
+"\n"
+"我们已收到底比斯的霍伦海布之申请，并将在下一新月前审查其记录。请告知他，我们将在适当时候回复。\n"
+"\n"
+"奉谕，"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:275
 #, fuzzy
@@ -4766,7 +4862,13 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "致大王，\n\n多年以来，吾等两家情同手足。今特致函，愿将此友谊正式化，以惠及吾等两族：订立互助盟约，共享商道。\n\n我只恳请大王倾听我的条件。请速派下一信使回复，我将立即派遣使者前往。\n\n阿齐鲁，大王之仆，阿穆鲁之主"
+msgstr "致大王，\n"
+"\n"
+"多年以来，吾等两家情同手足。今特致函，愿将此友谊正式化，以惠及吾等两族：订立互助盟约，共享商道。\n"
+"\n"
+"我只恳请大王倾听我的条件。请速派下一信使回复，我将立即派遣使者前往。\n"
+"\n"
+"阿齐鲁，大王之仆，阿穆鲁之主"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:388
 #, fuzzy
@@ -4775,7 +4877,11 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "致大王，\n\n吾近期旅程将近三角洲一带。如大王能拨冗一小时，我愿与你面谈；有些事，口头陈述胜于笔墨。\n\n你的仆人，阿卜迪-赫巴，乌鲁沙利姆总督"
+msgstr "致大王，\n"
+"\n"
+"吾近期旅程将近三角洲一带。如大王能拨冗一小时，我愿与你面谈；有些事，口头陈述胜于笔墨。\n"
+"\n"
+"你的仆人，阿卜迪-赫巴，乌鲁沙利姆总督"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:153
 #, fuzzy
@@ -4784,7 +4890,11 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "致吾兄，大王，\n\n你之言语，我已听闻。黄金将在下一信使启程前发出。吾等珍视两家情谊，不愿其冷却。\n\n友谊长存，"
+msgstr "致吾兄，大王，\n"
+"\n"
+"你之言语，我已听闻。黄金将在下一信使启程前发出。吾等珍视两家情谊，不愿其冷却。\n"
+"\n"
+"友谊长存，"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:236
 #, fuzzy
@@ -4795,7 +4905,13 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "致吾兄，大王，\n\n我以友谊之名致函，正如我等父辈昔日所为。依照盟约，第三批黄金仍未抵达。两批信使已过，吾等仍在等候。\n\n吾等恳请你勿再延误，速将其发出，以维系吾等两家之盟谊。\n\n布尔那-布里亚什二世，巴比伦国王"
+msgstr "致吾兄，大王，\n"
+"\n"
+"我以友谊之名致函，正如我等父辈昔日所为。依照盟约，第三批黄金仍未抵达。两批信使已过，吾等仍在等候。\n"
+"\n"
+"吾等恳请你勿再延误，速将其发出，以维系吾等两家之盟谊。\n"
+"\n"
+"布尔那-布里亚什二世，巴比伦国王"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:349
 msgid "To the Great King, my lord, my sun,\n"
@@ -4805,7 +4921,13 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "致大王，吾主，吾日，\n\n上月你所赐谷物，吾等不胜感激，吾亦在民众面前颂扬大王之名。然我不得不再次致函：第三批谷物尚未抵达，城中民心骚动不安。\n\n我已七度致函。我实不愿劳烦大王，然此外我能奈何？\n\n你的仆人，里布-哈达，比布鲁斯总督"
+msgstr "致大王，吾主，吾日，\n"
+"\n"
+"上月你所赐谷物，吾等不胜感激，吾亦在民众面前颂扬大王之名。然我不得不再次致函：第三批谷物尚未抵达，城中民心骚动不安。\n"
+"\n"
+"我已七度致函。我实不愿劳烦大王，然此外我能奈何？\n"
+"\n"
+"你的仆人，里布-哈达，比布鲁斯总督"
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:19
 #: ../ui/src/emails/ThreadList.tsx:15
@@ -5306,8 +5428,8 @@ msgid "You do not have permission to connect a Gmail inbox to this workspace."
 msgstr "您没有权限将 Gmail 收件箱连接到此工作区。"
 
 #: ../../apps/extension/src/panel/notificationText.ts:16
-#: ../../apps/mobile/src/data/notificationView.ts:24
-#: ../../apps/web/src/lib/notifications.ts:44
+#: ../../apps/mobile/src/data/notificationView.ts:35
+#: ../../apps/web/src/lib/notifications.ts:55
 msgid "You were assigned a thread"
 msgstr "您被分配了一个会话"
 
@@ -5358,6 +5480,11 @@ msgstr "你的 Gmail，依然是你的。"
 #: ../ui/src/i18n/generation-reason-messages.ts:14
 msgid "Your inbox doesn't have enough variety yet to personalize a taxonomy. Choose a template instead."
 msgstr "您的收件箱内容多样性不足，尚无法个性化分类体系。请改用模板。"
+
+#: ../../apps/mobile/src/data/notificationView.ts:64
+#: ../../apps/web/src/lib/notifications.ts:83
+msgid "Your inbox import finished."
+msgstr "您的收件箱导入已完成。"
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:57
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:262

@@ -7,8 +7,8 @@ import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
 import { api } from "@/lib/api";
 import type { NotificationItem } from "@amarnai/api-client";
-import { describeNotification } from "@/lib/notifications";
-import { switchWorkspaceAction } from "@/actions/workspace";
+import { describeNotification, type NotificationAction } from "@/lib/notifications";
+import { runNotificationAction } from "@/lib/notificationAction";
 
 const PAGE_SIZE = 30;
 
@@ -154,31 +154,10 @@ export function NotificationsClient({ currentWorkspaceId }: { currentWorkspaceId
     api.deleteNotifications(ids).catch(() => {}).finally(() => setBusy(false));
   }
 
-  function openThread(n: NotificationItem, threadId: string) {
-    if (!n.readAt) applyRead([n.id], true);
-    // Opening the thread deals with the notification: dismiss it so it drops out
-    // of the bell pop-up. The row stays on this page (the full archive); the
-    // dismiss call is best-effort.
-    if (!n.dismissedAt) {
-      setItems((prev) =>
-        prev.map((it) => (it.id === n.id ? { ...it, dismissedAt: new Date().toISOString() } : it))
-      );
-      api.dismissNotifications([n.id]).catch(() => {});
-    }
-    const target = `/emails?t=${encodeURIComponent(threadId)}`;
-    // Deep-link into the notification's own workspace: switch first when it
-    // differs from the selected one (server action sets the cookie then redirects
-    // to the thread), otherwise a soft push suffices.
-    if (n.workspaceId !== currentWorkspaceId) {
-      void switchWorkspaceAction(n.workspaceId, target);
-    } else {
-      router.push(target);
-    }
-  }
-
-  // Open a notification's external link (e.g. the extension store listing).
-  // Counts as dealing with it: mark read + dismiss, then open in a new tab.
-  function openLink(n: NotificationItem, href: string) {
+  // Run a notification's click action. Counts as dealing with it: mark read +
+  // dismiss (the row stays on this page — the full archive), then dispatch the
+  // action. Both calls are best-effort.
+  function runAction(n: NotificationItem, action: NotificationAction) {
     if (!n.readAt) applyRead([n.id], true);
     if (!n.dismissedAt) {
       setItems((prev) =>
@@ -186,7 +165,7 @@ export function NotificationsClient({ currentWorkspaceId }: { currentWorkspaceId
       );
       api.dismissNotifications([n.id]).catch(() => {});
     }
-    window.open(href, "_blank", "noopener,noreferrer");
+    runNotificationAction(action, n, { router, currentWorkspaceId });
   }
 
   const selectedIds = Array.from(selected);
@@ -273,22 +252,11 @@ export function NotificationsClient({ currentWorkspaceId }: { currentWorkspaceId
                   >
                     {isUnread ? <CheckIcon /> : <DotIcon />}
                   </button>
-                  {view.threadId && (
+                  {view.action && (
                     <button
                       type="button"
                       className="notif-mgr-icon-btn"
-                      onClick={() => openThread(n, view.threadId!)}
-                      title={_(msg`Open thread`)}
-                      aria-label={_(msg`Open thread`)}
-                    >
-                      <OpenIcon />
-                    </button>
-                  )}
-                  {view.href && (
-                    <button
-                      type="button"
-                      className="notif-mgr-icon-btn"
-                      onClick={() => openLink(n, view.href!)}
+                      onClick={() => runAction(n, view.action!)}
                       title={_(msg`Open`)}
                       aria-label={_(msg`Open`)}
                     >

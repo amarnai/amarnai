@@ -5,6 +5,7 @@ import {
 } from "../queues.js";
 import { redisConnection } from "../redis.js";
 import { notifyThreadAssigned } from "../notifications/notify-thread-assigned.js";
+import { notifyGmailDisconnected } from "../notifications/notify-gmail-disconnected.js";
 
 /**
  * Processes `push-notification` jobs. A discriminated union on `data.kind` lets
@@ -24,10 +25,13 @@ export function createPushNotificationWorker(): Worker<PushNotificationJobData> 
             assigneeUserId: data.assigneeUserId,
           });
           return;
+        case "gmail_disconnected":
+          await notifyGmailDisconnected({ workspaceId: data.workspaceId });
+          return;
         default: {
           // Exhaustiveness guard: a new kind must add a case above.
-          const _exhaustive: never = data.kind;
-          throw new Error(`Unknown push-notification kind: ${String(_exhaustive)}`);
+          const _exhaustive: never = data;
+          throw new Error(`Unknown push-notification kind: ${JSON.stringify(_exhaustive)}`);
         }
       }
     },

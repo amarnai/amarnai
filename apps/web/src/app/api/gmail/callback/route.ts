@@ -8,7 +8,7 @@ import {
 import { encrypt } from "@/lib/encryption";
 import { triggerPostConnectHooks } from "@/lib/post-connect-hooks";
 import { GMAIL_READONLY_SCOPE } from "@amarnai/gmail";
-import { db } from "@amarnai/db";
+import { db, deleteGmailDisconnectedNotifications } from "@amarnai/db";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
@@ -123,6 +123,10 @@ export async function GET(req: NextRequest) {
     settingsUrl.searchParams.set("gmail_error", "db_upsert");
     return NextResponse.redirect(settingsUrl);
   }
+
+  // Connection is ACTIVE again — clear any "reconnect your account" nudge so it
+  // doesn't linger after a successful reconnect. Best-effort.
+  await deleteGmailDisconnectedNotifications(workspaceId).catch(() => {});
 
   // Audit the connect (best-effort) so web inbox rotation is observable, matching
   // the API connect path. `replacedAddress` is set only on a real inbox swap.

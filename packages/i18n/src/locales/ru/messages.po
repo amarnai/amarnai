@@ -42,6 +42,20 @@ msgstr "{0, plural, one {# сообщение} other {# сообщений}}"
 msgid "{0, plural, one {# person} other {# people}}"
 msgstr "{0, plural, one {# человек} other {# людей}}"
 
+#. placeholder {0}: d.processed
+#: ../../apps/mobile/src/data/notificationView.ts:73
+#: ../../apps/web/src/lib/notifications.ts:92
+#, fuzzy
+msgid "{0, plural, one {# thread imported.} other {# threads imported.}}"
+msgstr "{0, plural, one {# поток импортирован.} other {# потоков импортировано.}}"
+
+#. placeholder {0}: d.processed
+#: ../../apps/mobile/src/data/notificationView.ts:67
+#: ../../apps/web/src/lib/notifications.ts:86
+#, fuzzy
+msgid "{0, plural, one {# thread imported.} other {# threads imported.}} Your plan's import limit was reached."
+msgstr "{0, plural, one {# поток импортирован.} other {# потоков импортировано.}} Достигнут лимит импорта по вашему тарифному плану."
+
 #. placeholder {0}: node?.threadCount ?? 0
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:380
 msgid "{0, plural, one {Deleting leaves # thread without this folder.} other {Deleting leaves # threads without this folder.}}"
@@ -71,8 +85,8 @@ msgstr "{0} / {1} осталось · обновится {2}"
 
 #. placeholder {0}: d.assignedBy
 #: ../../apps/extension/src/panel/notificationText.ts:15
-#: ../../apps/mobile/src/data/notificationView.ts:23
-#: ../../apps/web/src/lib/notifications.ts:43
+#: ../../apps/mobile/src/data/notificationView.ts:34
+#: ../../apps/web/src/lib/notifications.ts:54
 msgid "{0} assigned you a thread"
 msgstr "{0} назначил вам тему"
 
@@ -182,8 +196,8 @@ msgstr "{remaining} из {limit} осталось · обновится {resetDa
 msgid "{routableCount} of {TAXONOMY_MIN_NON_ROOT_NODES} folders connected to your inbox. Routing requires at least {TAXONOMY_MIN_NON_ROOT_NODES}."
 msgstr "{routableCount} из {TAXONOMY_MIN_NON_ROOT_NODES} папок подключено к вашим входящим. Для маршрутизации требуется минимум {TAXONOMY_MIN_NON_ROOT_NODES}."
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:276
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:207
+#: ../../apps/mobile/app/(app)/notifications.tsx:293
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:186
 msgid "{selectedCount} selected"
 msgstr "{selectedCount} выбрано"
 
@@ -615,6 +629,27 @@ msgstr "Amarnai больше не синхронизирует этот почт
 msgid "Amarnai is open source under AGPL-3.0. Clone it, bring your own keys, and run every tier free on your own infrastructure."
 msgstr "Amarnai — проект с открытым исходным кодом по лицензии AGPL-3.0. Клонируйте его, используйте свои ключи и запускайте любой уровень бесплатно на собственной инфраструктуре."
 
+#. placeholder {0}: d.gmailAddress
+#: ../../apps/web/src/lib/notifications.ts:74
+#, fuzzy
+msgid "Amarnai lost access to {0}. Click to reconnect your Google account."
+msgstr "Amarnai потерял доступ к {0}. Нажмите, чтобы заново подключить ваш аккаунт Google."
+
+#. placeholder {0}: d.gmailAddress
+#: ../../apps/mobile/src/data/notificationView.ts:55
+#, fuzzy
+msgid "Amarnai lost access to {0}. Tap to reconnect your Google account."
+msgstr "Amarnai потерял доступ к {0}. Нажмите, чтобы заново подключить ваш аккаунт Google."
+
+#: ../../apps/web/src/lib/notifications.ts:75
+#, fuzzy
+msgid "Amarnai lost access to your inbox. Click to reconnect your Google account."
+msgstr "Amarnai потерял доступ к вашему почтовому ящику. Нажмите, чтобы заново подключить ваш аккаунт Google."
+
+#: ../../apps/mobile/src/data/notificationView.ts:56
+msgid "Amarnai lost access to your inbox. Tap to reconnect your Google account."
+msgstr "Amarnai потерял доступ к вашему почтовому ящику. Нажмите, чтобы заново подключить ваш аккаунт Google."
+
 #: ../../apps/extension/src/platform/HostPermissionGate.tsx:34
 #, fuzzy
 msgid "Amarnai needs access to its server and Gmail to show your inbox."
@@ -972,7 +1007,7 @@ msgstr "Можно ли установить Amarnai на своём серве�
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:147
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:174
 #: ../../apps/mobile/app/(app)/account.tsx:82
-#: ../../apps/mobile/app/(app)/notifications.tsx:141
+#: ../../apps/mobile/app/(app)/notifications.tsx:145
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:93
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:245
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:150
@@ -1549,12 +1584,12 @@ msgstr "Бесплатное рабочее пространство по умо
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:176
 #: ../../apps/mobile/app/(app)/account.tsx:84
-#: ../../apps/mobile/app/(app)/notifications.tsx:142
-#: ../../apps/mobile/app/(app)/notifications.tsx:238
-#: ../../apps/mobile/app/(app)/notifications.tsx:324
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:219
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:303
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:304
+#: ../../apps/mobile/app/(app)/notifications.tsx:146
+#: ../../apps/mobile/app/(app)/notifications.tsx:255
+#: ../../apps/mobile/app/(app)/notifications.tsx:341
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:198
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:271
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:272
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:596
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:607
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:703
@@ -1563,7 +1598,7 @@ msgid "Delete"
 msgstr "Удалить"
 
 #. placeholder {0}: ids.length
-#: ../../apps/mobile/app/(app)/notifications.tsx:139
+#: ../../apps/mobile/app/(app)/notifications.tsx:143
 msgid "Delete {0} notifications?"
 msgstr "Удалить {0} уведомлений?"
 
@@ -1593,12 +1628,12 @@ msgstr "Удаление не удалось. Пожалуйста, попроб
 msgid "Delete folder"
 msgstr "Удалить папку"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:140
+#: ../../apps/mobile/app/(app)/notifications.tsx:144
 #, fuzzy
 msgid "Delete notifications"
 msgstr "Удалить уведомления"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:138
+#: ../../apps/mobile/app/(app)/notifications.tsx:142
 msgid "Delete this notification?"
 msgstr "Удалить это уведомление?"
 
@@ -1728,8 +1763,8 @@ msgstr "Отключает это рабочее пространство. Amarn
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:369
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:57
 #: ../../apps/web/src/components/JoinedWorkspaceToast.tsx:46
-#: ../../apps/web/src/components/NotificationBell.tsx:199
-#: ../../apps/web/src/components/NotificationBell.tsx:200
+#: ../../apps/web/src/components/NotificationBell.tsx:179
+#: ../../apps/web/src/components/NotificationBell.tsx:180
 #: ../ui/src/AppDownloadBanner.tsx:80
 #: ../ui/src/emails/MockEmailsPage.tsx:261
 #, fuzzy
@@ -1767,7 +1802,7 @@ msgstr "Нет аккаунта? <0>Создайте его</0>"
 msgid "Don't have an account? <0>Sign up</0>"
 msgstr "Нет аккаунта? <0>Зарегистрируйтесь</0>"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:261
+#: ../../apps/mobile/app/(app)/notifications.tsx:278
 #: ../../apps/mobile/src/components/ThreadRow.tsx:35
 #: ../ui/src/emails/ThreadRow.tsx:180
 #, fuzzy
@@ -2383,6 +2418,12 @@ msgstr "Получить приложение"
 msgid "gmail ai assistant"
 msgstr "ИИ-ассистент Gmail"
 
+#: ../../apps/extension/src/panel/notificationText.ts:18
+#: ../../apps/mobile/src/data/notificationView.ts:53
+#: ../../apps/web/src/lib/notifications.ts:72
+msgid "Gmail disconnected"
+msgstr "Gmail отключен"
+
 #: ../../apps/mobile/src/components/emails/DisconnectedBanner.tsx:39
 #, fuzzy
 msgid "Gmail disconnected. Amarnai stopped syncing this inbox, so new mail will not appear until you reconnect."
@@ -2635,6 +2676,12 @@ msgstr "Входящие"
 msgid "Inbox (entry point)"
 msgstr "Входящие (точка входа)"
 
+#: ../../apps/extension/src/panel/notificationText.ts:20
+#: ../../apps/mobile/src/data/notificationView.ts:61
+#: ../../apps/web/src/lib/notifications.ts:80
+msgid "Inbox import complete"
+msgstr "Импорт входящих завершен"
+
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:145
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:154
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:167
@@ -2674,8 +2721,8 @@ msgstr "Неформальное сообщение без четкой кате
 msgid "Initial backfill"
 msgstr "Первоначальное заполнение"
 
-#: ../../apps/mobile/src/data/notificationView.ts:32
-#: ../../apps/web/src/lib/notifications.ts:49
+#: ../../apps/mobile/src/data/notificationView.ts:47
+#: ../../apps/web/src/lib/notifications.ts:65
 msgid "Install the Amarnai browser extension"
 msgstr "Установите расширение Amarnai для браузера"
 
@@ -2899,9 +2946,9 @@ msgstr "Перечислите отправителей, темы и ключе�
 msgid "Live"
 msgstr "Активно"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:301
+#: ../../apps/mobile/app/(app)/notifications.tsx:318
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:101
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:316
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:284
 #: ../ui/src/emails/ThreadList.tsx:242
 #, fuzzy
 msgid "Load more"
@@ -2916,16 +2963,16 @@ msgid "Loading past threads…"
 msgstr "Загрузка прошлых цепочек…"
 
 #: ../../apps/extension/src/panel/NotificationBell.tsx:133
-#: ../../apps/mobile/app/(app)/notifications.tsx:301
+#: ../../apps/mobile/app/(app)/notifications.tsx:318
 #: ../../apps/mobile/src/components/MessageCard.tsx:53
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:73
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:227
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:316
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:206
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:284
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:121
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:137
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:158
 #: ../../apps/web/src/app/loading.tsx:6
-#: ../../apps/web/src/components/NotificationBell.tsx:181
+#: ../../apps/web/src/components/NotificationBell.tsx:161
 #: ../ui/src/emails/MessageCard.tsx:60
 #: ../ui/src/emails/ThreadList.tsx:242
 #, fuzzy
@@ -2945,7 +2992,7 @@ msgstr "Управление"
 
 #: ../../apps/extension/src/panel/NotificationBell.tsx:155
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:79
-#: ../../apps/web/src/components/NotificationBell.tsx:212
+#: ../../apps/web/src/components/NotificationBell.tsx:192
 msgid "Manage notifications"
 msgstr "Управление уведомлениями"
 
@@ -2984,9 +3031,9 @@ msgstr "Отметить как важное"
 msgid "Mark as not done"
 msgstr "Пометить как невыполненное"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:215
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:271
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:272
+#: ../../apps/mobile/app/(app)/notifications.tsx:232
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:250
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:251
 msgid "Mark as read"
 msgstr "Пометить как прочитанное"
 
@@ -2996,9 +3043,9 @@ msgstr "Пометить как прочитанное"
 msgid "Mark as sent"
 msgstr "Пометить как отправленное"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:215
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:271
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:272
+#: ../../apps/mobile/app/(app)/notifications.tsx:232
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:250
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:251
 msgid "Mark as unread"
 msgstr "Пометить как непрочитанное"
 
@@ -3018,14 +3065,14 @@ msgstr "Отметить выполненным"
 #~ msgid "Mark invited"
 #~ msgstr "Отметить приглашенным"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:314
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:213
+#: ../../apps/mobile/app/(app)/notifications.tsx:331
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:192
 #, fuzzy
 msgid "Mark read"
 msgstr "Отметить прочитанным"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:319
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:216
+#: ../../apps/mobile/app/(app)/notifications.tsx:336
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:195
 msgid "Mark unread"
 msgstr "Отметить непрочитанным"
 
@@ -3082,6 +3129,14 @@ msgstr "Качество модели"
 #, fuzzy
 msgid "Monthly"
 msgstr "Ежемесячно"
+
+#: ../../apps/extension/src/panel/notificationText.ts:22
+#: ../../apps/mobile/src/data/notificationView.ts:85
+#: ../../apps/mobile/src/data/notificationView.ts:90
+#: ../../apps/web/src/lib/notifications.ts:104
+#: ../../apps/web/src/lib/notifications.ts:109
+msgid "Monthly sorting limit reached"
+msgstr "Достигнут месячный лимит сортировки"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:43
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:46
@@ -3174,6 +3229,17 @@ msgstr "Новая заявка от Хоремхеба из Фив."
 msgid "New business inquiries, proposals, pricing discussions, and prospective client outreach."
 msgstr "Новые деловые запросы, предложения, обсуждения цен и привлечение потенциальных клиентов."
 
+#: ../../apps/mobile/src/data/notificationView.ts:91
+#: ../../apps/web/src/lib/notifications.ts:110
+#, fuzzy
+msgid "New emails will wait until next month. Upgrade your plan for a higher limit."
+msgstr "Новые письма будут ждать до следующего месяца. Обновите тариф для увеличения лимита."
+
+#: ../../apps/mobile/src/data/notificationView.ts:86
+#: ../../apps/web/src/lib/notifications.ts:105
+msgid "New emails will wait until your limit resets next month."
+msgstr "Новые письма будут ждать до сброса лимита в следующем месяце."
+
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:250
 #: ../ui/src/emails/EmailRail.tsx:101
 #: ../ui/src/emails/EmailRail.tsx:106
@@ -3181,9 +3247,9 @@ msgstr "Новые деловые запросы, предложения, обс
 msgid "New folder"
 msgstr "Новая папка"
 
-#: ../../apps/extension/src/panel/notificationText.ts:18
-#: ../../apps/mobile/src/data/notificationView.ts:37
-#: ../../apps/web/src/lib/notifications.ts:55
+#: ../../apps/extension/src/panel/notificationText.ts:24
+#: ../../apps/mobile/src/data/notificationView.ts:95
+#: ../../apps/web/src/lib/notifications.ts:114
 msgid "New notification"
 msgstr "Новое уведомление"
 
@@ -3286,10 +3352,10 @@ msgid "No members available"
 msgstr "Нет доступных участников"
 
 #: ../../apps/extension/src/panel/NotificationBell.tsx:138
-#: ../../apps/mobile/app/(app)/notifications.tsx:294
+#: ../../apps/mobile/app/(app)/notifications.tsx:311
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:73
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:229
-#: ../../apps/web/src/components/NotificationBell.tsx:184
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:208
+#: ../../apps/web/src/components/NotificationBell.tsx:164
 msgid "No notifications yet"
 msgstr "Уведомлений пока нет"
 
@@ -3389,18 +3455,18 @@ msgstr "Ещё не синхронизировано"
 #: ../../apps/extension/src/panel/NotificationBell.tsx:125
 #: ../../apps/extension/src/panel/NotificationBell.tsx:128
 #: ../../apps/mobile/app/(app)/account.tsx:145
-#: ../../apps/mobile/app/(app)/notifications.tsx:256
+#: ../../apps/mobile/app/(app)/notifications.tsx:273
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:49
 #: ../../apps/web/src/app/(app)/notifications/page.tsx:16
-#: ../../apps/web/src/components/NotificationBell.tsx:158
-#: ../../apps/web/src/components/NotificationBell.tsx:173
-#: ../../apps/web/src/components/NotificationBell.tsx:177
+#: ../../apps/web/src/components/NotificationBell.tsx:138
+#: ../../apps/web/src/components/NotificationBell.tsx:153
+#: ../../apps/web/src/components/NotificationBell.tsx:157
 #, fuzzy
 msgid "Notifications"
 msgstr "Уведомления"
 
 #: ../../apps/extension/src/panel/NotificationBell.tsx:107
-#: ../../apps/web/src/components/NotificationBell.tsx:157
+#: ../../apps/web/src/components/NotificationBell.tsx:137
 msgid "Notifications, {unread} unread"
 msgstr "Уведомления, {unread} непрочитанн{unread, plural, one{ое} few{ых} many{ых} other{ых}}"
 
@@ -3419,8 +3485,9 @@ msgstr "Текущая переписка с известным главой г�
 msgid "Only the workspace owner can manage billing."
 msgstr "Только владелец рабочего пространства может управлять оплатой."
 
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:292
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:293
+#: ../../apps/mobile/app/(app)/notifications.tsx:245
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:260
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:261
 msgid "Open"
 msgstr "Открыть"
 
@@ -3448,8 +3515,8 @@ msgstr "ИИ для почты с открытым исходным кодом"
 #: ../../apps/mobile/app/(app)/notifications.tsx:228
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:281
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:282
-msgid "Open thread"
-msgstr "Открыть ветку"
+#~ msgid "Open thread"
+#~ msgstr "Открыть ветку"
 
 #: ../../apps/site/src/components/landing/HeroSection.tsx:58
 #, fuzzy
@@ -4142,12 +4209,12 @@ msgstr "Сохранить изменения"
 msgid "Save hours of triage every week. Let Amarnai sort your inbox, filing every email, old and new, where it belongs."
 msgstr "Экономьте часы на разборе почты каждую неделю. Amarnai упорядочит ваш входящий ящик, распределяя все письма, старые и новые, по нужным папкам."
 
-#: ../../apps/web/src/lib/notifications.ts:50
+#: ../../apps/web/src/lib/notifications.ts:66
 #, fuzzy
 msgid "Save time by triaging your inbox without leaving Gmail."
 msgstr "Экономьте время, разбирая входящие, не выходя из Gmail."
 
-#: ../../apps/mobile/src/data/notificationView.ts:33
+#: ../../apps/mobile/src/data/notificationView.ts:48
 msgid "Save time by triaging your inbox without leaving Gmail. The extension runs in your desktop browser."
 msgstr "Экономьте время, разбирая входящие, не выходя из Gmail. Расширение работает в вашем настольном браузере."
 
@@ -4193,7 +4260,7 @@ msgstr "Поиск цепочек…"
 msgid "See how your inbox is sorted, right next to Gmail."
 msgstr "Посмотрите, как сортируется ваша почта, прямо в Gmail."
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:261
+#: ../../apps/mobile/app/(app)/notifications.tsx:278
 msgid "Select"
 msgstr "Выбрать"
 
@@ -4204,14 +4271,14 @@ msgstr "Выбрать"
 msgid "Select a thread to preview"
 msgstr "Выберите цепочку для предпросмотра"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:276
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:205
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:207
+#: ../../apps/mobile/app/(app)/notifications.tsx:293
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:184
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:186
 #, fuzzy
 msgid "Select all"
 msgstr "Выбрать все"
 
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:247
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:226
 msgid "Select notification"
 msgstr "Выбрать уведомление"
 
@@ -5519,8 +5586,8 @@ msgid "You do not have permission to connect a Gmail inbox to this workspace."
 msgstr "У вас нет разрешения на подключение почтового ящика Gmail к этому рабочему пространству."
 
 #: ../../apps/extension/src/panel/notificationText.ts:16
-#: ../../apps/mobile/src/data/notificationView.ts:24
-#: ../../apps/web/src/lib/notifications.ts:44
+#: ../../apps/mobile/src/data/notificationView.ts:35
+#: ../../apps/web/src/lib/notifications.ts:55
 msgid "You were assigned a thread"
 msgstr "Вам назначили ветку"
 
@@ -5572,6 +5639,11 @@ msgstr "Ваш Gmail остаётся вашим"
 #: ../ui/src/i18n/generation-reason-messages.ts:14
 msgid "Your inbox doesn't have enough variety yet to personalize a taxonomy. Choose a template instead."
 msgstr "В вашем почтовом ящике пока недостаточно разнообразия, чтобы персонализировать таксономию. Выберите шаблон."
+
+#: ../../apps/mobile/src/data/notificationView.ts:64
+#: ../../apps/web/src/lib/notifications.ts:83
+msgid "Your inbox import finished."
+msgstr "Импорт входящих завершен."
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:57
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:262

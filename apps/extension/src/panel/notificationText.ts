@@ -14,6 +14,12 @@ export function notificationTitle(n: NotificationItem, i18n: I18n): string {
       return d.assignedBy
         ? i18n._(msg`${d.assignedBy} assigned you a thread`)
         : i18n._(msg`You were assigned a thread`);
+    case "gmail_disconnected":
+      return i18n._(msg`Gmail disconnected`);
+    case "backfill_complete":
+      return i18n._(msg`Inbox import complete`);
+    case "quota_blocked":
+      return i18n._(msg`Monthly sorting limit reached`);
     default:
       return i18n._(msg`New notification`);
   }

@@ -1,5 +1,5 @@
 import { Job } from "bullmq";
-import { db } from "@amarnai/db";
+import { db, deleteGmailDisconnectedNotifications } from "@amarnai/db";
 import { GmailClient, revokeGoogleToken } from "@amarnai/gmail";
 import { classifyThreadQueue } from "../queues.js";
 import { syncInboxQueue, backfillInboxQueue } from "./queue-client.js";
@@ -96,6 +96,10 @@ export async function disconnectGmail(
     where: { workspaceId },
     data: { status: "DISCONNECTED" },
   });
+
+  // An explicit user-initiated disconnect must not leave a stale automatic
+  // "reconnect your account" nudge (and must never create one). Best-effort.
+  await deleteGmailDisconnectedNotifications(workspaceId).catch(() => {});
 
   // ── 2. Shared-mailbox check ───────────────────────────────────────────────
   // Google-side teardown (watch stop + token revocation) is scoped to the

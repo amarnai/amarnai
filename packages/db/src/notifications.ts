@@ -45,6 +45,137 @@ export async function createNotification(input: CreateNotificationInput): Promis
   });
 }
 
+export interface CreateWorkspaceNotificationsInput {
+  /** Workspace whose members all receive the notification. */
+  workspaceId: string;
+  /** Producer-defined type, e.g. "backfill_complete". Free-form by design. */
+  type: string;
+  /** Structured, localization-neutral payload rendered to text on the client. */
+  params?: Prisma.InputJsonValue;
+}
+
+/**
+ * Fan a single notification out to every member of a workspace — one row per
+ * member. Used by workspace-level events (backfill finished, quota reached,
+ * Gmail disconnected) where there is no single recipient. Per-member creation is
+ * best-effort via `Promise.allSettled`: one member's failed insert never blocks
+ * the others. Returns the number of members a row was created for.
+ *
+ * Like the other producers here, treat this as best-effort: callers must not
+ * fail their critical path if it throws.
+ */
+export async function createNotificationsForWorkspaceMembers(
+  input: CreateWorkspaceNotificationsInput
+): Promise<number> {
+  const members = await db.workspaceMember.findMany({
+    where: { workspaceId: input.workspaceId },
+    select: { userId: true },
+  });
+
+  const results = await Promise.allSettled(
+    members.map((m) =>
+      createNotification({
+        userId: m.userId,
+        workspaceId: input.workspaceId,
+        type: input.type,
+        // Omit rather than pass `undefined` (exactOptionalPropertyTypes);
+        // createNotification defaults an absent params to {}.
+        ...(input.params !== undefined ? { params: input.params } : {}),
+      })
+    )
+  );
+
+  return results.filter((r) => r.status === "fulfilled").length;
+}
+
+export interface MaybeCreateQuotaBlockedNotificationsInput {
+  /** Workspace whose members should be told sorting is paused. */
+  workspaceId: string;
+  /** Start of the meter window that hit the cap (from `meterWindowStart`). */
+  windowStart: Date;
+}
+
+/**
+ * Produce the "monthly sorting limit reached" (quota_blocked) notification for a
+ * workspace, at most once per meter window.
+ *
+ * A single sync can flip hundreds of threads to QUOTA_BLOCKED; without dedup each
+ * would notify. The guard is a monotonic claim on `Workspace.quotaNotifiedWindowStart`
+ * via a conditional `updateMany` (WHERE the marker is null or an older window),
+ * mirroring the `maybeCreateExtensionNudge` pattern: only the update that actually
+ * advances the marker (count === 1) goes on to fan out. Windows are monotonic, so
+ * `lt` is the correct comparison and it re-arms cleanly on the next window.
+ *
+ * The workspace's own `plan` is embedded in the params so the client can decide
+ * the click target (upgrade vs informational) without a separate lookup and even
+ * when the notification's workspace is not the one currently selected.
+ *
+ * Best-effort: callers must not fail their critical path if it throws.
+ */
+export async function maybeCreateQuotaBlockedNotifications(
+  input: MaybeCreateQuotaBlockedNotificationsInput
+): Promise<void> {
+  const claimed = await db.workspace.updateMany({
+    where: {
+      id: input.workspaceId,
+      OR: [
+        { quotaNotifiedWindowStart: null },
+        { quotaNotifiedWindowStart: { lt: input.windowStart } },
+      ],
+    },
+    data: { quotaNotifiedWindowStart: input.windowStart },
+  });
+  if (claimed.count === 0) return;
+
+  const workspace = await db.workspace.findUnique({
+    where: { id: input.workspaceId },
+    select: { plan: true },
+  });
+  if (!workspace) return;
+
+  await createNotificationsForWorkspaceMembers({
+    workspaceId: input.workspaceId,
+    type: "quota_blocked",
+    params: { windowStart: input.windowStart.toISOString(), plan: workspace.plan },
+  });
+
+  await db.auditLog
+    .create({
+      data: {
+        workspaceId: input.workspaceId,
+        actorType: "SYSTEM",
+        eventType: "quota.blocked",
+        metadata: { windowStart: input.windowStart.toISOString(), plan: workspace.plan },
+      },
+    })
+    .catch(() => {});
+}
+
+/**
+ * Remove a workspace's "quota_blocked" notifications. Called when sorting
+ * recovers (month rollover or plan upgrade re-enqueues the blocked threads), so
+ * the "limit reached" nudge disappears once triage resumes. The
+ * `quotaNotifiedWindowStart` marker is intentionally left set — recovery within
+ * the same window must not re-arm the notification. Best-effort.
+ */
+export async function deleteQuotaBlockedNotifications(workspaceId: string): Promise<void> {
+  await db.notification.deleteMany({
+    where: { workspaceId, type: "quota_blocked" },
+  });
+}
+
+/**
+ * Remove a workspace's "gmail_disconnected" notifications. Called when the
+ * connection returns to ACTIVE (reconnect) and on explicit user-initiated
+ * disconnect, so a stale "reconnect your account" nudge never lingers.
+ * Best-effort.
+ */
+export async function deleteGmailDisconnectedNotifications(workspaceId: string): Promise<void> {
+  await db.notification.deleteMany({
+    where: { workspaceId, type: "gmail_disconnected" },
+  });
+}
+
 export interface MaybeCreateExtensionNudgeInput {
   /** The user who just connected Gmail — recipient of the nudge. */
   userId: string;

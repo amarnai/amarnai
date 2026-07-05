@@ -42,6 +42,20 @@ msgstr "{0, plural, one {# ข้อความ} other {# ข้อความ
 msgid "{0, plural, one {# person} other {# people}}"
 msgstr "{0, plural, one {# คน} other {# คน}}"
 
+#. placeholder {0}: d.processed
+#: ../../apps/mobile/src/data/notificationView.ts:73
+#: ../../apps/web/src/lib/notifications.ts:92
+#, fuzzy
+msgid "{0, plural, one {# thread imported.} other {# threads imported.}}"
+msgstr "นำเข้า {0} เธรดแล้ว"
+
+#. placeholder {0}: d.processed
+#: ../../apps/mobile/src/data/notificationView.ts:67
+#: ../../apps/web/src/lib/notifications.ts:86
+#, fuzzy
+msgid "{0, plural, one {# thread imported.} other {# threads imported.}} Your plan's import limit was reached."
+msgstr "นำเข้า {0} เธรดแล้ว ถึงขีดจำกัดการนำเข้าของแผนคุณแล้ว"
+
 #. placeholder {0}: node?.threadCount ?? 0
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:380
 msgid "{0, plural, one {Deleting leaves # thread without this folder.} other {Deleting leaves # threads without this folder.}}"
@@ -71,8 +85,8 @@ msgstr "{0} / {1} คงเหลือ · รีเซ็ตใน {2}"
 
 #. placeholder {0}: d.assignedBy
 #: ../../apps/extension/src/panel/notificationText.ts:15
-#: ../../apps/mobile/src/data/notificationView.ts:23
-#: ../../apps/web/src/lib/notifications.ts:43
+#: ../../apps/mobile/src/data/notificationView.ts:34
+#: ../../apps/web/src/lib/notifications.ts:54
 msgid "{0} assigned you a thread"
 msgstr "{0} มอบหมายเธรดให้คุณ"
 
@@ -182,8 +196,8 @@ msgstr "เหลือ {remaining} จาก {limit} · รีเซ็ตใ�
 msgid "{routableCount} of {TAXONOMY_MIN_NON_ROOT_NODES} folders connected to your inbox. Routing requires at least {TAXONOMY_MIN_NON_ROOT_NODES}."
 msgstr "เชื่อมต่อโฟลเดอร์ {routableCount} จาก {TAXONOMY_MIN_NON_ROOT_NODES} รายการเข้ากับกล่องขาเข้าของคุณ การจัดเส้นทางต้องใช้โฟลเดอร์อย่างน้อย {TAXONOMY_MIN_NON_ROOT_NODES} รายการ"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:276
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:207
+#: ../../apps/mobile/app/(app)/notifications.tsx:293
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:186
 msgid "{selectedCount} selected"
 msgstr "{selectedCount} รายการที่เลือก"
 
@@ -616,6 +630,27 @@ msgstr "Amarnai ไม่ซิงค์กล่องขาเข้านี�
 msgid "Amarnai is open source under AGPL-3.0. Clone it, bring your own keys, and run every tier free on your own infrastructure."
 msgstr "Amarnai เป็นโอเพนซอร์สภายใต้ AGPL-3.0 คุณสามารถโคลน ใช้คีย์ของคุณเอง และรันทุกระดับได้ฟรีบนโครงสร้างพื้นฐานของคุณเอง"
 
+#. placeholder {0}: d.gmailAddress
+#: ../../apps/web/src/lib/notifications.ts:74
+#, fuzzy
+msgid "Amarnai lost access to {0}. Click to reconnect your Google account."
+msgstr "Amarnai ไม่สามารถเข้าถึง {0} ได้ คลิกเพื่อเชื่อมต่อบัญชี Google ของคุณอีกครั้ง"
+
+#. placeholder {0}: d.gmailAddress
+#: ../../apps/mobile/src/data/notificationView.ts:55
+#, fuzzy
+msgid "Amarnai lost access to {0}. Tap to reconnect your Google account."
+msgstr "Amarnai ไม่สามารถเข้าถึง {0} ได้ แตะเพื่อเชื่อมต่อบัญชี Google ของคุณอีกครั้ง"
+
+#: ../../apps/web/src/lib/notifications.ts:75
+#, fuzzy
+msgid "Amarnai lost access to your inbox. Click to reconnect your Google account."
+msgstr "Amarnai ไม่สามารถเข้าถึงกล่องจดหมายของคุณได้ คลิกเพื่อเชื่อมต่อบัญชี Google ของคุณอีกครั้ง"
+
+#: ../../apps/mobile/src/data/notificationView.ts:56
+msgid "Amarnai lost access to your inbox. Tap to reconnect your Google account."
+msgstr "Amarnai ไม่สามารถเข้าถึงกล่องจดหมายของคุณได้ แตะเพื่อเชื่อมต่อบัญชี Google ของคุณอีกครั้ง"
+
 #: ../../apps/extension/src/platform/HostPermissionGate.tsx:34
 #, fuzzy
 msgid "Amarnai needs access to its server and Gmail to show your inbox."
@@ -973,7 +1008,7 @@ msgstr "ฉันสามารถโฮสต์ Amarnai ด้วยตนเ
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:147
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:174
 #: ../../apps/mobile/app/(app)/account.tsx:82
-#: ../../apps/mobile/app/(app)/notifications.tsx:141
+#: ../../apps/mobile/app/(app)/notifications.tsx:145
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:93
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:245
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:150
@@ -1550,12 +1585,12 @@ msgstr "เวิร์กสเปซฟรีเริ่มต้น"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:176
 #: ../../apps/mobile/app/(app)/account.tsx:84
-#: ../../apps/mobile/app/(app)/notifications.tsx:142
-#: ../../apps/mobile/app/(app)/notifications.tsx:238
-#: ../../apps/mobile/app/(app)/notifications.tsx:324
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:219
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:303
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:304
+#: ../../apps/mobile/app/(app)/notifications.tsx:146
+#: ../../apps/mobile/app/(app)/notifications.tsx:255
+#: ../../apps/mobile/app/(app)/notifications.tsx:341
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:198
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:271
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:272
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:596
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:607
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:703
@@ -1564,7 +1599,7 @@ msgid "Delete"
 msgstr "ลบ"
 
 #. placeholder {0}: ids.length
-#: ../../apps/mobile/app/(app)/notifications.tsx:139
+#: ../../apps/mobile/app/(app)/notifications.tsx:143
 msgid "Delete {0} notifications?"
 msgstr "ลบ {0} การแจ้งเตือน?"
 
@@ -1594,12 +1629,12 @@ msgstr "ลบไม่สำเร็จ โปรดลองอีกคร�
 msgid "Delete folder"
 msgstr "ลบโฟลเดอร์"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:140
+#: ../../apps/mobile/app/(app)/notifications.tsx:144
 #, fuzzy
 msgid "Delete notifications"
 msgstr "ลบการแจ้งเตือน"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:138
+#: ../../apps/mobile/app/(app)/notifications.tsx:142
 msgid "Delete this notification?"
 msgstr "ลบการแจ้งเตือนนี้ไหม?"
 
@@ -1729,8 +1764,8 @@ msgstr "ยกเลิกการเชื่อมต่อเวิร์ก
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:369
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:57
 #: ../../apps/web/src/components/JoinedWorkspaceToast.tsx:46
-#: ../../apps/web/src/components/NotificationBell.tsx:199
-#: ../../apps/web/src/components/NotificationBell.tsx:200
+#: ../../apps/web/src/components/NotificationBell.tsx:179
+#: ../../apps/web/src/components/NotificationBell.tsx:180
 #: ../ui/src/AppDownloadBanner.tsx:80
 #: ../ui/src/emails/MockEmailsPage.tsx:261
 #, fuzzy
@@ -1768,7 +1803,7 @@ msgstr "ไม่มีบัญชีใช่ไหม? <0>สร้างบ�
 msgid "Don't have an account? <0>Sign up</0>"
 msgstr "ไม่มีบัญชีใช่ไหม? <0>สมัครใช้งาน</0>"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:261
+#: ../../apps/mobile/app/(app)/notifications.tsx:278
 #: ../../apps/mobile/src/components/ThreadRow.tsx:35
 #: ../ui/src/emails/ThreadRow.tsx:180
 #, fuzzy
@@ -2384,6 +2419,12 @@ msgstr "ดาวน์โหลดแอป"
 msgid "gmail ai assistant"
 msgstr "ผู้ช่วย AI สำหรับ Gmail"
 
+#: ../../apps/extension/src/panel/notificationText.ts:18
+#: ../../apps/mobile/src/data/notificationView.ts:53
+#: ../../apps/web/src/lib/notifications.ts:72
+msgid "Gmail disconnected"
+msgstr "Gmail หลุดการเชื่อมต่อ"
+
 #: ../../apps/mobile/src/components/emails/DisconnectedBanner.tsx:39
 #, fuzzy
 msgid "Gmail disconnected. Amarnai stopped syncing this inbox, so new mail will not appear until you reconnect."
@@ -2636,6 +2677,12 @@ msgstr "กล่องจดหมาย"
 msgid "Inbox (entry point)"
 msgstr "กล่องจดหมาย (จุดเข้าใช้งาน)"
 
+#: ../../apps/extension/src/panel/notificationText.ts:20
+#: ../../apps/mobile/src/data/notificationView.ts:61
+#: ../../apps/web/src/lib/notifications.ts:80
+msgid "Inbox import complete"
+msgstr "นำเข้ากล่องจดหมายเรียบร้อย"
+
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:145
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:154
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:167
@@ -2675,8 +2722,8 @@ msgstr "ข้อความไม่เป็นทางการที่ไ
 msgid "Initial backfill"
 msgstr "การดึงข้อมูลย้อนหลังเบื้องต้น"
 
-#: ../../apps/mobile/src/data/notificationView.ts:32
-#: ../../apps/web/src/lib/notifications.ts:49
+#: ../../apps/mobile/src/data/notificationView.ts:47
+#: ../../apps/web/src/lib/notifications.ts:65
 msgid "Install the Amarnai browser extension"
 msgstr "ติดตั้งส่วนขยายเบราว์เซอร์ Amarnai"
 
@@ -2900,9 +2947,9 @@ msgstr "ระบุผู้ส่ง หัวข้อ และคีย์�
 msgid "Live"
 msgstr "สด"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:301
+#: ../../apps/mobile/app/(app)/notifications.tsx:318
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:101
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:316
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:284
 #: ../ui/src/emails/ThreadList.tsx:242
 #, fuzzy
 msgid "Load more"
@@ -2917,16 +2964,16 @@ msgid "Loading past threads…"
 msgstr "กำลังโหลดเธรดเก่า..."
 
 #: ../../apps/extension/src/panel/NotificationBell.tsx:133
-#: ../../apps/mobile/app/(app)/notifications.tsx:301
+#: ../../apps/mobile/app/(app)/notifications.tsx:318
 #: ../../apps/mobile/src/components/MessageCard.tsx:53
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:73
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:227
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:316
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:206
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:284
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:121
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:137
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:158
 #: ../../apps/web/src/app/loading.tsx:6
-#: ../../apps/web/src/components/NotificationBell.tsx:181
+#: ../../apps/web/src/components/NotificationBell.tsx:161
 #: ../ui/src/emails/MessageCard.tsx:60
 #: ../ui/src/emails/ThreadList.tsx:242
 #, fuzzy
@@ -2946,7 +2993,7 @@ msgstr "จัดการ"
 
 #: ../../apps/extension/src/panel/NotificationBell.tsx:155
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:79
-#: ../../apps/web/src/components/NotificationBell.tsx:212
+#: ../../apps/web/src/components/NotificationBell.tsx:192
 msgid "Manage notifications"
 msgstr "จัดการการแจ้งเตือน"
 
@@ -2985,9 +3032,9 @@ msgstr "ทำเครื่องหมายว่าสำคัญ"
 msgid "Mark as not done"
 msgstr "ทำเครื่องหมายว่ายังไม่เสร็จสิ้น"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:215
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:271
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:272
+#: ../../apps/mobile/app/(app)/notifications.tsx:232
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:250
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:251
 msgid "Mark as read"
 msgstr "ทำเครื่องหมายว่าอ่านแล้ว"
 
@@ -2997,9 +3044,9 @@ msgstr "ทำเครื่องหมายว่าอ่านแล้ว
 msgid "Mark as sent"
 msgstr "ทำเครื่องหมายว่าส่งแล้ว"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:215
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:271
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:272
+#: ../../apps/mobile/app/(app)/notifications.tsx:232
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:250
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:251
 msgid "Mark as unread"
 msgstr "ทำเครื่องหมายว่ายังไม่ได้อ่าน"
 
@@ -3019,14 +3066,14 @@ msgstr "ทำเครื่องหมายว่าเสร็จ"
 #~ msgid "Mark invited"
 #~ msgstr "ทำเครื่องหมายว่าได้รับเชิญ"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:314
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:213
+#: ../../apps/mobile/app/(app)/notifications.tsx:331
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:192
 #, fuzzy
 msgid "Mark read"
 msgstr "ทำเครื่องหมายว่าอ่านแล้ว"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:319
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:216
+#: ../../apps/mobile/app/(app)/notifications.tsx:336
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:195
 msgid "Mark unread"
 msgstr "ทำเครื่องหมายว่ายังไม่ได้อ่าน"
 
@@ -3083,6 +3130,14 @@ msgstr "คุณภาพโมเดล"
 #, fuzzy
 msgid "Monthly"
 msgstr "รายเดือน"
+
+#: ../../apps/extension/src/panel/notificationText.ts:22
+#: ../../apps/mobile/src/data/notificationView.ts:85
+#: ../../apps/mobile/src/data/notificationView.ts:90
+#: ../../apps/web/src/lib/notifications.ts:104
+#: ../../apps/web/src/lib/notifications.ts:109
+msgid "Monthly sorting limit reached"
+msgstr "ถึงขีดจำกัดการจัดเรียงรายเดือนแล้ว"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:43
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:46
@@ -3175,6 +3230,17 @@ msgstr "ใบสมัครใหม่จาก Horemheb แห่ง Thebes"
 msgid "New business inquiries, proposals, pricing discussions, and prospective client outreach."
 msgstr "การสอบถามธุรกิจใหม่ ข้อเสนอ การปรึกษาเรื่องราคา และการติดต่อลูกค้าเป้าหมาย"
 
+#: ../../apps/mobile/src/data/notificationView.ts:91
+#: ../../apps/web/src/lib/notifications.ts:110
+#, fuzzy
+msgid "New emails will wait until next month. Upgrade your plan for a higher limit."
+msgstr "อีเมลใหม่จะรอจนถึงเดือนหน้า อัปเกรดแพ็กเกจเพื่อเพิ่มขีดจำกัด"
+
+#: ../../apps/mobile/src/data/notificationView.ts:86
+#: ../../apps/web/src/lib/notifications.ts:105
+msgid "New emails will wait until your limit resets next month."
+msgstr "อีเมลใหม่จะรอจนกว่าขีดจำกัดของคุณจะรีเซ็ตในเดือนหน้า"
+
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:250
 #: ../ui/src/emails/EmailRail.tsx:101
 #: ../ui/src/emails/EmailRail.tsx:106
@@ -3182,9 +3248,9 @@ msgstr "การสอบถามธุรกิจใหม่ ข้อเ�
 msgid "New folder"
 msgstr "โฟลเดอร์ใหม่"
 
-#: ../../apps/extension/src/panel/notificationText.ts:18
-#: ../../apps/mobile/src/data/notificationView.ts:37
-#: ../../apps/web/src/lib/notifications.ts:55
+#: ../../apps/extension/src/panel/notificationText.ts:24
+#: ../../apps/mobile/src/data/notificationView.ts:95
+#: ../../apps/web/src/lib/notifications.ts:114
 msgid "New notification"
 msgstr "แจ้งเตือนใหม่"
 
@@ -3287,10 +3353,10 @@ msgid "No members available"
 msgstr "ไม่มีสมาชิกที่ใช้งานได้"
 
 #: ../../apps/extension/src/panel/NotificationBell.tsx:138
-#: ../../apps/mobile/app/(app)/notifications.tsx:294
+#: ../../apps/mobile/app/(app)/notifications.tsx:311
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:73
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:229
-#: ../../apps/web/src/components/NotificationBell.tsx:184
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:208
+#: ../../apps/web/src/components/NotificationBell.tsx:164
 msgid "No notifications yet"
 msgstr "ยังไม่มีการแจ้งเตือน"
 
@@ -3390,18 +3456,18 @@ msgstr "ยังไม่ได้ซิงค์"
 #: ../../apps/extension/src/panel/NotificationBell.tsx:125
 #: ../../apps/extension/src/panel/NotificationBell.tsx:128
 #: ../../apps/mobile/app/(app)/account.tsx:145
-#: ../../apps/mobile/app/(app)/notifications.tsx:256
+#: ../../apps/mobile/app/(app)/notifications.tsx:273
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:49
 #: ../../apps/web/src/app/(app)/notifications/page.tsx:16
-#: ../../apps/web/src/components/NotificationBell.tsx:158
-#: ../../apps/web/src/components/NotificationBell.tsx:173
-#: ../../apps/web/src/components/NotificationBell.tsx:177
+#: ../../apps/web/src/components/NotificationBell.tsx:138
+#: ../../apps/web/src/components/NotificationBell.tsx:153
+#: ../../apps/web/src/components/NotificationBell.tsx:157
 #, fuzzy
 msgid "Notifications"
 msgstr "การแจ้งเตือน"
 
 #: ../../apps/extension/src/panel/NotificationBell.tsx:107
-#: ../../apps/web/src/components/NotificationBell.tsx:157
+#: ../../apps/web/src/components/NotificationBell.tsx:137
 msgid "Notifications, {unread} unread"
 msgstr "การแจ้งเตือน, {unread} ที่ยังไม่ได้อ่าน"
 
@@ -3420,8 +3486,9 @@ msgstr "การสนทนาต่อเนื่องกับผู้ว
 msgid "Only the workspace owner can manage billing."
 msgstr "เฉพาะเจ้าของเวิร์กสเปซเท่านั้นที่จัดการการเรียกเก็บเงินได้"
 
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:292
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:293
+#: ../../apps/mobile/app/(app)/notifications.tsx:245
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:260
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:261
 msgid "Open"
 msgstr "เปิด"
 
@@ -3449,8 +3516,8 @@ msgstr "AI จัดการอีเมลโอเพนซอร์ส"
 #: ../../apps/mobile/app/(app)/notifications.tsx:228
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:281
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:282
-msgid "Open thread"
-msgstr "เปิดชุดข้อความ"
+#~ msgid "Open thread"
+#~ msgstr "เปิดชุดข้อความ"
 
 #: ../../apps/site/src/components/landing/HeroSection.tsx:58
 #, fuzzy
@@ -4143,12 +4210,12 @@ msgstr "บันทึกการเปลี่ยนแปลง"
 msgid "Save hours of triage every week. Let Amarnai sort your inbox, filing every email, old and new, where it belongs."
 msgstr "ประหยัดเวลาคัดแยกอีเมลหลายชั่วโมงทุกสัปดาห์ ให้ Amarnai จัดระเบียบกล่องขาเข้าของคุณ จัดเก็บทุกอีเมล ทั้งเก่าและใหม่ เข้าที่เข้าทาง"
 
-#: ../../apps/web/src/lib/notifications.ts:50
+#: ../../apps/web/src/lib/notifications.ts:66
 #, fuzzy
 msgid "Save time by triaging your inbox without leaving Gmail."
 msgstr "ประหยัดเวลาด้วยการจัดระเบียบกล่องขาเข้า โดยไม่ต้องออกจาก Gmail"
 
-#: ../../apps/mobile/src/data/notificationView.ts:33
+#: ../../apps/mobile/src/data/notificationView.ts:48
 msgid "Save time by triaging your inbox without leaving Gmail. The extension runs in your desktop browser."
 msgstr "ประหยัดเวลาด้วยการจัดระเบียบกล่องขาเข้า โดยไม่ต้องออกจาก Gmail ส่วนขยายนี้ทำงานบนเบราว์เซอร์บนเดสก์ท็อป"
 
@@ -4194,7 +4261,7 @@ msgstr "ค้นหาเธรด..."
 msgid "See how your inbox is sorted, right next to Gmail."
 msgstr "เห็นการจัดเรียงกล่องจดหมายของคุณได้ข้าง Gmail"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:261
+#: ../../apps/mobile/app/(app)/notifications.tsx:278
 msgid "Select"
 msgstr "เลือก"
 
@@ -4205,14 +4272,14 @@ msgstr "เลือก"
 msgid "Select a thread to preview"
 msgstr "เลือกเธรดเพื่อดูตัวอย่าง"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:276
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:205
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:207
+#: ../../apps/mobile/app/(app)/notifications.tsx:293
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:184
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:186
 #, fuzzy
 msgid "Select all"
 msgstr "เลือกทั้งหมด"
 
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:247
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:226
 msgid "Select notification"
 msgstr "เลือกการแจ้งเตือน"
 
@@ -5519,8 +5586,8 @@ msgid "You do not have permission to connect a Gmail inbox to this workspace."
 msgstr "คุณไม่มีสิทธิ์เชื่อมต่อกล่องจดหมาย Gmail กับพื้นที่ทำงานนี้"
 
 #: ../../apps/extension/src/panel/notificationText.ts:16
-#: ../../apps/mobile/src/data/notificationView.ts:24
-#: ../../apps/web/src/lib/notifications.ts:44
+#: ../../apps/mobile/src/data/notificationView.ts:35
+#: ../../apps/web/src/lib/notifications.ts:55
 msgid "You were assigned a thread"
 msgstr "คุณได้รับมอบหมายเธรด"
 
@@ -5572,6 +5639,11 @@ msgstr "Gmail ของคุณยังคงเป็นของคุณ"
 #: ../ui/src/i18n/generation-reason-messages.ts:14
 msgid "Your inbox doesn't have enough variety yet to personalize a taxonomy. Choose a template instead."
 msgstr "กล่องจดหมายของคุณยังไม่มีความหลากหลายมากพอที่จะสร้างการจัดหมวดหมู่เฉพาะบุคคลได้ โปรดเลือกเทมเพลตแทน"
+
+#: ../../apps/mobile/src/data/notificationView.ts:64
+#: ../../apps/web/src/lib/notifications.ts:83
+msgid "Your inbox import finished."
+msgstr "นำเข้ากล่องจดหมายของคุณเสร็จเรียบร้อยแล้ว"
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:57
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:262

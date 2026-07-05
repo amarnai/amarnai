@@ -3,6 +3,7 @@ import { Platform } from 'react-native';
 import {
   PUSH_CATEGORY_THREAD_NEEDS_ATTENTION,
   PUSH_CATEGORY_THREAD_ASSIGNED,
+  PUSH_CATEGORY_GMAIL_DISCONNECTED,
   PUSH_CHANNEL_TRIAGE,
 } from '@amarnai/shared';
 
@@ -47,6 +48,11 @@ export async function registerNotificationCategories(): Promise<void> {
       options: { opensAppToForeground: true },
     },
   ]);
+
+  // "Gmail disconnected" category. No inline actions — tapping the body opens the
+  // emails tab (reconnect banner) via the default-action path. Registered so the
+  // category id resolves on Android even though it carries no buttons.
+  await Notifications.setNotificationCategoryAsync(PUSH_CATEGORY_GMAIL_DISCONNECTED, []);
 
   if (Platform.OS === 'android') {
     await Notifications.setNotificationChannelAsync(PUSH_CHANNEL_TRIAGE, {

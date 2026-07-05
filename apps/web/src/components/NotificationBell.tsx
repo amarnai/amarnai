@@ -11,11 +11,7 @@ import {
   type NotificationItem,
 } from "@amarnai/api-client";
 import { describeNotification } from "@/lib/notifications";
-import { switchWorkspaceAction } from "@/actions/workspace";
-
-function str(v: unknown): string | null {
-  return typeof v === "string" && v.length > 0 ? v : null;
-}
+import { runNotificationAction } from "@/lib/notificationAction";
 
 function BellIcon() {
   return (
@@ -119,24 +115,8 @@ export function NotificationBell({ currentWorkspaceId }: { currentWorkspaceId: s
     // in the pop-up on next open.
     dismiss(n.id);
     const view = describeNotification(n, i18n);
-    // Non-thread notifications (e.g. the extension nudge) carry an external URL
-    // instead. Open it in a new tab and stop — there is no thread to route to.
-    if (view.href) {
-      window.open(view.href, "_blank", "noopener,noreferrer");
-      return;
-    }
-    const threadId = str(n.params["threadId"]);
-    if (!threadId) return;
-    const target = `/emails?t=${encodeURIComponent(threadId)}`;
-    // The thread lives in the notification's workspace, which may not be the one
-    // currently selected. When it differs, switch first (server action: sets the
-    // workspace cookie, then redirects to the thread) so the emails page renders
-    // the right inbox. Same workspace: a soft push is enough.
-    if (currentWorkspaceId && n.workspaceId !== currentWorkspaceId) {
-      void switchWorkspaceAction(n.workspaceId, target);
-    } else {
-      router.push(target);
-    }
+    if (!view.action) return;
+    runNotificationAction(view.action, n, { router, currentWorkspaceId });
   }
 
   function openManager() {

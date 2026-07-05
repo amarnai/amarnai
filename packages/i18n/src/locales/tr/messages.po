@@ -42,6 +42,20 @@ msgstr "{0, plural, one {# mesaj} other {# mesaj}}"
 msgid "{0, plural, one {# person} other {# people}}"
 msgstr "{0, plural, one {# kişi} other {# kişi}}"
 
+#. placeholder {0}: d.processed
+#: ../../apps/mobile/src/data/notificationView.ts:73
+#: ../../apps/web/src/lib/notifications.ts:92
+#, fuzzy
+msgid "{0, plural, one {# thread imported.} other {# threads imported.}}"
+msgstr "{0, plural, one {# konu içe aktarıldı.} other {# konu içe aktarıldı.}}"
+
+#. placeholder {0}: d.processed
+#: ../../apps/mobile/src/data/notificationView.ts:67
+#: ../../apps/web/src/lib/notifications.ts:86
+#, fuzzy
+msgid "{0, plural, one {# thread imported.} other {# threads imported.}} Your plan's import limit was reached."
+msgstr "{0, plural, one {# konu içe aktarıldı.} other {# konu içe aktarıldı.}} Planınızın içe aktarma sınırına ulaşıldı."
+
 #. placeholder {0}: node?.threadCount ?? 0
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:380
 msgid "{0, plural, one {Deleting leaves # thread without this folder.} other {Deleting leaves # threads without this folder.}}"
@@ -71,8 +85,8 @@ msgstr "{0} / {1} kaldı · sıfırlanır {2}"
 
 #. placeholder {0}: d.assignedBy
 #: ../../apps/extension/src/panel/notificationText.ts:15
-#: ../../apps/mobile/src/data/notificationView.ts:23
-#: ../../apps/web/src/lib/notifications.ts:43
+#: ../../apps/mobile/src/data/notificationView.ts:34
+#: ../../apps/web/src/lib/notifications.ts:54
 msgid "{0} assigned you a thread"
 msgstr "{0} sana bir ileti dizisi atadı"
 
@@ -182,8 +196,8 @@ msgstr "{remaining} / {limit} kaldı · sıfırlanır {resetDate}"
 msgid "{routableCount} of {TAXONOMY_MIN_NON_ROOT_NODES} folders connected to your inbox. Routing requires at least {TAXONOMY_MIN_NON_ROOT_NODES}."
 msgstr "Gelen kutunuza {routableCount} / {TAXONOMY_MIN_NON_ROOT_NODES} klasör bağlı. Yönlendirme için en az {TAXONOMY_MIN_NON_ROOT_NODES} klasör gerekir."
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:276
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:207
+#: ../../apps/mobile/app/(app)/notifications.tsx:293
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:186
 msgid "{selectedCount} selected"
 msgstr "{selectedCount} seçili"
 
@@ -393,7 +407,9 @@ msgstr "Thebes'li Horemheb'den Yazışma Şefi pozisyonu için yeni bir başvuru
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "Thebes'li Horemheb'den Yazışma Şefi pozisyonu için yeni bir başvuru alındı.\n\nBaşvuruyu Kayıtlar Evi'nde görüntüleyin."
+msgstr "Thebes'li Horemheb'den Yazışma Şefi pozisyonu için yeni bir başvuru alındı.\n"
+"\n"
+"Başvuruyu Kayıtlar Evi'nde görüntüleyin."
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:384
 #, fuzzy
@@ -407,7 +423,11 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "Abdi-Heba,\n\nAynı hafta Delta yakınında olacağım. İkinci gün menzil istasyonunda buluşalım; sabahı ayırabilirim.\n\nO zamana dek,"
+msgstr "Abdi-Heba,\n"
+"\n"
+"Aynı hafta Delta yakınında olacağım. İkinci gün menzil istasyonunda buluşalım; sabahı ayırabilirim.\n"
+"\n"
+"O zamana dek,"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
@@ -614,6 +634,27 @@ msgstr "Amarnai bu gelen kutusunu artık senkronize etmiyor. E-posta ileti dizil
 #, fuzzy
 msgid "Amarnai is open source under AGPL-3.0. Clone it, bring your own keys, and run every tier free on your own infrastructure."
 msgstr "Amarnai, AGPL-3.0 lisansı altında açık kaynaklıdır. Klonlayın, kendi anahtarlarınızı kullanın ve tüm katmanları kendi altyapınızda ücretsiz çalıştırın."
+
+#. placeholder {0}: d.gmailAddress
+#: ../../apps/web/src/lib/notifications.ts:74
+#, fuzzy
+msgid "Amarnai lost access to {0}. Click to reconnect your Google account."
+msgstr "Amarnai {0}'e erişimini kaybetti. Google hesabınızı yeniden bağlamak için tıklayın."
+
+#. placeholder {0}: d.gmailAddress
+#: ../../apps/mobile/src/data/notificationView.ts:55
+#, fuzzy
+msgid "Amarnai lost access to {0}. Tap to reconnect your Google account."
+msgstr "Amarnai {0}'e erişimini kaybetti. Google hesabınızı yeniden bağlamak için dokunun."
+
+#: ../../apps/web/src/lib/notifications.ts:75
+#, fuzzy
+msgid "Amarnai lost access to your inbox. Click to reconnect your Google account."
+msgstr "Amarnai gelen kutunuza erişimini kaybetti. Google hesabınızı yeniden bağlamak için tıklayın."
+
+#: ../../apps/mobile/src/data/notificationView.ts:56
+msgid "Amarnai lost access to your inbox. Tap to reconnect your Google account."
+msgstr "Amarnai gelen kutunuza erişimini kaybetti. Google hesabınızı yeniden bağlamak için dokunun."
 
 #: ../../apps/extension/src/platform/HostPermissionGate.tsx:34
 #, fuzzy
@@ -827,7 +868,11 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "Aziru,\n\nDostluk sözleriniz bize ulaştı. Amurru hanedanının ne önerdiğini daha fazla duymaya açığız. Koşullarınızı bir sonraki kurye ile gönderin.\n\nSaygılarımızla,"
+msgstr "Aziru,\n"
+"\n"
+"Dostluk sözleriniz bize ulaştı. Amurru hanedanının ne önerdiğini daha fazla duymaya açığız. Koşullarınızı bir sonraki kurye ile gönderin.\n"
+"\n"
+"Saygılarımızla,"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:217
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
@@ -972,7 +1017,7 @@ msgstr "Amarnai'yi kendi sunucumda barındırabilir miyim?"
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:147
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:174
 #: ../../apps/mobile/app/(app)/account.tsx:82
-#: ../../apps/mobile/app/(app)/notifications.tsx:141
+#: ../../apps/mobile/app/(app)/notifications.tsx:145
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:93
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:245
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:150
@@ -1549,12 +1594,12 @@ msgstr "Varsayılan ücretsiz çalışma alanı"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:176
 #: ../../apps/mobile/app/(app)/account.tsx:84
-#: ../../apps/mobile/app/(app)/notifications.tsx:142
-#: ../../apps/mobile/app/(app)/notifications.tsx:238
-#: ../../apps/mobile/app/(app)/notifications.tsx:324
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:219
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:303
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:304
+#: ../../apps/mobile/app/(app)/notifications.tsx:146
+#: ../../apps/mobile/app/(app)/notifications.tsx:255
+#: ../../apps/mobile/app/(app)/notifications.tsx:341
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:198
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:271
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:272
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:596
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:607
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:703
@@ -1563,7 +1608,7 @@ msgid "Delete"
 msgstr "Sil"
 
 #. placeholder {0}: ids.length
-#: ../../apps/mobile/app/(app)/notifications.tsx:139
+#: ../../apps/mobile/app/(app)/notifications.tsx:143
 msgid "Delete {0} notifications?"
 msgstr "{0} bildirim silinsin mi?"
 
@@ -1593,12 +1638,12 @@ msgstr "Silme başarısız oldu. Lütfen tekrar deneyin."
 msgid "Delete folder"
 msgstr "Klasörü sil"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:140
+#: ../../apps/mobile/app/(app)/notifications.tsx:144
 #, fuzzy
 msgid "Delete notifications"
 msgstr "Bildirimleri Sil"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:138
+#: ../../apps/mobile/app/(app)/notifications.tsx:142
 msgid "Delete this notification?"
 msgstr "Bu bildirim silinsin mi?"
 
@@ -1728,8 +1773,8 @@ msgstr "Bu çalışma alanının bağlantısı kesilir. Bu posta kutusu hala {sh
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:369
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:57
 #: ../../apps/web/src/components/JoinedWorkspaceToast.tsx:46
-#: ../../apps/web/src/components/NotificationBell.tsx:199
-#: ../../apps/web/src/components/NotificationBell.tsx:200
+#: ../../apps/web/src/components/NotificationBell.tsx:179
+#: ../../apps/web/src/components/NotificationBell.tsx:180
 #: ../ui/src/AppDownloadBanner.tsx:80
 #: ../ui/src/emails/MockEmailsPage.tsx:261
 #, fuzzy
@@ -1767,7 +1812,7 @@ msgstr "Hesabın yok mu? <0>Bir hesap oluştur</0>"
 msgid "Don't have an account? <0>Sign up</0>"
 msgstr "Hesabın yok mu? <0>Kaydol</0>"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:261
+#: ../../apps/mobile/app/(app)/notifications.tsx:278
 #: ../../apps/mobile/src/components/ThreadRow.tsx:35
 #: ../ui/src/emails/ThreadRow.tsx:180
 #, fuzzy
@@ -2383,6 +2428,12 @@ msgstr "Uygulamayı indirin"
 msgid "gmail ai assistant"
 msgstr "gmail yapay zeka asistanı"
 
+#: ../../apps/extension/src/panel/notificationText.ts:18
+#: ../../apps/mobile/src/data/notificationView.ts:53
+#: ../../apps/web/src/lib/notifications.ts:72
+msgid "Gmail disconnected"
+msgstr "Gmail bağlantısı kesildi"
+
 #: ../../apps/mobile/src/components/emails/DisconnectedBanner.tsx:39
 #, fuzzy
 msgid "Gmail disconnected. Amarnai stopped syncing this inbox, so new mail will not appear until you reconnect."
@@ -2478,7 +2529,11 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "Ulu Kralım,\n\nİstediğiniz raporlar konsey toplanmadan önce hazırlanacaktır. Katiplerime doğu topraklarının hesaplarını derletecek ve hızlı kurye ile önceden göndereceğim.\n\nKardeşlik içerisinde,"
+msgstr "Ulu Kralım,\n"
+"\n"
+"İstediğiniz raporlar konsey toplanmadan önce hazırlanacaktır. Katiplerime doğu topraklarının hesaplarını derletecek ve hızlı kurye ile önceden göndereceğim.\n"
+"\n"
+"Kardeşlik içerisinde,"
 
 #: ../../apps/site/src/components/landing/FinalCTASection.tsx:8
 #, fuzzy
@@ -2635,6 +2690,12 @@ msgstr "Gelen Kutusu"
 msgid "Inbox (entry point)"
 msgstr "Gelen Kutusu (giriş noktası)"
 
+#: ../../apps/extension/src/panel/notificationText.ts:20
+#: ../../apps/mobile/src/data/notificationView.ts:61
+#: ../../apps/web/src/lib/notifications.ts:80
+msgid "Inbox import complete"
+msgstr "Gelen kutusu içe aktarımı tamamlandı"
+
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:145
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:154
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:167
@@ -2674,8 +2735,8 @@ msgstr "Net bir kategorisi olmayan gayri resmi mesaj: kişisel ziyaret mi yoksa 
 msgid "Initial backfill"
 msgstr "İlk geriye dönük doldurma"
 
-#: ../../apps/mobile/src/data/notificationView.ts:32
-#: ../../apps/web/src/lib/notifications.ts:49
+#: ../../apps/mobile/src/data/notificationView.ts:47
+#: ../../apps/web/src/lib/notifications.ts:65
 msgid "Install the Amarnai browser extension"
 msgstr "Amarnai tarayıcı uzantısını yükleyin"
 
@@ -2899,9 +2960,9 @@ msgstr "Buraya ait gönderenleri, konuları ve anahtar kelimeleri listeleyin. En
 msgid "Live"
 msgstr "Canlı"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:301
+#: ../../apps/mobile/app/(app)/notifications.tsx:318
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:101
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:316
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:284
 #: ../ui/src/emails/ThreadList.tsx:242
 #, fuzzy
 msgid "Load more"
@@ -2916,16 +2977,16 @@ msgid "Loading past threads…"
 msgstr "Geçmiş yazışmalar yükleniyor…"
 
 #: ../../apps/extension/src/panel/NotificationBell.tsx:133
-#: ../../apps/mobile/app/(app)/notifications.tsx:301
+#: ../../apps/mobile/app/(app)/notifications.tsx:318
 #: ../../apps/mobile/src/components/MessageCard.tsx:53
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:73
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:227
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:316
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:206
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:284
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:121
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:137
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:158
 #: ../../apps/web/src/app/loading.tsx:6
-#: ../../apps/web/src/components/NotificationBell.tsx:181
+#: ../../apps/web/src/components/NotificationBell.tsx:161
 #: ../ui/src/emails/MessageCard.tsx:60
 #: ../ui/src/emails/ThreadList.tsx:242
 #, fuzzy
@@ -2945,7 +3006,7 @@ msgstr "Yönet"
 
 #: ../../apps/extension/src/panel/NotificationBell.tsx:155
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:79
-#: ../../apps/web/src/components/NotificationBell.tsx:212
+#: ../../apps/web/src/components/NotificationBell.tsx:192
 msgid "Manage notifications"
 msgstr "Bildirimleri Yönet"
 
@@ -2984,9 +3045,9 @@ msgstr "Önemli olarak işaretle"
 msgid "Mark as not done"
 msgstr "Tamamlanmadı olarak işaretle"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:215
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:271
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:272
+#: ../../apps/mobile/app/(app)/notifications.tsx:232
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:250
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:251
 msgid "Mark as read"
 msgstr "Okundu Olarak İşaretle"
 
@@ -2996,9 +3057,9 @@ msgstr "Okundu Olarak İşaretle"
 msgid "Mark as sent"
 msgstr "Gönderildi olarak işaretle"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:215
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:271
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:272
+#: ../../apps/mobile/app/(app)/notifications.tsx:232
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:250
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:251
 msgid "Mark as unread"
 msgstr "Okunmadı Olarak İşaretle"
 
@@ -3018,14 +3079,14 @@ msgstr "Tamamlandı olarak işaretle"
 #~ msgid "Mark invited"
 #~ msgstr "Davet edildi olarak işaretle"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:314
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:213
+#: ../../apps/mobile/app/(app)/notifications.tsx:331
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:192
 #, fuzzy
 msgid "Mark read"
 msgstr "Okundu İşaretle"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:319
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:216
+#: ../../apps/mobile/app/(app)/notifications.tsx:336
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:195
 msgid "Mark unread"
 msgstr "Okunmadı İşaretle"
 
@@ -3082,6 +3143,14 @@ msgstr "Model kalitesi"
 #, fuzzy
 msgid "Monthly"
 msgstr "Aylık"
+
+#: ../../apps/extension/src/panel/notificationText.ts:22
+#: ../../apps/mobile/src/data/notificationView.ts:85
+#: ../../apps/mobile/src/data/notificationView.ts:90
+#: ../../apps/web/src/lib/notifications.ts:104
+#: ../../apps/web/src/lib/notifications.ts:109
+msgid "Monthly sorting limit reached"
+msgstr "Aylık sıralama sınırına ulaşıldı"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:43
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:46
@@ -3174,6 +3243,17 @@ msgstr "Thebesli Horemheb'den yeni başvuru."
 msgid "New business inquiries, proposals, pricing discussions, and prospective client outreach."
 msgstr "Yeni iş sorguları, teklifler, fiyatlandırma görüşmeleri ve potansiyel müşteri iletişimi."
 
+#: ../../apps/mobile/src/data/notificationView.ts:91
+#: ../../apps/web/src/lib/notifications.ts:110
+#, fuzzy
+msgid "New emails will wait until next month. Upgrade your plan for a higher limit."
+msgstr "Yeni e-postalar gelecek aya kadar bekleyecek. Daha yüksek bir sınır için planınızı yükseltin."
+
+#: ../../apps/mobile/src/data/notificationView.ts:86
+#: ../../apps/web/src/lib/notifications.ts:105
+msgid "New emails will wait until your limit resets next month."
+msgstr "Yeni e-postalar, sınırınız gelecek ay sıfırlanana kadar bekleyecek."
+
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:250
 #: ../ui/src/emails/EmailRail.tsx:101
 #: ../ui/src/emails/EmailRail.tsx:106
@@ -3181,9 +3261,9 @@ msgstr "Yeni iş sorguları, teklifler, fiyatlandırma görüşmeleri ve potansi
 msgid "New folder"
 msgstr "Yeni klasör"
 
-#: ../../apps/extension/src/panel/notificationText.ts:18
-#: ../../apps/mobile/src/data/notificationView.ts:37
-#: ../../apps/web/src/lib/notifications.ts:55
+#: ../../apps/extension/src/panel/notificationText.ts:24
+#: ../../apps/mobile/src/data/notificationView.ts:95
+#: ../../apps/web/src/lib/notifications.ts:114
 msgid "New notification"
 msgstr "Yeni bildirim"
 
@@ -3286,10 +3366,10 @@ msgid "No members available"
 msgstr "Üye bulunamadı"
 
 #: ../../apps/extension/src/panel/NotificationBell.tsx:138
-#: ../../apps/mobile/app/(app)/notifications.tsx:294
+#: ../../apps/mobile/app/(app)/notifications.tsx:311
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:73
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:229
-#: ../../apps/web/src/components/NotificationBell.tsx:184
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:208
+#: ../../apps/web/src/components/NotificationBell.tsx:164
 msgid "No notifications yet"
 msgstr "Henüz bildirim yok"
 
@@ -3389,18 +3469,18 @@ msgstr "Henüz senkronize edilmedi"
 #: ../../apps/extension/src/panel/NotificationBell.tsx:125
 #: ../../apps/extension/src/panel/NotificationBell.tsx:128
 #: ../../apps/mobile/app/(app)/account.tsx:145
-#: ../../apps/mobile/app/(app)/notifications.tsx:256
+#: ../../apps/mobile/app/(app)/notifications.tsx:273
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:49
 #: ../../apps/web/src/app/(app)/notifications/page.tsx:16
-#: ../../apps/web/src/components/NotificationBell.tsx:158
-#: ../../apps/web/src/components/NotificationBell.tsx:173
-#: ../../apps/web/src/components/NotificationBell.tsx:177
+#: ../../apps/web/src/components/NotificationBell.tsx:138
+#: ../../apps/web/src/components/NotificationBell.tsx:153
+#: ../../apps/web/src/components/NotificationBell.tsx:157
 #, fuzzy
 msgid "Notifications"
 msgstr "Bildirimler"
 
 #: ../../apps/extension/src/panel/NotificationBell.tsx:107
-#: ../../apps/web/src/components/NotificationBell.tsx:157
+#: ../../apps/web/src/components/NotificationBell.tsx:137
 msgid "Notifications, {unread} unread"
 msgstr "Bildirimler, {unread} okunmamış"
 
@@ -3419,8 +3499,9 @@ msgstr "Tanınmış bir şehir valisiyle devam eden yazışma, tekrarlayan bir t
 msgid "Only the workspace owner can manage billing."
 msgstr "Faturalandırmayı yalnızca çalışma alanı sahibi yönetebilir."
 
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:292
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:293
+#: ../../apps/mobile/app/(app)/notifications.tsx:245
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:260
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:261
 msgid "Open"
 msgstr "Aç"
 
@@ -3448,8 +3529,8 @@ msgstr "açık kaynak e-posta yapay zekası"
 #: ../../apps/mobile/app/(app)/notifications.tsx:228
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:281
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:282
-msgid "Open thread"
-msgstr "Konuyu Aç"
+#~ msgid "Open thread"
+#~ msgstr "Konuyu Aç"
 
 #: ../../apps/site/src/components/landing/HeroSection.tsx:58
 #, fuzzy
@@ -4092,7 +4173,11 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "Rib-Hadda,\n\nSeni duyuyoruz. Güneydeki depolardan ek tahıl sipariş edildi ve hasat festivalinden önce ulaşacak. O zamana kadar sabrınızı rica ediyoruz.\n\nEsen kal,"
+msgstr "Rib-Hadda,\n"
+"\n"
+"Seni duyuyoruz. Güneydeki depolardan ek tahıl sipariş edildi ve hasat festivalinden önce ulaşacak. O zamana kadar sabrınızı rica ediyoruz.\n"
+"\n"
+"Esen kal,"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -4142,12 +4227,12 @@ msgstr "Değişiklikleri kaydet"
 msgid "Save hours of triage every week. Let Amarnai sort your inbox, filing every email, old and new, where it belongs."
 msgstr "Her hafta saatler süren ön eleme derdinden kurtulun. Amarnai, gelen kutunuzu düzenlesin, eski ve yeni tüm e-postaları ait oldukları yere dosyalasın."
 
-#: ../../apps/web/src/lib/notifications.ts:50
+#: ../../apps/web/src/lib/notifications.ts:66
 #, fuzzy
 msgid "Save time by triaging your inbox without leaving Gmail."
 msgstr "Gelen kutunuzu Gmail’den ayrılmadan önceliklendirerek zamandan tasarruf edin."
 
-#: ../../apps/mobile/src/data/notificationView.ts:33
+#: ../../apps/mobile/src/data/notificationView.ts:48
 msgid "Save time by triaging your inbox without leaving Gmail. The extension runs in your desktop browser."
 msgstr "Gelen kutunuzu Gmail’den ayrılmadan önceliklendirerek zamandan tasarruf edin. Uzantı, masaüstü tarayıcınızda çalışır."
 
@@ -4193,7 +4278,7 @@ msgstr "İletiler aranıyor…"
 msgid "See how your inbox is sorted, right next to Gmail."
 msgstr "Gelen kutunun nasıl sıralandığını Gmail'in hemen yanında gör."
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:261
+#: ../../apps/mobile/app/(app)/notifications.tsx:278
 msgid "Select"
 msgstr "Seç"
 
@@ -4204,14 +4289,14 @@ msgstr "Seç"
 msgid "Select a thread to preview"
 msgstr "Önizlemek için bir ileti seçin"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:276
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:205
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:207
+#: ../../apps/mobile/app/(app)/notifications.tsx:293
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:184
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:186
 #, fuzzy
 msgid "Select all"
 msgstr "Tümünü Seç"
 
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:247
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:226
 msgid "Select notification"
 msgstr "Bildirimi Seç"
 
@@ -4934,7 +5019,13 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "Büyük Kral kardeşim,\n\nBüyük konsey Şemu'nun başında toplanacak. Doğu topraklarının tam bir muhasebesini hazırlamanızı ve mümkünse yeni aydan önce hızlı bir kurye ile göndermenizi rica ediyorum.\n\nİttifakımız güçlüdür. Konseye bunun böyle kaldığını gösterelim.\n\nMitanni Büyük Kralı Tuşratta"
+msgstr "Büyük Kral kardeşim,\n"
+"\n"
+"Büyük konsey Şemu'nun başında toplanacak. Doğu topraklarının tam bir muhasebesini hazırlamanızı ve mümkünse yeni aydan önce hızlı bir kurye ile göndermenizi rica ediyorum.\n"
+"\n"
+"İttifakımız güçlüdür. Konseye bunun böyle kaldığını gösterelim.\n"
+"\n"
+"Mitanni Büyük Kralı Tuşratta"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:163
 #, fuzzy
@@ -4943,7 +5034,11 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "Kraliyet Atama Bürosu'na,\n\nThebesli Horemheb'in başvurusunu aldık ve sonraki yeni aydan önce sicilini gözden geçireceğiz. Lütfen kendisine zamanı geldiğinde haber vereceğimizi bildirin.\n\nKraliyet fermanıyla,"
+msgstr "Kraliyet Atama Bürosu'na,\n"
+"\n"
+"Thebesli Horemheb'in başvurusunu aldık ve sonraki yeni aydan önce sicilini gözden geçireceğiz. Lütfen kendisine zamanı geldiğinde haber vereceğimizi bildirin.\n"
+"\n"
+"Kraliyet fermanıyla,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:275
 #, fuzzy
@@ -4954,7 +5049,13 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "Büyük Kral'a,\n\nYıllardır hanelerimiz kardeş gibidir. Şimdi, bu dostluğumuzu her iki halkımızın da yararına resmileştirmeyi teklif etmek için yazıyorum: karşılıklı koruma ve ortak ticaret yolları anlaşması.\n\nSadece şartlarımı dinlemenizi rica ediyorum. Sonraki kurye ile haber gönderin, elçimi derhal yola çıkaracağım.\n\nAmurru lordu, Büyük Kral'ın hizmetkarı Aziru"
+msgstr "Büyük Kral'a,\n"
+"\n"
+"Yıllardır hanelerimiz kardeş gibidir. Şimdi, bu dostluğumuzu her iki halkımızın da yararına resmileştirmeyi teklif etmek için yazıyorum: karşılıklı koruma ve ortak ticaret yolları anlaşması.\n"
+"\n"
+"Sadece şartlarımı dinlemenizi rica ediyorum. Sonraki kurye ile haber gönderin, elçimi derhal yola çıkaracağım.\n"
+"\n"
+"Amurru lordu, Büyük Kral'ın hizmetkarı Aziru"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:388
 #, fuzzy
@@ -4963,7 +5064,11 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "Büyük Kral'a,\n\nYolculuklarım beni önümüzdeki günlerde Delta'ya yakın bir yere getirecek. Büyük Kral'ın ayıracak bir saati varsa, yüz yüze konuşma fırsatını memnuniyetle karşılarım; yazmaktan daha kolay anlatılacak meseleler var.\n\nKulunuz, Urushalim Valisi Abdi-Heba"
+msgstr "Büyük Kral'a,\n"
+"\n"
+"Yolculuklarım beni önümüzdeki günlerde Delta'ya yakın bir yere getirecek. Büyük Kral'ın ayıracak bir saati varsa, yüz yüze konuşma fırsatını memnuniyetle karşılarım; yazmaktan daha kolay anlatılacak meseleler var.\n"
+"\n"
+"Kulunuz, Urushalim Valisi Abdi-Heba"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:153
 #, fuzzy
@@ -4972,7 +5077,11 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "Büyük Kral kardeşim,\n\nSözlerinizi duydum. Altın, bir sonraki elçi ayrılmadan önce gönderilecektir. Hanelerimiz arasındaki bağı değerli buluyoruz ve soğumasını istemiyoruz.\n\nDostlukla,"
+msgstr "Büyük Kral kardeşim,\n"
+"\n"
+"Sözlerinizi duydum. Altın, bir sonraki elçi ayrılmadan önce gönderilecektir. Hanelerimiz arasındaki bağı değerli buluyoruz ve soğumasını istemiyoruz.\n"
+"\n"
+"Dostlukla,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:236
 #, fuzzy
@@ -4983,7 +5092,13 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "Büyük Kral kardeşim,\n\nAtalarımızın yazdığı gibi, dostlukla yazıyorum. Antlaşmamız kapsamında üzerinde anlaşılan üçüncü altın sevkiyatı gelmedi. İki elçi geçti ve hâlâ bekliyoruz.\n\nHanelerimiz arasındaki bağa yakışır şekilde, gecikmeksizin göndermenizi rica ediyoruz.\n\nBabil Kralı II. Burna-Buriash"
+msgstr "Büyük Kral kardeşim,\n"
+"\n"
+"Atalarımızın yazdığı gibi, dostlukla yazıyorum. Antlaşmamız kapsamında üzerinde anlaşılan üçüncü altın sevkiyatı gelmedi. İki elçi geçti ve hâlâ bekliyoruz.\n"
+"\n"
+"Hanelerimiz arasındaki bağa yakışır şekilde, gecikmeksizin göndermenizi rica ediyoruz.\n"
+"\n"
+"Babil Kralı II. Burna-Buriash"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:349
 #, fuzzy
@@ -4994,7 +5109,13 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "Büyük Kral'ım, efendim, güneşim,\n\nGeçen ay gönderdiğiniz tahıl şükranla alındı ve adınızı halkın önünde övdüm. Ancak tekrar yazmak zorundayım: üçüncü sevkiyat gelmedi ve şehir huzursuzlanıyor.\n\nYedi kez yazdım. Sizi rahatsız etmek istemem ama başka ne yapabilirim?\n\nKulunuz, Byblos Valisi Rib-Hadda"
+msgstr "Büyük Kral'ım, efendim, güneşim,\n"
+"\n"
+"Geçen ay gönderdiğiniz tahıl şükranla alındı ve adınızı halkın önünde övdüm. Ancak tekrar yazmak zorundayım: üçüncü sevkiyat gelmedi ve şehir huzursuzlanıyor.\n"
+"\n"
+"Yedi kez yazdım. Sizi rahatsız etmek istemem ama başka ne yapabilirim?\n"
+"\n"
+"Kulunuz, Byblos Valisi Rib-Hadda"
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:19
 #: ../ui/src/emails/ThreadList.tsx:15
@@ -5519,8 +5640,8 @@ msgid "You do not have permission to connect a Gmail inbox to this workspace."
 msgstr "Bu çalışma alanına bir Gmail gelen kutusu bağlamak için izniniz yok."
 
 #: ../../apps/extension/src/panel/notificationText.ts:16
-#: ../../apps/mobile/src/data/notificationView.ts:24
-#: ../../apps/web/src/lib/notifications.ts:44
+#: ../../apps/mobile/src/data/notificationView.ts:35
+#: ../../apps/web/src/lib/notifications.ts:55
 msgid "You were assigned a thread"
 msgstr "Size bir konu atandı"
 
@@ -5572,6 +5693,11 @@ msgstr "Gmail'iniz size ait kalır."
 #: ../ui/src/i18n/generation-reason-messages.ts:14
 msgid "Your inbox doesn't have enough variety yet to personalize a taxonomy. Choose a template instead."
 msgstr "Gelen kutunuzda taksonomiyi kişiselleştirmek için henüz yeterli çeşitlilik yok. Bunun yerine bir şablon seçin."
+
+#: ../../apps/mobile/src/data/notificationView.ts:64
+#: ../../apps/web/src/lib/notifications.ts:83
+msgid "Your inbox import finished."
+msgstr "Gelen kutusu içe aktarımınız tamamlandı."
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:57
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:262

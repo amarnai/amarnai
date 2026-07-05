@@ -6,6 +6,8 @@ import {
   meterWindowStart,
   getMeterUsed,
   recordMeterUsage,
+  markGmailConnectionAuthFailed,
+  maybeCreateQuotaBlockedNotifications,
 } from "@amarnai/db";
 import { config } from "@amarnai/config";
 import { getThreadSortLimit } from "@amarnai/shared";
@@ -29,6 +31,7 @@ import { GmailClient, GmailAuthError, normalizeGmailThread } from "@amarnai/gmai
 import {
   QUEUE_CLASSIFY_THREAD,
   type ClassifyThreadJobData,
+  pushNotificationQueue,
 } from "../queues.js";
 import { redisConnection } from "../redis.js";
 import {
@@ -206,6 +209,16 @@ export function createClassifyThreadWorker(): Worker {
                 where: { id: emailThreadId },
                 data: { triageStatus: "QUOTA_BLOCKED" },
               });
+              // Notify members that sorting is paused — deduped to once per meter
+              // window, so a burst of blocked threads produces a single nudge.
+              // Fire-and-forget: must never fail or retry the classify job.
+              void maybeCreateQuotaBlockedNotifications({ workspaceId, windowStart: meterWindow }).catch(
+                (notifyErr) =>
+                  console.error(
+                    `[classify-thread] quota_blocked notify failed for workspace ${workspaceId}:`,
+                    notifyErr instanceof Error ? notifyErr.message : notifyErr,
+                  ),
+              );
               return;
             }
           }
@@ -627,12 +640,17 @@ export function createClassifyThreadWorker(): Worker {
         if (err instanceof GmailAuthError) {
           // Token is permanently invalid — mark the connection as disconnected
           // so all remaining queued jobs for this workspace skip immediately.
+          // The helper flips the row atomically and notifies members only on the
+          // winning flip; enqueue the matching push exactly once, on that flip.
           console.error(
             `[classify-thread] Gmail auth failed for workspace ${workspaceId} — marking connection DISCONNECTED: ${err.message}`,
           );
-          await db.gmailConnection
-            .update({ where: { workspaceId }, data: { status: "DISCONNECTED" } })
-            .catch(() => {});
+          const flipped = await markGmailConnectionAuthFailed(workspaceId).catch(() => false);
+          if (flipped) {
+            await pushNotificationQueue
+              .add("push-notification", { kind: "gmail_disconnected", workspaceId })
+              .catch(() => {});
+          }
           return;
         }
         if (err instanceof EmbeddingModelNotFoundError) {

@@ -4,6 +4,7 @@ vi.mock("@amarnai/db", () => ({
   db: {
     gmailConnection: { upsert: vi.fn() },
   },
+  deleteGmailDisconnectedNotifications: vi.fn().mockResolvedValue(undefined),
 }));
 
 vi.mock("@amarnai/gmail", () => ({

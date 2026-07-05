@@ -98,16 +98,24 @@ export type GenerateTaxonomyJobData = {
  * Payload for a `push-notification` job. A discriminated union keyed on `kind`
  * so future push producers extend it without a new queue. The worker re-reads
  * the underlying entity and no-ops if state changed since enqueue, making retries
- * idempotent. Today the only kind is a thread assignment addressed to the
- * assignee (never the actor who assigned).
+ * idempotent.
+ *
+ * - `thread_assigned`: addressed to the assignee (never the actor who assigned).
+ * - `gmail_disconnected`: fans out to every workspace member's devices after the
+ *   connection flipped ACTIVE → DISCONNECTED on an auth failure.
  */
-export type PushNotificationJobData = {
-  kind: "thread_assigned";
-  workspaceId: string;
-  /** Internal EmailThread.id. */
-  emailThreadId: string;
-  /** Recipient: the user the thread was assigned to. */
-  assigneeUserId: string;
-  /** Actor who made the assignment (for auditing; never pushed to). */
-  assignedByUserId: string;
-};
+export type PushNotificationJobData =
+  | {
+      kind: "thread_assigned";
+      workspaceId: string;
+      /** Internal EmailThread.id. */
+      emailThreadId: string;
+      /** Recipient: the user the thread was assigned to. */
+      assigneeUserId: string;
+      /** Actor who made the assignment (for auditing; never pushed to). */
+      assignedByUserId: string;
+    }
+  | {
+      kind: "gmail_disconnected";
+      workspaceId: string;
+    };

@@ -30,12 +30,14 @@ vi.mock("@amarnai/db", () => ({
     emailMessage: {
       upsert: vi.fn(),
     },
+    auditLog: { create: vi.fn().mockResolvedValue({}) },
   },
   getInboxPlanCeiling: mockGetInboxPlanCeiling,
   resolveBackfillBudget: mockResolveBackfillBudget,
   recordMeterUsage: mockRecordMeterUsage,
   inboxKeyFor: (a: string) => a,
   meterWindowStart: () => new Date("2026-06-01T00:00:00Z"),
+  createNotificationsForWorkspaceMembers: vi.fn().mockResolvedValue(0),
 }));
 
 vi.mock("@amarnai/config", () => ({

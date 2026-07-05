@@ -17,7 +17,8 @@ import { msg } from '@lingui/core/macro';
 import { colors, fontSize, fontWeight, radii, space } from '@amarnai/tokens';
 import type { NotificationItem } from '@amarnai/api-client';
 import { useSession } from '../../src/auth/session';
-import { describeNotification } from '../../src/data/notificationView';
+import { describeNotification, type NotificationAction } from '../../src/data/notificationView';
+import { useConnectGmail } from '../../src/auth/useConnectGmail';
 import { ScreenContainer } from '../../src/components/ScreenContainer';
 
 const PAGE_SIZE = 30;
@@ -31,6 +32,9 @@ export default function NotificationsScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { client, workspaceId, switchWorkspace } = useSession();
+  // performAction always overrides the target with the notification's own
+  // workspace, so the hook's fallback workspace is never actually used here.
+  const { connect } = useConnectGmail(workspaceId ?? '', client);
 
   const [items, setItems] = useState<NotificationItem[]>([]);
   const [nextCursor, setNextCursor] = useState<string | null>(null);
@@ -143,17 +147,30 @@ export default function NotificationsScreen() {
     ]);
   }
 
-  function openThread(n: NotificationItem, threadId: string) {
+  // Run a notification's tap action. Counts as dealing with it: mark read +
+  // dismiss (the row stays on this page — the full archive), switch into the
+  // notification's workspace if needed, then dispatch on the action kind.
+  function performAction(n: NotificationItem, action: NotificationAction) {
     if (!n.readAt) applyRead([n.id], true);
-    // Opening the thread deals with the notification: dismiss it so it drops out
-    // of the bell pop-up. The row stays on this page (the full archive).
     if (!n.dismissedAt) {
       const at = new Date().toISOString();
       setItems((prev) => prev.map((it) => (it.id === n.id ? { ...it, dismissedAt: at } : it)));
       client.dismissNotifications([n.id]).catch(() => {});
     }
     if (n.workspaceId !== workspaceId) switchWorkspace(n.workspaceId);
-    router.push(`/thread/${threadId}`);
+
+    switch (action.kind) {
+      case 'open_thread':
+        router.push(`/thread/${action.threadId}`);
+        return;
+      case 'navigate':
+        router.push(action.path);
+        return;
+      case 'reconnect_gmail':
+        // Native Google auth, scoped to the notification's own workspace.
+        void connect(undefined, n.workspaceId);
+        return;
+    }
   }
 
   const selectedIds = Array.from(selected);
@@ -220,12 +237,12 @@ export default function NotificationsScreen() {
                 color={colors.ink3}
               />
             </TouchableOpacity>
-            {view.threadId ? (
+            {view.action ? (
               <TouchableOpacity
                 style={styles.iconBtn}
                 hitSlop={6}
-                onPress={() => openThread(n, view.threadId!)}
-                accessibilityLabel={i18n._(msg`Open thread`)}
+                onPress={() => performAction(n, view.action!)}
+                accessibilityLabel={i18n._(msg`Open`)}
               >
                 <Ionicons name="open-outline" size={18} color={colors.ink3} />
               </TouchableOpacity>

@@ -48,6 +48,8 @@ vi.mock("@amarnai/db", () => ({
   meterWindowStart: () => new Date("2026-06-01T00:00:00Z"),
   getMeterUsed: mockGetMeterUsed,
   recordMeterUsage: mockRecordMeterUsage,
+  markGmailConnectionAuthFailed: vi.fn().mockResolvedValue(false),
+  maybeCreateQuotaBlockedNotifications: vi.fn().mockResolvedValue(undefined),
 }));
 
 // Quota enforcement is on by default; individual tests flip it as needed.
@@ -119,7 +121,10 @@ vi.mock("bullmq", () => ({
 }));
 
 vi.mock("../redis.js", () => ({ redisConnection: {} }));
-vi.mock("../queues.js", () => ({ QUEUE_CLASSIFY_THREAD: "classify-thread" }));
+vi.mock("../queues.js", () => ({
+  QUEUE_CLASSIFY_THREAD: "classify-thread",
+  pushNotificationQueue: { add: vi.fn().mockResolvedValue(undefined) },
+}));
 
 vi.mock("../notifications/notify-threads.js", () => ({
   notifyThreadNeedsAttention: mockNotifyThreadNeedsAttention,

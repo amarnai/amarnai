@@ -242,6 +242,12 @@ model Workspace {
   currentPeriodEnd       DateTime?
   cancelAtPeriodEnd      Boolean       @default(false)
   paymentFailed          Boolean       @default(false)
+  // One-shot marker for the "monthly sorting limit reached" (quota_blocked)
+  // notification: the meter window we last notified members about. Claimed
+  // atomically (WHERE null OR lt windowStart) so a burst of QUOTA_BLOCKED threads
+  // produces exactly one notification per (workspace, window). Monotonic — never
+  // reset on quota recovery, so recovery within the same window cannot re-arm it.
+  quotaNotifiedWindowStart DateTime?
   createdAt              DateTime      @default(now())
   updatedAt              DateTime      @updatedAt
 

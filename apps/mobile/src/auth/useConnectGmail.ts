@@ -11,11 +11,15 @@ export function useConnectGmail(workspaceId: string, client: ApiClient) {
   const [connecting, setConnecting] = useState(false);
 
   const connect = useCallback(
-    async (onSuccess?: () => void) => {
+    // `targetWorkspaceId` defaults to the hook's workspace; a caller acting on
+    // another workspace (e.g. a notification for a workspace that isn't the
+    // selected one) can override it so the connection lands on the right tenant.
+    async (onSuccess?: () => void, targetWorkspaceId?: string) => {
+      const wsId = targetWorkspaceId ?? workspaceId;
       setConnecting(true);
       try {
         const authResult = await requestGoogleAuth();
-        await client.connectGmail(workspaceId, authResult);
+        await client.connectGmail(wsId, authResult);
         onSuccess?.();
       } catch (err) {
         if (err instanceof Error && err.message === 'cancelled') return;

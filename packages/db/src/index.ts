@@ -10,12 +10,19 @@ export { eligibleThreadWhere } from "./eligible-threads.js";
 export {
   createNotification,
   type CreateNotificationInput,
+  createNotificationsForWorkspaceMembers,
+  type CreateWorkspaceNotificationsInput,
   deleteThreadAssignedNotifications,
   type DeleteThreadAssignedNotificationsInput,
   maybeCreateExtensionNudge,
   type MaybeCreateExtensionNudgeInput,
   deleteExtensionNudgeNotifications,
+  maybeCreateQuotaBlockedNotifications,
+  type MaybeCreateQuotaBlockedNotificationsInput,
+  deleteQuotaBlockedNotifications,
+  deleteGmailDisconnectedNotifications,
 } from "./notifications.js";
+export { markGmailConnectionAuthFailed } from "./gmail-connection-status.js";
 export { getInboxPlanCeiling, type InboxPlanCeiling } from "./inbox-entitlement.js";
 export {
   trialEmailKeyHash,

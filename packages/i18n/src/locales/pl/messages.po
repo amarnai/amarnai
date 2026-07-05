@@ -42,6 +42,20 @@ msgstr "{0, plural, one {# wiadomość} few {# wiadomości} many {# wiadomości}
 msgid "{0, plural, one {# person} other {# people}}"
 msgstr "{0, plural, one {# osoba} few {# osoby} many {# osób} other {# osób}}"
 
+#. placeholder {0}: d.processed
+#: ../../apps/mobile/src/data/notificationView.ts:73
+#: ../../apps/web/src/lib/notifications.ts:92
+#, fuzzy
+msgid "{0, plural, one {# thread imported.} other {# threads imported.}}"
+msgstr "{0, plural, one {# wątek zaimportowany.} other {# wątków zaimportowanych.}}"
+
+#. placeholder {0}: d.processed
+#: ../../apps/mobile/src/data/notificationView.ts:67
+#: ../../apps/web/src/lib/notifications.ts:86
+#, fuzzy
+msgid "{0, plural, one {# thread imported.} other {# threads imported.}} Your plan's import limit was reached."
+msgstr "{0, plural, one {# wątek zaimportowany.} other {# wątków zaimportowanych.}} Osiągnięto limit importu dla Twojego planu."
+
 #. placeholder {0}: node?.threadCount ?? 0
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:380
 msgid "{0, plural, one {Deleting leaves # thread without this folder.} other {Deleting leaves # threads without this folder.}}"
@@ -71,8 +85,8 @@ msgstr "{0} / {1} pozostało · resetuje się {2}"
 
 #. placeholder {0}: d.assignedBy
 #: ../../apps/extension/src/panel/notificationText.ts:15
-#: ../../apps/mobile/src/data/notificationView.ts:23
-#: ../../apps/web/src/lib/notifications.ts:43
+#: ../../apps/mobile/src/data/notificationView.ts:34
+#: ../../apps/web/src/lib/notifications.ts:54
 msgid "{0} assigned you a thread"
 msgstr "{0} przypisał Ci wątek"
 
@@ -182,8 +196,8 @@ msgstr "Pozostało {remaining} z {limit} · resetuje się {resetDate}"
 msgid "{routableCount} of {TAXONOMY_MIN_NON_ROOT_NODES} folders connected to your inbox. Routing requires at least {TAXONOMY_MIN_NON_ROOT_NODES}."
 msgstr "{routableCount} z {TAXONOMY_MIN_NON_ROOT_NODES} folderów połączonych ze skrzynką odbiorczą. Do routingu wymagane jest co najmniej {TAXONOMY_MIN_NON_ROOT_NODES}."
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:276
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:207
+#: ../../apps/mobile/app/(app)/notifications.tsx:293
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:186
 msgid "{selectedCount} selected"
 msgstr "{selectedCount} zaznaczonych"
 
@@ -393,7 +407,9 @@ msgstr "Otrzymano nową aplikację od Horemheba z Teb na stanowisko Głównego K
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "Otrzymano nową aplikację od Horemheba z Teb na stanowisko Głównego Korespondenta.\n\nPrzejrzyj aplikację w Domu Rejestrów."
+msgstr "Otrzymano nową aplikację od Horemheba z Teb na stanowisko Głównego Korespondenta.\n"
+"\n"
+"Przejrzyj aplikację w Domu Rejestrów."
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:384
 #, fuzzy
@@ -407,7 +423,11 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "Abdi-Heba,\n\nBędę w okolicach Delty w tym samym tygodniu. Spotkajmy się w zajazd na drugi dzień; rano mam wolne.\n\nDo tego czasu,"
+msgstr "Abdi-Heba,\n"
+"\n"
+"Będę w okolicach Delty w tym samym tygodniu. Spotkajmy się w zajazd na drugi dzień; rano mam wolne.\n"
+"\n"
+"Do tego czasu,"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
@@ -614,6 +634,27 @@ msgstr "Amarnai nie synchronizuje już tej skrzynki odbiorczej. Ponownie połąc
 #, fuzzy
 msgid "Amarnai is open source under AGPL-3.0. Clone it, bring your own keys, and run every tier free on your own infrastructure."
 msgstr "Amarnai jest oprogramowaniem open source na licencji AGPL-3.0. Sklonuj je, użyj własnych kluczy i uruchom każdą wersję za darmo na własnej infrastrukturze."
+
+#. placeholder {0}: d.gmailAddress
+#: ../../apps/web/src/lib/notifications.ts:74
+#, fuzzy
+msgid "Amarnai lost access to {0}. Click to reconnect your Google account."
+msgstr "Amarnai utracił dostęp do {0}. Kliknij, aby ponownie połączyć swoje konto Google."
+
+#. placeholder {0}: d.gmailAddress
+#: ../../apps/mobile/src/data/notificationView.ts:55
+#, fuzzy
+msgid "Amarnai lost access to {0}. Tap to reconnect your Google account."
+msgstr "Amarnai utracił dostęp do {0}. Dotknij, aby ponownie połączyć swoje konto Google."
+
+#: ../../apps/web/src/lib/notifications.ts:75
+#, fuzzy
+msgid "Amarnai lost access to your inbox. Click to reconnect your Google account."
+msgstr "Amarnai utracił dostęp do Twojej skrzynki odbiorczej. Kliknij, aby ponownie połączyć swoje konto Google."
+
+#: ../../apps/mobile/src/data/notificationView.ts:56
+msgid "Amarnai lost access to your inbox. Tap to reconnect your Google account."
+msgstr "Amarnai utracił dostęp do Twojej skrzynki odbiorczej. Dotknij, aby ponownie połączyć swoje konto Google."
 
 #: ../../apps/extension/src/platform/HostPermissionGate.tsx:34
 #, fuzzy
@@ -827,7 +868,11 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "Aziru,\n\nSłowa Twojej przyjaźni dotarły do nas pomyślnie. Jesteśmy otwarci na wysłuchanie dalszych propozycji rodu Amurru. Prześlij swoje warunki z kolejnym kurierem.\n\nZ wyrazami szacunku,"
+msgstr "Aziru,\n"
+"\n"
+"Słowa Twojej przyjaźni dotarły do nas pomyślnie. Jesteśmy otwarci na wysłuchanie dalszych propozycji rodu Amurru. Prześlij swoje warunki z kolejnym kurierem.\n"
+"\n"
+"Z wyrazami szacunku,"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:217
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
@@ -972,7 +1017,7 @@ msgstr "Czy mogę samodzielnie hostować Amarnai?"
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:147
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:174
 #: ../../apps/mobile/app/(app)/account.tsx:82
-#: ../../apps/mobile/app/(app)/notifications.tsx:141
+#: ../../apps/mobile/app/(app)/notifications.tsx:145
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:93
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:245
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:150
@@ -1549,12 +1594,12 @@ msgstr "Domyślny darmowy obszar roboczy"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:176
 #: ../../apps/mobile/app/(app)/account.tsx:84
-#: ../../apps/mobile/app/(app)/notifications.tsx:142
-#: ../../apps/mobile/app/(app)/notifications.tsx:238
-#: ../../apps/mobile/app/(app)/notifications.tsx:324
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:219
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:303
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:304
+#: ../../apps/mobile/app/(app)/notifications.tsx:146
+#: ../../apps/mobile/app/(app)/notifications.tsx:255
+#: ../../apps/mobile/app/(app)/notifications.tsx:341
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:198
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:271
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:272
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:596
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:607
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:703
@@ -1563,7 +1608,7 @@ msgid "Delete"
 msgstr "Usuń"
 
 #. placeholder {0}: ids.length
-#: ../../apps/mobile/app/(app)/notifications.tsx:139
+#: ../../apps/mobile/app/(app)/notifications.tsx:143
 msgid "Delete {0} notifications?"
 msgstr "Usunąć {0} powiadomień?"
 
@@ -1593,12 +1638,12 @@ msgstr "Usunięcie nie powiodło się. Spróbuj ponownie."
 msgid "Delete folder"
 msgstr "Usuń folder"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:140
+#: ../../apps/mobile/app/(app)/notifications.tsx:144
 #, fuzzy
 msgid "Delete notifications"
 msgstr "Usuń powiadomienia"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:138
+#: ../../apps/mobile/app/(app)/notifications.tsx:142
 msgid "Delete this notification?"
 msgstr "Usunąć to powiadomienie?"
 
@@ -1728,8 +1773,8 @@ msgstr "Odłącza ten obszar roboczy. Amarnai zachowuje dostęp, ponieważ ta sk
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:369
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:57
 #: ../../apps/web/src/components/JoinedWorkspaceToast.tsx:46
-#: ../../apps/web/src/components/NotificationBell.tsx:199
-#: ../../apps/web/src/components/NotificationBell.tsx:200
+#: ../../apps/web/src/components/NotificationBell.tsx:179
+#: ../../apps/web/src/components/NotificationBell.tsx:180
 #: ../ui/src/AppDownloadBanner.tsx:80
 #: ../ui/src/emails/MockEmailsPage.tsx:261
 #, fuzzy
@@ -1767,7 +1812,7 @@ msgstr "Nie masz konta? <0>Utwórz je</0>"
 msgid "Don't have an account? <0>Sign up</0>"
 msgstr "Nie masz konta? <0>Zarejestruj się</0>"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:261
+#: ../../apps/mobile/app/(app)/notifications.tsx:278
 #: ../../apps/mobile/src/components/ThreadRow.tsx:35
 #: ../ui/src/emails/ThreadRow.tsx:180
 #, fuzzy
@@ -2383,6 +2428,12 @@ msgstr "Pobierz aplikację."
 msgid "gmail ai assistant"
 msgstr "Asystent AI Gmail."
 
+#: ../../apps/extension/src/panel/notificationText.ts:18
+#: ../../apps/mobile/src/data/notificationView.ts:53
+#: ../../apps/web/src/lib/notifications.ts:72
+msgid "Gmail disconnected"
+msgstr "Gmail rozłączony"
+
 #: ../../apps/mobile/src/components/emails/DisconnectedBanner.tsx:39
 #, fuzzy
 msgid "Gmail disconnected. Amarnai stopped syncing this inbox, so new mail will not appear until you reconnect."
@@ -2478,7 +2529,11 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "Wielki Królu,\n\nŻądane raporty zostaną przygotowane przed zwołaniem rady. Moi skrybowie zestawią sprawozdania z terytoriów wschodnich i wyślą je naprzód szybkim kurierem.\n\nW braterstwie,"
+msgstr "Wielki Królu,\n"
+"\n"
+"Żądane raporty zostaną przygotowane przed zwołaniem rady. Moi skrybowie zestawią sprawozdania z terytoriów wschodnich i wyślą je naprzód szybkim kurierem.\n"
+"\n"
+"W braterstwie,"
 
 #: ../../apps/site/src/components/landing/FinalCTASection.tsx:8
 #, fuzzy
@@ -2635,6 +2690,12 @@ msgstr "Skrzynka odbiorcza"
 msgid "Inbox (entry point)"
 msgstr "Skrzynka odbiorcza (punkt wejścia)"
 
+#: ../../apps/extension/src/panel/notificationText.ts:20
+#: ../../apps/mobile/src/data/notificationView.ts:61
+#: ../../apps/web/src/lib/notifications.ts:80
+msgid "Inbox import complete"
+msgstr "Import skrzynki odbiorczej zakończony"
+
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:145
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:154
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:167
@@ -2674,8 +2735,8 @@ msgstr "Nieformalna wiadomość bez wyraźnej kategorii: wizyta osobista czy aud
 msgid "Initial backfill"
 msgstr "Początkowe uzupełnianie danych"
 
-#: ../../apps/mobile/src/data/notificationView.ts:32
-#: ../../apps/web/src/lib/notifications.ts:49
+#: ../../apps/mobile/src/data/notificationView.ts:47
+#: ../../apps/web/src/lib/notifications.ts:65
 msgid "Install the Amarnai browser extension"
 msgstr "Zainstaluj rozszerzenie Amarnai do przeglądarki"
 
@@ -2899,9 +2960,9 @@ msgstr "Wymień nadawców, tematy i słowa kluczowe, które tu pasują. Co najmn
 msgid "Live"
 msgstr "Na żywo"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:301
+#: ../../apps/mobile/app/(app)/notifications.tsx:318
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:101
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:316
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:284
 #: ../ui/src/emails/ThreadList.tsx:242
 #, fuzzy
 msgid "Load more"
@@ -2916,16 +2977,16 @@ msgid "Loading past threads…"
 msgstr "Wczytywanie poprzednich wątków…"
 
 #: ../../apps/extension/src/panel/NotificationBell.tsx:133
-#: ../../apps/mobile/app/(app)/notifications.tsx:301
+#: ../../apps/mobile/app/(app)/notifications.tsx:318
 #: ../../apps/mobile/src/components/MessageCard.tsx:53
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:73
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:227
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:316
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:206
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:284
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:121
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:137
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:158
 #: ../../apps/web/src/app/loading.tsx:6
-#: ../../apps/web/src/components/NotificationBell.tsx:181
+#: ../../apps/web/src/components/NotificationBell.tsx:161
 #: ../ui/src/emails/MessageCard.tsx:60
 #: ../ui/src/emails/ThreadList.tsx:242
 #, fuzzy
@@ -2945,7 +3006,7 @@ msgstr "Zarządzaj"
 
 #: ../../apps/extension/src/panel/NotificationBell.tsx:155
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:79
-#: ../../apps/web/src/components/NotificationBell.tsx:212
+#: ../../apps/web/src/components/NotificationBell.tsx:192
 msgid "Manage notifications"
 msgstr "Zarządzaj powiadomieniami"
 
@@ -2984,9 +3045,9 @@ msgstr "Oznacz jako ważne"
 msgid "Mark as not done"
 msgstr "Oznacz jako nieukończone"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:215
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:271
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:272
+#: ../../apps/mobile/app/(app)/notifications.tsx:232
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:250
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:251
 msgid "Mark as read"
 msgstr "Oznacz jako przeczytane"
 
@@ -2996,9 +3057,9 @@ msgstr "Oznacz jako przeczytane"
 msgid "Mark as sent"
 msgstr "Oznacz jako wysłane"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:215
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:271
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:272
+#: ../../apps/mobile/app/(app)/notifications.tsx:232
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:250
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:251
 msgid "Mark as unread"
 msgstr "Oznacz jako nieprzeczytane"
 
@@ -3018,14 +3079,14 @@ msgstr "Ukończ"
 #~ msgid "Mark invited"
 #~ msgstr "Oznacz jako zaproszone"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:314
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:213
+#: ../../apps/mobile/app/(app)/notifications.tsx:331
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:192
 #, fuzzy
 msgid "Mark read"
 msgstr "Oznacz przeczytane"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:319
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:216
+#: ../../apps/mobile/app/(app)/notifications.tsx:336
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:195
 msgid "Mark unread"
 msgstr "Oznacz nieprzeczytane"
 
@@ -3082,6 +3143,14 @@ msgstr "Jakość modelu"
 #, fuzzy
 msgid "Monthly"
 msgstr "Miesięcznie"
+
+#: ../../apps/extension/src/panel/notificationText.ts:22
+#: ../../apps/mobile/src/data/notificationView.ts:85
+#: ../../apps/mobile/src/data/notificationView.ts:90
+#: ../../apps/web/src/lib/notifications.ts:104
+#: ../../apps/web/src/lib/notifications.ts:109
+msgid "Monthly sorting limit reached"
+msgstr "Osiągnięto miesięczny limit sortowania"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:43
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:46
@@ -3174,6 +3243,17 @@ msgstr "Nowe zgłoszenie od Horemheba z Teb."
 msgid "New business inquiries, proposals, pricing discussions, and prospective client outreach."
 msgstr "Nowe zapytania biznesowe, propozycje, negocjacje cenowe i pozyskiwanie potencjalnych klientów."
 
+#: ../../apps/mobile/src/data/notificationView.ts:91
+#: ../../apps/web/src/lib/notifications.ts:110
+#, fuzzy
+msgid "New emails will wait until next month. Upgrade your plan for a higher limit."
+msgstr "Nowe e-maile poczekają do przyszłego miesiąca. Uaktualnij plan, aby zwiększyć limit."
+
+#: ../../apps/mobile/src/data/notificationView.ts:86
+#: ../../apps/web/src/lib/notifications.ts:105
+msgid "New emails will wait until your limit resets next month."
+msgstr "Nowe e-maile poczekają, aż limit zostanie odnowiony w przyszłym miesiącu."
+
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:250
 #: ../ui/src/emails/EmailRail.tsx:101
 #: ../ui/src/emails/EmailRail.tsx:106
@@ -3181,9 +3261,9 @@ msgstr "Nowe zapytania biznesowe, propozycje, negocjacje cenowe i pozyskiwanie p
 msgid "New folder"
 msgstr "Nowy folder"
 
-#: ../../apps/extension/src/panel/notificationText.ts:18
-#: ../../apps/mobile/src/data/notificationView.ts:37
-#: ../../apps/web/src/lib/notifications.ts:55
+#: ../../apps/extension/src/panel/notificationText.ts:24
+#: ../../apps/mobile/src/data/notificationView.ts:95
+#: ../../apps/web/src/lib/notifications.ts:114
 msgid "New notification"
 msgstr "Nowe powiadomienie"
 
@@ -3286,10 +3366,10 @@ msgid "No members available"
 msgstr "Brak dostępnych członków"
 
 #: ../../apps/extension/src/panel/NotificationBell.tsx:138
-#: ../../apps/mobile/app/(app)/notifications.tsx:294
+#: ../../apps/mobile/app/(app)/notifications.tsx:311
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:73
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:229
-#: ../../apps/web/src/components/NotificationBell.tsx:184
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:208
+#: ../../apps/web/src/components/NotificationBell.tsx:164
 msgid "No notifications yet"
 msgstr "Brak powiadomień"
 
@@ -3389,18 +3469,18 @@ msgstr "Jeszcze nie zsynchronizowano"
 #: ../../apps/extension/src/panel/NotificationBell.tsx:125
 #: ../../apps/extension/src/panel/NotificationBell.tsx:128
 #: ../../apps/mobile/app/(app)/account.tsx:145
-#: ../../apps/mobile/app/(app)/notifications.tsx:256
+#: ../../apps/mobile/app/(app)/notifications.tsx:273
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:49
 #: ../../apps/web/src/app/(app)/notifications/page.tsx:16
-#: ../../apps/web/src/components/NotificationBell.tsx:158
-#: ../../apps/web/src/components/NotificationBell.tsx:173
-#: ../../apps/web/src/components/NotificationBell.tsx:177
+#: ../../apps/web/src/components/NotificationBell.tsx:138
+#: ../../apps/web/src/components/NotificationBell.tsx:153
+#: ../../apps/web/src/components/NotificationBell.tsx:157
 #, fuzzy
 msgid "Notifications"
 msgstr "Powiadomienia"
 
 #: ../../apps/extension/src/panel/NotificationBell.tsx:107
-#: ../../apps/web/src/components/NotificationBell.tsx:157
+#: ../../apps/web/src/components/NotificationBell.tsx:137
 msgid "Notifications, {unread} unread"
 msgstr "Powiadomienia, {unread} nieprzeczytane"
 
@@ -3419,8 +3499,9 @@ msgstr "Trwający wątek z burmistrzem miasta dotyczący powtarzającego się pr
 msgid "Only the workspace owner can manage billing."
 msgstr "Tylko właściciel obszaru roboczego może zarządzać płatnościami."
 
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:292
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:293
+#: ../../apps/mobile/app/(app)/notifications.tsx:245
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:260
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:261
 msgid "Open"
 msgstr "Otwórz"
 
@@ -3448,8 +3529,8 @@ msgstr "AI open source do poczty"
 #: ../../apps/mobile/app/(app)/notifications.tsx:228
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:281
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:282
-msgid "Open thread"
-msgstr "Otwórz wątek"
+#~ msgid "Open thread"
+#~ msgstr "Otwórz wątek"
 
 #: ../../apps/site/src/components/landing/HeroSection.tsx:58
 #, fuzzy
@@ -4092,7 +4173,11 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "Rib-Haddo,\n\nSłyszymy cię. Dodatkowe zboże zostało zamówione z południowych magazynów i dotrze przed świętem żniw. Prosimy o cierpliwość do tego czasu.\n\nBądź zdrów,"
+msgstr "Rib-Haddo,\n"
+"\n"
+"Słyszymy cię. Dodatkowe zboże zostało zamówione z południowych magazynów i dotrze przed świętem żniw. Prosimy o cierpliwość do tego czasu.\n"
+"\n"
+"Bądź zdrów,"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -4142,12 +4227,12 @@ msgstr "Zapisz zmiany"
 msgid "Save hours of triage every week. Let Amarnai sort your inbox, filing every email, old and new, where it belongs."
 msgstr "Zaoszczędź godziny na sortowaniu co tydzień. Amarnai posortuje Twoją skrzynkę, archiwizując każdą wiadomość – starą i nową – tam, gdzie jej miejsce."
 
-#: ../../apps/web/src/lib/notifications.ts:50
+#: ../../apps/web/src/lib/notifications.ts:66
 #, fuzzy
 msgid "Save time by triaging your inbox without leaving Gmail."
 msgstr "Oszczędź czas, sortując skrzynkę odbiorczą bez opuszczania Gmaila."
 
-#: ../../apps/mobile/src/data/notificationView.ts:33
+#: ../../apps/mobile/src/data/notificationView.ts:48
 msgid "Save time by triaging your inbox without leaving Gmail. The extension runs in your desktop browser."
 msgstr "Oszczędź czas, sortując skrzynkę odbiorczą bez opuszczania Gmaila. Rozszerzenie działa w przeglądarce na komputerze."
 
@@ -4193,7 +4278,7 @@ msgstr "Szukaj wątków..."
 msgid "See how your inbox is sorted, right next to Gmail."
 msgstr "Zobacz, jak sortuje się Twoja skrzynka, prosto w Gmailu."
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:261
+#: ../../apps/mobile/app/(app)/notifications.tsx:278
 msgid "Select"
 msgstr "Wybierz"
 
@@ -4204,14 +4289,14 @@ msgstr "Wybierz"
 msgid "Select a thread to preview"
 msgstr "Wybierz wątek do podglądu"
 
-#: ../../apps/mobile/app/(app)/notifications.tsx:276
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:205
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:207
+#: ../../apps/mobile/app/(app)/notifications.tsx:293
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:184
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:186
 #, fuzzy
 msgid "Select all"
 msgstr "Zaznacz wszystkie"
 
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:247
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:226
 msgid "Select notification"
 msgstr "Zaznacz powiadomienie"
 
@@ -4934,7 +5019,13 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "Do mego brata, Wielkiego Króla,\n\nWielka Rada zbiera się na początku Shemu. Proszę, abyś przygotował pełne sprawozdanie z terytoriów wschodnich i wysłał je naprzód szybkim kurierem, jeśli to możliwe przed nowiem.\n\nNasze przymierze jest silne. Pokażmy Radzie, że takie pozostaje.\n\nTushratta, Wielki Król Mitanni"
+msgstr "Do mego brata, Wielkiego Króla,\n"
+"\n"
+"Wielka Rada zbiera się na początku Shemu. Proszę, abyś przygotował pełne sprawozdanie z terytoriów wschodnich i wysłał je naprzód szybkim kurierem, jeśli to możliwe przed nowiem.\n"
+"\n"
+"Nasze przymierze jest silne. Pokażmy Radzie, że takie pozostaje.\n"
+"\n"
+"Tushratta, Wielki Król Mitanni"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:163
 #, fuzzy
@@ -4943,7 +5034,11 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "Do Biura Nominacji Królewskich,\n\nOtrzymaliśmy wniosek od Horemheba z Teb i przejrzymy jego akta przed następnym nowiem. Prosimy o poinformowanie go, że odezwiemy się w stosownym czasie.\n\nZgodnie z dekretem królewskim,"
+msgstr "Do Biura Nominacji Królewskich,\n"
+"\n"
+"Otrzymaliśmy wniosek od Horemheba z Teb i przejrzymy jego akta przed następnym nowiem. Prosimy o poinformowanie go, że odezwiemy się w stosownym czasie.\n"
+"\n"
+"Zgodnie z dekretem królewskim,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:275
 #, fuzzy
@@ -4954,7 +5049,13 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "Do Wielkiego Króla,\n\nPrzez wiele lat nasze rody były jak bracia. Piszę teraz, aby zaproponować sformalizowanie tej przyjaźni dla dobra obu naszych ludów: pakt wzajemnej ochrony i wspólnych szlaków.\n\nProszę jedynie, abyś wysłuchał moich warunków. Prześlij wiadomość następnym kurierem, a ja natychmiast wyślę mojego posłańca.\n\nAziru, sługa Wielkiego Króla, pan Amurru"
+msgstr "Do Wielkiego Króla,\n"
+"\n"
+"Przez wiele lat nasze rody były jak bracia. Piszę teraz, aby zaproponować sformalizowanie tej przyjaźni dla dobra obu naszych ludów: pakt wzajemnej ochrony i wspólnych szlaków.\n"
+"\n"
+"Proszę jedynie, abyś wysłuchał moich warunków. Prześlij wiadomość następnym kurierem, a ja natychmiast wyślę mojego posłańca.\n"
+"\n"
+"Aziru, sługa Wielkiego Króla, pan Amurru"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:388
 #, fuzzy
@@ -4963,7 +5064,11 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "Do Wielkiego Króla,\n\nMoje podróże w nadchodzących dniach zaprowadzą mnie w pobliże Delty. Jeśli Wielki Król znajdzie godzinę czasu, z radością skorzystam z okazji, aby porozmawiać twarzą w twarz; są sprawy łatwiejsze do powiedzenia niż do napisania.\n\nTwój sługa, Abdi-Heba, gubernator Urushalim"
+msgstr "Do Wielkiego Króla,\n"
+"\n"
+"Moje podróże w nadchodzących dniach zaprowadzą mnie w pobliże Delty. Jeśli Wielki Król znajdzie godzinę czasu, z radością skorzystam z okazji, aby porozmawiać twarzą w twarz; są sprawy łatwiejsze do powiedzenia niż do napisania.\n"
+"\n"
+"Twój sługa, Abdi-Heba, gubernator Urushalim"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:153
 #, fuzzy
@@ -4972,7 +5077,11 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "Do Wielkiego Króla, mego brata,\n\nUsłyszałem Twoje słowa. Złoto zostanie wysłane, zanim następny posłaniec wyruszy. Cenimy więź między naszymi rodami i nie życzymy sobie, aby ostygła.\n\nW przyjaźni,"
+msgstr "Do Wielkiego Króla, mego brata,\n"
+"\n"
+"Usłyszałem Twoje słowa. Złoto zostanie wysłane, zanim następny posłaniec wyruszy. Cenimy więź między naszymi rodami i nie życzymy sobie, aby ostygła.\n"
+"\n"
+"W przyjaźni,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:236
 #, fuzzy
@@ -4983,7 +5092,13 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "Do Wielkiego Króla, mego brata,\n\nPiszę w duchu przyjaźni, tak jak pisali nasi ojcowie przed nami. Trzecia przesyłka złota, uzgodniona w naszym traktacie, nie dotarła. Minęło dwóch posłańców, a my wciąż czekamy.\n\nProsimy o jej wysłanie bez dalszej zwłoki, jak przystało na więź między naszymi rodami.\n\nBurna-Buriash II, Król Babilonu"
+msgstr "Do Wielkiego Króla, mego brata,\n"
+"\n"
+"Piszę w duchu przyjaźni, tak jak pisali nasi ojcowie przed nami. Trzecia przesyłka złota, uzgodniona w naszym traktacie, nie dotarła. Minęło dwóch posłańców, a my wciąż czekamy.\n"
+"\n"
+"Prosimy o jej wysłanie bez dalszej zwłoki, jak przystało na więź między naszymi rodami.\n"
+"\n"
+"Burna-Buriash II, Król Babilonu"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:349
 #, fuzzy
@@ -4994,7 +5109,13 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "Do Wielkiego Króla, mego pana, mego słońca,\n\nZboże, które wysłałeś w zeszłym miesiącu, zostało przyjęte z wdzięcznością i chwaliłem Twoje imię przed ludem. Muszę jednak napisać ponownie: trzecia przesyłka nie dotarła, a miasto staje się niespokojne.\n\nPisałem siedem razy. Nie chcę Cię niepokoić, ale co innego mogę zrobić?\n\nTwój sługa, Rib-Hadda, gubernator Byblos"
+msgstr "Do Wielkiego Króla, mego pana, mego słońca,\n"
+"\n"
+"Zboże, które wysłałeś w zeszłym miesiącu, zostało przyjęte z wdzięcznością i chwaliłem Twoje imię przed ludem. Muszę jednak napisać ponownie: trzecia przesyłka nie dotarła, a miasto staje się niespokojne.\n"
+"\n"
+"Pisałem siedem razy. Nie chcę Cię niepokoić, ale co innego mogę zrobić?\n"
+"\n"
+"Twój sługa, Rib-Hadda, gubernator Byblos"
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:19
 #: ../ui/src/emails/ThreadList.tsx:15
@@ -5519,8 +5640,8 @@ msgid "You do not have permission to connect a Gmail inbox to this workspace."
 msgstr "Nie masz uprawnień, aby podłączyć skrzynkę Gmail do tej przestrzeni roboczej."
 
 #: ../../apps/extension/src/panel/notificationText.ts:16
-#: ../../apps/mobile/src/data/notificationView.ts:24
-#: ../../apps/web/src/lib/notifications.ts:44
+#: ../../apps/mobile/src/data/notificationView.ts:35
+#: ../../apps/web/src/lib/notifications.ts:55
 msgid "You were assigned a thread"
 msgstr "Przypisano Ci wątek"
 
@@ -5572,6 +5693,11 @@ msgstr "Twój Gmail pozostaje Twój"
 #: ../ui/src/i18n/generation-reason-messages.ts:14
 msgid "Your inbox doesn't have enough variety yet to personalize a taxonomy. Choose a template instead."
 msgstr "W Twojej skrzynce brakuje jeszcze różnorodności, aby spersonalizować taksonomię. Wybierz szablon zamiast tego."
+
+#: ../../apps/mobile/src/data/notificationView.ts:64
+#: ../../apps/web/src/lib/notifications.ts:83
+msgid "Your inbox import finished."
+msgstr "Import Twojej skrzynki odbiorczej zakończony"
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:57
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:262

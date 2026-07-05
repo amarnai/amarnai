@@ -1,5 +1,10 @@
 import { Worker } from "bullmq";
-import { db, countRecurringThreadSorts } from "@amarnai/db";
+import {
+  db,
+  countRecurringThreadSorts,
+  markGmailConnectionAuthFailed,
+  deleteQuotaBlockedNotifications,
+} from "@amarnai/db";
 import { config } from "@amarnai/config";
 import {
   GmailClient,
@@ -17,6 +22,7 @@ import {
 import {
   classifyThreadQueue,
   backfillInboxQueue,
+  pushNotificationQueue,
   QUEUE_SYNC_INBOX,
   type SyncInboxJobData,
 } from "../queues.js";
@@ -191,6 +197,10 @@ async function recoverQuotaBlockedThreads(workspaceId: string, plan: string): Pr
   });
   if (recovered > 0) {
     console.log(`[sync-inbox] Workspace ${workspaceId} recovered ${recovered} QUOTA_BLOCKED thread(s)`);
+    // Sorting resumed — clear the "monthly sorting limit reached" nudge. The
+    // window marker is left set so recovery within the same window can't re-arm
+    // it. Best-effort: never fail the sync.
+    await deleteQuotaBlockedNotifications(workspaceId).catch(() => {});
   }
 }
 
@@ -664,10 +674,14 @@ export function createSyncInboxWorker(): Worker {
       const isAuthError = err instanceof GmailAuthError;
 
       if (isAuthError) {
-        await db.gmailConnection.update({
-          where: { workspaceId },
-          data: { status: "DISCONNECTED" },
-        });
+        // Atomic flip + member notifications on the winning transition; enqueue
+        // the push exactly once, only when this call performed the flip.
+        const flipped = await markGmailConnectionAuthFailed(workspaceId).catch(() => false);
+        if (flipped) {
+          await pushNotificationQueue
+            .add("push-notification", { kind: "gmail_disconnected", workspaceId })
+            .catch(() => {});
+        }
         console.warn(
           `[sync-inbox] Gmail connection disconnected for workspace ${workspaceId}: ${err.message}`
         );

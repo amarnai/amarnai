@@ -7,6 +7,7 @@ import {
   recordMeterUsage,
   inboxKeyFor,
   meterWindowStart,
+  createNotificationsForWorkspaceMembers,
 } from "@amarnai/db";
 import { config } from "@amarnai/config";
 import { GmailClient, GmailAuthError, GmailThreadMeta, normalizeGmailThread } from "@amarnai/gmail";
@@ -656,6 +657,34 @@ export function createBackfillInboxWorker(): Worker {
         console.log(
           `[backfill-inbox] Workspace ${workspaceId}: backfill complete — processed ${processed} threads, skipped ${baseSkipped + runSkipped}`
         );
+
+        // Tell every member the bulk import finished. Guarded by the DONE write
+        // above (which is generation-guarded and exactly-once), so a superseded
+        // completion never notifies. Best-effort: must not fail the job.
+        void createNotificationsForWorkspaceMembers({
+          workspaceId,
+          type: "backfill_complete",
+          params: {
+            processed,
+            skipped: baseSkipped + runSkipped,
+            capReached: limitState !== "NONE",
+          },
+        }).catch((notifyErr) =>
+          console.error(
+            "[backfill-inbox] backfill_complete notify failed:",
+            notifyErr instanceof Error ? notifyErr.message : notifyErr,
+          ),
+        );
+        await db.auditLog
+          .create({
+            data: {
+              workspaceId,
+              actorType: "SYSTEM",
+              eventType: "backfill.completed",
+              metadata: { processed, skipped: baseSkipped + runSkipped, limitState },
+            },
+          })
+          .catch(() => {});
       } catch (err) {
         // ── On failure: mark ERROR but keep the cursor so a retry resumes ──────
         // rather than restarting from the beginning of the inbox. Guarded on our

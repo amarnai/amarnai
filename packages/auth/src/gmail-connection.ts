@@ -1,4 +1,4 @@
-import { db } from "@amarnai/db";
+import { db, deleteGmailDisconnectedNotifications } from "@amarnai/db";
 import { encrypt, fetchGmailProfile } from "@amarnai/gmail";
 
 export type StoreGmailConnectionInput = {
@@ -34,6 +34,10 @@ export async function storeGmailConnection({
     create: { workspaceId, ...connectionData },
     update: connectionData,
   });
+
+  // Connection is ACTIVE again — clear any "reconnect your account" nudge so it
+  // doesn't linger after a successful reconnect. Best-effort.
+  await deleteGmailDisconnectedNotifications(workspaceId).catch(() => {});
 
   return { gmailAddress: profile.emailAddress };
 }

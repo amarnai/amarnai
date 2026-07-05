@@ -15,6 +15,22 @@ function str(v: unknown): string | null {
   return typeof v === "string" && v.length > 0 ? v : null;
 }
 
+function num(v: unknown): number | null {
+  return typeof v === "number" && Number.isFinite(v) ? v : null;
+}
+
+function bool(v: unknown): boolean {
+  return v === true;
+}
+
+/** Workspace plans, whitelisted so an unexpected value degrades to null (which
+ *  the client treats as "clickable to upgrade") rather than trusting arbitrary
+ *  strings. Only literal "BUSINESS" (the top tier) suppresses the upgrade CTA. */
+type WorkspacePlan = "FREE" | "PRO" | "BUSINESS";
+function plan(v: unknown): WorkspacePlan | null {
+  return v === "FREE" || v === "PRO" || v === "BUSINESS" ? v : null;
+}
+
 export type NotificationDescriptor =
   | {
       kind: "thread_assigned";
@@ -29,6 +45,32 @@ export type NotificationDescriptor =
       /** One-time nudge to install the browser side-panel extension. Carries no
        *  params; the click target (a store listing) is a client-side config. */
       kind: "extension_not_installed";
+    }
+  | {
+      /** The workspace's Gmail connection dropped on an auth failure; triage is
+       *  paused until the account is reconnected. */
+      kind: "gmail_disconnected";
+      /** The disconnected Gmail address, shown in the body; null if absent. */
+      gmailAddress: string | null;
+    }
+  | {
+      /** A bulk inbox import (backfill) finished. */
+      kind: "backfill_complete";
+      /** Threads imported; null if the producer omitted the count. */
+      processed: number | null;
+      /** Threads skipped (permanent per-thread fetch errors). */
+      skipped: number | null;
+      /** True if the run stopped at the plan's import cap rather than exhausting. */
+      capReached: boolean;
+    }
+  | {
+      /** The monthly thread-sort quota was reached; new mail waits until the
+       *  window resets or the plan is upgraded. */
+      kind: "quota_blocked";
+      /** The workspace's own plan (the upgrade target). "BUSINESS" is the top
+       *  tier, so it renders informationally with no upgrade click. Null when the
+       *  param is missing or unrecognized — still clickable. */
+      plan: WorkspacePlan | null;
     }
   | { kind: "unknown" };
 
@@ -48,6 +90,23 @@ export function interpretNotification(n: NotificationItem): NotificationDescript
       };
     case "extension_not_installed":
       return { kind: "extension_not_installed" };
+    case "gmail_disconnected":
+      return {
+        kind: "gmail_disconnected",
+        gmailAddress: str(n.params["gmailAddress"]),
+      };
+    case "backfill_complete":
+      return {
+        kind: "backfill_complete",
+        processed: num(n.params["processed"]),
+        skipped: num(n.params["skipped"]),
+        capReached: bool(n.params["capReached"]),
+      };
+    case "quota_blocked":
+      return {
+        kind: "quota_blocked",
+        plan: plan(n.params["plan"]),
+      };
     default:
       return { kind: "unknown" };
   }
