@@ -2,10 +2,8 @@
 # Uses the standard CLA Assistant Lite action (contributor-assistant/github-action).
 # Signatures are stored in a repo-owned JSON file (signatures/cla.json) on a
 # dedicated branch, so the record lives in this repository and not a third party.
-#
-# LAWYER REVIEW: confirm that storing contributors' GitHub usernames + signing
-# timestamps in-repo is consistent with the Project's privacy policy and data
-# retention obligations.
+# Only the contributor's public GitHub username and signing timestamp are stored;
+# see CLA.md for the retention terms disclosed to contributors.
 name: CLA Assistant
 
 on:

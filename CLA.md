@@ -1,25 +1,3 @@
-<!--
-  LAWYER REVIEW REQUIRED BEFORE LAUNCH.
-
-  This document is adapted from the Apache Software Foundation Individual
-  Contributor License Agreement V2.0 and Corporate CLA V2.0
-  (https://www.apache.org/licenses/). The only substantive change is that
-  the grant runs to the project owner named below instead of the Apache
-  Software Foundation.
-
-  A lawyer must review EVERY item flagged with "[LAWYER REVIEW]" below,
-  and confirm the whole document is appropriate for a project licensed
-  under the GNU Affero General Public License v3.0 (AGPL-3.0). The Apache
-  CLA is license-agnostic on its face, but counsel should confirm the
-  outbound AGPL terms and any relicensing intent are consistent with the
-  grant here.
-
-  The Owner is set to "Azgard LLC". Counsel should confirm this is the
-  correct legal entity to receive the contributor grant (i.e. the entity
-  that owns and commercializes the Project's IP), and that it matches the
-  copyright owner named in the repository LICENSE.
--->
-
 # Amarnai Contributor License Agreement (CLA)
 
 Thank you for your interest in contributing to Amarnai (the "Project"),
@@ -34,11 +12,6 @@ This document contains two agreements:
 Most contributors only need the **Individual CLA**. You accept it once (see
 [How to sign](#how-to-sign)); it then covers all of your future
 contributions to the Project until you revoke it in writing.
-
-> **[LAWYER REVIEW]** Confirm the two-agreement structure below is what the
-> Owner wants, that the outbound license (AGPL-3.0) is compatible with the
-> grants, and that the electronic acceptance mechanism in
-> [How to sign](#how-to-sign) is enforceable in the Owner's jurisdiction.
 
 ---
 
@@ -159,12 +132,9 @@ additions and changes:
 - The Corporation shall provide, and keep current, a list of the employees
   who are authorized to submit Contributions on its behalf.
 
-> **[LAWYER REVIEW]** The Apache Corporate CLA V2.0 includes a "Schedule A"
-> (designated employees) and "Schedule B" (list of the Corporation's own
-> work excluded from the grant), plus a designated point of contact. If the
-> Owner expects meaningful corporate contributions, counsel should supply the
-> full Apache CCLA V2.0 with these schedules rather than the condensed
-> summary above.
+To sign on behalf of a Corporation, contact the Owner at
+[hello@amarnai.com](mailto:hello@amarnai.com) with the Corporation's name and
+the list of authorized employees before those employees open pull requests.
 
 ---
 
@@ -181,11 +151,10 @@ request with the exact sentence the bot specifies (for example:
 Project-owned signatures file as your electronic signature. You accept the
 Agreement once; it covers all of your future Contributions.
 
-> **[LAWYER REVIEW]** Confirm that comment-based electronic acceptance,
-> recorded via the CLA Assistant GitHub Action, satisfies the Owner's
-> requirements for an enforceable signature and for retaining a signing
-> record. Confirm what personal data (GitHub username, timestamp) may be
-> stored and for how long, consistent with the Project's privacy policy.
+This record (your public GitHub username and the signing timestamp) is
+retained for as long as the Project distributes your Contributions, so that
+the Owner can demonstrate the license grant. No other personal data is
+collected by this process.
 
 ---
 
