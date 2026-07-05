@@ -10,15 +10,7 @@
  * Usage:
  *   pnpm --filter @amarnai/db backfill-trial-claims
  */
-import crypto from "node:crypto";
-import { PrismaClient } from "@prisma/client";
-import { normalizeInboxKey } from "@amarnai/shared";
-
-const db = new PrismaClient();
-
-function trialEmailKeyHash(email: string): string {
-  return crypto.createHash("sha256").update(normalizeInboxKey(email)).digest("hex");
-}
+import { db, trialEmailKeyHash } from "../src/index.js";
 
 async function main() {
   const PAGE = 1000;

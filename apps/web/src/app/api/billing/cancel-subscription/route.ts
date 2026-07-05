@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "@amarnai/db";
+import { subscriptionPeriodEnd } from "@amarnai/billing";
 import { getStripe } from "@/lib/stripe";
 import { resolveBillingUser, resolveBillingWorkspaceId } from "@/lib/billing-auth";
 import { FREE_PLAN_RESET } from "@/lib/billing-mutations";
@@ -56,14 +57,9 @@ export async function POST(request: Request) {
     cancel_at_period_end: true,
   });
 
-  const item = subscription.items.data[0];
-  const currentPeriodEnd = item?.current_period_end
-    ? new Date(item.current_period_end * 1000)
-    : null;
-
   await db.workspace.update({
     where: { id: workspaceId },
-    data: { cancelAtPeriodEnd: true, currentPeriodEnd },
+    data: { cancelAtPeriodEnd: true, currentPeriodEnd: subscriptionPeriodEnd(subscription) },
   });
 
   return NextResponse.json({ immediateDowngrade: false });

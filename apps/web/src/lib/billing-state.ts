@@ -1,4 +1,5 @@
 import { db, hasTrialClaim } from "@amarnai/db";
+import { subscriptionPeriodEnd } from "@amarnai/billing";
 import { getStripe } from "@/lib/stripe";
 import { getCollaboratorLimit } from "@amarnai/shared";
 import type { BillingState, BillingPlan, BillingCycleValue } from "@amarnai/shared";
@@ -58,13 +59,9 @@ export async function assembleBillingState(
           db.workspace.update({ where: { id: workspaceId }, data: FREE_PLAN_RESET }),
         ]);
       } else if (subscription.cancel_at_period_end) {
-        const item = subscription.items.data[0];
-        const currentPeriodEnd = item?.current_period_end
-          ? new Date(item.current_period_end * 1000)
-          : null;
         await db.workspace.update({
           where: { id: workspaceId },
-          data: { cancelAtPeriodEnd: true, currentPeriodEnd },
+          data: { cancelAtPeriodEnd: true, currentPeriodEnd: subscriptionPeriodEnd(subscription) },
         });
       }
 

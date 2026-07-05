@@ -1,11 +1,6 @@
 import { db } from "@amarnai/db";
 import { isStripeConfigured } from "./stripe.js";
-import { ensureSubscriptionCanceled } from "./cancel-subscription.js";
-
-/** Keep lastError bounded — it is diagnostic, not a payload. */
-function clampError(message: string | undefined): string | null {
-  return message ? message.slice(0, 500) : null;
-}
+import { ensureSubscriptionCanceled, clampError } from "./cancel-subscription.js";
 
 async function recordPending(
   stripeSubscriptionId: string,

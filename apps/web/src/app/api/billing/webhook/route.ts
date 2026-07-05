@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import type Stripe from "stripe";
+import { subscriptionPeriodEnd } from "@amarnai/billing";
 import { getStripe } from "@/lib/stripe";
 import { db } from "@amarnai/db";
 import { provisionFromCheckoutSession } from "@/lib/billing-provision";
@@ -49,15 +50,6 @@ export async function POST(request: Request) {
   }
 
   return NextResponse.json({ received: true });
-}
-
-function subscriptionPeriodEnd(subscription: Stripe.Subscription): Date | null {
-  // In Stripe API v2025+, current_period_end moved to each subscription item.
-  const item = subscription.items.data[0];
-  if (item?.current_period_end) {
-    return new Date(item.current_period_end * 1000);
-  }
-  return null;
 }
 
 function invoiceSubscriptionId(invoice: Stripe.Invoice): string | null {

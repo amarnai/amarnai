@@ -1,4 +1,5 @@
 import { db } from "@amarnai/db";
+import { subscriptionPeriodEnd } from "@amarnai/billing";
 import { getStripe, getPriceId } from "@/lib/stripe";
 import type { PlanId, BillingCycle } from "@amarnai/shared";
 
@@ -50,18 +51,13 @@ export async function applyPaidPlanChange(opts: {
     proration_behavior: "create_prorations",
     cancel_at_period_end: false,
   });
-  const updatedItem = updated.items.data[0];
-  const currentPeriodEnd = updatedItem?.current_period_end
-    ? new Date(updatedItem.current_period_end * 1000)
-    : null;
-
   await db.workspace.update({
     where: { id: opts.workspaceId },
     data: {
       plan: opts.plan === "pro" ? "PRO" : "BUSINESS",
       stripePriceId: priceId,
       billingCycle: opts.cycle === "annual" ? "ANNUAL" : "MONTHLY",
-      currentPeriodEnd,
+      currentPeriodEnd: subscriptionPeriodEnd(updated),
       cancelAtPeriodEnd: false,
       ...(opts.clearTrial ? { trialEndsAt: null } : {}),
     },

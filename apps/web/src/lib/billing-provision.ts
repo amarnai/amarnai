@@ -1,5 +1,6 @@
 import type Stripe from "stripe";
 import { getStripe } from "@/lib/stripe";
+import { queueSubscriptionCancellation, subscriptionPeriodEnd } from "@amarnai/billing";
 import { db, ensureInboxTaxonomy, claimTrial, Prisma } from "@amarnai/db";
 
 export interface ProvisionResult {
@@ -22,12 +23,6 @@ interface TrialPolicy {
   // (denied) trial whose immediate charge did not settle, or an already-dead
   // subscription. The subscription is canceled and the caller provisions nothing.
   abort?: boolean;
-}
-
-function periodEnd(subscription: Stripe.Subscription): Date | null {
-  // In Stripe API v2025+, current_period_end lives on each subscription item.
-  const item = subscription.items.data[0];
-  return item?.current_period_end ? new Date(item.current_period_end * 1000) : null;
 }
 
 /**
@@ -208,11 +203,7 @@ export async function provisionFromCheckoutSession(
     // The paying account is gone — make sure the subscription is canceled so it
     // never keeps billing. The worker reconciles this row against Stripe.
     if (subscriptionId) {
-      await db.pendingSubscriptionCancellation.upsert({
-        where: { stripeSubscriptionId: subscriptionId },
-        create: { stripeSubscriptionId: subscriptionId, userId: meta.userId },
-        update: {},
-      });
+      await queueSubscriptionCancellation(subscriptionId, meta.userId);
     }
     return null;
   }
@@ -257,7 +248,7 @@ export async function provisionFromCheckoutSession(
           stripePriceId: priceId,
           billingCycle: cycleValue,
           trialEndsAt: policy.trialEndsAt,
-          currentPeriodEnd: periodEnd(policy.subscription),
+          currentPeriodEnd: subscriptionPeriodEnd(policy.subscription),
           cancelAtPeriodEnd: false,
           paymentFailed: false,
         },
@@ -337,7 +328,7 @@ export async function provisionFromCheckoutSession(
         stripePriceId: priceId,
         billingCycle: cycleValue,
         trialEndsAt: policy.trialEndsAt,
-        currentPeriodEnd: periodEnd(policy.subscription),
+        currentPeriodEnd: subscriptionPeriodEnd(policy.subscription),
         members: { create: { userId: meta.userId, role: "OWNER" } },
       },
       select: { id: true },

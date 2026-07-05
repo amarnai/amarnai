@@ -10,6 +10,11 @@ function toError(err: unknown): Error {
   return err instanceof Error ? err : new Error(String(err));
 }
 
+/** Bound an error message before persisting it as diagnostic `lastError`. */
+export function clampError(message: string | undefined): string | null {
+  return message ? message.slice(0, 500) : null;
+}
+
 export type EnsureCanceledResult = { done: true } | { done: false; error: Error };
 
 /**

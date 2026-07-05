@@ -1,6 +1,6 @@
 import { db } from "@amarnai/db";
 import { isStripeConfigured } from "./stripe.js";
-import { ensureSubscriptionCanceled } from "./cancel-subscription.js";
+import { ensureSubscriptionCanceled, clampError } from "./cancel-subscription.js";
 
 // Exponential backoff so a persistently-failing row (e.g. during a Stripe outage)
 // is not hammered every tick, while a fresh row is retried promptly. Capped so it
@@ -25,8 +25,21 @@ function isDue(row: { attempts: number; lastAttemptAt: Date | null }, now: numbe
   return now >= row.lastAttemptAt.getTime() + delay;
 }
 
-function clampError(message: string | undefined): string | null {
-  return message ? message.slice(0, 500) : null;
+/**
+ * Enqueue a subscription for autonomous cancellation by the worker. Idempotent
+ * (unique on stripeSubscriptionId). Used when we know a subscription must be
+ * canceled but can't do it inline — e.g. an orphaned checkout whose account is
+ * already gone. `processPendingSubscriptionCancellations` reconciles it later.
+ */
+export async function queueSubscriptionCancellation(
+  stripeSubscriptionId: string,
+  userId?: string,
+): Promise<void> {
+  await db.pendingSubscriptionCancellation.upsert({
+    where: { stripeSubscriptionId },
+    create: { stripeSubscriptionId, userId: userId ?? null },
+    update: {},
+  });
 }
 
 /**
