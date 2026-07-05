@@ -25,13 +25,13 @@ msgid "(No body)"
 msgstr "(ไม่มีเนื้อหา)"
 
 #. placeholder {0}: thread.attachmentCount
-#: ../../apps/mobile/src/components/ThreadRow.tsx:106
+#: ../../apps/mobile/src/components/ThreadRow.tsx:125
 #, fuzzy
 msgid "{0, plural, one {# file} other {# files}}"
 msgstr "{0, plural, one {# ไฟล์} other {# ไฟล์}}"
 
 #. placeholder {0}: thread.messageCount
-#: ../../apps/mobile/src/components/ThreadRow.tsx:111
+#: ../../apps/mobile/src/components/ThreadRow.tsx:130
 #, fuzzy
 msgid "{0, plural, one {# message} other {# messages}}"
 msgstr "{0, plural, one {# ข้อความ} other {# ข้อความ}}"
@@ -79,8 +79,8 @@ msgstr "{0} มอบหมายเธรดให้คุณ"
 #. placeholder {0}: threads.length.toLocaleString()
 #. placeholder {1}: (total ?? 0).toLocaleString()
 #. placeholder {1}: viewCount.toLocaleString()
-#: ../../apps/mobile/src/components/emails/ThreadListView.tsx:81
-#: ../ui/src/emails/ThreadList.tsx:227
+#: ../../apps/mobile/src/components/emails/ThreadListView.tsx:87
+#: ../ui/src/emails/ThreadList.tsx:231
 #, fuzzy
 msgid "{0} of {1} loaded"
 msgstr "โหลดแล้ว {0} จาก {1}"
@@ -131,7 +131,7 @@ msgstr "เพิ่มแล้ว {collaboratorCount} / {collaboratorLimit}"
 msgid "{confPct}% confidence"
 msgstr "ความมั่นใจ {confPct}%"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:150
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:151
 #, fuzzy
 msgid "{draftRemaining} of {draftLimit} left · resets {draftResetDate}"
 msgstr "เหลือ {draftRemaining} จาก {draftLimit} · รีเซ็ตใน {draftResetDate}"
@@ -166,8 +166,8 @@ msgstr "{folderCount, plural, one {# โฟลเดอร์} other {# โฟ�
 #~ msgstr "{pendingCount} ที่รอดำเนินการ"
 
 #. placeholder {0}: draftQuota.limit
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:300
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:320
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:320
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:344
 #, fuzzy
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
 msgstr "เหลือ {quotaRemaining} จาก {0} · รีเซ็ตใน {quotaResetDate}"
@@ -735,13 +735,13 @@ msgstr "การนำไปใช้จะแทนที่แผนปัจ
 msgid "Applying…"
 msgstr "กำลังนำไปใช้…"
 
-#: ../../apps/mobile/src/components/RationaleCard.tsx:75
-#: ../ui/src/emails/RationaleCard.tsx:142
+#: ../../apps/mobile/src/components/RationaleCard.tsx:71
+#: ../ui/src/emails/RationaleCard.tsx:133
 #, fuzzy
 msgid "Approve routing"
 msgstr "อนุมัติการจัดเส้นทาง"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:233
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:234
 #: ../ui/src/emails/TriageBar.tsx:71
 #, fuzzy
 msgid "Assign"
@@ -757,8 +757,8 @@ msgstr "มอบหมายเธรด"
 msgid "Assign to"
 msgstr "มอบหมายให้"
 
-#: ../ui/src/emails/ThreadRow.tsx:260
-#: ../ui/src/emails/ThreadRow.tsx:264
+#: ../ui/src/emails/ThreadRow.tsx:307
+#: ../ui/src/emails/ThreadRow.tsx:311
 #: ../ui/src/emails/TriageBar.tsx:63
 #, fuzzy
 msgid "Assign to a member"
@@ -777,7 +777,7 @@ msgstr "มอบหมายแล้ว"
 msgid "Assigned to {assigneeName}"
 msgstr "มอบหมายให้ {assigneeName}"
 
-#: ../ui/src/emails/ThreadRow.tsx:174
+#: ../ui/src/emails/ThreadRow.tsx:195
 #: ../ui/src/emails/TriageBar.tsx:62
 #, fuzzy
 msgid "Assigned to {assigneeName}. Change assignee"
@@ -829,17 +829,17 @@ msgid "Aziru,\n"
 "With regards,"
 msgstr "Aziru,\n\nถ้อยคำแห่งมิตรภาพของท่านมาถึงเราแล้ว เรายินดีรับฟังข้อเสนอเพิ่มเติมจากตระกูล Amurru โปรดส่งเงื่อนไขของท่านมาพร้อมกับผู้ส่งสารคนถัดไป\n\nด้วยความเคารพ,"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:215
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:217
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:25
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:228
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:230
 #: ../ui/src/emails/ThreadPreview.tsx:92
 #, fuzzy
 msgid "Back"
 msgstr "ย้อนกลับ"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:211
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:223
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:213
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:225
 #: ../ui/src/emails/ThreadPreview.tsx:87
 #, fuzzy
 msgid "Back to list"
@@ -1099,8 +1099,8 @@ msgstr "ปิด"
 msgid "Close panel"
 msgstr "ปิดแผง"
 
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:231
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:235
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:255
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:259
 #: ../ui/src/emails/ThreadPreview.tsx:97
 #: ../ui/src/emails/ThreadPreview.tsx:101
 #, fuzzy
@@ -1718,16 +1718,16 @@ msgstr "ยกเลิกการเชื่อมต่อเวิร์ก
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "ยกเลิกการเชื่อมต่อเวิร์กสเปซนี้ Amarnai ยังคงเข้าถึงได้ เนื่องจากกล่องจดหมายนี้ยังคงเชื่อมต่ออยู่ใน {sharedNames}"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:228
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:230
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:65
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:367
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:369
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:57
 #: ../../apps/web/src/components/JoinedWorkspaceToast.tsx:46
 #: ../../apps/web/src/components/NotificationBell.tsx:199
 #: ../../apps/web/src/components/NotificationBell.tsx:200
 #: ../ui/src/AppDownloadBanner.tsx:80
-#: ../ui/src/emails/MockEmailsPage.tsx:256
+#: ../ui/src/emails/MockEmailsPage.tsx:261
 #, fuzzy
 msgid "Dismiss"
 msgstr "ไม่สนใจ"
@@ -1764,13 +1764,13 @@ msgid "Don't have an account? <0>Sign up</0>"
 msgstr "ไม่มีบัญชีใช่ไหม? <0>สมัครใช้งาน</0>"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:261
-#: ../../apps/mobile/src/components/ThreadRow.tsx:40
-#: ../ui/src/emails/ThreadRow.tsx:166
+#: ../../apps/mobile/src/components/ThreadRow.tsx:42
+#: ../ui/src/emails/ThreadRow.tsx:187
 #, fuzzy
 msgid "Done"
 msgstr "เสร็จสิ้น"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:211
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:212
 #, fuzzy
 msgid "Done · undo"
 msgstr "เสร็จสิ้น · เลิกทำ"
@@ -1780,23 +1780,23 @@ msgstr "เสร็จสิ้น · เลิกทำ"
 msgid "Downgrade to {planName}"
 msgstr "ดาวน์เกรดเป็น {planName}"
 
-#: ../ui/src/emails/ThreadRow.tsx:228
+#: ../ui/src/emails/ThreadRow.tsx:249
 #, fuzzy
 msgid "draft"
 msgstr "ฉบับร่าง"
 
-#: ../../apps/mobile/src/components/ThreadRow.tsx:98
+#: ../../apps/mobile/src/components/ThreadRow.tsx:117
 #, fuzzy
 msgid "Draft"
 msgstr "ฉบับร่าง"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:179
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:180
 #, fuzzy
 msgid "Draft failed · tap to retry"
 msgstr "สร้างฉบับร่างไม่สำเร็จ · แตะเพื่อลองอีกครั้ง"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:315
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:336
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:335
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:360
 #, fuzzy
 msgid "Draft generation failed. Try again."
 msgstr "สร้างฉบับร่างไม่สำเร็จ โปรดลองอีกครั้ง"
@@ -1808,7 +1808,7 @@ msgstr "สร้างฉบับร่างไม่สำเร็จ โ�
 msgid "Draft reply"
 msgstr "ร่างการตอบกลับ"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:126
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:127
 #, fuzzy
 msgid "Draft shared"
 msgstr "แชร์ฉบับร่างแล้ว"
@@ -1819,8 +1819,8 @@ msgstr "แชร์ฉบับร่างแล้ว"
 msgid "Draft style guidance"
 msgstr "แนวทางรูปแบบฉบับร่าง"
 
-#: ../../apps/mobile/src/components/ThreadRow.tsx:94
-#: ../ui/src/emails/ThreadRow.tsx:222
+#: ../../apps/mobile/src/components/ThreadRow.tsx:113
+#: ../ui/src/emails/ThreadRow.tsx:243
 #, fuzzy
 msgid "Drafting…"
 msgstr "กำลังร่าง..."
@@ -2137,7 +2137,7 @@ msgstr "ระบุว่าเป็นข้อเสนอพันธมิ
 msgid "Flight and hotel bookings, travel itineraries, visa applications, and trip confirmations."
 msgstr "การจองตั๋วเครื่องบินและโรงแรม, กำหนดการเดินทาง, การยื่นขอวีซ่า และการยืนยันการเดินทาง"
 
-#: ../ui/src/emails/MockEmailsPage.tsx:158
+#: ../ui/src/emails/MockEmailsPage.tsx:162
 msgid "folder"
 msgstr "โฟลเดอร์"
 
@@ -2173,7 +2173,7 @@ msgid "Folder: {activeFolderName}"
 msgstr "โฟลเดอร์: {activeFolderName}"
 
 #: ../ui/src/emails/EmailRail.tsx:99
-#: ../ui/src/emails/ThreadList.tsx:136
+#: ../ui/src/emails/ThreadList.tsx:139
 #, fuzzy
 msgid "Folders"
 msgstr "โฟลเดอร์"
@@ -2307,9 +2307,9 @@ msgstr "สร้างฉบับร่างใหม่ หักโคว�
 msgid "Generate a plan from your inbox"
 msgstr "สร้างแผนจากกล่องจดหมายของคุณ"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:294
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:145
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:314
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:314
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:146
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:338
 #: ../ui/src/emails/ThreadPreview.tsx:162
 #, fuzzy
 msgid "Generate draft reply"
@@ -2407,8 +2407,8 @@ msgstr "ซิงค์ Gmail แบบเรียลไทม์ทำงา�
 #: ../../apps/mobile/src/components/RationaleCard.tsx:67
 #: ../ui/src/emails/RationaleCard.tsx:116
 #, fuzzy
-msgid "Gmail marked as important"
-msgstr "Gmail ที่ทำเครื่องหมายว่าสำคัญ"
+#~ msgid "Gmail marked as important"
+#~ msgstr "Gmail ที่ทำเครื่องหมายว่าสำคัญ"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:51
 #, fuzzy
@@ -2896,17 +2896,17 @@ msgid "Live"
 msgstr "สด"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:301
-#: ../../apps/mobile/src/components/emails/ThreadListView.tsx:95
+#: ../../apps/mobile/src/components/emails/ThreadListView.tsx:101
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:316
-#: ../ui/src/emails/ThreadList.tsx:238
+#: ../ui/src/emails/ThreadList.tsx:242
 #, fuzzy
 msgid "Load more"
 msgstr "โหลดเพิ่ม"
 
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
-#: ../../apps/mobile/src/components/emails/ThreadListView.tsx:116
+#: ../../apps/mobile/src/components/emails/ThreadListView.tsx:122
 #: ../ui/src/emails/BackfillCard.tsx:35
-#: ../ui/src/emails/ThreadList.tsx:179
+#: ../ui/src/emails/ThreadList.tsx:182
 #, fuzzy
 msgid "Loading past threads…"
 msgstr "กำลังโหลดเธรดเก่า..."
@@ -2923,7 +2923,7 @@ msgstr "กำลังโหลดเธรดเก่า..."
 #: ../../apps/web/src/app/loading.tsx:6
 #: ../../apps/web/src/components/NotificationBell.tsx:181
 #: ../ui/src/emails/MessageCard.tsx:60
-#: ../ui/src/emails/ThreadList.tsx:238
+#: ../ui/src/emails/ThreadList.tsx:242
 #, fuzzy
 msgid "Loading…"
 msgstr "กำลังโหลด..."
@@ -2961,12 +2961,21 @@ msgid "Manager emails: one-on-ones, performance reviews, and feedback."
 msgstr "อีเมลผู้จัดการ: การประชุมส่วนตัว (one-on-one), การประเมินผลงาน และข้อเสนอแนะ"
 
 #: ../ui/src/emails/PreviewDoneBar.tsx:23
-#: ../ui/src/emails/ThreadRow.tsx:124
+#: ../ui/src/emails/ThreadRow.tsx:142
 #, fuzzy
 msgid "Mark as done"
 msgstr "ทำเครื่องหมายว่าเสร็จสิ้น"
 
-#: ../ui/src/emails/ThreadRow.tsx:123
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:223
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:244
+#: ../../apps/mobile/src/components/ThreadRow.tsx:65
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:234
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:240
+#: ../ui/src/emails/ThreadRow.tsx:145
+msgid "Mark as important"
+msgstr "ทำเครื่องหมายว่าสำคัญ"
+
+#: ../ui/src/emails/ThreadRow.tsx:141
 #, fuzzy
 msgid "Mark as not done"
 msgstr "ทำเครื่องหมายว่ายังไม่เสร็จสิ้น"
@@ -2995,7 +3004,7 @@ msgstr "ทำเครื่องหมายว่ายังไม่ได
 msgid "Mark as unsent"
 msgstr "ทำเครื่องหมายว่ายังไม่ส่ง"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:218
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:219
 #, fuzzy
 msgid "Mark done"
 msgstr "ทำเครื่องหมายว่าเสร็จ"
@@ -3103,13 +3112,13 @@ msgid "Move to folder…"
 msgstr "ย้ายไปโฟลเดอร์..."
 
 #: ../../apps/mobile/src/components/RationaleCard.tsx:50
-#: ../../apps/mobile/src/components/RationaleCard.tsx:79
-#: ../ui/src/emails/RationaleCard.tsx:151
+#: ../../apps/mobile/src/components/RationaleCard.tsx:75
+#: ../ui/src/emails/RationaleCard.tsx:142
 #, fuzzy
 msgid "Move to…"
 msgstr "ย้ายไปที่..."
 
-#: ../ui/src/emails/MockEmailsPage.tsx:168
+#: ../ui/src/emails/MockEmailsPage.tsx:172
 msgid "Moved to {folderName}"
 msgstr "ย้ายไปยัง {folderName} แล้ว"
 
@@ -3133,7 +3142,7 @@ msgid "Name updated."
 msgstr "อัปเดตชื่อแล้ว"
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:11
-#: ../../apps/mobile/src/components/ThreadRow.tsx:44
+#: ../../apps/mobile/src/components/ThreadRow.tsx:46
 #: ../ui/src/emails/queueLabels.ts:18
 #, fuzzy
 msgid "Needs review"
@@ -3200,13 +3209,13 @@ msgstr "พื้นที่ทำงานใหม่"
 msgid "New workspace name"
 msgstr "ชื่อพื้นที่ทำงานใหม่"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:143
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:144
 #, fuzzy
 msgid "No drafts remaining"
 msgstr "ไม่มีฉบับร่างเหลืออยู่"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:299
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:319
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:319
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:343
 #: ../ui/src/emails/SuggestedDraftCard.tsx:97
 #, fuzzy
 msgid "No drafts remaining · resets {quotaResetDate}"
@@ -3294,12 +3303,12 @@ msgstr "ไม่มีอีเมลใหม่ที่สำคัญเข
 #~ msgid "No signups yet."
 #~ msgstr "ยังไม่มีการสมัครสมาชิก"
 
-#: ../../apps/mobile/src/components/emails/ThreadListView.tsx:46
+#: ../../apps/mobile/src/components/emails/ThreadListView.tsx:48
 #, fuzzy
 msgid "No threads"
 msgstr "ไม่มีเธรด"
 
-#: ../ui/src/emails/ThreadList.tsx:182
+#: ../ui/src/emails/ThreadList.tsx:185
 #, fuzzy
 msgid "No threads here."
 msgstr "ไม่มีเธรดที่นี่"
@@ -3314,7 +3323,7 @@ msgstr "ไม่มีเธรดใน {folderName}"
 msgid "No threads match your search"
 msgstr "ไม่มีเธรดตรงกับการค้นหาของคุณ"
 
-#: ../ui/src/emails/ThreadList.tsx:175
+#: ../ui/src/emails/ThreadList.tsx:178
 #, fuzzy
 msgid "No threads match your search."
 msgstr "ไม่มีเธรดตรงกับการค้นหาของคุณ"
@@ -3411,13 +3420,13 @@ msgstr "เฉพาะเจ้าของเวิร์กสเปซเท
 msgid "Open"
 msgstr "เปิด"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:244
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:264
 #: ../../apps/mobile/src/components/DraftSheet.tsx:97
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:248
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:254
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:272
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:278
 #: ../ui/src/emails/ThreadPreview.tsx:115
 #: ../ui/src/emails/ThreadPreview.tsx:121
-#: ../ui/src/emails/ThreadRow.tsx:125
+#: ../ui/src/emails/ThreadRow.tsx:146
 #, fuzzy
 msgid "Open in Gmail"
 msgstr "เปิดใน Gmail"
@@ -3766,7 +3775,7 @@ msgstr "โฟลเดอร์ที่เสนอ การนำไปใ�
 msgid "Queuing rescan…"
 msgstr "กำลังจัดคิวสแกนใหม่…"
 
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:377
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:379
 #, fuzzy
 msgid "Re-route {unclassifiedCount} unclassified"
 msgstr "เปลี่ยนเส้นทาง {unclassifiedCount} รายการที่ยังไม่ได้จัดประเภท"
@@ -3900,6 +3909,16 @@ msgstr "นำ {0} ออก"
 msgid "Remove {email} from blacklist"
 msgstr "นำ {email} ออกจากบัญชีดำ"
 
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:223
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:243
+#: ../../apps/mobile/src/components/ThreadRow.tsx:64
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:234
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:240
+#: ../ui/src/emails/ThreadRow.tsx:144
+#, fuzzy
+msgid "Remove from important"
+msgstr "นำออกจากสำคัญ"
+
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:432
 msgid "Remove its child folders before deleting this one."
 msgstr "ลบโฟลเดอร์ย่อยออกก่อนที่จะลบโฟลเดอร์นี้"
@@ -4021,7 +4040,7 @@ msgstr "รีเซ็ตพื้นที่ทำงาน"
 msgid "Reset workspace?"
 msgstr "รีเซ็ตพื้นที่ทำงาน?"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:155
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:156
 #, fuzzy
 msgid "Resets {draftResetDate}"
 msgstr "รีเซ็ต {draftResetDate}"
@@ -4045,9 +4064,9 @@ msgstr "ปรับขนาดรายการเธรด"
 msgid "Resources"
 msgstr "แหล่งข้อมูล"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:317
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:337
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:345
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:342
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:366
 #, fuzzy
 msgid "Retry"
 msgstr "ลองอีกครั้ง"
@@ -4089,7 +4108,7 @@ msgstr "อนุมัติการจัดเส้นทางแล้ว
 
 #. placeholder {0}: altFolder.name
 #. placeholder {1}: Math.round(thread.alternativeFolder.weight * 100)
-#: ../ui/src/emails/RationaleCard.tsx:130
+#: ../ui/src/emails/RationaleCard.tsx:121
 #, fuzzy
 msgid "Runner-up: <0>{0}</0> ({1}%)"
 msgstr "อันดับสอง: <0>{0}</0> ({1}%)"
@@ -4165,9 +4184,9 @@ msgstr "เห็นการจัดเรียงกล่องจดหม
 msgid "Select"
 msgstr "เลือก"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:199
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:334
-#: ../ui/src/emails/MockEmailsPage.tsx:234
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:201
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:336
+#: ../ui/src/emails/MockEmailsPage.tsx:239
 #, fuzzy
 msgid "Select a thread to preview"
 msgstr "เลือกเธรดเพื่อดูตัวอย่าง"
@@ -4403,18 +4422,18 @@ msgstr "คัดแยกเลย"
 #~ msgstr "จัดระเบียบอีเมลเก่าจำนวนมากโดยอัตโนมัติ ใช้งานได้สำหรับการสมัครสมาชิกแบบ Pro และ Business"
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:10
-#: ../../apps/mobile/src/components/ThreadRow.tsx:51
+#: ../../apps/mobile/src/components/ThreadRow.tsx:53
 #: ../ui/src/emails/queueLabels.ts:14
 #, fuzzy
 msgid "Sorted"
 msgstr "จัดระเบียบแล้ว"
 
-#: ../ui/src/emails/RationaleCard.tsx:122
+#: ../ui/src/emails/RationaleCard.tsx:113
 #, fuzzy
 msgid "Sorted automatically by content similarity."
 msgstr "จัดเรียงโดยอัตโนมัติ ตามความคล้ายคลึงของเนื้อหา"
 
-#: ../../apps/mobile/src/components/ThreadRow.tsx:41
+#: ../../apps/mobile/src/components/ThreadRow.tsx:43
 #, fuzzy
 msgid "Sorting"
 msgstr "การจัดเรียง"
@@ -4444,7 +4463,7 @@ msgstr "ปริมาณการจัดเรียง"
 #: ../../apps/mobile/src/components/RationaleCard.tsx:35
 #: ../../apps/site/src/components/landing/HeroFeedCard.tsx:90
 #: ../ui/src/emails/RationaleCard.tsx:52
-#: ../ui/src/emails/ThreadRow.tsx:193
+#: ../ui/src/emails/ThreadRow.tsx:214
 #, fuzzy
 msgid "Sorting…"
 msgstr "กำลังจัดเรียง..."
@@ -4661,7 +4680,7 @@ msgstr "เทมเพลต"
 msgid "Terms"
 msgstr "ข้อกำหนด"
 
-#: ../ui/src/emails/MockEmailsPage.tsx:144
+#: ../ui/src/emails/MockEmailsPage.tsx:148
 msgid "Thank you for your message. I'll follow up shortly."
 msgstr "ขอบคุณสำหรับข้อความของคุณ ฉันจะติดต่อกลับโดยเร็วที่สุด"
 
@@ -4810,7 +4829,7 @@ msgstr "สิ่งนี้จะลบการเชื่อมต่อ Gm
 msgid "This thread cannot be sorted yet. Add at least {TAXONOMY_MIN_NON_ROOT_NODES} categories to your plan to begin routing."
 msgstr "เธรดนี้ยังไม่สามารถจัดเรียงได้ เพิ่มหมวดหมู่อย่างน้อย {TAXONOMY_MIN_NON_ROOT_NODES} รายการในแผนของคุณเพื่อเริ่มการจัดเส้นทาง"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:261
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:281
 msgid "This thread hasn't been sorted yet."
 msgstr "เธรดนี้ยังไม่ได้ถูกจัดเรียง"
 
@@ -4824,12 +4843,12 @@ msgstr "เธรดนี้กำลังรอการจัดเส้น
 msgid "This thread is waiting to be routed. Use “Route now” to start sorting."
 msgstr "เธรดนี้กำลังรอการจัดเส้นทาง ใช้ “จัดเส้นทางทันที” เพื่อเริ่มการจัดเรียง"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:85
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:86
 #, fuzzy
 msgid "Thread"
 msgstr "เธรด"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:87
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:88
 #, fuzzy
 msgid "Thread not found"
 msgstr "ไม่พบเธรด"
@@ -4860,8 +4879,8 @@ msgstr "เธรดจากผู้ส่งเหล่านี้จะไ
 
 #: ../ui/src/emails/queueLabels.ts:27
 #, fuzzy
-msgid "Threads Gmail has flagged as important."
-msgstr "เธรดที่ Gmail ตั้งค่าสถานะว่าสำคัญ"
+#~ msgid "Threads Gmail has flagged as important."
+#~ msgstr "เธรดที่ Gmail ตั้งค่าสถานะว่าสำคัญ"
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:288
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:196
@@ -4883,6 +4902,10 @@ msgstr "เธรดที่ Amarnai จัดเรียงไปยังโ
 #, fuzzy
 msgid "Threads that haven't been sorted yet."
 msgstr "เธรดที่ยังไม่ได้จัดเรียง"
+
+#: ../ui/src/emails/queueLabels.ts:27
+msgid "Threads you've marked as important."
+msgstr "เธรดที่คุณทำเครื่องหมายว่าสำคัญ"
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:400
 #, fuzzy
@@ -4966,7 +4989,7 @@ msgstr "ถึง ท่านมหาราช, นายของข้า, �
 msgid "Today"
 msgstr "วันนี้"
 
-#: ../ui/src/emails/ThreadList.tsx:120
+#: ../ui/src/emails/ThreadList.tsx:123
 #, fuzzy
 msgid "Toggle folders"
 msgstr "สลับโฟลเดอร์"
@@ -5028,16 +5051,16 @@ msgstr "ยกเลิกการมอบหมาย"
 msgid "Unavailable"
 msgstr "ไม่พร้อมใช้งาน"
 
-#: ../../apps/mobile/src/components/ThreadRow.tsx:46
-#: ../ui/src/emails/ThreadRow.tsx:201
+#: ../../apps/mobile/src/components/ThreadRow.tsx:48
+#: ../ui/src/emails/ThreadRow.tsx:222
 #, fuzzy
 msgid "Unclassified"
 msgstr "ยังไม่จัดประเภท"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:221
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:364
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:223
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:366
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1321
-#: ../ui/src/emails/MockEmailsPage.tsx:253
+#: ../ui/src/emails/MockEmailsPage.tsx:258
 #, fuzzy
 msgid "Undo"
 msgstr "เลิกทำ"
@@ -5244,7 +5267,7 @@ msgstr "ส่งอีเมลยืนยันแล้ว โปรดต�
 msgid "Verify your email"
 msgstr "ยืนยันอีเมลของคุณ"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:192
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:193
 #, fuzzy
 msgid "View draft reply"
 msgstr "ดูฉบับร่างตอบกลับ"
@@ -5254,9 +5277,9 @@ msgid "View only. Only workspace admins can edit the plan."
 msgstr "ดูได้อย่างเดียว ผู้ดูแลระบบพื้นที่ทำงานเท่านั้นที่สามารถแก้ไขแผนได้"
 
 #: ../../apps/mobile/src/components/RationaleCard.tsx:44
-#: ../../apps/mobile/src/components/ThreadRow.tsx:49
+#: ../../apps/mobile/src/components/ThreadRow.tsx:51
 #: ../ui/src/emails/RationaleCard.tsx:74
-#: ../ui/src/emails/ThreadRow.tsx:197
+#: ../ui/src/emails/ThreadRow.tsx:218
 #, fuzzy
 msgid "Waiting"
 msgstr "กำลังรอ"
@@ -5276,7 +5299,7 @@ msgstr "กำลังรอการยืนยัน..."
 #~ msgid "Waitlist"
 #~ msgstr "รายการรอ"
 
-#: ../ui/src/emails/ThreadRow.tsx:117
+#: ../ui/src/emails/ThreadRow.tsx:135
 #, fuzzy
 msgid "Wants {folderName}"
 msgstr "ต้องการ {folderName}"
@@ -5391,9 +5414,9 @@ msgstr "ประเภทพื้นที่ทำงาน"
 msgid "Workspaces included"
 msgstr "รวมพื้นที่ทำงาน"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:309
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:167
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:330
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:329
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:168
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:354
 #: ../ui/src/emails/ThreadPreview.tsx:169
 #, fuzzy
 msgid "Writing draft reply…"

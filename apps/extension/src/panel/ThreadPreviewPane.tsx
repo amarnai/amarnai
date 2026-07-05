@@ -28,6 +28,7 @@ type Props = {
   onDraftSentToggled: (threadId: string, sent: boolean) => void;
   onMarkDone: (threadId: string) => void;
   onUnmarkDone: (threadId: string) => void;
+  onToggleImportant: (threadId: string) => void;
 };
 
 // Port of apps/web ThreadPreview, with the internal-secret api client swapped
@@ -51,6 +52,7 @@ export function ThreadPreviewPane({
   onDraftSentToggled,
   onMarkDone,
   onUnmarkDone,
+  onToggleImportant,
 }: Props) {
   const { _ } = useLingui();
   const [reasoning, setReasoning] = useState<string | null>(thread.reasoning);
@@ -213,6 +215,24 @@ export function ThreadPreviewPane({
             <path d="M9 11L5 7l4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
           <Trans>Back</Trans>
+        </button>
+        <span className="em-preview-spacer" />
+        <button
+          type="button"
+          className={`em-icon-btn em-star-btn${thread.isImportant ? " is-important" : ""}`}
+          aria-label={thread.isImportant ? _(msg`Remove from important`) : _(msg`Mark as important`)}
+          aria-pressed={thread.isImportant}
+          onClick={() => onToggleImportant(thread.id)}
+        >
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
+            <path
+              d="M7 1.75l1.545 3.13 3.455.502-2.5 2.437.59 3.44L7 9.63l-3.09 1.625.59-3.44-2.5-2.437 3.455-.502z"
+              fill={thread.isImportant ? "currentColor" : "none"}
+              stroke="currentColor"
+              strokeWidth={thread.isImportant ? 0 : 1.3}
+              strokeLinejoin="round"
+            />
+          </svg>
         </button>
       </div>
 

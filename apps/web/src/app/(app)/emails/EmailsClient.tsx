@@ -297,6 +297,7 @@ export function EmailsClient({
         searchRef={searchRef}
         onMarkDone={triage.handleMarkDone}
         onUnmarkDone={triage.handleUnmarkDone}
+        onToggleImportant={triage.handleToggleImportant}
         canAssign={canAssign}
         onOpenAssign={openAssignFor}
         railOpen={railOpen}
@@ -325,6 +326,7 @@ export function EmailsClient({
           onDraftSentToggled={triage.handleDraftSentToggled}
           onMarkDone={triage.handleMarkDone}
           onUnmarkDone={triage.handleUnmarkDone}
+          onToggleImportant={triage.handleToggleImportant}
           members={members}
           canAssign={canAssign}
           onOpenAssign={openAssignFor}

@@ -116,6 +116,10 @@ export function MockEmailsPage({
     setThreads((ts) => ts.map((t) => t.id === threadId ? { ...t, doneMark: null } : t));
   }
 
+  function handleToggleImportant(threadId: string) {
+    setThreads((ts) => ts.map((t) => t.id === threadId ? { ...t, isImportant: !t.isImportant } : t));
+  }
+
   function openRerouteFor(threadId: string, anchor: HTMLElement) {
     setRerouteThreadId(threadId);
     setRerouteAnchor(anchor);
@@ -208,6 +212,7 @@ export function MockEmailsPage({
         searchRef={searchRef}
         onMarkDone={handleMarkDone}
         onUnmarkDone={handleUnmarkDone}
+        onToggleImportant={handleToggleImportant}
         railOpen={railOpen}
         onToggleRail={() => setRailOpen((v) => !v)}
       />

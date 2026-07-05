@@ -558,7 +558,7 @@ export function createBackfillInboxWorker(): Worker {
           return;
         }
 
-        // ── 10. Final run: reconcile trash/spam/important, then mark DONE ───────
+        // ── 10. Final run: reconcile trash/spam, then mark DONE ────────────────
         //
         // The `after:` query excludes trash and spam by default, so threads that
         // moved there after first sync never appear in the page loop. Run targeted
@@ -566,10 +566,9 @@ export function createBackfillInboxWorker(): Worker {
 
         const afterSecs = Math.floor(afterMs / 1000);
 
-        const [trashIds, spamIds, importantIds] = await Promise.all([
+        const [trashIds, spamIds] = await Promise.all([
           client.listThreadIdsByQuery(`in:trash after:${afterSecs}`, 500),
           client.listThreadIdsByQuery(`in:spam after:${afterSecs}`, 500),
-          client.listThreadIdsByQuery("is:important", 2_000),
         ]);
 
         if (trashIds.length > 0) {
@@ -582,12 +581,6 @@ export function createBackfillInboxWorker(): Worker {
           await db.emailThread.updateMany({
             where: { emailAccountId, providerThreadId: { in: spamIds } },
             data: { gmailIsSpam: true },
-          });
-        }
-        if (importantIds.length > 0) {
-          await db.emailThread.updateMany({
-            where: { emailAccountId, providerThreadId: { in: importantIds } },
-            data: { gmailIsImportant: true },
           });
         }
 

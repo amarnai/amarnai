@@ -348,7 +348,6 @@ export function createSyncInboxWorker(): Worker {
           backfillStatus: true,
           backfillStartedAt: true,
           backfillRoutingStartedAt: true,
-          importantBackfilled: true,
           autoRouteBacklogArmed: true,
         },
       });
@@ -378,26 +377,6 @@ export function createSyncInboxWorker(): Worker {
       // ── 3. Discover changed thread IDs ──────────────────────────────────────
 
       const client = new GmailClient(connection.encryptedRefreshToken);
-
-      // ── 3a. One-time backfill: stamp gmailIsImportant on existing threads ────
-      //
-      // The gmailIsImportant flag was introduced after many threads were already
-      // synced, so all pre-existing rows defaulted to false. Running a targeted
-      // is:important query once marks them correctly without a full re-sync.
-      // The flag is set to true immediately so this block never runs again.
-      if (!syncState.importantBackfilled) {
-        const importantIds = await client.listThreadIdsByQuery("is:important", 5_000);
-        if (importantIds.length > 0) {
-          await db.emailThread.updateMany({
-            where: { emailAccountId, providerThreadId: { in: importantIds } },
-            data: { gmailIsImportant: true },
-          });
-        }
-        await db.providerSyncState.update({
-          where: { emailAccountId },
-          data: { importantBackfilled: true },
-        });
-      }
 
       const { changedThreadIds, newHistoryId } = await getChangedThreadIds(
         client,

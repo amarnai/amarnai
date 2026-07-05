@@ -17,6 +17,7 @@ interface ThreadListViewProps {
   backfilling?: boolean;
   onRefresh: () => Promise<void>;
   onThreadPress: (threadId: string) => void;
+  onToggleImportant: (threadId: string) => void;
   // Rendered inside the scroll area, above the threads, so it scrolls with the
   // list rather than staying pinned above it.
   listHeader?: ReactElement | null;
@@ -35,6 +36,7 @@ export function ThreadListView({
   backfilling,
   onRefresh,
   onThreadPress,
+  onToggleImportant,
   listHeader,
   hasMore,
   loadingMore,
@@ -62,7 +64,11 @@ export function ThreadListView({
       sections={sections}
       keyExtractor={(t) => t.id}
       renderItem={({ item }) => (
-        <ThreadRow thread={item} onPress={() => onThreadPress(item.id)} />
+        <ThreadRow
+          thread={item}
+          onPress={() => onThreadPress(item.id)}
+          onToggleImportant={() => onToggleImportant(item.id)}
+        />
       )}
       renderSectionHeader={({ section }) => (
         <View style={styles.sectionHeader}>

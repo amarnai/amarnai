@@ -308,6 +308,15 @@ export function makeApiClient(transport: ApiTransport) {
         "DELETE"
       ),
 
+    // Set or clear the user-marked "important" star on a thread. The star is a
+    // shared, workspace-level flag (any member can toggle it).
+    setThreadImportant: (workspaceId: string, threadId: string, isImportant: boolean) =>
+      apiMutate<{ ok: boolean; isImportant: boolean }>(
+        `/workspaces/${workspaceId}/email-threads/${threadId}/important`,
+        "PATCH",
+        { isImportant }
+      ),
+
     // ── Notifications (user-scoped) ────────────────────────────────────────────
     // `undismissedOnly` powers the bell pop-up feed: it hides notifications the
     // user has already dealt with. The full notifications page omits it and gets

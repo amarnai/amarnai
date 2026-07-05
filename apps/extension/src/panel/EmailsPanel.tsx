@@ -165,6 +165,7 @@ export function EmailsPanel({
           searchRef={searchRef}
           onMarkDone={triage.handleMarkDone}
           onUnmarkDone={triage.handleUnmarkDone}
+          onToggleImportant={triage.handleToggleImportant}
           railOpen={railOpen}
           onToggleRail={() => setRailOpen((v) => !v)}
           hasMore={triage.hasMore}
@@ -193,6 +194,7 @@ export function EmailsPanel({
             onDraftSentToggled={triage.handleDraftSentToggled}
             onMarkDone={triage.handleMarkDone}
             onUnmarkDone={triage.handleUnmarkDone}
+            onToggleImportant={triage.handleToggleImportant}
           />
         ) : (
           <div className="em-preview-empty">

@@ -190,7 +190,7 @@ export type FilterCounts = {
   SORTED: number;
   UNROUTED: number;
   UNCLASSIFIED: number;
-  // Count of Gmail-important threads (orthogonal to triageStatus).
+  // Count of user-marked important threads (orthogonal to triageStatus).
   important: number;
   // Count of threads assigned to the current user (orthogonal to triageStatus).
   assigned: number;
@@ -206,7 +206,7 @@ export type EmailThreadSummary = {
   isClassifying: boolean;
   isQueued: boolean;
   createdAt: string;
-  gmailIsImportant: boolean;
+  isImportant: boolean;
   messages: Array<{
     id: string;
     senderEmail: string;
@@ -244,7 +244,7 @@ export type EmailThreadDetail = {
   isQueued: boolean;
   createdAt: string;
   updatedAt: string;
-  gmailIsImportant: boolean;
+  isImportant: boolean;
   hasDraft: boolean;
   isDrafting: boolean;
   messages: Array<{

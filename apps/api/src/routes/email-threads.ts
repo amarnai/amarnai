@@ -180,7 +180,7 @@ emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
   const viewWhere = {
     ...baseWhere,
     ...(triageStatus  ? { triageStatus }                                      : {}),
-    ...(importantOnly ? { gmailIsImportant: true }                            : {}),
+    ...(importantOnly ? { isImportant: true }                                 : {}),
     ...(assignedOnly  ? { assignedToUserId: currentUserId }                   : {}),
     ...(nodeId        ? { classifications: { some: { finalNodeId: nodeId } } } : {}),
     ...searchWhere,
@@ -201,7 +201,7 @@ emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
     triageStatus: true,
     classifyingAt: true,
     createdAt: true,
-    gmailIsImportant: true,
+    isImportant: true,
     resolvedByUserId: true,
     resolvedAt: true,
     resolvedByUser: {
@@ -270,7 +270,7 @@ emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
       where: baseWhere,
       _count: { _all: true },
     }),
-    db.emailThread.count({ where: { ...baseWhere, gmailIsImportant: true } }),
+    db.emailThread.count({ where: { ...baseWhere, isImportant: true } }),
     // Threads assigned to the current user — drives the "Assigned" pill. Scoped
     // per-user (unlike the status pills), so it counts only this member's queue.
     db.emailThread.count({ where: { ...baseWhere, assignedToUserId: currentUserId } }),
@@ -369,7 +369,7 @@ emailThreads.get(
         classifyingAt: true,
         createdAt: true,
         updatedAt: true,
-        gmailIsImportant: true,
+        isImportant: true,
         resolvedByUserId: true,
         resolvedAt: true,
         resolvedByUser: {

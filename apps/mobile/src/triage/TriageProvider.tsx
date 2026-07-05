@@ -29,6 +29,7 @@ type TriageActions = Pick<
   | 'handleApprove'
   | 'handleMarkDone'
   | 'handleUnmarkDone'
+  | 'handleToggleImportant'
   | 'handleAssign'
   | 'openRerouteFor'
   | 'closeReroute'
@@ -154,6 +155,7 @@ function TriageInner({
       handleApprove: triage.handleApprove,
       handleMarkDone: triage.handleMarkDone,
       handleUnmarkDone: triage.handleUnmarkDone,
+      handleToggleImportant: triage.handleToggleImportant,
       handleAssign: triage.handleAssign,
       openRerouteFor: triage.openRerouteFor,
       closeReroute: triage.closeReroute,
@@ -179,6 +181,7 @@ function TriageInner({
       triage.handleApprove,
       triage.handleMarkDone,
       triage.handleUnmarkDone,
+      triage.handleToggleImportant,
       triage.handleAssign,
       triage.openRerouteFor,
       triage.closeReroute,

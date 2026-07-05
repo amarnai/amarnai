@@ -21,7 +21,6 @@ const LABEL_FLAGS: ThreadLabelFlags = {
   gmailIsSpam: false,
   gmailIsPromotions: false,
   gmailIsTrash: false,
-  gmailIsImportant: true,
   isAutomated: false,
 };
 
@@ -84,7 +83,6 @@ describe("upsertEmailThread", () => {
       providerThreadId: "gmail-t1",
       subject: "Hello",
       messageCount: 2,
-      gmailIsImportant: true,
       isAutomated: false,
     });
   });
@@ -97,7 +95,6 @@ describe("upsertEmailThread", () => {
       subject: "Hello",
       latestMessageAt: THREAD_INPUT.latestMessageAt,
       messageCount: 2,
-      gmailIsImportant: true,
     });
   });
 

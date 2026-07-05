@@ -790,6 +790,39 @@
 .em-done-btn.is-done { opacity: 1; color: var(--ok); }
 .em-done-btn.is-done:hover { background: var(--bg-soft); color: var(--ink-3); }
 
+/* Important star (thread-row action). Hidden until hover/selection unless the
+   thread is already starred, matching the done button's affordance. */
+.em-thread-actions .em-star-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  border: none;
+  background: transparent;
+  color: var(--ink-3);
+  opacity: 0;
+  cursor: pointer;
+  transition: opacity 0.1s, color 0.1s, background 0.1s;
+  flex-shrink: 0;
+  padding: 0;
+}
+
+.em-thread-row:hover .em-thread-actions .em-star-btn,
+.em-thread-row.selected .em-thread-actions .em-star-btn { opacity: 1; }
+
+.em-thread-actions .em-star-btn:hover { background: var(--accent-soft); }
+
+/* Starred state + hover tint apply in both the row and the preview toolbar
+   (where the button also carries .em-icon-btn for its base sizing/visibility). */
+.em-star-btn:hover { color: var(--accent); }
+
+.em-star-btn.is-important {
+  opacity: 1;
+  color: var(--accent);
+}
+
 /* Confidence donut */
 .em-conf {
   display: inline-flex;

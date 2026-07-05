@@ -63,10 +63,6 @@ export function RationaleCard({
 
       <Text style={styles.dest}>{folder?.name ?? i18n._(msg`Unrouted`)}</Text>
 
-      {thread.isImportant ? (
-        <Text style={styles.important}><Trans>Gmail marked as important</Trans></Text>
-      ) : null}
-
       {explanation ? <Text style={styles.reason}>{explanation}</Text> : null}
 
       <View style={styles.actions}>
@@ -113,10 +109,6 @@ const styles = StyleSheet.create({
     fontSize: fontSize.lg,
     fontWeight: fontWeight.semibold,
     color: colors.ink,
-  },
-  important: {
-    fontSize: fontSize.sm,
-    color: colors.warnInk,
   },
   reason: {
     fontSize: fontSize.md,

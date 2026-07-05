@@ -1,4 +1,5 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { Trans, Plural } from '@lingui/react/macro';
 import { useLingui } from '@lingui/react';
 import { msg } from '@lingui/core/macro';
@@ -9,6 +10,7 @@ import type { ThreadItem } from '@amarnai/core';
 interface ThreadRowProps {
   thread: ThreadItem;
   onPress: () => void;
+  onToggleImportant: () => void;
 }
 
 // Short, dependency-free timestamp: time of day for today, otherwise a short date.
@@ -52,12 +54,15 @@ function statusBadge(thread: ThreadItem): { label: MessageDescriptor; bg: string
   }
 }
 
-export function ThreadRow({ thread, onPress }: ThreadRowProps) {
+export function ThreadRow({ thread, onPress, onToggleImportant }: ThreadRowProps) {
   const { i18n } = useLingui();
   const badge = statusBadge(thread);
   const assigneeName = thread.assignment
     ? (thread.assignment.userName ?? thread.assignment.userEmail)
     : null;
+  const importantLabel = thread.isImportant
+    ? i18n._(msg`Remove from important`)
+    : i18n._(msg`Mark as important`);
 
   return (
     <TouchableOpacity style={styles.row} onPress={onPress}>
@@ -66,6 +71,20 @@ export function ThreadRow({ thread, onPress }: ThreadRowProps) {
           {thread.participants}
         </Text>
         <Text style={styles.time}>{formatTime(thread.latestAt)}</Text>
+        <TouchableOpacity
+          onPress={onToggleImportant}
+          hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+          accessibilityRole="button"
+          accessibilityLabel={importantLabel}
+          accessibilityState={{ selected: thread.isImportant }}
+          style={styles.star}
+        >
+          <Ionicons
+            name={thread.isImportant ? 'star' : 'star-outline'}
+            size={17}
+            color={thread.isImportant ? colors.accent : colors.ink4}
+          />
+        </TouchableOpacity>
       </View>
 
       <Text style={styles.subject} numberOfLines={1}>
@@ -139,6 +158,9 @@ const styles = StyleSheet.create({
   time: {
     fontSize: fontSize.sm,
     color: colors.ink4,
+  },
+  star: {
+    marginLeft: space.md,
   },
   subject: {
     fontSize: fontSize.lg,

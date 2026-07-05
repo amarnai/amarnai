@@ -25,13 +25,13 @@ msgid "(No body)"
 msgstr "(本文なし)"
 
 #. placeholder {0}: thread.attachmentCount
-#: ../../apps/mobile/src/components/ThreadRow.tsx:106
+#: ../../apps/mobile/src/components/ThreadRow.tsx:125
 #, fuzzy
 msgid "{0, plural, one {# file} other {# files}}"
 msgstr "{0, plural, one {# ファイル} other {# ファイル}}"
 
 #. placeholder {0}: thread.messageCount
-#: ../../apps/mobile/src/components/ThreadRow.tsx:111
+#: ../../apps/mobile/src/components/ThreadRow.tsx:130
 msgid "{0, plural, one {# message} other {# messages}}"
 msgstr "{0, plural, one {# メッセージ} other {# メッセージ}}"
 
@@ -79,8 +79,8 @@ msgstr "{0} がスレッドを割り当てました"
 #. placeholder {0}: threads.length.toLocaleString()
 #. placeholder {1}: (total ?? 0).toLocaleString()
 #. placeholder {1}: viewCount.toLocaleString()
-#: ../../apps/mobile/src/components/emails/ThreadListView.tsx:81
-#: ../ui/src/emails/ThreadList.tsx:227
+#: ../../apps/mobile/src/components/emails/ThreadListView.tsx:87
+#: ../ui/src/emails/ThreadList.tsx:231
 msgid "{0} of {1} loaded"
 msgstr "読み込み済み: {0}/{1}"
 
@@ -127,7 +127,7 @@ msgstr "{collaboratorCount} / {collaboratorLimit} 追加済み"
 msgid "{confPct}% confidence"
 msgstr "確信度 {confPct}%"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:150
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:151
 msgid "{draftRemaining} of {draftLimit} left · resets {draftResetDate}"
 msgstr "{draftLimit} 件中 {draftRemaining} 件利用可能 · {draftResetDate} にリセット"
 
@@ -160,8 +160,8 @@ msgstr "{folderCount, plural, one {# フォルダ} other {# フォルダ}}"
 #~ msgstr "{pendingCount} 保留中"
 
 #. placeholder {0}: draftQuota.limit
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:300
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:320
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:320
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:344
 #, fuzzy
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
 msgstr "{0} 中 {quotaRemaining} 残り · {quotaResetDate} にリセット"
@@ -712,13 +712,13 @@ msgstr "適用すると現在のプランが置き換えられます。後から
 msgid "Applying…"
 msgstr "適用中…"
 
-#: ../../apps/mobile/src/components/RationaleCard.tsx:75
-#: ../ui/src/emails/RationaleCard.tsx:142
+#: ../../apps/mobile/src/components/RationaleCard.tsx:71
+#: ../ui/src/emails/RationaleCard.tsx:133
 #, fuzzy
 msgid "Approve routing"
 msgstr "ルーティングを承認"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:233
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:234
 #: ../ui/src/emails/TriageBar.tsx:71
 #, fuzzy
 msgid "Assign"
@@ -734,8 +734,8 @@ msgstr "スレッドを割り当てる"
 msgid "Assign to"
 msgstr "割り当て先"
 
-#: ../ui/src/emails/ThreadRow.tsx:260
-#: ../ui/src/emails/ThreadRow.tsx:264
+#: ../ui/src/emails/ThreadRow.tsx:307
+#: ../ui/src/emails/ThreadRow.tsx:311
 #: ../ui/src/emails/TriageBar.tsx:63
 #, fuzzy
 msgid "Assign to a member"
@@ -754,7 +754,7 @@ msgstr "アサイン済み"
 msgid "Assigned to {assigneeName}"
 msgstr "{assigneeName}が担当"
 
-#: ../ui/src/emails/ThreadRow.tsx:174
+#: ../ui/src/emails/ThreadRow.tsx:195
 #: ../ui/src/emails/TriageBar.tsx:62
 #, fuzzy
 msgid "Assigned to {assigneeName}. Change assignee"
@@ -803,17 +803,17 @@ msgid "Aziru,\n"
 "With regards,"
 msgstr "アジル殿、\n\n貴殿の友情の言葉、謹んで拝聴いたしました。アムル家のご提案、ぜひ詳しくお聞かせください。次回の使者にて、条件をご送付ください。\n\n敬具、"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:215
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:217
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:25
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:228
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:230
 #: ../ui/src/emails/ThreadPreview.tsx:92
 #, fuzzy
 msgid "Back"
 msgstr "戻る"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:211
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:223
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:213
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:225
 #: ../ui/src/emails/ThreadPreview.tsx:87
 #, fuzzy
 msgid "Back to list"
@@ -1059,8 +1059,8 @@ msgstr "閉じる"
 msgid "Close panel"
 msgstr "パネルを閉じる"
 
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:231
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:235
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:255
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:259
 #: ../ui/src/emails/ThreadPreview.tsx:97
 #: ../ui/src/emails/ThreadPreview.tsx:101
 #, fuzzy
@@ -1657,16 +1657,16 @@ msgstr "このワークスペースを切断します。このメールボック
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "このワークスペースを切断します。このメールボックスは{sharedNames}にも接続されているため、Amarnaiは引き続きアクセスします。"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:228
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:230
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:65
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:367
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:369
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:57
 #: ../../apps/web/src/components/JoinedWorkspaceToast.tsx:46
 #: ../../apps/web/src/components/NotificationBell.tsx:199
 #: ../../apps/web/src/components/NotificationBell.tsx:200
 #: ../ui/src/AppDownloadBanner.tsx:80
-#: ../ui/src/emails/MockEmailsPage.tsx:256
+#: ../ui/src/emails/MockEmailsPage.tsx:261
 msgid "Dismiss"
 msgstr "閉じる"
 
@@ -1704,13 +1704,13 @@ msgid "Don't have an account? <0>Sign up</0>"
 msgstr "アカウントをお持ちではありませんか？ <0>サインアップ</0>"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:261
-#: ../../apps/mobile/src/components/ThreadRow.tsx:40
-#: ../ui/src/emails/ThreadRow.tsx:166
+#: ../../apps/mobile/src/components/ThreadRow.tsx:42
+#: ../ui/src/emails/ThreadRow.tsx:187
 #, fuzzy
 msgid "Done"
 msgstr "完了"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:211
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:212
 msgid "Done · undo"
 msgstr "完了 · 元に戻す"
 
@@ -1718,21 +1718,21 @@ msgstr "完了 · 元に戻す"
 msgid "Downgrade to {planName}"
 msgstr "{planName}にダウングレード"
 
-#: ../ui/src/emails/ThreadRow.tsx:228
+#: ../ui/src/emails/ThreadRow.tsx:249
 #, fuzzy
 msgid "draft"
 msgstr "下書き"
 
-#: ../../apps/mobile/src/components/ThreadRow.tsx:98
+#: ../../apps/mobile/src/components/ThreadRow.tsx:117
 msgid "Draft"
 msgstr "下書き"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:179
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:180
 msgid "Draft failed · tap to retry"
 msgstr "下書きの送信に失敗しました · タップして再試行"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:315
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:336
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:335
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:360
 #, fuzzy
 msgid "Draft generation failed. Try again."
 msgstr "下書きの生成に失敗しました。もう一度お試しください。"
@@ -1743,7 +1743,7 @@ msgstr "下書きの生成に失敗しました。もう一度お試しくださ
 msgid "Draft reply"
 msgstr "返信の下書き"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:126
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:127
 msgid "Draft shared"
 msgstr "下書きを共有しました"
 
@@ -1753,8 +1753,8 @@ msgstr "下書きを共有しました"
 msgid "Draft style guidance"
 msgstr "下書きのスタイルガイド"
 
-#: ../../apps/mobile/src/components/ThreadRow.tsx:94
-#: ../ui/src/emails/ThreadRow.tsx:222
+#: ../../apps/mobile/src/components/ThreadRow.tsx:113
+#: ../ui/src/emails/ThreadRow.tsx:243
 msgid "Drafting…"
 msgstr "下書き作成中…"
 
@@ -2054,7 +2054,7 @@ msgstr "「相互利益」「長年の友情」といった文言から、同盟
 msgid "Flight and hotel bookings, travel itineraries, visa applications, and trip confirmations."
 msgstr "航空券とホテルの予約、旅行日程、ビザ申請、旅行確認。"
 
-#: ../ui/src/emails/MockEmailsPage.tsx:158
+#: ../ui/src/emails/MockEmailsPage.tsx:162
 msgid "folder"
 msgstr "フォルダー"
 
@@ -2090,7 +2090,7 @@ msgid "Folder: {activeFolderName}"
 msgstr "フォルダ: {activeFolderName}"
 
 #: ../ui/src/emails/EmailRail.tsx:99
-#: ../ui/src/emails/ThreadList.tsx:136
+#: ../ui/src/emails/ThreadList.tsx:139
 msgid "Folders"
 msgstr "フォルダ"
 
@@ -2216,9 +2216,9 @@ msgstr "新しい下書きを作成します。月間利用枠を1消費しま�
 msgid "Generate a plan from your inbox"
 msgstr "受信トレイからプランを生成"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:294
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:145
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:314
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:314
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:146
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:338
 #: ../ui/src/emails/ThreadPreview.tsx:162
 #, fuzzy
 msgid "Generate draft reply"
@@ -2309,8 +2309,8 @@ msgstr "Gmailライブ同期が有効"
 
 #: ../../apps/mobile/src/components/RationaleCard.tsx:67
 #: ../ui/src/emails/RationaleCard.tsx:116
-msgid "Gmail marked as important"
-msgstr "Gmailで重要としてマーク済み"
+#~ msgid "Gmail marked as important"
+#~ msgstr "Gmailで重要としてマーク済み"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:51
 #, fuzzy
@@ -2783,17 +2783,17 @@ msgid "Live"
 msgstr "ライブ"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:301
-#: ../../apps/mobile/src/components/emails/ThreadListView.tsx:95
+#: ../../apps/mobile/src/components/emails/ThreadListView.tsx:101
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:316
-#: ../ui/src/emails/ThreadList.tsx:238
+#: ../ui/src/emails/ThreadList.tsx:242
 #, fuzzy
 msgid "Load more"
 msgstr "さらに読み込む"
 
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
-#: ../../apps/mobile/src/components/emails/ThreadListView.tsx:116
+#: ../../apps/mobile/src/components/emails/ThreadListView.tsx:122
 #: ../ui/src/emails/BackfillCard.tsx:35
-#: ../ui/src/emails/ThreadList.tsx:179
+#: ../ui/src/emails/ThreadList.tsx:182
 msgid "Loading past threads…"
 msgstr "過去のスレッドを読み込み中…"
 
@@ -2809,7 +2809,7 @@ msgstr "過去のスレッドを読み込み中…"
 #: ../../apps/web/src/app/loading.tsx:6
 #: ../../apps/web/src/components/NotificationBell.tsx:181
 #: ../ui/src/emails/MessageCard.tsx:60
-#: ../ui/src/emails/ThreadList.tsx:238
+#: ../ui/src/emails/ThreadList.tsx:242
 #, fuzzy
 msgid "Loading…"
 msgstr "読み込み中…"
@@ -2845,12 +2845,21 @@ msgid "Manager emails: one-on-ones, performance reviews, and feedback."
 msgstr "マネージャーからのメール：1対1面談、パフォーマンスレビュー、フィードバック。"
 
 #: ../ui/src/emails/PreviewDoneBar.tsx:23
-#: ../ui/src/emails/ThreadRow.tsx:124
+#: ../ui/src/emails/ThreadRow.tsx:142
 #, fuzzy
 msgid "Mark as done"
 msgstr "完了としてマーク"
 
-#: ../ui/src/emails/ThreadRow.tsx:123
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:223
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:244
+#: ../../apps/mobile/src/components/ThreadRow.tsx:65
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:234
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:240
+#: ../ui/src/emails/ThreadRow.tsx:145
+msgid "Mark as important"
+msgstr "重要にする"
+
+#: ../ui/src/emails/ThreadRow.tsx:141
 #, fuzzy
 msgid "Mark as not done"
 msgstr "未完了としてマーク"
@@ -2879,7 +2888,7 @@ msgstr "未読にする"
 msgid "Mark as unsent"
 msgstr "未送信としてマーク"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:218
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:219
 msgid "Mark done"
 msgstr "完了としてマーク"
 
@@ -2981,12 +2990,12 @@ msgid "Move to folder…"
 msgstr "フォルダに移動…"
 
 #: ../../apps/mobile/src/components/RationaleCard.tsx:50
-#: ../../apps/mobile/src/components/RationaleCard.tsx:79
-#: ../ui/src/emails/RationaleCard.tsx:151
+#: ../../apps/mobile/src/components/RationaleCard.tsx:75
+#: ../ui/src/emails/RationaleCard.tsx:142
 msgid "Move to…"
 msgstr "移動先…"
 
-#: ../ui/src/emails/MockEmailsPage.tsx:168
+#: ../ui/src/emails/MockEmailsPage.tsx:172
 #, fuzzy
 msgid "Moved to {folderName}"
 msgstr "「{folderName}」に移動しました"
@@ -3010,7 +3019,7 @@ msgid "Name updated."
 msgstr "名前を更新しました。"
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:11
-#: ../../apps/mobile/src/components/ThreadRow.tsx:44
+#: ../../apps/mobile/src/components/ThreadRow.tsx:46
 #: ../ui/src/emails/queueLabels.ts:18
 msgid "Needs review"
 msgstr "確認が必要"
@@ -3073,12 +3082,12 @@ msgstr "新規ワークスペース"
 msgid "New workspace name"
 msgstr "新しいワークスペース名"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:143
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:144
 msgid "No drafts remaining"
 msgstr "残りの下書きはありません"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:299
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:319
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:319
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:343
 #: ../ui/src/emails/SuggestedDraftCard.tsx:97
 #, fuzzy
 msgid "No drafts remaining · resets {quotaResetDate}"
@@ -3163,12 +3172,12 @@ msgstr "前回生成以降、目立った新着メールがないため、結果
 #~ msgid "No signups yet."
 #~ msgstr "まだサインアップはありません。"
 
-#: ../../apps/mobile/src/components/emails/ThreadListView.tsx:46
+#: ../../apps/mobile/src/components/emails/ThreadListView.tsx:48
 #, fuzzy
 msgid "No threads"
 msgstr "スレッドがありません"
 
-#: ../ui/src/emails/ThreadList.tsx:182
+#: ../ui/src/emails/ThreadList.tsx:185
 msgid "No threads here."
 msgstr "ここにスレッドはありません。"
 
@@ -3186,7 +3195,7 @@ msgstr "{folderName}にスレッドはありません"
 msgid "No threads match your search"
 msgstr "検索結果にスレッドがありません"
 
-#: ../ui/src/emails/ThreadList.tsx:175
+#: ../ui/src/emails/ThreadList.tsx:178
 #, fuzzy
 msgid "No threads match your search."
 msgstr "検索条件に一致するスレッドはありません。"
@@ -3276,13 +3285,13 @@ msgstr "ワークスペースのオーナーのみが請求を管理できます
 msgid "Open"
 msgstr "開く"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:244
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:264
 #: ../../apps/mobile/src/components/DraftSheet.tsx:97
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:248
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:254
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:272
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:278
 #: ../ui/src/emails/ThreadPreview.tsx:115
 #: ../ui/src/emails/ThreadPreview.tsx:121
-#: ../ui/src/emails/ThreadRow.tsx:125
+#: ../ui/src/emails/ThreadRow.tsx:146
 #, fuzzy
 msgid "Open in Gmail"
 msgstr "Gmailで開く"
@@ -3618,7 +3627,7 @@ msgstr "提案フォルダを適用すると、現在のプランは上書きさ
 msgid "Queuing rescan…"
 msgstr "再スキャンをキューに入れています…"
 
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:377
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:379
 #, fuzzy
 msgid "Re-route {unclassifiedCount} unclassified"
 msgstr "{unclassifiedCount}件の未分類を再ルーティング"
@@ -3746,6 +3755,16 @@ msgstr "{0}を削除"
 msgid "Remove {email} from blacklist"
 msgstr "ブラックリストから{email}を削除"
 
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:223
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:243
+#: ../../apps/mobile/src/components/ThreadRow.tsx:64
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:234
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:240
+#: ../ui/src/emails/ThreadRow.tsx:144
+#, fuzzy
+msgid "Remove from important"
+msgstr "重要を解除"
+
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:432
 msgid "Remove its child folders before deleting this one."
 msgstr "このフォルダーを削除する前に、子フォルダーをすべて削除してください。"
@@ -3863,7 +3882,7 @@ msgstr "ワークスペースをリセット"
 msgid "Reset workspace?"
 msgstr "ワークスペースをリセットしますか？"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:155
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:156
 msgid "Resets {draftResetDate}"
 msgstr "{draftResetDate} にリセット"
 
@@ -3886,9 +3905,9 @@ msgstr "スレッドリストのサイズを変更"
 msgid "Resources"
 msgstr "リソース"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:317
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:337
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:345
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:342
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:366
 #, fuzzy
 msgid "Retry"
 msgstr "再試行"
@@ -3928,7 +3947,7 @@ msgstr "ルーティングが承認されました"
 
 #. placeholder {0}: altFolder.name
 #. placeholder {1}: Math.round(thread.alternativeFolder.weight * 100)
-#: ../ui/src/emails/RationaleCard.tsx:130
+#: ../ui/src/emails/RationaleCard.tsx:121
 #, fuzzy
 msgid "Runner-up: <0>{0}</0> ({1}%)"
 msgstr "次点: <0>{0}</0> ({1}%)"
@@ -4001,9 +4020,9 @@ msgstr "Gmailの隣で、受信トレイのソート状況を確認できます�
 msgid "Select"
 msgstr "選択"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:199
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:334
-#: ../ui/src/emails/MockEmailsPage.tsx:234
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:201
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:336
+#: ../ui/src/emails/MockEmailsPage.tsx:239
 #, fuzzy
 msgid "Select a thread to preview"
 msgstr "スレッドを選択してプレビュー"
@@ -4228,18 +4247,18 @@ msgstr "今すぐソート"
 #~ msgstr "数千件の過去のメールを自動で仕分けできます。ProおよびBusinessサブスクリプションでご利用いただけます。"
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:10
-#: ../../apps/mobile/src/components/ThreadRow.tsx:51
+#: ../../apps/mobile/src/components/ThreadRow.tsx:53
 #: ../ui/src/emails/queueLabels.ts:14
 #, fuzzy
 msgid "Sorted"
 msgstr "ソート済み"
 
-#: ../ui/src/emails/RationaleCard.tsx:122
+#: ../ui/src/emails/RationaleCard.tsx:113
 #, fuzzy
 msgid "Sorted automatically by content similarity."
 msgstr "コンテンツの類似性により自動的にソートされました。"
 
-#: ../../apps/mobile/src/components/ThreadRow.tsx:41
+#: ../../apps/mobile/src/components/ThreadRow.tsx:43
 #, fuzzy
 msgid "Sorting"
 msgstr "ソート中"
@@ -4268,7 +4287,7 @@ msgstr "ソート量"
 #: ../../apps/mobile/src/components/RationaleCard.tsx:35
 #: ../../apps/site/src/components/landing/HeroFeedCard.tsx:90
 #: ../ui/src/emails/RationaleCard.tsx:52
-#: ../ui/src/emails/ThreadRow.tsx:193
+#: ../ui/src/emails/ThreadRow.tsx:214
 msgid "Sorting…"
 msgstr "ソート中…"
 
@@ -4478,7 +4497,7 @@ msgstr "テンプレート"
 msgid "Terms"
 msgstr "規約"
 
-#: ../ui/src/emails/MockEmailsPage.tsx:144
+#: ../ui/src/emails/MockEmailsPage.tsx:148
 #, fuzzy
 msgid "Thank you for your message. I'll follow up shortly."
 msgstr "メッセージありがとうございます。追ってご連絡いたします。"
@@ -4624,7 +4643,7 @@ msgstr "これによりGmail連携が解除され、同期されたすべての�
 msgid "This thread cannot be sorted yet. Add at least {TAXONOMY_MIN_NON_ROOT_NODES} categories to your plan to begin routing."
 msgstr "このスレッドはまだソートできません。ルーティングを開始するには、プランに少なくとも{TAXONOMY_MIN_NON_ROOT_NODES}個のカテゴリを追加してください。"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:261
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:281
 #, fuzzy
 msgid "This thread hasn't been sorted yet."
 msgstr "このスレッドはまだソートされていません。"
@@ -4638,12 +4657,12 @@ msgstr "このスレッドはルーティング待ちです。"
 msgid "This thread is waiting to be routed. Use “Route now” to start sorting."
 msgstr "このスレッドはルーティング待ちです。「今すぐルーティング」を使用してソートを開始してください。"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:85
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:86
 #, fuzzy
 msgid "Thread"
 msgstr "スレッド"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:87
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:88
 msgid "Thread not found"
 msgstr "スレッドが見つかりません"
 
@@ -4672,8 +4691,8 @@ msgid "Threads from these senders will never be imported or sorted by Amarnai."
 msgstr "これらの送信者からのスレッドは、Amarnaiによってインポートされたり、分類されたりすることはありません。"
 
 #: ../ui/src/emails/queueLabels.ts:27
-msgid "Threads Gmail has flagged as important."
-msgstr "Gmailが重要とフラグ付けしたスレッド。"
+#~ msgid "Threads Gmail has flagged as important."
+#~ msgstr "Gmailが重要とフラグ付けしたスレッド。"
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:288
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:196
@@ -4694,6 +4713,11 @@ msgstr "Amarnaiによってこのフォルダーにソートされたスレッ�
 #, fuzzy
 msgid "Threads that haven't been sorted yet."
 msgstr "まだソートされていないスレッド。"
+
+#: ../ui/src/emails/queueLabels.ts:27
+#, fuzzy
+msgid "Threads you've marked as important."
+msgstr "重要にしたスレッド"
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:400
 msgid "Three steps. Then it sorts every email for you."
@@ -4775,7 +4799,7 @@ msgstr "大王陛下、我が主、我が太陽よ、\n\n先月お送りいた�
 msgid "Today"
 msgstr "今日"
 
-#: ../ui/src/emails/ThreadList.tsx:120
+#: ../ui/src/emails/ThreadList.tsx:123
 #, fuzzy
 msgid "Toggle folders"
 msgstr "フォルダーを切り替える"
@@ -4837,15 +4861,15 @@ msgstr "割り当てを解除"
 msgid "Unavailable"
 msgstr "利用不可"
 
-#: ../../apps/mobile/src/components/ThreadRow.tsx:46
-#: ../ui/src/emails/ThreadRow.tsx:201
+#: ../../apps/mobile/src/components/ThreadRow.tsx:48
+#: ../ui/src/emails/ThreadRow.tsx:222
 msgid "Unclassified"
 msgstr "未分類"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:221
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:364
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:223
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:366
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1321
-#: ../ui/src/emails/MockEmailsPage.tsx:253
+#: ../ui/src/emails/MockEmailsPage.tsx:258
 #, fuzzy
 msgid "Undo"
 msgstr "元に戻す"
@@ -5042,7 +5066,7 @@ msgstr "確認メールを送信しました。受信トレイをご確認くだ
 msgid "Verify your email"
 msgstr "メールアドレスを確認"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:192
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:193
 #, fuzzy
 msgid "View draft reply"
 msgstr "下書きの返信を表示"
@@ -5053,9 +5077,9 @@ msgid "View only. Only workspace admins can edit the plan."
 msgstr "閲覧のみ。ワークスペース管理者のみがプランを編集できます。"
 
 #: ../../apps/mobile/src/components/RationaleCard.tsx:44
-#: ../../apps/mobile/src/components/ThreadRow.tsx:49
+#: ../../apps/mobile/src/components/ThreadRow.tsx:51
 #: ../ui/src/emails/RationaleCard.tsx:74
-#: ../ui/src/emails/ThreadRow.tsx:197
+#: ../ui/src/emails/ThreadRow.tsx:218
 msgid "Waiting"
 msgstr "待機中"
 
@@ -5073,7 +5097,7 @@ msgstr "認証待ち…"
 #~ msgid "Waitlist"
 #~ msgstr "順番待ちリスト"
 
-#: ../ui/src/emails/ThreadRow.tsx:117
+#: ../ui/src/emails/ThreadRow.tsx:135
 msgid "Wants {folderName}"
 msgstr "{folderName}を希望"
 
@@ -5180,9 +5204,9 @@ msgstr "ワークスペースの種類"
 msgid "Workspaces included"
 msgstr "含まれるワークスペース"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:309
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:167
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:330
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:329
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:168
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:354
 #: ../ui/src/emails/ThreadPreview.tsx:169
 #, fuzzy
 msgid "Writing draft reply…"

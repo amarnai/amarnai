@@ -108,15 +108,6 @@ export function RationaleCard({
         <span>{folder?.name ?? i18n._(msg`Unrouted`)}</span>
       </div>
 
-      {thread.isImportant && (
-        <div className="em-rationale-important">
-          <svg width="11" height="11" viewBox="0 0 14 14" fill="none" aria-hidden>
-            <path d="M7 1.5l1.7 3.5 3.8.55-2.75 2.68.65 3.77L7 10.1l-3.42 1.9.65-3.77L1.5 5.55 5.3 5z" fill="currentColor" />
-          </svg>
-          <Trans>Gmail marked as important</Trans>
-        </div>
-      )}
-
       {isEmbeddingExplanation(decisionSource, thread.reasoning) ? (
         <div className="em-rationale-reason em-rationale-reason--muted">
           <Trans>Sorted automatically by content similarity.</Trans>

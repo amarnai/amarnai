@@ -159,7 +159,6 @@ beforeEach(() => {
     // classifies new threads as LIVE. Tests that exercise the pre-start window
     // override this with backfillRoutingStartedAt: null.
     backfillRoutingStartedAt: new Date(),
-    importantBackfilled: true,
   } as never);
   vi.mocked(db.providerSyncState.update).mockResolvedValue({} as never);
   vi.mocked(db.emailThread.upsert).mockResolvedValue({ id: "db-t1" } as never);
@@ -241,7 +240,6 @@ describe("createSyncInboxWorker — taxonomy gate", () => {
       backfillStatus: "RUNNING",
       backfillStartedAt: new Date(),
       backfillRoutingStartedAt: null,
-      importantBackfilled: true,
     } as never);
 
     createSyncInboxWorker();
@@ -565,7 +563,6 @@ describe("createSyncInboxWorker — armed backlog recovery", () => {
       historyId: "hist-1",
       backfillStatus: "RUNNING",
       backfillStartedAt: new Date(),
-      importantBackfilled: true,
       autoRouteBacklogArmed: true,
     } as never);
   }
@@ -682,7 +679,6 @@ describe("createSyncInboxWorker — disconnect-awareness", () => {
       historyId: "hist-1",
       backfillStatus: "RUNNING",
       backfillStartedAt: staleDate,
-      importantBackfilled: true,
     } as never);
 
     createSyncInboxWorker();
@@ -708,7 +704,6 @@ describe("createSyncInboxWorker — disconnect-awareness", () => {
       historyId: "hist-1",
       backfillStatus: "PENDING",
       backfillStartedAt: null,
-      importantBackfilled: true,
     } as never);
 
     createSyncInboxWorker();
@@ -730,7 +725,6 @@ describe("createSyncInboxWorker — disconnect-awareness", () => {
       historyId: "hist-1",
       backfillStatus: "RUNNING",
       backfillStartedAt: freshDate,
-      importantBackfilled: true,
     } as never);
 
     createSyncInboxWorker();
@@ -751,7 +745,6 @@ describe("createSyncInboxWorker — first-run bootstrap", () => {
       backfillStatus: "PENDING",
       backfillStartedAt: null,
       backfillRoutingStartedAt: null,
-      importantBackfilled: true,
     } as never);
 
     createSyncInboxWorker();
@@ -787,7 +780,6 @@ describe("createSyncInboxWorker — first-run bootstrap", () => {
       backfillStatus: "DONE",
       backfillStartedAt: null,
       backfillRoutingStartedAt: new Date(),
-      importantBackfilled: true,
     } as never);
     mockListHistory.mockRejectedValue(new GmailHistoryCursorExpiredError("expired"));
     mockListRecentThreadIds.mockResolvedValue(["gmail-t1"]);

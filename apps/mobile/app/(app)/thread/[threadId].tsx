@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { ActivityIndicator, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Trans } from '@lingui/react/macro';
 import { useLingui } from '@lingui/react';
@@ -233,6 +234,23 @@ export default function ThreadDetailScreen() {
               <Text style={styles.assignBtnText}><Trans>Assign</Trans></Text>
             </TouchableOpacity>
           ) : null}
+          <TouchableOpacity
+            style={[styles.starBtn, thread.isImportant && styles.starBtnActive]}
+            onPress={() => triage.handleToggleImportant(thread.id)}
+            accessibilityRole="button"
+            accessibilityLabel={
+              thread.isImportant
+                ? i18n._(msg`Remove from important`)
+                : i18n._(msg`Mark as important`)
+            }
+            accessibilityState={{ selected: thread.isImportant }}
+          >
+            <Ionicons
+              name={thread.isImportant ? 'star' : 'star-outline'}
+              size={18}
+              color={thread.isImportant ? colors.accent : colors.ink3}
+            />
+          </TouchableOpacity>
         </View>
 
         <RationaleCard
@@ -321,6 +339,17 @@ const styles = StyleSheet.create({
     gap: space.md,
     paddingHorizontal: space.xl,
     paddingTop: space.lg,
+  },
+  starBtn: {
+    marginLeft: 'auto',
+    borderWidth: 1,
+    borderColor: colors.line2,
+    borderRadius: radii.full,
+    padding: space.sm,
+  },
+  starBtnActive: {
+    borderColor: colors.accentLine,
+    backgroundColor: colors.accentSoft,
   },
   assignBtn: {
     borderWidth: 1,

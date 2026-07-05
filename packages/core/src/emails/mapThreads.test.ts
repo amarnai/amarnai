@@ -13,7 +13,7 @@ function makeThread(triageStatus: EmailThreadSummary["triageStatus"]): EmailThre
     isClassifying: false,
     isQueued: false,
     createdAt: new Date().toISOString(),
-    gmailIsImportant: false,
+    isImportant: false,
     messages: [],
     tags: [],
     latestClassification: null,
@@ -63,7 +63,7 @@ function makeDetail(): EmailThreadDetail {
     isQueued: false,
     createdAt: "2026-01-01T00:00:00.000Z",
     updatedAt: "2026-01-02T00:00:00.000Z",
-    gmailIsImportant: true,
+    isImportant: true,
     hasDraft: true,
     isDrafting: false,
     // Detail returns messages oldest-first.

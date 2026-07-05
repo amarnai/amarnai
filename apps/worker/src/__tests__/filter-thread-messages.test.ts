@@ -34,7 +34,6 @@ describe("computeThreadLabelFlagsFromMeta", () => {
 
   it("still derives the label-only flags it can see", () => {
     expect(computeThreadLabelFlagsFromMeta([["CATEGORY_PROMOTIONS"]]).gmailIsPromotions).toBe(true);
-    expect(computeThreadLabelFlagsFromMeta([["INBOX", "IMPORTANT"]]).gmailIsImportant).toBe(true);
     expect(computeThreadLabelFlagsFromMeta([["TRASH"]]).gmailIsTrash).toBe(true);
   });
 });

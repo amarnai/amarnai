@@ -366,8 +366,6 @@ model ProviderSyncState {
   // newly-arrived threads PENDING (they are swept as BACKFILL on start). Once
   // set, live sync resumes classifying new threads as LIVE.
   backfillRoutingStartedAt DateTime?
-  // Set to true after a one-time pass that marks existing threads with gmailIsImportant.
-  importantBackfilled      Boolean        @default(false)
   // Whether the last backfill stopped because it hit the plan's thread cap (more
   // threads exist in Gmail than the plan ingests). Drives the "upgrade to load
   // more" banner. backfillBeyondCount is Gmail's estimate of how many threads
@@ -454,8 +452,9 @@ model EmailThread {
   gmailIsSpam       Boolean      @default(false)
   gmailIsPromotions Boolean      @default(false)
   gmailIsTrash      Boolean      @default(false)
-  // True when ANY message carries Gmail's IMPORTANT label (priority inbox signal).
-  gmailIsImportant  Boolean      @default(false)
+  // User-marked "important" star. Set from the Amarnai UI (never derived from
+  // Gmail's own IMPORTANT label); shared across the workspace.
+  isImportant       Boolean      @default(false)
   // True when every message looks automated/bulk (notifications, newsletters,
   // service mail). Computed at sync; drives the route-to-catch-all policy.
   isAutomated       Boolean      @default(false)

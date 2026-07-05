@@ -25,13 +25,13 @@ msgid "(No body)"
 msgstr "(İçerik yok)"
 
 #. placeholder {0}: thread.attachmentCount
-#: ../../apps/mobile/src/components/ThreadRow.tsx:106
+#: ../../apps/mobile/src/components/ThreadRow.tsx:125
 #, fuzzy
 msgid "{0, plural, one {# file} other {# files}}"
 msgstr "{0, plural, one {# dosya} other {# dosya}}"
 
 #. placeholder {0}: thread.messageCount
-#: ../../apps/mobile/src/components/ThreadRow.tsx:111
+#: ../../apps/mobile/src/components/ThreadRow.tsx:130
 #, fuzzy
 msgid "{0, plural, one {# message} other {# messages}}"
 msgstr "{0, plural, one {# mesaj} other {# mesaj}}"
@@ -79,8 +79,8 @@ msgstr "{0} sana bir ileti dizisi atadı"
 #. placeholder {0}: threads.length.toLocaleString()
 #. placeholder {1}: (total ?? 0).toLocaleString()
 #. placeholder {1}: viewCount.toLocaleString()
-#: ../../apps/mobile/src/components/emails/ThreadListView.tsx:81
-#: ../ui/src/emails/ThreadList.tsx:227
+#: ../../apps/mobile/src/components/emails/ThreadListView.tsx:87
+#: ../ui/src/emails/ThreadList.tsx:231
 #, fuzzy
 msgid "{0} of {1} loaded"
 msgstr "{0} / {1} yüklendi"
@@ -131,7 +131,7 @@ msgstr "{collaboratorCount} / {collaboratorLimit} eklendi"
 msgid "{confPct}% confidence"
 msgstr "%{confPct} güven"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:150
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:151
 #, fuzzy
 msgid "{draftRemaining} of {draftLimit} left · resets {draftResetDate}"
 msgstr "{draftRemaining} / {draftLimit} taslak kaldı · sıfırlanır {draftResetDate}"
@@ -166,8 +166,8 @@ msgstr "{folderCount, plural, one {# klasör} other {# klasör}}"
 #~ msgstr "{pendingCount} beklemede"
 
 #. placeholder {0}: draftQuota.limit
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:300
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:320
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:320
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:344
 #, fuzzy
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
 msgstr "{quotaRemaining} / {0} kaldı · sıfırlanır {quotaResetDate}"
@@ -734,13 +734,13 @@ msgstr "Bu uygulama mevcut planınızın yerine geçer. Sonrasında tamamını d
 msgid "Applying…"
 msgstr "Uygulanıyor…"
 
-#: ../../apps/mobile/src/components/RationaleCard.tsx:75
-#: ../ui/src/emails/RationaleCard.tsx:142
+#: ../../apps/mobile/src/components/RationaleCard.tsx:71
+#: ../ui/src/emails/RationaleCard.tsx:133
 #, fuzzy
 msgid "Approve routing"
 msgstr "Yönlendirmeyi onayla"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:233
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:234
 #: ../ui/src/emails/TriageBar.tsx:71
 #, fuzzy
 msgid "Assign"
@@ -756,8 +756,8 @@ msgstr "Konuyu Ata"
 msgid "Assign to"
 msgstr "Şuraya ata"
 
-#: ../ui/src/emails/ThreadRow.tsx:260
-#: ../ui/src/emails/ThreadRow.tsx:264
+#: ../ui/src/emails/ThreadRow.tsx:307
+#: ../ui/src/emails/ThreadRow.tsx:311
 #: ../ui/src/emails/TriageBar.tsx:63
 #, fuzzy
 msgid "Assign to a member"
@@ -776,7 +776,7 @@ msgstr "Atanan"
 msgid "Assigned to {assigneeName}"
 msgstr "{assigneeName}'e atandı"
 
-#: ../ui/src/emails/ThreadRow.tsx:174
+#: ../ui/src/emails/ThreadRow.tsx:195
 #: ../ui/src/emails/TriageBar.tsx:62
 #, fuzzy
 msgid "Assigned to {assigneeName}. Change assignee"
@@ -828,17 +828,17 @@ msgid "Aziru,\n"
 "With regards,"
 msgstr "Aziru,\n\nDostluk sözleriniz bize ulaştı. Amurru hanedanının ne önerdiğini daha fazla duymaya açığız. Koşullarınızı bir sonraki kurye ile gönderin.\n\nSaygılarımızla,"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:215
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:217
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:25
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:228
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:230
 #: ../ui/src/emails/ThreadPreview.tsx:92
 #, fuzzy
 msgid "Back"
 msgstr "Geri"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:211
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:223
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:213
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:225
 #: ../ui/src/emails/ThreadPreview.tsx:87
 #, fuzzy
 msgid "Back to list"
@@ -1098,8 +1098,8 @@ msgstr "Kapat"
 msgid "Close panel"
 msgstr "Paneli kapat"
 
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:231
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:235
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:255
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:259
 #: ../ui/src/emails/ThreadPreview.tsx:97
 #: ../ui/src/emails/ThreadPreview.tsx:101
 #, fuzzy
@@ -1717,16 +1717,16 @@ msgstr "Bu çalışma alanının bağlantısı kesilir. Bu posta kutusu Amarnai'
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "Bu çalışma alanının bağlantısı kesilir. Bu posta kutusu hala {sharedNames} içinde bağlı olduğu için Amarnai'nin erişimi devam eder."
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:228
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:230
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:65
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:367
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:369
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:57
 #: ../../apps/web/src/components/JoinedWorkspaceToast.tsx:46
 #: ../../apps/web/src/components/NotificationBell.tsx:199
 #: ../../apps/web/src/components/NotificationBell.tsx:200
 #: ../ui/src/AppDownloadBanner.tsx:80
-#: ../ui/src/emails/MockEmailsPage.tsx:256
+#: ../ui/src/emails/MockEmailsPage.tsx:261
 #, fuzzy
 msgid "Dismiss"
 msgstr "Kapat"
@@ -1763,13 +1763,13 @@ msgid "Don't have an account? <0>Sign up</0>"
 msgstr "Hesabın yok mu? <0>Kaydol</0>"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:261
-#: ../../apps/mobile/src/components/ThreadRow.tsx:40
-#: ../ui/src/emails/ThreadRow.tsx:166
+#: ../../apps/mobile/src/components/ThreadRow.tsx:42
+#: ../ui/src/emails/ThreadRow.tsx:187
 #, fuzzy
 msgid "Done"
 msgstr "Tamamlandı"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:211
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:212
 #, fuzzy
 msgid "Done · undo"
 msgstr "Tamamlandı · geri al"
@@ -1779,23 +1779,23 @@ msgstr "Tamamlandı · geri al"
 msgid "Downgrade to {planName}"
 msgstr "{planName} planına düşür"
 
-#: ../ui/src/emails/ThreadRow.tsx:228
+#: ../ui/src/emails/ThreadRow.tsx:249
 #, fuzzy
 msgid "draft"
 msgstr "taslak"
 
-#: ../../apps/mobile/src/components/ThreadRow.tsx:98
+#: ../../apps/mobile/src/components/ThreadRow.tsx:117
 #, fuzzy
 msgid "Draft"
 msgstr "Taslak"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:179
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:180
 #, fuzzy
 msgid "Draft failed · tap to retry"
 msgstr "Taslak oluşturulamadı · yeniden denemek için dokunun"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:315
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:336
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:335
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:360
 #, fuzzy
 msgid "Draft generation failed. Try again."
 msgstr "Taslak oluşturulamadı. Tekrar deneyin."
@@ -1807,7 +1807,7 @@ msgstr "Taslak oluşturulamadı. Tekrar deneyin."
 msgid "Draft reply"
 msgstr "Yanıt taslağı"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:126
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:127
 #, fuzzy
 msgid "Draft shared"
 msgstr "Taslak paylaşıldı"
@@ -1818,8 +1818,8 @@ msgstr "Taslak paylaşıldı"
 msgid "Draft style guidance"
 msgstr "Taslak stil yönergeleri"
 
-#: ../../apps/mobile/src/components/ThreadRow.tsx:94
-#: ../ui/src/emails/ThreadRow.tsx:222
+#: ../../apps/mobile/src/components/ThreadRow.tsx:113
+#: ../ui/src/emails/ThreadRow.tsx:243
 #, fuzzy
 msgid "Drafting…"
 msgstr "Taslak Oluşturuluyor…"
@@ -2136,7 +2136,7 @@ msgstr "Dildeki ifadeler (\"karşılıklı yarar\", \"köklü dostluk\") nedeniy
 msgid "Flight and hotel bookings, travel itineraries, visa applications, and trip confirmations."
 msgstr "Uçuş ve otel rezervasyonları, seyahat programları, vize başvuruları ve seyahat onayları."
 
-#: ../ui/src/emails/MockEmailsPage.tsx:158
+#: ../ui/src/emails/MockEmailsPage.tsx:162
 msgid "folder"
 msgstr "klasör"
 
@@ -2172,7 +2172,7 @@ msgid "Folder: {activeFolderName}"
 msgstr "Klasör: {activeFolderName}"
 
 #: ../ui/src/emails/EmailRail.tsx:99
-#: ../ui/src/emails/ThreadList.tsx:136
+#: ../ui/src/emails/ThreadList.tsx:139
 #, fuzzy
 msgid "Folders"
 msgstr "Klasörler"
@@ -2306,9 +2306,9 @@ msgstr "Yeni taslak oluştur. Aylık kullanım hakkınızdan birini kullanır."
 msgid "Generate a plan from your inbox"
 msgstr "Gelen kutunuzdan plan oluştur"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:294
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:145
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:314
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:314
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:146
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:338
 #: ../ui/src/emails/ThreadPreview.tsx:162
 #, fuzzy
 msgid "Generate draft reply"
@@ -2406,8 +2406,8 @@ msgstr "Gmail canlı senkronizasyonu etkin"
 #: ../../apps/mobile/src/components/RationaleCard.tsx:67
 #: ../ui/src/emails/RationaleCard.tsx:116
 #, fuzzy
-msgid "Gmail marked as important"
-msgstr "Gmail önemli olarak işaretlendi"
+#~ msgid "Gmail marked as important"
+#~ msgstr "Gmail önemli olarak işaretlendi"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:51
 #, fuzzy
@@ -2895,17 +2895,17 @@ msgid "Live"
 msgstr "Canlı"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:301
-#: ../../apps/mobile/src/components/emails/ThreadListView.tsx:95
+#: ../../apps/mobile/src/components/emails/ThreadListView.tsx:101
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:316
-#: ../ui/src/emails/ThreadList.tsx:238
+#: ../ui/src/emails/ThreadList.tsx:242
 #, fuzzy
 msgid "Load more"
 msgstr "Daha fazla yükle"
 
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
-#: ../../apps/mobile/src/components/emails/ThreadListView.tsx:116
+#: ../../apps/mobile/src/components/emails/ThreadListView.tsx:122
 #: ../ui/src/emails/BackfillCard.tsx:35
-#: ../ui/src/emails/ThreadList.tsx:179
+#: ../ui/src/emails/ThreadList.tsx:182
 #, fuzzy
 msgid "Loading past threads…"
 msgstr "Geçmiş yazışmalar yükleniyor…"
@@ -2922,7 +2922,7 @@ msgstr "Geçmiş yazışmalar yükleniyor…"
 #: ../../apps/web/src/app/loading.tsx:6
 #: ../../apps/web/src/components/NotificationBell.tsx:181
 #: ../ui/src/emails/MessageCard.tsx:60
-#: ../ui/src/emails/ThreadList.tsx:238
+#: ../ui/src/emails/ThreadList.tsx:242
 #, fuzzy
 msgid "Loading…"
 msgstr "Yükleniyor…"
@@ -2960,12 +2960,21 @@ msgid "Manager emails: one-on-ones, performance reviews, and feedback."
 msgstr "Yönetici e-postaları: bire bir görüşmeler, performans değerlendirmeleri ve geri bildirimler."
 
 #: ../ui/src/emails/PreviewDoneBar.tsx:23
-#: ../ui/src/emails/ThreadRow.tsx:124
+#: ../ui/src/emails/ThreadRow.tsx:142
 #, fuzzy
 msgid "Mark as done"
 msgstr "Tamamlandı olarak işaretle"
 
-#: ../ui/src/emails/ThreadRow.tsx:123
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:223
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:244
+#: ../../apps/mobile/src/components/ThreadRow.tsx:65
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:234
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:240
+#: ../ui/src/emails/ThreadRow.tsx:145
+msgid "Mark as important"
+msgstr "Önemli olarak işaretle"
+
+#: ../ui/src/emails/ThreadRow.tsx:141
 #, fuzzy
 msgid "Mark as not done"
 msgstr "Tamamlanmadı olarak işaretle"
@@ -2994,7 +3003,7 @@ msgstr "Okunmadı Olarak İşaretle"
 msgid "Mark as unsent"
 msgstr "Gönderilmedi olarak işaretle"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:218
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:219
 #, fuzzy
 msgid "Mark done"
 msgstr "Tamamlandı olarak işaretle"
@@ -3102,13 +3111,13 @@ msgid "Move to folder…"
 msgstr "Klasöre taşı…"
 
 #: ../../apps/mobile/src/components/RationaleCard.tsx:50
-#: ../../apps/mobile/src/components/RationaleCard.tsx:79
-#: ../ui/src/emails/RationaleCard.tsx:151
+#: ../../apps/mobile/src/components/RationaleCard.tsx:75
+#: ../ui/src/emails/RationaleCard.tsx:142
 #, fuzzy
 msgid "Move to…"
 msgstr "Şuraya taşı…"
 
-#: ../ui/src/emails/MockEmailsPage.tsx:168
+#: ../ui/src/emails/MockEmailsPage.tsx:172
 msgid "Moved to {folderName}"
 msgstr "{folderName} klasörüne taşındı"
 
@@ -3132,7 +3141,7 @@ msgid "Name updated."
 msgstr "Ad güncellendi."
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:11
-#: ../../apps/mobile/src/components/ThreadRow.tsx:44
+#: ../../apps/mobile/src/components/ThreadRow.tsx:46
 #: ../ui/src/emails/queueLabels.ts:18
 #, fuzzy
 msgid "Needs review"
@@ -3199,13 +3208,13 @@ msgstr "Yeni çalışma alanı"
 msgid "New workspace name"
 msgstr "Yeni çalışma alanı adı"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:143
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:144
 #, fuzzy
 msgid "No drafts remaining"
 msgstr "Kalan taslak yok"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:299
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:319
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:319
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:343
 #: ../ui/src/emails/SuggestedDraftCard.tsx:97
 #, fuzzy
 msgid "No drafts remaining · resets {quotaResetDate}"
@@ -3293,12 +3302,12 @@ msgstr "Son üretiminizden bu yana önemli yeni e-posta yok, bu yüzden sonuç a
 #~ msgid "No signups yet."
 #~ msgstr "Henüz kayıt yok."
 
-#: ../../apps/mobile/src/components/emails/ThreadListView.tsx:46
+#: ../../apps/mobile/src/components/emails/ThreadListView.tsx:48
 #, fuzzy
 msgid "No threads"
 msgstr "İleti dizisi yok"
 
-#: ../ui/src/emails/ThreadList.tsx:182
+#: ../ui/src/emails/ThreadList.tsx:185
 #, fuzzy
 msgid "No threads here."
 msgstr "Burada ileti dizisi yok."
@@ -3313,7 +3322,7 @@ msgstr "{folderName} içinde ileti dizisi yok"
 msgid "No threads match your search"
 msgstr "Arama kriterlerinize uygun ileti dizisi yok"
 
-#: ../ui/src/emails/ThreadList.tsx:175
+#: ../ui/src/emails/ThreadList.tsx:178
 #, fuzzy
 msgid "No threads match your search."
 msgstr "Arama kriterlerinize uygun ileti dizisi yok."
@@ -3410,13 +3419,13 @@ msgstr "Faturalandırmayı yalnızca çalışma alanı sahibi yönetebilir."
 msgid "Open"
 msgstr "Aç"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:244
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:264
 #: ../../apps/mobile/src/components/DraftSheet.tsx:97
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:248
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:254
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:272
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:278
 #: ../ui/src/emails/ThreadPreview.tsx:115
 #: ../ui/src/emails/ThreadPreview.tsx:121
-#: ../ui/src/emails/ThreadRow.tsx:125
+#: ../ui/src/emails/ThreadRow.tsx:146
 #, fuzzy
 msgid "Open in Gmail"
 msgstr "Gmail'de Aç"
@@ -3765,7 +3774,7 @@ msgstr "Önerilen klasörler. Uygulamak mevcut planınızı değiştirir; her ş
 msgid "Queuing rescan…"
 msgstr "Yeniden tarama sıraya alınıyor…"
 
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:377
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:379
 #, fuzzy
 msgid "Re-route {unclassifiedCount} unclassified"
 msgstr "{unclassifiedCount} sınıflandırılmamışı yeniden yönlendir"
@@ -3899,6 +3908,16 @@ msgstr "{0} Kaldır"
 msgid "Remove {email} from blacklist"
 msgstr "Kara listeden {email} adresini kaldır"
 
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:223
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:243
+#: ../../apps/mobile/src/components/ThreadRow.tsx:64
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:234
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:240
+#: ../ui/src/emails/ThreadRow.tsx:144
+#, fuzzy
+msgid "Remove from important"
+msgstr "Önemlilerden çıkar"
+
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:432
 msgid "Remove its child folders before deleting this one."
 msgstr "Bu klasörü silmeden önce alt klasörlerini kaldırın."
@@ -4020,7 +4039,7 @@ msgstr "Çalışma alanını sıfırla"
 msgid "Reset workspace?"
 msgstr "Çalışma alanı sıfırlansın mı?"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:155
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:156
 #, fuzzy
 msgid "Resets {draftResetDate}"
 msgstr "{draftResetDate} tarihinde sıfırlanır."
@@ -4044,9 +4063,9 @@ msgstr "Konu listesini boyutlandır"
 msgid "Resources"
 msgstr "Kaynaklar"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:317
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:337
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:345
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:342
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:366
 #, fuzzy
 msgid "Retry"
 msgstr "Tekrar Dene"
@@ -4088,7 +4107,7 @@ msgstr "Yönlendirme onaylandı"
 
 #. placeholder {0}: altFolder.name
 #. placeholder {1}: Math.round(thread.alternativeFolder.weight * 100)
-#: ../ui/src/emails/RationaleCard.tsx:130
+#: ../ui/src/emails/RationaleCard.tsx:121
 #, fuzzy
 msgid "Runner-up: <0>{0}</0> ({1}%)"
 msgstr "İkinci: <0>{0}</0> (%{1})"
@@ -4164,9 +4183,9 @@ msgstr "Gelen kutunun nasıl sıralandığını Gmail'in hemen yanında gör."
 msgid "Select"
 msgstr "Seç"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:199
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:334
-#: ../ui/src/emails/MockEmailsPage.tsx:234
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:201
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:336
+#: ../ui/src/emails/MockEmailsPage.tsx:239
 #, fuzzy
 msgid "Select a thread to preview"
 msgstr "Önizlemek için bir ileti seçin"
@@ -4402,18 +4421,18 @@ msgstr "Şimdi Sırala"
 #~ msgstr "Binlerce geçmiş e-postayı otomatik sıralayın. Pro ve Business aboneliklerinde kullanılabilir."
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:10
-#: ../../apps/mobile/src/components/ThreadRow.tsx:51
+#: ../../apps/mobile/src/components/ThreadRow.tsx:53
 #: ../ui/src/emails/queueLabels.ts:14
 #, fuzzy
 msgid "Sorted"
 msgstr "Sıralandı"
 
-#: ../ui/src/emails/RationaleCard.tsx:122
+#: ../ui/src/emails/RationaleCard.tsx:113
 #, fuzzy
 msgid "Sorted automatically by content similarity."
 msgstr "İçerik benzerliğine göre otomatik olarak sıralandı."
 
-#: ../../apps/mobile/src/components/ThreadRow.tsx:41
+#: ../../apps/mobile/src/components/ThreadRow.tsx:43
 #, fuzzy
 msgid "Sorting"
 msgstr "Sıralanıyor"
@@ -4443,7 +4462,7 @@ msgstr "Sıralama hacmi"
 #: ../../apps/mobile/src/components/RationaleCard.tsx:35
 #: ../../apps/site/src/components/landing/HeroFeedCard.tsx:90
 #: ../ui/src/emails/RationaleCard.tsx:52
-#: ../ui/src/emails/ThreadRow.tsx:193
+#: ../ui/src/emails/ThreadRow.tsx:214
 #, fuzzy
 msgid "Sorting…"
 msgstr "Sıralanıyor…"
@@ -4660,7 +4679,7 @@ msgstr "Şablonlar"
 msgid "Terms"
 msgstr "Şartlar"
 
-#: ../ui/src/emails/MockEmailsPage.tsx:144
+#: ../ui/src/emails/MockEmailsPage.tsx:148
 msgid "Thank you for your message. I'll follow up shortly."
 msgstr "Mesajınız için teşekkürler. Yakında dönüş yapacağım."
 
@@ -4809,7 +4828,7 @@ msgstr "Bu işlem, Gmail bağlantısını kaldırır, senkronize edilen tüm e-p
 msgid "This thread cannot be sorted yet. Add at least {TAXONOMY_MIN_NON_ROOT_NODES} categories to your plan to begin routing."
 msgstr "Bu e-posta dizisi henüz sıralanamaz. Yönlendirmeye başlamak için planınıza en az {TAXONOMY_MIN_NON_ROOT_NODES} kategori ekleyin."
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:261
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:281
 msgid "This thread hasn't been sorted yet."
 msgstr "Bu ileti dizisi henüz sıralanmadı."
 
@@ -4823,12 +4842,12 @@ msgstr "Bu e-posta dizisi yönlendirilmeyi bekliyor."
 msgid "This thread is waiting to be routed. Use “Route now” to start sorting."
 msgstr "Bu e-posta dizisi yönlendirilmeyi bekliyor. Sıralamaya başlamak için “Şimdi yönlendir” seçeneğini kullanın."
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:85
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:86
 #, fuzzy
 msgid "Thread"
 msgstr "E-posta Dizisi"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:87
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:88
 #, fuzzy
 msgid "Thread not found"
 msgstr "E-posta dizisi bulunamadı"
@@ -4859,8 +4878,8 @@ msgstr "Bu göndericilerden gelen e-posta dizileri Amarnai tarafından asla içe
 
 #: ../ui/src/emails/queueLabels.ts:27
 #, fuzzy
-msgid "Threads Gmail has flagged as important."
-msgstr "Gmail'in önemli olarak işaretlediği e-posta dizileri."
+#~ msgid "Threads Gmail has flagged as important."
+#~ msgstr "Gmail'in önemli olarak işaretlediği e-posta dizileri."
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:288
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:196
@@ -4882,6 +4901,10 @@ msgstr "Amarnai tarafından bu klasöre sıralanan ileti dizileri."
 #, fuzzy
 msgid "Threads that haven't been sorted yet."
 msgstr "Henüz sıralanmamış ileti dizileri."
+
+#: ../ui/src/emails/queueLabels.ts:27
+msgid "Threads you've marked as important."
+msgstr "Önemli olarak işaretlediğin sohbetler."
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:400
 #, fuzzy
@@ -4965,7 +4988,7 @@ msgstr "Büyük Kral'ım, efendim, güneşim,\n\nGeçen ay gönderdiğiniz tahı
 msgid "Today"
 msgstr "Bugün"
 
-#: ../ui/src/emails/ThreadList.tsx:120
+#: ../ui/src/emails/ThreadList.tsx:123
 #, fuzzy
 msgid "Toggle folders"
 msgstr "Klasörleri Aç/Kapat"
@@ -5028,16 +5051,16 @@ msgstr "Atamayı Kaldır"
 msgid "Unavailable"
 msgstr "Mevcut Değil"
 
-#: ../../apps/mobile/src/components/ThreadRow.tsx:46
-#: ../ui/src/emails/ThreadRow.tsx:201
+#: ../../apps/mobile/src/components/ThreadRow.tsx:48
+#: ../ui/src/emails/ThreadRow.tsx:222
 #, fuzzy
 msgid "Unclassified"
 msgstr "Sınıflandırılmamış"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:221
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:364
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:223
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:366
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1321
-#: ../ui/src/emails/MockEmailsPage.tsx:253
+#: ../ui/src/emails/MockEmailsPage.tsx:258
 #, fuzzy
 msgid "Undo"
 msgstr "Geri Al"
@@ -5244,7 +5267,7 @@ msgstr "Doğrulama e-postası gönderildi. Gelen kutunuzu kontrol edin."
 msgid "Verify your email"
 msgstr "E-postanı doğrula"
 
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:192
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:193
 #, fuzzy
 msgid "View draft reply"
 msgstr "Taslak yanıtı görüntüle"
@@ -5254,9 +5277,9 @@ msgid "View only. Only workspace admins can edit the plan."
 msgstr "Yalnızca görüntüleme. Planı yalnızca çalışma alanı yöneticileri düzenleyebilir."
 
 #: ../../apps/mobile/src/components/RationaleCard.tsx:44
-#: ../../apps/mobile/src/components/ThreadRow.tsx:49
+#: ../../apps/mobile/src/components/ThreadRow.tsx:51
 #: ../ui/src/emails/RationaleCard.tsx:74
-#: ../ui/src/emails/ThreadRow.tsx:197
+#: ../ui/src/emails/ThreadRow.tsx:218
 #, fuzzy
 msgid "Waiting"
 msgstr "Bekleniyor"
@@ -5276,7 +5299,7 @@ msgstr "Doğrulama bekleniyor…"
 #~ msgid "Waitlist"
 #~ msgstr "Bekleme Listesi"
 
-#: ../ui/src/emails/ThreadRow.tsx:117
+#: ../ui/src/emails/ThreadRow.tsx:135
 #, fuzzy
 msgid "Wants {folderName}"
 msgstr "{folderName} istiyor"
@@ -5391,9 +5414,9 @@ msgstr "Çalışma alanı türü"
 msgid "Workspaces included"
 msgstr "Çalışma Alanları Dahil"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:309
-#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:167
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:330
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:329
+#: ../../apps/mobile/app/(app)/thread/[threadId].tsx:168
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:354
 #: ../ui/src/emails/ThreadPreview.tsx:169
 #, fuzzy
 msgid "Writing draft reply…"

@@ -343,6 +343,29 @@ export function useEmailTriage(options: UseEmailTriageOptions) {
       });
   }, [api, workspaceId]);
 
+  // ─── Important ───────────────────────────────────────────────────────────────
+  //
+  // Toggle the user-marked "important" star. Optimistic: flip locally, persist,
+  // and roll back on failure. The star is a shared workspace flag, so no user id
+  // is needed.
+
+  const handleToggleImportant = useCallback((threadId: string) => {
+    const prev = threadsRef.current.find((t) => t.id === threadId);
+    if (!prev) return;
+    const next = !prev.isImportant;
+    setThreads((ts) =>
+      ts.map((t) => (t.id === threadId ? { ...t, isImportant: next } : t))
+    );
+    // Keep the Important pill total in step with the optimistic flip.
+    setCounts((c) => ({ ...c, important: Math.max(0, c.important + (next ? 1 : -1)) }));
+    api
+      .setThreadImportant(workspaceId, threadId, next)
+      .catch(() => {
+        setThreads((ts) => ts.map((t) => (t.id === threadId ? prev : t)));
+        setCounts((c) => ({ ...c, important: Math.max(0, c.important + (next ? -1 : 1)) }));
+      });
+  }, [api, workspaceId]);
+
   // ─── Reroute ─────────────────────────────────────────────────────────────────
 
   const openRerouteFor = useCallback((threadId: string) => {
@@ -511,6 +534,7 @@ export function useEmailTriage(options: UseEmailTriageOptions) {
     handleMarkDone,
     handleUnmarkDone,
     handleAssign,
+    handleToggleImportant,
     openRerouteFor,
     closeReroute,
     commitReroute,

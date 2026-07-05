@@ -44,7 +44,7 @@ export function mapThreadDetail(detail: EmailThreadDetail): ThreadItem {
     isClassifying: detail.isClassifying,
     isQueued: detail.isQueued,
     createdAt: detail.createdAt,
-    gmailIsImportant: detail.gmailIsImportant,
+    isImportant: detail.isImportant,
     // The detail endpoint returns messages oldest-first; the summary mapping
     // expects newest-first (it reads messages[0] for the snippet), so reverse.
     messages: detail.messages
@@ -119,7 +119,7 @@ export function mapThreads(threads: EmailThreadSummary[]): ThreadItem[] {
         : null,
       doneMark: t.doneMark ?? null,
       assignment: t.assignment ?? null,
-      isImportant: t.gmailIsImportant,
+      isImportant: t.isImportant,
       isClassifying: t.isClassifying,
       attachmentCount: t.messages.reduce((sum, m) => sum + m.attachments.length, 0),
       messages: t.messages.map((m) => ({

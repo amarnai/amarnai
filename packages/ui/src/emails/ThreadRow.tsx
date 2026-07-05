@@ -54,6 +54,21 @@ const PERSON_ICO = (
   </svg>
 );
 
+// Five-point star. Filled when the thread is marked important; outline otherwise.
+function StarIco({ filled }: { filled: boolean }) {
+  return (
+    <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden>
+      <path
+        d="M7 1.75l1.545 3.13 3.455.502-2.5 2.437.59 3.44L7 9.63l-3.09 1.625.59-3.44-2.5-2.437 3.455-.502z"
+        fill={filled ? "currentColor" : "none"}
+        stroke="currentColor"
+        strokeWidth={filled ? 0 : 1.2}
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 function fmtTime(d: Date, today: string): string {
   const ds = d.toISOString().slice(0, 10);
   if (ds === today) {
@@ -79,6 +94,8 @@ export interface ThreadRowProps {
   onSelect: () => void;
   onMarkDone: () => void;
   onUnmarkDone: () => void;
+  /** Toggle the user-marked "important" star. */
+  onToggleImportant: () => void;
   /** True when the workspace has ≥2 members (assign affordances are shown). */
   canAssign?: boolean;
   /** Open the member picker anchored to the passed element. */
@@ -94,6 +111,7 @@ export function ThreadRow({
   onSelect,
   onMarkDone,
   onUnmarkDone,
+  onToggleImportant,
   canAssign,
   onOpenAssign,
 }: ThreadRowProps) {
@@ -122,6 +140,9 @@ export function ThreadRow({
   const markDoneLabel = isDone
     ? i18n._(msg`Mark as not done`)
     : i18n._(msg`Mark as done`);
+  const importantLabel = thread.isImportant
+    ? i18n._(msg`Remove from important`)
+    : i18n._(msg`Mark as important`);
   const openInGmailLabel = i18n._(msg`Open in Gmail`);
 
   const assignment = thread.assignment;
@@ -256,6 +277,32 @@ export function ThreadRow({
           {fmtTime(thread.latestAt, today)}
         </div>
         <div className="em-thread-actions">
+          <Tooltip content={openInGmailLabel}>
+            <a
+              href={`https://mail.google.com/mail/u/0/#all/${thread.providerThreadId}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="em-thread-gmail-link"
+              aria-label={openInGmailLabel}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <svg
+                width="11"
+                height="11"
+                viewBox="0 0 12 12"
+                fill="none"
+                aria-hidden
+              >
+                <path
+                  d="M5 2H2a1 1 0 00-1 1v7a1 1 0 001 1h7a1 1 0 001-1V7M7.5 1H11v3.5M11 1L5.5 6.5"
+                  stroke="currentColor"
+                  strokeWidth="1.4"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </a>
+          </Tooltip>
           {assignInteractive && canAssign && !assignment && (
             <Tooltip content={i18n._(msg`Assign to a member`)}>
               <button
@@ -285,31 +332,22 @@ export function ThreadRow({
               {CHECK_ICO}
             </button>
           </Tooltip>
-          <Tooltip content={openInGmailLabel}>
-            <a
-              href={`https://mail.google.com/mail/u/0/#all/${thread.providerThreadId}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="em-thread-gmail-link"
-              aria-label={openInGmailLabel}
-              onClick={(e) => e.stopPropagation()}
+          {/* Trailing slot: a starred thread shows the star flush to the row's
+              right edge (anchored, not floating) even when the other hover-only
+              actions are hidden. */}
+          <Tooltip content={importantLabel}>
+            <button
+              type="button"
+              className={`em-star-btn${thread.isImportant ? " is-important" : ""}`}
+              aria-label={importantLabel}
+              aria-pressed={thread.isImportant}
+              onClick={(e) => {
+                e.stopPropagation();
+                onToggleImportant();
+              }}
             >
-              <svg
-                width="11"
-                height="11"
-                viewBox="0 0 12 12"
-                fill="none"
-                aria-hidden
-              >
-                <path
-                  d="M5 2H2a1 1 0 00-1 1v7a1 1 0 001 1h7a1 1 0 001-1V7M7.5 1H11v3.5M11 1L5.5 6.5"
-                  stroke="currentColor"
-                  strokeWidth="1.4"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </a>
+              <StarIco filled={thread.isImportant} />
+            </button>
           </Tooltip>
         </div>
       </div>

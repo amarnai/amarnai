@@ -18,8 +18,6 @@ export type MetaThreadLabelFlags = {
   gmailIsPromotions: boolean;
   /** True when ALL messages in the thread carry the TRASH label. */
   gmailIsTrash: boolean;
-  /** True when ANY message in the thread carries Gmail's IMPORTANT label. */
-  gmailIsImportant: boolean;
 };
 
 /**
@@ -37,7 +35,6 @@ const CLEAN_META_FLAGS: MetaThreadLabelFlags = {
   gmailIsSpam: false,
   gmailIsPromotions: false,
   gmailIsTrash: false,
-  gmailIsImportant: false,
 };
 
 /**
@@ -57,7 +54,6 @@ export function computeThreadLabelFlags(
     gmailIsSpam:       messages.every((m) => (m.labelIds ?? []).includes("SPAM")),
     gmailIsPromotions: messages.every((m) => (m.labelIds ?? []).includes("CATEGORY_PROMOTIONS")),
     gmailIsTrash:      messages.every((m) => (m.labelIds ?? []).includes("TRASH")),
-    gmailIsImportant:  messages.some((m)  => (m.labelIds ?? []).includes("IMPORTANT")),
     isAutomated:       detectAutomatedThread(messages, selfEmail),
   };
 }
@@ -79,7 +75,6 @@ export function computeThreadLabelFlagsFromMeta(messageLabelIds: string[][]): Me
     gmailIsSpam:       messageLabelIds.every((labels) => labels.includes("SPAM")),
     gmailIsPromotions: messageLabelIds.every((labels) => labels.includes("CATEGORY_PROMOTIONS")),
     gmailIsTrash:      messageLabelIds.every((labels) => labels.includes("TRASH")),
-    gmailIsImportant:  messageLabelIds.some((labels)  => labels.includes("IMPORTANT")),
   };
 }
 

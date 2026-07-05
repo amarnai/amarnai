@@ -212,6 +212,7 @@ export default function EmailsScreen() {
           backfilling={syncStatusQuery.data?.backfillStatus === 'RUNNING'}
           onRefresh={triage.refresh}
           onThreadPress={handleThreadPress}
+          onToggleImportant={triage.handleToggleImportant}
           hasMore={triage.hasMore}
           loadingMore={triage.loadingMore}
           onLoadMore={triage.loadMore}

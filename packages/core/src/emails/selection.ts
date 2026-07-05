@@ -2,8 +2,8 @@ import type { FilterCounts } from "@amarnai/api-client";
 import type { FolderItem, QueueId, ActiveSelection, SegFilter, ThreadItem } from "./types.js";
 
 // Ordered action-first: views that require the user to act (Assigned, Needs
-// review) come first, then lifecycle state (Pending, Sorted), then the passive
-// Gmail flag (Important) last.
+// review) come first, then lifecycle state (Pending, Sorted), then the
+// user-marked Important star last.
 export const QUEUES: { id: QueueId; name: string; warn?: boolean; desc: string }[] = [
   { id: "all", name: "All", desc: "Every thread in your inbox." },
   { id: "assigned", name: "Assigned", desc: "Threads assigned to you." },
@@ -15,7 +15,7 @@ export const QUEUES: { id: QueueId; name: string; warn?: boolean; desc: string }
   },
   { id: "pending", name: "Pending", desc: "Threads that haven't been sorted yet." },
   { id: "sorted", name: "Sorted", desc: "Threads Amarnai has successfully routed to a folder." },
-  { id: "important", name: "Important", desc: "Threads Gmail has flagged as important." },
+  { id: "important", name: "Important", desc: "Threads you've marked as important." },
 ];
 
 function baseFilter(
