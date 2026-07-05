@@ -18,11 +18,22 @@ export type NotificationView = {
   href: string | null;
 };
 
-// Chrome Web Store / AMO listing for the browser extension. Config-gated
-// (mirrors the mobile AppDownloadBanner's NEXT_PUBLIC_PLAY_STORE_URL): when
-// unset — self-host without a published listing — the nudge stays informational
-// with no click target.
-const EXTENSION_STORE_URL = process.env.NEXT_PUBLIC_EXTENSION_STORE_URL ?? null;
+// Store listings for the browser extension. Config-gated (mirrors the mobile
+// AppDownloadBanner's NEXT_PUBLIC_PLAY_STORE_URL): when neither is set —
+// self-host without a published listing — the nudge stays informational with
+// no click target. `|| null` so a blank-but-set var also counts as unset.
+const CHROME_STORE_URL = process.env.NEXT_PUBLIC_EXTENSION_STORE_URL || null;
+const FIREFOX_STORE_URL = process.env.NEXT_PUBLIC_EXTENSION_STORE_URL_FIREFOX || null;
+
+// Firefox is reliably UA-detectable; every other browser gets the Chrome Web
+// Store link, which covers all Chromium-based browsers. Falls back to the
+// other listing when only one is configured, so the fallback (not detection)
+// decides whether a link exists — SSR and client always agree on `href`
+// presence, only the target may differ after hydration.
+function extensionStoreUrl(): string | null {
+  const isFirefox = typeof navigator !== "undefined" && navigator.userAgent.includes("Firefox");
+  return isFirefox ? (FIREFOX_STORE_URL ?? CHROME_STORE_URL) : (CHROME_STORE_URL ?? FIREFOX_STORE_URL);
+}
 
 export function describeNotification(n: NotificationItem, i18n: I18n): NotificationView {
   const d = interpretNotification(n);
@@ -36,9 +47,9 @@ export function describeNotification(n: NotificationItem, i18n: I18n): Notificat
     case "extension_not_installed":
       return {
         title: i18n._(msg`Install the Amarnai browser extension`),
-        body: i18n._(msg`Triage your inbox from a side panel next to Gmail.`),
+        body: i18n._(msg`Save time by triaging your inbox without leaving Gmail.`),
         threadId: null,
-        href: EXTENSION_STORE_URL,
+        href: extensionStoreUrl(),
       };
     default:
       return { title: i18n._(msg`New notification`), body: null, threadId: null, href: null };

@@ -30,7 +30,7 @@ export function describeNotification(n: NotificationItem, i18n: I18n): Notificat
       // server-driven unread badge still clears when the row is read/dismissed.
       return {
         title: i18n._(msg`Install the Amarnai browser extension`),
-        body: i18n._(msg`Triage your inbox from a side panel next to Gmail on your computer.`),
+        body: i18n._(msg`Save time by triaging your inbox without leaving Gmail. The extension runs in your desktop browser.`),
         threadId: null,
       };
     default:
