@@ -437,3 +437,11 @@ packages/
   tokens/     Framework-agnostic design tokens (web + mobile)
   api-client/ Transport-agnostic typed API client (web + mobile)
 ```
+
+## License
+
+Copyright (C) 2026 Azgard LLC
+
+Amarnai is free software licensed under the GNU Affero General Public License v3.0 (AGPL-3.0-only). See [LICENSE](LICENSE) for the full text.
+
+Contributions are accepted under a Contributor License Agreement — see [CLA.md](CLA.md) and [CONTRIBUTING.md](CONTRIBUTING.md).

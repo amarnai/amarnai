@@ -6,6 +6,10 @@ Check the [open issues](https://github.com/BenAzlay/amarnai/issues) and [existin
 
 Amarnai is intentionally focused. Contributions that add scope (new email providers, team features, workflow automation) are unlikely to be accepted regardless of quality. See the Non-Goals section in [CLAUDE.md](CLAUDE.md).
 
+## Contributor License Agreement
+
+All contributions to Amarnai are covered by our [Contributor License Agreement](CLA.md). Every pull request must have a signed CLA before it can be merged — an automated check will comment on your PR with a one-time signing link when you first open one. You sign once, and it covers all of your future contributions.
+
 ## Setup
 
 Follow the setup steps in [README.md](README.md). The short version:
