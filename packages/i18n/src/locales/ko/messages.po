@@ -25,13 +25,13 @@ msgid "(No body)"
 msgstr "(내용 없음)"
 
 #. placeholder {0}: thread.attachmentCount
-#: ../../apps/mobile/src/components/ThreadRow.tsx:125
+#: ../../apps/mobile/src/components/ThreadRow.tsx:115
 #, fuzzy
 msgid "{0, plural, one {# file} other {# files}}"
 msgstr "{0, plural, one {#개 파일} other {#개 파일}}"
 
 #. placeholder {0}: thread.messageCount
-#: ../../apps/mobile/src/components/ThreadRow.tsx:130
+#: ../../apps/mobile/src/components/ThreadRow.tsx:120
 #, fuzzy
 msgid "{0, plural, one {# message} other {# messages}}"
 msgstr "{0, plural, one {#개 메시지} other {#개 메시지}}"
@@ -763,8 +763,8 @@ msgstr "스레드 할당"
 msgid "Assign to"
 msgstr "할당 대상"
 
-#: ../ui/src/emails/ThreadRow.tsx:311
-#: ../ui/src/emails/ThreadRow.tsx:320
+#: ../ui/src/emails/ThreadRow.tsx:292
+#: ../ui/src/emails/ThreadRow.tsx:301
 #: ../ui/src/emails/TriageBar.tsx:63
 #, fuzzy
 msgid "Assign to a member"
@@ -783,8 +783,8 @@ msgstr "담당"
 msgid "Assigned to {assigneeName}"
 msgstr "{assigneeName}님에게 할당됨"
 
-#: ../ui/src/emails/ThreadRow.tsx:195
-#: ../ui/src/emails/ThreadRow.tsx:319
+#: ../ui/src/emails/ThreadRow.tsx:188
+#: ../ui/src/emails/ThreadRow.tsx:300
 #: ../ui/src/emails/TriageBar.tsx:62
 #, fuzzy
 msgid "Assigned to {assigneeName}. Change assignee"
@@ -1039,7 +1039,7 @@ msgstr "캐치올"
 msgid "Change"
 msgstr "변경"
 
-#: ../ui/src/emails/ThreadRow.tsx:310
+#: ../ui/src/emails/ThreadRow.tsx:291
 msgid "Change assignee"
 msgstr "담당자 변경"
 
@@ -1069,7 +1069,7 @@ msgstr "하위 폴더"
 msgid "Choose a new password for your account."
 msgstr "계정의 새 비밀번호를 설정하세요."
 
-#: ../../apps/web/src/app/(app)/upgrade/page.tsx:43
+#: ../../apps/web/src/app/(app)/upgrade/page.tsx:40
 #, fuzzy
 msgid "Choose a subscription"
 msgstr "구독 선택"
@@ -1779,8 +1779,8 @@ msgid "Don't have an account? <0>Sign up</0>"
 msgstr "계정이 없으신가요? <0>가입하기</0>"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:261
-#: ../../apps/mobile/src/components/ThreadRow.tsx:42
-#: ../ui/src/emails/ThreadRow.tsx:187
+#: ../../apps/mobile/src/components/ThreadRow.tsx:35
+#: ../ui/src/emails/ThreadRow.tsx:180
 #, fuzzy
 msgid "Done"
 msgstr "완료"
@@ -1795,12 +1795,12 @@ msgstr "완료 · 실행 취소"
 msgid "Downgrade to {planName}"
 msgstr "{planName}(으)로 다운그레이드"
 
-#: ../ui/src/emails/ThreadRow.tsx:249
+#: ../ui/src/emails/ThreadRow.tsx:242
 #, fuzzy
 msgid "draft"
 msgstr "초안"
 
-#: ../../apps/mobile/src/components/ThreadRow.tsx:117
+#: ../../apps/mobile/src/components/ThreadRow.tsx:110
 #, fuzzy
 msgid "Draft"
 msgstr "초안"
@@ -1834,8 +1834,8 @@ msgstr "초안 공유됨"
 msgid "Draft style guidance"
 msgstr "초안 작성 지침"
 
-#: ../../apps/mobile/src/components/ThreadRow.tsx:113
-#: ../ui/src/emails/ThreadRow.tsx:243
+#: ../../apps/mobile/src/components/ThreadRow.tsx:106
+#: ../ui/src/emails/ThreadRow.tsx:236
 #, fuzzy
 msgid "Drafting…"
 msgstr "초안 작성 중..."
@@ -2441,7 +2441,7 @@ msgid "Go home"
 msgstr "홈으로"
 
 #. placeholder {0}: workspace.name
-#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:202
+#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:122
 #, fuzzy
 msgid "Go to {0}"
 msgstr "{0}으로 이동"
@@ -2980,21 +2980,21 @@ msgid "Manager emails: one-on-ones, performance reviews, and feedback."
 msgstr "관리자 이메일: 일대일 면담, 성과 평가 및 피드백."
 
 #: ../ui/src/emails/PreviewDoneBar.tsx:23
-#: ../ui/src/emails/ThreadRow.tsx:142
+#: ../ui/src/emails/ThreadRow.tsx:135
 #, fuzzy
 msgid "Mark as done"
 msgstr "완료로 표시"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:223
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:244
-#: ../../apps/mobile/src/components/ThreadRow.tsx:65
+#: ../../apps/mobile/src/components/ThreadRow.tsx:58
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:234
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:240
-#: ../ui/src/emails/ThreadRow.tsx:145
+#: ../ui/src/emails/ThreadRow.tsx:138
 msgid "Mark as important"
 msgstr "중요 표시"
 
-#: ../ui/src/emails/ThreadRow.tsx:141
+#: ../ui/src/emails/ThreadRow.tsx:134
 #, fuzzy
 msgid "Mark as not done"
 msgstr "미완료로 표시"
@@ -3161,7 +3161,7 @@ msgid "Name updated."
 msgstr "이름이 업데이트되었습니다."
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:11
-#: ../../apps/mobile/src/components/ThreadRow.tsx:46
+#: ../../apps/mobile/src/components/ThreadRow.tsx:39
 #: ../ui/src/emails/queueLabels.ts:18
 #, fuzzy
 msgid "Needs review"
@@ -3445,7 +3445,7 @@ msgstr "열기"
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:278
 #: ../ui/src/emails/ThreadPreview.tsx:115
 #: ../ui/src/emails/ThreadPreview.tsx:121
-#: ../ui/src/emails/ThreadRow.tsx:146
+#: ../ui/src/emails/ThreadRow.tsx:139
 #, fuzzy
 msgid "Open in Gmail"
 msgstr "Gmail에서 열기"
@@ -3564,7 +3564,7 @@ msgstr "비밀번호가 업데이트되었습니다. 새 비밀번호로 로그�
 msgid "Passwords do not match"
 msgstr "비밀번호가 일치하지 않습니다."
 
-#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:175
+#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:95
 msgid "Payment confirmed"
 msgstr "결제 완료"
 
@@ -3930,10 +3930,10 @@ msgstr "{email}을(를) 블랙리스트에서 제거"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:223
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:243
-#: ../../apps/mobile/src/components/ThreadRow.tsx:64
+#: ../../apps/mobile/src/components/ThreadRow.tsx:57
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:234
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:240
-#: ../ui/src/emails/ThreadRow.tsx:144
+#: ../ui/src/emails/ThreadRow.tsx:137
 #, fuzzy
 msgid "Remove from important"
 msgstr "중요 표시 해제"
@@ -3976,7 +3976,7 @@ msgid "Renews monthly on <0>{0}</0>."
 msgstr "<0>{0}</0>에 매월 갱신됩니다."
 
 #. placeholder {0}: workspace.currentPeriodEnd.toLocaleDateString()
-#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:192
+#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:112
 #, fuzzy
 msgid "Renews on <0>{0}</0>."
 msgstr "<0>{0}</0>에 갱신됩니다."
@@ -4445,7 +4445,7 @@ msgstr "지금 정리"
 #~ msgstr "수천 건의 과거 이메일을 자동으로 분류합니다. Pro 및 Business 요금제에서 이용 가능합니다."
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:10
-#: ../../apps/mobile/src/components/ThreadRow.tsx:53
+#: ../../apps/mobile/src/components/ThreadRow.tsx:46
 #: ../ui/src/emails/queueLabels.ts:14
 #, fuzzy
 msgid "Sorted"
@@ -4456,7 +4456,7 @@ msgstr "분류됨"
 msgid "Sorted automatically by content similarity."
 msgstr "콘텐츠 유사성에 따라 자동으로 분류됩니다."
 
-#: ../../apps/mobile/src/components/ThreadRow.tsx:43
+#: ../../apps/mobile/src/components/ThreadRow.tsx:36
 #, fuzzy
 msgid "Sorting"
 msgstr "분류 중"
@@ -4486,7 +4486,7 @@ msgstr "분류량"
 #: ../../apps/mobile/src/components/RationaleCard.tsx:35
 #: ../../apps/site/src/components/landing/HeroFeedCard.tsx:90
 #: ../ui/src/emails/RationaleCard.tsx:52
-#: ../ui/src/emails/ThreadRow.tsx:214
+#: ../ui/src/emails/ThreadRow.tsx:207
 #, fuzzy
 msgid "Sorting…"
 msgstr "분류 중…"
@@ -4506,7 +4506,7 @@ msgstr "기본 분류"
 msgid "Start 14-day trial"
 msgstr "14일 무료 체험 시작"
 
-#: ../../apps/web/src/app/(app)/upgrade/page.tsx:45
+#: ../../apps/web/src/app/(app)/upgrade/page.tsx:42
 #, fuzzy
 msgid "Start for free and upgrade as your needs grow."
 msgstr "무료로 시작하고 필요에 따라 업그레이드하세요."
@@ -5110,8 +5110,8 @@ msgstr "할당 해제"
 msgid "Unavailable"
 msgstr "이용 불가"
 
-#: ../../apps/mobile/src/components/ThreadRow.tsx:48
-#: ../ui/src/emails/ThreadRow.tsx:222
+#: ../../apps/mobile/src/components/ThreadRow.tsx:41
+#: ../ui/src/emails/ThreadRow.tsx:215
 #, fuzzy
 msgid "Unclassified"
 msgstr "미분류"
@@ -5336,9 +5336,9 @@ msgid "View only. Only workspace admins can edit the plan."
 msgstr "보기 전용. 워크스페이스 관리자만 플랜을 편집할 수 있습니다."
 
 #: ../../apps/mobile/src/components/RationaleCard.tsx:44
-#: ../../apps/mobile/src/components/ThreadRow.tsx:51
+#: ../../apps/mobile/src/components/ThreadRow.tsx:44
 #: ../ui/src/emails/RationaleCard.tsx:74
-#: ../ui/src/emails/ThreadRow.tsx:218
+#: ../ui/src/emails/ThreadRow.tsx:211
 #, fuzzy
 msgid "Waiting"
 msgstr "대기 중"
@@ -5358,7 +5358,7 @@ msgstr "인증 대기 중…"
 #~ msgid "Waitlist"
 #~ msgstr "대기 목록"
 
-#: ../ui/src/emails/ThreadRow.tsx:135
+#: ../ui/src/emails/ThreadRow.tsx:128
 #, fuzzy
 msgid "Wants {folderName}"
 msgstr "{folderName}을(를) 원함"
@@ -5569,7 +5569,7 @@ msgstr "이 워크스페이스에 Gmail 받은 편지함을 연결할 권한이 
 msgid "You were assigned a thread"
 msgstr "스레드가 할당되었습니다."
 
-#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:178
+#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:98
 #, fuzzy
 msgid "You're on {planLabel}"
 msgstr "{planLabel} 플랜입니다."
@@ -5599,7 +5599,7 @@ msgid "Your {plan} plan finished importing your most recent emails. Older ones b
 msgstr "{plan} 플랜으로 가장 최신 이메일을 가져왔습니다. 한도를 초과한 이전 이메일은 로드되지 않았습니다."
 
 #. placeholder {0}: workspace.trialEndsAt.toLocaleDateString()
-#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:183
+#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:103
 #, fuzzy
 msgid "Your 14-day free trial runs until <0>{0}</0>. You won't be charged before then."
 msgstr "14일 무료 체험은 <0>{0}</0>까지입니다. 그전에 요금이 청구되지 않습니다."

@@ -823,39 +823,6 @@
   color: var(--accent);
 }
 
-/* Confidence donut */
-.em-conf {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  font-family: var(--f-mono);
-  font-size: 10px;
-  letter-spacing: 0.04em;
-  color: var(--ink-3);
-}
-
-.em-donut {
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
-  background: conic-gradient(
-    var(--em-conf-c, var(--ok)) calc(var(--em-conf, 0) * 360deg),
-    var(--line-2) 0
-  );
-  position: relative;
-  flex-shrink: 0;
-}
-
-.em-donut::after {
-  content: "";
-  position: absolute;
-  inset: 2px;
-  background: var(--surface);
-  border-radius: 50%;
-}
-
-.em-thread-row.selected .em-donut::after { background: var(--accent-soft); }
-
 /* Routing chip */
 .em-route-chip {
   display: inline-flex;

@@ -117,13 +117,6 @@ export function ThreadRow({
 }: ThreadRowProps) {
   const { i18n } = useLingui();
   const today = new Date().toISOString().slice(0, 10);
-  const confPct = Math.round(thread.confidence * 100);
-  const confColor =
-    thread.confidence >= 0.8
-      ? "var(--ok)"
-      : thread.confidence >= 0.6
-        ? "var(--warn)"
-        : "var(--danger)";
 
   const inExactFolder =
     active.kind === "folder" &&
@@ -257,18 +250,6 @@ export function ThreadRow({
               {thread.attachmentCount}
             </span>
           )}
-          <span className="em-conf">
-            <span
-              className="em-donut"
-              style={
-                {
-                  "--em-conf": thread.confidence,
-                  "--em-conf-c": confColor,
-                } as React.CSSProperties
-              }
-            />
-            {confPct}%
-          </span>
         </div>
       </div>
 

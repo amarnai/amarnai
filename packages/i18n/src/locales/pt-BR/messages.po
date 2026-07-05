@@ -25,13 +25,13 @@ msgid "(No body)"
 msgstr "(Sem corpo)"
 
 #. placeholder {0}: thread.attachmentCount
-#: ../../apps/mobile/src/components/ThreadRow.tsx:125
+#: ../../apps/mobile/src/components/ThreadRow.tsx:115
 #, fuzzy
 msgid "{0, plural, one {# file} other {# files}}"
 msgstr "{0, plural, one {# arquivo} other {# arquivos}}"
 
 #. placeholder {0}: thread.messageCount
-#: ../../apps/mobile/src/components/ThreadRow.tsx:130
+#: ../../apps/mobile/src/components/ThreadRow.tsx:120
 msgid "{0, plural, one {# message} other {# messages}}"
 msgstr "{0, plural, one {# mensagem} other {# mensagens}}"
 
@@ -740,8 +740,8 @@ msgstr "Atribuir conversa"
 msgid "Assign to"
 msgstr "Atribuir a"
 
-#: ../ui/src/emails/ThreadRow.tsx:311
-#: ../ui/src/emails/ThreadRow.tsx:320
+#: ../ui/src/emails/ThreadRow.tsx:292
+#: ../ui/src/emails/ThreadRow.tsx:301
 #: ../ui/src/emails/TriageBar.tsx:63
 #, fuzzy
 msgid "Assign to a member"
@@ -760,8 +760,8 @@ msgstr "Atribuído"
 msgid "Assigned to {assigneeName}"
 msgstr "Atribuído a {assigneeName}"
 
-#: ../ui/src/emails/ThreadRow.tsx:195
-#: ../ui/src/emails/ThreadRow.tsx:319
+#: ../ui/src/emails/ThreadRow.tsx:188
+#: ../ui/src/emails/ThreadRow.tsx:300
 #: ../ui/src/emails/TriageBar.tsx:62
 #, fuzzy
 msgid "Assigned to {assigneeName}. Change assignee"
@@ -1003,7 +1003,7 @@ msgstr "Geral"
 msgid "Change"
 msgstr "Alterar"
 
-#: ../ui/src/emails/ThreadRow.tsx:310
+#: ../ui/src/emails/ThreadRow.tsx:291
 #, fuzzy
 msgid "Change assignee"
 msgstr "Alterar responsável"
@@ -1032,7 +1032,7 @@ msgstr "Subpasta"
 msgid "Choose a new password for your account."
 msgstr "Escolha uma nova senha para sua conta."
 
-#: ../../apps/web/src/app/(app)/upgrade/page.tsx:43
+#: ../../apps/web/src/app/(app)/upgrade/page.tsx:40
 #, fuzzy
 msgid "Choose a subscription"
 msgstr "Escolha uma assinatura"
@@ -1720,8 +1720,8 @@ msgid "Don't have an account? <0>Sign up</0>"
 msgstr "Não tem uma conta? <0>Cadastre-se</0>"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:261
-#: ../../apps/mobile/src/components/ThreadRow.tsx:42
-#: ../ui/src/emails/ThreadRow.tsx:187
+#: ../../apps/mobile/src/components/ThreadRow.tsx:35
+#: ../ui/src/emails/ThreadRow.tsx:180
 #, fuzzy
 msgid "Done"
 msgstr "Concluído"
@@ -1734,12 +1734,12 @@ msgstr "Concluído · desfazer"
 msgid "Downgrade to {planName}"
 msgstr "Fazer downgrade para {planName}"
 
-#: ../ui/src/emails/ThreadRow.tsx:249
+#: ../ui/src/emails/ThreadRow.tsx:242
 #, fuzzy
 msgid "draft"
 msgstr "rascunho"
 
-#: ../../apps/mobile/src/components/ThreadRow.tsx:117
+#: ../../apps/mobile/src/components/ThreadRow.tsx:110
 msgid "Draft"
 msgstr "Rascunho"
 
@@ -1769,8 +1769,8 @@ msgstr "Rascunho compartilhado"
 msgid "Draft style guidance"
 msgstr "Orientações de estilo do rascunho"
 
-#: ../../apps/mobile/src/components/ThreadRow.tsx:113
-#: ../ui/src/emails/ThreadRow.tsx:243
+#: ../../apps/mobile/src/components/ThreadRow.tsx:106
+#: ../ui/src/emails/ThreadRow.tsx:236
 msgid "Drafting…"
 msgstr "Rascunhando…"
 
@@ -2344,7 +2344,7 @@ msgid "Go home"
 msgstr "Ir para a página inicial"
 
 #. placeholder {0}: workspace.name
-#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:202
+#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:122
 #, fuzzy
 msgid "Go to {0}"
 msgstr "Ir para {0}"
@@ -2865,21 +2865,21 @@ msgid "Manager emails: one-on-ones, performance reviews, and feedback."
 msgstr "E-mails de gerentes: reuniões individuais, avaliações de desempenho e feedback."
 
 #: ../ui/src/emails/PreviewDoneBar.tsx:23
-#: ../ui/src/emails/ThreadRow.tsx:142
+#: ../ui/src/emails/ThreadRow.tsx:135
 #, fuzzy
 msgid "Mark as done"
 msgstr "Marcar como concluído"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:223
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:244
-#: ../../apps/mobile/src/components/ThreadRow.tsx:65
+#: ../../apps/mobile/src/components/ThreadRow.tsx:58
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:234
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:240
-#: ../ui/src/emails/ThreadRow.tsx:145
+#: ../ui/src/emails/ThreadRow.tsx:138
 msgid "Mark as important"
 msgstr "Marcar como importante"
 
-#: ../ui/src/emails/ThreadRow.tsx:141
+#: ../ui/src/emails/ThreadRow.tsx:134
 #, fuzzy
 msgid "Mark as not done"
 msgstr "Marcar como não concluído"
@@ -3039,7 +3039,7 @@ msgid "Name updated."
 msgstr "Nome atualizado."
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:11
-#: ../../apps/mobile/src/components/ThreadRow.tsx:46
+#: ../../apps/mobile/src/components/ThreadRow.tsx:39
 #: ../ui/src/emails/queueLabels.ts:18
 msgid "Needs review"
 msgstr "Precisa de revisão"
@@ -3311,7 +3311,7 @@ msgstr "Abrir"
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:278
 #: ../ui/src/emails/ThreadPreview.tsx:115
 #: ../ui/src/emails/ThreadPreview.tsx:121
-#: ../ui/src/emails/ThreadRow.tsx:146
+#: ../ui/src/emails/ThreadRow.tsx:139
 #, fuzzy
 msgid "Open in Gmail"
 msgstr "Abrir no Gmail"
@@ -3423,7 +3423,7 @@ msgstr "Senha atualizada. Faça login com sua nova senha."
 msgid "Passwords do not match"
 msgstr "As senhas não coincidem"
 
-#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:175
+#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:95
 msgid "Payment confirmed"
 msgstr "Pagamento confirmado"
 
@@ -3776,10 +3776,10 @@ msgstr "Remover {email} da lista negra"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:223
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:243
-#: ../../apps/mobile/src/components/ThreadRow.tsx:64
+#: ../../apps/mobile/src/components/ThreadRow.tsx:57
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:234
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:240
-#: ../ui/src/emails/ThreadRow.tsx:144
+#: ../ui/src/emails/ThreadRow.tsx:137
 #, fuzzy
 msgid "Remove from important"
 msgstr "Remover de importantes"
@@ -3821,7 +3821,7 @@ msgid "Renews monthly on <0>{0}</0>."
 msgstr "Renova mensalmente em <0>{0}</0>."
 
 #. placeholder {0}: workspace.currentPeriodEnd.toLocaleDateString()
-#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:192
+#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:112
 #, fuzzy
 msgid "Renews on <0>{0}</0>."
 msgstr "Renova em <0>{0}</0>."
@@ -4270,7 +4270,7 @@ msgstr "Organizar agora"
 #~ msgstr "Organize milhares de e-mails históricos automaticamente. Disponível nas assinaturas Pro e Business."
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:10
-#: ../../apps/mobile/src/components/ThreadRow.tsx:53
+#: ../../apps/mobile/src/components/ThreadRow.tsx:46
 #: ../ui/src/emails/queueLabels.ts:14
 #, fuzzy
 msgid "Sorted"
@@ -4281,7 +4281,7 @@ msgstr "Classificado"
 msgid "Sorted automatically by content similarity."
 msgstr "Classificado automaticamente por similaridade de conteúdo."
 
-#: ../../apps/mobile/src/components/ThreadRow.tsx:43
+#: ../../apps/mobile/src/components/ThreadRow.tsx:36
 #, fuzzy
 msgid "Sorting"
 msgstr "Classificação"
@@ -4310,7 +4310,7 @@ msgstr "Volume de organização"
 #: ../../apps/mobile/src/components/RationaleCard.tsx:35
 #: ../../apps/site/src/components/landing/HeroFeedCard.tsx:90
 #: ../ui/src/emails/RationaleCard.tsx:52
-#: ../ui/src/emails/ThreadRow.tsx:214
+#: ../ui/src/emails/ThreadRow.tsx:207
 msgid "Sorting…"
 msgstr "Classificando…"
 
@@ -4327,7 +4327,7 @@ msgstr "Organização padrão"
 msgid "Start 14-day trial"
 msgstr "Começar teste de 14 dias"
 
-#: ../../apps/web/src/app/(app)/upgrade/page.tsx:45
+#: ../../apps/web/src/app/(app)/upgrade/page.tsx:42
 #, fuzzy
 msgid "Start for free and upgrade as your needs grow."
 msgstr "Comece gratuitamente e atualize conforme suas necessidades aumentam."
@@ -4920,8 +4920,8 @@ msgstr "Desatribuir"
 msgid "Unavailable"
 msgstr "Indisponível"
 
-#: ../../apps/mobile/src/components/ThreadRow.tsx:48
-#: ../ui/src/emails/ThreadRow.tsx:222
+#: ../../apps/mobile/src/components/ThreadRow.tsx:41
+#: ../ui/src/emails/ThreadRow.tsx:215
 msgid "Unclassified"
 msgstr "Não classificado"
 
@@ -5136,9 +5136,9 @@ msgid "View only. Only workspace admins can edit the plan."
 msgstr "Somente visualização. Apenas administradores do workspace podem editar o plano."
 
 #: ../../apps/mobile/src/components/RationaleCard.tsx:44
-#: ../../apps/mobile/src/components/ThreadRow.tsx:51
+#: ../../apps/mobile/src/components/ThreadRow.tsx:44
 #: ../ui/src/emails/RationaleCard.tsx:74
-#: ../ui/src/emails/ThreadRow.tsx:218
+#: ../ui/src/emails/ThreadRow.tsx:211
 msgid "Waiting"
 msgstr "Aguardando"
 
@@ -5156,7 +5156,7 @@ msgstr "Aguardando verificação…"
 #~ msgid "Waitlist"
 #~ msgstr "Lista de espera"
 
-#: ../ui/src/emails/ThreadRow.tsx:135
+#: ../ui/src/emails/ThreadRow.tsx:128
 msgid "Wants {folderName}"
 msgstr "Deseja {folderName}"
 
@@ -5356,7 +5356,7 @@ msgstr "Você não tem permissão para conectar uma caixa de entrada do Gmail a 
 msgid "You were assigned a thread"
 msgstr "Você recebeu uma conversa"
 
-#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:178
+#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:98
 #, fuzzy
 msgid "You're on {planLabel}"
 msgstr "Você está no plano {planLabel}"
@@ -5386,7 +5386,7 @@ msgid "Your {plan} plan finished importing your most recent emails. Older ones b
 msgstr "Seu plano {plan} concluiu a importação dos seus e-mails mais recentes. Os mais antigos, que excedem o limite do plano, não foram carregados."
 
 #. placeholder {0}: workspace.trialEndsAt.toLocaleDateString()
-#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:183
+#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:103
 #, fuzzy
 msgid "Your 14-day free trial runs until <0>{0}</0>. You won't be charged before then."
 msgstr "Sua avaliação gratuita de 14 dias vai até <0>{0}</0>. Você não será cobrado antes disso."
