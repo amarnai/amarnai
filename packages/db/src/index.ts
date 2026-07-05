@@ -12,6 +12,9 @@ export {
   type CreateNotificationInput,
   deleteThreadAssignedNotifications,
   type DeleteThreadAssignedNotificationsInput,
+  maybeCreateExtensionNudge,
+  type MaybeCreateExtensionNudgeInput,
+  deleteExtensionNudgeNotifications,
 } from "./notifications.js";
 export { getInboxPlanCeiling, type InboxPlanCeiling } from "./inbox-entitlement.js";
 export {

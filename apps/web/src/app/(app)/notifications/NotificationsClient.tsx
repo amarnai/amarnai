@@ -176,6 +176,19 @@ export function NotificationsClient({ currentWorkspaceId }: { currentWorkspaceId
     }
   }
 
+  // Open a notification's external link (e.g. the extension store listing).
+  // Counts as dealing with it: mark read + dismiss, then open in a new tab.
+  function openLink(n: NotificationItem, href: string) {
+    if (!n.readAt) applyRead([n.id], true);
+    if (!n.dismissedAt) {
+      setItems((prev) =>
+        prev.map((it) => (it.id === n.id ? { ...it, dismissedAt: new Date().toISOString() } : it))
+      );
+      api.dismissNotifications([n.id]).catch(() => {});
+    }
+    window.open(href, "_blank", "noopener,noreferrer");
+  }
+
   const selectedIds = Array.from(selected);
   const selectedCount = selected.size;
 
@@ -267,6 +280,17 @@ export function NotificationsClient({ currentWorkspaceId }: { currentWorkspaceId
                       onClick={() => openThread(n, view.threadId!)}
                       title={_(msg`Open thread`)}
                       aria-label={_(msg`Open thread`)}
+                    >
+                      <OpenIcon />
+                    </button>
+                  )}
+                  {view.href && (
+                    <button
+                      type="button"
+                      className="notif-mgr-icon-btn"
+                      onClick={() => openLink(n, view.href!)}
+                      title={_(msg`Open`)}
+                      aria-label={_(msg`Open`)}
                     >
                       <OpenIcon />
                     </button>

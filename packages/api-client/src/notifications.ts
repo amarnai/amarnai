@@ -25,6 +25,11 @@ export type NotificationDescriptor =
       /** Thread to open on click; null if absent. */
       threadId: string | null;
     }
+  | {
+      /** One-time nudge to install the browser side-panel extension. Carries no
+       *  params; the click target (a store listing) is a client-side config. */
+      kind: "extension_not_installed";
+    }
   | { kind: "unknown" };
 
 /**
@@ -41,6 +46,8 @@ export function interpretNotification(n: NotificationItem): NotificationDescript
         subject: str(n.params["subject"]),
         threadId: str(n.params["threadId"]),
       };
+    case "extension_not_installed":
+      return { kind: "extension_not_installed" };
     default:
       return { kind: "unknown" };
   }

@@ -71,7 +71,7 @@ msgstr "{0} / {1} verbleibend · Setzt zurück {2}"
 #. placeholder {0}: d.assignedBy
 #: ../../apps/extension/src/panel/notificationText.ts:15
 #: ../../apps/mobile/src/data/notificationView.ts:23
-#: ../../apps/web/src/lib/notifications.ts:23
+#: ../../apps/web/src/lib/notifications.ts:32
 #, fuzzy
 msgid "{0} assigned you a thread"
 msgstr "{0} hat dir eine Konversation zugewiesen"
@@ -176,7 +176,7 @@ msgid "{routableCount} of {TAXONOMY_MIN_NON_ROOT_NODES} folders connected to you
 msgstr "{routableCount} von {TAXONOMY_MIN_NON_ROOT_NODES} Ordnern mit Ihrem Posteingang verbunden. Das Routing erfordert mindestens {TAXONOMY_MIN_NON_ROOT_NODES}."
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:276
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:194
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:207
 msgid "{selectedCount} selected"
 msgstr "{selectedCount} ausgewählt"
 
@@ -602,6 +602,7 @@ msgstr "Amarnai ist Open Source unter AGPL-3.0-Lizenz. Klonen Sie es, bringen Si
 msgid "Amarnai needs access to its server and Gmail to show your inbox."
 msgstr "Amarnai benötigt Zugriff auf seinen Server und Gmail, um Ihren Posteingang anzuzeigen."
 
+#: ../../apps/extension/src/App.tsx:52
 #: ../../apps/extension/src/auth/SignInScreen.tsx:12
 msgid "Amarnai needs access to its server and Gmail to work. Please allow access and try again."
 msgstr "Amarnai benötigt Zugriff auf seinen Server und Gmail, um zu funktionieren. Bitte erlauben Sie den Zugriff und versuchen Sie es erneut."
@@ -1115,7 +1116,7 @@ msgstr "Passwort bestätigen"
 msgid "Connect a Gmail inbox to configure sync filters."
 msgstr "Verbinden Sie einen Gmail-Posteingang, um Synchronisierungsfilter zu konfigurieren."
 
-#: ../../apps/extension/src/App.tsx:46
+#: ../../apps/extension/src/App.tsx:93
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:361
@@ -1158,7 +1159,7 @@ msgstr "Gmail verbinden, um mit der Triage zu beginnen"
 msgid "Connect once, generate your plan once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
 msgstr "Einmal verbinden, einmal Ihren Plan erstellen und Amarnai den Umgang mit neuen E-Mails und Tausenden bereits vorhandener Konversationen in Ihrem Posteingang überlassen."
 
-#: ../../apps/extension/src/App.tsx:43
+#: ../../apps/extension/src/App.tsx:89
 #, fuzzy
 msgid "Connect your Gmail account to start triaging."
 msgstr "Verbinden Sie Ihr Gmail-Konto, um mit dem Sortieren zu beginnen."
@@ -1245,6 +1246,10 @@ msgstr "Kündigung nicht möglich"
 #, fuzzy
 msgid "Could not change subscription"
 msgstr "Abonnement konnte nicht geändert werden."
+
+#: ../../apps/extension/src/App.tsx:80
+msgid "Could not connect Gmail. Please try again."
+msgstr "Verbindung zu Gmail fehlgeschlagen. Bitte versuchen Sie es erneut."
 
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:113
 #, fuzzy
@@ -1487,9 +1492,9 @@ msgstr "Kostenloser Standard-Workspace"
 #: ../../apps/mobile/app/(app)/notifications.tsx:142
 #: ../../apps/mobile/app/(app)/notifications.tsx:238
 #: ../../apps/mobile/app/(app)/notifications.tsx:324
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:206
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:279
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:280
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:219
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:303
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:304
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:596
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:607
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:703
@@ -1658,8 +1663,8 @@ msgstr "Trennt diesen Arbeitsbereich. Amarnai behält den Zugriff, da dieses Pos
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:367
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:57
 #: ../../apps/web/src/components/JoinedWorkspaceToast.tsx:46
-#: ../../apps/web/src/components/NotificationBell.tsx:192
-#: ../../apps/web/src/components/NotificationBell.tsx:193
+#: ../../apps/web/src/components/NotificationBell.tsx:199
+#: ../../apps/web/src/components/NotificationBell.tsx:200
 #: ../ui/src/AppDownloadBanner.tsx:80
 #: ../ui/src/emails/MockEmailsPage.tsx:256
 msgid "Dismiss"
@@ -2555,6 +2560,12 @@ msgstr "Informelle Nachricht ohne klare Kategorie: Persönlicher Besuch oder pol
 msgid "Initial backfill"
 msgstr "Erstbefüllung"
 
+#: ../../apps/mobile/src/data/notificationView.ts:32
+#: ../../apps/web/src/lib/notifications.ts:38
+#, fuzzy
+msgid "Install the Amarnai browser extension"
+msgstr "Installieren Sie die Amarnai Browser-Erweiterung"
+
 #: ../../apps/site/src/components/landing/FAQSection.tsx:16
 msgid "Instead of scanning a crowded inbox, you open Amarnai and find your threads already grouped into the folders you care about, so you can work through customer questions, investor updates, or hiring replies in focused batches. Each thread comes with a suggested folder and the reasoning behind it, and you can draft a reply or jump straight to the thread in Gmail with one click. Triage that used to take an hour takes minutes."
 msgstr "Anstatt einen überfüllten Posteingang zu durchforsten, öffnen Sie Amarnai und finden Ihre Konversationen bereits in den Ordnern, die Ihnen wichtig sind. So bearbeiten Sie Kundenfragen, Investoren-Updates oder Bewerbungsantworten in gezielten Stapeln. Jede Konversation enthält einen Ordner-Vorschlag mit Begründung, und Sie können eine Antwort entwerfen oder mit einem Klick direkt in Gmail zur Konversation springen. Was früher eine Stunde Triage erforderte, ist jetzt in Minuten erledigt."
@@ -2773,7 +2784,7 @@ msgstr "Live"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:301
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:95
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:292
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:316
 #: ../ui/src/emails/ThreadList.tsx:238
 #, fuzzy
 msgid "Load more"
@@ -2786,17 +2797,17 @@ msgstr "Mehr laden"
 msgid "Loading past threads…"
 msgstr "Alte Konversationen werden geladen…"
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:122
+#: ../../apps/extension/src/panel/NotificationBell.tsx:133
 #: ../../apps/mobile/app/(app)/notifications.tsx:301
 #: ../../apps/mobile/src/components/MessageCard.tsx:53
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:73
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:214
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:292
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:227
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:316
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:121
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:137
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:158
 #: ../../apps/web/src/app/loading.tsx:6
-#: ../../apps/web/src/components/NotificationBell.tsx:174
+#: ../../apps/web/src/components/NotificationBell.tsx:181
 #: ../ui/src/emails/MessageCard.tsx:60
 #: ../ui/src/emails/ThreadList.tsx:238
 #, fuzzy
@@ -2813,9 +2824,9 @@ msgstr "E-Mail"
 msgid "Manage"
 msgstr "Verwalten"
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:144
+#: ../../apps/extension/src/panel/NotificationBell.tsx:155
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:79
-#: ../../apps/web/src/components/NotificationBell.tsx:205
+#: ../../apps/web/src/components/NotificationBell.tsx:212
 #, fuzzy
 msgid "Manage notifications"
 msgstr "Benachrichtigungen verwalten"
@@ -2845,8 +2856,8 @@ msgid "Mark as not done"
 msgstr "Als nicht erledigt markieren"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:215
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:258
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:259
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:271
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:272
 msgid "Mark as read"
 msgstr "Als gelesen markieren"
 
@@ -2857,8 +2868,8 @@ msgid "Mark as sent"
 msgstr "Als gesendet markieren"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:215
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:258
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:259
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:271
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:272
 #, fuzzy
 msgid "Mark as unread"
 msgstr "Als ungelesen markieren"
@@ -2878,13 +2889,13 @@ msgstr "Als erledigt markieren"
 #~ msgstr "Als eingeladen markieren"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:314
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:200
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:213
 #, fuzzy
 msgid "Mark read"
 msgstr "Gelesen markieren"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:319
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:203
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:216
 msgid "Mark unread"
 msgstr "Ungelesen markieren"
 
@@ -3032,8 +3043,8 @@ msgid "New folder"
 msgstr "Neuer Ordner"
 
 #: ../../apps/extension/src/panel/notificationText.ts:18
-#: ../../apps/mobile/src/data/notificationView.ts:28
-#: ../../apps/web/src/lib/notifications.ts:28
+#: ../../apps/mobile/src/data/notificationView.ts:37
+#: ../../apps/web/src/lib/notifications.ts:44
 msgid "New notification"
 msgstr "Neue Benachrichtigung"
 
@@ -3130,11 +3141,11 @@ msgstr "Keine Mitglieder"
 msgid "No members available"
 msgstr "Keine Mitglieder verfügbar"
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:127
+#: ../../apps/extension/src/panel/NotificationBell.tsx:138
 #: ../../apps/mobile/app/(app)/notifications.tsx:294
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:73
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:216
-#: ../../apps/web/src/components/NotificationBell.tsx:177
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:229
+#: ../../apps/web/src/components/NotificationBell.tsx:184
 #, fuzzy
 msgid "No notifications yet"
 msgstr "Noch keine Benachrichtigungen"
@@ -3228,22 +3239,22 @@ msgstr "Nicht festgelegt"
 msgid "Not yet synced"
 msgstr "Noch nicht synchronisiert"
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:39
-#: ../../apps/extension/src/panel/NotificationBell.tsx:115
-#: ../../apps/extension/src/panel/NotificationBell.tsx:117
+#: ../../apps/extension/src/panel/NotificationBell.tsx:40
+#: ../../apps/extension/src/panel/NotificationBell.tsx:125
+#: ../../apps/extension/src/panel/NotificationBell.tsx:128
 #: ../../apps/mobile/app/(app)/account.tsx:145
 #: ../../apps/mobile/app/(app)/notifications.tsx:256
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:49
 #: ../../apps/web/src/app/(app)/notifications/page.tsx:16
-#: ../../apps/web/src/components/NotificationBell.tsx:151
-#: ../../apps/web/src/components/NotificationBell.tsx:166
-#: ../../apps/web/src/components/NotificationBell.tsx:170
+#: ../../apps/web/src/components/NotificationBell.tsx:158
+#: ../../apps/web/src/components/NotificationBell.tsx:173
+#: ../../apps/web/src/components/NotificationBell.tsx:177
 #, fuzzy
 msgid "Notifications"
 msgstr "Benachrichtigungen"
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:100
-#: ../../apps/web/src/components/NotificationBell.tsx:150
+#: ../../apps/extension/src/panel/NotificationBell.tsx:107
+#: ../../apps/web/src/components/NotificationBell.tsx:157
 #, fuzzy
 msgid "Notifications, {unread} unread"
 msgstr "Benachrichtigungen, {unread} ungelesen"
@@ -3259,6 +3270,11 @@ msgstr "Laufende Konversation mit einem bekannten Stadtgouverneur, der ein wiede
 #: ../../apps/mobile/app/(app)/subscription.tsx:325
 msgid "Only the workspace owner can manage billing."
 msgstr "Nur der Workspace-Inhaber kann die Abrechnung verwalten."
+
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:292
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:293
+msgid "Open"
+msgstr "Öffnen"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:244
 #: ../../apps/mobile/src/components/DraftSheet.tsx:97
@@ -3282,8 +3298,8 @@ msgid "open source email ai"
 msgstr "Open-Source E-Mail-KI"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:228
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:268
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:269
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:281
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:282
 msgid "Open thread"
 msgstr "Konversation öffnen"
 
@@ -3992,13 +4008,13 @@ msgid "Select a thread to preview"
 msgstr "Wählen Sie eine Konversation zur Vorschau aus"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:276
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:192
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:194
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:205
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:207
 #, fuzzy
 msgid "Select all"
 msgstr "Alle auswählen"
 
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:234
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:247
 msgid "Select notification"
 msgstr "Benachrichtigung auswählen"
 
@@ -4138,7 +4154,7 @@ msgstr "Mit Google anmelden"
 msgid "Sign in with Google. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
 msgstr "Mit Google anmelden. Amarnai synchronisiert Ihre Konversationen und Labels. Es sendet oder löscht niemals in Ihrem Namen."
 
-#: ../../apps/extension/src/App.tsx:49
+#: ../../apps/extension/src/App.tsx:96
 #: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:68
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:130
 #: ../../apps/mobile/app/(app)/account.tsx:122
@@ -4780,6 +4796,16 @@ msgstr "Triage"
 msgid "Triage & review"
 msgstr "Sichtung & Überprüfung"
 
+#: ../../apps/mobile/src/data/notificationView.ts:33
+#, fuzzy
+msgid "Triage your inbox from a side panel next to Gmail on your computer."
+msgstr "Sichten Sie Ihren Posteingang über ein Seitenpanel direkt neben Gmail auf Ihrem Computer."
+
+#: ../../apps/web/src/lib/notifications.ts:39
+#, fuzzy
+msgid "Triage your inbox from a side panel next to Gmail."
+msgstr "Sichten Sie Ihren Posteingang über ein Seitenpanel direkt neben Gmail."
+
 #: ../ui/src/AppDownloadBanner.tsx:71
 msgid "Triage your inbox on the go."
 msgstr "Sortieren Sie Ihren Posteingang unterwegs."
@@ -5242,7 +5268,7 @@ msgstr "Sie haben keine Berechtigung, einen Gmail-Posteingang mit diesem Arbeits
 
 #: ../../apps/extension/src/panel/notificationText.ts:16
 #: ../../apps/mobile/src/data/notificationView.ts:24
-#: ../../apps/web/src/lib/notifications.ts:24
+#: ../../apps/web/src/lib/notifications.ts:33
 msgid "You were assigned a thread"
 msgstr "Dir wurde eine Konversation zugewiesen"
 

@@ -24,7 +24,7 @@ import {
 import { RegisterCredentialsSchema } from "@amarnai/shared";
 import { isSupportedLocale, localeFromAcceptLanguage } from "@amarnai/i18n";
 import { sendVerificationEmail, sendPasswordResetEmail } from "@amarnai/email";
-import { db, deleteUserCascade } from "@amarnai/db";
+import { db, deleteUserCascade, maybeCreateExtensionNudge } from "@amarnai/db";
 import type { AppEnv } from "../env.js";
 import { syncInboxQueue } from "../services/queue-client.js";
 import { disconnectGmail } from "../services/gmail-disconnect.js";
@@ -222,6 +222,15 @@ auth.post("/auth/google", async (c) => {
       );
     registerGmailWatch(workspaceId).catch((err) =>
       console.error("[auth/google] register_watch:", err instanceof Error ? err.message : err)
+    );
+  }
+
+  // Fire-and-forget: one-time "install the browser extension" nudge, for new and
+  // returning users alike (the helper is idempotent and self-suppressing). No-op
+  // when the sign-in came through the extension itself — it registers on load.
+  if (result.gmailConnected && result.workspaceId) {
+    maybeCreateExtensionNudge({ userId: result.userId, workspaceId: result.workspaceId }).catch(
+      (err) => console.error("[auth/google] extension_nudge:", err instanceof Error ? err.message : err)
     );
   }
 

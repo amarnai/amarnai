@@ -72,7 +72,7 @@ msgstr "{0} / {1} 남음 · {2} 초기화"
 #. placeholder {0}: d.assignedBy
 #: ../../apps/extension/src/panel/notificationText.ts:15
 #: ../../apps/mobile/src/data/notificationView.ts:23
-#: ../../apps/web/src/lib/notifications.ts:23
+#: ../../apps/web/src/lib/notifications.ts:32
 msgid "{0} assigned you a thread"
 msgstr "{0}님이 회원님께 스레드를 할당했습니다."
 
@@ -183,7 +183,7 @@ msgid "{routableCount} of {TAXONOMY_MIN_NON_ROOT_NODES} folders connected to you
 msgstr "받은편지함에 {TAXONOMY_MIN_NON_ROOT_NODES}개 폴더 중 {routableCount}개가 연결되었습니다. 라우팅하려면 최소 {TAXONOMY_MIN_NON_ROOT_NODES}개가 필요합니다."
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:276
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:194
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:207
 msgid "{selectedCount} selected"
 msgstr "{selectedCount}개 선택됨"
 
@@ -621,6 +621,7 @@ msgstr "Amarnai는 AGPL-3.0에 따라 오픈 소스로 제공됩니다. 클론�
 msgid "Amarnai needs access to its server and Gmail to show your inbox."
 msgstr "Amarnai는 받은 편지함을 표시하기 위해 자체 서버 및 Gmail 접근 권한이 필요합니다."
 
+#: ../../apps/extension/src/App.tsx:52
 #: ../../apps/extension/src/auth/SignInScreen.tsx:12
 msgid "Amarnai needs access to its server and Gmail to work. Please allow access and try again."
 msgstr "Amarnai는 정상적인 작동을 위해 자체 서버 및 Gmail 접근 권한이 필요합니다. 접근을 허용하고 다시 시도해 주세요."
@@ -1159,7 +1160,7 @@ msgstr "비밀번호 확인"
 msgid "Connect a Gmail inbox to configure sync filters."
 msgstr "동기화 필터를 설정하려면 Gmail 받은 편지함을 연결하세요."
 
-#: ../../apps/extension/src/App.tsx:46
+#: ../../apps/extension/src/App.tsx:93
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:361
@@ -1203,7 +1204,7 @@ msgstr "Gmail을 연결하고 분류를 시작하세요."
 msgid "Connect once, generate your plan once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
 msgstr "한 번 연결하고 계획을 한 번 생성하면, Amarnai가 새 메일과 받은 편지함에 이미 쌓여있는 수많은 스레드를 처리합니다."
 
-#: ../../apps/extension/src/App.tsx:43
+#: ../../apps/extension/src/App.tsx:89
 msgid "Connect your Gmail account to start triaging."
 msgstr "정리를 시작하려면 Gmail 계정을 연결하세요."
 
@@ -1294,6 +1295,10 @@ msgstr "취소할 수 없습니다."
 #, fuzzy
 msgid "Could not change subscription"
 msgstr "구독을 변경할 수 없습니다."
+
+#: ../../apps/extension/src/App.tsx:80
+msgid "Could not connect Gmail. Please try again."
+msgstr "Gmail에 연결할 수 없습니다. 다시 시도해 주세요."
 
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:113
 #, fuzzy
@@ -1543,9 +1548,9 @@ msgstr "기본 무료 워크스페이스"
 #: ../../apps/mobile/app/(app)/notifications.tsx:142
 #: ../../apps/mobile/app/(app)/notifications.tsx:238
 #: ../../apps/mobile/app/(app)/notifications.tsx:324
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:206
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:279
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:280
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:219
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:303
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:304
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:596
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:607
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:703
@@ -1719,8 +1724,8 @@ msgstr "이 작업 공간의 연결을 해제합니다. 이 메일함은 {shared
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:367
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:57
 #: ../../apps/web/src/components/JoinedWorkspaceToast.tsx:46
-#: ../../apps/web/src/components/NotificationBell.tsx:192
-#: ../../apps/web/src/components/NotificationBell.tsx:193
+#: ../../apps/web/src/components/NotificationBell.tsx:199
+#: ../../apps/web/src/components/NotificationBell.tsx:200
 #: ../ui/src/AppDownloadBanner.tsx:80
 #: ../ui/src/emails/MockEmailsPage.tsx:256
 #, fuzzy
@@ -2665,6 +2670,11 @@ msgstr "명확한 카테고리가 없는 비공식 메시지: 개인 방문인�
 msgid "Initial backfill"
 msgstr "초기 백필"
 
+#: ../../apps/mobile/src/data/notificationView.ts:32
+#: ../../apps/web/src/lib/notifications.ts:38
+msgid "Install the Amarnai browser extension"
+msgstr "Amarnai 브라우저 확장 프로그램 설치"
+
 #: ../../apps/site/src/components/landing/FAQSection.tsx:16
 #, fuzzy
 msgid "Instead of scanning a crowded inbox, you open Amarnai and find your threads already grouped into the folders you care about, so you can work through customer questions, investor updates, or hiring replies in focused batches. Each thread comes with a suggested folder and the reasoning behind it, and you can draft a reply or jump straight to the thread in Gmail with one click. Triage that used to take an hour takes minutes."
@@ -2887,7 +2897,7 @@ msgstr "실시간"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:301
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:95
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:292
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:316
 #: ../ui/src/emails/ThreadList.tsx:238
 #, fuzzy
 msgid "Load more"
@@ -2901,17 +2911,17 @@ msgstr "더 보기"
 msgid "Loading past threads…"
 msgstr "이전 스레드를 불러오는 중…"
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:122
+#: ../../apps/extension/src/panel/NotificationBell.tsx:133
 #: ../../apps/mobile/app/(app)/notifications.tsx:301
 #: ../../apps/mobile/src/components/MessageCard.tsx:53
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:73
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:214
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:292
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:227
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:316
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:121
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:137
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:158
 #: ../../apps/web/src/app/loading.tsx:6
-#: ../../apps/web/src/components/NotificationBell.tsx:174
+#: ../../apps/web/src/components/NotificationBell.tsx:181
 #: ../ui/src/emails/MessageCard.tsx:60
 #: ../ui/src/emails/ThreadList.tsx:238
 #, fuzzy
@@ -2929,9 +2939,9 @@ msgstr "메일"
 msgid "Manage"
 msgstr "관리"
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:144
+#: ../../apps/extension/src/panel/NotificationBell.tsx:155
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:79
-#: ../../apps/web/src/components/NotificationBell.tsx:205
+#: ../../apps/web/src/components/NotificationBell.tsx:212
 msgid "Manage notifications"
 msgstr "알림 관리"
 
@@ -2962,8 +2972,8 @@ msgid "Mark as not done"
 msgstr "미완료로 표시"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:215
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:258
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:259
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:271
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:272
 msgid "Mark as read"
 msgstr "읽음으로 표시"
 
@@ -2974,8 +2984,8 @@ msgid "Mark as sent"
 msgstr "보낸 것으로 표시"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:215
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:258
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:259
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:271
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:272
 msgid "Mark as unread"
 msgstr "안 읽음으로 표시"
 
@@ -2996,13 +3006,13 @@ msgstr "완료 표시"
 #~ msgstr "초대 완료로 표시"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:314
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:200
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:213
 #, fuzzy
 msgid "Mark read"
 msgstr "읽음으로 표시"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:319
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:203
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:216
 msgid "Mark unread"
 msgstr "안 읽음으로 표시"
 
@@ -3159,8 +3169,8 @@ msgid "New folder"
 msgstr "새 폴더"
 
 #: ../../apps/extension/src/panel/notificationText.ts:18
-#: ../../apps/mobile/src/data/notificationView.ts:28
-#: ../../apps/web/src/lib/notifications.ts:28
+#: ../../apps/mobile/src/data/notificationView.ts:37
+#: ../../apps/web/src/lib/notifications.ts:44
 msgid "New notification"
 msgstr "새 알림"
 
@@ -3262,11 +3272,11 @@ msgstr "멤버 없음"
 msgid "No members available"
 msgstr "사용 가능한 멤버 없음"
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:127
+#: ../../apps/extension/src/panel/NotificationBell.tsx:138
 #: ../../apps/mobile/app/(app)/notifications.tsx:294
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:73
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:216
-#: ../../apps/web/src/components/NotificationBell.tsx:177
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:229
+#: ../../apps/web/src/components/NotificationBell.tsx:184
 msgid "No notifications yet"
 msgstr "아직 알림 없음"
 
@@ -3362,22 +3372,22 @@ msgstr "설정되지 않음"
 msgid "Not yet synced"
 msgstr "아직 동기화되지 않음"
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:39
-#: ../../apps/extension/src/panel/NotificationBell.tsx:115
-#: ../../apps/extension/src/panel/NotificationBell.tsx:117
+#: ../../apps/extension/src/panel/NotificationBell.tsx:40
+#: ../../apps/extension/src/panel/NotificationBell.tsx:125
+#: ../../apps/extension/src/panel/NotificationBell.tsx:128
 #: ../../apps/mobile/app/(app)/account.tsx:145
 #: ../../apps/mobile/app/(app)/notifications.tsx:256
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:49
 #: ../../apps/web/src/app/(app)/notifications/page.tsx:16
-#: ../../apps/web/src/components/NotificationBell.tsx:151
-#: ../../apps/web/src/components/NotificationBell.tsx:166
-#: ../../apps/web/src/components/NotificationBell.tsx:170
+#: ../../apps/web/src/components/NotificationBell.tsx:158
+#: ../../apps/web/src/components/NotificationBell.tsx:173
+#: ../../apps/web/src/components/NotificationBell.tsx:177
 #, fuzzy
 msgid "Notifications"
 msgstr "알림"
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:100
-#: ../../apps/web/src/components/NotificationBell.tsx:150
+#: ../../apps/extension/src/panel/NotificationBell.tsx:107
+#: ../../apps/web/src/components/NotificationBell.tsx:157
 msgid "Notifications, {unread} unread"
 msgstr "알림, 읽지 않음 {unread}개"
 
@@ -3395,6 +3405,11 @@ msgstr "잘 알려진 도시 시장과의 반복되는 공급 문제 스레드. 
 #, fuzzy
 msgid "Only the workspace owner can manage billing."
 msgstr "워크스페이스 소유자만 결제를 관리할 수 있습니다."
+
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:292
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:293
+msgid "Open"
+msgstr "열기"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:244
 #: ../../apps/mobile/src/components/DraftSheet.tsx:97
@@ -3418,8 +3433,8 @@ msgid "open source email ai"
 msgstr "오픈 소스 이메일 AI"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:228
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:268
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:269
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:281
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:282
 msgid "Open thread"
 msgstr "스레드 열기"
 
@@ -4158,13 +4173,13 @@ msgid "Select a thread to preview"
 msgstr "미리 보려면 스레드를 선택하세요."
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:276
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:192
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:194
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:205
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:207
 #, fuzzy
 msgid "Select all"
 msgstr "모두 선택"
 
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:234
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:247
 msgid "Select notification"
 msgstr "알림 선택"
 
@@ -4311,7 +4326,7 @@ msgstr "Google로 로그인"
 msgid "Sign in with Google. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
 msgstr "Google로 로그인하세요. Amarnai는 스레드와 라벨을 동기화합니다. 사용자를 대신하여 메일을 보내거나 삭제하지 않습니다."
 
-#: ../../apps/extension/src/App.tsx:49
+#: ../../apps/extension/src/App.tsx:96
 #: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:68
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:130
 #: ../../apps/mobile/app/(app)/account.tsx:122
@@ -4974,6 +4989,15 @@ msgstr "선별"
 msgid "Triage & review"
 msgstr "선별 및 검토"
 
+#: ../../apps/mobile/src/data/notificationView.ts:33
+#, fuzzy
+msgid "Triage your inbox from a side panel next to Gmail on your computer."
+msgstr "컴퓨터에서 Gmail 옆 사이드 패널로 수신함을 분류하세요."
+
+#: ../../apps/web/src/lib/notifications.ts:39
+msgid "Triage your inbox from a side panel next to Gmail."
+msgstr "Gmail 옆 사이드 패널로 수신함을 분류하세요."
+
 #: ../ui/src/AppDownloadBanner.tsx:71
 #, fuzzy
 msgid "Triage your inbox on the go."
@@ -5459,7 +5483,7 @@ msgstr "이 워크스페이스에 Gmail 받은 편지함을 연결할 권한이 
 
 #: ../../apps/extension/src/panel/notificationText.ts:16
 #: ../../apps/mobile/src/data/notificationView.ts:24
-#: ../../apps/web/src/lib/notifications.ts:24
+#: ../../apps/web/src/lib/notifications.ts:33
 msgid "You were assigned a thread"
 msgstr "스레드가 할당되었습니다."
 

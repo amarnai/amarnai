@@ -45,6 +45,68 @@ export async function createNotification(input: CreateNotificationInput): Promis
   });
 }
 
+export interface MaybeCreateExtensionNudgeInput {
+  /** The user who just connected Gmail — recipient of the nudge. */
+  userId: string;
+  /** Workspace the connect happened in; carried for client-side context. */
+  workspaceId: string;
+}
+
+/**
+ * Produce the one-time "install the browser extension" nudge for a user, if and
+ * only if they don't already have the extension and have never been nudged.
+ *
+ * Called (best-effort, fire-and-forget) whenever a user's Gmail is connected —
+ * the earliest moment the extension's side panel has real triaged threads to
+ * show. Two guards keep it strictly one-time:
+ *   1. An `ExtensionInstall` row means they already have it — never nudge. This
+ *      also covers connecting *through* the extension (it registers on load).
+ *   2. `User.extensionNudgedAt` is set the first time the nudge fires and is
+ *      never cleared, so a later reconnect (or the user deleting the bell item)
+ *      cannot re-trigger it.
+ *
+ * The marker flip is done with a conditional `updateMany` (WHERE extensionNudgedAt
+ * IS NULL) so two concurrent connects can't both create a notification: only the
+ * update that actually flipped the row (count === 1) goes on to create it.
+ *
+ * Like the other producers here, treat this as best-effort: callers must not fail
+ * their critical path if it throws.
+ */
+export async function maybeCreateExtensionNudge(
+  input: MaybeCreateExtensionNudgeInput
+): Promise<void> {
+  const install = await db.extensionInstall.findUnique({
+    where: { userId: input.userId },
+    select: { userId: true },
+  });
+  if (install) return;
+
+  // Atomically claim the one-time slot: only succeeds while the marker is null.
+  const claimed = await db.user.updateMany({
+    where: { id: input.userId, extensionNudgedAt: null },
+    data: { extensionNudgedAt: new Date() },
+  });
+  if (claimed.count === 0) return;
+
+  await createNotification({
+    userId: input.userId,
+    workspaceId: input.workspaceId,
+    type: "extension_not_installed",
+  });
+}
+
+/**
+ * Remove a user's outstanding "extension_not_installed" nudge. Called when the
+ * extension registers, so a user who is nudged and then installs sees the bell
+ * item disappear. The durable `User.extensionNudgedAt` marker is intentionally
+ * left set — installing must not re-arm the one-time nudge. Best-effort.
+ */
+export async function deleteExtensionNudgeNotifications(userId: string): Promise<void> {
+  await db.notification.deleteMany({
+    where: { userId, type: "extension_not_installed" },
+  });
+}
+
 export interface DeleteThreadAssignedNotificationsInput {
   /** Recipient whose stale assignment notifications should be removed. */
   userId: string;

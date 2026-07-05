@@ -23,3 +23,15 @@ export type ExtApi = Omit<typeof chrome, "sidePanel"> & {
 
 export const ext: ExtApi =
   (globalThis as unknown as { browser?: ExtApi }).browser ?? (chrome as ExtApi);
+
+// Which browser this build is running in, feature-detected the same way the
+// service worker distinguishes side panel (Chrome) from sidebar (Firefox).
+// Defaults to CHROME when neither surface is present (e.g. the vitest stub).
+export function currentBrowser(): "CHROME" | "FIREFOX" {
+  return ext.sidebarAction && !ext.sidePanel ? "FIREFOX" : "CHROME";
+}
+
+// This extension's own version, from the manifest generated at build time.
+export function extensionVersion(): string {
+  return ext.runtime.getManifest().version;
+}

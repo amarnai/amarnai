@@ -240,7 +240,6 @@ body {
 .ax-notif-panel {
   position: absolute;
   top: calc(100% + var(--space-xs));
-  right: 0;
   width: 260px;
   max-width: calc(100vw - var(--space-lg) * 2);
   background: var(--surface);
@@ -249,6 +248,17 @@ body {
   box-shadow: var(--shadow-2);
   z-index: 40;
   overflow: hidden;
+}
+
+/* Anchor the pop-up to the edge it should grow away from, so it opens toward
+   screen centre: leftward for a right-docked panel, rightward for a left-docked
+   one (see detectPanelSide). */
+.ax-notif-panel--open-left {
+  right: 0;
+}
+
+.ax-notif-panel--open-right {
+  left: 0;
 }
 
 .ax-notif-header {

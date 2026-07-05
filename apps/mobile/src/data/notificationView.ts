@@ -24,6 +24,15 @@ export function describeNotification(n: NotificationItem, i18n: I18n): Notificat
         : i18n._(msg`You were assigned a thread`);
       return { title, body: d.subject, threadId: d.threadId };
     }
+    case 'extension_not_installed':
+      // Rendered informationally on mobile (no action): the browser extension is
+      // a desktop surface. Kept in the feed rather than filtered so the
+      // server-driven unread badge still clears when the row is read/dismissed.
+      return {
+        title: i18n._(msg`Install the Amarnai browser extension`),
+        body: i18n._(msg`Triage your inbox from a side panel next to Gmail on your computer.`),
+        threadId: null,
+      };
     default:
       return { title: i18n._(msg`New notification`), body: null, threadId: null };
   }

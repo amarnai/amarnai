@@ -71,7 +71,7 @@ msgstr "剩余 {0} / {1} · 重置于 {2}"
 #. placeholder {0}: d.assignedBy
 #: ../../apps/extension/src/panel/notificationText.ts:15
 #: ../../apps/mobile/src/data/notificationView.ts:23
-#: ../../apps/web/src/lib/notifications.ts:23
+#: ../../apps/web/src/lib/notifications.ts:32
 #, fuzzy
 msgid "{0} assigned you a thread"
 msgstr "{0} 给你指派了一个会话"
@@ -176,7 +176,7 @@ msgid "{routableCount} of {TAXONOMY_MIN_NON_ROOT_NODES} folders connected to you
 msgstr "您的收件箱已连接 {routableCount} / {TAXONOMY_MIN_NON_ROOT_NODES} 个文件夹。路由至少需要 {TAXONOMY_MIN_NON_ROOT_NODES} 个文件夹。"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:276
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:194
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:207
 msgid "{selectedCount} selected"
 msgstr "{selectedCount} 已选中"
 
@@ -602,6 +602,7 @@ msgstr "Amarnai 遵循 AGPL-3.0 协议开源。克隆代码、自带密钥，即
 msgid "Amarnai needs access to its server and Gmail to show your inbox."
 msgstr "Amarnai 需要访问其服务器和 Gmail 才能显示您的收件箱。"
 
+#: ../../apps/extension/src/App.tsx:52
 #: ../../apps/extension/src/auth/SignInScreen.tsx:12
 msgid "Amarnai needs access to its server and Gmail to work. Please allow access and try again."
 msgstr "Amarnai 需要访问其服务器和 Gmail 才能正常运行。请允许访问，然后重试。"
@@ -1115,7 +1116,7 @@ msgstr "确认密码"
 msgid "Connect a Gmail inbox to configure sync filters."
 msgstr "连接 Gmail 收件箱以配置同步筛选条件。"
 
-#: ../../apps/extension/src/App.tsx:46
+#: ../../apps/extension/src/App.tsx:93
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:361
@@ -1158,7 +1159,7 @@ msgstr "连接 Gmail 以开始分类"
 msgid "Connect once, generate your plan once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
 msgstr "只需连接一次，制定一次方案，Amarnai 即可处理新邮件，并整理您收件箱中已有的数千个会话。"
 
-#: ../../apps/extension/src/App.tsx:43
+#: ../../apps/extension/src/App.tsx:89
 #, fuzzy
 msgid "Connect your Gmail account to start triaging."
 msgstr "连接您的 Gmail 账号，即可开始分类处理。"
@@ -1245,6 +1246,10 @@ msgstr "无法取消"
 #, fuzzy
 msgid "Could not change subscription"
 msgstr "无法更改订阅"
+
+#: ../../apps/extension/src/App.tsx:80
+msgid "Could not connect Gmail. Please try again."
+msgstr "无法连接 Gmail。请重试。"
 
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:113
 #, fuzzy
@@ -1487,9 +1492,9 @@ msgstr "默认免费工作区"
 #: ../../apps/mobile/app/(app)/notifications.tsx:142
 #: ../../apps/mobile/app/(app)/notifications.tsx:238
 #: ../../apps/mobile/app/(app)/notifications.tsx:324
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:206
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:279
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:280
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:219
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:303
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:304
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:596
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:607
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:703
@@ -1658,8 +1663,8 @@ msgstr "断开此工作区连接。Amarnai仍保留访问权限，因为此邮�
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:367
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:57
 #: ../../apps/web/src/components/JoinedWorkspaceToast.tsx:46
-#: ../../apps/web/src/components/NotificationBell.tsx:192
-#: ../../apps/web/src/components/NotificationBell.tsx:193
+#: ../../apps/web/src/components/NotificationBell.tsx:199
+#: ../../apps/web/src/components/NotificationBell.tsx:200
 #: ../ui/src/AppDownloadBanner.tsx:80
 #: ../ui/src/emails/MockEmailsPage.tsx:256
 msgid "Dismiss"
@@ -2555,6 +2560,12 @@ msgstr "无明确类别的非正式信息：私人拜访还是政治会面？语
 msgid "Initial backfill"
 msgstr "初始回填"
 
+#: ../../apps/mobile/src/data/notificationView.ts:32
+#: ../../apps/web/src/lib/notifications.ts:38
+#, fuzzy
+msgid "Install the Amarnai browser extension"
+msgstr "安装 Amarnai 浏览器扩展程序"
+
 #: ../../apps/site/src/components/landing/FAQSection.tsx:16
 msgid "Instead of scanning a crowded inbox, you open Amarnai and find your threads already grouped into the folders you care about, so you can work through customer questions, investor updates, or hiring replies in focused batches. Each thread comes with a suggested folder and the reasoning behind it, and you can draft a reply or jump straight to the thread in Gmail with one click. Triage that used to take an hour takes minutes."
 msgstr "告别杂乱收件箱。打开 Amarnai，您的会话已按重要性自动归类到相应文件夹，让您能集中处理客户问题、投资者动态或招聘回复。每个会话都附带建议的文件夹和理由，您可一键起草回复或直接跳转到 Gmail 中的该会话。过去耗时一小时的分类整理，现在只需几分钟。"
@@ -2773,7 +2784,7 @@ msgstr "实时"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:301
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:95
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:292
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:316
 #: ../ui/src/emails/ThreadList.tsx:238
 #, fuzzy
 msgid "Load more"
@@ -2786,17 +2797,17 @@ msgstr "加载更多"
 msgid "Loading past threads…"
 msgstr "正在加载过去的会话…"
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:122
+#: ../../apps/extension/src/panel/NotificationBell.tsx:133
 #: ../../apps/mobile/app/(app)/notifications.tsx:301
 #: ../../apps/mobile/src/components/MessageCard.tsx:53
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:73
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:214
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:292
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:227
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:316
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:121
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:137
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:158
 #: ../../apps/web/src/app/loading.tsx:6
-#: ../../apps/web/src/components/NotificationBell.tsx:174
+#: ../../apps/web/src/components/NotificationBell.tsx:181
 #: ../ui/src/emails/MessageCard.tsx:60
 #: ../ui/src/emails/ThreadList.tsx:238
 #, fuzzy
@@ -2813,9 +2824,9 @@ msgstr "邮件"
 msgid "Manage"
 msgstr "管理"
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:144
+#: ../../apps/extension/src/panel/NotificationBell.tsx:155
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:79
-#: ../../apps/web/src/components/NotificationBell.tsx:205
+#: ../../apps/web/src/components/NotificationBell.tsx:212
 #, fuzzy
 msgid "Manage notifications"
 msgstr "管理通知"
@@ -2845,8 +2856,8 @@ msgid "Mark as not done"
 msgstr "标记为未完成"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:215
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:258
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:259
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:271
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:272
 msgid "Mark as read"
 msgstr "标记为已读"
 
@@ -2857,8 +2868,8 @@ msgid "Mark as sent"
 msgstr "标记为已发送"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:215
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:258
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:259
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:271
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:272
 #, fuzzy
 msgid "Mark as unread"
 msgstr "标记为未读"
@@ -2878,13 +2889,13 @@ msgstr "标记为完成"
 #~ msgstr "标记为已邀请"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:314
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:200
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:213
 #, fuzzy
 msgid "Mark read"
 msgstr "标为已读"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:319
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:203
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:216
 msgid "Mark unread"
 msgstr "标为未读"
 
@@ -3032,8 +3043,8 @@ msgid "New folder"
 msgstr "新建文件夹"
 
 #: ../../apps/extension/src/panel/notificationText.ts:18
-#: ../../apps/mobile/src/data/notificationView.ts:28
-#: ../../apps/web/src/lib/notifications.ts:28
+#: ../../apps/mobile/src/data/notificationView.ts:37
+#: ../../apps/web/src/lib/notifications.ts:44
 msgid "New notification"
 msgstr "新通知"
 
@@ -3130,11 +3141,11 @@ msgstr "无成员"
 msgid "No members available"
 msgstr "无可用成员"
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:127
+#: ../../apps/extension/src/panel/NotificationBell.tsx:138
 #: ../../apps/mobile/app/(app)/notifications.tsx:294
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:73
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:216
-#: ../../apps/web/src/components/NotificationBell.tsx:177
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:229
+#: ../../apps/web/src/components/NotificationBell.tsx:184
 #, fuzzy
 msgid "No notifications yet"
 msgstr "暂无通知"
@@ -3228,22 +3239,22 @@ msgstr "未设置"
 msgid "Not yet synced"
 msgstr "尚未同步"
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:39
-#: ../../apps/extension/src/panel/NotificationBell.tsx:115
-#: ../../apps/extension/src/panel/NotificationBell.tsx:117
+#: ../../apps/extension/src/panel/NotificationBell.tsx:40
+#: ../../apps/extension/src/panel/NotificationBell.tsx:125
+#: ../../apps/extension/src/panel/NotificationBell.tsx:128
 #: ../../apps/mobile/app/(app)/account.tsx:145
 #: ../../apps/mobile/app/(app)/notifications.tsx:256
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:49
 #: ../../apps/web/src/app/(app)/notifications/page.tsx:16
-#: ../../apps/web/src/components/NotificationBell.tsx:151
-#: ../../apps/web/src/components/NotificationBell.tsx:166
-#: ../../apps/web/src/components/NotificationBell.tsx:170
+#: ../../apps/web/src/components/NotificationBell.tsx:158
+#: ../../apps/web/src/components/NotificationBell.tsx:173
+#: ../../apps/web/src/components/NotificationBell.tsx:177
 #, fuzzy
 msgid "Notifications"
 msgstr "通知"
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:100
-#: ../../apps/web/src/components/NotificationBell.tsx:150
+#: ../../apps/extension/src/panel/NotificationBell.tsx:107
+#: ../../apps/web/src/components/NotificationBell.tsx:157
 #, fuzzy
 msgid "Notifications, {unread} unread"
 msgstr "通知，{unread} 条未读"
@@ -3259,6 +3270,11 @@ msgstr "与一位已知城市总督关于反复出现的供应问题的进行中
 #: ../../apps/mobile/app/(app)/subscription.tsx:325
 msgid "Only the workspace owner can manage billing."
 msgstr "只有工作区所有者才能管理账单。"
+
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:292
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:293
+msgid "Open"
+msgstr "打开"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:244
 #: ../../apps/mobile/src/components/DraftSheet.tsx:97
@@ -3282,8 +3298,8 @@ msgid "open source email ai"
 msgstr "开源邮件AI"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:228
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:268
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:269
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:281
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:282
 msgid "Open thread"
 msgstr "打开会话"
 
@@ -3991,13 +4007,13 @@ msgid "Select a thread to preview"
 msgstr "选择一个会话进行预览"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:276
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:192
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:194
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:205
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:207
 #, fuzzy
 msgid "Select all"
 msgstr "全选"
 
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:234
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:247
 msgid "Select notification"
 msgstr "选择通知"
 
@@ -4137,7 +4153,7 @@ msgstr "使用 Google 登录"
 msgid "Sign in with Google. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
 msgstr "使用 Google 登录。Amarnai 会同步您的会话和标签。它绝不会代表您发送或删除邮件。"
 
-#: ../../apps/extension/src/App.tsx:49
+#: ../../apps/extension/src/App.tsx:96
 #: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:68
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:130
 #: ../../apps/mobile/app/(app)/account.tsx:122
@@ -4779,6 +4795,16 @@ msgstr "分类"
 msgid "Triage & review"
 msgstr "分类与审阅"
 
+#: ../../apps/mobile/src/data/notificationView.ts:33
+#, fuzzy
+msgid "Triage your inbox from a side panel next to Gmail on your computer."
+msgstr "在电脑上，于 Gmail 侧边栏整理收件箱。"
+
+#: ../../apps/web/src/lib/notifications.ts:39
+#, fuzzy
+msgid "Triage your inbox from a side panel next to Gmail."
+msgstr "在 Gmail 侧边栏整理收件箱。"
+
 #: ../ui/src/AppDownloadBanner.tsx:71
 msgid "Triage your inbox on the go."
 msgstr "随时随地，高效管理收件箱。"
@@ -5241,7 +5267,7 @@ msgstr "您没有权限将 Gmail 收件箱连接到此工作区。"
 
 #: ../../apps/extension/src/panel/notificationText.ts:16
 #: ../../apps/mobile/src/data/notificationView.ts:24
-#: ../../apps/web/src/lib/notifications.ts:24
+#: ../../apps/web/src/lib/notifications.ts:33
 msgid "You were assigned a thread"
 msgstr "您被分配了一个会话"
 

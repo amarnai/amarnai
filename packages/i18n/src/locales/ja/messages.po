@@ -71,7 +71,7 @@ msgstr "{0} / {1} 残り · {2} にリセット"
 #. placeholder {0}: d.assignedBy
 #: ../../apps/extension/src/panel/notificationText.ts:15
 #: ../../apps/mobile/src/data/notificationView.ts:23
-#: ../../apps/web/src/lib/notifications.ts:23
+#: ../../apps/web/src/lib/notifications.ts:32
 #, fuzzy
 msgid "{0} assigned you a thread"
 msgstr "{0} がスレッドを割り当てました"
@@ -176,7 +176,7 @@ msgid "{routableCount} of {TAXONOMY_MIN_NON_ROOT_NODES} folders connected to you
 msgstr "受信トレイに接続されているフォルダは {TAXONOMY_MIN_NON_ROOT_NODES} 件中 {routableCount} 件です。ルーティングには少なくとも {TAXONOMY_MIN_NON_ROOT_NODES} 件が必要です。"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:276
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:194
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:207
 msgid "{selectedCount} selected"
 msgstr "{selectedCount} 件選択済み"
 
@@ -602,6 +602,7 @@ msgstr "AmarnaiはAGPL-3.0ライセンスの下でオープンソースです。
 msgid "Amarnai needs access to its server and Gmail to show your inbox."
 msgstr "Amarnaiが受信トレイを表示するには、サーバーとGmailへのアクセスが必要です。"
 
+#: ../../apps/extension/src/App.tsx:52
 #: ../../apps/extension/src/auth/SignInScreen.tsx:12
 msgid "Amarnai needs access to its server and Gmail to work. Please allow access and try again."
 msgstr "Amarnaiの動作には、サーバーとGmailへのアクセスが必要です。アクセスを許可し、もう一度お試しください。"
@@ -1115,7 +1116,7 @@ msgstr "パスワードを再入力"
 msgid "Connect a Gmail inbox to configure sync filters."
 msgstr "同期フィルターを設定するには、Gmail受信トレイを接続してください。"
 
-#: ../../apps/extension/src/App.tsx:46
+#: ../../apps/extension/src/App.tsx:93
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:361
@@ -1158,7 +1159,7 @@ msgstr "トリアージを開始するにはGmailに接続"
 msgid "Connect once, generate your plan once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
 msgstr "連携とプラン作成は一度きり。新着メールから受信箱に眠る何千ものスレッドまで、Amarnaiがすべて処理します。"
 
-#: ../../apps/extension/src/App.tsx:43
+#: ../../apps/extension/src/App.tsx:89
 #, fuzzy
 msgid "Connect your Gmail account to start triaging."
 msgstr "Gmailアカウントを連携して、トリアージを開始。"
@@ -1245,6 +1246,10 @@ msgstr "キャンセルできませんでした"
 #, fuzzy
 msgid "Could not change subscription"
 msgstr "定期購入を変更できませんでした"
+
+#: ../../apps/extension/src/App.tsx:80
+msgid "Could not connect Gmail. Please try again."
+msgstr "Gmailに接続できませんでした。もう一度お試しください。"
 
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:113
 #, fuzzy
@@ -1487,9 +1492,9 @@ msgstr "デフォルトの無料ワークスペース"
 #: ../../apps/mobile/app/(app)/notifications.tsx:142
 #: ../../apps/mobile/app/(app)/notifications.tsx:238
 #: ../../apps/mobile/app/(app)/notifications.tsx:324
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:206
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:279
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:280
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:219
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:303
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:304
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:596
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:607
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:703
@@ -1658,8 +1663,8 @@ msgstr "このワークスペースを切断します。このメールボック
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:367
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:57
 #: ../../apps/web/src/components/JoinedWorkspaceToast.tsx:46
-#: ../../apps/web/src/components/NotificationBell.tsx:192
-#: ../../apps/web/src/components/NotificationBell.tsx:193
+#: ../../apps/web/src/components/NotificationBell.tsx:199
+#: ../../apps/web/src/components/NotificationBell.tsx:200
 #: ../ui/src/AppDownloadBanner.tsx:80
 #: ../ui/src/emails/MockEmailsPage.tsx:256
 msgid "Dismiss"
@@ -2555,6 +2560,12 @@ msgstr "明確なカテゴリのない非公式メッセージ：個人的な訪
 msgid "Initial backfill"
 msgstr "初回バックフィル"
 
+#: ../../apps/mobile/src/data/notificationView.ts:32
+#: ../../apps/web/src/lib/notifications.ts:38
+#, fuzzy
+msgid "Install the Amarnai browser extension"
+msgstr "Amarnaiブラウザ拡張機能をインストール"
+
 #: ../../apps/site/src/components/landing/FAQSection.tsx:16
 msgid "Instead of scanning a crowded inbox, you open Amarnai and find your threads already grouped into the folders you care about, so you can work through customer questions, investor updates, or hiring replies in focused batches. Each thread comes with a suggested folder and the reasoning behind it, and you can draft a reply or jump straight to the thread in Gmail with one click. Triage that used to take an hour takes minutes."
 msgstr "散らかった受信トレイを眺める代わりに、Amarnaiを開けば、大切なスレッドがすでに整理され、関心のあるフォルダーに分類されています。顧客からの質問、投資家への報告、採用に関する返信などをまとめて効率的に処理できます。各スレッドには推奨フォルダーとその理由が表示され、ワンクリックで返信を作成したり、Gmailでスレッドを直接開いたりできます。これまで1時間かかっていたトリアージが、わずか数分で完了します。"
@@ -2773,7 +2784,7 @@ msgstr "ライブ"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:301
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:95
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:292
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:316
 #: ../ui/src/emails/ThreadList.tsx:238
 #, fuzzy
 msgid "Load more"
@@ -2786,17 +2797,17 @@ msgstr "さらに読み込む"
 msgid "Loading past threads…"
 msgstr "過去のスレッドを読み込み中…"
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:122
+#: ../../apps/extension/src/panel/NotificationBell.tsx:133
 #: ../../apps/mobile/app/(app)/notifications.tsx:301
 #: ../../apps/mobile/src/components/MessageCard.tsx:53
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:73
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:214
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:292
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:227
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:316
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:121
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:137
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:158
 #: ../../apps/web/src/app/loading.tsx:6
-#: ../../apps/web/src/components/NotificationBell.tsx:174
+#: ../../apps/web/src/components/NotificationBell.tsx:181
 #: ../ui/src/emails/MessageCard.tsx:60
 #: ../ui/src/emails/ThreadList.tsx:238
 #, fuzzy
@@ -2813,9 +2824,9 @@ msgstr "メール"
 msgid "Manage"
 msgstr "管理"
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:144
+#: ../../apps/extension/src/panel/NotificationBell.tsx:155
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:79
-#: ../../apps/web/src/components/NotificationBell.tsx:205
+#: ../../apps/web/src/components/NotificationBell.tsx:212
 #, fuzzy
 msgid "Manage notifications"
 msgstr "通知を管理"
@@ -2845,8 +2856,8 @@ msgid "Mark as not done"
 msgstr "未完了としてマーク"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:215
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:258
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:259
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:271
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:272
 msgid "Mark as read"
 msgstr "既読にする"
 
@@ -2857,8 +2868,8 @@ msgid "Mark as sent"
 msgstr "送信済みとしてマーク"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:215
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:258
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:259
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:271
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:272
 #, fuzzy
 msgid "Mark as unread"
 msgstr "未読にする"
@@ -2878,13 +2889,13 @@ msgstr "完了としてマーク"
 #~ msgstr "招待済みとしてマーク"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:314
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:200
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:213
 #, fuzzy
 msgid "Mark read"
 msgstr "既読にする"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:319
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:203
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:216
 msgid "Mark unread"
 msgstr "未読にする"
 
@@ -3032,8 +3043,8 @@ msgid "New folder"
 msgstr "新しいフォルダ"
 
 #: ../../apps/extension/src/panel/notificationText.ts:18
-#: ../../apps/mobile/src/data/notificationView.ts:28
-#: ../../apps/web/src/lib/notifications.ts:28
+#: ../../apps/mobile/src/data/notificationView.ts:37
+#: ../../apps/web/src/lib/notifications.ts:44
 msgid "New notification"
 msgstr "新着通知"
 
@@ -3130,11 +3141,11 @@ msgstr "メンバーなし"
 msgid "No members available"
 msgstr "利用可能なメンバーがいません"
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:127
+#: ../../apps/extension/src/panel/NotificationBell.tsx:138
 #: ../../apps/mobile/app/(app)/notifications.tsx:294
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:73
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:216
-#: ../../apps/web/src/components/NotificationBell.tsx:177
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:229
+#: ../../apps/web/src/components/NotificationBell.tsx:184
 #, fuzzy
 msgid "No notifications yet"
 msgstr "まだ通知がありません"
@@ -3228,22 +3239,22 @@ msgstr "未設定"
 msgid "Not yet synced"
 msgstr "まだ同期されていません"
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:39
-#: ../../apps/extension/src/panel/NotificationBell.tsx:115
-#: ../../apps/extension/src/panel/NotificationBell.tsx:117
+#: ../../apps/extension/src/panel/NotificationBell.tsx:40
+#: ../../apps/extension/src/panel/NotificationBell.tsx:125
+#: ../../apps/extension/src/panel/NotificationBell.tsx:128
 #: ../../apps/mobile/app/(app)/account.tsx:145
 #: ../../apps/mobile/app/(app)/notifications.tsx:256
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:49
 #: ../../apps/web/src/app/(app)/notifications/page.tsx:16
-#: ../../apps/web/src/components/NotificationBell.tsx:151
-#: ../../apps/web/src/components/NotificationBell.tsx:166
-#: ../../apps/web/src/components/NotificationBell.tsx:170
+#: ../../apps/web/src/components/NotificationBell.tsx:158
+#: ../../apps/web/src/components/NotificationBell.tsx:173
+#: ../../apps/web/src/components/NotificationBell.tsx:177
 #, fuzzy
 msgid "Notifications"
 msgstr "通知"
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:100
-#: ../../apps/web/src/components/NotificationBell.tsx:150
+#: ../../apps/extension/src/panel/NotificationBell.tsx:107
+#: ../../apps/web/src/components/NotificationBell.tsx:157
 #, fuzzy
 msgid "Notifications, {unread} unread"
 msgstr "通知、未読{unread}件"
@@ -3259,6 +3270,11 @@ msgstr "既知の都市総督との、繰り返される供給問題に関する
 #: ../../apps/mobile/app/(app)/subscription.tsx:325
 msgid "Only the workspace owner can manage billing."
 msgstr "ワークスペースのオーナーのみが請求を管理できます。"
+
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:292
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:293
+msgid "Open"
+msgstr "開く"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:244
 #: ../../apps/mobile/src/components/DraftSheet.tsx:97
@@ -3282,8 +3298,8 @@ msgid "open source email ai"
 msgstr "オープンソースのメールAI"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:228
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:268
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:269
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:281
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:282
 msgid "Open thread"
 msgstr "スレッドを開く"
 
@@ -3993,13 +4009,13 @@ msgid "Select a thread to preview"
 msgstr "スレッドを選択してプレビュー"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:276
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:192
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:194
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:205
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:207
 #, fuzzy
 msgid "Select all"
 msgstr "すべて選択"
 
-#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:234
+#: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:247
 msgid "Select notification"
 msgstr "通知を選択"
 
@@ -4139,7 +4155,7 @@ msgstr "Googleでサインイン"
 msgid "Sign in with Google. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
 msgstr "Googleでサインイン。Amarnaiはスレッドとラベルを同期しますが、あなたに代わってメールを送信したり削除したりすることはありません。"
 
-#: ../../apps/extension/src/App.tsx:49
+#: ../../apps/extension/src/App.tsx:96
 #: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:68
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:130
 #: ../../apps/mobile/app/(app)/account.tsx:122
@@ -4781,6 +4797,16 @@ msgstr "トリアージ"
 msgid "Triage & review"
 msgstr "トリアージ＆レビュー"
 
+#: ../../apps/mobile/src/data/notificationView.ts:33
+#, fuzzy
+msgid "Triage your inbox from a side panel next to Gmail on your computer."
+msgstr "PCのGmail横サイドパネルで、受信トレイを効率的に処理。"
+
+#: ../../apps/web/src/lib/notifications.ts:39
+#, fuzzy
+msgid "Triage your inbox from a side panel next to Gmail."
+msgstr "Gmail横のサイドパネルから、受信トレイを効率的に処理。"
+
 #: ../ui/src/AppDownloadBanner.tsx:71
 msgid "Triage your inbox on the go."
 msgstr "外出先でも受信トレイを整理。"
@@ -5243,7 +5269,7 @@ msgstr "このワークスペースにGmail受信トレイを接続する権限�
 
 #: ../../apps/extension/src/panel/notificationText.ts:16
 #: ../../apps/mobile/src/data/notificationView.ts:24
-#: ../../apps/web/src/lib/notifications.ts:24
+#: ../../apps/web/src/lib/notifications.ts:33
 msgid "You were assigned a thread"
 msgstr "スレッドが割り当てられました"
 

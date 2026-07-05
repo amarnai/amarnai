@@ -36,6 +36,8 @@ import type {
   QuotaInfo,
   RegisterPushDeviceInput,
   RegisterPushDeviceResult,
+  RegisterExtensionInput,
+  RegisterExtensionResult,
   CurrentUser,
   UpdateCurrentUserInput,
   TaxonomyGenerationStatusResult,
@@ -465,6 +467,11 @@ export function makeApiClient(transport: ApiTransport) {
 
     registerPushDevice: (input: RegisterPushDeviceInput) =>
       apiMutate<RegisterPushDeviceResult>("/devices", "POST", input),
+
+    // ── Browser extension ──────────────────────────────────────────────────────
+
+    registerExtension: (input: RegisterExtensionInput) =>
+      apiMutate<RegisterExtensionResult>("/extension/register", "POST", input),
 
     // ── Dev endpoints ──────────────────────────────────────────────────────────
 

@@ -4,6 +4,8 @@
 // because the polling scheduler covers sync and the worker's daily renewal
 // covers the watch — but they must still be *visible* in logs when they break.
 
+import { maybeCreateExtensionNudge } from "@amarnai/db";
+
 /**
  * Describe a fetch failure for logging. A rejected `fetch` is a bare
  * `TypeError: fetch failed`; the real reason (ECONNREFUSED, ENOTFOUND, a TLS
@@ -69,4 +71,14 @@ function postInternal(
 export function triggerPostConnectHooks(source: string, workspaceId: string, userId: string): void {
   postInternal(source, "trigger_sync", workspaceId, userId, `/workspaces/${workspaceId}/trigger-sync`);
   postInternal(source, "register_watch", workspaceId, userId, `/workspaces/${workspaceId}/register-gmail-watch`);
+
+  // Gmail is now connected — the earliest moment the extension's side panel has
+  // real triaged threads to show. Produce the one-time install nudge (no-op if
+  // they already have the extension or were already nudged). Best-effort; a
+  // failure must not affect the connect flow.
+  void maybeCreateExtensionNudge({ userId, workspaceId }).catch((err) =>
+    console.error(
+      `[${source}] extension_nudge failed (workspace=${workspaceId}): ${describeFetchError(err)}`,
+    ),
+  );
 }

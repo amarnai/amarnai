@@ -530,3 +530,14 @@ export type RegisterPushDeviceInput = {
 };
 
 export type RegisterPushDeviceResult = { ok: boolean; deviceId: string };
+
+// ── Browser extension ───────────────────────────────────────────────────────────
+
+export type ExtensionBrowser = "CHROME" | "FIREFOX";
+
+export type RegisterExtensionInput = {
+  browser: ExtensionBrowser;
+  version: string;
+};
+
+export type RegisterExtensionResult = { ok: boolean };

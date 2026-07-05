@@ -178,6 +178,11 @@ enum DevicePlatform {
   IOS
 }
 
+enum ExtensionBrowser {
+  CHROME
+  FIREFOX
+}
+
 // ─── Models ──────────────────────────────────────────────────────────────────
 
 model User {
@@ -200,6 +205,12 @@ model User {
   lifecycleEmailSentAt   DateTime?
   locale                 String    @default("en")
 
+  // One-time "install the browser extension" nudge. Set the first (and only) time
+  // the nudge is produced, so it never re-fires on a later Gmail reconnect even if
+  // the user dismisses or deletes the notification row. Independent of the
+  // ExtensionInstall record: this survives; the notification row is disposable.
+  extensionNudgedAt DateTime?
+
   ownedWorkspaces          Workspace[]
   workspaceMemberships     WorkspaceMember[]
   sentWorkspaceInvitations WorkspaceInvitation[]
@@ -209,6 +220,7 @@ model User {
   verificationTokens       VerificationToken[]
   refreshTokens            RefreshToken[]
   pushDevices              PushDevice[]
+  extensionInstall         ExtensionInstall?
   resolvedThreads          EmailThread[]         @relation("ResolvedByUser")
   assignedThreads          EmailThread[]         @relation("AssignedToUser")
   assignedByThreads        EmailThread[]         @relation("AssignedByUser")
@@ -699,6 +711,24 @@ model PushDevice {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
+}
+
+// Records that a user has connected the browser side-panel extension at least
+// once. Per-user (an extension belongs to a user, like a PushDevice), and the
+// presence of the row is the "does this user have the extension?" signal that
+// suppresses the install nudge. Unique on userId: we only need the boolean, so a
+// re-register from either browser just refreshes browser/version/lastSeenAt. No
+// email content is stored here.
+model ExtensionInstall {
+  id         String           @id @default(cuid())
+  userId     String           @unique
+  browser    ExtensionBrowser
+  version    String
+  lastSeenAt DateTime         @default(now())
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model GmailConnection {

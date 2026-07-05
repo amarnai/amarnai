@@ -118,6 +118,13 @@ export function NotificationBell({ currentWorkspaceId }: { currentWorkspaceId: s
     // Clicking through counts as dealing with it: dismiss so it won't reappear
     // in the pop-up on next open.
     dismiss(n.id);
+    const view = describeNotification(n, i18n);
+    // Non-thread notifications (e.g. the extension nudge) carry an external URL
+    // instead. Open it in a new tab and stop — there is no thread to route to.
+    if (view.href) {
+      window.open(view.href, "_blank", "noopener,noreferrer");
+      return;
+    }
     const threadId = str(n.params["threadId"]);
     if (!threadId) return;
     const target = `/emails?t=${encodeURIComponent(threadId)}`;

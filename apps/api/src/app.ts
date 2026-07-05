@@ -35,6 +35,7 @@ import { gmailWebhookRoute } from "./routes/gmail-webhook.js";
 import { gmailWatchRoute } from "./routes/gmail-watch.js";
 import { workspaceEventsRoute } from "./routes/workspace-events.js";
 import { devicesRoute } from "./routes/devices.js";
+import { extensionRoute } from "./routes/extension.js";
 import { adminRoute } from "./routes/admin.js";
 
 // Endpoints that authenticate themselves and must skip the bearer-token check.
@@ -54,11 +55,12 @@ const PUBLIC_PATHS = new Set([
 const app = new Hono<AppEnv>();
 
 // CORS: allow the configured web origin plus the browser extension. The
-// extension (side panel + service worker) calls the API from a
-// chrome-extension:// origin whose id differs between the unpacked dev build and
-// the re-signed Web Store build, so we match the scheme rather than a fixed id.
-// Auth is by bearer token in the Authorization header (no cookies), so CORS is
-// not the security boundary here; the per-route token check is.
+// extension calls the API from an extension origin whose id differs between the
+// unpacked dev build and the re-signed store build, so we match the scheme
+// rather than a fixed id: chrome-extension:// (Chrome side panel + service
+// worker) and moz-extension:// (Firefox sidebar + event page). Auth is by bearer
+// token in the Authorization header (no cookies), so CORS is not the security
+// boundary here; the per-route token check is.
 const WEB_ORIGIN = process.env["CORS_ORIGIN"] ?? "http://localhost:3000";
 app.use(
   "*",
@@ -66,6 +68,7 @@ app.use(
     origin: (origin) => {
       if (origin === WEB_ORIGIN) return origin;
       if (origin.startsWith("chrome-extension://")) return origin;
+      if (origin.startsWith("moz-extension://")) return origin;
       return null;
     },
   }),
@@ -164,6 +167,7 @@ app.route("/", gmailWebhookRoute);
 app.route("/", gmailWatchRoute);
 app.route("/", workspaceEventsRoute);
 app.route("/", devicesRoute);
+app.route("/", extensionRoute);
 app.route("/", adminRoute);
 
 export default app;

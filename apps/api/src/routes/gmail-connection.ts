@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import { z } from "zod";
-import { db } from "@amarnai/db";
+import { db, maybeCreateExtensionNudge } from "@amarnai/db";
 import {
   parseGrantedScopes,
   exchangeAuthCode,
@@ -178,6 +178,16 @@ gmailConnection.post("/workspaces/:workspaceId/gmail-connection", async (c) => {
   registerGmailWatch(workspaceId).catch((err) =>
     console.error(
       "[gmail-connection/connect] register_watch:",
+      err instanceof Error ? err.message : err,
+    ),
+  );
+
+  // Fire-and-forget: one-time "install the browser extension" nudge. No-op if
+  // the user already has the extension (they may be connecting *through* it) or
+  // was already nudged. Never blocks the connect response.
+  maybeCreateExtensionNudge({ userId, workspaceId }).catch((err) =>
+    console.error(
+      "[gmail-connection/connect] extension_nudge:",
       err instanceof Error ? err.message : err,
     ),
   );

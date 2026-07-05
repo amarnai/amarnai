@@ -54,6 +54,7 @@ vi.mock("@amarnai/db", () => ({
     },
     $transaction: vi.fn(),
   },
+  maybeCreateExtensionNudge: vi.fn().mockResolvedValue(undefined),
 }));
 
 const GMAIL_SCOPE = "https://www.googleapis.com/auth/gmail.readonly";

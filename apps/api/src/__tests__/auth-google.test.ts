@@ -1,6 +1,9 @@
 import { vi, describe, it, expect, beforeEach } from "vitest";
 
-vi.mock("@amarnai/db", () => ({ db: {} }));
+vi.mock("@amarnai/db", () => ({
+  db: {},
+  maybeCreateExtensionNudge: vi.fn().mockResolvedValue(undefined),
+}));
 
 vi.mock("@amarnai/gmail", () => {
   class GmailApiError extends Error {
