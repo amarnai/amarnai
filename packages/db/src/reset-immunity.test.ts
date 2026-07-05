@@ -17,6 +17,14 @@ describe("reset-immunity of inbox usage meters", () => {
     expect(workspaceOps).not.toMatch(/inboxBackfillGrant/i);
   });
 
+  it("workspace-ops never DELETES a TrialClaim (deleteUserCascade only writes one) and never touches PendingSubscriptionCancellation", () => {
+    // A consumed trial must survive account deletion, so the cascade may upsert a
+    // TrialClaim but must never delete one. The pending-cancellation table is
+    // owned by the billing worker and must not appear in a teardown at all.
+    expect(workspaceOps).not.toMatch(/trialClaim\.delete/i);
+    expect(workspaceOps).not.toMatch(/pendingSubscriptionCancellation/i);
+  });
+
   it("the three teardown functions still exist (guards against the file being renamed away)", () => {
     expect(workspaceOps).toMatch(/resetWorkspaceData/);
     expect(workspaceOps).toMatch(/deleteWorkspaceCascade/);

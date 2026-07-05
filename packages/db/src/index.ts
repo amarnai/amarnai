@@ -18,6 +18,14 @@ export {
 } from "./notifications.js";
 export { getInboxPlanCeiling, type InboxPlanCeiling } from "./inbox-entitlement.js";
 export {
+  trialEmailKeyHash,
+  hasTrialClaim,
+  hasConsumedTrial,
+  claimTrial,
+  ensureTrialClaimForEmail,
+  type TrialClaimResult,
+} from "./trial-claims.js";
+export {
   MeterKind,
   meterWindowStart,
   inboxKeyFor,

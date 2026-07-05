@@ -14,6 +14,7 @@ vi.mock("@amarnai/db", () => ({
     workspace: { findUnique: vi.fn(), update: vi.fn() },
     auditLog: { create: vi.fn() },
   },
+  hasTrialClaim: vi.fn(),
 }));
 
 vi.mock("@/lib/stripe", () => ({
@@ -22,7 +23,7 @@ vi.mock("@/lib/stripe", () => ({
 }));
 
 import { auth } from "@/auth";
-import { db } from "@amarnai/db";
+import { db, hasTrialClaim } from "@amarnai/db";
 import { getStripe, getPriceId } from "@/lib/stripe";
 import { POST } from "@/app/api/billing/create-checkout-session/route";
 
@@ -64,8 +65,12 @@ beforeEach(() => {
   // Default: fresh, email-verified user with no prior trial
   vi.mocked(db.user.findUnique).mockResolvedValue({
     trialUsed: false,
+    email: "user@example.com",
     emailVerified: new Date(),
   } as never);
+
+  // Default: no durable trial claim on this email identity
+  vi.mocked(hasTrialClaim).mockResolvedValue(false);
 
   // Default: user is workspace OWNER
   vi.mocked(db.workspaceMember.findUnique).mockResolvedValue({ role: "OWNER" } as never);
@@ -89,6 +94,23 @@ describe("trial eligibility — upgrade action (FREE → paid)", () => {
     // After cancellation the webhook sets user.trialUsed = true.
     // Simulate that state here: user already consumed their trial.
     vi.mocked(db.user.findUnique).mockResolvedValue({ trialUsed: true, emailVerified: new Date() } as never);
+
+    const res = await POST(upgradeReq(WS_ID));
+
+    expect(res.status).toBe(200);
+    expect(sessionsCreateArg()?.subscription_data?.trial_period_days).toBeUndefined();
+  });
+
+  it("re-registered email: trialUsed is false on the new account but a durable claim suppresses the trial", async () => {
+    // A user who consumed a trial, deleted their account, and signed up again gets
+    // a fresh User row (trialUsed=false) — but the reset-immune claim on their email
+    // still recognizes them.
+    vi.mocked(db.user.findUnique).mockResolvedValue({
+      trialUsed: false,
+      email: "reused@example.com",
+      emailVerified: new Date(),
+    } as never);
+    vi.mocked(hasTrialClaim).mockResolvedValue(true);
 
     const res = await POST(upgradeReq(WS_ID));
 

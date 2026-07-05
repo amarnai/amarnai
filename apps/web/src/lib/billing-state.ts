@@ -1,4 +1,4 @@
-import { db } from "@amarnai/db";
+import { db, hasTrialClaim } from "@amarnai/db";
 import { getStripe } from "@/lib/stripe";
 import { getCollaboratorLimit } from "@amarnai/shared";
 import type { BillingState, BillingPlan, BillingCycleValue } from "@amarnai/shared";
@@ -85,8 +85,15 @@ export async function assembleBillingState(
       where: { workspaceId, NOT: { role: "OWNER" } },
       select: { user: { select: { name: true, email: true } } },
     }),
-    db.user.findUnique({ where: { id: userId }, select: { trialUsed: true } }),
+    db.user.findUnique({ where: { id: userId }, select: { trialUsed: true, email: true } }),
   ]);
+
+  // A durable trial claim on the owner's email counts as consumed even if the
+  // denormalized flag is not yet set (e.g. a card-denied trial), so the UI stops
+  // advertising a trial they can't get.
+  const trialConsumed = owner
+    ? owner.trialUsed || (await hasTrialClaim(owner.email))
+    : false;
 
   const plan = billing.plan as BillingPlan;
   return {
@@ -101,6 +108,6 @@ export async function assembleBillingState(
     collaboratorCount: members.length,
     collaboratorLimit: getCollaboratorLimit(plan),
     membersToRemoveOnCancel: members.map((m) => ({ name: m.user.name, email: m.user.email })),
-    trialUsed: owner?.trialUsed ?? false,
+    trialUsed: trialConsumed,
   };
 }

@@ -860,3 +860,40 @@ model InboxBackfillGrant {
   @@unique([inboxKey, workspaceId])
   @@index([inboxKey])
 }
+
+// Reset-immune record that an email identity (and optionally a payment card) has
+// consumed the single 14-day free trial. Like InboxUsageMeter it has NO relation or
+// FK to User/Workspace, so account deletion cannot erase it — that is the whole
+// point: re-registering the same email must not mint a fresh trial. `emailKeyHash`
+// is sha256(normalizeInboxKey(email)); the raw email is never stored (data-minimal
+// for deleted accounts). `cardFingerprint` is nullable-unique so one card can start
+// at most one trial, enforced atomically by the insert (Postgres allows many NULLs).
+//
+// IMPORTANT: never add this model to a teardown in packages/db/src/workspace-ops.ts
+// as a delete. deleteUserCascade WRITES a claim on deletion; it must never remove one.
+model TrialClaim {
+  id                   String   @id @default(cuid())
+  emailKeyHash         String   @unique
+  cardFingerprint      String?  @unique
+  // The subscription that consumed the trial; null for backfilled legacy rows.
+  stripeSubscriptionId String?
+  // Attribution only — a plain String, NOT a relation (must survive deletion).
+  userId               String?
+  createdAt            DateTime @default(now())
+}
+
+// Durable, no-FK retry record guaranteeing a deleted account's Stripe subscription
+// is canceled even if Stripe was unreachable at deletion time — so nobody keeps
+// paying for an account they deleted. The worker's tick reconciles each row against
+// Stripe (retrieve-then-cancel) and deletes it once the subscription can no longer
+// bill (canceled or gone). Attribution-only userId; the user row is usually already
+// deleted by the time this retries.
+model PendingSubscriptionCancellation {
+  id                   String    @id @default(cuid())
+  stripeSubscriptionId String    @unique
+  userId               String?
+  attempts             Int       @default(0)
+  lastError            String?
+  lastAttemptAt        DateTime?
+  createdAt            DateTime  @default(now())
+}

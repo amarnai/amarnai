@@ -25,6 +25,7 @@ import { RegisterCredentialsSchema } from "@amarnai/shared";
 import { isSupportedLocale, localeFromAcceptLanguage } from "@amarnai/i18n";
 import { sendVerificationEmail, sendPasswordResetEmail } from "@amarnai/email";
 import { db, deleteUserCascade, maybeCreateExtensionNudge } from "@amarnai/db";
+import { cancelSubscriptionsForAccountDeletion } from "@amarnai/billing";
 import type { AppEnv } from "../env.js";
 import { syncInboxQueue } from "../services/queue-client.js";
 import { disconnectGmail } from "../services/gmail-disconnect.js";
@@ -376,6 +377,11 @@ auth.delete("/auth/me", async (c) => {
       }
     }
   }
+
+  // Cancel any paid Stripe subscriptions before the workspace rows are gone, so a
+  // deleted account can never keep paying. Never throws; a Stripe failure records a
+  // durable retry row the worker reconciles.
+  await cancelSubscriptionsForAccountDeletion(userId);
 
   await deleteUserCascade(userId);
   return c.json({ ok: true });

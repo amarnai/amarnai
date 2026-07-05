@@ -1,6 +1,6 @@
 import { requireUser } from "@/lib/session";
 import { getSelectedWorkspace } from "@/lib/workspace";
-import { db } from "@amarnai/db";
+import { hasConsumedTrial } from "@amarnai/db";
 import { UpgradeClient } from "./UpgradeClient";
 import type { PlanId, BillingCycle } from "@amarnai/ui";
 import { Trans } from "@lingui/react/macro";
@@ -27,10 +27,7 @@ export default async function UpgradePage({
   const workspace = await getSelectedWorkspace(user.id);
   const currentPlan = planIdMap[workspace.plan] ?? "free";
 
-  const userBilling = await db.user.findUnique({
-    where: { id: user.id },
-    select: { trialUsed: true },
-  });
+  const trialConsumed = await hasConsumedTrial(user.id);
 
   const params = await searchParams;
   const planParam = typeof params.plan === "string" ? params.plan as PlanId : undefined;
@@ -48,7 +45,7 @@ export default async function UpgradePage({
         workspaceId={workspace.id}
         workspaceName={workspace.name}
         currentPlan={currentPlan}
-        trialUsed={userBilling?.trialUsed ?? false}
+        trialUsed={trialConsumed}
         {...(preselectedPlan ? { preselectedPlan } : {})}
         {...(preselectedCycle ? { preselectedCycle } : {})}
       />

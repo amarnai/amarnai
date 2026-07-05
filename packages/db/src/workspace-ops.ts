@@ -1,5 +1,6 @@
 import { db } from "./client.js";
 import { ensureInboxTaxonomy } from "./inbox.js";
+import { trialEmailKeyHash } from "./trial-claims.js";
 
 export class FreeWorkspaceLimitError extends Error {
   constructor() {
@@ -71,6 +72,13 @@ export async function resetWorkspaceData(workspaceId: string): Promise<void> {
 // Gmail disconnect (job cancellation + OAuth revoke) must be done by the caller
 // BEFORE this runs, while the connection rows still exist.
 export async function deleteUserCascade(userId: string): Promise<void> {
+  const user = await db.user.findUnique({
+    where: { id: userId },
+    select: { email: true, trialUsed: true },
+  });
+  // Already gone — nothing to do. Keeps the cascade idempotent under retry.
+  if (!user) return;
+
   const workspaces = await db.workspace.findMany({
     where: { ownerUserId: userId },
     select: { id: true },
@@ -78,6 +86,19 @@ export async function deleteUserCascade(userId: string): Promise<void> {
   const workspaceIds = workspaces.map((w) => w.id);
 
   await db.$transaction([
+    // Persist the consumed trial BEFORE the user row disappears, so re-registering
+    // the same email cannot mint a fresh trial. Reset-immune (no FK). Defensive:
+    // provisioning normally wrote this already; the empty update never clobbers an
+    // existing claim's cardFingerprint/subscriptionId.
+    ...(user.trialUsed
+      ? [
+          db.trialClaim.upsert({
+            where: { emailKeyHash: trialEmailKeyHash(user.email) },
+            create: { emailKeyHash: trialEmailKeyHash(user.email), userId },
+            update: {},
+          }),
+        ]
+      : []),
     db.draft.deleteMany({ where: { workspaceId: { in: workspaceIds } } }),
     db.emailTag.deleteMany({
       where: {

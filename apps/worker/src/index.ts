@@ -2,6 +2,7 @@ import { db } from "@amarnai/db";
 import { config } from "@amarnai/config";
 import { GmailClient, GmailAuthError } from "@amarnai/gmail";
 import { deleteExpiredRefreshTokens } from "@amarnai/auth";
+import { processPendingSubscriptionCancellations } from "@amarnai/billing";
 import {
   createEmbeddingProvider,
   getEmbeddingProviderConfig,
@@ -301,6 +302,28 @@ async function main(): Promise<void> {
     reapRefreshTokens().catch((err) => console.error("[refresh-token-reaper] Failed:", err));
   }, 24 * 60 * 60 * 1000);
 
+  // ── Pending subscription cancellations ─────────────────────────────────────
+  // When an account is deleted and Stripe is unreachable, the cancellation is
+  // recorded as a durable row so nobody keeps paying for a deleted account. This
+  // tick reconciles those rows against Stripe (retrieve-then-cancel) until each
+  // subscription can no longer bill. Fully autonomous; no-ops without Stripe.
+  async function retryPendingSubscriptionCancellations(): Promise<void> {
+    const resolved = await processPendingSubscriptionCancellations();
+    if (resolved > 0) {
+      console.log(`[billing-cancellation] Resolved ${resolved} pending cancellation(s)`);
+    }
+  }
+
+  await retryPendingSubscriptionCancellations().catch((err) =>
+    console.error("[billing-cancellation] Failed:", err),
+  );
+
+  const pendingCancellationHandle = setInterval(() => {
+    retryPendingSubscriptionCancellations().catch((err) =>
+      console.error("[billing-cancellation] Failed:", err),
+    );
+  }, 15 * 60 * 1000);
+
   // ── Weekly lifecycle reminder emails ───────────────────────────────────────
   // Enqueue due reminders on startup, then on a daily tick. The 7-day cadence is
   // enforced per user via lifecycleEmailSentAt (see scheduleLifecycleEmails), so
@@ -330,6 +353,7 @@ async function main(): Promise<void> {
     clearInterval(intervalHandle);
     clearInterval(watchRenewalHandle);
     clearInterval(refreshReaperHandle);
+    clearInterval(pendingCancellationHandle);
     clearInterval(lifecycleEmailHandle);
 
     await Promise.all([

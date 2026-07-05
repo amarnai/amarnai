@@ -1,19 +1,9 @@
-import Stripe from "stripe";
 import type { PlanId, BillingCycle } from "@amarnai/ui";
 
-let _stripe: Stripe | undefined;
-
-export function getStripe(): Stripe {
-  if (!_stripe) {
-    if (!process.env.STRIPE_SECRET_KEY) {
-      throw new Error("STRIPE_SECRET_KEY is not set");
-    }
-    _stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-      apiVersion: "2026-05-27.dahlia",
-    });
-  }
-  return _stripe;
-}
+// The Stripe client singleton lives in @amarnai/billing so the api and worker
+// packages can share it. Re-exported here so existing `@/lib/stripe` imports (and
+// their test mocks) keep working unchanged. Price-ID lookup stays web-only.
+export { getStripe } from "@amarnai/billing";
 
 const PRICE_IDS: Record<PlanId, Record<BillingCycle, string | undefined>> = {
   free: { monthly: undefined, annual: undefined },

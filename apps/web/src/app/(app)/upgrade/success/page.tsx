@@ -2,7 +2,8 @@ import { redirect } from "next/navigation";
 import Image from "next/image";
 import { requireUser } from "@/lib/session";
 import { getStripe } from "@/lib/stripe";
-import { db, ensureInboxTaxonomy } from "@amarnai/db";
+import { db } from "@amarnai/db";
+import { provisionFromCheckoutSession } from "@/lib/billing-provision";
 import { switchWorkspaceAction } from "@/actions/workspace";
 import { WorkspaceSetupWaiting } from "./WorkspaceSetupWaiting";
 import { Trans } from "@lingui/react/macro";
@@ -13,14 +14,6 @@ export const metadata = { title: "Upgrade Successful | Amarnai" };
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 
 const planLabels: Record<string, string> = { PRO: "Pro", BUSINESS: "Business" };
-
-type WorkspaceResult = {
-  id: string;
-  name: string;
-  plan: string;
-  currentPeriodEnd: Date | null;
-  trialEndsAt: Date | null;
-};
 
 export default async function UpgradeSuccessPage({
   searchParams,
@@ -49,97 +42,24 @@ export default async function UpgradeSuccessPage({
     return <WorkspaceSetupWaiting />;
   }
 
-  const meta = session.metadata ?? {};
-  const subscriptionId =
-    typeof session.subscription === "string" ? session.subscription : null;
-  const customerId =
-    typeof session.customer === "string" ? session.customer : null;
-  const planValue = meta.plan === "pro" ? "PRO" : "BUSINESS";
-  const cycleValue = meta.cycle === "annual" ? "ANNUAL" : "MONTHLY";
-
-  // Fetch subscription details once for both upgrade and create paths.
-  let currentPeriodEnd: Date | null = null;
-  let trialEndsAt: Date | null = null;
-  let priceId: string | null = null;
-
-  if (subscriptionId) {
-    const subscription = await stripe.subscriptions.retrieve(subscriptionId);
-    const item = subscription.items.data[0];
-    if (item?.current_period_end) {
-      currentPeriodEnd = new Date(item.current_period_end * 1000);
-    }
-    if (subscription.trial_end) {
-      trialEndsAt = new Date(subscription.trial_end * 1000);
-    }
-    priceId = item?.price.id ?? null;
+  // Provision through the single source of truth (same path as the webhook and
+  // mobile confirm-checkout): sets the plan, enforces trial eligibility, resets the
+  // backfill, and writes the audit log. Idempotent, so racing the webhook is safe.
+  const result = await provisionFromCheckoutSession(session);
+  if (!result) {
+    return <WorkspaceSetupWaiting />;
   }
 
-  let workspace: WorkspaceResult | null = null;
-
-  if (meta.action === "upgrade" && meta.workspaceId) {
-    // Update directly — idempotent with the webhook.
-    workspace = await db.workspace.update({
-      where: { id: meta.workspaceId },
-      data: {
-        plan: planValue,
-        ...(customerId && { stripeCustomerId: customerId }),
-        ...(subscriptionId && { stripeSubscriptionId: subscriptionId }),
-        stripePriceId: priceId,
-        billingCycle: cycleValue,
-        trialEndsAt,
-        currentPeriodEnd,
-        cancelAtPeriodEnd: false,
-        paymentFailed: false,
-      },
-      select: {
-        id: true,
-        name: true,
-        plan: true,
-        currentPeriodEnd: true,
-        trialEndsAt: true,
-      },
-    });
-  } else if (meta.action === "create" && subscriptionId) {
-    const existing = await db.workspace.findFirst({
-      where: { stripeSubscriptionId: subscriptionId },
-      select: {
-        id: true,
-        name: true,
-        plan: true,
-        currentPeriodEnd: true,
-        trialEndsAt: true,
-      },
-    });
-
-    if (existing) {
-      workspace = existing;
-    } else {
-      const created = await db.workspace.create({
-        data: {
-          name: meta.newWorkspaceName || "My Workspace",
-          ownerUserId: user.id,
-          plan: planValue,
-          ...(customerId && { stripeCustomerId: customerId }),
-          stripeSubscriptionId: subscriptionId,
-          stripePriceId: priceId,
-          billingCycle: cycleValue,
-          trialEndsAt,
-          currentPeriodEnd,
-          members: { create: { userId: user.id, role: "OWNER" } },
-        },
-        select: {
-          id: true,
-          name: true,
-          plan: true,
-          currentPeriodEnd: true,
-          trialEndsAt: true,
-        },
-      });
-      await ensureInboxTaxonomy(created.id);
-      workspace = created;
-    }
-  }
-
+  const workspace = await db.workspace.findUnique({
+    where: { id: result.workspaceId },
+    select: {
+      id: true,
+      name: true,
+      plan: true,
+      currentPeriodEnd: true,
+      trialEndsAt: true,
+    },
+  });
   if (!workspace) {
     return <WorkspaceSetupWaiting />;
   }

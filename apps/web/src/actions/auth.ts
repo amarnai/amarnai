@@ -3,7 +3,8 @@
 import bcrypt from "bcryptjs";
 import { z } from "zod";
 import { signIn, signOut, unstable_update } from "@/auth";
-import { db } from "@amarnai/db";
+import { db, deleteUserCascade } from "@amarnai/db";
+import { cancelSubscriptionsForAccountDeletion } from "@amarnai/billing";
 import {
   registerWithPassword,
   rotateVerificationToken,
@@ -184,49 +185,16 @@ export async function deleteAccountAction(
     ownedWorkspaces.map((w) => w.id)
   );
 
-  await db.$transaction(async (tx) => {
-    const [workspaces, emailAccounts] = await Promise.all([
-      tx.workspace.findMany({ where: { ownerUserId: user.id }, select: { id: true } }),
-      tx.emailAccount.findMany({ where: { userId: user.id }, select: { id: true } }),
-    ]);
-    const workspaceIds = workspaces.map((w) => w.id);
-    const emailAccountIds = emailAccounts.map((ea) => ea.id);
+  // Cancel any paid Stripe subscriptions on owned workspaces before the rows are
+  // gone, so nobody keeps paying for a deleted account. Never throws — a Stripe
+  // failure records a durable retry row the worker reconciles; deletion is never
+  // blocked. Must run before deleteUserCascade (it needs the workspace rows).
+  await cancelSubscriptionsForAccountDeletion(user.id);
 
-    const [threads, messages] = await Promise.all([
-      tx.emailThread.findMany({ where: { workspaceId: { in: workspaceIds } }, select: { id: true } }),
-      tx.emailMessage.findMany({ where: { workspaceId: { in: workspaceIds } }, select: { id: true } }),
-    ]);
-    const threadIds = threads.map((t) => t.id);
-    const messageIds = messages.map((m) => m.id);
-
-    // Delete leaf records first, then work up to User.
-    await tx.emailTag.deleteMany({
-      where: { OR: [{ emailThreadId: { in: threadIds } }, { emailMessageId: { in: messageIds } }] },
-    });
-    await tx.draft.deleteMany({ where: { workspaceId: { in: workspaceIds } } });
-    await tx.emailClassification.deleteMany({ where: { workspaceId: { in: workspaceIds } } });
-    await tx.emailMessage.deleteMany({ where: { workspaceId: { in: workspaceIds } } });
-    await tx.emailThread.deleteMany({ where: { workspaceId: { in: workspaceIds } } });
-    await tx.tag.deleteMany({ where: { workspaceId: { in: workspaceIds } } });
-    await tx.taxonomyEdge.deleteMany({ where: { workspaceId: { in: workspaceIds } } });
-    await tx.taxonomyNode.deleteMany({ where: { workspaceId: { in: workspaceIds } } });
-    await tx.gmailSyncSettings.deleteMany({ where: { workspaceId: { in: workspaceIds } } });
-    await tx.gmailConnection.deleteMany({ where: { workspaceId: { in: workspaceIds } } });
-    await tx.providerSyncState.deleteMany({ where: { emailAccountId: { in: emailAccountIds } } });
-    await tx.emailAddressIdentity.deleteMany({ where: { emailAccountId: { in: emailAccountIds } } });
-    // Deleting by userId is only safe because every emailAccount lives in a
-    // workspace this user owns: Gmail connect requires the OWNER role, and the
-    // OWNER role is only ever granted to the workspace creator (ownerUserId).
-    // If ownership transfer or member promotion is ever added, this scope must
-    // change with it or threads in surviving workspaces will break this delete.
-    await tx.emailAccount.deleteMany({ where: { userId: user.id } });
-    await tx.workspaceMember.deleteMany({ where: { userId: user.id } });
-    await tx.auditLog.deleteMany({ where: { actorUserId: user.id } });
-    await tx.workspace.deleteMany({ where: { ownerUserId: user.id } });
-    await tx.verificationToken.deleteMany({ where: { userId: user.id } });
-    await tx.userCredential.deleteMany({ where: { userId: user.id } });
-    await tx.user.delete({ where: { id: user.id } });
-  });
+  // Single source of truth for the FK-safe teardown order. Also persists a
+  // reset-immune TrialClaim so re-registering the same email cannot mint a new
+  // trial.
+  await deleteUserCascade(user.id);
 
   // Session is now invalid — sign out and redirect.
   await signOut({ redirectTo: "/sign-in" });

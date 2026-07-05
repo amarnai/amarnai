@@ -11,11 +11,12 @@ vi.mock("@amarnai/db", () => ({
     user: { findUnique: vi.fn() },
     $transaction: vi.fn(),
   },
+  hasTrialClaim: vi.fn(),
 }));
 
 vi.mock("@/lib/stripe", () => ({ getStripe: () => mockStripe }));
 
-import { db } from "@amarnai/db";
+import { db, hasTrialClaim } from "@amarnai/db";
 import { assembleBillingState } from "@/lib/billing-state";
 
 const USER_ID = "user-1";
@@ -23,8 +24,9 @@ const WS_ID = "ws-1";
 
 beforeEach(() => {
   vi.clearAllMocks();
-  vi.mocked(db.user.findUnique).mockResolvedValue({ trialUsed: true } as never);
+  vi.mocked(db.user.findUnique).mockResolvedValue({ trialUsed: true, email: "user@example.com" } as never);
   vi.mocked(db.workspaceMember.findMany).mockResolvedValue([] as never);
+  vi.mocked(hasTrialClaim).mockResolvedValue(false);
 });
 
 describe("assembleBillingState", () => {
@@ -78,6 +80,50 @@ describe("assembleBillingState", () => {
     expect(state.currentPeriodEnd).toBe(periodEnd.toISOString());
     expect(state.membersToRemoveOnCancel).toEqual([{ name: "Ann", email: "ann@x.com" }]);
     expect(state.collaboratorCount).toBe(1);
+  });
+
+  it("reports trialUsed true when the flag is false but a durable claim exists on the email", async () => {
+    // e.g. a card-denied trial: the user never got the trial, but must not be
+    // offered one again.
+    vi.mocked(db.user.findUnique).mockResolvedValue({
+      trialUsed: false,
+      email: "reused@example.com",
+    } as never);
+    vi.mocked(hasTrialClaim).mockResolvedValue(true);
+    vi.mocked(db.workspace.findUnique).mockResolvedValue({
+      plan: "FREE",
+      billingCycle: null,
+      currentPeriodEnd: null,
+      trialEndsAt: null,
+      cancelAtPeriodEnd: false,
+      paymentFailed: false,
+      stripeSubscriptionId: null,
+      ownerUserId: USER_ID,
+    } as never);
+
+    const state = await assembleBillingState(USER_ID, WS_ID);
+    expect(state.trialUsed).toBe(true);
+  });
+
+  it("reports trialUsed false when neither the flag nor a claim is present", async () => {
+    vi.mocked(db.user.findUnique).mockResolvedValue({
+      trialUsed: false,
+      email: "fresh@example.com",
+    } as never);
+    vi.mocked(hasTrialClaim).mockResolvedValue(false);
+    vi.mocked(db.workspace.findUnique).mockResolvedValue({
+      plan: "FREE",
+      billingCycle: null,
+      currentPeriodEnd: null,
+      trialEndsAt: null,
+      cancelAtPeriodEnd: false,
+      paymentFailed: false,
+      stripeSubscriptionId: null,
+      ownerUserId: USER_ID,
+    } as never);
+
+    const state = await assembleBillingState(USER_ID, WS_ID);
+    expect(state.trialUsed).toBe(false);
   });
 
   it("reports isOwner false when the user does not own the workspace", async () => {

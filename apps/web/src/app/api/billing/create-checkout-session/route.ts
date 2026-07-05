@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { db } from "@amarnai/db";
+import { db, hasTrialClaim } from "@amarnai/db";
 import { getStripe, getPriceId } from "@/lib/stripe";
 import { resolveBillingUser } from "@/lib/billing-auth";
 import { applyPaidPlanChange } from "@/lib/billing-mutations";
@@ -31,15 +31,18 @@ export async function POST(request: Request) {
   const { plan, cycle, action, workspaceId, newWorkspaceName } = parsed.data;
   const stripe = getStripe();
 
-  // `trialUsed` decides whether to offer the 14-day trial on first paid plan.
+  // Whether to advertise the 14-day trial on this first paid plan. This is only
+  // advertisement — the trial is claimed and enforced per email/card at redemption
+  // in provisionFromCheckoutSession, so a stockpiled or raced session cannot mint a
+  // second trial even if this check passed.
   const userRecord = await db.user.findUnique({
     where: { id: userId },
-    select: { trialUsed: true },
+    select: { trialUsed: true, email: true },
   });
   if (!userRecord) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  const offerTrial = !userRecord.trialUsed;
+  const offerTrial = !userRecord.trialUsed && !(await hasTrialClaim(userRecord.email));
 
   if (action === "upgrade") {
     if (!workspaceId) {
