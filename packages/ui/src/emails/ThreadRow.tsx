@@ -303,12 +303,22 @@ export function ThreadRow({
               </svg>
             </a>
           </Tooltip>
-          {assignInteractive && canAssign && !assignment && (
-            <Tooltip content={i18n._(msg`Assign to a member`)}>
+          {assignInteractive && (canAssign || assignment) && (
+            <Tooltip
+              content={
+                assignment
+                  ? i18n._(msg`Change assignee`)
+                  : i18n._(msg`Assign to a member`)
+              }
+            >
               <button
                 type="button"
-                className="em-assign-row-btn"
-                aria-label={i18n._(msg`Assign to a member`)}
+                className={`em-assign-row-btn${assignment ? " is-assigned" : ""}`}
+                aria-label={
+                  assignment
+                    ? i18n._(msg`Assigned to ${assigneeName}. Change assignee`)
+                    : i18n._(msg`Assign to a member`)
+                }
                 onClick={(e) => {
                   e.stopPropagation();
                   onOpenAssign?.(e.currentTarget);

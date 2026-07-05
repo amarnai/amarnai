@@ -1718,6 +1718,10 @@ button.em-pill--assignee:hover { background: var(--accent-line); }
 .em-thread-row.selected .em-assign-row-btn { opacity: 1; }
 .em-assign-row-btn:hover { background: var(--accent-soft); color: var(--accent-ink); }
 
+/* Assigned thread: the person affordance persists (like done/important) to show
+   the thread is owned, and stays clickable to change the assignee. */
+.em-assign-row-btn.is-assigned { opacity: 1; color: var(--accent-ink); }
+
 /* Member picker popover, mirroring the reroute popover. */
 .em-assignee-panel {
   position: fixed;
