@@ -124,11 +124,6 @@ export function EmailsDemoSection() {
           data-mode={mode}
         >
           <div className="ld-browser-bar">
-            <div className="ld-traffic" aria-hidden="true">
-              <span />
-              <span />
-              <span />
-            </div>
             <div className="ld-url-pill">
               <svg width="10" height="12" viewBox="0 0 10 12" fill="none" aria-hidden>
                 <rect x="1" y="5" width="8" height="6" rx="1.5" stroke="currentColor" strokeWidth="1.3" />

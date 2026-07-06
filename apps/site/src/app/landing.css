@@ -168,7 +168,6 @@
 
 /* ─── Hero feed card ──────────────────────────────────────────────────────── */
 
-@keyframes ld-pulse    { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
 @keyframes ld-chip-spin  { to { transform: rotate(360deg); } }
 @keyframes ld-feed-enter {
   from { opacity: 0; transform: translateY(-10px); }
@@ -201,8 +200,6 @@
   border-bottom: 1px solid var(--line);
   background: var(--bg-soft);
 }
-.ld-feed-dots { display: inline-flex; gap: 6px; flex: none; }
-.ld-feed-dots i { width: 9px; height: 9px; border-radius: 50%; background: var(--line-3); }
 .ld-feed-url { font-family: var(--f-mono); font-size: 11px; color: var(--ink-3); letter-spacing: 0.01em; text-decoration: none; transition: color 0.15s ease; }
 .ld-feed-url:hover { color: var(--ink); }
 .ld-feed-live {
@@ -725,11 +722,12 @@
 
 /* ─── Browser demo frame (emails section) ─────────────────────────────────── */
 
-/* Chrome bar: traffic lights left, URL pill centered, mode toggle right. The
-   1fr side columns keep the pill centered regardless of toggle width. */
+/* Chrome bar: URL pill left, mode toggle right — the classic browser toolbar
+   layout. No window dots — the URL pill and toggle carry the "browser" read,
+   matching the hero feed card's dot-free chrome. */
 .ld-browser-bar {
   display: grid;
-  grid-template-columns: 1fr minmax(0, 340px) 1fr;
+  grid-template-columns: minmax(0, 340px) 1fr;
   align-items: center;
   gap: 14px;
   padding: 9px 16px;
@@ -737,21 +735,11 @@
   border-bottom: 1px solid var(--line);
 }
 
-.ld-traffic {
-  display: flex;
-  gap: 6px;
-  justify-self: start;
-}
-
-.ld-traffic span { width: 11px; height: 11px; border-radius: 50%; }
-.ld-traffic span:nth-child(1) { background: oklch(72% 0.14 25); }
-.ld-traffic span:nth-child(2) { background: oklch(80% 0.13 85); }
-.ld-traffic span:nth-child(3) { background: oklch(74% 0.13 145); }
-
 .ld-url-pill {
+  grid-column: 1;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 7px;
   min-width: 0;
   padding: 5px 14px;
@@ -772,6 +760,7 @@
 }
 
 .ld-seg {
+  grid-column: 2;
   justify-self: end;
   display: inline-flex;
   gap: 2px;
