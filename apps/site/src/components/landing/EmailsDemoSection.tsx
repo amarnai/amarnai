@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  useEffect,
   useLayoutEffect,
   useMemo,
   useRef,
@@ -28,6 +29,21 @@ const KEY_STEP_PCT = 2;
 
 const clampPct = (pct: number) => Math.min(GMAIL_MAX_PCT, Math.max(GMAIL_MIN_PCT, pct));
 
+/** The two addresses the frame can show, in display order. Each maps to a mode. */
+const URL_OPTIONS: { mode: DemoMode; host: string }[] = [
+  { mode: "ext", host: "mail.google.com" },
+  { mode: "web", host: "app.amarnai.com" },
+];
+
+function LockIcon() {
+  return (
+    <svg width="10" height="12" viewBox="0 0 10 12" fill="none" aria-hidden>
+      <rect x="1" y="5" width="8" height="6" rx="1.5" stroke="currentColor" strokeWidth="1.3" />
+      <path d="M3 5V3.8a2 2 0 014 0V5" stroke="currentColor" strokeWidth="1.3" />
+    </svg>
+  );
+}
+
 /**
  * A single browser-framed demo with two modes: the Amarnai web app full-width
  * ("web") and the same workspace docked beside a static Gmail inbox ("ext").
@@ -53,6 +69,40 @@ export function EmailsDemoSection() {
   // null until the frame is first measured (SSR and pre-layout render).
   const [wide, setWide] = useState<boolean | null>(null);
   const mode: DemoMode = wide === false ? "web" : userMode;
+  const currentHost = URL_OPTIONS.find((o) => o.mode === mode)!.host;
+
+  // The URL pill doubles as a mode picker (same choices as the right-hand
+  // toggle). Only interactive when both modes are available; in a narrow frame
+  // the split can't fit, so the address is fixed to the web app.
+  const urlNavRef = useRef<HTMLDivElement>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onPointerDown = (e: PointerEvent) => {
+      if (!urlNavRef.current?.contains(e.target as Node)) setMenuOpen(false);
+    };
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMenuOpen(false);
+    };
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [menuOpen]);
+
+  // A frame that narrows past the split threshold hides the toggle; close the
+  // URL menu with it so it can't linger over the fixed single-URL pill.
+  useEffect(() => {
+    if (wide === false) setMenuOpen(false);
+  }, [wide]);
+
+  function chooseMode(next: DemoMode) {
+    setUserMode(next);
+    setMenuOpen(false);
+  }
 
   useLayoutEffect(() => {
     const frame = frameRef.current;
@@ -124,13 +174,61 @@ export function EmailsDemoSection() {
           data-mode={mode}
         >
           <div className="ld-browser-bar">
-            <div className="ld-url-pill">
-              <svg width="10" height="12" viewBox="0 0 10 12" fill="none" aria-hidden>
-                <rect x="1" y="5" width="8" height="6" rx="1.5" stroke="currentColor" strokeWidth="1.3" />
-                <path d="M3 5V3.8a2 2 0 014 0V5" stroke="currentColor" strokeWidth="1.3" />
-              </svg>
-              <span>{mode === "ext" ? "mail.google.com" : "app.amarnai.com"}</span>
-            </div>
+            {wide === false ? (
+              <div className="ld-url-pill">
+                <LockIcon />
+                <span>{currentHost}</span>
+              </div>
+            ) : (
+              <div className="ld-url-nav" ref={urlNavRef}>
+                <button
+                  type="button"
+                  className="ld-url-pill ld-url-pill--btn"
+                  aria-haspopup="listbox"
+                  aria-expanded={menuOpen}
+                  aria-label={_(msg`Switch the previewed address`)}
+                  onClick={() => setMenuOpen((open) => !open)}
+                >
+                  <LockIcon />
+                  <span>{currentHost}</span>
+                  <svg
+                    className="ld-url-caret"
+                    width="8"
+                    height="5"
+                    viewBox="0 0 8 5"
+                    fill="none"
+                    aria-hidden
+                  >
+                    <path
+                      d="M1 1l3 3 3-3"
+                      stroke="currentColor"
+                      strokeWidth="1.3"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </button>
+                {menuOpen && (
+                  <ul className="ld-url-menu" role="listbox" aria-label={_(msg`Available addresses`)}>
+                    {URL_OPTIONS.map((opt) => (
+                      <li
+                        key={opt.mode}
+                        role="option"
+                        aria-selected={opt.mode === mode}
+                        className={`ld-url-opt${opt.mode === mode ? " active" : ""}`}
+                        onClick={() => chooseMode(opt.mode)}
+                      >
+                        <LockIcon />
+                        <span className="ld-url-opt-host">{opt.host}</span>
+                        <span className="ld-url-opt-label">
+                          {opt.mode === "ext" ? <Trans>Browser extension</Trans> : "Web app"}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            )}
             {wide !== false && (
               <div className="ld-seg" role="group" aria-label={_(msg`Choose how to preview Amarnai`)}>
                 <button

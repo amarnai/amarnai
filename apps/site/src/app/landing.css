@@ -735,8 +735,19 @@
   border-bottom: 1px solid var(--line);
 }
 
+/* The pill sits at the left of the bar. In interactive mode it's wrapped in
+   .ld-url-nav (the positioning context for the address dropdown); in a narrow
+   frame it renders bare. Both are the grid's first column. */
+.ld-url-nav {
+  grid-column: 1;
+  justify-self: start;
+  position: relative;
+  min-width: 0;
+}
+
 .ld-url-pill {
   grid-column: 1;
+  justify-self: start;
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -758,6 +769,84 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+/* The pill-as-button: same chip, plus a caret and hover affordance. */
+.ld-url-pill--btn {
+  appearance: none;
+  cursor: pointer;
+  font: inherit;
+  font-family: var(--f-mono);
+  font-size: 11.5px;
+  transition: background 0.12s, border-color 0.12s;
+}
+
+.ld-url-pill--btn:hover { border-color: var(--line-2); background: var(--bg-sunk); }
+
+.ld-url-caret {
+  margin-left: 2px;
+  color: var(--ink-4);
+  transition: transform 0.15s ease;
+}
+
+.ld-url-pill--btn[aria-expanded="true"] .ld-url-caret { transform: rotate(180deg); }
+
+/* Address dropdown: the same two choices as the right-hand toggle. */
+.ld-url-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 30;
+  width: max-content;
+  min-width: 100%;
+  max-width: 340px;
+  margin: 0;
+  padding: 5px;
+  list-style: none;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: var(--shadow-3);
+}
+
+.ld-url-opt {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  border-radius: 8px;
+  font-family: var(--f-mono);
+  font-size: 11.5px;
+  color: var(--ink-2);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.ld-url-opt svg { flex-shrink: 0; color: var(--ink-4); }
+.ld-url-opt:hover { background: var(--bg-sunk); }
+
+.ld-url-opt.active {
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+}
+
+.ld-url-opt.active svg { color: var(--accent-ink); }
+
+.ld-url-opt-host {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ld-url-opt-label {
+  margin-left: auto;
+  padding-left: 16px;
+  font-family: var(--f-sans);
+  font-size: 11px;
+  white-space: nowrap;
+  color: var(--ink-3);
+}
+
+.ld-url-opt.active .ld-url-opt-label { color: var(--accent-ink); }
 
 .ld-seg {
   grid-column: 2;
