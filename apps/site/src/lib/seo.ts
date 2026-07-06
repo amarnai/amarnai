@@ -34,7 +34,10 @@ export function buildHomeMetadata(
   i18n: I18n,
   locale: SupportedLocale
 ): Metadata {
-  const title = i18n._(msg`Amarnai: AI email triage for Gmail`);
+  // Visible browser-tab / search-result headline uses the human-facing brand
+  // tagline. Machine-facing OG/Twitter titles keep the keyword-rich SEO phrasing.
+  const title = i18n._(msg`Amarnai: Gmail, sorted your way`);
+  const seoTitle = i18n._(msg`Amarnai: AI email triage for Gmail`);
   const url = localeUrl(locale);
 
   return {
@@ -55,7 +58,7 @@ export function buildHomeMetadata(
       languages: languageAlternates(),
     },
     openGraph: {
-      title,
+      title: seoTitle,
       description: i18n._(
         msg`Amarnai reads your Gmail, sorts every thread into the folders you define, and drafts replies for your approval. Reach inbox zero without the busywork.`
       ),
@@ -64,7 +67,7 @@ export function buildHomeMetadata(
     },
     twitter: {
       card: "summary_large_image",
-      title,
+      title: seoTitle,
       images: ["/og-image.png"],
     },
     robots: { index: true, follow: true },

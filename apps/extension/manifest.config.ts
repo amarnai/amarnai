@@ -59,7 +59,7 @@ export function buildManifest({
     // ID comes from gecko.id).
     return {
       manifest_version: 3,
-      name: "Amarnai: AI Triage for Gmail",
+      name: "Amarnai: Gmail, sorted your way",
       description:
         "Amarnai sorts your Gmail, drafts replies for your approval, and takes you to any thread without leaving the tab.",
       version,
@@ -89,7 +89,7 @@ export function buildManifest({
   // Chrome — byte-identical to the original single-target manifest.
   return {
     manifest_version: 3,
-    name: "Amarnai: AI Triage for Gmail",
+    name: "Amarnai: Gmail, sorted your way",
     description:
       "Amarnai sorts your Gmail, drafts replies for your approval, and takes you to any thread without leaving the tab.",
     ...(key ? { key } : {}),
