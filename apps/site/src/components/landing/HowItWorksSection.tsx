@@ -373,7 +373,7 @@ const steps = [
     body: (
       <Trans>
         Lay out folders like <em>Customers</em>, <em>Investors</em>,{" "}
-        <em>Hiring</em>. A simple sentence each is the whole config.
+        <em>Hiring</em>. A simple sentence each: that&apos;s the whole setup.
       </Trans>
     ),
     art: <StepArt2 />,

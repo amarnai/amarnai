@@ -13,8 +13,7 @@ export function Footer() {
             </div>
             <p className="ld-footer-tagline">
               <Trans>
-                Open-source AI email triage. Gmail-first. Hosted or self-hosted.
-                Your call.
+                Email, sorted automatically. Never sends without you.
               </Trans>
             </p>
           </div>
@@ -23,8 +22,8 @@ export function Footer() {
             <div className="ld-footer-col">
               <h4><Trans>Product</Trans></h4>
               <Link href="#how"><Trans>How it works</Trans></Link>
-              <Link href="#taxonomy"><Trans>Plan</Trans></Link>
-              <Link href="#triage"><Trans>Triage</Trans></Link>
+              <Link href="#taxonomy"><Trans>Your folders</Trans></Link>
+              <Link href="#triage"><Trans>See it work</Trans></Link>
               <Link href="/pricing"><Trans>Pricing</Trans></Link>
             </div>
             <div className="ld-footer-col">

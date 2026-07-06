@@ -36,8 +36,8 @@ export function Nav() {
 
         <nav className="ld-nav-links">
           <a href="#how" onClick={scrollTo("how")}><Trans>How it works</Trans></a>
-          <a href="#taxonomy" onClick={scrollTo("taxonomy")}><Trans>Plan</Trans></a>
-          <a href="#triage" onClick={scrollTo("triage")}><Trans>Triage</Trans></a>
+          <a href="#taxonomy" onClick={scrollTo("taxonomy")}><Trans>Your folders</Trans></a>
+          <a href="#triage" onClick={scrollTo("triage")}><Trans>See it work</Trans></a>
           <a href="#faq" onClick={scrollTo("faq")}><Trans>FAQ</Trans></a>
           <ThemeToggle className="theme-toggle--nav" />
           <Link className="ld-btn ld-nav-cta accent" href="/pricing">

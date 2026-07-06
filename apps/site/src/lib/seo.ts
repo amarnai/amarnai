@@ -36,8 +36,8 @@ export function buildHomeMetadata(
 ): Metadata {
   // Visible browser-tab / search-result headline uses the human-facing brand
   // tagline. Machine-facing OG/Twitter titles keep the keyword-rich SEO phrasing.
-  const title = i18n._(msg`Amarnai: Gmail, sorted your way`);
-  const seoTitle = i18n._(msg`Amarnai: AI email triage for Gmail`);
+  const title = i18n._(msg`Amarnai: AI Email Sorter for Gmail`);
+  const seoTitle = i18n._(msg`Amarnai: Gmail, sorted your way`);
   const url = localeUrl(locale);
 
   return {
@@ -46,7 +46,7 @@ export function buildHomeMetadata(
       msg`Amarnai sorts your Gmail into the folders you define, drafts replies for your approval, and explains every call so you reach inbox zero faster.`
     ),
     keywords: [
-      i18n._(msg`ai email triage`),
+      i18n._(msg`ai email sorter`),
       i18n._(msg`gmail ai assistant`),
       i18n._(msg`email organizer`),
       i18n._(msg`inbox zero`),

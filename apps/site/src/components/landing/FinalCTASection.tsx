@@ -10,12 +10,12 @@ export function FinalCTASection() {
         <p>
           <Trans>
             Connect Gmail and Amarnai starts sorting within minutes. Pricing is
-            per workspace. Sort as much mail as you like, with backfill of your
-            whole history included.
+            per workspace. Sorts new mail as it arrives, and works through years
+            of backlog.
           </Trans>
         </p>
         <div className="ld-final-cta-row">
-          <Link className="ld-btn accent lg" href="/pricing">
+          <Link className="ld-btn accent lg" href="https://app.amarnai.com/sign-up">
             <Trans>Try Amarnai</Trans>
           </Link>
           <InstallExtensionButton variant="secondary" />
