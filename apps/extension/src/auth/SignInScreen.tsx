@@ -2,6 +2,7 @@ import { useState, type FormEvent } from "react";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
+import { GoogleGIcon } from "@amarnai/ui";
 import { useSession } from "./session";
 import { GoogleAuthCancelledError } from "./googleAuth";
 import { WEB_APP_URL } from "../config";
@@ -101,6 +102,7 @@ export function SignInScreen() {
       <div className="ax-auth-divider"><span><Trans>or</Trans></span></div>
 
       <button type="button" className="ax-btn ax-btn-google" onClick={onGoogle} disabled={busy}>
+        <GoogleGIcon />
         <Trans>Sign in with Google</Trans>
       </button>
 
