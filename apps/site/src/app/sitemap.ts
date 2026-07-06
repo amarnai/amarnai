@@ -8,7 +8,7 @@ export const dynamic = "force-static";
 // Public, localized routes. The source locale is served at the bare domain and
 // other locales under `/{locale}`; each entry lists every locale as an hreflang
 // alternate so crawlers discover the translations.
-const PATHS = ["", "pricing", "privacy", "terms"];
+const PATHS = ["", "pricing", "privacy", "terms", "delete-account"];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return PATHS.map((path) => ({
