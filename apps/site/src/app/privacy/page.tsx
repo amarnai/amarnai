@@ -168,7 +168,7 @@ export default function PrivacyPage() {
       </ul>
       <p>
         To request a copy of your data or ask questions about deletion, email us at{" "}
-        <a href="mailto:hello@amarnai.com">hello@amarnai.com</a>.
+        <a href="mailto:privacy@amarnai.com">privacy@amarnai.com</a>.
       </p>
 
       <h2>Security</h2>
@@ -216,7 +216,7 @@ export default function PrivacyPage() {
       <h2>Contact</h2>
       <p>
         Questions about this policy or your data can be sent to{" "}
-        <a href="mailto:hello@amarnai.com">hello@amarnai.com</a>.
+        <a href="mailto:privacy@amarnai.com">privacy@amarnai.com</a>.
       </p>
     </ProseLayout>
   );
