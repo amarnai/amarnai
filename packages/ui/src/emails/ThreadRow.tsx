@@ -54,6 +54,18 @@ const PERSON_ICO = (
   </svg>
 );
 
+const GMAIL_LINK_ICO = (
+  <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden>
+    <path
+      d="M5 2H2a1 1 0 00-1 1v7a1 1 0 001 1h7a1 1 0 001-1V7M7.5 1H11v3.5M11 1L5.5 6.5"
+      stroke="currentColor"
+      strokeWidth="1.4"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
 // Five-point star. Filled when the thread is marked important; outline otherwise.
 function StarIco({ filled }: { filled: boolean }) {
   return (
@@ -100,6 +112,13 @@ export interface ThreadRowProps {
   canAssign?: boolean;
   /** Open the member picker anchored to the passed element. */
   onOpenAssign?: (anchor: HTMLElement) => void;
+  /**
+   * When set, the Gmail icon routes through this callback instead of opening a
+   * new tab via a plain link. The browser extension uses it to reuse/activate an
+   * existing Gmail tab; the web app leaves it unset and keeps the target="_blank"
+   * link (a web page can't reuse or focus another tab).
+   */
+  onOpenInGmail?: () => void;
 }
 
 export function ThreadRow({
@@ -114,6 +133,7 @@ export function ThreadRow({
   onToggleImportant,
   canAssign,
   onOpenAssign,
+  onOpenInGmail,
 }: ThreadRowProps) {
   const { i18n } = useLingui();
   const today = new Date().toISOString().slice(0, 10);
@@ -259,30 +279,30 @@ export function ThreadRow({
         </div>
         <div className="em-thread-actions">
           <Tooltip content={openInGmailLabel}>
-            <a
-              href={`https://mail.google.com/mail/u/0/#all/${thread.providerThreadId}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="em-thread-gmail-link"
-              aria-label={openInGmailLabel}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <svg
-                width="11"
-                height="11"
-                viewBox="0 0 12 12"
-                fill="none"
-                aria-hidden
+            {onOpenInGmail ? (
+              <button
+                type="button"
+                className="em-thread-gmail-link"
+                aria-label={openInGmailLabel}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onOpenInGmail();
+                }}
               >
-                <path
-                  d="M5 2H2a1 1 0 00-1 1v7a1 1 0 001 1h7a1 1 0 001-1V7M7.5 1H11v3.5M11 1L5.5 6.5"
-                  stroke="currentColor"
-                  strokeWidth="1.4"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </a>
+                {GMAIL_LINK_ICO}
+              </button>
+            ) : (
+              <a
+                href={`https://mail.google.com/mail/u/0/#all/${thread.providerThreadId}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="em-thread-gmail-link"
+                aria-label={openInGmailLabel}
+                onClick={(e) => e.stopPropagation()}
+              >
+                {GMAIL_LINK_ICO}
+              </a>
+            )}
           </Tooltip>
           {assignInteractive && (canAssign || assignment) && (
             <Tooltip

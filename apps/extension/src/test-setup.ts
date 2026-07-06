@@ -24,8 +24,8 @@ const chromeStub = {
   },
   tabs: {
     query: vi.fn(async () => []),
-    update: vi.fn(async () => {}),
-    create: vi.fn(async () => {}),
+    update: vi.fn(async () => ({}) as chrome.tabs.Tab),
+    create: vi.fn(async () => ({}) as chrome.tabs.Tab),
   },
   sidePanel: {
     setPanelBehavior: vi.fn(async () => {}),

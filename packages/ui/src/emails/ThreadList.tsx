@@ -64,6 +64,12 @@ export interface ThreadListProps {
   canAssign?: boolean;
   /** Open the member picker for a thread, anchored to the passed element. */
   onOpenAssign?: (threadId: string, anchor: HTMLElement) => void;
+  /**
+   * When set, a thread row's Gmail icon routes through this callback instead of
+   * opening a new tab. The browser extension uses it to reuse/activate an
+   * existing Gmail tab; the web app leaves it unset.
+   */
+  onOpenInGmail?: (threadId: string) => void;
   railOpen?: boolean;
   onToggleRail?: () => void;
   // Pagination: a footer shows "X of Y loaded" with an explicit Load more button,
@@ -96,6 +102,7 @@ export function ThreadList({
   onToggleImportant,
   canAssign,
   onOpenAssign,
+  onOpenInGmail,
   railOpen,
   onToggleRail,
   hasMore,
@@ -214,6 +221,9 @@ export function ThreadList({
                     {...(canAssign !== undefined ? { canAssign } : {})}
                     {...(onOpenAssign
                       ? { onOpenAssign: (anchor: HTMLElement) => onOpenAssign(thread.id, anchor) }
+                      : {})}
+                    {...(onOpenInGmail
+                      ? { onOpenInGmail: () => onOpenInGmail(thread.id) }
                       : {})}
                   />
                 );
