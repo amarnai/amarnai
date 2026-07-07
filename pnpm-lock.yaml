@@ -782,6 +782,28 @@ importers:
       '@amarnai/gmail':
         specifier: workspace:*
         version: link:../gmail
+      '@amarnai/outlook':
+        specifier: workspace:*
+        version: link:../outlook
+    devDependencies:
+      '@types/node':
+        specifier: ^24.0.0
+        version: 24.13.2
+      typescript:
+        specifier: ^5.8.0
+        version: 5.9.3
+      vitest:
+        specifier: ^3.0.0
+        version: 3.2.6(@types/debug@4.1.13)(@types/node@24.13.2)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@1.8.0))(lightningcss@1.32.0)(terser@5.48.0)(tsx@4.22.4)(yaml@2.9.0)
+
+  packages/outlook:
+    dependencies:
+      '@amarnai/ai':
+        specifier: workspace:*
+        version: link:../ai
+      '@amarnai/gmail':
+        specifier: workspace:*
+        version: link:../gmail
     devDependencies:
       '@types/node':
         specifier: ^24.0.0

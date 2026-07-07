@@ -27,6 +27,9 @@ export async function upsertEmailThread(opts: {
   messageCount: number;
   labelFlags: ThreadLabelFlags;
   updateContent: boolean;
+  // Representative deep-link (Outlook conversationId is not URL-resolvable).
+  // Undefined for Gmail; only written when provided so it is never nulled.
+  webLink?: string | null | undefined;
 }): Promise<string> {
   const {
     workspaceId,
@@ -38,7 +41,12 @@ export async function upsertEmailThread(opts: {
     messageCount,
     labelFlags,
     updateContent,
+    webLink,
   } = opts;
+
+  // Only include webLink in the write when the adapter supplied one, so a Gmail
+  // sync never overwrites a stored link with null.
+  const webLinkData = webLink != null ? { webLink } : {};
 
   const thread = await db.emailThread.upsert({
     where: {
@@ -52,11 +60,12 @@ export async function upsertEmailThread(opts: {
       subject,
       latestMessageAt,
       messageCount,
+      ...webLinkData,
       ...labelFlags,
     },
     update: updateContent
-      ? { subject, latestMessageAt, messageCount, ...labelFlags }
-      : { ...labelFlags },
+      ? { subject, latestMessageAt, messageCount, ...webLinkData, ...labelFlags }
+      : { ...webLinkData, ...labelFlags },
     select: { id: true },
   });
 

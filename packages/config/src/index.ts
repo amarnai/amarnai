@@ -64,6 +64,28 @@ const envSchema = z.object({
   // Random secret included as ?token= in the Pub/Sub push subscription URL.
   // Generate with: openssl rand -hex 32
   GMAIL_PUBSUB_WEBHOOK_SECRET: z.string().optional(),
+  // ─── Microsoft Graph (Outlook) OAuth + push ─────────────────────────────────
+  // Confidential Web app registration (multitenant + personal accounts). CLIENT_ID
+  // and CLIENT_SECRET must be set together to enable the Outlook provider. TENANT
+  // is the literal "common" for the multitenant+personal account type.
+  MS_GRAPH_CLIENT_ID: z.string().optional(),
+  MS_GRAPH_CLIENT_SECRET: z.string().optional(),
+  MS_GRAPH_TENANT: z.string().default('common'),
+  // clientState secret echoed on every Graph change-notification so the webhook
+  // can verify a subscription callback is genuinely ours. Generate: openssl rand -hex 32
+  MS_GRAPH_SUBSCRIPTION_SECRET: z.string().optional(),
+  // Which mail providers the product offers for connection, comma-separated.
+  // Gates the UI/connect flows only; the runtime adapter is always chosen per
+  // connection row. Defaults to gmail-only until Outlook launches.
+  MAIL_PROVIDERS: z
+    .string()
+    .default('gmail')
+    .transform((v) =>
+      v
+        .split(',')
+        .map((s) => s.trim().toLowerCase())
+        .filter(Boolean),
+    ),
 });
 
 function validateEnv(raw: NodeJS.ProcessEnv) {
@@ -98,6 +120,15 @@ function validateEnv(raw: NodeJS.ProcessEnv) {
 
   if (env.GMAIL_PUBSUB_TOPIC && !env.GMAIL_PUBSUB_WEBHOOK_SECRET) {
     throw new Error('GMAIL_PUBSUB_WEBHOOK_SECRET is required when GMAIL_PUBSUB_TOPIC is set');
+  }
+
+  // Outlook is enabled by a full confidential-client credential pair. Require both
+  // together so a half-configured registration fails fast instead of at connect time.
+  if (env.MS_GRAPH_CLIENT_ID && !env.MS_GRAPH_CLIENT_SECRET) {
+    throw new Error('MS_GRAPH_CLIENT_SECRET is required when MS_GRAPH_CLIENT_ID is set');
+  }
+  if (env.MS_GRAPH_CLIENT_SECRET && !env.MS_GRAPH_CLIENT_ID) {
+    throw new Error('MS_GRAPH_CLIENT_ID is required when MS_GRAPH_CLIENT_SECRET is set');
   }
 
   if (env.AI_PROVIDER === 'frontier') {
@@ -180,5 +211,17 @@ export const config = {
   gmail: {
     pubsubTopic: env.GMAIL_PUBSUB_TOPIC,
     webhookSecret: env.GMAIL_PUBSUB_WEBHOOK_SECRET,
+  },
+  outlook: {
+    clientId: env.MS_GRAPH_CLIENT_ID,
+    clientSecret: env.MS_GRAPH_CLIENT_SECRET,
+    tenant: env.MS_GRAPH_TENANT,
+    subscriptionSecret: env.MS_GRAPH_SUBSCRIPTION_SECRET,
+    // Whether a full confidential-client credential pair is configured.
+    enabled: Boolean(env.MS_GRAPH_CLIENT_ID && env.MS_GRAPH_CLIENT_SECRET),
+  },
+  mail: {
+    // Providers offered in the UI/connect flows (runtime adapter is per-connection).
+    enabledProviders: env.MAIL_PROVIDERS,
   },
 };

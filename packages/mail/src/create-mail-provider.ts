@@ -1,4 +1,5 @@
 import { GmailClient } from "@amarnai/gmail";
+import { GraphClient } from "@amarnai/outlook";
 import type { MailProvider } from "./types.js";
 
 /**
@@ -11,26 +12,27 @@ export type MailConnection = {
   encryptedRefreshToken: string;
 };
 
-// Compile-time guarantee that GmailClient satisfies the MailProvider contract.
-// If a method drifts, this line fails to typecheck (structural conformance —
-// GmailClient does not import this package, avoiding a dependency cycle).
+// Compile-time guarantee that each adapter satisfies the MailProvider contract.
+// If a method drifts, these lines fail to typecheck (structural conformance —
+// the adapters do not import this package, avoiding a dependency cycle).
 const _gmailConformsToMailProvider: new (encryptedRefreshToken: string) => MailProvider =
   GmailClient;
+const _graphConformsToMailProvider: new (encryptedRefreshToken: string) => MailProvider =
+  GraphClient;
 void _gmailConformsToMailProvider;
+void _graphConformsToMailProvider;
 
 /**
  * Selects the mail adapter for a connection. Mirrors `createAIProvider`
  * (packages/ai): a `switch` on the discriminant returning the concrete
  * implementation. Selection is per-connection, not a global env switch — a
- * workspace may have Gmail or (later) Outlook connected.
+ * workspace may have Gmail or Outlook connected.
  */
 export function createMailProvider(connection: MailConnection): MailProvider {
   switch (connection.provider) {
     case "GMAIL":
       return new GmailClient(connection.encryptedRefreshToken);
     case "OUTLOOK":
-      throw new Error(
-        "Outlook provider is not yet implemented (Phase B). Connect a Gmail account.",
-      );
+      return new GraphClient(connection.encryptedRefreshToken);
   }
 }

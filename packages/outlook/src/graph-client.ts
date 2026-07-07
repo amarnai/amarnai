@@ -1,0 +1,328 @@
+import type { ThreadSnapshot } from "@amarnai/ai";
+// Neutral control-flow errors are canonical in @amarnai/gmail and re-exported by
+// @amarnai/mail as MailAuthError / MailCursorExpiredError. GraphClient throws the
+// SAME classes so the worker's `instanceof Mail*Error` branches match, without a
+// package cycle (outlook -> gmail only).
+import {
+  decrypt,
+  GmailAuthError as MailAuthError,
+  GmailHistoryCursorExpiredError as MailCursorExpiredError,
+} from "@amarnai/gmail";
+import { normalizeGraphThread, type GraphMessage } from "./normalize-graph-thread.js";
+
+const GRAPH_BASE_URL = "https://graph.microsoft.com/v1.0";
+
+function tenant(): string {
+  return process.env["MS_GRAPH_TENANT"] || "common";
+}
+
+function tokenUrl(): string {
+  return `https://login.microsoftonline.com/${tenant()}/oauth2/v2.0/token`;
+}
+
+// Message fields the classifier snapshot needs. internetMessageHeaders must be
+// explicitly selected (it is not returned by default).
+const MESSAGE_SELECT =
+  "id,conversationId,from,sender,toRecipients,ccRecipients,subject," +
+  "receivedDateTime,bodyPreview,uniqueBody,body,hasAttachments,isRead,webLink,internetMessageHeaders";
+const ATTACHMENT_EXPAND = "attachments($select=name,contentType,size,isInline)";
+
+// The inbox folder is the sync scope: spam (Junk Email) and trash (Deleted Items)
+// live in other well-known folders and are therefore never imported, so no
+// per-message spam/trash flags are needed downstream.
+const INBOX_MESSAGES = "/me/mailFolders/inbox/messages";
+
+type TokenResponse = { access_token: string; expires_in: number };
+
+type GraphListResponse<T> = {
+  value?: T[];
+  "@odata.nextLink"?: string;
+  "@odata.deltaLink"?: string;
+};
+
+/**
+ * Read-only Microsoft Graph adapter. Structurally conforms to the `MailProvider`
+ * contract (asserted in the createMailProvider factory) without importing it, to
+ * keep the package graph acyclic. Every data request carries
+ * `Prefer: IdType="ImmutableId"` so message ids survive folder moves.
+ */
+export class GraphClient {
+  constructor(private readonly encryptedRefreshToken: string) {}
+
+  async refreshAccessToken(): Promise<string> {
+    const refreshToken = decrypt(this.encryptedRefreshToken);
+    const res = await fetch(tokenUrl(), {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({
+        refresh_token: refreshToken,
+        client_id: process.env["MS_GRAPH_CLIENT_ID"] ?? "",
+        client_secret: process.env["MS_GRAPH_CLIENT_SECRET"] ?? "",
+        grant_type: "refresh_token",
+        scope: "Mail.Read offline_access User.Read",
+      }),
+    });
+    if (!res.ok) {
+      let code: string | undefined;
+      try {
+        code = ((await res.json()) as { error?: string }).error;
+      } catch {
+        /* ignore body parse errors */
+      }
+      if (code === "invalid_grant" || res.status === 401) {
+        throw new MailAuthError(`Token refresh failed: ${code ?? res.status}`);
+      }
+      throw new Error(`Token refresh failed: ${res.status}`);
+    }
+    const data = (await res.json()) as TokenResponse;
+    return data.access_token;
+  }
+
+  /**
+   * Authenticated GET against an absolute Graph URL (or one deltaLink/nextLink
+   * follow-up), honoring a single `Retry-After` on 429 (Graph throttles harder
+   * than Gmail and sends the header). 410 Gone on a delta URL is surfaced as a
+   * cursor-expiry so the caller falls back to a full resync.
+   */
+  private async graphGet<T>(url: string, accessToken: string): Promise<GraphListResponse<T>> {
+    for (let attempt = 0; attempt < 2; attempt++) {
+      const res = await fetch(url, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          Prefer: 'IdType="ImmutableId"',
+        },
+      });
+      if (res.status === 429 && attempt === 0) {
+        const retryAfter = Number(res.headers.get("Retry-After")) || 1;
+        await new Promise((r) => setTimeout(r, Math.min(retryAfter, 30) * 1000));
+        continue;
+      }
+      if (res.status === 410) {
+        throw new MailCursorExpiredError("Delta cursor expired (410 Gone). Perform a full resync.");
+      }
+      if (res.status === 404) throw new Error(`Graph resource not found: ${res.status}`);
+      if (!res.ok) throw new Error(`Graph request failed: ${res.status}`);
+      return (await res.json()) as GraphListResponse<T>;
+    }
+    // Unreachable in practice: the retry either returns or throws above.
+    throw new Error("Graph request failed after retry");
+  }
+
+  async getProfile(): Promise<{ emailAddress: string; syncCursor: string }> {
+    const accessToken = await this.refreshAccessToken();
+
+    const meRes = await fetch(`${GRAPH_BASE_URL}/me?$select=mail,userPrincipalName`, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+    if (!meRes.ok) throw new Error(`Graph /me fetch failed: ${meRes.status}`);
+    const me = (await meRes.json()) as { mail?: string | null; userPrincipalName?: string };
+    const emailAddress = (me.mail ?? me.userPrincipalName ?? "").toLowerCase();
+
+    // Establish the initial delta cursor at "now" without importing anything:
+    // `$deltatoken=latest` returns a deltaLink representing the current state.
+    const initial = await this.graphGet<GraphMessage>(
+      `${GRAPH_BASE_URL}${INBOX_MESSAGES}/delta?$deltatoken=latest`,
+      accessToken,
+    );
+    const syncCursor = initial["@odata.deltaLink"] ?? "";
+    return { emailAddress, syncCursor };
+  }
+
+  async listChangesSince(cursor: string): Promise<{ changedThreadIds: string[]; newCursor: string }> {
+    const accessToken = await this.refreshAccessToken();
+    const seen = new Set<string>();
+    let url = cursor;
+    let newCursor = cursor;
+
+    // Follow nextLink pages until the terminal deltaLink appears.
+    for (;;) {
+      const page: GraphListResponse<GraphMessage> = await this.graphGet<GraphMessage>(
+        url,
+        accessToken,
+      );
+      for (const msg of page.value ?? []) {
+        if (msg.conversationId) seen.add(msg.conversationId);
+      }
+      if (page["@odata.deltaLink"]) {
+        newCursor = page["@odata.deltaLink"];
+        break;
+      }
+      if (!page["@odata.nextLink"]) break;
+      url = page["@odata.nextLink"];
+    }
+
+    return { changedThreadIds: Array.from(seen), newCursor };
+  }
+
+  async listThreadsPage(opts: {
+    afterMs: number;
+    pageToken?: string | undefined;
+    pageSize?: number | undefined;
+  }): Promise<{
+    threads: Array<{ id: string; unread: boolean; latestMessageAt: Date; messageLabelIds: string[][] }>;
+    nextPageToken: string | undefined;
+    resultSizeEstimate: number;
+  }> {
+    const accessToken = await this.refreshAccessToken();
+
+    let url: string;
+    if (opts.pageToken) {
+      // Graph's nextLink is an absolute URL carrying the original filter/orderby.
+      url = opts.pageToken;
+    } else {
+      const afterSecs = Math.max(1, Math.floor(opts.afterMs / 1000));
+      const afterIso = new Date(afterSecs * 1000).toISOString();
+      const params = new URLSearchParams({
+        $filter: `receivedDateTime ge ${afterIso}`,
+        $orderby: "receivedDateTime desc",
+        $top: String(opts.pageSize ?? 100),
+        $select: "id,conversationId,receivedDateTime,isRead",
+      });
+      url = `${GRAPH_BASE_URL}${INBOX_MESSAGES}?${params}`;
+    }
+
+    const page = await this.graphGet<GraphMessage>(url, accessToken);
+
+    // Group the page's messages into one entry per conversation. A conversation
+    // whose messages span a page boundary is deduplicated downstream by the
+    // upsert on (emailAccountId, providerThreadId); the resume cursor is the
+    // Graph skiptoken, so no message is skipped.
+    const byConversation = new Map<string, { unread: boolean; latestMessageAt: Date }>();
+    for (const msg of page.value ?? []) {
+      const id = msg.conversationId;
+      if (!id) continue;
+      const at = msg.receivedDateTime ? new Date(msg.receivedDateTime) : new Date(0);
+      const existing = byConversation.get(id);
+      if (existing) {
+        existing.unread = existing.unread || msg.isRead === false;
+        if (at > existing.latestMessageAt) existing.latestMessageAt = at;
+      } else {
+        byConversation.set(id, { unread: msg.isRead === false, latestMessageAt: at });
+      }
+    }
+
+    const threads = Array.from(byConversation.entries()).map(([id, v]) => ({
+      id,
+      unread: v.unread,
+      latestMessageAt: v.latestMessageAt,
+      messageLabelIds: [] as string[][],
+    }));
+
+    return {
+      threads,
+      nextPageToken: page["@odata.nextLink"],
+      // Graph does not return a cheap total; the progress bar treats 0 as unknown.
+      resultSizeEstimate: 0,
+    };
+  }
+
+  /**
+   * Gmail's trash/spam reconciliation queries have no Outlook analogue: the sync
+   * is inbox-folder-scoped, so trash (Deleted Items) and spam (Junk Email)
+   * threads are never imported and need no reconciliation. Returns an empty list.
+   */
+  async listThreadIdsByQuery(_q: string, _maxResults: number): Promise<string[]> {
+    return [];
+  }
+
+  async listRecentThreadIds(maxResults = 10): Promise<string[]> {
+    const accessToken = await this.refreshAccessToken();
+    const params = new URLSearchParams({
+      $top: String(maxResults),
+      $orderby: "receivedDateTime desc",
+      $select: "conversationId",
+    });
+    const page = await this.graphGet<GraphMessage>(
+      `${GRAPH_BASE_URL}${INBOX_MESSAGES}?${params}`,
+      accessToken,
+    );
+    const seen = new Set<string>();
+    for (const msg of page.value ?? []) {
+      if (msg.conversationId) seen.add(msg.conversationId);
+    }
+    return Array.from(seen).slice(0, maxResults);
+  }
+
+  async getThreadSnapshot(conversationId: string): Promise<ThreadSnapshot> {
+    const accessToken = await this.refreshAccessToken();
+    // Escape single quotes per OData literal rules.
+    const literal = conversationId.replace(/'/g, "''");
+    const params = new URLSearchParams({
+      $filter: `conversationId eq '${literal}'`,
+      $select: MESSAGE_SELECT,
+      $expand: ATTACHMENT_EXPAND,
+      $top: "100",
+    });
+
+    const messages: GraphMessage[] = [];
+    let next: string | undefined = `${GRAPH_BASE_URL}/me/messages?${params}`;
+    while (next !== undefined) {
+      const page: GraphListResponse<GraphMessage> = await this.graphGet<GraphMessage>(
+        next,
+        accessToken,
+      );
+      messages.push(...(page.value ?? []));
+      next = page["@odata.nextLink"];
+    }
+
+    if (messages.length === 0) {
+      // Conversation removed since it was queued — matches the Gmail "not found"
+      // signal the sync/classify loops skip on.
+      throw new Error(`Graph conversation not found: ${conversationId}`);
+    }
+
+    return normalizeGraphThread(messages, conversationId);
+  }
+
+  /**
+   * Registers a Graph change-notification subscription for the inbox. `target` is
+   * the public HTTPS webhook URL. Graph performs a validation handshake against
+   * `target` during creation, so this requires the webhook receiver to be live
+   * (Phase C). Max lifetime for mail is ~4230 minutes; the worker renews before
+   * expiry. Returns the subscription id as the cursor and its expiry (unix ms).
+   */
+  async registerWatch(target: string): Promise<{ cursor: string; expiresAt: string }> {
+    const accessToken = await this.refreshAccessToken();
+    // 4230 min is the documented mail maximum; back off slightly for clock skew.
+    const expiration = new Date(Date.now() + 4200 * 60 * 1000).toISOString();
+    const res = await fetch(`${GRAPH_BASE_URL}/subscriptions`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        changeType: "created,updated",
+        notificationUrl: target,
+        resource: "/me/mailFolders('inbox')/messages",
+        expirationDateTime: expiration,
+        clientState: process.env["MS_GRAPH_SUBSCRIPTION_SECRET"] ?? "",
+      }),
+    });
+    if (!res.ok) {
+      const body = await res.text();
+      throw new Error(`Graph subscription create failed: ${res.status} ${body}`);
+    }
+    const data = (await res.json()) as { id: string; expirationDateTime: string };
+    return {
+      cursor: data.id,
+      expiresAt: String(new Date(data.expirationDateTime).getTime()),
+    };
+  }
+
+  /**
+   * Removes this user's mail subscriptions. Graph has no mailbox-wide stop, and
+   * we do not thread the subscription id here, so we list the token's
+   * subscriptions and delete each. Best-effort; must run before token revoke.
+   */
+  async stopWatch(): Promise<void> {
+    const accessToken = await this.refreshAccessToken();
+    const list = await this.graphGet<{ id: string }>(`${GRAPH_BASE_URL}/subscriptions`, accessToken);
+    for (const sub of list.value ?? []) {
+      await fetch(`${GRAPH_BASE_URL}/subscriptions/${encodeURIComponent(sub.id)}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${accessToken}` },
+      }).catch(() => {});
+    }
+  }
+}

@@ -33,5 +33,8 @@ export function normalizeInboxKey(rawAddress: string): string {
     return `${local}@gmail.com`;
   }
 
+  // Every other provider (Outlook/outlook.com, custom domains, …) treats dots and
+  // the local part literally, so we pass the address through unchanged apart from
+  // the lowercase/trim above. Only the Gmail branch collapses dots and +tags.
   return `${local}@${domain}`;
 }

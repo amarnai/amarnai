@@ -440,6 +440,10 @@ model EmailThread {
   emailAccountId    String
   provider          Provider
   providerThreadId  String
+  // Representative message deep-link for providers whose thread id is not itself
+  // URL-resolvable (Outlook conversationId). Null for Gmail, where
+  // providerThreadId doubles as the deep-link key.
+  webLink           String?
   subject           String?
   latestMessageAt   DateTime?
   messageCount      Int          @default(0)

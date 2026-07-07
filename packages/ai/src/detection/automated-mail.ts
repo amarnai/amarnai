@@ -18,7 +18,18 @@ import { subjectIsTransactionalAuto } from "./transactional-subjects.js";
 // Re-exported so existing importers (and the package index) keep their path.
 export { subjectIsTransactionalAuto };
 
-/** Gmail category labels that mark non-personal, bulk-ish mail. */
+/**
+ * Gmail category labels that mark non-personal, bulk-ish mail. These, and the
+ * CATEGORY_PERSONAL / IMPORTANT vetoes below, are Gmail-label-specific: they read
+ * from `SnapshotMessage.labelIds`, which the Gmail adapter populates.
+ *
+ * Outlook has no equivalent category vocabulary, so the Graph adapter emits an
+ * empty `labelIds` — this weak "category" layer and its vetoes simply do not fire
+ * for Outlook, and detection there rests on the provider-neutral signals (RFC
+ * bulk headers, no-reply senders, transactional subjects), which port cleanly.
+ * A Graph-specific mapping (e.g. inferenceClassification) is deferred until it can
+ * be tuned against real Outlook mail.
+ */
 const BULK_CATEGORY_LABELS = [
   "CATEGORY_PROMOTIONS",
   "CATEGORY_SOCIAL",

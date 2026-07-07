@@ -26,10 +26,21 @@ describe("createMailProvider — dispatch", () => {
     }
   });
 
-  it("throws for the not-yet-implemented OUTLOOK provider (Phase B)", () => {
-    expect(() =>
-      createMailProvider({ provider: "OUTLOOK", encryptedRefreshToken: "enc" }),
-    ).toThrow(/Outlook/);
+  it("returns an Outlook (Graph) adapter conforming to the MailProvider surface for OUTLOOK", () => {
+    const client = createMailProvider({
+      provider: "OUTLOOK",
+      encryptedRefreshToken: "enc",
+    });
+    for (const method of MAIL_PROVIDER_METHODS) {
+      expect(typeof (client as unknown as Record<string, unknown>)[method]).toBe("function");
+    }
+  });
+
+  it("dispatches to distinct adapter implementations per provider", () => {
+    const gmail = createMailProvider({ provider: "GMAIL", encryptedRefreshToken: "enc" });
+    const outlook = createMailProvider({ provider: "OUTLOOK", encryptedRefreshToken: "enc" });
+    expect(gmail.constructor.name).toBe("GmailClient");
+    expect(outlook.constructor.name).toBe("GraphClient");
   });
 });
 

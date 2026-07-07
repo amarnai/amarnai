@@ -49,6 +49,13 @@ export type ThreadSnapshot = {
   latestMessageAt: Date;
   messageCount: number;
   messages: SnapshotMessage[];
+  /**
+   * A representative message deep-link for the thread. Populated for providers
+   * whose thread id is not itself URL-resolvable (Outlook `conversationId`): the
+   * adapter captures one message's `webLink` so the app can open the thread.
+   * Undefined for Gmail, where `providerThreadId` doubles as the deep-link key.
+   */
+  webLink?: string | null;
 };
 
 export function snapshotToThreadMessages(snapshot: ThreadSnapshot): ThreadMessage[] {
