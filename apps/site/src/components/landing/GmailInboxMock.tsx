@@ -75,8 +75,11 @@ export function GmailInboxMock({ threads }: { threads: ThreadItem[] }) {
           </div>
         ))}
 
-        {/* Filler rows fading out below the real threads, so the list reads
-            as a full inbox at any pane height without inventing more copy. */}
+        {/* De-emphasized filler rows standing in for already-read mail below
+            the real threads, so the list reads as a full inbox at any pane
+            height without inventing more copy. Styled static (no shimmer, no
+            fade) and hard-clipped at the pane edge so it reads as a real
+            inbox continuing below the fold, not a loading or broken state. */}
         <div className="ld-gmail-more">
           {Array.from({ length: 7 }, (_, i) => (
             <div key={i} className="ld-gmail-row ld-gmail-skel">

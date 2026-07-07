@@ -1173,12 +1173,15 @@
   font-weight: 600;
 }
 
-/* Filler rows: grey bars fading toward the bottom of the pane. */
+/* Filler rows: static, de-emphasized rows standing in for already-read mail
+   below the fold. No fade — the block is hard-clipped at the pane's bottom
+   edge like a real inbox scrolled to the top, so it reads as "more mail
+   continues" rather than a loading or broken state. */
 .ld-gmail-more {
   flex: 1;
   min-height: 0;
   overflow: hidden;
-  mask-image: linear-gradient(to bottom, black 20%, transparent 92%);
+  opacity: 0.55;
 }
 
 .ld-skel-sender,

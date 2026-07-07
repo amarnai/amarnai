@@ -12,9 +12,7 @@ export function Footer() {
               Amarnai
             </div>
             <p className="ld-footer-tagline">
-              <Trans>
-                Email, sorted automatically. Never sends without you.
-              </Trans>
+              <Trans>Gmail, sorted your way.</Trans>
             </p>
           </div>
 
