@@ -214,6 +214,28 @@ describe("trial eligibility — upgrade action (FREE → paid)", () => {
   });
 });
 
+describe("Stripe Tax — checkout session", () => {
+  it("enables automatic tax, VAT ID collection, and requires a billing address", async () => {
+    const res = await POST(upgradeReq(WS_ID));
+
+    expect(res.status).toBe(200);
+    const arg = sessionsCreateArg();
+    expect(arg?.automatic_tax).toEqual({ enabled: true });
+    expect(arg?.tax_id_collection).toEqual({ enabled: true });
+    expect(arg?.billing_address_collection).toBe("required");
+  });
+
+  it("also sets tax fields on the create-workspace checkout", async () => {
+    const res = await POST(createReq("business", "annual", "Taxed Workspace"));
+
+    expect(res.status).toBe(200);
+    const arg = sessionsCreateArg();
+    expect(arg?.automatic_tax).toEqual({ enabled: true });
+    expect(arg?.tax_id_collection).toEqual({ enabled: true });
+    expect(arg?.billing_address_collection).toBe("required");
+  });
+});
+
 describe("trial eligibility — create action (new workspace)", () => {
   it("offers a 14-day trial when user has never subscribed before", async () => {
     const res = await POST(createReq("pro", "monthly", "My New Workspace"));

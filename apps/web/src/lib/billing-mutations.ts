@@ -50,6 +50,9 @@ export async function applyPaidPlanChange(opts: {
     items: [{ id: item!.id, price: priceId }],
     proration_behavior: "create_prorations",
     cancel_at_period_end: false,
+    // Compute tax on the prorated invoice. The customer already has a saved
+    // address from their original Checkout, so automatic_tax resolves a location.
+    automatic_tax: { enabled: true },
   });
   await db.workspace.update({
     where: { id: opts.workspaceId },

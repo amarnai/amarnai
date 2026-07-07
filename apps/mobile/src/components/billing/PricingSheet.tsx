@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { Trans } from '@lingui/react/macro';
 import { PLANS, type PlanId, type BillingCycle, type BillingPlan, type BillingCycleValue } from '@amarnai/shared';
 import { colors, fontSize, fontWeight, radii, space } from '@amarnai/tokens';
 import { SheetLayout } from '../SheetLayout';
@@ -63,6 +64,11 @@ export function PricingSheet({ visible, onClose, currentPlan, currentCycle, busy
                 ) : null}
               </View>
               <Text style={styles.cardPrice}>{price}</Text>
+              {!plan.free ? (
+                <Text style={styles.cardPriceNote}>
+                  <Trans>Taxes calculated at checkout</Trans>
+                </Text>
+              ) : null}
 
               <View style={styles.highlights}>
                 {plan.highlights.map((h) => (
@@ -157,6 +163,10 @@ const styles = StyleSheet.create({
     fontSize: fontSize.md,
     fontWeight: fontWeight.medium,
     color: colors.accent,
+  },
+  cardPriceNote: {
+    fontSize: fontSize.xs,
+    color: colors.ink3,
   },
   highlights: {
     gap: space.xs,

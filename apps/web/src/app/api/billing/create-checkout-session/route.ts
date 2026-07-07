@@ -105,6 +105,15 @@ export async function POST(request: Request) {
   const checkoutSession = await stripe.checkout.sessions.create({
     mode: "subscription",
     line_items: [{ price: priceId, quantity: 1 }],
+    // Stripe Tax: geolocate the buyer and add the correct VAT/sales-tax line.
+    // Requires a buyer location, so billing address collection is required. The
+    // customer is auto-created by Checkout (no `customer` passed), so the
+    // collected address is saved to it automatically — no `customer_update`
+    // needed. tax_id_collection surfaces a VAT/GST field; a VIES-valid EU
+    // business VAT number makes Stripe apply reverse charge automatically.
+    automatic_tax: { enabled: true },
+    tax_id_collection: { enabled: true },
+    billing_address_collection: "required",
     subscription_data: {
       ...(offerTrial ? { trial_period_days: 14 } : {}),
       metadata: {

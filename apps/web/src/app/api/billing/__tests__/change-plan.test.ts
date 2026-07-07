@@ -84,6 +84,7 @@ describe("downgrade Business -> Pro", () => {
       items: [{ id: "si_1", price: "price_pro_monthly" }],
       proration_behavior: "create_prorations",
       cancel_at_period_end: false,
+      automatic_tax: { enabled: true },
     });
     expect(db.workspace.update).toHaveBeenCalledWith(
       expect.objectContaining({

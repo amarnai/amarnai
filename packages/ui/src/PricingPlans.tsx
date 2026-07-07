@@ -172,6 +172,7 @@ function PlanPrice({ plan, cycle }: { plan: (typeof PLANS)[number]; cycle: Billi
           <Trans>Billed monthly · 14-day free trial</Trans>
         )}
       </div>
+      <div className="plan-pricenote"><Trans>Taxes calculated at checkout</Trans></div>
 </>
   );
 }
@@ -487,7 +488,7 @@ export function PricingPlans({
   showMatrix = true,
   showSelfHost = true,
 }: Props) {
-  const [cycle, setCycle] = useState<BillingCycle>("monthly");
+  const [cycle, setCycle] = useState<BillingCycle>("annual");
 
   const currentIdx = currentPlan ? PLAN_ORDER.indexOf(currentPlan) : -1;
   // On the highest tier there is nothing to emphasise.
