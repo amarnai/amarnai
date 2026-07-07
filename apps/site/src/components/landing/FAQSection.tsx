@@ -32,6 +32,10 @@ const FAQ_ITEMS: { q: MessageDescriptor; a: MessageDescriptor }[] = [
     a: msg`Gmail filters just slap a label on each message and leave it in the same crowded inbox. Amarnai reads every thread the way a person would and lays them out in a clean workspace where related threads sit together, each with the reasoning behind its placement, so you get a calmer view instead of one more buried label. Spam and promotions are kept out automatically unless you turn them on in settings, and anything Amarnai is unsure about is flagged for your review.`,
   },
   {
+    q: msg`Does Amarnai work with Outlook?`,
+    a: msg`Today Amarnai connects to Gmail. Outlook support is on the way, and it will work the same read-only way: Amarnai reads your threads to sort them and never sends, deletes, or changes anything in your account.`,
+  },
+  {
     q: msg`Can Amarnai sort my existing inbox, not just new mail?`,
     a: msg`Yes. Amarnai can work through the thousands of threads already sitting in your inbox, not only messages that arrive from now on. Clearing your backlog and sorting new mail use the same plan, so your whole inbox ends up organized the same way.`,
   },

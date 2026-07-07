@@ -6,6 +6,8 @@ When working on Amarnai, prioritize readability, safety, and a focused feature s
 
 Amarnai is an open-source, self-hostable AI email triage assistant. It is Gmail-first, but not a full email client.
 
+**Provider support (product decision):** Amarnai will implement read-only Outlook support to mirror read-only Gmail. Outlook must offer the same feature set as Gmail, with parity across triage, sorting, drafts (approval-only), and all downstream functionality. Both providers are read-only; Amarnai never sends or mutates mail state beyond what the read-only model allows. New provider work should reuse the existing provider abstraction rather than forking Gmail-specific logic.
+
 Amarnai will also be offered as a hosted SaaS product. The codebase must support both deployment models equally. Design, architecture, storage layout, and API cost structure must never assume a single-tenant or fully self-managed environment. Specifically:
 
 - Multi-tenancy must be a first-class concern: data isolation, per-user resource accounting, and tenant-scoped configuration should be built in, not retrofitted.
@@ -58,7 +60,9 @@ A key use case is bulk triage of an existing inbox: users may want to sort and c
 
 ## Cross-Platform Parity
 
-- Before implementing any feature or change, check whether that functionality exists in both `apps/web/` and `apps/mobile/`. If it does, the change must be applied to both. Never update one without updating the other.
+**Mobile is shelved (product decision).** The mobile app (`apps/mobile/`) is on hold. Do not update it for every functionality or UI change. Web and site are the active surfaces; new features and UI updates ship there without a corresponding mobile change. Leave the existing mobile code in place, but do not treat mobile parity as a requirement for ongoing work. Revisit this decision before resuming mobile development.
+
+- Provider parity still applies: when a feature exists for Gmail, it must also be implemented for Outlook (read-only), and vice versa. Never update one provider without updating the other.
 
 ## Localization
 
@@ -85,7 +89,7 @@ Amarnai uses Lingui v5 for i18n across `apps/web`, `apps/site`, and `apps/mobile
 
 ## Non-Goals
 
-- Outlook/IMAP support
+- IMAP support (Outlook is supported read-only; see Provider support above)
 - Team features
 - Arbitrary workflow automation
 - Kubernetes
