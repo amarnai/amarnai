@@ -209,10 +209,6 @@ export const FEATURE_GROUPS: FeatureGroup[] = [
           "Enhanced + higher fallback",
         ],
       },
-      {
-        label: "Gmail label sync",
-        values: [{ soon: "Soon" }, { soon: "Soon" }, { soon: "Soon" }],
-      },
     ],
   },
   {
