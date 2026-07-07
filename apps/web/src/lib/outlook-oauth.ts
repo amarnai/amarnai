@@ -21,16 +21,22 @@ export type { OutlookProfile, OutlookTokens };
  * build (which would force these env vars to be present at build time).
  */
 export function isOutlookConfigured(): boolean {
-  return Boolean(process.env["MS_GRAPH_CLIENT_ID"] && process.env["MS_GRAPH_CLIENT_SECRET"]);
+  return Boolean(env("MS_GRAPH_CLIENT_ID") && env("MS_GRAPH_CLIENT_SECRET"));
 }
 
-const MS_TENANT = process.env["MS_GRAPH_TENANT"] ?? "common";
+// Read an env var, treating an empty/whitespace-only value as unset. `??` alone
+// would pass through OUTLOOK_OAUTH_CALLBACK_URL="" and send an empty redirect_uri,
+// which Microsoft rejects with "AADSTS900971: No reply address provided".
+function env(name: string): string | undefined {
+  const value = process.env[name]?.trim();
+  return value ? value : undefined;
+}
+
+const MS_TENANT = env("MS_GRAPH_TENANT") ?? "common";
 const MS_AUTH_URL = `https://login.microsoftonline.com/${MS_TENANT}/oauth2/v2.0/authorize`;
 
 function getCallbackUrl(): string {
-  return (
-    process.env["OUTLOOK_OAUTH_CALLBACK_URL"] ?? "http://localhost:3000/api/outlook/callback"
-  );
+  return env("OUTLOOK_OAUTH_CALLBACK_URL") ?? "http://localhost:3000/api/outlook/callback";
 }
 
 // ─── OAuth URL ────────────────────────────────────────────────────────────────
@@ -38,8 +44,14 @@ function getCallbackUrl(): string {
 // mirrors gmail.readonly. offline_access is required for a refresh token.
 
 export function buildOutlookAuthUrl(state: string): string {
+  const clientId = env("MS_GRAPH_CLIENT_ID");
+  if (!clientId) {
+    // Guard rather than send client_id="", which Microsoft rejects with an
+    // opaque error. isOutlookConfigured() should gate the connect UI upstream.
+    throw new Error("MS_GRAPH_CLIENT_ID is not configured");
+  }
   const params = new URLSearchParams({
-    client_id: process.env["MS_GRAPH_CLIENT_ID"] ?? "",
+    client_id: clientId,
     redirect_uri: getCallbackUrl(),
     response_type: "code",
     response_mode: "query",
