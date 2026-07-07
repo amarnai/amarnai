@@ -23,6 +23,7 @@ const workspaceParam = z.object({ workspaceId: z.string().min(1) });
 const connectionSelect = {
   id: true,
   workspaceId: true,
+  provider: true,
   emailAddress: true,
   grantedScopes: true,
   status: true,

@@ -34,6 +34,8 @@ import { threadImportantRoute } from "./routes/thread-important.js";
 import { notificationsRoute } from "./routes/notifications.js";
 import { gmailWebhookRoute } from "./routes/gmail-webhook.js";
 import { gmailWatchRoute } from "./routes/gmail-watch.js";
+import { outlookWebhookRoute } from "./routes/outlook-webhook.js";
+import { outlookSubscriptionRoute } from "./routes/outlook-subscription.js";
 import { workspaceEventsRoute } from "./routes/workspace-events.js";
 import { devicesRoute } from "./routes/devices.js";
 import { extensionRoute } from "./routes/extension.js";
@@ -45,6 +47,7 @@ import { adminRoute } from "./routes/admin.js";
 const PUBLIC_PATHS = new Set([
   "/health",
   "/webhooks/gmail",
+  "/webhooks/outlook",
   "/auth/login",
   "/auth/register",
   "/auth/google",
@@ -167,6 +170,8 @@ app.route("/", threadImportantRoute);
 app.route("/", notificationsRoute);
 app.route("/", gmailWebhookRoute);
 app.route("/", gmailWatchRoute);
+app.route("/", outlookWebhookRoute);
+app.route("/", outlookSubscriptionRoute);
 app.route("/", workspaceEventsRoute);
 app.route("/", devicesRoute);
 app.route("/", extensionRoute);

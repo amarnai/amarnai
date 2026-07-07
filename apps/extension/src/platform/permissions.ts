@@ -7,7 +7,11 @@ import { API_BASE_URL } from "../config";
 // auto-grant them on temporary loads, so without these the panel's API fetch/SSE
 // are CORS-blocked and tabs.query({url}) matches nothing. Chrome grants them at
 // install, so request() resolves true silently there.
-const ORIGINS = [`${new URL(API_BASE_URL).origin}/*`, "https://mail.google.com/*"];
+const ORIGINS = [
+  `${new URL(API_BASE_URL).origin}/*`,
+  "https://mail.google.com/*",
+  "https://outlook.office.com/*",
+];
 
 // Ensures the extension holds its host permissions, prompting on Firefox if not.
 //

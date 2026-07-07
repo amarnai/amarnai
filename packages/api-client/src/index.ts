@@ -19,6 +19,7 @@ export type {
   UpdateTaxonomyEdgeInput,
   UpdateGmailSyncSettingsInput,
   GmailConnection,
+  MailProvider,
   ConnectGmailInput,
   DisconnectResult,
   SyncStatus,

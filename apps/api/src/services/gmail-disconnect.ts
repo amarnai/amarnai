@@ -130,9 +130,15 @@ export async function disconnectGmail(
     }
 
     // ── 4. Revoke OAuth grant ─────────────────────────────────────────────────
-    revoked = await revokeGoogleToken(connection.encryptedRefreshToken);
-    if (!revoked) {
-      console.warn("[gmail-disconnect] Token revocation failed or token already invalid");
+    // Gmail exposes a token-revoke endpoint; Microsoft does not (revocation is
+    // user-driven via the MS account permissions page — surfaced in the UI). For
+    // Outlook, stopWatch above already deleted the Graph subscriptions and the
+    // stored token is scrubbed below, so there is nothing more to call here.
+    if (connection.provider === "GMAIL") {
+      revoked = await revokeGoogleToken(connection.encryptedRefreshToken);
+      if (!revoked) {
+        console.warn("[gmail-disconnect] Token revocation failed or token already invalid");
+      }
     }
   }
 

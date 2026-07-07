@@ -51,7 +51,11 @@ export type MemberItem = {
 export type ThreadItem = {
   id: string;
   subject: string;
+  provider: "GMAIL" | "OUTLOOK";
   providerThreadId: string;
+  // Representative message deep-link (Outlook); null for Gmail. Consumed by
+  // buildThreadUrl to open/switch the thread in the provider's web UI.
+  webLink: string | null;
   participants: string;
   latestAt: Date;
   messageCount: number;

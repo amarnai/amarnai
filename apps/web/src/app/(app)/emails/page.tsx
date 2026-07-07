@@ -4,6 +4,7 @@ import { getSelectedWorkspace } from "@/lib/workspace";
 import { apiFor } from "@/lib/api";
 import { initServerI18n } from "@/lib/i18n-server";
 import { ConnectGmailCta } from "@/components/ConnectGmailCta";
+import { isOutlookConfigured } from "@/lib/outlook-oauth";
 import { EmailsClient } from "./EmailsClient";
 import { mapFolders, mapThreads } from "./queries";
 import type { ActiveSelection } from "@amarnai/ui/emails";
@@ -56,10 +57,22 @@ export default async function EmailsPage({ searchParams }: PageProps) {
   const gmailConnected = connectionValue?.status === "ACTIVE";
 
   if (!gmailConnected) {
+    // Reconnect keeps the existing provider; a fresh connect defaults to Gmail
+    // and offers Outlook as a secondary option when it is configured.
+    if (connectionValue !== null) {
+      return (
+        <ConnectGmailCta
+          workspaceId={workspace.id}
+          reconnect
+          provider={connectionValue.provider}
+        />
+      );
+    }
     return (
       <ConnectGmailCta
         workspaceId={workspace.id}
-        reconnect={connectionValue !== null}
+        provider="GMAIL"
+        secondaryProvider={isOutlookConfigured() ? "OUTLOOK" : undefined}
       />
     );
   }

@@ -172,9 +172,13 @@ msgstr "{folderCount, plural, one {# 个文件夹} other {# 个文件夹}}"
 #~ msgid "{pendingCount} pending"
 #~ msgstr "{pendingCount} 待处理"
 
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:175
+msgid "{providerName} Inbox"
+msgstr "{providerName} 收件箱"
+
 #. placeholder {0}: draftQuota.limit
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:320
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:344
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:341
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:351
 #, fuzzy
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
 msgstr "剩余 {quotaRemaining} / {0} · 重置于 {quotaResetDate}"
@@ -254,9 +258,13 @@ msgstr "+ 添加文件夹"
 msgid "+ New workspace"
 msgstr "+ 新建工作区"
 
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:70
+msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your {providerName} account to get started. Amarnai connects with <1>read-only access</1> and <2>never sends, deletes, or changes anything</2>. Your inbox stays yours."
+msgstr "<0>King Aziru</0> 已准备好为您整理电子邮件会话。连接您的 {providerName} 账户即可开始。Amarnai 采用<1>只读访问</1>，<2>绝不会发送、删除或修改任何内容</2>。您的收件箱始终归您所有。"
+
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:55
-msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your Gmail account to get started. Amarnai connects with <1>read-only access</1> and <2>never sends, deletes, or changes anything</2>. Your inbox stays yours."
-msgstr "<0>阿齐鲁国王</0>已准备好为您整理邮件会话。连接您的 Gmail 账户即可开始。Amarnai 以<1>只读权限</1>连接，<2>绝不发送、删除或更改任何内容</2>。您的收件箱，由您掌控。"
+#~ msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your Gmail account to get started. Amarnai connects with <1>read-only access</1> and <2>never sends, deletes, or changes anything</2>. Your inbox stays yours."
+#~ msgstr "<0>阿齐鲁国王</0>已准备好为您整理邮件会话。连接您的 Gmail 账户即可开始。Amarnai 以<1>只读权限</1>连接，<2>绝不发送、删除或更改任何内容</2>。您的收件箱，由您掌控。"
 
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:47
 #, fuzzy
@@ -384,12 +392,12 @@ msgstr "每月分拣 500 个会话"
 msgid "75,000 threads"
 msgstr "75,000 个会话"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:300
+#: ../../apps/site/src/components/demo/demo-seed.ts:303
 #, fuzzy
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence."
 msgstr "收到赫伦希布（底比斯）的首席文书官职位申请。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:314
+#: ../../apps/site/src/components/demo/demo-seed.ts:317
 #, fuzzy
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
@@ -398,7 +406,7 @@ msgstr "已收到底比斯的霍伦海布呈报的文书长职位申请。\n"
 "\n"
 "请在记录馆查看该申请。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:384
+#: ../../apps/site/src/components/demo/demo-seed.ts:387
 #, fuzzy
 msgid "Abdi-Heba of Urushalim"
 msgstr "乌鲁沙林的阿布迪赫巴"
@@ -426,10 +434,15 @@ msgstr "阿卜迪-赫巴，\n"
 #~ msgid "Access is granted to that exact Google account, so if it isn't the one whose Gmail you want Amarnai to organize, just submit the right address."
 #~ msgstr "访问权限已授予该 Google 账号，如果这不是您希望 Amarnai 整理的 Gmail 账号，请提交正确的地址。"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:41
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:54
 #, fuzzy
 msgid "Access was denied. Grant read-only Gmail access to connect."
 msgstr "访问被拒绝。请授予只读 Gmail 访问权限以进行连接。"
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:76
+#, fuzzy
+msgid "Access was denied. Grant read-only Outlook (Mail.Read) access to connect."
+msgstr "访问被拒绝。请授予 Outlook 只读访问权限 (Mail.Read) 以进行连接。"
 
 #: ../../apps/mobile/app/(app)/account.tsx:105
 msgid "Account"
@@ -568,7 +581,7 @@ msgstr "所有工作区数据将被永久删除。"
 msgid "All your workspaces, emails, and settings will be deleted permanently."
 msgstr "您的所有工作区、电子邮件和设置将被永久删除。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:256
+#: ../../apps/site/src/components/demo/demo-seed.ts:259
 msgid "Alliance proposal: house of Amurru"
 msgstr "结盟提议：阿摩利家族"
 
@@ -590,7 +603,7 @@ msgstr "已在列表中。"
 #~ msgid "Already invited? <0>Sign in</0>"
 #~ msgstr "已被邀请？<0>登录</0>"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:191
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:234
 #, fuzzy
 msgid "Also erase synced email data"
 msgstr "同时抹除已同步的邮件数据"
@@ -618,8 +631,11 @@ msgstr "Amarnai 的命名灵感源自<0>阿马尔那泥版文书</0>：这些青
 #~ msgid "Amarnai is named after the Amarna Letters: clay cuneiform tablets used for diplomatic correspondence with the Egyptian pharaohs during the Bronze Age. One sender of these letters was Aziru, king of Amurru, a resourceful ruler and shrewd diplomat who navigated the rivalry between Egypt and the Hittites. Thousands of years later, he has found a new calling: helping folks like you bring order to their emails."
 #~ msgstr ""
 
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:64
+msgid "Amarnai is no longer syncing this inbox. Reconnect your {providerName} account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
+msgstr "Amarnai 不再同步此收件箱。请重新连接您的 {providerName} 账户，以恢复整理您的电子邮件会话。访问权限仍为<0>只读</0>，您的收件箱始终归您所有。"
+
 #: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:51
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:49
 #, fuzzy
 msgid "Amarnai is no longer syncing this inbox. Reconnect your Gmail account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
 msgstr "Amarnai 不再同步此收件箱。请重新连接您的 Gmail 账号以恢复对邮件会话的分类。访问权限仍保持<0>只读</0>，您的收件箱仍然归您所有。"
@@ -737,7 +753,7 @@ msgstr "API 错误 {0}"
 msgid "Appearance"
 msgstr "外观"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:295
+#: ../../apps/site/src/components/demo/demo-seed.ts:298
 #, fuzzy
 msgid "Application: Chief of Correspondence"
 msgstr "申请：首席文书官"
@@ -796,8 +812,8 @@ msgstr "分配会话"
 msgid "Assign to"
 msgstr "分配给"
 
-#: ../ui/src/emails/ThreadRow.tsx:312
-#: ../ui/src/emails/ThreadRow.tsx:321
+#: ../ui/src/emails/ThreadRow.tsx:316
+#: ../ui/src/emails/ThreadRow.tsx:325
 #: ../ui/src/emails/TriageBar.tsx:63
 #, fuzzy
 msgid "Assign to a member"
@@ -816,8 +832,8 @@ msgstr "已指派"
 msgid "Assigned to {assigneeName}"
 msgstr "分配给 {assigneeName}"
 
-#: ../ui/src/emails/ThreadRow.tsx:208
-#: ../ui/src/emails/ThreadRow.tsx:320
+#: ../ui/src/emails/ThreadRow.tsx:212
+#: ../ui/src/emails/ThreadRow.tsx:324
 #: ../ui/src/emails/TriageBar.tsx:62
 #, fuzzy
 msgid "Assigned to {assigneeName}. Change assignee"
@@ -834,7 +850,7 @@ msgstr "至少 {PASSWORD_MIN_LENGTH} 个字符"
 #~ msgstr "至少8个字符"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:127
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:82
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:88
 #, fuzzy
 msgid "Auto-file notifications to Updates / Other"
 msgstr "将通知自动归档到“更新/其他”"
@@ -843,7 +859,7 @@ msgstr "将通知自动归档到“更新/其他”"
 msgid "Automated and bulk mail that doesn't fit another folder lands here automatically. This is different from Needs review, which holds threads too ambiguous for the assistant to sort."
 msgstr "不适合其他文件夹的自动邮件和批量邮件会自动归档到这里。这与“待审核”不同，“待审核”文件夹则收录助手无法明确分类的会话。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:305
+#: ../../apps/site/src/components/demo/demo-seed.ts:308
 #, fuzzy
 msgid "Automated notice from the Bureau of Royal Appointments. Subject and sender clearly indicate a new application for an open position."
 msgstr "来自皇家任命局的自动通知。主题和发件人清楚表明有新的空缺职位申请。"
@@ -857,7 +873,7 @@ msgstr "不属于其他文件夹的自动通知、新闻通讯和服务更新。
 msgid "Available addresses"
 msgstr "可用地址"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:271
+#: ../../apps/site/src/components/demo/demo-seed.ts:274
 #, fuzzy
 msgid "Aziru of Amurru"
 msgstr "阿摩利的阿齐鲁"
@@ -878,14 +894,14 @@ msgstr "阿齐鲁，\n"
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:25
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:230
-#: ../ui/src/emails/ThreadPreview.tsx:92
+#: ../ui/src/emails/ThreadPreview.tsx:93
 #, fuzzy
 msgid "Back"
 msgstr "返回"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:213
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:225
-#: ../ui/src/emails/ThreadPreview.tsx:87
+#: ../ui/src/emails/ThreadPreview.tsx:88
 #, fuzzy
 msgid "Back to list"
 msgstr "返回列表"
@@ -969,12 +985,12 @@ msgstr "构建计划"
 #~ msgid "Bulk triage your inbox"
 #~ msgstr "批量分类您的收件箱"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:310
+#: ../../apps/site/src/components/demo/demo-seed.ts:313
 #, fuzzy
 msgid "Bureau of Royal Appointments"
 msgstr "皇家任命局"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:232
+#: ../../apps/site/src/components/demo/demo-seed.ts:235
 msgid "Burna-Buriash II"
 msgstr "伯尔那布里亚什二世"
 
@@ -1025,7 +1041,7 @@ msgstr "我能自托管 Amarnai 吗？"
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1686
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1773
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:64
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:208
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:251
 #: ../../apps/web/src/app/(app)/settings/ResetWorkspaceSection.tsx:73
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:182
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:170
@@ -1068,7 +1084,7 @@ msgstr "全收"
 msgid "Change"
 msgstr "更改"
 
-#: ../ui/src/emails/ThreadRow.tsx:311
+#: ../ui/src/emails/ThreadRow.tsx:315
 #, fuzzy
 msgid "Change assignee"
 msgstr "更改负责人"
@@ -1146,8 +1162,8 @@ msgstr "关闭面板"
 
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:255
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:259
-#: ../ui/src/emails/ThreadPreview.tsx:97
-#: ../ui/src/emails/ThreadPreview.tsx:101
+#: ../ui/src/emails/ThreadPreview.tsx:98
+#: ../ui/src/emails/ThreadPreview.tsx:102
 #, fuzzy
 msgid "Close preview"
 msgstr "关闭预览"
@@ -1197,6 +1213,11 @@ msgstr "确认删除"
 msgid "Confirm password"
 msgstr "确认密码"
 
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:98
+#, fuzzy
+msgid "Connect {providerName}"
+msgstr "连接 {providerName}"
+
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:170
 msgid "Connect a Gmail inbox to configure sync filters."
 msgstr "连接 Gmail 收件箱以配置同步筛选条件。"
@@ -1205,8 +1226,7 @@ msgstr "连接 Gmail 收件箱以配置同步筛选条件。"
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:361
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:271
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:76
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:314
 #, fuzzy
 msgid "Connect Gmail"
 msgstr "连接 Gmail"
@@ -1248,6 +1268,15 @@ msgstr "连接 Gmail 以开始分类"
 msgid "Connect once, generate your plan once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
 msgstr "只需连接一次，制定一次方案，Amarnai 即可处理新邮件，并整理您收件箱中已有的数千个会话。"
 
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:322
+#, fuzzy
+msgid "Connect Outlook"
+msgstr "连接 Outlook"
+
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:59
+msgid "Connect your {providerName} inbox"
+msgstr "连接您的 {providerName} 收件箱"
+
 #: ../../apps/extension/src/App.tsx:89
 #, fuzzy
 msgid "Connect your Gmail account to start triaging."
@@ -1259,10 +1288,10 @@ msgstr "连接您的 Gmail 帐户以将您的收件箱同步到 Amarnai。Amarna
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:44
 #, fuzzy
-msgid "Connect your Gmail inbox"
-msgstr "连接您的 Gmail 收件箱"
+#~ msgid "Connect your Gmail inbox"
+#~ msgstr "连接您的 Gmail 收件箱"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:99
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:142
 #, fuzzy
 msgid "Connection failed. Please try again."
 msgstr "连接失败。请重试。"
@@ -1305,10 +1334,14 @@ msgstr "已复制"
 msgid "Copy"
 msgstr "复制"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:53
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:66
 #, fuzzy
 msgid "Could not access your Gmail inbox. Make sure the Gmail API is enabled and the gmail.readonly scope is added to the OAuth consent screen in Google Cloud Console."
 msgstr "无法访问您的 Gmail 收件箱。请确保已启用 Gmail API，并且已将 gmail.readonly 范围添加到 Google Cloud Console 中的 OAuth 同意屏幕。"
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:88
+msgid "Could not access your Outlook inbox. Please try again."
+msgstr "无法访问您的 Outlook 收件箱。请重试。"
 
 #: ../../apps/mobile/src/components/BlacklistSheet.tsx:66
 #: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:59
@@ -1381,7 +1414,7 @@ msgid "Could not open billing management."
 msgstr "无法打开账单管理。"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:89
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:108
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:114
 #, fuzzy
 msgid "Could not queue rescan. Please try again."
 msgstr "无法排队重新扫描。请重试。"
@@ -1443,7 +1476,7 @@ msgstr "无法更新您的提醒设置。"
 msgid "Could not upgrade"
 msgstr "无法升级"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:55
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:68
 #, fuzzy
 msgid "Could not verify your Google account. Please try again."
 msgstr "无法验证您的 Google 账户。请重试。"
@@ -1452,12 +1485,12 @@ msgstr "无法验证您的 Google 账户。请重试。"
 msgid "Couldn't load your inbox. Check your connection and reopen the panel."
 msgstr "无法加载收件箱。请检查您的网络连接并重新打开面板。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:406
+#: ../../apps/site/src/components/demo/demo-seed.ts:409
 #, fuzzy
 msgid "Council convening: season of Shemu"
 msgstr "议会召开：收获季"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:416
+#: ../../apps/site/src/components/demo/demo-seed.ts:419
 #, fuzzy
 msgid "Council preparation request from a known royal ally. Sender domain and context clearly match the Current investors folder."
 msgstr "来自已知王室盟友的议会准备请求。发件人域名和上下文与“现有投资者”文件夹明确匹配。"
@@ -1670,7 +1703,7 @@ msgid "Description"
 msgstr "描述"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:137
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:85
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:91
 #, fuzzy
 msgid "Detected notifications, newsletters, and service updates are filed to your catch-all folder without using AI. Requires the <0>Updates / Other</0> folder from a taxonomy template."
 msgstr "检测到的通知、新闻稿和服务更新将归档到您的包罗万象文件夹，无需使用AI。需要分类模板中的<0>更新 / 其他</0>文件夹。"
@@ -1686,6 +1719,10 @@ msgstr "放弃"
 msgid "Disconnect"
 msgstr "断开连接"
 
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:222
+msgid "Disconnect {providerName}"
+msgstr "断开 {providerName} 连接"
+
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:96
 #, fuzzy
 msgid "Disconnect & erase data"
@@ -1696,7 +1733,6 @@ msgid "Disconnect failed"
 msgstr "断开连接失败"
 
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:170
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:179
 #, fuzzy
 msgid "Disconnect Gmail"
 msgstr "断开Gmail连接"
@@ -1711,37 +1747,45 @@ msgstr "断开 Gmail 连接？"
 msgid "Disconnected"
 msgstr "已断开连接"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:227
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:271
 #, fuzzy
 msgid "Disconnected from this workspace. {erasedNote} Amarnai still has access because this mailbox is connected in another workspace. To fully revoke access, remove Amarnai from your <0/>."
 msgstr "已从该工作区断开连接。{erasedNote} Amarnai仍有访问权限，因为此邮箱在另一个工作区中已连接。要完全撤销访问权限，请从您的<0/>中移除Amarnai。"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:243
 #, fuzzy
-msgid "Disconnected. {erasedNote} Revocation at Google could not be confirmed. You can remove Amarnai from your <0/>."
-msgstr "已断开连接。{erasedNote} 无法确认Google上的撤销。您可以从您的<0/>中移除Amarnai。"
+#~ msgid "Disconnected. {erasedNote} Revocation at Google could not be confirmed. You can remove Amarnai from your <0/>."
+#~ msgstr "已断开连接。{erasedNote} 无法确认Google上的撤销。您可以从您的<0/>中移除Amarnai。"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:252
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:287
+msgid "Disconnected. {erasedNote} To fully revoke Amarnai's access, remove it from your <0/>."
+msgstr "已断开连接。{erasedNote} 如需完全撤销 Amarnai 的访问权限，请从您的 <0/> 中移除它。"
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:295
 #, fuzzy
 msgid "Disconnected. Amarnai is no longer syncing this inbox."
 msgstr "已断开连接。Amarnai不再同步此收件箱。"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:236
 #, fuzzy
-msgid "Disconnected. Amarnai's access to this mailbox was revoked at Google. {erasedNote}"
-msgstr "已断开连接。Amarnai对此邮箱的访问权限已在Google撤销。{erasedNote}"
+#~ msgid "Disconnected. Amarnai's access to this mailbox was revoked at Google. {erasedNote}"
+#~ msgstr "已断开连接。Amarnai对此邮箱的访问权限已在Google撤销。{erasedNote}"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:200
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:280
+msgid "Disconnected. Amarnai's access to this mailbox was revoked.{erasedNote}"
+msgstr "已断开连接。Amarnai 对此邮箱的访问权限已被撤销。{erasedNote}"
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:243
 #, fuzzy
 msgid "Disconnecting…"
 msgstr "正在断开连接…"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:121
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:164
 #, fuzzy
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is also connected elsewhere in Amarnai. To fully revoke access, remove Amarnai from your <0/>."
 msgstr "断开此工作区连接。Amarnai仍保留访问权限，因为此邮箱在Amarnai的其他地方也已连接。要完全撤销访问权限，请从您的<0/>中移除Amarnai。"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:116
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:159
 #, fuzzy
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "断开此工作区连接。Amarnai仍保留访问权限，因为此邮箱仍连接在{sharedNames}中。"
@@ -1799,7 +1843,7 @@ msgstr "没有账户？<0>注册</0>"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:278
 #: ../../apps/mobile/src/components/ThreadRow.tsx:35
-#: ../ui/src/emails/ThreadRow.tsx:200
+#: ../ui/src/emails/ThreadRow.tsx:204
 #, fuzzy
 msgid "Done"
 msgstr "完成"
@@ -1812,7 +1856,7 @@ msgstr "完成 · 撤消"
 msgid "Downgrade to {planName}"
 msgstr "降级至 {planName}"
 
-#: ../ui/src/emails/ThreadRow.tsx:262
+#: ../ui/src/emails/ThreadRow.tsx:266
 #, fuzzy
 msgid "draft"
 msgstr "草稿"
@@ -1825,8 +1869,8 @@ msgstr "草稿"
 msgid "Draft failed · tap to retry"
 msgstr "草稿失败 · 轻触重试"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:335
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:360
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:356
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:367
 #, fuzzy
 msgid "Draft generation failed. Try again."
 msgstr "草稿生成失败。请重试。"
@@ -1848,7 +1892,7 @@ msgid "Draft style guidance"
 msgstr "草稿风格指南"
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:106
-#: ../ui/src/emails/ThreadRow.tsx:256
+#: ../ui/src/emails/ThreadRow.tsx:260
 msgid "Drafting…"
 msgstr "正在起草…"
 
@@ -2157,7 +2201,7 @@ msgstr "查找并起草"
 msgid "Five things keep your inbox safe. First, Amarnai is read-only by design: the permissions you grant through Google make it impossible for Amarnai to send, delete, or change any email. Second, Amarnai has passed Google's security review, completing the CASA security assessment required for any app that accesses Gmail. Third, you stay in control: replies stay drafts until you say so, nothing is ever sent on your behalf, and you can disconnect Amarnai at any time. Fourth, no email bodies are stored: Amarnai keeps labels and metadata, never the contents of your messages. Fifth, the code is public, so anyone can inspect exactly what touches your email."
 msgstr "五大保障，让您的收件箱安全无虞。第一，Amarnai 采用只读设计：您通过 Google 授予的权限，让 Amarnai 无法发送、删除或更改任何邮件。第二，Amarnai 已通过 Google 的安全审查，包括所有访问 Gmail 的应用都必须完成的 CASA 安全评估。第三，一切尽在您的掌控：回复邮件在您确认发送前始终是草稿，绝不会代表您发送任何内容，并且您可以随时断开 Amarnai 的连接。第四，邮件正文绝不存储：Amarnai 仅保留标签和元数据，从不存储您的邮件内容。第五，代码公开透明：任何人都可以检查您的邮件是如何被处理的。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:266
+#: ../../apps/site/src/components/demo/demo-seed.ts:269
 msgid "Flagged as alliance/investor intro based on language (\"mutual benefit\", \"long-standing friendship\"). Confidence is moderate; Aziru has been known to send similar overtures to multiple courts."
 msgstr "基于措辞（“互惠互利”、“长期友谊”）被标记为联盟/投资者介绍。置信度中等；阿齐鲁曾向多个宫廷发出过类似提议。"
 
@@ -2242,7 +2286,7 @@ msgstr "适用于大型组织和高邮件量团队。"
 msgid "For larger organizations."
 msgstr "适用于大型组织。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:261
+#: ../../apps/site/src/components/demo/demo-seed.ts:264
 msgid "For many years our houses have been as brothers. I write now to propose that we formalise this friendship for the benefit of both our peoples."
 msgstr "多年来，我们两家亲如兄弟。我现在写信提议，为了我们两国人民的福祉，将这份友谊正式化。"
 
@@ -2333,10 +2377,10 @@ msgstr "生成新草稿。占用一次月用量。"
 msgid "Generate a plan from your inbox"
 msgstr "根据收件箱生成方案"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:314
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:335
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:146
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:338
-#: ../ui/src/emails/ThreadPreview.tsx:162
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:345
+#: ../ui/src/emails/ThreadPreview.tsx:174
 #, fuzzy
 msgid "Generate draft reply"
 msgstr "生成草稿回复"
@@ -2419,8 +2463,8 @@ msgstr "Gmail 筛选器只会在每封邮件上打个标签，却仍让它们堆
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:132
 #, fuzzy
-msgid "Gmail Inbox"
-msgstr "Gmail 收件箱"
+#~ msgid "Gmail Inbox"
+#~ msgstr "Gmail 收件箱"
 
 #: ../ui/src/pricing/planMessages.ts:71
 msgid "Gmail label sync"
@@ -2436,7 +2480,7 @@ msgstr "Gmail 实时同步已启用"
 #~ msgid "Gmail marked as important"
 #~ msgstr "Gmail 已标记为重要"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:51
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:64
 #, fuzzy
 msgid "Gmail read-only access was not granted. Please try again and approve the requested permission."
 msgstr "未授予 Gmail 只读访问权限。请重试并批准请求的权限。"
@@ -2466,7 +2510,7 @@ msgstr "前往 {0}"
 msgid "Go to sign in"
 msgstr "前往登录"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:217
+#: ../../apps/site/src/components/demo/demo-seed.ts:220
 msgid "Gold balance: third consignment overdue"
 msgstr "黄金余额：第三批货物逾期"
 
@@ -2475,12 +2519,12 @@ msgstr "黄金余额：第三批货物逾期"
 #~ msgid "Google account email"
 #~ msgstr "Google 账号邮箱"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:34
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:46
 #, fuzzy
 msgid "Google Account permissions"
 msgstr "Google 账号权限"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:49
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:62
 #, fuzzy
 msgid "Google could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the Gmail callback URL is registered in Google Cloud Console."
 msgstr "Google 无法完成授权。链接可能已过期：请重试。如果问题仍然存在，请检查 Gmail 回调 URL 是否已在 Google Cloud Console 中注册。"
@@ -2592,7 +2636,7 @@ msgstr "工作原理"
 msgid "How to write a good description"
 msgstr "如何写出好的描述"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:274
+#: ../../apps/site/src/components/demo/demo-seed.ts:277
 msgid "I write to propose that we formalise our friendship."
 msgstr "我写信提议，我们将友谊正式化。"
 
@@ -2671,8 +2715,8 @@ msgid "Inbox import complete"
 msgstr "收件箱导入完成"
 
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:145
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:154
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:167
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:197
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:210
 #, fuzzy
 msgid "Inbox sync"
 msgstr "收件箱同步"
@@ -2682,13 +2726,13 @@ msgid "inbox zero"
 msgstr "收件箱清零"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:116
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:72
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:77
 #, fuzzy
 msgid "Include Promotions"
 msgstr "包含促销"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:105
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:62
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:66
 #, fuzzy
 msgid "Include spam"
 msgstr "包含垃圾邮件"
@@ -2698,7 +2742,7 @@ msgstr "包含垃圾邮件"
 msgid "Included"
 msgstr "包含"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:379
+#: ../../apps/site/src/components/demo/demo-seed.ts:382
 msgid "Informal message with no clear category: personal visit or political audience? Tone is personal but sender is a known vassal governor. Routed to Other with low confidence."
 msgstr "无明确类别的非正式信息：私人拜访还是政治会面？语气私人化，但发件人是已知的藩属总督。以低置信度路由到“其他”。"
 
@@ -2870,7 +2914,7 @@ msgstr "语言"
 #. placeholder {0}: formatDate(syncStatus.lastSyncedAt, _(msg`Never`))
 #. placeholder {0}: formatDate(syncStatus.lastSyncedAt, i18n)
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:154
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:158
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:201
 #, fuzzy
 msgid "Last synced {0}"
 msgstr "上次同步时间 {0}"
@@ -2878,7 +2922,7 @@ msgstr "上次同步时间 {0}"
 #. placeholder {0}: formatDate(connection.lastVerifiedAt, _(msg`Never`))
 #. placeholder {0}: formatDate(connection.lastVerifiedAt, i18n)
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:140
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:143
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:186
 #, fuzzy
 msgid "Last verified: {0}"
 msgstr "上次验证时间：{0}"
@@ -3000,7 +3044,7 @@ msgid "Manager emails: one-on-ones, performance reviews, and feedback."
 msgstr "经理邮件：一对一会议、绩效评估和反馈。"
 
 #: ../ui/src/emails/PreviewDoneBar.tsx:23
-#: ../ui/src/emails/ThreadRow.tsx:155
+#: ../ui/src/emails/ThreadRow.tsx:156
 #, fuzzy
 msgid "Mark as done"
 msgstr "标记为完成"
@@ -3010,11 +3054,11 @@ msgstr "标记为完成"
 #: ../../apps/mobile/src/components/ThreadRow.tsx:58
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:234
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:240
-#: ../ui/src/emails/ThreadRow.tsx:158
+#: ../ui/src/emails/ThreadRow.tsx:159
 msgid "Mark as important"
 msgstr "标记为重要"
 
-#: ../ui/src/emails/ThreadRow.tsx:154
+#: ../ui/src/emails/ThreadRow.tsx:155
 #, fuzzy
 msgid "Mark as not done"
 msgstr "标记为未完成"
@@ -3095,6 +3139,15 @@ msgstr "成员"
 msgid "Messages from paying customers and account holders."
 msgstr "来自付费客户和账户持有人的消息。"
 
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:40
+#, fuzzy
+msgid "Microsoft account permissions"
+msgstr "Microsoft 账户权限"
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:84
+msgid "Microsoft could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the redirect URI is registered on the app registration."
+msgstr "Microsoft 无法完成授权。链接可能已过期：请重试。如果问题仍然存在，请检查重定向 URI 是否已在应用程序注册中注册。"
+
 #: ../../apps/web/src/components/Sidebar.tsx:43
 #, fuzzy
 msgid "Mock Inbox"
@@ -3163,7 +3216,7 @@ msgstr "移至…"
 msgid "Moved to {folderName}"
 msgstr "已移动到 {folderName}"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:374
+#: ../../apps/site/src/components/demo/demo-seed.ts:377
 msgid "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face."
 msgstr "未来几天我的行程将经过三角洲附近。如果伟大君王能抽出一点时间，我将非常乐意面谈。"
 
@@ -3188,8 +3241,8 @@ msgid "Needs review"
 msgstr "需要审核"
 
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:32
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:143
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:158
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:186
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:201
 #, fuzzy
 msgid "Never"
 msgstr "从不"
@@ -3199,7 +3252,7 @@ msgstr "从不"
 msgid "Never auto-sends · Encrypted at rest · Minimal data"
 msgstr "绝不自动发送 ・ 静态加密 ・ 最少数据"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:313
+#: ../../apps/site/src/components/demo/demo-seed.ts:316
 #, fuzzy
 msgid "New application from Horemheb of Thebes."
 msgstr "赫伦希布（底比斯）的新申请。"
@@ -3261,8 +3314,8 @@ msgstr "新工作区名称"
 msgid "No drafts remaining"
 msgstr "没有剩余草稿"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:319
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:343
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:340
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:350
 #: ../ui/src/emails/SuggestedDraftCard.tsx:97
 #, fuzzy
 msgid "No drafts remaining · resets {quotaResetDate}"
@@ -3302,13 +3355,17 @@ msgstr "暂无文件夹"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:265
 #, fuzzy
-msgid "No Gmail inbox connected to this workspace."
-msgstr "此工作区未连接 Gmail 收件箱。"
+#~ msgid "No Gmail inbox connected to this workspace."
+#~ msgstr "此工作区未连接 Gmail 收件箱。"
 
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:118
 #, fuzzy
 msgid "No Gmail inbox connected. Connect your account to start syncing."
 msgstr "未连接 Gmail 收件箱。请连接您的账户以开始同步。"
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:308
+msgid "No inbox connected to this workspace."
+msgstr "此工作区未连接收件箱。"
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:376
 #, fuzzy
@@ -3418,7 +3475,7 @@ msgstr "不一定。Amarnai 可一键根据您的收件箱生成完整方案。�
 msgid "Not set"
 msgstr "未设置"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:159
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:202
 #, fuzzy
 msgid "Not yet synced"
 msgstr "尚未同步"
@@ -3447,7 +3504,7 @@ msgstr "通知，{unread} 条未读"
 msgid "Official university emails: registrar, student services, and housing."
 msgstr "大学官方邮件：注册办公室、学生服务和住宿。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:340
+#: ../../apps/site/src/components/demo/demo-seed.ts:343
 msgid "Ongoing thread with a known city governor raising a recurring supply issue. Escalatory tone and repeated follow-ups match the Support folder."
 msgstr "与一位已知城市总督关于反复出现的供应问题的进行中的会话。升级的语气和反复的跟进与“支持”文件夹匹配。"
 
@@ -3461,16 +3518,25 @@ msgstr "只有工作区所有者才能管理账单。"
 msgid "Open"
 msgstr "打开"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:264
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:284
 #: ../../apps/mobile/src/components/DraftSheet.tsx:97
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:272
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:278
-#: ../ui/src/emails/ThreadPreview.tsx:115
-#: ../ui/src/emails/ThreadPreview.tsx:121
-#: ../ui/src/emails/ThreadRow.tsx:159
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:274
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:284
+#: ../ui/src/emails/ThreadPreview.tsx:120
+#: ../ui/src/emails/ThreadPreview.tsx:132
+#: ../ui/src/emails/ThreadRow.tsx:163
 #, fuzzy
 msgid "Open in Gmail"
 msgstr "在 Gmail 中打开"
+
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:282
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:274
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:284
+#: ../ui/src/emails/ThreadPreview.tsx:119
+#: ../ui/src/emails/ThreadPreview.tsx:131
+#: ../ui/src/emails/ThreadRow.tsx:162
+msgid "Open in Outlook"
+msgstr "在 Outlook 中打开"
 
 #: ../../apps/web/src/components/Sidebar.tsx:114
 #, fuzzy
@@ -3528,6 +3594,10 @@ msgstr "或"
 msgid "Other"
 msgstr "其他"
 
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:86
+msgid "Outlook read-only access (Mail.Read) was not granted. Please try again and approve the requested permission."
+msgstr "Outlook 只读访问权限 (Mail.Read) 未被授予。请重试并批准请求的权限。"
+
 #: ../ui/src/pricing/planMessages.ts:78
 #, fuzzy
 msgid "Paid or upgraded Personal"
@@ -3553,8 +3623,8 @@ msgstr "合作伙伴"
 msgid "Passed Google's security review"
 msgstr "通过 Google 安全审查"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:369
-#: ../../apps/site/src/components/demo/demo-seed.ts:387
+#: ../../apps/site/src/components/demo/demo-seed.ts:372
+#: ../../apps/site/src/components/demo/demo-seed.ts:390
 msgid "Passing through the Delta: free to meet?"
 msgstr "途经三角洲：方便会面吗？"
 
@@ -3701,6 +3771,15 @@ msgstr "套餐节点"
 msgid "Please try again."
 msgstr "请重试。"
 
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:109
+#, fuzzy
+msgid "Prefer Gmail? Connect Gmail instead"
+msgstr "偏爱 Gmail？改为连接 Gmail"
+
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:107
+msgid "Prefer Outlook? Connect Outlook instead"
+msgstr "偏爱 Outlook？改为连接 Outlook"
+
 #: ../ui/src/pricing/planMessages.ts:111
 #, fuzzy
 msgid "Prefer to self-host?"
@@ -3710,7 +3789,7 @@ msgstr "想自托管？"
 msgid "Prefer to self-host? It's open source:<0/> <1>clone it and run it free</1>."
 msgstr "想自托管？它是开源的：<0/> <1>克隆并免费运行</1>。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:424
+#: ../../apps/site/src/components/demo/demo-seed.ts:427
 msgid "Prepare your accounts before the council convenes."
 msgstr "在议会召开之前准备好您的账目。"
 
@@ -3805,7 +3884,7 @@ msgstr "促销"
 msgid "Proposed folders. Applying replaces your current plan; you can edit everything afterward."
 msgstr "建议文件夹。应用将替换您当前方案；之后您仍可编辑所有内容。"
 
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:99
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:105
 #, fuzzy
 msgid "Queuing rescan…"
 msgstr "正在排队重新扫描…"
@@ -3819,7 +3898,7 @@ msgstr "重新路由 {unclassifiedCount} 个未分类项"
 msgid "Re-route thread"
 msgstr "重新路由会话"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:330
+#: ../../apps/site/src/components/demo/demo-seed.ts:333
 #, fuzzy
 msgid "Re: Grain shipment: third delay this season"
 msgstr "关于：谷物运输：本季第三次延误"
@@ -3861,20 +3940,27 @@ msgstr "最近已尝试。请稍后重试。"
 msgid "Reconnect"
 msgstr "重新连接"
 
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:303
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:96
+#, fuzzy
+msgid "Reconnect {providerName}"
+msgstr "重新连接 {providerName}"
+
 #: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:37
 msgid "Reconnect failed. Please try again."
 msgstr "重新连接失败。请重试。"
 
 #: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:65
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:260
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:76
 #, fuzzy
 msgid "Reconnect Gmail"
 msgstr "重新连接 Gmail"
 
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:57
+msgid "Reconnect your {providerName} inbox"
+msgstr "重新连接您的 {providerName} 收件箱"
+
 #: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:48
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:42
 #, fuzzy
 msgid "Reconnect your Gmail inbox"
 msgstr "重新连接您的 Gmail 收件箱"
@@ -3947,7 +4033,7 @@ msgstr "从黑名单中移除 {email}"
 #: ../../apps/mobile/src/components/ThreadRow.tsx:57
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:234
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:240
-#: ../ui/src/emails/ThreadRow.tsx:157
+#: ../ui/src/emails/ThreadRow.tsx:158
 #, fuzzy
 msgid "Remove from important"
 msgstr "取消重要"
@@ -4013,7 +4099,7 @@ msgid "Rescan failed"
 msgstr "重新扫描失败"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:153
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:99
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:105
 #, fuzzy
 msgid "Rescan inbox"
 msgstr "重新扫描收件箱"
@@ -4022,7 +4108,7 @@ msgstr "重新扫描收件箱"
 #~ msgid "Rescan queued — threads will update shortly."
 #~ msgstr "重新扫描已排队 — 会话即将更新。"
 
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:103
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:109
 #, fuzzy
 msgid "Rescan queued: threads will update shortly."
 msgstr "重新扫描已排队：会话即将更新。"
@@ -4095,9 +4181,9 @@ msgstr "调整会话列表大小"
 msgid "Resources"
 msgstr "资源"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:337
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:358
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:345
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:366
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:373
 #, fuzzy
 msgid "Retry"
 msgstr "重试"
@@ -4106,7 +4192,7 @@ msgstr "重试"
 msgid "Review queue"
 msgstr "审阅队列"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:345
+#: ../../apps/site/src/components/demo/demo-seed.ts:348
 #, fuzzy
 msgid "Rib-Hadda of Byblos"
 msgstr "比布鲁斯的瑞布哈达"
@@ -4296,7 +4382,7 @@ msgstr "发件人黑名单"
 msgid "Sender Blacklist"
 msgstr "发件人黑名单"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:227
+#: ../../apps/site/src/components/demo/demo-seed.ts:230
 #, fuzzy
 msgid "Sender is a known treaty partner of significant standing. Subject explicitly references an outstanding balance on an agreed consignment, which matches the Billing folder."
 msgstr "发件人是地位显赫的已知条约伙伴。主题明确提及已同意货物上的未结清余额，这与“账单”文件夹匹配。"
@@ -4506,7 +4592,7 @@ msgstr "分类量"
 #: ../../apps/mobile/src/components/RationaleCard.tsx:35
 #: ../../apps/site/src/components/landing/HeroFeedCard.tsx:90
 #: ../ui/src/emails/RationaleCard.tsx:52
-#: ../ui/src/emails/ThreadRow.tsx:227
+#: ../ui/src/emails/ThreadRow.tsx:231
 msgid "Sorting…"
 msgstr "正在排序…"
 
@@ -4573,7 +4659,7 @@ msgstr "别再手动分类邮件了。<0/><1>让它一次搞定。</1>"
 msgid "Stops syncing and revokes Amarnai's access to this mailbox."
 msgstr "停止同步并撤销 Amarnai 对此邮箱的访问权限。"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:111
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:154
 #, fuzzy
 msgid "Stops syncing and revokes Amarnai's access to this mailbox. Synced email data is kept so you can reconnect later."
 msgstr "停止同步并撤销 Amarnai 对此邮箱的访问权限。已同步的邮件数据将保留，以便您日后重新连接。"
@@ -4643,14 +4729,14 @@ msgid "Switch theme"
 msgstr "切换主题"
 
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:39
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:71
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:104
 #, fuzzy
 msgid "Sync error"
 msgstr "同步错误"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:281
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:96
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:50
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:54
 #, fuzzy
 msgid "Sync filters"
 msgstr "同步筛选器"
@@ -4659,13 +4745,13 @@ msgstr "同步筛选器"
 #~ msgid "Synced 2m ago"
 #~ msgstr "2分钟前同步"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:128
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:171
 #, fuzzy
 msgid "Synced email data was erased."
 msgstr "已同步的邮件数据已清除。"
 
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:38
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:70
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:103
 #, fuzzy
 msgid "Syncing…"
 msgstr "正在同步…"
@@ -4744,12 +4830,14 @@ msgstr "该邀请链接无效或已失效。"
 msgid "That link is invalid or has expired."
 msgstr "该链接无效或已过期。"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:43
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:56
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:78
 #, fuzzy
 msgid "The authorization callback was incomplete. Please try again."
 msgstr "授权回调不完整。请重试。"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:45
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:58
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:80
 #, fuzzy
 msgid "The authorization request expired or was tampered with. Please try again."
 msgstr "授权请求已过期或被篡改。请重试。"
@@ -4759,7 +4847,8 @@ msgstr "授权请求已过期或被篡改。请重试。"
 #~ msgid "The catch-all folder can't be deleted. Automated and bulk mail is filed here."
 #~ msgstr "“全收”文件夹无法删除。自动邮件和批量邮件将归档到此处。"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:57
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:70
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:90
 #, fuzzy
 msgid "The connection could not be saved due to a server error. Please try again."
 msgstr "由于服务器错误，无法保存连接。请重试。"
@@ -4773,27 +4862,27 @@ msgstr "由于服务器错误，无法保存连接。请重试。"
 msgid "The Gmail connection, all synced emails, and the taxonomy will be permanently deleted. Re-importing this inbox uses your monthly import allowance; if it runs out, you can import again after {allowanceResetsAt} or by upgrading."
 msgstr "Gmail 连接、所有已同步的电子邮件和分类体系将被永久删除。重新导入此收件箱将占用您的每月导入额度；如果额度用完，您可以在 {allowanceResetsAt} 之后或升级后再次导入。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:335
+#: ../../apps/site/src/components/demo/demo-seed.ts:338
 #, fuzzy
 msgid "The grain you sent last month was received with gratitude. But I must write again: the third shipment has not arrived and the city grows restless."
 msgstr "上月您送来的谷物已收到，不胜感激。但我必须再次写信：第三批货物尚未抵达，城市居民日渐不安。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:411
+#: ../../apps/site/src/components/demo/demo-seed.ts:414
 #, fuzzy
 msgid "The great council convenes at the start of Shemu. I ask that you prepare a full accounting of the eastern territories and send it ahead by fast courier."
 msgstr "示姆季初大议会召开。请备妥东部领地详细账目，速派信使提前送达。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:222
+#: ../../apps/site/src/components/demo/demo-seed.ts:225
 #, fuzzy
 msgid "The third gold consignment agreed under our treaty has not arrived. Two messengers have passed and still we wait."
 msgstr "依条约议定的第三批黄金至今未到。两名信使往返，吾等仍在等候。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:235
+#: ../../apps/site/src/components/demo/demo-seed.ts:238
 #, fuzzy
 msgid "The third gold consignment is overdue."
 msgstr "第三批黄金已逾期。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:348
+#: ../../apps/site/src/components/demo/demo-seed.ts:351
 msgid "The third grain shipment has not arrived."
 msgstr "第三批谷物未到。"
 
@@ -4819,8 +4908,12 @@ msgstr "这些协作者将在 {0} 失去访问权限："
 
 #: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:52
 #, fuzzy
-msgid "These settings control which Gmail threads are imported. Trash is always excluded."
-msgstr "这些设置控制导入哪些 Gmail 会话。垃圾邮件始终排除在外。"
+#~ msgid "These settings control which Gmail threads are imported. Trash is always excluded."
+#~ msgstr "这些设置控制导入哪些 Gmail 会话。垃圾邮件始终排除在外。"
+
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:56
+msgid "These settings control which inbox threads are imported. Trash is always excluded."
+msgstr "这些设置控制将导入哪些收件箱会话。垃圾邮件始终被排除在外。"
 
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1301
 #, fuzzy
@@ -4833,8 +4926,12 @@ msgstr "此文件夹无法从收件箱访问，也不会用于路由。"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:148
 #, fuzzy
-msgid "This Gmail is also connected in {sharedNames}. Each workspace syncs and classifies it separately, which uses separate AI quota."
-msgstr "此 Gmail 也已连接到 {sharedNames}。每个工作区独立同步和分类，这将使用独立的 AI 配额。"
+#~ msgid "This Gmail is also connected in {sharedNames}. Each workspace syncs and classifies it separately, which uses separate AI quota."
+#~ msgstr "此 Gmail 也已连接到 {sharedNames}。每个工作区独立同步和分类，这将使用独立的 AI 配额。"
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:191
+msgid "This inbox is also connected in {sharedNames}. Each workspace syncs and classifies it separately, which uses separate AI quota."
+msgstr "此收件箱也连接到 {sharedNames}。每个工作区会独立同步和分类，这会消耗单独的 AI 配额。"
 
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:53
 #, fuzzy
@@ -4872,7 +4969,7 @@ msgstr "这将移除 Gmail 连接、删除所有已同步的电子邮件，并�
 msgid "This thread cannot be sorted yet. Add at least {TAXONOMY_MIN_NON_ROOT_NODES} categories to your plan to begin routing."
 msgstr "此会话尚未排序。请至少添加 {TAXONOMY_MIN_NON_ROOT_NODES} 个类别到您的计划以开始路由。"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:281
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:302
 #, fuzzy
 msgid "This thread hasn't been sorted yet."
 msgstr "此会话尚未分类。"
@@ -4956,7 +5053,7 @@ msgstr "三步打造有序收件箱。"
 #~ msgid "Three steps. Then it sorts every email for you."
 #~ msgstr "简单三步，即可帮你分类所有邮件。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:425
+#: ../../apps/site/src/components/demo/demo-seed.ts:428
 #, fuzzy
 msgid "To my brother, the Great King,\n"
 "\n"
@@ -4986,7 +5083,7 @@ msgstr "致王室任命局，\n"
 "\n"
 "奉谕，"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:275
+#: ../../apps/site/src/components/demo/demo-seed.ts:278
 #, fuzzy
 msgid "To the Great King,\n"
 "\n"
@@ -5003,7 +5100,7 @@ msgstr "致大王，\n"
 "\n"
 "阿齐鲁，大王之仆，阿穆鲁之主"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:388
+#: ../../apps/site/src/components/demo/demo-seed.ts:391
 #, fuzzy
 msgid "To the Great King,\n"
 "\n"
@@ -5029,7 +5126,7 @@ msgstr "致吾兄，大王，\n"
 "\n"
 "友谊长存，"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:236
+#: ../../apps/site/src/components/demo/demo-seed.ts:239
 #, fuzzy
 msgid "To the Great King, my brother,\n"
 "\n"
@@ -5046,7 +5143,7 @@ msgstr "致吾兄，大王，\n"
 "\n"
 "布尔那-布里亚什二世，巴比伦国王"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:349
+#: ../../apps/site/src/components/demo/demo-seed.ts:352
 msgid "To the Great King, my lord, my sun,\n"
 "\n"
 "The grain you sent last month was received with gratitude and I praised your name before the people. But I must write again: the third shipment has not arrived and the city grows restless.\n"
@@ -5116,7 +5213,7 @@ msgstr "随时随地，高效管理收件箱。"
 msgid "Try Amarnai"
 msgstr "试用 Amarnai"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:421
+#: ../../apps/site/src/components/demo/demo-seed.ts:424
 #, fuzzy
 msgid "Tushratta of Mitanni"
 msgstr "米坦尼的图什拉塔"
@@ -5133,7 +5230,7 @@ msgid "Unavailable"
 msgstr "不可用"
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:41
-#: ../ui/src/emails/ThreadRow.tsx:235
+#: ../ui/src/emails/ThreadRow.tsx:239
 msgid "Unclassified"
 msgstr "未分类"
 
@@ -5207,7 +5304,7 @@ msgid "Up to 25 collaborators"
 msgstr "最多25位协作成员"
 
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:37
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:69
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:102
 #, fuzzy
 msgid "Up to date"
 msgstr "已是最新"
@@ -5288,7 +5385,7 @@ msgstr "升级以加载更多"
 #~ msgid "Upgrade your subscription on the web app to enable backfill."
 #~ msgstr "在网页应用中升级您的订阅以启用回填。"
 
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:114
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:120
 #, fuzzy
 msgid "Use \"Rescan inbox\" after changing filter settings to apply them to threads already in your inbox."
 msgstr "更改筛选器设置后，使用“重新扫描收件箱”将其应用于收件箱中已有的会话。"
@@ -5350,11 +5447,11 @@ msgstr "仅限查看。只有工作区管理员才能编辑方案。"
 #: ../../apps/mobile/src/components/RationaleCard.tsx:44
 #: ../../apps/mobile/src/components/ThreadRow.tsx:44
 #: ../ui/src/emails/RationaleCard.tsx:74
-#: ../ui/src/emails/ThreadRow.tsx:231
+#: ../ui/src/emails/ThreadRow.tsx:235
 msgid "Waiting"
 msgstr "等待中"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:168
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:211
 #, fuzzy
 msgid "Waiting for first sync…"
 msgstr "等待首次同步…"
@@ -5368,7 +5465,7 @@ msgstr "等待验证…"
 #~ msgid "Waitlist"
 #~ msgstr "候补名单"
 
-#: ../ui/src/emails/ThreadRow.tsx:148
+#: ../ui/src/emails/ThreadRow.tsx:149
 msgid "Wants {folderName}"
 msgstr "想要 {folderName}"
 
@@ -5415,7 +5512,7 @@ msgid "Where this folder sits. Folders with no parent stay disconnected and are 
 msgstr "此文件夹所在位置。没有父级的文件夹将保持未连接状态并被忽略，直到被连接。"
 
 #: ../../apps/web/src/components/AziruIntroDialog.tsx:46
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:28
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:43
 msgid "Who is king Aziru?"
 msgstr "阿齐鲁国王是谁？"
 
@@ -5469,7 +5566,7 @@ msgstr "工作区名称已更新。"
 msgid "Workspace settings"
 msgstr "工作区设置"
 
-#: ../../apps/web/src/app/(app)/settings/page.tsx:106
+#: ../../apps/web/src/app/(app)/settings/page.tsx:114
 #, fuzzy
 msgid "Workspace Settings"
 msgstr "工作区设置"
@@ -5483,10 +5580,10 @@ msgstr "工作区类型"
 msgid "Workspaces included"
 msgstr "包含的工作区"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:329
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:350
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:168
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:354
-#: ../ui/src/emails/ThreadPreview.tsx:169
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:361
+#: ../ui/src/emails/ThreadPreview.tsx:181
 #, fuzzy
 msgid "Writing draft reply…"
 msgstr "正在撰写回复草稿…"
@@ -5505,7 +5602,7 @@ msgstr "是的，删除我的帐户"
 msgid "Yes, delete workspace"
 msgstr "是的，删除工作区"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:200
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:243
 #, fuzzy
 msgid "Yes, disconnect"
 msgstr "是的，断开连接"
@@ -5569,10 +5666,14 @@ msgstr "您可以在 {0} 后重试，或者从模板开始。"
 msgid "You can try again shortly, or start from a template."
 msgstr "您可以稍后重试，或者从模板开始。"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:47
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:60
 #, fuzzy
 msgid "You do not have permission to connect a Gmail inbox to this workspace."
 msgstr "您没有权限将 Gmail 收件箱连接到此工作区。"
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:82
+msgid "You do not have permission to connect an Outlook inbox to this workspace."
+msgstr "您没有权限将 Outlook 收件箱连接到此工作区。"
 
 #: ../../apps/site/src/components/landing/HeroSection.tsx:66
 #, fuzzy

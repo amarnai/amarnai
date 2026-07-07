@@ -37,7 +37,9 @@ export function mapThreadDetail(detail: EmailThreadDetail): ThreadItem {
   const summary: EmailThreadSummary = {
     id: detail.id,
     subject: detail.subject,
+    provider: detail.provider,
     providerThreadId: detail.providerThreadId,
+    webLink: detail.webLink,
     latestMessageAt: detail.latestMessageAt,
     messageCount: detail.messageCount,
     triageStatus: detail.triageStatus,
@@ -99,7 +101,9 @@ export function mapThreads(threads: EmailThreadSummary[]): ThreadItem[] {
     return {
       id: t.id,
       subject: t.subject ?? "(no subject)",
+      provider: t.provider,
       providerThreadId: t.providerThreadId,
+      webLink: t.webLink,
       participants,
       latestAt: t.latestMessageAt
         ? new Date(t.latestMessageAt)

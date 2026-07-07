@@ -64,13 +64,25 @@ function postInternal(
 }
 
 /**
- * Trigger the immediate inbox sync and Gmail push-watch registration that
- * follow a fresh Gmail connection. `source` tags the log line with the call
- * site ("auth" or "gmail/callback").
+ * Trigger the immediate inbox sync and push-watch/subscription registration that
+ * follow a fresh mailbox connection. `source` tags the log line with the call
+ * site ("auth", "gmail/callback", "outlook/callback"). `provider` selects the
+ * push-registration endpoint (Gmail Pub/Sub watch vs Graph subscription); the
+ * trigger-sync hook is provider-neutral.
  */
-export function triggerPostConnectHooks(source: string, workspaceId: string, userId: string): void {
+export function triggerPostConnectHooks(
+  source: string,
+  workspaceId: string,
+  userId: string,
+  provider: "gmail" | "outlook" = "gmail",
+): void {
+  const registerPath =
+    provider === "outlook"
+      ? `/workspaces/${workspaceId}/register-outlook-subscription`
+      : `/workspaces/${workspaceId}/register-gmail-watch`;
+
   postInternal(source, "trigger_sync", workspaceId, userId, `/workspaces/${workspaceId}/trigger-sync`);
-  postInternal(source, "register_watch", workspaceId, userId, `/workspaces/${workspaceId}/register-gmail-watch`);
+  postInternal(source, "register_watch", workspaceId, userId, registerPath);
 
   // Gmail is now connected — the earliest moment the extension's side panel has
   // real triaged threads to show. Produce the one-time install nudge (no-op if

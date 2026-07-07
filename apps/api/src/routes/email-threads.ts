@@ -195,7 +195,9 @@ emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
   const threadSelect = {
     id: true,
     subject: true,
+    provider: true,
     providerThreadId: true,
+    webLink: true,
     latestMessageAt: true,
     messageCount: true,
     triageStatus: true,
@@ -362,7 +364,9 @@ emailThreads.get(
       select: {
         id: true,
         subject: true,
+        provider: true,
         providerThreadId: true,
+        webLink: true,
         latestMessageAt: true,
         messageCount: true,
         triageStatus: true,

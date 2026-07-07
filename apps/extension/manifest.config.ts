@@ -50,7 +50,11 @@ export function buildManifest({
     48: "icons/icon48.png",
     128: "icons/icon128.png",
   };
-  const hostPermissions = [`${apiOrigin}/*`, "https://mail.google.com/*"];
+  const hostPermissions = [
+    `${apiOrigin}/*`,
+    "https://mail.google.com/*",
+    "https://outlook.office.com/*",
+  ];
 
   if (browser === "firefox") {
     // Firefox has no side_panel/sidePanel and no MV3 background.service_worker: it

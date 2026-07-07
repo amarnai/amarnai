@@ -4,6 +4,7 @@ import { apiFor } from "@/lib/api";
 import { db } from "@amarnai/db";
 import { assembleBillingState } from "@/lib/billing-state";
 import { GmailConnectionSection } from "./GmailConnectionSection";
+import { isOutlookConfigured } from "@/lib/outlook-oauth";
 import { WorkspaceNameSection } from "./WorkspaceNameSection";
 import { WorkspaceLanguageSection } from "./WorkspaceLanguageSection";
 import { DeleteWorkspaceSection } from "./DeleteWorkspaceSection";
@@ -25,8 +26,15 @@ export default async function SettingsPage({ searchParams }: { searchParams: Sea
   const role = await getUserWorkspaceRole(workspace.id, user.id);
   const isAdmin = role === "OWNER";
 
-  const connectError =
+  // A failed connect redirects back with gmail_error or outlook_error; the
+  // present one also tells us which provider's error copy to show.
+  const gmailError =
     typeof params["gmail_error"] === "string" ? params["gmail_error"] : null;
+  const outlookError =
+    typeof params["outlook_error"] === "string" ? params["outlook_error"] : null;
+  const connectError = gmailError ?? outlookError;
+  const connectProvider = outlookError ? ("OUTLOOK" as const) : ("GMAIL" as const);
+  const outlookEnabled = isOutlookConfigured();
   const billingCancelled = params["cancelled"] === "true";
 
   let connection = null;
@@ -115,6 +123,8 @@ export default async function SettingsPage({ searchParams }: { searchParams: Sea
             syncStatus={syncStatus}
             syncSettings={syncSettings}
             connectError={connectError}
+            connectProvider={connectProvider}
+            outlookEnabled={outlookEnabled}
           />
           <EmailBlacklistSection
             workspaceId={workspace.id}

@@ -6,9 +6,9 @@ import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
 import type { MessageDescriptor } from "@lingui/core";
 import { disconnectGmailAction, type DisconnectOutcome } from "@/actions/gmail";
-import type { GmailConnection, SyncStatus, GmailSyncSettings } from "@/lib/api";
+import type { GmailConnection, MailProvider, SyncStatus, GmailSyncSettings } from "@/lib/api";
 import { GmailSyncSettingsSection } from "./GmailSyncSettingsSection";
-import { GoogleGIcon } from "@amarnai/ui";
+import { GoogleGIcon, OutlookIcon } from "@amarnai/ui";
 
 const DEFAULT_SYNC_SETTINGS: GmailSyncSettings = {
   includeSpam: false,
@@ -24,11 +24,23 @@ type Props = {
   syncStatus: SyncStatus;
   syncSettings: GmailSyncSettings | null;
   connectError: string | null;
+  // Which provider a failed connect attempt was for (drives the error copy).
+  connectProvider: MailProvider;
+  // Whether the Outlook provider is configured, so the empty state can offer it.
+  outlookEnabled: boolean;
 };
 
 const GOOGLE_PERMISSIONS_URL = "https://myaccount.google.com/permissions";
+const MICROSOFT_PERMISSIONS_URL = "https://account.microsoft.com/consent";
 
-function GooglePermissionsLink() {
+function AccountPermissionsLink({ provider }: { provider: MailProvider }) {
+  if (provider === "OUTLOOK") {
+    return (
+      <a href={MICROSOFT_PERMISSIONS_URL} target="_blank" rel="noreferrer">
+        <Trans>Microsoft account permissions</Trans>
+      </a>
+    );
+  }
   return (
     <a href={GOOGLE_PERMISSIONS_URL} target="_blank" rel="noreferrer">
       <Trans>Google Account permissions</Trans>
@@ -36,7 +48,8 @@ function GooglePermissionsLink() {
   );
 }
 
-const ERROR_MESSAGES: Record<string, MessageDescriptor> = {
+// Gmail connect-error copy (unchanged keys so existing translations are kept).
+const GMAIL_ERROR_MESSAGES: Record<string, MessageDescriptor> = {
   access_denied:
     msg`Access was denied. Grant read-only Gmail access to connect.`,
   invalid_callback:
@@ -53,6 +66,26 @@ const ERROR_MESSAGES: Record<string, MessageDescriptor> = {
     msg`Could not access your Gmail inbox. Make sure the Gmail API is enabled and the gmail.readonly scope is added to the OAuth consent screen in Google Cloud Console.`,
   google_account_info:
     msg`Could not verify your Google account. Please try again.`,
+  db_upsert:
+    msg`The connection could not be saved due to a server error. Please try again.`,
+};
+
+// Outlook connect-error copy (Microsoft-specific wording).
+const OUTLOOK_ERROR_MESSAGES: Record<string, MessageDescriptor> = {
+  access_denied:
+    msg`Access was denied. Grant read-only Outlook (Mail.Read) access to connect.`,
+  invalid_callback:
+    msg`The authorization callback was incomplete. Please try again.`,
+  invalid_state:
+    msg`The authorization request expired or was tampered with. Please try again.`,
+  unauthorized:
+    msg`You do not have permission to connect an Outlook inbox to this workspace.`,
+  token_exchange:
+    msg`Microsoft could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the redirect URI is registered on the app registration.`,
+  insufficient_scope:
+    msg`Outlook read-only access (Mail.Read) was not granted. Please try again and approve the requested permission.`,
+  profile_fetch:
+    msg`Could not access your Outlook inbox. Please try again.`,
   db_upsert:
     msg`The connection could not be saved due to a server error. Please try again.`,
 };
@@ -77,6 +110,8 @@ export function GmailConnectionSection({
   syncStatus,
   syncSettings,
   connectError,
+  connectProvider,
+  outlookEnabled,
 }: Props) {
   const { _ } = useLingui();
   const [isPending, startTransition] = useTransition();
@@ -93,16 +128,24 @@ export function GmailConnectionSection({
     });
   }
 
+  // The connected provider, or the one a failed connect attempt targeted.
+  const provider: MailProvider = connection?.provider ?? connectProvider;
+  const isOutlook = provider === "OUTLOOK";
+  const providerName = isOutlook ? "Outlook" : "Gmail";
+  const connectPath = isOutlook ? "outlook" : "gmail";
+  const ProviderIcon = isOutlook ? OutlookIcon : GoogleGIcon;
+
+  const errorMap = connectProvider === "OUTLOOK" ? OUTLOOK_ERROR_MESSAGES : GMAIL_ERROR_MESSAGES;
   const errorMessage = connectError
-    ? (ERROR_MESSAGES[connectError]
-        ? _(ERROR_MESSAGES[connectError])
+    ? (errorMap[connectError]
+        ? _(errorMap[connectError])
         : _(msg`Connection failed. Please try again.`))
     : null;
 
   const badge = syncStatus ? SYNC_BADGE[syncStatus.status] : null;
   const alsoConnectedIn = connection?.alsoConnectedIn ?? [];
   // sharedMailbox is cross-tenant (drives whether disconnecting revokes the
-  // Google grant); alsoConnectedIn only lists workspaces this user can see.
+  // grant); alsoConnectedIn only lists workspaces this user can see.
   const sharedMailbox = connection?.sharedMailbox ?? false;
   const isShared = alsoConnectedIn.length > 0;
   const sharedNames = alsoConnectedIn.map((w) => w.name).join(", ");
@@ -121,7 +164,7 @@ export function GmailConnectionSection({
     <Trans>
       Disconnects this workspace. Amarnai keeps access because this mailbox is
       also connected elsewhere in Amarnai. To fully revoke access, remove
-      Amarnai from your <GooglePermissionsLink />.
+      Amarnai from your <AccountPermissionsLink provider={provider} />.
     </Trans>
   );
 
@@ -129,7 +172,7 @@ export function GmailConnectionSection({
 
   return (
     <section className="settings-section">
-      <h2><Trans>Gmail Inbox</Trans></h2>
+      <h2><Trans>{providerName} Inbox</Trans></h2>
 
       {errorMessage && (
         <div className="alert alert-error">{errorMessage}</div>
@@ -145,7 +188,7 @@ export function GmailConnectionSection({
 
             {isShared && (
               <div className="alert alert-info">
-                <Trans>This Gmail is also connected in {sharedNames}. Each workspace syncs and classifies it separately, which uses separate AI quota.</Trans>
+                <Trans>This inbox is also connected in {sharedNames}. Each workspace syncs and classifies it separately, which uses separate AI quota.</Trans>
               </div>
             )}
 
@@ -176,7 +219,7 @@ export function GmailConnectionSection({
                 disabled={isPending}
                 type="button"
               >
-                <Trans>Disconnect Gmail</Trans>
+                <Trans>Disconnect {providerName}</Trans>
               </button>
             ) : (
               <div className="account-delete-confirm">
@@ -214,6 +257,7 @@ export function GmailConnectionSection({
 
           <GmailSyncSettingsSection
             workspaceId={workspaceId}
+            provider={provider}
             initialSettings={syncSettings ?? DEFAULT_SYNC_SETTINGS}
           />
         </>
@@ -228,22 +272,21 @@ export function GmailConnectionSection({
                   Disconnected from this workspace. {erasedNote} Amarnai still has
                   access because this mailbox is connected in another workspace.
                   To fully revoke access, remove Amarnai from your{" "}
-                  <GooglePermissionsLink />.
+                  <AccountPermissionsLink provider={provider} />.
                 </Trans>
               </div>
             ) : outcome.revoked ? (
               <div className="alert alert-success">
                 <Trans>
-                  Disconnected. Amarnai&apos;s access to this mailbox was revoked
-                  at Google. {erasedNote}
+                  Disconnected. Amarnai&apos;s access to this mailbox was revoked.
+                  {erasedNote}
                 </Trans>
               </div>
             ) : (
               <div className="alert alert-info">
                 <Trans>
-                  Disconnected. {erasedNote} Revocation at Google could not be
-                  confirmed. You can remove Amarnai from your{" "}
-                  <GooglePermissionsLink />.
+                  Disconnected. {erasedNote} To fully revoke Amarnai&apos;s access,
+                  remove it from your <AccountPermissionsLink provider={provider} />.
                 </Trans>
               </div>
             )
@@ -253,16 +296,16 @@ export function GmailConnectionSection({
             </div>
           )}
           <a
-            href={`/api/gmail/connect?workspaceId=${workspaceId}`}
+            href={`/api/${connectPath}/connect?workspaceId=${workspaceId}`}
             className="btn-primary"
           >
-            <GoogleGIcon variant="mono" size={16} />
-            <Trans>Reconnect Gmail</Trans>
+            <ProviderIcon variant="mono" size={16} />
+            <Trans>Reconnect {providerName}</Trans>
           </a>
         </div>
       ) : (
         <div className="gmail-connection-empty">
-          <p><Trans>No Gmail inbox connected to this workspace.</Trans></p>
+          <p><Trans>No inbox connected to this workspace.</Trans></p>
           <a
             href={`/api/gmail/connect?workspaceId=${workspaceId}`}
             className="btn-primary"
@@ -270,6 +313,15 @@ export function GmailConnectionSection({
             <GoogleGIcon variant="mono" size={16} />
             <Trans>Connect Gmail</Trans>
           </a>
+          {outlookEnabled && (
+            <a
+              href={`/api/outlook/connect?workspaceId=${workspaceId}`}
+              className="btn-primary"
+            >
+              <OutlookIcon variant="mono" size={16} />
+              <Trans>Connect Outlook</Trans>
+            </a>
+          )}
         </div>
       )}
     </section>

@@ -74,6 +74,11 @@ const envSchema = z.object({
   // clientState secret echoed on every Graph change-notification so the webhook
   // can verify a subscription callback is genuinely ours. Generate: openssl rand -hex 32
   MS_GRAPH_SUBSCRIPTION_SECRET: z.string().optional(),
+  // Public HTTPS URL Graph posts change notifications to (the notificationUrl of
+  // each subscription). Analogous to GMAIL_PUBSUB_TOPIC: when unset, Outlook runs
+  // polling-only. Must be publicly reachable so Graph's validation handshake and
+  // subsequent notifications succeed. e.g. https://api.amarnai.com/webhooks/outlook
+  MS_GRAPH_NOTIFICATION_URL: z.string().optional(),
   // Which mail providers the product offers for connection, comma-separated.
   // Gates the UI/connect flows only; the runtime adapter is always chosen per
   // connection row. Defaults to gmail-only until Outlook launches.
@@ -129,6 +134,14 @@ function validateEnv(raw: NodeJS.ProcessEnv) {
   }
   if (env.MS_GRAPH_CLIENT_SECRET && !env.MS_GRAPH_CLIENT_ID) {
     throw new Error('MS_GRAPH_CLIENT_ID is required when MS_GRAPH_CLIENT_SECRET is set');
+  }
+
+  // Graph change-notification push requires both the public callback URL and the
+  // clientState secret the webhook verifies. Mirror Gmail's TOPIC→SECRET pairing.
+  if (env.MS_GRAPH_NOTIFICATION_URL && !env.MS_GRAPH_SUBSCRIPTION_SECRET) {
+    throw new Error(
+      'MS_GRAPH_SUBSCRIPTION_SECRET is required when MS_GRAPH_NOTIFICATION_URL is set',
+    );
   }
 
   if (env.AI_PROVIDER === 'frontier') {
@@ -217,6 +230,7 @@ export const config = {
     clientSecret: env.MS_GRAPH_CLIENT_SECRET,
     tenant: env.MS_GRAPH_TENANT,
     subscriptionSecret: env.MS_GRAPH_SUBSCRIPTION_SECRET,
+    notificationUrl: env.MS_GRAPH_NOTIFICATION_URL,
     // Whether a full confidential-client credential pair is configured.
     enabled: Boolean(env.MS_GRAPH_CLIENT_ID && env.MS_GRAPH_CLIENT_SECRET),
   },

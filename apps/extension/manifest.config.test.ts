@@ -70,6 +70,7 @@ describe("buildManifest — host permissions", () => {
       expect(m["host_permissions"]).toEqual([
         "https://api.example.test/*",
         "https://mail.google.com/*",
+        "https://outlook.office.com/*",
       ]);
     }
   });

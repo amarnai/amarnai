@@ -6,7 +6,9 @@ function makeThread(triageStatus: EmailThreadSummary["triageStatus"]): EmailThre
   return {
     id: "t1",
     subject: "Test",
+    provider: "GMAIL",
     providerThreadId: "gmail-1",
+    webLink: null,
     latestMessageAt: new Date().toISOString(),
     messageCount: 1,
     triageStatus,
@@ -55,7 +57,9 @@ function makeDetail(): EmailThreadDetail {
   return {
     id: "t1",
     subject: "Assigned to you",
+    provider: "GMAIL",
     providerThreadId: "gmail-1",
+    webLink: null,
     latestMessageAt: "2026-01-02T00:00:00.000Z",
     messageCount: 2,
     triageStatus: "NEEDS_REVIEW",

@@ -7,6 +7,7 @@ import { msg } from "@lingui/core/macro";
 import { TAXONOMY_MIN_NON_ROOT_NODES } from "@amarnai/shared";
 import type { FolderItem } from "../folder-tree/types.js";
 import type { ThreadItem, ThreadMessage, DraftItem } from "./types.js";
+import { buildThreadUrl } from "@amarnai/core/emails";
 import { RationaleCard } from "./RationaleCard.js";
 import { PreviewDoneBar } from "./PreviewDoneBar.js";
 import { MessageCard } from "./MessageCard.js";
@@ -112,13 +113,24 @@ export function ThreadPreview({
       <div className="em-preview-scroll">
         <h2 className="em-preview-subject">
           {thread.subject}
-          <Tooltip content={i18n._(msg`Open in Gmail`)} placement="bottom">
+          <Tooltip
+            content={
+              thread.provider === "OUTLOOK"
+                ? i18n._(msg`Open in Outlook`)
+                : i18n._(msg`Open in Gmail`)
+            }
+            placement="bottom"
+          >
             <a
-              href={`https://mail.google.com/mail/u/0/#all/${thread.providerThreadId}`}
+              href={buildThreadUrl(thread)}
               target="_blank"
               rel="noopener noreferrer"
               className="em-preview-gmail-link"
-              aria-label={i18n._(msg`Open in Gmail`)}
+              aria-label={
+                thread.provider === "OUTLOOK"
+                  ? i18n._(msg`Open in Outlook`)
+                  : i18n._(msg`Open in Gmail`)
+              }
             >
               <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden>
                 <path d="M5 2H2a1 1 0 00-1 1v7a1 1 0 001 1h7a1 1 0 001-1V7M7.5 1H11v3.5M11 1L5.5 6.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />

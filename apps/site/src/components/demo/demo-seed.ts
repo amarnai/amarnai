@@ -201,7 +201,10 @@ type ThreadMessageSeed = {
   bodyText: MessageDescriptor;
 };
 
-type ThreadSeed = Omit<ThreadItem, "subject" | "snippet" | "reasoning" | "alternativeFolder" | "messages"> & {
+type ThreadSeed = Omit<
+  ThreadItem,
+  "subject" | "snippet" | "reasoning" | "alternativeFolder" | "messages" | "provider" | "webLink"
+> & {
   subject: MessageDescriptor;
   snippet: MessageDescriptor;
   reasoning: MessageDescriptor;
@@ -447,6 +450,9 @@ export function getDemoThreads(i18n: I18n): ThreadItem[] {
     const { subject, snippet, reasoning, alternativeFolder, messages, ...rest } = seed;
     return {
       ...rest,
+      // The marketing demo showcases the Gmail experience.
+      provider: "GMAIL",
+      webLink: null,
       subject: i18n._(subject),
       snippet: i18n._(snippet),
       reasoning: i18n._(reasoning),
