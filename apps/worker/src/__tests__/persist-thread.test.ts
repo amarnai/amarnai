@@ -27,6 +27,7 @@ const LABEL_FLAGS: ThreadLabelFlags = {
 const THREAD_INPUT = {
   workspaceId: "ws-1",
   emailAccountId: "acc-1",
+  provider: "GMAIL" as const,
   providerThreadId: "gmail-t1",
   subject: "Hello",
   latestMessageAt: new Date("2026-06-01T00:00:00Z"),

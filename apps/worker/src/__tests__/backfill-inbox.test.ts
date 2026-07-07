@@ -11,7 +11,7 @@ const { mockGetInboxPlanCeiling, mockResolveBackfillBudget, mockRecordMeterUsage
 vi.mock("@amarnai/db", () => ({
   db: {
     workspace: { findUnique: vi.fn() },
-    gmailConnection: { findUnique: vi.fn() },
+    emailConnection: { findUnique: vi.fn() },
     gmailSyncSettings: { findUnique: vi.fn() },
     emailAccount: { findUnique: vi.fn() },
     providerSyncState: {
@@ -48,23 +48,24 @@ const mockListThreadsPage = vi.fn();
 const mockGetThread = vi.fn();
 const mockListThreadIdsByQuery = vi.fn().mockResolvedValue([]);
 
-vi.mock("@amarnai/gmail", () => ({
-  GmailAuthError: class GmailAuthError extends Error {
-    constructor(message: string) {
-      super(message);
-      this.name = "GmailAuthError";
+vi.mock("@amarnai/gmail", () => {
+  // getThreadSnapshot folds the raw fetch (mockGetThread — so error tests still
+  // drive rejections) and normalization, matching the real client. Parse failures
+  // surface as GmailThreadParseError (re-exported by @amarnai/mail as
+  // MailThreadParseError), which backfill treats as a skippable per-thread error.
+  class GmailThreadParseError extends Error {
+    constructor(cause: unknown) {
+      super(cause instanceof Error ? cause.message : String(cause));
+      this.name = "GmailThreadParseError";
     }
-  },
-  GmailClient: vi.fn().mockImplementation(() => ({
-    listThreadsPage: mockListThreadsPage,
-    getThread: mockGetThread,
-    listThreadIdsByQuery: mockListThreadIdsByQuery,
-  })),
-  normalizeGmailThread: vi.fn().mockImplementation((raw: unknown) => {
+  }
+  const normalize = (raw: unknown) => {
     const r = raw as { id: string; subject?: string };
     return {
+      provider: "gmail" as const,
       providerThreadId: r.id,
       subject: r.subject ?? null,
+      participants: ["sender@example.com"],
       latestMessageAt: new Date(),
       messageCount: 1,
       messages: [
@@ -81,8 +82,30 @@ vi.mock("@amarnai/gmail", () => ({
         },
       ],
     };
-  }),
-}));
+  };
+  return {
+    GmailAuthError: class GmailAuthError extends Error {
+      constructor(message: string) {
+        super(message);
+        this.name = "GmailAuthError";
+      }
+    },
+    GmailHistoryCursorExpiredError: class GmailHistoryCursorExpiredError extends Error {},
+    GmailThreadParseError,
+    GmailClient: vi.fn().mockImplementation(() => ({
+      listThreadsPage: mockListThreadsPage,
+      getThreadSnapshot: async (id: string) => {
+        const raw = await mockGetThread(id);
+        try {
+          return normalize(raw);
+        } catch (err) {
+          throw new GmailThreadParseError(err);
+        }
+      },
+      listThreadIdsByQuery: mockListThreadIdsByQuery,
+    })),
+  };
+});
 
 vi.mock("bullmq", () => ({
   Worker: vi.fn().mockImplementation((_queue: string, processor: unknown) => ({
@@ -178,9 +201,10 @@ beforeEach(() => {
     plan: "PRO",
     billingCycle: "MONTHLY",
   } as never);
-  vi.mocked(db.gmailConnection.findUnique).mockResolvedValue({
-    gmailAddress: "test@gmail.com",
-    googleSubjectId: "google-sub-1",
+  vi.mocked(db.emailConnection.findUnique).mockResolvedValue({
+    provider: "GMAIL",
+    emailAddress: "test@gmail.com",
+    subjectId: "google-sub-1",
     encryptedRefreshToken: "enc-token",
     status: "ACTIVE",
   } as never);
@@ -884,9 +908,10 @@ describe("createBackfillInboxWorker", () => {
 
 describe("createBackfillInboxWorker — disconnect-awareness", () => {
   it("returns gracefully when connection status is not ACTIVE", async () => {
-    vi.mocked(db.gmailConnection.findUnique).mockResolvedValue({
-      gmailAddress: "test@gmail.com",
-      googleSubjectId: "google-sub-1",
+    vi.mocked(db.emailConnection.findUnique).mockResolvedValue({
+      provider: "GMAIL",
+      emailAddress: "test@gmail.com",
+      subjectId: "google-sub-1",
       encryptedRefreshToken: "enc-token",
       status: "DISCONNECTED",
     } as never);
@@ -979,10 +1004,11 @@ describe("createBackfillInboxWorker — disconnect-awareness", () => {
     vi.mocked(db.emailThread.upsert).mockResolvedValue({ id: "db-t1" } as never);
 
     // First call (Promise.all startup): ACTIVE; second call (loop i=0): DISCONNECTED
-    vi.mocked(db.gmailConnection.findUnique)
+    vi.mocked(db.emailConnection.findUnique)
       .mockResolvedValueOnce({
-        gmailAddress: "test@gmail.com",
-        googleSubjectId: "google-sub-1",
+        provider: "GMAIL",
+        emailAddress: "test@gmail.com",
+        subjectId: "google-sub-1",
         encryptedRefreshToken: "enc-token",
         status: "ACTIVE",
       } as never)

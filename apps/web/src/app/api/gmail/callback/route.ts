@@ -89,9 +89,9 @@ export async function GET(req: NextRequest) {
 
   // Prior inbox on this workspace (if any) so the audit below can flag a ROTATION
   // — connecting a different inbox than was there before.
-  const priorConnection = await db.gmailConnection.findUnique({
+  const priorConnection = await db.emailConnection.findUnique({
     where: { workspaceId },
-    select: { gmailAddress: true, status: true },
+    select: { emailAddress: true, status: true },
   });
 
   // ── Step 3: persist the connection ───────────────────────────────────────────
@@ -100,18 +100,18 @@ export async function GET(req: NextRequest) {
   // without requesting additional scopes. It can be backfilled later.
   try {
     const encryptedRefreshToken = encrypt(tokens.refreshToken);
-    await db.gmailConnection.upsert({
+    await db.emailConnection.upsert({
       where: { workspaceId },
       create: {
         workspaceId,
-        gmailAddress: profile.emailAddress,
+        emailAddress: profile.emailAddress,
         encryptedRefreshToken,
         grantedScopes,
         status: "ACTIVE",
         lastVerifiedAt: new Date(),
       },
       update: {
-        gmailAddress: profile.emailAddress,
+        emailAddress: profile.emailAddress,
         encryptedRefreshToken,
         grantedScopes,
         status: "ACTIVE",
@@ -131,8 +131,8 @@ export async function GET(req: NextRequest) {
   // Audit the connect (best-effort) so web inbox rotation is observable, matching
   // the API connect path. `replacedAddress` is set only on a real inbox swap.
   const replacedAddress =
-    priorConnection?.gmailAddress && priorConnection.gmailAddress !== profile.emailAddress
-      ? priorConnection.gmailAddress
+    priorConnection?.emailAddress && priorConnection.emailAddress !== profile.emailAddress
+      ? priorConnection.emailAddress
       : null;
   await db.auditLog
     .create({

@@ -3,7 +3,7 @@ import { vi, describe, it, expect, beforeEach } from "vitest";
 vi.mock("@amarnai/db", () => ({
   db: {
     user: { findUnique: vi.fn(), upsert: vi.fn() },
-    gmailConnection: { upsert: vi.fn() },
+    emailConnection: { upsert: vi.fn() },
   },
   ensureInboxTaxonomy: vi.fn(),
   deleteGmailDisconnectedNotifications: vi.fn().mockResolvedValue(undefined),
@@ -33,7 +33,7 @@ beforeEach(() => {
     plan: "FREE",
   } as never);
   vi.mocked(fetchGmailProfile).mockResolvedValue({ emailAddress: "a@b.com" } as never);
-  vi.mocked(db.gmailConnection.upsert).mockResolvedValue({} as never);
+  vi.mocked(db.emailConnection.upsert).mockResolvedValue({} as never);
 });
 
 describe("provisionGoogleUser", () => {
@@ -54,11 +54,11 @@ describe("provisionGoogleUser", () => {
     });
     // Refresh token is encrypted before being stored.
     expect(encrypt).toHaveBeenCalledWith("rt");
-    expect(db.gmailConnection.upsert).toHaveBeenCalledWith(
+    expect(db.emailConnection.upsert).toHaveBeenCalledWith(
       expect.objectContaining({
         where: { workspaceId: "ws-1" },
         create: expect.objectContaining({
-          gmailAddress: "a@b.com",
+          emailAddress: "a@b.com",
           encryptedRefreshToken: "enc(rt)",
           status: "ACTIVE",
         }),
@@ -91,7 +91,7 @@ describe("provisionGoogleUser", () => {
       gmailConnected: false,
     });
     expect(getOrCreateDefaultWorkspace).not.toHaveBeenCalled();
-    expect(db.gmailConnection.upsert).not.toHaveBeenCalled();
+    expect(db.emailConnection.upsert).not.toHaveBeenCalled();
   });
 
   it("keeps sign-in alive (non-fatal) when Gmail setup throws", async () => {

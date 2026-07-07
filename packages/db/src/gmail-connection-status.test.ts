@@ -2,7 +2,7 @@ import { vi, describe, it, expect, beforeEach } from "vitest";
 
 vi.mock("./client", () => ({
   db: {
-    gmailConnection: { updateMany: vi.fn(), findUnique: vi.fn() },
+    emailConnection: { updateMany: vi.fn(), findUnique: vi.fn() },
     workspaceMember: { findMany: vi.fn() },
     notification: { create: vi.fn(), deleteMany: vi.fn() },
     auditLog: { create: vi.fn() },
@@ -21,15 +21,15 @@ beforeEach(() => {
 
 describe("markGmailConnectionAuthFailed", () => {
   it("flips ACTIVE→DISCONNECTED, notifies members, audits, and returns true on the winning flip", async () => {
-    vi.mocked(db.gmailConnection.updateMany).mockResolvedValue({ count: 1 } as never);
-    vi.mocked(db.gmailConnection.findUnique).mockResolvedValue({ gmailAddress: "a@b.com" } as never);
+    vi.mocked(db.emailConnection.updateMany).mockResolvedValue({ count: 1 } as never);
+    vi.mocked(db.emailConnection.findUnique).mockResolvedValue({ emailAddress: "a@b.com" } as never);
     vi.mocked(db.workspaceMember.findMany).mockResolvedValue([{ userId: "u1" }] as never);
 
     const result = await markGmailConnectionAuthFailed("ws1");
 
     expect(result).toBe(true);
     // The flip is guarded on the current status being ACTIVE (atomic claim).
-    expect(db.gmailConnection.updateMany).toHaveBeenCalledWith({
+    expect(db.emailConnection.updateMany).toHaveBeenCalledWith({
       where: { workspaceId: "ws1", status: "ACTIVE" },
       data: { status: "DISCONNECTED" },
     });
@@ -50,12 +50,12 @@ describe("markGmailConnectionAuthFailed", () => {
   });
 
   it("is a no-op and returns false when the connection was not ACTIVE (lost the race)", async () => {
-    vi.mocked(db.gmailConnection.updateMany).mockResolvedValue({ count: 0 } as never);
+    vi.mocked(db.emailConnection.updateMany).mockResolvedValue({ count: 0 } as never);
 
     const result = await markGmailConnectionAuthFailed("ws1");
 
     expect(result).toBe(false);
-    expect(db.gmailConnection.findUnique).not.toHaveBeenCalled();
+    expect(db.emailConnection.findUnique).not.toHaveBeenCalled();
     expect(db.notification.create).not.toHaveBeenCalled();
     expect(db.auditLog.create).not.toHaveBeenCalled();
   });

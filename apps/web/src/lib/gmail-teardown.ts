@@ -28,7 +28,7 @@ export async function disconnectGmailBeforeDeletion(
 
   // Include DISCONNECTED rows: their queued jobs may not have been cancelled
   // (e.g. auth-failure disconnects), and the service is idempotent.
-  const connections = await db.gmailConnection.findMany({
+  const connections = await db.emailConnection.findMany({
     where: { workspaceId: { in: workspaceIds } },
     select: { workspaceId: true },
   });

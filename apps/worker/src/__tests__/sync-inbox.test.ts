@@ -5,7 +5,7 @@ import { vi, describe, it, expect, beforeEach } from "vitest";
 vi.mock("@amarnai/db", () => ({
   db: {
     workspace: { findUnique: vi.fn() },
-    gmailConnection: { findUnique: vi.fn() },
+    emailConnection: { findUnique: vi.fn() },
     gmailSyncSettings: { findUnique: vi.fn() },
     emailAccount: { upsert: vi.fn() },
     providerSyncState: { upsert: vi.fn(), update: vi.fn() },
@@ -32,20 +32,16 @@ const mockListRecentThreadIds = vi.fn();
 const mockListHistory = vi.fn();
 const mockGetThread = vi.fn();
 
-vi.mock("@amarnai/gmail", () => ({
-  GmailClient: vi.fn().mockImplementation(() => ({
-    getProfile: mockGetProfile,
-    listRecentThreadIds: mockListRecentThreadIds,
-    listHistory: mockListHistory,
-    getThread: mockGetThread,
-  })),
-  GmailAuthError: class GmailAuthError extends Error {},
-  GmailHistoryCursorExpiredError: class GmailHistoryCursorExpiredError extends Error {},
-  normalizeGmailThread: vi.fn().mockImplementation((raw: unknown) => {
+vi.mock("@amarnai/gmail", () => {
+  // getThreadSnapshot folds the raw fetch (mockGetThread — so error tests still
+  // drive rejections) and normalization into one call, matching the real client.
+  const normalize = (raw: unknown) => {
     const r = raw as { id: string };
     return {
+      provider: "gmail" as const,
       providerThreadId: r.id,
       subject: "Test subject",
+      participants: ["sender@example.com"],
       latestMessageAt: new Date(),
       messageCount: 1,
       messages: [
@@ -63,8 +59,19 @@ vi.mock("@amarnai/gmail", () => ({
         },
       ],
     };
-  }),
-}));
+  };
+  return {
+    GmailClient: vi.fn().mockImplementation(() => ({
+      getProfile: mockGetProfile,
+      listRecentThreadIds: mockListRecentThreadIds,
+      listChangesSince: mockListHistory,
+      getThreadSnapshot: async (id: string) => normalize(await mockGetThread(id)),
+    })),
+    GmailAuthError: class GmailAuthError extends Error {},
+    GmailHistoryCursorExpiredError: class GmailHistoryCursorExpiredError extends Error {},
+    GmailThreadParseError: class GmailThreadParseError extends Error {},
+  };
+});
 
 vi.mock("bullmq", () => ({
   Worker: vi.fn().mockImplementation((_queue: string, processor: unknown) => ({
@@ -138,9 +145,10 @@ beforeEach(() => {
     ownerUserId: "user-1",
     plan: "PRO",
   } as never);
-  vi.mocked(db.gmailConnection.findUnique).mockResolvedValue({
-    gmailAddress: "test@gmail.com",
-    googleSubjectId: "sub-1",
+  vi.mocked(db.emailConnection.findUnique).mockResolvedValue({
+    provider: "GMAIL",
+    emailAddress: "test@gmail.com",
+    subjectId: "sub-1",
     encryptedRefreshToken: "enc-token",
     status: "ACTIVE",
   } as never);
@@ -168,10 +176,10 @@ beforeEach(() => {
   // counts as content-changed. Tests for label-only changes override this.
   vi.mocked(db.emailMessage.findMany).mockResolvedValue([] as never);
 
-  mockGetProfile.mockResolvedValue({ historyId: "hist-2" });
+  mockGetProfile.mockResolvedValue({ syncCursor: "hist-2" });
   mockListHistory.mockResolvedValue({
     changedThreadIds: ["gmail-t1"],
-    newHistoryId: "hist-2",
+    newCursor: "hist-2",
   });
   mockGetThread.mockResolvedValue({ id: "gmail-t1" });
 
@@ -316,7 +324,7 @@ describe("createSyncInboxWorker — taxonomy gate", () => {
     // Two threads changed this cycle.
     mockListHistory.mockResolvedValue({
       changedThreadIds: ["gmail-t1", "gmail-t2"],
-      newHistoryId: "hist-2",
+      newCursor: "hist-2",
     });
     mockGetThread
       .mockResolvedValueOnce({ id: "gmail-t1" })
@@ -654,9 +662,10 @@ describe("createSyncInboxWorker — recovery non-fatal", () => {
 
 describe("createSyncInboxWorker — disconnect-awareness", () => {
   it("returns gracefully when connection status is not ACTIVE", async () => {
-    vi.mocked(db.gmailConnection.findUnique).mockResolvedValue({
-      gmailAddress: "test@gmail.com",
-      googleSubjectId: "sub-1",
+    vi.mocked(db.emailConnection.findUnique).mockResolvedValue({
+      provider: "GMAIL",
+      emailAddress: "test@gmail.com",
+      subjectId: "sub-1",
       encryptedRefreshToken: "enc-token",
       status: "DISCONNECTED",
     } as never);
@@ -674,7 +683,7 @@ describe("createSyncInboxWorker — disconnect-awareness", () => {
   it("triggers backfill when RUNNING is stale (worker-crash recovery)", async () => {
     const staleDate = new Date(Date.now() - 2 * 60 * 60 * 1_000); // 2 hours ago
     // Quiet inbox cycle so we hit the backfill-trigger branch
-    mockListHistory.mockResolvedValue({ changedThreadIds: [], newHistoryId: "hist-2" });
+    mockListHistory.mockResolvedValue({ changedThreadIds: [], newCursor: "hist-2" });
     vi.mocked(db.providerSyncState.upsert).mockResolvedValue({
       historyId: "hist-1",
       backfillStatus: "RUNNING",
@@ -699,7 +708,7 @@ describe("createSyncInboxWorker — disconnect-awareness", () => {
     vi.mocked(db.taxonomyNode.findMany).mockResolvedValue(makeNodes(2) as never);
     vi.mocked(db.taxonomyEdge.findMany).mockResolvedValue(makeEdges(2) as never);
     // Quiet inbox cycle with a resumable (PENDING) backfill so we hit the trigger.
-    mockListHistory.mockResolvedValue({ changedThreadIds: [], newHistoryId: "hist-2" });
+    mockListHistory.mockResolvedValue({ changedThreadIds: [], newCursor: "hist-2" });
     vi.mocked(db.providerSyncState.upsert).mockResolvedValue({
       historyId: "hist-1",
       backfillStatus: "PENDING",
@@ -720,7 +729,7 @@ describe("createSyncInboxWorker — disconnect-awareness", () => {
 
   it("does not trigger backfill when RUNNING is fresh (another worker is running it)", async () => {
     const freshDate = new Date(); // just now
-    mockListHistory.mockResolvedValue({ changedThreadIds: [], newHistoryId: "hist-2" });
+    mockListHistory.mockResolvedValue({ changedThreadIds: [], newCursor: "hist-2" });
     vi.mocked(db.providerSyncState.upsert).mockResolvedValue({
       historyId: "hist-1",
       backfillStatus: "RUNNING",

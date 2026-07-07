@@ -5,8 +5,10 @@ import { createAIProvider, createEmbeddingProvider, sortThreadByEmbedding, snaps
 import type { EmbeddableNode } from "@amarnai/ai";
 import { getThreadSortLimit, getDraftQuotaWindowStart, getDraftQuotaResetsAt } from "@amarnai/shared";
 import { config } from "@amarnai/config";
+import { createMailProvider } from "@amarnai/mail";
+// GmailClient is retained only for the Gmail-specific dev endpoint below
+// (listRecentThreads is a debug convenience, not part of the neutral seam).
 import { GmailClient } from "../services/gmail-client.js";
-import { normalizeGmailThread } from "../services/gmail-thread-adapter.js";
 
 const workspaceParam = z.object({ workspaceId: z.string().min(1) });
 
@@ -81,12 +83,13 @@ gmailSort.post("/dev/workspaces/:workspaceId/gmail-sort-thread", async (c) => {
     }
   }
 
-  const connection = await db.gmailConnection.findUnique({
+  const connection = await db.emailConnection.findUnique({
     where: { workspaceId },
     select: {
       id: true,
-      gmailAddress: true,
-      googleSubjectId: true,
+      provider: true,
+      emailAddress: true,
+      subjectId: true,
       encryptedRefreshToken: true,
     },
   });
@@ -94,19 +97,17 @@ gmailSort.post("/dev/workspaces/:workspaceId/gmail-sort-thread", async (c) => {
     return c.json({ error: "No Gmail inbox connected to this workspace" }, 422);
   }
 
-  // ── 2. Fetch + normalize Gmail thread ─────────────────────────────────────
+  // ── 2. Fetch + normalize thread ───────────────────────────────────────────
 
-  const client = new GmailClient(connection.encryptedRefreshToken);
-  let rawThread: unknown;
+  const client = createMailProvider(connection);
+  let snapshot: Awaited<ReturnType<typeof client.getThreadSnapshot>>;
   try {
-    rawThread = await client.getThread(gmailThreadId);
+    snapshot = await client.getThreadSnapshot(gmailThreadId);
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
     if (msg.includes("not found")) return c.json({ error: "Gmail thread not found" }, 404);
     return c.json({ error: "Failed to fetch Gmail thread" }, 502);
   }
-
-  const snapshot = normalizeGmailThread(rawThread);
 
   if (snapshot.messages.length === 0) {
     return c.json({ error: "Gmail thread has no messages" }, 422);
@@ -114,7 +115,7 @@ gmailSort.post("/dev/workspaces/:workspaceId/gmail-sort-thread", async (c) => {
 
   // ── 3. Find or create EmailAccount for this connection ────────────────────
 
-  const providerAccountId = connection.googleSubjectId ?? connection.gmailAddress;
+  const providerAccountId = connection.subjectId ?? connection.emailAddress;
   const emailAccount = await db.emailAccount.upsert({
     where: {
       workspaceId_providerAccountId: { workspaceId, providerAccountId },
@@ -122,8 +123,8 @@ gmailSort.post("/dev/workspaces/:workspaceId/gmail-sort-thread", async (c) => {
     create: {
       workspaceId,
       userId: workspace.ownerUserId,
-      provider: "GMAIL",
-      primaryEmailAddress: connection.gmailAddress,
+      provider: connection.provider,
+      primaryEmailAddress: connection.emailAddress,
       providerAccountId,
       accessTokenEncrypted: "placeholder",
       refreshTokenEncrypted: "placeholder",
@@ -144,7 +145,7 @@ gmailSort.post("/dev/workspaces/:workspaceId/gmail-sort-thread", async (c) => {
     create: {
       workspaceId,
       emailAccountId: emailAccount.id,
-      provider: "GMAIL",
+      provider: connection.provider,
       providerThreadId: snapshot.providerThreadId,
       subject: snapshot.subject,
       latestMessageAt: snapshot.latestMessageAt,
@@ -343,7 +344,7 @@ gmailSort.get("/dev/workspaces/:workspaceId/gmail-recent-threads", async (c) => 
   });
   if (!workspace) return c.json({ error: "Workspace not found" }, 404);
 
-  const connection = await db.gmailConnection.findUnique({
+  const connection = await db.emailConnection.findUnique({
     where: { workspaceId },
     select: { encryptedRefreshToken: true },
   });

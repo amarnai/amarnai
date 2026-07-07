@@ -3,6 +3,12 @@ import { vi, describe, it, expect, beforeEach } from "vitest";
 vi.mock("@amarnai/db", () => ({ db: {} }));
 
 vi.mock("@amarnai/gmail", () => ({
+  // GmailClient is referenced at module load by @amarnai/mail's createMailProvider
+  // (a MailProvider conformance check), so it must exist on the mock.
+  GmailClient: vi.fn(),
+  GmailAuthError: class GmailAuthError extends Error {},
+  GmailHistoryCursorExpiredError: class GmailHistoryCursorExpiredError extends Error {},
+  GmailThreadParseError: class GmailThreadParseError extends Error {},
   fetchGmailProfile: vi.fn(),
   fetchGoogleUserInfo: vi.fn(),
   parseGrantedScopes: vi.fn(),

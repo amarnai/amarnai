@@ -16,7 +16,7 @@ vi.mock("@amarnai/db", () => ({
     taxonomyNode: { findMany: vi.fn() },
     taxonomyEdge: { findMany: vi.fn() },
     emailThread: { findMany: vi.fn(), updateMany: vi.fn() },
-    gmailConnection: { findUnique: vi.fn() },
+    emailConnection: { findUnique: vi.fn() },
     gmailSyncSettings: { findUnique: vi.fn() },
     emailAccount: { findUnique: vi.fn() },
     providerSyncState: { updateMany: vi.fn() },
@@ -76,10 +76,10 @@ beforeEach(() => {
     includeSpam: false,
     includePromotions: false,
   } as never);
-  vi.mocked(db.gmailConnection.findUnique).mockResolvedValue({
+  vi.mocked(db.emailConnection.findUnique).mockResolvedValue({
     status: "ACTIVE",
-    gmailAddress: "user@example.com",
-    googleSubjectId: "sub-1",
+    emailAddress: "user@example.com",
+    subjectId: "sub-1",
   } as never);
   vi.mocked(db.emailAccount.findUnique).mockResolvedValue({ id: "acct-1" } as never);
   // Default: a backfill is still in flight, so arming updates one row.
@@ -233,7 +233,7 @@ describe("POST /workspaces/:workspaceId/sorting-queue/route-unrouted", () => {
   });
 
   it("does not arm when there is no Gmail connection", async () => {
-    vi.mocked(db.gmailConnection.findUnique).mockResolvedValue(null as never);
+    vi.mocked(db.emailConnection.findUnique).mockResolvedValue(null as never);
     vi.mocked(db.emailThread.findMany).mockResolvedValue([{ id: "t1" }] as never);
 
     const res = await post(`/workspaces/${WS_ID}/sorting-queue/route-unrouted`);

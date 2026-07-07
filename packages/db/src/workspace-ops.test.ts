@@ -24,7 +24,7 @@ vi.mock("./client", () => {
       emailAddressIdentity: del(),
       emailThread: del(),
       emailAccount: del(),
-      gmailConnection: del(),
+      emailConnection: del(),
       gmailSyncSettings: del(),
       workspaceInvitation: del(),
       workspaceMember: del(),

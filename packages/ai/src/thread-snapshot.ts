@@ -42,7 +42,7 @@ export type SnapshotMessage = {
 };
 
 export type ThreadSnapshot = {
-  provider: "gmail";
+  provider: "gmail" | "outlook";
   providerThreadId: string;
   subject: string | null;
   participants: string[];

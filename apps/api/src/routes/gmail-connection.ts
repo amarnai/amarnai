@@ -23,7 +23,7 @@ const workspaceParam = z.object({ workspaceId: z.string().min(1) });
 const connectionSelect = {
   id: true,
   workspaceId: true,
-  gmailAddress: true,
+  emailAddress: true,
   grantedScopes: true,
   status: true,
   lastVerifiedAt: true,
@@ -43,27 +43,32 @@ gmailConnection.get("/workspaces/:workspaceId/gmail-connection", async (c) => {
   });
   if (!workspace) return c.json({ error: "Workspace not found" }, 404);
 
-  const connection = await db.gmailConnection.findUnique({
+  const connection = await db.emailConnection.findUnique({
     where: { workspaceId: parsed.data.workspaceId },
     select: connectionSelect,
   });
 
   if (!connection) return c.json(null, 200);
-  // encryptedRefreshToken is excluded by the select clause above and must never be returned.
-  const { ...safe } = connection as typeof connection & { encryptedRefreshToken?: unknown };
-  delete safe.encryptedRefreshToken;
+  // encryptedRefreshToken is excluded by the select clause above and must never be
+  // returned. The response keeps the `gmailAddress` key (client contract) mapped
+  // from the neutral `emailAddress` column.
+  const { emailAddress, ...safe } = connection as typeof connection & {
+    encryptedRefreshToken?: unknown;
+  };
+  delete (safe as { encryptedRefreshToken?: unknown }).encryptedRefreshToken;
 
   // sharedMailbox is cross-tenant on purpose: it must match the disconnect
   // service's revocation decision. alsoConnectedIn is scoped to the requesting
   // user's memberships — other tenants' workspace names must never leak.
   const userId = c.get("userId");
   const [siblingsCount, alsoConnectedIn] = await Promise.all([
-    countActiveSiblingConnections(connection.gmailAddress, connection.workspaceId),
-    listVisibleSiblingConnections(connection.gmailAddress, connection.workspaceId, userId),
+    countActiveSiblingConnections(emailAddress, connection.workspaceId),
+    listVisibleSiblingConnections(emailAddress, connection.workspaceId, userId),
   ]);
 
   return c.json({
     ...safe,
+    gmailAddress: emailAddress,
     sharedMailbox: siblingsCount > 0,
     alsoConnectedIn,
   });
@@ -110,9 +115,9 @@ gmailConnection.post("/workspaces/:workspaceId/gmail-connection", async (c) => {
   // audit entry below can flag a ROTATION — connecting a different inbox than was
   // there before. The connect path was previously unaudited, leaving serial
   // inbox rotation (reusing one paid workspace across many inboxes) invisible.
-  const priorConnection = await db.gmailConnection.findUnique({
+  const priorConnection = await db.emailConnection.findUnique({
     where: { workspaceId },
-    select: { gmailAddress: true, status: true },
+    select: { emailAddress: true, status: true },
   });
 
   try {
@@ -137,8 +142,8 @@ gmailConnection.post("/workspaces/:workspaceId/gmail-connection", async (c) => {
     // Audit the connect (best-effort; never blocks the response). `replacedAddress`
     // is set only when a DIFFERENT inbox was connected before — the rotation signal.
     const replacedAddress =
-      priorConnection?.gmailAddress && priorConnection.gmailAddress !== gmailAddress
-        ? priorConnection.gmailAddress
+      priorConnection?.emailAddress && priorConnection.emailAddress !== gmailAddress
+        ? priorConnection.emailAddress
         : null;
     await recordAudit({
       workspaceId,
@@ -193,18 +198,22 @@ gmailConnection.post("/workspaces/:workspaceId/gmail-connection", async (c) => {
   );
 
   // Return the full connection shape (same as GET) so the client can update state.
-  const connection = await db.gmailConnection.findUnique({
+  const connection = await db.emailConnection.findUnique({
     where: { workspaceId },
     select: connectionSelect,
   });
   if (!connection) return c.json({ error: "Connection not found" }, 500);
 
+  const { emailAddress, ...rest } = connection;
   const [siblingsCount, alsoConnectedIn] = await Promise.all([
-    countActiveSiblingConnections(connection.gmailAddress, connection.workspaceId),
-    listVisibleSiblingConnections(connection.gmailAddress, connection.workspaceId, userId),
+    countActiveSiblingConnections(emailAddress, connection.workspaceId),
+    listVisibleSiblingConnections(emailAddress, connection.workspaceId, userId),
   ]);
 
-  return c.json({ ...connection, sharedMailbox: siblingsCount > 0, alsoConnectedIn }, 201);
+  return c.json(
+    { ...rest, gmailAddress: emailAddress, sharedMailbox: siblingsCount > 0, alsoConnectedIn },
+    201,
+  );
 });
 
 gmailConnection.delete("/workspaces/:workspaceId/gmail-connection", async (c) => {
@@ -219,7 +228,7 @@ gmailConnection.delete("/workspaces/:workspaceId/gmail-connection", async (c) =>
   });
   if (!workspace) return c.json({ error: "Workspace not found" }, 404);
 
-  const existing = await db.gmailConnection.findUnique({
+  const existing = await db.emailConnection.findUnique({
     where: { workspaceId },
     select: { id: true },
   });

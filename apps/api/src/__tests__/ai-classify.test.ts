@@ -21,7 +21,7 @@ vi.mock("@amarnai/db", () => ({
     emailClassification: { create: vi.fn(), findFirst: vi.fn() },
     workspace: { findUnique: vi.fn() },
     workspaceMember: { findUnique: vi.fn() },
-    gmailConnection: { findUnique: vi.fn() },
+    emailConnection: { findUnique: vi.fn() },
     $queryRaw: vi.fn(),
   },
   resolveInboxQuota: mockResolveInboxQuota,
@@ -83,8 +83,8 @@ beforeEach(() => {
   vi.mocked(db.emailClassification.findFirst).mockResolvedValue({ id: "cls-existing" } as never);
   vi.mocked(classifyThreadQueue.add).mockResolvedValue({} as never);
   // Default: active inbox on FREE plan, 0 threads sorted this month (well under 500).
-  vi.mocked(db.gmailConnection.findUnique).mockResolvedValue({
-    gmailAddress: "ben@gmail.com",
+  vi.mocked(db.emailConnection.findUnique).mockResolvedValue({
+    emailAddress: "ben@gmail.com",
     status: "ACTIVE",
   } as never);
   mockResolveInboxQuota.mockResolvedValue({
@@ -191,7 +191,7 @@ describe("POST /workspaces/:workspaceId/email-threads/:threadId/ai-classify — 
   it("skips the quota check when there is no active Gmail connection", async () => {
     // No inbox to meter against → the soft pre-check is skipped (the worker is
     // authoritative); the sort proceeds.
-    vi.mocked(db.gmailConnection.findUnique).mockResolvedValue(null);
+    vi.mocked(db.emailConnection.findUnique).mockResolvedValue(null);
     const res = await post(`/workspaces/${WS_ID}/email-threads/${THREAD_ID}/ai-classify`);
     expect(res.status).toBe(202);
     expect(mockResolveInboxQuota).not.toHaveBeenCalled();

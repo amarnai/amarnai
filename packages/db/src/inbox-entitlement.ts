@@ -31,9 +31,9 @@ const FREE_CEILING: InboxPlanCeiling = { plan: "FREE", billingCycle: null };
  * Pass the connection's raw `gmailAddress` (OAuth returns each account's canonical
  * address, so sibling connections store the same string and match on equality).
  */
-export async function getInboxPlanCeiling(gmailAddress: string): Promise<InboxPlanCeiling> {
-  const connections = await db.gmailConnection.findMany({
-    where: { gmailAddress, status: "ACTIVE" },
+export async function getInboxPlanCeiling(emailAddress: string): Promise<InboxPlanCeiling> {
+  const connections = await db.emailConnection.findMany({
+    where: { emailAddress, status: "ACTIVE" },
     select: { workspace: { select: { plan: true, billingCycle: true } } },
   });
 

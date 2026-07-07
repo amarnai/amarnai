@@ -27,8 +27,8 @@ async function main() {
   const windowStart = meterWindowStart();
   console.log(`Seeding inbox usage meters for window ${windowStart.toISOString()}…`);
 
-  const connections = await db.gmailConnection.findMany({
-    select: { workspaceId: true, gmailAddress: true },
+  const connections = await db.emailConnection.findMany({
+    select: { workspaceId: true, emailAddress: true },
   });
   console.log(`Found ${connections.length} Gmail connection(s).`);
 
@@ -38,7 +38,7 @@ async function main() {
   const doneGrants: { inboxKey: string; workspaceId: string }[] = [];
 
   for (const conn of connections) {
-    const inboxKey = inboxKeyFor(conn.gmailAddress);
+    const inboxKey = inboxKeyFor(conn.emailAddress);
     const workspaceId = conn.workspaceId;
 
     const [threadSort, draft, taxState, syncState] = await Promise.all([

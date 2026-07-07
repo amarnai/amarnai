@@ -1,6 +1,7 @@
 import { Job } from "bullmq";
 import { db, deleteGmailDisconnectedNotifications } from "@amarnai/db";
-import { GmailClient, revokeGoogleToken } from "@amarnai/gmail";
+import { revokeGoogleToken } from "@amarnai/gmail";
+import { createMailProvider } from "@amarnai/mail";
 import { classifyThreadQueue } from "../queues.js";
 import { syncInboxQueue, backfillInboxQueue } from "./queue-client.js";
 import { recordAudit } from "./audit.js";
@@ -21,12 +22,12 @@ export type DisconnectResult = {
  * grant and to tell the UI which warning to show, so the two can never drift.
  */
 export async function countActiveSiblingConnections(
-  gmailAddress: string,
+  emailAddress: string,
   excludeWorkspaceId: string
 ): Promise<number> {
-  return db.gmailConnection.count({
+  return db.emailConnection.count({
     where: {
-      gmailAddress,
+      emailAddress,
       status: "ACTIVE",
       NOT: { workspaceId: excludeWorkspaceId },
     },
@@ -39,13 +40,13 @@ export async function countActiveSiblingConnections(
  * be exposed, even though countActiveSiblingConnections counts them.
  */
 export async function listVisibleSiblingConnections(
-  gmailAddress: string,
+  emailAddress: string,
   excludeWorkspaceId: string,
   userId: string
 ): Promise<{ id: string; name: string }[]> {
-  const siblings = await db.gmailConnection.findMany({
+  const siblings = await db.emailConnection.findMany({
     where: {
-      gmailAddress,
+      emailAddress,
       status: "ACTIVE",
       NOT: { workspaceId: excludeWorkspaceId },
       workspace: { members: { some: { userId } } },
@@ -74,12 +75,13 @@ export async function disconnectGmail(
 ): Promise<DisconnectResult> {
   const { eraseData, actorUserId } = opts;
 
-  const connection = await db.gmailConnection.findUnique({
+  const connection = await db.emailConnection.findUnique({
     where: { workspaceId },
     select: {
       id: true,
-      gmailAddress: true,
-      googleSubjectId: true,
+      provider: true,
+      emailAddress: true,
+      subjectId: true,
       encryptedRefreshToken: true,
       status: true,
     },
@@ -92,7 +94,7 @@ export async function disconnectGmail(
   // ── 1. Flip status immediately ────────────────────────────────────────────
   // This stops the scheduler, webhook, and all enqueue paths from adding new
   // work before we do anything else.
-  await db.gmailConnection.update({
+  await db.emailConnection.update({
     where: { workspaceId },
     data: { status: "DISCONNECTED" },
   });
@@ -106,7 +108,7 @@ export async function disconnectGmail(
   // mailbox/grant, not to this workspace. Skip it when another ACTIVE workspace
   // shares the same address so we don't break their sync.
   const siblingsCount = await countActiveSiblingConnections(
-    connection.gmailAddress,
+    connection.emailAddress,
     workspaceId
   );
   const sharedMailbox = siblingsCount > 0;
@@ -117,7 +119,7 @@ export async function disconnectGmail(
   if (!sharedMailbox && connection.encryptedRefreshToken) {
     // ── 3. Stop push watch (needs a valid token, so runs before revoke) ──────
     try {
-      const client = new GmailClient(connection.encryptedRefreshToken);
+      const client = createMailProvider(connection);
       await client.stopWatch();
       watchStopped = true;
     } catch (err) {
@@ -135,12 +137,12 @@ export async function disconnectGmail(
   }
 
   // ── 5. Scrub stored tokens ────────────────────────────────────────────────
-  await db.gmailConnection.update({
+  await db.emailConnection.update({
     where: { workspaceId },
-    data: { encryptedRefreshToken: "", gmailWatchExpiresAt: null },
+    data: { encryptedRefreshToken: "", watchExpiresAt: null },
   });
 
-  const providerAccountId = connection.googleSubjectId ?? connection.gmailAddress;
+  const providerAccountId = connection.subjectId ?? connection.emailAddress;
   const emailAccount = await db.emailAccount.findUnique({
     where: { workspaceId_providerAccountId: { workspaceId, providerAccountId } },
     select: { id: true },
@@ -243,7 +245,7 @@ export async function disconnectGmail(
     entityType: "GmailConnection",
     entityId: connection.id,
     metadata: {
-      gmailAddress: connection.gmailAddress,
+      gmailAddress: connection.emailAddress,
       eraseData,
       revoked,
       watchStopped,

@@ -51,13 +51,13 @@ classify.post(
       // Soft pre-check against the reset-immune, inbox-pooled meter (the worker
       // re-checks authoritatively). Sized by the top plan among workspaces sharing
       // this inbox. Skipped if there's no active connection — the sort can't run.
-      const connection = await db.gmailConnection.findUnique({
+      const connection = await db.emailConnection.findUnique({
         where: { workspaceId },
-        select: { gmailAddress: true, status: true },
+        select: { emailAddress: true, status: true },
       });
       if (connection && connection.status === "ACTIVE") {
         const now = new Date();
-        const { plan, used } = await resolveInboxQuota(connection.gmailAddress, "THREAD_SORT", now);
+        const { plan, used } = await resolveInboxQuota(connection.emailAddress, "THREAD_SORT", now);
         const limit = getThreadSortLimit(plan);
 
         if (used >= limit) {

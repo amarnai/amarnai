@@ -3,8 +3,9 @@ import type { SnapshotMessage } from "@amarnai/ai";
 import type { ThreadLabelFlags } from "./filter-thread-messages.js";
 
 /**
- * Upsert the EmailThread row for a fetched Gmail thread. Shared by the live sync
- * and the historical backfill, which persist threads identically.
+ * Upsert the EmailThread row for a fetched thread. Shared by the live sync and
+ * the historical backfill, which persist threads identically. Provider-neutral —
+ * the caller passes the connection's provider so the row is stamped correctly.
  *
  * `updateContent` distinguishes the two write shapes:
  *  - true  — an included (kept) thread: refresh subject / latestMessageAt /
@@ -19,6 +20,7 @@ import type { ThreadLabelFlags } from "./filter-thread-messages.js";
 export async function upsertEmailThread(opts: {
   workspaceId: string;
   emailAccountId: string;
+  provider: "GMAIL" | "OUTLOOK";
   providerThreadId: string;
   subject: string | null;
   latestMessageAt: Date;
@@ -29,6 +31,7 @@ export async function upsertEmailThread(opts: {
   const {
     workspaceId,
     emailAccountId,
+    provider,
     providerThreadId,
     subject,
     latestMessageAt,
@@ -44,7 +47,7 @@ export async function upsertEmailThread(opts: {
     create: {
       workspaceId,
       emailAccountId,
-      provider: "GMAIL",
+      provider,
       providerThreadId,
       subject,
       latestMessageAt,

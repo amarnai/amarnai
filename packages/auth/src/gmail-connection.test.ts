@@ -2,7 +2,7 @@ import { vi, describe, it, expect, beforeEach } from "vitest";
 
 vi.mock("@amarnai/db", () => ({
   db: {
-    gmailConnection: { upsert: vi.fn() },
+    emailConnection: { upsert: vi.fn() },
   },
   deleteGmailDisconnectedNotifications: vi.fn().mockResolvedValue(undefined),
 }));
@@ -21,7 +21,7 @@ const GMAIL_SCOPE = "https://www.googleapis.com/auth/gmail.readonly";
 beforeEach(() => {
   vi.clearAllMocks();
   vi.mocked(fetchGmailProfile).mockResolvedValue({ emailAddress: "a@b.com" } as never);
-  vi.mocked(db.gmailConnection.upsert).mockResolvedValue({} as never);
+  vi.mocked(db.emailConnection.upsert).mockResolvedValue({} as never);
 });
 
 describe("storeGmailConnection", () => {
@@ -49,7 +49,7 @@ describe("storeGmailConnection", () => {
       grantedScopes: [GMAIL_SCOPE],
     });
 
-    const call = vi.mocked(db.gmailConnection.upsert).mock.calls[0]![0] as {
+    const call = vi.mocked(db.emailConnection.upsert).mock.calls[0]![0] as {
       where: { workspaceId: string };
       create: Record<string, unknown>;
       update: Record<string, unknown>;
@@ -57,7 +57,7 @@ describe("storeGmailConnection", () => {
 
     expect(call.where).toEqual({ workspaceId: "ws-1" });
     const sharedFields = {
-      gmailAddress: "a@b.com",
+      emailAddress: "a@b.com",
       encryptedRefreshToken: "enc(rt)",
       grantedScopes: [GMAIL_SCOPE],
       status: "ACTIVE",
@@ -80,6 +80,6 @@ describe("storeGmailConnection", () => {
       })
     ).rejects.toThrow("401");
 
-    expect(db.gmailConnection.upsert).not.toHaveBeenCalled();
+    expect(db.emailConnection.upsert).not.toHaveBeenCalled();
   });
 });

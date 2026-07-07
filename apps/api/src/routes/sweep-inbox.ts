@@ -27,9 +27,9 @@ sweepInbox.post("/workspaces/:workspaceId/sweep-inbox", async (c) => {
   const { workspaceId } = parsed.data;
 
   // Verify an active Gmail connection exists.
-  const connection = await db.gmailConnection.findUnique({
+  const connection = await db.emailConnection.findUnique({
     where: { workspaceId },
-    select: { status: true, gmailAddress: true, googleSubjectId: true },
+    select: { status: true, emailAddress: true, subjectId: true },
   });
 
   if (!connection) return c.json({ error: "No Gmail connection found" }, 422);
@@ -38,7 +38,7 @@ sweepInbox.post("/workspaces/:workspaceId/sweep-inbox", async (c) => {
   }
 
   // Resolve the EmailAccount so we can update ProviderSyncState.
-  const providerAccountId = connection.googleSubjectId ?? connection.gmailAddress;
+  const providerAccountId = connection.subjectId ?? connection.emailAddress;
   const emailAccount = await db.emailAccount.findUnique({
     where: { workspaceId_providerAccountId: { workspaceId, providerAccountId } },
     select: { id: true },

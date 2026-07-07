@@ -1,6 +1,6 @@
 import { db } from "@amarnai/db";
 import { config } from "@amarnai/config";
-import { GmailClient, GmailAuthError } from "@amarnai/gmail";
+import { createMailProvider, MailAuthError } from "@amarnai/mail";
 import { deleteExpiredRefreshTokens } from "@amarnai/auth";
 import { processPendingSubscriptionCancellations } from "@amarnai/billing";
 import {
@@ -40,15 +40,18 @@ async function renewAllGmailWatches(): Promise<void> {
   // Watches last ~7 days, so this fires at most once per day per user and
   // avoids rate-limit spikes from frequent worker restarts or redeploys.
   const renewBefore = new Date(Date.now() + 25 * 60 * 60 * 1000);
-  const connections = await db.gmailConnection.findMany({
+  const connections = await db.emailConnection.findMany({
     where: {
+      // Gmail push watches only — Outlook subscriptions renew on their own tick
+      // (Phase C). Scoping here keeps createMailProvider off the Outlook path.
+      provider: "GMAIL",
       status: "ACTIVE",
       OR: [
-        { gmailWatchExpiresAt: null },
-        { gmailWatchExpiresAt: { lte: renewBefore } },
+        { watchExpiresAt: null },
+        { watchExpiresAt: { lte: renewBefore } },
       ],
     },
-    select: { workspaceId: true, gmailAddress: true, encryptedRefreshToken: true },
+    select: { workspaceId: true, provider: true, emailAddress: true, encryptedRefreshToken: true },
   });
 
   if (connections.length === 0) return;
@@ -58,35 +61,35 @@ async function renewAllGmailWatches(): Promise<void> {
   // connection in each group, then stamp gmailWatchExpiresAt on all rows.
   const byAddress = new Map<string, typeof connections>();
   for (const conn of connections) {
-    const group = byAddress.get(conn.gmailAddress) ?? [];
+    const group = byAddress.get(conn.emailAddress) ?? [];
     group.push(conn);
-    byAddress.set(conn.gmailAddress, group);
+    byAddress.set(conn.emailAddress, group);
   }
 
   await Promise.allSettled(
     Array.from(byAddress.values()).map(async (group) => {
       const primary = group[0]!;
-      const client = new GmailClient(primary.encryptedRefreshToken);
+      const client = createMailProvider(primary);
       try {
-        const result = await client.watchInbox(config.gmail.pubsubTopic!);
-        const expiresAt = new Date(Number(result.expiration));
+        const result = await client.registerWatch(config.gmail.pubsubTopic!);
+        const expiresAt = new Date(Number(result.expiresAt));
         await Promise.all(
           group.map((conn) =>
-            db.gmailConnection.update({
+            db.emailConnection.update({
               where: { workspaceId: conn.workspaceId },
-              data: { gmailWatchExpiresAt: expiresAt },
+              data: { watchExpiresAt: expiresAt },
             })
           )
         );
-        console.log(`[watch-renewal] Renewed watch for ${primary.gmailAddress} (${group.length} workspace(s)) — historyId=${result.historyId} expires=${expiresAt.toISOString()}`);
+        console.log(`[watch-renewal] Renewed watch for ${primary.emailAddress} (${group.length} workspace(s)) — cursor=${result.cursor} expires=${expiresAt.toISOString()}`);
       } catch (err) {
         // Auth errors mean the refresh token is revoked/invalid — log at info
         // level since sync jobs will surface this to the user separately.
-        if (err instanceof GmailAuthError) {
-          console.log(`[watch-renewal] Skipping ${primary.gmailAddress} — token needs re-authorization`);
+        if (err instanceof MailAuthError) {
+          console.log(`[watch-renewal] Skipping ${primary.emailAddress} — token needs re-authorization`);
         } else {
           const msg = err instanceof Error ? err.message : String(err);
-          console.error(`[watch-renewal] Failed for ${primary.gmailAddress}:`, msg);
+          console.error(`[watch-renewal] Failed for ${primary.emailAddress}:`, msg);
         }
       }
     })
@@ -101,7 +104,7 @@ async function renewAllGmailWatches(): Promise<void> {
  * up duplicate syncs for the same workspace.
  */
 async function scheduleSyncJobs(): Promise<void> {
-  const connections = await db.gmailConnection.findMany({
+  const connections = await db.emailConnection.findMany({
     where: { status: "ACTIVE" },
     select: { workspaceId: true },
   });
@@ -151,7 +154,7 @@ async function scheduleLifecycleEmails(): Promise<void> {
       emailVerified: { not: null },
       lifecycleEmailsEnabled: true,
       OR: [{ lifecycleEmailSentAt: null }, { lifecycleEmailSentAt: { lte: dueBefore } }],
-      workspaceMemberships: { some: { workspace: { gmailConnection: { status: "ACTIVE" } } } },
+      workspaceMemberships: { some: { workspace: { emailConnection: { status: "ACTIVE" } } } },
     },
     select: { id: true },
   });

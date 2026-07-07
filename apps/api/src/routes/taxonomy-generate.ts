@@ -43,7 +43,7 @@ async function evaluate(workspaceId: string): Promise<EvalResult> {
       where: { emailAccount: { workspaceId } },
       select: { backfillStatus: true },
     }),
-    db.gmailConnection.findUnique({ where: { workspaceId }, select: { gmailAddress: true } }),
+    db.emailConnection.findUnique({ where: { workspaceId }, select: { emailAddress: true } }),
   ]);
 
   // Backstop quota counters come from the reset-immune, inbox-pooled meter
@@ -52,7 +52,7 @@ async function evaluate(workspaceId: string): Promise<EvalResult> {
   // path (generation can't run without an inbox anyway).
   const now = new Date();
   const enforceTaxonomy = config.billing.enforceTaxonomyQuota;
-  const quota = connection ? await resolveInboxQuota(connection.gmailAddress, "TAXONOMY_GEN", now) : null;
+  const quota = connection ? await resolveInboxQuota(connection.emailAddress, "TAXONOMY_GEN", now) : null;
   const genPlan = quota?.plan ?? workspace?.plan ?? "FREE";
   // The cap is only ENFORCED when the flag is on (self-host can opt out); a null
   // window makes computeGenerationEligibility skip the backstop branch.

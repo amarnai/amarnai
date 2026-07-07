@@ -175,7 +175,7 @@ export async function resetWorkspaceAction(
   if (!workspace) return { error: "Workspace not found or you are not the admin" };
 
   // Best-effort Gmail disconnect before wiping taxonomy.
-  const hasConnection = await db.gmailConnection.findUnique({
+  const hasConnection = await db.emailConnection.findUnique({
     where: { workspaceId },
     select: { id: true },
   });

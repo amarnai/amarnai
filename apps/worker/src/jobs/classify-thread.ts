@@ -27,7 +27,7 @@ import {
   LLMRequestError,
 } from "@amarnai/ai";
 import type { EmbeddableNode, TriageMetadata, EmbeddingTriageResult, LlmCallMemoizer } from "@amarnai/ai";
-import { GmailClient, GmailAuthError, normalizeGmailThread } from "@amarnai/gmail";
+import { createMailProvider, MailAuthError } from "@amarnai/mail";
 import {
   QUEUE_CLASSIFY_THREAD,
   type ClassifyThreadJobData,
@@ -134,9 +134,9 @@ export function createClassifyThreadWorker(): Worker {
           where: { id: emailThreadId, workspaceId },
           select: { providerThreadId: true, isAutomated: true },
         }),
-        db.gmailConnection.findUnique({
+        db.emailConnection.findUnique({
           where: { workspaceId },
-          select: { encryptedRefreshToken: true, status: true, gmailAddress: true },
+          select: { provider: true, encryptedRefreshToken: true, status: true, emailAddress: true },
         }),
         db.gmailSyncSettings.findUnique({
           where: { workspaceId },
@@ -175,7 +175,7 @@ export function createClassifyThreadWorker(): Worker {
         // monthly quota counts. BACKFILL is exempt (one-time allowance) and
         // automated/bulk mail is filed without an LLM call, so neither counts.
         const meteredSort = !triageOnly && source !== "BACKFILL" && !routeBulkAutomated;
-        const inboxKey = inboxKeyFor(connection.gmailAddress);
+        const inboxKey = inboxKeyFor(connection.emailAddress);
         const meterWindow = meterWindowStart();
 
         // The quota counts DISTINCT threads. A re-sort of a thread already counted
@@ -198,7 +198,7 @@ export function createClassifyThreadWorker(): Worker {
           // from stuck-recovery and resume). Concurrent workers may overshoot
           // slightly (check-then-act); accepted as a soft cap.
           if (config.billing.enforceThreadSortQuota && !alreadyCountedThisWindow) {
-            const { plan } = await getInboxPlanCeiling(connection.gmailAddress);
+            const { plan } = await getInboxPlanCeiling(connection.emailAddress);
             const limit = getThreadSortLimit(plan);
             const used = await getMeterUsed(inboxKey, "THREAD_SORT", meterWindow);
             if (used >= limit) {
@@ -239,19 +239,18 @@ export function createClassifyThreadWorker(): Worker {
 
         // ── 2. Re-fetch thread from Gmail ───────────────────────────────────
 
-        const client = new GmailClient(connection.encryptedRefreshToken);
+        const client = createMailProvider(connection);
 
-        let rawThread: unknown;
+        let snapshot: Awaited<ReturnType<typeof client.getThreadSnapshot>>;
         try {
-          rawThread = await client.getThread(thread.providerThreadId);
+          snapshot = await client.getThreadSnapshot(thread.providerThreadId);
         } catch (err) {
           const msg = err instanceof Error ? err.message : String(err);
-          // Thread deleted from Gmail after we enqueued the job — nothing to do.
+          // Thread deleted from the provider after we enqueued the job — nothing to do.
           if (msg.includes("not found")) return;
           throw err;
         }
 
-        const snapshot = normalizeGmailThread(rawThread);
         if (snapshot.messages.length === 0) return;
 
         const messages = snapshotToThreadMessages(snapshot);
@@ -637,7 +636,7 @@ export function createClassifyThreadWorker(): Worker {
 
         await job.updateProgress(100);
       } catch (err) {
-        if (err instanceof GmailAuthError) {
+        if (err instanceof MailAuthError) {
           // Token is permanently invalid — mark the connection as disconnected
           // so all remaining queued jobs for this workspace skip immediately.
           // The helper flips the row atomically and notifies members only on the

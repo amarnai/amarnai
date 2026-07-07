@@ -4,7 +4,7 @@ const mockDisconnectGmail = vi.hoisted(() => vi.fn());
 
 vi.mock("@amarnai/db", () => ({
   db: {
-    gmailConnection: { findMany: vi.fn() },
+    emailConnection: { findMany: vi.fn() },
   },
 }));
 
@@ -27,12 +27,12 @@ describe("disconnectGmailBeforeDeletion", () => {
   it("does nothing when no workspace IDs are given", async () => {
     await disconnectGmailBeforeDeletion(USER_ID, []);
 
-    expect(db.gmailConnection.findMany).not.toHaveBeenCalled();
+    expect(db.emailConnection.findMany).not.toHaveBeenCalled();
     expect(mockDisconnectGmail).not.toHaveBeenCalled();
   });
 
   it("does not call the API when no connections exist", async () => {
-    vi.mocked(db.gmailConnection.findMany).mockResolvedValue([]);
+    vi.mocked(db.emailConnection.findMany).mockResolvedValue([]);
 
     await disconnectGmailBeforeDeletion(USER_ID, ["ws-1", "ws-2"]);
 
@@ -40,7 +40,7 @@ describe("disconnectGmailBeforeDeletion", () => {
   });
 
   it("disconnects every connection without erasing data", async () => {
-    vi.mocked(db.gmailConnection.findMany).mockResolvedValue([
+    vi.mocked(db.emailConnection.findMany).mockResolvedValue([
       { workspaceId: "ws-1" },
       { workspaceId: "ws-2" },
     ] as never);
@@ -54,11 +54,11 @@ describe("disconnectGmailBeforeDeletion", () => {
   });
 
   it("only queries connections for the given workspace IDs", async () => {
-    vi.mocked(db.gmailConnection.findMany).mockResolvedValue([]);
+    vi.mocked(db.emailConnection.findMany).mockResolvedValue([]);
 
     await disconnectGmailBeforeDeletion(USER_ID, ["ws-1"]);
 
-    expect(db.gmailConnection.findMany).toHaveBeenCalledWith(
+    expect(db.emailConnection.findMany).toHaveBeenCalledWith(
       expect.objectContaining({
         where: { workspaceId: { in: ["ws-1"] } },
       })
@@ -66,7 +66,7 @@ describe("disconnectGmailBeforeDeletion", () => {
   });
 
   it("continues with remaining workspaces when one disconnect fails", async () => {
-    vi.mocked(db.gmailConnection.findMany).mockResolvedValue([
+    vi.mocked(db.emailConnection.findMany).mockResolvedValue([
       { workspaceId: "ws-1" },
       { workspaceId: "ws-2" },
     ] as never);
@@ -83,7 +83,7 @@ describe("disconnectGmailBeforeDeletion", () => {
   });
 
   it("disconnects sequentially, not in parallel (shared-mailbox guard depends on it)", async () => {
-    vi.mocked(db.gmailConnection.findMany).mockResolvedValue([
+    vi.mocked(db.emailConnection.findMany).mockResolvedValue([
       { workspaceId: "ws-1" },
       { workspaceId: "ws-2" },
     ] as never);

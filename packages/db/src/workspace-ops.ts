@@ -62,7 +62,7 @@ export async function resetWorkspaceData(workspaceId: string): Promise<void> {
     db.emailThread.deleteMany({ where: { workspaceId } }),
     db.emailAccount.deleteMany({ where: { workspaceId } }),
     db.gmailSyncSettings.deleteMany({ where: { workspaceId } }),
-    db.gmailConnection.deleteMany({ where: { workspaceId } }),
+    db.emailConnection.deleteMany({ where: { workspaceId } }),
   ]);
 
   await ensureInboxTaxonomy(workspaceId);
@@ -119,7 +119,7 @@ export async function deleteUserCascade(userId: string): Promise<void> {
     db.emailAddressIdentity.deleteMany({ where: { emailAccount: { workspaceId: { in: workspaceIds } } } }),
     db.emailThread.deleteMany({ where: { workspaceId: { in: workspaceIds } } }),
     db.emailAccount.deleteMany({ where: { userId } }),
-    db.gmailConnection.deleteMany({ where: { workspaceId: { in: workspaceIds } } }),
+    db.emailConnection.deleteMany({ where: { workspaceId: { in: workspaceIds } } }),
     db.gmailSyncSettings.deleteMany({ where: { workspaceId: { in: workspaceIds } } }),
     db.workspaceInvitation.deleteMany({ where: { workspaceId: { in: workspaceIds } } }),
     db.workspaceMember.deleteMany({ where: { userId } }),
@@ -151,7 +151,7 @@ export async function deleteWorkspaceCascade(workspaceId: string): Promise<void>
     db.emailAddressIdentity.deleteMany({ where: { emailAccount: { workspaceId } } }),
     db.emailThread.deleteMany({ where: { workspaceId } }),
     db.emailAccount.deleteMany({ where: { workspaceId } }),
-    db.gmailConnection.deleteMany({ where: { workspaceId } }),
+    db.emailConnection.deleteMany({ where: { workspaceId } }),
     db.gmailSyncSettings.deleteMany({ where: { workspaceId } }),
     db.workspaceInvitation.deleteMany({ where: { workspaceId } }),
     db.workspaceMember.deleteMany({ where: { workspaceId } }),

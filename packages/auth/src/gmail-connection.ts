@@ -22,14 +22,14 @@ export async function storeGmailConnection({
   const encryptedRefreshToken = encrypt(refreshToken);
 
   const connectionData = {
-    gmailAddress: profile.emailAddress,
+    emailAddress: profile.emailAddress,
     encryptedRefreshToken,
     grantedScopes,
     status: "ACTIVE" as const,
     lastVerifiedAt: new Date(),
   };
 
-  await db.gmailConnection.upsert({
+  await db.emailConnection.upsert({
     where: { workspaceId },
     create: { workspaceId, ...connectionData },
     update: connectionData,

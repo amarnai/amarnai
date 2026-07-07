@@ -365,7 +365,7 @@ auth.delete("/auth/me", async (c) => {
   });
 
   for (const { id: workspaceId } of ownedWorkspaces) {
-    const connection = await db.gmailConnection.findUnique({ where: { workspaceId }, select: { id: true } });
+    const connection = await db.emailConnection.findUnique({ where: { workspaceId }, select: { id: true } });
     if (connection) {
       try {
         await disconnectGmail(workspaceId, { eraseData: false, actorUserId: userId });
