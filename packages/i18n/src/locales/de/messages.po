@@ -258,7 +258,7 @@ msgstr "+ Ordner hinzufügen"
 msgid "+ New workspace"
 msgstr "+ Neuer Arbeitsbereich"
 
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:89
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:95
 msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your {providerName} account to get started. Amarnai connects with <1>read-only access</1> and <2>never sends, deletes, or changes anything</2>. Your inbox stays yours."
 msgstr "<0>King Aziru</0> ist bereit, Ihre E-Mail-Konversationen zu sortieren. Verbinden Sie Ihr {providerName}-Konto, um loszulegen. Amarnai verbindet sich mit <1>reinem Lesezugriff</1> und <2>sendet, löscht oder ändert niemals etwas</2>. Ihr Posteingang bleibt Ihnen erhalten."
 
@@ -402,9 +402,7 @@ msgstr "Eine neue Bewerbung von Horemheb aus Theben für die Position des Korres
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "Eine neue Bewerbung von Horemheb aus Theben für die Position des Obersten Korrespondenten ist eingegangen.\n"
-"\n"
-"Bewerbung im Haus der Akten einsehen."
+msgstr "Eine neue Bewerbung von Horemheb aus Theben für die Position des Obersten Korrespondenten ist eingegangen.\n\nBewerbung im Haus der Akten einsehen."
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:387
 #, fuzzy
@@ -417,11 +415,7 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "Abdi-Heba,\n"
-"\n"
-"Ich bin in jener Woche nahe des Deltas. Treffen wir uns am zweiten Tag an der Wegstation; den Vormittag habe ich frei.\n"
-"\n"
-"Bis dahin,"
+msgstr "Abdi-Heba,\n\nIch bin in jener Woche nahe des Deltas. Treffen wir uns am zweiten Tag an der Wegstation; den Vormittag habe ich frei.\n\nBis dahin,"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
@@ -631,7 +625,7 @@ msgstr "Amarnai ist benannt nach den <0>Amarna-Briefen</0>: Keilschrifttafeln au
 #~ msgid "Amarnai is named after the Amarna Letters: clay cuneiform tablets used for diplomatic correspondence with the Egyptian pharaohs during the Bronze Age. One sender of these letters was Aziru, king of Amurru, a resourceful ruler and shrewd diplomat who navigated the rivalry between Egypt and the Hittites. Thousands of years later, he has found a new calling: helping folks like you bring order to their emails."
 #~ msgstr ""
 
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:83
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:89
 msgid "Amarnai is no longer syncing this inbox. Reconnect your {providerName} account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
 msgstr "Amarnai synchronisiert diesen Posteingang nicht mehr. Verbinden Sie Ihr {providerName}-Konto erneut, um Ihre E-Mail-Konversationen wieder zu sortieren. Der Zugriff bleibt <0>rein lesend</0>, und Ihr Posteingang bleibt Ihnen erhalten."
 
@@ -884,11 +878,7 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "Aziru,\n"
-"\n"
-"Deine Worte der Freundschaft erreichen uns wohl. Wir sind offen dafür, mehr von den Vorschlägen des Hauses Amurru zu hören. Sende deine Bedingungen mit dem nächsten Kurier.\n"
-"\n"
-"Mit Grüßen,"
+msgstr "Aziru,\n\nDeine Worte der Freundschaft erreichen uns wohl. Wir sind offen dafür, mehr von den Vorschlägen des Hauses Amurru zu hören. Sende deine Bedingungen mit dem nächsten Kurier.\n\nMit Grüßen,"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:217
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
@@ -1042,11 +1032,11 @@ msgstr "Kann ich Amarnai selbst hosten?"
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1773
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:64
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:275
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:369
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:370
 #: ../../apps/web/src/app/(app)/settings/ResetWorkspaceSection.tsx:73
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:182
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:170
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:140
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:147
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:207
 #, fuzzy
 msgid "Cancel"
@@ -1215,8 +1205,8 @@ msgstr "Löschen bestätigen"
 msgid "Confirm password"
 msgstr "Passwort bestätigen"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:381
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:390
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:382
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:391
 #, fuzzy
 msgid "Connect {name}"
 msgstr "Verbinde {name}"
@@ -1225,15 +1215,20 @@ msgstr "Verbinde {name}"
 msgid "Connect {name} to this workspace?"
 msgstr "{name} mit diesem Arbeitsbereich verbinden?"
 
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:117
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:123
 #, fuzzy
 msgid "Connect {providerName}"
 msgstr "{providerName} verbinden"
 
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:158
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:167
+msgid "Connect {secondaryName}"
+msgstr "Verbinden {secondaryName}"
+
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:150
 #, fuzzy
-msgid "Connect {secondaryName} instead"
-msgstr "Stattdessen {secondaryName} verbinden"
+#~ msgid "Connect {secondaryName} instead"
+#~ msgstr "Stattdessen {secondaryName} verbinden"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:170
 msgid "Connect a Gmail inbox to configure sync filters."
@@ -1243,7 +1238,7 @@ msgstr "Verbinden Sie einen Gmail-Posteingang, um Synchronisierungsfilter zu kon
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:361
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:405
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:406
 #, fuzzy
 msgid "Connect Gmail"
 msgstr "Gmail verbinden"
@@ -1285,12 +1280,12 @@ msgstr "Gmail verbinden, um mit der Triage zu beginnen"
 msgid "Connect once, generate your plan once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
 msgstr "Einmal verbinden, einmal Ihren Plan erstellen und Amarnai den Umgang mit neuen E-Mails und Tausenden bereits vorhandener Konversationen in Ihrem Posteingang überlassen."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:413
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:414
 #, fuzzy
 msgid "Connect Outlook"
 msgstr "Outlook verbinden"
 
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:78
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:84
 msgid "Connect your {providerName} inbox"
 msgstr "Ihren {providerName}-Posteingang verbinden"
 
@@ -1313,7 +1308,7 @@ msgstr "Verbinden Sie Ihr Gmail-Konto, um Ihren Posteingang mit Amarnai zu synch
 msgid "Connecting {name} will permanently remove the sorted email saved from {retainedAddress}. Your folders and settings are kept."
 msgstr "Beim Verbinden von {name} werden die von {retainedAddress} gespeicherten sortierten E-Mails dauerhaft entfernt. Ihre Ordner und Einstellungen bleiben erhalten."
 
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:125
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:131
 msgid "Connecting {secondaryName} will permanently remove the sorted email saved from {retainedAddress}. Your folders and settings are kept."
 msgstr "Beim Verbinden von {secondaryName} werden die von {retainedAddress} gespeicherten sortierten E-Mails dauerhaft entfernt. Ihre Ordner und Einstellungen bleiben erhalten."
 
@@ -1322,12 +1317,12 @@ msgstr "Beim Verbinden von {secondaryName} werden die von {retainedAddress} gesp
 msgid "Connection failed. Please try again."
 msgstr "Verbindung fehlgeschlagen. Bitte versuchen Sie es erneut."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:362
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:363
 #, fuzzy
 msgid "Continue to {name}"
 msgstr "Weiter zu {name}"
 
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:133
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:140
 msgid "Continue to {secondaryName}"
 msgstr "Weiter zu {secondaryName}"
 
@@ -2582,11 +2577,7 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "Großer König,\n"
-"\n"
-"Die angeforderten Berichte werden vor der Ratsversammlung fertig sein. Ich werde meine Schreiber die Aufzeichnungen der östlichen Gebiete zusammenstellen und sie per Eilkurier vorausschicken.\n"
-"\n"
-"In Brüderlichkeit,"
+msgstr "Großer König,\n\nDie angeforderten Berichte werden vor der Ratsversammlung fertig sein. Ich werde meine Schreiber die Aufzeichnungen der östlichen Gebiete zusammenstellen und sie per Eilkurier vorausschicken.\n\nIn Brüderlichkeit,"
 
 #: ../../apps/site/src/components/landing/FinalCTASection.tsx:9
 #, fuzzy
@@ -3398,7 +3389,7 @@ msgstr "Noch keine Ordner"
 msgid "No Gmail inbox connected. Connect your account to start syncing."
 msgstr "Kein Gmail-Postfach verbunden. Verbinden Sie Ihr Konto, um die Synchronisierung zu starten."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:399
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:400
 msgid "No inbox connected to this workspace."
 msgstr "Kein Posteingang mit diesem Arbeitsbereich verbunden."
 
@@ -3814,12 +3805,12 @@ msgstr "Bitte versuchen Sie es erneut."
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:158
 #, fuzzy
-msgid "Prefer Gmail? Connect Gmail instead"
-msgstr "Lieber Gmail? Verbinden Sie stattdessen Gmail"
+#~ msgid "Prefer Gmail? Connect Gmail instead"
+#~ msgstr "Lieber Gmail? Verbinden Sie stattdessen Gmail"
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:156
-msgid "Prefer Outlook? Connect Outlook instead"
-msgstr "Lieber Outlook? Verbinden Sie stattdessen Outlook"
+#~ msgid "Prefer Outlook? Connect Outlook instead"
+#~ msgstr "Lieber Outlook? Verbinden Sie stattdessen Outlook"
 
 #: ../ui/src/pricing/planMessages.ts:111
 #, fuzzy
@@ -3981,7 +3972,7 @@ msgid "Reconnect"
 msgstr "Wieder verbinden"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:337
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:115
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:121
 #, fuzzy
 msgid "Reconnect {providerName}"
 msgstr "{providerName} erneut verbinden"
@@ -3996,7 +3987,7 @@ msgstr "Wiederverbindung fehlgeschlagen. Bitte versuchen Sie es erneut."
 msgid "Reconnect Gmail"
 msgstr "Gmail neu verbinden"
 
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:76
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:82
 msgid "Reconnect your {providerName} inbox"
 msgstr "Ihren {providerName}-Posteingang erneut verbinden"
 
@@ -4244,11 +4235,7 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "Rib-Hadda,\n"
-"\n"
-"Wir haben deine Botschaft empfangen. Zusätzliches Getreide wurde aus den südlichen Lagern geordert und trifft vor dem Erntefest ein. Wir bitten dich um Geduld bis dahin.\n"
-"\n"
-"Bleibe gesund,"
+msgstr "Rib-Hadda,\n\nWir haben deine Botschaft empfangen. Zusätzliches Getreide wurde aus den südlichen Lagern geordert und trifft vor dem Erntefest ein. Wir bitten dich um Geduld bis dahin.\n\nBleibe gesund,"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -5103,13 +5090,7 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "An meinen Bruder, den Großen König,\n"
-"\n"
-"Der Große Rat tritt zu Beginn von Shemu zusammen. Ich bitte Euch, eine vollständige Abrechnung der östlichen Gebiete zu erstellen und diese per Eilkurier vorauszuschicken, möglichst vor dem Neumond.\n"
-"\n"
-"Unsere Allianz ist stark. Zeigen wir dem Rat, dass sie es bleibt.\n"
-"\n"
-"Tushratta, Großer König von Mitanni"
+msgstr "An meinen Bruder, den Großen König,\n\nDer Große Rat tritt zu Beginn von Shemu zusammen. Ich bitte Euch, eine vollständige Abrechnung der östlichen Gebiete zu erstellen und diese per Eilkurier vorauszuschicken, möglichst vor dem Neumond.\n\nUnsere Allianz ist stark. Zeigen wir dem Rat, dass sie es bleibt.\n\nTushratta, Großer König von Mitanni"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:163
 #, fuzzy
@@ -5118,11 +5099,7 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "An das Büro für königliche Ernennungen,\n"
-"\n"
-"Wir haben die Bewerbung von Horemheb aus Theben erhalten und werden seine Akten vor dem nächsten Neumond prüfen. Bitte informiert ihn, dass wir uns zu gegebener Zeit melden werden.\n"
-"\n"
-"Durch königlichen Erlass,"
+msgstr "An das Büro für königliche Ernennungen,\n\nWir haben die Bewerbung von Horemheb aus Theben erhalten und werden seine Akten vor dem nächsten Neumond prüfen. Bitte informiert ihn, dass wir uns zu gegebener Zeit melden werden.\n\nDurch königlichen Erlass,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:278
 #, fuzzy
@@ -5133,13 +5110,7 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "An den Großen König,\n"
-"\n"
-"Seit vielen Jahren sind unsere Häuser wie Brüder. Ich schreibe nun, um vorzuschlagen, dass wir diese Freundschaft zum Wohle beider Völker formalisieren: einen Pakt des gegenseitigen Schutzes und der gemeinsamen Routen.\n"
-"\n"
-"Ich bitte lediglich darum, dass Ihr meine Bedingungen anhört. Sendet eine Nachricht mit dem nächsten Kurier, und ich werde meinen Gesandten sogleich entsenden.\n"
-"\n"
-"Aziru, Diener des Großen Königs, Herr von Amurru"
+msgstr "An den Großen König,\n\nSeit vielen Jahren sind unsere Häuser wie Brüder. Ich schreibe nun, um vorzuschlagen, dass wir diese Freundschaft zum Wohle beider Völker formalisieren: einen Pakt des gegenseitigen Schutzes und der gemeinsamen Routen.\n\nIch bitte lediglich darum, dass Ihr meine Bedingungen anhört. Sendet eine Nachricht mit dem nächsten Kurier, und ich werde meinen Gesandten sogleich entsenden.\n\nAziru, Diener des Großen Königs, Herr von Amurru"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:391
 #, fuzzy
@@ -5148,11 +5119,7 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "An den Großen König,\n"
-"\n"
-"Meine Reisen führen mich in den kommenden Tagen in die Nähe des Deltas. Falls der Große König eine Stunde erübrigen kann, würde ich die Gelegenheit begrüßen, von Angesicht zu Angesicht zu sprechen; manche Dinge lassen sich leichter sagen als schreiben.\n"
-"\n"
-"Euer Diener, Abdi-Heba, Gouverneur von Urushalim"
+msgstr "An den Großen König,\n\nMeine Reisen führen mich in den kommenden Tagen in die Nähe des Deltas. Falls der Große König eine Stunde erübrigen kann, würde ich die Gelegenheit begrüßen, von Angesicht zu Angesicht zu sprechen; manche Dinge lassen sich leichter sagen als schreiben.\n\nEuer Diener, Abdi-Heba, Gouverneur von Urushalim"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:153
 #, fuzzy
@@ -5161,11 +5128,7 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "An den Großen König, mein Bruder,\n"
-"\n"
-"Deine Worte haben mich erreicht. Das Gold wird vor dem Aufbruch des nächsten Boten entsandt. Wir schätzen die Bindung zwischen unseren Häusern und wünschen nicht, dass sie abkühlt.\n"
-"\n"
-"In Freundschaft,"
+msgstr "An den Großen König, mein Bruder,\n\nDeine Worte haben mich erreicht. Das Gold wird vor dem Aufbruch des nächsten Boten entsandt. Wir schätzen die Bindung zwischen unseren Häusern und wünschen nicht, dass sie abkühlt.\n\nIn Freundschaft,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:239
 #, fuzzy
@@ -5176,13 +5139,7 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "An den Großen König, mein Bruder,\n"
-"\n"
-"Ich schreibe in Freundschaft, wie unsere Väter vor uns schrieben. Die dritte unter unserem Vertrag vereinbarte Goldlieferung ist nicht eingetroffen. Zwei Boten sind bereits vorbeigezogen, und wir warten immer noch.\n"
-"\n"
-"Wir bitten Euch, sie ohne weitere Verzögerung zu entsenden, wie es der Bindung zwischen unseren Häusern geziemt.\n"
-"\n"
-"Burna-Buriash II, König von Babylon"
+msgstr "An den Großen König, mein Bruder,\n\nIch schreibe in Freundschaft, wie unsere Väter vor uns schrieben. Die dritte unter unserem Vertrag vereinbarte Goldlieferung ist nicht eingetroffen. Zwei Boten sind bereits vorbeigezogen, und wir warten immer noch.\n\nWir bitten Euch, sie ohne weitere Verzögerung zu entsenden, wie es der Bindung zwischen unseren Häusern geziemt.\n\nBurna-Buriash II, König von Babylon"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:352
 msgid "To the Great King, my lord, my sun,\n"
@@ -5192,13 +5149,7 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "An den Großen König, mein Herr, meine Sonne,\n"
-"\n"
-"Das Getreide, das Ihr letzten Monat sandtet, wurde dankbar empfangen, und ich lobte Euren Namen vor dem Volk. Doch ich muss erneut schreiben: Die dritte Lieferung ist nicht eingetroffen, und die Stadt wird unruhig.\n"
-"\n"
-"Ich habe bereits siebenmal geschrieben. Ich möchte Euch nicht behelligen, doch was bleibt mir anderes übrig?\n"
-"\n"
-"Euer Diener, Rib-Hadda, Gouverneur von Byblos"
+msgstr "An den Großen König, mein Herr, meine Sonne,\n\nDas Getreide, das Ihr letzten Monat sandtet, wurde dankbar empfangen, und ich lobte Euren Namen vor dem Volk. Doch ich muss erneut schreiben: Die dritte Lieferung ist nicht eingetroffen, und die Stadt wird unruhig.\n\nIch habe bereits siebenmal geschrieben. Ich möchte Euch nicht behelligen, doch was bleibt mir anderes übrig?\n\nEuer Diener, Rib-Hadda, Gouverneur von Byblos"
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:19
 #: ../ui/src/emails/ThreadList.tsx:15
@@ -5553,7 +5504,7 @@ msgid "Where this folder sits. Folders with no parent stay disconnected and are 
 msgstr "Wo sich dieser Ordner befindet. Ordner ohne übergeordneten Ordner bleiben getrennt und werden ignoriert, bis sie verbunden werden."
 
 #: ../../apps/web/src/components/AziruIntroDialog.tsx:46
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:62
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:68
 msgid "Who is king Aziru?"
 msgstr "Wer ist König Aziru?"
 

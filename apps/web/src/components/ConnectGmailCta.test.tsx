@@ -33,7 +33,7 @@ describe("ConnectGmailCta reconnect switch", () => {
     expect(
       screen.queryByRole("link", { name: /Connect Outlook/ }),
     ).not.toBeInTheDocument();
-    const switchBtn = screen.getByRole("button", { name: /Connect Outlook instead/ });
+    const switchBtn = screen.getByRole("button", { name: /Connect Outlook/ });
 
     // The erasure warning only appears after the user opts in.
     expect(screen.queryByText(/permanently remove/)).not.toBeInTheDocument();
@@ -57,11 +57,11 @@ describe("ConnectGmailCta reconnect switch", () => {
       />,
     );
 
-    const link = screen.getByRole("link", { name: /Connect Outlook instead/ });
+    const link = screen.getByRole("link", { name: /Connect Outlook/ });
     expect(link).toHaveAttribute("href", `/api/outlook/connect?workspaceId=${WS}`);
     // No confirmation button and no warning in the no-data case.
     expect(
-      screen.queryByRole("button", { name: /Connect Outlook instead/ }),
+      screen.queryByRole("button", { name: /Connect Outlook/ }),
     ).not.toBeInTheDocument();
     expect(screen.queryByText(/permanently remove/)).not.toBeInTheDocument();
   });
@@ -76,8 +76,28 @@ describe("ConnectGmailCta reconnect switch", () => {
     );
 
     expect(
-      screen.getByRole("link", { name: /Prefer Outlook\? Connect Outlook instead/ }),
+      screen.getByRole("link", { name: /Connect Outlook/ }),
     ).toHaveAttribute("href", `/api/outlook/connect?workspaceId=${WS}`);
     expect(screen.queryByText(/permanently remove/)).not.toBeInTheDocument();
+  });
+
+  it("mirrors the labels when the disconnected inbox was Outlook", () => {
+    render(
+      <ConnectGmailCta
+        workspaceId={WS}
+        reconnect
+        provider="OUTLOOK"
+        secondaryProvider="GMAIL"
+        hasSyncedData={false}
+      />,
+    );
+
+    // Primary reconnects the Outlook inbox; secondary connects Gmail instead.
+    expect(
+      screen.getByRole("link", { name: /Reconnect Outlook/ }),
+    ).toHaveAttribute("href", `/api/outlook/connect?workspaceId=${WS}`);
+    expect(
+      screen.getByRole("link", { name: /Connect Gmail/ }),
+    ).toHaveAttribute("href", `/api/gmail/connect?workspaceId=${WS}`);
   });
 });

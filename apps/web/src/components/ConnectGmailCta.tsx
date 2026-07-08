@@ -46,10 +46,16 @@ export function ConnectGmailCta({
 
   // Secondary provider (the one to switch to). On reconnect with retained data,
   // switching erases it, so the action is confirmed rather than a bare link.
-  const secondaryName = secondaryProvider === "OUTLOOK" ? "Outlook" : "Gmail";
+  const isSecondaryOutlook = secondaryProvider === "OUTLOOK";
+  const secondaryName = isSecondaryOutlook ? "Outlook" : "Gmail";
   const secondaryHref = `/api/${
-    secondaryProvider === "OUTLOOK" ? "outlook" : "gmail"
+    isSecondaryOutlook ? "outlook" : "gmail"
   }/connect?workspaceId=${workspaceId}`;
+  // The switch action reads as a brand-colored outline button (with the
+  // provider's mark) so it is obviously clickable, while staying subordinate to
+  // the solid primary connect button above it.
+  const SecondaryIcon = isSecondaryOutlook ? OutlookIcon : GoogleGIcon;
+  const secondaryBtnClass = isSecondaryOutlook ? "btn-outline-outlook" : "btn-outline-clay";
   const warnOnSwitch = reconnect && hasSyncedData;
 
   return (
@@ -129,7 +135,8 @@ export function ConnectGmailCta({
                     </Trans>
                   </p>
                   <div className="account-delete-actions">
-                    <a href={secondaryHref} className="btn-danger">
+                    <a href={secondaryHref} className={secondaryBtnClass}>
+                      <SecondaryIcon variant="mono" size={16} />
                       <Trans>Continue to {secondaryName}</Trans>
                     </a>
                     <button
@@ -144,19 +151,20 @@ export function ConnectGmailCta({
               ) : (
                 <button
                   type="button"
-                  className="connect-gmail-cta-secondary"
+                  className={`${secondaryBtnClass} connect-gmail-cta-alt`}
                   onClick={() => setSwitchConfirming(true)}
                 >
-                  <Trans>Connect {secondaryName} instead</Trans>
+                  <SecondaryIcon variant="mono" size={16} />
+                  <Trans>Connect {secondaryName}</Trans>
                 </button>
               )
             ) : (
-              <a href={secondaryHref} className="connect-gmail-cta-secondary">
-                {secondaryProvider === "OUTLOOK" ? (
-                  <Trans>Prefer Outlook? Connect Outlook instead</Trans>
-                ) : (
-                  <Trans>Prefer Gmail? Connect Gmail instead</Trans>
-                )}
+              <a
+                href={secondaryHref}
+                className={`${secondaryBtnClass} connect-gmail-cta-alt`}
+              >
+                <SecondaryIcon variant="mono" size={16} />
+                <Trans>Connect {secondaryName}</Trans>
               </a>
             ))}
         </div>

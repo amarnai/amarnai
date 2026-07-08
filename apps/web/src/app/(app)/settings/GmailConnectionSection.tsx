@@ -357,8 +357,9 @@ export function GmailConnectionSection({
                     <div className="account-delete-actions">
                       <a
                         href={`/api/${path}/connect?workspaceId=${workspaceId}`}
-                        className="btn-danger"
+                        className={btnClass}
                       >
+                        <Icon variant="mono" size={16} />
                         <Trans>Continue to {name}</Trans>
                       </a>
                       <button

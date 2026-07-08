@@ -2474,24 +2474,10 @@ a {
   font-size: 14px;
 }
 
-.connect-gmail-cta-secondary {
-  margin-top: 10px;
-  font-size: 13px;
-  color: var(--color-text-secondary);
-  text-decoration: underline;
-}
-
-.connect-gmail-cta-secondary:hover {
-  color: var(--color-text);
-}
-
-/* The secondary action is a button when it opens a switch confirmation; strip
-   the native button chrome so it reads as the same underlined link. */
-button.connect-gmail-cta-secondary {
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
+/* The provider-switch action (outline brand button) sits below the primary
+   connect button with clear separation. */
+.connect-gmail-cta-alt {
+  margin-top: 12px;
 }
 
 .connect-gmail-cta-switch-confirm {
