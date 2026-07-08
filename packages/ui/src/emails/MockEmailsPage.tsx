@@ -237,6 +237,14 @@ export function MockEmailsPage({
         onMarkDone={handleMarkDone}
         onUnmarkDone={handleUnmarkDone}
         onToggleImportant={handleToggleImportant}
+        {...(onOpenInProvider
+          ? {
+              onOpenInGmail: (threadId: string) => {
+                const thread = threads.find((t) => t.id === threadId);
+                if (thread) onOpenInProvider(thread);
+              },
+            }
+          : {})}
         railOpen={railOpen}
         onToggleRail={() => setRailOpen((v) => !v)}
       />

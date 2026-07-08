@@ -932,9 +932,11 @@
   box-shadow: inset 0 0 0 1px var(--accent-line);
 }
 
-/* Split stage: static Gmail pane | divider | live workspace pane. In web mode
-   the Gmail pane and divider are hidden so the workspace fills the frame; the
-   workspace stays mounted across modes and keeps its state. */
+/* Split stage: mock Gmail pane | divider | live workspace pane. Its thread
+   rows open the provider conversation mock; the rest of the pane is
+   decorative. In web mode the Gmail pane and divider are hidden so the
+   workspace fills the frame; the workspace stays mounted across modes and
+   keeps its state. */
 .ld-split-stage {
   --ld-gmail-w: 52%;
   display: flex;
@@ -945,7 +947,6 @@
   min-width: 0;
   border-right: 1px solid var(--line);
   overflow: hidden;
-  pointer-events: none;
   user-select: none;
 }
 
@@ -1259,12 +1260,25 @@ button.ld-gmail-row:hover { background: var(--bg-soft); }
    <provider>" control; dismissed with Back or Escape. */
 .ld-mailthread {
   position: absolute;
-  inset: 0;
+  /* In extension mode the conversation view stands in for the provider's
+     inbox only: it spans the Gmail/Outlook pane's width and sits under the
+     resize divider, so the docked Amarnai panel stays visible beside it
+     rather than being masked. Web mode (and the narrow collapse, which also
+     reports data-mode="web") overrides this to cover the whole stage. */
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: var(--ld-gmail-w);
   z-index: 5;
   display: flex;
   flex-direction: column;
   background: var(--surface);
   animation: ld-mailthread-in 0.22s ease-out;
+}
+
+.ld-browser-frame[data-mode="web"] .ld-mailthread {
+  width: auto;
+  right: 0;
 }
 
 @keyframes ld-mailthread-in {
