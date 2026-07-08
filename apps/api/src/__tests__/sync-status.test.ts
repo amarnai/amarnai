@@ -5,7 +5,7 @@ vi.mock("@amarnai/db", () => ({
   db: {
     workspaceMember: { findUnique: vi.fn() },
     workspace: { findUnique: vi.fn() },
-    gmailConnection: { findUnique: vi.fn() },
+    emailConnection: { findUnique: vi.fn() },
     emailAccount: { findUnique: vi.fn() },
     providerSyncState: { findUnique: vi.fn() },
     gmailSyncSettings: { findUnique: vi.fn() },
@@ -44,10 +44,10 @@ async function getBody(): Promise<SyncStatusBody> {
 beforeEach(() => {
   vi.clearAllMocks();
   vi.mocked(db.workspaceMember.findUnique).mockResolvedValue({ userId: TEST_USER_ID } as never);
-  vi.mocked(db.gmailConnection.findUnique).mockResolvedValue({
-    googleSubjectId: "sub-1",
-    gmailAddress: "a@gmail.com",
-    gmailWatchExpiresAt: new Date(Date.now() + 60_000),
+  vi.mocked(db.emailConnection.findUnique).mockResolvedValue({
+    subjectId: "sub-1",
+    emailAddress: "a@gmail.com",
+    watchExpiresAt: new Date(Date.now() + 60_000),
   } as never);
   vi.mocked(db.emailAccount.findUnique).mockResolvedValue({ id: "account-1" } as never);
   vi.mocked(db.gmailSyncSettings.findUnique).mockResolvedValue({ sortingPaused: false } as never);
@@ -279,10 +279,10 @@ describe("GET /workspaces/:workspaceId/sync-status", () => {
     // would surface the "loading past threads", plan-cap ("upgrade to load the rest"),
     // or routing banners — only the DisconnectedBanner (driven by the connection query)
     // should show.
-    vi.mocked(db.gmailConnection.findUnique).mockResolvedValue({
-      googleSubjectId: "sub-1",
-      gmailAddress: "a@gmail.com",
-      gmailWatchExpiresAt: new Date(Date.now() + 60_000),
+    vi.mocked(db.emailConnection.findUnique).mockResolvedValue({
+      subjectId: "sub-1",
+      emailAddress: "a@gmail.com",
+      watchExpiresAt: new Date(Date.now() + 60_000),
       status: "DISCONNECTED",
     } as never);
     vi.mocked(getMeterUsed).mockResolvedValue(20_000);

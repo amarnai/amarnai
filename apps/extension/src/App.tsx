@@ -49,7 +49,7 @@ function Gate() {
 
 // Firefox treats host permissions as user-grantable and may not have them yet;
 // Chrome grants them at install, so this resolves true without a prompt there.
-const NEEDS_PERMISSIONS = msg`Amarnai needs access to its server and Gmail to work. Please allow access and try again.`;
+const NEEDS_PERMISSIONS = msg`Amarnai needs access to its server and your inbox to work. Please allow access and try again.`;
 
 // Signed in but no workspace yet: the user has an account but hasn't connected
 // Gmail. Run the Gmail OAuth grant in-panel (same flow as the sign-in screen),

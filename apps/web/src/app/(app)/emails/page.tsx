@@ -4,6 +4,7 @@ import { getSelectedWorkspace } from "@/lib/workspace";
 import { apiFor } from "@/lib/api";
 import { initServerI18n } from "@/lib/i18n-server";
 import { ConnectGmailCta } from "@/components/ConnectGmailCta";
+import { isOutlookConfigured } from "@/lib/outlook-oauth";
 import { EmailsClient } from "./EmailsClient";
 import { mapFolders, mapThreads } from "./queries";
 import type { ActiveSelection } from "@amarnai/ui/emails";
@@ -56,10 +57,37 @@ export default async function EmailsPage({ searchParams }: PageProps) {
   const gmailConnected = connectionValue?.status === "ACTIVE";
 
   if (!gmailConnected) {
+    // Reconnect keeps the existing provider as the primary action; a fresh
+    // connect defaults to Gmail and offers Outlook as a secondary option when
+    // it is configured.
+    if (connectionValue !== null) {
+      // The other provider is offered as a subordinate switch. Connecting it
+      // erases retained data (rotation cleanup), so pass the flags that gate
+      // the switch behind a confirmation.
+      const secondaryProvider =
+        connectionValue.provider === "GMAIL"
+          ? isOutlookConfigured()
+            ? ("OUTLOOK" as const)
+            : undefined
+          : ("GMAIL" as const);
+      const hasSyncedData =
+        (await db.emailThread.count({ where: { workspaceId: workspace.id } })) > 0;
+      return (
+        <ConnectGmailCta
+          workspaceId={workspace.id}
+          reconnect
+          provider={connectionValue.provider}
+          secondaryProvider={secondaryProvider}
+          hasSyncedData={hasSyncedData}
+          retainedAddress={connectionValue.gmailAddress}
+        />
+      );
+    }
     return (
       <ConnectGmailCta
         workspaceId={workspace.id}
-        reconnect={connectionValue !== null}
+        provider="GMAIL"
+        secondaryProvider={isOutlookConfigured() ? "OUTLOOK" : undefined}
       />
     );
   }

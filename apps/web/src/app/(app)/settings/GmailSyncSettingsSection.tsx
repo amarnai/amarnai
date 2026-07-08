@@ -2,22 +2,26 @@
 
 import { useState, useTransition } from "react";
 import { Trans } from "@lingui/react/macro";
-import { api, type GmailSyncSettings } from "@/lib/api";
+import { api, type GmailSyncSettings, type MailProvider } from "@/lib/api";
 import { sweepInboxAction } from "@/actions/gmail";
 
 type Props = {
   workspaceId: string;
+  provider: MailProvider;
   initialSettings: GmailSyncSettings;
 };
 
-export function GmailSyncSettingsSection({ workspaceId, initialSettings }: Props) {
+export function GmailSyncSettingsSection({ workspaceId, provider, initialSettings }: Props) {
   const [settings, setSettings] = useState<GmailSyncSettings>(initialSettings);
   const [isPending, startTransition] = useTransition();
   const [rescanState, setRescanState] = useState<"idle" | "pending" | "done" | "error">("idle");
 
+  // Promotions is a Gmail-category concept with no Outlook equivalent, so the
+  // toggle is hidden for Outlook and excluded from the dirty check.
+  const showPromotions = provider !== "OUTLOOK";
   const isDirty =
     settings.includeSpam !== initialSettings.includeSpam ||
-    settings.includePromotions !== initialSettings.includePromotions;
+    (showPromotions && settings.includePromotions !== initialSettings.includePromotions);
 
   function handleToggle(field: "includeSpam" | "includePromotions" | "routeBulkToOther") {
     const newValue = !settings[field];
@@ -49,7 +53,7 @@ export function GmailSyncSettingsSection({ workspaceId, initialSettings }: Props
     <div className="settings-subsection">
       <h3><Trans>Sync filters</Trans></h3>
       <p className="settings-hint">
-        <Trans>These settings control which Gmail threads are imported. Trash is always excluded.</Trans>
+        <Trans>These settings control which inbox threads are imported. Trash is always excluded.</Trans>
       </p>
 
       <label className="settings-toggle">
@@ -62,15 +66,17 @@ export function GmailSyncSettingsSection({ workspaceId, initialSettings }: Props
         <Trans>Include spam</Trans>
       </label>
 
-      <label className="settings-toggle">
-        <input
-          type="checkbox"
-          checked={settings.includePromotions}
-          onChange={() => handleToggle("includePromotions")}
-          disabled={isPending}
-        />
-        <Trans>Include Promotions</Trans>
-      </label>
+      {showPromotions && (
+        <label className="settings-toggle">
+          <input
+            type="checkbox"
+            checked={settings.includePromotions}
+            onChange={() => handleToggle("includePromotions")}
+            disabled={isPending}
+          />
+          <Trans>Include Promotions</Trans>
+        </label>
+      )}
 
       <label className="settings-toggle">
         <input

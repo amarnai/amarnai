@@ -7,7 +7,7 @@ import { msg } from "@lingui/core/macro";
 import { api } from "@/lib/api";
 import type { Draft } from "@/lib/api";
 import type { FolderItem, ThreadItem, MemberItem } from "@amarnai/ui/emails";
-import { RationaleCard, MessageCard, SuggestedDraftCard, TriageBar } from "@amarnai/ui/emails";
+import { RationaleCard, MessageCard, SuggestedDraftCard, TriageBar, buildThreadUrl, openInProviderLabel } from "@amarnai/ui/emails";
 import { Tooltip } from "@amarnai/ui";
 import { formatQuotaResetDate } from "@amarnai/shared";
 
@@ -54,7 +54,7 @@ export function ThreadPreview({
   canAssign,
   onOpenAssign,
 }: Props) {
-  const { _ } = useLingui();
+  const { _, i18n } = useLingui();
   const [reasoning, setReasoning] = useState<string | null>(thread.reasoning);
   const [decisionSource, setDecisionSource] = useState<string | null>(null);
   const [bodyLoaded, setBodyLoaded] = useState(false);
@@ -269,13 +269,13 @@ export function ThreadPreview({
       <div className="em-preview-scroll">
         <h2 className="em-preview-subject">
           {thread.subject}
-          <Tooltip content={_(msg`Open in Gmail`)} placement="bottom">
+          <Tooltip content={openInProviderLabel(i18n, thread.provider)} placement="bottom">
             <a
-              href={`https://mail.google.com/mail/u/0/#all/${thread.providerThreadId}`}
+              href={buildThreadUrl(thread)}
               target="_blank"
               rel="noopener noreferrer"
               className="em-preview-gmail-link"
-              aria-label={_(msg`Open in Gmail`)}
+              aria-label={openInProviderLabel(i18n, thread.provider)}
             >
               <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden>
                 <path d="M5 2H2a1 1 0 00-1 1v7a1 1 0 001 1h7a1 1 0 001-1V7M7.5 1H11v3.5M11 1L5.5 6.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />

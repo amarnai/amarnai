@@ -6,7 +6,7 @@ vi.mock("@amarnai/db", () => ({
   db: {
     workspace: { findUnique: vi.fn() },
     workspaceMember: { findUnique: vi.fn() },
-    gmailConnection: { findUnique: vi.fn() },
+    emailConnection: { findUnique: vi.fn() },
     emailAccount: { upsert: vi.fn() },
     emailThread: { upsert: vi.fn(), update: vi.fn() },
     emailMessage: { upsert: vi.fn() },
@@ -17,12 +17,30 @@ vi.mock("@amarnai/db", () => ({
   countRecurringThreadSorts: vi.fn(),
 }));
 
-// Mock GmailClient so tests never make real HTTP calls
-vi.mock("../services/gmail-client.js", () => ({
+// Mock @amarnai/gmail so tests never make real HTTP calls. The sort route builds
+// its client via createMailProvider(connection) (@amarnai/mail, unmocked), which
+// constructs this GmailClient; the recent-threads dev endpoint uses it directly
+// through ../services/gmail-client.js (a re-export of @amarnai/gmail).
+vi.mock("@amarnai/gmail", () => ({
   GmailClient: vi.fn().mockImplementation(() => ({
-    getThread: vi.fn(),
+    getThreadSnapshot: vi.fn(),
     listRecentThreads: vi.fn(),
   })),
+  GmailAuthError: class GmailAuthError extends Error {},
+  GmailHistoryCursorExpiredError: class GmailHistoryCursorExpiredError extends Error {},
+  GmailThreadParseError: class GmailThreadParseError extends Error {},
+  revokeGoogleToken: vi.fn(),
+  normalizeGmailThread: vi.fn(),
+  encrypt: vi.fn(),
+  decrypt: vi.fn(),
+  GMAIL_READONLY_SCOPE: "https://www.googleapis.com/auth/gmail.readonly",
+  GmailApiError: class GmailApiError extends Error {},
+  exchangeAuthCode: vi.fn(),
+  exchangeServerAuthCode: vi.fn(),
+  parseGrantedScopes: vi.fn(),
+  fetchGmailProfile: vi.fn(),
+  fetchGoogleSubjectId: vi.fn(),
+  fetchGoogleUserInfo: vi.fn(),
 }));
 
 const mockSortThreadByEmbedding = vi.fn();
@@ -44,7 +62,7 @@ vi.mock("@amarnai/ai", () => ({
 
 import app from "../app.js";
 import { db, countRecurringThreadSorts } from "@amarnai/db";
-import { GmailClient } from "../services/gmail-client.js";
+import { GmailClient } from "@amarnai/gmail";
 
 const WS_ID = "ws-1";
 
@@ -52,8 +70,9 @@ const BASE_WORKSPACE = { id: WS_ID, ownerUserId: "user-1", plan: "FREE" };
 
 const BASE_CONNECTION = {
   id: "conn-1",
-  gmailAddress: "user@gmail.com",
-  googleSubjectId: "google-sub-123",
+  provider: "GMAIL" as const,
+  emailAddress: "user@gmail.com",
+  subjectId: "google-sub-123",
   encryptedRefreshToken: "enc-token",
 };
 
@@ -112,30 +131,27 @@ const VALID_CLASSIFY_RESULT = {
   updatedNodeEmbeddings: [],
 };
 
-// Minimal raw Gmail thread to feed to normalizeGmailThread
-function makeRawThread(threadId = "gmail-thread-1") {
-  const body = Buffer.from("Hello there")
-    .toString("base64")
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_")
-    .replace(/=/g, "");
-
+// Normalized ThreadSnapshot as returned by client.getThreadSnapshot(). The route
+// no longer sees raw Gmail JSON — the adapter normalizes it inside the client.
+function makeSnapshot(threadId = "gmail-thread-1") {
   return {
-    id: threadId,
+    provider: "gmail" as const,
+    providerThreadId: threadId,
+    subject: "Test thread",
+    participants: ["sender@example.com", "user@gmail.com"],
+    latestMessageAt: new Date("2026-01-20T10:00:00.000Z"),
+    messageCount: 1,
     messages: [
       {
-        id: "gmail-msg-1",
-        threadId,
-        payload: {
-          mimeType: "text/plain",
-          headers: [
-            { name: "From", value: "Sender <sender@example.com>" },
-            { name: "To", value: "user@gmail.com" },
-            { name: "Subject", value: "Test thread" },
-            { name: "Date", value: "Mon, 20 Jan 2026 10:00:00 +0000" },
-          ],
-          body: { size: body.length, data: body },
-        },
+        providerMessageId: "gmail-msg-1",
+        senderEmail: "sender@example.com",
+        senderName: "Sender",
+        toEmails: ["user@gmail.com"],
+        ccEmails: [],
+        subject: "Test thread",
+        bodyExcerpt: "Hello there",
+        attachments: [],
+        receivedAt: new Date("2026-01-20T10:00:00.000Z"),
       },
     ],
   };
@@ -148,7 +164,7 @@ beforeEach(() => {
 
   vi.mocked(db.workspaceMember.findUnique).mockResolvedValue({ userId: "test-user-1" } as never);
   vi.mocked(db.workspace.findUnique).mockResolvedValue(BASE_WORKSPACE as never);
-  vi.mocked(db.gmailConnection.findUnique).mockResolvedValue(BASE_CONNECTION as never);
+  vi.mocked(db.emailConnection.findUnique).mockResolvedValue(BASE_CONNECTION as never);
   vi.mocked(db.emailAccount.upsert).mockResolvedValue({ id: "acc-1" } as never);
   vi.mocked(db.emailThread.upsert).mockResolvedValue({ id: "thread-db-1" } as never);
   vi.mocked(db.emailMessage.upsert).mockResolvedValue({ id: "msg-db-1" } as never);
@@ -194,7 +210,7 @@ describe("POST /dev/workspaces/:workspaceId/gmail-sort-thread", () => {
   });
 
   it("returns 422 when no Gmail connection exists", async () => {
-    vi.mocked(db.gmailConnection.findUnique).mockResolvedValue(null);
+    vi.mocked(db.emailConnection.findUnique).mockResolvedValue(null);
     const res = await postSort();
     expect(res.status).toBe(422);
     const body = (await res.json()) as { error: string };
@@ -214,7 +230,7 @@ describe("POST /dev/workspaces/:workspaceId/gmail-sort-thread", () => {
     expect(body.limit).toBe(500);
     expect(typeof body.resetsAt).toBe("string");
 
-    expect(db.gmailConnection.findUnique).not.toHaveBeenCalled();
+    expect(db.emailConnection.findUnique).not.toHaveBeenCalled();
     expect(mockSortThreadByEmbedding).not.toHaveBeenCalled();
     expect(db.emailClassification.create).not.toHaveBeenCalled();
   });
@@ -222,7 +238,7 @@ describe("POST /dev/workspaces/:workspaceId/gmail-sort-thread", () => {
   it("proceeds with the sort when usage is below the limit", async () => {
     vi.mocked(countRecurringThreadSorts).mockResolvedValue(499);
     vi.mocked(GmailClient).mockImplementationOnce(() => ({
-      getThread: vi.fn().mockResolvedValue(makeRawThread()),
+      getThreadSnapshot: vi.fn().mockResolvedValue(makeSnapshot()),
       listRecentThreads: vi.fn(),
     }) as never);
 
@@ -248,7 +264,7 @@ describe("POST /dev/workspaces/:workspaceId/gmail-sort-thread", () => {
   it("returns 404 when Gmail API says thread not found", async () => {
     // GmailClient is constructed fresh per request — set up mock after clearing
     vi.mocked(GmailClient).mockImplementationOnce(() => ({
-      getThread: vi.fn().mockRejectedValue(new Error("Gmail thread not found: xyz")),
+      getThreadSnapshot: vi.fn().mockRejectedValue(new Error("Gmail thread not found: xyz")),
       listRecentThreads: vi.fn(),
     }) as never);
 
@@ -258,7 +274,7 @@ describe("POST /dev/workspaces/:workspaceId/gmail-sort-thread", () => {
 
   it("returns 502 when Gmail API fails with a non-404 error", async () => {
     vi.mocked(GmailClient).mockImplementationOnce(() => ({
-      getThread: vi.fn().mockRejectedValue(new Error("Gmail thread fetch failed: 403")),
+      getThreadSnapshot: vi.fn().mockRejectedValue(new Error("Gmail thread fetch failed: 403")),
       listRecentThreads: vi.fn(),
     }) as never);
 
@@ -268,7 +284,7 @@ describe("POST /dev/workspaces/:workspaceId/gmail-sort-thread", () => {
 
   it("fetches thread, upserts thread and messages, persists classification, returns 201", async () => {
     vi.mocked(GmailClient).mockImplementationOnce(() => ({
-      getThread: vi.fn().mockResolvedValue(makeRawThread()),
+      getThreadSnapshot: vi.fn().mockResolvedValue(makeSnapshot()),
       listRecentThreads: vi.fn(),
     }) as never);
 
@@ -285,7 +301,7 @@ describe("POST /dev/workspaces/:workspaceId/gmail-sort-thread", () => {
 
   it("does not persist bodyText on EmailMessage records", async () => {
     vi.mocked(GmailClient).mockImplementationOnce(() => ({
-      getThread: vi.fn().mockResolvedValue(makeRawThread()),
+      getThreadSnapshot: vi.fn().mockResolvedValue(makeSnapshot()),
       listRecentThreads: vi.fn(),
     }) as never);
 
@@ -301,11 +317,11 @@ describe("POST /dev/workspaces/:workspaceId/gmail-sort-thread", () => {
   it("upserts EmailThread so repeated sorts do not duplicate rows", async () => {
     vi.mocked(GmailClient)
       .mockImplementationOnce(() => ({
-        getThread: vi.fn().mockResolvedValue(makeRawThread()),
+        getThreadSnapshot: vi.fn().mockResolvedValue(makeSnapshot()),
         listRecentThreads: vi.fn(),
       }) as never)
       .mockImplementationOnce(() => ({
-        getThread: vi.fn().mockResolvedValue(makeRawThread()),
+        getThreadSnapshot: vi.fn().mockResolvedValue(makeSnapshot()),
         listRecentThreads: vi.fn(),
       }) as never);
 
@@ -320,7 +336,7 @@ describe("POST /dev/workspaces/:workspaceId/gmail-sort-thread", () => {
 
   it("sets triageStatus to NEEDS_REVIEW when needsHumanReview is true", async () => {
     vi.mocked(GmailClient).mockImplementationOnce(() => ({
-      getThread: vi.fn().mockResolvedValue(makeRawThread()),
+      getThreadSnapshot: vi.fn().mockResolvedValue(makeSnapshot()),
       listRecentThreads: vi.fn(),
     }) as never);
 
@@ -341,7 +357,7 @@ describe("POST /dev/workspaces/:workspaceId/gmail-sort-thread", () => {
 
   it("returns 422 when no taxonomy nodes exist", async () => {
     vi.mocked(GmailClient).mockImplementationOnce(() => ({
-      getThread: vi.fn().mockResolvedValue(makeRawThread()),
+      getThreadSnapshot: vi.fn().mockResolvedValue(makeSnapshot()),
       listRecentThreads: vi.fn(),
     }) as never);
     vi.mocked(db.taxonomyNode.findMany).mockResolvedValue([] as never);
@@ -366,7 +382,7 @@ describe("POST /dev/workspaces/:workspaceId/gmail-sort-thread", () => {
 
   it("resolves finalNodeName from taxonomy nodes", async () => {
     vi.mocked(GmailClient).mockImplementationOnce(() => ({
-      getThread: vi.fn().mockResolvedValue(makeRawThread()),
+      getThreadSnapshot: vi.fn().mockResolvedValue(makeSnapshot()),
       listRecentThreads: vi.fn(),
     }) as never);
 
@@ -399,7 +415,7 @@ describe("GET /dev/workspaces/:workspaceId/gmail-recent-threads", () => {
   });
 
   it("returns 422 when no Gmail connection exists", async () => {
-    vi.mocked(db.gmailConnection.findUnique).mockResolvedValue(null);
+    vi.mocked(db.emailConnection.findUnique).mockResolvedValue(null);
     const res = await app.request(`/dev/workspaces/${WS_ID}/gmail-recent-threads`, authed());
     expect(res.status).toBe(422);
   });
@@ -411,7 +427,7 @@ describe("GET /dev/workspaces/:workspaceId/gmail-recent-threads", () => {
       { id: "t3", subject: "Thread 3" },
     ];
     vi.mocked(GmailClient).mockImplementationOnce(() => ({
-      getThread: vi.fn(),
+      getThreadSnapshot: vi.fn(),
       listRecentThreads: vi.fn().mockResolvedValue(mockThreads),
     }) as never);
 
@@ -423,7 +439,7 @@ describe("GET /dev/workspaces/:workspaceId/gmail-recent-threads", () => {
 
   it("returns 502 when Gmail API listing fails", async () => {
     vi.mocked(GmailClient).mockImplementationOnce(() => ({
-      getThread: vi.fn(),
+      getThreadSnapshot: vi.fn(),
       listRecentThreads: vi.fn().mockRejectedValue(new Error("Gmail threads list failed: 401")),
     }) as never);
 

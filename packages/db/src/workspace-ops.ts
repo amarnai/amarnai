@@ -35,6 +35,57 @@ export async function createFreeWorkspace(
   return workspace.id;
 }
 
+// Erase one EmailAccount's synced email data (threads, messages, drafts,
+// classifications, tags, identities, sync cursor) and delete the account row,
+// in FK-safe order within a single transaction. Workspace-level data —
+// taxonomy, folders, sync settings, the EmailConnection — is intentionally
+// kept: this scrubs a single mailbox, not the workspace. Idempotent under
+// retry (deleteMany on already-removed rows is a no-op).
+export async function eraseEmailAccountData(emailAccountId: string): Promise<void> {
+  await db.$transaction([
+    db.emailTag.deleteMany({
+      where: {
+        OR: [
+          { emailThread: { emailAccountId } },
+          { emailMessage: { emailAccountId } },
+        ],
+      },
+    }),
+    db.draft.deleteMany({ where: { emailThread: { emailAccountId } } }),
+    db.emailClassification.deleteMany({ where: { emailThread: { emailAccountId } } }),
+    db.emailMessage.deleteMany({ where: { emailAccountId } }),
+    db.emailThread.deleteMany({ where: { emailAccountId } }),
+    db.providerSyncState.deleteMany({ where: { emailAccountId } }),
+    db.emailAddressIdentity.deleteMany({ where: { emailAccountId } }),
+    db.emailAccount.delete({ where: { id: emailAccountId } }),
+  ]);
+}
+
+// Inbox-rotation cleanup: erase every EmailAccount in the workspace whose
+// providerAccountId does NOT match the newly connected inbox, keeping the
+// workspace's taxonomy and settings intact. Because EmailAccount is keyed by
+// (workspaceId, providerAccountId) and one workspace holds one connection at a
+// time, connecting a different inbox (different address or provider) would
+// otherwise leave the previous inbox's threads orphaned and spliced into the
+// new inbox's view. Reconnecting the SAME inbox matches keepProviderAccountId,
+// so its data is preserved. Returns the addresses that were erased (for audit).
+//
+// Safe to run in the OAuth callback before the sync worker (re)creates the new
+// account: at that point only prior accounts exist, so nothing fresh is touched.
+export async function eraseStaleEmailAccounts(
+  workspaceId: string,
+  keepProviderAccountId: string,
+): Promise<string[]> {
+  const stale = await db.emailAccount.findMany({
+    where: { workspaceId, providerAccountId: { not: keepProviderAccountId } },
+    select: { id: true, primaryEmailAddress: true },
+  });
+  for (const account of stale) {
+    await eraseEmailAccountData(account.id);
+  }
+  return stale.map((a) => a.primaryEmailAddress);
+}
+
 // Workspace teardown cascades shared by the web server actions and the API
 // routes, so the FK-safe delete order lives in exactly one place. Gmail
 // disconnect (job cancellation + OAuth revoke) is orchestrated by the caller
@@ -62,7 +113,7 @@ export async function resetWorkspaceData(workspaceId: string): Promise<void> {
     db.emailThread.deleteMany({ where: { workspaceId } }),
     db.emailAccount.deleteMany({ where: { workspaceId } }),
     db.gmailSyncSettings.deleteMany({ where: { workspaceId } }),
-    db.gmailConnection.deleteMany({ where: { workspaceId } }),
+    db.emailConnection.deleteMany({ where: { workspaceId } }),
   ]);
 
   await ensureInboxTaxonomy(workspaceId);
@@ -119,7 +170,7 @@ export async function deleteUserCascade(userId: string): Promise<void> {
     db.emailAddressIdentity.deleteMany({ where: { emailAccount: { workspaceId: { in: workspaceIds } } } }),
     db.emailThread.deleteMany({ where: { workspaceId: { in: workspaceIds } } }),
     db.emailAccount.deleteMany({ where: { userId } }),
-    db.gmailConnection.deleteMany({ where: { workspaceId: { in: workspaceIds } } }),
+    db.emailConnection.deleteMany({ where: { workspaceId: { in: workspaceIds } } }),
     db.gmailSyncSettings.deleteMany({ where: { workspaceId: { in: workspaceIds } } }),
     db.workspaceInvitation.deleteMany({ where: { workspaceId: { in: workspaceIds } } }),
     db.workspaceMember.deleteMany({ where: { userId } }),
@@ -151,7 +202,7 @@ export async function deleteWorkspaceCascade(workspaceId: string): Promise<void>
     db.emailAddressIdentity.deleteMany({ where: { emailAccount: { workspaceId } } }),
     db.emailThread.deleteMany({ where: { workspaceId } }),
     db.emailAccount.deleteMany({ where: { workspaceId } }),
-    db.gmailConnection.deleteMany({ where: { workspaceId } }),
+    db.emailConnection.deleteMany({ where: { workspaceId } }),
     db.gmailSyncSettings.deleteMany({ where: { workspaceId } }),
     db.workspaceInvitation.deleteMany({ where: { workspaceId } }),
     db.workspaceMember.deleteMany({ where: { workspaceId } }),

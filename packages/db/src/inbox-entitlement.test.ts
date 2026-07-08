@@ -1,7 +1,7 @@
 import { vi, describe, it, expect, beforeEach } from "vitest";
 
 vi.mock("./client", () => ({
-  db: { gmailConnection: { findMany: vi.fn() } },
+  db: { emailConnection: { findMany: vi.fn() } },
 }));
 
 import { db } from "./client";
@@ -15,12 +15,12 @@ beforeEach(() => vi.clearAllMocks());
 
 describe("getInboxPlanCeiling", () => {
   it("returns FREE when no active connection shares the inbox", async () => {
-    vi.mocked(db.gmailConnection.findMany).mockResolvedValue([] as never);
+    vi.mocked(db.emailConnection.findMany).mockResolvedValue([] as never);
     expect(await getInboxPlanCeiling("ben@gmail.com")).toEqual({ plan: "FREE", billingCycle: null });
   });
 
   it("sizes by the TOP plan among workspaces sharing the inbox (FREE + BUSINESS -> BUSINESS)", async () => {
-    vi.mocked(db.gmailConnection.findMany).mockResolvedValue([
+    vi.mocked(db.emailConnection.findMany).mockResolvedValue([
       conn("FREE", null),
       conn("BUSINESS", "MONTHLY"),
       conn("PRO", "ANNUAL"),
@@ -29,7 +29,7 @@ describe("getInboxPlanCeiling", () => {
   });
 
   it("within the same plan, ANNUAL outranks MONTHLY", async () => {
-    vi.mocked(db.gmailConnection.findMany).mockResolvedValue([
+    vi.mocked(db.emailConnection.findMany).mockResolvedValue([
       conn("PRO", "MONTHLY"),
       conn("PRO", "ANNUAL"),
     ] as never);

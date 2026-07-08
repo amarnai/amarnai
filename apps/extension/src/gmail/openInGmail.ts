@@ -1,5 +1,7 @@
 import { buildGmailThreadUrl, buildGmailThreadHashUrl } from "./gmailUrl";
+import { buildThreadUrl, type ThreadUrlInput } from "@amarnai/core/emails";
 import { ext } from "../platform/ext";
+import { OUTLOOK_MAIL_HOSTS } from "../platform/mailHosts";
 
 // The Gmail tab we last navigated with the account-routing `authuser` URL, so we
 // know it is pinned to the correct Google account. While a reused tab stays this
@@ -54,6 +56,43 @@ export async function openInGmail(gmailAddress: string, providerThreadId: string
     active: true,
   });
   pinnedTabId = existing.id;
+}
+
+// Opens a thread in Outlook on the web (OWA). Reuses an existing OWA tab in the
+// current window so the panel stays docked; else opens a new tab. Unlike Gmail
+// there is no zero-reload hash swap — OWA routes the message via its `webLink`,
+// so every switch is one reload (accepted). The webLink already carries the
+// account context, so no `authuser`-style pinning is needed and the Gmail
+// pinnedTabId singleton is intentionally not used here.
+//
+// Requires host_permissions for the OWA hosts (see OUTLOOK_MAIL_HOSTS).
+export async function openInOutlook(webLink: string | null): Promise<void> {
+  const url = buildThreadUrl({ provider: "OUTLOOK", providerThreadId: "", webLink });
+  const tabs = await ext.tabs.query({
+    url: OUTLOOK_MAIL_HOSTS,
+    currentWindow: true,
+  });
+  const existing = tabs.find((t) => t.active) ?? tabs[0];
+
+  if (existing?.id == null) {
+    await ext.tabs.create({ url });
+    return;
+  }
+  await ext.tabs.update(existing.id, { url, active: true });
+}
+
+// Provider-aware dispatcher used by the panel call sites. Routes to the Gmail or
+// Outlook tab-reuse path based on the thread's provider. `account` is the
+// connected mailbox address (used only for Gmail account pinning).
+export async function openThreadInMail(
+  account: string,
+  thread: ThreadUrlInput,
+): Promise<void> {
+  if (thread.provider === "OUTLOOK") {
+    await openInOutlook(thread.webLink);
+    return;
+  }
+  await openInGmail(account, thread.providerThreadId);
 }
 
 // Test-only: clears the pinned-tab singleton so cases run in isolation.

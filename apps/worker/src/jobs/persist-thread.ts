@@ -3,8 +3,9 @@ import type { SnapshotMessage } from "@amarnai/ai";
 import type { ThreadLabelFlags } from "./filter-thread-messages.js";
 
 /**
- * Upsert the EmailThread row for a fetched Gmail thread. Shared by the live sync
- * and the historical backfill, which persist threads identically.
+ * Upsert the EmailThread row for a fetched thread. Shared by the live sync and
+ * the historical backfill, which persist threads identically. Provider-neutral —
+ * the caller passes the connection's provider so the row is stamped correctly.
  *
  * `updateContent` distinguishes the two write shapes:
  *  - true  — an included (kept) thread: refresh subject / latestMessageAt /
@@ -19,23 +20,33 @@ import type { ThreadLabelFlags } from "./filter-thread-messages.js";
 export async function upsertEmailThread(opts: {
   workspaceId: string;
   emailAccountId: string;
+  provider: "GMAIL" | "OUTLOOK";
   providerThreadId: string;
   subject: string | null;
   latestMessageAt: Date;
   messageCount: number;
   labelFlags: ThreadLabelFlags;
   updateContent: boolean;
+  // Representative deep-link (Outlook conversationId is not URL-resolvable).
+  // Undefined for Gmail; only written when provided so it is never nulled.
+  webLink?: string | null | undefined;
 }): Promise<string> {
   const {
     workspaceId,
     emailAccountId,
+    provider,
     providerThreadId,
     subject,
     latestMessageAt,
     messageCount,
     labelFlags,
     updateContent,
+    webLink,
   } = opts;
+
+  // Only include webLink in the write when the adapter supplied one, so a Gmail
+  // sync never overwrites a stored link with null.
+  const webLinkData = webLink != null ? { webLink } : {};
 
   const thread = await db.emailThread.upsert({
     where: {
@@ -44,16 +55,17 @@ export async function upsertEmailThread(opts: {
     create: {
       workspaceId,
       emailAccountId,
-      provider: "GMAIL",
+      provider,
       providerThreadId,
       subject,
       latestMessageAt,
       messageCount,
+      ...webLinkData,
       ...labelFlags,
     },
     update: updateContent
-      ? { subject, latestMessageAt, messageCount, ...labelFlags }
-      : { ...labelFlags },
+      ? { subject, latestMessageAt, messageCount, ...webLinkData, ...labelFlags }
+      : { ...webLinkData, ...labelFlags },
     select: { id: true },
   });
 

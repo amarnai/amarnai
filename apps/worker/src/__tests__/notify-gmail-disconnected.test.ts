@@ -4,7 +4,7 @@ import { vi, describe, it, expect, beforeEach } from "vitest";
 
 vi.mock("@amarnai/db", () => ({
   db: {
-    gmailConnection: { findUnique: vi.fn() },
+    emailConnection: { findUnique: vi.fn() },
     pushDevice: { findMany: vi.fn() },
     auditLog: { create: vi.fn().mockResolvedValue({}) },
   },
@@ -40,8 +40,8 @@ beforeEach(() => {
   vi.clearAllMocks();
   okSend.mockClear();
   // Default: the connection is currently disconnected (job is still valid).
-  vi.mocked(db.gmailConnection.findUnique).mockResolvedValue(
-    { status: "DISCONNECTED", gmailAddress: "a@b.com" } as never,
+  vi.mocked(db.emailConnection.findUnique).mockResolvedValue(
+    { status: "DISCONNECTED", emailAddress: "a@b.com" } as never,
   );
 });
 
@@ -72,8 +72,8 @@ describe("notifyGmailDisconnected", () => {
   });
 
   it("no-ops when the connection is already ACTIVE again (stale job → idempotent retry)", async () => {
-    vi.mocked(db.gmailConnection.findUnique).mockResolvedValue(
-      { status: "ACTIVE", gmailAddress: "a@b.com" } as never,
+    vi.mocked(db.emailConnection.findUnique).mockResolvedValue(
+      { status: "ACTIVE", emailAddress: "a@b.com" } as never,
     );
 
     await notifyGmailDisconnected(ARGS, { store: makeStore(), send: okSend });
@@ -83,7 +83,7 @@ describe("notifyGmailDisconnected", () => {
   });
 
   it("no-ops when the connection no longer exists", async () => {
-    vi.mocked(db.gmailConnection.findUnique).mockResolvedValue(null);
+    vi.mocked(db.emailConnection.findUnique).mockResolvedValue(null);
 
     await notifyGmailDisconnected(ARGS, { store: makeStore(), send: okSend });
 

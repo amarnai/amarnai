@@ -136,7 +136,7 @@ workspaces.post("/workspaces/:workspaceId/reset", async (c) => {
     return c.json({ error: "Only admins can reset the workspace" }, 403);
   }
 
-  const connection = await db.gmailConnection.findUnique({
+  const connection = await db.emailConnection.findUnique({
     where: { workspaceId },
     select: { id: true },
   });
@@ -171,7 +171,7 @@ workspaces.delete("/workspaces/:workspaceId", async (c) => {
     return c.json({ error: "You cannot delete your only workspace" }, 409);
   }
 
-  const connection = await db.gmailConnection.findUnique({
+  const connection = await db.emailConnection.findUnique({
     where: { workspaceId },
     select: { id: true },
   });

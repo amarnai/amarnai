@@ -18,6 +18,7 @@ enum WorkspaceRole {
 
 enum Provider {
   GMAIL
+  OUTLOOK
 }
 
 enum EmailAddressIdentityKind {
@@ -166,7 +167,7 @@ enum VerificationTokenType {
   PASSWORD_RESET
 }
 
-enum GmailConnectionStatus {
+enum ConnectionStatus {
   ACTIVE
   DISCONNECTED
 }
@@ -255,7 +256,7 @@ model Workspace {
   members                 WorkspaceMember[]
   invitations             WorkspaceInvitation[]
   emailAccounts           EmailAccount[]
-  gmailConnection         GmailConnection?
+  emailConnection         EmailConnection?
   gmailSyncSettings       GmailSyncSettings?
   taxonomyGenerationState TaxonomyGenerationState?
   taxonomyNodes           TaxonomyNode[]
@@ -439,6 +440,10 @@ model EmailThread {
   emailAccountId    String
   provider          Provider
   providerThreadId  String
+  // Representative message deep-link for providers whose thread id is not itself
+  // URL-resolvable (Outlook conversationId). Null for Gmail, where
+  // providerThreadId doubles as the deep-link key.
+  webLink           String?
   subject           String?
   latestMessageAt   DateTime?
   messageCount      Int          @default(0)
@@ -736,18 +741,25 @@ model ExtensionInstall {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-model GmailConnection {
-  id                    String                @id @default(cuid())
-  workspaceId           String                @unique
-  googleSubjectId       String?
-  gmailAddress          String
+// A connected mailbox and its encrypted OAuth grant, for any read-only provider
+// (Gmail today, Outlook next). Provider-neutral: `provider` discriminates which
+// adapter reads it; `emailAddress`/`subjectId`/`watchExpiresAt` carry the same
+// meaning for every provider. One connection per workspace for now
+// (`workspaceId @unique`); simultaneous multi-provider connections relax this to
+// `@@unique([workspaceId, provider])` when the Outlook adapter lands.
+model EmailConnection {
+  id                    String           @id @default(cuid())
+  workspaceId           String           @unique
+  provider              Provider         @default(GMAIL)
+  subjectId             String?
+  emailAddress          String
   encryptedRefreshToken String
   grantedScopes         String[]
-  status                GmailConnectionStatus @default(ACTIVE)
+  status                ConnectionStatus @default(ACTIVE)
   lastVerifiedAt        DateTime?
-  gmailWatchExpiresAt   DateTime?
-  createdAt             DateTime              @default(now())
-  updatedAt             DateTime              @updatedAt
+  watchExpiresAt        DateTime?
+  createdAt             DateTime         @default(now())
+  updatedAt             DateTime         @updatedAt
 
   workspace Workspace @relation(fields: [workspaceId], references: [id])
 }

@@ -64,8 +64,8 @@ gmailWebhook.post("/webhooks/gmail", async (c) => {
   // ── Find all workspaces with this Gmail address ──────────────────────────
   // Multiple workspaces can share the same Gmail address, so we enqueue
   // a sync for each one rather than stopping at the first match.
-  const connections = await db.gmailConnection.findMany({
-    where: { gmailAddress: payload.emailAddress, status: "ACTIVE" },
+  const connections = await db.emailConnection.findMany({
+    where: { emailAddress: payload.emailAddress, status: "ACTIVE" },
     select: { workspaceId: true },
   });
 

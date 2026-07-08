@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import { z } from "zod";
 import { db } from "@amarnai/db";
 import { DEFAULT_GMAIL_SYNC_SETTINGS } from "@amarnai/shared";
-import { GmailClient, normalizeGmailThread } from "@amarnai/gmail";
+import { createMailProvider } from "@amarnai/mail";
 import type { AppEnv } from "../env.js";
 
 const workspaceParam = z.object({ workspaceId: z.string().min(1) });
@@ -195,7 +195,9 @@ emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
   const threadSelect = {
     id: true,
     subject: true,
+    provider: true,
     providerThreadId: true,
+    webLink: true,
     latestMessageAt: true,
     messageCount: true,
     triageStatus: true,
@@ -362,7 +364,9 @@ emailThreads.get(
       select: {
         id: true,
         subject: true,
+        provider: true,
         providerThreadId: true,
+        webLink: true,
         latestMessageAt: true,
         messageCount: true,
         triageStatus: true,
@@ -506,9 +510,9 @@ emailThreads.get(
           },
         },
       }),
-      db.gmailConnection.findUnique({
+      db.emailConnection.findUnique({
         where: { workspaceId },
-        select: { encryptedRefreshToken: true },
+        select: { provider: true, encryptedRefreshToken: true },
       }),
     ]);
 
@@ -520,9 +524,8 @@ emailThreads.get(
     }
 
     try {
-      const client = new GmailClient(gmailConnection.encryptedRefreshToken);
-      const rawThread = await client.getThread(thread.providerThreadId);
-      const snapshot = normalizeGmailThread(rawThread);
+      const client = createMailProvider(gmailConnection);
+      const snapshot = await client.getThreadSnapshot(thread.providerThreadId);
       const bodyByProviderMsgId = new Map(
         snapshot.messages.map((m) => [m.providerMessageId, m.bodyExcerpt])
       );

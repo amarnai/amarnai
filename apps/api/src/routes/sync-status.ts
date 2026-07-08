@@ -29,12 +29,12 @@ syncStatus.get("/workspaces/:workspaceId/sync-status", async (c) => {
   const { workspaceId } = parsed.data;
 
   // Resolve the GmailConnection → EmailAccount → ProviderSyncState chain.
-  const connection = await db.gmailConnection.findUnique({
+  const connection = await db.emailConnection.findUnique({
     where: { workspaceId },
     select: {
-      googleSubjectId: true,
-      gmailAddress: true,
-      gmailWatchExpiresAt: true,
+      subjectId: true,
+      emailAddress: true,
+      watchExpiresAt: true,
       status: true,
     },
   });
@@ -49,7 +49,7 @@ syncStatus.get("/workspaces/:workspaceId/sync-status", async (c) => {
   // relevant message in this state.
   const disconnected = connection.status === "DISCONNECTED";
 
-  const providerAccountId = connection.googleSubjectId ?? connection.gmailAddress;
+  const providerAccountId = connection.subjectId ?? connection.emailAddress;
 
   const account = await db.emailAccount.findUnique({
     where: { workspaceId_providerAccountId: { workspaceId, providerAccountId } },
@@ -103,9 +103,9 @@ syncStatus.get("/workspaces/:workspaceId/sync-status", async (c) => {
   let backfillBeyondCount = state.backfillBeyondCount;
   let backfillLimitState = state.backfillLimitState;
   if (backfillCapReached) {
-    const ceiling = await getInboxPlanCeiling(connection.gmailAddress);
+    const ceiling = await getInboxPlanCeiling(connection.emailAddress);
     const cap = getBackfillCap(ceiling.plan, ceiling.billingCycle).maxThreads;
-    const inboxKey = inboxKeyFor(connection.gmailAddress);
+    const inboxKey = inboxKeyFor(connection.emailAddress);
     const windowStart = meterWindowStart();
     const used = await getMeterUsed(inboxKey, MeterKind.BACKFILL, windowStart);
     if (used < cap) {
@@ -120,7 +120,7 @@ syncStatus.get("/workspaces/:workspaceId/sync-status", async (c) => {
 
   const now = new Date();
   const pushEnabled =
-    connection.gmailWatchExpiresAt != null && connection.gmailWatchExpiresAt > now;
+    connection.watchExpiresAt != null && connection.watchExpiresAt > now;
 
   // Backfill loading progress is only meaningful while a backfill is running.
   // While it is, report how many past threads the backfill has processed so far

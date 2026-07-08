@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description: "How to delete your Amarnai account and the data it removes.",
 };
 
-const LAST_UPDATED = "July 6, 2026";
+const LAST_UPDATED = "July 8, 2026";
 
 export default function DeleteAccountPage() {
   return (
@@ -48,6 +48,27 @@ export default function DeleteAccountPage() {
           </a>{" "}
           and removing Amarnai from the list of connected apps.
         </li>
+        <li>
+          <strong>Revoke access from Microsoft:</strong> you can also remove
+          Amarnai&rsquo;s access to your Microsoft account at any time. For a
+          personal account, visit{" "}
+          <a
+            href="https://account.live.com/consent/Manage"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            account.live.com/consent/Manage
+          </a>
+          ; for a work or school account, visit{" "}
+          <a
+            href="https://myapps.microsoft.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            myapps.microsoft.com
+          </a>
+          . Then remove Amarnai from the list of connected apps.
+        </li>
       </ul>
 
       <h2>What Gets Deleted</h2>
@@ -65,7 +86,8 @@ export default function DeleteAccountPage() {
         <li>Your settings and preferences.</li>
         <li>Your taxonomy, including any categories and rules you created.</li>
         <li>
-          Your Gmail connection and stored OAuth tokens, revoked and deleted.
+          Your Gmail or Outlook connection and stored OAuth tokens, revoked and
+          deleted.
         </li>
         <li>Any paid subscription, which is cancelled as part of deletion.</li>
       </ul>
@@ -81,8 +103,9 @@ export default function DeleteAccountPage() {
       </p>
       <ul>
         <li>
-          <strong>Disconnect Gmail and erase synced data:</strong> revokes
-          Amarnai&rsquo;s access to Gmail, deletes your stored OAuth token, and
+          <strong>Disconnect your inbox and erase synced data:</strong> revokes
+          Amarnai&rsquo;s access to Gmail or Outlook, deletes your stored OAuth token,
+          and
           erases the email data synced into the workspace. Your account and
           workspaces are kept.
         </li>
@@ -104,8 +127,8 @@ export default function DeleteAccountPage() {
         When you delete your account, all of your data, including thread
         metadata and content, is permanently deleted as part of the deletion
         request, with no recovery period. OAuth tokens are deleted immediately
-        upon Gmail disconnection or account deletion. Deletion is permanent and
-        cannot be undone.
+        upon Gmail or Outlook disconnection or account deletion. Deletion is
+        permanent and cannot be undone.
       </p>
 
       <h2>Need Help?</h2>

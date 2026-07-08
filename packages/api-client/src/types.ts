@@ -12,6 +12,10 @@ import type { TaxonomyTransferFile } from "@amarnai/shared";
 
 export type OkResult = { ok: boolean };
 
+// Mail provider discriminant, mirroring the Prisma `Provider` enum. Drives
+// provider-aware deep links and connection UI.
+export type MailProvider = "GMAIL" | "OUTLOOK";
+
 // GET /workspaces/:id/taxonomy-generate — current generation status, the cost
 // limiter verdict, and the latest READY proposal (for preview before apply).
 export type TaxonomyGenerationStatus =
@@ -199,7 +203,11 @@ export type FilterCounts = {
 export type EmailThreadSummary = {
   id: string;
   subject: string | null;
+  provider: MailProvider;
   providerThreadId: string;
+  // Representative message deep-link for providers whose thread id is not itself
+  // URL-resolvable (Outlook). Null for Gmail (providerThreadId is the link key).
+  webLink: string | null;
   latestMessageAt: string | null;
   messageCount: number;
   triageStatus: TriageStatus;
@@ -236,7 +244,9 @@ export type EmailThreadListResult = {
 export type EmailThreadDetail = {
   id: string;
   subject: string | null;
+  provider: MailProvider;
   providerThreadId: string;
+  webLink: string | null;
   latestMessageAt: string | null;
   messageCount: number;
   triageStatus: TriageStatus;
@@ -299,9 +309,21 @@ export type ConnectGmailInput = {
   redirectUri?: string;
 };
 
+// Outlook connect input. Unlike Gmail, the code is always redeemed against a
+// redirect (the browser extension's chromiumapp.org URL), so `redirectUri` is
+// required.
+export type ConnectOutlookInput = {
+  code: string;
+  scope: string;
+  redirectUri: string;
+};
+
 export type GmailConnection = {
   id: string;
   workspaceId: string;
+  provider: MailProvider;
+  // The connected mailbox address, whatever the provider. Field name kept for
+  // backwards compatibility; it holds the Outlook address for Outlook connections.
   gmailAddress: string;
   grantedScopes: string[];
   status: "ACTIVE" | "DISCONNECTED";

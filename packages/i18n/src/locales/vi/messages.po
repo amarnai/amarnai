@@ -179,8 +179,12 @@ msgstr "{folderCount, plural, one {# thư mục} other {# thư mục}}"
 #~ msgid "{pendingCount} pending"
 #~ msgstr "{pendingCount} đang chờ"
 
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:199
+msgid "{providerName} Inbox"
+msgstr "Hộp thư {providerName}"
+
 #. placeholder {0}: draftQuota.limit
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:320
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:330
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:344
 #, fuzzy
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
@@ -265,9 +269,13 @@ msgstr "+ Thêm thư mục"
 msgid "+ New workspace"
 msgstr "+ Không gian làm việc mới"
 
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:95
+msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your {providerName} account to get started. Amarnai connects with <1>read-only access</1> and <2>never sends, deletes, or changes anything</2>. Your inbox stays yours."
+msgstr "<0>King Aziru</0> đã sẵn sàng sắp xếp email của bạn. Kết nối tài khoản {providerName} để bắt đầu. Amarnai kết nối với <1>quyền truy cập chỉ đọc</1> và <2>không bao giờ gửi, xóa hay thay đổi bất cứ điều gì</2>. Hộp thư của bạn luôn thuộc về bạn."
+
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:55
-msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your Gmail account to get started. Amarnai connects with <1>read-only access</1> and <2>never sends, deletes, or changes anything</2>. Your inbox stays yours."
-msgstr "<0>King Aziru</0> sẵn sàng giúp bạn sắp xếp các chuỗi email. Kết nối tài khoản Gmail để bắt đầu. Amarnai kết nối với <1>quyền truy cập chỉ đọc</1> và <2>không bao giờ gửi, xóa hay thay đổi bất cứ điều gì</2>. Hộp thư của bạn luôn thuộc về bạn."
+#~ msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your Gmail account to get started. Amarnai connects with <1>read-only access</1> and <2>never sends, deletes, or changes anything</2>. Your inbox stays yours."
+#~ msgstr "<0>King Aziru</0> sẵn sàng giúp bạn sắp xếp các chuỗi email. Kết nối tài khoản Gmail để bắt đầu. Amarnai kết nối với <1>quyền truy cập chỉ đọc</1> và <2>không bao giờ gửi, xóa hay thay đổi bất cứ điều gì</2>. Hộp thư của bạn luôn thuộc về bạn."
 
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:47
 #, fuzzy
@@ -397,19 +405,19 @@ msgstr "500 cuộc trò chuyện được phân loại / tháng"
 msgid "75,000 threads"
 msgstr "75.000 cuộc trò chuyện"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:300
+#: ../../apps/site/src/components/demo/demo-seed.ts:303
 #, fuzzy
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence."
 msgstr "Đã nhận được hồ sơ ứng tuyển mới từ Horemheb của Thebes cho vị trí Trưởng phòng Thư tín."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:314
+#: ../../apps/site/src/components/demo/demo-seed.ts:317
 #, fuzzy
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
 msgstr "Đã nhận được hồ sơ ứng tuyển mới từ Horemheb của Thebes cho vị trí Trưởng phòng Thư tín.\n\nXem hồ sơ trong Nhà Lưu trữ."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:384
+#: ../../apps/site/src/components/demo/demo-seed.ts:387
 #, fuzzy
 msgid "Abdi-Heba of Urushalim"
 msgstr "Abdi-Heba của Urushalim"
@@ -434,10 +442,14 @@ msgstr "Abdi-Heba,\n\nTôi sẽ ở gần vùng Đồng bằng vào tuần đó.
 #~ msgid "Access is granted to that exact Google account, so if it isn't the one whose Gmail you want Amarnai to organize, just submit the right address."
 #~ msgstr "Quyền truy cập được cấp cho chính tài khoản Google đó, vì vậy nếu đây không phải là tài khoản Gmail bạn muốn Amarnai sắp xếp, hãy gửi đúng địa chỉ."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:41
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:57
 #, fuzzy
 msgid "Access was denied. Grant read-only Gmail access to connect."
 msgstr "Quyền truy cập đã bị từ chối. Cấp quyền truy cập Gmail chỉ đọc để kết nối."
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:79
+msgid "Access was denied. Grant read-only Outlook (Mail.Read) access to connect."
+msgstr "Quyền truy cập đã bị từ chối. Vui lòng cấp quyền truy cập chỉ đọc Outlook (Mail.Read) để kết nối."
 
 #: ../../apps/mobile/app/(app)/account.tsx:105
 #, fuzzy
@@ -579,7 +591,7 @@ msgstr "Toàn bộ dữ liệu không gian làm việc sẽ bị xóa vĩnh vi�
 msgid "All your workspaces, emails, and settings will be deleted permanently."
 msgstr "Toàn bộ không gian làm việc, email và cài đặt của bạn sẽ bị xóa vĩnh viễn."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:256
+#: ../../apps/site/src/components/demo/demo-seed.ts:259
 #, fuzzy
 msgid "Alliance proposal: house of Amurru"
 msgstr "Đề nghị liên minh: Gia tộc Amurru"
@@ -602,7 +614,7 @@ msgstr "Đã có trong danh sách."
 #~ msgid "Already invited? <0>Sign in</0>"
 #~ msgstr "Đã được mời? <0>Đăng nhập</0>"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:191
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:258
 #, fuzzy
 msgid "Also erase synced email data"
 msgstr "Cũng xóa dữ liệu email đã đồng bộ hóa"
@@ -631,11 +643,18 @@ msgstr "Amarnai được đặt tên theo <0>các bức thư Amarna</0>: những
 #~ msgid "Amarnai is named after the Amarna Letters: clay cuneiform tablets used for diplomatic correspondence with the Egyptian pharaohs during the Bronze Age. One sender of these letters was Aziru, king of Amurru, a resourceful ruler and shrewd diplomat who navigated the rivalry between Egypt and the Hittites. Thousands of years later, he has found a new calling: helping folks like you bring order to their emails."
 #~ msgstr ""
 
-#: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:51
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:49
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:89
+msgid "Amarnai is no longer syncing this inbox. Reconnect your {providerName} account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
+msgstr "Amarnai không còn đồng bộ hóa hộp thư này nữa. Vui lòng kết nối lại tài khoản {providerName} để tiếp tục sắp xếp email. Quyền truy cập vẫn là <0>chỉ đọc</0> và hộp thư của bạn vẫn thuộc về bạn."
+
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:88
 #, fuzzy
 msgid "Amarnai is no longer syncing this inbox. Reconnect your Gmail account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
 msgstr "Amarnai đã ngừng đồng bộ hộp thư này. Vui lòng kết nối lại tài khoản Gmail để tiếp tục sắp xếp các cuộc trò chuyện email của bạn. Quyền truy cập vẫn <0>chỉ đọc</0>, và hộp thư của bạn vẫn thuộc về bạn."
+
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:82
+msgid "Amarnai is no longer syncing this inbox. Reconnect your Outlook account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
+msgstr "Amarnai không còn đồng bộ hóa hộp thư này nữa. Hãy kết nối lại tài khoản Outlook để tiếp tục phân loại chuỗi email. Quyền truy cập vẫn là <0>chỉ đọc</0>, và hộp thư của bạn vẫn thuộc về bạn."
 
 #: ../ui/src/pricing/planMessages.ts:112
 #, fuzzy
@@ -665,27 +684,45 @@ msgstr "Amarnai đã mất quyền truy cập vào hộp thư đến của bạn
 
 #: ../../apps/extension/src/platform/HostPermissionGate.tsx:34
 #, fuzzy
-msgid "Amarnai needs access to its server and Gmail to show your inbox."
-msgstr "Amarnai cần quyền truy cập vào máy chủ và Gmail để hiển thị hộp thư đến của bạn."
+#~ msgid "Amarnai needs access to its server and Gmail to show your inbox."
+#~ msgstr "Amarnai cần quyền truy cập vào máy chủ và Gmail để hiển thị hộp thư đến của bạn."
 
 #: ../../apps/extension/src/App.tsx:52
 #: ../../apps/extension/src/auth/SignInScreen.tsx:13
-msgid "Amarnai needs access to its server and Gmail to work. Please allow access and try again."
-msgstr "Amarnai cần quyền truy cập vào máy chủ và Gmail để hoạt động. Vui lòng cấp quyền truy cập và thử lại."
+#~ msgid "Amarnai needs access to its server and Gmail to work. Please allow access and try again."
+#~ msgstr "Amarnai cần quyền truy cập vào máy chủ và Gmail để hoạt động. Vui lòng cấp quyền truy cập và thử lại."
+
+#: ../../apps/extension/src/platform/HostPermissionGate.tsx:34
+#, fuzzy
+msgid "Amarnai needs access to its server and your inbox to show your emails."
+msgstr "Amarnai cần truy cập máy chủ và hộp thư đến của bạn để hiển thị email."
+
+#: ../../apps/extension/src/App.tsx:52
+#: ../../apps/extension/src/auth/SignInScreen.tsx:13
+msgid "Amarnai needs access to its server and your inbox to work. Please allow access and try again."
+msgstr "Amarnai cần truy cập máy chủ và hộp thư đến của bạn để hoạt động. Vui lòng cho phép truy cập và thử lại."
 
 #: ../../apps/site/src/lib/seo.ts:63
 #, fuzzy
-msgid "Amarnai reads your Gmail, sorts every thread into the folders you define, and drafts replies for your approval. Reach inbox zero without the busywork."
-msgstr "Amarnai đọc Gmail, sắp xếp mọi email vào thư mục định sẵn, và soạn nháp phản hồi để bạn duyệt. Đạt inbox zero không cần tốn công sức."
+#~ msgid "Amarnai reads your Gmail, sorts every thread into the folders you define, and drafts replies for your approval. Reach inbox zero without the busywork."
+#~ msgstr "Amarnai đọc Gmail, sắp xếp mọi email vào thư mục định sẵn, và soạn nháp phản hồi để bạn duyệt. Đạt inbox zero không cần tốn công sức."
+
+#: ../../apps/site/src/lib/seo.ts:64
+msgid "Amarnai reads your inbox, sorts every thread into the folders you define, and drafts replies for your approval. Reach inbox zero without the busywork."
+msgstr "Amarnai đọc hộp thư đến, sắp xếp mọi chuỗi email vào các thư mục bạn định nghĩa, và soạn thảo phản hồi chờ bạn duyệt. Đạt inbox zero mà không cần bận rộn."
 
 #: ../../apps/site/src/lib/seo.ts:46
-msgid "Amarnai sorts your Gmail into the folders you define, drafts replies for your approval, and explains every call so you reach inbox zero faster."
-msgstr "Amarnai sắp xếp Gmail vào thư mục bạn định sẵn, soạn thảo phản hồi để bạn duyệt, và giải thích mọi cuộc gọi, giúp bạn đạt inbox zero nhanh hơn."
+#~ msgid "Amarnai sorts your Gmail into the folders you define, drafts replies for your approval, and explains every call so you reach inbox zero faster."
+#~ msgstr "Amarnai sắp xếp Gmail vào thư mục bạn định sẵn, soạn thảo phản hồi để bạn duyệt, và giải thích mọi cuộc gọi, giúp bạn đạt inbox zero nhanh hơn."
 
 #: ../../apps/site/src/app/[locale]/page.tsx:50
 #, fuzzy
 #~ msgid "Amarnai sorts your Gmail threads into folders you define, drafts replies for your approval, and explains every decision. Open-source and self-hostable."
 #~ msgstr "Amarnai phân loại các cuộc trò chuyện Gmail vào thư mục bạn định sẵn, soạn thảo phản hồi để bạn duyệt, và giải thích mọi quyết định. Mã nguồn mở và có thể tự host."
+
+#: ../../apps/site/src/lib/seo.ts:46
+msgid "Amarnai sorts your inbox into the folders you define, drafts replies for your approval, and explains every call so you reach inbox zero faster."
+msgstr "Amarnai sắp xếp hộp thư đến của bạn vào các thư mục đã định, soạn thảo phản hồi chờ duyệt, và giải thích mọi quyết định để bạn đạt inbox zero nhanh hơn."
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:104
 #, fuzzy
@@ -698,8 +735,12 @@ msgid "Amarnai will analyze your senders, labels, and subject keywords (never me
 msgstr "Amarnai sẽ phân tích người gửi, nhãn và từ khóa chủ đề (không bao giờ là nội dung tin nhắn) để đề xuất bộ thư mục cá nhân hóa. Bạn có thể xem xét và chỉnh sửa trước khi áp dụng."
 
 #: ../../apps/site/src/lib/seo.ts:39
-msgid "Amarnai: AI Email Sorter for Gmail"
-msgstr "Amarnai: AI sắp xếp email trên Gmail"
+#~ msgid "Amarnai: AI Email Sorter for Gmail"
+#~ msgstr "Amarnai: AI sắp xếp email trên Gmail"
+
+#: ../../apps/site/src/lib/seo.ts:39
+msgid "Amarnai: AI Email Sorter for Gmail & Outlook"
+msgstr "Amarnai: Sắp xếp email bằng AI cho Gmail & Outlook"
 
 #: ../../apps/site/src/app/[locale]/page.tsx:29
 #, fuzzy
@@ -711,8 +752,12 @@ msgstr "Amarnai: AI sắp xếp email trên Gmail"
 #~ msgstr "Amarnai: AI sàng lọc email dành cho Gmail."
 
 #: ../../apps/site/src/lib/seo.ts:40
-msgid "Amarnai: Gmail, sorted your way"
-msgstr "Amarnai: Gmail, sắp xếp theo ý bạn"
+#~ msgid "Amarnai: Gmail, sorted your way"
+#~ msgstr "Amarnai: Gmail, sắp xếp theo ý bạn"
+
+#: ../../apps/site/src/lib/seo.ts:40
+msgid "Amarnai: Sort emails your way"
+msgstr "Amarnai: Sắp xếp email theo cách của bạn"
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:68
 #, fuzzy
@@ -752,7 +797,7 @@ msgstr "Lỗi API {0}"
 msgid "Appearance"
 msgstr "Giao diện"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:295
+#: ../../apps/site/src/components/demo/demo-seed.ts:298
 #, fuzzy
 msgid "Application: Chief of Correspondence"
 msgstr "Ứng tuyển: Chánh văn phòng"
@@ -812,8 +857,8 @@ msgstr "Giao chủ đề"
 msgid "Assign to"
 msgstr "Giao cho"
 
-#: ../ui/src/emails/ThreadRow.tsx:312
-#: ../ui/src/emails/ThreadRow.tsx:321
+#: ../ui/src/emails/ThreadRow.tsx:314
+#: ../ui/src/emails/ThreadRow.tsx:323
 #: ../ui/src/emails/TriageBar.tsx:63
 #, fuzzy
 msgid "Assign to a member"
@@ -832,8 +877,8 @@ msgstr "Được giao"
 msgid "Assigned to {assigneeName}"
 msgstr "Giao cho {assigneeName}"
 
-#: ../ui/src/emails/ThreadRow.tsx:208
-#: ../ui/src/emails/ThreadRow.tsx:320
+#: ../ui/src/emails/ThreadRow.tsx:210
+#: ../ui/src/emails/ThreadRow.tsx:322
 #: ../ui/src/emails/TriageBar.tsx:62
 #, fuzzy
 msgid "Assigned to {assigneeName}. Change assignee"
@@ -851,7 +896,7 @@ msgstr "Ít nhất {PASSWORD_MIN_LENGTH} ký tự"
 #~ msgstr "Ít nhất 8 ký tự"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:127
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:82
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:88
 #, fuzzy
 msgid "Auto-file notifications to Updates / Other"
 msgstr "Tự động phân loại thông báo vào Cập nhật / Khác"
@@ -860,7 +905,7 @@ msgstr "Tự động phân loại thông báo vào Cập nhật / Khác"
 msgid "Automated and bulk mail that doesn't fit another folder lands here automatically. This is different from Needs review, which holds threads too ambiguous for the assistant to sort."
 msgstr "Thư tự động và thư hàng loạt không thuộc thư mục nào khác sẽ tự động chuyển đến đây. Thư mục này khác với <em>Cần xem lại</em>, nơi chứa các cuộc hội thoại quá mơ hồ để trợ lý có thể sắp xếp."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:305
+#: ../../apps/site/src/components/demo/demo-seed.ts:308
 #, fuzzy
 msgid "Automated notice from the Bureau of Royal Appointments. Subject and sender clearly indicate a new application for an open position."
 msgstr "Thông báo tự động từ Cục Bổ nhiệm Hoàng gia. Chủ đề và người gửi cho thấy đây là đơn ứng tuyển mới cho một vị trí đang tuyển."
@@ -871,11 +916,11 @@ msgstr "Thông báo tự động từ Cục Bổ nhiệm Hoàng gia. Chủ đề
 msgid "Automated notifications, newsletters, and service updates that don't fit another folder."
 msgstr "Thông báo tự động, bản tin và cập nhật dịch vụ không thuộc thư mục nào khác."
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:212
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:243
 msgid "Available addresses"
 msgstr "Địa chỉ khả dụng"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:271
+#: ../../apps/site/src/components/demo/demo-seed.ts:274
 #, fuzzy
 msgid "Aziru of Amurru"
 msgstr "Aziru xứ Amurru"
@@ -889,18 +934,22 @@ msgid "Aziru,\n"
 "With regards,"
 msgstr "Aziru,\n\nLời hữu nghị của ngài đã đến tai chúng tôi. Chúng tôi sẵn lòng lắng nghe thêm về đề xuất của Gia tộc Amurru. Xin hãy gửi các điều khoản của ngài qua sứ giả kế tiếp.\n\nTrân trọng,"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:217
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:219
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:25
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:230
-#: ../ui/src/emails/ThreadPreview.tsx:92
+#: ../ui/src/emails/ThreadPreview.tsx:121
 #, fuzzy
 msgid "Back"
 msgstr "Quay lại"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:213
+#: ../../apps/site/src/components/landing/MailThreadMock.tsx:62
+msgid "Back to inbox"
+msgstr "Về hộp thư đến"
+
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:215
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:225
-#: ../ui/src/emails/ThreadPreview.tsx:87
+#: ../ui/src/emails/ThreadPreview.tsx:116
 #, fuzzy
 msgid "Back to list"
 msgstr "Quay lại danh sách"
@@ -937,7 +986,7 @@ msgid "Billed monthly · 14-day free trial"
 msgstr "Tính phí hằng tháng · 14 ngày dùng thử miễn phí"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:30
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:257
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:258
 #, fuzzy
 msgid "Billing"
 msgstr "Thanh toán"
@@ -965,8 +1014,12 @@ msgstr "Thành viên hội đồng quản trị, đối tác quỹ hiện tại 
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:385
 #, fuzzy
-msgid "Browse emails easily through your folders. Generate draft replies and copy them to Gmail."
-msgstr "Dễ dàng duyệt email qua các thư mục của bạn. Tạo bản nháp trả lời và sao chép vào Gmail."
+#~ msgid "Browse emails easily through your folders. Generate draft replies and copy them to Gmail."
+#~ msgstr "Dễ dàng duyệt email qua các thư mục của bạn. Tạo bản nháp trả lời và sao chép vào Gmail."
+
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:416
+msgid "Browse emails easily through your folders. Generate draft replies and copy them to your inbox."
+msgstr "Dễ dàng duyệt email qua các thư mục. Tạo bản nháp phản hồi và sao chép vào hộp thư đến của bạn."
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:283
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1403
@@ -974,8 +1027,8 @@ msgstr "Dễ dàng duyệt email qua các thư mục của bạn. Tạo bản nh
 msgid "Browse templates"
 msgstr "Duyệt mẫu"
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:224
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:246
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:257
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:280
 msgid "Browser extension"
 msgstr "Tiện ích trình duyệt"
 
@@ -990,12 +1043,12 @@ msgstr "Tạo gói"
 #~ msgid "Bulk triage your inbox"
 #~ msgstr "Sắp xếp hộp thư đến hàng loạt"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:310
+#: ../../apps/site/src/components/demo/demo-seed.ts:313
 #, fuzzy
 msgid "Bureau of Royal Appointments"
 msgstr "Cục Bổ nhiệm Hoàng gia"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:232
+#: ../../apps/site/src/components/demo/demo-seed.ts:235
 #, fuzzy
 msgid "Burna-Buriash II"
 msgstr "Burna-Buriash II"
@@ -1049,10 +1102,12 @@ msgstr "Tôi có thể tự lưu trữ Amarnai không?"
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1686
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1773
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:64
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:208
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:275
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:370
 #: ../../apps/web/src/app/(app)/settings/ResetWorkspaceSection.tsx:73
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:182
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:170
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:147
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:207
 #, fuzzy
 msgid "Cancel"
@@ -1093,7 +1148,7 @@ msgstr "Tổng hợp"
 msgid "Change"
 msgstr "Thay đổi"
 
-#: ../ui/src/emails/ThreadRow.tsx:311
+#: ../ui/src/emails/ThreadRow.tsx:313
 msgid "Change assignee"
 msgstr "Thay đổi người được giao"
 
@@ -1133,7 +1188,11 @@ msgstr "Chọn gói đăng ký"
 #~ msgid "Choose a theme, or follow your system setting. Saved on this device."
 #~ msgstr "Chọn chủ đề hoặc theo cài đặt hệ thống của bạn. Lưu trên thiết bị này."
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:233
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:328
+msgid "Choose email provider"
+msgstr "Chọn nhà cung cấp email"
+
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:267
 #, fuzzy
 msgid "Choose how to preview Amarnai"
 msgstr "Chọn cách xem trước Amarnai"
@@ -1175,8 +1234,8 @@ msgstr "Đóng bảng điều khiển"
 
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:255
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:259
-#: ../ui/src/emails/ThreadPreview.tsx:97
-#: ../ui/src/emails/ThreadPreview.tsx:101
+#: ../ui/src/emails/ThreadPreview.tsx:147
+#: ../ui/src/emails/ThreadPreview.tsx:151
 #, fuzzy
 msgid "Close preview"
 msgstr "Đóng bản xem trước"
@@ -1229,30 +1288,54 @@ msgstr "Xác nhận xóa"
 msgid "Confirm password"
 msgstr "Xác nhận mật khẩu"
 
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:382
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:391
+#, fuzzy
+msgid "Connect {name}"
+msgstr "Kết nối {name}"
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:354
+#, fuzzy
+msgid "Connect {name} to this workspace?"
+msgstr "Kết nối {name} vào không gian làm việc này?"
+
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:123
+msgid "Connect {providerName}"
+msgstr "Kết nối {providerName}"
+
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:158
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:167
+msgid "Connect {secondaryName}"
+msgstr "Kết nối {secondaryName}"
+
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:150
+#~ msgid "Connect {secondaryName} instead"
+#~ msgstr "Kết nối {secondaryName} thay thế"
+
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:170
 #, fuzzy
 msgid "Connect a Gmail inbox to configure sync filters."
 msgstr "Kết nối hộp thư đến Gmail để cấu hình bộ lọc đồng bộ hóa."
 
 #: ../../apps/extension/src/App.tsx:93
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:138
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:361
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:271
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:76
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:371
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:406
 #, fuzzy
 msgid "Connect Gmail"
 msgstr "Kết nối Gmail"
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:349
 #, fuzzy
-msgid "Connect Gmail account"
-msgstr "Kết nối tài khoản Gmail"
+#~ msgid "Connect Gmail account"
+#~ msgstr "Kết nối tài khoản Gmail"
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:346
 #, fuzzy
-msgid "Connect Gmail account button"
-msgstr "Nút kết nối tài khoản Gmail"
+#~ msgid "Connect Gmail account button"
+#~ msgstr "Nút kết nối tài khoản Gmail"
 
 #: ../../apps/site/src/components/landing/FinalCTASection.tsx:11
 #, fuzzy
@@ -1260,8 +1343,12 @@ msgstr "Nút kết nối tài khoản Gmail"
 #~ msgstr "Chỉ cần kết nối Gmail, Amarnai sẽ bắt đầu phân loại trong vài phút. Giá tính trên mỗi không gian làm việc. Thỏa sức sắp xếp mọi thư bạn muốn, bao gồm cả việc tải lại toàn bộ lịch sử."
 
 #: ../../apps/site/src/components/landing/FinalCTASection.tsx:11
-msgid "Connect Gmail and Amarnai starts sorting within minutes. Pricing is per workspace. Sorts new mail as it arrives, and works through years of backlog."
-msgstr "Kết nối Gmail, Amarnai bắt đầu sắp xếp chỉ trong vài phút. Giá tính theo không gian làm việc. Sắp xếp thư mới ngay khi đến và xử lý hàng năm email tồn đọng."
+#~ msgid "Connect Gmail and Amarnai starts sorting within minutes. Pricing is per workspace. Sorts new mail as it arrives, and works through years of backlog."
+#~ msgstr "Kết nối Gmail, Amarnai bắt đầu sắp xếp chỉ trong vài phút. Giá tính theo không gian làm việc. Sắp xếp thư mới ngay khi đến và xử lý hàng năm email tồn đọng."
+
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:364
+msgid "Connect Gmail button"
+msgstr "Nút kết nối Gmail"
 
 #: ../../apps/extension/src/App.tsx:38
 #~ msgid "Connect Gmail on the web"
@@ -1277,10 +1364,35 @@ msgstr "Kết nối Gmail để tạo kế hoạch từ hộp thư đến của 
 msgid "Connect Gmail to start triaging"
 msgstr "Kết nối Gmail để bắt đầu phân loại"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:403
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:387
+#, fuzzy
+msgid "Connect inbox"
+msgstr "Kết nối hộp thư đến"
+
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:347
+#~ msgid "Connect inbox button"
+#~ msgstr "Nút kết nối hộp thư đến"
+
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:433
 #, fuzzy
 msgid "Connect once, generate your plan once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
 msgstr "Chỉ cần kết nối và tạo kế hoạch một lần, Amarnai sẽ tự động xử lý thư mới cũng như hàng ngàn email hiện có trong hộp thư của bạn."
+
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:151
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:369
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:414
+#, fuzzy
+msgid "Connect Outlook"
+msgstr "Kết nối Outlook"
+
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:363
+msgid "Connect Outlook button"
+msgstr "Nút kết nối Outlook"
+
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:84
+#, fuzzy
+msgid "Connect your {providerName} inbox"
+msgstr "Kết nối hộp thư {providerName} của bạn"
 
 #: ../../apps/extension/src/App.tsx:89
 msgid "Connect your Gmail account to start triaging."
@@ -1293,13 +1405,45 @@ msgstr "Kết nối tài khoản Gmail của bạn để đồng bộ hộp thư
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:44
 #, fuzzy
-msgid "Connect your Gmail inbox"
-msgstr "Kết nối hộp thư đến Gmail của bạn"
+#~ msgid "Connect your Gmail inbox"
+#~ msgstr "Kết nối hộp thư đến Gmail của bạn"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:99
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:76
+msgid "Connect your inbox"
+msgstr "Kết nối hộp thư của bạn"
+
+#: ../../apps/site/src/components/landing/FinalCTASection.tsx:11
+msgid "Connect your inbox and Amarnai starts sorting within minutes. Pricing is per workspace. Sorts new mail as it arrives, and works through years of backlog."
+msgstr "Kết nối hộp thư đến và Amarnai bắt đầu sắp xếp chỉ trong vài phút. Giá tính theo mỗi không gian làm việc. Sắp xếp thư mới ngay khi đến và xử lý hàng năm email tồn đọng."
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:348
+#, fuzzy
+msgid "Connecting {name} will permanently remove the sorted email saved from {retainedAddress}. Your folders and settings are kept."
+msgstr "Việc kết nối {name} sẽ xóa vĩnh viễn các email đã sắp xếp được lưu từ {retainedAddress}. Các thư mục và cài đặt của bạn vẫn được giữ nguyên."
+
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:131
+msgid "Connecting {secondaryName} will permanently remove the sorted email saved from {retainedAddress}. Your folders and settings are kept."
+msgstr "Việc kết nối {secondaryName} sẽ xóa vĩnh viễn các email đã sắp xếp được lưu từ {retainedAddress}. Các thư mục và cài đặt của bạn vẫn được giữ nguyên."
+
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:138
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:149
+msgid "Connecting…"
+msgstr "Đang kết nối…"
+
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:58
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:162
 #, fuzzy
 msgid "Connection failed. Please try again."
 msgstr "Kết nối thất bại. Vui lòng thử lại."
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:363
+#, fuzzy
+msgid "Continue to {name}"
+msgstr "Tiếp tục với {name}"
+
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:140
+msgid "Continue to {secondaryName}"
+msgstr "Tiếp tục với {secondaryName}"
 
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:156
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:100
@@ -1343,10 +1487,14 @@ msgstr "Đã sao chép"
 msgid "Copy"
 msgstr "Sao chép"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:53
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:69
 #, fuzzy
 msgid "Could not access your Gmail inbox. Make sure the Gmail API is enabled and the gmail.readonly scope is added to the OAuth consent screen in Google Cloud Console."
 msgstr "Không thể truy cập hộp thư đến Gmail của bạn. Hãy đảm bảo API Gmail đã được bật và phạm vi gmail.readonly đã được thêm vào màn hình đồng ý OAuth trong Google Cloud Console."
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:91
+msgid "Could not access your Outlook inbox. Please try again."
+msgstr "Không thể truy cập hộp thư Outlook của bạn. Vui lòng thử lại."
 
 #: ../../apps/mobile/src/components/BlacklistSheet.tsx:66
 #: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:59
@@ -1419,7 +1567,7 @@ msgid "Could not open billing management."
 msgstr "Không thể mở quản lý thanh toán."
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:89
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:108
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:114
 #, fuzzy
 msgid "Could not queue rescan. Please try again."
 msgstr "Không thể xếp hàng chờ quét lại. Vui lòng thử lại."
@@ -1484,21 +1632,21 @@ msgstr "Không thể cập nhật cài đặt nhắc nhở của bạn."
 msgid "Could not upgrade"
 msgstr "Không thể nâng cấp"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:55
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:71
 #, fuzzy
 msgid "Could not verify your Google account. Please try again."
 msgstr "Không thể xác minh tài khoản Google của bạn. Vui lòng thử lại."
 
-#: ../../apps/extension/src/panel/TriageGate.tsx:81
+#: ../../apps/extension/src/panel/TriageGate.tsx:85
 msgid "Couldn't load your inbox. Check your connection and reopen the panel."
 msgstr "Không thể tải hộp thư đến của bạn. Kiểm tra kết nối và mở lại bảng điều khiển."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:406
+#: ../../apps/site/src/components/demo/demo-seed.ts:409
 #, fuzzy
 msgid "Council convening: season of Shemu"
 msgstr "Triệu tập Hội đồng: mùa Shemu"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:416
+#: ../../apps/site/src/components/demo/demo-seed.ts:419
 #, fuzzy
 msgid "Council preparation request from a known royal ally. Sender domain and context clearly match the Current investors folder."
 msgstr "Yêu cầu chuẩn bị Hội đồng từ một đồng minh hoàng gia đã biết. Tên miền người gửi và ngữ cảnh khớp rõ ràng với thư mục Nhà đầu tư hiện tại."
@@ -1593,7 +1741,7 @@ msgid "Customer support, onboarding, product feedback, churn, and success conver
 msgstr "Hỗ trợ khách hàng, onboarding, phản hồi sản phẩm, churn và các cuộc trò chuyện thành công."
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:29
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:156
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:157
 #: ../ui/src/i18n/taxonomy-template-messages.ts:53
 #, fuzzy
 msgid "Customers"
@@ -1706,7 +1854,7 @@ msgstr "Đang xóa…"
 msgid "Describe what kinds of emails belong here: who they come from and what they are about. Be specific and use the actual names, topics, and words that show up in those emails. Describe what the emails are, not what you plan to do about them. The clearer your description, the more accurately your email is sorted here."
 msgstr "Mô tả loại email phù hợp ở đây: chúng từ ai và về điều gì. Hãy cụ thể và dùng đúng tên, chủ đề, từ ngữ thực tế có trong email. Mô tả nội dung email, không phải kế hoạch của bạn với chúng. Mô tả càng rõ ràng, email của bạn càng được phân loại chính xác."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:372
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:401
 #, fuzzy
 msgid "Describe your folders"
 msgstr "Mô tả thư mục của bạn"
@@ -1718,7 +1866,7 @@ msgid "Description"
 msgstr "Mô tả"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:137
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:85
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:91
 #, fuzzy
 msgid "Detected notifications, newsletters, and service updates are filed to your catch-all folder without using AI. Requires the <0>Updates / Other</0> folder from a taxonomy template."
 msgstr "Các thông báo, bản tin và cập nhật dịch vụ được phát hiện sẽ được lưu vào thư mục chung của bạn mà không cần dùng AI. Yêu cầu thư mục <0>Cập nhật / Khác</0> từ một mẫu phân loại."
@@ -1734,6 +1882,10 @@ msgstr "Hủy bỏ"
 msgid "Disconnect"
 msgstr "Ngắt kết nối"
 
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:246
+msgid "Disconnect {providerName}"
+msgstr "Ngắt kết nối {providerName}"
+
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:96
 #, fuzzy
 msgid "Disconnect & erase data"
@@ -1745,7 +1897,6 @@ msgid "Disconnect failed"
 msgstr "Ngắt kết nối thất bại"
 
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:170
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:179
 #, fuzzy
 msgid "Disconnect Gmail"
 msgstr "Ngắt kết nối Gmail"
@@ -1761,37 +1912,45 @@ msgstr "Ngắt kết nối Gmail?"
 msgid "Disconnected"
 msgstr "Đã ngắt kết nối"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:227
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:295
 #, fuzzy
 msgid "Disconnected from this workspace. {erasedNote} Amarnai still has access because this mailbox is connected in another workspace. To fully revoke access, remove Amarnai from your <0/>."
 msgstr "Đã ngắt kết nối khỏi không gian làm việc này. {erasedNote} Amarnai vẫn có quyền truy cập vì hộp thư này được kết nối trong một không gian làm việc khác. Để thu hồi hoàn toàn quyền truy cập, hãy xóa Amarnai khỏi <0/> của bạn."
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:243
 #, fuzzy
-msgid "Disconnected. {erasedNote} Revocation at Google could not be confirmed. You can remove Amarnai from your <0/>."
-msgstr "Đã ngắt kết nối. {erasedNote} Không thể xác nhận việc thu hồi tại Google. Bạn có thể xóa Amarnai khỏi <0/> của mình."
+#~ msgid "Disconnected. {erasedNote} Revocation at Google could not be confirmed. You can remove Amarnai from your <0/>."
+#~ msgstr "Đã ngắt kết nối. {erasedNote} Không thể xác nhận việc thu hồi tại Google. Bạn có thể xóa Amarnai khỏi <0/> của mình."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:252
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:311
+msgid "Disconnected. {erasedNote} To fully revoke Amarnai's access, remove it from your <0/>."
+msgstr "Đã ngắt kết nối. {erasedNote} Để thu hồi hoàn toàn quyền truy cập của Amarnai, hãy xóa ứng dụng khỏi <0/> của bạn."
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:319
 #, fuzzy
 msgid "Disconnected. Amarnai is no longer syncing this inbox."
 msgstr "Đã ngắt kết nối. Amarnai không còn đồng bộ hóa hộp thư đến này nữa."
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:236
 #, fuzzy
-msgid "Disconnected. Amarnai's access to this mailbox was revoked at Google. {erasedNote}"
-msgstr "Đã ngắt kết nối. Quyền truy cập của Amarnai vào hộp thư này đã bị thu hồi tại Google. {erasedNote}"
+#~ msgid "Disconnected. Amarnai's access to this mailbox was revoked at Google. {erasedNote}"
+#~ msgstr "Đã ngắt kết nối. Quyền truy cập của Amarnai vào hộp thư này đã bị thu hồi tại Google. {erasedNote}"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:200
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:304
+msgid "Disconnected. Amarnai's access to this mailbox was revoked.{erasedNote}"
+msgstr "Đã ngắt kết nối. Quyền truy cập của Amarnai vào hộp thư này đã bị thu hồi.{erasedNote}"
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:267
 #, fuzzy
 msgid "Disconnecting…"
 msgstr "Đang ngắt kết nối…"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:121
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:188
 #, fuzzy
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is also connected elsewhere in Amarnai. To fully revoke access, remove Amarnai from your <0/>."
 msgstr "Ngắt kết nối không gian làm việc này. Amarnai vẫn giữ quyền truy cập vì hộp thư này cũng được kết nối ở nơi khác trong Amarnai. Để thu hồi hoàn toàn quyền truy cập, hãy xóa Amarnai khỏi <0/> của bạn."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:116
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:183
 #, fuzzy
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "Ngắt kết nối không gian làm việc này. Amarnai vẫn giữ quyền truy cập vì hộp thư này vẫn được kết nối trong {sharedNames}."
@@ -1805,7 +1964,7 @@ msgstr "Ngắt kết nối không gian làm việc này. Amarnai vẫn giữ quy
 #: ../../apps/web/src/components/NotificationBell.tsx:179
 #: ../../apps/web/src/components/NotificationBell.tsx:180
 #: ../ui/src/AppDownloadBanner.tsx:80
-#: ../ui/src/emails/MockEmailsPage.tsx:270
+#: ../ui/src/emails/MockEmailsPage.tsx:288
 #, fuzzy
 msgid "Dismiss"
 msgstr "Bỏ qua"
@@ -1847,7 +2006,7 @@ msgstr "Chưa có tài khoản? <0>Đăng ký</0>"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:278
 #: ../../apps/mobile/src/components/ThreadRow.tsx:35
-#: ../ui/src/emails/ThreadRow.tsx:200
+#: ../ui/src/emails/ThreadRow.tsx:202
 #, fuzzy
 msgid "Done"
 msgstr "Hoàn tất"
@@ -1862,7 +2021,7 @@ msgstr "Hoàn tất · hoàn tác"
 msgid "Downgrade to {planName}"
 msgstr "Hạ cấp xuống {planName}"
 
-#: ../ui/src/emails/ThreadRow.tsx:262
+#: ../ui/src/emails/ThreadRow.tsx:264
 #, fuzzy
 msgid "draft"
 msgstr "bản nháp"
@@ -1877,14 +2036,14 @@ msgstr "Bản nháp"
 msgid "Draft failed · tap to retry"
 msgstr "Bản nháp thất bại · chạm để thử lại"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:335
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:345
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:360
 #, fuzzy
 msgid "Draft generation failed. Try again."
 msgstr "Tạo bản nháp thất bại. Vui lòng thử lại."
 
 #: ../../apps/mobile/src/components/DraftSheet.tsx:63
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:263
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:264
 #: ../ui/src/emails/SuggestedDraftCard.tsx:47
 #, fuzzy
 msgid "Draft reply"
@@ -1902,7 +2061,7 @@ msgid "Draft style guidance"
 msgstr "Hướng dẫn phong cách bản nháp"
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:106
-#: ../ui/src/emails/ThreadRow.tsx:256
+#: ../ui/src/emails/ThreadRow.tsx:258
 #, fuzzy
 msgid "Drafting…"
 msgstr "Đang soạn nháp…"
@@ -1912,7 +2071,7 @@ msgstr "Đang soạn nháp…"
 msgid "Drag and connect. It's fully interactive."
 msgstr "Kéo và kết nối. Hoàn toàn tương tác."
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:276
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:310
 #, fuzzy
 msgid "Drag to resize"
 msgstr "Kéo để thay đổi kích thước"
@@ -1979,7 +2138,7 @@ msgstr "Địa chỉ email cần đưa vào danh sách đen"
 msgid "Email address to invite"
 msgstr "Địa chỉ email để mời"
 
-#: ../../apps/site/src/lib/seo.ts:51
+#: ../../apps/site/src/lib/seo.ts:52
 #, fuzzy
 msgid "email organizer"
 msgstr "Gửi email cho người tổ chức"
@@ -2075,7 +2234,7 @@ msgstr "Mục"
 msgid "Every account starts with a free Personal workspace, no card required. Create more or upgrade whenever your needs grow."
 msgstr "Mỗi tài khoản bắt đầu với không gian làm việc Cá nhân miễn phí, không yêu cầu thẻ. Tạo thêm hoặc nâng cấp bất cứ khi nào nhu cầu của bạn tăng lên."
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:159
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:190
 #, fuzzy
 msgid "Every email goes where it belongs."
 msgstr "Mọi email đều đến đúng nơi cần đến."
@@ -2089,7 +2248,7 @@ msgstr "Mọi email đều đến đúng nơi cần đến."
 msgid "Every thread in your inbox."
 msgstr "Mọi luồng email trong hộp thư đến của bạn."
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:162
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:193
 #, fuzzy
 msgid "Every thread lands in one of your folders, exactly where you would expect to find it. When a reply is needed, a draft is one click away, ready for your edits and never sent without them."
 msgstr "Mọi luồng email đều nằm gọn trong một trong các thư mục của bạn, chính xác là nơi bạn mong đợi. Khi cần trả lời, một bản nháp chỉ cách bạn một cú nhấp chuột, sẵn sàng để chỉnh sửa và sẽ không bao giờ được gửi khi chưa hoàn thiện."
@@ -2217,7 +2376,7 @@ msgstr "Thanh lọc"
 msgid "Finance"
 msgstr "Tài chính"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:383
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:413
 #, fuzzy
 msgid "Find and draft"
 msgstr "Tìm và soạn thảo"
@@ -2226,7 +2385,7 @@ msgstr "Tìm và soạn thảo"
 msgid "Five things keep your inbox safe. First, Amarnai is read-only by design: the permissions you grant through Google make it impossible for Amarnai to send, delete, or change any email. Second, Amarnai has passed Google's security review, completing the CASA security assessment required for any app that accesses Gmail. Third, you stay in control: replies stay drafts until you say so, nothing is ever sent on your behalf, and you can disconnect Amarnai at any time. Fourth, no email bodies are stored: Amarnai keeps labels and metadata, never the contents of your messages. Fifth, the code is public, so anyone can inspect exactly what touches your email."
 msgstr "Năm điều đảm bảo hộp thư của bạn an toàn. Thứ nhất, Amarnai được thiết kế chỉ để đọc: các quyền bạn cấp qua Google khiến Amarnai không thể gửi, xóa hoặc thay đổi bất kỳ email nào. Thứ hai, Amarnai đã vượt qua đánh giá bảo mật của Google, hoàn thành đánh giá bảo mật CASA yêu cầu cho bất kỳ ứng dụng nào truy cập Gmail. Thứ ba, bạn luôn kiểm soát: thư trả lời vẫn là bản nháp cho đến khi bạn quyết định, không có gì được gửi thay mặt bạn, và bạn có thể ngắt kết nối Amarnai bất cứ lúc nào. Thứ tư, không lưu trữ nội dung email: Amarnai chỉ giữ nhãn và siêu dữ liệu, không bao giờ lưu trữ nội dung tin nhắn của bạn. Thứ năm, mã nguồn công khai: bất kỳ ai cũng có thể kiểm tra chính xác những gì tương tác với email của bạn."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:266
+#: ../../apps/site/src/components/demo/demo-seed.ts:269
 #, fuzzy
 msgid "Flagged as alliance/investor intro based on language (\"mutual benefit\", \"long-standing friendship\"). Confidence is moderate; Aziru has been known to send similar overtures to multiple courts."
 msgstr "Được gắn cờ là lời giới thiệu liên minh/nhà đầu tư dựa trên ngôn ngữ (\"lợi ích chung\", \"tình hữu nghị lâu đời\"). Độ tin cậy trung bình; Aziru được biết là đã gửi những lời mời tương tự đến nhiều triều đình."
@@ -2236,7 +2395,12 @@ msgstr "Được gắn cờ là lời giới thiệu liên minh/nhà đầu tư 
 msgid "Flight and hotel bookings, travel itineraries, visa applications, and trip confirmations."
 msgstr "Đặt vé máy bay và khách sạn, lịch trình du lịch, hồ sơ xin visa và xác nhận chuyến đi."
 
-#: ../ui/src/emails/MockEmailsPage.tsx:171
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:75
+#, fuzzy
+msgid "Focused"
+msgstr "Đã tập trung"
+
+#: ../ui/src/emails/MockEmailsPage.tsx:186
 msgid "folder"
 msgstr "thư mục"
 
@@ -2313,7 +2477,7 @@ msgstr "Dành cho các tổ chức lớn và nhóm có khối lượng công vi�
 msgid "For larger organizations."
 msgstr "Dành cho các tổ chức lớn."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:261
+#: ../../apps/site/src/components/demo/demo-seed.ts:264
 #, fuzzy
 msgid "For many years our houses have been as brothers. I write now to propose that we formalise this friendship for the benefit of both our peoples."
 msgstr "Trong nhiều năm, các gia tộc chúng ta đã như anh em. Tôi viết thư này để đề xuất chúng ta chính thức hóa tình hữu nghị này vì lợi ích của cả hai dân tộc."
@@ -2410,10 +2574,10 @@ msgstr "Tạo bản nháp mới. Tính vào hạn mức hàng tháng của bạn
 msgid "Generate a plan from your inbox"
 msgstr "Tạo kế hoạch từ hộp thư đến của bạn"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:314
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:324
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:146
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:338
-#: ../ui/src/emails/ThreadPreview.tsx:162
+#: ../ui/src/emails/ThreadPreview.tsx:253
 #, fuzzy
 msgid "Generate draft reply"
 msgstr "Tạo bản nháp trả lời"
@@ -2482,6 +2646,11 @@ msgstr "Tải ứng dụng"
 msgid "gmail ai assistant"
 msgstr "trợ lý AI Gmail"
 
+#: ../../apps/site/src/components/landing/FAQSection.tsx:32
+#, fuzzy
+msgid "Gmail and Outlook filters just slap a label or category on each message and leave it in the same crowded inbox. Amarnai reads every thread the way a person would and lays them out in a clean workspace where related threads sit together, each with the reasoning behind its placement, so you get a calmer view instead of one more buried label. Spam and promotions are kept out automatically unless you turn them on in settings, and anything Amarnai is unsure about is flagged for your review."
+msgstr "Bộ lọc của Gmail và Outlook chỉ gắn nhãn hoặc phân loại cho mỗi tin nhắn và để nguyên trong hộp thư đến chật chội. Amarnai đọc từng chuỗi email như một người thật, sắp xếp chúng vào không gian làm việc gọn gàng nơi các chuỗi liên quan nằm cạnh nhau, mỗi chuỗi đều có lý do sắp xếp rõ ràng. Nhờ đó, bạn có một cái nhìn nhẹ nhàng hơn thay vì chỉ thêm một nhãn bị ẩn. Thư rác và khuyến mãi được tự động loại bỏ, trừ khi bạn bật trong cài đặt. Bất cứ điều gì Amarnai không chắc chắn đều được gắn cờ để bạn xem xét."
+
 #: ../../apps/extension/src/panel/notificationText.ts:18
 #: ../../apps/mobile/src/data/notificationView.ts:53
 #: ../../apps/web/src/lib/notifications.ts:72
@@ -2495,13 +2664,13 @@ msgstr "Gmail đã ngắt kết nối. Amarnai đã ngừng đồng bộ hóa h�
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:32
 #, fuzzy
-msgid "Gmail filters just slap a label on each message and leave it in the same crowded inbox. Amarnai reads every thread the way a person would and lays them out in a clean workspace where related threads sit together, each with the reasoning behind its placement, so you get a calmer view instead of one more buried label. Spam and promotions are kept out automatically unless you turn them on in settings, and anything Amarnai is unsure about is flagged for your review."
-msgstr "Bộ lọc Gmail chỉ dán nhãn và để nguyên tin nhắn trong hộp thư đến lộn xộn. Amarnai đọc hiểu từng chuỗi thư như con người, sắp xếp chúng vào một không gian làm việc gọn gàng, nơi các chuỗi liên quan được đặt cạnh nhau, kèm theo lý do cụ thể. Nhờ đó, bạn có cái nhìn tổng quan, bình tĩnh hơn thay vì chỉ thêm một nhãn khác bị chôn vùi. Thư rác và quảng cáo tự động bị loại trừ (trừ khi bạn bật trong cài đặt), và mọi nội dung Amarnai không chắc chắn đều được gắn cờ để bạn xem xét."
+#~ msgid "Gmail filters just slap a label on each message and leave it in the same crowded inbox. Amarnai reads every thread the way a person would and lays them out in a clean workspace where related threads sit together, each with the reasoning behind its placement, so you get a calmer view instead of one more buried label. Spam and promotions are kept out automatically unless you turn them on in settings, and anything Amarnai is unsure about is flagged for your review."
+#~ msgstr "Bộ lọc Gmail chỉ dán nhãn và để nguyên tin nhắn trong hộp thư đến lộn xộn. Amarnai đọc hiểu từng chuỗi thư như con người, sắp xếp chúng vào một không gian làm việc gọn gàng, nơi các chuỗi liên quan được đặt cạnh nhau, kèm theo lý do cụ thể. Nhờ đó, bạn có cái nhìn tổng quan, bình tĩnh hơn thay vì chỉ thêm một nhãn khác bị chôn vùi. Thư rác và quảng cáo tự động bị loại trừ (trừ khi bạn bật trong cài đặt), và mọi nội dung Amarnai không chắc chắn đều được gắn cờ để bạn xem xét."
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:132
 #, fuzzy
-msgid "Gmail Inbox"
-msgstr "Hộp thư đến Gmail"
+#~ msgid "Gmail Inbox"
+#~ msgstr "Hộp thư đến Gmail"
 
 #: ../ui/src/pricing/planMessages.ts:71
 #, fuzzy
@@ -2519,7 +2688,7 @@ msgstr "Đồng bộ trực tiếp Gmail đang hoạt động"
 #~ msgid "Gmail marked as important"
 #~ msgstr "Gmail đánh dấu là quan trọng"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:51
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:67
 #, fuzzy
 msgid "Gmail read-only access was not granted. Please try again and approve the requested permission."
 msgstr "Quyền truy cập chỉ đọc Gmail không được cấp. Vui lòng thử lại và phê duyệt quyền đã yêu cầu."
@@ -2530,8 +2699,8 @@ msgid "Gmail Sort Tester"
 msgstr "Công cụ kiểm tra sắp xếp Gmail"
 
 #: ../../apps/site/src/components/landing/Footer.tsx:15
-msgid "Gmail, sorted your way."
-msgstr "Gmail, sắp xếp tùy thích."
+#~ msgid "Gmail, sorted your way."
+#~ msgstr "Gmail, sắp xếp tùy thích."
 
 #: ../../apps/web/src/app/not-found.tsx:41
 #, fuzzy
@@ -2549,7 +2718,7 @@ msgstr "Đi đến {0}"
 msgid "Go to sign in"
 msgstr "Đến đăng nhập"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:217
+#: ../../apps/site/src/components/demo/demo-seed.ts:220
 #, fuzzy
 msgid "Gold balance: third consignment overdue"
 msgstr "Số dư vàng: lô hàng thứ ba quá hạn"
@@ -2559,12 +2728,12 @@ msgstr "Số dư vàng: lô hàng thứ ba quá hạn"
 #~ msgid "Google account email"
 #~ msgstr "Email tài khoản Google"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:34
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:49
 #, fuzzy
 msgid "Google Account permissions"
 msgstr "Quyền tài khoản Google"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:49
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:65
 #, fuzzy
 msgid "Google could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the Gmail callback URL is registered in Google Cloud Console."
 msgstr "Google không thể hoàn tất ủy quyền. Liên kết có thể đã hết hạn: vui lòng thử lại. Nếu sự cố vẫn tiếp diễn, hãy kiểm tra xem URL gọi lại của Gmail đã được đăng ký trong Google Cloud Console chưa."
@@ -2656,9 +2825,13 @@ msgid "How does Amarnai's plan work?"
 msgstr "Kế hoạch của Amarnai hoạt động như thế nào?"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:31
+msgid "How is Amarnai different from Gmail and Outlook filters?"
+msgstr "Amarnai khác gì so với bộ lọc của Gmail và Outlook?"
+
+#: ../../apps/site/src/components/landing/FAQSection.tsx:31
 #, fuzzy
-msgid "How is Amarnai different from Gmail's filters and labels?"
-msgstr "Amarnai khác gì so với bộ lọc và nhãn của Gmail?"
+#~ msgid "How is Amarnai different from Gmail's filters and labels?"
+#~ msgstr "Amarnai khác gì so với bộ lọc và nhãn của Gmail?"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:51
 #, fuzzy
@@ -2677,7 +2850,7 @@ msgstr "Cách thức hoạt động"
 msgid "How to write a good description"
 msgstr "Cách viết mô tả hay"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:274
+#: ../../apps/site/src/components/demo/demo-seed.ts:277
 #, fuzzy
 msgid "I write to propose that we formalise our friendship."
 msgstr "Tôi viết thư này để đề xuất chúng ta chính thức hóa tình bạn."
@@ -2741,7 +2914,7 @@ msgstr "Việc nhập sẽ thay thế kế hoạch hiện tại của bạn bằ
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:183
 #: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:45
 #: ../../apps/site/src/components/demo/demo-seed.ts:28
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:150
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:151
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:512
 #: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:57
 #, fuzzy
@@ -2760,25 +2933,25 @@ msgid "Inbox import complete"
 msgstr "Đã hoàn tất nhập hộp thư đến"
 
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:145
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:154
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:167
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:221
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:234
 #, fuzzy
 msgid "Inbox sync"
 msgstr "Đồng bộ hộp thư đến"
 
-#: ../../apps/site/src/lib/seo.ts:52
+#: ../../apps/site/src/lib/seo.ts:53
 #, fuzzy
 msgid "inbox zero"
 msgstr "Inbox Zero"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:116
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:72
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:77
 #, fuzzy
 msgid "Include Promotions"
 msgstr "Bao gồm khuyến mãi"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:105
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:62
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:66
 #, fuzzy
 msgid "Include spam"
 msgstr "Bao gồm thư rác"
@@ -2788,7 +2961,7 @@ msgstr "Bao gồm thư rác"
 msgid "Included"
 msgstr "Đã bao gồm"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:379
+#: ../../apps/site/src/components/demo/demo-seed.ts:382
 #, fuzzy
 msgid "Informal message with no clear category: personal visit or political audience? Tone is personal but sender is a known vassal governor. Routed to Other with low confidence."
 msgstr "Tin nhắn không trang trọng, không có danh mục rõ ràng: chuyến thăm cá nhân hay buổi tiếp kiến chính trị? Giọng điệu mang tính cá nhân nhưng người gửi là một thống đốc chư hầu đã biết. Được chuyển đến mục Khác với độ tin cậy thấp."
@@ -2804,13 +2977,17 @@ msgid "Install the Amarnai browser extension"
 msgstr "Cài đặt tiện ích mở rộng trình duyệt Amarnai"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:20
-msgid "Instead of scanning a crowded inbox, you open Amarnai and find your threads already grouped into the folders you care about, so you can work through customer questions, investor updates, or hiring replies in focused batches. Each thread comes with a suggested folder and the reasoning behind it, and you can draft a reply or jump straight to the thread in Gmail with one click. Sorting that used to take an hour takes minutes."
-msgstr "Thay vì quét qua hộp thư đến lộn xộn, bạn mở Amarnai và thấy các chuỗi thư đã được nhóm vào các thư mục bạn quan tâm, nhờ đó bạn có thể xử lý các câu hỏi của khách hàng, cập nhật từ nhà đầu tư, hoặc thư tuyển dụng theo từng đợt tập trung. Mỗi chuỗi thư đi kèm với một thư mục gợi ý và lý do đằng sau nó, và bạn có thể soạn thảo thư trả lời hoặc truy cập thẳng vào chuỗi thư trong Gmail chỉ với một cú nhấp chuột. Công việc sắp xếp từng mất một giờ giờ chỉ còn vài phút."
+#~ msgid "Instead of scanning a crowded inbox, you open Amarnai and find your threads already grouped into the folders you care about, so you can work through customer questions, investor updates, or hiring replies in focused batches. Each thread comes with a suggested folder and the reasoning behind it, and you can draft a reply or jump straight to the thread in Gmail with one click. Sorting that used to take an hour takes minutes."
+#~ msgstr "Thay vì quét qua hộp thư đến lộn xộn, bạn mở Amarnai và thấy các chuỗi thư đã được nhóm vào các thư mục bạn quan tâm, nhờ đó bạn có thể xử lý các câu hỏi của khách hàng, cập nhật từ nhà đầu tư, hoặc thư tuyển dụng theo từng đợt tập trung. Mỗi chuỗi thư đi kèm với một thư mục gợi ý và lý do đằng sau nó, và bạn có thể soạn thảo thư trả lời hoặc truy cập thẳng vào chuỗi thư trong Gmail chỉ với một cú nhấp chuột. Công việc sắp xếp từng mất một giờ giờ chỉ còn vài phút."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:16
 #, fuzzy
 #~ msgid "Instead of scanning a crowded inbox, you open Amarnai and find your threads already grouped into the folders you care about, so you can work through customer questions, investor updates, or hiring replies in focused batches. Each thread comes with a suggested folder and the reasoning behind it, and you can draft a reply or jump straight to the thread in Gmail with one click. Triage that used to take an hour takes minutes."
 #~ msgstr "Thay vì phải rà soát hộp thư đến chật kín, bạn mở Amarnai và thấy các cuộc hội thoại đã được nhóm gọn gàng vào các thư mục quan trọng. Nhờ đó, bạn có thể xử lý các câu hỏi từ khách hàng, cập nhật từ nhà đầu tư hoặc phản hồi tuyển dụng theo từng lô tập trung. Mỗi cuộc hội thoại đều có gợi ý thư mục và lý do cụ thể. Bạn có thể soạn email trả lời hoặc truy cập thẳng vào cuộc hội thoại trong Gmail chỉ với một cú nhấp. Việc phân loại vốn mất cả giờ giờ chỉ còn tính bằng phút."
+
+#: ../../apps/site/src/components/landing/FAQSection.tsx:20
+msgid "Instead of scanning a crowded inbox, you open Amarnai and find your threads already grouped into the folders you care about, so you can work through customer questions, investor updates, or hiring replies in focused batches. Each thread comes with a suggested folder and the reasoning behind it, and you can draft a reply or jump straight to the thread in your inbox with one click. Sorting that used to take an hour takes minutes."
+msgstr "Thay vì phải quét hộp thư đến chật chội, bạn mở Amarnai và thấy các chuỗi email đã được nhóm vào những thư mục bạn quan tâm. Nhờ đó, bạn có thể xử lý các câu hỏi khách hàng, cập nhật nhà đầu tư, hoặc thư phản hồi tuyển dụng theo từng lô tập trung. Mỗi chuỗi email đi kèm với thư mục gợi ý và lý do sắp xếp. Bạn có thể soạn thảo phản hồi hoặc chuyển thẳng đến chuỗi email trong hộp thư đến của mình chỉ với một cú nhấp. Việc sắp xếp từng mất hàng giờ nay chỉ còn vài phút."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:39
 #, fuzzy
@@ -2844,7 +3021,7 @@ msgid "Invalid taxonomy file: {detail}"
 msgstr "Tệp phân loại không hợp lệ: {detail}"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:32
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:162
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:163
 #: ../ui/src/i18n/taxonomy-template-messages.ts:51
 #, fuzzy
 msgid "Investors"
@@ -2891,8 +3068,12 @@ msgstr "Hóa đơn, biên lai và các câu hỏi về thanh toán từ khách h
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:11
 #, fuzzy
-msgid "Is connecting my Gmail to Amarnai safe?"
-msgstr "Việc kết nối Gmail của tôi với Amarnai có an toàn không?"
+#~ msgid "Is connecting my Gmail to Amarnai safe?"
+#~ msgstr "Việc kết nối Gmail của tôi với Amarnai có an toàn không?"
+
+#: ../../apps/site/src/components/landing/FAQSection.tsx:11
+msgid "Is connecting my inbox to Amarnai safe?"
+msgstr "Kết nối hộp thư đến của tôi với Amarnai có an toàn không?"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:47
 #, fuzzy
@@ -2954,6 +3135,10 @@ msgstr "King Aziru"
 msgid "King Aziru has consulted every clay tablet in his archive, but this page does not appear to exist."
 msgstr "King Aziru đã tra cứu mọi phiến đất sét trong kho lưu trữ của mình, nhưng trang này có vẻ không tồn tại."
 
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:95
+msgid "King Aziru is ready to sort your email threads. Connect your account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
+msgstr "King Aziru sẵn sàng phân loại các chuỗi email của bạn. Kết nối tài khoản để bắt đầu. Amarnai kết nối với <0>quyền truy cập chỉ đọc</0>, <1>không bao giờ gửi, xóa hay thay đổi bất cứ thứ gì</1>. Hộp thư của bạn vẫn luôn thuộc về bạn."
+
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:41
 #, fuzzy
 #~ msgid "King Aziru is ready to sort your email threads. Connect your Gmail account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
@@ -2968,7 +3153,7 @@ msgstr "Ngôn ngữ"
 #. placeholder {0}: formatDate(syncStatus.lastSyncedAt, _(msg`Never`))
 #. placeholder {0}: formatDate(syncStatus.lastSyncedAt, i18n)
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:154
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:158
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:225
 #, fuzzy
 msgid "Last synced {0}"
 msgstr "Đồng bộ lần cuối: {0}"
@@ -2976,7 +3161,7 @@ msgstr "Đồng bộ lần cuối: {0}"
 #. placeholder {0}: formatDate(connection.lastVerifiedAt, _(msg`Never`))
 #. placeholder {0}: formatDate(connection.lastVerifiedAt, i18n)
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:140
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:143
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:210
 #, fuzzy
 msgid "Last verified: {0}"
 msgstr "Xác minh lần cuối: {0}"
@@ -2986,7 +3171,7 @@ msgstr "Xác minh lần cuối: {0}"
 #~ msgid "Lay out folders like <0>Customers</0>, <1>Investors</1>, <2>Hiring</2>. A simple sentence each is the whole config."
 #~ msgstr "Sắp xếp các thư mục như <0>Khách hàng</0>, <1>Nhà đầu tư</1>, <2>Tuyển dụng</2>. Chỉ một câu đơn giản cho mỗi thư mục là đủ cấu hình."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:374
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:404
 msgid "Lay out folders like <0>Customers</0>, <1>Investors</1>, <2>Hiring</2>. A simple sentence each: that's the whole setup."
 msgstr "Sắp xếp thư mục như <0>Khách hàng</0>, <1>Nhà đầu tư</1>, <2>Tuyển dụng</2>. Mỗi mục chỉ cần một câu đơn giản: đó là toàn bộ thiết lập."
 
@@ -3096,21 +3281,23 @@ msgid "Manager emails: one-on-ones, performance reviews, and feedback."
 msgstr "Email quản lý: các cuộc họp 1-1, đánh giá hiệu suất và phản hồi."
 
 #: ../ui/src/emails/PreviewDoneBar.tsx:23
-#: ../ui/src/emails/ThreadRow.tsx:155
+#: ../ui/src/emails/ThreadRow.tsx:157
 #, fuzzy
 msgid "Mark as done"
 msgstr "Đánh dấu đã hoàn thành"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:223
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:225
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:244
 #: ../../apps/mobile/src/components/ThreadRow.tsx:58
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:234
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:240
-#: ../ui/src/emails/ThreadRow.tsx:158
+#: ../ui/src/emails/ThreadPreview.tsx:126
+#: ../ui/src/emails/ThreadPreview.tsx:130
+#: ../ui/src/emails/ThreadRow.tsx:160
 msgid "Mark as important"
 msgstr "Đánh dấu quan trọng"
 
-#: ../ui/src/emails/ThreadRow.tsx:154
+#: ../ui/src/emails/ThreadRow.tsx:156
 #, fuzzy
 msgid "Mark as not done"
 msgstr "Đánh dấu chưa hoàn thành"
@@ -3195,6 +3382,15 @@ msgstr "Thành viên"
 msgid "Messages from paying customers and account holders."
 msgstr "Tin nhắn từ khách hàng trả phí và chủ tài khoản."
 
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:43
+#, fuzzy
+msgid "Microsoft account permissions"
+msgstr "Quyền tài khoản Microsoft"
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:87
+msgid "Microsoft could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the redirect URI is registered on the app registration."
+msgstr "Microsoft không thể hoàn tất ủy quyền. Liên kết có thể đã hết hạn: vui lòng thử lại. Nếu sự cố vẫn tiếp diễn, hãy kiểm tra xem URI chuyển hướng đã được đăng ký trên phần đăng ký ứng dụng chưa."
+
 #: ../../apps/web/src/components/Sidebar.tsx:43
 #, fuzzy
 msgid "Mock Inbox"
@@ -3261,11 +3457,11 @@ msgstr "Chuyển vào thư mục…"
 msgid "Move to…"
 msgstr "Chuyển đến…"
 
-#: ../ui/src/emails/MockEmailsPage.tsx:181
+#: ../ui/src/emails/MockEmailsPage.tsx:196
 msgid "Moved to {folderName}"
 msgstr "Đã chuyển đến {folderName}"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:374
+#: ../../apps/site/src/components/demo/demo-seed.ts:377
 #, fuzzy
 msgid "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face."
 msgstr "Hạ thần sẽ đến gần khu vực Đồng bằng trong vài ngày tới. Nếu Đức Vua vĩ đại có thể dành một giờ rảnh rỗi, hạ thần rất mong có cơ hội được diện kiến trực tiếp."
@@ -3292,8 +3488,8 @@ msgid "Needs review"
 msgstr "Cần xem xét"
 
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:32
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:143
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:158
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:210
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:225
 #, fuzzy
 msgid "Never"
 msgstr "Không bao giờ"
@@ -3303,7 +3499,7 @@ msgstr "Không bao giờ"
 msgid "Never auto-sends · Encrypted at rest · Minimal data"
 msgstr "Không tự động gửi · Mã hóa dữ liệu lưu trữ · Dữ liệu tối thiểu"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:313
+#: ../../apps/site/src/components/demo/demo-seed.ts:316
 #, fuzzy
 msgid "New application from Horemheb of Thebes."
 msgstr "Đơn đăng ký mới từ Horemheb xứ Thebes."
@@ -3368,7 +3564,7 @@ msgstr "Tên không gian làm việc mới"
 msgid "No drafts remaining"
 msgstr "Không còn bản nháp nào"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:319
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:329
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:343
 #: ../ui/src/emails/SuggestedDraftCard.tsx:97
 #, fuzzy
@@ -3413,13 +3609,18 @@ msgstr "Chưa có thư mục nào"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:265
 #, fuzzy
-msgid "No Gmail inbox connected to this workspace."
-msgstr "Chưa có hộp thư đến Gmail nào được kết nối với không gian làm việc này."
+#~ msgid "No Gmail inbox connected to this workspace."
+#~ msgstr "Chưa có hộp thư đến Gmail nào được kết nối với không gian làm việc này."
 
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:118
 #, fuzzy
 msgid "No Gmail inbox connected. Connect your account to start syncing."
 msgstr "Chưa có hộp thư đến Gmail được kết nối. Kết nối tài khoản của bạn để bắt đầu đồng bộ hóa."
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:400
+#, fuzzy
+msgid "No inbox connected to this workspace."
+msgstr "Không có hộp thư nào được kết nối với không gian làm việc này."
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:376
 msgid "No matching folders"
@@ -3530,7 +3731,7 @@ msgstr "Không nhất thiết. Amarnai có thể tạo một kế hoạch hoàn 
 msgid "Not set"
 msgstr "Chưa đặt"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:159
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:226
 #, fuzzy
 msgid "Not yet synced"
 msgstr "Chưa đồng bộ"
@@ -3559,7 +3760,7 @@ msgstr "Thông báo, {unread} chưa đọc"
 msgid "Official university emails: registrar, student services, and housing."
 msgstr "Email chính thức từ trường đại học: phòng đăng ký, dịch vụ sinh viên và nhà ở."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:340
+#: ../../apps/site/src/components/demo/demo-seed.ts:343
 #, fuzzy
 msgid "Ongoing thread with a known city governor raising a recurring supply issue. Escalatory tone and repeated follow-ups match the Support folder."
 msgstr "Cuộc trò chuyện đang diễn ra với một thống đốc thành phố quen thuộc về vấn đề cung ứng định kỳ. Tông giọng leo thang và các lần theo dõi lặp lại phù hợp với thư mục Hỗ trợ."
@@ -3575,23 +3776,24 @@ msgstr "Chỉ chủ sở hữu không gian làm việc mới có thể quản l�
 msgid "Open"
 msgstr "Mở"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:264
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:256
 #: ../../apps/mobile/src/components/DraftSheet.tsx:97
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:272
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:278
-#: ../ui/src/emails/ThreadPreview.tsx:115
-#: ../ui/src/emails/ThreadPreview.tsx:121
-#: ../ui/src/emails/ThreadRow.tsx:159
+#: ../ui/src/emails/providerLabels.ts:11
 #, fuzzy
 msgid "Open in Gmail"
 msgstr "Mở trong Gmail"
+
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:254
+#: ../ui/src/emails/providerLabels.ts:11
+msgid "Open in Outlook"
+msgstr "Mở trong Outlook"
 
 #: ../../apps/web/src/components/Sidebar.tsx:114
 #, fuzzy
 msgid "Open navigation"
 msgstr "Mở điều hướng"
 
-#: ../../apps/site/src/lib/seo.ts:53
+#: ../../apps/site/src/lib/seo.ts:54
 #, fuzzy
 msgid "open source email ai"
 msgstr "AI email nguồn mở"
@@ -3639,10 +3841,24 @@ msgstr "Tùy chọn. Được áp dụng khi tạo bản nháp trả lời cho c
 msgid "or"
 msgstr "hoặc"
 
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:342
+msgid "Or connect a different inbox:"
+msgstr "Hoặc kết nối một hộp thư đến khác:"
+
 #: ../../apps/site/src/components/demo/demo-seed.ts:35
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:78
 #, fuzzy
 msgid "Other"
 msgstr "Khác"
+
+#: ../../apps/site/src/lib/seo.ts:51
+#, fuzzy
+msgid "outlook ai assistant"
+msgstr "trợ lý AI Outlook"
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:89
+msgid "Outlook read-only access (Mail.Read) was not granted. Please try again and approve the requested permission."
+msgstr "Quyền truy cập chỉ đọc Outlook (Mail.Read) chưa được cấp. Vui lòng thử lại và phê duyệt quyền được yêu cầu."
 
 #: ../ui/src/pricing/planMessages.ts:78
 #, fuzzy
@@ -3670,8 +3886,8 @@ msgstr "Đối tác"
 msgid "Passed Google's security review"
 msgstr "Đã vượt qua đánh giá bảo mật của Google"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:369
-#: ../../apps/site/src/components/demo/demo-seed.ts:387
+#: ../../apps/site/src/components/demo/demo-seed.ts:372
+#: ../../apps/site/src/components/demo/demo-seed.ts:390
 #, fuzzy
 msgid "Passing through the Delta: free to meet?"
 msgstr "Đang đi qua Đồng bằng: có rảnh gặp mặt không?"
@@ -3812,6 +4028,10 @@ msgstr "Kế hoạch này chỉ ở chế độ xem. Chỉ quản trị viên kh
 msgid "Plan nodes"
 msgstr "Nút kế hoạch"
 
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:285
+msgid "Plan sorting"
+msgstr "Lập kế hoạch phân loại"
+
 #: ../../apps/mobile/app/(app)/subscription.tsx:129
 #: ../../apps/mobile/app/(app)/subscription.tsx:134
 #: ../../apps/mobile/app/(app)/subscription.tsx:189
@@ -3820,6 +4040,15 @@ msgstr "Nút kế hoạch"
 #, fuzzy
 msgid "Please try again."
 msgstr "Vui lòng thử lại."
+
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:158
+#, fuzzy
+#~ msgid "Prefer Gmail? Connect Gmail instead"
+#~ msgstr "Bạn thích Gmail? Kết nối Gmail thay thế"
+
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:156
+#~ msgid "Prefer Outlook? Connect Outlook instead"
+#~ msgstr "Bạn thích Outlook? Kết nối Outlook thay thế"
 
 #: ../ui/src/pricing/planMessages.ts:111
 #, fuzzy
@@ -3831,7 +4060,7 @@ msgstr "Bạn muốn tự host?"
 msgid "Prefer to self-host? It's open source:<0/> <1>clone it and run it free</1>."
 msgstr "Bạn muốn tự host? Đây là mã nguồn mở:<0/> <1>clone và chạy miễn phí</1>."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:424
+#: ../../apps/site/src/components/demo/demo-seed.ts:427
 #, fuzzy
 msgid "Prepare your accounts before the council convenes."
 msgstr "Chuẩn bị tài khoản của bạn trước khi hội đồng nhóm họp."
@@ -3857,7 +4086,7 @@ msgstr "Tính phí theo không gian làm việc. Sắp xếp tùy thích."
 msgid "Pricing"
 msgstr "Bảng giá"
 
-#: ../../apps/site/src/lib/seo.ts:83
+#: ../../apps/site/src/lib/seo.ts:84
 #, fuzzy
 msgid "Pricing | Amarnai"
 msgstr "Bảng giá | Amarnai"
@@ -3867,7 +4096,7 @@ msgstr "Bảng giá | Amarnai"
 msgid "Pricing is per workspace, billed monthly or annually. Every account starts with a free Personal workspace, no card required. The paid Pro and Business subscriptions add higher limits and include a 14-day trial. See the pricing page for current details."
 msgstr "Giá được tính theo không gian làm việc, thanh toán hàng tháng hoặc hàng năm. Mỗi tài khoản bắt đầu với một không gian làm việc Cá nhân miễn phí, không yêu cầu thẻ. Các gói đăng ký trả phí Pro và Business cung cấp giới hạn cao hơn và bao gồm bản dùng thử 14 ngày. Xem trang bảng giá để biết chi tiết hiện tại."
 
-#: ../../apps/site/src/components/landing/GmailInboxMock.tsx:47
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:84
 msgid "Primary"
 msgstr "Chính"
 
@@ -3922,7 +4151,7 @@ msgid "Projects"
 msgstr "Dự án"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:112
-#: ../../apps/site/src/components/landing/GmailInboxMock.tsx:50
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:87
 #, fuzzy
 msgid "Promotions"
 msgstr "Khuyến mãi"
@@ -3932,7 +4161,7 @@ msgstr "Khuyến mãi"
 msgid "Proposed folders. Applying replaces your current plan; you can edit everything afterward."
 msgstr "Thư mục đề xuất. Áp dụng sẽ thay thế kế hoạch hiện tại của bạn; bạn có thể chỉnh sửa mọi thứ sau đó."
 
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:99
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:105
 #, fuzzy
 msgid "Queuing rescan…"
 msgstr "Đang xếp hàng quét lại…"
@@ -3947,12 +4176,12 @@ msgstr "Chuyển hướng {unclassifiedCount} mục chưa phân loại"
 msgid "Re-route thread"
 msgstr "Chuyển hướng chuỗi thư"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:330
+#: ../../apps/site/src/components/demo/demo-seed.ts:333
 #, fuzzy
 msgid "Re: Grain shipment: third delay this season"
 msgstr "Re: Lô hàng ngũ cốc: lần trì hoãn thứ ba trong mùa này"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:252
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:253
 #, fuzzy
 msgid "Re: Q3 renewal"
 msgstr "Re: Gia hạn Quý 3"
@@ -3962,7 +4191,7 @@ msgstr "Re: Gia hạn Quý 3"
 msgid "Reactivate"
 msgstr "Kích hoạt lại"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:352
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:375
 #, fuzzy
 msgid "Read-only · OAuth · revoke anytime"
 msgstr "Chỉ đọc · OAuth · có thể thu hồi bất cứ lúc nào"
@@ -3991,25 +4220,41 @@ msgstr "Vừa thực hiện. Vui lòng thử lại sau."
 msgid "Reconnect"
 msgstr "Kết nối lại"
 
-#: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:37
-msgid "Reconnect failed. Please try again."
-msgstr "Kết nối lại thất bại. Vui lòng thử lại."
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:337
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:121
+#, fuzzy
+msgid "Reconnect {providerName}"
+msgstr "Kết nối lại {providerName}"
 
-#: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:65
+#: ../../apps/extension/src/panel/ReconnectMailCta.tsx:48
+#~ msgid "Reconnect failed. Please try again."
+#~ msgstr "Kết nối lại thất bại. Vui lòng thử lại."
+
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:126
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:260
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:76
 #, fuzzy
 msgid "Reconnect Gmail"
 msgstr "Kết nối lại Gmail"
 
-#: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:48
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:42
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:124
+#, fuzzy
+msgid "Reconnect Outlook"
+msgstr "Kết nối lại Outlook"
+
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:82
+msgid "Reconnect your {providerName} inbox"
+msgstr "Kết nối lại hộp thư {providerName} của bạn"
+
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:73
 #, fuzzy
 msgid "Reconnect your Gmail inbox"
 msgstr "Kết nối lại hộp thư đến Gmail của bạn"
 
-#: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:65
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:71
+msgid "Reconnect your Outlook inbox"
+msgstr "Kết nối lại hộp thư Outlook của bạn"
+
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:122
 #: ../../apps/mobile/src/components/emails/DisconnectedBanner.tsx:46
 #, fuzzy
 msgid "Reconnecting…"
@@ -4075,12 +4320,14 @@ msgstr "Xóa {0}"
 msgid "Remove {email} from blacklist"
 msgstr "Gỡ {email} khỏi danh sách đen"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:223
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:225
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:243
 #: ../../apps/mobile/src/components/ThreadRow.tsx:57
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:234
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:240
-#: ../ui/src/emails/ThreadRow.tsx:157
+#: ../ui/src/emails/ThreadPreview.tsx:126
+#: ../ui/src/emails/ThreadPreview.tsx:130
+#: ../ui/src/emails/ThreadRow.tsx:159
 #, fuzzy
 msgid "Remove from important"
 msgstr "Bỏ đánh dấu quan trọng"
@@ -4143,13 +4390,17 @@ msgstr "Thay thế phân loại"
 msgid "Replace with a template"
 msgstr "Thay bằng mẫu"
 
+#: ../../apps/site/src/components/landing/MailThreadMock.tsx:106
+msgid "Reply"
+msgstr "Trả lời"
+
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:89
 #, fuzzy
 msgid "Rescan failed"
 msgstr "Quét lại thất bại"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:153
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:99
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:105
 #, fuzzy
 msgid "Rescan inbox"
 msgstr "Quét lại hộp thư đến"
@@ -4159,7 +4410,7 @@ msgstr "Quét lại hộp thư đến"
 #~ msgid "Rescan queued — threads will update shortly."
 #~ msgstr "Đã xếp hàng quét lại — các cuộc hội thoại sẽ sớm được cập nhật."
 
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:103
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:109
 #, fuzzy
 msgid "Rescan queued: threads will update shortly."
 msgstr "Đã xếp hàng quét lại: các cuộc hội thoại sẽ sớm được cập nhật."
@@ -4221,7 +4472,7 @@ msgstr "Đang đặt lại…"
 msgid "Resize the folder sidebar"
 msgstr "Điều chỉnh kích thước thanh bên thư mục"
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:261
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:295
 #, fuzzy
 msgid "Resize the split between the inbox and Amarnai"
 msgstr "Thay đổi kích thước phần chia giữa hộp thư đến và Amarnai"
@@ -4235,7 +4486,7 @@ msgstr "Điều chỉnh kích thước danh sách cuộc hội thoại"
 msgid "Resources"
 msgstr "Tài nguyên"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:337
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:347
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:345
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:366
 #, fuzzy
@@ -4247,7 +4498,7 @@ msgstr "Thử lại"
 msgid "Review queue"
 msgstr "Hàng chờ xem xét"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:345
+#: ../../apps/site/src/components/demo/demo-seed.ts:348
 #, fuzzy
 msgid "Rib-Hadda of Byblos"
 msgstr "Rib-Hadda của Byblos"
@@ -4267,7 +4518,7 @@ msgstr "Rib-Hadda,\n\nChúng tôi đã nhận được thông tin. Ngũ cốc b�
 #~ msgid "Route now"
 #~ msgstr "Chuyển hướng ngay"
 
-#: ../ui/src/emails/MockEmailsPage.tsx:111
+#: ../ui/src/emails/MockEmailsPage.tsx:126
 msgid "Routing approved"
 msgstr "Đã phê duyệt định tuyến"
 
@@ -4315,12 +4566,16 @@ msgstr "Tiết kiệm hàng giờ sắp xếp email mỗi tuần. Hãy để Ama
 
 #: ../../apps/web/src/lib/notifications.ts:66
 #, fuzzy
-msgid "Save time by triaging your inbox without leaving Gmail."
-msgstr "Quản lý hộp thư đến ngay trong Gmail, giúp bạn tiết kiệm thời gian."
+#~ msgid "Save time by triaging your inbox without leaving Gmail."
+#~ msgstr "Quản lý hộp thư đến ngay trong Gmail, giúp bạn tiết kiệm thời gian."
 
 #: ../../apps/mobile/src/data/notificationView.ts:48
 msgid "Save time by triaging your inbox without leaving Gmail. The extension runs in your desktop browser."
 msgstr "Quản lý hộp thư đến ngay trong Gmail, giúp bạn tiết kiệm thời gian. Tiện ích hoạt động trên trình duyệt máy tính."
+
+#: ../../apps/web/src/lib/notifications.ts:66
+msgid "Save time by triaging your inbox without leaving your email."
+msgstr "Tiết kiệm thời gian phân loại hộp thư đến mà không cần rời khỏi email."
 
 #: ../ui/src/PricingPlans.tsx:138
 #, fuzzy
@@ -4350,7 +4605,7 @@ msgstr "Tìm kiếm {threadCount} luồng"
 msgid "Search folders"
 msgstr "Tìm kiếm thư mục"
 
-#: ../../apps/site/src/components/landing/GmailInboxMock.tsx:40
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:66
 msgid "Search mail"
 msgstr "Tìm kiếm thư"
 
@@ -4365,8 +4620,12 @@ msgid "Search threads…"
 msgstr "Tìm kiếm luồng..."
 
 #: ../../apps/extension/src/auth/SignInScreen.tsx:70
-msgid "See how your inbox is sorted, right next to Gmail."
-msgstr "Xem hộp thư đến được phân loại như thế nào, ngay cạnh Gmail."
+#~ msgid "See how your inbox is sorted, right next to Gmail."
+#~ msgstr "Xem hộp thư đến được phân loại như thế nào, ngay cạnh Gmail."
+
+#: ../../apps/extension/src/auth/SignInScreen.tsx:70
+msgid "See how your inbox is sorted, right next to your email."
+msgstr "Xem cách hộp thư đến của bạn được sắp xếp, ngay bên cạnh email."
 
 #: ../../apps/site/src/components/landing/Footer.tsx:24
 #: ../../apps/site/src/components/landing/Nav.tsx:40
@@ -4380,7 +4639,7 @@ msgstr "Chọn"
 
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:210
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:336
-#: ../ui/src/emails/MockEmailsPage.tsx:248
+#: ../ui/src/emails/MockEmailsPage.tsx:266
 #, fuzzy
 msgid "Select a thread to preview"
 msgstr "Chọn một luồng để xem trước"
@@ -4406,7 +4665,7 @@ msgstr "Chọn gói để so sánh"
 msgid "Self-host guide"
 msgstr "Hướng dẫn tự lưu trữ"
 
-#: ../../apps/site/src/lib/seo.ts:54
+#: ../../apps/site/src/lib/seo.ts:55
 #, fuzzy
 msgid "self-hosted email assistant"
 msgstr "trợ lý email tự lưu trữ"
@@ -4438,7 +4697,7 @@ msgstr "Danh sách đen người gửi"
 msgid "Sender Blacklist"
 msgstr "Danh sách đen người gửi"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:227
+#: ../../apps/site/src/components/demo/demo-seed.ts:230
 #, fuzzy
 msgid "Sender is a known treaty partner of significant standing. Subject explicitly references an outstanding balance on an agreed consignment, which matches the Billing folder."
 msgstr "Người gửi là đối tác hiệp ước đã biết, có vị thế quan trọng. Chủ đề email tham chiếu rõ ràng về số dư chưa thanh toán của lô hàng đã thỏa thuận, khớp với thư mục Thanh toán."
@@ -4513,6 +4772,15 @@ msgstr "Gói chia sẻ + hàng chờ đánh giá"
 #~ msgid "Shared taxonomy + review queue"
 #~ msgstr "Hệ thống phân loại chung + hàng đợi xem xét"
 
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:334
+#, fuzzy
+msgid "Show Gmail"
+msgstr "Hiển thị Gmail"
+
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:343
+msgid "Show Outlook"
+msgstr "Hiển thị Outlook"
+
 #: ../../apps/extension/src/auth/SignInScreen.tsx:98
 #: ../../apps/mobile/app/sign-in.tsx:133
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:29
@@ -4534,13 +4802,17 @@ msgstr "Đăng nhập để sàng lọc hộp thư đến"
 msgid "Sign in with Google"
 msgstr "Đăng nhập bằng Google"
 
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:392
+msgid "Sign in with Google or Microsoft. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
+msgstr "Đăng nhập bằng Google hoặc Microsoft. Amarnai đồng bộ các chuỗi email và nhãn của bạn. Amarnai không bao giờ gửi hoặc xóa email thay mặt bạn."
+
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:363
 #, fuzzy
-msgid "Sign in with Google. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
-msgstr "Đăng nhập bằng Google. Amarnai đồng bộ hóa các luồng và nhãn của bạn. Amarnai không bao giờ gửi hoặc xóa email thay mặt bạn."
+#~ msgid "Sign in with Google. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
+#~ msgstr "Đăng nhập bằng Google. Amarnai đồng bộ hóa các luồng và nhãn của bạn. Amarnai không bao giờ gửi hoặc xóa email thay mặt bạn."
 
 #: ../../apps/extension/src/App.tsx:96
-#: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:68
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:159
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:132
 #: ../../apps/mobile/app/(app)/account.tsx:122
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:98
@@ -4574,12 +4846,12 @@ msgstr "Đăng ký thất bại. Vui lòng thử lại."
 msgid "Signing in…"
 msgstr "Đang đăng nhập…"
 
-#: ../../apps/site/src/lib/seo.ts:89
+#: ../../apps/site/src/lib/seo.ts:90
 #, fuzzy
 msgid "Simple per-workspace pricing. Start free, upgrade or create additional workspaces as you need."
 msgstr "Giá theo từng không gian làm việc đơn giản. Bắt đầu miễn phí, nâng cấp hoặc tạo thêm không gian làm việc khi cần."
 
-#: ../../apps/site/src/components/landing/GmailInboxMock.tsx:53
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:90
 #: ../ui/src/i18n/taxonomy-template-messages.ts:76
 #, fuzzy
 msgid "Social"
@@ -4605,6 +4877,11 @@ msgstr "Đã xảy ra lỗi. Vui lòng thử lại."
 #, fuzzy
 msgid "Soon"
 msgstr "Sắp có"
+
+#: ../../apps/site/src/components/landing/Footer.tsx:15
+#, fuzzy
+msgid "Sort emails your way."
+msgstr "Sắp xếp email theo cách của bạn."
 
 #: ../../apps/extension/src/panel/SortNowButton.tsx:28
 msgid "Sort now"
@@ -4658,7 +4935,7 @@ msgstr "Khối lượng sắp xếp"
 #: ../../apps/mobile/src/components/RationaleCard.tsx:35
 #: ../../apps/site/src/components/landing/HeroFeedCard.tsx:90
 #: ../ui/src/emails/RationaleCard.tsx:52
-#: ../ui/src/emails/ThreadRow.tsx:227
+#: ../ui/src/emails/ThreadRow.tsx:229
 #, fuzzy
 msgid "Sorting…"
 msgstr "Đang sắp xếp…"
@@ -4730,7 +5007,7 @@ msgstr "Ngừng sắp xếp email.<0/><1>Chỉ sắp xếp một lần.</1>"
 msgid "Stops syncing and revokes Amarnai's access to this mailbox."
 msgstr "Dừng đồng bộ hóa và thu hồi quyền truy cập của Amarnai vào hộp thư này."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:111
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:178
 #, fuzzy
 msgid "Stops syncing and revokes Amarnai's access to this mailbox. Synced email data is kept so you can reconnect later."
 msgstr "Dừng đồng bộ hóa và thu hồi quyền truy cập của Amarnai vào hộp thư này. Dữ liệu email đã đồng bộ vẫn được giữ lại để bạn có thể kết nối lại sau."
@@ -4793,7 +5070,7 @@ msgstr "Hỗ trợ"
 msgid "Switch"
 msgstr "Chuyển đổi"
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:189
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:220
 #, fuzzy
 msgid "Switch the previewed address"
 msgstr "Chuyển đổi địa chỉ xem trước"
@@ -4804,14 +5081,14 @@ msgid "Switch theme"
 msgstr "Đổi giao diện"
 
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:39
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:71
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:107
 #, fuzzy
 msgid "Sync error"
 msgstr "Lỗi đồng bộ hóa"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:281
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:96
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:50
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:54
 #, fuzzy
 msgid "Sync filters"
 msgstr "Bộ lọc đồng bộ hóa"
@@ -4821,13 +5098,13 @@ msgstr "Bộ lọc đồng bộ hóa"
 #~ msgid "Synced 2m ago"
 #~ msgstr "Đã đồng bộ 2 phút trước"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:128
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:195
 #, fuzzy
 msgid "Synced email data was erased."
 msgstr "Dữ liệu email đã đồng bộ đã bị xóa."
 
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:38
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:70
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:106
 #, fuzzy
 msgid "Syncing…"
 msgstr "Đang đồng bộ..."
@@ -4866,7 +5143,7 @@ msgstr "Đã áp dụng phân loại"
 #~ msgid "Taxonomy nodes"
 #~ msgstr "Các nút phân loại"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:168
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:169
 #: ../ui/src/i18n/taxonomy-template-messages.ts:38
 #, fuzzy
 msgid "Team"
@@ -4886,11 +5163,11 @@ msgstr "Mẫu"
 msgid "Terms"
 msgstr "Điều khoản"
 
-#: ../ui/src/emails/MockEmailsPage.tsx:157
+#: ../ui/src/emails/MockEmailsPage.tsx:172
 msgid "Thank you for your message. I'll follow up shortly."
 msgstr "Cảm ơn tin nhắn của bạn. Tôi sẽ phản hồi lại trong thời gian sớm nhất."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:189
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:190
 #, fuzzy
 msgid "Thanks for the update. Friday works."
 msgstr "Cảm ơn đã cập nhật. Thứ Sáu được đó."
@@ -4904,12 +5181,14 @@ msgstr "Đường dẫn lời mời đó không hợp lệ hoặc đã hết h�
 msgid "That link is invalid or has expired."
 msgstr "Liên kết này không hợp lệ hoặc đã hết hạn."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:43
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:59
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:81
 #, fuzzy
 msgid "The authorization callback was incomplete. Please try again."
 msgstr "Lệnh gọi lại ủy quyền không hoàn tất. Vui lòng thử lại."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:45
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:61
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:83
 #, fuzzy
 msgid "The authorization request expired or was tampered with. Please try again."
 msgstr "Yêu cầu ủy quyền đã hết hạn hoặc bị can thiệp. Vui lòng thử lại."
@@ -4919,7 +5198,8 @@ msgstr "Yêu cầu ủy quyền đã hết hạn hoặc bị can thiệp. Vui l�
 #~ msgid "The catch-all folder can't be deleted. Automated and bulk mail is filed here."
 #~ msgstr "Thư mục Tổng hợp không thể xóa. Thư tự động và thư hàng loạt được phân loại vào đây."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:57
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:73
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:93
 #, fuzzy
 msgid "The connection could not be saved due to a server error. Please try again."
 msgstr "Không thể lưu kết nối do lỗi máy chủ. Vui lòng thử lại."
@@ -4933,27 +5213,27 @@ msgstr "Không thể lưu kết nối do lỗi máy chủ. Vui lòng thử lại
 msgid "The Gmail connection, all synced emails, and the taxonomy will be permanently deleted. Re-importing this inbox uses your monthly import allowance; if it runs out, you can import again after {allowanceResetsAt} or by upgrading."
 msgstr "Kết nối Gmail, tất cả email đã đồng bộ và hệ thống phân loại sẽ bị xóa vĩnh viễn. Việc nhập lại hộp thư này sẽ dùng đến hạn mức nhập hàng tháng của bạn; nếu hết, bạn có thể nhập lại sau {allowanceResetsAt} hoặc bằng cách nâng cấp gói."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:335
+#: ../../apps/site/src/components/demo/demo-seed.ts:338
 #, fuzzy
 msgid "The grain you sent last month was received with gratitude. But I must write again: the third shipment has not arrived and the city grows restless."
 msgstr "Số ngũ cốc người gửi tháng trước đã được nhận với lòng biết ơn. Nhưng ta phải viết lại: chuyến hàng thứ ba vẫn chưa đến và thành phố đang dần náo động."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:411
+#: ../../apps/site/src/components/demo/demo-seed.ts:414
 #, fuzzy
 msgid "The great council convenes at the start of Shemu. I ask that you prepare a full accounting of the eastern territories and send it ahead by fast courier."
 msgstr "Đại hội đồng triệu tập vào đầu Shemu. Ta yêu cầu ngươi chuẩn bị đầy đủ báo cáo về các vùng lãnh thổ phía đông và gửi trước bằng chuyển phát nhanh."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:222
+#: ../../apps/site/src/components/demo/demo-seed.ts:225
 #, fuzzy
 msgid "The third gold consignment agreed under our treaty has not arrived. Two messengers have passed and still we wait."
 msgstr "Lô vàng thứ ba theo thỏa thuận trong hiệp ước của chúng ta vẫn chưa đến. Hai sứ giả đã đi qua nhưng chúng ta vẫn chờ đợi."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:235
+#: ../../apps/site/src/components/demo/demo-seed.ts:238
 #, fuzzy
 msgid "The third gold consignment is overdue."
 msgstr "Lô vàng thứ ba đã quá hạn."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:348
+#: ../../apps/site/src/components/demo/demo-seed.ts:351
 #, fuzzy
 msgid "The third grain shipment has not arrived."
 msgstr "Chuyến hàng ngũ cốc thứ ba vẫn chưa đến."
@@ -4980,8 +5260,12 @@ msgstr "Những cộng tác viên này sẽ mất quyền truy cập vào ngày 
 
 #: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:52
 #, fuzzy
-msgid "These settings control which Gmail threads are imported. Trash is always excluded."
-msgstr "Những cài đặt này kiểm soát các luồng Gmail nào được nhập. Thùng rác luôn bị loại trừ."
+#~ msgid "These settings control which Gmail threads are imported. Trash is always excluded."
+#~ msgstr "Những cài đặt này kiểm soát các luồng Gmail nào được nhập. Thùng rác luôn bị loại trừ."
+
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:56
+msgid "These settings control which inbox threads are imported. Trash is always excluded."
+msgstr "Các cài đặt này kiểm soát các luồng hộp thư đến nào được nhập. Thùng rác luôn bị loại trừ."
 
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1301
 #, fuzzy
@@ -4995,8 +5279,12 @@ msgstr "Thư mục này không thể truy cập được từ hộp thư đến 
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:148
 #, fuzzy
-msgid "This Gmail is also connected in {sharedNames}. Each workspace syncs and classifies it separately, which uses separate AI quota."
-msgstr "Gmail này cũng được kết nối trong {sharedNames}. Mỗi không gian làm việc đồng bộ và phân loại riêng, sử dụng hạn mức AI riêng."
+#~ msgid "This Gmail is also connected in {sharedNames}. Each workspace syncs and classifies it separately, which uses separate AI quota."
+#~ msgstr "Gmail này cũng được kết nối trong {sharedNames}. Mỗi không gian làm việc đồng bộ và phân loại riêng, sử dụng hạn mức AI riêng."
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:215
+msgid "This inbox is also connected in {sharedNames}. Each workspace syncs and classifies it separately, which uses separate AI quota."
+msgstr "Hộp thư này cũng được kết nối trong {sharedNames}. Mỗi không gian làm việc đồng bộ hóa và phân loại riêng, sử dụng hạn ngạch AI riêng."
 
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:53
 #, fuzzy
@@ -5035,9 +5323,13 @@ msgstr "Thao tác này sẽ xóa kết nối Gmail, tất cả email đã đồn
 msgid "This thread cannot be sorted yet. Add at least {TAXONOMY_MIN_NON_ROOT_NODES} categories to your plan to begin routing."
 msgstr "Luồng này chưa thể được sắp xếp. Vui lòng thêm ít nhất {TAXONOMY_MIN_NON_ROOT_NODES} danh mục vào gói của bạn để bắt đầu định tuyến."
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:281
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:290
 msgid "This thread hasn't been sorted yet."
 msgstr "Luồng này chưa được phân loại."
+
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:278
+msgid "This thread hasn't been sorted yet. Create a sorting plan so Amarnai knows where to file it."
+msgstr "Luồng này chưa được phân loại. Tạo kế hoạch phân loại để Amarnai biết nơi lưu trữ."
 
 #: ../../apps/mobile/src/components/RationaleCard.tsx:46
 #, fuzzy
@@ -5113,7 +5405,7 @@ msgstr "Email chưa được phân loại."
 msgid "Threads you've marked as important."
 msgstr "Các cuộc trò chuyện bạn đã đánh dấu quan trọng."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:400
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:430
 msgid "Three steps to a sorted inbox."
 msgstr "3 bước để hộp thư ngăn nắp."
 
@@ -5122,7 +5414,7 @@ msgstr "3 bước để hộp thư ngăn nắp."
 #~ msgid "Three steps. Then it sorts every email for you."
 #~ msgstr "Chỉ 3 bước. Mọi email được sắp xếp tự động cho bạn."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:425
+#: ../../apps/site/src/components/demo/demo-seed.ts:428
 #, fuzzy
 msgid "To my brother, the Great King,\n"
 "\n"
@@ -5142,7 +5434,7 @@ msgid "To the Bureau of Royal Appointments,\n"
 "By royal decree,"
 msgstr "Gửi Cục Bổ nhiệm Hoàng gia,\n\nChúng tôi đã nhận được đơn xin của Horemheb xứ Thebes và sẽ xem xét hồ sơ của ông ấy trước kỳ trăng non tới. Vui lòng thông báo cho ông ấy rằng chúng tôi sẽ gửi tin tức vào thời điểm thích hợp.\n\nTheo sắc lệnh hoàng gia,"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:275
+#: ../../apps/site/src/components/demo/demo-seed.ts:278
 #, fuzzy
 msgid "To the Great King,\n"
 "\n"
@@ -5153,7 +5445,7 @@ msgid "To the Great King,\n"
 "Aziru, servant of the Great King, lord of Amurru"
 msgstr "Gửi Đại Vương,\n\nTrong nhiều năm, các gia tộc của chúng ta đã như huynh đệ. Nay thần viết thư này để đề xuất chúng ta chính thức hóa tình hữu nghị này vì lợi ích của cả hai dân tộc: một hiệp ước bảo vệ lẫn nhau và chia sẻ các tuyến đường.\n\nThần chỉ yêu cầu ngài lắng nghe các điều khoản của thần. Xin gửi tin tức bằng người đưa thư tiếp theo và thần sẽ cử sứ giả của mình đi ngay lập tức.\n\nAziru, bầy tôi của Đại Vương, chúa tể Amurru"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:388
+#: ../../apps/site/src/components/demo/demo-seed.ts:391
 #, fuzzy
 msgid "To the Great King,\n"
 "\n"
@@ -5171,7 +5463,7 @@ msgid "To the Great King, my brother,\n"
 "In friendship,"
 msgstr "Gửi Đại Vương, huynh đệ của ta,\n\nTa đã nghe lời huynh nói. Vàng sẽ được gửi đi trước khi sứ giả tiếp theo khởi hành. Chúng ta trân trọng mối giao hảo giữa các gia tộc và không muốn nó nguội lạnh.\n\nTrong tình hữu nghị,"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:236
+#: ../../apps/site/src/components/demo/demo-seed.ts:239
 #, fuzzy
 msgid "To the Great King, my brother,\n"
 "\n"
@@ -5182,7 +5474,7 @@ msgid "To the Great King, my brother,\n"
 "Burna-Buriash II, King of Babylon"
 msgstr "Gửi Đại Vương, huynh đệ của ta,\n\nTa viết thư này trong tình hữu nghị, như cha ông chúng ta đã viết trước đây. Lô vàng thứ ba đã thỏa thuận theo hiệp ước của chúng ta vẫn chưa đến. Hai sứ giả đã đi qua mà chúng ta vẫn chờ đợi.\n\nChúng ta yêu cầu huynh gửi nó đi mà không trì hoãn thêm, như lẽ phải của mối giao hảo giữa các gia tộc chúng ta.\n\nBurna-Buriash II, Vua Babylon"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:349
+#: ../../apps/site/src/components/demo/demo-seed.ts:352
 #, fuzzy
 msgid "To the Great King, my lord, my sun,\n"
 "\n"
@@ -5200,8 +5492,8 @@ msgid "Today"
 msgstr "Hôm nay"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:36
-msgid "Today Amarnai connects to Gmail. Outlook support is on the way, and it will work the same read-only way: Amarnai reads your threads to sort them and never sends, deletes, or changes anything in your account."
-msgstr "Hiện tại, Amarnai kết nối với Gmail. Sắp có hỗ trợ Outlook và cơ chế hoạt động cũng sẽ là chỉ đọc: Amarnai đọc luồng thư để phân loại, không gửi, xóa hay thay đổi bất cứ điều gì trong tài khoản của bạn."
+#~ msgid "Today Amarnai connects to Gmail. Outlook support is on the way, and it will work the same read-only way: Amarnai reads your threads to sort them and never sends, deletes, or changes anything in your account."
+#~ msgstr "Hiện tại, Amarnai kết nối với Gmail. Sắp có hỗ trợ Outlook và cơ chế hoạt động cũng sẽ là chỉ đọc: Amarnai đọc luồng thư để phân loại, không gửi, xóa hay thay đổi bất cứ điều gì trong tài khoản của bạn."
 
 #: ../ui/src/emails/ThreadList.tsx:130
 #, fuzzy
@@ -5248,7 +5540,7 @@ msgstr "Sắp xếp hộp thư đến của bạn mọi lúc, mọi nơi."
 msgid "Try Amarnai"
 msgstr "Dùng thử Amarnai"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:421
+#: ../../apps/site/src/components/demo/demo-seed.ts:424
 #, fuzzy
 msgid "Tushratta of Mitanni"
 msgstr "Tushratta xứ Mitanni"
@@ -5265,7 +5557,7 @@ msgid "Unavailable"
 msgstr "Không khả dụng"
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:41
-#: ../ui/src/emails/ThreadRow.tsx:235
+#: ../ui/src/emails/ThreadRow.tsx:237
 #, fuzzy
 msgid "Unclassified"
 msgstr "Chưa được phân loại"
@@ -5273,7 +5565,7 @@ msgstr "Chưa được phân loại"
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:232
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:366
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1321
-#: ../ui/src/emails/MockEmailsPage.tsx:267
+#: ../ui/src/emails/MockEmailsPage.tsx:285
 #, fuzzy
 msgid "Undo"
 msgstr "Hoàn tác"
@@ -5343,7 +5635,7 @@ msgid "Up to 25 collaborators"
 msgstr "Tối đa 25 cộng tác viên"
 
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:37
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:69
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:105
 #, fuzzy
 msgid "Up to date"
 msgstr "Đã cập nhật"
@@ -5428,7 +5720,7 @@ msgstr "Nâng cấp để xem tiếp"
 #~ msgid "Upgrade your subscription on the web app to enable backfill."
 #~ msgstr "Nâng cấp gói đăng ký của bạn trên ứng dụng web để bật tính năng khôi phục dữ liệu cũ."
 
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:114
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:120
 #, fuzzy
 msgid "Use \"Rescan inbox\" after changing filter settings to apply them to threads already in your inbox."
 msgstr "Sau khi thay đổi cài đặt bộ lọc, hãy dùng \"Quét lại hộp thư đến\" để áp dụng cho các cuộc trò chuyện đã có trong hộp thư của bạn."
@@ -5492,12 +5784,12 @@ msgstr "Chỉ xem. Chỉ quản trị viên không gian làm việc mới có th
 #: ../../apps/mobile/src/components/RationaleCard.tsx:44
 #: ../../apps/mobile/src/components/ThreadRow.tsx:44
 #: ../ui/src/emails/RationaleCard.tsx:74
-#: ../ui/src/emails/ThreadRow.tsx:231
+#: ../ui/src/emails/ThreadRow.tsx:233
 #, fuzzy
 msgid "Waiting"
 msgstr "Đang chờ"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:168
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:235
 #, fuzzy
 msgid "Waiting for first sync…"
 msgstr "Đang chờ đồng bộ lần đầu…"
@@ -5512,7 +5804,7 @@ msgstr "Đang chờ xác minh…"
 #~ msgid "Waitlist"
 #~ msgstr "Danh sách chờ"
 
-#: ../ui/src/emails/ThreadRow.tsx:148
+#: ../ui/src/emails/ThreadRow.tsx:150
 #, fuzzy
 msgid "Wants {folderName}"
 msgstr "Muốn {folderName}"
@@ -5564,7 +5856,7 @@ msgid "Where this folder sits. Folders with no parent stay disconnected and are 
 msgstr "Vị trí của thư mục này. Các thư mục không có thư mục cha sẽ bị ngắt kết nối và bỏ qua cho đến khi được kết nối."
 
 #: ../../apps/web/src/components/AziruIntroDialog.tsx:46
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:28
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:68
 msgid "Who is king Aziru?"
 msgstr "King Aziru là ai?"
 
@@ -5579,8 +5871,12 @@ msgid "Working Professional"
 msgstr "Chuyên gia làm việc"
 
 #: ../../apps/site/src/components/landing/FinalCTASection.tsx:24
-msgid "Works with Gmail today. Outlook support is on the way."
-msgstr "Hiện hoạt động với Gmail. Sắp có hỗ trợ Outlook."
+msgid "Works with Gmail and Outlook."
+msgstr "Hoạt động với Gmail và Outlook."
+
+#: ../../apps/site/src/components/landing/FinalCTASection.tsx:24
+#~ msgid "Works with Gmail today. Outlook support is on the way."
+#~ msgstr "Hiện hoạt động với Gmail. Sắp có hỗ trợ Outlook."
 
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:61
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:220
@@ -5619,7 +5915,7 @@ msgstr "Đã cập nhật tên không gian làm việc."
 msgid "Workspace settings"
 msgstr "Cài đặt không gian làm việc"
 
-#: ../../apps/web/src/app/(app)/settings/page.tsx:106
+#: ../../apps/web/src/app/(app)/settings/page.tsx:118
 #, fuzzy
 msgid "Workspace Settings"
 msgstr "Cài đặt không gian làm việc"
@@ -5634,10 +5930,10 @@ msgstr "Loại không gian làm việc"
 msgid "Workspaces included"
 msgstr "Không gian làm việc bao gồm"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:329
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:339
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:168
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:354
-#: ../ui/src/emails/ThreadPreview.tsx:169
+#: ../ui/src/emails/ThreadPreview.tsx:260
 #, fuzzy
 msgid "Writing draft reply…"
 msgstr "Đang soạn thảo phản hồi…"
@@ -5657,7 +5953,7 @@ msgstr "Có, xóa tài khoản của tôi"
 msgid "Yes, delete workspace"
 msgstr "Có, xóa không gian làm việc"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:200
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:267
 #, fuzzy
 msgid "Yes, disconnect"
 msgstr "Có, ngắt kết nối"
@@ -5677,19 +5973,31 @@ msgstr "Có. Amarnai có thể xử lý hàng nghìn chuỗi thư đã có sẵn
 #~ msgstr "Có. Amarnai có thể xử lý hàng nghìn cuộc hội thoại đã có sẵn trong hộp thư đến của bạn, không chỉ những tin nhắn mới đến. Việc phân loại lịch sử và sắp xếp liên tục sử dụng cùng một kế hoạch, giúp toàn bộ hộp thư đến của bạn được tổ chức theo một cách thống nhất."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:12
+msgid "Yes. Amarnai connects with a read-only scope, so it can read your threads but cannot send, delete, label, or change anything in your account. It keeps only what it needs to sort and display threads: subjects, participants, snippets, and the labels and reasoning it generates. Full message bodies are fetched when needed and processed in memory, not stored, and OAuth tokens are encrypted at rest."
+msgstr "Có. Amarnai kết nối với phạm vi chỉ đọc, vì vậy nó có thể đọc các chuỗi email của bạn nhưng không thể gửi, xóa, gắn nhãn hoặc thay đổi bất cứ điều gì trong tài khoản của bạn. Nó chỉ lưu giữ những gì cần thiết để sắp xếp và hiển thị các chuỗi email: tiêu đề, người tham gia, đoạn trích, cùng với các nhãn và lý do sắp xếp mà nó tạo ra. Nội dung tin nhắn đầy đủ được tìm nạp khi cần và xử lý trong bộ nhớ, không được lưu trữ, và mã thông báo OAuth được mã hóa khi không hoạt động."
+
+#: ../../apps/site/src/components/landing/FAQSection.tsx:12
 #, fuzzy
-msgid "Yes. Amarnai connects with Gmail's read-only scope, so it can read your threads but cannot send, delete, label, or change anything in your account. It keeps only what it needs to sort and display threads: subjects, participants, snippets, and the labels and reasoning it generates. Full message bodies are fetched when needed and processed in memory, not stored, and OAuth tokens are encrypted at rest."
-msgstr "Có. Amarnai kết nối với Gmail ở phạm vi chỉ đọc, vì vậy nó có thể đọc các cuộc hội thoại của bạn nhưng không thể gửi, xóa, gắn nhãn hoặc thay đổi bất cứ điều gì trong tài khoản của bạn. Nó chỉ lưu giữ những gì cần thiết để sắp xếp và hiển thị các cuộc hội thoại: tiêu đề, người tham gia, đoạn trích, cùng với các nhãn và lý do mà nó tạo ra. Nội dung tin nhắn đầy đủ được tìm nạp khi cần và xử lý trong bộ nhớ, không được lưu trữ, và các mã thông báo OAuth được mã hóa khi không sử dụng."
+#~ msgid "Yes. Amarnai connects with Gmail's read-only scope, so it can read your threads but cannot send, delete, label, or change anything in your account. It keeps only what it needs to sort and display threads: subjects, participants, snippets, and the labels and reasoning it generates. Full message bodies are fetched when needed and processed in memory, not stored, and OAuth tokens are encrypted at rest."
+#~ msgstr "Có. Amarnai kết nối với Gmail ở phạm vi chỉ đọc, vì vậy nó có thể đọc các cuộc hội thoại của bạn nhưng không thể gửi, xóa, gắn nhãn hoặc thay đổi bất cứ điều gì trong tài khoản của bạn. Nó chỉ lưu giữ những gì cần thiết để sắp xếp và hiển thị các cuộc hội thoại: tiêu đề, người tham gia, đoạn trích, cùng với các nhãn và lý do mà nó tạo ra. Nội dung tin nhắn đầy đủ được tìm nạp khi cần và xử lý trong bộ nhớ, không được lưu trữ, và các mã thông báo OAuth được mã hóa khi không sử dụng."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:56
 #, fuzzy
 msgid "Yes. Amarnai is open source under the AGPL-3.0 license. You can clone the repository and run it yourself with Docker. Self-hosting is free and unsupported, with community support available on GitHub."
 msgstr "Có. Amarnai là mã nguồn mở theo giấy phép AGPL-3.0. Bạn có thể sao chép kho lưu trữ và tự chạy nó với Docker. Việc tự host là miễn phí và không được hỗ trợ chính thức, nhưng có hỗ trợ cộng đồng trên GitHub."
 
+#: ../../apps/site/src/components/landing/FAQSection.tsx:36
+msgid "Yes. Amarnai works with both Gmail and Outlook, each connected the same read-only way: Amarnai reads your threads to sort them and never sends, deletes, or changes anything in your account."
+msgstr "Có. Amarnai hoạt động với cả Gmail và Outlook, mỗi nền tảng được kết nối theo cùng một cách chỉ đọc: Amarnai đọc các chuỗi email của bạn để sắp xếp chúng và không bao giờ gửi, xóa hoặc thay đổi bất cứ điều gì trong tài khoản của bạn."
+
 #: ../../apps/site/src/components/landing/FAQSection.tsx:48
 #, fuzzy
-msgid "Yes. Open a thread, press Generate draft reply, and a suggested draft appears in Amarnai for you to read and edit. Nothing is ever sent for you: when you are happy with it, you can jump to the thread in Gmail with one click and paste your reply there to send. Each subscription includes a monthly draft allowance."
-msgstr "Có. Mở một cuộc hội thoại, nhấn Tạo bản nháp trả lời, và một bản nháp gợi ý sẽ xuất hiện trong Amarnai để bạn đọc và chỉnh sửa. Không có gì được gửi đi thay bạn: khi bạn hài lòng với bản nháp, bạn có thể chuyển đến cuộc hội thoại trong Gmail chỉ với một cú nhấp chuột và dán câu trả lời của bạn vào đó để gửi. Mỗi gói đăng ký bao gồm một hạn mức bản nháp hàng tháng."
+#~ msgid "Yes. Open a thread, press Generate draft reply, and a suggested draft appears in Amarnai for you to read and edit. Nothing is ever sent for you: when you are happy with it, you can jump to the thread in Gmail with one click and paste your reply there to send. Each subscription includes a monthly draft allowance."
+#~ msgstr "Có. Mở một cuộc hội thoại, nhấn Tạo bản nháp trả lời, và một bản nháp gợi ý sẽ xuất hiện trong Amarnai để bạn đọc và chỉnh sửa. Không có gì được gửi đi thay bạn: khi bạn hài lòng với bản nháp, bạn có thể chuyển đến cuộc hội thoại trong Gmail chỉ với một cú nhấp chuột và dán câu trả lời của bạn vào đó để gửi. Mỗi gói đăng ký bao gồm một hạn mức bản nháp hàng tháng."
+
+#: ../../apps/site/src/components/landing/FAQSection.tsx:48
+msgid "Yes. Open a thread, press Generate draft reply, and a suggested draft appears in Amarnai for you to read and edit. Nothing is ever sent for you: when you are happy with it, you can jump to the thread in your inbox with one click and paste your reply there to send. Each subscription includes a monthly draft allowance."
+msgstr "Có. Mở một chuỗi email, nhấn 'Tạo bản nháp phản hồi', và một bản nháp gợi ý sẽ xuất hiện trong Amarnai để bạn đọc và chỉnh sửa. Không có gì được gửi đi thay mặt bạn: khi bạn hài lòng với bản nháp, bạn có thể chuyển đến chuỗi email trong hộp thư đến chỉ với một cú nhấp và dán phản hồi của bạn vào đó để gửi. Mỗi gói đăng ký bao gồm một số lượng bản nháp hàng tháng nhất định."
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:20
 #: ../ui/src/emails/ThreadList.tsx:16
@@ -5723,10 +6031,14 @@ msgstr "Bạn có thể thử lại sau {0}, hoặc bắt đầu từ một mẫ
 msgid "You can try again shortly, or start from a template."
 msgstr "Bạn có thể thử lại trong thời gian ngắn, hoặc bắt đầu từ một mẫu."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:47
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:63
 #, fuzzy
 msgid "You do not have permission to connect a Gmail inbox to this workspace."
 msgstr "Bạn không có quyền kết nối hộp thư Gmail vào không gian làm việc này."
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:85
+msgid "You do not have permission to connect an Outlook inbox to this workspace."
+msgstr "Bạn không có quyền kết nối hộp thư Outlook với không gian làm việc này."
 
 #: ../../apps/site/src/components/landing/HeroSection.tsx:66
 #, fuzzy
@@ -5829,6 +6141,10 @@ msgstr "Kế hoạch của bạn là một cây thư mục (ví dụ: thư mục
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:38
 msgid "Your retry import finished and is still capped by your {plan} plan. Your next retry is available {refreshDate}."
 msgstr "Lượt nhập thử lại của bạn đã hoàn tất và vẫn bị giới hạn bởi gói {plan}. Lần thử lại tiếp theo sẽ có vào {refreshDate}."
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:324
+msgid "Your sorted email from {retainedAddress} is saved. Reconnecting the same inbox restores it; connecting a different inbox permanently removes it. Folders and settings are kept either way."
+msgstr "Email đã sắp xếp của bạn từ {retainedAddress} đã được lưu. Kết nối lại cùng hộp thư đến sẽ khôi phục email đó; kết nối một hộp thư đến khác sẽ xóa vĩnh viễn email đó. Các thư mục và cài đặt vẫn được giữ nguyên trong cả hai trường hợp."
 
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:102
 #, fuzzy

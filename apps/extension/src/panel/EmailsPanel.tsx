@@ -9,7 +9,7 @@ import { useEmailTriage } from "@amarnai/core/emails";
 import { useWorkspaceEvents } from "../realtime/useWorkspaceEvents";
 import { ThreadPreviewPane } from "./ThreadPreviewPane";
 import { PanelHeader } from "./WorkspacePicker";
-import { openInGmail } from "../gmail/openInGmail";
+import { openThreadInMail } from "../gmail/openInGmail";
 
 type Props = {
   api: ApiClient;
@@ -171,7 +171,7 @@ export function EmailsPanel({
             ? {
                 onOpenInGmail: (threadId: string) => {
                   const t = triage.threads.find((x) => x.id === threadId);
-                  if (t) void openInGmail(gmailAddress, t.providerThreadId);
+                  if (t) void openThreadInMail(gmailAddress, t);
                 },
               }
             : {})}

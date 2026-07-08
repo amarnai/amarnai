@@ -14,6 +14,8 @@ export type {
 export type { FolderItem } from "../folder-tree/types.js";
 
 export { filterThreads, countForActive, buildFolderCounts, QUEUES } from "./selection.js";
+export { buildThreadUrl } from "@amarnai/core/emails";
+export { openInProviderLabel } from "./providerLabels.js";
 export { QueueList } from "./QueueList.js";
 export { ColumnResizeHandle } from "./ColumnResizeHandle.js";
 export { BackfillCard } from "./BackfillCard.js";

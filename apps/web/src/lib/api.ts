@@ -63,6 +63,7 @@ export type {
   CreateTaxonomyEdgeInput,
   UpdateTaxonomyEdgeInput,
   GmailConnection,
+  MailProvider,
   DisconnectResult,
   SyncStatus,
   BackfillStatus,

@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { MAIL_HOSTS } from "./src/platform/mailHosts";
 
 const dir = path.dirname(fileURLToPath(import.meta.url));
 
@@ -50,7 +51,9 @@ export function buildManifest({
     48: "icons/icon48.png",
     128: "icons/icon128.png",
   };
-  const hostPermissions = [`${apiOrigin}/*`, "https://mail.google.com/*"];
+  // MAIL_HOSTS (Gmail + OWA) is shared with permissions.ts and openInGmail.ts so
+  // the manifest grant can never drift from the runtime request or tab-reuse query.
+  const hostPermissions = [`${apiOrigin}/*`, ...MAIL_HOSTS];
 
   if (browser === "firefox") {
     // Firefox has no side_panel/sidePanel and no MV3 background.service_worker: it
@@ -59,9 +62,9 @@ export function buildManifest({
     // ID comes from gecko.id).
     return {
       manifest_version: 3,
-      name: "Amarnai: Gmail, sorted your way",
+      name: "Amarnai: Sort emails your way",
       description:
-        "Amarnai sorts your Gmail, drafts replies for your approval, and takes you to any thread without leaving the tab.",
+        "Amarnai sorts your inbox, drafts replies for your approval, and takes you to any thread without leaving the tab.",
       version,
       action: { default_title: "Amarnai" },
       sidebar_action: {
@@ -89,9 +92,9 @@ export function buildManifest({
   // Chrome — byte-identical to the original single-target manifest.
   return {
     manifest_version: 3,
-    name: "Amarnai: Gmail, sorted your way",
+    name: "Amarnai: Sort emails your way",
     description:
-      "Amarnai sorts your Gmail, drafts replies for your approval, and takes you to any thread without leaving the tab.",
+      "Amarnai sorts your inbox, drafts replies for your approval, and takes you to any thread without leaving the tab.",
     ...(key ? { key } : {}),
     version,
     minimum_chrome_version: "116",

@@ -23,7 +23,7 @@ triggerSync.post("/workspaces/:workspaceId/trigger-sync", async (c) => {
 
   const { workspaceId } = parsed.data;
 
-  const connection = await db.gmailConnection.findUnique({
+  const connection = await db.emailConnection.findUnique({
     where: { workspaceId },
     select: { status: true },
   });

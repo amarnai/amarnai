@@ -1,6 +1,6 @@
 import { db } from "@amarnai/db";
 import { config } from "@amarnai/config";
-import { GmailClient, GmailAuthError } from "@amarnai/gmail";
+import { createMailProvider, MailAuthError } from "@amarnai/mail";
 import { deleteExpiredRefreshTokens } from "@amarnai/auth";
 import { processPendingSubscriptionCancellations } from "@amarnai/billing";
 import {
@@ -40,15 +40,18 @@ async function renewAllGmailWatches(): Promise<void> {
   // Watches last ~7 days, so this fires at most once per day per user and
   // avoids rate-limit spikes from frequent worker restarts or redeploys.
   const renewBefore = new Date(Date.now() + 25 * 60 * 60 * 1000);
-  const connections = await db.gmailConnection.findMany({
+  const connections = await db.emailConnection.findMany({
     where: {
+      // Gmail push watches only — Outlook subscriptions renew on their own tick
+      // (Phase C). Scoping here keeps createMailProvider off the Outlook path.
+      provider: "GMAIL",
       status: "ACTIVE",
       OR: [
-        { gmailWatchExpiresAt: null },
-        { gmailWatchExpiresAt: { lte: renewBefore } },
+        { watchExpiresAt: null },
+        { watchExpiresAt: { lte: renewBefore } },
       ],
     },
-    select: { workspaceId: true, gmailAddress: true, encryptedRefreshToken: true },
+    select: { workspaceId: true, provider: true, emailAddress: true, encryptedRefreshToken: true },
   });
 
   if (connections.length === 0) return;
@@ -58,35 +61,92 @@ async function renewAllGmailWatches(): Promise<void> {
   // connection in each group, then stamp gmailWatchExpiresAt on all rows.
   const byAddress = new Map<string, typeof connections>();
   for (const conn of connections) {
-    const group = byAddress.get(conn.gmailAddress) ?? [];
+    const group = byAddress.get(conn.emailAddress) ?? [];
     group.push(conn);
-    byAddress.set(conn.gmailAddress, group);
+    byAddress.set(conn.emailAddress, group);
   }
 
   await Promise.allSettled(
     Array.from(byAddress.values()).map(async (group) => {
       const primary = group[0]!;
-      const client = new GmailClient(primary.encryptedRefreshToken);
+      const client = createMailProvider(primary);
       try {
-        const result = await client.watchInbox(config.gmail.pubsubTopic!);
-        const expiresAt = new Date(Number(result.expiration));
+        const result = await client.registerWatch(config.gmail.pubsubTopic!);
+        const expiresAt = new Date(Number(result.expiresAt));
         await Promise.all(
           group.map((conn) =>
-            db.gmailConnection.update({
+            db.emailConnection.update({
               where: { workspaceId: conn.workspaceId },
-              data: { gmailWatchExpiresAt: expiresAt },
+              data: { watchExpiresAt: expiresAt },
             })
           )
         );
-        console.log(`[watch-renewal] Renewed watch for ${primary.gmailAddress} (${group.length} workspace(s)) — historyId=${result.historyId} expires=${expiresAt.toISOString()}`);
+        console.log(`[watch-renewal] Renewed watch for ${primary.emailAddress} (${group.length} workspace(s)) — cursor=${result.cursor} expires=${expiresAt.toISOString()}`);
       } catch (err) {
         // Auth errors mean the refresh token is revoked/invalid — log at info
         // level since sync jobs will surface this to the user separately.
-        if (err instanceof GmailAuthError) {
-          console.log(`[watch-renewal] Skipping ${primary.gmailAddress} — token needs re-authorization`);
+        if (err instanceof MailAuthError) {
+          console.log(`[watch-renewal] Skipping ${primary.emailAddress} — token needs re-authorization`);
         } else {
           const msg = err instanceof Error ? err.message : String(err);
-          console.error(`[watch-renewal] Failed for ${primary.gmailAddress}:`, msg);
+          console.error(`[watch-renewal] Failed for ${primary.emailAddress}:`, msg);
+        }
+      }
+    })
+  );
+}
+
+/**
+ * Renews the Microsoft Graph change-notification subscription for every active
+ * Outlook connection. Graph subscriptions carry a hard ~70h max lifetime with no
+ * auto-renew, so this runs on startup and then on the shared daily tick with a
+ * wide renewal window to stay comfortably ahead of expiry.
+ *
+ * No-ops when MS_GRAPH_NOTIFICATION_URL is not configured (polling-only). Each
+ * renewal creates a fresh subscription (Graph has no idempotent re-register and
+ * we do not persist the subscription id), tearing down existing ones first via
+ * stopWatch so exactly one subscription per mailbox survives.
+ */
+async function renewAllOutlookSubscriptions(): Promise<void> {
+  if (!config.outlook.notificationUrl) return;
+
+  // Renew subscriptions expiring within 30 hours (or never registered). With a
+  // ~70h lifetime and a daily tick, this always renews well before expiry.
+  const renewBefore = new Date(Date.now() + 30 * 60 * 60 * 1000);
+  const connections = await db.emailConnection.findMany({
+    where: {
+      provider: "OUTLOOK",
+      status: "ACTIVE",
+      OR: [
+        { watchExpiresAt: null },
+        { watchExpiresAt: { lte: renewBefore } },
+      ],
+    },
+    select: { workspaceId: true, provider: true, emailAddress: true, encryptedRefreshToken: true },
+  });
+
+  if (connections.length === 0) return;
+
+  await Promise.allSettled(
+    connections.map(async (conn) => {
+      const client = createMailProvider(conn);
+      try {
+        // Tear down existing subscriptions before creating a fresh one so they
+        // do not accumulate (POST /subscriptions is not idempotent).
+        await client.stopWatch().catch(() => {});
+        const result = await client.registerWatch(config.outlook.notificationUrl!);
+        const expiresAt = new Date(Number(result.expiresAt));
+        await db.emailConnection.update({
+          where: { workspaceId: conn.workspaceId },
+          data: { watchExpiresAt: expiresAt },
+        });
+        console.log(`[subscription-renewal] Renewed Graph subscription for ${conn.emailAddress} — cursor=${result.cursor} expires=${expiresAt.toISOString()}`);
+      } catch (err) {
+        if (err instanceof MailAuthError) {
+          console.log(`[subscription-renewal] Skipping ${conn.emailAddress} — token needs re-authorization`);
+        } else {
+          const msg = err instanceof Error ? err.message : String(err);
+          console.error(`[subscription-renewal] Failed for ${conn.emailAddress}:`, msg);
         }
       }
     })
@@ -101,7 +161,7 @@ async function renewAllGmailWatches(): Promise<void> {
  * up duplicate syncs for the same workspace.
  */
 async function scheduleSyncJobs(): Promise<void> {
-  const connections = await db.gmailConnection.findMany({
+  const connections = await db.emailConnection.findMany({
     where: { status: "ACTIVE" },
     select: { workspaceId: true },
   });
@@ -151,7 +211,7 @@ async function scheduleLifecycleEmails(): Promise<void> {
       emailVerified: { not: null },
       lifecycleEmailsEnabled: true,
       OR: [{ lifecycleEmailSentAt: null }, { lifecycleEmailSentAt: { lte: dueBefore } }],
-      workspaceMemberships: { some: { workspace: { gmailConnection: { status: "ACTIVE" } } } },
+      workspaceMemberships: { some: { workspace: { emailConnection: { status: "ACTIVE" } } } },
     },
     select: { id: true },
   });
@@ -273,18 +333,26 @@ async function main(): Promise<void> {
     `[worker] Scheduler running — polling every ${config.worker.inboxSyncIntervalMs / 1000}s`
   );
 
-  // ── Gmail push watch renewal ───────────────────────────────────────────────
-  // Renew watch registrations on startup, then daily (Gmail watches expire ~7d).
+  // ── Push watch / subscription renewal ──────────────────────────────────────
+  // Renew Gmail watches (~7d) and Outlook Graph subscriptions (~70h) on startup,
+  // then daily. Both use a renewal window wide enough for a daily cadence.
   await renewAllGmailWatches();
+  await renewAllOutlookSubscriptions();
 
   const watchRenewalHandle = setInterval(() => {
     renewAllGmailWatches().catch((err) => {
       console.error("[watch-renewal] Failed:", err);
     });
+    renewAllOutlookSubscriptions().catch((err) => {
+      console.error("[subscription-renewal] Failed:", err);
+    });
   }, 24 * 60 * 60 * 1000);
 
   if (config.gmail.pubsubTopic) {
     console.log("[worker] Gmail push notifications active — watch renewal scheduled daily");
+  }
+  if (config.outlook.notificationUrl) {
+    console.log("[worker] Outlook push notifications active — subscription renewal scheduled daily");
   }
 
   // ── Expired refresh-token cleanup ──────────────────────────────────────────

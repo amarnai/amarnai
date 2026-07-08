@@ -18,7 +18,7 @@ vi.mock("@amarnai/db", () => {
       workspaceMember: {
         findUnique: vi.fn(),
       },
-      gmailConnection: {
+      emailConnection: {
         findUnique: vi.fn(),
       },
     },
@@ -142,7 +142,7 @@ describe("POST /workspaces/:id/reset", () => {
   it("resets when OWNER, disconnecting Gmail first when connected", async () => {
     asMember("OWNER");
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    vi.mocked(db.gmailConnection.findUnique).mockResolvedValue({ id: "c1" } as any);
+    vi.mocked(db.emailConnection.findUnique).mockResolvedValue({ id: "c1" } as any);
 
     const res = await app.request("/workspaces/ws1/reset", jsonBody("POST"));
 
@@ -157,7 +157,7 @@ describe("POST /workspaces/:id/reset", () => {
 
   it("skips Gmail disconnect when there is no connection", async () => {
     asMember("OWNER");
-    vi.mocked(db.gmailConnection.findUnique).mockResolvedValue(null);
+    vi.mocked(db.emailConnection.findUnique).mockResolvedValue(null);
 
     const res = await app.request("/workspaces/ws1/reset", jsonBody("POST"));
 
@@ -253,7 +253,7 @@ describe("DELETE /workspaces/:id", () => {
   it("deletes when OWNER and more than one owned workspace", async () => {
     asMember("OWNER");
     vi.mocked(db.workspace.count).mockResolvedValue(2);
-    vi.mocked(db.gmailConnection.findUnique).mockResolvedValue(null);
+    vi.mocked(db.emailConnection.findUnique).mockResolvedValue(null);
 
     const res = await app.request("/workspaces/ws1", jsonBody("DELETE"));
 

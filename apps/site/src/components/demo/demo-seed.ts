@@ -201,7 +201,10 @@ type ThreadMessageSeed = {
   bodyText: MessageDescriptor;
 };
 
-type ThreadSeed = Omit<ThreadItem, "subject" | "snippet" | "reasoning" | "alternativeFolder" | "messages"> & {
+type ThreadSeed = Omit<
+  ThreadItem,
+  "subject" | "snippet" | "reasoning" | "alternativeFolder" | "messages" | "provider" | "webLink"
+> & {
   subject: MessageDescriptor;
   snippet: MessageDescriptor;
   reasoning: MessageDescriptor;
@@ -442,11 +445,19 @@ Tushratta, Great King of Mitanni`,
   },
 ];
 
-export function getDemoThreads(i18n: I18n): ThreadItem[] {
+export function getDemoThreads(
+  i18n: I18n,
+  provider: "GMAIL" | "OUTLOOK" = "GMAIL",
+): ThreadItem[] {
   return THREAD_SEED.map((seed) => {
     const { subject, snippet, reasoning, alternativeFolder, messages, ...rest } = seed;
     return {
       ...rest,
+      // The demo frame previews both providers; the caller passes whichever
+      // inbox is currently shown so the workspace's "Open in <provider>" link
+      // matches the mock beside it.
+      provider,
+      webLink: null,
       subject: i18n._(subject),
       snippet: i18n._(snippet),
       reasoning: i18n._(reasoning),

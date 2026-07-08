@@ -1,6 +1,6 @@
 import { db } from "@amarnai/db";
 import { config } from "@amarnai/config";
-import { GmailClient } from "./gmail-client.js";
+import { createMailProvider } from "@amarnai/mail";
 
 export type RegisterGmailWatchResult =
   | { ok: true; expiresAt: Date }
@@ -21,28 +21,29 @@ export async function registerGmailWatch(
 ): Promise<RegisterGmailWatchResult> {
   if (!config.gmail.pubsubTopic) return { ok: false, reason: "no_pubsub_topic" };
 
-  const connection = await db.gmailConnection.findUnique({
+  const connection = await db.emailConnection.findUnique({
     where: { workspaceId },
     select: {
+      provider: true,
       encryptedRefreshToken: true,
       status: true,
-      gmailAddress: true,
+      emailAddress: true,
     },
   });
   if (!connection || connection.status !== "ACTIVE") {
     return { ok: false, reason: "no_active_connection" };
   }
 
-  const client = new GmailClient(connection.encryptedRefreshToken);
-  const result = await client.watchInbox(config.gmail.pubsubTopic);
-  const expiresAt = new Date(Number(result.expiration));
-  await db.gmailConnection.update({
+  const client = createMailProvider(connection);
+  const result = await client.registerWatch(config.gmail.pubsubTopic);
+  const expiresAt = new Date(Number(result.expiresAt));
+  await db.emailConnection.update({
     where: { workspaceId },
-    data: { gmailWatchExpiresAt: expiresAt },
+    data: { watchExpiresAt: expiresAt },
   });
 
   console.log(
-    `[gmail-watch] Registered push watch for ${connection.gmailAddress} (workspace=${workspaceId}) expires=${expiresAt.toISOString()}`,
+    `[gmail-watch] Registered push watch for ${connection.emailAddress} (workspace=${workspaceId}) expires=${expiresAt.toISOString()}`,
   );
   return { ok: true, expiresAt };
 }

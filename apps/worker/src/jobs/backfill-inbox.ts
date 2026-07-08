@@ -10,7 +10,12 @@ import {
   createNotificationsForWorkspaceMembers,
 } from "@amarnai/db";
 import { config } from "@amarnai/config";
-import { GmailClient, GmailAuthError, GmailThreadMeta, normalizeGmailThread } from "@amarnai/gmail";
+import {
+  createMailProvider,
+  MailAuthError,
+  MailThreadParseError,
+  type MailThreadMeta,
+} from "@amarnai/mail";
 import type { GmailSyncSettings } from "@amarnai/shared";
 import { isTaxonomyRoutable, getBackfillCap, BACKFILL_RUNNING_STALE_MS } from "@amarnai/shared";
 import {
@@ -69,7 +74,7 @@ class SkippableThreadError extends Error {
  * run retries rather than silently skipping threads.
  */
 function isPermanentThreadFetchError(err: unknown): boolean {
-  if (err instanceof GmailAuthError) return false;
+  if (err instanceof MailAuthError) return false;
   const msg = err instanceof Error ? err.message : String(err);
   if (msg.includes("not found")) return true;
   const status = Number(msg.match(/fetch failed: (\d+)/)?.[1]);
@@ -81,7 +86,7 @@ function isPermanentThreadFetchError(err: unknown): boolean {
  * the plan cap truncates the inbox, the kept set is the most recent threads —
  * matching what a user expects to see. Read state is intentionally not a factor.
  */
-function sortByPriority(threads: GmailThreadMeta[]): GmailThreadMeta[] {
+function sortByPriority(threads: MailThreadMeta[]): MailThreadMeta[] {
   return [...threads].sort(
     (a, b) => b.latestMessageAt.getTime() - a.latestMessageAt.getTime(),
   );
@@ -102,11 +107,12 @@ export function createBackfillInboxWorker(): Worker {
           where: { id: workspaceId },
           select: { ownerUserId: true, plan: true, billingCycle: true },
         }),
-        db.gmailConnection.findUnique({
+        db.emailConnection.findUnique({
           where: { workspaceId },
           select: {
-            gmailAddress: true,
-            googleSubjectId: true,
+            provider: true,
+            emailAddress: true,
+            subjectId: true,
             encryptedRefreshToken: true,
             status: true,
           },
@@ -135,7 +141,7 @@ export function createBackfillInboxWorker(): Worker {
 
       // ── 2. Resolve the EmailAccount and current ProviderSyncState ───────────
 
-      const providerAccountId = connection.googleSubjectId ?? connection.gmailAddress;
+      const providerAccountId = connection.subjectId ?? connection.emailAddress;
       const emailAccount = await db.emailAccount.findUnique({
         where: { workspaceId_providerAccountId: { workspaceId, providerAccountId } },
         select: { id: true },
@@ -235,22 +241,25 @@ export function createBackfillInboxWorker(): Worker {
         // workspace's own (reset-wiped) ProviderSyncState. This is what bounds the
         // reset → reconnect → re-import loop: a workspace that already imported this
         // inbox draws from the shared pool, with a single grace re-import per month.
-        const inboxKey = inboxKeyFor(connection.gmailAddress);
+        const inboxKey = inboxKeyFor(connection.emailAddress);
         const windowStart = meterWindowStart();
         const enforceBackfill = config.billing.enforceBackfillQuota;
         // When enforced, size by the TOP plan among workspaces sharing this inbox
         // (pooled). When the self-host opt-out is set, fall back to this workspace's
         // own plan and skip pooling/grace entirely (usage is still recorded below).
         const ceiling = enforceBackfill
-          ? await getInboxPlanCeiling(connection.gmailAddress)
+          ? await getInboxPlanCeiling(connection.emailAddress)
           : { plan: workspace.plan, billingCycle: workspace.billingCycle };
         const cap = getBackfillCap(ceiling.plan, ceiling.billingCycle);
 
-        const client = new GmailClient(connection.encryptedRefreshToken);
+        const client = createMailProvider(connection);
         // Mailbox owner's address — forwarded to the detector so the user's own
         // replies do not defeat automated-mail detection. Captured here so the
         // narrowing survives into the processThread closure below.
-        const selfEmail = connection.gmailAddress;
+        const selfEmail = connection.emailAddress;
+        // Captured outside processThread so the closure keeps the non-null
+        // narrowing (the provider stamps every persisted thread row).
+        const connectionProvider = connection.provider;
         const nowMs = Date.now();
         const afterMs = cap.windowDays === null ? 0 : nowMs - cap.windowDays * MS_PER_DAY;
 
@@ -292,7 +301,7 @@ export function createBackfillInboxWorker(): Worker {
         // Threads already present (picked up by a live sync) only have their label
         // flags refreshed; we still classify them if they are PENDING and not
         // excluded. New threads are fetched in full, filtered, and persisted.
-        async function processThread(gmailThread: GmailThreadMeta): Promise<string | null> {
+        async function processThread(gmailThread: MailThreadMeta): Promise<string | null> {
           const existing = await db.emailThread.findUnique({
             where: {
               emailAccountId_providerThreadId: { emailAccountId, providerThreadId: gmailThread.id },
@@ -313,19 +322,22 @@ export function createBackfillInboxWorker(): Worker {
           // that is permanent for this one thread is rethrown as a
           // SkippableThreadError so the caller skips it; everything else (auth,
           // rate limits, 5xx, network) propagates to abort and retry the run.
-          let rawFull: unknown;
+          let rawSnapshot: Awaited<ReturnType<typeof client.getThreadSnapshot>>;
           try {
-            rawFull = await client.getThread(gmailThread.id);
+            rawSnapshot = await client.getThreadSnapshot(gmailThread.id);
           } catch (err) {
-            if (isPermanentThreadFetchError(err)) throw new SkippableThreadError(gmailThread.id, err);
+            // A permanent per-thread fetch failure (404/400) or an unparseable
+            // thread is skipped; transient/systemic errors (auth, 5xx, network)
+            // propagate so the run aborts and resumes from its cursor.
+            if (isPermanentThreadFetchError(err) || err instanceof MailThreadParseError) {
+              throw new SkippableThreadError(gmailThread.id, err);
+            }
             throw err;
           }
 
-          let rawSnapshot: ReturnType<typeof normalizeGmailThread>;
           let labelFlags: ReturnType<typeof computeThreadLabelFlags>;
           let snapshot: ReturnType<typeof applyThreadFilter>;
           try {
-            rawSnapshot = normalizeGmailThread(rawFull);
             labelFlags = computeThreadLabelFlags(rawSnapshot.messages, selfEmail);
             snapshot = applyThreadFilter(rawSnapshot, settings);
           } catch (err) {
@@ -339,7 +351,9 @@ export function createBackfillInboxWorker(): Worker {
             await upsertEmailThread({
               workspaceId,
               emailAccountId,
+              provider: connectionProvider,
               providerThreadId: rawSnapshot.providerThreadId,
+              webLink: rawSnapshot.webLink,
               subject: rawSnapshot.subject,
               latestMessageAt: rawSnapshot.latestMessageAt,
               messageCount: rawSnapshot.messageCount,
@@ -352,7 +366,9 @@ export function createBackfillInboxWorker(): Worker {
           const emailThreadId = await upsertEmailThread({
             workspaceId,
             emailAccountId,
+            provider: connectionProvider,
             providerThreadId: snapshot.providerThreadId,
+            webLink: snapshot.webLink,
             subject: snapshot.subject,
             latestMessageAt: snapshot.latestMessageAt,
             messageCount: snapshot.messageCount,
@@ -418,7 +434,7 @@ export function createBackfillInboxWorker(): Worker {
 
             // Check for disconnect periodically so a long run stops promptly.
             if ((processed + i) % 50 === 0) {
-              const currentConn = await db.gmailConnection.findUnique({
+              const currentConn = await db.emailConnection.findUnique({
                 where: { workspaceId },
                 select: { status: true },
               });

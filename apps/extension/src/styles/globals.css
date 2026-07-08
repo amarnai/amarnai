@@ -413,6 +413,16 @@ body {
   background: var(--accent-ink);
 }
 
+/* Outlook connect/reconnect — mirrors .ax-btn-primary in Outlook brand blue. */
+.ax-btn-outlook {
+  background: var(--outlook);
+  color: var(--on-accent, #fff);
+}
+
+.ax-btn-outlook:hover:not(:disabled) {
+  background: var(--outlook-ink);
+}
+
 .ax-btn-secondary {
   background: var(--surface);
   color: var(--ink);

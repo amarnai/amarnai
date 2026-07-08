@@ -6,7 +6,9 @@ function makeThread(id: string, overrides: Partial<ThreadItem> = {}): ThreadItem
   return {
     id,
     subject: id,
+    provider: "GMAIL",
     providerThreadId: `g-${id}`,
+    webLink: null,
     participants: "Someone",
     latestAt: new Date("2026-01-01T00:00:00.000Z"),
     messageCount: 1,

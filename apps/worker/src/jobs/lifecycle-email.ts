@@ -80,7 +80,7 @@ export async function runLifecycleEmailJob(userId: string): Promise<void> {
 
   // Workspaces the user belongs to that have an active Gmail connection.
   const memberships = await db.workspaceMember.findMany({
-    where: { userId, workspace: { gmailConnection: { status: "ACTIVE" } } },
+    where: { userId, workspace: { emailConnection: { status: "ACTIVE" } } },
     select: { workspace: { select: { id: true, name: true } } },
   });
 

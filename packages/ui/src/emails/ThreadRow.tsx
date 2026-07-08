@@ -5,6 +5,8 @@ import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
 import type { FolderItem } from "../folder-tree/types.js";
 import type { ActiveSelection, ThreadItem } from "./types.js";
+import { buildThreadUrl } from "@amarnai/core/emails";
+import { openInProviderLabel } from "./providerLabels.js";
 import { Tooltip } from "../Tooltip.js";
 
 const FOLDER_ICO = (
@@ -156,7 +158,7 @@ export function ThreadRow({
   const importantLabel = thread.isImportant
     ? i18n._(msg`Remove from important`)
     : i18n._(msg`Mark as important`);
-  const openInGmailLabel = i18n._(msg`Open in Gmail`);
+  const openInGmailLabel = openInProviderLabel(i18n, thread.provider);
 
   const assignment = thread.assignment;
   const assigneeName = assignment ? (assignment.userName ?? assignment.userEmail) : "";
@@ -293,7 +295,7 @@ export function ThreadRow({
               </button>
             ) : (
               <a
-                href={`https://mail.google.com/mail/u/0/#all/${thread.providerThreadId}`}
+                href={buildThreadUrl(thread)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="em-thread-gmail-link"

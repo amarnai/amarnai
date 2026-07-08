@@ -11,6 +11,12 @@ export const API_BASE_URL: string = (
 export const GOOGLE_WEB_CLIENT_ID: string =
   (import.meta.env["VITE_GOOGLE_WEB_CLIENT_ID"] as string | undefined) ?? "";
 
+// The Microsoft (Entra) app registration client id — the same confidential Web
+// client the API redeems Outlook codes against. Empty when Outlook is not
+// configured, which hides the Outlook reconnect option.
+export const MS_CLIENT_ID: string =
+  (import.meta.env["VITE_MS_CLIENT_ID"] as string | undefined) ?? "";
+
 // Where the marketing/web app lives, for links out (sign-up, connect Gmail).
 export const WEB_APP_URL: string = (
   (import.meta.env["VITE_WEB_APP_URL"] as string | undefined) ?? "http://localhost:3000"

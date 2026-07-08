@@ -23,8 +23,12 @@ vi.mock("./client", () => {
       providerSyncState: del(),
       emailAddressIdentity: del(),
       emailThread: del(),
-      emailAccount: del(),
-      gmailConnection: del(),
+      emailAccount: {
+        deleteMany: vi.fn().mockReturnValue({}),
+        delete: vi.fn().mockReturnValue({}),
+        findMany: vi.fn(),
+      },
+      emailConnection: del(),
       gmailSyncSettings: del(),
       workspaceInvitation: del(),
       workspaceMember: del(),
@@ -38,7 +42,11 @@ vi.mock("./client", () => {
 vi.mock("./inbox", () => ({ ensureInboxTaxonomy: vi.fn() }));
 
 import { db } from "./client";
-import { deleteUserCascade } from "./workspace-ops";
+import {
+  deleteUserCascade,
+  eraseEmailAccountData,
+  eraseStaleEmailAccounts,
+} from "./workspace-ops";
 
 const USER_ID = "user-1";
 
@@ -85,5 +93,51 @@ describe("deleteUserCascade", () => {
 
     expect(db.$transaction).not.toHaveBeenCalled();
     expect(db.trialClaim.upsert).not.toHaveBeenCalled();
+  });
+});
+
+describe("eraseEmailAccountData", () => {
+  it("deletes the account's data and the account row in one transaction, keeping taxonomy", async () => {
+    await eraseEmailAccountData("acct-1");
+
+    expect(db.$transaction).toHaveBeenCalledOnce();
+    expect(db.emailAccount.delete).toHaveBeenCalledWith({ where: { id: "acct-1" } });
+    // Workspace-level data must NOT be touched by an account-scoped erase.
+    expect(db.taxonomyNode.deleteMany).not.toHaveBeenCalled();
+    expect(db.taxonomyEdge.deleteMany).not.toHaveBeenCalled();
+    expect(db.gmailSyncSettings.deleteMany).not.toHaveBeenCalled();
+    expect(db.emailConnection.deleteMany).not.toHaveBeenCalled();
+  });
+});
+
+describe("eraseStaleEmailAccounts", () => {
+  it("erases every account except the one now connected and returns their addresses", async () => {
+    vi.mocked(db.emailAccount.findMany).mockResolvedValue([
+      { id: "acct-old-1", primaryEmailAddress: "old1@gmail.com" },
+      { id: "acct-old-2", primaryEmailAddress: "old2@outlook.com" },
+    ] as never);
+
+    const erased = await eraseStaleEmailAccounts("ws-1", "kept@outlook.com");
+
+    // Filters by workspace, excluding the kept provider account id.
+    expect(db.emailAccount.findMany).toHaveBeenCalledWith({
+      where: { workspaceId: "ws-1", providerAccountId: { not: "kept@outlook.com" } },
+      select: { id: true, primaryEmailAddress: true },
+    });
+    // One erase transaction per stale account.
+    expect(db.$transaction).toHaveBeenCalledTimes(2);
+    expect(db.emailAccount.delete).toHaveBeenCalledWith({ where: { id: "acct-old-1" } });
+    expect(db.emailAccount.delete).toHaveBeenCalledWith({ where: { id: "acct-old-2" } });
+    expect(erased).toEqual(["old1@gmail.com", "old2@outlook.com"]);
+  });
+
+  it("does nothing when the connected inbox is the only account (same-mailbox reconnect)", async () => {
+    vi.mocked(db.emailAccount.findMany).mockResolvedValue([] as never);
+
+    const erased = await eraseStaleEmailAccounts("ws-1", "kept@gmail.com");
+
+    expect(db.$transaction).not.toHaveBeenCalled();
+    expect(db.emailAccount.delete).not.toHaveBeenCalled();
+    expect(erased).toEqual([]);
   });
 });

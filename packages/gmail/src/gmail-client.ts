@@ -1,4 +1,6 @@
+import type { ThreadSnapshot } from "@amarnai/ai";
 import { decrypt } from "./encryption.js";
+import { normalizeGmailThread } from "./gmail-thread-adapter.js";
 
 // ─── Internal Gmail History API shapes ────────────────────────────────────────
 
@@ -38,6 +40,18 @@ export class GmailAuthError extends Error {
   constructor(message: string) {
     super(message);
     this.name = "GmailAuthError";
+  }
+}
+
+/**
+ * Thrown by {@link GmailClient.getThreadSnapshot} when a fetched thread cannot be
+ * normalized (malformed data). Permanent for that one thread — callers skip it
+ * rather than aborting a run, distinct from a transient fetch failure.
+ */
+export class GmailThreadParseError extends Error {
+  constructor(cause: unknown) {
+    super(cause instanceof Error ? cause.message : String(cause));
+    this.name = "GmailThreadParseError";
   }
 }
 
@@ -93,7 +107,7 @@ export type GmailHistoryResult = {
   /** Deduplicated thread IDs that were added or modified since the cursor. */
   changedThreadIds: string[];
   /** New cursor to persist in ProviderSyncState.historyId after processing. */
-  newHistoryId: string;
+  newCursor: string;
 };
 
 /** Lightweight metadata for a thread returned by listThreadsPage. */
@@ -158,13 +172,18 @@ export class GmailClient {
     return data.access_token;
   }
 
-  async getProfile(): Promise<GmailProfile> {
+  /**
+   * The connected mailbox's identity and current sync cursor, in the neutral
+   * shape the pipeline consumes. Gmail's `historyId` is the opaque `syncCursor`.
+   */
+  async getProfile(): Promise<{ emailAddress: string; syncCursor: string }> {
     const accessToken = await this.refreshAccessToken();
     const res = await fetch(GMAIL_PROFILE_URL, {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
     if (!res.ok) throw new Error(`Gmail profile fetch failed: ${res.status}`);
-    return res.json() as Promise<GmailProfile>;
+    const data = (await res.json()) as GmailProfile;
+    return { emailAddress: data.emailAddress, syncCursor: data.historyId };
   }
 
   async listRecentThreadIds(maxResults = 10): Promise<string[]> {
@@ -215,7 +234,7 @@ export class GmailClient {
    * Throws if the cursor is invalid (HTTP 404) — caller should treat this as a
    * full-resync signal and fall back to `listRecentThreadIds`.
    */
-  async listHistory(sinceHistoryId: string): Promise<GmailHistoryResult> {
+  async listChangesSince(sinceHistoryId: string): Promise<GmailHistoryResult> {
     const accessToken = await this.refreshAccessToken();
 
     // Collect all pages of history records.
@@ -266,7 +285,7 @@ export class GmailClient {
       }
     }
 
-    return { changedThreadIds: Array.from(seen), newHistoryId: latestHistoryId };
+    return { changedThreadIds: Array.from(seen), newCursor: latestHistoryId };
   }
 
   /**
@@ -405,7 +424,7 @@ export class GmailClient {
    * (gmail-api-push@system.gserviceaccount.com) granted the Publisher role —
    * this is operator infrastructure set up once, not per-user.
    */
-  async watchInbox(topicName: string): Promise<GmailWatchResult> {
+  async registerWatch(topicName: string): Promise<{ cursor: string; expiresAt: string }> {
     const accessToken = await this.refreshAccessToken();
     const res = await fetch(GMAIL_WATCH_URL, {
       method: "POST",
@@ -423,7 +442,8 @@ export class GmailClient {
       const body = await res.text();
       throw new Error(`Gmail watch failed: ${res.status} ${body}`);
     }
-    return res.json() as Promise<GmailWatchResult>;
+    const data = (await res.json()) as GmailWatchResult;
+    return { cursor: data.historyId, expiresAt: data.expiration };
   }
 
   /**
@@ -451,5 +471,18 @@ export class GmailClient {
     if (res.status === 404) throw new Error(`Gmail thread not found: ${threadId}`);
     if (!res.ok) throw new Error(`Gmail thread fetch failed: ${res.status}`);
     return res.json();
+  }
+
+  /**
+   * Fetch a thread and normalize it to a {@link ThreadSnapshot}. Folds the raw
+   * fetch and the Gmail normalizer so callers never handle raw Gmail JSON.
+   */
+  async getThreadSnapshot(threadId: string): Promise<ThreadSnapshot> {
+    const raw = await this.getThread(threadId);
+    try {
+      return normalizeGmailThread(raw);
+    } catch (err) {
+      throw new GmailThreadParseError(err);
+    }
   }
 }

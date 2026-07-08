@@ -6,8 +6,8 @@ const { mockStopWatch, mockRevokeGoogleToken } = vi.hoisted(() => ({
   mockRevokeGoogleToken: vi.fn(),
 }));
 
-vi.mock("@amarnai/db", () => ({
-  db: {
+vi.mock("@amarnai/db", () => {
+  const db = {
     workspace: {
       findUnique: vi.fn(),
       findFirst: vi.fn(),
@@ -15,7 +15,7 @@ vi.mock("@amarnai/db", () => ({
     workspaceMember: {
       findUnique: vi.fn(),
     },
-    gmailConnection: {
+    emailConnection: {
       findUnique: vi.fn(),
       findMany: vi.fn(),
       update: vi.fn(),
@@ -53,10 +53,19 @@ vi.mock("@amarnai/db", () => ({
       create: vi.fn(),
     },
     $transaction: vi.fn(),
-  },
-  maybeCreateExtensionNudge: vi.fn().mockResolvedValue(undefined),
-  deleteGmailDisconnectedNotifications: vi.fn().mockResolvedValue(undefined),
-}));
+  };
+  return {
+    db,
+    // Erase is extracted into @amarnai/db; keep the mock faithful to the real
+    // export and route it through $transaction so the erase assertions hold.
+    eraseEmailAccountData: vi.fn(async () => {
+      await db.$transaction([]);
+    }),
+    eraseStaleEmailAccounts: vi.fn().mockResolvedValue([]),
+    maybeCreateExtensionNudge: vi.fn().mockResolvedValue(undefined),
+    deleteGmailDisconnectedNotifications: vi.fn().mockResolvedValue(undefined),
+  };
+});
 
 const GMAIL_SCOPE = "https://www.googleapis.com/auth/gmail.readonly";
 
@@ -124,8 +133,9 @@ const OTHER_WS_ID = "ws-other";
 const baseConnection = {
   id: "conn-1",
   workspaceId: WS_ID,
-  gmailAddress: "user@gmail.com",
-  googleSubjectId: null,
+  provider: "GMAIL" as const,
+  emailAddress: "user@gmail.com",
+  subjectId: null,
   encryptedRefreshToken: "encrypted-token",
   grantedScopes: ["https://www.googleapis.com/auth/gmail.readonly"],
   status: "ACTIVE" as const,
@@ -139,9 +149,9 @@ const baseEmailAccount = { id: "acct-1" };
 beforeEach(() => {
   vi.clearAllMocks();
   vi.mocked(db.workspaceMember.findUnique).mockResolvedValue({ userId: TEST_USER_ID } as never);
-  vi.mocked(db.gmailConnection.update).mockResolvedValue({} as never);
-  vi.mocked(db.gmailConnection.count).mockResolvedValue(0); // no siblings by default
-  vi.mocked(db.gmailConnection.findMany).mockResolvedValue([]); // no visible siblings by default
+  vi.mocked(db.emailConnection.update).mockResolvedValue({} as never);
+  vi.mocked(db.emailConnection.count).mockResolvedValue(0); // no siblings by default
+  vi.mocked(db.emailConnection.findMany).mockResolvedValue([]); // no visible siblings by default
   vi.mocked(db.emailAccount.findUnique).mockResolvedValue(baseEmailAccount as never);
   vi.mocked(db.emailAccount.update).mockResolvedValue({} as never);
   vi.mocked(db.emailThread.updateMany).mockResolvedValue({ count: 0 } as never);
@@ -162,7 +172,7 @@ beforeEach(() => {
     expiresAt: new Date("2030-01-01T00:00:00.000Z"),
   });
   vi.mocked(encrypt).mockReturnValue("encrypted-token");
-  vi.mocked(db.gmailConnection.upsert).mockResolvedValue({} as never);
+  vi.mocked(db.emailConnection.upsert).mockResolvedValue({} as never);
   vi.mocked(syncInboxQueue.add).mockResolvedValue({} as never);
 });
 
@@ -171,7 +181,7 @@ beforeEach(() => {
 describe("GET /workspaces/:workspaceId/gmail-connection", () => {
   it("returns the connection when one exists", async () => {
     vi.mocked(db.workspace.findUnique).mockResolvedValue({ id: WS_ID } as never);
-    vi.mocked(db.gmailConnection.findUnique).mockResolvedValue(baseConnection as never);
+    vi.mocked(db.emailConnection.findUnique).mockResolvedValue(baseConnection as never);
 
     const res = await app.request(`/workspaces/${WS_ID}/gmail-connection`, authed());
     expect(res.status).toBe(200);
@@ -181,7 +191,7 @@ describe("GET /workspaces/:workspaceId/gmail-connection", () => {
 
   it("returns null when no connection exists", async () => {
     vi.mocked(db.workspace.findUnique).mockResolvedValue({ id: WS_ID } as never);
-    vi.mocked(db.gmailConnection.findUnique).mockResolvedValue(null);
+    vi.mocked(db.emailConnection.findUnique).mockResolvedValue(null);
 
     const res = await app.request(`/workspaces/${WS_ID}/gmail-connection`, authed());
     expect(res.status).toBe(200);
@@ -200,7 +210,7 @@ describe("GET /workspaces/:workspaceId/gmail-connection", () => {
   it("does not expose encryptedRefreshToken in the response", async () => {
     const withToken = { ...baseConnection, encryptedRefreshToken: "secret-encrypted-token" };
     vi.mocked(db.workspace.findUnique).mockResolvedValue({ id: WS_ID } as never);
-    vi.mocked(db.gmailConnection.findUnique).mockResolvedValue(withToken as never);
+    vi.mocked(db.emailConnection.findUnique).mockResolvedValue(withToken as never);
 
     const res = await app.request(`/workspaces/${WS_ID}/gmail-connection`, authed());
     expect(res.status).toBe(200);
@@ -210,7 +220,7 @@ describe("GET /workspaces/:workspaceId/gmail-connection", () => {
 
   it("reports an unshared mailbox when no other workspace syncs it", async () => {
     vi.mocked(db.workspace.findUnique).mockResolvedValue({ id: WS_ID } as never);
-    vi.mocked(db.gmailConnection.findUnique).mockResolvedValue(baseConnection as never);
+    vi.mocked(db.emailConnection.findUnique).mockResolvedValue(baseConnection as never);
 
     const res = await app.request(`/workspaces/${WS_ID}/gmail-connection`, authed());
     const body = (await res.json()) as { sharedMailbox: boolean; alsoConnectedIn: unknown[] };
@@ -220,9 +230,9 @@ describe("GET /workspaces/:workspaceId/gmail-connection", () => {
 
   it("reports sharedMailbox=true without leaking names when the sibling belongs to another tenant", async () => {
     vi.mocked(db.workspace.findUnique).mockResolvedValue({ id: WS_ID } as never);
-    vi.mocked(db.gmailConnection.findUnique).mockResolvedValue(baseConnection as never);
-    vi.mocked(db.gmailConnection.count).mockResolvedValue(1); // foreign-tenant sibling
-    vi.mocked(db.gmailConnection.findMany).mockResolvedValue([]); // not visible to this user
+    vi.mocked(db.emailConnection.findUnique).mockResolvedValue(baseConnection as never);
+    vi.mocked(db.emailConnection.count).mockResolvedValue(1); // foreign-tenant sibling
+    vi.mocked(db.emailConnection.findMany).mockResolvedValue([]); // not visible to this user
 
     const res = await app.request(`/workspaces/${WS_ID}/gmail-connection`, authed());
     const body = (await res.json()) as { sharedMailbox: boolean; alsoConnectedIn: unknown[] };
@@ -232,9 +242,9 @@ describe("GET /workspaces/:workspaceId/gmail-connection", () => {
 
   it("lists sibling workspaces the requesting user is a member of", async () => {
     vi.mocked(db.workspace.findUnique).mockResolvedValue({ id: WS_ID } as never);
-    vi.mocked(db.gmailConnection.findUnique).mockResolvedValue(baseConnection as never);
-    vi.mocked(db.gmailConnection.count).mockResolvedValue(1);
-    vi.mocked(db.gmailConnection.findMany).mockResolvedValue([
+    vi.mocked(db.emailConnection.findUnique).mockResolvedValue(baseConnection as never);
+    vi.mocked(db.emailConnection.count).mockResolvedValue(1);
+    vi.mocked(db.emailConnection.findMany).mockResolvedValue([
       { workspace: { id: OTHER_WS_ID, name: "Benjamin Personal" } },
     ] as never);
 
@@ -246,11 +256,11 @@ describe("GET /workspaces/:workspaceId/gmail-connection", () => {
 
   it("scopes the visible-siblings query to the requesting user's memberships", async () => {
     vi.mocked(db.workspace.findUnique).mockResolvedValue({ id: WS_ID } as never);
-    vi.mocked(db.gmailConnection.findUnique).mockResolvedValue(baseConnection as never);
+    vi.mocked(db.emailConnection.findUnique).mockResolvedValue(baseConnection as never);
 
     await app.request(`/workspaces/${WS_ID}/gmail-connection`, authed());
 
-    expect(vi.mocked(db.gmailConnection.findMany)).toHaveBeenCalledWith(
+    expect(vi.mocked(db.emailConnection.findMany)).toHaveBeenCalledWith(
       expect.objectContaining({
         where: expect.objectContaining({
           workspace: { members: { some: { userId: TEST_USER_ID } } },
@@ -261,7 +271,7 @@ describe("GET /workspaces/:workspaceId/gmail-connection", () => {
 
   it("only has the gmail.readonly scope in the granted scopes", async () => {
     vi.mocked(db.workspace.findUnique).mockResolvedValue({ id: WS_ID } as never);
-    vi.mocked(db.gmailConnection.findUnique).mockResolvedValue(baseConnection as never);
+    vi.mocked(db.emailConnection.findUnique).mockResolvedValue(baseConnection as never);
 
     const res = await app.request(`/workspaces/${WS_ID}/gmail-connection`, authed());
     const body = (await res.json()) as typeof baseConnection;
@@ -280,7 +290,8 @@ const VALID_CONNECT_BODY = {
 const safeConnection = {
   id: "conn-1",
   workspaceId: WS_ID,
-  gmailAddress: "user@gmail.com",
+  provider: "GMAIL" as const,
+  emailAddress: "user@gmail.com",
   grantedScopes: [GMAIL_SCOPE],
   status: "ACTIVE" as const,
   lastVerifiedAt: new Date().toISOString(),
@@ -302,7 +313,7 @@ async function connect(body: unknown): Promise<Response> {
 describe("POST /workspaces/:workspaceId/gmail-connection", () => {
   beforeEach(() => {
     vi.mocked(db.workspace.findFirst).mockResolvedValue({ id: WS_ID } as never); // requester owns the ws
-    vi.mocked(db.gmailConnection.findUnique).mockResolvedValue(safeConnection as never);
+    vi.mocked(db.emailConnection.findUnique).mockResolvedValue(safeConnection as never);
   });
 
   it("stores the connection, enqueues one sync, and returns it (201)", async () => {
@@ -320,12 +331,12 @@ describe("POST /workspaces/:workspaceId/gmail-connection", () => {
     expect(vi.mocked(exchangeServerAuthCode)).toHaveBeenCalledWith("auth-code-123");
     expect(vi.mocked(fetchGmailProfile)).toHaveBeenCalledWith("google-at");
     expect(vi.mocked(encrypt)).toHaveBeenCalledWith("google-rt");
-    expect(vi.mocked(db.gmailConnection.upsert)).toHaveBeenCalledWith(
+    expect(vi.mocked(db.emailConnection.upsert)).toHaveBeenCalledWith(
       expect.objectContaining({
         where: { workspaceId: WS_ID },
         create: expect.objectContaining({
           workspaceId: WS_ID,
-          gmailAddress: "user@gmail.com",
+          emailAddress: "user@gmail.com",
           encryptedRefreshToken: "encrypted-token",
           grantedScopes: ["openid", "email", GMAIL_SCOPE],
           status: "ACTIVE",
@@ -354,7 +365,7 @@ describe("POST /workspaces/:workspaceId/gmail-connection", () => {
       "https://ext-id.chromiumapp.org/"
     );
     expect(vi.mocked(exchangeServerAuthCode)).not.toHaveBeenCalled();
-    expect(vi.mocked(db.gmailConnection.upsert)).toHaveBeenCalledWith(
+    expect(vi.mocked(db.emailConnection.upsert)).toHaveBeenCalledWith(
       expect.objectContaining({
         create: expect.objectContaining({ status: "ACTIVE" }),
       })
@@ -366,7 +377,7 @@ describe("POST /workspaces/:workspaceId/gmail-connection", () => {
     const body = (await res.json()) as Record<string, unknown>;
     expect(body).not.toHaveProperty("encryptedRefreshToken");
     // The guarantee relies on the Prisma select excluding the field.
-    expect(vi.mocked(db.gmailConnection.findUnique)).toHaveBeenCalledWith(
+    expect(vi.mocked(db.emailConnection.findUnique)).toHaveBeenCalledWith(
       expect.objectContaining({
         select: expect.not.objectContaining({ encryptedRefreshToken: true }),
       })
@@ -377,7 +388,7 @@ describe("POST /workspaces/:workspaceId/gmail-connection", () => {
     vi.mocked(db.workspace.findFirst).mockResolvedValue(null); // requester is not the owner
     const res = await connect(VALID_CONNECT_BODY);
     expect(res.status).toBe(403);
-    expect(vi.mocked(db.gmailConnection.upsert)).not.toHaveBeenCalled();
+    expect(vi.mocked(db.emailConnection.upsert)).not.toHaveBeenCalled();
     expect(vi.mocked(syncInboxQueue.add)).not.toHaveBeenCalled();
   });
 
@@ -386,7 +397,7 @@ describe("POST /workspaces/:workspaceId/gmail-connection", () => {
     expect(res.status).toBe(403);
     expect(vi.mocked(exchangeServerAuthCode)).not.toHaveBeenCalled();
     expect(vi.mocked(fetchGmailProfile)).not.toHaveBeenCalled();
-    expect(vi.mocked(db.gmailConnection.upsert)).not.toHaveBeenCalled();
+    expect(vi.mocked(db.emailConnection.upsert)).not.toHaveBeenCalled();
     expect(vi.mocked(syncInboxQueue.add)).not.toHaveBeenCalled();
   });
 
@@ -394,7 +405,7 @@ describe("POST /workspaces/:workspaceId/gmail-connection", () => {
     vi.mocked(exchangeServerAuthCode).mockRejectedValue(new GmailApiError("invalid_grant", 400));
     const res = await connect(VALID_CONNECT_BODY);
     expect(res.status).toBe(502);
-    expect(vi.mocked(db.gmailConnection.upsert)).not.toHaveBeenCalled();
+    expect(vi.mocked(db.emailConnection.upsert)).not.toHaveBeenCalled();
     expect(vi.mocked(syncInboxQueue.add)).not.toHaveBeenCalled();
   });
 
@@ -402,7 +413,23 @@ describe("POST /workspaces/:workspaceId/gmail-connection", () => {
     const res = await connect({ scope: GMAIL_SCOPE });
     expect(res.status).toBe(400);
     expect(vi.mocked(exchangeServerAuthCode)).not.toHaveBeenCalled();
-    expect(vi.mocked(db.gmailConnection.upsert)).not.toHaveBeenCalled();
+    expect(vi.mocked(db.emailConnection.upsert)).not.toHaveBeenCalled();
+  });
+
+  it("returns 409 and stores nothing when the workspace is connected to another provider", async () => {
+    // A DISCONNECTED Outlook workspace must not be reactivated/clobbered by a
+    // Gmail connect — the extension-sign-in resurrection bug. Reconnect via that
+    // provider instead.
+    vi.mocked(db.emailConnection.findUnique).mockResolvedValue({
+      ...safeConnection,
+      provider: "OUTLOOK",
+      status: "DISCONNECTED",
+    } as never);
+
+    const res = await connect(VALID_CONNECT_BODY);
+    expect(res.status).toBe(409);
+    expect(vi.mocked(db.emailConnection.upsert)).not.toHaveBeenCalled();
+    expect(vi.mocked(syncInboxQueue.add)).not.toHaveBeenCalled();
   });
 });
 
@@ -411,21 +438,21 @@ describe("POST /workspaces/:workspaceId/gmail-connection", () => {
 describe("DELETE /workspaces/:workspaceId/gmail-connection", () => {
   it("sets DISCONNECTED instead of deleting the row", async () => {
     vi.mocked(db.workspace.findUnique).mockResolvedValue({ id: WS_ID } as never);
-    vi.mocked(db.gmailConnection.findUnique).mockResolvedValue(baseConnection as never);
+    vi.mocked(db.emailConnection.findUnique).mockResolvedValue(baseConnection as never);
 
     const res = await app.request(`/workspaces/${WS_ID}/gmail-connection`, authed({ method: "DELETE" }));
     expect(res.status).toBe(200);
     const body = (await res.json()) as { ok: boolean };
     expect(body.ok).toBe(true);
 
-    expect(vi.mocked(db.gmailConnection.update)).toHaveBeenCalledWith(
+    expect(vi.mocked(db.emailConnection.update)).toHaveBeenCalledWith(
       expect.objectContaining({ data: expect.objectContaining({ status: "DISCONNECTED" }) })
     );
   });
 
   it("calls stopWatch before revokeGoogleToken", async () => {
     vi.mocked(db.workspace.findUnique).mockResolvedValue({ id: WS_ID } as never);
-    vi.mocked(db.gmailConnection.findUnique).mockResolvedValue(baseConnection as never);
+    vi.mocked(db.emailConnection.findUnique).mockResolvedValue(baseConnection as never);
 
     const callOrder: string[] = [];
     mockStopWatch.mockImplementation(async () => { callOrder.push("stopWatch"); });
@@ -441,7 +468,7 @@ describe("DELETE /workspaces/:workspaceId/gmail-connection", () => {
 
   it("succeeds even when stopWatch fails", async () => {
     vi.mocked(db.workspace.findUnique).mockResolvedValue({ id: WS_ID } as never);
-    vi.mocked(db.gmailConnection.findUnique).mockResolvedValue(baseConnection as never);
+    vi.mocked(db.emailConnection.findUnique).mockResolvedValue(baseConnection as never);
     mockStopWatch.mockRejectedValue(new Error("watch stop failed"));
     mockRevokeGoogleToken.mockResolvedValue(true);
 
@@ -455,7 +482,7 @@ describe("DELETE /workspaces/:workspaceId/gmail-connection", () => {
 
   it("succeeds even when revoke fails", async () => {
     vi.mocked(db.workspace.findUnique).mockResolvedValue({ id: WS_ID } as never);
-    vi.mocked(db.gmailConnection.findUnique).mockResolvedValue(baseConnection as never);
+    vi.mocked(db.emailConnection.findUnique).mockResolvedValue(baseConnection as never);
     mockRevokeGoogleToken.mockResolvedValue(false);
 
     const res = await app.request(`/workspaces/${WS_ID}/gmail-connection`, authed({ method: "DELETE" }));
@@ -467,8 +494,8 @@ describe("DELETE /workspaces/:workspaceId/gmail-connection", () => {
 
   it("skips Google-side teardown and returns sharedMailbox=true when another workspace shares the mailbox", async () => {
     vi.mocked(db.workspace.findUnique).mockResolvedValue({ id: WS_ID } as never);
-    vi.mocked(db.gmailConnection.findUnique).mockResolvedValue(baseConnection as never);
-    vi.mocked(db.gmailConnection.count).mockResolvedValue(1); // shared mailbox
+    vi.mocked(db.emailConnection.findUnique).mockResolvedValue(baseConnection as never);
+    vi.mocked(db.emailConnection.count).mockResolvedValue(1); // shared mailbox
 
     const res = await app.request(`/workspaces/${WS_ID}/gmail-connection`, authed({ method: "DELETE" }));
     expect(res.status).toBe(200);
@@ -483,7 +510,7 @@ describe("DELETE /workspaces/:workspaceId/gmail-connection", () => {
 
   it("does not erase email data without ?eraseData=true", async () => {
     vi.mocked(db.workspace.findUnique).mockResolvedValue({ id: WS_ID } as never);
-    vi.mocked(db.gmailConnection.findUnique).mockResolvedValue(baseConnection as never);
+    vi.mocked(db.emailConnection.findUnique).mockResolvedValue(baseConnection as never);
 
     const res = await app.request(`/workspaces/${WS_ID}/gmail-connection`, authed({ method: "DELETE" }));
     expect(res.status).toBe(200);
@@ -494,7 +521,7 @@ describe("DELETE /workspaces/:workspaceId/gmail-connection", () => {
 
   it("erases email data when ?eraseData=true", async () => {
     vi.mocked(db.workspace.findUnique).mockResolvedValue({ id: WS_ID } as never);
-    vi.mocked(db.gmailConnection.findUnique).mockResolvedValue(baseConnection as never);
+    vi.mocked(db.emailConnection.findUnique).mockResolvedValue(baseConnection as never);
     vi.mocked(db.$transaction).mockResolvedValue([]);
 
     const res = await app.request(
@@ -509,7 +536,7 @@ describe("DELETE /workspaces/:workspaceId/gmail-connection", () => {
 
   it("audit log entry contains no token material", async () => {
     vi.mocked(db.workspace.findUnique).mockResolvedValue({ id: WS_ID } as never);
-    vi.mocked(db.gmailConnection.findUnique).mockResolvedValue(baseConnection as never);
+    vi.mocked(db.emailConnection.findUnique).mockResolvedValue(baseConnection as never);
 
     await app.request(`/workspaces/${WS_ID}/gmail-connection`, authed({ method: "DELETE" }));
 
@@ -525,7 +552,7 @@ describe("DELETE /workspaces/:workspaceId/gmail-connection", () => {
   it("succeeds (idempotent) when connection is already DISCONNECTED", async () => {
     const disconnectedConn = { ...baseConnection, status: "DISCONNECTED" as const, encryptedRefreshToken: "" };
     vi.mocked(db.workspace.findUnique).mockResolvedValue({ id: WS_ID } as never);
-    vi.mocked(db.gmailConnection.findUnique).mockResolvedValue(disconnectedConn as never);
+    vi.mocked(db.emailConnection.findUnique).mockResolvedValue(disconnectedConn as never);
 
     const res = await app.request(`/workspaces/${WS_ID}/gmail-connection`, authed({ method: "DELETE" }));
     expect(res.status).toBe(200);
@@ -535,7 +562,7 @@ describe("DELETE /workspaces/:workspaceId/gmail-connection", () => {
 
   it("returns 404 when no connection exists", async () => {
     vi.mocked(db.workspace.findUnique).mockResolvedValue({ id: WS_ID } as never);
-    vi.mocked(db.gmailConnection.findUnique).mockResolvedValue(null);
+    vi.mocked(db.emailConnection.findUnique).mockResolvedValue(null);
 
     const res = await app.request(`/workspaces/${WS_ID}/gmail-connection`, authed({ method: "DELETE" }));
     expect(res.status).toBe(404);
@@ -552,11 +579,11 @@ describe("DELETE /workspaces/:workspaceId/gmail-connection", () => {
 
   it("does not affect connections belonging to other workspaces", async () => {
     vi.mocked(db.workspace.findUnique).mockResolvedValue({ id: WS_ID } as never);
-    vi.mocked(db.gmailConnection.findUnique).mockResolvedValue(null);
+    vi.mocked(db.emailConnection.findUnique).mockResolvedValue(null);
 
     const res = await app.request(`/workspaces/${WS_ID}/gmail-connection`, authed({ method: "DELETE" }));
     expect(res.status).toBe(404);
-    expect(vi.mocked(db.gmailConnection.update)).not.toHaveBeenCalled();
+    expect(vi.mocked(db.emailConnection.update)).not.toHaveBeenCalled();
   });
 });
 
@@ -565,14 +592,14 @@ describe("DELETE /workspaces/:workspaceId/gmail-connection", () => {
 describe("One GmailConnection per workspace", () => {
   it("GET returns the single connection for a workspace", async () => {
     vi.mocked(db.workspace.findUnique).mockResolvedValue({ id: WS_ID } as never);
-    vi.mocked(db.gmailConnection.findUnique).mockResolvedValue(baseConnection as never);
+    vi.mocked(db.emailConnection.findUnique).mockResolvedValue(baseConnection as never);
 
     const res1 = await app.request(`/workspaces/${WS_ID}/gmail-connection`, authed());
     expect(res1.status).toBe(200);
 
     // A different workspace has no connection
     vi.mocked(db.workspace.findUnique).mockResolvedValue({ id: OTHER_WS_ID } as never);
-    vi.mocked(db.gmailConnection.findUnique).mockResolvedValue(null);
+    vi.mocked(db.emailConnection.findUnique).mockResolvedValue(null);
 
     const res2 = await app.request(`/workspaces/${OTHER_WS_ID}/gmail-connection`, authed());
     expect(res2.status).toBe(200);

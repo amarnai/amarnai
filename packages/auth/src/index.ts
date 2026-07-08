@@ -17,6 +17,12 @@ export { provisionGoogleUser } from "./provision.js";
 export type { ProvisionGoogleUserInput, ProvisionGoogleUserResult } from "./provision.js";
 export { storeGmailConnection } from "./gmail-connection.js";
 export type { StoreGmailConnectionInput } from "./gmail-connection.js";
+export { storeOutlookConnection } from "./outlook-connection.js";
+export type { StoreOutlookConnectionInput } from "./outlook-connection.js";
+export { ProviderMismatchError, assertNoProviderConflict } from "./connection-guard.js";
+export type { ConnectionProvider } from "./connection-guard.js";
+export { upsertEmailConnection } from "./upsert-connection.js";
+export type { UpsertEmailConnectionInput } from "./upsert-connection.js";
 // signUnsubscribeToken / verifyUnsubscribeToken use node:crypto and are
 // deliberately NOT re-exported here: this barrel is reachable from the web
 // Edge middleware (via @/auth), and node:crypto breaks the Edge bundle. Import

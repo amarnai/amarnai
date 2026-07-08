@@ -179,8 +179,12 @@ msgstr "{folderCount, plural, one {# folder} few {# foldery} many {# folderów} 
 #~ msgid "{pendingCount} pending"
 #~ msgstr "{pendingCount} oczekujących"
 
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:199
+msgid "{providerName} Inbox"
+msgstr "Skrzynka odbiorcza {providerName}"
+
 #. placeholder {0}: draftQuota.limit
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:320
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:330
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:344
 #, fuzzy
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
@@ -265,9 +269,13 @@ msgstr "+ Dodaj folder"
 msgid "+ New workspace"
 msgstr "+ Nowa przestrzeń robocza"
 
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:95
+msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your {providerName} account to get started. Amarnai connects with <1>read-only access</1> and <2>never sends, deletes, or changes anything</2>. Your inbox stays yours."
+msgstr "<0>King Aziru</0> posortuje Twoje wątki e-mail. Połącz konto {providerName}, aby rozpocząć. Amarnai łączy się z <1>dostępem tylko do odczytu</1> i <2>nigdy nie wysyła, nie usuwa ani nie zmienia niczego</2>. Twoja skrzynka pozostaje Twoja."
+
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:55
-msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your Gmail account to get started. Amarnai connects with <1>read-only access</1> and <2>never sends, deletes, or changes anything</2>. Your inbox stays yours."
-msgstr "<0>Król Aziru</0> jest gotowy, by uporządkować Twoje wątki e-mailowe. Połącz swoje konto Gmail, aby zacząć. Amarnai łączy się z <1>dostępem tylko do odczytu</1> i <2>nigdy nie wysyła, nie usuwa ani nie zmienia niczego</2>. Twoja skrzynka pocztowa pozostaje Twoja."
+#~ msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your Gmail account to get started. Amarnai connects with <1>read-only access</1> and <2>never sends, deletes, or changes anything</2>. Your inbox stays yours."
+#~ msgstr "<0>Król Aziru</0> jest gotowy, by uporządkować Twoje wątki e-mailowe. Połącz swoje konto Gmail, aby zacząć. Amarnai łączy się z <1>dostępem tylko do odczytu</1> i <2>nigdy nie wysyła, nie usuwa ani nie zmienia niczego</2>. Twoja skrzynka pocztowa pozostaje Twoja."
 
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:47
 #, fuzzy
@@ -397,19 +405,19 @@ msgstr "500 posortowanych wątków / miesiąc"
 msgid "75,000 threads"
 msgstr "75 000 wątków"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:300
+#: ../../apps/site/src/components/demo/demo-seed.ts:303
 #, fuzzy
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence."
 msgstr "Otrzymano nową aplikację od Horemheba z Teb na stanowisko Głównego Korespondenta."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:314
+#: ../../apps/site/src/components/demo/demo-seed.ts:317
 #, fuzzy
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
 msgstr "Otrzymano nową aplikację od Horemheba z Teb na stanowisko Głównego Korespondenta.\n\nPrzejrzyj aplikację w Domu Rejestrów."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:384
+#: ../../apps/site/src/components/demo/demo-seed.ts:387
 #, fuzzy
 msgid "Abdi-Heba of Urushalim"
 msgstr "Abdi-Heba z Urushalim"
@@ -434,10 +442,14 @@ msgstr "Abdi-Heba,\n\nBędę w okolicach Delty w tym samym tygodniu. Spotkajmy s
 #~ msgid "Access is granted to that exact Google account, so if it isn't the one whose Gmail you want Amarnai to organize, just submit the right address."
 #~ msgstr "Dostęp jest przyznawany do tego konkretnego konta Google, więc jeśli nie jest to konto, którego Gmail chcesz, aby Amarnai porządkowało, po prostu podaj właściwy adres."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:41
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:57
 #, fuzzy
 msgid "Access was denied. Grant read-only Gmail access to connect."
 msgstr "Dostęp odrzucono. Aby się połączyć, przyznaj dostęp do Gmaila tylko do odczytu."
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:79
+msgid "Access was denied. Grant read-only Outlook (Mail.Read) access to connect."
+msgstr "Odmówiono dostępu. Aby się połączyć, przyznaj dostęp tylko do odczytu dla Outlooka (Mail.Read)."
 
 #: ../../apps/mobile/app/(app)/account.tsx:105
 #, fuzzy
@@ -579,7 +591,7 @@ msgstr "Wszystkie dane przestrzeni roboczej zostaną trwale usunięte."
 msgid "All your workspaces, emails, and settings will be deleted permanently."
 msgstr "Wszystkie Twoje przestrzenie robocze, e-maile i ustawienia zostaną trwale usunięte."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:256
+#: ../../apps/site/src/components/demo/demo-seed.ts:259
 #, fuzzy
 msgid "Alliance proposal: house of Amurru"
 msgstr "Propozycja sojuszu: ród Amurru"
@@ -602,7 +614,7 @@ msgstr "Już jest na liście."
 #~ msgid "Already invited? <0>Sign in</0>"
 #~ msgstr "Masz już zaproszenie? <0>Zaloguj się</0>"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:191
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:258
 #, fuzzy
 msgid "Also erase synced email data"
 msgstr "Usuń również zsynchronizowane dane e-mail"
@@ -631,11 +643,18 @@ msgstr "Amarnai zawdzięcza swoją nazwę <0>Listom z Amarny</0>: glinianym tabl
 #~ msgid "Amarnai is named after the Amarna Letters: clay cuneiform tablets used for diplomatic correspondence with the Egyptian pharaohs during the Bronze Age. One sender of these letters was Aziru, king of Amurru, a resourceful ruler and shrewd diplomat who navigated the rivalry between Egypt and the Hittites. Thousands of years later, he has found a new calling: helping folks like you bring order to their emails."
 #~ msgstr ""
 
-#: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:51
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:49
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:89
+msgid "Amarnai is no longer syncing this inbox. Reconnect your {providerName} account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
+msgstr "Amarnai nie synchronizuje już tej skrzynki. Połącz ponownie swoje konto {providerName}, aby wznowić sortowanie wątków e-mail. Dostęp pozostaje <0>tylko do odczytu</0>, a Twoja skrzynka – Twoja."
+
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:88
 #, fuzzy
 msgid "Amarnai is no longer syncing this inbox. Reconnect your Gmail account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
 msgstr "Amarnai nie synchronizuje już tej skrzynki odbiorczej. Ponownie połącz swoje konto Gmail, aby wznowić sortowanie wątków e-mail. Dostęp pozostaje <0>tylko do odczytu</0>, a Twoja skrzynka odbiorcza pozostaje Twoja."
+
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:82
+msgid "Amarnai is no longer syncing this inbox. Reconnect your Outlook account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
+msgstr "Amarnai przestał synchronizować tę skrzynkę. Połącz ponownie konto Outlook, aby wznowić sortowanie wątków e-mail. Dostęp pozostaje <0>tylko do odczytu</0>, a Twoja skrzynka należy do Ciebie."
 
 #: ../ui/src/pricing/planMessages.ts:112
 #, fuzzy
@@ -665,27 +684,45 @@ msgstr "Amarnai utracił dostęp do Twojej skrzynki odbiorczej. Dotknij, aby pon
 
 #: ../../apps/extension/src/platform/HostPermissionGate.tsx:34
 #, fuzzy
-msgid "Amarnai needs access to its server and Gmail to show your inbox."
-msgstr "Amarnai potrzebuje dostępu do swojego serwera i Gmaila, aby wyświetlić Twoją skrzynkę odbiorczą."
+#~ msgid "Amarnai needs access to its server and Gmail to show your inbox."
+#~ msgstr "Amarnai potrzebuje dostępu do swojego serwera i Gmaila, aby wyświetlić Twoją skrzynkę odbiorczą."
 
 #: ../../apps/extension/src/App.tsx:52
 #: ../../apps/extension/src/auth/SignInScreen.tsx:13
-msgid "Amarnai needs access to its server and Gmail to work. Please allow access and try again."
-msgstr "Amarnai potrzebuje dostępu do swojego serwera i Gmaila, aby działać. Prosimy o zezwolenie na dostęp i spróbowanie ponownie."
+#~ msgid "Amarnai needs access to its server and Gmail to work. Please allow access and try again."
+#~ msgstr "Amarnai potrzebuje dostępu do swojego serwera i Gmaila, aby działać. Prosimy o zezwolenie na dostęp i spróbowanie ponownie."
+
+#: ../../apps/extension/src/platform/HostPermissionGate.tsx:34
+#, fuzzy
+msgid "Amarnai needs access to its server and your inbox to show your emails."
+msgstr "Amarnai potrzebuje dostępu do swojego serwera i Twojej skrzynki odbiorczej, aby wyświetlić Twoje e-maile."
+
+#: ../../apps/extension/src/App.tsx:52
+#: ../../apps/extension/src/auth/SignInScreen.tsx:13
+msgid "Amarnai needs access to its server and your inbox to work. Please allow access and try again."
+msgstr "Amarnai potrzebuje dostępu do swojego serwera i Twojej skrzynki odbiorczej, aby działać. Proszę zezwolić na dostęp i spróbować ponownie."
 
 #: ../../apps/site/src/lib/seo.ts:63
 #, fuzzy
-msgid "Amarnai reads your Gmail, sorts every thread into the folders you define, and drafts replies for your approval. Reach inbox zero without the busywork."
-msgstr "Amarnai analizuje Twoje wiadomości Gmail, sortuje wątki do zdefiniowanych folderów i przygotowuje odpowiedzi do zatwierdzenia. Osiągnij inbox zero, zapominając o żmudnej pracy."
+#~ msgid "Amarnai reads your Gmail, sorts every thread into the folders you define, and drafts replies for your approval. Reach inbox zero without the busywork."
+#~ msgstr "Amarnai analizuje Twoje wiadomości Gmail, sortuje wątki do zdefiniowanych folderów i przygotowuje odpowiedzi do zatwierdzenia. Osiągnij inbox zero, zapominając o żmudnej pracy."
+
+#: ../../apps/site/src/lib/seo.ts:64
+msgid "Amarnai reads your inbox, sorts every thread into the folders you define, and drafts replies for your approval. Reach inbox zero without the busywork."
+msgstr "Amarnai czyta Twoją skrzynkę, sortuje wątki do zdefiniowanych folderów i przygotowuje wersje robocze odpowiedzi do akceptacji. Osiągnij inbox zero bez wysiłku."
 
 #: ../../apps/site/src/lib/seo.ts:46
-msgid "Amarnai sorts your Gmail into the folders you define, drafts replies for your approval, and explains every call so you reach inbox zero faster."
-msgstr "Amarnai sortuje Twoje wiadomości Gmail do zdefiniowanych folderów, przygotowuje odpowiedzi do zatwierdzenia i podsumowuje każde połączenie, byś szybciej osiągnął inbox zero."
+#~ msgid "Amarnai sorts your Gmail into the folders you define, drafts replies for your approval, and explains every call so you reach inbox zero faster."
+#~ msgstr "Amarnai sortuje Twoje wiadomości Gmail do zdefiniowanych folderów, przygotowuje odpowiedzi do zatwierdzenia i podsumowuje każde połączenie, byś szybciej osiągnął inbox zero."
 
 #: ../../apps/site/src/app/[locale]/page.tsx:50
 #, fuzzy
 #~ msgid "Amarnai sorts your Gmail threads into folders you define, drafts replies for your approval, and explains every decision. Open-source and self-hostable."
 #~ msgstr "Amarnai sortuje Twoje wątki Gmail do zdefiniowanych przez Ciebie folderów, tworzy szkice odpowiedzi do Twojej akceptacji i wyjaśnia każdą decyzję. Otwarty kod źródłowy i możliwość samodzielnego hostowania."
+
+#: ../../apps/site/src/lib/seo.ts:46
+msgid "Amarnai sorts your inbox into the folders you define, drafts replies for your approval, and explains every call so you reach inbox zero faster."
+msgstr "Amarnai sortuje Twoją skrzynkę do zdefiniowanych folderów, tworzy wersje robocze odpowiedzi do Twojej akceptacji i wyjaśnia każdą decyzję, abyś szybciej osiągnął inbox zero."
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:104
 #, fuzzy
@@ -698,8 +735,12 @@ msgid "Amarnai will analyze your senders, labels, and subject keywords (never me
 msgstr "Amarnai przeanalizuje Twoich nadawców, etykiety i słowa kluczowe w temacie (nigdy treści wiadomości), aby zasugerować spersonalizowany zestaw folderów. Możesz przejrzeć i edytować, zanim cokolwiek zostanie zastosowane."
 
 #: ../../apps/site/src/lib/seo.ts:39
-msgid "Amarnai: AI Email Sorter for Gmail"
-msgstr "Amarnai: Sorter e-maili AI dla Gmaila"
+#~ msgid "Amarnai: AI Email Sorter for Gmail"
+#~ msgstr "Amarnai: Sorter e-maili AI dla Gmaila"
+
+#: ../../apps/site/src/lib/seo.ts:39
+msgid "Amarnai: AI Email Sorter for Gmail & Outlook"
+msgstr "Amarnai: Inteligentny sorter e-maili dla Gmaila i Outlooka"
 
 #: ../../apps/site/src/app/[locale]/page.tsx:29
 #, fuzzy
@@ -711,8 +752,12 @@ msgstr "Amarnai: Sorter e-maili AI dla Gmaila"
 #~ msgstr "Amarnai: AI do zarządzania pocztą Gmail."
 
 #: ../../apps/site/src/lib/seo.ts:40
-msgid "Amarnai: Gmail, sorted your way"
-msgstr "Amarnai: Gmail, uporządkowany po Twojemu"
+#~ msgid "Amarnai: Gmail, sorted your way"
+#~ msgstr "Amarnai: Gmail, uporządkowany po Twojemu"
+
+#: ../../apps/site/src/lib/seo.ts:40
+msgid "Amarnai: Sort emails your way"
+msgstr "Amarnai: Sortuj e-maile po swojemu"
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:68
 #, fuzzy
@@ -752,7 +797,7 @@ msgstr "Błąd API {0}"
 msgid "Appearance"
 msgstr "Wygląd"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:295
+#: ../../apps/site/src/components/demo/demo-seed.ts:298
 #, fuzzy
 msgid "Application: Chief of Correspondence"
 msgstr "Zgłoszenie: Szef Korespondencji"
@@ -812,8 +857,8 @@ msgstr "Przypisz wątek"
 msgid "Assign to"
 msgstr "Przypisz do"
 
-#: ../ui/src/emails/ThreadRow.tsx:312
-#: ../ui/src/emails/ThreadRow.tsx:321
+#: ../ui/src/emails/ThreadRow.tsx:314
+#: ../ui/src/emails/ThreadRow.tsx:323
 #: ../ui/src/emails/TriageBar.tsx:63
 #, fuzzy
 msgid "Assign to a member"
@@ -832,8 +877,8 @@ msgstr "Przypisane"
 msgid "Assigned to {assigneeName}"
 msgstr "Przypisano do {assigneeName}"
 
-#: ../ui/src/emails/ThreadRow.tsx:208
-#: ../ui/src/emails/ThreadRow.tsx:320
+#: ../ui/src/emails/ThreadRow.tsx:210
+#: ../ui/src/emails/ThreadRow.tsx:322
 #: ../ui/src/emails/TriageBar.tsx:62
 #, fuzzy
 msgid "Assigned to {assigneeName}. Change assignee"
@@ -851,7 +896,7 @@ msgstr "Co najmniej {PASSWORD_MIN_LENGTH} znaków"
 #~ msgstr "Co najmniej 8 znaków"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:127
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:82
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:88
 #, fuzzy
 msgid "Auto-file notifications to Updates / Other"
 msgstr "Automatycznie przyporządkuj powiadomienia do folderu Aktualizacje / Inne"
@@ -860,7 +905,7 @@ msgstr "Automatycznie przyporządkuj powiadomienia do folderu Aktualizacje / Inn
 msgid "Automated and bulk mail that doesn't fit another folder lands here automatically. This is different from Needs review, which holds threads too ambiguous for the assistant to sort."
 msgstr "Zautomatyzowane i masowe wiadomości, które nie kwalifikują się do innych folderów, trafiają tu automatycznie. Różni się od folderu <Needs review>, gdzie trafiają wątki zbyt niejednoznaczne dla asystenta."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:305
+#: ../../apps/site/src/components/demo/demo-seed.ts:308
 #, fuzzy
 msgid "Automated notice from the Bureau of Royal Appointments. Subject and sender clearly indicate a new application for an open position."
 msgstr "Automatyczne powiadomienie z Biura Królewskich Nominacji. Temat i nadawca wyraźnie wskazują na nowe zgłoszenie na wolne stanowisko."
@@ -871,11 +916,11 @@ msgstr "Automatyczne powiadomienie z Biura Królewskich Nominacji. Temat i nadaw
 msgid "Automated notifications, newsletters, and service updates that don't fit another folder."
 msgstr "Automatyczne powiadomienia, newslettery i aktualizacje usług, które nie pasują do innych folderów."
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:212
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:243
 msgid "Available addresses"
 msgstr "Dostępne adresy"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:271
+#: ../../apps/site/src/components/demo/demo-seed.ts:274
 #, fuzzy
 msgid "Aziru of Amurru"
 msgstr "Aziru z Amurru"
@@ -889,18 +934,22 @@ msgid "Aziru,\n"
 "With regards,"
 msgstr "Aziru,\n\nSłowa Twojej przyjaźni dotarły do nas pomyślnie. Jesteśmy otwarci na wysłuchanie dalszych propozycji rodu Amurru. Prześlij swoje warunki z kolejnym kurierem.\n\nZ wyrazami szacunku,"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:217
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:219
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:25
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:230
-#: ../ui/src/emails/ThreadPreview.tsx:92
+#: ../ui/src/emails/ThreadPreview.tsx:121
 #, fuzzy
 msgid "Back"
 msgstr "Wróć"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:213
+#: ../../apps/site/src/components/landing/MailThreadMock.tsx:62
+msgid "Back to inbox"
+msgstr "Wróć do skrzynki"
+
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:215
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:225
-#: ../ui/src/emails/ThreadPreview.tsx:87
+#: ../ui/src/emails/ThreadPreview.tsx:116
 #, fuzzy
 msgid "Back to list"
 msgstr "Wróć do listy"
@@ -937,7 +986,7 @@ msgid "Billed monthly · 14-day free trial"
 msgstr "Płatne miesięcznie · 14-dniowy bezpłatny okres próbny"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:30
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:257
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:258
 #, fuzzy
 msgid "Billing"
 msgstr "Rozliczenia"
@@ -965,8 +1014,12 @@ msgstr "Członkowie zarządu, istniejący partnerzy funduszu i aktualizacje port
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:385
 #, fuzzy
-msgid "Browse emails easily through your folders. Generate draft replies and copy them to Gmail."
-msgstr "Łatwo przeglądaj e-maile w swoich folderach. Generuj robocze odpowiedzi i kopiuj je do Gmaila."
+#~ msgid "Browse emails easily through your folders. Generate draft replies and copy them to Gmail."
+#~ msgstr "Łatwo przeglądaj e-maile w swoich folderach. Generuj robocze odpowiedzi i kopiuj je do Gmaila."
+
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:416
+msgid "Browse emails easily through your folders. Generate draft replies and copy them to your inbox."
+msgstr "Łatwo przeglądaj e-maile w swoich folderach. Generuj wersje robocze odpowiedzi i kopiuj je do skrzynki odbiorczej."
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:283
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1403
@@ -974,8 +1027,8 @@ msgstr "Łatwo przeglądaj e-maile w swoich folderach. Generuj robocze odpowiedz
 msgid "Browse templates"
 msgstr "Przeglądaj szablony"
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:224
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:246
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:257
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:280
 msgid "Browser extension"
 msgstr "Rozszerzenie przeglądarki"
 
@@ -990,12 +1043,12 @@ msgstr "Stwórz plan"
 #~ msgid "Bulk triage your inbox"
 #~ msgstr "Masowo sortuj swoją skrzynkę odbiorczą"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:310
+#: ../../apps/site/src/components/demo/demo-seed.ts:313
 #, fuzzy
 msgid "Bureau of Royal Appointments"
 msgstr "Biuro Królewskich Nominacji"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:232
+#: ../../apps/site/src/components/demo/demo-seed.ts:235
 #, fuzzy
 msgid "Burna-Buriash II"
 msgstr "Burna-Buriash II"
@@ -1049,10 +1102,12 @@ msgstr "Czy mogę samodzielnie hostować Amarnai?"
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1686
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1773
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:64
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:208
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:275
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:370
 #: ../../apps/web/src/app/(app)/settings/ResetWorkspaceSection.tsx:73
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:182
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:170
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:147
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:207
 #, fuzzy
 msgid "Cancel"
@@ -1093,7 +1148,7 @@ msgstr "Zbiorcze"
 msgid "Change"
 msgstr "Zmień"
 
-#: ../ui/src/emails/ThreadRow.tsx:311
+#: ../ui/src/emails/ThreadRow.tsx:313
 msgid "Change assignee"
 msgstr "Zmień przypisanego"
 
@@ -1133,7 +1188,11 @@ msgstr "Wybierz subskrypcję"
 #~ msgid "Choose a theme, or follow your system setting. Saved on this device."
 #~ msgstr "Wybierz motyw lub użyj ustawienia systemowego. Zapisano na tym urządzeniu."
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:233
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:328
+msgid "Choose email provider"
+msgstr "Wybierz dostawcę poczty"
+
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:267
 #, fuzzy
 msgid "Choose how to preview Amarnai"
 msgstr "Wybierz sposób podglądu Amarnai"
@@ -1175,8 +1234,8 @@ msgstr "Zamknij panel"
 
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:255
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:259
-#: ../ui/src/emails/ThreadPreview.tsx:97
-#: ../ui/src/emails/ThreadPreview.tsx:101
+#: ../ui/src/emails/ThreadPreview.tsx:147
+#: ../ui/src/emails/ThreadPreview.tsx:151
 #, fuzzy
 msgid "Close preview"
 msgstr "Zamknij podgląd"
@@ -1229,30 +1288,54 @@ msgstr "Potwierdź usunięcie"
 msgid "Confirm password"
 msgstr "Potwierdź hasło"
 
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:382
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:391
+#, fuzzy
+msgid "Connect {name}"
+msgstr "Połącz {name}"
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:354
+#, fuzzy
+msgid "Connect {name} to this workspace?"
+msgstr "Połączyć {name} z tym obszarem roboczym?"
+
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:123
+msgid "Connect {providerName}"
+msgstr "Połącz {providerName}"
+
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:158
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:167
+msgid "Connect {secondaryName}"
+msgstr "Połącz {secondaryName}"
+
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:150
+#~ msgid "Connect {secondaryName} instead"
+#~ msgstr "Zamiast tego połącz {secondaryName}"
+
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:170
 #, fuzzy
 msgid "Connect a Gmail inbox to configure sync filters."
 msgstr "Podłącz skrzynkę Gmail, aby skonfigurować filtry synchronizacji."
 
 #: ../../apps/extension/src/App.tsx:93
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:138
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:361
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:271
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:76
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:371
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:406
 #, fuzzy
 msgid "Connect Gmail"
 msgstr "Połącz z Gmailem"
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:349
 #, fuzzy
-msgid "Connect Gmail account"
-msgstr "Połącz konto Gmail"
+#~ msgid "Connect Gmail account"
+#~ msgstr "Połącz konto Gmail"
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:346
 #, fuzzy
-msgid "Connect Gmail account button"
-msgstr "Przycisk połączenia z kontem Gmail"
+#~ msgid "Connect Gmail account button"
+#~ msgstr "Przycisk połączenia z kontem Gmail"
 
 #: ../../apps/site/src/components/landing/FinalCTASection.tsx:11
 #, fuzzy
@@ -1260,8 +1343,12 @@ msgstr "Przycisk połączenia z kontem Gmail"
 #~ msgstr "Połącz Gmail, a Amarnai zacznie sortować w ciągu minut. Rozliczenie jest za obszar roboczy. Sortuj tyle maili, ile chcesz, z uwzględnieniem całej historii."
 
 #: ../../apps/site/src/components/landing/FinalCTASection.tsx:11
-msgid "Connect Gmail and Amarnai starts sorting within minutes. Pricing is per workspace. Sorts new mail as it arrives, and works through years of backlog."
-msgstr "Połącz Gmaila, a Amarnai zacznie sortować w kilka minut. Rozliczanie za obszar roboczy. Sortuje nowe wiadomości na bieżąco i porządkuje wieloletnie zaległości."
+#~ msgid "Connect Gmail and Amarnai starts sorting within minutes. Pricing is per workspace. Sorts new mail as it arrives, and works through years of backlog."
+#~ msgstr "Połącz Gmaila, a Amarnai zacznie sortować w kilka minut. Rozliczanie za obszar roboczy. Sortuje nowe wiadomości na bieżąco i porządkuje wieloletnie zaległości."
+
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:364
+msgid "Connect Gmail button"
+msgstr "Połącz Gmail"
 
 #: ../../apps/extension/src/App.tsx:38
 #~ msgid "Connect Gmail on the web"
@@ -1277,10 +1364,35 @@ msgstr "Połącz Gmail, by wygenerować plan ze skrzynki odbiorczej"
 msgid "Connect Gmail to start triaging"
 msgstr "Połącz Gmail, by rozpocząć porządkowanie"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:403
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:387
+#, fuzzy
+msgid "Connect inbox"
+msgstr "Podłącz skrzynkę"
+
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:347
+#~ msgid "Connect inbox button"
+#~ msgstr "Przycisk Podłącz skrzynkę"
+
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:433
 #, fuzzy
 msgid "Connect once, generate your plan once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
 msgstr "Połącz raz, wygeneruj plan raz, a Amarnai zajmie się nowymi wiadomościami i tysiącami wątków, które już masz w skrzynce odbiorczej."
+
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:151
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:369
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:414
+#, fuzzy
+msgid "Connect Outlook"
+msgstr "Połącz Outlook"
+
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:363
+msgid "Connect Outlook button"
+msgstr "Połącz Outlook"
+
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:84
+#, fuzzy
+msgid "Connect your {providerName} inbox"
+msgstr "Połącz swoją skrzynkę {providerName}"
 
 #: ../../apps/extension/src/App.tsx:89
 msgid "Connect your Gmail account to start triaging."
@@ -1293,13 +1405,45 @@ msgstr "Połącz swoje konto Gmail, aby zsynchronizować skrzynkę odbiorczą z 
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:44
 #, fuzzy
-msgid "Connect your Gmail inbox"
-msgstr "Połącz swoją skrzynkę Gmail"
+#~ msgid "Connect your Gmail inbox"
+#~ msgstr "Połącz swoją skrzynkę Gmail"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:99
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:76
+msgid "Connect your inbox"
+msgstr "Połącz swoją skrzynkę"
+
+#: ../../apps/site/src/components/landing/FinalCTASection.tsx:11
+msgid "Connect your inbox and Amarnai starts sorting within minutes. Pricing is per workspace. Sorts new mail as it arrives, and works through years of backlog."
+msgstr "Podłącz skrzynkę, a Amarnai zacznie sortować e-maile w ciągu kilku minut. Ceny naliczane są za przestrzeń roboczą. Sortuje nowe wiadomości zaraz po nadejściu i porządkuje zaległości z lat ubiegłych."
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:348
+#, fuzzy
+msgid "Connecting {name} will permanently remove the sorted email saved from {retainedAddress}. Your folders and settings are kept."
+msgstr "Połączenie {name} trwale usunie posortowane wiadomości zapisane z {retainedAddress}. Foldery i ustawienia zostają zachowane."
+
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:131
+msgid "Connecting {secondaryName} will permanently remove the sorted email saved from {retainedAddress}. Your folders and settings are kept."
+msgstr "Połączenie {secondaryName} trwale usunie posortowane wiadomości zapisane z {retainedAddress}. Foldery i ustawienia zostają zachowane."
+
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:138
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:149
+msgid "Connecting…"
+msgstr "Łączenie…"
+
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:58
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:162
 #, fuzzy
 msgid "Connection failed. Please try again."
 msgstr "Połączenie nie powiodło się. Spróbuj ponownie."
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:363
+#, fuzzy
+msgid "Continue to {name}"
+msgstr "Przejdź do {name}"
+
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:140
+msgid "Continue to {secondaryName}"
+msgstr "Przejdź do {secondaryName}"
 
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:156
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:100
@@ -1343,10 +1487,14 @@ msgstr "Skopiowano"
 msgid "Copy"
 msgstr "Kopiuj"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:53
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:69
 #, fuzzy
 msgid "Could not access your Gmail inbox. Make sure the Gmail API is enabled and the gmail.readonly scope is added to the OAuth consent screen in Google Cloud Console."
 msgstr "Nie udało się uzyskać dostępu do Twojej skrzynki Gmail. Upewnij się, że interfejs Gmail API jest włączony, a zakres gmail.readonly został dodany do ekranu zgody OAuth w Google Cloud Console."
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:91
+msgid "Could not access your Outlook inbox. Please try again."
+msgstr "Nie można uzyskać dostępu do skrzynki odbiorczej Outlook. Spróbuj ponownie."
 
 #: ../../apps/mobile/src/components/BlacklistSheet.tsx:66
 #: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:59
@@ -1419,7 +1567,7 @@ msgid "Could not open billing management."
 msgstr "Nie udało się otworzyć zarządzania rozliczeniami."
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:89
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:108
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:114
 #, fuzzy
 msgid "Could not queue rescan. Please try again."
 msgstr "Nie udało się zaplanować ponownego skanowania. Spróbuj ponownie."
@@ -1484,21 +1632,21 @@ msgstr "Nie udało się zaktualizować ustawienia przypomnienia."
 msgid "Could not upgrade"
 msgstr "Nie udało się uaktualnić"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:55
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:71
 #, fuzzy
 msgid "Could not verify your Google account. Please try again."
 msgstr "Nie udało się zweryfikować konta Google. Spróbuj ponownie."
 
-#: ../../apps/extension/src/panel/TriageGate.tsx:81
+#: ../../apps/extension/src/panel/TriageGate.tsx:85
 msgid "Couldn't load your inbox. Check your connection and reopen the panel."
 msgstr "Nie udało się załadować Twojej skrzynki odbiorczej. Sprawdź swoje połączenie i otwórz ponownie panel."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:406
+#: ../../apps/site/src/components/demo/demo-seed.ts:409
 #, fuzzy
 msgid "Council convening: season of Shemu"
 msgstr "Zwołanie rady: sezon Shemu"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:416
+#: ../../apps/site/src/components/demo/demo-seed.ts:419
 #, fuzzy
 msgid "Council preparation request from a known royal ally. Sender domain and context clearly match the Current investors folder."
 msgstr "Prośba o przygotowanie rady od znanego sojusznika królewskiego. Domena nadawcy i kontekst wyraźnie pasują do folderu Bieżący inwestorzy."
@@ -1593,7 +1741,7 @@ msgid "Customer support, onboarding, product feedback, churn, and success conver
 msgstr "Obsługa klienta, wdrożenie, opinie o produkcie, rezygnacje i rozmowy o sukcesach."
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:29
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:156
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:157
 #: ../ui/src/i18n/taxonomy-template-messages.ts:53
 #, fuzzy
 msgid "Customers"
@@ -1706,7 +1854,7 @@ msgstr "Usuwanie…"
 msgid "Describe what kinds of emails belong here: who they come from and what they are about. Be specific and use the actual names, topics, and words that show up in those emails. Describe what the emails are, not what you plan to do about them. The clearer your description, the more accurately your email is sorted here."
 msgstr "Opisz, jakiego rodzaju e-maile tu należą: od kogo pochodzą i czego dotyczą. Bądź precyzyjny i używaj faktycznych nazw, tematów i słów, które pojawiają się w tych wiadomościach. Opisz, czym są e-maile, a nie to, co zamierzasz z nimi zrobić. Im jaśniejszy opis, tym dokładniej e-mail zostanie tu posortowany."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:372
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:401
 #, fuzzy
 msgid "Describe your folders"
 msgstr "Opisz swoje foldery"
@@ -1718,7 +1866,7 @@ msgid "Description"
 msgstr "Opis"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:137
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:85
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:91
 #, fuzzy
 msgid "Detected notifications, newsletters, and service updates are filed to your catch-all folder without using AI. Requires the <0>Updates / Other</0> folder from a taxonomy template."
 msgstr "Wykryte powiadomienia, newslettery i aktualizacje usług są przenoszone do folderu zbiorczego bez użycia AI. Wymaga folderu <0>Aktualizacje / Inne</0> z szablonu taksonomii."
@@ -1734,6 +1882,10 @@ msgstr "Odrzuć"
 msgid "Disconnect"
 msgstr "Odłącz"
 
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:246
+msgid "Disconnect {providerName}"
+msgstr "Rozłącz {providerName}"
+
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:96
 #, fuzzy
 msgid "Disconnect & erase data"
@@ -1745,7 +1897,6 @@ msgid "Disconnect failed"
 msgstr "Odłączenie nie powiodło się"
 
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:170
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:179
 #, fuzzy
 msgid "Disconnect Gmail"
 msgstr "Odłącz Gmaila"
@@ -1761,37 +1912,45 @@ msgstr "Odłączyć Gmaila?"
 msgid "Disconnected"
 msgstr "Odłączono"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:227
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:295
 #, fuzzy
 msgid "Disconnected from this workspace. {erasedNote} Amarnai still has access because this mailbox is connected in another workspace. To fully revoke access, remove Amarnai from your <0/>."
 msgstr "Odłączono od tego obszaru roboczego. {erasedNote} Amarnai nadal ma dostęp, ponieważ ta skrzynka pocztowa jest połączona w innym obszarze roboczym. Aby całkowicie odwołać dostęp, usuń Amarnai z <0/>."
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:243
 #, fuzzy
-msgid "Disconnected. {erasedNote} Revocation at Google could not be confirmed. You can remove Amarnai from your <0/>."
-msgstr "Odłączono. {erasedNote} Nie udało się potwierdzić odwołania dostępu w Google. Możesz usunąć Amarnai z <0/>."
+#~ msgid "Disconnected. {erasedNote} Revocation at Google could not be confirmed. You can remove Amarnai from your <0/>."
+#~ msgstr "Odłączono. {erasedNote} Nie udało się potwierdzić odwołania dostępu w Google. Możesz usunąć Amarnai z <0/>."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:252
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:311
+msgid "Disconnected. {erasedNote} To fully revoke Amarnai's access, remove it from your <0/>."
+msgstr "Rozłączono. {erasedNote} Aby całkowicie odwołać dostęp Amarnai, usuń ją z <0/>."
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:319
 #, fuzzy
 msgid "Disconnected. Amarnai is no longer syncing this inbox."
 msgstr "Odłączono. Amarnai nie synchronizuje już tej skrzynki odbiorczej."
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:236
 #, fuzzy
-msgid "Disconnected. Amarnai's access to this mailbox was revoked at Google. {erasedNote}"
-msgstr "Odłączono. Dostęp Amarnai do tej skrzynki pocztowej został odwołany w Google. {erasedNote}"
+#~ msgid "Disconnected. Amarnai's access to this mailbox was revoked at Google. {erasedNote}"
+#~ msgstr "Odłączono. Dostęp Amarnai do tej skrzynki pocztowej został odwołany w Google. {erasedNote}"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:200
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:304
+msgid "Disconnected. Amarnai's access to this mailbox was revoked.{erasedNote}"
+msgstr "Rozłączono. Dostęp Amarnai do tej skrzynki został odwołany.{erasedNote}"
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:267
 #, fuzzy
 msgid "Disconnecting…"
 msgstr "Odłączanie…"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:121
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:188
 #, fuzzy
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is also connected elsewhere in Amarnai. To fully revoke access, remove Amarnai from your <0/>."
 msgstr "Odłącza ten obszar roboczy. Amarnai zachowuje dostęp, ponieważ ta skrzynka pocztowa jest połączona także w innym miejscu w Amarnai. Aby całkowicie odwołać dostęp, usuń Amarnai z <0/>."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:116
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:183
 #, fuzzy
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "Odłącza ten obszar roboczy. Amarnai zachowuje dostęp, ponieważ ta skrzynka pocztowa jest nadal połączona w {sharedNames}."
@@ -1805,7 +1964,7 @@ msgstr "Odłącza ten obszar roboczy. Amarnai zachowuje dostęp, ponieważ ta sk
 #: ../../apps/web/src/components/NotificationBell.tsx:179
 #: ../../apps/web/src/components/NotificationBell.tsx:180
 #: ../ui/src/AppDownloadBanner.tsx:80
-#: ../ui/src/emails/MockEmailsPage.tsx:270
+#: ../ui/src/emails/MockEmailsPage.tsx:288
 #, fuzzy
 msgid "Dismiss"
 msgstr "Odrzuć"
@@ -1847,7 +2006,7 @@ msgstr "Nie masz konta? <0>Zarejestruj się</0>"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:278
 #: ../../apps/mobile/src/components/ThreadRow.tsx:35
-#: ../ui/src/emails/ThreadRow.tsx:200
+#: ../ui/src/emails/ThreadRow.tsx:202
 #, fuzzy
 msgid "Done"
 msgstr "Gotowe"
@@ -1862,7 +2021,7 @@ msgstr "Gotowe · cofnij"
 msgid "Downgrade to {planName}"
 msgstr "Przejdź na plan {planName}"
 
-#: ../ui/src/emails/ThreadRow.tsx:262
+#: ../ui/src/emails/ThreadRow.tsx:264
 #, fuzzy
 msgid "draft"
 msgstr "szkic"
@@ -1877,14 +2036,14 @@ msgstr "Szkic"
 msgid "Draft failed · tap to retry"
 msgstr "Szkicowanie nie powiodło się · stuknij, aby ponowić"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:335
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:345
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:360
 #, fuzzy
 msgid "Draft generation failed. Try again."
 msgstr "Generowanie szkicu nie powiodło się. Spróbuj ponownie."
 
 #: ../../apps/mobile/src/components/DraftSheet.tsx:63
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:263
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:264
 #: ../ui/src/emails/SuggestedDraftCard.tsx:47
 #, fuzzy
 msgid "Draft reply"
@@ -1902,7 +2061,7 @@ msgid "Draft style guidance"
 msgstr "Wskazówki dotyczące stylu szkicu"
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:106
-#: ../ui/src/emails/ThreadRow.tsx:256
+#: ../ui/src/emails/ThreadRow.tsx:258
 #, fuzzy
 msgid "Drafting…"
 msgstr "Szkicowanie…"
@@ -1912,7 +2071,7 @@ msgstr "Szkicowanie…"
 msgid "Drag and connect. It's fully interactive."
 msgstr "Przeciągnij i połącz. Jest w pełni interaktywny."
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:276
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:310
 #, fuzzy
 msgid "Drag to resize"
 msgstr "Przeciągnij, by zmienić rozmiar"
@@ -1979,7 +2138,7 @@ msgstr "Adres e-mail do zablokowania"
 msgid "Email address to invite"
 msgstr "Adres e-mail do zaproszenia"
 
-#: ../../apps/site/src/lib/seo.ts:51
+#: ../../apps/site/src/lib/seo.ts:52
 #, fuzzy
 msgid "email organizer"
 msgstr "organizator e-maili"
@@ -2075,7 +2234,7 @@ msgstr "Wpis"
 msgid "Every account starts with a free Personal workspace, no card required. Create more or upgrade whenever your needs grow."
 msgstr "Każde konto zaczyna się od darmowej przestrzeni roboczej Personal, bez wymaganej karty. Twórz więcej lub ulepszaj w miarę rosnących potrzeb."
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:159
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:190
 #, fuzzy
 msgid "Every email goes where it belongs."
 msgstr "Każdy e-mail trafia tam, gdzie jego miejsce."
@@ -2089,7 +2248,7 @@ msgstr "Każdy e-mail trafia tam, gdzie jego miejsce."
 msgid "Every thread in your inbox."
 msgstr "Każdy wątek w Twojej skrzynce."
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:162
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:193
 #, fuzzy
 msgid "Every thread lands in one of your folders, exactly where you would expect to find it. When a reply is needed, a draft is one click away, ready for your edits and never sent without them."
 msgstr "Każdy wątek trafia do odpowiedniego folderu, dokładnie tam, gdzie się go spodziewasz. Kiedy potrzebna jest odpowiedź, szkic jest na wyciągnięcie ręki, gotowy do edycji i nigdy nie wysłany bez Twojej zgody."
@@ -2217,7 +2376,7 @@ msgstr "Panel filtrów"
 msgid "Finance"
 msgstr "Finanse"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:383
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:413
 #, fuzzy
 msgid "Find and draft"
 msgstr "Znajdź i szkicuj"
@@ -2226,7 +2385,7 @@ msgstr "Znajdź i szkicuj"
 msgid "Five things keep your inbox safe. First, Amarnai is read-only by design: the permissions you grant through Google make it impossible for Amarnai to send, delete, or change any email. Second, Amarnai has passed Google's security review, completing the CASA security assessment required for any app that accesses Gmail. Third, you stay in control: replies stay drafts until you say so, nothing is ever sent on your behalf, and you can disconnect Amarnai at any time. Fourth, no email bodies are stored: Amarnai keeps labels and metadata, never the contents of your messages. Fifth, the code is public, so anyone can inspect exactly what touches your email."
 msgstr "Pięć zasad, które zapewniają bezpieczeństwo Twojej skrzynki. Po pierwsze, Amarnai z założenia działa w trybie tylko do odczytu: uprawnienia, które nadajesz przez Google, uniemożliwiają Amarnai wysyłanie, usuwanie lub zmienianie jakichkolwiek e-maili. Po drugie, Amarnai przeszedł kontrolę bezpieczeństwa Google, uzyskując certyfikat CASA wymagany dla każdej aplikacji uzyskującej dostęp do Gmaila. Po trzecie, masz pełną kontrolę: odpowiedzi pozostają w szkicach, dopóki nie zatwierdzisz wysyłki, nic nie jest wysyłane w Twoim imieniu, a Amarnai możesz odłączyć w dowolnym momencie. Po czwarte, treść e-maili nie jest przechowywana: Amarnai przechowuje tylko etykiety i metadane, nigdy zawartość Twoich wiadomości. Po piąte, kod jest publiczny, więc każdy może sprawdzić, jak dokładnie Amarnai przetwarza Twoje e-maile."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:266
+#: ../../apps/site/src/components/demo/demo-seed.ts:269
 #, fuzzy
 msgid "Flagged as alliance/investor intro based on language (\"mutual benefit\", \"long-standing friendship\"). Confidence is moderate; Aziru has been known to send similar overtures to multiple courts."
 msgstr "Oznaczono jako propozycję sojuszu/inwestycji na podstawie sformułowań („wzajemne korzyści”, „długoletnia przyjaźń”). Stopień pewności jest umiarkowany; Aziru wysyłał podobne oferty do wielu dworów."
@@ -2236,7 +2395,12 @@ msgstr "Oznaczono jako propozycję sojuszu/inwestycji na podstawie sformułowań
 msgid "Flight and hotel bookings, travel itineraries, visa applications, and trip confirmations."
 msgstr "Rezerwacje lotów i hoteli, plany podróży, wnioski wizowe i potwierdzenia wyjazdów."
 
-#: ../ui/src/emails/MockEmailsPage.tsx:171
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:75
+#, fuzzy
+msgid "Focused"
+msgstr "Skupiony"
+
+#: ../ui/src/emails/MockEmailsPage.tsx:186
 msgid "folder"
 msgstr "folder"
 
@@ -2313,7 +2477,7 @@ msgstr "Dla większych organizacji i zespołów o dużym natężeniu pracy."
 msgid "For larger organizations."
 msgstr "Dla większych organizacji."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:261
+#: ../../apps/site/src/components/demo/demo-seed.ts:264
 #, fuzzy
 msgid "For many years our houses have been as brothers. I write now to propose that we formalise this friendship for the benefit of both our peoples."
 msgstr "Od wielu lat nasze rody są jak bracia. Piszę teraz, aby zaproponować sformalizowanie tej przyjaźni dla dobra obu naszych ludów."
@@ -2410,10 +2574,10 @@ msgstr "Wygeneruj nowy szkic. Zalicza się do miesięcznego limitu."
 msgid "Generate a plan from your inbox"
 msgstr "Wygeneruj plan ze skrzynki odbiorczej"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:314
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:324
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:146
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:338
-#: ../ui/src/emails/ThreadPreview.tsx:162
+#: ../ui/src/emails/ThreadPreview.tsx:253
 #, fuzzy
 msgid "Generate draft reply"
 msgstr "Wygeneruj szkic odpowiedzi"
@@ -2482,6 +2646,11 @@ msgstr "Pobierz aplikację."
 msgid "gmail ai assistant"
 msgstr "Asystent AI Gmail."
 
+#: ../../apps/site/src/components/landing/FAQSection.tsx:32
+#, fuzzy
+msgid "Gmail and Outlook filters just slap a label or category on each message and leave it in the same crowded inbox. Amarnai reads every thread the way a person would and lays them out in a clean workspace where related threads sit together, each with the reasoning behind its placement, so you get a calmer view instead of one more buried label. Spam and promotions are kept out automatically unless you turn them on in settings, and anything Amarnai is unsure about is flagged for your review."
+msgstr "Filtry Gmaila i Outlooka jedynie dodają etykietę lub kategorię do wiadomości, zostawiając je w tej samej, zatłoczonej skrzynce. Amarnai czyta każdy wątek tak, jak człowiek i układa je w uporządkowanej przestrzeni roboczej, gdzie powiązane wątki są zgrupowane, każdy z wyjaśnieniem jego umiejscowienia. Dzięki temu uzyskujesz jaśniejszy obraz, zamiast kolejnej zagubionej etykiety. Spam i promocje są automatycznie usuwane, chyba że włączysz je w ustawieniach, a wszystko, co Amarnai uzna za niepewne, jest oznaczane do Twojej weryfikacji."
+
 #: ../../apps/extension/src/panel/notificationText.ts:18
 #: ../../apps/mobile/src/data/notificationView.ts:53
 #: ../../apps/web/src/lib/notifications.ts:72
@@ -2495,13 +2664,13 @@ msgstr "Gmail rozłączony. Amarnai przestało synchronizować tę skrzynkę odb
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:32
 #, fuzzy
-msgid "Gmail filters just slap a label on each message and leave it in the same crowded inbox. Amarnai reads every thread the way a person would and lays them out in a clean workspace where related threads sit together, each with the reasoning behind its placement, so you get a calmer view instead of one more buried label. Spam and promotions are kept out automatically unless you turn them on in settings, and anything Amarnai is unsure about is flagged for your review."
-msgstr "Filtry Gmaila jedynie przypinają etykietę do wiadomości, zostawiając ją w tej samej przepełnionej skrzynce. Amarnai czyta każdą konwersację jak człowiek i porządkuje je w przejrzystej przestrzeni roboczej, gdzie powiązane wątki są zebrane razem, a każdy z nich zawiera uzasadnienie swojego miejsca. Dzięki temu uzyskujesz uporządkowany widok zamiast kolejnej zagubionej etykiety. Spam i promocje są automatycznie usuwane, chyba że włączysz je w ustawieniach, a wszystko, czego Amarnai nie jest pewne, zostaje oznaczone do Twojej weryfikacji."
+#~ msgid "Gmail filters just slap a label on each message and leave it in the same crowded inbox. Amarnai reads every thread the way a person would and lays them out in a clean workspace where related threads sit together, each with the reasoning behind its placement, so you get a calmer view instead of one more buried label. Spam and promotions are kept out automatically unless you turn them on in settings, and anything Amarnai is unsure about is flagged for your review."
+#~ msgstr "Filtry Gmaila jedynie przypinają etykietę do wiadomości, zostawiając ją w tej samej przepełnionej skrzynce. Amarnai czyta każdą konwersację jak człowiek i porządkuje je w przejrzystej przestrzeni roboczej, gdzie powiązane wątki są zebrane razem, a każdy z nich zawiera uzasadnienie swojego miejsca. Dzięki temu uzyskujesz uporządkowany widok zamiast kolejnej zagubionej etykiety. Spam i promocje są automatycznie usuwane, chyba że włączysz je w ustawieniach, a wszystko, czego Amarnai nie jest pewne, zostaje oznaczone do Twojej weryfikacji."
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:132
 #, fuzzy
-msgid "Gmail Inbox"
-msgstr "Skrzynka odbiorcza Gmail."
+#~ msgid "Gmail Inbox"
+#~ msgstr "Skrzynka odbiorcza Gmail."
 
 #: ../ui/src/pricing/planMessages.ts:71
 #, fuzzy
@@ -2519,7 +2688,7 @@ msgstr "Aktywna synchronizacja Gmail na żywo."
 #~ msgid "Gmail marked as important"
 #~ msgstr "Oznaczone jako ważne w Gmailu."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:51
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:67
 #, fuzzy
 msgid "Gmail read-only access was not granted. Please try again and approve the requested permission."
 msgstr "Dostęp tylko do odczytu w Gmailu nie został przyznany. Spróbuj ponownie i zatwierdź żądane uprawnienia."
@@ -2530,8 +2699,8 @@ msgid "Gmail Sort Tester"
 msgstr "Tester sortowania Gmail."
 
 #: ../../apps/site/src/components/landing/Footer.tsx:15
-msgid "Gmail, sorted your way."
-msgstr "Gmail, uporządkowany po Twojemu."
+#~ msgid "Gmail, sorted your way."
+#~ msgstr "Gmail, uporządkowany po Twojemu."
 
 #: ../../apps/web/src/app/not-found.tsx:41
 #, fuzzy
@@ -2549,7 +2718,7 @@ msgstr "Przejdź do {0}"
 msgid "Go to sign in"
 msgstr "Przejdź do logowania."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:217
+#: ../../apps/site/src/components/demo/demo-seed.ts:220
 #, fuzzy
 msgid "Gold balance: third consignment overdue"
 msgstr "Saldo złota: trzecia dostawa zaległa."
@@ -2559,12 +2728,12 @@ msgstr "Saldo złota: trzecia dostawa zaległa."
 #~ msgid "Google account email"
 #~ msgstr "Adres e-mail konta Google."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:34
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:49
 #, fuzzy
 msgid "Google Account permissions"
 msgstr "Uprawnienia konta Google."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:49
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:65
 #, fuzzy
 msgid "Google could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the Gmail callback URL is registered in Google Cloud Console."
 msgstr "Google nie mógł dokończyć autoryzacji. Link mógł wygasnąć: spróbuj ponownie. Jeśli problem będzie się powtarzał, sprawdź, czy adres URL zwrotny Gmaila jest zarejestrowany w Google Cloud Console."
@@ -2656,9 +2825,13 @@ msgid "How does Amarnai's plan work?"
 msgstr "Jak działa plan Amarnai?"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:31
+msgid "How is Amarnai different from Gmail and Outlook filters?"
+msgstr "Czym Amarnai różni się od filtrów Gmaila i Outlooka?"
+
+#: ../../apps/site/src/components/landing/FAQSection.tsx:31
 #, fuzzy
-msgid "How is Amarnai different from Gmail's filters and labels?"
-msgstr "Czym Amarnai różni się od filtrów i etykiet Gmaila?"
+#~ msgid "How is Amarnai different from Gmail's filters and labels?"
+#~ msgstr "Czym Amarnai różni się od filtrów i etykiet Gmaila?"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:51
 #, fuzzy
@@ -2677,7 +2850,7 @@ msgstr "Jak to działa."
 msgid "How to write a good description"
 msgstr "Jak napisać dobry opis."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:274
+#: ../../apps/site/src/components/demo/demo-seed.ts:277
 #, fuzzy
 msgid "I write to propose that we formalise our friendship."
 msgstr "Piszę z propozycją sformalizowania naszej przyjaźni."
@@ -2741,7 +2914,7 @@ msgstr "Importowanie zastąpi Twój obecny plan <0>{0} folderami</0> i <1>{1} ś
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:183
 #: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:45
 #: ../../apps/site/src/components/demo/demo-seed.ts:28
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:150
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:151
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:512
 #: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:57
 #, fuzzy
@@ -2760,25 +2933,25 @@ msgid "Inbox import complete"
 msgstr "Import skrzynki odbiorczej zakończony"
 
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:145
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:154
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:167
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:221
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:234
 #, fuzzy
 msgid "Inbox sync"
 msgstr "Synchronizacja skrzynki odbiorczej"
 
-#: ../../apps/site/src/lib/seo.ts:52
+#: ../../apps/site/src/lib/seo.ts:53
 #, fuzzy
 msgid "inbox zero"
 msgstr "Pusta skrzynka odbiorcza"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:116
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:72
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:77
 #, fuzzy
 msgid "Include Promotions"
 msgstr "Uwzględnij promocje"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:105
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:62
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:66
 #, fuzzy
 msgid "Include spam"
 msgstr "Uwzględnij spam"
@@ -2788,7 +2961,7 @@ msgstr "Uwzględnij spam"
 msgid "Included"
 msgstr "Uwzględnione"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:379
+#: ../../apps/site/src/components/demo/demo-seed.ts:382
 #, fuzzy
 msgid "Informal message with no clear category: personal visit or political audience? Tone is personal but sender is a known vassal governor. Routed to Other with low confidence."
 msgstr "Nieformalna wiadomość bez wyraźnej kategorii: wizyta osobista czy audiencja polityczna? Ton jest osobisty, ale nadawca to znany wasalny gubernator. Skierowano do Innych z niską pewnością."
@@ -2804,13 +2977,17 @@ msgid "Install the Amarnai browser extension"
 msgstr "Zainstaluj rozszerzenie Amarnai do przeglądarki"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:20
-msgid "Instead of scanning a crowded inbox, you open Amarnai and find your threads already grouped into the folders you care about, so you can work through customer questions, investor updates, or hiring replies in focused batches. Each thread comes with a suggested folder and the reasoning behind it, and you can draft a reply or jump straight to the thread in Gmail with one click. Sorting that used to take an hour takes minutes."
-msgstr "Zamiast skanować przepełnioną skrzynkę odbiorczą, otwierasz Amarnai i znajdujesz swoje wątki już pogrupowane w foldery, na których Ci zależy, dzięki czemu możesz skupić się na pytaniach klientów, aktualizacjach od inwestorów lub odpowiedziach rekrutacyjnych w uporządkowanych partiach. Każdy wątek zawiera sugerowany folder i uzasadnienie, a Ty możesz sporządzić odpowiedź lub przejść bezpośrednio do wątku w Gmailu jednym kliknięciem. Sortowanie, które zajmowało godzinę, teraz trwa minuty."
+#~ msgid "Instead of scanning a crowded inbox, you open Amarnai and find your threads already grouped into the folders you care about, so you can work through customer questions, investor updates, or hiring replies in focused batches. Each thread comes with a suggested folder and the reasoning behind it, and you can draft a reply or jump straight to the thread in Gmail with one click. Sorting that used to take an hour takes minutes."
+#~ msgstr "Zamiast skanować przepełnioną skrzynkę odbiorczą, otwierasz Amarnai i znajdujesz swoje wątki już pogrupowane w foldery, na których Ci zależy, dzięki czemu możesz skupić się na pytaniach klientów, aktualizacjach od inwestorów lub odpowiedziach rekrutacyjnych w uporządkowanych partiach. Każdy wątek zawiera sugerowany folder i uzasadnienie, a Ty możesz sporządzić odpowiedź lub przejść bezpośrednio do wątku w Gmailu jednym kliknięciem. Sortowanie, które zajmowało godzinę, teraz trwa minuty."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:16
 #, fuzzy
 #~ msgid "Instead of scanning a crowded inbox, you open Amarnai and find your threads already grouped into the folders you care about, so you can work through customer questions, investor updates, or hiring replies in focused batches. Each thread comes with a suggested folder and the reasoning behind it, and you can draft a reply or jump straight to the thread in Gmail with one click. Triage that used to take an hour takes minutes."
 #~ msgstr "Zamiast przeglądać przepełnioną skrzynkę odbiorczą, otwierasz Amarnai i znajdujesz swoje wątki już pogrupowane w foldery, na których Ci zależy. Dzięki temu możesz skupić się na pytaniach klientów, aktualizacjach od inwestorów czy odpowiedziach na rekrutację, pracując w zorganizowanych partiach. Każdy wątek ma sugerowany folder i uzasadnienie, a Ty możesz od razu zredagować odpowiedź lub przejść do wątku w Gmailu jednym kliknięciem. Segregacja, która kiedyś zajmowała godzinę, teraz trwa minuty."
+
+#: ../../apps/site/src/components/landing/FAQSection.tsx:20
+msgid "Instead of scanning a crowded inbox, you open Amarnai and find your threads already grouped into the folders you care about, so you can work through customer questions, investor updates, or hiring replies in focused batches. Each thread comes with a suggested folder and the reasoning behind it, and you can draft a reply or jump straight to the thread in your inbox with one click. Sorting that used to take an hour takes minutes."
+msgstr "Zamiast skanować zatłoczoną skrzynkę, otwierasz Amarnai i znajdujesz swoje wątki już pogrupowane w folderach, na których Ci zależy. Dzięki temu możesz odpowiadać na pytania klientów, aktualizacje dla inwestorów czy odpowiedzi rekrutacyjne w skoncentrowanych blokach. Każdy wątek zawiera sugerowany folder i uzasadnienie jego przyporządkowania, a Ty możesz przygotować odpowiedź lub jednym kliknięciem przejść bezpośrednio do wątku w swojej skrzynce. Sortowanie, które zajmowało godzinę, teraz trwa minuty."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:39
 #, fuzzy
@@ -2844,7 +3021,7 @@ msgid "Invalid taxonomy file: {detail}"
 msgstr "Nieprawidłowy plik taksonomii: {detail}"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:32
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:162
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:163
 #: ../ui/src/i18n/taxonomy-template-messages.ts:51
 #, fuzzy
 msgid "Investors"
@@ -2891,8 +3068,12 @@ msgstr "Faktury, paragony oraz pytania dotyczące rozliczeń od klientów i dost
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:11
 #, fuzzy
-msgid "Is connecting my Gmail to Amarnai safe?"
-msgstr "Czy połączenie mojego konta Gmail z Amarnai jest bezpieczne?"
+#~ msgid "Is connecting my Gmail to Amarnai safe?"
+#~ msgstr "Czy połączenie mojego konta Gmail z Amarnai jest bezpieczne?"
+
+#: ../../apps/site/src/components/landing/FAQSection.tsx:11
+msgid "Is connecting my inbox to Amarnai safe?"
+msgstr "Czy podłączenie mojej skrzynki do Amarnai jest bezpieczne?"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:47
 #, fuzzy
@@ -2954,6 +3135,10 @@ msgstr "King Aziru"
 msgid "King Aziru has consulted every clay tablet in his archive, but this page does not appear to exist."
 msgstr "King Aziru przeszukał każdą glinianą tabliczkę w swoim archiwum, ale tej strony najwyraźniej nie ma."
 
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:95
+msgid "King Aziru is ready to sort your email threads. Connect your account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
+msgstr "King Aziru jest gotów sortować Twoje wątki e-mail. Połącz swoje konto, aby zacząć. Amarnai łączy się z <0>dostępem tylko do odczytu</0> i <1>nigdy nie wysyła, nie usuwa ani niczego nie zmienia</1>. Twoja skrzynka należy do Ciebie."
+
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:41
 #, fuzzy
 #~ msgid "King Aziru is ready to sort your email threads. Connect your Gmail account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
@@ -2968,7 +3153,7 @@ msgstr "Język"
 #. placeholder {0}: formatDate(syncStatus.lastSyncedAt, _(msg`Never`))
 #. placeholder {0}: formatDate(syncStatus.lastSyncedAt, i18n)
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:154
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:158
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:225
 #, fuzzy
 msgid "Last synced {0}"
 msgstr "Ostatnia synchronizacja: {0}"
@@ -2976,7 +3161,7 @@ msgstr "Ostatnia synchronizacja: {0}"
 #. placeholder {0}: formatDate(connection.lastVerifiedAt, _(msg`Never`))
 #. placeholder {0}: formatDate(connection.lastVerifiedAt, i18n)
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:140
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:143
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:210
 #, fuzzy
 msgid "Last verified: {0}"
 msgstr "Ostatnia weryfikacja: {0}"
@@ -2986,7 +3171,7 @@ msgstr "Ostatnia weryfikacja: {0}"
 #~ msgid "Lay out folders like <0>Customers</0>, <1>Investors</1>, <2>Hiring</2>. A simple sentence each is the whole config."
 #~ msgstr "Ułóż foldery takie jak <0>Klienci</0>, <1>Inwestorzy</1>, <2>Rekrutacja</2>. Jedno proste zdanie to cała konfiguracja."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:374
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:404
 msgid "Lay out folders like <0>Customers</0>, <1>Investors</1>, <2>Hiring</2>. A simple sentence each: that's the whole setup."
 msgstr "Uporządkuj foldery, takie jak <0>Klienci</0>, <1>Inwestorzy</1>, <2>Rekrutacja</2>. Po jednym prostym zdaniu dla każdego – to cała konfiguracja."
 
@@ -3096,21 +3281,23 @@ msgid "Manager emails: one-on-ones, performance reviews, and feedback."
 msgstr "E-maile od menedżerów: spotkania indywidualne, oceny wydajności i informacje zwrotne."
 
 #: ../ui/src/emails/PreviewDoneBar.tsx:23
-#: ../ui/src/emails/ThreadRow.tsx:155
+#: ../ui/src/emails/ThreadRow.tsx:157
 #, fuzzy
 msgid "Mark as done"
 msgstr "Oznacz jako ukończone"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:223
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:225
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:244
 #: ../../apps/mobile/src/components/ThreadRow.tsx:58
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:234
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:240
-#: ../ui/src/emails/ThreadRow.tsx:158
+#: ../ui/src/emails/ThreadPreview.tsx:126
+#: ../ui/src/emails/ThreadPreview.tsx:130
+#: ../ui/src/emails/ThreadRow.tsx:160
 msgid "Mark as important"
 msgstr "Oznacz jako ważne"
 
-#: ../ui/src/emails/ThreadRow.tsx:154
+#: ../ui/src/emails/ThreadRow.tsx:156
 #, fuzzy
 msgid "Mark as not done"
 msgstr "Oznacz jako nieukończone"
@@ -3195,6 +3382,15 @@ msgstr "Członek"
 msgid "Messages from paying customers and account holders."
 msgstr "Wiadomości od płacących klientów i posiadaczy kont."
 
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:43
+#, fuzzy
+msgid "Microsoft account permissions"
+msgstr "Uprawnienia konta Microsoft"
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:87
+msgid "Microsoft could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the redirect URI is registered on the app registration."
+msgstr "Microsoft nie mógł zakończyć autoryzacji. Link mógł wygasnąć: spróbuj ponownie. Jeśli problem będzie się powtarzał, sprawdź, czy identyfikator URI przekierowania jest zarejestrowany w rejestracji aplikacji."
+
 #: ../../apps/web/src/components/Sidebar.tsx:43
 #, fuzzy
 msgid "Mock Inbox"
@@ -3261,11 +3457,11 @@ msgstr "Przenieś do folderu…"
 msgid "Move to…"
 msgstr "Przenieś do…"
 
-#: ../ui/src/emails/MockEmailsPage.tsx:181
+#: ../ui/src/emails/MockEmailsPage.tsx:196
 msgid "Moved to {folderName}"
 msgstr "Przeniesiono do {folderName}"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:374
+#: ../../apps/site/src/components/demo/demo-seed.ts:377
 #, fuzzy
 msgid "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face."
 msgstr "W najbliższych dniach moje podróże zaprowadzą mnie w okolice Delty. Jeśli Wielki Król znajdzie wolną godzinę, chętnie skorzystam z okazji, aby porozmawiać osobiście."
@@ -3292,8 +3488,8 @@ msgid "Needs review"
 msgstr "Wymaga sprawdzenia"
 
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:32
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:143
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:158
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:210
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:225
 #, fuzzy
 msgid "Never"
 msgstr "Nigdy"
@@ -3303,7 +3499,7 @@ msgstr "Nigdy"
 msgid "Never auto-sends · Encrypted at rest · Minimal data"
 msgstr "Brak automatycznych wysyłek · Szyfrowane w spoczynku · Minimalne dane"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:313
+#: ../../apps/site/src/components/demo/demo-seed.ts:316
 #, fuzzy
 msgid "New application from Horemheb of Thebes."
 msgstr "Nowe zgłoszenie od Horemheba z Teb."
@@ -3368,7 +3564,7 @@ msgstr "Nazwa nowego obszaru roboczego"
 msgid "No drafts remaining"
 msgstr "Brak wersji roboczych"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:319
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:329
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:343
 #: ../ui/src/emails/SuggestedDraftCard.tsx:97
 #, fuzzy
@@ -3413,13 +3609,18 @@ msgstr "Jeszcze brak folderów"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:265
 #, fuzzy
-msgid "No Gmail inbox connected to this workspace."
-msgstr "Brak skrzynki odbiorczej Gmaila podłączonej do tego obszaru roboczego."
+#~ msgid "No Gmail inbox connected to this workspace."
+#~ msgstr "Brak skrzynki odbiorczej Gmaila podłączonej do tego obszaru roboczego."
 
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:118
 #, fuzzy
 msgid "No Gmail inbox connected. Connect your account to start syncing."
 msgstr "Brak połączonej skrzynki odbiorczej Gmaila. Podłącz swoje konto, aby rozpocząć synchronizację."
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:400
+#, fuzzy
+msgid "No inbox connected to this workspace."
+msgstr "Brak skrzynki odbiorczej połączonej z tym obszarem roboczym."
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:376
 msgid "No matching folders"
@@ -3530,7 +3731,7 @@ msgstr "Niekoniecznie. Amarnai może wygenerować dla Ciebie kompletny plan ze s
 msgid "Not set"
 msgstr "Nie ustawiono"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:159
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:226
 #, fuzzy
 msgid "Not yet synced"
 msgstr "Jeszcze nie zsynchronizowano"
@@ -3559,7 +3760,7 @@ msgstr "Powiadomienia, {unread} nieprzeczytane"
 msgid "Official university emails: registrar, student services, and housing."
 msgstr "Oficjalne e-maile z uczelni: dziekanat, biuro obsługi studenta i zakwaterowanie."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:340
+#: ../../apps/site/src/components/demo/demo-seed.ts:343
 #, fuzzy
 msgid "Ongoing thread with a known city governor raising a recurring supply issue. Escalatory tone and repeated follow-ups match the Support folder."
 msgstr "Trwający wątek z burmistrzem miasta dotyczący powtarzającego się problemu z dostawami. Eskalujący ton i wielokrotne przypomnienia pasują do folderu Wsparcie."
@@ -3575,23 +3776,24 @@ msgstr "Tylko właściciel obszaru roboczego może zarządzać płatnościami."
 msgid "Open"
 msgstr "Otwórz"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:264
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:256
 #: ../../apps/mobile/src/components/DraftSheet.tsx:97
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:272
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:278
-#: ../ui/src/emails/ThreadPreview.tsx:115
-#: ../ui/src/emails/ThreadPreview.tsx:121
-#: ../ui/src/emails/ThreadRow.tsx:159
+#: ../ui/src/emails/providerLabels.ts:11
 #, fuzzy
 msgid "Open in Gmail"
 msgstr "Otwórz w Gmailu"
+
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:254
+#: ../ui/src/emails/providerLabels.ts:11
+msgid "Open in Outlook"
+msgstr "Otwórz w Outlooku"
 
 #: ../../apps/web/src/components/Sidebar.tsx:114
 #, fuzzy
 msgid "Open navigation"
 msgstr "Otwórz nawigację"
 
-#: ../../apps/site/src/lib/seo.ts:53
+#: ../../apps/site/src/lib/seo.ts:54
 #, fuzzy
 msgid "open source email ai"
 msgstr "AI open source do poczty"
@@ -3639,10 +3841,24 @@ msgstr "Opcjonalne. Stosowane podczas generowania propozycji odpowiedzi dla wąt
 msgid "or"
 msgstr "lub"
 
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:342
+msgid "Or connect a different inbox:"
+msgstr "Lub połącz inną skrzynkę odbiorczą:"
+
 #: ../../apps/site/src/components/demo/demo-seed.ts:35
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:78
 #, fuzzy
 msgid "Other"
 msgstr "Inne"
+
+#: ../../apps/site/src/lib/seo.ts:51
+#, fuzzy
+msgid "outlook ai assistant"
+msgstr "Asystent AI dla Outlooka"
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:89
+msgid "Outlook read-only access (Mail.Read) was not granted. Please try again and approve the requested permission."
+msgstr "Dostęp tylko do odczytu Outlooka (Mail.Read) nie został przyznany. Spróbuj ponownie i zatwierdź żądane uprawnienie."
 
 #: ../ui/src/pricing/planMessages.ts:78
 #, fuzzy
@@ -3670,8 +3886,8 @@ msgstr "Partnerzy"
 msgid "Passed Google's security review"
 msgstr "Przeszedł kontrolę bezpieczeństwa Google"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:369
-#: ../../apps/site/src/components/demo/demo-seed.ts:387
+#: ../../apps/site/src/components/demo/demo-seed.ts:372
+#: ../../apps/site/src/components/demo/demo-seed.ts:390
 #, fuzzy
 msgid "Passing through the Delta: free to meet?"
 msgstr "Przejeżdżam przez Deltę: masz czas na spotkanie?"
@@ -3812,6 +4028,10 @@ msgstr "Plan jest tylko do odczytu. Tylko administratorzy obszaru roboczego mog�
 msgid "Plan nodes"
 msgstr "Węzły planu"
 
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:285
+msgid "Plan sorting"
+msgstr "Zaplanuj sortowanie"
+
 #: ../../apps/mobile/app/(app)/subscription.tsx:129
 #: ../../apps/mobile/app/(app)/subscription.tsx:134
 #: ../../apps/mobile/app/(app)/subscription.tsx:189
@@ -3820,6 +4040,15 @@ msgstr "Węzły planu"
 #, fuzzy
 msgid "Please try again."
 msgstr "Spróbuj ponownie."
+
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:158
+#, fuzzy
+#~ msgid "Prefer Gmail? Connect Gmail instead"
+#~ msgstr "Wolisz Gmail? Połącz Gmail zamiast tego."
+
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:156
+#~ msgid "Prefer Outlook? Connect Outlook instead"
+#~ msgstr "Wolisz Outlook? Połącz Outlook zamiast tego."
 
 #: ../ui/src/pricing/planMessages.ts:111
 #, fuzzy
@@ -3831,7 +4060,7 @@ msgstr "Wolisz samodzielnie hostować?"
 msgid "Prefer to self-host? It's open source:<0/> <1>clone it and run it free</1>."
 msgstr "Wolisz samodzielnie hostować? To oprogramowanie open source:<0/> <1>sklonuj i uruchom za darmo</1>."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:424
+#: ../../apps/site/src/components/demo/demo-seed.ts:427
 #, fuzzy
 msgid "Prepare your accounts before the council convenes."
 msgstr "Przygotuj swoje konta, zanim zbierze się rada."
@@ -3857,7 +4086,7 @@ msgstr "Cena za obszar roboczy. Sortuj bez ograniczeń."
 msgid "Pricing"
 msgstr "Cennik"
 
-#: ../../apps/site/src/lib/seo.ts:83
+#: ../../apps/site/src/lib/seo.ts:84
 #, fuzzy
 msgid "Pricing | Amarnai"
 msgstr "Cennik | Amarnai"
@@ -3867,7 +4096,7 @@ msgstr "Cennik | Amarnai"
 msgid "Pricing is per workspace, billed monthly or annually. Every account starts with a free Personal workspace, no card required. The paid Pro and Business subscriptions add higher limits and include a 14-day trial. See the pricing page for current details."
 msgstr "Cena za obszar roboczy, rozliczana miesięcznie lub rocznie. Każde konto zaczyna się od bezpłatnego osobistego obszaru roboczego, karta nie jest wymagana. Płatne subskrypcje Pro i Business oferują wyższe limity i obejmują 14-dniowy okres próbny. Szczegóły znajdziesz na stronie cennika."
 
-#: ../../apps/site/src/components/landing/GmailInboxMock.tsx:47
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:84
 msgid "Primary"
 msgstr "Główne"
 
@@ -3922,7 +4151,7 @@ msgid "Projects"
 msgstr "Projekty"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:112
-#: ../../apps/site/src/components/landing/GmailInboxMock.tsx:50
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:87
 #, fuzzy
 msgid "Promotions"
 msgstr "Promocje"
@@ -3932,7 +4161,7 @@ msgstr "Promocje"
 msgid "Proposed folders. Applying replaces your current plan; you can edit everything afterward."
 msgstr "Proponowane foldery. Zastosowanie zastąpi Twój obecny plan; wszystko możesz edytować później."
 
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:99
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:105
 #, fuzzy
 msgid "Queuing rescan…"
 msgstr "Ponowne skanowanie w kolejce…"
@@ -3947,12 +4176,12 @@ msgstr "Przekieruj {unclassifiedCount} niesklasyfikowane"
 msgid "Re-route thread"
 msgstr "Przekieruj wątek"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:330
+#: ../../apps/site/src/components/demo/demo-seed.ts:333
 #, fuzzy
 msgid "Re: Grain shipment: third delay this season"
 msgstr "Dot.: Przesyłka zboża: trzecie opóźnienie w tym sezonie"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:252
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:253
 #, fuzzy
 msgid "Re: Q3 renewal"
 msgstr "Dot.: odnowienie w Q3"
@@ -3962,7 +4191,7 @@ msgstr "Dot.: odnowienie w Q3"
 msgid "Reactivate"
 msgstr "Aktywuj ponownie"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:352
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:375
 #, fuzzy
 msgid "Read-only · OAuth · revoke anytime"
 msgstr "Tylko do odczytu · OAuth · odwołaj w dowolnym momencie"
@@ -3991,25 +4220,41 @@ msgstr "Ostatnia próba. Spróbuj ponownie później."
 msgid "Reconnect"
 msgstr "Połącz ponownie"
 
-#: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:37
-msgid "Reconnect failed. Please try again."
-msgstr "Ponowne połączenie nie powiodło się. Spróbuj ponownie."
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:337
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:121
+#, fuzzy
+msgid "Reconnect {providerName}"
+msgstr "Połącz ponownie {providerName}"
 
-#: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:65
+#: ../../apps/extension/src/panel/ReconnectMailCta.tsx:48
+#~ msgid "Reconnect failed. Please try again."
+#~ msgstr "Ponowne połączenie nie powiodło się. Spróbuj ponownie."
+
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:126
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:260
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:76
 #, fuzzy
 msgid "Reconnect Gmail"
 msgstr "Połącz ponownie Gmaila"
 
-#: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:48
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:42
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:124
+#, fuzzy
+msgid "Reconnect Outlook"
+msgstr "Połącz ponownie Outlook"
+
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:82
+msgid "Reconnect your {providerName} inbox"
+msgstr "Połącz ponownie swoją skrzynkę {providerName}"
+
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:73
 #, fuzzy
 msgid "Reconnect your Gmail inbox"
 msgstr "Połącz ponownie swoją skrzynkę odbiorczą Gmaila"
 
-#: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:65
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:71
+msgid "Reconnect your Outlook inbox"
+msgstr "Połącz ponownie swoją skrzynkę Outlook"
+
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:122
 #: ../../apps/mobile/src/components/emails/DisconnectedBanner.tsx:46
 #, fuzzy
 msgid "Reconnecting…"
@@ -4075,12 +4320,14 @@ msgstr "Usuń {0}"
 msgid "Remove {email} from blacklist"
 msgstr "Usuń {email} z czarnej listy"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:223
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:225
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:243
 #: ../../apps/mobile/src/components/ThreadRow.tsx:57
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:234
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:240
-#: ../ui/src/emails/ThreadRow.tsx:157
+#: ../ui/src/emails/ThreadPreview.tsx:126
+#: ../ui/src/emails/ThreadPreview.tsx:130
+#: ../ui/src/emails/ThreadRow.tsx:159
 #, fuzzy
 msgid "Remove from important"
 msgstr "Usuń z ważnych"
@@ -4143,13 +4390,17 @@ msgstr "Zastąp taksonomię"
 msgid "Replace with a template"
 msgstr "Zastąp szablonem"
 
+#: ../../apps/site/src/components/landing/MailThreadMock.tsx:106
+msgid "Reply"
+msgstr "Odpowiedz"
+
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:89
 #, fuzzy
 msgid "Rescan failed"
 msgstr "Ponowne skanowanie nie powiodło się"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:153
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:99
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:105
 #, fuzzy
 msgid "Rescan inbox"
 msgstr "Przeskanuj skrzynkę odbiorczą ponownie"
@@ -4159,7 +4410,7 @@ msgstr "Przeskanuj skrzynkę odbiorczą ponownie"
 #~ msgid "Rescan queued — threads will update shortly."
 #~ msgstr "Ponowne skanowanie w kolejce, wątki zostaną wkrótce zaktualizowane."
 
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:103
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:109
 #, fuzzy
 msgid "Rescan queued: threads will update shortly."
 msgstr "Ponowne skanowanie w kolejce: wątki zostaną wkrótce zaktualizowane."
@@ -4221,7 +4472,7 @@ msgstr "Resetowanie…"
 msgid "Resize the folder sidebar"
 msgstr "Zmień rozmiar paska bocznego folderów"
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:261
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:295
 #, fuzzy
 msgid "Resize the split between the inbox and Amarnai"
 msgstr "Zmień rozmiar podziału między skrzynką odbiorczą a Amarnai"
@@ -4235,7 +4486,7 @@ msgstr "Zmień rozmiar listy wątków"
 msgid "Resources"
 msgstr "Zasoby"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:337
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:347
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:345
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:366
 #, fuzzy
@@ -4247,7 +4498,7 @@ msgstr "Ponów próbę"
 msgid "Review queue"
 msgstr "Kolejka do przeglądu"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:345
+#: ../../apps/site/src/components/demo/demo-seed.ts:348
 #, fuzzy
 msgid "Rib-Hadda of Byblos"
 msgstr "Rib-Hadda z Byblos"
@@ -4267,7 +4518,7 @@ msgstr "Rib-Haddo,\n\nSłyszymy cię. Dodatkowe zboże zostało zamówione z po�
 #~ msgid "Route now"
 #~ msgstr "Przekieruj teraz"
 
-#: ../ui/src/emails/MockEmailsPage.tsx:111
+#: ../ui/src/emails/MockEmailsPage.tsx:126
 msgid "Routing approved"
 msgstr "Routing zatwierdzony"
 
@@ -4315,12 +4566,16 @@ msgstr "Oszczędź godziny na sortowaniu e-maili każdego tygodnia. Pozwól Amar
 
 #: ../../apps/web/src/lib/notifications.ts:66
 #, fuzzy
-msgid "Save time by triaging your inbox without leaving Gmail."
-msgstr "Oszczędź czas, sortując skrzynkę odbiorczą bez opuszczania Gmaila."
+#~ msgid "Save time by triaging your inbox without leaving Gmail."
+#~ msgstr "Oszczędź czas, sortując skrzynkę odbiorczą bez opuszczania Gmaila."
 
 #: ../../apps/mobile/src/data/notificationView.ts:48
 msgid "Save time by triaging your inbox without leaving Gmail. The extension runs in your desktop browser."
 msgstr "Oszczędź czas, sortując skrzynkę odbiorczą bez opuszczania Gmaila. Rozszerzenie działa w przeglądarce na komputerze."
+
+#: ../../apps/web/src/lib/notifications.ts:66
+msgid "Save time by triaging your inbox without leaving your email."
+msgstr "Oszczędź czas, segregując skrzynkę odbiorczą bez opuszczania poczty."
 
 #: ../ui/src/PricingPlans.tsx:138
 #, fuzzy
@@ -4350,7 +4605,7 @@ msgstr "Wyszukaj {threadCount} wątków"
 msgid "Search folders"
 msgstr "Szukaj folderów"
 
-#: ../../apps/site/src/components/landing/GmailInboxMock.tsx:40
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:66
 msgid "Search mail"
 msgstr "Szukaj poczty"
 
@@ -4365,8 +4620,12 @@ msgid "Search threads…"
 msgstr "Szukaj wątków..."
 
 #: ../../apps/extension/src/auth/SignInScreen.tsx:70
-msgid "See how your inbox is sorted, right next to Gmail."
-msgstr "Zobacz, jak sortuje się Twoja skrzynka, prosto w Gmailu."
+#~ msgid "See how your inbox is sorted, right next to Gmail."
+#~ msgstr "Zobacz, jak sortuje się Twoja skrzynka, prosto w Gmailu."
+
+#: ../../apps/extension/src/auth/SignInScreen.tsx:70
+msgid "See how your inbox is sorted, right next to your email."
+msgstr "Zobacz, jak sortowana jest Twoja skrzynka, tuż obok Twojej poczty."
 
 #: ../../apps/site/src/components/landing/Footer.tsx:24
 #: ../../apps/site/src/components/landing/Nav.tsx:40
@@ -4380,7 +4639,7 @@ msgstr "Wybierz"
 
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:210
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:336
-#: ../ui/src/emails/MockEmailsPage.tsx:248
+#: ../ui/src/emails/MockEmailsPage.tsx:266
 #, fuzzy
 msgid "Select a thread to preview"
 msgstr "Wybierz wątek do podglądu"
@@ -4406,7 +4665,7 @@ msgstr "Wybierz plan do porównania"
 msgid "Self-host guide"
 msgstr "Przewodnik po samodzielnym hostowaniu"
 
-#: ../../apps/site/src/lib/seo.ts:54
+#: ../../apps/site/src/lib/seo.ts:55
 #, fuzzy
 msgid "self-hosted email assistant"
 msgstr "samodzielnie hostowany asystent e-mail"
@@ -4438,7 +4697,7 @@ msgstr "Czarna lista nadawców"
 msgid "Sender Blacklist"
 msgstr "Czarna lista nadawców"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:227
+#: ../../apps/site/src/components/demo/demo-seed.ts:230
 #, fuzzy
 msgid "Sender is a known treaty partner of significant standing. Subject explicitly references an outstanding balance on an agreed consignment, which matches the Billing folder."
 msgstr "Nadawca jest znanym partnerem umowy o znaczącej pozycji. Temat wyraźnie odnosi się do zaległego salda z uzgodnionej przesyłki, co pasuje do folderu Płatności."
@@ -4513,6 +4772,15 @@ msgstr "Plan współdzielony + kolejka recenzji"
 #~ msgid "Shared taxonomy + review queue"
 #~ msgstr "Wspólna taksonomia + kolejka przeglądu"
 
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:334
+#, fuzzy
+msgid "Show Gmail"
+msgstr "Pokaż Gmaila"
+
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:343
+msgid "Show Outlook"
+msgstr "Pokaż Outlooka"
+
 #: ../../apps/extension/src/auth/SignInScreen.tsx:98
 #: ../../apps/mobile/app/sign-in.tsx:133
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:29
@@ -4534,13 +4802,17 @@ msgstr "Zaloguj się, aby uporządkować swoją skrzynkę odbiorczą."
 msgid "Sign in with Google"
 msgstr "Zaloguj się przez Google"
 
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:392
+msgid "Sign in with Google or Microsoft. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
+msgstr "Zaloguj się przez Google lub Microsoft. Amarnai synchronizuje Twoje wątki i etykiety. Nigdy nie wysyła ani nie usuwa wiadomości w Twoim imieniu."
+
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:363
 #, fuzzy
-msgid "Sign in with Google. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
-msgstr "Zaloguj się przez Google. Amarnai synchronizuje Twoje wątki i etykiety. Nigdy nie wysyła ani nie usuwa wiadomości w Twoim imieniu."
+#~ msgid "Sign in with Google. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
+#~ msgstr "Zaloguj się przez Google. Amarnai synchronizuje Twoje wątki i etykiety. Nigdy nie wysyła ani nie usuwa wiadomości w Twoim imieniu."
 
 #: ../../apps/extension/src/App.tsx:96
-#: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:68
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:159
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:132
 #: ../../apps/mobile/app/(app)/account.tsx:122
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:98
@@ -4574,12 +4846,12 @@ msgstr "Rejestracja nie powiodła się. Spróbuj ponownie."
 msgid "Signing in…"
 msgstr "Logowanie…"
 
-#: ../../apps/site/src/lib/seo.ts:89
+#: ../../apps/site/src/lib/seo.ts:90
 #, fuzzy
 msgid "Simple per-workspace pricing. Start free, upgrade or create additional workspaces as you need."
 msgstr "Proste ceny za obszar roboczy. Zacznij bezpłatnie i rozwijaj, gdy Twoje potrzeby rosną, lub twórz dodatkowe obszary robocze w zależności od potrzeb."
 
-#: ../../apps/site/src/components/landing/GmailInboxMock.tsx:53
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:90
 #: ../ui/src/i18n/taxonomy-template-messages.ts:76
 #, fuzzy
 msgid "Social"
@@ -4605,6 +4877,11 @@ msgstr "Coś poszło nie tak. Spróbuj ponownie."
 #, fuzzy
 msgid "Soon"
 msgstr "Wkrótce"
+
+#: ../../apps/site/src/components/landing/Footer.tsx:15
+#, fuzzy
+msgid "Sort emails your way."
+msgstr "Sortuj e-maile po swojemu."
 
 #: ../../apps/extension/src/panel/SortNowButton.tsx:28
 msgid "Sort now"
@@ -4658,7 +4935,7 @@ msgstr "Wolumen sortowania"
 #: ../../apps/mobile/src/components/RationaleCard.tsx:35
 #: ../../apps/site/src/components/landing/HeroFeedCard.tsx:90
 #: ../ui/src/emails/RationaleCard.tsx:52
-#: ../ui/src/emails/ThreadRow.tsx:227
+#: ../ui/src/emails/ThreadRow.tsx:229
 #, fuzzy
 msgid "Sorting…"
 msgstr "Sortowanie…"
@@ -4730,7 +5007,7 @@ msgstr "Dość sortowania maili.<0/><1>Posortuj raz a dobrze.</1>"
 msgid "Stops syncing and revokes Amarnai's access to this mailbox."
 msgstr "Zatrzymuje synchronizację i cofa dostęp Amarnai do tej skrzynki pocztowej."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:111
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:178
 #, fuzzy
 msgid "Stops syncing and revokes Amarnai's access to this mailbox. Synced email data is kept so you can reconnect later."
 msgstr "Zatrzymuje synchronizację i cofa dostęp Amarnai do tej skrzynki pocztowej. Zsynchronizowane dane e-mail są zachowywane, aby można było ponownie się połączyć później."
@@ -4793,7 +5070,7 @@ msgstr "Wsparcie"
 msgid "Switch"
 msgstr "Przełącz"
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:189
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:220
 #, fuzzy
 msgid "Switch the previewed address"
 msgstr "Przełącz podglądany adres"
@@ -4804,14 +5081,14 @@ msgid "Switch theme"
 msgstr "Przełącz motyw"
 
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:39
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:71
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:107
 #, fuzzy
 msgid "Sync error"
 msgstr "Błąd synchronizacji"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:281
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:96
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:50
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:54
 #, fuzzy
 msgid "Sync filters"
 msgstr "Filtry synchronizacji"
@@ -4821,13 +5098,13 @@ msgstr "Filtry synchronizacji"
 #~ msgid "Synced 2m ago"
 #~ msgstr "Zsynchronizowano 2 min temu"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:128
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:195
 #, fuzzy
 msgid "Synced email data was erased."
 msgstr "Dane zsynchronizowanych e-maili zostały usunięte."
 
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:38
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:70
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:106
 #, fuzzy
 msgid "Syncing…"
 msgstr "Synchronizowanie…"
@@ -4866,7 +5143,7 @@ msgstr "Taksonomia zastosowana"
 #~ msgid "Taxonomy nodes"
 #~ msgstr "Węzły taksonomii"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:168
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:169
 #: ../ui/src/i18n/taxonomy-template-messages.ts:38
 #, fuzzy
 msgid "Team"
@@ -4886,11 +5163,11 @@ msgstr "Szablony"
 msgid "Terms"
 msgstr "Warunki"
 
-#: ../ui/src/emails/MockEmailsPage.tsx:157
+#: ../ui/src/emails/MockEmailsPage.tsx:172
 msgid "Thank you for your message. I'll follow up shortly."
 msgstr "Dziękuję za wiadomość. Skontaktuję się wkrótce."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:189
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:190
 #, fuzzy
 msgid "Thanks for the update. Friday works."
 msgstr "Dzięki za aktualizację. Piątek pasuje."
@@ -4904,12 +5181,14 @@ msgstr "Ten link z zaproszeniem jest nieprawidłowy lub wygasł."
 msgid "That link is invalid or has expired."
 msgstr "Ten link jest nieprawidłowy lub wygasł."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:43
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:59
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:81
 #, fuzzy
 msgid "The authorization callback was incomplete. Please try again."
 msgstr "Wywołanie zwrotne autoryzacji było niekompletne. Spróbuj ponownie."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:45
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:61
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:83
 #, fuzzy
 msgid "The authorization request expired or was tampered with. Please try again."
 msgstr "Żądanie autoryzacji wygasło lub zostało naruszone. Spróbuj ponownie."
@@ -4919,7 +5198,8 @@ msgstr "Żądanie autoryzacji wygasło lub zostało naruszone. Spróbuj ponownie
 #~ msgid "The catch-all folder can't be deleted. Automated and bulk mail is filed here."
 #~ msgstr "Nie można usunąć folderu zbiorczego. Tutaj trafiają wiadomości automatyczne i masowe."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:57
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:73
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:93
 #, fuzzy
 msgid "The connection could not be saved due to a server error. Please try again."
 msgstr "Nie udało się zapisać połączenia z powodu błędu serwera. Spróbuj ponownie."
@@ -4933,27 +5213,27 @@ msgstr "Nie udało się zapisać połączenia z powodu błędu serwera. Spróbuj
 msgid "The Gmail connection, all synced emails, and the taxonomy will be permanently deleted. Re-importing this inbox uses your monthly import allowance; if it runs out, you can import again after {allowanceResetsAt} or by upgrading."
 msgstr "Połączenie z Gmailem, wszystkie zsynchronizowane e-maile i taksonomia zostaną trwale usunięte. Ponowny import tej skrzynki wykorzystuje Twój miesięczny limit importu; jeśli się wyczerpie, możesz zaimportować ponownie po {allowanceResetsAt} lub ulepszając plan."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:335
+#: ../../apps/site/src/components/demo/demo-seed.ts:338
 #, fuzzy
 msgid "The grain you sent last month was received with gratitude. But I must write again: the third shipment has not arrived and the city grows restless."
 msgstr "Zboże, które wysłaliście w zeszłym miesiącu, przyjęto z wdzięcznością. Muszę jednak napisać ponownie: trzecia dostawa nie dotarła, a miasto staje się niespokojne."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:411
+#: ../../apps/site/src/components/demo/demo-seed.ts:414
 #, fuzzy
 msgid "The great council convenes at the start of Shemu. I ask that you prepare a full accounting of the eastern territories and send it ahead by fast courier."
 msgstr "Wielka rada zbiera się na początku Shemu. Proszę o przygotowanie pełnego rozliczenia wschodnich terytoriów i wysłanie go z wyprzedzeniem szybkim kurierem."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:222
+#: ../../apps/site/src/components/demo/demo-seed.ts:225
 #, fuzzy
 msgid "The third gold consignment agreed under our treaty has not arrived. Two messengers have passed and still we wait."
 msgstr "Trzecia dostawa złota, uzgodniona w naszym traktacie, nie dotarła. Przeszło dwóch posłańców, a my wciąż czekamy."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:235
+#: ../../apps/site/src/components/demo/demo-seed.ts:238
 #, fuzzy
 msgid "The third gold consignment is overdue."
 msgstr "Trzecia przesyłka złota jest zaległa."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:348
+#: ../../apps/site/src/components/demo/demo-seed.ts:351
 #, fuzzy
 msgid "The third grain shipment has not arrived."
 msgstr "Trzecia przesyłka zboża nie dotarła."
@@ -4980,8 +5260,12 @@ msgstr "Ci współpracownicy stracą dostęp {0}:"
 
 #: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:52
 #, fuzzy
-msgid "These settings control which Gmail threads are imported. Trash is always excluded."
-msgstr "Te ustawienia określają, które wątki Gmaila są importowane. Kosz jest zawsze wykluczony."
+#~ msgid "These settings control which Gmail threads are imported. Trash is always excluded."
+#~ msgstr "Te ustawienia określają, które wątki Gmaila są importowane. Kosz jest zawsze wykluczony."
+
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:56
+msgid "These settings control which inbox threads are imported. Trash is always excluded."
+msgstr "Te ustawienia kontrolują, które wątki ze skrzynki odbiorczej są importowane. Kosz jest zawsze wykluczony."
 
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1301
 #, fuzzy
@@ -4995,8 +5279,12 @@ msgstr "Ten folder jest niedostępny ze skrzynki odbiorczej i nie będzie używa
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:148
 #, fuzzy
-msgid "This Gmail is also connected in {sharedNames}. Each workspace syncs and classifies it separately, which uses separate AI quota."
-msgstr "Ten Gmail jest również połączony w {sharedNames}. Każdy obszar roboczy synchronizuje go i klasyfikuje oddzielnie, co zużywa oddzielne limity AI."
+#~ msgid "This Gmail is also connected in {sharedNames}. Each workspace syncs and classifies it separately, which uses separate AI quota."
+#~ msgstr "Ten Gmail jest również połączony w {sharedNames}. Każdy obszar roboczy synchronizuje go i klasyfikuje oddzielnie, co zużywa oddzielne limity AI."
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:215
+msgid "This inbox is also connected in {sharedNames}. Each workspace syncs and classifies it separately, which uses separate AI quota."
+msgstr "Ta skrzynka jest również połączona w {sharedNames}. Każdy obszar roboczy synchronizuje i klasyfikuje ją oddzielnie, co zużywa oddzielny limit AI."
 
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:53
 #, fuzzy
@@ -5035,9 +5323,13 @@ msgstr "Spowoduje to usunięcie połączenia z Gmailem, usunięcie wszystkich zs
 msgid "This thread cannot be sorted yet. Add at least {TAXONOMY_MIN_NON_ROOT_NODES} categories to your plan to begin routing."
 msgstr "Tego wątku nie można jeszcze posortować. Dodaj co najmniej {TAXONOMY_MIN_NON_ROOT_NODES} kategorii do swojego planu, aby rozpocząć routing."
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:281
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:290
 msgid "This thread hasn't been sorted yet."
 msgstr "Ten wątek nie został jeszcze posortowany."
+
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:278
+msgid "This thread hasn't been sorted yet. Create a sorting plan so Amarnai knows where to file it."
+msgstr "Wątek nie został jeszcze posortowany. Utwórz plan sortowania, aby Amarnai wiedziało, gdzie go przypisać."
 
 #: ../../apps/mobile/src/components/RationaleCard.tsx:46
 #, fuzzy
@@ -5113,7 +5405,7 @@ msgstr "Wątki, które nie zostały jeszcze posortowane."
 msgid "Threads you've marked as important."
 msgstr "Wątki oznaczone przez Ciebie jako ważne."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:400
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:430
 msgid "Three steps to a sorted inbox."
 msgstr "Trzy kroki do uporządkowania skrzynki."
 
@@ -5122,7 +5414,7 @@ msgstr "Trzy kroki do uporządkowania skrzynki."
 #~ msgid "Three steps. Then it sorts every email for you."
 #~ msgstr "Trzy kroki. A potem Amarnai sortuje dla Ciebie każdy e-mail."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:425
+#: ../../apps/site/src/components/demo/demo-seed.ts:428
 #, fuzzy
 msgid "To my brother, the Great King,\n"
 "\n"
@@ -5142,7 +5434,7 @@ msgid "To the Bureau of Royal Appointments,\n"
 "By royal decree,"
 msgstr "Do Biura Nominacji Królewskich,\n\nOtrzymaliśmy wniosek od Horemheba z Teb i przejrzymy jego akta przed następnym nowiem. Prosimy o poinformowanie go, że odezwiemy się w stosownym czasie.\n\nZgodnie z dekretem królewskim,"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:275
+#: ../../apps/site/src/components/demo/demo-seed.ts:278
 #, fuzzy
 msgid "To the Great King,\n"
 "\n"
@@ -5153,7 +5445,7 @@ msgid "To the Great King,\n"
 "Aziru, servant of the Great King, lord of Amurru"
 msgstr "Do Wielkiego Króla,\n\nPrzez wiele lat nasze rody były jak bracia. Piszę teraz, aby zaproponować sformalizowanie tej przyjaźni dla dobra obu naszych ludów: pakt wzajemnej ochrony i wspólnych szlaków.\n\nProszę jedynie, abyś wysłuchał moich warunków. Prześlij wiadomość następnym kurierem, a ja natychmiast wyślę mojego posłańca.\n\nAziru, sługa Wielkiego Króla, pan Amurru"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:388
+#: ../../apps/site/src/components/demo/demo-seed.ts:391
 #, fuzzy
 msgid "To the Great King,\n"
 "\n"
@@ -5171,7 +5463,7 @@ msgid "To the Great King, my brother,\n"
 "In friendship,"
 msgstr "Do Wielkiego Króla, mego brata,\n\nUsłyszałem Twoje słowa. Złoto zostanie wysłane, zanim następny posłaniec wyruszy. Cenimy więź między naszymi rodami i nie życzymy sobie, aby ostygła.\n\nW przyjaźni,"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:236
+#: ../../apps/site/src/components/demo/demo-seed.ts:239
 #, fuzzy
 msgid "To the Great King, my brother,\n"
 "\n"
@@ -5182,7 +5474,7 @@ msgid "To the Great King, my brother,\n"
 "Burna-Buriash II, King of Babylon"
 msgstr "Do Wielkiego Króla, mego brata,\n\nPiszę w duchu przyjaźni, tak jak pisali nasi ojcowie przed nami. Trzecia przesyłka złota, uzgodniona w naszym traktacie, nie dotarła. Minęło dwóch posłańców, a my wciąż czekamy.\n\nProsimy o jej wysłanie bez dalszej zwłoki, jak przystało na więź między naszymi rodami.\n\nBurna-Buriash II, Król Babilonu"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:349
+#: ../../apps/site/src/components/demo/demo-seed.ts:352
 #, fuzzy
 msgid "To the Great King, my lord, my sun,\n"
 "\n"
@@ -5200,8 +5492,8 @@ msgid "Today"
 msgstr "Dziś"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:36
-msgid "Today Amarnai connects to Gmail. Outlook support is on the way, and it will work the same read-only way: Amarnai reads your threads to sort them and never sends, deletes, or changes anything in your account."
-msgstr "Obecnie Amarnai łączy się z Gmailem. Obsługa Outlooka jest w drodze i będzie działać w identyczny sposób – tylko do odczytu: Amarnai odczytuje Twoje wątki, aby je sortować, i nigdy nie wysyła, nie usuwa ani nie zmienia niczego na Twoim koncie."
+#~ msgid "Today Amarnai connects to Gmail. Outlook support is on the way, and it will work the same read-only way: Amarnai reads your threads to sort them and never sends, deletes, or changes anything in your account."
+#~ msgstr "Obecnie Amarnai łączy się z Gmailem. Obsługa Outlooka jest w drodze i będzie działać w identyczny sposób – tylko do odczytu: Amarnai odczytuje Twoje wątki, aby je sortować, i nigdy nie wysyła, nie usuwa ani nie zmienia niczego na Twoim koncie."
 
 #: ../ui/src/emails/ThreadList.tsx:130
 #, fuzzy
@@ -5248,7 +5540,7 @@ msgstr "Selekcjonuj skrzynkę odbiorczą w podróży."
 msgid "Try Amarnai"
 msgstr "Wypróbuj Amarnai"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:421
+#: ../../apps/site/src/components/demo/demo-seed.ts:424
 #, fuzzy
 msgid "Tushratta of Mitanni"
 msgstr "Tuszratta z Mitanni"
@@ -5265,7 +5557,7 @@ msgid "Unavailable"
 msgstr "Niedostępne"
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:41
-#: ../ui/src/emails/ThreadRow.tsx:235
+#: ../ui/src/emails/ThreadRow.tsx:237
 #, fuzzy
 msgid "Unclassified"
 msgstr "Niesklasyfikowane"
@@ -5273,7 +5565,7 @@ msgstr "Niesklasyfikowane"
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:232
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:366
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1321
-#: ../ui/src/emails/MockEmailsPage.tsx:267
+#: ../ui/src/emails/MockEmailsPage.tsx:285
 #, fuzzy
 msgid "Undo"
 msgstr "Cofnij"
@@ -5343,7 +5635,7 @@ msgid "Up to 25 collaborators"
 msgstr "Do 25 współpracowników"
 
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:37
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:69
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:105
 #, fuzzy
 msgid "Up to date"
 msgstr "Aktualne"
@@ -5428,7 +5720,7 @@ msgstr "Ulepsz, aby załadować resztę"
 #~ msgid "Upgrade your subscription on the web app to enable backfill."
 #~ msgstr "Uaktualnij subskrypcję w aplikacji webowej, aby włączyć uzupełnianie danych."
 
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:114
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:120
 #, fuzzy
 msgid "Use \"Rescan inbox\" after changing filter settings to apply them to threads already in your inbox."
 msgstr "Użyj opcji „Skanuj ponownie skrzynkę odbiorczą” po zmianie ustawień filtra, aby zastosować je do wątków już znajdujących się w Twojej skrzynce."
@@ -5492,12 +5784,12 @@ msgstr "Tylko do odczytu. Tylko administratorzy obszaru roboczego mogą edytowa�
 #: ../../apps/mobile/src/components/RationaleCard.tsx:44
 #: ../../apps/mobile/src/components/ThreadRow.tsx:44
 #: ../ui/src/emails/RationaleCard.tsx:74
-#: ../ui/src/emails/ThreadRow.tsx:231
+#: ../ui/src/emails/ThreadRow.tsx:233
 #, fuzzy
 msgid "Waiting"
 msgstr "Oczekiwanie"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:168
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:235
 #, fuzzy
 msgid "Waiting for first sync…"
 msgstr "Oczekiwanie na pierwszą synchronizację…"
@@ -5512,7 +5804,7 @@ msgstr "Oczekiwanie na weryfikację…"
 #~ msgid "Waitlist"
 #~ msgstr "Lista oczekujących"
 
-#: ../ui/src/emails/ThreadRow.tsx:148
+#: ../ui/src/emails/ThreadRow.tsx:150
 #, fuzzy
 msgid "Wants {folderName}"
 msgstr "Chce {folderName}"
@@ -5564,7 +5856,7 @@ msgid "Where this folder sits. Folders with no parent stay disconnected and are 
 msgstr "Lokalizacja tego folderu. Foldery bez nadrzędnego elementu pozostają odłączone i są ignorowane, dopóki nie zostaną połączone."
 
 #: ../../apps/web/src/components/AziruIntroDialog.tsx:46
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:28
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:68
 msgid "Who is king Aziru?"
 msgstr "Kim jest król Aziru?"
 
@@ -5579,8 +5871,12 @@ msgid "Working Professional"
 msgstr "Profesjonalista"
 
 #: ../../apps/site/src/components/landing/FinalCTASection.tsx:24
-msgid "Works with Gmail today. Outlook support is on the way."
-msgstr "Działa z Gmailem już dziś. Obsługa Outlooka w drodze."
+msgid "Works with Gmail and Outlook."
+msgstr "Działa z Gmailem i Outlookiem."
+
+#: ../../apps/site/src/components/landing/FinalCTASection.tsx:24
+#~ msgid "Works with Gmail today. Outlook support is on the way."
+#~ msgstr "Działa z Gmailem już dziś. Obsługa Outlooka w drodze."
 
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:61
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:220
@@ -5619,7 +5915,7 @@ msgstr "Nazwa obszaru roboczego zaktualizowana."
 msgid "Workspace settings"
 msgstr "Ustawienia obszaru roboczego"
 
-#: ../../apps/web/src/app/(app)/settings/page.tsx:106
+#: ../../apps/web/src/app/(app)/settings/page.tsx:118
 #, fuzzy
 msgid "Workspace Settings"
 msgstr "Ustawienia obszaru roboczego"
@@ -5634,10 +5930,10 @@ msgstr "Typ obszaru roboczego"
 msgid "Workspaces included"
 msgstr "Przestrzenie robocze w zestawie"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:329
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:339
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:168
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:354
-#: ../ui/src/emails/ThreadPreview.tsx:169
+#: ../ui/src/emails/ThreadPreview.tsx:260
 #, fuzzy
 msgid "Writing draft reply…"
 msgstr "Generuję roboczą odpowiedź…"
@@ -5657,7 +5953,7 @@ msgstr "Tak, usuń moje konto"
 msgid "Yes, delete workspace"
 msgstr "Tak, usuń przestrzeń roboczą"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:200
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:267
 #, fuzzy
 msgid "Yes, disconnect"
 msgstr "Tak, rozłącz"
@@ -5677,19 +5973,31 @@ msgstr "Tak. Amarnai może przetworzyć tysiące wątków już znajdujących si�
 #~ msgstr "Tak. Amarnai przetworzy tysiące wątków, które już masz w skrzynce odbiorczej, a nie tylko wiadomości przychodzące. Sortowanie historyczne i bieżące odbywają się według tego samego planu, dzięki czemu cała Twoja skrzynka będzie zorganizowana w jednolity sposób."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:12
+msgid "Yes. Amarnai connects with a read-only scope, so it can read your threads but cannot send, delete, label, or change anything in your account. It keeps only what it needs to sort and display threads: subjects, participants, snippets, and the labels and reasoning it generates. Full message bodies are fetched when needed and processed in memory, not stored, and OAuth tokens are encrypted at rest."
+msgstr "Tak. Amarnai łączy się z dostępem tylko do odczytu, dzięki czemu może czytać Twoje wątki, ale nie może wysyłać, usuwać, etykietować ani zmieniać niczego na Twoim koncie. Przechowuje tylko to, co jest potrzebne do sortowania i wyświetlania wątków: tematy, uczestników, fragmenty wiadomości oraz generowane etykiety i uzasadnienia. Pełne treści wiadomości są pobierane w razie potrzeby i przetwarzane w pamięci, nie są przechowywane, a tokeny OAuth są szyfrowane w spoczynku."
+
+#: ../../apps/site/src/components/landing/FAQSection.tsx:12
 #, fuzzy
-msgid "Yes. Amarnai connects with Gmail's read-only scope, so it can read your threads but cannot send, delete, label, or change anything in your account. It keeps only what it needs to sort and display threads: subjects, participants, snippets, and the labels and reasoning it generates. Full message bodies are fetched when needed and processed in memory, not stored, and OAuth tokens are encrypted at rest."
-msgstr "Tak. Amarnai łączy się z Gmail w trybie tylko do odczytu, dzięki czemu może czytać Twoje wątki, ale nie może wysyłać, usuwać, etykietować ani zmieniać niczego na Twoim koncie. Przechowuje tylko to, co jest niezbędne do sortowania i wyświetlania wątków: tematy, uczestników, fragmenty wiadomości oraz generowane przez siebie etykiety i uzasadnienia. Pełne treści wiadomości są pobierane w razie potrzeby i przetwarzane w pamięci, a nie przechowywane. Tokeny OAuth są szyfrowane w spoczynku."
+#~ msgid "Yes. Amarnai connects with Gmail's read-only scope, so it can read your threads but cannot send, delete, label, or change anything in your account. It keeps only what it needs to sort and display threads: subjects, participants, snippets, and the labels and reasoning it generates. Full message bodies are fetched when needed and processed in memory, not stored, and OAuth tokens are encrypted at rest."
+#~ msgstr "Tak. Amarnai łączy się z Gmail w trybie tylko do odczytu, dzięki czemu może czytać Twoje wątki, ale nie może wysyłać, usuwać, etykietować ani zmieniać niczego na Twoim koncie. Przechowuje tylko to, co jest niezbędne do sortowania i wyświetlania wątków: tematy, uczestników, fragmenty wiadomości oraz generowane przez siebie etykiety i uzasadnienia. Pełne treści wiadomości są pobierane w razie potrzeby i przetwarzane w pamięci, a nie przechowywane. Tokeny OAuth są szyfrowane w spoczynku."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:56
 #, fuzzy
 msgid "Yes. Amarnai is open source under the AGPL-3.0 license. You can clone the repository and run it yourself with Docker. Self-hosting is free and unsupported, with community support available on GitHub."
 msgstr "Tak. Amarnai jest oprogramowaniem open source na licencji AGPL-3.0. Możesz sklonować repozytorium i uruchomić je samodzielnie za pomocą Docker. Samodzielne hostowanie jest darmowe i nieobjęte wsparciem, ale dostępna jest pomoc społeczności na GitHub."
 
+#: ../../apps/site/src/components/landing/FAQSection.tsx:36
+msgid "Yes. Amarnai works with both Gmail and Outlook, each connected the same read-only way: Amarnai reads your threads to sort them and never sends, deletes, or changes anything in your account."
+msgstr "Tak. Amarnai działa zarówno z Gmailem, jak i Outlookiem, każdy połączony w ten sam sposób – tylko do odczytu: Amarnai czyta Twoje wątki, aby je sortować i nigdy nie wysyła, nie usuwa ani nie zmienia niczego na Twoim koncie."
+
 #: ../../apps/site/src/components/landing/FAQSection.tsx:48
 #, fuzzy
-msgid "Yes. Open a thread, press Generate draft reply, and a suggested draft appears in Amarnai for you to read and edit. Nothing is ever sent for you: when you are happy with it, you can jump to the thread in Gmail with one click and paste your reply there to send. Each subscription includes a monthly draft allowance."
-msgstr "Tak. Otwórz wątek, naciśnij „Generuj roboczą odpowiedź”, a w Amarnai pojawi się sugerowana wersja do przeczytania i edycji. Nic nigdy nie zostanie wysłane za Ciebie: gdy będziesz zadowolony z treści, jednym kliknięciem możesz przejść do wątku w Gmailu i wkleić tam swoją odpowiedź, aby ją wysłać. Każda subskrypcja obejmuje miesięczny limit roboczych odpowiedzi."
+#~ msgid "Yes. Open a thread, press Generate draft reply, and a suggested draft appears in Amarnai for you to read and edit. Nothing is ever sent for you: when you are happy with it, you can jump to the thread in Gmail with one click and paste your reply there to send. Each subscription includes a monthly draft allowance."
+#~ msgstr "Tak. Otwórz wątek, naciśnij „Generuj roboczą odpowiedź”, a w Amarnai pojawi się sugerowana wersja do przeczytania i edycji. Nic nigdy nie zostanie wysłane za Ciebie: gdy będziesz zadowolony z treści, jednym kliknięciem możesz przejść do wątku w Gmailu i wkleić tam swoją odpowiedź, aby ją wysłać. Każda subskrypcja obejmuje miesięczny limit roboczych odpowiedzi."
+
+#: ../../apps/site/src/components/landing/FAQSection.tsx:48
+msgid "Yes. Open a thread, press Generate draft reply, and a suggested draft appears in Amarnai for you to read and edit. Nothing is ever sent for you: when you are happy with it, you can jump to the thread in your inbox with one click and paste your reply there to send. Each subscription includes a monthly draft allowance."
+msgstr "Tak. Otwórz wątek, naciśnij Generuj wersję roboczą odpowiedzi, a sugerowana wersja robocza pojawi się w Amarnai do Twojej weryfikacji i edycji. Nic nie jest wysyłane w Twoim imieniu: kiedy będziesz zadowolony/a, możesz jednym kliknięciem przejść do wątku w swojej skrzynce i wkleić tam swoją odpowiedź do wysłania. Każda subskrypcja obejmuje miesięczny limit wersji roboczych."
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:20
 #: ../ui/src/emails/ThreadList.tsx:16
@@ -5723,10 +6031,14 @@ msgstr "Możesz spróbować ponownie po {0} lub zacząć od szablonu."
 msgid "You can try again shortly, or start from a template."
 msgstr "Możesz spróbować ponownie wkrótce lub zacząć od szablonu."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:47
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:63
 #, fuzzy
 msgid "You do not have permission to connect a Gmail inbox to this workspace."
 msgstr "Nie masz uprawnień, aby podłączyć skrzynkę Gmail do tej przestrzeni roboczej."
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:85
+msgid "You do not have permission to connect an Outlook inbox to this workspace."
+msgstr "Nie masz uprawnień do połączenia skrzynki odbiorczej Outlook z tym obszarem roboczym."
 
 #: ../../apps/site/src/components/landing/HeroSection.tsx:66
 #, fuzzy
@@ -5829,6 +6141,10 @@ msgstr "Twój plan to drzewo folderów (np. folder Klienci z podfolderami Wsparc
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:38
 msgid "Your retry import finished and is still capped by your {plan} plan. Your next retry is available {refreshDate}."
 msgstr "Ponowny import został zakończony, ale nadal obowiązuje limit Twojego planu {plan}. Następna ponowna próba będzie dostępna {refreshDate}."
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:324
+msgid "Your sorted email from {retainedAddress} is saved. Reconnecting the same inbox restores it; connecting a different inbox permanently removes it. Folders and settings are kept either way."
+msgstr "Posortowane wiadomości z {retainedAddress} są zapisane. Ponowne połączenie tej samej skrzynki odbiorczej je przywróci; połączenie innej skrzynki trwale je usunie. Foldery i ustawienia zostaną zachowane w każdym przypadku."
 
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:102
 #, fuzzy

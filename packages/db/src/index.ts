@@ -1,6 +1,6 @@
 export { db } from "./client.js";
 export { ensureInboxTaxonomy } from "./inbox.js";
-export { resetWorkspaceData, deleteWorkspaceCascade, deleteUserCascade, createFreeWorkspace, FreeWorkspaceLimitError } from "./workspace-ops.js";
+export { resetWorkspaceData, deleteWorkspaceCascade, deleteUserCascade, createFreeWorkspace, eraseEmailAccountData, eraseStaleEmailAccounts, FreeWorkspaceLimitError } from "./workspace-ops.js";
 export {
   countRecurringThreadSorts,
   getThreadSortUsage,

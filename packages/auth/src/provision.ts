@@ -1,7 +1,7 @@
 import { db } from "@amarnai/db";
 import { GMAIL_READONLY_SCOPE } from "@amarnai/gmail";
 import { getOrCreateDefaultWorkspace } from "./workspace.js";
-import { storeGmailConnection } from "./gmail-connection.js";
+import { storeGmailConnection, ProviderMismatchError } from "./gmail-connection.js";
 
 export type ProvisionGoogleUserInput = {
   email: string;
@@ -75,10 +75,16 @@ export async function provisionGoogleUser(
 
     return { userId: user.id, workspaceId: workspace.id, isNew, gmailConnected: true };
   } catch (err) {
-    console.error(
-      "[provisionGoogleUser] gmail_setup:",
-      err instanceof Error ? err.message : err
-    );
+    // A returning user whose default workspace is connected to a non-Gmail
+    // provider (e.g. Outlook): sign-in still succeeds, and we deliberately leave
+    // that connection untouched instead of resurrecting/clobbering it with Gmail.
+    // Expected, not an error worth logging.
+    if (!(err instanceof ProviderMismatchError)) {
+      console.error(
+        "[provisionGoogleUser] gmail_setup:",
+        err instanceof Error ? err.message : err
+      );
+    }
     return { userId: user.id, workspaceId: null, isNew, gmailConnected: false };
   }
 }

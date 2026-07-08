@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { Trans } from "@lingui/react/macro";
 import { mapFolders, mapThreads, type FolderItem, type ThreadItem } from "@amarnai/core";
-import type { ApiClient, FilterCounts, SyncStatus } from "@amarnai/api-client";
+import type { ApiClient, FilterCounts, SyncStatus, MailProvider } from "@amarnai/api-client";
 import { EmailsPanel } from "./EmailsPanel";
-import { ReconnectGmailCta } from "./ReconnectGmailCta";
+import { ConnectMailCta } from "./ConnectMailCta";
 
 type Seed = {
   folders: FolderItem[];
@@ -18,6 +18,9 @@ type Seed = {
   // can exist but be DISCONNECTED (revoked or token expired) — only ACTIVE is
   // actually syncing. Mirrors the web emails page gate.
   gmailStatus: "ACTIVE" | "DISCONNECTED" | null;
+  // The connected mailbox's provider, so the reconnect CTA runs the right OAuth
+  // flow (Google vs Microsoft). Null when no connection record exists yet.
+  provider: MailProvider | null;
 };
 
 // Loads the triage seed (taxonomy + threads + gmail connection + sync status)
@@ -64,6 +67,7 @@ export function TriageGate({
           gmailAddress: connection?.gmailAddress ?? null,
           workspaceEmail: connection?.gmailAddress ?? null,
           gmailStatus: connection?.status ?? null,
+          provider: connection?.provider ?? null,
         });
       } catch {
         if (!cancelled) setFailed(true);
@@ -91,13 +95,16 @@ export function TriageGate({
     );
   }
 
-  // A DISCONNECTED (or missing) connection is not syncing this inbox. Prompt to
-  // reconnect instead of showing a stale thread list. Mirrors the web gate.
+  // Anything but an ACTIVE connection means this inbox is not syncing, so show
+  // the connect gate instead of a stale thread list. Mirrors the web gate: with
+  // no connection record yet (provider null) it offers both Gmail and Outlook;
+  // with a DISCONNECTED record it reconnects that same provider.
   if (seed.gmailStatus !== "ACTIVE") {
     return (
-      <ReconnectGmailCta
+      <ConnectMailCta
         workspaceId={workspaceId}
-        onReconnected={() => setReloadKey((k) => k + 1)}
+        provider={seed.provider}
+        onConnected={() => setReloadKey((k) => k + 1)}
       />
     );
   }

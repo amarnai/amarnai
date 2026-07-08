@@ -19,6 +19,7 @@ import { emailThreadsRoute } from "./routes/email-threads.js";
 import { mockInboxRoute } from "./routes/mock-inbox.js";
 import { classifyRoute } from "./routes/classify.js";
 import { gmailConnectionRoute } from "./routes/gmail-connection.js";
+import { outlookConnectionRoute } from "./routes/outlook-connection.js";
 import { gmailSyncSettingsRoute } from "./routes/gmail-sync-settings.js";
 import { gmailSortRoute } from "./routes/gmail-sort.js";
 import { triggerSyncRoute } from "./routes/trigger-sync.js";
@@ -34,6 +35,8 @@ import { threadImportantRoute } from "./routes/thread-important.js";
 import { notificationsRoute } from "./routes/notifications.js";
 import { gmailWebhookRoute } from "./routes/gmail-webhook.js";
 import { gmailWatchRoute } from "./routes/gmail-watch.js";
+import { outlookWebhookRoute } from "./routes/outlook-webhook.js";
+import { outlookSubscriptionRoute } from "./routes/outlook-subscription.js";
 import { workspaceEventsRoute } from "./routes/workspace-events.js";
 import { devicesRoute } from "./routes/devices.js";
 import { extensionRoute } from "./routes/extension.js";
@@ -45,6 +48,7 @@ import { adminRoute } from "./routes/admin.js";
 const PUBLIC_PATHS = new Set([
   "/health",
   "/webhooks/gmail",
+  "/webhooks/outlook",
   "/auth/login",
   "/auth/register",
   "/auth/google",
@@ -150,6 +154,7 @@ app.route("/", emailThreadsRoute);
 app.route("/", mockInboxRoute);
 app.route("/", classifyRoute);
 app.route("/", gmailConnectionRoute);
+app.route("/", outlookConnectionRoute);
 app.route("/", gmailSyncSettingsRoute);
 app.route("/", gmailSortRoute);
 app.route("/", triggerSyncRoute);
@@ -167,6 +172,8 @@ app.route("/", threadImportantRoute);
 app.route("/", notificationsRoute);
 app.route("/", gmailWebhookRoute);
 app.route("/", gmailWatchRoute);
+app.route("/", outlookWebhookRoute);
+app.route("/", outlookSubscriptionRoute);
 app.route("/", workspaceEventsRoute);
 app.route("/", devicesRoute);
 app.route("/", extensionRoute);

@@ -10,7 +10,7 @@ import { ensureHostPermissions } from "../platform/permissions";
 
 // Firefox treats host permissions as user-grantable and may not have them yet;
 // Chrome grants them at install, so this resolves true without a prompt there.
-const NEEDS_PERMISSIONS = msg`Amarnai needs access to its server and Gmail to work. Please allow access and try again.`;
+const NEEDS_PERMISSIONS = msg`Amarnai needs access to its server and your inbox to work. Please allow access and try again.`;
 
 export function SignInScreen() {
   const { _ } = useLingui();
@@ -67,7 +67,7 @@ export function SignInScreen() {
         <span className="ax-auth-title">Amarnai</span>
       </div>
       <p className="ax-auth-tagline">
-        <Trans>See how your inbox is sorted, right next to Gmail.</Trans>
+        <Trans>See how your inbox is sorted, right next to your email.</Trans>
       </p>
 
       <form className="ax-auth-form" onSubmit={onSubmit}>

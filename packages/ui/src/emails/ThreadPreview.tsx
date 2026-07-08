@@ -7,6 +7,10 @@ import { msg } from "@lingui/core/macro";
 import { TAXONOMY_MIN_NON_ROOT_NODES } from "@amarnai/shared";
 import type { FolderItem } from "../folder-tree/types.js";
 import type { ThreadItem, ThreadMessage, DraftItem } from "./types.js";
+import { buildThreadUrl } from "@amarnai/core/emails";
+import { openInProviderLabel } from "./providerLabels.js";
+import { GoogleGIcon } from "../icons/GoogleGIcon.js";
+import { OutlookIcon } from "../icons/OutlookIcon.js";
 import { RationaleCard } from "./RationaleCard.js";
 import { PreviewDoneBar } from "./PreviewDoneBar.js";
 import { MessageCard } from "./MessageCard.js";
@@ -35,6 +39,20 @@ export interface ThreadPreviewProps {
   onClose?: (() => void) | undefined;
   onMarkDone?: ((threadId: string) => void) | undefined;
   onUnmarkDone?: ((threadId: string) => void) | undefined;
+  onToggleImportant?: ((threadId: string) => void) | undefined;
+  /**
+   * Which surface this preview mimics. "extension" matches the browser side
+   * panel (a full-width "Open in <provider>" button below the toolbar and a star
+   * toggle in it); "web" (default) matches the web app (a compact deep-link
+   * glyph beside the subject).
+   */
+  surface?: "web" | "extension";
+  /**
+   * When provided, the "Open in <provider>" control calls this instead of
+   * navigating to the real provider deep link (used by the marketing demo to
+   * open a mock provider view).
+   */
+  onOpenInProvider?: ((thread: ThreadItem) => void) | undefined;
 }
 
 export function ThreadPreview({
@@ -53,10 +71,21 @@ export function ThreadPreview({
   onClose,
   onMarkDone,
   onUnmarkDone,
+  onToggleImportant,
+  surface = "web",
+  onOpenInProvider,
 }: ThreadPreviewProps) {
   const { i18n } = useLingui();
   const [generating, setGenerating] = useState(false);
 
+  const isExtension = surface === "extension";
+  const providerLabel = openInProviderLabel(i18n, thread.provider);
+  const providerIcon =
+    thread.provider === "OUTLOOK" ? (
+      <OutlookIcon variant="color" size={16} />
+    ) : (
+      <GoogleGIcon variant="color" size={16} />
+    );
   const isDone = !!thread.doneMark;
   const enrichedThread = { ...thread, reasoning };
   const lastMsg = messages[messages.length - 1];
@@ -93,38 +122,100 @@ export function ThreadPreview({
           </button>
         )}
         <span className="em-preview-spacer" />
-        {onClose && (
-          <Tooltip content={i18n._(msg`Close preview`)}>
+        {isExtension && onToggleImportant ? (
+          <Tooltip content={thread.isImportant ? i18n._(msg`Remove from important`) : i18n._(msg`Mark as important`)}>
             <button
               type="button"
-              className="em-icon-btn"
-              aria-label={i18n._(msg`Close preview`)}
-              onClick={onClose}
+              className={`em-icon-btn em-star-btn${thread.isImportant ? " is-important" : ""}`}
+              aria-label={thread.isImportant ? i18n._(msg`Remove from important`) : i18n._(msg`Mark as important`)}
+              aria-pressed={thread.isImportant}
+              onClick={() => onToggleImportant(thread.id)}
             >
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
-                <path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
+                <path
+                  d="M7 1.75l1.545 3.13 3.455.502-2.5 2.437.59 3.44L7 9.63l-3.09 1.625.59-3.44-2.5-2.437 3.455-.502z"
+                  fill={thread.isImportant ? "currentColor" : "none"}
+                  stroke="currentColor"
+                  strokeWidth={thread.isImportant ? 0 : 1.3}
+                  strokeLinejoin="round"
+                />
               </svg>
             </button>
           </Tooltip>
+        ) : (
+          onClose && (
+            <Tooltip content={i18n._(msg`Close preview`)}>
+              <button
+                type="button"
+                className="em-icon-btn"
+                aria-label={i18n._(msg`Close preview`)}
+                onClick={onClose}
+              >
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
+                  <path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+                </svg>
+              </button>
+            </Tooltip>
+          )
         )}
       </div>
+
+      {isExtension && (
+        <div className="em-open-provider-row">
+          {onOpenInProvider ? (
+            <button
+              type="button"
+              className="em-open-provider"
+              onClick={() => onOpenInProvider(thread)}
+            >
+              {providerIcon}
+              {providerLabel}
+            </button>
+          ) : (
+            <a
+              href={buildThreadUrl(thread)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="em-open-provider"
+            >
+              {providerIcon}
+              {providerLabel}
+            </a>
+          )}
+        </div>
+      )}
 
       <div className="em-preview-scroll">
         <h2 className="em-preview-subject">
           {thread.subject}
-          <Tooltip content={i18n._(msg`Open in Gmail`)} placement="bottom">
-            <a
-              href={`https://mail.google.com/mail/u/0/#all/${thread.providerThreadId}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="em-preview-gmail-link"
-              aria-label={i18n._(msg`Open in Gmail`)}
-            >
-              <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden>
-                <path d="M5 2H2a1 1 0 00-1 1v7a1 1 0 001 1h7a1 1 0 001-1V7M7.5 1H11v3.5M11 1L5.5 6.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </a>
-          </Tooltip>
+          {!isExtension && (
+            <Tooltip content={providerLabel} placement="bottom">
+              {onOpenInProvider ? (
+                <button
+                  type="button"
+                  className="em-preview-gmail-link"
+                  aria-label={providerLabel}
+                  onClick={() => onOpenInProvider(thread)}
+                >
+                  <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden>
+                    <path d="M5 2H2a1 1 0 00-1 1v7a1 1 0 001 1h7a1 1 0 001-1V7M7.5 1H11v3.5M11 1L5.5 6.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+              ) : (
+                <a
+                  href={buildThreadUrl(thread)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="em-preview-gmail-link"
+                  aria-label={providerLabel}
+                >
+                  <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden>
+                    <path d="M5 2H2a1 1 0 00-1 1v7a1 1 0 001 1h7a1 1 0 001-1V7M7.5 1H11v3.5M11 1L5.5 6.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </a>
+              )}
+            </Tooltip>
+          )}
         </h2>
 
         {(onMarkDone || onUnmarkDone) && (

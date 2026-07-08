@@ -9,7 +9,7 @@ export function FinalCTASection() {
         <h2><Trans>Hand the sorting to Amarnai.</Trans></h2>
         <p>
           <Trans>
-            Connect Gmail and Amarnai starts sorting within minutes. Pricing is
+            Connect your inbox and Amarnai starts sorting within minutes. Pricing is
             per workspace. Sorts new mail as it arrives, and works through years
             of backlog.
           </Trans>
@@ -21,7 +21,7 @@ export function FinalCTASection() {
           <InstallExtensionButton variant="secondary" />
         </div>
         <p className="ld-final-soon">
-          <Trans>Works with Gmail today. Outlook support is on the way.</Trans>
+          <Trans>Works with Gmail and Outlook.</Trans>
         </p>
         <div className="ld-final-note">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>

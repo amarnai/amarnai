@@ -250,9 +250,9 @@ export async function runGenerateTaxonomyJob(
   };
 
   const state = await db.taxonomyGenerationState.findUnique({ where: { workspaceId } });
-  const connection = await db.gmailConnection.findUnique({
+  const connection = await db.emailConnection.findUnique({
     where: { workspaceId },
-    select: { gmailAddress: true },
+    select: { emailAddress: true },
   });
 
   await setState(workspaceId, { status: "RUNNING" });
@@ -269,7 +269,7 @@ export async function runGenerateTaxonomyJob(
   // row — those are workspace-local UX state and correctly reset. `recordWindow`
   // is always the calendar month (usage recorded for observability); the cap is
   // only ENFORCED when enforceTaxonomyQuota is on (self-host can opt out).
-  const quota = connection ? await resolveInboxQuota(connection.gmailAddress, "TAXONOMY_GEN", now) : null;
+  const quota = connection ? await resolveInboxQuota(connection.emailAddress, "TAXONOMY_GEN", now) : null;
   const enforceTaxonomy = config.billing.enforceTaxonomyQuota;
   const genPlan = quota?.plan ?? workspace.plan;
   // The cap is only ENFORCED when the flag is on; a null window makes the backstop

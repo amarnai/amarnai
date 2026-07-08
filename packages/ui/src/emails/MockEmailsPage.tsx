@@ -32,6 +32,19 @@ export interface MockEmailsPageProps {
    * thread list is visible first, as the real side panel does.
    */
   initialRailOpen?: boolean;
+  /**
+   * Which product surface the preview should mimic. "extension" matches the
+   * browser side panel (a prominent "Open in <provider>" button and a star
+   * toggle in the toolbar); "web" matches the full web app (a compact deep-link
+   * glyph beside the subject). Only affects the thread preview chrome.
+   */
+  surface?: "web" | "extension";
+  /**
+   * Called when the preview's "Open in <provider>" control is used. When
+   * provided, the control opens this handler (e.g. a mock provider view) instead
+   * of navigating to the real provider deep link.
+   */
+  onOpenInProvider?: (thread: ThreadItem) => void;
 }
 
 export function MockEmailsPage({
@@ -43,6 +56,8 @@ export function MockEmailsPage({
   workspaceEmail,
   draftBodies,
   initialRailOpen = true,
+  surface = "web",
+  onOpenInProvider,
 }: MockEmailsPageProps) {
   const { _ } = useLingui();
   const now = useRef(new Date()).current;
@@ -235,6 +250,8 @@ export function MockEmailsPage({
           reasoning={selectedThread.reasoning}
           draft={draftMap.get(selectedThread.id) ?? null}
           workspaceEmail={workspaceEmail}
+          surface={surface}
+          onOpenInProvider={onOpenInProvider}
           onGenerateDraft={draftBodies ? () => handleGenerateDraft(selectedThread.id) : undefined}
           onToggleDraftSent={() => handleToggleDraftSent(selectedThread.id)}
           onApprove={handleApprove}
@@ -242,6 +259,7 @@ export function MockEmailsPage({
           onClose={closePreview}
           onMarkDone={handleMarkDone}
           onUnmarkDone={handleUnmarkDone}
+          onToggleImportant={handleToggleImportant}
         />
       ) : (
         <div className="em-preview-empty">

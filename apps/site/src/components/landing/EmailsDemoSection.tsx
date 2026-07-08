@@ -12,11 +12,14 @@ import {
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
+import type { ThreadItem } from "@amarnai/ui/emails";
 import { MockEmailsPage } from "@amarnai/ui/emails";
-import { GmailInboxMock } from "./GmailInboxMock";
+import { MailInboxMock, type MockProvider } from "./MailInboxMock";
+import { MailThreadMock } from "./MailThreadMock";
 import { getDemoThreads, getDemoFolders, getDemoDraftBodies } from "@/components/demo/demo-seed";
 
-type DemoMode = "web" | "ext";
+/** Which surface the frame previews: the docked extension or the full web app. */
+type Surface = "web" | "ext";
 
 /** Below this rendered frame width the Gmail + workspace split doesn't fit. */
 const MIN_SPLIT_FRAME_PX = 720;
@@ -29,10 +32,16 @@ const KEY_STEP_PCT = 2;
 
 const clampPct = (pct: number) => Math.min(GMAIL_MAX_PCT, Math.max(GMAIL_MIN_PCT, pct));
 
-/** The two addresses the frame can show, in display order. Each maps to a mode. */
-const URL_OPTIONS: { mode: DemoMode; host: string }[] = [
-  { mode: "ext", host: "mail.google.com" },
-  { mode: "web", host: "app.amarnai.com" },
+/**
+ * The addresses the frame can show, in display order. The extension surface
+ * covers both mail providers (Gmail and Outlook); the web app is
+ * provider-agnostic. Selecting a provider address switches both the surface and
+ * which inbox mock sits beside the workspace.
+ */
+const URL_OPTIONS: { surface: Surface; provider?: MockProvider; host: string }[] = [
+  { surface: "ext", provider: "gmail", host: "mail.google.com" },
+  { surface: "ext", provider: "outlook", host: "outlook.live.com" },
+  { surface: "web", host: "app.amarnai.com" },
 ];
 
 function LockIcon() {
@@ -55,7 +64,18 @@ function LockIcon() {
  */
 export function EmailsDemoSection() {
   const { i18n, _ } = useLingui();
-  const threads = useMemo(() => getDemoThreads(i18n), [i18n]);
+  const [userMode, setUserMode] = useState<Surface>("ext");
+  const [provider, setProvider] = useState<MockProvider>("gmail");
+  // The thread whose provider conversation view is open over the stage, if any.
+  const [openedThread, setOpenedThread] = useState<ThreadItem | null>(null);
+  // null until the frame is first measured (SSR and pre-layout render).
+  const [wide, setWide] = useState<boolean | null>(null);
+  const mode: Surface = wide === false ? "web" : userMode;
+
+  const threads = useMemo(
+    () => getDemoThreads(i18n, provider === "outlook" ? "OUTLOOK" : "GMAIL"),
+    [i18n, provider],
+  );
   const folders = useMemo(() => getDemoFolders(i18n), [i18n]);
   const draftBodies = useMemo(() => getDemoDraftBodies(i18n), [i18n]);
 
@@ -65,11 +85,12 @@ export function EmailsDemoSection() {
   const dragStart = useRef<{ x: number; pct: number } | null>(null);
   const gmailPct = useRef(GMAIL_DEFAULT_PCT);
 
-  const [userMode, setUserMode] = useState<DemoMode>("ext");
-  // null until the frame is first measured (SSR and pre-layout render).
-  const [wide, setWide] = useState<boolean | null>(null);
-  const mode: DemoMode = wide === false ? "web" : userMode;
-  const currentHost = URL_OPTIONS.find((o) => o.mode === mode)!.host;
+  const currentHost =
+    mode === "web"
+      ? "app.amarnai.com"
+      : provider === "outlook"
+        ? "outlook.live.com"
+        : "mail.google.com";
 
   // The URL pill doubles as a mode picker (same choices as the right-hand
   // toggle). Only interactive when both modes are available; in a narrow frame
@@ -99,10 +120,20 @@ export function EmailsDemoSection() {
     if (wide === false) setMenuOpen(false);
   }, [wide]);
 
-  function chooseMode(next: DemoMode) {
-    setUserMode(next);
+  function chooseOption(opt: { surface: Surface; provider?: MockProvider }) {
+    setUserMode(opt.surface);
+    if (opt.provider) setProvider(opt.provider);
     setMenuOpen(false);
+    // The open conversation belongs to the address being left; close it.
+    setOpenedThread(null);
   }
+
+  // An address in the dropdown is the current one when its surface matches, and,
+  // for the two provider addresses, when its provider matches too.
+  const isCurrentOption = (opt: { surface: Surface; provider?: MockProvider }) =>
+    opt.surface === "web"
+      ? mode === "web"
+      : mode === "ext" && opt.provider === provider;
 
   useLayoutEffect(() => {
     const frame = frameRef.current;
@@ -210,21 +241,24 @@ export function EmailsDemoSection() {
                 </button>
                 {menuOpen && (
                   <ul className="ld-url-menu" role="listbox" aria-label={_(msg`Available addresses`)}>
-                    {URL_OPTIONS.map((opt) => (
-                      <li
-                        key={opt.mode}
-                        role="option"
-                        aria-selected={opt.mode === mode}
-                        className={`ld-url-opt${opt.mode === mode ? " active" : ""}`}
-                        onClick={() => chooseMode(opt.mode)}
-                      >
-                        <LockIcon />
-                        <span className="ld-url-opt-host">{opt.host}</span>
-                        <span className="ld-url-opt-label">
-                          {opt.mode === "ext" ? <Trans>Browser extension</Trans> : "Web app"}
-                        </span>
-                      </li>
-                    ))}
+                    {URL_OPTIONS.map((opt) => {
+                      const current = isCurrentOption(opt);
+                      return (
+                        <li
+                          key={opt.host}
+                          role="option"
+                          aria-selected={current}
+                          className={`ld-url-opt${current ? " active" : ""}`}
+                          onClick={() => chooseOption(opt)}
+                        >
+                          <LockIcon />
+                          <span className="ld-url-opt-host">{opt.host}</span>
+                          <span className="ld-url-opt-label">
+                            {opt.surface === "ext" ? <Trans>Browser extension</Trans> : "Web app"}
+                          </span>
+                        </li>
+                      );
+                    })}
                   </ul>
                 )}
               </div>
@@ -234,14 +268,14 @@ export function EmailsDemoSection() {
                 <button
                   type="button"
                   aria-pressed={mode === "web"}
-                  onClick={() => setUserMode("web")}
+                  onClick={() => { setUserMode("web"); setOpenedThread(null); }}
                 >
                   Web app
                 </button>
                 <button
                   type="button"
                   aria-pressed={mode === "ext"}
-                  onClick={() => setUserMode("ext")}
+                  onClick={() => { setUserMode("ext"); setOpenedThread(null); }}
                 >
                   <Trans>Browser extension</Trans>
                 </button>
@@ -250,8 +284,8 @@ export function EmailsDemoSection() {
           </div>
 
           <div ref={stageRef} className="ld-demo-stage emails ld-split-stage">
-            <div className="ld-gmail-pane" aria-hidden="true">
-              <GmailInboxMock threads={threads} />
+            <div className="ld-gmail-pane">
+              <MailInboxMock provider={provider} threads={threads} onOpenThread={setOpenedThread} />
             </div>
             <div
               ref={dividerRef}
@@ -275,18 +309,25 @@ export function EmailsDemoSection() {
               <span className="ld-split-grip" aria-hidden="true" />
               <span className="ld-split-hint"><Trans>Drag to resize</Trans></span>
             </div>
-            {/* One MockEmailsPage instance, shared across both modes: in "ext"
-                mode it renders the extension's compact side-panel layout beside
-                Gmail; in "web" mode the pane widens to the full desktop app.
-                It stays mounted across the switch so all workspace state is
-                shared. The rail starts closed so the thread list shows first,
-                matching the real side panel. */}
+            {/* One MockEmailsPage instance per provider: in "ext" mode it renders
+                the extension's compact side-panel layout beside the inbox mock;
+                in "web" mode the pane widens to the full desktop app. It stays
+                mounted across the surface switch so workspace state is shared,
+                and `surface` swaps the preview chrome to match the extension
+                (Open-in-provider button, star toggle) or the web app. Keying on
+                the provider remounts when the inbox switches (Gmail↔Outlook) so
+                the threads reload with the matching provider. The rail starts
+                closed so the thread list shows first, matching the real side
+                panel. */}
             <div className="em-shell ld-app-pane">
               <MockEmailsPage
+                key={provider}
                 initialThreads={threads}
                 initialFolders={folders}
                 draftBodies={draftBodies}
                 initialRailOpen={false}
+                surface={mode === "web" ? "web" : "extension"}
+                onOpenInProvider={setOpenedThread}
                 syncInfo={{
                   lastSyncedAt: new Date().toISOString(),
                   backfillStatus: "IDLE",
@@ -295,6 +336,14 @@ export function EmailsDemoSection() {
                 }}
               />
             </div>
+
+            {openedThread && (
+              <MailThreadMock
+                provider={provider}
+                thread={openedThread}
+                onBack={() => setOpenedThread(null)}
+              />
+            )}
           </div>
         </div>
       </div>

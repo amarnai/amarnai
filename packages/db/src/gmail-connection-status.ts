@@ -27,21 +27,21 @@ import { createNotificationsForWorkspaceMembers } from "./notifications.js";
  * Best-effort: callers must not fail their critical path if it throws.
  */
 export async function markGmailConnectionAuthFailed(workspaceId: string): Promise<boolean> {
-  const flipped = await db.gmailConnection.updateMany({
+  const flipped = await db.emailConnection.updateMany({
     where: { workspaceId, status: "ACTIVE" },
     data: { status: "DISCONNECTED" },
   });
   if (flipped.count === 0) return false;
 
-  const connection = await db.gmailConnection.findUnique({
+  const connection = await db.emailConnection.findUnique({
     where: { workspaceId },
-    select: { gmailAddress: true },
+    select: { emailAddress: true },
   });
 
   await createNotificationsForWorkspaceMembers({
     workspaceId,
     type: "gmail_disconnected",
-    params: { gmailAddress: connection?.gmailAddress ?? "" },
+    params: { gmailAddress: connection?.emailAddress ?? "" },
   });
 
   await db.auditLog
@@ -50,7 +50,7 @@ export async function markGmailConnectionAuthFailed(workspaceId: string): Promis
         workspaceId,
         actorType: "SYSTEM",
         eventType: "gmail.auto_disconnected",
-        metadata: { gmailAddress: connection?.gmailAddress ?? null },
+        metadata: { gmailAddress: connection?.emailAddress ?? null },
       },
     })
     .catch(() => {});

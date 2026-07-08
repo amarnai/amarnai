@@ -38,6 +38,13 @@
   --accent-line: oklch(87% 0.05 40);
   --avatar-grad: linear-gradient(135deg, oklch(82% 0.08 50), oklch(72% 0.10 30)); /* user avatar fill */
 
+  /* ── Outlook — provider brand blue (Microsoft) ── */
+  --outlook:       oklch(55% 0.15 250);
+  --outlook-hover: oklch(49% 0.16 250);
+  --outlook-soft:  oklch(96% 0.025 250);
+  --outlook-line:  oklch(88% 0.05 250);
+  --outlook-on:    #fff;
+
   /* ── Teal — AI generation actions ── */
   --teal:      oklch(57% 0.13 190);
   --teal-soft: oklch(95.5% 0.025 190);
@@ -191,6 +198,13 @@ html[data-theme="dark"] {
   --accent-soft: oklch(28% 0.045 40);
   --accent-line: oklch(40% 0.06 40);
   --avatar-grad: linear-gradient(135deg, oklch(52% 0.10 50), oklch(44% 0.11 30)); /* user avatar fill */
+
+  /* ── Outlook — provider brand blue (Microsoft) ── */
+  --outlook:       oklch(58% 0.15 250);
+  --outlook-hover: oklch(64% 0.15 250);
+  --outlook-soft:  oklch(30% 0.05 250);
+  --outlook-line:  oklch(42% 0.07 250);
+  --outlook-on:    #fff;
 
   /* ── Teal ── */
   --teal:      oklch(60% 0.12 190);
@@ -1408,6 +1422,63 @@ h2 {
   cursor: not-allowed;
 }
 
+/* Outlook connect button — mirrors .btn-primary in Outlook brand blue. */
+.btn-outlook {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 16px;
+  background: var(--outlook);
+  color: var(--outlook-on);
+  border: none;
+  border-radius: 9px;
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.1s;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.btn-outlook:hover:not(:disabled) {
+  background: var(--outlook-hover);
+}
+
+.btn-outlook:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Outline variant in Outlook blue — the secondary "switch inbox" counterpart to
+   .btn-outline-clay. */
+.btn-outline-outlook {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 16px;
+  background: transparent;
+  color: var(--outlook);
+  border: 1px solid var(--outlook);
+  border-radius: 9px;
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.1s;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.btn-outline-outlook:hover:not(:disabled) {
+  background: var(--outlook-soft);
+}
+
+.btn-outline-outlook:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .btn-ghost {
   display: inline-flex;
   align-items: center;
@@ -2260,6 +2331,19 @@ a {
   gap: 12px;
 }
 
+.gmail-connection-switch {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-border);
+}
+
+.gmail-connection-switch .gmail-meta {
+  margin: 0;
+}
+
 .gmail-connection-empty p {
   color: var(--color-muted);
   margin: 0;
@@ -2388,6 +2472,20 @@ a {
   margin-top: 4px;
   padding: 10px 22px;
   font-size: 14px;
+}
+
+/* The provider-switch action (outline brand button) sits below the primary
+   connect button with clear separation. */
+.connect-gmail-cta-alt {
+  margin-top: 12px;
+}
+
+.connect-gmail-cta-switch-confirm {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+  max-width: 320px;
 }
 
 @media (max-width: 560px) {

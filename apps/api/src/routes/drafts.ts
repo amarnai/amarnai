@@ -10,7 +10,7 @@ import {
 import { createAIProvider, generateDraft, getDraftAIProviderConfig, type ThreadMessage } from "@amarnai/ai";
 import { getDraftLimit, getDraftQuotaResetsAt, getThreadSortLimit } from "@amarnai/shared";
 import { config } from "@amarnai/config";
-import { GmailClient, normalizeGmailThread } from "@amarnai/gmail";
+import { createMailProvider } from "@amarnai/mail";
 
 const params = z.object({
   workspaceId: z.string().min(1),
@@ -113,9 +113,9 @@ drafts.post(
       );
     }
 
-    const gmailConnection = await db.gmailConnection.findUnique({
+    const gmailConnection = await db.emailConnection.findUnique({
       where: { workspaceId },
-      select: { gmailAddress: true, encryptedRefreshToken: true },
+      select: { provider: true, emailAddress: true, encryptedRefreshToken: true },
     });
 
     // force=true bypasses the short-circuit that returns an existing PROPOSED
@@ -161,7 +161,7 @@ drafts.post(
     // (no Gmail connection), where the draft quota is not metered. `used` here is
     // ignored — the gate re-reads it transactionally under the workspace lock below.
     const draftQuota = gmailConnection
-      ? await resolveInboxQuota(gmailConnection.gmailAddress, "DRAFT")
+      ? await resolveInboxQuota(gmailConnection.emailAddress, "DRAFT")
       : null;
 
     let provider;
@@ -279,9 +279,8 @@ drafts.post(
     let messagesForDraft: ThreadMessage[] = aiMessages;
     if (gmailConnection?.encryptedRefreshToken) {
       try {
-        const client = new GmailClient(gmailConnection.encryptedRefreshToken);
-        const rawThread = await client.getThread(thread.providerThreadId);
-        const snapshot = normalizeGmailThread(rawThread);
+        const client = createMailProvider(gmailConnection);
+        const snapshot = await client.getThreadSnapshot(thread.providerThreadId);
         const bodyByMessageId = new Map(
           snapshot.messages.map((m) => [m.providerMessageId, m.bodyExcerpt])
         );
@@ -301,7 +300,7 @@ drafts.post(
         suggestedNextStep: classification.suggestedNextStep ?? null,
         explanation: classification.explanation ?? null,
         finalNodeName: classification.finalNode?.name ?? null,
-        senderEmail: gmailConnection?.gmailAddress ?? null,
+        senderEmail: gmailConnection?.emailAddress ?? null,
         draftInstructions: classification.finalNode?.draftPrompt ?? null,
       });
     } catch (e) {
@@ -368,13 +367,13 @@ drafts.get(
       return c.json({ error: "Invalid params" }, 400);
     }
 
-    const connection = await db.gmailConnection.findUnique({
+    const connection = await db.emailConnection.findUnique({
       where: { workspaceId },
-      select: { gmailAddress: true },
+      select: { emailAddress: true },
     });
 
     const now = new Date();
-    const quota = connection ? await resolveInboxQuota(connection.gmailAddress, "DRAFT", now) : null;
+    const quota = connection ? await resolveInboxQuota(connection.emailAddress, "DRAFT", now) : null;
     const limit = getDraftLimit(quota?.plan ?? "FREE");
 
     return c.json({
@@ -401,13 +400,13 @@ drafts.get(
       return c.json({ error: "Invalid params" }, 400);
     }
 
-    const connection = await db.gmailConnection.findUnique({
+    const connection = await db.emailConnection.findUnique({
       where: { workspaceId },
-      select: { gmailAddress: true },
+      select: { emailAddress: true },
     });
 
     const now = new Date();
-    const quota = connection ? await resolveInboxQuota(connection.gmailAddress, "THREAD_SORT", now) : null;
+    const quota = connection ? await resolveInboxQuota(connection.emailAddress, "THREAD_SORT", now) : null;
     const limit = getThreadSortLimit(quota?.plan ?? "FREE");
 
     // "used"/"recurring" come from the reset-immune, inbox-pooled meter (what the

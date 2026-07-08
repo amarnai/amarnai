@@ -37,7 +37,7 @@ vi.mock("@amarnai/db", () => ({
       findFirst: vi.fn(),
       update: vi.fn().mockResolvedValue({}),
     },
-    gmailConnection: { findUnique: vi.fn() },
+    emailConnection: { findUnique: vi.fn() },
     gmailSyncSettings: { findUnique: vi.fn().mockResolvedValue(null) },
     taxonomyNode: { findMany: vi.fn() },
     taxonomyEdge: { findMany: vi.fn() },
@@ -92,25 +92,31 @@ vi.mock("@amarnai/ai", () => ({
 }));
 
 vi.mock("@amarnai/gmail", () => ({
-  // Real class so `err instanceof GmailAuthError` in the worker's catch block
-  // evaluates instead of throwing on an undefined mock export.
+  // Real classes so the worker's `err instanceof MailAuthError` catch branches
+  // (MailAuthError etc. are these classes re-exported by @amarnai/mail) evaluate
+  // instead of throwing on an undefined mock export.
   GmailAuthError: class GmailAuthError extends Error {},
+  GmailHistoryCursorExpiredError: class GmailHistoryCursorExpiredError extends Error {},
+  GmailThreadParseError: class GmailThreadParseError extends Error {},
+  // The worker builds the client via createMailProvider (real), which constructs
+  // this mocked GmailClient. getThreadSnapshot folds fetch + normalize: it awaits
+  // the raw fetch (mockGetThread — so error tests still drive rejections) and
+  // returns the normalized snapshot.
   GmailClient: vi.fn().mockImplementation(() => ({
-    getThread: mockGetThread,
+    getThreadSnapshot: async (id: string) => {
+      const r = (await mockGetThread(id)) as { id: string };
+      return {
+        providerThreadId: r.id,
+        messages: [
+          {
+            providerMessageId: `msg-${r.id}`,
+            senderEmail: "sender@example.com",
+            receivedAt: new Date(),
+          },
+        ],
+      };
+    },
   })),
-  normalizeGmailThread: vi.fn().mockImplementation((raw: unknown) => {
-    const r = raw as { id: string };
-    return {
-      providerThreadId: r.id,
-      messages: [
-        {
-          providerMessageId: `msg-${r.id}`,
-          senderEmail: "sender@example.com",
-          receivedAt: new Date(),
-        },
-      ],
-    };
-  }),
 }));
 
 vi.mock("bullmq", () => ({
@@ -220,10 +226,11 @@ beforeEach(() => {
   vi.mocked(db.emailThread.findFirst).mockResolvedValue({
     providerThreadId: "gmail-t1",
   } as never);
-  vi.mocked(db.gmailConnection.findUnique).mockResolvedValue({
+  vi.mocked(db.emailConnection.findUnique).mockResolvedValue({
+    provider: "GMAIL",
     encryptedRefreshToken: "enc-token",
     status: "ACTIVE",
-    gmailAddress: "ben@gmail.com",
+    emailAddress: "ben@gmail.com",
   } as never);
   vi.mocked(db.emailThread.update).mockResolvedValue({} as never);
   vi.mocked(db.taxonomyEdge.findMany).mockResolvedValue(makeEdges(3) as never);
@@ -426,7 +433,7 @@ describe("createClassifyThreadWorker — needs-attention push", () => {
 
 describe("createClassifyThreadWorker — disconnect-awareness", () => {
   it("returns gracefully when connection status is not ACTIVE", async () => {
-    vi.mocked(db.gmailConnection.findUnique).mockResolvedValue({
+    vi.mocked(db.emailConnection.findUnique).mockResolvedValue({
       encryptedRefreshToken: "enc-token",
       status: "DISCONNECTED",
     } as never);
@@ -442,7 +449,7 @@ describe("createClassifyThreadWorker — disconnect-awareness", () => {
   });
 
   it("returns gracefully when connection is null", async () => {
-    vi.mocked(db.gmailConnection.findUnique).mockResolvedValue(null);
+    vi.mocked(db.emailConnection.findUnique).mockResolvedValue(null);
 
     createClassifyThreadWorker();
     const processor = getProcessor();

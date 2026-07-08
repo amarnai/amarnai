@@ -53,9 +53,9 @@ export async function notifyGmailDisconnected(
 
   // Re-read current state. If the connection is no longer disconnected (already
   // reconnected since enqueue), this job is stale — do nothing (idempotent retry).
-  const connection = await db.gmailConnection.findUnique({
+  const connection = await db.emailConnection.findUnique({
     where: { workspaceId },
-    select: { status: true, gmailAddress: true },
+    select: { status: true, emailAddress: true },
   });
   if (!connection || connection.status !== "DISCONNECTED") return;
 
@@ -77,8 +77,8 @@ export async function notifyGmailDisconnected(
   }
 
   const title = "Gmail disconnected";
-  const body = connection.gmailAddress
-    ? `Amarnai lost access to ${connection.gmailAddress}. Reconnect to resume email sync.`
+  const body = connection.emailAddress
+    ? `Amarnai lost access to ${connection.emailAddress}. Reconnect to resume email sync.`
     : "Amarnai lost access to your inbox. Reconnect to resume email sync.";
 
   const messages: ExpoPushMessage[] = [];

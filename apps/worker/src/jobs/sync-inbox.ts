@@ -7,11 +7,11 @@ import {
 } from "@amarnai/db";
 import { config } from "@amarnai/config";
 import {
-  GmailClient,
-  GmailAuthError,
-  GmailHistoryCursorExpiredError,
-  normalizeGmailThread,
-} from "@amarnai/gmail";
+  createMailProvider,
+  MailAuthError,
+  MailCursorExpiredError,
+  type MailProvider,
+} from "@amarnai/mail";
 import type { GmailSyncSettings } from "@amarnai/shared";
 import {
   isTaxonomyRoutable,
@@ -61,19 +61,20 @@ export function latestExternalMessageTime(
 async function ensureEmailAccount(
   workspaceId: string,
   ownerUserId: string,
-  gmailAddress: string,
-  googleSubjectId: string | null,
+  provider: "GMAIL" | "OUTLOOK",
+  emailAddress: string,
+  subjectId: string | null,
 ): Promise<string> {
-  const providerAccountId = googleSubjectId ?? gmailAddress;
+  const providerAccountId = subjectId ?? emailAddress;
   const account = await db.emailAccount.upsert({
     where: { workspaceId_providerAccountId: { workspaceId, providerAccountId } },
     create: {
       workspaceId,
       userId: ownerUserId,
-      provider: "GMAIL",
-      primaryEmailAddress: gmailAddress,
+      provider,
+      primaryEmailAddress: emailAddress,
       providerAccountId,
-      // GmailConnection is the single authoritative token source.
+      // EmailConnection is the single authoritative token source.
       // These fields are not used for token refresh and hold only placeholders.
       accessTokenEncrypted: "placeholder",
       refreshTokenEncrypted: "placeholder",
@@ -93,9 +94,9 @@ async function ensureEmailAccount(
  * Returns the changed thread IDs and the new cursor to persist.
  */
 async function getChangedThreadIds(
-  client: GmailClient,
+  client: MailProvider,
   storedHistoryId: string | null
-): Promise<{ changedThreadIds: string[]; newHistoryId: string }> {
+): Promise<{ changedThreadIds: string[]; newCursor: string }> {
   if (!storedHistoryId) {
     // First sync for this inbox: establish the history cursor at "now" and
     // import nothing here. The historical backfill (enqueued in parallel) is the
@@ -103,14 +104,14 @@ async function getChangedThreadIds(
     // up to the plan cap. Seeding recent threads here too would be a redundant,
     // date-blind second importer. Deltas after this cursor arrive via listHistory.
     const profile = await client.getProfile();
-    return { changedThreadIds: [], newHistoryId: profile.historyId };
+    return { changedThreadIds: [], newCursor: profile.syncCursor };
   }
 
   try {
-    const { changedThreadIds, newHistoryId } = await client.listHistory(storedHistoryId);
-    return { changedThreadIds, newHistoryId };
+    const { changedThreadIds, newCursor } = await client.listChangesSince(storedHistoryId);
+    return { changedThreadIds, newCursor };
   } catch (err) {
-    if (err instanceof GmailHistoryCursorExpiredError) {
+    if (err instanceof MailCursorExpiredError) {
       console.warn("[sync-inbox] History cursor expired — performing full resync");
       // Unlike the first-run branch, the seed is kept here on purpose: the cursor
       // expired (>7-day gap) on an already-established inbox whose backfill is
@@ -120,7 +121,7 @@ async function getChangedThreadIds(
         client.getProfile(),
         client.listRecentThreadIds(50),
       ]);
-      return { changedThreadIds: ids, newHistoryId: profile.historyId };
+      return { changedThreadIds: ids, newCursor: profile.syncCursor };
     }
     throw err;
   }
@@ -293,11 +294,12 @@ export function createSyncInboxWorker(): Worker {
           where: { id: workspaceId },
           select: { ownerUserId: true, plan: true },
         }),
-        db.gmailConnection.findUnique({
+        db.emailConnection.findUnique({
           where: { workspaceId },
           select: {
-            gmailAddress: true,
-            googleSubjectId: true,
+            provider: true,
+            emailAddress: true,
+            subjectId: true,
             encryptedRefreshToken: true,
             status: true,
           },
@@ -345,13 +347,14 @@ export function createSyncInboxWorker(): Worker {
       const emailAccountId = await ensureEmailAccount(
         workspaceId,
         workspace.ownerUserId,
-        connection.gmailAddress,
-        connection.googleSubjectId,
+        connection.provider,
+        connection.emailAddress,
+        connection.subjectId,
       );
 
       const syncState = await db.providerSyncState.upsert({
         where: { emailAccountId },
-        create: { emailAccountId, provider: "GMAIL" },
+        create: { emailAccountId, provider: connection.provider },
         update: { status: "SYNCING", errorMessage: null },
         select: {
           historyId: true,
@@ -386,9 +389,9 @@ export function createSyncInboxWorker(): Worker {
 
       // ── 3. Discover changed thread IDs ──────────────────────────────────────
 
-      const client = new GmailClient(connection.encryptedRefreshToken);
+      const client = createMailProvider(connection);
 
-      const { changedThreadIds, newHistoryId } = await getChangedThreadIds(
+      const { changedThreadIds, newCursor } = await getChangedThreadIds(
         client,
         syncState.historyId
       );
@@ -402,7 +405,7 @@ export function createSyncInboxWorker(): Worker {
         // because the inbox was quiet this cycle).
         await db.providerSyncState.update({
           where: { emailAccountId },
-          data: { historyId: newHistoryId, lastSyncedAt: new Date(), status: "IDLE" },
+          data: { historyId: newCursor, lastSyncedAt: new Date(), status: "IDLE" },
         });
 
         // (The historical backfill was already enqueued right after the sync-state
@@ -448,22 +451,21 @@ export function createSyncInboxWorker(): Worker {
       const threadsToClassify: string[] = [];
 
       for (const gmailThreadId of changedThreadIds) {
-        let rawThread: unknown;
+        let rawSnapshot: Awaited<ReturnType<typeof client.getThreadSnapshot>>;
         try {
-          rawThread = await client.getThread(gmailThreadId);
+          rawSnapshot = await client.getThreadSnapshot(gmailThreadId);
         } catch (err) {
           const msg = err instanceof Error ? err.message : String(err);
           if (msg.includes("not found")) {
-            // Thread was deleted from Gmail — skip without failing the job.
+            // Thread was deleted from the provider — skip without failing the job.
             continue;
           }
           throw err;
         }
 
-        const rawSnapshot = normalizeGmailThread(rawThread);
         // Compute label flags from all messages (before filtering).
         // Stored on the thread so the API can filter at query time without re-fetching.
-        const labelFlags = computeThreadLabelFlags(rawSnapshot.messages, connection.gmailAddress);
+        const labelFlags = computeThreadLabelFlags(rawSnapshot.messages, connection.emailAddress);
         const snapshot = applyThreadFilter(rawSnapshot, settings);
 
         if (snapshot === null) {
@@ -473,7 +475,9 @@ export function createSyncInboxWorker(): Worker {
           await upsertEmailThread({
             workspaceId,
             emailAccountId,
+            provider: connection.provider,
             providerThreadId: rawSnapshot.providerThreadId,
+            webLink: rawSnapshot.webLink,
             subject: rawSnapshot.subject,
             latestMessageAt: rawSnapshot.latestMessageAt,
             messageCount: rawSnapshot.messageCount,
@@ -486,7 +490,9 @@ export function createSyncInboxWorker(): Worker {
         const emailThreadId = await upsertEmailThread({
           workspaceId,
           emailAccountId,
+          provider: connection.provider,
           providerThreadId: snapshot.providerThreadId,
+          webLink: snapshot.webLink,
           subject: snapshot.subject,
           latestMessageAt: snapshot.latestMessageAt,
           messageCount: snapshot.messageCount,
@@ -532,7 +538,7 @@ export function createSyncInboxWorker(): Worker {
         // Clear done mark if an external message arrived after the thread was
         // marked done. Uses updateMany with a conditional where clause so no
         // extra query is needed when the thread isn't marked done.
-        const latestExternal = latestExternalMessageTime(snapshot.messages, connection.gmailAddress);
+        const latestExternal = latestExternalMessageTime(snapshot.messages, connection.emailAddress);
         if (latestExternal) {
           await db.emailThread.updateMany({
             where: {
@@ -613,7 +619,7 @@ export function createSyncInboxWorker(): Worker {
       await db.providerSyncState.update({
         where: { emailAccountId },
         data: {
-          historyId: newHistoryId,
+          historyId: newCursor,
           lastSyncedAt: new Date(),
           status: "IDLE",
           errorMessage: null,
@@ -671,7 +677,7 @@ export function createSyncInboxWorker(): Worker {
     if (!job) return;
     const { workspaceId } = job.data;
     try {
-      const isAuthError = err instanceof GmailAuthError;
+      const isAuthError = err instanceof MailAuthError;
 
       if (isAuthError) {
         // Atomic flip + member notifications on the winning transition; enqueue
@@ -687,12 +693,12 @@ export function createSyncInboxWorker(): Worker {
         );
       }
 
-      const connection = await db.gmailConnection.findUnique({
+      const connection = await db.emailConnection.findUnique({
         where: { workspaceId },
-        select: { googleSubjectId: true, gmailAddress: true },
+        select: { subjectId: true, emailAddress: true },
       });
       if (!connection) return;
-      const providerAccountId = connection.googleSubjectId ?? connection.gmailAddress;
+      const providerAccountId = connection.subjectId ?? connection.emailAddress;
       const account = await db.emailAccount.findUnique({
         where: { workspaceId_providerAccountId: { workspaceId, providerAccountId } },
         select: { id: true },
