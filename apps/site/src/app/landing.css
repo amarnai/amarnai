@@ -1430,6 +1430,349 @@ button.ld-gmail-row:hover { background: var(--bg-soft); }
   .ld-mailthread-reply { margin-left: 0; }
 }
 
+/* ─── Outlook inbox mock ──────────────────────────────────────────────────────
+   A distinct layout from the Gmail mock above so the pane reads as real Outlook:
+   a blue app bar, a folder rail, the Focused/Other pivot, and stacked message
+   rows with colored initials avatars. The Outlook-blue accents come from a
+   scoped variable — a third-party brand color used only to make the mock
+   recognizable, not an Amarnai design token (same basis as the provider logos). */
+.ld-ol,
+.ld-mailthread--outlook {
+  --ld-ol-blue: #0f6cbd;
+  --ld-ol-blue-strong: #115ea3;
+}
+
+.ld-ol {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.ld-ol-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 14px;
+  background: var(--ld-ol-blue);
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.ld-ol-waffle,
+.ld-ol-gear { display: inline-flex; opacity: 0.9; flex-shrink: 0; }
+
+.ld-ol-logo {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.ld-ol-search {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.16);
+  border-radius: 6px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.85);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.ld-ol-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ld-ol-body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+}
+
+.ld-ol-rail {
+  flex: 0 0 132px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 10px 8px;
+  border-right: 1px solid var(--line);
+  overflow: hidden;
+}
+
+.ld-ol-new {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  align-self: flex-start;
+  padding: 6px 14px 6px 11px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  background: var(--ld-ol-blue);
+  color: #fff;
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.ld-ol-rail-label {
+  padding: 4px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink-4);
+}
+
+.ld-ol-folder {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 6px 8px;
+  border-radius: 5px;
+  font-size: 12.5px;
+  color: var(--ink-2);
+}
+
+.ld-ol-folder-ico {
+  display: inline-flex;
+  color: var(--ink-4);
+  flex-shrink: 0;
+}
+
+.ld-ol-folder-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ld-ol-folder.active {
+  background: color-mix(in srgb, var(--ld-ol-blue) 12%, transparent);
+  color: var(--ld-ol-blue);
+  font-weight: 600;
+}
+
+.ld-ol-folder.active .ld-ol-folder-ico { color: var(--ld-ol-blue); }
+
+.ld-ol-folder-count {
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ld-ol-blue);
+}
+
+.ld-ol-list-col {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.ld-ol-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 8px 12px 0;
+  flex-shrink: 0;
+}
+
+.ld-ol-tab {
+  padding: 6px 10px 8px;
+  font-size: 12.5px;
+  color: var(--ink-4);
+}
+
+.ld-ol-tab.active {
+  color: var(--ink);
+  font-weight: 600;
+  box-shadow: inset 0 -2px 0 var(--ld-ol-blue);
+}
+
+.ld-ol-list {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-top: 1px solid var(--line);
+}
+
+.ld-ol-row {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 9px 14px 9px 12px;
+  flex-shrink: 0;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--line);
+  color: inherit;
+  font-family: inherit;
+}
+
+/* Real thread rows are buttons that open the Outlook reading-pane mock; the
+   skeleton filler rows below stay plain divs. */
+button.ld-ol-row { cursor: pointer; transition: background 0.12s; }
+button.ld-ol-row:hover { background: var(--bg-soft); }
+
+.ld-ol-unread-bar {
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 3px;
+  border-radius: 0 2px 2px 0;
+  background: transparent;
+}
+
+.ld-ol-row.unread .ld-ol-unread-bar { background: var(--ld-ol-blue); }
+
+.ld-ol-av {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  margin-top: 1px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.ld-ol-row-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.ld-ol-row-top {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.ld-ol-sender {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+  color: var(--ink-2);
+}
+
+.ld-ol-time {
+  flex-shrink: 0;
+  font-size: 11px;
+  color: var(--ink-4);
+}
+
+.ld-ol-row-subject {
+  font-size: 12.5px;
+  color: var(--ink-2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ld-ol-row-preview {
+  font-size: 12px;
+  color: var(--ink-4);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ld-ol-row.unread .ld-ol-sender { color: var(--ink); font-weight: 700; }
+.ld-ol-row.unread .ld-ol-row-subject { color: var(--ink); font-weight: 600; }
+.ld-ol-row.unread .ld-ol-time { color: var(--ld-ol-blue); font-weight: 600; }
+
+.ld-ol-unread-dot {
+  align-self: center;
+  width: 8px;
+  height: 8px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--ld-ol-blue);
+}
+
+/* Filler rows: static, de-emphasized stand-ins for already-read mail below the
+   fold, hard-clipped at the pane edge like the Gmail mock's. */
+.ld-ol-more {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  opacity: 0.5;
+}
+
+.ld-ol-av-skel { background: var(--line); }
+
+.ld-ol-skel .ld-skel-sender { width: 84px; }
+.ld-ol-skel .ld-skel-time { width: 24px; }
+.ld-ol-skel .ld-skel-line {
+  flex: none;
+  width: 80%;
+  max-width: none;
+  margin-top: 5px;
+}
+.ld-ol-skel .ld-skel-line--short { width: 55%; }
+
+/* Outlook contact-avatar tints (assigned by outlook-helpers.ts). Decorative
+   brand-style colors for the mock — white initials on each — not Amarnai
+   tokens. Defined after .ld-mailthread-avatar so they win in the reading pane. */
+.ld-ol-av--0 { background: #0f6cbd; color: #fff; }
+.ld-ol-av--1 { background: #0a7b74; color: #fff; }
+.ld-ol-av--2 { background: #8764b8; color: #fff; }
+.ld-ol-av--3 { background: #c4396b; color: #fff; }
+.ld-ol-av--4 { background: #ca6a18; color: #fff; }
+.ld-ol-av--5 { background: #3a7d44; color: #fff; }
+
+/* Outlook reading pane: the same overlay shell as the Gmail thread (position,
+   width, back bar), fronted by Outlook's Reply / Reply all / Forward bar. */
+.ld-ol-actions {
+  display: flex;
+  gap: 4px;
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--line);
+  flex-shrink: 0;
+}
+
+.ld-ol-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 5px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--ld-ol-blue-strong);
+}
+
 /* "Generate from inbox" lives in the frame bar, right-aligned opposite the
    breadcrumb (the bar uses justify-content: space-between). */
 .demo-generate-btn {

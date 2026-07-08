@@ -3,9 +3,9 @@
 import { useMemo } from "react";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
-import { OutlookIcon } from "@amarnai/ui";
 import type { ThreadItem } from "@amarnai/ui/emails";
 import { GmailLogoIcon } from "./icons";
+import { OutlookInboxMock } from "./OutlookInboxMock";
 
 export type MockProvider = "gmail" | "outlook";
 
@@ -16,10 +16,10 @@ export type MockProvider = "gmail" | "outlook";
  * conversation view (the same mock the workspace's "Open in <provider>" button
  * opens); the skeleton filler rows below stay decorative.
  *
- * One component covers both providers (Gmail and Outlook) so the row list,
- * skeleton filler, and layout are shared; only the header wordmark and the inbox
- * pivot differ. It reuses the `ld-gmail-*` classes as the shared webmail-mock
- * styling rather than duplicating them per provider.
+ * Gmail and Outlook are rendered by distinct layouts so each pane reads as the
+ * real product (Gmail's single-line rows and label tabs here; Outlook's folder
+ * rail, stacked rows, and blue chrome in OutlookInboxMock). Both consume the
+ * same ThreadItem list and the same onOpenThread callback.
  */
 export function MailInboxMock({
   provider,
@@ -35,7 +35,10 @@ export function MailInboxMock({
     () => new Intl.DateTimeFormat(i18n.locale, { month: "short", day: "numeric" }),
     [i18n.locale],
   );
-  const isOutlook = provider === "outlook";
+
+  if (provider === "outlook") {
+    return <OutlookInboxMock threads={threads} onOpenThread={onOpenThread} />;
+  }
 
   return (
     <div className="ld-gmail">
@@ -46,17 +49,8 @@ export function MailInboxMock({
           <span />
         </span>
         <span className="ld-gmail-logo">
-          {isOutlook ? (
-            <>
-              <OutlookIcon variant="color" size={18} />
-              Outlook
-            </>
-          ) : (
-            <>
-              <GmailLogoIcon />
-              Gmail
-            </>
-          )}
+          <GmailLogoIcon />
+          Gmail
         </span>
         <span className="ld-gmail-search">
           <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden>
@@ -69,28 +63,15 @@ export function MailInboxMock({
       </div>
 
       <div className="ld-gmail-tabs">
-        {isOutlook ? (
-          <>
-            <span className="ld-gmail-tab active">
-              <Trans>Focused</Trans>
-            </span>
-            <span className="ld-gmail-tab">
-              <Trans>Other</Trans>
-            </span>
-          </>
-        ) : (
-          <>
-            <span className="ld-gmail-tab active">
-              <Trans>Primary</Trans>
-            </span>
-            <span className="ld-gmail-tab">
-              <Trans>Promotions</Trans>
-            </span>
-            <span className="ld-gmail-tab">
-              <Trans>Social</Trans>
-            </span>
-          </>
-        )}
+        <span className="ld-gmail-tab active">
+          <Trans>Primary</Trans>
+        </span>
+        <span className="ld-gmail-tab">
+          <Trans>Promotions</Trans>
+        </span>
+        <span className="ld-gmail-tab">
+          <Trans>Social</Trans>
+        </span>
       </div>
 
       <div className="ld-gmail-list">
