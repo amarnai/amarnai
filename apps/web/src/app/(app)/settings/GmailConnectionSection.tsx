@@ -140,16 +140,18 @@ export function GmailConnectionSection({
   const providerName = isOutlook ? "Outlook" : "Gmail";
   const connectPath = isOutlook ? "outlook" : "gmail";
   const ProviderIcon = isOutlook ? OutlookIcon : GoogleGIcon;
+  // Primary connect/reconnect action carries the provider's brand color.
+  const primaryBtnClass = isOutlook ? "btn-outlook" : "btn-primary";
 
   // Providers the user could switch TO from the currently connected one. Gmail
   // is always available; Outlook only when configured. Switching to any of
   // these connects a different inbox, which erases retained data.
   const otherProviders = [
     ...(provider !== "GMAIL"
-      ? [{ path: "gmail" as const, name: "Gmail", Icon: GoogleGIcon }]
+      ? [{ path: "gmail" as const, name: "Gmail", Icon: GoogleGIcon, btnClass: "btn-outline-clay" }]
       : []),
     ...(provider !== "OUTLOOK" && outlookEnabled
-      ? [{ path: "outlook" as const, name: "Outlook", Icon: OutlookIcon }]
+      ? [{ path: "outlook" as const, name: "Outlook", Icon: OutlookIcon, btnClass: "btn-outline-outlook" }]
       : []),
   ];
 
@@ -329,7 +331,7 @@ export function GmailConnectionSection({
           )}
           <a
             href={`/api/${connectPath}/connect?workspaceId=${workspaceId}`}
-            className="btn-primary"
+            className={primaryBtnClass}
           >
             <ProviderIcon variant="mono" size={16} />
             <Trans>Reconnect {providerName}</Trans>
@@ -338,7 +340,7 @@ export function GmailConnectionSection({
           {otherProviders.length > 0 && (
             <div className="gmail-connection-switch">
               <p className="gmail-meta"><Trans>Or connect a different inbox:</Trans></p>
-              {otherProviders.map(({ path, name, Icon }) =>
+              {otherProviders.map(({ path, name, Icon, btnClass }) =>
                 switchingTo === path ? (
                   <div key={path} className="account-delete-confirm">
                     <p className="account-danger-warning">
@@ -372,7 +374,7 @@ export function GmailConnectionSection({
                   <button
                     key={path}
                     type="button"
-                    className="btn-outline"
+                    className={btnClass}
                     onClick={() => setSwitchingTo(path)}
                   >
                     <Icon variant="mono" size={16} />
@@ -382,7 +384,7 @@ export function GmailConnectionSection({
                   <a
                     key={path}
                     href={`/api/${path}/connect?workspaceId=${workspaceId}`}
-                    className="btn-outline"
+                    className={btnClass}
                   >
                     <Icon variant="mono" size={16} />
                     <Trans>Connect {name}</Trans>
@@ -405,7 +407,7 @@ export function GmailConnectionSection({
           {outlookEnabled && (
             <a
               href={`/api/outlook/connect?workspaceId=${workspaceId}`}
-              className="btn-primary"
+              className="btn-outlook"
             >
               <OutlookIcon variant="mono" size={16} />
               <Trans>Connect Outlook</Trans>

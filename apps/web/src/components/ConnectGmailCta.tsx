@@ -104,7 +104,7 @@ export function ConnectGmailCta({
           </p>
           <a
             href={`/api/${connectPath}/connect?workspaceId=${workspaceId}`}
-            className="btn-primary connect-gmail-cta-btn"
+            className={`${isOutlook ? "btn-outlook" : "btn-primary"} connect-gmail-cta-btn`}
           >
             {isOutlook ? (
               <OutlookIcon variant="mono" size={16} />
