@@ -13,7 +13,7 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:513
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:516
 #, fuzzy
 msgid " (Inbox)"
 msgstr " (Gelen Kutusu)"
@@ -55,6 +55,12 @@ msgstr "{0, plural, one {# konu içe aktarıldı.} other {# konu içe aktarıld�
 #, fuzzy
 msgid "{0, plural, one {# thread imported.} other {# threads imported.}} Your plan's import limit was reached."
 msgstr "{0, plural, one {# konu içe aktarıldı.} other {# konu içe aktarıldı.}} Planınızın içe aktarma sınırına ulaşıldı."
+
+#. placeholder {0}: s.threadCount
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:125
+#, fuzzy
+msgid "{0, plural, one {# thread} other {# threads}}"
+msgstr "{0, plural, one {# konu} other {# konu}}"
 
 #. placeholder {0}: node?.threadCount ?? 0
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:380
@@ -129,7 +135,7 @@ msgstr "{blacklistCount, plural, one {# engellendi} other {# engellendi}}"
 #~ msgid "{by} assigned you: {subject}"
 #~ msgstr "{by} size atadı: {subject}"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:528
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:531
 #, fuzzy
 msgid "{classificationCount, plural, one {Deleting this folder will leave # thread unsorted.} other {Deleting this folder will leave # threads unsorted.}}"
 msgstr "{classificationCount, plural, one {Bu klasör silinirse # konu sınıflandırılmamış kalır.} other {Bu klasör silinirse # konu sınıflandırılmamış kalır.}}"
@@ -150,6 +156,15 @@ msgstr "%{confPct} güven"
 msgid "{draftRemaining} of {draftLimit} left · resets {draftResetDate}"
 msgstr "{draftRemaining} / {draftLimit} taslak kaldı · sıfırlanır {draftResetDate}"
 
+#: ../../apps/web/src/app/(app)/emails/ResortReviewBanner.tsx:65
+#, fuzzy
+msgid "{eligible, plural, one {# needs-review thread can be re-sorted automatically, because your plan changed since it was sorted or sorting hit a temporary error. The rest need your decision.} other {# needs-review threads can be re-sorted automatically, because your plan changed since they were sorted or sorting hit a temporary error. The rest need your decision.}}"
+msgstr "{eligible, plural, one {# gözden geçirilmesi gereken ileti dizisi, planınız sıralandıktan sonra değiştiği veya sıralamada geçici bir hata oluştuğu için otomatik olarak yeniden sıralanabilir. Kalanlar sizin kararınızı bekliyor.} other {# gözden geçirilmesi gereken ileti dizisi, planınız sıralandıktan sonra değiştiği veya sıralamada geçici bir hata oluştuğu için otomatik olarak yeniden sıralanabilir. Kalanlar sizin kararınızı bekliyor.}}"
+
+#: ../../apps/web/src/app/(app)/emails/ResortReviewBanner.tsx:81
+msgid "{eligible, plural, one {Re-sort # thread} other {Re-sort # threads}}"
+msgstr "{eligible, plural, one {# konuyu yeniden sırala} other {# konuyu yeniden sırala}}"
+
 #: ../../apps/site/src/components/landing/HeroFeedCard.tsx:260
 #, fuzzy
 #~ msgid "{filed} filed, {reviewCount} needs review"
@@ -163,6 +178,10 @@ msgstr "{filed} sıralandı · {reviewCount} incelenecek"
 #, fuzzy
 msgid "{folderCount, plural, one {# folder} other {# folders}}"
 msgstr "{folderCount, plural, one {# klasör} other {# klasör}}"
+
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:156
+msgid "{hiddenCount, plural, one {# folder with no threads is not shown.} other {# folders with no threads are not shown.}}"
+msgstr "{hiddenCount, plural, one {# ileti dizisi olmayan klasör gösterilmiyor.} other {# ileti dizisi olmayan klasör gösterilmiyor.}}"
 
 #: ../../apps/web/src/app/admin/waitlist/WaitlistShell.tsx:17
 #, fuzzy
@@ -195,7 +214,7 @@ msgstr "{quotaRemaining} / {0} kaldı · sıfırlanır {quotaResetDate}"
 msgid "{remaining} of {limit} remaining · resets {resetDate}"
 msgstr "{remaining} / {limit} kaldı · sıfırlanır {resetDate}"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1478
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1549
 #, fuzzy
 msgid "{routableCount} of {TAXONOMY_MIN_NON_ROOT_NODES} folders connected to your inbox. Routing requires at least {TAXONOMY_MIN_NON_ROOT_NODES}."
 msgstr "Gelen kutunuza {routableCount} / {TAXONOMY_MIN_NON_ROOT_NODES} klasör bağlı. Yönlendirme için en az {TAXONOMY_MIN_NON_ROOT_NODES} klasör gerekir."
@@ -259,7 +278,7 @@ msgstr "© 2026 Amarnai. AGPL-3.0 lisansıyla açık kaynak."
 msgid "+ Add folder"
 msgstr "+ Klasör ekle"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1319
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1390
 #, fuzzy
 msgid "+ Add Folder"
 msgstr "+ Klasör Ekle"
@@ -268,6 +287,11 @@ msgstr "+ Klasör Ekle"
 #, fuzzy
 msgid "+ New workspace"
 msgstr "+ Yeni çalışma alanı"
+
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:170
+#, fuzzy
+msgid "<0>{migrateLive}</0> threads move to their new folder instantly. <1>{resortLive}</1> threads will be re-sorted by AI."
+msgstr "<0>{migrateLive}</0> ileti dizisi anında yeni klasörüne taşınır. <1>{resortLive}</1> ileti dizisi yapay zeka tarafından yeniden sıralanacak."
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:95
 msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your {providerName} account to get started. Amarnai connects with <1>read-only access</1> and <2>never sends, deletes, or changes anything</2>. Your inbox stays yours."
@@ -415,7 +439,9 @@ msgstr "Thebes'li Horemheb'den Yazışma Şefi pozisyonu için yeni bir başvuru
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "Thebes'li Horemheb'den Yazışma Şefi pozisyonu için yeni bir başvuru alındı.\n\nBaşvuruyu Kayıtlar Evi'nde görüntüleyin."
+msgstr "Thebes'li Horemheb'den Yazışma Şefi pozisyonu için yeni bir başvuru alındı.\n"
+"\n"
+"Başvuruyu Kayıtlar Evi'nde görüntüleyin."
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:387
 #, fuzzy
@@ -429,13 +455,21 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "Abdi-Heba,\n\nAynı hafta Delta yakınında olacağım. İkinci gün menzil istasyonunda buluşalım; sabahı ayırabilirim.\n\nO zamana dek,"
+msgstr "Abdi-Heba,\n"
+"\n"
+"Aynı hafta Delta yakınında olacağım. İkinci gün menzil istasyonunda buluşalım; sabahı ayırabilirim.\n"
+"\n"
+"O zamana dek,"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
 #, fuzzy
 #~ msgid "About {count, plural, one {# more thread} other {# more threads}} beyond your {plan} subscription limit aren't loaded."
 #~ msgstr "{plan} abonelik limitinizin üzerinde {count, plural, one {# ileti daha} other {# ileti daha}} yüklenmedi."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:186
+msgid "Academic Researcher"
+msgstr "Akademik Araştırmacı"
 
 #: ../../apps/web/src/app/sign-up/WaitlistForm.tsx:24
 #, fuzzy
@@ -476,10 +510,14 @@ msgstr "Hesap Ayarları"
 #~ msgid "Acme Workspace"
 #~ msgstr "Acme Çalışma Alanı"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:17
+#: ../ui/src/i18n/taxonomy-template-messages.ts:19
 #, fuzzy
 msgid "Active project communication, deliverables, feedback, and approvals from clients."
 msgstr "Müşterilerden gelen aktif proje iletişimi, teslimatlar, geri bildirimler ve onaylar."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:163
+msgid "Ad revenue, fan tips, and creator earnings statements."
+msgstr "Reklam geliri, hayran bağışları ve içerik üreticisi kazanç beyanları."
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:293
 #: ../../apps/mobile/src/components/BlacklistSheet.tsx:118
@@ -488,7 +526,7 @@ msgstr "Müşterilerden gelen aktif proje iletişimi, teslimatlar, geri bildirim
 msgid "Add"
 msgstr "Ekle"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1343
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1414
 #, fuzzy
 msgid "Add at least 3 connected folders to export"
 msgstr "Dışa aktarmak için en az 3 bağlı klasör ekleyin."
@@ -504,7 +542,7 @@ msgstr "Firefox'a Ekle"
 
 #: ../../apps/mobile/src/components/CollaboratorsSheet.tsx:58
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:42
-#: ../ui/src/i18n/taxonomy-template-messages.ts:28
+#: ../ui/src/i18n/taxonomy-template-messages.ts:30
 #, fuzzy
 msgid "Admin"
 msgstr "Yönetici"
@@ -523,6 +561,20 @@ msgstr "Gelişmiş"
 #, fuzzy
 msgid "Advanced review queue"
 msgstr "Gelişmiş inceleme kuyruğu"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:155
+#, fuzzy
+msgid "Affiliate links, referral commissions, and creator reward tiers."
+msgstr "Satış ortaklığı linkleri, referans komisyonları ve içerik üreticisi ödül seviyeleri."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:154
+#, fuzzy
+msgid "Affiliates"
+msgstr "Satış Ortakları"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:67
+msgid "Agreements, banking, accounting, incorporation, and corporate legal correspondence."
+msgstr "Sözleşmeler, bankacılık, muhasebe, şirket kuruluşu ve kurumsal hukuki yazışmalar."
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:287
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:185
@@ -841,6 +893,10 @@ msgstr "Uygulanıyor…"
 msgid "Approve routing"
 msgstr "Yönlendirmeyi onayla"
 
+#: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:131
+msgid "Archive"
+msgstr "Arşiv"
+
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:234
 #: ../ui/src/emails/TriageBar.tsx:71
 #, fuzzy
@@ -895,11 +951,21 @@ msgstr "En az {PASSWORD_MIN_LENGTH} karakter"
 #~ msgid "At least 8 characters"
 #~ msgstr "En az 8 karakter"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:160
+msgid "Audience"
+msgstr "Kitle"
+
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:127
 #: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:88
 #, fuzzy
 msgid "Auto-file notifications to Updates / Other"
 msgstr "Bildirimleri Güncellemeler / Diğer'e otomatik olarak dosyala."
+
+#. placeholder {0}: catchAllRow.threadCount
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:148
+#, fuzzy
+msgid "Automated and bulk mail ({0}) always moves to the new catch-all folder."
+msgstr "Otomatik ve toplu postalar ({0}) her zaman yeni genel klasöre taşınır."
 
 #: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:39
 msgid "Automated and bulk mail that doesn't fit another folder lands here automatically. This is different from Needs review, which holds threads too ambiguous for the assistant to sort."
@@ -910,7 +976,7 @@ msgstr "Başka bir klasöre uymayan otomatik ve toplu e-postalar doğrudan buray
 msgid "Automated notice from the Bureau of Royal Appointments. Subject and sender clearly indicate a new application for an open position."
 msgstr "Kraliyet Atamaları Bürosu'ndan otomatik bildirim. Konu ve gönderici, açık bir pozisyona yeni bir başvuru olduğunu açıkça belirtiyor."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:96
+#: ../ui/src/i18n/taxonomy-template-messages.ts:246
 #: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:68
 #, fuzzy
 msgid "Automated notifications, newsletters, and service updates that don't fit another folder."
@@ -932,10 +998,15 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "Aziru,\n\nDostluk sözleriniz bize ulaştı. Amurru hanedanının ne önerdiğini daha fazla duymaya açığız. Koşullarınızı bir sonraki kurye ile gönderin.\n\nSaygılarımızla,"
+msgstr "Aziru,\n"
+"\n"
+"Dostluk sözleriniz bize ulaştı. Amurru hanedanının ne önerdiğini daha fazla duymaya açığız. Koşullarınızı bir sonraki kurye ile gönderin.\n"
+"\n"
+"Saygılarımızla,"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:219
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
+#: ../../apps/site/src/components/landing/MailThreadMock.tsx:65
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:25
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:230
 #: ../ui/src/emails/ThreadPreview.tsx:121
@@ -944,8 +1015,8 @@ msgid "Back"
 msgstr "Geri"
 
 #: ../../apps/site/src/components/landing/MailThreadMock.tsx:62
-msgid "Back to inbox"
-msgstr "Gelen kutusuna geri dön"
+#~ msgid "Back to inbox"
+#~ msgstr "Gelen kutusuna geri dön"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:215
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:225
@@ -965,7 +1036,7 @@ msgstr "Girişe dön"
 msgid "Backfill"
 msgstr "Geri doldurma"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:81
+#: ../ui/src/i18n/taxonomy-template-messages.ts:91
 #, fuzzy
 msgid "Bank statements, investments, insurance policies, and personal financial records."
 msgstr "Banka ekstreleri, yatırımlar, sigorta poliçeleri ve kişisel finans kayıtları."
@@ -1002,15 +1073,33 @@ msgstr "Faturalandırma döngüsü"
 msgid "Billing unit"
 msgstr "Faturalandırma birimi"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:23
+#: ../ui/src/i18n/taxonomy-template-messages.ts:25
 #, fuzzy
 msgid "Billing, payments, invoices, and financial records for freelance work."
 msgstr "Serbest çalışma için faturalandırma, ödemeler, faturalar ve finans kayıtları."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:94
+#, fuzzy
+msgid "Bills & Receipts"
+msgstr "Faturalar ve Makbuzlar"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:238
+#, fuzzy
+msgid "Board & Governance"
+msgstr "Yönetim Kurulu ve Yönetişim"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:239
+msgid "Board meetings, governance policies, bylaws, and trustee correspondence."
+msgstr "Yönetim kurulu toplantıları, yönetişim politikaları, tüzükler ve mütevelli yazışmaları."
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:33
 #, fuzzy
 msgid "Board members, existing fund partners, and portfolio updates."
 msgstr "Yönetim kurulu üyeleri, mevcut fon ortakları ve portföy güncellemeleri."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:150
+msgid "Brand Deals"
+msgstr "Marka Anlaşmaları"
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:385
 #, fuzzy
@@ -1022,7 +1111,7 @@ msgid "Browse emails easily through your folders. Generate draft replies and cop
 msgstr "Klasörlerinizdeki e-postaları kolayca gözden geçirin. Yanıt taslakları oluşturun ve gelen kutunuza kopyalayın."
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:283
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1403
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1474
 #, fuzzy
 msgid "Browse templates"
 msgstr "Şablonlara göz at"
@@ -1031,6 +1120,15 @@ msgstr "Şablonlara göz at"
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:280
 msgid "Browser extension"
 msgstr "Tarayıcı uzantısı"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:114
+#, fuzzy
+msgid "Bug Reports"
+msgstr "Hata Raporları"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:115
+msgid "Bug reports, stack traces, and regression tickets filed against the codebase."
+msgstr "Kod tabanına karşı açılan hata raporları, yığın izleri ve regresyon biletleri."
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:55
 #, fuzzy
@@ -1064,10 +1162,24 @@ msgstr "İş"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:27
 #, fuzzy
-msgid "Business receipts, reimbursements, and records of work-related purchases."
-msgstr "İş makbuzları, geri ödemeler ve iş ile ilgili satın alma kayıtları."
+#~ msgid "Business receipts, reimbursements, and records of work-related purchases."
+#~ msgstr "İş makbuzları, geri ödemeler ve iş ile ilgili satın alma kayıtları."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:71
+#: ../ui/src/i18n/taxonomy-template-messages.ts:31
+#, fuzzy
+msgid "Business registration, liability coverage, and internal administration notices."
+msgstr "İşletme tescili, sorumluluk sigortası ve dahili yönetim bildirimleri."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:29
+#, fuzzy
+msgid "Business reimbursements and records of work-related purchases and equipment."
+msgstr "İşletme masraf iadeleri ve işe bağlı satın alımlar ile ekipman kayıtları."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:209
+msgid "Buyers & Showings"
+msgstr "Alıcılar ve Gösterimler"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:79
 #, fuzzy
 msgid "Campus Admin"
 msgstr "Kampüs Yöneticisi"
@@ -1094,13 +1206,13 @@ msgstr "Amarnai'yi kendi sunucumda barındırabilir miyim?"
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:93
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:245
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:150
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:566
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:580
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:694
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1617
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1645
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1686
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1773
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:94
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:186
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:569
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:583
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:697
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1702
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1795
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:64
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:275
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:370
@@ -1137,6 +1249,15 @@ msgstr "Abonelik iptal edilsin mi?"
 msgid "Cancelling…"
 msgstr "İptal ediliyor…"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:63
+#, fuzzy
+msgid "Candidate pipelines, applicant screening, and headcount planning."
+msgstr "Aday havuzları, başvuru sahibi taraması ve personel planlaması."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:134
+msgid "Carrier tracking numbers, delivery exceptions, and courier dispatch notices."
+msgstr "Kargo takip numaraları, teslimat istisnaları ve kurye gönderim bildirimleri."
+
 #: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:58
 #: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:81
 #, fuzzy
@@ -1157,6 +1278,10 @@ msgstr "Atananı Değiştir"
 msgid "Change subscription"
 msgstr "Aboneliği değiştir"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:157
+msgid "Channel notifications, upload analytics, and policy updates from social platforms."
+msgstr "Sosyal platformlardan gelen kanal bildirimleri, yükleme analizleri ve politika güncellemeleri."
+
 #: ../../apps/web/src/app/verify-email/page.tsx:26
 #, fuzzy
 msgid "Check your inbox"
@@ -1168,7 +1293,7 @@ msgstr "Gelen kutunuzu kontrol edin"
 msgid "Checkout failed: {0}"
 msgstr "Ödeme başarısız: {0}"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:676
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:679
 #, fuzzy
 msgid "Child folder"
 msgstr "Alt klasör"
@@ -1201,6 +1326,15 @@ msgstr "Amarnai'yi nasıl önizleyeceğinizi seçin"
 msgid "Choose parent"
 msgstr "Üst klasör seç"
 
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:101
+#, fuzzy
+msgid "Choose where each folder’s threads should go under your new plan. Matched folders keep their threads instantly; anything set to re-sort is re-classified by AI."
+msgstr "Yeni planınız kapsamında her bir klasörün ileti dizilerinin nereye gideceğini seçin. Eşleşen klasörler ileti dizilerini anında korur; yeniden sıralanacak şekilde ayarlananlar yapay zeka tarafından yeniden sınıflandırılır."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:169
+msgid "Classroom"
+msgstr "Sınıf"
+
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:120
 #, fuzzy
 #~ msgid "Click folders & threads, then generate a draft."
@@ -1208,10 +1342,14 @@ msgstr "Üst klasör seç"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:21
 #, fuzzy
-msgid "Client agreements, statements of work, NDAs, and contract amendments."
-msgstr "Müşteri sözleşmeleri, iş beyanları, gizlilik anlaşmaları ve sözleşme ekleri."
+#~ msgid "Client agreements, statements of work, NDAs, and contract amendments."
+#~ msgstr "Müşteri sözleşmeleri, iş beyanları, gizlilik anlaşmaları ve sözleşme ekleri."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:16
+#: ../ui/src/i18n/taxonomy-template-messages.ts:23
+msgid "Client contracts, statements of work, NDAs, and signed amendments."
+msgstr "Müşteri sözleşmeleri, iş beyanları, gizlilik anlaşmaları ve imzalı ekler."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:18
 #, fuzzy
 msgid "Clients"
 msgstr "Müşteriler"
@@ -1227,7 +1365,7 @@ msgstr "Müşteriler"
 msgid "Close"
 msgstr "Kapat"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1542
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1613
 #, fuzzy
 msgid "Close panel"
 msgstr "Paneli kapat"
@@ -1239,6 +1377,25 @@ msgstr "Paneli kapat"
 #, fuzzy
 msgid "Close preview"
 msgstr "Önizlemeyi kapat"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:117
+#, fuzzy
+msgid "Cloud hosting, servers, and platform monitoring for running services."
+msgstr "Hizmetleri çalıştırmak için bulut barındırma, sunucular ve platform izleme."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:110
+#, fuzzy
+msgid "Code"
+msgstr "Kod"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:159
+#, fuzzy
+msgid "Collab invitations, guest appearances, and cross-promotion with other creators."
+msgstr "İşbirliği davetleri, konuk katılımları ve diğer içerik üreticileriyle çapraz tanıtım."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:158
+msgid "Collaborations"
+msgstr "İşbirlikleri"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:251
 #: ../../apps/mobile/src/components/CollaboratorsSheet.tsx:36
@@ -1259,6 +1416,10 @@ msgstr "Ortaklar, Pro ve İşletme aboneliklerinde kullanılabilir. <0>Eklemek i
 #~ msgid "Collapse"
 #~ msgstr "Daralt"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:124
+msgid "Communities"
+msgstr "Topluluklar"
+
 #: ../ui/src/pricing/planMessages.ts:98
 #, fuzzy
 msgid "Community & docs"
@@ -1269,6 +1430,15 @@ msgstr "Topluluk ve belgeler"
 msgid "Compare every subscription"
 msgstr "Tüm abonelikleri karşılaştırın"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:195
+#, fuzzy
+msgid "Conference submissions, abstract acceptances, and keynote session invitations."
+msgstr "Konferans başvuruları, özet kabulleri ve açılış konuşması oturumu davetiyeleri."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:194
+msgid "Conferences"
+msgstr "Konferanslar"
+
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:294
 #, fuzzy
 msgid "Confirm cancellation"
@@ -1278,7 +1448,7 @@ msgstr "İptali Onayla"
 msgid "Confirm delete"
 msgstr "Silmeyi onayla"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:558
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:561
 #, fuzzy
 msgid "Confirm Delete"
 msgstr "Silmeyi Onayla"
@@ -1436,6 +1606,10 @@ msgstr "Bağlanıyor…"
 msgid "Connection failed. Please try again."
 msgstr "Bağlantı başarısız oldu. Lütfen tekrar deneyin."
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:148
+msgid "Content Creator"
+msgstr "İçerik Üreticisi"
+
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:363
 #, fuzzy
 msgid "Continue to {name}"
@@ -1462,15 +1636,19 @@ msgstr "Ödemeye devam et"
 msgid "Continue with Google"
 msgstr "Google ile devam et"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:20
+#: ../ui/src/i18n/taxonomy-template-messages.ts:119
+msgid "Continuous-integration runs, build pipelines, and deployment status notifications."
+msgstr "Sürekli entegrasyon çalıştırmaları, derleme işlem hatları ve dağıtım durumu bildirimleri."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:22
 #, fuzzy
 msgid "Contracts"
 msgstr "Sözleşmeler"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:61
 #, fuzzy
-msgid "Contracts, banking, accounting, tax filings, and corporate legal correspondence."
-msgstr "Sözleşmeler, bankacılık, muhasebe, vergi beyannameleri ve kurumsal hukuki yazışmalar."
+#~ msgid "Contracts, banking, accounting, tax filings, and corporate legal correspondence."
+#~ msgstr "Sözleşmeler, bankacılık, muhasebe, vergi beyannameleri ve kurumsal hukuki yazışmalar."
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:99
 #, fuzzy
@@ -1566,6 +1744,10 @@ msgstr "Plan yüklenemedi."
 msgid "Could not open billing management."
 msgstr "Fatura yönetimi açılamadı."
 
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1298
+msgid "Could not prepare migration"
+msgstr "Taşıma hazırlanamadı"
+
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:89
 #: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:114
 #, fuzzy
@@ -1577,7 +1759,7 @@ msgstr "Yeniden tarama sıraya alınamadı. Lütfen tekrar deneyin."
 msgid "Could not reach the server. Please check your connection and try again."
 msgstr "Sunucuya ulaşılamadı. Lütfen bağlantınızı kontrol edin ve tekrar deneyin."
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1212
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1248
 #, fuzzy
 msgid "Could not read file: invalid JSON."
 msgstr "Dosya okunamadı: geçersiz JSON."
@@ -1651,13 +1833,13 @@ msgstr "Konsey toplanıyor: Shemu mevsimi"
 msgid "Council preparation request from a known royal ally. Sender domain and context clearly match the Current investors folder."
 msgstr "Bilinen bir kraliyet müttefikinden konsey hazırlık talebi. Gönderen alan adı ve bağlam, Mevcut yatırımcılar klasörüyle açıkça eşleşiyor."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:69
+#: ../ui/src/i18n/taxonomy-template-messages.ts:77
 #, fuzzy
 msgid "Courses"
 msgstr "Kurslar"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:448
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:577
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:580
 #, fuzzy
 msgid "Create"
 msgstr "Oluştur"
@@ -1683,7 +1865,7 @@ msgstr "Hesap oluştur"
 msgid "Create an account to triage your inbox"
 msgstr "Gelen kutunuzu düzenlemek için bir hesap oluşturun"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:439
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:442
 #, fuzzy
 msgid "Create Folder"
 msgstr "Klasör Oluştur"
@@ -1718,7 +1900,7 @@ msgstr "Oluşturuluyor…"
 #: ../../apps/mobile/src/components/RerouteSheet.tsx:45
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:107
 #: ../../apps/site/src/components/demo/demo-seed.ts:33
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1739
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1756
 #, fuzzy
 msgid "Current"
 msgstr "Mevcut"
@@ -1735,14 +1917,23 @@ msgstr "Mevcut abonelik"
 msgid "Current workspace: <0>{workspaceName}</0>"
 msgstr "Mevcut çalışma alanı: <0>{workspaceName}</0>"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:174
+#, fuzzy
+msgid "Curriculum resources, lesson materials, and syllabus planning for upcoming units."
+msgstr "Müfredat kaynakları, ders materyalleri ve gelecek üniteler için müfredat planlaması."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:141
+msgid "Customer Questions"
+msgstr "Müşteri Soruları"
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:54
 #, fuzzy
-msgid "Customer support, onboarding, product feedback, churn, and success conversations."
-msgstr "Müşteri desteği, müşteri kazanımı, ürün geri bildirimi, müşteri kaybı ve başarı görüşmeleri."
+#~ msgid "Customer support, onboarding, product feedback, churn, and success conversations."
+#~ msgstr "Müşteri desteği, müşteri kazanımı, ürün geri bildirimi, müşteri kaybı ve başarı görüşmeleri."
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:29
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:157
-#: ../ui/src/i18n/taxonomy-template-messages.ts:53
+#: ../ui/src/i18n/taxonomy-template-messages.ts:59
 #, fuzzy
 msgid "Customers"
 msgstr "Müşteriler"
@@ -1758,6 +1949,10 @@ msgstr "Tehlike bölgesi"
 #: ../ui/src/theme/themes.ts:39
 msgid "Dark"
 msgstr "Koyu"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:214
+msgid "Deal progress, transaction stages, and closing coordination across active sales."
+msgstr "Aktif satışlarda anlaşma ilerlemesi, işlem aşamaları ve kapanış koordinasyonu."
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:118
 #, fuzzy
@@ -1777,9 +1972,9 @@ msgstr "Varsayılan ücretsiz çalışma alanı"
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:198
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:271
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:272
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:596
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:607
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:703
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:599
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:610
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:706
 #, fuzzy
 msgid "Delete"
 msgstr "Sil"
@@ -1836,20 +2031,29 @@ msgstr "Çalışma alanını sil"
 msgid "Delete workspace?"
 msgstr "Çalışma alanı silinsin mi?"
 
+#: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:130
+#, fuzzy
+msgid "Deleted Items"
+msgstr "Silinen Öğeler"
+
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:405
 msgid "Deleting..."
 msgstr "Siliniyor..."
 
 #: ../../apps/mobile/app/(app)/account.tsx:166
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:143
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:558
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:561
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:56
 #, fuzzy
 msgid "Deleting…"
 msgstr "Siliniyor…"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:118
+msgid "Deployments"
+msgstr "Dağıtımlar"
+
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:80
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:290
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:293
 #, fuzzy
 msgid "Describe what kinds of emails belong here: who they come from and what they are about. Be specific and use the actual names, topics, and words that show up in those emails. Describe what the emails are, not what you plan to do about them. The clearer your description, the more accurately your email is sorted here."
 msgstr "Buraya hangi tür e-postaların dahil olduğunu açıklayın: kimden geldiklerini ve içeriklerini belirtin. Belirli olun; bu e-postalarda yer alan gerçek adları, konuları ve kelimeleri kullanın. E-postaların ne olduğunu açıklayın, onlarla ne yapmayı planladığınızı değil. Açıklamanız ne kadar net olursa, e-postalarınız burada o kadar doğru bir şekilde sıralanır."
@@ -1860,7 +2064,7 @@ msgid "Describe your folders"
 msgstr "Klasörlerinizi tanımlayın"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:289
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:461
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:464
 #, fuzzy
 msgid "Description"
 msgstr "Açıklama"
@@ -1958,13 +2162,13 @@ msgstr "Bu çalışma alanının bağlantısı kesilir. Bu posta kutusu hala {sh
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:239
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:65
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:369
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:375
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:57
 #: ../../apps/web/src/components/JoinedWorkspaceToast.tsx:46
 #: ../../apps/web/src/components/NotificationBell.tsx:179
 #: ../../apps/web/src/components/NotificationBell.tsx:180
 #: ../ui/src/AppDownloadBanner.tsx:80
-#: ../ui/src/emails/MockEmailsPage.tsx:288
+#: ../ui/src/emails/MockEmailsPage.tsx:296
 #, fuzzy
 msgid "Dismiss"
 msgstr "Kapat"
@@ -1980,10 +2184,18 @@ msgstr "Görünen ad"
 msgid "Do I have to build the folder structure myself?"
 msgstr "Klasör yapısını kendim mi oluşturmam gerekiyor?"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:201
+msgid "Doctoral advising, thesis feedback, and mentoring for doctoral researchers."
+msgstr "Doktora danışmanlığı, tez geri bildirimi ve doktora araştırmacıları için mentorluk."
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:86
 #, fuzzy
-msgid "Doctors, pharmacies, medical appointments, health insurance claims, and lab results."
-msgstr "Doktorlar, eczaneler, tıbbi randevular, sağlık sigortası talepleri ve laboratuvar sonuçları."
+#~ msgid "Doctors, pharmacies, medical appointments, health insurance claims, and lab results."
+#~ msgstr "Doktorlar, eczaneler, tıbbi randevular, sağlık sigortası talepleri ve laboratuvar sonuçları."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:97
+msgid "Doctors, pharmacies, medical appointments, prescriptions, and test results."
+msgstr "Doktorlar, eczaneler, tıbbi randevular, reçeteler ve test sonuçları."
 
 #: ../../apps/site/src/components/landing/Footer.tsx:30
 #, fuzzy
@@ -2004,6 +2216,10 @@ msgstr "Hesabın yok mu? <0>Bir hesap oluştur</0>"
 msgid "Don't have an account? <0>Sign up</0>"
 msgstr "Hesabın yok mu? <0>Kaydol</0>"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:229
+msgid "Donation drives, giving campaigns, and fundraising appeal responses."
+msgstr "Bağış kampanyaları, yardım etkinlikleri ve bağış toplama çağrılarına yanıtlar."
+
 #: ../../apps/mobile/app/(app)/notifications.tsx:278
 #: ../../apps/mobile/src/components/ThreadRow.tsx:35
 #: ../ui/src/emails/ThreadRow.tsx:202
@@ -2015,6 +2231,10 @@ msgstr "Tamamlandı"
 #, fuzzy
 msgid "Done · undo"
 msgstr "Tamamlandı · geri al"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:230
+msgid "Donors"
+msgstr "Bağışçılar"
 
 #: ../ui/src/PricingPlans.tsx:189
 #, fuzzy
@@ -2055,7 +2275,7 @@ msgid "Draft shared"
 msgstr "Taslak paylaşıldı"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:342
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:484
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:487
 #, fuzzy
 msgid "Draft style guidance"
 msgstr "Taslak stil yönergeleri"
@@ -2065,6 +2285,10 @@ msgstr "Taslak stil yönergeleri"
 #, fuzzy
 msgid "Drafting…"
 msgstr "Taslak Oluşturuluyor…"
+
+#: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:128
+msgid "Drafts"
+msgstr "Taslaklar"
 
 #: ../../apps/site/src/components/demo/DemoTaxonomyCanvas.tsx:223
 #, fuzzy
@@ -2076,17 +2300,22 @@ msgstr "Sürükle ve bağla. Tamamen etkileşimli."
 msgid "Drag to resize"
 msgstr "Yeniden boyutlandırmak için sürükleyin"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:129
+#, fuzzy
+msgid "E-commerce Seller"
+msgstr "E-ticaret Satıcısı"
+
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:280
 msgid "e.g. Invoices"
 msgstr "örn. Faturalar"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:469
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:472
 #, fuzzy
 msgid "e.g. Invoices, receipts, payment confirmations, and billing questions from clients and vendors."
 msgstr "Örn: Müşterilerden ve tedarikçilerden gelen faturalar, makbuzlar, ödeme onayları ve faturalandırma soruları."
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:350
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:490
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:493
 #, fuzzy
 msgid "e.g. Reply formally. Keep responses under 3 sentences."
 msgstr "Örn: Resmi yanıt verin. Yanıtları 3 cümleden kısa tutun."
@@ -2101,7 +2330,7 @@ msgstr "Daha önce"
 msgid "Edit folder"
 msgstr "Klasörü düzenle"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:439
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:442
 #, fuzzy
 msgid "Edit Folder"
 msgstr "Klasörü Düzenle"
@@ -2110,7 +2339,7 @@ msgstr "Klasörü Düzenle"
 msgid "Edit inbox"
 msgstr "Gelen kutusunu düzenle"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:651
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:654
 #, fuzzy
 msgid "Edit Path"
 msgstr "Yolu Düzenle"
@@ -2178,15 +2407,19 @@ msgid "Emails"
 msgstr "E-postalar"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:100
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:318
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:321
 #, fuzzy
 msgid "Emails about my bills that I need to deal with."
 msgstr "İşlem yapmam gereken fatura e-postaları."
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:101
+msgid "Emails from relatives, children's activities, family events, and household coordination."
+msgstr "Akrabalardan gelen e-postalar, çocuk etkinlikleri, aile toplantıları ve ev içi koordinasyon."
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:90
 #, fuzzy
-msgid "Emails from relatives, children's schools, family events, and household coordination."
-msgstr "Akrabalardan, çocukların okullarından, aile etkinliklerinden ve ev işleri koordinasyonundan gelen e-postalar."
+#~ msgid "Emails from relatives, children's schools, family events, and household coordination."
+#~ msgstr "Akrabalardan, çocukların okullarından, aile etkinliklerinden ve ev işleri koordinasyonundan gelen e-postalar."
 
 #: ../ui/src/pricing/planMessages.ts:95
 #, fuzzy
@@ -2198,10 +2431,14 @@ msgstr "Gelişmiş + geri dönüş"
 msgid "Enhanced + higher fallback"
 msgstr "Gelişmiş + daha yüksek geri dönüş"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:80
+msgid "Enrollment, tuition fees, dorm assignments, and official campus administration."
+msgstr "Kayıt, öğrenim ücretleri, yurt yerleşimleri ve resmi kampüs yönetimi."
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:72
 #, fuzzy
-msgid "Enrollment, tuition fees, housing applications, and official campus administration."
-msgstr "Kayıt, öğrenim ücretleri, konaklama başvuruları ve resmi kampüs yönetimi."
+#~ msgid "Enrollment, tuition fees, housing applications, and official campus administration."
+#~ msgstr "Kayıt, öğrenim ücretleri, konaklama başvuruları ve resmi kampüs yönetimi."
 
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:71
 #, fuzzy
@@ -2228,6 +2465,25 @@ msgstr "E-posta adresinizi girin, size sıfırlama bağlantısı gönderelim."
 #, fuzzy
 msgid "Entry"
 msgstr "Giriş"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:215
+#, fuzzy
+msgid "Escrow & Closing"
+msgstr "Emanet & Kapanış"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:216
+#, fuzzy
+msgid "Escrow instructions, title documents, closing disclosures, and signing appointments."
+msgstr "Emanet talimatları, tapu belgeleri, kapanış beyanları ve imza randevuları."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:240
+#, fuzzy
+msgid "Events & Campaigns"
+msgstr "Etkinlikler & Kampanyalar"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:179
+msgid "Events & Field Trips"
+msgstr "Etkinlikler & Saha Gezileri"
 
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:31
 #, fuzzy
@@ -2263,48 +2519,52 @@ msgstr "Adlandırılmış bir klasöre uymayan her şey."
 #~ msgid "Expand"
 #~ msgstr "Genişlet"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:26
+#: ../ui/src/i18n/taxonomy-template-messages.ts:28
 #, fuzzy
 msgid "Expenses"
 msgstr "Giderler"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1367
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1438
 #, fuzzy
 msgid "Export"
 msgstr "Dışa Aktar"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1342
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1350
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1413
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1421
 #, fuzzy
 msgid "Export plan"
 msgstr "Dışa aktarma planı"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:47
+msgid "External agencies, outside firms, and business partners engaged professionally."
+msgstr "Harici ajanslar, dış firmalar ve profesyonel iş ortakları."
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:43
 #, fuzzy
-msgid "External vendors, clients, and agencies engaged in a professional capacity."
-msgstr "Profesyonel kapasitede çalışan harici satıcılar, müşteriler ve ajanslar."
+#~ msgid "External vendors, clients, and agencies engaged in a professional capacity."
+#~ msgstr "Profesyonel kapasitede çalışan harici satıcılar, müşteriler ve ajanslar."
 
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:163
 #, fuzzy
 msgid "Failed to apply"
 msgstr "Uygulanamadı"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1044
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1080
 #, fuzzy
 msgid "Failed to create folder"
 msgstr "Klasör oluşturulamadı"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:977
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1013
 #, fuzzy
 msgid "Failed to create path"
 msgstr "Yol oluşturulamadı"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1115
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1151
 #, fuzzy
 msgid "Failed to delete folder"
 msgstr "Klasör silinemedi"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1132
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1168
 #, fuzzy
 msgid "Failed to delete path"
 msgstr "Yol silinemedi"
@@ -2314,12 +2574,12 @@ msgstr "Yol silinemedi"
 msgid "Failed to load status"
 msgstr "Durum yüklenemedi"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1173
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1209
 #, fuzzy
 msgid "Failed to redo"
 msgstr "Yinele yapılamadı"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:944
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:980
 #, fuzzy
 msgid "Failed to save position"
 msgstr "Konum kaydedilemedi"
@@ -2329,25 +2589,29 @@ msgstr "Konum kaydedilemedi"
 msgid "Failed to start generation"
 msgstr "Oluşturma başlatılamadı"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1154
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1190
 #, fuzzy
 msgid "Failed to undo"
 msgstr "Geri alınamadı"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1076
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1112
 #, fuzzy
 msgid "Failed to update folder"
 msgstr "Klasör güncellenemedi"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1098
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1134
 #, fuzzy
 msgid "Failed to update path"
 msgstr "Yol güncellenemedi"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:89
+#: ../ui/src/i18n/taxonomy-template-messages.ts:100
 #, fuzzy
 msgid "Family"
 msgstr "Aile"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:161
+msgid "Fan messages, viewer comments, and follower engagement notifications."
+msgstr "Hayran mesajları, izleyici yorumları ve takipçi etkileşimi bildirimleri."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:76
 #: ../../apps/site/src/components/landing/Footer.tsx:29
@@ -2355,6 +2619,20 @@ msgstr "Aile"
 #, fuzzy
 msgid "FAQ"
 msgstr "SSS"
+
+#: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:161
+#, fuzzy
+msgid "Favorites"
+msgstr "Favoriler"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:197
+#, fuzzy
+msgid "Fellowship awards, funding-body deadlines, and research budget correspondence."
+msgstr "Burs ödülleri, fon sağlayıcı son tarihleri ve araştırma bütçesi yazışmaları."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:180
+msgid "Field trips, parent evenings, assemblies, and school event scheduling."
+msgstr "Saha gezileri, veli toplantıları, öğrenci buluşmaları ve okul etkinliği planlaması."
 
 #: ../../apps/mobile/src/components/emails/FolderFilterSheet.tsx:33
 #, fuzzy
@@ -2371,7 +2649,7 @@ msgstr "Kuyrukları ve klasörleri filtrele…"
 msgid "Filter rail"
 msgstr "Filtreleme Alanı"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:22
+#: ../ui/src/i18n/taxonomy-template-messages.ts:24
 #, fuzzy
 msgid "Finance"
 msgstr "Finans"
@@ -2380,6 +2658,11 @@ msgstr "Finans"
 #, fuzzy
 msgid "Find and draft"
 msgstr "Bul ve Taslak Oluştur"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:222
+#, fuzzy
+msgid "First-contact buyer and seller enquiries and new agent introductions."
+msgstr "İlk temas alıcı ve satıcı sorguları ve yeni acente tanıtımları."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:16
 msgid "Five things keep your inbox safe. First, Amarnai is read-only by design: the permissions you grant through Google make it impossible for Amarnai to send, delete, or change any email. Second, Amarnai has passed Google's security review, completing the CASA security assessment required for any app that accesses Gmail. Third, you stay in control: replies stay drafts until you say so, nothing is ever sent on your behalf, and you can disconnect Amarnai at any time. Fourth, no email bodies are stored: Amarnai keeps labels and metadata, never the contents of your messages. Fifth, the code is public, so anyone can inspect exactly what touches your email."
@@ -2392,10 +2675,14 @@ msgstr "Dildeki ifadeler (\"karşılıklı yarar\", \"köklü dostluk\") nedeniy
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:92
 #, fuzzy
-msgid "Flight and hotel bookings, travel itineraries, visa applications, and trip confirmations."
-msgstr "Uçuş ve otel rezervasyonları, seyahat programları, vize başvuruları ve seyahat onayları."
+#~ msgid "Flight and hotel bookings, travel itineraries, visa applications, and trip confirmations."
+#~ msgstr "Uçuş ve otel rezervasyonları, seyahat programları, vize başvuruları ve seyahat onayları."
 
-#: ../../apps/site/src/components/landing/MailInboxMock.tsx:75
+#: ../ui/src/i18n/taxonomy-template-messages.ts:103
+msgid "Flight and hotel bookings, travel itineraries, visas, and trip confirmations."
+msgstr "Uçuş ve otel rezervasyonları, seyahat planları, vizeler ve gezi onayları."
+
+#: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:175
 #, fuzzy
 msgid "Focused"
 msgstr "Odaklanmış"
@@ -2441,22 +2728,35 @@ msgstr "Klasör: {activeFolderName}"
 msgid "Folders"
 msgstr "Klasörler"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:35
+#: ../ui/src/i18n/taxonomy-template-messages.ts:206
+#, fuzzy
+msgid "For agents managing listings, showings, transactions, and closings."
+msgstr "İlanları, gösterimleri, işlemleri ve kapanışları yöneten acenteler için."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:149
+msgid "For creators handling brand deals, platforms, audience, and monetization."
+msgstr "Marka anlaşmalarını, platformları, hedef kitleyi ve para kazanmayı yöneten içerik üreticileri için."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:39
 #, fuzzy
 msgid "For employees managing work, team communication, and personal email in one inbox."
 msgstr "İşlerini, ekip iletişimini ve kişisel e-postalarını tek gelen kutusundan yöneten çalışanlar için."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:50
+#: ../ui/src/i18n/taxonomy-template-messages.ts:109
+msgid "For engineers and open-source maintainers tracking code, deployments, and releases."
+msgstr "Kodu, dağıtımları ve sürümleri takip eden mühendisler ve açık kaynak proje yöneticileri için."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:56
 #, fuzzy
 msgid "For founders juggling investors, customers, hiring, legal, and press in one view."
 msgstr "Yatırımcıları, müşterileri, işe alımı, hukuki süreçleri ve basını tek bir görünümde yöneten kurucular için."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:15
+#: ../ui/src/i18n/taxonomy-template-messages.ts:17
 #, fuzzy
 msgid "For independent consultants and freelancers managing clients, projects, and finances."
 msgstr "Müşterilerini, projelerini ve finansal durumlarını yöneten bağımsız danışmanlar ve serbest çalışanlar için."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:80
+#: ../ui/src/i18n/taxonomy-template-messages.ts:90
 #, fuzzy
 msgid "For individuals managing finances, health, home, family, and personal subscriptions."
 msgstr "Finans, sağlık, ev, aile ve kişisel abonelikleri yöneten bireyler için."
@@ -2466,6 +2766,10 @@ msgstr "Finans, sağlık, ev, aile ve kişisel abonelikleri yöneten bireyler i�
 #, fuzzy
 msgid "For individuals trying Amarnai on their own inbox."
 msgstr "Amarnai'yi kendi gelen kutularında deneyen bireyler için."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:168
+msgid "For K-12 educators managing classroom, parents, and school administration."
+msgstr "Sınıfı, velileri ve okul yönetimini yöneten K-12 eğitimcileri için."
 
 #: ../ui/src/pricing/planMessages.ts:27
 #, fuzzy
@@ -2482,6 +2786,15 @@ msgstr "Daha büyük kuruluşlar için."
 msgid "For many years our houses have been as brothers. I write now to propose that we formalise this friendship for the benefit of both our peoples."
 msgstr "Hanelerimiz uzun yıllardır kardeş gibidir. Şimdi, bu dostluğu iki halkımızın da yararına resmileştirmeyi teklif etmek için yazıyorum."
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:227
+#, fuzzy
+msgid "For nonprofit directors managing fundraising, volunteers, programs, and board."
+msgstr "Bağış toplama, gönüllüleri, programları ve yönetim kurulunu yöneten sivil toplum kuruluşu yöneticileri için."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:130
+msgid "For online sellers tracking orders, shipping, suppliers, and marketplace payouts."
+msgstr "Siparişleri, gönderimi, tedarikçileri ve pazar yeri ödemelerini takip eden online satıcılar için."
+
 #: ../ui/src/pricing/planMessages.ts:26
 #, fuzzy
 msgid "For power users and small businesses who live in their inbox."
@@ -2492,7 +2805,11 @@ msgstr "Gelen kutularını etkin kullanan ileri düzey kullanıcılar ve küçü
 msgid "For power users and small businesses."
 msgstr "İleri düzey kullanıcılar ve küçük işletmeler için."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:66
+#: ../ui/src/i18n/taxonomy-template-messages.ts:187
+msgid "For researchers managing publications, conferences, funding, and lab work."
+msgstr "Yayınları, konferansları, fonları ve laboratuvar çalışmalarını yöneten araştırmacılar için."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:74
 #, fuzzy
 msgid "For students balancing university, internship applications, and everyday life."
 msgstr "Üniversiteyi, staj başvurularını ve günlük yaşamı dengeleyen öğrenciler için."
@@ -2502,6 +2819,10 @@ msgstr "Üniversiteyi, staj başvurularını ve günlük yaşamı dengeleyen ö�
 #, fuzzy
 msgid "Forgot password?"
 msgstr "Şifremi unuttum?"
+
+#: ../../apps/site/src/components/landing/MailThreadMock.tsx:102
+msgid "Forward"
+msgstr "İleri"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:38
 #: ../../apps/mobile/app/(app)/subscription.tsx:40
@@ -2534,15 +2855,19 @@ msgstr "{0} tarihine kadar ücretsiz deneme."
 msgid "Free trial until <0>{0}</0>. You won't be charged before then."
 msgstr "<0>{0}</0> tarihine kadar ücretsiz deneme. Bu tarihten önce sizden ücret alınmayacaktır."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:14
+#: ../ui/src/i18n/taxonomy-template-messages.ts:16
 #, fuzzy
 msgid "Freelancer"
 msgstr "Serbest Çalışan"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:85
+msgid "Friends, campus clubs, social invitations, and extracurricular activities."
+msgstr "Arkadaşlar, kampüs kulüpleri, sosyal davetler ve ders dışı etkinlikler."
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:77
 #, fuzzy
-msgid "Friends, campus events, clubs, social invitations, and extracurricular activities."
-msgstr "Arkadaşlar, kampüs etkinlikleri, kulüpler, sosyal davetler ve ders dışı aktiviteler."
+#~ msgid "Friends, campus events, clubs, social invitations, and extracurricular activities."
+#~ msgstr "Arkadaşlar, kampüs etkinlikleri, kulüpler, sosyal davetler ve ders dışı aktiviteler."
 
 #: ../ui/src/pricing/planMessages.ts:92
 #, fuzzy
@@ -2553,6 +2878,20 @@ msgstr "Tam"
 #, fuzzy
 msgid "Full + admin controls"
 msgstr "Tam + yönetici kontrolleri"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:196
+#, fuzzy
+msgid "Funding & Fellowships"
+msgstr "Fon & Burslar"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:228
+#, fuzzy
+msgid "Fundraising"
+msgstr "Bağış Toplama"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:241
+msgid "Gala planning, charity auctions, and awareness campaign logistics."
+msgstr "Gala planlaması, yardım müzayedeleri ve farkındalık kampanyası lojistiği."
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:159
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:342
@@ -2588,7 +2927,7 @@ msgstr "Taslak yanıt oluştur"
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:60
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:207
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:251
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1504
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1575
 #, fuzzy
 msgid "Generate from inbox"
 msgstr "Gelen kutusundan oluştur"
@@ -2745,9 +3084,23 @@ msgstr "Google yetkilendirmeyi tamamlayamadı. Bağlantının süresi dolmuş ol
 msgid "Google sign-in failed. Please try again."
 msgstr "Google ile oturum açma başarısız oldu. Lütfen tekrar deneyin."
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:172
+#, fuzzy
+msgid "Graded homework, rubric feedback, and marks recorded for each pupil."
+msgstr "Notlandırılmış ödevler, rubrik geri bildirimleri ve her öğrenci için kaydedilen notlar."
+
 #: ../../apps/extension/src/platform/HostPermissionGate.tsx:36
 msgid "Grant access"
 msgstr "Erişim İzni Ver"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:233
+#, fuzzy
+msgid "Grant requests, foundation deadlines, and funder reporting requirements."
+msgstr "Hibe talepleri, vakıf son tarihleri ve fon sağlayıcı raporlama gereklilikleri."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:232
+msgid "Grants & Foundations"
+msgstr "Hibeler & Vakıflar"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:178
 #, fuzzy
@@ -2756,14 +3109,18 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "Ulu Kralım,\n\nİstediğiniz raporlar konsey toplanmadan önce hazırlanacaktır. Katiplerime doğu topraklarının hesaplarını derletecek ve hızlı kurye ile önceden göndereceğim.\n\nKardeşlik içerisinde,"
+msgstr "Ulu Kralım,\n"
+"\n"
+"İstediğiniz raporlar konsey toplanmadan önce hazırlanacaktır. Katiplerime doğu topraklarının hesaplarını derletecek ve hızlı kurye ile önceden göndereceğim.\n"
+"\n"
+"Kardeşlik içerisinde,"
 
 #: ../../apps/site/src/components/landing/FinalCTASection.tsx:9
 #, fuzzy
 msgid "Hand the sorting to Amarnai."
 msgstr "Sıralama işini Amarnai'ye bırakın."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:85
+#: ../ui/src/i18n/taxonomy-template-messages.ts:96
 #, fuzzy
 msgid "Health"
 msgstr "Sağlık"
@@ -2774,13 +3131,13 @@ msgid "Help requests, supply issues, and escalations from customers."
 msgstr "Müşterilerden gelen yardım talepleri, tedarik sorunları ve üst düzey sorunlar."
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:71
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:274
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:277
 #, fuzzy
 msgid "Hide tips"
 msgstr "İpuçlarını gizle"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:34
-#: ../ui/src/i18n/taxonomy-template-messages.ts:56
+#: ../ui/src/i18n/taxonomy-template-messages.ts:62
 #, fuzzy
 msgid "Hiring"
 msgstr "İşe alım"
@@ -2790,10 +3147,19 @@ msgstr "İşe alım"
 msgid "Historical threads sorted when you first connect"
 msgstr "İlk bağlandığınızda sıralanan geçmiş yazışmalar"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:87
+#: ../ui/src/i18n/taxonomy-template-messages.ts:98
 #, fuzzy
 msgid "Home"
 msgstr "Ana Sayfa"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:218
+#, fuzzy
+msgid "Home inspections, appraisal reports, repair negotiations, and contingency deadlines."
+msgstr "Ev denetimleri, ekspertiz raporları, onarım müzakereleri ve koşullu süreler."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:171
+msgid "Homework & Grading"
+msgstr "Ödev & Notlandırma"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:52
 #, fuzzy
@@ -2804,6 +3170,11 @@ msgstr "Ana Sayfa"
 #, fuzzy
 msgid "Hosted subscriptions run on a leading AI model. Self-hosted deployments can point at any OpenAI-compatible provider, such as OpenAI or Google Gemini, or a local Ollama model for fully offline operation."
 msgstr "Barındırılan abonelikler lider bir yapay zeka modeli üzerinde çalışır. Kendi kendine barındırılan dağıtımlar, OpenAI veya Google Gemini gibi OpenAI uyumlu herhangi bir sağlayıcıya ya da tamamen çevrimdışı çalışma için yerel bir Ollama modeline yönlendirilebilir."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:95
+#, fuzzy
+msgid "Household bills, payment confirmations, receipts, and records of everyday expenses."
+msgstr "Ev faturaları, ödeme onayları, makbuzlar ve günlük harcama kayıtları."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:15
 msgid "How do I know it's safe?"
@@ -2845,7 +3216,7 @@ msgid "How it works"
 msgstr "Nasıl çalışır"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:73
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:274
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:277
 #, fuzzy
 msgid "How to write a good description"
 msgstr "İyi bir açıklama nasıl yazılır"
@@ -2871,22 +3242,22 @@ msgstr "Bu e-postaya ait bir hesap varsa, sıfırlama bağlantısı gönderdik. 
 msgid "Ignored"
 msgstr "Yoksayıldı"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1392
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1463
 #, fuzzy
 msgid "Import"
 msgstr "İçe Aktar"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1253
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1313
 #, fuzzy
 msgid "Import failed"
 msgstr "İçe aktarma başarısız oldu"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1375
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1446
 #, fuzzy
 msgid "Import plan"
 msgstr "Planı İçe Aktar"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1370
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1441
 #, fuzzy
 msgid "Import plan (replaces current)"
 msgstr "Planı İçe Aktar (mevcut olanı değiştirir)"
@@ -2906,8 +3277,8 @@ msgstr "Önemli"
 #. placeholder {1}: pendingImportFile.edges.length
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1628
 #, fuzzy
-msgid "Importing will replace your current plan with <0>{0} folders</0> and <1>{1} paths</1> from the file. Threads that were sorted into removed folders will become unsorted. This cannot be undone."
-msgstr "İçe aktarma işlemi, mevcut planınızı dosyadan gelen <0>{0} klasör</0> ve <1>{1} yol</1> ile değiştirecektir. Kaldırılan klasörlere sıralanan e-postalar sırasız hale gelecektir. Bu işlem geri alınamaz."
+#~ msgid "Importing will replace your current plan with <0>{0} folders</0> and <1>{1} paths</1> from the file. Threads that were sorted into removed folders will become unsorted. This cannot be undone."
+#~ msgstr "İçe aktarma işlemi, mevcut planınızı dosyadan gelen <0>{0} klasör</0> ve <1>{1} yol</1> ile değiştirecektir. Kaldırılan klasörlere sıralanan e-postalar sırasız hale gelecektir. Bu işlem geri alınamaz."
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:274
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:107
@@ -2915,7 +3286,8 @@ msgstr "İçe aktarma işlemi, mevcut planınızı dosyadan gelen <0>{0} klasör
 #: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:45
 #: ../../apps/site/src/components/demo/demo-seed.ts:28
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:151
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:512
+#: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:126
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:515
 #: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:57
 #, fuzzy
 msgid "Inbox"
@@ -2944,6 +3316,10 @@ msgstr "Gelen kutusu senkronizasyonu"
 msgid "inbox zero"
 msgstr "Gelen kutusu sıfır"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:120
+msgid "Incidents"
+msgstr "Olaylar"
+
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:116
 #: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:77
 #, fuzzy
@@ -2966,10 +3342,19 @@ msgstr "Dahil Edildi"
 msgid "Informal message with no clear category: personal visit or political audience? Tone is personal but sender is a known vassal governor. Routed to Other with low confidence."
 msgstr "Net bir kategorisi olmayan gayri resmi mesaj: kişisel ziyaret mi yoksa siyasi bir görüşme mi? Tonu kişisel olsa da gönderen bilinen bir vasal vali. Düşük güvenle Diğer kategorisine yönlendirildi."
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:116
+msgid "Infrastructure"
+msgstr "Altyapı"
+
 #: ../ui/src/pricing/planMessages.ts:64
 #, fuzzy
 msgid "Initial backfill"
 msgstr "İlk geriye dönük doldurma"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:217
+#, fuzzy
+msgid "Inspections & Appraisals"
+msgstr "Denetimler ve Değerlemeler"
 
 #: ../../apps/mobile/src/data/notificationView.ts:47
 #: ../../apps/web/src/lib/notifications.ts:65
@@ -2991,18 +3376,30 @@ msgstr "Kalabalık bir gelen kutusunu taramak yerine, Amarnai'yi açtığınızd
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:39
 #, fuzzy
-msgid "Internal communication with colleagues, team updates, and project collaboration."
-msgstr "İş arkadaşlarıyla iç iletişim, ekip güncellemeleri ve proje işbirliği."
+#~ msgid "Internal communication with colleagues, team updates, and project collaboration."
+#~ msgstr "İş arkadaşlarıyla iç iletişim, ekip güncellemeleri ve proje işbirliği."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:43
+msgid "Internal communication with colleagues, team updates, and workplace collaboration."
+msgstr "Ekip arkadaşlarıyla iç iletişim, ekip güncellemeleri ve iş birliği."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:55
 #, fuzzy
-msgid "Internal communications, HR, contractor coordination, and team operational emails."
-msgstr "İç yazışmalar, İK, yüklenici koordinasyonu ve ekip operasyonel e-postaları."
+#~ msgid "Internal communications, HR, contractor coordination, and team operational emails."
+#~ msgstr "İç yazışmalar, İK, yüklenici koordinasyonu ve ekip operasyonel e-postaları."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:61
+msgid "Internal communications, HR, staff coordination, and team operational emails."
+msgstr "İç iletişim, İK, personel koordinasyonu ve ekip operasyonel e-postaları."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:74
 #, fuzzy
-msgid "Internship and job applications, recruiter messages, and interview invitations."
-msgstr "Staj ve iş başvuruları, işe alımcı mesajları ve mülakat davetleri."
+#~ msgid "Internship and job applications, recruiter messages, and interview invitations."
+#~ msgstr "Staj ve iş başvuruları, işe alımcı mesajları ve mülakat davetleri."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:82
+msgid "Internship postings, campus career fairs, and graduate scheme openings."
+msgstr "Staj ilanları, kampüs kariyer fuarları ve yeni mezun programları."
 
 #: ../../apps/web/src/app/reset-password/page.tsx:33
 #, fuzzy
@@ -3010,19 +3407,19 @@ msgid "Invalid or missing reset link."
 msgstr "Geçersiz veya eksik sıfırlama bağlantısı."
 
 #. placeholder {0}: validation.error
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1226
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1262
 #, fuzzy
 msgid "Invalid taxonomy file: {0}"
 msgstr "Geçersiz taksonomi dosyası: {0}"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1220
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1256
 #, fuzzy
 msgid "Invalid taxonomy file: {detail}"
 msgstr "Geçersiz taksonomi dosyası: {detail}"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:32
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:163
-#: ../ui/src/i18n/taxonomy-template-messages.ts:51
+#: ../ui/src/i18n/taxonomy-template-messages.ts:57
 #, fuzzy
 msgid "Investors"
 msgstr "Yatırımcılar"
@@ -3052,12 +3449,12 @@ msgstr "Ortak çalışanları web uygulamasından davet edin ve kaldırın."
 msgid "Invoice questions, overdue balances, and payment disputes."
 msgstr "Fatura soruları, vadesi geçmiş bakiyeler ve ödeme anlaşmazlıkları."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:24
+#: ../ui/src/i18n/taxonomy-template-messages.ts:26
 #, fuzzy
 msgid "Invoices"
 msgstr "Faturalar"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:25
+#: ../ui/src/i18n/taxonomy-template-messages.ts:27
 #, fuzzy
 msgid "Invoices issued to clients and follow-ups on unpaid amounts."
 msgstr "Müşterilere kesilen faturalar ve ödenmemiş tutarların takibi."
@@ -3077,15 +3474,19 @@ msgstr "Gelen kutumu Amarnai'ye bağlamak güvenli mi?"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:47
 #, fuzzy
-msgid "IT support, HR notices, legal documents, and internal administrative emails."
-msgstr "BT desteği, İK duyuruları, hukuki belgeler ve dahili idari e-postalar."
+#~ msgid "IT support, HR notices, legal documents, and internal administrative emails."
+#~ msgstr "BT desteği, İK duyuruları, hukuki belgeler ve dahili idari e-postalar."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:51
+msgid "IT support, HR notices, policy documents, and internal administrative emails."
+msgstr "BT desteği, İK duyuruları, politika belgeleri ve iç idari e-postalar."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:57
 #, fuzzy
-msgid "Job applications, recruiter outreach, interview scheduling, and offer negotiations."
-msgstr "İş başvuruları, işe alımcı iletişimi, mülakat planlaması ve teklif görüşmeleri."
+#~ msgid "Job applications, recruiter outreach, interview scheduling, and offer negotiations."
+#~ msgstr "İş başvuruları, işe alımcı iletişimi, mülakat planlaması ve teklif görüşmeleri."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:73
+#: ../ui/src/i18n/taxonomy-template-messages.ts:81
 #, fuzzy
 msgid "Jobs"
 msgstr "İşler"
@@ -3108,6 +3509,20 @@ msgstr "{name}’e Katıldın."
 #, fuzzy
 #~ msgid "Joining…"
 #~ msgstr "Katılıyor…"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:193
+#, fuzzy
+msgid "Journal calls for papers, special issue invitations, and citation metrics."
+msgstr "Makale çağrıları, özel sayı davetleri ve atıf metrikleri."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:192
+#, fuzzy
+msgid "Journals"
+msgstr "Dergiler"
+
+#: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:127
+msgid "Junk Email"
+msgstr "İstenmeyen Posta"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:126
 #, fuzzy
@@ -3144,6 +3559,15 @@ msgstr "King Aziru, e-posta ileti dizilerinizi sıralamaya hazır. Başlamak iç
 #~ msgid "King Aziru is ready to sort your email threads. Connect your Gmail account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
 #~ msgstr "King Aziru, e-posta yazışmalarınızı sıralamaya hazır. Başlamak için Gmail hesabınızı bağlayın. Amarnai, <0>salt okunur erişimle</0> bağlanır ve <1>asla e-posta göndermez, silmez veya değiştirmez</1>. Gelen kutunuz size aittir."
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:198
+#, fuzzy
+msgid "Lab & Collaborators"
+msgstr "Laboratuvar ve İş Birlikçileri"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:199
+msgid "Lab group updates, collaborator threads, and experiment coordination."
+msgstr "Laboratuvar grubu güncellemeleri, iş birliği yazışmaları ve deney koordinasyonu."
+
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:244
 #: ../../apps/web/src/app/(app)/settings/WorkspaceLanguageSection.tsx:37
 #, fuzzy
@@ -3175,34 +3599,44 @@ msgstr "Son doğrulama: {0}"
 msgid "Lay out folders like <0>Customers</0>, <1>Investors</1>, <2>Hiring</2>. A simple sentence each: that's the whole setup."
 msgstr "Klasörleri <0>Müşteriler</0>, <1>Yatırımcılar</1>, <2>İşe Alım</2> gibi düzenleyin. Her biri için tek bir basit cümle: tüm kurulum bu kadar."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:30
+#: ../ui/src/i18n/taxonomy-template-messages.ts:32
 #, fuzzy
 msgid "Leads"
 msgstr "Müşteri Adayları"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:200
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:209
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:542
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:545
 #, fuzzy
 msgid "Leave unsorted"
 msgstr "Sıralanmamış bırak"
 
 #: ../../apps/site/src/components/landing/Footer.tsx:36
-#: ../ui/src/i18n/taxonomy-template-messages.ts:60
+#: ../ui/src/i18n/taxonomy-template-messages.ts:66
 #, fuzzy
 msgid "Legal"
 msgstr "Yasal"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:29
 #, fuzzy
-msgid "Legal, insurance, software subscriptions, and business administration notices."
-msgstr "Yasal, sigorta, yazılım abonelikleri ve iş yönetimi bildirimleri."
+#~ msgid "Legal, insurance, software subscriptions, and business administration notices."
+#~ msgstr "Yasal, sigorta, yazılım abonelikleri ve iş yönetimi bildirimleri."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:219
+#, fuzzy
+msgid "Lenders & Mortgage"
+msgstr "Borç Verenler ve Konut Kredisi"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:173
+#, fuzzy
+msgid "Lesson Planning"
+msgstr "Ders Planlama"
 
 #: ../ui/src/theme/themes.ts:38
 msgid "Light"
 msgstr "Açık"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:474
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:477
 #, fuzzy
 msgid "List the kinds of emails that belong here: senders, topics, keywords. Aim for a full sentence."
 msgstr "Buraya ait e-posta türlerini listeleyin: gönderenler, konular, anahtar kelimeler. Tam bir cümle hedefleyin."
@@ -3210,6 +3644,10 @@ msgstr "Buraya ait e-posta türlerini listeleyin: gönderenler, konular, anahtar
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:307
 msgid "List the senders, topics, and keywords that belong here. At least {minDescriptionLength} characters. ({descriptionLength}/{minDescriptionLength})"
 msgstr "Buraya ait gönderenleri, konuları ve anahtar kelimeleri listeleyin. En az {minDescriptionLength} karakter. ({descriptionLength}/{minDescriptionLength})"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:207
+msgid "Listings"
+msgstr "İlanlar"
 
 #: ../ui/src/emails/EmailRail.tsx:57
 #, fuzzy
@@ -3254,6 +3692,10 @@ msgstr "Yükleniyor…"
 msgid "Mail"
 msgstr "E-posta"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:231
+msgid "Major donor relationships, pledge confirmations, and gift acknowledgements."
+msgstr "Büyük bağışçı ilişkileri, taahhüt onayları ve hediye teşekkürleri."
+
 #: ../../apps/mobile/app/(app)/subscription.tsx:293
 #, fuzzy
 msgid "Manage"
@@ -3270,15 +3712,28 @@ msgstr "Bildirimleri Yönet"
 msgid "Manage payment method"
 msgstr "Ödeme yöntemini yönet"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:40
+#: ../ui/src/i18n/taxonomy-template-messages.ts:44
 #, fuzzy
 msgid "Management"
 msgstr "Yönetim"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:45
+msgid "Manager emails: one-on-ones, performance evaluations, and career feedback."
+msgstr "Yönetici e-postaları: bire bir görüşmeler, performans değerlendirmeleri ve kariyer geri bildirimleri."
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:41
 #, fuzzy
-msgid "Manager emails: one-on-ones, performance reviews, and feedback."
-msgstr "Yönetici e-postaları: bire bir görüşmeler, performans değerlendirmeleri ve geri bildirimler."
+#~ msgid "Manager emails: one-on-ones, performance reviews, and feedback."
+#~ msgstr "Yönetici e-postaları: bire bir görüşmeler, performans değerlendirmeleri ve geri bildirimler."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:189
+#, fuzzy
+msgid "Manuscript drafts, co-author coordination, and submission status for papers."
+msgstr "Taslaklar, ortak yazar koordinasyonu ve makale başvuru durumu."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:190
+msgid "Manuscripts & Peer Review"
+msgstr "Taslaklar ve Hakem Değerlendirmesi"
 
 #: ../ui/src/emails/PreviewDoneBar.tsx:23
 #: ../ui/src/emails/ThreadRow.tsx:157
@@ -3361,21 +3816,33 @@ msgstr "Tamamlandı olarak işaretlendi"
 msgid "Marked as done by {doneByName}"
 msgstr "{doneByName} tarafından tamamlandı olarak işaretlendi"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:139
+msgid "Marketplaces"
+msgstr "Pazaryerleri"
+
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:198
 #, fuzzy
 msgid "Maximum of {collaboratorLimit} collaborators reached."
 msgstr "Maksimum {collaboratorLimit} iş birlikçi sayısına ulaşıldı."
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:69
+msgid "Media inquiries, journalist requests, and press coverage bookings."
+msgstr "Medya soruları, gazeteci talepleri ve basın yayını rezervasyonları."
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:63
 #, fuzzy
-msgid "Media inquiries, press coverage, co-marketing proposals, and partnership outreach."
-msgstr "Medya sorguları, basın yayınları, ortak pazarlama teklifleri ve iş ortaklığı yaklaşımları."
+#~ msgid "Media inquiries, press coverage, co-marketing proposals, and partnership outreach."
+#~ msgstr "Medya sorguları, basın yayınları, ortak pazarlama teklifleri ve iş ortaklığı yaklaşımları."
 
 #: ../../apps/mobile/src/components/CollaboratorsSheet.tsx:58
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:42
 #, fuzzy
 msgid "Member"
 msgstr "Üye"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:176
+msgid "Messages from parents and guardians about attendance, behavior, and progress."
+msgstr "Veli ve vasilerden devam, davranış ve gelişim hakkında mesajlar."
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:29
 #, fuzzy
@@ -3391,6 +3858,10 @@ msgstr "Microsoft hesap izinleri"
 msgid "Microsoft could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the redirect URI is registered on the app registration."
 msgstr "Microsoft yetkilendirmeyi tamamlayamadı. Bağlantının süresi dolmuş olabilir: lütfen tekrar deneyin. Sorun devam ederse, yönlendirme URI'sinin uygulama kaydında kayıtlı olduğundan emin olun."
 
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:189
+msgid "Migrate & apply"
+msgstr "Taşı ve Uygula"
+
 #: ../../apps/web/src/components/Sidebar.tsx:43
 #, fuzzy
 msgid "Mock Inbox"
@@ -3400,6 +3871,10 @@ msgstr "Örnek Gelen Kutusu"
 #, fuzzy
 msgid "Model quality"
 msgstr "Model kalitesi"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:162
+msgid "Monetization"
+msgstr "Para Kazanma"
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:41
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:223
@@ -3424,6 +3899,10 @@ msgstr "Aylık sıralama sınırına ulaşıldı"
 #~ msgid "More threads beyond your {plan} subscription limit aren't loaded."
 #~ msgstr "{plan} abonelik limitinizin üzerindeki ek ileti dizileri yüklenmiyor."
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:220
+msgid "Mortgage brokers, financing pre-approvals, rate quotes, and underwriting updates."
+msgstr "Mortgage brokerları, finansman ön onayları, faiz oranları ve sigortalama güncellemeleri."
+
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:46
 #: ../ui/src/pricing/planMessages.ts:30
 #, fuzzy
@@ -3431,7 +3910,7 @@ msgid "Most popular"
 msgstr "En popüler"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:387
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:536
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:539
 #, fuzzy
 msgid "Move them to"
 msgstr "Şuraya taşı"
@@ -3469,7 +3948,7 @@ msgstr "Seyahatlerim önümüzdeki günlerde beni Delta bölgesine yaklaştırac
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:235
 #: ../../apps/mobile/app/(app)/account.tsx:131
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:272
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:448
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:451
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:15
 #, fuzzy
 msgid "Name"
@@ -3504,10 +3983,14 @@ msgstr "Asla otomatik göndermez · Depolanırken şifrelidir · Minimum veri"
 msgid "New application from Horemheb of Thebes."
 msgstr "Thebesli Horemheb'den yeni başvuru."
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:33
+msgid "New business inquiries, project proposals, and pricing discussions from prospective clients."
+msgstr "Yeni iş talepleri, proje teklifleri ve potansiyel müşterilerden fiyat görüşmeleri."
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:31
 #, fuzzy
-msgid "New business inquiries, proposals, pricing discussions, and prospective client outreach."
-msgstr "Yeni iş sorguları, teklifler, fiyatlandırma görüşmeleri ve potansiyel müşteri iletişimi."
+#~ msgid "New business inquiries, proposals, pricing discussions, and prospective client outreach."
+#~ msgstr "Yeni iş sorguları, teklifler, fiyatlandırma görüşmeleri ve potansiyel müşteri iletişimi."
 
 #: ../../apps/mobile/src/data/notificationView.ts:91
 #: ../../apps/web/src/lib/notifications.ts:110
@@ -3526,6 +4009,16 @@ msgstr "Yeni e-postalar, sınırınız gelecek ay sıfırlanana kadar bekleyecek
 #, fuzzy
 msgid "New folder"
 msgstr "Yeni klasör"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:221
+#, fuzzy
+msgid "New Inquiries"
+msgstr "Yeni Talepler"
+
+#: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:158
+#, fuzzy
+msgid "New mail"
+msgstr "Yeni posta"
 
 #: ../../apps/extension/src/panel/notificationText.ts:24
 #: ../../apps/mobile/src/data/notificationView.ts:95
@@ -3658,6 +4151,10 @@ msgstr "Son üretiminizden bu yana önemli yeni e-posta yok, bu yüzden sonuç a
 #~ msgid "No signups yet."
 #~ msgstr "Henüz kayıt yok."
 
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:110
+msgid "No sorted threads to migrate. Your new plan will apply directly."
+msgstr "Taşınacak sıralanmış ileti yok. Yeni planınız doğrudan uygulanacak."
+
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:48
 #, fuzzy
 msgid "No threads"
@@ -3701,10 +4198,14 @@ msgstr "Yok"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:190
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:205
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:509
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:512
 #, fuzzy
 msgid "None (not connected)"
 msgstr "Yok (bağlı değil)"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:226
+msgid "Nonprofit Leader"
+msgstr "STK Lideri"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:100
 #, fuzzy
@@ -3755,10 +4256,14 @@ msgstr "Bildirimler"
 msgid "Notifications, {unread} unread"
 msgstr "Bildirimler, {unread} okunmamış"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:68
+#: ../ui/src/i18n/taxonomy-template-messages.ts:76
 #, fuzzy
 msgid "Official university emails: registrar, student services, and housing."
 msgstr "Resmi üniversite e-postaları: öğrenci işleri, öğrenci hizmetleri ve barınma."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:121
+msgid "On-call alerts, outage reports, and production incident escalations."
+msgstr "Nöbetçi uyarıları, kesinti raporları ve üretim olayı yükseltmeleri."
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:343
 #, fuzzy
@@ -3819,7 +4324,11 @@ msgstr "açık kaynak e-posta yapay zekası"
 #~ msgid "Open-source AI email triage. Gmail-first. Hosted or self-hosted. Your call."
 #~ msgstr "Açık kaynak yapay zeka destekli e-posta tasnifi. Gmail odaklı. Barındırılan veya kendi sunucunuzda. Karar sizin."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:58
+#: ../ui/src/i18n/taxonomy-template-messages.ts:125
+msgid "Open-source maintainers, contributor discussions, and developer forum threads."
+msgstr "Açık kaynak sürdürücüleri, katılımcı tartışmaları ve geliştirici forumu yazışmaları."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:64
 #, fuzzy
 msgid "Operations"
 msgstr "Operasyonlar"
@@ -3828,7 +4337,7 @@ msgstr "Operasyonlar"
 msgid "Optional. Applied when generating draft replies for this folder."
 msgstr "İsteğe bağlı. Bu klasör için taslak yanıtlar oluşturulurken uygulanır."
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:495
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:498
 #, fuzzy
 msgid "Optional. Applied when generating draft replies for threads in this folder."
 msgstr "İsteğe bağlı. Bu klasördeki yazışmalar için yanıt taslakları oluşturulurken uygulanır."
@@ -3845,8 +4354,12 @@ msgstr "veya"
 msgid "Or connect a different inbox:"
 msgstr "Ya da farklı bir gelen kutusu bağla:"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:131
+msgid "Orders"
+msgstr "Siparişler"
+
 #: ../../apps/site/src/components/demo/demo-seed.ts:35
-#: ../../apps/site/src/components/landing/MailInboxMock.tsx:78
+#: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:178
 #, fuzzy
 msgid "Other"
 msgstr "Diğer"
@@ -3871,13 +4384,17 @@ msgid "Paid or upgraded workspace"
 msgstr "Ücretli veya yükseltilmiş çalışma alanı"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:322
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:503
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:660
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:506
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:663
 #, fuzzy
 msgid "Parent"
 msgstr "Ana"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:42
+#: ../ui/src/i18n/taxonomy-template-messages.ts:175
+msgid "Parents & Guardians"
+msgstr "Veli ve Vasiler"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:46
 #, fuzzy
 msgid "Partners"
 msgstr "Ortaklar"
@@ -3934,10 +4451,18 @@ msgstr "Ödeme başarısız oldu. Erişiminizi kaybetmemek için lütfen ödeme 
 msgid "Payment failed. Update your payment method to keep access."
 msgstr "Ödeme başarısız oldu. Erişiminizi sürdürmek için ödeme yönteminizi güncelleyin."
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:143
+msgid "Payouts & Fees"
+msgstr "Ödemeler ve Ücretler"
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:46
 #, fuzzy
-msgid "Payslips, expense reports, reimbursements, and employee benefits emails."
-msgstr "Maaş bordroları, masraf raporları, geri ödemeler ve çalışan yan hakları e-postaları."
+#~ msgid "Payslips, expense reports, reimbursements, and employee benefits emails."
+#~ msgstr "Maaş bordroları, masraf raporları, geri ödemeler ve çalışan yan hakları e-postaları."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:50
+msgid "Payslips, salary statements, and employee benefits and pension emails."
+msgstr "Maaş bordroları, maaş bildirimleri ve çalışan yan hakları ile emeklilik e-postaları."
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:12
 #: ../ui/src/emails/queueLabels.ts:22
@@ -3969,38 +4494,71 @@ msgstr "Hesabınızı ve tüm ilişkili verileri kalıcı olarak silin. Bu işle
 
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:37
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:29
-#: ../ui/src/i18n/taxonomy-template-messages.ts:32
+#: ../ui/src/i18n/taxonomy-template-messages.ts:34
 #: ../ui/src/pricing/planMessages.ts:20
 #, fuzzy
 msgid "Personal"
 msgstr "Kişisel"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:79
+#: ../ui/src/i18n/taxonomy-template-messages.ts:89
 #, fuzzy
 msgid "Personal / Family"
 msgstr "Kişisel / Aile"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:84
 #, fuzzy
-msgid "Personal bills, payment confirmations, receipts, and records of household expenses."
-msgstr "Kişisel faturalar, ödeme onayları, makbuzlar ve hanehalkı gider kayıtları."
+#~ msgid "Personal bills, payment confirmations, receipts, and records of household expenses."
+#~ msgstr "Kişisel faturalar, ödeme onayları, makbuzlar ve hanehalkı gider kayıtları."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:33
+#: ../ui/src/i18n/taxonomy-template-messages.ts:164
+msgid "Personal correspondence and emails unrelated to content work."
+msgstr "İçerik işiyle ilgili olmayan kişisel yazışmalar ve e-postalar."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:35
 #, fuzzy
 msgid "Personal correspondence and emails unrelated to freelance work."
 msgstr "Serbest çalışmayla ilgili olmayan kişisel yazışmalar ve e-postalar."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:64
+#: ../ui/src/i18n/taxonomy-template-messages.ts:223
+#, fuzzy
+msgid "Personal correspondence and emails unrelated to real estate."
+msgstr "Emlak işiyle ilgili olmayan kişisel yazışmalar ve e-postalar."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:202
+#, fuzzy
+msgid "Personal correspondence and emails unrelated to research."
+msgstr "Araştırma işiyle ilgili olmayan kişisel yazışmalar ve e-postalar."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:126
+#, fuzzy
+msgid "Personal correspondence and emails unrelated to software work."
+msgstr "Yazılım işiyle ilgili olmayan kişisel yazışmalar ve e-postalar."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:183
+#, fuzzy
+msgid "Personal correspondence and emails unrelated to teaching."
+msgstr "Kişisel yazışmalar ve öğretimle ilgili olmayan e-postalar."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:242
+#, fuzzy
+msgid "Personal correspondence and emails unrelated to the organization."
+msgstr "Kişisel yazışmalar ve organizasyonla ilgili olmayan e-postalar."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:145
+msgid "Personal correspondence and emails unrelated to the shop."
+msgstr "Kişisel yazışmalar ve mağazayla ilgili olmayan e-postalar."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:70
 #, fuzzy
 msgid "Personal correspondence and emails unrelated to the startup."
 msgstr "Startup ile ilgili olmayan kişisel yazışmalar ve e-postalar."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:48
+#: ../ui/src/i18n/taxonomy-template-messages.ts:52
 #, fuzzy
 msgid "Personal correspondence and emails unrelated to work."
 msgstr "İşle ilgili olmayan kişisel yazışmalar ve e-postalar."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:78
+#: ../ui/src/i18n/taxonomy-template-messages.ts:86
 #, fuzzy
 msgid "Personal correspondence and non-academic emails for everyday life."
 msgstr "Günlük hayata dair kişisel yazışmalar ve akademik olmayan e-postalar."
@@ -4019,7 +4577,7 @@ msgid "Plan"
 msgstr "Plan"
 
 #. “Plan” here is the email-sorting taxonomy, not a billing or subscription plan.
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1309
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1380
 #, fuzzy
 msgid "Plan is view-only. Only workspace admins can edit it."
 msgstr "Plan sadece görüntülenebilir. Sadece çalışma alanı yöneticileri düzenleyebilir."
@@ -4032,6 +4590,10 @@ msgstr "Plan düğümleri"
 msgid "Plan sorting"
 msgstr "Sıralama Planı"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:156
+msgid "Platforms"
+msgstr "Platformlar"
+
 #: ../../apps/mobile/app/(app)/subscription.tsx:129
 #: ../../apps/mobile/app/(app)/subscription.tsx:134
 #: ../../apps/mobile/app/(app)/subscription.tsx:189
@@ -4040,6 +4602,10 @@ msgstr "Sıralama Planı"
 #, fuzzy
 msgid "Please try again."
 msgstr "Lütfen tekrar deneyin."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:142
+msgid "Pre-sale questions and messages from prospective shoppers about products."
+msgstr "Potansiyel müşterilerden ürünlerle ilgili satış öncesi sorular ve mesajlar."
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:158
 #, fuzzy
@@ -4070,7 +4636,7 @@ msgstr "Konsey toplanmadan önce hesaplarınızı hazırlayın."
 #~ msgid "Preparing…"
 #~ msgstr ""
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:62
+#: ../ui/src/i18n/taxonomy-template-messages.ts:68
 #, fuzzy
 msgid "Press"
 msgstr "Basın"
@@ -4096,9 +4662,13 @@ msgstr "Fiyatlandırma | Amarnai"
 msgid "Pricing is per workspace, billed monthly or annually. Every account starts with a free Personal workspace, no card required. The paid Pro and Business subscriptions add higher limits and include a 14-day trial. See the pricing page for current details."
 msgstr "Fiyatlandırma çalışma alanı başına aylık veya yıllık olarak faturalandırılır. Her hesap ücretsiz bir Kişisel çalışma alanı ile başlar, kart gerekmez. Ücretli Pro ve Business abonelikleri daha yüksek limitler sunar ve 14 günlük deneme süresi içerir. Güncel ayrıntılar için fiyatlandırma sayfasını ziyaret edin."
 
-#: ../../apps/site/src/components/landing/MailInboxMock.tsx:84
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:67
 msgid "Primary"
 msgstr "Birincil"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:178
+msgid "Principal notices, staff meetings, and district administration bulletins."
+msgstr "Müdür duyuruları, personel toplantıları ve bölge yönetimi bültenleri."
 
 #: ../ui/src/pricing/planMessages.ts:100
 #, fuzzy
@@ -4129,12 +4699,21 @@ msgstr "Pro"
 msgid "Product"
 msgstr "Ürün"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:181
+#, fuzzy
+msgid "Professional Development"
+msgstr "Mesleki Gelişim"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:41
+msgid "Professional emails related to job duties and workplace activities."
+msgstr "İş görevleri ve iş yeri faaliyetleriyle ilgili profesyonel e-postalar."
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:37
 #, fuzzy
-msgid "Professional emails related to work, projects, and workplace activities."
-msgstr "İşle, projelerle ve iş yeri faaliyetleriyle ilgili profesyonel e-postalar."
+#~ msgid "Professional emails related to work, projects, and workplace activities."
+#~ msgstr "İşle, projelerle ve iş yeri faaliyetleriyle ilgili profesyonel e-postalar."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:70
+#: ../ui/src/i18n/taxonomy-template-messages.ts:78
 #, fuzzy
 msgid "Professors, assignments, study groups, course announcements, and academic deadlines."
 msgstr "Profesörler, ödevler, çalışma grupları, ders duyuruları ve akademik son tarihler."
@@ -4145,28 +4724,65 @@ msgstr "Profesörler, ödevler, çalışma grupları, ders duyuruları ve akadem
 msgid "Profile"
 msgstr "Profil"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:18
+#: ../ui/src/i18n/taxonomy-template-messages.ts:237
+#, fuzzy
+msgid "Program operations, beneficiary services, and impact reporting updates."
+msgstr "Program operasyonları, yararlanıcı hizmetleri ve etki raporlama güncellemeleri."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:236
+msgid "Programs"
+msgstr "Programlar"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:20
 #, fuzzy
 msgid "Projects"
 msgstr "Projeler"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:112
-#: ../../apps/site/src/components/landing/MailInboxMock.tsx:87
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:70
 #, fuzzy
 msgid "Promotions"
 msgstr "Promosyonlar"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:208
+msgid "Property listings, MLS updates, staging, and photography scheduling."
+msgstr "Emlak listelemeleri, MLS güncellemeleri, sahneleme ve fotoğraf çekimi planlaması."
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:86
 #, fuzzy
 msgid "Proposed folders. Applying replaces your current plan; you can edit everything afterward."
 msgstr "Önerilen klasörler. Uygulamak mevcut planınızı değiştirir; her şeyi sonradan düzenleyebilirsiniz."
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:188
+#, fuzzy
+msgid "Publications"
+msgstr "Yayınlar"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:113
+#, fuzzy
+msgid "Pull request notifications, merge-approval mentions, and comment threads on repositories."
+msgstr "Çekme isteği bildirimleri, birleştirme onayı bahsetmeleri ve depolardaki yorum dizileri."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:112
+#, fuzzy
+msgid "Pull Requests"
+msgstr "Çekme İstekleri"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:170
+#, fuzzy
+msgid "Pupil questions, homework hand-ins, and daily instruction in the classroom."
+msgstr "Öğrenci soruları, ödev teslimleri ve sınıftaki günlük eğitim."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:132
+msgid "Purchase confirmations, order status changes, and fulfillment updates from your store."
+msgstr "Mağazanızdan satın alma onayları, sipariş durumu değişiklikleri ve teslimat güncellemeleri."
+
 #: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:105
 #, fuzzy
 msgid "Queuing rescan…"
 msgstr "Yeniden tarama sıraya alınıyor…"
 
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:379
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:385
 #, fuzzy
 msgid "Re-route {unclassifiedCount} unclassified"
 msgstr "{unclassifiedCount} sınıflandırılmamışı yeniden yönlendir"
@@ -4175,6 +4791,20 @@ msgstr "{unclassifiedCount} sınıflandırılmamışı yeniden yönlendir"
 #, fuzzy
 msgid "Re-route thread"
 msgstr "İleti dizisini yeniden yönlendir"
+
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:135
+#, fuzzy
+msgid "Re-sort with AI"
+msgstr "Yapay Zeka ile Yeniden Sırala"
+
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:176
+#, fuzzy
+msgid "Re-sorting threads already sorted this month is free. If you reach your monthly limit, the rest resume next month."
+msgstr "Bu ay zaten sıralanmış konuşmaları yeniden sıralamak ücretsizdir. Aylık limitinize ulaştığınızda, geri kalanı gelecek ay devam eder."
+
+#: ../../apps/web/src/app/(app)/emails/ResortReviewBanner.tsx:79
+msgid "Re-sorting…"
+msgstr "Yeniden sıralanıyor…"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:333
 #, fuzzy
@@ -4200,8 +4830,12 @@ msgstr "Sadece okuma · OAuth · İstenildiği zaman iptal edilebilir"
 msgid "Read-only by design"
 msgstr "Varsayılan olarak salt okunur"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:205
+msgid "Real Estate Agent"
+msgstr "Gayrimenkul Danışmanı"
+
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:91
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:307
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:310
 #, fuzzy
 msgid "Receipts, payment confirmations, and billing questions from vendors."
 msgstr "Makbuzlar, ödeme onayları ve tedarikçilerden gelen faturalandırma soruları."
@@ -4214,6 +4848,10 @@ msgstr "Yakın zamanda denendi. {when} tekrar kullanılabilir."
 #: ../ui/src/i18n/generation-reason-messages.ts:18
 msgid "Recently attempted. Try again later."
 msgstr "Yakın zamanda denendi. Daha sonra tekrar deneyin."
+
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1760
+msgid "Recommended for your inbox"
+msgstr "Gelen Kutunuz İçin Önerilenler"
 
 #: ../../apps/mobile/src/components/emails/DisconnectedBanner.tsx:46
 #, fuzzy
@@ -4262,10 +4900,14 @@ msgstr "Yeniden bağlanılıyor…"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:45
 #, fuzzy
-msgid "Recruiter outreach, job applications, interview scheduling, and offer letters."
-msgstr "İşe alım uzmanı erişimi, iş başvuruları, mülakat planlaması ve teklif mektupları."
+#~ msgid "Recruiter outreach, job applications, interview scheduling, and offer letters."
+#~ msgstr "İşe alım uzmanı erişimi, iş başvuruları, mülakat planlaması ve teklif mektupları."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:44
+#: ../ui/src/i18n/taxonomy-template-messages.ts:49
+msgid "Recruiter outreach, role applications, interview scheduling, and staffing packages."
+msgstr "İşe alım uzmanı erişimi, iş başvuruları, mülakat planlaması ve personel paketleri."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:48
 #, fuzzy
 msgid "Recruiting"
 msgstr "İşe Alım"
@@ -4277,10 +4919,14 @@ msgstr "İşe Alım"
 msgid "Redirecting…"
 msgstr "Yönlendiriliyor…"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1330
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1401
 #, fuzzy
 msgid "Redo"
 msgstr "Yinele"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:191
+msgid "Referee invitations, reviewer reports, and revision requests from journal editors."
+msgstr "Hakem davetiyeleri, incelemeci raporları ve dergi editörlerinden revizyon talepleri."
 
 #: ../../apps/web/src/components/ClassifyingRefresher.tsx:56
 #, fuzzy
@@ -4298,6 +4944,10 @@ msgstr "Yenile"
 #, fuzzy
 msgid "Regenerate"
 msgstr "Yeniden Oluştur"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:122
+msgid "Releases"
+msgstr "Sürümler"
 
 #: ../../apps/mobile/app/forgot-password.tsx:115
 #, fuzzy
@@ -4375,24 +5025,33 @@ msgstr "<0>{0}</0> tarihinde aylık olarak yenilenir."
 msgid "Renews on <0>{0}</0>."
 msgstr "<0>{0}</0> tarihinde yenilenir."
 
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:93
+msgid "Replace plan"
+msgstr "Planı Değiştir"
+
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1614
 #, fuzzy
-msgid "Replace plan?"
-msgstr "Plan değiştirilsin mi?"
+#~ msgid "Replace plan?"
+#~ msgstr "Plan değiştirilsin mi?"
 
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1652
 #, fuzzy
-msgid "Replace taxonomy"
-msgstr "Sınıflandırmayı Değiştir"
+#~ msgid "Replace taxonomy"
+#~ msgstr "Sınıflandırmayı Değiştir"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1681
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1697
 #, fuzzy
 msgid "Replace with a template"
 msgstr "Şablonla değiştir"
 
-#: ../../apps/site/src/components/landing/MailThreadMock.tsx:106
+#: ../../apps/site/src/components/landing/MailThreadMock.tsx:90
+#: ../../apps/site/src/components/landing/MailThreadMock.tsx:145
 msgid "Reply"
 msgstr "Yanıtla"
+
+#: ../../apps/site/src/components/landing/MailThreadMock.tsx:96
+msgid "Reply all"
+msgstr "Tümünü Yanıtla"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:89
 #, fuzzy
@@ -4493,6 +5152,15 @@ msgstr "Kaynaklar"
 msgid "Retry"
 msgstr "Tekrar Dene"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:136
+#, fuzzy
+msgid "Return requests, refund approvals, and exchange labels from shoppers."
+msgstr "Müşterilerden iade talepleri, geri ödeme onayları ve değişim etiketleri."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:135
+msgid "Returns"
+msgstr "İadeler"
+
 #: ../ui/src/pricing/planMessages.ts:68
 #, fuzzy
 msgid "Review queue"
@@ -4510,7 +5178,11 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "Rib-Hadda,\n\nSeni duyuyoruz. Güneydeki depolardan ek tahıl sipariş edildi ve hasat festivalinden önce ulaşacak. O zamana kadar sabrınızı rica ediyoruz.\n\nEsen kal,"
+msgstr "Rib-Hadda,\n"
+"\n"
+"Seni duyuyoruz. Güneydeki depolardan ek tahıl sipariş edildi ve hasat festivalinden önce ulaşacak. O zamana kadar sabrınızı rica ediyoruz.\n"
+"\n"
+"Esen kal,"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -4543,8 +5215,8 @@ msgstr "Aylıkla aynı"
 #: ../../apps/mobile/src/components/EditNameSheet.tsx:66
 #: ../../apps/mobile/src/components/RenameWorkspaceSheet.tsx:74
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:450
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:577
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:691
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:580
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:694
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:29
 #, fuzzy
 msgid "Save"
@@ -4587,12 +5259,21 @@ msgid "Saving..."
 msgstr "Kaydediliyor..."
 
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:76
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:577
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:691
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:580
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:694
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:29
 #, fuzzy
 msgid "Saving…"
 msgstr "Kaydediliyor…"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:177
+#, fuzzy
+msgid "School Administration"
+msgstr "Okul Yönetimi"
+
+#: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:146
+msgid "Search"
+msgstr "Ara"
 
 #: ../ui/src/emails/ThreadListHeader.tsx:104
 #, fuzzy
@@ -4605,7 +5286,7 @@ msgstr "{threadCount} iletiyi ara"
 msgid "Search folders"
 msgstr "Klasörlerde ara"
 
-#: ../../apps/site/src/components/landing/MailInboxMock.tsx:66
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:60
 msgid "Search mail"
 msgstr "E-posta ara"
 
@@ -4638,8 +5319,8 @@ msgid "Select"
 msgstr "Seç"
 
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:210
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:336
-#: ../ui/src/emails/MockEmailsPage.tsx:266
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:342
+#: ../ui/src/emails/MockEmailsPage.tsx:274
 #, fuzzy
 msgid "Select a thread to preview"
 msgstr "Önizlemek için bir ileti seçin"
@@ -4669,6 +5350,15 @@ msgstr "Kendi sunucunuzda barındırma rehberi"
 #, fuzzy
 msgid "self-hosted email assistant"
 msgstr "kendi sunucunuzda barındırılan e-posta asistanı"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:212
+#, fuzzy
+msgid "Seller consultations, listing paperwork, price reductions, and market appraisals."
+msgstr "Satıcı danışmanlıkları, listeleme evrakları, fiyat indirimleri ve piyasa değerlemeleri."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:211
+msgid "Sellers"
+msgstr "Satıcılar"
 
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:224
 #, fuzzy
@@ -4708,6 +5398,10 @@ msgstr "Gönderen, önemli bir konuma sahip, bilinen bir anlaşma ortağıdır. 
 #, fuzzy
 msgid "Sending…"
 msgstr "Gönderiliyor…"
+
+#: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:129
+msgid "Sent Items"
+msgstr "Gönderilenler"
 
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:95
 #, fuzzy
@@ -4772,6 +5466,10 @@ msgstr "Paylaşılan plan + inceleme kuyruğu"
 #~ msgid "Shared taxonomy + review queue"
 #~ msgstr "Paylaşılan taksonomi + inceleme kuyruğu"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:133
+msgid "Shipping"
+msgstr "Kargo"
+
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:334
 #, fuzzy
 msgid "Show Gmail"
@@ -4780,6 +5478,10 @@ msgstr "Gmail'i Göster"
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:343
 msgid "Show Outlook"
 msgstr "Outlook'u Göster"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:210
+msgid "Showing requests, buyer tours, open-house sign-ups, and written offers."
+msgstr "Gösterim talepleri, alıcı turları, açık ev kayıtları ve yazılı teklifler."
 
 #: ../../apps/extension/src/auth/SignInScreen.tsx:98
 #: ../../apps/mobile/app/sign-in.tsx:133
@@ -4851,11 +5553,15 @@ msgstr "Giriş yapılıyor…"
 msgid "Simple per-workspace pricing. Start free, upgrade or create additional workspaces as you need."
 msgstr "Basit çalışma alanı fiyatlandırması. Ücretsiz başlayın, ihtiyacınıza göre yükseltin veya yeni çalışma alanları oluşturun."
 
-#: ../../apps/site/src/components/landing/MailInboxMock.tsx:90
-#: ../ui/src/i18n/taxonomy-template-messages.ts:76
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:73
+#: ../ui/src/i18n/taxonomy-template-messages.ts:84
 #, fuzzy
 msgid "Social"
 msgstr "Sosyal"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:108
+msgid "Software Developer"
+msgstr "Yazılım Geliştirici"
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:213
 #, fuzzy
@@ -4940,10 +5646,28 @@ msgstr "Sıralama hacmi"
 msgid "Sorting…"
 msgstr "Sıralanıyor…"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:111
+msgid "Source-control activity, branch changes, and merge approvals across repositories."
+msgstr "Kaynak kontrolü etkinliği, dal değişiklikleri ve depolar arası birleştirme onayları."
+
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:111
 #, fuzzy
 msgid "Spam"
 msgstr "Spam"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:151
+#, fuzzy
+msgid "Sponsored placements, brand partnerships, and promotional collaborations."
+msgstr "Sponsorlu yerleşimler, marka ortaklıkları ve tanıtım iş birlikleri."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:153
+#, fuzzy
+msgid "Sponsorship rates, content briefs, and paid placement deals."
+msgstr "Sponsorluk oranları, içerik özetleri ve ücretli yerleşim anlaşmaları."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:152
+msgid "Sponsorships"
+msgstr "Sponsorluklar"
 
 #: ../ui/src/pricing/planMessages.ts:94
 #, fuzzy
@@ -4966,12 +5690,12 @@ msgid "Start free"
 msgstr "Ücretsiz başla"
 
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:52
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1682
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1698
 #, fuzzy
 msgid "Start from a template"
 msgstr "Şablondan başlat"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1395
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1466
 #, fuzzy
 msgid "Start from a template (replaces current)"
 msgstr "Şablondan başlat (mevcutu değiştirir)"
@@ -4988,7 +5712,7 @@ msgstr "Sıralamayı başlat"
 msgid "Starting…"
 msgstr "Başlatılıyor…"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:49
+#: ../ui/src/i18n/taxonomy-template-messages.ts:55
 #, fuzzy
 msgid "Startup Founder"
 msgstr "Startup Kurucusu"
@@ -5012,20 +5736,38 @@ msgstr "Senkronizasyonu durdurur ve Amarnai'nin bu gelen kutusuna erişimini ipt
 msgid "Stops syncing and revokes Amarnai's access to this mailbox. Synced email data is kept so you can reconnect later."
 msgstr "Senkronizasyonu durdurur ve Amarnai'nin bu gelen kutusuna erişimini iptal eder. Senkronize edilen e-posta verileri, daha sonra yeniden bağlanabilmeniz için saklanır."
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:144
+#, fuzzy
+msgid "Store payouts, chargebacks, selling fees, and settlement statements."
+msgstr "Ödemeler, ters ibrazlar, satış ücretleri ve mutabakat ekstreleri."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:140
+#, fuzzy
+msgid "Storefront notices from Amazon, Etsy, eBay, and marketplace store accounts."
+msgstr "Amazon, Etsy, eBay ve pazar yeri mağaza hesaplarından gelen bildirimler."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:105
+msgid "Streaming services, app subscriptions, memberships, and recurring billing notices."
+msgstr "Yayın hizmetleri, uygulama abonelikleri, üyelikler ve tekrarlayan faturalandırma bildirimleri."
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:94
 #, fuzzy
-msgid "Streaming services, software subscriptions, memberships, and recurring notifications."
-msgstr "Yayın hizmetleri, yazılım abonelikleri, üyelikler ve yinelenen bildirimler."
+#~ msgid "Streaming services, software subscriptions, memberships, and recurring notifications."
+#~ msgstr "Yayın hizmetleri, yazılım abonelikleri, üyelikler ve yinelenen bildirimler."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:65
+#: ../ui/src/i18n/taxonomy-template-messages.ts:73
 #, fuzzy
 msgid "Student"
 msgstr "Öğrenci"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:83
+msgid "Student loans, rent payments, and financial aid notifications."
+msgstr "Öğrenim kredileri, kira ödemeleri ve finansal yardım bildirimleri."
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:75
 #, fuzzy
-msgid "Student loans, rent, bank statements, and financial aid notifications."
-msgstr "Öğrenim kredileri, kira, banka hesap özetleri ve finansal yardım bildirimleri."
+#~ msgid "Student loans, rent, bank statements, and financial aid notifications."
+#~ msgstr "Öğrenim kredileri, kira, banka hesap özetleri ve finansal yardım bildirimleri."
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:258
 #: ../../apps/mobile/app/(app)/subscription.tsx:222
@@ -5054,16 +5796,29 @@ msgstr "Abonelik yenilenmeyecek. {planLabel} erişimi <0>{0}</0> tarihinde sona 
 msgid "Subscription will not renew. Access ends {0}."
 msgstr "Abonelik yenilenmeyecek. Erişim {0} tarihinde sona erer."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:93
+#: ../ui/src/i18n/taxonomy-template-messages.ts:104
 #, fuzzy
 msgid "Subscriptions"
 msgstr "Abonelikler"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:200
+#, fuzzy
+msgid "Supervision"
+msgstr "Denetim"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:137
+msgid "Suppliers"
+msgstr "Tedarikçiler"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:31
 #: ../ui/src/pricing/planMessages.ts:56
 #, fuzzy
 msgid "Support"
 msgstr "Destek"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:60
+msgid "Support, onboarding, retention, churn, and customer success conversations."
+msgstr "Destek, yeni kullanıcı katılımı, müşteri tutma, müşteri kaybı ve müşteri başarısı görüşmeleri."
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:227
 #, fuzzy
@@ -5115,15 +5870,19 @@ msgstr "Senkronize ediliyor…"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:19
 #, fuzzy
-msgid "Task coordination, milestones, and deliverable reviews for ongoing client projects."
-msgstr "Devam eden müşteri projeleri için görev koordinasyonu, dönüm noktası belirleme ve teslimat değerlendirmeleri."
+#~ msgid "Task coordination, milestones, and deliverable reviews for ongoing client projects."
+#~ msgstr "Devam eden müşteri projeleri için görev koordinasyonu, dönüm noktası belirleme ve teslimat değerlendirmeleri."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:83
+#: ../ui/src/i18n/taxonomy-template-messages.ts:21
+msgid "Task coordination, milestones, and scope discussions for ongoing client work."
+msgstr "Görev koordinasyonu, kilometre taşları ve devam eden müşteri çalışmaları için kapsam görüşmeleri."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:93
 #, fuzzy
 msgid "Tax returns, government notices, fines, and annual contributions to state authorities."
 msgstr "Vergi beyannameleri, resmi tebligatlar, para cezaları ve devlet kurumlarına yıllık katkılar."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:82
+#: ../ui/src/i18n/taxonomy-template-messages.ts:92
 #, fuzzy
 msgid "Taxes"
 msgstr "Vergiler"
@@ -5143,8 +5902,17 @@ msgstr "Sınıflandırma uygulandı"
 #~ msgid "Taxonomy nodes"
 #~ msgstr "Taksonomi düğümleri"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:167
+#, fuzzy
+msgid "Teacher"
+msgstr "Öğretmen"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:182
+msgid "Teacher training workshops, certification renewals, and education webinars."
+msgstr "Öğretmen eğitim atölyeleri, sertifika yenilemeleri ve eğitim webinarları."
+
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:169
-#: ../ui/src/i18n/taxonomy-template-messages.ts:38
+#: ../ui/src/i18n/taxonomy-template-messages.ts:42
 #, fuzzy
 msgid "Team"
 msgstr "Ekip"
@@ -5153,7 +5921,7 @@ msgstr "Ekip"
 msgid "Template applied"
 msgstr "Şablon uygulandı"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1419
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1490
 #, fuzzy
 msgid "Templates"
 msgstr "Şablonlar"
@@ -5267,7 +6035,7 @@ msgstr "Bu işbirlikçiler {0} tarihinde erişimi kaybedecek:"
 msgid "These settings control which inbox threads are imported. Trash is always excluded."
 msgstr "Bu ayarlar, hangi gelen kutusu yazışmalarının içe aktarılacağını kontrol eder. Çöp kutusu her zaman hariç tutulur."
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1301
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1372
 #, fuzzy
 msgid "This folder has child folders. Remove their Paths first, then delete it."
 msgstr "Bu klasörün alt klasörleri var. Önce yollarını kaldırıp sonra silin."
@@ -5423,7 +6191,13 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "Büyük Kral kardeşim,\n\nBüyük konsey Şemu'nun başında toplanacak. Doğu topraklarının tam bir muhasebesini hazırlamanızı ve mümkünse yeni aydan önce hızlı bir kurye ile göndermenizi rica ediyorum.\n\nİttifakımız güçlüdür. Konseye bunun böyle kaldığını gösterelim.\n\nMitanni Büyük Kralı Tuşratta"
+msgstr "Büyük Kral kardeşim,\n"
+"\n"
+"Büyük konsey Şemu'nun başında toplanacak. Doğu topraklarının tam bir muhasebesini hazırlamanızı ve mümkünse yeni aydan önce hızlı bir kurye ile göndermenizi rica ediyorum.\n"
+"\n"
+"İttifakımız güçlüdür. Konseye bunun böyle kaldığını gösterelim.\n"
+"\n"
+"Mitanni Büyük Kralı Tuşratta"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:163
 #, fuzzy
@@ -5432,7 +6206,11 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "Kraliyet Atama Bürosu'na,\n\nThebesli Horemheb'in başvurusunu aldık ve sonraki yeni aydan önce sicilini gözden geçireceğiz. Lütfen kendisine zamanı geldiğinde haber vereceğimizi bildirin.\n\nKraliyet fermanıyla,"
+msgstr "Kraliyet Atama Bürosu'na,\n"
+"\n"
+"Thebesli Horemheb'in başvurusunu aldık ve sonraki yeni aydan önce sicilini gözden geçireceğiz. Lütfen kendisine zamanı geldiğinde haber vereceğimizi bildirin.\n"
+"\n"
+"Kraliyet fermanıyla,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:278
 #, fuzzy
@@ -5443,7 +6221,13 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "Büyük Kral'a,\n\nYıllardır hanelerimiz kardeş gibidir. Şimdi, bu dostluğumuzu her iki halkımızın da yararına resmileştirmeyi teklif etmek için yazıyorum: karşılıklı koruma ve ortak ticaret yolları anlaşması.\n\nSadece şartlarımı dinlemenizi rica ediyorum. Sonraki kurye ile haber gönderin, elçimi derhal yola çıkaracağım.\n\nAmurru lordu, Büyük Kral'ın hizmetkarı Aziru"
+msgstr "Büyük Kral'a,\n"
+"\n"
+"Yıllardır hanelerimiz kardeş gibidir. Şimdi, bu dostluğumuzu her iki halkımızın da yararına resmileştirmeyi teklif etmek için yazıyorum: karşılıklı koruma ve ortak ticaret yolları anlaşması.\n"
+"\n"
+"Sadece şartlarımı dinlemenizi rica ediyorum. Sonraki kurye ile haber gönderin, elçimi derhal yola çıkaracağım.\n"
+"\n"
+"Amurru lordu, Büyük Kral'ın hizmetkarı Aziru"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:391
 #, fuzzy
@@ -5452,7 +6236,11 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "Büyük Kral'a,\n\nYolculuklarım beni önümüzdeki günlerde Delta'ya yakın bir yere getirecek. Büyük Kral'ın ayıracak bir saati varsa, yüz yüze konuşma fırsatını memnuniyetle karşılarım; yazmaktan daha kolay anlatılacak meseleler var.\n\nKulunuz, Urushalim Valisi Abdi-Heba"
+msgstr "Büyük Kral'a,\n"
+"\n"
+"Yolculuklarım beni önümüzdeki günlerde Delta'ya yakın bir yere getirecek. Büyük Kral'ın ayıracak bir saati varsa, yüz yüze konuşma fırsatını memnuniyetle karşılarım; yazmaktan daha kolay anlatılacak meseleler var.\n"
+"\n"
+"Kulunuz, Urushalim Valisi Abdi-Heba"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:153
 #, fuzzy
@@ -5461,7 +6249,11 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "Büyük Kral kardeşim,\n\nSözlerinizi duydum. Altın, bir sonraki elçi ayrılmadan önce gönderilecektir. Hanelerimiz arasındaki bağı değerli buluyoruz ve soğumasını istemiyoruz.\n\nDostlukla,"
+msgstr "Büyük Kral kardeşim,\n"
+"\n"
+"Sözlerinizi duydum. Altın, bir sonraki elçi ayrılmadan önce gönderilecektir. Hanelerimiz arasındaki bağı değerli buluyoruz ve soğumasını istemiyoruz.\n"
+"\n"
+"Dostlukla,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:239
 #, fuzzy
@@ -5472,7 +6264,13 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "Büyük Kral kardeşim,\n\nAtalarımızın yazdığı gibi, dostlukla yazıyorum. Antlaşmamız kapsamında üzerinde anlaşılan üçüncü altın sevkiyatı gelmedi. İki elçi geçti ve hâlâ bekliyoruz.\n\nHanelerimiz arasındaki bağa yakışır şekilde, gecikmeksizin göndermenizi rica ediyoruz.\n\nBabil Kralı II. Burna-Buriash"
+msgstr "Büyük Kral kardeşim,\n"
+"\n"
+"Atalarımızın yazdığı gibi, dostlukla yazıyorum. Antlaşmamız kapsamında üzerinde anlaşılan üçüncü altın sevkiyatı gelmedi. İki elçi geçti ve hâlâ bekliyoruz.\n"
+"\n"
+"Hanelerimiz arasındaki bağa yakışır şekilde, gecikmeksizin göndermenizi rica ediyoruz.\n"
+"\n"
+"Babil Kralı II. Burna-Buriash"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:352
 #, fuzzy
@@ -5483,7 +6281,17 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "Büyük Kral'ım, efendim, güneşim,\n\nGeçen ay gönderdiğiniz tahıl şükranla alındı ve adınızı halkın önünde övdüm. Ancak tekrar yazmak zorundayım: üçüncü sevkiyat gelmedi ve şehir huzursuzlanıyor.\n\nYedi kez yazdım. Sizi rahatsız etmek istemem ama başka ne yapabilirim?\n\nKulunuz, Byblos Valisi Rib-Hadda"
+msgstr "Büyük Kral'ım, efendim, güneşim,\n"
+"\n"
+"Geçen ay gönderdiğiniz tahıl şükranla alındı ve adınızı halkın önünde övdüm. Ancak tekrar yazmak zorundayım: üçüncü sevkiyat gelmedi ve şehir huzursuzlanıyor.\n"
+"\n"
+"Yedi kez yazdım. Sizi rahatsız etmek istemem ama başka ne yapabilirim?\n"
+"\n"
+"Kulunuz, Byblos Valisi Rib-Hadda"
+
+#: ../../apps/site/src/components/landing/MailThreadMock.tsx:123
+msgid "To: You"
+msgstr "Kime: Siz"
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:19
 #: ../ui/src/emails/ThreadList.tsx:15
@@ -5500,7 +6308,11 @@ msgstr "Bugün"
 msgid "Toggle folders"
 msgstr "Klasörleri Aç/Kapat"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:91
+#: ../ui/src/i18n/taxonomy-template-messages.ts:213
+msgid "Transactions"
+msgstr "İşlemler"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:102
 #, fuzzy
 msgid "Travel"
 msgstr "Seyahat"
@@ -5563,14 +6375,14 @@ msgid "Unclassified"
 msgstr "Sınıflandırılmamış"
 
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:232
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:366
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1321
-#: ../ui/src/emails/MockEmailsPage.tsx:285
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:372
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1392
+#: ../ui/src/emails/MockEmailsPage.tsx:293
 #, fuzzy
 msgid "Undo"
 msgstr "Geri Al"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:67
+#: ../ui/src/i18n/taxonomy-template-messages.ts:75
 #, fuzzy
 msgid "University"
 msgstr "Üniversite"
@@ -5580,7 +6392,7 @@ msgstr "Üniversite"
 msgid "Unknown"
 msgstr "Bilinmiyor"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1219
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1255
 #, fuzzy
 msgid "unknown error"
 msgstr "bilinmeyen hata"
@@ -5652,7 +6464,7 @@ msgid "Update payment method"
 msgstr "Ödeme yöntemini güncelle"
 
 #: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:47
-#: ../ui/src/i18n/taxonomy-template-messages.ts:95
+#: ../ui/src/i18n/taxonomy-template-messages.ts:245
 #: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:59
 #, fuzzy
 msgid "Updates / Other"
@@ -5663,7 +6475,7 @@ msgstr "Güncellemeler / Diğer"
 msgid "Updates, intros, and check-ins from current or prospective investors."
 msgstr "Mevcut veya potansiyel yatırımcılardan gelen güncellemeler, tanıtımlar ve bilgilendirmeler."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:52
+#: ../ui/src/i18n/taxonomy-template-messages.ts:58
 #, fuzzy
 msgid "Updates, term sheets, due diligence requests, cap table, and investor relations."
 msgstr "Güncellemeler, yatırım şartları, durum tespiti talepleri, sermaye tablosu ve yatırımcı ilişkileri."
@@ -5737,7 +6549,7 @@ msgstr "Filtreleri değiştirdikten sonra gelen kutunuzdaki mevcut konulara uygu
 msgid "Use a template"
 msgstr "Bir şablon kullan"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1784
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1806
 #, fuzzy
 msgid "Use template"
 msgstr "Şablonu kullan"
@@ -5747,15 +6559,23 @@ msgstr "Şablonu kullan"
 msgid "Use this plan for a business, team, or separate Gmail account."
 msgstr "Bu paketi bir işletme, ekip veya ayrı bir Gmail hesabı için kullanın."
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:99
+msgid "Utilities, household maintenance, and home upkeep appointments."
+msgstr "Faturalar, ev bakımı ve evle ilgili randevular."
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:88
 #, fuzzy
-msgid "Utilities, landlord or mortgage communications, home maintenance, and property services."
-msgstr "Faturalar, ev sahibi veya ipotek yazışmaları, ev bakımı ve mülk hizmetleri."
+#~ msgid "Utilities, landlord or mortgage communications, home maintenance, and property services."
+#~ msgstr "Faturalar, ev sahibi veya ipotek yazışmaları, ev bakımı ve mülk hizmetleri."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:65
+msgid "Vendor agreements, office logistics, and day-to-day operational coordination."
+msgstr "Tedarikçi sözleşmeleri, ofis lojistiği ve günlük operasyonel koordinasyon."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:59
 #, fuzzy
-msgid "Vendor contracts, tools, infrastructure, and day-to-day operational communications."
-msgstr "Satıcı sözleşmeleri, araçlar, altyapı ve günlük operasyonel iletişimler."
+#~ msgid "Vendor contracts, tools, infrastructure, and day-to-day operational communications."
+#~ msgstr "Satıcı sözleşmeleri, araçlar, altyapı ve günlük operasyonel iletişimler."
 
 #: ../../apps/web/src/app/verify-email/page.tsx:32
 #, fuzzy
@@ -5772,6 +6592,10 @@ msgstr "Doğrulama e-postası gönderildi. Gelen kutunuzu kontrol edin."
 msgid "Verify your email"
 msgstr "E-postanı doğrula"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:123
+msgid "Version releases, changelogs, dependency upgrades, and package registry alerts."
+msgstr "Sürüm yayınları, değişiklik günlükleri, bağımlılık güncellemeleri ve paket kayıt uyarıları."
+
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:193
 #, fuzzy
 msgid "View draft reply"
@@ -5780,6 +6604,15 @@ msgstr "Taslak yanıtı görüntüle"
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:303
 msgid "View only. Only workspace admins can edit the plan."
 msgstr "Yalnızca görüntüleme. Planı yalnızca çalışma alanı yöneticileri düzenleyebilir."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:235
+#, fuzzy
+msgid "Volunteer sign-ups, shift scheduling, and coordinator communications."
+msgstr "Gönüllü kayıtları, vardiya planlaması ve koordinatör iletişimleri."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:234
+msgid "Volunteers"
+msgstr "Gönüllüler"
 
 #: ../../apps/mobile/src/components/RationaleCard.tsx:44
 #: ../../apps/mobile/src/components/ThreadRow.tsx:44
@@ -5850,7 +6683,7 @@ msgstr "Amarnai'nin emin olmadığı konulara ne olur?"
 msgid "What model does Amarnai use?"
 msgstr "Amarnai hangi modeli kullanıyor?"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:518
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:521
 #, fuzzy
 msgid "Where this folder sits. Folders with no parent stay disconnected and are ignored until connected."
 msgstr "Bu klasörün konumu. Ebeveyni olmayan klasörler bağlantısız kalır ve bağlanana kadar yok sayılır."
@@ -5860,12 +6693,16 @@ msgstr "Bu klasörün konumu. Ebeveyni olmayan klasörler bağlantısız kalır 
 msgid "Who is king Aziru?"
 msgstr "King Aziru kimdir?"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:36
+#: ../ui/src/i18n/taxonomy-template-messages.ts:138
+msgid "Wholesale suppliers, restock orders, and inventory availability from manufacturers."
+msgstr "Toptan tedarikçiler, stok yenileme siparişleri ve üreticilerden stok durumu."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:40
 #, fuzzy
 msgid "Work"
 msgstr "İş"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:34
+#: ../ui/src/i18n/taxonomy-template-messages.ts:38
 #, fuzzy
 msgid "Working Professional"
 msgstr "Çalışan Profesyonel"

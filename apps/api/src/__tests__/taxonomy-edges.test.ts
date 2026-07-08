@@ -5,6 +5,7 @@ vi.mock("@amarnai/db", () => ({
   db: {
     workspace: {
       findUnique: vi.fn(),
+      update: vi.fn(),
     },
     workspaceMember: {
       findUnique: vi.fn(),
@@ -123,6 +124,13 @@ describe("POST /workspaces/:workspaceId/taxonomy-edges", () => {
     expect(res.status).toBe(201);
     const body = (await res.json()) as typeof baseEdge;
     expect(body).toMatchObject({ id: EDGE_ID, sourceNodeId: NODE_A, targetNodeId: NODE_B });
+    // Re-parenting the tree changes routing → bump taxonomyChangedAt.
+    expect(vi.mocked(db.workspace.update)).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { id: WS_ID },
+        data: expect.objectContaining({ taxonomyChangedAt: expect.any(Date) }),
+      })
+    );
   });
 
   it("returns 400 when sourceNodeId is missing", async () => {

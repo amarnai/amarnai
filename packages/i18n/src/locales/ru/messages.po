@@ -13,7 +13,7 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:513
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:516
 #, fuzzy
 msgid " (Inbox)"
 msgstr " (Входящие)"
@@ -55,6 +55,12 @@ msgstr "{0, plural, one {# поток импортирован.} other {# пот
 #, fuzzy
 msgid "{0, plural, one {# thread imported.} other {# threads imported.}} Your plan's import limit was reached."
 msgstr "{0, plural, one {# поток импортирован.} other {# потоков импортировано.}} Достигнут лимит импорта по вашему тарифному плану."
+
+#. placeholder {0}: s.threadCount
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:125
+#, fuzzy
+msgid "{0, plural, one {# thread} other {# threads}}"
+msgstr "{0, plural, one {# цепочка} other {# цепочек}}"
 
 #. placeholder {0}: node?.threadCount ?? 0
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:380
@@ -129,7 +135,7 @@ msgstr "{blacklistCount, plural, one {# заблокировано} other {# з�
 #~ msgid "{by} assigned you: {subject}"
 #~ msgstr "{by} назначил вам: {subject}"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:528
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:531
 #, fuzzy
 msgid "{classificationCount, plural, one {Deleting this folder will leave # thread unsorted.} other {Deleting this folder will leave # threads unsorted.}}"
 msgstr "{classificationCount, plural, one {Удаление этой папки оставит # поток несортированным.} other {Удаление этой папки оставит # потоков несортированными.}}"
@@ -150,6 +156,15 @@ msgstr "{confPct}% уверенности"
 msgid "{draftRemaining} of {draftLimit} left · resets {draftResetDate}"
 msgstr "{draftRemaining} из {draftLimit} осталось · обновится {draftResetDate}"
 
+#: ../../apps/web/src/app/(app)/emails/ResortReviewBanner.tsx:65
+#, fuzzy
+msgid "{eligible, plural, one {# needs-review thread can be re-sorted automatically, because your plan changed since it was sorted or sorting hit a temporary error. The rest need your decision.} other {# needs-review threads can be re-sorted automatically, because your plan changed since they were sorted or sorting hit a temporary error. The rest need your decision.}}"
+msgstr "{eligible, plural, one {# цепочка, ожидающая проверки, может быть пересортирована автоматически из-за изменения тарифа или временной ошибки. Остальные требуют вашего решения.} other {# цепочек, ожидающих проверки, могут быть пересортированы автоматически из-за изменения тарифа или временной ошибки. Остальные требуют вашего решения.}}"
+
+#: ../../apps/web/src/app/(app)/emails/ResortReviewBanner.tsx:81
+msgid "{eligible, plural, one {Re-sort # thread} other {Re-sort # threads}}"
+msgstr "{eligible, plural, one {Пересортировать # цепочку} other {Пересортировать # цепочек}}"
+
 #: ../../apps/site/src/components/landing/HeroFeedCard.tsx:260
 #, fuzzy
 #~ msgid "{filed} filed, {reviewCount} needs review"
@@ -163,6 +178,10 @@ msgstr "{filed} отсортировано · {reviewCount} на проверк�
 #, fuzzy
 msgid "{folderCount, plural, one {# folder} other {# folders}}"
 msgstr "{folderCount, plural, one {# папка} other {# папок}}"
+
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:156
+msgid "{hiddenCount, plural, one {# folder with no threads is not shown.} other {# folders with no threads are not shown.}}"
+msgstr "{hiddenCount, plural, one {# папка без цепочек не отображается.} other {# папок без цепочек не отображаются.}}"
 
 #: ../../apps/web/src/app/admin/waitlist/WaitlistShell.tsx:17
 #, fuzzy
@@ -195,7 +214,7 @@ msgstr "{quotaRemaining} из {0} осталось · обновится {quotaR
 msgid "{remaining} of {limit} remaining · resets {resetDate}"
 msgstr "{remaining} из {limit} осталось · обновится {resetDate}"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1478
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1549
 #, fuzzy
 msgid "{routableCount} of {TAXONOMY_MIN_NON_ROOT_NODES} folders connected to your inbox. Routing requires at least {TAXONOMY_MIN_NON_ROOT_NODES}."
 msgstr "{routableCount} из {TAXONOMY_MIN_NON_ROOT_NODES} папок подключено к вашим входящим. Для маршрутизации требуется минимум {TAXONOMY_MIN_NON_ROOT_NODES}."
@@ -259,7 +278,7 @@ msgstr "© 2026 Amarnai. Открытый исходный код под лиц�
 msgid "+ Add folder"
 msgstr "+ Добавить папку"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1319
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1390
 #, fuzzy
 msgid "+ Add Folder"
 msgstr "+ Добавить папку"
@@ -268,6 +287,11 @@ msgstr "+ Добавить папку"
 #, fuzzy
 msgid "+ New workspace"
 msgstr "+ Новое рабочее пространство"
+
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:170
+#, fuzzy
+msgid "<0>{migrateLive}</0> threads move to their new folder instantly. <1>{resortLive}</1> threads will be re-sorted by AI."
+msgstr "<0>{migrateLive}</0> цепочек мгновенно переместятся в новые папки. <1>{resortLive}</1> цепочек будут пересортированы ИИ."
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:95
 msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your {providerName} account to get started. Amarnai connects with <1>read-only access</1> and <2>never sends, deletes, or changes anything</2>. Your inbox stays yours."
@@ -415,7 +439,9 @@ msgstr "Получена новая заявка от Хоремхеба из Ф
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "Получена новая заявка от Хоремхеба из Фив на должность Главы корреспонденции.\n\nПросмотреть заявку можно в Доме Архивов."
+msgstr "Получена новая заявка от Хоремхеба из Фив на должность Главы корреспонденции.\n"
+"\n"
+"Просмотреть заявку можно в Доме Архивов."
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:387
 #, fuzzy
@@ -429,13 +455,21 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "Абди-Хеба,\n\nЯ буду рядом с Дельтой на той же неделе. Давай встретимся на станции отдыха на второй день; я смогу выделить утро.\n\nДо встречи,"
+msgstr "Абди-Хеба,\n"
+"\n"
+"Я буду рядом с Дельтой на той же неделе. Давай встретимся на станции отдыха на второй день; я смогу выделить утро.\n"
+"\n"
+"До встречи,"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
 #, fuzzy
 #~ msgid "About {count, plural, one {# more thread} other {# more threads}} beyond your {plan} subscription limit aren't loaded."
 #~ msgstr "{count, plural, one {# дополнительный тред} other {# дополнительных тредов}} сверх лимита вашей подписки {plan} не загружен{count, plural, one {} other {ы}}."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:186
+msgid "Academic Researcher"
+msgstr "Научный сотрудник"
 
 #: ../../apps/web/src/app/sign-up/WaitlistForm.tsx:24
 #, fuzzy
@@ -476,10 +510,14 @@ msgstr "Настройки аккаунта"
 #~ msgid "Acme Workspace"
 #~ msgstr "Рабочее пространство Acme"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:17
+#: ../ui/src/i18n/taxonomy-template-messages.ts:19
 #, fuzzy
 msgid "Active project communication, deliverables, feedback, and approvals from clients."
 msgstr "Активное общение по проектам, результаты, обратная связь и утверждения от клиентов."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:163
+msgid "Ad revenue, fan tips, and creator earnings statements."
+msgstr "Выписки о доходах от рекламы, чаевых фанатов и заработка авторов."
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:293
 #: ../../apps/mobile/src/components/BlacklistSheet.tsx:118
@@ -488,7 +526,7 @@ msgstr "Активное общение по проектам, результа�
 msgid "Add"
 msgstr "Добавить"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1343
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1414
 #, fuzzy
 msgid "Add at least 3 connected folders to export"
 msgstr "Добавьте как минимум 3 подключенные папки для экспорта"
@@ -504,7 +542,7 @@ msgstr "Добавить в Firefox"
 
 #: ../../apps/mobile/src/components/CollaboratorsSheet.tsx:58
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:42
-#: ../ui/src/i18n/taxonomy-template-messages.ts:28
+#: ../ui/src/i18n/taxonomy-template-messages.ts:30
 #, fuzzy
 msgid "Admin"
 msgstr "Администратор"
@@ -523,6 +561,20 @@ msgstr "Расширенные"
 #, fuzzy
 msgid "Advanced review queue"
 msgstr "Расширенная очередь проверки"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:155
+#, fuzzy
+msgid "Affiliate links, referral commissions, and creator reward tiers."
+msgstr "Партнерские ссылки, реферальные комиссии и уровни вознаграждений для авторов."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:154
+#, fuzzy
+msgid "Affiliates"
+msgstr "Партнеры"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:67
+msgid "Agreements, banking, accounting, incorporation, and corporate legal correspondence."
+msgstr "Соглашения, банковские операции, бухгалтерия, регистрация компаний и юридическая корреспонденция."
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:287
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:185
@@ -841,6 +893,10 @@ msgstr "Применяется…"
 msgid "Approve routing"
 msgstr "Подтвердить маршрутизацию"
 
+#: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:131
+msgid "Archive"
+msgstr "Архив"
+
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:234
 #: ../ui/src/emails/TriageBar.tsx:71
 #, fuzzy
@@ -895,11 +951,21 @@ msgstr "Не менее {PASSWORD_MIN_LENGTH} символов"
 #~ msgid "At least 8 characters"
 #~ msgstr "Не менее 8 символов"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:160
+msgid "Audience"
+msgstr "Аудитория"
+
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:127
 #: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:88
 #, fuzzy
 msgid "Auto-file notifications to Updates / Other"
 msgstr "Автоматически перемещать уведомления в Обновления / Прочее"
+
+#. placeholder {0}: catchAllRow.threadCount
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:148
+#, fuzzy
+msgid "Automated and bulk mail ({0}) always moves to the new catch-all folder."
+msgstr "Автоматические и массовые письма ({0}) всегда перемещаются в новую общую папку."
 
 #: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:39
 msgid "Automated and bulk mail that doesn't fit another folder lands here automatically. This is different from Needs review, which holds threads too ambiguous for the assistant to sort."
@@ -910,7 +976,7 @@ msgstr "Автоматические и массовые письма, не по
 msgid "Automated notice from the Bureau of Royal Appointments. Subject and sender clearly indicate a new application for an open position."
 msgstr "Автоматическое уведомление от Бюро Королевских Назначений. Тема и отправитель явно указывают на новую заявку на открытую вакансию."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:96
+#: ../ui/src/i18n/taxonomy-template-messages.ts:246
 #: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:68
 #, fuzzy
 msgid "Automated notifications, newsletters, and service updates that don't fit another folder."
@@ -932,10 +998,15 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "Азиру,\n\nВаши слова дружбы дошли до нас. Мы готовы выслушать подробности предложений дома Амурру. Передайте ваши условия со следующим курьером.\n\nС уважением,"
+msgstr "Азиру,\n"
+"\n"
+"Ваши слова дружбы дошли до нас. Мы готовы выслушать подробности предложений дома Амурру. Передайте ваши условия со следующим курьером.\n"
+"\n"
+"С уважением,"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:219
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
+#: ../../apps/site/src/components/landing/MailThreadMock.tsx:65
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:25
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:230
 #: ../ui/src/emails/ThreadPreview.tsx:121
@@ -944,8 +1015,8 @@ msgid "Back"
 msgstr "Назад"
 
 #: ../../apps/site/src/components/landing/MailThreadMock.tsx:62
-msgid "Back to inbox"
-msgstr "Вернуться к входящим"
+#~ msgid "Back to inbox"
+#~ msgstr "Вернуться к входящим"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:215
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:225
@@ -965,7 +1036,7 @@ msgstr "Вернуться ко входу"
 msgid "Backfill"
 msgstr "Дозаполнение"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:81
+#: ../ui/src/i18n/taxonomy-template-messages.ts:91
 #, fuzzy
 msgid "Bank statements, investments, insurance policies, and personal financial records."
 msgstr "Банковские выписки, инвестиции, страховые полисы и личные финансовые записи."
@@ -1002,15 +1073,33 @@ msgstr "Расчётный период"
 msgid "Billing unit"
 msgstr "Единица тарификации"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:23
+#: ../ui/src/i18n/taxonomy-template-messages.ts:25
 #, fuzzy
 msgid "Billing, payments, invoices, and financial records for freelance work."
 msgstr "Счета, платежи, инвойсы и финансовые записи по фрилансу."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:94
+#, fuzzy
+msgid "Bills & Receipts"
+msgstr "Счета и чеки"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:238
+#, fuzzy
+msgid "Board & Governance"
+msgstr "Совет директоров и управление"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:239
+msgid "Board meetings, governance policies, bylaws, and trustee correspondence."
+msgstr "Заседания совета директоров, политики управления, устав и переписка с попечителями."
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:33
 #, fuzzy
 msgid "Board members, existing fund partners, and portfolio updates."
 msgstr "Члены совета директоров, существующие партнеры фонда и обновления портфолио."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:150
+msgid "Brand Deals"
+msgstr "Сотрудничество с брендами"
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:385
 #, fuzzy
@@ -1022,7 +1111,7 @@ msgid "Browse emails easily through your folders. Generate draft replies and cop
 msgstr "Легко просматривайте письма в своих папках. Создавайте черновики ответов и копируйте их в свою почту."
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:283
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1403
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1474
 #, fuzzy
 msgid "Browse templates"
 msgstr "Просмотреть шаблоны"
@@ -1031,6 +1120,15 @@ msgstr "Просмотреть шаблоны"
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:280
 msgid "Browser extension"
 msgstr "Расширение для браузера"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:114
+#, fuzzy
+msgid "Bug Reports"
+msgstr "Отчеты об ошибках"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:115
+msgid "Bug reports, stack traces, and regression tickets filed against the codebase."
+msgstr "Отчеты об ошибках, трассировки стека и тикеты регрессии, поданные по кодовой базе."
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:55
 #, fuzzy
@@ -1064,10 +1162,24 @@ msgstr "Бизнес"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:27
 #, fuzzy
-msgid "Business receipts, reimbursements, and records of work-related purchases."
-msgstr "Деловые чеки, возмещения расходов и записи о рабочих покупках."
+#~ msgid "Business receipts, reimbursements, and records of work-related purchases."
+#~ msgstr "Деловые чеки, возмещения расходов и записи о рабочих покупках."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:71
+#: ../ui/src/i18n/taxonomy-template-messages.ts:31
+#, fuzzy
+msgid "Business registration, liability coverage, and internal administration notices."
+msgstr "Регистрация бизнеса, страхование ответственности и внутренние административные уведомления."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:29
+#, fuzzy
+msgid "Business reimbursements and records of work-related purchases and equipment."
+msgstr "Возмещение деловых расходов и записи о покупках и оборудовании для работы."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:209
+msgid "Buyers & Showings"
+msgstr "Покупатели и показы"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:79
 #, fuzzy
 msgid "Campus Admin"
 msgstr "Администратор кампуса"
@@ -1094,13 +1206,13 @@ msgstr "Можно ли установить Amarnai на своём серве�
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:93
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:245
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:150
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:566
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:580
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:694
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1617
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1645
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1686
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1773
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:94
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:186
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:569
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:583
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:697
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1702
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1795
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:64
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:275
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:370
@@ -1137,6 +1249,15 @@ msgstr "Отменить подписку?"
 msgid "Cancelling…"
 msgstr "Отмена…"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:63
+#, fuzzy
+msgid "Candidate pipelines, applicant screening, and headcount planning."
+msgstr "Поток кандидатов, отбор соискателей и планирование штатного расписания."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:134
+msgid "Carrier tracking numbers, delivery exceptions, and courier dispatch notices."
+msgstr "Трекинг-номера, проблемы с доставкой и уведомления об отправке курьером."
+
 #: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:58
 #: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:81
 #, fuzzy
@@ -1157,6 +1278,10 @@ msgstr "Сменить исполнителя"
 msgid "Change subscription"
 msgstr "Изменить подписку"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:157
+msgid "Channel notifications, upload analytics, and policy updates from social platforms."
+msgstr "Уведомления по каналу, аналитика загрузок и обновления правил от социальных платформ."
+
 #: ../../apps/web/src/app/verify-email/page.tsx:26
 #, fuzzy
 msgid "Check your inbox"
@@ -1168,7 +1293,7 @@ msgstr "Проверьте входящие"
 msgid "Checkout failed: {0}"
 msgstr "Ошибка оформления заказа: {0}"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:676
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:679
 #, fuzzy
 msgid "Child folder"
 msgstr "Вложенная папка"
@@ -1201,6 +1326,15 @@ msgstr "Выберите способ предварительного прос�
 msgid "Choose parent"
 msgstr "Выбрать родителя"
 
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:101
+#, fuzzy
+msgid "Choose where each folder’s threads should go under your new plan. Matched folders keep their threads instantly; anything set to re-sort is re-classified by AI."
+msgstr "Выберите, куда будут перемещаться цепочки из каждой папки по новому плану. Соответствующие папки мгновенно сохранят свои цепочки; все, что отмечено для пересортировки, будет переклассифицировано ИИ."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:169
+msgid "Classroom"
+msgstr "Учебный класс"
+
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:120
 #, fuzzy
 #~ msgid "Click folders & threads, then generate a draft."
@@ -1208,10 +1342,14 @@ msgstr "Выбрать родителя"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:21
 #, fuzzy
-msgid "Client agreements, statements of work, NDAs, and contract amendments."
-msgstr "Клиентские соглашения, технические задания, соглашения о неразглашении и поправки к договорам."
+#~ msgid "Client agreements, statements of work, NDAs, and contract amendments."
+#~ msgstr "Клиентские соглашения, технические задания, соглашения о неразглашении и поправки к договорам."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:16
+#: ../ui/src/i18n/taxonomy-template-messages.ts:23
+msgid "Client contracts, statements of work, NDAs, and signed amendments."
+msgstr "Клиентские договоры, технические задания, NDA и подписанные дополнения."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:18
 #, fuzzy
 msgid "Clients"
 msgstr "Клиенты"
@@ -1227,7 +1365,7 @@ msgstr "Клиенты"
 msgid "Close"
 msgstr "Закрыть"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1542
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1613
 #, fuzzy
 msgid "Close panel"
 msgstr "Закрыть панель"
@@ -1239,6 +1377,25 @@ msgstr "Закрыть панель"
 #, fuzzy
 msgid "Close preview"
 msgstr "Закрыть предпросмотр"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:117
+#, fuzzy
+msgid "Cloud hosting, servers, and platform monitoring for running services."
+msgstr "Облачный хостинг, серверы и мониторинг платформы для функционирования сервисов."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:110
+#, fuzzy
+msgid "Code"
+msgstr "Код"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:159
+#, fuzzy
+msgid "Collab invitations, guest appearances, and cross-promotion with other creators."
+msgstr "Приглашения к сотрудничеству, гостевые выступления и кросс-промо с другими авторами."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:158
+msgid "Collaborations"
+msgstr "Сотрудничество"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:251
 #: ../../apps/mobile/src/components/CollaboratorsSheet.tsx:36
@@ -1259,6 +1416,10 @@ msgstr "Участники доступны на тарифах Pro и Business.
 #~ msgid "Collapse"
 #~ msgstr "Свернуть"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:124
+msgid "Communities"
+msgstr "Сообщества"
+
 #: ../ui/src/pricing/planMessages.ts:98
 #, fuzzy
 msgid "Community & docs"
@@ -1269,6 +1430,15 @@ msgstr "Сообщество и документация"
 msgid "Compare every subscription"
 msgstr "Сравнить все тарифы"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:195
+#, fuzzy
+msgid "Conference submissions, abstract acceptances, and keynote session invitations."
+msgstr "Заявки на конференции, подтверждения тезисов и приглашения на пленарные заседания."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:194
+msgid "Conferences"
+msgstr "Конференции"
+
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:294
 #, fuzzy
 msgid "Confirm cancellation"
@@ -1278,7 +1448,7 @@ msgstr "Подтвердить отмену"
 msgid "Confirm delete"
 msgstr "Подтвердить удаление"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:558
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:561
 #, fuzzy
 msgid "Confirm Delete"
 msgstr "Подтвердить удаление"
@@ -1436,6 +1606,10 @@ msgstr "Подключение…"
 msgid "Connection failed. Please try again."
 msgstr "Ошибка подключения. Пожалуйста, попробуйте еще раз."
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:148
+msgid "Content Creator"
+msgstr "Создатель контента"
+
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:363
 #, fuzzy
 msgid "Continue to {name}"
@@ -1462,15 +1636,19 @@ msgstr "Перейти к оплате"
 msgid "Continue with Google"
 msgstr "Продолжить через Google"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:20
+#: ../ui/src/i18n/taxonomy-template-messages.ts:119
+msgid "Continuous-integration runs, build pipelines, and deployment status notifications."
+msgstr "Запуски непрерывной интеграции, конвейеры сборки и уведомления о статусе развертывания."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:22
 #, fuzzy
 msgid "Contracts"
 msgstr "Договоры"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:61
 #, fuzzy
-msgid "Contracts, banking, accounting, tax filings, and corporate legal correspondence."
-msgstr "Договоры, банковские операции, бухгалтерский учет, налоговая отчетность и корпоративная юридическая переписка."
+#~ msgid "Contracts, banking, accounting, tax filings, and corporate legal correspondence."
+#~ msgstr "Договоры, банковские операции, бухгалтерский учет, налоговая отчетность и корпоративная юридическая переписка."
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:99
 #, fuzzy
@@ -1566,6 +1744,10 @@ msgstr "Не удалось загрузить план."
 msgid "Could not open billing management."
 msgstr "Не удалось открыть управление счетами."
 
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1298
+msgid "Could not prepare migration"
+msgstr "Не удалось подготовить миграцию"
+
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:89
 #: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:114
 #, fuzzy
@@ -1577,7 +1759,7 @@ msgstr "Не удалось поставить повторное сканиро
 msgid "Could not reach the server. Please check your connection and try again."
 msgstr "Не удалось связаться с сервером. Пожалуйста, проверьте ваше подключение и попробуйте еще раз."
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1212
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1248
 #, fuzzy
 msgid "Could not read file: invalid JSON."
 msgstr "Не удалось прочитать файл: некорректный JSON."
@@ -1651,13 +1833,13 @@ msgstr "Созыв совета: сезон Шему"
 msgid "Council preparation request from a known royal ally. Sender domain and context clearly match the Current investors folder."
 msgstr "Запрос на подготовку совета от известного королевского союзника. Домен отправителя и контекст явно соответствуют папке «Текущие инвесторы»."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:69
+#: ../ui/src/i18n/taxonomy-template-messages.ts:77
 #, fuzzy
 msgid "Courses"
 msgstr "Курсы"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:448
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:577
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:580
 #, fuzzy
 msgid "Create"
 msgstr "Создать"
@@ -1683,7 +1865,7 @@ msgstr "Создать аккаунт"
 msgid "Create an account to triage your inbox"
 msgstr "Создайте аккаунт, чтобы разбирать входящие"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:439
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:442
 #, fuzzy
 msgid "Create Folder"
 msgstr "Создать папку"
@@ -1718,7 +1900,7 @@ msgstr "Создание…"
 #: ../../apps/mobile/src/components/RerouteSheet.tsx:45
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:107
 #: ../../apps/site/src/components/demo/demo-seed.ts:33
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1739
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1756
 #, fuzzy
 msgid "Current"
 msgstr "Текущий"
@@ -1735,14 +1917,23 @@ msgstr "Текущая подписка"
 msgid "Current workspace: <0>{workspaceName}</0>"
 msgstr "Текущее рабочее пространство: <0>{workspaceName}</0>"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:174
+#, fuzzy
+msgid "Curriculum resources, lesson materials, and syllabus planning for upcoming units."
+msgstr "Ресурсы учебных программ, материалы для уроков и планирование учебных планов для будущих разделов."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:141
+msgid "Customer Questions"
+msgstr "Вопросы клиентов"
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:54
 #, fuzzy
-msgid "Customer support, onboarding, product feedback, churn, and success conversations."
-msgstr "Поддержка клиентов, онбординг, обратная связь по продукту, отток и успешные коммуникации."
+#~ msgid "Customer support, onboarding, product feedback, churn, and success conversations."
+#~ msgstr "Поддержка клиентов, онбординг, обратная связь по продукту, отток и успешные коммуникации."
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:29
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:157
-#: ../ui/src/i18n/taxonomy-template-messages.ts:53
+#: ../ui/src/i18n/taxonomy-template-messages.ts:59
 #, fuzzy
 msgid "Customers"
 msgstr "Клиенты"
@@ -1758,6 +1949,10 @@ msgstr "Опасная зона"
 #: ../ui/src/theme/themes.ts:39
 msgid "Dark"
 msgstr "Тёмная"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:214
+msgid "Deal progress, transaction stages, and closing coordination across active sales."
+msgstr "Ход сделок, этапы транзакций, координация закрытия продаж."
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:118
 #, fuzzy
@@ -1777,9 +1972,9 @@ msgstr "Бесплатное рабочее пространство по умо
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:198
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:271
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:272
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:596
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:607
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:703
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:599
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:610
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:706
 #, fuzzy
 msgid "Delete"
 msgstr "Удалить"
@@ -1836,20 +2031,29 @@ msgstr "Удалить рабочее пространство"
 msgid "Delete workspace?"
 msgstr "Удалить рабочее пространство?"
 
+#: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:130
+#, fuzzy
+msgid "Deleted Items"
+msgstr "Удаленные элементы"
+
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:405
 msgid "Deleting..."
 msgstr "Удаление..."
 
 #: ../../apps/mobile/app/(app)/account.tsx:166
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:143
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:558
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:561
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:56
 #, fuzzy
 msgid "Deleting…"
 msgstr "Удаление…"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:118
+msgid "Deployments"
+msgstr "Развертывания"
+
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:80
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:290
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:293
 #, fuzzy
 msgid "Describe what kinds of emails belong here: who they come from and what they are about. Be specific and use the actual names, topics, and words that show up in those emails. Describe what the emails are, not what you plan to do about them. The clearer your description, the more accurately your email is sorted here."
 msgstr "Опишите, какие письма должны сюда попадать: от кого они приходят и о чем они. Будьте конкретны и используйте реальные имена, темы и слова, которые встречаются в этих письмах. Опишите, что представляют собой письма, а не то, что вы планируете с ними делать. Чем точнее ваше описание, тем точнее ваши письма будут отсортированы здесь."
@@ -1860,7 +2064,7 @@ msgid "Describe your folders"
 msgstr "Опишите папки"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:289
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:461
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:464
 #, fuzzy
 msgid "Description"
 msgstr "Описание"
@@ -1958,13 +2162,13 @@ msgstr "Отключает это рабочее пространство. Amarn
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:239
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:65
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:369
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:375
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:57
 #: ../../apps/web/src/components/JoinedWorkspaceToast.tsx:46
 #: ../../apps/web/src/components/NotificationBell.tsx:179
 #: ../../apps/web/src/components/NotificationBell.tsx:180
 #: ../ui/src/AppDownloadBanner.tsx:80
-#: ../ui/src/emails/MockEmailsPage.tsx:288
+#: ../ui/src/emails/MockEmailsPage.tsx:296
 #, fuzzy
 msgid "Dismiss"
 msgstr "Закрыть"
@@ -1980,10 +2184,18 @@ msgstr "Отображаемое имя"
 msgid "Do I have to build the folder structure myself?"
 msgstr "Мне нужно самому создавать структуру папок?"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:201
+msgid "Doctoral advising, thesis feedback, and mentoring for doctoral researchers."
+msgstr "Руководство аспирантами, отзывы на диссертации и наставничество для докторантов."
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:86
 #, fuzzy
-msgid "Doctors, pharmacies, medical appointments, health insurance claims, and lab results."
-msgstr "Врачи, аптеки, медицинские приемы, страховые требования и результаты анализов."
+#~ msgid "Doctors, pharmacies, medical appointments, health insurance claims, and lab results."
+#~ msgstr "Врачи, аптеки, медицинские приемы, страховые требования и результаты анализов."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:97
+msgid "Doctors, pharmacies, medical appointments, prescriptions, and test results."
+msgstr "Врачи, аптеки, медицинские приемы, рецепты и результаты анализов."
 
 #: ../../apps/site/src/components/landing/Footer.tsx:30
 #, fuzzy
@@ -2004,6 +2216,10 @@ msgstr "Нет аккаунта? <0>Создайте его</0>"
 msgid "Don't have an account? <0>Sign up</0>"
 msgstr "Нет аккаунта? <0>Зарегистрируйтесь</0>"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:229
+msgid "Donation drives, giving campaigns, and fundraising appeal responses."
+msgstr "Сборы пожертвований, благотворительные кампании и ответы на призывы о финансировании."
+
 #: ../../apps/mobile/app/(app)/notifications.tsx:278
 #: ../../apps/mobile/src/components/ThreadRow.tsx:35
 #: ../ui/src/emails/ThreadRow.tsx:202
@@ -2015,6 +2231,10 @@ msgstr "Готово"
 #, fuzzy
 msgid "Done · undo"
 msgstr "Готово · отменить"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:230
+msgid "Donors"
+msgstr "Доноры"
 
 #: ../ui/src/PricingPlans.tsx:189
 #, fuzzy
@@ -2055,7 +2275,7 @@ msgid "Draft shared"
 msgstr "Черновик отправлен"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:342
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:484
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:487
 #, fuzzy
 msgid "Draft style guidance"
 msgstr "Рекомендации по стилю черновика"
@@ -2065,6 +2285,10 @@ msgstr "Рекомендации по стилю черновика"
 #, fuzzy
 msgid "Drafting…"
 msgstr "Создание черновика…"
+
+#: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:128
+msgid "Drafts"
+msgstr "Черновики"
 
 #: ../../apps/site/src/components/demo/DemoTaxonomyCanvas.tsx:223
 #, fuzzy
@@ -2076,17 +2300,22 @@ msgstr "Перетащите и подключите. Полностью инт�
 msgid "Drag to resize"
 msgstr "Перетащите, чтобы изменить размер"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:129
+#, fuzzy
+msgid "E-commerce Seller"
+msgstr "Онлайн-продавец"
+
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:280
 msgid "e.g. Invoices"
 msgstr "Например: Счета"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:469
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:472
 #, fuzzy
 msgid "e.g. Invoices, receipts, payment confirmations, and billing questions from clients and vendors."
 msgstr "Например: Счета, квитанции, подтверждения платежей и вопросы по оплате от клиентов и поставщиков."
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:350
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:490
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:493
 #, fuzzy
 msgid "e.g. Reply formally. Keep responses under 3 sentences."
 msgstr "Например: Отвечайте официально. Ответы не длиннее 3 предложений."
@@ -2101,7 +2330,7 @@ msgstr "Ранее"
 msgid "Edit folder"
 msgstr "Изменить папку"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:439
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:442
 #, fuzzy
 msgid "Edit Folder"
 msgstr "Редактировать папку"
@@ -2110,7 +2339,7 @@ msgstr "Редактировать папку"
 msgid "Edit inbox"
 msgstr "Изменить входящие"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:651
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:654
 #, fuzzy
 msgid "Edit Path"
 msgstr "Редактировать путь"
@@ -2178,15 +2407,19 @@ msgid "Emails"
 msgstr "Письма"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:100
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:318
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:321
 #, fuzzy
 msgid "Emails about my bills that I need to deal with."
 msgstr "Счета, требующие моего внимания."
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:101
+msgid "Emails from relatives, children's activities, family events, and household coordination."
+msgstr "Письма от родственников, детские мероприятия, семейные события и координация бытовых вопросов."
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:90
 #, fuzzy
-msgid "Emails from relatives, children's schools, family events, and household coordination."
-msgstr "Письма от родственников, школы, о семейных мероприятиях и домашних делах."
+#~ msgid "Emails from relatives, children's schools, family events, and household coordination."
+#~ msgstr "Письма от родственников, школы, о семейных мероприятиях и домашних делах."
 
 #: ../ui/src/pricing/planMessages.ts:95
 #, fuzzy
@@ -2198,10 +2431,14 @@ msgstr "Расширенный + запасной"
 msgid "Enhanced + higher fallback"
 msgstr "Расширенный + повышенный запасной"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:80
+msgid "Enrollment, tuition fees, dorm assignments, and official campus administration."
+msgstr "Зачисление, плата за обучение, распределение в общежития и административные вопросы кампуса."
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:72
 #, fuzzy
-msgid "Enrollment, tuition fees, housing applications, and official campus administration."
-msgstr "Зачисление, оплата обучения, заявления на жильё и официальная администрация кампуса."
+#~ msgid "Enrollment, tuition fees, housing applications, and official campus administration."
+#~ msgstr "Зачисление, оплата обучения, заявления на жильё и официальная администрация кампуса."
 
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:71
 #, fuzzy
@@ -2228,6 +2465,25 @@ msgstr "Введите свой email, и мы отправим вам ссыл�
 #, fuzzy
 msgid "Entry"
 msgstr "Запись"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:215
+#, fuzzy
+msgid "Escrow & Closing"
+msgstr "Эскроу и закрытие сделки"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:216
+#, fuzzy
+msgid "Escrow instructions, title documents, closing disclosures, and signing appointments."
+msgstr "Инструкции по эскроу, правоустанавливающие документы, раскрытие информации о закрытии сделки и подписание документов."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:240
+#, fuzzy
+msgid "Events & Campaigns"
+msgstr "События и кампании"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:179
+msgid "Events & Field Trips"
+msgstr "Мероприятия и экскурсии"
 
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:31
 #, fuzzy
@@ -2263,48 +2519,52 @@ msgstr "Все, что не подходит ни под одну именова
 #~ msgid "Expand"
 #~ msgstr "Развернуть"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:26
+#: ../ui/src/i18n/taxonomy-template-messages.ts:28
 #, fuzzy
 msgid "Expenses"
 msgstr "Расходы"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1367
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1438
 #, fuzzy
 msgid "Export"
 msgstr "Экспорт"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1342
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1350
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1413
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1421
 #, fuzzy
 msgid "Export plan"
 msgstr "План экспорта"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:47
+msgid "External agencies, outside firms, and business partners engaged professionally."
+msgstr "Внешние агентства, сторонние фирмы и профессиональные деловые партнеры."
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:43
 #, fuzzy
-msgid "External vendors, clients, and agencies engaged in a professional capacity."
-msgstr "Внешние поставщики, клиенты и агентства, с которыми налажено профессиональное сотрудничество."
+#~ msgid "External vendors, clients, and agencies engaged in a professional capacity."
+#~ msgstr "Внешние поставщики, клиенты и агентства, с которыми налажено профессиональное сотрудничество."
 
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:163
 #, fuzzy
 msgid "Failed to apply"
 msgstr "Не удалось применить"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1044
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1080
 #, fuzzy
 msgid "Failed to create folder"
 msgstr "Не удалось создать папку"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:977
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1013
 #, fuzzy
 msgid "Failed to create path"
 msgstr "Не удалось создать путь"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1115
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1151
 #, fuzzy
 msgid "Failed to delete folder"
 msgstr "Не удалось удалить папку"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1132
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1168
 #, fuzzy
 msgid "Failed to delete path"
 msgstr "Не удалось удалить путь"
@@ -2314,12 +2574,12 @@ msgstr "Не удалось удалить путь"
 msgid "Failed to load status"
 msgstr "Не удалось загрузить статус"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1173
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1209
 #, fuzzy
 msgid "Failed to redo"
 msgstr "Не удалось повторить действие"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:944
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:980
 #, fuzzy
 msgid "Failed to save position"
 msgstr "Не удалось сохранить позицию"
@@ -2329,25 +2589,29 @@ msgstr "Не удалось сохранить позицию"
 msgid "Failed to start generation"
 msgstr "Не удалось начать генерацию"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1154
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1190
 #, fuzzy
 msgid "Failed to undo"
 msgstr "Не удалось отменить действие"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1076
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1112
 #, fuzzy
 msgid "Failed to update folder"
 msgstr "Не удалось обновить папку"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1098
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1134
 #, fuzzy
 msgid "Failed to update path"
 msgstr "Не удалось обновить путь"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:89
+#: ../ui/src/i18n/taxonomy-template-messages.ts:100
 #, fuzzy
 msgid "Family"
 msgstr "Семья"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:161
+msgid "Fan messages, viewer comments, and follower engagement notifications."
+msgstr "Сообщения фанатов, комментарии зрителей и уведомления о вовлеченности подписчиков."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:76
 #: ../../apps/site/src/components/landing/Footer.tsx:29
@@ -2355,6 +2619,20 @@ msgstr "Семья"
 #, fuzzy
 msgid "FAQ"
 msgstr "FAQ"
+
+#: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:161
+#, fuzzy
+msgid "Favorites"
+msgstr "Избранное"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:197
+#, fuzzy
+msgid "Fellowship awards, funding-body deadlines, and research budget correspondence."
+msgstr "Стипендии, сроки подачи заявок на финансирование и переписка по бюджету исследований."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:180
+msgid "Field trips, parent evenings, assemblies, and school event scheduling."
+msgstr "Экскурсии, родительские собрания, общешкольные мероприятия и планирование школьных событий."
 
 #: ../../apps/mobile/src/components/emails/FolderFilterSheet.tsx:33
 #, fuzzy
@@ -2371,7 +2649,7 @@ msgstr "Фильтровать очереди и папки…"
 msgid "Filter rail"
 msgstr "Панель фильтров"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:22
+#: ../ui/src/i18n/taxonomy-template-messages.ts:24
 #, fuzzy
 msgid "Finance"
 msgstr "Финансы"
@@ -2380,6 +2658,11 @@ msgstr "Финансы"
 #, fuzzy
 msgid "Find and draft"
 msgstr "Найти и создать черновик"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:222
+#, fuzzy
+msgid "First-contact buyer and seller enquiries and new agent introductions."
+msgstr "Первичные запросы покупателей и продавцов, а также представление новых агентов."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:16
 msgid "Five things keep your inbox safe. First, Amarnai is read-only by design: the permissions you grant through Google make it impossible for Amarnai to send, delete, or change any email. Second, Amarnai has passed Google's security review, completing the CASA security assessment required for any app that accesses Gmail. Third, you stay in control: replies stay drafts until you say so, nothing is ever sent on your behalf, and you can disconnect Amarnai at any time. Fourth, no email bodies are stored: Amarnai keeps labels and metadata, never the contents of your messages. Fifth, the code is public, so anyone can inspect exactly what touches your email."
@@ -2392,10 +2675,14 @@ msgstr "Отмечено как предложение альянса/инвес
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:92
 #, fuzzy
-msgid "Flight and hotel bookings, travel itineraries, visa applications, and trip confirmations."
-msgstr "Бронирование авиабилетов и отелей, маршруты поездок, заявления на визу и подтверждения поездок."
+#~ msgid "Flight and hotel bookings, travel itineraries, visa applications, and trip confirmations."
+#~ msgstr "Бронирование авиабилетов и отелей, маршруты поездок, заявления на визу и подтверждения поездок."
 
-#: ../../apps/site/src/components/landing/MailInboxMock.tsx:75
+#: ../ui/src/i18n/taxonomy-template-messages.ts:103
+msgid "Flight and hotel bookings, travel itineraries, visas, and trip confirmations."
+msgstr "Бронирование авиабилетов и отелей, маршруты поездок, визы и подтверждения путешествий."
+
+#: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:175
 #, fuzzy
 msgid "Focused"
 msgstr "Приоритетные"
@@ -2441,22 +2728,35 @@ msgstr "Папка: {activeFolderName}"
 msgid "Folders"
 msgstr "Папки"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:35
+#: ../ui/src/i18n/taxonomy-template-messages.ts:206
+#, fuzzy
+msgid "For agents managing listings, showings, transactions, and closings."
+msgstr "Для агентов, управляющих объектами, показами, сделками и закрытиями."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:149
+msgid "For creators handling brand deals, platforms, audience, and monetization."
+msgstr "Для креаторов, управляющих сотрудничеством с брендами, платформами, аудиторией и монетизацией."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:39
 #, fuzzy
 msgid "For employees managing work, team communication, and personal email in one inbox."
 msgstr "Для сотрудников, управляющих работой, командной перепиской и личной почтой в одном почтовом ящике."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:50
+#: ../ui/src/i18n/taxonomy-template-messages.ts:109
+msgid "For engineers and open-source maintainers tracking code, deployments, and releases."
+msgstr "Для инженеров и мейнтейнеров открытого ПО, отслеживающих код, развертывания и релизы."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:56
 #, fuzzy
 msgid "For founders juggling investors, customers, hiring, legal, and press in one view."
 msgstr "Для основателей, управляющих инвесторами, клиентами, наймом, юридическими вопросами и прессой в одном окне."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:15
+#: ../ui/src/i18n/taxonomy-template-messages.ts:17
 #, fuzzy
 msgid "For independent consultants and freelancers managing clients, projects, and finances."
 msgstr "Для независимых консультантов и фрилансеров, управляющих клиентами, проектами и финансами."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:80
+#: ../ui/src/i18n/taxonomy-template-messages.ts:90
 #, fuzzy
 msgid "For individuals managing finances, health, home, family, and personal subscriptions."
 msgstr "Для частных лиц, управляющих финансами, здоровьем, домом, семьей и личными подписками."
@@ -2466,6 +2766,10 @@ msgstr "Для частных лиц, управляющих финансами,
 #, fuzzy
 msgid "For individuals trying Amarnai on their own inbox."
 msgstr "Для тех, кто пробует Amarnai на своем почтовом ящике."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:168
+msgid "For K-12 educators managing classroom, parents, and school administration."
+msgstr "Для педагогов школ, управляющих классом, родителями и администрацией учебного заведения."
 
 #: ../ui/src/pricing/planMessages.ts:27
 #, fuzzy
@@ -2482,6 +2786,15 @@ msgstr "Для крупных организаций."
 msgid "For many years our houses have been as brothers. I write now to propose that we formalise this friendship for the benefit of both our peoples."
 msgstr "Наши дома многие годы были как братья. Я пишу, чтобы предложить оформить эту дружбу на благо обоих наших народов."
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:227
+#, fuzzy
+msgid "For nonprofit directors managing fundraising, volunteers, programs, and board."
+msgstr "Для директоров некоммерческих организаций, управляющих сбором средств, волонтерами, программами и советом."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:130
+msgid "For online sellers tracking orders, shipping, suppliers, and marketplace payouts."
+msgstr "Для онлайн-продавцов, отслеживающих заказы, доставку, поставщиков и выплаты с маркетплейсов."
+
 #: ../ui/src/pricing/planMessages.ts:26
 #, fuzzy
 msgid "For power users and small businesses who live in their inbox."
@@ -2492,7 +2805,11 @@ msgstr "Для продвинутых пользователей и малого
 msgid "For power users and small businesses."
 msgstr "Для опытных пользователей и малого бизнеса."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:66
+#: ../ui/src/i18n/taxonomy-template-messages.ts:187
+msgid "For researchers managing publications, conferences, funding, and lab work."
+msgstr "Для исследователей, управляющих публикациями, конференциями, финансированием и лабораторной работой."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:74
 #, fuzzy
 msgid "For students balancing university, internship applications, and everyday life."
 msgstr "Для студентов, совмещающих учебу в университете, подачу заявок на стажировку и повседневную жизнь."
@@ -2502,6 +2819,10 @@ msgstr "Для студентов, совмещающих учебу в унив
 #, fuzzy
 msgid "Forgot password?"
 msgstr "Забыли пароль?"
+
+#: ../../apps/site/src/components/landing/MailThreadMock.tsx:102
+msgid "Forward"
+msgstr "Переслать"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:38
 #: ../../apps/mobile/app/(app)/subscription.tsx:40
@@ -2534,15 +2855,19 @@ msgstr "Бесплатный пробный период до {0}."
 msgid "Free trial until <0>{0}</0>. You won't be charged before then."
 msgstr "Бесплатный пробный период до <0>{0}</0>. С вас не будет списана плата до этой даты."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:14
+#: ../ui/src/i18n/taxonomy-template-messages.ts:16
 #, fuzzy
 msgid "Freelancer"
 msgstr "Фрилансер"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:85
+msgid "Friends, campus clubs, social invitations, and extracurricular activities."
+msgstr "Друзья, университетские клубы, приглашения на мероприятия и внеучебная деятельность."
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:77
 #, fuzzy
-msgid "Friends, campus events, clubs, social invitations, and extracurricular activities."
-msgstr "Друзья, мероприятия кампуса, клубы, приглашения на общественные мероприятия и внеучебная деятельность."
+#~ msgid "Friends, campus events, clubs, social invitations, and extracurricular activities."
+#~ msgstr "Друзья, мероприятия кампуса, клубы, приглашения на общественные мероприятия и внеучебная деятельность."
 
 #: ../ui/src/pricing/planMessages.ts:92
 #, fuzzy
@@ -2553,6 +2878,20 @@ msgstr "Полный"
 #, fuzzy
 msgid "Full + admin controls"
 msgstr "Полный доступ + администрирование"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:196
+#, fuzzy
+msgid "Funding & Fellowships"
+msgstr "Финансирование и стипендии"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:228
+#, fuzzy
+msgid "Fundraising"
+msgstr "Сбор средств"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:241
+msgid "Gala planning, charity auctions, and awareness campaign logistics."
+msgstr "Планирование гала-вечеров, благотворительные аукционы и логистика информационных кампаний."
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:159
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:342
@@ -2588,7 +2927,7 @@ msgstr "Сгенерировать черновик ответа"
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:60
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:207
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:251
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1504
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1575
 #, fuzzy
 msgid "Generate from inbox"
 msgstr "Сгенерировать из почты"
@@ -2745,9 +3084,23 @@ msgstr "Google не смог завершить авторизацию. Возм
 msgid "Google sign-in failed. Please try again."
 msgstr "Ошибка входа через Google. Повторите попытку."
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:172
+#, fuzzy
+msgid "Graded homework, rubric feedback, and marks recorded for each pupil."
+msgstr "Оцененные домашние задания, обратная связь по критериям и оценки для каждого ученика."
+
 #: ../../apps/extension/src/platform/HostPermissionGate.tsx:36
 msgid "Grant access"
 msgstr "Разрешить доступ"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:233
+#, fuzzy
+msgid "Grant requests, foundation deadlines, and funder reporting requirements."
+msgstr "Заявки на гранты, сроки подачи в фонды и требования к отчетности для спонсоров."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:232
+msgid "Grants & Foundations"
+msgstr "Гранты и фонды"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:178
 #, fuzzy
@@ -2756,14 +3109,18 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "Великий Царь,\n\nОтчеты, которые Вы запросили, будут подготовлены до созыва совета. Мои писцы составят сводки по восточным территориям и отправят их вперед с быстрым курьером.\n\nС братством,"
+msgstr "Великий Царь,\n"
+"\n"
+"Отчеты, которые Вы запросили, будут подготовлены до созыва совета. Мои писцы составят сводки по восточным территориям и отправят их вперед с быстрым курьером.\n"
+"\n"
+"С братством,"
 
 #: ../../apps/site/src/components/landing/FinalCTASection.tsx:9
 #, fuzzy
 msgid "Hand the sorting to Amarnai."
 msgstr "Доверьте сортировку Amarnai."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:85
+#: ../ui/src/i18n/taxonomy-template-messages.ts:96
 #, fuzzy
 msgid "Health"
 msgstr "Здоровье"
@@ -2774,13 +3131,13 @@ msgid "Help requests, supply issues, and escalations from customers."
 msgstr "Запросы в поддержку, проблемы с поставками и эскалации от клиентов."
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:71
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:274
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:277
 #, fuzzy
 msgid "Hide tips"
 msgstr "Скрыть подсказки"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:34
-#: ../ui/src/i18n/taxonomy-template-messages.ts:56
+#: ../ui/src/i18n/taxonomy-template-messages.ts:62
 #, fuzzy
 msgid "Hiring"
 msgstr "Вакансии"
@@ -2790,10 +3147,19 @@ msgstr "Вакансии"
 msgid "Historical threads sorted when you first connect"
 msgstr "Исторические переписки сортируются при первом подключении"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:87
+#: ../ui/src/i18n/taxonomy-template-messages.ts:98
 #, fuzzy
 msgid "Home"
 msgstr "Главная"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:218
+#, fuzzy
+msgid "Home inspections, appraisal reports, repair negotiations, and contingency deadlines."
+msgstr "Инспекции жилья, отчеты об оценке, переговоры по ремонту и сроки выполнения условий."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:171
+msgid "Homework & Grading"
+msgstr "Домашние задания и оценивание"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:52
 #, fuzzy
@@ -2804,6 +3170,11 @@ msgstr "Главная"
 #, fuzzy
 msgid "Hosted subscriptions run on a leading AI model. Self-hosted deployments can point at any OpenAI-compatible provider, such as OpenAI or Google Gemini, or a local Ollama model for fully offline operation."
 msgstr "Хостинг-подписки работают на ведущей модели ИИ. Для самостоятельного размещения можно использовать любого OpenAI-совместимого провайдера (например, OpenAI или Google Gemini) или локальную модель Ollama для полностью автономной работы."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:95
+#, fuzzy
+msgid "Household bills, payment confirmations, receipts, and records of everyday expenses."
+msgstr "Счета за коммунальные услуги, подтверждения платежей, квитанции и учет повседневных расходов."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:15
 msgid "How do I know it's safe?"
@@ -2845,7 +3216,7 @@ msgid "How it works"
 msgstr "Как это работает"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:73
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:274
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:277
 #, fuzzy
 msgid "How to write a good description"
 msgstr "Как написать хорошее описание"
@@ -2871,22 +3242,22 @@ msgstr "Если аккаунт с этим email существует, мы о�
 msgid "Ignored"
 msgstr "Проигнорировано"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1392
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1463
 #, fuzzy
 msgid "Import"
 msgstr "Импорт"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1253
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1313
 #, fuzzy
 msgid "Import failed"
 msgstr "Импорт не удался"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1375
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1446
 #, fuzzy
 msgid "Import plan"
 msgstr "Импорт плана"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1370
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1441
 #, fuzzy
 msgid "Import plan (replaces current)"
 msgstr "Импорт плана (заменяет текущий)"
@@ -2906,8 +3277,8 @@ msgstr "Важно"
 #. placeholder {1}: pendingImportFile.edges.length
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1628
 #, fuzzy
-msgid "Importing will replace your current plan with <0>{0} folders</0> and <1>{1} paths</1> from the file. Threads that were sorted into removed folders will become unsorted. This cannot be undone."
-msgstr "Импорт заменит ваш текущий план на <0>{0} папок</0> и <1>{1} путей</1> из файла. Переписки, которые были отсортированы в удаленные папки, станут несортированными. Это действие нельзя отменить."
+#~ msgid "Importing will replace your current plan with <0>{0} folders</0> and <1>{1} paths</1> from the file. Threads that were sorted into removed folders will become unsorted. This cannot be undone."
+#~ msgstr "Импорт заменит ваш текущий план на <0>{0} папок</0> и <1>{1} путей</1> из файла. Переписки, которые были отсортированы в удаленные папки, станут несортированными. Это действие нельзя отменить."
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:274
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:107
@@ -2915,7 +3286,8 @@ msgstr "Импорт заменит ваш текущий план на <0>{0} �
 #: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:45
 #: ../../apps/site/src/components/demo/demo-seed.ts:28
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:151
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:512
+#: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:126
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:515
 #: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:57
 #, fuzzy
 msgid "Inbox"
@@ -2944,6 +3316,10 @@ msgstr "Синхронизация входящих"
 msgid "inbox zero"
 msgstr "Inbox Zero"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:120
+msgid "Incidents"
+msgstr "Инциденты"
+
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:116
 #: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:77
 #, fuzzy
@@ -2966,10 +3342,19 @@ msgstr "Включено"
 msgid "Informal message with no clear category: personal visit or political audience? Tone is personal but sender is a known vassal governor. Routed to Other with low confidence."
 msgstr "Неформальное сообщение без четкой категории: личный визит или политическая аудиенция? Тон личный, но отправитель — известный вассальный наместник. Перенаправлено в «Другое» с низкой степенью уверенности."
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:116
+msgid "Infrastructure"
+msgstr "Инфраструктура"
+
 #: ../ui/src/pricing/planMessages.ts:64
 #, fuzzy
 msgid "Initial backfill"
 msgstr "Первоначальное заполнение"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:217
+#, fuzzy
+msgid "Inspections & Appraisals"
+msgstr "Инспекции и оценки"
 
 #: ../../apps/mobile/src/data/notificationView.ts:47
 #: ../../apps/web/src/lib/notifications.ts:65
@@ -2991,18 +3376,30 @@ msgstr "Вместо того чтобы просматривать перепо
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:39
 #, fuzzy
-msgid "Internal communication with colleagues, team updates, and project collaboration."
-msgstr "Внутренняя коммуникация с коллегами, обновления команды и совместная работа над проектами."
+#~ msgid "Internal communication with colleagues, team updates, and project collaboration."
+#~ msgstr "Внутренняя коммуникация с коллегами, обновления команды и совместная работа над проектами."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:43
+msgid "Internal communication with colleagues, team updates, and workplace collaboration."
+msgstr "Внутренние коммуникации с коллегами, обновления команды и рабочее взаимодействие."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:55
 #, fuzzy
-msgid "Internal communications, HR, contractor coordination, and team operational emails."
-msgstr "Внутренние коммуникации, HR, координация подрядчиков и операционные письма команды."
+#~ msgid "Internal communications, HR, contractor coordination, and team operational emails."
+#~ msgstr "Внутренние коммуникации, HR, координация подрядчиков и операционные письма команды."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:61
+msgid "Internal communications, HR, staff coordination, and team operational emails."
+msgstr "Внутренние коммуникации, HR, координация персонала и оперативные письма команды."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:74
 #, fuzzy
-msgid "Internship and job applications, recruiter messages, and interview invitations."
-msgstr "Заявки на стажировку и работу, сообщения от рекрутеров и приглашения на собеседования."
+#~ msgid "Internship and job applications, recruiter messages, and interview invitations."
+#~ msgstr "Заявки на стажировку и работу, сообщения от рекрутеров и приглашения на собеседования."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:82
+msgid "Internship postings, campus career fairs, and graduate scheme openings."
+msgstr "Вакансии стажировок, ярмарки вакансий в кампусах и программы для выпускников."
 
 #: ../../apps/web/src/app/reset-password/page.tsx:33
 #, fuzzy
@@ -3010,19 +3407,19 @@ msgid "Invalid or missing reset link."
 msgstr "Неверная или отсутствующая ссылка для сброса."
 
 #. placeholder {0}: validation.error
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1226
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1262
 #, fuzzy
 msgid "Invalid taxonomy file: {0}"
 msgstr "Неверный файл таксономии: {0}"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1220
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1256
 #, fuzzy
 msgid "Invalid taxonomy file: {detail}"
 msgstr "Неверный файл таксономии: {detail}"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:32
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:163
-#: ../ui/src/i18n/taxonomy-template-messages.ts:51
+#: ../ui/src/i18n/taxonomy-template-messages.ts:57
 #, fuzzy
 msgid "Investors"
 msgstr "Инвесторы"
@@ -3052,12 +3449,12 @@ msgstr "Приглашайте и удаляйте участников в ве�
 msgid "Invoice questions, overdue balances, and payment disputes."
 msgstr "Вопросы по счетам, просроченные задолженности и споры о платежах."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:24
+#: ../ui/src/i18n/taxonomy-template-messages.ts:26
 #, fuzzy
 msgid "Invoices"
 msgstr "Счета"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:25
+#: ../ui/src/i18n/taxonomy-template-messages.ts:27
 #, fuzzy
 msgid "Invoices issued to clients and follow-ups on unpaid amounts."
 msgstr "Счета, выставленные клиентам, и напоминания о неоплаченных суммах."
@@ -3077,15 +3474,19 @@ msgstr "Безопасно ли подключать мою почту к Amarna
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:47
 #, fuzzy
-msgid "IT support, HR notices, legal documents, and internal administrative emails."
-msgstr "ИТ-поддержка, HR-уведомления, юридические документы и внутренние административные письма."
+#~ msgid "IT support, HR notices, legal documents, and internal administrative emails."
+#~ msgstr "ИТ-поддержка, HR-уведомления, юридические документы и внутренние административные письма."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:51
+msgid "IT support, HR notices, policy documents, and internal administrative emails."
+msgstr "ИТ-поддержка, уведомления HR, регламенты и внутренние административные письма."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:57
 #, fuzzy
-msgid "Job applications, recruiter outreach, interview scheduling, and offer negotiations."
-msgstr "Заявки на вакансии, запросы от рекрутеров, планирование собеседований и обсуждение предложений."
+#~ msgid "Job applications, recruiter outreach, interview scheduling, and offer negotiations."
+#~ msgstr "Заявки на вакансии, запросы от рекрутеров, планирование собеседований и обсуждение предложений."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:73
+#: ../ui/src/i18n/taxonomy-template-messages.ts:81
 #, fuzzy
 msgid "Jobs"
 msgstr "Вакансии"
@@ -3108,6 +3509,20 @@ msgstr "Вы присоединились к {name}"
 #, fuzzy
 #~ msgid "Joining…"
 #~ msgstr "Присоединение…"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:193
+#, fuzzy
+msgid "Journal calls for papers, special issue invitations, and citation metrics."
+msgstr "Приглашения к публикации, анонсы спецвыпусков и метрики цитирования."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:192
+#, fuzzy
+msgid "Journals"
+msgstr "Журналы"
+
+#: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:127
+msgid "Junk Email"
+msgstr "Спам"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:126
 #, fuzzy
@@ -3144,6 +3559,15 @@ msgstr "Король Азиру готов сортировать ваши пе�
 #~ msgid "King Aziru is ready to sort your email threads. Connect your Gmail account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
 #~ msgstr "Царь Азиру готов сортировать вашу переписку. Подключите аккаунт Gmail, чтобы начать. Amarnai подключается с <0>доступом только для чтения</0> и <1>никогда ничего не отправляет, не удаляет и не изменяет</1>. Ваш почтовый ящик останется вашим."
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:198
+#, fuzzy
+msgid "Lab & Collaborators"
+msgstr "Лаборатория и Сотрудники"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:199
+msgid "Lab group updates, collaborator threads, and experiment coordination."
+msgstr "Обновления лабораторной группы, переписка с коллегами и координация экспериментов."
+
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:244
 #: ../../apps/web/src/app/(app)/settings/WorkspaceLanguageSection.tsx:37
 #, fuzzy
@@ -3175,34 +3599,44 @@ msgstr "Последняя проверка: {0}"
 msgid "Lay out folders like <0>Customers</0>, <1>Investors</1>, <2>Hiring</2>. A simple sentence each: that's the whole setup."
 msgstr "Создайте папки, например <0>Клиенты</0>, <1>Инвесторы</1>, <2>Найм</2>. По одному простому предложению для каждой — вот и вся настройка."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:30
+#: ../ui/src/i18n/taxonomy-template-messages.ts:32
 #, fuzzy
 msgid "Leads"
 msgstr "Лиды"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:200
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:209
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:542
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:545
 #, fuzzy
 msgid "Leave unsorted"
 msgstr "Оставить без сортировки"
 
 #: ../../apps/site/src/components/landing/Footer.tsx:36
-#: ../ui/src/i18n/taxonomy-template-messages.ts:60
+#: ../ui/src/i18n/taxonomy-template-messages.ts:66
 #, fuzzy
 msgid "Legal"
 msgstr "Юридические"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:29
 #, fuzzy
-msgid "Legal, insurance, software subscriptions, and business administration notices."
-msgstr "Уведомления по юридическим вопросам, страхованию, подпискам на ПО и администрированию бизнеса."
+#~ msgid "Legal, insurance, software subscriptions, and business administration notices."
+#~ msgstr "Уведомления по юридическим вопросам, страхованию, подпискам на ПО и администрированию бизнеса."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:219
+#, fuzzy
+msgid "Lenders & Mortgage"
+msgstr "Кредиторы и ипотека"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:173
+#, fuzzy
+msgid "Lesson Planning"
+msgstr "Планирование уроков"
 
 #: ../ui/src/theme/themes.ts:38
 msgid "Light"
 msgstr "Светлая"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:474
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:477
 #, fuzzy
 msgid "List the kinds of emails that belong here: senders, topics, keywords. Aim for a full sentence."
 msgstr "Укажите типы писем, которые относятся сюда: отправители, темы, ключевые слова. Формулируйте полным предложением."
@@ -3210,6 +3644,10 @@ msgstr "Укажите типы писем, которые относятся с
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:307
 msgid "List the senders, topics, and keywords that belong here. At least {minDescriptionLength} characters. ({descriptionLength}/{minDescriptionLength})"
 msgstr "Перечислите отправителей, темы и ключевые слова, относящиеся сюда. Не менее {minDescriptionLength} символов. ({descriptionLength}/{minDescriptionLength})"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:207
+msgid "Listings"
+msgstr "Предложения"
 
 #: ../ui/src/emails/EmailRail.tsx:57
 #, fuzzy
@@ -3254,6 +3692,10 @@ msgstr "Загрузка…"
 msgid "Mail"
 msgstr "Почта"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:231
+msgid "Major donor relationships, pledge confirmations, and gift acknowledgements."
+msgstr "Отношения с крупными донорами, подтверждения обещаний и благодарности за пожертвования."
+
 #: ../../apps/mobile/app/(app)/subscription.tsx:293
 #, fuzzy
 msgid "Manage"
@@ -3270,15 +3712,28 @@ msgstr "Управление уведомлениями"
 msgid "Manage payment method"
 msgstr "Управлять способом оплаты"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:40
+#: ../ui/src/i18n/taxonomy-template-messages.ts:44
 #, fuzzy
 msgid "Management"
 msgstr "Управление"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:45
+msgid "Manager emails: one-on-ones, performance evaluations, and career feedback."
+msgstr "Письма от руководителя: встречи 1 на 1, оценка эффективности и обратная связь по карьере."
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:41
 #, fuzzy
-msgid "Manager emails: one-on-ones, performance reviews, and feedback."
-msgstr "Письма руководителя: встречи один на один, оценки эффективности и обратная связь."
+#~ msgid "Manager emails: one-on-ones, performance reviews, and feedback."
+#~ msgstr "Письма руководителя: встречи один на один, оценки эффективности и обратная связь."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:189
+#, fuzzy
+msgid "Manuscript drafts, co-author coordination, and submission status for papers."
+msgstr "Черновики рукописей, координация соавторов и статус подачи статей."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:190
+msgid "Manuscripts & Peer Review"
+msgstr "Рукописи и рецензирование"
 
 #: ../ui/src/emails/PreviewDoneBar.tsx:23
 #: ../ui/src/emails/ThreadRow.tsx:157
@@ -3361,21 +3816,33 @@ msgstr "Помечено как выполненное"
 msgid "Marked as done by {doneByName}"
 msgstr "Завершено пользователем {doneByName}"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:139
+msgid "Marketplaces"
+msgstr "Маркетплейсы"
+
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:198
 #, fuzzy
 msgid "Maximum of {collaboratorLimit} collaborators reached."
 msgstr "Достигнут лимит в {collaboratorLimit} соавторов."
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:69
+msgid "Media inquiries, journalist requests, and press coverage bookings."
+msgstr "Запросы СМИ, обращения журналистов и бронирование освещения в прессе."
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:63
 #, fuzzy
-msgid "Media inquiries, press coverage, co-marketing proposals, and partnership outreach."
-msgstr "Запросы СМИ, освещение в прессе, предложения по совместному маркетингу и привлечение партнёров."
+#~ msgid "Media inquiries, press coverage, co-marketing proposals, and partnership outreach."
+#~ msgstr "Запросы СМИ, освещение в прессе, предложения по совместному маркетингу и привлечение партнёров."
 
 #: ../../apps/mobile/src/components/CollaboratorsSheet.tsx:58
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:42
 #, fuzzy
 msgid "Member"
 msgstr "Участник"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:176
+msgid "Messages from parents and guardians about attendance, behavior, and progress."
+msgstr "Сообщения от родителей и опекунов о посещаемости, поведении и успеваемости."
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:29
 #, fuzzy
@@ -3391,6 +3858,10 @@ msgstr "Разрешения аккаунта Microsoft"
 msgid "Microsoft could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the redirect URI is registered on the app registration."
 msgstr "Microsoft не удалось завершить авторизацию. Возможно, срок действия ссылки истек: пожалуйста, попробуйте еще раз. Если проблема сохраняется, убедитесь, что URI перенаправления зарегистрирован в регистрации приложения."
 
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:189
+msgid "Migrate & apply"
+msgstr "Перенести и применить"
+
 #: ../../apps/web/src/components/Sidebar.tsx:43
 #, fuzzy
 msgid "Mock Inbox"
@@ -3400,6 +3871,10 @@ msgstr "Макет входящих"
 #, fuzzy
 msgid "Model quality"
 msgstr "Качество модели"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:162
+msgid "Monetization"
+msgstr "Монетизация"
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:41
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:223
@@ -3424,6 +3899,10 @@ msgstr "Достигнут месячный лимит сортировки"
 #~ msgid "More threads beyond your {plan} subscription limit aren't loaded."
 #~ msgstr "Потоки, превышающие лимит вашей подписки {plan}, не загружены."
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:220
+msgid "Mortgage brokers, financing pre-approvals, rate quotes, and underwriting updates."
+msgstr "Ипотечные брокеры, предварительные одобрения финансирования, котировки ставок и обновления по андеррайтингу."
+
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:46
 #: ../ui/src/pricing/planMessages.ts:30
 #, fuzzy
@@ -3431,7 +3910,7 @@ msgid "Most popular"
 msgstr "Самый популярный"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:387
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:536
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:539
 #, fuzzy
 msgid "Move them to"
 msgstr "Переместить в"
@@ -3469,7 +3948,7 @@ msgstr "Мои странствия приведут меня к Дельте в
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:235
 #: ../../apps/mobile/app/(app)/account.tsx:131
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:272
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:448
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:451
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:15
 #, fuzzy
 msgid "Name"
@@ -3504,10 +3983,14 @@ msgstr "Без автоотправки · Зашифровано при хра�
 msgid "New application from Horemheb of Thebes."
 msgstr "Новая заявка от Хоремхеба из Фив."
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:33
+msgid "New business inquiries, project proposals, and pricing discussions from prospective clients."
+msgstr "Новые деловые запросы, проектные предложения и обсуждение цен с потенциальными клиентами."
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:31
 #, fuzzy
-msgid "New business inquiries, proposals, pricing discussions, and prospective client outreach."
-msgstr "Новые деловые запросы, предложения, обсуждения цен и привлечение потенциальных клиентов."
+#~ msgid "New business inquiries, proposals, pricing discussions, and prospective client outreach."
+#~ msgstr "Новые деловые запросы, предложения, обсуждения цен и привлечение потенциальных клиентов."
 
 #: ../../apps/mobile/src/data/notificationView.ts:91
 #: ../../apps/web/src/lib/notifications.ts:110
@@ -3526,6 +4009,16 @@ msgstr "Новые письма будут ждать до сброса лими
 #, fuzzy
 msgid "New folder"
 msgstr "Новая папка"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:221
+#, fuzzy
+msgid "New Inquiries"
+msgstr "Новые запросы"
+
+#: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:158
+#, fuzzy
+msgid "New mail"
+msgstr "Новые письма"
 
 #: ../../apps/extension/src/panel/notificationText.ts:24
 #: ../../apps/mobile/src/data/notificationView.ts:95
@@ -3658,6 +4151,10 @@ msgstr "Значимых новых писем с последней генер�
 #~ msgid "No signups yet."
 #~ msgstr "Пока нет регистраций."
 
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:110
+msgid "No sorted threads to migrate. Your new plan will apply directly."
+msgstr "Нет отсортированных цепочек для переноса. Ваш новый план будет применен напрямую."
+
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:48
 #, fuzzy
 msgid "No threads"
@@ -3701,10 +4198,14 @@ msgstr "Нет"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:190
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:205
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:509
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:512
 #, fuzzy
 msgid "None (not connected)"
 msgstr "Нет (не подключено)"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:226
+msgid "Nonprofit Leader"
+msgstr "Руководитель НКО"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:100
 #, fuzzy
@@ -3755,10 +4256,14 @@ msgstr "Уведомления"
 msgid "Notifications, {unread} unread"
 msgstr "Уведомления, {unread} непрочитанн{unread, plural, one{ое} few{ых} many{ых} other{ых}}"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:68
+#: ../ui/src/i18n/taxonomy-template-messages.ts:76
 #, fuzzy
 msgid "Official university emails: registrar, student services, and housing."
 msgstr "Официальные письма университета: регистратура, студенческие службы и жильё."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:121
+msgid "On-call alerts, outage reports, and production incident escalations."
+msgstr "Дежурные оповещения, отчеты о сбоях и эскалация производственных инцидентов."
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:343
 #, fuzzy
@@ -3819,7 +4324,11 @@ msgstr "ИИ для почты с открытым исходным кодом"
 #~ msgid "Open-source AI email triage. Gmail-first. Hosted or self-hosted. Your call."
 #~ msgstr "ИИ для сортировки почты с открытым исходным кодом. Прежде всего для Gmail. Облачный или с самостоятельным размещением. Выбор за вами."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:58
+#: ../ui/src/i18n/taxonomy-template-messages.ts:125
+msgid "Open-source maintainers, contributor discussions, and developer forum threads."
+msgstr "Сопровождающие open-source проектов, обсуждения с контрибьюторами и темы на форумах разработчиков."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:64
 #, fuzzy
 msgid "Operations"
 msgstr "Операции"
@@ -3828,7 +4337,7 @@ msgstr "Операции"
 msgid "Optional. Applied when generating draft replies for this folder."
 msgstr "Необязательно. Применяется при создании черновиков ответов для этой папки."
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:495
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:498
 #, fuzzy
 msgid "Optional. Applied when generating draft replies for threads in this folder."
 msgstr "Необязательно. Применяется при создании черновиков ответов для переписок в этой папке."
@@ -3845,8 +4354,12 @@ msgstr "или"
 msgid "Or connect a different inbox:"
 msgstr "Или подключить другой почтовый ящик:"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:131
+msgid "Orders"
+msgstr "Заказы"
+
 #: ../../apps/site/src/components/demo/demo-seed.ts:35
-#: ../../apps/site/src/components/landing/MailInboxMock.tsx:78
+#: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:178
 #, fuzzy
 msgid "Other"
 msgstr "Другое"
@@ -3871,13 +4384,17 @@ msgid "Paid or upgraded workspace"
 msgstr "Платное или улучшенное рабочее пространство"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:322
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:503
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:660
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:506
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:663
 #, fuzzy
 msgid "Parent"
 msgstr "Родительский"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:42
+#: ../ui/src/i18n/taxonomy-template-messages.ts:175
+msgid "Parents & Guardians"
+msgstr "Родители и опекуны"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:46
 #, fuzzy
 msgid "Partners"
 msgstr "Партнеры"
@@ -3934,10 +4451,18 @@ msgstr "Платеж не прошел. Пожалуйста, обновите �
 msgid "Payment failed. Update your payment method to keep access."
 msgstr "Платеж не прошел. Обновите способ оплаты, чтобы сохранить доступ."
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:143
+msgid "Payouts & Fees"
+msgstr "Выплаты и комиссии"
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:46
 #, fuzzy
-msgid "Payslips, expense reports, reimbursements, and employee benefits emails."
-msgstr "Расчетные листки, отчеты о расходах, возмещения и письма о льготах для сотрудников."
+#~ msgid "Payslips, expense reports, reimbursements, and employee benefits emails."
+#~ msgstr "Расчетные листки, отчеты о расходах, возмещения и письма о льготах для сотрудников."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:50
+msgid "Payslips, salary statements, and employee benefits and pension emails."
+msgstr "Расчетные листки, выписки о зарплате и письма о льготах и пенсиях сотрудников."
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:12
 #: ../ui/src/emails/queueLabels.ts:22
@@ -3969,38 +4494,71 @@ msgstr "Безвозвратно удалить ваш аккаунт и все 
 
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:37
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:29
-#: ../ui/src/i18n/taxonomy-template-messages.ts:32
+#: ../ui/src/i18n/taxonomy-template-messages.ts:34
 #: ../ui/src/pricing/planMessages.ts:20
 #, fuzzy
 msgid "Personal"
 msgstr "Личное"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:79
+#: ../ui/src/i18n/taxonomy-template-messages.ts:89
 #, fuzzy
 msgid "Personal / Family"
 msgstr "Личное / Семья"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:84
 #, fuzzy
-msgid "Personal bills, payment confirmations, receipts, and records of household expenses."
-msgstr "Личные счета, подтверждения платежей, чеки и записи о бытовых расходах."
+#~ msgid "Personal bills, payment confirmations, receipts, and records of household expenses."
+#~ msgstr "Личные счета, подтверждения платежей, чеки и записи о бытовых расходах."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:33
+#: ../ui/src/i18n/taxonomy-template-messages.ts:164
+msgid "Personal correspondence and emails unrelated to content work."
+msgstr "Личная переписка и письма, не связанные с работой над контентом."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:35
 #, fuzzy
 msgid "Personal correspondence and emails unrelated to freelance work."
 msgstr "Личная переписка и электронные письма, не связанные с фрилансом."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:64
+#: ../ui/src/i18n/taxonomy-template-messages.ts:223
+#, fuzzy
+msgid "Personal correspondence and emails unrelated to real estate."
+msgstr "Личная переписка и письма, не связанные с недвижимостью."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:202
+#, fuzzy
+msgid "Personal correspondence and emails unrelated to research."
+msgstr "Личная переписка и письма, не связанные с исследованиями."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:126
+#, fuzzy
+msgid "Personal correspondence and emails unrelated to software work."
+msgstr "Личная переписка и письма, не связанные с разработкой ПО."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:183
+#, fuzzy
+msgid "Personal correspondence and emails unrelated to teaching."
+msgstr "Личная переписка и электронные письма, не связанные с преподаванием."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:242
+#, fuzzy
+msgid "Personal correspondence and emails unrelated to the organization."
+msgstr "Личная переписка и электронные письма, не связанные с деятельностью организации."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:145
+msgid "Personal correspondence and emails unrelated to the shop."
+msgstr "Личная переписка и электронные письма, не связанные с магазином."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:70
 #, fuzzy
 msgid "Personal correspondence and emails unrelated to the startup."
 msgstr "Личная переписка и электронные письма, не связанные со стартапом."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:48
+#: ../ui/src/i18n/taxonomy-template-messages.ts:52
 #, fuzzy
 msgid "Personal correspondence and emails unrelated to work."
 msgstr "Личная переписка и электронные письма, не связанные с работой."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:78
+#: ../ui/src/i18n/taxonomy-template-messages.ts:86
 #, fuzzy
 msgid "Personal correspondence and non-academic emails for everyday life."
 msgstr "Личная переписка и неакадемические письма для повседневной жизни."
@@ -4019,7 +4577,7 @@ msgid "Plan"
 msgstr "План"
 
 #. “Plan” here is the email-sorting taxonomy, not a billing or subscription plan.
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1309
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1380
 #, fuzzy
 msgid "Plan is view-only. Only workspace admins can edit it."
 msgstr "План доступен только для просмотра. Изменять его могут только администраторы рабочей области."
@@ -4032,6 +4590,10 @@ msgstr "Элементы плана"
 msgid "Plan sorting"
 msgstr "План сортировки"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:156
+msgid "Platforms"
+msgstr "Платформы"
+
 #: ../../apps/mobile/app/(app)/subscription.tsx:129
 #: ../../apps/mobile/app/(app)/subscription.tsx:134
 #: ../../apps/mobile/app/(app)/subscription.tsx:189
@@ -4040,6 +4602,10 @@ msgstr "План сортировки"
 #, fuzzy
 msgid "Please try again."
 msgstr "Повторите попытку."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:142
+msgid "Pre-sale questions and messages from prospective shoppers about products."
+msgstr "Предпродажные вопросы и сообщения от потенциальных покупателей о товарах."
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:158
 #, fuzzy
@@ -4070,7 +4636,7 @@ msgstr "Подготовьте свои аккаунты до созыва со�
 #~ msgid "Preparing…"
 #~ msgstr ""
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:62
+#: ../ui/src/i18n/taxonomy-template-messages.ts:68
 #, fuzzy
 msgid "Press"
 msgstr "Пресса"
@@ -4096,9 +4662,13 @@ msgstr "Цены | Amarnai"
 msgid "Pricing is per workspace, billed monthly or annually. Every account starts with a free Personal workspace, no card required. The paid Pro and Business subscriptions add higher limits and include a 14-day trial. See the pricing page for current details."
 msgstr "Цены указаны за рабочую область, оплата ежемесячно или ежегодно. Каждая учетная запись начинается с бесплатной личной рабочей области, карта не требуется. Платные подписки Pro и Business предлагают более высокие лимиты и включают 14-дневный пробный период. Актуальные детали смотрите на странице с ценами."
 
-#: ../../apps/site/src/components/landing/MailInboxMock.tsx:84
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:67
 msgid "Primary"
 msgstr "Основное"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:178
+msgid "Principal notices, staff meetings, and district administration bulletins."
+msgstr "Уведомления директора, собрания персонала и бюллетени районной администрации."
 
 #: ../ui/src/pricing/planMessages.ts:100
 #, fuzzy
@@ -4129,12 +4699,21 @@ msgstr "Pro"
 msgid "Product"
 msgstr "Продукт"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:181
+#, fuzzy
+msgid "Professional Development"
+msgstr "Профессиональное развитие"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:41
+msgid "Professional emails related to job duties and workplace activities."
+msgstr "Служебные письма, связанные с должностными обязанностями и рабочей деятельностью."
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:37
 #, fuzzy
-msgid "Professional emails related to work, projects, and workplace activities."
-msgstr "Профессиональные электронные письма, связанные с работой, проектами и деятельностью на рабочем месте."
+#~ msgid "Professional emails related to work, projects, and workplace activities."
+#~ msgstr "Профессиональные электронные письма, связанные с работой, проектами и деятельностью на рабочем месте."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:70
+#: ../ui/src/i18n/taxonomy-template-messages.ts:78
 #, fuzzy
 msgid "Professors, assignments, study groups, course announcements, and academic deadlines."
 msgstr "Преподаватели, задания, учебные группы, объявления о курсах и академические сроки."
@@ -4145,28 +4724,65 @@ msgstr "Преподаватели, задания, учебные группы,
 msgid "Profile"
 msgstr "Профиль"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:18
+#: ../ui/src/i18n/taxonomy-template-messages.ts:237
+#, fuzzy
+msgid "Program operations, beneficiary services, and impact reporting updates."
+msgstr "Операции по программе, обслуживание бенефициаров и отчеты о воздействии."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:236
+msgid "Programs"
+msgstr "Программы"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:20
 #, fuzzy
 msgid "Projects"
 msgstr "Проекты"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:112
-#: ../../apps/site/src/components/landing/MailInboxMock.tsx:87
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:70
 #, fuzzy
 msgid "Promotions"
 msgstr "Акции"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:208
+msgid "Property listings, MLS updates, staging, and photography scheduling."
+msgstr "Объявления о недвижимости, обновления MLS, подготовка к показу и планирование фотосъемки."
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:86
 #, fuzzy
 msgid "Proposed folders. Applying replaces your current plan; you can edit everything afterward."
 msgstr "Предлагаемые папки. Применение заменит ваш текущий план; вы сможете отредактировать все позже."
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:188
+#, fuzzy
+msgid "Publications"
+msgstr "Публикации"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:113
+#, fuzzy
+msgid "Pull request notifications, merge-approval mentions, and comment threads on repositories."
+msgstr "Уведомления о пулл-реквестах, упоминания об одобрении слияния и ветки комментариев в репозиториях."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:112
+#, fuzzy
+msgid "Pull Requests"
+msgstr "Пулл-реквесты"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:170
+#, fuzzy
+msgid "Pupil questions, homework hand-ins, and daily instruction in the classroom."
+msgstr "Вопросы учеников, сдача домашних заданий и ежедневные занятия в классе."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:132
+msgid "Purchase confirmations, order status changes, and fulfillment updates from your store."
+msgstr "Подтверждения покупок, изменения статуса заказов и обновления по выполнению от вашего магазина."
+
 #: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:105
 #, fuzzy
 msgid "Queuing rescan…"
 msgstr "Повторное сканирование в очереди…"
 
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:379
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:385
 #, fuzzy
 msgid "Re-route {unclassifiedCount} unclassified"
 msgstr "Перенаправить {unclassifiedCount} неклассифицированных"
@@ -4175,6 +4791,20 @@ msgstr "Перенаправить {unclassifiedCount} неклассифици�
 #, fuzzy
 msgid "Re-route thread"
 msgstr "Перенаправить цепочку"
+
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:135
+#, fuzzy
+msgid "Re-sort with AI"
+msgstr "Пересортировать с помощью ИИ"
+
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:176
+#, fuzzy
+msgid "Re-sorting threads already sorted this month is free. If you reach your monthly limit, the rest resume next month."
+msgstr "Пересортировка тем, уже отсортированных в этом месяце, бесплатна. Если вы достигнете месячного лимита, остальные возобновятся в следующем месяце."
+
+#: ../../apps/web/src/app/(app)/emails/ResortReviewBanner.tsx:79
+msgid "Re-sorting…"
+msgstr "Пересортировка…"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:333
 #, fuzzy
@@ -4200,8 +4830,12 @@ msgstr "Только для чтения · OAuth · отозвать в люб�
 msgid "Read-only by design"
 msgstr "Только для чтения по умолчанию"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:205
+msgid "Real Estate Agent"
+msgstr "Агент по недвижимости"
+
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:91
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:307
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:310
 #, fuzzy
 msgid "Receipts, payment confirmations, and billing questions from vendors."
 msgstr "Чеки, подтверждения платежей и вопросы по выставлению счетов от поставщиков."
@@ -4214,6 +4848,10 @@ msgstr "Недавно была попытка. Доступно снова {whe
 #: ../ui/src/i18n/generation-reason-messages.ts:18
 msgid "Recently attempted. Try again later."
 msgstr "Недавно была попытка. Попробуйте позже."
+
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1760
+msgid "Recommended for your inbox"
+msgstr "Рекомендовано для входящих"
 
 #: ../../apps/mobile/src/components/emails/DisconnectedBanner.tsx:46
 #, fuzzy
@@ -4262,10 +4900,14 @@ msgstr "Переподключение…"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:45
 #, fuzzy
-msgid "Recruiter outreach, job applications, interview scheduling, and offer letters."
-msgstr "Взаимодействие с рекрутерами, заявки на вакансии, планирование интервью и предложения о работе."
+#~ msgid "Recruiter outreach, job applications, interview scheduling, and offer letters."
+#~ msgstr "Взаимодействие с рекрутерами, заявки на вакансии, планирование интервью и предложения о работе."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:44
+#: ../ui/src/i18n/taxonomy-template-messages.ts:49
+msgid "Recruiter outreach, role applications, interview scheduling, and staffing packages."
+msgstr "Связь с рекрутерами, заявки на вакансии, планирование собеседований и предложения по найму."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:48
 #, fuzzy
 msgid "Recruiting"
 msgstr "Рекрутинг"
@@ -4277,10 +4919,14 @@ msgstr "Рекрутинг"
 msgid "Redirecting…"
 msgstr "Перенаправление…"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1330
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1401
 #, fuzzy
 msgid "Redo"
 msgstr "Повторить"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:191
+msgid "Referee invitations, reviewer reports, and revision requests from journal editors."
+msgstr "Приглашения рецензентам, отчеты рецензентов и запросы на доработки от редакторов журналов."
 
 #: ../../apps/web/src/components/ClassifyingRefresher.tsx:56
 #, fuzzy
@@ -4298,6 +4944,10 @@ msgstr "Обновить"
 #, fuzzy
 msgid "Regenerate"
 msgstr "Перегенерировать"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:122
+msgid "Releases"
+msgstr "Релизы"
 
 #: ../../apps/mobile/app/forgot-password.tsx:115
 #, fuzzy
@@ -4375,24 +5025,33 @@ msgstr "Продлевается ежемесячно <0>{0}</0>."
 msgid "Renews on <0>{0}</0>."
 msgstr "Продлевается <0>{0}</0>."
 
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:93
+msgid "Replace plan"
+msgstr "Заменить план"
+
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1614
 #, fuzzy
-msgid "Replace plan?"
-msgstr "Заменить тариф?"
+#~ msgid "Replace plan?"
+#~ msgstr "Заменить тариф?"
 
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1652
 #, fuzzy
-msgid "Replace taxonomy"
-msgstr "Заменить таксономию"
+#~ msgid "Replace taxonomy"
+#~ msgstr "Заменить таксономию"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1681
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1697
 #, fuzzy
 msgid "Replace with a template"
 msgstr "Заменить шаблоном"
 
-#: ../../apps/site/src/components/landing/MailThreadMock.tsx:106
+#: ../../apps/site/src/components/landing/MailThreadMock.tsx:90
+#: ../../apps/site/src/components/landing/MailThreadMock.tsx:145
 msgid "Reply"
 msgstr "Ответить"
+
+#: ../../apps/site/src/components/landing/MailThreadMock.tsx:96
+msgid "Reply all"
+msgstr "Ответить всем"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:89
 #, fuzzy
@@ -4493,6 +5152,15 @@ msgstr "Ресурсы"
 msgid "Retry"
 msgstr "Повторить"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:136
+#, fuzzy
+msgid "Return requests, refund approvals, and exchange labels from shoppers."
+msgstr "Запросы на возврат, одобрения возврата средств и этикетки для обмена от покупателей."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:135
+msgid "Returns"
+msgstr "Возвраты"
+
 #: ../ui/src/pricing/planMessages.ts:68
 #, fuzzy
 msgid "Review queue"
@@ -4510,7 +5178,11 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "Риб-Хадда,\n\nМы вас услышали. Дополнительное зерно заказано с южных складов и прибудет до праздника урожая. Просим проявить терпение до этого момента.\n\nБудьте здоровы,"
+msgstr "Риб-Хадда,\n"
+"\n"
+"Мы вас услышали. Дополнительное зерно заказано с южных складов и прибудет до праздника урожая. Просим проявить терпение до этого момента.\n"
+"\n"
+"Будьте здоровы,"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -4543,8 +5215,8 @@ msgstr "Как при ежемесячной оплате"
 #: ../../apps/mobile/src/components/EditNameSheet.tsx:66
 #: ../../apps/mobile/src/components/RenameWorkspaceSheet.tsx:74
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:450
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:577
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:691
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:580
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:694
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:29
 #, fuzzy
 msgid "Save"
@@ -4587,12 +5259,21 @@ msgid "Saving..."
 msgstr "Сохранение..."
 
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:76
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:577
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:691
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:580
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:694
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:29
 #, fuzzy
 msgid "Saving…"
 msgstr "Сохранение…"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:177
+#, fuzzy
+msgid "School Administration"
+msgstr "Школьная администрация"
+
+#: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:146
+msgid "Search"
+msgstr "Поиск"
 
 #: ../ui/src/emails/ThreadListHeader.tsx:104
 #, fuzzy
@@ -4605,7 +5286,7 @@ msgstr "Поиск {threadCount} цепочек"
 msgid "Search folders"
 msgstr "Поиск папок"
 
-#: ../../apps/site/src/components/landing/MailInboxMock.tsx:66
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:60
 msgid "Search mail"
 msgstr "Поиск писем"
 
@@ -4638,8 +5319,8 @@ msgid "Select"
 msgstr "Выбрать"
 
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:210
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:336
-#: ../ui/src/emails/MockEmailsPage.tsx:266
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:342
+#: ../ui/src/emails/MockEmailsPage.tsx:274
 #, fuzzy
 msgid "Select a thread to preview"
 msgstr "Выберите цепочку для предпросмотра"
@@ -4669,6 +5350,15 @@ msgstr "Руководство по самохостингу"
 #, fuzzy
 msgid "self-hosted email assistant"
 msgstr "почтовый ассистент с самохостингом"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:212
+#, fuzzy
+msgid "Seller consultations, listing paperwork, price reductions, and market appraisals."
+msgstr "Консультации продавцов, документы для листинга, снижение цен и рыночная оценка."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:211
+msgid "Sellers"
+msgstr "Продавцы"
 
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:224
 #, fuzzy
@@ -4708,6 +5398,10 @@ msgstr "Отправитель — известный и авторитетны�
 #, fuzzy
 msgid "Sending…"
 msgstr "Отправка…"
+
+#: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:129
+msgid "Sent Items"
+msgstr "Отправленные"
 
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:95
 #, fuzzy
@@ -4772,6 +5466,10 @@ msgstr "Совместный план + очередь на проверку"
 #~ msgid "Shared taxonomy + review queue"
 #~ msgstr "Общая таксономия + очередь проверки"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:133
+msgid "Shipping"
+msgstr "Доставка"
+
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:334
 #, fuzzy
 msgid "Show Gmail"
@@ -4780,6 +5478,10 @@ msgstr "Показать Gmail"
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:343
 msgid "Show Outlook"
 msgstr "Показать Outlook"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:210
+msgid "Showing requests, buyer tours, open-house sign-ups, and written offers."
+msgstr "Запросы на просмотр, туры для покупателей, запись на дни открытых дверей и письменные предложения."
 
 #: ../../apps/extension/src/auth/SignInScreen.tsx:98
 #: ../../apps/mobile/app/sign-in.tsx:133
@@ -4851,11 +5553,15 @@ msgstr "Вход…"
 msgid "Simple per-workspace pricing. Start free, upgrade or create additional workspaces as you need."
 msgstr "Простое ценообразование за рабочее пространство. Начните бесплатно, расширяйте тариф или создавайте новые рабочие пространства по мере необходимости."
 
-#: ../../apps/site/src/components/landing/MailInboxMock.tsx:90
-#: ../ui/src/i18n/taxonomy-template-messages.ts:76
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:73
+#: ../ui/src/i18n/taxonomy-template-messages.ts:84
 #, fuzzy
 msgid "Social"
 msgstr "Соцсети"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:108
+msgid "Software Developer"
+msgstr "Разработчик ПО"
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:213
 #, fuzzy
@@ -4940,10 +5646,28 @@ msgstr "Объем сортировки"
 msgid "Sorting…"
 msgstr "Сортировка…"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:111
+msgid "Source-control activity, branch changes, and merge approvals across repositories."
+msgstr "Активность контроля версий, изменения веток и одобрения слияния в репозиториях."
+
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:111
 #, fuzzy
 msgid "Spam"
 msgstr "Спам"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:151
+#, fuzzy
+msgid "Sponsored placements, brand partnerships, and promotional collaborations."
+msgstr "Спонсорские размещения, партнерства с брендами и рекламные коллаборации."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:153
+#, fuzzy
+msgid "Sponsorship rates, content briefs, and paid placement deals."
+msgstr "Тарифы на спонсорство, брифы по контенту и сделки по платному размещению."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:152
+msgid "Sponsorships"
+msgstr "Спонсорство"
 
 #: ../ui/src/pricing/planMessages.ts:94
 #, fuzzy
@@ -4966,12 +5690,12 @@ msgid "Start free"
 msgstr "Начать бесплатно"
 
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:52
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1682
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1698
 #, fuzzy
 msgid "Start from a template"
 msgstr "Начать с шаблона"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1395
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1466
 #, fuzzy
 msgid "Start from a template (replaces current)"
 msgstr "Начать с шаблона (заменит текущий)"
@@ -4988,7 +5712,7 @@ msgstr "Начать сортировку"
 msgid "Starting…"
 msgstr "Запуск…"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:49
+#: ../ui/src/i18n/taxonomy-template-messages.ts:55
 #, fuzzy
 msgid "Startup Founder"
 msgstr "Основатель стартапа"
@@ -5012,20 +5736,38 @@ msgstr "Останавливает синхронизацию и отзывае�
 msgid "Stops syncing and revokes Amarnai's access to this mailbox. Synced email data is kept so you can reconnect later."
 msgstr "Останавливает синхронизацию и отзывает доступ Amarnai к этому почтовому ящику. Синхронизированные данные писем сохраняются, чтобы вы могли повторно подключиться позже."
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:144
+#, fuzzy
+msgid "Store payouts, chargebacks, selling fees, and settlement statements."
+msgstr "Выплаты, чарджбэки, комиссии и расчетные ведомости магазина."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:140
+#, fuzzy
+msgid "Storefront notices from Amazon, Etsy, eBay, and marketplace store accounts."
+msgstr "Уведомления от Amazon, Etsy, eBay и других маркетплейсов."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:105
+msgid "Streaming services, app subscriptions, memberships, and recurring billing notices."
+msgstr "Стриминговые сервисы, подписки, членство и регулярные платежи."
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:94
 #, fuzzy
-msgid "Streaming services, software subscriptions, memberships, and recurring notifications."
-msgstr "Стриминговые сервисы, подписки на ПО, членства и регулярные уведомления."
+#~ msgid "Streaming services, software subscriptions, memberships, and recurring notifications."
+#~ msgstr "Стриминговые сервисы, подписки на ПО, членства и регулярные уведомления."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:65
+#: ../ui/src/i18n/taxonomy-template-messages.ts:73
 #, fuzzy
 msgid "Student"
 msgstr "Студент"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:83
+msgid "Student loans, rent payments, and financial aid notifications."
+msgstr "Студенческие займы, арендные платежи и уведомления о финпомощи."
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:75
 #, fuzzy
-msgid "Student loans, rent, bank statements, and financial aid notifications."
-msgstr "Студенческие займы, арендная плата, выписки из банка и уведомления о финансовой помощи."
+#~ msgid "Student loans, rent, bank statements, and financial aid notifications."
+#~ msgstr "Студенческие займы, арендная плата, выписки из банка и уведомления о финансовой помощи."
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:258
 #: ../../apps/mobile/app/(app)/subscription.tsx:222
@@ -5054,16 +5796,29 @@ msgstr "Подписка не будет продлена. Доступ к та�
 msgid "Subscription will not renew. Access ends {0}."
 msgstr "Подписка не будет продлена. Доступ закончится {0}."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:93
+#: ../ui/src/i18n/taxonomy-template-messages.ts:104
 #, fuzzy
 msgid "Subscriptions"
 msgstr "Подписки"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:200
+#, fuzzy
+msgid "Supervision"
+msgstr "Надзор"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:137
+msgid "Suppliers"
+msgstr "Поставщики"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:31
 #: ../ui/src/pricing/planMessages.ts:56
 #, fuzzy
 msgid "Support"
 msgstr "Поддержка"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:60
+msgid "Support, onboarding, retention, churn, and customer success conversations."
+msgstr "Поддержка, онбординг, удержание, отток и общение с клиентами."
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:227
 #, fuzzy
@@ -5115,15 +5870,19 @@ msgstr "Синхронизация…"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:19
 #, fuzzy
-msgid "Task coordination, milestones, and deliverable reviews for ongoing client projects."
-msgstr "Координация задач, этапы и проверка результатов текущих клиентских проектов."
+#~ msgid "Task coordination, milestones, and deliverable reviews for ongoing client projects."
+#~ msgstr "Координация задач, этапы и проверка результатов текущих клиентских проектов."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:83
+#: ../ui/src/i18n/taxonomy-template-messages.ts:21
+msgid "Task coordination, milestones, and scope discussions for ongoing client work."
+msgstr "Координация задач, этапы и обсуждение объема по клиентским проектам."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:93
 #, fuzzy
 msgid "Tax returns, government notices, fines, and annual contributions to state authorities."
 msgstr "Налоговые декларации, уведомления от госорганов, штрафы и ежегодные взносы в государственные органы."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:82
+#: ../ui/src/i18n/taxonomy-template-messages.ts:92
 #, fuzzy
 msgid "Taxes"
 msgstr "Налоги"
@@ -5143,8 +5902,17 @@ msgstr "Таксономия применена"
 #~ msgid "Taxonomy nodes"
 #~ msgstr "Узлы таксономии"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:167
+#, fuzzy
+msgid "Teacher"
+msgstr "Учитель"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:182
+msgid "Teacher training workshops, certification renewals, and education webinars."
+msgstr "Тренинги для учителей, продление сертификатов и образовательные вебинары."
+
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:169
-#: ../ui/src/i18n/taxonomy-template-messages.ts:38
+#: ../ui/src/i18n/taxonomy-template-messages.ts:42
 #, fuzzy
 msgid "Team"
 msgstr "Команда"
@@ -5153,7 +5921,7 @@ msgstr "Команда"
 msgid "Template applied"
 msgstr "Шаблон применен"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1419
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1490
 #, fuzzy
 msgid "Templates"
 msgstr "Шаблоны"
@@ -5267,7 +6035,7 @@ msgstr "Эти пользователи потеряют доступ {0}:"
 msgid "These settings control which inbox threads are imported. Trash is always excluded."
 msgstr "Эти настройки определяют, какие переписки из входящих импортируются. Корзина всегда исключается."
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1301
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1372
 #, fuzzy
 msgid "This folder has child folders. Remove their Paths first, then delete it."
 msgstr "Эта папка содержит дочерние папки. Сначала удалите их пути, затем удалите эту папку."
@@ -5423,7 +6191,13 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "Моему брату, Великому Царю,\n\nВеликий совет созывается в начале Шему. Прошу тебя подготовить полный отчет по восточным территориям и отправить его вперед быстрым курьером, если возможно, до новолуния.\n\nНаш союз крепок. Покажем совету, что он остается таковым.\n\nТушратта, Великий Царь Митанни"
+msgstr "Моему брату, Великому Царю,\n"
+"\n"
+"Великий совет созывается в начале Шему. Прошу тебя подготовить полный отчет по восточным территориям и отправить его вперед быстрым курьером, если возможно, до новолуния.\n"
+"\n"
+"Наш союз крепок. Покажем совету, что он остается таковым.\n"
+"\n"
+"Тушратта, Великий Царь Митанни"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:163
 #, fuzzy
@@ -5432,7 +6206,11 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "В Бюро по царским назначениям,\n\nМы получили заявление от Горемхеба из Фив и рассмотрим его досье до следующего новолуния. Прошу вас сообщить ему, что мы отправим весть в должное время.\n\nЦарским указом,"
+msgstr "В Бюро по царским назначениям,\n"
+"\n"
+"Мы получили заявление от Горемхеба из Фив и рассмотрим его досье до следующего новолуния. Прошу вас сообщить ему, что мы отправим весть в должное время.\n"
+"\n"
+"Царским указом,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:278
 #, fuzzy
@@ -5443,7 +6221,13 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "Великому Царю,\n\nМногие годы наши дома были как братья. Пишу сейчас, чтобы предложить официально оформить эту дружбу на благо обоих наших народов: пакт о взаимной защите и общих маршрутах.\n\nПрошу лишь, чтобы ты выслушал мои условия. Пришли весть со следующим курьером, и я немедленно отправлю моего посланника.\n\nАзиру, слуга Великого Царя, владыка Амурру"
+msgstr "Великому Царю,\n"
+"\n"
+"Многие годы наши дома были как братья. Пишу сейчас, чтобы предложить официально оформить эту дружбу на благо обоих наших народов: пакт о взаимной защите и общих маршрутах.\n"
+"\n"
+"Прошу лишь, чтобы ты выслушал мои условия. Пришли весть со следующим курьером, и я немедленно отправлю моего посланника.\n"
+"\n"
+"Азиру, слуга Великого Царя, владыка Амурру"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:391
 #, fuzzy
@@ -5452,7 +6236,11 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "Великому Царю,\n\nМои странствия приведут меня к Дельте в ближайшие дни. Если у Великого Царя найдется свободный час, я бы приветствовал возможность поговорить лицом к лицу; есть вопросы, которые легче сказать, чем написать.\n\nТвой слуга, Абди-Хеба, наместник Урушалима"
+msgstr "Великому Царю,\n"
+"\n"
+"Мои странствия приведут меня к Дельте в ближайшие дни. Если у Великого Царя найдется свободный час, я бы приветствовал возможность поговорить лицом к лицу; есть вопросы, которые легче сказать, чем написать.\n"
+"\n"
+"Твой слуга, Абди-Хеба, наместник Урушалима"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:153
 #, fuzzy
@@ -5461,7 +6249,11 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "Великому Царю, моему брату,\n\nЯ слышал твои слова. Золото будет отправлено до отбытия следующего посланника. Мы ценим связь между нашими домами и не хотим, чтобы она остыла.\n\nВ дружбе,"
+msgstr "Великому Царю, моему брату,\n"
+"\n"
+"Я слышал твои слова. Золото будет отправлено до отбытия следующего посланника. Мы ценим связь между нашими домами и не хотим, чтобы она остыла.\n"
+"\n"
+"В дружбе,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:239
 #, fuzzy
@@ -5472,7 +6264,13 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "Великому Царю, моему брату,\n\nЯ пишу в дружбе, как наши отцы писали до нас. Третья партия золота, согласованная по нашему договору, не прибыла. Два посланника прошли, и мы все еще ждем.\n\nПросим вас отправить ее без дальнейших задержек, как подобает связи между нашими домами.\n\nБурна-Буриаш II, Царь Вавилона"
+msgstr "Великому Царю, моему брату,\n"
+"\n"
+"Я пишу в дружбе, как наши отцы писали до нас. Третья партия золота, согласованная по нашему договору, не прибыла. Два посланника прошли, и мы все еще ждем.\n"
+"\n"
+"Просим вас отправить ее без дальнейших задержек, как подобает связи между нашими домами.\n"
+"\n"
+"Бурна-Буриаш II, Царь Вавилона"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:352
 #, fuzzy
@@ -5483,7 +6281,17 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "Великому Царю, моему господину, моему солнцу,\n\nЗерно, которое вы прислали в прошлом месяце, было получено с благодарностью, и я восхвалял ваше имя перед народом. Но я должен написать снова: третья партия не прибыла, и город становится беспокойным.\n\nЯ писал семь раз. Я не хочу беспокоить вас, но что еще я могу сделать?\n\nТвой слуга, Риб-Хадда, наместник Библа"
+msgstr "Великому Царю, моему господину, моему солнцу,\n"
+"\n"
+"Зерно, которое вы прислали в прошлом месяце, было получено с благодарностью, и я восхвалял ваше имя перед народом. Но я должен написать снова: третья партия не прибыла, и город становится беспокойным.\n"
+"\n"
+"Я писал семь раз. Я не хочу беспокоить вас, но что еще я могу сделать?\n"
+"\n"
+"Твой слуга, Риб-Хадда, наместник Библа"
+
+#: ../../apps/site/src/components/landing/MailThreadMock.tsx:123
+msgid "To: You"
+msgstr "Кому: Вам"
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:19
 #: ../ui/src/emails/ThreadList.tsx:15
@@ -5500,7 +6308,11 @@ msgstr "Сегодня"
 msgid "Toggle folders"
 msgstr "Переключить папки"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:91
+#: ../ui/src/i18n/taxonomy-template-messages.ts:213
+msgid "Transactions"
+msgstr "Транзакции"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:102
 #, fuzzy
 msgid "Travel"
 msgstr "Путешествия"
@@ -5563,14 +6375,14 @@ msgid "Unclassified"
 msgstr "Неклассифицированные"
 
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:232
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:366
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1321
-#: ../ui/src/emails/MockEmailsPage.tsx:285
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:372
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1392
+#: ../ui/src/emails/MockEmailsPage.tsx:293
 #, fuzzy
 msgid "Undo"
 msgstr "Отменить"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:67
+#: ../ui/src/i18n/taxonomy-template-messages.ts:75
 #, fuzzy
 msgid "University"
 msgstr "Университет"
@@ -5580,7 +6392,7 @@ msgstr "Университет"
 msgid "Unknown"
 msgstr "Неизвестно"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1219
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1255
 #, fuzzy
 msgid "unknown error"
 msgstr "неизвестная ошибка"
@@ -5652,7 +6464,7 @@ msgid "Update payment method"
 msgstr "Изменить способ оплаты"
 
 #: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:47
-#: ../ui/src/i18n/taxonomy-template-messages.ts:95
+#: ../ui/src/i18n/taxonomy-template-messages.ts:245
 #: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:59
 #, fuzzy
 msgid "Updates / Other"
@@ -5663,7 +6475,7 @@ msgstr "Обновления / Прочее"
 msgid "Updates, intros, and check-ins from current or prospective investors."
 msgstr "Обновления, представления и проверки от текущих или потенциальных инвесторов."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:52
+#: ../ui/src/i18n/taxonomy-template-messages.ts:58
 #, fuzzy
 msgid "Updates, term sheets, due diligence requests, cap table, and investor relations."
 msgstr "Обновления, условия сделок, запросы на комплексную проверку, таблица капитализации и отношения с инвесторами."
@@ -5737,7 +6549,7 @@ msgstr "Используйте «Повторное сканирование в�
 msgid "Use a template"
 msgstr "Использовать шаблон"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1784
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1806
 #, fuzzy
 msgid "Use template"
 msgstr "Использовать шаблон"
@@ -5747,15 +6559,23 @@ msgstr "Использовать шаблон"
 msgid "Use this plan for a business, team, or separate Gmail account."
 msgstr "Используйте этот тариф для бизнеса, команды или отдельного аккаунта Gmail."
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:99
+msgid "Utilities, household maintenance, and home upkeep appointments."
+msgstr "Коммунальные услуги, обслуживание и ремонт дома."
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:88
 #, fuzzy
-msgid "Utilities, landlord or mortgage communications, home maintenance, and property services."
-msgstr "Коммунальные услуги, переписка с арендодателем или по ипотеке, обслуживание дома и услуги по недвижимости."
+#~ msgid "Utilities, landlord or mortgage communications, home maintenance, and property services."
+#~ msgstr "Коммунальные услуги, переписка с арендодателем или по ипотеке, обслуживание дома и услуги по недвижимости."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:65
+msgid "Vendor agreements, office logistics, and day-to-day operational coordination."
+msgstr "Договоры с поставщиками, офисная логистика и операционная координация."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:59
 #, fuzzy
-msgid "Vendor contracts, tools, infrastructure, and day-to-day operational communications."
-msgstr "Договоры с поставщиками, инструменты, инфраструктура и повседневные операционные коммуникации."
+#~ msgid "Vendor contracts, tools, infrastructure, and day-to-day operational communications."
+#~ msgstr "Договоры с поставщиками, инструменты, инфраструктура и повседневные операционные коммуникации."
 
 #: ../../apps/web/src/app/verify-email/page.tsx:32
 #, fuzzy
@@ -5772,6 +6592,10 @@ msgstr "Письмо для подтверждения отправлено. П�
 msgid "Verify your email"
 msgstr "Подтвердите email"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:123
+msgid "Version releases, changelogs, dependency upgrades, and package registry alerts."
+msgstr "Выпуски версий, чейнджлоги, обновления зависимостей и оповещения реестра пакетов."
+
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:193
 #, fuzzy
 msgid "View draft reply"
@@ -5780,6 +6604,15 @@ msgstr "Посмотреть черновик ответа"
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:303
 msgid "View only. Only workspace admins can edit the plan."
 msgstr "Только просмотр. Редактировать план могут только администраторы рабочей области."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:235
+#, fuzzy
+msgid "Volunteer sign-ups, shift scheduling, and coordinator communications."
+msgstr "Регистрация волонтеров, расписание смен и связь с координаторами."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:234
+msgid "Volunteers"
+msgstr "Волонтеры"
 
 #: ../../apps/mobile/src/components/RationaleCard.tsx:44
 #: ../../apps/mobile/src/components/ThreadRow.tsx:44
@@ -5850,7 +6683,7 @@ msgstr "Что происходит с цепочками писем, в кот�
 msgid "What model does Amarnai use?"
 msgstr "Какую модель использует Amarnai?"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:518
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:521
 #, fuzzy
 msgid "Where this folder sits. Folders with no parent stay disconnected and are ignored until connected."
 msgstr "Расположение этой папки. Папки без родительской не подключены и игнорируются, пока не будут связаны."
@@ -5860,12 +6693,16 @@ msgstr "Расположение этой папки. Папки без роди
 msgid "Who is king Aziru?"
 msgstr "Кто такой король Азиру?"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:36
+#: ../ui/src/i18n/taxonomy-template-messages.ts:138
+msgid "Wholesale suppliers, restock orders, and inventory availability from manufacturers."
+msgstr "Оптовые поставщики, заказы на пополнение и наличие товаров у производителей."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:40
 #, fuzzy
 msgid "Work"
 msgstr "Работа"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:34
+#: ../ui/src/i18n/taxonomy-template-messages.ts:38
 #, fuzzy
 msgid "Working Professional"
 msgstr "Профессионал"

@@ -6,6 +6,7 @@ vi.mock("@amarnai/db", () => ({
     $queryRaw: vi.fn(),
     workspace: {
       findUnique: vi.fn(),
+      update: vi.fn(),
     },
     workspaceMember: {
       findUnique: vi.fn(),
@@ -141,6 +142,13 @@ describe("POST /workspaces/:workspaceId/taxonomy-nodes", () => {
     expect(res.status).toBe(201);
     const body = await res.json() as typeof created;
     expect(body).toMatchObject({ id: NODE_ID, name: "Clients", description: VALID_DESCRIPTION });
+    // A new folder changes routing → bump taxonomyChangedAt.
+    expect(vi.mocked(db.workspace.update)).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { id: WS_ID },
+        data: expect.objectContaining({ taxonomyChangedAt: expect.any(Date) }),
+      })
+    );
   });
 
   it("creates a node with optional fields alongside required description", async () => {
@@ -566,6 +574,28 @@ describe("PATCH /workspaces/:workspaceId/taxonomy-nodes/:nodeId", () => {
     const [callArg] = vi.mocked(db.taxonomyNode.update).mock.calls;
     expect(callArg![0]).not.toMatchObject({ data: { embeddingTextHash: null } });
   });
+
+  it("PATCH position-only change does NOT bump taxonomyChangedAt", async () => {
+    vi.mocked(db.taxonomyNode.findUnique).mockResolvedValue(baseNode as never);
+    vi.mocked(db.taxonomyNode.update).mockResolvedValue({ ...baseNode, positionX: 100 } as never);
+
+    await patch(`/workspaces/${WS_ID}/taxonomy-nodes/${NODE_ID}`, { positionX: 100 });
+    expect(vi.mocked(db.workspace.update)).not.toHaveBeenCalled();
+  });
+
+  it("PATCH name change bumps taxonomyChangedAt", async () => {
+    vi.mocked(db.taxonomyNode.findUnique).mockResolvedValue(baseNode as never);
+    vi.mocked(db.taxonomyNode.update).mockResolvedValue({ ...baseNode, name: "Renamed" } as never);
+    vi.mocked(db.taxonomyEdge.findMany).mockResolvedValue([] as never);
+
+    await patch(`/workspaces/${WS_ID}/taxonomy-nodes/${NODE_ID}`, { name: "Renamed" });
+    expect(vi.mocked(db.workspace.update)).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { id: WS_ID },
+        data: expect.objectContaining({ taxonomyChangedAt: expect.any(Date) }),
+      })
+    );
+  });
 });
 
 // ─── DELETE ───────────────────────────────────────────────────────────────────
@@ -581,6 +611,13 @@ describe("DELETE /workspaces/:workspaceId/taxonomy-nodes/:nodeId", () => {
     expect(res.status).toBe(200);
     const body = await res.json() as { ok: boolean };
     expect(body.ok).toBe(true);
+    // Removing a folder changes routing → bump taxonomyChangedAt.
+    expect(vi.mocked(db.workspace.update)).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { id: WS_ID },
+        data: expect.objectContaining({ taxonomyChangedAt: expect.any(Date) }),
+      })
+    );
   });
 
   it("returns 422 when node is the root Inbox node", async () => {

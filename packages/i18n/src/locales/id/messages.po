@@ -13,7 +13,7 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:513
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:516
 #, fuzzy
 msgid " (Inbox)"
 msgstr " (Kotak Masuk)"
@@ -55,6 +55,12 @@ msgstr "{0, plural, one {# utas diimpor.} other {# utas diimpor.}}"
 #, fuzzy
 msgid "{0, plural, one {# thread imported.} other {# threads imported.}} Your plan's import limit was reached."
 msgstr "{0, plural, one {# utas diimpor.} other {# utas diimpor.}} Batas impor paket Anda tercapai."
+
+#. placeholder {0}: s.threadCount
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:125
+#, fuzzy
+msgid "{0, plural, one {# thread} other {# threads}}"
+msgstr "{0, plural, one {# utas} other {# utas}}"
 
 #. placeholder {0}: node?.threadCount ?? 0
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:380
@@ -129,7 +135,7 @@ msgstr "{blacklistCount, plural, one {# diblokir} other {# diblokir}}"
 #~ msgid "{by} assigned you: {subject}"
 #~ msgstr "{by} menugaskan Anda: {subject}"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:528
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:531
 #, fuzzy
 msgid "{classificationCount, plural, one {Deleting this folder will leave # thread unsorted.} other {Deleting this folder will leave # threads unsorted.}}"
 msgstr "{classificationCount, plural, one {Menghapus folder ini akan meninggalkan # thread tidak terurut.} other {Menghapus folder ini akan meninggalkan # thread tidak terurut.}}"
@@ -150,6 +156,15 @@ msgstr "{confPct}% keyakinan"
 msgid "{draftRemaining} of {draftLimit} left · resets {draftResetDate}"
 msgstr "{draftRemaining} dari {draftLimit} tersisa · reset {draftResetDate}"
 
+#: ../../apps/web/src/app/(app)/emails/ResortReviewBanner.tsx:65
+#, fuzzy
+msgid "{eligible, plural, one {# needs-review thread can be re-sorted automatically, because your plan changed since it was sorted or sorting hit a temporary error. The rest need your decision.} other {# needs-review threads can be re-sorted automatically, because your plan changed since they were sorted or sorting hit a temporary error. The rest need your decision.}}"
+msgstr "{eligible, plural, one {# utas yang perlu ditinjau dapat disortir ulang secara otomatis, karena paket Anda berubah sejak disortir atau penyortiran mengalami error sementara. Sisanya memerlukan keputusan Anda.} other {# utas yang perlu ditinjau dapat disortir ulang secara otomatis, karena paket Anda berubah sejak disortir atau penyortiran mengalami error sementara. Sisanya memerlukan keputusan Anda.}}"
+
+#: ../../apps/web/src/app/(app)/emails/ResortReviewBanner.tsx:81
+msgid "{eligible, plural, one {Re-sort # thread} other {Re-sort # threads}}"
+msgstr "{eligible, plural, one {Sortir Ulang # utas} other {Sortir Ulang # utas}}"
+
 #: ../../apps/site/src/components/landing/HeroFeedCard.tsx:260
 #, fuzzy
 #~ msgid "{filed} filed, {reviewCount} needs review"
@@ -163,6 +178,10 @@ msgstr "{filed} disortir · {reviewCount} perlu ditinjau"
 #, fuzzy
 msgid "{folderCount, plural, one {# folder} other {# folders}}"
 msgstr "{folderCount, plural, one {# folder} other {# folder}}"
+
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:156
+msgid "{hiddenCount, plural, one {# folder with no threads is not shown.} other {# folders with no threads are not shown.}}"
+msgstr "{hiddenCount, plural, one {# folder tanpa utas tidak ditampilkan.} other {# folder tanpa utas tidak ditampilkan.}}"
 
 #: ../../apps/web/src/app/admin/waitlist/WaitlistShell.tsx:17
 #, fuzzy
@@ -195,7 +214,7 @@ msgstr "{quotaRemaining} dari {0} tersisa · reset {quotaResetDate}"
 msgid "{remaining} of {limit} remaining · resets {resetDate}"
 msgstr "{remaining} dari {limit} tersisa · reset {resetDate}"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1478
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1549
 #, fuzzy
 msgid "{routableCount} of {TAXONOMY_MIN_NON_ROOT_NODES} folders connected to your inbox. Routing requires at least {TAXONOMY_MIN_NON_ROOT_NODES}."
 msgstr "{routableCount} dari {TAXONOMY_MIN_NON_ROOT_NODES} folder terhubung ke kotak masuk Anda. Routing memerlukan setidaknya {TAXONOMY_MIN_NON_ROOT_NODES}."
@@ -259,7 +278,7 @@ msgstr "© 2026 Amarnai. Sumber terbuka di bawah AGPL-3.0."
 msgid "+ Add folder"
 msgstr "+ Tambah folder"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1319
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1390
 #, fuzzy
 msgid "+ Add Folder"
 msgstr "+ Tambah Folder"
@@ -268,6 +287,11 @@ msgstr "+ Tambah Folder"
 #, fuzzy
 msgid "+ New workspace"
 msgstr "+ Ruang kerja baru"
+
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:170
+#, fuzzy
+msgid "<0>{migrateLive}</0> threads move to their new folder instantly. <1>{resortLive}</1> threads will be re-sorted by AI."
+msgstr "<0>{migrateLive}</0> utas langsung berpindah ke folder baru. <1>{resortLive}</1> utas akan disortir ulang oleh AI."
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:95
 msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your {providerName} account to get started. Amarnai connects with <1>read-only access</1> and <2>never sends, deletes, or changes anything</2>. Your inbox stays yours."
@@ -415,7 +439,9 @@ msgstr "Lamaran baru telah diterima dari Horemheb dari Thebes untuk posisi Kepal
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "Lamaran baru telah diterima dari Horemheb dari Thebes untuk posisi Kepala Korespondensi.\n\nLihat lamaran di Gedung Arsip."
+msgstr "Lamaran baru telah diterima dari Horemheb dari Thebes untuk posisi Kepala Korespondensi.\n"
+"\n"
+"Lihat lamaran di Gedung Arsip."
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:387
 #, fuzzy
@@ -429,13 +455,21 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "Abdi-Heba,\n\nSaya akan berada di dekat Delta pada minggu yang sama. Mari kita bertemu di stasiun persinggahan pada hari kedua; saya bisa menyisihkan waktu pagi.\n\nSampai jumpa,"
+msgstr "Abdi-Heba,\n"
+"\n"
+"Saya akan berada di dekat Delta pada minggu yang sama. Mari kita bertemu di stasiun persinggahan pada hari kedua; saya bisa menyisihkan waktu pagi.\n"
+"\n"
+"Sampai jumpa,"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
 #, fuzzy
 #~ msgid "About {count, plural, one {# more thread} other {# more threads}} beyond your {plan} subscription limit aren't loaded."
 #~ msgstr "Sekitar {count, plural, one {# utas} other {# utas}} lebih dari batas langganan {plan} Anda tidak dimuat."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:186
+msgid "Academic Researcher"
+msgstr "Peneliti Akademis"
 
 #: ../../apps/web/src/app/sign-up/WaitlistForm.tsx:24
 #, fuzzy
@@ -476,10 +510,14 @@ msgstr "Pengaturan Akun"
 #~ msgid "Acme Workspace"
 #~ msgstr "Acme Workspace"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:17
+#: ../ui/src/i18n/taxonomy-template-messages.ts:19
 #, fuzzy
 msgid "Active project communication, deliverables, feedback, and approvals from clients."
 msgstr "Komunikasi proyek aktif, kiriman, umpan balik, dan persetujuan dari klien."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:163
+msgid "Ad revenue, fan tips, and creator earnings statements."
+msgstr "Pendapatan iklan, tip penggemar, dan laporan penghasilan kreator."
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:293
 #: ../../apps/mobile/src/components/BlacklistSheet.tsx:118
@@ -488,7 +526,7 @@ msgstr "Komunikasi proyek aktif, kiriman, umpan balik, dan persetujuan dari klie
 msgid "Add"
 msgstr "Tambah"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1343
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1414
 #, fuzzy
 msgid "Add at least 3 connected folders to export"
 msgstr "Tambahkan setidaknya 3 folder terhubung untuk ekspor"
@@ -504,7 +542,7 @@ msgstr "Tambahkan ke Firefox"
 
 #: ../../apps/mobile/src/components/CollaboratorsSheet.tsx:58
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:42
-#: ../ui/src/i18n/taxonomy-template-messages.ts:28
+#: ../ui/src/i18n/taxonomy-template-messages.ts:30
 #, fuzzy
 msgid "Admin"
 msgstr "Admin"
@@ -523,6 +561,20 @@ msgstr "Lanjutan"
 #, fuzzy
 msgid "Advanced review queue"
 msgstr "Antrean peninjauan lanjutan"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:155
+#, fuzzy
+msgid "Affiliate links, referral commissions, and creator reward tiers."
+msgstr "Tautan afiliasi, komisi rujukan, dan tingkatan hadiah kreator."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:154
+#, fuzzy
+msgid "Affiliates"
+msgstr "Afiliasi"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:67
+msgid "Agreements, banking, accounting, incorporation, and corporate legal correspondence."
+msgstr "Perjanjian, perbankan, akuntansi, pendirian perusahaan, dan korespondensi hukum perusahaan."
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:287
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:185
@@ -841,6 +893,10 @@ msgstr "Menerapkan…"
 msgid "Approve routing"
 msgstr "Setujui perutean"
 
+#: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:131
+msgid "Archive"
+msgstr "Arsip"
+
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:234
 #: ../ui/src/emails/TriageBar.tsx:71
 #, fuzzy
@@ -895,11 +951,21 @@ msgstr "Minimal {PASSWORD_MIN_LENGTH} karakter"
 #~ msgid "At least 8 characters"
 #~ msgstr "Minimal 8 karakter"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:160
+msgid "Audience"
+msgstr "Audiens"
+
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:127
 #: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:88
 #, fuzzy
 msgid "Auto-file notifications to Updates / Other"
 msgstr "Arsipkan notifikasi secara otomatis ke Pembaruan / Lainnya"
+
+#. placeholder {0}: catchAllRow.threadCount
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:148
+#, fuzzy
+msgid "Automated and bulk mail ({0}) always moves to the new catch-all folder."
+msgstr "Email otomatis dan massal ({0}) akan selalu masuk ke folder umum baru."
 
 #: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:39
 msgid "Automated and bulk mail that doesn't fit another folder lands here automatically. This is different from Needs review, which holds threads too ambiguous for the assistant to sort."
@@ -910,7 +976,7 @@ msgstr "Email otomatis dan massal yang tidak sesuai dengan folder lain akan masu
 msgid "Automated notice from the Bureau of Royal Appointments. Subject and sender clearly indicate a new application for an open position."
 msgstr "Pemberitahuan otomatis dari Biro Penunjukan Kerajaan. Subjek dan pengirim dengan jelas menunjukkan lamaran baru untuk posisi yang tersedia."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:96
+#: ../ui/src/i18n/taxonomy-template-messages.ts:246
 #: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:68
 #, fuzzy
 msgid "Automated notifications, newsletters, and service updates that don't fit another folder."
@@ -932,10 +998,15 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "Aziru,\n\nKata-kata persahabatan Anda telah kami terima dengan baik. Kami terbuka untuk mendengar lebih banyak tentang apa yang diusulkan oleh Wangsa Amurru. Kirimkan ketentuan Anda melalui kurir berikutnya.\n\nDengan hormat,"
+msgstr "Aziru,\n"
+"\n"
+"Kata-kata persahabatan Anda telah kami terima dengan baik. Kami terbuka untuk mendengar lebih banyak tentang apa yang diusulkan oleh Wangsa Amurru. Kirimkan ketentuan Anda melalui kurir berikutnya.\n"
+"\n"
+"Dengan hormat,"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:219
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
+#: ../../apps/site/src/components/landing/MailThreadMock.tsx:65
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:25
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:230
 #: ../ui/src/emails/ThreadPreview.tsx:121
@@ -944,8 +1015,8 @@ msgid "Back"
 msgstr "Kembali"
 
 #: ../../apps/site/src/components/landing/MailThreadMock.tsx:62
-msgid "Back to inbox"
-msgstr "Kembali ke kotak masuk"
+#~ msgid "Back to inbox"
+#~ msgstr "Kembali ke kotak masuk"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:215
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:225
@@ -965,7 +1036,7 @@ msgstr "Kembali ke Masuk"
 msgid "Backfill"
 msgstr "Pengisian Ulang"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:81
+#: ../ui/src/i18n/taxonomy-template-messages.ts:91
 #, fuzzy
 msgid "Bank statements, investments, insurance policies, and personal financial records."
 msgstr "Rekening koran, investasi, polis asuransi, dan catatan keuangan pribadi."
@@ -1002,15 +1073,33 @@ msgstr "Siklus Penagihan"
 msgid "Billing unit"
 msgstr "Unit Penagihan"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:23
+#: ../ui/src/i18n/taxonomy-template-messages.ts:25
 #, fuzzy
 msgid "Billing, payments, invoices, and financial records for freelance work."
 msgstr "Penagihan, pembayaran, faktur, dan catatan keuangan untuk pekerjaan lepas."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:94
+#, fuzzy
+msgid "Bills & Receipts"
+msgstr "Tagihan & Kwitansi"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:238
+#, fuzzy
+msgid "Board & Governance"
+msgstr "Dewan & Tata Kelola"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:239
+msgid "Board meetings, governance policies, bylaws, and trustee correspondence."
+msgstr "Rapat dewan, kebijakan tata kelola, anggaran dasar, dan korespondensi wali amanat."
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:33
 #, fuzzy
 msgid "Board members, existing fund partners, and portfolio updates."
 msgstr "Anggota dewan, mitra dana yang ada, dan pembaruan portofolio."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:150
+msgid "Brand Deals"
+msgstr "Kerja Sama Merek"
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:385
 #, fuzzy
@@ -1022,7 +1111,7 @@ msgid "Browse emails easily through your folders. Generate draft replies and cop
 msgstr "Jelajahi email dengan mudah melalui folder Anda. Buat draf balasan dan salin ke kotak masuk Anda."
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:283
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1403
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1474
 #, fuzzy
 msgid "Browse templates"
 msgstr "Telusuri Template"
@@ -1031,6 +1120,15 @@ msgstr "Telusuri Template"
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:280
 msgid "Browser extension"
 msgstr "Ekstensi browser"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:114
+#, fuzzy
+msgid "Bug Reports"
+msgstr "Laporan Bug"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:115
+msgid "Bug reports, stack traces, and regression tickets filed against the codebase."
+msgstr "Laporan bug, stack trace, dan tiket regresi yang diajukan untuk basis kode."
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:55
 #, fuzzy
@@ -1064,10 +1162,24 @@ msgstr "Bisnis"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:27
 #, fuzzy
-msgid "Business receipts, reimbursements, and records of work-related purchases."
-msgstr "Kuitansi bisnis, penggantian biaya, dan catatan pembelian terkait pekerjaan."
+#~ msgid "Business receipts, reimbursements, and records of work-related purchases."
+#~ msgstr "Kuitansi bisnis, penggantian biaya, dan catatan pembelian terkait pekerjaan."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:71
+#: ../ui/src/i18n/taxonomy-template-messages.ts:31
+#, fuzzy
+msgid "Business registration, liability coverage, and internal administration notices."
+msgstr "Pendaftaran bisnis, perlindungan kewajiban, dan pemberitahuan administrasi internal."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:29
+#, fuzzy
+msgid "Business reimbursements and records of work-related purchases and equipment."
+msgstr "Penggantian biaya bisnis dan catatan pembelian serta peralatan terkait pekerjaan."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:209
+msgid "Buyers & Showings"
+msgstr "Pembeli & Tur Properti"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:79
 #, fuzzy
 msgid "Campus Admin"
 msgstr "Admin Kampus"
@@ -1094,13 +1206,13 @@ msgstr "Bisakah saya meng-hosting Amarnai sendiri?"
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:93
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:245
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:150
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:566
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:580
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:694
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1617
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1645
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1686
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1773
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:94
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:186
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:569
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:583
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:697
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1702
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1795
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:64
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:275
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:370
@@ -1137,6 +1249,15 @@ msgstr "Batalkan langganan?"
 msgid "Cancelling…"
 msgstr "Membatalkan…"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:63
+#, fuzzy
+msgid "Candidate pipelines, applicant screening, and headcount planning."
+msgstr "Daftar kandidat, penyaringan pelamar, dan perencanaan jumlah karyawan."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:134
+msgid "Carrier tracking numbers, delivery exceptions, and courier dispatch notices."
+msgstr "Nomor pelacakan pengiriman, pengecualian pengiriman, dan pemberitahuan pengiriman kurir."
+
 #: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:58
 #: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:81
 #, fuzzy
@@ -1157,6 +1278,10 @@ msgstr "Ganti penerima tugas"
 msgid "Change subscription"
 msgstr "Ubah Langganan"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:157
+msgid "Channel notifications, upload analytics, and policy updates from social platforms."
+msgstr "Notifikasi saluran, analitik unggahan, dan pembaruan kebijakan dari platform sosial."
+
 #: ../../apps/web/src/app/verify-email/page.tsx:26
 #, fuzzy
 msgid "Check your inbox"
@@ -1168,7 +1293,7 @@ msgstr "Cek kotak masuk Anda"
 msgid "Checkout failed: {0}"
 msgstr "Pembayaran gagal: {0}"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:676
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:679
 #, fuzzy
 msgid "Child folder"
 msgstr "Subfolder"
@@ -1201,6 +1326,15 @@ msgstr "Pilih cara pratinjau Amarnai"
 msgid "Choose parent"
 msgstr "Pilih induk"
 
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:101
+#, fuzzy
+msgid "Choose where each folder’s threads should go under your new plan. Matched folders keep their threads instantly; anything set to re-sort is re-classified by AI."
+msgstr "Pilih tujuan utas setiap folder di paket baru Anda. Folder yang cocok akan langsung mempertahankan utasnya; apa pun yang diatur untuk disortir ulang akan diklasifikasikan ulang oleh AI."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:169
+msgid "Classroom"
+msgstr "Kelas"
+
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:120
 #, fuzzy
 #~ msgid "Click folders & threads, then generate a draft."
@@ -1208,10 +1342,14 @@ msgstr "Pilih induk"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:21
 #, fuzzy
-msgid "Client agreements, statements of work, NDAs, and contract amendments."
-msgstr "Perjanjian klien, surat perintah kerja, NDA, dan amandemen kontrak."
+#~ msgid "Client agreements, statements of work, NDAs, and contract amendments."
+#~ msgstr "Perjanjian klien, surat perintah kerja, NDA, dan amandemen kontrak."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:16
+#: ../ui/src/i18n/taxonomy-template-messages.ts:23
+msgid "Client contracts, statements of work, NDAs, and signed amendments."
+msgstr "Kontrak klien, pernyataan kerja, NDA, dan amandemen yang ditandatangani."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:18
 #, fuzzy
 msgid "Clients"
 msgstr "Klien"
@@ -1227,7 +1365,7 @@ msgstr "Klien"
 msgid "Close"
 msgstr "Tutup"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1542
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1613
 #, fuzzy
 msgid "Close panel"
 msgstr "Tutup Panel"
@@ -1239,6 +1377,25 @@ msgstr "Tutup Panel"
 #, fuzzy
 msgid "Close preview"
 msgstr "Tutup Pratinjau"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:117
+#, fuzzy
+msgid "Cloud hosting, servers, and platform monitoring for running services."
+msgstr "Hosting cloud, server, dan pemantauan platform untuk menjalankan layanan."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:110
+#, fuzzy
+msgid "Code"
+msgstr "Kode"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:159
+#, fuzzy
+msgid "Collab invitations, guest appearances, and cross-promotion with other creators."
+msgstr "Undangan kolaborasi, penampilan tamu, dan promosi silang dengan kreator lain."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:158
+msgid "Collaborations"
+msgstr "Kolaborasi"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:251
 #: ../../apps/mobile/src/components/CollaboratorsSheet.tsx:36
@@ -1259,6 +1416,10 @@ msgstr "Kolaborator tersedia pada langganan Pro dan Bisnis. <0>Upgrade untuk men
 #~ msgid "Collapse"
 #~ msgstr "Ciutkan"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:124
+msgid "Communities"
+msgstr "Komunitas"
+
 #: ../ui/src/pricing/planMessages.ts:98
 #, fuzzy
 msgid "Community & docs"
@@ -1269,6 +1430,15 @@ msgstr "Komunitas & Dokumen"
 msgid "Compare every subscription"
 msgstr "Bandingkan Semua Langganan"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:195
+#, fuzzy
+msgid "Conference submissions, abstract acceptances, and keynote session invitations."
+msgstr "Pengajuan konferensi, penerimaan abstrak, dan undangan sesi utama."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:194
+msgid "Conferences"
+msgstr "Konferensi"
+
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:294
 #, fuzzy
 msgid "Confirm cancellation"
@@ -1278,7 +1448,7 @@ msgstr "Konfirmasi Pembatalan"
 msgid "Confirm delete"
 msgstr "Konfirmasi penghapusan"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:558
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:561
 #, fuzzy
 msgid "Confirm Delete"
 msgstr "Konfirmasi Hapus"
@@ -1436,6 +1606,10 @@ msgstr "Menghubungkan…"
 msgid "Connection failed. Please try again."
 msgstr "Koneksi gagal. Silakan coba lagi."
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:148
+msgid "Content Creator"
+msgstr "Kreator Konten"
+
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:363
 #, fuzzy
 msgid "Continue to {name}"
@@ -1462,15 +1636,19 @@ msgstr "Lanjutkan ke Pembayaran"
 msgid "Continue with Google"
 msgstr "Lanjutkan dengan Google"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:20
+#: ../ui/src/i18n/taxonomy-template-messages.ts:119
+msgid "Continuous-integration runs, build pipelines, and deployment status notifications."
+msgstr "Eksekusi integrasi berkelanjutan, pipeline build, dan notifikasi status deployment."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:22
 #, fuzzy
 msgid "Contracts"
 msgstr "Kontrak"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:61
 #, fuzzy
-msgid "Contracts, banking, accounting, tax filings, and corporate legal correspondence."
-msgstr "Kontrak, perbankan, akuntansi, pengajuan pajak, dan korespondensi hukum perusahaan."
+#~ msgid "Contracts, banking, accounting, tax filings, and corporate legal correspondence."
+#~ msgstr "Kontrak, perbankan, akuntansi, pengajuan pajak, dan korespondensi hukum perusahaan."
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:99
 #, fuzzy
@@ -1566,6 +1744,10 @@ msgstr "Tidak dapat memuat rencana."
 msgid "Could not open billing management."
 msgstr "Tidak dapat membuka manajemen penagihan."
 
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1298
+msgid "Could not prepare migration"
+msgstr "Tidak dapat menyiapkan migrasi"
+
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:89
 #: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:114
 #, fuzzy
@@ -1577,7 +1759,7 @@ msgstr "Tidak dapat mengantrekan pemindaian ulang. Silakan coba lagi."
 msgid "Could not reach the server. Please check your connection and try again."
 msgstr "Tidak dapat menjangkau server. Harap periksa koneksi Anda dan coba lagi."
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1212
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1248
 #, fuzzy
 msgid "Could not read file: invalid JSON."
 msgstr "Gagal membaca berkas: JSON tidak valid."
@@ -1651,13 +1833,13 @@ msgstr "Sidang Dewan: musim Shemu"
 msgid "Council preparation request from a known royal ally. Sender domain and context clearly match the Current investors folder."
 msgstr "Permintaan persiapan dewan dari sekutu kerajaan yang dikenal. Domain pengirim dan konteks jelas cocok dengan folder Investor Saat Ini."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:69
+#: ../ui/src/i18n/taxonomy-template-messages.ts:77
 #, fuzzy
 msgid "Courses"
 msgstr "Kursus"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:448
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:577
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:580
 #, fuzzy
 msgid "Create"
 msgstr "Buat"
@@ -1683,7 +1865,7 @@ msgstr "Buat akun"
 msgid "Create an account to triage your inbox"
 msgstr "Buat akun untuk memilah kotak masuk Anda"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:439
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:442
 #, fuzzy
 msgid "Create Folder"
 msgstr "Buat Folder"
@@ -1718,7 +1900,7 @@ msgstr "Membuat…"
 #: ../../apps/mobile/src/components/RerouteSheet.tsx:45
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:107
 #: ../../apps/site/src/components/demo/demo-seed.ts:33
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1739
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1756
 #, fuzzy
 msgid "Current"
 msgstr "Saat Ini"
@@ -1735,14 +1917,23 @@ msgstr "Langganan saat ini"
 msgid "Current workspace: <0>{workspaceName}</0>"
 msgstr "Ruang kerja saat ini: <0>{workspaceName}</0>"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:174
+#, fuzzy
+msgid "Curriculum resources, lesson materials, and syllabus planning for upcoming units."
+msgstr "Sumber daya kurikulum, materi pelajaran, dan perencanaan silabus untuk unit mendatang."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:141
+msgid "Customer Questions"
+msgstr "Pertanyaan Pelanggan"
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:54
 #, fuzzy
-msgid "Customer support, onboarding, product feedback, churn, and success conversations."
-msgstr "Dukungan pelanggan, orientasi, umpan balik produk, pergantian pelanggan, dan percakapan keberhasilan."
+#~ msgid "Customer support, onboarding, product feedback, churn, and success conversations."
+#~ msgstr "Dukungan pelanggan, orientasi, umpan balik produk, pergantian pelanggan, dan percakapan keberhasilan."
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:29
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:157
-#: ../ui/src/i18n/taxonomy-template-messages.ts:53
+#: ../ui/src/i18n/taxonomy-template-messages.ts:59
 #, fuzzy
 msgid "Customers"
 msgstr "Pelanggan"
@@ -1758,6 +1949,10 @@ msgstr "Zona Bahaya"
 #: ../ui/src/theme/themes.ts:39
 msgid "Dark"
 msgstr "Gelap"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:214
+msgid "Deal progress, transaction stages, and closing coordination across active sales."
+msgstr "Kemajuan kesepakatan, tahapan transaksi, dan koordinasi penutupan untuk semua penjualan aktif."
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:118
 #, fuzzy
@@ -1777,9 +1972,9 @@ msgstr "Ruang kerja gratis bawaan"
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:198
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:271
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:272
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:596
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:607
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:703
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:599
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:610
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:706
 #, fuzzy
 msgid "Delete"
 msgstr "Hapus"
@@ -1836,20 +2031,29 @@ msgstr "Hapus ruang kerja"
 msgid "Delete workspace?"
 msgstr "Hapus ruang kerja?"
 
+#: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:130
+#, fuzzy
+msgid "Deleted Items"
+msgstr "Item Dihapus"
+
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:405
 msgid "Deleting..."
 msgstr "Menghapus..."
 
 #: ../../apps/mobile/app/(app)/account.tsx:166
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:143
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:558
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:561
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:56
 #, fuzzy
 msgid "Deleting…"
 msgstr "Menghapus…"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:118
+msgid "Deployments"
+msgstr "Deployment"
+
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:80
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:290
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:293
 #, fuzzy
 msgid "Describe what kinds of emails belong here: who they come from and what they are about. Be specific and use the actual names, topics, and words that show up in those emails. Describe what the emails are, not what you plan to do about them. The clearer your description, the more accurately your email is sorted here."
 msgstr "Jelaskan jenis email apa yang termasuk di sini: siapa pengirimnya dan tentang apa isinya. Bersikaplah spesifik dan gunakan nama, topik, dan kata-kata sebenarnya yang muncul dalam email tersebut. Jelaskan tentang apa email tersebut, bukan apa yang Anda rencanakan untuk dilakukan dengannya. Semakin jelas deskripsi Anda, semakin akurat email Anda akan disortir di sini."
@@ -1860,7 +2064,7 @@ msgid "Describe your folders"
 msgstr "Deskripsikan folder Anda"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:289
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:461
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:464
 #, fuzzy
 msgid "Description"
 msgstr "Deskripsi"
@@ -1958,13 +2162,13 @@ msgstr "Memutus sambungan ruang kerja ini. Amarnai tetap memiliki akses karena k
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:239
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:65
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:369
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:375
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:57
 #: ../../apps/web/src/components/JoinedWorkspaceToast.tsx:46
 #: ../../apps/web/src/components/NotificationBell.tsx:179
 #: ../../apps/web/src/components/NotificationBell.tsx:180
 #: ../ui/src/AppDownloadBanner.tsx:80
-#: ../ui/src/emails/MockEmailsPage.tsx:288
+#: ../ui/src/emails/MockEmailsPage.tsx:296
 #, fuzzy
 msgid "Dismiss"
 msgstr "Tutup"
@@ -1980,10 +2184,18 @@ msgstr "Nama Tampilan"
 msgid "Do I have to build the folder structure myself?"
 msgstr "Apakah saya harus membuat struktur folder sendiri?"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:201
+msgid "Doctoral advising, thesis feedback, and mentoring for doctoral researchers."
+msgstr "Pembimbingan doktoral, masukan tesis, dan mentoring untuk peneliti doktoral."
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:86
 #, fuzzy
-msgid "Doctors, pharmacies, medical appointments, health insurance claims, and lab results."
-msgstr "Dokter, apotek, janji medis, klaim asuransi kesehatan, dan hasil lab."
+#~ msgid "Doctors, pharmacies, medical appointments, health insurance claims, and lab results."
+#~ msgstr "Dokter, apotek, janji medis, klaim asuransi kesehatan, dan hasil lab."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:97
+msgid "Doctors, pharmacies, medical appointments, prescriptions, and test results."
+msgstr "Dokter, apotek, janji temu medis, resep, dan hasil tes."
 
 #: ../../apps/site/src/components/landing/Footer.tsx:30
 #, fuzzy
@@ -2004,6 +2216,10 @@ msgstr "Belum punya akun? <0>Buat akun</0>"
 msgid "Don't have an account? <0>Sign up</0>"
 msgstr "Belum punya akun? <0>Daftar</0>"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:229
+msgid "Donation drives, giving campaigns, and fundraising appeal responses."
+msgstr "Kampanye donasi, program pemberian, dan tanggapan permohonan penggalangan dana."
+
 #: ../../apps/mobile/app/(app)/notifications.tsx:278
 #: ../../apps/mobile/src/components/ThreadRow.tsx:35
 #: ../ui/src/emails/ThreadRow.tsx:202
@@ -2015,6 +2231,10 @@ msgstr "Selesai"
 #, fuzzy
 msgid "Done · undo"
 msgstr "Selesai · batalkan"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:230
+msgid "Donors"
+msgstr "Donatur"
 
 #: ../ui/src/PricingPlans.tsx:189
 #, fuzzy
@@ -2055,7 +2275,7 @@ msgid "Draft shared"
 msgstr "Draf dibagikan"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:342
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:484
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:487
 #, fuzzy
 msgid "Draft style guidance"
 msgstr "Panduan Gaya Draf"
@@ -2065,6 +2285,10 @@ msgstr "Panduan Gaya Draf"
 #, fuzzy
 msgid "Drafting…"
 msgstr "Mendraf…"
+
+#: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:128
+msgid "Drafts"
+msgstr "Draf"
 
 #: ../../apps/site/src/components/demo/DemoTaxonomyCanvas.tsx:223
 #, fuzzy
@@ -2076,17 +2300,22 @@ msgstr "Seret dan hubungkan. Sepenuhnya interaktif."
 msgid "Drag to resize"
 msgstr "Seret untuk mengubah ukuran"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:129
+#, fuzzy
+msgid "E-commerce Seller"
+msgstr "Penjual E-commerce"
+
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:280
 msgid "e.g. Invoices"
 msgstr "Contoh: Faktur"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:469
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:472
 #, fuzzy
 msgid "e.g. Invoices, receipts, payment confirmations, and billing questions from clients and vendors."
 msgstr "Contoh: Faktur, tanda terima, konfirmasi pembayaran, dan pertanyaan tagihan dari klien dan vendor."
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:350
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:490
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:493
 #, fuzzy
 msgid "e.g. Reply formally. Keep responses under 3 sentences."
 msgstr "Contoh: Balas secara formal. Jaga balasan di bawah 3 kalimat."
@@ -2101,7 +2330,7 @@ msgstr "Sebelumnya"
 msgid "Edit folder"
 msgstr "Edit folder"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:439
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:442
 #, fuzzy
 msgid "Edit Folder"
 msgstr "Edit Folder"
@@ -2110,7 +2339,7 @@ msgstr "Edit Folder"
 msgid "Edit inbox"
 msgstr "Edit kotak masuk"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:651
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:654
 #, fuzzy
 msgid "Edit Path"
 msgstr "Ubah Jalur"
@@ -2178,15 +2407,19 @@ msgid "Emails"
 msgstr "Email"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:100
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:318
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:321
 #, fuzzy
 msgid "Emails about my bills that I need to deal with."
 msgstr "Email tentang tagihan yang perlu saya tangani."
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:101
+msgid "Emails from relatives, children's activities, family events, and household coordination."
+msgstr "Email dari kerabat, aktivitas anak, acara keluarga, dan koordinasi rumah tangga."
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:90
 #, fuzzy
-msgid "Emails from relatives, children's schools, family events, and household coordination."
-msgstr "Email dari kerabat, sekolah anak, acara keluarga, dan koordinasi rumah tangga."
+#~ msgid "Emails from relatives, children's schools, family events, and household coordination."
+#~ msgstr "Email dari kerabat, sekolah anak, acara keluarga, dan koordinasi rumah tangga."
 
 #: ../ui/src/pricing/planMessages.ts:95
 #, fuzzy
@@ -2198,10 +2431,14 @@ msgstr "Ditingkatkan + cadangan"
 msgid "Enhanced + higher fallback"
 msgstr "Ditingkatkan + cadangan lebih tinggi"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:80
+msgid "Enrollment, tuition fees, dorm assignments, and official campus administration."
+msgstr "Pendaftaran, biaya kuliah, penempatan asrama, dan administrasi kampus resmi."
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:72
 #, fuzzy
-msgid "Enrollment, tuition fees, housing applications, and official campus administration."
-msgstr "Pendaftaran, biaya kuliah, permohonan akomodasi, dan administrasi kampus resmi."
+#~ msgid "Enrollment, tuition fees, housing applications, and official campus administration."
+#~ msgstr "Pendaftaran, biaya kuliah, permohonan akomodasi, dan administrasi kampus resmi."
 
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:71
 #, fuzzy
@@ -2228,6 +2465,25 @@ msgstr "Masukkan email Anda dan kami akan mengirimkan tautan reset."
 #, fuzzy
 msgid "Entry"
 msgstr "Entri"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:215
+#, fuzzy
+msgid "Escrow & Closing"
+msgstr "Escrow & Penutupan"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:216
+#, fuzzy
+msgid "Escrow instructions, title documents, closing disclosures, and signing appointments."
+msgstr "Instruksi escrow, dokumen hak milik, pengungkapan penutupan, dan janji temu penandatanganan."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:240
+#, fuzzy
+msgid "Events & Campaigns"
+msgstr "Acara & Kampanye"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:179
+msgid "Events & Field Trips"
+msgstr "Acara & Kunjungan Lapangan"
 
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:31
 #, fuzzy
@@ -2263,48 +2519,52 @@ msgstr "Semua yang tidak masuk ke folder bernama."
 #~ msgid "Expand"
 #~ msgstr "Perluas"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:26
+#: ../ui/src/i18n/taxonomy-template-messages.ts:28
 #, fuzzy
 msgid "Expenses"
 msgstr "Pengeluaran"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1367
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1438
 #, fuzzy
 msgid "Export"
 msgstr "Ekspor"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1342
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1350
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1413
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1421
 #, fuzzy
 msgid "Export plan"
 msgstr "Rencana ekspor"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:47
+msgid "External agencies, outside firms, and business partners engaged professionally."
+msgstr "Agen eksternal, firma luar, dan mitra bisnis yang terlibat secara profesional."
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:43
 #, fuzzy
-msgid "External vendors, clients, and agencies engaged in a professional capacity."
-msgstr "Vendor eksternal, klien, dan agen yang terlibat secara profesional."
+#~ msgid "External vendors, clients, and agencies engaged in a professional capacity."
+#~ msgstr "Vendor eksternal, klien, dan agen yang terlibat secara profesional."
 
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:163
 #, fuzzy
 msgid "Failed to apply"
 msgstr "Gagal menerapkan"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1044
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1080
 #, fuzzy
 msgid "Failed to create folder"
 msgstr "Gagal membuat folder"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:977
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1013
 #, fuzzy
 msgid "Failed to create path"
 msgstr "Gagal membuat jalur"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1115
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1151
 #, fuzzy
 msgid "Failed to delete folder"
 msgstr "Gagal menghapus folder"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1132
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1168
 #, fuzzy
 msgid "Failed to delete path"
 msgstr "Gagal menghapus jalur"
@@ -2314,12 +2574,12 @@ msgstr "Gagal menghapus jalur"
 msgid "Failed to load status"
 msgstr "Gagal memuat status"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1173
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1209
 #, fuzzy
 msgid "Failed to redo"
 msgstr "Gagal mengulang"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:944
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:980
 #, fuzzy
 msgid "Failed to save position"
 msgstr "Gagal menyimpan posisi"
@@ -2329,25 +2589,29 @@ msgstr "Gagal menyimpan posisi"
 msgid "Failed to start generation"
 msgstr "Gagal memulai pembuatan"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1154
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1190
 #, fuzzy
 msgid "Failed to undo"
 msgstr "Gagal membatalkan"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1076
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1112
 #, fuzzy
 msgid "Failed to update folder"
 msgstr "Gagal memperbarui folder"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1098
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1134
 #, fuzzy
 msgid "Failed to update path"
 msgstr "Gagal memperbarui jalur"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:89
+#: ../ui/src/i18n/taxonomy-template-messages.ts:100
 #, fuzzy
 msgid "Family"
 msgstr "Keluarga"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:161
+msgid "Fan messages, viewer comments, and follower engagement notifications."
+msgstr "Pesan penggemar, komentar penonton, dan notifikasi interaksi pengikut."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:76
 #: ../../apps/site/src/components/landing/Footer.tsx:29
@@ -2355,6 +2619,20 @@ msgstr "Keluarga"
 #, fuzzy
 msgid "FAQ"
 msgstr "FAQ"
+
+#: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:161
+#, fuzzy
+msgid "Favorites"
+msgstr "Favorit"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:197
+#, fuzzy
+msgid "Fellowship awards, funding-body deadlines, and research budget correspondence."
+msgstr "Penghargaan beasiswa, tenggat waktu badan pemberi dana, dan korespondensi anggaran penelitian."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:180
+msgid "Field trips, parent evenings, assemblies, and school event scheduling."
+msgstr "Kunjungan lapangan, malam orang tua, rapat sekolah, dan penjadwalan acara sekolah."
 
 #: ../../apps/mobile/src/components/emails/FolderFilterSheet.tsx:33
 #, fuzzy
@@ -2371,7 +2649,7 @@ msgstr "Filter antrean & folder…"
 msgid "Filter rail"
 msgstr "Bilah filter"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:22
+#: ../ui/src/i18n/taxonomy-template-messages.ts:24
 #, fuzzy
 msgid "Finance"
 msgstr "Keuangan"
@@ -2380,6 +2658,11 @@ msgstr "Keuangan"
 #, fuzzy
 msgid "Find and draft"
 msgstr "Cari dan susun draf"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:222
+#, fuzzy
+msgid "First-contact buyer and seller enquiries and new agent introductions."
+msgstr "Pertanyaan pembeli dan penjual kontak pertama serta perkenalan agen baru."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:16
 msgid "Five things keep your inbox safe. First, Amarnai is read-only by design: the permissions you grant through Google make it impossible for Amarnai to send, delete, or change any email. Second, Amarnai has passed Google's security review, completing the CASA security assessment required for any app that accesses Gmail. Third, you stay in control: replies stay drafts until you say so, nothing is ever sent on your behalf, and you can disconnect Amarnai at any time. Fourth, no email bodies are stored: Amarnai keeps labels and metadata, never the contents of your messages. Fifth, the code is public, so anyone can inspect exactly what touches your email."
@@ -2392,10 +2675,14 @@ msgstr "Ditandai sebagai perkenalan aliansi/investor berdasarkan bahasa yang dig
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:92
 #, fuzzy
-msgid "Flight and hotel bookings, travel itineraries, visa applications, and trip confirmations."
-msgstr "Pemesanan penerbangan dan hotel, jadwal perjalanan, pengajuan visa, dan konfirmasi perjalanan."
+#~ msgid "Flight and hotel bookings, travel itineraries, visa applications, and trip confirmations."
+#~ msgstr "Pemesanan penerbangan dan hotel, jadwal perjalanan, pengajuan visa, dan konfirmasi perjalanan."
 
-#: ../../apps/site/src/components/landing/MailInboxMock.tsx:75
+#: ../ui/src/i18n/taxonomy-template-messages.ts:103
+msgid "Flight and hotel bookings, travel itineraries, visas, and trip confirmations."
+msgstr "Pemesanan penerbangan dan hotel, jadwal perjalanan, visa, dan konfirmasi perjalanan."
+
+#: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:175
 #, fuzzy
 msgid "Focused"
 msgstr "Fokus"
@@ -2441,22 +2728,35 @@ msgstr "Folder: {activeFolderName}"
 msgid "Folders"
 msgstr "Folder"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:35
+#: ../ui/src/i18n/taxonomy-template-messages.ts:206
+#, fuzzy
+msgid "For agents managing listings, showings, transactions, and closings."
+msgstr "Untuk agen yang mengelola daftar properti, tur, transaksi, dan penutupan."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:149
+msgid "For creators handling brand deals, platforms, audience, and monetization."
+msgstr "Untuk kreator yang mengelola kerja sama merek, platform, audiens, dan monetisasi."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:39
 #, fuzzy
 msgid "For employees managing work, team communication, and personal email in one inbox."
 msgstr "Untuk karyawan yang mengelola pekerjaan, komunikasi tim, dan email pribadi dalam satu kotak masuk."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:50
+#: ../ui/src/i18n/taxonomy-template-messages.ts:109
+msgid "For engineers and open-source maintainers tracking code, deployments, and releases."
+msgstr "Untuk engineer dan maintainer open-source yang melacak kode, deployment, dan rilis."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:56
 #, fuzzy
 msgid "For founders juggling investors, customers, hiring, legal, and press in one view."
 msgstr "Untuk para pendiri yang mengelola investor, pelanggan, perekrutan, hukum, dan media dalam satu tampilan."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:15
+#: ../ui/src/i18n/taxonomy-template-messages.ts:17
 #, fuzzy
 msgid "For independent consultants and freelancers managing clients, projects, and finances."
 msgstr "Untuk konsultan independen dan pekerja lepas yang mengelola klien, proyek, dan keuangan."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:80
+#: ../ui/src/i18n/taxonomy-template-messages.ts:90
 #, fuzzy
 msgid "For individuals managing finances, health, home, family, and personal subscriptions."
 msgstr "Untuk individu yang mengelola keuangan, kesehatan, rumah, keluarga, dan langganan pribadi."
@@ -2466,6 +2766,10 @@ msgstr "Untuk individu yang mengelola keuangan, kesehatan, rumah, keluarga, dan 
 #, fuzzy
 msgid "For individuals trying Amarnai on their own inbox."
 msgstr "Untuk individu yang mencoba Amarnai di kotak masuk pribadi mereka."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:168
+msgid "For K-12 educators managing classroom, parents, and school administration."
+msgstr "Untuk pendidik K-12 yang mengelola kelas, orang tua, dan administrasi sekolah."
 
 #: ../ui/src/pricing/planMessages.ts:27
 #, fuzzy
@@ -2482,6 +2786,15 @@ msgstr "Untuk organisasi besar."
 msgid "For many years our houses have been as brothers. I write now to propose that we formalise this friendship for the benefit of both our peoples."
 msgstr "Selama bertahun-tahun, keluarga kita telah bersaudara. Saya menulis sekarang untuk mengusulkan agar kita meresmikan persahabatan ini demi keuntungan kedua bangsa kita."
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:227
+#, fuzzy
+msgid "For nonprofit directors managing fundraising, volunteers, programs, and board."
+msgstr "Untuk direktur nirlaba yang mengelola penggalangan dana, sukarelawan, program, dan dewan."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:130
+msgid "For online sellers tracking orders, shipping, suppliers, and marketplace payouts."
+msgstr "Untuk penjual online yang melacak pesanan, pengiriman, pemasok, dan pembayaran marketplace."
+
 #: ../ui/src/pricing/planMessages.ts:26
 #, fuzzy
 msgid "For power users and small businesses who live in their inbox."
@@ -2492,7 +2805,11 @@ msgstr "Untuk power user dan bisnis kecil yang sangat aktif di kotak masuk merek
 msgid "For power users and small businesses."
 msgstr "Untuk power user dan bisnis kecil."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:66
+#: ../ui/src/i18n/taxonomy-template-messages.ts:187
+msgid "For researchers managing publications, conferences, funding, and lab work."
+msgstr "Untuk peneliti yang mengelola publikasi, konferensi, pendanaan, dan pekerjaan lab."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:74
 #, fuzzy
 msgid "For students balancing university, internship applications, and everyday life."
 msgstr "Untuk mahasiswa yang menyeimbangkan perkuliahan, lamaran magang, dan kehidupan sehari-hari."
@@ -2502,6 +2819,10 @@ msgstr "Untuk mahasiswa yang menyeimbangkan perkuliahan, lamaran magang, dan keh
 #, fuzzy
 msgid "Forgot password?"
 msgstr "Lupa kata sandi?"
+
+#: ../../apps/site/src/components/landing/MailThreadMock.tsx:102
+msgid "Forward"
+msgstr "Teruskan"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:38
 #: ../../apps/mobile/app/(app)/subscription.tsx:40
@@ -2534,15 +2855,19 @@ msgstr "Uji coba gratis hingga {0}."
 msgid "Free trial until <0>{0}</0>. You won't be charged before then."
 msgstr "Uji coba gratis hingga <0>{0}</0>. Anda tidak akan dikenakan biaya sebelum tanggal tersebut."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:14
+#: ../ui/src/i18n/taxonomy-template-messages.ts:16
 #, fuzzy
 msgid "Freelancer"
 msgstr "Pekerja Lepas"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:85
+msgid "Friends, campus clubs, social invitations, and extracurricular activities."
+msgstr "Teman, klub kampus, undangan sosial, dan kegiatan ekstrakurikuler."
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:77
 #, fuzzy
-msgid "Friends, campus events, clubs, social invitations, and extracurricular activities."
-msgstr "Teman, acara kampus, klub, undangan sosial, dan kegiatan ekstrakurikuler."
+#~ msgid "Friends, campus events, clubs, social invitations, and extracurricular activities."
+#~ msgstr "Teman, acara kampus, klub, undangan sosial, dan kegiatan ekstrakurikuler."
 
 #: ../ui/src/pricing/planMessages.ts:92
 #, fuzzy
@@ -2553,6 +2878,20 @@ msgstr "Lengkap"
 #, fuzzy
 msgid "Full + admin controls"
 msgstr "Lengkap + kontrol admin"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:196
+#, fuzzy
+msgid "Funding & Fellowships"
+msgstr "Pendanaan & Beasiswa"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:228
+#, fuzzy
+msgid "Fundraising"
+msgstr "Penggalangan Dana"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:241
+msgid "Gala planning, charity auctions, and awareness campaign logistics."
+msgstr "Perencanaan gala, lelang amal, dan logistik kampanye kesadaran."
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:159
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:342
@@ -2588,7 +2927,7 @@ msgstr "Hasilkan draf balasan"
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:60
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:207
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:251
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1504
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1575
 #, fuzzy
 msgid "Generate from inbox"
 msgstr "Hasilkan dari kotak masuk"
@@ -2745,9 +3084,23 @@ msgstr "Google tidak dapat menyelesaikan otorisasi. Tautan mungkin telah kedaluw
 msgid "Google sign-in failed. Please try again."
 msgstr "Masuk Google gagal. Silakan coba lagi."
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:172
+#, fuzzy
+msgid "Graded homework, rubric feedback, and marks recorded for each pupil."
+msgstr "Tugas rumah yang dinilai, masukan rubrik, dan nilai yang dicatat untuk setiap siswa."
+
 #: ../../apps/extension/src/platform/HostPermissionGate.tsx:36
 msgid "Grant access"
 msgstr "Berikan Akses"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:233
+#, fuzzy
+msgid "Grant requests, foundation deadlines, and funder reporting requirements."
+msgstr "Permohonan hibah, tenggat waktu yayasan, dan persyaratan pelaporan pemberi dana."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:232
+msgid "Grants & Foundations"
+msgstr "Hibah & Yayasan"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:178
 #, fuzzy
@@ -2756,14 +3109,18 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "Baginda Raja,\n\nLaporan yang Paduka minta akan disiapkan sebelum dewan bersidang. Hamba akan meminta juru tulis hamba menyusun catatan wilayah timur dan mengirimkannya terlebih dahulu dengan kurir cepat.\n\nDalam persaudaraan,"
+msgstr "Baginda Raja,\n"
+"\n"
+"Laporan yang Paduka minta akan disiapkan sebelum dewan bersidang. Hamba akan meminta juru tulis hamba menyusun catatan wilayah timur dan mengirimkannya terlebih dahulu dengan kurir cepat.\n"
+"\n"
+"Dalam persaudaraan,"
 
 #: ../../apps/site/src/components/landing/FinalCTASection.tsx:9
 #, fuzzy
 msgid "Hand the sorting to Amarnai."
 msgstr "Serahkan penyortiran ke Amarnai."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:85
+#: ../ui/src/i18n/taxonomy-template-messages.ts:96
 #, fuzzy
 msgid "Health"
 msgstr "Kesehatan"
@@ -2774,13 +3131,13 @@ msgid "Help requests, supply issues, and escalations from customers."
 msgstr "Permintaan bantuan, masalah pasokan, dan eskalasi dari pelanggan."
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:71
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:274
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:277
 #, fuzzy
 msgid "Hide tips"
 msgstr "Sembunyikan kiat"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:34
-#: ../ui/src/i18n/taxonomy-template-messages.ts:56
+#: ../ui/src/i18n/taxonomy-template-messages.ts:62
 #, fuzzy
 msgid "Hiring"
 msgstr "Perekrutan"
@@ -2790,10 +3147,19 @@ msgstr "Perekrutan"
 msgid "Historical threads sorted when you first connect"
 msgstr "Utas historis disortir saat pertama kali Anda terhubung"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:87
+#: ../ui/src/i18n/taxonomy-template-messages.ts:98
 #, fuzzy
 msgid "Home"
 msgstr "Beranda"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:218
+#, fuzzy
+msgid "Home inspections, appraisal reports, repair negotiations, and contingency deadlines."
+msgstr "Inspeksi rumah, laporan penilaian, negosiasi perbaikan, dan tenggat waktu kontingensi."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:171
+msgid "Homework & Grading"
+msgstr "Tugas Rumah & Penilaian"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:52
 #, fuzzy
@@ -2804,6 +3170,11 @@ msgstr "Beranda"
 #, fuzzy
 msgid "Hosted subscriptions run on a leading AI model. Self-hosted deployments can point at any OpenAI-compatible provider, such as OpenAI or Google Gemini, or a local Ollama model for fully offline operation."
 msgstr "Langganan yang di-hosting berjalan di model AI terkemuka. Deployment yang di-hosting sendiri dapat terhubung ke penyedia yang kompatibel dengan OpenAI, seperti OpenAI atau Google Gemini, atau model Ollama lokal untuk operasi sepenuhnya offline."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:95
+#, fuzzy
+msgid "Household bills, payment confirmations, receipts, and records of everyday expenses."
+msgstr "Tagihan rumah tangga, konfirmasi pembayaran, kuitansi, dan catatan pengeluaran sehari-hari."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:15
 msgid "How do I know it's safe?"
@@ -2845,7 +3216,7 @@ msgid "How it works"
 msgstr "Cara kerjanya"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:73
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:274
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:277
 #, fuzzy
 msgid "How to write a good description"
 msgstr "Cara menulis deskripsi yang baik"
@@ -2871,22 +3242,22 @@ msgstr "Jika akun terkait email tersebut ada, kami telah mengirim tautan reset. 
 msgid "Ignored"
 msgstr "Diabaikan"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1392
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1463
 #, fuzzy
 msgid "Import"
 msgstr "Impor"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1253
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1313
 #, fuzzy
 msgid "Import failed"
 msgstr "Impor gagal"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1375
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1446
 #, fuzzy
 msgid "Import plan"
 msgstr "Impor rencana"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1370
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1441
 #, fuzzy
 msgid "Import plan (replaces current)"
 msgstr "Impor rencana (menggantikan yang ada)"
@@ -2906,8 +3277,8 @@ msgstr "Penting"
 #. placeholder {1}: pendingImportFile.edges.length
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1628
 #, fuzzy
-msgid "Importing will replace your current plan with <0>{0} folders</0> and <1>{1} paths</1> from the file. Threads that were sorted into removed folders will become unsorted. This cannot be undone."
-msgstr "Mengimpor akan mengganti rencana Anda saat ini dengan <0>{0} folder</0> dan <1>{1} jalur</1> dari file. Thread yang sudah disortir ke folder yang dihapus akan menjadi tidak tersortir. Tindakan ini tidak dapat dibatalkan."
+#~ msgid "Importing will replace your current plan with <0>{0} folders</0> and <1>{1} paths</1> from the file. Threads that were sorted into removed folders will become unsorted. This cannot be undone."
+#~ msgstr "Mengimpor akan mengganti rencana Anda saat ini dengan <0>{0} folder</0> dan <1>{1} jalur</1> dari file. Thread yang sudah disortir ke folder yang dihapus akan menjadi tidak tersortir. Tindakan ini tidak dapat dibatalkan."
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:274
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:107
@@ -2915,7 +3286,8 @@ msgstr "Mengimpor akan mengganti rencana Anda saat ini dengan <0>{0} folder</0> 
 #: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:45
 #: ../../apps/site/src/components/demo/demo-seed.ts:28
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:151
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:512
+#: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:126
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:515
 #: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:57
 #, fuzzy
 msgid "Inbox"
@@ -2944,6 +3316,10 @@ msgstr "Sinkronisasi Kotak Masuk"
 msgid "inbox zero"
 msgstr "kotak masuk nol"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:120
+msgid "Incidents"
+msgstr "Insiden"
+
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:116
 #: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:77
 #, fuzzy
@@ -2966,10 +3342,19 @@ msgstr "Termasuk"
 msgid "Informal message with no clear category: personal visit or political audience? Tone is personal but sender is a known vassal governor. Routed to Other with low confidence."
 msgstr "Pesan informal tanpa kategori jelas: kunjungan pribadi atau audiens politik? Nadanya personal tetapi pengirim adalah gubernur bawahan yang dikenal. Dirutekan ke Lainnya dengan tingkat keyakinan rendah."
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:116
+msgid "Infrastructure"
+msgstr "Infrastruktur"
+
 #: ../ui/src/pricing/planMessages.ts:64
 #, fuzzy
 msgid "Initial backfill"
 msgstr "Pengisian ulang awal"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:217
+#, fuzzy
+msgid "Inspections & Appraisals"
+msgstr "Inspeksi & Penilaian"
 
 #: ../../apps/mobile/src/data/notificationView.ts:47
 #: ../../apps/web/src/lib/notifications.ts:65
@@ -2991,18 +3376,30 @@ msgstr "Alih-alih memindai kotak masuk yang ramai, Anda cukup membuka Amarnai da
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:39
 #, fuzzy
-msgid "Internal communication with colleagues, team updates, and project collaboration."
-msgstr "Komunikasi internal dengan rekan kerja, pembaruan tim, dan kolaborasi proyek."
+#~ msgid "Internal communication with colleagues, team updates, and project collaboration."
+#~ msgstr "Komunikasi internal dengan rekan kerja, pembaruan tim, dan kolaborasi proyek."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:43
+msgid "Internal communication with colleagues, team updates, and workplace collaboration."
+msgstr "Komunikasi internal, pembaruan tim, dan kolaborasi dengan rekan kerja."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:55
 #, fuzzy
-msgid "Internal communications, HR, contractor coordination, and team operational emails."
-msgstr "Komunikasi internal, SDM, koordinasi kontraktor, dan email operasional tim."
+#~ msgid "Internal communications, HR, contractor coordination, and team operational emails."
+#~ msgstr "Komunikasi internal, SDM, koordinasi kontraktor, dan email operasional tim."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:61
+msgid "Internal communications, HR, staff coordination, and team operational emails."
+msgstr "Komunikasi internal, HR, koordinasi staf, dan email operasional tim."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:74
 #, fuzzy
-msgid "Internship and job applications, recruiter messages, and interview invitations."
-msgstr "Lamaran magang dan pekerjaan, pesan perekrut, dan undangan wawancara."
+#~ msgid "Internship and job applications, recruiter messages, and interview invitations."
+#~ msgstr "Lamaran magang dan pekerjaan, pesan perekrut, dan undangan wawancara."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:82
+msgid "Internship postings, campus career fairs, and graduate scheme openings."
+msgstr "Lowongan magang, bursa karier kampus, dan program pascasarjana."
 
 #: ../../apps/web/src/app/reset-password/page.tsx:33
 #, fuzzy
@@ -3010,19 +3407,19 @@ msgid "Invalid or missing reset link."
 msgstr "Tautan reset tidak valid atau tidak ada."
 
 #. placeholder {0}: validation.error
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1226
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1262
 #, fuzzy
 msgid "Invalid taxonomy file: {0}"
 msgstr "File taksonomi tidak valid: {0}"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1220
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1256
 #, fuzzy
 msgid "Invalid taxonomy file: {detail}"
 msgstr "File taksonomi tidak valid: {detail}"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:32
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:163
-#: ../ui/src/i18n/taxonomy-template-messages.ts:51
+#: ../ui/src/i18n/taxonomy-template-messages.ts:57
 #, fuzzy
 msgid "Investors"
 msgstr "Investor"
@@ -3052,12 +3449,12 @@ msgstr "Undang dan hapus kolaborator di aplikasi web."
 msgid "Invoice questions, overdue balances, and payment disputes."
 msgstr "Pertanyaan faktur, tagihan jatuh tempo, dan sengketa pembayaran."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:24
+#: ../ui/src/i18n/taxonomy-template-messages.ts:26
 #, fuzzy
 msgid "Invoices"
 msgstr "Faktur"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:25
+#: ../ui/src/i18n/taxonomy-template-messages.ts:27
 #, fuzzy
 msgid "Invoices issued to clients and follow-ups on unpaid amounts."
 msgstr "Faktur yang diterbitkan untuk klien dan tindak lanjut atas jumlah yang belum dibayar."
@@ -3077,15 +3474,19 @@ msgstr "Apakah menghubungkan kotak masuk saya ke Amarnai aman?"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:47
 #, fuzzy
-msgid "IT support, HR notices, legal documents, and internal administrative emails."
-msgstr "Dukungan TI, pemberitahuan SDM, dokumen hukum, dan email administratif internal."
+#~ msgid "IT support, HR notices, legal documents, and internal administrative emails."
+#~ msgstr "Dukungan TI, pemberitahuan SDM, dokumen hukum, dan email administratif internal."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:51
+msgid "IT support, HR notices, policy documents, and internal administrative emails."
+msgstr "Dukungan IT, pengumuman HR, dokumen kebijakan, dan email administrasi internal."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:57
 #, fuzzy
-msgid "Job applications, recruiter outreach, interview scheduling, and offer negotiations."
-msgstr "Lamaran kerja, penjangkauan perekrut, penjadwalan wawancara, dan negosiasi tawaran."
+#~ msgid "Job applications, recruiter outreach, interview scheduling, and offer negotiations."
+#~ msgstr "Lamaran kerja, penjangkauan perekrut, penjadwalan wawancara, dan negosiasi tawaran."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:73
+#: ../ui/src/i18n/taxonomy-template-messages.ts:81
 #, fuzzy
 msgid "Jobs"
 msgstr "Pekerjaan"
@@ -3108,6 +3509,20 @@ msgstr "Bergabung dengan {name}"
 #, fuzzy
 #~ msgid "Joining…"
 #~ msgstr "Bergabung..."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:193
+#, fuzzy
+msgid "Journal calls for papers, special issue invitations, and citation metrics."
+msgstr "Panggilan makalah jurnal, undangan edisi khusus, dan metrik sitasi."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:192
+#, fuzzy
+msgid "Journals"
+msgstr "Jurnal"
+
+#: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:127
+msgid "Junk Email"
+msgstr "Email Sampah"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:126
 #, fuzzy
@@ -3144,6 +3559,15 @@ msgstr "King Aziru siap menyortir utas email Anda. Hubungkan akun Anda untuk mem
 #~ msgid "King Aziru is ready to sort your email threads. Connect your Gmail account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
 #~ msgstr "King Aziru siap menyortir utas email Anda. Hubungkan akun Gmail Anda untuk memulai. Amarnai terhubung dengan <0>akses hanya-baca</0> dan <1>tidak pernah mengirim, menghapus, atau mengubah apa pun</1>. Kotak masuk Anda tetap milik Anda."
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:198
+#, fuzzy
+msgid "Lab & Collaborators"
+msgstr "Lab & Kolaborator"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:199
+msgid "Lab group updates, collaborator threads, and experiment coordination."
+msgstr "Pembaruan grup lab, diskusi kolaborator, dan koordinasi eksperimen."
+
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:244
 #: ../../apps/web/src/app/(app)/settings/WorkspaceLanguageSection.tsx:37
 #, fuzzy
@@ -3175,34 +3599,44 @@ msgstr "Terakhir diverifikasi: {0}"
 msgid "Lay out folders like <0>Customers</0>, <1>Investors</1>, <2>Hiring</2>. A simple sentence each: that's the whole setup."
 msgstr "Atur folder seperti <0>Pelanggan</0>, <1>Investor</1>, <2>Perekrutan</2>. Cukup satu kalimat untuk setiap folder: itulah seluruh pengaturannya."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:30
+#: ../ui/src/i18n/taxonomy-template-messages.ts:32
 #, fuzzy
 msgid "Leads"
 msgstr "Prospek"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:200
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:209
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:542
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:545
 #, fuzzy
 msgid "Leave unsorted"
 msgstr "Jangan disortir"
 
 #: ../../apps/site/src/components/landing/Footer.tsx:36
-#: ../ui/src/i18n/taxonomy-template-messages.ts:60
+#: ../ui/src/i18n/taxonomy-template-messages.ts:66
 #, fuzzy
 msgid "Legal"
 msgstr "Hukum"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:29
 #, fuzzy
-msgid "Legal, insurance, software subscriptions, and business administration notices."
-msgstr "Pemberitahuan hukum, asuransi, langganan perangkat lunak, dan administrasi bisnis."
+#~ msgid "Legal, insurance, software subscriptions, and business administration notices."
+#~ msgstr "Pemberitahuan hukum, asuransi, langganan perangkat lunak, dan administrasi bisnis."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:219
+#, fuzzy
+msgid "Lenders & Mortgage"
+msgstr "Pemberi Pinjaman & Hipotek"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:173
+#, fuzzy
+msgid "Lesson Planning"
+msgstr "Perencanaan Pelajaran"
 
 #: ../ui/src/theme/themes.ts:38
 msgid "Light"
 msgstr "Terang"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:474
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:477
 #, fuzzy
 msgid "List the kinds of emails that belong here: senders, topics, keywords. Aim for a full sentence."
 msgstr "Daftarkan jenis-jenis email yang termasuk di sini: pengirim, topik, kata kunci. Buat dalam satu kalimat lengkap."
@@ -3210,6 +3644,10 @@ msgstr "Daftarkan jenis-jenis email yang termasuk di sini: pengirim, topik, kata
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:307
 msgid "List the senders, topics, and keywords that belong here. At least {minDescriptionLength} characters. ({descriptionLength}/{minDescriptionLength})"
 msgstr "Daftarkan pengirim, topik, dan kata kunci yang termasuk di sini. Minimal {minDescriptionLength} karakter. ({descriptionLength}/{minDescriptionLength})"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:207
+msgid "Listings"
+msgstr "Daftar"
 
 #: ../ui/src/emails/EmailRail.tsx:57
 #, fuzzy
@@ -3254,6 +3692,10 @@ msgstr "Memuat..."
 msgid "Mail"
 msgstr "Email"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:231
+msgid "Major donor relationships, pledge confirmations, and gift acknowledgements."
+msgstr "Hubungan dengan donatur besar, konfirmasi komitmen, dan ucapan terima kasih sumbangan."
+
 #: ../../apps/mobile/app/(app)/subscription.tsx:293
 #, fuzzy
 msgid "Manage"
@@ -3270,15 +3712,28 @@ msgstr "Kelola notifikasi"
 msgid "Manage payment method"
 msgstr "Kelola metode pembayaran"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:40
+#: ../ui/src/i18n/taxonomy-template-messages.ts:44
 #, fuzzy
 msgid "Management"
 msgstr "Manajemen"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:45
+msgid "Manager emails: one-on-ones, performance evaluations, and career feedback."
+msgstr "Email manajer: rapat empat mata, evaluasi kinerja, dan umpan balik karier."
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:41
 #, fuzzy
-msgid "Manager emails: one-on-ones, performance reviews, and feedback."
-msgstr "Email dari manajer: rapat empat mata, tinjauan kinerja, dan umpan balik."
+#~ msgid "Manager emails: one-on-ones, performance reviews, and feedback."
+#~ msgstr "Email dari manajer: rapat empat mata, tinjauan kinerja, dan umpan balik."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:189
+#, fuzzy
+msgid "Manuscript drafts, co-author coordination, and submission status for papers."
+msgstr "Draf naskah, koordinasi penulis pendamping, dan status pengiriman makalah."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:190
+msgid "Manuscripts & Peer Review"
+msgstr "Naskah & Tinjauan Sejawat"
 
 #: ../ui/src/emails/PreviewDoneBar.tsx:23
 #: ../ui/src/emails/ThreadRow.tsx:157
@@ -3361,21 +3816,33 @@ msgstr "Ditandai sebagai selesai"
 msgid "Marked as done by {doneByName}"
 msgstr "Ditandai selesai oleh {doneByName}"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:139
+msgid "Marketplaces"
+msgstr "Marketplace"
+
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:198
 #, fuzzy
 msgid "Maximum of {collaboratorLimit} collaborators reached."
 msgstr "Batas maksimum {collaboratorLimit} kolaborator tercapai."
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:69
+msgid "Media inquiries, journalist requests, and press coverage bookings."
+msgstr "Pertanyaan media, permintaan jurnalis, dan pemesanan liputan pers."
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:63
 #, fuzzy
-msgid "Media inquiries, press coverage, co-marketing proposals, and partnership outreach."
-msgstr "Permintaan media, liputan pers, proposal co-marketing, dan jangkauan kemitraan."
+#~ msgid "Media inquiries, press coverage, co-marketing proposals, and partnership outreach."
+#~ msgstr "Permintaan media, liputan pers, proposal co-marketing, dan jangkauan kemitraan."
 
 #: ../../apps/mobile/src/components/CollaboratorsSheet.tsx:58
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:42
 #, fuzzy
 msgid "Member"
 msgstr "Anggota"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:176
+msgid "Messages from parents and guardians about attendance, behavior, and progress."
+msgstr "Pesan dari orang tua/wali tentang kehadiran, perilaku, dan kemajuan."
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:29
 #, fuzzy
@@ -3391,6 +3858,10 @@ msgstr "Izin akun Microsoft"
 msgid "Microsoft could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the redirect URI is registered on the app registration."
 msgstr "Microsoft tidak dapat menyelesaikan otorisasi. Tautan mungkin telah kedaluwarsa: silakan coba lagi. Jika masalah berlanjut, periksa apakah URI pengalihan terdaftar pada pendaftaran aplikasi."
 
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:189
+msgid "Migrate & apply"
+msgstr "Migrasi & terapkan"
+
 #: ../../apps/web/src/components/Sidebar.tsx:43
 #, fuzzy
 msgid "Mock Inbox"
@@ -3400,6 +3871,10 @@ msgstr "Kotak Masuk Contoh"
 #, fuzzy
 msgid "Model quality"
 msgstr "Kualitas model"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:162
+msgid "Monetization"
+msgstr "Monetisasi"
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:41
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:223
@@ -3424,6 +3899,10 @@ msgstr "Batas penyortiran bulanan tercapai"
 #~ msgid "More threads beyond your {plan} subscription limit aren't loaded."
 #~ msgstr "Thread lain di luar batas langganan {plan} Anda tidak dimuat."
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:220
+msgid "Mortgage brokers, financing pre-approvals, rate quotes, and underwriting updates."
+msgstr "Pialang hipotek, pra-persetujuan pembiayaan, penawaran suku bunga, dan pembaruan penjaminan."
+
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:46
 #: ../ui/src/pricing/planMessages.ts:30
 #, fuzzy
@@ -3431,7 +3910,7 @@ msgid "Most popular"
 msgstr "Terpopuler"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:387
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:536
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:539
 #, fuzzy
 msgid "Move them to"
 msgstr "Pindahkan ke"
@@ -3469,7 +3948,7 @@ msgstr "Perjalanan saya akan membawa saya dekat dengan Delta dalam beberapa hari
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:235
 #: ../../apps/mobile/app/(app)/account.tsx:131
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:272
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:448
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:451
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:15
 #, fuzzy
 msgid "Name"
@@ -3504,10 +3983,14 @@ msgstr "Tidak pernah kirim otomatis · Terenkripsi saat tidak aktif · Data mini
 msgid "New application from Horemheb of Thebes."
 msgstr "Aplikasi baru dari Horemheb dari Thebes."
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:33
+msgid "New business inquiries, project proposals, and pricing discussions from prospective clients."
+msgstr "Permintaan bisnis baru, proposal proyek, dan diskusi harga dari calon klien."
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:31
 #, fuzzy
-msgid "New business inquiries, proposals, pricing discussions, and prospective client outreach."
-msgstr "Pertanyaan bisnis baru, proposal, diskusi harga, dan penjangkauan calon klien."
+#~ msgid "New business inquiries, proposals, pricing discussions, and prospective client outreach."
+#~ msgstr "Pertanyaan bisnis baru, proposal, diskusi harga, dan penjangkauan calon klien."
 
 #: ../../apps/mobile/src/data/notificationView.ts:91
 #: ../../apps/web/src/lib/notifications.ts:110
@@ -3526,6 +4009,16 @@ msgstr "Email baru akan menunggu hingga batas Anda diatur ulang bulan depan."
 #, fuzzy
 msgid "New folder"
 msgstr "Folder baru"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:221
+#, fuzzy
+msgid "New Inquiries"
+msgstr "Permintaan Baru"
+
+#: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:158
+#, fuzzy
+msgid "New mail"
+msgstr "Email baru"
 
 #: ../../apps/extension/src/panel/notificationText.ts:24
 #: ../../apps/mobile/src/data/notificationView.ts:95
@@ -3658,6 +4151,10 @@ msgstr "Tidak ada email baru signifikan sejak generasi terakhir Anda, jadi hasil
 #~ msgid "No signups yet."
 #~ msgstr "Belum ada pendaftar."
 
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:110
+msgid "No sorted threads to migrate. Your new plan will apply directly."
+msgstr "Tidak ada utas terurut untuk dimigrasikan. Paket baru Anda akan langsung diterapkan."
+
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:48
 #, fuzzy
 msgid "No threads"
@@ -3701,10 +4198,14 @@ msgstr "Tidak Ada"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:190
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:205
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:509
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:512
 #, fuzzy
 msgid "None (not connected)"
 msgstr "Tidak Ada (tidak terhubung)"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:226
+msgid "Nonprofit Leader"
+msgstr "Pemimpin Nirlaba"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:100
 #, fuzzy
@@ -3755,10 +4256,14 @@ msgstr "Notifikasi"
 msgid "Notifications, {unread} unread"
 msgstr "Notifikasi, {unread} belum dibaca"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:68
+#: ../ui/src/i18n/taxonomy-template-messages.ts:76
 #, fuzzy
 msgid "Official university emails: registrar, student services, and housing."
 msgstr "Email resmi universitas: registrasi, layanan mahasiswa, dan akomodasi."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:121
+msgid "On-call alerts, outage reports, and production incident escalations."
+msgstr "Peringatan siaga, laporan gangguan, dan eskalasi insiden produksi."
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:343
 #, fuzzy
@@ -3819,7 +4324,11 @@ msgstr "AI email sumber terbuka"
 #~ msgid "Open-source AI email triage. Gmail-first. Hosted or self-hosted. Your call."
 #~ msgstr "Triage email AI sumber terbuka. Fokus Gmail. Dihosting atau di-host sendiri. Pilihan Anda."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:58
+#: ../ui/src/i18n/taxonomy-template-messages.ts:125
+msgid "Open-source maintainers, contributor discussions, and developer forum threads."
+msgstr "Pengelola open-source, diskusi kontributor, dan utas forum developer."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:64
 #, fuzzy
 msgid "Operations"
 msgstr "Operasional"
@@ -3828,7 +4337,7 @@ msgstr "Operasional"
 msgid "Optional. Applied when generating draft replies for this folder."
 msgstr "Opsional. Diterapkan saat membuat draf balasan untuk folder ini."
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:495
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:498
 #, fuzzy
 msgid "Optional. Applied when generating draft replies for threads in this folder."
 msgstr "Opsional. Diterapkan saat membuat draf balasan untuk utas di folder ini."
@@ -3845,8 +4354,12 @@ msgstr "atau"
 msgid "Or connect a different inbox:"
 msgstr "Atau hubungkan kotak masuk lain:"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:131
+msgid "Orders"
+msgstr "Pesanan"
+
 #: ../../apps/site/src/components/demo/demo-seed.ts:35
-#: ../../apps/site/src/components/landing/MailInboxMock.tsx:78
+#: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:178
 #, fuzzy
 msgid "Other"
 msgstr "Lainnya"
@@ -3871,13 +4384,17 @@ msgid "Paid or upgraded workspace"
 msgstr "Ruang kerja Berbayar atau Di-upgrade"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:322
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:503
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:660
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:506
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:663
 #, fuzzy
 msgid "Parent"
 msgstr "Induk"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:42
+#: ../ui/src/i18n/taxonomy-template-messages.ts:175
+msgid "Parents & Guardians"
+msgstr "Orang Tua & Wali"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:46
 #, fuzzy
 msgid "Partners"
 msgstr "Mitra"
@@ -3934,10 +4451,18 @@ msgstr "Pembayaran gagal. Harap perbarui metode pembayaran Anda agar tidak kehil
 msgid "Payment failed. Update your payment method to keep access."
 msgstr "Pembayaran gagal. Perbarui metode pembayaran Anda untuk mempertahankan akses."
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:143
+msgid "Payouts & Fees"
+msgstr "Pembayaran & Biaya"
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:46
 #, fuzzy
-msgid "Payslips, expense reports, reimbursements, and employee benefits emails."
-msgstr "Slip gaji, laporan pengeluaran, penggantian biaya, dan email tunjangan karyawan."
+#~ msgid "Payslips, expense reports, reimbursements, and employee benefits emails."
+#~ msgstr "Slip gaji, laporan pengeluaran, penggantian biaya, dan email tunjangan karyawan."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:50
+msgid "Payslips, salary statements, and employee benefits and pension emails."
+msgstr "Slip gaji, laporan gaji, serta email tunjangan karyawan dan pensiun."
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:12
 #: ../ui/src/emails/queueLabels.ts:22
@@ -3969,38 +4494,71 @@ msgstr "Hapus permanen akun Anda dan semua data terkait. Tindakan ini tidak dapa
 
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:37
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:29
-#: ../ui/src/i18n/taxonomy-template-messages.ts:32
+#: ../ui/src/i18n/taxonomy-template-messages.ts:34
 #: ../ui/src/pricing/planMessages.ts:20
 #, fuzzy
 msgid "Personal"
 msgstr "Personal"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:79
+#: ../ui/src/i18n/taxonomy-template-messages.ts:89
 #, fuzzy
 msgid "Personal / Family"
 msgstr "Pribadi / Keluarga"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:84
 #, fuzzy
-msgid "Personal bills, payment confirmations, receipts, and records of household expenses."
-msgstr "Tagihan pribadi, konfirmasi pembayaran, tanda terima, dan catatan pengeluaran rumah tangga."
+#~ msgid "Personal bills, payment confirmations, receipts, and records of household expenses."
+#~ msgstr "Tagihan pribadi, konfirmasi pembayaran, tanda terima, dan catatan pengeluaran rumah tangga."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:33
+#: ../ui/src/i18n/taxonomy-template-messages.ts:164
+msgid "Personal correspondence and emails unrelated to content work."
+msgstr "Korespondensi pribadi dan email yang tidak terkait dengan pekerjaan konten."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:35
 #, fuzzy
 msgid "Personal correspondence and emails unrelated to freelance work."
 msgstr "Korespondensi dan email pribadi yang tidak terkait dengan pekerjaan lepas."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:64
+#: ../ui/src/i18n/taxonomy-template-messages.ts:223
+#, fuzzy
+msgid "Personal correspondence and emails unrelated to real estate."
+msgstr "Korespondensi pribadi dan email yang tidak terkait dengan properti."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:202
+#, fuzzy
+msgid "Personal correspondence and emails unrelated to research."
+msgstr "Korespondensi pribadi dan email yang tidak terkait dengan penelitian."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:126
+#, fuzzy
+msgid "Personal correspondence and emails unrelated to software work."
+msgstr "Korespondensi pribadi dan email yang tidak terkait dengan pekerjaan perangkat lunak."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:183
+#, fuzzy
+msgid "Personal correspondence and emails unrelated to teaching."
+msgstr "Korespondensi pribadi dan email yang tidak terkait dengan pengajaran."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:242
+#, fuzzy
+msgid "Personal correspondence and emails unrelated to the organization."
+msgstr "Korespondensi pribadi dan email yang tidak terkait dengan organisasi."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:145
+msgid "Personal correspondence and emails unrelated to the shop."
+msgstr "Korespondensi pribadi dan email yang tidak terkait dengan toko."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:70
 #, fuzzy
 msgid "Personal correspondence and emails unrelated to the startup."
 msgstr "Korespondensi dan email pribadi yang tidak terkait dengan startup."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:48
+#: ../ui/src/i18n/taxonomy-template-messages.ts:52
 #, fuzzy
 msgid "Personal correspondence and emails unrelated to work."
 msgstr "Korespondensi dan email pribadi yang tidak terkait dengan pekerjaan."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:78
+#: ../ui/src/i18n/taxonomy-template-messages.ts:86
 #, fuzzy
 msgid "Personal correspondence and non-academic emails for everyday life."
 msgstr "Korespondensi pribadi dan email non-akademik untuk kehidupan sehari-hari."
@@ -4019,7 +4577,7 @@ msgid "Plan"
 msgstr "Paket"
 
 #. “Plan” here is the email-sorting taxonomy, not a billing or subscription plan.
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1309
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1380
 #, fuzzy
 msgid "Plan is view-only. Only workspace admins can edit it."
 msgstr "Paket hanya dapat dilihat. Hanya admin ruang kerja yang dapat mengeditnya."
@@ -4032,6 +4590,10 @@ msgstr "Node paket"
 msgid "Plan sorting"
 msgstr "Buat Rencana Sortir"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:156
+msgid "Platforms"
+msgstr "Platform"
+
 #: ../../apps/mobile/app/(app)/subscription.tsx:129
 #: ../../apps/mobile/app/(app)/subscription.tsx:134
 #: ../../apps/mobile/app/(app)/subscription.tsx:189
@@ -4040,6 +4602,10 @@ msgstr "Buat Rencana Sortir"
 #, fuzzy
 msgid "Please try again."
 msgstr "Silakan coba lagi."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:142
+msgid "Pre-sale questions and messages from prospective shoppers about products."
+msgstr "Pertanyaan pra-penjualan dan pesan dari calon pembeli tentang produk."
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:158
 #, fuzzy
@@ -4070,7 +4636,7 @@ msgstr "Siapkan akun Anda sebelum rapat dewan dimulai."
 #~ msgid "Preparing…"
 #~ msgstr ""
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:62
+#: ../ui/src/i18n/taxonomy-template-messages.ts:68
 #, fuzzy
 msgid "Press"
 msgstr "Pers"
@@ -4096,9 +4662,13 @@ msgstr "Harga | Amarnai"
 msgid "Pricing is per workspace, billed monthly or annually. Every account starts with a free Personal workspace, no card required. The paid Pro and Business subscriptions add higher limits and include a 14-day trial. See the pricing page for current details."
 msgstr "Harga adalah per ruang kerja, ditagih bulanan atau tahunan. Setiap akun dimulai dengan ruang kerja Pribadi gratis, tanpa kartu kredit. Langganan Pro dan Bisnis berbayar menawarkan batasan yang lebih tinggi dan termasuk uji coba 14 hari. Lihat halaman harga untuk detail terkini."
 
-#: ../../apps/site/src/components/landing/MailInboxMock.tsx:84
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:67
 msgid "Primary"
 msgstr "Utama"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:178
+msgid "Principal notices, staff meetings, and district administration bulletins."
+msgstr "Pengumuman kepala sekolah, rapat staf, dan buletin administrasi distrik."
 
 #: ../ui/src/pricing/planMessages.ts:100
 #, fuzzy
@@ -4129,12 +4699,21 @@ msgstr "Pro"
 msgid "Product"
 msgstr "Produk"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:181
+#, fuzzy
+msgid "Professional Development"
+msgstr "Pengembangan Profesional"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:41
+msgid "Professional emails related to job duties and workplace activities."
+msgstr "Email profesional terkait tugas pekerjaan dan aktivitas di tempat kerja."
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:37
 #, fuzzy
-msgid "Professional emails related to work, projects, and workplace activities."
-msgstr "Email profesional yang berkaitan dengan pekerjaan, proyek, dan aktivitas di tempat kerja."
+#~ msgid "Professional emails related to work, projects, and workplace activities."
+#~ msgstr "Email profesional yang berkaitan dengan pekerjaan, proyek, dan aktivitas di tempat kerja."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:70
+#: ../ui/src/i18n/taxonomy-template-messages.ts:78
 #, fuzzy
 msgid "Professors, assignments, study groups, course announcements, and academic deadlines."
 msgstr "Dosen, tugas, kelompok belajar, pengumuman mata kuliah, dan tenggat waktu akademik."
@@ -4145,28 +4724,65 @@ msgstr "Dosen, tugas, kelompok belajar, pengumuman mata kuliah, dan tenggat wakt
 msgid "Profile"
 msgstr "Profil"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:18
+#: ../ui/src/i18n/taxonomy-template-messages.ts:237
+#, fuzzy
+msgid "Program operations, beneficiary services, and impact reporting updates."
+msgstr "Operasi program, layanan penerima manfaat, dan pembaruan laporan dampak."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:236
+msgid "Programs"
+msgstr "Program"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:20
 #, fuzzy
 msgid "Projects"
 msgstr "Proyek"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:112
-#: ../../apps/site/src/components/landing/MailInboxMock.tsx:87
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:70
 #, fuzzy
 msgid "Promotions"
 msgstr "Promosi"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:208
+msgid "Property listings, MLS updates, staging, and photography scheduling."
+msgstr "Daftar properti, pembaruan MLS, penataan, dan penjadwalan fotografi."
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:86
 #, fuzzy
 msgid "Proposed folders. Applying replaces your current plan; you can edit everything afterward."
 msgstr "Folder yang diusulkan. Menerapkan ini akan mengganti paket Anda saat ini; Anda dapat mengedit semuanya setelahnya."
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:188
+#, fuzzy
+msgid "Publications"
+msgstr "Publikasi"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:113
+#, fuzzy
+msgid "Pull request notifications, merge-approval mentions, and comment threads on repositories."
+msgstr "Notifikasi pull request, mention persetujuan merge, dan thread komentar di repositori."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:112
+#, fuzzy
+msgid "Pull Requests"
+msgstr "Pull Request"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:170
+#, fuzzy
+msgid "Pupil questions, homework hand-ins, and daily instruction in the classroom."
+msgstr "Pertanyaan siswa, pengumpulan tugas, dan pengajaran harian di kelas."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:132
+msgid "Purchase confirmations, order status changes, and fulfillment updates from your store."
+msgstr "Konfirmasi pembelian, perubahan status pesanan, dan pembaruan pemenuhan dari toko Anda."
+
 #: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:105
 #, fuzzy
 msgid "Queuing rescan…"
 msgstr "Mengantrekan pemindaian ulang…"
 
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:379
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:385
 #, fuzzy
 msgid "Re-route {unclassifiedCount} unclassified"
 msgstr "Alihkan {unclassifiedCount} yang belum terklasifikasi"
@@ -4175,6 +4791,20 @@ msgstr "Alihkan {unclassifiedCount} yang belum terklasifikasi"
 #, fuzzy
 msgid "Re-route thread"
 msgstr "Alihkan percakapan"
+
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:135
+#, fuzzy
+msgid "Re-sort with AI"
+msgstr "Urutkan Ulang dengan AI"
+
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:176
+#, fuzzy
+msgid "Re-sorting threads already sorted this month is free. If you reach your monthly limit, the rest resume next month."
+msgstr "Pengurutan ulang utas yang sudah diurutkan bulan ini gratis. Jika Anda mencapai batas bulanan Anda, sisanya akan dilanjutkan bulan depan."
+
+#: ../../apps/web/src/app/(app)/emails/ResortReviewBanner.tsx:79
+msgid "Re-sorting…"
+msgstr "Mengurutkan ulang…"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:333
 #, fuzzy
@@ -4200,8 +4830,12 @@ msgstr "Hanya baca · OAuth · cabut kapan saja"
 msgid "Read-only by design"
 msgstr "Dirancang hanya untuk membaca"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:205
+msgid "Real Estate Agent"
+msgstr "Agen Properti"
+
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:91
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:307
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:310
 #, fuzzy
 msgid "Receipts, payment confirmations, and billing questions from vendors."
 msgstr "Tanda terima, konfirmasi pembayaran, dan pertanyaan penagihan dari vendor."
@@ -4214,6 +4848,10 @@ msgstr "Baru saja dicoba. Tersedia lagi {when}."
 #: ../ui/src/i18n/generation-reason-messages.ts:18
 msgid "Recently attempted. Try again later."
 msgstr "Baru saja dicoba. Coba lagi nanti."
+
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1760
+msgid "Recommended for your inbox"
+msgstr "Rekomendasi untuk kotak masuk Anda"
 
 #: ../../apps/mobile/src/components/emails/DisconnectedBanner.tsx:46
 #, fuzzy
@@ -4262,10 +4900,14 @@ msgstr "Menghubungkan kembali…"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:45
 #, fuzzy
-msgid "Recruiter outreach, job applications, interview scheduling, and offer letters."
-msgstr "Jangkauan perekrut, lamaran kerja, penjadwalan wawancara, dan surat tawaran."
+#~ msgid "Recruiter outreach, job applications, interview scheduling, and offer letters."
+#~ msgstr "Jangkauan perekrut, lamaran kerja, penjadwalan wawancara, dan surat tawaran."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:44
+#: ../ui/src/i18n/taxonomy-template-messages.ts:49
+msgid "Recruiter outreach, role applications, interview scheduling, and staffing packages."
+msgstr "Penjangkauan perekrut, lamaran pekerjaan, penjadwalan wawancara, dan paket penempatan staf."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:48
 #, fuzzy
 msgid "Recruiting"
 msgstr "Perekrutan"
@@ -4277,10 +4919,14 @@ msgstr "Perekrutan"
 msgid "Redirecting…"
 msgstr "Mengalihkan…"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1330
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1401
 #, fuzzy
 msgid "Redo"
 msgstr "Ulangi"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:191
+msgid "Referee invitations, reviewer reports, and revision requests from journal editors."
+msgstr "Undangan peninjau, laporan peninjau, dan permintaan revisi dari editor jurnal."
 
 #: ../../apps/web/src/components/ClassifyingRefresher.tsx:56
 #, fuzzy
@@ -4298,6 +4944,10 @@ msgstr "Segarkan"
 #, fuzzy
 msgid "Regenerate"
 msgstr "Hasilkan Ulang"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:122
+msgid "Releases"
+msgstr "Rilis"
 
 #: ../../apps/mobile/app/forgot-password.tsx:115
 #, fuzzy
@@ -4375,24 +5025,33 @@ msgstr "Diperbarui setiap bulan pada <0>{0}</0>."
 msgid "Renews on <0>{0}</0>."
 msgstr "Diperbarui pada <0>{0}</0>."
 
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:93
+msgid "Replace plan"
+msgstr "Ganti paket"
+
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1614
 #, fuzzy
-msgid "Replace plan?"
-msgstr "Ganti paket?"
+#~ msgid "Replace plan?"
+#~ msgstr "Ganti paket?"
 
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1652
 #, fuzzy
-msgid "Replace taxonomy"
-msgstr "Ganti taksonomi"
+#~ msgid "Replace taxonomy"
+#~ msgstr "Ganti taksonomi"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1681
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1697
 #, fuzzy
 msgid "Replace with a template"
 msgstr "Ganti dengan templat"
 
-#: ../../apps/site/src/components/landing/MailThreadMock.tsx:106
+#: ../../apps/site/src/components/landing/MailThreadMock.tsx:90
+#: ../../apps/site/src/components/landing/MailThreadMock.tsx:145
 msgid "Reply"
 msgstr "Balas"
+
+#: ../../apps/site/src/components/landing/MailThreadMock.tsx:96
+msgid "Reply all"
+msgstr "Balas semua"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:89
 #, fuzzy
@@ -4493,6 +5152,15 @@ msgstr "Sumber Daya"
 msgid "Retry"
 msgstr "Coba lagi"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:136
+#, fuzzy
+msgid "Return requests, refund approvals, and exchange labels from shoppers."
+msgstr "Permintaan pengembalian, persetujuan pengembalian dana, dan label penukaran dari pembeli."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:135
+msgid "Returns"
+msgstr "Pengembalian"
+
 #: ../ui/src/pricing/planMessages.ts:68
 #, fuzzy
 msgid "Review queue"
@@ -4510,7 +5178,11 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "Rib-Hadda,\n\nKami mengerti. Gandum tambahan telah dipesan dari gudang selatan dan akan tiba sebelum festival panen. Kami mohon kesabaran Anda hingga saat itu.\n\nSemoga sehat selalu,"
+msgstr "Rib-Hadda,\n"
+"\n"
+"Kami mengerti. Gandum tambahan telah dipesan dari gudang selatan dan akan tiba sebelum festival panen. Kami mohon kesabaran Anda hingga saat itu.\n"
+"\n"
+"Semoga sehat selalu,"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -4543,8 +5215,8 @@ msgstr "Sama seperti bulanan"
 #: ../../apps/mobile/src/components/EditNameSheet.tsx:66
 #: ../../apps/mobile/src/components/RenameWorkspaceSheet.tsx:74
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:450
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:577
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:691
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:580
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:694
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:29
 #, fuzzy
 msgid "Save"
@@ -4587,12 +5259,21 @@ msgid "Saving..."
 msgstr "Menyimpan..."
 
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:76
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:577
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:691
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:580
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:694
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:29
 #, fuzzy
 msgid "Saving…"
 msgstr "Menyimpan…"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:177
+#, fuzzy
+msgid "School Administration"
+msgstr "Administrasi Sekolah"
+
+#: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:146
+msgid "Search"
+msgstr "Cari"
 
 #: ../ui/src/emails/ThreadListHeader.tsx:104
 #, fuzzy
@@ -4605,7 +5286,7 @@ msgstr "Cari {threadCount} utas"
 msgid "Search folders"
 msgstr "Cari folder"
 
-#: ../../apps/site/src/components/landing/MailInboxMock.tsx:66
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:60
 msgid "Search mail"
 msgstr "Cari email"
 
@@ -4638,8 +5319,8 @@ msgid "Select"
 msgstr "Pilih"
 
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:210
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:336
-#: ../ui/src/emails/MockEmailsPage.tsx:266
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:342
+#: ../ui/src/emails/MockEmailsPage.tsx:274
 #, fuzzy
 msgid "Select a thread to preview"
 msgstr "Pilih utas untuk pratinjau"
@@ -4669,6 +5350,15 @@ msgstr "Panduan hosting mandiri"
 #, fuzzy
 msgid "self-hosted email assistant"
 msgstr "asisten email hosting mandiri"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:212
+#, fuzzy
+msgid "Seller consultations, listing paperwork, price reductions, and market appraisals."
+msgstr "Konsultasi penjual, dokumen daftar, penurunan harga, dan penilaian pasar."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:211
+msgid "Sellers"
+msgstr "Penjual"
 
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:224
 #, fuzzy
@@ -4708,6 +5398,10 @@ msgstr "Pengirim adalah mitra perjanjian yang sudah dikenal dan bereputasi baik.
 #, fuzzy
 msgid "Sending…"
 msgstr "Mengirim…"
+
+#: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:129
+msgid "Sent Items"
+msgstr "Terkirim"
 
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:95
 #, fuzzy
@@ -4772,6 +5466,10 @@ msgstr "Paket Bersama + Antrean Peninjauan"
 #~ msgid "Shared taxonomy + review queue"
 #~ msgstr "Taksonomi bersama + antrean peninjauan"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:133
+msgid "Shipping"
+msgstr "Pengiriman"
+
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:334
 #, fuzzy
 msgid "Show Gmail"
@@ -4780,6 +5478,10 @@ msgstr "Tampilkan Gmail"
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:343
 msgid "Show Outlook"
 msgstr "Tampilkan Outlook"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:210
+msgid "Showing requests, buyer tours, open-house sign-ups, and written offers."
+msgstr "Permintaan penayangan, tur pembeli, pendaftaran open house, dan penawaran tertulis."
 
 #: ../../apps/extension/src/auth/SignInScreen.tsx:98
 #: ../../apps/mobile/app/sign-in.tsx:133
@@ -4851,11 +5553,15 @@ msgstr "Masuk…"
 msgid "Simple per-workspace pricing. Start free, upgrade or create additional workspaces as you need."
 msgstr "Harga per ruang kerja yang sederhana. Mulai gratis, tingkatkan, atau buat ruang kerja tambahan sesuai kebutuhan Anda."
 
-#: ../../apps/site/src/components/landing/MailInboxMock.tsx:90
-#: ../ui/src/i18n/taxonomy-template-messages.ts:76
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:73
+#: ../ui/src/i18n/taxonomy-template-messages.ts:84
 #, fuzzy
 msgid "Social"
 msgstr "Sosial"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:108
+msgid "Software Developer"
+msgstr "Pengembang Perangkat Lunak"
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:213
 #, fuzzy
@@ -4940,10 +5646,28 @@ msgstr "Volume pengurutan"
 msgid "Sorting…"
 msgstr "Mengurutkan…"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:111
+msgid "Source-control activity, branch changes, and merge approvals across repositories."
+msgstr "Aktivitas kontrol sumber, perubahan cabang, dan persetujuan penggabungan di seluruh repositori."
+
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:111
 #, fuzzy
 msgid "Spam"
 msgstr "Spam"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:151
+#, fuzzy
+msgid "Sponsored placements, brand partnerships, and promotional collaborations."
+msgstr "Penempatan bersponsor, kemitraan merek, dan kolaborasi promosi."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:153
+#, fuzzy
+msgid "Sponsorship rates, content briefs, and paid placement deals."
+msgstr "Tarif sponsor, ringkasan konten, dan kesepakatan penempatan berbayar."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:152
+msgid "Sponsorships"
+msgstr "Sponsor"
 
 #: ../ui/src/pricing/planMessages.ts:94
 #, fuzzy
@@ -4966,12 +5690,12 @@ msgid "Start free"
 msgstr "Mulai gratis"
 
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:52
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1682
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1698
 #, fuzzy
 msgid "Start from a template"
 msgstr "Mulai dari templat"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1395
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1466
 #, fuzzy
 msgid "Start from a template (replaces current)"
 msgstr "Mulai dari templat (mengganti yang sekarang)"
@@ -4988,7 +5712,7 @@ msgstr "Mulai mengurutkan"
 msgid "Starting…"
 msgstr "Memulai..."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:49
+#: ../ui/src/i18n/taxonomy-template-messages.ts:55
 #, fuzzy
 msgid "Startup Founder"
 msgstr "Pendiri Startup"
@@ -5012,20 +5736,38 @@ msgstr "Menghentikan sinkronisasi dan mencabut akses Amarnai ke kotak surat ini.
 msgid "Stops syncing and revokes Amarnai's access to this mailbox. Synced email data is kept so you can reconnect later."
 msgstr "Menghentikan sinkronisasi dan mencabut akses Amarnai ke kotak surat ini. Data email yang disinkronkan tetap disimpan sehingga Anda dapat menghubungkan kembali nanti."
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:144
+#, fuzzy
+msgid "Store payouts, chargebacks, selling fees, and settlement statements."
+msgstr "Pembayaran toko, penarikan dana, biaya penjualan, dan laporan penyelesaian."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:140
+#, fuzzy
+msgid "Storefront notices from Amazon, Etsy, eBay, and marketplace store accounts."
+msgstr "Notifikasi toko dari Amazon, Etsy, eBay, dan akun toko marketplace."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:105
+msgid "Streaming services, app subscriptions, memberships, and recurring billing notices."
+msgstr "Layanan streaming, langganan aplikasi, keanggotaan, dan pemberitahuan tagihan berulang."
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:94
 #, fuzzy
-msgid "Streaming services, software subscriptions, memberships, and recurring notifications."
-msgstr "Layanan streaming, langganan perangkat lunak, keanggotaan, dan notifikasi berulang."
+#~ msgid "Streaming services, software subscriptions, memberships, and recurring notifications."
+#~ msgstr "Layanan streaming, langganan perangkat lunak, keanggotaan, dan notifikasi berulang."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:65
+#: ../ui/src/i18n/taxonomy-template-messages.ts:73
 #, fuzzy
 msgid "Student"
 msgstr "Mahasiswa"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:83
+msgid "Student loans, rent payments, and financial aid notifications."
+msgstr "Pinjaman pelajar, pembayaran sewa, dan notifikasi bantuan keuangan."
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:75
 #, fuzzy
-msgid "Student loans, rent, bank statements, and financial aid notifications."
-msgstr "Pinjaman mahasiswa, sewa, laporan bank, dan notifikasi bantuan keuangan."
+#~ msgid "Student loans, rent, bank statements, and financial aid notifications."
+#~ msgstr "Pinjaman mahasiswa, sewa, laporan bank, dan notifikasi bantuan keuangan."
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:258
 #: ../../apps/mobile/app/(app)/subscription.tsx:222
@@ -5054,16 +5796,29 @@ msgstr "Langganan tidak akan diperpanjang. Akses {planLabel} berakhir pada <0>{0
 msgid "Subscription will not renew. Access ends {0}."
 msgstr "Langganan tidak akan diperpanjang. Akses berakhir {0}."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:93
+#: ../ui/src/i18n/taxonomy-template-messages.ts:104
 #, fuzzy
 msgid "Subscriptions"
 msgstr "Langganan"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:200
+#, fuzzy
+msgid "Supervision"
+msgstr "Pengawasan"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:137
+msgid "Suppliers"
+msgstr "Pemasok"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:31
 #: ../ui/src/pricing/planMessages.ts:56
 #, fuzzy
 msgid "Support"
 msgstr "Dukungan"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:60
+msgid "Support, onboarding, retention, churn, and customer success conversations."
+msgstr "Komunikasi dukungan, orientasi, retensi, churn, dan keberhasilan pelanggan."
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:227
 #, fuzzy
@@ -5115,15 +5870,19 @@ msgstr "Menyinkronkan…"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:19
 #, fuzzy
-msgid "Task coordination, milestones, and deliverable reviews for ongoing client projects."
-msgstr "Koordinasi tugas, pencapaian, dan tinjauan hasil proyek klien."
+#~ msgid "Task coordination, milestones, and deliverable reviews for ongoing client projects."
+#~ msgstr "Koordinasi tugas, pencapaian, dan tinjauan hasil proyek klien."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:83
+#: ../ui/src/i18n/taxonomy-template-messages.ts:21
+msgid "Task coordination, milestones, and scope discussions for ongoing client work."
+msgstr "Koordinasi tugas, pencapaian, dan diskusi ruang lingkup untuk pekerjaan klien yang sedang berlangsung."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:93
 #, fuzzy
 msgid "Tax returns, government notices, fines, and annual contributions to state authorities."
 msgstr "SPT Pajak, pemberitahuan pemerintah, denda, dan iuran tahunan kepada otoritas negara."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:82
+#: ../ui/src/i18n/taxonomy-template-messages.ts:92
 #, fuzzy
 msgid "Taxes"
 msgstr "Pajak"
@@ -5143,8 +5902,17 @@ msgstr "Taksonomi diterapkan"
 #~ msgid "Taxonomy nodes"
 #~ msgstr "Node taksonomi"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:167
+#, fuzzy
+msgid "Teacher"
+msgstr "Guru"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:182
+msgid "Teacher training workshops, certification renewals, and education webinars."
+msgstr "Lokakarya pelatihan guru, perpanjangan sertifikasi, dan webinar pendidikan."
+
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:169
-#: ../ui/src/i18n/taxonomy-template-messages.ts:38
+#: ../ui/src/i18n/taxonomy-template-messages.ts:42
 #, fuzzy
 msgid "Team"
 msgstr "Tim"
@@ -5153,7 +5921,7 @@ msgstr "Tim"
 msgid "Template applied"
 msgstr "Templat diterapkan"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1419
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1490
 #, fuzzy
 msgid "Templates"
 msgstr "Template"
@@ -5267,7 +6035,7 @@ msgstr "Kolaborator ini akan kehilangan akses pada {0}:"
 msgid "These settings control which inbox threads are imported. Trash is always excluded."
 msgstr "Pengaturan ini mengontrol utas kotak masuk mana yang diimpor. Sampah selalu dikecualikan."
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1301
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1372
 #, fuzzy
 msgid "This folder has child folders. Remove their Paths first, then delete it."
 msgstr "Folder ini memiliki folder anak. Hapus jalur-jalurnya terlebih dahulu, lalu hapus folder ini."
@@ -5423,7 +6191,13 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "Untuk saudaraku, Raja Agung,\n\nDewan agung bersidang pada awal Shemu. Aku meminta Anda menyiapkan laporan lengkap wilayah timur dan mengirimkannya dengan kurir cepat, sebelum bulan baru jika memungkinkan.\n\nAliansi kita kuat. Marilah kita tunjukkan kepada dewan bahwa itu tetap demikian.\n\nTushratta, Raja Agung Mitanni"
+msgstr "Untuk saudaraku, Raja Agung,\n"
+"\n"
+"Dewan agung bersidang pada awal Shemu. Aku meminta Anda menyiapkan laporan lengkap wilayah timur dan mengirimkannya dengan kurir cepat, sebelum bulan baru jika memungkinkan.\n"
+"\n"
+"Aliansi kita kuat. Marilah kita tunjukkan kepada dewan bahwa itu tetap demikian.\n"
+"\n"
+"Tushratta, Raja Agung Mitanni"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:163
 #, fuzzy
@@ -5432,7 +6206,11 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "Kepada Biro Penunjukan Kerajaan,\n\nKami telah menerima permohonan dari Horemheb dari Thebes dan akan meninjau catatan rekam jejaknya sebelum bulan baru berikutnya. Harap beri tahu dia bahwa kami akan mengirimkan kabar pada waktunya.\n\nBerdasarkan keputusan kerajaan,"
+msgstr "Kepada Biro Penunjukan Kerajaan,\n"
+"\n"
+"Kami telah menerima permohonan dari Horemheb dari Thebes dan akan meninjau catatan rekam jejaknya sebelum bulan baru berikutnya. Harap beri tahu dia bahwa kami akan mengirimkan kabar pada waktunya.\n"
+"\n"
+"Berdasarkan keputusan kerajaan,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:278
 #, fuzzy
@@ -5443,7 +6221,13 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "Kepada Raja Agung,\n\nSelama bertahun-tahun rumah kita telah seperti saudara. Saya menulis sekarang untuk mengusulkan agar kita meresmikan persahabatan ini demi kepentingan kedua bangsa kita: sebuah pakta perlindungan timbal balik dan rute bersama.\n\nSaya hanya meminta Anda mendengar syarat-syarat saya. Kirimkan pesan melalui kurir berikutnya dan saya akan segera mengirimkan utusan saya.\n\nAziru, hamba Raja Agung, penguasa Amurru"
+msgstr "Kepada Raja Agung,\n"
+"\n"
+"Selama bertahun-tahun rumah kita telah seperti saudara. Saya menulis sekarang untuk mengusulkan agar kita meresmikan persahabatan ini demi kepentingan kedua bangsa kita: sebuah pakta perlindungan timbal balik dan rute bersama.\n"
+"\n"
+"Saya hanya meminta Anda mendengar syarat-syarat saya. Kirimkan pesan melalui kurir berikutnya dan saya akan segera mengirimkan utusan saya.\n"
+"\n"
+"Aziru, hamba Raja Agung, penguasa Amurru"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:391
 #, fuzzy
@@ -5452,7 +6236,11 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "Kepada Raja Agung,\n\nPerjalanan saya membawa saya dekat Delta dalam beberapa hari mendatang. Jika Raja Agung memiliki waktu luang, saya akan menyambut kesempatan untuk berbicara tatap muka; ada hal-hal yang lebih mudah diucapkan daripada ditulis.\n\nHambamu, Abdi-Heba, gubernur Urushalim"
+msgstr "Kepada Raja Agung,\n"
+"\n"
+"Perjalanan saya membawa saya dekat Delta dalam beberapa hari mendatang. Jika Raja Agung memiliki waktu luang, saya akan menyambut kesempatan untuk berbicara tatap muka; ada hal-hal yang lebih mudah diucapkan daripada ditulis.\n"
+"\n"
+"Hambamu, Abdi-Heba, gubernur Urushalim"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:153
 #, fuzzy
@@ -5461,7 +6249,11 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "Kepada Raja Agung, saudaraku,\n\nSaya telah mendengar perkataan Anda. Emas akan dikirimkan sebelum utusan berikutnya berangkat. Kami menghargai ikatan antara rumah kita dan tidak ingin itu mendingin.\n\nDalam persahabatan,"
+msgstr "Kepada Raja Agung, saudaraku,\n"
+"\n"
+"Saya telah mendengar perkataan Anda. Emas akan dikirimkan sebelum utusan berikutnya berangkat. Kami menghargai ikatan antara rumah kita dan tidak ingin itu mendingin.\n"
+"\n"
+"Dalam persahabatan,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:239
 #, fuzzy
@@ -5472,7 +6264,13 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "Kepada Raja Agung, saudaraku,\n\nSaya menulis dalam persahabatan, sebagaimana para ayah kita menulis sebelumnya. Pengiriman emas ketiga yang disepakati dalam perjanjian kita belum tiba. Dua utusan telah berlalu dan kami masih menunggu.\n\nKami meminta Anda mengirimkannya tanpa penundaan lebih lanjut, sebagaimana layaknya ikatan antara rumah kita.\n\nBurna-Buriash II, Raja Babilonia"
+msgstr "Kepada Raja Agung, saudaraku,\n"
+"\n"
+"Saya menulis dalam persahabatan, sebagaimana para ayah kita menulis sebelumnya. Pengiriman emas ketiga yang disepakati dalam perjanjian kita belum tiba. Dua utusan telah berlalu dan kami masih menunggu.\n"
+"\n"
+"Kami meminta Anda mengirimkannya tanpa penundaan lebih lanjut, sebagaimana layaknya ikatan antara rumah kita.\n"
+"\n"
+"Burna-Buriash II, Raja Babilonia"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:352
 #, fuzzy
@@ -5483,7 +6281,17 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "Kepada Raja Agung, Tuanku, Matahariku,\n\nGandum yang Anda kirim bulan lalu telah diterima dengan syukur dan saya memuji nama Anda di hadapan rakyat. Namun saya harus menulis lagi: pengiriman ketiga belum tiba dan kota menjadi gelisah.\n\nSaya telah menulis tujuh kali. Saya tidak ingin menyusahkan Anda, namun apa lagi yang bisa saya lakukan?\n\nHambamu, Rib-Hadda, gubernur Byblos"
+msgstr "Kepada Raja Agung, Tuanku, Matahariku,\n"
+"\n"
+"Gandum yang Anda kirim bulan lalu telah diterima dengan syukur dan saya memuji nama Anda di hadapan rakyat. Namun saya harus menulis lagi: pengiriman ketiga belum tiba dan kota menjadi gelisah.\n"
+"\n"
+"Saya telah menulis tujuh kali. Saya tidak ingin menyusahkan Anda, namun apa lagi yang bisa saya lakukan?\n"
+"\n"
+"Hambamu, Rib-Hadda, gubernur Byblos"
+
+#: ../../apps/site/src/components/landing/MailThreadMock.tsx:123
+msgid "To: You"
+msgstr "Kepada: Anda"
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:19
 #: ../ui/src/emails/ThreadList.tsx:15
@@ -5500,7 +6308,11 @@ msgstr "Hari ini"
 msgid "Toggle folders"
 msgstr "Alihkan folder"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:91
+#: ../ui/src/i18n/taxonomy-template-messages.ts:213
+msgid "Transactions"
+msgstr "Transaksi"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:102
 #, fuzzy
 msgid "Travel"
 msgstr "Perjalanan"
@@ -5563,14 +6375,14 @@ msgid "Unclassified"
 msgstr "Tidak Terklasifikasi"
 
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:232
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:366
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1321
-#: ../ui/src/emails/MockEmailsPage.tsx:285
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:372
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1392
+#: ../ui/src/emails/MockEmailsPage.tsx:293
 #, fuzzy
 msgid "Undo"
 msgstr "Urungkan"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:67
+#: ../ui/src/i18n/taxonomy-template-messages.ts:75
 #, fuzzy
 msgid "University"
 msgstr "Universitas"
@@ -5580,7 +6392,7 @@ msgstr "Universitas"
 msgid "Unknown"
 msgstr "Tidak diketahui"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1219
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1255
 #, fuzzy
 msgid "unknown error"
 msgstr "kesalahan tidak dikenal"
@@ -5652,7 +6464,7 @@ msgid "Update payment method"
 msgstr "Perbarui metode pembayaran"
 
 #: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:47
-#: ../ui/src/i18n/taxonomy-template-messages.ts:95
+#: ../ui/src/i18n/taxonomy-template-messages.ts:245
 #: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:59
 #, fuzzy
 msgid "Updates / Other"
@@ -5663,7 +6475,7 @@ msgstr "Pembaruan / Lainnya"
 msgid "Updates, intros, and check-ins from current or prospective investors."
 msgstr "Pembaruan, perkenalan, dan check-in dari investor saat ini atau calon investor."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:52
+#: ../ui/src/i18n/taxonomy-template-messages.ts:58
 #, fuzzy
 msgid "Updates, term sheets, due diligence requests, cap table, and investor relations."
 msgstr "Pembaruan, lembar persyaratan, permintaan uji tuntas, cap table, dan hubungan investor."
@@ -5737,7 +6549,7 @@ msgstr "Gunakan \"Pindai ulang kotak masuk\" setelah mengubah filter untuk mener
 msgid "Use a template"
 msgstr "Gunakan template"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1784
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1806
 #, fuzzy
 msgid "Use template"
 msgstr "Gunakan template"
@@ -5747,15 +6559,23 @@ msgstr "Gunakan template"
 msgid "Use this plan for a business, team, or separate Gmail account."
 msgstr "Gunakan paket ini untuk bisnis, tim, atau akun Gmail terpisah."
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:99
+msgid "Utilities, household maintenance, and home upkeep appointments."
+msgstr "Tagihan utilitas, pemeliharaan rumah tangga, dan janji temu perawatan rumah."
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:88
 #, fuzzy
-msgid "Utilities, landlord or mortgage communications, home maintenance, and property services."
-msgstr "Utilitas, komunikasi tuan tanah atau hipotek, pemeliharaan rumah, dan layanan properti."
+#~ msgid "Utilities, landlord or mortgage communications, home maintenance, and property services."
+#~ msgstr "Utilitas, komunikasi tuan tanah atau hipotek, pemeliharaan rumah, dan layanan properti."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:65
+msgid "Vendor agreements, office logistics, and day-to-day operational coordination."
+msgstr "Perjanjian vendor, logistik kantor, dan koordinasi operasional sehari-hari."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:59
 #, fuzzy
-msgid "Vendor contracts, tools, infrastructure, and day-to-day operational communications."
-msgstr "Kontrak vendor, alat, infrastruktur, dan komunikasi operasional sehari-hari."
+#~ msgid "Vendor contracts, tools, infrastructure, and day-to-day operational communications."
+#~ msgstr "Kontrak vendor, alat, infrastruktur, dan komunikasi operasional sehari-hari."
 
 #: ../../apps/web/src/app/verify-email/page.tsx:32
 #, fuzzy
@@ -5772,6 +6592,10 @@ msgstr "Email verifikasi terkirim. Periksa kotak masuk Anda."
 msgid "Verify your email"
 msgstr "Verifikasi email Anda"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:123
+msgid "Version releases, changelogs, dependency upgrades, and package registry alerts."
+msgstr "Rilis versi, catatan perubahan, peningkatan dependensi, dan peringatan registri paket."
+
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:193
 #, fuzzy
 msgid "View draft reply"
@@ -5780,6 +6604,15 @@ msgstr "Lihat draf balasan"
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:303
 msgid "View only. Only workspace admins can edit the plan."
 msgstr "Hanya lihat. Hanya admin ruang kerja yang dapat mengedit rencana."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:235
+#, fuzzy
+msgid "Volunteer sign-ups, shift scheduling, and coordinator communications."
+msgstr "Pendaftaran sukarelawan, penjadwalan shift, dan komunikasi koordinator."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:234
+msgid "Volunteers"
+msgstr "Sukarelawan"
 
 #: ../../apps/mobile/src/components/RationaleCard.tsx:44
 #: ../../apps/mobile/src/components/ThreadRow.tsx:44
@@ -5850,7 +6683,7 @@ msgstr "Apa yang terjadi pada percakapan yang Amarnai ragukan?"
 msgid "What model does Amarnai use?"
 msgstr "Model apa yang Amarnai gunakan?"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:518
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:521
 #, fuzzy
 msgid "Where this folder sits. Folders with no parent stay disconnected and are ignored until connected."
 msgstr "Lokasi folder ini. Folder tanpa induk tetap terputus dan diabaikan hingga terhubung."
@@ -5860,12 +6693,16 @@ msgstr "Lokasi folder ini. Folder tanpa induk tetap terputus dan diabaikan hingg
 msgid "Who is king Aziru?"
 msgstr "Siapa King Aziru?"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:36
+#: ../ui/src/i18n/taxonomy-template-messages.ts:138
+msgid "Wholesale suppliers, restock orders, and inventory availability from manufacturers."
+msgstr "Pemasok grosir, pesanan pengisian ulang stok, dan ketersediaan inventaris dari produsen."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:40
 #, fuzzy
 msgid "Work"
 msgstr "Pekerjaan"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:34
+#: ../ui/src/i18n/taxonomy-template-messages.ts:38
 #, fuzzy
 msgid "Working Professional"
 msgstr "Profesional Aktif"

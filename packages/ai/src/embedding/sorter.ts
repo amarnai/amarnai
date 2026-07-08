@@ -217,11 +217,32 @@ export type EmbeddingSortResult = {
    */
   failedOpenOnError: boolean;
   /**
+   * Which fallback path produced an inbox fallback, or null for a non-fallback
+   * (successful placement) result. Lets the caller persist why a thread landed in
+   * review: transient causes (`embedding_failed`, `llm_error`) mark the thread
+   * re-sortable without a taxonomy change; deliberate ones (`quality_gate`,
+   * `llm_declined`, `no_root`) do not.
+   */
+  fallbackCause: FallbackCause;
+  /**
    * Cross-branch decision signal for margin tuning. Null when no guard-met
    * comparison occurred (quality-gate fallback, root-only taxonomy, LLM error).
    */
   crossBranch: CrossBranchSignal | null;
 };
+
+/**
+ * The reason an inbox fallback was produced. `embedding_failed` and `llm_error`
+ * are transient infrastructure failures (retrying may succeed); the rest are
+ * deliberate routing decisions. Null on a successful placement.
+ */
+export type FallbackCause =
+  | "no_root"
+  | "embedding_failed"
+  | "quality_gate"
+  | "llm_declined"
+  | "llm_error"
+  | null;
 
 // ─── Internal helpers ─────────────────────────────────────────────────────────
 
@@ -238,9 +259,8 @@ function makeInboxFallback(
   rawSimilarities: Record<string, number>,
   subtreeScores: Record<string, number>,
   updatedNodeEmbeddings: UpdatedNodeEmbedding[],
-  threadEmbeddingVector: number[] = [],
-  // Only the LLM-error catch sets this; every deliberate fallback leaves it false.
-  failedOpenOnError = false
+  cause: Exclude<FallbackCause, null>,
+  threadEmbeddingVector: number[] = []
 ): EmbeddingSortResult {
   return {
     finalNodeId: null,
@@ -253,7 +273,10 @@ function makeInboxFallback(
     subtreeScores,
     updatedNodeEmbeddings,
     threadEmbeddingVector,
-    failedOpenOnError,
+    // Only the LLM-error catch fails open; every deliberate fallback leaves this
+    // false. Derived from the cause so the two can never disagree.
+    failedOpenOnError: cause === "llm_error",
+    fallbackCause: cause,
     // No traversal happened (gate/error), so there is no cross-branch decision.
     crossBranch: null,
   };
@@ -495,7 +518,7 @@ export async function sortThreadByEmbedding(
 
   const rootNode = nodes.find((n) => n.isRoot);
   if (!rootNode) {
-    return makeInboxFallback("No root node in taxonomy", {}, {}, []);
+    return makeInboxFallback("No root node in taxonomy", {}, {}, [], "no_root");
   }
 
   const nonRootNodes = nodes.filter((n) => !n.isRoot && n.description != null);
@@ -580,7 +603,14 @@ export async function sortThreadByEmbedding(
     );
     const [computed] = await embeddingProvider.embed([threadText]);
     if (!computed || computed.length === 0) {
-      return makeInboxFallback("Thread embedding failed", {}, {}, updatedNodeEmbeddings, []);
+      return makeInboxFallback(
+        "Thread embedding failed",
+        {},
+        {},
+        updatedNodeEmbeddings,
+        "embedding_failed",
+        []
+      );
     }
     threadVector = computed;
   }
@@ -660,6 +690,7 @@ export async function sortThreadByEmbedding(
       rawSimsRecord,
       subtreeScoresRecord,
       updatedNodeEmbeddings,
+      "quality_gate",
       threadVector
     );
   }
@@ -768,8 +799,8 @@ export async function sortThreadByEmbedding(
           rawSimsRecord,
           subtreeScoresRecord,
           updatedNodeEmbeddings,
-          threadVector,
-          true
+          "llm_error",
+          threadVector
         );
       }
 
@@ -794,6 +825,7 @@ export async function sortThreadByEmbedding(
           updatedNodeEmbeddings,
           threadEmbeddingVector: threadVector,
           failedOpenOnError: false,
+          fallbackCause: null,
           crossBranch,
         };
       }
@@ -803,6 +835,7 @@ export async function sortThreadByEmbedding(
         rawSimsRecord,
         subtreeScoresRecord,
         updatedNodeEmbeddings,
+        "llm_declined",
         threadVector
       );
     }
@@ -883,7 +916,7 @@ export async function sortThreadByEmbedding(
         );
         return makeInboxFallback(
           LLM_ERROR_FALLBACK_EXPLANATION,
-          rawSimsRecord, subtreeScoresRecord, updatedNodeEmbeddings, threadVector, true
+          rawSimsRecord, subtreeScoresRecord, updatedNodeEmbeddings, "llm_error", threadVector
         );
       }
       if (!soleResult.needsHumanReview && soleResult.finalNodeId) {
@@ -895,7 +928,7 @@ export async function sortThreadByEmbedding(
       }
       return makeInboxFallback(
         `LLM could not resolve descend-vs-stay at "${nodeMap.get(currentNodeId)?.name ?? currentNodeId}": ${soleResult.explanation}`,
-        rawSimsRecord, subtreeScoresRecord, updatedNodeEmbeddings, threadVector
+        rawSimsRecord, subtreeScoresRecord, updatedNodeEmbeddings, "llm_declined", threadVector
       );
     }
 
@@ -1023,7 +1056,7 @@ export async function sortThreadByEmbedding(
             );
             return makeInboxFallback(
               LLM_ERROR_FALLBACK_EXPLANATION,
-              rawSimsRecord, subtreeScoresRecord, updatedNodeEmbeddings, threadVector, true
+              rawSimsRecord, subtreeScoresRecord, updatedNodeEmbeddings, "llm_error", threadVector
             );
           }
           if (!llmResult.needsHumanReview && llmResult.finalNodeId) {
@@ -1043,12 +1076,13 @@ export async function sortThreadByEmbedding(
               updatedNodeEmbeddings,
               threadEmbeddingVector: threadVector,
               failedOpenOnError: false,
+              fallbackCause: null,
               crossBranch,
             };
           }
           return makeInboxFallback(
             `LLM could not resolve mid-traversal ambiguity at "${nodeMap.get(currentNodeId)?.name ?? currentNodeId}": ${llmResult.explanation}`,
-            rawSimsRecord, subtreeScoresRecord, updatedNodeEmbeddings, threadVector
+            rawSimsRecord, subtreeScoresRecord, updatedNodeEmbeddings, "llm_declined", threadVector
           );
         }
       }
@@ -1089,6 +1123,7 @@ export async function sortThreadByEmbedding(
       updatedNodeEmbeddings,
       threadEmbeddingVector: threadVector,
       failedOpenOnError: false,
+      fallbackCause: null,
       crossBranch,
     };
   }
@@ -1118,6 +1153,7 @@ export async function sortThreadByEmbedding(
     updatedNodeEmbeddings,
     threadEmbeddingVector: threadVector,
     failedOpenOnError: false,
+    fallbackCause: null,
     crossBranch,
   };
 }

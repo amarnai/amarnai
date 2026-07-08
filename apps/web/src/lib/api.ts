@@ -91,4 +91,9 @@ export type {
   GmailSortResult,
   ClassifyResult,
   QueuedResult,
+  TaxonomyImportPreviewResult,
+  TaxonomyImportResult,
+  TaxonomyMigrationMapping,
+  MigrationPreviewRow,
+  MigrationCandidate,
 } from "@amarnai/api-client";

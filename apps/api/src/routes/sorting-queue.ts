@@ -4,7 +4,12 @@ import { Job } from "bullmq";
 import { db } from "@amarnai/db";
 import { classifyThreadQueue } from "../queues.js";
 import { DEFAULT_GMAIL_SYNC_SETTINGS } from "@amarnai/shared";
-import { DEDUP_CLASSIFY_UNROUTED, DEDUP_CLASSIFY_UNCLASSIFIED } from "@amarnai/queue";
+import {
+  DEDUP_CLASSIFY_UNROUTED,
+  DEDUP_CLASSIFY_UNCLASSIFIED,
+  DEDUP_CLASSIFY_NEEDS_REVIEW,
+  DEDUP_CLASSIFY_MIGRATION,
+} from "@amarnai/queue";
 import { resolveEmailAccountId } from "../services/email-account.js";
 import { isWorkspaceTaxonomyRoutable } from "../services/taxonomy-routable.js";
 
@@ -154,6 +159,8 @@ sortingQueue.delete(
       `classify_quota_recovery_${workspaceId}_${threadId}`,
       `${DEDUP_CLASSIFY_UNROUTED}_${workspaceId}_${threadId}`,
       `${DEDUP_CLASSIFY_UNCLASSIFIED}_${workspaceId}_${threadId}`,
+      `${DEDUP_CLASSIFY_NEEDS_REVIEW}_${workspaceId}_${threadId}`,
+      `${DEDUP_CLASSIFY_MIGRATION}_${workspaceId}_${threadId}`,
     ];
 
     let removed = false;
@@ -190,16 +197,22 @@ sortingQueue.delete(
 
 async function enqueueThreadsForRouting(
   workspaceId: string,
-  statuses: ("PENDING" | "UNROUTED" | "UNCLASSIFIED")[],
+  statuses: ("PENDING" | "UNROUTED" | "UNCLASSIFIED" | "NEEDS_REVIEW")[],
   dedupPrefix: string,
   syncSettings: { includeSpam: boolean; includePromotions: boolean } | null,
   applyInboxFilter: boolean,
-  source: "BACKFILL" | "REROUTE"
+  source: "BACKFILL" | "REROUTE",
+  // When provided, restrict to these thread IDs (pre-filtered by the caller,
+  // e.g. eligibility computed from latest-classification state). The status
+  // filter still applies, so a thread that left `statuses` between the caller's
+  // read and this enqueue is safely skipped.
+  threadIds?: string[]
 ): Promise<number> {
   const where = {
     workspaceId,
     triageStatus: { in: statuses },
     classifyingAt: null,
+    ...(threadIds ? { id: { in: threadIds } } : {}),
     ...(applyInboxFilter
       ? {
           gmailIsTrash: false,
@@ -339,6 +352,103 @@ sortingQueue.post("/workspaces/:workspaceId/sorting-queue/reroute-unclassified",
     null,
     false,
     "REROUTE"
+  );
+
+  return c.json({ queued });
+});
+
+/**
+ * Which NEEDS_REVIEW threads can a re-sort plausibly place differently. A thread
+ * qualifies when EITHER the taxonomy changed since it was last sorted (it may
+ * route to a folder that did not exist then) OR its last sort hit a transient
+ * infrastructure failure (LLM fail-open / embedding error — retrying may
+ * succeed). Threads with no textual content are always excluded: re-sorting them
+ * fails identically, so they stay in the review queue for a human.
+ *
+ * Eligibility is computed from each thread's latest classification, so it is
+ * done in JS over the (small) NEEDS_REVIEW set rather than in SQL — matching the
+ * latest-classification pattern used elsewhere (email-threads, triage). Threads
+ * already classifying are skipped so a re-sort cannot double-enqueue them.
+ */
+async function findEligibleNeedsReviewThreadIds(workspaceId: string): Promise<string[]> {
+  const [workspace, threads] = await Promise.all([
+    db.workspace.findUnique({
+      where: { id: workspaceId },
+      select: { taxonomyChangedAt: true },
+    }),
+    db.emailThread.findMany({
+      where: { workspaceId, triageStatus: "NEEDS_REVIEW", classifyingAt: null },
+      select: {
+        id: true,
+        classifications: {
+          orderBy: { createdAt: "desc" },
+          take: 1,
+          select: { createdAt: true, transientFailure: true, decisionSource: true },
+        },
+      },
+    }),
+  ]);
+
+  const taxonomyChangedAt = workspace?.taxonomyChangedAt ?? null;
+
+  return threads
+    .filter((t) => {
+      const latest = t.classifications[0];
+      // No classification at all — routing never produced a result; let it try.
+      if (!latest) return true;
+      // Empty-text threads can never be placed by re-sorting; keep for a human.
+      if (latest.decisionSource === "no_text_content") return false;
+      // Transient failure (LLM fail-open / embedding error) — retrying may work.
+      if (latest.transientFailure) return true;
+      // Taxonomy changed since this thread was sorted — it may route differently.
+      // NOTE: rows written before this feature shipped have transientFailure=false
+      // by default, so a pre-migration fail-open is only re-sortable via this clause.
+      return taxonomyChangedAt != null && latest.createdAt < taxonomyChangedAt;
+    })
+    .map((t) => t.id);
+}
+
+/**
+ * GET /workspaces/:workspaceId/sorting-queue/reroute-needs-review
+ *
+ * Returns how many NEEDS_REVIEW threads are eligible for a one-click re-sort.
+ * Kept off the hot email-threads counts query because it needs the
+ * latest-classification join.
+ */
+sortingQueue.get("/workspaces/:workspaceId/sorting-queue/reroute-needs-review", async (c) => {
+  const parsed = workspaceParam.safeParse({ workspaceId: c.req.param("workspaceId") });
+  if (!parsed.success) return c.json({ error: "Invalid workspace ID" }, 400);
+
+  const eligible = (await findEligibleNeedsReviewThreadIds(parsed.data.workspaceId)).length;
+  return c.json({ eligible });
+});
+
+/**
+ * POST /workspaces/:workspaceId/sorting-queue/reroute-needs-review
+ *
+ * Re-sorts the eligible NEEDS_REVIEW threads (see findEligibleNeedsReviewThreadIds)
+ * through the normal routing pipeline as REROUTE. No taxonomy check — routing
+ * already ran once for these threads; re-routing is always permitted. Metered
+ * like any REROUTE sort (threads already counted this window re-sort free; the
+ * overflow defers to QUOTA_BLOCKED as usual).
+ */
+sortingQueue.post("/workspaces/:workspaceId/sorting-queue/reroute-needs-review", async (c) => {
+  const parsed = workspaceParam.safeParse({ workspaceId: c.req.param("workspaceId") });
+  if (!parsed.success) return c.json({ error: "Invalid workspace ID" }, 400);
+
+  const { workspaceId } = parsed.data;
+
+  const eligibleIds = await findEligibleNeedsReviewThreadIds(workspaceId);
+  if (eligibleIds.length === 0) return c.json({ queued: 0 });
+
+  const queued = await enqueueThreadsForRouting(
+    workspaceId,
+    ["NEEDS_REVIEW"],
+    DEDUP_CLASSIFY_NEEDS_REVIEW,
+    null,
+    false,
+    "REROUTE",
+    eligibleIds
   );
 
   return c.json({ queued });

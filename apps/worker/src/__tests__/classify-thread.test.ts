@@ -385,6 +385,53 @@ describe("createClassifyThreadWorker — UNCLASSIFIED detection", () => {
   });
 });
 
+// ─── transientFailure persistence ──────────────────────────────────────────────
+
+describe("createClassifyThreadWorker — transientFailure flag", () => {
+  async function runWithSort(sort: Record<string, unknown>) {
+    mockSortThreadByEmbedding.mockResolvedValue({ ...BASE_SORT_RESULT, ...sort });
+    createClassifyThreadWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID, emailThreadId: THREAD_ID }));
+    return vi.mocked(db.emailClassification.create).mock.calls[0]?.[0] as
+      | { data: Record<string, unknown> }
+      | undefined;
+  }
+
+  it("persists transientFailure:true on an LLM-error fail-open", async () => {
+    const call = await runWithSort({
+      finalNodeId: null,
+      needsHumanReview: true,
+      fallbackCause: "llm_error",
+      failedOpenOnError: true,
+    });
+    expect(call?.data.transientFailure).toBe(true);
+  });
+
+  it("persists transientFailure:true on an embedding failure", async () => {
+    const call = await runWithSort({
+      finalNodeId: null,
+      needsHumanReview: true,
+      fallbackCause: "embedding_failed",
+    });
+    expect(call?.data.transientFailure).toBe(true);
+  });
+
+  it("persists transientFailure:false on a deliberate quality-gate fallback", async () => {
+    const call = await runWithSort({
+      finalNodeId: null,
+      needsHumanReview: true,
+      fallbackCause: "quality_gate",
+    });
+    expect(call?.data.transientFailure).toBe(false);
+  });
+
+  it("persists transientFailure:false on a successful placement (null cause)", async () => {
+    const call = await runWithSort({ fallbackCause: null });
+    expect(call?.data.transientFailure).toBe(false);
+  });
+});
+
 // ─── Needs-attention push (fail-open suppression) ──────────────────────────────
 
 describe("createClassifyThreadWorker — needs-attention push", () => {

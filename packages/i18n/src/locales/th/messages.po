@@ -13,7 +13,7 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:513
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:516
 #, fuzzy
 msgid " (Inbox)"
 msgstr " (กล่องขาเข้า)"
@@ -55,6 +55,12 @@ msgstr "นำเข้า {0} เธรดแล้ว"
 #, fuzzy
 msgid "{0, plural, one {# thread imported.} other {# threads imported.}} Your plan's import limit was reached."
 msgstr "นำเข้า {0} เธรดแล้ว ถึงขีดจำกัดการนำเข้าของแผนคุณแล้ว"
+
+#. placeholder {0}: s.threadCount
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:125
+#, fuzzy
+msgid "{0, plural, one {# thread} other {# threads}}"
+msgstr "{0, plural, one {# เธรด} other {# เธรด}}"
 
 #. placeholder {0}: node?.threadCount ?? 0
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:380
@@ -129,7 +135,7 @@ msgstr "{blacklistCount, plural, one {# บล็อก} other {# บล็อ�
 #~ msgid "{by} assigned you: {subject}"
 #~ msgstr "{by} มอบหมายถึงคุณ: {subject}"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:528
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:531
 #, fuzzy
 msgid "{classificationCount, plural, one {Deleting this folder will leave # thread unsorted.} other {Deleting this folder will leave # threads unsorted.}}"
 msgstr "{classificationCount, plural, one {การลบโฟลเดอร์นี้จะทำให้มี # เธรดไม่ได้จัดเรียง} other {การลบโฟลเดอร์นี้จะทำให้มี # เธรดไม่ได้จัดเรียง}}"
@@ -150,6 +156,15 @@ msgstr "ความมั่นใจ {confPct}%"
 msgid "{draftRemaining} of {draftLimit} left · resets {draftResetDate}"
 msgstr "เหลือ {draftRemaining} จาก {draftLimit} · รีเซ็ตใน {draftResetDate}"
 
+#: ../../apps/web/src/app/(app)/emails/ResortReviewBanner.tsx:65
+#, fuzzy
+msgid "{eligible, plural, one {# needs-review thread can be re-sorted automatically, because your plan changed since it was sorted or sorting hit a temporary error. The rest need your decision.} other {# needs-review threads can be re-sorted automatically, because your plan changed since they were sorted or sorting hit a temporary error. The rest need your decision.}}"
+msgstr "{eligible, plural, one {# เธรดที่ต้องพิจารณาสามารถจัดเรียงใหม่ได้อัตโนมัติ เนื่องจากแผนบริการของคุณเปลี่ยนไปหลังจากจัดเรียง หรือเกิดข้อผิดพลาดชั่วคราวในการจัดเรียง ส่วนที่เหลือต้องได้รับการตัดสินใจจากคุณ} other {# เธรดที่ต้องพิจารณาสามารถจัดเรียงใหม่ได้อัตโนมัติ เนื่องจากแผนบริการของคุณเปลี่ยนไปหลังจากจัดเรียง หรือเกิดข้อผิดพลาดชั่วคราวในการจัดเรียง ส่วนที่เหลือต้องได้รับการตัดสินใจจากคุณ}}"
+
+#: ../../apps/web/src/app/(app)/emails/ResortReviewBanner.tsx:81
+msgid "{eligible, plural, one {Re-sort # thread} other {Re-sort # threads}}"
+msgstr "{eligible, plural, one {จัดเรียง # เธรดใหม่} other {จัดเรียง # เธรดใหม่}}"
+
 #: ../../apps/site/src/components/landing/HeroFeedCard.tsx:260
 #~ msgid "{filed} filed, {reviewCount} needs review"
 #~ msgstr ""
@@ -163,6 +178,10 @@ msgstr "{filed} จัดเรียง · {reviewCount} ต้องตรว�
 #, fuzzy
 msgid "{folderCount, plural, one {# folder} other {# folders}}"
 msgstr "{folderCount, plural, one {# โฟลเดอร์} other {# โฟลเดอร์}}"
+
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:156
+msgid "{hiddenCount, plural, one {# folder with no threads is not shown.} other {# folders with no threads are not shown.}}"
+msgstr "{hiddenCount, plural, one {# โฟลเดอร์ที่ไม่มีเธรดจะไม่แสดง} other {# โฟลเดอร์ที่ไม่มีเธรดจะไม่แสดง}}"
 
 #: ../../apps/web/src/app/admin/waitlist/WaitlistShell.tsx:17
 #, fuzzy
@@ -195,7 +214,7 @@ msgstr "เหลือ {quotaRemaining} จาก {0} · รีเซ็ตใ�
 msgid "{remaining} of {limit} remaining · resets {resetDate}"
 msgstr "เหลือ {remaining} จาก {limit} · รีเซ็ตใน {resetDate}"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1478
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1549
 #, fuzzy
 msgid "{routableCount} of {TAXONOMY_MIN_NON_ROOT_NODES} folders connected to your inbox. Routing requires at least {TAXONOMY_MIN_NON_ROOT_NODES}."
 msgstr "เชื่อมต่อโฟลเดอร์ {routableCount} จาก {TAXONOMY_MIN_NON_ROOT_NODES} รายการเข้ากับกล่องขาเข้าของคุณ การจัดเส้นทางต้องใช้โฟลเดอร์อย่างน้อย {TAXONOMY_MIN_NON_ROOT_NODES} รายการ"
@@ -259,7 +278,7 @@ msgstr "© 2026 Amarnai โอเพนซอร์สภายใต้ AGPL-3.
 msgid "+ Add folder"
 msgstr "+ เพิ่มโฟลเดอร์"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1319
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1390
 #, fuzzy
 msgid "+ Add Folder"
 msgstr "+ เพิ่มโฟลเดอร์"
@@ -268,6 +287,11 @@ msgstr "+ เพิ่มโฟลเดอร์"
 #, fuzzy
 msgid "+ New workspace"
 msgstr "+ พื้นที่ทำงานใหม่"
+
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:170
+#, fuzzy
+msgid "<0>{migrateLive}</0> threads move to their new folder instantly. <1>{resortLive}</1> threads will be re-sorted by AI."
+msgstr "<0>{migrateLive}</0> เธรดจะย้ายไปยังโฟลเดอร์ใหม่ทันที <1>{resortLive}</1> เธรดจะถูกจัดเรียงใหม่ด้วย AI"
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:95
 msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your {providerName} account to get started. Amarnai connects with <1>read-only access</1> and <2>never sends, deletes, or changes anything</2>. Your inbox stays yours."
@@ -416,7 +440,9 @@ msgstr "ได้รับใบสมัครใหม่จากโฮเร
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "ได้รับใบสมัครใหม่จากโฮเรมเฮบแห่งธีบส์ สำหรับตำแหน่งหัวหน้าฝ่ายการติดต่อสื่อสาร\n\nดูใบสมัครได้ที่ทำเนียบบันทึก"
+msgstr "ได้รับใบสมัครใหม่จากโฮเรมเฮบแห่งธีบส์ สำหรับตำแหน่งหัวหน้าฝ่ายการติดต่อสื่อสาร\n"
+"\n"
+"ดูใบสมัครได้ที่ทำเนียบบันทึก"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:387
 #, fuzzy
@@ -430,13 +456,21 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "อับดิ-เฮบา,\n\nสัปดาห์นั้นฉันจะอยู่แถวเดลตาพอดี เราไปพบกันที่สถานีพักระหว่างทางในวันที่สอง ฉันพอจะมีเวลาว่างช่วงเช้า\n\nแล้วพบกัน,"
+msgstr "อับดิ-เฮบา,\n"
+"\n"
+"สัปดาห์นั้นฉันจะอยู่แถวเดลตาพอดี เราไปพบกันที่สถานีพักระหว่างทางในวันที่สอง ฉันพอจะมีเวลาว่างช่วงเช้า\n"
+"\n"
+"แล้วพบกัน,"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
 #, fuzzy
 #~ msgid "About {count, plural, one {# more thread} other {# more threads}} beyond your {plan} subscription limit aren't loaded."
 #~ msgstr "เธรดอีก {count, plural, one {# รายการ} other {# รายการ}} ที่เกินขีดจำกัดการสมัครสมาชิก {plan} ของคุณ ไม่ได้โหลด"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:186
+msgid "Academic Researcher"
+msgstr "นักวิจัยเชิงวิชาการ"
 
 #: ../../apps/web/src/app/sign-up/WaitlistForm.tsx:24
 #, fuzzy
@@ -477,10 +511,14 @@ msgstr "การตั้งค่าบัญชี"
 #~ msgid "Acme Workspace"
 #~ msgstr "เวิร์กสเปซ Acme"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:17
+#: ../ui/src/i18n/taxonomy-template-messages.ts:19
 #, fuzzy
 msgid "Active project communication, deliverables, feedback, and approvals from clients."
 msgstr "การสื่อสารโครงการ, สิ่งที่ต้องส่งมอบ, ข้อเสนอแนะ และการอนุมัติจากลูกค้า"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:163
+msgid "Ad revenue, fan tips, and creator earnings statements."
+msgstr "ใบแจ้งรายได้จากโฆษณา, ทิปจากแฟนคลับ และรายได้ครีเอเตอร์"
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:293
 #: ../../apps/mobile/src/components/BlacklistSheet.tsx:118
@@ -489,7 +527,7 @@ msgstr "การสื่อสารโครงการ, สิ่งที�
 msgid "Add"
 msgstr "เพิ่ม"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1343
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1414
 #, fuzzy
 msgid "Add at least 3 connected folders to export"
 msgstr "เพิ่มโฟลเดอร์ที่เชื่อมต่ออย่างน้อย 3 โฟลเดอร์เพื่อส่งออก"
@@ -505,7 +543,7 @@ msgstr "เพิ่มใน Firefox"
 
 #: ../../apps/mobile/src/components/CollaboratorsSheet.tsx:58
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:42
-#: ../ui/src/i18n/taxonomy-template-messages.ts:28
+#: ../ui/src/i18n/taxonomy-template-messages.ts:30
 #, fuzzy
 msgid "Admin"
 msgstr "ผู้ดูแลระบบ"
@@ -524,6 +562,20 @@ msgstr "ขั้นสูง"
 #, fuzzy
 msgid "Advanced review queue"
 msgstr "คิวการตรวจสอบขั้นสูง"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:155
+#, fuzzy
+msgid "Affiliate links, referral commissions, and creator reward tiers."
+msgstr "ลิงก์พันธมิตร, ค่าคอมมิชชันการแนะนำ และระดับรางวัลครีเอเตอร์"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:154
+#, fuzzy
+msgid "Affiliates"
+msgstr "พันธมิตร"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:67
+msgid "Agreements, banking, accounting, incorporation, and corporate legal correspondence."
+msgstr "ข้อตกลง, การธนาคาร, การบัญชี, การจดทะเบียนบริษัท และการติดต่อทางกฎหมายองค์กร"
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:287
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:185
@@ -842,6 +894,10 @@ msgstr "กำลังนำไปใช้…"
 msgid "Approve routing"
 msgstr "อนุมัติการจัดเส้นทาง"
 
+#: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:131
+msgid "Archive"
+msgstr "เก็บถาวร"
+
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:234
 #: ../ui/src/emails/TriageBar.tsx:71
 #, fuzzy
@@ -896,11 +952,21 @@ msgstr "อย่างน้อย {PASSWORD_MIN_LENGTH} ตัวอักษ�
 #~ msgid "At least 8 characters"
 #~ msgstr "อย่างน้อย 8 ตัวอักษร"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:160
+msgid "Audience"
+msgstr "ผู้ชม"
+
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:127
 #: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:88
 #, fuzzy
 msgid "Auto-file notifications to Updates / Other"
 msgstr "จัดเก็บการแจ้งเตือนโดยอัตโนมัติไปยัง อัปเดต / อื่นๆ"
+
+#. placeholder {0}: catchAllRow.threadCount
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:148
+#, fuzzy
+msgid "Automated and bulk mail ({0}) always moves to the new catch-all folder."
+msgstr "อีเมลอัตโนมัติและอีเมลจำนวนมาก ({0}) จะย้ายไปยังโฟลเดอร์รวบรวมใหม่เสมอ"
 
 #: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:39
 msgid "Automated and bulk mail that doesn't fit another folder lands here automatically. This is different from Needs review, which holds threads too ambiguous for the assistant to sort."
@@ -911,7 +977,7 @@ msgstr "อีเมลอัตโนมัติและอีเมลจำ
 msgid "Automated notice from the Bureau of Royal Appointments. Subject and sender clearly indicate a new application for an open position."
 msgstr "ประกาศอัตโนมัติจากสำนักราชการแต่งตั้ง หัวเรื่องและผู้ส่งระบุชัดเจนว่าเป็นการสมัครตำแหน่งว่างใหม่"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:96
+#: ../ui/src/i18n/taxonomy-template-messages.ts:246
 #: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:68
 #, fuzzy
 msgid "Automated notifications, newsletters, and service updates that don't fit another folder."
@@ -933,10 +999,15 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "Aziru,\n\nถ้อยคำแห่งมิตรภาพของท่านมาถึงเราแล้ว เรายินดีรับฟังข้อเสนอเพิ่มเติมจากตระกูล Amurru โปรดส่งเงื่อนไขของท่านมาพร้อมกับผู้ส่งสารคนถัดไป\n\nด้วยความเคารพ,"
+msgstr "Aziru,\n"
+"\n"
+"ถ้อยคำแห่งมิตรภาพของท่านมาถึงเราแล้ว เรายินดีรับฟังข้อเสนอเพิ่มเติมจากตระกูล Amurru โปรดส่งเงื่อนไขของท่านมาพร้อมกับผู้ส่งสารคนถัดไป\n"
+"\n"
+"ด้วยความเคารพ,"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:219
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
+#: ../../apps/site/src/components/landing/MailThreadMock.tsx:65
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:25
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:230
 #: ../ui/src/emails/ThreadPreview.tsx:121
@@ -945,8 +1016,8 @@ msgid "Back"
 msgstr "ย้อนกลับ"
 
 #: ../../apps/site/src/components/landing/MailThreadMock.tsx:62
-msgid "Back to inbox"
-msgstr "กลับสู่กล่องจดหมาย"
+#~ msgid "Back to inbox"
+#~ msgstr "กลับสู่กล่องจดหมาย"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:215
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:225
@@ -966,7 +1037,7 @@ msgstr "กลับสู่หน้าลงชื่อเข้าใช้
 msgid "Backfill"
 msgstr "เติมข้อมูลย้อนหลัง"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:81
+#: ../ui/src/i18n/taxonomy-template-messages.ts:91
 #, fuzzy
 msgid "Bank statements, investments, insurance policies, and personal financial records."
 msgstr "ใบแจ้งยอดธนาคาร, การลงทุน, กรมธรรม์ประกันภัย และบันทึกทางการเงินส่วนบุคคล"
@@ -1003,15 +1074,33 @@ msgstr "รอบบิล"
 msgid "Billing unit"
 msgstr "หน่วยการเรียกเก็บเงิน"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:23
+#: ../ui/src/i18n/taxonomy-template-messages.ts:25
 #, fuzzy
 msgid "Billing, payments, invoices, and financial records for freelance work."
 msgstr "การเรียกเก็บเงิน, การชำระเงิน, ใบแจ้งหนี้ และบันทึกทางการเงินสำหรับงานฟรีแลนซ์"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:94
+#, fuzzy
+msgid "Bills & Receipts"
+msgstr "ใบแจ้งหนี้และใบเสร็จ"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:238
+#, fuzzy
+msgid "Board & Governance"
+msgstr "คณะกรรมการและการกำกับดูแล"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:239
+msgid "Board meetings, governance policies, bylaws, and trustee correspondence."
+msgstr "การประชุมคณะกรรมการ, นโยบายการกำกับดูแล, ข้อบังคับ และการติดต่อของคณะกรรมการ"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:33
 #, fuzzy
 msgid "Board members, existing fund partners, and portfolio updates."
 msgstr "สมาชิกคณะกรรมการ, พันธมิตรทางการเงินปัจจุบัน และข้อมูลอัปเดตพอร์ตการลงทุน"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:150
+msgid "Brand Deals"
+msgstr "ข้อตกลงแบรนด์"
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:385
 #, fuzzy
@@ -1023,7 +1112,7 @@ msgid "Browse emails easily through your folders. Generate draft replies and cop
 msgstr "เรียกดูอีเมลได้ง่ายผ่านโฟลเดอร์ สร้างอีเมลตอบกลับฉบับร่าง และคัดลอกลงในกล่องจดหมายของคุณ"
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:283
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1403
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1474
 #, fuzzy
 msgid "Browse templates"
 msgstr "เรียกดูเทมเพลต"
@@ -1032,6 +1121,15 @@ msgstr "เรียกดูเทมเพลต"
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:280
 msgid "Browser extension"
 msgstr "ส่วนขยายเบราว์เซอร์"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:114
+#, fuzzy
+msgid "Bug Reports"
+msgstr "รายงานบั๊ก"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:115
+msgid "Bug reports, stack traces, and regression tickets filed against the codebase."
+msgstr "รายงานบั๊ก, Stack trace และบัตรแจ้งปัญหาการถดถอยที่ยื่นต่อโค้ดเบส"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:55
 #, fuzzy
@@ -1065,10 +1163,24 @@ msgstr "ธุรกิจ"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:27
 #, fuzzy
-msgid "Business receipts, reimbursements, and records of work-related purchases."
-msgstr "ใบเสร็จธุรกิจ, การเบิกจ่าย และบันทึกการซื้อที่เกี่ยวข้องกับงาน"
+#~ msgid "Business receipts, reimbursements, and records of work-related purchases."
+#~ msgstr "ใบเสร็จธุรกิจ, การเบิกจ่าย และบันทึกการซื้อที่เกี่ยวข้องกับงาน"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:71
+#: ../ui/src/i18n/taxonomy-template-messages.ts:31
+#, fuzzy
+msgid "Business registration, liability coverage, and internal administration notices."
+msgstr "การจดทะเบียนธุรกิจ, ความคุ้มครองความรับผิด และประกาศการบริหารภายใน"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:29
+#, fuzzy
+msgid "Business reimbursements and records of work-related purchases and equipment."
+msgstr "การเบิกจ่ายคืนธุรกิจ และบันทึกการจัดซื้อที่เกี่ยวข้องกับงานและอุปกรณ์"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:209
+msgid "Buyers & Showings"
+msgstr "ผู้ซื้อและการนำชม"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:79
 #, fuzzy
 msgid "Campus Admin"
 msgstr "ผู้ดูแลระบบวิทยาเขต"
@@ -1095,13 +1207,13 @@ msgstr "ฉันสามารถโฮสต์ Amarnai ด้วยตนเ
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:93
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:245
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:150
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:566
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:580
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:694
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1617
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1645
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1686
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1773
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:94
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:186
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:569
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:583
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:697
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1702
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1795
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:64
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:275
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:370
@@ -1138,6 +1250,15 @@ msgstr "ยกเลิกการสมัครสมาชิกหรือ
 msgid "Cancelling…"
 msgstr "กำลังยกเลิก…"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:63
+#, fuzzy
+msgid "Candidate pipelines, applicant screening, and headcount planning."
+msgstr "กลุ่มผู้สมัคร, การคัดกรองผู้สมัคร และการวางแผนกำลังคน"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:134
+msgid "Carrier tracking numbers, delivery exceptions, and courier dispatch notices."
+msgstr "เลขติดตามพัสดุ, ข้อยกเว้นการจัดส่ง และใบแจ้งการจัดส่งจากบริษัทขนส่ง"
+
 #: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:58
 #: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:81
 #, fuzzy
@@ -1158,6 +1279,10 @@ msgstr "เปลี่ยนผู้รับมอบหมาย"
 msgid "Change subscription"
 msgstr "เปลี่ยนการสมัครสมาชิก"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:157
+msgid "Channel notifications, upload analytics, and policy updates from social platforms."
+msgstr "การแจ้งเตือนช่อง, การวิเคราะห์การอัปโหลด และการอัปเดตนโยบายจากแพลตฟอร์มโซเชียล"
+
 #: ../../apps/web/src/app/verify-email/page.tsx:26
 #, fuzzy
 msgid "Check your inbox"
@@ -1169,7 +1294,7 @@ msgstr "ตรวจสอบกล่องขาเข้าของคุณ
 msgid "Checkout failed: {0}"
 msgstr "ชำระเงินไม่สำเร็จ: {0}"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:676
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:679
 #, fuzzy
 msgid "Child folder"
 msgstr "โฟลเดอร์ย่อย"
@@ -1202,6 +1327,15 @@ msgstr "เลือกวิธีแสดงตัวอย่าง Amarnai"
 msgid "Choose parent"
 msgstr "เลือกโฟลเดอร์หลัก"
 
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:101
+#, fuzzy
+msgid "Choose where each folder’s threads should go under your new plan. Matched folders keep their threads instantly; anything set to re-sort is re-classified by AI."
+msgstr "เลือกว่าเธรดของแต่ละโฟลเดอร์จะไปที่ใดภายใต้แผนบริการใหม่ของคุณ โฟลเดอร์ที่ตรงกันจะยังคงมีเธรดอยู่ทันที ส่วนที่ตั้งค่าให้จัดเรียงใหม่จะถูกจัดประเภทใหม่โดย AI"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:169
+msgid "Classroom"
+msgstr "ห้องเรียน"
+
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:120
 #, fuzzy
 #~ msgid "Click folders & threads, then generate a draft."
@@ -1209,10 +1343,14 @@ msgstr "เลือกโฟลเดอร์หลัก"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:21
 #, fuzzy
-msgid "Client agreements, statements of work, NDAs, and contract amendments."
-msgstr "ข้อตกลงลูกค้า, ใบแจ้งงาน, ข้อตกลงไม่เปิดเผยข้อมูล และการแก้ไขสัญญา"
+#~ msgid "Client agreements, statements of work, NDAs, and contract amendments."
+#~ msgstr "ข้อตกลงลูกค้า, ใบแจ้งงาน, ข้อตกลงไม่เปิดเผยข้อมูล และการแก้ไขสัญญา"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:16
+#: ../ui/src/i18n/taxonomy-template-messages.ts:23
+msgid "Client contracts, statements of work, NDAs, and signed amendments."
+msgstr "สัญญาของลูกค้า, ใบแจ้งงาน, NDA และการแก้ไขที่ลงนามแล้ว"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:18
 #, fuzzy
 msgid "Clients"
 msgstr "ลูกค้า"
@@ -1228,7 +1366,7 @@ msgstr "ลูกค้า"
 msgid "Close"
 msgstr "ปิด"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1542
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1613
 #, fuzzy
 msgid "Close panel"
 msgstr "ปิดแผง"
@@ -1240,6 +1378,25 @@ msgstr "ปิดแผง"
 #, fuzzy
 msgid "Close preview"
 msgstr "ปิดการแสดงตัวอย่าง"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:117
+#, fuzzy
+msgid "Cloud hosting, servers, and platform monitoring for running services."
+msgstr "Cloud hosting, เซิร์ฟเวอร์ และการตรวจสอบแพลตฟอร์มสำหรับการรันบริการ"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:110
+#, fuzzy
+msgid "Code"
+msgstr "โค้ด"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:159
+#, fuzzy
+msgid "Collab invitations, guest appearances, and cross-promotion with other creators."
+msgstr "คำเชิญร่วมงาน, การเป็นแขกรับเชิญ และการโปรโมตข้ามช่องกับครีเอเตอร์อื่น"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:158
+msgid "Collaborations"
+msgstr "การร่วมงาน"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:251
 #: ../../apps/mobile/src/components/CollaboratorsSheet.tsx:36
@@ -1260,6 +1417,10 @@ msgstr "ผู้ร่วมงานใช้งานได้ในแพ็
 #~ msgid "Collapse"
 #~ msgstr "ย่อ"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:124
+msgid "Communities"
+msgstr "ชุมชน"
+
 #: ../ui/src/pricing/planMessages.ts:98
 #, fuzzy
 msgid "Community & docs"
@@ -1270,6 +1431,15 @@ msgstr "ชุมชนและเอกสาร"
 msgid "Compare every subscription"
 msgstr "เปรียบเทียบแพ็กเกจทั้งหมด"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:195
+#, fuzzy
+msgid "Conference submissions, abstract acceptances, and keynote session invitations."
+msgstr "การส่งบทความเข้าร่วมการประชุม, การตอบรับบทคัดย่อ และคำเชิญเข้าร่วม Keynote session"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:194
+msgid "Conferences"
+msgstr "การประชุม"
+
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:294
 #, fuzzy
 msgid "Confirm cancellation"
@@ -1279,7 +1449,7 @@ msgstr "ยืนยันการยกเลิก"
 msgid "Confirm delete"
 msgstr "ยืนยันการลบ"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:558
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:561
 #, fuzzy
 msgid "Confirm Delete"
 msgstr "ยืนยันการลบ"
@@ -1437,6 +1607,10 @@ msgstr "กำลังเชื่อมต่อ..."
 msgid "Connection failed. Please try again."
 msgstr "การเชื่อมต่อล้มเหลว โปรดลองอีกครั้ง"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:148
+msgid "Content Creator"
+msgstr "ครีเอเตอร์เนื้อหา"
+
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:363
 #, fuzzy
 msgid "Continue to {name}"
@@ -1463,15 +1637,19 @@ msgstr "ดำเนินการชำระเงิน"
 msgid "Continue with Google"
 msgstr "ดำเนินการต่อด้วย Google"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:20
+#: ../ui/src/i18n/taxonomy-template-messages.ts:119
+msgid "Continuous-integration runs, build pipelines, and deployment status notifications."
+msgstr "การรัน Continuous Integration, Build pipeline และการแจ้งเตือนสถานะการปรับใช้"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:22
 #, fuzzy
 msgid "Contracts"
 msgstr "สัญญา"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:61
 #, fuzzy
-msgid "Contracts, banking, accounting, tax filings, and corporate legal correspondence."
-msgstr "สัญญา, การธนาคาร, การบัญชี, การยื่นภาษี และจดหมายโต้ตอบทางกฎหมายของบริษัท"
+#~ msgid "Contracts, banking, accounting, tax filings, and corporate legal correspondence."
+#~ msgstr "สัญญา, การธนาคาร, การบัญชี, การยื่นภาษี และจดหมายโต้ตอบทางกฎหมายของบริษัท"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:99
 #, fuzzy
@@ -1567,6 +1745,10 @@ msgstr "ไม่สามารถโหลดแผนได้"
 msgid "Could not open billing management."
 msgstr "ไม่สามารถเปิดหน้าจัดการการเรียกเก็บเงินได้"
 
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1298
+msgid "Could not prepare migration"
+msgstr "ไม่สามารถเตรียมการย้ายข้อมูลได้"
+
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:89
 #: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:114
 #, fuzzy
@@ -1578,7 +1760,7 @@ msgstr "ไม่สามารถจัดคิวการสแกนซ้
 msgid "Could not reach the server. Please check your connection and try again."
 msgstr "ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้ โปรดตรวจสอบการเชื่อมต่อของคุณแล้วลองอีกครั้ง"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1212
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1248
 #, fuzzy
 msgid "Could not read file: invalid JSON."
 msgstr "ไม่สามารถอ่านไฟล์ได้: JSON ไม่ถูกต้อง"
@@ -1652,13 +1834,13 @@ msgstr "การประชุมสภา: ฤดู Shemu"
 msgid "Council preparation request from a known royal ally. Sender domain and context clearly match the Current investors folder."
 msgstr "คำขอเตรียมการประชุมสภาจากพันธมิตรราชวงศ์ที่รู้จัก โดเมนและบริบทของผู้ส่งตรงกับโฟลเดอร์นักลงทุนปัจจุบันอย่างชัดเจน"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:69
+#: ../ui/src/i18n/taxonomy-template-messages.ts:77
 #, fuzzy
 msgid "Courses"
 msgstr "คอร์สเรียน"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:448
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:577
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:580
 #, fuzzy
 msgid "Create"
 msgstr "สร้าง"
@@ -1684,7 +1866,7 @@ msgstr "สร้างบัญชี"
 msgid "Create an account to triage your inbox"
 msgstr "สร้างบัญชีเพื่อจัดการกล่องขาเข้าของคุณ"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:439
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:442
 #, fuzzy
 msgid "Create Folder"
 msgstr "สร้างโฟลเดอร์"
@@ -1719,7 +1901,7 @@ msgstr "กำลังสร้าง…"
 #: ../../apps/mobile/src/components/RerouteSheet.tsx:45
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:107
 #: ../../apps/site/src/components/demo/demo-seed.ts:33
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1739
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1756
 #, fuzzy
 msgid "Current"
 msgstr "ปัจจุบัน"
@@ -1736,14 +1918,23 @@ msgstr "การสมัครสมาชิกปัจจุบัน"
 msgid "Current workspace: <0>{workspaceName}</0>"
 msgstr "เวิร์กสเปซปัจจุบัน: <0>{workspaceName}</0>"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:174
+#, fuzzy
+msgid "Curriculum resources, lesson materials, and syllabus planning for upcoming units."
+msgstr "แหล่งข้อมูลหลักสูตร, สื่อการสอน และการวางแผนหลักสูตรสำหรับหน่วยเรียนถัดไป"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:141
+msgid "Customer Questions"
+msgstr "คำถามของลูกค้า"
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:54
 #, fuzzy
-msgid "Customer support, onboarding, product feedback, churn, and success conversations."
-msgstr "การสนับสนุนลูกค้า, การเริ่มต้นใช้งาน, ข้อเสนอแนะผลิตภัณฑ์, การเลิกใช้งาน และการสนทนาเพื่อความสำเร็จ"
+#~ msgid "Customer support, onboarding, product feedback, churn, and success conversations."
+#~ msgstr "การสนับสนุนลูกค้า, การเริ่มต้นใช้งาน, ข้อเสนอแนะผลิตภัณฑ์, การเลิกใช้งาน และการสนทนาเพื่อความสำเร็จ"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:29
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:157
-#: ../ui/src/i18n/taxonomy-template-messages.ts:53
+#: ../ui/src/i18n/taxonomy-template-messages.ts:59
 #, fuzzy
 msgid "Customers"
 msgstr "ลูกค้า"
@@ -1759,6 +1950,10 @@ msgstr "โซนอันตราย"
 #: ../ui/src/theme/themes.ts:39
 msgid "Dark"
 msgstr "มืด"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:214
+msgid "Deal progress, transaction stages, and closing coordination across active sales."
+msgstr "ความคืบหน้าข้อตกลง, ขั้นตอนธุรกรรม และการประสานงานปิดการขายที่กำลังดำเนินอยู่"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:118
 #, fuzzy
@@ -1778,9 +1973,9 @@ msgstr "เวิร์กสเปซฟรีเริ่มต้น"
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:198
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:271
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:272
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:596
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:607
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:703
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:599
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:610
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:706
 #, fuzzy
 msgid "Delete"
 msgstr "ลบ"
@@ -1837,20 +2032,29 @@ msgstr "ลบเวิร์กสเปซ"
 msgid "Delete workspace?"
 msgstr "ลบเวิร์กสเปซหรือไม่?"
 
+#: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:130
+#, fuzzy
+msgid "Deleted Items"
+msgstr "รายการที่ถูกลบ"
+
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:405
 msgid "Deleting..."
 msgstr "กำลังลบ..."
 
 #: ../../apps/mobile/app/(app)/account.tsx:166
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:143
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:558
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:561
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:56
 #, fuzzy
 msgid "Deleting…"
 msgstr "กำลังลบ…"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:118
+msgid "Deployments"
+msgstr "การปรับใช้"
+
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:80
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:290
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:293
 #, fuzzy
 msgid "Describe what kinds of emails belong here: who they come from and what they are about. Be specific and use the actual names, topics, and words that show up in those emails. Describe what the emails are, not what you plan to do about them. The clearer your description, the more accurately your email is sorted here."
 msgstr "อธิบายว่าอีเมลประเภทใดควรอยู่ในที่นี้ มาจากใครและเกี่ยวกับอะไร ระบุให้ชัดเจนและใช้ชื่อ หัวข้อ และคำศัพท์จริงที่ปรากฏในอีเมลเหล่านั้น อธิบายว่าอีเมลเหล่านั้นคืออะไร ไม่ใช่อธิบายว่าคุณวางแผนจะทำอะไรกับมัน ยิ่งคำอธิบายของคุณชัดเจนเท่าไร อีเมลของคุณก็จะถูกจัดเรียงได้แม่นยำมากขึ้นเท่านั้น"
@@ -1861,7 +2065,7 @@ msgid "Describe your folders"
 msgstr "อธิบายโฟลเดอร์ของคุณ"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:289
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:461
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:464
 #, fuzzy
 msgid "Description"
 msgstr "คำอธิบาย"
@@ -1959,13 +2163,13 @@ msgstr "ยกเลิกการเชื่อมต่อเวิร์ก
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:239
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:65
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:369
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:375
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:57
 #: ../../apps/web/src/components/JoinedWorkspaceToast.tsx:46
 #: ../../apps/web/src/components/NotificationBell.tsx:179
 #: ../../apps/web/src/components/NotificationBell.tsx:180
 #: ../ui/src/AppDownloadBanner.tsx:80
-#: ../ui/src/emails/MockEmailsPage.tsx:288
+#: ../ui/src/emails/MockEmailsPage.tsx:296
 #, fuzzy
 msgid "Dismiss"
 msgstr "ไม่สนใจ"
@@ -1981,10 +2185,18 @@ msgstr "ชื่อที่แสดง"
 msgid "Do I have to build the folder structure myself?"
 msgstr "ฉันต้องสร้างโครงสร้างโฟลเดอร์ด้วยตัวเองหรือไม่?"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:201
+msgid "Doctoral advising, thesis feedback, and mentoring for doctoral researchers."
+msgstr "การให้คำปรึกษาระดับปริญญาเอก, ข้อเสนอแนะวิทยานิพนธ์ และการเป็นพี่เลี้ยงนักวิจัยระดับปริญญาเอก"
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:86
 #, fuzzy
-msgid "Doctors, pharmacies, medical appointments, health insurance claims, and lab results."
-msgstr "แพทย์, ร้านขายยา, นัดหมายทางการแพทย์, การเคลมประกันสุขภาพ และผลการตรวจแล็บ"
+#~ msgid "Doctors, pharmacies, medical appointments, health insurance claims, and lab results."
+#~ msgstr "แพทย์, ร้านขายยา, นัดหมายทางการแพทย์, การเคลมประกันสุขภาพ และผลการตรวจแล็บ"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:97
+msgid "Doctors, pharmacies, medical appointments, prescriptions, and test results."
+msgstr "แพทย์, ร้านขายยา, การนัดหมายแพทย์, ใบสั่งยา และผลการตรวจ"
 
 #: ../../apps/site/src/components/landing/Footer.tsx:30
 #, fuzzy
@@ -2005,6 +2217,10 @@ msgstr "ไม่มีบัญชีใช่ไหม? <0>สร้างบ�
 msgid "Don't have an account? <0>Sign up</0>"
 msgstr "ไม่มีบัญชีใช่ไหม? <0>สมัครใช้งาน</0>"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:229
+msgid "Donation drives, giving campaigns, and fundraising appeal responses."
+msgstr "การรณรงค์รับบริจาค, แคมเปญการให้ และการตอบรับการระดมทุน"
+
 #: ../../apps/mobile/app/(app)/notifications.tsx:278
 #: ../../apps/mobile/src/components/ThreadRow.tsx:35
 #: ../ui/src/emails/ThreadRow.tsx:202
@@ -2016,6 +2232,10 @@ msgstr "เสร็จสิ้น"
 #, fuzzy
 msgid "Done · undo"
 msgstr "เสร็จสิ้น · เลิกทำ"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:230
+msgid "Donors"
+msgstr "ผู้บริจาค"
 
 #: ../ui/src/PricingPlans.tsx:189
 #, fuzzy
@@ -2056,7 +2276,7 @@ msgid "Draft shared"
 msgstr "แชร์ฉบับร่างแล้ว"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:342
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:484
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:487
 #, fuzzy
 msgid "Draft style guidance"
 msgstr "แนวทางรูปแบบฉบับร่าง"
@@ -2066,6 +2286,10 @@ msgstr "แนวทางรูปแบบฉบับร่าง"
 #, fuzzy
 msgid "Drafting…"
 msgstr "กำลังร่าง..."
+
+#: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:128
+msgid "Drafts"
+msgstr "ฉบับร่าง"
 
 #: ../../apps/site/src/components/demo/DemoTaxonomyCanvas.tsx:223
 #, fuzzy
@@ -2077,17 +2301,22 @@ msgstr "ลากแล้วเชื่อมต่อ เป็นการ�
 msgid "Drag to resize"
 msgstr "ลากเพื่อปรับขนาด"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:129
+#, fuzzy
+msgid "E-commerce Seller"
+msgstr "ผู้ค้าอีคอมเมิร์ซ"
+
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:280
 msgid "e.g. Invoices"
 msgstr "เช่น ใบแจ้งหนี้"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:469
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:472
 #, fuzzy
 msgid "e.g. Invoices, receipts, payment confirmations, and billing questions from clients and vendors."
 msgstr "เช่น ใบแจ้งหนี้, ใบเสร็จรับเงิน, การยืนยันการชำระเงิน และคำถามเกี่ยวกับการเรียกเก็บเงินจากลูกค้าและผู้ขาย"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:350
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:490
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:493
 #, fuzzy
 msgid "e.g. Reply formally. Keep responses under 3 sentences."
 msgstr "เช่น ตอบกลับอย่างเป็นทางการ เขียนตอบกลับไม่เกิน 3 ประโยค"
@@ -2102,7 +2331,7 @@ msgstr "ก่อนหน้านี้"
 msgid "Edit folder"
 msgstr "แก้ไขโฟลเดอร์"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:439
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:442
 #, fuzzy
 msgid "Edit Folder"
 msgstr "แก้ไขโฟลเดอร์"
@@ -2111,7 +2340,7 @@ msgstr "แก้ไขโฟลเดอร์"
 msgid "Edit inbox"
 msgstr "แก้ไขกล่องขาเข้า"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:651
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:654
 #, fuzzy
 msgid "Edit Path"
 msgstr "แก้ไขเส้นทาง"
@@ -2179,15 +2408,19 @@ msgid "Emails"
 msgstr "อีเมล"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:100
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:318
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:321
 #, fuzzy
 msgid "Emails about my bills that I need to deal with."
 msgstr "อีเมลเกี่ยวกับใบแจ้งหนี้ที่ต้องจัดการ"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:101
+msgid "Emails from relatives, children's activities, family events, and household coordination."
+msgstr "อีเมลญาติ, กิจกรรมลูก, กิจกรรมครอบครัว และการประสานงานในบ้าน"
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:90
 #, fuzzy
-msgid "Emails from relatives, children's schools, family events, and household coordination."
-msgstr "อีเมลจากญาติ, โรงเรียนลูก, งานครอบครัว และการประสานงานในบ้าน"
+#~ msgid "Emails from relatives, children's schools, family events, and household coordination."
+#~ msgstr "อีเมลจากญาติ, โรงเรียนลูก, งานครอบครัว และการประสานงานในบ้าน"
 
 #: ../ui/src/pricing/planMessages.ts:95
 #, fuzzy
@@ -2199,10 +2432,14 @@ msgstr "ปรับปรุง + สำรอง"
 msgid "Enhanced + higher fallback"
 msgstr "ปรับปรุง + สำรองระดับสูงขึ้น"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:80
+msgid "Enrollment, tuition fees, dorm assignments, and official campus administration."
+msgstr "การลงทะเบียน, ค่าเล่าเรียน, การจัดสรรหอพัก และงานบริหารวิทยาเขต"
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:72
 #, fuzzy
-msgid "Enrollment, tuition fees, housing applications, and official campus administration."
-msgstr "การลงทะเบียน, ค่าเล่าเรียน, การสมัครที่พัก และการบริหารจัดการวิทยาเขตอย่างเป็นทางการ"
+#~ msgid "Enrollment, tuition fees, housing applications, and official campus administration."
+#~ msgstr "การลงทะเบียน, ค่าเล่าเรียน, การสมัครที่พัก และการบริหารจัดการวิทยาเขตอย่างเป็นทางการ"
 
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:71
 #, fuzzy
@@ -2229,6 +2466,25 @@ msgstr "กรอกอีเมลของคุณ แล้วเราจ�
 #, fuzzy
 msgid "Entry"
 msgstr "รายการ"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:215
+#, fuzzy
+msgid "Escrow & Closing"
+msgstr "เอสโครว์และการปิดการขาย"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:216
+#, fuzzy
+msgid "Escrow instructions, title documents, closing disclosures, and signing appointments."
+msgstr "คำแนะนำ Escrow, เอกสารสิทธิ์, การเปิดเผยข้อมูลปิดดีล และการนัดหมายลงนาม"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:240
+#, fuzzy
+msgid "Events & Campaigns"
+msgstr "กิจกรรมและแคมเปญ"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:179
+msgid "Events & Field Trips"
+msgstr "กิจกรรมและทัศนศึกษา"
 
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:31
 #, fuzzy
@@ -2264,48 +2520,52 @@ msgstr "สิ่งที่ไม่ได้จัดอยู่ในโฟ
 #~ msgid "Expand"
 #~ msgstr "ขยาย"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:26
+#: ../ui/src/i18n/taxonomy-template-messages.ts:28
 #, fuzzy
 msgid "Expenses"
 msgstr "ค่าใช้จ่าย"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1367
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1438
 #, fuzzy
 msgid "Export"
 msgstr "ส่งออก"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1342
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1350
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1413
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1421
 #, fuzzy
 msgid "Export plan"
 msgstr "แผนการส่งออก"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:47
+msgid "External agencies, outside firms, and business partners engaged professionally."
+msgstr "หน่วยงานภายนอก, บริษัทนอก และคู่ค้าที่ทำงานร่วมกัน"
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:43
 #, fuzzy
-msgid "External vendors, clients, and agencies engaged in a professional capacity."
-msgstr "ผู้ขายภายนอก, ลูกค้า และเอเจนซี่ที่ร่วมงานในฐานะมืออาชีพ"
+#~ msgid "External vendors, clients, and agencies engaged in a professional capacity."
+#~ msgstr "ผู้ขายภายนอก, ลูกค้า และเอเจนซี่ที่ร่วมงานในฐานะมืออาชีพ"
 
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:163
 #, fuzzy
 msgid "Failed to apply"
 msgstr "นำไปใช้ไม่ได้"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1044
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1080
 #, fuzzy
 msgid "Failed to create folder"
 msgstr "สร้างโฟลเดอร์ไม่สำเร็จ"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:977
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1013
 #, fuzzy
 msgid "Failed to create path"
 msgstr "สร้างเส้นทางไม่สำเร็จ"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1115
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1151
 #, fuzzy
 msgid "Failed to delete folder"
 msgstr "ลบโฟลเดอร์ไม่สำเร็จ"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1132
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1168
 #, fuzzy
 msgid "Failed to delete path"
 msgstr "ลบเส้นทางไม่สำเร็จ"
@@ -2315,12 +2575,12 @@ msgstr "ลบเส้นทางไม่สำเร็จ"
 msgid "Failed to load status"
 msgstr "โหลดสถานะไม่สำเร็จ"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1173
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1209
 #, fuzzy
 msgid "Failed to redo"
 msgstr "ทำซ้ำไม่สำเร็จ"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:944
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:980
 #, fuzzy
 msgid "Failed to save position"
 msgstr "บันทึกตำแหน่งไม่สำเร็จ"
@@ -2330,25 +2590,29 @@ msgstr "บันทึกตำแหน่งไม่สำเร็จ"
 msgid "Failed to start generation"
 msgstr "เริ่มต้นการสร้างไม่สำเร็จ"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1154
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1190
 #, fuzzy
 msgid "Failed to undo"
 msgstr "เลิกทำไม่สำเร็จ"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1076
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1112
 #, fuzzy
 msgid "Failed to update folder"
 msgstr "อัปเดตโฟลเดอร์ไม่สำเร็จ"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1098
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1134
 #, fuzzy
 msgid "Failed to update path"
 msgstr "อัปเดตเส้นทางไม่สำเร็จ"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:89
+#: ../ui/src/i18n/taxonomy-template-messages.ts:100
 #, fuzzy
 msgid "Family"
 msgstr "ครอบครัว"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:161
+msgid "Fan messages, viewer comments, and follower engagement notifications."
+msgstr "ข้อความแฟนคลับ, คอมเมนต์ผู้ชม และการแจ้งเตือนจากผู้ติดตาม"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:76
 #: ../../apps/site/src/components/landing/Footer.tsx:29
@@ -2356,6 +2620,20 @@ msgstr "ครอบครัว"
 #, fuzzy
 msgid "FAQ"
 msgstr "คำถามที่พบบ่อย"
+
+#: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:161
+#, fuzzy
+msgid "Favorites"
+msgstr "รายการโปรด"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:197
+#, fuzzy
+msgid "Fellowship awards, funding-body deadlines, and research budget correspondence."
+msgstr "รางวัลทุนวิจัย, กำหนดเวลาจากหน่วยงานให้ทุน และการติดต่อเรื่องงบประมาณวิจัย"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:180
+msgid "Field trips, parent evenings, assemblies, and school event scheduling."
+msgstr "ทัศนศึกษา, กิจกรรมผู้ปกครอง, การประชุมนักเรียน และการจัดตารางกิจกรรมโรงเรียน"
 
 #: ../../apps/mobile/src/components/emails/FolderFilterSheet.tsx:33
 #, fuzzy
@@ -2372,7 +2650,7 @@ msgstr "กรองคิวและโฟลเดอร์…"
 msgid "Filter rail"
 msgstr "แถบกรอง"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:22
+#: ../ui/src/i18n/taxonomy-template-messages.ts:24
 #, fuzzy
 msgid "Finance"
 msgstr "การเงิน"
@@ -2381,6 +2659,11 @@ msgstr "การเงิน"
 #, fuzzy
 msgid "Find and draft"
 msgstr "ค้นหาและร่าง"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:222
+#, fuzzy
+msgid "First-contact buyer and seller enquiries and new agent introductions."
+msgstr "การสอบถามครั้งแรกจากผู้ซื้อและผู้ขาย และการแนะนำตัวของตัวแทนใหม่"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:16
 msgid "Five things keep your inbox safe. First, Amarnai is read-only by design: the permissions you grant through Google make it impossible for Amarnai to send, delete, or change any email. Second, Amarnai has passed Google's security review, completing the CASA security assessment required for any app that accesses Gmail. Third, you stay in control: replies stay drafts until you say so, nothing is ever sent on your behalf, and you can disconnect Amarnai at any time. Fourth, no email bodies are stored: Amarnai keeps labels and metadata, never the contents of your messages. Fifth, the code is public, so anyone can inspect exactly what touches your email."
@@ -2393,10 +2676,14 @@ msgstr "ระบุว่าเป็นข้อเสนอพันธมิ
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:92
 #, fuzzy
-msgid "Flight and hotel bookings, travel itineraries, visa applications, and trip confirmations."
-msgstr "การจองตั๋วเครื่องบินและโรงแรม, กำหนดการเดินทาง, การยื่นขอวีซ่า และการยืนยันการเดินทาง"
+#~ msgid "Flight and hotel bookings, travel itineraries, visa applications, and trip confirmations."
+#~ msgstr "การจองตั๋วเครื่องบินและโรงแรม, กำหนดการเดินทาง, การยื่นขอวีซ่า และการยืนยันการเดินทาง"
 
-#: ../../apps/site/src/components/landing/MailInboxMock.tsx:75
+#: ../ui/src/i18n/taxonomy-template-messages.ts:103
+msgid "Flight and hotel bookings, travel itineraries, visas, and trip confirmations."
+msgstr "การจองตั๋วเครื่องบินและโรงแรม, แผนการเดินทาง, วีซ่า และการยืนยันการเดินทาง"
+
+#: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:175
 #, fuzzy
 msgid "Focused"
 msgstr "เน้น"
@@ -2442,22 +2729,35 @@ msgstr "โฟลเดอร์: {activeFolderName}"
 msgid "Folders"
 msgstr "โฟลเดอร์"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:35
+#: ../ui/src/i18n/taxonomy-template-messages.ts:206
+#, fuzzy
+msgid "For agents managing listings, showings, transactions, and closings."
+msgstr "สำหรับตัวแทนที่ดูแลรายการ, การพาชม, ธุรกรรม และการปิดการขาย"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:149
+msgid "For creators handling brand deals, platforms, audience, and monetization."
+msgstr "สำหรับครีเอเตอร์ที่ดูแลดีลแบรนด์, แพลตฟอร์ม, ผู้ชม และการสร้างรายได้"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:39
 #, fuzzy
 msgid "For employees managing work, team communication, and personal email in one inbox."
 msgstr "สำหรับพนักงานที่ต้องการจัดการงาน, การสื่อสารในทีม และอีเมลส่วนตัวทั้งหมดในกล่องจดหมายเดียว"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:50
+#: ../ui/src/i18n/taxonomy-template-messages.ts:109
+msgid "For engineers and open-source maintainers tracking code, deployments, and releases."
+msgstr "สำหรับวิศวกรและผู้ดูแลโอเพนซอร์สที่ติดตามโค้ด, การปรับใช้ และการเผยแพร่"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:56
 #, fuzzy
 msgid "For founders juggling investors, customers, hiring, legal, and press in one view."
 msgstr "สำหรับผู้ก่อตั้งที่ต้องรับมือกับนักลงทุน, ลูกค้า, การจ้างงาน, กฎหมาย และสื่อ ในมุมมองเดียว"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:15
+#: ../ui/src/i18n/taxonomy-template-messages.ts:17
 #, fuzzy
 msgid "For independent consultants and freelancers managing clients, projects, and finances."
 msgstr "สำหรับที่ปรึกษาอิสระและฟรีแลนซ์ที่จัดการลูกค้า, โครงการ และการเงิน"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:80
+#: ../ui/src/i18n/taxonomy-template-messages.ts:90
 #, fuzzy
 msgid "For individuals managing finances, health, home, family, and personal subscriptions."
 msgstr "สำหรับบุคคลทั่วไปที่จัดการการเงิน, สุขภาพ, บ้าน, ครอบครัว และการสมัครสมาชิกส่วนตัว"
@@ -2467,6 +2767,10 @@ msgstr "สำหรับบุคคลทั่วไปที่จัดก
 #, fuzzy
 msgid "For individuals trying Amarnai on their own inbox."
 msgstr "สำหรับบุคคลทั่วไปที่ต้องการทดลองใช้ Amarnai กับกล่องจดหมายของตนเอง"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:168
+msgid "For K-12 educators managing classroom, parents, and school administration."
+msgstr "สำหรับครูผู้สอนระดับ K-12 ที่ดูแลห้องเรียน, ผู้ปกครอง และงานบริหารโรงเรียน"
 
 #: ../ui/src/pricing/planMessages.ts:27
 #, fuzzy
@@ -2483,6 +2787,15 @@ msgstr "สำหรับองค์กรขนาดใหญ่"
 msgid "For many years our houses have been as brothers. I write now to propose that we formalise this friendship for the benefit of both our peoples."
 msgstr "เป็นเวลาหลายปีแล้วที่ราชวงศ์ของเราเปรียบเสมือนพี่น้อง บัดนี้ข้าพเจ้าขอเสนอให้เราทำให้มิตรภาพนี้เป็นทางการเพื่อประโยชน์ของประชาชนของเราทั้งสองฝ่าย"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:227
+#, fuzzy
+msgid "For nonprofit directors managing fundraising, volunteers, programs, and board."
+msgstr "สำหรับผู้อำนวยการองค์กรไม่แสวงผลกำไรที่บริหารจัดการการระดมทุน, อาสาสมัคร, โครงการ และคณะกรรมการ"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:130
+msgid "For online sellers tracking orders, shipping, suppliers, and marketplace payouts."
+msgstr "สำหรับผู้ขายออนไลน์ที่ติดตามคำสั่งซื้อ, การจัดส่ง, ซัพพลายเออร์ และการชำระเงินจากแพลตฟอร์ม"
+
 #: ../ui/src/pricing/planMessages.ts:26
 #, fuzzy
 msgid "For power users and small businesses who live in their inbox."
@@ -2493,7 +2806,11 @@ msgstr "สำหรับผู้ใช้งานระดับสูงแ
 msgid "For power users and small businesses."
 msgstr "สำหรับผู้ใช้งานระดับสูงและธุรกิจขนาดเล็ก"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:66
+#: ../ui/src/i18n/taxonomy-template-messages.ts:187
+msgid "For researchers managing publications, conferences, funding, and lab work."
+msgstr "สำหรับนักวิจัยที่จัดการสิ่งตีพิมพ์, การประชุม, เงินทุน และงานในห้องแล็บ"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:74
 #, fuzzy
 msgid "For students balancing university, internship applications, and everyday life."
 msgstr "สำหรับนักเรียนที่ต้องรักษาสมดุลระหว่างมหาวิทยาลัย, การสมัครฝึกงาน และชีวิตประจำวัน"
@@ -2503,6 +2820,10 @@ msgstr "สำหรับนักเรียนที่ต้องรัก
 #, fuzzy
 msgid "Forgot password?"
 msgstr "ลืมรหัสผ่าน?"
+
+#: ../../apps/site/src/components/landing/MailThreadMock.tsx:102
+msgid "Forward"
+msgstr "ส่งต่อ"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:38
 #: ../../apps/mobile/app/(app)/subscription.tsx:40
@@ -2535,15 +2856,19 @@ msgstr "ทดลองใช้ฟรีจนถึง {0}"
 msgid "Free trial until <0>{0}</0>. You won't be charged before then."
 msgstr "<0>ทดลองใช้ฟรีจนถึง {0}</0> คุณจะไม่ถูกเรียกเก็บเงินก่อนหน้านั้น"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:14
+#: ../ui/src/i18n/taxonomy-template-messages.ts:16
 #, fuzzy
 msgid "Freelancer"
 msgstr "ฟรีแลนซ์"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:85
+msgid "Friends, campus clubs, social invitations, and extracurricular activities."
+msgstr "เพื่อน, ชมรมมหาวิทยาลัย, คำเชิญร่วมงาน และกิจกรรมนอกหลักสูตร"
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:77
 #, fuzzy
-msgid "Friends, campus events, clubs, social invitations, and extracurricular activities."
-msgstr "เพื่อน, กิจกรรมในมหาวิทยาลัย, ชมรม, การเชิญชวนทางสังคม และกิจกรรมนอกหลักสูตร"
+#~ msgid "Friends, campus events, clubs, social invitations, and extracurricular activities."
+#~ msgstr "เพื่อน, กิจกรรมในมหาวิทยาลัย, ชมรม, การเชิญชวนทางสังคม และกิจกรรมนอกหลักสูตร"
 
 #: ../ui/src/pricing/planMessages.ts:92
 #, fuzzy
@@ -2554,6 +2879,20 @@ msgstr "เต็มรูปแบบ"
 #, fuzzy
 msgid "Full + admin controls"
 msgstr "เต็มรูปแบบ + การควบคุมสำหรับผู้ดูแลระบบ"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:196
+#, fuzzy
+msgid "Funding & Fellowships"
+msgstr "เงินทุนและทุนวิจัย"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:228
+#, fuzzy
+msgid "Fundraising"
+msgstr "การระดมทุน"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:241
+msgid "Gala planning, charity auctions, and awareness campaign logistics."
+msgstr "การวางแผนงานกาล่า, การประมูลเพื่อการกุศล และการจัดการแคมเปญสร้างความตระหนัก"
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:159
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:342
@@ -2589,7 +2928,7 @@ msgstr "สร้างฉบับร่างตอบกลับ"
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:60
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:207
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:251
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1504
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1575
 #, fuzzy
 msgid "Generate from inbox"
 msgstr "สร้างจากกล่องจดหมาย"
@@ -2746,9 +3085,23 @@ msgstr "Google ไม่สามารถดำเนินการตรว�
 msgid "Google sign-in failed. Please try again."
 msgstr "การลงชื่อเข้าใช้ด้วย Google ล้มเหลว โปรดลองอีกครั้ง"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:172
+#, fuzzy
+msgid "Graded homework, rubric feedback, and marks recorded for each pupil."
+msgstr "การบ้านที่ตรวจแล้ว, ข้อเสนอแนะตามเกณฑ์ และคะแนนที่บันทึกสำหรับนักเรียน"
+
 #: ../../apps/extension/src/platform/HostPermissionGate.tsx:36
 msgid "Grant access"
 msgstr "อนุญาตการเข้าถึง"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:233
+#, fuzzy
+msgid "Grant requests, foundation deadlines, and funder reporting requirements."
+msgstr "คำขอทุน, กำหนดเวลาของมูลนิธิ และข้อกำหนดการรายงานของผู้ให้ทุน"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:232
+msgid "Grants & Foundations"
+msgstr "ทุนและมูลนิธิ"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:178
 #, fuzzy
@@ -2757,14 +3110,18 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "ฝ่าบาท,\n\nรายงานที่ฝ่าบาททรงขอจะถูกจัดเตรียมให้เสร็จสิ้นก่อนการประชุมสภา ข้าพระบาทจะให้เหล่านักจารึกรวบรวมบัญชีของดินแดนทางตะวันออกและส่งล่วงหน้าไปกับผู้ส่งสารที่รวดเร็ว\n\nด้วยไมตรี,"
+msgstr "ฝ่าบาท,\n"
+"\n"
+"รายงานที่ฝ่าบาททรงขอจะถูกจัดเตรียมให้เสร็จสิ้นก่อนการประชุมสภา ข้าพระบาทจะให้เหล่านักจารึกรวบรวมบัญชีของดินแดนทางตะวันออกและส่งล่วงหน้าไปกับผู้ส่งสารที่รวดเร็ว\n"
+"\n"
+"ด้วยไมตรี,"
 
 #: ../../apps/site/src/components/landing/FinalCTASection.tsx:9
 #, fuzzy
 msgid "Hand the sorting to Amarnai."
 msgstr "ให้ Amarnai จัดการการจัดเรียง"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:85
+#: ../ui/src/i18n/taxonomy-template-messages.ts:96
 #, fuzzy
 msgid "Health"
 msgstr "สุขภาพ"
@@ -2775,13 +3132,13 @@ msgid "Help requests, supply issues, and escalations from customers."
 msgstr "คำขอความช่วยเหลือ ปัญหาด้านอุปทาน และการยกระดับปัญหาจากลูกค้า"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:71
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:274
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:277
 #, fuzzy
 msgid "Hide tips"
 msgstr "ซ่อนเคล็ดลับ"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:34
-#: ../ui/src/i18n/taxonomy-template-messages.ts:56
+#: ../ui/src/i18n/taxonomy-template-messages.ts:62
 #, fuzzy
 msgid "Hiring"
 msgstr "การจ้างงาน"
@@ -2791,10 +3148,19 @@ msgstr "การจ้างงาน"
 msgid "Historical threads sorted when you first connect"
 msgstr "หัวข้ออีเมลย้อนหลังจะถูกจัดเรียงเมื่อเชื่อมต่อครั้งแรก"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:87
+#: ../ui/src/i18n/taxonomy-template-messages.ts:98
 #, fuzzy
 msgid "Home"
 msgstr "หน้าหลัก"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:218
+#, fuzzy
+msgid "Home inspections, appraisal reports, repair negotiations, and contingency deadlines."
+msgstr "การตรวจสอบบ้าน, รายงานการประเมินราคา, การเจรจาซ่อมแซม และกำหนดเวลาเงื่อนไข"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:171
+msgid "Homework & Grading"
+msgstr "การบ้านและการให้คะแนน"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:52
 #, fuzzy
@@ -2805,6 +3171,11 @@ msgstr "หน้าหลัก"
 #, fuzzy
 msgid "Hosted subscriptions run on a leading AI model. Self-hosted deployments can point at any OpenAI-compatible provider, such as OpenAI or Google Gemini, or a local Ollama model for fully offline operation."
 msgstr "การสมัครใช้งานแบบโฮสต์ทำงานบนโมเดล AI ชั้นนำ การติดตั้งแบบ Self-hosted สามารถเชื่อมต่อกับผู้ให้บริการที่รองรับ OpenAI ได้ทุกราย เช่น OpenAI หรือ Google Gemini หรือโมเดล Ollama ในเครื่องสำหรับการทำงานแบบออฟไลน์เต็มรูปแบบ"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:95
+#, fuzzy
+msgid "Household bills, payment confirmations, receipts, and records of everyday expenses."
+msgstr "บิลค่าใช้จ่ายในบ้าน, การยืนยันการชำระเงิน, ใบเสร็จ และบันทึกค่าใช้จ่ายประจำวัน"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:15
 msgid "How do I know it's safe?"
@@ -2846,7 +3217,7 @@ msgid "How it works"
 msgstr "วิธีการทำงาน"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:73
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:274
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:277
 #, fuzzy
 msgid "How to write a good description"
 msgstr "เขียนคำอธิบายอย่างไรให้ดี"
@@ -2872,22 +3243,22 @@ msgstr "หากอีเมลนี้มีบัญชีอยู่ เ�
 msgid "Ignored"
 msgstr "ไม่สนใจ"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1392
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1463
 #, fuzzy
 msgid "Import"
 msgstr "นำเข้า"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1253
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1313
 #, fuzzy
 msgid "Import failed"
 msgstr "นำเข้าล้มเหลว"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1375
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1446
 #, fuzzy
 msgid "Import plan"
 msgstr "นำเข้าแผน"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1370
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1441
 #, fuzzy
 msgid "Import plan (replaces current)"
 msgstr "นำเข้าแผน (แทนที่แผนปัจจุบัน)"
@@ -2907,8 +3278,8 @@ msgstr "สำคัญ"
 #. placeholder {1}: pendingImportFile.edges.length
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1628
 #, fuzzy
-msgid "Importing will replace your current plan with <0>{0} folders</0> and <1>{1} paths</1> from the file. Threads that were sorted into removed folders will become unsorted. This cannot be undone."
-msgstr "การนำเข้าจะแทนที่แผนปัจจุบันของคุณด้วย <0>{0} โฟลเดอร์</0> และ <1>{1} เส้นทาง</1> จากไฟล์ อีเมลที่ถูกจัดเรียงอยู่ในโฟลเดอร์ที่ถูกลบจะกลายเป็นไม่ถูกจัดเรียง การดำเนินการนี้ไม่สามารถยกเลิกได้"
+#~ msgid "Importing will replace your current plan with <0>{0} folders</0> and <1>{1} paths</1> from the file. Threads that were sorted into removed folders will become unsorted. This cannot be undone."
+#~ msgstr "การนำเข้าจะแทนที่แผนปัจจุบันของคุณด้วย <0>{0} โฟลเดอร์</0> และ <1>{1} เส้นทาง</1> จากไฟล์ อีเมลที่ถูกจัดเรียงอยู่ในโฟลเดอร์ที่ถูกลบจะกลายเป็นไม่ถูกจัดเรียง การดำเนินการนี้ไม่สามารถยกเลิกได้"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:274
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:107
@@ -2916,7 +3287,8 @@ msgstr "การนำเข้าจะแทนที่แผนปัจจ
 #: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:45
 #: ../../apps/site/src/components/demo/demo-seed.ts:28
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:151
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:512
+#: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:126
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:515
 #: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:57
 #, fuzzy
 msgid "Inbox"
@@ -2945,6 +3317,10 @@ msgstr "ซิงค์กล่องจดหมาย"
 msgid "inbox zero"
 msgstr "inbox zero"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:120
+msgid "Incidents"
+msgstr "เหตุการณ์"
+
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:116
 #: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:77
 #, fuzzy
@@ -2967,10 +3343,19 @@ msgstr "รวมแล้ว"
 msgid "Informal message with no clear category: personal visit or political audience? Tone is personal but sender is a known vassal governor. Routed to Other with low confidence."
 msgstr "ข้อความไม่เป็นทางการที่ไม่มีหมวดหมู่ชัดเจน: การเยี่ยมส่วนตัวหรือการเข้าเฝ้าทางการเมือง? น้ำเสียงเป็นส่วนตัว แต่ผู้ส่งเป็นข้าหลวงที่รู้จักดี จัดเข้าหมวดหมู่อื่น ๆ ด้วยความมั่นใจต่ำ"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:116
+msgid "Infrastructure"
+msgstr "โครงสร้างพื้นฐาน"
+
 #: ../ui/src/pricing/planMessages.ts:64
 #, fuzzy
 msgid "Initial backfill"
 msgstr "การดึงข้อมูลย้อนหลังเบื้องต้น"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:217
+#, fuzzy
+msgid "Inspections & Appraisals"
+msgstr "การตรวจสอบและประเมินราคา"
 
 #: ../../apps/mobile/src/data/notificationView.ts:47
 #: ../../apps/web/src/lib/notifications.ts:65
@@ -2992,18 +3377,30 @@ msgstr "แทนที่จะต้องไล่ดูกล่องจด
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:39
 #, fuzzy
-msgid "Internal communication with colleagues, team updates, and project collaboration."
-msgstr "การสื่อสารภายในกับเพื่อนร่วมงาน การอัปเดตทีม และการทำงานร่วมกันในโครงการ"
+#~ msgid "Internal communication with colleagues, team updates, and project collaboration."
+#~ msgstr "การสื่อสารภายในกับเพื่อนร่วมงาน การอัปเดตทีม และการทำงานร่วมกันในโครงการ"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:43
+msgid "Internal communication with colleagues, team updates, and workplace collaboration."
+msgstr "การสื่อสารภายในกับเพื่อนร่วมงาน, อัปเดตทีม, และการทำงานร่วมกันในที่ทำงาน"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:55
 #, fuzzy
-msgid "Internal communications, HR, contractor coordination, and team operational emails."
-msgstr "การสื่อสารภายใน, ฝ่ายบุคคล, การประสานงานผู้รับเหมา และอีเมลการดำเนินงานของทีม"
+#~ msgid "Internal communications, HR, contractor coordination, and team operational emails."
+#~ msgstr "การสื่อสารภายใน, ฝ่ายบุคคล, การประสานงานผู้รับเหมา และอีเมลการดำเนินงานของทีม"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:61
+msgid "Internal communications, HR, staff coordination, and team operational emails."
+msgstr "การสื่อสารภายใน, ฝ่ายบุคคล (HR), การประสานงานพนักงาน, และอีเมลปฏิบัติการของทีม"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:74
 #, fuzzy
-msgid "Internship and job applications, recruiter messages, and interview invitations."
-msgstr "การสมัครฝึกงานและงาน ข้อความจากผู้สรรหา และคำเชิญสัมภาษณ์"
+#~ msgid "Internship and job applications, recruiter messages, and interview invitations."
+#~ msgstr "การสมัครฝึกงานและงาน ข้อความจากผู้สรรหา และคำเชิญสัมภาษณ์"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:82
+msgid "Internship postings, campus career fairs, and graduate scheme openings."
+msgstr "ประกาศรับนักศึกษาฝึกงาน, งานมหกรรมอาชีพในมหาวิทยาลัย, และตำแหน่งสำหรับบัณฑิตจบใหม่"
 
 #: ../../apps/web/src/app/reset-password/page.tsx:33
 #, fuzzy
@@ -3011,19 +3408,19 @@ msgid "Invalid or missing reset link."
 msgstr "ลิงก์รีเซ็ตไม่ถูกต้องหรือไม่มีอยู่"
 
 #. placeholder {0}: validation.error
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1226
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1262
 #, fuzzy
 msgid "Invalid taxonomy file: {0}"
 msgstr "ไฟล์ Taxonomy ไม่ถูกต้อง: {0}"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1220
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1256
 #, fuzzy
 msgid "Invalid taxonomy file: {detail}"
 msgstr "ไฟล์ Taxonomy ไม่ถูกต้อง: {detail}"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:32
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:163
-#: ../ui/src/i18n/taxonomy-template-messages.ts:51
+#: ../ui/src/i18n/taxonomy-template-messages.ts:57
 #, fuzzy
 msgid "Investors"
 msgstr "นักลงทุน"
@@ -3053,12 +3450,12 @@ msgstr "เชิญและลบผู้ทำงานร่วมกัน
 msgid "Invoice questions, overdue balances, and payment disputes."
 msgstr "ข้อสงสัยเกี่ยวกับใบแจ้งหนี้ ยอดค้างชำระ และข้อพิพาทการชำระเงิน"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:24
+#: ../ui/src/i18n/taxonomy-template-messages.ts:26
 #, fuzzy
 msgid "Invoices"
 msgstr "ใบแจ้งหนี้"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:25
+#: ../ui/src/i18n/taxonomy-template-messages.ts:27
 #, fuzzy
 msgid "Invoices issued to clients and follow-ups on unpaid amounts."
 msgstr "ใบแจ้งหนี้ที่ออกให้ลูกค้าและการติดตามยอดค้างชำระ"
@@ -3078,15 +3475,19 @@ msgstr "การเชื่อมต่อกล่องจดหมายข
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:47
 #, fuzzy
-msgid "IT support, HR notices, legal documents, and internal administrative emails."
-msgstr "การสนับสนุนด้านไอที, ประกาศจากฝ่ายบุคคล, เอกสารทางกฎหมาย และอีเมลบริหารจัดการภายใน"
+#~ msgid "IT support, HR notices, legal documents, and internal administrative emails."
+#~ msgstr "การสนับสนุนด้านไอที, ประกาศจากฝ่ายบุคคล, เอกสารทางกฎหมาย และอีเมลบริหารจัดการภายใน"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:51
+msgid "IT support, HR notices, policy documents, and internal administrative emails."
+msgstr "การสนับสนุนด้านไอที, ประกาศ HR, เอกสารนโยบาย, และอีเมลบริหารจัดการภายใน"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:57
 #, fuzzy
-msgid "Job applications, recruiter outreach, interview scheduling, and offer negotiations."
-msgstr "การสมัครงาน, การติดต่อจากผู้สรรหา, การจัดตารางสัมภาษณ์ และการเจรจาข้อเสนอ"
+#~ msgid "Job applications, recruiter outreach, interview scheduling, and offer negotiations."
+#~ msgstr "การสมัครงาน, การติดต่อจากผู้สรรหา, การจัดตารางสัมภาษณ์ และการเจรจาข้อเสนอ"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:73
+#: ../ui/src/i18n/taxonomy-template-messages.ts:81
 #, fuzzy
 msgid "Jobs"
 msgstr "งาน"
@@ -3109,6 +3510,20 @@ msgstr "{name} เข้าร่วมแล้ว"
 #, fuzzy
 #~ msgid "Joining…"
 #~ msgstr "กำลังเข้าร่วม..."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:193
+#, fuzzy
+msgid "Journal calls for papers, special issue invitations, and citation metrics."
+msgstr "การเรียกรับบทความจากวารสาร, คำเชิญสำหรับฉบับพิเศษ, และเมตริกการอ้างอิง"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:192
+#, fuzzy
+msgid "Journals"
+msgstr "วารสาร"
+
+#: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:127
+msgid "Junk Email"
+msgstr "อีเมลขยะ"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:126
 #, fuzzy
@@ -3145,6 +3560,15 @@ msgstr "King Aziru พร้อมจัดเรียงอีเมลขอ�
 #~ msgid "King Aziru is ready to sort your email threads. Connect your Gmail account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
 #~ msgstr "King Aziru พร้อมจัดเรียงอีเมลของคุณแล้ว เชื่อมต่อบัญชี Gmail ของคุณเพื่อเริ่มต้น Amarnai เชื่อมต่อด้วย <0>สิทธิ์เข้าถึงแบบอ่านอย่างเดียว</0> และ <1>ไม่เคยส่ง ลบ หรือเปลี่ยนแปลงสิ่งใด</1> อินบ็อกซ์ของคุณยังคงเป็นของคุณ"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:198
+#, fuzzy
+msgid "Lab & Collaborators"
+msgstr "ห้องปฏิบัติการและผู้ร่วมงาน"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:199
+msgid "Lab group updates, collaborator threads, and experiment coordination."
+msgstr "อัปเดตกลุ่มในห้องปฏิบัติการ, การสนทนากับผู้ร่วมงาน, และการประสานงานการทดลอง"
+
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:244
 #: ../../apps/web/src/app/(app)/settings/WorkspaceLanguageSection.tsx:37
 #, fuzzy
@@ -3176,34 +3600,44 @@ msgstr "ยืนยันล่าสุด: {0}"
 msgid "Lay out folders like <0>Customers</0>, <1>Investors</1>, <2>Hiring</2>. A simple sentence each: that's the whole setup."
 msgstr "จัดวางโฟลเดอร์ เช่น <0>ลูกค้า</0>, <1>นักลงทุน</1>, <2>การจ้างงาน</2> เพียงประโยคง่าย ๆ แค่นี้ ก็เป็นการตั้งค่าทั้งหมดแล้ว"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:30
+#: ../ui/src/i18n/taxonomy-template-messages.ts:32
 #, fuzzy
 msgid "Leads"
 msgstr "ผู้สนใจ"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:200
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:209
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:542
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:545
 #, fuzzy
 msgid "Leave unsorted"
 msgstr "ปล่อยไว้โดยไม่จัดเรียง"
 
 #: ../../apps/site/src/components/landing/Footer.tsx:36
-#: ../ui/src/i18n/taxonomy-template-messages.ts:60
+#: ../ui/src/i18n/taxonomy-template-messages.ts:66
 #, fuzzy
 msgid "Legal"
 msgstr "กฎหมาย"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:29
 #, fuzzy
-msgid "Legal, insurance, software subscriptions, and business administration notices."
-msgstr "ประกาศด้านกฎหมาย, ประกัน, การสมัครสมาชิกซอฟต์แวร์ และการบริหารธุรกิจ"
+#~ msgid "Legal, insurance, software subscriptions, and business administration notices."
+#~ msgstr "ประกาศด้านกฎหมาย, ประกัน, การสมัครสมาชิกซอฟต์แวร์ และการบริหารธุรกิจ"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:219
+#, fuzzy
+msgid "Lenders & Mortgage"
+msgstr "ผู้ให้กู้และสินเชื่อที่อยู่อาศัย"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:173
+#, fuzzy
+msgid "Lesson Planning"
+msgstr "การวางแผนบทเรียน"
 
 #: ../ui/src/theme/themes.ts:38
 msgid "Light"
 msgstr "สว่าง"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:474
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:477
 #, fuzzy
 msgid "List the kinds of emails that belong here: senders, topics, keywords. Aim for a full sentence."
 msgstr "ระบุประเภทอีเมลที่ควรอยู่ในหมวดหมู่นี้: ผู้ส่ง, หัวข้อ, คีย์เวิร์ด ควรระบุให้เป็นประโยคที่สมบูรณ์"
@@ -3211,6 +3645,10 @@ msgstr "ระบุประเภทอีเมลที่ควรอยู
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:307
 msgid "List the senders, topics, and keywords that belong here. At least {minDescriptionLength} characters. ({descriptionLength}/{minDescriptionLength})"
 msgstr "ระบุผู้ส่ง หัวข้อ และคีย์เวิร์ดที่เกี่ยวข้อง อย่างน้อย {minDescriptionLength} ตัวอักษร ({descriptionLength}/{minDescriptionLength})"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:207
+msgid "Listings"
+msgstr "รายการประกาศ"
 
 #: ../ui/src/emails/EmailRail.tsx:57
 #, fuzzy
@@ -3255,6 +3693,10 @@ msgstr "กำลังโหลด..."
 msgid "Mail"
 msgstr "อีเมล"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:231
+msgid "Major donor relationships, pledge confirmations, and gift acknowledgements."
+msgstr "ความสัมพันธ์กับผู้บริจาครายใหญ่, การยืนยันคำมั่นสัญญา, และการตอบรับการบริจาค"
+
 #: ../../apps/mobile/app/(app)/subscription.tsx:293
 #, fuzzy
 msgid "Manage"
@@ -3271,15 +3713,28 @@ msgstr "จัดการการแจ้งเตือน"
 msgid "Manage payment method"
 msgstr "จัดการวิธีการชำระเงิน"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:40
+#: ../ui/src/i18n/taxonomy-template-messages.ts:44
 #, fuzzy
 msgid "Management"
 msgstr "การจัดการ"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:45
+msgid "Manager emails: one-on-ones, performance evaluations, and career feedback."
+msgstr "อีเมลจากผู้จัดการ: การประชุมส่วนตัว, การประเมินผลงาน, และข้อเสนอแนะด้านอาชีพ"
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:41
 #, fuzzy
-msgid "Manager emails: one-on-ones, performance reviews, and feedback."
-msgstr "อีเมลผู้จัดการ: การประชุมส่วนตัว (one-on-one), การประเมินผลงาน และข้อเสนอแนะ"
+#~ msgid "Manager emails: one-on-ones, performance reviews, and feedback."
+#~ msgstr "อีเมลผู้จัดการ: การประชุมส่วนตัว (one-on-one), การประเมินผลงาน และข้อเสนอแนะ"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:189
+#, fuzzy
+msgid "Manuscript drafts, co-author coordination, and submission status for papers."
+msgstr "ฉบับร่างต้นฉบับ, การประสานงานกับผู้เขียนร่วม, และสถานะการส่งบทความ"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:190
+msgid "Manuscripts & Peer Review"
+msgstr "ต้นฉบับและทบทวนโดยผู้ทรงคุณวุฒิ"
 
 #: ../ui/src/emails/PreviewDoneBar.tsx:23
 #: ../ui/src/emails/ThreadRow.tsx:157
@@ -3362,21 +3817,33 @@ msgstr "ทำเครื่องหมายว่าเสร็จสิ้
 msgid "Marked as done by {doneByName}"
 msgstr "{doneByName} ทำเสร็จแล้ว"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:139
+msgid "Marketplaces"
+msgstr "ตลาดกลาง"
+
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:198
 #, fuzzy
 msgid "Maximum of {collaboratorLimit} collaborators reached."
 msgstr "ถึงจำนวนผู้ทำงานร่วมกันสูงสุด {collaboratorLimit} คนแล้ว"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:69
+msgid "Media inquiries, journalist requests, and press coverage bookings."
+msgstr "การสอบถามจากสื่อ, คำขอจากนักข่าว, และการจองพื้นที่ข่าว"
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:63
 #, fuzzy
-msgid "Media inquiries, press coverage, co-marketing proposals, and partnership outreach."
-msgstr "การสอบถามจากสื่อ, ข่าวประชาสัมพันธ์, ข้อเสนอ co-marketing และการติดต่อเพื่อเป็นพันธมิตร"
+#~ msgid "Media inquiries, press coverage, co-marketing proposals, and partnership outreach."
+#~ msgstr "การสอบถามจากสื่อ, ข่าวประชาสัมพันธ์, ข้อเสนอ co-marketing และการติดต่อเพื่อเป็นพันธมิตร"
 
 #: ../../apps/mobile/src/components/CollaboratorsSheet.tsx:58
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:42
 #, fuzzy
 msgid "Member"
 msgstr "สมาชิก"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:176
+msgid "Messages from parents and guardians about attendance, behavior, and progress."
+msgstr "ข้อความจากผู้ปกครองเกี่ยวกับเวลาเรียน, พฤติกรรม, และความก้าวหน้า"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:29
 #, fuzzy
@@ -3392,6 +3859,10 @@ msgstr "สิทธิ์บัญชี Microsoft"
 msgid "Microsoft could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the redirect URI is registered on the app registration."
 msgstr "Microsoft ไม่สามารถดำเนินการอนุมัติได้ ลิงก์อาจหมดอายุแล้ว: โปรดลองอีกครั้ง หากปัญหายังคงอยู่ โปรดตรวจสอบว่า URI การเปลี่ยนเส้นทางได้รับการลงทะเบียนในการลงทะเบียนแอปแล้ว"
 
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:189
+msgid "Migrate & apply"
+msgstr "ย้ายและใช้งาน"
+
 #: ../../apps/web/src/components/Sidebar.tsx:43
 #, fuzzy
 msgid "Mock Inbox"
@@ -3401,6 +3872,10 @@ msgstr "กล่องขาเข้าจำลอง"
 #, fuzzy
 msgid "Model quality"
 msgstr "คุณภาพโมเดล"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:162
+msgid "Monetization"
+msgstr "การสร้างรายได้"
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:41
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:223
@@ -3425,6 +3900,10 @@ msgstr "ถึงขีดจำกัดการจัดเรียงรา
 #~ msgid "More threads beyond your {plan} subscription limit aren't loaded."
 #~ msgstr "เธรดที่เกินขีดจำกัดของแผน {plan} จะไม่ถูกโหลด"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:220
+msgid "Mortgage brokers, financing pre-approvals, rate quotes, and underwriting updates."
+msgstr "นายหน้าสินเชื่อที่อยู่อาศัย, การอนุมัติสินเชื่อเบื้องต้น, ใบเสนอราคาสินเชื่อ, และการอัปเดตการพิจารณาสินเชื่อ"
+
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:46
 #: ../ui/src/pricing/planMessages.ts:30
 #, fuzzy
@@ -3432,7 +3911,7 @@ msgid "Most popular"
 msgstr "ยอดนิยม"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:387
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:536
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:539
 #, fuzzy
 msgid "Move them to"
 msgstr "ย้ายไปที่"
@@ -3470,7 +3949,7 @@ msgstr "ในอีกไม่กี่วันข้างหน้า ก�
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:235
 #: ../../apps/mobile/app/(app)/account.tsx:131
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:272
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:448
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:451
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:15
 #, fuzzy
 msgid "Name"
@@ -3505,10 +3984,14 @@ msgstr "ไม่ส่งอัตโนมัติ · เข้ารหั�
 msgid "New application from Horemheb of Thebes."
 msgstr "ใบสมัครใหม่จาก Horemheb แห่ง Thebes"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:33
+msgid "New business inquiries, project proposals, and pricing discussions from prospective clients."
+msgstr "การสอบถามธุรกิจใหม่, ข้อเสนอโครงการ, และการพูดคุยเรื่องราคาจากลูกค้าเป้าหมาย"
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:31
 #, fuzzy
-msgid "New business inquiries, proposals, pricing discussions, and prospective client outreach."
-msgstr "การสอบถามธุรกิจใหม่ ข้อเสนอ การปรึกษาเรื่องราคา และการติดต่อลูกค้าเป้าหมาย"
+#~ msgid "New business inquiries, proposals, pricing discussions, and prospective client outreach."
+#~ msgstr "การสอบถามธุรกิจใหม่ ข้อเสนอ การปรึกษาเรื่องราคา และการติดต่อลูกค้าเป้าหมาย"
 
 #: ../../apps/mobile/src/data/notificationView.ts:91
 #: ../../apps/web/src/lib/notifications.ts:110
@@ -3527,6 +4010,16 @@ msgstr "อีเมลใหม่จะรอจนกว่าขีดจำ
 #, fuzzy
 msgid "New folder"
 msgstr "โฟลเดอร์ใหม่"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:221
+#, fuzzy
+msgid "New Inquiries"
+msgstr "การสอบถามใหม่"
+
+#: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:158
+#, fuzzy
+msgid "New mail"
+msgstr "อีเมลใหม่"
 
 #: ../../apps/extension/src/panel/notificationText.ts:24
 #: ../../apps/mobile/src/data/notificationView.ts:95
@@ -3659,6 +4152,10 @@ msgstr "ไม่มีอีเมลใหม่ที่สำคัญเข
 #~ msgid "No signups yet."
 #~ msgstr "ยังไม่มีการสมัครสมาชิก"
 
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:110
+msgid "No sorted threads to migrate. Your new plan will apply directly."
+msgstr "ไม่มีเธรดที่จัดเรียงไว้เพื่อย้าย แผนใหม่ของคุณจะถูกนำไปใช้โดยตรง"
+
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:48
 #, fuzzy
 msgid "No threads"
@@ -3702,10 +4199,14 @@ msgstr "ไม่มี"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:190
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:205
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:509
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:512
 #, fuzzy
 msgid "None (not connected)"
 msgstr "ไม่มี (ไม่ได้เชื่อมต่อ)"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:226
+msgid "Nonprofit Leader"
+msgstr "ผู้นำองค์กรไม่แสวงหาผลกำไร"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:100
 #, fuzzy
@@ -3756,10 +4257,14 @@ msgstr "การแจ้งเตือน"
 msgid "Notifications, {unread} unread"
 msgstr "การแจ้งเตือน, {unread} ที่ยังไม่ได้อ่าน"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:68
+#: ../ui/src/i18n/taxonomy-template-messages.ts:76
 #, fuzzy
 msgid "Official university emails: registrar, student services, and housing."
 msgstr "อีเมลทางการจากมหาวิทยาลัย: สำนักทะเบียน, ฝ่ายบริการนักศึกษา และที่พักอาศัย"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:121
+msgid "On-call alerts, outage reports, and production incident escalations."
+msgstr "การแจ้งเตือนเมื่อถึงเวร, รายงานการหยุดทำงาน, และการส่งต่อเหตุการณ์การผลิต"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:343
 #, fuzzy
@@ -3820,7 +4325,11 @@ msgstr "AI จัดการอีเมลโอเพนซอร์ส"
 #~ msgid "Open-source AI email triage. Gmail-first. Hosted or self-hosted. Your call."
 #~ msgstr "AI จัดการอีเมลโอเพนซอร์ส เน้น Gmail เป็นหลัก โฮสต์เองหรือใช้บริการโฮสต์ เลือกได้ตามต้องการ"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:58
+#: ../ui/src/i18n/taxonomy-template-messages.ts:125
+msgid "Open-source maintainers, contributor discussions, and developer forum threads."
+msgstr "ผู้ดูแลโอเพนซอร์ส, การพูดคุยของผู้มีส่วนร่วม, และเธรดฟอรัมของนักพัฒนา"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:64
 #, fuzzy
 msgid "Operations"
 msgstr "การดำเนินงาน"
@@ -3829,7 +4338,7 @@ msgstr "การดำเนินงาน"
 msgid "Optional. Applied when generating draft replies for this folder."
 msgstr "ไม่บังคับ ใช้เมื่อสร้างฉบับร่างตอบกลับสำหรับโฟลเดอร์นี้"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:495
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:498
 #, fuzzy
 msgid "Optional. Applied when generating draft replies for threads in this folder."
 msgstr "ไม่บังคับ ใช้เมื่อสร้างร่างอีเมลตอบกลับสำหรับการสนทนาในโฟลเดอร์นี้"
@@ -3846,8 +4355,12 @@ msgstr "หรือ"
 msgid "Or connect a different inbox:"
 msgstr "หรือเชื่อมต่อกล่องขาเข้าอื่น:"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:131
+msgid "Orders"
+msgstr "คำสั่งซื้อ"
+
 #: ../../apps/site/src/components/demo/demo-seed.ts:35
-#: ../../apps/site/src/components/landing/MailInboxMock.tsx:78
+#: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:178
 #, fuzzy
 msgid "Other"
 msgstr "อื่นๆ"
@@ -3872,13 +4385,17 @@ msgid "Paid or upgraded workspace"
 msgstr "เวิร์กสเปซแบบชำระเงินหรืออัปเกรดแล้ว"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:322
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:503
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:660
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:506
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:663
 #, fuzzy
 msgid "Parent"
 msgstr "หลัก"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:42
+#: ../ui/src/i18n/taxonomy-template-messages.ts:175
+msgid "Parents & Guardians"
+msgstr "ผู้ปกครอง"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:46
 #, fuzzy
 msgid "Partners"
 msgstr "พาร์ทเนอร์"
@@ -3935,10 +4452,18 @@ msgstr "ชำระเงินไม่สำเร็จ โปรดอั�
 msgid "Payment failed. Update your payment method to keep access."
 msgstr "ชำระเงินไม่สำเร็จ อัปเดตวิธีการชำระเงินเพื่อใช้งานต่อ"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:143
+msgid "Payouts & Fees"
+msgstr "การเบิกจ่ายและค่าธรรมเนียม"
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:46
 #, fuzzy
-msgid "Payslips, expense reports, reimbursements, and employee benefits emails."
-msgstr "สลิปเงินเดือน รายงานค่าใช้จ่าย การเบิกจ่าย และอีเมลเกี่ยวกับสวัสดิการพนักงาน"
+#~ msgid "Payslips, expense reports, reimbursements, and employee benefits emails."
+#~ msgstr "สลิปเงินเดือน รายงานค่าใช้จ่าย การเบิกจ่าย และอีเมลเกี่ยวกับสวัสดิการพนักงาน"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:50
+msgid "Payslips, salary statements, and employee benefits and pension emails."
+msgstr "สลิปเงินเดือน, ใบแจ้งเงินเดือน, และอีเมลเกี่ยวกับสวัสดิการพนักงานและเงินบำนาญ"
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:12
 #: ../ui/src/emails/queueLabels.ts:22
@@ -3970,38 +4495,71 @@ msgstr "ลบบัญชีและข้อมูลทั้งหมดท
 
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:37
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:29
-#: ../ui/src/i18n/taxonomy-template-messages.ts:32
+#: ../ui/src/i18n/taxonomy-template-messages.ts:34
 #: ../ui/src/pricing/planMessages.ts:20
 #, fuzzy
 msgid "Personal"
 msgstr "ส่วนตัว"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:79
+#: ../ui/src/i18n/taxonomy-template-messages.ts:89
 #, fuzzy
 msgid "Personal / Family"
 msgstr "ส่วนตัว / ครอบครัว"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:84
 #, fuzzy
-msgid "Personal bills, payment confirmations, receipts, and records of household expenses."
-msgstr "ใบแจ้งหนี้ส่วนตัว, การยืนยันการชำระเงิน, ใบเสร็จ และบันทึกค่าใช้จ่ายในครัวเรือน"
+#~ msgid "Personal bills, payment confirmations, receipts, and records of household expenses."
+#~ msgstr "ใบแจ้งหนี้ส่วนตัว, การยืนยันการชำระเงิน, ใบเสร็จ และบันทึกค่าใช้จ่ายในครัวเรือน"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:33
+#: ../ui/src/i18n/taxonomy-template-messages.ts:164
+msgid "Personal correspondence and emails unrelated to content work."
+msgstr "การติดต่อส่วนตัวและอีเมลที่ไม่เกี่ยวข้องกับงานเนื้อหา"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:35
 #, fuzzy
 msgid "Personal correspondence and emails unrelated to freelance work."
 msgstr "จดหมายโต้ตอบส่วนตัวและอีเมลที่ไม่เกี่ยวข้องกับงานฟรีแลนซ์"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:64
+#: ../ui/src/i18n/taxonomy-template-messages.ts:223
+#, fuzzy
+msgid "Personal correspondence and emails unrelated to real estate."
+msgstr "การติดต่อส่วนตัวและอีเมลที่ไม่เกี่ยวข้องกับอสังหาริมทรัพย์"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:202
+#, fuzzy
+msgid "Personal correspondence and emails unrelated to research."
+msgstr "การติดต่อส่วนตัวและอีเมลที่ไม่เกี่ยวข้องกับการวิจัย"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:126
+#, fuzzy
+msgid "Personal correspondence and emails unrelated to software work."
+msgstr "การติดต่อส่วนตัวและอีเมลที่ไม่เกี่ยวข้องกับงานซอฟต์แวร์"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:183
+#, fuzzy
+msgid "Personal correspondence and emails unrelated to teaching."
+msgstr "การติดต่อส่วนตัวและอีเมลที่ไม่เกี่ยวข้องกับการสอน"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:242
+#, fuzzy
+msgid "Personal correspondence and emails unrelated to the organization."
+msgstr "การติดต่อส่วนตัวและอีเมลที่ไม่เกี่ยวข้องกับองค์กร"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:145
+msgid "Personal correspondence and emails unrelated to the shop."
+msgstr "การติดต่อส่วนตัวและอีเมลที่ไม่เกี่ยวข้องกับร้านค้า"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:70
 #, fuzzy
 msgid "Personal correspondence and emails unrelated to the startup."
 msgstr "จดหมายโต้ตอบส่วนตัวและอีเมลที่ไม่เกี่ยวข้องกับสตาร์ทอัพ"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:48
+#: ../ui/src/i18n/taxonomy-template-messages.ts:52
 #, fuzzy
 msgid "Personal correspondence and emails unrelated to work."
 msgstr "จดหมายโต้ตอบส่วนตัวและอีเมลที่ไม่เกี่ยวข้องกับงาน"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:78
+#: ../ui/src/i18n/taxonomy-template-messages.ts:86
 #, fuzzy
 msgid "Personal correspondence and non-academic emails for everyday life."
 msgstr "จดหมายโต้ตอบส่วนตัวและอีเมลที่ไม่ใช่วิชาการสำหรับชีวิตประจำวัน"
@@ -4020,7 +4578,7 @@ msgid "Plan"
 msgstr "แผน"
 
 #. “Plan” here is the email-sorting taxonomy, not a billing or subscription plan.
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1309
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1380
 #, fuzzy
 msgid "Plan is view-only. Only workspace admins can edit it."
 msgstr "แผนเป็นแบบอ่านอย่างเดียว เฉพาะผู้ดูแลระบบของเวิร์กสเปซเท่านั้นที่แก้ไขได้"
@@ -4033,6 +4591,10 @@ msgstr "โหนดแผน"
 msgid "Plan sorting"
 msgstr "วางแผนการจัดเรียง"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:156
+msgid "Platforms"
+msgstr "แพลตฟอร์ม"
+
 #: ../../apps/mobile/app/(app)/subscription.tsx:129
 #: ../../apps/mobile/app/(app)/subscription.tsx:134
 #: ../../apps/mobile/app/(app)/subscription.tsx:189
@@ -4041,6 +4603,10 @@ msgstr "วางแผนการจัดเรียง"
 #, fuzzy
 msgid "Please try again."
 msgstr "โปรดลองอีกครั้ง"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:142
+msgid "Pre-sale questions and messages from prospective shoppers about products."
+msgstr "คำถามและข้อความก่อนการขายจากผู้ซื้อที่สนใจเกี่ยวกับผลิตภัณฑ์"
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:158
 #, fuzzy
@@ -4071,7 +4637,7 @@ msgstr "เตรียมบัญชีของคุณให้พร้อ
 #~ msgid "Preparing…"
 #~ msgstr ""
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:62
+#: ../ui/src/i18n/taxonomy-template-messages.ts:68
 #, fuzzy
 msgid "Press"
 msgstr "สื่อ / ข่าว"
@@ -4097,9 +4663,13 @@ msgstr "ราคา | Amarnai"
 msgid "Pricing is per workspace, billed monthly or annually. Every account starts with a free Personal workspace, no card required. The paid Pro and Business subscriptions add higher limits and include a 14-day trial. See the pricing page for current details."
 msgstr "ราคาคิดตามเวิร์กสเปซ โดยเรียกเก็บเป็นรายเดือนหรือรายปี ทุกบัญชีเริ่มต้นด้วยเวิร์กสเปซส่วนตัวฟรี ไม่ต้องใช้บัตรเครดิต การสมัครสมาชิก Pro และ Business แบบชำระเงินจะเพิ่มขีดจำกัดที่สูงขึ้นและรวมช่วงทดลองใช้ 14 วัน ดูหน้าราคาสำหรับรายละเอียดปัจจุบัน"
 
-#: ../../apps/site/src/components/landing/MailInboxMock.tsx:84
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:67
 msgid "Primary"
 msgstr "หลัก"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:178
+msgid "Principal notices, staff meetings, and district administration bulletins."
+msgstr "ประกาศจากผู้อำนวยการ, การประชุมพนักงาน, และประกาศจากฝ่ายบริหารเขตการศึกษา"
 
 #: ../ui/src/pricing/planMessages.ts:100
 #, fuzzy
@@ -4130,12 +4700,21 @@ msgstr "โปร"
 msgid "Product"
 msgstr "ผลิตภัณฑ์"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:181
+#, fuzzy
+msgid "Professional Development"
+msgstr "การพัฒนาวิชาชีพ"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:41
+msgid "Professional emails related to job duties and workplace activities."
+msgstr "อีเมลเกี่ยวกับหน้าที่การงานและกิจกรรมในที่ทำงาน"
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:37
 #, fuzzy
-msgid "Professional emails related to work, projects, and workplace activities."
-msgstr "อีเมลมืออาชีพที่เกี่ยวข้องกับงาน, โปรเจกต์ และกิจกรรมในที่ทำงาน"
+#~ msgid "Professional emails related to work, projects, and workplace activities."
+#~ msgstr "อีเมลมืออาชีพที่เกี่ยวข้องกับงาน, โปรเจกต์ และกิจกรรมในที่ทำงาน"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:70
+#: ../ui/src/i18n/taxonomy-template-messages.ts:78
 #, fuzzy
 msgid "Professors, assignments, study groups, course announcements, and academic deadlines."
 msgstr "อาจารย์, การบ้าน, กลุ่มอ่านหนังสือ, ประกาศรายวิชา และกำหนดส่งงานวิชาการ"
@@ -4146,28 +4725,65 @@ msgstr "อาจารย์, การบ้าน, กลุ่มอ่า�
 msgid "Profile"
 msgstr "โปรไฟล์"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:18
+#: ../ui/src/i18n/taxonomy-template-messages.ts:237
+#, fuzzy
+msgid "Program operations, beneficiary services, and impact reporting updates."
+msgstr "การดำเนินงานโครงการ, บริการผู้รับผลประโยชน์, และรายงานความคืบหน้าด้านผลกระทบ"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:236
+msgid "Programs"
+msgstr "โครงการ"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:20
 #, fuzzy
 msgid "Projects"
 msgstr "โปรเจกต์"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:112
-#: ../../apps/site/src/components/landing/MailInboxMock.tsx:87
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:70
 #, fuzzy
 msgid "Promotions"
 msgstr "โปรโมชัน"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:208
+msgid "Property listings, MLS updates, staging, and photography scheduling."
+msgstr "ประกาศขายอสังหาริมทรัพย์, การอัปเดต MLS, การจัดตกแต่ง, และการกำหนดเวลาถ่ายภาพ"
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:86
 #, fuzzy
 msgid "Proposed folders. Applying replaces your current plan; you can edit everything afterward."
 msgstr "โฟลเดอร์ที่เสนอ การนำไปใช้จะแทนที่แผนปัจจุบันของคุณ คุณสามารถแก้ไขทุกอย่างได้หลังจากนั้น"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:188
+#, fuzzy
+msgid "Publications"
+msgstr "สิ่งพิมพ์"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:113
+#, fuzzy
+msgid "Pull request notifications, merge-approval mentions, and comment threads on repositories."
+msgstr "การแจ้งเตือน Pull Request, การกล่าวถึงเพื่ออนุมัติการรวมโค้ด, และกระทู้ความคิดเห็นบน Repository"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:112
+#, fuzzy
+msgid "Pull Requests"
+msgstr "Pull Request"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:170
+#, fuzzy
+msgid "Pupil questions, homework hand-ins, and daily instruction in the classroom."
+msgstr "คำถามของนักเรียน, การส่งการบ้าน, และการสอนรายวันในห้องเรียน"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:132
+msgid "Purchase confirmations, order status changes, and fulfillment updates from your store."
+msgstr "การยืนยันการสั่งซื้อ, การเปลี่ยนแปลงสถานะคำสั่งซื้อ, และการอัปเดตการจัดส่งจากร้านค้าของคุณ"
+
 #: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:105
 #, fuzzy
 msgid "Queuing rescan…"
 msgstr "กำลังจัดคิวสแกนใหม่…"
 
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:379
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:385
 #, fuzzy
 msgid "Re-route {unclassifiedCount} unclassified"
 msgstr "เปลี่ยนเส้นทาง {unclassifiedCount} รายการที่ยังไม่ได้จัดประเภท"
@@ -4176,6 +4792,20 @@ msgstr "เปลี่ยนเส้นทาง {unclassifiedCount} ราย
 #, fuzzy
 msgid "Re-route thread"
 msgstr "เปลี่ยนเส้นทางเธรด"
+
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:135
+#, fuzzy
+msgid "Re-sort with AI"
+msgstr "จัดเรียงใหม่ด้วย AI"
+
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:176
+#, fuzzy
+msgid "Re-sorting threads already sorted this month is free. If you reach your monthly limit, the rest resume next month."
+msgstr "การจัดเรียงหัวข้อที่จัดเรียงไปแล้วในเดือนนี้ไม่มีค่าใช้จ่าย หากคุณใช้เกินขีดจำกัดรายเดือน ส่วนที่เหลือจะดำเนินการต่อในเดือนหน้า"
+
+#: ../../apps/web/src/app/(app)/emails/ResortReviewBanner.tsx:79
+msgid "Re-sorting…"
+msgstr "กำลังจัดเรียงใหม่…"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:333
 #, fuzzy
@@ -4201,8 +4831,12 @@ msgstr "อ่านอย่างเดียว · OAuth · เพิกถ�
 msgid "Read-only by design"
 msgstr "ออกแบบมาให้อ่านได้อย่างเดียว"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:205
+msgid "Real Estate Agent"
+msgstr "นายหน้าอสังหาริมทรัพย์"
+
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:91
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:307
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:310
 #, fuzzy
 msgid "Receipts, payment confirmations, and billing questions from vendors."
 msgstr "ใบเสร็จ, การยืนยันการชำระเงิน และคำถามเกี่ยวกับการเรียกเก็บเงินจากผู้ขาย"
@@ -4215,6 +4849,10 @@ msgstr "ได้ลองใช้ไปเมื่อเร็ว ๆ นี�
 #: ../ui/src/i18n/generation-reason-messages.ts:18
 msgid "Recently attempted. Try again later."
 msgstr "ได้ลองใช้ไปเมื่อเร็ว ๆ นี้ โปรดลองอีกครั้งในภายหลัง"
+
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1760
+msgid "Recommended for your inbox"
+msgstr "แนะนำสำหรับกล่องจดหมายของคุณ"
 
 #: ../../apps/mobile/src/components/emails/DisconnectedBanner.tsx:46
 #, fuzzy
@@ -4263,10 +4901,14 @@ msgstr "กำลังเชื่อมต่อใหม่…"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:45
 #, fuzzy
-msgid "Recruiter outreach, job applications, interview scheduling, and offer letters."
-msgstr "การติดต่อผู้สรรหา การสมัครงาน การกำหนดตารางสัมภาษณ์ และหนังสือเสนอจ้าง"
+#~ msgid "Recruiter outreach, job applications, interview scheduling, and offer letters."
+#~ msgstr "การติดต่อผู้สรรหา การสมัครงาน การกำหนดตารางสัมภาษณ์ และหนังสือเสนอจ้าง"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:44
+#: ../ui/src/i18n/taxonomy-template-messages.ts:49
+msgid "Recruiter outreach, role applications, interview scheduling, and staffing packages."
+msgstr "การติดต่อจาก Recruiter, การสมัครงาน, การกำหนดเวลาสัมภาษณ์, และแพ็กเกจการจัดหาบุคลากร"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:48
 #, fuzzy
 msgid "Recruiting"
 msgstr "การสรรหา"
@@ -4278,10 +4920,14 @@ msgstr "การสรรหา"
 msgid "Redirecting…"
 msgstr "กำลังเปลี่ยนเส้นทาง…"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1330
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1401
 #, fuzzy
 msgid "Redo"
 msgstr "ทำซ้ำ"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:191
+msgid "Referee invitations, reviewer reports, and revision requests from journal editors."
+msgstr "คำเชิญให้เป็นผู้ประเมิน, รายงานการตรวจทาน, และคำขอแก้ไขจากบรรณาธิการวารสาร"
 
 #: ../../apps/web/src/components/ClassifyingRefresher.tsx:56
 #, fuzzy
@@ -4299,6 +4945,10 @@ msgstr "รีเฟรช"
 #, fuzzy
 msgid "Regenerate"
 msgstr "สร้างใหม่"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:122
+msgid "Releases"
+msgstr "การเผยแพร่"
 
 #: ../../apps/mobile/app/forgot-password.tsx:115
 #, fuzzy
@@ -4376,24 +5026,33 @@ msgstr "ต่ออายุรายเดือนในวันที่ <0
 msgid "Renews on <0>{0}</0>."
 msgstr "ต่ออายุในวันที่ <0>{0}</0>"
 
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:93
+msgid "Replace plan"
+msgstr "เปลี่ยนแผน"
+
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1614
 #, fuzzy
-msgid "Replace plan?"
-msgstr "เปลี่ยนแผน?"
+#~ msgid "Replace plan?"
+#~ msgstr "เปลี่ยนแผน?"
 
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1652
 #, fuzzy
-msgid "Replace taxonomy"
-msgstr "แทนที่การจัดประเภท"
+#~ msgid "Replace taxonomy"
+#~ msgstr "แทนที่การจัดประเภท"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1681
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1697
 #, fuzzy
 msgid "Replace with a template"
 msgstr "แทนที่ด้วยเทมเพลต"
 
-#: ../../apps/site/src/components/landing/MailThreadMock.tsx:106
+#: ../../apps/site/src/components/landing/MailThreadMock.tsx:90
+#: ../../apps/site/src/components/landing/MailThreadMock.tsx:145
 msgid "Reply"
 msgstr "ตอบกลับ"
+
+#: ../../apps/site/src/components/landing/MailThreadMock.tsx:96
+msgid "Reply all"
+msgstr "ตอบกลับทั้งหมด"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:89
 #, fuzzy
@@ -4494,6 +5153,15 @@ msgstr "แหล่งข้อมูล"
 msgid "Retry"
 msgstr "ลองอีกครั้ง"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:136
+#, fuzzy
+msgid "Return requests, refund approvals, and exchange labels from shoppers."
+msgstr "คำขอคืนสินค้า, การอนุมัติการคืนเงิน, และป้ายกำกับการเปลี่ยนสินค้าจากผู้ซื้อ"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:135
+msgid "Returns"
+msgstr "การคืนสินค้า"
+
 #: ../ui/src/pricing/planMessages.ts:68
 #, fuzzy
 msgid "Review queue"
@@ -4511,7 +5179,11 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "ริบ-ฮัดดา,\n\nเราเข้าใจดี มีการสั่งธัญพืชเพิ่มเติมจากคลังทางใต้ และจะมาถึงก่อนเทศกาลเก็บเกี่ยว โปรดอดทนรอจนกว่าจะถึงเวลานั้น\n\nขอให้สบายดี,"
+msgstr "ริบ-ฮัดดา,\n"
+"\n"
+"เราเข้าใจดี มีการสั่งธัญพืชเพิ่มเติมจากคลังทางใต้ และจะมาถึงก่อนเทศกาลเก็บเกี่ยว โปรดอดทนรอจนกว่าจะถึงเวลานั้น\n"
+"\n"
+"ขอให้สบายดี,"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -4544,8 +5216,8 @@ msgstr "เท่ากับรายเดือน"
 #: ../../apps/mobile/src/components/EditNameSheet.tsx:66
 #: ../../apps/mobile/src/components/RenameWorkspaceSheet.tsx:74
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:450
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:577
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:691
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:580
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:694
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:29
 #, fuzzy
 msgid "Save"
@@ -4588,12 +5260,21 @@ msgid "Saving..."
 msgstr "กำลังบันทึก..."
 
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:76
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:577
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:691
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:580
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:694
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:29
 #, fuzzy
 msgid "Saving…"
 msgstr "กำลังบันทึก..."
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:177
+#, fuzzy
+msgid "School Administration"
+msgstr "การบริหารโรงเรียน"
+
+#: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:146
+msgid "Search"
+msgstr "ค้นหา"
 
 #: ../ui/src/emails/ThreadListHeader.tsx:104
 #, fuzzy
@@ -4606,7 +5287,7 @@ msgstr "ค้นหา {threadCount} เธรด"
 msgid "Search folders"
 msgstr "ค้นหาโฟลเดอร์"
 
-#: ../../apps/site/src/components/landing/MailInboxMock.tsx:66
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:60
 msgid "Search mail"
 msgstr "ค้นหาอีเมล"
 
@@ -4639,8 +5320,8 @@ msgid "Select"
 msgstr "เลือก"
 
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:210
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:336
-#: ../ui/src/emails/MockEmailsPage.tsx:266
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:342
+#: ../ui/src/emails/MockEmailsPage.tsx:274
 #, fuzzy
 msgid "Select a thread to preview"
 msgstr "เลือกเธรดเพื่อดูตัวอย่าง"
@@ -4670,6 +5351,15 @@ msgstr "คู่มือติดตั้งเอง"
 #, fuzzy
 msgid "self-hosted email assistant"
 msgstr "ผู้ช่วยอีเมลที่ติดตั้งเอง"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:212
+#, fuzzy
+msgid "Seller consultations, listing paperwork, price reductions, and market appraisals."
+msgstr "การให้คำปรึกษาผู้ขาย, เอกสารรายการ, การลดราคา, และการประเมินตลาด"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:211
+msgid "Sellers"
+msgstr "ผู้ขาย"
 
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:224
 #, fuzzy
@@ -4709,6 +5399,10 @@ msgstr "ผู้ส่งเป็นคู่ค้าในสนธิสั
 #, fuzzy
 msgid "Sending…"
 msgstr "กำลังส่ง..."
+
+#: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:129
+msgid "Sent Items"
+msgstr "รายการที่ส่งแล้ว"
 
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:95
 #, fuzzy
@@ -4773,6 +5467,10 @@ msgstr "แผนแชร์ + คิวตรวจสอบ"
 #~ msgid "Shared taxonomy + review queue"
 #~ msgstr "รูปแบบการจัดหมวดหมู่ที่แชร์ + คิวตรวจสอบ"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:133
+msgid "Shipping"
+msgstr "การจัดส่ง"
+
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:334
 #, fuzzy
 msgid "Show Gmail"
@@ -4781,6 +5479,10 @@ msgstr "แสดง Gmail"
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:343
 msgid "Show Outlook"
 msgstr "แสดง Outlook"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:210
+msgid "Showing requests, buyer tours, open-house sign-ups, and written offers."
+msgstr "คำขอเข้าชม, การทัวร์ของผู้ซื้อ, การลงทะเบียนเข้าชมบ้านเปิด, และข้อเสนอเป็นลายลักษณ์อักษร"
 
 #: ../../apps/extension/src/auth/SignInScreen.tsx:98
 #: ../../apps/mobile/app/sign-in.tsx:133
@@ -4852,11 +5554,15 @@ msgstr "กำลังเข้าสู่ระบบ..."
 msgid "Simple per-workspace pricing. Start free, upgrade or create additional workspaces as you need."
 msgstr "ราคาต่อเวิร์กสเปซที่เข้าใจง่าย เริ่มต้นฟรี อัปเกรดหรือสร้างเวิร์กสเปซเพิ่มเติมได้ตามต้องการ"
 
-#: ../../apps/site/src/components/landing/MailInboxMock.tsx:90
-#: ../ui/src/i18n/taxonomy-template-messages.ts:76
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:73
+#: ../ui/src/i18n/taxonomy-template-messages.ts:84
 #, fuzzy
 msgid "Social"
 msgstr "โซเชียล"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:108
+msgid "Software Developer"
+msgstr "นักพัฒนาซอฟต์แวร์"
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:213
 #, fuzzy
@@ -4941,10 +5647,28 @@ msgstr "ปริมาณการจัดเรียง"
 msgid "Sorting…"
 msgstr "กำลังจัดเรียง..."
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:111
+msgid "Source-control activity, branch changes, and merge approvals across repositories."
+msgstr "กิจกรรม Source Control, การเปลี่ยนแปลง Branch, และการอนุมัติการรวมโค้ดใน Repository ต่างๆ"
+
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:111
 #, fuzzy
 msgid "Spam"
 msgstr "สแปม"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:151
+#, fuzzy
+msgid "Sponsored placements, brand partnerships, and promotional collaborations."
+msgstr "การลงโฆษณาแบบสปอนเซอร์, ความร่วมมือกับแบรนด์, และการร่วมมือโปรโมท"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:153
+#, fuzzy
+msgid "Sponsorship rates, content briefs, and paid placement deals."
+msgstr "อัตราสปอนเซอร์, ข้อมูลสรุปเนื้อหา, และข้อตกลงการลงโฆษณาแบบชำระเงิน"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:152
+msgid "Sponsorships"
+msgstr "การเป็นสปอนเซอร์"
 
 #: ../ui/src/pricing/planMessages.ts:94
 #, fuzzy
@@ -4967,12 +5691,12 @@ msgid "Start free"
 msgstr "เริ่มต้นฟรี"
 
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:52
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1682
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1698
 #, fuzzy
 msgid "Start from a template"
 msgstr "เริ่มต้นจากเทมเพลต"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1395
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1466
 #, fuzzy
 msgid "Start from a template (replaces current)"
 msgstr "เริ่มต้นจากเทมเพลต (แทนที่ปัจจุบัน)"
@@ -4989,7 +5713,7 @@ msgstr "เริ่มการจัดเรียง"
 msgid "Starting…"
 msgstr "กำลังเริ่ม..."
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:49
+#: ../ui/src/i18n/taxonomy-template-messages.ts:55
 #, fuzzy
 msgid "Startup Founder"
 msgstr "ผู้ก่อตั้งสตาร์ทอัพ"
@@ -5013,20 +5737,38 @@ msgstr "หยุดการซิงค์และเพิกถอนสิ
 msgid "Stops syncing and revokes Amarnai's access to this mailbox. Synced email data is kept so you can reconnect later."
 msgstr "หยุดการซิงค์และเพิกถอนสิทธิ์การเข้าถึงกล่องจดหมายนี้ของ Amarnai ข้อมูลอีเมลที่ซิงค์ไว้จะถูกเก็บรักษาเพื่อให้คุณสามารถเชื่อมต่อใหม่ได้ในภายหลัง"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:144
+#, fuzzy
+msgid "Store payouts, chargebacks, selling fees, and settlement statements."
+msgstr "การจ่ายเงินคืนจากร้านค้า, การเรียกคืนเงิน, ค่าธรรมเนียมการขาย และใบแจ้งยอดการชำระเงิน"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:140
+#, fuzzy
+msgid "Storefront notices from Amazon, Etsy, eBay, and marketplace store accounts."
+msgstr "การแจ้งเตือนหน้าร้านค้าจากบัญชีร้านค้าบน Amazon, Etsy, eBay และแพลตฟอร์มมาร์เก็ตเพลส"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:105
+msgid "Streaming services, app subscriptions, memberships, and recurring billing notices."
+msgstr "บริการสตรีมมิง, การสมัครสมาชิกแอป, การเป็นสมาชิก และการแจ้งเตือนการเรียกเก็บเงินเป็นประจำ"
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:94
 #, fuzzy
-msgid "Streaming services, software subscriptions, memberships, and recurring notifications."
-msgstr "บริการสตรีมมิ่ง, การสมัครสมาชิกซอฟต์แวร์, การเป็นสมาชิก, และการแจ้งเตือนที่เกิดซ้ำ"
+#~ msgid "Streaming services, software subscriptions, memberships, and recurring notifications."
+#~ msgstr "บริการสตรีมมิ่ง, การสมัครสมาชิกซอฟต์แวร์, การเป็นสมาชิก, และการแจ้งเตือนที่เกิดซ้ำ"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:65
+#: ../ui/src/i18n/taxonomy-template-messages.ts:73
 #, fuzzy
 msgid "Student"
 msgstr "นักเรียน/นักศึกษา"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:83
+msgid "Student loans, rent payments, and financial aid notifications."
+msgstr "เงินกู้ยืมนักเรียน, การชำระค่าเช่า และการแจ้งเตือนความช่วยเหลือทางการเงิน"
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:75
 #, fuzzy
-msgid "Student loans, rent, bank statements, and financial aid notifications."
-msgstr "เงินกู้นักเรียน, ค่าเช่า, ใบแจ้งยอดบัญชีธนาคาร, และการแจ้งเตือนความช่วยเหลือทางการเงิน"
+#~ msgid "Student loans, rent, bank statements, and financial aid notifications."
+#~ msgstr "เงินกู้นักเรียน, ค่าเช่า, ใบแจ้งยอดบัญชีธนาคาร, และการแจ้งเตือนความช่วยเหลือทางการเงิน"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:258
 #: ../../apps/mobile/app/(app)/subscription.tsx:222
@@ -5055,16 +5797,29 @@ msgstr "การสมัครสมาชิกจะไม่ต่ออา
 msgid "Subscription will not renew. Access ends {0}."
 msgstr "การสมัครสมาชิกจะไม่ต่ออายุ สิทธิ์การเข้าถึงจะสิ้นสุดในวันที่ {0}"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:93
+#: ../ui/src/i18n/taxonomy-template-messages.ts:104
 #, fuzzy
 msgid "Subscriptions"
 msgstr "การสมัครสมาชิก"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:200
+#, fuzzy
+msgid "Supervision"
+msgstr "การกำกับดูแล"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:137
+msgid "Suppliers"
+msgstr "ซัพพลายเออร์"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:31
 #: ../ui/src/pricing/planMessages.ts:56
 #, fuzzy
 msgid "Support"
 msgstr "ฝ่ายสนับสนุน"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:60
+msgid "Support, onboarding, retention, churn, and customer success conversations."
+msgstr "การสนทนาเกี่ยวกับการสนับสนุน, การแนะนำเข้าสู่ระบบ, การรักษาลูกค้า, การเลิกใช้บริการ และความสำเร็จของลูกค้า"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:227
 #, fuzzy
@@ -5116,15 +5871,19 @@ msgstr "กำลังซิงค์..."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:19
 #, fuzzy
-msgid "Task coordination, milestones, and deliverable reviews for ongoing client projects."
-msgstr "การประสานงานภารกิจ การกำหนดเป้าหมาย และการทบทวนผลงานสำหรับโครงการลูกค้าปัจจุบัน"
+#~ msgid "Task coordination, milestones, and deliverable reviews for ongoing client projects."
+#~ msgstr "การประสานงานภารกิจ การกำหนดเป้าหมาย และการทบทวนผลงานสำหรับโครงการลูกค้าปัจจุบัน"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:83
+#: ../ui/src/i18n/taxonomy-template-messages.ts:21
+msgid "Task coordination, milestones, and scope discussions for ongoing client work."
+msgstr "การประสานงานภารกิจ, เหตุการณ์สำคัญ และการพูดคุยเรื่องขอบเขตสำหรับงานลูกค้าที่ดำเนินอยู่"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:93
 #, fuzzy
 msgid "Tax returns, government notices, fines, and annual contributions to state authorities."
 msgstr "การยื่นภาษี หนังสือแจ้งจากราชการ ค่าปรับ และการชำระเงินประจำปีแก่หน่วยงานรัฐ"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:82
+#: ../ui/src/i18n/taxonomy-template-messages.ts:92
 #, fuzzy
 msgid "Taxes"
 msgstr "ภาษี"
@@ -5144,8 +5903,17 @@ msgstr "ใช้ Taxonomy แล้ว"
 #~ msgid "Taxonomy nodes"
 #~ msgstr "โหนดการจัดหมวดหมู่"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:167
+#, fuzzy
+msgid "Teacher"
+msgstr "ครู"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:182
+msgid "Teacher training workshops, certification renewals, and education webinars."
+msgstr "เวิร์กช็อปอบรมครู, การต่ออายุใบรับรอง และเวบินาร์ด้านการศึกษา"
+
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:169
-#: ../ui/src/i18n/taxonomy-template-messages.ts:38
+#: ../ui/src/i18n/taxonomy-template-messages.ts:42
 #, fuzzy
 msgid "Team"
 msgstr "ทีม"
@@ -5154,7 +5922,7 @@ msgstr "ทีม"
 msgid "Template applied"
 msgstr "ใช้เทมเพลตแล้ว"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1419
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1490
 #, fuzzy
 msgid "Templates"
 msgstr "เทมเพลต"
@@ -5268,7 +6036,7 @@ msgstr "ผู้ร่วมงานเหล่านี้จะเสีย
 msgid "These settings control which inbox threads are imported. Trash is always excluded."
 msgstr "การตั้งค่าเหล่านี้ควบคุมว่าเธรดอีเมลใดจะถูกนำเข้า ถังขยะจะถูกยกเว้นเสมอ"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1301
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1372
 #, fuzzy
 msgid "This folder has child folders. Remove their Paths first, then delete it."
 msgstr "โฟลเดอร์นี้มีโฟลเดอร์ย่อย โปรดลบ Path ของโฟลเดอร์ย่อยเหล่านั้นก่อนจึงจะลบโฟลเดอร์นี้ได้"
@@ -5424,7 +6192,13 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "ถึง ท่านมหาราช ผู้เป็นดุจพี่น้องของข้า,\n\nสภาใหญ่จะมีการประชุมในช่วงต้นของฤดูเชมู ข้าขอให้ท่านเตรียมการบันทึกบัญชีฉบับสมบูรณ์ของดินแดนทางตะวันออก และส่งล่วงหน้ามากับผู้ส่งสารที่รวดเร็ว หากเป็นไปได้ ให้ส่งมาก่อนวันเดือนดับ\n\nพันธมิตรของเราแข็งแกร่ง ขอเราจงแสดงให้สภาเห็นว่ามันยังคงเป็นเช่นนั้น\n\nทุชรัตตะ, มหาราชแห่งมิตันนี"
+msgstr "ถึง ท่านมหาราช ผู้เป็นดุจพี่น้องของข้า,\n"
+"\n"
+"สภาใหญ่จะมีการประชุมในช่วงต้นของฤดูเชมู ข้าขอให้ท่านเตรียมการบันทึกบัญชีฉบับสมบูรณ์ของดินแดนทางตะวันออก และส่งล่วงหน้ามากับผู้ส่งสารที่รวดเร็ว หากเป็นไปได้ ให้ส่งมาก่อนวันเดือนดับ\n"
+"\n"
+"พันธมิตรของเราแข็งแกร่ง ขอเราจงแสดงให้สภาเห็นว่ามันยังคงเป็นเช่นนั้น\n"
+"\n"
+"ทุชรัตตะ, มหาราชแห่งมิตันนี"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:163
 #, fuzzy
@@ -5433,7 +6207,11 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "ถึง กรมการแต่งตั้งราชการ,\n\nเราได้รับใบสมัครจากโฮเรมเฮบแห่งธีบส์แล้ว และจะตรวจสอบประวัติของเขาก่อนวันเดือนดับครั้งต่อไป โปรดแจ้งให้เขาทราบว่าเราจะส่งข่าวไปในเวลาอันควร\n\nตามพระบรมราชโองการ,"
+msgstr "ถึง กรมการแต่งตั้งราชการ,\n"
+"\n"
+"เราได้รับใบสมัครจากโฮเรมเฮบแห่งธีบส์แล้ว และจะตรวจสอบประวัติของเขาก่อนวันเดือนดับครั้งต่อไป โปรดแจ้งให้เขาทราบว่าเราจะส่งข่าวไปในเวลาอันควร\n"
+"\n"
+"ตามพระบรมราชโองการ,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:278
 #, fuzzy
@@ -5444,7 +6222,13 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "ถึง ท่านมหาราช,\n\nหลายปีมาแล้วที่ราชวงศ์ของเราเป็นดุจพี่น้อง บัดนี้ข้าพเจ้าขอเสนอให้เราทำให้มิตรภาพนี้เป็นทางการ เพื่อประโยชน์ของทั้งสองประชาชาติของเรา: สนธิสัญญาคุ้มครองร่วมกันและเส้นทางการค้าที่ใช้ร่วมกัน\n\nข้าพเจ้าเพียงขอให้ท่านรับฟังข้อเสนอของข้าพเจ้า โปรดส่งข่าวโดยผู้ส่งสารคนถัดไป และข้าพเจ้าจะส่งทูตของข้าพเจ้าไปทันที\n\nอาซีรู, ข้ารับใช้ของมหาราช, เจ้าแห่งอามูร์รู"
+msgstr "ถึง ท่านมหาราช,\n"
+"\n"
+"หลายปีมาแล้วที่ราชวงศ์ของเราเป็นดุจพี่น้อง บัดนี้ข้าพเจ้าขอเสนอให้เราทำให้มิตรภาพนี้เป็นทางการ เพื่อประโยชน์ของทั้งสองประชาชาติของเรา: สนธิสัญญาคุ้มครองร่วมกันและเส้นทางการค้าที่ใช้ร่วมกัน\n"
+"\n"
+"ข้าพเจ้าเพียงขอให้ท่านรับฟังข้อเสนอของข้าพเจ้า โปรดส่งข่าวโดยผู้ส่งสารคนถัดไป และข้าพเจ้าจะส่งทูตของข้าพเจ้าไปทันที\n"
+"\n"
+"อาซีรู, ข้ารับใช้ของมหาราช, เจ้าแห่งอามูร์รู"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:391
 #, fuzzy
@@ -5453,7 +6237,11 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "ถึง ท่านมหาราช,\n\nการเดินทางของข้าพเจ้าจะพาข้าพเจ้าเข้าใกล้ดินดอนสามเหลี่ยมปากแม่น้ำในอีกไม่กี่วันข้างหน้า หากท่านมหาราชมีเวลาสักหนึ่งชั่วโมง ข้าพเจ้าจะยินดีเป็นอย่างยิ่งที่จะได้มีโอกาสพูดคุยกันต่อหน้า; มีหลายเรื่องที่พูดง่ายกว่าเขียน\n\nข้ารับใช้ของท่าน, อับดี-เฮบา, ผู้ว่าการแห่งอูรูชาลิม"
+msgstr "ถึง ท่านมหาราช,\n"
+"\n"
+"การเดินทางของข้าพเจ้าจะพาข้าพเจ้าเข้าใกล้ดินดอนสามเหลี่ยมปากแม่น้ำในอีกไม่กี่วันข้างหน้า หากท่านมหาราชมีเวลาสักหนึ่งชั่วโมง ข้าพเจ้าจะยินดีเป็นอย่างยิ่งที่จะได้มีโอกาสพูดคุยกันต่อหน้า; มีหลายเรื่องที่พูดง่ายกว่าเขียน\n"
+"\n"
+"ข้ารับใช้ของท่าน, อับดี-เฮบา, ผู้ว่าการแห่งอูรูชาลิม"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:153
 #, fuzzy
@@ -5462,7 +6250,11 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "ถึง ท่านมหาราช ผู้เป็นดุจพี่น้องของข้า,\n\nข้าพเจ้าได้รับทราบพระดำรัสของท่านแล้ว ทองคำจะถูกส่งไปก่อนที่ผู้ส่งสารคนถัดไปจะออกเดินทาง เราให้ความสำคัญกับความผูกพันระหว่างราชวงศ์ของเรา และไม่ปรารถนาให้มันจืดจางลง\n\nด้วยไมตรีจิต,"
+msgstr "ถึง ท่านมหาราช ผู้เป็นดุจพี่น้องของข้า,\n"
+"\n"
+"ข้าพเจ้าได้รับทราบพระดำรัสของท่านแล้ว ทองคำจะถูกส่งไปก่อนที่ผู้ส่งสารคนถัดไปจะออกเดินทาง เราให้ความสำคัญกับความผูกพันระหว่างราชวงศ์ของเรา และไม่ปรารถนาให้มันจืดจางลง\n"
+"\n"
+"ด้วยไมตรีจิต,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:239
 #, fuzzy
@@ -5473,7 +6265,13 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "ถึง ท่านมหาราช ผู้เป็นดุจพี่น้องของข้า,\n\nข้าพเจ้าเขียนด้วยไมตรีจิต ดุจที่บิดาของเราได้เขียนไว้ก่อนหน้าเรา ทองคำงวดที่สามที่ตกลงกันตามสนธิสัญญาของเรายังไม่มาถึง ผู้ส่งสารสองคนได้ผ่านไปแล้ว แต่เราก็ยังคงรอคอย\n\nเราขอให้ท่านส่งมอบโดยไม่ล่าช้าอีกต่อไป ตามที่เหมาะสมกับความผูกพันระหว่างราชวงศ์ของเรา\n\nเบอร์นา-บูริอาชที่ 2, กษัตริย์แห่งบาบิโลน"
+msgstr "ถึง ท่านมหาราช ผู้เป็นดุจพี่น้องของข้า,\n"
+"\n"
+"ข้าพเจ้าเขียนด้วยไมตรีจิต ดุจที่บิดาของเราได้เขียนไว้ก่อนหน้าเรา ทองคำงวดที่สามที่ตกลงกันตามสนธิสัญญาของเรายังไม่มาถึง ผู้ส่งสารสองคนได้ผ่านไปแล้ว แต่เราก็ยังคงรอคอย\n"
+"\n"
+"เราขอให้ท่านส่งมอบโดยไม่ล่าช้าอีกต่อไป ตามที่เหมาะสมกับความผูกพันระหว่างราชวงศ์ของเรา\n"
+"\n"
+"เบอร์นา-บูริอาชที่ 2, กษัตริย์แห่งบาบิโลน"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:352
 #, fuzzy
@@ -5484,7 +6282,17 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "ถึง ท่านมหาราช, นายของข้า, ดวงตะวันของข้า,\n\nข้าวที่พระองค์ส่งมาเมื่อเดือนที่แล้วได้รับด้วยความกตัญญู และข้าพเจ้าได้สรรเสริญพระนามของพระองค์ต่อหน้าประชาชน แต่ข้าพเจ้าต้องเขียนอีกครั้ง: การจัดส่งครั้งที่สามยังไม่มาถึง และเมืองก็เริ่มกระสับกระส่าย\n\nข้าพเจ้าได้เขียนไปเจ็ดครั้งแล้ว ข้าพเจ้าไม่ปรารถนาที่จะรบกวนพระองค์ แต่ข้าพเจ้าจะทำอะไรได้อีกเล่า?\n\nข้ารับใช้ของพระองค์, ริบ-ฮัดดา, ผู้ว่าการแห่งบิบลอส"
+msgstr "ถึง ท่านมหาราช, นายของข้า, ดวงตะวันของข้า,\n"
+"\n"
+"ข้าวที่พระองค์ส่งมาเมื่อเดือนที่แล้วได้รับด้วยความกตัญญู และข้าพเจ้าได้สรรเสริญพระนามของพระองค์ต่อหน้าประชาชน แต่ข้าพเจ้าต้องเขียนอีกครั้ง: การจัดส่งครั้งที่สามยังไม่มาถึง และเมืองก็เริ่มกระสับกระส่าย\n"
+"\n"
+"ข้าพเจ้าได้เขียนไปเจ็ดครั้งแล้ว ข้าพเจ้าไม่ปรารถนาที่จะรบกวนพระองค์ แต่ข้าพเจ้าจะทำอะไรได้อีกเล่า?\n"
+"\n"
+"ข้ารับใช้ของพระองค์, ริบ-ฮัดดา, ผู้ว่าการแห่งบิบลอส"
+
+#: ../../apps/site/src/components/landing/MailThreadMock.tsx:123
+msgid "To: You"
+msgstr "ถึง: คุณ"
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:19
 #: ../ui/src/emails/ThreadList.tsx:15
@@ -5501,7 +6309,11 @@ msgstr "วันนี้"
 msgid "Toggle folders"
 msgstr "สลับโฟลเดอร์"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:91
+#: ../ui/src/i18n/taxonomy-template-messages.ts:213
+msgid "Transactions"
+msgstr "ธุรกรรม"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:102
 #, fuzzy
 msgid "Travel"
 msgstr "เดินทาง"
@@ -5563,14 +6375,14 @@ msgid "Unclassified"
 msgstr "ยังไม่จัดประเภท"
 
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:232
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:366
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1321
-#: ../ui/src/emails/MockEmailsPage.tsx:285
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:372
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1392
+#: ../ui/src/emails/MockEmailsPage.tsx:293
 #, fuzzy
 msgid "Undo"
 msgstr "เลิกทำ"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:67
+#: ../ui/src/i18n/taxonomy-template-messages.ts:75
 #, fuzzy
 msgid "University"
 msgstr "มหาวิทยาลัย"
@@ -5580,7 +6392,7 @@ msgstr "มหาวิทยาลัย"
 msgid "Unknown"
 msgstr "ไม่ทราบ"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1219
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1255
 #, fuzzy
 msgid "unknown error"
 msgstr "ข้อผิดพลาดที่ไม่รู้จัก"
@@ -5652,7 +6464,7 @@ msgid "Update payment method"
 msgstr "อัปเดตวิธีการชำระเงิน"
 
 #: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:47
-#: ../ui/src/i18n/taxonomy-template-messages.ts:95
+#: ../ui/src/i18n/taxonomy-template-messages.ts:245
 #: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:59
 #, fuzzy
 msgid "Updates / Other"
@@ -5663,7 +6475,7 @@ msgstr "อัปเดต / อื่น ๆ"
 msgid "Updates, intros, and check-ins from current or prospective investors."
 msgstr "ข่าวสาร, การแนะนำตัว, และการติดตามความคืบหน้าจากนักลงทุนปัจจุบันหรือนักลงทุนที่มีแนวโน้มในอนาคต"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:52
+#: ../ui/src/i18n/taxonomy-template-messages.ts:58
 #, fuzzy
 msgid "Updates, term sheets, due diligence requests, cap table, and investor relations."
 msgstr "ข่าวสาร, เอกสารข้อตกลง, คำขอตรวจสอบวิเคราะห์สถานะ, ตารางทุน, และความสัมพันธ์กับนักลงทุน"
@@ -5737,7 +6549,7 @@ msgstr "ใช้ \"สแกนกล่องจดหมายใหม่\" 
 msgid "Use a template"
 msgstr "ใช้เทมเพลต"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1784
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1806
 #, fuzzy
 msgid "Use template"
 msgstr "ใช้เทมเพลต"
@@ -5747,15 +6559,23 @@ msgstr "ใช้เทมเพลต"
 msgid "Use this plan for a business, team, or separate Gmail account."
 msgstr "ใช้แพ็กเกจนี้สำหรับธุรกิจ ทีม หรือบัญชี Gmail แยก"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:99
+msgid "Utilities, household maintenance, and home upkeep appointments."
+msgstr "ค่าสาธารณูปโภค, การบำรุงรักษาในครัวเรือน และการนัดหมายดูแลบ้าน"
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:88
 #, fuzzy
-msgid "Utilities, landlord or mortgage communications, home maintenance, and property services."
-msgstr "ค่าสาธารณูปโภค, การสื่อสารกับเจ้าของที่พักหรือการจำนอง, การบำรุงรักษาบ้าน และบริการอสังหาริมทรัพย์"
+#~ msgid "Utilities, landlord or mortgage communications, home maintenance, and property services."
+#~ msgstr "ค่าสาธารณูปโภค, การสื่อสารกับเจ้าของที่พักหรือการจำนอง, การบำรุงรักษาบ้าน และบริการอสังหาริมทรัพย์"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:65
+msgid "Vendor agreements, office logistics, and day-to-day operational coordination."
+msgstr "ข้อตกลงกับผู้ขาย, การจัดการสำนักงาน และการประสานงานการดำเนินงานประจำวัน"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:59
 #, fuzzy
-msgid "Vendor contracts, tools, infrastructure, and day-to-day operational communications."
-msgstr "สัญญาผู้ขาย, เครื่องมือ, โครงสร้างพื้นฐาน และการสื่อสารการดำเนินงานประจำวัน"
+#~ msgid "Vendor contracts, tools, infrastructure, and day-to-day operational communications."
+#~ msgstr "สัญญาผู้ขาย, เครื่องมือ, โครงสร้างพื้นฐาน และการสื่อสารการดำเนินงานประจำวัน"
 
 #: ../../apps/web/src/app/verify-email/page.tsx:32
 #, fuzzy
@@ -5772,6 +6592,10 @@ msgstr "ส่งอีเมลยืนยันแล้ว โปรดต�
 msgid "Verify your email"
 msgstr "ยืนยันอีเมลของคุณ"
 
+#: ../ui/src/i18n/taxonomy-template-messages.ts:123
+msgid "Version releases, changelogs, dependency upgrades, and package registry alerts."
+msgstr "การเผยแพร่เวอร์ชัน, บันทึกการเปลี่ยนแปลง, การอัปเกรดการพึ่งพา และการแจ้งเตือนรีจิสทรีแพ็กเกจ"
+
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:193
 #, fuzzy
 msgid "View draft reply"
@@ -5780,6 +6604,15 @@ msgstr "ดูฉบับร่างตอบกลับ"
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:303
 msgid "View only. Only workspace admins can edit the plan."
 msgstr "ดูได้อย่างเดียว ผู้ดูแลระบบพื้นที่ทำงานเท่านั้นที่สามารถแก้ไขแผนได้"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:235
+#, fuzzy
+msgid "Volunteer sign-ups, shift scheduling, and coordinator communications."
+msgstr "การลงทะเบียนอาสาสมัคร, การจัดตารางกะ และการสื่อสารจากผู้ประสานงาน"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:234
+msgid "Volunteers"
+msgstr "อาสาสมัคร"
 
 #: ../../apps/mobile/src/components/RationaleCard.tsx:44
 #: ../../apps/mobile/src/components/ThreadRow.tsx:44
@@ -5850,7 +6683,7 @@ msgstr "จะเกิดอะไรขึ้นกับอีเมลที
 msgid "What model does Amarnai use?"
 msgstr "Amarnai ใช้โมเดลอะไร?"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:518
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:521
 #, fuzzy
 msgid "Where this folder sits. Folders with no parent stay disconnected and are ignored until connected."
 msgstr "ตำแหน่งของโฟลเดอร์นี้ โฟลเดอร์ที่ไม่มีโฟลเดอร์แม่จะยังคงตัดการเชื่อมต่อและจะถูกละเว้นจนกว่าจะเชื่อมต่อ"
@@ -5860,12 +6693,16 @@ msgstr "ตำแหน่งของโฟลเดอร์นี้ โฟ�
 msgid "Who is king Aziru?"
 msgstr "King Aziru คือใคร?"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:36
+#: ../ui/src/i18n/taxonomy-template-messages.ts:138
+msgid "Wholesale suppliers, restock orders, and inventory availability from manufacturers."
+msgstr "ซัพพลายเออร์ค้าส่ง, คำสั่งซื้อเพื่อเติมสต็อก และความพร้อมของสินค้าคงคลังจากผู้ผลิต"
+
+#: ../ui/src/i18n/taxonomy-template-messages.ts:40
 #, fuzzy
 msgid "Work"
 msgstr "งาน"
 
-#: ../ui/src/i18n/taxonomy-template-messages.ts:34
+#: ../ui/src/i18n/taxonomy-template-messages.ts:38
 #, fuzzy
 msgid "Working Professional"
 msgstr "มืออาชีพ"

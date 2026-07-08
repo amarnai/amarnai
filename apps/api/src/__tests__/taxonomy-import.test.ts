@@ -6,8 +6,12 @@ vi.mock("@amarnai/db", () => ({
     workspaceMember: {
       findUnique: vi.fn(),
     },
+    workspace: {
+      update: vi.fn(),
+    },
     taxonomyNode: {
       findFirst: vi.fn(),
+      findMany: vi.fn(),
       update: vi.fn(),
       create: vi.fn(),
       deleteMany: vi.fn(),
@@ -16,8 +20,12 @@ vi.mock("@amarnai/db", () => ({
       deleteMany: vi.fn(),
       create: vi.fn(),
     },
+    emailThread: {
+      updateMany: vi.fn(),
+    },
     emailClassification: {
       updateMany: vi.fn(),
+      createMany: vi.fn(),
     },
     taxonomyGenerationState: {
       updateMany: vi.fn(),
@@ -27,8 +35,20 @@ vi.mock("@amarnai/db", () => ({
   Prisma: { DbNull: Symbol("DbNull") },
 }));
 
+vi.mock("../queues.js", () => ({
+  classifyThreadQueue: { addBulk: vi.fn().mockResolvedValue([]) },
+}));
+
+vi.mock("../services/taxonomy-migration.js", () => ({
+  latestClassificationsByThread: vi.fn(),
+  computeMigrationPreview: vi.fn(),
+}));
+
 import app from "../app.js";
 import { db } from "@amarnai/db";
+import { classifyThreadQueue } from "../queues.js";
+import { latestClassificationsByThread } from "../services/taxonomy-migration.js";
+import { DEDUP_CLASSIFY_MIGRATION } from "@amarnai/queue";
 
 const WS_ID = "ws-1";
 const ROOT_ID = "existing-root-id";
@@ -106,11 +126,26 @@ describe("POST /workspaces/:workspaceId/taxonomy-import", () => {
     vi.mocked(db.$transaction).mockImplementation(async (fn) => fn(db as never));
     vi.mocked(db.taxonomyEdge.deleteMany).mockResolvedValue({ count: 0 } as never);
     vi.mocked(db.emailClassification.updateMany).mockResolvedValue({ count: 0 } as never);
+    vi.mocked(db.emailClassification.createMany).mockResolvedValue({ count: 0 } as never);
     vi.mocked(db.taxonomyNode.deleteMany).mockResolvedValue({ count: 0 } as never);
+    // currentNodes lookup: a mapped folder "cur-n1" and the catch-all "cur-other".
+    vi.mocked(db.taxonomyNode.findMany).mockResolvedValue([
+      { id: "cur-n1", name: "Invoices (old)", isCatchAll: false },
+      { id: "cur-other", name: "Updates (old)", isCatchAll: true },
+    ] as never);
     vi.mocked(db.taxonomyNode.update).mockResolvedValue({} as never);
-    vi.mocked(db.taxonomyNode.create).mockResolvedValue({ id: "new-node-id" } as never);
+    // Distinct node ids so migration rows can be told apart in assertions.
+    let created = 0;
+    vi.mocked(db.taxonomyNode.create).mockImplementation(
+      (() => Promise.resolve({ id: `new-node-${++created}` })) as never,
+    );
     vi.mocked(db.taxonomyEdge.create).mockResolvedValue({} as never);
+    vi.mocked(db.emailThread.updateMany).mockResolvedValue({ count: 0 } as never);
+    vi.mocked(db.workspace.update).mockResolvedValue({} as never);
     vi.mocked(db.taxonomyGenerationState.updateMany).mockResolvedValue({ count: 0 } as never);
+    vi.mocked(classifyThreadQueue.addBulk).mockResolvedValue([] as never);
+    // Default: no threads exist (pure structural apply).
+    vi.mocked(latestClassificationsByThread).mockResolvedValue([]);
   });
 
   it("returns 404 when not a workspace member", async () => {
@@ -232,7 +267,104 @@ describe("POST /workspaces/:workspaceId/taxonomy-import", () => {
     expect(createCall?.[0]?.data).toMatchObject({
       workspaceId: WS_ID,
       sourceNodeId: ROOT_ID,
-      targetNodeId: "new-node-id",
+      targetNodeId: expect.stringMatching(/^new-node-/),
+    });
+  });
+
+  it("bumps taxonomyChangedAt on apply", async () => {
+    await post(IMPORT_PATH, validFile());
+    expect(db.workspace.update).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { id: WS_ID },
+        data: expect.objectContaining({ taxonomyChangedAt: expect.any(Date) }),
+      })
+    );
+  });
+
+  // ── Migration mapping ───────────────────────────────────────────────────────
+
+  describe("with folder migration mapping", () => {
+    it("migrates mapped folders' threads (MIGRATION rows) and leaves them SORTED", async () => {
+      vi.mocked(latestClassificationsByThread).mockResolvedValue([
+        { emailThreadId: "t-mapped", finalNodeId: "cur-n1", triageStatus: "SORTED" },
+      ]);
+
+      const res = await post(IMPORT_PATH, { file: validFile(), mapping: { "cur-n1": "n1" } });
+      expect(res.status).toBe(200);
+      const body = await res.json() as { migratedThreads: number; requeuedThreads: number };
+      expect(body.migratedThreads).toBe(1);
+      expect(body.requeuedThreads).toBe(0);
+
+      const createManyCall = vi.mocked(db.emailClassification.createMany).mock.calls[0];
+      const rows = (createManyCall?.[0] as { data: Array<Record<string, unknown>> }).data;
+      expect(rows[0]).toMatchObject({
+        emailThreadId: "t-mapped",
+        source: "MIGRATION",
+        decisionSource: "migration",
+        needsHumanReview: false,
+      });
+      // Never flipped to PENDING (stays SORTED).
+      expect(db.emailThread.updateMany).not.toHaveBeenCalled();
+      // Nothing re-enqueued.
+      expect(classifyThreadQueue.addBulk).not.toHaveBeenCalled();
+    });
+
+    it("re-sorts SORTED threads under an unmapped folder (orphan-bug fix)", async () => {
+      vi.mocked(latestClassificationsByThread).mockResolvedValue([
+        { emailThreadId: "t-orphan", finalNodeId: "cur-n1", triageStatus: "SORTED" },
+      ]);
+
+      // Empty mapping → cur-n1 is unmapped → its SORTED thread must be re-sorted.
+      const res = await post(IMPORT_PATH, { file: validFile(), mapping: {} });
+      expect(res.status).toBe(200);
+      const body = await res.json() as { migratedThreads: number; requeuedThreads: number };
+      expect(body.migratedThreads).toBe(0);
+      expect(body.requeuedThreads).toBe(1);
+
+      expect(db.emailThread.updateMany).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: { id: { in: ["t-orphan"] } },
+          data: expect.objectContaining({ triageStatus: "PENDING", classifyingAt: expect.any(Date) }),
+        })
+      );
+      const [jobs] = vi.mocked(classifyThreadQueue.addBulk).mock.calls[0]!;
+      expect(jobs).toHaveLength(1);
+      expect((jobs[0]!.data as { source?: string }).source).toBe("REROUTE");
+      expect(jobs[0]!.opts?.deduplication?.id).toMatch(new RegExp(`^${DEDUP_CLASSIFY_MIGRATION}_`));
+    });
+
+    it("re-sorts NEEDS_REVIEW and UNCLASSIFIED threads regardless of mapping", async () => {
+      vi.mocked(latestClassificationsByThread).mockResolvedValue([
+        { emailThreadId: "t-review", finalNodeId: null, triageStatus: "NEEDS_REVIEW" },
+        { emailThreadId: "t-unclass", finalNodeId: ROOT_ID, triageStatus: "UNCLASSIFIED" },
+      ]);
+
+      const res = await post(IMPORT_PATH, { file: validFile(), mapping: { "cur-n1": "n1" } });
+      const body = await res.json() as { requeuedThreads: number };
+      expect(body.requeuedThreads).toBe(2);
+    });
+
+    it("rejects a mapping targeting an unknown folder ref", async () => {
+      vi.mocked(latestClassificationsByThread).mockResolvedValue([]);
+      const res = await post(IMPORT_PATH, { file: validFile(), mapping: { "cur-n1": "does-not-exist" } });
+      expect(res.status).toBe(400);
+      const body = await res.json() as { error: string };
+      expect(body.error).toMatch(/unknown folder ref/);
+    });
+
+    it("rejects a mapping targeting the root ref", async () => {
+      const res = await post(IMPORT_PATH, { file: validFile(), mapping: { "cur-n1": "root" } });
+      expect(res.status).toBe(400);
+      const body = await res.json() as { error: string };
+      expect(body.error).toMatch(/root/i);
+    });
+
+    it("drops mapping keys for folders deleted since preview", async () => {
+      // "ghost" is not in currentNodes → dropped; its (would-be) threads never
+      // appear because latest classifications don't reference it.
+      vi.mocked(latestClassificationsByThread).mockResolvedValue([]);
+      const res = await post(IMPORT_PATH, { file: validFile(), mapping: { ghost: "n1" } });
+      expect(res.status).toBe(200);
     });
   });
 });

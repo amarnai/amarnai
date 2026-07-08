@@ -14,6 +14,7 @@ import { useEmailTriage } from "@amarnai/core/emails";
 import { ThreadPreview } from "./ThreadPreview";
 import { useThreadKeyboard } from "./useThreadKeyboard";
 import { UnroutedBanner } from "./UnroutedBanner";
+import { ResortReviewBanner } from "./ResortReviewBanner";
 import { PlanCapBanner } from "./PlanCapBanner";
 import { ClassifyingRefresher } from "@/components/ClassifyingRefresher";
 
@@ -260,6 +261,11 @@ export function EmailsClient({
       routableNodeCount={routableNodeCount}
       routingStarted={syncStatus?.backfillRoutingStarted ?? false}
       onRouted={triage.markWaitingClassifying}
+    />
+    <ResortReviewBanner
+      workspaceId={workspaceId}
+      refreshKey={triage.queueCounts.review ?? 0}
+      onResorted={triage.refresh}
     />
     <PlanCapBanner syncStatus={syncStatus} />
     <div

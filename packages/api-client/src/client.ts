@@ -43,6 +43,9 @@ import type {
   UpdateCurrentUserInput,
   TaxonomyGenerationStatusResult,
   TaxonomyTemplateRecommendationResult,
+  TaxonomyImportPreviewResult,
+  TaxonomyImportResult,
+  TaxonomyMigrationMapping,
 } from "./types.js";
 
 export function makeApiClient(transport: ApiTransport) {
@@ -226,14 +229,30 @@ export function makeApiClient(transport: ApiTransport) {
         "DELETE"
       ),
 
-    // Atomically replaces the workspace's non-root taxonomy from a transfer file
-    // (the root node is preserved server-side). Used by template-apply now and by
-    // file import later.
-    importTaxonomy: (workspaceId: string, file: TaxonomyTransferFile) =>
-      apiMutate<{ ok: true }>(
-        `/workspaces/${workspaceId}/taxonomy-import`,
+    // Preview the folder migration for replacing the taxonomy with `file`:
+    // returns which old folders auto-map to new ones and how many threads migrate
+    // vs re-sort. Advisory — the apply route re-validates everything.
+    previewTaxonomyImport: (workspaceId: string, file: TaxonomyTransferFile) =>
+      apiMutate<TaxonomyImportPreviewResult>(
+        `/workspaces/${workspaceId}/taxonomy-import/preview`,
         "POST",
         file
+      ),
+
+    // Atomically replaces the workspace's non-root taxonomy from a transfer file
+    // (the root node is preserved server-side). With a `mapping` (old node id →
+    // new folder ref, or "resort"), threads under mapped folders carry over
+    // instantly; the rest are re-sorted with AI. Without one, every sorted thread
+    // is re-sorted (legacy behavior).
+    importTaxonomy: (
+      workspaceId: string,
+      file: TaxonomyTransferFile,
+      mapping?: TaxonomyMigrationMapping
+    ) =>
+      apiMutate<TaxonomyImportResult>(
+        `/workspaces/${workspaceId}/taxonomy-import`,
+        "POST",
+        mapping ? { file, mapping } : file
       ),
 
     // Auto-generate-taxonomy-from-inbox. `generateTaxonomy` enqueues a run
@@ -428,6 +447,21 @@ export function makeApiClient(transport: ApiTransport) {
     rerouteUnclassified: (workspaceId: string) =>
       apiMutate<{ queued: number }>(
         `/workspaces/${workspaceId}/sorting-queue/reroute-unclassified`,
+        "POST"
+      ),
+
+    // How many NEEDS_REVIEW threads are eligible for one-click re-sort (their
+    // plan changed since they were sorted, or their last sort hit a transient
+    // error). Not all review threads qualify.
+    needsReviewResortEligible: (workspaceId: string) =>
+      apiFetch<{ eligible: number }>(
+        `/workspaces/${workspaceId}/sorting-queue/reroute-needs-review`
+      ),
+
+    // Re-sort the eligible NEEDS_REVIEW threads through the routing pipeline.
+    rerouteNeedsReview: (workspaceId: string) =>
+      apiMutate<{ queued: number }>(
+        `/workspaces/${workspaceId}/sorting-queue/reroute-needs-review`,
         "POST"
       ),
 

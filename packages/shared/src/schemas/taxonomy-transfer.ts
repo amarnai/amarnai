@@ -52,6 +52,39 @@ export const TaxonomyTransferFileSchema = z.object({
 });
 export type TaxonomyTransferFile = z.infer<typeof TaxonomyTransferFileSchema>;
 
+// ─── Import request (file + optional folder migration mapping) ─────────────────
+
+/**
+ * Sentinel value in a migration mapping meaning "do not carry this folder's
+ * threads over; re-sort them with AI against the new taxonomy".
+ */
+export const MIGRATION_RESORT = "resort" as const;
+
+/**
+ * Body accepted by the taxonomy-import apply route. Two shapes:
+ *   - a bare TaxonomyTransferFile (legacy / no mapping) — every sorted thread is
+ *     re-sorted, matching the pre-migration behavior.
+ *   - { file, mapping } — `mapping` carries old DB node id → new folder `ref`
+ *     (migrate those threads instantly) or the `"resort"` sentinel (re-sort with
+ *     AI). Old folders absent from the mapping are treated as `"resort"`.
+ */
+export const TaxonomyImportRequestSchema = z.union([
+  TaxonomyTransferFileSchema,
+  z.object({
+    file: TaxonomyTransferFileSchema,
+    mapping: z.record(z.string(), z.union([z.string().min(1), z.literal(MIGRATION_RESORT)])),
+  }),
+]);
+export type TaxonomyImportRequest = z.infer<typeof TaxonomyImportRequestSchema>;
+
+/** Normalize either import-request shape into { file, mapping }. */
+export function normalizeTaxonomyImportRequest(
+  req: TaxonomyImportRequest
+): { file: TaxonomyTransferFile; mapping: Record<string, string> } {
+  if ("file" in req) return { file: req.file, mapping: req.mapping };
+  return { file: req, mapping: {} };
+}
+
 // ─── Cycle detection (refs) ───────────────────────────────────────────────────
 
 function hasCycleInRefs(edges: TaxonomyTransferEdge[]): boolean {

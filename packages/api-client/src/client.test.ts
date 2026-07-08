@@ -98,6 +98,57 @@ describe("makeApiClient", () => {
       expect(init.method).toBe("POST");
       expect(init.body).toBe(JSON.stringify(file));
     });
+
+    it("importTaxonomy wraps file + mapping when a mapping is provided", async () => {
+      const fetchFn = vi.fn().mockResolvedValue(mockOk({ ok: true }));
+      const client = makeApiClient(makeMockTransport(fetchFn));
+      const file = {
+        amarnaiTaxonomyVersion: 1 as const,
+        exportedAt: "2026-01-01T00:00:00.000Z",
+        nodes: [],
+        edges: [],
+      };
+      await client.importTaxonomy("ws1", file, { "old-1": "ref-2", "old-2": "resort" });
+      const [, init] = fetchFn.mock.calls[0] as [string, RequestInit];
+      expect(init.body).toBe(
+        JSON.stringify({ file, mapping: { "old-1": "ref-2", "old-2": "resort" } })
+      );
+    });
+
+    it("previewTaxonomyImport POSTs the file to the preview endpoint", async () => {
+      const fetchFn = vi.fn().mockResolvedValue(mockOk({ suggestions: [], migrateCount: 0, resortCount: 0 }));
+      const client = makeApiClient(makeMockTransport(fetchFn));
+      const file = {
+        amarnaiTaxonomyVersion: 1 as const,
+        exportedAt: "2026-01-01T00:00:00.000Z",
+        nodes: [],
+        edges: [],
+      };
+      await client.previewTaxonomyImport("ws1", file);
+      const [url, init] = fetchFn.mock.calls[0] as [string, RequestInit];
+      expect(url).toBe("https://api.test/workspaces/ws1/taxonomy-import/preview");
+      expect(init.method).toBe("POST");
+      expect(init.body).toBe(JSON.stringify(file));
+    });
+
+    it("needsReviewResortEligible GETs the reroute-needs-review endpoint", async () => {
+      const fetchFn = vi.fn().mockResolvedValue(mockOk({ eligible: 4 }));
+      const client = makeApiClient(makeMockTransport(fetchFn));
+      const r = await client.needsReviewResortEligible("ws1");
+      const [url, init] = fetchFn.mock.calls[0] as [string, RequestInit];
+      expect(url).toBe("https://api.test/workspaces/ws1/sorting-queue/reroute-needs-review");
+      expect(init.method ?? "GET").toBe("GET");
+      expect(r.eligible).toBe(4);
+    });
+
+    it("rerouteNeedsReview POSTs the reroute-needs-review endpoint", async () => {
+      const fetchFn = vi.fn().mockResolvedValue(mockOk({ queued: 4 }));
+      const client = makeApiClient(makeMockTransport(fetchFn));
+      await client.rerouteNeedsReview("ws1");
+      const [url, init] = fetchFn.mock.calls[0] as [string, RequestInit];
+      expect(url).toBe("https://api.test/workspaces/ws1/sorting-queue/reroute-needs-review");
+      expect(init.method).toBe("POST");
+    });
   });
 
   describe("emailThreads", () => {

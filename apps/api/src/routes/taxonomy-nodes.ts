@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { z } from "zod";
 import { db } from "@amarnai/db";
 import { findDescendants } from "@amarnai/ai";
+import { bumpTaxonomyChangedAt } from "../services/taxonomy-changed.js";
 
 const workspaceParam = z.object({ workspaceId: z.string().min(1) });
 const nodeParam = z.object({
@@ -180,6 +181,9 @@ taxonomyNodes.post("/workspaces/:workspaceId/taxonomy-nodes", async (c) => {
     select: nodeSelect,
   });
 
+  // A new folder changes routing outcomes — mark review threads re-sortable.
+  await bumpTaxonomyChangedAt(workspaceId);
+
   return c.json({ ...node, threadCount: 0 }, 201);
 });
 
@@ -263,6 +267,13 @@ taxonomyNodes.patch(
       }
     }
 
+    // Only a name/description change alters routing (same condition as embedding
+    // invalidation above). instructions/examples also feed LLM candidate
+    // selection and could be added here later; position/draftPrompt never do.
+    if (d.name !== undefined || d.description !== undefined) {
+      await bumpTaxonomyChangedAt(workspaceId);
+    }
+
     return c.json({ ...updated, threadCount: 0 });
   }
 );
@@ -334,6 +345,10 @@ taxonomyNodes.delete(
     }
 
     await db.taxonomyNode.delete({ where: { id: nodeId } });
+
+    // Removing a folder changes routing outcomes — mark review threads re-sortable.
+    await bumpTaxonomyChangedAt(workspaceId);
+
     return c.json({ ok: true });
   }
 );

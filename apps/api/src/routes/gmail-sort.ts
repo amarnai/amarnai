@@ -271,6 +271,8 @@ gmailSort.post("/dev/workspaces/:workspaceId/gmail-sort-thread", async (c) => {
       confidence: result.confidence,
       explanation: result.explanation,
       needsHumanReview: result.needsHumanReview,
+      transientFailure:
+        result.fallbackCause === "llm_error" || result.fallbackCause === "embedding_failed",
       source: "MANUAL",
       decisionSource: result.decisionSource,
       modelProvider: provider.providerName,

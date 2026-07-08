@@ -389,6 +389,42 @@ export type FolderCountsResult = {
   total: number;
 };
 
+// ── Taxonomy import (migration) ─────────────────────────────────────────────────
+
+/** One incoming-folder candidate for an outgoing folder, with its similarity. */
+export type MigrationCandidate = { ref: string; sim: number };
+
+/** One outgoing folder's migration suggestion, enriched for the review UI. */
+export type MigrationPreviewRow = {
+  oldNodeId: string;
+  oldName: string;
+  isCatchAll: boolean;
+  threadCount: number;
+  /** Suggested incoming folder ref, or null to re-sort with AI. */
+  suggestedRef: string | null;
+  matchKind: "catch_all" | "name" | "embedding" | null;
+  candidates: MigrationCandidate[];
+};
+
+export type TaxonomyImportPreviewResult = {
+  suggestions: MigrationPreviewRow[];
+  /** Threads carried over instantly (auto-mapped folders), no AI cost. */
+  migrateCount: number;
+  /** Threads that will be re-sorted by AI. */
+  resortCount: number;
+};
+
+export type TaxonomyImportResult = {
+  ok: true;
+  nodeCount: number;
+  edgeCount: number;
+  migratedThreads: number;
+  requeuedThreads: number;
+};
+
+/** Old node DB id → new folder ref, or the "resort" sentinel. */
+export type TaxonomyMigrationMapping = Record<string, string>;
+
 // ── Drafts ────────────────────────────────────────────────────────────────────
 
 export type Draft = {

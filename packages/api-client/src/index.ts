@@ -68,4 +68,9 @@ export type {
   TaxonomyGenerationStatus,
   TaxonomyGenerationStatusResult,
   TaxonomyTemplateRecommendationResult,
+  TaxonomyImportPreviewResult,
+  TaxonomyImportResult,
+  TaxonomyMigrationMapping,
+  MigrationPreviewRow,
+  MigrationCandidate,
 } from "./types.js";

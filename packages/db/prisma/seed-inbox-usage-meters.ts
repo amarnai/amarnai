@@ -47,7 +47,7 @@ async function main() {
           where: {
             workspaceId,
             createdAt: { gte: windowStart },
-            source: { notIn: ["BACKFILL", "MOVE"] },
+            source: { notIn: ["BACKFILL", "MOVE", "MIGRATION"] },
           },
           distinct: ["emailThreadId"],
           select: { emailThreadId: true },

@@ -8,13 +8,14 @@ import { db } from "./client.js";
 //   - backfill:  the one-time historical backfill (ClassificationSource.BACKFILL).
 //   - recurring: AI sorts that meter the quota (LIVE / REROUTE / MANUAL).
 //
-// Only the recurring count is metered by the monthly thread-sort quota. Two
-// sources never consume it: BACKFILL (a separate one-time allowance) and MOVE
-// (a manual folder reassignment, which runs no embedding/LLM and so has zero AI
-// cost). These are the UNMETERED_SOURCES below.
+// Only the recurring count is metered by the monthly thread-sort quota. Three
+// sources never consume it: BACKFILL (a separate one-time allowance), MOVE (a
+// manual folder reassignment), and MIGRATION (a folder-to-folder remap during a
+// taxonomy replace). MOVE and MIGRATION run no embedding/LLM and so have zero AI
+// cost. These are the UNMETERED_SOURCES below.
 
 /** Classification sources that do NOT consume the monthly thread-sort quota. */
-const UNMETERED_SOURCES = ["BACKFILL", "MOVE"] as const;
+const UNMETERED_SOURCES = ["BACKFILL", "MOVE", "MIGRATION"] as const;
 
 /** Per-workspace thread-sort usage for a window, split by origin. */
 export interface ThreadSortUsage {
@@ -52,9 +53,9 @@ export async function countRecurringThreadSorts(
 /**
  * Per-workspace thread-sort usage for [windowStart, now), split into backfill vs
  * recurring distinct-thread counts. The `recurring` bucket matches what the quota
- * meters, so MOVE rows are excluded (they are unmetered, like BACKFILL). A thread
- * sorted by both a backfill and a recurring source is counted once in each bucket
- * (the buckets are independent).
+ * meters, so MOVE and MIGRATION rows are excluded (they are unmetered, like
+ * BACKFILL). A thread sorted by both a backfill and a recurring source is counted
+ * once in each bucket (the buckets are independent).
  */
 export async function getThreadSortUsage(
   workspaceId: string,
@@ -67,7 +68,7 @@ export async function getThreadSortUsage(
     FROM "EmailClassification"
     WHERE "workspaceId" = ${workspaceId}
       AND "createdAt" >= ${windowStart}
-      AND "source" <> 'MOVE'
+      AND "source" NOT IN ('MOVE', 'MIGRATION')
     GROUP BY 1
   `;
 

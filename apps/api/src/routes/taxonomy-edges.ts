@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import { z } from "zod";
 import { db } from "@amarnai/db";
+import { bumpTaxonomyChangedAt } from "../services/taxonomy-changed.js";
 
 const workspaceParam = z.object({ workspaceId: z.string().min(1) });
 const edgeParam = z.object({
@@ -174,6 +175,9 @@ taxonomyEdges.post("/workspaces/:workspaceId/taxonomy-edges", async (c) => {
     select: edgeSelect,
   });
 
+  // Re-parenting the tree changes routing outcomes — mark review threads re-sortable.
+  await bumpTaxonomyChangedAt(workspaceId);
+
   return c.json(edge, 201);
 });
 
@@ -257,10 +261,12 @@ taxonomyEdges.patch(
 
     const newEdge = await db.$transaction(async (tx) => {
       await tx.taxonomyEdge.delete({ where: { id: edgeId } });
-      return tx.taxonomyEdge.create({
+      const created = await tx.taxonomyEdge.create({
         data: { workspaceId, sourceNodeId: newSourceNodeId, targetNodeId: existing.targetNodeId },
         select: edgeSelect,
       });
+      await bumpTaxonomyChangedAt(workspaceId, tx);
+      return created;
     });
 
     return c.json(newEdge);
@@ -301,6 +307,10 @@ taxonomyEdges.delete(
     }
 
     await db.taxonomyEdge.delete({ where: { id: edgeId } });
+
+    // Removing an edge changes routing outcomes — mark review threads re-sortable.
+    await bumpTaxonomyChangedAt(workspaceId);
+
     return c.json({ ok: true });
   }
 );

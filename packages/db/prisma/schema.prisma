@@ -119,6 +119,9 @@ enum ClassificationSource {
   REROUTE
   MANUAL
   MOVE
+  // Folder-to-folder remap during a taxonomy replace. Runs no embedding/LLM
+  // (zero AI cost), so it is quota-exempt like MOVE.
+  MIGRATION
 }
 
 enum BackfillStatus {
@@ -249,6 +252,11 @@ model Workspace {
   // produces exactly one notification per (workspace, window). Monotonic — never
   // reset on quota recovery, so recovery within the same window cannot re-arm it.
   quotaNotifiedWindowStart DateTime?
+  // Last routing-relevant taxonomy mutation (node create/delete, name or
+  // description edit, edge change, full import). Drives NEEDS_REVIEW re-sort
+  // eligibility: a thread whose latest classification predates this may route
+  // differently now. Null until the taxonomy is first edited.
+  taxonomyChangedAt      DateTime?
   createdAt              DateTime      @default(now())
   updatedAt              DateTime      @updatedAt
 
@@ -576,6 +584,11 @@ model EmailClassification {
   dueAt             DateTime?
   suggestedNextStep SuggestedNextStep?
   needsHumanReview  Boolean
+  // True when this row is an inbox fallback caused by a transient infrastructure
+  // failure (LLM fail-open on final retry, thread-embedding failure) rather than
+  // a deliberate routing decision. Such threads are eligible for re-sort even
+  // when the taxonomy has not changed.
+  transientFailure  Boolean              @default(false)
   source            ClassificationSource @default(LIVE)
   decisionSource    String?
   modelProvider     String?

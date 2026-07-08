@@ -187,7 +187,7 @@ export function createClassifyThreadWorker(): Worker {
             (await db.emailClassification.count({
               where: {
                 emailThreadId,
-                source: { notIn: ["BACKFILL", "MOVE"] },
+                source: { notIn: ["BACKFILL", "MOVE", "MIGRATION"] },
                 createdAt: { gte: meterWindow },
               },
             })) > 0;
@@ -540,6 +540,13 @@ export function createClassifyThreadWorker(): Worker {
             : result.explanation;
           const needsHumanReview = filedToCatchAll ? false : result.needsHumanReview;
           const decisionSource: string = filedToCatchAll ? "automated_bulk" : result.decisionSource;
+          // Mark rows produced by a transient infrastructure failure (LLM
+          // fail-open on the final retry, or thread-embedding failure) so a later
+          // bulk re-sort can pick them up even when the taxonomy has not changed.
+          // Never set for a bulk auto-file (it did not fail).
+          const transientFailure =
+            !filedToCatchAll &&
+            (result.fallbackCause === "llm_error" || result.fallbackCause === "embedding_failed");
 
           // ── 7. Persist routing result + triage ────────────────────────────
 
@@ -551,6 +558,7 @@ export function createClassifyThreadWorker(): Worker {
               confidence,
               explanation,
               needsHumanReview,
+              transientFailure,
               source,
               decisionSource,
               modelProvider: aiProvider.providerName,

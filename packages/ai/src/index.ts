@@ -37,8 +37,21 @@ export {
   CROSS_BRANCH_MARGIN,
   TOP_K_LLM_CANDIDATES,
 } from "./embedding/sorter.js";
-export type { EmbeddingSortResult, DecisionSource, CrossBranchSignal } from "./embedding/sorter.js";
+export type { EmbeddingSortResult, DecisionSource, CrossBranchSignal, FallbackCause } from "./embedding/sorter.js";
 export { buildRoutingTelemetry, TELEMETRY_TOP_K } from "./embedding/telemetry.js";
+export {
+  computeFolderMigrationMap,
+  MIGRATION_SIM_FLOOR,
+  MIGRATION_SIM_MARGIN,
+  MIGRATION_RAW_SIM_FLOOR,
+} from "./embedding/migration-map.js";
+export type {
+  MigrationCandidate,
+  MigrationSuggestion,
+  MigrationOldNode,
+  MigrationNewNode,
+  MigrationMapOptions,
+} from "./embedding/migration-map.js";
 // ─── Automated-mail detection ───────────────────────────────────────────────────
 export {
   isAutomatedMessage,

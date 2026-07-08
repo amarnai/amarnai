@@ -15,6 +15,8 @@ export function parseRedisUrl(url: string): { host: string; port: number; passwo
 
 export const DEDUP_CLASSIFY_UNROUTED     = "classify_unrouted";
 export const DEDUP_CLASSIFY_UNCLASSIFIED = "classify_unclassified";
+export const DEDUP_CLASSIFY_NEEDS_REVIEW = "classify_needs_review";
+export const DEDUP_CLASSIFY_MIGRATION    = "classify_migration";
 
 // ─── Queue names ──────────────────────────────────────────────────────────────
 // Single source of truth. Import these constants everywhere instead of

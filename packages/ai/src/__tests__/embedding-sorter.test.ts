@@ -196,6 +196,8 @@ describe("embedding sorter — clear route to direct child", () => {
       messages
     );
     expect(result.decisionSource).toBe("embedding_auto");
+    // A successful placement is not a fallback.
+    expect(result.fallbackCause).toBeNull();
   });
 
   it("LLM is not called when there is a clear winner", async () => {
@@ -384,6 +386,9 @@ describe("embedding sorter — poor taxonomy fit routes to Inbox review", () => 
     // The quality gate is a legitimate review decision, not an error fail-open,
     // so the push must NOT be suppressed.
     expect(result.failedOpenOnError).toBe(false);
+    // A deliberate (non-transient) fallback cause — not re-sortable without a
+    // taxonomy change.
+    expect(result.fallbackCause).toBe("quality_gate");
   });
 
   it("explanation mentions quality threshold", async () => {

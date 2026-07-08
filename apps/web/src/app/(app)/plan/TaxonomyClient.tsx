@@ -31,7 +31,10 @@ import {
   type TaxonomyEdge,
   type CreateTaxonomyNodeInput,
   type UpdateTaxonomyEdgeInput,
+  type TaxonomyImportPreviewResult,
+  type TaxonomyMigrationMapping,
 } from "@/lib/api";
+import { MigrationReviewModal } from "./MigrationReviewModal";
 import {
   createTaxonomyNodeAction as createTaxonomyNodeActionRaw,
   updateTaxonomyNodeAction as updateTaxonomyNodeActionRaw,
@@ -830,9 +833,13 @@ function TaxonomyCanvasInner({
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
   const [apiError, setApiError] = useState<string | null>(null);
-  const [importConfirmOpen, setImportConfirmOpen] = useState(false);
-  const [pendingImportFile, setPendingImportFile] =
-    useState<TaxonomyTransferFile | null>(null);
+  // Pending taxonomy replacement awaiting the migration-review step. Null when no
+  // replace is in flight. `previewLoading` covers the preview round-trip.
+  const [migration, setMigration] = useState<{
+    file: TaxonomyTransferFile;
+    preview: TaxonomyImportPreviewResult;
+  } | null>(null);
+  const [previewLoading, setPreviewLoading] = useState(false);
   const [templatePickerOpen, setTemplatePickerOpen] = useState(false);
   const [selectedTemplateIdx, setSelectedTemplateIdx] = useState<number | null>(
     null,
@@ -1261,21 +1268,45 @@ function TaxonomyCanvasInner({
       rfEdges.map((e) => ({ sourceNodeId: e.source, targetNodeId: e.target })),
     );
 
-    if (currentlyRoutable) {
-      setPendingImportFile(validation.data);
-      setImportConfirmOpen(true);
-    } else {
-      await executeImport(validation.data);
+    await beginImport(validation.data, currentlyRoutable);
+  }
+
+  // Entry point for every taxonomy replacement (file, template, generated). When
+  // the current taxonomy can route (so threads may be sorted into folders that
+  // are about to change), fetch the folder migration preview and open the review
+  // modal. If nothing is affected, or the taxonomy cannot route yet, apply
+  // directly with no mapping (re-sort everything, the legacy behavior).
+  async function beginImport(file: TaxonomyTransferFile, currentlyRoutable: boolean) {
+    if (submitting || previewLoading) return; // guard against double-submit
+    if (!currentlyRoutable) {
+      await executeImport(file);
+      return;
+    }
+    setPreviewLoading(true);
+    setApiError(null);
+    try {
+      const preview = await api.previewTaxonomyImport(workspaceId, file);
+      const affected =
+        preview.migrateCount + preview.resortCount > 0 ||
+        preview.suggestions.some((s) => s.threadCount > 0);
+      if (!affected) {
+        await executeImport(file);
+      } else {
+        setMigration({ file, preview });
+      }
+    } catch (err) {
+      setApiError(err instanceof Error ? err.message : _(msg`Could not prepare migration`));
+    } finally {
+      setPreviewLoading(false);
     }
   }
 
-  async function executeImport(file: TaxonomyTransferFile) {
-    setImportConfirmOpen(false);
-    setPendingImportFile(null);
+  async function executeImport(file: TaxonomyTransferFile, mapping?: TaxonomyMigrationMapping) {
+    setMigration(null);
     setSubmitting(true);
     setApiError(null);
     try {
-      await api.importTaxonomy(workspaceId, file);
+      await api.importTaxonomy(workspaceId, file, mapping);
       const { nodes, edges } = await refetch();
       history.reset({ nodes, edges });
     } catch (err) {
@@ -1300,12 +1331,7 @@ function TaxonomyCanvasInner({
     if (!template) return;
     setTemplatePickerOpen(false);
     setSelectedTemplateIdx(null);
-    if (taxonomyIsRoutable) {
-      setPendingImportFile(template.file);
-      setImportConfirmOpen(true);
-    } else {
-      await executeImport(template.file);
-    }
+    await beginImport(template.file, taxonomyIsRoutable);
   }
 
   // ─── Render ───────────────────────────────────────────────────────────────
@@ -1468,7 +1494,7 @@ function TaxonomyCanvasInner({
             workspaceId={workspaceId}
             disabled={submitting}
             gmailConnected={gmailConnected}
-            onApply={executeImport}
+            onApply={(file) => beginImport(file, taxonomyIsRoutable)}
             onUseTemplates={() => {
               setSelectedTemplateIdx(null);
               setTemplatePickerOpen(true);
@@ -1636,69 +1662,14 @@ function TaxonomyCanvasInner({
         )}
       </div>
 
-      {importConfirmOpen && pendingImportFile && (
-        <div
-          className="modal-backdrop"
-          onClick={(e) => {
-            if (e.target === e.currentTarget) {
-              setImportConfirmOpen(false);
-              setPendingImportFile(null);
-            }
-          }}
-          onKeyDown={(e) => {
-            if (e.key === "Escape") {
-              setImportConfirmOpen(false);
-              setPendingImportFile(null);
-            }
-          }}
-          role="dialog"
-          aria-modal="true"
-        >
-          <div className="modal">
-            <div className="modal-header">
-              <h2 className="modal-title"><Trans>Replace plan?</Trans></h2>
-              <button
-                className="modal-close"
-                aria-label={_(msg`Cancel`)}
-                onClick={() => {
-                  setImportConfirmOpen(false);
-                  setPendingImportFile(null);
-                }}
-              >
-                ✕
-              </button>
-            </div>
-            <div className="modal-body">
-              <p>
-                <Trans>
-                  Importing will replace your current plan with{" "}
-                  <strong>{pendingImportFile.nodes.length} folders</strong> and{" "}
-                  <strong>{pendingImportFile.edges.length} paths</strong> from the
-                  file. Threads that were sorted into removed folders will
-                  become unsorted. This cannot be undone.
-                </Trans>
-              </p>
-            </div>
-            <div className="modal-footer">
-              <button
-                className="btn-ghost"
-                onClick={() => {
-                  setImportConfirmOpen(false);
-                  setPendingImportFile(null);
-                }}
-              >
-                <Trans>Cancel</Trans>
-              </button>
-              <button
-                className="btn-danger"
-                onClick={() => executeImport(pendingImportFile)}
-                disabled={submitting}
-              >
-                <Trans>Replace taxonomy</Trans>
-              </button>
-            </div>
-          </div>
-        </div>
+      {migration && (
+        <MigrationReviewModal
+          file={migration.file}
+          preview={migration.preview}
+          submitting={submitting}
+          onCancel={() => setMigration(null)}
+          onConfirm={(mapping) => executeImport(migration.file, mapping)}
+        />
       )}
 
       {templatePickerOpen && (

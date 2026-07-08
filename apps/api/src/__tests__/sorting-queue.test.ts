@@ -12,6 +12,7 @@ vi.mock("@amarnai/config", () => ({
 vi.mock("@amarnai/db", () => ({
   Prisma: {},
   db: {
+    workspace: { findUnique: vi.fn() },
     workspaceMember: { findUnique: vi.fn() },
     taxonomyNode: { findMany: vi.fn() },
     taxonomyEdge: { findMany: vi.fn() },
@@ -35,13 +36,21 @@ import app from "../app.js";
 import { db } from "@amarnai/db";
 import { classifyThreadQueue } from "../queues.js";
 import { TAXONOMY_MIN_NON_ROOT_NODES } from "@amarnai/shared";
-import { DEDUP_CLASSIFY_UNROUTED, DEDUP_CLASSIFY_UNCLASSIFIED } from "@amarnai/queue";
+import {
+  DEDUP_CLASSIFY_UNROUTED,
+  DEDUP_CLASSIFY_UNCLASSIFIED,
+  DEDUP_CLASSIFY_NEEDS_REVIEW,
+} from "@amarnai/queue";
 
 const WS_ID = "ws-1";
 const ROOT_NODE_ID = "root-id";
 
 function post(path: string) {
   return app.request(path, authed({ method: "POST" }));
+}
+
+function get(path: string) {
+  return app.request(path, authed({ method: "GET" }));
 }
 
 function makeNodes(nonRootCount: number) {
@@ -70,6 +79,7 @@ const BASE_MEMBER = { userId: "test-user-1" };
 beforeEach(() => {
   vi.clearAllMocks();
   vi.mocked(db.workspaceMember.findUnique).mockResolvedValue(BASE_MEMBER as never);
+  vi.mocked(db.workspace.findUnique).mockResolvedValue({ taxonomyChangedAt: null } as never);
   vi.mocked(classifyThreadQueue.addBulk).mockResolvedValue([]);
   vi.mocked(db.emailThread.updateMany).mockResolvedValue({ count: 0 } as never);
   vi.mocked(db.gmailSyncSettings.findUnique).mockResolvedValue({
@@ -288,6 +298,104 @@ describe("POST /workspaces/:workspaceId/sorting-queue/reroute-unclassified", () 
 
     const res = await post(`/workspaces/${WS_ID}/sorting-queue/reroute-unclassified`);
     expect(res.status).toBe(200);
+  });
+});
+
+// ─── reroute-needs-review ─────────────────────────────────────────────────────
+
+type ReviewThread = {
+  id: string;
+  classifications: { createdAt: Date; transientFailure: boolean; decisionSource: string | null }[];
+};
+
+/**
+ * Wire the shared emailThread.findMany mock for the two-step needs-review flow:
+ * the eligibility query (select includes `classifications`) returns `threads`;
+ * the subsequent enqueue query (select is `{ id: true }`) returns only the ids
+ * the route passed through, so the assertions reflect the eligibility filter.
+ */
+function mockNeedsReview(threads: ReviewThread[]) {
+  vi.mocked(db.emailThread.findMany).mockImplementation((args: unknown) => {
+    const select = (args as { select?: Record<string, unknown> }).select ?? {};
+    if ("classifications" in select) return Promise.resolve(threads) as never;
+    // Enqueue query: honor the id filter the route computed.
+    const where = (args as { where?: { id?: { in?: string[] } } }).where;
+    const ids = where?.id?.in ?? threads.map((t) => t.id);
+    return Promise.resolve(ids.map((id) => ({ id }))) as never;
+  });
+}
+
+function reviewRow(id: string, latest: ReviewThread["classifications"][number] | null): ReviewThread {
+  return { id, classifications: latest ? [latest] : [] };
+}
+
+describe("reroute-needs-review", () => {
+  const CHANGED_AT = new Date("2026-02-01T00:00:00Z");
+  const BEFORE = new Date("2026-01-01T00:00:00Z");
+  const AFTER = new Date("2026-03-01T00:00:00Z");
+
+  it("GET returns the eligible count", async () => {
+    vi.mocked(db.workspace.findUnique).mockResolvedValue({ taxonomyChangedAt: CHANGED_AT } as never);
+    mockNeedsReview([
+      reviewRow("stale", { createdAt: BEFORE, transientFailure: false, decisionSource: "inbox_fallback" }),
+      reviewRow("fresh", { createdAt: AFTER, transientFailure: false, decisionSource: "inbox_fallback" }),
+      reviewRow("transient", { createdAt: AFTER, transientFailure: true, decisionSource: "inbox_fallback" }),
+    ]);
+
+    const res = await get(`/workspaces/${WS_ID}/sorting-queue/reroute-needs-review`);
+    expect(res.status).toBe(200);
+    // stale (predates change) + transient (fail-open) are eligible; fresh is not.
+    expect((await res.json() as Record<string, unknown>).eligible).toBe(2);
+  });
+
+  it("excludes empty-text (no_text_content) threads even after a taxonomy change", async () => {
+    vi.mocked(db.workspace.findUnique).mockResolvedValue({ taxonomyChangedAt: CHANGED_AT } as never);
+    mockNeedsReview([
+      reviewRow("empty", { createdAt: BEFORE, transientFailure: false, decisionSource: "no_text_content" }),
+    ]);
+
+    const res = await get(`/workspaces/${WS_ID}/sorting-queue/reroute-needs-review`);
+    expect((await res.json() as Record<string, unknown>).eligible).toBe(0);
+  });
+
+  it("with no taxonomy change, only transient-failure threads are eligible", async () => {
+    vi.mocked(db.workspace.findUnique).mockResolvedValue({ taxonomyChangedAt: null } as never);
+    mockNeedsReview([
+      reviewRow("stale", { createdAt: BEFORE, transientFailure: false, decisionSource: "inbox_fallback" }),
+      reviewRow("transient", { createdAt: BEFORE, transientFailure: true, decisionSource: "inbox_fallback" }),
+    ]);
+
+    const res = await get(`/workspaces/${WS_ID}/sorting-queue/reroute-needs-review`);
+    expect((await res.json() as Record<string, unknown>).eligible).toBe(1);
+  });
+
+  it("POST enqueues only eligible threads as REROUTE with the needs-review dedup prefix", async () => {
+    vi.mocked(db.workspace.findUnique).mockResolvedValue({ taxonomyChangedAt: CHANGED_AT } as never);
+    mockNeedsReview([
+      reviewRow("stale", { createdAt: BEFORE, transientFailure: false, decisionSource: "inbox_fallback" }),
+      reviewRow("fresh", { createdAt: AFTER, transientFailure: false, decisionSource: "inbox_fallback" }),
+    ]);
+
+    const res = await post(`/workspaces/${WS_ID}/sorting-queue/reroute-needs-review`);
+    expect(res.status).toBe(200);
+    expect((await res.json() as Record<string, unknown>).queued).toBe(1);
+
+    const [jobs] = vi.mocked(classifyThreadQueue.addBulk).mock.calls[0]!;
+    expect(jobs).toHaveLength(1);
+    expect((jobs[0]!.data as { source?: string }).source).toBe("REROUTE");
+    expect(jobs[0]!.opts?.deduplication?.id).toMatch(new RegExp(`^${DEDUP_CLASSIFY_NEEDS_REVIEW}_`));
+  });
+
+  it("POST returns queued:0 and enqueues nothing when none are eligible", async () => {
+    vi.mocked(db.workspace.findUnique).mockResolvedValue({ taxonomyChangedAt: null } as never);
+    mockNeedsReview([
+      reviewRow("fresh", { createdAt: AFTER, transientFailure: false, decisionSource: "inbox_fallback" }),
+    ]);
+
+    const res = await post(`/workspaces/${WS_ID}/sorting-queue/reroute-needs-review`);
+    expect(res.status).toBe(200);
+    expect((await res.json() as Record<string, unknown>).queued).toBe(0);
+    expect(classifyThreadQueue.addBulk).not.toHaveBeenCalled();
   });
 });
 
