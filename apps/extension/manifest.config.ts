@@ -53,7 +53,13 @@ export function buildManifest({
   const hostPermissions = [
     `${apiOrigin}/*`,
     "https://mail.google.com/*",
+    // All three OWA hosts: office.com (work/school reading pane), office365.com
+    // (the host Graph `webLink`s point at, pre-redirect) and live.com (personal
+    // accounts). Reusing an open Outlook tab requires reading its URL, which
+    // needs a host grant for whichever of these the mailbox lives on.
     "https://outlook.office.com/*",
+    "https://outlook.office365.com/*",
+    "https://outlook.live.com/*",
   ];
 
   if (browser === "firefox") {

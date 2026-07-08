@@ -10,7 +10,12 @@ import { API_BASE_URL } from "../config";
 const ORIGINS = [
   `${new URL(API_BASE_URL).origin}/*`,
   "https://mail.google.com/*",
+  // Keep in sync with manifest.config.ts host_permissions. All three OWA hosts
+  // so an open Outlook tab (office.com / office365.com / personal live.com) is
+  // readable and can be reused instead of opening a new one.
   "https://outlook.office.com/*",
+  "https://outlook.office365.com/*",
+  "https://outlook.live.com/*",
 ];
 
 // Ensures the extension holds its host permissions, prompting on Firefox if not.

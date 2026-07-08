@@ -71,6 +71,8 @@ describe("buildManifest — host permissions", () => {
         "https://api.example.test/*",
         "https://mail.google.com/*",
         "https://outlook.office.com/*",
+        "https://outlook.office365.com/*",
+        "https://outlook.live.com/*",
       ]);
     }
   });

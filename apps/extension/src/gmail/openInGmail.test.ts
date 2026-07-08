@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import { openInGmail, __resetPinnedGmailTab } from "./openInGmail";
+import { openInGmail, openInOutlook, __resetPinnedGmailTab } from "./openInGmail";
 import { ext } from "../platform/ext";
 
 const EMAIL = "user@example.com";
@@ -96,5 +96,63 @@ describe("openInGmail", () => {
       url: "https://mail.google.com/mail/?authuser=user%40example.com#all/NEWTHREAD",
       active: true,
     });
+  });
+});
+
+describe("openInOutlook", () => {
+  const WEBLINK = "https://outlook.office365.com/owa/?ItemID=abc";
+  const OUTLOOK_URL = "https://outlook.office365.com/owa/?ItemID=abc&ispopout=0";
+
+  beforeEach(() => {
+    vi.mocked(ext.tabs.query).mockReset();
+    vi.mocked(ext.tabs.update).mockReset();
+    vi.mocked(ext.tabs.create).mockClear();
+  });
+
+  it("opens a new tab when no Outlook tab exists", async () => {
+    vi.mocked(ext.tabs.query).mockResolvedValue([]);
+
+    await openInOutlook(WEBLINK);
+
+    expect(ext.tabs.create).toHaveBeenCalledWith({ url: OUTLOOK_URL });
+    expect(ext.tabs.update).not.toHaveBeenCalled();
+  });
+
+  it("matches all three OWA hosts so an office365/live tab is found", async () => {
+    vi.mocked(ext.tabs.query).mockResolvedValue([]);
+
+    await openInOutlook(WEBLINK);
+
+    expect(ext.tabs.query).toHaveBeenCalledWith({
+      url: [
+        "https://outlook.office.com/*",
+        "https://outlook.office365.com/*",
+        "https://outlook.live.com/*",
+      ],
+      currentWindow: true,
+    });
+  });
+
+  it("reuses an existing office365.com tab instead of opening a new one", async () => {
+    vi.mocked(ext.tabs.query).mockResolvedValue([
+      tab({ id: 3, active: true, url: "https://outlook.office365.com/mail/" }),
+    ]);
+
+    await openInOutlook(WEBLINK);
+
+    expect(ext.tabs.update).toHaveBeenCalledWith(3, { url: OUTLOOK_URL, active: true });
+    expect(ext.tabs.create).not.toHaveBeenCalled();
+  });
+
+  it("prefers the active OWA tab over a background one", async () => {
+    vi.mocked(ext.tabs.query).mockResolvedValue([
+      tab({ id: 3, active: false, url: "https://outlook.office.com/mail/" }),
+      tab({ id: 4, active: true, url: "https://outlook.live.com/mail/" }),
+    ]);
+
+    await openInOutlook(WEBLINK);
+
+    expect(ext.tabs.update).toHaveBeenCalledWith(4, { url: OUTLOOK_URL, active: true });
+    expect(ext.tabs.create).not.toHaveBeenCalled();
   });
 });
