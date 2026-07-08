@@ -18,6 +18,7 @@ vi.mock("./client", () => {
       taxonomyGenerationState: del(),
       taxonomyEdge: del(),
       taxonomyNode: del(),
+      taxonomyNodeReference: del(),
       tag: del(),
       emailMessage: del(),
       providerSyncState: del(),

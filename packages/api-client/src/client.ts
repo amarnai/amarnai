@@ -309,7 +309,12 @@ export function makeApiClient(transport: ApiTransport) {
     triageThread: (
       workspaceId: string,
       threadId: string,
-      action: { action: "approve" } | { action: "move"; nodeId: string }
+      // retractReference — sent by the Undo toast when reverting a move, so the
+      // server deletes the thread's sorting-reference row instead of treating
+      // the revert as a fresh human folder choice.
+      action:
+        | { action: "approve" }
+        | { action: "move"; nodeId: string; retractReference?: boolean }
     ) =>
       apiMutate<{ ok: boolean; triageStatus: TriageStatus }>(
         `/workspaces/${workspaceId}/email-threads/${threadId}/triage`,

@@ -403,8 +403,15 @@ export function useEmailTriage(options: UseEmailTriageOptions) {
           const oldFolderId = prev.folderId;
           setThreads((ts) => ts.map((t) => (t.id === threadId ? prev : t)));
           if (oldFolderId) {
+            // retractReference: undoing a move means it was a mistake, so the
+            // sorting reference created by that move is deleted rather than
+            // repointed at the restored (possibly AI-chosen) folder.
             api
-              .triageThread(workspaceId, threadId, { action: "move", nodeId: oldFolderId })
+              .triageThread(workspaceId, threadId, {
+                action: "move",
+                nodeId: oldFolderId,
+                retractReference: true,
+              })
               .catch(() => {});
           }
         },

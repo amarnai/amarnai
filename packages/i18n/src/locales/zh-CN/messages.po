@@ -55,7 +55,7 @@ msgid "{0, plural, one {# thread imported.} other {# threads imported.}} Your pl
 msgstr "{0, plural, one {# 会话已导入。} other {# 个会话已导入。}} 您的套餐已达到导入上限。"
 
 #. placeholder {0}: s.threadCount
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:125
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:155
 msgid "{0, plural, one {# thread} other {# threads}}"
 msgstr "{0, plural, one {# 会话} other {# 会话}}"
 
@@ -115,6 +115,12 @@ msgstr "{0} / {1} 剩余 · {quotaResetDate} 重置"
 #~ msgid "{0} of ~{1} threads · {percent}%"
 #~ msgstr ""
 
+#. placeholder {0}: migrateLive > 0 ? ( <Fragment> <strong>{migrateLive}</strong> threads move to their new folder instantly.{" "} </Fragment> ) : null
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:224
+#, fuzzy
+msgid "{0}<0>{resortLive}</0> threads will be re-sorted by AI."
+msgstr "{0}<0>{resortLive}</0> 会话将由 AI 重新排序。"
+
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:109
 msgid "{blacklistCount, plural, one {# blocked} other {# blocked}}"
 msgstr "{blacklistCount, plural, one {# 已阻止} other {# 已阻止}}"
@@ -172,7 +178,7 @@ msgstr "{filed} 已归档 · {reviewCount} 待审"
 msgid "{folderCount, plural, one {# folder} other {# folders}}"
 msgstr "{folderCount, plural, one {# 个文件夹} other {# 个文件夹}}"
 
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:156
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:205
 msgid "{hiddenCount, plural, one {# folder with no threads is not shown.} other {# folders with no threads are not shown.}}"
 msgstr "{hiddenCount, plural, one {未显示 # 个无会话的文件夹。} other {未显示 # 个无会话的文件夹。}}"
 
@@ -279,8 +285,8 @@ msgstr "+ 新建工作区"
 
 #: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:170
 #, fuzzy
-msgid "<0>{migrateLive}</0> threads move to their new folder instantly. <1>{resortLive}</1> threads will be re-sorted by AI."
-msgstr "<0>{migrateLive}</0> 会话即时移至新文件夹。<1>{resortLive}</1> 会话将由AI重新分类。"
+#~ msgid "<0>{migrateLive}</0> threads move to their new folder instantly. <1>{resortLive}</1> threads will be re-sorted by AI."
+#~ msgstr "<0>{migrateLive}</0> 会话即时移至新文件夹。<1>{resortLive}</1> 会话将由AI重新分类。"
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:95
 msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your {providerName} account to get started. Amarnai connects with <1>read-only access</1> and <2>never sends, deletes, or changes anything</2>. Your inbox stays yours."
@@ -426,9 +432,7 @@ msgstr "收到赫伦希布（底比斯）的首席文书官职位申请。"
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "已收到底比斯的霍伦海布呈报的文书长职位申请。\n"
-"\n"
-"请在记录馆查看该申请。"
+msgstr "已收到底比斯的霍伦海布呈报的文书长职位申请。\n\n请在记录馆查看该申请。"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:387
 #, fuzzy
@@ -441,11 +445,7 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "阿卜迪-赫巴，\n"
-"\n"
-"同周我将行至三角洲附近。我们可在第二日于驿站会面；我可抽出上午时间。\n"
-"\n"
-"届时再叙，"
+msgstr "阿卜迪-赫巴，\n\n同周我将行至三角洲附近。我们可在第二日于驿站会面；我可抽出上午时间。\n\n届时再叙，"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
@@ -943,7 +943,7 @@ msgid "Auto-file notifications to Updates / Other"
 msgstr "将通知自动归档到“更新/其他”"
 
 #. placeholder {0}: catchAllRow.threadCount
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:148
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:190
 #, fuzzy
 msgid "Automated and bulk mail ({0}) always moves to the new catch-all folder."
 msgstr "自动化邮件和批量邮件 ({0}) 始终移至新的包罗万象文件夹。"
@@ -977,11 +977,7 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "阿齐鲁，\n"
-"\n"
-"你的友谊之言我们已悉。阿穆鲁家族有何提议，我们愿闻其详。请速派下一信使呈上你的条件。\n"
-"\n"
-"此致，"
+msgstr "阿齐鲁，\n\n你的友谊之言我们已悉。阿穆鲁家族有何提议，我们愿闻其详。请速派下一信使呈上你的条件。\n\n此致，"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:219
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
@@ -1178,8 +1174,8 @@ msgstr "我能自托管 Amarnai 吗？"
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:93
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:245
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:150
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:94
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:186
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:107
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:255
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:569
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:583
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:697
@@ -1297,7 +1293,7 @@ msgstr "选择如何预览 Amarnai"
 msgid "Choose parent"
 msgstr "选择父级"
 
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:101
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:117
 #, fuzzy
 msgid "Choose where each folder’s threads should go under your new plan. Matched folders keep their threads instantly; anything set to re-sort is re-classified by AI."
 msgstr "请选择新套餐下每个文件夹的会话归属。已匹配的文件夹会话即时保留；任何设置为重新分类的会话都将由AI重新分类。"
@@ -3029,11 +3025,7 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "大王，\n"
-"\n"
-"你所要求之呈报，将在议会召开前备妥。我将命抄写员汇编东方领地的账目，并派快马先行送呈。\n"
-"\n"
-"兄弟情谊，"
+msgstr "大王，\n\n你所要求之呈报，将在议会召开前备妥。我将命抄写员汇编东方领地的账目，并派快马先行送呈。\n\n兄弟情谊，"
 
 #: ../../apps/site/src/components/landing/FinalCTASection.tsx:9
 #, fuzzy
@@ -3761,7 +3753,7 @@ msgstr "Microsoft 账户权限"
 msgid "Microsoft could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the redirect URI is registered on the app registration."
 msgstr "Microsoft 无法完成授权。链接可能已过期：请重试。如果问题仍然存在，请检查重定向 URI 是否已在应用程序注册中注册。"
 
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:189
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:262
 msgid "Migrate & apply"
 msgstr "迁移并应用"
 
@@ -4044,7 +4036,7 @@ msgstr "自上次生成后，收件箱无显著新邮件，结果将保持不变
 #~ msgid "No signups yet."
 #~ msgstr "暂无注册。"
 
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:110
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:126
 msgid "No sorted threads to migrate. Your new plan will apply directly."
 msgstr "没有已分类的会话可供迁移。您的新方案将直接生效。"
 
@@ -4676,12 +4668,12 @@ msgstr "重新路由 {unclassifiedCount} 个未分类项"
 msgid "Re-route thread"
 msgstr "重新路由会话"
 
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:135
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:171
 #, fuzzy
 msgid "Re-sort with AI"
 msgstr "AI 智能重分"
 
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:176
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:241
 #, fuzzy
 msgid "Re-sorting threads already sorted this month is free. If you reach your monthly limit, the rest resume next month."
 msgstr "本月已分类的会话重新分类免费。如果您达到月度限额，剩余部分将在下个月恢复。"
@@ -4907,7 +4899,7 @@ msgstr "每月在 <0>{0}</0> 续订。"
 msgid "Renews on <0>{0}</0>."
 msgstr "在 <0>{0}</0> 续订。"
 
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:93
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:103
 msgid "Replace plan"
 msgstr "更换套餐"
 
@@ -5055,11 +5047,7 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "里布-哈达，\n"
-"\n"
-"你的呼吁，我们已收到。已从南方粮仓加订谷物，并将在丰收节前抵达。在此期间，请你耐心等候。\n"
-"\n"
-"保重，"
+msgstr "里布-哈达，\n\n你的呼吁，我们已收到。已从南方粮仓加订谷物，并将在丰收节前抵达。在此期间，请你耐心等候。\n\n保重，"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -6046,13 +6034,7 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "致吾兄，大王，\n"
-"\n"
-"大议会将于谢穆月初召开。我请求你备妥东方领地的详尽账目，并请快马先行送呈，如可能，请在新月之前。\n"
-"\n"
-"吾等盟约坚固。愿我们向议会昭示其一如既往。\n"
-"\n"
-"图什拉塔，米坦尼大王"
+msgstr "致吾兄，大王，\n\n大议会将于谢穆月初召开。我请求你备妥东方领地的详尽账目，并请快马先行送呈，如可能，请在新月之前。\n\n吾等盟约坚固。愿我们向议会昭示其一如既往。\n\n图什拉塔，米坦尼大王"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:163
 #, fuzzy
@@ -6061,11 +6043,7 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "致王室任命局，\n"
-"\n"
-"我们已收到底比斯的霍伦海布之申请，并将在下一新月前审查其记录。请告知他，我们将在适当时候回复。\n"
-"\n"
-"奉谕，"
+msgstr "致王室任命局，\n\n我们已收到底比斯的霍伦海布之申请，并将在下一新月前审查其记录。请告知他，我们将在适当时候回复。\n\n奉谕，"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:278
 #, fuzzy
@@ -6076,13 +6054,7 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "致大王，\n"
-"\n"
-"多年以来，吾等两家情同手足。今特致函，愿将此友谊正式化，以惠及吾等两族：订立互助盟约，共享商道。\n"
-"\n"
-"我只恳请大王倾听我的条件。请速派下一信使回复，我将立即派遣使者前往。\n"
-"\n"
-"阿齐鲁，大王之仆，阿穆鲁之主"
+msgstr "致大王，\n\n多年以来，吾等两家情同手足。今特致函，愿将此友谊正式化，以惠及吾等两族：订立互助盟约，共享商道。\n\n我只恳请大王倾听我的条件。请速派下一信使回复，我将立即派遣使者前往。\n\n阿齐鲁，大王之仆，阿穆鲁之主"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:391
 #, fuzzy
@@ -6091,11 +6063,7 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "致大王，\n"
-"\n"
-"吾近期旅程将近三角洲一带。如大王能拨冗一小时，我愿与你面谈；有些事，口头陈述胜于笔墨。\n"
-"\n"
-"你的仆人，阿卜迪-赫巴，乌鲁沙利姆总督"
+msgstr "致大王，\n\n吾近期旅程将近三角洲一带。如大王能拨冗一小时，我愿与你面谈；有些事，口头陈述胜于笔墨。\n\n你的仆人，阿卜迪-赫巴，乌鲁沙利姆总督"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:153
 #, fuzzy
@@ -6104,11 +6072,7 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "致吾兄，大王，\n"
-"\n"
-"你之言语，我已听闻。黄金将在下一信使启程前发出。吾等珍视两家情谊，不愿其冷却。\n"
-"\n"
-"友谊长存，"
+msgstr "致吾兄，大王，\n\n你之言语，我已听闻。黄金将在下一信使启程前发出。吾等珍视两家情谊，不愿其冷却。\n\n友谊长存，"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:239
 #, fuzzy
@@ -6119,13 +6083,7 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "致吾兄，大王，\n"
-"\n"
-"我以友谊之名致函，正如我等父辈昔日所为。依照盟约，第三批黄金仍未抵达。两批信使已过，吾等仍在等候。\n"
-"\n"
-"吾等恳请你勿再延误，速将其发出，以维系吾等两家之盟谊。\n"
-"\n"
-"布尔那-布里亚什二世，巴比伦国王"
+msgstr "致吾兄，大王，\n\n我以友谊之名致函，正如我等父辈昔日所为。依照盟约，第三批黄金仍未抵达。两批信使已过，吾等仍在等候。\n\n吾等恳请你勿再延误，速将其发出，以维系吾等两家之盟谊。\n\n布尔那-布里亚什二世，巴比伦国王"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:352
 msgid "To the Great King, my lord, my sun,\n"
@@ -6135,13 +6093,7 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "致大王，吾主，吾日，\n"
-"\n"
-"上月你所赐谷物，吾等不胜感激，吾亦在民众面前颂扬大王之名。然我不得不再次致函：第三批谷物尚未抵达，城中民心骚动不安。\n"
-"\n"
-"我已七度致函。我实不愿劳烦大王，然此外我能奈何？\n"
-"\n"
-"你的仆人，里布-哈达，比布鲁斯总督"
+msgstr "致大王，吾主，吾日，\n\n上月你所赐谷物，吾等不胜感激，吾亦在民众面前颂扬大王之名。然我不得不再次致函：第三批谷物尚未抵达，城中民心骚动不安。\n\n我已七度致函。我实不愿劳烦大王，然此外我能奈何？\n\n你的仆人，里布-哈达，比布鲁斯总督"
 
 #: ../../apps/site/src/components/landing/MailThreadMock.tsx:123
 msgid "To: You"

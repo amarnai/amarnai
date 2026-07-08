@@ -145,6 +145,21 @@ export const CROSS_BRANCH_Z_MARGIN = 0.5;
 export const CROSS_BRANCH_Z_FLOOR = 0.0;
 export const SOLE_CHILD_Z_MARGIN = 0.5;
 
+// ─── Reference-thread reinforcement ─────────────────────────────────────────────
+//
+// REFERENCE_SIM_WEIGHT
+//   Weight on the best cosine similarity between the thread and a node's
+//   reference threads (threads a user MANUALLY moved into that folder). A node's
+//   raw similarity becomes max(descriptionSim, weight · referenceSim), so a
+//   strong human exemplar pulls similar new threads toward that folder without
+//   ever lowering any score. Below 1 because thread↔thread cosines run
+//   systematically higher than thread↔description cosines (two emails resemble
+//   each other more than an email resembles a folder blurb) — unweighted, one
+//   reference would dominate every description signal. Initial value pending a
+//   grid search with reference-labeled fixtures (benchmark-constants); references
+//   are additive-only, so the untuned value cannot regress reference-free routing.
+export const REFERENCE_SIM_WEIGHT = 0.85;
+
 // ─── Production routing config (Gemini + mean-centering) ────────────────────────
 //
 // Tuned for the deployed configuration: gemini-embedding-001 with scaleInvariant
@@ -167,6 +182,7 @@ export const CENTERED_ROUTING_CONFIG = {
   crossBranchMargin: CROSS_BRANCH_MARGIN,
   scaleInvariant: true,
   meanCenter: true,
+  referenceSimWeight: REFERENCE_SIM_WEIGHT,
 } as const;
 
 // ─── Result type ──────────────────────────────────────────────────────────────
@@ -454,6 +470,18 @@ export async function sortThreadByEmbedding(
      * centroid is derived from node vectors already loaded). Default false.
      */
     meanCenter?: boolean;
+    /**
+     * Reference-thread vectors per node: embeddings of threads the user MANUALLY
+     * moved into that folder (TaxonomyNodeReference rows; never AI-assigned, so
+     * the sorter cannot reinforce its own decisions). Each node's raw similarity
+     * becomes max(descriptionSim, referenceSimWeight · bestReferenceSim). Absent
+     * or empty map → routing is byte-identical to the reference-free path.
+     * Vectors live in the thread-embedding space and are mean-centered with the
+     * node-set centroid when meanCenter is on.
+     */
+    referenceVectors?: ReadonlyMap<string, number[][]>;
+    /** Weight on reference similarity in the blend above. Default REFERENCE_SIM_WEIGHT; 0 disables. */
+    referenceSimWeight?: number;
     /** Pre-computed thread embedding vector. When provided, skips the internal embed call (Step 3). */
     precomputedThreadVector?: number[];
     /**
@@ -496,6 +524,8 @@ export async function sortThreadByEmbedding(
   const soleChildZMargin = options?.soleChildZMargin ?? SOLE_CHILD_Z_MARGIN;
   const llmMemoizer = options?.llmMemoizer;
   const meanCenter = options?.meanCenter ?? false;
+  const referenceVectors = options?.referenceVectors;
+  const referenceSimWeight = options?.referenceSimWeight ?? REFERENCE_SIM_WEIGHT;
   const failOpenOnLlmError = options?.failOpenOnLlmError ?? false;
   const suppressLlmEscalation = options?.suppressLlmEscalation ?? false;
 
@@ -626,9 +656,14 @@ export async function sortThreadByEmbedding(
 
   let queryVector = threadVector;
   let simNodeVectors = nodeEmbeddings;
+  // Hoisted so reference vectors below are centered with the SAME node-set
+  // centroid as the query. Deliberately derived from node vectors only — never
+  // reference vectors — so description similarities are byte-identical whether
+  // or not references exist. Empty when centering is off or degenerate.
+  let centroid: number[] = [];
   if (meanCenter) {
     const realNodeVectors = [...nodeEmbeddings.values()].filter((v) => v.length > 0);
-    const centroid = meanVector(realNodeVectors);
+    centroid = meanVector(realNodeVectors);
     if (centroid.length > 0) {
       queryVector = subtractVector(threadVector, centroid);
       const centered = new Map<string, number[]>();
@@ -639,9 +674,26 @@ export async function sortThreadByEmbedding(
     }
   }
 
+  // Blend in reference-thread reinforcement: max(descSim, weight · bestRefSim),
+  // monotone so a reference can only lift a node, never sink one. Happens here —
+  // before sigmaSim and the subtree pass — so the quality gate, z-scored margins,
+  // softmax traversal, and subtree propagation all consume one consistent score
+  // per node (a reference on a leaf lifts its whole ancestor chain).
   const rawSims = new Map<string, number>();
   for (const [nodeId, vector] of simNodeVectors) {
-    rawSims.set(nodeId, vector.length > 0 ? cosineSimilarity(queryVector, vector) : 0);
+    const descSim = vector.length > 0 ? cosineSimilarity(queryVector, vector) : 0;
+    let sim = descSim;
+    const refs = referenceVectors?.get(nodeId);
+    if (refs && refs.length > 0 && referenceSimWeight > 0) {
+      let bestRefSim = -Infinity;
+      for (const ref of refs) {
+        const centeredRef = centroid.length > 0 ? subtractVector(ref, centroid) : ref;
+        const refSim = cosineSimilarity(queryVector, centeredRef);
+        if (refSim > bestRefSim) bestRefSim = refSim;
+      }
+      sim = Math.max(descSim, referenceSimWeight * bestRefSim);
+    }
+    rawSims.set(nodeId, sim);
   }
   const rawSimsRecord = Object.fromEntries(rawSims);
 

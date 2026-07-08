@@ -50,7 +50,7 @@ msgid "{0, plural, one {# thread imported.} other {# threads imported.}} Your pl
 msgstr "{0, plural, one {# thread imported.} other {# threads imported.}} Your plan's import limit was reached."
 
 #. placeholder {0}: s.threadCount
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:125
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:155
 msgid "{0, plural, one {# thread} other {# threads}}"
 msgstr "{0, plural, one {# thread} other {# threads}}"
 
@@ -106,6 +106,11 @@ msgstr "{0} of {1} remaining · resets {quotaResetDate}"
 #~ msgid "{0} of ~{1} threads · {percent}%"
 #~ msgstr "{0} of ~{1} threads · {percent}%"
 
+#. placeholder {0}: migrateLive > 0 ? ( <Fragment> <strong>{migrateLive}</strong> threads move to their new folder instantly.{" "} </Fragment> ) : null
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:224
+msgid "{0}<0>{resortLive}</0> threads will be re-sorted by AI."
+msgstr "{0}<0>{resortLive}</0> threads will be re-sorted by AI."
+
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:109
 msgid "{blacklistCount, plural, one {# blocked} other {# blocked}}"
 msgstr "{blacklistCount, plural, one {# blocked} other {# blocked}}"
@@ -157,7 +162,7 @@ msgstr "{filed} sorted · {reviewCount} to review"
 msgid "{folderCount, plural, one {# folder} other {# folders}}"
 msgstr "{folderCount, plural, one {# folder} other {# folders}}"
 
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:156
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:205
 msgid "{hiddenCount, plural, one {# folder with no threads is not shown.} other {# folders with no threads are not shown.}}"
 msgstr "{hiddenCount, plural, one {# folder with no threads is not shown.} other {# folders with no threads are not shown.}}"
 
@@ -252,8 +257,8 @@ msgid "+ New workspace"
 msgstr "+ New workspace"
 
 #: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:170
-msgid "<0>{migrateLive}</0> threads move to their new folder instantly. <1>{resortLive}</1> threads will be re-sorted by AI."
-msgstr "<0>{migrateLive}</0> threads move to their new folder instantly. <1>{resortLive}</1> threads will be re-sorted by AI."
+#~ msgid "<0>{migrateLive}</0> threads move to their new folder instantly. <1>{resortLive}</1> threads will be re-sorted by AI."
+#~ msgstr "<0>{migrateLive}</0> threads move to their new folder instantly. <1>{resortLive}</1> threads will be re-sorted by AI."
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:95
 msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your {providerName} account to get started. Amarnai connects with <1>read-only access</1> and <2>never sends, deletes, or changes anything</2>. Your inbox stays yours."
@@ -830,7 +835,7 @@ msgid "Auto-file notifications to Updates / Other"
 msgstr "Auto-file notifications to Updates / Other"
 
 #. placeholder {0}: catchAllRow.threadCount
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:148
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:190
 msgid "Automated and bulk mail ({0}) always moves to the new catch-all folder."
 msgstr "Automated and bulk mail ({0}) always moves to the new catch-all folder."
 
@@ -1039,8 +1044,8 @@ msgstr "Can I self-host Amarnai?"
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:93
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:245
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:150
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:94
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:186
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:107
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:255
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:569
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:583
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:697
@@ -1144,7 +1149,7 @@ msgstr "Choose how to preview Amarnai"
 msgid "Choose parent"
 msgstr "Choose parent"
 
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:101
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:117
 msgid "Choose where each folder’s threads should go under your new plan. Matched folders keep their threads instantly; anything set to re-sort is re-classified by AI."
 msgstr "Choose where each folder’s threads should go under your new plan. Matched folders keep their threads instantly; anything set to re-sort is re-classified by AI."
 
@@ -3312,7 +3317,7 @@ msgstr "Microsoft account permissions"
 msgid "Microsoft could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the redirect URI is registered on the app registration."
 msgstr "Microsoft could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the redirect URI is registered on the app registration."
 
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:189
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:262
 msgid "Migrate & apply"
 msgstr "Migrate & apply"
 
@@ -3564,7 +3569,7 @@ msgstr "No significant new mail since your last generation, so the result would 
 #~ msgid "No signups yet."
 #~ msgstr "No signups yet."
 
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:110
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:126
 msgid "No sorted threads to migrate. Your new plan will apply directly."
 msgstr "No sorted threads to migrate. Your new plan will apply directly."
 
@@ -4121,11 +4126,11 @@ msgstr "Re-route {unclassifiedCount} unclassified"
 msgid "Re-route thread"
 msgstr "Re-route thread"
 
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:135
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:171
 msgid "Re-sort with AI"
 msgstr "Re-sort with AI"
 
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:176
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:241
 msgid "Re-sorting threads already sorted this month is free. If you reach your monthly limit, the rest resume next month."
 msgstr "Re-sorting threads already sorted this month is free. If you reach your monthly limit, the rest resume next month."
 
@@ -4322,7 +4327,7 @@ msgstr "Renews monthly on <0>{0}</0>."
 msgid "Renews on <0>{0}</0>."
 msgstr "Renews on <0>{0}</0>."
 
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:93
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:103
 msgid "Replace plan"
 msgstr "Replace plan"
 

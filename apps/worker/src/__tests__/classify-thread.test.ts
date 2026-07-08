@@ -41,6 +41,7 @@ vi.mock("@amarnai/db", () => ({
     gmailSyncSettings: { findUnique: vi.fn().mockResolvedValue(null) },
     taxonomyNode: { findMany: vi.fn() },
     taxonomyEdge: { findMany: vi.fn() },
+    taxonomyNodeReference: { findMany: vi.fn() },
     emailClassification: { create: vi.fn(), findFirst: vi.fn(), count: vi.fn() },
   },
   getInboxPlanCeiling: mockGetInboxPlanCeiling,
@@ -247,6 +248,10 @@ beforeEach(() => {
 
   // Default: strong taxonomy (3 non-root nodes).
   vi.mocked(db.taxonomyNode.findMany).mockResolvedValue(makeNodes(3) as never);
+
+  // Default: no manual-move pin and no reference threads.
+  vi.mocked(db.emailClassification.findFirst).mockResolvedValue(null as never);
+  vi.mocked(db.taxonomyNodeReference.findMany).mockResolvedValue([] as never);
 });
 
 // ─── Tests ────────────────────────────────────────────────────────────────────
@@ -655,3 +660,122 @@ describe("createClassifyThreadWorker — failure markers", () => {
   });
 });
 
+
+describe("createClassifyThreadWorker — manual-move pin", () => {
+  function pinByMove() {
+    vi.mocked(db.emailClassification.findFirst).mockResolvedValue({ source: "MOVE" } as never);
+  }
+
+  it("skips a LIVE re-sort when the latest classification is a manual MOVE", async () => {
+    pinByMove();
+
+    createClassifyThreadWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID, emailThreadId: THREAD_ID, source: "LIVE" }));
+
+    expect(mockSortThreadByEmbedding).not.toHaveBeenCalled();
+    expect(db.emailClassification.create).not.toHaveBeenCalled();
+    // The skip must never flip the thread's triage status.
+    const statusUpdate = vi.mocked(db.emailThread.update).mock.calls.find(
+      (c) => (c[0] as { data: { triageStatus?: string } }).data?.triageStatus !== undefined
+    );
+    expect(statusUpdate).toBeUndefined();
+  });
+
+  it("skips BACKFILL and REROUTE re-sorts of a pinned thread", async () => {
+    pinByMove();
+    createClassifyThreadWorker();
+    const processor = getProcessor();
+
+    await processor(makeJob({ workspaceId: WS_ID, emailThreadId: THREAD_ID, source: "BACKFILL" }));
+    await processor(makeJob({ workspaceId: WS_ID, emailThreadId: THREAD_ID, source: "REROUTE" }));
+
+    expect(mockSortThreadByEmbedding).not.toHaveBeenCalled();
+  });
+
+  it("an explicit user-triggered sort (source MANUAL) bypasses the pin", async () => {
+    pinByMove();
+
+    createClassifyThreadWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID, emailThreadId: THREAD_ID, source: "MANUAL" }));
+
+    expect(mockSortThreadByEmbedding).toHaveBeenCalledOnce();
+  });
+
+  it("does not pin when the latest classification is AI-made", async () => {
+    vi.mocked(db.emailClassification.findFirst).mockResolvedValue({ source: "LIVE" } as never);
+
+    createClassifyThreadWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID, emailThreadId: THREAD_ID, source: "LIVE" }));
+
+    expect(mockSortThreadByEmbedding).toHaveBeenCalledOnce();
+  });
+});
+
+describe("createClassifyThreadWorker — reference vectors for the sorter", () => {
+  function lastSortOptions(): { referenceVectors?: Map<string, number[][]> } {
+    const call = mockSortThreadByEmbedding.mock.calls.at(-1);
+    return call?.[5] as { referenceVectors?: Map<string, number[][]> };
+  }
+
+  beforeEach(() => {
+    // The reference-model filter compares against the provider's modelName.
+    vi.mocked(createEmbeddingProvider).mockReturnValue({
+      embed: mockEmbed,
+      modelName: "mock-embed",
+    } as never);
+  });
+
+  it("passes matching-model references, dropping stale-model rows and the thread's own row", async () => {
+    vi.mocked(db.taxonomyNodeReference.findMany).mockResolvedValue([
+      { nodeId: "node-1", emailThreadId: "other-1", embeddingVector: [1, 0], embeddingModel: "mock-embed" },
+      // The thread's own reference would have self-similarity ≈ 1 and act as a
+      // hidden pin — must be excluded.
+      { nodeId: "node-1", emailThreadId: THREAD_ID, embeddingVector: [0, 1], embeddingModel: "mock-embed" },
+      // Embedded under a previous model — incomparable, must be excluded.
+      { nodeId: "node-2", emailThreadId: "other-2", embeddingVector: [1, 1], embeddingModel: "old-model" },
+    ] as never);
+
+    createClassifyThreadWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID, emailThreadId: THREAD_ID }));
+
+    const { referenceVectors } = lastSortOptions();
+    expect(referenceVectors).toBeInstanceOf(Map);
+    expect(referenceVectors!.get("node-1")).toEqual([[1, 0]]);
+    expect(referenceVectors!.has("node-2")).toBe(false);
+  });
+
+  it("caps the vectors per node at MAX_REFERENCES_PER_NODE, keeping the newest", async () => {
+    // Rows arrive recency-ordered (updatedAt desc), so the first N survive.
+    const rows = Array.from({ length: 14 }, (_, i) => ({
+      nodeId: "node-1",
+      emailThreadId: `other-${i}`,
+      embeddingVector: [i, 0],
+      embeddingModel: "mock-embed",
+    }));
+    vi.mocked(db.taxonomyNodeReference.findMany).mockResolvedValue(rows as never);
+
+    createClassifyThreadWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID, emailThreadId: THREAD_ID }));
+
+    const { referenceVectors } = lastSortOptions();
+    const vectors = referenceVectors!.get("node-1")!;
+    expect(vectors).toHaveLength(10);
+    expect(vectors[0]).toEqual([0, 0]);
+    expect(vectors[9]).toEqual([9, 0]);
+  });
+
+  it("passes an empty map when the workspace has no references", async () => {
+    createClassifyThreadWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID, emailThreadId: THREAD_ID }));
+
+    const { referenceVectors } = lastSortOptions();
+    expect(referenceVectors).toBeInstanceOf(Map);
+    expect(referenceVectors!.size).toBe(0);
+  });
+});

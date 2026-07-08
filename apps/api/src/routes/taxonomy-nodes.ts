@@ -344,6 +344,10 @@ taxonomyNodes.delete(
       await db.taxonomyEdge.deleteMany({ where: { targetNodeId: nodeId } });
     }
 
+    // References are deleted, not reassigned to moveToNodeId: a reference means
+    // "this content belongs in THAT folder", and the folder is gone.
+    await db.taxonomyNodeReference.deleteMany({ where: { nodeId } });
+
     await db.taxonomyNode.delete({ where: { id: nodeId } });
 
     // Removing a folder changes routing outcomes — mark review threads re-sortable.

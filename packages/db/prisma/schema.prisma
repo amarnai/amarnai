@@ -269,6 +269,7 @@ model Workspace {
   taxonomyGenerationState TaxonomyGenerationState?
   taxonomyNodes           TaxonomyNode[]
   taxonomyEdges           TaxonomyEdge[]
+  taxonomyNodeReferences  TaxonomyNodeReference[]
   emailThreads            EmailThread[]
   emailMessages           EmailMessage[]
   tags                    Tag[]
@@ -421,10 +422,11 @@ model TaxonomyNode {
   createdAt          DateTime  @default(now())
   updatedAt          DateTime  @updatedAt
 
-  workspace       Workspace             @relation(fields: [workspaceId], references: [id])
-  outgoingEdges   TaxonomyEdge[]        @relation("SourceNode")
-  incomingEdges   TaxonomyEdge[]        @relation("TargetNode")
+  workspace       Workspace               @relation(fields: [workspaceId], references: [id])
+  outgoingEdges   TaxonomyEdge[]          @relation("SourceNode")
+  incomingEdges   TaxonomyEdge[]          @relation("TargetNode")
   classifications EmailClassification[]
+  references      TaxonomyNodeReference[]
 }
 
 model TaxonomyEdge {
@@ -440,6 +442,34 @@ model TaxonomyEdge {
   targetNode TaxonomyNode @relation("TargetNode", fields: [targetNodeId], references: [id])
 
   @@unique([workspaceId, sourceNodeId, targetNodeId])
+}
+
+// A thread a user MANUALLY moved into a folder, kept as a routing exemplar:
+// at sort time, similarity to a node's reference threads lifts that node's
+// score, pulling similar new threads toward the human-chosen folder. Written
+// ONLY by the manual-move API branch (source MOVE) — never by any AI path —
+// so the sorter cannot reinforce its own decisions (feedback-loop guard).
+// One row per thread (latest human decision wins); a re-move repoints nodeId
+// and keeps the content-derived vector. An empty embeddingVector marks a
+// pending row awaiting the capture-reference job; the sort-time loader skips
+// pending and model-mismatched rows (mirrors the TaxonomyNode embedding cache).
+model TaxonomyNodeReference {
+  id                String    @id @default(cuid())
+  workspaceId       String
+  nodeId            String
+  emailThreadId     String    @unique
+  embeddingVector   Float[]   @default([])
+  embeddingModel    String?
+  embeddingTextHash String?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  workspace   Workspace    @relation(fields: [workspaceId], references: [id])
+  node        TaxonomyNode @relation(fields: [nodeId], references: [id])
+  emailThread EmailThread  @relation(fields: [emailThreadId], references: [id])
+
+  // Sort-time load (per workspace) and per-node recency prune.
+  @@index([workspaceId, nodeId, updatedAt])
 }
 
 model EmailThread {
@@ -498,6 +528,7 @@ model EmailThread {
   tags            EmailTag[]
   classifications EmailClassification[]
   drafts          Draft[]
+  nodeReference   TaxonomyNodeReference?
 
   @@unique([emailAccountId, providerThreadId])
   // Supports the recoverFailedThreads sweep: PENDING threads that have failed.

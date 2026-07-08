@@ -6,12 +6,13 @@ import {
   QUEUE_LIFECYCLE_EMAIL,
   QUEUE_GENERATE_TAXONOMY,
   QUEUE_PUSH_NOTIFICATION,
+  QUEUE_CAPTURE_REFERENCE,
 } from "@amarnai/queue";
 import { redisConnection } from "./redis.js";
 
 // Re-export so job files can import names and types from one place.
-export { QUEUE_SYNC_INBOX, QUEUE_CLASSIFY_THREAD, QUEUE_BACKFILL_INBOX, QUEUE_LIFECYCLE_EMAIL, QUEUE_GENERATE_TAXONOMY, QUEUE_PUSH_NOTIFICATION } from "@amarnai/queue";
-export type { SyncInboxJobData, ClassifyThreadJobData, ClassifyThreadSource, BackfillInboxJobData, LifecycleEmailJobData, GenerateTaxonomyJobData, PushNotificationJobData } from "@amarnai/queue";
+export { QUEUE_SYNC_INBOX, QUEUE_CLASSIFY_THREAD, QUEUE_BACKFILL_INBOX, QUEUE_LIFECYCLE_EMAIL, QUEUE_GENERATE_TAXONOMY, QUEUE_PUSH_NOTIFICATION, QUEUE_CAPTURE_REFERENCE } from "@amarnai/queue";
+export type { SyncInboxJobData, ClassifyThreadJobData, ClassifyThreadSource, BackfillInboxJobData, LifecycleEmailJobData, GenerateTaxonomyJobData, PushNotificationJobData, CaptureReferenceJobData } from "@amarnai/queue";
 
 // ─── Queue instances ──────────────────────────────────────────────────────────
 
@@ -101,6 +102,21 @@ export const pushNotificationQueue = new Queue(QUEUE_PUSH_NOTIFICATION, {
   connection: redisConnection,
   defaultJobOptions: {
     attempts: 2,
+    backoff: { type: "exponential", delay: 10_000 },
+    removeOnComplete: { count: 100 },
+    removeOnFail: { count: 500 },
+  },
+});
+
+/**
+ * Enqueue an embedding capture for a manually moved thread's reference row.
+ * Embedding-only (no LLM) and idempotent — the job no-ops when the row is gone
+ * (undo) or its embeddingTextHash is already current — so retries are cheap.
+ */
+export const captureReferenceQueue = new Queue(QUEUE_CAPTURE_REFERENCE, {
+  connection: redisConnection,
+  defaultJobOptions: {
+    attempts: 3,
     backoff: { type: "exponential", delay: 10_000 },
     removeOnComplete: { count: 100 },
     removeOnFail: { count: 500 },

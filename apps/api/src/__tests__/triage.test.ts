@@ -12,8 +12,13 @@ vi.mock("@amarnai/db", () => ({
   },
 }));
 
+vi.mock("../queues.js", () => ({
+  captureReferenceQueue: { add: vi.fn().mockResolvedValue({}) },
+}));
+
 import app from "../app.js";
 import { db } from "@amarnai/db";
+import { captureReferenceQueue } from "../queues.js";
 
 const WS_ID = "ws-1";
 const THREAD_ID = "thread-1";
@@ -24,6 +29,8 @@ const CLS_ID = "cls-1";
 // Capture the create call made inside the $transaction callback.
 const txClassificationCreate = vi.fn();
 const txThreadUpdate = vi.fn();
+const txReferenceUpsert = vi.fn();
+const txReferenceDeleteMany = vi.fn();
 
 function patch(body: unknown) {
   return app.request(
@@ -40,7 +47,12 @@ beforeEach(() => {
   vi.clearAllMocks();
   vi.mocked(db.workspaceMember.findUnique).mockResolvedValue({ userId: USER_ID } as never);
   vi.mocked(db.emailThread.findFirst).mockResolvedValue({ id: THREAD_ID, triageStatus: "NEEDS_REVIEW" } as never);
-  vi.mocked(db.taxonomyNode.findFirst).mockResolvedValue({ id: NODE_ID, name: "Clients" } as never);
+  vi.mocked(db.taxonomyNode.findFirst).mockResolvedValue({
+    id: NODE_ID,
+    name: "Clients",
+    isRoot: false,
+    isCatchAll: false,
+  } as never);
   // Prior AI decision the user is reacting to: a quality-gate fallback
   // (finalNodeId null, decisionSource inbox_fallback) with its gate score in
   // routing telemetry. This is the calibration feature paired with the verdict.
@@ -55,6 +67,7 @@ beforeEach(() => {
     cb({
       emailClassification: { create: txClassificationCreate },
       emailThread: { update: txThreadUpdate },
+      taxonomyNodeReference: { upsert: txReferenceUpsert, deleteMany: txReferenceDeleteMany },
     })) as never);
 });
 
@@ -109,6 +122,92 @@ describe("PATCH /workspaces/:workspaceId/email-threads/:threadId/triage — move
     vi.mocked(db.taxonomyNode.findFirst).mockResolvedValue(null);
     await patch({ action: "move", nodeId: NODE_ID });
     expect(db.auditLog.create).not.toHaveBeenCalled();
+  });
+});
+
+describe("PATCH triage — move: sorting references", () => {
+  it("upserts the thread's reference row and enqueues the embedding capture", async () => {
+    const res = await patch({ action: "move", nodeId: NODE_ID });
+
+    expect(res.status).toBe(200);
+    // Upsert keyed by thread: a re-move repoints nodeId, keeping the vector.
+    expect(txReferenceUpsert).toHaveBeenCalledWith({
+      where: { emailThreadId: THREAD_ID },
+      create: { workspaceId: WS_ID, nodeId: NODE_ID, emailThreadId: THREAD_ID },
+      update: { nodeId: NODE_ID },
+    });
+    expect(txReferenceDeleteMany).not.toHaveBeenCalled();
+    expect(captureReferenceQueue.add).toHaveBeenCalledWith("capture-reference", {
+      workspaceId: WS_ID,
+      emailThreadId: THREAD_ID,
+    });
+  });
+
+  it("retractReference deletes the reference instead of upserting (undo semantics)", async () => {
+    const res = await patch({ action: "move", nodeId: NODE_ID, retractReference: true });
+
+    expect(res.status).toBe(200);
+    // The move itself still happens…
+    expect(txClassificationCreate).toHaveBeenCalled();
+    // …but the reference is retracted, not laundered onto the restored folder.
+    expect(txReferenceUpsert).not.toHaveBeenCalled();
+    expect(txReferenceDeleteMany).toHaveBeenCalledWith({
+      where: { emailThreadId: THREAD_ID, workspaceId: WS_ID },
+    });
+    expect(captureReferenceQueue.add).not.toHaveBeenCalled();
+  });
+
+  it("a move to the catch-all folder clears the reference and captures nothing", async () => {
+    vi.mocked(db.taxonomyNode.findFirst).mockResolvedValue({
+      id: NODE_ID,
+      name: "Updates / Other",
+      isRoot: false,
+      isCatchAll: true,
+    } as never);
+
+    const res = await patch({ action: "move", nodeId: NODE_ID });
+
+    expect(res.status).toBe(200);
+    // Catch-all is excluded from routing scores, so a reference there would
+    // never be read — and "this is junk" supersedes any earlier folder choice.
+    expect(txReferenceUpsert).not.toHaveBeenCalled();
+    expect(txReferenceDeleteMany).toHaveBeenCalled();
+    expect(captureReferenceQueue.add).not.toHaveBeenCalled();
+  });
+
+  it("a move to the root (Inbox) clears the reference and captures nothing", async () => {
+    vi.mocked(db.taxonomyNode.findFirst).mockResolvedValue({
+      id: NODE_ID,
+      name: "Inbox",
+      isRoot: true,
+      isCatchAll: false,
+    } as never);
+
+    const res = await patch({ action: "move", nodeId: NODE_ID });
+
+    expect(res.status).toBe(200);
+    expect(txReferenceUpsert).not.toHaveBeenCalled();
+    expect(txReferenceDeleteMany).toHaveBeenCalled();
+    expect(captureReferenceQueue.add).not.toHaveBeenCalled();
+  });
+
+  it("a failed enqueue does not fail the move (best-effort capture)", async () => {
+    vi.mocked(captureReferenceQueue.add).mockRejectedValueOnce(new Error("redis down"));
+
+    const res = await patch({ action: "move", nodeId: NODE_ID });
+
+    expect(res.status).toBe(200);
+    const body = await res.json() as Record<string, unknown>;
+    expect(body.triageStatus).toBe("SORTED");
+  });
+
+  it("approve never touches references", async () => {
+    const res = await patch({ action: "approve" });
+
+    expect(res.status).toBe(200);
+    expect(txReferenceUpsert).not.toHaveBeenCalled();
+    expect(txReferenceDeleteMany).not.toHaveBeenCalled();
+    expect(captureReferenceQueue.add).not.toHaveBeenCalled();
   });
 });
 

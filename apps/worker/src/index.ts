@@ -17,7 +17,8 @@ import { createBackfillInboxWorker } from "./jobs/backfill-inbox.js";
 import { createLifecycleEmailWorker } from "./jobs/lifecycle-email.js";
 import { createGenerateTaxonomyWorker } from "./jobs/generate-taxonomy.js";
 import { createPushNotificationWorker } from "./jobs/push-notification.js";
-import { syncInboxQueue, backfillInboxQueue, lifecycleEmailQueue, generateTaxonomyQueue, pushNotificationQueue } from "./queues.js";
+import { createCaptureReferenceWorker } from "./jobs/capture-reference.js";
+import { syncInboxQueue, backfillInboxQueue, lifecycleEmailQueue, generateTaxonomyQueue, pushNotificationQueue, captureReferenceQueue } from "./queues.js";
 import { closePublisher } from "./redis-publisher.js";
 import { closeAiDedup } from "./ai-dedup.js";
 import { closePushBudget } from "./notifications/notify-threads.js";
@@ -316,8 +317,9 @@ async function main(): Promise<void> {
   const lifecycleEmailWorker = createLifecycleEmailWorker();
   const generateTaxonomyWorker = createGenerateTaxonomyWorker();
   const pushNotificationWorker = createPushNotificationWorker();
+  const captureReferenceWorker = createCaptureReferenceWorker();
 
-  console.log("[worker] sync-inbox, classify-thread, backfill-inbox, lifecycle-email, generate-taxonomy, and push-notification workers registered");
+  console.log("[worker] sync-inbox, classify-thread, backfill-inbox, lifecycle-email, generate-taxonomy, push-notification, and capture-reference workers registered");
 
   // Run immediately on startup so the first sync doesn't wait a full interval.
   await scheduleSyncJobs();
@@ -432,6 +434,7 @@ async function main(): Promise<void> {
       lifecycleEmailWorker.close(),
       generateTaxonomyWorker.close(),
       pushNotificationWorker.close(),
+      captureReferenceWorker.close(),
     ]);
 
     await Promise.all([
@@ -440,6 +443,7 @@ async function main(): Promise<void> {
       lifecycleEmailQueue.close(),
       generateTaxonomyQueue.close(),
       pushNotificationQueue.close(),
+      captureReferenceQueue.close(),
       closePublisher(),
       closeAiDedup(),
       closePushBudget(),

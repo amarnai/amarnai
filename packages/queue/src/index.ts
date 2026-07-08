@@ -28,6 +28,7 @@ export const QUEUE_BACKFILL_INBOX = "backfill-inbox";
 export const QUEUE_LIFECYCLE_EMAIL = "lifecycle-email";
 export const QUEUE_GENERATE_TAXONOMY = "generate-taxonomy";
 export const QUEUE_PUSH_NOTIFICATION = "push-notification";
+export const QUEUE_CAPTURE_REFERENCE = "capture-reference";
 
 // ─── Job data types ───────────────────────────────────────────────────────────
 
@@ -65,6 +66,19 @@ export type ClassifyThreadJobData = {
   emailThreadId: string;
   triageOnly?: boolean;
   source?: ClassifyThreadSource;
+};
+
+/**
+ * Payload for a `capture-reference` job. Enqueued (best-effort) after a manual
+ * move created or repointed the thread's TaxonomyNodeReference row; the worker
+ * fills in the row's embedding vector and prunes the node's references to the
+ * retention cap. Idempotent: a missing row (undo retracted it) or an
+ * already-current embeddingTextHash is a no-op.
+ */
+export type CaptureReferenceJobData = {
+  workspaceId: string;
+  /** Internal EmailThread.id — not the provider thread ID. */
+  emailThreadId: string;
 };
 
 /** Payload for a `backfill-inbox` job. One job per workspace, run once. */

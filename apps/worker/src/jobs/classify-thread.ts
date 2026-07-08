@@ -10,7 +10,7 @@ import {
   maybeCreateQuotaBlockedNotifications,
 } from "@amarnai/db";
 import { config } from "@amarnai/config";
-import { getThreadSortLimit } from "@amarnai/shared";
+import { getThreadSortLimit, MAX_REFERENCES_PER_NODE } from "@amarnai/shared";
 import {
   createAIProvider,
   createEmbeddingProvider,
@@ -159,6 +159,30 @@ export function createClassifyThreadWorker(): Worker {
       const routeBulkAutomated = thread.isAutomated && (syncSettings?.routeBulkToOther ?? true);
 
       try {
+        // ── 1a. Manual-move pin ──────────────────────────────────────────────
+        //
+        // A thread whose latest classification is a manual MOVE stays where the
+        // user put it: automatic re-sorts (LIVE on a new message, BACKFILL,
+        // REROUTE sweeps) are skipped so the human decision is never silently
+        // superseded. An explicit user-triggered sort (source MANUAL) bypasses
+        // the pin — it IS the unpin action — and triage-only jobs pass through
+        // because they refresh metadata without touching routing. Runs before
+        // the quota gate so a pinned skip is never metered; the finally block
+        // clears any enqueue-time classifyingAt.
+        if (!triageOnly && source !== "MANUAL") {
+          const latestClassification = await db.emailClassification.findFirst({
+            where: { emailThreadId, workspaceId },
+            orderBy: { createdAt: "desc" },
+            select: { source: true },
+          });
+          if (latestClassification?.source === "MOVE") {
+            console.log(
+              `[classify-thread] Thread ${emailThreadId} is pinned by a manual move — skipping ${source} re-sort`,
+            );
+            return;
+          }
+        }
+
         // ── 1b. Monthly thread-sort quota (recurring sorts only) ────────────
         //
         // Runs before stamping classifyingAt so a deferred thread is not briefly
@@ -304,7 +328,7 @@ export function createClassifyThreadWorker(): Worker {
 
           // ── 3. Load taxonomy ──────────────────────────────────────────────
 
-          const [rawNodes, rawEdges] = await Promise.all([
+          const [rawNodes, rawEdges, rawReferences] = await Promise.all([
             db.taxonomyNode.findMany({
               where: { workspaceId },
               select: {
@@ -323,6 +347,20 @@ export function createClassifyThreadWorker(): Worker {
             db.taxonomyEdge.findMany({
               where: { workspaceId },
               select: { id: true, sourceNodeId: true, targetNodeId: true },
+            }),
+            // Reference threads (manual moves) reinforce their folders in the
+            // sorter. Pending rows (empty vector, capture job not done yet) are
+            // excluded here; model-mismatched rows and the thread's own row are
+            // filtered below once the embedding provider is known.
+            db.taxonomyNodeReference.findMany({
+              where: { workspaceId, NOT: { embeddingVector: { isEmpty: true } } },
+              orderBy: { updatedAt: "desc" },
+              select: {
+                nodeId: true,
+                emailThreadId: true,
+                embeddingVector: true,
+                embeddingModel: true,
+              },
             }),
           ]);
 
@@ -355,6 +393,22 @@ export function createClassifyThreadWorker(): Worker {
           const embeddingProvider = createEmbeddingProvider(
             getEmbeddingProviderConfig(),
           );
+
+          // nodeId → reference vectors for the sorter. Drops rows embedded under
+          // a different model (stale after a model change — they age out or
+          // refresh on the next move, mirroring the node embedding cache) and
+          // the thread's OWN reference row: its self-similarity ≈ 1 would act as
+          // a hidden re-sort pin, and pinning is the explicit guard at step 1a.
+          // Rows arrive recency-ordered, so slice keeps the newest per node.
+          const referenceVectors = new Map<string, number[][]>();
+          for (const ref of rawReferences) {
+            if (ref.embeddingModel !== embeddingProvider.modelName) continue;
+            if (ref.emailThreadId === emailThreadId) continue;
+            const vectors = referenceVectors.get(ref.nodeId) ?? [];
+            if (vectors.length >= MAX_REFERENCES_PER_NODE) continue;
+            vectors.push(ref.embeddingVector);
+            referenceVectors.set(ref.nodeId, vectors);
+          }
 
           const threadText = buildThreadEmbeddingText(
             messages.map((m) => ({
@@ -475,6 +529,9 @@ export function createClassifyThreadWorker(): Worker {
               {
                 ...(threadVector ? { precomputedThreadVector: threadVector } : {}),
                 llmMemoizer,
+                // Human-moved exemplars lift their folders' similarity scores
+                // (max-blend; empty map is a no-op). See REFERENCE_SIM_WEIGHT.
+                referenceVectors,
                 // Production routing config: scale-invariant + mean-centering with
                 // constants tuned for Gemini. Centering corrects the embedding
                 // anisotropy (similarities bunch into a narrow high band) that

@@ -16,6 +16,7 @@ export * from "./inbox-key.js";
 export * from "./draft-quota.js";
 export * from "./collaborator-quota.js";
 export * from "./thread-sort-quota.js";
+export * from "./node-references.js";
 export * from "./backfill-quota.js";
 export * from "./backfill-staleness.js";
 export * from "./taxonomy-generation.js";

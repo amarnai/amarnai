@@ -1,6 +1,15 @@
 import { Queue } from "bullmq";
-import { parseRedisUrl, QUEUE_CLASSIFY_THREAD, QUEUE_PUSH_NOTIFICATION } from "@amarnai/queue";
-import type { ClassifyThreadJobData, PushNotificationJobData } from "@amarnai/queue";
+import {
+  parseRedisUrl,
+  QUEUE_CLASSIFY_THREAD,
+  QUEUE_PUSH_NOTIFICATION,
+  QUEUE_CAPTURE_REFERENCE,
+} from "@amarnai/queue";
+import type {
+  ClassifyThreadJobData,
+  PushNotificationJobData,
+  CaptureReferenceJobData,
+} from "@amarnai/queue";
 import { config } from "@amarnai/config";
 
 /**
@@ -18,5 +27,15 @@ export const classifyThreadQueue = new Queue<ClassifyThreadJobData>(
  */
 export const pushNotificationQueue = new Queue<PushNotificationJobData>(
   QUEUE_PUSH_NOTIFICATION,
+  { connection: parseRedisUrl(config.redis.url) }
+);
+
+/**
+ * Shared capture-reference queue instance for the API process.
+ * Used by the triage move endpoint to enqueue the embedding capture for a
+ * manually moved thread's TaxonomyNodeReference row (worker fills the vector).
+ */
+export const captureReferenceQueue = new Queue<CaptureReferenceJobData>(
+  QUEUE_CAPTURE_REFERENCE,
   { connection: parseRedisUrl(config.redis.url) }
 );

@@ -184,7 +184,9 @@ taxonomyImport.post("/workspaces/:workspaceId/taxonomy-import", async (c) => {
         data: { finalNodeId: null },
       });
 
-      // 3. Delete all non-root nodes
+      // 3. Delete all non-root nodes (and every reference pointing at them —
+      //    the folders those human choices named no longer exist)
+      await tx.taxonomyNodeReference.deleteMany({ where: { workspaceId } });
       await tx.taxonomyNode.deleteMany({ where: { workspaceId, isRoot: false } });
 
       // 4. Update root node (name + position only; keep isRoot: true)

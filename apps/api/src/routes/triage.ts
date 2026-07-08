@@ -3,6 +3,7 @@ import { z } from "zod";
 import { db } from "@amarnai/db";
 import type { AppEnv } from "../env.js";
 import { recordAudit } from "../services/audit.js";
+import { captureReferenceQueue } from "../queues.js";
 
 const params = z.object({
   workspaceId: z.string().min(1),
@@ -10,7 +11,14 @@ const params = z.object({
 });
 
 const approveBody = z.object({ action: z.literal("approve") });
-const moveBody = z.object({ action: z.literal("move"), nodeId: z.string().min(1) });
+// retractReference — set by the Undo toast when reverting a move: undo means
+// "my move was a mistake", not "I confirm the old folder", so the thread's
+// reference row is deleted instead of repointed at the restored folder.
+const moveBody = z.object({
+  action: z.literal("move"),
+  nodeId: z.string().min(1),
+  retractReference: z.boolean().optional(),
+});
 const bodySchema = z.union([approveBody, moveBody]);
 
 /**
@@ -126,11 +134,19 @@ triage.patch(
 
     const node = await db.taxonomyNode.findFirst({
       where: { id: nodeId, workspaceId },
-      select: { id: true, name: true },
+      select: { id: true, name: true, isRoot: true, isCatchAll: true },
     });
     if (!node) {
       return c.json({ error: "Taxonomy node not found" }, 404);
     }
+
+    // A manual move is the ONLY writer of TaxonomyNodeReference rows (routing
+    // exemplars): no AI path may create one, or the sorter would reinforce its
+    // own decisions. Root and catch-all are not reference destinations (root is
+    // the stay-put default, catch-all is excluded from scoring), and both — like
+    // an Undo retraction — clear any existing reference so it always reflects
+    // the thread's LATEST human destination.
+    const referenceable = !action.retractReference && !node.isRoot && !node.isCatchAll;
 
     await db.$transaction(async (tx) => {
       await tx.emailClassification.create({
@@ -150,11 +166,42 @@ triage.patch(
         },
       });
 
+      if (referenceable) {
+        // Re-moves repoint nodeId and keep the content-derived vector; the
+        // capture job below no-ops when the vector is already current.
+        await tx.taxonomyNodeReference.upsert({
+          where: { emailThreadId: threadId },
+          create: { workspaceId, nodeId, emailThreadId: threadId },
+          update: { nodeId },
+        });
+      } else {
+        await tx.taxonomyNodeReference.deleteMany({
+          where: { emailThreadId: threadId, workspaceId },
+        });
+      }
+
       await tx.emailThread.update({
         where: { id: threadId },
         data: { triageStatus: "SORTED" },
       });
     });
+
+    // Best-effort like recordAudit: the reference is a routing hint, so a lost
+    // enqueue must never fail the move. The pending (empty-vector) row is
+    // skipped by the sort-time loader and healed by the next move or retry.
+    if (referenceable) {
+      try {
+        await captureReferenceQueue.add("capture-reference", {
+          workspaceId,
+          emailThreadId: threadId,
+        });
+      } catch (err) {
+        console.error(
+          `[triage] capture-reference enqueue failed for thread ${threadId}:`,
+          err instanceof Error ? err.message : err,
+        );
+      }
+    }
 
     // Correction label: the AI decision (aiNodeId, possibly null for a
     // quality-gate fallback) at score scoreAtDecision was overridden to

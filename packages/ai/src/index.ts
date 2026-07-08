@@ -36,6 +36,7 @@ export {
   THETA_DESCENT,
   CROSS_BRANCH_MARGIN,
   TOP_K_LLM_CANDIDATES,
+  REFERENCE_SIM_WEIGHT,
 } from "./embedding/sorter.js";
 export type { EmbeddingSortResult, DecisionSource, CrossBranchSignal, FallbackCause } from "./embedding/sorter.js";
 export { buildRoutingTelemetry, TELEMETRY_TOP_K } from "./embedding/telemetry.js";

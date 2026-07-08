@@ -22,6 +22,9 @@ vi.mock("@amarnai/db", () => ({
       findMany: vi.fn(),
       deleteMany: vi.fn(),
     },
+    taxonomyNodeReference: {
+      deleteMany: vi.fn(),
+    },
     emailClassification: {
       updateMany: vi.fn(),
     },

@@ -57,7 +57,7 @@ msgid "{0, plural, one {# thread imported.} other {# threads imported.}} Your pl
 msgstr "{0, plural, one {# wątek zaimportowany.} other {# wątków zaimportowanych.}} Osiągnięto limit importu dla Twojego planu."
 
 #. placeholder {0}: s.threadCount
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:125
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:155
 #, fuzzy
 msgid "{0, plural, one {# thread} other {# threads}}"
 msgstr "{0, plural, one {# wątek} other {# wątków}}"
@@ -119,6 +119,11 @@ msgstr "Pozostało {0} z {1} · resetuje się {quotaResetDate}"
 #~ msgid "{0} of ~{1} threads · {percent}%"
 #~ msgstr ""
 
+#. placeholder {0}: migrateLive > 0 ? ( <Fragment> <strong>{migrateLive}</strong> threads move to their new folder instantly.{" "} </Fragment> ) : null
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:224
+msgid "{0}<0>{resortLive}</0> threads will be re-sorted by AI."
+msgstr "{0}<0>{resortLive}</0> wątki zostaną przesortowane przez AI."
+
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:109
 #, fuzzy
 msgid "{blacklistCount, plural, one {# blocked} other {# blocked}}"
@@ -179,7 +184,7 @@ msgstr "{filed} ułożone · {reviewCount} do oceny"
 msgid "{folderCount, plural, one {# folder} other {# folders}}"
 msgstr "{folderCount, plural, one {# folder} few {# foldery} many {# folderów} other {# folderów}}"
 
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:156
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:205
 msgid "{hiddenCount, plural, one {# folder with no threads is not shown.} other {# folders with no threads are not shown.}}"
 msgstr "{hiddenCount, plural, one {# folder bez wątków nie jest wyświetlany.} other {# folderów bez wątków nie jest wyświetlanych.}}"
 
@@ -290,8 +295,8 @@ msgstr "+ Nowa przestrzeń robocza"
 
 #: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:170
 #, fuzzy
-msgid "<0>{migrateLive}</0> threads move to their new folder instantly. <1>{resortLive}</1> threads will be re-sorted by AI."
-msgstr "<0>{migrateLive}</0> wątki natychmiast przenoszą się do nowego folderu. <1>{resortLive}</1> wątki zostaną ponownie posortowane przez AI."
+#~ msgid "<0>{migrateLive}</0> threads move to their new folder instantly. <1>{resortLive}</1> threads will be re-sorted by AI."
+#~ msgstr "<0>{migrateLive}</0> wątki natychmiast przenoszą się do nowego folderu. <1>{resortLive}</1> wątki zostaną ponownie posortowane przez AI."
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:95
 msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your {providerName} account to get started. Amarnai connects with <1>read-only access</1> and <2>never sends, deletes, or changes anything</2>. Your inbox stays yours."
@@ -439,9 +444,7 @@ msgstr "Otrzymano nową aplikację od Horemheba z Teb na stanowisko Głównego K
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "Otrzymano nową aplikację od Horemheba z Teb na stanowisko Głównego Korespondenta.\n"
-"\n"
-"Przejrzyj aplikację w Domu Rejestrów."
+msgstr "Otrzymano nową aplikację od Horemheba z Teb na stanowisko Głównego Korespondenta.\n\nPrzejrzyj aplikację w Domu Rejestrów."
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:387
 #, fuzzy
@@ -455,11 +458,7 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "Abdi-Heba,\n"
-"\n"
-"Będę w okolicach Delty w tym samym tygodniu. Spotkajmy się w zajazd na drugi dzień; rano mam wolne.\n"
-"\n"
-"Do tego czasu,"
+msgstr "Abdi-Heba,\n\nBędę w okolicach Delty w tym samym tygodniu. Spotkajmy się w zajazd na drugi dzień; rano mam wolne.\n\nDo tego czasu,"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
@@ -962,7 +961,7 @@ msgid "Auto-file notifications to Updates / Other"
 msgstr "Automatycznie przyporządkuj powiadomienia do folderu Aktualizacje / Inne"
 
 #. placeholder {0}: catchAllRow.threadCount
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:148
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:190
 #, fuzzy
 msgid "Automated and bulk mail ({0}) always moves to the new catch-all folder."
 msgstr "Zautomatyzowana i masowa korespondencja ({0}) zawsze przenosi się do nowego folderu zbiorczego."
@@ -998,11 +997,7 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "Aziru,\n"
-"\n"
-"Słowa Twojej przyjaźni dotarły do nas pomyślnie. Jesteśmy otwarci na wysłuchanie dalszych propozycji rodu Amurru. Prześlij swoje warunki z kolejnym kurierem.\n"
-"\n"
-"Z wyrazami szacunku,"
+msgstr "Aziru,\n\nSłowa Twojej przyjaźni dotarły do nas pomyślnie. Jesteśmy otwarci na wysłuchanie dalszych propozycji rodu Amurru. Prześlij swoje warunki z kolejnym kurierem.\n\nZ wyrazami szacunku,"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:219
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
@@ -1206,8 +1201,8 @@ msgstr "Czy mogę samodzielnie hostować Amarnai?"
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:93
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:245
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:150
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:94
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:186
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:107
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:255
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:569
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:583
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:697
@@ -1326,7 +1321,7 @@ msgstr "Wybierz sposób podglądu Amarnai"
 msgid "Choose parent"
 msgstr "Wybierz folder nadrzędny"
 
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:101
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:117
 #, fuzzy
 msgid "Choose where each folder’s threads should go under your new plan. Matched folders keep their threads instantly; anything set to re-sort is re-classified by AI."
 msgstr "Wybierz, gdzie trafią wątki z każdego folderu w ramach nowego planu. Dopasowane foldery natychmiast zachowują swoje wątki; wszystko przeznaczone do ponownego sortowania zostanie przeklasyfikowane przez AI."
@@ -3109,11 +3104,7 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "Wielki Królu,\n"
-"\n"
-"Żądane raporty zostaną przygotowane przed zwołaniem rady. Moi skrybowie zestawią sprawozdania z terytoriów wschodnich i wyślą je naprzód szybkim kurierem.\n"
-"\n"
-"W braterstwie,"
+msgstr "Wielki Królu,\n\nŻądane raporty zostaną przygotowane przed zwołaniem rady. Moi skrybowie zestawią sprawozdania z terytoriów wschodnich i wyślą je naprzód szybkim kurierem.\n\nW braterstwie,"
 
 #: ../../apps/site/src/components/landing/FinalCTASection.tsx:9
 #, fuzzy
@@ -3858,7 +3849,7 @@ msgstr "Uprawnienia konta Microsoft"
 msgid "Microsoft could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the redirect URI is registered on the app registration."
 msgstr "Microsoft nie mógł zakończyć autoryzacji. Link mógł wygasnąć: spróbuj ponownie. Jeśli problem będzie się powtarzał, sprawdź, czy identyfikator URI przekierowania jest zarejestrowany w rejestracji aplikacji."
 
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:189
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:262
 msgid "Migrate & apply"
 msgstr "Migruj i zastosuj"
 
@@ -4151,7 +4142,7 @@ msgstr "Brak znaczących nowych wiadomości od ostatniego generowania, więc wyn
 #~ msgid "No signups yet."
 #~ msgstr "Jeszcze brak rejestracji."
 
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:110
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:126
 msgid "No sorted threads to migrate. Your new plan will apply directly."
 msgstr "Brak posortowanych wątków do migracji. Twój nowy plan zostanie zastosowany bezpośrednio."
 
@@ -4792,12 +4783,12 @@ msgstr "Przekieruj {unclassifiedCount} niesklasyfikowane"
 msgid "Re-route thread"
 msgstr "Przekieruj wątek"
 
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:135
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:171
 #, fuzzy
 msgid "Re-sort with AI"
 msgstr "Posortuj ponownie z AI"
 
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:176
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:241
 #, fuzzy
 msgid "Re-sorting threads already sorted this month is free. If you reach your monthly limit, the rest resume next month."
 msgstr "Ponowne sortowanie wątków posortowanych w tym miesiącu jest bezpłatne. Po osiągnięciu miesięcznego limitu, pozostałe zostaną wznowione w przyszłym miesiącu."
@@ -5025,7 +5016,7 @@ msgstr "Odnowi się co miesiąc <0>{0}</0>."
 msgid "Renews on <0>{0}</0>."
 msgstr "Odnowi się <0>{0}</0>."
 
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:93
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:103
 msgid "Replace plan"
 msgstr "Zmień plan"
 
@@ -5178,11 +5169,7 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "Rib-Haddo,\n"
-"\n"
-"Słyszymy cię. Dodatkowe zboże zostało zamówione z południowych magazynów i dotrze przed świętem żniw. Prosimy o cierpliwość do tego czasu.\n"
-"\n"
-"Bądź zdrów,"
+msgstr "Rib-Haddo,\n\nSłyszymy cię. Dodatkowe zboże zostało zamówione z południowych magazynów i dotrze przed świętem żniw. Prosimy o cierpliwość do tego czasu.\n\nBądź zdrów,"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -6191,13 +6178,7 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "Do mego brata, Wielkiego Króla,\n"
-"\n"
-"Wielka Rada zbiera się na początku Shemu. Proszę, abyś przygotował pełne sprawozdanie z terytoriów wschodnich i wysłał je naprzód szybkim kurierem, jeśli to możliwe przed nowiem.\n"
-"\n"
-"Nasze przymierze jest silne. Pokażmy Radzie, że takie pozostaje.\n"
-"\n"
-"Tushratta, Wielki Król Mitanni"
+msgstr "Do mego brata, Wielkiego Króla,\n\nWielka Rada zbiera się na początku Shemu. Proszę, abyś przygotował pełne sprawozdanie z terytoriów wschodnich i wysłał je naprzód szybkim kurierem, jeśli to możliwe przed nowiem.\n\nNasze przymierze jest silne. Pokażmy Radzie, że takie pozostaje.\n\nTushratta, Wielki Król Mitanni"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:163
 #, fuzzy
@@ -6206,11 +6187,7 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "Do Biura Nominacji Królewskich,\n"
-"\n"
-"Otrzymaliśmy wniosek od Horemheba z Teb i przejrzymy jego akta przed następnym nowiem. Prosimy o poinformowanie go, że odezwiemy się w stosownym czasie.\n"
-"\n"
-"Zgodnie z dekretem królewskim,"
+msgstr "Do Biura Nominacji Królewskich,\n\nOtrzymaliśmy wniosek od Horemheba z Teb i przejrzymy jego akta przed następnym nowiem. Prosimy o poinformowanie go, że odezwiemy się w stosownym czasie.\n\nZgodnie z dekretem królewskim,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:278
 #, fuzzy
@@ -6221,13 +6198,7 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "Do Wielkiego Króla,\n"
-"\n"
-"Przez wiele lat nasze rody były jak bracia. Piszę teraz, aby zaproponować sformalizowanie tej przyjaźni dla dobra obu naszych ludów: pakt wzajemnej ochrony i wspólnych szlaków.\n"
-"\n"
-"Proszę jedynie, abyś wysłuchał moich warunków. Prześlij wiadomość następnym kurierem, a ja natychmiast wyślę mojego posłańca.\n"
-"\n"
-"Aziru, sługa Wielkiego Króla, pan Amurru"
+msgstr "Do Wielkiego Króla,\n\nPrzez wiele lat nasze rody były jak bracia. Piszę teraz, aby zaproponować sformalizowanie tej przyjaźni dla dobra obu naszych ludów: pakt wzajemnej ochrony i wspólnych szlaków.\n\nProszę jedynie, abyś wysłuchał moich warunków. Prześlij wiadomość następnym kurierem, a ja natychmiast wyślę mojego posłańca.\n\nAziru, sługa Wielkiego Króla, pan Amurru"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:391
 #, fuzzy
@@ -6236,11 +6207,7 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "Do Wielkiego Króla,\n"
-"\n"
-"Moje podróże w nadchodzących dniach zaprowadzą mnie w pobliże Delty. Jeśli Wielki Król znajdzie godzinę czasu, z radością skorzystam z okazji, aby porozmawiać twarzą w twarz; są sprawy łatwiejsze do powiedzenia niż do napisania.\n"
-"\n"
-"Twój sługa, Abdi-Heba, gubernator Urushalim"
+msgstr "Do Wielkiego Króla,\n\nMoje podróże w nadchodzących dniach zaprowadzą mnie w pobliże Delty. Jeśli Wielki Król znajdzie godzinę czasu, z radością skorzystam z okazji, aby porozmawiać twarzą w twarz; są sprawy łatwiejsze do powiedzenia niż do napisania.\n\nTwój sługa, Abdi-Heba, gubernator Urushalim"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:153
 #, fuzzy
@@ -6249,11 +6216,7 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "Do Wielkiego Króla, mego brata,\n"
-"\n"
-"Usłyszałem Twoje słowa. Złoto zostanie wysłane, zanim następny posłaniec wyruszy. Cenimy więź między naszymi rodami i nie życzymy sobie, aby ostygła.\n"
-"\n"
-"W przyjaźni,"
+msgstr "Do Wielkiego Króla, mego brata,\n\nUsłyszałem Twoje słowa. Złoto zostanie wysłane, zanim następny posłaniec wyruszy. Cenimy więź między naszymi rodami i nie życzymy sobie, aby ostygła.\n\nW przyjaźni,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:239
 #, fuzzy
@@ -6264,13 +6227,7 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "Do Wielkiego Króla, mego brata,\n"
-"\n"
-"Piszę w duchu przyjaźni, tak jak pisali nasi ojcowie przed nami. Trzecia przesyłka złota, uzgodniona w naszym traktacie, nie dotarła. Minęło dwóch posłańców, a my wciąż czekamy.\n"
-"\n"
-"Prosimy o jej wysłanie bez dalszej zwłoki, jak przystało na więź między naszymi rodami.\n"
-"\n"
-"Burna-Buriash II, Król Babilonu"
+msgstr "Do Wielkiego Króla, mego brata,\n\nPiszę w duchu przyjaźni, tak jak pisali nasi ojcowie przed nami. Trzecia przesyłka złota, uzgodniona w naszym traktacie, nie dotarła. Minęło dwóch posłańców, a my wciąż czekamy.\n\nProsimy o jej wysłanie bez dalszej zwłoki, jak przystało na więź między naszymi rodami.\n\nBurna-Buriash II, Król Babilonu"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:352
 #, fuzzy
@@ -6281,13 +6238,7 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "Do Wielkiego Króla, mego pana, mego słońca,\n"
-"\n"
-"Zboże, które wysłałeś w zeszłym miesiącu, zostało przyjęte z wdzięcznością i chwaliłem Twoje imię przed ludem. Muszę jednak napisać ponownie: trzecia przesyłka nie dotarła, a miasto staje się niespokojne.\n"
-"\n"
-"Pisałem siedem razy. Nie chcę Cię niepokoić, ale co innego mogę zrobić?\n"
-"\n"
-"Twój sługa, Rib-Hadda, gubernator Byblos"
+msgstr "Do Wielkiego Króla, mego pana, mego słońca,\n\nZboże, które wysłałeś w zeszłym miesiącu, zostało przyjęte z wdzięcznością i chwaliłem Twoje imię przed ludem. Muszę jednak napisać ponownie: trzecia przesyłka nie dotarła, a miasto staje się niespokojne.\n\nPisałem siedem razy. Nie chcę Cię niepokoić, ale co innego mogę zrobić?\n\nTwój sługa, Rib-Hadda, gubernator Byblos"
 
 #: ../../apps/site/src/components/landing/MailThreadMock.tsx:123
 msgid "To: You"

@@ -57,7 +57,7 @@ msgid "{0, plural, one {# thread imported.} other {# threads imported.}} Your pl
 msgstr "{0, plural, one {# konu içe aktarıldı.} other {# konu içe aktarıldı.}} Planınızın içe aktarma sınırına ulaşıldı."
 
 #. placeholder {0}: s.threadCount
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:125
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:155
 #, fuzzy
 msgid "{0, plural, one {# thread} other {# threads}}"
 msgstr "{0, plural, one {# konu} other {# konu}}"
@@ -119,6 +119,11 @@ msgstr "{0} / {1} kaldı · sıfırlanır {quotaResetDate}"
 #~ msgid "{0} of ~{1} threads · {percent}%"
 #~ msgstr ""
 
+#. placeholder {0}: migrateLive > 0 ? ( <Fragment> <strong>{migrateLive}</strong> threads move to their new folder instantly.{" "} </Fragment> ) : null
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:224
+msgid "{0}<0>{resortLive}</0> threads will be re-sorted by AI."
+msgstr "Yapay zeka, {0}<0>{resortLive}</0> konuyu yeniden sıralayacak."
+
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:109
 #, fuzzy
 msgid "{blacklistCount, plural, one {# blocked} other {# blocked}}"
@@ -179,7 +184,7 @@ msgstr "{filed} sıralandı · {reviewCount} incelenecek"
 msgid "{folderCount, plural, one {# folder} other {# folders}}"
 msgstr "{folderCount, plural, one {# klasör} other {# klasör}}"
 
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:156
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:205
 msgid "{hiddenCount, plural, one {# folder with no threads is not shown.} other {# folders with no threads are not shown.}}"
 msgstr "{hiddenCount, plural, one {# ileti dizisi olmayan klasör gösterilmiyor.} other {# ileti dizisi olmayan klasör gösterilmiyor.}}"
 
@@ -290,8 +295,8 @@ msgstr "+ Yeni çalışma alanı"
 
 #: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:170
 #, fuzzy
-msgid "<0>{migrateLive}</0> threads move to their new folder instantly. <1>{resortLive}</1> threads will be re-sorted by AI."
-msgstr "<0>{migrateLive}</0> ileti dizisi anında yeni klasörüne taşınır. <1>{resortLive}</1> ileti dizisi yapay zeka tarafından yeniden sıralanacak."
+#~ msgid "<0>{migrateLive}</0> threads move to their new folder instantly. <1>{resortLive}</1> threads will be re-sorted by AI."
+#~ msgstr "<0>{migrateLive}</0> ileti dizisi anında yeni klasörüne taşınır. <1>{resortLive}</1> ileti dizisi yapay zeka tarafından yeniden sıralanacak."
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:95
 msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your {providerName} account to get started. Amarnai connects with <1>read-only access</1> and <2>never sends, deletes, or changes anything</2>. Your inbox stays yours."
@@ -439,9 +444,7 @@ msgstr "Thebes'li Horemheb'den Yazışma Şefi pozisyonu için yeni bir başvuru
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "Thebes'li Horemheb'den Yazışma Şefi pozisyonu için yeni bir başvuru alındı.\n"
-"\n"
-"Başvuruyu Kayıtlar Evi'nde görüntüleyin."
+msgstr "Thebes'li Horemheb'den Yazışma Şefi pozisyonu için yeni bir başvuru alındı.\n\nBaşvuruyu Kayıtlar Evi'nde görüntüleyin."
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:387
 #, fuzzy
@@ -455,11 +458,7 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "Abdi-Heba,\n"
-"\n"
-"Aynı hafta Delta yakınında olacağım. İkinci gün menzil istasyonunda buluşalım; sabahı ayırabilirim.\n"
-"\n"
-"O zamana dek,"
+msgstr "Abdi-Heba,\n\nAynı hafta Delta yakınında olacağım. İkinci gün menzil istasyonunda buluşalım; sabahı ayırabilirim.\n\nO zamana dek,"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
@@ -962,7 +961,7 @@ msgid "Auto-file notifications to Updates / Other"
 msgstr "Bildirimleri Güncellemeler / Diğer'e otomatik olarak dosyala."
 
 #. placeholder {0}: catchAllRow.threadCount
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:148
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:190
 #, fuzzy
 msgid "Automated and bulk mail ({0}) always moves to the new catch-all folder."
 msgstr "Otomatik ve toplu postalar ({0}) her zaman yeni genel klasöre taşınır."
@@ -998,11 +997,7 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "Aziru,\n"
-"\n"
-"Dostluk sözleriniz bize ulaştı. Amurru hanedanının ne önerdiğini daha fazla duymaya açığız. Koşullarınızı bir sonraki kurye ile gönderin.\n"
-"\n"
-"Saygılarımızla,"
+msgstr "Aziru,\n\nDostluk sözleriniz bize ulaştı. Amurru hanedanının ne önerdiğini daha fazla duymaya açığız. Koşullarınızı bir sonraki kurye ile gönderin.\n\nSaygılarımızla,"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:219
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
@@ -1206,8 +1201,8 @@ msgstr "Amarnai'yi kendi sunucumda barındırabilir miyim?"
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:93
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:245
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:150
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:94
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:186
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:107
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:255
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:569
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:583
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:697
@@ -1326,7 +1321,7 @@ msgstr "Amarnai'yi nasıl önizleyeceğinizi seçin"
 msgid "Choose parent"
 msgstr "Üst klasör seç"
 
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:101
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:117
 #, fuzzy
 msgid "Choose where each folder’s threads should go under your new plan. Matched folders keep their threads instantly; anything set to re-sort is re-classified by AI."
 msgstr "Yeni planınız kapsamında her bir klasörün ileti dizilerinin nereye gideceğini seçin. Eşleşen klasörler ileti dizilerini anında korur; yeniden sıralanacak şekilde ayarlananlar yapay zeka tarafından yeniden sınıflandırılır."
@@ -3109,11 +3104,7 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "Ulu Kralım,\n"
-"\n"
-"İstediğiniz raporlar konsey toplanmadan önce hazırlanacaktır. Katiplerime doğu topraklarının hesaplarını derletecek ve hızlı kurye ile önceden göndereceğim.\n"
-"\n"
-"Kardeşlik içerisinde,"
+msgstr "Ulu Kralım,\n\nİstediğiniz raporlar konsey toplanmadan önce hazırlanacaktır. Katiplerime doğu topraklarının hesaplarını derletecek ve hızlı kurye ile önceden göndereceğim.\n\nKardeşlik içerisinde,"
 
 #: ../../apps/site/src/components/landing/FinalCTASection.tsx:9
 #, fuzzy
@@ -3858,7 +3849,7 @@ msgstr "Microsoft hesap izinleri"
 msgid "Microsoft could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the redirect URI is registered on the app registration."
 msgstr "Microsoft yetkilendirmeyi tamamlayamadı. Bağlantının süresi dolmuş olabilir: lütfen tekrar deneyin. Sorun devam ederse, yönlendirme URI'sinin uygulama kaydında kayıtlı olduğundan emin olun."
 
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:189
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:262
 msgid "Migrate & apply"
 msgstr "Taşı ve Uygula"
 
@@ -4151,7 +4142,7 @@ msgstr "Son üretiminizden bu yana önemli yeni e-posta yok, bu yüzden sonuç a
 #~ msgid "No signups yet."
 #~ msgstr "Henüz kayıt yok."
 
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:110
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:126
 msgid "No sorted threads to migrate. Your new plan will apply directly."
 msgstr "Taşınacak sıralanmış ileti yok. Yeni planınız doğrudan uygulanacak."
 
@@ -4792,12 +4783,12 @@ msgstr "{unclassifiedCount} sınıflandırılmamışı yeniden yönlendir"
 msgid "Re-route thread"
 msgstr "İleti dizisini yeniden yönlendir"
 
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:135
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:171
 #, fuzzy
 msgid "Re-sort with AI"
 msgstr "Yapay Zeka ile Yeniden Sırala"
 
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:176
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:241
 #, fuzzy
 msgid "Re-sorting threads already sorted this month is free. If you reach your monthly limit, the rest resume next month."
 msgstr "Bu ay zaten sıralanmış konuşmaları yeniden sıralamak ücretsizdir. Aylık limitinize ulaştığınızda, geri kalanı gelecek ay devam eder."
@@ -5025,7 +5016,7 @@ msgstr "<0>{0}</0> tarihinde aylık olarak yenilenir."
 msgid "Renews on <0>{0}</0>."
 msgstr "<0>{0}</0> tarihinde yenilenir."
 
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:93
+#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:103
 msgid "Replace plan"
 msgstr "Planı Değiştir"
 
@@ -5178,11 +5169,7 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "Rib-Hadda,\n"
-"\n"
-"Seni duyuyoruz. Güneydeki depolardan ek tahıl sipariş edildi ve hasat festivalinden önce ulaşacak. O zamana kadar sabrınızı rica ediyoruz.\n"
-"\n"
-"Esen kal,"
+msgstr "Rib-Hadda,\n\nSeni duyuyoruz. Güneydeki depolardan ek tahıl sipariş edildi ve hasat festivalinden önce ulaşacak. O zamana kadar sabrınızı rica ediyoruz.\n\nEsen kal,"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -6191,13 +6178,7 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "Büyük Kral kardeşim,\n"
-"\n"
-"Büyük konsey Şemu'nun başında toplanacak. Doğu topraklarının tam bir muhasebesini hazırlamanızı ve mümkünse yeni aydan önce hızlı bir kurye ile göndermenizi rica ediyorum.\n"
-"\n"
-"İttifakımız güçlüdür. Konseye bunun böyle kaldığını gösterelim.\n"
-"\n"
-"Mitanni Büyük Kralı Tuşratta"
+msgstr "Büyük Kral kardeşim,\n\nBüyük konsey Şemu'nun başında toplanacak. Doğu topraklarının tam bir muhasebesini hazırlamanızı ve mümkünse yeni aydan önce hızlı bir kurye ile göndermenizi rica ediyorum.\n\nİttifakımız güçlüdür. Konseye bunun böyle kaldığını gösterelim.\n\nMitanni Büyük Kralı Tuşratta"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:163
 #, fuzzy
@@ -6206,11 +6187,7 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "Kraliyet Atama Bürosu'na,\n"
-"\n"
-"Thebesli Horemheb'in başvurusunu aldık ve sonraki yeni aydan önce sicilini gözden geçireceğiz. Lütfen kendisine zamanı geldiğinde haber vereceğimizi bildirin.\n"
-"\n"
-"Kraliyet fermanıyla,"
+msgstr "Kraliyet Atama Bürosu'na,\n\nThebesli Horemheb'in başvurusunu aldık ve sonraki yeni aydan önce sicilini gözden geçireceğiz. Lütfen kendisine zamanı geldiğinde haber vereceğimizi bildirin.\n\nKraliyet fermanıyla,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:278
 #, fuzzy
@@ -6221,13 +6198,7 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "Büyük Kral'a,\n"
-"\n"
-"Yıllardır hanelerimiz kardeş gibidir. Şimdi, bu dostluğumuzu her iki halkımızın da yararına resmileştirmeyi teklif etmek için yazıyorum: karşılıklı koruma ve ortak ticaret yolları anlaşması.\n"
-"\n"
-"Sadece şartlarımı dinlemenizi rica ediyorum. Sonraki kurye ile haber gönderin, elçimi derhal yola çıkaracağım.\n"
-"\n"
-"Amurru lordu, Büyük Kral'ın hizmetkarı Aziru"
+msgstr "Büyük Kral'a,\n\nYıllardır hanelerimiz kardeş gibidir. Şimdi, bu dostluğumuzu her iki halkımızın da yararına resmileştirmeyi teklif etmek için yazıyorum: karşılıklı koruma ve ortak ticaret yolları anlaşması.\n\nSadece şartlarımı dinlemenizi rica ediyorum. Sonraki kurye ile haber gönderin, elçimi derhal yola çıkaracağım.\n\nAmurru lordu, Büyük Kral'ın hizmetkarı Aziru"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:391
 #, fuzzy
@@ -6236,11 +6207,7 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "Büyük Kral'a,\n"
-"\n"
-"Yolculuklarım beni önümüzdeki günlerde Delta'ya yakın bir yere getirecek. Büyük Kral'ın ayıracak bir saati varsa, yüz yüze konuşma fırsatını memnuniyetle karşılarım; yazmaktan daha kolay anlatılacak meseleler var.\n"
-"\n"
-"Kulunuz, Urushalim Valisi Abdi-Heba"
+msgstr "Büyük Kral'a,\n\nYolculuklarım beni önümüzdeki günlerde Delta'ya yakın bir yere getirecek. Büyük Kral'ın ayıracak bir saati varsa, yüz yüze konuşma fırsatını memnuniyetle karşılarım; yazmaktan daha kolay anlatılacak meseleler var.\n\nKulunuz, Urushalim Valisi Abdi-Heba"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:153
 #, fuzzy
@@ -6249,11 +6216,7 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "Büyük Kral kardeşim,\n"
-"\n"
-"Sözlerinizi duydum. Altın, bir sonraki elçi ayrılmadan önce gönderilecektir. Hanelerimiz arasındaki bağı değerli buluyoruz ve soğumasını istemiyoruz.\n"
-"\n"
-"Dostlukla,"
+msgstr "Büyük Kral kardeşim,\n\nSözlerinizi duydum. Altın, bir sonraki elçi ayrılmadan önce gönderilecektir. Hanelerimiz arasındaki bağı değerli buluyoruz ve soğumasını istemiyoruz.\n\nDostlukla,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:239
 #, fuzzy
@@ -6264,13 +6227,7 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "Büyük Kral kardeşim,\n"
-"\n"
-"Atalarımızın yazdığı gibi, dostlukla yazıyorum. Antlaşmamız kapsamında üzerinde anlaşılan üçüncü altın sevkiyatı gelmedi. İki elçi geçti ve hâlâ bekliyoruz.\n"
-"\n"
-"Hanelerimiz arasındaki bağa yakışır şekilde, gecikmeksizin göndermenizi rica ediyoruz.\n"
-"\n"
-"Babil Kralı II. Burna-Buriash"
+msgstr "Büyük Kral kardeşim,\n\nAtalarımızın yazdığı gibi, dostlukla yazıyorum. Antlaşmamız kapsamında üzerinde anlaşılan üçüncü altın sevkiyatı gelmedi. İki elçi geçti ve hâlâ bekliyoruz.\n\nHanelerimiz arasındaki bağa yakışır şekilde, gecikmeksizin göndermenizi rica ediyoruz.\n\nBabil Kralı II. Burna-Buriash"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:352
 #, fuzzy
@@ -6281,13 +6238,7 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "Büyük Kral'ım, efendim, güneşim,\n"
-"\n"
-"Geçen ay gönderdiğiniz tahıl şükranla alındı ve adınızı halkın önünde övdüm. Ancak tekrar yazmak zorundayım: üçüncü sevkiyat gelmedi ve şehir huzursuzlanıyor.\n"
-"\n"
-"Yedi kez yazdım. Sizi rahatsız etmek istemem ama başka ne yapabilirim?\n"
-"\n"
-"Kulunuz, Byblos Valisi Rib-Hadda"
+msgstr "Büyük Kral'ım, efendim, güneşim,\n\nGeçen ay gönderdiğiniz tahıl şükranla alındı ve adınızı halkın önünde övdüm. Ancak tekrar yazmak zorundayım: üçüncü sevkiyat gelmedi ve şehir huzursuzlanıyor.\n\nYedi kez yazdım. Sizi rahatsız etmek istemem ama başka ne yapabilirim?\n\nKulunuz, Byblos Valisi Rib-Hadda"
 
 #: ../../apps/site/src/components/landing/MailThreadMock.tsx:123
 msgid "To: You"
