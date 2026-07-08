@@ -70,11 +70,10 @@ const OUTLOOK_TAB_URLS = [
 ];
 
 // Opens a thread in Outlook on the web (OWA). Reuses an existing OWA tab in the
-// current window so the panel stays docked; else opens a new tab. The target is
-// the full-mailbox message URL (see buildThreadUrl) so the folder list and back
-// navigation stay. Unlike Gmail there is no zero-reload hash swap — each switch
-// is one navigation (accepted). The URL already carries the account context
-// (host + message id), so no `authuser`-style pinning is needed and the Gmail
+// current window so the panel stays docked; else opens a new tab. Unlike Gmail
+// there is no zero-reload hash swap — OWA routes the message via its `webLink`,
+// so every switch is one reload (accepted). The webLink already carries the
+// account context, so no `authuser`-style pinning is needed and the Gmail
 // pinnedTabId singleton is intentionally not used here.
 //
 // Requires host_permissions for the OWA hosts (see OUTLOOK_TAB_URLS).

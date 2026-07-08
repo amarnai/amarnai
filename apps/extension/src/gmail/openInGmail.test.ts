@@ -100,8 +100,8 @@ describe("openInGmail", () => {
 });
 
 describe("openInOutlook", () => {
-  const WEBLINK = "https://outlook.office365.com/owa/?ItemID=abc&viewmodel=ReadMessageItem";
-  const OUTLOOK_URL = "https://outlook.office.com/mail/inbox/id/abc";
+  const WEBLINK = "https://outlook.office365.com/owa/?ItemID=abc";
+  const OUTLOOK_URL = "https://outlook.office365.com/owa/?ItemID=abc&ispopout=0";
 
   beforeEach(() => {
     vi.mocked(ext.tabs.query).mockReset();
