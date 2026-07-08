@@ -10,16 +10,39 @@ export type ThreadUrlInput = Pick<ThreadItem, "provider" | "providerThreadId" | 
  * Gmail: the providerThreadId doubles as the URL key — `#all/<threadId>` opens
  * the conversation and supports a hash-only swap for in-place tab reuse.
  *
- * Outlook: the conversationId is not URL-resolvable, so we deep-link a
- * representative message via its stored `webLink`, appending `&ispopout=0` so it
- * opens in the OWA reading pane (reusing the tab) rather than a popout window.
- * Falls back to the OWA inbox when no webLink was captured.
+ * Outlook: open the message inside the full OWA mailbox at
+ * `/mail/inbox/id/<messageId>` — that keeps the folder list and back navigation,
+ * so the user can return to their inbox. The stored Graph `webLink` points at a
+ * standalone reading popout instead (`owa/?ItemID=...&viewmodel=ReadMessageItem`,
+ * which strips the mailbox chrome), so we rebuild the mailbox URL from it: its
+ * `ItemID` query param is the URL-encoded store id the `/id/` route needs, and
+ * its host distinguishes personal (outlook.live.com) from work/school
+ * (outlook.office.com) accounts. Falls back to the OWA inbox when no usable
+ * webLink was captured.
  */
 export function buildThreadUrl(thread: ThreadUrlInput): string {
   if (thread.provider === "OUTLOOK") {
-    if (!thread.webLink) return "https://outlook.office.com/mail/";
-    const separator = thread.webLink.includes("?") ? "&" : "?";
-    return `${thread.webLink}${separator}ispopout=0`;
+    return buildOutlookThreadUrl(thread.webLink);
   }
   return `https://mail.google.com/mail/u/0/#all/${thread.providerThreadId}`;
+}
+
+// The two OWA app hosts. office365.com only appears as a webLink/redirect host;
+// the mailbox app itself lives at office.com, so work/school links resolve there.
+function outlookHost(webLink: string | null): "outlook.live.com" | "outlook.office.com" {
+  return webLink?.includes("outlook.live.com") ? "outlook.live.com" : "outlook.office.com";
+}
+
+// Pull the still-encoded ItemID value straight out of the webLink query string so
+// it drops into the `/id/` path segment without a decode/re-encode round trip.
+function extractItemId(webLink: string): string | null {
+  return /[?&]ItemID=([^&]+)/i.exec(webLink)?.[1] ?? null;
+}
+
+function buildOutlookThreadUrl(webLink: string | null): string {
+  const host = outlookHost(webLink);
+  const itemId = webLink ? extractItemId(webLink) : null;
+  // No resolvable message id: land on the mailbox root (shows the inbox).
+  if (!itemId) return `https://${host}/mail/`;
+  return `https://${host}/mail/inbox/id/${itemId}`;
 }

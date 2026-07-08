@@ -177,7 +177,7 @@ msgid "{providerName} Inbox"
 msgstr "Posta in arrivo di {providerName}"
 
 #. placeholder {0}: draftQuota.limit
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:341
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:330
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:351
 #, fuzzy
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
@@ -894,7 +894,7 @@ msgstr "Aziru,\n"
 "\n"
 "Con i nostri saluti,"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:217
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:219
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:25
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:230
@@ -903,7 +903,7 @@ msgstr "Aziru,\n"
 msgid "Back"
 msgstr "Indietro"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:213
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:215
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:225
 #: ../ui/src/emails/ThreadPreview.tsx:88
 #, fuzzy
@@ -1925,7 +1925,7 @@ msgstr "Bozza"
 msgid "Draft failed · tap to retry"
 msgstr "Bozza non riuscita · tocca per riprovare"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:356
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:345
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:367
 #, fuzzy
 msgid "Draft generation failed. Try again."
@@ -2433,7 +2433,7 @@ msgstr "Genera una nuova bozza. Consuma un credito dal tuo piano mensile."
 msgid "Generate a plan from your inbox"
 msgstr "Genera un piano dalla tua casella di posta"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:335
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:324
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:146
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:345
 #: ../ui/src/emails/ThreadPreview.tsx:174
@@ -3109,7 +3109,7 @@ msgstr "Email del manager: incontri individuali, valutazioni delle prestazioni e
 msgid "Mark as done"
 msgstr "Contrassegna come fatto"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:223
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:225
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:244
 #: ../../apps/mobile/src/components/ThreadRow.tsx:58
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:234
@@ -3374,7 +3374,7 @@ msgstr "Nuovo nome spazio di lavoro"
 msgid "No drafts remaining"
 msgstr "Nessuna bozza rimanente"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:340
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:329
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:350
 #: ../ui/src/emails/SuggestedDraftCard.tsx:97
 #, fuzzy
@@ -3578,7 +3578,7 @@ msgstr "Solo il proprietario dello spazio di lavoro può gestire la fatturazione
 msgid "Open"
 msgstr "Apri"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:284
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:256
 #: ../../apps/mobile/src/components/DraftSheet.tsx:97
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:274
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:284
@@ -3589,7 +3589,7 @@ msgstr "Apri"
 msgid "Open in Gmail"
 msgstr "Apri in Gmail"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:282
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:254
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:274
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:284
 #: ../ui/src/emails/ThreadPreview.tsx:119
@@ -3828,6 +3828,11 @@ msgstr "Il piano è in sola lettura. Solo gli amministratori dello spazio di lav
 #, fuzzy
 msgid "Plan nodes"
 msgstr "Nodi del piano"
+
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:285
+#, fuzzy
+msgid "Plan sorting"
+msgstr "Pianifica ordinamento"
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:129
 #: ../../apps/mobile/app/(app)/subscription.tsx:134
@@ -4103,7 +4108,7 @@ msgstr "Rimuovi {0}"
 msgid "Remove {email} from blacklist"
 msgstr "Rimuovi {email} dalla lista nera"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:223
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:225
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:243
 #: ../../apps/mobile/src/components/ThreadRow.tsx:57
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:234
@@ -4257,7 +4262,7 @@ msgstr "Ridimensiona l'elenco delle conversazioni"
 msgid "Resources"
 msgstr "Risorse"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:358
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:347
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:345
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:373
 #, fuzzy
@@ -5045,10 +5050,15 @@ msgstr "Questa operazione rimuove la connessione a Gmail, elimina tutte le email
 msgid "This thread cannot be sorted yet. Add at least {TAXONOMY_MIN_NON_ROOT_NODES} categories to your plan to begin routing."
 msgstr "Questa conversazione non può essere ancora ordinata. Aggiungi almeno {TAXONOMY_MIN_NON_ROOT_NODES} categorie al tuo piano per iniziare l'instradamento."
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:302
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:290
 #, fuzzy
 msgid "This thread hasn't been sorted yet."
 msgstr "Questa conversazione non è stata ancora smistata."
+
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:278
+#, fuzzy
+msgid "This thread hasn't been sorted yet. Create a sorting plan so Amarnai knows where to file it."
+msgstr "Questa conversazione non è ancora stata ordinata. Crea un piano di ordinamento così Amarnai saprà dove archiviarla."
 
 #: ../../apps/mobile/src/components/RationaleCard.tsx:46
 msgid "This thread is waiting to be routed."
@@ -5656,7 +5666,7 @@ msgstr "Tipo di workspace"
 msgid "Workspaces included"
 msgstr "Workspace inclusi"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:350
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:339
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:168
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:361
 #: ../ui/src/emails/ThreadPreview.tsx:181

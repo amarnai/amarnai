@@ -177,7 +177,7 @@ msgid "{providerName} Inbox"
 msgstr "{providerName} 受信トレイ"
 
 #. placeholder {0}: draftQuota.limit
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:341
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:330
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:351
 #, fuzzy
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
@@ -894,7 +894,7 @@ msgstr "アジル殿、\n"
 "\n"
 "敬具、"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:217
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:219
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:25
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:230
@@ -903,7 +903,7 @@ msgstr "アジル殿、\n"
 msgid "Back"
 msgstr "戻る"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:213
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:215
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:225
 #: ../ui/src/emails/ThreadPreview.tsx:88
 #, fuzzy
@@ -1925,7 +1925,7 @@ msgstr "下書き"
 msgid "Draft failed · tap to retry"
 msgstr "下書きの送信に失敗しました · タップして再試行"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:356
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:345
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:367
 #, fuzzy
 msgid "Draft generation failed. Try again."
@@ -2433,7 +2433,7 @@ msgstr "新しい下書きを作成します。月間利用枠を1消費しま�
 msgid "Generate a plan from your inbox"
 msgstr "受信トレイからプランを生成"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:335
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:324
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:146
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:345
 #: ../ui/src/emails/ThreadPreview.tsx:174
@@ -3109,7 +3109,7 @@ msgstr "マネージャーからのメール：1対1面談、パフォーマン�
 msgid "Mark as done"
 msgstr "完了としてマーク"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:223
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:225
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:244
 #: ../../apps/mobile/src/components/ThreadRow.tsx:58
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:234
@@ -3374,7 +3374,7 @@ msgstr "新しいワークスペース名"
 msgid "No drafts remaining"
 msgstr "残りの下書きはありません"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:340
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:329
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:350
 #: ../ui/src/emails/SuggestedDraftCard.tsx:97
 #, fuzzy
@@ -3578,7 +3578,7 @@ msgstr "ワークスペースのオーナーのみが請求を管理できます
 msgid "Open"
 msgstr "開く"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:284
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:256
 #: ../../apps/mobile/src/components/DraftSheet.tsx:97
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:274
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:284
@@ -3589,7 +3589,7 @@ msgstr "開く"
 msgid "Open in Gmail"
 msgstr "Gmailで開く"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:282
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:254
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:274
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:284
 #: ../ui/src/emails/ThreadPreview.tsx:119
@@ -3828,6 +3828,11 @@ msgstr "プランは閲覧専用です。ワークスペースの管理者のみ
 #, fuzzy
 msgid "Plan nodes"
 msgstr "プランノード"
+
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:285
+#, fuzzy
+msgid "Plan sorting"
+msgstr "仕分けプラン"
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:129
 #: ../../apps/mobile/app/(app)/subscription.tsx:134
@@ -4104,7 +4109,7 @@ msgstr "{0}を削除"
 msgid "Remove {email} from blacklist"
 msgstr "ブラックリストから{email}を削除"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:223
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:225
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:243
 #: ../../apps/mobile/src/components/ThreadRow.tsx:57
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:234
@@ -4258,7 +4263,7 @@ msgstr "スレッドリストのサイズを変更"
 msgid "Resources"
 msgstr "リソース"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:358
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:347
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:345
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:373
 #, fuzzy
@@ -5046,10 +5051,15 @@ msgstr "これによりGmail連携が解除され、同期されたすべての�
 msgid "This thread cannot be sorted yet. Add at least {TAXONOMY_MIN_NON_ROOT_NODES} categories to your plan to begin routing."
 msgstr "このスレッドはまだソートできません。ルーティングを開始するには、プランに少なくとも{TAXONOMY_MIN_NON_ROOT_NODES}個のカテゴリを追加してください。"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:302
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:290
 #, fuzzy
 msgid "This thread hasn't been sorted yet."
 msgstr "このスレッドはまだソートされていません。"
+
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:278
+#, fuzzy
+msgid "This thread hasn't been sorted yet. Create a sorting plan so Amarnai knows where to file it."
+msgstr "このスレッドはまだ仕分けされていません。Amarnaiがどこに仕分けすればよいか分かるよう、仕分けプランを作成してください。"
 
 #: ../../apps/mobile/src/components/RationaleCard.tsx:46
 msgid "This thread is waiting to be routed."
@@ -5657,7 +5667,7 @@ msgstr "ワークスペースの種類"
 msgid "Workspaces included"
 msgstr "含まれるワークスペース"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:350
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:339
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:168
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:361
 #: ../ui/src/emails/ThreadPreview.tsx:181

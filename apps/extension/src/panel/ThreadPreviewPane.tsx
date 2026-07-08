@@ -6,9 +6,10 @@ import type { ApiClient, Draft } from "@amarnai/api-client";
 import type { FolderItem, ThreadItem } from "@amarnai/ui/emails";
 import { RationaleCard, MessageCard, SuggestedDraftCard, PreviewDoneBar } from "@amarnai/ui/emails";
 import { GoogleGIcon, OutlookIcon } from "@amarnai/ui";
-import { formatQuotaResetDate } from "@amarnai/shared";
+import { formatQuotaResetDate, TAXONOMY_MIN_NON_ROOT_NODES } from "@amarnai/shared";
 import { openThreadInMail } from "../gmail/openInGmail";
 import { SortNowButton } from "./SortNowButton";
+import { WEB_APP_URL } from "../config";
 
 type DraftState = "idle" | "loading" | "ready" | "error";
 
@@ -269,10 +270,27 @@ export function ThreadPreviewPane({
         />
 
         {isUnsorted ? (
-          <div className="ax-sort-now-wrap">
-            <p><Trans>This thread hasn't been sorted yet.</Trans></p>
-            <SortNowButton api={api} workspaceId={workspaceId} threadId={thread.id} />
-          </div>
+          routableNodeCount < TAXONOMY_MIN_NON_ROOT_NODES ? (
+            // Taxonomy too weak to route into (same threshold the web app uses to
+            // gate "Route now"), so triage would no-op. Send the user to the web
+            // app to build out their sorting plan first.
+            <div className="ax-sort-now-wrap">
+              <p><Trans>This thread hasn't been sorted yet. Create a sorting plan so Amarnai knows where to file it.</Trans></p>
+              <a
+                className="ax-btn ax-btn-secondary ax-sort-now"
+                href={`${WEB_APP_URL}/plan`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Trans>Plan sorting</Trans>
+              </a>
+            </div>
+          ) : (
+            <div className="ax-sort-now-wrap">
+              <p><Trans>This thread hasn't been sorted yet.</Trans></p>
+              <SortNowButton api={api} workspaceId={workspaceId} threadId={thread.id} />
+            </div>
+          )
         ) : (
           <RationaleCard
             thread={enrichedThread}

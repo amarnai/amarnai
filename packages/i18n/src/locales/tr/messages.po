@@ -184,7 +184,7 @@ msgid "{providerName} Inbox"
 msgstr "{providerName} Gelen Kutusu"
 
 #. placeholder {0}: draftQuota.limit
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:341
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:330
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:351
 #, fuzzy
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
@@ -918,7 +918,7 @@ msgstr "Aziru,\n"
 "\n"
 "Saygılarımızla,"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:217
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:219
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:25
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:230
@@ -927,7 +927,7 @@ msgstr "Aziru,\n"
 msgid "Back"
 msgstr "Geri"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:213
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:215
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:225
 #: ../ui/src/emails/ThreadPreview.tsx:88
 #, fuzzy
@@ -1986,7 +1986,7 @@ msgstr "Taslak"
 msgid "Draft failed · tap to retry"
 msgstr "Taslak oluşturulamadı · yeniden denemek için dokunun"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:356
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:345
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:367
 #, fuzzy
 msgid "Draft generation failed. Try again."
@@ -2519,7 +2519,7 @@ msgstr "Yeni taslak oluştur. Aylık kullanım hakkınızdan birini kullanır."
 msgid "Generate a plan from your inbox"
 msgstr "Gelen kutunuzdan plan oluştur"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:335
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:324
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:146
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:345
 #: ../ui/src/emails/ThreadPreview.tsx:174
@@ -3218,7 +3218,7 @@ msgstr "Yönetici e-postaları: bire bir görüşmeler, performans değerlendirm
 msgid "Mark as done"
 msgstr "Tamamlandı olarak işaretle"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:223
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:225
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:244
 #: ../../apps/mobile/src/components/ThreadRow.tsx:58
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:234
@@ -3494,7 +3494,7 @@ msgstr "Yeni çalışma alanı adı"
 msgid "No drafts remaining"
 msgstr "Kalan taslak yok"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:340
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:329
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:350
 #: ../ui/src/emails/SuggestedDraftCard.tsx:97
 #, fuzzy
@@ -3706,7 +3706,7 @@ msgstr "Faturalandırmayı yalnızca çalışma alanı sahibi yönetebilir."
 msgid "Open"
 msgstr "Aç"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:284
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:256
 #: ../../apps/mobile/src/components/DraftSheet.tsx:97
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:274
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:284
@@ -3717,7 +3717,7 @@ msgstr "Aç"
 msgid "Open in Gmail"
 msgstr "Gmail'de Aç"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:282
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:254
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:274
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:284
 #: ../ui/src/emails/ThreadPreview.tsx:119
@@ -3959,6 +3959,10 @@ msgstr "Plan sadece görüntülenebilir. Sadece çalışma alanı yöneticileri 
 #: ../ui/src/pricing/planMessages.ts:66
 msgid "Plan nodes"
 msgstr "Plan düğümleri"
+
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:285
+msgid "Plan sorting"
+msgstr "Sıralama Planı"
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:129
 #: ../../apps/mobile/app/(app)/subscription.tsx:134
@@ -4248,7 +4252,7 @@ msgstr "{0} Kaldır"
 msgid "Remove {email} from blacklist"
 msgstr "Kara listeden {email} adresini kaldır"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:223
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:225
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:243
 #: ../../apps/mobile/src/components/ThreadRow.tsx:57
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:234
@@ -4408,7 +4412,7 @@ msgstr "Konu listesini boyutlandır"
 msgid "Resources"
 msgstr "Kaynaklar"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:358
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:347
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:345
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:373
 #, fuzzy
@@ -5223,9 +5227,13 @@ msgstr "Bu işlem, Gmail bağlantısını kaldırır, senkronize edilen tüm e-p
 msgid "This thread cannot be sorted yet. Add at least {TAXONOMY_MIN_NON_ROOT_NODES} categories to your plan to begin routing."
 msgstr "Bu e-posta dizisi henüz sıralanamaz. Yönlendirmeye başlamak için planınıza en az {TAXONOMY_MIN_NON_ROOT_NODES} kategori ekleyin."
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:302
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:290
 msgid "This thread hasn't been sorted yet."
 msgstr "Bu ileti dizisi henüz sıralanmadı."
+
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:278
+msgid "This thread hasn't been sorted yet. Create a sorting plan so Amarnai knows where to file it."
+msgstr "Bu sohbet dizisi henüz sıralanmadı. Amarnai'nin nereye dosyalayacağını belirlemek için bir sıralama planı oluşturun."
 
 #: ../../apps/mobile/src/components/RationaleCard.tsx:46
 #, fuzzy
@@ -5858,7 +5866,7 @@ msgstr "Çalışma alanı türü"
 msgid "Workspaces included"
 msgstr "Çalışma Alanları Dahil"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:350
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:339
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:168
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:361
 #: ../ui/src/emails/ThreadPreview.tsx:181

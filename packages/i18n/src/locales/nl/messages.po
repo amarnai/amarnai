@@ -177,7 +177,7 @@ msgid "{providerName} Inbox"
 msgstr "{providerName} Inbox"
 
 #. placeholder {0}: draftQuota.limit
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:341
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:330
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:351
 #, fuzzy
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
@@ -894,7 +894,7 @@ msgstr "Aziru,\n"
 "\n"
 "Met vriendelijke groet,"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:217
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:219
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:25
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:230
@@ -903,7 +903,7 @@ msgstr "Aziru,\n"
 msgid "Back"
 msgstr "Terug"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:213
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:215
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:225
 #: ../ui/src/emails/ThreadPreview.tsx:88
 #, fuzzy
@@ -1925,7 +1925,7 @@ msgstr "Concept"
 msgid "Draft failed · tap to retry"
 msgstr "Concept mislukt · tik om opnieuw te proberen"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:356
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:345
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:367
 #, fuzzy
 msgid "Draft generation failed. Try again."
@@ -2433,7 +2433,7 @@ msgstr "Genereer een nieuw concept. Dit telt mee voor je maandelijkse tegoed."
 msgid "Generate a plan from your inbox"
 msgstr "Genereer een plan vanuit je inbox"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:335
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:324
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:146
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:345
 #: ../ui/src/emails/ThreadPreview.tsx:174
@@ -3109,7 +3109,7 @@ msgstr "E-mails van managers: een-op-eens, functioneringsgesprekken en feedback.
 msgid "Mark as done"
 msgstr "Markeren als gereed"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:223
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:225
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:244
 #: ../../apps/mobile/src/components/ThreadRow.tsx:58
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:234
@@ -3374,7 +3374,7 @@ msgstr "Nieuwe werkruimtenaam"
 msgid "No drafts remaining"
 msgstr "Geen concepten meer"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:340
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:329
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:350
 #: ../ui/src/emails/SuggestedDraftCard.tsx:97
 #, fuzzy
@@ -3578,7 +3578,7 @@ msgstr "Alleen de eigenaar van de werkruimte kan de facturatie beheren."
 msgid "Open"
 msgstr "Open"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:284
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:256
 #: ../../apps/mobile/src/components/DraftSheet.tsx:97
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:274
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:284
@@ -3589,7 +3589,7 @@ msgstr "Open"
 msgid "Open in Gmail"
 msgstr "Openen in Gmail"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:282
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:254
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:274
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:284
 #: ../ui/src/emails/ThreadPreview.tsx:119
@@ -3827,6 +3827,11 @@ msgstr "Het plan is alleen-lezen. Alleen werkruimtebeheerders kunnen het bewerke
 #, fuzzy
 msgid "Plan nodes"
 msgstr "Plannodes"
+
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:285
+#, fuzzy
+msgid "Plan sorting"
+msgstr "Sorteren plannen"
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:129
 #: ../../apps/mobile/app/(app)/subscription.tsx:134
@@ -4102,7 +4107,7 @@ msgstr "{0} verwijderen"
 msgid "Remove {email} from blacklist"
 msgstr "{email} van de zwarte lijst verwijderen"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:223
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:225
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:243
 #: ../../apps/mobile/src/components/ThreadRow.tsx:57
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:234
@@ -4255,7 +4260,7 @@ msgstr "Lijst met gesprekken aanpassen"
 msgid "Resources"
 msgstr "Bronnen"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:358
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:347
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:345
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:373
 #, fuzzy
@@ -5043,10 +5048,15 @@ msgstr "Hiermee wordt de Gmail-verbinding verbroken, alle gesynchroniseerde e-ma
 msgid "This thread cannot be sorted yet. Add at least {TAXONOMY_MIN_NON_ROOT_NODES} categories to your plan to begin routing."
 msgstr "Dit gesprek kan nog niet worden gesorteerd. Voeg minstens {TAXONOMY_MIN_NON_ROOT_NODES} categorieën toe aan je abonnement om te beginnen met routeren."
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:302
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:290
 #, fuzzy
 msgid "This thread hasn't been sorted yet."
 msgstr "Dit gesprek is nog niet gesorteerd."
+
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:278
+#, fuzzy
+msgid "This thread hasn't been sorted yet. Create a sorting plan so Amarnai knows where to file it."
+msgstr "Dit gesprek is nog niet gesorteerd. Maak een sorteerplan zodat Amarnai weet waar het naartoe moet."
 
 #: ../../apps/mobile/src/components/RationaleCard.tsx:46
 msgid "This thread is waiting to be routed."
@@ -5654,7 +5664,7 @@ msgstr "Workspacetype"
 msgid "Workspaces included"
 msgstr "Inbegrepen workspaces"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:350
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:339
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:168
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:361
 #: ../ui/src/emails/ThreadPreview.tsx:181

@@ -177,7 +177,7 @@ msgid "{providerName} Inbox"
 msgstr "Caixa de Entrada do {providerName}"
 
 #. placeholder {0}: draftQuota.limit
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:341
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:330
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:351
 #, fuzzy
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
@@ -894,7 +894,7 @@ msgstr "Aziru,\n"
 "\n"
 "Saudações,"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:217
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:219
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:25
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:230
@@ -903,7 +903,7 @@ msgstr "Aziru,\n"
 msgid "Back"
 msgstr "Voltar"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:213
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:215
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:225
 #: ../ui/src/emails/ThreadPreview.tsx:88
 #, fuzzy
@@ -1925,7 +1925,7 @@ msgstr "Rascunho"
 msgid "Draft failed · tap to retry"
 msgstr "Rascunho falhou · toque para tentar novamente"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:356
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:345
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:367
 #, fuzzy
 msgid "Draft generation failed. Try again."
@@ -2433,7 +2433,7 @@ msgstr "Gerar novo rascunho. Usa uma da sua cota mensal"
 msgid "Generate a plan from your inbox"
 msgstr "Gerar um plano a partir da sua caixa de entrada"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:335
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:324
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:146
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:345
 #: ../ui/src/emails/ThreadPreview.tsx:174
@@ -3109,7 +3109,7 @@ msgstr "E-mails de gerentes: reuniões individuais, avaliações de desempenho e
 msgid "Mark as done"
 msgstr "Marcar como concluído"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:223
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:225
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:244
 #: ../../apps/mobile/src/components/ThreadRow.tsx:58
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:234
@@ -3374,7 +3374,7 @@ msgstr "Novo nome do espaço de trabalho"
 msgid "No drafts remaining"
 msgstr "Nenhum rascunho restante"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:340
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:329
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:350
 #: ../ui/src/emails/SuggestedDraftCard.tsx:97
 #, fuzzy
@@ -3578,7 +3578,7 @@ msgstr "Apenas o proprietário do workspace pode gerenciar o faturamento."
 msgid "Open"
 msgstr "Abrir"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:284
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:256
 #: ../../apps/mobile/src/components/DraftSheet.tsx:97
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:274
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:284
@@ -3589,7 +3589,7 @@ msgstr "Abrir"
 msgid "Open in Gmail"
 msgstr "Abrir no Gmail"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:282
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:254
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:274
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:284
 #: ../ui/src/emails/ThreadPreview.tsx:119
@@ -3828,6 +3828,11 @@ msgstr "O plano é somente leitura. Somente administradores do espaço de trabal
 #, fuzzy
 msgid "Plan nodes"
 msgstr "Nós do plano"
+
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:285
+#, fuzzy
+msgid "Plan sorting"
+msgstr "Plano de Classificação"
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:129
 #: ../../apps/mobile/app/(app)/subscription.tsx:134
@@ -4103,7 +4108,7 @@ msgstr "Remover {0}"
 msgid "Remove {email} from blacklist"
 msgstr "Remover {email} da lista negra"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:223
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:225
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:243
 #: ../../apps/mobile/src/components/ThreadRow.tsx:57
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:234
@@ -4257,7 +4262,7 @@ msgstr "Redimensionar a lista de conversas"
 msgid "Resources"
 msgstr "Recursos"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:358
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:347
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:345
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:373
 #, fuzzy
@@ -5045,10 +5050,15 @@ msgstr "Isso remove a conexão com o Gmail, exclui todos os e-mails sincronizado
 msgid "This thread cannot be sorted yet. Add at least {TAXONOMY_MIN_NON_ROOT_NODES} categories to your plan to begin routing."
 msgstr "Esta conversa ainda não pode ser classificada. Adicione pelo menos {TAXONOMY_MIN_NON_ROOT_NODES} categorias ao seu plano para começar o encaminhamento."
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:302
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:290
 #, fuzzy
 msgid "This thread hasn't been sorted yet."
 msgstr "Esta conversa ainda não foi organizada."
+
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:278
+#, fuzzy
+msgid "This thread hasn't been sorted yet. Create a sorting plan so Amarnai knows where to file it."
+msgstr "Esta conversa ainda não foi classificada. Crie um plano de classificação para que Amarnai saiba onde arquivá-la."
 
 #: ../../apps/mobile/src/components/RationaleCard.tsx:46
 msgid "This thread is waiting to be routed."
@@ -5656,7 +5666,7 @@ msgstr "Tipo de workspace"
 msgid "Workspaces included"
 msgstr "Workspaces incluídos"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:350
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:339
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:168
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:361
 #: ../ui/src/emails/ThreadPreview.tsx:181

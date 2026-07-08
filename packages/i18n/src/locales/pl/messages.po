@@ -184,7 +184,7 @@ msgid "{providerName} Inbox"
 msgstr "Skrzynka odbiorcza {providerName}"
 
 #. placeholder {0}: draftQuota.limit
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:341
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:330
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:351
 #, fuzzy
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
@@ -918,7 +918,7 @@ msgstr "Aziru,\n"
 "\n"
 "Z wyrazami szacunku,"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:217
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:219
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:25
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:230
@@ -927,7 +927,7 @@ msgstr "Aziru,\n"
 msgid "Back"
 msgstr "Wróć"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:213
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:215
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:225
 #: ../ui/src/emails/ThreadPreview.tsx:88
 #, fuzzy
@@ -1986,7 +1986,7 @@ msgstr "Szkic"
 msgid "Draft failed · tap to retry"
 msgstr "Szkicowanie nie powiodło się · stuknij, aby ponowić"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:356
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:345
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:367
 #, fuzzy
 msgid "Draft generation failed. Try again."
@@ -2519,7 +2519,7 @@ msgstr "Wygeneruj nowy szkic. Zalicza się do miesięcznego limitu."
 msgid "Generate a plan from your inbox"
 msgstr "Wygeneruj plan ze skrzynki odbiorczej"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:335
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:324
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:146
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:345
 #: ../ui/src/emails/ThreadPreview.tsx:174
@@ -3218,7 +3218,7 @@ msgstr "E-maile od menedżerów: spotkania indywidualne, oceny wydajności i inf
 msgid "Mark as done"
 msgstr "Oznacz jako ukończone"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:223
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:225
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:244
 #: ../../apps/mobile/src/components/ThreadRow.tsx:58
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:234
@@ -3494,7 +3494,7 @@ msgstr "Nazwa nowego obszaru roboczego"
 msgid "No drafts remaining"
 msgstr "Brak wersji roboczych"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:340
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:329
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:350
 #: ../ui/src/emails/SuggestedDraftCard.tsx:97
 #, fuzzy
@@ -3706,7 +3706,7 @@ msgstr "Tylko właściciel obszaru roboczego może zarządzać płatnościami."
 msgid "Open"
 msgstr "Otwórz"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:284
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:256
 #: ../../apps/mobile/src/components/DraftSheet.tsx:97
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:274
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:284
@@ -3717,7 +3717,7 @@ msgstr "Otwórz"
 msgid "Open in Gmail"
 msgstr "Otwórz w Gmailu"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:282
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:254
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:274
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:284
 #: ../ui/src/emails/ThreadPreview.tsx:119
@@ -3959,6 +3959,10 @@ msgstr "Plan jest tylko do odczytu. Tylko administratorzy obszaru roboczego mog�
 #: ../ui/src/pricing/planMessages.ts:66
 msgid "Plan nodes"
 msgstr "Węzły planu"
+
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:285
+msgid "Plan sorting"
+msgstr "Zaplanuj sortowanie"
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:129
 #: ../../apps/mobile/app/(app)/subscription.tsx:134
@@ -4248,7 +4252,7 @@ msgstr "Usuń {0}"
 msgid "Remove {email} from blacklist"
 msgstr "Usuń {email} z czarnej listy"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:223
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:225
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:243
 #: ../../apps/mobile/src/components/ThreadRow.tsx:57
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:234
@@ -4408,7 +4412,7 @@ msgstr "Zmień rozmiar listy wątków"
 msgid "Resources"
 msgstr "Zasoby"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:358
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:347
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:345
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:373
 #, fuzzy
@@ -5223,9 +5227,13 @@ msgstr "Spowoduje to usunięcie połączenia z Gmailem, usunięcie wszystkich zs
 msgid "This thread cannot be sorted yet. Add at least {TAXONOMY_MIN_NON_ROOT_NODES} categories to your plan to begin routing."
 msgstr "Tego wątku nie można jeszcze posortować. Dodaj co najmniej {TAXONOMY_MIN_NON_ROOT_NODES} kategorii do swojego planu, aby rozpocząć routing."
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:302
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:290
 msgid "This thread hasn't been sorted yet."
 msgstr "Ten wątek nie został jeszcze posortowany."
+
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:278
+msgid "This thread hasn't been sorted yet. Create a sorting plan so Amarnai knows where to file it."
+msgstr "Wątek nie został jeszcze posortowany. Utwórz plan sortowania, aby Amarnai wiedziało, gdzie go przypisać."
 
 #: ../../apps/mobile/src/components/RationaleCard.tsx:46
 #, fuzzy
@@ -5858,7 +5866,7 @@ msgstr "Typ obszaru roboczego"
 msgid "Workspaces included"
 msgstr "Przestrzenie robocze w zestawie"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:350
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:339
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:168
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:361
 #: ../ui/src/emails/ThreadPreview.tsx:181

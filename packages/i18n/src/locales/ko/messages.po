@@ -184,7 +184,7 @@ msgid "{providerName} Inbox"
 msgstr "{providerName} 받은 편지함"
 
 #. placeholder {0}: draftQuota.limit
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:341
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:330
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:351
 #, fuzzy
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
@@ -919,7 +919,7 @@ msgstr "아지루,\n"
 "\n"
 "안녕히,"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:217
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:219
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:25
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:230
@@ -928,7 +928,7 @@ msgstr "아지루,\n"
 msgid "Back"
 msgstr "뒤로"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:213
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:215
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:225
 #: ../ui/src/emails/ThreadPreview.tsx:88
 #, fuzzy
@@ -1987,7 +1987,7 @@ msgstr "초안"
 msgid "Draft failed · tap to retry"
 msgstr "초안 실패 · 탭하여 다시 시도"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:356
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:345
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:367
 #, fuzzy
 msgid "Draft generation failed. Try again."
@@ -2520,7 +2520,7 @@ msgstr "새 초안 생성. 월간 할당량 1회가 소진됩니다."
 msgid "Generate a plan from your inbox"
 msgstr "받은 편지함에서 계획 생성"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:335
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:324
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:146
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:345
 #: ../ui/src/emails/ThreadPreview.tsx:174
@@ -3219,7 +3219,7 @@ msgstr "관리자 이메일: 일대일 면담, 성과 평가 및 피드백."
 msgid "Mark as done"
 msgstr "완료로 표시"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:223
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:225
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:244
 #: ../../apps/mobile/src/components/ThreadRow.tsx:58
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:234
@@ -3495,7 +3495,7 @@ msgstr "새 워크스페이스 이름"
 msgid "No drafts remaining"
 msgstr "남은 초안 없음"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:340
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:329
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:350
 #: ../ui/src/emails/SuggestedDraftCard.tsx:97
 #, fuzzy
@@ -3707,7 +3707,7 @@ msgstr "워크스페이스 소유자만 결제를 관리할 수 있습니다."
 msgid "Open"
 msgstr "열기"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:284
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:256
 #: ../../apps/mobile/src/components/DraftSheet.tsx:97
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:274
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:284
@@ -3718,7 +3718,7 @@ msgstr "열기"
 msgid "Open in Gmail"
 msgstr "Gmail에서 열기"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:282
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:254
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:274
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:284
 #: ../ui/src/emails/ThreadPreview.tsx:119
@@ -3960,6 +3960,10 @@ msgstr "플랜은 보기 전용입니다. 워크스페이스 관리자만 편집
 #: ../ui/src/pricing/planMessages.ts:66
 msgid "Plan nodes"
 msgstr "플랜 노드"
+
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:285
+msgid "Plan sorting"
+msgstr "분류 계획"
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:129
 #: ../../apps/mobile/app/(app)/subscription.tsx:134
@@ -4249,7 +4253,7 @@ msgstr "{0} 제거"
 msgid "Remove {email} from blacklist"
 msgstr "{email}을(를) 블랙리스트에서 제거"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:223
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:225
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:243
 #: ../../apps/mobile/src/components/ThreadRow.tsx:57
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:234
@@ -4409,7 +4413,7 @@ msgstr "스레드 목록 크기 조절"
 msgid "Resources"
 msgstr "자료"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:358
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:347
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:345
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:373
 #, fuzzy
@@ -5224,9 +5228,13 @@ msgstr "Gmail 연결이 제거되고, 동기화된 모든 이메일이 삭제되
 msgid "This thread cannot be sorted yet. Add at least {TAXONOMY_MIN_NON_ROOT_NODES} categories to your plan to begin routing."
 msgstr "이 스레드는 아직 분류할 수 없습니다. 분류를 시작하려면 플랜에 최소 {TAXONOMY_MIN_NON_ROOT_NODES}개의 카테고리를 추가하세요."
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:302
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:290
 msgid "This thread hasn't been sorted yet."
 msgstr "이 스레드는 아직 정리되지 않았습니다."
+
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:278
+msgid "This thread hasn't been sorted yet. Create a sorting plan so Amarnai knows where to file it."
+msgstr "이 스레드는 아직 분류되지 않았습니다. Amarnai가 어디에 분류해야 할지 알 수 있도록 분류 계획을 만드세요."
 
 #: ../../apps/mobile/src/components/RationaleCard.tsx:46
 #, fuzzy
@@ -5858,7 +5866,7 @@ msgstr "워크스페이스 유형"
 msgid "Workspaces included"
 msgstr "워크스페이스 포함"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:350
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:339
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:168
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:361
 #: ../ui/src/emails/ThreadPreview.tsx:181

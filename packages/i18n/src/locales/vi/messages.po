@@ -184,7 +184,7 @@ msgid "{providerName} Inbox"
 msgstr "Hộp thư {providerName}"
 
 #. placeholder {0}: draftQuota.limit
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:341
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:330
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:351
 #, fuzzy
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
@@ -918,7 +918,7 @@ msgstr "Aziru,\n"
 "\n"
 "Trân trọng,"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:217
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:219
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:25
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:230
@@ -927,7 +927,7 @@ msgstr "Aziru,\n"
 msgid "Back"
 msgstr "Quay lại"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:213
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:215
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:225
 #: ../ui/src/emails/ThreadPreview.tsx:88
 #, fuzzy
@@ -1986,7 +1986,7 @@ msgstr "Bản nháp"
 msgid "Draft failed · tap to retry"
 msgstr "Bản nháp thất bại · chạm để thử lại"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:356
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:345
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:367
 #, fuzzy
 msgid "Draft generation failed. Try again."
@@ -2519,7 +2519,7 @@ msgstr "Tạo bản nháp mới. Tính vào hạn mức hàng tháng của bạn
 msgid "Generate a plan from your inbox"
 msgstr "Tạo kế hoạch từ hộp thư đến của bạn"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:335
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:324
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:146
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:345
 #: ../ui/src/emails/ThreadPreview.tsx:174
@@ -3218,7 +3218,7 @@ msgstr "Email quản lý: các cuộc họp 1-1, đánh giá hiệu suất và p
 msgid "Mark as done"
 msgstr "Đánh dấu đã hoàn thành"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:223
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:225
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:244
 #: ../../apps/mobile/src/components/ThreadRow.tsx:58
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:234
@@ -3494,7 +3494,7 @@ msgstr "Tên không gian làm việc mới"
 msgid "No drafts remaining"
 msgstr "Không còn bản nháp nào"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:340
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:329
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:350
 #: ../ui/src/emails/SuggestedDraftCard.tsx:97
 #, fuzzy
@@ -3706,7 +3706,7 @@ msgstr "Chỉ chủ sở hữu không gian làm việc mới có thể quản l�
 msgid "Open"
 msgstr "Mở"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:284
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:256
 #: ../../apps/mobile/src/components/DraftSheet.tsx:97
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:274
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:284
@@ -3717,7 +3717,7 @@ msgstr "Mở"
 msgid "Open in Gmail"
 msgstr "Mở trong Gmail"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:282
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:254
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:274
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:284
 #: ../ui/src/emails/ThreadPreview.tsx:119
@@ -3959,6 +3959,10 @@ msgstr "Kế hoạch này chỉ ở chế độ xem. Chỉ quản trị viên kh
 #: ../ui/src/pricing/planMessages.ts:66
 msgid "Plan nodes"
 msgstr "Nút kế hoạch"
+
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:285
+msgid "Plan sorting"
+msgstr "Lập kế hoạch phân loại"
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:129
 #: ../../apps/mobile/app/(app)/subscription.tsx:134
@@ -4248,7 +4252,7 @@ msgstr "Xóa {0}"
 msgid "Remove {email} from blacklist"
 msgstr "Gỡ {email} khỏi danh sách đen"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:223
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:225
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:243
 #: ../../apps/mobile/src/components/ThreadRow.tsx:57
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:234
@@ -4408,7 +4412,7 @@ msgstr "Điều chỉnh kích thước danh sách cuộc hội thoại"
 msgid "Resources"
 msgstr "Tài nguyên"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:358
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:347
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:345
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:373
 #, fuzzy
@@ -5223,9 +5227,13 @@ msgstr "Thao tác này sẽ xóa kết nối Gmail, tất cả email đã đồn
 msgid "This thread cannot be sorted yet. Add at least {TAXONOMY_MIN_NON_ROOT_NODES} categories to your plan to begin routing."
 msgstr "Luồng này chưa thể được sắp xếp. Vui lòng thêm ít nhất {TAXONOMY_MIN_NON_ROOT_NODES} danh mục vào gói của bạn để bắt đầu định tuyến."
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:302
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:290
 msgid "This thread hasn't been sorted yet."
 msgstr "Luồng này chưa được phân loại."
+
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:278
+msgid "This thread hasn't been sorted yet. Create a sorting plan so Amarnai knows where to file it."
+msgstr "Luồng này chưa được phân loại. Tạo kế hoạch phân loại để Amarnai biết nơi lưu trữ."
 
 #: ../../apps/mobile/src/components/RationaleCard.tsx:46
 #, fuzzy
@@ -5858,7 +5866,7 @@ msgstr "Loại không gian làm việc"
 msgid "Workspaces included"
 msgstr "Không gian làm việc bao gồm"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:350
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:339
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:168
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:361
 #: ../ui/src/emails/ThreadPreview.tsx:181
