@@ -16,16 +16,18 @@ type PoolItem = {
   subj: string;
   dest: string;
   tone: Tone;
+  avatar?: string | undefined;
 };
 
-// Hue and initials are presentation-only — everything else comes from demo-seed
-const THREAD_DISPLAY: Record<string, { hue: number; init: string }> = {
-  t1: { hue: 220, init: "BB" },
-  t2: { hue: 140, init: "AA" },
+// Hue and initials are presentation-only — everything else comes from demo-seed.
+// `avatar` overrides the initials chip with a photo when present.
+const THREAD_DISPLAY: Record<string, { hue: number; init: string; avatar?: string }> = {
+  t1: { hue: 220, init: "BB", avatar: "/burna-buriash-pfp.png" },
+  t2: { hue: 140, init: "AA", avatar: "/aziru-pfp.png" },
   t3: { hue: 65,  init: "BR" },
-  t4: { hue: 30,  init: "RH" },
-  t5: { hue: 55,  init: "AU" },
-  t6: { hue: 280, init: "TM" },
+  t4: { hue: 30,  init: "RH", avatar: "/rib-hadda-pfp.png" },
+  t5: { hue: 55,  init: "AU", avatar: "/abdi-heba-pfp.png" },
+  t6: { hue: 280, init: "TM", avatar: "/tushratta-pfp.png" },
 };
 
 function folderDest(
@@ -66,6 +68,7 @@ function buildPool(i18n: I18n): PoolItem[] {
       from: t.messages[0]!.fromName,
       init: display.init,
       hue: display.hue,
+      avatar: display.avatar,
       subj: t.subject,
       dest: folderDest(folders, t.folderId),
       tone,
@@ -234,9 +237,13 @@ export function HeroFeedCard() {
             <span
               className="ld-feed-ava"
               // 54% lightness keeps the white initials at WCAG AA 4.5:1 across hues.
-              style={{ background: `oklch(54% 0.11 ${row.hue})` }}
+              style={row.avatar ? undefined : { background: `oklch(54% 0.11 ${row.hue})` }}
             >
-              {row.init}
+              {row.avatar ? (
+                <img className="ld-feed-ava-img" src={row.avatar} alt="" />
+              ) : (
+                row.init
+              )}
             </span>
             <span className="ld-feed-meta">
               <span className="ld-feed-from">{row.from}</span>
