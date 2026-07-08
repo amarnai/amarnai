@@ -62,9 +62,9 @@ export function buildManifest({
     // ID comes from gecko.id).
     return {
       manifest_version: 3,
-      name: "Amarnai: Gmail, sorted your way",
+      name: "Amarnai: Sort emails your way",
       description:
-        "Amarnai sorts your Gmail, drafts replies for your approval, and takes you to any thread without leaving the tab.",
+        "Amarnai sorts your inbox, drafts replies for your approval, and takes you to any thread without leaving the tab.",
       version,
       action: { default_title: "Amarnai" },
       sidebar_action: {
@@ -92,9 +92,9 @@ export function buildManifest({
   // Chrome — byte-identical to the original single-target manifest.
   return {
     manifest_version: 3,
-    name: "Amarnai: Gmail, sorted your way",
+    name: "Amarnai: Sort emails your way",
     description:
-      "Amarnai sorts your Gmail, drafts replies for your approval, and takes you to any thread without leaving the tab.",
+      "Amarnai sorts your inbox, drafts replies for your approval, and takes you to any thread without leaving the tab.",
     ...(key ? { key } : {}),
     version,
     minimum_chrome_version: "116",

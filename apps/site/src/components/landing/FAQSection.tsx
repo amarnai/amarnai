@@ -8,8 +8,8 @@ import type { MessageDescriptor } from "@lingui/core";
 
 const FAQ_ITEMS: { q: MessageDescriptor; a: MessageDescriptor }[] = [
   {
-    q: msg`Is connecting my Gmail to Amarnai safe?`,
-    a: msg`Yes. Amarnai connects with Gmail's read-only scope, so it can read your threads but cannot send, delete, label, or change anything in your account. It keeps only what it needs to sort and display threads: subjects, participants, snippets, and the labels and reasoning it generates. Full message bodies are fetched when needed and processed in memory, not stored, and OAuth tokens are encrypted at rest.`,
+    q: msg`Is connecting my inbox to Amarnai safe?`,
+    a: msg`Yes. Amarnai connects with a read-only scope, so it can read your threads but cannot send, delete, label, or change anything in your account. It keeps only what it needs to sort and display threads: subjects, participants, snippets, and the labels and reasoning it generates. Full message bodies are fetched when needed and processed in memory, not stored, and OAuth tokens are encrypted at rest.`,
   },
   {
     q: msg`How do I know it's safe?`,
@@ -17,7 +17,7 @@ const FAQ_ITEMS: { q: MessageDescriptor; a: MessageDescriptor }[] = [
   },
   {
     q: msg`How does Amarnai save me time?`,
-    a: msg`Instead of scanning a crowded inbox, you open Amarnai and find your threads already grouped into the folders you care about, so you can work through customer questions, investor updates, or hiring replies in focused batches. Each thread comes with a suggested folder and the reasoning behind it, and you can draft a reply or jump straight to the thread in Gmail with one click. Sorting that used to take an hour takes minutes.`,
+    a: msg`Instead of scanning a crowded inbox, you open Amarnai and find your threads already grouped into the folders you care about, so you can work through customer questions, investor updates, or hiring replies in focused batches. Each thread comes with a suggested folder and the reasoning behind it, and you can draft a reply or jump straight to the thread in your inbox with one click. Sorting that used to take an hour takes minutes.`,
   },
   {
     q: msg`How does Amarnai's plan work?`,
@@ -28,12 +28,12 @@ const FAQ_ITEMS: { q: MessageDescriptor; a: MessageDescriptor }[] = [
     a: msg`Not necessarily. Amarnai can generate a complete plan for you from your inbox, with one click. You can also start from a ready-made template. Most people generate a plan, rename two or three folders, and they're done.`,
   },
   {
-    q: msg`How is Amarnai different from Gmail's filters and labels?`,
-    a: msg`Gmail filters just slap a label on each message and leave it in the same crowded inbox. Amarnai reads every thread the way a person would and lays them out in a clean workspace where related threads sit together, each with the reasoning behind its placement, so you get a calmer view instead of one more buried label. Spam and promotions are kept out automatically unless you turn them on in settings, and anything Amarnai is unsure about is flagged for your review.`,
+    q: msg`How is Amarnai different from Gmail and Outlook filters?`,
+    a: msg`Gmail and Outlook filters just slap a label or category on each message and leave it in the same crowded inbox. Amarnai reads every thread the way a person would and lays them out in a clean workspace where related threads sit together, each with the reasoning behind its placement, so you get a calmer view instead of one more buried label. Spam and promotions are kept out automatically unless you turn them on in settings, and anything Amarnai is unsure about is flagged for your review.`,
   },
   {
     q: msg`Does Amarnai work with Outlook?`,
-    a: msg`Today Amarnai connects to Gmail. Outlook support is on the way, and it will work the same read-only way: Amarnai reads your threads to sort them and never sends, deletes, or changes anything in your account.`,
+    a: msg`Yes. Amarnai works with both Gmail and Outlook, each connected the same read-only way: Amarnai reads your threads to sort them and never sends, deletes, or changes anything in your account.`,
   },
   {
     q: msg`Can Amarnai sort my existing inbox, not just new mail?`,
@@ -45,7 +45,7 @@ const FAQ_ITEMS: { q: MessageDescriptor; a: MessageDescriptor }[] = [
   },
   {
     q: msg`Can Amarnai draft replies?`,
-    a: msg`Yes. Open a thread, press Generate draft reply, and a suggested draft appears in Amarnai for you to read and edit. Nothing is ever sent for you: when you are happy with it, you can jump to the thread in Gmail with one click and paste your reply there to send. Each subscription includes a monthly draft allowance.`,
+    a: msg`Yes. Open a thread, press Generate draft reply, and a suggested draft appears in Amarnai for you to read and edit. Nothing is ever sent for you: when you are happy with it, you can jump to the thread in your inbox with one click and paste your reply there to send. Each subscription includes a monthly draft allowance.`,
   },
   {
     q: msg`How is Amarnai's pricing structured?`,

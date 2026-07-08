@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description: "How Amarnai collects, uses, and protects your data.",
 };
 
-const LAST_UPDATED = "June 28, 2026";
+const LAST_UPDATED = "July 8, 2026";
 
 export default function PrivacyPage() {
   return (
@@ -33,8 +33,9 @@ export default function PrivacyPage() {
         , including the Limited Use requirements.
       </p>
       <p>
-        Specifically, Gmail data accessed through the Google API is used solely to
-        provide the email triage and sorting features visible in the Amarnai interface.
+        Specifically, Gmail data accessed through the Google API, and Outlook data
+        accessed through the Microsoft Graph API, is used solely to provide the email
+        triage and sorting features visible in the Amarnai interface.
         It is not used for advertising, transferred to third parties for purposes
         unrelated to providing the Service, or used to train generalized AI or machine
         learning models.
@@ -45,17 +46,17 @@ export default function PrivacyPage() {
       <ul>
         <li>
           <strong>Account information:</strong> your name and email address, obtained
-          from Google at sign-in.
+          from Google or Microsoft at sign-in.
         </li>
         <li>
-          <strong>Gmail thread metadata and content:</strong> subject lines, sender and
-          recipient addresses, message bodies, and timestamps, fetched via the Gmail
-          API to classify and sort your threads.
+          <strong>Gmail or Outlook thread metadata and content:</strong> subject lines,
+          sender and recipient addresses, message bodies, and timestamps, fetched via the
+          Gmail API or Microsoft Graph API to classify and sort your threads.
         </li>
         <li>
           <strong>OAuth tokens:</strong> encrypted refresh tokens that allow Amarnai to
-          access Gmail on your behalf. These are stored encrypted at rest and never
-          logged.
+          access Gmail or Outlook on your behalf. These are stored encrypted at rest and
+          never logged.
         </li>
         <li>
           <strong>Usage data:</strong> actions you take in the app (e.g., changing
@@ -68,7 +69,7 @@ export default function PrivacyPage() {
       </p>
 
       <h2>How We Use Your Data</h2>
-      <p>Gmail and account data is used exclusively to:</p>
+      <p>Gmail, Outlook, and account data is used exclusively to:</p>
       <ul>
         <li>Classify and sort your email threads using AI.</li>
         <li>Display threads and their assigned categories in the Amarnai UI.</li>
@@ -107,6 +108,10 @@ export default function PrivacyPage() {
           access your Gmail data with your permission.
         </li>
         <li>
+          <strong>Microsoft (Microsoft Graph API, OAuth 2.0):</strong> to authenticate
+          you and access your Outlook data with your permission.
+        </li>
+        <li>
           <strong>Anthropic:</strong> to classify email threads using AI. Governed by
           Anthropic&rsquo;s API data usage policy.
         </li>
@@ -116,8 +121,8 @@ export default function PrivacyPage() {
         </li>
       </ul>
       <p>
-        We do not share your email content or Gmail data with any third party except as
-        described above to provide the Service.
+        We do not share your email content, Gmail data, or Outlook data with any third
+        party except as described above to provide the Service.
       </p>
 
       <h2>Analytics</h2>
@@ -137,17 +142,17 @@ export default function PrivacyPage() {
         Thread metadata and content is retained while your account is active. When you
         delete your account, all of your data, including thread metadata and content, is
         permanently deleted as part of the deletion request, with no recovery period.
-        OAuth tokens are deleted immediately upon Gmail disconnection or account
-        deletion. Deletion is permanent and cannot be undone.
+        OAuth tokens are deleted immediately upon Gmail or Outlook disconnection or
+        account deletion. Deletion is permanent and cannot be undone.
       </p>
 
       <h2>Your Rights and Data Deletion</h2>
       <p>You can manage and delete your data at any time:</p>
       <ul>
         <li>
-          <strong>Disconnect Gmail:</strong> go to Settings in the Amarnai app and
-          click &ldquo;Disconnect Gmail&rdquo;. This immediately revokes our access and
-          deletes your stored OAuth token.
+          <strong>Disconnect your inbox:</strong> go to Settings in the Amarnai app and
+          click &ldquo;Disconnect Gmail&rdquo; or &ldquo;Disconnect Outlook&rdquo;. This
+          immediately revokes our access and deletes your stored OAuth token.
         </li>
         <li>
           <strong>Delete your account:</strong> go to Settings and click &ldquo;Delete
@@ -162,6 +167,17 @@ export default function PrivacyPage() {
             rel="noopener noreferrer"
           >
             myaccount.google.com/permissions
+          </a>{" "}
+          and remove Amarnai from the list of connected apps.
+        </li>
+        <li>
+          <strong>Revoke Microsoft access directly:</strong> visit{" "}
+          <a
+            href="https://account.live.com/consent/Manage"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            account.live.com/consent/Manage
           </a>{" "}
           and remove Amarnai from the list of connected apps.
         </li>

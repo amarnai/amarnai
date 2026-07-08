@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description: "Terms governing your use of Amarnai.",
 };
 
-const LAST_UPDATED = "June 16, 2026";
+const LAST_UPDATED = "July 8, 2026";
 
 export default function TermsPage() {
   return (
@@ -23,8 +23,8 @@ export default function TermsPage() {
 
       <h2>The Service</h2>
       <p>
-        Amarnai is an AI-assisted email triage tool. It connects to your Gmail account
-        with your permission and sorts, classifies, and displays your threads. Actions
+        Amarnai is an AI-assisted email triage tool. It connects to your Gmail or Outlook
+        account with your permission and sorts, classifies, and displays your threads. Actions
         that modify or send email always require explicit user confirmation.
       </p>
 
@@ -37,11 +37,11 @@ export default function TermsPage() {
         unauthorized access.
       </p>
 
-      <h2>Gmail Access</h2>
+      <h2>Mailbox Access</h2>
       <p>
         You grant Amarnai permission to access your Gmail account through Google&rsquo;s
-        OAuth 2.0 API. You can revoke this permission at any time from the Amarnai
-        Settings page or from{" "}
+        OAuth 2.0 API, or your Outlook account through Microsoft&rsquo;s Graph API. You
+        can revoke this permission at any time from the Amarnai Settings page, from{" "}
         <a
           href="https://myaccount.google.com/permissions"
           target="_blank"
@@ -49,11 +49,19 @@ export default function TermsPage() {
         >
           myaccount.google.com/permissions
         </a>
-        . Revoking access stops all Gmail-related features but does not delete your
+        , or from{" "}
+        <a
+          href="https://account.live.com/consent/Manage"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          account.live.com/consent/Manage
+        </a>
+        . Revoking access stops all mail-related features but does not delete your
         account.
       </p>
       <p>
-        Amarnai&rsquo;s use of Gmail data is governed by our{" "}
+        Amarnai&rsquo;s use of Gmail and Outlook data is governed by our{" "}
         <a href="/privacy">Privacy Policy</a> and the{" "}
         <a
           href="https://developers.google.com/terms/api-services-user-data-policy"

@@ -401,9 +401,7 @@ msgstr "Une nouvelle candidature a été reçue de Horemheb de Thèbes pour le p
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "Nous avons reçu une nouvelle candidature de Horemheb de Thèbes pour le poste de Chef de la Correspondance.\n"
-"\n"
-"Consultez la candidature à la Maison des Archives."
+msgstr "Nous avons reçu une nouvelle candidature de Horemheb de Thèbes pour le poste de Chef de la Correspondance.\n\nConsultez la candidature à la Maison des Archives."
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:387
 #, fuzzy
@@ -416,11 +414,7 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "Abdi-Heba,\n"
-"\n"
-"Je serai près du Delta la même semaine. Retrouvons-nous au relais le deuxième jour ; je suis libre le matin.\n"
-"\n"
-"D'ici là,"
+msgstr "Abdi-Heba,\n\nJe serai près du Delta la même semaine. Retrouvons-nous au relais le deuxième jour ; je suis libre le matin.\n\nD'ici là,"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
@@ -671,27 +665,46 @@ msgstr "Amarnai a perdu l'accès à votre boîte de réception. Appuyez pour rec
 
 #: ../../apps/extension/src/platform/HostPermissionGate.tsx:34
 #, fuzzy
-msgid "Amarnai needs access to its server and Gmail to show your inbox."
-msgstr "Amarnai nécessite l'accès à son serveur et à Gmail pour afficher votre boîte de réception."
+#~ msgid "Amarnai needs access to its server and Gmail to show your inbox."
+#~ msgstr "Amarnai nécessite l'accès à son serveur et à Gmail pour afficher votre boîte de réception."
 
 #: ../../apps/extension/src/App.tsx:52
 #: ../../apps/extension/src/auth/SignInScreen.tsx:13
-msgid "Amarnai needs access to its server and Gmail to work. Please allow access and try again."
-msgstr "Amarnai nécessite l'accès à son serveur et à Gmail pour fonctionner. Veuillez autoriser l'accès et réessayer."
+#~ msgid "Amarnai needs access to its server and Gmail to work. Please allow access and try again."
+#~ msgstr "Amarnai nécessite l'accès à son serveur et à Gmail pour fonctionner. Veuillez autoriser l'accès et réessayer."
+
+#: ../../apps/extension/src/platform/HostPermissionGate.tsx:34
+#, fuzzy
+msgid "Amarnai needs access to its server and your inbox to show your emails."
+msgstr "Amarnai a besoin d'accéder à son serveur et à votre boîte de réception pour afficher vos e-mails."
+
+#: ../../apps/extension/src/App.tsx:52
+#: ../../apps/extension/src/auth/SignInScreen.tsx:13
+msgid "Amarnai needs access to its server and your inbox to work. Please allow access and try again."
+msgstr "Amarnai a besoin d'accéder à son serveur et à votre boîte de réception pour fonctionner. Veuillez autoriser l'accès et réessayer."
 
 #: ../../apps/site/src/lib/seo.ts:63
 #, fuzzy
-msgid "Amarnai reads your Gmail, sorts every thread into the folders you define, and drafts replies for your approval. Reach inbox zero without the busywork."
-msgstr "Amarnai analyse votre Gmail, trie vos conversations dans les dossiers de votre choix et prépare vos réponses pour validation. Atteignez l'inbox zéro sans effort."
+#~ msgid "Amarnai reads your Gmail, sorts every thread into the folders you define, and drafts replies for your approval. Reach inbox zero without the busywork."
+#~ msgstr "Amarnai analyse votre Gmail, trie vos conversations dans les dossiers de votre choix et prépare vos réponses pour validation. Atteignez l'inbox zéro sans effort."
+
+#: ../../apps/site/src/lib/seo.ts:64
+msgid "Amarnai reads your inbox, sorts every thread into the folders you define, and drafts replies for your approval. Reach inbox zero without the busywork."
+msgstr "Amarnai lit votre boîte de réception, trie chaque conversation dans les dossiers que vous définissez et rédige des brouillons de réponses pour votre approbation. Atteignez la boîte de réception zéro sans les tâches superflues."
 
 #: ../../apps/site/src/lib/seo.ts:46
 #, fuzzy
-msgid "Amarnai sorts your Gmail into the folders you define, drafts replies for your approval, and explains every call so you reach inbox zero faster."
-msgstr "Amarnai classe votre Gmail dans vos dossiers, rédige les réponses pour validation et clarifie chaque appel. Atteignez l'inbox zéro plus vite."
+#~ msgid "Amarnai sorts your Gmail into the folders you define, drafts replies for your approval, and explains every call so you reach inbox zero faster."
+#~ msgstr "Amarnai classe votre Gmail dans vos dossiers, rédige les réponses pour validation et clarifie chaque appel. Atteignez l'inbox zéro plus vite."
 
 #: ../../apps/site/src/app/[locale]/page.tsx:50
 #~ msgid "Amarnai sorts your Gmail threads into folders you define, drafts replies for your approval, and explains every decision. Open-source and self-hostable."
 #~ msgstr "Amarnai trie vos conversations Gmail dans les dossiers que vous définissez, rédige des réponses pour votre approbation et explique chaque décision. Open source et auto-hébergeable."
+
+#: ../../apps/site/src/lib/seo.ts:46
+#, fuzzy
+msgid "Amarnai sorts your inbox into the folders you define, drafts replies for your approval, and explains every call so you reach inbox zero faster."
+msgstr "Amarnai trie votre boîte de réception dans les dossiers que vous définissez, rédige des brouillons de réponses pour votre approbation et explique chaque décision pour vous permettre d'atteindre la boîte de réception zéro plus rapidement."
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:104
 msgid "Amarnai will analyze your senders, labels, and subject keywords (never message bodies) to suggest a personalized set of folders. Review and edit before anything is applied."
@@ -703,8 +716,12 @@ msgid "Amarnai will analyze your senders, labels, and subject keywords (never me
 msgstr "Amarnai analysera vos expéditeurs, libellés et mots-clés d'objet (jamais les corps de message) pour suggérer un ensemble de dossiers personnalisé. Vous pouvez les examiner et les modifier avant toute application."
 
 #: ../../apps/site/src/lib/seo.ts:39
-msgid "Amarnai: AI Email Sorter for Gmail"
-msgstr "Amarnai : Votre trieur d'e-mails intelligent pour Gmail"
+#~ msgid "Amarnai: AI Email Sorter for Gmail"
+#~ msgstr "Amarnai : Votre trieur d'e-mails intelligent pour Gmail"
+
+#: ../../apps/site/src/lib/seo.ts:39
+msgid "Amarnai: AI Email Sorter for Gmail & Outlook"
+msgstr "Amarnai : Le trieur d'e-mails IA pour Gmail et Outlook."
 
 #: ../../apps/site/src/app/[locale]/page.tsx:29
 #~ msgid "Amarnai: AI email triage"
@@ -717,8 +734,13 @@ msgstr "Amarnai : Votre trieur d'e-mails intelligent pour Gmail"
 
 #: ../../apps/site/src/lib/seo.ts:40
 #, fuzzy
-msgid "Amarnai: Gmail, sorted your way"
-msgstr "Amarnai : Gmail, le tri personnalisé."
+#~ msgid "Amarnai: Gmail, sorted your way"
+#~ msgstr "Amarnai : Gmail, le tri personnalisé."
+
+#: ../../apps/site/src/lib/seo.ts:40
+#, fuzzy
+msgid "Amarnai: Sort emails your way"
+msgstr "Amarnai : Triez vos e-mails comme vous l'entendez."
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:68
 msgid "Analyzing your inbox and building a plan…"
@@ -887,11 +909,7 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "Aziru,\n"
-"\n"
-"Vos paroles d'amitié nous sont bien parvenues. Nous sommes disposés à entendre les propositions de la maison d'Amurru. Envoyez vos conditions par le prochain courrier.\n"
-"\n"
-"Avec nos salutations,"
+msgstr "Aziru,\n\nVos paroles d'amitié nous sont bien parvenues. Nous sommes disposés à entendre les propositions de la maison d'Amurru. Envoyez vos conditions par le prochain courrier.\n\nAvec nos salutations,"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:219
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
@@ -939,7 +957,7 @@ msgid "Billed monthly · 14-day free trial"
 msgstr "Facturé mensuellement · Essai gratuit de 14 jours"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:30
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:257
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:258
 msgid "Billing"
 msgstr "Facturation"
 
@@ -964,8 +982,12 @@ msgid "Board members, existing fund partners, and portfolio updates."
 msgstr "Membres du conseil, partenaires de fonds actuels et mises à jour du portefeuille."
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:385
-msgid "Browse emails easily through your folders. Generate draft replies and copy them to Gmail."
-msgstr "Parcourez facilement vos e-mails dans vos dossiers. Générez des brouillons de réponses et copiez-les dans Gmail."
+#~ msgid "Browse emails easily through your folders. Generate draft replies and copy them to Gmail."
+#~ msgstr "Parcourez facilement vos e-mails dans vos dossiers. Générez des brouillons de réponses et copiez-les dans Gmail."
+
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:386
+msgid "Browse emails easily through your folders. Generate draft replies and copy them to your inbox."
+msgstr "Parcourez facilement vos e-mails dans vos dossiers. Générez des brouillons de réponses et copiez-les dans votre boîte de réception."
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:283
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1403
@@ -1127,6 +1149,11 @@ msgstr "Choisir un abonnement"
 #~ msgid "Choose a theme, or follow your system setting. Saved on this device."
 #~ msgstr "Choisissez un thème ou suivez les réglages de votre système. Enregistré sur cet appareil."
 
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:323
+#, fuzzy
+msgid "Choose email provider"
+msgstr "Choisir un fournisseur d'e-mail"
+
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:233
 msgid "Choose how to preview Amarnai"
 msgstr "Choisissez comment prévisualiser Amarnai"
@@ -1251,7 +1278,6 @@ msgstr "Connectez une boîte de réception Gmail pour configurer les filtres de 
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:138
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:361
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:406
 #, fuzzy
 msgid "Connect Gmail"
@@ -1259,21 +1285,21 @@ msgstr "Connecter Gmail"
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:349
 #, fuzzy
-msgid "Connect Gmail account"
-msgstr "Connecter un compte Gmail"
+#~ msgid "Connect Gmail account"
+#~ msgstr "Connecter un compte Gmail"
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:346
 #, fuzzy
-msgid "Connect Gmail account button"
-msgstr "Connecter un compte Gmail"
+#~ msgid "Connect Gmail account button"
+#~ msgstr "Connecter un compte Gmail"
 
 #: ../../apps/site/src/components/landing/FinalCTASection.tsx:11
 #~ msgid "Connect Gmail and Amarnai starts sorting within minutes. Pricing is per workspace. Sort as much mail as you like, with backfill of your whole history included."
 #~ msgstr "Connectez Gmail et Amarnai commence le tri en quelques minutes. La tarification est par espace de travail. Triez autant de courriels que vous le souhaitez, avec l'historique complet inclus."
 
 #: ../../apps/site/src/components/landing/FinalCTASection.tsx:11
-msgid "Connect Gmail and Amarnai starts sorting within minutes. Pricing is per workspace. Sorts new mail as it arrives, and works through years of backlog."
-msgstr "Connectez Gmail et Amarnai commence à trier en quelques minutes. La tarification est par espace de travail. Trie les nouveaux e-mails dès leur arrivée et gère les années d'anciens messages."
+#~ msgid "Connect Gmail and Amarnai starts sorting within minutes. Pricing is per workspace. Sorts new mail as it arrives, and works through years of backlog."
+#~ msgstr "Connectez Gmail et Amarnai commence à trier en quelques minutes. La tarification est par espace de travail. Trie les nouveaux e-mails dès leur arrivée et gère les années d'anciens messages."
 
 #: ../../apps/extension/src/App.tsx:38
 #~ msgid "Connect Gmail on the web"
@@ -1289,7 +1315,17 @@ msgstr "Connectez Gmail pour générer un plan depuis votre boîte de réception
 msgid "Connect Gmail to start triaging"
 msgstr "Connectez Gmail pour commencer le tri"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:403
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:350
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:362
+#, fuzzy
+msgid "Connect inbox"
+msgstr "Connecter la boîte de réception"
+
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:347
+msgid "Connect inbox button"
+msgstr "Bouton Connecter la boîte de réception"
+
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:404
 #, fuzzy
 msgid "Connect once, generate your plan once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
 msgstr "Connectez-vous une fois, générez votre plan une seule fois, et laissez Amarnai gérer les nouveaux courriels ainsi que les milliers de conversations déjà présentes dans votre boîte de réception."
@@ -1320,6 +1356,10 @@ msgstr "Connectez votre compte Gmail pour synchroniser votre boîte de réceptio
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:76
 msgid "Connect your inbox"
 msgstr "Connecter votre boîte de réception"
+
+#: ../../apps/site/src/components/landing/FinalCTASection.tsx:11
+msgid "Connect your inbox and Amarnai starts sorting within minutes. Pricing is per workspace. Sorts new mail as it arrives, and works through years of backlog."
+msgstr "Connectez votre boîte de réception et Amarnai commence le tri en quelques minutes. La tarification est par espace de travail. L'outil trie les nouveaux e-mails dès leur arrivée et traite les années d'arriérés."
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:348
 #, fuzzy
@@ -1637,7 +1677,7 @@ msgid "Customer support, onboarding, product feedback, churn, and success conver
 msgstr "Support client, intégration, retours produits, désabonnement et conversations de réussite."
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:29
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:156
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:157
 #: ../ui/src/i18n/taxonomy-template-messages.ts:53
 msgid "Customers"
 msgstr "Clients"
@@ -1746,7 +1786,7 @@ msgstr "Suppression…"
 msgid "Describe what kinds of emails belong here: who they come from and what they are about. Be specific and use the actual names, topics, and words that show up in those emails. Describe what the emails are, not what you plan to do about them. The clearer your description, the more accurately your email is sorted here."
 msgstr "Décrivez le type d'e-mails qui doivent être classés ici : de qui ils proviennent et de quoi ils parlent. Soyez précis et utilisez les noms, sujets et mots réels qui apparaissent dans ces e-mails. Décrivez ce que sont les e-mails, pas ce que vous comptez en faire. Plus votre description est claire, plus vos e-mails seront triés précisément ici."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:372
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:373
 msgid "Describe your folders"
 msgstr "Décrivez vos dossiers"
 
@@ -1930,7 +1970,7 @@ msgid "Draft generation failed. Try again."
 msgstr "La génération du brouillon a échoué. Veuillez réessayer."
 
 #: ../../apps/mobile/src/components/DraftSheet.tsx:63
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:263
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:264
 #: ../ui/src/emails/SuggestedDraftCard.tsx:47
 msgid "Draft reply"
 msgstr "Brouillon de réponse"
@@ -2020,7 +2060,7 @@ msgstr "Adresse e-mail à mettre sur liste noire"
 msgid "Email address to invite"
 msgstr "Adresse e-mail à inviter"
 
-#: ../../apps/site/src/lib/seo.ts:51
+#: ../../apps/site/src/lib/seo.ts:52
 #, fuzzy
 msgid "email organizer"
 msgstr "Organisateur d'e-mails"
@@ -2246,7 +2286,7 @@ msgstr "Volet de filtre"
 msgid "Finance"
 msgstr "Finance"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:383
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:384
 msgid "Find and draft"
 msgstr "Trouver et rédiger"
 
@@ -2500,6 +2540,10 @@ msgstr "Obtenez l'app"
 msgid "gmail ai assistant"
 msgstr "Assistant IA pour Gmail"
 
+#: ../../apps/site/src/components/landing/FAQSection.tsx:32
+msgid "Gmail and Outlook filters just slap a label or category on each message and leave it in the same crowded inbox. Amarnai reads every thread the way a person would and lays them out in a clean workspace where related threads sit together, each with the reasoning behind its placement, so you get a calmer view instead of one more buried label. Spam and promotions are kept out automatically unless you turn them on in settings, and anything Amarnai is unsure about is flagged for your review."
+msgstr "Les filtres de Gmail et Outlook se contentent d'apposer une étiquette ou une catégorie sur chaque message et les laissent dans la même boîte de réception encombrée. Amarnai lit chaque conversation comme le ferait une personne et les organise dans un espace de travail épuré où les conversations connexes sont regroupées, chacune avec la justification de son classement. Vous obtenez ainsi une vue plus sereine, au lieu d'une étiquette supplémentaire perdue au milieu. Les spams et promotions sont automatiquement exclus, sauf si vous les activez dans les paramètres, et tout ce dont Amarnai n'est pas certain est signalé pour votre examen."
+
 #: ../../apps/extension/src/panel/notificationText.ts:18
 #: ../../apps/mobile/src/data/notificationView.ts:53
 #: ../../apps/web/src/lib/notifications.ts:72
@@ -2512,8 +2556,8 @@ msgid "Gmail disconnected. Amarnai stopped syncing this inbox, so new mail will 
 msgstr "Gmail déconnecté. Amarnai a arrêté de synchroniser cette boîte de réception, donc les nouveaux e-mails n'apparaîtront pas tant que vous ne vous serez pas reconnecté."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:32
-msgid "Gmail filters just slap a label on each message and leave it in the same crowded inbox. Amarnai reads every thread the way a person would and lays them out in a clean workspace where related threads sit together, each with the reasoning behind its placement, so you get a calmer view instead of one more buried label. Spam and promotions are kept out automatically unless you turn them on in settings, and anything Amarnai is unsure about is flagged for your review."
-msgstr "Les filtres Gmail se contentent d'apposer une étiquette sur chaque message et les laissent dans la même boîte de réception encombrée. Amarnai lit chaque conversation comme le ferait une personne et les organise dans un espace de travail clair où les conversations similaires sont regroupées, chacune avec la raison de son emplacement, vous offrant une vue plus sereine au lieu d'une étiquette supplémentaire noyée. Les spams et promotions sont automatiquement exclus, sauf si vous les activez dans les paramètres, et tout ce dont Amarnai n'est pas sûr est signalé pour votre examen."
+#~ msgid "Gmail filters just slap a label on each message and leave it in the same crowded inbox. Amarnai reads every thread the way a person would and lays them out in a clean workspace where related threads sit together, each with the reasoning behind its placement, so you get a calmer view instead of one more buried label. Spam and promotions are kept out automatically unless you turn them on in settings, and anything Amarnai is unsure about is flagged for your review."
+#~ msgstr "Les filtres Gmail se contentent d'apposer une étiquette sur chaque message et les laissent dans la même boîte de réception encombrée. Amarnai lit chaque conversation comme le ferait une personne et les organise dans un espace de travail clair où les conversations similaires sont regroupées, chacune avec la raison de son emplacement, vous offrant une vue plus sereine au lieu d'une étiquette supplémentaire noyée. Les spams et promotions sont automatiquement exclus, sauf si vous les activez dans les paramètres, et tout ce dont Amarnai n'est pas sûr est signalé pour votre examen."
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:132
 #, fuzzy
@@ -2545,8 +2589,8 @@ msgid "Gmail Sort Tester"
 msgstr "Testeur de tri Gmail"
 
 #: ../../apps/site/src/components/landing/Footer.tsx:15
-msgid "Gmail, sorted your way."
-msgstr "Gmail, trié à votre façon."
+#~ msgid "Gmail, sorted your way."
+#~ msgstr "Gmail, trié à votre façon."
 
 #: ../../apps/web/src/app/not-found.tsx:41
 #, fuzzy
@@ -2601,11 +2645,7 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "Grand Roi,\n"
-"\n"
-"Les rapports que vous avez demandés seront prêts avant la réunion du conseil. Je ferai compiler les comptes des territoires de l'Est par mes scribes et les enverrai par courrier rapide.\n"
-"\n"
-"Fraternellement,"
+msgstr "Grand Roi,\n\nLes rapports que vous avez demandés seront prêts avant la réunion du conseil. Je ferai compiler les comptes des territoires de l'Est par mes scribes et les enverrai par courrier rapide.\n\nFraternellement,"
 
 #: ../../apps/site/src/components/landing/FinalCTASection.tsx:9
 #, fuzzy
@@ -2670,9 +2710,13 @@ msgid "How does Amarnai's plan work?"
 msgstr "Comment fonctionne le plan d'Amarnai ?"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:31
+msgid "How is Amarnai different from Gmail and Outlook filters?"
+msgstr "En quoi Amarnai est-il différent des filtres de Gmail et Outlook ?"
+
+#: ../../apps/site/src/components/landing/FAQSection.tsx:31
 #, fuzzy
-msgid "How is Amarnai different from Gmail's filters and labels?"
-msgstr "En quoi Amarnai est-il différent des filtres et étiquettes de Gmail ?"
+#~ msgid "How is Amarnai different from Gmail's filters and labels?"
+#~ msgstr "En quoi Amarnai est-il différent des filtres et étiquettes de Gmail ?"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:51
 #, fuzzy
@@ -2751,7 +2795,7 @@ msgstr "L'importation remplacera votre plan actuel par <0>{0} dossiers</0> et <1
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:183
 #: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:45
 #: ../../apps/site/src/components/demo/demo-seed.ts:28
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:150
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:151
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:512
 #: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:57
 #, fuzzy
@@ -2775,7 +2819,7 @@ msgstr "Importation de la boîte de réception terminée"
 msgid "Inbox sync"
 msgstr "Synchronisation de la boîte de réception"
 
-#: ../../apps/site/src/lib/seo.ts:52
+#: ../../apps/site/src/lib/seo.ts:53
 msgid "inbox zero"
 msgstr "inbox zéro"
 
@@ -2812,12 +2856,16 @@ msgid "Install the Amarnai browser extension"
 msgstr "Installer l'extension de navigateur Amarnai"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:20
-msgid "Instead of scanning a crowded inbox, you open Amarnai and find your threads already grouped into the folders you care about, so you can work through customer questions, investor updates, or hiring replies in focused batches. Each thread comes with a suggested folder and the reasoning behind it, and you can draft a reply or jump straight to the thread in Gmail with one click. Sorting that used to take an hour takes minutes."
-msgstr "Au lieu de parcourir une boîte de réception surchargée, vous ouvrez Amarnai et trouvez vos conversations déjà regroupées dans les dossiers qui vous intéressent. Vous pouvez ainsi traiter les questions clients, les mises à jour d'investisseurs ou les réponses de recrutement par lots ciblés. Chaque conversation est accompagnée d'un dossier suggéré et de sa justification, et vous pouvez rédiger une réponse ou accéder directement à la conversation dans Gmail en un clic. Le tri qui prenait auparavant une heure ne prend plus que quelques minutes."
+#~ msgid "Instead of scanning a crowded inbox, you open Amarnai and find your threads already grouped into the folders you care about, so you can work through customer questions, investor updates, or hiring replies in focused batches. Each thread comes with a suggested folder and the reasoning behind it, and you can draft a reply or jump straight to the thread in Gmail with one click. Sorting that used to take an hour takes minutes."
+#~ msgstr "Au lieu de parcourir une boîte de réception surchargée, vous ouvrez Amarnai et trouvez vos conversations déjà regroupées dans les dossiers qui vous intéressent. Vous pouvez ainsi traiter les questions clients, les mises à jour d'investisseurs ou les réponses de recrutement par lots ciblés. Chaque conversation est accompagnée d'un dossier suggéré et de sa justification, et vous pouvez rédiger une réponse ou accéder directement à la conversation dans Gmail en un clic. Le tri qui prenait auparavant une heure ne prend plus que quelques minutes."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:16
 #~ msgid "Instead of scanning a crowded inbox, you open Amarnai and find your threads already grouped into the folders you care about, so you can work through customer questions, investor updates, or hiring replies in focused batches. Each thread comes with a suggested folder and the reasoning behind it, and you can draft a reply or jump straight to the thread in Gmail with one click. Triage that used to take an hour takes minutes."
 #~ msgstr "Au lieu de scanner une boîte de réception saturée, ouvrez Amarnai : vos conversations sont déjà regroupées dans les dossiers qui vous importent. Traitez ainsi les questions clients, les mises à jour investisseurs ou les réponses de recrutement par lots ciblés. Chaque conversation est associée à un dossier suggéré et sa justification. Rédigez une réponse ou accédez directement à la conversation dans Gmail en un clic. Un tri qui prenait une heure ne prend plus que quelques minutes."
+
+#: ../../apps/site/src/components/landing/FAQSection.tsx:20
+msgid "Instead of scanning a crowded inbox, you open Amarnai and find your threads already grouped into the folders you care about, so you can work through customer questions, investor updates, or hiring replies in focused batches. Each thread comes with a suggested folder and the reasoning behind it, and you can draft a reply or jump straight to the thread in your inbox with one click. Sorting that used to take an hour takes minutes."
+msgstr "Au lieu de parcourir une boîte de réception encombrée, ouvrez Amarnai et trouvez vos conversations déjà regroupées dans les dossiers qui vous intéressent. Vous pouvez ainsi traiter les questions des clients, les mises à jour des investisseurs ou les réponses de recrutement par lots ciblés. Chaque conversation est accompagnée d'un dossier suggéré et de la justification de ce choix. Vous pouvez rédiger une réponse ou accéder directement à la conversation dans votre boîte de réception en un clic. Ce qui prenait une heure de tri s'effectue désormais en quelques minutes."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:39
 #, fuzzy
@@ -2850,7 +2898,7 @@ msgid "Invalid taxonomy file: {detail}"
 msgstr "Fichier de taxonomie invalide : {detail}"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:32
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:162
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:163
 #: ../ui/src/i18n/taxonomy-template-messages.ts:51
 msgid "Investors"
 msgstr "Investisseurs"
@@ -2894,8 +2942,12 @@ msgid "Invoices, receipts, and billing questions from clients and vendors."
 msgstr "Factures, reçus et questions de facturation des clients et fournisseurs."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:11
-msgid "Is connecting my Gmail to Amarnai safe?"
-msgstr "Connecter mon compte Gmail à Amarnai est-il sécurisé ?"
+#~ msgid "Is connecting my Gmail to Amarnai safe?"
+#~ msgstr "Connecter mon compte Gmail à Amarnai est-il sécurisé ?"
+
+#: ../../apps/site/src/components/landing/FAQSection.tsx:11
+msgid "Is connecting my inbox to Amarnai safe?"
+msgstr "La connexion de ma boîte de réception à Amarnai est-elle sûre ?"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:47
 #, fuzzy
@@ -2990,7 +3042,7 @@ msgstr "Dernière vérification : {0}"
 #~ msgid "Lay out folders like <0>Customers</0>, <1>Investors</1>, <2>Hiring</2>. A simple sentence each is the whole config."
 #~ msgstr "Créez des dossiers comme <0>Clients</0>, <1>Investisseurs</1>, <2>Recrutement</2>. Une simple phrase pour chacun suffit à la configuration."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:374
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:375
 #, fuzzy
 msgid "Lay out folders like <0>Customers</0>, <1>Investors</1>, <2>Hiring</2>. A simple sentence each: that's the whole setup."
 msgstr "Créez des dossiers comme <0>Clients</0>, <1>Investisseurs</1>, <2>Recrutement</2>. Une simple phrase pour chacun, et le tour est joué."
@@ -3593,7 +3645,7 @@ msgstr "Ouvrir dans Outlook"
 msgid "Open navigation"
 msgstr "Ouvrir la navigation"
 
-#: ../../apps/site/src/lib/seo.ts:53
+#: ../../apps/site/src/lib/seo.ts:54
 #, fuzzy
 msgid "open source email ai"
 msgstr "IA d'e-mail open source"
@@ -3648,6 +3700,11 @@ msgstr "Ou connecter une autre boîte de réception :"
 #: ../../apps/site/src/components/demo/demo-seed.ts:35
 msgid "Other"
 msgstr "Autre"
+
+#: ../../apps/site/src/lib/seo.ts:51
+#, fuzzy
+msgid "outlook ai assistant"
+msgstr "assistant IA Outlook"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:89
 msgid "Outlook read-only access (Mail.Read) was not granted. Please try again and approve the requested permission."
@@ -3874,7 +3931,7 @@ msgstr "Tarification par espace de travail. Triez autant que vous le souhaitez."
 msgid "Pricing"
 msgstr "Tarifs"
 
-#: ../../apps/site/src/lib/seo.ts:83
+#: ../../apps/site/src/lib/seo.ts:84
 #, fuzzy
 msgid "Pricing | Amarnai"
 msgstr "Tarifs | Amarnai"
@@ -3961,7 +4018,7 @@ msgstr "Réacheminer la conversation"
 msgid "Re: Grain shipment: third delay this season"
 msgstr "Re: Expédition de céréales : troisième retard cette saison"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:252
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:253
 msgid "Re: Q3 renewal"
 msgstr "Re: renouvellement T3"
 
@@ -3970,7 +4027,7 @@ msgstr "Re: renouvellement T3"
 msgid "Reactivate"
 msgstr "Réactiver"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:352
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:353
 msgid "Read-only · OAuth · revoke anytime"
 msgstr "Lecture seule · OAuth · Révoquez à tout moment"
 
@@ -4271,11 +4328,7 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "Rib-Hadda,\n"
-"\n"
-"Nous vous avons entendu. Du grain supplémentaire a été commandé aux réserves du sud et arrivera avant la fête des moissons. Nous vous demandons de patienter jusque-là.\n"
-"\n"
-"Portez-vous bien,"
+msgstr "Rib-Hadda,\n\nNous vous avons entendu. Du grain supplémentaire a été commandé aux réserves du sud et arrivera avant la fête des moissons. Nous vous demandons de patienter jusque-là.\n\nPortez-vous bien,"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -4330,13 +4383,18 @@ msgstr "Gagnez des heures de tri d'e-mails chaque semaine. Laissez Amarnai organ
 
 #: ../../apps/web/src/lib/notifications.ts:66
 #, fuzzy
-msgid "Save time by triaging your inbox without leaving Gmail."
-msgstr "Gagnez du temps en triant votre boîte de réception sans quitter Gmail."
+#~ msgid "Save time by triaging your inbox without leaving Gmail."
+#~ msgstr "Gagnez du temps en triant votre boîte de réception sans quitter Gmail."
 
 #: ../../apps/mobile/src/data/notificationView.ts:48
 #, fuzzy
 msgid "Save time by triaging your inbox without leaving Gmail. The extension runs in your desktop browser."
 msgstr "Gagnez du temps en triant votre boîte de réception sans quitter Gmail. L'extension fonctionne dans votre navigateur de bureau."
+
+#: ../../apps/web/src/lib/notifications.ts:66
+#, fuzzy
+msgid "Save time by triaging your inbox without leaving your email."
+msgstr "Gagnez du temps en triant votre boîte de réception sans quitter votre messagerie."
 
 #: ../ui/src/PricingPlans.tsx:138
 msgid "Save up to 20% annually"
@@ -4379,8 +4437,12 @@ msgid "Search threads…"
 msgstr "Rechercher des conversations…"
 
 #: ../../apps/extension/src/auth/SignInScreen.tsx:70
-msgid "See how your inbox is sorted, right next to Gmail."
-msgstr "Découvrez comment votre boîte de réception est triée, directement dans Gmail."
+#~ msgid "See how your inbox is sorted, right next to Gmail."
+#~ msgstr "Découvrez comment votre boîte de réception est triée, directement dans Gmail."
+
+#: ../../apps/extension/src/auth/SignInScreen.tsx:70
+msgid "See how your inbox is sorted, right next to your email."
+msgstr "Voyez comment votre boîte de réception est triée, juste à côté de vos e-mails."
 
 #: ../../apps/site/src/components/landing/Footer.tsx:24
 #: ../../apps/site/src/components/landing/Nav.tsx:40
@@ -4420,7 +4482,7 @@ msgstr "Sélectionner un plan à comparer"
 msgid "Self-host guide"
 msgstr "Guide d'auto-hébergement"
 
-#: ../../apps/site/src/lib/seo.ts:54
+#: ../../apps/site/src/lib/seo.ts:55
 msgid "self-hosted email assistant"
 msgstr "assistant e-mail auto-hébergé"
 
@@ -4520,6 +4582,15 @@ msgstr "Plan partagé + file de révision"
 #~ msgid "Shared taxonomy + review queue"
 #~ msgstr "Taxonomie partagée + file de révision"
 
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:329
+#, fuzzy
+msgid "Show Gmail"
+msgstr "Afficher Gmail"
+
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:338
+msgid "Show Outlook"
+msgstr "Afficher Outlook"
+
 #: ../../apps/extension/src/auth/SignInScreen.tsx:98
 #: ../../apps/mobile/app/sign-in.tsx:133
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:29
@@ -4542,9 +4613,13 @@ msgstr "Connectez-vous pour trier votre boîte de réception"
 msgid "Sign in with Google"
 msgstr "Se connecter avec Google"
 
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:364
+msgid "Sign in with Google or Microsoft. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
+msgstr "Connectez-vous avec Google ou Microsoft. Amarnai synchronise vos conversations et vos étiquettes. Il n'envoie ni ne supprime jamais rien en votre nom."
+
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:363
-msgid "Sign in with Google. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
-msgstr "Connectez-vous avec Google. Amarnai synchronise vos conversations et vos libellés. Il n'envoie ni ne supprime jamais rien en votre nom."
+#~ msgid "Sign in with Google. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
+#~ msgstr "Connectez-vous avec Google. Amarnai synchronise vos conversations et vos libellés. Il n'envoie ni ne supprime jamais rien en votre nom."
 
 #: ../../apps/extension/src/App.tsx:96
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:159
@@ -4580,7 +4655,7 @@ msgstr "L'inscription a échoué. Veuillez réessayer."
 msgid "Signing in…"
 msgstr "Connexion en cours…"
 
-#: ../../apps/site/src/lib/seo.ts:89
+#: ../../apps/site/src/lib/seo.ts:90
 #, fuzzy
 msgid "Simple per-workspace pricing. Start free, upgrade or create additional workspaces as you need."
 msgstr "Tarification simple par espace de travail. Démarrez gratuitement, mettez à niveau ou créez des espaces de travail supplémentaires selon vos besoins."
@@ -4608,6 +4683,11 @@ msgstr "Une erreur est survenue. Veuillez réessayer."
 #: ../ui/src/pricing/planMessages.ts:97
 msgid "Soon"
 msgstr "Bientôt"
+
+#: ../../apps/site/src/components/landing/Footer.tsx:15
+#, fuzzy
+msgid "Sort emails your way."
+msgstr "Triez vos e-mails comme vous l'entendez."
 
 #: ../../apps/extension/src/panel/SortNowButton.tsx:28
 msgid "Sort now"
@@ -4861,7 +4941,7 @@ msgstr "Taxonomie appliquée"
 #~ msgid "Taxonomy nodes"
 #~ msgstr "Nœuds de taxonomie"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:168
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:169
 #: ../ui/src/i18n/taxonomy-template-messages.ts:38
 #, fuzzy
 msgid "Team"
@@ -4885,7 +4965,7 @@ msgstr "Conditions"
 msgid "Thank you for your message. I'll follow up shortly."
 msgstr "Merci pour votre message. Je vous répondrai sous peu."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:189
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:190
 msgid "Thanks for the update. Friday works."
 msgstr "Merci pour la mise à jour. Vendredi me convient."
 
@@ -5118,7 +5198,7 @@ msgstr "Conversations qui n'ont pas encore été triées."
 msgid "Threads you've marked as important."
 msgstr "Vos conversations importantes."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:400
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:401
 msgid "Three steps to a sorted inbox."
 msgstr "Trois étapes pour une boîte de réception organisée."
 
@@ -5135,13 +5215,7 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "À mon frère, le Grand Roi,\n"
-"\n"
-"Le grand conseil se réunit au début de Shemu. Je vous demande de préparer un compte rendu complet des territoires de l'Est et de l'envoyer par courrier rapide, si possible avant la nouvelle lune.\n"
-"\n"
-"Notre alliance est forte. Montrons au conseil qu'elle le reste.\n"
-"\n"
-"Tushratta, Grand Roi de Mitanni"
+msgstr "À mon frère, le Grand Roi,\n\nLe grand conseil se réunit au début de Shemu. Je vous demande de préparer un compte rendu complet des territoires de l'Est et de l'envoyer par courrier rapide, si possible avant la nouvelle lune.\n\nNotre alliance est forte. Montrons au conseil qu'elle le reste.\n\nTushratta, Grand Roi de Mitanni"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:163
 #, fuzzy
@@ -5150,11 +5224,7 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "Au Bureau des Nominations Royales,\n"
-"\n"
-"Nous avons reçu la candidature de Horemheb de Thèbes et examinerons son dossier avant la prochaine nouvelle lune. Veuillez l'informer que nous lui ferons part de notre décision en temps voulu.\n"
-"\n"
-"Par décret royal,"
+msgstr "Au Bureau des Nominations Royales,\n\nNous avons reçu la candidature de Horemheb de Thèbes et examinerons son dossier avant la prochaine nouvelle lune. Veuillez l'informer que nous lui ferons part de notre décision en temps voulu.\n\nPar décret royal,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:278
 #, fuzzy
@@ -5165,13 +5235,7 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "Au Grand Roi,\n"
-"\n"
-"Depuis de nombreuses années, nos maisons sont comme des frères. J'écris aujourd'hui pour proposer d'officialiser cette amitié au bénéfice de nos deux peuples : un pacte de protection mutuelle et de routes partagées.\n"
-"\n"
-"Je demande seulement que vous écoutiez mes conditions. Faites-moi part de votre réponse par le prochain courrier et j'enverrai mon émissaire aussitôt.\n"
-"\n"
-"Aziru, serviteur du Grand Roi, seigneur d'Amurru"
+msgstr "Au Grand Roi,\n\nDepuis de nombreuses années, nos maisons sont comme des frères. J'écris aujourd'hui pour proposer d'officialiser cette amitié au bénéfice de nos deux peuples : un pacte de protection mutuelle et de routes partagées.\n\nJe demande seulement que vous écoutiez mes conditions. Faites-moi part de votre réponse par le prochain courrier et j'enverrai mon émissaire aussitôt.\n\nAziru, serviteur du Grand Roi, seigneur d'Amurru"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:391
 #, fuzzy
@@ -5180,11 +5244,7 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "Au Grand Roi,\n"
-"\n"
-"Mes voyages me mèneront près du Delta dans les prochains jours. Si le Grand Roi a une heure à consacrer, j'aimerais avoir l'occasion de parler en personne ; certaines affaires sont plus faciles à dire qu'à écrire.\n"
-"\n"
-"Votre serviteur, Abdi-Heba, gouverneur d'Urushalim"
+msgstr "Au Grand Roi,\n\nMes voyages me mèneront près du Delta dans les prochains jours. Si le Grand Roi a une heure à consacrer, j'aimerais avoir l'occasion de parler en personne ; certaines affaires sont plus faciles à dire qu'à écrire.\n\nVotre serviteur, Abdi-Heba, gouverneur d'Urushalim"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:153
 #, fuzzy
@@ -5193,11 +5253,7 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "Au Grand Roi, mon frère,\n"
-"\n"
-"J'ai entendu vos paroles. L'or sera expédié avant le départ du prochain messager. Nous chérissons le lien entre nos maisons et ne voulons pas qu'il se refroidisse.\n"
-"\n"
-"En toute amitié,"
+msgstr "Au Grand Roi, mon frère,\n\nJ'ai entendu vos paroles. L'or sera expédié avant le départ du prochain messager. Nous chérissons le lien entre nos maisons et ne voulons pas qu'il se refroidisse.\n\nEn toute amitié,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:239
 #, fuzzy
@@ -5208,13 +5264,7 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "Au Grand Roi, mon frère,\n"
-"\n"
-"J'écris en ami, comme nos pères l'ont fait avant nous. Le troisième envoi d'or convenu par notre traité n'est pas arrivé. Deux messagers sont passés et nous attendons toujours.\n"
-"\n"
-"Nous vous demandons de l'expédier sans plus tarder, comme il sied au lien entre nos maisons.\n"
-"\n"
-"Burna-Buriash II, Roi de Babylone"
+msgstr "Au Grand Roi, mon frère,\n\nJ'écris en ami, comme nos pères l'ont fait avant nous. Le troisième envoi d'or convenu par notre traité n'est pas arrivé. Deux messagers sont passés et nous attendons toujours.\n\nNous vous demandons de l'expédier sans plus tarder, comme il sied au lien entre nos maisons.\n\nBurna-Buriash II, Roi de Babylone"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:352
 msgid "To the Great King, my lord, my sun,\n"
@@ -5224,13 +5274,7 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "Au Grand Roi, mon seigneur, mon soleil,\n"
-"\n"
-"Le grain que vous avez envoyé le mois dernier a été reçu avec gratitude et j'ai loué votre nom devant le peuple. Mais je dois écrire à nouveau : le troisième chargement n'est pas arrivé et la ville s'agite.\n"
-"\n"
-"J'ai écrit sept fois. Je ne souhaite pas vous importuner, mais que puis-je faire d'autre ?\n"
-"\n"
-"Votre serviteur, Rib-Hadda, gouverneur de Byblos"
+msgstr "Au Grand Roi, mon seigneur, mon soleil,\n\nLe grain que vous avez envoyé le mois dernier a été reçu avec gratitude et j'ai loué votre nom devant le peuple. Mais je dois écrire à nouveau : le troisième chargement n'est pas arrivé et la ville s'agite.\n\nJ'ai écrit sept fois. Je ne souhaite pas vous importuner, mais que puis-je faire d'autre ?\n\nVotre serviteur, Rib-Hadda, gouverneur de Byblos"
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:19
 #: ../ui/src/emails/ThreadList.tsx:15
@@ -5239,8 +5283,8 @@ msgid "Today"
 msgstr "Aujourd'hui"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:36
-msgid "Today Amarnai connects to Gmail. Outlook support is on the way, and it will work the same read-only way: Amarnai reads your threads to sort them and never sends, deletes, or changes anything in your account."
-msgstr "Actuellement, Amarnai se connecte à Gmail. La compatibilité Outlook arrive et fonctionnera de la même manière en lecture seule : Amarnai lit vos conversations pour les trier et n'envoie, ne supprime ni ne modifie jamais rien dans votre compte."
+#~ msgid "Today Amarnai connects to Gmail. Outlook support is on the way, and it will work the same read-only way: Amarnai reads your threads to sort them and never sends, deletes, or changes anything in your account."
+#~ msgstr "Actuellement, Amarnai se connecte à Gmail. La compatibilité Outlook arrive et fonctionnera de la même manière en lecture seule : Amarnai lit vos conversations pour les trier et n'envoie, ne supprime ni ne modifie jamais rien dans votre compte."
 
 #: ../ui/src/emails/ThreadList.tsx:130
 #, fuzzy
@@ -5599,9 +5643,13 @@ msgid "Working Professional"
 msgstr "Professionnel en activité"
 
 #: ../../apps/site/src/components/landing/FinalCTASection.tsx:24
+msgid "Works with Gmail and Outlook."
+msgstr "Fonctionne avec Gmail et Outlook."
+
+#: ../../apps/site/src/components/landing/FinalCTASection.tsx:24
 #, fuzzy
-msgid "Works with Gmail today. Outlook support is on the way."
-msgstr "Compatible avec Gmail actuellement. La compatibilité Outlook arrive."
+#~ msgid "Works with Gmail today. Outlook support is on the way."
+#~ msgstr "Compatible avec Gmail actuellement. La compatibilité Outlook arrive."
 
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:61
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:220
@@ -5695,19 +5743,32 @@ msgstr "Oui. Amarnai peut traiter les milliers de conversations déjà présente
 #~ msgstr "Oui. Amarnai peut traiter les milliers de conversations déjà présentes dans votre boîte de réception, et pas seulement les nouveaux messages. Le triage historique et le tri continu utilisent le même plan, de sorte que l'ensemble de votre boîte de réception est organisé de la même manière."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:12
+msgid "Yes. Amarnai connects with a read-only scope, so it can read your threads but cannot send, delete, label, or change anything in your account. It keeps only what it needs to sort and display threads: subjects, participants, snippets, and the labels and reasoning it generates. Full message bodies are fetched when needed and processed in memory, not stored, and OAuth tokens are encrypted at rest."
+msgstr "Oui. Amarnai se connecte avec un accès en lecture seule. Il peut donc lire vos conversations, mais ne peut ni envoyer, ni supprimer, ni étiqueter, ni modifier quoi que ce soit dans votre compte. Il ne conserve que ce dont il a besoin pour trier et afficher les conversations : les objets, les participants, les extraits, ainsi que les étiquettes et les justifications qu'il génère. Les corps complets des messages sont récupérés si nécessaire et traités en mémoire, sans être stockés, et les jetons OAuth sont chiffrés au repos."
+
+#: ../../apps/site/src/components/landing/FAQSection.tsx:12
 #, fuzzy
-msgid "Yes. Amarnai connects with Gmail's read-only scope, so it can read your threads but cannot send, delete, label, or change anything in your account. It keeps only what it needs to sort and display threads: subjects, participants, snippets, and the labels and reasoning it generates. Full message bodies are fetched when needed and processed in memory, not stored, and OAuth tokens are encrypted at rest."
-msgstr "Oui. Amarnai se connecte à Gmail avec une portée en lecture seule ; il peut donc lire vos conversations, mais ne peut ni envoyer, ni supprimer, ni étiqueter, ni modifier quoi que ce soit dans votre compte. Il ne conserve que ce dont il a besoin pour trier et afficher les conversations : les objets, les participants, les extraits, ainsi que les étiquettes et le raisonnement qu'il génère. Les corps complets des messages sont récupérés si nécessaire et traités en mémoire, non stockés, et les jetons OAuth sont chiffrés au repos."
+#~ msgid "Yes. Amarnai connects with Gmail's read-only scope, so it can read your threads but cannot send, delete, label, or change anything in your account. It keeps only what it needs to sort and display threads: subjects, participants, snippets, and the labels and reasoning it generates. Full message bodies are fetched when needed and processed in memory, not stored, and OAuth tokens are encrypted at rest."
+#~ msgstr "Oui. Amarnai se connecte à Gmail avec une portée en lecture seule ; il peut donc lire vos conversations, mais ne peut ni envoyer, ni supprimer, ni étiqueter, ni modifier quoi que ce soit dans votre compte. Il ne conserve que ce dont il a besoin pour trier et afficher les conversations : les objets, les participants, les extraits, ainsi que les étiquettes et le raisonnement qu'il génère. Les corps complets des messages sont récupérés si nécessaire et traités en mémoire, non stockés, et les jetons OAuth sont chiffrés au repos."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:56
 #, fuzzy
 msgid "Yes. Amarnai is open source under the AGPL-3.0 license. You can clone the repository and run it yourself with Docker. Self-hosting is free and unsupported, with community support available on GitHub."
 msgstr "Oui. Amarnai est open source sous licence AGPL-3.0. Vous pouvez cloner le dépôt et l'exécuter vous-même avec Docker. L'auto-hébergement est gratuit et non supporté, avec un support communautaire disponible sur GitHub."
 
+#: ../../apps/site/src/components/landing/FAQSection.tsx:36
+msgid "Yes. Amarnai works with both Gmail and Outlook, each connected the same read-only way: Amarnai reads your threads to sort them and never sends, deletes, or changes anything in your account."
+msgstr "Oui. Amarnai fonctionne avec Gmail et Outlook, chacun connecté de la même manière en lecture seule : Amarnai lit vos conversations pour les trier et n'envoie, ne supprime ni ne modifie jamais rien dans votre compte."
+
 #: ../../apps/site/src/components/landing/FAQSection.tsx:48
 #, fuzzy
-msgid "Yes. Open a thread, press Generate draft reply, and a suggested draft appears in Amarnai for you to read and edit. Nothing is ever sent for you: when you are happy with it, you can jump to the thread in Gmail with one click and paste your reply there to send. Each subscription includes a monthly draft allowance."
-msgstr "Oui. Ouvrez une conversation, appuyez sur « Générer une réponse préliminaire », et une proposition de brouillon apparaît dans Amarnai pour que vous puissiez la lire et la modifier. Rien n'est jamais envoyé à votre place : une fois satisfait, vous pouvez accéder à la conversation dans Gmail en un clic et y coller votre réponse pour l'envoyer. Chaque abonnement inclut un quota mensuel de brouillons."
+#~ msgid "Yes. Open a thread, press Generate draft reply, and a suggested draft appears in Amarnai for you to read and edit. Nothing is ever sent for you: when you are happy with it, you can jump to the thread in Gmail with one click and paste your reply there to send. Each subscription includes a monthly draft allowance."
+#~ msgstr "Oui. Ouvrez une conversation, appuyez sur « Générer une réponse préliminaire », et une proposition de brouillon apparaît dans Amarnai pour que vous puissiez la lire et la modifier. Rien n'est jamais envoyé à votre place : une fois satisfait, vous pouvez accéder à la conversation dans Gmail en un clic et y coller votre réponse pour l'envoyer. Chaque abonnement inclut un quota mensuel de brouillons."
+
+#: ../../apps/site/src/components/landing/FAQSection.tsx:48
+#, fuzzy
+msgid "Yes. Open a thread, press Generate draft reply, and a suggested draft appears in Amarnai for you to read and edit. Nothing is ever sent for you: when you are happy with it, you can jump to the thread in your inbox with one click and paste your reply there to send. Each subscription includes a monthly draft allowance."
+msgstr "Oui. Ouvrez une conversation, appuyez sur Générer un brouillon de réponse, et un brouillon suggéré apparaît dans Amarnai pour que vous puissiez le lire et le modifier. Rien n'est jamais envoyé automatiquement : lorsque vous en êtes satisfait, vous pouvez accéder à la conversation dans votre boîte de réception en un clic et y coller votre réponse pour l'envoyer. Chaque abonnement inclut un quota mensuel de brouillons."
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:20
 #: ../ui/src/emails/ThreadList.tsx:16

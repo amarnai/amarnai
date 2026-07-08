@@ -415,9 +415,7 @@ msgstr "Lamaran baru telah diterima dari Horemheb dari Thebes untuk posisi Kepal
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "Lamaran baru telah diterima dari Horemheb dari Thebes untuk posisi Kepala Korespondensi.\n"
-"\n"
-"Lihat lamaran di Gedung Arsip."
+msgstr "Lamaran baru telah diterima dari Horemheb dari Thebes untuk posisi Kepala Korespondensi.\n\nLihat lamaran di Gedung Arsip."
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:387
 #, fuzzy
@@ -431,11 +429,7 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "Abdi-Heba,\n"
-"\n"
-"Saya akan berada di dekat Delta pada minggu yang sama. Mari kita bertemu di stasiun persinggahan pada hari kedua; saya bisa menyisihkan waktu pagi.\n"
-"\n"
-"Sampai jumpa,"
+msgstr "Abdi-Heba,\n\nSaya akan berada di dekat Delta pada minggu yang sama. Mari kita bertemu di stasiun persinggahan pada hari kedua; saya bisa menyisihkan waktu pagi.\n\nSampai jumpa,"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
@@ -690,27 +684,45 @@ msgstr "Amarnai kehilangan akses ke kotak masuk Anda. Ketuk untuk menghubungkan 
 
 #: ../../apps/extension/src/platform/HostPermissionGate.tsx:34
 #, fuzzy
-msgid "Amarnai needs access to its server and Gmail to show your inbox."
-msgstr "Amarnai memerlukan akses ke servernya dan Gmail untuk menampilkan kotak masuk Anda."
+#~ msgid "Amarnai needs access to its server and Gmail to show your inbox."
+#~ msgstr "Amarnai memerlukan akses ke servernya dan Gmail untuk menampilkan kotak masuk Anda."
 
 #: ../../apps/extension/src/App.tsx:52
 #: ../../apps/extension/src/auth/SignInScreen.tsx:13
-msgid "Amarnai needs access to its server and Gmail to work. Please allow access and try again."
-msgstr "Amarnai memerlukan akses ke servernya dan Gmail agar berfungsi. Harap izinkan akses dan coba lagi."
+#~ msgid "Amarnai needs access to its server and Gmail to work. Please allow access and try again."
+#~ msgstr "Amarnai memerlukan akses ke servernya dan Gmail agar berfungsi. Harap izinkan akses dan coba lagi."
+
+#: ../../apps/extension/src/platform/HostPermissionGate.tsx:34
+#, fuzzy
+msgid "Amarnai needs access to its server and your inbox to show your emails."
+msgstr "Amarnai memerlukan akses ke servernya dan kotak masuk Anda untuk menampilkan email Anda."
+
+#: ../../apps/extension/src/App.tsx:52
+#: ../../apps/extension/src/auth/SignInScreen.tsx:13
+msgid "Amarnai needs access to its server and your inbox to work. Please allow access and try again."
+msgstr "Amarnai memerlukan akses ke servernya dan kotak masuk Anda agar berfungsi. Mohon izinkan akses dan coba lagi."
 
 #: ../../apps/site/src/lib/seo.ts:63
 #, fuzzy
-msgid "Amarnai reads your Gmail, sorts every thread into the folders you define, and drafts replies for your approval. Reach inbox zero without the busywork."
-msgstr "Amarnai membaca Gmail Anda, menyortir semua percakapan ke folder yang Anda tentukan, dan menyusun draf balasan untuk persetujuan Anda. Capai inbox zero tanpa repot."
+#~ msgid "Amarnai reads your Gmail, sorts every thread into the folders you define, and drafts replies for your approval. Reach inbox zero without the busywork."
+#~ msgstr "Amarnai membaca Gmail Anda, menyortir semua percakapan ke folder yang Anda tentukan, dan menyusun draf balasan untuk persetujuan Anda. Capai inbox zero tanpa repot."
+
+#: ../../apps/site/src/lib/seo.ts:64
+msgid "Amarnai reads your inbox, sorts every thread into the folders you define, and drafts replies for your approval. Reach inbox zero without the busywork."
+msgstr "Amarnai membaca kotak masuk Anda, mengurutkan setiap rangkaian email ke folder yang Anda tentukan, dan menyusun draf balasan untuk persetujuan Anda. Raih inbox zero tanpa perlu repot."
 
 #: ../../apps/site/src/lib/seo.ts:46
-msgid "Amarnai sorts your Gmail into the folders you define, drafts replies for your approval, and explains every call so you reach inbox zero faster."
-msgstr "Amarnai menyortir Gmail Anda ke folder yang Anda tentukan, menyusun draf balasan untuk persetujuan Anda, dan menjelaskan setiap keputusan agar Anda mencapai inbox zero lebih cepat."
+#~ msgid "Amarnai sorts your Gmail into the folders you define, drafts replies for your approval, and explains every call so you reach inbox zero faster."
+#~ msgstr "Amarnai menyortir Gmail Anda ke folder yang Anda tentukan, menyusun draf balasan untuk persetujuan Anda, dan menjelaskan setiap keputusan agar Anda mencapai inbox zero lebih cepat."
 
 #: ../../apps/site/src/app/[locale]/page.tsx:50
 #, fuzzy
 #~ msgid "Amarnai sorts your Gmail threads into folders you define, drafts replies for your approval, and explains every decision. Open-source and self-hostable."
 #~ msgstr "Amarnai menyortir utas Gmail Anda ke dalam folder yang Anda tentukan, menyusun draf balasan untuk persetujuan Anda, dan menjelaskan setiap keputusan. Sumber terbuka dan dapat di-hosting sendiri."
+
+#: ../../apps/site/src/lib/seo.ts:46
+msgid "Amarnai sorts your inbox into the folders you define, drafts replies for your approval, and explains every call so you reach inbox zero faster."
+msgstr "Amarnai mengurutkan kotak masuk Anda ke folder yang Anda tentukan, menyusun draf balasan untuk persetujuan Anda, dan menjelaskan setiap pemilahan agar Anda mencapai inbox zero lebih cepat."
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:104
 #, fuzzy
@@ -723,8 +735,12 @@ msgid "Amarnai will analyze your senders, labels, and subject keywords (never me
 msgstr "Amarnai akan menganalisis pengirim, label, dan kata kunci subjek Anda (bukan isi pesan) untuk menyarankan serangkaian folder yang dipersonalisasi. Anda dapat meninjau dan mengedit sebelum diterapkan."
 
 #: ../../apps/site/src/lib/seo.ts:39
-msgid "Amarnai: AI Email Sorter for Gmail"
-msgstr "Amarnai: Penyortir Email AI untuk Gmail"
+#~ msgid "Amarnai: AI Email Sorter for Gmail"
+#~ msgstr "Amarnai: Penyortir Email AI untuk Gmail"
+
+#: ../../apps/site/src/lib/seo.ts:39
+msgid "Amarnai: AI Email Sorter for Gmail & Outlook"
+msgstr "Amarnai: Pengurut Email AI untuk Gmail & Outlook"
 
 #: ../../apps/site/src/app/[locale]/page.tsx:29
 #, fuzzy
@@ -736,8 +752,12 @@ msgstr "Amarnai: Penyortir Email AI untuk Gmail"
 #~ msgstr "Amarnai: Triase email AI untuk Gmail"
 
 #: ../../apps/site/src/lib/seo.ts:40
-msgid "Amarnai: Gmail, sorted your way"
-msgstr "Amarnai: Gmail, diurutkan sesukamu"
+#~ msgid "Amarnai: Gmail, sorted your way"
+#~ msgstr "Amarnai: Gmail, diurutkan sesukamu"
+
+#: ../../apps/site/src/lib/seo.ts:40
+msgid "Amarnai: Sort emails your way"
+msgstr "Amarnai: Urutkan email sesuai keinginan Anda"
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:68
 #, fuzzy
@@ -912,11 +932,7 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "Aziru,\n"
-"\n"
-"Kata-kata persahabatan Anda telah kami terima dengan baik. Kami terbuka untuk mendengar lebih banyak tentang apa yang diusulkan oleh Wangsa Amurru. Kirimkan ketentuan Anda melalui kurir berikutnya.\n"
-"\n"
-"Dengan hormat,"
+msgstr "Aziru,\n\nKata-kata persahabatan Anda telah kami terima dengan baik. Kami terbuka untuk mendengar lebih banyak tentang apa yang diusulkan oleh Wangsa Amurru. Kirimkan ketentuan Anda melalui kurir berikutnya.\n\nDengan hormat,"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:219
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
@@ -966,7 +982,7 @@ msgid "Billed monthly · 14-day free trial"
 msgstr "Ditagih bulanan · Uji coba gratis 14 hari"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:30
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:257
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:258
 #, fuzzy
 msgid "Billing"
 msgstr "Penagihan"
@@ -994,8 +1010,12 @@ msgstr "Anggota dewan, mitra dana yang ada, dan pembaruan portofolio."
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:385
 #, fuzzy
-msgid "Browse emails easily through your folders. Generate draft replies and copy them to Gmail."
-msgstr "Telusuri email dengan mudah di folder Anda. Buat draf balasan dan salin ke Gmail."
+#~ msgid "Browse emails easily through your folders. Generate draft replies and copy them to Gmail."
+#~ msgstr "Telusuri email dengan mudah di folder Anda. Buat draf balasan dan salin ke Gmail."
+
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:386
+msgid "Browse emails easily through your folders. Generate draft replies and copy them to your inbox."
+msgstr "Jelajahi email dengan mudah melalui folder Anda. Buat draf balasan dan salin ke kotak masuk Anda."
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:283
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1403
@@ -1164,6 +1184,10 @@ msgstr "Pilih Langganan"
 #~ msgid "Choose a theme, or follow your system setting. Saved on this device."
 #~ msgstr "Pilih tema, atau ikuti pengaturan sistem Anda. Disimpan di perangkat ini."
 
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:323
+msgid "Choose email provider"
+msgstr "Pilih penyedia email"
+
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:233
 #, fuzzy
 msgid "Choose how to preview Amarnai"
@@ -1293,7 +1317,6 @@ msgstr "Hubungkan kotak masuk Gmail untuk mengonfigurasi filter sinkronisasi."
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:138
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:361
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:406
 #, fuzzy
 msgid "Connect Gmail"
@@ -1301,13 +1324,13 @@ msgstr "Hubungkan Gmail"
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:349
 #, fuzzy
-msgid "Connect Gmail account"
-msgstr "Hubungkan Akun Gmail"
+#~ msgid "Connect Gmail account"
+#~ msgstr "Hubungkan Akun Gmail"
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:346
 #, fuzzy
-msgid "Connect Gmail account button"
-msgstr "Tombol Hubungkan Akun Gmail"
+#~ msgid "Connect Gmail account button"
+#~ msgstr "Tombol Hubungkan Akun Gmail"
 
 #: ../../apps/site/src/components/landing/FinalCTASection.tsx:11
 #, fuzzy
@@ -1315,8 +1338,8 @@ msgstr "Tombol Hubungkan Akun Gmail"
 #~ msgstr "Cukup hubungkan Gmail, Amarnai akan langsung menyortir dalam hitungan menit. Harga per ruang kerja. Sortir email sebanyak mungkin, termasuk seluruh riwayat Anda."
 
 #: ../../apps/site/src/components/landing/FinalCTASection.tsx:11
-msgid "Connect Gmail and Amarnai starts sorting within minutes. Pricing is per workspace. Sorts new mail as it arrives, and works through years of backlog."
-msgstr "Hubungkan Gmail, Amarnai akan mulai menyortir dalam hitungan menit. Harga per ruang kerja. Menyortir email baru saat tiba, dan juga membereskan tumpukan email bertahun-tahun."
+#~ msgid "Connect Gmail and Amarnai starts sorting within minutes. Pricing is per workspace. Sorts new mail as it arrives, and works through years of backlog."
+#~ msgstr "Hubungkan Gmail, Amarnai akan mulai menyortir dalam hitungan menit. Harga per ruang kerja. Menyortir email baru saat tiba, dan juga membereskan tumpukan email bertahun-tahun."
 
 #: ../../apps/extension/src/App.tsx:38
 #~ msgid "Connect Gmail on the web"
@@ -1332,7 +1355,17 @@ msgstr "Hubungkan Gmail untuk menyusun rencana dari kotak masuk Anda"
 msgid "Connect Gmail to start triaging"
 msgstr "Hubungkan Gmail untuk mulai memilah"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:403
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:350
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:362
+#, fuzzy
+msgid "Connect inbox"
+msgstr "Hubungkan kotak masuk"
+
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:347
+msgid "Connect inbox button"
+msgstr "Tombol hubungkan kotak masuk"
+
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:404
 #, fuzzy
 msgid "Connect once, generate your plan once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
 msgstr "Cukup hubungkan sekali, buat rencana sekali, dan biarkan Amarnai menangani email baru serta ribuan utas yang sudah ada di kotak masuk Anda."
@@ -1365,6 +1398,10 @@ msgstr "Hubungkan akun Gmail Anda untuk menyinkronkan kotak masuk Anda ke Amarna
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:76
 msgid "Connect your inbox"
 msgstr "Hubungkan Kotak Masuk Anda"
+
+#: ../../apps/site/src/components/landing/FinalCTASection.tsx:11
+msgid "Connect your inbox and Amarnai starts sorting within minutes. Pricing is per workspace. Sorts new mail as it arrives, and works through years of backlog."
+msgstr "Hubungkan kotak masuk Anda dan Amarnai mulai mengurutkan dalam hitungan menit. Harga per ruang kerja. Mengurutkan email baru saat tiba, dan memproses tumpukan email bertahun-tahun."
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:348
 #, fuzzy
@@ -1691,7 +1728,7 @@ msgid "Customer support, onboarding, product feedback, churn, and success conver
 msgstr "Dukungan pelanggan, orientasi, umpan balik produk, pergantian pelanggan, dan percakapan keberhasilan."
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:29
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:156
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:157
 #: ../ui/src/i18n/taxonomy-template-messages.ts:53
 #, fuzzy
 msgid "Customers"
@@ -1804,7 +1841,7 @@ msgstr "Menghapus…"
 msgid "Describe what kinds of emails belong here: who they come from and what they are about. Be specific and use the actual names, topics, and words that show up in those emails. Describe what the emails are, not what you plan to do about them. The clearer your description, the more accurately your email is sorted here."
 msgstr "Jelaskan jenis email apa yang termasuk di sini: siapa pengirimnya dan tentang apa isinya. Bersikaplah spesifik dan gunakan nama, topik, dan kata-kata sebenarnya yang muncul dalam email tersebut. Jelaskan tentang apa email tersebut, bukan apa yang Anda rencanakan untuk dilakukan dengannya. Semakin jelas deskripsi Anda, semakin akurat email Anda akan disortir di sini."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:372
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:373
 #, fuzzy
 msgid "Describe your folders"
 msgstr "Deskripsikan folder Anda"
@@ -1993,7 +2030,7 @@ msgid "Draft generation failed. Try again."
 msgstr "Pembuatan draf gagal. Coba lagi."
 
 #: ../../apps/mobile/src/components/DraftSheet.tsx:63
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:263
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:264
 #: ../ui/src/emails/SuggestedDraftCard.tsx:47
 #, fuzzy
 msgid "Draft reply"
@@ -2088,7 +2125,7 @@ msgstr "Alamat email yang diblacklist"
 msgid "Email address to invite"
 msgstr "Alamat email untuk diundang"
 
-#: ../../apps/site/src/lib/seo.ts:51
+#: ../../apps/site/src/lib/seo.ts:52
 #, fuzzy
 msgid "email organizer"
 msgstr "Pengatur email"
@@ -2326,7 +2363,7 @@ msgstr "Bilah filter"
 msgid "Finance"
 msgstr "Keuangan"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:383
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:384
 #, fuzzy
 msgid "Find and draft"
 msgstr "Cari dan susun draf"
@@ -2591,6 +2628,11 @@ msgstr "Dapatkan aplikasi"
 msgid "gmail ai assistant"
 msgstr "Asisten AI Gmail"
 
+#: ../../apps/site/src/components/landing/FAQSection.tsx:32
+#, fuzzy
+msgid "Gmail and Outlook filters just slap a label or category on each message and leave it in the same crowded inbox. Amarnai reads every thread the way a person would and lays them out in a clean workspace where related threads sit together, each with the reasoning behind its placement, so you get a calmer view instead of one more buried label. Spam and promotions are kept out automatically unless you turn them on in settings, and anything Amarnai is unsure about is flagged for your review."
+msgstr "Filter Gmail dan Outlook hanya menempelkan label atau kategori pada setiap pesan dan membiarkannya menumpuk di kotak masuk yang ramai. Amarnai membaca setiap rangkaian email layaknya manusia dan menatanya di ruang kerja yang rapi. Rangkaian email terkait ditempatkan bersama, lengkap dengan alasan penempatannya, memberikan Anda pandangan yang lebih tenang alih-alih sekadar label tambahan yang terkubur. Spam dan promosi otomatis disaring, kecuali Anda mengaktifkannya di pengaturan. Amarnai juga akan menandai apa pun yang tidak pasti untuk Anda tinjau."
+
 #: ../../apps/extension/src/panel/notificationText.ts:18
 #: ../../apps/mobile/src/data/notificationView.ts:53
 #: ../../apps/web/src/lib/notifications.ts:72
@@ -2604,8 +2646,8 @@ msgstr "Gmail terputus. Amarnai berhenti menyinkronkan kotak masuk ini, jadi ema
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:32
 #, fuzzy
-msgid "Gmail filters just slap a label on each message and leave it in the same crowded inbox. Amarnai reads every thread the way a person would and lays them out in a clean workspace where related threads sit together, each with the reasoning behind its placement, so you get a calmer view instead of one more buried label. Spam and promotions are kept out automatically unless you turn them on in settings, and anything Amarnai is unsure about is flagged for your review."
-msgstr "Filter Gmail hanya melabeli, membiarkannya di kotak masuk yang sesak. Amarnai membaca setiap utas seperti manusia, menatanya rapi di ruang kerja bersih tempat utas terkait berkumpul, lengkap dengan alasannya. Hasilnya, tampilan lebih tenang daripada sekadar label tersembunyi. Spam dan promosi otomatis disaring (kecuali diaktifkan di pengaturan), dan apa pun yang Amarnai ragu akan ditandai untuk Anda tinjau."
+#~ msgid "Gmail filters just slap a label on each message and leave it in the same crowded inbox. Amarnai reads every thread the way a person would and lays them out in a clean workspace where related threads sit together, each with the reasoning behind its placement, so you get a calmer view instead of one more buried label. Spam and promotions are kept out automatically unless you turn them on in settings, and anything Amarnai is unsure about is flagged for your review."
+#~ msgstr "Filter Gmail hanya melabeli, membiarkannya di kotak masuk yang sesak. Amarnai membaca setiap utas seperti manusia, menatanya rapi di ruang kerja bersih tempat utas terkait berkumpul, lengkap dengan alasannya. Hasilnya, tampilan lebih tenang daripada sekadar label tersembunyi. Spam dan promosi otomatis disaring (kecuali diaktifkan di pengaturan), dan apa pun yang Amarnai ragu akan ditandai untuk Anda tinjau."
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:132
 #, fuzzy
@@ -2639,8 +2681,8 @@ msgid "Gmail Sort Tester"
 msgstr "Penguji Penyortiran Gmail"
 
 #: ../../apps/site/src/components/landing/Footer.tsx:15
-msgid "Gmail, sorted your way."
-msgstr "Gmail, tertata sesuai keinginanmu."
+#~ msgid "Gmail, sorted your way."
+#~ msgstr "Gmail, tertata sesuai keinginanmu."
 
 #: ../../apps/web/src/app/not-found.tsx:41
 #, fuzzy
@@ -2696,11 +2738,7 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "Baginda Raja,\n"
-"\n"
-"Laporan yang Paduka minta akan disiapkan sebelum dewan bersidang. Hamba akan meminta juru tulis hamba menyusun catatan wilayah timur dan mengirimkannya terlebih dahulu dengan kurir cepat.\n"
-"\n"
-"Dalam persaudaraan,"
+msgstr "Baginda Raja,\n\nLaporan yang Paduka minta akan disiapkan sebelum dewan bersidang. Hamba akan meminta juru tulis hamba menyusun catatan wilayah timur dan mengirimkannya terlebih dahulu dengan kurir cepat.\n\nDalam persaudaraan,"
 
 #: ../../apps/site/src/components/landing/FinalCTASection.tsx:9
 #, fuzzy
@@ -2769,9 +2807,13 @@ msgid "How does Amarnai's plan work?"
 msgstr "Bagaimana cara kerja rencana Amarnai?"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:31
+msgid "How is Amarnai different from Gmail and Outlook filters?"
+msgstr "Bagaimana Amarnai berbeda dari filter Gmail dan Outlook?"
+
+#: ../../apps/site/src/components/landing/FAQSection.tsx:31
 #, fuzzy
-msgid "How is Amarnai different from Gmail's filters and labels?"
-msgstr "Apa perbedaan Amarnai dengan filter dan label Gmail?"
+#~ msgid "How is Amarnai different from Gmail's filters and labels?"
+#~ msgstr "Apa perbedaan Amarnai dengan filter dan label Gmail?"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:51
 #, fuzzy
@@ -2854,7 +2896,7 @@ msgstr "Mengimpor akan mengganti rencana Anda saat ini dengan <0>{0} folder</0> 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:183
 #: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:45
 #: ../../apps/site/src/components/demo/demo-seed.ts:28
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:150
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:151
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:512
 #: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:57
 #, fuzzy
@@ -2879,7 +2921,7 @@ msgstr "Impor kotak masuk selesai"
 msgid "Inbox sync"
 msgstr "Sinkronisasi Kotak Masuk"
 
-#: ../../apps/site/src/lib/seo.ts:52
+#: ../../apps/site/src/lib/seo.ts:53
 #, fuzzy
 msgid "inbox zero"
 msgstr "kotak masuk nol"
@@ -2917,13 +2959,17 @@ msgid "Install the Amarnai browser extension"
 msgstr "Pasang ekstensi browser Amarnai"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:20
-msgid "Instead of scanning a crowded inbox, you open Amarnai and find your threads already grouped into the folders you care about, so you can work through customer questions, investor updates, or hiring replies in focused batches. Each thread comes with a suggested folder and the reasoning behind it, and you can draft a reply or jump straight to the thread in Gmail with one click. Sorting that used to take an hour takes minutes."
-msgstr "Alih-alih menyaring kotak masuk yang padat, Anda membuka Amarnai dan menemukan percakapan Anda sudah dikelompokkan ke dalam folder yang Anda inginkan, sehingga Anda dapat menanggapi pertanyaan pelanggan, pembaruan investor, atau balasan perekrutan dalam satu batch terfokus. Setiap percakapan dilengkapi dengan saran folder dan alasannya, dan Anda dapat menyusun balasan atau langsung melompat ke percakapan tersebut di Gmail dengan sekali klik. Penyortiran yang dulunya memakan waktu satu jam, kini hanya butuh beberapa menit."
+#~ msgid "Instead of scanning a crowded inbox, you open Amarnai and find your threads already grouped into the folders you care about, so you can work through customer questions, investor updates, or hiring replies in focused batches. Each thread comes with a suggested folder and the reasoning behind it, and you can draft a reply or jump straight to the thread in Gmail with one click. Sorting that used to take an hour takes minutes."
+#~ msgstr "Alih-alih menyaring kotak masuk yang padat, Anda membuka Amarnai dan menemukan percakapan Anda sudah dikelompokkan ke dalam folder yang Anda inginkan, sehingga Anda dapat menanggapi pertanyaan pelanggan, pembaruan investor, atau balasan perekrutan dalam satu batch terfokus. Setiap percakapan dilengkapi dengan saran folder dan alasannya, dan Anda dapat menyusun balasan atau langsung melompat ke percakapan tersebut di Gmail dengan sekali klik. Penyortiran yang dulunya memakan waktu satu jam, kini hanya butuh beberapa menit."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:16
 #, fuzzy
 #~ msgid "Instead of scanning a crowded inbox, you open Amarnai and find your threads already grouped into the folders you care about, so you can work through customer questions, investor updates, or hiring replies in focused batches. Each thread comes with a suggested folder and the reasoning behind it, and you can draft a reply or jump straight to the thread in Gmail with one click. Triage that used to take an hour takes minutes."
 #~ msgstr "Tidak perlu lagi menelusuri kotak masuk yang penuh. Dengan Amarnai, thread Anda sudah terkelompokkan ke dalam folder prioritas, agar Anda bisa fokus menanggapi pertanyaan pelanggan, pembaruan investor, atau lamaran kerja. Setiap thread dilengkapi saran folder beserta alasannya. Anda bisa langsung menyusun balasan atau lompat ke thread di Gmail, cukup sekali klik. Penyaringan email yang dulu makan waktu sejam, kini selesai dalam hitungan menit."
+
+#: ../../apps/site/src/components/landing/FAQSection.tsx:20
+msgid "Instead of scanning a crowded inbox, you open Amarnai and find your threads already grouped into the folders you care about, so you can work through customer questions, investor updates, or hiring replies in focused batches. Each thread comes with a suggested folder and the reasoning behind it, and you can draft a reply or jump straight to the thread in your inbox with one click. Sorting that used to take an hour takes minutes."
+msgstr "Alih-alih memindai kotak masuk yang ramai, Anda cukup membuka Amarnai dan menemukan rangkaian email Anda sudah dikelompokkan ke dalam folder yang penting bagi Anda. Ini memungkinkan Anda menangani pertanyaan pelanggan, pembaruan investor, atau balasan perekrutan dalam sesi yang terfokus. Setiap rangkaian email dilengkapi folder saran beserta alasannya. Anda dapat menyusun draf balasan atau langsung menuju rangkaian email di kotak masuk Anda hanya dengan satu klik. Pekerjaan pengurutan yang biasanya memakan waktu satu jam, kini hanya butuh beberapa menit."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:39
 #, fuzzy
@@ -2957,7 +3003,7 @@ msgid "Invalid taxonomy file: {detail}"
 msgstr "File taksonomi tidak valid: {detail}"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:32
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:162
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:163
 #: ../ui/src/i18n/taxonomy-template-messages.ts:51
 #, fuzzy
 msgid "Investors"
@@ -3004,8 +3050,12 @@ msgstr "Faktur, tanda terima, dan pertanyaan tagihan dari klien serta vendor."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:11
 #, fuzzy
-msgid "Is connecting my Gmail to Amarnai safe?"
-msgstr "Apakah menghubungkan Gmail saya ke Amarnai aman?"
+#~ msgid "Is connecting my Gmail to Amarnai safe?"
+#~ msgstr "Apakah menghubungkan Gmail saya ke Amarnai aman?"
+
+#: ../../apps/site/src/components/landing/FAQSection.tsx:11
+msgid "Is connecting my inbox to Amarnai safe?"
+msgstr "Apakah menghubungkan kotak masuk saya ke Amarnai aman?"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:47
 #, fuzzy
@@ -3103,7 +3153,7 @@ msgstr "Terakhir diverifikasi: {0}"
 #~ msgid "Lay out folders like <0>Customers</0>, <1>Investors</1>, <2>Hiring</2>. A simple sentence each is the whole config."
 #~ msgstr "Atur folder seperti <0>Pelanggan</0>, <1>Investor</1>, <2>Perekrutan</2>. Cukup satu kalimat sederhana untuk setiap folder adalah seluruh konfigurasinya."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:374
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:375
 msgid "Lay out folders like <0>Customers</0>, <1>Investors</1>, <2>Hiring</2>. A simple sentence each: that's the whole setup."
 msgstr "Atur folder seperti <0>Pelanggan</0>, <1>Investor</1>, <2>Perekrutan</2>. Cukup satu kalimat untuk setiap folder: itulah seluruh pengaturannya."
 
@@ -3723,7 +3773,7 @@ msgstr "Buka di Outlook"
 msgid "Open navigation"
 msgstr "Buka navigasi"
 
-#: ../../apps/site/src/lib/seo.ts:53
+#: ../../apps/site/src/lib/seo.ts:54
 #, fuzzy
 msgid "open source email ai"
 msgstr "AI email sumber terbuka"
@@ -3779,6 +3829,11 @@ msgstr "Atau hubungkan kotak masuk lain:"
 #, fuzzy
 msgid "Other"
 msgstr "Lainnya"
+
+#: ../../apps/site/src/lib/seo.ts:51
+#, fuzzy
+msgid "outlook ai assistant"
+msgstr "asisten AI Outlook"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:89
 msgid "Outlook read-only access (Mail.Read) was not granted. Please try again and approve the requested permission."
@@ -4010,7 +4065,7 @@ msgstr "Harga per ruang kerja. Urutkan sebanyak yang Anda mau."
 msgid "Pricing"
 msgstr "Harga"
 
-#: ../../apps/site/src/lib/seo.ts:83
+#: ../../apps/site/src/lib/seo.ts:84
 #, fuzzy
 msgid "Pricing | Amarnai"
 msgstr "Harga | Amarnai"
@@ -4105,7 +4160,7 @@ msgstr "Alihkan percakapan"
 msgid "Re: Grain shipment: third delay this season"
 msgstr "Re: Pengiriman Gandum: Penundaan Ketiga Musim Ini"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:252
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:253
 #, fuzzy
 msgid "Re: Q3 renewal"
 msgstr "Re: Perpanjangan Q3"
@@ -4115,7 +4170,7 @@ msgstr "Re: Perpanjangan Q3"
 msgid "Reactivate"
 msgstr "Aktifkan ulang"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:352
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:353
 #, fuzzy
 msgid "Read-only · OAuth · revoke anytime"
 msgstr "Hanya baca · OAuth · cabut kapan saja"
@@ -4428,11 +4483,7 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "Rib-Hadda,\n"
-"\n"
-"Kami mengerti. Gandum tambahan telah dipesan dari gudang selatan dan akan tiba sebelum festival panen. Kami mohon kesabaran Anda hingga saat itu.\n"
-"\n"
-"Semoga sehat selalu,"
+msgstr "Rib-Hadda,\n\nKami mengerti. Gandum tambahan telah dipesan dari gudang selatan dan akan tiba sebelum festival panen. Kami mohon kesabaran Anda hingga saat itu.\n\nSemoga sehat selalu,"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -4488,12 +4539,16 @@ msgstr "Hemat waktu menyortir email berjam-jam setiap minggu. Biarkan Amarnai me
 
 #: ../../apps/web/src/lib/notifications.ts:66
 #, fuzzy
-msgid "Save time by triaging your inbox without leaving Gmail."
-msgstr "Hemat waktu menyortir email masuk tanpa keluar dari Gmail."
+#~ msgid "Save time by triaging your inbox without leaving Gmail."
+#~ msgstr "Hemat waktu menyortir email masuk tanpa keluar dari Gmail."
 
 #: ../../apps/mobile/src/data/notificationView.ts:48
 msgid "Save time by triaging your inbox without leaving Gmail. The extension runs in your desktop browser."
 msgstr "Hemat waktu menyortir email masuk tanpa keluar dari Gmail. Ekstensi ini berjalan di browser desktop Anda."
+
+#: ../../apps/web/src/lib/notifications.ts:66
+msgid "Save time by triaging your inbox without leaving your email."
+msgstr "Hemat waktu dengan memilah kotak masuk Anda tanpa meninggalkan email."
 
 #: ../ui/src/PricingPlans.tsx:138
 #, fuzzy
@@ -4538,8 +4593,12 @@ msgid "Search threads…"
 msgstr "Cari utas…"
 
 #: ../../apps/extension/src/auth/SignInScreen.tsx:70
-msgid "See how your inbox is sorted, right next to Gmail."
-msgstr "Lihat kotak masuk Anda tersortir, langsung di Gmail."
+#~ msgid "See how your inbox is sorted, right next to Gmail."
+#~ msgstr "Lihat kotak masuk Anda tersortir, langsung di Gmail."
+
+#: ../../apps/extension/src/auth/SignInScreen.tsx:70
+msgid "See how your inbox is sorted, right next to your email."
+msgstr "Lihat bagaimana kotak masuk Anda diurutkan, tepat di samping email Anda."
 
 #: ../../apps/site/src/components/landing/Footer.tsx:24
 #: ../../apps/site/src/components/landing/Nav.tsx:40
@@ -4579,7 +4638,7 @@ msgstr "Pilih paket untuk dibandingkan"
 msgid "Self-host guide"
 msgstr "Panduan hosting mandiri"
 
-#: ../../apps/site/src/lib/seo.ts:54
+#: ../../apps/site/src/lib/seo.ts:55
 #, fuzzy
 msgid "self-hosted email assistant"
 msgstr "asisten email hosting mandiri"
@@ -4686,6 +4745,15 @@ msgstr "Paket Bersama + Antrean Peninjauan"
 #~ msgid "Shared taxonomy + review queue"
 #~ msgstr "Taksonomi bersama + antrean peninjauan"
 
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:329
+#, fuzzy
+msgid "Show Gmail"
+msgstr "Tampilkan Gmail"
+
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:338
+msgid "Show Outlook"
+msgstr "Tampilkan Outlook"
+
 #: ../../apps/extension/src/auth/SignInScreen.tsx:98
 #: ../../apps/mobile/app/sign-in.tsx:133
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:29
@@ -4707,10 +4775,14 @@ msgstr "Masuk untuk menyeleksi kotak masuk Anda"
 msgid "Sign in with Google"
 msgstr "Masuk dengan Google"
 
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:364
+msgid "Sign in with Google or Microsoft. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
+msgstr "Masuk dengan Google atau Microsoft. Amarnai menyinkronkan rangkaian email dan label Anda. Amarnai tidak pernah mengirim atau menghapus atas nama Anda."
+
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:363
 #, fuzzy
-msgid "Sign in with Google. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
-msgstr "Masuk dengan Google. Amarnai menyinkronkan utas dan label Anda. Amarnai tidak pernah mengirim atau menghapus atas nama Anda."
+#~ msgid "Sign in with Google. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
+#~ msgstr "Masuk dengan Google. Amarnai menyinkronkan utas dan label Anda. Amarnai tidak pernah mengirim atau menghapus atas nama Anda."
 
 #: ../../apps/extension/src/App.tsx:96
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:159
@@ -4747,7 +4819,7 @@ msgstr "Gagal mendaftar. Silakan coba lagi."
 msgid "Signing in…"
 msgstr "Masuk…"
 
-#: ../../apps/site/src/lib/seo.ts:89
+#: ../../apps/site/src/lib/seo.ts:90
 #, fuzzy
 msgid "Simple per-workspace pricing. Start free, upgrade or create additional workspaces as you need."
 msgstr "Harga per ruang kerja yang sederhana. Mulai gratis, tingkatkan, atau buat ruang kerja tambahan sesuai kebutuhan Anda."
@@ -4778,6 +4850,11 @@ msgstr "Terjadi kesalahan. Silakan coba lagi."
 #, fuzzy
 msgid "Soon"
 msgstr "Segera"
+
+#: ../../apps/site/src/components/landing/Footer.tsx:15
+#, fuzzy
+msgid "Sort emails your way."
+msgstr "Urutkan email sesuai keinginan Anda."
 
 #: ../../apps/extension/src/panel/SortNowButton.tsx:28
 msgid "Sort now"
@@ -5039,7 +5116,7 @@ msgstr "Taksonomi diterapkan"
 #~ msgid "Taxonomy nodes"
 #~ msgstr "Node taksonomi"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:168
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:169
 #: ../ui/src/i18n/taxonomy-template-messages.ts:38
 #, fuzzy
 msgid "Team"
@@ -5063,7 +5140,7 @@ msgstr "Ketentuan"
 msgid "Thank you for your message. I'll follow up shortly."
 msgstr "Terima kasih atas pesan Anda. Saya akan segera menindaklanjuti."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:189
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:190
 #, fuzzy
 msgid "Thanks for the update. Friday works."
 msgstr "Terima kasih atas informasinya. Jumat bisa."
@@ -5301,7 +5378,7 @@ msgstr "Thread yang belum disortir."
 msgid "Threads you've marked as important."
 msgstr "Utas yang Anda tandai sebagai penting."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:400
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:401
 msgid "Three steps to a sorted inbox."
 msgstr "Tiga langkah menuju kotak masuk rapi."
 
@@ -5319,13 +5396,7 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "Untuk saudaraku, Raja Agung,\n"
-"\n"
-"Dewan agung bersidang pada awal Shemu. Aku meminta Anda menyiapkan laporan lengkap wilayah timur dan mengirimkannya dengan kurir cepat, sebelum bulan baru jika memungkinkan.\n"
-"\n"
-"Aliansi kita kuat. Marilah kita tunjukkan kepada dewan bahwa itu tetap demikian.\n"
-"\n"
-"Tushratta, Raja Agung Mitanni"
+msgstr "Untuk saudaraku, Raja Agung,\n\nDewan agung bersidang pada awal Shemu. Aku meminta Anda menyiapkan laporan lengkap wilayah timur dan mengirimkannya dengan kurir cepat, sebelum bulan baru jika memungkinkan.\n\nAliansi kita kuat. Marilah kita tunjukkan kepada dewan bahwa itu tetap demikian.\n\nTushratta, Raja Agung Mitanni"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:163
 #, fuzzy
@@ -5334,11 +5405,7 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "Kepada Biro Penunjukan Kerajaan,\n"
-"\n"
-"Kami telah menerima permohonan dari Horemheb dari Thebes dan akan meninjau catatan rekam jejaknya sebelum bulan baru berikutnya. Harap beri tahu dia bahwa kami akan mengirimkan kabar pada waktunya.\n"
-"\n"
-"Berdasarkan keputusan kerajaan,"
+msgstr "Kepada Biro Penunjukan Kerajaan,\n\nKami telah menerima permohonan dari Horemheb dari Thebes dan akan meninjau catatan rekam jejaknya sebelum bulan baru berikutnya. Harap beri tahu dia bahwa kami akan mengirimkan kabar pada waktunya.\n\nBerdasarkan keputusan kerajaan,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:278
 #, fuzzy
@@ -5349,13 +5416,7 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "Kepada Raja Agung,\n"
-"\n"
-"Selama bertahun-tahun rumah kita telah seperti saudara. Saya menulis sekarang untuk mengusulkan agar kita meresmikan persahabatan ini demi kepentingan kedua bangsa kita: sebuah pakta perlindungan timbal balik dan rute bersama.\n"
-"\n"
-"Saya hanya meminta Anda mendengar syarat-syarat saya. Kirimkan pesan melalui kurir berikutnya dan saya akan segera mengirimkan utusan saya.\n"
-"\n"
-"Aziru, hamba Raja Agung, penguasa Amurru"
+msgstr "Kepada Raja Agung,\n\nSelama bertahun-tahun rumah kita telah seperti saudara. Saya menulis sekarang untuk mengusulkan agar kita meresmikan persahabatan ini demi kepentingan kedua bangsa kita: sebuah pakta perlindungan timbal balik dan rute bersama.\n\nSaya hanya meminta Anda mendengar syarat-syarat saya. Kirimkan pesan melalui kurir berikutnya dan saya akan segera mengirimkan utusan saya.\n\nAziru, hamba Raja Agung, penguasa Amurru"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:391
 #, fuzzy
@@ -5364,11 +5425,7 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "Kepada Raja Agung,\n"
-"\n"
-"Perjalanan saya membawa saya dekat Delta dalam beberapa hari mendatang. Jika Raja Agung memiliki waktu luang, saya akan menyambut kesempatan untuk berbicara tatap muka; ada hal-hal yang lebih mudah diucapkan daripada ditulis.\n"
-"\n"
-"Hambamu, Abdi-Heba, gubernur Urushalim"
+msgstr "Kepada Raja Agung,\n\nPerjalanan saya membawa saya dekat Delta dalam beberapa hari mendatang. Jika Raja Agung memiliki waktu luang, saya akan menyambut kesempatan untuk berbicara tatap muka; ada hal-hal yang lebih mudah diucapkan daripada ditulis.\n\nHambamu, Abdi-Heba, gubernur Urushalim"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:153
 #, fuzzy
@@ -5377,11 +5434,7 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "Kepada Raja Agung, saudaraku,\n"
-"\n"
-"Saya telah mendengar perkataan Anda. Emas akan dikirimkan sebelum utusan berikutnya berangkat. Kami menghargai ikatan antara rumah kita dan tidak ingin itu mendingin.\n"
-"\n"
-"Dalam persahabatan,"
+msgstr "Kepada Raja Agung, saudaraku,\n\nSaya telah mendengar perkataan Anda. Emas akan dikirimkan sebelum utusan berikutnya berangkat. Kami menghargai ikatan antara rumah kita dan tidak ingin itu mendingin.\n\nDalam persahabatan,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:239
 #, fuzzy
@@ -5392,13 +5445,7 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "Kepada Raja Agung, saudaraku,\n"
-"\n"
-"Saya menulis dalam persahabatan, sebagaimana para ayah kita menulis sebelumnya. Pengiriman emas ketiga yang disepakati dalam perjanjian kita belum tiba. Dua utusan telah berlalu dan kami masih menunggu.\n"
-"\n"
-"Kami meminta Anda mengirimkannya tanpa penundaan lebih lanjut, sebagaimana layaknya ikatan antara rumah kita.\n"
-"\n"
-"Burna-Buriash II, Raja Babilonia"
+msgstr "Kepada Raja Agung, saudaraku,\n\nSaya menulis dalam persahabatan, sebagaimana para ayah kita menulis sebelumnya. Pengiriman emas ketiga yang disepakati dalam perjanjian kita belum tiba. Dua utusan telah berlalu dan kami masih menunggu.\n\nKami meminta Anda mengirimkannya tanpa penundaan lebih lanjut, sebagaimana layaknya ikatan antara rumah kita.\n\nBurna-Buriash II, Raja Babilonia"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:352
 #, fuzzy
@@ -5409,13 +5456,7 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "Kepada Raja Agung, Tuanku, Matahariku,\n"
-"\n"
-"Gandum yang Anda kirim bulan lalu telah diterima dengan syukur dan saya memuji nama Anda di hadapan rakyat. Namun saya harus menulis lagi: pengiriman ketiga belum tiba dan kota menjadi gelisah.\n"
-"\n"
-"Saya telah menulis tujuh kali. Saya tidak ingin menyusahkan Anda, namun apa lagi yang bisa saya lakukan?\n"
-"\n"
-"Hambamu, Rib-Hadda, gubernur Byblos"
+msgstr "Kepada Raja Agung, Tuanku, Matahariku,\n\nGandum yang Anda kirim bulan lalu telah diterima dengan syukur dan saya memuji nama Anda di hadapan rakyat. Namun saya harus menulis lagi: pengiriman ketiga belum tiba dan kota menjadi gelisah.\n\nSaya telah menulis tujuh kali. Saya tidak ingin menyusahkan Anda, namun apa lagi yang bisa saya lakukan?\n\nHambamu, Rib-Hadda, gubernur Byblos"
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:19
 #: ../ui/src/emails/ThreadList.tsx:15
@@ -5424,8 +5465,8 @@ msgid "Today"
 msgstr "Hari ini"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:36
-msgid "Today Amarnai connects to Gmail. Outlook support is on the way, and it will work the same read-only way: Amarnai reads your threads to sort them and never sends, deletes, or changes anything in your account."
-msgstr "Saat ini Amarnai terhubung ke Gmail. Dukungan Outlook segera hadir, dengan prinsip baca-saja yang sama: Amarnai membaca percakapan Anda untuk mengurutkannya, tanpa pernah mengirim, menghapus, atau mengubah apa pun di akun Anda."
+#~ msgid "Today Amarnai connects to Gmail. Outlook support is on the way, and it will work the same read-only way: Amarnai reads your threads to sort them and never sends, deletes, or changes anything in your account."
+#~ msgstr "Saat ini Amarnai terhubung ke Gmail. Dukungan Outlook segera hadir, dengan prinsip baca-saja yang sama: Amarnai membaca percakapan Anda untuk mengurutkannya, tanpa pernah mengirim, menghapus, atau mengubah apa pun di akun Anda."
 
 #: ../ui/src/emails/ThreadList.tsx:130
 #, fuzzy
@@ -5803,8 +5844,12 @@ msgid "Working Professional"
 msgstr "Profesional Aktif"
 
 #: ../../apps/site/src/components/landing/FinalCTASection.tsx:24
-msgid "Works with Gmail today. Outlook support is on the way."
-msgstr "Saat ini kompatibel dengan Gmail. Dukungan Outlook segera menyusul."
+msgid "Works with Gmail and Outlook."
+msgstr "Berfungsi dengan Gmail dan Outlook."
+
+#: ../../apps/site/src/components/landing/FinalCTASection.tsx:24
+#~ msgid "Works with Gmail today. Outlook support is on the way."
+#~ msgstr "Saat ini kompatibel dengan Gmail. Dukungan Outlook segera menyusul."
 
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:61
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:220
@@ -5901,19 +5946,31 @@ msgstr "Ya. Amarnai dapat memproses ribuan percakapan yang sudah ada di kotak ma
 #~ msgstr "Ya. Amarnai dapat memproses ribuan thread yang sudah ada di kotak masuk Anda, bukan hanya pesan yang baru masuk. Triage historis dan pengurutan berkelanjutan menggunakan rencana yang sama, jadi seluruh kotak masuk Anda akan tertata seragam."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:12
+msgid "Yes. Amarnai connects with a read-only scope, so it can read your threads but cannot send, delete, label, or change anything in your account. It keeps only what it needs to sort and display threads: subjects, participants, snippets, and the labels and reasoning it generates. Full message bodies are fetched when needed and processed in memory, not stored, and OAuth tokens are encrypted at rest."
+msgstr "Ya. Amarnai terhubung dengan cakupan hanya-baca, sehingga dapat membaca rangkaian email Anda tetapi tidak dapat mengirim, menghapus, melabeli, atau mengubah apa pun di akun Anda. Amarnai hanya menyimpan yang diperlukan untuk mengurutkan dan menampilkan rangkaian email: subjek, peserta, cuplikan, serta label dan alasan yang dihasilkannya. Isi pesan lengkap diambil saat dibutuhkan dan diproses dalam memori, tidak disimpan, dan token OAuth dienkripsi saat tidak aktif."
+
+#: ../../apps/site/src/components/landing/FAQSection.tsx:12
 #, fuzzy
-msgid "Yes. Amarnai connects with Gmail's read-only scope, so it can read your threads but cannot send, delete, label, or change anything in your account. It keeps only what it needs to sort and display threads: subjects, participants, snippets, and the labels and reasoning it generates. Full message bodies are fetched when needed and processed in memory, not stored, and OAuth tokens are encrypted at rest."
-msgstr "Ya. Amarnai terhubung dengan cakupan hanya-baca Gmail, sehingga dapat membaca thread Anda tetapi tidak dapat mengirim, menghapus, memberi label, atau mengubah apa pun di akun Anda. Amarnai hanya menyimpan yang diperlukan untuk mengurutkan dan menampilkan thread: subjek, peserta, cuplikan, serta label dan alasannya. Isi pesan lengkap diambil saat diperlukan dan diproses dalam memori, tidak disimpan, dan token OAuth dienkripsi saat tidak digunakan."
+#~ msgid "Yes. Amarnai connects with Gmail's read-only scope, so it can read your threads but cannot send, delete, label, or change anything in your account. It keeps only what it needs to sort and display threads: subjects, participants, snippets, and the labels and reasoning it generates. Full message bodies are fetched when needed and processed in memory, not stored, and OAuth tokens are encrypted at rest."
+#~ msgstr "Ya. Amarnai terhubung dengan cakupan hanya-baca Gmail, sehingga dapat membaca thread Anda tetapi tidak dapat mengirim, menghapus, memberi label, atau mengubah apa pun di akun Anda. Amarnai hanya menyimpan yang diperlukan untuk mengurutkan dan menampilkan thread: subjek, peserta, cuplikan, serta label dan alasannya. Isi pesan lengkap diambil saat diperlukan dan diproses dalam memori, tidak disimpan, dan token OAuth dienkripsi saat tidak digunakan."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:56
 #, fuzzy
 msgid "Yes. Amarnai is open source under the AGPL-3.0 license. You can clone the repository and run it yourself with Docker. Self-hosting is free and unsupported, with community support available on GitHub."
 msgstr "Ya. Amarnai adalah open source di bawah lisensi AGPL-3.0. Anda dapat mengkloning repositori dan menjalankannya sendiri dengan Docker. Self-hosting gratis dan tidak didukung, dengan dukungan komunitas tersedia di GitHub."
 
+#: ../../apps/site/src/components/landing/FAQSection.tsx:36
+msgid "Yes. Amarnai works with both Gmail and Outlook, each connected the same read-only way: Amarnai reads your threads to sort them and never sends, deletes, or changes anything in your account."
+msgstr "Ya. Amarnai berfungsi dengan Gmail dan Outlook, masing-masing terhubung dengan cara hanya-baca yang sama: Amarnai membaca rangkaian email Anda untuk mengurutkannya dan tidak pernah mengirim, menghapus, atau mengubah apa pun di akun Anda."
+
 #: ../../apps/site/src/components/landing/FAQSection.tsx:48
 #, fuzzy
-msgid "Yes. Open a thread, press Generate draft reply, and a suggested draft appears in Amarnai for you to read and edit. Nothing is ever sent for you: when you are happy with it, you can jump to the thread in Gmail with one click and paste your reply there to send. Each subscription includes a monthly draft allowance."
-msgstr "Ya. Buka thread, tekan 'Hasilkan draf balasan', dan draf yang disarankan akan muncul di Amarnai untuk Anda baca dan edit. Tidak ada yang akan dikirim secara otomatis: setelah puas, Anda dapat langsung ke thread di Gmail dengan satu klik dan menempelkan balasan Anda di sana untuk dikirim. Setiap langganan mencakup jatah draf bulanan."
+#~ msgid "Yes. Open a thread, press Generate draft reply, and a suggested draft appears in Amarnai for you to read and edit. Nothing is ever sent for you: when you are happy with it, you can jump to the thread in Gmail with one click and paste your reply there to send. Each subscription includes a monthly draft allowance."
+#~ msgstr "Ya. Buka thread, tekan 'Hasilkan draf balasan', dan draf yang disarankan akan muncul di Amarnai untuk Anda baca dan edit. Tidak ada yang akan dikirim secara otomatis: setelah puas, Anda dapat langsung ke thread di Gmail dengan satu klik dan menempelkan balasan Anda di sana untuk dikirim. Setiap langganan mencakup jatah draf bulanan."
+
+#: ../../apps/site/src/components/landing/FAQSection.tsx:48
+msgid "Yes. Open a thread, press Generate draft reply, and a suggested draft appears in Amarnai for you to read and edit. Nothing is ever sent for you: when you are happy with it, you can jump to the thread in your inbox with one click and paste your reply there to send. Each subscription includes a monthly draft allowance."
+msgstr "Ya. Buka rangkaian email, tekan Buat draf balasan, dan draf yang disarankan akan muncul di Amarnai untuk Anda baca dan edit. Tidak ada yang pernah dikirim atas nama Anda: setelah Anda puas, Anda dapat langsung menuju rangkaian email di kotak masuk Anda dengan satu klik dan menempelkan balasan Anda di sana untuk dikirim. Setiap langganan menyertakan jatah draf bulanan."
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:20
 #: ../ui/src/emails/ThreadList.tsx:16

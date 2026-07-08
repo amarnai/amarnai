@@ -63,7 +63,7 @@ export function describeNotification(n: NotificationItem, i18n: I18n): Notificat
       const href = extensionStoreUrl();
       return {
         title: i18n._(msg`Install the Amarnai browser extension`),
-        body: i18n._(msg`Save time by triaging your inbox without leaving Gmail.`),
+        body: i18n._(msg`Save time by triaging your inbox without leaving your email.`),
         action: href ? { kind: "open_url", href } : null,
       };
     }

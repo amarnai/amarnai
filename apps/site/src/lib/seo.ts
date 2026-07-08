@@ -36,18 +36,19 @@ export function buildHomeMetadata(
 ): Metadata {
   // Visible browser-tab / search-result headline uses the human-facing brand
   // tagline. Machine-facing OG/Twitter titles keep the keyword-rich SEO phrasing.
-  const title = i18n._(msg`Amarnai: AI Email Sorter for Gmail`);
-  const seoTitle = i18n._(msg`Amarnai: Gmail, sorted your way`);
+  const title = i18n._(msg`Amarnai: AI Email Sorter for Gmail & Outlook`);
+  const seoTitle = i18n._(msg`Amarnai: Sort emails your way`);
   const url = localeUrl(locale);
 
   return {
     title,
     description: i18n._(
-      msg`Amarnai sorts your Gmail into the folders you define, drafts replies for your approval, and explains every call so you reach inbox zero faster.`
+      msg`Amarnai sorts your inbox into the folders you define, drafts replies for your approval, and explains every call so you reach inbox zero faster.`
     ),
     keywords: [
       i18n._(msg`ai email sorter`),
       i18n._(msg`gmail ai assistant`),
+      i18n._(msg`outlook ai assistant`),
       i18n._(msg`email organizer`),
       i18n._(msg`inbox zero`),
       i18n._(msg`open source email ai`),
@@ -60,7 +61,7 @@ export function buildHomeMetadata(
     openGraph: {
       title: seoTitle,
       description: i18n._(
-        msg`Amarnai reads your Gmail, sorts every thread into the folders you define, and drafts replies for your approval. Reach inbox zero without the busywork.`
+        msg`Amarnai reads your inbox, sorts every thread into the folders you define, and drafts replies for your approval. Reach inbox zero without the busywork.`
       ),
       url,
       images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Amarnai" }],

@@ -31,7 +31,7 @@ export function HostPermissionGate({ children }: { children: ReactNode }) {
   if (!granted) {
     return (
       <div className="ax-center ax-muted ax-noworkspace">
-        <p><Trans>Amarnai needs access to its server and Gmail to show your inbox.</Trans></p>
+        <p><Trans>Amarnai needs access to its server and your inbox to show your emails.</Trans></p>
         <button type="button" className="ax-btn ax-btn-primary" onClick={() => void onGrant()}>
           <Trans>Grant access</Trans>
         </button>

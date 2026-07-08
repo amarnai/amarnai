@@ -493,8 +493,45 @@
   padding: 14px;
 }
 
-/* Art 1 — Connect Gmail */
-.ld-sa-connect { flex-direction: column; gap: 11px; }
+/* Art 1 — Connect inbox */
+.ld-sa-connect { flex-direction: column; gap: 11px; position: relative; }
+
+/* Quiet Gmail/Outlook toggle in the corner of the connect mock. */
+.ld-sa-toggle {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: inline-flex;
+  gap: 2px;
+  padding: 2px;
+  border-radius: 8px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-1);
+}
+
+.ld-sa-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  opacity: 0.4;
+  transition: opacity 0.15s ease, background 0.15s ease;
+}
+
+.ld-sa-toggle-btn:hover { opacity: 0.75; }
+
+.ld-sa-toggle-btn.active {
+  opacity: 1;
+  background: var(--bg-soft);
+}
 
 .ld-sa-gbtn {
   display: inline-flex;
