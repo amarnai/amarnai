@@ -7,7 +7,7 @@ import {
   exchangeServerAuthCode,
   GmailApiError,
 } from "@amarnai/gmail";
-import { storeGmailConnection } from "@amarnai/auth";
+import { storeGmailConnection, ProviderMismatchError } from "@amarnai/auth";
 import type { AppEnv } from "../env.js";
 import {
   disconnectGmail,
@@ -155,6 +155,15 @@ gmailConnection.post("/workspaces/:workspaceId/gmail-connection", async (c) => {
       metadata: { gmailAddress, replacedAddress, priorStatus: priorConnection?.status ?? null },
     });
   } catch (err) {
+    if (err instanceof ProviderMismatchError) {
+      // This workspace's inbox belongs to a different provider (e.g. Outlook).
+      // Connecting Gmail here would silently clobber it; reconnect via that
+      // provider instead.
+      return c.json(
+        { error: "This workspace is connected to a different mail provider" },
+        409,
+      );
+    }
     if (err instanceof GmailApiError) {
       // Code redemption or profile verification failed (expired/reused/invalid code).
       return c.json({ error: "Could not verify Gmail access" }, 502);

@@ -560,9 +560,13 @@ msgstr "Amarnai is named after the <0>Amarna Letters</0>: clay cuneiform tablets
 msgid "Amarnai is no longer syncing this inbox. Reconnect your {providerName} account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
 msgstr "Amarnai is no longer syncing this inbox. Reconnect your {providerName} account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
 
-#: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:51
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:88
 msgid "Amarnai is no longer syncing this inbox. Reconnect your Gmail account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
 msgstr "Amarnai is no longer syncing this inbox. Reconnect your Gmail account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
+
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:82
+msgid "Amarnai is no longer syncing this inbox. Reconnect your Outlook account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
+msgstr "Amarnai is no longer syncing this inbox. Reconnect your Outlook account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
 
 #: ../ui/src/pricing/planMessages.ts:112
 msgid "Amarnai is open source under AGPL-3.0. Clone it, bring your own keys, and run every tier free on your own infrastructure."
@@ -1100,6 +1104,7 @@ msgid "Connect a Gmail inbox to configure sync filters."
 msgstr "Connect a Gmail inbox to configure sync filters."
 
 #: ../../apps/extension/src/App.tsx:93
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:138
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:361
@@ -1139,6 +1144,7 @@ msgstr "Connect Gmail to start triaging"
 msgid "Connect once, generate your plan once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
 msgstr "Connect once, generate your plan once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
 
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:151
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:414
 msgid "Connect Outlook"
 msgstr "Connect Outlook"
@@ -1159,6 +1165,10 @@ msgstr "Connect your Gmail account to sync your inbox into Amarnai. Amarnai conn
 #~ msgid "Connect your Gmail inbox"
 #~ msgstr "Connect your Gmail inbox"
 
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:76
+msgid "Connect your inbox"
+msgstr "Connect your inbox"
+
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:348
 msgid "Connecting {name} will permanently remove the sorted email saved from {retainedAddress}. Your folders and settings are kept."
 msgstr "Connecting {name} will permanently remove the sorted email saved from {retainedAddress}. Your folders and settings are kept."
@@ -1167,6 +1177,12 @@ msgstr "Connecting {name} will permanently remove the sorted email saved from {r
 msgid "Connecting {secondaryName} will permanently remove the sorted email saved from {retainedAddress}. Your folders and settings are kept."
 msgstr "Connecting {secondaryName} will permanently remove the sorted email saved from {retainedAddress}. Your folders and settings are kept."
 
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:138
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:149
+msgid "Connecting…"
+msgstr "Connecting…"
+
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:58
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:162
 msgid "Connection failed. Please try again."
 msgstr "Connection failed. Please try again."
@@ -1338,7 +1354,7 @@ msgstr "Could not upgrade"
 msgid "Could not verify your Google account. Please try again."
 msgstr "Could not verify your Google account. Please try again."
 
-#: ../../apps/extension/src/panel/TriageGate.tsx:81
+#: ../../apps/extension/src/panel/TriageGate.tsx:85
 msgid "Couldn't load your inbox. Check your connection and reopen the panel."
 msgstr "Couldn't load your inbox. Check your connection and reopen the panel."
 
@@ -2579,6 +2595,10 @@ msgstr "King Aziru"
 msgid "King Aziru has consulted every clay tablet in his archive, but this page does not appear to exist."
 msgstr "King Aziru has consulted every clay tablet in his archive, but this page does not appear to exist."
 
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:95
+msgid "King Aziru is ready to sort your email threads. Connect your account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
+msgstr "King Aziru is ready to sort your email threads. Connect your account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
+
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:41
 #~ msgid "King Aziru is ready to sort your email threads. Connect your Gmail account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
 #~ msgstr "King Aziru is ready to sort your email threads. Connect your Gmail account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
@@ -3514,24 +3534,32 @@ msgstr "Reconnect"
 msgid "Reconnect {providerName}"
 msgstr "Reconnect {providerName}"
 
-#: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:37
-msgid "Reconnect failed. Please try again."
-msgstr "Reconnect failed. Please try again."
+#: ../../apps/extension/src/panel/ReconnectMailCta.tsx:48
+#~ msgid "Reconnect failed. Please try again."
+#~ msgstr "Reconnect failed. Please try again."
 
-#: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:65
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:126
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 msgid "Reconnect Gmail"
 msgstr "Reconnect Gmail"
+
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:124
+msgid "Reconnect Outlook"
+msgstr "Reconnect Outlook"
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:82
 msgid "Reconnect your {providerName} inbox"
 msgstr "Reconnect your {providerName} inbox"
 
-#: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:48
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:73
 msgid "Reconnect your Gmail inbox"
 msgstr "Reconnect your Gmail inbox"
 
-#: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:65
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:71
+msgid "Reconnect your Outlook inbox"
+msgstr "Reconnect your Outlook inbox"
+
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:122
 #: ../../apps/mobile/src/components/emails/DisconnectedBanner.tsx:46
 msgid "Reconnecting…"
 msgstr "Reconnecting…"
@@ -3983,7 +4011,7 @@ msgid "Sign in with Google. Amarnai syncs your threads and labels. It never send
 msgstr "Sign in with Google. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
 
 #: ../../apps/extension/src/App.tsx:96
-#: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:68
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:159
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:132
 #: ../../apps/mobile/app/(app)/account.tsx:122
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:98

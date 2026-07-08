@@ -18,6 +18,7 @@ import {
 import { API_BASE_URL } from "../config";
 import { extensionTokenStore, type StoredTokens } from "./tokenStore";
 import { requestGoogleAuth } from "./googleAuth";
+import { requestMicrosoftAuth } from "./microsoftAuth";
 
 type Status = "loading" | "signedOut" | "signedIn";
 
@@ -57,6 +58,10 @@ interface SessionValue {
   // it leaves the session tokens untouched — the user is already signed in.
   // Throws GoogleAuthCancelledError on dismiss.
   reconnectGmail(targetWorkspaceId: string): Promise<void>;
+  // Outlook counterpart of reconnectGmail: runs the Microsoft OAuth grant and
+  // reconnects the given workspace's Outlook inbox. Leaves the session untouched.
+  // Throws MicrosoftAuthCancelledError on dismiss.
+  reconnectOutlook(targetWorkspaceId: string): Promise<void>;
   signOut(): Promise<void>;
 }
 
@@ -206,6 +211,18 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     [client, refreshWorkspaces],
   );
 
+  const reconnectOutlook = useCallback(
+    async (targetWorkspaceId: string) => {
+      const authResult = await requestMicrosoftAuth(); // throws MicrosoftAuthCancelledError on dismiss
+      // Reconnect THIS workspace's Outlook inbox via the workspace-scoped
+      // endpoint (mirrors reconnectGmail). Leaves the session tokens untouched —
+      // we're already signed in.
+      await client.connectOutlook(targetWorkspaceId, authResult);
+      await refreshWorkspaces(targetWorkspaceId);
+    },
+    [client, refreshWorkspaces],
+  );
+
   const signOut = useCallback(async () => {
     const tokens = await extensionTokenStore.get();
     if (tokens?.refreshToken) {
@@ -236,6 +253,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       signIn,
       signInWithGoogle,
       reconnectGmail,
+      reconnectOutlook,
       signOut,
     }),
     [
@@ -252,6 +270,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       signIn,
       signInWithGoogle,
       reconnectGmail,
+      reconnectOutlook,
       signOut,
     ],
   );

@@ -415,7 +415,9 @@ msgstr "Lamaran baru telah diterima dari Horemheb dari Thebes untuk posisi Kepal
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "Lamaran baru telah diterima dari Horemheb dari Thebes untuk posisi Kepala Korespondensi.\n\nLihat lamaran di Gedung Arsip."
+msgstr "Lamaran baru telah diterima dari Horemheb dari Thebes untuk posisi Kepala Korespondensi.\n"
+"\n"
+"Lihat lamaran di Gedung Arsip."
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:387
 #, fuzzy
@@ -429,7 +431,11 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "Abdi-Heba,\n\nSaya akan berada di dekat Delta pada minggu yang sama. Mari kita bertemu di stasiun persinggahan pada hari kedua; saya bisa menyisihkan waktu pagi.\n\nSampai jumpa,"
+msgstr "Abdi-Heba,\n"
+"\n"
+"Saya akan berada di dekat Delta pada minggu yang sama. Mari kita bertemu di stasiun persinggahan pada hari kedua; saya bisa menyisihkan waktu pagi.\n"
+"\n"
+"Sampai jumpa,"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
@@ -647,10 +653,14 @@ msgstr "Nama Amarnai diambil dari <0>Surat-surat Amarna</0>: tablet tanah liat b
 msgid "Amarnai is no longer syncing this inbox. Reconnect your {providerName} account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
 msgstr "Amarnai tidak lagi menyinkronkan kotak masuk ini. Hubungkan kembali akun {providerName} Anda untuk melanjutkan penyortiran utas email Anda. Akses tetap <0>baca-saja</0>, dan kotak masuk Anda tetap milik Anda."
 
-#: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:51
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:88
 #, fuzzy
 msgid "Amarnai is no longer syncing this inbox. Reconnect your Gmail account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
 msgstr "Amarnai tidak lagi menyinkronkan kotak masuk ini. Sambungkan kembali akun Gmail Anda untuk melanjutkan penyortiran utas email. Akses tetap <0>hanya-baca</0>, dan kotak masuk Anda tetap milik Anda."
+
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:82
+msgid "Amarnai is no longer syncing this inbox. Reconnect your Outlook account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
+msgstr "Amarnai tidak lagi menyinkronkan kotak masuk ini. Sambungkan kembali akun Outlook Anda untuk melanjutkan penyortiran utas email Anda. Akses tetap <0>hanya-baca</0>, dan kotak masuk Anda tetap milik Anda."
 
 #: ../ui/src/pricing/planMessages.ts:112
 #, fuzzy
@@ -902,7 +912,11 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "Aziru,\n\nKata-kata persahabatan Anda telah kami terima dengan baik. Kami terbuka untuk mendengar lebih banyak tentang apa yang diusulkan oleh Wangsa Amurru. Kirimkan ketentuan Anda melalui kurir berikutnya.\n\nDengan hormat,"
+msgstr "Aziru,\n"
+"\n"
+"Kata-kata persahabatan Anda telah kami terima dengan baik. Kami terbuka untuk mendengar lebih banyak tentang apa yang diusulkan oleh Wangsa Amurru. Kirimkan ketentuan Anda melalui kurir berikutnya.\n"
+"\n"
+"Dengan hormat,"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:217
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
@@ -1276,6 +1290,7 @@ msgid "Connect a Gmail inbox to configure sync filters."
 msgstr "Hubungkan kotak masuk Gmail untuk mengonfigurasi filter sinkronisasi."
 
 #: ../../apps/extension/src/App.tsx:93
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:138
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:361
@@ -1322,6 +1337,7 @@ msgstr "Hubungkan Gmail untuk mulai memilah"
 msgid "Connect once, generate your plan once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
 msgstr "Cukup hubungkan sekali, buat rencana sekali, dan biarkan Amarnai menangani email baru serta ribuan utas yang sudah ada di kotak masuk Anda."
 
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:151
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:414
 #, fuzzy
 msgid "Connect Outlook"
@@ -1346,6 +1362,10 @@ msgstr "Hubungkan akun Gmail Anda untuk menyinkronkan kotak masuk Anda ke Amarna
 #~ msgid "Connect your Gmail inbox"
 #~ msgstr "Hubungkan kotak masuk Gmail Anda"
 
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:76
+msgid "Connect your inbox"
+msgstr "Hubungkan Kotak Masuk Anda"
+
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:348
 #, fuzzy
 msgid "Connecting {name} will permanently remove the sorted email saved from {retainedAddress}. Your folders and settings are kept."
@@ -1355,6 +1375,12 @@ msgstr "Menghubungkan {name} akan menghapus secara permanen email yang sudah diu
 msgid "Connecting {secondaryName} will permanently remove the sorted email saved from {retainedAddress}. Your folders and settings are kept."
 msgstr "Menghubungkan {secondaryName} akan menghapus secara permanen email yang sudah diurutkan yang tersimpan dari {retainedAddress}. Folder dan pengaturan Anda tetap tersimpan."
 
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:138
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:149
+msgid "Connecting…"
+msgstr "Menghubungkan…"
+
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:58
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:162
 #, fuzzy
 msgid "Connection failed. Please try again."
@@ -1561,7 +1587,7 @@ msgstr "Gagal meningkatkan"
 msgid "Could not verify your Google account. Please try again."
 msgstr "Gagal memverifikasi akun Google Anda. Silakan coba lagi."
 
-#: ../../apps/extension/src/panel/TriageGate.tsx:81
+#: ../../apps/extension/src/panel/TriageGate.tsx:85
 msgid "Couldn't load your inbox. Check your connection and reopen the panel."
 msgstr "Gagal memuat kotak masuk Anda. Periksa koneksi Anda dan buka kembali panel."
 
@@ -2670,7 +2696,11 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "Baginda Raja,\n\nLaporan yang Paduka minta akan disiapkan sebelum dewan bersidang. Hamba akan meminta juru tulis hamba menyusun catatan wilayah timur dan mengirimkannya terlebih dahulu dengan kurir cepat.\n\nDalam persaudaraan,"
+msgstr "Baginda Raja,\n"
+"\n"
+"Laporan yang Paduka minta akan disiapkan sebelum dewan bersidang. Hamba akan meminta juru tulis hamba menyusun catatan wilayah timur dan mengirimkannya terlebih dahulu dengan kurir cepat.\n"
+"\n"
+"Dalam persaudaraan,"
 
 #: ../../apps/site/src/components/landing/FinalCTASection.tsx:9
 #, fuzzy
@@ -3036,6 +3066,10 @@ msgstr "King Aziru"
 #, fuzzy
 msgid "King Aziru has consulted every clay tablet in his archive, but this page does not appear to exist."
 msgstr "King Aziru telah memeriksa setiap tablet tanah liat di arsipnya, tetapi halaman ini sepertinya tidak ada."
+
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:95
+msgid "King Aziru is ready to sort your email threads. Connect your account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
+msgstr "King Aziru siap menyortir utas email Anda. Hubungkan akun Anda untuk memulai. Amarnai terhubung dengan <0>akses hanya-baca</0> dan <1>tidak pernah mengirim, menghapus, atau mengubah apa pun</1>. Kotak masuk Anda tetap milik Anda."
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:41
 #, fuzzy
@@ -4120,26 +4154,35 @@ msgstr "Sambungkan ulang"
 msgid "Reconnect {providerName}"
 msgstr "Hubungkan Kembali {providerName}"
 
-#: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:37
-msgid "Reconnect failed. Please try again."
-msgstr "Koneksi ulang gagal. Silakan coba lagi."
+#: ../../apps/extension/src/panel/ReconnectMailCta.tsx:48
+#~ msgid "Reconnect failed. Please try again."
+#~ msgstr "Koneksi ulang gagal. Silakan coba lagi."
 
-#: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:65
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:126
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #, fuzzy
 msgid "Reconnect Gmail"
 msgstr "Sambungkan ulang Gmail"
 
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:124
+#, fuzzy
+msgid "Reconnect Outlook"
+msgstr "Sambungkan Kembali Outlook"
+
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:82
 msgid "Reconnect your {providerName} inbox"
 msgstr "Hubungkan kembali kotak masuk {providerName} Anda"
 
-#: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:48
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:73
 #, fuzzy
 msgid "Reconnect your Gmail inbox"
 msgstr "Sambungkan ulang kotak masuk Gmail Anda"
 
-#: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:65
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:71
+msgid "Reconnect your Outlook inbox"
+msgstr "Sambungkan Kembali Kotak Masuk Outlook Anda"
+
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:122
 #: ../../apps/mobile/src/components/emails/DisconnectedBanner.tsx:46
 #, fuzzy
 msgid "Reconnecting…"
@@ -4389,7 +4432,11 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "Rib-Hadda,\n\nKami mengerti. Gandum tambahan telah dipesan dari gudang selatan dan akan tiba sebelum festival panen. Kami mohon kesabaran Anda hingga saat itu.\n\nSemoga sehat selalu,"
+msgstr "Rib-Hadda,\n"
+"\n"
+"Kami mengerti. Gandum tambahan telah dipesan dari gudang selatan dan akan tiba sebelum festival panen. Kami mohon kesabaran Anda hingga saat itu.\n"
+"\n"
+"Semoga sehat selalu,"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -4670,7 +4717,7 @@ msgid "Sign in with Google. Amarnai syncs your threads and labels. It never send
 msgstr "Masuk dengan Google. Amarnai menyinkronkan utas dan label Anda. Amarnai tidak pernah mengirim atau menghapus atas nama Anda."
 
 #: ../../apps/extension/src/App.tsx:96
-#: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:68
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:159
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:132
 #: ../../apps/mobile/app/(app)/account.tsx:122
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:98
@@ -5272,7 +5319,13 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "Untuk saudaraku, Raja Agung,\n\nDewan agung bersidang pada awal Shemu. Aku meminta Anda menyiapkan laporan lengkap wilayah timur dan mengirimkannya dengan kurir cepat, sebelum bulan baru jika memungkinkan.\n\nAliansi kita kuat. Marilah kita tunjukkan kepada dewan bahwa itu tetap demikian.\n\nTushratta, Raja Agung Mitanni"
+msgstr "Untuk saudaraku, Raja Agung,\n"
+"\n"
+"Dewan agung bersidang pada awal Shemu. Aku meminta Anda menyiapkan laporan lengkap wilayah timur dan mengirimkannya dengan kurir cepat, sebelum bulan baru jika memungkinkan.\n"
+"\n"
+"Aliansi kita kuat. Marilah kita tunjukkan kepada dewan bahwa itu tetap demikian.\n"
+"\n"
+"Tushratta, Raja Agung Mitanni"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:163
 #, fuzzy
@@ -5281,7 +5334,11 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "Kepada Biro Penunjukan Kerajaan,\n\nKami telah menerima permohonan dari Horemheb dari Thebes dan akan meninjau catatan rekam jejaknya sebelum bulan baru berikutnya. Harap beri tahu dia bahwa kami akan mengirimkan kabar pada waktunya.\n\nBerdasarkan keputusan kerajaan,"
+msgstr "Kepada Biro Penunjukan Kerajaan,\n"
+"\n"
+"Kami telah menerima permohonan dari Horemheb dari Thebes dan akan meninjau catatan rekam jejaknya sebelum bulan baru berikutnya. Harap beri tahu dia bahwa kami akan mengirimkan kabar pada waktunya.\n"
+"\n"
+"Berdasarkan keputusan kerajaan,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:278
 #, fuzzy
@@ -5292,7 +5349,13 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "Kepada Raja Agung,\n\nSelama bertahun-tahun rumah kita telah seperti saudara. Saya menulis sekarang untuk mengusulkan agar kita meresmikan persahabatan ini demi kepentingan kedua bangsa kita: sebuah pakta perlindungan timbal balik dan rute bersama.\n\nSaya hanya meminta Anda mendengar syarat-syarat saya. Kirimkan pesan melalui kurir berikutnya dan saya akan segera mengirimkan utusan saya.\n\nAziru, hamba Raja Agung, penguasa Amurru"
+msgstr "Kepada Raja Agung,\n"
+"\n"
+"Selama bertahun-tahun rumah kita telah seperti saudara. Saya menulis sekarang untuk mengusulkan agar kita meresmikan persahabatan ini demi kepentingan kedua bangsa kita: sebuah pakta perlindungan timbal balik dan rute bersama.\n"
+"\n"
+"Saya hanya meminta Anda mendengar syarat-syarat saya. Kirimkan pesan melalui kurir berikutnya dan saya akan segera mengirimkan utusan saya.\n"
+"\n"
+"Aziru, hamba Raja Agung, penguasa Amurru"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:391
 #, fuzzy
@@ -5301,7 +5364,11 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "Kepada Raja Agung,\n\nPerjalanan saya membawa saya dekat Delta dalam beberapa hari mendatang. Jika Raja Agung memiliki waktu luang, saya akan menyambut kesempatan untuk berbicara tatap muka; ada hal-hal yang lebih mudah diucapkan daripada ditulis.\n\nHambamu, Abdi-Heba, gubernur Urushalim"
+msgstr "Kepada Raja Agung,\n"
+"\n"
+"Perjalanan saya membawa saya dekat Delta dalam beberapa hari mendatang. Jika Raja Agung memiliki waktu luang, saya akan menyambut kesempatan untuk berbicara tatap muka; ada hal-hal yang lebih mudah diucapkan daripada ditulis.\n"
+"\n"
+"Hambamu, Abdi-Heba, gubernur Urushalim"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:153
 #, fuzzy
@@ -5310,7 +5377,11 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "Kepada Raja Agung, saudaraku,\n\nSaya telah mendengar perkataan Anda. Emas akan dikirimkan sebelum utusan berikutnya berangkat. Kami menghargai ikatan antara rumah kita dan tidak ingin itu mendingin.\n\nDalam persahabatan,"
+msgstr "Kepada Raja Agung, saudaraku,\n"
+"\n"
+"Saya telah mendengar perkataan Anda. Emas akan dikirimkan sebelum utusan berikutnya berangkat. Kami menghargai ikatan antara rumah kita dan tidak ingin itu mendingin.\n"
+"\n"
+"Dalam persahabatan,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:239
 #, fuzzy
@@ -5321,7 +5392,13 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "Kepada Raja Agung, saudaraku,\n\nSaya menulis dalam persahabatan, sebagaimana para ayah kita menulis sebelumnya. Pengiriman emas ketiga yang disepakati dalam perjanjian kita belum tiba. Dua utusan telah berlalu dan kami masih menunggu.\n\nKami meminta Anda mengirimkannya tanpa penundaan lebih lanjut, sebagaimana layaknya ikatan antara rumah kita.\n\nBurna-Buriash II, Raja Babilonia"
+msgstr "Kepada Raja Agung, saudaraku,\n"
+"\n"
+"Saya menulis dalam persahabatan, sebagaimana para ayah kita menulis sebelumnya. Pengiriman emas ketiga yang disepakati dalam perjanjian kita belum tiba. Dua utusan telah berlalu dan kami masih menunggu.\n"
+"\n"
+"Kami meminta Anda mengirimkannya tanpa penundaan lebih lanjut, sebagaimana layaknya ikatan antara rumah kita.\n"
+"\n"
+"Burna-Buriash II, Raja Babilonia"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:352
 #, fuzzy
@@ -5332,7 +5409,13 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "Kepada Raja Agung, Tuanku, Matahariku,\n\nGandum yang Anda kirim bulan lalu telah diterima dengan syukur dan saya memuji nama Anda di hadapan rakyat. Namun saya harus menulis lagi: pengiriman ketiga belum tiba dan kota menjadi gelisah.\n\nSaya telah menulis tujuh kali. Saya tidak ingin menyusahkan Anda, namun apa lagi yang bisa saya lakukan?\n\nHambamu, Rib-Hadda, gubernur Byblos"
+msgstr "Kepada Raja Agung, Tuanku, Matahariku,\n"
+"\n"
+"Gandum yang Anda kirim bulan lalu telah diterima dengan syukur dan saya memuji nama Anda di hadapan rakyat. Namun saya harus menulis lagi: pengiriman ketiga belum tiba dan kota menjadi gelisah.\n"
+"\n"
+"Saya telah menulis tujuh kali. Saya tidak ingin menyusahkan Anda, namun apa lagi yang bisa saya lakukan?\n"
+"\n"
+"Hambamu, Rib-Hadda, gubernur Byblos"
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:19
 #: ../ui/src/emails/ThreadList.tsx:15

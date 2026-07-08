@@ -309,6 +309,15 @@ export type ConnectGmailInput = {
   redirectUri?: string;
 };
 
+// Outlook connect input. Unlike Gmail, the code is always redeemed against a
+// redirect (the browser extension's chromiumapp.org URL), so `redirectUri` is
+// required.
+export type ConnectOutlookInput = {
+  code: string;
+  scope: string;
+  redirectUri: string;
+};
+
 export type GmailConnection = {
   id: string;
   workspaceId: string;

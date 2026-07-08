@@ -415,7 +415,9 @@ msgstr "Получена новая заявка от Хоремхеба из Ф
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "Получена новая заявка от Хоремхеба из Фив на должность Главы корреспонденции.\n\nПросмотреть заявку можно в Доме Архивов."
+msgstr "Получена новая заявка от Хоремхеба из Фив на должность Главы корреспонденции.\n"
+"\n"
+"Просмотреть заявку можно в Доме Архивов."
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:387
 #, fuzzy
@@ -429,7 +431,11 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "Абди-Хеба,\n\nЯ буду рядом с Дельтой на той же неделе. Давай встретимся на станции отдыха на второй день; я смогу выделить утро.\n\nДо встречи,"
+msgstr "Абди-Хеба,\n"
+"\n"
+"Я буду рядом с Дельтой на той же неделе. Давай встретимся на станции отдыха на второй день; я смогу выделить утро.\n"
+"\n"
+"До встречи,"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
@@ -647,10 +653,14 @@ msgstr "Amarnai назван в честь <0>Амарнских писем</0> 
 msgid "Amarnai is no longer syncing this inbox. Reconnect your {providerName} account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
 msgstr "Amarnai больше не синхронизирует этот почтовый ящик. Переподключите аккаунт {providerName}, чтобы возобновить сортировку вашей переписки. Доступ останется <0>только для чтения</0>, а ваш ящик останется вашим."
 
-#: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:51
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:88
 #, fuzzy
 msgid "Amarnai is no longer syncing this inbox. Reconnect your Gmail account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
 msgstr "Amarnai больше не синхронизирует этот почтовый ящик. Подключите аккаунт Gmail заново, чтобы возобновить сортировку ваших почтовых цепочек. Доступ остаётся <0>только для чтения</0>, и ваш ящик остаётся полностью вашим."
+
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:82
+msgid "Amarnai is no longer syncing this inbox. Reconnect your Outlook account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
+msgstr "Amarnai больше не синхронизирует этот почтовый ящик. Подключите свою учетную запись Outlook повторно, чтобы возобновить сортировку переписок. Доступ остается <0>только для чтения</0>, а ваш почтовый ящик остается вашим."
 
 #: ../ui/src/pricing/planMessages.ts:112
 #, fuzzy
@@ -902,7 +912,11 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "Азиру,\n\nВаши слова дружбы дошли до нас. Мы готовы выслушать подробности предложений дома Амурру. Передайте ваши условия со следующим курьером.\n\nС уважением,"
+msgstr "Азиру,\n"
+"\n"
+"Ваши слова дружбы дошли до нас. Мы готовы выслушать подробности предложений дома Амурру. Передайте ваши условия со следующим курьером.\n"
+"\n"
+"С уважением,"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:217
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
@@ -1276,6 +1290,7 @@ msgid "Connect a Gmail inbox to configure sync filters."
 msgstr "Подключите почтовый ящик Gmail, чтобы настроить фильтры синхронизации."
 
 #: ../../apps/extension/src/App.tsx:93
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:138
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:361
@@ -1322,6 +1337,7 @@ msgstr "Подключите Gmail, чтобы начать разбирать �
 msgid "Connect once, generate your plan once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
 msgstr "Подключите один раз, создайте план один раз, и Amarnai займется новой почтой и тысячами уже имеющихся в вашем ящике цепочек."
 
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:151
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:414
 #, fuzzy
 msgid "Connect Outlook"
@@ -1346,6 +1362,10 @@ msgstr "Подключите аккаунт Gmail, чтобы синхрониз
 #~ msgid "Connect your Gmail inbox"
 #~ msgstr "Подключите свой почтовый ящик Gmail"
 
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:76
+msgid "Connect your inbox"
+msgstr "Подключить почтовый ящик"
+
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:348
 #, fuzzy
 msgid "Connecting {name} will permanently remove the sorted email saved from {retainedAddress}. Your folders and settings are kept."
@@ -1355,6 +1375,12 @@ msgstr "При подключении {name} будет безвозвратно
 msgid "Connecting {secondaryName} will permanently remove the sorted email saved from {retainedAddress}. Your folders and settings are kept."
 msgstr "При подключении {secondaryName} будет безвозвратно удалена отсортированная почта от {retainedAddress}. Ваши папки и настройки сохранятся."
 
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:138
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:149
+msgid "Connecting…"
+msgstr "Подключение…"
+
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:58
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:162
 #, fuzzy
 msgid "Connection failed. Please try again."
@@ -1561,7 +1587,7 @@ msgstr "Не удалось выполнить обновление"
 msgid "Could not verify your Google account. Please try again."
 msgstr "Не удалось подтвердить ваш аккаунт Google. Повторите попытку."
 
-#: ../../apps/extension/src/panel/TriageGate.tsx:81
+#: ../../apps/extension/src/panel/TriageGate.tsx:85
 msgid "Couldn't load your inbox. Check your connection and reopen the panel."
 msgstr "Не удалось загрузить почтовый ящик. Проверьте подключение и откройте панель снова."
 
@@ -2670,7 +2696,11 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "Великий Царь,\n\nОтчеты, которые Вы запросили, будут подготовлены до созыва совета. Мои писцы составят сводки по восточным территориям и отправят их вперед с быстрым курьером.\n\nС братством,"
+msgstr "Великий Царь,\n"
+"\n"
+"Отчеты, которые Вы запросили, будут подготовлены до созыва совета. Мои писцы составят сводки по восточным территориям и отправят их вперед с быстрым курьером.\n"
+"\n"
+"С братством,"
 
 #: ../../apps/site/src/components/landing/FinalCTASection.tsx:9
 #, fuzzy
@@ -3036,6 +3066,10 @@ msgstr "Царь Азиру"
 #, fuzzy
 msgid "King Aziru has consulted every clay tablet in his archive, but this page does not appear to exist."
 msgstr "Царь Азиру просмотрел все глиняные таблички своего архива, но этой страницы, кажется, не существует."
+
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:95
+msgid "King Aziru is ready to sort your email threads. Connect your account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
+msgstr "Король Азиру готов сортировать ваши переписки. Подключите свою учетную запись, чтобы начать. Amarnai подключается с <0>доступом только для чтения</0> и <1>никогда не отправляет, не удаляет и не изменяет ничего</1>. Ваш почтовый ящик остается вашим."
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:41
 #, fuzzy
@@ -4120,26 +4154,35 @@ msgstr "Переподключить"
 msgid "Reconnect {providerName}"
 msgstr "Переподключить {providerName}"
 
-#: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:37
-msgid "Reconnect failed. Please try again."
-msgstr "Ошибка повторного подключения. Пожалуйста, повторите попытку."
+#: ../../apps/extension/src/panel/ReconnectMailCta.tsx:48
+#~ msgid "Reconnect failed. Please try again."
+#~ msgstr "Ошибка повторного подключения. Пожалуйста, повторите попытку."
 
-#: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:65
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:126
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #, fuzzy
 msgid "Reconnect Gmail"
 msgstr "Переподключить Gmail"
 
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:124
+#, fuzzy
+msgid "Reconnect Outlook"
+msgstr "Переподключить Outlook"
+
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:82
 msgid "Reconnect your {providerName} inbox"
 msgstr "Переподключите свой почтовый ящик {providerName}"
 
-#: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:48
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:73
 #, fuzzy
 msgid "Reconnect your Gmail inbox"
 msgstr "Переподключить свой почтовый ящик Gmail"
 
-#: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:65
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:71
+msgid "Reconnect your Outlook inbox"
+msgstr "Переподключить почтовый ящик Outlook"
+
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:122
 #: ../../apps/mobile/src/components/emails/DisconnectedBanner.tsx:46
 #, fuzzy
 msgid "Reconnecting…"
@@ -4389,7 +4432,11 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "Риб-Хадда,\n\nМы вас услышали. Дополнительное зерно заказано с южных складов и прибудет до праздника урожая. Просим проявить терпение до этого момента.\n\nБудьте здоровы,"
+msgstr "Риб-Хадда,\n"
+"\n"
+"Мы вас услышали. Дополнительное зерно заказано с южных складов и прибудет до праздника урожая. Просим проявить терпение до этого момента.\n"
+"\n"
+"Будьте здоровы,"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -4670,7 +4717,7 @@ msgid "Sign in with Google. Amarnai syncs your threads and labels. It never send
 msgstr "Войдите с помощью Google. Amarnai синхронизирует ваши цепочки писем и метки. Он никогда не отправляет и не удаляет письма от вашего имени."
 
 #: ../../apps/extension/src/App.tsx:96
-#: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:68
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:159
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:132
 #: ../../apps/mobile/app/(app)/account.tsx:122
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:98
@@ -5272,7 +5319,13 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "Моему брату, Великому Царю,\n\nВеликий совет созывается в начале Шему. Прошу тебя подготовить полный отчет по восточным территориям и отправить его вперед быстрым курьером, если возможно, до новолуния.\n\nНаш союз крепок. Покажем совету, что он остается таковым.\n\nТушратта, Великий Царь Митанни"
+msgstr "Моему брату, Великому Царю,\n"
+"\n"
+"Великий совет созывается в начале Шему. Прошу тебя подготовить полный отчет по восточным территориям и отправить его вперед быстрым курьером, если возможно, до новолуния.\n"
+"\n"
+"Наш союз крепок. Покажем совету, что он остается таковым.\n"
+"\n"
+"Тушратта, Великий Царь Митанни"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:163
 #, fuzzy
@@ -5281,7 +5334,11 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "В Бюро по царским назначениям,\n\nМы получили заявление от Горемхеба из Фив и рассмотрим его досье до следующего новолуния. Прошу вас сообщить ему, что мы отправим весть в должное время.\n\nЦарским указом,"
+msgstr "В Бюро по царским назначениям,\n"
+"\n"
+"Мы получили заявление от Горемхеба из Фив и рассмотрим его досье до следующего новолуния. Прошу вас сообщить ему, что мы отправим весть в должное время.\n"
+"\n"
+"Царским указом,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:278
 #, fuzzy
@@ -5292,7 +5349,13 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "Великому Царю,\n\nМногие годы наши дома были как братья. Пишу сейчас, чтобы предложить официально оформить эту дружбу на благо обоих наших народов: пакт о взаимной защите и общих маршрутах.\n\nПрошу лишь, чтобы ты выслушал мои условия. Пришли весть со следующим курьером, и я немедленно отправлю моего посланника.\n\nАзиру, слуга Великого Царя, владыка Амурру"
+msgstr "Великому Царю,\n"
+"\n"
+"Многие годы наши дома были как братья. Пишу сейчас, чтобы предложить официально оформить эту дружбу на благо обоих наших народов: пакт о взаимной защите и общих маршрутах.\n"
+"\n"
+"Прошу лишь, чтобы ты выслушал мои условия. Пришли весть со следующим курьером, и я немедленно отправлю моего посланника.\n"
+"\n"
+"Азиру, слуга Великого Царя, владыка Амурру"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:391
 #, fuzzy
@@ -5301,7 +5364,11 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "Великому Царю,\n\nМои странствия приведут меня к Дельте в ближайшие дни. Если у Великого Царя найдется свободный час, я бы приветствовал возможность поговорить лицом к лицу; есть вопросы, которые легче сказать, чем написать.\n\nТвой слуга, Абди-Хеба, наместник Урушалима"
+msgstr "Великому Царю,\n"
+"\n"
+"Мои странствия приведут меня к Дельте в ближайшие дни. Если у Великого Царя найдется свободный час, я бы приветствовал возможность поговорить лицом к лицу; есть вопросы, которые легче сказать, чем написать.\n"
+"\n"
+"Твой слуга, Абди-Хеба, наместник Урушалима"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:153
 #, fuzzy
@@ -5310,7 +5377,11 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "Великому Царю, моему брату,\n\nЯ слышал твои слова. Золото будет отправлено до отбытия следующего посланника. Мы ценим связь между нашими домами и не хотим, чтобы она остыла.\n\nВ дружбе,"
+msgstr "Великому Царю, моему брату,\n"
+"\n"
+"Я слышал твои слова. Золото будет отправлено до отбытия следующего посланника. Мы ценим связь между нашими домами и не хотим, чтобы она остыла.\n"
+"\n"
+"В дружбе,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:239
 #, fuzzy
@@ -5321,7 +5392,13 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "Великому Царю, моему брату,\n\nЯ пишу в дружбе, как наши отцы писали до нас. Третья партия золота, согласованная по нашему договору, не прибыла. Два посланника прошли, и мы все еще ждем.\n\nПросим вас отправить ее без дальнейших задержек, как подобает связи между нашими домами.\n\nБурна-Буриаш II, Царь Вавилона"
+msgstr "Великому Царю, моему брату,\n"
+"\n"
+"Я пишу в дружбе, как наши отцы писали до нас. Третья партия золота, согласованная по нашему договору, не прибыла. Два посланника прошли, и мы все еще ждем.\n"
+"\n"
+"Просим вас отправить ее без дальнейших задержек, как подобает связи между нашими домами.\n"
+"\n"
+"Бурна-Буриаш II, Царь Вавилона"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:352
 #, fuzzy
@@ -5332,7 +5409,13 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "Великому Царю, моему господину, моему солнцу,\n\nЗерно, которое вы прислали в прошлом месяце, было получено с благодарностью, и я восхвалял ваше имя перед народом. Но я должен написать снова: третья партия не прибыла, и город становится беспокойным.\n\nЯ писал семь раз. Я не хочу беспокоить вас, но что еще я могу сделать?\n\nТвой слуга, Риб-Хадда, наместник Библа"
+msgstr "Великому Царю, моему господину, моему солнцу,\n"
+"\n"
+"Зерно, которое вы прислали в прошлом месяце, было получено с благодарностью, и я восхвалял ваше имя перед народом. Но я должен написать снова: третья партия не прибыла, и город становится беспокойным.\n"
+"\n"
+"Я писал семь раз. Я не хочу беспокоить вас, но что еще я могу сделать?\n"
+"\n"
+"Твой слуга, Риб-Хадда, наместник Библа"
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:19
 #: ../ui/src/emails/ThreadList.tsx:15

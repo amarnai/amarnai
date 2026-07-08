@@ -402,7 +402,9 @@ msgstr "Eine neue Bewerbung von Horemheb aus Theben für die Position des Korres
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "Eine neue Bewerbung von Horemheb aus Theben für die Position des Obersten Korrespondenten ist eingegangen.\n\nBewerbung im Haus der Akten einsehen."
+msgstr "Eine neue Bewerbung von Horemheb aus Theben für die Position des Obersten Korrespondenten ist eingegangen.\n"
+"\n"
+"Bewerbung im Haus der Akten einsehen."
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:387
 #, fuzzy
@@ -415,7 +417,11 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "Abdi-Heba,\n\nIch bin in jener Woche nahe des Deltas. Treffen wir uns am zweiten Tag an der Wegstation; den Vormittag habe ich frei.\n\nBis dahin,"
+msgstr "Abdi-Heba,\n"
+"\n"
+"Ich bin in jener Woche nahe des Deltas. Treffen wir uns am zweiten Tag an der Wegstation; den Vormittag habe ich frei.\n"
+"\n"
+"Bis dahin,"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
@@ -629,10 +635,14 @@ msgstr "Amarnai ist benannt nach den <0>Amarna-Briefen</0>: Keilschrifttafeln au
 msgid "Amarnai is no longer syncing this inbox. Reconnect your {providerName} account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
 msgstr "Amarnai synchronisiert diesen Posteingang nicht mehr. Verbinden Sie Ihr {providerName}-Konto erneut, um Ihre E-Mail-Konversationen wieder zu sortieren. Der Zugriff bleibt <0>rein lesend</0>, und Ihr Posteingang bleibt Ihnen erhalten."
 
-#: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:51
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:88
 #, fuzzy
 msgid "Amarnai is no longer syncing this inbox. Reconnect your Gmail account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
 msgstr "Amarnai synchronisiert diesen Posteingang nicht mehr. Verbinden Sie Ihr Gmail-Konto erneut, um Ihre E-Mail-Konversationen weiter zu sortieren. Der Zugriff bleibt <0>nur lesend</0>, und Ihr Posteingang bleibt Ihrer."
+
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:82
+msgid "Amarnai is no longer syncing this inbox. Reconnect your Outlook account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
+msgstr "Amarnai synchronisiert diesen Posteingang nicht mehr. Verbinden Sie Ihr Outlook-Konto erneut, um Ihre E-Mail-Konversationen wieder zu sortieren. Der Zugriff bleibt <0>nur lesend</0>, und Ihr Posteingang gehört Ihnen."
 
 #: ../ui/src/pricing/planMessages.ts:112
 #, fuzzy
@@ -878,7 +888,11 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "Aziru,\n\nDeine Worte der Freundschaft erreichen uns wohl. Wir sind offen dafür, mehr von den Vorschlägen des Hauses Amurru zu hören. Sende deine Bedingungen mit dem nächsten Kurier.\n\nMit Grüßen,"
+msgstr "Aziru,\n"
+"\n"
+"Deine Worte der Freundschaft erreichen uns wohl. Wir sind offen dafür, mehr von den Vorschlägen des Hauses Amurru zu hören. Sende deine Bedingungen mit dem nächsten Kurier.\n"
+"\n"
+"Mit Grüßen,"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:217
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
@@ -1235,6 +1249,7 @@ msgid "Connect a Gmail inbox to configure sync filters."
 msgstr "Verbinden Sie einen Gmail-Posteingang, um Synchronisierungsfilter zu konfigurieren."
 
 #: ../../apps/extension/src/App.tsx:93
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:138
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:361
@@ -1280,6 +1295,7 @@ msgstr "Gmail verbinden, um mit der Triage zu beginnen"
 msgid "Connect once, generate your plan once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
 msgstr "Einmal verbinden, einmal Ihren Plan erstellen und Amarnai den Umgang mit neuen E-Mails und Tausenden bereits vorhandener Konversationen in Ihrem Posteingang überlassen."
 
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:151
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:414
 #, fuzzy
 msgid "Connect Outlook"
@@ -1303,6 +1319,10 @@ msgstr "Verbinden Sie Ihr Gmail-Konto, um Ihren Posteingang mit Amarnai zu synch
 #~ msgid "Connect your Gmail inbox"
 #~ msgstr "Verbinden Sie Ihren Gmail-Posteingang"
 
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:76
+msgid "Connect your inbox"
+msgstr "Posteingang verbinden"
+
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:348
 #, fuzzy
 msgid "Connecting {name} will permanently remove the sorted email saved from {retainedAddress}. Your folders and settings are kept."
@@ -1312,6 +1332,12 @@ msgstr "Beim Verbinden von {name} werden die von {retainedAddress} gespeicherten
 msgid "Connecting {secondaryName} will permanently remove the sorted email saved from {retainedAddress}. Your folders and settings are kept."
 msgstr "Beim Verbinden von {secondaryName} werden die von {retainedAddress} gespeicherten sortierten E-Mails dauerhaft entfernt. Ihre Ordner und Einstellungen bleiben erhalten."
 
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:138
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:149
+msgid "Connecting…"
+msgstr "Verbinden…"
+
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:58
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:162
 #, fuzzy
 msgid "Connection failed. Please try again."
@@ -1511,7 +1537,7 @@ msgstr "Upgrade nicht möglich"
 msgid "Could not verify your Google account. Please try again."
 msgstr "Ihr Google-Konto konnte nicht verifiziert werden. Bitte versuchen Sie es erneut."
 
-#: ../../apps/extension/src/panel/TriageGate.tsx:81
+#: ../../apps/extension/src/panel/TriageGate.tsx:85
 msgid "Couldn't load your inbox. Check your connection and reopen the panel."
 msgstr "Posteingang konnte nicht geladen werden. Überprüfen Sie Ihre Verbindung und öffnen Sie das Panel erneut."
 
@@ -2577,7 +2603,11 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "Großer König,\n\nDie angeforderten Berichte werden vor der Ratsversammlung fertig sein. Ich werde meine Schreiber die Aufzeichnungen der östlichen Gebiete zusammenstellen und sie per Eilkurier vorausschicken.\n\nIn Brüderlichkeit,"
+msgstr "Großer König,\n"
+"\n"
+"Die angeforderten Berichte werden vor der Ratsversammlung fertig sein. Ich werde meine Schreiber die Aufzeichnungen der östlichen Gebiete zusammenstellen und sie per Eilkurier vorausschicken.\n"
+"\n"
+"In Brüderlichkeit,"
 
 #: ../../apps/site/src/components/landing/FinalCTASection.tsx:9
 #, fuzzy
@@ -2926,6 +2956,10 @@ msgstr "König Aziru"
 #, fuzzy
 msgid "King Aziru has consulted every clay tablet in his archive, but this page does not appear to exist."
 msgstr "König Aziru hat jede Tontafel in seinem Archiv konsultiert, aber diese Seite scheint nicht zu existieren."
+
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:95
+msgid "King Aziru is ready to sort your email threads. Connect your account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
+msgstr "King Aziru ist bereit, Ihre E-Mail-Konversationen zu sortieren. Verbinden Sie Ihr Konto, um loszulegen. Amarnai stellt die Verbindung mit <0>nur lesendem Zugriff</0> her und <1>versendet, löscht oder verändert niemals etwas</1>. Ihr Posteingang bleibt Ihnen erhalten."
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:41
 #~ msgid "King Aziru is ready to sort your email threads. Connect your Gmail account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
@@ -3977,26 +4011,36 @@ msgstr "Wieder verbinden"
 msgid "Reconnect {providerName}"
 msgstr "{providerName} erneut verbinden"
 
-#: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:37
-msgid "Reconnect failed. Please try again."
-msgstr "Wiederverbindung fehlgeschlagen. Bitte versuchen Sie es erneut."
+#: ../../apps/extension/src/panel/ReconnectMailCta.tsx:48
+#~ msgid "Reconnect failed. Please try again."
+#~ msgstr "Wiederverbindung fehlgeschlagen. Bitte versuchen Sie es erneut."
 
-#: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:65
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:126
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #, fuzzy
 msgid "Reconnect Gmail"
 msgstr "Gmail neu verbinden"
 
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:124
+#, fuzzy
+msgid "Reconnect Outlook"
+msgstr "Outlook erneut verbinden"
+
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:82
 msgid "Reconnect your {providerName} inbox"
 msgstr "Ihren {providerName}-Posteingang erneut verbinden"
 
-#: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:48
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:73
 #, fuzzy
 msgid "Reconnect your Gmail inbox"
 msgstr "Ihren Gmail-Posteingang neu verbinden"
 
-#: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:65
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:71
+#, fuzzy
+msgid "Reconnect your Outlook inbox"
+msgstr "Ihren Outlook-Posteingang erneut verbinden"
+
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:122
 #: ../../apps/mobile/src/components/emails/DisconnectedBanner.tsx:46
 msgid "Reconnecting…"
 msgstr "Verbindung wird wiederhergestellt…"
@@ -4235,7 +4279,11 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "Rib-Hadda,\n\nWir haben deine Botschaft empfangen. Zusätzliches Getreide wurde aus den südlichen Lagern geordert und trifft vor dem Erntefest ein. Wir bitten dich um Geduld bis dahin.\n\nBleibe gesund,"
+msgstr "Rib-Hadda,\n"
+"\n"
+"Wir haben deine Botschaft empfangen. Zusätzliches Getreide wurde aus den südlichen Lagern geordert und trifft vor dem Erntefest ein. Wir bitten dich um Geduld bis dahin.\n"
+"\n"
+"Bleibe gesund,"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -4507,7 +4555,7 @@ msgid "Sign in with Google. Amarnai syncs your threads and labels. It never send
 msgstr "Mit Google anmelden. Amarnai synchronisiert Ihre Konversationen und Labels. Es sendet oder löscht niemals in Ihrem Namen."
 
 #: ../../apps/extension/src/App.tsx:96
-#: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:68
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:159
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:132
 #: ../../apps/mobile/app/(app)/account.tsx:122
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:98
@@ -5090,7 +5138,13 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "An meinen Bruder, den Großen König,\n\nDer Große Rat tritt zu Beginn von Shemu zusammen. Ich bitte Euch, eine vollständige Abrechnung der östlichen Gebiete zu erstellen und diese per Eilkurier vorauszuschicken, möglichst vor dem Neumond.\n\nUnsere Allianz ist stark. Zeigen wir dem Rat, dass sie es bleibt.\n\nTushratta, Großer König von Mitanni"
+msgstr "An meinen Bruder, den Großen König,\n"
+"\n"
+"Der Große Rat tritt zu Beginn von Shemu zusammen. Ich bitte Euch, eine vollständige Abrechnung der östlichen Gebiete zu erstellen und diese per Eilkurier vorauszuschicken, möglichst vor dem Neumond.\n"
+"\n"
+"Unsere Allianz ist stark. Zeigen wir dem Rat, dass sie es bleibt.\n"
+"\n"
+"Tushratta, Großer König von Mitanni"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:163
 #, fuzzy
@@ -5099,7 +5153,11 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "An das Büro für königliche Ernennungen,\n\nWir haben die Bewerbung von Horemheb aus Theben erhalten und werden seine Akten vor dem nächsten Neumond prüfen. Bitte informiert ihn, dass wir uns zu gegebener Zeit melden werden.\n\nDurch königlichen Erlass,"
+msgstr "An das Büro für königliche Ernennungen,\n"
+"\n"
+"Wir haben die Bewerbung von Horemheb aus Theben erhalten und werden seine Akten vor dem nächsten Neumond prüfen. Bitte informiert ihn, dass wir uns zu gegebener Zeit melden werden.\n"
+"\n"
+"Durch königlichen Erlass,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:278
 #, fuzzy
@@ -5110,7 +5168,13 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "An den Großen König,\n\nSeit vielen Jahren sind unsere Häuser wie Brüder. Ich schreibe nun, um vorzuschlagen, dass wir diese Freundschaft zum Wohle beider Völker formalisieren: einen Pakt des gegenseitigen Schutzes und der gemeinsamen Routen.\n\nIch bitte lediglich darum, dass Ihr meine Bedingungen anhört. Sendet eine Nachricht mit dem nächsten Kurier, und ich werde meinen Gesandten sogleich entsenden.\n\nAziru, Diener des Großen Königs, Herr von Amurru"
+msgstr "An den Großen König,\n"
+"\n"
+"Seit vielen Jahren sind unsere Häuser wie Brüder. Ich schreibe nun, um vorzuschlagen, dass wir diese Freundschaft zum Wohle beider Völker formalisieren: einen Pakt des gegenseitigen Schutzes und der gemeinsamen Routen.\n"
+"\n"
+"Ich bitte lediglich darum, dass Ihr meine Bedingungen anhört. Sendet eine Nachricht mit dem nächsten Kurier, und ich werde meinen Gesandten sogleich entsenden.\n"
+"\n"
+"Aziru, Diener des Großen Königs, Herr von Amurru"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:391
 #, fuzzy
@@ -5119,7 +5183,11 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "An den Großen König,\n\nMeine Reisen führen mich in den kommenden Tagen in die Nähe des Deltas. Falls der Große König eine Stunde erübrigen kann, würde ich die Gelegenheit begrüßen, von Angesicht zu Angesicht zu sprechen; manche Dinge lassen sich leichter sagen als schreiben.\n\nEuer Diener, Abdi-Heba, Gouverneur von Urushalim"
+msgstr "An den Großen König,\n"
+"\n"
+"Meine Reisen führen mich in den kommenden Tagen in die Nähe des Deltas. Falls der Große König eine Stunde erübrigen kann, würde ich die Gelegenheit begrüßen, von Angesicht zu Angesicht zu sprechen; manche Dinge lassen sich leichter sagen als schreiben.\n"
+"\n"
+"Euer Diener, Abdi-Heba, Gouverneur von Urushalim"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:153
 #, fuzzy
@@ -5128,7 +5196,11 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "An den Großen König, mein Bruder,\n\nDeine Worte haben mich erreicht. Das Gold wird vor dem Aufbruch des nächsten Boten entsandt. Wir schätzen die Bindung zwischen unseren Häusern und wünschen nicht, dass sie abkühlt.\n\nIn Freundschaft,"
+msgstr "An den Großen König, mein Bruder,\n"
+"\n"
+"Deine Worte haben mich erreicht. Das Gold wird vor dem Aufbruch des nächsten Boten entsandt. Wir schätzen die Bindung zwischen unseren Häusern und wünschen nicht, dass sie abkühlt.\n"
+"\n"
+"In Freundschaft,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:239
 #, fuzzy
@@ -5139,7 +5211,13 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "An den Großen König, mein Bruder,\n\nIch schreibe in Freundschaft, wie unsere Väter vor uns schrieben. Die dritte unter unserem Vertrag vereinbarte Goldlieferung ist nicht eingetroffen. Zwei Boten sind bereits vorbeigezogen, und wir warten immer noch.\n\nWir bitten Euch, sie ohne weitere Verzögerung zu entsenden, wie es der Bindung zwischen unseren Häusern geziemt.\n\nBurna-Buriash II, König von Babylon"
+msgstr "An den Großen König, mein Bruder,\n"
+"\n"
+"Ich schreibe in Freundschaft, wie unsere Väter vor uns schrieben. Die dritte unter unserem Vertrag vereinbarte Goldlieferung ist nicht eingetroffen. Zwei Boten sind bereits vorbeigezogen, und wir warten immer noch.\n"
+"\n"
+"Wir bitten Euch, sie ohne weitere Verzögerung zu entsenden, wie es der Bindung zwischen unseren Häusern geziemt.\n"
+"\n"
+"Burna-Buriash II, König von Babylon"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:352
 msgid "To the Great King, my lord, my sun,\n"
@@ -5149,7 +5227,13 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "An den Großen König, mein Herr, meine Sonne,\n\nDas Getreide, das Ihr letzten Monat sandtet, wurde dankbar empfangen, und ich lobte Euren Namen vor dem Volk. Doch ich muss erneut schreiben: Die dritte Lieferung ist nicht eingetroffen, und die Stadt wird unruhig.\n\nIch habe bereits siebenmal geschrieben. Ich möchte Euch nicht behelligen, doch was bleibt mir anderes übrig?\n\nEuer Diener, Rib-Hadda, Gouverneur von Byblos"
+msgstr "An den Großen König, mein Herr, meine Sonne,\n"
+"\n"
+"Das Getreide, das Ihr letzten Monat sandtet, wurde dankbar empfangen, und ich lobte Euren Namen vor dem Volk. Doch ich muss erneut schreiben: Die dritte Lieferung ist nicht eingetroffen, und die Stadt wird unruhig.\n"
+"\n"
+"Ich habe bereits siebenmal geschrieben. Ich möchte Euch nicht behelligen, doch was bleibt mir anderes übrig?\n"
+"\n"
+"Euer Diener, Rib-Hadda, Gouverneur von Byblos"
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:19
 #: ../ui/src/emails/ThreadList.tsx:15

@@ -1,5 +1,10 @@
 import { db, deleteGmailDisconnectedNotifications } from "@amarnai/db";
 import { encrypt, fetchGmailProfile } from "@amarnai/gmail";
+import { assertNoProviderConflict } from "./connection-guard.js";
+
+// Re-exported so existing importers keep resolving it from here; the class and
+// the guard now live in ./connection-guard so Outlook can share them.
+export { ProviderMismatchError } from "./connection-guard.js";
 
 export type StoreGmailConnectionInput = {
   workspaceId: string;
@@ -18,6 +23,10 @@ export async function storeGmailConnection({
   refreshToken,
   grantedScopes,
 }: StoreGmailConnectionInput): Promise<{ gmailAddress: string }> {
+  // Refuse to reactivate/overwrite a connection that belongs to another provider
+  // (the extension-sign-in resurrection bug). See connection-guard for details.
+  await assertNoProviderConflict(workspaceId, "GMAIL");
+
   const profile = await fetchGmailProfile(accessToken);
   const encryptedRefreshToken = encrypt(refreshToken);
 

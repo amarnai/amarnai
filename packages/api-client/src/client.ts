@@ -10,6 +10,7 @@ import type {
   UpdateTaxonomyEdgeInput,
   GmailConnection,
   ConnectGmailInput,
+  ConnectOutlookInput,
   DisconnectResult,
   SyncStatus,
   GmailSyncSettings,
@@ -131,6 +132,16 @@ export function makeApiClient(transport: ApiTransport) {
     connectGmail: (workspaceId: string, input: ConnectGmailInput) =>
       apiMutate<NonNullable<GmailConnection>>(
         `/workspaces/${workspaceId}/gmail-connection`,
+        "POST",
+        input,
+      ),
+
+    // Connect (or reconnect) Outlook for the workspace. The browser extension
+    // supplies the Microsoft auth code + the chromiumapp.org redirect it was
+    // minted for. Owner-only. Returns the updated connection.
+    connectOutlook: (workspaceId: string, input: ConnectOutlookInput) =>
+      apiMutate<NonNullable<GmailConnection>>(
+        `/workspaces/${workspaceId}/outlook-connection`,
         "POST",
         input,
       ),

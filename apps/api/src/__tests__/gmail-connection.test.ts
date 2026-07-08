@@ -290,6 +290,7 @@ const VALID_CONNECT_BODY = {
 const safeConnection = {
   id: "conn-1",
   workspaceId: WS_ID,
+  provider: "GMAIL" as const,
   emailAddress: "user@gmail.com",
   grantedScopes: [GMAIL_SCOPE],
   status: "ACTIVE" as const,
@@ -413,6 +414,22 @@ describe("POST /workspaces/:workspaceId/gmail-connection", () => {
     expect(res.status).toBe(400);
     expect(vi.mocked(exchangeServerAuthCode)).not.toHaveBeenCalled();
     expect(vi.mocked(db.emailConnection.upsert)).not.toHaveBeenCalled();
+  });
+
+  it("returns 409 and stores nothing when the workspace is connected to another provider", async () => {
+    // A DISCONNECTED Outlook workspace must not be reactivated/clobbered by a
+    // Gmail connect — the extension-sign-in resurrection bug. Reconnect via that
+    // provider instead.
+    vi.mocked(db.emailConnection.findUnique).mockResolvedValue({
+      ...safeConnection,
+      provider: "OUTLOOK",
+      status: "DISCONNECTED",
+    } as never);
+
+    const res = await connect(VALID_CONNECT_BODY);
+    expect(res.status).toBe(409);
+    expect(vi.mocked(db.emailConnection.upsert)).not.toHaveBeenCalled();
+    expect(vi.mocked(syncInboxQueue.add)).not.toHaveBeenCalled();
   });
 });
 

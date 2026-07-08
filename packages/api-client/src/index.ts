@@ -21,6 +21,7 @@ export type {
   GmailConnection,
   MailProvider,
   ConnectGmailInput,
+  ConnectOutlookInput,
   DisconnectResult,
   SyncStatus,
   BackfillStatus,

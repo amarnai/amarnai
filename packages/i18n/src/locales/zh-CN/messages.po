@@ -402,7 +402,9 @@ msgstr "收到赫伦希布（底比斯）的首席文书官职位申请。"
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "已收到底比斯的霍伦海布呈报的文书长职位申请。\n\n请在记录馆查看该申请。"
+msgstr "已收到底比斯的霍伦海布呈报的文书长职位申请。\n"
+"\n"
+"请在记录馆查看该申请。"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:387
 #, fuzzy
@@ -415,7 +417,11 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "阿卜迪-赫巴，\n\n同周我将行至三角洲附近。我们可在第二日于驿站会面；我可抽出上午时间。\n\n届时再叙，"
+msgstr "阿卜迪-赫巴，\n"
+"\n"
+"同周我将行至三角洲附近。我们可在第二日于驿站会面；我可抽出上午时间。\n"
+"\n"
+"届时再叙，"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
@@ -629,10 +635,14 @@ msgstr "Amarnai 的命名灵感源自<0>阿马尔那泥版文书</0>：这些青
 msgid "Amarnai is no longer syncing this inbox. Reconnect your {providerName} account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
 msgstr "Amarnai 不再同步此收件箱。请重新连接您的 {providerName} 账户，以恢复整理您的电子邮件会话。访问权限仍为<0>只读</0>，您的收件箱始终归您所有。"
 
-#: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:51
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:88
 #, fuzzy
 msgid "Amarnai is no longer syncing this inbox. Reconnect your Gmail account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
 msgstr "Amarnai 不再同步此收件箱。请重新连接您的 Gmail 账号以恢复对邮件会话的分类。访问权限仍保持<0>只读</0>，您的收件箱仍然归您所有。"
+
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:82
+msgid "Amarnai is no longer syncing this inbox. Reconnect your Outlook account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
+msgstr "Amarnai 已停止同步此收件箱。请重新连接您的 Outlook 账户，以恢复电子邮件会话的整理。访问权限仍为<0>只读</0>，您的收件箱始终归您所有。"
 
 #: ../ui/src/pricing/planMessages.ts:112
 #, fuzzy
@@ -878,7 +888,11 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "阿齐鲁，\n\n你的友谊之言我们已悉。阿穆鲁家族有何提议，我们愿闻其详。请速派下一信使呈上你的条件。\n\n此致，"
+msgstr "阿齐鲁，\n"
+"\n"
+"你的友谊之言我们已悉。阿穆鲁家族有何提议，我们愿闻其详。请速派下一信使呈上你的条件。\n"
+"\n"
+"此致，"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:217
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
@@ -1235,6 +1249,7 @@ msgid "Connect a Gmail inbox to configure sync filters."
 msgstr "连接 Gmail 收件箱以配置同步筛选条件。"
 
 #: ../../apps/extension/src/App.tsx:93
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:138
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:361
@@ -1280,6 +1295,7 @@ msgstr "连接 Gmail 以开始分类"
 msgid "Connect once, generate your plan once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
 msgstr "只需连接一次，制定一次方案，Amarnai 即可处理新邮件，并整理您收件箱中已有的数千个会话。"
 
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:151
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:414
 #, fuzzy
 msgid "Connect Outlook"
@@ -1303,6 +1319,10 @@ msgstr "连接您的 Gmail 帐户以将您的收件箱同步到 Amarnai。Amarna
 #~ msgid "Connect your Gmail inbox"
 #~ msgstr "连接您的 Gmail 收件箱"
 
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:76
+msgid "Connect your inbox"
+msgstr "连接收件箱"
+
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:348
 #, fuzzy
 msgid "Connecting {name} will permanently remove the sorted email saved from {retainedAddress}. Your folders and settings are kept."
@@ -1312,6 +1332,12 @@ msgstr "连接 {name} 将永久删除来自 {retainedAddress} 的已分类邮件
 msgid "Connecting {secondaryName} will permanently remove the sorted email saved from {retainedAddress}. Your folders and settings are kept."
 msgstr "连接 {secondaryName} 将永久删除来自 {retainedAddress} 的已分类邮件。您的文件夹和设置将保留。"
 
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:138
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:149
+msgid "Connecting…"
+msgstr "连接中…"
+
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:58
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:162
 #, fuzzy
 msgid "Connection failed. Please try again."
@@ -1511,7 +1537,7 @@ msgstr "无法升级"
 msgid "Could not verify your Google account. Please try again."
 msgstr "无法验证您的 Google 账户。请重试。"
 
-#: ../../apps/extension/src/panel/TriageGate.tsx:81
+#: ../../apps/extension/src/panel/TriageGate.tsx:85
 msgid "Couldn't load your inbox. Check your connection and reopen the panel."
 msgstr "无法加载收件箱。请检查您的网络连接并重新打开面板。"
 
@@ -2577,7 +2603,11 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "大王，\n\n你所要求之呈报，将在议会召开前备妥。我将命抄写员汇编东方领地的账目，并派快马先行送呈。\n\n兄弟情谊，"
+msgstr "大王，\n"
+"\n"
+"你所要求之呈报，将在议会召开前备妥。我将命抄写员汇编东方领地的账目，并派快马先行送呈。\n"
+"\n"
+"兄弟情谊，"
 
 #: ../../apps/site/src/components/landing/FinalCTASection.tsx:9
 #, fuzzy
@@ -2926,6 +2956,10 @@ msgstr "阿兹鲁国王"
 #, fuzzy
 msgid "King Aziru has consulted every clay tablet in his archive, but this page does not appear to exist."
 msgstr "阿兹鲁国王已查阅了他档案中的每一块泥板，但此页面似乎不存在。"
+
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:95
+msgid "King Aziru is ready to sort your email threads. Connect your account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
+msgstr "King Aziru 已准备好整理您的电子邮件会话。连接您的账户即可开始。Amarnai 以<0>只读访问权限</0>连接，<1>绝不会发送、删除或更改任何内容</1>。您的收件箱始终归您所有。"
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:41
 #~ msgid "King Aziru is ready to sort your email threads. Connect your Gmail account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
@@ -3977,26 +4011,36 @@ msgstr "重新连接"
 msgid "Reconnect {providerName}"
 msgstr "重新连接 {providerName}"
 
-#: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:37
-msgid "Reconnect failed. Please try again."
-msgstr "重新连接失败。请重试。"
+#: ../../apps/extension/src/panel/ReconnectMailCta.tsx:48
+#~ msgid "Reconnect failed. Please try again."
+#~ msgstr "重新连接失败。请重试。"
 
-#: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:65
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:126
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #, fuzzy
 msgid "Reconnect Gmail"
 msgstr "重新连接 Gmail"
 
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:124
+#, fuzzy
+msgid "Reconnect Outlook"
+msgstr "重新连接 Outlook"
+
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:82
 msgid "Reconnect your {providerName} inbox"
 msgstr "重新连接您的 {providerName} 收件箱"
 
-#: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:48
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:73
 #, fuzzy
 msgid "Reconnect your Gmail inbox"
 msgstr "重新连接您的 Gmail 收件箱"
 
-#: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:65
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:71
+#, fuzzy
+msgid "Reconnect your Outlook inbox"
+msgstr "重新连接您的 Outlook 收件箱"
+
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:122
 #: ../../apps/mobile/src/components/emails/DisconnectedBanner.tsx:46
 msgid "Reconnecting…"
 msgstr "正在重新连接…"
@@ -4234,7 +4278,11 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "里布-哈达，\n\n你的呼吁，我们已收到。已从南方粮仓加订谷物，并将在丰收节前抵达。在此期间，请你耐心等候。\n\n保重，"
+msgstr "里布-哈达，\n"
+"\n"
+"你的呼吁，我们已收到。已从南方粮仓加订谷物，并将在丰收节前抵达。在此期间，请你耐心等候。\n"
+"\n"
+"保重，"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -4506,7 +4554,7 @@ msgid "Sign in with Google. Amarnai syncs your threads and labels. It never send
 msgstr "使用 Google 登录。Amarnai 会同步您的会话和标签。它绝不会代表您发送或删除邮件。"
 
 #: ../../apps/extension/src/App.tsx:96
-#: ../../apps/extension/src/panel/ReconnectGmailCta.tsx:68
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:159
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:132
 #: ../../apps/mobile/app/(app)/account.tsx:122
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:98
@@ -5089,7 +5137,13 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "致吾兄，大王，\n\n大议会将于谢穆月初召开。我请求你备妥东方领地的详尽账目，并请快马先行送呈，如可能，请在新月之前。\n\n吾等盟约坚固。愿我们向议会昭示其一如既往。\n\n图什拉塔，米坦尼大王"
+msgstr "致吾兄，大王，\n"
+"\n"
+"大议会将于谢穆月初召开。我请求你备妥东方领地的详尽账目，并请快马先行送呈，如可能，请在新月之前。\n"
+"\n"
+"吾等盟约坚固。愿我们向议会昭示其一如既往。\n"
+"\n"
+"图什拉塔，米坦尼大王"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:163
 #, fuzzy
@@ -5098,7 +5152,11 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "致王室任命局，\n\n我们已收到底比斯的霍伦海布之申请，并将在下一新月前审查其记录。请告知他，我们将在适当时候回复。\n\n奉谕，"
+msgstr "致王室任命局，\n"
+"\n"
+"我们已收到底比斯的霍伦海布之申请，并将在下一新月前审查其记录。请告知他，我们将在适当时候回复。\n"
+"\n"
+"奉谕，"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:278
 #, fuzzy
@@ -5109,7 +5167,13 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "致大王，\n\n多年以来，吾等两家情同手足。今特致函，愿将此友谊正式化，以惠及吾等两族：订立互助盟约，共享商道。\n\n我只恳请大王倾听我的条件。请速派下一信使回复，我将立即派遣使者前往。\n\n阿齐鲁，大王之仆，阿穆鲁之主"
+msgstr "致大王，\n"
+"\n"
+"多年以来，吾等两家情同手足。今特致函，愿将此友谊正式化，以惠及吾等两族：订立互助盟约，共享商道。\n"
+"\n"
+"我只恳请大王倾听我的条件。请速派下一信使回复，我将立即派遣使者前往。\n"
+"\n"
+"阿齐鲁，大王之仆，阿穆鲁之主"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:391
 #, fuzzy
@@ -5118,7 +5182,11 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "致大王，\n\n吾近期旅程将近三角洲一带。如大王能拨冗一小时，我愿与你面谈；有些事，口头陈述胜于笔墨。\n\n你的仆人，阿卜迪-赫巴，乌鲁沙利姆总督"
+msgstr "致大王，\n"
+"\n"
+"吾近期旅程将近三角洲一带。如大王能拨冗一小时，我愿与你面谈；有些事，口头陈述胜于笔墨。\n"
+"\n"
+"你的仆人，阿卜迪-赫巴，乌鲁沙利姆总督"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:153
 #, fuzzy
@@ -5127,7 +5195,11 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "致吾兄，大王，\n\n你之言语，我已听闻。黄金将在下一信使启程前发出。吾等珍视两家情谊，不愿其冷却。\n\n友谊长存，"
+msgstr "致吾兄，大王，\n"
+"\n"
+"你之言语，我已听闻。黄金将在下一信使启程前发出。吾等珍视两家情谊，不愿其冷却。\n"
+"\n"
+"友谊长存，"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:239
 #, fuzzy
@@ -5138,7 +5210,13 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "致吾兄，大王，\n\n我以友谊之名致函，正如我等父辈昔日所为。依照盟约，第三批黄金仍未抵达。两批信使已过，吾等仍在等候。\n\n吾等恳请你勿再延误，速将其发出，以维系吾等两家之盟谊。\n\n布尔那-布里亚什二世，巴比伦国王"
+msgstr "致吾兄，大王，\n"
+"\n"
+"我以友谊之名致函，正如我等父辈昔日所为。依照盟约，第三批黄金仍未抵达。两批信使已过，吾等仍在等候。\n"
+"\n"
+"吾等恳请你勿再延误，速将其发出，以维系吾等两家之盟谊。\n"
+"\n"
+"布尔那-布里亚什二世，巴比伦国王"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:352
 msgid "To the Great King, my lord, my sun,\n"
@@ -5148,7 +5226,13 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "致大王，吾主，吾日，\n\n上月你所赐谷物，吾等不胜感激，吾亦在民众面前颂扬大王之名。然我不得不再次致函：第三批谷物尚未抵达，城中民心骚动不安。\n\n我已七度致函。我实不愿劳烦大王，然此外我能奈何？\n\n你的仆人，里布-哈达，比布鲁斯总督"
+msgstr "致大王，吾主，吾日，\n"
+"\n"
+"上月你所赐谷物，吾等不胜感激，吾亦在民众面前颂扬大王之名。然我不得不再次致函：第三批谷物尚未抵达，城中民心骚动不安。\n"
+"\n"
+"我已七度致函。我实不愿劳烦大王，然此外我能奈何？\n"
+"\n"
+"你的仆人，里布-哈达，比布鲁斯总督"
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:19
 #: ../ui/src/emails/ThreadList.tsx:15
