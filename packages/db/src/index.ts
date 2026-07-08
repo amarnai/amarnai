@@ -7,6 +7,7 @@ export {
   type ThreadSortUsage,
 } from "./thread-sort-usage.js";
 export { eligibleThreadWhere } from "./eligible-threads.js";
+export { buildInboxProfile, buildSenderSignal } from "./inbox-profile.js";
 export {
   createNotification,
   type CreateNotificationInput,

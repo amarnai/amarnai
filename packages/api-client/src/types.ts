@@ -35,6 +35,12 @@ export type TaxonomyGenerationStatusResult = {
   proposal: TaxonomyTransferFile | null;
 };
 
+// Deterministic best-fit template for the picker's "Recommended" badge. Null
+// when no inbox is connected or the inbox has too little signal to match.
+export type TaxonomyTemplateRecommendationResult = {
+  recommendedTemplateId: string | null;
+};
+
 export type QuotaInfo = { used: number; limit: number; resetsAt: string };
 
 // Authenticated identity for the current access token (GET /auth/me). Native

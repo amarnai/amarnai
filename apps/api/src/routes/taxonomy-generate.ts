@@ -1,12 +1,15 @@
 import { Hono } from "hono";
 import { z } from "zod";
-import { db, eligibleThreadWhere, resolveInboxQuota } from "@amarnai/db";
+import { db, eligibleThreadWhere, resolveInboxQuota, buildInboxProfile } from "@amarnai/db";
 import {
   computeGenerationEligibility,
   emailDomain,
   isGenerationRunningFresh,
+  GENERATION_MIN_ELIGIBLE_THREADS,
+  GENERATION_MIN_SENDER_DOMAINS,
   type GenerationEligibility,
 } from "@amarnai/shared";
+import { matchTemplateToProfile } from "@amarnai/core/taxonomy";
 import { config } from "@amarnai/config";
 import type { AppEnv } from "../env.js";
 import { isTaxonomyEditor } from "../services/taxonomy-permission.js";
@@ -195,5 +198,49 @@ taxonomyGenerate.get("/workspaces/:workspaceId/taxonomy-generate", async (c) => 
     proposal: status === "READY" ? state?.proposal ?? null : null,
   });
 });
+
+// GET — the deterministic best-fit template for the inbox, for the picker's
+// "Recommended" badge. No LLM and no persistence: builds the body-free profile
+// and runs the token-overlap matcher fresh. Returns null (no badge) unless an
+// inbox is connected AND it clears the same data floors generation uses — below
+// those, a token-overlap match is noise. Read-only; the workspace-membership
+// guard is sufficient (unlike the POST, which requires an editor).
+taxonomyGenerate.get(
+  "/workspaces/:workspaceId/taxonomy-template-recommendation",
+  async (c) => {
+    const params = workspaceParam.safeParse({ workspaceId: c.req.param("workspaceId") });
+    if (!params.success) return c.json({ error: "Invalid workspace ID" }, 400);
+    const { workspaceId } = params.data;
+
+    // No connected inbox → nothing to recommend from. Cheap check first so
+    // unconnected workspaces never run the profile aggregation.
+    const connection = await db.emailConnection.findUnique({
+      where: { workspaceId },
+      select: { workspaceId: true },
+    });
+    if (!connection) return c.json({ recommendedTemplateId: null });
+
+    const settingsRow = await db.gmailSyncSettings.findUnique({ where: { workspaceId } });
+    const settings = {
+      includeSpam: settingsRow?.includeSpam ?? false,
+      includePromotions: settingsRow?.includePromotions ?? false,
+      blacklistedSenderEmails: settingsRow?.blacklistedSenderEmails ?? [],
+    };
+
+    const profile = await buildInboxProfile(workspaceId, settings);
+
+    // Same "enough data" floors as generation eligibility: too few threads or
+    // too few distinct sender domains and the match is unreliable. senderDomains
+    // is the ranked set of distinct domains (capped well above the floor).
+    if (
+      profile.eligibleThreadCount < GENERATION_MIN_ELIGIBLE_THREADS ||
+      profile.senderDomains.length < GENERATION_MIN_SENDER_DOMAINS
+    ) {
+      return c.json({ recommendedTemplateId: null });
+    }
+
+    return c.json({ recommendedTemplateId: matchTemplateToProfile(profile).id });
+  },
+);
 
 export { taxonomyGenerate as taxonomyGenerateRoute };

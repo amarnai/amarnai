@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { buildSenderSignal } from "../jobs/generate-taxonomy.js";
+import { buildSenderSignal } from "./inbox-profile.js";
 
 type SampledMessage = { senderEmail: string; senderName: string | null; subject: string | null };
 

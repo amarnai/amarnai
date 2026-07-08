@@ -42,6 +42,7 @@ import type {
   CurrentUser,
   UpdateCurrentUserInput,
   TaxonomyGenerationStatusResult,
+  TaxonomyTemplateRecommendationResult,
 } from "./types.js";
 
 export function makeApiClient(transport: ApiTransport) {
@@ -247,6 +248,13 @@ export function makeApiClient(transport: ApiTransport) {
     taxonomyGeneration: (workspaceId: string) =>
       apiFetch<TaxonomyGenerationStatusResult>(
         `/workspaces/${workspaceId}/taxonomy-generate`
+      ),
+
+    // Deterministic best-fit template for the picker's "Recommended" badge.
+    // No LLM; safe to call on picker open. Null when there is too little signal.
+    taxonomyTemplateRecommendation: (workspaceId: string) =>
+      apiFetch<TaxonomyTemplateRecommendationResult>(
+        `/workspaces/${workspaceId}/taxonomy-template-recommendation`
       ),
 
     folderCounts: (workspaceId: string) =>

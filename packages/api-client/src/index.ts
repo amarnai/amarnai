@@ -67,4 +67,5 @@ export type {
   GenerationEligibilityReason,
   TaxonomyGenerationStatus,
   TaxonomyGenerationStatusResult,
+  TaxonomyTemplateRecommendationResult,
 } from "./types.js";

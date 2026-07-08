@@ -837,6 +837,13 @@ function TaxonomyCanvasInner({
   const [selectedTemplateIdx, setSelectedTemplateIdx] = useState<number | null>(
     null,
   );
+  // Deterministic (no-LLM) best-fit template for the picker's "Recommended"
+  // badge. Fetched lazily the first time the picker opens; the badge is progressive
+  // enhancement, so any failure just leaves it unset.
+  const [recommendedTemplateId, setRecommendedTemplateId] = useState<string | null>(
+    null,
+  );
+  const recommendationFetchedRef = useRef(false);
   const [generateOpen, setGenerateOpen] = useState(
     () => gmailConnected && searchParams.get("openGenerate") === "1",
   );
@@ -885,6 +892,28 @@ function TaxonomyCanvasInner({
     const next = params.size > 0 ? `?${params.toString()}` : "";
     router.replace(`/plan${next}`, { scroll: false });
   }, []);
+
+  // Fetch the recommended template the first time the picker opens (only when an
+  // inbox is connected — the endpoint returns nothing otherwise, and the server
+  // gates on having enough inbox signal to make a reliable match).
+  useEffect(() => {
+    if (!templatePickerOpen || !gmailConnected || recommendationFetchedRef.current) {
+      return;
+    }
+    recommendationFetchedRef.current = true;
+    let cancelled = false;
+    api
+      .taxonomyTemplateRecommendation(workspaceId)
+      .then((r) => {
+        if (!cancelled) setRecommendedTemplateId(r.recommendedTemplateId);
+      })
+      .catch(() => {
+        // Badge is progressive enhancement; never block the picker on it.
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [templatePickerOpen, gmailConnected, workspaceId]);
 
   const onCanvasDoubleClick = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
@@ -1289,6 +1318,22 @@ function TaxonomyCanvasInner({
   const currentTemplateIdx = localizedTemplates.findIndex((t) =>
     matchesTemplate(dbNodes, dbEdges, t),
   );
+
+  // Recommended template (ids survive localization). Suppress when it is already
+  // the current template — the card is disabled and labeled "Current", so a
+  // "Recommended" badge and reorder would just be noise. Selection stays
+  // index-based into localizedTemplates, so we reorder a list of {template, idx}
+  // pairs rather than the array itself.
+  const recommendedIdx = recommendedTemplateId
+    ? localizedTemplates.findIndex((t) => t.id === recommendedTemplateId)
+    : -1;
+  const showRecommended =
+    recommendedIdx !== -1 && recommendedIdx !== currentTemplateIdx;
+  const orderedTemplates = localizedTemplates.map((template, idx) => ({ template, idx }));
+  if (showRecommended) {
+    const rec = orderedTemplates.splice(recommendedIdx, 1)[0];
+    if (rec) orderedTemplates.unshift(rec);
+  }
 
   // The catch-all is not editable (its panel never opens), so the only
   // delete-disabled reason left here is having child folders.
@@ -1697,7 +1742,7 @@ function TaxonomyCanvasInner({
               style={{ overflowY: "auto", maxHeight: "60vh" }}
             >
               <div className="option-cards">
-                {localizedTemplates.map((template, idx) => {
+                {orderedTemplates.map(({ template, idx }) => {
                   const rootRef = template.file.nodes.find(
                     (n) => n.isRoot,
                   )?.ref;
@@ -1711,6 +1756,7 @@ function TaxonomyCanvasInner({
                     .filter((n): n is string => !!n);
                   const isSelected = selectedTemplateIdx === idx;
                   const isCurrent = currentTemplateIdx === idx;
+                  const isRecommended = showRecommended && recommendedIdx === idx;
                   return (
                     <button
                       key={template.id}
@@ -1737,6 +1783,11 @@ function TaxonomyCanvasInner({
                           {template.name}
                           {isCurrent && (
                             <span className="em-pill"><Trans>Current</Trans></span>
+                          )}
+                          {isRecommended && (
+                            <span className="em-pill accent">
+                              <Trans>Recommended for your inbox</Trans>
+                            </span>
                           )}
                         </span>
                         <span className="option-card-desc">

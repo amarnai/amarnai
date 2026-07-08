@@ -66,15 +66,20 @@ function weightProfileTokens(profile: InboxProfile): Map<string, number> {
   return weighted;
 }
 
+/** The zero-signal default: the least prescriptive template for an unknown inbox. */
+const FALLBACK_TEMPLATE_ID = "personal";
+
 /**
  * Return the best-fitting built-in template for an inbox profile. Ties resolve
- * deterministically to the first template in TAXONOMY_TEMPLATES order. With no
- * usable signal, falls back to the first template (a safe generic default).
+ * deterministically to the first template in TAXONOMY_TEMPLATES order. When no
+ * template overlaps the profile at all (empty or unusable signal), falls back to
+ * the "Personal / Family" template — a safe generic default that assumes nothing
+ * about the user's profession, rather than whichever template is authored first.
  */
 export function matchTemplateToProfile(profile: InboxProfile): TaxonomyTemplate {
   const weighted = weightProfileTokens(profile);
-  let best: TaxonomyTemplate = TAXONOMY_TEMPLATES[0]!;
-  let bestScore = -1;
+  let best: TaxonomyTemplate | null = null;
+  let bestScore = 0;
   for (const template of TAXONOMY_TEMPLATES) {
     const score = scoreTemplate(template, weighted);
     if (score > bestScore) {
@@ -82,5 +87,9 @@ export function matchTemplateToProfile(profile: InboxProfile): TaxonomyTemplate 
       best = template;
     }
   }
-  return best;
+  return (
+    best ??
+    TAXONOMY_TEMPLATES.find((t) => t.id === FALLBACK_TEMPLATE_ID) ??
+    TAXONOMY_TEMPLATES[0]!
+  );
 }
