@@ -3,6 +3,7 @@ import { HeroSection } from "./HeroSection";
 import { HowItWorksSection } from "./HowItWorksSection";
 import { TaxonomyDemoSection } from "./TaxonomyDemoSection";
 import { EmailsDemoSection } from "./EmailsDemoSection";
+import { ReviewsSection } from "./ReviewsSection";
 import { FAQSection } from "./FAQSection";
 import { FinalCTASection } from "./FinalCTASection";
 import { Footer } from "./Footer";
@@ -22,6 +23,7 @@ export function LandingContent() {
         <HowItWorksSection />
         <TaxonomyDemoSection />
         <EmailsDemoSection />
+        <ReviewsSection />
         <FAQSection />
         <FinalCTASection />
       </main>

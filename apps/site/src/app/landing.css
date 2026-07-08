@@ -489,6 +489,84 @@
   line-height: 1.6;
 }
 
+/* ─── Reviews ─────────────────────────────────────────────────────────────── */
+
+.ld-reviews {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.ld-review {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  background: var(--surface);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-xl);
+  padding: 28px;
+  box-shadow: var(--shadow-1);
+}
+
+.ld-review-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.ld-review-ava {
+  flex: none;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--line-2);
+}
+
+.ld-review-id {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.ld-review-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.ld-review-title {
+  font-size: 13px;
+  color: var(--ink-3);
+}
+
+.ld-review-stars {
+  display: inline-flex;
+  gap: 3px;
+  margin-top: 2px;
+  color: oklch(80% 0.12 82);
+}
+
+.ld-review-quote {
+  font-size: 16px;
+  font-weight: 450;
+  color: var(--ink-2);
+  line-height: 1.65;
+}
+
+.ld-review-source {
+  margin-top: auto;
+  font-size: 12px;
+  font-style: italic;
+  color: var(--ink-3);
+  opacity: 0.6;
+}
+
+@media (max-width: 720px) {
+  .ld-reviews { grid-template-columns: 1fr; }
+}
+
 /* ─── Step art illustrations ──────────────────────────────────────────────── */
 
 .ld-step-art {

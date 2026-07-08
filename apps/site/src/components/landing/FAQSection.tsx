@@ -56,6 +56,10 @@ const FAQ_ITEMS: { q: MessageDescriptor; a: MessageDescriptor }[] = [
     a: msg`Yes. Amarnai is open source under the AGPL-3.0 license. You can clone the repository and run it yourself with Docker. Self-hosting is free and unsupported, with community support available on GitHub.`,
   },
   {
+    q: msg`Why is it called Amarnai?`,
+    a: msg`Amarnai is named after the Amarna letters, a cache of clay tablets from around 1350 BC: the diplomatic correspondence between the pharaoh of Egypt and the kings and vassals of the ancient Near East. It is one of the earliest surviving inboxes, and almost all of it is incoming. Hundreds of letters reached the pharaoh, but barely any of his replies survive. Senders like Rib-Hadda of Byblos wrote again and again with little response, most likely because the pharaoh was too overloaded to keep up. Amarnai spares you from that fate.`,
+  },
+  {
     q: msg`What model does Amarnai use?`,
     a: msg`Hosted subscriptions run on a leading AI model. Self-hosted deployments can point at any OpenAI-compatible provider, such as OpenAI or Google Gemini, or a local Ollama model for fully offline operation.`,
   },
