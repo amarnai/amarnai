@@ -5,6 +5,7 @@ import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import type { I18n } from "@lingui/core";
 import { getDemoThreads, getDemoFolders } from "@/components/demo/demo-seed";
+import { DEMO_AVATARS } from "@/components/demo/demo-avatars";
 import { FolderIcon } from "@/components/landing/icons";
 
 type Tone = "ok" | "review" | "accent" | "neutral";
@@ -20,14 +21,15 @@ type PoolItem = {
 };
 
 // Hue and initials are presentation-only — everything else comes from demo-seed.
-// `avatar` overrides the initials chip with a photo when present.
-const THREAD_DISPLAY: Record<string, { hue: number; init: string; avatar?: string }> = {
-  t1: { hue: 220, init: "BB", avatar: "/burna-buriash-pfp.png" },
-  t2: { hue: 140, init: "AA", avatar: "/aziru-pfp.png" },
+// Sender photos live in DEMO_AVATARS (shared with the Outlook inbox mock) and
+// override the initials chip when present.
+const THREAD_DISPLAY: Record<string, { hue: number; init: string }> = {
+  t1: { hue: 220, init: "BB" },
+  t2: { hue: 140, init: "AA" },
   t3: { hue: 65,  init: "BR" },
-  t4: { hue: 30,  init: "RH", avatar: "/rib-hadda-pfp.png" },
-  t5: { hue: 55,  init: "AU", avatar: "/abdi-heba-pfp.png" },
-  t6: { hue: 280, init: "TM", avatar: "/tushratta-pfp.png" },
+  t4: { hue: 30,  init: "RH" },
+  t5: { hue: 55,  init: "AU" },
+  t6: { hue: 280, init: "TM" },
 };
 
 function folderDest(
@@ -68,7 +70,7 @@ function buildPool(i18n: I18n): PoolItem[] {
       from: t.messages[0]!.fromName,
       init: display.init,
       hue: display.hue,
-      avatar: display.avatar,
+      avatar: DEMO_AVATARS[t.id],
       subj: t.subject,
       dest: folderDest(folders, t.folderId),
       tone,

@@ -9,6 +9,7 @@ import type { ThreadItem } from "@amarnai/ui/emails";
 import { GmailLogoIcon } from "./icons";
 import type { MockProvider } from "./MailInboxMock";
 import { initial, outlookAvatarClass } from "./outlook-helpers";
+import { DEMO_AVATARS } from "@/components/demo/demo-avatars";
 
 /**
  * A stylized Gmail/Outlook conversation view for the landing demo. It stands in
@@ -107,15 +108,26 @@ export function MailThreadMock({
       <div className="ld-mailthread-scroll">
         <h1 className="ld-mailthread-subject">{thread.subject}</h1>
 
-        {thread.messages.map((m) => (
+        {thread.messages.map((m) => {
+          // Show the sender's photo only on messages actually from the thread's
+          // primary sender, so a future "You" reply keeps an initials avatar.
+          const avatar =
+            m.fromEmail === thread.messages[0]?.fromEmail ? DEMO_AVATARS[thread.id] : undefined;
+          return (
           <article key={m.id} className="ld-mailthread-msg">
             <div className="ld-mailthread-msg-head">
-              <span
-                className={`ld-mailthread-avatar${isOutlook ? ` ${outlookAvatarClass(m.fromName)}` : ""}`}
-                aria-hidden
-              >
-                {initial(m.fromName)}
-              </span>
+              {avatar ? (
+                <span className="ld-mailthread-avatar ld-mailthread-avatar--photo" aria-hidden>
+                  <img src={avatar} alt="" />
+                </span>
+              ) : (
+                <span
+                  className={`ld-mailthread-avatar${isOutlook ? ` ${outlookAvatarClass(m.fromName)}` : ""}`}
+                  aria-hidden
+                >
+                  {initial(m.fromName)}
+                </span>
+              )}
               <div className="ld-mailthread-from">
                 <span className="ld-mailthread-name">{m.fromName}</span>
                 {isOutlook ? (
@@ -130,7 +142,8 @@ export function MailThreadMock({
             </div>
             <div className="ld-mailthread-body">{m.bodyText ?? m.snippet}</div>
           </article>
-        ))}
+          );
+        })}
 
         {/* A dead reply affordance: this is a read-only mock, so it does nothing.
             It grounds the view as a real conversation pane rather than a preview.

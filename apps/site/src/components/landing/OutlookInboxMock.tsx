@@ -6,6 +6,7 @@ import { useLingui } from "@lingui/react";
 import { OutlookIcon } from "@amarnai/ui";
 import type { ThreadItem } from "@amarnai/ui/emails";
 import { initial, outlookAvatarClass } from "./outlook-helpers";
+import { DEMO_AVATARS } from "@/components/demo/demo-avatars";
 
 // 3x3 app-launcher waffle, the top-left glyph on every Outlook web page.
 function WaffleIcon() {
@@ -182,6 +183,7 @@ export function OutlookInboxMock({
           <div className="ld-ol-list">
             {threads.map((t) => {
               const name = t.messages[0]?.fromName ?? t.participants;
+              const avatar = DEMO_AVATARS[t.id];
               return (
                 <button
                   key={t.id}
@@ -190,7 +192,13 @@ export function OutlookInboxMock({
                   onClick={() => onOpenThread(t)}
                 >
                   <span className="ld-ol-unread-bar" aria-hidden />
-                  <span className={`ld-ol-av ${outlookAvatarClass(name)}`}>{initial(name)}</span>
+                  {avatar ? (
+                    <span className="ld-ol-av ld-ol-av-photo">
+                      <img src={avatar} alt="" />
+                    </span>
+                  ) : (
+                    <span className={`ld-ol-av ${outlookAvatarClass(name)}`}>{initial(name)}</span>
+                  )}
                   <span className="ld-ol-row-main">
                     <span className="ld-ol-row-top">
                       <span className="ld-ol-sender">{name}</span>

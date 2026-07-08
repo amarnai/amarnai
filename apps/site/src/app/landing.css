@@ -1379,6 +1379,10 @@ button.ld-gmail-row:hover { background: var(--bg-soft); }
   justify-content: center;
 }
 
+/* Photo variant: the sender's picture clipped to the same 36px circle. */
+.ld-mailthread-avatar--photo { overflow: hidden; background: var(--line); }
+.ld-mailthread-avatar--photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
 .ld-mailthread-from {
   display: flex;
   flex-direction: column;
@@ -1739,6 +1743,11 @@ button.ld-ol-row:hover { background: var(--bg-soft); }
 }
 
 .ld-ol-av-skel { background: var(--line); }
+
+/* Photo avatar: the sender's picture clipped to the same circle as the initials
+   variants, so a real face and a colored initials chip line up in the list. */
+.ld-ol-av-photo { overflow: hidden; background: var(--line); }
+.ld-ol-av-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
 .ld-ol-skel .ld-skel-sender { width: 84px; }
 .ld-ol-skel .ld-skel-time { width: 24px; }
