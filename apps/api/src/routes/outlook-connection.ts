@@ -3,31 +3,12 @@ import { z } from "zod";
 import { db } from "@amarnai/db";
 import { config } from "@amarnai/config";
 import { parseGrantedScopes, exchangeAuthCode, MicrosoftApiError } from "@amarnai/outlook";
-import { storeOutlookConnection, ProviderMismatchError } from "@amarnai/auth";
+import { storeOutlookConnection } from "@amarnai/auth";
 import type { AppEnv } from "../env.js";
-import {
-  countActiveSiblingConnections,
-  listVisibleSiblingConnections,
-} from "../services/gmail-disconnect.js";
-import { syncInboxQueue } from "../services/queue-client.js";
 import { registerOutlookSubscription } from "../services/outlook-subscription.js";
-import { recordAudit } from "../services/audit.js";
+import { runProviderConnect } from "../services/provider-connect.js";
 
 const workspaceParam = z.object({ workspaceId: z.string().min(1) });
-
-// Same shape the GET/POST Gmail endpoint returns (see gmail-connection.ts). The
-// neutral `emailAddress` column is mapped to the `gmailAddress` client key.
-const connectionSelect = {
-  id: true,
-  workspaceId: true,
-  provider: true,
-  emailAddress: true,
-  grantedScopes: true,
-  status: true,
-  lastVerifiedAt: true,
-  createdAt: true,
-  updatedAt: true,
-} as const;
 
 // The browser extension runs the Microsoft code flow via chrome.identity and
 // sends the authorization code plus the chromiumapp.org redirect it was minted
@@ -66,101 +47,39 @@ outlookConnection.post("/workspaces/:workspaceId/outlook-connection", async (c) 
   if (!bodyParsed.success) return c.json({ error: "Invalid request" }, 400);
 
   const { code, scope, redirectUri } = bodyParsed.data;
-  // Early check on the client-claimed scope; the authoritative check is on the
-  // scope Microsoft returns from the exchange below.
+  const notGranted = "Outlook read access (Mail.Read) was not granted";
+  // Early check on the client-claimed scope; the authoritative check inside
+  // runProviderConnect is on the scope Microsoft returns from the exchange.
   if (!parseGrantedScopes(scope).hasReadonly) {
-    return c.json({ error: "Outlook read access (Mail.Read) was not granted" }, 403);
+    return c.json({ error: notGranted }, 403);
   }
 
-  // Prior inbox on this workspace (if any) so the audit below can flag a rotation.
-  const priorConnection = await db.emailConnection.findUnique({
-    where: { workspaceId },
-    select: { emailAddress: true, status: true },
-  });
-
-  let emailAddress: string;
-  try {
+  return runProviderConnect({
+    c,
+    workspaceId,
+    userId,
     // Redeem the code against the extension's chromiumapp.org redirect with the
     // confidential Web client (no PKCE — the redirect is registered on the app).
-    const tokens = await exchangeAuthCode(code, redirectUri);
-    const { scopes: grantedScopes, hasReadonly } = parseGrantedScopes(tokens.scope);
-    if (!hasReadonly) {
-      return c.json({ error: "Outlook read access (Mail.Read) was not granted" }, 403);
-    }
-    const stored = await storeOutlookConnection({
-      workspaceId,
-      accessToken: tokens.accessToken,
-      refreshToken: tokens.refreshToken,
-      grantedScopes,
-    });
-    emailAddress = stored.emailAddress;
-
-    // Audit the connect (best-effort). `replacedAddress` is set only when a
-    // DIFFERENT inbox was connected before — the rotation signal.
-    const replacedAddress =
-      priorConnection?.emailAddress && priorConnection.emailAddress !== emailAddress
-        ? priorConnection.emailAddress
-        : null;
-    await recordAudit({
-      workspaceId,
-      actorType: "USER",
-      actorUserId: userId,
+    exchange: () => exchangeAuthCode(code, redirectUri),
+    parseScopes: parseGrantedScopes,
+    store: storeOutlookConnection,
+    isApiError: (err) => err instanceof MicrosoftApiError,
+    audit: {
       eventType: "outlook.connected",
       entityType: "EmailConnection",
-      metadata: { emailAddress, replacedAddress, priorStatus: priorConnection?.status ?? null },
-    });
-  } catch (err) {
-    if (err instanceof ProviderMismatchError) {
-      // This workspace's inbox belongs to a different provider (e.g. Gmail).
-      return c.json(
-        { error: "This workspace is connected to a different mail provider" },
-        409,
-      );
-    }
-    if (err instanceof MicrosoftApiError) {
-      // Code redemption or profile verification failed (expired/reused/invalid).
-      return c.json({ error: "Could not verify Outlook access" }, 502);
-    }
-    console.error("[outlook-connection/connect] store:", err instanceof Error ? err.message : err);
-    return c.json({ error: "Could not store Outlook connection" }, 500);
-  }
-
-  // Fire-and-forget: immediate inbox sync. Same dedup id as the Gmail path so a
-  // concurrent call does not double-queue.
-  syncInboxQueue
-    .add("sync-inbox", { workspaceId }, { deduplication: { id: `sync-inbox_${workspaceId}` } })
-    .catch((err) =>
-      console.error(
-        "[outlook-connection/connect] trigger_sync:",
-        err instanceof Error ? err.message : err,
-      ),
-    );
-
-  // Fire-and-forget: arm the Graph change subscription immediately (mirrors the
-  // Gmail watch). The worker's periodic renewal is the fallback.
-  registerOutlookSubscription(workspaceId).catch((err) =>
-    console.error(
-      "[outlook-connection/connect] register_subscription:",
-      err instanceof Error ? err.message : err,
-    ),
-  );
-
-  const connection = await db.emailConnection.findUnique({
-    where: { workspaceId },
-    select: connectionSelect,
+      addressKey: "emailAddress",
+    },
+    registerPush: registerOutlookSubscription,
+    // Outlook does not fire the extension-install nudge (Gmail-only path).
+    fireExtensionNudge: false,
+    logPrefix: "outlook-connection/connect",
+    messages: {
+      notGranted,
+      mismatch: "This workspace is connected to a different mail provider",
+      apiError: "Could not verify Outlook access",
+      storeError: "Could not store Outlook connection",
+    },
   });
-  if (!connection) return c.json({ error: "Connection not found" }, 500);
-
-  const { emailAddress: addr, ...rest } = connection;
-  const [siblingsCount, alsoConnectedIn] = await Promise.all([
-    countActiveSiblingConnections(addr, connection.workspaceId),
-    listVisibleSiblingConnections(addr, connection.workspaceId, userId),
-  ]);
-
-  return c.json(
-    { ...rest, gmailAddress: addr, sharedMailbox: siblingsCount > 0, alsoConnectedIn },
-    201,
-  );
 });
 
 export { outlookConnection as outlookConnectionRoute };
