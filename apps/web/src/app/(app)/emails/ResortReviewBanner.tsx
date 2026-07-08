@@ -64,8 +64,8 @@ export function ResortReviewBanner({ workspaceId, refreshKey, onResorted }: Prop
       <span suppressHydrationWarning>
         <Plural
           value={eligible}
-          one="# needs-review thread can be re-sorted automatically, because your plan changed since it was sorted or sorting hit a temporary error. The rest need your decision."
-          other="# needs-review threads can be re-sorted automatically, because your plan changed since they were sorted or sorting hit a temporary error. The rest need your decision."
+          one="# needs-review thread can be re-sorted automatically, because your plan changed since it was sorted or sorting hit a temporary error."
+          other="# needs-review threads can be re-sorted automatically, because your plan changed since they were sorted or sorting hit a temporary error."
         />
       </span>
       <button
