@@ -895,7 +895,7 @@ msgstr "Aviso automático do Departamento de Nomeações Reais. Assunto e remete
 msgid "Automated notifications, newsletters, and service updates that don't fit another folder."
 msgstr "Notificações automáticas, newsletters e atualizações de serviço que não se encaixam em outra pasta."
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:212
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:243
 msgid "Available addresses"
 msgstr "Endereços disponíveis"
 
@@ -916,14 +916,18 @@ msgstr "Aziru,\n\nSuas palavras de amizade nos são gratas. Estamos dispostos a 
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:25
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:230
-#: ../ui/src/emails/ThreadPreview.tsx:94
+#: ../ui/src/emails/ThreadPreview.tsx:121
 #, fuzzy
 msgid "Back"
 msgstr "Voltar"
 
+#: ../../apps/site/src/components/landing/MailThreadMock.tsx:62
+msgid "Back to inbox"
+msgstr "Voltar para a caixa de entrada"
+
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:215
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:225
-#: ../ui/src/emails/ThreadPreview.tsx:89
+#: ../ui/src/emails/ThreadPreview.tsx:116
 #, fuzzy
 msgid "Back to list"
 msgstr "Voltar para a lista"
@@ -996,8 +1000,8 @@ msgstr "Navegue seus e-mails facilmente pelas suas pastas. Gere rascunhos de res
 msgid "Browse templates"
 msgstr "Explorar modelos"
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:224
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:246
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:257
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:280
 msgid "Browser extension"
 msgstr "Extensão do navegador"
 
@@ -1155,7 +1159,7 @@ msgstr "Escolha uma assinatura"
 msgid "Choose email provider"
 msgstr "Escolha o provedor de e-mail"
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:233
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:267
 msgid "Choose how to preview Amarnai"
 msgstr "Escolha como pré-visualizar Amarnai"
 
@@ -1195,8 +1199,8 @@ msgstr "Fechar painel"
 
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:255
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:259
-#: ../ui/src/emails/ThreadPreview.tsx:99
-#: ../ui/src/emails/ThreadPreview.tsx:103
+#: ../ui/src/emails/ThreadPreview.tsx:147
+#: ../ui/src/emails/ThreadPreview.tsx:151
 #, fuzzy
 msgid "Close preview"
 msgstr "Fechar prévia"
@@ -1905,7 +1909,7 @@ msgstr "Desconecta este espaço de trabalho. Amarnai mantém o acesso porque est
 #: ../../apps/web/src/components/NotificationBell.tsx:179
 #: ../../apps/web/src/components/NotificationBell.tsx:180
 #: ../ui/src/AppDownloadBanner.tsx:80
-#: ../ui/src/emails/MockEmailsPage.tsx:270
+#: ../ui/src/emails/MockEmailsPage.tsx:288
 msgid "Dismiss"
 msgstr "Dispensar"
 
@@ -2006,7 +2010,7 @@ msgstr "Rascunhando…"
 msgid "Drag and connect. It's fully interactive."
 msgstr "Arraste e conecte. É totalmente interativo."
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:276
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:310
 #, fuzzy
 msgid "Drag to resize"
 msgstr "Arraste para redimensionar"
@@ -2164,7 +2168,7 @@ msgstr "Entrada"
 msgid "Every account starts with a free Personal workspace, no card required. Create more or upgrade whenever your needs grow."
 msgstr "Toda conta começa com um workspace Pessoal gratuito, sem necessidade de cartão. Crie mais ou faça upgrade quando suas necessidades aumentarem."
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:159
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:190
 msgid "Every email goes where it belongs."
 msgstr "Cada e-mail no seu devido lugar."
 
@@ -2177,7 +2181,7 @@ msgstr "Cada e-mail no seu devido lugar."
 msgid "Every thread in your inbox."
 msgstr "Todas as conversas na sua caixa de entrada."
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:162
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:193
 msgid "Every thread lands in one of your folders, exactly where you would expect to find it. When a reply is needed, a draft is one click away, ready for your edits and never sent without them."
 msgstr "Cada conversa vai para uma das suas pastas, exatamente onde você esperaria encontrá-la. Quando uma resposta é necessária, um rascunho está a um clique, pronto para suas edições e nunca enviado sem elas."
 
@@ -2316,7 +2320,12 @@ msgstr "Sinalizado como introdução de aliança/investidor com base na linguage
 msgid "Flight and hotel bookings, travel itineraries, visa applications, and trip confirmations."
 msgstr "Reservas de voos e hotéis, itinerários de viagem, pedidos de visto e confirmações de viagem."
 
-#: ../ui/src/emails/MockEmailsPage.tsx:171
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:75
+#, fuzzy
+msgid "Focused"
+msgstr "Focado"
+
+#: ../ui/src/emails/MockEmailsPage.tsx:186
 msgid "folder"
 msgstr "pasta"
 
@@ -2486,7 +2495,7 @@ msgstr "Gerar um plano a partir da sua caixa de entrada"
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:324
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:146
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:338
-#: ../ui/src/emails/ThreadPreview.tsx:164
+#: ../ui/src/emails/ThreadPreview.tsx:253
 #, fuzzy
 msgid "Generate draft reply"
 msgstr "Gerar rascunho de resposta"
@@ -3176,6 +3185,8 @@ msgstr "Marcar como concluído"
 #: ../../apps/mobile/src/components/ThreadRow.tsx:58
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:234
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:240
+#: ../ui/src/emails/ThreadPreview.tsx:126
+#: ../ui/src/emails/ThreadPreview.tsx:130
 #: ../ui/src/emails/ThreadRow.tsx:160
 msgid "Mark as important"
 msgstr "Marcar como importante"
@@ -3333,7 +3344,7 @@ msgstr "Mover para pasta…"
 msgid "Move to…"
 msgstr "Mover para…"
 
-#: ../ui/src/emails/MockEmailsPage.tsx:181
+#: ../ui/src/emails/MockEmailsPage.tsx:196
 #, fuzzy
 msgid "Moved to {folderName}"
 msgstr "Movido para {folderName}"
@@ -3710,6 +3721,7 @@ msgid "Or connect a different inbox:"
 msgstr "Ou conectar outra caixa de entrada:"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:35
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:78
 msgid "Other"
 msgstr "Outros"
 
@@ -3954,7 +3966,7 @@ msgstr "Preços | Amarnai"
 msgid "Pricing is per workspace, billed monthly or annually. Every account starts with a free Personal workspace, no card required. The paid Pro and Business subscriptions add higher limits and include a 14-day trial. See the pricing page for current details."
 msgstr "Os preços são por espaço de trabalho, cobrados mensalmente ou anualmente. Toda conta começa com um espaço de trabalho Pessoal gratuito, sem necessidade de cartão. As assinaturas pagas Pro e Business adicionam limites maiores e incluem um teste de 14 dias. Consulte a página de preços para detalhes atuais."
 
-#: ../../apps/site/src/components/landing/GmailInboxMock.tsx:47
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:84
 msgid "Primary"
 msgstr "Principal"
 
@@ -4005,7 +4017,7 @@ msgid "Projects"
 msgstr "Projetos"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:112
-#: ../../apps/site/src/components/landing/GmailInboxMock.tsx:50
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:87
 #, fuzzy
 msgid "Promotions"
 msgstr "Promoções"
@@ -4172,6 +4184,8 @@ msgstr "Remover {email} da lista negra"
 #: ../../apps/mobile/src/components/ThreadRow.tsx:57
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:234
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:240
+#: ../ui/src/emails/ThreadPreview.tsx:126
+#: ../ui/src/emails/ThreadPreview.tsx:130
 #: ../ui/src/emails/ThreadRow.tsx:159
 #, fuzzy
 msgid "Remove from important"
@@ -4233,6 +4247,11 @@ msgstr "Substituir taxonomia"
 #, fuzzy
 msgid "Replace with a template"
 msgstr "Substituir por um modelo"
+
+#: ../../apps/site/src/components/landing/MailThreadMock.tsx:106
+#, fuzzy
+msgid "Reply"
+msgstr "Responder"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:89
 msgid "Rescan failed"
@@ -4308,7 +4327,7 @@ msgstr "Redefinindo…"
 msgid "Resize the folder sidebar"
 msgstr "Redimensionar a barra lateral de pastas"
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:261
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:295
 msgid "Resize the split between the inbox and Amarnai"
 msgstr "Redimensionar a divisão entre a caixa de entrada e Amarnai"
 
@@ -4351,7 +4370,7 @@ msgstr "Rib-Hadda,\n\nNós o ouvimos. Grãos adicionais foram solicitados dos ar
 #~ msgid "Route now"
 #~ msgstr "Roteando agora"
 
-#: ../ui/src/emails/MockEmailsPage.tsx:111
+#: ../ui/src/emails/MockEmailsPage.tsx:126
 msgid "Routing approved"
 msgstr "Roteamento aprovado"
 
@@ -4438,7 +4457,7 @@ msgstr "Pesquisar {threadCount} conversas"
 msgid "Search folders"
 msgstr "Pesquisar pastas"
 
-#: ../../apps/site/src/components/landing/GmailInboxMock.tsx:40
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:66
 msgid "Search mail"
 msgstr "Pesquisar e-mails"
 
@@ -4471,7 +4490,7 @@ msgstr "Selecionar"
 
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:210
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:336
-#: ../ui/src/emails/MockEmailsPage.tsx:248
+#: ../ui/src/emails/MockEmailsPage.tsx:266
 #, fuzzy
 msgid "Select a thread to preview"
 msgstr "Selecione uma conversa para pré-visualizar"
@@ -4675,7 +4694,7 @@ msgstr "Fazendo login…"
 msgid "Simple per-workspace pricing. Start free, upgrade or create additional workspaces as you need."
 msgstr "Preço simples por workspace. Comece grátis, faça upgrade ou crie workspaces adicionais conforme precisar."
 
-#: ../../apps/site/src/components/landing/GmailInboxMock.tsx:53
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:90
 #: ../ui/src/i18n/taxonomy-template-messages.ts:76
 msgid "Social"
 msgstr "Social"
@@ -4881,7 +4900,7 @@ msgstr "Suporte"
 msgid "Switch"
 msgstr "Mudar"
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:189
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:220
 #, fuzzy
 msgid "Switch the previewed address"
 msgstr "Trocar o endereço pré-visualizado"
@@ -4975,7 +4994,7 @@ msgstr "Modelos"
 msgid "Terms"
 msgstr "Termos"
 
-#: ../ui/src/emails/MockEmailsPage.tsx:157
+#: ../ui/src/emails/MockEmailsPage.tsx:172
 #, fuzzy
 msgid "Thank you for your message. I'll follow up shortly."
 msgstr "Obrigado pela sua mensagem. Responderei em breve."
@@ -5369,7 +5388,7 @@ msgstr "Não classificado"
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:232
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:366
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1321
-#: ../ui/src/emails/MockEmailsPage.tsx:267
+#: ../ui/src/emails/MockEmailsPage.tsx:285
 #, fuzzy
 msgid "Undo"
 msgstr "Desfazer"
@@ -5719,7 +5738,7 @@ msgstr "Workspaces incluídos"
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:339
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:168
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:354
-#: ../ui/src/emails/ThreadPreview.tsx:171
+#: ../ui/src/emails/ThreadPreview.tsx:260
 #, fuzzy
 msgid "Writing draft reply…"
 msgstr "Escrevendo rascunho de resposta…"

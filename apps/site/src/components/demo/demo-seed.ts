@@ -445,13 +445,18 @@ Tushratta, Great King of Mitanni`,
   },
 ];
 
-export function getDemoThreads(i18n: I18n): ThreadItem[] {
+export function getDemoThreads(
+  i18n: I18n,
+  provider: "GMAIL" | "OUTLOOK" = "GMAIL",
+): ThreadItem[] {
   return THREAD_SEED.map((seed) => {
     const { subject, snippet, reasoning, alternativeFolder, messages, ...rest } = seed;
     return {
       ...rest,
-      // The marketing demo showcases the Gmail experience.
-      provider: "GMAIL",
+      // The demo frame previews both providers; the caller passes whichever
+      // inbox is currently shown so the workspace's "Open in <provider>" link
+      // matches the mock beside it.
+      provider,
       webLink: null,
       subject: i18n._(subject),
       snippet: i18n._(snippet),

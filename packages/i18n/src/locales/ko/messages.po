@@ -917,7 +917,7 @@ msgstr "왕실 임명국에서 보낸 자동 알림. 제목과 발신자는 공�
 msgid "Automated notifications, newsletters, and service updates that don't fit another folder."
 msgstr "다른 폴더에 속하지 않는 자동 알림, 뉴스레터 및 서비스 업데이트."
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:212
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:243
 msgid "Available addresses"
 msgstr "사용 가능한 주소"
 
@@ -939,14 +939,18 @@ msgstr "아지루,\n\n친구로서의 말씀 잘 받았습니다. 아무르 가�
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:25
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:230
-#: ../ui/src/emails/ThreadPreview.tsx:94
+#: ../ui/src/emails/ThreadPreview.tsx:121
 #, fuzzy
 msgid "Back"
 msgstr "뒤로"
 
+#: ../../apps/site/src/components/landing/MailThreadMock.tsx:62
+msgid "Back to inbox"
+msgstr "받은 편지함으로"
+
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:215
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:225
-#: ../ui/src/emails/ThreadPreview.tsx:89
+#: ../ui/src/emails/ThreadPreview.tsx:116
 #, fuzzy
 msgid "Back to list"
 msgstr "목록으로"
@@ -1024,8 +1028,8 @@ msgstr "폴더를 통해 이메일을 편리하게 살펴보세요. 답장 초�
 msgid "Browse templates"
 msgstr "템플릿 둘러보기"
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:224
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:246
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:257
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:280
 msgid "Browser extension"
 msgstr "브라우저 확장 프로그램"
 
@@ -1189,7 +1193,7 @@ msgstr "구독 선택"
 msgid "Choose email provider"
 msgstr "이메일 공급자 선택"
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:233
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:267
 #, fuzzy
 msgid "Choose how to preview Amarnai"
 msgstr "Amarnai 미리보기 방식 선택"
@@ -1231,8 +1235,8 @@ msgstr "패널 닫기"
 
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:255
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:259
-#: ../ui/src/emails/ThreadPreview.tsx:99
-#: ../ui/src/emails/ThreadPreview.tsx:103
+#: ../ui/src/emails/ThreadPreview.tsx:147
+#: ../ui/src/emails/ThreadPreview.tsx:151
 #, fuzzy
 msgid "Close preview"
 msgstr "미리보기 닫기"
@@ -1961,7 +1965,7 @@ msgstr "이 작업 공간의 연결을 해제합니다. 이 메일함은 {shared
 #: ../../apps/web/src/components/NotificationBell.tsx:179
 #: ../../apps/web/src/components/NotificationBell.tsx:180
 #: ../ui/src/AppDownloadBanner.tsx:80
-#: ../ui/src/emails/MockEmailsPage.tsx:270
+#: ../ui/src/emails/MockEmailsPage.tsx:288
 #, fuzzy
 msgid "Dismiss"
 msgstr "닫기"
@@ -2068,7 +2072,7 @@ msgstr "초안 작성 중..."
 msgid "Drag and connect. It's fully interactive."
 msgstr "드래그하여 연결하세요. 완전히 상호작용합니다."
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:276
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:310
 #, fuzzy
 msgid "Drag to resize"
 msgstr "드래그하여 크기 조절"
@@ -2231,7 +2235,7 @@ msgstr "항목"
 msgid "Every account starts with a free Personal workspace, no card required. Create more or upgrade whenever your needs grow."
 msgstr "모든 계정은 무료 개인 워크스페이스로 시작하며, 카드 정보는 필요 없습니다. 필요에 따라 언제든지 추가 생성하거나 업그레이드하세요."
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:159
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:190
 #, fuzzy
 msgid "Every email goes where it belongs."
 msgstr "모든 이메일이 제자리를 찾아갑니다."
@@ -2245,7 +2249,7 @@ msgstr "모든 이메일이 제자리를 찾아갑니다."
 msgid "Every thread in your inbox."
 msgstr "받은편지함의 모든 대화."
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:162
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:193
 #, fuzzy
 msgid "Every thread lands in one of your folders, exactly where you would expect to find it. When a reply is needed, a draft is one click away, ready for your edits and never sent without them."
 msgstr "모든 대화는 예상했던 폴더에 정확히 보관됩니다. 답장이 필요할 때는 클릭 한 번으로 초안을 작성하고 수정할 수 있으며, 수정 없이 전송되는 일은 절대 없습니다."
@@ -2392,7 +2396,12 @@ msgstr "언어(예: '상호 이익', '오랜 우정')를 기반으로 동맹/투
 msgid "Flight and hotel bookings, travel itineraries, visa applications, and trip confirmations."
 msgstr "항공권 및 호텔 예약, 여행 일정, 비자 신청, 여행 확인."
 
-#: ../ui/src/emails/MockEmailsPage.tsx:171
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:75
+#, fuzzy
+msgid "Focused"
+msgstr "주요"
+
+#: ../ui/src/emails/MockEmailsPage.tsx:186
 msgid "folder"
 msgstr "폴더"
 
@@ -2569,7 +2578,7 @@ msgstr "받은 편지함에서 계획 생성"
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:324
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:146
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:338
-#: ../ui/src/emails/ThreadPreview.tsx:164
+#: ../ui/src/emails/ThreadPreview.tsx:253
 #, fuzzy
 msgid "Generate draft reply"
 msgstr "초안 답장 생성"
@@ -3283,6 +3292,8 @@ msgstr "완료로 표시"
 #: ../../apps/mobile/src/components/ThreadRow.tsx:58
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:234
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:240
+#: ../ui/src/emails/ThreadPreview.tsx:126
+#: ../ui/src/emails/ThreadPreview.tsx:130
 #: ../ui/src/emails/ThreadRow.tsx:160
 msgid "Mark as important"
 msgstr "중요 표시"
@@ -3447,7 +3458,7 @@ msgstr "폴더로 이동…"
 msgid "Move to…"
 msgstr "다음으로 이동…"
 
-#: ../ui/src/emails/MockEmailsPage.tsx:181
+#: ../ui/src/emails/MockEmailsPage.tsx:196
 msgid "Moved to {folderName}"
 msgstr "{folderName}으로 이동됨"
 
@@ -3836,6 +3847,7 @@ msgid "Or connect a different inbox:"
 msgstr "또는 다른 받은 편지함 연결:"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:35
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:78
 #, fuzzy
 msgid "Other"
 msgstr "기타"
@@ -4085,7 +4097,7 @@ msgstr "가격 | Amarnai"
 msgid "Pricing is per workspace, billed monthly or annually. Every account starts with a free Personal workspace, no card required. The paid Pro and Business subscriptions add higher limits and include a 14-day trial. See the pricing page for current details."
 msgstr "가격은 워크스페이스당 책정되며 월별 또는 연간으로 청구됩니다. 모든 계정은 카드 없이 무료 개인 워크스페이스로 시작합니다. 유료 Pro 및 Business 구독은 더 높은 한도를 제공하며 14일 무료 체험이 포함됩니다. 자세한 내용은 가격 페이지를 참조하세요."
 
-#: ../../apps/site/src/components/landing/GmailInboxMock.tsx:47
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:84
 msgid "Primary"
 msgstr "기본"
 
@@ -4140,7 +4152,7 @@ msgid "Projects"
 msgstr "프로젝트"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:112
-#: ../../apps/site/src/components/landing/GmailInboxMock.tsx:50
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:87
 #, fuzzy
 msgid "Promotions"
 msgstr "프로모션"
@@ -4314,6 +4326,8 @@ msgstr "{email}을(를) 블랙리스트에서 제거"
 #: ../../apps/mobile/src/components/ThreadRow.tsx:57
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:234
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:240
+#: ../ui/src/emails/ThreadPreview.tsx:126
+#: ../ui/src/emails/ThreadPreview.tsx:130
 #: ../ui/src/emails/ThreadRow.tsx:159
 #, fuzzy
 msgid "Remove from important"
@@ -4376,6 +4390,10 @@ msgstr "분류 체계 교체"
 #, fuzzy
 msgid "Replace with a template"
 msgstr "템플릿으로 교체"
+
+#: ../../apps/site/src/components/landing/MailThreadMock.tsx:106
+msgid "Reply"
+msgstr "답장"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:89
 #, fuzzy
@@ -4455,7 +4473,7 @@ msgstr "재설정 중..."
 msgid "Resize the folder sidebar"
 msgstr "폴더 사이드바 크기 조절"
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:261
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:295
 #, fuzzy
 msgid "Resize the split between the inbox and Amarnai"
 msgstr "받은 편지함과 Amarnai 분할 화면 크기 조절"
@@ -4501,7 +4519,7 @@ msgstr "립-하따님께,\n\n저희는 귀하의 말씀을 경청했습니다. �
 #~ msgid "Route now"
 #~ msgstr "지금 분류"
 
-#: ../ui/src/emails/MockEmailsPage.tsx:111
+#: ../ui/src/emails/MockEmailsPage.tsx:126
 msgid "Routing approved"
 msgstr "라우팅 승인됨"
 
@@ -4588,7 +4606,7 @@ msgstr "{threadCount}개 스레드 검색"
 msgid "Search folders"
 msgstr "폴더 검색"
 
-#: ../../apps/site/src/components/landing/GmailInboxMock.tsx:40
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:66
 msgid "Search mail"
 msgstr "메일 검색"
 
@@ -4622,7 +4640,7 @@ msgstr "선택"
 
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:210
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:336
-#: ../ui/src/emails/MockEmailsPage.tsx:248
+#: ../ui/src/emails/MockEmailsPage.tsx:266
 #, fuzzy
 msgid "Select a thread to preview"
 msgstr "미리 보려면 스레드를 선택하세요."
@@ -4834,7 +4852,7 @@ msgstr "로그인 중…"
 msgid "Simple per-workspace pricing. Start free, upgrade or create additional workspaces as you need."
 msgstr "워크스페이스별 간편 요금제. 무료로 시작하고, 필요에 따라 업그레이드하거나 워크스페이스를 추가하세요."
 
-#: ../../apps/site/src/components/landing/GmailInboxMock.tsx:53
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:90
 #: ../ui/src/i18n/taxonomy-template-messages.ts:76
 #, fuzzy
 msgid "Social"
@@ -5053,7 +5071,7 @@ msgstr "지원"
 msgid "Switch"
 msgstr "전환"
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:189
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:220
 #, fuzzy
 msgid "Switch the previewed address"
 msgstr "미리보기 주소 전환"
@@ -5146,7 +5164,7 @@ msgstr "템플릿"
 msgid "Terms"
 msgstr "약관"
 
-#: ../ui/src/emails/MockEmailsPage.tsx:157
+#: ../ui/src/emails/MockEmailsPage.tsx:172
 msgid "Thank you for your message. I'll follow up shortly."
 msgstr "메시지 감사합니다. 곧 다시 연락드리겠습니다."
 
@@ -5547,7 +5565,7 @@ msgstr "미분류"
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:232
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:366
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1321
-#: ../ui/src/emails/MockEmailsPage.tsx:267
+#: ../ui/src/emails/MockEmailsPage.tsx:285
 #, fuzzy
 msgid "Undo"
 msgstr "실행 취소"
@@ -5915,7 +5933,7 @@ msgstr "워크스페이스 포함"
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:339
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:168
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:354
-#: ../ui/src/emails/ThreadPreview.tsx:171
+#: ../ui/src/emails/ThreadPreview.tsx:260
 #, fuzzy
 msgid "Writing draft reply…"
 msgstr "답장 초안 작성 중…"

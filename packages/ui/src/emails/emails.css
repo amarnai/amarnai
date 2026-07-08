@@ -955,9 +955,45 @@
   color: var(--ink-3);
   transition: color 0.1s;
   margin-bottom: 1px;
+  /* Reset for when rendered as a <button> (demo opens a mock instead of a link). */
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
 }
 
 .em-preview-gmail-link:hover { color: var(--ink); }
+
+/* Extension-surface deep link: a full-width "Open in <provider>" button between
+   the toolbar and the scroll area, matching the browser side panel. The web
+   surface uses the compact glyph beside the subject (.em-preview-gmail-link). */
+.em-open-provider-row {
+  padding: 0 22px 12px;
+}
+
+.em-open-provider {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: var(--surface);
+  border: 1px solid var(--line-2);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s;
+}
+
+.em-open-provider:hover {
+  background: var(--bg-soft);
+  border-color: var(--line-3);
+}
 
 .em-preview-done-bar {
   display: inline-flex;

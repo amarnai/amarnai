@@ -3,22 +3,39 @@
 import { useMemo } from "react";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
+import { OutlookIcon } from "@amarnai/ui";
 import type { ThreadItem } from "@amarnai/ui/emails";
 import { GmailLogoIcon } from "./icons";
 
+export type MockProvider = "gmail" | "outlook";
+
 /**
- * Static, non-interactive Gmail-style inbox for the extension mode of the
- * landing demo. It renders the same demo threads that the live Amarnai
- * workspace beside it sorts, so the two panes visibly show the same inbox.
- * The parent pane disables pointer events and hides it from assistive tech;
- * everything here is decorative.
+ * Webmail inbox for the extension mode of the landing demo. It renders the same
+ * demo threads that the live Amarnai workspace beside it sorts, so the two panes
+ * visibly show the same inbox. Clicking a real thread row opens the provider's
+ * conversation view (the same mock the workspace's "Open in <provider>" button
+ * opens); the skeleton filler rows below stay decorative.
+ *
+ * One component covers both providers (Gmail and Outlook) so the row list,
+ * skeleton filler, and layout are shared; only the header wordmark and the inbox
+ * pivot differ. It reuses the `ld-gmail-*` classes as the shared webmail-mock
+ * styling rather than duplicating them per provider.
  */
-export function GmailInboxMock({ threads }: { threads: ThreadItem[] }) {
+export function MailInboxMock({
+  provider,
+  threads,
+  onOpenThread,
+}: {
+  provider: MockProvider;
+  threads: ThreadItem[];
+  onOpenThread: (thread: ThreadItem) => void;
+}) {
   const { i18n } = useLingui();
   const dateFmt = useMemo(
     () => new Intl.DateTimeFormat(i18n.locale, { month: "short", day: "numeric" }),
     [i18n.locale],
   );
+  const isOutlook = provider === "outlook";
 
   return (
     <div className="ld-gmail">
@@ -29,8 +46,17 @@ export function GmailInboxMock({ threads }: { threads: ThreadItem[] }) {
           <span />
         </span>
         <span className="ld-gmail-logo">
-          <GmailLogoIcon />
-          Gmail
+          {isOutlook ? (
+            <>
+              <OutlookIcon variant="color" size={18} />
+              Outlook
+            </>
+          ) : (
+            <>
+              <GmailLogoIcon />
+              Gmail
+            </>
+          )}
         </span>
         <span className="ld-gmail-search">
           <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden>
@@ -43,20 +69,38 @@ export function GmailInboxMock({ threads }: { threads: ThreadItem[] }) {
       </div>
 
       <div className="ld-gmail-tabs">
-        <span className="ld-gmail-tab active">
-          <Trans>Primary</Trans>
-        </span>
-        <span className="ld-gmail-tab">
-          <Trans>Promotions</Trans>
-        </span>
-        <span className="ld-gmail-tab">
-          <Trans>Social</Trans>
-        </span>
+        {isOutlook ? (
+          <>
+            <span className="ld-gmail-tab active">
+              <Trans>Focused</Trans>
+            </span>
+            <span className="ld-gmail-tab">
+              <Trans>Other</Trans>
+            </span>
+          </>
+        ) : (
+          <>
+            <span className="ld-gmail-tab active">
+              <Trans>Primary</Trans>
+            </span>
+            <span className="ld-gmail-tab">
+              <Trans>Promotions</Trans>
+            </span>
+            <span className="ld-gmail-tab">
+              <Trans>Social</Trans>
+            </span>
+          </>
+        )}
       </div>
 
       <div className="ld-gmail-list">
         {threads.map((t) => (
-          <div key={t.id} className={`ld-gmail-row${t.unread ? " unread" : ""}`}>
+          <button
+            key={t.id}
+            type="button"
+            className={`ld-gmail-row${t.unread ? " unread" : ""}`}
+            onClick={() => onOpenThread(t)}
+          >
             <span className="ld-gmail-check" />
             <svg className="ld-gmail-star" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
               <path
@@ -72,7 +116,7 @@ export function GmailInboxMock({ threads }: { threads: ThreadItem[] }) {
               <span className="ld-gmail-snippet"> · {t.snippet}</span>
             </span>
             <span className="ld-gmail-time">{dateFmt.format(t.latestAt)}</span>
-          </div>
+          </button>
         ))}
 
         {/* De-emphasized filler rows standing in for already-read mail below

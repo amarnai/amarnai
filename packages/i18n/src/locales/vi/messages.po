@@ -916,7 +916,7 @@ msgstr "Thông báo tự động từ Cục Bổ nhiệm Hoàng gia. Chủ đề
 msgid "Automated notifications, newsletters, and service updates that don't fit another folder."
 msgstr "Thông báo tự động, bản tin và cập nhật dịch vụ không thuộc thư mục nào khác."
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:212
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:243
 msgid "Available addresses"
 msgstr "Địa chỉ khả dụng"
 
@@ -938,14 +938,18 @@ msgstr "Aziru,\n\nLời hữu nghị của ngài đã đến tai chúng tôi. Ch
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:25
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:230
-#: ../ui/src/emails/ThreadPreview.tsx:94
+#: ../ui/src/emails/ThreadPreview.tsx:121
 #, fuzzy
 msgid "Back"
 msgstr "Quay lại"
 
+#: ../../apps/site/src/components/landing/MailThreadMock.tsx:62
+msgid "Back to inbox"
+msgstr "Về hộp thư đến"
+
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:215
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:225
-#: ../ui/src/emails/ThreadPreview.tsx:89
+#: ../ui/src/emails/ThreadPreview.tsx:116
 #, fuzzy
 msgid "Back to list"
 msgstr "Quay lại danh sách"
@@ -1023,8 +1027,8 @@ msgstr "Dễ dàng duyệt email qua các thư mục. Tạo bản nháp phản h
 msgid "Browse templates"
 msgstr "Duyệt mẫu"
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:224
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:246
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:257
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:280
 msgid "Browser extension"
 msgstr "Tiện ích trình duyệt"
 
@@ -1188,7 +1192,7 @@ msgstr "Chọn gói đăng ký"
 msgid "Choose email provider"
 msgstr "Chọn nhà cung cấp email"
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:233
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:267
 #, fuzzy
 msgid "Choose how to preview Amarnai"
 msgstr "Chọn cách xem trước Amarnai"
@@ -1230,8 +1234,8 @@ msgstr "Đóng bảng điều khiển"
 
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:255
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:259
-#: ../ui/src/emails/ThreadPreview.tsx:99
-#: ../ui/src/emails/ThreadPreview.tsx:103
+#: ../ui/src/emails/ThreadPreview.tsx:147
+#: ../ui/src/emails/ThreadPreview.tsx:151
 #, fuzzy
 msgid "Close preview"
 msgstr "Đóng bản xem trước"
@@ -1960,7 +1964,7 @@ msgstr "Ngắt kết nối không gian làm việc này. Amarnai vẫn giữ quy
 #: ../../apps/web/src/components/NotificationBell.tsx:179
 #: ../../apps/web/src/components/NotificationBell.tsx:180
 #: ../ui/src/AppDownloadBanner.tsx:80
-#: ../ui/src/emails/MockEmailsPage.tsx:270
+#: ../ui/src/emails/MockEmailsPage.tsx:288
 #, fuzzy
 msgid "Dismiss"
 msgstr "Bỏ qua"
@@ -2067,7 +2071,7 @@ msgstr "Đang soạn nháp…"
 msgid "Drag and connect. It's fully interactive."
 msgstr "Kéo và kết nối. Hoàn toàn tương tác."
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:276
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:310
 #, fuzzy
 msgid "Drag to resize"
 msgstr "Kéo để thay đổi kích thước"
@@ -2230,7 +2234,7 @@ msgstr "Mục"
 msgid "Every account starts with a free Personal workspace, no card required. Create more or upgrade whenever your needs grow."
 msgstr "Mỗi tài khoản bắt đầu với không gian làm việc Cá nhân miễn phí, không yêu cầu thẻ. Tạo thêm hoặc nâng cấp bất cứ khi nào nhu cầu của bạn tăng lên."
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:159
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:190
 #, fuzzy
 msgid "Every email goes where it belongs."
 msgstr "Mọi email đều đến đúng nơi cần đến."
@@ -2244,7 +2248,7 @@ msgstr "Mọi email đều đến đúng nơi cần đến."
 msgid "Every thread in your inbox."
 msgstr "Mọi luồng email trong hộp thư đến của bạn."
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:162
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:193
 #, fuzzy
 msgid "Every thread lands in one of your folders, exactly where you would expect to find it. When a reply is needed, a draft is one click away, ready for your edits and never sent without them."
 msgstr "Mọi luồng email đều nằm gọn trong một trong các thư mục của bạn, chính xác là nơi bạn mong đợi. Khi cần trả lời, một bản nháp chỉ cách bạn một cú nhấp chuột, sẵn sàng để chỉnh sửa và sẽ không bao giờ được gửi khi chưa hoàn thiện."
@@ -2391,7 +2395,12 @@ msgstr "Được gắn cờ là lời giới thiệu liên minh/nhà đầu tư 
 msgid "Flight and hotel bookings, travel itineraries, visa applications, and trip confirmations."
 msgstr "Đặt vé máy bay và khách sạn, lịch trình du lịch, hồ sơ xin visa và xác nhận chuyến đi."
 
-#: ../ui/src/emails/MockEmailsPage.tsx:171
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:75
+#, fuzzy
+msgid "Focused"
+msgstr "Đã tập trung"
+
+#: ../ui/src/emails/MockEmailsPage.tsx:186
 msgid "folder"
 msgstr "thư mục"
 
@@ -2568,7 +2577,7 @@ msgstr "Tạo kế hoạch từ hộp thư đến của bạn"
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:324
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:146
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:338
-#: ../ui/src/emails/ThreadPreview.tsx:164
+#: ../ui/src/emails/ThreadPreview.tsx:253
 #, fuzzy
 msgid "Generate draft reply"
 msgstr "Tạo bản nháp trả lời"
@@ -3282,6 +3291,8 @@ msgstr "Đánh dấu đã hoàn thành"
 #: ../../apps/mobile/src/components/ThreadRow.tsx:58
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:234
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:240
+#: ../ui/src/emails/ThreadPreview.tsx:126
+#: ../ui/src/emails/ThreadPreview.tsx:130
 #: ../ui/src/emails/ThreadRow.tsx:160
 msgid "Mark as important"
 msgstr "Đánh dấu quan trọng"
@@ -3446,7 +3457,7 @@ msgstr "Chuyển vào thư mục…"
 msgid "Move to…"
 msgstr "Chuyển đến…"
 
-#: ../ui/src/emails/MockEmailsPage.tsx:181
+#: ../ui/src/emails/MockEmailsPage.tsx:196
 msgid "Moved to {folderName}"
 msgstr "Đã chuyển đến {folderName}"
 
@@ -3835,6 +3846,7 @@ msgid "Or connect a different inbox:"
 msgstr "Hoặc kết nối một hộp thư đến khác:"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:35
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:78
 #, fuzzy
 msgid "Other"
 msgstr "Khác"
@@ -4084,7 +4096,7 @@ msgstr "Bảng giá | Amarnai"
 msgid "Pricing is per workspace, billed monthly or annually. Every account starts with a free Personal workspace, no card required. The paid Pro and Business subscriptions add higher limits and include a 14-day trial. See the pricing page for current details."
 msgstr "Giá được tính theo không gian làm việc, thanh toán hàng tháng hoặc hàng năm. Mỗi tài khoản bắt đầu với một không gian làm việc Cá nhân miễn phí, không yêu cầu thẻ. Các gói đăng ký trả phí Pro và Business cung cấp giới hạn cao hơn và bao gồm bản dùng thử 14 ngày. Xem trang bảng giá để biết chi tiết hiện tại."
 
-#: ../../apps/site/src/components/landing/GmailInboxMock.tsx:47
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:84
 msgid "Primary"
 msgstr "Chính"
 
@@ -4139,7 +4151,7 @@ msgid "Projects"
 msgstr "Dự án"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:112
-#: ../../apps/site/src/components/landing/GmailInboxMock.tsx:50
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:87
 #, fuzzy
 msgid "Promotions"
 msgstr "Khuyến mãi"
@@ -4313,6 +4325,8 @@ msgstr "Gỡ {email} khỏi danh sách đen"
 #: ../../apps/mobile/src/components/ThreadRow.tsx:57
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:234
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:240
+#: ../ui/src/emails/ThreadPreview.tsx:126
+#: ../ui/src/emails/ThreadPreview.tsx:130
 #: ../ui/src/emails/ThreadRow.tsx:159
 #, fuzzy
 msgid "Remove from important"
@@ -4375,6 +4389,10 @@ msgstr "Thay thế phân loại"
 #, fuzzy
 msgid "Replace with a template"
 msgstr "Thay bằng mẫu"
+
+#: ../../apps/site/src/components/landing/MailThreadMock.tsx:106
+msgid "Reply"
+msgstr "Trả lời"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:89
 #, fuzzy
@@ -4454,7 +4472,7 @@ msgstr "Đang đặt lại…"
 msgid "Resize the folder sidebar"
 msgstr "Điều chỉnh kích thước thanh bên thư mục"
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:261
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:295
 #, fuzzy
 msgid "Resize the split between the inbox and Amarnai"
 msgstr "Thay đổi kích thước phần chia giữa hộp thư đến và Amarnai"
@@ -4500,7 +4518,7 @@ msgstr "Rib-Hadda,\n\nChúng tôi đã nhận được thông tin. Ngũ cốc b�
 #~ msgid "Route now"
 #~ msgstr "Chuyển hướng ngay"
 
-#: ../ui/src/emails/MockEmailsPage.tsx:111
+#: ../ui/src/emails/MockEmailsPage.tsx:126
 msgid "Routing approved"
 msgstr "Đã phê duyệt định tuyến"
 
@@ -4587,7 +4605,7 @@ msgstr "Tìm kiếm {threadCount} luồng"
 msgid "Search folders"
 msgstr "Tìm kiếm thư mục"
 
-#: ../../apps/site/src/components/landing/GmailInboxMock.tsx:40
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:66
 msgid "Search mail"
 msgstr "Tìm kiếm thư"
 
@@ -4621,7 +4639,7 @@ msgstr "Chọn"
 
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:210
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:336
-#: ../ui/src/emails/MockEmailsPage.tsx:248
+#: ../ui/src/emails/MockEmailsPage.tsx:266
 #, fuzzy
 msgid "Select a thread to preview"
 msgstr "Chọn một luồng để xem trước"
@@ -4833,7 +4851,7 @@ msgstr "Đang đăng nhập…"
 msgid "Simple per-workspace pricing. Start free, upgrade or create additional workspaces as you need."
 msgstr "Giá theo từng không gian làm việc đơn giản. Bắt đầu miễn phí, nâng cấp hoặc tạo thêm không gian làm việc khi cần."
 
-#: ../../apps/site/src/components/landing/GmailInboxMock.tsx:53
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:90
 #: ../ui/src/i18n/taxonomy-template-messages.ts:76
 #, fuzzy
 msgid "Social"
@@ -5052,7 +5070,7 @@ msgstr "Hỗ trợ"
 msgid "Switch"
 msgstr "Chuyển đổi"
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:189
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:220
 #, fuzzy
 msgid "Switch the previewed address"
 msgstr "Chuyển đổi địa chỉ xem trước"
@@ -5145,7 +5163,7 @@ msgstr "Mẫu"
 msgid "Terms"
 msgstr "Điều khoản"
 
-#: ../ui/src/emails/MockEmailsPage.tsx:157
+#: ../ui/src/emails/MockEmailsPage.tsx:172
 msgid "Thank you for your message. I'll follow up shortly."
 msgstr "Cảm ơn tin nhắn của bạn. Tôi sẽ phản hồi lại trong thời gian sớm nhất."
 
@@ -5547,7 +5565,7 @@ msgstr "Chưa được phân loại"
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:232
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:366
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1321
-#: ../ui/src/emails/MockEmailsPage.tsx:267
+#: ../ui/src/emails/MockEmailsPage.tsx:285
 #, fuzzy
 msgid "Undo"
 msgstr "Hoàn tác"
@@ -5915,7 +5933,7 @@ msgstr "Không gian làm việc bao gồm"
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:339
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:168
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:354
-#: ../ui/src/emails/ThreadPreview.tsx:171
+#: ../ui/src/emails/ThreadPreview.tsx:260
 #, fuzzy
 msgid "Writing draft reply…"
 msgstr "Đang soạn thảo phản hồi…"

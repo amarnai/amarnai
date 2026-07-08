@@ -895,7 +895,7 @@ msgstr "来自皇家任命局的自动通知。主题和发件人清楚表明有
 msgid "Automated notifications, newsletters, and service updates that don't fit another folder."
 msgstr "不属于其他文件夹的自动通知、新闻通讯和服务更新。"
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:212
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:243
 msgid "Available addresses"
 msgstr "可用地址"
 
@@ -916,14 +916,18 @@ msgstr "阿齐鲁，\n\n你的友谊之言我们已悉。阿穆鲁家族有何�
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:25
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:230
-#: ../ui/src/emails/ThreadPreview.tsx:94
+#: ../ui/src/emails/ThreadPreview.tsx:121
 #, fuzzy
 msgid "Back"
 msgstr "返回"
 
+#: ../../apps/site/src/components/landing/MailThreadMock.tsx:62
+msgid "Back to inbox"
+msgstr "返回收件箱"
+
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:215
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:225
-#: ../ui/src/emails/ThreadPreview.tsx:89
+#: ../ui/src/emails/ThreadPreview.tsx:116
 #, fuzzy
 msgid "Back to list"
 msgstr "返回列表"
@@ -996,8 +1000,8 @@ msgstr "通过文件夹轻松浏览邮件。生成回复草稿，并将其复制
 msgid "Browse templates"
 msgstr "浏览模板"
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:224
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:246
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:257
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:280
 msgid "Browser extension"
 msgstr "浏览器扩展程序"
 
@@ -1155,7 +1159,7 @@ msgstr "选择订阅"
 msgid "Choose email provider"
 msgstr "选择邮件服务提供商"
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:233
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:267
 msgid "Choose how to preview Amarnai"
 msgstr "选择如何预览 Amarnai"
 
@@ -1195,8 +1199,8 @@ msgstr "关闭面板"
 
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:255
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:259
-#: ../ui/src/emails/ThreadPreview.tsx:99
-#: ../ui/src/emails/ThreadPreview.tsx:103
+#: ../ui/src/emails/ThreadPreview.tsx:147
+#: ../ui/src/emails/ThreadPreview.tsx:151
 #, fuzzy
 msgid "Close preview"
 msgstr "关闭预览"
@@ -1905,7 +1909,7 @@ msgstr "断开此工作区连接。Amarnai仍保留访问权限，因为此邮�
 #: ../../apps/web/src/components/NotificationBell.tsx:179
 #: ../../apps/web/src/components/NotificationBell.tsx:180
 #: ../ui/src/AppDownloadBanner.tsx:80
-#: ../ui/src/emails/MockEmailsPage.tsx:270
+#: ../ui/src/emails/MockEmailsPage.tsx:288
 msgid "Dismiss"
 msgstr "忽略"
 
@@ -2006,7 +2010,7 @@ msgstr "正在起草…"
 msgid "Drag and connect. It's fully interactive."
 msgstr "拖动连接，全面互动。"
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:276
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:310
 #, fuzzy
 msgid "Drag to resize"
 msgstr "拖动以调整大小"
@@ -2164,7 +2168,7 @@ msgstr "入口"
 msgid "Every account starts with a free Personal workspace, no card required. Create more or upgrade whenever your needs grow."
 msgstr "每个账户均享免费个人工作区，无需绑定银行卡。可随时创建更多工作区或升级，以满足不断增长的需求。"
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:159
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:190
 msgid "Every email goes where it belongs."
 msgstr "每封邮件，各归其位。"
 
@@ -2177,7 +2181,7 @@ msgstr "每封邮件，各归其位。"
 msgid "Every thread in your inbox."
 msgstr "收件箱中的所有会话。"
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:162
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:193
 msgid "Every thread lands in one of your folders, exactly where you would expect to find it. When a reply is needed, a draft is one click away, ready for your edits and never sent without them."
 msgstr "每个会话都将精准归入您的文件夹，恰如您所预料。需要回复时，一键即可生成草稿，随时供您修改，未经确认绝不发送。"
 
@@ -2316,7 +2320,12 @@ msgstr "基于措辞（“互惠互利”、“长期友谊”）被标记为联
 msgid "Flight and hotel bookings, travel itineraries, visa applications, and trip confirmations."
 msgstr "机票和酒店预订、旅行行程、签证申请和行程确认。"
 
-#: ../ui/src/emails/MockEmailsPage.tsx:171
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:75
+#, fuzzy
+msgid "Focused"
+msgstr "重点"
+
+#: ../ui/src/emails/MockEmailsPage.tsx:186
 msgid "folder"
 msgstr "文件夹"
 
@@ -2486,7 +2495,7 @@ msgstr "根据收件箱生成方案"
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:324
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:146
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:338
-#: ../ui/src/emails/ThreadPreview.tsx:164
+#: ../ui/src/emails/ThreadPreview.tsx:253
 #, fuzzy
 msgid "Generate draft reply"
 msgstr "生成草稿回复"
@@ -3176,6 +3185,8 @@ msgstr "标记为完成"
 #: ../../apps/mobile/src/components/ThreadRow.tsx:58
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:234
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:240
+#: ../ui/src/emails/ThreadPreview.tsx:126
+#: ../ui/src/emails/ThreadPreview.tsx:130
 #: ../ui/src/emails/ThreadRow.tsx:160
 msgid "Mark as important"
 msgstr "标记为重要"
@@ -3333,7 +3344,7 @@ msgstr "移至文件夹…"
 msgid "Move to…"
 msgstr "移至…"
 
-#: ../ui/src/emails/MockEmailsPage.tsx:181
+#: ../ui/src/emails/MockEmailsPage.tsx:196
 #, fuzzy
 msgid "Moved to {folderName}"
 msgstr "已移动到 {folderName}"
@@ -3710,6 +3721,7 @@ msgid "Or connect a different inbox:"
 msgstr "或连接其他收件箱："
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:35
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:78
 msgid "Other"
 msgstr "其他"
 
@@ -3953,7 +3965,7 @@ msgstr "定价 | Amarnai"
 msgid "Pricing is per workspace, billed monthly or annually. Every account starts with a free Personal workspace, no card required. The paid Pro and Business subscriptions add higher limits and include a 14-day trial. See the pricing page for current details."
 msgstr "定价按工作区计算，按月或按年计费。所有账户均从免费个人工作区开始，无需绑定银行卡。付费的专业版和商业版订阅提供更高限额，并包含 14 天试用期。请查看定价页面了解最新详情。"
 
-#: ../../apps/site/src/components/landing/GmailInboxMock.tsx:47
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:84
 msgid "Primary"
 msgstr "主要"
 
@@ -4004,7 +4016,7 @@ msgid "Projects"
 msgstr "项目"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:112
-#: ../../apps/site/src/components/landing/GmailInboxMock.tsx:50
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:87
 #, fuzzy
 msgid "Promotions"
 msgstr "促销"
@@ -4172,6 +4184,8 @@ msgstr "从黑名单中移除 {email}"
 #: ../../apps/mobile/src/components/ThreadRow.tsx:57
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:234
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:240
+#: ../ui/src/emails/ThreadPreview.tsx:126
+#: ../ui/src/emails/ThreadPreview.tsx:130
 #: ../ui/src/emails/ThreadRow.tsx:159
 #, fuzzy
 msgid "Remove from important"
@@ -4232,6 +4246,11 @@ msgstr "替换分类"
 #, fuzzy
 msgid "Replace with a template"
 msgstr "替换为模板"
+
+#: ../../apps/site/src/components/landing/MailThreadMock.tsx:106
+#, fuzzy
+msgid "Reply"
+msgstr "回复"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:89
 msgid "Rescan failed"
@@ -4307,7 +4326,7 @@ msgstr "正在重置…"
 msgid "Resize the folder sidebar"
 msgstr "调整文件夹侧边栏大小"
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:261
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:295
 msgid "Resize the split between the inbox and Amarnai"
 msgstr "调整收件箱和 Amarnai 之间分栏的大小"
 
@@ -4350,7 +4369,7 @@ msgstr "里布-哈达，\n\n你的呼吁，我们已收到。已从南方粮仓�
 #~ msgid "Route now"
 #~ msgstr "立即路由"
 
-#: ../ui/src/emails/MockEmailsPage.tsx:111
+#: ../ui/src/emails/MockEmailsPage.tsx:126
 msgid "Routing approved"
 msgstr "路由已批准"
 
@@ -4437,7 +4456,7 @@ msgstr "搜索 {threadCount} 个会话"
 msgid "Search folders"
 msgstr "搜索文件夹"
 
-#: ../../apps/site/src/components/landing/GmailInboxMock.tsx:40
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:66
 msgid "Search mail"
 msgstr "搜索邮件"
 
@@ -4470,7 +4489,7 @@ msgstr "选择"
 
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:210
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:336
-#: ../ui/src/emails/MockEmailsPage.tsx:248
+#: ../ui/src/emails/MockEmailsPage.tsx:266
 #, fuzzy
 msgid "Select a thread to preview"
 msgstr "选择一个会话进行预览"
@@ -4674,7 +4693,7 @@ msgstr "正在登录…"
 msgid "Simple per-workspace pricing. Start free, upgrade or create additional workspaces as you need."
 msgstr "按工作区简单定价。免费体验，按需升级或创建更多工作区。"
 
-#: ../../apps/site/src/components/landing/GmailInboxMock.tsx:53
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:90
 #: ../ui/src/i18n/taxonomy-template-messages.ts:76
 msgid "Social"
 msgstr "社交"
@@ -4880,7 +4899,7 @@ msgstr "支持"
 msgid "Switch"
 msgstr "切换"
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:189
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:220
 #, fuzzy
 msgid "Switch the previewed address"
 msgstr "切换预览地址"
@@ -4974,7 +4993,7 @@ msgstr "模板"
 msgid "Terms"
 msgstr "术语"
 
-#: ../ui/src/emails/MockEmailsPage.tsx:157
+#: ../ui/src/emails/MockEmailsPage.tsx:172
 #, fuzzy
 msgid "Thank you for your message. I'll follow up shortly."
 msgstr "感谢您的留言。我将尽快回复。"
@@ -5368,7 +5387,7 @@ msgstr "未分类"
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:232
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:366
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1321
-#: ../ui/src/emails/MockEmailsPage.tsx:267
+#: ../ui/src/emails/MockEmailsPage.tsx:285
 #, fuzzy
 msgid "Undo"
 msgstr "撤消"
@@ -5718,7 +5737,7 @@ msgstr "包含的工作区"
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:339
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:168
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:354
-#: ../ui/src/emails/ThreadPreview.tsx:171
+#: ../ui/src/emails/ThreadPreview.tsx:260
 #, fuzzy
 msgid "Writing draft reply…"
 msgstr "正在撰写回复草稿…"

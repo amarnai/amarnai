@@ -1164,9 +1164,20 @@
   height: 42px;
   padding: 0 16px;
   flex-shrink: 0;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
   border-bottom: 1px solid var(--line);
+  color: inherit;
+  font-family: inherit;
   font-size: 12.5px;
 }
+
+/* Real thread rows are buttons that open the provider conversation mock; the
+   skeleton filler rows below stay plain divs. */
+button.ld-gmail-row { cursor: pointer; transition: background 0.12s; }
+button.ld-gmail-row:hover { background: var(--bg-soft); }
 
 .ld-gmail-check {
   width: 12px;
@@ -1240,6 +1251,170 @@
 
 .ld-gmail-skel:nth-child(2n) .ld-skel-line { max-width: 44%; }
 .ld-gmail-skel:nth-child(3n) .ld-skel-line { max-width: 72%; }
+
+/* ─── Provider conversation mock ──────────────────────────────────────────────
+   The "opened in <provider>" view. It covers the whole demo stage (which is
+   position: relative, overflow: hidden) so it reads as clicking through to the
+   provider's reading pane. Opened from an inbox row or the workspace's "Open in
+   <provider>" control; dismissed with Back or Escape. */
+.ld-mailthread {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  animation: ld-mailthread-in 0.22s ease-out;
+}
+
+@keyframes ld-mailthread-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.ld-mailthread-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--line);
+  flex-shrink: 0;
+}
+
+.ld-mailthread-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 12px 6px 8px;
+  border: 1px solid var(--line-2);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink-2);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+}
+
+.ld-mailthread-back:hover {
+  background: var(--bg-soft);
+  border-color: var(--line-3);
+  color: var(--ink);
+}
+
+.ld-mailthread-logo {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink-2);
+  letter-spacing: -0.01em;
+}
+
+.ld-mailthread-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 24px clamp(20px, 5%, 56px) 48px;
+}
+
+.ld-mailthread-subject {
+  font-size: 21px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  line-height: 1.3;
+  margin: 0 0 20px;
+}
+
+.ld-mailthread-msg {
+  padding: 18px 0;
+  border-top: 1px solid var(--line);
+}
+
+.ld-mailthread-msg:first-of-type { border-top: none; padding-top: 0; }
+
+.ld-mailthread-msg-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.ld-mailthread-avatar {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  font-size: 15px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ld-mailthread-from {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 1px;
+}
+
+.ld-mailthread-name {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ld-mailthread-email {
+  font-size: 12px;
+  color: var(--ink-4);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ld-mailthread-time {
+  margin-left: auto;
+  flex-shrink: 0;
+  font-size: 12px;
+  color: var(--ink-4);
+}
+
+.ld-mailthread-body {
+  white-space: pre-wrap;
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--ink-2);
+  padding-left: 48px;
+}
+
+.ld-mailthread-reply {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 24px 0 0 48px;
+  padding: 8px 18px;
+  border: 1px solid var(--line-2);
+  border-radius: 999px;
+  font-size: 13px;
+  color: var(--ink-3);
+}
+
+.ld-mailthread-reply-icon { display: inline-flex; color: var(--ink-4); }
+
+@media (max-width: 780px) {
+  .ld-mailthread-body,
+  .ld-mailthread-reply { padding-left: 0; }
+  .ld-mailthread-reply { margin-left: 0; }
+}
 
 /* "Generate from inbox" lives in the frame bar, right-aligned opposite the
    breadcrumb (the bar uses justify-content: space-between). */

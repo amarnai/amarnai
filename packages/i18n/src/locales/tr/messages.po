@@ -916,7 +916,7 @@ msgstr "Kraliyet Atamaları Bürosu'ndan otomatik bildirim. Konu ve gönderici, 
 msgid "Automated notifications, newsletters, and service updates that don't fit another folder."
 msgstr "Başka bir klasöre uymayan otomatik bildirimler, bültenler ve hizmet güncellemeleri."
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:212
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:243
 msgid "Available addresses"
 msgstr "Mevcut adresler"
 
@@ -938,14 +938,18 @@ msgstr "Aziru,\n\nDostluk sözleriniz bize ulaştı. Amurru hanedanının ne ön
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:25
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:230
-#: ../ui/src/emails/ThreadPreview.tsx:94
+#: ../ui/src/emails/ThreadPreview.tsx:121
 #, fuzzy
 msgid "Back"
 msgstr "Geri"
 
+#: ../../apps/site/src/components/landing/MailThreadMock.tsx:62
+msgid "Back to inbox"
+msgstr "Gelen kutusuna geri dön"
+
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:215
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:225
-#: ../ui/src/emails/ThreadPreview.tsx:89
+#: ../ui/src/emails/ThreadPreview.tsx:116
 #, fuzzy
 msgid "Back to list"
 msgstr "Listeye geri dön"
@@ -1023,8 +1027,8 @@ msgstr "Klasörlerinizdeki e-postaları kolayca gözden geçirin. Yanıt taslakl
 msgid "Browse templates"
 msgstr "Şablonlara göz at"
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:224
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:246
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:257
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:280
 msgid "Browser extension"
 msgstr "Tarayıcı uzantısı"
 
@@ -1188,7 +1192,7 @@ msgstr "Bir abonelik seçin"
 msgid "Choose email provider"
 msgstr "E-posta sağlayıcısı seçin"
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:233
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:267
 #, fuzzy
 msgid "Choose how to preview Amarnai"
 msgstr "Amarnai'yi nasıl önizleyeceğinizi seçin"
@@ -1230,8 +1234,8 @@ msgstr "Paneli kapat"
 
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:255
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:259
-#: ../ui/src/emails/ThreadPreview.tsx:99
-#: ../ui/src/emails/ThreadPreview.tsx:103
+#: ../ui/src/emails/ThreadPreview.tsx:147
+#: ../ui/src/emails/ThreadPreview.tsx:151
 #, fuzzy
 msgid "Close preview"
 msgstr "Önizlemeyi kapat"
@@ -1960,7 +1964,7 @@ msgstr "Bu çalışma alanının bağlantısı kesilir. Bu posta kutusu hala {sh
 #: ../../apps/web/src/components/NotificationBell.tsx:179
 #: ../../apps/web/src/components/NotificationBell.tsx:180
 #: ../ui/src/AppDownloadBanner.tsx:80
-#: ../ui/src/emails/MockEmailsPage.tsx:270
+#: ../ui/src/emails/MockEmailsPage.tsx:288
 #, fuzzy
 msgid "Dismiss"
 msgstr "Kapat"
@@ -2067,7 +2071,7 @@ msgstr "Taslak Oluşturuluyor…"
 msgid "Drag and connect. It's fully interactive."
 msgstr "Sürükle ve bağla. Tamamen etkileşimli."
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:276
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:310
 #, fuzzy
 msgid "Drag to resize"
 msgstr "Yeniden boyutlandırmak için sürükleyin"
@@ -2230,7 +2234,7 @@ msgstr "Giriş"
 msgid "Every account starts with a free Personal workspace, no card required. Create more or upgrade whenever your needs grow."
 msgstr "Her hesap ücretsiz bir Kişisel çalışma alanıyla başlar, kart gerekmez. İhtiyaçlarınız arttığında daha fazlasını oluşturun veya yükseltin."
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:159
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:190
 #, fuzzy
 msgid "Every email goes where it belongs."
 msgstr "Her e-posta ait olduğu yere gider."
@@ -2244,7 +2248,7 @@ msgstr "Her e-posta ait olduğu yere gider."
 msgid "Every thread in your inbox."
 msgstr "Gelen kutunuzdaki her konuşma."
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:162
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:193
 #, fuzzy
 msgid "Every thread lands in one of your folders, exactly where you would expect to find it. When a reply is needed, a draft is one click away, ready for your edits and never sent without them."
 msgstr "Her konuşma, tam da beklediğiniz gibi, klasörlerinizden birine düşer. Bir yanıt gerektiğinde, taslak tek tıkla hazır olur, düzenlemelerinizi bekler ve onlarsız asla gönderilmez."
@@ -2391,7 +2395,12 @@ msgstr "Dildeki ifadeler (\"karşılıklı yarar\", \"köklü dostluk\") nedeniy
 msgid "Flight and hotel bookings, travel itineraries, visa applications, and trip confirmations."
 msgstr "Uçuş ve otel rezervasyonları, seyahat programları, vize başvuruları ve seyahat onayları."
 
-#: ../ui/src/emails/MockEmailsPage.tsx:171
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:75
+#, fuzzy
+msgid "Focused"
+msgstr "Odaklanmış"
+
+#: ../ui/src/emails/MockEmailsPage.tsx:186
 msgid "folder"
 msgstr "klasör"
 
@@ -2568,7 +2577,7 @@ msgstr "Gelen kutunuzdan plan oluştur"
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:324
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:146
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:338
-#: ../ui/src/emails/ThreadPreview.tsx:164
+#: ../ui/src/emails/ThreadPreview.tsx:253
 #, fuzzy
 msgid "Generate draft reply"
 msgstr "Taslak yanıt oluştur"
@@ -3282,6 +3291,8 @@ msgstr "Tamamlandı olarak işaretle"
 #: ../../apps/mobile/src/components/ThreadRow.tsx:58
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:234
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:240
+#: ../ui/src/emails/ThreadPreview.tsx:126
+#: ../ui/src/emails/ThreadPreview.tsx:130
 #: ../ui/src/emails/ThreadRow.tsx:160
 msgid "Mark as important"
 msgstr "Önemli olarak işaretle"
@@ -3446,7 +3457,7 @@ msgstr "Klasöre taşı…"
 msgid "Move to…"
 msgstr "Şuraya taşı…"
 
-#: ../ui/src/emails/MockEmailsPage.tsx:181
+#: ../ui/src/emails/MockEmailsPage.tsx:196
 msgid "Moved to {folderName}"
 msgstr "{folderName} klasörüne taşındı"
 
@@ -3835,6 +3846,7 @@ msgid "Or connect a different inbox:"
 msgstr "Ya da farklı bir gelen kutusu bağla:"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:35
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:78
 #, fuzzy
 msgid "Other"
 msgstr "Diğer"
@@ -4084,7 +4096,7 @@ msgstr "Fiyatlandırma | Amarnai"
 msgid "Pricing is per workspace, billed monthly or annually. Every account starts with a free Personal workspace, no card required. The paid Pro and Business subscriptions add higher limits and include a 14-day trial. See the pricing page for current details."
 msgstr "Fiyatlandırma çalışma alanı başına aylık veya yıllık olarak faturalandırılır. Her hesap ücretsiz bir Kişisel çalışma alanı ile başlar, kart gerekmez. Ücretli Pro ve Business abonelikleri daha yüksek limitler sunar ve 14 günlük deneme süresi içerir. Güncel ayrıntılar için fiyatlandırma sayfasını ziyaret edin."
 
-#: ../../apps/site/src/components/landing/GmailInboxMock.tsx:47
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:84
 msgid "Primary"
 msgstr "Birincil"
 
@@ -4139,7 +4151,7 @@ msgid "Projects"
 msgstr "Projeler"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:112
-#: ../../apps/site/src/components/landing/GmailInboxMock.tsx:50
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:87
 #, fuzzy
 msgid "Promotions"
 msgstr "Promosyonlar"
@@ -4313,6 +4325,8 @@ msgstr "Kara listeden {email} adresini kaldır"
 #: ../../apps/mobile/src/components/ThreadRow.tsx:57
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:234
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:240
+#: ../ui/src/emails/ThreadPreview.tsx:126
+#: ../ui/src/emails/ThreadPreview.tsx:130
 #: ../ui/src/emails/ThreadRow.tsx:159
 #, fuzzy
 msgid "Remove from important"
@@ -4375,6 +4389,10 @@ msgstr "Sınıflandırmayı Değiştir"
 #, fuzzy
 msgid "Replace with a template"
 msgstr "Şablonla değiştir"
+
+#: ../../apps/site/src/components/landing/MailThreadMock.tsx:106
+msgid "Reply"
+msgstr "Yanıtla"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:89
 #, fuzzy
@@ -4454,7 +4472,7 @@ msgstr "Sıfırlanıyor…"
 msgid "Resize the folder sidebar"
 msgstr "Klasör kenar çubuğunu boyutlandır"
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:261
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:295
 #, fuzzy
 msgid "Resize the split between the inbox and Amarnai"
 msgstr "Gelen kutusu ile Amarnai arasındaki bölmeyi yeniden boyutlandırın"
@@ -4500,7 +4518,7 @@ msgstr "Rib-Hadda,\n\nSeni duyuyoruz. Güneydeki depolardan ek tahıl sipariş e
 #~ msgid "Route now"
 #~ msgstr "Şimdi yönlendir"
 
-#: ../ui/src/emails/MockEmailsPage.tsx:111
+#: ../ui/src/emails/MockEmailsPage.tsx:126
 msgid "Routing approved"
 msgstr "Yönlendirme onaylandı"
 
@@ -4587,7 +4605,7 @@ msgstr "{threadCount} iletiyi ara"
 msgid "Search folders"
 msgstr "Klasörlerde ara"
 
-#: ../../apps/site/src/components/landing/GmailInboxMock.tsx:40
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:66
 msgid "Search mail"
 msgstr "E-posta ara"
 
@@ -4621,7 +4639,7 @@ msgstr "Seç"
 
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:210
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:336
-#: ../ui/src/emails/MockEmailsPage.tsx:248
+#: ../ui/src/emails/MockEmailsPage.tsx:266
 #, fuzzy
 msgid "Select a thread to preview"
 msgstr "Önizlemek için bir ileti seçin"
@@ -4833,7 +4851,7 @@ msgstr "Giriş yapılıyor…"
 msgid "Simple per-workspace pricing. Start free, upgrade or create additional workspaces as you need."
 msgstr "Basit çalışma alanı fiyatlandırması. Ücretsiz başlayın, ihtiyacınıza göre yükseltin veya yeni çalışma alanları oluşturun."
 
-#: ../../apps/site/src/components/landing/GmailInboxMock.tsx:53
+#: ../../apps/site/src/components/landing/MailInboxMock.tsx:90
 #: ../ui/src/i18n/taxonomy-template-messages.ts:76
 #, fuzzy
 msgid "Social"
@@ -5052,7 +5070,7 @@ msgstr "Destek"
 msgid "Switch"
 msgstr "Değiştir"
 
-#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:189
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:220
 #, fuzzy
 msgid "Switch the previewed address"
 msgstr "Önizlenen adresi değiştir"
@@ -5145,7 +5163,7 @@ msgstr "Şablonlar"
 msgid "Terms"
 msgstr "Şartlar"
 
-#: ../ui/src/emails/MockEmailsPage.tsx:157
+#: ../ui/src/emails/MockEmailsPage.tsx:172
 msgid "Thank you for your message. I'll follow up shortly."
 msgstr "Mesajınız için teşekkürler. Yakında dönüş yapacağım."
 
@@ -5547,7 +5565,7 @@ msgstr "Sınıflandırılmamış"
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:232
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:366
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1321
-#: ../ui/src/emails/MockEmailsPage.tsx:267
+#: ../ui/src/emails/MockEmailsPage.tsx:285
 #, fuzzy
 msgid "Undo"
 msgstr "Geri Al"
@@ -5915,7 +5933,7 @@ msgstr "Çalışma Alanları Dahil"
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:339
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:168
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:354
-#: ../ui/src/emails/ThreadPreview.tsx:171
+#: ../ui/src/emails/ThreadPreview.tsx:260
 #, fuzzy
 msgid "Writing draft reply…"
 msgstr "Taslak yanıt yazılıyor…"
