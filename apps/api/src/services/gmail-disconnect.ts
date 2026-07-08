@@ -1,5 +1,5 @@
 import { Job } from "bullmq";
-import { db, deleteGmailDisconnectedNotifications } from "@amarnai/db";
+import { db, deleteGmailDisconnectedNotifications, eraseEmailAccountData } from "@amarnai/db";
 import { revokeGoogleToken } from "@amarnai/gmail";
 import { createMailProvider } from "@amarnai/mail";
 import { classifyThreadQueue } from "../queues.js";
@@ -220,25 +220,11 @@ export async function disconnectGmail(
   });
 
   // ── 7. Optionally erase synced email data ─────────────────────────────────
+  // Shared with inbox-rotation cleanup so the FK-safe delete order lives in one
+  // place. Scrubs this mailbox only; taxonomy and settings are kept.
   let erased = false;
   if (eraseData && emailAccount) {
-    await db.$transaction([
-      db.emailTag.deleteMany({
-        where: {
-          OR: [
-            { emailThread: { emailAccountId: emailAccount.id } },
-            { emailMessage: { emailAccountId: emailAccount.id } },
-          ],
-        },
-      }),
-      db.draft.deleteMany({ where: { emailThread: { emailAccountId: emailAccount.id } } }),
-      db.emailClassification.deleteMany({ where: { emailThread: { emailAccountId: emailAccount.id } } }),
-      db.emailMessage.deleteMany({ where: { emailAccountId: emailAccount.id } }),
-      db.emailThread.deleteMany({ where: { emailAccountId: emailAccount.id } }),
-      db.providerSyncState.deleteMany({ where: { emailAccountId: emailAccount.id } }),
-      db.emailAddressIdentity.deleteMany({ where: { emailAccountId: emailAccount.id } }),
-      db.emailAccount.delete({ where: { id: emailAccount.id } }),
-    ]);
+    await eraseEmailAccountData(emailAccount.id);
     erased = true;
   }
 

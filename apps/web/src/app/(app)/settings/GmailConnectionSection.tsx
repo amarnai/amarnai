@@ -28,6 +28,9 @@ type Props = {
   connectProvider: MailProvider;
   // Whether the Outlook provider is configured, so the empty state can offer it.
   outlookEnabled: boolean;
+  // Whether the workspace holds retained synced email that connecting a
+  // different inbox would erase. Drives the inbox-switch warning.
+  hasSyncedData: boolean;
 };
 
 const GOOGLE_PERMISSIONS_URL = "https://myaccount.google.com/permissions";
@@ -112,12 +115,15 @@ export function GmailConnectionSection({
   connectError,
   connectProvider,
   outlookEnabled,
+  hasSyncedData,
 }: Props) {
   const { _ } = useLingui();
   const [isPending, startTransition] = useTransition();
   const [confirming, setConfirming] = useState(false);
   const [eraseData, setEraseData] = useState(false);
   const [outcome, setOutcome] = useState<DisconnectOutcome | null>(null);
+  // Which provider path the user is confirming an inbox switch to, if any.
+  const [switchingTo, setSwitchingTo] = useState<"gmail" | "outlook" | null>(null);
 
   function handleDisconnect() {
     startTransition(async () => {
@@ -135,12 +141,28 @@ export function GmailConnectionSection({
   const connectPath = isOutlook ? "outlook" : "gmail";
   const ProviderIcon = isOutlook ? OutlookIcon : GoogleGIcon;
 
+  // Providers the user could switch TO from the currently connected one. Gmail
+  // is always available; Outlook only when configured. Switching to any of
+  // these connects a different inbox, which erases retained data.
+  const otherProviders = [
+    ...(provider !== "GMAIL"
+      ? [{ path: "gmail" as const, name: "Gmail", Icon: GoogleGIcon }]
+      : []),
+    ...(provider !== "OUTLOOK" && outlookEnabled
+      ? [{ path: "outlook" as const, name: "Outlook", Icon: OutlookIcon }]
+      : []),
+  ];
+
   const errorMap = connectProvider === "OUTLOOK" ? OUTLOOK_ERROR_MESSAGES : GMAIL_ERROR_MESSAGES;
   const errorMessage = connectError
     ? (errorMap[connectError]
         ? _(errorMap[connectError])
         : _(msg`Connection failed. Please try again.`))
     : null;
+
+  // Address of the inbox whose synced data is retained (named local so the
+  // Lingui placeholder is stable across the warnings that reference it).
+  const retainedAddress = connection?.gmailAddress ?? "";
 
   const badge = syncStatus ? SYNC_BADGE[syncStatus.status] : null;
   const alsoConnectedIn = connection?.alsoConnectedIn ?? [];
@@ -295,6 +317,16 @@ export function GmailConnectionSection({
               <Trans>Disconnected. Amarnai is no longer syncing this inbox.</Trans>
             </div>
           )}
+          {hasSyncedData && (
+            <p className="gmail-meta">
+              <Trans>
+                Your sorted email from {retainedAddress} is saved.
+                Reconnecting the same inbox restores it; connecting a different
+                inbox permanently removes it. Folders and settings are kept
+                either way.
+              </Trans>
+            </p>
+          )}
           <a
             href={`/api/${connectPath}/connect?workspaceId=${workspaceId}`}
             className="btn-primary"
@@ -302,6 +334,63 @@ export function GmailConnectionSection({
             <ProviderIcon variant="mono" size={16} />
             <Trans>Reconnect {providerName}</Trans>
           </a>
+
+          {otherProviders.length > 0 && (
+            <div className="gmail-connection-switch">
+              <p className="gmail-meta"><Trans>Or connect a different inbox:</Trans></p>
+              {otherProviders.map(({ path, name, Icon }) =>
+                switchingTo === path ? (
+                  <div key={path} className="account-delete-confirm">
+                    <p className="account-danger-warning">
+                      {hasSyncedData ? (
+                        <Trans>
+                          Connecting {name} will permanently remove the sorted
+                          email saved from {retainedAddress}. Your folders
+                          and settings are kept.
+                        </Trans>
+                      ) : (
+                        <Trans>Connect {name} to this workspace?</Trans>
+                      )}
+                    </p>
+                    <div className="account-delete-actions">
+                      <a
+                        href={`/api/${path}/connect?workspaceId=${workspaceId}`}
+                        className="btn-danger"
+                      >
+                        <Trans>Continue to {name}</Trans>
+                      </a>
+                      <button
+                        type="button"
+                        className="btn-ghost"
+                        onClick={() => setSwitchingTo(null)}
+                      >
+                        <Trans>Cancel</Trans>
+                      </button>
+                    </div>
+                  </div>
+                ) : hasSyncedData ? (
+                  <button
+                    key={path}
+                    type="button"
+                    className="btn-outline"
+                    onClick={() => setSwitchingTo(path)}
+                  >
+                    <Icon variant="mono" size={16} />
+                    <Trans>Connect {name}</Trans>
+                  </button>
+                ) : (
+                  <a
+                    key={path}
+                    href={`/api/${path}/connect?workspaceId=${workspaceId}`}
+                    className="btn-outline"
+                  >
+                    <Icon variant="mono" size={16} />
+                    <Trans>Connect {name}</Trans>
+                  </a>
+                )
+              )}
+            </div>
+          )}
         </div>
       ) : (
         <div className="gmail-connection-empty">

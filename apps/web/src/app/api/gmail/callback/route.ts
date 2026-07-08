@@ -6,9 +6,10 @@ import {
   fetchGmailProfile,
 } from "@/lib/gmail-oauth";
 import { encrypt } from "@/lib/encryption";
+import { persistEmailConnection } from "@/lib/persist-connection";
 import { triggerPostConnectHooks } from "@/lib/post-connect-hooks";
 import { GMAIL_READONLY_SCOPE } from "@amarnai/gmail";
-import { db, deleteGmailDisconnectedNotifications } from "@amarnai/db";
+import { db, deleteGmailDisconnectedNotifications, eraseStaleEmailAccounts } from "@amarnai/db";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
@@ -95,28 +96,18 @@ export async function GET(req: NextRequest) {
   });
 
   // ── Step 3: persist the connection ───────────────────────────────────────────
-  // googleSubjectId is intentionally omitted: Google's tokeninfo endpoints do not
-  // reliably return a stable account ID for gmail.readonly-only access tokens
-  // without requesting additional scopes. It can be backfilled later.
+  // subjectId is null: Google's tokeninfo endpoints do not reliably return a
+  // stable account ID for gmail.readonly-only access tokens without requesting
+  // additional scopes. persistEmailConnection resets provider/subjectId/watch so
+  // switching back from Outlook cannot leave the connection pointing at Outlook.
   try {
-    const encryptedRefreshToken = encrypt(tokens.refreshToken);
-    await db.emailConnection.upsert({
-      where: { workspaceId },
-      create: {
-        workspaceId,
-        emailAddress: profile.emailAddress,
-        encryptedRefreshToken,
-        grantedScopes,
-        status: "ACTIVE",
-        lastVerifiedAt: new Date(),
-      },
-      update: {
-        emailAddress: profile.emailAddress,
-        encryptedRefreshToken,
-        grantedScopes,
-        status: "ACTIVE",
-        lastVerifiedAt: new Date(),
-      },
+    await persistEmailConnection({
+      workspaceId,
+      provider: "GMAIL",
+      subjectId: null,
+      emailAddress: profile.emailAddress,
+      encryptedRefreshToken: encrypt(tokens.refreshToken),
+      grantedScopes,
     });
   } catch (err) {
     console.error("[gmail/callback] db_upsert:", err instanceof Error ? err.message : err);
@@ -127,6 +118,22 @@ export async function GET(req: NextRequest) {
   // Connection is ACTIVE again — clear any "reconnect your account" nudge so it
   // doesn't linger after a successful reconnect. Best-effort.
   await deleteGmailDisconnectedNotifications(workspaceId).catch(() => {});
+
+  // ── Inbox-rotation cleanup ───────────────────────────────────────────────────
+  // One connection per workspace: if this connects a DIFFERENT inbox than was
+  // synced before (another Gmail address, or a prior Outlook inbox), the old
+  // inbox's threads would otherwise be spliced into this inbox's view. Erase any
+  // account that isn't the one now connected. The key mirrors the sync worker's
+  // derivation (subjectId ?? emailAddress; Gmail stores no subjectId, so it is
+  // the address), so reconnecting the same inbox preserves its data. Runs before
+  // the sync worker (re)creates the account, so only stale accounts match.
+  const keepProviderAccountId = profile.emailAddress;
+  let erasedInboxes: string[] = [];
+  try {
+    erasedInboxes = await eraseStaleEmailAccounts(workspaceId, keepProviderAccountId);
+  } catch (err) {
+    console.error("[gmail/callback] rotation_cleanup:", err instanceof Error ? err.message : err);
+  }
 
   // Audit the connect (best-effort) so web inbox rotation is observable, matching
   // the API connect path. `replacedAddress` is set only on a real inbox swap.
@@ -146,6 +153,7 @@ export async function GET(req: NextRequest) {
           gmailAddress: profile.emailAddress,
           replacedAddress,
           priorStatus: priorConnection?.status ?? null,
+          erasedInboxes,
         },
       },
     })

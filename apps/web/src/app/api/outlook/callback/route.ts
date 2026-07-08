@@ -6,9 +6,10 @@ import {
 } from "@/lib/outlook-oauth";
 import { verifyState } from "@/lib/gmail-oauth";
 import { encrypt } from "@/lib/encryption";
+import { persistEmailConnection } from "@/lib/persist-connection";
 import { triggerPostConnectHooks } from "@/lib/post-connect-hooks";
 import { parseGrantedScopes } from "@amarnai/outlook";
-import { db, deleteGmailDisconnectedNotifications } from "@amarnai/db";
+import { db, deleteGmailDisconnectedNotifications, eraseStaleEmailAccounts } from "@amarnai/db";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
@@ -96,23 +97,16 @@ export async function GET(req: NextRequest) {
   // One connection per workspace (workspaceId is @unique): connecting Outlook
   // replaces any existing Gmail connection for this workspace and vice versa.
   // Unlike Gmail, Graph returns a stable subjectId (Entra object id) up front.
+  // persistEmailConnection resets every provider-scoped field so the swap cannot
+  // inherit stale Gmail state.
   try {
-    const encryptedRefreshToken = encrypt(tokens.refreshToken);
-    const connectionData = {
-      provider: "OUTLOOK" as const,
+    await persistEmailConnection({
+      workspaceId,
+      provider: "OUTLOOK",
       subjectId: profile.subjectId,
       emailAddress: profile.emailAddress,
-      encryptedRefreshToken,
+      encryptedRefreshToken: encrypt(tokens.refreshToken),
       grantedScopes,
-      status: "ACTIVE" as const,
-      lastVerifiedAt: new Date(),
-      // Clear any stale Gmail push-watch expiry when swapping providers.
-      watchExpiresAt: null,
-    };
-    await db.emailConnection.upsert({
-      where: { workspaceId },
-      create: { workspaceId, ...connectionData },
-      update: connectionData,
     });
   } catch (err) {
     console.error("[outlook/callback] db_upsert:", err instanceof Error ? err.message : err);
@@ -122,6 +116,21 @@ export async function GET(req: NextRequest) {
 
   // Connection is ACTIVE again — clear any "reconnect your account" nudge.
   await deleteGmailDisconnectedNotifications(workspaceId).catch(() => {});
+
+  // ── Inbox-rotation cleanup ───────────────────────────────────────────────────
+  // One connection per workspace: if this connects a DIFFERENT inbox than was
+  // synced before, the prior inbox's threads would otherwise be spliced into
+  // this inbox's view. Erase any account that isn't the one now connected. The
+  // key mirrors the sync worker's derivation (subjectId ?? emailAddress), so
+  // reconnecting the same inbox preserves its data. Runs before the sync worker
+  // (re)creates the account below, so only stale accounts can match. Best-effort.
+  const keepProviderAccountId = profile.subjectId ?? profile.emailAddress;
+  let erasedInboxes: string[] = [];
+  try {
+    erasedInboxes = await eraseStaleEmailAccounts(workspaceId, keepProviderAccountId);
+  } catch (err) {
+    console.error("[outlook/callback] rotation_cleanup:", err instanceof Error ? err.message : err);
+  }
 
   // Audit the connect (best-effort) so inbox rotation is observable.
   const replacedAddress =
@@ -140,6 +149,7 @@ export async function GET(req: NextRequest) {
           emailAddress: profile.emailAddress,
           replacedAddress,
           priorStatus: priorConnection?.status ?? null,
+          erasedInboxes,
         },
       },
     })

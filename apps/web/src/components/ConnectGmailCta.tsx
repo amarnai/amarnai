@@ -17,6 +17,14 @@ type Props = {
   provider?: MailProvider;
   /** When set, renders a secondary "connect the other provider instead" link. */
   secondaryProvider?: MailProvider | undefined;
+  /**
+   * Whether the workspace holds retained synced email that switching to the
+   * secondary provider would erase. When true (reconnect only), the secondary
+   * action is gated behind a confirmation instead of a plain link.
+   */
+  hasSyncedData?: boolean;
+  /** Address of the retained inbox, shown in the switch-erasure warning. */
+  retainedAddress?: string;
 };
 
 export function ConnectGmailCta({
@@ -24,14 +32,25 @@ export function ConnectGmailCta({
   reconnect = false,
   provider = "GMAIL",
   secondaryProvider,
+  hasSyncedData = false,
+  retainedAddress = "",
 }: Props) {
   const { _ } = useLingui();
   const [showAziru, setShowAziru] = useState(false);
+  const [switchConfirming, setSwitchConfirming] = useState(false);
 
   const isOutlook = provider === "OUTLOOK";
   // Brand noun interpolated into copy (sanctioned ICU value, not string concat).
   const providerName = isOutlook ? "Outlook" : "Gmail";
   const connectPath = isOutlook ? "outlook" : "gmail";
+
+  // Secondary provider (the one to switch to). On reconnect with retained data,
+  // switching erases it, so the action is confirmed rather than a bare link.
+  const secondaryName = secondaryProvider === "OUTLOOK" ? "Outlook" : "Gmail";
+  const secondaryHref = `/api/${
+    secondaryProvider === "OUTLOOK" ? "outlook" : "gmail"
+  }/connect?workspaceId=${workspaceId}`;
+  const warnOnSwitch = reconnect && hasSyncedData;
 
   return (
     <div className="connect-gmail-cta-wrap">
@@ -98,18 +117,48 @@ export function ConnectGmailCta({
               <Trans>Connect {providerName}</Trans>
             )}
           </a>
-          {secondaryProvider && (
-            <a
-              href={`/api/${secondaryProvider === "OUTLOOK" ? "outlook" : "gmail"}/connect?workspaceId=${workspaceId}`}
-              className="connect-gmail-cta-secondary"
-            >
-              {secondaryProvider === "OUTLOOK" ? (
-                <Trans>Prefer Outlook? Connect Outlook instead</Trans>
+          {secondaryProvider &&
+            (warnOnSwitch ? (
+              switchConfirming ? (
+                <div className="connect-gmail-cta-switch-confirm">
+                  <p className="account-danger-warning">
+                    <Trans>
+                      Connecting {secondaryName} will permanently remove the
+                      sorted email saved from {retainedAddress}. Your folders and
+                      settings are kept.
+                    </Trans>
+                  </p>
+                  <div className="account-delete-actions">
+                    <a href={secondaryHref} className="btn-danger">
+                      <Trans>Continue to {secondaryName}</Trans>
+                    </a>
+                    <button
+                      type="button"
+                      className="btn-ghost"
+                      onClick={() => setSwitchConfirming(false)}
+                    >
+                      <Trans>Cancel</Trans>
+                    </button>
+                  </div>
+                </div>
               ) : (
-                <Trans>Prefer Gmail? Connect Gmail instead</Trans>
-              )}
-            </a>
-          )}
+                <button
+                  type="button"
+                  className="connect-gmail-cta-secondary"
+                  onClick={() => setSwitchConfirming(true)}
+                >
+                  <Trans>Connect {secondaryName} instead</Trans>
+                </button>
+              )
+            ) : (
+              <a href={secondaryHref} className="connect-gmail-cta-secondary">
+                {secondaryProvider === "OUTLOOK" ? (
+                  <Trans>Prefer Outlook? Connect Outlook instead</Trans>
+                ) : (
+                  <Trans>Prefer Gmail? Connect Gmail instead</Trans>
+                )}
+              </a>
+            ))}
         </div>
       </div>
       {showAziru && <AziruIntroDialog onClose={() => setShowAziru(false)} />}

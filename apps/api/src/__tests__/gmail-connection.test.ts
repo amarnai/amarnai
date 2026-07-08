@@ -6,8 +6,8 @@ const { mockStopWatch, mockRevokeGoogleToken } = vi.hoisted(() => ({
   mockRevokeGoogleToken: vi.fn(),
 }));
 
-vi.mock("@amarnai/db", () => ({
-  db: {
+vi.mock("@amarnai/db", () => {
+  const db = {
     workspace: {
       findUnique: vi.fn(),
       findFirst: vi.fn(),
@@ -53,10 +53,19 @@ vi.mock("@amarnai/db", () => ({
       create: vi.fn(),
     },
     $transaction: vi.fn(),
-  },
-  maybeCreateExtensionNudge: vi.fn().mockResolvedValue(undefined),
-  deleteGmailDisconnectedNotifications: vi.fn().mockResolvedValue(undefined),
-}));
+  };
+  return {
+    db,
+    // Erase is extracted into @amarnai/db; keep the mock faithful to the real
+    // export and route it through $transaction so the erase assertions hold.
+    eraseEmailAccountData: vi.fn(async () => {
+      await db.$transaction([]);
+    }),
+    eraseStaleEmailAccounts: vi.fn().mockResolvedValue([]),
+    maybeCreateExtensionNudge: vi.fn().mockResolvedValue(undefined),
+    deleteGmailDisconnectedNotifications: vi.fn().mockResolvedValue(undefined),
+  };
+});
 
 const GMAIL_SCOPE = "https://www.googleapis.com/auth/gmail.readonly";
 

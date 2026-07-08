@@ -2260,6 +2260,19 @@ a {
   gap: 12px;
 }
 
+.gmail-connection-switch {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-border);
+}
+
+.gmail-connection-switch .gmail-meta {
+  margin: 0;
+}
+
 .gmail-connection-empty p {
   color: var(--color-muted);
   margin: 0;
@@ -2399,6 +2412,23 @@ a {
 
 .connect-gmail-cta-secondary:hover {
   color: var(--color-text);
+}
+
+/* The secondary action is a button when it opens a switch confirmation; strip
+   the native button chrome so it reads as the same underlined link. */
+button.connect-gmail-cta-secondary {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.connect-gmail-cta-switch-confirm {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+  max-width: 320px;
 }
 
 @media (max-width: 560px) {

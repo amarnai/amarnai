@@ -51,6 +51,10 @@ export default async function SettingsPage({ searchParams }: { searchParams: Sea
     // API unavailable — show disconnected state
   }
 
+  // Whether this workspace holds retained synced email that connecting a
+  // DIFFERENT inbox would erase (rotation cleanup). Drives the switch warning.
+  const hasSyncedData = (await db.emailThread.count({ where: { workspaceId: workspace.id } })) > 0;
+
   // Billing state, reconciled with Stripe on portal return. Computed before the
   // team list below so any trial-cancellation member removal is reflected there.
   const billingState = await assembleBillingState(user.id, workspace.id, {
@@ -125,6 +129,7 @@ export default async function SettingsPage({ searchParams }: { searchParams: Sea
             connectError={connectError}
             connectProvider={connectProvider}
             outlookEnabled={outlookEnabled}
+            hasSyncedData={hasSyncedData}
           />
           <EmailBlacklistSection
             workspaceId={workspace.id}
