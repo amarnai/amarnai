@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { MAIL_HOSTS } from "./src/platform/mailHosts";
 
 const dir = path.dirname(fileURLToPath(import.meta.url));
 
@@ -50,17 +51,9 @@ export function buildManifest({
     48: "icons/icon48.png",
     128: "icons/icon128.png",
   };
-  const hostPermissions = [
-    `${apiOrigin}/*`,
-    "https://mail.google.com/*",
-    // All three OWA hosts: office.com (work/school reading pane), office365.com
-    // (the host Graph `webLink`s point at, pre-redirect) and live.com (personal
-    // accounts). Reusing an open Outlook tab requires reading its URL, which
-    // needs a host grant for whichever of these the mailbox lives on.
-    "https://outlook.office.com/*",
-    "https://outlook.office365.com/*",
-    "https://outlook.live.com/*",
-  ];
+  // MAIL_HOSTS (Gmail + OWA) is shared with permissions.ts and openInGmail.ts so
+  // the manifest grant can never drift from the runtime request or tab-reuse query.
+  const hostPermissions = [`${apiOrigin}/*`, ...MAIL_HOSTS];
 
   if (browser === "firefox") {
     // Firefox has no side_panel/sidePanel and no MV3 background.service_worker: it

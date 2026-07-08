@@ -1,5 +1,5 @@
 import { MS_CLIENT_ID } from "../config";
-import { ext } from "../platform/ext";
+import { runAuthCodeFlow, type AuthCodeFlowResult } from "./authCodeFlow";
 
 // Delegated scopes for the read-only Outlook connection. Mirrors
 // @amarnai/outlook OUTLOOK_SCOPES (kept as a literal so the extension bundle does
@@ -18,57 +18,21 @@ export class MicrosoftAuthCancelledError extends Error {
   }
 }
 
-export interface MicrosoftAuthResult {
-  code: string;
-  scope: string;
-  redirectUri: string;
-}
+export type MicrosoftAuthResult = AuthCodeFlowResult;
 
-// Runs the Microsoft OAuth *code* flow via identity.launchWebAuthFlow and returns
-// the authorization code for the API to redeem. The code must be redeemed against
-// this exact redirect URI (Chrome: https://<ext-id>.chromiumapp.org/, Firefox:
-// https://<hash>.extensions.allizom.org/), which the API receives alongside the
-// code and pins on exchangeAuthCode — so the redirect must be registered on the
-// Microsoft app registration. Unlike Google, Microsoft returns a refresh token
+// Runs the Microsoft OAuth *code* flow and returns the authorization code for the
+// API to redeem. The code must be redeemed against the returned redirect URI,
+// which the API pins on exchangeAuthCode — so that redirect must be registered on
+// the Microsoft app registration. Unlike Google, Microsoft returns a refresh token
 // whenever offline_access is granted, so no forced consent prompt is needed;
 // prompt=select_account lets the user pick which mailbox to connect.
-export async function requestMicrosoftAuth(): Promise<MicrosoftAuthResult> {
-  if (!MS_CLIENT_ID) {
-    throw new Error("VITE_MS_CLIENT_ID is not configured");
-  }
-
-  const redirectUri = ext.identity.getRedirectURL();
-  const authUrl =
-    `${AUTHORIZE_URL}?` +
-    new URLSearchParams({
-      client_id: MS_CLIENT_ID,
-      response_type: "code",
-      redirect_uri: redirectUri,
-      response_mode: "query",
-      scope: SCOPES,
-      prompt: "select_account",
-    }).toString();
-
-  let resultUrl: string | undefined;
-  try {
-    resultUrl = await ext.identity.launchWebAuthFlow({ url: authUrl, interactive: true });
-  } catch {
-    // Both browsers reject (or resolve undefined) when the user closes the window.
-    throw new MicrosoftAuthCancelledError();
-  }
-  if (!resultUrl) throw new MicrosoftAuthCancelledError();
-
-  const params = new URL(resultUrl).searchParams;
-  const code = params.get("code");
-  if (!code) {
-    // error=access_denied when the user declines consent.
-    throw new MicrosoftAuthCancelledError();
-  }
-
-  return {
-    code,
-    // Microsoft echoes the granted scopes; fall back to what we requested.
-    scope: params.get("scope") ?? SCOPES,
-    redirectUri,
-  };
+export function requestMicrosoftAuth(): Promise<MicrosoftAuthResult> {
+  return runAuthCodeFlow({
+    authorizeUrl: AUTHORIZE_URL,
+    clientId: MS_CLIENT_ID,
+    missingClientIdMessage: "VITE_MS_CLIENT_ID is not configured",
+    scope: SCOPES,
+    extraParams: { response_mode: "query", prompt: "select_account" },
+    onCancel: () => new MicrosoftAuthCancelledError(),
+  });
 }

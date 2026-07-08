@@ -6,6 +6,7 @@ import { msg } from "@lingui/core/macro";
 import type { FolderItem } from "../folder-tree/types.js";
 import type { ActiveSelection, ThreadItem } from "./types.js";
 import { buildThreadUrl } from "@amarnai/core/emails";
+import { openInProviderLabel } from "./providerLabels.js";
 import { Tooltip } from "../Tooltip.js";
 
 const FOLDER_ICO = (
@@ -157,10 +158,7 @@ export function ThreadRow({
   const importantLabel = thread.isImportant
     ? i18n._(msg`Remove from important`)
     : i18n._(msg`Mark as important`);
-  const openInGmailLabel =
-    thread.provider === "OUTLOOK"
-      ? i18n._(msg`Open in Outlook`)
-      : i18n._(msg`Open in Gmail`);
+  const openInGmailLabel = openInProviderLabel(i18n, thread.provider);
 
   const assignment = thread.assignment;
   const assigneeName = assignment ? (assignment.userName ?? assignment.userEmail) : "";

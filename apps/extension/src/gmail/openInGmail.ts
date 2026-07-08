@@ -1,6 +1,7 @@
 import { buildGmailThreadUrl, buildGmailThreadHashUrl } from "./gmailUrl";
 import { buildThreadUrl, type ThreadUrlInput } from "@amarnai/core/emails";
 import { ext } from "../platform/ext";
+import { OUTLOOK_MAIL_HOSTS } from "../platform/mailHosts";
 
 // The Gmail tab we last navigated with the account-routing `authuser` URL, so we
 // know it is pinned to the correct Google account. While a reused tab stays this
@@ -57,18 +58,6 @@ export async function openInGmail(gmailAddress: string, providerThreadId: string
   pinnedTabId = existing.id;
 }
 
-// The OWA hosts an open Outlook tab can live on: office.com (work/school reading
-// pane), office365.com (where Graph `webLink`s point before redirecting) and
-// live.com (personal accounts). We match all three so a tab is found regardless
-// of which host the mailbox resolved to; a single-host filter misses the common
-// case where the webLink opened office365.com, which is why a new tab was always
-// created. Kept in sync with the manifest/permissions host grants.
-const OUTLOOK_TAB_URLS = [
-  "https://outlook.office.com/*",
-  "https://outlook.office365.com/*",
-  "https://outlook.live.com/*",
-];
-
 // Opens a thread in Outlook on the web (OWA). Reuses an existing OWA tab in the
 // current window so the panel stays docked; else opens a new tab. Unlike Gmail
 // there is no zero-reload hash swap — OWA routes the message via its `webLink`,
@@ -76,11 +65,11 @@ const OUTLOOK_TAB_URLS = [
 // account context, so no `authuser`-style pinning is needed and the Gmail
 // pinnedTabId singleton is intentionally not used here.
 //
-// Requires host_permissions for the OWA hosts (see OUTLOOK_TAB_URLS).
+// Requires host_permissions for the OWA hosts (see OUTLOOK_MAIL_HOSTS).
 export async function openInOutlook(webLink: string | null): Promise<void> {
   const url = buildThreadUrl({ provider: "OUTLOOK", providerThreadId: "", webLink });
   const tabs = await ext.tabs.query({
-    url: OUTLOOK_TAB_URLS,
+    url: OUTLOOK_MAIL_HOSTS,
     currentWindow: true,
   });
   const existing = tabs.find((t) => t.active) ?? tabs[0];
