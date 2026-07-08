@@ -1013,7 +1013,7 @@ msgstr "Thành viên hội đồng quản trị, đối tác quỹ hiện tại 
 #~ msgid "Browse emails easily through your folders. Generate draft replies and copy them to Gmail."
 #~ msgstr "Dễ dàng duyệt email qua các thư mục của bạn. Tạo bản nháp trả lời và sao chép vào Gmail."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:386
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:416
 msgid "Browse emails easily through your folders. Generate draft replies and copy them to your inbox."
 msgstr "Dễ dàng duyệt email qua các thư mục. Tạo bản nháp phản hồi và sao chép vào hộp thư đến của bạn."
 
@@ -1184,7 +1184,7 @@ msgstr "Chọn gói đăng ký"
 #~ msgid "Choose a theme, or follow your system setting. Saved on this device."
 #~ msgstr "Chọn chủ đề hoặc theo cài đặt hệ thống của bạn. Lưu trên thiết bị này."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:323
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:328
 msgid "Choose email provider"
 msgstr "Chọn nhà cung cấp email"
 
@@ -1317,6 +1317,7 @@ msgstr "Kết nối hộp thư đến Gmail để cấu hình bộ lọc đồng
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:138
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:371
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:406
 #, fuzzy
 msgid "Connect Gmail"
@@ -1341,6 +1342,10 @@ msgstr "Kết nối Gmail"
 #~ msgid "Connect Gmail and Amarnai starts sorting within minutes. Pricing is per workspace. Sorts new mail as it arrives, and works through years of backlog."
 #~ msgstr "Kết nối Gmail, Amarnai bắt đầu sắp xếp chỉ trong vài phút. Giá tính theo không gian làm việc. Sắp xếp thư mới ngay khi đến và xử lý hàng năm email tồn đọng."
 
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:364
+msgid "Connect Gmail button"
+msgstr "Nút kết nối Gmail"
+
 #: ../../apps/extension/src/App.tsx:38
 #~ msgid "Connect Gmail on the web"
 #~ msgstr "Kết nối Gmail trên web"
@@ -1355,26 +1360,30 @@ msgstr "Kết nối Gmail để tạo kế hoạch từ hộp thư đến của 
 msgid "Connect Gmail to start triaging"
 msgstr "Kết nối Gmail để bắt đầu phân loại"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:350
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:362
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:387
 #, fuzzy
 msgid "Connect inbox"
 msgstr "Kết nối hộp thư đến"
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:347
-msgid "Connect inbox button"
-msgstr "Nút kết nối hộp thư đến"
+#~ msgid "Connect inbox button"
+#~ msgstr "Nút kết nối hộp thư đến"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:404
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:433
 #, fuzzy
 msgid "Connect once, generate your plan once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
 msgstr "Chỉ cần kết nối và tạo kế hoạch một lần, Amarnai sẽ tự động xử lý thư mới cũng như hàng ngàn email hiện có trong hộp thư của bạn."
 
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:151
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:369
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:414
 #, fuzzy
 msgid "Connect Outlook"
 msgstr "Kết nối Outlook"
+
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:363
+msgid "Connect Outlook button"
+msgstr "Nút kết nối Outlook"
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:84
 #, fuzzy
@@ -1841,7 +1850,7 @@ msgstr "Đang xóa…"
 msgid "Describe what kinds of emails belong here: who they come from and what they are about. Be specific and use the actual names, topics, and words that show up in those emails. Describe what the emails are, not what you plan to do about them. The clearer your description, the more accurately your email is sorted here."
 msgstr "Mô tả loại email phù hợp ở đây: chúng từ ai và về điều gì. Hãy cụ thể và dùng đúng tên, chủ đề, từ ngữ thực tế có trong email. Mô tả nội dung email, không phải kế hoạch của bạn với chúng. Mô tả càng rõ ràng, email của bạn càng được phân loại chính xác."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:373
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:401
 #, fuzzy
 msgid "Describe your folders"
 msgstr "Mô tả thư mục của bạn"
@@ -2363,7 +2372,7 @@ msgstr "Thanh lọc"
 msgid "Finance"
 msgstr "Tài chính"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:384
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:413
 #, fuzzy
 msgid "Find and draft"
 msgstr "Tìm và soạn thảo"
@@ -3153,7 +3162,7 @@ msgstr "Xác minh lần cuối: {0}"
 #~ msgid "Lay out folders like <0>Customers</0>, <1>Investors</1>, <2>Hiring</2>. A simple sentence each is the whole config."
 #~ msgstr "Sắp xếp các thư mục như <0>Khách hàng</0>, <1>Nhà đầu tư</1>, <2>Tuyển dụng</2>. Chỉ một câu đơn giản cho mỗi thư mục là đủ cấu hình."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:375
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:404
 msgid "Lay out folders like <0>Customers</0>, <1>Investors</1>, <2>Hiring</2>. A simple sentence each: that's the whole setup."
 msgstr "Sắp xếp thư mục như <0>Khách hàng</0>, <1>Nhà đầu tư</1>, <2>Tuyển dụng</2>. Mỗi mục chỉ cần một câu đơn giản: đó là toàn bộ thiết lập."
 
@@ -4170,7 +4179,7 @@ msgstr "Re: Gia hạn Quý 3"
 msgid "Reactivate"
 msgstr "Kích hoạt lại"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:353
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:375
 #, fuzzy
 msgid "Read-only · OAuth · revoke anytime"
 msgstr "Chỉ đọc · OAuth · có thể thu hồi bất cứ lúc nào"
@@ -4745,12 +4754,12 @@ msgstr "Gói chia sẻ + hàng chờ đánh giá"
 #~ msgid "Shared taxonomy + review queue"
 #~ msgstr "Hệ thống phân loại chung + hàng đợi xem xét"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:329
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:334
 #, fuzzy
 msgid "Show Gmail"
 msgstr "Hiển thị Gmail"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:338
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:343
 msgid "Show Outlook"
 msgstr "Hiển thị Outlook"
 
@@ -4775,7 +4784,7 @@ msgstr "Đăng nhập để sàng lọc hộp thư đến"
 msgid "Sign in with Google"
 msgstr "Đăng nhập bằng Google"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:364
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:392
 msgid "Sign in with Google or Microsoft. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
 msgstr "Đăng nhập bằng Google hoặc Microsoft. Amarnai đồng bộ các chuỗi email và nhãn của bạn. Amarnai không bao giờ gửi hoặc xóa email thay mặt bạn."
 
@@ -5378,7 +5387,7 @@ msgstr "Email chưa được phân loại."
 msgid "Threads you've marked as important."
 msgstr "Các cuộc trò chuyện bạn đã đánh dấu quan trọng."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:401
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:430
 msgid "Three steps to a sorted inbox."
 msgstr "3 bước để hộp thư ngăn nắp."
 

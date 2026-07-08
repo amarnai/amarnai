@@ -986,7 +986,7 @@ msgstr "董事会成员、现有基金合伙人和投资组合更新。"
 #~ msgid "Browse emails easily through your folders. Generate draft replies and copy them to Gmail."
 #~ msgstr "轻松浏览文件夹中的邮件。生成回复草稿并将其复制到 Gmail。"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:386
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:416
 msgid "Browse emails easily through your folders. Generate draft replies and copy them to your inbox."
 msgstr "通过文件夹轻松浏览邮件。生成回复草稿，并将其复制到您的收件箱。"
 
@@ -1150,7 +1150,7 @@ msgstr "选择订阅"
 #~ msgid "Choose a theme, or follow your system setting. Saved on this device."
 #~ msgstr "选择主题，或遵循系统设置。保存到此设备。"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:323
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:328
 #, fuzzy
 msgid "Choose email provider"
 msgstr "选择邮件服务提供商"
@@ -1279,6 +1279,7 @@ msgstr "连接 Gmail 收件箱以配置同步筛选条件。"
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:138
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:371
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:406
 #, fuzzy
 msgid "Connect Gmail"
@@ -1302,6 +1303,10 @@ msgstr "连接 Gmail"
 #~ msgid "Connect Gmail and Amarnai starts sorting within minutes. Pricing is per workspace. Sorts new mail as it arrives, and works through years of backlog."
 #~ msgstr "连接 Gmail，Amarnai 几分钟内即可开始分类。按工作区定价。实时分类新邮件，并可处理积压多年的旧邮件。"
 
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:364
+msgid "Connect Gmail button"
+msgstr "连接 Gmail"
+
 #: ../../apps/extension/src/App.tsx:38
 #~ msgid "Connect Gmail on the web"
 #~ msgstr "连接 Gmail 网页版"
@@ -1316,25 +1321,30 @@ msgstr "连接 Gmail 以根据收件箱生成计划"
 msgid "Connect Gmail to start triaging"
 msgstr "连接 Gmail 以开始分类"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:350
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:362
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:387
 #, fuzzy
 msgid "Connect inbox"
 msgstr "连接收件箱"
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:347
-msgid "Connect inbox button"
-msgstr "连接收件箱按钮"
+#~ msgid "Connect inbox button"
+#~ msgstr "连接收件箱按钮"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:404
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:433
 #, fuzzy
 msgid "Connect once, generate your plan once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
 msgstr "只需连接一次，制定一次方案，Amarnai 即可处理新邮件，并整理您收件箱中已有的数千个会话。"
 
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:151
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:369
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:414
 #, fuzzy
 msgid "Connect Outlook"
+msgstr "连接 Outlook"
+
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:363
+#, fuzzy
+msgid "Connect Outlook button"
 msgstr "连接 Outlook"
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:84
@@ -1788,7 +1798,7 @@ msgstr "正在删除…"
 msgid "Describe what kinds of emails belong here: who they come from and what they are about. Be specific and use the actual names, topics, and words that show up in those emails. Describe what the emails are, not what you plan to do about them. The clearer your description, the more accurately your email is sorted here."
 msgstr "描述哪些类型的邮件属于此处：它们来自谁，以及它们是关于什么的。请具体说明，并使用这些邮件中出现的实际名称、主题和词语。描述邮件是什么，而不是你打算如何处理它们。你的描述越清晰，邮件在此处分类就越准确。"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:373
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:401
 msgid "Describe your folders"
 msgstr "描述您的文件夹"
 
@@ -2288,7 +2298,7 @@ msgstr "筛选栏"
 msgid "Finance"
 msgstr "财务"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:384
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:413
 msgid "Find and draft"
 msgstr "查找并起草"
 
@@ -3044,7 +3054,7 @@ msgstr "上次验证时间：{0}"
 #~ msgid "Lay out folders like <0>Customers</0>, <1>Investors</1>, <2>Hiring</2>. A simple sentence each is the whole config."
 #~ msgstr "设置文件夹，如 <0>客户</0>、<1>投资者</1>、<2>招聘</2>。只需一句话即可完成所有配置。"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:375
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:404
 #, fuzzy
 msgid "Lay out folders like <0>Customers</0>, <1>Investors</1>, <2>Hiring</2>. A simple sentence each: that's the whole setup."
 msgstr "创建类似 <0>客户</0>、<1>投资者</1>、<2>招聘</2> 的文件夹。每个文件夹只需一个简单描述句：这就是全部设置。"
@@ -4031,7 +4041,7 @@ msgstr "关于：第三季度续订"
 msgid "Reactivate"
 msgstr "重新激活"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:353
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:375
 msgid "Read-only · OAuth · revoke anytime"
 msgstr "只读 ・ OAuth ・ 随时撤销"
 
@@ -4586,12 +4596,12 @@ msgstr "共享套餐 + 复审队列"
 #~ msgid "Shared taxonomy + review queue"
 #~ msgstr "共享分类法 + 审阅队列"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:329
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:334
 #, fuzzy
 msgid "Show Gmail"
 msgstr "显示 Gmail"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:338
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:343
 msgid "Show Outlook"
 msgstr "显示 Outlook"
 
@@ -4617,7 +4627,7 @@ msgstr "登录，高效管理收件箱"
 msgid "Sign in with Google"
 msgstr "使用 Google 登录"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:364
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:392
 msgid "Sign in with Google or Microsoft. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
 msgstr "使用 Google 或 Microsoft 登录。Amarnai 会同步您的会话和标签。它绝不会代表您发送或删除任何内容。"
 
@@ -5202,7 +5212,7 @@ msgstr "尚未排序的会话。"
 msgid "Threads you've marked as important."
 msgstr "您标记为重要的会话。"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:401
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:430
 msgid "Three steps to a sorted inbox."
 msgstr "三步打造有序收件箱。"
 

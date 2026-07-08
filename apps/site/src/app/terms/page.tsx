@@ -56,9 +56,17 @@ export default function TermsPage() {
           rel="noopener noreferrer"
         >
           account.live.com/consent/Manage
-        </a>
-        . Revoking access stops all mail-related features but does not delete your
-        account.
+        </a>{" "}
+        (or{" "}
+        <a
+          href="https://myapps.microsoft.com"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          myapps.microsoft.com
+        </a>{" "}
+        for work or school accounts). Revoking access stops all mail-related features
+        but does not delete your account.
       </p>
       <p>
         Amarnai&rsquo;s use of Gmail and Outlook data is governed by our{" "}

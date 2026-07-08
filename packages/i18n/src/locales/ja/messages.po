@@ -986,7 +986,7 @@ msgstr "役員、既存のファンドパートナー、ポートフォリオの
 #~ msgid "Browse emails easily through your folders. Generate draft replies and copy them to Gmail."
 #~ msgstr "フォルダーを通じてメールを簡単に閲覧できます。返信の下書きを生成してGmailにコピーできます。"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:386
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:416
 msgid "Browse emails easily through your folders. Generate draft replies and copy them to your inbox."
 msgstr "フォルダーでメールを簡単に閲覧。返信ドラフトを生成し、受信トレイにコピーできます。"
 
@@ -1150,7 +1150,7 @@ msgstr "サブスクリプションを選択"
 #~ msgid "Choose a theme, or follow your system setting. Saved on this device."
 #~ msgstr "テーマを選択するか、システム設定に従います。このデバイスに保存されます。"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:323
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:328
 #, fuzzy
 msgid "Choose email provider"
 msgstr "メールプロバイダーを選択"
@@ -1279,6 +1279,7 @@ msgstr "同期フィルターを設定するには、Gmail受信トレイを接�
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:138
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:371
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:406
 #, fuzzy
 msgid "Connect Gmail"
@@ -1302,6 +1303,10 @@ msgstr "Gmailを接続"
 #~ msgid "Connect Gmail and Amarnai starts sorting within minutes. Pricing is per workspace. Sorts new mail as it arrives, and works through years of backlog."
 #~ msgstr "Gmailと接続するだけ。Amarnaiが数分でメールを整理し始めます。料金はワークスペースごと。新着メールはもちろん、過去の大量メールも自動で分類します。"
 
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:364
+msgid "Connect Gmail button"
+msgstr "Gmailと連携"
+
 #: ../../apps/extension/src/App.tsx:38
 #~ msgid "Connect Gmail on the web"
 #~ msgstr "ウェブ版でGmailを連携"
@@ -1316,26 +1321,31 @@ msgstr "Gmailを接続して受信トレイからプランを生成"
 msgid "Connect Gmail to start triaging"
 msgstr "トリアージを開始するにはGmailに接続"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:350
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:362
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:387
 #, fuzzy
 msgid "Connect inbox"
 msgstr "受信トレイを接続"
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:347
-msgid "Connect inbox button"
-msgstr "受信トレイ接続ボタン"
+#~ msgid "Connect inbox button"
+#~ msgstr "受信トレイ接続ボタン"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:404
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:433
 #, fuzzy
 msgid "Connect once, generate your plan once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
 msgstr "連携とプラン作成は一度きり。新着メールから受信箱に眠る何千ものスレッドまで、Amarnaiがすべて処理します。"
 
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:151
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:369
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:414
 #, fuzzy
 msgid "Connect Outlook"
 msgstr "Outlook を接続"
+
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:363
+#, fuzzy
+msgid "Connect Outlook button"
+msgstr "Outlookと連携"
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:84
 msgid "Connect your {providerName} inbox"
@@ -1788,7 +1798,7 @@ msgstr "削除中…"
 msgid "Describe what kinds of emails belong here: who they come from and what they are about. Be specific and use the actual names, topics, and words that show up in those emails. Describe what the emails are, not what you plan to do about them. The clearer your description, the more accurately your email is sorted here."
 msgstr "ここに分類されるメールの種類について説明してください。差出人、内容、件名、キーワードなど、メールに実際に表示される具体的な情報を記述してください。メールが「何であるか」を説明し、「どうするつもりか」は説明しないでください。説明が明確であるほど、メールはより正確にここに分類されます。"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:373
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:401
 msgid "Describe your folders"
 msgstr "フォルダを記述"
 
@@ -2288,7 +2298,7 @@ msgstr "フィルタレール"
 msgid "Finance"
 msgstr "財務"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:384
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:413
 msgid "Find and draft"
 msgstr "検索と下書き作成"
 
@@ -3044,7 +3054,7 @@ msgstr "最終確認: {0}"
 #~ msgid "Lay out folders like <0>Customers</0>, <1>Investors</1>, <2>Hiring</2>. A simple sentence each is the whole config."
 #~ msgstr "<0>顧客</0>、<1>投資家</1>、<2>採用</2>といったフォルダーを設定。各フォルダーの定義はシンプルな一文で完了します。"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:375
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:404
 #, fuzzy
 msgid "Lay out folders like <0>Customers</0>, <1>Investors</1>, <2>Hiring</2>. A simple sentence each: that's the whole setup."
 msgstr "<0>顧客</0>、<1>投資家</1>、<2>採用</2>などのフォルダーを設定します。それぞれのフォルダーに簡単な説明文を追加するだけ。これだけで設定完了です。"
@@ -4032,7 +4042,7 @@ msgstr "件名：第3四半期の更新"
 msgid "Reactivate"
 msgstr "再開"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:353
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:375
 msgid "Read-only · OAuth · revoke anytime"
 msgstr "読み取り専用・OAuth認証・いつでも取り消し可能"
 
@@ -4588,12 +4598,12 @@ msgstr "共有プラン＋レビューキュー"
 #~ msgid "Shared taxonomy + review queue"
 #~ msgstr "共有タクソノミー + レビューキュー"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:329
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:334
 #, fuzzy
 msgid "Show Gmail"
 msgstr "Gmailを表示"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:338
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:343
 msgid "Show Outlook"
 msgstr "Outlookを表示"
 
@@ -4619,7 +4629,7 @@ msgstr "受信トレイを管理するためサインイン"
 msgid "Sign in with Google"
 msgstr "Googleでサインイン"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:364
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:392
 msgid "Sign in with Google or Microsoft. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
 msgstr "GoogleまたはMicrosoftでサインイン。Amarnaiはあなたのスレッドとラベルを同期しますが、あなたに代わってメールを送ったり削除したりすることはありません。"
 
@@ -5204,7 +5214,7 @@ msgstr "まだソートされていないスレッド。"
 msgid "Threads you've marked as important."
 msgstr "重要にしたスレッド"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:401
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:430
 msgid "Three steps to a sorted inbox."
 msgstr "3つのステップで、受信トレイをすっきり。"
 

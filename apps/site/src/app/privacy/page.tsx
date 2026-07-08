@@ -171,15 +171,24 @@ export default function PrivacyPage() {
           and remove Amarnai from the list of connected apps.
         </li>
         <li>
-          <strong>Revoke Microsoft access directly:</strong> visit{" "}
+          <strong>Revoke Microsoft access directly:</strong> for a personal
+          Microsoft account, visit{" "}
           <a
             href="https://account.live.com/consent/Manage"
             target="_blank"
             rel="noopener noreferrer"
           >
             account.live.com/consent/Manage
-          </a>{" "}
-          and remove Amarnai from the list of connected apps.
+          </a>
+          ; for a work or school account, visit{" "}
+          <a
+            href="https://myapps.microsoft.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            myapps.microsoft.com
+          </a>
+          . Then remove Amarnai from the list of connected apps.
         </li>
       </ul>
       <p>

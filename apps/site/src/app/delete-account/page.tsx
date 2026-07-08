@@ -50,15 +50,24 @@ export default function DeleteAccountPage() {
         </li>
         <li>
           <strong>Revoke access from Microsoft:</strong> you can also remove
-          Amarnai&rsquo;s access to your Microsoft account at any time by visiting{" "}
+          Amarnai&rsquo;s access to your Microsoft account at any time. For a
+          personal account, visit{" "}
           <a
             href="https://account.live.com/consent/Manage"
             target="_blank"
             rel="noopener noreferrer"
           >
             account.live.com/consent/Manage
-          </a>{" "}
-          and removing Amarnai from the list of connected apps.
+          </a>
+          ; for a work or school account, visit{" "}
+          <a
+            href="https://myapps.microsoft.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            myapps.microsoft.com
+          </a>
+          . Then remove Amarnai from the list of connected apps.
         </li>
       </ul>
 

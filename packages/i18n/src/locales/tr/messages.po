@@ -1013,7 +1013,7 @@ msgstr "Yönetim kurulu üyeleri, mevcut fon ortakları ve portföy güncellemel
 #~ msgid "Browse emails easily through your folders. Generate draft replies and copy them to Gmail."
 #~ msgstr "E-postalarınızı klasörlerinizde kolayca görüntüleyin. Taslak yanıtlar oluşturun ve bunları Gmail'e kopyalayın."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:386
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:416
 msgid "Browse emails easily through your folders. Generate draft replies and copy them to your inbox."
 msgstr "Klasörlerinizdeki e-postaları kolayca gözden geçirin. Yanıt taslakları oluşturun ve gelen kutunuza kopyalayın."
 
@@ -1184,7 +1184,7 @@ msgstr "Bir abonelik seçin"
 #~ msgid "Choose a theme, or follow your system setting. Saved on this device."
 #~ msgstr "Bir tema seçin veya sistem ayarınızı kullanın. Bu cihaza kaydedildi."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:323
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:328
 msgid "Choose email provider"
 msgstr "E-posta sağlayıcısı seçin"
 
@@ -1317,6 +1317,7 @@ msgstr "Senkronizasyon filtrelerini yapılandırmak için bir Gmail gelen kutusu
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:138
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:371
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:406
 #, fuzzy
 msgid "Connect Gmail"
@@ -1341,6 +1342,10 @@ msgstr "Gmail'i Bağla"
 #~ msgid "Connect Gmail and Amarnai starts sorting within minutes. Pricing is per workspace. Sorts new mail as it arrives, and works through years of backlog."
 #~ msgstr "Gmail'i bağlayın, Amarnai dakikalar içinde düzenlemeye başlasın. Fiyatlandırma çalışma alanına göredir. Yeni e-postaları geldikçe düzenler ve yıllarca birikmiş e-postalarınızı da halleder."
 
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:364
+msgid "Connect Gmail button"
+msgstr "Gmail'i Bağla"
+
 #: ../../apps/extension/src/App.tsx:38
 #~ msgid "Connect Gmail on the web"
 #~ msgstr "Gmail'i Web'de Bağla"
@@ -1355,26 +1360,30 @@ msgstr "Gelen kutunuzdan bir plan oluşturmak için Gmail'i bağlayın."
 msgid "Connect Gmail to start triaging"
 msgstr "Ayıklamaya başlamak için Gmail'i bağlayın."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:350
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:362
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:387
 #, fuzzy
 msgid "Connect inbox"
 msgstr "Gelen Kutusunu Bağlayın"
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:347
-msgid "Connect inbox button"
-msgstr "Gelen kutusunu bağla düğmesi"
+#~ msgid "Connect inbox button"
+#~ msgstr "Gelen kutusunu bağla düğmesi"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:404
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:433
 #, fuzzy
 msgid "Connect once, generate your plan once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
 msgstr "Bir kez bağlanın, planınızı bir kez oluşturun ve Amarnai'nin yeni e-postaları ve gelen kutunuzda zaten bulunan binlerce ileti dizisini halletmesine izin verin."
 
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:151
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:369
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:414
 #, fuzzy
 msgid "Connect Outlook"
 msgstr "Outlook Bağla"
+
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:363
+msgid "Connect Outlook button"
+msgstr "Outlook'u Bağla"
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:84
 #, fuzzy
@@ -1841,7 +1850,7 @@ msgstr "Siliniyor…"
 msgid "Describe what kinds of emails belong here: who they come from and what they are about. Be specific and use the actual names, topics, and words that show up in those emails. Describe what the emails are, not what you plan to do about them. The clearer your description, the more accurately your email is sorted here."
 msgstr "Buraya hangi tür e-postaların dahil olduğunu açıklayın: kimden geldiklerini ve içeriklerini belirtin. Belirli olun; bu e-postalarda yer alan gerçek adları, konuları ve kelimeleri kullanın. E-postaların ne olduğunu açıklayın, onlarla ne yapmayı planladığınızı değil. Açıklamanız ne kadar net olursa, e-postalarınız burada o kadar doğru bir şekilde sıralanır."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:373
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:401
 #, fuzzy
 msgid "Describe your folders"
 msgstr "Klasörlerinizi tanımlayın"
@@ -2363,7 +2372,7 @@ msgstr "Filtreleme Alanı"
 msgid "Finance"
 msgstr "Finans"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:384
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:413
 #, fuzzy
 msgid "Find and draft"
 msgstr "Bul ve Taslak Oluştur"
@@ -3153,7 +3162,7 @@ msgstr "Son doğrulama: {0}"
 #~ msgid "Lay out folders like <0>Customers</0>, <1>Investors</1>, <2>Hiring</2>. A simple sentence each is the whole config."
 #~ msgstr "Şu şekilde klasörler oluşturun: <0>Müşteriler</0>, <1>Yatırımcılar</1>, <2>İşe Alım</2>. Her birini basit bir cümleyle tanımlamanız yeterli."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:375
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:404
 msgid "Lay out folders like <0>Customers</0>, <1>Investors</1>, <2>Hiring</2>. A simple sentence each: that's the whole setup."
 msgstr "Klasörleri <0>Müşteriler</0>, <1>Yatırımcılar</1>, <2>İşe Alım</2> gibi düzenleyin. Her biri için tek bir basit cümle: tüm kurulum bu kadar."
 
@@ -4170,7 +4179,7 @@ msgstr "Hk: Q3 yenilemesi"
 msgid "Reactivate"
 msgstr "Yeniden etkinleştir"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:353
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:375
 #, fuzzy
 msgid "Read-only · OAuth · revoke anytime"
 msgstr "Sadece okuma · OAuth · İstenildiği zaman iptal edilebilir"
@@ -4745,12 +4754,12 @@ msgstr "Paylaşılan plan + inceleme kuyruğu"
 #~ msgid "Shared taxonomy + review queue"
 #~ msgstr "Paylaşılan taksonomi + inceleme kuyruğu"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:329
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:334
 #, fuzzy
 msgid "Show Gmail"
 msgstr "Gmail'i Göster"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:338
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:343
 msgid "Show Outlook"
 msgstr "Outlook'u Göster"
 
@@ -4775,7 +4784,7 @@ msgstr "Gelen kutunuzu tasnif etmek için giriş yapın"
 msgid "Sign in with Google"
 msgstr "Google ile oturum aç"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:364
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:392
 msgid "Sign in with Google or Microsoft. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
 msgstr "Google veya Microsoft ile oturum açın. Amarnai yazışmalarınızı ve etiketlerinizi senkronize eder. Adınıza asla e-posta göndermez veya silmez."
 
@@ -5378,7 +5387,7 @@ msgstr "Henüz sıralanmamış ileti dizileri."
 msgid "Threads you've marked as important."
 msgstr "Önemli olarak işaretlediğin sohbetler."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:401
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:430
 msgid "Three steps to a sorted inbox."
 msgstr "Gelen kutunuzu düzene sokmak için 3 adım."
 

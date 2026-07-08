@@ -1014,7 +1014,7 @@ msgstr "สมาชิกคณะกรรมการ, พันธมิต�
 #~ msgid "Browse emails easily through your folders. Generate draft replies and copy them to Gmail."
 #~ msgstr "เรียกดูอีเมลในโฟลเดอร์ได้สะดวก สร้างฉบับร่างตอบกลับและคัดลอกไป Gmail"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:386
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:416
 msgid "Browse emails easily through your folders. Generate draft replies and copy them to your inbox."
 msgstr "เรียกดูอีเมลได้ง่ายผ่านโฟลเดอร์ สร้างอีเมลตอบกลับฉบับร่าง และคัดลอกลงในกล่องจดหมายของคุณ"
 
@@ -1185,7 +1185,7 @@ msgstr "เลือกการสมัครสมาชิก"
 #~ msgid "Choose a theme, or follow your system setting. Saved on this device."
 #~ msgstr "เลือกธีม หรือตั้งค่าตามระบบของคุณ. บันทึกบนอุปกรณ์นี้"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:323
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:328
 msgid "Choose email provider"
 msgstr "เลือกผู้ให้บริการอีเมล"
 
@@ -1318,6 +1318,7 @@ msgstr "เชื่อมต่อกล่องจดหมาย Gmail เ�
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:138
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:371
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:406
 #, fuzzy
 msgid "Connect Gmail"
@@ -1342,6 +1343,10 @@ msgstr "เชื่อมต่อ Gmail"
 #~ msgid "Connect Gmail and Amarnai starts sorting within minutes. Pricing is per workspace. Sorts new mail as it arrives, and works through years of backlog."
 #~ msgstr "เชื่อมต่อ Gmail ปุ๊บ Amarnai เริ่มจัดเรียงได้ในไม่กี่นาที ราคาคิดตามแต่ละ Workspace จัดเรียงอีเมลใหม่ทันทีที่มาถึง และจัดการอีเมลค้างปี"
 
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:364
+msgid "Connect Gmail button"
+msgstr "เชื่อมต่อ Gmail"
+
 #: ../../apps/extension/src/App.tsx:38
 #~ msgid "Connect Gmail on the web"
 #~ msgstr "เชื่อมต่อ Gmail บนเว็บ"
@@ -1356,25 +1361,29 @@ msgstr "เชื่อมต่อ Gmail เพื่อสร้างแผ�
 msgid "Connect Gmail to start triaging"
 msgstr "เชื่อมต่อ Gmail เพื่อเริ่มคัดกรอง"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:350
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:362
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:387
 #, fuzzy
 msgid "Connect inbox"
 msgstr "เชื่อมต่อกล่องจดหมาย"
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:347
-msgid "Connect inbox button"
-msgstr "ปุ่มเชื่อมต่อกล่องจดหมาย"
+#~ msgid "Connect inbox button"
+#~ msgstr "ปุ่มเชื่อมต่อกล่องจดหมาย"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:404
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:433
 #, fuzzy
 msgid "Connect once, generate your plan once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
 msgstr "เชื่อมต่อเพียงครั้งเดียว สร้างแผนเพียงครั้งเดียว แล้วปล่อยให้ Amarnai จัดการอีเมลใหม่และเธรดนับพันที่มีอยู่ในกล่องจดหมายของคุณ"
 
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:151
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:369
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:414
 #, fuzzy
 msgid "Connect Outlook"
+msgstr "เชื่อมต่อ Outlook"
+
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:363
+msgid "Connect Outlook button"
 msgstr "เชื่อมต่อ Outlook"
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:84
@@ -1842,7 +1851,7 @@ msgstr "กำลังลบ…"
 msgid "Describe what kinds of emails belong here: who they come from and what they are about. Be specific and use the actual names, topics, and words that show up in those emails. Describe what the emails are, not what you plan to do about them. The clearer your description, the more accurately your email is sorted here."
 msgstr "อธิบายว่าอีเมลประเภทใดควรอยู่ในที่นี้ มาจากใครและเกี่ยวกับอะไร ระบุให้ชัดเจนและใช้ชื่อ หัวข้อ และคำศัพท์จริงที่ปรากฏในอีเมลเหล่านั้น อธิบายว่าอีเมลเหล่านั้นคืออะไร ไม่ใช่อธิบายว่าคุณวางแผนจะทำอะไรกับมัน ยิ่งคำอธิบายของคุณชัดเจนเท่าไร อีเมลของคุณก็จะถูกจัดเรียงได้แม่นยำมากขึ้นเท่านั้น"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:373
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:401
 #, fuzzy
 msgid "Describe your folders"
 msgstr "อธิบายโฟลเดอร์ของคุณ"
@@ -2364,7 +2373,7 @@ msgstr "แถบกรอง"
 msgid "Finance"
 msgstr "การเงิน"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:384
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:413
 #, fuzzy
 msgid "Find and draft"
 msgstr "ค้นหาและร่าง"
@@ -3154,7 +3163,7 @@ msgstr "ยืนยันล่าสุด: {0}"
 #~ msgid "Lay out folders like <0>Customers</0>, <1>Investors</1>, <2>Hiring</2>. A simple sentence each is the whole config."
 #~ msgstr "จัดเรียงโฟลเดอร์ได้ง่ายๆ เช่น <0>ลูกค้า</0>, <1>นักลงทุน</1>, <2>การจ้างงาน</2> เพียงแค่ประโยคสั้นๆ ก็เป็นการกำหนดค่าทั้งหมดแล้ว"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:375
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:404
 msgid "Lay out folders like <0>Customers</0>, <1>Investors</1>, <2>Hiring</2>. A simple sentence each: that's the whole setup."
 msgstr "จัดวางโฟลเดอร์ เช่น <0>ลูกค้า</0>, <1>นักลงทุน</1>, <2>การจ้างงาน</2> เพียงประโยคง่าย ๆ แค่นี้ ก็เป็นการตั้งค่าทั้งหมดแล้ว"
 
@@ -4171,7 +4180,7 @@ msgstr "เรื่อง: การต่ออายุ Q3"
 msgid "Reactivate"
 msgstr "เปิดใช้งานใหม่"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:353
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:375
 #, fuzzy
 msgid "Read-only · OAuth · revoke anytime"
 msgstr "อ่านอย่างเดียว · OAuth · เพิกถอนได้ทุกเมื่อ"
@@ -4746,12 +4755,12 @@ msgstr "แผนแชร์ + คิวตรวจสอบ"
 #~ msgid "Shared taxonomy + review queue"
 #~ msgstr "รูปแบบการจัดหมวดหมู่ที่แชร์ + คิวตรวจสอบ"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:329
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:334
 #, fuzzy
 msgid "Show Gmail"
 msgstr "แสดง Gmail"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:338
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:343
 msgid "Show Outlook"
 msgstr "แสดง Outlook"
 
@@ -4776,7 +4785,7 @@ msgstr "ลงชื่อเข้าใช้เพื่อคัดแยก
 msgid "Sign in with Google"
 msgstr "ลงชื่อเข้าใช้ด้วย Google"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:364
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:392
 msgid "Sign in with Google or Microsoft. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
 msgstr "ลงชื่อเข้าใช้ด้วย Google หรือ Microsoft Amarnai จะซิงค์เธรดและป้ายกำกับของคุณ และจะไม่ส่งหรือลบข้อมูลในนามของคุณ"
 
@@ -5379,7 +5388,7 @@ msgstr "เธรดที่ยังไม่ได้จัดเรียง
 msgid "Threads you've marked as important."
 msgstr "เธรดที่คุณทำเครื่องหมายว่าสำคัญ"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:401
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:430
 msgid "Three steps to a sorted inbox."
 msgstr "3 ขั้นตอนสู่กล่องขาเข้าที่เป็นระเบียบ"
 

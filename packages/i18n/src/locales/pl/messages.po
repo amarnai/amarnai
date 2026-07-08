@@ -1013,7 +1013,7 @@ msgstr "Członkowie zarządu, istniejący partnerzy funduszu i aktualizacje port
 #~ msgid "Browse emails easily through your folders. Generate draft replies and copy them to Gmail."
 #~ msgstr "Łatwo przeglądaj e-maile w swoich folderach. Generuj robocze odpowiedzi i kopiuj je do Gmaila."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:386
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:416
 msgid "Browse emails easily through your folders. Generate draft replies and copy them to your inbox."
 msgstr "Łatwo przeglądaj e-maile w swoich folderach. Generuj wersje robocze odpowiedzi i kopiuj je do skrzynki odbiorczej."
 
@@ -1184,7 +1184,7 @@ msgstr "Wybierz subskrypcję"
 #~ msgid "Choose a theme, or follow your system setting. Saved on this device."
 #~ msgstr "Wybierz motyw lub użyj ustawienia systemowego. Zapisano na tym urządzeniu."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:323
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:328
 msgid "Choose email provider"
 msgstr "Wybierz dostawcę poczty"
 
@@ -1317,6 +1317,7 @@ msgstr "Podłącz skrzynkę Gmail, aby skonfigurować filtry synchronizacji."
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:138
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:371
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:406
 #, fuzzy
 msgid "Connect Gmail"
@@ -1341,6 +1342,10 @@ msgstr "Połącz z Gmailem"
 #~ msgid "Connect Gmail and Amarnai starts sorting within minutes. Pricing is per workspace. Sorts new mail as it arrives, and works through years of backlog."
 #~ msgstr "Połącz Gmaila, a Amarnai zacznie sortować w kilka minut. Rozliczanie za obszar roboczy. Sortuje nowe wiadomości na bieżąco i porządkuje wieloletnie zaległości."
 
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:364
+msgid "Connect Gmail button"
+msgstr "Połącz Gmail"
+
 #: ../../apps/extension/src/App.tsx:38
 #~ msgid "Connect Gmail on the web"
 #~ msgstr "Połącz Gmaila w przeglądarce"
@@ -1355,25 +1360,29 @@ msgstr "Połącz Gmail, by wygenerować plan ze skrzynki odbiorczej"
 msgid "Connect Gmail to start triaging"
 msgstr "Połącz Gmail, by rozpocząć porządkowanie"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:350
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:362
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:387
 #, fuzzy
 msgid "Connect inbox"
 msgstr "Podłącz skrzynkę"
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:347
-msgid "Connect inbox button"
-msgstr "Przycisk Podłącz skrzynkę"
+#~ msgid "Connect inbox button"
+#~ msgstr "Przycisk Podłącz skrzynkę"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:404
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:433
 #, fuzzy
 msgid "Connect once, generate your plan once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
 msgstr "Połącz raz, wygeneruj plan raz, a Amarnai zajmie się nowymi wiadomościami i tysiącami wątków, które już masz w skrzynce odbiorczej."
 
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:151
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:369
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:414
 #, fuzzy
 msgid "Connect Outlook"
+msgstr "Połącz Outlook"
+
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:363
+msgid "Connect Outlook button"
 msgstr "Połącz Outlook"
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:84
@@ -1841,7 +1850,7 @@ msgstr "Usuwanie…"
 msgid "Describe what kinds of emails belong here: who they come from and what they are about. Be specific and use the actual names, topics, and words that show up in those emails. Describe what the emails are, not what you plan to do about them. The clearer your description, the more accurately your email is sorted here."
 msgstr "Opisz, jakiego rodzaju e-maile tu należą: od kogo pochodzą i czego dotyczą. Bądź precyzyjny i używaj faktycznych nazw, tematów i słów, które pojawiają się w tych wiadomościach. Opisz, czym są e-maile, a nie to, co zamierzasz z nimi zrobić. Im jaśniejszy opis, tym dokładniej e-mail zostanie tu posortowany."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:373
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:401
 #, fuzzy
 msgid "Describe your folders"
 msgstr "Opisz swoje foldery"
@@ -2363,7 +2372,7 @@ msgstr "Panel filtrów"
 msgid "Finance"
 msgstr "Finanse"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:384
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:413
 #, fuzzy
 msgid "Find and draft"
 msgstr "Znajdź i szkicuj"
@@ -3153,7 +3162,7 @@ msgstr "Ostatnia weryfikacja: {0}"
 #~ msgid "Lay out folders like <0>Customers</0>, <1>Investors</1>, <2>Hiring</2>. A simple sentence each is the whole config."
 #~ msgstr "Ułóż foldery takie jak <0>Klienci</0>, <1>Inwestorzy</1>, <2>Rekrutacja</2>. Jedno proste zdanie to cała konfiguracja."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:375
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:404
 msgid "Lay out folders like <0>Customers</0>, <1>Investors</1>, <2>Hiring</2>. A simple sentence each: that's the whole setup."
 msgstr "Uporządkuj foldery, takie jak <0>Klienci</0>, <1>Inwestorzy</1>, <2>Rekrutacja</2>. Po jednym prostym zdaniu dla każdego – to cała konfiguracja."
 
@@ -4170,7 +4179,7 @@ msgstr "Dot.: odnowienie w Q3"
 msgid "Reactivate"
 msgstr "Aktywuj ponownie"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:353
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:375
 #, fuzzy
 msgid "Read-only · OAuth · revoke anytime"
 msgstr "Tylko do odczytu · OAuth · odwołaj w dowolnym momencie"
@@ -4745,12 +4754,12 @@ msgstr "Plan współdzielony + kolejka recenzji"
 #~ msgid "Shared taxonomy + review queue"
 #~ msgstr "Wspólna taksonomia + kolejka przeglądu"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:329
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:334
 #, fuzzy
 msgid "Show Gmail"
 msgstr "Pokaż Gmaila"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:338
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:343
 msgid "Show Outlook"
 msgstr "Pokaż Outlooka"
 
@@ -4775,7 +4784,7 @@ msgstr "Zaloguj się, aby uporządkować swoją skrzynkę odbiorczą."
 msgid "Sign in with Google"
 msgstr "Zaloguj się przez Google"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:364
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:392
 msgid "Sign in with Google or Microsoft. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
 msgstr "Zaloguj się przez Google lub Microsoft. Amarnai synchronizuje Twoje wątki i etykiety. Nigdy nie wysyła ani nie usuwa wiadomości w Twoim imieniu."
 
@@ -5378,7 +5387,7 @@ msgstr "Wątki, które nie zostały jeszcze posortowane."
 msgid "Threads you've marked as important."
 msgstr "Wątki oznaczone przez Ciebie jako ważne."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:401
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:430
 msgid "Three steps to a sorted inbox."
 msgstr "Trzy kroki do uporządkowania skrzynki."
 

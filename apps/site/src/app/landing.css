@@ -459,12 +459,19 @@
   box-shadow: var(--shadow-1);
 }
 
+.ld-step-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
 .ld-step h3 {
   font-size: 18px;
   font-weight: 600;
   letter-spacing: -0.015em;
   color: var(--ink);
-  margin-bottom: 8px;
 }
 
 .ld-step p {
@@ -494,13 +501,11 @@
 }
 
 /* Art 1 — Connect inbox */
-.ld-sa-connect { flex-direction: column; gap: 11px; position: relative; }
+.ld-sa-connect { flex-direction: column; gap: 11px; }
 
-/* Quiet Gmail/Outlook toggle in the corner of the connect mock. */
+/* Quiet Gmail/Outlook toggle in the connect step header. */
 .ld-sa-toggle {
-  position: absolute;
-  top: 8px;
-  right: 8px;
+  flex: none;
   display: inline-flex;
   gap: 2px;
   padding: 2px;

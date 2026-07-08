@@ -1014,7 +1014,7 @@ msgstr "이사회 구성원, 기존 펀드 파트너 및 포트폴리오 업데�
 #~ msgid "Browse emails easily through your folders. Generate draft replies and copy them to Gmail."
 #~ msgstr "폴더에서 이메일을 편리하게 찾아보고, 답장 초안을 생성하여 Gmail로 복사하세요."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:386
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:416
 msgid "Browse emails easily through your folders. Generate draft replies and copy them to your inbox."
 msgstr "폴더를 통해 이메일을 편리하게 살펴보세요. 답장 초안을 생성하고 받은편지함으로 복사할 수 있습니다."
 
@@ -1185,7 +1185,7 @@ msgstr "구독 선택"
 #~ msgid "Choose a theme, or follow your system setting. Saved on this device."
 #~ msgstr "테마를 선택하거나 시스템 설정을 따르세요. 이 기기에 저장됩니다."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:323
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:328
 msgid "Choose email provider"
 msgstr "이메일 공급자 선택"
 
@@ -1318,6 +1318,7 @@ msgstr "동기화 필터를 설정하려면 Gmail 받은 편지함을 연결하�
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:138
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:371
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:406
 #, fuzzy
 msgid "Connect Gmail"
@@ -1342,6 +1343,10 @@ msgstr "Gmail 연결"
 #~ msgid "Connect Gmail and Amarnai starts sorting within minutes. Pricing is per workspace. Sorts new mail as it arrives, and works through years of backlog."
 #~ msgstr "Gmail을 연결하면 Amarnai가 몇 분 내 분류를 시작합니다. 요금은 워크스페이스 단위이며, 새 메일은 도착 즉시, 기존 메일은 수년치까지 분류합니다."
 
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:364
+msgid "Connect Gmail button"
+msgstr "Gmail 연결하기"
+
 #: ../../apps/extension/src/App.tsx:38
 #~ msgid "Connect Gmail on the web"
 #~ msgstr "웹에서 Gmail 연결"
@@ -1356,26 +1361,30 @@ msgstr "Gmail을 연결하여 받은 편지함에서 계획을 생성하세요."
 msgid "Connect Gmail to start triaging"
 msgstr "Gmail을 연결하고 분류를 시작하세요."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:350
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:362
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:387
 #, fuzzy
 msgid "Connect inbox"
 msgstr "받은편지함 연결"
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:347
-msgid "Connect inbox button"
-msgstr "받은편지함 연결 버튼"
+#~ msgid "Connect inbox button"
+#~ msgstr "받은편지함 연결 버튼"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:404
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:433
 #, fuzzy
 msgid "Connect once, generate your plan once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
 msgstr "한 번 연결하고 계획을 한 번 생성하면, Amarnai가 새 메일과 받은 편지함에 이미 쌓여있는 수많은 스레드를 처리합니다."
 
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:151
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:369
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:414
 #, fuzzy
 msgid "Connect Outlook"
 msgstr "Outlook 연결"
+
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:363
+msgid "Connect Outlook button"
+msgstr "Outlook 연결하기"
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:84
 #, fuzzy
@@ -1842,7 +1851,7 @@ msgstr "삭제 중..."
 msgid "Describe what kinds of emails belong here: who they come from and what they are about. Be specific and use the actual names, topics, and words that show up in those emails. Describe what the emails are, not what you plan to do about them. The clearer your description, the more accurately your email is sorted here."
 msgstr "이곳에 분류될 이메일의 종류를 설명하세요. 발신자와 내용, 그리고 이메일에 실제 나타나는 이름, 주제, 단어를 구체적으로 알려주세요. 이메일로 무엇을 할지가 아니라, 이메일의 특징을 묘사해야 합니다. 설명이 명확할수록 이메일 분류 정확도가 높아집니다."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:373
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:401
 #, fuzzy
 msgid "Describe your folders"
 msgstr "폴더 설명"
@@ -2364,7 +2373,7 @@ msgstr "필터 영역"
 msgid "Finance"
 msgstr "재무"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:384
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:413
 #, fuzzy
 msgid "Find and draft"
 msgstr "찾기 및 초안 작성"
@@ -3154,7 +3163,7 @@ msgstr "최종 확인: {0}"
 #~ msgid "Lay out folders like <0>Customers</0>, <1>Investors</1>, <2>Hiring</2>. A simple sentence each is the whole config."
 #~ msgstr "예를 들어 <0>고객</0>, <1>투자자</1>, <2>채용</2>과 같은 폴더를 만드세요. 각 폴더별로 간단한 문장 하나면 모든 설정이 끝납니다."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:375
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:404
 msgid "Lay out folders like <0>Customers</0>, <1>Investors</1>, <2>Hiring</2>. A simple sentence each: that's the whole setup."
 msgstr "<0>고객</0>, <1>투자자</1>, <2>채용</2>과 같이 폴더를 설정하세요. 각 폴더에 간단한 문장으로 설명을 추가하면 설정 완료입니다."
 
@@ -4171,7 +4180,7 @@ msgstr "Re: 3분기 갱신"
 msgid "Reactivate"
 msgstr "재활성화"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:353
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:375
 #, fuzzy
 msgid "Read-only · OAuth · revoke anytime"
 msgstr "읽기 전용 · OAuth · 언제든지 철회 가능"
@@ -4746,12 +4755,12 @@ msgstr "공유 플랜 + 검토 큐"
 #~ msgid "Shared taxonomy + review queue"
 #~ msgstr "공유 분류 체계 + 검토 대기열"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:329
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:334
 #, fuzzy
 msgid "Show Gmail"
 msgstr "Gmail 표시"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:338
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:343
 msgid "Show Outlook"
 msgstr "Outlook 표시"
 
@@ -4776,7 +4785,7 @@ msgstr "수신함을 정리하려면 로그인하세요."
 msgid "Sign in with Google"
 msgstr "Google로 로그인"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:364
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:392
 msgid "Sign in with Google or Microsoft. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
 msgstr "Google 또는 Microsoft로 로그인하세요. Amarnai는 스레드와 라벨을 동기화합니다. 사용자를 대신하여 메일을 보내거나 삭제하지 않습니다."
 
@@ -5379,7 +5388,7 @@ msgstr "아직 정리되지 않은 스레드."
 msgid "Threads you've marked as important."
 msgstr "중요 표시한 스레드"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:401
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:430
 msgid "Three steps to a sorted inbox."
 msgstr "깔끔한 받은 편지함, 3단계로 완성."
 

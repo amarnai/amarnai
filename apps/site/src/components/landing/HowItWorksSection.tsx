@@ -310,44 +310,66 @@ const penIcon = (
   </svg>
 );
 
-function StepArt1() {
+type Provider = "gmail" | "outlook";
+
+function ProviderToggle({
+  provider,
+  onChange,
+}: {
+  provider: Provider;
+  onChange: (p: Provider) => void;
+}) {
   const { _ } = useLingui();
-  const [provider, setProvider] = useState<"gmail" | "outlook">("gmail");
+
+  return (
+    <div
+      className="ld-sa-toggle"
+      role="group"
+      aria-label={_(msg`Choose email provider`)}
+    >
+      <button
+        type="button"
+        className={`ld-sa-toggle-btn${provider === "gmail" ? " active" : ""}`}
+        aria-pressed={provider === "gmail"}
+        aria-label={_(msg`Show Gmail`)}
+        onClick={() => onChange("gmail")}
+      >
+        <GoogleGIcon size={13} />
+      </button>
+      <button
+        type="button"
+        className={`ld-sa-toggle-btn${provider === "outlook" ? " active" : ""}`}
+        aria-pressed={provider === "outlook"}
+        aria-label={_(msg`Show Outlook`)}
+        onClick={() => onChange("outlook")}
+      >
+        <OutlookIcon size={13} />
+      </button>
+    </div>
+  );
+}
+
+function StepArt1({ provider }: { provider: Provider }) {
+  const { _ } = useLingui();
   const ProviderIcon = provider === "outlook" ? OutlookIcon : GoogleGIcon;
 
   return (
     <div className="ld-sa ld-sa-connect">
-      <div
-        className="ld-sa-toggle"
-        role="group"
-        aria-label={_(msg`Choose email provider`)}
-      >
-        <button
-          type="button"
-          className={`ld-sa-toggle-btn${provider === "gmail" ? " active" : ""}`}
-          aria-pressed={provider === "gmail"}
-          aria-label={_(msg`Show Gmail`)}
-          onClick={() => setProvider("gmail")}
-        >
-          <GoogleGIcon size={13} />
-        </button>
-        <button
-          type="button"
-          className={`ld-sa-toggle-btn${provider === "outlook" ? " active" : ""}`}
-          aria-pressed={provider === "outlook"}
-          aria-label={_(msg`Show Outlook`)}
-          onClick={() => setProvider("outlook")}
-        >
-          <OutlookIcon size={13} />
-        </button>
-      </div>
       <span
         className="ld-sa-gbtn primary"
         role="img"
-        aria-label={_(msg`Connect inbox button`)}
+        aria-label={
+          provider === "outlook"
+            ? _(msg`Connect Outlook button`)
+            : _(msg`Connect Gmail button`)
+        }
       >
         <ProviderIcon size={15} className="ld-sa-g" />
-        <Trans>Connect inbox</Trans>
+        {provider === "outlook" ? (
+          <Trans>Connect Outlook</Trans>
+        ) : (
+          <Trans>Connect Gmail</Trans>
+        )}
       </span>
       <div className="ld-sa-hint">
         <Trans>Read-only · OAuth · revoke anytime</Trans>
@@ -356,43 +378,50 @@ function StepArt1() {
   );
 }
 
-const steps = [
-  {
-    id: "connect",
-    title: <Trans>Connect inbox</Trans>,
-    body: (
-      <Trans>
-        Sign in with Google or Microsoft. Amarnai syncs your threads and labels.
-        It never sends or deletes on your behalf.
-      </Trans>
-    ),
-    art: <StepArt1 />,
-  },
-  {
-    id: "describe",
-    title: <Trans>Describe your folders</Trans>,
-    body: (
-      <Trans>
-        Lay out folders like <em>Customers</em>, <em>Investors</em>,{" "}
-        <em>Hiring</em>. A simple sentence each: that&apos;s the whole setup.
-      </Trans>
-    ),
-    art: <StepArt2 />,
-  },
-  {
-    id: "find",
-    title: <Trans>Find and draft</Trans>,
-    body: (
-      <Trans>
-        Browse emails easily through your folders. Generate draft replies and
-        copy them to your inbox.
-      </Trans>
-    ),
-    art: <StepArt3 />,
-  },
-];
-
 export function HowItWorksSection() {
+  const [provider, setProvider] = useState<Provider>("gmail");
+
+  const steps = [
+    {
+      id: "connect",
+      title: <Trans>Connect inbox</Trans>,
+      headerExtra: (
+        <ProviderToggle provider={provider} onChange={setProvider} />
+      ),
+      body: (
+        <Trans>
+          Sign in with Google or Microsoft. Amarnai syncs your threads and
+          labels. It never sends or deletes on your behalf.
+        </Trans>
+      ),
+      art: <StepArt1 provider={provider} />,
+    },
+    {
+      id: "describe",
+      title: <Trans>Describe your folders</Trans>,
+      headerExtra: null,
+      body: (
+        <Trans>
+          Lay out folders like <em>Customers</em>, <em>Investors</em>,{" "}
+          <em>Hiring</em>. A simple sentence each: that&apos;s the whole setup.
+        </Trans>
+      ),
+      art: <StepArt2 />,
+    },
+    {
+      id: "find",
+      title: <Trans>Find and draft</Trans>,
+      headerExtra: null,
+      body: (
+        <Trans>
+          Browse emails easily through your folders. Generate draft replies and
+          copy them to your inbox.
+        </Trans>
+      ),
+      art: <StepArt3 />,
+    },
+  ];
+
   return (
     <section className="ld-section" id="how">
       <div className="ld-wrap">
@@ -417,9 +446,10 @@ export function HowItWorksSection() {
                 </div>
               )}
               <div className="ld-step ld-reveal">
-                <h3>
-                  {step.title}
-                </h3>
+                <div className="ld-step-head">
+                  <h3>{step.title}</h3>
+                  {step.headerExtra}
+                </div>
                 <p>{step.body}</p>
                 <div className="ld-step-art">{step.art}</div>
               </div>
