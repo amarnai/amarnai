@@ -1,7 +1,8 @@
-import { db, deleteGmailDisconnectedNotifications } from "@amarnai/db";
+import { deleteGmailDisconnectedNotifications } from "@amarnai/db";
 import { encrypt } from "@amarnai/gmail";
 import { fetchOutlookProfile } from "@amarnai/outlook";
 import { assertNoProviderConflict } from "./connection-guard.js";
+import { upsertEmailConnection } from "./upsert-connection.js";
 
 export type StoreOutlookConnectionInput = {
   workspaceId: string;
@@ -26,23 +27,16 @@ export async function storeOutlookConnection({
   await assertNoProviderConflict(workspaceId, "OUTLOOK");
 
   const profile = await fetchOutlookProfile(accessToken);
-  const encryptedRefreshToken = encrypt(refreshToken);
 
-  const connectionData = {
-    provider: "OUTLOOK" as const,
+  // Graph returns a stable subjectId (Entra object id) up front. Sets every
+  // provider-scoped field so a reconnect cannot inherit stale state.
+  await upsertEmailConnection({
+    workspaceId,
+    provider: "OUTLOOK",
     subjectId: profile.subjectId,
     emailAddress: profile.emailAddress,
-    encryptedRefreshToken,
+    encryptedRefreshToken: encrypt(refreshToken),
     grantedScopes,
-    status: "ACTIVE" as const,
-    lastVerifiedAt: new Date(),
-    watchExpiresAt: null,
-  };
-
-  await db.emailConnection.upsert({
-    where: { workspaceId },
-    create: { workspaceId, ...connectionData },
-    update: connectionData,
   });
 
   // Connection is ACTIVE again — clear any "reconnect your account" nudge.

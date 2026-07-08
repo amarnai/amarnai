@@ -1,6 +1,7 @@
-import { db, deleteGmailDisconnectedNotifications } from "@amarnai/db";
+import { deleteGmailDisconnectedNotifications } from "@amarnai/db";
 import { encrypt, fetchGmailProfile } from "@amarnai/gmail";
 import { assertNoProviderConflict } from "./connection-guard.js";
+import { upsertEmailConnection } from "./upsert-connection.js";
 
 // Re-exported so existing importers keep resolving it from here; the class and
 // the guard now live in ./connection-guard so Outlook can share them.
@@ -28,20 +29,18 @@ export async function storeGmailConnection({
   await assertNoProviderConflict(workspaceId, "GMAIL");
 
   const profile = await fetchGmailProfile(accessToken);
-  const encryptedRefreshToken = encrypt(refreshToken);
 
-  const connectionData = {
+  // Gmail has no stable provider subject id (gmail.readonly exposes none), so
+  // subjectId is always null. upsertEmailConnection resets every provider-scoped
+  // field, so a Gmail reconnect cannot inherit a stale watch expiry (or, absent
+  // the cross-provider guard above, stale Outlook provider/subjectId).
+  await upsertEmailConnection({
+    workspaceId,
+    provider: "GMAIL",
+    subjectId: null,
     emailAddress: profile.emailAddress,
-    encryptedRefreshToken,
+    encryptedRefreshToken: encrypt(refreshToken),
     grantedScopes,
-    status: "ACTIVE" as const,
-    lastVerifiedAt: new Date(),
-  };
-
-  await db.emailConnection.upsert({
-    where: { workspaceId },
-    create: { workspaceId, ...connectionData },
-    update: connectionData,
   });
 
   // Connection is ACTIVE again — clear any "reconnect your account" nudge so it

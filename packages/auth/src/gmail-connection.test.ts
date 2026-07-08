@@ -59,6 +59,12 @@ describe("storeGmailConnection", () => {
 
     expect(call.where).toEqual({ workspaceId: "ws-1" });
     const sharedFields = {
+      // Every provider-scoped field is reset so a Gmail (re)connect can never
+      // inherit stale state — provider/subjectId pinned and the push-watch
+      // expiry cleared, matching the Outlook and web-callback connect paths.
+      provider: "GMAIL",
+      subjectId: null,
+      watchExpiresAt: null,
       emailAddress: "a@b.com",
       encryptedRefreshToken: "enc(rt)",
       grantedScopes: [GMAIL_SCOPE],

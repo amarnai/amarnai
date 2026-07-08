@@ -1,4 +1,4 @@
-import { db } from "@amarnai/db";
+import { upsertEmailConnection } from "@amarnai/auth";
 import type { MailProvider } from "@/lib/api";
 
 type PersistConnectionInput = {
@@ -13,44 +13,18 @@ type PersistConnectionInput = {
 };
 
 /**
- * Upsert the workspace's single EmailConnection, resetting EVERY provider-scoped
- * field so connecting a provider can never inherit stale state from a prior one.
+ * Persist the workspace's single EmailConnection from an OAuth callback.
  *
- * This is the single place both OAuth callbacks persist a connection, so Gmail
- * and Outlook cannot drift apart. The bug this prevents: switching Outlook →
- * Gmail while only updating a subset of columns left `provider` and `subjectId`
- * pointing at Outlook, so the sync built an Outlook adapter around a Gmail token
- * and auth-failed, disconnecting the freshly connected inbox.
- *
- * status is set ACTIVE and the push-watch expiry cleared (the post-connect hooks
- * re-register the watch/subscription).
+ * Unlike storeGmailConnection / storeOutlookConnection, this path does NOT run
+ * the cross-provider guard: the web connect callbacks are the deliberate
+ * provider-switch surface (behind the "this erases the other inbox"
+ * confirmation), so connecting Gmail here may replace an Outlook connection and
+ * vice versa. It shares the same upsertEmailConnection primitive, so the set of
+ * provider-scoped fields reset on a switch stays identical across every connect
+ * path and cannot inherit stale state from a prior provider.
  */
 export async function persistEmailConnection(
   input: PersistConnectionInput,
 ): Promise<void> {
-  const {
-    workspaceId,
-    provider,
-    subjectId,
-    emailAddress,
-    encryptedRefreshToken,
-    grantedScopes,
-  } = input;
-
-  const connectionData = {
-    provider,
-    subjectId,
-    emailAddress,
-    encryptedRefreshToken,
-    grantedScopes,
-    status: "ACTIVE" as const,
-    lastVerifiedAt: new Date(),
-    watchExpiresAt: null,
-  };
-
-  await db.emailConnection.upsert({
-    where: { workspaceId },
-    create: { workspaceId, ...connectionData },
-    update: connectionData,
-  });
+  await upsertEmailConnection(input);
 }
