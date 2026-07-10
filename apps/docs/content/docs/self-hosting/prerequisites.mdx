@@ -5,7 +5,7 @@ description: What you need before self-hosting Amarnai.
 
 ## System requirements
 
-- **Docker 24+** with the Compose plugin — verify with `docker compose version`
+- **Docker 24+** with the Compose plugin. Verify with `docker compose version`
 - A machine with at least 1 GB RAM (2 GB recommended)
 
 ## Google Cloud project
@@ -18,8 +18,8 @@ Amarnai uses Google OAuth for both user authentication and Gmail inbox access. Y
 2. Click **Create Credentials → OAuth 2.0 Client ID** (Web application)
 3. Under **Authorised JavaScript origins**, add your domain (e.g. `https://mail.yourdomain.com`)
 4. Under **Authorised redirect URIs**, add **both**:
-   - `https://mail.yourdomain.com/api/auth/callback/google` — NextAuth sign-in
-   - `https://mail.yourdomain.com/api/gmail/callback` — Gmail inbox connection
+   - `https://mail.yourdomain.com/api/auth/callback/google` for NextAuth sign-in
+   - `https://mail.yourdomain.com/api/gmail/callback` for Gmail inbox connection
 5. Copy the **Client ID** and **Client Secret** into `.env` as `AUTH_GOOGLE_ID` and `AUTH_GOOGLE_SECRET`
 
 ### Enable required APIs
@@ -28,44 +28,60 @@ In **APIs & Services → Library**, enable:
 
 - **Gmail API** (`gmail.googleapis.com`)
 
+For real-time Gmail sync (optional), also enable the **Pub/Sub API** and set the `GMAIL_PUBSUB_*` variables in [Configuration](/docs/self-hosting/configuration). Without them, Amarnai polls on `INBOX_SYNC_INTERVAL_MS`.
+
 ### Generate secrets
 
 ```bash
-openssl rand -base64 32   # → AUTH_SECRET
-openssl rand -hex 32      # → INTERNAL_API_SECRET
-openssl rand -hex 32      # → GMAIL_TOKEN_ENCRYPTION_KEY
+openssl rand -base64 32   # AUTH_SECRET
+openssl rand -hex 32      # INTERNAL_API_SECRET
+openssl rand -hex 32      # AUTH_JWT_SECRET
+openssl rand -hex 32      # GMAIL_TOKEN_ENCRYPTION_KEY
 ```
+
+## Outlook (optional, beta)
+
+Outlook is supported read-only via Microsoft Graph. Skip this section if you only need Gmail.
+
+1. In the [Microsoft Entra admin center](https://entra.microsoft.com/), register a **confidential Web app**.
+2. For **Supported account types**, choose "Accounts in any organizational directory (multitenant) and personal Microsoft accounts". The tenant/authority is then the literal string `common`.
+3. Add the redirect URI `https://mail.yourdomain.com/api/outlook/callback`.
+4. Add delegated **API permissions**: `Mail.Read`, `offline_access`, `User.Read` (none require admin consent).
+5. Create a client secret, then set `MS_GRAPH_CLIENT_ID`, `MS_GRAPH_CLIENT_SECRET`, `MS_GRAPH_TENANT=common`, and `OUTLOOK_OAUTH_CALLBACK_URL`, and add `outlook` to `MAIL_PROVIDERS` (e.g. `MAIL_PROVIDERS=gmail,outlook`).
+
+For real-time Outlook sync, also set `MS_GRAPH_NOTIFICATION_URL` (a public HTTPS webhook) and `MS_GRAPH_SUBSCRIPTION_SECRET`. When unset, Outlook runs polling-only.
 
 ## AI providers
 
-Amarnai needs two AI capabilities: an LLM for sorting decisions and an embedding model for semantic similarity.
+Amarnai needs two AI capabilities: an LLM for sorting decisions and an embedding model for semantic similarity. The recommended production setup is Gemini for both (cheap, and free within Google's quota). Get a key from [Google AI Studio](https://aistudio.google.com/apikey).
 
 ### LLM
 
-Set `AI_PROVIDER=frontier` and configure your provider:
+Set `AI_PROVIDER=frontier` and configure Gemini through its OpenAI-compatible endpoint:
 
 ```bash
-FRONTIER_LLM_PROVIDER=openai        # or any OpenAI-compatible provider
-FRONTIER_LLM_API_KEY=<your key>
-FRONTIER_LLM_MODEL=gpt-4o-mini
+AI_PROVIDER=frontier
+FRONTIER_LLM_PROVIDER=gemini
+FRONTIER_LLM_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai/
+FRONTIER_LLM_MODEL=gemini-2.5-flash-lite
+FRONTIER_LLM_API_KEY=<your Google AI Studio key>
 ```
 
-Any OpenAI-compatible endpoint works — set `FRONTIER_LLM_BASE_URL` to point at a different host.
+OpenAI, or any OpenAI-compatible endpoint, is a supported alternative: set `FRONTIER_LLM_PROVIDER=openai`, `FRONTIER_LLM_MODEL=gpt-4o-mini`, and point `FRONTIER_LLM_BASE_URL` at a custom host if needed.
 
 ### Embeddings
 
 Set `EMBEDDING_PROVIDER=frontier` and configure the provider you want to use.
 
-**Gemini** (recommended — free within Google's quota limits, 768-dim vectors):
+**Gemini** (recommended, 768-dim vectors):
 
 ```bash
 EMBEDDING_PROVIDER=frontier
 FRONTIER_EMBEDDING_PROVIDER=gemini
 FRONTIER_EMBEDDING_API_KEY=<your Google AI Studio key>
-FRONTIER_EMBEDDING_MODEL=text-embedding-004
+FRONTIER_EMBEDDING_MODEL=gemini-embedding-001
+FRONTIER_EMBEDDING_DIMENSIONS=768
 ```
-
-Get a key from [Google AI Studio](https://aistudio.google.com/apikey).
 
 **OpenAI** (or any OpenAI-compatible endpoint):
 
@@ -78,9 +94,20 @@ FRONTIER_EMBEDDING_MODEL=text-embedding-3-small
 # FRONTIER_EMBEDDING_BASE_URL=https://my-endpoint.example.com/v1
 ```
 
-## SMTP
+Use the same embedding model and dimensions everywhere you embed. Changing either re-embeds all stored vectors.
 
-Amarnai sends email for account verification and password resets. Configure an SMTP provider such as AWS SES:
+## Email
+
+Amarnai sends email for account verification and password resets, via Resend (recommended) or SMTP. Set one of the two.
+
+Resend (recommended, avoids SMTP port blocking on most cloud hosts):
+
+```bash
+EMAIL_FROM=noreply@yourdomain.com
+RESEND_API_KEY=<your Resend API key>
+```
+
+SMTP (for example AWS SES):
 
 ```bash
 EMAIL_FROM=noreply@yourdomain.com

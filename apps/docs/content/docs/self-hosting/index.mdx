@@ -3,7 +3,7 @@ title: Self-Hosting
 description: Run Amarnai on your own infrastructure using Docker Compose.
 ---
 
-Amarnai ships as a set of Docker images that start with a single `docker compose` command. All services — web UI, API, background worker, Postgres, and Redis — are defined in `docker-compose.selfhost.yml`.
+Amarnai ships as a set of Docker images that start with a single `docker compose` command. All services (web UI, API, background worker, Postgres, and Redis) are defined in `docker-compose.selfhost.yml`.
 
 ## Quick start
 
@@ -12,14 +12,14 @@ Amarnai ships as a set of Docker images that start with a single `docker compose
 git clone https://github.com/BenAzlay/amarnai.git
 cd amarnai
 
-# 2. Create your env file
-cp .env.example .env
+# 2. Create your env file from the self-host template
+cp .env.selfhost.example .env
 
 # 3. Fill in every required value (see Configuration)
 #    AUTH_SECRET, AUTH_GOOGLE_ID, AUTH_GOOGLE_SECRET,
-#    INTERNAL_API_SECRET, GMAIL_TOKEN_ENCRYPTION_KEY,
+#    INTERNAL_API_SECRET, AUTH_JWT_SECRET, GMAIL_TOKEN_ENCRYPTION_KEY,
 #    FRONTIER_LLM_API_KEY, FRONTIER_EMBEDDING_API_KEY,
-#    SMTP_HOST / SMTP_USER / SMTP_PASS, EMAIL_FROM
+#    EMAIL_FROM plus RESEND_API_KEY (or SMTP_HOST / SMTP_USER / SMTP_PASS)
 #    Update AUTH_URL, CORS_ORIGIN, and GMAIL_OAUTH_CALLBACK_URL to your domain.
 
 # 4. Build images and start all services
@@ -28,6 +28,8 @@ docker compose -f docker-compose.selfhost.yml up -d --build
 ```
 
 The web UI is available at `http://localhost:3000` (or your configured domain).
+
+To offer Outlook (read-only, beta) alongside Gmail, add `outlook` to `MAIL_PROVIDERS` and set the `MS_GRAPH_*` variables. See [Prerequisites](/docs/self-hosting/prerequisites) and [Configuration](/docs/self-hosting/configuration).
 
 ## Service ports
 
@@ -47,7 +49,7 @@ git pull
 docker compose -f docker-compose.selfhost.yml up -d --build
 ```
 
-Migrations run automatically on each deploy via the `migrate` service — there is no manual migration step.
+Migrations run automatically on each deploy via the `migrate` service, so there is no manual migration step.
 
 ## Reverse proxy
 

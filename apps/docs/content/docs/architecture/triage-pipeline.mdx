@@ -1,19 +1,19 @@
 ---
 title: Triage Pipeline
-description: How Amarnai sorts Gmail threads from inbox to labelled category.
+description: How Amarnai sorts email threads from inbox to labelled category.
 ---
 
-The triage pipeline is the core of Amarnai. It runs inside the worker for every thread that needs sorting — both new threads arriving in real time and existing threads during a backfill.
+The triage pipeline is the core of Amarnai. It runs inside the worker for every thread that needs sorting: both new threads arriving in real time and existing threads during a backfill. It reads the inbox through the provider seam (`packages/mail`), so the same pipeline serves Gmail and Outlook connections unchanged.
 
 ## Pipeline stages
 
 ```
-Gmail inbox
+Provider inbox (Gmail or Outlook)
     │
     ▼
 1. Fetch thread
-    │  Pull the full thread (all messages) via the Gmail API.
-    │  Only metadata and a short snippet are stored — full bodies
+    │  Pull the full thread (all messages) through the mail provider.
+    │  Only metadata and a short snippet are stored; full bodies
     │  are never persisted.
     ▼
 2. Filter messages
@@ -41,30 +41,32 @@ Gmail inbox
     │  - Policy decides the final action, not the prompt.
     ▼
 7. Apply label
-    │  The Gmail API applies the corresponding label to the thread.
+    │  The provider applies the corresponding label to the thread.
     │  Amarnai never modifies thread content or sends email.
     ▼
 Done
 ```
 
+Amarnai can also generate a suggested draft reply for a thread. Drafts are always presented for user approval and are never auto-sent.
+
 ## Real-time vs. backfill
 
-**Real-time:** The worker polls each connected inbox on a configurable interval (`INBOX_SYNC_INTERVAL_MS`, default 5 minutes). New threads and threads with new messages are enqueued for triage.
+**Real-time:** The worker polls each connected inbox on a configurable interval (`INBOX_SYNC_INTERVAL_MS`, default 5 minutes), and enqueues new threads and threads with new messages for triage. When push is configured, near-real-time delivery replaces the wait between polls: Gmail via Google Cloud Pub/Sub, Outlook via Microsoft Graph change-notification subscriptions. Polling continues as a fallback for missed events.
 
-**Backfill:** Users can trigger a full-inbox sort from the UI. This enqueues all threads in the inbox as individual jobs. Jobs are idempotent — running triage on an already-sorted thread is safe and produces the same result.
+**Backfill:** Users can trigger a full-inbox sort from the UI. This enqueues all threads in the inbox as individual jobs. Jobs are idempotent, so running triage on an already-sorted thread is safe and produces the same result.
 
 ## AI provider abstraction
 
-The pipeline does not call OpenAI or Gemini directly. It goes through the `packages/ai` provider abstraction, which routes to the configured backend:
+The pipeline does not call the model API directly. It goes through the `packages/ai` provider abstraction, which routes to the configured backend:
 
 | `AI_PROVIDER`  | Used for               |
 |----------------|------------------------|
-| `frontier`     | Production             |
+| `frontier`     | Production (Gemini by default; any OpenAI-compatible API) |
 | `ollama`       | Local development      |
 | `mock`         | Deterministic testing  |
 
-Swapping providers requires only an env var change — no code changes.
+Swapping providers requires only an env var change, no code changes.
 
 ## Taxonomy
 
-Categories are defined in a per-workspace taxonomy — a tree of named nodes (e.g. `Work → Invoices`, `Personal → Travel`). Each node has a name and description used to generate its embedding. The taxonomy is what the embedding sorter compares threads against.
+Categories are defined in a per-workspace taxonomy: a tree of named nodes (for example `Work → Invoices`, `Personal → Travel`). Each node has a name and description used to generate its embedding, and the taxonomy is what the embedding sorter compares threads against. Amarnai can also generate a starting taxonomy from your existing inbox.

@@ -26,8 +26,8 @@ All configuration is done through environment variables in a single `.env` file 
 |----------------------------|--------------------------------|----------------------------------------------------------------------------|
 | `API_PORT`                 | `3001`                         | Port the API server listens on                                             |
 | `WORKER_PORT`              | `3002`                         | Port the worker process listens on                                         |
-| `INBOX_SYNC_INTERVAL_MS`   | `300000`                       | How often the worker polls each connected Gmail inbox (milliseconds)       |
-| `CORS_ORIGIN`              | `http://localhost:3000`        | Allowed CORS origin — set to your web app domain in production             |
+| `INBOX_SYNC_INTERVAL_MS`   | `300000`                       | How often the worker polls each connected inbox, in milliseconds (fallback when push is not configured) |
+| `CORS_ORIGIN`              | `http://localhost:3000`        | Allowed CORS origin. Set to your web app domain in production              |
 
 ## Auth
 
@@ -37,7 +37,8 @@ All configuration is done through environment variables in a single `.env` file 
 | `AUTH_URL`             | Yes      | Public URL of the web app (e.g. `https://mail.yourdomain.com`)                               |
 | `AUTH_GOOGLE_ID`       | Yes      | Google OAuth Client ID                                                                       |
 | `AUTH_GOOGLE_SECRET`   | Yes      | Google OAuth Client Secret                                                                   |
-| `INTERNAL_API_SECRET`  | Yes      | Shared secret for server-action → API calls. Generate with `openssl rand -hex 32`            |
+| `INTERNAL_API_SECRET`  | Yes      | Shared secret for server-action to API calls. Generate with `openssl rand -hex 32`           |
+| `AUTH_JWT_SECRET`      | Yes      | Signs per-user access tokens for native clients (browser extension, mobile). Generate with `openssl rand -hex 32` |
 
 ## Gmail
 
@@ -46,30 +47,100 @@ All configuration is done through environment variables in a single `.env` file 
 | `GMAIL_OAUTH_CALLBACK_URL`  | Yes      | Redirect URI registered in Google Cloud Console (e.g. `https://mail.yourdomain.com/api/gmail/callback`)       |
 | `GMAIL_TOKEN_ENCRYPTION_KEY`| Yes      | 64-char hex string (32 bytes) for AES-256-GCM encryption of stored refresh tokens. `openssl rand -hex 32`    |
 
+### Gmail push (optional, real-time)
+
+Enables real-time inbox sync via Google Cloud Pub/Sub instead of polling. Leave unset to rely on polling.
+
+| Variable                      | Required | Description                                                                                          |
+|-------------------------------|----------|------------------------------------------------------------------------------------------------------|
+| `GMAIL_PUBSUB_TOPIC`          | No       | Pub/Sub topic, format `projects/<project-id>/topics/<topic-name>`. When set, Gmail pushes on new mail |
+| `GMAIL_PUBSUB_WEBHOOK_SECRET` | If topic set | Secret included as `?token=` on the push endpoint and verified on each request. `openssl rand -hex 32` |
+| `GMAIL_PUBSUB_SUBSCRIPTION`   | No       | Subscription name that receives push notifications. Default `amarnai-gmail-sub`                       |
+
+## Mail providers
+
+| Variable         | Default  | Description                                                                                          |
+|------------------|----------|------------------------------------------------------------------------------------------------------|
+| `MAIL_PROVIDERS` | `gmail`  | Providers offered in the connect flow, comma-separated (e.g. `gmail,outlook`). Only gates onboarding; the adapter is chosen per connection |
+
+### Outlook / Microsoft Graph (optional, beta, read-only)
+
+Setting `MS_GRAPH_CLIENT_ID` and `MS_GRAPH_CLIENT_SECRET` together enables the Outlook provider. See [Prerequisites](/docs/self-hosting/prerequisites) for the Microsoft Entra app registration.
+
+| Variable                       | Required | Description                                                                                          |
+|--------------------------------|----------|------------------------------------------------------------------------------------------------------|
+| `MS_GRAPH_CLIENT_ID`           | For Outlook | Microsoft Entra confidential Web app client ID                                                    |
+| `MS_GRAPH_CLIENT_SECRET`       | For Outlook | Client secret for the same app registration                                                       |
+| `MS_GRAPH_TENANT`              | For Outlook | Authority/tenant. Use the literal `common` for multitenant + personal accounts (not a GUID). Default `common` |
+| `MS_GRAPH_SUBSCRIPTION_SECRET` | For push | `clientState` echoed on every Graph change-notification so the webhook can verify it. `openssl rand -hex 32` |
+| `MS_GRAPH_NOTIFICATION_URL`    | For push | Public HTTPS URL Graph posts change notifications to (e.g. `https://api.yourdomain.com/webhooks/outlook`). Unset means polling-only |
+| `OUTLOOK_OAUTH_CALLBACK_URL`   | For Outlook | Redirect URI registered for the app (e.g. `https://mail.yourdomain.com/api/outlook/callback`)     |
+
 ## AI
 
-| Variable                      | Default      | Description                                                         |
-|-------------------------------|--------------|---------------------------------------------------------------------|
-| `AI_PROVIDER`                 | `mock`       | `frontier` for production, `ollama` for local dev, `mock` for tests |
-| `FRONTIER_LLM_PROVIDER`       | `openai`     | LLM backend (`openai` or any OpenAI-compatible provider)            |
-| `FRONTIER_LLM_API_KEY`        | —            | API key for the LLM provider                                        |
-| `FRONTIER_LLM_MODEL`          | `gpt-4o-mini`| Model name                                                          |
-| `FRONTIER_LLM_BASE_URL`       | —            | Override base URL for OpenAI-compatible endpoints                   |
-| `EMBEDDING_PROVIDER`          | `mock`       | `frontier` for production, `ollama` for local dev, `mock` for tests |
-| `FRONTIER_EMBEDDING_PROVIDER` | `gemini`     | Embedding backend: `gemini` or any OpenAI-compatible provider       |
-| `FRONTIER_EMBEDDING_API_KEY`  | —            | API key for the embedding provider                                  |
-| `FRONTIER_EMBEDDING_MODEL`    | —            | Embedding model name (e.g. `text-embedding-004`, `text-embedding-3-small`) |
-| `FRONTIER_EMBEDDING_BASE_URL` | —            | Override base URL for OpenAI-compatible embedding endpoints         |
+Set `AI_PROVIDER=frontier` and `EMBEDDING_PROVIDER=frontier` for production. The default `AI_PROVIDER=mock` (with `EMBEDDING_PROVIDER=mock`) is for tests; `ollama` is for local development.
 
-## SMTP
+The recommended production configuration is Gemini through its OpenAI-compatible endpoint (cheap and free within Google's quota):
 
-| Variable      | Default         | Description                                     |
-|---------------|-----------------|-------------------------------------------------|
-| `EMAIL_FROM`  | —               | Sender address for verification and reset emails |
-| `SMTP_HOST`   | `127.0.0.1`     | SMTP server hostname                            |
-| `SMTP_PORT`   | `1025`          | SMTP server port                                |
-| `SMTP_USER`   | —               | SMTP username (required for production)         |
-| `SMTP_PASS`   | —               | SMTP password (required for production)         |
+```bash
+AI_PROVIDER=frontier
+FRONTIER_LLM_PROVIDER=gemini
+FRONTIER_LLM_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai/
+FRONTIER_LLM_MODEL=gemini-2.5-flash-lite
+FRONTIER_LLM_API_KEY=<Google AI Studio key>
+
+EMBEDDING_PROVIDER=frontier
+FRONTIER_EMBEDDING_PROVIDER=gemini
+FRONTIER_EMBEDDING_MODEL=gemini-embedding-001
+FRONTIER_EMBEDDING_DIMENSIONS=768
+FRONTIER_EMBEDDING_API_KEY=<Google AI Studio key>
+```
+
+OpenAI (or any OpenAI-compatible endpoint) is a supported alternative: set `FRONTIER_LLM_PROVIDER=openai`, `FRONTIER_LLM_MODEL=gpt-4o-mini`, and for embeddings `FRONTIER_EMBEDDING_PROVIDER=openai`, `FRONTIER_EMBEDDING_MODEL=text-embedding-3-small`.
+
+| Variable                       | Default              | Description                                                              |
+|--------------------------------|----------------------|--------------------------------------------------------------------------|
+| `AI_PROVIDER`                  | `mock`               | `frontier` for production, `ollama` for local dev, `mock` for tests      |
+| `FRONTIER_LLM_PROVIDER`        | `openai`             | LLM backend: `gemini`, `openai`, or any OpenAI-compatible provider       |
+| `FRONTIER_LLM_API_KEY`         | —                    | API key for the LLM provider                                             |
+| `FRONTIER_LLM_MODEL`           | `gpt-4o-mini`        | Model name (production: `gemini-2.5-flash-lite`)                         |
+| `FRONTIER_LLM_BASE_URL`        | —                    | Base URL for the provider. For Gemini: `https://generativelanguage.googleapis.com/v1beta/openai/` |
+| `ROUTING_LLM_MODEL`            | falls back to LLM model | Optional cheaper model for routing decisions                          |
+| `DRAFT_LLM_MODEL`              | falls back to LLM model | Optional model for draft generation                                   |
+| `TAXONOMY_LLM_MODEL`           | falls back to LLM model | Optional model for taxonomy generation. Keep on a capable tier (the cheapest tiers are the most throttled) |
+| `EMBEDDING_PROVIDER`           | `frontier`           | `frontier` for production, `ollama` for local dev, `mock` for tests      |
+| `FRONTIER_EMBEDDING_PROVIDER`  | `gemini`             | Embedding backend: `gemini` or any OpenAI-compatible provider            |
+| `FRONTIER_EMBEDDING_API_KEY`   | —                    | API key for the embedding provider                                       |
+| `FRONTIER_EMBEDDING_MODEL`     | `gemini-embedding-001` | Embedding model name (e.g. `text-embedding-3-small` for OpenAI)        |
+| `FRONTIER_EMBEDDING_BASE_URL`  | —                    | Override base URL for OpenAI-compatible embedding endpoints              |
+| `FRONTIER_EMBEDDING_DIMENSIONS`| `768`                | Output vector size. Use the same model and dimensions everywhere you embed |
+
+## Email
+
+Amarnai sends verification and password-reset emails via Resend (recommended) or SMTP. If `RESEND_API_KEY` is set, the SMTP variables are ignored.
+
+| Variable         | Default       | Description                                                        |
+|------------------|---------------|--------------------------------------------------------------------|
+| `EMAIL_FROM`     | —             | Sender address for verification and reset emails                   |
+| `RESEND_API_KEY` | —             | Resend HTTP API key. When set, SMTP is ignored. Get one at resend.com |
+| `SMTP_HOST`      | `127.0.0.1`   | SMTP server hostname (dev default points at Mailpit)              |
+| `SMTP_PORT`      | `1025`        | SMTP server port (production typically `587`)                     |
+| `SMTP_USER`      | —             | SMTP username (required for production SMTP)                      |
+| `SMTP_PASS`      | —             | SMTP password (required for production SMTP)                      |
+| `SMTP_SECURE`    | —             | Set `true` for port 465 (direct SSL). Leave unset for 587 (STARTTLS) |
+
+## Web app and CSP (optional)
+
+These `NEXT_PUBLIC_*` and CSP variables are read by the web app and site. All are optional and config-gated.
+
+| Variable                              | Description                                                                 |
+|---------------------------------------|-----------------------------------------------------------------------------|
+| `NEXT_PUBLIC_ANALYTICS_URL`           | URL of a private analytics script server. Blank disables analytics          |
+| `NEXT_PUBLIC_PLAY_STORE_URL`          | Play Store URL. When set, an Android-only download banner shows             |
+| `NEXT_PUBLIC_EXTENSION_STORE_URL`     | Chrome Web Store listing URL for the extension nudge                        |
+| `NEXT_PUBLIC_EXTENSION_STORE_URL_FIREFOX` | AMO listing URL for the extension nudge on Firefox                      |
+| `CSP_REPORT_ONLY`                     | Set `true` to send the CSP as report-only instead of enforcing it          |
+| `CSP_REPORT_URI`                      | Optional endpoint that receives CSP violation reports                      |
 
 ## Stripe (optional)
 

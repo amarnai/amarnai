@@ -2,20 +2,24 @@
 
 <!-- What does this change do, and why? -->
 
-## Platform parity
+## Parity
 
-Amarnai ships a web app (`apps/web`) and a mobile app (`apps/mobile`). See
+Amarnai's active clients are the web app (`apps/web`) and the browser extension
+(`apps/extension`). The mobile app (`apps/mobile`) is shelved. Provider parity
+(Gmail and Outlook, read-only) is also required. See
 [docs/platform-parity.md](../docs/platform-parity.md).
 
 - [ ] This change is **not** user-facing (infra, docs, tests, build), OR
-- [ ] User-facing: I updated **both** `apps/web` and `apps/mobile`, OR
-- [ ] User-facing but intentionally one platform: I recorded the gap in
+- [ ] User-facing: I addressed the relevant active clients (`apps/web` and, where
+      applicable, `apps/extension`), OR
+- [ ] User-facing but intentionally one surface: I recorded the gap in
       `docs/platform-parity.md`.
+- [ ] Provider parity: a triage feature touching one provider was also applied to
+      the other (Gmail ↔ Outlook), or is provider-agnostic behind `packages/mail`.
 
 > Reminder: logic that is not literally JSX rendering belongs in a shared
 > package (`@amarnai/core`, `@amarnai/shared`, `@amarnai/api-client`), not in a
-> single app. The CI `parity-check` posts a warning if `apps/web`/`packages/ui`
-> changed without a matching `apps/mobile` change.
+> single app.
 
 ## Testing
 

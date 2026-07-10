@@ -1,0 +1,39 @@
+---
+title: Providers
+description: How Gmail and Outlook are supported through one read-only provider seam.
+---
+
+Amarnai connects to email through a single provider-neutral seam in `packages/mail`. Two concrete adapters implement it: **Gmail** (generally available) and **Outlook** (beta). Both are strictly read-only. Amarnai never sends or mutates mail beyond what read-only access allows.
+
+## The mail seam
+
+`packages/mail` defines a `MailProvider` interface (`refreshAccessToken`, `listChangesSince`, `listThreadsPage`, `getThreadSnapshot`, `registerWatch`, and related methods) and a `create-mail-provider` factory. The factory switches on `connection.provider` and returns the Gmail or Outlook client. Selection is **per `EmailConnection`**, not a global env switch, so a single deployment can serve both providers at once and everything downstream of the seam (triage, sorting, backfill, drafts) is provider-agnostic.
+
+| Provider | Status | Backend                | OAuth scope (read-only)                 |
+|----------|--------|------------------------|------------------------------------------|
+| Gmail    | GA     | Gmail API              | `gmail.readonly`                         |
+| Outlook  | Beta   | Microsoft Graph        | `Mail.Read offline_access User.Read`     |
+
+## Enabling providers
+
+`MAIL_PROVIDERS` gates which providers appear in the connect/onboarding flow (comma-separated). It only affects onboarding; the runtime adapter is always chosen per connection.
+
+```bash
+MAIL_PROVIDERS=gmail            # default
+MAIL_PROVIDERS=gmail,outlook    # offer both
+```
+
+Gmail requires the Google OAuth credentials described in [Prerequisites](/docs/self-hosting/prerequisites). Outlook additionally requires a Microsoft Entra app registration and the `MS_GRAPH_*` variables; setting `MS_GRAPH_CLIENT_ID` and `MS_GRAPH_CLIENT_SECRET` together enables the Outlook provider. See [Configuration](/docs/self-hosting/configuration) for the full variable reference.
+
+## Real-time delivery
+
+Each provider supports near-real-time sync in addition to polling:
+
+- **Gmail** pushes via Google Cloud Pub/Sub (`GMAIL_PUBSUB_TOPIC`, `GMAIL_PUBSUB_WEBHOOK_SECRET`).
+- **Outlook** pushes via Microsoft Graph change-notification subscriptions (`MS_GRAPH_NOTIFICATION_URL`, `MS_GRAPH_SUBSCRIPTION_SECRET`).
+
+When push is not configured, the provider runs polling-only on `INBOX_SYNC_INTERVAL_MS`. Polling always stays on as a fallback for missed push events.
+
+## Parity
+
+Provider parity is a project requirement: a feature that exists for Gmail must also work for Outlook, and vice versa. Because both adapters conform to the same `MailProvider` interface, new triage functionality is written once against the seam rather than forked per provider.

@@ -4,7 +4,7 @@
 
 Check the [open issues](https://github.com/BenAzlay/amarnai/issues) and [existing PRs](https://github.com/BenAzlay/amarnai/pulls) before starting work. For anything beyond a small bug fix, open an issue first to discuss the approach — this avoids wasted effort if the direction doesn't fit the project.
 
-Amarnai is intentionally focused. Contributions that add scope (new email providers, team features, workflow automation) are unlikely to be accepted regardless of quality. See the Non-Goals section in [CLAUDE.md](CLAUDE.md).
+Amarnai is intentionally focused. The supported email providers are Gmail and Outlook, both read-only; contributions that add other providers (IMAP and the like) or arbitrary workflow automation are unlikely to be accepted regardless of quality. See the Non-Goals section in [CLAUDE.md](CLAUDE.md).
 
 ## Contributor License Agreement
 
@@ -57,6 +57,10 @@ Scope is optional but preferred — use the package or app name (`web`, `api`, `
 - No console.log left in submitted code
 - Small files with explicit domain names; avoid barrel re-exports
 - Reuse existing design tokens and utility functions — check before adding new ones
+
+### Localization
+
+User-visible strings must be wrapped in Lingui macros, never hardcoded: `<Trans>` in JSX, `` _(msg`...`) `` for imperative strings. English is the source locale; the other 15 are filled automatically. The pre-commit hook runs extract, translate, and compile, so you only need to wrap the string. See the Localization section in [CLAUDE.md](CLAUDE.md).
 
 ### Tests
 

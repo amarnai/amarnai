@@ -1,6 +1,6 @@
 # Amarnai
 
-Gmail-first AI email triage assistant.
+Gmail-first AI email triage assistant, with read-only Outlook support in beta. Both connections are read-only: Amarnai sorts and labels your inbox but never sends or mutates mail, and drafts always require your approval.
 
 ## Prerequisites
 
@@ -60,28 +60,31 @@ If port `11434` is already in use, Ollama is probably already running. In that c
 
 ### Production LLM + embeddings
 
-Set the following in `.env` (or your deployment secrets):
+The recommended production configuration is Gemini for both the LLM (via its OpenAI-compatible endpoint) and embeddings. Set the following in `.env` (or your deployment secrets):
 
 ```env
-# LLM
+# LLM (Gemini, recommended)
 AI_PROVIDER=frontier
-FRONTIER_LLM_PROVIDER=openai
-FRONTIER_LLM_API_KEY=<your key>
-FRONTIER_LLM_MODEL=<model name>
+FRONTIER_LLM_PROVIDER=gemini
+FRONTIER_LLM_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai/
+FRONTIER_LLM_MODEL=gemini-2.5-flash-lite
+FRONTIER_LLM_API_KEY=<your Google AI Studio key>
 
-# Optional: use a lighter model for email routing and a larger model for drafts.
-# Both fall back to FRONTIER_LLM_MODEL if unset.
+# Optional: use a lighter model for routing and different models for drafts
+# and taxonomy generation. Each falls back to FRONTIER_LLM_MODEL if unset.
 ROUTING_LLM_MODEL=
 DRAFT_LLM_MODEL=
+TAXONOMY_LLM_MODEL=
 
-# Embeddings (any provider — Gemini shown as an example)
+# Embeddings (Gemini, recommended)
 EMBEDDING_PROVIDER=frontier
 FRONTIER_EMBEDDING_PROVIDER=gemini
 FRONTIER_EMBEDDING_API_KEY=<your Google AI Studio key>
-FRONTIER_EMBEDDING_MODEL=text-embedding-004
+FRONTIER_EMBEDDING_MODEL=gemini-embedding-001
+FRONTIER_EMBEDDING_DIMENSIONS=768
 ```
 
-Get a Gemini API key from [Google AI Studio](https://aistudio.google.com/apikey). You can also use OpenAI embeddings (`FRONTIER_EMBEDDING_PROVIDER=openai`) or any OpenAI-compatible endpoint via `FRONTIER_EMBEDDING_BASE_URL`.
+Get a Gemini API key from [Google AI Studio](https://aistudio.google.com/apikey). OpenAI (or any OpenAI-compatible endpoint) is a supported alternative: set `FRONTIER_LLM_PROVIDER=openai` with `FRONTIER_LLM_MODEL=gpt-4o-mini`, and `FRONTIER_EMBEDDING_PROVIDER=openai` with `FRONTIER_EMBEDDING_MODEL=text-embedding-3-small` (or point `FRONTIER_EMBEDDING_BASE_URL` at a custom endpoint).
 
 ## Authentication setup
 
@@ -206,6 +209,36 @@ Requires [`cloudflared`](https://developers.cloudflare.com/cloudflare-one/connec
 1. APIs & Services → Library → enable **Gmail API**
 2. APIs & Services → Credentials → open your OAuth client → add `http://localhost:3000/api/gmail/callback` to authorised redirect URIs (in production, add your production URL)
 
+## Outlook inbox setup (beta, read-only)
+
+Amarnai supports Outlook read-only via Microsoft Graph, at feature parity with Gmail. It is opt-in: Gmail is the default provider, and Outlook only appears in the connect flow once you enable it.
+
+1. In the [Microsoft Entra admin center](https://entra.microsoft.com/), register a **confidential Web app**.
+2. For **Supported account types**, choose "Accounts in any organizational directory (multitenant) and personal Microsoft accounts". The tenant/authority is then the literal string `common`.
+3. Add the redirect URI `http://localhost:3000/api/outlook/callback` (use your domain in production).
+4. Add delegated **API permissions**: `Mail.Read`, `offline_access`, `User.Read`. None require admin consent.
+5. Create a client secret.
+
+**Env vars:**
+
+```env
+# Add outlook to the providers offered in the connect flow
+MAIL_PROVIDERS=gmail,outlook
+
+# Setting CLIENT_ID + CLIENT_SECRET together enables the Outlook provider
+MS_GRAPH_CLIENT_ID=<your app client id>
+MS_GRAPH_CLIENT_SECRET=<your app client secret>
+MS_GRAPH_TENANT=common
+OUTLOOK_OAUTH_CALLBACK_URL=http://localhost:3000/api/outlook/callback
+
+# Optional: real-time sync via Microsoft Graph change-notification subscriptions
+# (the Outlook analogue of Gmail Pub/Sub). Leave unset for polling-only.
+MS_GRAPH_NOTIFICATION_URL=https://api.yourdomain.com/webhooks/outlook
+MS_GRAPH_SUBSCRIPTION_SECRET=<openssl rand -hex 32>
+```
+
+The runtime adapter is always chosen per connection, so a single deployment can serve Gmail and Outlook inboxes at once. When `MS_GRAPH_NOTIFICATION_URL` is unset, Outlook runs polling-only on `INBOX_SYNC_INTERVAL_MS`.
+
 ## Dev seed account
 
 Running `pnpm db:seed` creates a local dev user and workspace:
@@ -232,7 +265,7 @@ Amarnai can be self-hosted on any machine with Docker and Docker Compose. All se
 
 ```bash
 # 1. Clone the repo
-git clone https://github.com/amarnai/amarnai.git
+git clone https://github.com/BenAzlay/amarnai.git
 cd amarnai
 
 # 2. Create your env file from the self-host template
@@ -325,15 +358,43 @@ pnpm dev
 pnpm dev
 ```
 
-Starts all apps in parallel:
+Starts the core runtime apps in parallel:
 
 | App | URL |
 |-----|-----|
 | Web | http://localhost:3000 |
 | API | http://localhost:3001 |
-| Worker | — |
+| Worker | (no HTTP surface) |
+
+The marketing site (`apps/site`, port 3002), docs site (`apps/docs`, port 3003),
+and browser extension are not part of `pnpm dev`. Run them on demand with
+`pnpm --filter @amarnai/site dev`, `pnpm --filter @amarnai/docs dev`, and the
+`pnpm extension:*` scripts respectively.
+
+## Browser extension
+
+`apps/extension` is the Amarnai browser side-panel extension (Manifest V3),
+available for Chrome and Firefox. It holds a live SSE connection to the API and
+mirrors the web app's triage surface in a side panel. It is built with Vite and
+kept out of `pnpm dev`.
+
+```bash
+pnpm extension:build            # Chrome (dev build) -> apps/extension/dist
+pnpm extension:build:firefox    # Firefox (dev build) -> apps/extension/dist-firefox
+pnpm extension:package          # production Chrome .zip for the Web Store
+pnpm extension:package:firefox  # production Firefox .zip for AMO
+```
+
+Load the unpacked `dist/` (Chrome) or `dist-firefox/` (Firefox) directory in your
+browser's extension developer mode. See [`apps/extension/README.md`](apps/extension/README.md)
+for the full build, configuration, and store-deployment guide.
 
 ## Mobile app
+
+> **Shelved/paused.** The mobile app is on hold (see the Cross-Platform Parity
+> section in [CLAUDE.md](CLAUDE.md)). The code stays in the repo, but it is not
+> updated for every feature or UI change. Web and the browser extension are the
+> active clients.
 
 `apps/mobile` is the Amarnai Android app (Expo + Expo Router), a readonly triage
 companion. It is intentionally kept out of `pnpm dev` so web/API/worker
@@ -425,17 +486,30 @@ The output shows the top-ranked configurations with a per-email breakdown and a 
 
 ```
 apps/
-  web/      Next.js frontend
-  api/      Hono API server
-  worker/   Background jobs
-  mobile/   Expo Android app (readonly triage companion)
+  web/        Next.js frontend (builds with --webpack)
+  api/        Hono API server (the only DB writer)
+  worker/     Background jobs (BullMQ)
+  site/       Marketing site (Next.js, Cloudflare via OpenNext)
+  extension/  Browser side-panel extension (Chrome + Firefox, MV3)
+  docs/       Documentation site (Fumadocs)
+  mobile/     Expo Android app (shelved/paused)
 packages/
-  shared/     Shared types and constants
+  db/         Database schema, migrations, and client
+  ai/         AI provider abstraction, embedding sorter, drafts
+  mail/       Provider-neutral mail seam (MailProvider interface)
+  gmail/      Gmail provider (read-only) + token encryption
+  outlook/    Outlook provider over Microsoft Graph (read-only)
+  auth/       Credentials, JWT/Bearer, connection guards
+  billing/    Stripe subscriptions and cleanup
+  email/      Transactional email (Resend or SMTP)
+  core/       Framework-free view-model logic
+  ui/         Shared React components + email templates
+  tokens/     Framework-agnostic design tokens and theme
+  i18n/       Lingui catalogs (16 locales)
+  api-client/ Transport-agnostic typed API client
+  queue/      BullMQ job definitions
+  shared/     Shared types and Zod schemas
   config/     Environment config
-  db/         Database schema and client
-  ai/         AI provider abstraction
-  tokens/     Framework-agnostic design tokens (web + mobile)
-  api-client/ Transport-agnostic typed API client (web + mobile)
 ```
 
 ## License

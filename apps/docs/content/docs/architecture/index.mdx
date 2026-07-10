@@ -3,33 +3,51 @@ title: Architecture
 description: High-level overview of how Amarnai is built.
 ---
 
-Amarnai is a TypeScript monorepo managed with [pnpm workspaces](https://pnpm.io/workspaces) and [Turborepo](https://turbo.build/). It is composed of three deployable applications and five shared packages.
+Amarnai is a TypeScript monorepo managed with [pnpm workspaces](https://pnpm.io/workspaces) and [Turborepo](https://turbo.build/). It is composed of several applications and a set of shared packages. The runtime services are `web`, `api`, and `worker`; the remaining apps are supporting surfaces (marketing site, browser extension, docs) and a shelved mobile app.
+
+The stack is Node 24, Next.js 16, React 19, Prisma 6 on PostgreSQL, and BullMQ on Redis. The Next.js apps (`web` and `site`) build with `--webpack`; Turbopack is not used because it lacks the workspace `.js` extension alias these packages rely on.
 
 ## Applications
 
-| App      | Description                                                      |
-|----------|------------------------------------------------------------------|
-| `web`    | Next.js 15 frontend — the user-facing UI                         |
-| `api`    | Hono HTTP server — handles all data-mutating operations          |
-| `worker` | Background job runner — Gmail polling, AI triage, queue processing |
+| App         | Description                                                              |
+|-------------|--------------------------------------------------------------------------|
+| `web`       | Next.js 16 frontend, the user-facing app                                 |
+| `api`       | Hono HTTP server, the only service that writes to the database           |
+| `worker`    | Background job runner: inbox polling, AI triage, queue processing        |
+| `site`      | Next.js 16 marketing site, deployed to Cloudflare via OpenNext           |
+| `extension` | Browser side-panel extension (Chrome and Firefox, MV3)                   |
+| `docs`      | This documentation site (Fumadocs)                                       |
+| `mobile`    | Expo/React Native Android app. Shelved/paused (see the repo CLAUDE.md)   |
 
 ## Packages
 
-| Package    | Description                                              |
-|------------|----------------------------------------------------------|
-| `db`       | Prisma schema, migrations, and generated client           |
-| `ai`       | AI provider abstraction, prompts, output validation       |
-| `gmail`    | Gmail API client and OAuth helpers                        |
-| `queue`    | BullMQ job definitions and queue configuration            |
-| `shared`   | Shared types and Zod schemas                              |
-| `config`   | Environment variable loading and validation               |
+| Package      | Description                                                            |
+|--------------|------------------------------------------------------------------------|
+| `db`         | Prisma schema, migrations, and generated client                        |
+| `ai`         | AI provider abstraction, prompts, embedding sorter, output validation  |
+| `mail`       | Provider-neutral mail seam (the `MailProvider` interface + factory)    |
+| `gmail`      | Gmail API client, OAuth, AES-256-GCM token encryption                  |
+| `outlook`    | Outlook provider over Microsoft Graph (read-only)                      |
+| `auth`       | Credentials, JWT/Bearer for native clients, connection guards          |
+| `billing`    | Stripe subscriptions, cancellation, and cleanup                        |
+| `email`      | Transactional email sending (Resend or SMTP)                           |
+| `core`       | Framework-free view-model logic (emails, taxonomy, identity)           |
+| `ui`         | Shared React components and email templates (web)                      |
+| `tokens`     | Framework-agnostic design tokens and theme                             |
+| `i18n`       | Lingui catalogs and helpers (16 locales)                               |
+| `api-client` | Transport-agnostic typed API client (web + native)                     |
+| `queue`      | BullMQ job definitions and queue configuration                         |
+| `shared`     | Shared types and Zod schemas                                           |
+| `config`     | Environment variable loading and validation                            |
 
 ## Key design decisions
 
-**Threads, not messages.** Amarnai triages Gmail threads as a unit. A new message in an existing thread triggers re-triage of the whole thread, so the sort order always reflects the full conversation.
+**Threads, not messages.** Amarnai triages email threads as a unit. A new message in an existing thread triggers re-triage of the whole thread, so the sort order always reflects the full conversation.
+
+**One provider seam, read-only.** Gmail and Outlook are reached through a single `MailProvider` interface in `packages/mail`. The concrete adapter is chosen per `EmailConnection`, not by a global env switch, so both providers stay at feature parity. Neither adapter can send or mutate mail beyond what read-only access allows.
 
 **Multi-tenant by default.** Every resource in the database is scoped to a workspace. API costs are attributable per user so the hosted offering can track and control spend.
 
-**AI output is untrusted.** All LLM responses are validated with Zod before any action is taken. Policy code — not prompts — decides final labels and destinations.
+**AI output is untrusted.** All LLM responses are validated with Zod before any action is taken. Policy code, not prompts, decides final labels and destinations.
 
 **Idempotent jobs.** All background jobs are safe to retry. Duplicate runs produce the same result rather than double-applying effects.
