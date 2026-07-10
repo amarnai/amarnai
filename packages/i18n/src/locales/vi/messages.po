@@ -274,7 +274,7 @@ msgstr "{waitingCount, plural, one {# luồng đang chờ.} other {# luồng đa
 msgid "/ workspace / month"
 msgstr "/ không gian làm việc / tháng"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:44
+#: ../../apps/site/src/components/landing/Footer.tsx:48
 #, fuzzy
 msgid "© 2026 Amarnai. Open source under AGPL-3.0."
 msgstr "© 2026 Amarnai. Mã nguồn mở theo AGPL-3.0."
@@ -754,7 +754,7 @@ msgstr "Gói Amarnai Business"
 msgid "Amarnai for Android"
 msgstr "Amarnai dành cho Android"
 
-#: ../../apps/site/src/components/landing/Nav.tsx:32
+#: ../../apps/site/src/components/landing/Nav.tsx:42
 #, fuzzy
 msgid "Amarnai home"
 msgstr "Trang chủ Amarnai"
@@ -2225,6 +2225,10 @@ msgstr "Ngắt kết nối Gmail"
 msgid "Disconnect Gmail?"
 msgstr "Ngắt kết nối Gmail?"
 
+#: ../../apps/site/src/components/support/SupportContent.tsx:106
+msgid "Disconnect your inbox or delete your account"
+msgstr "Ngắt kết nối hộp thư đến hoặc xóa tài khoản của bạn"
+
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:102
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:114
 #, fuzzy
@@ -2312,7 +2316,8 @@ msgstr "Tư vấn, phản hồi luận án và hướng dẫn cho nghiên cứu 
 msgid "Doctors, pharmacies, medical appointments, prescriptions, and test results."
 msgstr "Bác sĩ, nhà thuốc, lịch hẹn khám, đơn thuốc và kết quả xét nghiệm."
 
-#: ../../apps/site/src/components/landing/Footer.tsx:30
+#: ../../apps/site/src/components/landing/Footer.tsx:33
+#: ../../apps/site/src/components/support/SupportContent.tsx:74
 #, fuzzy
 msgid "Documentation"
 msgstr "Tài liệu"
@@ -2509,6 +2514,10 @@ msgstr "Hỗ trợ qua email"
 #: ../ui/src/emails/ThreadList.tsx:134
 #~ msgid "Email threads"
 #~ msgstr "Luồng email"
+
+#: ../../apps/site/src/components/support/SupportContent.tsx:59
+msgid "Email us"
+msgstr "Gửi email cho chúng tôi"
 
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:32
 #, fuzzy
@@ -2737,8 +2746,8 @@ msgid "Fan messages, viewer comments, and follower engagement notifications."
 msgstr "Tin nhắn fan, bình luận người xem và thông báo tương tác người theo dõi."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:80
-#: ../../apps/site/src/components/landing/Footer.tsx:29
-#: ../../apps/site/src/components/landing/Nav.tsx:41
+#: ../../apps/site/src/components/landing/Footer.tsx:32
+#: ../../apps/site/src/components/landing/Nav.tsx:51
 #, fuzzy
 msgid "FAQ"
 msgstr "Câu hỏi thường gặp"
@@ -3112,6 +3121,15 @@ msgstr "Tạo không thành công. Thử lại sau ít phút, hoặc bắt đầ
 msgid "Generation isn't available right now."
 msgstr "Tính năng tạo hiện không khả dụng."
 
+#: ../../apps/site/src/components/support/SupportContent.tsx:45
+#, fuzzy
+msgid "Get help with Amarnai"
+msgstr "Trợ giúp Amarnai"
+
+#: ../../apps/site/src/lib/seo.ts:124
+msgid "Get help with Amarnai: contact support, browse the documentation, report a bug, or manage your account and data."
+msgstr "Nhận trợ giúp về Amarnai: liên hệ hỗ trợ, xem tài liệu, báo cáo lỗi hoặc quản lý tài khoản và dữ liệu của bạn."
+
 #: ../ui/src/AppDownloadBanner.tsx:65
 #, fuzzy
 msgid "Get the Amarnai app"
@@ -3253,6 +3271,10 @@ msgid "Great King,\n"
 "In brotherhood,"
 msgstr "Kính gửi Đại vương,\n\nCác báo cáo ngài yêu cầu sẽ được chuẩn bị trước khi hội đồng nhóm họp. Thần sẽ lệnh cho các thư lại tổng hợp sổ sách các lãnh thổ phía đông và gửi trước bằng sứ giả tốc hành.\n\nTrong tình huynh đệ,"
 
+#: ../../apps/site/src/components/support/SupportContent.tsx:77
+msgid "Guides and answers to common questions"
+msgstr "Hướng dẫn và giải đáp các câu hỏi thường gặp"
+
 #: ../../apps/site/src/components/landing/FinalCTASection.tsx:9
 #, fuzzy
 msgid "Hand the sorting to Amarnai."
@@ -3314,6 +3336,11 @@ msgstr "Các gói đăng ký được host chạy trên một mô hình AI hàng
 msgid "Household bills, payment confirmations, receipts, and records of everyday expenses."
 msgstr "Hóa đơn gia đình, xác nhận thanh toán, biên lai và ghi chép chi tiêu hàng ngày."
 
+#: ../../apps/site/src/components/support/SupportContent.tsx:118
+#, fuzzy
+msgid "How Amarnai stores and protects your data"
+msgstr "Cách Amarnai lưu trữ và bảo vệ dữ liệu của bạn"
+
 #: ../../apps/site/src/components/landing/FAQSection.tsx:15
 msgid "How do I know it's safe?"
 msgstr "Làm sao tôi biết nó an toàn?"
@@ -3347,8 +3374,8 @@ msgstr "Amarnai khác gì so với bộ lọc của Gmail và Outlook?"
 msgid "How is Amarnai's pricing structured?"
 msgstr "Cấu trúc giá của Amarnai như thế nào?"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:22
-#: ../../apps/site/src/components/landing/Nav.tsx:38
+#: ../../apps/site/src/components/landing/Footer.tsx:25
+#: ../../apps/site/src/components/landing/Nav.tsx:48
 #, fuzzy
 msgid "How it works"
 msgstr "Cách thức hoạt động"
@@ -3373,6 +3400,10 @@ msgstr "Nếu email này có tài khoản, chúng tôi đã gửi liên kết đ
 #, fuzzy
 msgid "If an account exists for that email, we've sent a reset link. Open it to choose a new password, then sign in."
 msgstr "Nếu email này có tài khoản, chúng tôi đã gửi liên kết đặt lại. Mở liên kết để chọn mật khẩu mới, sau đó đăng nhập."
+
+#: ../../apps/site/src/components/support/SupportContent.tsx:48
+msgid "If something isn’t working or you have a question, here’s how to reach us."
+msgstr "Nếu có sự cố hoặc bạn có câu hỏi, đây là cách liên hệ với chúng tôi."
 
 #: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:64
 #: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:84
@@ -3753,7 +3784,7 @@ msgstr "Khách hàng tiềm năng"
 msgid "Leave unsorted"
 msgstr "Để nguyên không sắp xếp"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:36
+#: ../../apps/site/src/components/landing/Footer.tsx:40
 #: ../ui/src/i18n/taxonomy-template-messages.ts:66
 #, fuzzy
 msgid "Legal"
@@ -3866,6 +3897,10 @@ msgstr "Quản lý thông báo"
 #, fuzzy
 msgid "Manage payment method"
 msgstr "Quản lý phương thức thanh toán"
+
+#: ../../apps/site/src/components/support/SupportContent.tsx:103
+msgid "Manage your account and data"
+msgstr "Quản lý tài khoản và dữ liệu của bạn"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:44
 #, fuzzy
@@ -4132,7 +4167,7 @@ msgstr "Cần xem xét"
 msgid "Never"
 msgstr "Không bao giờ"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:45
+#: ../../apps/site/src/components/landing/Footer.tsx:49
 #, fuzzy
 msgid "Never auto-sends · Encrypted at rest · Minimal data"
 msgstr "Không tự động gửi · Mã hóa dữ liệu lưu trữ · Dữ liệu tối thiểu"
@@ -4439,6 +4474,10 @@ msgstr "Chỉ chủ sở hữu không gian làm việc mới có thể quản l�
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:261
 msgid "Open"
 msgstr "Mở"
+
+#: ../../apps/site/src/components/support/SupportContent.tsx:94
+msgid "Open an issue on GitHub"
+msgstr "Tạo một issue trên GitHub"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:256
 #: ../../apps/mobile/src/components/DraftSheet.tsx:97
@@ -4817,8 +4856,8 @@ msgstr "Tính giá theo không gian làm việc. Gói dịch vụ rõ ràng, gi�
 #~ msgid "Priced per workspace. Sort as much as you like."
 #~ msgstr "Tính phí theo không gian làm việc. Sắp xếp tùy thích."
 
-#: ../../apps/site/src/components/landing/Footer.tsx:25
-#: ../../apps/site/src/components/landing/Nav.tsx:44
+#: ../../apps/site/src/components/landing/Footer.tsx:28
+#: ../../apps/site/src/components/landing/Nav.tsx:54
 #, fuzzy
 msgid "Pricing"
 msgstr "Bảng giá"
@@ -4851,10 +4890,14 @@ msgstr "Thông báo của hiệu trưởng, cuộc họp nhân viên và bản t
 msgid "Priority support"
 msgstr "Hỗ trợ ưu tiên"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:37
+#: ../../apps/site/src/components/landing/Footer.tsx:41
 #, fuzzy
 msgid "Privacy"
 msgstr "Quyền riêng tư"
+
+#: ../../apps/site/src/components/support/SupportContent.tsx:115
+msgid "Privacy and data handling"
+msgstr "Quyền riêng tư và xử lý dữ liệu"
 
 #: ../../apps/site/src/components/landing/HeroSection.tsx:44
 #, fuzzy
@@ -4867,7 +4910,7 @@ msgstr "Quyền riêng tư theo thiết kế"
 msgid "Pro"
 msgstr "Pro"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:21
+#: ../../apps/site/src/components/landing/Footer.tsx:24
 #, fuzzy
 msgid "Product"
 msgstr "Sản phẩm"
@@ -5234,6 +5277,10 @@ msgstr "Trả lời tất cả"
 msgid "Reply drafts"
 msgstr "Bản nháp trả lời"
 
+#: ../../apps/site/src/components/support/SupportContent.tsx:91
+msgid "Report a bug"
+msgstr "Báo cáo lỗi"
+
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:89
 #, fuzzy
 msgid "Rescan failed"
@@ -5321,7 +5368,7 @@ msgstr "Thay đổi kích thước phần chia giữa hộp thư đến và Amar
 msgid "Resize the thread list"
 msgstr "Điều chỉnh kích thước danh sách cuộc hội thoại"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:28
+#: ../../apps/site/src/components/landing/Footer.tsx:31
 #, fuzzy
 msgid "Resources"
 msgstr "Tài nguyên"
@@ -5504,8 +5551,8 @@ msgstr "Tìm kiếm luồng..."
 msgid "See how your inbox is sorted, right next to your email."
 msgstr "Xem cách hộp thư đến của bạn được sắp xếp, ngay bên cạnh email."
 
-#: ../../apps/site/src/components/landing/Footer.tsx:24
-#: ../../apps/site/src/components/landing/Nav.tsx:40
+#: ../../apps/site/src/components/landing/Footer.tsx:27
+#: ../../apps/site/src/components/landing/Nav.tsx:50
 #, fuzzy
 msgid "See it work"
 msgstr "Xem cách hoạt động"
@@ -5780,7 +5827,7 @@ msgstr "Đã xảy ra lỗi. Vui lòng thử lại."
 msgid "Soon"
 msgstr "Sắp có"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:15
+#: ../../apps/site/src/components/landing/Footer.tsx:18
 #, fuzzy
 msgid "Sort emails your way."
 msgstr "Sắp xếp email theo cách của bạn."
@@ -6007,10 +6054,16 @@ msgid "Suppliers"
 msgstr "Nhà cung cấp"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:31
+#: ../../apps/site/src/components/landing/Footer.tsx:37
 #: ../ui/src/pricing/planMessages.ts:53
 #, fuzzy
 msgid "Support"
 msgstr "Hỗ trợ"
+
+#: ../../apps/site/src/lib/seo.ts:118
+#, fuzzy
+msgid "Support | Amarnai"
+msgstr "Hỗ trợ | Amarnai"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:60
 msgid "Support, onboarding, retention, churn, and customer success conversations."
@@ -6122,7 +6175,7 @@ msgstr "Đã áp dụng mẫu"
 msgid "Templates"
 msgstr "Mẫu"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:38
+#: ../../apps/site/src/components/landing/Footer.tsx:42
 #, fuzzy
 msgid "Terms"
 msgstr "Điều khoản"
@@ -7124,8 +7177,8 @@ msgstr "Gói {plan} của bạn đã hoàn tất việc nhập các email gần 
 msgid "Your 14-day free trial runs until <0>{0}</0>. You won't be charged before then."
 msgstr "Bản dùng thử miễn phí 14 ngày của bạn sẽ kéo dài đến <0>{0}</0>. Bạn sẽ không bị tính phí trước thời điểm đó."
 
-#: ../../apps/site/src/components/landing/Footer.tsx:23
-#: ../../apps/site/src/components/landing/Nav.tsx:39
+#: ../../apps/site/src/components/landing/Footer.tsx:26
+#: ../../apps/site/src/components/landing/Nav.tsx:49
 msgid "Your folders"
 msgstr "Thư mục của bạn"
 

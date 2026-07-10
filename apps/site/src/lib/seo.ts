@@ -106,3 +106,29 @@ export function buildPricingMetadata(
     robots: { index: true, follow: true },
   };
 }
+
+// Shared support-page SEO metadata, reused by the localized support page
+// (`/{locale}/support`) and the bare `/support` redirect entry point. Also the
+// URL registered as the "Support" link on the Google Workspace Marketplace
+// listing, so it must stay a real, indexable page.
+export function buildSupportMetadata(
+  i18n: I18n,
+  locale: SupportedLocale
+): Metadata {
+  const title = i18n._(msg`Support | Amarnai`);
+  const url = localeUrl(locale, "support");
+
+  return {
+    title,
+    description: i18n._(
+      msg`Get help with Amarnai: contact support, browse the documentation, report a bug, or manage your account and data.`
+    ),
+    alternates: {
+      canonical: url,
+      languages: languageAlternates("support"),
+    },
+    openGraph: { title, url, images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Amarnai" }] },
+    twitter: { card: "summary_large_image", title, images: ["/og-image.png"] },
+    robots: { index: true, follow: true },
+  };
+}

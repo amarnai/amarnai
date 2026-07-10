@@ -1,7 +1,10 @@
 import Link from "next/link";
 import { Trans } from "@lingui/react/macro";
 
-export function Footer() {
+// `anchorBase` mirrors `Nav`: default `""` keeps the section links as in-page
+// anchors on the landing route; other routes pass `"/"` so they resolve to
+// `/#how` etc. and navigate home before scrolling.
+export function Footer({ anchorBase = "" }: { anchorBase?: string }) {
   return (
     <footer className="ld-footer">
       <div className="ld-wrap">
@@ -19,18 +22,19 @@ export function Footer() {
           <div className="ld-footer-cols">
             <div className="ld-footer-col">
               <h4><Trans>Product</Trans></h4>
-              <Link href="#how"><Trans>How it works</Trans></Link>
-              <Link href="#taxonomy"><Trans>Your folders</Trans></Link>
-              <Link href="#triage"><Trans>See it work</Trans></Link>
+              <Link href={`${anchorBase}#how`}><Trans>How it works</Trans></Link>
+              <Link href={`${anchorBase}#taxonomy`}><Trans>Your folders</Trans></Link>
+              <Link href={`${anchorBase}#triage`}><Trans>See it work</Trans></Link>
               <Link href="/pricing"><Trans>Pricing</Trans></Link>
             </div>
             <div className="ld-footer-col">
               <h4><Trans>Resources</Trans></h4>
-              <Link href="#faq"><Trans>FAQ</Trans></Link>
+              <Link href={`${anchorBase}#faq`}><Trans>FAQ</Trans></Link>
               <a href="https://docs.amarnai.com" target="_blank" rel="noopener noreferrer"><Trans>Documentation</Trans></a>
               <a href="https://github.com/amarnai/amarnai" target="_blank" rel="noopener noreferrer">
                 GitHub
               </a>
+              <Link href="/support"><Trans>Support</Trans></Link>
             </div>
             <div className="ld-footer-col">
               <h4><Trans>Legal</Trans></h4>

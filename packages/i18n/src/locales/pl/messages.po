@@ -274,7 +274,7 @@ msgstr "{waitingCount, plural, one {# wątek czeka.} other {# wątków czeka.}} 
 msgid "/ workspace / month"
 msgstr "/ przestrzeń roboczą / miesiąc"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:44
+#: ../../apps/site/src/components/landing/Footer.tsx:48
 #, fuzzy
 msgid "© 2026 Amarnai. Open source under AGPL-3.0."
 msgstr "© 2026 Amarnai. Otwarty kod źródłowy na licencji AGPL-3.0."
@@ -754,7 +754,7 @@ msgstr "Plan biznesowy Amarnai"
 msgid "Amarnai for Android"
 msgstr "Amarnai dla Androida"
 
-#: ../../apps/site/src/components/landing/Nav.tsx:32
+#: ../../apps/site/src/components/landing/Nav.tsx:42
 #, fuzzy
 msgid "Amarnai home"
 msgstr "Strona główna Amarnai"
@@ -2225,6 +2225,10 @@ msgstr "Odłącz Gmaila"
 msgid "Disconnect Gmail?"
 msgstr "Odłączyć Gmaila?"
 
+#: ../../apps/site/src/components/support/SupportContent.tsx:106
+msgid "Disconnect your inbox or delete your account"
+msgstr "Odłącz skrzynkę odbiorczą lub usuń konto"
+
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:102
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:114
 #, fuzzy
@@ -2312,7 +2316,8 @@ msgstr "Doradztwo, recenzje prac i mentoring dla doktorantów."
 msgid "Doctors, pharmacies, medical appointments, prescriptions, and test results."
 msgstr "Lekarze, apteki, wizyty lekarskie, recepty i wyniki badań."
 
-#: ../../apps/site/src/components/landing/Footer.tsx:30
+#: ../../apps/site/src/components/landing/Footer.tsx:33
+#: ../../apps/site/src/components/support/SupportContent.tsx:74
 #, fuzzy
 msgid "Documentation"
 msgstr "Dokumentacja"
@@ -2509,6 +2514,10 @@ msgstr "Wsparcie e-mailowe"
 #: ../ui/src/emails/ThreadList.tsx:134
 #~ msgid "Email threads"
 #~ msgstr "Wątki e-mail"
+
+#: ../../apps/site/src/components/support/SupportContent.tsx:59
+msgid "Email us"
+msgstr "Napisz do nas"
 
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:32
 #, fuzzy
@@ -2737,8 +2746,8 @@ msgid "Fan messages, viewer comments, and follower engagement notifications."
 msgstr "Wiadomości od fanów, komentarze widzów i powiadomienia o zaangażowaniu obserwujących."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:80
-#: ../../apps/site/src/components/landing/Footer.tsx:29
-#: ../../apps/site/src/components/landing/Nav.tsx:41
+#: ../../apps/site/src/components/landing/Footer.tsx:32
+#: ../../apps/site/src/components/landing/Nav.tsx:51
 #, fuzzy
 msgid "FAQ"
 msgstr "FAQ"
@@ -3112,6 +3121,15 @@ msgstr "Generowanie nie powiodło się. Spróbuj ponownie wkrótce lub zacznij o
 msgid "Generation isn't available right now."
 msgstr "Generowanie jest chwilowo niedostępne."
 
+#: ../../apps/site/src/components/support/SupportContent.tsx:45
+#, fuzzy
+msgid "Get help with Amarnai"
+msgstr "Pomoc z Amarnai"
+
+#: ../../apps/site/src/lib/seo.ts:124
+msgid "Get help with Amarnai: contact support, browse the documentation, report a bug, or manage your account and data."
+msgstr "Pomoc z Amarnai: skontaktuj się z pomocą techniczną, przeglądaj dokumentację, zgłoś błąd lub zarządzaj kontem i danymi."
+
 #: ../ui/src/AppDownloadBanner.tsx:65
 #, fuzzy
 msgid "Get the Amarnai app"
@@ -3253,6 +3271,10 @@ msgid "Great King,\n"
 "In brotherhood,"
 msgstr "Wielki Królu,\n\nŻądane raporty zostaną przygotowane przed zwołaniem rady. Moi skrybowie zestawią sprawozdania z terytoriów wschodnich i wyślą je naprzód szybkim kurierem.\n\nW braterstwie,"
 
+#: ../../apps/site/src/components/support/SupportContent.tsx:77
+msgid "Guides and answers to common questions"
+msgstr "Przewodniki i odpowiedzi na najczęstsze pytania"
+
 #: ../../apps/site/src/components/landing/FinalCTASection.tsx:9
 #, fuzzy
 msgid "Hand the sorting to Amarnai."
@@ -3314,6 +3336,11 @@ msgstr "Subskrypcje hostowane działają w oparciu o wiodący model AI. Wdrożen
 msgid "Household bills, payment confirmations, receipts, and records of everyday expenses."
 msgstr "Rachunki domowe, potwierdzenia płatności, paragony i zapisy codziennych wydatków."
 
+#: ../../apps/site/src/components/support/SupportContent.tsx:118
+#, fuzzy
+msgid "How Amarnai stores and protects your data"
+msgstr "Jak Amarnai przechowuje i chroni Twoje dane"
+
 #: ../../apps/site/src/components/landing/FAQSection.tsx:15
 msgid "How do I know it's safe?"
 msgstr "Skąd wiem, że jest bezpieczny?"
@@ -3347,8 +3374,8 @@ msgstr "Czym Amarnai różni się od filtrów Gmaila i Outlooka?"
 msgid "How is Amarnai's pricing structured?"
 msgstr "Jak skonstruowane są ceny Amarnai?"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:22
-#: ../../apps/site/src/components/landing/Nav.tsx:38
+#: ../../apps/site/src/components/landing/Footer.tsx:25
+#: ../../apps/site/src/components/landing/Nav.tsx:48
 #, fuzzy
 msgid "How it works"
 msgstr "Jak to działa."
@@ -3373,6 +3400,10 @@ msgstr "Jeśli istnieje konto dla tego adresu e-mail, link do resetowania zosta�
 #, fuzzy
 msgid "If an account exists for that email, we've sent a reset link. Open it to choose a new password, then sign in."
 msgstr "Jeśli dla tego adresu e-mail istnieje konto, wysłaliśmy link do resetowania hasła. Otwórz go, aby wybrać nowe hasło, a następnie zaloguj się."
+
+#: ../../apps/site/src/components/support/SupportContent.tsx:48
+msgid "If something isn’t working or you have a question, here’s how to reach us."
+msgstr "Jeśli coś nie działa lub masz pytanie, oto jak się z nami skontaktować."
 
 #: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:64
 #: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:84
@@ -3753,7 +3784,7 @@ msgstr "Lidy"
 msgid "Leave unsorted"
 msgstr "Pozostaw nieposortowane"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:36
+#: ../../apps/site/src/components/landing/Footer.tsx:40
 #: ../ui/src/i18n/taxonomy-template-messages.ts:66
 #, fuzzy
 msgid "Legal"
@@ -3866,6 +3897,10 @@ msgstr "Zarządzaj powiadomieniami"
 #, fuzzy
 msgid "Manage payment method"
 msgstr "Zarządzaj metodą płatności"
+
+#: ../../apps/site/src/components/support/SupportContent.tsx:103
+msgid "Manage your account and data"
+msgstr "Zarządzaj kontem i danymi"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:44
 #, fuzzy
@@ -4132,7 +4167,7 @@ msgstr "Wymaga sprawdzenia"
 msgid "Never"
 msgstr "Nigdy"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:45
+#: ../../apps/site/src/components/landing/Footer.tsx:49
 #, fuzzy
 msgid "Never auto-sends · Encrypted at rest · Minimal data"
 msgstr "Brak automatycznych wysyłek · Szyfrowane w spoczynku · Minimalne dane"
@@ -4439,6 +4474,10 @@ msgstr "Tylko właściciel obszaru roboczego może zarządzać płatnościami."
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:261
 msgid "Open"
 msgstr "Otwórz"
+
+#: ../../apps/site/src/components/support/SupportContent.tsx:94
+msgid "Open an issue on GitHub"
+msgstr "Zgłoś problem na GitHubie"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:256
 #: ../../apps/mobile/src/components/DraftSheet.tsx:97
@@ -4817,8 +4856,8 @@ msgstr "Cena za obszar roboczy. Jasne plany, jasne limity."
 #~ msgid "Priced per workspace. Sort as much as you like."
 #~ msgstr "Cena za obszar roboczy. Sortuj bez ograniczeń."
 
-#: ../../apps/site/src/components/landing/Footer.tsx:25
-#: ../../apps/site/src/components/landing/Nav.tsx:44
+#: ../../apps/site/src/components/landing/Footer.tsx:28
+#: ../../apps/site/src/components/landing/Nav.tsx:54
 #, fuzzy
 msgid "Pricing"
 msgstr "Cennik"
@@ -4851,10 +4890,14 @@ msgstr "Ogłoszenia dyrektora, spotkania personelu i biuletyny administracji okr
 msgid "Priority support"
 msgstr "Wsparcie priorytetowe"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:37
+#: ../../apps/site/src/components/landing/Footer.tsx:41
 #, fuzzy
 msgid "Privacy"
 msgstr "Prywatność"
+
+#: ../../apps/site/src/components/support/SupportContent.tsx:115
+msgid "Privacy and data handling"
+msgstr "Prywatność i przetwarzanie danych"
 
 #: ../../apps/site/src/components/landing/HeroSection.tsx:44
 #, fuzzy
@@ -4867,7 +4910,7 @@ msgstr "Prywatność od podstaw"
 msgid "Pro"
 msgstr "Pro"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:21
+#: ../../apps/site/src/components/landing/Footer.tsx:24
 #, fuzzy
 msgid "Product"
 msgstr "Produkt"
@@ -5234,6 +5277,10 @@ msgstr "Odpowiedz wszystkim"
 msgid "Reply drafts"
 msgstr "Wersje robocze odpowiedzi"
 
+#: ../../apps/site/src/components/support/SupportContent.tsx:91
+msgid "Report a bug"
+msgstr "Zgłoś błąd"
+
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:89
 #, fuzzy
 msgid "Rescan failed"
@@ -5321,7 +5368,7 @@ msgstr "Zmień rozmiar podziału między skrzynką odbiorczą a Amarnai"
 msgid "Resize the thread list"
 msgstr "Zmień rozmiar listy wątków"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:28
+#: ../../apps/site/src/components/landing/Footer.tsx:31
 #, fuzzy
 msgid "Resources"
 msgstr "Zasoby"
@@ -5504,8 +5551,8 @@ msgstr "Szukaj wątków..."
 msgid "See how your inbox is sorted, right next to your email."
 msgstr "Zobacz, jak sortowana jest Twoja skrzynka, tuż obok Twojej poczty."
 
-#: ../../apps/site/src/components/landing/Footer.tsx:24
-#: ../../apps/site/src/components/landing/Nav.tsx:40
+#: ../../apps/site/src/components/landing/Footer.tsx:27
+#: ../../apps/site/src/components/landing/Nav.tsx:50
 #, fuzzy
 msgid "See it work"
 msgstr "Zobacz, jak to działa"
@@ -5780,7 +5827,7 @@ msgstr "Coś poszło nie tak. Spróbuj ponownie."
 msgid "Soon"
 msgstr "Wkrótce"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:15
+#: ../../apps/site/src/components/landing/Footer.tsx:18
 #, fuzzy
 msgid "Sort emails your way."
 msgstr "Sortuj e-maile po swojemu."
@@ -6007,10 +6054,16 @@ msgid "Suppliers"
 msgstr "Dostawcy"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:31
+#: ../../apps/site/src/components/landing/Footer.tsx:37
 #: ../ui/src/pricing/planMessages.ts:53
 #, fuzzy
 msgid "Support"
 msgstr "Wsparcie"
+
+#: ../../apps/site/src/lib/seo.ts:118
+#, fuzzy
+msgid "Support | Amarnai"
+msgstr "Wsparcie | Amarnai"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:60
 msgid "Support, onboarding, retention, churn, and customer success conversations."
@@ -6122,7 +6175,7 @@ msgstr "Szablon zastosowany"
 msgid "Templates"
 msgstr "Szablony"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:38
+#: ../../apps/site/src/components/landing/Footer.tsx:42
 #, fuzzy
 msgid "Terms"
 msgstr "Warunki"
@@ -7124,8 +7177,8 @@ msgstr "Plan {plan} zakończył import najnowszych e-maili. Starsze wiadomości,
 msgid "Your 14-day free trial runs until <0>{0}</0>. You won't be charged before then."
 msgstr "Twój 14-dniowy bezpłatny okres próbny trwa do <0>{0}</0>. Nie zostaniesz obciążony przed tym terminem."
 
-#: ../../apps/site/src/components/landing/Footer.tsx:23
-#: ../../apps/site/src/components/landing/Nav.tsx:39
+#: ../../apps/site/src/components/landing/Footer.tsx:26
+#: ../../apps/site/src/components/landing/Nav.tsx:49
 msgid "Your folders"
 msgstr "Twoje foldery"
 

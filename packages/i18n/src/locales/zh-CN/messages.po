@@ -264,7 +264,7 @@ msgstr "{waitingCount, plural, one {# 个会话正在等待。} other {# 个会�
 msgid "/ workspace / month"
 msgstr "/ 工作区 / 月"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:44
+#: ../../apps/site/src/components/landing/Footer.tsx:48
 msgid "© 2026 Amarnai. Open source under AGPL-3.0."
 msgstr "© 2026 Amarnai。AGPL-3.0 协议开源。"
 
@@ -739,7 +739,7 @@ msgstr "Amarnai 商业版"
 msgid "Amarnai for Android"
 msgstr "Amarnai 安卓版"
 
-#: ../../apps/site/src/components/landing/Nav.tsx:32
+#: ../../apps/site/src/components/landing/Nav.tsx:42
 msgid "Amarnai home"
 msgstr "Amarnai 首页"
 
@@ -2178,6 +2178,11 @@ msgstr "断开Gmail连接"
 msgid "Disconnect Gmail?"
 msgstr "断开 Gmail 连接？"
 
+#: ../../apps/site/src/components/support/SupportContent.tsx:106
+#, fuzzy
+msgid "Disconnect your inbox or delete your account"
+msgstr "断开收件箱连接或删除您的账户"
+
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:102
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:114
 msgid "Disconnected"
@@ -2269,7 +2274,8 @@ msgstr "博士指导、论文反馈及研究员辅导。"
 msgid "Doctors, pharmacies, medical appointments, prescriptions, and test results."
 msgstr "医生、药房、医疗预约、处方及化验结果。"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:30
+#: ../../apps/site/src/components/landing/Footer.tsx:33
+#: ../../apps/site/src/components/support/SupportContent.tsx:74
 msgid "Documentation"
 msgstr "文档"
 
@@ -2457,6 +2463,10 @@ msgstr "邮件支持"
 #: ../ui/src/emails/ThreadList.tsx:134
 #~ msgid "Email threads"
 #~ msgstr "电子邮件会话"
+
+#: ../../apps/site/src/components/support/SupportContent.tsx:59
+msgid "Email us"
+msgstr "发送邮件"
 
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:32
 #, fuzzy
@@ -2678,8 +2688,8 @@ msgid "Fan messages, viewer comments, and follower engagement notifications."
 msgstr "粉丝留言、观众评论及关注者互动通知。"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:80
-#: ../../apps/site/src/components/landing/Footer.tsx:29
-#: ../../apps/site/src/components/landing/Nav.tsx:41
+#: ../../apps/site/src/components/landing/Footer.tsx:32
+#: ../../apps/site/src/components/landing/Nav.tsx:51
 #, fuzzy
 msgid "FAQ"
 msgstr "常见问题"
@@ -3042,6 +3052,15 @@ msgstr "生成失败。请稍后重试，或从模板开始。"
 msgid "Generation isn't available right now."
 msgstr "当前无法生成。"
 
+#: ../../apps/site/src/components/support/SupportContent.tsx:45
+#, fuzzy
+msgid "Get help with Amarnai"
+msgstr "获取 Amarnai 帮助"
+
+#: ../../apps/site/src/lib/seo.ts:124
+msgid "Get help with Amarnai: contact support, browse the documentation, report a bug, or manage your account and data."
+msgstr "获取 Amarnai 帮助：联系支持、浏览文档、报告错误或管理您的账户和数据。"
+
 #: ../ui/src/AppDownloadBanner.tsx:65
 #, fuzzy
 msgid "Get the Amarnai app"
@@ -3177,6 +3196,10 @@ msgid "Great King,\n"
 "In brotherhood,"
 msgstr "大王，\n\n你所要求之呈报，将在议会召开前备妥。我将命抄写员汇编东方领地的账目，并派快马先行送呈。\n\n兄弟情谊，"
 
+#: ../../apps/site/src/components/support/SupportContent.tsx:77
+msgid "Guides and answers to common questions"
+msgstr "指南与常见问题"
+
 #: ../../apps/site/src/components/landing/FinalCTASection.tsx:9
 #, fuzzy
 msgid "Hand the sorting to Amarnai."
@@ -3234,6 +3257,11 @@ msgstr "托管订阅服务基于领先的 AI 模型运行。自部署版本可�
 msgid "Household bills, payment confirmations, receipts, and records of everyday expenses."
 msgstr "家庭账单、付款确认、收据及日常开支记录。"
 
+#: ../../apps/site/src/components/support/SupportContent.tsx:118
+#, fuzzy
+msgid "How Amarnai stores and protects your data"
+msgstr "Amarnai 如何存储和保护您的数据"
+
 #: ../../apps/site/src/components/landing/FAQSection.tsx:15
 msgid "How do I know it's safe?"
 msgstr "我怎么知道它是否安全？"
@@ -3267,8 +3295,8 @@ msgstr "Amarnai 与 Gmail 和 Outlook 过滤器有何不同？"
 msgid "How is Amarnai's pricing structured?"
 msgstr "Amarnai 如何定价？"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:22
-#: ../../apps/site/src/components/landing/Nav.tsx:38
+#: ../../apps/site/src/components/landing/Footer.tsx:25
+#: ../../apps/site/src/components/landing/Nav.tsx:48
 msgid "How it works"
 msgstr "工作原理"
 
@@ -3291,6 +3319,11 @@ msgstr "如果该邮箱存在账户，重置链接已发送。"
 #, fuzzy
 msgid "If an account exists for that email, we've sent a reset link. Open it to choose a new password, then sign in."
 msgstr "如果此邮箱存在账户，我们已发送重置链接。请打开链接设置新密码，然后登录。"
+
+#: ../../apps/site/src/components/support/SupportContent.tsx:48
+#, fuzzy
+msgid "If something isn’t working or you have a question, here’s how to reach us."
+msgstr "如果遇到问题或有疑问，请通过以下方式联系我们。"
 
 #: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:64
 #: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:84
@@ -3660,7 +3693,7 @@ msgstr "潜在客户"
 msgid "Leave unsorted"
 msgstr "保持未分类"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:36
+#: ../../apps/site/src/components/landing/Footer.tsx:40
 #: ../ui/src/i18n/taxonomy-template-messages.ts:66
 #, fuzzy
 msgid "Legal"
@@ -3775,6 +3808,10 @@ msgstr "管理通知"
 #: ../../apps/mobile/app/(app)/subscription.tsx:303
 msgid "Manage payment method"
 msgstr "管理付款方式"
+
+#: ../../apps/site/src/components/support/SupportContent.tsx:103
+msgid "Manage your account and data"
+msgstr "管理您的账户和数据"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:44
 #, fuzzy
@@ -4035,7 +4072,7 @@ msgstr "需要审核"
 msgid "Never"
 msgstr "从不"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:45
+#: ../../apps/site/src/components/landing/Footer.tsx:49
 #, fuzzy
 msgid "Never auto-sends · Encrypted at rest · Minimal data"
 msgstr "绝不自动发送 ・ 静态加密 ・ 最少数据"
@@ -4332,6 +4369,10 @@ msgstr "只有工作区所有者才能管理账单。"
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:261
 msgid "Open"
 msgstr "打开"
+
+#: ../../apps/site/src/components/support/SupportContent.tsx:94
+msgid "Open an issue on GitHub"
+msgstr "在 GitHub 上提交 issue"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:256
 #: ../../apps/mobile/src/components/DraftSheet.tsx:97
@@ -4708,8 +4749,8 @@ msgstr "按工作区计费。方案透明，限制清晰。"
 #~ msgid "Priced per workspace. Sort as much as you like."
 #~ msgstr "按工作区计费。可随意分类。"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:25
-#: ../../apps/site/src/components/landing/Nav.tsx:44
+#: ../../apps/site/src/components/landing/Footer.tsx:28
+#: ../../apps/site/src/components/landing/Nav.tsx:54
 #, fuzzy
 msgid "Pricing"
 msgstr "定价"
@@ -4742,10 +4783,14 @@ msgstr "校长通知、教职工会议和学区管理公告。"
 msgid "Priority support"
 msgstr "优先支持"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:37
+#: ../../apps/site/src/components/landing/Footer.tsx:41
 #, fuzzy
 msgid "Privacy"
 msgstr "隐私"
+
+#: ../../apps/site/src/components/support/SupportContent.tsx:115
+msgid "Privacy and data handling"
+msgstr "隐私与数据处理"
 
 #: ../../apps/site/src/components/landing/HeroSection.tsx:44
 #, fuzzy
@@ -4757,7 +4802,7 @@ msgstr "设计即隐私"
 msgid "Pro"
 msgstr "专业版"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:21
+#: ../../apps/site/src/components/landing/Footer.tsx:24
 msgid "Product"
 msgstr "产品"
 
@@ -5121,6 +5166,11 @@ msgstr "回复全部"
 msgid "Reply drafts"
 msgstr "回复草稿"
 
+#: ../../apps/site/src/components/support/SupportContent.tsx:91
+#, fuzzy
+msgid "Report a bug"
+msgstr "报告错误"
+
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:89
 msgid "Rescan failed"
 msgstr "重新扫描失败"
@@ -5204,7 +5254,7 @@ msgstr "调整收件箱和 Amarnai 之间分栏的大小"
 msgid "Resize the thread list"
 msgstr "调整会话列表大小"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:28
+#: ../../apps/site/src/components/landing/Footer.tsx:31
 msgid "Resources"
 msgstr "资源"
 
@@ -5384,8 +5434,8 @@ msgstr "搜索会话…"
 msgid "See how your inbox is sorted, right next to your email."
 msgstr "在您的邮件旁边，查看收件箱如何分类。"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:24
-#: ../../apps/site/src/components/landing/Nav.tsx:40
+#: ../../apps/site/src/components/landing/Footer.tsx:27
+#: ../../apps/site/src/components/landing/Nav.tsx:50
 #, fuzzy
 msgid "See it work"
 msgstr "查看效果"
@@ -5650,7 +5700,7 @@ msgstr "出错了。请重试。"
 msgid "Soon"
 msgstr "即将推出"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:15
+#: ../../apps/site/src/components/landing/Footer.tsx:18
 #, fuzzy
 msgid "Sort emails your way."
 msgstr "按您的方式管理邮件。"
@@ -5871,9 +5921,14 @@ msgid "Suppliers"
 msgstr "供应商"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:31
+#: ../../apps/site/src/components/landing/Footer.tsx:37
 #: ../ui/src/pricing/planMessages.ts:53
 msgid "Support"
 msgstr "支持"
+
+#: ../../apps/site/src/lib/seo.ts:118
+msgid "Support | Amarnai"
+msgstr "支持 | Amarnai"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:60
 #, fuzzy
@@ -5987,7 +6042,7 @@ msgstr "模板已应用"
 msgid "Templates"
 msgstr "模板"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:38
+#: ../../apps/site/src/components/landing/Footer.tsx:42
 msgid "Terms"
 msgstr "术语"
 
@@ -6963,8 +7018,8 @@ msgstr "您的{plan}套餐已完成最近邮件的导入。超出额度的旧邮
 msgid "Your 14-day free trial runs until <0>{0}</0>. You won't be charged before then."
 msgstr "您的14天免费试用期截至<0>{0}</0>。在此之前，我们不会向您收费。"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:23
-#: ../../apps/site/src/components/landing/Nav.tsx:39
+#: ../../apps/site/src/components/landing/Footer.tsx:26
+#: ../../apps/site/src/components/landing/Nav.tsx:49
 msgid "Your folders"
 msgstr "您的文件夹"
 

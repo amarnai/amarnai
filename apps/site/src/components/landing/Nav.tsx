@@ -14,7 +14,11 @@ function scrollTo(id: string) {
   };
 }
 
-export function Nav() {
+// `anchorBase` lets the shared nav live on pages other than the landing route.
+// On the landing page (default `""`) the section links smooth-scroll in place;
+// on other routes (e.g. `/support`, passing `"/"`) they become `/#how` links
+// that navigate home and let the browser scroll to the section.
+export function Nav({ anchorBase = "" }: { anchorBase?: string }) {
   const { _ } = useLingui();
   const [scrolled, setScrolled] = useState(false);
 
@@ -26,19 +30,25 @@ export function Nav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  const onLanding = anchorBase === "";
+  const anchorProps = (id: string) =>
+    onLanding
+      ? { href: `#${id}`, onClick: scrollTo(id) }
+      : { href: `${anchorBase}#${id}` };
+
   return (
     <header className={`ld-nav${scrolled ? " scrolled" : ""}`} id="nav">
       <div className="ld-nav-inner">
-        <a className="ld-brand" href="#top" onClick={scrollTo("top")} aria-label={_(msg`Amarnai home`)}>
+        <a className="ld-brand" {...anchorProps("top")} aria-label={_(msg`Amarnai home`)}>
           <img src="/logo.png" alt="" aria-hidden="true" className="ld-brand-mark" />
           Amarnai
         </a>
 
         <nav className="ld-nav-links">
-          <a href="#how" onClick={scrollTo("how")}><Trans>How it works</Trans></a>
-          <a href="#taxonomy" onClick={scrollTo("taxonomy")}><Trans>Your folders</Trans></a>
-          <a href="#triage" onClick={scrollTo("triage")}><Trans>See it work</Trans></a>
-          <a href="#faq" onClick={scrollTo("faq")}><Trans>FAQ</Trans></a>
+          <a {...anchorProps("how")}><Trans>How it works</Trans></a>
+          <a {...anchorProps("taxonomy")}><Trans>Your folders</Trans></a>
+          <a {...anchorProps("triage")}><Trans>See it work</Trans></a>
+          <a {...anchorProps("faq")}><Trans>FAQ</Trans></a>
           <ThemeToggle className="theme-toggle--nav" />
           <Link className="ld-btn ld-nav-cta accent" href="/pricing">
             <Trans>Pricing</Trans>

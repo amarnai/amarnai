@@ -274,7 +274,7 @@ msgstr "{waitingCount, plural, one {# เธรดกำลังรออยู
 msgid "/ workspace / month"
 msgstr "/ พื้นที่ทำงาน / เดือน"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:44
+#: ../../apps/site/src/components/landing/Footer.tsx:48
 #, fuzzy
 msgid "© 2026 Amarnai. Open source under AGPL-3.0."
 msgstr "© 2026 Amarnai โอเพนซอร์สภายใต้ AGPL-3.0"
@@ -754,7 +754,7 @@ msgstr "แผนธุรกิจ Amarnai"
 msgid "Amarnai for Android"
 msgstr "Amarnai สำหรับ Android"
 
-#: ../../apps/site/src/components/landing/Nav.tsx:32
+#: ../../apps/site/src/components/landing/Nav.tsx:42
 #, fuzzy
 msgid "Amarnai home"
 msgstr "หน้าแรก Amarnai"
@@ -2225,6 +2225,10 @@ msgstr "ยกเลิกการเชื่อมต่อ Gmail"
 msgid "Disconnect Gmail?"
 msgstr "ยกเลิกการเชื่อมต่อ Gmail?"
 
+#: ../../apps/site/src/components/support/SupportContent.tsx:106
+msgid "Disconnect your inbox or delete your account"
+msgstr "ยกเลิกการเชื่อมต่อกล่องจดหมายของคุณ หรือลบบัญชีของคุณ"
+
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:102
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:114
 #, fuzzy
@@ -2312,7 +2316,8 @@ msgstr "การให้คำปรึกษาระดับปริญญ
 msgid "Doctors, pharmacies, medical appointments, prescriptions, and test results."
 msgstr "แพทย์, ร้านขายยา, การนัดหมายแพทย์, ใบสั่งยา และผลการตรวจ"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:30
+#: ../../apps/site/src/components/landing/Footer.tsx:33
+#: ../../apps/site/src/components/support/SupportContent.tsx:74
 #, fuzzy
 msgid "Documentation"
 msgstr "เอกสารประกอบ"
@@ -2509,6 +2514,10 @@ msgstr "ฝ่ายสนับสนุนทางอีเมล"
 #: ../ui/src/emails/ThreadList.tsx:134
 #~ msgid "Email threads"
 #~ msgstr "เธรดอีเมล"
+
+#: ../../apps/site/src/components/support/SupportContent.tsx:59
+msgid "Email us"
+msgstr "ส่งอีเมลถึงเรา"
 
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:32
 #, fuzzy
@@ -2737,8 +2746,8 @@ msgid "Fan messages, viewer comments, and follower engagement notifications."
 msgstr "ข้อความแฟนคลับ, คอมเมนต์ผู้ชม และการแจ้งเตือนจากผู้ติดตาม"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:80
-#: ../../apps/site/src/components/landing/Footer.tsx:29
-#: ../../apps/site/src/components/landing/Nav.tsx:41
+#: ../../apps/site/src/components/landing/Footer.tsx:32
+#: ../../apps/site/src/components/landing/Nav.tsx:51
 #, fuzzy
 msgid "FAQ"
 msgstr "คำถามที่พบบ่อย"
@@ -3112,6 +3121,15 @@ msgstr "สร้างไม่สำเร็จ ลองใหม่ภา�
 msgid "Generation isn't available right now."
 msgstr "ไม่สามารถสร้างได้ในขณะนี้"
 
+#: ../../apps/site/src/components/support/SupportContent.tsx:45
+#, fuzzy
+msgid "Get help with Amarnai"
+msgstr "รับความช่วยเหลือเกี่ยวกับ Amarnai"
+
+#: ../../apps/site/src/lib/seo.ts:124
+msgid "Get help with Amarnai: contact support, browse the documentation, report a bug, or manage your account and data."
+msgstr "รับความช่วยเหลือเกี่ยวกับ Amarnai: ติดต่อฝ่ายสนับสนุน, เรียกดูเอกสารประกอบ, รายงานข้อผิดพลาด หรือจัดการบัญชีและข้อมูลของคุณ"
+
 #: ../ui/src/AppDownloadBanner.tsx:65
 #, fuzzy
 msgid "Get the Amarnai app"
@@ -3253,6 +3271,10 @@ msgid "Great King,\n"
 "In brotherhood,"
 msgstr "ฝ่าบาท,\n\nรายงานที่ฝ่าบาททรงขอจะถูกจัดเตรียมให้เสร็จสิ้นก่อนการประชุมสภา ข้าพระบาทจะให้เหล่านักจารึกรวบรวมบัญชีของดินแดนทางตะวันออกและส่งล่วงหน้าไปกับผู้ส่งสารที่รวดเร็ว\n\nด้วยไมตรี,"
 
+#: ../../apps/site/src/components/support/SupportContent.tsx:77
+msgid "Guides and answers to common questions"
+msgstr "คู่มือและคำตอบสำหรับคำถามที่พบบ่อย"
+
 #: ../../apps/site/src/components/landing/FinalCTASection.tsx:9
 #, fuzzy
 msgid "Hand the sorting to Amarnai."
@@ -3314,6 +3336,11 @@ msgstr "การสมัครใช้งานแบบโฮสต์ทำ
 msgid "Household bills, payment confirmations, receipts, and records of everyday expenses."
 msgstr "บิลค่าใช้จ่ายในบ้าน, การยืนยันการชำระเงิน, ใบเสร็จ และบันทึกค่าใช้จ่ายประจำวัน"
 
+#: ../../apps/site/src/components/support/SupportContent.tsx:118
+#, fuzzy
+msgid "How Amarnai stores and protects your data"
+msgstr "Amarnai จัดเก็บและปกป้องข้อมูลของคุณอย่างไร"
+
 #: ../../apps/site/src/components/landing/FAQSection.tsx:15
 msgid "How do I know it's safe?"
 msgstr "ฉันจะรู้ได้อย่างไรว่าปลอดภัย?"
@@ -3347,8 +3374,8 @@ msgstr "Amarnai แตกต่างจากฟิลเตอร์ของ 
 msgid "How is Amarnai's pricing structured?"
 msgstr "โครงสร้างราคาของ Amarnai เป็นอย่างไร?"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:22
-#: ../../apps/site/src/components/landing/Nav.tsx:38
+#: ../../apps/site/src/components/landing/Footer.tsx:25
+#: ../../apps/site/src/components/landing/Nav.tsx:48
 #, fuzzy
 msgid "How it works"
 msgstr "วิธีการทำงาน"
@@ -3373,6 +3400,10 @@ msgstr "หากอีเมลนี้มีบัญชีอยู่ ร�
 #, fuzzy
 msgid "If an account exists for that email, we've sent a reset link. Open it to choose a new password, then sign in."
 msgstr "หากอีเมลนี้มีบัญชีอยู่ เราได้ส่งลิงก์รีเซ็ตไปให้แล้ว เปิดลิงก์เพื่อตั้งรหัสผ่านใหม่ แล้วลงชื่อเข้าใช้"
+
+#: ../../apps/site/src/components/support/SupportContent.tsx:48
+msgid "If something isn’t working or you have a question, here’s how to reach us."
+msgstr "หากมีปัญหาในการใช้งาน หรือมีคำถาม นี่คือช่องทางติดต่อเรา"
 
 #: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:64
 #: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:84
@@ -3753,7 +3784,7 @@ msgstr "ผู้สนใจ"
 msgid "Leave unsorted"
 msgstr "ปล่อยไว้โดยไม่จัดเรียง"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:36
+#: ../../apps/site/src/components/landing/Footer.tsx:40
 #: ../ui/src/i18n/taxonomy-template-messages.ts:66
 #, fuzzy
 msgid "Legal"
@@ -3866,6 +3897,10 @@ msgstr "จัดการการแจ้งเตือน"
 #, fuzzy
 msgid "Manage payment method"
 msgstr "จัดการวิธีการชำระเงิน"
+
+#: ../../apps/site/src/components/support/SupportContent.tsx:103
+msgid "Manage your account and data"
+msgstr "จัดการบัญชีและข้อมูลของคุณ"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:44
 #, fuzzy
@@ -4132,7 +4167,7 @@ msgstr "รอตรวจสอบ"
 msgid "Never"
 msgstr "ไม่เคย"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:45
+#: ../../apps/site/src/components/landing/Footer.tsx:49
 #, fuzzy
 msgid "Never auto-sends · Encrypted at rest · Minimal data"
 msgstr "ไม่ส่งอัตโนมัติ · เข้ารหัสขณะพัก · ใช้ข้อมูลน้อยที่สุด"
@@ -4439,6 +4474,10 @@ msgstr "เฉพาะเจ้าของเวิร์กสเปซเท
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:261
 msgid "Open"
 msgstr "เปิด"
+
+#: ../../apps/site/src/components/support/SupportContent.tsx:94
+msgid "Open an issue on GitHub"
+msgstr "สร้างประเด็นบน GitHub"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:256
 #: ../../apps/mobile/src/components/DraftSheet.tsx:97
@@ -4817,8 +4856,8 @@ msgstr "ราคาต่อพื้นที่ทำงาน แผนช�
 #~ msgid "Priced per workspace. Sort as much as you like."
 #~ msgstr "ราคาต่อเวิร์กสเปซ จัดเรียงได้มากเท่าที่คุณต้องการ"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:25
-#: ../../apps/site/src/components/landing/Nav.tsx:44
+#: ../../apps/site/src/components/landing/Footer.tsx:28
+#: ../../apps/site/src/components/landing/Nav.tsx:54
 #, fuzzy
 msgid "Pricing"
 msgstr "ราคา"
@@ -4851,10 +4890,14 @@ msgstr "ประกาศจากผู้อำนวยการ, การ�
 msgid "Priority support"
 msgstr "การสนับสนุนแบบจัดลำดับความสำคัญ"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:37
+#: ../../apps/site/src/components/landing/Footer.tsx:41
 #, fuzzy
 msgid "Privacy"
 msgstr "ความเป็นส่วนตัว"
+
+#: ../../apps/site/src/components/support/SupportContent.tsx:115
+msgid "Privacy and data handling"
+msgstr "ความเป็นส่วนตัวและการจัดการข้อมูล"
 
 #: ../../apps/site/src/components/landing/HeroSection.tsx:44
 #, fuzzy
@@ -4867,7 +4910,7 @@ msgstr "ความเป็นส่วนตัวตั้งแต่กา
 msgid "Pro"
 msgstr "โปร"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:21
+#: ../../apps/site/src/components/landing/Footer.tsx:24
 #, fuzzy
 msgid "Product"
 msgstr "ผลิตภัณฑ์"
@@ -5234,6 +5277,10 @@ msgstr "ตอบกลับทั้งหมด"
 msgid "Reply drafts"
 msgstr "ฉบับร่างตอบกลับ"
 
+#: ../../apps/site/src/components/support/SupportContent.tsx:91
+msgid "Report a bug"
+msgstr "รายงานข้อผิดพลาด"
+
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:89
 #, fuzzy
 msgid "Rescan failed"
@@ -5321,7 +5368,7 @@ msgstr "ปรับขนาดการแบ่งระหว่างกล
 msgid "Resize the thread list"
 msgstr "ปรับขนาดรายการเธรด"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:28
+#: ../../apps/site/src/components/landing/Footer.tsx:31
 #, fuzzy
 msgid "Resources"
 msgstr "แหล่งข้อมูล"
@@ -5504,8 +5551,8 @@ msgstr "ค้นหาเธรด..."
 msgid "See how your inbox is sorted, right next to your email."
 msgstr "ดูวิธีการจัดเรียงกล่องจดหมายของคุณ ได้ข้างอีเมลของคุณทันที"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:24
-#: ../../apps/site/src/components/landing/Nav.tsx:40
+#: ../../apps/site/src/components/landing/Footer.tsx:27
+#: ../../apps/site/src/components/landing/Nav.tsx:50
 #, fuzzy
 msgid "See it work"
 msgstr "ดูการทำงาน"
@@ -5780,7 +5827,7 @@ msgstr "เกิดข้อผิดพลาด โปรดลองอี�
 msgid "Soon"
 msgstr "เร็วๆ นี้"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:15
+#: ../../apps/site/src/components/landing/Footer.tsx:18
 #, fuzzy
 msgid "Sort emails your way."
 msgstr "จัดเรียงอีเมลในแบบของคุณ"
@@ -6007,10 +6054,16 @@ msgid "Suppliers"
 msgstr "ซัพพลายเออร์"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:31
+#: ../../apps/site/src/components/landing/Footer.tsx:37
 #: ../ui/src/pricing/planMessages.ts:53
 #, fuzzy
 msgid "Support"
 msgstr "ฝ่ายสนับสนุน"
+
+#: ../../apps/site/src/lib/seo.ts:118
+#, fuzzy
+msgid "Support | Amarnai"
+msgstr "ฝ่ายสนับสนุน | Amarnai"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:60
 msgid "Support, onboarding, retention, churn, and customer success conversations."
@@ -6122,7 +6175,7 @@ msgstr "ใช้เทมเพลตแล้ว"
 msgid "Templates"
 msgstr "เทมเพลต"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:38
+#: ../../apps/site/src/components/landing/Footer.tsx:42
 #, fuzzy
 msgid "Terms"
 msgstr "ข้อกำหนด"
@@ -7123,8 +7176,8 @@ msgstr "แผน {plan} ของคุณนำเข้าอีเมลล�
 msgid "Your 14-day free trial runs until <0>{0}</0>. You won't be charged before then."
 msgstr "ช่วงทดลองใช้ฟรี 14 วันของคุณจะใช้งานได้จนถึง <0>{0}</0> คุณจะไม่ถูกเรียกเก็บเงินก่อนวันดังกล่าว"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:23
-#: ../../apps/site/src/components/landing/Nav.tsx:39
+#: ../../apps/site/src/components/landing/Footer.tsx:26
+#: ../../apps/site/src/components/landing/Nav.tsx:49
 msgid "Your folders"
 msgstr "โฟลเดอร์ของคุณ"
 

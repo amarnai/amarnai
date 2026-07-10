@@ -2002,6 +2002,39 @@ button.ld-ol-row:hover { background: var(--bg-soft); }
   .ld-faq-chevron { transition: color 0.15s; }
 }
 
+/* Support page: a card of contact/help links, reusing the FAQ panel shell. */
+.ld-support-card { max-width: 640px; }
+
+.ld-support-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 22px;
+  color: var(--ink);
+  text-decoration: none;
+  transition: background 0.12s, color 0.1s;
+}
+
+.ld-support-row + .ld-support-row { border-top: 1px solid var(--line); }
+.ld-support-row:hover { background: var(--bg-soft); color: var(--accent-ink); }
+
+.ld-support-row-main { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.ld-support-row-label { font-size: 15px; font-weight: 600; }
+.ld-support-row-value { font-size: 13.5px; font-weight: 450; color: var(--ink-3); }
+.ld-support-row:hover .ld-support-row-value { color: var(--accent-ink); }
+
+.ld-support-row-arrow {
+  color: var(--ink-4);
+  flex-shrink: 0;
+  transition: transform 0.15s, color 0.15s;
+}
+.ld-support-row:hover .ld-support-row-arrow { color: var(--accent-ink); transform: translateX(2px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .ld-support-row-arrow { transition: color 0.15s; }
+}
+
 /* ─── Final CTA ───────────────────────────────────────────────────────────── */
 
 .ld-final {
