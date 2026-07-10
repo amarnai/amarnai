@@ -2,7 +2,7 @@ import { vi, describe, it, expect, beforeEach } from "vitest";
 
 vi.mock("./client", () => ({
   db: {
-    inboxUsageMeter: { findUnique: vi.fn(), upsert: vi.fn(), updateMany: vi.fn() },
+    inboxUsageMeter: { findUnique: vi.fn(), findFirst: vi.fn(), upsert: vi.fn(), updateMany: vi.fn() },
     inboxBackfillGrant: { findUnique: vi.fn(), upsert: vi.fn() },
   },
 }));
@@ -12,7 +12,7 @@ vi.mock("./client", () => ({
 vi.mock("./inbox-entitlement", () => ({ getInboxPlanCeiling: vi.fn() }));
 
 import { db } from "./client";
-import { resolveBackfillBudget } from "./usage-meter";
+import { resolveBackfillBudget, getBackfillGraceUsed, GRACE_ROLLING_WINDOW_MS } from "./usage-meter";
 
 const WINDOW = new Date("2026-06-01T00:00:00Z");
 const base = { inboxKey: "ben@gmail.com", workspaceId: "ws1", windowStart: WINDOW };
@@ -21,6 +21,8 @@ beforeEach(() => {
   vi.clearAllMocks();
   vi.mocked(db.inboxBackfillGrant.upsert).mockResolvedValue({} as never);
   vi.mocked(db.inboxUsageMeter.upsert).mockResolvedValue({} as never);
+  // Default: no grace claimed within the rolling 12-month window (eligible).
+  vi.mocked(db.inboxUsageMeter.findFirst).mockResolvedValue(null as never);
   // Default: the grace-token claim succeeds (this run wins it).
   vi.mocked(db.inboxUsageMeter.updateMany).mockResolvedValue({ count: 1 } as never);
 });
@@ -53,11 +55,31 @@ describe("resolveBackfillBudget", () => {
     const r = await resolveBackfillBudget({ ...base, cap: 500 });
 
     expect(r).toEqual({ effectiveBudget: 500, usingGrace: true, blockedAwaitingWindow: false });
-    // Grace claimed via a conditional update guarded on graceUsed=false (not a blind upsert).
+    // Grace claimed via a conditional update guarded on graceUsed=false (not a blind
+    // upsert), stamping graceClaimedAt in the same statement for the rolling gate.
     expect(db.inboxUsageMeter.updateMany).toHaveBeenCalledWith({
       where: { inboxKey: base.inboxKey, kind: "BACKFILL", windowStart: base.windowStart, graceUsed: false },
-      data: { graceUsed: true },
+      data: { graceUsed: true, graceClaimedAt: expect.any(Date) },
     });
+  });
+
+  it("grace blocked by rolling 12-month window: a claim within the last year → no grace", async () => {
+    vi.mocked(db.inboxUsageMeter.findUnique).mockResolvedValue({ used: 500, graceUsed: false } as never);
+    vi.mocked(db.inboxBackfillGrant.findUnique).mockResolvedValue({ id: "g1" } as never);
+    // A prior BACKFILL row carries a graceClaimedAt inside the rolling window.
+    vi.mocked(db.inboxUsageMeter.findFirst).mockResolvedValue({ id: "prev" } as never);
+
+    const r = await resolveBackfillBudget({ ...base, cap: 500 });
+
+    expect(r).toEqual({ effectiveBudget: 0, usingGrace: false, blockedAwaitingWindow: true });
+    // Blocked before claiming — the atomic token flip must not run.
+    expect(db.inboxUsageMeter.updateMany).not.toHaveBeenCalled();
+    // The rolling lookback uses a 365-day cutoff.
+    const call = vi.mocked(db.inboxUsageMeter.findFirst).mock.calls[0]![0] as {
+      where: { graceClaimedAt: { gte: Date } };
+    };
+    const cutoff = call.where.graceClaimedAt.gte.getTime();
+    expect(Date.now() - cutoff).toBeCloseTo(GRACE_ROLLING_WINDOW_MS, -4);
   });
 
   it("grace resume: a later chunk of the SAME re-import keeps its budget and does NOT re-claim (regression)", async () => {
@@ -110,5 +132,23 @@ describe("resolveBackfillBudget", () => {
     const second = await resolveBackfillBudget({ ...base, cap: 500 });
 
     expect(first.effectiveBudget + second.effectiveBudget).toBe(1000); // == 2 x cap
+  });
+});
+
+describe("getBackfillGraceUsed (rolling window)", () => {
+  it("true when a BACKFILL row was grace-claimed within the last 12 months", async () => {
+    vi.mocked(db.inboxUsageMeter.findFirst).mockResolvedValue({ id: "r1" } as never);
+    expect(await getBackfillGraceUsed("ben@gmail.com")).toBe(true);
+    const call = vi.mocked(db.inboxUsageMeter.findFirst).mock.calls[0]![0] as {
+      where: { inboxKey: string; kind: string; graceClaimedAt: { gte: Date } };
+    };
+    expect(call.where.inboxKey).toBe("ben@gmail.com");
+    expect(call.where.kind).toBe("BACKFILL");
+    expect(Date.now() - call.where.graceClaimedAt.gte.getTime()).toBeCloseTo(GRACE_ROLLING_WINDOW_MS, -4);
+  });
+
+  it("false when no grace claim falls within the window", async () => {
+    vi.mocked(db.inboxUsageMeter.findFirst).mockResolvedValue(null as never);
+    expect(await getBackfillGraceUsed("ben@gmail.com")).toBe(false);
   });
 });

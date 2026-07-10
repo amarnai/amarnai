@@ -237,36 +237,33 @@ describe("canInviteMember", () => {
     if ("error" in result) expect(result.error).toMatch(/admin/i);
   });
 
-  it("rejects when collaborator limit reached (PRO: 10)", async () => {
+  it("rejects when collaborator limit reached (PRO: 1)", async () => {
     mockOwnerMember();
     vi.mocked(db.workspace.findUnique).mockResolvedValue({
       name: "Test WS",
       plan: "PRO",
       members: [
         { userId: OWNER_ID, role: "OWNER" },
-        ...Array.from({ length: 10 }, (_, i) => ({ userId: `m${i + 1}`, role: "MEMBER" })),
+        { userId: "m1", role: "MEMBER" },
       ],
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
 
-    const result = await canInviteMember(WS_ID, OWNER_ID, "eleventh@example.com");
+    const result = await canInviteMember(WS_ID, OWNER_ID, "third@example.com");
     expect("error" in result).toBe(true);
     if ("error" in result) expect(result.error).toMatch(/collaborator limit/i);
   });
 
-  it("allows invite when exactly at limit minus 1 (last slot, PRO: 10)", async () => {
+  it("allows invite when exactly at limit minus 1 (last slot, PRO: 1)", async () => {
     mockOwnerMember();
     vi.mocked(db.workspace.findUnique).mockResolvedValue({
       name: "Test WS",
       plan: "PRO",
-      members: [
-        { userId: OWNER_ID, role: "OWNER" },
-        ...Array.from({ length: 9 }, (_, i) => ({ userId: `m${i + 1}`, role: "MEMBER" })),
-      ],
+      members: [{ userId: OWNER_ID, role: "OWNER" }],
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
 
-    const result = await canInviteMember(WS_ID, OWNER_ID, "tenth@example.com");
+    const result = await canInviteMember(WS_ID, OWNER_ID, "second@example.com");
     expect(result).toEqual({ ok: true });
   });
 
@@ -300,12 +297,12 @@ describe("getCollaboratorLimit", () => {
     expect(getCollaboratorLimit("FREE")).toBe(0);
   });
 
-  it("returns 10 for PRO plan", () => {
-    expect(getCollaboratorLimit("PRO")).toBe(10);
+  it("returns 1 for PRO plan", () => {
+    expect(getCollaboratorLimit("PRO")).toBe(1);
   });
 
-  it("returns 25 for BUSINESS plan", () => {
-    expect(getCollaboratorLimit("BUSINESS")).toBe(25);
+  it("returns 2 for BUSINESS plan", () => {
+    expect(getCollaboratorLimit("BUSINESS")).toBe(2);
   });
 
   it("falls back to FREE limit for unknown plans", () => {

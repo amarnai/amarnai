@@ -2,8 +2,8 @@ import { vi, describe, it, expect, beforeEach } from "vitest";
 
 // ─── Mocks ────────────────────────────────────────────────────────────────────
 
-const { mockGetInboxPlanCeiling, mockResolveBackfillBudget, mockRecordMeterUsage } = vi.hoisted(() => ({
-  mockGetInboxPlanCeiling: vi.fn(),
+const { mockGetInboxBackfillCeiling, mockResolveBackfillBudget, mockRecordMeterUsage } = vi.hoisted(() => ({
+  mockGetInboxBackfillCeiling: vi.fn(),
   mockResolveBackfillBudget: vi.fn(),
   mockRecordMeterUsage: vi.fn(),
 }));
@@ -32,7 +32,7 @@ vi.mock("@amarnai/db", () => ({
     },
     auditLog: { create: vi.fn().mockResolvedValue({}) },
   },
-  getInboxPlanCeiling: mockGetInboxPlanCeiling,
+  getInboxBackfillCeiling: mockGetInboxBackfillCeiling,
   resolveBackfillBudget: mockResolveBackfillBudget,
   recordMeterUsage: mockRecordMeterUsage,
   inboxKeyFor: (a: string) => a,
@@ -41,7 +41,7 @@ vi.mock("@amarnai/db", () => ({
 }));
 
 vi.mock("@amarnai/config", () => ({
-  config: { billing: { enforceBackfillQuota: true } },
+  config: { billing: { enforceBackfillQuota: true, enforceBackfillPaymentGate: true } },
 }));
 
 const mockListThreadsPage = vi.fn();
@@ -234,7 +234,7 @@ beforeEach(() => {
   // tracks the cursor, so remaining budget = cap − processedSoFar. This makes
   // runCeiling == the plan cap, reproducing the old `processed < cap.maxThreads`
   // bound for every existing test (fresh and resume) with no per-test wiring.
-  mockGetInboxPlanCeiling.mockImplementation(async () => {
+  mockGetInboxBackfillCeiling.mockImplementation(async () => {
     const ws = (await db.workspace.findUnique({ where: {} } as never)) as
       | { plan?: string; billingCycle?: string | null }
       | null;

@@ -2,8 +2,8 @@
 // Keep in sync with the plan highlights in packages/ui/src/plans.ts.
 export const THREAD_SORT_LIMITS: Record<string, number> = {
   FREE: 500,
-  PRO: 10000,
-  BUSINESS: 50000,
+  PRO: 5000,
+  BUSINESS: 10000,
 };
 
 export function getThreadSortLimit(plan: string): number {

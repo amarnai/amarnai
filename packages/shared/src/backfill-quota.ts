@@ -28,8 +28,8 @@ export const BACKFILL_CAPS: Record<string, PlanBackfillCaps> = {
     annual:  { maxThreads: 50_000, windowDays: null },
   },
   BUSINESS: {
-    monthly: { maxThreads: 75_000, windowDays: null },
-    annual:  { maxThreads: 250_000, windowDays: null },
+    monthly: { maxThreads: 20_000, windowDays: null },
+    annual:  { maxThreads: 75_000, windowDays: null },
   },
 };
 

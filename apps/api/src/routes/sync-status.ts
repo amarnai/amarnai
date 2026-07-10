@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import { z } from "zod";
 import {
   db,
-  getInboxPlanCeiling,
+  getInboxBackfillCeiling,
   getMeterUsed,
   getBackfillGraceUsed,
   inboxKeyFor,
@@ -10,6 +10,7 @@ import {
   MeterKind,
 } from "@amarnai/db";
 import { getBackfillCap, isTaxonomyRoutable } from "@amarnai/shared";
+import { config } from "@amarnai/config";
 
 const workspaceParam = z.object({ workspaceId: z.string().min(1) });
 
@@ -103,7 +104,11 @@ syncStatus.get("/workspaces/:workspaceId/sync-status", async (c) => {
   let backfillBeyondCount = state.backfillBeyondCount;
   let backfillLimitState = state.backfillLimitState;
   if (backfillCapReached) {
-    const ceiling = await getInboxPlanCeiling(connection.emailAddress);
+    // Match the worker's backfill cap exactly (payment-gated), so the banner's
+    // relax/CAPPED/BLOCKED derivation reflects what the backfill job actually enforces.
+    const ceiling = await getInboxBackfillCeiling(connection.emailAddress, {
+      requirePayment: config.billing.enforceBackfillPaymentGate,
+    });
     const cap = getBackfillCap(ceiling.plan, ceiling.billingCycle).maxThreads;
     const inboxKey = inboxKeyFor(connection.emailAddress);
     const windowStart = meterWindowStart();
@@ -113,7 +118,9 @@ syncStatus.get("/workspaces/:workspaceId/sync-status", async (c) => {
       backfillBeyondCount = 0;
       backfillLimitState = "NONE";
     } else if (backfillLimitState === "NONE") {
-      const graceUsed = await getBackfillGraceUsed(inboxKey, windowStart);
+      // Rolling 12-month grace: BLOCKED only if the inbox already spent its grace
+      // re-import this year; otherwise a retry is still available (CAPPED).
+      const graceUsed = await getBackfillGraceUsed(inboxKey);
       backfillLimitState = graceUsed ? "BLOCKED" : "CAPPED";
     }
   }

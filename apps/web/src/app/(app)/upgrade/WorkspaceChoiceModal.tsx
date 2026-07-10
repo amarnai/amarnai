@@ -159,7 +159,7 @@ export function WorkspaceChoiceModal({
 
           <p className="ws-choice-helper">
             <Trans>
-              You can keep your free Personal workspace and use paid workspaces
+              You can keep your free workspace and use paid workspaces
               separately.
             </Trans>
           </p>

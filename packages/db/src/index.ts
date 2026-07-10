@@ -24,7 +24,11 @@ export {
   deleteGmailDisconnectedNotifications,
 } from "./notifications.js";
 export { markGmailConnectionAuthFailed } from "./gmail-connection-status.js";
-export { getInboxPlanCeiling, type InboxPlanCeiling } from "./inbox-entitlement.js";
+export {
+  getInboxPlanCeiling,
+  getInboxBackfillCeiling,
+  type InboxPlanCeiling,
+} from "./inbox-entitlement.js";
 export {
   trialEmailKeyHash,
   hasTrialClaim,
@@ -43,6 +47,7 @@ export {
   resolveInboxQuota,
   ensureBackfillGrant,
   resolveBackfillBudget,
+  GRACE_ROLLING_WINDOW_MS,
   type InboxQuota,
   type BackfillBudget,
 } from "./usage-meter.js";

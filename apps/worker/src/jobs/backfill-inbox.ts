@@ -1,7 +1,7 @@
 import { Worker } from "bullmq";
 import {
   db,
-  getInboxPlanCeiling,
+  getInboxBackfillCeiling,
   resolveBackfillBudget,
   ensureBackfillGrant,
   recordMeterUsage,
@@ -245,10 +245,15 @@ export function createBackfillInboxWorker(): Worker {
         const windowStart = meterWindowStart();
         const enforceBackfill = config.billing.enforceBackfillQuota;
         // When enforced, size by the TOP plan among workspaces sharing this inbox
-        // (pooled). When the self-host opt-out is set, fall back to this workspace's
-        // own plan and skip pooling/grace entirely (usage is still recorded below).
+        // (pooled). The payment gate clamps any paid-but-unpaid (FREE/trialing)
+        // workspace to the FREE cap until its first payment — sorts/drafts stay at
+        // plan level, only backfill is gated. When the self-host opt-out is set, fall
+        // back to this workspace's own plan and skip pooling/grace entirely (usage is
+        // still recorded below).
         const ceiling = enforceBackfill
-          ? await getInboxPlanCeiling(connection.emailAddress)
+          ? await getInboxBackfillCeiling(connection.emailAddress, {
+              requirePayment: config.billing.enforceBackfillPaymentGate,
+            })
           : { plan: workspace.plan, billingCycle: workspace.billingCycle };
         const cap = getBackfillCap(ceiling.plan, ceiling.billingCycle);
 

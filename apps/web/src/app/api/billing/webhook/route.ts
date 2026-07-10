@@ -4,6 +4,7 @@ import { subscriptionPeriodEnd } from "@amarnai/billing";
 import { getStripe } from "@/lib/stripe";
 import { db } from "@amarnai/db";
 import { provisionFromCheckoutSession } from "@/lib/billing-provision";
+import { BACKFILL_RESCAN_RESET } from "@/lib/backfill-reset";
 
 export async function POST(request: Request) {
   const stripe = getStripe();
@@ -179,4 +180,35 @@ async function handlePaymentSucceeded(invoice: Stripe.Invoice) {
       currentPeriodEnd: new Date(invoice.period_end * 1000),
     },
   });
+
+  // First real payment (covers both immediate checkout and trial conversion, since
+  // Stripe issues the first non-zero invoice at trial end): unlock the plan backfill
+  // cap and re-scan. `amount_paid > 0` excludes the $0 invoice Stripe emits at trial
+  // start. The flip is null-guarded so a redelivered webhook flips 0 rows and skips
+  // the re-scan, keeping backfillGeneration from being bumped twice (which would
+  // cancel a running backfill).
+  if (invoice.amount_paid > 0) {
+    await db.$transaction(async (tx) => {
+      const flipped = await tx.workspace.updateMany({
+        where: { id: workspace.id, firstPaidAt: null },
+        data: { firstPaidAt: new Date() },
+      });
+      if (flipped.count === 1) {
+        await tx.providerSyncState.updateMany({
+          where: { emailAccount: { workspaceId: workspace.id } },
+          data: BACKFILL_RESCAN_RESET,
+        });
+        await tx.auditLog.create({
+          data: {
+            workspaceId: workspace.id,
+            actorType: "SYSTEM",
+            eventType: "billing.first_payment",
+            entityType: "Workspace",
+            entityId: workspace.id,
+            metadata: { subscriptionId },
+          },
+        });
+      }
+    });
+  }
 }

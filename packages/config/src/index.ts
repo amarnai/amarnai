@@ -45,6 +45,13 @@ const envSchema = z.object({
   // re-import). Self-hosted deployments managing their own AI costs may turn this
   // off to backfill unbounded history. Usage is still recorded for observability.
   ENFORCE_BACKFILL_QUOTA: z.string().transform((v) => v !== 'false').default('true'),
+  // Set to 'false' to unlock plan-level backfill caps WITHOUT a first Stripe payment.
+  // Cloud keeps this on so FREE/trialing inboxes backfill at the FREE cap until they
+  // pay. Stripe-less self-hosts are unaffected in practice: ENFORCE_BACKFILL_QUOTA=false
+  // bypasses the pooled ceiling (and this gate) entirely, and the migration grandfathers
+  // every existing non-FREE workspace (firstPaidAt = now()). Installs that assign a paid
+  // plan by hand later should set this to 'false' (or set Workspace.firstPaidAt).
+  ENFORCE_BACKFILL_PAYMENT_GATE: z.string().transform((v) => v !== 'false').default('true'),
   // Set to 'false' to disable the per-inbox monthly taxonomy-generation backstop.
   // Self-hosted deployments managing their own AI costs should set this to false.
   ENFORCE_TAXONOMY_QUOTA: z.string().transform((v) => v !== 'false').default('true'),
@@ -214,6 +221,7 @@ export const config = {
     enforceDraftQuota: env.ENFORCE_DRAFT_QUOTA,
     enforceThreadSortQuota: env.ENFORCE_THREAD_SORT_QUOTA,
     enforceBackfillQuota: env.ENFORCE_BACKFILL_QUOTA,
+    enforceBackfillPaymentGate: env.ENFORCE_BACKFILL_PAYMENT_GATE,
     enforceTaxonomyQuota: env.ENFORCE_TAXONOMY_QUOTA,
   },
   internalApiSecret: env.INTERNAL_API_SECRET ?? 'dev-internal-secret',

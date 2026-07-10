@@ -44,3 +44,34 @@ export async function getInboxPlanCeiling(emailAddress: string): Promise<InboxPl
     FREE_CEILING,
   );
 }
+
+/**
+ * Backfill-specific ceiling. Identical to getInboxPlanCeiling EXCEPT that, when
+ * `requirePayment` is true, a paid-plan connection whose workspace has not yet made
+ * a first successful payment (`firstPaidAt == null` — i.e. FREE or still trialing)
+ * contributes only the FREE ceiling. This gates the large plan backfill caps behind
+ * the first payment while leaving sorts/drafts/seats at plan level during the trial.
+ *
+ * The clamp is applied PER CONNECTION before pooling, so a shared inbox with a
+ * paid-PRO workspace and a trialing-BUSINESS workspace pools at PRO, not BUSINESS.
+ */
+export async function getInboxBackfillCeiling(
+  emailAddress: string,
+  opts: { requirePayment: boolean },
+): Promise<InboxPlanCeiling> {
+  const connections = await db.emailConnection.findMany({
+    where: { emailAddress, status: "ACTIVE" },
+    select: { workspace: { select: { plan: true, billingCycle: true, firstPaidAt: true } } },
+  });
+
+  if (connections.length === 0) return FREE_CEILING;
+
+  return connections.reduce<InboxPlanCeiling>((top, c) => {
+    const w = c.workspace;
+    const gated = opts.requirePayment && w.plan !== "FREE" && w.firstPaidAt == null;
+    const contribution: InboxPlanCeiling = gated
+      ? FREE_CEILING
+      : { plan: w.plan, billingCycle: w.billingCycle };
+    return maxCeiling(top, contribution);
+  }, FREE_CEILING);
+}

@@ -25,12 +25,12 @@ export function PricingContent() {
           <Trans>Back</Trans>
         </Link>
         <h1 className={styles.title}>
-          <Trans>Priced per workspace. Sort as much as you like.</Trans>
+          <Trans>Priced per workspace. Clear plans, clear limits.</Trans>
         </h1>
         <p className={styles.subtitle}>
           <Trans>
-            Every account starts with a free Personal workspace, no card
-            required. Create more or upgrade whenever your needs grow.
+            Every account starts with a free workspace, no card required.
+            Create more or upgrade whenever your needs grow.
           </Trans>
         </p>
       </div>

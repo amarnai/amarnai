@@ -26,9 +26,9 @@ interface Props {
 }
 
 const planLabels: Record<string, MessageDescriptor> = {
-  FREE: msg`Personal`,
-  PRO: msg`Pro`,
-  BUSINESS: msg`Business`,
+  FREE: msg`Apprentice`,
+  PRO: msg`Scribe`,
+  BUSINESS: msg`Pharaoh`,
 };
 
 const cycleLabels: Record<string, MessageDescriptor> = {

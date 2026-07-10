@@ -12,7 +12,7 @@ vi.mock("@amarnai/db", () => ({
     taxonomyNode: { findMany: vi.fn() },
     taxonomyEdge: { findMany: vi.fn() },
   },
-  getInboxPlanCeiling: vi.fn(),
+  getInboxBackfillCeiling: vi.fn(),
   getMeterUsed: vi.fn(),
   getBackfillGraceUsed: vi.fn(),
   inboxKeyFor: (addr: string) => addr,
@@ -21,7 +21,7 @@ vi.mock("@amarnai/db", () => ({
 }));
 
 import app from "../app.js";
-import { db, getInboxPlanCeiling, getMeterUsed, getBackfillGraceUsed } from "@amarnai/db";
+import { db, getInboxBackfillCeiling, getMeterUsed, getBackfillGraceUsed } from "@amarnai/db";
 
 const WS = "ws-1";
 
@@ -52,8 +52,8 @@ beforeEach(() => {
   vi.mocked(db.emailAccount.findUnique).mockResolvedValue({ id: "account-1" } as never);
   vi.mocked(db.gmailSyncSettings.findUnique).mockResolvedValue({ sortingPaused: false } as never);
   vi.mocked(db.workspace.findUnique).mockResolvedValue({ plan: "PRO" } as never);
-  // Pooled inbox sized for PRO (monthly cap 10,000); meter empty by default.
-  vi.mocked(getInboxPlanCeiling).mockResolvedValue({ plan: "PRO", billingCycle: "MONTHLY" } as never);
+  // Pooled inbox sized for PRO (monthly backfill cap 10,000); meter empty by default.
+  vi.mocked(getInboxBackfillCeiling).mockResolvedValue({ plan: "PRO", billingCycle: "MONTHLY" } as never);
   vi.mocked(getMeterUsed).mockResolvedValue(0);
   vi.mocked(getBackfillGraceUsed).mockResolvedValue(false);
   // A routable taxonomy (3 non-root nodes linked to root) by default.

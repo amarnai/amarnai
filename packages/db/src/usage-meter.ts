@@ -19,6 +19,13 @@ export function meterWindowStart(now = new Date()): Date {
   return getDraftQuotaWindowStart(now);
 }
 
+/**
+ * Rolling window over which an inbox may claim at most one grace re-import.
+ * The base backfill budget still replenishes monthly (the calendar-month meter
+ * bucket); only the grace (2×cap) allowance is gated by this longer window.
+ */
+export const GRACE_ROLLING_WINDOW_MS = 365 * 24 * 60 * 60 * 1000;
+
 /** Normalize a raw gmail address into the pooling key used by every meter. */
 export function inboxKeyFor(gmailAddress: string): string {
   return normalizeInboxKey(gmailAddress);
@@ -38,20 +45,26 @@ export async function getMeterUsed(
 }
 
 /**
- * Whether the inbox has already consumed its one grace re-import for the window
- * (false if no BACKFILL meter row yet). Read-only. Used by the sync-status banner
- * reconciliation to tell "still capped, retry available" (CAPPED) from "budget and
- * grace both spent" (BLOCKED) without re-running the budget resolver.
+ * Whether the inbox has claimed a grace re-import within the rolling 12-month window
+ * (false if none). Read-only. Used by the sync-status banner reconciliation to tell
+ * "still capped, retry available" (CAPPED) from "grace already spent this year"
+ * (BLOCKED) without re-running the budget resolver. Because the grace gate is now
+ * rolling — not per calendar month — this looks across ALL of the inbox's BACKFILL
+ * rows, not just the current window's.
  */
 export async function getBackfillGraceUsed(
   inboxKey: string,
-  windowStart: Date,
+  now = new Date(),
 ): Promise<boolean> {
-  const row = await db.inboxUsageMeter.findUnique({
-    where: { inboxKey_kind_windowStart: { inboxKey, kind: MeterKind.BACKFILL, windowStart } },
-    select: { graceUsed: true },
+  const row = await db.inboxUsageMeter.findFirst({
+    where: {
+      inboxKey,
+      kind: MeterKind.BACKFILL,
+      graceClaimedAt: { gte: new Date(now.getTime() - GRACE_ROLLING_WINDOW_MS) },
+    },
+    select: { id: true },
   });
-  return row?.graceUsed ?? false;
+  return row != null;
 }
 
 /**
@@ -141,16 +154,19 @@ export interface BackfillBudget {
  *   - effective ceiling = cap normally, or 2×cap once the grace has been unlocked.
  *   - while used < ceiling: import the remainder (ensures a per-workspace grant so a
  *     later post-reset re-import by the SAME workspace is recognized as a re-run).
- *   - when the BASE cap is hit AND this workspace already imported (grant exists):
- *     atomically unlock the grace, lifting the ceiling to 2×cap for the rest of the
- *     month. The graceUsed flag stays set, so EVERY subsequent chunk of that re-import
- *     keeps drawing the second cap (this is why the ceiling — not the one-shot token —
- *     gates the budget; otherwise a multi-chunk PRO/BUSINESS re-import would stall
- *     after its first chunk).
- *   - otherwise: 0 (blocked until the window rolls over).
+ *   - when the BASE cap is hit AND this workspace already imported (grant exists) AND
+ *     the inbox has NOT claimed a grace re-import in the last 12 months: atomically
+ *     unlock the grace, lifting the ceiling to 2×cap for the rest of the month. The
+ *     graceUsed flag stays set, so EVERY subsequent chunk of that re-import keeps
+ *     drawing the second cap (this is why the ceiling — not the one-shot token — gates
+ *     the budget; otherwise a multi-chunk re-import would stall after its first chunk).
+ *   - otherwise: 0 (blocked until the base window rolls over, or until the rolling
+ *     12-month grace window elapses if grace is what's exhausted).
  *
- * Total imports per inbox per month are bounded by 2×cap. Idempotent and resume-safe:
- * budget is recomputed from the reset-immune meter on every run.
+ * The base budget replenishes monthly (cap per calendar-month window); the grace
+ * (the extra cap on top) is limited to ONE claim per inbox per rolling 12 months.
+ * Idempotent and resume-safe: budget is recomputed from the reset-immune meter on
+ * every run.
  */
 export async function resolveBackfillBudget(params: {
   inboxKey: string;
@@ -184,13 +200,29 @@ export async function resolveBackfillBudget(params: {
       select: { id: true },
     });
     if (grant) {
+      // Rolling 12-month gate: an inbox may claim only one grace re-import per year.
+      // If it already claimed one within the window, block (base pool still replenishes
+      // monthly; only this extra allowance is rate-limited across months).
+      const now = new Date();
+      const recentClaim = await db.inboxUsageMeter.findFirst({
+        where: {
+          inboxKey,
+          kind: "BACKFILL",
+          graceClaimedAt: { gte: new Date(now.getTime() - GRACE_ROLLING_WINDOW_MS) },
+        },
+        select: { id: true },
+      });
+      if (recentClaim) {
+        return { effectiveBudget: 0, usingGrace: false, blockedAwaitingWindow: true };
+      }
       // Claim the single grace token ATOMICALLY: only the run whose conditional
-      // update flips graceUsed false->true wins it. Without this, two concurrent
+      // update flips graceUsed false->true wins it, stamping graceClaimedAt in the
+      // same statement (one write, no partial state). Without this, two concurrent
       // backfills for the same inbox (e.g. two workspaces sharing it, on separate
       // worker replicas) could each grant a 2×cap budget, blowing past the bound.
       const claim = await db.inboxUsageMeter.updateMany({
         where: { inboxKey, kind: "BACKFILL", windowStart, graceUsed: false },
-        data: { graceUsed: true },
+        data: { graceUsed: true, graceClaimedAt: now },
       });
       if (claim.count === 1) {
         return { effectiveBudget: Math.max(0, 2 * cap - used), usingGrace: true, blockedAwaitingWindow: false };

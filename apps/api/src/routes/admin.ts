@@ -63,6 +63,20 @@ admin.patch("/admin/workspaces/:workspaceId/plan", async (c) => {
       : []),
   ]);
 
+  // Audit the admin override (previously unaudited). Distinct eventType from the
+  // self-serve billing changes so admin actions are filterable.
+  await db.auditLog.create({
+    data: {
+      workspaceId,
+      actorType: "USER",
+      actorUserId: userId,
+      eventType: "workspace.plan.admin_set",
+      entityType: "Workspace",
+      entityId: workspaceId,
+      metadata: { from: existing.plan, to: newPlan },
+    },
+  });
+
   return c.json(workspace);
 });
 

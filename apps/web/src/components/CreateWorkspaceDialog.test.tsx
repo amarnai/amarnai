@@ -36,59 +36,60 @@ afterEach(() => {
 
 describe("CreateWorkspaceDialog", () => {
   describe("plan card visibility", () => {
-    it("shows Personal, Pro and Business when user has no free workspace", () => {
+    it("shows Apprentice, Scribe and Pharaoh when user has no free workspace", () => {
       render(<CreateWorkspaceDialog hasFreeWorkspace={false} onClose={onClose} />);
-      expect(screen.getByRole("button", { name: /Personal/ })).toBeInTheDocument();
-      expect(screen.getByRole("button", { name: /Pro/ })).toBeInTheDocument();
-      expect(screen.getByRole("button", { name: /Business/ })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /Apprentice/ })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /Scribe/ })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /Pharaoh/ })).toBeInTheDocument();
     });
 
-    it("hides Personal and shows only Pro and Business when user already has a free workspace", () => {
+    it("hides Apprentice and shows only Scribe and Pharaoh when user already has a free workspace", () => {
       render(<CreateWorkspaceDialog hasFreeWorkspace={true} onClose={onClose} />);
-      expect(screen.queryByRole("button", { name: /Personal/ })).not.toBeInTheDocument();
-      expect(screen.getByRole("button", { name: /Pro/ })).toBeInTheDocument();
-      expect(screen.getByRole("button", { name: /Business/ })).toBeInTheDocument();
+      expect(screen.queryByRole("button", { name: /Apprentice/ })).not.toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /Scribe/ })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /Pharaoh/ })).toBeInTheDocument();
     });
   });
 
   describe("default selection", () => {
-    it("pre-selects Personal when user has no free workspace", () => {
+    it("pre-selects Apprentice when user has no free workspace", () => {
       render(<CreateWorkspaceDialog hasFreeWorkspace={false} onClose={onClose} />);
-      expect(screen.getByRole("button", { name: /Personal/ })).toHaveAttribute("aria-pressed", "true");
+      expect(screen.getByRole("button", { name: /Apprentice/ })).toHaveAttribute("aria-pressed", "true");
       expect(screen.getByRole("button", { name: /Create workspace/ })).toBeInTheDocument();
     });
 
-    it("pre-selects Pro when user already has a free workspace", () => {
+    it("pre-selects Scribe when user already has a free workspace", () => {
       render(<CreateWorkspaceDialog hasFreeWorkspace={true} onClose={onClose} />);
-      expect(screen.getByRole("button", { name: /Pro/ })).toHaveAttribute("aria-pressed", "true");
+      expect(screen.getByRole("button", { name: /Scribe/ })).toHaveAttribute("aria-pressed", "true");
       expect(screen.getByRole("button", { name: /Continue to checkout/ })).toBeInTheDocument();
     });
   });
 
   describe("billing cycle toggle", () => {
-    it("is not shown when the Personal plan is selected", () => {
+    it("is not shown when the Apprentice plan is selected", () => {
       render(<CreateWorkspaceDialog hasFreeWorkspace={false} onClose={onClose} />);
       expect(screen.queryByRole("tab", { name: "Monthly" })).not.toBeInTheDocument();
     });
 
-    it("is shown when Pro is selected", () => {
+    it("is shown when Scribe is selected", () => {
       render(<CreateWorkspaceDialog hasFreeWorkspace={false} onClose={onClose} />);
-      fireEvent.click(screen.getByRole("button", { name: /Pro/ }));
+      fireEvent.click(screen.getByRole("button", { name: /Scribe/ }));
       expect(screen.getByRole("tab", { name: "Monthly" })).toBeInTheDocument();
     });
 
-    it("is shown when Business is selected", () => {
+    it("is shown when Pharaoh is selected", () => {
       render(<CreateWorkspaceDialog hasFreeWorkspace={true} onClose={onClose} />);
-      fireEvent.click(screen.getByRole("button", { name: /Business/ }));
+      fireEvent.click(screen.getByRole("button", { name: /Pharaoh/ }));
       expect(screen.getByRole("tab", { name: "Monthly" })).toBeInTheDocument();
     });
 
-    it("switching to annual updates the Pro price", () => {
+    it("switching billing cycle updates the Scribe price (annual is the default)", () => {
       render(<CreateWorkspaceDialog hasFreeWorkspace={false} onClose={onClose} />);
-      fireEvent.click(screen.getByRole("button", { name: /Pro/ }));
+      fireEvent.click(screen.getByRole("button", { name: /Scribe/ }));
+      // Annual is pre-selected, so the annual per-month price shows first.
       expect(screen.getByText("$5/mo")).toBeInTheDocument();
-      fireEvent.click(screen.getByRole("tab", { name: /Annual/ }));
-      expect(screen.getByText("$4/mo")).toBeInTheDocument();
+      fireEvent.click(screen.getByRole("tab", { name: /Monthly/ }));
+      expect(screen.getByText("$6/mo")).toBeInTheDocument();
       expect(screen.queryByText("$5/mo")).not.toBeInTheDocument();
     });
   });
@@ -170,7 +171,7 @@ describe("CreateWorkspaceDialog", () => {
       expect(body).toMatchObject({
         action: "create",
         plan: "pro",
-        cycle: "monthly",
+        cycle: "annual",
         newWorkspaceName: "Acme Corp",
       });
     });

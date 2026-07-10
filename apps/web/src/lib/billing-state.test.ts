@@ -76,7 +76,7 @@ describe("assembleBillingState", () => {
     const state = await assembleBillingState(USER_ID, WS_ID);
 
     expect(state.plan).toBe("PRO");
-    expect(state.collaboratorLimit).toBe(10);
+    expect(state.collaboratorLimit).toBe(1);
     expect(state.currentPeriodEnd).toBe(periodEnd.toISOString());
     expect(state.membersToRemoveOnCancel).toEqual([{ name: "Ann", email: "ann@x.com" }]);
     expect(state.collaboratorCount).toBe(1);

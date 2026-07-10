@@ -21,7 +21,9 @@ export function CreateWorkspaceDialog({ hasFreeWorkspace, onClose }: Props) {
     hasFreeWorkspace ? "pro" : "free"
   );
   const [workspaceName, setWorkspaceName] = useState("");
-  const [cycle, setCycle] = useState<BillingCycle>("monthly");
+  // Annual is the default-selected cycle (monthly remains one click away), matching
+  // the shared PricingPlans toggle so every checkout entry point pre-selects annual.
+  const [cycle, setCycle] = useState<BillingCycle>("annual");
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const backdropRef = useRef<HTMLDivElement>(null);

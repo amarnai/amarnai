@@ -13,7 +13,7 @@ export const metadata = { title: "Upgrade Successful | Amarnai" };
 
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 
-const planLabels: Record<string, string> = { PRO: "Pro", BUSINESS: "Business" };
+const planLabels: Record<string, string> = { PRO: "Scribe", BUSINESS: "Pharaoh" };
 
 export default async function UpgradeSuccessPage({
   searchParams,

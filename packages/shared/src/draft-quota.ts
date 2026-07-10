@@ -3,7 +3,7 @@
 export const DRAFT_LIMITS: Record<string, number> = {
   FREE: 3,
   PRO: 200,
-  BUSINESS: 1000,
+  BUSINESS: 500,
 };
 
 export function getDraftLimit(plan: string): number {

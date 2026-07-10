@@ -29,7 +29,7 @@ const { MockPrismaKnownRequestError } = vi.hoisted(() => {
 
 vi.mock("@amarnai/db", () => ({
   db: {
-    workspace: { findFirst: vi.fn(), findUnique: vi.fn(), update: vi.fn(), create: vi.fn() },
+    workspace: { findFirst: vi.fn(), findUnique: vi.fn(), update: vi.fn(), updateMany: vi.fn(), create: vi.fn() },
     workspaceMember: { deleteMany: vi.fn() },
     user: { findUnique: vi.fn(), update: vi.fn() },
     auditLog: { create: vi.fn() },
@@ -199,6 +199,7 @@ beforeEach(() => {
   // $transaction resolves each operation in the array
   vi.mocked(db.$transaction).mockResolvedValue([] as never);
   vi.mocked(db.workspace.update).mockResolvedValue({} as never);
+  vi.mocked(db.workspace.updateMany).mockResolvedValue({ count: 1 } as never);
   vi.mocked(db.workspace.create).mockResolvedValue({ id: WS_ID } as never);
   vi.mocked(db.workspace.findFirst).mockResolvedValue(null);
   // Upgrade-path idempotency probe in provisionFromCheckoutSession: default to an
@@ -271,9 +272,9 @@ describe("checkout.session.completed — upgrade action", () => {
     );
   });
 
-  it("resets the backfill so the higher plan cap re-scans the inbox", async () => {
+  it("on immediate (no-trial) payment: resets the backfill and stamps firstPaidAt", async () => {
     vi.spyOn(testStripe.subscriptions, "retrieve").mockResolvedValue(
-      SUBSCRIPTION_WITH_TRIAL as never
+      SUBSCRIPTION_WITHOUT_TRIAL as never
     );
 
     await POST(webhookRequest(makeUpgradeCheckoutEvent()));
@@ -288,6 +289,22 @@ describe("checkout.session.completed — upgrade action", () => {
         }),
       })
     );
+    // firstPaidAt is stamped via a null-guarded updateMany (monotonic).
+    expect(db.workspace.updateMany).toHaveBeenCalledWith({
+      where: { id: WS_ID, firstPaidAt: null },
+      data: { firstPaidAt: expect.any(Date) },
+    });
+  });
+
+  it("during a trial: does NOT reset the backfill (stays at FREE cap until payment, avoids grace burn)", async () => {
+    vi.spyOn(testStripe.subscriptions, "retrieve").mockResolvedValue(
+      SUBSCRIPTION_WITH_TRIAL as never
+    );
+
+    await POST(webhookRequest(makeUpgradeCheckoutEvent()));
+
+    expect(db.providerSyncState.updateMany).not.toHaveBeenCalled();
+    expect(db.workspace.updateMany).not.toHaveBeenCalled();
   });
 });
 

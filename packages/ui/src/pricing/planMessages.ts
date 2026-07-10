@@ -17,31 +17,31 @@ import type { I18n, MessageDescriptor } from "@lingui/core";
 // intentionally absent: they render as-is via the fallback.
 const PLAN_MESSAGES: Record<string, MessageDescriptor> = {
   // ── Plan names ──
-  Personal: msg`Personal`,
-  Pro: msg`Pro`,
-  Business: msg`Business`,
+  Apprentice: msg`Apprentice`,
+  Scribe: msg`Scribe`,
+  Pharaoh: msg`Pharaoh`,
 
   // ── Plan taglines ──
-  "For individuals trying Amarnai on their own inbox.": msg`For individuals trying Amarnai on their own inbox.`,
-  "For power users and small businesses who live in their inbox.": msg`For power users and small businesses who live in their inbox.`,
-  "For larger organizations and higher-volume teams.": msg`For larger organizations and higher-volume teams.`,
+  "For trying Amarnai on your own inbox.": msg`For trying Amarnai on your own inbox.`,
+  "For your busy inbox as a freelancer, consultant, property manager, or business owner.": msg`For your busy inbox as a freelancer, consultant, property manager, or business owner.`,
+  "For your high-volume or shared inbox as a recruiter, agency, or small team on one mailbox.": msg`For your high-volume or shared inbox as a recruiter, agency, or small team on one mailbox.`,
 
   // ── Badges ──
   "Most popular": msg`Most popular`,
 
   // ── Card highlights ──
-  "1 free Personal workspace": msg`1 free Personal workspace`,
+  "1 free workspace": msg`1 free workspace`,
   "500 threads sorted / month": msg`500 threads sorted / month`,
   "Up to 12 plan nodes": msg`Up to 12 plan nodes`,
-  "3 AI drafts / month": msg`3 AI drafts / month`,
-  "Up to 10 collaborators": msg`Up to 10 collaborators`,
+  "3 reply drafts / month": msg`3 reply drafts / month`,
+  "You + 1 teammate": msg`You + 1 teammate`,
+  "5,000 threads sorted / month": msg`5,000 threads sorted / month`,
   "10,000 threads sorted / month": msg`10,000 threads sorted / month`,
   "Unlimited plan nodes": msg`Unlimited plan nodes`,
-  "200 AI drafts / month, pooled": msg`200 AI drafts / month, pooled`,
+  "200 reply drafts / month, pooled": msg`200 reply drafts / month, pooled`,
   "Shared plan + review queue": msg`Shared plan + review queue`,
-  "Up to 25 collaborators": msg`Up to 25 collaborators`,
-  "50,000 threads sorted / month": msg`50,000 threads sorted / month`,
-  "1,000 AI drafts / month, pooled": msg`1,000 AI drafts / month, pooled`,
+  "Up to 3 people": msg`Up to 3 people`,
+  "500 reply drafts / month, pooled": msg`500 reply drafts / month, pooled`,
   "Advanced review queue": msg`Advanced review queue`,
   "Admin & review controls": msg`Admin & review controls`,
 
@@ -62,11 +62,11 @@ const PLAN_MESSAGES: Record<string, MessageDescriptor> = {
   Collaborators: msg`Collaborators`,
   "Threads sorted / month": msg`Threads sorted / month`,
   "Initial backfill": msg`Initial backfill`,
-  "AI drafts": msg`AI drafts`,
+  "Reply drafts": msg`Reply drafts`,
   "Plan nodes": msg`Plan nodes`,
   "Shared plan": msg`Shared plan`,
   "Review queue": msg`Review queue`,
-  "AI metadata": msg`AI metadata`,
+  Metadata: msg`Metadata`,
   "Model quality": msg`Model quality`,
   "Gmail label sync": msg`Gmail label sync`,
 
@@ -75,17 +75,16 @@ const PLAN_MESSAGES: Record<string, MessageDescriptor> = {
 
   // ── Comparison cell values ──
   "Default free workspace": msg`Default free workspace`,
-  "Paid or upgraded Personal": msg`Paid or upgraded Personal`,
   "Paid or upgraded workspace": msg`Paid or upgraded workspace`,
-  "1 Personal / user": msg`1 Personal / user`,
-  "1 Pro workspace": msg`1 Pro workspace`,
-  "1 Business workspace": msg`1 Business workspace`,
-  "1 user": msg`1 user`,
-  "Up to 10": msg`Up to 10`,
-  "Up to 25": msg`Up to 25`,
+  "1 free workspace / user": msg`1 free workspace / user`,
+  "1 Scribe workspace": msg`1 Scribe workspace`,
+  "1 Pharaoh workspace": msg`1 Pharaoh workspace`,
+  "1 person": msg`1 person`,
+  "2 people": msg`2 people`,
+  "3 people": msg`3 people`,
   "3 / month": msg`3 / month`,
   "200 / month, pooled": msg`200 / month, pooled`,
-  "1,000 / month, pooled": msg`1,000 / month, pooled`,
+  "500 / month, pooled": msg`500 / month, pooled`,
   Unlimited: msg`Unlimited`,
   Basic: msg`Basic`,
   Advanced: msg`Advanced`,
@@ -103,9 +102,9 @@ const PLAN_MESSAGES: Record<string, MessageDescriptor> = {
   "Same as monthly": msg`Same as monthly`,
   "500 threads": msg`500 threads`,
   "10,000 threads": msg`10,000 threads`,
+  "20,000 threads": msg`20,000 threads`,
   "50,000 threads": msg`50,000 threads`,
   "75,000 threads": msg`75,000 threads`,
-  "250,000 threads": msg`250,000 threads`,
 
   // ── Self-host note ──
   "Prefer to self-host?": msg`Prefer to self-host?`,

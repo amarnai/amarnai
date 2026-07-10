@@ -8,8 +8,8 @@ describe("@amarnai/shared plans", () => {
   it("exposes the three plans with prices", () => {
     expect(PLANS.map((p) => p.id)).toEqual(["free", "pro", "business"]);
     const pro = PLANS.find((p) => p.id === "pro");
-    expect(pro?.monthlyPrice).toBe(5);
-    expect(pro?.annualMonthlyPrice).toBe(4);
+    expect(pro?.monthlyPrice).toBe(6);
+    expect(pro?.annualMonthlyPrice).toBe(5);
   });
 
   it("exposes feature definitions for every plan id", () => {

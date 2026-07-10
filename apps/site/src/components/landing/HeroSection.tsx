@@ -19,7 +19,7 @@ export function HeroSection() {
             <p className="ld-hero-sub">
               <Trans>
                 Save hours of email sorting every week. Let Amarnai sort your
-                inbox, filing every email, old and new, where it belongs.
+                inbox, filing old and new mail where it belongs.
               </Trans>
             </p>
 

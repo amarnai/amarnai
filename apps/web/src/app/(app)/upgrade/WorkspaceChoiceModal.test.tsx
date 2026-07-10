@@ -48,7 +48,7 @@ describe("WorkspaceChoiceModal", () => {
       render(<WorkspaceChoiceModal {...defaultProps} />);
       expect(
         screen.getByText(
-          "You can keep your free Personal workspace and use paid workspaces separately."
+          "You can keep your free workspace and use paid workspaces separately."
         )
       ).toBeInTheDocument();
     });

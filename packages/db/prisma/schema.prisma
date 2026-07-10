@@ -246,6 +246,12 @@ model Workspace {
   currentPeriodEnd       DateTime?
   cancelAtPeriodEnd      Boolean       @default(false)
   paymentFailed          Boolean       @default(false)
+  // First successful (non-zero) Stripe payment for this workspace. Null = never
+  // paid (FREE, still trialing, or self-host). Gates the plan-level BACKFILL cap:
+  // FREE/TRIALING workspaces backfill at the FREE cap until this is set; sorts,
+  // drafts, and seats stay at plan level during the trial. Monotonic — set once on
+  // first payment, never cleared (refund/dispute handling is out of scope).
+  firstPaidAt            DateTime?
   // One-shot marker for the "monthly sorting limit reached" (quota_blocked)
   // notification: the meter window we last notified members about. Claimed
   // atomically (WHERE null OR lt windowStart) so a burst of QUOTA_BLOCKED threads
@@ -892,9 +898,16 @@ model InboxUsageMeter {
   windowStart  DateTime
   // Monotonic consumption counter for this window. Never decremented.
   used         Int            @default(0)
-  // BACKFILL only: the single per-(inboxKey, month) grace token. Once true, a reset
-  // re-import is blocked until the window rolls over.
+  // BACKFILL only: window-scoped grace flag. Once true, the 2x-cap grace ceiling is
+  // unlocked for the rest of this window (so a multi-chunk re-import keeps its budget).
+  // Eligibility to CLAIM grace is gated by the rolling 12-month graceClaimedAt lookback
+  // below, not by this per-window flag.
   graceUsed    Boolean        @default(false)
+  // BACKFILL only: when this window's grace token was claimed. Drives the rolling
+  // 12-month grace gate — an inbox is grace-eligible only if NO BACKFILL row for its
+  // inboxKey has graceClaimedAt within the last 365 days. Set atomically in the same
+  // conditional update that flips graceUsed.
+  graceClaimedAt DateTime?
   // Observability: the plan ceiling that first sized this window's budget.
   sizedForPlan WorkspacePlan?
   createdAt    DateTime       @default(now())

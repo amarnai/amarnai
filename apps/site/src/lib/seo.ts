@@ -89,6 +89,14 @@ export function buildPricingMetadata(
     description: i18n._(
       msg`Simple per-workspace pricing. Start free, upgrade or create additional workspaces as you need.`
     ),
+    // The plan tiers are branded Scribe / Pharaoh, but many people search the
+    // conventional "pro"/"business" terms — keep them as keywords so intent lands.
+    keywords: [
+      i18n._(msg`amarnai pricing`),
+      i18n._(msg`amarnai pro plan`),
+      i18n._(msg`amarnai business plan`),
+      i18n._(msg`email sorter pricing`),
+    ],
     alternates: {
       canonical: url,
       languages: languageAlternates("pricing"),

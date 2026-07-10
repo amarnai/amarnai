@@ -15,12 +15,12 @@ describe("getBackfillCap", () => {
     expect(getBackfillCap("PRO", "ANNUAL")).toEqual({ maxThreads: 50_000, windowDays: null });
   });
 
-  it("returns the Business monthly cap (75,000 threads, full history)", () => {
-    expect(getBackfillCap("BUSINESS", "MONTHLY")).toEqual({ maxThreads: 75_000, windowDays: null });
+  it("returns the Business monthly cap (20,000 threads, full history)", () => {
+    expect(getBackfillCap("BUSINESS", "MONTHLY")).toEqual({ maxThreads: 20_000, windowDays: null });
   });
 
-  it("returns the Business annual cap (250,000 threads, full history)", () => {
-    expect(getBackfillCap("BUSINESS", "ANNUAL")).toEqual({ maxThreads: 250_000, windowDays: null });
+  it("returns the Business annual cap (75,000 threads, full history)", () => {
+    expect(getBackfillCap("BUSINESS", "ANNUAL")).toEqual({ maxThreads: 75_000, windowDays: null });
   });
 
   it("falls back to the monthly cap when billing cycle is null", () => {

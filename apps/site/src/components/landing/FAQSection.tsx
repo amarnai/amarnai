@@ -37,7 +37,7 @@ const FAQ_ITEMS: { q: MessageDescriptor; a: MessageDescriptor }[] = [
   },
   {
     q: msg`Can Amarnai sort my existing inbox, not just new mail?`,
-    a: msg`Yes. Amarnai can work through the thousands of threads already sitting in your inbox, not only messages that arrive from now on. Clearing your backlog and sorting new mail use the same plan, so your whole inbox ends up organized the same way.`,
+    a: msg`Yes. Amarnai can work through the backlog already sitting in your inbox, not only messages that arrive from now on. Clearing your backlog and sorting new mail use the same plan, up to your plan's limits, so old and new mail end up organized the same way.`,
   },
   {
     q: msg`What happens to threads Amarnai is unsure about?`,
@@ -49,7 +49,7 @@ const FAQ_ITEMS: { q: MessageDescriptor; a: MessageDescriptor }[] = [
   },
   {
     q: msg`How is Amarnai's pricing structured?`,
-    a: msg`Pricing is per workspace, billed monthly or annually. Every account starts with a free Personal workspace, no card required. The paid Pro and Business subscriptions add higher limits and include a 14-day trial. See the pricing page for current details.`,
+    a: msg`Pricing is per workspace, billed monthly or annually. Every account starts with a free workspace, no card required. The paid Scribe and Pharaoh plans add higher limits and include a 14-day trial. See the pricing page for current details.`,
   },
   {
     q: msg`Can I self-host Amarnai?`,

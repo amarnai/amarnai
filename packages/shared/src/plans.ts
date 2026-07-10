@@ -92,46 +92,46 @@ export interface FeatureGroup {
 export const PLANS: Plan[] = [
   {
     id: "free",
-    name: "Personal",
-    tagline: "For individuals trying Amarnai on their own inbox.",
+    name: "Apprentice",
+    tagline: "For trying Amarnai on your own inbox.",
     monthlyPrice: 0,
     annualMonthlyPrice: 0,
     free: true,
     highlights: [
-      "1 free Personal workspace",
+      "1 free workspace",
       "500 threads sorted / month",
       "Up to 12 plan nodes",
-      "3 AI drafts / month",
+      "3 reply drafts / month",
     ],
     cta: { label: "Start free", kind: "secondary" },
   },
   {
     id: "pro",
-    name: "Pro",
-    tagline: "For power users and small businesses who live in their inbox.",
-    monthlyPrice: 5,
-    annualMonthlyPrice: 4,
+    name: "Scribe",
+    tagline: "For your busy inbox as a freelancer, consultant, property manager, or business owner.",
+    monthlyPrice: 6,
+    annualMonthlyPrice: 5,
     featured: true,
     badge: "Most popular",
     highlights: [
-      "Up to 10 collaborators",
-      "10,000 threads sorted / month",
+      "You + 1 teammate",
+      "5,000 threads sorted / month",
       "Unlimited plan nodes",
-      "200 AI drafts / month, pooled",
+      "200 reply drafts / month, pooled",
       "Shared plan + review queue",
     ],
     cta: { label: "Start 14-day trial", kind: "primary" },
   },
   {
     id: "business",
-    name: "Business",
-    tagline: "For larger organizations and higher-volume teams.",
-    monthlyPrice: 12,
-    annualMonthlyPrice: 10,
+    name: "Pharaoh",
+    tagline: "For your high-volume or shared inbox as a recruiter, agency, or small team on one mailbox.",
+    monthlyPrice: 15,
+    annualMonthlyPrice: 12,
     highlights: [
-      "Up to 25 collaborators",
-      "50,000 threads sorted / month",
-      "1,000 AI drafts / month, pooled",
+      "Up to 3 people",
+      "10,000 threads sorted / month",
+      "500 reply drafts / month, pooled",
       "Advanced review queue",
       "Admin & review controls",
     ],
@@ -148,15 +148,15 @@ export const FEATURE_GROUPS: FeatureGroup[] = [
         label: "Workspace type",
         values: [
           "Default free workspace",
-          "Paid or upgraded Personal",
+          "Paid or upgraded workspace",
           "Paid or upgraded workspace",
         ],
       },
       {
         label: "Workspaces included",
-        values: ["1 Personal / user", "1 Pro workspace", "1 Business workspace"],
+        values: ["1 free workspace / user", "1 Scribe workspace", "1 Pharaoh workspace"],
       },
-      { label: "Collaborators", values: ["1 user", "Up to 10", "Up to 25"] },
+      { label: "Collaborators", values: ["1 person", "2 people", "3 people"] },
     ],
   },
   {
@@ -164,7 +164,7 @@ export const FEATURE_GROUPS: FeatureGroup[] = [
     rows: [
       {
         label: "Threads sorted / month",
-        values: ["500", "10,000", "50,000"],
+        values: ["500", "5,000", "10,000"],
       },
       {
         label: "Initial backfill",
@@ -183,8 +183,8 @@ export const FEATURE_GROUPS: FeatureGroup[] = [
         },
       },
       {
-        label: "AI drafts",
-        values: ["3 / month", "200 / month, pooled", "1,000 / month, pooled"],
+        label: "Reply drafts",
+        values: ["3 / month", "200 / month, pooled", "500 / month, pooled"],
       },
       {
         label: "Plan nodes",
@@ -198,7 +198,7 @@ export const FEATURE_GROUPS: FeatureGroup[] = [
       { label: "Shared plan", values: [false, true, true] },
       { label: "Review queue", values: [false, "Basic", "Advanced"] },
       {
-        label: "AI metadata",
+        label: "Metadata",
         values: ["Basic", "Full", "Full + admin controls"],
       },
       {
@@ -239,13 +239,13 @@ export const PLAN_FEATURES: PlanFeature[] = [
     id: "collaborators",
     label: "Collaborators",
     showInCard: true,
-    values: { free: "1", pro: "Up to 10", business: "Up to 25" },
+    values: { free: "1 person", pro: "2 people", business: "3 people" },
   },
   {
     id: "monthly_threads",
     label: "Threads / month",
     showInCard: true,
-    values: { free: "500", pro: "10,000", business: "50,000" },
+    values: { free: "500", pro: "5,000", business: "10,000" },
   },
   {
     id: "backfill_monthly",
@@ -269,13 +269,13 @@ export const PLAN_FEATURES: PlanFeature[] = [
   },
   {
     id: "ai_drafts",
-    label: "AI drafts / month",
+    label: "Reply drafts / month",
     showInCard: true,
-    values: { free: "3", pro: "200 pooled", business: "1,000 pooled" },
+    values: { free: "3", pro: "200 pooled", business: "500 pooled" },
   },
   {
     id: "model_quality",
-    label: "AI model quality",
+    label: "Model quality",
     showInCard: true,
     values: {
       free: "Standard sorting",

@@ -11,7 +11,7 @@ describe("getDraftLimit", () => {
   it("returns correct limits per plan", () => {
     expect(getDraftLimit("FREE")).toBe(3);
     expect(getDraftLimit("PRO")).toBe(200);
-    expect(getDraftLimit("BUSINESS")).toBe(1000);
+    expect(getDraftLimit("BUSINESS")).toBe(500);
   });
 
   it("falls back to FREE limit for unknown plans", () => {

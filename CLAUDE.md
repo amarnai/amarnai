@@ -90,7 +90,6 @@ Amarnai uses Lingui v5 for i18n across `apps/web`, `apps/site`, and `apps/mobile
 ## Non-Goals
 
 - IMAP support (Outlook is supported read-only; see Provider support above)
-- Team features
 - Arbitrary workflow automation
 - Kubernetes
 

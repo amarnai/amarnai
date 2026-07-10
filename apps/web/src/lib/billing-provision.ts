@@ -2,6 +2,7 @@ import type Stripe from "stripe";
 import { getStripe } from "@/lib/stripe";
 import { queueSubscriptionCancellation, subscriptionPeriodEnd } from "@amarnai/billing";
 import { db, ensureInboxTaxonomy, claimTrial, Prisma } from "@amarnai/db";
+import { BACKFILL_RESCAN_RESET } from "@/lib/backfill-reset";
 
 export interface ProvisionResult {
   workspaceId: string;
@@ -237,6 +238,12 @@ export async function provisionFromCheckoutSession(
       return null;
     }
     const priceId = policy.subscription.items.data[0]?.price.id ?? null;
+    // Paid immediately (no trial) vs starting a trial. Backfill expansion and the
+    // firstPaidAt marker only happen on real payment: during a trial the backfill
+    // stays at the FREE cap (payment gate), so re-scanning now would import nothing
+    // and needlessly burn the inbox's one rolling grace. The trial-conversion payment
+    // triggers the re-scan later via the invoice.payment_succeeded webhook.
+    const paidNow = policy.trialEndsAt == null && policy.subscription.status === "active";
 
     await db.$transaction([
       db.workspace.update({
@@ -253,25 +260,23 @@ export async function provisionFromCheckoutSession(
           paymentFailed: false,
         },
       }),
-      // Reset the backfill so it re-scans up to the new (higher) plan cap. The
-      // worker's sync scheduler re-enqueues a backfill whenever the status is
-      // PENDING. Re-ingesting already-stored threads is idempotent (upsert by
-      // provider thread id). No-op when the workspace has no connected inbox yet.
-      db.providerSyncState.updateMany({
-        where: { emailAccount: { workspaceId: meta.workspaceId } },
-        data: {
-          backfillStatus: "PENDING",
-          backfillStartedAt: null,
-          backfillPageToken: null,
-          backfillProcessedCount: 0,
-          backfillTotalEstimate: 0,
-          backfillSkipped: 0,
-          backfillGeneration: { increment: 1 },
-          backfillCapReached: false,
-          backfillBeyondCount: 0,
-          backfillLimitState: "NONE",
-        },
-      }),
+      // Only on immediate payment: re-scan up to the (now ungated) plan cap and stamp
+      // firstPaidAt. The worker's sync scheduler re-enqueues a backfill whenever the
+      // status is PENDING; re-ingesting stored threads is idempotent. No-op when the
+      // workspace has no connected inbox yet. firstPaidAt is set via a null-guarded
+      // updateMany so a re-subscribe never overwrites the original first-payment date.
+      ...(paidNow
+        ? [
+            db.providerSyncState.updateMany({
+              where: { emailAccount: { workspaceId: meta.workspaceId } },
+              data: BACKFILL_RESCAN_RESET,
+            }),
+            db.workspace.updateMany({
+              where: { id: meta.workspaceId, firstPaidAt: null },
+              data: { firstPaidAt: new Date() },
+            }),
+          ]
+        : []),
       // Mark the trial consumed whenever it was granted OR denied — a denied user
       // should stop being offered a trial they can't get.
       ...(policy.trialOutcome !== "none"
@@ -315,6 +320,9 @@ export async function provisionFromCheckoutSession(
     return null;
   }
   const priceId = policy.subscription.items.data[0]?.price.id ?? null;
+  // Immediate payment stamps firstPaidAt now; a trial leaves it null until the
+  // trial-conversion payment arrives via the invoice.payment_succeeded webhook.
+  const paidNow = policy.trialEndsAt == null && policy.subscription.status === "active";
 
   let workspace: { id: string };
   try {
@@ -329,6 +337,7 @@ export async function provisionFromCheckoutSession(
         billingCycle: cycleValue,
         trialEndsAt: policy.trialEndsAt,
         currentPeriodEnd: subscriptionPeriodEnd(policy.subscription),
+        firstPaidAt: paidNow ? new Date() : null,
         members: { create: { userId: meta.userId, role: "OWNER" } },
       },
       select: { id: true },

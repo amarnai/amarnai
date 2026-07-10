@@ -34,22 +34,22 @@ const ALL_PLANS: Array<{
 }> = [
   {
     id: 'free',
-    name: msg`Personal`,
-    tagline: msg`For individuals trying Amarnai on their own inbox.`,
+    name: msg`Apprentice`,
+    tagline: msg`For individuals trying Amarnai on their personal inbox.`,
     price: (_cycle: BillingCycle) => msg`Free`,
   },
   {
     id: 'pro',
-    name: msg`Pro`,
+    name: msg`Scribe`,
     tagline: msg`For power users and small businesses.`,
-    price: (cycle: BillingCycle) => (cycle === 'annual' ? msg`$4/mo` : msg`$5/mo`),
+    price: (cycle: BillingCycle) => (cycle === 'annual' ? msg`$5/mo` : msg`$6/mo`),
     badge: msg`Most popular`,
   },
   {
     id: 'business',
-    name: msg`Business`,
+    name: msg`Pharaoh`,
     tagline: msg`For larger organizations.`,
-    price: (cycle: BillingCycle) => (cycle === 'annual' ? msg`$10/mo` : msg`$12/mo`),
+    price: (cycle: BillingCycle) => (cycle === 'annual' ? msg`$12/mo` : msg`$15/mo`),
   },
 ];
 
