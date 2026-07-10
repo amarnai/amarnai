@@ -100,8 +100,8 @@ export const PLANS: Plan[] = [
     highlights: [
       "1 free workspace",
       "500 threads sorted / month",
-      "Up to 12 plan nodes",
       "3 reply drafts / month",
+      "Up to 12 plan nodes",
     ],
     cta: { label: "Start free", kind: "secondary" },
   },
@@ -114,11 +114,11 @@ export const PLANS: Plan[] = [
     featured: true,
     badge: "Most popular",
     highlights: [
-      "You + 1 teammate",
+      "Up to 2 people",
       "5,000 threads sorted / month",
-      "Unlimited plan nodes",
       "200 reply drafts / month, pooled",
-      "Shared plan + review queue",
+      "Unlimited plan nodes",
+      "Shared plan",
     ],
     cta: { label: "Start 14-day trial", kind: "primary" },
   },
@@ -132,8 +132,8 @@ export const PLANS: Plan[] = [
       "Up to 3 people",
       "10,000 threads sorted / month",
       "500 reply drafts / month, pooled",
-      "Advanced review queue",
-      "Admin & review controls",
+      "Unlimited plan nodes",
+      "Shared plan",
     ],
     cta: { label: "Start 14-day trial", kind: "secondary" },
   },
@@ -196,10 +196,9 @@ export const FEATURE_GROUPS: FeatureGroup[] = [
     name: "Triage & review",
     rows: [
       { label: "Shared plan", values: [false, true, true] },
-      { label: "Review queue", values: [false, "Basic", "Advanced"] },
       {
         label: "Metadata",
-        values: ["Basic", "Full", "Full + admin controls"],
+        values: ["Basic", "Full", "Full"],
       },
       {
         label: "Model quality",
@@ -300,12 +299,6 @@ export const PLAN_FEATURES: PlanFeature[] = [
     label: "Gmail label sync",
     showInCard: false,
     values: { free: null, pro: null, business: null },
-  },
-  {
-    id: "review_queue",
-    label: "Review queue",
-    showInCard: true,
-    values: { free: false, pro: "Basic", business: "Advanced" },
   },
   {
     id: "support",
