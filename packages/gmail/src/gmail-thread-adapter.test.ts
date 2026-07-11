@@ -40,6 +40,7 @@ function thread(payload: object): RawGmailThread {
       {
         id: "msg-1",
         threadId: "thread-1",
+        internalDate: String(new Date("Wed, 03 Jun 2026 17:32:00 +0000").getTime()),
         payload: {
           headers: [
             { name: "From", value: "Sender <sender@example.com>" },
@@ -144,6 +145,78 @@ describe("normalizeGmailThread attachment detection", () => {
     expect(snapshot.messages[0]!.attachments).toEqual([
       { filename: "contract.pdf", mimeType: "application/pdf", size: 1234 },
     ]);
+  });
+});
+
+describe("normalizeGmailThread receivedAt / ordering", () => {
+  // Build a raw thread from (internalDate, Date-header) pairs. Both are provided
+  // independently so tests can force them to disagree.
+  function timestampThread(
+    messages: Array<{ id: string; internalDate?: string; dateHeader?: string }>
+  ): RawGmailThread {
+    return {
+      id: "thread-1",
+      messages: messages.map((m) => ({
+        id: m.id,
+        threadId: "thread-1",
+        ...(m.internalDate !== undefined ? { internalDate: m.internalDate } : {}),
+        payload: {
+          mimeType: "text/plain",
+          headers: [
+            { name: "From", value: "Sender <sender@example.com>" },
+            ...(m.dateHeader !== undefined ? [{ name: "Date", value: m.dateHeader }] : []),
+            { name: "Subject", value: "Test" },
+          ],
+          body: { size: 0 },
+        },
+      })),
+    } as RawGmailThread;
+  }
+
+  it("derives receivedAt from internalDate, not the Date header", () => {
+    const serverTime = new Date("2026-06-03T17:32:00Z").getTime();
+    // Sender claims a wildly different (future) send time in the Date header.
+    const raw = timestampThread([
+      { id: "msg-1", internalDate: String(serverTime), dateHeader: "Fri, 01 Jan 2100 00:00:00 +0000" },
+    ]);
+    const snapshot = normalizeGmailThread(raw);
+    expect(snapshot.messages[0]!.receivedAt.getTime()).toBe(serverTime);
+    expect(snapshot.latestMessageAt.getTime()).toBe(serverTime);
+  });
+
+  it("does not sink to epoch 0 when the Date header is missing", () => {
+    const serverTime = new Date("2026-06-03T17:32:00Z").getTime();
+    const raw = timestampThread([{ id: "msg-1", internalDate: String(serverTime) }]);
+    const snapshot = normalizeGmailThread(raw);
+    expect(snapshot.messages[0]!.receivedAt.getTime()).toBe(serverTime);
+  });
+
+  it("does not sink to epoch 0 when the Date header is unparseable", () => {
+    const serverTime = new Date("2026-06-03T17:32:00Z").getTime();
+    const raw = timestampThread([
+      { id: "msg-1", internalDate: String(serverTime), dateHeader: "not a real date" },
+    ]);
+    const snapshot = normalizeGmailThread(raw);
+    expect(snapshot.messages[0]!.receivedAt.getTime()).toBe(serverTime);
+  });
+
+  it("falls back to epoch 0 only when internalDate itself is absent", () => {
+    const raw = timestampThread([{ id: "msg-1", dateHeader: "Wed, 03 Jun 2026 17:32:00 +0000" }]);
+    const snapshot = normalizeGmailThread(raw);
+    expect(snapshot.messages[0]!.receivedAt.getTime()).toBe(0);
+  });
+
+  it("orders latestMessageAt by server internalDate, ignoring a forged future Date header", () => {
+    const older = new Date("2026-06-03T17:32:00Z").getTime();
+    const newer = new Date("2026-06-04T09:00:00Z").getTime();
+    const raw = timestampThread([
+      // Newest by server time, but claims an ancient send time.
+      { id: "msg-2", internalDate: String(newer), dateHeader: "Thu, 01 Jan 1970 00:00:00 +0000" },
+      // Oldest by server time, but forges a far-future send time.
+      { id: "msg-1", internalDate: String(older), dateHeader: "Fri, 01 Jan 2100 00:00:00 +0000" },
+    ]);
+    const snapshot = normalizeGmailThread(raw);
+    expect(snapshot.latestMessageAt.getTime()).toBe(newer);
   });
 });
 

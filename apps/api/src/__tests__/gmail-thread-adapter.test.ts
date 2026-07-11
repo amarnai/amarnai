@@ -18,15 +18,19 @@ function makeMessage(opts: {
   cc?: string;
   subject?: string;
   date?: string;
+  /** Server receive time (epoch ms). Defaults to match `date`; this is what
+   * the adapter derives receivedAt from, not the sender-controlled Date header. */
+  internalDate?: string;
   mimeType?: string;
   bodyData?: string;
   parts?: unknown[];
 }) {
+  const date = opts.date ?? "Mon, 20 Jan 2026 10:00:00 +0000";
   const headers = [
     { name: "From", value: opts.from ?? "sender@example.com" },
     { name: "To", value: opts.to ?? "recipient@example.com" },
     { name: "Subject", value: opts.subject ?? "Test Subject" },
-    { name: "Date", value: opts.date ?? "Mon, 20 Jan 2026 10:00:00 +0000" },
+    { name: "Date", value: date },
   ];
   if (opts.cc) headers.push({ name: "Cc", value: opts.cc });
 
@@ -39,7 +43,12 @@ function makeMessage(opts: {
   };
   if (opts.parts) payload["parts"] = opts.parts;
 
-  return { id: opts.id ?? "msg-1", threadId: "thread-1", payload };
+  return {
+    id: opts.id ?? "msg-1",
+    threadId: "thread-1",
+    internalDate: opts.internalDate ?? String(new Date(date).getTime()),
+    payload,
+  };
 }
 
 function makeThread(messages: unknown[], id = "thread-1") {

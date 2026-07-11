@@ -17,6 +17,8 @@ type RawMessage = {
   threadId: string;
   labelIds?: string[];
   snippet?: string;
+  /** Gmail's server receive time, epoch milliseconds as a string. */
+  internalDate?: string;
   payload: RawPart & { headers: RawHeader[] };
 };
 
@@ -219,9 +221,16 @@ function extractAttachments(part: RawPart, referencedCids: Set<string>): Attachm
   return result;
 }
 
-function parseReceivedAt(dateHeader: string | null): Date {
-  if (!dateHeader) return new Date(0);
-  const d = new Date(dateHeader);
+/**
+ * Per-message receive time from Gmail's server-authoritative `internalDate`
+ * (epoch ms), NOT the sender-controlled `Date:` header. The header is spoofable
+ * and often missing on bulk mail; `internalDate` is unspoofable and matches both
+ * the metadata path (fetchThreadMetaForIds) and the Outlook adapter's server
+ * receive time, so ordering is consistent across paths and providers.
+ */
+function parseReceivedAt(internalDate: string | undefined): Date {
+  if (!internalDate) return new Date(0);
+  const d = new Date(Number(internalDate));
   return isNaN(d.getTime()) ? new Date(0) : d;
 }
 
@@ -235,8 +244,7 @@ function normalizeMessage(msg: RawMessage): SnapshotMessage {
   const ccRaw = getHeader(headers, "Cc") ?? "";
 
   const subject = getHeader(headers, "Subject") ?? null;
-  const dateHeader = getHeader(headers, "Date");
-  const receivedAt = parseReceivedAt(dateHeader);
+  const receivedAt = parseReceivedAt(msg.internalDate);
 
   const rawText = extractText(msg.payload);
   let bodyExcerpt: string | null = null;
