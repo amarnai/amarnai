@@ -15,8 +15,9 @@ import { db } from "./client.js";
 /**
  * The durable trial identity key: sha256 of the normalized email. We store the
  * hash, never the raw email, so a deleted account leaves only a pseudonymous
- * token behind. normalizeInboxKey collapses gmail dot/plus aliases so
- * ben+x@gmail.com and b.en@gmail.com map to one claim.
+ * token behind. normalizeInboxKey collapses "+tag" aliases on every provider (and
+ * dots on Gmail), so ben+x@outlook.com maps to the same claim as ben@outlook.com,
+ * and b.en@gmail.com maps to ben@gmail.com, so one identity cannot farm two trials.
  */
 export function trialEmailKeyHash(email: string): string {
   return crypto.createHash("sha256").update(normalizeInboxKey(email)).digest("hex");

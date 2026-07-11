@@ -34,6 +34,11 @@ describe("trialEmailKeyHash", () => {
     expect(trialEmailKeyHash("Ben+promo@GMAIL.com")).toBe(trialEmailKeyHash("b.en@gmail.com"));
   });
 
+  it("collapses +tag aliases to one key on non-gmail domains (Outlook honors +tag)", () => {
+    expect(trialEmailKeyHash("user+1@outlook.com")).toBe(trialEmailKeyHash("user+2@outlook.com"));
+    expect(trialEmailKeyHash("user+1@outlook.com")).toBe(trialEmailKeyHash("user@outlook.com"));
+  });
+
   it("treats dots as significant on custom domains", () => {
     expect(trialEmailKeyHash("b.en@corp.com")).not.toBe(trialEmailKeyHash("ben@corp.com"));
   });
@@ -101,6 +106,42 @@ describe("claimTrial", () => {
       .mockResolvedValueOnce({ stripeSubscriptionId: "sub_other" } as never); // by card
     const result = await claimTrial({ ...base, stripeSubscriptionId: SUB_ID });
     expect(result).toEqual({ granted: false, reason: "card_claimed" });
+  });
+
+  it("denies a second trial claimed via a +tag variant of an already-claimed address", async () => {
+    // First identity claims the trial for user@outlook.com.
+    vi.mocked(db.trialClaim.create).mockResolvedValueOnce({ id: "tc_1" } as never);
+    const first = await claimTrial({
+      email: "user@outlook.com",
+      userId: "user-1",
+      cardFingerprint: null,
+      stripeSubscriptionId: SUB_ID,
+    });
+    expect(first).toEqual({ granted: true });
+    // Both addresses collapse to one durable key, so the second insert targets the
+    // same emailKeyHash the first already claimed.
+    const sharedHash = trialEmailKeyHash("user@outlook.com");
+    expect(db.trialClaim.create).toHaveBeenNthCalledWith(
+      1,
+      expect.objectContaining({ data: expect.objectContaining({ emailKeyHash: sharedHash }) }),
+    );
+
+    // A farmer retries with user+2@outlook.com: same emailKeyHash, so the insert
+    // collides (P2002) and the existing claim belongs to a DIFFERENT subscription.
+    vi.mocked(db.trialClaim.create).mockRejectedValueOnce(p2002());
+    vi.mocked(db.trialClaim.findUnique).mockResolvedValueOnce({ stripeSubscriptionId: SUB_ID } as never);
+    const second = await claimTrial({
+      email: "user+2@outlook.com",
+      userId: "user-2",
+      cardFingerprint: null,
+      stripeSubscriptionId: "sub_farmed",
+    });
+    expect(second).toEqual({ granted: false, reason: "email_claimed" });
+    // The +tag variant resolves to the same durable key it was blocked on.
+    expect(db.trialClaim.create).toHaveBeenNthCalledWith(
+      2,
+      expect.objectContaining({ data: expect.objectContaining({ emailKeyHash: sharedHash }) }),
+    );
   });
 
   it("rethrows errors that are not unique-constraint violations", async () => {
