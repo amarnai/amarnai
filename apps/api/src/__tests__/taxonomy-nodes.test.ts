@@ -86,7 +86,12 @@ function delWithBody(path: string, body: unknown) {
 
 beforeEach(() => {
   vi.clearAllMocks();
-  vi.mocked(db.workspaceMember.findUnique).mockResolvedValue({ userId: "test-user-1" } as never);
+  // OWNER by default: passes both the membership guard and the mount-level
+  // taxonomy-editor guard (requireTaxonomyEditor) that gates every write below.
+  vi.mocked(db.workspaceMember.findUnique).mockResolvedValue({
+    userId: "test-user-1",
+    role: "OWNER",
+  } as never);
   // Default: no edges → no descendants to invalidate for any name-change test.
   // Individual tests override this when testing descendant invalidation.
   vi.mocked(db.taxonomyEdge.findMany).mockResolvedValue([] as never);
@@ -751,5 +756,68 @@ describe("DELETE /workspaces/:workspaceId/taxonomy-nodes/:nodeId", () => {
 
     const res = await del(`/workspaces/${WS_ID}/taxonomy-nodes/${NODE_ID}`);
     expect(res.status).toBe(404);
+  });
+});
+
+// ─── Authorization (mount-level requireTaxonomyEditor) ─────────────────────────
+
+describe("taxonomy-node writes require an editor", () => {
+  // A non-editor MEMBER: passes membership (so not 404) but the editor guard 403s.
+  function asNonEditorMember() {
+    vi.mocked(db.workspaceMember.findUnique).mockResolvedValue({
+      userId: "test-user-1",
+      role: "MEMBER",
+    } as never);
+    vi.mocked(db.workspace.findUnique).mockResolvedValue({
+      membersCanEditTaxonomy: false,
+    } as never);
+  }
+
+  it("403s POST for a MEMBER when membersCanEditTaxonomy is false, and creates nothing", async () => {
+    asNonEditorMember();
+    const res = await post(`/workspaces/${WS_ID}/taxonomy-nodes`, {
+      name: "Clients",
+      description: VALID_DESCRIPTION,
+    });
+    expect(res.status).toBe(403);
+    expect(vi.mocked(db.taxonomyNode.create)).not.toHaveBeenCalled();
+  });
+
+  it("403s PATCH for a non-editor MEMBER, and updates nothing", async () => {
+    asNonEditorMember();
+    const res = await patch(`/workspaces/${WS_ID}/taxonomy-nodes/${NODE_ID}`, { name: "Renamed" });
+    expect(res.status).toBe(403);
+    expect(vi.mocked(db.taxonomyNode.update)).not.toHaveBeenCalled();
+  });
+
+  it("403s DELETE for a non-editor MEMBER, and deletes nothing", async () => {
+    asNonEditorMember();
+    const res = await del(`/workspaces/${WS_ID}/taxonomy-nodes/${NODE_ID}`);
+    expect(res.status).toBe(403);
+    expect(vi.mocked(db.taxonomyNode.delete)).not.toHaveBeenCalled();
+  });
+
+  it("lets a MEMBER through when membersCanEditTaxonomy is true (not 403)", async () => {
+    vi.mocked(db.workspaceMember.findUnique).mockResolvedValue({
+      userId: "test-user-1",
+      role: "MEMBER",
+    } as never);
+    // isTaxonomyEditor reads this; the create handler reads workspace existence.
+    vi.mocked(db.workspace.findUnique).mockResolvedValue({
+      id: WS_ID,
+      membersCanEditTaxonomy: true,
+    } as never);
+    vi.mocked(db.taxonomyNode.create).mockResolvedValue({
+      ...baseNode,
+      name: "Clients",
+      description: VALID_DESCRIPTION,
+    } as never);
+
+    const res = await post(`/workspaces/${WS_ID}/taxonomy-nodes`, {
+      name: "Clients",
+      description: VALID_DESCRIPTION,
+    });
+    expect(res.status).not.toBe(403);
+    expect(res.status).toBe(201);
   });
 });

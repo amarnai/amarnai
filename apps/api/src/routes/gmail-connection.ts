@@ -55,13 +55,7 @@ gmailConnection.post("/workspaces/:workspaceId/gmail-connection", async (c) => {
 
   const { workspaceId } = parsed.data;
   const userId = c.get("userId");
-
-  // Only the workspace owner may connect Gmail (mirrors the web connect flow).
-  const workspace = await db.workspace.findFirst({
-    where: { id: workspaceId, ownerUserId: userId },
-    select: { id: true },
-  });
-  if (!workspace) return c.json({ error: "Not authorized" }, 403);
+  // Owner-only is enforced at the mount (requireWorkspaceOwner in app.ts).
 
   const body = await c.req.json().catch(() => null);
   const bodyParsed = connectBody.safeParse(body);

@@ -7,6 +7,7 @@ import { verifyAccessToken } from "@amarnai/auth";
 import type { MiddlewareHandler } from "hono";
 import type { AppEnv } from "./env.js";
 import { rateLimit } from "./services/rate-limit.js";
+import { isTaxonomyEditor } from "./services/taxonomy-permission.js";
 import { healthRoute } from "./routes/health.js";
 import { authRoute } from "./routes/auth.js";
 import { workspacesRoute } from "./routes/workspaces.js";
@@ -139,8 +140,71 @@ const requireWorkspaceMember: MiddlewareHandler<AppEnv> = async (c, next) => {
   return next();
 };
 
+// Workspace-owner guard: rejects members who are not the workspace owner. Runs
+// after requireWorkspaceMember (owners are always members), so a non-member is
+// already 404'd here and only a non-owner member reaches the 403. Reuses the
+// { id, ownerUserId } lookup that the connection connect handlers used inline.
+const requireWorkspaceOwner: MiddlewareHandler<AppEnv> = async (c, next) => {
+  const workspaceId = c.req.param("workspaceId") as string;
+  const userId: string = c.get("userId");
+  if (!userId) return c.json({ error: "Unauthorized" }, 401);
+
+  const workspace = await db.workspace.findFirst({
+    where: { id: workspaceId, ownerUserId: userId },
+    select: { id: true },
+  });
+  if (!workspace) return c.json({ error: "Not authorized" }, 403);
+
+  return next();
+};
+
+// Taxonomy-editor guard: rejects members who may not edit the taxonomy. OWNERs
+// always pass; MEMBERs pass only when the workspace has membersCanEditTaxonomy
+// enabled (isTaxonomyEditor). Applied to every taxonomy mutation so a new write
+// route inherits the check instead of re-implementing it per handler.
+const requireTaxonomyEditor: MiddlewareHandler<AppEnv> = async (c, next) => {
+  const workspaceId = c.req.param("workspaceId") as string;
+  const userId: string = c.get("userId");
+  if (!userId) return c.json({ error: "Unauthorized" }, 401);
+
+  if (!(await isTaxonomyEditor(workspaceId, userId))) {
+    return c.json({ error: "Taxonomy editing is restricted to workspace admins" }, 403);
+  }
+
+  return next();
+};
+
 app.use("/workspaces/:workspaceId/*", requireWorkspaceMember);
 app.use("/dev/workspaces/:workspaceId/*", requireWorkspaceMember);
+
+// Owner-only: connecting or disconnecting a mailbox is destructive (a member
+// could otherwise disconnect with ?eraseData=true and wipe the mailbox). Both
+// providers share the single disconnect route — DELETE gmail-connection tears
+// down OUTLOOK rows too (disconnectGmail is provider-neutral) — so Outlook needs
+// no separate delete guard; its only mutating route is the connect POST.
+app.on(["POST", "DELETE"], "/workspaces/:workspaceId/gmail-connection", requireWorkspaceOwner);
+app.on("POST", "/workspaces/:workspaceId/outlook-connection", requireWorkspaceOwner);
+
+// Taxonomy-editor: every mutating taxonomy route. GETs stay on membership.
+app.on(
+  ["POST", "PATCH", "DELETE"],
+  [
+    "/workspaces/:workspaceId/taxonomy-nodes",
+    "/workspaces/:workspaceId/taxonomy-nodes/:nodeId",
+    "/workspaces/:workspaceId/taxonomy-edges",
+    "/workspaces/:workspaceId/taxonomy-edges/:edgeId",
+  ],
+  requireTaxonomyEditor,
+);
+app.on(
+  "POST",
+  [
+    "/workspaces/:workspaceId/taxonomy-import",
+    "/workspaces/:workspaceId/taxonomy-import/preview",
+    "/workspaces/:workspaceId/taxonomy-generate",
+  ],
+  requireTaxonomyEditor,
+);
 
 app.route("/", healthRoute);
 app.route("/", authRoute);

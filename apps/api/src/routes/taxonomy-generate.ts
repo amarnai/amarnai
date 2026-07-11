@@ -12,7 +12,6 @@ import {
 import { matchTemplateToProfile } from "@amarnai/core/taxonomy";
 import { config } from "@amarnai/config";
 import type { AppEnv } from "../env.js";
-import { isTaxonomyEditor } from "../services/taxonomy-permission.js";
 import { generateTaxonomyQueue } from "../services/queue-client.js";
 
 const workspaceParam = z.object({ workspaceId: z.string().min(1) });
@@ -116,13 +115,9 @@ taxonomyGenerate.post("/workspaces/:workspaceId/taxonomy-generate", async (c) =>
   if (!params.success) return c.json({ error: "Invalid workspace ID" }, 400);
   const { workspaceId } = params.data;
 
-  // Authorization: generation spends LLM budget and produces a proposal that can
-  // replace the taxonomy, so it is restricted to taxonomy editors (membership
-  // alone is not enough). Native/proxy callers reach here without the web gate.
-  const userId = c.get("userId");
-  if (!userId || !(await isTaxonomyEditor(workspaceId, userId))) {
-    return c.json({ error: "Taxonomy editing is restricted to workspace admins" }, 403);
-  }
+  // Authorization (taxonomy-editor only: generation spends LLM budget and can
+  // produce a proposal that replaces the taxonomy) is enforced at the mount
+  // (requireTaxonomyEditor in app.ts), alongside the other taxonomy writes.
 
   const { state, eligibility } = await evaluate(workspaceId);
 

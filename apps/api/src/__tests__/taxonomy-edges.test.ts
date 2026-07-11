@@ -74,7 +74,12 @@ function del(path: string) {
 
 beforeEach(() => {
   vi.clearAllMocks();
-  vi.mocked(db.workspaceMember.findUnique).mockResolvedValue({ userId: "test-user-1" } as never);
+  // OWNER by default: passes both the membership guard and the mount-level
+  // taxonomy-editor guard (requireTaxonomyEditor) that gates every write below.
+  vi.mocked(db.workspaceMember.findUnique).mockResolvedValue({
+    userId: "test-user-1",
+    role: "OWNER",
+  } as never);
 });
 
 // ─── GET ─────────────────────────────────────────────────────────────────────
@@ -507,5 +512,72 @@ describe("DELETE /workspaces/:workspaceId/taxonomy-edges/:edgeId", () => {
 
     const res = await del(`/workspaces/${WS_ID}/taxonomy-edges/${EDGE_ID}`);
     expect(res.status).toBe(404);
+  });
+});
+
+// ─── Authorization (mount-level requireTaxonomyEditor) ─────────────────────────
+
+describe("taxonomy-edge writes require an editor", () => {
+  // A non-editor MEMBER: passes membership (so not 404) but the editor guard 403s.
+  function asNonEditorMember() {
+    vi.mocked(db.workspaceMember.findUnique).mockResolvedValue({
+      userId: "test-user-1",
+      role: "MEMBER",
+    } as never);
+    vi.mocked(db.workspace.findUnique).mockResolvedValue({
+      membersCanEditTaxonomy: false,
+    } as never);
+  }
+
+  it("403s POST for a MEMBER when membersCanEditTaxonomy is false, and creates nothing", async () => {
+    asNonEditorMember();
+    const res = await post(`/workspaces/${WS_ID}/taxonomy-edges`, {
+      sourceNodeId: NODE_A,
+      targetNodeId: NODE_B,
+    });
+    expect(res.status).toBe(403);
+    expect(vi.mocked(db.taxonomyEdge.create)).not.toHaveBeenCalled();
+  });
+
+  it("403s PATCH for a non-editor MEMBER, and re-parents nothing", async () => {
+    asNonEditorMember();
+    const res = await patch(`/workspaces/${WS_ID}/taxonomy-edges/${EDGE_ID}`, {
+      newSourceNodeId: NODE_C,
+    });
+    expect(res.status).toBe(403);
+    expect(vi.mocked(db.taxonomyEdge.delete)).not.toHaveBeenCalled();
+  });
+
+  it("403s DELETE for a non-editor MEMBER, and deletes nothing", async () => {
+    asNonEditorMember();
+    const res = await del(`/workspaces/${WS_ID}/taxonomy-edges/${EDGE_ID}`);
+    expect(res.status).toBe(403);
+    expect(vi.mocked(db.taxonomyEdge.delete)).not.toHaveBeenCalled();
+  });
+
+  it("lets a MEMBER with membersCanEditTaxonomy create an edge (201)", async () => {
+    vi.mocked(db.workspaceMember.findUnique).mockResolvedValue({
+      userId: "test-user-1",
+      role: "MEMBER",
+    } as never);
+    // isTaxonomyEditor reads membersCanEditTaxonomy; the handler reads workspace
+    // existence — one findUnique mock serves both.
+    vi.mocked(db.workspace.findUnique).mockResolvedValue({
+      id: WS_ID,
+      membersCanEditTaxonomy: true,
+    } as never);
+    vi.mocked(db.taxonomyNode.findUnique)
+      .mockResolvedValueOnce(nodeA as never)
+      .mockResolvedValueOnce(nodeB as never);
+    vi.mocked(db.taxonomyEdge.findFirst).mockResolvedValue(null);
+    vi.mocked(db.taxonomyEdge.findMany).mockResolvedValue([]);
+    vi.mocked(db.taxonomyEdge.create).mockResolvedValue(baseEdge as never);
+
+    const res = await post(`/workspaces/${WS_ID}/taxonomy-edges`, {
+      sourceNodeId: NODE_A,
+      targetNodeId: NODE_B,
+    });
+    expect(res.status).toBe(201);
+    expect(vi.mocked(db.taxonomyEdge.create)).toHaveBeenCalled();
   });
 });

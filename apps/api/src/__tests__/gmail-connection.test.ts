@@ -149,6 +149,9 @@ const baseEmailAccount = { id: "acct-1" };
 beforeEach(() => {
   vi.clearAllMocks();
   vi.mocked(db.workspaceMember.findUnique).mockResolvedValue({ userId: TEST_USER_ID } as never);
+  // Default: the requester owns the workspace, so the mount-level owner guard
+  // (requireWorkspaceOwner) passes. Non-owner cases override this to null.
+  vi.mocked(db.workspace.findFirst).mockResolvedValue({ id: WS_ID } as never);
   vi.mocked(db.emailConnection.update).mockResolvedValue({} as never);
   vi.mocked(db.emailConnection.count).mockResolvedValue(0); // no siblings by default
   vi.mocked(db.emailConnection.findMany).mockResolvedValue([]); // no visible siblings by default
@@ -584,6 +587,55 @@ describe("DELETE /workspaces/:workspaceId/gmail-connection", () => {
     const res = await app.request(`/workspaces/${WS_ID}/gmail-connection`, authed({ method: "DELETE" }));
     expect(res.status).toBe(404);
     expect(vi.mocked(db.emailConnection.update)).not.toHaveBeenCalled();
+  });
+
+  // Owner-only is enforced at the mount for the destructive disconnect route. A
+  // member who is not the owner must not be able to disconnect (or eraseData).
+  it("rejects a non-owner member with 403 and disconnects nothing (Gmail)", async () => {
+    vi.mocked(db.workspace.findFirst).mockResolvedValue(null); // member, not the owner
+    vi.mocked(db.emailConnection.findUnique).mockResolvedValue(baseConnection as never);
+
+    const res = await app.request(
+      `/workspaces/${WS_ID}/gmail-connection?eraseData=true`,
+      authed({ method: "DELETE" })
+    );
+    expect(res.status).toBe(403);
+    expect(vi.mocked(db.emailConnection.update)).not.toHaveBeenCalled();
+    expect(vi.mocked(db.$transaction)).not.toHaveBeenCalled();
+  });
+
+  // The single disconnect route tears down OUTLOOK connections too (disconnectGmail
+  // is provider-neutral), so the owner guard must protect Outlook mailboxes as well.
+  it("rejects a non-owner member with 403 and disconnects nothing (Outlook)", async () => {
+    vi.mocked(db.workspace.findFirst).mockResolvedValue(null); // member, not the owner
+    vi.mocked(db.emailConnection.findUnique).mockResolvedValue({
+      ...baseConnection,
+      provider: "OUTLOOK",
+      emailAddress: "user@outlook.com",
+    } as never);
+
+    const res = await app.request(
+      `/workspaces/${WS_ID}/gmail-connection?eraseData=true`,
+      authed({ method: "DELETE" })
+    );
+    expect(res.status).toBe(403);
+    expect(vi.mocked(db.emailConnection.update)).not.toHaveBeenCalled();
+    expect(vi.mocked(db.$transaction)).not.toHaveBeenCalled();
+  });
+
+  it("allows the owner to disconnect an OUTLOOK connection through the shared route", async () => {
+    vi.mocked(db.workspace.findUnique).mockResolvedValue({ id: WS_ID } as never);
+    vi.mocked(db.emailConnection.findUnique).mockResolvedValue({
+      ...baseConnection,
+      provider: "OUTLOOK",
+      emailAddress: "user@outlook.com",
+    } as never);
+
+    const res = await app.request(`/workspaces/${WS_ID}/gmail-connection`, authed({ method: "DELETE" }));
+    expect(res.status).toBe(200);
+    expect(vi.mocked(db.emailConnection.update)).toHaveBeenCalledWith(
+      expect.objectContaining({ data: expect.objectContaining({ status: "DISCONNECTED" }) })
+    );
   });
 });
 

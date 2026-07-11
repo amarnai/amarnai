@@ -7,6 +7,7 @@ vi.mock("@amarnai/db", () => ({
       findUnique: vi.fn(),
     },
     workspace: {
+      findUnique: vi.fn(),
       update: vi.fn(),
     },
     taxonomyNode: {
@@ -120,8 +121,15 @@ const IMPORT_PATH = `/workspaces/${WS_ID}/taxonomy-import`;
 describe("POST /workspaces/:workspaceId/taxonomy-import", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    // OWNER by default: passes both the membership guard and the mount-level
+    // taxonomy-editor guard (requireTaxonomyEditor) that gates import + preview.
     vi.mocked(db.workspaceMember.findUnique).mockResolvedValue({
       userId: "test-user-1",
+      role: "OWNER",
+    } as never);
+    // isTaxonomyEditor reads this in the guard; OWNER short-circuits regardless.
+    vi.mocked(db.workspace.findUnique).mockResolvedValue({
+      membersCanEditTaxonomy: true,
     } as never);
     vi.mocked(db.taxonomyNode.findFirst).mockResolvedValue({
       id: ROOT_ID,
@@ -368,6 +376,33 @@ describe("POST /workspaces/:workspaceId/taxonomy-import", () => {
       vi.mocked(latestClassificationsByThread).mockResolvedValue([]);
       const res = await post(IMPORT_PATH, { file: validFile(), mapping: { ghost: "n1" } });
       expect(res.status).toBe(200);
+    });
+  });
+
+  // ─── Authorization (mount-level requireTaxonomyEditor) ───────────────────────
+
+  describe("import + preview require an editor", () => {
+    // A non-editor MEMBER: passes membership (so not 404) but the editor guard 403s.
+    beforeEach(() => {
+      vi.mocked(db.workspaceMember.findUnique).mockResolvedValue({
+        userId: "test-user-1",
+        role: "MEMBER",
+      } as never);
+      vi.mocked(db.workspace.findUnique).mockResolvedValue({
+        membersCanEditTaxonomy: false,
+      } as never);
+    });
+
+    it("403s the import apply for a non-editor MEMBER, and mutates nothing", async () => {
+      const res = await post(IMPORT_PATH, validFile());
+      expect(res.status).toBe(403);
+      expect(vi.mocked(db.$transaction)).not.toHaveBeenCalled();
+      expect(vi.mocked(db.taxonomyNode.deleteMany)).not.toHaveBeenCalled();
+    });
+
+    it("403s the migration preview for a non-editor MEMBER", async () => {
+      const res = await post(`${IMPORT_PATH}/preview`, validFile());
+      expect(res.status).toBe(403);
     });
   });
 });
