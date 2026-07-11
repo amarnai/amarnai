@@ -741,15 +741,21 @@ model VerificationToken {
 
 // Long-lived refresh tokens for native clients (mobile). The raw token is
 // returned to the device once; only its SHA-256 hash is stored. Tokens rotate on
-// every refresh: the presented token is marked used (usedAt) and a child token is
-// issued in the same family. Presenting an already-used token signals theft and
-// revokes the whole family. Logout revokes the family too.
+// every refresh: the presented token is marked used (usedAt), a child token is
+// issued in the same family, and the parent records the child's id (replacedById).
+// Re-presenting an already-used parent only signals theft when the child was ALSO
+// used: that means the chain forked into two live branches. A parent replayed
+// while its child is still unused is a benign retry (the client lost the response
+// and never advanced), so the family is left intact. Logout revokes the family.
 model RefreshToken {
   id        String    @id @default(cuid())
   userId    String
   familyId  String
   tokenHash String    @unique
   usedAt    DateTime?
+  // The child minted when this token was rotated. Lets reuse-detection tell a
+  // benign retry (child unused) from a real fork (child used) without a timer.
+  replacedById String?
   expiresAt DateTime
   createdAt DateTime  @default(now())
 

@@ -6,6 +6,7 @@ vi.mock("@amarnai/db", () => ({
     refreshToken: {
       create: vi.fn(),
       findUnique: vi.fn(),
+      update: vi.fn(),
       updateMany: vi.fn(),
       deleteMany: vi.fn(),
     },
@@ -24,7 +25,8 @@ const sha256 = (raw: string) => createHash("sha256").update(raw).digest("hex");
 
 beforeEach(() => {
   vi.clearAllMocks();
-  vi.mocked(db.refreshToken.create).mockResolvedValue({} as never);
+  vi.mocked(db.refreshToken.create).mockResolvedValue({ id: "rt-child" } as never);
+  vi.mocked(db.refreshToken.update).mockResolvedValue({} as never);
   vi.mocked(db.refreshToken.updateMany).mockResolvedValue({ count: 1 } as never);
   vi.mocked(db.refreshToken.deleteMany).mockResolvedValue({ count: 1 } as never);
 });
@@ -78,20 +80,63 @@ describe("rotateRefreshToken", () => {
     expect(vi.mocked(db.refreshToken.create).mock.calls[0]![0].data).toMatchObject({
       familyId: "fam-1",
     });
+    // Parent records the child it minted so a later replay can be classified.
+    expect(db.refreshToken.update).toHaveBeenCalledWith({
+      where: { id: "rt-1" },
+      data: { replacedById: "rt-child" },
+    });
   });
 
-  it("detects reuse of an already-used token and revokes the whole family", async () => {
+  it("revokes the whole family when a used parent's child was also used (fork = theft)", async () => {
+    vi.mocked(db.refreshToken.findUnique)
+      .mockResolvedValueOnce({
+        id: "rt-1",
+        userId: "user-1",
+        familyId: "fam-1",
+        usedAt: new Date(),
+        replacedById: "rt-2",
+        expiresAt: new Date(Date.now() + 60_000),
+      } as never)
+      // The child was also consumed: the chain forked, so this is real theft.
+      .mockResolvedValueOnce({ id: "rt-2", usedAt: new Date() } as never);
+
+    expect(await rotateRefreshToken("stolen")).toBeNull();
+    expect(db.refreshToken.deleteMany).toHaveBeenCalledWith({ where: { familyId: "fam-1" } });
+    expect(db.refreshToken.updateMany).not.toHaveBeenCalled();
+    expect(db.refreshToken.create).not.toHaveBeenCalled();
+  });
+
+  it("does NOT revoke on a benign retry: used parent whose child is still unused", async () => {
+    vi.mocked(db.refreshToken.findUnique)
+      .mockResolvedValueOnce({
+        id: "rt-1",
+        userId: "user-1",
+        familyId: "fam-1",
+        usedAt: new Date(),
+        replacedById: "rt-2",
+        expiresAt: new Date(Date.now() + 60_000),
+      } as never)
+      // The client lost the rotation response and never advanced: child unused.
+      .mockResolvedValueOnce({ id: "rt-2", usedAt: null } as never);
+
+    expect(await rotateRefreshToken("lost-response-retry")).toBeNull();
+    expect(db.refreshToken.deleteMany).not.toHaveBeenCalled();
+    expect(db.refreshToken.create).not.toHaveBeenCalled();
+  });
+
+  it("does NOT revoke when a used parent has no recorded child (legacy/link lost)", async () => {
     vi.mocked(db.refreshToken.findUnique).mockResolvedValue({
       id: "rt-1",
       userId: "user-1",
       familyId: "fam-1",
       usedAt: new Date(),
+      replacedById: null,
       expiresAt: new Date(Date.now() + 60_000),
     } as never);
 
-    expect(await rotateRefreshToken("stolen")).toBeNull();
-    expect(db.refreshToken.deleteMany).toHaveBeenCalledWith({ where: { familyId: "fam-1" } });
-    expect(db.refreshToken.updateMany).not.toHaveBeenCalled();
+    expect(await rotateRefreshToken("legacy")).toBeNull();
+    // Fails safe toward the user: no child link means no fork evidence.
+    expect(db.refreshToken.deleteMany).not.toHaveBeenCalled();
     expect(db.refreshToken.create).not.toHaveBeenCalled();
   });
 

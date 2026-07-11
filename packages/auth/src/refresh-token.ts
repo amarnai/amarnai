@@ -13,14 +13,15 @@ export type IssuedRefreshToken = { token: string; expiresAt: Date };
 
 // Issues a refresh token. A fresh login starts a new family; a rotation passes
 // the parent's familyId so the whole lineage can be revoked together if a stolen
-// token is ever replayed.
+// token is ever replayed. Also returns the new row's id so a rotating parent can
+// record the child it minted (see rotateRefreshToken).
 export async function issueRefreshToken(
   userId: string,
   familyId?: string
-): Promise<IssuedRefreshToken> {
+): Promise<IssuedRefreshToken & { id: string }> {
   const token = randomBytes(32).toString("hex");
   const expiresAt = new Date(Date.now() + REFRESH_TOKEN_TTL_MS);
-  await db.refreshToken.create({
+  const created = await db.refreshToken.create({
     data: {
       userId,
       familyId: familyId ?? randomBytes(16).toString("hex"),
@@ -28,15 +29,19 @@ export async function issueRefreshToken(
       expiresAt,
     },
   });
-  return { token, expiresAt };
+  return { id: created.id, token, expiresAt };
 }
 
 // Validates and rotates a refresh token. Returns the user id and a fresh child
 // token, or null if the token is unknown, expired, or lost a concurrent race.
 //
 // Reuse detection: a token presented after it was already rotated (usedAt set)
-// means the legitimate client has moved on to the child token, so a second use
-// of the parent indicates theft. The entire family is revoked, forcing re-auth.
+// is either a benign retry (the client lost the rotation response and re-sent the
+// same token, never advancing to the child) or theft (an attacker replayed a
+// stolen token while the legitimate client also rotated). The two are told apart
+// by the child: a real attack forks the chain so the child is ALSO used, whereas
+// a retry leaves the child untouched. Only a used child revokes the family; a
+// benign retry is rejected without logging every device out.
 export async function rotateRefreshToken(
   raw: string
 ): Promise<{ userId: string; refresh: IssuedRefreshToken } | null> {
@@ -46,8 +51,16 @@ export async function rotateRefreshToken(
   if (!existing) return null;
 
   if (existing.usedAt) {
-    // Replay of an already-consumed token: revoke the whole lineage.
-    await db.refreshToken.deleteMany({ where: { familyId: existing.familyId } });
+    // Parent already rotated. Revoke the lineage only if the chain forked: the
+    // child it minted was also consumed, which a benign retry never does. If the
+    // child is still unused (or the link is missing), treat it as a lost-response
+    // retry and reject without revoking.
+    const child = existing.replacedById
+      ? await db.refreshToken.findUnique({ where: { id: existing.replacedById } })
+      : null;
+    if (child?.usedAt) {
+      await db.refreshToken.deleteMany({ where: { familyId: existing.familyId } });
+    }
     return null;
   }
 
@@ -63,6 +76,13 @@ export async function rotateRefreshToken(
   if (consumed.count !== 1) return null;
 
   const refresh = await issueRefreshToken(existing.userId, existing.familyId);
+  // Record the child so a later replay of this now-used parent can distinguish a
+  // benign retry from a fork. Best-effort: if this write is lost, reuse detection
+  // simply fails safe (no revoke) rather than logging the user out on a retry.
+  await db.refreshToken.update({
+    where: { id: existing.id },
+    data: { replacedById: refresh.id },
+  });
   return { userId: existing.userId, refresh };
 }
 
