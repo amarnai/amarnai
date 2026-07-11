@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import Link from "next/link";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
@@ -18,25 +18,39 @@ export function SignUpForm({
 }) {
   const { _ } = useLingui();
   const [state, action, pending] = useActionState(registerAction, null);
+  // "try again" returns to the form. We're already on /sign-up, so a route
+  // navigation would not remount this component or clear the success state;
+  // a local flag does. Resubmitting clears it via the wrapped action below.
+  const [retrying, setRetrying] = useState(false);
+
+  const submit = (formData: FormData) => {
+    setRetrying(false);
+    return action(formData);
+  };
 
   // Success is intentionally identical for every account state (new, already
   // registered, or Google-only): the response must not reveal whether the email
-  // is registered. Whatever the case, the right next step arrives by email.
-  if (state?.success) {
+  // is registered. Whatever the case, the right next step arrives by email, so
+  // the copy stays generic and never hints at which state applies.
+  if (state?.success && !retrying && !pending) {
     return (
       <AuthShell title={_( msg`Check your email`)}>
         <p className="auth-success">
           <Trans>
-            If you can create an account with that email, we've sent a link to
-            finish setting it up. Follow it to choose a password and sign in.
+            We've sent a link to that email address. Follow it to finish signing
+            in.
           </Trans>
         </p>
         <p className="auth-switch">
           <Trans>
             Didn't get an email? Check your spam folder, or{" "}
-            <Link href="/sign-up" className="auth-link">
+            <button
+              type="button"
+              className="auth-link"
+              onClick={() => setRetrying(true)}
+            >
               try again
-            </Link>
+            </button>
             .
           </Trans>
         </p>
@@ -51,7 +65,7 @@ export function SignUpForm({
           <Trans>Create your account to accept your workspace invitation.</Trans>
         </p>
       )}
-      <form action={action} className="auth-form">
+      <form action={submit} className="auth-form">
         {state?.error && <p className="auth-error">{state.error}</p>}
 
         <div className="form-group">

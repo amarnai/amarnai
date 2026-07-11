@@ -13,19 +13,27 @@ import { AuthShell } from "@/components/AuthShell";
 
 function ResetPasswordForm() {
   const { _ } = useLingui();
-  const token = useSearchParams().get("token") ?? "";
+  const params = useSearchParams();
+  const token = params.get("token") ?? "";
+  // The post-verification set-password flow lands here with `verified=1`; a plain
+  // forgot-password reset does not. Use it to word the confirmation correctly.
+  const isFirstTimeSet = params.get("verified") === "1";
   const [state, action, pending] = useActionState(resetPasswordAction, null);
 
   if (state?.success) {
     return (
-      <>
-        <p className="auth-success"><Trans>Password updated! You can now sign in.</Trans></p>
-        <p className="auth-switch">
-          <Link href="/sign-in" className="auth-link">
-            <Trans>Go to sign in</Trans>
-          </Link>
+      <div className="auth-actions">
+        <p className="auth-success">
+          {isFirstTimeSet ? (
+            <Trans>Password set! You can now sign in.</Trans>
+          ) : (
+            <Trans>Password updated! You can now sign in.</Trans>
+          )}
         </p>
-      </>
+        <Link href="/sign-in" className="btn-primary auth-submit">
+          <Trans>Go to sign in</Trans>
+        </Link>
+      </div>
     );
   }
 

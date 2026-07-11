@@ -19,7 +19,7 @@ export default function ForgotPasswordPage() {
     >
       {state?.success ? (
         <p className="auth-success">
-          <Trans>If an account exists for that email, a reset link is on its way.</Trans>
+          <Trans>We've sent a link to that email address. Follow it to reset your password.</Trans>
         </p>
       ) : (
         <form action={action} className="auth-form">

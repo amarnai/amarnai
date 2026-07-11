@@ -3105,6 +3105,18 @@ a {
   padding: 10px 16px;
   font-size: 14px;
   border-radius: 9px;
+  justify-content: center;
+}
+
+/* Success confirmation + full-width CTA shown after a password is set/updated. */
+.auth-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.auth-actions .auth-submit {
+  margin-top: 0;
 }
 
 .auth-label-row {
@@ -3196,6 +3208,12 @@ a {
 .auth-link {
   color: var(--color-primary);
   text-decoration: none;
+  /* Render identically whether the element is an <a> or an inline <button>. */
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
 }
 
 .auth-link:hover {
