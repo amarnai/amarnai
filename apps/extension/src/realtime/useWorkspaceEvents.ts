@@ -41,6 +41,11 @@ export function useWorkspaceEvents(
     let abort: AbortController | null = null;
     let reconnectTimer: ReturnType<typeof setTimeout> | null = null;
     let backoff = INITIAL_BACKOFF_MS;
+    // Monotonic id for the current connect attempt. `close()` bumps it so any
+    // in-flight connect that is still suspended before it created its
+    // AbortController (i.e. cannot yet be aborted) sees it is superseded and
+    // bails after its next await, rather than opening a second live stream.
+    let generation = 0;
 
     const clearReconnect = () => {
       if (reconnectTimer) {
@@ -51,6 +56,9 @@ export function useWorkspaceEvents(
 
     const close = () => {
       clearReconnect();
+      // Supersede any in-flight connect, including one still awaiting me()/the
+      // token read that has not yet stored a controller to abort.
+      generation++;
       if (abort) {
         abort.abort();
         abort = null;
@@ -69,6 +77,10 @@ export function useWorkspaceEvents(
     const connect = async () => {
       if (cancelled || document.visibilityState !== "visible") return;
       close(); // never run more than one live connection
+      // Claim this attempt. If another connect() (or a close()) runs while we
+      // are suspended on an await below, `generation` moves on and the stale
+      // checks bail us out before we open a second stream.
+      const myGeneration = generation;
 
       // Refresh the access token if it has expired by piggybacking on the
       // transport's single-flight 401-refresh, then read the (possibly rotated)
@@ -79,10 +91,11 @@ export function useWorkspaceEvents(
         // A failed ping (e.g. offline) just falls through; we either connect
         // with the current token or hit the error path and back off.
       }
-      if (cancelled) return;
+      if (cancelled || myGeneration !== generation) return;
       const accessToken = (await extensionTokenStore.get())?.accessToken ?? null;
-      if (cancelled || !accessToken) {
-        if (!cancelled) scheduleReconnect();
+      if (cancelled || myGeneration !== generation) return;
+      if (!accessToken) {
+        scheduleReconnect();
         return;
       }
 
