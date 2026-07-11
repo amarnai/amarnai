@@ -119,6 +119,43 @@ export async function sendVerificationEmail(to: string, token: string): Promise<
   );
 }
 
+// Sent when someone tries to register an email that already has a verified
+// password account. Registration returns the same neutral response for every
+// account state, so this email — which only the real mailbox owner receives — is
+// where the "you already have an account" guidance lives, without the endpoint
+// leaking that the account exists.
+export async function sendAccountExistsEmail(to: string): Promise<void> {
+  const signIn = `${appUrl()}/sign-in`;
+  const forgot = `${appUrl()}/forgot-password`;
+  await sendEmail(
+    to,
+    "You already have an Amarnai account",
+    layout(`
+      <p style="margin:0 0 12px;">Someone (probably you) just tried to sign up for Amarnai with this email address, but you already have an account.</p>
+      <p style="margin:0 0 20px;">Sign in to pick up where you left off. If you've forgotten your password, you can reset it.</p>
+      <p style="margin:0 0 20px;">${button(signIn, "Sign in")}</p>
+      <p style="margin:0;color:${colors.ink3};font-size:13px;">Forgot your password? <a href="${forgot}" style="color:${colors.ink3};">Reset it here</a>. If this wasn't you, no action is needed — no changes were made to your account.</p>
+    `)
+  );
+}
+
+// Sent when someone tries to register an email that already has a verified
+// Google (password-less) account. Same rationale as sendAccountExistsEmail: the
+// register response stays neutral, and the guidance reaches only the real owner.
+export async function sendGoogleAccountEmail(to: string): Promise<void> {
+  const signIn = `${appUrl()}/sign-in`;
+  await sendEmail(
+    to,
+    "You already have an Amarnai account",
+    layout(`
+      <p style="margin:0 0 12px;">Someone (probably you) just tried to sign up for Amarnai with this email address, but you already have an account that signs in with Google.</p>
+      <p style="margin:0 0 20px;">Use <strong>Sign in with Google</strong> to get back in — there's no password to set.</p>
+      <p style="margin:0 0 20px;">${button(signIn, "Go to sign in")}</p>
+      <p style="margin:0;color:${colors.ink3};font-size:13px;">If this wasn't you, no action is needed — no changes were made to your account.</p>
+    `)
+  );
+}
+
 export async function sendWorkspaceInvitationEmail(
   to: string,
   inviterName: string,

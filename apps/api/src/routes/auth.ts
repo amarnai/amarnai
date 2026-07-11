@@ -7,7 +7,7 @@ import {
   revokeRefreshToken,
   verifyCredentials,
   checkUserPassword,
-  registerWithPassword,
+  registerEmail,
   rotateVerificationToken,
   provisionGoogleUser,
   createPasswordResetToken,
@@ -21,9 +21,14 @@ import {
   exchangeAuthCode,
   type GoogleUserInfo,
 } from "@amarnai/gmail";
-import { RegisterCredentialsSchema } from "@amarnai/shared";
+import { RegisterEmailSchema } from "@amarnai/shared";
 import { isSupportedLocale, localeFromAcceptLanguage } from "@amarnai/i18n";
-import { sendVerificationEmail, sendPasswordResetEmail } from "@amarnai/email";
+import {
+  sendVerificationEmail,
+  sendPasswordResetEmail,
+  sendAccountExistsEmail,
+  sendGoogleAccountEmail,
+} from "@amarnai/email";
 import { db, deleteUserCascade, maybeCreateExtensionNudge } from "@amarnai/db";
 import { cancelSubscriptionsForAccountDeletion } from "@amarnai/billing";
 import type { AppEnv } from "../env.js";
@@ -96,32 +101,41 @@ auth.post("/auth/login", async (c) => {
   return c.json(await issueTokenPair(userId));
 });
 
-// Email/password sign-up for native clients. Creates the account, emails a
-// verification link, and returns a token pair so the app is signed in but in an
-// unverified state (the client gates app access on /auth/me's emailVerified).
-// Mirrors the web register action's policy via the shared registerWithPassword.
+// Email-first sign-up. Collects only an email; the password is set later at the
+// verify step by whoever proves they own the mailbox. Returns the SAME neutral
+// { ok: true } for every account state so the response never reveals whether the
+// email is registered (no enumeration oracle), and never hands back a session.
+// The right guidance is delivered by email, which only the real owner receives.
 auth.post("/auth/register", async (c) => {
   const body = await c.req.json().catch(() => null);
-  const parsed = RegisterCredentialsSchema.safeParse(body);
+  // Non-strict parse: legacy/native bodies may still include `password`; it is
+  // ignored under the email-first flow.
+  const parsed = RegisterEmailSchema.safeParse(body);
   if (!parsed.success) {
     return c.json({ error: parsed.error.errors[0]?.message ?? "Invalid request" }, 400);
   }
 
-  const result = await registerWithPassword(parsed.data);
-  if (result.status === "google_only") {
-    return c.json({ error: "An account with this email exists. Sign in with Google instead." }, 409);
-  }
-  if (result.status === "exists") {
-    return c.json({ error: "An account with this email already exists." }, 409);
+  const { email } = parsed.data;
+  const result = await registerEmail({ email });
+
+  // Dispatch the state-appropriate email (best-effort; a delivery failure must
+  // never change the response or leak state, and the recipient is never logged).
+  try {
+    if (result.status === "verify") {
+      // Null when a recent resend is still throttled — send nothing.
+      if (result.verificationToken) {
+        await sendVerificationEmail(email, result.verificationToken);
+      }
+    } else if (result.status === "already_registered") {
+      await sendAccountExistsEmail(email);
+    } else {
+      await sendGoogleAccountEmail(email);
+    }
+  } catch (err) {
+    console.error("[auth/register] send:", err instanceof Error ? err.message : err);
   }
 
-  // Best-effort: a delivery failure must not block sign-up — the client lands on
-  // the verify screen and can resend. Never logs the recipient address.
-  await sendVerificationEmail(parsed.data.email, result.verificationToken).catch((err) =>
-    console.error("[auth/register] send_verification:", err instanceof Error ? err.message : err)
-  );
-
-  return c.json(await issueTokenPair(result.userId));
+  return c.json({ ok: true });
 });
 
 // Requests a password-reset email for native clients. Always returns 200 — it

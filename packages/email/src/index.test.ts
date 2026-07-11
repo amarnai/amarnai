@@ -7,10 +7,38 @@ vi.mock("nodemailer", () => ({
   default: { createTransport: () => ({ sendMail }) },
 }));
 
-import { sendWelcomeEmail, sendLifecycleReminderEmail } from "./index.js";
+import {
+  sendWelcomeEmail,
+  sendLifecycleReminderEmail,
+  sendAccountExistsEmail,
+  sendGoogleAccountEmail,
+} from "./index.js";
 
 beforeEach(() => {
   vi.clearAllMocks();
+});
+
+describe("registration notice emails", () => {
+  it("sendAccountExistsEmail points the real owner at sign-in and reset, with no unsubscribe", async () => {
+    await sendAccountExistsEmail("owner@x.com");
+
+    expect(sendMail).toHaveBeenCalledTimes(1);
+    const mail = sendMail.mock.calls[0]![0] as Record<string, unknown>;
+    expect(mail.to).toBe("owner@x.com");
+    expect(mail.subject).toBe("You already have an Amarnai account");
+    expect(mail.html).toContain("/sign-in");
+    expect(mail.html).toContain("/forgot-password");
+    expect(mail.html).not.toContain("Unsubscribe");
+  });
+
+  it("sendGoogleAccountEmail points the owner at Google sign-in", async () => {
+    await sendGoogleAccountEmail("owner@x.com");
+
+    const mail = sendMail.mock.calls[0]![0] as Record<string, unknown>;
+    expect(mail.subject).toBe("You already have an Amarnai account");
+    expect(mail.html).toContain("/sign-in");
+    expect(mail.html).toContain("Google");
+  });
 });
 
 describe("sendWelcomeEmail", () => {

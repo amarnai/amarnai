@@ -6,17 +6,22 @@ import { signIn, signOut, unstable_update } from "@/auth";
 import { db, deleteUserCascade } from "@amarnai/db";
 import { cancelSubscriptionsForAccountDeletion } from "@amarnai/billing";
 import {
-  registerWithPassword,
+  registerEmail,
   rotateVerificationToken,
   createPasswordResetToken,
   revokeAllRefreshTokensForUser,
   checkUserPassword,
 } from "@amarnai/auth";
-import { RegisterCredentialsSchema, PasswordSchema } from "@amarnai/shared";
+import { RegisterEmailSchema, PasswordSchema } from "@amarnai/shared";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/session";
-import { sendVerificationEmail, sendPasswordResetEmail } from "@/lib/email";
+import {
+  sendVerificationEmail,
+  sendPasswordResetEmail,
+  sendAccountExistsEmail,
+  sendGoogleAccountEmail,
+} from "@/lib/email";
 import { disconnectGmailBeforeDeletion } from "@/lib/gmail-teardown";
 import { INVITE_COOKIE, sanitizeInvitePath } from "@/lib/invite-redirect";
 
@@ -60,32 +65,39 @@ export async function credentialsSignInAction(
 // ─── Register ─────────────────────────────────────────────────────────────────
 
 export async function registerAction(
-  _prev: { error?: string } | null,
+  _prev: { error?: string; success?: boolean } | null,
   formData: FormData
-): Promise<{ error?: string }> {
-  const parsed = RegisterCredentialsSchema.safeParse({
+): Promise<{ error?: string; success?: boolean }> {
+  const parsed = RegisterEmailSchema.safeParse({
     email: formData.get("email"),
-    password: formData.get("password"),
   });
   if (!parsed.success) {
     return { error: parsed.error.errors[0]?.message ?? "Invalid input" };
   }
-  const { email, password } = parsed.data;
+  const { email } = parsed.data;
 
-  const result = await registerWithPassword({ email, password });
-  if (result.status === "google_only") {
-    return { error: "An account with this email exists. Sign in with Google instead." };
+  // Email-first: no password is collected here and no session is ever handed
+  // back. Every account state returns the SAME neutral success below, so the
+  // response cannot reveal whether the email is registered. The correct guidance
+  // is delivered by email, which only the real mailbox owner receives.
+  const result = await registerEmail({ email });
+  try {
+    if (result.status === "verify") {
+      // Null when a recent resend is still throttled — send nothing.
+      if (result.verificationToken) {
+        await sendVerificationEmail(email, result.verificationToken);
+      }
+    } else if (result.status === "already_registered") {
+      await sendAccountExistsEmail(email);
+    } else {
+      await sendGoogleAccountEmail(email);
+    }
+  } catch (err) {
+    // A delivery failure must never change the response (that would leak state).
+    console.error("[registerAction] send:", err instanceof Error ? err.message : err);
   }
-  if (result.status === "exists") {
-    return { error: "An account with this email already exists." };
-  }
 
-  await sendVerificationEmail(email, result.verificationToken);
-
-  // Sign in immediately — throws NEXT_REDIRECT to /verify-email (middleware gates unverified users there).
-  await signIn("credentials", { email, password, redirectTo: "/verify-email" });
-
-  return {};
+  return { success: true };
 }
 
 // ─── Resend verification ──────────────────────────────────────────────────────
@@ -268,9 +280,14 @@ export async function resetPasswordAction(
   await db.verificationToken.delete({ where: { token } });
 
   // A reset assumes the old password may be compromised, so log out every other
-  // device: revoke all refresh-token families for this user. (Stateless web JWTs
-  // are short-lived and lapse on their own.)
+  // session: revoke all refresh-token families (native/API) AND bump the session
+  // epoch, which invalidates the stateless web JWTs that a refresh-token revoke
+  // cannot reach.
   await revokeAllRefreshTokensForUser(record.userId);
+  await db.user.update({
+    where: { id: record.userId },
+    data: { sessionEpoch: { increment: 1 } },
+  });
 
   return { success: true };
 }

@@ -24,7 +24,7 @@ vi.mock("@amarnai/gmail", () => {
 });
 
 vi.mock("@amarnai/auth", () => ({
-  registerWithPassword: vi.fn(),
+  registerEmail: vi.fn(),
   rotateVerificationToken: vi.fn(async () => "verif-tok"),
   issueAccessToken: vi.fn(async () => "access-tok"),
   issueRefreshToken: vi.fn(async () => ({
@@ -38,7 +38,11 @@ vi.mock("@amarnai/auth", () => ({
   provisionGoogleUser: vi.fn(),
 }));
 
-vi.mock("@amarnai/email", () => ({ sendVerificationEmail: vi.fn(async () => {}) }));
+vi.mock("@amarnai/email", () => ({
+  sendVerificationEmail: vi.fn(async () => {}),
+  sendAccountExistsEmail: vi.fn(async () => {}),
+  sendGoogleAccountEmail: vi.fn(async () => {}),
+}));
 
 vi.mock("../services/queue-client.js", () => ({
   syncInboxQueue: { add: vi.fn().mockResolvedValue({}) },
@@ -46,8 +50,12 @@ vi.mock("../services/queue-client.js", () => ({
 }));
 
 import app from "../app.js";
-import { registerWithPassword } from "@amarnai/auth";
-import { sendVerificationEmail } from "@amarnai/email";
+import { registerEmail } from "@amarnai/auth";
+import {
+  sendVerificationEmail,
+  sendAccountExistsEmail,
+  sendGoogleAccountEmail,
+} from "@amarnai/email";
 
 async function post(body: unknown): Promise<Response> {
   return app.request("/auth/register", {
@@ -57,77 +65,70 @@ async function post(body: unknown): Promise<Response> {
   });
 }
 
-const TOKEN_PAIR = {
-  accessToken: "access-tok",
-  refreshToken: "refresh-tok",
-  refreshTokenExpiresAt: "2030-01-01T00:00:00.000Z",
-};
-
 beforeEach(() => {
   vi.clearAllMocks();
 });
 
 describe("POST /auth/register", () => {
-  it("creates the account, emails a link, and returns a token pair", async () => {
-    vi.mocked(registerWithPassword).mockResolvedValue({
-      status: "created",
-      userId: "user-1",
+  it("returns a neutral { ok: true } and emails a verify link for a new/unverified email", async () => {
+    vi.mocked(registerEmail).mockResolvedValue({
+      status: "verify",
       verificationToken: "verif-tok",
     });
 
-    const res = await post({ email: "new@b.com", password: "password123456" });
+    const res = await post({ email: "new@b.com" });
 
     expect(res.status).toBe(200);
-    expect(await res.json()).toEqual(TOKEN_PAIR);
-    expect(registerWithPassword).toHaveBeenCalledWith({
-      email: "new@b.com",
-      password: "password123456",
-    });
+    expect(await res.json()).toEqual({ ok: true });
+    expect(registerEmail).toHaveBeenCalledWith({ email: "new@b.com" });
     expect(sendVerificationEmail).toHaveBeenCalledWith("new@b.com", "verif-tok");
   });
 
-  it("treats an unverified resend as success", async () => {
-    vi.mocked(registerWithPassword).mockResolvedValue({
-      status: "resent",
-      userId: "user-1",
-      verificationToken: "verif-tok",
-    });
+  it("emails the verify link is skipped when the resend is throttled", async () => {
+    vi.mocked(registerEmail).mockResolvedValue({ status: "verify", verificationToken: null });
 
-    const res = await post({ email: "u@b.com", password: "password123456" });
+    const res = await post({ email: "u@b.com" });
 
     expect(res.status).toBe(200);
-    expect(sendVerificationEmail).toHaveBeenCalledWith("u@b.com", "verif-tok");
-  });
-
-  it("returns 409 for an already-registered email", async () => {
-    vi.mocked(registerWithPassword).mockResolvedValue({ status: "exists" });
-
-    const res = await post({ email: "v@b.com", password: "password123456" });
-
-    expect(res.status).toBe(409);
     expect(sendVerificationEmail).not.toHaveBeenCalled();
   });
 
-  it("returns 409 and directs Google-only accounts to sign in with Google", async () => {
-    vi.mocked(registerWithPassword).mockResolvedValue({ status: "google_only" });
+  it("returns the SAME neutral response (no tokens) for an already-registered email, and emails a notice", async () => {
+    vi.mocked(registerEmail).mockResolvedValue({ status: "already_registered" });
 
-    const res = await post({ email: "g@b.com", password: "password123456" });
+    const res = await post({ email: "v@b.com" });
 
-    expect(res.status).toBe(409);
-    expect(((await res.json()) as { error?: string }).error).toMatch(/Google/);
+    expect(res.status).toBe(200);
+    const body = (await res.json()) as Record<string, unknown>;
+    expect(body).toEqual({ ok: true });
+    expect(body).not.toHaveProperty("accessToken");
+    expect(sendAccountExistsEmail).toHaveBeenCalledWith("v@b.com");
+    expect(sendVerificationEmail).not.toHaveBeenCalled();
   });
 
-  it("rejects an invalid email with 400 and never touches the db", async () => {
-    const res = await post({ email: "not-an-email", password: "password123456" });
+  it("returns the SAME neutral response for a Google-only email, and emails a Google notice", async () => {
+    vi.mocked(registerEmail).mockResolvedValue({ status: "google_only" });
 
-    expect(res.status).toBe(400);
-    expect(registerWithPassword).not.toHaveBeenCalled();
+    const res = await post({ email: "g@b.com" });
+
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({ ok: true });
+    expect(sendGoogleAccountEmail).toHaveBeenCalledWith("g@b.com");
   });
 
-  it("rejects a too-short password with 400", async () => {
-    const res = await post({ email: "a@b.com", password: "short" });
+  it("ignores a legacy password field in the body (email-first)", async () => {
+    vi.mocked(registerEmail).mockResolvedValue({ status: "verify", verificationToken: "verif-tok" });
+
+    const res = await post({ email: "new@b.com", password: "whatever-they-typed" });
+
+    expect(res.status).toBe(200);
+    expect(registerEmail).toHaveBeenCalledWith({ email: "new@b.com" });
+  });
+
+  it("rejects an invalid email with 400 and never touches registration", async () => {
+    const res = await post({ email: "not-an-email" });
 
     expect(res.status).toBe(400);
-    expect(registerWithPassword).not.toHaveBeenCalled();
+    expect(registerEmail).not.toHaveBeenCalled();
   });
 });

@@ -14,11 +14,14 @@ export const PasswordSchema = z
   .min(PASSWORD_MIN_LENGTH, `Password must be at least ${PASSWORD_MIN_LENGTH} characters`)
   .max(72, "Password must be at most 72 characters");
 
-// Credentials accepted when registering a password-based account. Shared by the
-// web register action, the API /auth/register endpoint, and the mobile sign-up
-// screen so validation lives in exactly one place.
-export const RegisterCredentialsSchema = z.object({
+// Registration is email-first: the sign-up form collects only an email, and the
+// password is set later at the verify step by whoever proves they own the
+// mailbox. This keeps the register response non-enumerating (no session or
+// token is ever handed back, so it cannot differ by account state) and makes an
+// account pre-hijack structurally impossible (no password is ever stored before
+// mailbox ownership is proven). Shared by the web register action and the API
+// /auth/register endpoint so validation lives in exactly one place.
+export const RegisterEmailSchema = z.object({
   email: z.string().email("Invalid email address"),
-  password: PasswordSchema,
 });
-export type RegisterCredentialsInput = z.infer<typeof RegisterCredentialsSchema>;
+export type RegisterEmailInput = z.infer<typeof RegisterEmailSchema>;

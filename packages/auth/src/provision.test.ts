@@ -2,7 +2,8 @@ import { vi, describe, it, expect, beforeEach } from "vitest";
 
 vi.mock("@amarnai/db", () => ({
   db: {
-    user: { findUnique: vi.fn(), upsert: vi.fn() },
+    user: { findUnique: vi.fn(), upsert: vi.fn(), update: vi.fn() },
+    userCredential: { deleteMany: vi.fn() },
     emailConnection: { upsert: vi.fn(), findUnique: vi.fn() },
   },
   ensureInboxTaxonomy: vi.fn(),
@@ -19,9 +20,14 @@ vi.mock("./workspace.js", () => ({
   getOrCreateDefaultWorkspace: vi.fn(),
 }));
 
+vi.mock("./refresh-token.js", () => ({
+  revokeAllRefreshTokensForUser: vi.fn().mockResolvedValue(undefined),
+}));
+
 import { db } from "@amarnai/db";
 import { encrypt, fetchGmailProfile } from "@amarnai/gmail";
 import { getOrCreateDefaultWorkspace } from "./workspace.js";
+import { revokeAllRefreshTokensForUser } from "./refresh-token.js";
 import { provisionGoogleUser } from "./provision.js";
 
 beforeEach(() => {
@@ -66,6 +72,58 @@ describe("provisionGoogleUser", () => {
         }),
       })
     );
+  });
+
+  it("invalidates an untrusted password credential when Google first verifies the account", async () => {
+    // Account pre-hijack: an attacker planted a password on victim@x via
+    // /auth/register (row exists, emailVerified null, credential set). The victim
+    // now signs in with Google for the first time. That planted credential must
+    // be destroyed and any sessions it opened revoked, so it cannot carry over
+    // onto the now-verified account.
+    vi.mocked(db.user.findUnique).mockResolvedValue({
+      id: "user-1",
+      emailVerified: null,
+      credential: { id: "cred-1" },
+    } as never);
+
+    const result = await provisionGoogleUser({
+      email: "victim@x.com",
+      gmailAccessToken: "at",
+      gmailRefreshToken: "rt",
+    });
+
+    expect(db.userCredential.deleteMany).toHaveBeenCalledWith({
+      where: { userId: "user-1" },
+    });
+    expect(revokeAllRefreshTokensForUser).toHaveBeenCalledWith("user-1");
+    // The session epoch is bumped so any planted stateless web JWT is invalidated.
+    expect(db.user.update).toHaveBeenCalledWith({
+      where: { id: "user-1" },
+      data: { sessionEpoch: { increment: 1 } },
+    });
+    // The upsert still verifies the account and sign-in still succeeds.
+    expect(result.isNew).toBe(false);
+    expect(result.gmailConnected).toBe(true);
+  });
+
+  it("leaves a returning verified user's password credential untouched", async () => {
+    // emailVerified already set: the password was validated (or set via the
+    // authenticated reset flow), so re-verifying via Google must not nuke it.
+    vi.mocked(db.user.findUnique).mockResolvedValue({
+      id: "user-1",
+      emailVerified: new Date(),
+      credential: { id: "cred-1" },
+    } as never);
+
+    await provisionGoogleUser({
+      email: "a@b.com",
+      gmailAccessToken: "at",
+      gmailRefreshToken: "rt",
+    });
+
+    expect(db.userCredential.deleteMany).not.toHaveBeenCalled();
+    expect(revokeAllRefreshTokensForUser).not.toHaveBeenCalled();
+    expect(db.user.update).not.toHaveBeenCalled();
   });
 
   it("flags a returning user as not new", async () => {

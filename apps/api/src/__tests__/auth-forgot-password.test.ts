@@ -16,7 +16,7 @@ vi.mock("@amarnai/gmail", () => ({
 
 vi.mock("@amarnai/auth", () => ({
   createPasswordResetToken: vi.fn(),
-  registerWithPassword: vi.fn(),
+  registerEmail: vi.fn(),
   rotateVerificationToken: vi.fn(),
   provisionGoogleUser: vi.fn(),
   issueAccessToken: vi.fn(),

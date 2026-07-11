@@ -1,13 +1,14 @@
 import crypto from "crypto";
-import bcrypt from "bcryptjs";
 import { db } from "@amarnai/db";
-
-// bcrypt cost factor for stored password hashes. Matches the web sign-up path so
-// hashes are interchangeable regardless of which client created the account.
-const BCRYPT_ROUNDS = 12;
 
 // Email-verification tokens are valid for 24 hours.
 const VERIFICATION_TTL_MS = 24 * 60 * 60 * 1000;
+
+// Minimum gap between verification resends for the same account. Mirrors
+// forgot-password's throttle: a second /auth/register on the same unverified
+// account resends its link, and this window stops that path from being used to
+// bomb the owner's inbox.
+const RESEND_THROTTLE_MS = 60 * 1000;
 
 function generateToken(): string {
   return crypto.randomBytes(32).toString("hex");
@@ -32,54 +33,77 @@ export async function rotateVerificationToken(userId: string): Promise<string> {
   return token;
 }
 
-export type RegisterWithPasswordInput = {
+export type RegisterEmailInput = {
   email: string;
-  password: string;
 };
 
-export type RegisterWithPasswordResult =
-  // A new account was created, or an existing unverified account's password was
-  // updated. In both cases a verification token was issued and must be emailed.
-  | { status: "created" | "resent"; userId: string; verificationToken: string }
-  // An account with this email already exists and is verified.
-  | { status: "exists" }
-  // An account exists but has no password (Google-only): the user should sign in
-  // with Google rather than register a password here.
+export type RegisterEmailResult =
+  // A brand-new account was created, OR an existing unverified account is being
+  // re-registered: in both cases a verification link should be sent, unless a
+  // recent resend is still within the throttle window (verificationToken null →
+  // send nothing). The caller emails the link and never signs the user in.
+  | { status: "verify"; verificationToken: string | null }
+  // An account with this email already exists and is verified. The caller emails
+  // a "you already have an account, sign in" notice (only the real owner sees it).
+  | { status: "already_registered" }
+  // A verified account with no password (Google sign-in). The caller emails a
+  // "sign in with Google" notice.
   | { status: "google_only" };
 
-// Creates a password-based account (or refreshes the password on an existing
-// unverified one) and issues an email-verification token. Shared by the web
-// register action and the API /auth/register endpoint so the policy lives in
-// exactly one place. Does not send the email or sign the user in — the caller
-// owns those steps.
-export async function registerWithPassword({
+// Email-first registration. Creates the account row for a genuinely new email (no
+// password — that is set later at the verify step by the proven mailbox owner),
+// or resends verification for an existing unverified account, or reports an
+// existing verified account so the caller can email the right guidance. Shared by
+// the web register action and the API /auth/register endpoint so the policy lives
+// in exactly one place.
+//
+// Security: this NEVER stores a password and NEVER hands back a session. The
+// returned status is used only to choose which email to send server-side; every
+// caller returns the SAME neutral response regardless, so the response cannot
+// reveal whether the email is registered (no account-enumeration oracle). And
+// because no password is stored before the mailbox owner proves control, an
+// account pre-hijack is structurally impossible on this path.
+export async function registerEmail({
   email,
-  password,
-}: RegisterWithPasswordInput): Promise<RegisterWithPasswordResult> {
+}: RegisterEmailInput): Promise<RegisterEmailResult> {
   const existing = await db.user.findUnique({
     where: { email },
-    select: { id: true, emailVerified: true, credential: { select: { id: true } } },
+    select: {
+      id: true,
+      emailVerified: true,
+      credential: { select: { id: true } },
+      verificationTokens: {
+        where: { type: "EMAIL_VERIFICATION" },
+        orderBy: { createdAt: "desc" },
+        take: 1,
+        select: { createdAt: true },
+      },
+    },
   });
 
   if (existing) {
-    if (!existing.credential) return { status: "google_only" };
-    if (existing.emailVerified) return { status: "exists" };
+    if (existing.emailVerified) {
+      return existing.credential
+        ? { status: "already_registered" }
+        : { status: "google_only" };
+    }
 
-    // Unverified account: let the user reset the password and resend the link.
-    const passwordHash = await bcrypt.hash(password, BCRYPT_ROUNDS);
-    await db.userCredential.update({
-      where: { userId: existing.id },
-      data: { passwordHash },
-    });
+    // Existing but unverified: resend the verification link, throttled.
+    const last = existing.verificationTokens[0];
+    if (last && Date.now() - last.createdAt.getTime() < RESEND_THROTTLE_MS) {
+      return { status: "verify", verificationToken: null };
+    }
     const verificationToken = await rotateVerificationToken(existing.id);
-    return { status: "resent", userId: existing.id, verificationToken };
+    return { status: "verify", verificationToken };
   }
 
-  const passwordHash = await bcrypt.hash(password, BCRYPT_ROUNDS);
+  // Brand-new email: create the account with no credential. The password is set
+  // at the verify step (see the verify-email route), so a caller who never owned
+  // this mailbox can never end up controlling a password on it.
   const user = await db.user.create({
-    data: { email, credential: { create: { passwordHash } } },
+    data: { email },
     select: { id: true },
   });
   const verificationToken = await rotateVerificationToken(user.id);
-  return { status: "created", userId: user.id, verificationToken };
+  return { status: "verify", verificationToken };
 }

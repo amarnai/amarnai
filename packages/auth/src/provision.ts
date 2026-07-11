@@ -2,6 +2,7 @@ import { db } from "@amarnai/db";
 import { GMAIL_READONLY_SCOPE } from "@amarnai/gmail";
 import { getOrCreateDefaultWorkspace } from "./workspace.js";
 import { storeGmailConnection, ProviderMismatchError } from "./gmail-connection.js";
+import { revokeAllRefreshTokensForUser } from "./refresh-token.js";
 
 export type ProvisionGoogleUserInput = {
   email: string;
@@ -40,9 +41,36 @@ export async function provisionGoogleUser(
 ): Promise<ProvisionGoogleUserResult> {
   const existing = await db.user.findUnique({
     where: { email: input.email },
-    select: { id: true },
+    select: { id: true, emailVerified: true, credential: { select: { id: true } } },
   });
   const isNew = existing === null;
+
+  // First-time verification via Google of an account that already carries a
+  // password credential set while it was still unverified. That password is
+  // untrusted: an unauthenticated caller may have planted it via /auth/register
+  // on an email they do not control. This Google grant is the first proof of
+  // mailbox ownership, but it does not vouch for a password set beforehand, so we
+  // invalidate the credential and revoke any API sessions it may have opened
+  // before the upsert flips emailVerified. This fires only on the null -> verified
+  // transition; a returning verified user's password (set via the authenticated
+  // reset flow) is never touched.
+  //
+  // Bump the session epoch and revoke tokens BEFORE deleting the credential so the
+  // step is retry-safe: the credential is what re-arms this guard, so if any of
+  // these writes fail and the caller retries, we re-enter (credential still
+  // present) and redo them. Deleting first would drop the guard, and a retry after
+  // a failed revoke/bump would skip invalidation entirely, leaving planted
+  // sessions alive. The epoch bump invalidates any stateless web JWT the planted
+  // credential may have opened (revokeAllRefreshTokensForUser only clears the API
+  // refresh tokens); re-incrementing on a retry is harmless (monotonic).
+  if (existing && existing.emailVerified === null && existing.credential !== null) {
+    await db.user.update({
+      where: { id: existing.id },
+      data: { sessionEpoch: { increment: 1 } },
+    });
+    await revokeAllRefreshTokensForUser(existing.id);
+    await db.userCredential.deleteMany({ where: { userId: existing.id } });
+  }
 
   const user = await db.user.upsert({
     where: { email: input.email },

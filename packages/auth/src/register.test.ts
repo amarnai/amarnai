@@ -3,93 +3,105 @@ import { vi, describe, it, expect, beforeEach } from "vitest";
 vi.mock("@amarnai/db", () => ({
   db: {
     user: { findUnique: vi.fn(), create: vi.fn() },
-    userCredential: { update: vi.fn() },
     verificationToken: { deleteMany: vi.fn(), create: vi.fn() },
   },
 }));
 
 import { db } from "@amarnai/db";
-import { registerWithPassword, rotateVerificationToken } from "./register.js";
+import { registerEmail, rotateVerificationToken } from "./register.js";
 
 beforeEach(() => {
   vi.clearAllMocks();
 });
 
-describe("registerWithPassword", () => {
-  it("creates a new account and issues a verification token", async () => {
+describe("registerEmail", () => {
+  it("creates a brand-new account with NO credential and issues a verification token", async () => {
     vi.mocked(db.user.findUnique).mockResolvedValue(null);
     vi.mocked(db.user.create).mockResolvedValue({ id: "user-1" } as never);
 
-    const result = await registerWithPassword({ email: "new@b.com", password: "password123" });
+    const result = await registerEmail({ email: "new@b.com" });
 
-    expect(result).toEqual({
-      status: "created",
-      userId: "user-1",
-      verificationToken: expect.any(String),
+    expect(result).toEqual({ status: "verify", verificationToken: expect.any(String) });
+    // Email-first: the account row is created without a password credential.
+    expect(db.user.create).toHaveBeenCalledWith({
+      data: { email: "new@b.com" },
+      select: { id: true },
     });
-    expect(db.user.create).toHaveBeenCalledWith(
-      expect.objectContaining({
-        data: expect.objectContaining({
-          email: "new@b.com",
-          credential: { create: { passwordHash: expect.any(String) } },
-        }),
-      })
-    );
-    // The stored hash is bcrypt, never the raw password.
-    const createArgs = vi.mocked(db.user.create).mock.calls[0]![0] as {
-      data: { credential: { create: { passwordHash: string } } };
-    };
-    expect(createArgs.data.credential.create.passwordHash).not.toBe("password123");
+    const createArgs = vi.mocked(db.user.create).mock.calls[0]![0] as { data: Record<string, unknown> };
+    expect(createArgs.data).not.toHaveProperty("credential");
+    expect(createArgs.data).not.toHaveProperty("password");
     expect(db.verificationToken.create).toHaveBeenCalledTimes(1);
   });
 
-  it("rejects a Google-only account (no password set)", async () => {
+  it("reports an existing verified password account as already_registered (no email leak in status)", async () => {
+    vi.mocked(db.user.findUnique).mockResolvedValue({
+      id: "user-1",
+      emailVerified: new Date(),
+      credential: { id: "cred-1" },
+      verificationTokens: [],
+    } as never);
+
+    const result = await registerEmail({ email: "v@b.com" });
+
+    expect(result).toEqual({ status: "already_registered" });
+    expect(db.user.create).not.toHaveBeenCalled();
+    expect(db.verificationToken.create).not.toHaveBeenCalled();
+  });
+
+  it("reports an existing verified Google account as google_only", async () => {
     vi.mocked(db.user.findUnique).mockResolvedValue({
       id: "user-1",
       emailVerified: new Date(),
       credential: null,
+      verificationTokens: [],
     } as never);
 
-    const result = await registerWithPassword({ email: "g@b.com", password: "password123" });
+    const result = await registerEmail({ email: "g@b.com" });
 
     expect(result).toEqual({ status: "google_only" });
-    expect(db.user.create).not.toHaveBeenCalled();
-    expect(db.userCredential.update).not.toHaveBeenCalled();
-  });
-
-  it("reports an already-verified account as existing", async () => {
-    vi.mocked(db.user.findUnique).mockResolvedValue({
-      id: "user-1",
-      emailVerified: new Date(),
-      credential: { id: "cred-1" },
-    } as never);
-
-    const result = await registerWithPassword({ email: "v@b.com", password: "password123" });
-
-    expect(result).toEqual({ status: "exists" });
-    expect(db.userCredential.update).not.toHaveBeenCalled();
     expect(db.verificationToken.create).not.toHaveBeenCalled();
   });
 
-  it("resets the password and re-issues verification for an unverified account", async () => {
+  it("resends verification for an existing unverified account", async () => {
     vi.mocked(db.user.findUnique).mockResolvedValue({
       id: "user-1",
       emailVerified: null,
-      credential: { id: "cred-1" },
+      credential: null,
+      verificationTokens: [], // no recent resend, so not throttled
     } as never);
 
-    const result = await registerWithPassword({ email: "u@b.com", password: "password123" });
+    const result = await registerEmail({ email: "u@b.com" });
 
-    expect(result).toEqual({
-      status: "resent",
-      userId: "user-1",
-      verificationToken: expect.any(String),
-    });
-    expect(db.userCredential.update).toHaveBeenCalledWith(
-      expect.objectContaining({ where: { userId: "user-1" } })
-    );
+    expect(result).toEqual({ status: "verify", verificationToken: expect.any(String) });
     expect(db.user.create).not.toHaveBeenCalled();
     expect(db.verificationToken.create).toHaveBeenCalledTimes(1);
+  });
+
+  it("throttles a rapid re-register of an unverified account (no email sent)", async () => {
+    vi.mocked(db.user.findUnique).mockResolvedValue({
+      id: "user-1",
+      emailVerified: null,
+      credential: null,
+      verificationTokens: [{ createdAt: new Date() }],
+    } as never);
+
+    const result = await registerEmail({ email: "u@b.com" });
+
+    expect(result).toEqual({ status: "verify", verificationToken: null });
+    // Throttled: no new token issued, so no email is sent.
+    expect(db.verificationToken.create).not.toHaveBeenCalled();
+  });
+
+  it("never stores a password (no bcrypt path) regardless of account state", async () => {
+    // A password is never part of registration, so there is no per-state bcrypt
+    // cost — the account-existence timing oracle is gone by construction.
+    vi.mocked(db.user.findUnique).mockResolvedValue(null);
+    vi.mocked(db.user.create).mockResolvedValue({ id: "user-1" } as never);
+
+    await registerEmail({ email: "new@b.com" });
+
+    // db has no userCredential in the mock at all; a hash/create would throw.
+    expect(db.user.create).toHaveBeenCalledTimes(1);
   });
 });
 

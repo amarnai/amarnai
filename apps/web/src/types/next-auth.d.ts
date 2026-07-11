@@ -13,5 +13,8 @@ declare module "next-auth/jwt" {
   interface JWT {
     userId?: string;
     isEmailVerified?: boolean;
+    // Monotonic session-invalidation counter stamped at issue time; a token whose
+    // epoch is below the account's current sessionEpoch is treated as signed out.
+    sessionEpoch?: number;
   }
 }

@@ -79,12 +79,26 @@ export const { handlers, auth, signIn, signOut, unstable_update } = NextAuth({
       if (needsLookup && token.email) {
         const dbUser = await db.user.findUnique({
           where: { email: token.email },
-          select: { id: true, name: true, emailVerified: true },
+          select: { id: true, name: true, emailVerified: true, sessionEpoch: true },
         });
         if (dbUser) {
+          // Stateless-session invalidation: a token minted before the account's
+          // sessionEpoch was bumped (e.g. a planted pre-verification credential
+          // was invalidated when the real owner verified the mailbox) is no longer
+          // trusted. Drop it so the holder is treated as signed out. A token
+          // predating this field (undefined epoch) is stamped, not invalidated.
+          if (
+            typeof token.sessionEpoch === "number" &&
+            token.sessionEpoch < dbUser.sessionEpoch
+          ) {
+            delete token.userId;
+            delete token.isEmailVerified;
+            return token;
+          }
           token.userId = dbUser.id;
           token.name = dbUser.name;
           token.isEmailVerified = dbUser.emailVerified !== null;
+          token.sessionEpoch = dbUser.sessionEpoch;
         } else {
           delete token.userId;
           delete token.isEmailVerified;

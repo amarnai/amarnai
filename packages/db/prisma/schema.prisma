@@ -201,6 +201,14 @@ model User {
   trialUsed     Boolean @default(false)
   isSystemAdmin Boolean @default(false)
 
+  // Monotonic session-invalidation counter. Stamped into every issued web JWT and
+  // re-checked on refresh: bumping this invalidates all existing stateless
+  // sessions at once (there is no server-side session store to revoke). Bumped
+  // when an untrusted pre-verification password credential is invalidated, so an
+  // attacker who planted a password (and opened a session) on someone else's
+  // email cannot retain access once the real owner verifies the mailbox.
+  sessionEpoch Int @default(0)
+
   // Weekly lifecycle reminder email. `lifecycleEmailsEnabled` is the opt-out
   // flag (flipped by the unsubscribe link or the in-app toggle).
   // `lifecycleEmailSentAt` is the last send, used by the worker's daily tick to

@@ -2,7 +2,6 @@
 
 import { useActionState } from "react";
 import Link from "next/link";
-import { PASSWORD_MIN_LENGTH } from "@amarnai/shared";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
@@ -19,6 +18,31 @@ export function SignUpForm({
 }) {
   const { _ } = useLingui();
   const [state, action, pending] = useActionState(registerAction, null);
+
+  // Success is intentionally identical for every account state (new, already
+  // registered, or Google-only): the response must not reveal whether the email
+  // is registered. Whatever the case, the right next step arrives by email.
+  if (state?.success) {
+    return (
+      <AuthShell title={_( msg`Check your email`)}>
+        <p className="auth-success">
+          <Trans>
+            If you can create an account with that email, we've sent a link to
+            finish setting it up. Follow it to choose a password and sign in.
+          </Trans>
+        </p>
+        <p className="auth-switch">
+          <Trans>
+            Didn't get an email? Check your spam folder, or{" "}
+            <Link href="/sign-up" className="auth-link">
+              try again
+            </Link>
+            .
+          </Trans>
+        </p>
+      </AuthShell>
+    );
+  }
 
   return (
     <AuthShell title={_( msg`Create your account`)}>
@@ -43,26 +67,13 @@ export function SignUpForm({
             defaultValue={defaultEmail}
             className="form-input"
           />
-        </div>
-
-        <div className="form-group">
-          <label className="form-label" htmlFor="password">
-            <Trans>Password</Trans>
-          </label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            autoComplete="new-password"
-            required
-            minLength={PASSWORD_MIN_LENGTH}
-            className="form-input"
-          />
-          <p className="auth-hint"><Trans>At least {PASSWORD_MIN_LENGTH} characters</Trans></p>
+          <p className="auth-hint">
+            <Trans>We'll email you a link to set your password and finish signing up.</Trans>
+          </p>
         </div>
 
         <button type="submit" disabled={pending} className="btn-primary auth-submit">
-          {pending ? _( msg`Creating account…`) : _( msg`Create account`)}
+          {pending ? _( msg`Sending…`) : _( msg`Continue with email`)}
         </button>
       </form>
 

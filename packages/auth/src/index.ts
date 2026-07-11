@@ -9,9 +9,9 @@ export {
 export type { IssuedRefreshToken } from "./refresh-token.js";
 export { verifyCredentials, checkUserPassword } from "./credentials.js";
 export type { PasswordCheck } from "./credentials.js";
-export { registerWithPassword, rotateVerificationToken } from "./register.js";
-export type { RegisterWithPasswordInput, RegisterWithPasswordResult } from "./register.js";
-export { createPasswordResetToken } from "./password-reset.js";
+export { registerEmail, rotateVerificationToken } from "./register.js";
+export type { RegisterEmailInput, RegisterEmailResult } from "./register.js";
+export { createPasswordResetToken, issuePasswordResetToken } from "./password-reset.js";
 export { getOrCreateDefaultWorkspace } from "./workspace.js";
 export { provisionGoogleUser } from "./provision.js";
 export type { ProvisionGoogleUserInput, ProvisionGoogleUserResult } from "./provision.js";

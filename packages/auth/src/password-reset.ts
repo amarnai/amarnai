@@ -13,6 +13,29 @@ function generateToken(): string {
   return crypto.randomBytes(32).toString("hex");
 }
 
+// Replaces any outstanding password-reset token for the user with a fresh one and
+// returns the raw token. Unconditional (no existence/throttle checks) — callers
+// that have already decided a reset is warranted use this directly. The email
+// verification flow uses it to hand a proven mailbox owner a set-password link
+// after an untrusted pre-verification credential is invalidated.
+export async function issuePasswordResetToken(userId: string): Promise<string> {
+  await db.verificationToken.deleteMany({
+    where: { userId, type: "PASSWORD_RESET" },
+  });
+
+  const token = generateToken();
+  await db.verificationToken.create({
+    data: {
+      userId,
+      token,
+      type: "PASSWORD_RESET",
+      expiresAt: new Date(Date.now() + RESET_TTL_MS),
+    },
+  });
+
+  return token;
+}
+
 // Issues a password-reset token for the account with this email, or returns null
 // when no token should be sent. Shared by the web forgot-password action and the
 // API /auth/forgot-password endpoint so the policy lives in exactly one place.
@@ -46,19 +69,5 @@ export async function createPasswordResetToken(email: string): Promise<string | 
     return null;
   }
 
-  await db.verificationToken.deleteMany({
-    where: { userId: user.id, type: "PASSWORD_RESET" },
-  });
-
-  const token = generateToken();
-  await db.verificationToken.create({
-    data: {
-      userId: user.id,
-      token,
-      type: "PASSWORD_RESET",
-      expiresAt: new Date(Date.now() + RESET_TTL_MS),
-    },
-  });
-
-  return token;
+  return issuePasswordResetToken(user.id);
 }
