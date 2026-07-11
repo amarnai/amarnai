@@ -45,7 +45,7 @@ All configuration is done through environment variables in a single `.env` file 
 | Variable                    | Required | Description                                                                                                   |
 |-----------------------------|----------|---------------------------------------------------------------------------------------------------------------|
 | `GMAIL_OAUTH_CALLBACK_URL`  | Yes      | Redirect URI registered in Google Cloud Console (e.g. `https://mail.yourdomain.com/api/gmail/callback`)       |
-| `GMAIL_TOKEN_ENCRYPTION_KEY`| Yes      | 64-char hex string (32 bytes) for AES-256-GCM encryption of stored refresh tokens. `openssl rand -hex 32`    |
+| `TOKEN_ENCRYPTION_KEY`      | Yes      | 64-char hex string (32 bytes) for AES-256-GCM encryption of stored OAuth refresh tokens (Gmail + Outlook share it). No fallback; startup fails without it. `openssl rand -hex 32` |
 
 ### Gmail push (optional, real-time)
 

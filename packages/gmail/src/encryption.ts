@@ -1,12 +1,19 @@
 import crypto from "crypto";
+import { config } from "@amarnai/config";
 
+// AES-256-GCM key for stored OAuth refresh tokens. Provider-neutral: Gmail and
+// Outlook refresh tokens are encrypted/decrypted with this one key. The key is
+// sourced from the validated config (TOKEN_ENCRYPTION_KEY), which fails startup
+// in production when it is missing. We fail closed here too: never encrypt or
+// decrypt under a derived or default key.
 function getKey(): Buffer {
-  const hex = process.env["GMAIL_TOKEN_ENCRYPTION_KEY"] ?? "";
-  if (hex.length === 64) {
-    return Buffer.from(hex, "hex");
+  const hex = config.tokenEncryptionKey;
+  if (!/^[0-9a-fA-F]{64}$/.test(hex)) {
+    throw new Error(
+      "TOKEN_ENCRYPTION_KEY is missing or invalid (expected 64 hex characters)",
+    );
   }
-  const secret = process.env["AUTH_SECRET"] ?? "amarnai-fallback";
-  return crypto.createHash("sha256").update("gmail-token:" + secret).digest();
+  return Buffer.from(hex, "hex");
 }
 
 export function encrypt(plaintext: string): string {

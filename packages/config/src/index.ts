@@ -2,6 +2,15 @@ import { z } from 'zod';
 
 const boolStr = z.string().transform((v) => v === 'true').default('false');
 
+// A 32-byte AES key encoded as exactly 64 hexadecimal characters.
+const TOKEN_ENCRYPTION_KEY_RE = /^[0-9a-fA-F]{64}$/;
+
+// Fixed dev/test-only token-encryption key. Only ever reached outside
+// production (validateEnv throws before `config` is built when a real key is
+// missing in production), so it can never protect real user tokens. The
+// obvious "c0de" pattern makes it recognisable as a placeholder in logs/dumps.
+const DEV_TOKEN_ENCRYPTION_KEY = 'a3f1c0de'.repeat(8);
+
 const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
   API_PORT: z.string().default('3001'),
@@ -60,6 +69,14 @@ const envSchema = z.object({
   // Distinct from INTERNAL_API_SECRET (service-to-service) and AUTH_SECRET
   // (next-auth web session). Generate with: openssl rand -hex 32
   AUTH_JWT_SECRET: z.string().optional(),
+  // AES-256-GCM key used to encrypt stored OAuth refresh tokens at rest, for
+  // EVERY provider (Gmail and Outlook share one key). 64 hex chars = 32 bytes.
+  // Generate with: openssl rand -hex 32. Required in production; there is NO
+  // fallback — a missing/invalid key fails startup (see validateEnv) rather than
+  // encrypting under a source-derivable default. Outside production a fixed
+  // dev-only default is used so local dev/tests work unconfigured; that default
+  // is unreachable in production because the gate below throws first.
+  TOKEN_ENCRYPTION_KEY: z.string().optional(),
   // Set to 'true' to turn off per-IP rate limiting on the /auth/* endpoints.
   // Intended only for self-host setups that throttle at the proxy layer.
   AUTH_RATE_LIMIT_DISABLED: boolStr,
@@ -128,6 +145,20 @@ function validateEnv(raw: NodeJS.ProcessEnv) {
 
   if (env.NODE_ENV === 'production' && !isBuildPhase && !env.AUTH_JWT_SECRET) {
     throw new Error('AUTH_JWT_SECRET is required in production');
+  }
+
+  // Fail closed on the token-encryption key: refuse to start in production
+  // unless a real 64-hex key is configured. Never fall back to a derived or
+  // default key — that would encrypt every provider refresh token under a
+  // source-derivable constant.
+  if (
+    env.NODE_ENV === 'production' &&
+    !isBuildPhase &&
+    !TOKEN_ENCRYPTION_KEY_RE.test(env.TOKEN_ENCRYPTION_KEY ?? '')
+  ) {
+    throw new Error(
+      'TOKEN_ENCRYPTION_KEY is required in production and must be 64 hex characters (generate with: openssl rand -hex 32)',
+    );
   }
 
   if (env.GMAIL_PUBSUB_TOPIC && !env.GMAIL_PUBSUB_WEBHOOK_SECRET) {
@@ -226,6 +257,13 @@ export const config = {
   },
   internalApiSecret: env.INTERNAL_API_SECRET ?? 'dev-internal-secret',
   authJwtSecret: env.AUTH_JWT_SECRET ?? 'dev-auth-jwt-secret',
+  // 64-hex AES-256-GCM key for stored OAuth refresh tokens (all providers). In
+  // production validateEnv guarantees a real key was supplied; the dev default
+  // is only reachable outside production.
+  // `||` (not `??`) so a blank `TOKEN_ENCRYPTION_KEY=` in a .env file falls back
+  // to the dev default outside production; in production an empty value is
+  // already rejected by the validateEnv gate above.
+  tokenEncryptionKey: env.TOKEN_ENCRYPTION_KEY || DEV_TOKEN_ENCRYPTION_KEY,
   authRateLimit: {
     disabled: env.AUTH_RATE_LIMIT_DISABLED,
   },

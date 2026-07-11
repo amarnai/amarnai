@@ -115,7 +115,7 @@ Also generate random secrets:
 ```bash
 openssl rand -base64 32   # paste as AUTH_SECRET
 openssl rand -hex 32      # paste as INTERNAL_API_SECRET
-openssl rand -hex 32      # paste as GMAIL_TOKEN_ENCRYPTION_KEY
+openssl rand -hex 32      # paste as TOKEN_ENCRYPTION_KEY
 ```
 
 ### Email auth (local dev)
@@ -200,7 +200,7 @@ Requires [`cloudflared`](https://developers.cloudflare.com/cloudflare-one/connec
 | Variable | Description |
 |----------|-------------|
 | `GMAIL_OAUTH_CALLBACK_URL` | Redirect URI registered in Google Cloud Console. Default: `http://localhost:3000/api/gmail/callback` |
-| `GMAIL_TOKEN_ENCRYPTION_KEY` | 64-char hex string (32 bytes) used to AES-256-GCM-encrypt stored refresh tokens. Generate with `openssl rand -hex 32`. Falls back to a key derived from `AUTH_SECRET` when unset — always set this explicitly in production. |
+| `TOKEN_ENCRYPTION_KEY` | 64-char hex string (32 bytes) used to AES-256-GCM-encrypt stored OAuth refresh tokens (Gmail and Outlook share it). Generate with `openssl rand -hex 32`. Required in production — there is no fallback, and startup fails without a valid 64-hex key. |
 | `GMAIL_PUBSUB_TOPIC` | Optional. Pub/Sub topic for real-time push notifications. Format: `projects/<project-id>/topics/<topic-name>`. See [Real-time sync](#real-time-sync-gmail-push-notifications). |
 | `GMAIL_PUBSUB_WEBHOOK_SECRET` | Optional. Secret token verified on incoming Pub/Sub push requests. Generate with `openssl rand -hex 32`. Required when `GMAIL_PUBSUB_TOPIC` is set. |
 
@@ -273,7 +273,7 @@ cp .env.selfhost.example .env
 
 # 3. Fill in every value marked <required>:
 #    AUTH_SECRET, AUTH_GOOGLE_ID, AUTH_GOOGLE_SECRET, INTERNAL_API_SECRET,
-#    GMAIL_TOKEN_ENCRYPTION_KEY, FRONTIER_LLM_API_KEY, FRONTIER_EMBEDDING_API_KEY,
+#    TOKEN_ENCRYPTION_KEY, FRONTIER_LLM_API_KEY, FRONTIER_EMBEDDING_API_KEY,
 #    SMTP_HOST / SMTP_USER / SMTP_PASS, EMAIL_FROM
 #    Update AUTH_URL, CORS_ORIGIN, and GMAIL_OAUTH_CALLBACK_URL to your domain.
 
@@ -321,7 +321,7 @@ Update `AUTH_URL`, `CORS_ORIGIN`, and `GMAIL_OAUTH_CALLBACK_URL` in `.env` to ma
 cp .env.example .env
 
 # 2. Fill in secrets (see Authentication setup above):
-#    AUTH_SECRET, AUTH_GOOGLE_ID, AUTH_GOOGLE_SECRET, INTERNAL_API_SECRET, GMAIL_TOKEN_ENCRYPTION_KEY
+#    AUTH_SECRET, AUTH_GOOGLE_ID, AUTH_GOOGLE_SECRET, INTERNAL_API_SECRET, TOKEN_ENCRYPTION_KEY
 #    SMTP vars default to Mailpit (127.0.0.1:1025) — no changes needed for local email auth
 
 # 3. Start Postgres, Redis, and Mailpit
