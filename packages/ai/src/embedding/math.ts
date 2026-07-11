@@ -531,7 +531,12 @@ export function computeSubtreeScores(
       return rawSim;
     }
 
-    let maxChild = 0;
+    // Identity element for a max-fold is -Infinity, not 0. Seeding at 0 would
+    // floor a negative max-child up to 0, which under mean-centering (where ~half
+    // of centered similarities are negative) inflates the subtree score of any
+    // branch whose entire subtree is below the thread mean. children.length > 0
+    // here, so at least one real child score always replaces the seed.
+    let maxChild = -Infinity;
     for (const childId of children) {
       const s = dfs(childId);
       if (s > maxChild) maxChild = s;

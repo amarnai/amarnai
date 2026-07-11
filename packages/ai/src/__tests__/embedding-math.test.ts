@@ -924,6 +924,27 @@ describe("computeSubtreeScores", () => {
     const scores = computeSubtreeScores("solo", new Map([["solo", 0.5]]), [], 0.95);
     expect(scores.get("solo")).toBeCloseTo(0.5);
   });
+
+  // Mean-centering makes ~half of similarities negative. The spec is
+  // S(node) = max(rawSim, λ·max(S(child))); the identity element of the max over
+  // children is -Infinity, not 0. A parent whose entire subtree is below the
+  // thread mean must keep its true (negative) score, not be floored up to 0.
+  it("parent with an all-negative subtree keeps its true negative score (identity is -Inf, not 0)", () => {
+    const rawSims = new Map([["A", -0.03], ["A1", -0.05], ["A2", -0.08], ["B", 0.3]]);
+    const scores = computeSubtreeScores("root", rawSims, edges, 1.0);
+    // A = max(-0.03, 1·max(-0.05, -0.08)) = max(-0.03, -0.05) = -0.03, NOT 0.
+    expect(scores.get("A")).toBeCloseTo(-0.03);
+    // Leaves are already unfloored.
+    expect(scores.get("A1")).toBeCloseTo(-0.05);
+    // A positive sibling is unaffected, and the root takes the positive branch.
+    expect(scores.get("B")).toBeCloseTo(0.3);
+    expect(scores.get("root")).toBeCloseTo(0.3);
+  });
+
+  it("negative rawSim on a leaf is preserved, not clamped", () => {
+    const scores = computeSubtreeScores("solo", new Map([["solo", -0.2]]), [], 0.95);
+    expect(scores.get("solo")).toBeCloseTo(-0.2);
+  });
 });
 
 // ─── getStaleEmbeddableNodes ──────────────────────────────────────────────────
