@@ -7,6 +7,7 @@ import {
   decrypt,
   GmailAuthError as MailAuthError,
   GmailHistoryCursorExpiredError as MailCursorExpiredError,
+  GmailThreadNotFoundError as MailThreadNotFoundError,
 } from "@amarnai/gmail";
 import { normalizeGraphThread, type GraphMessage } from "./normalize-graph-thread.js";
 
@@ -266,9 +267,14 @@ export class GraphClient {
     }
 
     if (messages.length === 0) {
-      // Conversation removed since it was queued — matches the Gmail "not found"
-      // signal the sync/classify loops skip on.
-      throw new Error(`Graph conversation not found: ${conversationId}`);
+      // Graph has no per-conversation 404 on this path: a filter query for a
+      // deleted/unknown conversationId succeeds (200) with an empty result set,
+      // so an empty set IS the definitive not-found signal. (A direct
+      // GET /me/messages/{id} would 404 with ErrorItemNotFound, but we never
+      // fetch that way.) Typed so the sync/classify loops skip exactly this
+      // case; a 404 on the query itself means the mailbox/endpoint is broken,
+      // stays a generic error, and propagates as transient.
+      throw new MailThreadNotFoundError(`Graph conversation not found: ${conversationId}`);
     }
 
     return normalizeGraphThread(messages, conversationId);

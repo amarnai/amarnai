@@ -28,7 +28,7 @@ import {
   LLMRequestError,
 } from "@amarnai/ai";
 import type { EmbeddableNode, TriageMetadata, EmbeddingTriageResult, LlmCallMemoizer } from "@amarnai/ai";
-import { createMailProvider, MailAuthError } from "@amarnai/mail";
+import { createMailProvider, MailAuthError, MailThreadNotFoundError } from "@amarnai/mail";
 import {
   QUEUE_CLASSIFY_THREAD,
   type ClassifyThreadJobData,
@@ -270,9 +270,10 @@ export function createClassifyThreadWorker(): Worker {
         try {
           snapshot = await client.getThreadSnapshot(thread.providerThreadId);
         } catch (err) {
-          const msg = err instanceof Error ? err.message : String(err);
-          // Thread deleted from the provider after we enqueued the job — nothing to do.
-          if (msg.includes("not found")) return;
+          // Thread deleted from the provider after we enqueued the job — nothing
+          // to do. Only the typed not-found skips; transient errors (which may
+          // contain "not found" in their message) propagate so BullMQ retries.
+          if (err instanceof MailThreadNotFoundError) return;
           throw err;
         }
 

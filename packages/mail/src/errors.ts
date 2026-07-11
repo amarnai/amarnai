@@ -12,4 +12,5 @@ export {
   GmailAuthError as MailAuthError,
   GmailHistoryCursorExpiredError as MailCursorExpiredError,
   GmailThreadParseError as MailThreadParseError,
+  GmailThreadNotFoundError as MailThreadNotFoundError,
 } from "@amarnai/gmail";

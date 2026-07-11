@@ -5,7 +5,7 @@ import { createAIProvider, createEmbeddingProvider, sortThreadByEmbedding, snaps
 import type { EmbeddableNode } from "@amarnai/ai";
 import { getThreadSortLimit, getDraftQuotaResetsAt } from "@amarnai/shared";
 import { config } from "@amarnai/config";
-import { createMailProvider } from "@amarnai/mail";
+import { createMailProvider, MailThreadNotFoundError } from "@amarnai/mail";
 // GmailClient is retained only for the Gmail-specific dev endpoint below
 // (listRecentThreads is a debug convenience, not part of the neutral seam).
 import { GmailClient } from "../services/gmail-client.js";
@@ -108,8 +108,11 @@ gmailSort.post("/dev/workspaces/:workspaceId/gmail-sort-thread", async (c) => {
   try {
     snapshot = await client.getThreadSnapshot(gmailThreadId);
   } catch (err) {
-    const msg = err instanceof Error ? err.message : String(err);
-    if (msg.includes("not found")) return c.json({ error: "Gmail thread not found" }, 404);
+    // Only the typed provider not-found is a 404; transient errors (which may
+    // contain "not found" in their message) surface as 502 so the client retries.
+    if (err instanceof MailThreadNotFoundError) {
+      return c.json({ error: "Gmail thread not found" }, 404);
+    }
     return c.json({ error: "Failed to fetch Gmail thread" }, 502);
   }
 

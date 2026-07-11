@@ -11,6 +11,7 @@ import {
   createMailProvider,
   MailAuthError,
   MailCursorExpiredError,
+  MailThreadNotFoundError,
   type MailProvider,
 } from "@amarnai/mail";
 import type { GmailSyncSettings } from "@amarnai/shared";
@@ -478,11 +479,17 @@ export function createSyncInboxWorker(): Worker {
         try {
           rawSnapshot = await client.getThreadSnapshot(gmailThreadId);
         } catch (err) {
-          const msg = err instanceof Error ? err.message : String(err);
-          if (msg.includes("not found")) {
-            // Thread was deleted from the provider — skip without failing the job.
+          if (err instanceof MailThreadNotFoundError) {
+            // The provider definitively reports the thread as gone (Gmail 404 /
+            // empty Graph conversation) — skip it; advancing the cursor past a
+            // deleted thread is correct.
             continue;
           }
+          // Anything else (auth, 429, 5xx, network) is transient: propagate so
+          // the job fails BEFORE the cursor advance in step 6. BullMQ retries
+          // from the same historyId and re-diffs the thread — the change is
+          // never silently lost. Never classify by message text: a transient
+          // error can contain "not found".
           throw err;
         }
 

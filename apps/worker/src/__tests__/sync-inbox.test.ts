@@ -79,6 +79,7 @@ vi.mock("@amarnai/gmail", () => {
     GmailAuthError: class GmailAuthError extends Error {},
     GmailHistoryCursorExpiredError: class GmailHistoryCursorExpiredError extends Error {},
     GmailThreadParseError: class GmailThreadParseError extends Error {},
+    GmailThreadNotFoundError: class GmailThreadNotFoundError extends Error {},
   };
 });
 
@@ -109,7 +110,7 @@ vi.mock("../queues.js", () => ({
 
 import { db, resolveInboxQuota } from "@amarnai/db";
 import { Worker } from "bullmq";
-import { GmailHistoryCursorExpiredError } from "@amarnai/gmail";
+import { GmailHistoryCursorExpiredError, GmailThreadNotFoundError } from "@amarnai/gmail";
 import { classifyThreadQueue } from "../queues.js";
 import { DEDUP_CLASSIFY_UNROUTED } from "@amarnai/queue";
 import { createSyncInboxWorker } from "../jobs/sync-inbox.js";
@@ -844,5 +845,80 @@ describe("createSyncInboxWorker — first-run bootstrap", () => {
     expect(mockListRecentThreadIds).toHaveBeenCalledWith(50);
     expect(mockGetThread).toHaveBeenCalledWith("gmail-t1");
     expect(vi.mocked(db.emailThread.upsert)).toHaveBeenCalled();
+  });
+});
+
+// ─── Thread-fetch errors and cursor safety (finding #9) ───────────────────────
+//
+// Deleted threads are detected by TYPE (MailThreadNotFoundError), never by
+// matching "not found" in an error message. Everything else propagates so the
+// job fails before the step-6 cursor write and BullMQ retries from the same
+// historyId — a changed thread is never silently lost.
+
+describe("createSyncInboxWorker — thread-fetch errors and cursor safety", () => {
+  /** The step-6 cursor write: the only providerSyncState.update carrying historyId. */
+  function cursorAdvance() {
+    return vi.mocked(db.providerSyncState.update).mock.calls.find(
+      (c) => (c[0] as { data: { historyId?: string } }).data?.historyId !== undefined
+    );
+  }
+
+  it("propagates a transient error whose message contains 'not found' instead of swallowing it, leaving the cursor untouched", async () => {
+    // Not a provider 404 — e.g. a gateway/proxy error that happens to say "not found".
+    mockGetThread.mockRejectedValue(new Error("upstream host not found (transient DNS failure)"));
+
+    createSyncInboxWorker();
+    const processor = getProcessor();
+    await expect(processor(makeJob({ workspaceId: WS_ID }))).rejects.toThrow(
+      /upstream host not found/
+    );
+
+    // No cursor advance and no classify enqueue: BullMQ retries from the same
+    // historyId, so the changed thread is re-discovered instead of lost.
+    expect(cursorAdvance()).toBeUndefined();
+    expect(classifyThreadQueue.addBulk).not.toHaveBeenCalled();
+  });
+
+  it("skips a thread the provider definitively reports as gone (typed not-found) and still advances the cursor", async () => {
+    mockListHistory.mockResolvedValue({
+      changedThreadIds: ["gmail-gone", "gmail-t2"],
+      newCursor: "hist-2",
+    });
+    mockGetThread.mockImplementation((id: string) =>
+      id === "gmail-gone"
+        ? Promise.reject(new GmailThreadNotFoundError("Gmail thread not found: gmail-gone"))
+        : Promise.resolve({ id })
+    );
+
+    createSyncInboxWorker();
+    const processor = getProcessor();
+    await expect(processor(makeJob({ workspaceId: WS_ID }))).resolves.toBeUndefined();
+
+    // Only the surviving thread was upserted; advancing past a deleted thread is correct.
+    expect(vi.mocked(db.emailThread.upsert)).toHaveBeenCalledOnce();
+    const advance = cursorAdvance();
+    expect(advance).toBeDefined();
+    expect((advance![0] as { data: { historyId: string } }).data.historyId).toBe("hist-2");
+  });
+
+  it("does not advance the cursor when a transient error occurs mid-batch", async () => {
+    mockListHistory.mockResolvedValue({
+      changedThreadIds: ["gmail-t1", "gmail-t2"],
+      newCursor: "hist-2",
+    });
+    mockGetThread.mockImplementation((id: string) =>
+      id === "gmail-t2"
+        ? Promise.reject(new Error("Gmail thread fetch failed: 503"))
+        : Promise.resolve({ id })
+    );
+
+    createSyncInboxWorker();
+    const processor = getProcessor();
+    await expect(processor(makeJob({ workspaceId: WS_ID }))).rejects.toThrow(/503/);
+
+    // The first thread was processed (the retry re-diffs it idempotently), but
+    // the cursor stayed put so the failed thread is re-attempted.
+    expect(vi.mocked(db.emailThread.upsert)).toHaveBeenCalledOnce();
+    expect(cursorAdvance()).toBeUndefined();
   });
 });

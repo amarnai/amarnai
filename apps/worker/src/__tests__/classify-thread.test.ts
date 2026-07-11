@@ -107,6 +107,7 @@ vi.mock("@amarnai/gmail", () => ({
   GmailAuthError: class GmailAuthError extends Error {},
   GmailHistoryCursorExpiredError: class GmailHistoryCursorExpiredError extends Error {},
   GmailThreadParseError: class GmailThreadParseError extends Error {},
+  GmailThreadNotFoundError: class GmailThreadNotFoundError extends Error {},
   // The worker builds the client via createMailProvider (real), which constructs
   // this mocked GmailClient. getThreadSnapshot folds fetch + normalize: it awaits
   // the raw fetch (mockGetThread — so error tests still drive rejections) and

@@ -55,6 +55,22 @@ export class GmailThreadParseError extends Error {
   }
 }
 
+/**
+ * Thrown by {@link GmailClient.getThreadSnapshot} when the provider definitively
+ * reports the requested thread as gone (HTTP 404 on that thread). This is the
+ * ONLY signal callers may treat as "thread deleted — skip it"; auth, rate-limit,
+ * 5xx, and network failures are transient and must propagate so the caller
+ * retries instead of silently losing the thread. Never detect deletion by
+ * matching "not found" in an error message — a transient error can contain
+ * that substring.
+ */
+export class GmailThreadNotFoundError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "GmailThreadNotFoundError";
+  }
+}
+
 const GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token";
 const GOOGLE_REVOKE_URL = "https://oauth2.googleapis.com/revoke";
 const GMAIL_PROFILE_URL = "https://gmail.googleapis.com/gmail/v1/users/me/profile";
@@ -468,7 +484,7 @@ export class GmailClient {
     const res = await fetch(url, {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
-    if (res.status === 404) throw new Error(`Gmail thread not found: ${threadId}`);
+    if (res.status === 404) throw new GmailThreadNotFoundError(`Gmail thread not found: ${threadId}`);
     if (!res.ok) throw new Error(`Gmail thread fetch failed: ${res.status}`);
     return res.json();
   }

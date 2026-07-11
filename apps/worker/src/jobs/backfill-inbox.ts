@@ -14,6 +14,7 @@ import { config } from "@amarnai/config";
 import {
   createMailProvider,
   MailAuthError,
+  MailThreadNotFoundError,
   MailThreadParseError,
   type MailThreadMeta,
 } from "@amarnai/mail";
@@ -69,17 +70,18 @@ class SkippableThreadError extends Error {
 }
 
 /**
- * True when a getThread failure is permanent for that single thread — a 404 /
- * "not found" (deleted) or a 400 (bad request). Auth, rate-limit (429), server
- * (5xx) and network errors are transient or systemic and must propagate so the
- * run retries rather than silently skipping threads.
+ * True when a getThread failure is permanent for that single thread — the typed
+ * provider not-found (deleted) or a 400 (bad request). Auth, rate-limit (429),
+ * server (5xx) and network errors are transient or systemic and must propagate
+ * so the run retries rather than silently skipping threads. Deletion is
+ * detected by type only, never by matching "not found" in a message — a
+ * transient error can contain that substring.
  */
 function isPermanentThreadFetchError(err: unknown): boolean {
+  if (err instanceof MailThreadNotFoundError) return true;
   if (err instanceof MailAuthError) return false;
   const msg = err instanceof Error ? err.message : String(err);
-  if (msg.includes("not found")) return true;
-  const status = Number(msg.match(/fetch failed: (\d+)/)?.[1]);
-  return status === 400 || status === 404;
+  return Number(msg.match(/fetch failed: (\d+)/)?.[1]) === 400;
 }
 
 /**

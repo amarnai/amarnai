@@ -102,6 +102,7 @@ vi.mock("@amarnai/gmail", () => {
     },
     GmailHistoryCursorExpiredError: class GmailHistoryCursorExpiredError extends Error {},
     GmailThreadParseError,
+    GmailThreadNotFoundError: class GmailThreadNotFoundError extends Error {},
     GmailClient: vi.fn().mockImplementation(() => ({
       listThreadsPage: mockListThreadsPage,
       getThreadSnapshot: async (id: string) => {

@@ -7,10 +7,15 @@ vi.mock("@amarnai/gmail", () => ({
   decrypt: (v: string) => v,
   GmailAuthError: class GmailAuthError extends Error {},
   GmailHistoryCursorExpiredError: class GmailHistoryCursorExpiredError extends Error {},
+  GmailThreadNotFoundError: class GmailThreadNotFoundError extends Error {},
 }));
 
 import { GraphClient } from "./graph-client.js";
-import { GmailAuthError, GmailHistoryCursorExpiredError } from "@amarnai/gmail";
+import {
+  GmailAuthError,
+  GmailHistoryCursorExpiredError,
+  GmailThreadNotFoundError,
+} from "@amarnai/gmail";
 
 // ─── fetch mock plumbing ──────────────────────────────────────────────────────
 
@@ -193,9 +198,22 @@ describe("GraphClient.getThreadSnapshot", () => {
     expect(snap.webLink).toBe("wl-1");
   });
 
-  it("throws a not-found error when the conversation has no messages", async () => {
+  it("maps an empty conversation (Graph's definitive missing-item shape) to the typed MailThreadNotFoundError", async () => {
+    // A filter query for a deleted/unknown conversationId returns 200 with an
+    // empty value array — Graph never 404s per-conversation on this path.
     routeGraph(() => jsonResponse({ value: [] }));
-    await expect(client().getThreadSnapshot("gone")).rejects.toThrow(/not found/);
+    await expect(client().getThreadSnapshot("gone")).rejects.toBeInstanceOf(
+      GmailThreadNotFoundError,
+    );
+  });
+
+  it("does NOT map a 404 on the messages query itself to the typed not-found (mailbox-level failure, transient)", async () => {
+    routeGraph(() =>
+      jsonResponse({ error: { code: "MailboxNotEnabledForRESTAPI" } }, { status: 404 }),
+    );
+    const err = await client().getThreadSnapshot("conv-1").catch((e: unknown) => e);
+    expect(err).toBeInstanceOf(Error);
+    expect(err).not.toBeInstanceOf(GmailThreadNotFoundError);
   });
 });
 

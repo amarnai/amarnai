@@ -40,6 +40,7 @@ vi.mock("@amarnai/gmail", () => ({
   GmailAuthError: class GmailAuthError extends Error {},
   GmailHistoryCursorExpiredError: class GmailHistoryCursorExpiredError extends Error {},
   GmailThreadParseError: class GmailThreadParseError extends Error {},
+  GmailThreadNotFoundError: class GmailThreadNotFoundError extends Error {},
   revokeGoogleToken: vi.fn(),
   normalizeGmailThread: vi.fn(),
   encrypt: vi.fn(),
@@ -73,7 +74,7 @@ vi.mock("@amarnai/ai", () => ({
 
 import app from "../app.js";
 import { db, resolveInboxQuota, recordMeterUsage } from "@amarnai/db";
-import { GmailClient } from "@amarnai/gmail";
+import { GmailClient, GmailThreadNotFoundError } from "@amarnai/gmail";
 
 const WS_ID = "ws-1";
 
@@ -331,10 +332,12 @@ describe("POST /dev/workspaces/:workspaceId/gmail-sort-thread", () => {
     expect(res.status).toBe(400);
   });
 
-  it("returns 404 when Gmail API says thread not found", async () => {
+  it("returns 404 when Gmail reports the thread as gone (typed not-found)", async () => {
     // GmailClient is constructed fresh per request — set up mock after clearing
     vi.mocked(GmailClient).mockImplementationOnce(() => ({
-      getThreadSnapshot: vi.fn().mockRejectedValue(new Error("Gmail thread not found: xyz")),
+      getThreadSnapshot: vi
+        .fn()
+        .mockRejectedValue(new GmailThreadNotFoundError("Gmail thread not found: xyz")),
       listRecentThreads: vi.fn(),
     }) as never);
 
@@ -345,6 +348,18 @@ describe("POST /dev/workspaces/:workspaceId/gmail-sort-thread", () => {
   it("returns 502 when Gmail API fails with a non-404 error", async () => {
     vi.mocked(GmailClient).mockImplementationOnce(() => ({
       getThreadSnapshot: vi.fn().mockRejectedValue(new Error("Gmail thread fetch failed: 403")),
+      listRecentThreads: vi.fn(),
+    }) as never);
+
+    const res = await postSort();
+    expect(res.status).toBe(502);
+  });
+
+  it("returns 502 (not 404) for a transient error whose message contains 'not found'", async () => {
+    vi.mocked(GmailClient).mockImplementationOnce(() => ({
+      getThreadSnapshot: vi
+        .fn()
+        .mockRejectedValue(new Error("upstream host not found (transient DNS failure)")),
       listRecentThreads: vi.fn(),
     }) as never);
 

@@ -5,7 +5,12 @@ vi.mock("./encryption.js", () => ({
   encrypt: vi.fn().mockReturnValue("encrypted:token:value"),
 }));
 
-import { revokeGoogleToken, GmailClient, GmailAuthError } from "./gmail-client.js";
+import {
+  revokeGoogleToken,
+  GmailClient,
+  GmailAuthError,
+  GmailThreadNotFoundError,
+} from "./gmail-client.js";
 import { decrypt } from "./encryption.js";
 
 const REVOKE_URL = "https://oauth2.googleapis.com/revoke";
@@ -211,5 +216,34 @@ describe("GmailClient.listThreadsPage", () => {
     await client.listThreadsPage({ afterMs: 1_700_000_000_000, pageSize: 100 });
 
     expect(listUrl().searchParams.get("q")).toBe("after:1700000000");
+  });
+});
+
+// ─── GmailClient.getThread — deleted-thread detection ─────────────────────────
+// A thread-specific 404 is the ONLY definitive "deleted" signal and maps to the
+// typed GmailThreadNotFoundError the sync/classify/backfill loops skip on. Every
+// other status stays a generic error so callers treat it as transient and retry.
+
+describe("GmailClient.getThread — not-found mapping", () => {
+  it("throws GmailThreadNotFoundError on a 404 for the requested thread", async () => {
+    mockFetch
+      .mockResolvedValueOnce(makeTokenResponse())
+      .mockResolvedValueOnce({ ok: false, status: 404 });
+
+    const client = new GmailClient("encrypted:refresh:token");
+    await expect(client.getThread("gone-thread")).rejects.toBeInstanceOf(
+      GmailThreadNotFoundError
+    );
+  });
+
+  it("throws a plain (transient) error on a 5xx, never the typed not-found", async () => {
+    mockFetch
+      .mockResolvedValueOnce(makeTokenResponse())
+      .mockResolvedValueOnce({ ok: false, status: 503 });
+
+    const client = new GmailClient("encrypted:refresh:token");
+    const err = await client.getThread("t-1").catch((e: unknown) => e);
+    expect(err).toBeInstanceOf(Error);
+    expect(err).not.toBeInstanceOf(GmailThreadNotFoundError);
   });
 });

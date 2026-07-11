@@ -43,6 +43,9 @@ export interface MailProvider {
   /**
    * Fetch a thread and normalize it to a {@link ThreadSnapshot}. Folds the raw
    * fetch and the per-provider normalizer so callers never touch provider JSON.
+   * Throws {@link MailThreadNotFoundError} when the provider definitively
+   * reports the thread as gone — the only error callers may skip on; every
+   * other failure is transient and must propagate.
    */
   getThreadSnapshot(threadId: string): Promise<ThreadSnapshot>;
 

@@ -6,6 +6,11 @@ export type {
   MailThreadPage,
   MailWatchResult,
 } from "./types.js";
-export { MailAuthError, MailCursorExpiredError, MailThreadParseError } from "./errors.js";
+export {
+  MailAuthError,
+  MailCursorExpiredError,
+  MailThreadParseError,
+  MailThreadNotFoundError,
+} from "./errors.js";
 export { createMailProvider } from "./create-mail-provider.js";
 export type { MailConnection } from "./create-mail-provider.js";
