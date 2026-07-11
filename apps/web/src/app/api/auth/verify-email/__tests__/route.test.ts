@@ -110,7 +110,9 @@ describe("GET /api/auth/verify-email", () => {
     expect(db.refreshToken.deleteMany).not.toHaveBeenCalled();
     expect(db.userCredential.deleteMany).not.toHaveBeenCalled();
     expect(issuePasswordResetToken).toHaveBeenCalledWith(USER_ID, expect.anything());
-    expect(sendPasswordResetEmail).toHaveBeenCalledWith("u@b.com", "reset-tok");
+    // No credential was invalidated, so NO unsolicited "reset password" email is
+    // sent — the user sets their first password via the redirect (token in URL).
+    expect(sendPasswordResetEmail).not.toHaveBeenCalled();
     expect(location(res)).toContain("/reset-password");
     expect(location(res)).toContain("token=reset-tok");
   });

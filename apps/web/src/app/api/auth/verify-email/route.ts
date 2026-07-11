@@ -16,14 +16,19 @@ class VerifyRaceLostError extends Error {}
 // mobile users (both verify via this link). A send failure must never affect
 // verification or the redirect.
 async function sendWelcomeEmailFor(userId: string): Promise<void> {
-  const user = await db.user.findUnique({
-    where: { id: userId },
-    select: { email: true, name: true },
-  });
-  if (user) {
-    await sendWelcomeEmail(user.email, user.name).catch((err) => {
-      console.error("[verify-email] Failed to send welcome email:", err);
+  // Fully self-contained best-effort: the DB lookup is inside the try too, so a
+  // transient error here can never propagate out of a post-commit caller and 500
+  // a request whose verification token is already consumed.
+  try {
+    const user = await db.user.findUnique({
+      where: { id: userId },
+      select: { email: true, name: true },
     });
+    if (user) {
+      await sendWelcomeEmail(user.email, user.name);
+    }
+  } catch (err) {
+    console.error("[verify-email] Failed to send welcome email:", err);
   }
 }
 
@@ -32,14 +37,18 @@ async function sendWelcomeEmailFor(userId: string): Promise<void> {
 // emailing it guarantees a durable recovery path if that tab is abandoned —
 // critical when a credential was just invalidated. Best-effort, fire-and-forget.
 async function sendSetPasswordEmailFor(userId: string, token: string): Promise<void> {
-  const user = await db.user.findUnique({
-    where: { id: userId },
-    select: { email: true },
-  });
-  if (user) {
-    await sendPasswordResetEmail(user.email, token).catch((err) => {
-      console.error("[verify-email] Failed to send set-password email:", err);
+  // Fully self-contained best-effort (DB lookup inside the try) so it can never
+  // 500 the post-commit path and block the redirect that also carries this token.
+  try {
+    const user = await db.user.findUnique({
+      where: { id: userId },
+      select: { email: true },
     });
+    if (user) {
+      await sendPasswordResetEmail(user.email, token);
+    }
+  } catch (err) {
+    console.error("[verify-email] Failed to send set-password email:", err);
   }
 }
 
@@ -141,7 +150,15 @@ export async function GET(req: NextRequest) {
       console.error("[verify-email] workspace:", err instanceof Error ? err.message : err)
     );
     await sendWelcomeEmailFor(record.userId);
-    await sendSetPasswordEmailFor(record.userId, resetToken);
+    // Proactively email the set-password link ONLY when we just invalidated an
+    // existing credential (legacy pre-verification password): that user's password
+    // stopped working and needs a durable way back in. A brand-new email-first
+    // account never had a password — it sets its first one via the redirect below,
+    // with forgot-password as the durable fallback — so sending an unsolicited
+    // "reset your password" email to every new signup was wrong and alarming.
+    if (credential) {
+      await sendSetPasswordEmailFor(record.userId, resetToken);
+    }
 
     // Route the now-proven owner to set their password, then sign in.
     const resetUrl = new URL("/reset-password", baseUrl);

@@ -55,12 +55,12 @@ export async function throttleOnce(key: string, windowSeconds: number): Promise<
   const store = getClient();
   if (store.status !== "ready") return true;
   try {
-    const count = await store.incr(key);
-    if (count === 1) {
-      await store.expire(key, windowSeconds);
-      return true;
-    }
-    return false;
+    // Atomic claim: SET only if absent, with the TTL applied in the same command.
+    // Unlike INCR-then-EXPIRE this cannot leave a key without an expiry (a lost
+    // EXPIRE there would suppress the recipient's notices forever). "OK" means we
+    // won the window and should proceed; null means a live claim already exists.
+    const res = await store.set(key, "1", "EX", windowSeconds, "NX");
+    return res === "OK";
   } catch {
     return true;
   }
