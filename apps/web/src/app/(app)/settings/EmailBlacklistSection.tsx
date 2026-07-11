@@ -4,11 +4,7 @@ import { useState, useTransition, useRef } from "react";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
-
-const API_BASE =
-  typeof window !== "undefined"
-    ? (process.env["NEXT_PUBLIC_API_URL"] ?? "http://localhost:3001")
-    : "http://localhost:3001";
+import { api } from "@/lib/api";
 
 type Props = {
   workspaceId: string;
@@ -43,16 +39,7 @@ export function EmailBlacklistSection({ workspaceId, initialEmails }: Props) {
 
     startTransition(async () => {
       try {
-        const res = await fetch(
-          `${API_BASE}/workspaces/${workspaceId}/gmail-sync-settings/blacklist`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email }),
-          }
-        );
-        if (!res.ok) throw new Error();
-        const updated = (await res.json()) as { blacklistedSenderEmails: string[] };
+        const updated = await api.addBlacklistedEmail(workspaceId, email);
         setEmails(updated.blacklistedSenderEmails);
       } catch {
         setEmails((prev) => prev.filter((e) => e !== email));
@@ -68,15 +55,11 @@ export function EmailBlacklistSection({ workspaceId, initialEmails }: Props) {
 
     startTransition(async () => {
       try {
-        const res = await fetch(
-          `${API_BASE}/workspaces/${workspaceId}/gmail-sync-settings/blacklist/${encodeURIComponent(email)}`,
-          { method: "DELETE" }
-        );
-        if (!res.ok) throw new Error();
-        const updated = (await res.json()) as { blacklistedSenderEmails: string[] };
+        const updated = await api.removeBlacklistedEmail(workspaceId, email);
         setEmails(updated.blacklistedSenderEmails);
       } catch {
         setEmails((prev) => [...prev, email]);
+        setError(_(msg`Could not remove email. Please try again.`));
       }
     });
   }

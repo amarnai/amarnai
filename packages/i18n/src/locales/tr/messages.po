@@ -516,9 +516,7 @@ msgstr "Thebes'li Horemheb'den Yazışma Şefi pozisyonu için yeni bir başvuru
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "Thebes'li Horemheb'den Yazışma Şefi pozisyonu için yeni bir başvuru alındı.\n"
-"\n"
-"Başvuruyu Kayıtlar Evi'nde görüntüleyin."
+msgstr "Thebes'li Horemheb'den Yazışma Şefi pozisyonu için yeni bir başvuru alındı.\n\nBaşvuruyu Kayıtlar Evi'nde görüntüleyin."
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:387
 #, fuzzy
@@ -532,11 +530,7 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "Abdi-Heba,\n"
-"\n"
-"Aynı hafta Delta yakınında olacağım. İkinci gün menzil istasyonunda buluşalım; sabahı ayırabilirim.\n"
-"\n"
-"O zamana dek,"
+msgstr "Abdi-Heba,\n\nAynı hafta Delta yakınında olacağım. İkinci gün menzil istasyonunda buluşalım; sabahı ayırabilirim.\n\nO zamana dek,"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
@@ -598,7 +592,7 @@ msgstr "Reklam geliri, hayran bağışları ve içerik üreticisi kazanç beyanl
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:293
 #: ../../apps/mobile/src/components/BlacklistSheet.tsx:118
-#: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:124
+#: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:107
 #, fuzzy
 msgid "Add"
 msgstr "Ekle"
@@ -729,13 +723,13 @@ msgid "Alliance proposal: house of Amurru"
 msgstr "İttifak teklifi: Amurru hanedanı"
 
 #: ../../apps/mobile/app/sign-up.tsx:166
-#: ../../apps/web/src/app/sign-up/SignUpForm.tsx:76
+#: ../../apps/web/src/app/sign-up/SignUpForm.tsx:87
 #, fuzzy
 msgid "Already have an account? <0>Sign in</0>"
 msgstr "Zaten hesabın var mı? <0>Giriş yap</0>"
 
 #: ../../apps/mobile/src/components/BlacklistSheet.tsx:54
-#: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:37
+#: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:33
 #, fuzzy
 msgid "Already in the list."
 msgstr "Zaten listede."
@@ -1057,7 +1051,6 @@ msgid "Assigned to {assigneeName}. Change assignee"
 msgstr "{assigneeName} kişisine atandı. Atananı değiştir."
 
 #: ../../apps/web/src/app/reset-password/page.tsx:54
-#: ../../apps/web/src/app/sign-up/SignUpForm.tsx:61
 msgid "At least {PASSWORD_MIN_LENGTH} characters"
 msgstr "En az {PASSWORD_MIN_LENGTH} karakter"
 
@@ -1118,11 +1111,7 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "Aziru,\n"
-"\n"
-"Dostluk sözleriniz bize ulaştı. Amurru hanedanının ne önerdiğini daha fazla duymaya açığız. Koşullarınızı bir sonraki kurye ile gönderin.\n"
-"\n"
-"Saygılarımızla,"
+msgstr "Aziru,\n\nDostluk sözleriniz bize ulaştı. Amurru hanedanının ne önerdiğini daha fazla duymaya açığız. Koşullarınızı bir sonraki kurye ile gönderin.\n\nSaygılarımızla,"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:219
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
@@ -1402,6 +1391,10 @@ msgstr "Aboneliği değiştir"
 #: ../ui/src/i18n/taxonomy-template-messages.ts:157
 msgid "Channel notifications, upload analytics, and policy updates from social platforms."
 msgstr "Sosyal platformlardan gelen kanal bildirimleri, yükleme analizleri ve politika güncellemeleri."
+
+#: ../../apps/web/src/app/sign-up/SignUpForm.tsx:27
+msgid "Check your email"
+msgstr "E-postanızı kontrol edin"
 
 #: ../../apps/web/src/app/verify-email/page.tsx:26
 #, fuzzy
@@ -1755,6 +1748,10 @@ msgstr "Ödeme sayfasına git"
 msgid "Continue to payment"
 msgstr "Ödemeye devam et"
 
+#: ../../apps/web/src/app/sign-up/SignUpForm.tsx:76
+msgid "Continue with email"
+msgstr "E-posta ile devam et"
+
 #: ../../apps/mobile/src/auth/GoogleSignInButton.tsx:28
 #: ../../apps/web/src/components/GoogleButton.tsx:10
 #, fuzzy
@@ -1800,7 +1797,7 @@ msgid "Could not access your Outlook inbox. Please try again."
 msgstr "Outlook gelen kutunuza erişilemedi. Lütfen tekrar deneyin."
 
 #: ../../apps/mobile/src/components/BlacklistSheet.tsx:66
-#: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:59
+#: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:46
 #, fuzzy
 msgid "Could not add email. Please try again."
 msgstr "E-posta eklenemedi. Lütfen tekrar deneyin."
@@ -1888,6 +1885,10 @@ msgstr "Sunucuya ulaşılamadı. Lütfen bağlantınızı kontrol edin ve tekrar
 #, fuzzy
 msgid "Could not read file: invalid JSON."
 msgstr "Dosya okunamadı: geçersiz JSON."
+
+#: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:62
+msgid "Could not remove email. Please try again."
+msgstr "E-posta kaldırılamadı. Lütfen tekrar deneyin."
 
 #: ../../apps/mobile/src/components/RenameWorkspaceSheet.tsx:53
 #, fuzzy
@@ -1980,7 +1981,6 @@ msgid "Create a workspace"
 msgstr "Çalışma alanı oluştur"
 
 #: ../../apps/mobile/app/sign-up.tsx:154
-#: ../../apps/web/src/app/sign-up/SignUpForm.tsx:65
 #, fuzzy
 msgid "Create account"
 msgstr "Hesap oluştur"
@@ -2001,19 +2001,19 @@ msgstr "Klasör Oluştur"
 msgid "Create workspace"
 msgstr "Çalışma alanı oluştur"
 
-#: ../../apps/web/src/app/sign-up/SignUpForm.tsx:24
+#: ../../apps/web/src/app/sign-up/SignUpForm.tsx:48
 #, fuzzy
 msgid "Create your account"
 msgstr "Hesabınızı oluşturun"
 
-#: ../../apps/web/src/app/sign-up/SignUpForm.tsx:27
+#: ../../apps/web/src/app/sign-up/SignUpForm.tsx:51
 msgid "Create your account to accept your workspace invitation."
 msgstr "Çalışma alanı davetini kabul etmek için hesabını oluştur."
 
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:65
 #, fuzzy
-msgid "Creating account…"
-msgstr "Hesap oluşturuluyor…"
+#~ msgid "Creating account…"
+#~ msgstr "Hesap oluşturuluyor…"
 
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:152
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:98
@@ -2199,6 +2199,10 @@ msgstr "Açıklama"
 #, fuzzy
 msgid "Detected notifications, newsletters, and service updates are filed to your catch-all folder without using AI. Requires the <0>Updates / Other</0> folder from a taxonomy template."
 msgstr "Tespit edilen bildirimler, bültenler ve hizmet güncellemeleri, yapay zeka kullanılmadan yakalama klasörünüze dosyalanır. Bir taksonomi şablonundaki <0>Güncellemeler / Diğer</0> klasörü gereklidir."
+
+#: ../../apps/web/src/app/sign-up/SignUpForm.tsx:35
+msgid "Didn't get an email? Check your spam folder, or <0>try again</0>."
+msgstr "E-posta almadınız mı? Spam klasörünüzü kontrol edin veya <0>tekrar deneyin</0>."
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:127
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:319
@@ -2482,12 +2486,12 @@ msgstr "Yolu Düzenle"
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:71
 #: ../../apps/web/src/app/forgot-password/page.tsx:30
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:75
-#: ../../apps/web/src/app/sign-up/SignUpForm.tsx:35
+#: ../../apps/web/src/app/sign-up/SignUpForm.tsx:59
 #, fuzzy
 msgid "Email"
 msgstr "E-posta"
 
-#: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:116
+#: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:99
 #, fuzzy
 msgid "Email address to blacklist"
 msgstr "Kara listeye alınacak e-posta adresi"
@@ -2584,7 +2588,7 @@ msgid "Enter a valid email address"
 msgstr "Geçerli bir e-posta adresi girin"
 
 #: ../../apps/mobile/src/components/BlacklistSheet.tsx:50
-#: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:33
+#: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:29
 #, fuzzy
 msgid "Enter a valid email address."
 msgstr "Geçerli bir e-posta adresi girin."
@@ -3279,11 +3283,7 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "Ulu Kralım,\n"
-"\n"
-"İstediğiniz raporlar konsey toplanmadan önce hazırlanacaktır. Katiplerime doğu topraklarının hesaplarını derletecek ve hızlı kurye ile önceden göndereceğim.\n"
-"\n"
-"Kardeşlik içerisinde,"
+msgstr "Ulu Kralım,\n\nİstediğiniz raporlar konsey toplanmadan önce hazırlanacaktır. Katiplerime doğu topraklarının hesaplarını derletecek ve hızlı kurye ile önceden göndereceğim.\n\nKardeşlik içerisinde,"
 
 #: ../../apps/site/src/components/support/SupportContent.tsx:77
 msgid "Guides and answers to common questions"
@@ -3418,6 +3418,10 @@ msgstr "Bu e-postaya ait bir hesap varsa, sıfırlama bağlantısı gönderdik. 
 #: ../../apps/site/src/components/support/SupportContent.tsx:48
 msgid "If something isn’t working or you have a question, here’s how to reach us."
 msgstr "Bir sorunla karşılaşırsanız veya bir sorunuz olursa, bize nasıl ulaşabileceğinizi öğrenin."
+
+#: ../../apps/web/src/app/sign-up/SignUpForm.tsx:29
+msgid "If you can create an account with that email, we've sent a link to finish setting it up. Follow it to choose a password and sign in."
+msgstr "Bu e-posta adresiyle hesap oluşturabiliyorsanız, kurulumu tamamlamanız için bir bağlantı gönderdik. Parola seçmek ve oturum açmak için bu bağlantıyı takip edin."
 
 #: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:64
 #: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:84
@@ -4557,7 +4561,7 @@ msgstr "İsteğe bağlı. Bu klasördeki yazışmalar için yanıt taslakları o
 #: ../../apps/extension/src/auth/SignInScreen.tsx:102
 #: ../../apps/mobile/src/auth/GoogleSignInButton.tsx:17
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:113
-#: ../../apps/web/src/app/sign-up/SignUpForm.tsx:70
+#: ../../apps/web/src/app/sign-up/SignUpForm.tsx:81
 #, fuzzy
 msgid "or"
 msgstr "veya"
@@ -4624,7 +4628,6 @@ msgstr "Delta'dan geçerken: buluşmaya müsait misin?"
 #: ../../apps/extension/src/auth/SignInScreen.tsx:85
 #: ../../apps/mobile/app/sign-in.tsx:106
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:90
-#: ../../apps/web/src/app/sign-up/SignUpForm.tsx:50
 #, fuzzy
 msgid "Password"
 msgstr "Şifre"
@@ -5199,7 +5202,7 @@ msgstr "Kaldır"
 msgid "Remove {0}"
 msgstr "{0} Kaldır"
 
-#: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:140
+#: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:123
 #, fuzzy
 msgid "Remove {email} from blacklist"
 msgstr "Kara listeden {email} adresini kaldır"
@@ -5428,11 +5431,7 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "Rib-Hadda,\n"
-"\n"
-"Seni duyuyoruz. Güneydeki depolardan ek tahıl sipariş edildi ve hasat festivalinden önce ulaşacak. O zamana kadar sabrınızı rica ediyoruz.\n"
-"\n"
-"Esen kal,"
+msgstr "Rib-Hadda,\n\nSeni duyuyoruz. Güneydeki depolardan ek tahıl sipariş edildi ve hasat festivalinden önce ulaşacak. O zamana kadar sabrınızı rica ediyoruz.\n\nEsen kal,"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -5643,7 +5642,7 @@ msgstr "Sıfırlama bağlantısı gönder"
 msgid "Sender blacklist"
 msgstr "Gönderen kara listesi"
 
-#: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:94
+#: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:77
 #, fuzzy
 msgid "Sender Blacklist"
 msgstr "Gönderen Kara Listesi"
@@ -5655,6 +5654,7 @@ msgstr "Gönderen, önemli bir konuma sahip, bilinen bir anlaşma ortağıdır. 
 
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:224
 #: ../../apps/web/src/app/forgot-password/page.tsx:43
+#: ../../apps/web/src/app/sign-up/SignUpForm.tsx:76
 #: ../../apps/web/src/app/verify-email/page.tsx:36
 #, fuzzy
 msgid "Sending…"
@@ -5788,7 +5788,7 @@ msgstr "Çıkış yap"
 msgid "Sign out of the current account"
 msgstr "Mevcut hesaptan çıkış yap."
 
-#: ../../apps/web/src/app/sign-up/SignUpForm.tsx:73
+#: ../../apps/web/src/app/sign-up/SignUpForm.tsx:84
 #, fuzzy
 msgid "Sign up with Google"
 msgstr "Google ile kaydol"
@@ -6409,7 +6409,7 @@ msgid "Threads flagged for review. Amarnai wasn't confident enough to sort autom
 msgstr "Konular inceleme için işaretlendi. Amarnai, otomatik sıralama için yeterince güvenli bulamadı."
 
 #: ../../apps/mobile/src/components/BlacklistSheet.tsx:94
-#: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:101
+#: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:84
 #, fuzzy
 msgid "Threads from these senders will never be imported or sorted by Amarnai."
 msgstr "Bu göndericilerden gelen e-posta dizileri Amarnai tarafından asla içe aktarılmaz veya sıralanmaz."
@@ -6462,13 +6462,7 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "Büyük Kral kardeşim,\n"
-"\n"
-"Büyük konsey Şemu'nun başında toplanacak. Doğu topraklarının tam bir muhasebesini hazırlamanızı ve mümkünse yeni aydan önce hızlı bir kurye ile göndermenizi rica ediyorum.\n"
-"\n"
-"İttifakımız güçlüdür. Konseye bunun böyle kaldığını gösterelim.\n"
-"\n"
-"Mitanni Büyük Kralı Tuşratta"
+msgstr "Büyük Kral kardeşim,\n\nBüyük konsey Şemu'nun başında toplanacak. Doğu topraklarının tam bir muhasebesini hazırlamanızı ve mümkünse yeni aydan önce hızlı bir kurye ile göndermenizi rica ediyorum.\n\nİttifakımız güçlüdür. Konseye bunun böyle kaldığını gösterelim.\n\nMitanni Büyük Kralı Tuşratta"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:163
 #, fuzzy
@@ -6477,11 +6471,7 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "Kraliyet Atama Bürosu'na,\n"
-"\n"
-"Thebesli Horemheb'in başvurusunu aldık ve sonraki yeni aydan önce sicilini gözden geçireceğiz. Lütfen kendisine zamanı geldiğinde haber vereceğimizi bildirin.\n"
-"\n"
-"Kraliyet fermanıyla,"
+msgstr "Kraliyet Atama Bürosu'na,\n\nThebesli Horemheb'in başvurusunu aldık ve sonraki yeni aydan önce sicilini gözden geçireceğiz. Lütfen kendisine zamanı geldiğinde haber vereceğimizi bildirin.\n\nKraliyet fermanıyla,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:278
 #, fuzzy
@@ -6492,13 +6482,7 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "Büyük Kral'a,\n"
-"\n"
-"Yıllardır hanelerimiz kardeş gibidir. Şimdi, bu dostluğumuzu her iki halkımızın da yararına resmileştirmeyi teklif etmek için yazıyorum: karşılıklı koruma ve ortak ticaret yolları anlaşması.\n"
-"\n"
-"Sadece şartlarımı dinlemenizi rica ediyorum. Sonraki kurye ile haber gönderin, elçimi derhal yola çıkaracağım.\n"
-"\n"
-"Amurru lordu, Büyük Kral'ın hizmetkarı Aziru"
+msgstr "Büyük Kral'a,\n\nYıllardır hanelerimiz kardeş gibidir. Şimdi, bu dostluğumuzu her iki halkımızın da yararına resmileştirmeyi teklif etmek için yazıyorum: karşılıklı koruma ve ortak ticaret yolları anlaşması.\n\nSadece şartlarımı dinlemenizi rica ediyorum. Sonraki kurye ile haber gönderin, elçimi derhal yola çıkaracağım.\n\nAmurru lordu, Büyük Kral'ın hizmetkarı Aziru"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:391
 #, fuzzy
@@ -6507,11 +6491,7 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "Büyük Kral'a,\n"
-"\n"
-"Yolculuklarım beni önümüzdeki günlerde Delta'ya yakın bir yere getirecek. Büyük Kral'ın ayıracak bir saati varsa, yüz yüze konuşma fırsatını memnuniyetle karşılarım; yazmaktan daha kolay anlatılacak meseleler var.\n"
-"\n"
-"Kulunuz, Urushalim Valisi Abdi-Heba"
+msgstr "Büyük Kral'a,\n\nYolculuklarım beni önümüzdeki günlerde Delta'ya yakın bir yere getirecek. Büyük Kral'ın ayıracak bir saati varsa, yüz yüze konuşma fırsatını memnuniyetle karşılarım; yazmaktan daha kolay anlatılacak meseleler var.\n\nKulunuz, Urushalim Valisi Abdi-Heba"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:153
 #, fuzzy
@@ -6520,11 +6500,7 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "Büyük Kral kardeşim,\n"
-"\n"
-"Sözlerinizi duydum. Altın, bir sonraki elçi ayrılmadan önce gönderilecektir. Hanelerimiz arasındaki bağı değerli buluyoruz ve soğumasını istemiyoruz.\n"
-"\n"
-"Dostlukla,"
+msgstr "Büyük Kral kardeşim,\n\nSözlerinizi duydum. Altın, bir sonraki elçi ayrılmadan önce gönderilecektir. Hanelerimiz arasındaki bağı değerli buluyoruz ve soğumasını istemiyoruz.\n\nDostlukla,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:239
 #, fuzzy
@@ -6535,13 +6511,7 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "Büyük Kral kardeşim,\n"
-"\n"
-"Atalarımızın yazdığı gibi, dostlukla yazıyorum. Antlaşmamız kapsamında üzerinde anlaşılan üçüncü altın sevkiyatı gelmedi. İki elçi geçti ve hâlâ bekliyoruz.\n"
-"\n"
-"Hanelerimiz arasındaki bağa yakışır şekilde, gecikmeksizin göndermenizi rica ediyoruz.\n"
-"\n"
-"Babil Kralı II. Burna-Buriash"
+msgstr "Büyük Kral kardeşim,\n\nAtalarımızın yazdığı gibi, dostlukla yazıyorum. Antlaşmamız kapsamında üzerinde anlaşılan üçüncü altın sevkiyatı gelmedi. İki elçi geçti ve hâlâ bekliyoruz.\n\nHanelerimiz arasındaki bağa yakışır şekilde, gecikmeksizin göndermenizi rica ediyoruz.\n\nBabil Kralı II. Burna-Buriash"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:352
 #, fuzzy
@@ -6552,13 +6522,7 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "Büyük Kral'ım, efendim, güneşim,\n"
-"\n"
-"Geçen ay gönderdiğiniz tahıl şükranla alındı ve adınızı halkın önünde övdüm. Ancak tekrar yazmak zorundayım: üçüncü sevkiyat gelmedi ve şehir huzursuzlanıyor.\n"
-"\n"
-"Yedi kez yazdım. Sizi rahatsız etmek istemem ama başka ne yapabilirim?\n"
-"\n"
-"Kulunuz, Byblos Valisi Rib-Hadda"
+msgstr "Büyük Kral'ım, efendim, güneşim,\n\nGeçen ay gönderdiğiniz tahıl şükranla alındı ve adınızı halkın önünde övdüm. Ancak tekrar yazmak zorundayım: üçüncü sevkiyat gelmedi ve şehir huzursuzlanıyor.\n\nYedi kez yazdım. Sizi rahatsız etmek istemem ama başka ne yapabilirim?\n\nKulunuz, Byblos Valisi Rib-Hadda"
 
 #: ../../apps/site/src/components/landing/MailThreadMock.tsx:135
 msgid "To: You"
@@ -6949,6 +6913,10 @@ msgstr "E-posta adresinize bir doğrulama bağlantısı gönderdik. Hesabınız�
 #, fuzzy
 msgid "We sent you a verification link. Open it to finish setting up your account."
 msgstr "Size bir doğrulama bağlantısı gönderdik. Hesabınızı kurmayı tamamlamak için açın."
+
+#: ../../apps/web/src/app/sign-up/SignUpForm.tsx:71
+msgid "We'll email you a link to set your password and finish signing up."
+msgstr "Parolanızı belirlemeniz ve kaydı tamamlamanız için size bir bağlantı e-postayla göndereceğiz."
 
 #. placeholder {0}: state.email
 #: ../../apps/web/src/app/sign-up/WaitlistForm.tsx:19

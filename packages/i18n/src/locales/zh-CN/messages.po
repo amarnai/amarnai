@@ -503,9 +503,7 @@ msgstr "收到赫伦希布（底比斯）的首席文书官职位申请。"
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "已收到底比斯的霍伦海布呈报的文书长职位申请。\n"
-"\n"
-"请在记录馆查看该申请。"
+msgstr "已收到底比斯的霍伦海布呈报的文书长职位申请。\n\n请在记录馆查看该申请。"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:387
 #, fuzzy
@@ -518,11 +516,7 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "阿卜迪-赫巴，\n"
-"\n"
-"同周我将行至三角洲附近。我们可在第二日于驿站会面；我可抽出上午时间。\n"
-"\n"
-"届时再叙，"
+msgstr "阿卜迪-赫巴，\n\n同周我将行至三角洲附近。我们可在第二日于驿站会面；我可抽出上午时间。\n\n届时再叙，"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
@@ -583,7 +577,7 @@ msgstr "广告收入、粉丝打赏和创作者收益报表。"
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:293
 #: ../../apps/mobile/src/components/BlacklistSheet.tsx:118
-#: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:124
+#: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:107
 #, fuzzy
 msgid "Add"
 msgstr "添加"
@@ -714,13 +708,13 @@ msgid "Alliance proposal: house of Amurru"
 msgstr "结盟提议：阿摩利家族"
 
 #: ../../apps/mobile/app/sign-up.tsx:166
-#: ../../apps/web/src/app/sign-up/SignUpForm.tsx:76
+#: ../../apps/web/src/app/sign-up/SignUpForm.tsx:87
 #, fuzzy
 msgid "Already have an account? <0>Sign in</0>"
 msgstr "已有账号？<0>登录</0>"
 
 #: ../../apps/mobile/src/components/BlacklistSheet.tsx:54
-#: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:37
+#: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:33
 #, fuzzy
 msgid "Already in the list."
 msgstr "已在列表中。"
@@ -1040,7 +1034,6 @@ msgid "Assigned to {assigneeName}. Change assignee"
 msgstr "已分配给 {assigneeName}。更改分配人"
 
 #: ../../apps/web/src/app/reset-password/page.tsx:54
-#: ../../apps/web/src/app/sign-up/SignUpForm.tsx:61
 msgid "At least {PASSWORD_MIN_LENGTH} characters"
 msgstr "至少 {PASSWORD_MIN_LENGTH} 个字符"
 
@@ -1098,11 +1091,7 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "阿齐鲁，\n"
-"\n"
-"你的友谊之言我们已悉。阿穆鲁家族有何提议，我们愿闻其详。请速派下一信使呈上你的条件。\n"
-"\n"
-"此致，"
+msgstr "阿齐鲁，\n\n你的友谊之言我们已悉。阿穆鲁家族有何提议，我们愿闻其详。请速派下一信使呈上你的条件。\n\n此致，"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:219
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
@@ -1375,6 +1364,10 @@ msgstr "更改订阅"
 #: ../ui/src/i18n/taxonomy-template-messages.ts:157
 msgid "Channel notifications, upload analytics, and policy updates from social platforms."
 msgstr "社交平台的频道通知、上传分析和政策更新。"
+
+#: ../../apps/web/src/app/sign-up/SignUpForm.tsx:27
+msgid "Check your email"
+msgstr "查收邮件"
 
 #: ../../apps/web/src/app/verify-email/page.tsx:26
 #, fuzzy
@@ -1722,6 +1715,10 @@ msgstr "继续结账"
 msgid "Continue to payment"
 msgstr "继续付款"
 
+#: ../../apps/web/src/app/sign-up/SignUpForm.tsx:76
+msgid "Continue with email"
+msgstr "使用电子邮件继续"
+
 #: ../../apps/mobile/src/auth/GoogleSignInButton.tsx:28
 #: ../../apps/web/src/components/GoogleButton.tsx:10
 #, fuzzy
@@ -1764,7 +1761,7 @@ msgid "Could not access your Outlook inbox. Please try again."
 msgstr "无法访问您的 Outlook 收件箱。请重试。"
 
 #: ../../apps/mobile/src/components/BlacklistSheet.tsx:66
-#: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:59
+#: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:46
 #, fuzzy
 msgid "Could not add email. Please try again."
 msgstr "无法添加电子邮件。请重试。"
@@ -1851,6 +1848,10 @@ msgstr "无法连接到服务器。请检查您的网络连接后重试。"
 #, fuzzy
 msgid "Could not read file: invalid JSON."
 msgstr "无法读取文件：JSON 无效。"
+
+#: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:62
+msgid "Could not remove email. Please try again."
+msgstr "无法删除电子邮件。请重试。"
 
 #: ../../apps/mobile/src/components/RenameWorkspaceSheet.tsx:53
 #, fuzzy
@@ -1940,7 +1941,6 @@ msgid "Create a workspace"
 msgstr "创建工作区"
 
 #: ../../apps/mobile/app/sign-up.tsx:154
-#: ../../apps/web/src/app/sign-up/SignUpForm.tsx:65
 #, fuzzy
 msgid "Create account"
 msgstr "创建账户"
@@ -1960,19 +1960,19 @@ msgstr "创建文件夹"
 msgid "Create workspace"
 msgstr "创建工作区"
 
-#: ../../apps/web/src/app/sign-up/SignUpForm.tsx:24
+#: ../../apps/web/src/app/sign-up/SignUpForm.tsx:48
 #, fuzzy
 msgid "Create your account"
 msgstr "创建您的账户"
 
-#: ../../apps/web/src/app/sign-up/SignUpForm.tsx:27
+#: ../../apps/web/src/app/sign-up/SignUpForm.tsx:51
 msgid "Create your account to accept your workspace invitation."
 msgstr "创建账户以接受工作区邀请。"
 
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:65
 #, fuzzy
-msgid "Creating account…"
-msgstr "正在创建账户…"
+#~ msgid "Creating account…"
+#~ msgstr "正在创建账户…"
 
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:152
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:98
@@ -2153,6 +2153,10 @@ msgstr "描述"
 #, fuzzy
 msgid "Detected notifications, newsletters, and service updates are filed to your catch-all folder without using AI. Requires the <0>Updates / Other</0> folder from a taxonomy template."
 msgstr "检测到的通知、新闻稿和服务更新将归档到您的包罗万象文件夹，无需使用AI。需要分类模板中的<0>更新 / 其他</0>文件夹。"
+
+#: ../../apps/web/src/app/sign-up/SignUpForm.tsx:35
+msgid "Didn't get an email? Check your spam folder, or <0>try again</0>."
+msgstr "未收到邮件？请检查垃圾邮件文件夹，或<0>重试</0>。"
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:127
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:319
@@ -2432,12 +2436,12 @@ msgstr "编辑路径"
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:71
 #: ../../apps/web/src/app/forgot-password/page.tsx:30
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:75
-#: ../../apps/web/src/app/sign-up/SignUpForm.tsx:35
+#: ../../apps/web/src/app/sign-up/SignUpForm.tsx:59
 #, fuzzy
 msgid "Email"
 msgstr "电子邮件"
 
-#: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:116
+#: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:99
 #, fuzzy
 msgid "Email address to blacklist"
 msgstr "要加入黑名单的电子邮件地址"
@@ -2532,7 +2536,7 @@ msgid "Enter a valid email address"
 msgstr "请输入有效的电子邮件地址"
 
 #: ../../apps/mobile/src/components/BlacklistSheet.tsx:50
-#: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:33
+#: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:29
 #, fuzzy
 msgid "Enter a valid email address."
 msgstr "请输入有效的电子邮件地址。"
@@ -3204,11 +3208,7 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "大王，\n"
-"\n"
-"你所要求之呈报，将在议会召开前备妥。我将命抄写员汇编东方领地的账目，并派快马先行送呈。\n"
-"\n"
-"兄弟情谊，"
+msgstr "大王，\n\n你所要求之呈报，将在议会召开前备妥。我将命抄写员汇编东方领地的账目，并派快马先行送呈。\n\n兄弟情谊，"
 
 #: ../../apps/site/src/components/support/SupportContent.tsx:77
 msgid "Guides and answers to common questions"
@@ -3338,6 +3338,11 @@ msgstr "如果此邮箱存在账户，我们已发送重置链接。请打开链
 #, fuzzy
 msgid "If something isn’t working or you have a question, here’s how to reach us."
 msgstr "如果遇到问题或有疑问，请通过以下方式联系我们。"
+
+#: ../../apps/web/src/app/sign-up/SignUpForm.tsx:29
+#, fuzzy
+msgid "If you can create an account with that email, we've sent a link to finish setting it up. Follow it to choose a password and sign in."
+msgstr "若您可以用该邮箱创建账户，我们已发送一个链接以完成设置。请点击链接以选择密码并登录。"
 
 #: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:64
 #: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:84
@@ -4451,7 +4456,7 @@ msgstr "可选。在此文件夹中为会话生成草稿回复时应用。"
 #: ../../apps/extension/src/auth/SignInScreen.tsx:102
 #: ../../apps/mobile/src/auth/GoogleSignInButton.tsx:17
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:113
-#: ../../apps/web/src/app/sign-up/SignUpForm.tsx:70
+#: ../../apps/web/src/app/sign-up/SignUpForm.tsx:81
 #, fuzzy
 msgid "or"
 msgstr "或"
@@ -4518,7 +4523,6 @@ msgstr "途经三角洲：方便会面吗？"
 #: ../../apps/extension/src/auth/SignInScreen.tsx:85
 #: ../../apps/mobile/app/sign-in.tsx:106
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:90
-#: ../../apps/web/src/app/sign-up/SignUpForm.tsx:50
 #, fuzzy
 msgid "Password"
 msgstr "密码"
@@ -5087,7 +5091,7 @@ msgstr "移除"
 msgid "Remove {0}"
 msgstr "移除 {0}"
 
-#: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:140
+#: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:123
 #, fuzzy
 msgid "Remove {email} from blacklist"
 msgstr "从黑名单中移除 {email}"
@@ -5312,11 +5316,7 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "里布-哈达，\n"
-"\n"
-"你的呼吁，我们已收到。已从南方粮仓加订谷物，并将在丰收节前抵达。在此期间，请你耐心等候。\n"
-"\n"
-"保重，"
+msgstr "里布-哈达，\n\n你的呼吁，我们已收到。已从南方粮仓加订谷物，并将在丰收节前抵达。在此期间，请你耐心等候。\n\n保重，"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -5524,7 +5524,7 @@ msgstr "发送重置链接"
 msgid "Sender blacklist"
 msgstr "发件人黑名单"
 
-#: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:94
+#: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:77
 #, fuzzy
 msgid "Sender Blacklist"
 msgstr "发件人黑名单"
@@ -5536,6 +5536,7 @@ msgstr "发件人是地位显赫的已知条约伙伴。主题明确提及已同
 
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:224
 #: ../../apps/web/src/app/forgot-password/page.tsx:43
+#: ../../apps/web/src/app/sign-up/SignUpForm.tsx:76
 #: ../../apps/web/src/app/verify-email/page.tsx:36
 msgid "Sending…"
 msgstr "正在发送…"
@@ -5665,7 +5666,7 @@ msgstr "退出"
 msgid "Sign out of the current account"
 msgstr "退出当前账户"
 
-#: ../../apps/web/src/app/sign-up/SignUpForm.tsx:73
+#: ../../apps/web/src/app/sign-up/SignUpForm.tsx:84
 msgid "Sign up with Google"
 msgstr "用 Google 注册"
 
@@ -6272,7 +6273,7 @@ msgid "Threads flagged for review. Amarnai wasn't confident enough to sort autom
 msgstr "会话已标记待审核。Amarnai 自动分类的信心不足。"
 
 #: ../../apps/mobile/src/components/BlacklistSheet.tsx:94
-#: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:101
+#: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:84
 #, fuzzy
 msgid "Threads from these senders will never be imported or sorted by Amarnai."
 msgstr "来自这些发件人的会话将永远不会被 Amarnai 导入或分类。"
@@ -6323,13 +6324,7 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "致吾兄，大王，\n"
-"\n"
-"大议会将于谢穆月初召开。我请求你备妥东方领地的详尽账目，并请快马先行送呈，如可能，请在新月之前。\n"
-"\n"
-"吾等盟约坚固。愿我们向议会昭示其一如既往。\n"
-"\n"
-"图什拉塔，米坦尼大王"
+msgstr "致吾兄，大王，\n\n大议会将于谢穆月初召开。我请求你备妥东方领地的详尽账目，并请快马先行送呈，如可能，请在新月之前。\n\n吾等盟约坚固。愿我们向议会昭示其一如既往。\n\n图什拉塔，米坦尼大王"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:163
 #, fuzzy
@@ -6338,11 +6333,7 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "致王室任命局，\n"
-"\n"
-"我们已收到底比斯的霍伦海布之申请，并将在下一新月前审查其记录。请告知他，我们将在适当时候回复。\n"
-"\n"
-"奉谕，"
+msgstr "致王室任命局，\n\n我们已收到底比斯的霍伦海布之申请，并将在下一新月前审查其记录。请告知他，我们将在适当时候回复。\n\n奉谕，"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:278
 #, fuzzy
@@ -6353,13 +6344,7 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "致大王，\n"
-"\n"
-"多年以来，吾等两家情同手足。今特致函，愿将此友谊正式化，以惠及吾等两族：订立互助盟约，共享商道。\n"
-"\n"
-"我只恳请大王倾听我的条件。请速派下一信使回复，我将立即派遣使者前往。\n"
-"\n"
-"阿齐鲁，大王之仆，阿穆鲁之主"
+msgstr "致大王，\n\n多年以来，吾等两家情同手足。今特致函，愿将此友谊正式化，以惠及吾等两族：订立互助盟约，共享商道。\n\n我只恳请大王倾听我的条件。请速派下一信使回复，我将立即派遣使者前往。\n\n阿齐鲁，大王之仆，阿穆鲁之主"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:391
 #, fuzzy
@@ -6368,11 +6353,7 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "致大王，\n"
-"\n"
-"吾近期旅程将近三角洲一带。如大王能拨冗一小时，我愿与你面谈；有些事，口头陈述胜于笔墨。\n"
-"\n"
-"你的仆人，阿卜迪-赫巴，乌鲁沙利姆总督"
+msgstr "致大王，\n\n吾近期旅程将近三角洲一带。如大王能拨冗一小时，我愿与你面谈；有些事，口头陈述胜于笔墨。\n\n你的仆人，阿卜迪-赫巴，乌鲁沙利姆总督"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:153
 #, fuzzy
@@ -6381,11 +6362,7 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "致吾兄，大王，\n"
-"\n"
-"你之言语，我已听闻。黄金将在下一信使启程前发出。吾等珍视两家情谊，不愿其冷却。\n"
-"\n"
-"友谊长存，"
+msgstr "致吾兄，大王，\n\n你之言语，我已听闻。黄金将在下一信使启程前发出。吾等珍视两家情谊，不愿其冷却。\n\n友谊长存，"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:239
 #, fuzzy
@@ -6396,13 +6373,7 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "致吾兄，大王，\n"
-"\n"
-"我以友谊之名致函，正如我等父辈昔日所为。依照盟约，第三批黄金仍未抵达。两批信使已过，吾等仍在等候。\n"
-"\n"
-"吾等恳请你勿再延误，速将其发出，以维系吾等两家之盟谊。\n"
-"\n"
-"布尔那-布里亚什二世，巴比伦国王"
+msgstr "致吾兄，大王，\n\n我以友谊之名致函，正如我等父辈昔日所为。依照盟约，第三批黄金仍未抵达。两批信使已过，吾等仍在等候。\n\n吾等恳请你勿再延误，速将其发出，以维系吾等两家之盟谊。\n\n布尔那-布里亚什二世，巴比伦国王"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:352
 msgid "To the Great King, my lord, my sun,\n"
@@ -6412,13 +6383,7 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "致大王，吾主，吾日，\n"
-"\n"
-"上月你所赐谷物，吾等不胜感激，吾亦在民众面前颂扬大王之名。然我不得不再次致函：第三批谷物尚未抵达，城中民心骚动不安。\n"
-"\n"
-"我已七度致函。我实不愿劳烦大王，然此外我能奈何？\n"
-"\n"
-"你的仆人，里布-哈达，比布鲁斯总督"
+msgstr "致大王，吾主，吾日，\n\n上月你所赐谷物，吾等不胜感激，吾亦在民众面前颂扬大王之名。然我不得不再次致函：第三批谷物尚未抵达，城中民心骚动不安。\n\n我已七度致函。我实不愿劳烦大王，然此外我能奈何？\n\n你的仆人，里布-哈达，比布鲁斯总督"
 
 #: ../../apps/site/src/components/landing/MailThreadMock.tsx:135
 msgid "To: You"
@@ -6796,6 +6761,10 @@ msgstr "我们已向您的电子邮件地址发送了验证链接。点击它以
 #: ../../apps/mobile/app/verify-email.tsx:89
 msgid "We sent you a verification link. Open it to finish setting up your account."
 msgstr "我们已向您发送验证链接。请打开链接以完成账户设置。"
+
+#: ../../apps/web/src/app/sign-up/SignUpForm.tsx:71
+msgid "We'll email you a link to set your password and finish signing up."
+msgstr "我们将发送一个链接到您的邮箱，以设置密码并完成注册。"
 
 #. placeholder {0}: state.email
 #: ../../apps/web/src/app/sign-up/WaitlistForm.tsx:19
