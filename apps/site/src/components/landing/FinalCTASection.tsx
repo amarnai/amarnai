@@ -32,7 +32,7 @@ export function FinalCTASection() {
             <Trans>
               Prefer to self-host? It&apos;s open source:
               <br className="ld-final-note-br" />{" "}
-              <a href="https://github.com/amarnai/amarnai" target="_blank" rel="noopener noreferrer">
+              <a href="https://github.com/BenAzlay/amarnai" target="_blank" rel="noopener noreferrer">
                 clone it and run it free
               </a>
               .

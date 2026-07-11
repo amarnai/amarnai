@@ -3,7 +3,7 @@ title: Configuration
 description: Full environment variable reference for self-hosting Amarnai.
 ---
 
-All configuration is done through environment variables in a single `.env` file at the monorepo root. Copy `.env.example` as a starting point.
+All configuration is done through environment variables in a single `.env` file at the monorepo root. For self-hosting, copy `.env.selfhost.example` as a starting point (`.env.example` is the local-development template and defaults to mock AI).
 
 ## Postgres
 
@@ -25,7 +25,7 @@ All configuration is done through environment variables in a single `.env` file 
 | Variable                   | Default                        | Description                                                                |
 |----------------------------|--------------------------------|----------------------------------------------------------------------------|
 | `API_PORT`                 | `3001`                         | Port the API server listens on                                             |
-| `WORKER_PORT`              | `3002`                         | Port the worker process listens on                                         |
+| `WORKER_PORT`              | `3002`                         | Reserved port value for the worker process. The worker runs jobs and does not bind an HTTP server, so nothing needs to be exposed |
 | `INBOX_SYNC_INTERVAL_MS`   | `300000`                       | How often the worker polls each connected inbox, in milliseconds (fallback when push is not configured) |
 | `CORS_ORIGIN`              | `http://localhost:3000`        | Allowed CORS origin. Set to your web app domain in production              |
 

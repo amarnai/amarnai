@@ -82,7 +82,7 @@ export function SupportContent() {
 
               <a
                 className="ld-support-row"
-                href="https://github.com/amarnai/amarnai/issues"
+                href="https://github.com/BenAzlay/amarnai/issues"
                 target="_blank"
                 rel="noopener noreferrer"
               >

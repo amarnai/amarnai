@@ -19,7 +19,8 @@ Amarnai's active clients are the web app (`apps/web`) and the browser extension
 
 > Reminder: logic that is not literally JSX rendering belongs in a shared
 > package (`@amarnai/core`, `@amarnai/shared`, `@amarnai/api-client`), not in a
-> single app.
+> single app. A non-blocking CI `parity-check` posts a warning when `apps/web` or
+> `packages/ui` change without a matching `apps/extension` change.
 
 ## Testing
 

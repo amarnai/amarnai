@@ -55,7 +55,7 @@ jobs:
       - run: pnpm lint
 
   parity-check:
-    name: Web/Mobile parity
+    name: Client parity
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -69,10 +69,10 @@ jobs:
         run: |
           changed=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA")
           touched_web=$(echo "$changed" | grep -E '^(apps/web|packages/ui)/' || true)
-          touched_mobile=$(echo "$changed" | grep -E '^apps/mobile/' || true)
-          if [[ -n "$touched_web" && -z "$touched_mobile" ]]; then
-            echo "::warning title=Platform parity::This push changes apps/web or packages/ui but not apps/mobile. If the change is user-facing, mirror it in the mobile app or record the gap in docs/platform-parity.md."
-            echo "Web/UI files changed without a matching mobile change:"
+          touched_extension=$(echo "$changed" | grep -E '^apps/extension/' || true)
+          if [[ -n "$touched_web" && -z "$touched_extension" ]]; then
+            echo "::warning title=Client parity::This push changes apps/web or packages/ui but not apps/extension. If the change is user-facing, mirror it in the browser extension or record the gap in docs/platform-parity.md. (The mobile app is shelved and is not part of parity.)"
+            echo "Web/UI files changed without a matching extension change:"
             echo "$touched_web"
           else
             echo "Parity check OK (no web-only user-facing drift detected)."
