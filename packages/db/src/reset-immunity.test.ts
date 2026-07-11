@@ -30,6 +30,14 @@ describe("reset-immunity of inbox usage meters", () => {
     expect(workspaceOps).not.toMatch(/inboxBackfillGrant/i);
   });
 
+  it("workspace-ops teardown never touches IdempotencyMarker (a reset must not free a dedup token)", () => {
+    // The idempotency ledger is what makes a retried/duplicated job charge a meter or
+    // repeat a side effect at most once. If a reset deleted its markers, a re-run of an
+    // already-metered chunk would claim a fresh token and double-charge — the same
+    // reset-refund bug this whole feature closes. So it must never appear in a teardown.
+    expect(workspaceOps).not.toMatch(/idempotencyMarker/i);
+  });
+
   it("workspace-ops never DELETES a TrialClaim (deleteUserCascade only writes one) and never touches PendingSubscriptionCancellation", () => {
     // A consumed trial must survive account deletion, so the cascade may upsert a
     // TrialClaim but must never delete one. The pending-cancellation table is
@@ -45,7 +53,6 @@ describe("reset-immunity of inbox usage meters", () => {
   });
 });
 
-
 describe("THREAD_SORT quota gate reads the reset-immune meter, not deletable counts", () => {
   // resetWorkspaceData deletes EmailClassification rows but never the inbox meter
   // (asserted above). Therefore the THREAD_SORT pre-check gate must read the meter,
@@ -57,6 +64,14 @@ describe("THREAD_SORT quota gate reads the reset-immune meter, not deletable cou
     expect(syncInbox).toMatch(/resolveInboxQuota\(/);
     expect(syncInbox).toMatch(/"THREAD_SORT"/);
     expect(syncInbox).not.toMatch(/countRecurringThreadSorts/);
+  });
+
+  it("the LIVE classify enqueue uses a deterministic dedup key, not a timestamped jobId (Issue 13)", () => {
+    // A timestamped jobId made every enqueue unique, so two concurrent syncs could
+    // enqueue two classify jobs for one thread that both metered/pushed. The fix keys
+    // the enqueue on (workspace, thread) via DEDUP_CLASSIFY_LIVE so duplicates collapse.
+    expect(syncInbox).toMatch(/DEDUP_CLASSIFY_LIVE/);
+    expect(syncInbox).not.toMatch(/classify_\$\{workspaceId\}_\$\{emailThreadId\}_\$\{Date\.now\(\)\}/);
   });
 
   it("gmail-sort pre-check gates on resolveInboxQuota (the inbox meter)", () => {

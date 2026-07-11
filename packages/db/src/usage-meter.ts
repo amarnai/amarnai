@@ -1,7 +1,15 @@
-import { MeterKind, WorkspacePlan } from "@prisma/client";
+import { MeterKind, WorkspacePlan, Prisma } from "@prisma/client";
 import { normalizeInboxKey, getDraftQuotaWindowStart } from "@amarnai/shared";
 import { db } from "./client.js";
 import { getInboxPlanCeiling } from "./inbox-entitlement.js";
+
+/**
+ * A full Prisma client or an interactive-transaction client. The idempotency
+ * helpers and recordMeterUsage accept either, so a caller can enlist them in its
+ * own transaction (committing the meter atomically with the paired DB result) or
+ * call them standalone (they open their own transaction when atomicity matters).
+ */
+type DbClient = typeof db | Prisma.TransactionClient;
 
 // Reset-immune, inbox-keyed usage accounting. This is the single place that reads
 // and writes InboxUsageMeter / InboxBackfillGrant so the four cost meters (backfill,
@@ -68,10 +76,70 @@ export async function getBackfillGraceUsed(
 }
 
 /**
+ * Claim a one-time idempotency token. Returns true if THIS caller won the claim
+ * (first time the token is seen) and false if it was already claimed (a replay).
+ * The unique index on `token` makes the INSERT the arbiter, so two concurrent
+ * claims collapse in the DB rather than in application logic. Pass `client` to
+ * enlist the claim in a surrounding transaction so it commits atomically with the
+ * write it guards. See the IdempotencyMarker model.
+ */
+export async function claimIdempotencyToken(token: string, client: DbClient = db): Promise<boolean> {
+  const res = await client.idempotencyMarker.createMany({
+    data: [{ token }],
+    skipDuplicates: true,
+  });
+  return res.count === 1;
+}
+
+/**
+ * Release a previously-claimed token so a later attempt may re-run the guarded
+ * effect. Used when a side effect is claimed BEFORE it runs (to bar a concurrent
+ * duplicate) but then fails: the claim is rolled back so a retry is not suppressed.
+ * A no-op when the token was never claimed.
+ */
+export async function releaseIdempotencyToken(token: string, client: DbClient = db): Promise<void> {
+  await client.idempotencyMarker.deleteMany({ where: { token } });
+}
+
+/**
+ * How long an idempotency marker is retained before the maintenance sweep may
+ * delete it. A marker only needs to outlive every horizon on which a duplicate or
+ * retry of the job that wrote it could still fire: BullMQ retry/stall backoff is
+ * minutes, and the longest-lived case is the calendar-month meter window (a token
+ * far past its window will never be re-presented, because a later job in a new
+ * window builds a new token). 90 days is comfortably beyond all of those, so a
+ * pruned row can never cause a double-count.
+ */
+export const IDEMPOTENCY_MARKER_RETENTION_MS = 90 * 24 * 60 * 60 * 1000;
+
+/**
+ * Delete idempotency markers older than the retention window. The markers table is
+ * append-only on the hottest write path (one row per metered unit of work), so
+ * without this it grows without bound and the unique index degrades. Safe because a
+ * marker past IDEMPOTENCY_MARKER_RETENTION_MS is dead weight — no in-flight or
+ * future job can still present that token (see the constant). Returns the number
+ * deleted. Idempotent and safe to run repeatedly; the worker calls it on a daily tick.
+ */
+export async function pruneIdempotencyMarkers(now = new Date()): Promise<number> {
+  const cutoff = new Date(now.getTime() - IDEMPOTENCY_MARKER_RETENTION_MS);
+  const { count } = await db.idempotencyMarker.deleteMany({
+    where: { createdAt: { lt: cutoff } },
+  });
+  return count;
+}
+
+/**
  * Add `delta` to an inbox+kind meter for the window. Monotonic — never decrements.
  * `sizedForPlan` is recorded once (on create) for observability of which plan sized
- * the window. Safe to call repeatedly; concurrent callers may overshoot a soft cap,
- * which the existing quota paths already tolerate.
+ * the window.
+ *
+ * Idempotency: pass a stable `dedupToken` and a replay with the same token is a no-op
+ * instead of a second +1 — the single mechanism that makes a retried or duplicated
+ * worker job count a unit at most once (see IdempotencyMarker). The token claim and
+ * the increment always commit together: pass `tx` to enlist them in a caller's
+ * transaction (so the meter commits atomically with the DB result it is paired with),
+ * or omit it and this opens its own transaction. Callers that are already exactly-once
+ * by construction may omit `dedupToken`, preserving the original single-statement upsert.
  */
 export async function recordMeterUsage(params: {
   inboxKey: string;
@@ -79,14 +147,32 @@ export async function recordMeterUsage(params: {
   windowStart: Date;
   delta: number;
   sizedForPlan?: WorkspacePlan;
+  dedupToken?: string;
+  tx?: Prisma.TransactionClient;
 }): Promise<void> {
-  const { inboxKey, kind, windowStart, delta, sizedForPlan } = params;
+  const { inboxKey, kind, windowStart, delta, sizedForPlan, dedupToken, tx } = params;
   if (delta <= 0) return;
-  await db.inboxUsageMeter.upsert({
-    where: { inboxKey_kind_windowStart: { inboxKey, kind, windowStart } },
-    create: { inboxKey, kind, windowStart, used: delta, sizedForPlan: sizedForPlan ?? null },
-    update: { used: { increment: delta } },
-  });
+
+  const apply = async (client: DbClient): Promise<void> => {
+    // First claim of the token wins; a replay finds it already claimed and skips the
+    // increment entirely. Claim + increment share `client`, so under `tx` (or the
+    // fallback transaction below) they can never tear apart across a crash.
+    if (dedupToken && !(await claimIdempotencyToken(dedupToken, client))) return;
+    await client.inboxUsageMeter.upsert({
+      where: { inboxKey_kind_windowStart: { inboxKey, kind, windowStart } },
+      create: { inboxKey, kind, windowStart, used: delta, sizedForPlan: sizedForPlan ?? null },
+      update: { used: { increment: delta } },
+    });
+  };
+
+  if (tx) return apply(tx);
+  // Standalone with a token: wrap so the claim and the increment commit atomically.
+  // Standalone without a token: the bare upsert (unchanged behavior).
+  if (dedupToken) {
+    await db.$transaction(apply);
+    return;
+  }
+  await apply(db);
 }
 
 export interface InboxQuota {

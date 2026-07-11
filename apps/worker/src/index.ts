@@ -1,4 +1,4 @@
-import { db } from "@amarnai/db";
+import { db, pruneIdempotencyMarkers } from "@amarnai/db";
 import { config } from "@amarnai/config";
 import { createMailProvider, MailAuthError } from "@amarnai/mail";
 import { deleteExpiredRefreshTokens } from "@amarnai/auth";
@@ -373,6 +373,25 @@ async function main(): Promise<void> {
     reapRefreshTokens().catch((err) => console.error("[refresh-token-reaper] Failed:", err));
   }, 24 * 60 * 60 * 1000);
 
+  // ── Idempotency-marker cleanup ─────────────────────────────────────────────
+  // The idempotency ledger gets one row per metered unit of work and is never
+  // pruned inline (a marker must outlive its job's retry window). Sweep rows past
+  // the retention window on startup, then daily, so the table stays bounded. Only
+  // rows far older than any window a duplicate could still fire in are removed, so
+  // this can never reintroduce a double-count.
+  async function reapIdempotencyMarkers(): Promise<void> {
+    const count = await pruneIdempotencyMarkers();
+    if (count > 0) console.log(`[idempotency-reaper] Deleted ${count} expired idempotency marker(s)`);
+  }
+
+  await reapIdempotencyMarkers().catch((err) =>
+    console.error("[idempotency-reaper] Failed:", err)
+  );
+
+  const idempotencyReaperHandle = setInterval(() => {
+    reapIdempotencyMarkers().catch((err) => console.error("[idempotency-reaper] Failed:", err));
+  }, 24 * 60 * 60 * 1000);
+
   // ── Pending subscription cancellations ─────────────────────────────────────
   // When an account is deleted and Stripe is unreachable, the cancellation is
   // recorded as a durable row so nobody keeps paying for a deleted account. This
@@ -424,6 +443,7 @@ async function main(): Promise<void> {
     clearInterval(intervalHandle);
     clearInterval(watchRenewalHandle);
     clearInterval(refreshReaperHandle);
+    clearInterval(idempotencyReaperHandle);
     clearInterval(pendingCancellationHandle);
     clearInterval(lifecycleEmailHandle);
 

@@ -30,17 +30,25 @@ async function sendEmail(
   subject: string,
   html: string,
   headers?: Record<string, string>,
+  // Stable key so an at-least-once caller (a retried worker job) that re-sends the
+  // same email collapses at the provider instead of delivering twice. Sent as the
+  // `Idempotency-Key` header by Resend; SMTP has no equivalent, so callers that need
+  // exactly-once on self-host must also gate on a DB marker (see lifecycle-email).
+  idempotencyKey?: string,
 ): Promise<void> {
   const resendApiKey = process.env["RESEND_API_KEY"];
   if (resendApiKey) {
     const resend = new Resend(resendApiKey);
-    const { error } = await resend.emails.send({
-      from: from(),
-      to,
-      subject,
-      html,
-      ...(headers ? { headers } : {}),
-    });
+    const { error } = await resend.emails.send(
+      {
+        from: from(),
+        to,
+        subject,
+        html,
+        ...(headers ? { headers } : {}),
+      },
+      idempotencyKey ? { idempotencyKey } : undefined,
+    );
     if (error) throw new Error(`Resend error: ${error.message}`);
     return;
   }
@@ -180,7 +188,11 @@ export interface LifecycleReminderPayload {
 
 export async function sendLifecycleReminderEmail(
   to: string,
-  payload: LifecycleReminderPayload
+  payload: LifecycleReminderPayload,
+  // Idempotency key for the send. The worker passes a stable per-job key so a retry
+  // after a successful-but-uncommitted send collapses at the provider (see
+  // lifecycle-email.ts, which also gates on a DB marker for the SMTP/self-host case).
+  opts?: { idempotencyKey?: string },
 ): Promise<void> {
   const link = `${appUrl()}/emails`;
   const totalNeedsReview = payload.workspaces.reduce((n, w) => n + w.needsReview, 0);
@@ -223,6 +235,7 @@ export async function sendLifecycleReminderEmail(
       // native unsubscribe affordance.
       "List-Unsubscribe": `<${payload.unsubscribeUrl}>`,
       "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
-    }
+    },
+    opts?.idempotencyKey
   );
 }

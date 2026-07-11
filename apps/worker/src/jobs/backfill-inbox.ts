@@ -5,6 +5,7 @@ import {
   resolveBackfillBudget,
   ensureBackfillGrant,
   recordMeterUsage,
+  backfillChunkDedupToken,
   inboxKeyFor,
   meterWindowStart,
   createNotificationsForWorkspaceMembers,
@@ -540,29 +541,46 @@ export function createBackfillInboxWorker(): Worker {
         const totalEstimate = totalEstimateFor(processed);
 
         if (!done) {
-          const res = await db.providerSyncState.updateMany({
-            where: { emailAccountId, backfillGeneration: claimedGeneration },
-            data: {
-              backfillStatus: "RUNNING",
-              backfillStartedAt: null,
-              backfillPageToken: pageToken ?? null,
-              backfillProcessedCount: processed,
-              backfillTotalEstimate: totalEstimate,
-              backfillSkipped: baseSkipped + runSkipped,
-            },
-          });
-          // Record imports against the reset-immune inbox meter, in lockstep with
-          // the (generation-guarded) cursor advance so a superseded run doesn't
-          // count and a retry that restarts the run doesn't double-count.
-          if (res.count > 0 && processedThisRun > 0) {
-            await recordMeterUsage({
-              inboxKey,
-              kind: "BACKFILL",
-              windowStart,
-              delta: processedThisRun,
-              sizedForPlan: ceiling.plan,
+          // Advance the resume cursor and record this chunk's imports against the
+          // reset-immune inbox meter in ONE transaction. These were previously two
+          // separate awaits: a crash between them advanced the (committed) cursor
+          // without metering the committed chunk — a permanent under-report, because
+          // the next run resumes past those threads and never re-counts them. Coupling
+          // them means a crash rolls back both. The generation guard still makes a
+          // superseded run a no-op (count 0 → no meter), and the dedup token (this
+          // run's generation + cursor span) makes a retried commit a no-op too.
+          const res = await db.$transaction(async (tx) => {
+            const r = await tx.providerSyncState.updateMany({
+              where: { emailAccountId, backfillGeneration: claimedGeneration },
+              data: {
+                backfillStatus: "RUNNING",
+                backfillStartedAt: null,
+                backfillPageToken: pageToken ?? null,
+                backfillProcessedCount: processed,
+                backfillTotalEstimate: totalEstimate,
+                backfillSkipped: baseSkipped + runSkipped,
+              },
             });
-          }
+            if (r.count > 0 && processedThisRun > 0) {
+              await recordMeterUsage({
+                inboxKey,
+                kind: "BACKFILL",
+                windowStart,
+                delta: processedThisRun,
+                sizedForPlan: ceiling.plan,
+                dedupToken: backfillChunkDedupToken({
+                  inboxKey,
+                  windowStart,
+                  generation: claimedGeneration,
+                  startProcessed,
+                  processed,
+                  phase: "continuation",
+                }),
+                tx,
+              });
+            }
+            return r;
+          });
           await backfillInboxQueue.add("backfill-inbox", { workspaceId });
           await job.updateProgress(100);
           // Notify SSE subscribers so the backfill card's processed count and
@@ -625,26 +643,53 @@ export function createBackfillInboxWorker(): Worker {
               : "CAPPED"
             : "NONE";
 
-        const doneRes = await db.providerSyncState.updateMany({
-          where: { emailAccountId, backfillGeneration: claimedGeneration },
-          data: {
-            backfillStatus: "DONE",
-            backfillStartedAt: null,
-            backfillCompletedAt: new Date(),
-            backfillPageToken: null,
-            backfillProcessedCount: processed,
-            // All threads loaded — the estimate now equals what we processed.
-            backfillTotalEstimate: processed,
-            backfillSkipped: baseSkipped + runSkipped,
-            // backfillCapReached stays the banner's show/hide gate; backfillLimitState
-            // selects which message. backfillBeyondCount is no longer surfaced.
-            backfillCapReached: limitState !== "NONE",
-            backfillBeyondCount: 0,
-            backfillLimitState: limitState,
-            // Backfill finished — stop auto-routing arriving backlog. New live
-            // threads still auto-route via the normal sync path.
-            autoRouteBacklogArmed: false,
-          },
+        // Mark DONE and record this final run's imports against the reset-immune
+        // inbox meter in ONE transaction — same coupling as the continuation write
+        // above: a crash can't advance the terminal state without metering the chunk.
+        // Both are generation-guarded (count 0 → superseded → no meter, no DONE), and
+        // the dedup token (`_done` suffix so it can never collide with a continuation
+        // token) makes a retried commit a no-op.
+        const doneRes = await db.$transaction(async (tx) => {
+          const r = await tx.providerSyncState.updateMany({
+            where: { emailAccountId, backfillGeneration: claimedGeneration },
+            data: {
+              backfillStatus: "DONE",
+              backfillStartedAt: null,
+              backfillCompletedAt: new Date(),
+              backfillPageToken: null,
+              backfillProcessedCount: processed,
+              // All threads loaded — the estimate now equals what we processed.
+              backfillTotalEstimate: processed,
+              backfillSkipped: baseSkipped + runSkipped,
+              // backfillCapReached stays the banner's show/hide gate; backfillLimitState
+              // selects which message. backfillBeyondCount is no longer surfaced.
+              backfillCapReached: limitState !== "NONE",
+              backfillBeyondCount: 0,
+              backfillLimitState: limitState,
+              // Backfill finished — stop auto-routing arriving backlog. New live
+              // threads still auto-route via the normal sync path.
+              autoRouteBacklogArmed: false,
+            },
+          });
+          if (r.count > 0 && processedThisRun > 0) {
+            await recordMeterUsage({
+              inboxKey,
+              kind: "BACKFILL",
+              windowStart,
+              delta: processedThisRun,
+              sizedForPlan: ceiling.plan,
+              dedupToken: backfillChunkDedupToken({
+                inboxKey,
+                windowStart,
+                generation: claimedGeneration,
+                startProcessed,
+                processed,
+                phase: "done",
+              }),
+              tx,
+            });
+          }
+          return r;
         });
 
         await job.updateProgress(100);
@@ -655,18 +700,6 @@ export function createBackfillInboxWorker(): Worker {
           await backfillInboxQueue.add("backfill-inbox", { workspaceId });
           console.log(`[backfill-inbox] Workspace ${workspaceId}: superseded by a reset at completion — handing off`);
           return;
-        }
-
-        // Record this final run's imports against the reset-immune inbox meter
-        // (guarded by the DONE write above, so a superseded completion doesn't count).
-        if (processedThisRun > 0) {
-          await recordMeterUsage({
-            inboxKey,
-            kind: "BACKFILL",
-            windowStart,
-            delta: processedThisRun,
-            sizedForPlan: ceiling.plan,
-          });
         }
 
         // Final notify so the card flips out of its RUNNING state and the

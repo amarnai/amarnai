@@ -936,6 +936,31 @@ model InboxBackfillGrant {
   @@index([inboxKey])
 }
 
+// Reset-immune, no-FK idempotency ledger: one row per stable dedup token, claimed
+// exactly once. This is the single mechanism that makes retried/duplicated worker
+// jobs safe. It backs recordMeterUsage (a replay with the same token is a no-op
+// instead of a second +1) and gates non-transactional side effects (the taxonomy
+// proposal + meter, the lifecycle email send) so a crash-then-retry never
+// double-charges a meter or repeats a side effect. Like InboxUsageMeter it has NO
+// relation or FK to Workspace/User, so a reset/delete cannot erase a claim — a
+// consumed unit of cost must never be refunded by tearing down its dedup marker.
+//
+// IMPORTANT: never add this model to a teardown in packages/db/src/workspace-ops.ts.
+model IdempotencyMarker {
+  id        String   @id @default(cuid())
+  // Stable dedup token. Its shape varies by call site (threadId+window+source for a
+  // thread sort, generation+cursor span for a backfill chunk, jobId for a taxonomy
+  // generation or a lifecycle send) but it is ALWAYS globally unique, so a concurrent
+  // or retried claim collapses in the DB (insert conflict), not in application logic.
+  token     String   @unique
+  createdAt DateTime @default(now())
+
+  // The daily prune (pruneIdempotencyMarkers) deletes rows by createdAt; without
+  // this index that DELETE seq-scans what is the highest-cardinality write table
+  // (one row per metered unit of work).
+  @@index([createdAt])
+}
+
 // Reset-immune record that an email identity (and optionally a payment card) has
 // consumed the single 14-day free trial. Like InboxUsageMeter it has NO relation or
 // FK to User/Workspace, so account deletion cannot erase it — that is the whole

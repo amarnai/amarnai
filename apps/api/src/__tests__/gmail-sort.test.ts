@@ -1,9 +1,8 @@
 import { vi, describe, it, expect, beforeEach, afterEach } from "vitest";
 import { authed } from "./helpers.js";
 
-vi.mock("@amarnai/db", () => ({
-  Prisma: {},
-  db: {
+vi.mock("@amarnai/db", () => {
+  const db = {
     workspace: { findUnique: vi.fn() },
     workspaceMember: { findUnique: vi.fn() },
     emailConnection: { findUnique: vi.fn() },
@@ -13,12 +12,21 @@ vi.mock("@amarnai/db", () => ({
     taxonomyNode: { findMany: vi.fn(), update: vi.fn() },
     taxonomyEdge: { findMany: vi.fn() },
     emailClassification: { create: vi.fn(), count: vi.fn() },
-  },
-  resolveInboxQuota: vi.fn(),
-  recordMeterUsage: vi.fn(),
-  inboxKeyFor: vi.fn((addr: string) => addr),
-  meterWindowStart: vi.fn(() => new Date("2026-07-01T00:00:00.000Z")),
-}));
+    // The classification row + meter now commit in one transaction; the mock runs
+    // the callback with the same client so the create/meter mocks still fire.
+    $transaction: vi.fn((cb: (tx: unknown) => unknown) => cb(db)),
+  };
+  return {
+    Prisma: {},
+    db,
+    resolveInboxQuota: vi.fn(),
+    recordMeterUsage: vi.fn(),
+    threadSortDedupToken: (inboxKey: string, windowStart: Date, id: string) =>
+      `THREAD_SORT_${inboxKey}_${windowStart.toISOString()}_${id}`,
+    inboxKeyFor: vi.fn((addr: string) => addr),
+    meterWindowStart: vi.fn(() => new Date("2026-07-01T00:00:00.000Z")),
+  };
+});
 
 // Mock @amarnai/gmail so tests never make real HTTP calls. The sort route builds
 // its client via createMailProvider(connection) (@amarnai/mail, unmocked), which
@@ -280,8 +288,18 @@ describe("POST /dev/workspaces/:workspaceId/gmail-sort-thread", () => {
 
     const res = await postSort("gmail-thread-1");
     expect(res.status).toBe(201);
+    // Committed atomically with the classification row (one transaction) and keyed
+    // on a deterministic per-thread token so a crash can't leave the row without the
+    // meter and a concurrent duplicate can't double-count.
+    expect(db.$transaction).toHaveBeenCalled();
     expect(recordMeterUsage).toHaveBeenCalledWith(
-      expect.objectContaining({ inboxKey: "user@gmail.com", kind: "THREAD_SORT", delta: 1 })
+      expect.objectContaining({
+        inboxKey: "user@gmail.com",
+        kind: "THREAD_SORT",
+        delta: 1,
+        dedupToken: "THREAD_SORT_user@gmail.com_2026-07-01T00:00:00.000Z_thread-db-1",
+        tx: expect.anything(),
+      })
     );
   });
 

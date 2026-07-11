@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { Worker } from "bullmq";
 import {
   db,
@@ -25,6 +26,7 @@ import {
   QUEUE_SYNC_INBOX,
   type SyncInboxJobData,
 } from "../queues.js";
+import { DEDUP_CLASSIFY_LIVE } from "@amarnai/queue";
 import { redisConnection } from "../redis.js";
 import { publishWorkspaceSynced } from "../redis-publisher.js";
 import { applyThreadFilter, computeThreadLabelFlags } from "./filter-thread-messages.js";
@@ -131,6 +133,20 @@ const QUOTA_RECOVERY_BATCH = 200;
 
 /** Max attempts before a failed thread stops being auto-recovered. */
 const MAX_CLASSIFY_ATTEMPTS = 5;
+
+/**
+ * Compact, stable signature of a thread's current message-id set. Folded into the
+ * LIVE classify dedup key so the key is CONTENT-aware: a spurious re-discovery of an
+ * unchanged thread (overlapping historyId, a sync retry) yields the same signature
+ * and collapses to one job, while a genuinely-new (or removed) message yields a
+ * different signature and is NOT collapsed — so it re-sorts instead of being silently
+ * dropped while a prior classify for the old content is still in flight. Order-
+ * independent (ids are sorted) and truncated because a dedup id only needs to be
+ * collision-resistant, not reversible.
+ */
+function messageSetSignature(providerMessageIds: string[]): string {
+  return createHash("sha1").update([...providerMessageIds].sort().join(",")).digest("hex").slice(0, 16);
+}
 
 /**
  * Quota-bound a candidate list, stamp classifyingAt, and enqueue LIVE classify
@@ -453,7 +469,9 @@ export function createSyncInboxWorker(): Worker {
       // content untouched. Re-sorting those would re-pay the embedding + routing
       // cost for no reason, so only content-changed threads are re-classified —
       // matching the rule that new messages, not label changes, trigger sorting.
-      const threadsToClassify: string[] = [];
+      // Each entry carries the thread's current message-set signature so the LIVE
+      // enqueue dedup key can be content-aware (see messageSetSignature).
+      const threadsToClassify: Array<{ id: string; sig: string }> = [];
 
       for (const gmailThreadId of changedThreadIds) {
         let rawSnapshot: Awaited<ReturnType<typeof client.getThreadSnapshot>>;
@@ -569,7 +587,10 @@ export function createSyncInboxWorker(): Worker {
           (id) => !rawMessageIdSet.has(id)
         );
         if (messageAdded || messageRemoved) {
-          threadsToClassify.push(emailThreadId);
+          // Signature reflects the NEW message set (rawMessageIds), so a later
+          // content change produces a distinct dedup key and is not collapsed into
+          // an in-flight classify for the prior content.
+          threadsToClassify.push({ id: emailThreadId, sig: messageSetSignature(rawMessageIds) });
         }
       }
 
@@ -596,16 +617,24 @@ export function createSyncInboxWorker(): Worker {
       if (threadsToClassify.length > 0) {
         if (!sortingPaused && taxonomyStrong && routingStarted) {
           await db.emailThread.updateMany({
-            where: { id: { in: threadsToClassify } },
+            where: { id: { in: threadsToClassify.map((t) => t.id) } },
             data: { classifyingAt: new Date() },
           });
 
           await classifyThreadQueue.addBulk(
-            threadsToClassify.map((emailThreadId) => ({
+            threadsToClassify.map(({ id: emailThreadId, sig }) => ({
               name: "classify-thread",
               data: { workspaceId, emailThreadId, source: "LIVE" as const },
               opts: {
-                jobId: `classify_${workspaceId}_${emailThreadId}_${Date.now()}`,
+                // Content-aware dedup key: (workspace, thread, message-set signature).
+                // A spurious re-discovery of the SAME content (overlapping historyId, a
+                // sync retry, two near-simultaneous syncs) yields the same signature and
+                // collapses to one classify job — no double meter/push. A genuinely-new
+                // or removed message yields a DIFFERENT signature, so it re-sorts instead
+                // of being dropped into an in-flight classify for the old content. The
+                // idempotent THREAD_SORT meter (keyed on thread+window, independent of the
+                // signature) is still the backstop if two distinct-content jobs overlap.
+                deduplication: { id: `${DEDUP_CLASSIFY_LIVE}_${workspaceId}_${emailThreadId}_${sig}` },
                 priority: 1,
               },
             }))

@@ -43,7 +43,19 @@ export {
   getMeterUsed,
   getBackfillGraceUsed,
   recordMeterUsage,
+  claimIdempotencyToken,
+  releaseIdempotencyToken,
+  pruneIdempotencyMarkers,
+  IDEMPOTENCY_MARKER_RETENTION_MS,
   resolveInboxQuota,
+} from "./usage-meter.js";
+export {
+  threadSortDedupToken,
+  backfillChunkDedupToken,
+  taxonomyGenDedupToken,
+  lifecycleSendDedupToken,
+} from "./idempotency-tokens.js";
+export {
   ensureBackfillGrant,
   resolveBackfillBudget,
   GRACE_ROLLING_WINDOW_MS,

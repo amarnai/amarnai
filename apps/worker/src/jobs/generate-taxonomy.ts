@@ -1,5 +1,5 @@
 import { Worker } from "bullmq";
-import { db, buildInboxProfile, resolveInboxQuota, recordMeterUsage } from "@amarnai/db";
+import { db, buildInboxProfile, resolveInboxQuota, recordMeterUsage, taxonomyGenDedupToken, Prisma } from "@amarnai/db";
 import {
   createAIProvider,
   getTaxonomyAIProviderConfig,
@@ -19,12 +19,15 @@ import { redisConnection } from "../redis.js";
 
 // ─── Job ─────────────────────────────────────────────────────────────────────
 
-/** Upsert helper so a missing state row is created on first run. */
+/** Upsert helper so a missing state row is created on first run. Accepts an
+ * optional transaction client so the terminal READY write can commit atomically
+ * with the usage meter (see the $transaction in runGenerateTaxonomyJob). */
 async function setState(
   workspaceId: string,
   data: Parameters<typeof db.taxonomyGenerationState.update>[0]["data"],
+  client: typeof db | Prisma.TransactionClient = db,
 ): Promise<void> {
-  await db.taxonomyGenerationState.upsert({
+  await client.taxonomyGenerationState.upsert({
     where: { workspaceId },
     create: { workspaceId, ...(data as object) },
     update: data,
@@ -43,6 +46,7 @@ async function setState(
 export async function runGenerateTaxonomyJob(
   workspaceId: string,
   locale?: string,
+  idempotencyKey?: string,
 ): Promise<void> {
   const workspace = await db.workspace.findUnique({
     where: { id: workspaceId },
@@ -143,28 +147,55 @@ export async function runGenerateTaxonomyJob(
   // same convention as the templates so it renders cleanly on the canvas.
   const result = { ...generated, file: layoutTaxonomyTransfer(generated.file) };
 
-  // Count this generation against the reset-immune, inbox-pooled backstop meter.
+  // Persist the meter increment and the READY proposal in ONE transaction. These
+  // were previously two separate awaits: a crash after the meter but before the
+  // proposal charged the user for a generation whose result was lost (and, once the
+  // attempt went terminal, the FAILED cooldown then blocked the retry for 6h).
+  // Coupling them means a crash rolls back both — never charged without a saved
+  // proposal. The meter is keyed on the job's idempotency key (the marker committed
+  // atomically with the proposal), so a retry that re-runs the already-committed
+  // generation is a no-op on the meter — the retry is gated on the marker, not the
+  // cooldown timestamp a crashed attempt already advanced. (The LLM re-call on a
+  // pre-commit crash is inherent to a non-transactional external effect; the
+  // eligibility delta-gate short-circuits it once a proposal exists.)
   // Always recorded (even when enforcement is off) for observability.
-  // (The delta-gate + cooldown fields below stay on the state row.)
-  if (quota) {
-    await recordMeterUsage({
-      inboxKey: quota.inboxKey,
-      kind: "TAXONOMY_GEN",
-      windowStart: quota.windowStart,
-      delta: 1,
-      sizedForPlan: genPlan,
-    });
-  }
+  //
+  // The dedup token is the job's idempotency key. If it is ever absent (a direct or
+  // non-BullMQ call), fall OPEN — no token — so the meter simply counts. The prior
+  // `?? workspaceId` fallback produced a per-workspace-CONSTANT token: once claimed,
+  // every future generation for that workspace would find it already claimed and skip
+  // the increment forever (a silent under-count). Failing open to "count" is the safe
+  // direction; the transaction + eligibility delta-gate still prevent a same-run retry
+  // from double-counting even without a token.
+  const dedupToken = idempotencyKey ? taxonomyGenDedupToken(idempotencyKey) : undefined;
+  await db.$transaction(async (tx) => {
+    if (quota) {
+      await recordMeterUsage({
+        inboxKey: quota.inboxKey,
+        kind: "TAXONOMY_GEN",
+        windowStart: quota.windowStart,
+        delta: 1,
+        sizedForPlan: genPlan,
+        // Omit entirely when absent (fail-open); do not pass `undefined`.
+        ...(dedupToken ? { dedupToken } : {}),
+        tx,
+      });
+    }
 
-  await setState(workspaceId, {
-    status: "READY",
-    proposal: result.file as unknown as object,
-    matchedTemplateId: template.id,
-    lastGeneratedAt: now,
-    threadCountAtLastGen: profile.eligibleThreadCount,
-    lastOutcome: "SUCCESS",
-    modelProvider: provider.providerName,
-    modelName: provider.modelName,
+    await setState(
+      workspaceId,
+      {
+        status: "READY",
+        proposal: result.file as unknown as object,
+        matchedTemplateId: template.id,
+        lastGeneratedAt: now,
+        threadCountAtLastGen: profile.eligibleThreadCount,
+        lastOutcome: "SUCCESS",
+        modelProvider: provider.providerName,
+        modelName: provider.modelName,
+      },
+      tx,
+    );
   });
 
   console.log(
@@ -177,7 +208,7 @@ export async function runGenerateTaxonomyJob(
 export function createGenerateTaxonomyWorker(): Worker {
   const worker = new Worker<GenerateTaxonomyJobData>(
     QUEUE_GENERATE_TAXONOMY,
-    (job) => runGenerateTaxonomyJob(job.data.workspaceId, job.data.locale),
+    (job) => runGenerateTaxonomyJob(job.data.workspaceId, job.data.locale, job.id),
     {
       connection: redisConnection,
       // One LLM call per job; a small pool is plenty.

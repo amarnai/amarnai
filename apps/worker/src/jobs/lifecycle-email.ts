@@ -1,5 +1,5 @@
 import { Worker } from "bullmq";
-import { db } from "@amarnai/db";
+import { db, claimIdempotencyToken, releaseIdempotencyToken, lifecycleSendDedupToken } from "@amarnai/db";
 import { appUrl, sendLifecycleReminderEmail, type LifecycleWorkspaceSummary } from "@amarnai/email";
 import { signUnsubscribeToken } from "@amarnai/auth/unsubscribe-token";
 import {
@@ -59,7 +59,7 @@ export function summarizeReportable(
  * the timestamp after the send (or the decision to skip) succeeds, so a failed
  * send is retried rather than silently suppressing the next cycle.
  */
-export async function runLifecycleEmailJob(userId: string): Promise<void> {
+export async function runLifecycleEmailJob(userId: string, idempotencyKey?: string): Promise<void> {
   const user = await db.user.findUnique({
     where: { id: userId },
     select: { email: true, name: true, emailVerified: true, lifecycleEmailsEnabled: true },
@@ -109,11 +109,52 @@ export async function runLifecycleEmailJob(userId: string): Promise<void> {
     return;
   }
 
-  await sendLifecycleReminderEmail(user.email, {
-    name: user.name,
-    workspaces,
-    unsubscribeUrl: buildUnsubscribeUrl(userId),
-  });
+  // Gate the send on a one-time idempotency claim so a BullMQ retry after a send
+  // that succeeded but whose stamp never committed does not re-send the reminder.
+  // The token is claimed BEFORE the send and released if the send throws, so a
+  // genuine failure still retries; only a completed send keeps the claim. On the
+  // hosted product the same token is also handed to Resend, so even the narrow
+  // crash-after-send-reached-provider window collapses at the provider.
+  // When we have a stable key (the job id), gate the send on a one-time claim so a
+  // retry after a send that completed but whose stamp never committed does not
+  // re-send. Without a key (a direct/non-BullMQ call) fall OPEN to an unguarded send
+  // rather than adopting a per-user-CONSTANT token, which — never released on the
+  // success path — would suppress every future weekly reminder for that user.
+  const sendToken = idempotencyKey ? lifecycleSendDedupToken(idempotencyKey) : null;
+  if (sendToken) {
+    const won = await claimIdempotencyToken(sendToken);
+    if (!won) {
+      // The token was already claimed. This is either a duplicate of a send that
+      // completed (the winner stamped lifecycleEmailSentAt, so the cadence is
+      // already correct) or the retry of an attempt that claimed the token and then
+      // CRASHED before sending. We deliberately do NOT stamp here: stamping would
+      // suppress the user for a full week even in the crash case where nothing was
+      // sent. Leaving the stamp untouched keeps them eligible so the next daily tick
+      // re-enqueues a fresh job (new job.id → new token) and the reminder goes out a
+      // day late rather than being lost for the cycle.
+      console.log(`[lifecycle-email] User ${userId} reminder already claimed for this job — skipping resend`);
+      return;
+    }
+  }
+
+  try {
+    await sendLifecycleReminderEmail(
+      user.email,
+      {
+        name: user.name,
+        workspaces,
+        unsubscribeUrl: buildUnsubscribeUrl(userId),
+      },
+      sendToken ? { idempotencyKey: sendToken } : undefined,
+    );
+  } catch (err) {
+    // The send failed — roll back the claim so BullMQ's retry (or the next tick)
+    // can re-send. Best-effort: a failed release just means this job won't retry
+    // the send, which is the safe direction (no double-send). Only meaningful when
+    // a token was claimed (the keyed path).
+    if (sendToken) await releaseIdempotencyToken(sendToken).catch(() => {});
+    throw err;
+  }
 
   // Stamp only after a successful send so a failed send is retried by BullMQ (or
   // re-enqueued next tick) rather than suppressing the user for a week.
@@ -129,7 +170,7 @@ export async function runLifecycleEmailJob(userId: string): Promise<void> {
 export function createLifecycleEmailWorker(): Worker {
   const worker = new Worker<LifecycleEmailJobData>(
     QUEUE_LIFECYCLE_EMAIL,
-    (job) => runLifecycleEmailJob(job.data.userId),
+    (job) => runLifecycleEmailJob(job.data.userId, job.id),
     {
       connection: redisConnection,
       // Lightweight jobs (a few queries + one email), so a small pool is plenty.

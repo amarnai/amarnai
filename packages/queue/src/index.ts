@@ -17,6 +17,12 @@ export const DEDUP_CLASSIFY_UNROUTED     = "classify_unrouted";
 export const DEDUP_CLASSIFY_UNCLASSIFIED = "classify_unclassified";
 export const DEDUP_CLASSIFY_NEEDS_REVIEW = "classify_needs_review";
 export const DEDUP_CLASSIFY_MIGRATION    = "classify_migration";
+// Live sort of a new/changed thread from an inbox sync. Deterministic per
+// (workspace, thread) — NOT timestamped — so two concurrent syncs (or a retry that
+// re-discovers the same thread) collapse to a single classify job instead of each
+// passing the row-based quota guard and metering/pushing twice. Same namespace shape
+// as the recovery dedup prefixes above.
+export const DEDUP_CLASSIFY_LIVE         = "classify_live";
 
 // ─── Queue names ──────────────────────────────────────────────────────────────
 // Single source of truth. Import these constants everywhere instead of

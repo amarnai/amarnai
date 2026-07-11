@@ -30,8 +30,8 @@ const {
 
 // ─── Mocks ────────────────────────────────────────────────────────────────────
 
-vi.mock("@amarnai/db", () => ({
-  db: {
+vi.mock("@amarnai/db", () => {
+  const db = {
     workspace: { findUnique: vi.fn() },
     emailThread: {
       findFirst: vi.fn(),
@@ -43,15 +43,23 @@ vi.mock("@amarnai/db", () => ({
     taxonomyEdge: { findMany: vi.fn() },
     taxonomyNodeReference: { findMany: vi.fn() },
     emailClassification: { create: vi.fn(), findFirst: vi.fn(), count: vi.fn() },
-  },
-  getInboxPlanCeiling: mockGetInboxPlanCeiling,
-  inboxKeyFor: (a: string) => a,
-  meterWindowStart: () => new Date("2026-06-01T00:00:00Z"),
-  getMeterUsed: mockGetMeterUsed,
-  recordMeterUsage: mockRecordMeterUsage,
-  markGmailConnectionAuthFailed: vi.fn().mockResolvedValue(false),
-  maybeCreateQuotaBlockedNotifications: vi.fn().mockResolvedValue(undefined),
-}));
+    // The classification row + meter increment now commit in one transaction; the
+    // mock runs the callback with the same client so the create/meter mocks fire.
+    $transaction: vi.fn((cb: (tx: unknown) => unknown) => cb(db)),
+  };
+  return {
+    db,
+    getInboxPlanCeiling: mockGetInboxPlanCeiling,
+    inboxKeyFor: (a: string) => a,
+    meterWindowStart: () => new Date("2026-06-01T00:00:00Z"),
+    getMeterUsed: mockGetMeterUsed,
+    recordMeterUsage: mockRecordMeterUsage,
+    threadSortDedupToken: (inboxKey: string, windowStart: Date, id: string) =>
+      `THREAD_SORT_${inboxKey}_${windowStart.toISOString()}_${id}`,
+    markGmailConnectionAuthFailed: vi.fn().mockResolvedValue(false),
+    maybeCreateQuotaBlockedNotifications: vi.fn().mockResolvedValue(undefined),
+  };
+});
 
 // Quota enforcement is on by default; individual tests flip it as needed.
 vi.mock("@amarnai/config", () => ({
@@ -603,6 +611,38 @@ describe("createClassifyThreadWorker — monthly thread-sort quota", () => {
     expect(mockGetMeterUsed).not.toHaveBeenCalled();
     expect(mockSortThreadByEmbedding).toHaveBeenCalledOnce();
     expect(mockRecordMeterUsage).toHaveBeenCalledOnce();
+  });
+
+  it("meters inside the same transaction as the classification row, keyed on a stable per-thread token", async () => {
+    createClassifyThreadWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID, emailThreadId: THREAD_ID, source: "LIVE" }));
+
+    // create + meter commit atomically (one transaction), and the meter carries a
+    // deterministic dedup token (no timestamp) plus the transaction client.
+    expect(db.$transaction).toHaveBeenCalled();
+    expect(mockRecordMeterUsage).toHaveBeenCalledWith(
+      expect.objectContaining({
+        kind: "THREAD_SORT",
+        delta: 1,
+        dedupToken: `THREAD_SORT_ben@gmail.com_2026-06-01T00:00:00.000Z_${THREAD_ID}`,
+        tx: expect.anything(),
+      }),
+    );
+  });
+
+  it("a duplicated live job for the same thread produces the SAME dedup token (one meter unit)", async () => {
+    // The dedup token is derived only from inbox + window + thread, so two concurrent
+    // classify jobs for one thread present the identical token — the idempotent meter
+    // (see usage-meter.test) then counts it exactly once.
+    createClassifyThreadWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID, emailThreadId: THREAD_ID, source: "LIVE" }));
+    await processor(makeJob({ workspaceId: WS_ID, emailThreadId: THREAD_ID, source: "LIVE" }));
+
+    const tokens = mockRecordMeterUsage.mock.calls.map((c) => (c[0] as { dedupToken: string }).dedupToken);
+    expect(tokens).toHaveLength(2);
+    expect(new Set(tokens).size).toBe(1); // both jobs, one stable token
   });
 });
 

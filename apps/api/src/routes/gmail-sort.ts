@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import { z } from "zod";
-import { db, resolveInboxQuota, recordMeterUsage, inboxKeyFor, meterWindowStart } from "@amarnai/db";
+import { db, resolveInboxQuota, recordMeterUsage, inboxKeyFor, meterWindowStart, threadSortDedupToken } from "@amarnai/db";
 import { createAIProvider, createEmbeddingProvider, sortThreadByEmbedding, snapshotToThreadMessages, getAIProviderConfig, getEmbeddingProviderConfig } from "@amarnai/ai";
 import type { EmbeddableNode } from "@amarnai/ai";
 import { getThreadSortLimit, getDraftQuotaResetsAt } from "@amarnai/shared";
@@ -286,27 +286,45 @@ gmailSort.post("/dev/workspaces/:workspaceId/gmail-sort-thread", async (c) => {
       },
     })) > 0;
 
-  const classification = await db.emailClassification.create({
-    data: {
-      workspaceId,
-      emailThreadId: emailThread.id,
-      finalNodeId: result.finalNodeId,
-      confidence: result.confidence,
-      explanation: result.explanation,
-      needsHumanReview: result.needsHumanReview,
-      transientFailure:
-        result.fallbackCause === "llm_error" || result.fallbackCause === "embedding_failed",
-      source: "MANUAL",
-      decisionSource: result.decisionSource,
-      modelProvider: provider.providerName,
-      modelName: provider.modelName,
-    },
-    select: { id: true },
-  });
+  // Persist the classification row and its meter increment in ONE transaction,
+  // exactly as the classify worker does. As two separate awaits, a crash between
+  // them left the row committed but the meter unrecorded, and the count-based
+  // `alreadyCountedThisWindow` guard then read that row and skipped the meter
+  // forever (under-count); two concurrent manual sorts of one thread could also
+  // both pass the guard and double-count. The per-thread-per-window dedup token
+  // makes the increment idempotent, so even a concurrent duplicate counts once.
+  const classification = await db.$transaction(async (tx) => {
+    const row = await tx.emailClassification.create({
+      data: {
+        workspaceId,
+        emailThreadId: emailThread.id,
+        finalNodeId: result.finalNodeId,
+        confidence: result.confidence,
+        explanation: result.explanation,
+        needsHumanReview: result.needsHumanReview,
+        transientFailure:
+          result.fallbackCause === "llm_error" || result.fallbackCause === "embedding_failed",
+        source: "MANUAL",
+        decisionSource: result.decisionSource,
+        modelProvider: provider.providerName,
+        modelName: provider.modelName,
+      },
+      select: { id: true },
+    });
 
-  if (!alreadyCountedThisWindow) {
-    await recordMeterUsage({ inboxKey, kind: "THREAD_SORT", windowStart: meterWindow, delta: 1 });
-  }
+    if (!alreadyCountedThisWindow) {
+      await recordMeterUsage({
+        inboxKey,
+        kind: "THREAD_SORT",
+        windowStart: meterWindow,
+        delta: 1,
+        dedupToken: threadSortDedupToken(inboxKey, meterWindow, emailThread.id),
+        tx,
+      });
+    }
+
+    return row;
+  });
 
   await db.emailThread.update({
     where: { id: emailThread.id },

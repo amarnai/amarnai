@@ -8,8 +8,8 @@ const { mockGetInboxBackfillCeiling, mockResolveBackfillBudget, mockRecordMeterU
   mockRecordMeterUsage: vi.fn(),
 }));
 
-vi.mock("@amarnai/db", () => ({
-  db: {
+vi.mock("@amarnai/db", () => {
+  const db = {
     workspace: { findUnique: vi.fn() },
     emailConnection: { findUnique: vi.fn() },
     gmailSyncSettings: { findUnique: vi.fn() },
@@ -31,14 +31,24 @@ vi.mock("@amarnai/db", () => ({
       upsert: vi.fn(),
     },
     auditLog: { create: vi.fn().mockResolvedValue({}) },
-  },
+    // The cursor advance + meter now commit in one transaction; the mock runs the
+    // callback with the same client so the updateMany/meter mocks still fire.
+    $transaction: vi.fn((cb: (tx: unknown) => unknown) => cb(db)),
+  };
+  return {
+  db,
   getInboxBackfillCeiling: mockGetInboxBackfillCeiling,
   resolveBackfillBudget: mockResolveBackfillBudget,
   recordMeterUsage: mockRecordMeterUsage,
+  backfillChunkDedupToken: (p: {
+    inboxKey: string; windowStart: Date; generation: number; startProcessed: number; processed: number; phase: string;
+  }) =>
+    `BACKFILL_${p.inboxKey}_${p.windowStart.toISOString()}_g${p.generation}_${p.startProcessed}_${p.processed}${p.phase === "done" ? "_done" : ""}`,
   inboxKeyFor: (a: string) => a,
   meterWindowStart: () => new Date("2026-06-01T00:00:00Z"),
   createNotificationsForWorkspaceMembers: vi.fn().mockResolvedValue(0),
-}));
+  };
+});
 
 vi.mock("@amarnai/config", () => ({
   config: { billing: { enforceBackfillQuota: true, enforceBackfillPaymentGate: true } },
@@ -579,6 +589,72 @@ describe("createBackfillInboxWorker", () => {
 
     // Re-enqueued a continuation (without deduplication).
     expect(vi.mocked(backfillInboxQueue.add)).toHaveBeenCalledWith("backfill-inbox", { workspaceId: WS_ID });
+  });
+
+  it("(c5-meter) meters the chunk inside the cursor transaction with a generation+cursor dedup token", async () => {
+    vi.mocked(db.providerSyncState.findUnique).mockResolvedValue({
+      backfillStatus: "PENDING",
+      backfillStartedAt: null,
+      backfillPageToken: null,
+      backfillProcessedCount: 0,
+      backfillGeneration: 0,
+    } as never);
+    const fullPage = Array.from({ length: 100 }, (_, i) => makeGmailThread({ id: `t-${i}` }));
+    mockListThreadsPage.mockResolvedValue({ threads: fullPage, nextPageToken: "next-cursor" });
+    vi.mocked(db.emailThread.findUnique).mockResolvedValue(null);
+    mockGetThread.mockImplementation(async (id: string) => ({ id }));
+    vi.mocked(db.emailThread.upsert).mockResolvedValue({ id: "db-x" } as never);
+
+    createBackfillInboxWorker();
+    await getProcessor()(makeJob({ workspaceId: WS_ID }));
+
+    // Meter committed atomically with the cursor advance (one transaction), keyed on
+    // the run's generation + cursor span (0→500) so a retried commit is a no-op.
+    expect(db.$transaction).toHaveBeenCalled();
+    expect(mockRecordMeterUsage).toHaveBeenCalledWith(
+      expect.objectContaining({
+        kind: "BACKFILL",
+        delta: 500,
+        dedupToken: "BACKFILL_test@gmail.com_2026-06-01T00:00:00.000Z_g0_0_500",
+        tx: expect.anything(),
+      }),
+    );
+  });
+
+  it("(c4-meter) the final DONE run meters with a `_done` token (never collides with a continuation)", async () => {
+    // Free plan, one short page → exhausted on this run → DONE path meters.
+    vi.mocked(db.workspace.findUnique).mockResolvedValue({
+      ownerUserId: "user-1",
+      plan: "FREE",
+      billingCycle: null,
+    } as never);
+    vi.mocked(db.providerSyncState.findUnique).mockResolvedValue({
+      backfillStatus: "PENDING",
+      backfillStartedAt: null,
+      backfillPageToken: null,
+      backfillProcessedCount: 0,
+      backfillGeneration: 0,
+    } as never);
+    mockListThreadsPage.mockResolvedValue({
+      threads: [makeGmailThread({ id: "t1" })],
+      nextPageToken: undefined,
+      resultSizeEstimate: 1,
+    });
+    vi.mocked(db.emailThread.findUnique).mockResolvedValue(null);
+    mockGetThread.mockResolvedValue({ id: "t1" });
+    vi.mocked(db.emailThread.upsert).mockResolvedValue({ id: "db-t1" } as never);
+
+    createBackfillInboxWorker();
+    await getProcessor()(makeJob({ workspaceId: WS_ID }));
+
+    expect(mockRecordMeterUsage).toHaveBeenCalledWith(
+      expect.objectContaining({
+        kind: "BACKFILL",
+        delta: 1,
+        dedupToken: "BACKFILL_test@gmail.com_2026-06-01T00:00:00.000Z_g0_0_1_done",
+        tx: expect.anything(),
+      }),
+    );
   });
 
   it("(c6) resumes from the persisted pageToken and processed count", async () => {

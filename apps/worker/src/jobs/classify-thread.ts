@@ -8,6 +8,7 @@ import {
   recordMeterUsage,
   markGmailConnectionAuthFailed,
   maybeCreateQuotaBlockedNotifications,
+  threadSortDedupToken,
 } from "@amarnai/db";
 import { config } from "@amarnai/config";
 import { getThreadSortLimit, MAX_REFERENCES_PER_NODE } from "@amarnai/shared";
@@ -605,46 +606,62 @@ export function createClassifyThreadWorker(): Worker {
             !filedToCatchAll &&
             (result.fallbackCause === "llm_error" || result.fallbackCause === "embedding_failed");
 
-          // ── 7. Persist routing result + triage ────────────────────────────
-
-          const { id: classificationId } = await db.emailClassification.create({
-            data: {
-              workspaceId,
-              emailThreadId,
-              finalNodeId,
-              confidence,
-              explanation,
-              needsHumanReview,
-              transientFailure,
-              source,
-              decisionSource,
-              modelProvider: aiProvider.providerName,
-              modelName: aiProvider.modelName,
-              // Compact routing telemetry (maxima + top-K node sims). The scores
-              // are already computed during sorting; persisting the trimmed
-              // summary adds no compute and keeps the row small while enabling
-              // post-hoc diagnosis and data-driven threshold tuning.
-              // Telemetry threshold matches the routing config in use (centered
-              // similarities sit on a lower absolute scale than raw cosine).
-              rawOutput: buildRoutingTelemetry(result, CENTERED_ROUTING_CONFIG.thetaMin),
-            },
-            select: { id: true },
-          });
-
-          // Record one distinct-thread sort against the reset-immune inbox meter,
-          // the first time this thread is metered this window. Runs unconditionally
-          // (independent of the enforce flag) so self-host gets usage observability.
-          if (meteredSort && !alreadyCountedThisWindow) {
-            await recordMeterUsage({
-              inboxKey,
-              kind: "THREAD_SORT",
-              windowStart: meterWindow,
-              delta: 1,
+          // ── 7. Persist routing result + meter, atomically ─────────────────
+          //
+          // The classification row and its meter increment commit in ONE
+          // transaction. Previously they were two awaits: a crash between them left
+          // the row committed but the meter unrecorded, and the `alreadyCountedThisWindow`
+          // guard above (which counts committed rows) then read that row on the retry
+          // and skipped the meter forever — a permanent under-count. Coupling them means
+          // a crash rolls back both, so the guard and the meter always agree.
+          //
+          // The meter is keyed on a per-thread-per-window dedup token, so even two
+          // concurrent classify jobs for the same thread (the LIVE-enqueue dedup key in
+          // sync-inbox is the first line of defense; this is the backstop) count it once.
+          const classificationId = await db.$transaction(async (tx) => {
+            const { id } = await tx.emailClassification.create({
+              data: {
+                workspaceId,
+                emailThreadId,
+                finalNodeId,
+                confidence,
+                explanation,
+                needsHumanReview,
+                transientFailure,
+                source,
+                decisionSource,
+                modelProvider: aiProvider.providerName,
+                modelName: aiProvider.modelName,
+                // Compact routing telemetry (maxima + top-K node sims). The scores
+                // are already computed during sorting; persisting the trimmed
+                // summary adds no compute and keeps the row small while enabling
+                // post-hoc diagnosis and data-driven threshold tuning.
+                // Telemetry threshold matches the routing config in use (centered
+                // similarities sit on a lower absolute scale than raw cosine).
+                rawOutput: buildRoutingTelemetry(result, CENTERED_ROUTING_CONFIG.thetaMin),
+              },
+              select: { id: true },
             });
-            // Only count once per thread per window even if it re-sorts later in
-            // this same job lifetime.
-            alreadyCountedThisWindow = true;
-          }
+
+            // Record one distinct-thread sort against the reset-immune inbox meter,
+            // the first time this thread is metered this window. Runs unconditionally
+            // (independent of the enforce flag) so self-host gets usage observability.
+            if (meteredSort && !alreadyCountedThisWindow) {
+              await recordMeterUsage({
+                inboxKey,
+                kind: "THREAD_SORT",
+                windowStart: meterWindow,
+                delta: 1,
+                dedupToken: threadSortDedupToken(inboxKey, meterWindow, emailThreadId),
+                tx,
+              });
+              // Only count once per thread per window even if it re-sorts later in
+              // this same job lifetime.
+              alreadyCountedThisWindow = true;
+            }
+
+            return id;
+          });
 
           const isUnclassified = rootNode != null && finalNodeId === rootNode.id;
           const triageStatus = isUnclassified

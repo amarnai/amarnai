@@ -1,4 +1,5 @@
 import { vi, describe, it, expect, beforeEach } from "vitest";
+import { createHash } from "node:crypto";
 
 // ─── Mocks ────────────────────────────────────────────────────────────────────
 
@@ -314,6 +315,29 @@ describe("createSyncInboxWorker — taxonomy gate", () => {
     await processor(makeJob({ workspaceId: WS_ID }));
 
     expect(classifyThreadQueue.addBulk).toHaveBeenCalledOnce();
+  });
+
+  it("keys the LIVE classify enqueue on a content signature so new messages are not dropped (Issue 13 / #4)", async () => {
+    createSyncInboxWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID }));
+
+    const [jobs] = vi.mocked(classifyThreadQueue.addBulk).mock.calls[0]! as [
+      Array<{ opts: { deduplication: { id: string } } }>,
+    ];
+    // The default snapshot has one message `msg-gmail-t1`; the dedup id folds in a
+    // signature of that set, so a spurious re-discovery collapses but a genuinely-new
+    // message (a different set → different signature) enqueues instead of being dropped.
+    const sig = createHash("sha1").update(["msg-gmail-t1"].sort().join(",")).digest("hex").slice(0, 16);
+    expect(jobs[0]!.opts.deduplication.id).toBe(`classify_live_${WS_ID}_db-t1_${sig}`);
+
+    // Same content on a second sync → identical key (collapses the duplicate).
+    vi.mocked(classifyThreadQueue.addBulk).mockClear();
+    await processor(makeJob({ workspaceId: WS_ID }));
+    const [jobs2] = vi.mocked(classifyThreadQueue.addBulk).mock.calls[0]! as [
+      Array<{ opts: { deduplication: { id: string } } }>,
+    ];
+    expect(jobs2[0]!.opts.deduplication.id).toBe(`classify_live_${WS_ID}_db-t1_${sig}`);
   });
 
   it("does not mark threads as UNROUTED when sortingPaused is true (leaves PENDING)", async () => {
