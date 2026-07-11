@@ -12,9 +12,12 @@ vi.mock("@amarnai/db", () => ({
     emailMessage: { upsert: vi.fn() },
     taxonomyNode: { findMany: vi.fn(), update: vi.fn() },
     taxonomyEdge: { findMany: vi.fn() },
-    emailClassification: { create: vi.fn() },
+    emailClassification: { create: vi.fn(), count: vi.fn() },
   },
-  countRecurringThreadSorts: vi.fn(),
+  resolveInboxQuota: vi.fn(),
+  recordMeterUsage: vi.fn(),
+  inboxKeyFor: vi.fn((addr: string) => addr),
+  meterWindowStart: vi.fn(() => new Date("2026-07-01T00:00:00.000Z")),
 }));
 
 // Mock @amarnai/gmail so tests never make real HTTP calls. The sort route builds
@@ -61,12 +64,20 @@ vi.mock("@amarnai/ai", () => ({
 }));
 
 import app from "../app.js";
-import { db, countRecurringThreadSorts } from "@amarnai/db";
+import { db, resolveInboxQuota, recordMeterUsage } from "@amarnai/db";
 import { GmailClient } from "@amarnai/gmail";
 
 const WS_ID = "ws-1";
 
-const BASE_WORKSPACE = { id: WS_ID, ownerUserId: "user-1", plan: "FREE" };
+const BASE_WORKSPACE = { id: WS_ID, ownerUserId: "user-1" };
+
+/**
+ * Build a resolveInboxQuota result reporting `used` recurring sorts on the FREE
+ * plan (limit 500) — the reset-immune inbox meter the sort gate reads.
+ */
+function quotaUsed(used: number) {
+  return { inboxKey: "user@gmail.com", windowStart: new Date(), plan: "FREE" as const, used };
+}
 
 const BASE_CONNECTION = {
   id: "conn-1",
@@ -171,9 +182,12 @@ beforeEach(() => {
   vi.mocked(db.taxonomyNode.findMany).mockResolvedValue(BASE_NODES as never);
   vi.mocked(db.taxonomyEdge.findMany).mockResolvedValue(BASE_EDGES as never);
   vi.mocked(db.emailClassification.create).mockResolvedValue({ id: "cls-1" } as never);
+  // Default: this thread has no prior metered classification this window, so the
+  // sort records a fresh meter tick.
+  vi.mocked(db.emailClassification.count).mockResolvedValue(0 as never);
   vi.mocked(db.emailThread.update).mockResolvedValue({} as never);
   // Well under the FREE limit (500) by default so the quota check passes.
-  vi.mocked(countRecurringThreadSorts).mockResolvedValue(0);
+  vi.mocked(resolveInboxQuota).mockResolvedValue(quotaUsed(0));
   mockSortThreadByEmbedding.mockResolvedValue(VALID_CLASSIFY_RESULT);
 });
 
@@ -217,10 +231,14 @@ describe("POST /dev/workspaces/:workspaceId/gmail-sort-thread", () => {
     expect(body.error).toMatch(/no gmail inbox/i);
   });
 
-  it("returns 429 when the monthly thread-sort quota is reached", async () => {
-    // FREE limit is 500; pretend it is full. The check runs before the Gmail
-    // fetch + AI sort, so neither should be attempted.
-    vi.mocked(countRecurringThreadSorts).mockResolvedValue(500);
+  it("returns 429 when the reset-immune inbox meter is at the quota", async () => {
+    // FREE limit is 500; the reset-immune, inbox-pooled meter reports it full.
+    // This is the reset-immunity guarantee: after a disconnect+reconnect
+    // (resetWorkspaceData) wipes this workspace's EmailClassification rows, the
+    // inbox meter still reads at-cap, so the sort stays blocked — quota cannot be
+    // refunded by resetting. The check runs before the Gmail fetch + AI sort, so
+    // neither should be attempted.
+    vi.mocked(resolveInboxQuota).mockResolvedValue(quotaUsed(500));
 
     const res = await postSort();
     expect(res.status).toBe(429);
@@ -230,13 +248,17 @@ describe("POST /dev/workspaces/:workspaceId/gmail-sort-thread", () => {
     expect(body.limit).toBe(500);
     expect(typeof body.resetsAt).toBe("string");
 
-    expect(db.emailConnection.findUnique).not.toHaveBeenCalled();
+    // The gate keys the meter off the connection's inbox address, so the
+    // connection is resolved — but no sort work runs once over the cap.
+    expect(resolveInboxQuota).toHaveBeenCalledWith("user@gmail.com", "THREAD_SORT", expect.any(Date));
     expect(mockSortThreadByEmbedding).not.toHaveBeenCalled();
     expect(db.emailClassification.create).not.toHaveBeenCalled();
+    // Over the cap, nothing is sorted, so no meter tick is recorded.
+    expect(recordMeterUsage).not.toHaveBeenCalled();
   });
 
   it("proceeds with the sort when usage is below the limit", async () => {
-    vi.mocked(countRecurringThreadSorts).mockResolvedValue(499);
+    vi.mocked(resolveInboxQuota).mockResolvedValue(quotaUsed(499));
     vi.mocked(GmailClient).mockImplementationOnce(() => ({
       getThreadSnapshot: vi.fn().mockResolvedValue(makeSnapshot()),
       listRecentThreads: vi.fn(),
@@ -245,6 +267,36 @@ describe("POST /dev/workspaces/:workspaceId/gmail-sort-thread", () => {
     const res = await postSort("gmail-thread-1");
     expect(res.status).toBe(201);
     expect(mockSortThreadByEmbedding).toHaveBeenCalledOnce();
+  });
+
+  it("records a THREAD_SORT meter tick on the same counter it gates on", async () => {
+    // Closes the pre-check/accounting loop: this inline sort must increment the
+    // reset-immune inbox meter (keyed off the connection address), not just the
+    // deletable EmailClassification row — otherwise the gate above never sees it.
+    vi.mocked(GmailClient).mockImplementationOnce(() => ({
+      getThreadSnapshot: vi.fn().mockResolvedValue(makeSnapshot()),
+      listRecentThreads: vi.fn(),
+    }) as never);
+
+    const res = await postSort("gmail-thread-1");
+    expect(res.status).toBe(201);
+    expect(recordMeterUsage).toHaveBeenCalledWith(
+      expect.objectContaining({ inboxKey: "user@gmail.com", kind: "THREAD_SORT", delta: 1 })
+    );
+  });
+
+  it("does not double-count a thread already metered this window", async () => {
+    // A prior recurring classification exists for this thread this window, so a
+    // re-sort is free — distinct-thread semantics, mirroring the classify worker.
+    vi.mocked(db.emailClassification.count).mockResolvedValue(1 as never);
+    vi.mocked(GmailClient).mockImplementationOnce(() => ({
+      getThreadSnapshot: vi.fn().mockResolvedValue(makeSnapshot()),
+      listRecentThreads: vi.fn(),
+    }) as never);
+
+    const res = await postSort("gmail-thread-1");
+    expect(res.status).toBe(201);
+    expect(recordMeterUsage).not.toHaveBeenCalled();
   });
 
   it("returns 400 when gmailThreadId is missing", async () => {

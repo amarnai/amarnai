@@ -1,9 +1,9 @@
 import { Hono } from "hono";
 import { z } from "zod";
-import { db, countRecurringThreadSorts } from "@amarnai/db";
+import { db, resolveInboxQuota, recordMeterUsage, inboxKeyFor, meterWindowStart } from "@amarnai/db";
 import { createAIProvider, createEmbeddingProvider, sortThreadByEmbedding, snapshotToThreadMessages, getAIProviderConfig, getEmbeddingProviderConfig } from "@amarnai/ai";
 import type { EmbeddableNode } from "@amarnai/ai";
-import { getThreadSortLimit, getDraftQuotaWindowStart, getDraftQuotaResetsAt } from "@amarnai/shared";
+import { getThreadSortLimit, getDraftQuotaResetsAt } from "@amarnai/shared";
 import { config } from "@amarnai/config";
 import { createMailProvider } from "@amarnai/mail";
 // GmailClient is retained only for the Gmail-specific dev endpoint below
@@ -56,32 +56,9 @@ gmailSort.post("/dev/workspaces/:workspaceId/gmail-sort-thread", async (c) => {
 
   const workspace = await db.workspace.findUnique({
     where: { id: workspaceId },
-    select: { id: true, ownerUserId: true, plan: true },
+    select: { id: true, ownerUserId: true },
   });
   if (!workspace) return c.json({ error: "Workspace not found" }, 404);
-
-  // ── 1a. Monthly thread-sort quota ─────────────────────────────────────────
-  //
-  // This synchronous sort runs a real embedding/LLM, so it is metered like any
-  // recurring sort. Checked before the Gmail fetch + AI call to avoid wasted
-  // work when over limit. Recurring sorts only (BACKFILL/MOVE are exempt — see
-  // thread-sort-usage). Gated by enforceThreadSortQuota for self-host/dev.
-  if (config.billing.enforceThreadSortQuota) {
-    const now = new Date();
-    const limit = getThreadSortLimit(workspace.plan);
-    const used = await countRecurringThreadSorts(workspaceId, getDraftQuotaWindowStart(now));
-    if (used >= limit) {
-      return c.json(
-        {
-          error: "Monthly thread-sort quota exceeded",
-          used,
-          limit,
-          resetsAt: getDraftQuotaResetsAt(now).toISOString(),
-        },
-        429
-      );
-    }
-  }
 
   const connection = await db.emailConnection.findUnique({
     where: { workspaceId },
@@ -95,6 +72,33 @@ gmailSort.post("/dev/workspaces/:workspaceId/gmail-sort-thread", async (c) => {
   });
   if (!connection) {
     return c.json({ error: "No Gmail inbox connected to this workspace" }, 422);
+  }
+
+  // ── 1a. Monthly thread-sort quota ─────────────────────────────────────────
+  //
+  // This synchronous sort runs a real embedding/LLM, so it is metered like any
+  // recurring sort. Checked before the Gmail fetch + AI call to avoid wasted
+  // work when over limit. Gated against the SAME reset-immune, inbox-pooled
+  // meter the classify worker accounts + gates on (resolveInboxQuota →
+  // InboxUsageMeter), sized by the top plan among workspaces sharing this inbox.
+  // A disconnect+reconnect (resetWorkspaceData) wipes EmailClassification rows
+  // but never the meter, so it cannot refund quota. Gated by
+  // enforceThreadSortQuota for self-host/dev.
+  if (config.billing.enforceThreadSortQuota) {
+    const now = new Date();
+    const { plan, used } = await resolveInboxQuota(connection.emailAddress, "THREAD_SORT", now);
+    const limit = getThreadSortLimit(plan);
+    if (used >= limit) {
+      return c.json(
+        {
+          error: "Monthly thread-sort quota exceeded",
+          used,
+          limit,
+          resetsAt: getDraftQuotaResetsAt(now).toISOString(),
+        },
+        429
+      );
+    }
   }
 
   // ── 2. Fetch + normalize thread ───────────────────────────────────────────
@@ -261,7 +265,26 @@ gmailSort.post("/dev/workspaces/:workspaceId/gmail-sort-thread", async (c) => {
     );
   }
 
-  // ── 8. Persist classification ─────────────────────────────────────────────
+  // ── 8. Persist classification + meter the sort ────────────────────────────
+  //
+  // Account this synchronous sort against the SAME reset-immune, inbox-pooled
+  // meter the gate above reads, so this endpoint's pre-check and accounting
+  // share one counter (the invariant this whole change enforces). Unlike the
+  // live/backfill flow, this route sorts inline instead of enqueuing the
+  // classify worker, so it must record the meter tick itself. Distinct threads
+  // per window: a re-sort of a thread already counted this window is not
+  // re-charged, mirroring classify-thread. Recorded independent of the enforce
+  // flag so self-host still gets usage observability.
+  const inboxKey = inboxKeyFor(connection.emailAddress);
+  const meterWindow = meterWindowStart();
+  const alreadyCountedThisWindow =
+    (await db.emailClassification.count({
+      where: {
+        emailThreadId: emailThread.id,
+        source: { notIn: ["BACKFILL", "MOVE", "MIGRATION"] },
+        createdAt: { gte: meterWindow },
+      },
+    })) > 0;
 
   const classification = await db.emailClassification.create({
     data: {
@@ -280,6 +303,10 @@ gmailSort.post("/dev/workspaces/:workspaceId/gmail-sort-thread", async (c) => {
     },
     select: { id: true },
   });
+
+  if (!alreadyCountedThisWindow) {
+    await recordMeterUsage({ inboxKey, kind: "THREAD_SORT", windowStart: meterWindow, delta: 1 });
+  }
 
   await db.emailThread.update({
     where: { id: emailThread.id },

@@ -19,8 +19,16 @@ vi.mock("@amarnai/db", () => ({
     emailMessage: { upsert: vi.fn(), deleteMany: vi.fn(), findMany: vi.fn() },
     backfillInboxQueue: { add: vi.fn() },
   },
-  // Quota recovery counts recurring sorts; default to 0 so nothing is throttled.
-  countRecurringThreadSorts: vi.fn().mockResolvedValue(0),
+  // Recovery gates on the reset-immune, inbox-pooled meter (resolveInboxQuota →
+  // InboxUsageMeter), the SAME counter the classify worker accounts on — never a
+  // deletable EmailClassification count. Default to 0 used so nothing is
+  // throttled; plan PRO matches the workspace mock (limit 5000).
+  resolveInboxQuota: vi.fn().mockResolvedValue({
+    inboxKey: "test@gmail.com",
+    windowStart: new Date(),
+    plan: "PRO",
+    used: 0,
+  }),
 }));
 
 vi.mock("@amarnai/config", () => ({
@@ -98,12 +106,20 @@ vi.mock("../queues.js", () => ({
 
 // ─── Import after mocks ───────────────────────────────────────────────────────
 
-import { db, countRecurringThreadSorts } from "@amarnai/db";
+import { db, resolveInboxQuota } from "@amarnai/db";
 import { Worker } from "bullmq";
 import { GmailHistoryCursorExpiredError } from "@amarnai/gmail";
 import { classifyThreadQueue } from "../queues.js";
 import { DEDUP_CLASSIFY_UNROUTED } from "@amarnai/queue";
 import { createSyncInboxWorker } from "../jobs/sync-inbox.js";
+
+/**
+ * Build a resolveInboxQuota result reporting `used` recurring sorts on the PRO
+ * plan (limit 5000) — the reset-immune inbox meter the recovery gate reads.
+ */
+function quotaUsed(used: number) {
+  return { inboxKey: "test@gmail.com", windowStart: new Date(), plan: "PRO" as const, used };
+}
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -381,10 +397,14 @@ describe("createSyncInboxWorker — quota-blocked recovery", () => {
     expect(jobs[0]!.data.source).toBe("LIVE");
   });
 
-  it("does not recover when the workspace is still at its limit", async () => {
+  it("does not recover when the inbox meter is still at its limit", async () => {
     withBlockedThread("qb-1");
-    // PRO limit is 10000; pretend it is already full.
-    vi.mocked(countRecurringThreadSorts).mockResolvedValue(10_000);
+    // PRO limit is 5000; the reset-immune meter reports usage exactly at the cap.
+    // This is the reset-immunity guarantee: even after resetWorkspaceData wipes
+    // this workspace's EmailClassification rows, the inbox meter still reads
+    // at-cap, so a disconnect+reconnect cannot refund quota and recovery stays
+    // blocked (remaining = 5000 - 5000 = 0).
+    vi.mocked(resolveInboxQuota).mockResolvedValue(quotaUsed(5000));
 
     createSyncInboxWorker();
     const processor = getProcessor();
@@ -431,7 +451,7 @@ describe("createSyncInboxWorker — failed-thread recovery", () => {
 
   it("re-enqueues failed threads as LIVE and stamps classifyingAt", async () => {
     withFailedThread("f-1");
-    vi.mocked(countRecurringThreadSorts).mockResolvedValue(0); // capacity free
+    vi.mocked(resolveInboxQuota).mockResolvedValue(quotaUsed(0)); // capacity free
 
     createSyncInboxWorker();
     const processor = getProcessor();
@@ -516,7 +536,7 @@ describe("createSyncInboxWorker — stale-classifying recovery", () => {
 
   it("re-enqueues a thread whose classifyingAt is stale", async () => {
     withStaleThread("s-1", { lt: new Date() });
-    vi.mocked(countRecurringThreadSorts).mockResolvedValue(0); // capacity free
+    vi.mocked(resolveInboxQuota).mockResolvedValue(quotaUsed(0)); // capacity free
 
     createSyncInboxWorker();
     const processor = getProcessor();
@@ -530,7 +550,7 @@ describe("createSyncInboxWorker — stale-classifying recovery", () => {
 
   it("uses a stale classifyingAt window and the PENDING status in the query", async () => {
     withStaleThread("s-1", { lt: new Date() });
-    vi.mocked(countRecurringThreadSorts).mockResolvedValue(0);
+    vi.mocked(resolveInboxQuota).mockResolvedValue(quotaUsed(0));
 
     createSyncInboxWorker();
     const processor = getProcessor();
@@ -552,7 +572,7 @@ describe("createSyncInboxWorker — stale-classifying recovery", () => {
   it("does not recover a thread whose classifyingAt is recent (returned by the query as empty)", async () => {
     // No thread matches the stale window → query returns nothing → no recovery.
     withStaleThread("s-1", undefined);
-    vi.mocked(countRecurringThreadSorts).mockResolvedValue(0);
+    vi.mocked(resolveInboxQuota).mockResolvedValue(quotaUsed(0));
 
     createSyncInboxWorker();
     const processor = getProcessor();
@@ -647,7 +667,7 @@ describe("createSyncInboxWorker — recovery non-fatal", () => {
     // emailThread.findMany backs all three recovery helpers; reject it so each
     // recovery step throws. The sync must still resolve (recovery is guarded).
     vi.mocked(db.emailThread.findMany).mockRejectedValue(new Error("db down"));
-    vi.mocked(countRecurringThreadSorts).mockResolvedValue(0);
+    vi.mocked(resolveInboxQuota).mockResolvedValue(quotaUsed(0));
 
     createSyncInboxWorker();
     const processor = getProcessor();

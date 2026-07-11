@@ -1,7 +1,7 @@
 import { Worker } from "bullmq";
 import {
   db,
-  countRecurringThreadSorts,
+  resolveInboxQuota,
   markGmailConnectionAuthFailed,
   deleteQuotaBlockedNotifications,
 } from "@amarnai/db";
@@ -17,7 +17,6 @@ import {
   isTaxonomyRoutable,
   isBackfillResumable,
   getThreadSortLimit,
-  getDraftQuotaWindowStart,
 } from "@amarnai/shared";
 import {
   classifyThreadQueue,
@@ -140,10 +139,17 @@ const MAX_CLASSIFY_ATTEMPTS = 5;
  * remaining monthly capacity). Recovered sorts are tagged LIVE (recurring) and
  * re-check the quota in the worker, so a small concurrent overshoot self-corrects
  * on the next cycle. When enforcement is off there is no cap.
+ *
+ * The cap is read from the SAME reset-immune, inbox-pooled meter the classify
+ * worker gates + accounts on (resolveInboxQuota → InboxUsageMeter), keyed by the
+ * connection's inbox address — never a per-workspace EmailClassification count.
+ * resetWorkspaceData deletes classifications but not the meter, so this
+ * pre-enqueue gate and the worker's accounting gate always read one counter and
+ * a disconnect+reconnect cannot refund quota. `plan` is the pooled ceiling.
  */
 async function enqueueRecovery(
   workspaceId: string,
-  plan: string,
+  emailAddress: string,
   candidates: Array<{ id: string }>,
   dedupPrefix: string,
   extraThreadData: { triageStatus?: "PENDING" } = {},
@@ -152,7 +158,7 @@ async function enqueueRecovery(
 
   let recoverable = candidates;
   if (config.billing.enforceThreadSortQuota) {
-    const used = await countRecurringThreadSorts(workspaceId, getDraftQuotaWindowStart());
+    const { plan, used } = await resolveInboxQuota(emailAddress, "THREAD_SORT");
     const remaining = getThreadSortLimit(plan) - used;
     if (remaining <= 0) return 0;
     recoverable = candidates.slice(0, remaining);
@@ -183,17 +189,16 @@ async function enqueueRecovery(
  * rises). Caller gates on a strong taxonomy and sorting not being paused,
  * matching the conditions under which live threads are enqueued.
  */
-async function recoverQuotaBlockedThreads(workspaceId: string, plan: string): Promise<void> {
+async function recoverQuotaBlockedThreads(workspaceId: string, emailAddress: string): Promise<void> {
   // Cheap existence check first: the common case has nothing deferred, so avoid
-  // the COUNT(DISTINCT) recurring-usage query (in enqueueRecovery) unless there
-  // is work to recover.
+  // the meter read (in enqueueRecovery) unless there is work to recover.
   const blocked = await db.emailThread.findMany({
     where: { workspaceId, triageStatus: "QUOTA_BLOCKED", classifyingAt: null },
     select: { id: true },
     orderBy: { latestMessageAt: "desc" },
     take: QUOTA_RECOVERY_BATCH,
   });
-  const recovered = await enqueueRecovery(workspaceId, plan, blocked, "classify_quota_recovery", {
+  const recovered = await enqueueRecovery(workspaceId, emailAddress, blocked, "classify_quota_recovery", {
     triageStatus: "PENDING",
   });
   if (recovered > 0) {
@@ -214,7 +219,7 @@ async function recoverQuotaBlockedThreads(workspaceId: string, plan: string): Pr
  * persistently failing thread is not re-enqueued forever. Caller gates on a
  * strong taxonomy and sorting not being paused.
  */
-async function recoverFailedThreads(workspaceId: string, plan: string): Promise<void> {
+async function recoverFailedThreads(workspaceId: string, emailAddress: string): Promise<void> {
   const failed = await db.emailThread.findMany({
     where: {
       workspaceId,
@@ -227,7 +232,7 @@ async function recoverFailedThreads(workspaceId: string, plan: string): Promise<
     orderBy: { latestMessageAt: "desc" },
     take: QUOTA_RECOVERY_BATCH,
   });
-  const recovered = await enqueueRecovery(workspaceId, plan, failed, "classify_failed_recovery");
+  const recovered = await enqueueRecovery(workspaceId, emailAddress, failed, "classify_failed_recovery");
   if (recovered > 0) {
     console.log(`[sync-inbox] Workspace ${workspaceId} recovered ${recovered} failed thread(s)`);
   }
@@ -247,7 +252,7 @@ const STALE_CLASSIFYING_MS = 15 * 60 * 1000;
  * re-stamps classifyingAt and re-adds the job. Caller gates on a strong taxonomy
  * and sorting not being paused.
  */
-async function recoverStaleClassifyingThreads(workspaceId: string, plan: string): Promise<void> {
+async function recoverStaleClassifyingThreads(workspaceId: string, emailAddress: string): Promise<void> {
   const stale = await db.emailThread.findMany({
     where: {
       workspaceId,
@@ -258,7 +263,7 @@ async function recoverStaleClassifyingThreads(workspaceId: string, plan: string)
     orderBy: { latestMessageAt: "desc" },
     take: QUOTA_RECOVERY_BATCH,
   });
-  const recovered = await enqueueRecovery(workspaceId, plan, stale, "classify_stale_recovery");
+  const recovered = await enqueueRecovery(workspaceId, emailAddress, stale, "classify_stale_recovery");
   if (recovered > 0) {
     console.log(`[sync-inbox] Workspace ${workspaceId} recovered ${recovered} stale classifying thread(s)`);
   }
@@ -292,7 +297,7 @@ export function createSyncInboxWorker(): Worker {
       const [workspace, connection, syncSettingsRow] = await Promise.all([
         db.workspace.findUnique({
           where: { id: workspaceId },
-          select: { ownerUserId: true, plan: true },
+          select: { ownerUserId: true },
         }),
         db.emailConnection.findUnique({
           where: { workspaceId },
@@ -422,9 +427,9 @@ export function createSyncInboxWorker(): Worker {
         // Each call is guarded so one recovery query failing does not fail the
         // whole sync after its main work already ran.
         if (!sortingPaused && taxonomyStrong) {
-          await runRecovery(() => recoverQuotaBlockedThreads(workspaceId, workspace.plan));
-          await runRecovery(() => recoverFailedThreads(workspaceId, workspace.plan));
-          await runRecovery(() => recoverStaleClassifyingThreads(workspaceId, workspace.plan));
+          await runRecovery(() => recoverQuotaBlockedThreads(workspaceId, connection.emailAddress));
+          await runRecovery(() => recoverFailedThreads(workspaceId, connection.emailAddress));
+          await runRecovery(() => recoverStaleClassifyingThreads(workspaceId, connection.emailAddress));
           // While armed (the user clicked "Route now" during an in-flight
           // backfill), also route the never-attempted PENDING backlog so threads
           // a backfill chunk committed around the click do not re-surface the
@@ -647,9 +652,9 @@ export function createSyncInboxWorker(): Worker {
       // so a transient provider/embedding/DB fault self-heals. New live threads
       // auto-route in real time (step 5 above). Same gating as live classification.
       if (!sortingPaused && taxonomyStrong) {
-        await runRecovery(() => recoverQuotaBlockedThreads(workspaceId, workspace.plan));
-        await runRecovery(() => recoverFailedThreads(workspaceId, workspace.plan));
-        await runRecovery(() => recoverStaleClassifyingThreads(workspaceId, workspace.plan));
+        await runRecovery(() => recoverQuotaBlockedThreads(workspaceId, connection.emailAddress));
+        await runRecovery(() => recoverFailedThreads(workspaceId, connection.emailAddress));
+        await runRecovery(() => recoverStaleClassifyingThreads(workspaceId, connection.emailAddress));
         // See the quiet-branch comment: route the never-attempted backlog while
         // the "Route now" arm is set during an in-flight backfill.
         if (syncState.autoRouteBacklogArmed) {

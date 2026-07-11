@@ -81,7 +81,8 @@ describe("PATCH /workspaces/:workspaceId/email-threads/:threadId/triage — move
     expect(body.movedToNodeId).toBe(NODE_ID);
 
     // A manual folder move runs no embedding/LLM, so it must not be metered:
-    // it is recorded with source MOVE, which countRecurringThreadSorts excludes.
+    // it is recorded with source MOVE, an unmetered source (the classify worker
+    // never records a THREAD_SORT meter tick for it).
     expect(txClassificationCreate).toHaveBeenCalledWith(
       expect.objectContaining({ data: expect.objectContaining({ source: "MOVE" }) })
     );
