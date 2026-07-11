@@ -98,6 +98,16 @@ export function ThreadPreview({
     }, 2_000);
   }
 
+  // Reload the pane not only when a different thread is opened but whenever the
+  // open thread's content changes. A new message arriving in an already-open
+  // thread comes through the live refresh as a fresh thread object with the same
+  // id but a higher messageCount / newer latestAt, and a re-sort lands it in a
+  // different folder. Keying the loader on this primitive signal (rather than
+  // thread.id, which never changes here) reloads the message list and rationale
+  // when they actually change, while still not refetching on every parent render
+  // the way keying on the thread object itself would.
+  const threadSignal = `${thread.id}:${thread.messageCount}:${thread.latestAt.getTime()}:${thread.folderId ?? ""}`;
+
   useEffect(() => {
     setBodyLoaded(false);
     bodiesRef.current = null;
@@ -154,7 +164,7 @@ export function ThreadPreview({
     }
 
     return clearPoll;
-  }, [thread.id, workspaceId]);
+  }, [threadSignal, workspaceId]);
 
   function handleGenerateDraft(opts: { force?: boolean } = {}) {
     const threadId = thread.id;
