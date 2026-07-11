@@ -6,13 +6,25 @@ import { issueAccessToken, verifyAccessToken } from "./jwt.js";
 const SECRET = new TextEncoder().encode("dev-auth-jwt-secret");
 
 describe("access tokens", () => {
-  it("round-trips: a freshly issued token verifies to its user id", async () => {
-    const token = await issueAccessToken("user-123");
-    expect(await verifyAccessToken(token)).toBe("user-123");
+  it("round-trips: a freshly issued token verifies to its user id and epoch", async () => {
+    const token = await issueAccessToken("user-123", 5);
+    expect(await verifyAccessToken(token)).toEqual({ userId: "user-123", sessionEpoch: 5 });
   });
 
   it("rejects a malformed/garbage token", async () => {
     expect(await verifyAccessToken("not-a-jwt")).toBeNull();
+  });
+
+  it("rejects a token with no epoch claim (pre-epoch token)", async () => {
+    const noEpoch = await new SignJWT({ typ: "access" })
+      .setProtectedHeader({ alg: "HS256" })
+      .setSubject("user-123")
+      .setIssuer("amarnai")
+      .setAudience("amarnai-api")
+      .setIssuedAt()
+      .setExpirationTime("15m")
+      .sign(SECRET);
+    expect(await verifyAccessToken(noEpoch)).toBeNull();
   });
 
   it("rejects a token signed with a different secret", async () => {

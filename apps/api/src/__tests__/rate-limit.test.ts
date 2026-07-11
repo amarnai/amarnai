@@ -1,5 +1,15 @@
 import { vi, describe, it, expect } from "vitest";
-import { checkRateLimit, type RateLimitStore } from "../services/rate-limit.js";
+import type { Context } from "hono";
+import { checkRateLimit, clientIp, type RateLimitStore } from "../services/rate-limit.js";
+
+// Minimal Context stub: only header lookups matter here. No node-server bindings,
+// so the socket-address fallback (getConnInfo) throws and resolves to "unknown" —
+// which is exactly what lets us assert that a spoofed XFF is NOT used.
+function ctx(headers: Record<string, string>): Context {
+  return {
+    req: { header: (name: string) => headers[name.toLowerCase()] },
+  } as unknown as Context;
+}
 
 // In-memory stub that mimics Redis INCR/EXPIRE for the counter logic.
 function makeStore(): RateLimitStore & { expire: ReturnType<typeof vi.fn> } {
@@ -35,5 +45,27 @@ describe("checkRateLimit", () => {
     await checkRateLimit(store, "k", 5, 900);
     expect(store.expire).toHaveBeenCalledTimes(1);
     expect(store.expire).toHaveBeenCalledWith("k", 900);
+  });
+});
+
+describe("clientIp (XFF trust)", () => {
+  it("ignores a spoofed X-Forwarded-For when trustProxy is 0 (#10)", () => {
+    // The attacker-controlled header must NOT become the key; with no socket
+    // binding it resolves to "unknown", never the spoofed value.
+    expect(clientIp(ctx({ "x-forwarded-for": "9.9.9.9" }), 0)).not.toBe("9.9.9.9");
+    expect(clientIp(ctx({ "x-real-ip": "9.9.9.9" }), 0)).not.toBe("9.9.9.9");
+  });
+
+  it("reads the client from XFF at the trusted-hop offset", () => {
+    // One trusted proxy that appended the client's address.
+    expect(clientIp(ctx({ "x-forwarded-for": "1.1.1.1" }), 1)).toBe("1.1.1.1");
+    // Two hops (CDN + nginx): client is two from the right.
+    expect(clientIp(ctx({ "x-forwarded-for": "1.1.1.1, 3.3.3.3" }), 2)).toBe("1.1.1.1");
+  });
+
+  it("ignores entries to the left of the trusted proxies (spoof-proof)", () => {
+    // Attacker prepends 9.9.9.9; with 1 trusted hop we take the rightmost entry
+    // (what our own proxy observed), never the injected one.
+    expect(clientIp(ctx({ "x-forwarded-for": "9.9.9.9, 1.1.1.1, 3.3.3.3" }), 1)).toBe("3.3.3.3");
   });
 });

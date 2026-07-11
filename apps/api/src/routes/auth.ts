@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { Hono } from "hono";
 import { z } from "zod";
 import {
@@ -12,7 +13,9 @@ import {
   provisionGoogleUser,
   createPasswordResetToken,
   type IssuedRefreshToken,
+  type RegisterEmailResult,
 } from "@amarnai/auth";
+import { throttleOnce } from "../services/rate-limit.js";
 import {
   fetchGmailProfile,
   fetchGoogleUserInfo,
@@ -79,9 +82,20 @@ function tokenPairResponse(accessToken: string, refresh: IssuedRefreshToken): To
   };
 }
 
+// Issues an access token stamped with the user's CURRENT session epoch, so the
+// bearer middleware can reject it after a later epoch bump (password reset /
+// pre-hijack invalidation) instead of trusting it for the full 15m TTL.
+async function issueAccessTokenForUser(userId: string): Promise<string> {
+  const user = await db.user.findUnique({
+    where: { id: userId },
+    select: { sessionEpoch: true },
+  });
+  return issueAccessToken(userId, user?.sessionEpoch ?? 0);
+}
+
 async function issueTokenPair(userId: string): Promise<TokenPair> {
   const [accessToken, refresh] = await Promise.all([
-    issueAccessToken(userId),
+    issueAccessTokenForUser(userId),
     issueRefreshToken(userId),
   ]);
   return tokenPairResponse(accessToken, refresh);
@@ -101,6 +115,39 @@ auth.post("/auth/login", async (c) => {
   return c.json(await issueTokenPair(userId));
 });
 
+// Notice emails ("you already have an account" / "sign in with Google") are
+// throttled per recipient for this long, so a verified account cannot be
+// notice-bombed by repeated registration attempts (beyond the per-IP limit).
+const NOTICE_EMAIL_THROTTLE_SECONDS = 15 * 60;
+
+// Hash the recipient before using it as a throttle key so no raw address lands in
+// Redis. Not a security boundary, just PII hygiene.
+function emailThrottleKey(email: string): string {
+  const hash = createHash("sha256").update(email.trim().toLowerCase()).digest("hex");
+  return `register-notice:${hash}`;
+}
+
+// Sends the email that matches the registration outcome. The verification link is
+// already throttled at issuance (null token when throttled); notice emails are
+// throttled per recipient here. Kept separate so the route can fire it and return
+// without waiting on delivery.
+async function dispatchRegisterEmail(email: string, result: RegisterEmailResult): Promise<void> {
+  if (result.status === "verify") {
+    if (result.verificationToken) {
+      await sendVerificationEmail(email, result.verificationToken);
+    }
+    return;
+  }
+  if (!(await throttleOnce(emailThrottleKey(email), NOTICE_EMAIL_THROTTLE_SECONDS))) {
+    return;
+  }
+  if (result.status === "already_registered") {
+    await sendAccountExistsEmail(email);
+  } else {
+    await sendGoogleAccountEmail(email);
+  }
+}
+
 // Email-first sign-up. Collects only an email; the password is set later at the
 // verify step by whoever proves they own the mailbox. Returns the SAME neutral
 // { ok: true } for every account state so the response never reveals whether the
@@ -118,22 +165,13 @@ auth.post("/auth/register", async (c) => {
   const { email } = parsed.data;
   const result = await registerEmail({ email });
 
-  // Dispatch the state-appropriate email (best-effort; a delivery failure must
-  // never change the response or leak state, and the recipient is never logged).
-  try {
-    if (result.status === "verify") {
-      // Null when a recent resend is still throttled — send nothing.
-      if (result.verificationToken) {
-        await sendVerificationEmail(email, result.verificationToken);
-      }
-    } else if (result.status === "already_registered") {
-      await sendAccountExistsEmail(email);
-    } else {
-      await sendGoogleAccountEmail(email);
-    }
-  } catch (err) {
-    console.error("[auth/register] send:", err instanceof Error ? err.message : err);
-  }
+  // Dispatch the state-appropriate email fire-and-forget: the response returns
+  // immediately so its latency does not vary with account state (shrinking the
+  // enumeration timing oracle). A delivery failure never changes the response or
+  // leaks state, and the recipient address is never logged.
+  void dispatchRegisterEmail(email, result).catch((err) =>
+    console.error("[auth/register] send:", err instanceof Error ? err.message : err)
+  );
 
   return c.json({ ok: true });
 });
@@ -262,7 +300,7 @@ auth.post("/auth/refresh", async (c) => {
   const rotated = await rotateRefreshToken(parsed.data.refreshToken);
   if (!rotated) return c.json({ error: "Invalid refresh token" }, 401);
 
-  const accessToken = await issueAccessToken(rotated.userId);
+  const accessToken = await issueAccessTokenForUser(rotated.userId);
   return c.json(tokenPairResponse(accessToken, rotated.refresh));
 });
 

@@ -9,13 +9,14 @@ import {
   registerEmail,
   rotateVerificationToken,
   createPasswordResetToken,
-  revokeAllRefreshTokensForUser,
+  applyPasswordReset,
   checkUserPassword,
 } from "@amarnai/auth";
 import { RegisterEmailSchema, PasswordSchema } from "@amarnai/shared";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/session";
+import { authActionRateLimited } from "@/lib/auth-rate-limit";
 import {
   sendVerificationEmail,
   sendPasswordResetEmail,
@@ -48,6 +49,13 @@ export async function credentialsSignInAction(
   _prev: { error?: string } | null,
   formData: FormData
 ): Promise<{ error?: string }> {
+  const email = (formData.get("email") as string | null) ?? "";
+  // Throttle brute force: the web credentials path goes straight through
+  // next-auth, so the API's login rate limit does not cover it.
+  if (email && (await authActionRateLimited("login", email, 10))) {
+    return { error: "Too many attempts. Please try again in a few minutes." };
+  }
+
   try {
     await signIn("credentials", {
       email: formData.get("email"),
@@ -75,6 +83,13 @@ export async function registerAction(
     return { error: parsed.error.errors[0]?.message ?? "Invalid input" };
   }
   const { email } = parsed.data;
+
+  // Throttle per email/IP to stop this endpoint being an email-amplification
+  // vector. On trip we return the SAME neutral success without sending anything,
+  // so the throttle itself does not leak whether the email is registered.
+  if (await authActionRateLimited("register", email, 5)) {
+    return { success: true };
+  }
 
   // Email-first: no password is collected here and no session is ever handed
   // back. Every account state returns the SAME neutral success below, so the
@@ -231,6 +246,11 @@ export async function forgotPasswordAction(
   const email = z.string().email().safeParse(formData.get("email"));
   if (!email.success) return { error: "Invalid email address" };
 
+  // Throttle per email/IP; on trip return the same neutral success as always.
+  if (await authActionRateLimited("forgot", email.data, 5)) {
+    return { success: true };
+  }
+
   // Silent success — createPasswordResetToken returns null (no email sent) when
   // the account is missing, Google-only, or throttled, never revealing which.
   const token = await createPasswordResetToken(email.data);
@@ -271,23 +291,14 @@ export async function resetPasswordAction(
   }
 
   const passwordHash = await bcrypt.hash(password, 12);
-  await db.userCredential.upsert({
-    where: { userId: record.userId },
-    create: { userId: record.userId, passwordHash },
-    update: { passwordHash },
-  });
 
-  await db.verificationToken.delete({ where: { token } });
-
-  // A reset assumes the old password may be compromised, so log out every other
-  // session: revoke all refresh-token families (native/API) AND bump the session
-  // epoch, which invalidates the stateless web JWTs that a refresh-token revoke
-  // cannot reach.
-  await revokeAllRefreshTokensForUser(record.userId);
-  await db.user.update({
-    where: { id: record.userId },
-    data: { sessionEpoch: { increment: 1 } },
-  });
+  // Set the password + revoke every other session in one token-first transaction
+  // (see applyPasswordReset). A double-submit loses on the token delete and is
+  // reported as already-used rather than resetting twice or 500ing.
+  const outcome = await applyPasswordReset(record.userId, passwordHash, token);
+  if (outcome === "already_used") {
+    return { error: "This reset link has already been used. Please request a new one." };
+  }
 
   return { success: true };
 }

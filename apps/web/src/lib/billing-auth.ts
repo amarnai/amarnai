@@ -18,6 +18,9 @@ export type BillingAuthResult =
  */
 export async function resolveBillingUser(request: Request): Promise<BillingAuthResult> {
   let userId: string | undefined;
+  // Set only on the Bearer-token path, to enforce the session epoch below. The
+  // web session cookie is already epoch-enforced in the next-auth jwt callback.
+  let tokenEpoch: number | undefined;
 
   const session = await auth();
   if (session?.user?.id) {
@@ -25,8 +28,11 @@ export async function resolveBillingUser(request: Request): Promise<BillingAuthR
   } else {
     const authHeader = request.headers.get("Authorization");
     if (authHeader?.startsWith("Bearer ")) {
-      const jwtUserId = await verifyAccessToken(authHeader.slice(7));
-      if (jwtUserId) userId = jwtUserId;
+      const verified = await verifyAccessToken(authHeader.slice(7));
+      if (verified) {
+        userId = verified.userId;
+        tokenEpoch = verified.sessionEpoch;
+      }
     }
   }
 
@@ -36,9 +42,14 @@ export async function resolveBillingUser(request: Request): Promise<BillingAuthR
 
   const userRecord = await db.user.findUnique({
     where: { id: userId },
-    select: { emailVerified: true },
+    select: { emailVerified: true, sessionEpoch: true },
   });
   if (!userRecord) {
+    return { ok: false, status: 401, error: "Unauthorized" };
+  }
+  // Reject an access token minted before the account's epoch advanced (password
+  // reset / pre-hijack invalidation), matching the API bearer middleware.
+  if (tokenEpoch !== undefined && tokenEpoch < userRecord.sessionEpoch) {
     return { ok: false, status: 401, error: "Unauthorized" };
   }
   if (!userRecord.emailVerified) {

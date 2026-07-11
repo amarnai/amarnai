@@ -4,6 +4,7 @@ import { authed, TEST_USER_ID } from "./helpers.js";
 vi.mock("@amarnai/db", () => ({
   db: {
     pushDevice: { upsert: vi.fn(), findUnique: vi.fn() },
+    user: { findUnique: vi.fn() },
   },
 }));
 
@@ -17,6 +18,7 @@ beforeEach(() => {
   vi.clearAllMocks();
   // Default: token not seen before (fresh registration).
   vi.mocked(db.pushDevice.findUnique).mockResolvedValue(null);
+  vi.mocked(db.user.findUnique).mockResolvedValue({ sessionEpoch: 0 } as never);
   vi.mocked(db.pushDevice.upsert).mockResolvedValue({
     id: "device-1",
     platform: "ANDROID",
@@ -95,7 +97,7 @@ describe("POST /devices — registration", () => {
   });
 
   it("binds the device to the JWT subject, ignoring a caller-supplied X-User-Id", async () => {
-    const token = await issueAccessToken("jwt-user-9");
+    const token = await issueAccessToken("jwt-user-9", 0);
     const res = await app.request("/devices", {
       method: "POST",
       headers: {

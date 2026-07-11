@@ -80,6 +80,14 @@ const envSchema = z.object({
   // Set to 'true' to turn off per-IP rate limiting on the /auth/* endpoints.
   // Intended only for self-host setups that throttle at the proxy layer.
   AUTH_RATE_LIMIT_DISABLED: boolStr,
+  // Number of trusted reverse proxies in front of the API. Controls how the
+  // client IP is derived for rate limiting: 0 (default) ignores X-Forwarded-For /
+  // X-Real-IP entirely and uses the socket address, so a direct caller cannot
+  // spoof an arbitrary IP to dodge the limit. Set to the exact number of hops you
+  // run (e.g. 1 behind a single nginx, 2 behind a CDN + nginx) so the real client
+  // is read from the correct XFF position and everything to its left (attacker-
+  // controlled) is ignored.
+  TRUST_PROXY: z.coerce.number().int().min(0).default(0),
   // Gmail Push Notifications via Google Cloud Pub/Sub.
   // When set, Gmail pushes change notifications in real time instead of waiting
   // for the polling interval. Both vars must be set together.
@@ -266,6 +274,7 @@ export const config = {
   tokenEncryptionKey: env.TOKEN_ENCRYPTION_KEY || DEV_TOKEN_ENCRYPTION_KEY,
   authRateLimit: {
     disabled: env.AUTH_RATE_LIMIT_DISABLED,
+    trustProxy: env.TRUST_PROXY,
   },
   gmail: {
     pubsubTopic: env.GMAIL_PUBSUB_TOPIC,

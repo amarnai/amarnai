@@ -1,5 +1,5 @@
 import crypto from "crypto";
-import { db } from "@amarnai/db";
+import { db, Prisma } from "@amarnai/db";
 
 // Email-verification tokens are valid for 24 hours.
 const VERIFICATION_TTL_MS = 24 * 60 * 60 * 1000;
@@ -17,18 +17,18 @@ function generateToken(): string {
 // Replaces any outstanding email-verification token for the user with a fresh
 // one and returns the raw token. The caller is responsible for emailing the
 // link (kept out of this package so @amarnai/auth carries no mail dependency).
+//
+// A single upsert on the (userId, type) unique key, so concurrent issuance can
+// never leave two live tokens (and never 500s on a create/create race). createdAt
+// is reset on update so the caller-side resend throttle measures from the latest
+// issuance.
 export async function rotateVerificationToken(userId: string): Promise<string> {
-  await db.verificationToken.deleteMany({
-    where: { userId, type: "EMAIL_VERIFICATION" },
-  });
   const token = generateToken();
-  await db.verificationToken.create({
-    data: {
-      userId,
-      token,
-      type: "EMAIL_VERIFICATION",
-      expiresAt: new Date(Date.now() + VERIFICATION_TTL_MS),
-    },
+  const expiresAt = new Date(Date.now() + VERIFICATION_TTL_MS);
+  await db.verificationToken.upsert({
+    where: { userId_type: { userId, type: "EMAIL_VERIFICATION" } },
+    create: { userId, token, type: "EMAIL_VERIFICATION", expiresAt },
+    update: { token, expiresAt, createdAt: new Date() },
   });
   return token;
 }
@@ -71,6 +71,7 @@ export async function registerEmail({
     select: {
       id: true,
       emailVerified: true,
+      googleLinkedAt: true,
       credential: { select: { id: true } },
       verificationTokens: {
         where: { type: "EMAIL_VERIFICATION" },
@@ -83,9 +84,15 @@ export async function registerEmail({
 
   if (existing) {
     if (existing.emailVerified) {
-      return existing.credential
-        ? { status: "already_registered" }
-        : { status: "google_only" };
+      // Has a password → normal sign-in / reset. Truly Google-linked (and no
+      // password) → point at Google. A verified account with NEITHER is an
+      // email-first user who never finished setting a password: treat it like
+      // "already registered" so the notice email routes them to forgot-password
+      // (which issues a set-password token for exactly this state), instead of
+      // wrongly telling them to sign in with Google.
+      if (existing.credential) return { status: "already_registered" };
+      if (existing.googleLinkedAt) return { status: "google_only" };
+      return { status: "already_registered" };
     }
 
     // Existing but unverified: resend the verification link, throttled.
@@ -100,10 +107,21 @@ export async function registerEmail({
   // Brand-new email: create the account with no credential. The password is set
   // at the verify step (see the verify-email route), so a caller who never owned
   // this mailbox can never end up controlling a password on it.
-  const user = await db.user.create({
-    data: { email },
-    select: { id: true },
-  });
+  let user: { id: string };
+  try {
+    user = await db.user.create({ data: { email }, select: { id: true } });
+  } catch (err) {
+    // Two concurrent registrations of the same new email both passed the
+    // findUnique above; the loser's create violates the unique email constraint.
+    // The account now exists (created by the winner, which also issued+emailed a
+    // verification link), so return the neutral "check your email" response with
+    // no token, preserving the anti-enumeration contract without a double-send or
+    // a 500.
+    if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2002") {
+      return { status: "verify", verificationToken: null };
+    }
+    throw err;
+  }
   const verificationToken = await rotateVerificationToken(user.id);
   return { status: "verify", verificationToken };
 }

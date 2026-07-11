@@ -4,6 +4,7 @@ import { authed, INTERNAL_TOKEN } from "./helpers.js";
 vi.mock("@amarnai/db", () => ({
   db: {
     workspace: { findMany: vi.fn() },
+    user: { findUnique: vi.fn() },
   },
 }));
 
@@ -20,6 +21,9 @@ function authedUser(userId = USER_ID): RequestInit {
 beforeEach(() => {
   vi.clearAllMocks();
   vi.mocked(db.workspace.findMany).mockResolvedValue([]);
+  // Per-user-token path reads the account's current epoch; default matches the
+  // epoch stamped in the test tokens (0) so a valid token authenticates.
+  vi.mocked(db.user.findUnique).mockResolvedValue({ sessionEpoch: 0 } as never);
 });
 
 // ─── Auth middleware ──────────────────────────────────────────────────────────
@@ -60,7 +64,7 @@ describe("auth middleware", () => {
 
 describe("auth middleware: per-user access token", () => {
   it("authenticates a valid user JWT and scopes to its subject", async () => {
-    const token = await issueAccessToken("jwt-user-7");
+    const token = await issueAccessToken("jwt-user-7", 0);
     const res = await app.request("/workspaces", {
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -73,7 +77,7 @@ describe("auth middleware: per-user access token", () => {
   });
 
   it("ignores a caller-supplied X-User-Id, trusting only the token subject", async () => {
-    const token = await issueAccessToken("jwt-user-7");
+    const token = await issueAccessToken("jwt-user-7", 0);
     await app.request("/workspaces", {
       headers: { Authorization: `Bearer ${token}`, "X-User-Id": "attacker-99" },
     });
@@ -87,6 +91,27 @@ describe("auth middleware: per-user access token", () => {
   it("returns 401 for an expired/garbage token that is neither secret nor valid JWT", async () => {
     const res = await app.request("/workspaces", {
       headers: { Authorization: "Bearer eyJ-not-a-real-token" },
+    });
+    expect(res.status).toBe(401);
+  });
+
+  it("returns 401 when the token's epoch is below the account's current epoch (N3)", async () => {
+    // Token minted at epoch 0, but the account has since bumped to 1 (password
+    // reset / pre-hijack invalidation) → the still-unexpired token is rejected.
+    const token = await issueAccessToken("jwt-user-7", 0);
+    vi.mocked(db.user.findUnique).mockResolvedValue({ sessionEpoch: 1 } as never);
+    const res = await app.request("/workspaces", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    expect(res.status).toBe(401);
+    expect(db.workspace.findMany).not.toHaveBeenCalled();
+  });
+
+  it("returns 401 when the token's account no longer exists", async () => {
+    const token = await issueAccessToken("jwt-user-7", 0);
+    vi.mocked(db.user.findUnique).mockResolvedValue(null as never);
+    const res = await app.request("/workspaces", {
+      headers: { Authorization: `Bearer ${token}` },
     });
     expect(res.status).toBe(401);
   });

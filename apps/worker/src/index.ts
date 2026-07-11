@@ -1,4 +1,4 @@
-import { db, pruneIdempotencyMarkers } from "@amarnai/db";
+import { db, pruneIdempotencyMarkers, deleteStaleUnverifiedUsers } from "@amarnai/db";
 import { config } from "@amarnai/config";
 import { createMailProvider, MailAuthError } from "@amarnai/mail";
 import { deleteExpiredRefreshTokens } from "@amarnai/auth";
@@ -392,6 +392,24 @@ async function main(): Promise<void> {
     reapIdempotencyMarkers().catch((err) => console.error("[idempotency-reaper] Failed:", err));
   }, 24 * 60 * 60 * 1000);
 
+  // ── Abandoned-registration cleanup ─────────────────────────────────────────
+  // /auth/register creates a User row per new email even when the owner never
+  // returns; sweep never-verified, credential-less, workspace-less rows past the
+  // TTL on startup, then daily, so the table stays bounded (row-exhaustion half
+  // of the register abuse surface).
+  async function reapStaleUnverifiedUsers(): Promise<void> {
+    const count = await deleteStaleUnverifiedUsers();
+    if (count > 0) console.log(`[stale-user-reaper] Deleted ${count} abandoned unverified account(s)`);
+  }
+
+  await reapStaleUnverifiedUsers().catch((err) =>
+    console.error("[stale-user-reaper] Failed:", err)
+  );
+
+  const staleUserReaperHandle = setInterval(() => {
+    reapStaleUnverifiedUsers().catch((err) => console.error("[stale-user-reaper] Failed:", err));
+  }, 24 * 60 * 60 * 1000);
+
   // ── Pending subscription cancellations ─────────────────────────────────────
   // When an account is deleted and Stripe is unreachable, the cancellation is
   // recorded as a durable row so nobody keeps paying for a deleted account. This
@@ -444,6 +462,7 @@ async function main(): Promise<void> {
     clearInterval(watchRenewalHandle);
     clearInterval(refreshReaperHandle);
     clearInterval(idempotencyReaperHandle);
+    clearInterval(staleUserReaperHandle);
     clearInterval(pendingCancellationHandle);
     clearInterval(lifecycleEmailHandle);
 

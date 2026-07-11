@@ -4,6 +4,7 @@ import { authed, TEST_USER_ID } from "./helpers.js";
 vi.mock("@amarnai/db", () => ({
   db: {
     extensionInstall: { upsert: vi.fn() },
+    user: { findUnique: vi.fn() },
   },
   deleteExtensionNudgeNotifications: vi.fn(),
 }));
@@ -17,6 +18,7 @@ const VALID_BODY = { browser: "CHROME", version: "0.1.0" };
 beforeEach(() => {
   vi.clearAllMocks();
   vi.mocked(db.extensionInstall.upsert).mockResolvedValue({ id: "ext-1" } as never);
+  vi.mocked(db.user.findUnique).mockResolvedValue({ sessionEpoch: 0 } as never);
   vi.mocked(deleteExtensionNudgeNotifications).mockResolvedValue(undefined as never);
 });
 
@@ -60,7 +62,7 @@ describe("POST /extension/register — registration", () => {
   });
 
   it("binds the install to the JWT subject, ignoring a caller-supplied X-User-Id", async () => {
-    const token = await issueAccessToken("jwt-user-9");
+    const token = await issueAccessToken("jwt-user-9", 0);
     const res = await app.request("/extension/register", {
       method: "POST",
       headers: {

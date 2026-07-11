@@ -102,7 +102,8 @@ describe("POST /auth/register", () => {
     const body = (await res.json()) as Record<string, unknown>;
     expect(body).toEqual({ ok: true });
     expect(body).not.toHaveProperty("accessToken");
-    expect(sendAccountExistsEmail).toHaveBeenCalledWith("v@b.com");
+    // Sends are fire-and-forget (throttled per recipient), so wait for the notice.
+    await vi.waitFor(() => expect(sendAccountExistsEmail).toHaveBeenCalledWith("v@b.com"));
     expect(sendVerificationEmail).not.toHaveBeenCalled();
   });
 
@@ -113,7 +114,7 @@ describe("POST /auth/register", () => {
 
     expect(res.status).toBe(200);
     expect(await res.json()).toEqual({ ok: true });
-    expect(sendGoogleAccountEmail).toHaveBeenCalledWith("g@b.com");
+    await vi.waitFor(() => expect(sendGoogleAccountEmail).toHaveBeenCalledWith("g@b.com"));
   });
 
   it("ignores a legacy password field in the body (email-first)", async () => {

@@ -30,7 +30,7 @@ const makeReq = (body: Record<string, unknown>, headers: Record<string, string> 
 beforeEach(() => {
   vi.clearAllMocks();
   vi.mocked(auth).mockResolvedValue({ user: { id: USER_ID } } as never);
-  vi.mocked(db.user.findUnique).mockResolvedValue({ emailVerified: new Date() } as never);
+  vi.mocked(db.user.findUnique).mockResolvedValue({ emailVerified: new Date(), sessionEpoch: 0 } as never);
 });
 
 describe("confirm-checkout", () => {
@@ -88,7 +88,7 @@ describe("confirm-checkout", () => {
 
   it("authenticates a native client via Bearer JWT", async () => {
     vi.mocked(auth).mockResolvedValue(null as never);
-    vi.mocked(verifyAccessToken).mockResolvedValue(USER_ID as never);
+    vi.mocked(verifyAccessToken).mockResolvedValue({ userId: USER_ID, sessionEpoch: 0 } as never);
     mockStripe.checkout.sessions.retrieve.mockResolvedValue({
       client_reference_id: USER_ID,
       status: "complete",

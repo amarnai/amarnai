@@ -1,7 +1,10 @@
 import { vi, describe, it, expect, beforeEach } from "vitest";
 
 vi.mock("@amarnai/db", () => ({
-  db: {},
+  db: {
+    // issueAccessTokenForUser reads the account's current epoch to stamp the token.
+    user: { findUnique: vi.fn(async () => ({ sessionEpoch: 0 })) },
+  },
   maybeCreateExtensionNudge: vi.fn().mockResolvedValue(undefined),
 }));
 

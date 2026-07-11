@@ -1,4 +1,4 @@
-export { issueAccessToken, verifyAccessToken } from "./jwt.js";
+export { issueAccessToken, verifyAccessToken, type VerifiedAccessToken } from "./jwt.js";
 export {
   issueRefreshToken,
   rotateRefreshToken,
@@ -11,7 +11,11 @@ export { verifyCredentials, checkUserPassword } from "./credentials.js";
 export type { PasswordCheck } from "./credentials.js";
 export { registerEmail, rotateVerificationToken } from "./register.js";
 export type { RegisterEmailInput, RegisterEmailResult } from "./register.js";
-export { createPasswordResetToken, issuePasswordResetToken } from "./password-reset.js";
+export {
+  createPasswordResetToken,
+  issuePasswordResetToken,
+  applyPasswordReset,
+} from "./password-reset.js";
 export { getOrCreateDefaultWorkspace } from "./workspace.js";
 export { provisionGoogleUser } from "./provision.js";
 export type { ProvisionGoogleUserInput, ProvisionGoogleUserResult } from "./provision.js";

@@ -51,7 +51,7 @@ beforeEach(() => {
 
   vi.mocked(auth).mockResolvedValue({ user: { id: USER_ID } } as never);
   vi.mocked(getSelectedWorkspace).mockResolvedValue({ id: WS_ID } as never);
-  vi.mocked(db.user.findUnique).mockResolvedValue({ emailVerified: new Date() } as never);
+  vi.mocked(db.user.findUnique).mockResolvedValue({ emailVerified: new Date(), sessionEpoch: 0 } as never);
   vi.mocked(db.workspace.update).mockResolvedValue({} as never);
   vi.mocked(db.workspaceMember.findMany).mockResolvedValue([] as never);
   vi.mocked(db.auditLog.create).mockResolvedValue({} as never);
@@ -160,7 +160,7 @@ describe("auth", () => {
 
   it("authenticates a native client via Bearer JWT", async () => {
     vi.mocked(auth).mockResolvedValue(null as never);
-    vi.mocked(verifyAccessToken).mockResolvedValue(USER_ID as never);
+    vi.mocked(verifyAccessToken).mockResolvedValue({ userId: USER_ID, sessionEpoch: 0 } as never);
     vi.mocked(db.workspace.findUnique).mockResolvedValue({
       plan: "BUSINESS",
       ownerUserId: USER_ID,

@@ -5,6 +5,7 @@ import { verifyCredentials, provisionGoogleUser } from "@amarnai/auth";
 import { GMAIL_READONLY_SCOPE } from "@amarnai/gmail";
 import { db } from "@amarnai/db";
 import { triggerPostConnectHooks } from "@/lib/post-connect-hooks";
+import { resolveSessionToken } from "@/lib/session-jwt";
 
 export const { handlers, auth, signIn, signOut, unstable_update } = NextAuth({
   providers: [
@@ -74,37 +75,12 @@ export const { handlers, auth, signIn, signOut, unstable_update } = NextAuth({
       return true;
     },
 
-    async jwt({ token, trigger }) {
-      const needsLookup = !token.userId || trigger === "signIn" || trigger === "update";
-      if (needsLookup && token.email) {
-        const dbUser = await db.user.findUnique({
-          where: { email: token.email },
-          select: { id: true, name: true, emailVerified: true, sessionEpoch: true },
-        });
-        if (dbUser) {
-          // Stateless-session invalidation: a token minted before the account's
-          // sessionEpoch was bumped (e.g. a planted pre-verification credential
-          // was invalidated when the real owner verified the mailbox) is no longer
-          // trusted. Drop it so the holder is treated as signed out. A token
-          // predating this field (undefined epoch) is stamped, not invalidated.
-          if (
-            typeof token.sessionEpoch === "number" &&
-            token.sessionEpoch < dbUser.sessionEpoch
-          ) {
-            delete token.userId;
-            delete token.isEmailVerified;
-            return token;
-          }
-          token.userId = dbUser.id;
-          token.name = dbUser.name;
-          token.isEmailVerified = dbUser.emailVerified !== null;
-          token.sessionEpoch = dbUser.sessionEpoch;
-        } else {
-          delete token.userId;
-          delete token.isEmailVerified;
-        }
-      }
-      return token;
+    async jwt({ token, user, trigger }) {
+      // Resolve on EVERY evaluation so a session-epoch bump invalidates the token
+      // immediately (see resolveSessionToken). The sign-in mint (user present, or
+      // trigger "signIn") stamps the epoch; every other call enforces it.
+      const isInitialMint = Boolean(user) || trigger === "signIn";
+      return resolveSessionToken(token, isInitialMint);
     },
 
     async session({ session, token }) {

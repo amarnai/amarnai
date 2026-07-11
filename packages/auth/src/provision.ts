@@ -1,8 +1,7 @@
-import { db } from "@amarnai/db";
+import { db, Prisma } from "@amarnai/db";
 import { GMAIL_READONLY_SCOPE } from "@amarnai/gmail";
 import { getOrCreateDefaultWorkspace } from "./workspace.js";
 import { storeGmailConnection, ProviderMismatchError } from "./gmail-connection.js";
-import { revokeAllRefreshTokensForUser } from "./refresh-token.js";
 
 export type ProvisionGoogleUserInput = {
   email: string;
@@ -39,61 +38,14 @@ export type ProvisionGoogleUserResult = {
 export async function provisionGoogleUser(
   input: ProvisionGoogleUserInput
 ): Promise<ProvisionGoogleUserResult> {
-  const existing = await db.user.findUnique({
-    where: { email: input.email },
-    select: { id: true, emailVerified: true, credential: { select: { id: true } } },
-  });
-  const isNew = existing === null;
-
-  // First-time verification via Google of an account that already carries a
-  // password credential set while it was still unverified. That password is
-  // untrusted: an unauthenticated caller may have planted it via /auth/register
-  // on an email they do not control. This Google grant is the first proof of
-  // mailbox ownership, but it does not vouch for a password set beforehand, so we
-  // invalidate the credential and revoke any API sessions it may have opened
-  // before the upsert flips emailVerified. This fires only on the null -> verified
-  // transition; a returning verified user's password (set via the authenticated
-  // reset flow) is never touched.
-  //
-  // Bump the session epoch and revoke tokens BEFORE deleting the credential so the
-  // step is retry-safe: the credential is what re-arms this guard, so if any of
-  // these writes fail and the caller retries, we re-enter (credential still
-  // present) and redo them. Deleting first would drop the guard, and a retry after
-  // a failed revoke/bump would skip invalidation entirely, leaving planted
-  // sessions alive. The epoch bump invalidates any stateless web JWT the planted
-  // credential may have opened (revokeAllRefreshTokensForUser only clears the API
-  // refresh tokens); re-incrementing on a retry is harmless (monotonic).
-  if (existing && existing.emailVerified === null && existing.credential !== null) {
-    await db.user.update({
-      where: { id: existing.id },
-      data: { sessionEpoch: { increment: 1 } },
-    });
-    await revokeAllRefreshTokensForUser(existing.id);
-    await db.userCredential.deleteMany({ where: { userId: existing.id } });
-  }
-
-  const user = await db.user.upsert({
-    where: { email: input.email },
-    update: {
-      ...(input.name != null ? { name: input.name } : {}),
-      ...(input.imageUrl != null ? { imageUrl: input.imageUrl } : {}),
-      emailVerified: new Date(),
-    },
-    create: {
-      email: input.email,
-      name: input.name ?? null,
-      imageUrl: input.imageUrl ?? null,
-      emailVerified: new Date(),
-    },
-    select: { id: true },
-  });
+  const { userId, isNew } = await upsertGoogleUser(input);
 
   if (!input.gmailAccessToken || !input.gmailRefreshToken) {
-    return { userId: user.id, workspaceId: null, isNew, gmailConnected: false };
+    return { userId, workspaceId: null, isNew, gmailConnected: false };
   }
 
   try {
-    const workspace = await getOrCreateDefaultWorkspace(user.id, input.locale);
+    const workspace = await getOrCreateDefaultWorkspace(userId, input.locale);
     await storeGmailConnection({
       workspaceId: workspace.id,
       accessToken: input.gmailAccessToken,
@@ -101,7 +53,7 @@ export async function provisionGoogleUser(
       grantedScopes: input.grantedScopes ?? [GMAIL_READONLY_SCOPE],
     });
 
-    return { userId: user.id, workspaceId: workspace.id, isNew, gmailConnected: true };
+    return { userId, workspaceId: workspace.id, isNew, gmailConnected: true };
   } catch (err) {
     // A returning user whose default workspace is connected to a non-Gmail
     // provider (e.g. Outlook): sign-in still succeeds, and we deliberately leave
@@ -113,6 +65,89 @@ export async function provisionGoogleUser(
         err instanceof Error ? err.message : err
       );
     }
-    return { userId: user.id, workspaceId: null, isNew, gmailConnected: false };
+    return { userId, workspaceId: null, isNew, gmailConnected: false };
+  }
+}
+
+// Upserts the Google user and, on the null -> verified transition, invalidates any
+// untrusted pre-verification password credential — in the SAME transaction as the
+// verify flip, so a partial failure can never leave the account credential-less
+// yet unverified (the state a caller-retry would then mis-handle). Retries once on
+// a create/create race from a double OAuth callback. Returns the user id and
+// whether this sign-in created the record.
+async function upsertGoogleUser(
+  input: ProvisionGoogleUserInput
+): Promise<{ userId: string; isNew: boolean }> {
+  for (let attempt = 0; ; attempt++) {
+    const existing = await db.user.findUnique({
+      where: { email: input.email },
+      select: {
+        id: true,
+        emailVerified: true,
+        googleLinkedAt: true,
+        credential: { select: { id: true } },
+      },
+    });
+    const isNew = existing === null;
+
+    // Mark the Google linkage the first time it happens and keep the original
+    // timestamp on later sign-ins. Durable proof the account is truly federated,
+    // which the register/forgot-password flows read so they never treat a
+    // passwordless email-first account as a Google account.
+    const googleLinkedAt = existing?.googleLinkedAt ?? new Date();
+
+    try {
+      const user = await db.$transaction(async (tx) => {
+        // First-time verification via Google of an account that already carries a
+        // password set while it was still unverified. That password is untrusted
+        // (an unauthenticated caller may have planted it via /auth/register on an
+        // email they do not control). This Google grant is the first proof of
+        // mailbox ownership but does not vouch for that password, so we invalidate
+        // the credential and revoke any API sessions it opened — ATOMICALLY with
+        // the emailVerified flip below, so the account is never observably
+        // credential-less-but-unverified. The epoch bump kills any planted
+        // stateless web JWT. Fires only on the null -> verified transition; a
+        // returning verified user's password is never touched.
+        if (existing && existing.emailVerified === null && existing.credential !== null) {
+          await tx.user.update({
+            where: { id: existing.id },
+            data: { sessionEpoch: { increment: 1 } },
+          });
+          await tx.refreshToken.deleteMany({ where: { userId: existing.id } });
+          await tx.userCredential.deleteMany({ where: { userId: existing.id } });
+        }
+
+        return tx.user.upsert({
+          where: { email: input.email },
+          update: {
+            ...(input.name != null ? { name: input.name } : {}),
+            ...(input.imageUrl != null ? { imageUrl: input.imageUrl } : {}),
+            emailVerified: new Date(),
+            googleLinkedAt,
+          },
+          create: {
+            email: input.email,
+            name: input.name ?? null,
+            imageUrl: input.imageUrl ?? null,
+            emailVerified: new Date(),
+            googleLinkedAt,
+          },
+          select: { id: true },
+        });
+      });
+      return { userId: user.id, isNew };
+    } catch (err) {
+      // Double OAuth callback: two concurrent provisions both saw no row and both
+      // tried to create. The loser hits the unique-email constraint; re-read (the
+      // row now exists) and retry once, taking the update path.
+      if (
+        err instanceof Prisma.PrismaClientKnownRequestError &&
+        err.code === "P2002" &&
+        attempt === 0
+      ) {
+        continue;
+      }
+      throw err;
+    }
   }
 }

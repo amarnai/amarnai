@@ -201,6 +201,14 @@ model User {
   trialUsed     Boolean @default(false)
   isSystemAdmin Boolean @default(false)
 
+  // Set the first time this account completes a Google (OAuth) sign-in. Its
+  // presence is the authoritative signal of a real federated link — as opposed to
+  // an email-first account that simply has no password yet. Recovery flows use it
+  // so a passwordless email-first user is never misdirected to "sign in with
+  // Google" (register) and can still be issued a set-password token (forgot
+  // password). Backfilled for pre-existing verified-without-password accounts.
+  googleLinkedAt DateTime?
+
   // Monotonic session-invalidation counter. Stamped into every issued web JWT and
   // re-checked on refresh: bumping this invalidates all existing stateless
   // sessions at once (there is no server-side session store to revoke). Bumped
@@ -737,16 +745,22 @@ model VerificationToken {
   createdAt DateTime              @default(now())
 
   user User @relation(fields: [userId], references: [id])
+
+  // At most one live token per (user, type). Enforced by the database, not by
+  // call-site delete-then-create discipline, so concurrent issuance cannot leave
+  // two valid tokens (issuers upsert on this key). Also provides the userId index.
+  @@unique([userId, type])
 }
 
 // Long-lived refresh tokens for native clients (mobile). The raw token is
 // returned to the device once; only its SHA-256 hash is stored. Tokens rotate on
 // every refresh: the presented token is marked used (usedAt), a child token is
 // issued in the same family, and the parent records the child's id (replacedById).
-// Re-presenting an already-used parent only signals theft when the child was ALSO
-// used: that means the chain forked into two live branches. A parent replayed
-// while its child is still unused is a benign retry (the client lost the response
-// and never advanced), so the family is left intact. Logout revokes the family.
+// Re-presenting an already-used parent within a short grace window is a benign
+// retry (the client lost the rotation response and never advanced), so the family
+// is left intact — unless the child was ALSO used, which means the chain forked
+// into two live branches (theft). A replay AFTER the grace window is treated as
+// theft unconditionally and revokes the family. Logout revokes the family.
 model RefreshToken {
   id        String    @id @default(cuid())
   userId    String

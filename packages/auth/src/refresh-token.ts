@@ -1,7 +1,19 @@
 import { createHash, randomBytes } from "crypto";
-import { db } from "@amarnai/db";
+import { db, Prisma } from "@amarnai/db";
 
 const REFRESH_TOKEN_TTL_MS = 30 * 24 * 60 * 60 * 1000; // 30 days
+
+// How long after a token is rotated a replay is still treated as a benign retry
+// (the client lost the rotation response and re-sent the same token) rather than
+// theft. A legitimate retry lands within seconds; an attacker replaying a stolen
+// token almost always does so long after the real client has moved on. Past this
+// window, any replay of an already-rotated token revokes the whole family.
+const REUSE_GRACE_MS = 60 * 1000; // 60 seconds
+
+// Accepts either the base client or an interactive-transaction client so a
+// rotation can issue its child inside the same transaction. Mirrors the DbClient
+// seam in @amarnai/db (usage-meter.ts).
+type DbClient = typeof db | Prisma.TransactionClient;
 
 // The raw token is shown to the device once; only this hash is persisted, so a
 // database leak cannot be replayed against the API.
@@ -17,11 +29,12 @@ export type IssuedRefreshToken = { token: string; expiresAt: Date };
 // record the child it minted (see rotateRefreshToken).
 export async function issueRefreshToken(
   userId: string,
-  familyId?: string
+  familyId?: string,
+  client: DbClient = db
 ): Promise<IssuedRefreshToken & { id: string }> {
   const token = randomBytes(32).toString("hex");
   const expiresAt = new Date(Date.now() + REFRESH_TOKEN_TTL_MS);
-  const created = await db.refreshToken.create({
+  const created = await client.refreshToken.create({
     data: {
       userId,
       familyId: familyId ?? randomBytes(16).toString("hex"),
@@ -33,15 +46,19 @@ export async function issueRefreshToken(
 }
 
 // Validates and rotates a refresh token. Returns the user id and a fresh child
-// token, or null if the token is unknown, expired, or lost a concurrent race.
+// token, or null if the token is unknown, expired, replayed, or lost a
+// concurrent race.
 //
 // Reuse detection: a token presented after it was already rotated (usedAt set)
 // is either a benign retry (the client lost the rotation response and re-sent the
-// same token, never advancing to the child) or theft (an attacker replayed a
-// stolen token while the legitimate client also rotated). The two are told apart
-// by the child: a real attack forks the chain so the child is ALSO used, whereas
-// a retry leaves the child untouched. Only a used child revokes the family; a
-// benign retry is rejected without logging every device out.
+// same token within seconds) or theft (an attacker replays a stolen token, in
+// practice long after the real client has moved on). We tell them apart by time:
+// a replay within REUSE_GRACE_MS is a retry and is rejected WITHOUT revoking,
+// unless the chain has already forked (the child it minted was also used, which a
+// retry never does). A replay after the grace window is treated as theft and
+// revokes the whole family regardless of child state — this is what catches an
+// attacker who rotates a stolen token first and then holds the live child while
+// the real client's next (much later) refresh trips the alarm.
 export async function rotateRefreshToken(
   raw: string
 ): Promise<{ userId: string; refresh: IssuedRefreshToken } | null> {
@@ -51,10 +68,18 @@ export async function rotateRefreshToken(
   if (!existing) return null;
 
   if (existing.usedAt) {
-    // Parent already rotated. Revoke the lineage only if the chain forked: the
-    // child it minted was also consumed, which a benign retry never does. If the
-    // child is still unused (or the link is missing), treat it as a lost-response
-    // retry and reject without revoking.
+    const elapsedMs = Date.now() - existing.usedAt.getTime();
+
+    // Past the retry window: any replay of an already-rotated token is theft.
+    // Revoke the lineage unconditionally — we no longer need fork evidence.
+    if (elapsedMs > REUSE_GRACE_MS) {
+      await db.refreshToken.deleteMany({ where: { familyId: existing.familyId } });
+      return null;
+    }
+
+    // Within the window: a lost-response retry, unless the chain already forked
+    // (child also consumed). Revoke only on a proven fork; otherwise reject
+    // quietly so a legitimate retry does not log every device out.
     const child = existing.replacedById
       ? await db.refreshToken.findUnique({ where: { id: existing.replacedById } })
       : null;
@@ -66,24 +91,43 @@ export async function rotateRefreshToken(
 
   if (existing.expiresAt.getTime() < Date.now()) return null;
 
-  // Atomic single-use: only the caller that flips usedAt from null wins. A
-  // concurrent double-use loses (count 0) and is rejected without revoking the
-  // family, since a legitimate race is not an attack.
-  const consumed = await db.refreshToken.updateMany({
-    where: { id: existing.id, usedAt: null },
-    data: { usedAt: new Date() },
-  });
-  if (consumed.count !== 1) return null;
+  // Consume the parent, mint the child, and record replacedById as ONE atomic
+  // transaction. This makes the child link impossible to lose (a lost link would
+  // fail reuse detection open for that lineage) and keeps the whole rotation
+  // consistent. Atomic single-use: only the caller that flips usedAt from null
+  // (count 1) proceeds; a concurrent double-use loses (count 0) and is rejected
+  // without revoking, since a legitimate race is not an attack.
+  try {
+    return await db.$transaction(async (tx) => {
+      const consumed = await tx.refreshToken.updateMany({
+        where: { id: existing.id, usedAt: null },
+        data: { usedAt: new Date() },
+      });
+      if (consumed.count !== 1) return null;
 
-  const refresh = await issueRefreshToken(existing.userId, existing.familyId);
-  // Record the child so a later replay of this now-used parent can distinguish a
-  // benign retry from a fork. Best-effort: if this write is lost, reuse detection
-  // simply fails safe (no revoke) rather than logging the user out on a retry.
-  await db.refreshToken.update({
-    where: { id: existing.id },
-    data: { replacedById: refresh.id },
-  });
-  return { userId: existing.userId, refresh };
+      const child = await issueRefreshToken(existing.userId, existing.familyId, tx);
+      await tx.refreshToken.update({
+        where: { id: existing.id },
+        data: { replacedById: child.id },
+      });
+      return {
+        userId: existing.userId,
+        refresh: { token: child.token, expiresAt: child.expiresAt },
+      };
+    });
+  } catch (err) {
+    // A concurrent family revoke (logout, or theft detection on another replay)
+    // can delete the parent mid-transaction, so the update throws P2025; a unique
+    // collision throws P2002. Both mean this rotation lost a race — reject with
+    // null (a 401 the client retries) instead of surfacing a 500.
+    if (
+      err instanceof Prisma.PrismaClientKnownRequestError &&
+      (err.code === "P2025" || err.code === "P2002")
+    ) {
+      return null;
+    }
+    throw err;
+  }
 }
 
 // Sign-out: revokes the entire family the presented token belongs to, so neither

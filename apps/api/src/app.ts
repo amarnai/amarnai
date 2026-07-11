@@ -112,10 +112,20 @@ app.use("*", async (c, next) => {
   }
 
   // Path 2 — per-user access token (native clients). The user id is taken from
-  // the verified token; any caller-supplied X-User-Id header is ignored.
-  const tokenUserId = await verifyAccessToken(token);
-  if (tokenUserId) {
-    c.set("userId", tokenUserId);
+  // the verified token; any caller-supplied X-User-Id header is ignored. The
+  // token carries the session epoch it was minted at; reject it if the account's
+  // epoch has since advanced (password reset / pre-hijack invalidation) or the
+  // account is gone, so a revoked session cannot outlive its access-token TTL.
+  const verified = await verifyAccessToken(token);
+  if (verified) {
+    const user = await db.user.findUnique({
+      where: { id: verified.userId },
+      select: { sessionEpoch: true },
+    });
+    if (!user || verified.sessionEpoch < user.sessionEpoch) {
+      return c.json({ error: "Unauthorized" }, 401);
+    }
+    c.set("userId", verified.userId);
     return next();
   }
 

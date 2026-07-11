@@ -44,6 +44,28 @@ function getClient(): Redis {
   return client;
 }
 
+// One-shot per-key throttle: true if this is the first call for `key` within the
+// window (proceed), false if a prior call already claimed it (suppress). Used to
+// stop per-account email flooding (e.g. "you already have an account" notices).
+// Fails OPEN (true) when the store is unavailable so a Redis outage never
+// suppresses a legitimate email; a no-op (always true) under the test/self-host
+// disable switch, matching the rate-limit middleware.
+export async function throttleOnce(key: string, windowSeconds: number): Promise<boolean> {
+  if (DISABLED) return true;
+  const store = getClient();
+  if (store.status !== "ready") return true;
+  try {
+    const count = await store.incr(key);
+    if (count === 1) {
+      await store.expire(key, windowSeconds);
+      return true;
+    }
+    return false;
+  } catch {
+    return true;
+  }
+}
+
 export type RateLimitDecision = { allowed: boolean; remaining: number; retryAfter: number };
 
 // Fixed-window counter: INCR the key and set the TTL on the first hit of a
@@ -59,18 +81,36 @@ export async function checkRateLimit(
   return { allowed: count <= limit, remaining: Math.max(0, limit - count), retryAfter: windowSeconds };
 }
 
-function clientIp(c: Context): string {
-  // Trust proxy headers first (the hosted deployment runs behind one), then fall
-  // back to the socket address for direct/local connections.
-  const xff = c.req.header("x-forwarded-for");
-  if (xff) return xff.split(",")[0]!.trim();
-  const real = c.req.header("x-real-ip");
-  if (real) return real;
+function socketIp(c: Context): string {
   try {
     return getConnInfo(c).remote.address ?? "unknown";
   } catch {
     return "unknown";
   }
+}
+
+// Resolves the client IP used as the rate-limit key. Only trusts forwarded
+// headers when TRUST_PROXY says how many reverse proxies we actually run:
+//   - 0 (default): ignore X-Forwarded-For / X-Real-IP entirely and key on the
+//     socket address. A direct caller then cannot spoof an arbitrary IP per
+//     request to dodge the limit (the pre-fix bug: XFF's leftmost, fully
+//     attacker-controlled, was trusted unconditionally).
+//   - N >= 1: read the client from the XFF entry just before our N trusted
+//     proxies (rightmost is what our own proxy observed; everything to its left
+//     is caller-controlled). Falls back to the socket address if the header is
+//     absent or too short.
+export function clientIp(c: Context, trustProxy: number): string {
+  if (trustProxy <= 0) return socketIp(c);
+
+  const xff = c.req.header("x-forwarded-for");
+  if (xff) {
+    const parts = xff.split(",").map((p) => p.trim()).filter(Boolean);
+    const idx = parts.length - trustProxy;
+    if (idx >= 0 && idx < parts.length) return parts[idx]!;
+  }
+  const real = c.req.header("x-real-ip");
+  if (real) return real.trim();
+  return socketIp(c);
 }
 
 export function rateLimit(opts: {
@@ -85,7 +125,7 @@ export function rateLimit(opts: {
     // Issuing a command in a non-ready state throws immediately (the offline
     // queue is disabled), so guard instead of catching a noisy exception.
     if (store.status !== "ready") return next();
-    const key = `ratelimit:${opts.prefix}:${clientIp(c)}`;
+    const key = `ratelimit:${opts.prefix}:${clientIp(c, config.authRateLimit.trustProxy)}`;
     try {
       const { allowed, retryAfter } = await checkRateLimit(
         store,

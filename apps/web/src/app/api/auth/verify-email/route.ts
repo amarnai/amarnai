@@ -1,10 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
-import { db } from "@amarnai/db";
+import { db, Prisma } from "@amarnai/db";
 import { issuePasswordResetToken } from "@amarnai/auth";
 import { auth, unstable_update } from "@/auth";
 import { getOrCreateDefaultWorkspace } from "@/lib/workspace";
-import { sendWelcomeEmail } from "@/lib/email";
+import { sendWelcomeEmail, sendPasswordResetEmail } from "@/lib/email";
 import { INVITE_COOKIE, sanitizeInvitePath } from "@/lib/invite-redirect";
+
+// Thrown inside the verify transaction when a concurrent click already flipped
+// the account to verified: the loser aborts (rolling back) and is routed to
+// sign-in rather than 500ing on a doomed token delete.
+class VerifyRaceLostError extends Error {}
 
 // Welcome email — best-effort, fire-and-forget, only on the first verification.
 // This route is the single point where emailVerified transitions for both web and
@@ -18,6 +23,22 @@ async function sendWelcomeEmailFor(userId: string): Promise<void> {
   if (user) {
     await sendWelcomeEmail(user.email, user.name).catch((err) => {
       console.error("[verify-email] Failed to send welcome email:", err);
+    });
+  }
+}
+
+// Emails the set-password link (B3). The reset token is also carried in the
+// redirect, but the redirect only reaches the browser that clicked the link;
+// emailing it guarantees a durable recovery path if that tab is abandoned —
+// critical when a credential was just invalidated. Best-effort, fire-and-forget.
+async function sendSetPasswordEmailFor(userId: string, token: string): Promise<void> {
+  const user = await db.user.findUnique({
+    where: { id: userId },
+    select: { email: true },
+  });
+  if (user) {
+    await sendPasswordResetEmail(user.email, token).catch((err) => {
+      console.error("[verify-email] Failed to send set-password email:", err);
     });
   }
 }
@@ -67,44 +88,62 @@ export async function GET(req: NextRequest) {
       select: { id: true },
     });
 
-    // Verify + consume the token in ONE transaction, so the account is never
-    // observable as verified-with-an-unset-or-untrusted-credential, and a
-    // mid-flight failure rolls everything back — leaving the token intact for a
-    // clean retry. The `emailVerified: null` guard keeps a concurrent
-    // double-click consistent: only the first transaction flips and consumes the
-    // token; the loser's token delete throws and rolls the whole thing back.
+    // Flip to verified, consume the verification token, AND mint the
+    // set-password (reset) token in ONE transaction. Issuing the replacement
+    // token inside the same transaction that consumes the verification token is
+    // what closes the lockout window: a partial failure can never leave the
+    // account verified, credential-less, and without a live reset token. A
+    // mid-flight failure rolls everything back, leaving the token intact for a
+    // clean retry.
     //
-    // Email-first accounts (the norm) have no credential yet — we just verify and
-    // route the proven owner to set their first password. A credential present at
-    // this point is a legacy pre-verification password we did not vouch for, so we
-    // also drop it and invalidate its sessions (pre-hijack defense): bump the
-    // epoch to kill any planted stateless web JWT, and clear API refresh tokens
-    // (inlined from revokeAllRefreshTokensForUser so it joins this transaction).
-    const [flip] = credential
-      ? await db.$transaction([
-          db.user.updateMany({
-            where: { id: record.userId, emailVerified: null },
-            data: { emailVerified: new Date(), sessionEpoch: { increment: 1 } },
-          }),
-          db.refreshToken.deleteMany({ where: { userId: record.userId } }),
-          db.userCredential.deleteMany({ where: { userId: record.userId } }),
-          db.verificationToken.delete({ where: { token } }),
-        ])
-      : await db.$transaction([
-          db.user.updateMany({
-            where: { id: record.userId, emailVerified: null },
-            data: { emailVerified: new Date() },
-          }),
-          db.verificationToken.delete({ where: { token } }),
-        ]);
+    // The `emailVerified: null` guard is the race arbiter for a double-click /
+    // link-prefetch: exactly one transaction flips (count 1) and proceeds; the
+    // loser sees count 0 and aborts, so we never 500 on a doomed token delete.
+    //
+    // Email-first accounts (the norm) have no credential yet. A credential present
+    // here is a legacy pre-verification password we did not vouch for, so we drop
+    // it and invalidate its sessions (pre-hijack defense): bump the epoch to kill
+    // any planted stateless web JWT and clear API refresh tokens (inlined from
+    // revokeAllRefreshTokensForUser so it joins this transaction).
+    let resetToken: string;
+    try {
+      resetToken = await db.$transaction(async (tx) => {
+        const flip = await tx.user.updateMany({
+          where: { id: record.userId, emailVerified: null },
+          data: credential
+            ? { emailVerified: new Date(), sessionEpoch: { increment: 1 } }
+            : { emailVerified: new Date() },
+        });
+        if (flip.count !== 1) throw new VerifyRaceLostError();
 
-    await getOrCreateDefaultWorkspace(record.userId);
-    if (flip.count === 1) {
-      await sendWelcomeEmailFor(record.userId);
+        if (credential) {
+          await tx.refreshToken.deleteMany({ where: { userId: record.userId } });
+          await tx.userCredential.deleteMany({ where: { userId: record.userId } });
+        }
+        await tx.verificationToken.delete({ where: { token } });
+        return issuePasswordResetToken(record.userId, tx);
+      });
+    } catch (err) {
+      // A concurrent click already verified the account and its owner already got
+      // a set-password link — just route this loser to sign-in. Any other error
+      // rolled the transaction back (token intact), so rethrow for a clean retry.
+      if (err instanceof VerifyRaceLostError) {
+        signInUrl.searchParams.set("verified", "1");
+        return NextResponse.redirect(signInUrl);
+      }
+      throw err;
     }
 
+    // Post-commit side effects, all best-effort: none may strand the now-verified
+    // owner, who already holds a live reset token (emailed here AND in the
+    // redirect). The workspace is otherwise provisioned lazily on first sign-in.
+    await getOrCreateDefaultWorkspace(record.userId).catch((err) =>
+      console.error("[verify-email] workspace:", err instanceof Error ? err.message : err)
+    );
+    await sendWelcomeEmailFor(record.userId);
+    await sendSetPasswordEmailFor(record.userId, resetToken);
+
     // Route the now-proven owner to set their password, then sign in.
-    const resetToken = await issuePasswordResetToken(record.userId);
     const resetUrl = new URL("/reset-password", baseUrl);
     resetUrl.searchParams.set("token", resetToken);
     resetUrl.searchParams.set("verified", "1");
@@ -120,8 +159,19 @@ export async function GET(req: NextRequest) {
     data: { emailVerified: new Date() },
   });
 
-  await getOrCreateDefaultWorkspace(record.userId);
-  await db.verificationToken.delete({ where: { token } });
+  await getOrCreateDefaultWorkspace(record.userId).catch((err) =>
+    console.error("[verify-email] workspace:", err instanceof Error ? err.message : err)
+  );
+
+  // Consume the token; tolerate a concurrent click having already consumed it
+  // (P2025) so a double-click / link-prefetch never 500s.
+  try {
+    await db.verificationToken.delete({ where: { token } });
+  } catch (err) {
+    if (!(err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2025")) {
+      throw err;
+    }
+  }
 
   if (firstVerification.count === 1) {
     await sendWelcomeEmailFor(record.userId);
