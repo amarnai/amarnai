@@ -88,16 +88,47 @@ async function ensureEmailAccount(
 }
 
 /**
+ * Resolve provider message IDs the delta reported as removed from the inbox
+ * (Outlook `@removed` entries: archive / delete / move-out) to the provider
+ * thread IDs of the threads that own them, so the caller re-sorts those threads.
+ * Matches Gmail, where an INBOX-label removal re-surfaces the whole thread.
+ *
+ * The removed message is already gone from the provider, so its thread is
+ * resolved from our OWN persisted data — we synced the message earlier, and the
+ * EmailMessage → EmailThread mapping is keyed by (emailAccountId,
+ * providerMessageId). A message ID we never stored yields no row and is silently
+ * ignored: there is nothing to re-sort. Gmail passes an empty list, so this is a
+ * no-op for it. A DB error propagates so the caller aborts BEFORE advancing the
+ * cursor — the same cursor-safety rule the rest of the sync follows, so a failed
+ * resolution is retried from the unchanged cursor rather than lost.
+ */
+async function resolveRemovedThreadIds(
+  emailAccountId: string,
+  removedMessageIds: string[]
+): Promise<string[]> {
+  if (removedMessageIds.length === 0) return [];
+  const rows = await db.emailMessage.findMany({
+    where: { emailAccountId, providerMessageId: { in: removedMessageIds } },
+    select: { thread: { select: { providerThreadId: true } } },
+  });
+  return rows.map((r) => r.thread.providerThreadId);
+}
+
+/**
  * Fetch the thread IDs that changed since the stored history cursor.
  * Falls back to a full resync (most-recent 50 threads) when:
  *  - no cursor is stored yet (first run), or
  *  - the cursor has expired (Gmail keeps history for ~7 days).
  *
- * Returns the changed thread IDs and the new cursor to persist.
+ * Returns the changed thread IDs and the new cursor to persist. Threads whose
+ * only change was an inbox removal (a message archived/deleted/moved out) are
+ * folded into the changed set via {@link resolveRemovedThreadIds} so they
+ * re-sort too — see there for the Gmail-parity rationale.
  */
 async function getChangedThreadIds(
   client: MailProvider,
-  storedHistoryId: string | null
+  storedHistoryId: string | null,
+  emailAccountId: string
 ): Promise<{ changedThreadIds: string[]; newCursor: string }> {
   if (!storedHistoryId) {
     // First sync for this inbox: establish the history cursor at "now" and
@@ -110,8 +141,20 @@ async function getChangedThreadIds(
   }
 
   try {
-    const { changedThreadIds, newCursor } = await client.listChangesSince(storedHistoryId);
-    return { changedThreadIds, newCursor };
+    // removedMessageIds is a required field of MailChangeResult; default to []
+    // defensively so a provider result missing it degrades to "no removals"
+    // rather than throwing here (before the cursor advances).
+    const { changedThreadIds, removedMessageIds = [], newCursor } =
+      await client.listChangesSince(storedHistoryId);
+    // Resolve inbox-removal message IDs to their threads and merge (deduped) so a
+    // thread that only lost/archived a message still re-sorts. Runs before the
+    // cursor advances (step 6): a DB failure here throws and BullMQ retries from
+    // the same cursor, re-discovering the same @removed entries.
+    const removedThreadIds = await resolveRemovedThreadIds(emailAccountId, removedMessageIds);
+    return {
+      changedThreadIds: Array.from(new Set([...changedThreadIds, ...removedThreadIds])),
+      newCursor,
+    };
   } catch (err) {
     if (err instanceof MailCursorExpiredError) {
       console.warn("[sync-inbox] History cursor expired — performing full resync");
@@ -415,7 +458,8 @@ export function createSyncInboxWorker(): Worker {
 
       const { changedThreadIds, newCursor } = await getChangedThreadIds(
         client,
-        syncState.historyId
+        syncState.historyId,
+        emailAccountId
       );
       console.log(
         `[sync-inbox] workspace=${workspaceId} historyId=${syncState.historyId ?? "null"} → ${changedThreadIds.length} changed thread(s)`

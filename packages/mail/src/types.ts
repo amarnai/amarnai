@@ -67,6 +67,16 @@ export type MailProfile = {
 export type MailChangeResult = {
   /** Deduplicated thread IDs added or modified since the cursor. */
   changedThreadIds: string[];
+  /**
+   * Provider message IDs the delta reports as removed from the synced inbox
+   * scope (archived, deleted, or moved out). These entries carry only a message
+   * ID — no thread ID — so the caller resolves each to its owning thread from
+   * persisted data and re-sorts that thread, matching the Gmail path where an
+   * INBOX-label removal re-surfaces the whole thread through {@link changedThreadIds}.
+   * Gmail returns an empty list (it already folds removals into changedThreadIds);
+   * the Outlook/Graph adapter populates it from `@removed` delta entries.
+   */
+  removedMessageIds: string[];
   /** New cursor to persist after processing. */
   newCursor: string;
 };

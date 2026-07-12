@@ -116,6 +116,28 @@ describe("GraphClient.listChangesSince", () => {
     });
     const res = await client().listChangesSince("cursor-0");
     expect(res.changedThreadIds.sort()).toEqual(["c1", "c2"]);
+    expect(res.removedMessageIds).toEqual([]);
+    expect(res.newCursor).toBe("cursor-next");
+  });
+
+  it("collects @removed message ids (archive/delete/move-out) apart from changed conversations", async () => {
+    // A message archived / deleted / moved out of the inbox surfaces as an
+    // `@removed` tombstone carrying only its id — no conversationId — so it must
+    // be reported separately for the worker to resolve its thread and re-sort it.
+    routeGraph((url) => {
+      if (url === "cursor-0")
+        return jsonResponse({
+          value: [
+            { id: "m1", conversationId: "c1" },
+            { id: "m-removed", "@removed": { reason: "deleted" } },
+          ],
+          "@odata.deltaLink": "cursor-next",
+        });
+      throw new Error(`unexpected url ${url}`);
+    });
+    const res = await client().listChangesSince("cursor-0");
+    expect(res.changedThreadIds).toEqual(["c1"]);
+    expect(res.removedMessageIds).toEqual(["m-removed"]);
     expect(res.newCursor).toBe("cursor-next");
   });
 
@@ -172,8 +194,11 @@ describe("GraphClient.listThreadsPage", () => {
 // ─── getThreadSnapshot ────────────────────────────────────────────────────────
 
 describe("GraphClient.getThreadSnapshot", () => {
-  it("fetches the conversation's messages and normalizes them", async () => {
+  it("fetches the conversation's INBOX messages and normalizes them", async () => {
     routeGraph((url) => {
+      // Inbox-folder-scoped, not mailbox-wide: a message archived/moved out of
+      // the inbox must drop out of the snapshot so removals register.
+      expect(url).toContain("mailFolders/inbox/messages");
       expect(url).toContain("conversationId");
       expect(url).toContain("conv-1");
       expect(url).toContain("internetMessageHeaders");
@@ -198,9 +223,12 @@ describe("GraphClient.getThreadSnapshot", () => {
     expect(snap.webLink).toBe("wl-1");
   });
 
-  it("maps an empty conversation (Graph's definitive missing-item shape) to the typed MailThreadNotFoundError", async () => {
-    // A filter query for a deleted/unknown conversationId returns 200 with an
-    // empty value array — Graph never 404s per-conversation on this path.
+  it("maps an empty conversation (deleted, or fully gone from the inbox) to the typed MailThreadNotFoundError", async () => {
+    // A filter query for a deleted/unknown conversationId — or one whose messages
+    // have ALL left the inbox (every message archived/moved out) — returns 200
+    // with an empty value array. Graph never 404s per-conversation on this path,
+    // so the empty set is the definitive gone-from-inbox signal the sync/classify
+    // loops skip on.
     routeGraph(() => jsonResponse({ value: [] }));
     await expect(client().getThreadSnapshot("gone")).rejects.toBeInstanceOf(
       GmailThreadNotFoundError,

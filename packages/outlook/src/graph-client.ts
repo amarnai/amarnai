@@ -35,6 +35,15 @@ const INBOX_MESSAGES = "/me/mailFolders/inbox/messages";
 
 type TokenResponse = { access_token: string; expires_in: number };
 
+/**
+ * A message entry in a delta page. Graph interleaves full/changed messages with
+ * tombstones: an item removed from the tracked folder appears as `{ id,
+ * "@removed": { reason } }` and carries no other fields (notably no
+ * conversationId), so removed entries must be recognised by the `@removed`
+ * marker, not by a missing conversationId on an otherwise-normal message.
+ */
+type GraphDeltaEntry = GraphMessage & { "@removed"?: { reason?: string } };
+
 type GraphListResponse<T> = {
   value?: T[];
   "@odata.nextLink"?: string;
@@ -129,20 +138,36 @@ export class GraphClient {
     return { emailAddress, syncCursor };
   }
 
-  async listChangesSince(cursor: string): Promise<{ changedThreadIds: string[]; newCursor: string }> {
+  async listChangesSince(
+    cursor: string,
+  ): Promise<{ changedThreadIds: string[]; removedMessageIds: string[]; newCursor: string }> {
     const accessToken = await this.refreshAccessToken();
     const seen = new Set<string>();
+    const removed = new Set<string>();
     let url = cursor;
     let newCursor = cursor;
 
     // Follow nextLink pages until the terminal deltaLink appears.
     for (;;) {
-      const page: GraphListResponse<GraphMessage> = await this.graphGet<GraphMessage>(
+      const page: GraphListResponse<GraphDeltaEntry> = await this.graphGet<GraphDeltaEntry>(
         url,
         accessToken,
       );
-      for (const msg of page.value ?? []) {
-        if (msg.conversationId) seen.add(msg.conversationId);
+      for (const entry of page.value ?? []) {
+        // A message archived / deleted / moved out of the inbox surfaces as an
+        // `@removed` entry carrying only its id (no conversationId), because the
+        // message is gone from the synced folder. Since the inbox is the only
+        // scope we track, a move to Archive is indistinguishable from a delete —
+        // both are inbox-membership removals. Collect the id so the caller can
+        // resolve its thread from persisted data and re-sort it (Gmail parity:
+        // an INBOX-label removal re-sorts the whole thread). A normal
+        // created/updated entry carries a conversationId and re-sorts its thread
+        // directly.
+        if (entry["@removed"]) {
+          if (entry.id) removed.add(entry.id);
+        } else if (entry.conversationId) {
+          seen.add(entry.conversationId);
+        }
       }
       if (page["@odata.deltaLink"]) {
         newCursor = page["@odata.deltaLink"];
@@ -152,7 +177,11 @@ export class GraphClient {
       url = page["@odata.nextLink"];
     }
 
-    return { changedThreadIds: Array.from(seen), newCursor };
+    return {
+      changedThreadIds: Array.from(seen),
+      removedMessageIds: Array.from(removed),
+      newCursor,
+    };
   }
 
   async listThreadsPage(opts: {
@@ -255,8 +284,16 @@ export class GraphClient {
       $top: "100",
     });
 
+    // Scope to the inbox folder, not the whole mailbox. The Outlook adapter is
+    // inbox-folder-scoped everywhere else (list + delta), and this keeps the
+    // snapshot in step: when a message is archived / deleted / moved out of the
+    // inbox it drops out of this result, so a thread that lost one of several
+    // messages re-sorts on the reduced set, and a thread whose messages have ALL
+    // left the inbox yields an empty set — the definitive not-found signal below.
+    // A mailbox-wide `/me/messages` query would still return the archived copies
+    // (Archive/Sent live in other folders), so removals would never register.
     const messages: GraphMessage[] = [];
-    let next: string | undefined = `${GRAPH_BASE_URL}/me/messages?${params}`;
+    let next: string | undefined = `${GRAPH_BASE_URL}${INBOX_MESSAGES}?${params}`;
     while (next !== undefined) {
       const page: GraphListResponse<GraphMessage> = await this.graphGet<GraphMessage>(
         next,
@@ -268,8 +305,9 @@ export class GraphClient {
 
     if (messages.length === 0) {
       // Graph has no per-conversation 404 on this path: a filter query for a
-      // deleted/unknown conversationId succeeds (200) with an empty result set,
-      // so an empty set IS the definitive not-found signal. (A direct
+      // deleted/unknown conversationId (or one no longer present in the inbox)
+      // succeeds (200) with an empty result set, so an empty set IS the
+      // definitive not-found / gone-from-inbox signal. (A direct
       // GET /me/messages/{id} would 404 with ErrorItemNotFound, but we never
       // fetch that way.) Typed so the sync/classify loops skip exactly this
       // case; a 404 on the query itself means the mailbox/endpoint is broken,
@@ -298,7 +336,12 @@ export class GraphClient {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        changeType: "created,updated",
+        // `deleted` covers a message leaving the inbox (archive / delete / move
+        // out): Graph reports it as a delete from the subscribed folder. Without
+        // it the webhook never fires on a removal, so the thread would re-sort
+        // late (only on the next unrelated sync) — diverging from Gmail, whose
+        // INBOX watch fires the moment a message loses the INBOX label.
+        changeType: "created,updated,deleted",
         notificationUrl: target,
         resource: "/me/mailFolders('inbox')/messages",
         expirationDateTime: expiration,

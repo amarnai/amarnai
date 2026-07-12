@@ -197,6 +197,7 @@ beforeEach(() => {
   mockGetProfile.mockResolvedValue({ syncCursor: "hist-2" });
   mockListHistory.mockResolvedValue({
     changedThreadIds: ["gmail-t1"],
+    removedMessageIds: [],
     newCursor: "hist-2",
   });
   mockGetThread.mockResolvedValue({ id: "gmail-t1" });
@@ -316,6 +317,106 @@ describe("createSyncInboxWorker — taxonomy gate", () => {
     await processor(makeJob({ workspaceId: WS_ID }));
 
     expect(classifyThreadQueue.addBulk).toHaveBeenCalledOnce();
+  });
+
+  // ── Inbox-removal re-sort (Outlook/Gmail parity) ──────────────────────────
+  //
+  // A message archived / deleted / moved out of the inbox surfaces as an
+  // @removed delta entry that carries only a message id (Outlook) — no thread
+  // id. The worker resolves that message id to its owning thread from persisted
+  // data and re-sorts the thread, matching Gmail (where an INBOX-label removal
+  // re-surfaces the whole thread). db.emailMessage.findMany is now called twice
+  // per synced thread — once to resolve the removed id → thread, once for the
+  // prior-message-set diff — so these tests route it by query shape.
+
+  it("re-sorts a multi-message thread when one message is removed from the inbox (parity)", async () => {
+    // Only the removal surfaces: no created/updated entry for this conversation.
+    mockListHistory.mockResolvedValue({
+      changedThreadIds: [],
+      removedMessageIds: ["msg-removed"],
+      newCursor: "hist-2",
+    });
+    // The remaining inbox message keeps the thread alive.
+    mockGetThread.mockResolvedValue({ id: "gmail-t1" });
+    vi.mocked(db.emailMessage.findMany).mockImplementation((args: unknown) => {
+      const where = (args as { where?: { providerMessageId?: { in?: string[] } } }).where ?? {};
+      // Resolution query: removed provider message id → its thread's providerThreadId.
+      if (where.providerMessageId?.in) {
+        return Promise.resolve([{ thread: { providerThreadId: "gmail-t1" } }]) as never;
+      }
+      // Prior message set: both the surviving and the now-removed message were stored.
+      return Promise.resolve([
+        { providerMessageId: "msg-gmail-t1" },
+        { providerMessageId: "msg-removed" },
+      ]) as never;
+    });
+
+    createSyncInboxWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID }));
+
+    // The removed message dropped out of the (inbox-scoped) snapshot, so the
+    // message set changed → the thread is re-sorted.
+    expect(classifyThreadQueue.addBulk).toHaveBeenCalledOnce();
+    const [jobs] = vi.mocked(classifyThreadQueue.addBulk).mock.calls[0]! as [
+      Array<{ data: { emailThreadId: string } }>,
+    ];
+    expect(jobs[0]!.data.emailThreadId).toBe("db-t1");
+  });
+
+  it("does not error and does not re-sort when the thread's only message left the inbox", async () => {
+    // The removed message was the whole thread: its snapshot is now empty, which
+    // the provider surfaces as the typed not-found. The worker skips it (existing
+    // gone-from-inbox handling) — no crash, no classify.
+    mockListHistory.mockResolvedValue({
+      changedThreadIds: [],
+      removedMessageIds: ["msg-only"],
+      newCursor: "hist-2",
+    });
+    mockGetThread.mockRejectedValue(
+      new GmailThreadNotFoundError("Graph conversation not found: gmail-gone"),
+    );
+    vi.mocked(db.emailMessage.findMany).mockImplementation((args: unknown) => {
+      const where = (args as { where?: { providerMessageId?: { in?: string[] } } }).where ?? {};
+      if (where.providerMessageId?.in) {
+        return Promise.resolve([{ thread: { providerThreadId: "gmail-gone" } }]) as never;
+      }
+      return Promise.resolve([]) as never;
+    });
+
+    createSyncInboxWorker();
+    const processor = getProcessor();
+    await expect(processor(makeJob({ workspaceId: WS_ID }))).resolves.toBeUndefined();
+
+    expect(classifyThreadQueue.addBulk).not.toHaveBeenCalled();
+    // The cursor still advances past the handled removal.
+    const advance = vi
+      .mocked(db.providerSyncState.update)
+      .mock.calls.find((c) => (c[0] as { data: { historyId?: string } }).data?.historyId !== undefined);
+    expect(advance).toBeDefined();
+  });
+
+  it("ignores a removed message id that was never stored locally (no-op)", async () => {
+    // Unknown id → resolution finds no row → nothing added to the changed set,
+    // so no snapshot fetch and no classify. The cursor still advances.
+    mockListHistory.mockResolvedValue({
+      changedThreadIds: [],
+      removedMessageIds: ["msg-unknown"],
+      newCursor: "hist-2",
+    });
+    // Resolution returns nothing; no prior-message query runs (no changed threads).
+    vi.mocked(db.emailMessage.findMany).mockResolvedValue([] as never);
+
+    createSyncInboxWorker();
+    const processor = getProcessor();
+    await processor(makeJob({ workspaceId: WS_ID }));
+
+    expect(classifyThreadQueue.addBulk).not.toHaveBeenCalled();
+    expect(vi.mocked(db.emailThread.upsert)).not.toHaveBeenCalled();
+    const advance = vi
+      .mocked(db.providerSyncState.update)
+      .mock.calls.find((c) => (c[0] as { data: { historyId?: string } }).data?.historyId !== undefined);
+    expect(advance).toBeDefined();
   });
 
   it("keys the LIVE classify enqueue on a content signature so new messages are not dropped (Issue 13 / #4)", async () => {

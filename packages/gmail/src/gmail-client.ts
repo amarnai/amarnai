@@ -122,6 +122,14 @@ export type GmailProfile = {
 export type GmailHistoryResult = {
   /** Deduplicated thread IDs that were added or modified since the cursor. */
   changedThreadIds: string[];
+  /**
+   * Provider message IDs removed from the inbox scope. Always empty for Gmail:
+   * an INBOX-label removal already surfaces its thread through a labelRemoved
+   * history record (folded into `changedThreadIds`), so there is nothing to
+   * resolve separately. Present only to satisfy the neutral MailChangeResult
+   * shape the Outlook/Graph adapter uses for `@removed` delta entries.
+   */
+  removedMessageIds: string[];
   /** New cursor to persist in ProviderSyncState.historyId after processing. */
   newCursor: string;
 };
@@ -301,7 +309,9 @@ export class GmailClient {
       }
     }
 
-    return { changedThreadIds: Array.from(seen), newCursor: latestHistoryId };
+    // Gmail folds inbox removals into changedThreadIds via labelRemoved records,
+    // so there is never a separate message ID to resolve.
+    return { changedThreadIds: Array.from(seen), removedMessageIds: [], newCursor: latestHistoryId };
   }
 
   /**
