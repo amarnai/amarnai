@@ -5,6 +5,7 @@ import { THEME_INIT_SCRIPT } from "@amarnai/ui";
 import "@amarnai/ui/emails/styles";
 import "./globals.css";
 import "@amarnai/ui/theme/styles";
+import "@amarnai/ui/tooltip/styles";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-geist-sans" });
 const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" });

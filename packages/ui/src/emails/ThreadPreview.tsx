@@ -9,7 +9,7 @@ import type { FolderItem } from "../folder-tree/types.js";
 import type { ThreadItem, ThreadMessage, DraftItem } from "./types.js";
 import { buildThreadUrl } from "@amarnai/core/emails";
 import { openInProviderLabel } from "./providerLabels.js";
-import { GoogleGIcon } from "../icons/GoogleGIcon.js";
+import { GmailIcon } from "../icons/GmailIcon.js";
 import { OutlookIcon } from "../icons/OutlookIcon.js";
 import { RationaleCard } from "./RationaleCard.js";
 import { PreviewDoneBar } from "./PreviewDoneBar.js";
@@ -84,7 +84,7 @@ export function ThreadPreview({
     thread.provider === "OUTLOOK" ? (
       <OutlookIcon variant="color" size={16} />
     ) : (
-      <GoogleGIcon variant="color" size={16} />
+      <GmailIcon variant="color" size={16} />
     );
   const isDone = !!thread.doneMark;
   const enrichedThread = { ...thread, reasoning };
