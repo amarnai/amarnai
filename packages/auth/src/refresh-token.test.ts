@@ -23,12 +23,16 @@ vi.mock("@amarnai/db", () => {
     updateMany: vi.fn(),
     deleteMany: vi.fn(),
   };
+  // rotateRefreshToken reads the account's session epoch inside its transaction to
+  // mint an epoch-stamped access token without a second post-rotation read.
+  const user = { findUnique: vi.fn() };
   return {
     db: {
       refreshToken,
+      user,
       // Interactive transaction: run the callback against the same mocked client
-      // so assertions on db.refreshToken.* still observe the calls.
-      $transaction: vi.fn(async (cb: (tx: unknown) => unknown) => cb({ refreshToken })),
+      // so assertions on db.refreshToken.* / db.user.* still observe the calls.
+      $transaction: vi.fn(async (cb: (tx: unknown) => unknown) => cb({ refreshToken, user })),
     },
     Prisma: { PrismaClientKnownRequestError },
   };
@@ -50,6 +54,8 @@ beforeEach(() => {
   vi.mocked(db.refreshToken.update).mockResolvedValue({} as never);
   vi.mocked(db.refreshToken.updateMany).mockResolvedValue({ count: 1 } as never);
   vi.mocked(db.refreshToken.deleteMany).mockResolvedValue({ count: 1 } as never);
+  // Default: the account exists at epoch 0 so a valid rotation completes.
+  vi.mocked(db.user.findUnique).mockResolvedValue({ sessionEpoch: 0 } as never);
 });
 
 describe("issueRefreshToken", () => {
@@ -87,11 +93,15 @@ describe("rotateRefreshToken", () => {
       usedAt: null,
       expiresAt: new Date(Date.now() + 60_000),
     } as never);
+    vi.mocked(db.user.findUnique).mockResolvedValue({ sessionEpoch: 7 } as never);
 
     const result = await rotateRefreshToken("raw-token");
 
     expect(result?.userId).toBe("user-1");
     expect(result?.refresh.token).toMatch(/^[0-9a-f]{64}$/);
+    // Session epoch read in-transaction and returned, so the caller mints an
+    // epoch-stamped access token without a second post-rotation DB read.
+    expect(result?.sessionEpoch).toBe(7);
     // Atomic consume guarded on usedAt: null.
     expect(db.refreshToken.updateMany).toHaveBeenCalledWith({
       where: { id: "rt-1", usedAt: null },
@@ -106,6 +116,22 @@ describe("rotateRefreshToken", () => {
       where: { id: "rt-1" },
       data: { replacedById: "rt-child" },
     });
+  });
+
+  it("returns null when the account is gone by the time rotation reads it", async () => {
+    vi.mocked(db.refreshToken.findUnique).mockResolvedValue({
+      id: "rt-1",
+      userId: "user-1",
+      familyId: "fam-1",
+      usedAt: null,
+      expiresAt: new Date(Date.now() + 60_000),
+    } as never);
+    // Account deleted mid-rotation: the in-transaction user read returns null, so
+    // the whole rotation returns null (the caller 401s) rather than minting a
+    // token for a nonexistent account.
+    vi.mocked(db.user.findUnique).mockResolvedValue(null as never);
+
+    expect(await rotateRefreshToken("raw-token")).toBeNull();
   });
 
   it("revokes the whole family when a used parent's child was also used (fork = theft)", async () => {

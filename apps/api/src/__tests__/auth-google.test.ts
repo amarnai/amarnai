@@ -48,6 +48,18 @@ vi.mock("@amarnai/auth", () => ({
   rotateRefreshToken: vi.fn(),
   revokeRefreshToken: vi.fn(),
   getOrCreateDefaultWorkspace: vi.fn(),
+  StaleWhileErrorCache: class {
+    async get(_k: string, loader: () => Promise<unknown>) {
+      try {
+        return { status: "loaded", value: await loader() };
+      } catch {
+        return { status: "unavailable", value: null };
+      }
+    }
+    set() {}
+    invalidate() {}
+    clear() {}
+  },
 }));
 
 vi.mock("../services/queue-client.js", () => ({
@@ -63,7 +75,8 @@ import {
   exchangeAuthCode,
   GmailApiError,
 } from "@amarnai/gmail";
-import { provisionGoogleUser } from "@amarnai/auth";
+import { provisionGoogleUser, issueAccessToken, rotateRefreshToken } from "@amarnai/auth";
+import { db } from "@amarnai/db";
 import { syncInboxQueue } from "../services/queue-client.js";
 
 const GMAIL_SCOPE = "https://www.googleapis.com/auth/gmail.readonly";
@@ -130,6 +143,16 @@ describe("POST /auth/google", () => {
     );
   });
 
+  it("never mints an epoch-0 token: a null account read fails the mint instead", async () => {
+    // Replica lag / deletion race: the epoch read returns null. The mint must
+    // fail (caught by onError → 500) rather than stamp a fallback epoch 0 that the
+    // bearer check would then reject for the token's whole TTL.
+    vi.mocked(db.user.findUnique).mockResolvedValueOnce(null as never);
+    const res = await post(VALID_BODY);
+    expect(res.status).toBe(500);
+    expect(issueAccessToken).not.toHaveBeenCalled();
+  });
+
   it("enqueues an initial sync for a brand-new connected user", async () => {
     await post(VALID_BODY);
     expect(syncInboxQueue.add).toHaveBeenCalledWith(
@@ -192,5 +215,44 @@ describe("POST /auth/google", () => {
     expect(exchangeAuthCode).not.toHaveBeenCalled();
     expect(exchangeServerAuthCode).not.toHaveBeenCalled();
     expect(provisionGoogleUser).not.toHaveBeenCalled();
+  });
+});
+
+describe("POST /auth/refresh", () => {
+  async function postRefresh(body: unknown): Promise<Response> {
+    return app.request("/auth/refresh", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+  }
+
+  it("mints from the epoch rotateRefreshToken returns, with no second DB read", async () => {
+    vi.mocked(rotateRefreshToken).mockResolvedValue({
+      userId: "user-9",
+      sessionEpoch: 5,
+      refresh: { token: "refresh-tok", expiresAt: new Date("2030-01-01T00:00:00.000Z") },
+    });
+
+    const res = await postRefresh({ refreshToken: "rt-in" });
+
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({
+      accessToken: "access-tok",
+      refreshToken: "refresh-tok",
+      refreshTokenExpiresAt: "2030-01-01T00:00:00.000Z",
+    });
+    // The access token is stamped with the epoch the rotation already read...
+    expect(issueAccessToken).toHaveBeenCalledWith("user-9", 5);
+    // ...so the refresh path never does a second post-rotation account read (the
+    // read that used to throw after the single-use token was already consumed).
+    expect(db.user.findUnique).not.toHaveBeenCalled();
+  });
+
+  it("returns 401 when the refresh token is invalid/rotated/expired", async () => {
+    vi.mocked(rotateRefreshToken).mockResolvedValue(null);
+    const res = await postRefresh({ refreshToken: "bad" });
+    expect(res.status).toBe(401);
+    expect(issueAccessToken).not.toHaveBeenCalled();
   });
 });

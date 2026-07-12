@@ -85,12 +85,24 @@ function tokenPairResponse(accessToken: string, refresh: IssuedRefreshToken): To
 // Issues an access token stamped with the user's CURRENT session epoch, so the
 // bearer middleware can reject it after a later epoch bump (password reset /
 // pre-hijack invalidation) instead of trusting it for the full 15m TTL.
+//
+// A mint must stamp the EXACT epoch or fail — never a fallback. A read that
+// returns null (replica lag, or a race with account deletion) previously stamped
+// epoch 0, minting a token the bearer check then rejects for its whole TTL. We
+// throw instead so the caller returns a retryable error rather than a
+// dead-on-arrival token. Used by /auth/login and /auth/google, where a throw is a
+// safe 500-and-retry (nothing was consumed yet). /auth/refresh does NOT use this:
+// it mints from the epoch rotateRefreshToken reads in its own transaction, so a
+// failed read can never throw after the single-use refresh token was consumed.
 async function issueAccessTokenForUser(userId: string): Promise<string> {
   const user = await db.user.findUnique({
     where: { id: userId },
     select: { sessionEpoch: true },
   });
-  return issueAccessToken(userId, user?.sessionEpoch ?? 0);
+  if (!user) {
+    throw new Error(`cannot mint access token: user ${userId} not found`);
+  }
+  return issueAccessToken(userId, user.sessionEpoch);
 }
 
 async function issueTokenPair(userId: string): Promise<TokenPair> {
@@ -300,7 +312,12 @@ auth.post("/auth/refresh", async (c) => {
   const rotated = await rotateRefreshToken(parsed.data.refreshToken);
   if (!rotated) return c.json({ error: "Invalid refresh token" }, 401);
 
-  const accessToken = await issueAccessTokenForUser(rotated.userId);
+  // Mint from the epoch rotateRefreshToken already read in its transaction — no
+  // second DB read here. A read that failed AFTER the single-use parent was
+  // consumed used to throw and burn the client's session (the parent is gone, the
+  // child never reached them); minting from the rotation result removes that
+  // window entirely.
+  const accessToken = await issueAccessToken(rotated.userId, rotated.sessionEpoch);
   return c.json(tokenPairResponse(accessToken, rotated.refresh));
 });
 

@@ -61,7 +61,7 @@ export async function issueRefreshToken(
 // the real client's next (much later) refresh trips the alarm.
 export async function rotateRefreshToken(
   raw: string
-): Promise<{ userId: string; refresh: IssuedRefreshToken } | null> {
+): Promise<{ userId: string; sessionEpoch: number; refresh: IssuedRefreshToken } | null> {
   const existing = await db.refreshToken.findUnique({
     where: { tokenHash: hashToken(raw) },
   });
@@ -97,6 +97,14 @@ export async function rotateRefreshToken(
   // consistent. Atomic single-use: only the caller that flips usedAt from null
   // (count 1) proceeds; a concurrent double-use loses (count 0) and is rejected
   // without revoking, since a legitimate race is not an attack.
+  //
+  // The account's session epoch is read in the SAME transaction and returned, so
+  // the caller can mint an epoch-stamped access token WITHOUT a second post-
+  // rotation DB read. That read used to live in the /auth/refresh handler; when it
+  // failed (or returned null) it threw AFTER the parent was already consumed,
+  // burning a token the client could never recover — so the mint moved in here.
+  // A null user row (account deleted mid-rotation) returns null: the caller 401s
+  // and the just-minted child is orphaned, which is correct for a gone account.
   try {
     return await db.$transaction(async (tx) => {
       const consumed = await tx.refreshToken.updateMany({
@@ -105,6 +113,12 @@ export async function rotateRefreshToken(
       });
       if (consumed.count !== 1) return null;
 
+      const user = await tx.user.findUnique({
+        where: { id: existing.userId },
+        select: { sessionEpoch: true },
+      });
+      if (!user) return null;
+
       const child = await issueRefreshToken(existing.userId, existing.familyId, tx);
       await tx.refreshToken.update({
         where: { id: existing.id },
@@ -112,6 +126,7 @@ export async function rotateRefreshToken(
       });
       return {
         userId: existing.userId,
+        sessionEpoch: user.sessionEpoch,
         refresh: { token: child.token, expiresAt: child.expiresAt },
       };
     });

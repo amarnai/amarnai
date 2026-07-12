@@ -23,6 +23,9 @@ async function loadConfig(overrides: Record<string, string | undefined>) {
   ]) {
     vi.stubEnv(key, "");
   }
+  // Satisfy the production TRUST_PROXY gate so it is not what these cases trip on
+  // ("" coerces to 0, an explicit direct-connection topology).
+  vi.stubEnv("TRUST_PROXY", "0");
   for (const [key, value] of Object.entries(overrides)) {
     if (value !== undefined) vi.stubEnv(key, value);
   }

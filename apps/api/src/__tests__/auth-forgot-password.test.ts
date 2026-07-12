@@ -25,6 +25,18 @@ vi.mock("@amarnai/auth", () => ({
   revokeRefreshToken: vi.fn(),
   verifyCredentials: vi.fn(),
   verifyAccessToken: vi.fn(async () => null),
+  StaleWhileErrorCache: class {
+    async get(_k: string, loader: () => Promise<unknown>) {
+      try {
+        return { status: "loaded", value: await loader() };
+      } catch {
+        return { status: "unavailable", value: null };
+      }
+    }
+    set() {}
+    invalidate() {}
+    clear() {}
+  },
 }));
 
 vi.mock("@amarnai/email", () => ({

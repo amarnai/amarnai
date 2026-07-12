@@ -81,13 +81,27 @@ const envSchema = z.object({
   // Intended only for self-host setups that throttle at the proxy layer.
   AUTH_RATE_LIMIT_DISABLED: boolStr,
   // Number of trusted reverse proxies in front of the API. Controls how the
-  // client IP is derived for rate limiting: 0 (default) ignores X-Forwarded-For /
-  // X-Real-IP entirely and uses the socket address, so a direct caller cannot
-  // spoof an arbitrary IP to dodge the limit. Set to the exact number of hops you
-  // run (e.g. 1 behind a single nginx, 2 behind a CDN + nginx) so the real client
-  // is read from the correct XFF position and everything to its left (attacker-
-  // controlled) is ignored.
-  TRUST_PROXY: z.coerce.number().int().min(0).default(0),
+  // client IP is derived for rate limiting: 0 ignores X-Forwarded-For / X-Real-IP
+  // entirely and uses the socket address, so a direct caller cannot spoof an
+  // arbitrary IP to dodge the limit. Set to the exact number of hops you run (e.g.
+  // 1 behind a single nginx, 2 behind a CDN + nginx) so the real client is read
+  // from the correct XFF position and everything to its left (attacker-controlled)
+  // is ignored.
+  //
+  // Left OPTIONAL (not defaulted) so production can distinguish "unset" from an
+  // explicit 0: the validateEnv gate below refuses to start in production when it
+  // is unset, because a silent 0 behind a load balancer makes every user share one
+  // rate-limit bucket (aggregate /auth traffic then throttles everyone out of
+  // login). Non-production resolves an unset value to 0 (see config below).
+  //
+  // An empty string (TRUST_PROXY=, a common compose/k8s state) must count as
+  // UNSET, not 0: bare `z.coerce.number().optional()` would run Number('') = 0 and
+  // silently pass the production gate. The preprocess maps '' -> undefined so the
+  // gate treats missing and empty identically.
+  TRUST_PROXY: z.preprocess(
+    (v) => (v === '' ? undefined : v),
+    z.coerce.number().int().min(0).optional(),
+  ),
   // Gmail Push Notifications via Google Cloud Pub/Sub.
   // When set, Gmail pushes change notifications in real time instead of waiting
   // for the polling interval. Both vars must be set together.
@@ -153,6 +167,21 @@ function validateEnv(raw: NodeJS.ProcessEnv) {
 
   if (env.NODE_ENV === 'production' && !isBuildPhase && !env.AUTH_JWT_SECRET) {
     throw new Error('AUTH_JWT_SECRET is required in production');
+  }
+
+  // Force an explicit proxy topology in production. Proxy presence cannot be
+  // safely auto-detected (the only signal, X-Forwarded-For, is attacker-
+  // controlled), so the operator must state it: set TRUST_PROXY to the number of
+  // reverse proxies in front of the app, or 0 for direct socket connections.
+  // Skipped during the web build (secrets/topology are injected at runtime) and
+  // outside production (unset resolves to 0).
+  if (env.NODE_ENV === 'production' && !isBuildPhase && env.TRUST_PROXY === undefined) {
+    throw new Error(
+      'TRUST_PROXY is required in production: set it to the number of reverse proxies in ' +
+        'front of the app (e.g. 1 behind nginx, 2 behind a CDN + nginx), or 0 if clients ' +
+        'connect directly. An unset value behind a load balancer makes all users share one ' +
+        'rate-limit bucket, throttling everyone out of login.',
+    );
   }
 
   // Fail closed on the token-encryption key: refuse to start in production
@@ -274,7 +303,9 @@ export const config = {
   tokenEncryptionKey: env.TOKEN_ENCRYPTION_KEY || DEV_TOKEN_ENCRYPTION_KEY,
   authRateLimit: {
     disabled: env.AUTH_RATE_LIMIT_DISABLED,
-    trustProxy: env.TRUST_PROXY,
+    // Unset resolves to 0 here; production can never reach this with an unset
+    // value (the validateEnv gate above throws first).
+    trustProxy: env.TRUST_PROXY ?? 0,
   },
   gmail: {
     pubsubTopic: env.GMAIL_PUBSUB_TOPIC,

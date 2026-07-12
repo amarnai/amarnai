@@ -8,7 +8,7 @@ vi.mock("@amarnai/db", () => ({
   },
 }));
 
-import app from "../app.js";
+import app, { sessionEpochCache } from "../app.js";
 import { db } from "@amarnai/db";
 import { issueAccessToken } from "@amarnai/auth";
 
@@ -20,6 +20,8 @@ function authedUser(userId = USER_ID): RequestInit {
 
 beforeEach(() => {
   vi.clearAllMocks();
+  // The epoch cache is a module singleton shared across cases; isolate each test.
+  sessionEpochCache.clear();
   vi.mocked(db.workspace.findMany).mockResolvedValue([]);
   // Per-user-token path reads the account's current epoch; default matches the
   // epoch stamped in the test tokens (0) so a valid token authenticates.
@@ -114,6 +116,44 @@ describe("auth middleware: per-user access token", () => {
       headers: { Authorization: `Bearer ${token}` },
     });
     expect(res.status).toBe(401);
+  });
+
+  it("fails open (allows the request) when the epoch check DB read errors on a cold cache", async () => {
+    // Transient DB error and this instance never cached the user: the request
+    // proceeds on the token's own signature rather than 500ing every native call.
+    const token = await issueAccessToken("cold-user", 0);
+    vi.mocked(db.user.findUnique).mockRejectedValue(new Error("db down"));
+    const res = await app.request("/workspaces", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    expect(res.status).toBe(200);
+    expect(db.workspace.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({ where: { members: { some: { userId: "cold-user" } } } }),
+    );
+  });
+
+  it("still enforces a revocation from the cache even when the DB then errors", async () => {
+    // Warm the cache with the account at epoch 1 via a valid request.
+    vi.mocked(db.user.findUnique).mockResolvedValue({ sessionEpoch: 1 } as never);
+    const warm = await issueAccessToken("jwt-user-7", 1);
+    expect((await app.request("/workspaces", { headers: { Authorization: `Bearer ${warm}` } })).status).toBe(200);
+
+    // DB now errors, but a stale token (epoch 0 < cached 1) must still be rejected.
+    vi.mocked(db.user.findUnique).mockRejectedValue(new Error("db down"));
+    const stale = await issueAccessToken("jwt-user-7", 0);
+    const res = await app.request("/workspaces", { headers: { Authorization: `Bearer ${stale}` } });
+    expect(res.status).toBe(401);
+  });
+});
+
+// ─── onError safety net ───────────────────────────────────────────────────────
+
+describe("onError", () => {
+  it("turns an uncaught handler error into a JSON 500 instead of crashing", async () => {
+    vi.mocked(db.workspace.findMany).mockRejectedValue(new Error("boom"));
+    const res = await app.request("/workspaces", authedUser());
+    expect(res.status).toBe(500);
+    expect(await res.json()).toMatchObject({ error: "Internal server error" });
   });
 });
 

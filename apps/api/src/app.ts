@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { config } from "@amarnai/config";
 import { db } from "@amarnai/db";
-import { verifyAccessToken } from "@amarnai/auth";
+import { verifyAccessToken, StaleWhileErrorCache } from "@amarnai/auth";
 import type { MiddlewareHandler } from "hono";
 import type { AppEnv } from "./env.js";
 import { rateLimit } from "./services/rate-limit.js";
@@ -57,6 +57,12 @@ const PUBLIC_PATHS = new Set([
   "/auth/logout",
   "/auth/forgot-password",
 ]);
+
+// Short-TTL cache for the per-user access-token epoch check below. Keyed by user
+// id; value is the account row (or null when the account is gone — a real,
+// enforced value). Keeps the check off a blocking DB read on every native call
+// and keeps a DB blip from 500ing every bearer request. See StaleWhileErrorCache.
+const sessionEpochCache = new StaleWhileErrorCache<{ sessionEpoch: number } | null>();
 
 const app = new Hono<AppEnv>();
 
@@ -116,12 +122,24 @@ app.use("*", async (c, next) => {
   // account is gone, so a revoked session cannot outlive its access-token TTL.
   const verified = await verifyAccessToken(token);
   if (verified) {
-    const user = await db.user.findUnique({
-      where: { id: verified.userId },
-      select: { sessionEpoch: true },
-    });
-    if (!user || verified.sessionEpoch < user.sessionEpoch) {
-      return c.json({ error: "Unauthorized" }, 401);
+    // Enforce the session epoch through a short-TTL cache: not a blocking DB read
+    // on every native call, and a transient DB error degrades instead of 500ing
+    // every bearer request. "stale" still enforces a revocation seen before the
+    // outage; "unavailable" (DB down AND user never cached here) is the only
+    // fail-open case and lasts only as long as the outage.
+    const outcome = await sessionEpochCache.get(verified.userId, () =>
+      db.user.findUnique({
+        where: { id: verified.userId },
+        select: { sessionEpoch: true },
+      }),
+    );
+    if (outcome.status === "unavailable") {
+      console.error("[auth] epoch check unavailable, failing open for:", verified.userId);
+    } else {
+      const user = outcome.value;
+      if (!user || verified.sessionEpoch < user.sessionEpoch) {
+        return c.json({ error: "Unauthorized" }, 401);
+      }
     }
     c.set("userId", verified.userId);
     return next();
@@ -250,5 +268,17 @@ app.route("/", workspaceEventsRoute);
 app.route("/", devicesRoute);
 app.route("/", extensionRoute);
 app.route("/", adminRoute);
+
+// Safety net: any uncaught error in a handler or middleware becomes a JSON 500
+// rather than an unhandled rejection / crashed request. The client never sees the
+// error text and no request body is logged (email contents are sensitive). The
+// epoch check above no longer throws on a DB blip; this covers every other route.
+app.onError((err, c) => {
+  console.error("[api] unhandled error:", err instanceof Error ? err.message : err);
+  return c.json({ error: "Internal server error" }, 500);
+});
+
+// Exported so tests can isolate the module-singleton cache between cases.
+export { sessionEpochCache };
 
 export default app;

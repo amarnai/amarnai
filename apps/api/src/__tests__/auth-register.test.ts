@@ -36,6 +36,18 @@ vi.mock("@amarnai/auth", () => ({
   rotateRefreshToken: vi.fn(),
   revokeRefreshToken: vi.fn(),
   provisionGoogleUser: vi.fn(),
+  StaleWhileErrorCache: class {
+    async get(_k: string, loader: () => Promise<unknown>) {
+      try {
+        return { status: "loaded", value: await loader() };
+      } catch {
+        return { status: "unavailable", value: null };
+      }
+    }
+    set() {}
+    invalidate() {}
+    clear() {}
+  },
 }));
 
 vi.mock("@amarnai/email", () => ({

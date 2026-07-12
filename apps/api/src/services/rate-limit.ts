@@ -1,91 +1,45 @@
-import { Redis } from "ioredis";
 import { getConnInfo } from "@hono/node-server/conninfo";
 import { config } from "@amarnai/config";
 import type { Context, MiddlewareHandler } from "hono";
+import {
+  RATE_LIMIT_DISABLED,
+  getRateLimitClient,
+  checkRateLimit,
+} from "@amarnai/auth/rate-limit-store";
 
-// Redis-backed fixed-window rate limiting for the public /auth/* endpoints, the
-// only routes reachable without a token and therefore the brute-force surface.
-// Redis (not in-memory) so the limit holds across API instances in the hosted
-// deployment. Fails open if the store is unavailable: a rate-limit outage must
-// never lock users out of signing in.
-//
-// Disabled under NODE_ENV=test (deterministic suites) and when self-host opts
-// out via AUTH_RATE_LIMIT_DISABLED (e.g. throttling at the proxy instead).
-const DISABLED = process.env["NODE_ENV"] === "test" || config.authRateLimit.disabled;
-
-// Minimal surface so the counter can be unit-tested with a stub. ioredis
-// satisfies this structurally.
-export interface RateLimitStore {
-  incr(key: string): Promise<number>;
-  expire(key: string, seconds: number): Promise<unknown>;
-}
-
-let client: Redis | null = null;
-function getClient(): Redis {
-  if (!client) {
-    client = new Redis(config.redis.url, {
-      lazyConnect: true,
-      enableOfflineQueue: false,
-      maxRetriesPerRequest: 1,
-      connectTimeout: 1000,
-      // Keep trying to (re)connect in the background so the limiter self-heals
-      // after Redis restarts. Capped backoff; the status guard fails open until ready.
-      retryStrategy: (times) => Math.min(times * 200, 2000),
-    });
-    // Swallow connection errors here; the middleware fails open on rejection.
-    client.on("error", () => undefined);
-    // Warm the connection now instead of on the first command. With lazyConnect
-    // the socket connects only when a command is issued, but enableOfflineQueue is
-    // false, so that first command is rejected mid-handshake ("Stream isn't
-    // writeable"). Connecting eagerly lets the status guard below fail open
-    // quietly during warmup rather than throwing on real traffic.
-    client.connect().catch(() => undefined);
-  }
-  return client;
-}
-
-// One-shot per-key throttle: true if this is the first call for `key` within the
-// window (proceed), false if a prior call already claimed it (suppress). Used to
-// stop per-account email flooding (e.g. "you already have an account" notices).
-// Fails OPEN (true) when the store is unavailable so a Redis outage never
-// suppresses a legitimate email; a no-op (always true) under the test/self-host
-// disable switch, matching the rate-limit middleware.
-export async function throttleOnce(key: string, windowSeconds: number): Promise<boolean> {
-  if (DISABLED) return true;
-  const store = getClient();
-  if (store.status !== "ready") return true;
-  try {
-    // Atomic claim: SET only if absent, with the TTL applied in the same command.
-    // Unlike INCR-then-EXPIRE this cannot leave a key without an expiry (a lost
-    // EXPIRE there would suppress the recipient's notices forever). "OK" means we
-    // won the window and should proceed; null means a live claim already exists.
-    const res = await store.set(key, "1", "EX", windowSeconds, "NX");
-    return res === "OK";
-  } catch {
-    return true;
-  }
-}
-
-export type RateLimitDecision = { allowed: boolean; remaining: number; retryAfter: number };
-
-// Fixed-window counter: INCR the key and set the TTL on the first hit of a
-// window. Exported for unit testing with a stub store.
-export async function checkRateLimit(
-  store: RateLimitStore,
-  key: string,
-  limit: number,
-  windowSeconds: number
-): Promise<RateLimitDecision> {
-  const count = await store.incr(key);
-  if (count === 1) await store.expire(key, windowSeconds);
-  return { allowed: count <= limit, remaining: Math.max(0, limit - count), retryAfter: windowSeconds };
-}
+// The counter store and its primitives now live in @amarnai/auth so the web
+// server-action throttles share the exact same Redis-backed, fail-open limiter
+// (previously the web used a per-instance in-memory map, which diverged across
+// replicas). This module keeps only the Hono-specific pieces: client-IP
+// derivation and the middleware wrapper.
+export { checkRateLimit, throttleOnce } from "@amarnai/auth/rate-limit-store";
+export type { RateLimitStore, RateLimitDecision } from "@amarnai/auth/rate-limit-store";
 
 function socketIp(c: Context): string {
   try {
     return getConnInfo(c).remote.address ?? "unknown";
   } catch {
     return "unknown";
+  }
+}
+
+// Warn once per process if a request arrives with a forwarding header while
+// TRUST_PROXY is 0 in production. That is the collective-lockout footgun: behind
+// a load balancer the socket address is the proxy, so every user shares one
+// bucket. We do NOT change behavior off the header (it is attacker-controlled, so
+// trusting it would let a direct caller dodge the limit) — the operator must set
+// TRUST_PROXY. The startup gate in @amarnai/config already forces a value in
+// production; this catches a deployment that set it to 0 behind a real proxy.
+let warnedAboutProxy = false;
+function warnIfProxyHeaderIgnored(c: Context): void {
+  if (warnedAboutProxy || process.env["NODE_ENV"] !== "production") return;
+  if (c.req.header("x-forwarded-for") || c.req.header("x-real-ip")) {
+    warnedAboutProxy = true;
+    console.warn(
+      "[rate-limit] TRUST_PROXY=0 but requests carry X-Forwarded-For; if the API " +
+        "runs behind a proxy, all clients share one rate-limit bucket. Set TRUST_PROXY " +
+        "to the number of trusted proxies.",
+    );
   }
 }
 
@@ -100,7 +54,10 @@ function socketIp(c: Context): string {
 //     is caller-controlled). Falls back to the socket address if the header is
 //     absent or too short.
 export function clientIp(c: Context, trustProxy: number): string {
-  if (trustProxy <= 0) return socketIp(c);
+  if (trustProxy <= 0) {
+    warnIfProxyHeaderIgnored(c);
+    return socketIp(c);
+  }
 
   const xff = c.req.header("x-forwarded-for");
   if (xff) {
@@ -119,8 +76,8 @@ export function rateLimit(opts: {
   prefix: string;
 }): MiddlewareHandler {
   return async (c, next) => {
-    if (DISABLED) return next();
-    const store = getClient();
+    if (RATE_LIMIT_DISABLED) return next();
+    const store = getRateLimitClient();
     // Fail open quietly while the connection is warming up or Redis is down.
     // Issuing a command in a non-ready state throws immediately (the offline
     // queue is disabled), so guard instead of catching a noisy exception.
@@ -131,7 +88,7 @@ export function rateLimit(opts: {
         store,
         key,
         opts.limit,
-        opts.windowSeconds
+        opts.windowSeconds,
       );
       if (!allowed) {
         return c.json({ error: "Too many requests" }, 429, { "Retry-After": String(retryAfter) });

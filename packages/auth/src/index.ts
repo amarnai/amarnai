@@ -16,6 +16,8 @@ export {
   issuePasswordResetToken,
   applyPasswordReset,
 } from "./password-reset.js";
+export { StaleWhileErrorCache } from "./session-account-cache.js";
+export type { CacheOutcome } from "./session-account-cache.js";
 export { getOrCreateDefaultWorkspace } from "./workspace.js";
 export { provisionGoogleUser } from "./provision.js";
 export type { ProvisionGoogleUserInput, ProvisionGoogleUserResult } from "./provision.js";

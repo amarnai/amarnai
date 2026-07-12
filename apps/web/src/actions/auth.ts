@@ -16,7 +16,12 @@ import { RegisterEmailSchema, PasswordSchema } from "@amarnai/shared";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/session";
-import { authActionRateLimited } from "@/lib/auth-rate-limit";
+import {
+  authActionRateLimited,
+  isLoginBlocked,
+  recordLoginFailure,
+  clearLoginFailures,
+} from "@/lib/auth-rate-limit";
 import {
   sendVerificationEmail,
   sendPasswordResetEmail,
@@ -51,8 +56,10 @@ export async function credentialsSignInAction(
 ): Promise<{ error?: string }> {
   const email = (formData.get("email") as string | null) ?? "";
   // Throttle brute force: the web credentials path goes straight through
-  // next-auth, so the API's login rate limit does not cover it.
-  if (email && (await authActionRateLimited("login", email, 10))) {
+  // next-auth, so the API's login rate limit does not cover it. FAILURES-ONLY —
+  // check before the attempt, record only on failure, clear on success — so a
+  // wrong-password flood on a victim's email cannot lock the real user out.
+  if (email && (await isLoginBlocked(email))) {
     return { error: "Too many attempts. Please try again in a few minutes." };
   }
 
@@ -63,8 +70,13 @@ export async function credentialsSignInAction(
       redirectTo: await postAuthRedirect(),
     });
   } catch (err) {
-    // Re-throw NEXT_REDIRECT so Next.js handles it as a navigation.
-    if (err instanceof Error && err.message === "NEXT_REDIRECT") throw err;
+    // A successful sign-in throws NEXT_REDIRECT — clear the failure counters and
+    // re-throw so Next.js handles it as a navigation.
+    if (err instanceof Error && err.message === "NEXT_REDIRECT") {
+      if (email) await clearLoginFailures(email);
+      throw err;
+    }
+    if (email) await recordLoginFailure(email);
     return { error: "Invalid email or password" };
   }
   return {};
