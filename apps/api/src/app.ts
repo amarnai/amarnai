@@ -1,4 +1,3 @@
-import { timingSafeEqual } from "node:crypto";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { config } from "@amarnai/config";
@@ -7,6 +6,7 @@ import { verifyAccessToken } from "@amarnai/auth";
 import type { MiddlewareHandler } from "hono";
 import type { AppEnv } from "./env.js";
 import { rateLimit } from "./services/rate-limit.js";
+import { constantTimeEqual } from "./services/constant-time-equal.js";
 import { isTaxonomyEditor } from "./services/taxonomy-permission.js";
 import { healthRoute } from "./routes/health.js";
 import { authRoute } from "./routes/auth.js";
@@ -103,9 +103,7 @@ app.use("*", async (c, next) => {
   // Path 1 — trusted service-to-service caller (web SSR, worker): the shared
   // internal secret plus an X-User-Id header it is trusted to set.
   const secret = config.internalApiSecret;
-  const tokenBuf = Buffer.from(token, "utf8");
-  const secretBuf = Buffer.from(secret, "utf8");
-  if (tokenBuf.length === secretBuf.length && timingSafeEqual(tokenBuf, secretBuf)) {
+  if (constantTimeEqual(token, secret)) {
     const headerUserId = c.req.header("X-User-Id");
     if (headerUserId) c.set("userId", headerUserId);
     return next();

@@ -3,6 +3,7 @@ import { z } from "zod";
 import { db } from "@amarnai/db";
 import { config } from "@amarnai/config";
 import { syncInboxQueue } from "../services/queue-client.js";
+import { constantTimeEqual } from "../services/constant-time-equal.js";
 
 // A single Graph change-notification item. We only need the fields used to
 // authenticate the callback (clientState) and identify the mailbox (resource).
@@ -69,8 +70,10 @@ outlookWebhook.post("/webhooks/outlook", async (c) => {
   const secret = config.outlook.subscriptionSecret;
   const subjectIds = new Set<string>();
   for (const item of envelope.data.value) {
-    // Reject spoofed callbacks: every genuine notification echoes our clientState.
-    if (!secret || item.clientState !== secret) continue;
+    // Reject spoofed callbacks: every genuine notification echoes our
+    // clientState. Constant-time compare so a wrong clientState cannot be
+    // brute-forced via response timing; an unconfigured secret rejects.
+    if (!secret || !constantTimeEqual(item.clientState, secret)) continue;
     const subjectId = extractSubjectId(item.resource);
     if (subjectId) subjectIds.add(subjectId);
   }

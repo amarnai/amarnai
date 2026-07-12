@@ -3,6 +3,7 @@ import { z } from "zod";
 import { db } from "@amarnai/db";
 import { config } from "@amarnai/config";
 import { syncInboxQueue } from "../services/queue-client.js";
+import { constantTimeEqual } from "../services/constant-time-equal.js";
 
 const pubsubEnvelope = z.object({
   message: z.object({
@@ -35,7 +36,10 @@ const gmailWebhook = new Hono();
 gmailWebhook.post("/webhooks/gmail", async (c) => {
   // ── Auth ──────────────────────────────────────────────────────────────────
   const webhookSecret = config.gmail.webhookSecret;
-  if (!webhookSecret || c.req.query("token") !== webhookSecret) {
+  // Constant-time compare so a wrong ?token cannot be brute-forced byte-by-byte
+  // via response timing. An unconfigured secret rejects (constantTimeEqual
+  // returns false for a null/undefined side).
+  if (!webhookSecret || !constantTimeEqual(c.req.query("token"), webhookSecret)) {
     return c.json({ error: "Unauthorized" }, 401);
   }
 
