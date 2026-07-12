@@ -34,6 +34,8 @@ function Gate() {
         <div className="ax-center">
           <span className="ax-spinner" aria-label="Loading" />
         </div>
+      ) : status === "error" ? (
+        <SessionError />
       ) : status === "signedOut" ? (
         <SignInScreen />
       ) : !workspaceId || !userId ? (
@@ -94,6 +96,22 @@ function NoWorkspace() {
       </button>
       <button type="button" className="ax-linkbtn" onClick={() => void signOut()} disabled={busy}>
         <Trans>Sign out</Trans>
+      </button>
+    </div>
+  );
+}
+
+// The stored session looks valid (tokens present) but the server was unreachable
+// during startup, so identity could not be confirmed. Offer a retry rather than
+// signing the user out and destroying a possibly-valid session. retry() flips the
+// status back to "loading", so this screen unmounts while the attempt runs.
+function SessionError() {
+  const { retry } = useSession();
+  return (
+    <div className="ax-center ax-muted">
+      <p><Trans>Couldn't reach Amarnai. Check your connection and try again.</Trans></p>
+      <button type="button" className="ax-btn ax-btn-primary" onClick={() => void retry()}>
+        <Trans>Retry</Trans>
       </button>
     </div>
   );

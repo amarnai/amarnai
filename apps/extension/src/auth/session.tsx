@@ -20,12 +20,17 @@ import { extensionTokenStore, type StoredTokens } from "./tokenStore";
 import { requestGoogleAuth } from "./googleAuth";
 import { requestMicrosoftAuth } from "./microsoftAuth";
 
-type Status = "loading" | "signedOut" | "signedIn";
+// "error" means the stored session looks valid (tokens are still present) but the
+// server was unreachable during startup, so identity could not be confirmed. It is
+// deliberately distinct from "signedOut": we must not discard a possibly-valid
+// session over a transient network failure.
+type Status = "loading" | "signedOut" | "signedIn" | "error";
 
 type SessionUser = { email: string; name: string | null };
 
 // Resolve the signed-in user's profile from any workspace they belong to. Used
-// as a fallback when /auth/me fails but the workspace list resolved.
+// by refreshWorkspaces to re-derive the profile from a refreshed workspace list
+// without a second /auth/me round-trip.
 function findUser(workspaces: Workspace[], userId: string | null): SessionUser | null {
   if (!userId) return null;
   for (const ws of workspaces) {
@@ -48,6 +53,9 @@ interface SessionValue {
   client: ApiClient;
   switchWorkspace(id: string): void;
   refreshWorkspaces(switchToId?: string): Promise<void>;
+  // Re-attempts session restore from the stored tokens. Used by the "error"
+  // (couldn't-reach-server) screen so the user can retry without re-signing-in.
+  retry(): Promise<void>;
   // Throws on invalid credentials so the sign-in screen can show the error.
   signIn(email: string, password: string): Promise<void>;
   // Runs the Google OAuth flow and provisions/signs in via /auth/google. Throws
@@ -114,22 +122,63 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   // Resolve identity + active workspace from a valid access token. /auth/me is
   // the authority on identity + verification; the workspace list may be empty
   // for an account that has not connected Gmail yet.
+  //
+  // "signedIn" is gated on /auth/me actually succeeding — never asserted blindly.
+  // A failed me() has two very different causes that must route differently:
+  //   - Auth failure (expired/revoked refresh token): the transport clears the
+  //     tokens and fires onAuthFailure, so the store is now empty -> sign the user
+  //     out and route to the sign-in screen.
+  //   - Transient network error: the tokens are still present and may still be
+  //     valid -> do NOT sign out; surface a retry ("error") instead.
+  // workspaces() is caught to null (not []) so we can tell a genuinely empty list
+  // (valid: account has not connected Gmail) from a failed load.
   const bootstrap = useCallback(
     async (accessToken: string) => {
       const id = readUserIdFromAccessToken(accessToken);
-      setUserId(id);
       const [me, list] = await Promise.all([
         client.me().catch(() => null),
-        client.workspaces().catch(() => []),
+        client.workspaces().catch(() => null),
       ]);
-      setWorkspaces(list);
-      setUser(me ? { email: me.email, name: me.name } : findUser(list, id));
-      setEmailVerified(me ? me.emailVerified : null);
-      setWorkspaceId(list[0]?.id ?? null);
-      setStatus("signedIn");
+      if (me && list) {
+        setUserId(id);
+        setWorkspaces(list);
+        setUser({ email: me.email, name: me.name });
+        setEmailVerified(me.emailVerified);
+        setWorkspaceId(list[0]?.id ?? null);
+        setStatus("signedIn");
+        return;
+      }
+      // Identity or workspace load failed. Re-read the store: the transport clears
+      // tokens only on a real auth failure, so their presence disambiguates.
+      const tokens = await extensionTokenStore.get();
+      if (!tokens) {
+        // Auth failure. The transport already fired onAuthFailure -> signedOut;
+        // make it explicit so bootstrap never leaves a stale "signedIn" behind.
+        signOutLocal.current();
+        return;
+      }
+      // Tokens still valid, but the server was unreachable. Keep the session and
+      // let the user retry rather than falsely showing "Connect Gmail".
+      setStatus("error");
     },
     [client],
   );
+
+  // Restore a stored session (used on launch and by retry()). No tokens -> the
+  // user is signed out; otherwise resolve identity via bootstrap.
+  const restoreSession = useCallback(async () => {
+    const tokens = await extensionTokenStore.get();
+    if (!tokens) {
+      setStatus("signedOut");
+      return;
+    }
+    await bootstrap(tokens.accessToken);
+  }, [bootstrap]);
+
+  const retry = useCallback(async () => {
+    setStatus("loading");
+    await restoreSession();
+  }, [restoreSession]);
 
   const switchWorkspace = useCallback(
     (id: string) => {
@@ -154,20 +203,8 @@ export function SessionProvider({ children }: { children: ReactNode }) {
 
   // On launch, restore any stored session.
   useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      const tokens = await extensionTokenStore.get();
-      if (cancelled) return;
-      if (!tokens) {
-        setStatus("signedOut");
-        return;
-      }
-      await bootstrap(tokens.accessToken);
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, [bootstrap]);
+    void restoreSession();
+  }, [restoreSession]);
 
   const signIn = useCallback(
     async (email: string, password: string) => {
@@ -250,6 +287,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       client,
       switchWorkspace,
       refreshWorkspaces,
+      retry,
       signIn,
       signInWithGoogle,
       reconnectGmail,
@@ -267,6 +305,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       client,
       switchWorkspace,
       refreshWorkspaces,
+      retry,
       signIn,
       signInWithGoogle,
       reconnectGmail,
