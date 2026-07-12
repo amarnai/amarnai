@@ -23,6 +23,8 @@ export { Glyph, NavGlyph, FOLDER_GLYPH, MUTE_GLYPH } from "./icons/glyphs.js";
 export type { GlyphProps, NavGlyphProps } from "./icons/glyphs.js";
 export { GoogleGIcon } from "./icons/GoogleGIcon.js";
 export type { GoogleGIconProps } from "./icons/GoogleGIcon.js";
+export { GmailIcon } from "./icons/GmailIcon.js";
+export type { GmailIconProps } from "./icons/GmailIcon.js";
 export { OutlookIcon } from "./icons/OutlookIcon.js";
 export type { OutlookIconProps } from "./icons/OutlookIcon.js";
 export { AppDownloadBanner } from "./AppDownloadBanner.js";

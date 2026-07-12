@@ -8,6 +8,8 @@ import type { ActiveSelection, ThreadItem } from "./types.js";
 import { buildThreadUrl } from "@amarnai/core/emails";
 import { openInProviderLabel } from "./providerLabels.js";
 import { Tooltip } from "../Tooltip.js";
+import { GmailIcon } from "../icons/GmailIcon.js";
+import { OutlookIcon } from "../icons/OutlookIcon.js";
 
 const FOLDER_ICO = (
   <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden>
@@ -52,18 +54,6 @@ const PERSON_ICO = (
       stroke="currentColor"
       strokeWidth="1.2"
       strokeLinecap="round"
-    />
-  </svg>
-);
-
-const GMAIL_LINK_ICO = (
-  <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden>
-    <path
-      d="M5 2H2a1 1 0 00-1 1v7a1 1 0 001 1h7a1 1 0 001-1V7M7.5 1H11v3.5M11 1L5.5 6.5"
-      stroke="currentColor"
-      strokeWidth="1.4"
-      strokeLinecap="round"
-      strokeLinejoin="round"
     />
   </svg>
 );
@@ -159,6 +149,14 @@ export function ThreadRow({
     ? i18n._(msg`Remove from important`)
     : i18n._(msg`Mark as important`);
   const openInGmailLabel = openInProviderLabel(i18n, thread.provider);
+  // The "open in provider" action shows the destination's brand mark so it's
+  // clear at a glance whether the thread opens in Gmail or Outlook.
+  const providerIcon =
+    thread.provider === "OUTLOOK" ? (
+      <OutlookIcon variant="color" size={14} />
+    ) : (
+      <GmailIcon variant="color" size={14} />
+    );
 
   const assignment = thread.assignment;
   const assigneeName = assignment ? (assignment.userName ?? assignment.userEmail) : "";
@@ -291,7 +289,7 @@ export function ThreadRow({
                   onOpenInGmail();
                 }}
               >
-                {GMAIL_LINK_ICO}
+                {providerIcon}
               </button>
             ) : (
               <a
@@ -302,7 +300,7 @@ export function ThreadRow({
                 aria-label={openInGmailLabel}
                 onClick={(e) => e.stopPropagation()}
               >
-                {GMAIL_LINK_ICO}
+                {providerIcon}
               </a>
             )}
           </Tooltip>

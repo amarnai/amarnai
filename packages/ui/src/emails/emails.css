@@ -916,6 +916,11 @@
   flex-direction: column;
   min-width: 0;
   overflow: hidden;
+  /* Query container so the "Open in <provider>" toolbar control can show its
+     text label when the preview is wide and collapse to icon-only when the
+     column is genuinely cramped (narrow phones or a dragged-narrow column). */
+  container-type: inline-size;
+  container-name: preview;
 }
 
 .em-preview-spacer { flex: 1; }
@@ -963,6 +968,49 @@
 }
 
 .em-preview-gmail-link:hover { color: var(--ink); }
+
+/* Web-surface "Open in <provider>" control in the preview toolbar. A labeled
+   pill (color provider logo + text) so the action is obvious to any user, not a
+   bare icon that relies on a hover tooltip. It keeps its button chrome and
+   collapses to an icon-only square when the column is too narrow for the label
+   (see the @container rule below). Sits in the star/close action cluster. */
+.em-preview-open {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 30px;
+  padding: 0 10px;
+  border-radius: 8px;
+  background: var(--surface);
+  border: 1px solid var(--line-2);
+  color: var(--ink-2);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+}
+
+.em-preview-open:hover { background: var(--bg-soft); border-color: var(--line-3); color: var(--ink); }
+
+/* Collapse to an icon-only button when the preview column can't comfortably fit
+   the label alongside Back/star/close. Threshold sits just above the toolbar's
+   min-content width, so the label shows on all mainstream phone widths and only
+   retracts when truly cramped. Tunable. */
+@container preview (max-width: 340px) {
+  .em-preview-open {
+    width: 30px;
+    padding: 0;
+    justify-content: center;
+  }
+
+  .em-preview-open-label {
+    display: none;
+  }
+}
 
 /* Extension-surface deep link: a full-width "Open in <provider>" button between
    the toolbar and the scroll area, matching the browser side panel. The web

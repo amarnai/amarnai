@@ -5,7 +5,7 @@ import { msg } from "@lingui/core/macro";
 import type { ApiClient, Draft } from "@amarnai/api-client";
 import type { FolderItem, ThreadItem } from "@amarnai/ui/emails";
 import { RationaleCard, MessageCard, SuggestedDraftCard, PreviewDoneBar } from "@amarnai/ui/emails";
-import { GoogleGIcon, OutlookIcon } from "@amarnai/ui";
+import { GmailIcon, OutlookIcon } from "@amarnai/ui";
 import { formatQuotaResetDate, TAXONOMY_MIN_NON_ROOT_NODES } from "@amarnai/shared";
 import { openThreadInMail } from "../gmail/openInGmail";
 import { SortNowButton } from "./SortNowButton";
@@ -248,7 +248,7 @@ export function ThreadPreviewPane({
             {thread.provider === "OUTLOOK" ? (
               <OutlookIcon variant="color" size={16} />
             ) : (
-              <GoogleGIcon variant="color" size={16} />
+              <GmailIcon variant="color" size={16} />
             )}
             {thread.provider === "OUTLOOK" ? (
               <Trans>Open in Outlook</Trans>
