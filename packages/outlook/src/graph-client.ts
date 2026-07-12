@@ -36,6 +36,38 @@ const INBOX_MESSAGES = "/me/mailFolders/inbox/messages";
 type TokenResponse = { access_token: string; expires_in: number };
 
 /**
+ * Build a human-readable reason from a failed Graph response so a bare status
+ * code (notably a 401) carries WHY Graph rejected the request. Reads two sources,
+ * both best-effort:
+ *   - the `WWW-Authenticate` challenge, present on 401s — it names the failure
+ *     (`invalid_token`, `insufficient_claims` for a Conditional Access / CAE
+ *     challenge, an expired token, or an audience mismatch);
+ *   - the JSON error body (`error.code` / `error.message`).
+ * Truncated because this is diagnostic, not exhaustive. Consumes the response
+ * body, so only call it on an already-failed response that will not be read again.
+ */
+async function describeGraphError(res: Response): Promise<string> {
+  const parts: string[] = [];
+  const challenge = res.headers.get("WWW-Authenticate");
+  if (challenge) parts.push(challenge.length > 300 ? `${challenge.slice(0, 300)}…` : challenge);
+  try {
+    const body = (await res.text()).trim();
+    if (body) {
+      try {
+        const parsed = JSON.parse(body) as { error?: { code?: string; message?: string } };
+        const joined = [parsed.error?.code, parsed.error?.message].filter(Boolean).join(": ");
+        parts.push(joined || body.slice(0, 300));
+      } catch {
+        parts.push(body.slice(0, 300));
+      }
+    }
+  } catch {
+    /* body unavailable or already consumed */
+  }
+  return parts.join(" | ");
+}
+
+/**
  * A message entry in a delta page. Graph interleaves full/changed messages with
  * tombstones: an item removed from the tracked folder appears as `{ id,
  * "@removed": { reason } }` and carries no other fields (notably no
@@ -110,8 +142,23 @@ export class GraphClient {
       if (res.status === 410) {
         throw new MailCursorExpiredError("Delta cursor expired (410 Gone). Perform a full resync.");
       }
+      if (res.status === 401) {
+        // A 401 on a DATA request means the access token we just minted was
+        // rejected by Graph — the token refresh itself succeeded (that path throws
+        // its own MailAuthError). Retrying with the same refresh token cannot fix
+        // it: the cause is auth/consent (a Conditional Access / CAE claims
+        // challenge, a revoked or unconsented permission, an audience mismatch).
+        // Classify as MailAuthError — parity with Gmail's auth handling — so the
+        // worker surfaces "reconnect needed" instead of retrying forever, and
+        // carry the WWW-Authenticate / body reason so the cause is diagnosable.
+        const detail = await describeGraphError(res);
+        throw new MailAuthError(`Graph request failed: 401${detail ? ` — ${detail}` : ""}`);
+      }
       if (res.status === 404) throw new Error(`Graph resource not found: ${res.status}`);
-      if (!res.ok) throw new Error(`Graph request failed: ${res.status}`);
+      if (!res.ok) {
+        const detail = await describeGraphError(res);
+        throw new Error(`Graph request failed: ${res.status}${detail ? ` — ${detail}` : ""}`);
+      }
       return (await res.json()) as GraphListResponse<T>;
     }
     // Unreachable in practice: the retry either returns or throws above.
@@ -124,7 +171,16 @@ export class GraphClient {
     const meRes = await fetch(`${GRAPH_BASE_URL}/me?$select=mail,userPrincipalName`, {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
-    if (!meRes.ok) throw new Error(`Graph /me fetch failed: ${meRes.status}`);
+    if (!meRes.ok) {
+      const detail = await describeGraphError(meRes);
+      // Same rationale as graphGet: a 401 here is a rejected access token, not a
+      // transient fault — classify it as MailAuthError so the connection surfaces
+      // as needing re-auth rather than retrying indefinitely.
+      if (meRes.status === 401) {
+        throw new MailAuthError(`Graph /me fetch failed: 401${detail ? ` — ${detail}` : ""}`);
+      }
+      throw new Error(`Graph /me fetch failed: ${meRes.status}${detail ? ` — ${detail}` : ""}`);
+    }
     const me = (await meRes.json()) as { mail?: string | null; userPrincipalName?: string };
     const emailAddress = (me.mail ?? me.userPrincipalName ?? "").toLowerCase();
 

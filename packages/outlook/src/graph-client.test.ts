@@ -263,6 +263,49 @@ describe("GraphClient.listRecentThreadIds", () => {
   });
 });
 
+// ─── 401 on a data request (rejected access token) ────────────────────────────
+
+describe("GraphClient 401 handling", () => {
+  it("classifies a data-request 401 as MailAuthError (not a transient error)", async () => {
+    routeGraph(() => jsonResponse({ error: { code: "InvalidAuthenticationToken" } }, { status: 401 }));
+    await expect(client().listChangesSince("cursor-0")).rejects.toBeInstanceOf(GmailAuthError);
+  });
+
+  it("surfaces the WWW-Authenticate challenge and error body in the message", async () => {
+    routeGraph(() =>
+      jsonResponse(
+        { error: { code: "InvalidAuthenticationToken", message: "CAE challenge" } },
+        {
+          status: 401,
+          headers: { "WWW-Authenticate": 'Bearer error="insufficient_claims", claims="abc"' },
+        },
+      ),
+    );
+    const err = await client().listChangesSince("cursor-0").catch((e: unknown) => e);
+    expect(err).toBeInstanceOf(GmailAuthError);
+    const message = (err as Error).message;
+    expect(message).toContain("401");
+    expect(message).toContain("insufficient_claims");
+    expect(message).toContain("InvalidAuthenticationToken");
+  });
+
+  it("classifies a 401 on the getProfile /me fetch as MailAuthError", async () => {
+    routeGraph((url) => {
+      if (url.includes("/me?")) return jsonResponse({ error: { code: "invalid" } }, { status: 401 });
+      return jsonResponse({ value: [], "@odata.deltaLink": "next" });
+    });
+    await expect(client().getProfile()).rejects.toBeInstanceOf(GmailAuthError);
+  });
+
+  it("still classifies a non-401 failure (e.g. 500) as a generic transient error", async () => {
+    routeGraph(() => jsonResponse({ error: { code: "InternalServerError" } }, { status: 500 }));
+    const err = await client().listChangesSince("cursor-0").catch((e: unknown) => e);
+    expect(err).toBeInstanceOf(Error);
+    expect(err).not.toBeInstanceOf(GmailAuthError);
+    expect((err as Error).message).toContain("500");
+  });
+});
+
 // ─── Retry-After (throttling) ─────────────────────────────────────────────────
 
 describe("GraphClient throttling", () => {
