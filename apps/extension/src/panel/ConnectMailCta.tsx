@@ -93,8 +93,8 @@ export function ConnectMailCta({
           )
         ) : (
           <Trans>
-            King Aziru is ready to sort your email threads. Connect your account to get
-            started. Amarnai connects with <strong>read-only access</strong> and{" "}
+            Connect your account to get started. Amarnai connects with{" "}
+            <strong>read-only access</strong> and{" "}
             <strong>never sends, deletes, or changes anything</strong>. Your inbox stays
             yours.
           </Trans>
