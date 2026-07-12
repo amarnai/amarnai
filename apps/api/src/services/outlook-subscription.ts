@@ -4,7 +4,14 @@ import { createMailProvider } from "@amarnai/mail";
 
 export type RegisterOutlookSubscriptionResult =
   | { ok: true; expiresAt: Date }
-  | { ok: false; reason: "no_notification_url" | "no_active_connection" | "wrong_provider" };
+  | {
+      ok: false;
+      reason:
+        | "no_notification_url"
+        | "notification_url_not_https"
+        | "no_active_connection"
+        | "wrong_provider";
+    };
 
 /**
  * Registers (or renews) the Microsoft Graph change-notification subscription for
@@ -25,6 +32,15 @@ export async function registerOutlookSubscription(
 ): Promise<RegisterOutlookSubscriptionResult> {
   const notificationUrl = config.outlook.notificationUrl;
   if (!notificationUrl) return { ok: false, reason: "no_notification_url" };
+  // Graph deterministically rejects any non-HTTPS notification URL
+  // ("NotificationUrl scheme='http' is not supported"). A local dev endpoint
+  // (http://localhost) can never register a subscription, so short-circuit to a
+  // clean no-op — same fallback as an unset URL — rather than letting the Graph
+  // 400 surface as an unhandled 500. Push stays polling-only until a public
+  // HTTPS notification URL is configured.
+  if (!notificationUrl.startsWith("https://")) {
+    return { ok: false, reason: "notification_url_not_https" };
+  }
 
   const connection = await db.emailConnection.findUnique({
     where: { workspaceId },

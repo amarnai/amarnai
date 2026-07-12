@@ -103,13 +103,14 @@ async function renewAllGmailWatches(): Promise<void> {
  * auto-renew, so this runs on startup and then on the shared daily tick with a
  * wide renewal window to stay comfortably ahead of expiry.
  *
- * No-ops when MS_GRAPH_NOTIFICATION_URL is not configured (polling-only). Each
- * renewal creates a fresh subscription (Graph has no idempotent re-register and
- * we do not persist the subscription id), tearing down existing ones first via
- * stopWatch so exactly one subscription per mailbox survives.
+ * No-ops when MS_GRAPH_NOTIFICATION_URL is unset or not HTTPS (polling-only,
+ * incl. local dev on http://localhost — Graph rejects non-HTTPS notification
+ * URLs). Each renewal creates a fresh subscription (Graph has no idempotent
+ * re-register and we do not persist the subscription id), tearing down existing
+ * ones first via stopWatch so exactly one subscription per mailbox survives.
  */
 async function renewAllOutlookSubscriptions(): Promise<void> {
-  if (!config.outlook.notificationUrl) return;
+  if (!config.outlook.notificationUrl?.startsWith("https://")) return;
 
   // Renew subscriptions expiring within 30 hours (or never registered). With a
   // ~70h lifetime and a daily tick, this always renews well before expiry.
