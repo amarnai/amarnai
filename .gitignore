@@ -49,6 +49,9 @@ packages/i18n/src/locales/**/messages.mjs
 tsconfig.tsbuildinfo
 *.tsbuildinfo
 
+# Zip archives are build/submission artifacts (e.g. AMO source uploads), never source
+*.zip
+
 # Claude Code — ignore local/runtime files, keep shared config (settings.json,
 # commands/, skills/, agents/) committable.
 .claude/settings.local.json
