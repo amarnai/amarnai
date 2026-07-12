@@ -207,7 +207,7 @@ msgstr "{providerName} Inbox"
 
 #. placeholder {0}: draftQuota.limit
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:330
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:354
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:357
 #, fuzzy
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
 msgstr "{quotaRemaining} van {0} over · reset op {quotaResetDate}"
@@ -834,7 +834,7 @@ msgstr "Amarnai heeft de toegang tot je inbox verloren. Tik om je Google-account
 msgid "Amarnai needs access to its server and your inbox to show your emails."
 msgstr "Amarnai heeft toegang nodig tot zijn server en je inbox om je e-mails te tonen."
 
-#: ../../apps/extension/src/App.tsx:52
+#: ../../apps/extension/src/App.tsx:54
 #: ../../apps/extension/src/auth/SignInScreen.tsx:13
 msgid "Amarnai needs access to its server and your inbox to work. Please allow access and try again."
 msgstr "Amarnai heeft toegang nodig tot zijn server en je inbox om te kunnen werken. Sta toegang toe en probeer het opnieuw."
@@ -1012,8 +1012,8 @@ msgstr "Gesprek toewijzen"
 msgid "Assign to"
 msgstr "Toewijzen aan"
 
-#: ../ui/src/emails/ThreadRow.tsx:314
-#: ../ui/src/emails/ThreadRow.tsx:323
+#: ../ui/src/emails/ThreadRow.tsx:312
+#: ../ui/src/emails/ThreadRow.tsx:321
 #: ../ui/src/emails/TriageBar.tsx:63
 #, fuzzy
 msgid "Assign to a member"
@@ -1032,8 +1032,8 @@ msgstr "Toegewezen"
 msgid "Assigned to {assigneeName}"
 msgstr "Toegewezen aan {assigneeName}"
 
-#: ../ui/src/emails/ThreadRow.tsx:210
-#: ../ui/src/emails/ThreadRow.tsx:322
+#: ../ui/src/emails/ThreadRow.tsx:208
+#: ../ui/src/emails/ThreadRow.tsx:320
 #: ../ui/src/emails/TriageBar.tsx:62
 #, fuzzy
 msgid "Assigned to {assigneeName}. Change assignee"
@@ -1362,7 +1362,7 @@ msgstr "Verzamelmap"
 msgid "Change"
 msgstr "Wijzigen"
 
-#: ../ui/src/emails/ThreadRow.tsx:313
+#: ../ui/src/emails/ThreadRow.tsx:311
 #, fuzzy
 msgid "Change assignee"
 msgstr "Wijzig toegewezene"
@@ -1465,8 +1465,8 @@ msgstr "Sluiten"
 msgid "Close panel"
 msgstr "Paneel sluiten"
 
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:265
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:269
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:283
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:287
 #: ../ui/src/emails/ThreadPreview.tsx:147
 #: ../ui/src/emails/ThreadPreview.tsx:151
 #, fuzzy
@@ -1584,7 +1584,7 @@ msgstr "Verbind {secondaryName}"
 msgid "Connect a Gmail inbox to configure sync filters."
 msgstr "Koppel een Gmail-inbox om synchronisatiefilters in te stellen."
 
-#: ../../apps/extension/src/App.tsx:93
+#: ../../apps/extension/src/App.tsx:95
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:138
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
@@ -1660,7 +1660,11 @@ msgstr "Verbind Outlook-knop"
 msgid "Connect your {providerName} inbox"
 msgstr "Koppel uw {providerName} inbox"
 
-#: ../../apps/extension/src/App.tsx:89
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:95
+msgid "Connect your account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
+msgstr "Koppel je account om te beginnen. Amarnai maakt verbinding met <0>alleen-lezen toegang</0> en <1>verzendt, verwijdert of wijzigt nooit iets</1>. Je inbox blijft van jou."
+
+#: ../../apps/extension/src/App.tsx:91
 #, fuzzy
 msgid "Connect your Gmail account to start triaging."
 msgstr "Koppel je Gmail-account om te beginnen met triageren."
@@ -1796,7 +1800,7 @@ msgstr "Annuleren mislukt"
 msgid "Could not change subscription"
 msgstr "Abonnement wijzigen mislukt"
 
-#: ../../apps/extension/src/App.tsx:80
+#: ../../apps/extension/src/App.tsx:82
 msgid "Could not connect Gmail. Please try again."
 msgstr "Verbinding met Gmail mislukt. Probeer het opnieuw."
 
@@ -1919,6 +1923,10 @@ msgstr "Je Google-account kon niet worden geverifieerd. Probeer het opnieuw."
 #: ../../apps/extension/src/panel/TriageGate.tsx:85
 msgid "Couldn't load your inbox. Check your connection and reopen the panel."
 msgstr "Kon je inbox niet laden. Controleer je verbinding en heropen het paneel."
+
+#: ../../apps/extension/src/App.tsx:112
+msgid "Couldn't reach Amarnai. Check your connection and try again."
+msgstr "Kon Amarnai niet bereiken. Controleer je verbinding en probeer het opnieuw."
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:409
 #, fuzzy
@@ -2323,7 +2331,7 @@ msgstr "Donatieacties, inzamelingscampagnes en reacties op fondsenwervingsoproep
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:278
 #: ../../apps/mobile/src/components/ThreadRow.tsx:35
-#: ../ui/src/emails/ThreadRow.tsx:202
+#: ../ui/src/emails/ThreadRow.tsx:200
 #, fuzzy
 msgid "Done"
 msgstr "Gereed"
@@ -2341,7 +2349,7 @@ msgstr "Donoren"
 msgid "Downgrade to {planName}"
 msgstr "Downgraden naar {planName}"
 
-#: ../ui/src/emails/ThreadRow.tsx:264
+#: ../ui/src/emails/ThreadRow.tsx:262
 #, fuzzy
 msgid "draft"
 msgstr "concept"
@@ -2355,7 +2363,7 @@ msgid "Draft failed · tap to retry"
 msgstr "Concept mislukt · tik om opnieuw te proberen"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:345
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:370
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:373
 #, fuzzy
 msgid "Draft generation failed. Try again."
 msgstr "Genereren van concept mislukt. Probeer het opnieuw."
@@ -2377,7 +2385,7 @@ msgid "Draft style guidance"
 msgstr "Richtlijnen voor conceptstijl"
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:106
-#: ../ui/src/emails/ThreadRow.tsx:258
+#: ../ui/src/emails/ThreadRow.tsx:256
 msgid "Drafting…"
 msgstr "Concept aanmaken…"
 
@@ -3023,7 +3031,7 @@ msgstr "Genereer een plan vanuit je inbox"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:324
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:146
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:348
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:351
 #: ../ui/src/emails/ThreadPreview.tsx:253
 #, fuzzy
 msgid "Generate draft reply"
@@ -3663,8 +3671,8 @@ msgid "King Aziru has consulted every clay tablet in his archive, but this page 
 msgstr "Koning Aziru heeft elke kleitablet in zijn archief geraadpleegd, maar deze pagina lijkt niet te bestaan."
 
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:95
-msgid "King Aziru is ready to sort your email threads. Connect your account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
-msgstr "King Aziru staat klaar om je e-mailgesprekken te sorteren. Koppel je account om te beginnen. Amarnai maakt verbinding met <0>alleen-lezen toegang</0> en <1>verzendt, verwijdert of wijzigt nooit iets</1>. Je inbox blijft van jou."
+#~ msgid "King Aziru is ready to sort your email threads. Connect your account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
+#~ msgstr "King Aziru staat klaar om je e-mailgesprekken te sorteren. Koppel je account om te beginnen. Amarnai maakt verbinding met <0>alleen-lezen toegang</0> en <1>verzendt, verwijdert of wijzigt nooit iets</1>. Je inbox blijft van jou."
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:41
 #~ msgid "King Aziru is ready to sort your email threads. Connect your Gmail account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
@@ -3870,7 +3878,7 @@ msgid "Manuscripts & Peer Review"
 msgstr "Manuscripten & Peerreview"
 
 #: ../ui/src/emails/PreviewDoneBar.tsx:23
-#: ../ui/src/emails/ThreadRow.tsx:157
+#: ../ui/src/emails/ThreadRow.tsx:147
 #, fuzzy
 msgid "Mark as done"
 msgstr "Markeren als gereed"
@@ -3878,15 +3886,15 @@ msgstr "Markeren als gereed"
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:225
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:244
 #: ../../apps/mobile/src/components/ThreadRow.tsx:58
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:244
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:250
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:262
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:268
 #: ../ui/src/emails/ThreadPreview.tsx:126
 #: ../ui/src/emails/ThreadPreview.tsx:130
-#: ../ui/src/emails/ThreadRow.tsx:160
+#: ../ui/src/emails/ThreadRow.tsx:150
 msgid "Mark as important"
 msgstr "Markeren als belangrijk"
 
-#: ../ui/src/emails/ThreadRow.tsx:156
+#: ../ui/src/emails/ThreadRow.tsx:146
 #, fuzzy
 msgid "Mark as not done"
 msgstr "Markeren als niet gereed"
@@ -4187,7 +4195,7 @@ msgid "No drafts remaining"
 msgstr "Geen concepten meer"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:329
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:353
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:356
 #: ../ui/src/emails/SuggestedDraftCard.tsx:97
 #, fuzzy
 msgid "No drafts remaining · resets {quotaResetDate}"
@@ -5118,11 +5126,11 @@ msgstr "{email} van de zwarte lijst verwijderen"
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:225
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:243
 #: ../../apps/mobile/src/components/ThreadRow.tsx:57
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:244
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:250
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:262
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:268
 #: ../ui/src/emails/ThreadPreview.tsx:126
 #: ../ui/src/emails/ThreadPreview.tsx:130
-#: ../ui/src/emails/ThreadRow.tsx:159
+#: ../ui/src/emails/ThreadRow.tsx:149
 #, fuzzy
 msgid "Remove from important"
 msgstr "Markering 'Belangrijk' opheffen"
@@ -5295,9 +5303,10 @@ msgstr "Lijst met gesprekken aanpassen"
 msgid "Resources"
 msgstr "Bronnen"
 
+#: ../../apps/extension/src/App.tsx:114
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:347
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:345
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:376
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:379
 #, fuzzy
 msgid "Retry"
 msgstr "Opnieuw proberen"
@@ -5674,7 +5683,7 @@ msgstr "Meld je aan met Google of Microsoft. Amarnai synchroniseert je gesprekke
 #~ msgid "Sign in with Google. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
 #~ msgstr "Meld je aan met Google. Amarnai synchroniseert je gesprekken en labels. Het verstuurt of verwijdert nooit namens jou."
 
-#: ../../apps/extension/src/App.tsx:96
+#: ../../apps/extension/src/App.tsx:98
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:159
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:132
 #: ../../apps/mobile/app/(app)/account.tsx:122
@@ -5798,7 +5807,7 @@ msgstr "Sorteervolume"
 #: ../../apps/mobile/src/components/RationaleCard.tsx:35
 #: ../../apps/site/src/components/landing/HeroFeedCard.tsx:95
 #: ../ui/src/emails/RationaleCard.tsx:52
-#: ../ui/src/emails/ThreadRow.tsx:229
+#: ../ui/src/emails/ThreadRow.tsx:227
 msgid "Sorting…"
 msgstr "Sorteren…"
 
@@ -6534,7 +6543,7 @@ msgid "Unavailable"
 msgstr "Niet beschikbaar"
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:41
-#: ../ui/src/emails/ThreadRow.tsx:237
+#: ../ui/src/emails/ThreadRow.tsx:235
 msgid "Unclassified"
 msgstr "Ongeclassificeerd"
 
@@ -6785,7 +6794,7 @@ msgstr "Vrijwilligers"
 #: ../../apps/mobile/src/components/RationaleCard.tsx:44
 #: ../../apps/mobile/src/components/ThreadRow.tsx:44
 #: ../ui/src/emails/RationaleCard.tsx:74
-#: ../ui/src/emails/ThreadRow.tsx:233
+#: ../ui/src/emails/ThreadRow.tsx:231
 msgid "Waiting"
 msgstr "Wachtend"
 
@@ -6803,7 +6812,7 @@ msgstr "Wachten op verificatie…"
 #~ msgid "Waitlist"
 #~ msgstr "Wachtlijst"
 
-#: ../ui/src/emails/ThreadRow.tsx:150
+#: ../ui/src/emails/ThreadRow.tsx:140
 msgid "Wants {folderName}"
 msgstr "Wil {folderName}"
 
@@ -6946,7 +6955,7 @@ msgstr "Inbegrepen workspaces"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:339
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:168
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:364
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:367
 #: ../ui/src/emails/ThreadPreview.tsx:260
 #, fuzzy
 msgid "Writing draft reply…"

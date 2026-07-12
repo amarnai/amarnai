@@ -189,7 +189,7 @@ msgstr "{providerName} Inbox"
 
 #. placeholder {0}: draftQuota.limit
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:330
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:354
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:357
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
 msgstr "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
 
@@ -736,7 +736,7 @@ msgstr "Amarnai lost access to your inbox. Tap to reconnect your Google account.
 msgid "Amarnai needs access to its server and your inbox to show your emails."
 msgstr "Amarnai needs access to its server and your inbox to show your emails."
 
-#: ../../apps/extension/src/App.tsx:52
+#: ../../apps/extension/src/App.tsx:54
 #: ../../apps/extension/src/auth/SignInScreen.tsx:13
 msgid "Amarnai needs access to its server and your inbox to work. Please allow access and try again."
 msgstr "Amarnai needs access to its server and your inbox to work. Please allow access and try again."
@@ -892,8 +892,8 @@ msgstr "Assign thread"
 msgid "Assign to"
 msgstr "Assign to"
 
-#: ../ui/src/emails/ThreadRow.tsx:314
-#: ../ui/src/emails/ThreadRow.tsx:323
+#: ../ui/src/emails/ThreadRow.tsx:312
+#: ../ui/src/emails/ThreadRow.tsx:321
 #: ../ui/src/emails/TriageBar.tsx:63
 msgid "Assign to a member"
 msgstr "Assign to a member"
@@ -910,8 +910,8 @@ msgstr "Assigned"
 msgid "Assigned to {assigneeName}"
 msgstr "Assigned to {assigneeName}"
 
-#: ../ui/src/emails/ThreadRow.tsx:210
-#: ../ui/src/emails/ThreadRow.tsx:322
+#: ../ui/src/emails/ThreadRow.tsx:208
+#: ../ui/src/emails/ThreadRow.tsx:320
 #: ../ui/src/emails/TriageBar.tsx:62
 msgid "Assigned to {assigneeName}. Change assignee"
 msgstr "Assigned to {assigneeName}. Change assignee"
@@ -1205,7 +1205,7 @@ msgstr "Catch-all"
 msgid "Change"
 msgstr "Change"
 
-#: ../ui/src/emails/ThreadRow.tsx:313
+#: ../ui/src/emails/ThreadRow.tsx:311
 msgid "Change assignee"
 msgstr "Change assignee"
 
@@ -1296,8 +1296,8 @@ msgstr "Close"
 msgid "Close panel"
 msgstr "Close panel"
 
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:265
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:269
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:283
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:287
 #: ../ui/src/emails/ThreadPreview.tsx:147
 #: ../ui/src/emails/ThreadPreview.tsx:151
 msgid "Close preview"
@@ -1401,7 +1401,7 @@ msgstr "Connect {secondaryName}"
 msgid "Connect a Gmail inbox to configure sync filters."
 msgstr "Connect a Gmail inbox to configure sync filters."
 
-#: ../../apps/extension/src/App.tsx:93
+#: ../../apps/extension/src/App.tsx:95
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:138
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
@@ -1468,7 +1468,11 @@ msgstr "Connect Outlook button"
 msgid "Connect your {providerName} inbox"
 msgstr "Connect your {providerName} inbox"
 
-#: ../../apps/extension/src/App.tsx:89
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:95
+msgid "Connect your account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
+msgstr "Connect your account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
+
+#: ../../apps/extension/src/App.tsx:91
 msgid "Connect your Gmail account to start triaging."
 msgstr "Connect your Gmail account to start triaging."
 
@@ -1590,7 +1594,7 @@ msgstr "Could not cancel"
 msgid "Could not change subscription"
 msgstr "Could not change subscription"
 
-#: ../../apps/extension/src/App.tsx:80
+#: ../../apps/extension/src/App.tsx:82
 msgid "Could not connect Gmail. Please try again."
 msgstr "Could not connect Gmail. Please try again."
 
@@ -1696,6 +1700,10 @@ msgstr "Could not verify your Google account. Please try again."
 #: ../../apps/extension/src/panel/TriageGate.tsx:85
 msgid "Couldn't load your inbox. Check your connection and reopen the panel."
 msgstr "Couldn't load your inbox. Check your connection and reopen the panel."
+
+#: ../../apps/extension/src/App.tsx:112
+msgid "Couldn't reach Amarnai. Check your connection and try again."
+msgstr "Couldn't reach Amarnai. Check your connection and try again."
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:409
 msgid "Council convening: season of Shemu"
@@ -2051,7 +2059,7 @@ msgstr "Donation drives, giving campaigns, and fundraising appeal responses."
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:278
 #: ../../apps/mobile/src/components/ThreadRow.tsx:35
-#: ../ui/src/emails/ThreadRow.tsx:202
+#: ../ui/src/emails/ThreadRow.tsx:200
 msgid "Done"
 msgstr "Done"
 
@@ -2067,7 +2075,7 @@ msgstr "Donors"
 msgid "Downgrade to {planName}"
 msgstr "Downgrade to {planName}"
 
-#: ../ui/src/emails/ThreadRow.tsx:264
+#: ../ui/src/emails/ThreadRow.tsx:262
 msgid "draft"
 msgstr "draft"
 
@@ -2080,7 +2088,7 @@ msgid "Draft failed · tap to retry"
 msgstr "Draft failed · tap to retry"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:345
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:370
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:373
 msgid "Draft generation failed. Try again."
 msgstr "Draft generation failed. Try again."
 
@@ -2100,7 +2108,7 @@ msgid "Draft style guidance"
 msgstr "Draft style guidance"
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:106
-#: ../ui/src/emails/ThreadRow.tsx:258
+#: ../ui/src/emails/ThreadRow.tsx:256
 msgid "Drafting…"
 msgstr "Drafting…"
 
@@ -2663,7 +2671,7 @@ msgstr "Generate a plan from your inbox"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:324
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:146
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:348
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:351
 #: ../ui/src/emails/ThreadPreview.tsx:253
 msgid "Generate draft reply"
 msgstr "Generate draft reply"
@@ -3224,8 +3232,8 @@ msgid "King Aziru has consulted every clay tablet in his archive, but this page 
 msgstr "King Aziru has consulted every clay tablet in his archive, but this page does not appear to exist."
 
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:95
-msgid "King Aziru is ready to sort your email threads. Connect your account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
-msgstr "King Aziru is ready to sort your email threads. Connect your account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
+#~ msgid "King Aziru is ready to sort your email threads. Connect your account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
+#~ msgstr "King Aziru is ready to sort your email threads. Connect your account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:41
 #~ msgid "King Aziru is ready to sort your email threads. Connect your Gmail account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
@@ -3410,22 +3418,22 @@ msgid "Manuscripts & Peer Review"
 msgstr "Manuscripts & Peer Review"
 
 #: ../ui/src/emails/PreviewDoneBar.tsx:23
-#: ../ui/src/emails/ThreadRow.tsx:157
+#: ../ui/src/emails/ThreadRow.tsx:147
 msgid "Mark as done"
 msgstr "Mark as done"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:225
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:244
 #: ../../apps/mobile/src/components/ThreadRow.tsx:58
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:244
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:250
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:262
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:268
 #: ../ui/src/emails/ThreadPreview.tsx:126
 #: ../ui/src/emails/ThreadPreview.tsx:130
-#: ../ui/src/emails/ThreadRow.tsx:160
+#: ../ui/src/emails/ThreadRow.tsx:150
 msgid "Mark as important"
 msgstr "Mark as important"
 
-#: ../ui/src/emails/ThreadRow.tsx:156
+#: ../ui/src/emails/ThreadRow.tsx:146
 msgid "Mark as not done"
 msgstr "Mark as not done"
 
@@ -3696,7 +3704,7 @@ msgid "No drafts remaining"
 msgstr "No drafts remaining"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:329
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:353
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:356
 #: ../ui/src/emails/SuggestedDraftCard.tsx:97
 msgid "No drafts remaining · resets {quotaResetDate}"
 msgstr "No drafts remaining · resets {quotaResetDate}"
@@ -4515,11 +4523,11 @@ msgstr "Remove {email} from blacklist"
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:225
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:243
 #: ../../apps/mobile/src/components/ThreadRow.tsx:57
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:244
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:250
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:262
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:268
 #: ../ui/src/emails/ThreadPreview.tsx:126
 #: ../ui/src/emails/ThreadPreview.tsx:130
-#: ../ui/src/emails/ThreadRow.tsx:159
+#: ../ui/src/emails/ThreadRow.tsx:149
 msgid "Remove from important"
 msgstr "Remove from important"
 
@@ -4668,9 +4676,10 @@ msgstr "Resize the thread list"
 msgid "Resources"
 msgstr "Resources"
 
+#: ../../apps/extension/src/App.tsx:114
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:347
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:345
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:376
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:379
 msgid "Retry"
 msgstr "Retry"
 
@@ -5006,7 +5015,7 @@ msgstr "Sign in with Google or Microsoft. Amarnai syncs your threads and labels.
 #~ msgid "Sign in with Google. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
 #~ msgstr "Sign in with Google. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
 
-#: ../../apps/extension/src/App.tsx:96
+#: ../../apps/extension/src/App.tsx:98
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:159
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:132
 #: ../../apps/mobile/app/(app)/account.tsx:122
@@ -5115,7 +5124,7 @@ msgstr "Sorting volume"
 #: ../../apps/mobile/src/components/RationaleCard.tsx:35
 #: ../../apps/site/src/components/landing/HeroFeedCard.tsx:95
 #: ../ui/src/emails/RationaleCard.tsx:52
-#: ../ui/src/emails/ThreadRow.tsx:229
+#: ../ui/src/emails/ThreadRow.tsx:227
 msgid "Sorting…"
 msgstr "Sorting…"
 
@@ -5767,7 +5776,7 @@ msgid "Unavailable"
 msgstr "Unavailable"
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:41
-#: ../ui/src/emails/ThreadRow.tsx:237
+#: ../ui/src/emails/ThreadRow.tsx:235
 msgid "Unclassified"
 msgstr "Unclassified"
 
@@ -5988,7 +5997,7 @@ msgstr "Volunteers"
 #: ../../apps/mobile/src/components/RationaleCard.tsx:44
 #: ../../apps/mobile/src/components/ThreadRow.tsx:44
 #: ../ui/src/emails/RationaleCard.tsx:74
-#: ../ui/src/emails/ThreadRow.tsx:233
+#: ../ui/src/emails/ThreadRow.tsx:231
 msgid "Waiting"
 msgstr "Waiting"
 
@@ -6004,7 +6013,7 @@ msgstr "Waiting for verification…"
 #~ msgid "Waitlist"
 #~ msgstr "Waitlist"
 
-#: ../ui/src/emails/ThreadRow.tsx:150
+#: ../ui/src/emails/ThreadRow.tsx:140
 msgid "Wants {folderName}"
 msgstr "Wants {folderName}"
 
@@ -6133,7 +6142,7 @@ msgstr "Workspaces included"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:339
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:168
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:364
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:367
 #: ../ui/src/emails/ThreadPreview.tsx:260
 msgid "Writing draft reply…"
 msgstr "Writing draft reply…"

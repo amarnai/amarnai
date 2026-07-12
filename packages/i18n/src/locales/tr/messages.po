@@ -214,7 +214,7 @@ msgstr "{providerName} Gelen Kutusu"
 
 #. placeholder {0}: draftQuota.limit
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:330
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:354
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:357
 #, fuzzy
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
 msgstr "{quotaRemaining} / {0} kaldı · sıfırlanır {quotaResetDate}"
@@ -850,7 +850,7 @@ msgstr "Amarnai gelen kutunuza erişimini kaybetti. Google hesabınızı yeniden
 msgid "Amarnai needs access to its server and your inbox to show your emails."
 msgstr "Amarnai'nin e-postalarınızı gösterebilmesi için sunucusuna ve gelen kutunuza erişmesi gerekir."
 
-#: ../../apps/extension/src/App.tsx:52
+#: ../../apps/extension/src/App.tsx:54
 #: ../../apps/extension/src/auth/SignInScreen.tsx:13
 msgid "Amarnai needs access to its server and your inbox to work. Please allow access and try again."
 msgstr "Amarnai'nin çalışabilmesi için sunucusuna ve gelen kutunuza erişmesi gerekir. Lütfen erişim izni verin ve tekrar deneyin."
@@ -1029,8 +1029,8 @@ msgstr "Konuyu Ata"
 msgid "Assign to"
 msgstr "Şuraya ata"
 
-#: ../ui/src/emails/ThreadRow.tsx:314
-#: ../ui/src/emails/ThreadRow.tsx:323
+#: ../ui/src/emails/ThreadRow.tsx:312
+#: ../ui/src/emails/ThreadRow.tsx:321
 #: ../ui/src/emails/TriageBar.tsx:63
 #, fuzzy
 msgid "Assign to a member"
@@ -1049,8 +1049,8 @@ msgstr "Atanan"
 msgid "Assigned to {assigneeName}"
 msgstr "{assigneeName}'e atandı"
 
-#: ../ui/src/emails/ThreadRow.tsx:210
-#: ../ui/src/emails/ThreadRow.tsx:322
+#: ../ui/src/emails/ThreadRow.tsx:208
+#: ../ui/src/emails/ThreadRow.tsx:320
 #: ../ui/src/emails/TriageBar.tsx:62
 #, fuzzy
 msgid "Assigned to {assigneeName}. Change assignee"
@@ -1389,7 +1389,7 @@ msgstr "Genel"
 msgid "Change"
 msgstr "Değiştir"
 
-#: ../ui/src/emails/ThreadRow.tsx:313
+#: ../ui/src/emails/ThreadRow.tsx:311
 msgid "Change assignee"
 msgstr "Atananı Değiştir"
 
@@ -1494,8 +1494,8 @@ msgstr "Kapat"
 msgid "Close panel"
 msgstr "Paneli kapat"
 
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:265
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:269
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:283
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:287
 #: ../ui/src/emails/ThreadPreview.tsx:147
 #: ../ui/src/emails/ThreadPreview.tsx:151
 #, fuzzy
@@ -1615,7 +1615,7 @@ msgstr "{secondaryName} ile Bağlan"
 msgid "Connect a Gmail inbox to configure sync filters."
 msgstr "Senkronizasyon filtrelerini yapılandırmak için bir Gmail gelen kutusu bağlayın."
 
-#: ../../apps/extension/src/App.tsx:93
+#: ../../apps/extension/src/App.tsx:95
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:138
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
@@ -1692,7 +1692,12 @@ msgstr "Outlook'u Bağla"
 msgid "Connect your {providerName} inbox"
 msgstr "{providerName} gelen kutunuzu bağlayın"
 
-#: ../../apps/extension/src/App.tsx:89
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:95
+#, fuzzy
+msgid "Connect your account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
+msgstr "Başlamak için hesabını bağla. Amarnai, <0>salt okunur erişimle</0> bağlanır ve <1>hiçbir şeyi göndermez, silmez veya değiştirmez</1>. Gelen kutun sana özel kalır."
+
+#: ../../apps/extension/src/App.tsx:91
 msgid "Connect your Gmail account to start triaging."
 msgstr "E-postalarını düzenlemeye başlamak için Gmail hesabını bağla."
 
@@ -1832,7 +1837,7 @@ msgstr "İptal edilemedi"
 msgid "Could not change subscription"
 msgstr "Abonelik değiştirilemedi"
 
-#: ../../apps/extension/src/App.tsx:80
+#: ../../apps/extension/src/App.tsx:82
 msgid "Could not connect Gmail. Please try again."
 msgstr "Gmail’e bağlanılamadı. Lütfen tekrar deneyin."
 
@@ -1958,6 +1963,10 @@ msgstr "Google hesabınız doğrulanamadı. Lütfen tekrar deneyin."
 #: ../../apps/extension/src/panel/TriageGate.tsx:85
 msgid "Couldn't load your inbox. Check your connection and reopen the panel."
 msgstr "Gelen kutun yüklenemedi. Bağlantını kontrol et ve paneli yeniden aç."
+
+#: ../../apps/extension/src/App.tsx:112
+msgid "Couldn't reach Amarnai. Check your connection and try again."
+msgstr "Amarnai'ye ulaşılamadı. Bağlantını kontrol et ve tekrar dene."
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:409
 #, fuzzy
@@ -2366,7 +2375,7 @@ msgstr "Bağış kampanyaları, yardım etkinlikleri ve bağış toplama çağr�
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:278
 #: ../../apps/mobile/src/components/ThreadRow.tsx:35
-#: ../ui/src/emails/ThreadRow.tsx:202
+#: ../ui/src/emails/ThreadRow.tsx:200
 #, fuzzy
 msgid "Done"
 msgstr "Tamamlandı"
@@ -2385,7 +2394,7 @@ msgstr "Bağışçılar"
 msgid "Downgrade to {planName}"
 msgstr "{planName} planına düşür"
 
-#: ../ui/src/emails/ThreadRow.tsx:264
+#: ../ui/src/emails/ThreadRow.tsx:262
 #, fuzzy
 msgid "draft"
 msgstr "taslak"
@@ -2401,7 +2410,7 @@ msgid "Draft failed · tap to retry"
 msgstr "Taslak oluşturulamadı · yeniden denemek için dokunun"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:345
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:370
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:373
 #, fuzzy
 msgid "Draft generation failed. Try again."
 msgstr "Taslak oluşturulamadı. Tekrar deneyin."
@@ -2425,7 +2434,7 @@ msgid "Draft style guidance"
 msgstr "Taslak stil yönergeleri"
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:106
-#: ../ui/src/emails/ThreadRow.tsx:258
+#: ../ui/src/emails/ThreadRow.tsx:256
 #, fuzzy
 msgid "Drafting…"
 msgstr "Taslak Oluşturuluyor…"
@@ -3090,7 +3099,7 @@ msgstr "Gelen kutunuzdan plan oluştur"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:324
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:146
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:348
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:351
 #: ../ui/src/emails/ThreadPreview.tsx:253
 #, fuzzy
 msgid "Generate draft reply"
@@ -3752,8 +3761,8 @@ msgid "King Aziru has consulted every clay tablet in his archive, but this page 
 msgstr "King Aziru arşivindeki her kil tableti inceledi, ancak bu sayfa mevcut görünmüyor."
 
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:95
-msgid "King Aziru is ready to sort your email threads. Connect your account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
-msgstr "King Aziru, e-posta ileti dizilerinizi sıralamaya hazır. Başlamak için hesabınızı bağlayın. Amarnai, <0>salt okunur erişimle</0> bağlanır ve <1>asla e-posta göndermez, silmez veya değiştirmez</1>. Gelen kutunuz size ait kalır."
+#~ msgid "King Aziru is ready to sort your email threads. Connect your account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
+#~ msgstr "King Aziru, e-posta ileti dizilerinizi sıralamaya hazır. Başlamak için hesabınızı bağlayın. Amarnai, <0>salt okunur erişimle</0> bağlanır ve <1>asla e-posta göndermez, silmez veya değiştirmez</1>. Gelen kutunuz size ait kalır."
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:41
 #, fuzzy
@@ -3958,7 +3967,7 @@ msgid "Manuscripts & Peer Review"
 msgstr "Taslaklar ve Hakem Değerlendirmesi"
 
 #: ../ui/src/emails/PreviewDoneBar.tsx:23
-#: ../ui/src/emails/ThreadRow.tsx:157
+#: ../ui/src/emails/ThreadRow.tsx:147
 #, fuzzy
 msgid "Mark as done"
 msgstr "Tamamlandı olarak işaretle"
@@ -3966,15 +3975,15 @@ msgstr "Tamamlandı olarak işaretle"
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:225
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:244
 #: ../../apps/mobile/src/components/ThreadRow.tsx:58
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:244
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:250
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:262
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:268
 #: ../ui/src/emails/ThreadPreview.tsx:126
 #: ../ui/src/emails/ThreadPreview.tsx:130
-#: ../ui/src/emails/ThreadRow.tsx:160
+#: ../ui/src/emails/ThreadRow.tsx:150
 msgid "Mark as important"
 msgstr "Önemli olarak işaretle"
 
-#: ../ui/src/emails/ThreadRow.tsx:156
+#: ../ui/src/emails/ThreadRow.tsx:146
 #, fuzzy
 msgid "Mark as not done"
 msgstr "Tamamlanmadı olarak işaretle"
@@ -4284,7 +4293,7 @@ msgid "No drafts remaining"
 msgstr "Kalan taslak yok"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:329
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:353
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:356
 #: ../ui/src/emails/SuggestedDraftCard.tsx:97
 #, fuzzy
 msgid "No drafts remaining · resets {quotaResetDate}"
@@ -5228,11 +5237,11 @@ msgstr "Kara listeden {email} adresini kaldır"
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:225
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:243
 #: ../../apps/mobile/src/components/ThreadRow.tsx:57
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:244
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:250
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:262
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:268
 #: ../ui/src/emails/ThreadPreview.tsx:126
 #: ../ui/src/emails/ThreadPreview.tsx:130
-#: ../ui/src/emails/ThreadRow.tsx:159
+#: ../ui/src/emails/ThreadRow.tsx:149
 #, fuzzy
 msgid "Remove from important"
 msgstr "Önemlilerden çıkar"
@@ -5408,9 +5417,10 @@ msgstr "Konu listesini boyutlandır"
 msgid "Resources"
 msgstr "Kaynaklar"
 
+#: ../../apps/extension/src/App.tsx:114
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:347
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:345
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:376
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:379
 #, fuzzy
 msgid "Retry"
 msgstr "Tekrar Dene"
@@ -5796,7 +5806,7 @@ msgstr "Google veya Microsoft ile oturum açın. Amarnai yazışmalarınızı ve
 #~ msgid "Sign in with Google. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
 #~ msgstr "Google ile giriş yapın. Amarnai ileti ve etiketlerinizi senkronize eder. Adınıza asla e-posta göndermez veya silmez."
 
-#: ../../apps/extension/src/App.tsx:96
+#: ../../apps/extension/src/App.tsx:98
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:159
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:132
 #: ../../apps/mobile/app/(app)/account.tsx:122
@@ -5924,7 +5934,7 @@ msgstr "Sıralama hacmi"
 #: ../../apps/mobile/src/components/RationaleCard.tsx:35
 #: ../../apps/site/src/components/landing/HeroFeedCard.tsx:95
 #: ../ui/src/emails/RationaleCard.tsx:52
-#: ../ui/src/emails/ThreadRow.tsx:229
+#: ../ui/src/emails/ThreadRow.tsx:227
 #, fuzzy
 msgid "Sorting…"
 msgstr "Sıralanıyor…"
@@ -6671,7 +6681,7 @@ msgid "Unavailable"
 msgstr "Mevcut Değil"
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:41
-#: ../ui/src/emails/ThreadRow.tsx:237
+#: ../ui/src/emails/ThreadRow.tsx:235
 #, fuzzy
 msgid "Unclassified"
 msgstr "Sınıflandırılmamış"
@@ -6931,7 +6941,7 @@ msgstr "Gönüllüler"
 #: ../../apps/mobile/src/components/RationaleCard.tsx:44
 #: ../../apps/mobile/src/components/ThreadRow.tsx:44
 #: ../ui/src/emails/RationaleCard.tsx:74
-#: ../ui/src/emails/ThreadRow.tsx:233
+#: ../ui/src/emails/ThreadRow.tsx:231
 #, fuzzy
 msgid "Waiting"
 msgstr "Bekleniyor"
@@ -6951,7 +6961,7 @@ msgstr "Doğrulama bekleniyor…"
 #~ msgid "Waitlist"
 #~ msgstr "Bekleme Listesi"
 
-#: ../ui/src/emails/ThreadRow.tsx:150
+#: ../ui/src/emails/ThreadRow.tsx:140
 #, fuzzy
 msgid "Wants {folderName}"
 msgstr "{folderName} istiyor"
@@ -7100,7 +7110,7 @@ msgstr "Çalışma Alanları Dahil"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:339
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:168
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:364
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:367
 #: ../ui/src/emails/ThreadPreview.tsx:260
 #, fuzzy
 msgid "Writing draft reply…"

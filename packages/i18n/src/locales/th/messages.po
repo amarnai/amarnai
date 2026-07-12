@@ -214,7 +214,7 @@ msgstr "{providerName} กล่องจดหมาย"
 
 #. placeholder {0}: draftQuota.limit
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:330
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:354
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:357
 #, fuzzy
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
 msgstr "เหลือ {quotaRemaining} จาก {0} · รีเซ็ตใน {quotaResetDate}"
@@ -850,7 +850,7 @@ msgstr "Amarnai ไม่สามารถเข้าถึงกล่อง�
 msgid "Amarnai needs access to its server and your inbox to show your emails."
 msgstr "Amarnai ต้องเข้าถึงเซิร์ฟเวอร์และกล่องจดหมายของคุณเพื่อแสดงอีเมล"
 
-#: ../../apps/extension/src/App.tsx:52
+#: ../../apps/extension/src/App.tsx:54
 #: ../../apps/extension/src/auth/SignInScreen.tsx:13
 msgid "Amarnai needs access to its server and your inbox to work. Please allow access and try again."
 msgstr "Amarnai ต้องเข้าถึงเซิร์ฟเวอร์และกล่องจดหมายของคุณเพื่อให้ทำงานได้ โปรดอนุญาตการเข้าถึงและลองอีกครั้ง"
@@ -1029,8 +1029,8 @@ msgstr "มอบหมายเธรด"
 msgid "Assign to"
 msgstr "มอบหมายให้"
 
-#: ../ui/src/emails/ThreadRow.tsx:314
-#: ../ui/src/emails/ThreadRow.tsx:323
+#: ../ui/src/emails/ThreadRow.tsx:312
+#: ../ui/src/emails/ThreadRow.tsx:321
 #: ../ui/src/emails/TriageBar.tsx:63
 #, fuzzy
 msgid "Assign to a member"
@@ -1049,8 +1049,8 @@ msgstr "มอบหมายแล้ว"
 msgid "Assigned to {assigneeName}"
 msgstr "มอบหมายให้ {assigneeName}"
 
-#: ../ui/src/emails/ThreadRow.tsx:210
-#: ../ui/src/emails/ThreadRow.tsx:322
+#: ../ui/src/emails/ThreadRow.tsx:208
+#: ../ui/src/emails/ThreadRow.tsx:320
 #: ../ui/src/emails/TriageBar.tsx:62
 #, fuzzy
 msgid "Assigned to {assigneeName}. Change assignee"
@@ -1389,7 +1389,7 @@ msgstr "รวมทั้งหมด"
 msgid "Change"
 msgstr "เปลี่ยน"
 
-#: ../ui/src/emails/ThreadRow.tsx:313
+#: ../ui/src/emails/ThreadRow.tsx:311
 msgid "Change assignee"
 msgstr "เปลี่ยนผู้รับมอบหมาย"
 
@@ -1494,8 +1494,8 @@ msgstr "ปิด"
 msgid "Close panel"
 msgstr "ปิดแผง"
 
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:265
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:269
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:283
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:287
 #: ../ui/src/emails/ThreadPreview.tsx:147
 #: ../ui/src/emails/ThreadPreview.tsx:151
 #, fuzzy
@@ -1615,7 +1615,7 @@ msgstr "เชื่อมต่อ {secondaryName}"
 msgid "Connect a Gmail inbox to configure sync filters."
 msgstr "เชื่อมต่อกล่องจดหมาย Gmail เพื่อตั้งค่าตัวกรองการซิงค์"
 
-#: ../../apps/extension/src/App.tsx:93
+#: ../../apps/extension/src/App.tsx:95
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:138
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
@@ -1692,7 +1692,12 @@ msgstr "เชื่อมต่อ Outlook"
 msgid "Connect your {providerName} inbox"
 msgstr "เชื่อมต่อกล่องจดหมาย {providerName} ของคุณ"
 
-#: ../../apps/extension/src/App.tsx:89
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:95
+#, fuzzy
+msgid "Connect your account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
+msgstr "เชื่อมต่อบัญชีของคุณเพื่อเริ่มใช้งาน Amarnai เชื่อมต่อด้วย <0>สิทธิ์เข้าถึงแบบอ่านเท่านั้น</0> และ <1>ไม่เคยส่ง, ลบ หรือเปลี่ยนแปลงสิ่งใดๆ</1> กล่องจดหมายของคุณยังคงเป็นของคุณเสมอ"
+
+#: ../../apps/extension/src/App.tsx:91
 msgid "Connect your Gmail account to start triaging."
 msgstr "เชื่อมต่อบัญชี Gmail ของคุณเพื่อเริ่มคัดแยก"
 
@@ -1832,7 +1837,7 @@ msgstr "ไม่สามารถยกเลิกได้"
 msgid "Could not change subscription"
 msgstr "ไม่สามารถเปลี่ยนแพ็กเกจได้"
 
-#: ../../apps/extension/src/App.tsx:80
+#: ../../apps/extension/src/App.tsx:82
 msgid "Could not connect Gmail. Please try again."
 msgstr "ไม่สามารถเชื่อมต่อ Gmail ได้ โปรดลองอีกครั้ง"
 
@@ -1958,6 +1963,10 @@ msgstr "ไม่สามารถยืนยันบัญชี Google ข�
 #: ../../apps/extension/src/panel/TriageGate.tsx:85
 msgid "Couldn't load your inbox. Check your connection and reopen the panel."
 msgstr "ไม่สามารถโหลดกล่องจดหมายของคุณได้ โปรดตรวจสอบการเชื่อมต่อและเปิดแผงควบคุมอีกครั้ง"
+
+#: ../../apps/extension/src/App.tsx:112
+msgid "Couldn't reach Amarnai. Check your connection and try again."
+msgstr "ติดต่อ Amarnai ไม่ได้ โปรดตรวจสอบการเชื่อมต่อของคุณและลองใหม่อีกครั้ง"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:409
 #, fuzzy
@@ -2366,7 +2375,7 @@ msgstr "การรณรงค์รับบริจาค, แคมเป�
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:278
 #: ../../apps/mobile/src/components/ThreadRow.tsx:35
-#: ../ui/src/emails/ThreadRow.tsx:202
+#: ../ui/src/emails/ThreadRow.tsx:200
 #, fuzzy
 msgid "Done"
 msgstr "เสร็จสิ้น"
@@ -2385,7 +2394,7 @@ msgstr "ผู้บริจาค"
 msgid "Downgrade to {planName}"
 msgstr "ดาวน์เกรดเป็น {planName}"
 
-#: ../ui/src/emails/ThreadRow.tsx:264
+#: ../ui/src/emails/ThreadRow.tsx:262
 #, fuzzy
 msgid "draft"
 msgstr "ฉบับร่าง"
@@ -2401,7 +2410,7 @@ msgid "Draft failed · tap to retry"
 msgstr "สร้างฉบับร่างไม่สำเร็จ · แตะเพื่อลองอีกครั้ง"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:345
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:370
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:373
 #, fuzzy
 msgid "Draft generation failed. Try again."
 msgstr "สร้างฉบับร่างไม่สำเร็จ โปรดลองอีกครั้ง"
@@ -2425,7 +2434,7 @@ msgid "Draft style guidance"
 msgstr "แนวทางรูปแบบฉบับร่าง"
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:106
-#: ../ui/src/emails/ThreadRow.tsx:258
+#: ../ui/src/emails/ThreadRow.tsx:256
 #, fuzzy
 msgid "Drafting…"
 msgstr "กำลังร่าง..."
@@ -3090,7 +3099,7 @@ msgstr "สร้างแผนจากกล่องจดหมายขอ
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:324
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:146
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:348
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:351
 #: ../ui/src/emails/ThreadPreview.tsx:253
 #, fuzzy
 msgid "Generate draft reply"
@@ -3752,8 +3761,8 @@ msgid "King Aziru has consulted every clay tablet in his archive, but this page 
 msgstr "King Aziru ได้ตรวจสอบแผ่นดินเหนียวทุกชิ้นในคลังของพระองค์แล้ว แต่หน้าเว็บนี้ดูเหมือนจะไม่มีอยู่จริง"
 
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:95
-msgid "King Aziru is ready to sort your email threads. Connect your account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
-msgstr "King Aziru พร้อมจัดเรียงอีเมลของคุณแล้ว เชื่อมต่อบัญชีเพื่อเริ่มต้น Amarnai เชื่อมต่อด้วย <0>สิทธิ์อ่านอย่างเดียว</0> และ <1>ไม่ส่ง ไม่ลบ หรือเปลี่ยนแปลงสิ่งใดๆ</1> กล่องจดหมายของคุณยังคงเป็นของคุณ"
+#~ msgid "King Aziru is ready to sort your email threads. Connect your account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
+#~ msgstr "King Aziru พร้อมจัดเรียงอีเมลของคุณแล้ว เชื่อมต่อบัญชีเพื่อเริ่มต้น Amarnai เชื่อมต่อด้วย <0>สิทธิ์อ่านอย่างเดียว</0> และ <1>ไม่ส่ง ไม่ลบ หรือเปลี่ยนแปลงสิ่งใดๆ</1> กล่องจดหมายของคุณยังคงเป็นของคุณ"
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:41
 #, fuzzy
@@ -3958,7 +3967,7 @@ msgid "Manuscripts & Peer Review"
 msgstr "ต้นฉบับและทบทวนโดยผู้ทรงคุณวุฒิ"
 
 #: ../ui/src/emails/PreviewDoneBar.tsx:23
-#: ../ui/src/emails/ThreadRow.tsx:157
+#: ../ui/src/emails/ThreadRow.tsx:147
 #, fuzzy
 msgid "Mark as done"
 msgstr "ทำเครื่องหมายว่าเสร็จสิ้น"
@@ -3966,15 +3975,15 @@ msgstr "ทำเครื่องหมายว่าเสร็จสิ้
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:225
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:244
 #: ../../apps/mobile/src/components/ThreadRow.tsx:58
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:244
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:250
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:262
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:268
 #: ../ui/src/emails/ThreadPreview.tsx:126
 #: ../ui/src/emails/ThreadPreview.tsx:130
-#: ../ui/src/emails/ThreadRow.tsx:160
+#: ../ui/src/emails/ThreadRow.tsx:150
 msgid "Mark as important"
 msgstr "ทำเครื่องหมายว่าสำคัญ"
 
-#: ../ui/src/emails/ThreadRow.tsx:156
+#: ../ui/src/emails/ThreadRow.tsx:146
 #, fuzzy
 msgid "Mark as not done"
 msgstr "ทำเครื่องหมายว่ายังไม่เสร็จสิ้น"
@@ -4284,7 +4293,7 @@ msgid "No drafts remaining"
 msgstr "ไม่มีฉบับร่างเหลืออยู่"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:329
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:353
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:356
 #: ../ui/src/emails/SuggestedDraftCard.tsx:97
 #, fuzzy
 msgid "No drafts remaining · resets {quotaResetDate}"
@@ -5228,11 +5237,11 @@ msgstr "นำ {email} ออกจากบัญชีดำ"
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:225
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:243
 #: ../../apps/mobile/src/components/ThreadRow.tsx:57
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:244
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:250
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:262
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:268
 #: ../ui/src/emails/ThreadPreview.tsx:126
 #: ../ui/src/emails/ThreadPreview.tsx:130
-#: ../ui/src/emails/ThreadRow.tsx:159
+#: ../ui/src/emails/ThreadRow.tsx:149
 #, fuzzy
 msgid "Remove from important"
 msgstr "นำออกจากสำคัญ"
@@ -5408,9 +5417,10 @@ msgstr "ปรับขนาดรายการเธรด"
 msgid "Resources"
 msgstr "แหล่งข้อมูล"
 
+#: ../../apps/extension/src/App.tsx:114
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:347
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:345
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:376
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:379
 #, fuzzy
 msgid "Retry"
 msgstr "ลองอีกครั้ง"
@@ -5796,7 +5806,7 @@ msgstr "ลงชื่อเข้าใช้ด้วย Google หรือ 
 #~ msgid "Sign in with Google. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
 #~ msgstr "ลงชื่อเข้าใช้ด้วย Google Amarnai จะซิงค์เธรดและป้ายกำกับของคุณ และจะไม่ส่งหรือลบในนามของคุณ"
 
-#: ../../apps/extension/src/App.tsx:96
+#: ../../apps/extension/src/App.tsx:98
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:159
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:132
 #: ../../apps/mobile/app/(app)/account.tsx:122
@@ -5924,7 +5934,7 @@ msgstr "ปริมาณการจัดเรียง"
 #: ../../apps/mobile/src/components/RationaleCard.tsx:35
 #: ../../apps/site/src/components/landing/HeroFeedCard.tsx:95
 #: ../ui/src/emails/RationaleCard.tsx:52
-#: ../ui/src/emails/ThreadRow.tsx:229
+#: ../ui/src/emails/ThreadRow.tsx:227
 #, fuzzy
 msgid "Sorting…"
 msgstr "กำลังจัดเรียง..."
@@ -6670,7 +6680,7 @@ msgid "Unavailable"
 msgstr "ไม่พร้อมใช้งาน"
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:41
-#: ../ui/src/emails/ThreadRow.tsx:237
+#: ../ui/src/emails/ThreadRow.tsx:235
 #, fuzzy
 msgid "Unclassified"
 msgstr "ยังไม่จัดประเภท"
@@ -6930,7 +6940,7 @@ msgstr "อาสาสมัคร"
 #: ../../apps/mobile/src/components/RationaleCard.tsx:44
 #: ../../apps/mobile/src/components/ThreadRow.tsx:44
 #: ../ui/src/emails/RationaleCard.tsx:74
-#: ../ui/src/emails/ThreadRow.tsx:233
+#: ../ui/src/emails/ThreadRow.tsx:231
 #, fuzzy
 msgid "Waiting"
 msgstr "กำลังรอ"
@@ -6950,7 +6960,7 @@ msgstr "กำลังรอการยืนยัน..."
 #~ msgid "Waitlist"
 #~ msgstr "รายการรอ"
 
-#: ../ui/src/emails/ThreadRow.tsx:150
+#: ../ui/src/emails/ThreadRow.tsx:140
 #, fuzzy
 msgid "Wants {folderName}"
 msgstr "ต้องการ {folderName}"
@@ -7099,7 +7109,7 @@ msgstr "รวมพื้นที่ทำงาน"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:339
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:168
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:364
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:367
 #: ../ui/src/emails/ThreadPreview.tsx:260
 #, fuzzy
 msgid "Writing draft reply…"

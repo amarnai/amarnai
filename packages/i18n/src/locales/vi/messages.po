@@ -214,7 +214,7 @@ msgstr "Hộp thư {providerName}"
 
 #. placeholder {0}: draftQuota.limit
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:330
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:354
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:357
 #, fuzzy
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
 msgstr "Còn {quotaRemaining} trên {0} · đặt lại {quotaResetDate}"
@@ -850,7 +850,7 @@ msgstr "Amarnai đã mất quyền truy cập vào hộp thư đến của bạn
 msgid "Amarnai needs access to its server and your inbox to show your emails."
 msgstr "Amarnai cần truy cập máy chủ và hộp thư đến của bạn để hiển thị email."
 
-#: ../../apps/extension/src/App.tsx:52
+#: ../../apps/extension/src/App.tsx:54
 #: ../../apps/extension/src/auth/SignInScreen.tsx:13
 msgid "Amarnai needs access to its server and your inbox to work. Please allow access and try again."
 msgstr "Amarnai cần truy cập máy chủ và hộp thư đến của bạn để hoạt động. Vui lòng cho phép truy cập và thử lại."
@@ -1029,8 +1029,8 @@ msgstr "Giao chủ đề"
 msgid "Assign to"
 msgstr "Giao cho"
 
-#: ../ui/src/emails/ThreadRow.tsx:314
-#: ../ui/src/emails/ThreadRow.tsx:323
+#: ../ui/src/emails/ThreadRow.tsx:312
+#: ../ui/src/emails/ThreadRow.tsx:321
 #: ../ui/src/emails/TriageBar.tsx:63
 #, fuzzy
 msgid "Assign to a member"
@@ -1049,8 +1049,8 @@ msgstr "Được giao"
 msgid "Assigned to {assigneeName}"
 msgstr "Giao cho {assigneeName}"
 
-#: ../ui/src/emails/ThreadRow.tsx:210
-#: ../ui/src/emails/ThreadRow.tsx:322
+#: ../ui/src/emails/ThreadRow.tsx:208
+#: ../ui/src/emails/ThreadRow.tsx:320
 #: ../ui/src/emails/TriageBar.tsx:62
 #, fuzzy
 msgid "Assigned to {assigneeName}. Change assignee"
@@ -1389,7 +1389,7 @@ msgstr "Tổng hợp"
 msgid "Change"
 msgstr "Thay đổi"
 
-#: ../ui/src/emails/ThreadRow.tsx:313
+#: ../ui/src/emails/ThreadRow.tsx:311
 msgid "Change assignee"
 msgstr "Thay đổi người được giao"
 
@@ -1494,8 +1494,8 @@ msgstr "Đóng"
 msgid "Close panel"
 msgstr "Đóng bảng điều khiển"
 
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:265
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:269
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:283
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:287
 #: ../ui/src/emails/ThreadPreview.tsx:147
 #: ../ui/src/emails/ThreadPreview.tsx:151
 #, fuzzy
@@ -1615,7 +1615,7 @@ msgstr "Kết nối {secondaryName}"
 msgid "Connect a Gmail inbox to configure sync filters."
 msgstr "Kết nối hộp thư đến Gmail để cấu hình bộ lọc đồng bộ hóa."
 
-#: ../../apps/extension/src/App.tsx:93
+#: ../../apps/extension/src/App.tsx:95
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:138
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
@@ -1692,7 +1692,12 @@ msgstr "Nút kết nối Outlook"
 msgid "Connect your {providerName} inbox"
 msgstr "Kết nối hộp thư {providerName} của bạn"
 
-#: ../../apps/extension/src/App.tsx:89
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:95
+#, fuzzy
+msgid "Connect your account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
+msgstr "Kết nối tài khoản để bắt đầu. Amarnai kết nối với <0>quyền truy cập chỉ đọc</0> và <1>không bao giờ gửi, xóa hay thay đổi bất cứ điều gì</1>. Hộp thư của bạn luôn thuộc về bạn."
+
+#: ../../apps/extension/src/App.tsx:91
 msgid "Connect your Gmail account to start triaging."
 msgstr "Kết nối tài khoản Gmail của bạn để bắt đầu phân loại."
 
@@ -1832,7 +1837,7 @@ msgstr "Không thể hủy"
 msgid "Could not change subscription"
 msgstr "Không thể thay đổi gói đăng ký"
 
-#: ../../apps/extension/src/App.tsx:80
+#: ../../apps/extension/src/App.tsx:82
 msgid "Could not connect Gmail. Please try again."
 msgstr "Không thể kết nối Gmail. Vui lòng thử lại."
 
@@ -1958,6 +1963,10 @@ msgstr "Không thể xác minh tài khoản Google của bạn. Vui lòng thử 
 #: ../../apps/extension/src/panel/TriageGate.tsx:85
 msgid "Couldn't load your inbox. Check your connection and reopen the panel."
 msgstr "Không thể tải hộp thư đến của bạn. Kiểm tra kết nối và mở lại bảng điều khiển."
+
+#: ../../apps/extension/src/App.tsx:112
+msgid "Couldn't reach Amarnai. Check your connection and try again."
+msgstr "Không thể kết nối với Amarnai. Kiểm tra kết nối của bạn và thử lại."
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:409
 #, fuzzy
@@ -2366,7 +2375,7 @@ msgstr "Các chiến dịch quyên góp, vận động tài trợ và phản h�
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:278
 #: ../../apps/mobile/src/components/ThreadRow.tsx:35
-#: ../ui/src/emails/ThreadRow.tsx:202
+#: ../ui/src/emails/ThreadRow.tsx:200
 #, fuzzy
 msgid "Done"
 msgstr "Hoàn tất"
@@ -2385,7 +2394,7 @@ msgstr "Người quyên góp"
 msgid "Downgrade to {planName}"
 msgstr "Hạ cấp xuống {planName}"
 
-#: ../ui/src/emails/ThreadRow.tsx:264
+#: ../ui/src/emails/ThreadRow.tsx:262
 #, fuzzy
 msgid "draft"
 msgstr "bản nháp"
@@ -2401,7 +2410,7 @@ msgid "Draft failed · tap to retry"
 msgstr "Bản nháp thất bại · chạm để thử lại"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:345
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:370
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:373
 #, fuzzy
 msgid "Draft generation failed. Try again."
 msgstr "Tạo bản nháp thất bại. Vui lòng thử lại."
@@ -2425,7 +2434,7 @@ msgid "Draft style guidance"
 msgstr "Hướng dẫn phong cách bản nháp"
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:106
-#: ../ui/src/emails/ThreadRow.tsx:258
+#: ../ui/src/emails/ThreadRow.tsx:256
 #, fuzzy
 msgid "Drafting…"
 msgstr "Đang soạn nháp…"
@@ -3090,7 +3099,7 @@ msgstr "Tạo kế hoạch từ hộp thư đến của bạn"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:324
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:146
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:348
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:351
 #: ../ui/src/emails/ThreadPreview.tsx:253
 #, fuzzy
 msgid "Generate draft reply"
@@ -3752,8 +3761,8 @@ msgid "King Aziru has consulted every clay tablet in his archive, but this page 
 msgstr "King Aziru đã tra cứu mọi phiến đất sét trong kho lưu trữ của mình, nhưng trang này có vẻ không tồn tại."
 
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:95
-msgid "King Aziru is ready to sort your email threads. Connect your account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
-msgstr "King Aziru sẵn sàng phân loại các chuỗi email của bạn. Kết nối tài khoản để bắt đầu. Amarnai kết nối với <0>quyền truy cập chỉ đọc</0>, <1>không bao giờ gửi, xóa hay thay đổi bất cứ thứ gì</1>. Hộp thư của bạn vẫn luôn thuộc về bạn."
+#~ msgid "King Aziru is ready to sort your email threads. Connect your account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
+#~ msgstr "King Aziru sẵn sàng phân loại các chuỗi email của bạn. Kết nối tài khoản để bắt đầu. Amarnai kết nối với <0>quyền truy cập chỉ đọc</0>, <1>không bao giờ gửi, xóa hay thay đổi bất cứ thứ gì</1>. Hộp thư của bạn vẫn luôn thuộc về bạn."
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:41
 #, fuzzy
@@ -3958,7 +3967,7 @@ msgid "Manuscripts & Peer Review"
 msgstr "Bài viết & Phản biện đồng cấp"
 
 #: ../ui/src/emails/PreviewDoneBar.tsx:23
-#: ../ui/src/emails/ThreadRow.tsx:157
+#: ../ui/src/emails/ThreadRow.tsx:147
 #, fuzzy
 msgid "Mark as done"
 msgstr "Đánh dấu đã hoàn thành"
@@ -3966,15 +3975,15 @@ msgstr "Đánh dấu đã hoàn thành"
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:225
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:244
 #: ../../apps/mobile/src/components/ThreadRow.tsx:58
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:244
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:250
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:262
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:268
 #: ../ui/src/emails/ThreadPreview.tsx:126
 #: ../ui/src/emails/ThreadPreview.tsx:130
-#: ../ui/src/emails/ThreadRow.tsx:160
+#: ../ui/src/emails/ThreadRow.tsx:150
 msgid "Mark as important"
 msgstr "Đánh dấu quan trọng"
 
-#: ../ui/src/emails/ThreadRow.tsx:156
+#: ../ui/src/emails/ThreadRow.tsx:146
 #, fuzzy
 msgid "Mark as not done"
 msgstr "Đánh dấu chưa hoàn thành"
@@ -4284,7 +4293,7 @@ msgid "No drafts remaining"
 msgstr "Không còn bản nháp nào"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:329
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:353
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:356
 #: ../ui/src/emails/SuggestedDraftCard.tsx:97
 #, fuzzy
 msgid "No drafts remaining · resets {quotaResetDate}"
@@ -5228,11 +5237,11 @@ msgstr "Gỡ {email} khỏi danh sách đen"
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:225
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:243
 #: ../../apps/mobile/src/components/ThreadRow.tsx:57
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:244
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:250
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:262
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:268
 #: ../ui/src/emails/ThreadPreview.tsx:126
 #: ../ui/src/emails/ThreadPreview.tsx:130
-#: ../ui/src/emails/ThreadRow.tsx:159
+#: ../ui/src/emails/ThreadRow.tsx:149
 #, fuzzy
 msgid "Remove from important"
 msgstr "Bỏ đánh dấu quan trọng"
@@ -5408,9 +5417,10 @@ msgstr "Điều chỉnh kích thước danh sách cuộc hội thoại"
 msgid "Resources"
 msgstr "Tài nguyên"
 
+#: ../../apps/extension/src/App.tsx:114
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:347
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:345
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:376
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:379
 #, fuzzy
 msgid "Retry"
 msgstr "Thử lại"
@@ -5796,7 +5806,7 @@ msgstr "Đăng nhập bằng Google hoặc Microsoft. Amarnai đồng bộ các 
 #~ msgid "Sign in with Google. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
 #~ msgstr "Đăng nhập bằng Google. Amarnai đồng bộ hóa các luồng và nhãn của bạn. Amarnai không bao giờ gửi hoặc xóa email thay mặt bạn."
 
-#: ../../apps/extension/src/App.tsx:96
+#: ../../apps/extension/src/App.tsx:98
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:159
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:132
 #: ../../apps/mobile/app/(app)/account.tsx:122
@@ -5924,7 +5934,7 @@ msgstr "Khối lượng sắp xếp"
 #: ../../apps/mobile/src/components/RationaleCard.tsx:35
 #: ../../apps/site/src/components/landing/HeroFeedCard.tsx:95
 #: ../ui/src/emails/RationaleCard.tsx:52
-#: ../ui/src/emails/ThreadRow.tsx:229
+#: ../ui/src/emails/ThreadRow.tsx:227
 #, fuzzy
 msgid "Sorting…"
 msgstr "Đang sắp xếp…"
@@ -6671,7 +6681,7 @@ msgid "Unavailable"
 msgstr "Không khả dụng"
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:41
-#: ../ui/src/emails/ThreadRow.tsx:237
+#: ../ui/src/emails/ThreadRow.tsx:235
 #, fuzzy
 msgid "Unclassified"
 msgstr "Chưa được phân loại"
@@ -6931,7 +6941,7 @@ msgstr "Tình nguyện viên"
 #: ../../apps/mobile/src/components/RationaleCard.tsx:44
 #: ../../apps/mobile/src/components/ThreadRow.tsx:44
 #: ../ui/src/emails/RationaleCard.tsx:74
-#: ../ui/src/emails/ThreadRow.tsx:233
+#: ../ui/src/emails/ThreadRow.tsx:231
 #, fuzzy
 msgid "Waiting"
 msgstr "Đang chờ"
@@ -6951,7 +6961,7 @@ msgstr "Đang chờ xác minh…"
 #~ msgid "Waitlist"
 #~ msgstr "Danh sách chờ"
 
-#: ../ui/src/emails/ThreadRow.tsx:150
+#: ../ui/src/emails/ThreadRow.tsx:140
 #, fuzzy
 msgid "Wants {folderName}"
 msgstr "Muốn {folderName}"
@@ -7100,7 +7110,7 @@ msgstr "Không gian làm việc bao gồm"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:339
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:168
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:364
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:367
 #: ../ui/src/emails/ThreadPreview.tsx:260
 #, fuzzy
 msgid "Writing draft reply…"

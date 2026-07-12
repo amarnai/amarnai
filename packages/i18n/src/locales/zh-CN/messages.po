@@ -207,7 +207,7 @@ msgstr "{providerName} 收件箱"
 
 #. placeholder {0}: draftQuota.limit
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:330
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:354
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:357
 #, fuzzy
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
 msgstr "剩余 {quotaRemaining} / {0} · 重置于 {quotaResetDate}"
@@ -834,7 +834,7 @@ msgstr "Amarnai 无法访问您的收件箱。点按重新连接您的 Google �
 msgid "Amarnai needs access to its server and your inbox to show your emails."
 msgstr "Amarnai 需要访问其服务器和您的收件箱才能显示您的电子邮件。"
 
-#: ../../apps/extension/src/App.tsx:52
+#: ../../apps/extension/src/App.tsx:54
 #: ../../apps/extension/src/auth/SignInScreen.tsx:13
 msgid "Amarnai needs access to its server and your inbox to work. Please allow access and try again."
 msgstr "Amarnai 需要访问其服务器和您的收件箱才能正常运行。请允许访问并重试。"
@@ -1012,8 +1012,8 @@ msgstr "分配会话"
 msgid "Assign to"
 msgstr "分配给"
 
-#: ../ui/src/emails/ThreadRow.tsx:314
-#: ../ui/src/emails/ThreadRow.tsx:323
+#: ../ui/src/emails/ThreadRow.tsx:312
+#: ../ui/src/emails/ThreadRow.tsx:321
 #: ../ui/src/emails/TriageBar.tsx:63
 #, fuzzy
 msgid "Assign to a member"
@@ -1032,8 +1032,8 @@ msgstr "已指派"
 msgid "Assigned to {assigneeName}"
 msgstr "分配给 {assigneeName}"
 
-#: ../ui/src/emails/ThreadRow.tsx:210
-#: ../ui/src/emails/ThreadRow.tsx:322
+#: ../ui/src/emails/ThreadRow.tsx:208
+#: ../ui/src/emails/ThreadRow.tsx:320
 #: ../ui/src/emails/TriageBar.tsx:62
 #, fuzzy
 msgid "Assigned to {assigneeName}. Change assignee"
@@ -1362,7 +1362,7 @@ msgstr "全收"
 msgid "Change"
 msgstr "更改"
 
-#: ../ui/src/emails/ThreadRow.tsx:313
+#: ../ui/src/emails/ThreadRow.tsx:311
 #, fuzzy
 msgid "Change assignee"
 msgstr "更改负责人"
@@ -1465,8 +1465,8 @@ msgstr "关闭"
 msgid "Close panel"
 msgstr "关闭面板"
 
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:265
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:269
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:283
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:287
 #: ../ui/src/emails/ThreadPreview.tsx:147
 #: ../ui/src/emails/ThreadPreview.tsx:151
 #, fuzzy
@@ -1584,7 +1584,7 @@ msgstr "连接 {secondaryName}"
 msgid "Connect a Gmail inbox to configure sync filters."
 msgstr "连接 Gmail 收件箱以配置同步筛选条件。"
 
-#: ../../apps/extension/src/App.tsx:93
+#: ../../apps/extension/src/App.tsx:95
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:138
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
@@ -1660,7 +1660,11 @@ msgstr "连接 Outlook"
 msgid "Connect your {providerName} inbox"
 msgstr "连接您的 {providerName} 收件箱"
 
-#: ../../apps/extension/src/App.tsx:89
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:95
+msgid "Connect your account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
+msgstr "连接您的账户，立即开始。Amarnai 会以 <0>只读访问</0> 连接，<1>绝不会发送、删除或更改任何内容</1>。您的收件箱始终归您所有。"
+
+#: ../../apps/extension/src/App.tsx:91
 #, fuzzy
 msgid "Connect your Gmail account to start triaging."
 msgstr "连接您的 Gmail 账号，即可开始分类处理。"
@@ -1796,7 +1800,7 @@ msgstr "无法取消"
 msgid "Could not change subscription"
 msgstr "无法更改订阅"
 
-#: ../../apps/extension/src/App.tsx:80
+#: ../../apps/extension/src/App.tsx:82
 msgid "Could not connect Gmail. Please try again."
 msgstr "无法连接 Gmail。请重试。"
 
@@ -1919,6 +1923,10 @@ msgstr "无法验证您的 Google 账户。请重试。"
 #: ../../apps/extension/src/panel/TriageGate.tsx:85
 msgid "Couldn't load your inbox. Check your connection and reopen the panel."
 msgstr "无法加载收件箱。请检查您的网络连接并重新打开面板。"
+
+#: ../../apps/extension/src/App.tsx:112
+msgid "Couldn't reach Amarnai. Check your connection and try again."
+msgstr "无法连接 Amarnai。请检查您的网络连接并重试。"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:409
 #, fuzzy
@@ -2323,7 +2331,7 @@ msgstr "捐款活动、募捐行动及筹款反馈。"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:278
 #: ../../apps/mobile/src/components/ThreadRow.tsx:35
-#: ../ui/src/emails/ThreadRow.tsx:202
+#: ../ui/src/emails/ThreadRow.tsx:200
 #, fuzzy
 msgid "Done"
 msgstr "完成"
@@ -2341,7 +2349,7 @@ msgstr "捐赠者"
 msgid "Downgrade to {planName}"
 msgstr "降级至 {planName}"
 
-#: ../ui/src/emails/ThreadRow.tsx:264
+#: ../ui/src/emails/ThreadRow.tsx:262
 #, fuzzy
 msgid "draft"
 msgstr "草稿"
@@ -2355,7 +2363,7 @@ msgid "Draft failed · tap to retry"
 msgstr "草稿失败 · 轻触重试"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:345
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:370
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:373
 #, fuzzy
 msgid "Draft generation failed. Try again."
 msgstr "草稿生成失败。请重试。"
@@ -2377,7 +2385,7 @@ msgid "Draft style guidance"
 msgstr "草稿风格指南"
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:106
-#: ../ui/src/emails/ThreadRow.tsx:258
+#: ../ui/src/emails/ThreadRow.tsx:256
 msgid "Drafting…"
 msgstr "正在起草…"
 
@@ -3023,7 +3031,7 @@ msgstr "根据收件箱生成方案"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:324
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:146
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:348
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:351
 #: ../ui/src/emails/ThreadPreview.tsx:253
 #, fuzzy
 msgid "Generate draft reply"
@@ -3663,8 +3671,8 @@ msgid "King Aziru has consulted every clay tablet in his archive, but this page 
 msgstr "阿兹鲁国王已查阅了他档案中的每一块泥板，但此页面似乎不存在。"
 
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:95
-msgid "King Aziru is ready to sort your email threads. Connect your account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
-msgstr "King Aziru 已准备好整理您的电子邮件会话。连接您的账户即可开始。Amarnai 以<0>只读访问权限</0>连接，<1>绝不会发送、删除或更改任何内容</1>。您的收件箱始终归您所有。"
+#~ msgid "King Aziru is ready to sort your email threads. Connect your account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
+#~ msgstr "King Aziru 已准备好整理您的电子邮件会话。连接您的账户即可开始。Amarnai 以<0>只读访问权限</0>连接，<1>绝不会发送、删除或更改任何内容</1>。您的收件箱始终归您所有。"
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:41
 #~ msgid "King Aziru is ready to sort your email threads. Connect your Gmail account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
@@ -3870,7 +3878,7 @@ msgid "Manuscripts & Peer Review"
 msgstr "稿件与同行评审"
 
 #: ../ui/src/emails/PreviewDoneBar.tsx:23
-#: ../ui/src/emails/ThreadRow.tsx:157
+#: ../ui/src/emails/ThreadRow.tsx:147
 #, fuzzy
 msgid "Mark as done"
 msgstr "标记为完成"
@@ -3878,15 +3886,15 @@ msgstr "标记为完成"
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:225
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:244
 #: ../../apps/mobile/src/components/ThreadRow.tsx:58
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:244
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:250
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:262
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:268
 #: ../ui/src/emails/ThreadPreview.tsx:126
 #: ../ui/src/emails/ThreadPreview.tsx:130
-#: ../ui/src/emails/ThreadRow.tsx:160
+#: ../ui/src/emails/ThreadRow.tsx:150
 msgid "Mark as important"
 msgstr "标记为重要"
 
-#: ../ui/src/emails/ThreadRow.tsx:156
+#: ../ui/src/emails/ThreadRow.tsx:146
 #, fuzzy
 msgid "Mark as not done"
 msgstr "标记为未完成"
@@ -4187,7 +4195,7 @@ msgid "No drafts remaining"
 msgstr "没有剩余草稿"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:329
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:353
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:356
 #: ../ui/src/emails/SuggestedDraftCard.tsx:97
 #, fuzzy
 msgid "No drafts remaining · resets {quotaResetDate}"
@@ -5118,11 +5126,11 @@ msgstr "从黑名单中移除 {email}"
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:225
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:243
 #: ../../apps/mobile/src/components/ThreadRow.tsx:57
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:244
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:250
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:262
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:268
 #: ../ui/src/emails/ThreadPreview.tsx:126
 #: ../ui/src/emails/ThreadPreview.tsx:130
-#: ../ui/src/emails/ThreadRow.tsx:159
+#: ../ui/src/emails/ThreadRow.tsx:149
 #, fuzzy
 msgid "Remove from important"
 msgstr "取消重要"
@@ -5295,9 +5303,10 @@ msgstr "调整会话列表大小"
 msgid "Resources"
 msgstr "资源"
 
+#: ../../apps/extension/src/App.tsx:114
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:347
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:345
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:376
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:379
 #, fuzzy
 msgid "Retry"
 msgstr "重试"
@@ -5674,7 +5683,7 @@ msgstr "使用 Google 或 Microsoft 登录。Amarnai 会同步您的会话和标
 #~ msgid "Sign in with Google. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
 #~ msgstr "使用 Google 登录。Amarnai 会同步您的会话和标签。它绝不会代表您发送或删除邮件。"
 
-#: ../../apps/extension/src/App.tsx:96
+#: ../../apps/extension/src/App.tsx:98
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:159
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:132
 #: ../../apps/mobile/app/(app)/account.tsx:122
@@ -5798,7 +5807,7 @@ msgstr "分类量"
 #: ../../apps/mobile/src/components/RationaleCard.tsx:35
 #: ../../apps/site/src/components/landing/HeroFeedCard.tsx:95
 #: ../ui/src/emails/RationaleCard.tsx:52
-#: ../ui/src/emails/ThreadRow.tsx:229
+#: ../ui/src/emails/ThreadRow.tsx:227
 msgid "Sorting…"
 msgstr "正在排序…"
 
@@ -6534,7 +6543,7 @@ msgid "Unavailable"
 msgstr "不可用"
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:41
-#: ../ui/src/emails/ThreadRow.tsx:237
+#: ../ui/src/emails/ThreadRow.tsx:235
 msgid "Unclassified"
 msgstr "未分类"
 
@@ -6785,7 +6794,7 @@ msgstr "志愿者"
 #: ../../apps/mobile/src/components/RationaleCard.tsx:44
 #: ../../apps/mobile/src/components/ThreadRow.tsx:44
 #: ../ui/src/emails/RationaleCard.tsx:74
-#: ../ui/src/emails/ThreadRow.tsx:233
+#: ../ui/src/emails/ThreadRow.tsx:231
 msgid "Waiting"
 msgstr "等待中"
 
@@ -6803,7 +6812,7 @@ msgstr "等待验证…"
 #~ msgid "Waitlist"
 #~ msgstr "候补名单"
 
-#: ../ui/src/emails/ThreadRow.tsx:150
+#: ../ui/src/emails/ThreadRow.tsx:140
 msgid "Wants {folderName}"
 msgstr "想要 {folderName}"
 
@@ -6946,7 +6955,7 @@ msgstr "包含的工作区"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:339
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:168
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:364
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:367
 #: ../ui/src/emails/ThreadPreview.tsx:260
 #, fuzzy
 msgid "Writing draft reply…"

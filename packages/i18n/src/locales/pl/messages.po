@@ -214,7 +214,7 @@ msgstr "Skrzynka odbiorcza {providerName}"
 
 #. placeholder {0}: draftQuota.limit
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:330
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:354
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:357
 #, fuzzy
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
 msgstr "Pozostało {quotaRemaining} z {0} · resetuje się {quotaResetDate}"
@@ -850,7 +850,7 @@ msgstr "Amarnai utracił dostęp do Twojej skrzynki odbiorczej. Dotknij, aby pon
 msgid "Amarnai needs access to its server and your inbox to show your emails."
 msgstr "Amarnai potrzebuje dostępu do swojego serwera i Twojej skrzynki odbiorczej, aby wyświetlić Twoje e-maile."
 
-#: ../../apps/extension/src/App.tsx:52
+#: ../../apps/extension/src/App.tsx:54
 #: ../../apps/extension/src/auth/SignInScreen.tsx:13
 msgid "Amarnai needs access to its server and your inbox to work. Please allow access and try again."
 msgstr "Amarnai potrzebuje dostępu do swojego serwera i Twojej skrzynki odbiorczej, aby działać. Proszę zezwolić na dostęp i spróbować ponownie."
@@ -1029,8 +1029,8 @@ msgstr "Przypisz wątek"
 msgid "Assign to"
 msgstr "Przypisz do"
 
-#: ../ui/src/emails/ThreadRow.tsx:314
-#: ../ui/src/emails/ThreadRow.tsx:323
+#: ../ui/src/emails/ThreadRow.tsx:312
+#: ../ui/src/emails/ThreadRow.tsx:321
 #: ../ui/src/emails/TriageBar.tsx:63
 #, fuzzy
 msgid "Assign to a member"
@@ -1049,8 +1049,8 @@ msgstr "Przypisane"
 msgid "Assigned to {assigneeName}"
 msgstr "Przypisano do {assigneeName}"
 
-#: ../ui/src/emails/ThreadRow.tsx:210
-#: ../ui/src/emails/ThreadRow.tsx:322
+#: ../ui/src/emails/ThreadRow.tsx:208
+#: ../ui/src/emails/ThreadRow.tsx:320
 #: ../ui/src/emails/TriageBar.tsx:62
 #, fuzzy
 msgid "Assigned to {assigneeName}. Change assignee"
@@ -1389,7 +1389,7 @@ msgstr "Zbiorcze"
 msgid "Change"
 msgstr "Zmień"
 
-#: ../ui/src/emails/ThreadRow.tsx:313
+#: ../ui/src/emails/ThreadRow.tsx:311
 msgid "Change assignee"
 msgstr "Zmień przypisanego"
 
@@ -1494,8 +1494,8 @@ msgstr "Zamknij"
 msgid "Close panel"
 msgstr "Zamknij panel"
 
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:265
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:269
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:283
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:287
 #: ../ui/src/emails/ThreadPreview.tsx:147
 #: ../ui/src/emails/ThreadPreview.tsx:151
 #, fuzzy
@@ -1615,7 +1615,7 @@ msgstr "Połącz {secondaryName}"
 msgid "Connect a Gmail inbox to configure sync filters."
 msgstr "Podłącz skrzynkę Gmail, aby skonfigurować filtry synchronizacji."
 
-#: ../../apps/extension/src/App.tsx:93
+#: ../../apps/extension/src/App.tsx:95
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:138
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
@@ -1692,7 +1692,12 @@ msgstr "Połącz Outlook"
 msgid "Connect your {providerName} inbox"
 msgstr "Połącz swoją skrzynkę {providerName}"
 
-#: ../../apps/extension/src/App.tsx:89
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:95
+#, fuzzy
+msgid "Connect your account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
+msgstr "Połącz konto i zacznij. Amarnai uzyskuje <0>dostęp tylko do odczytu</0> i <1>nigdy niczego nie wysyła, nie usuwa ani nie zmienia</1>. Twoja skrzynka pozostaje Twoja."
+
+#: ../../apps/extension/src/App.tsx:91
 msgid "Connect your Gmail account to start triaging."
 msgstr "Połącz swoje konto Gmail, aby rozpocząć sortowanie."
 
@@ -1832,7 +1837,7 @@ msgstr "Nie udało się anulować."
 msgid "Could not change subscription"
 msgstr "Nie udało się zmienić subskrypcji."
 
-#: ../../apps/extension/src/App.tsx:80
+#: ../../apps/extension/src/App.tsx:82
 msgid "Could not connect Gmail. Please try again."
 msgstr "Nie udało się połączyć z Gmailem. Spróbuj ponownie."
 
@@ -1958,6 +1963,10 @@ msgstr "Nie udało się zweryfikować konta Google. Spróbuj ponownie."
 #: ../../apps/extension/src/panel/TriageGate.tsx:85
 msgid "Couldn't load your inbox. Check your connection and reopen the panel."
 msgstr "Nie udało się załadować Twojej skrzynki odbiorczej. Sprawdź swoje połączenie i otwórz ponownie panel."
+
+#: ../../apps/extension/src/App.tsx:112
+msgid "Couldn't reach Amarnai. Check your connection and try again."
+msgstr "Nie udało się połączyć z Amarnai. Sprawdź połączenie i spróbuj ponownie."
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:409
 #, fuzzy
@@ -2366,7 +2375,7 @@ msgstr "Zbiórki, kampanie dobroczynne i odpowiedzi na apele o wsparcie."
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:278
 #: ../../apps/mobile/src/components/ThreadRow.tsx:35
-#: ../ui/src/emails/ThreadRow.tsx:202
+#: ../ui/src/emails/ThreadRow.tsx:200
 #, fuzzy
 msgid "Done"
 msgstr "Gotowe"
@@ -2385,7 +2394,7 @@ msgstr "Darczyńcy"
 msgid "Downgrade to {planName}"
 msgstr "Przejdź na plan {planName}"
 
-#: ../ui/src/emails/ThreadRow.tsx:264
+#: ../ui/src/emails/ThreadRow.tsx:262
 #, fuzzy
 msgid "draft"
 msgstr "szkic"
@@ -2401,7 +2410,7 @@ msgid "Draft failed · tap to retry"
 msgstr "Szkicowanie nie powiodło się · stuknij, aby ponowić"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:345
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:370
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:373
 #, fuzzy
 msgid "Draft generation failed. Try again."
 msgstr "Generowanie szkicu nie powiodło się. Spróbuj ponownie."
@@ -2425,7 +2434,7 @@ msgid "Draft style guidance"
 msgstr "Wskazówki dotyczące stylu szkicu"
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:106
-#: ../ui/src/emails/ThreadRow.tsx:258
+#: ../ui/src/emails/ThreadRow.tsx:256
 #, fuzzy
 msgid "Drafting…"
 msgstr "Szkicowanie…"
@@ -3090,7 +3099,7 @@ msgstr "Wygeneruj plan ze skrzynki odbiorczej"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:324
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:146
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:348
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:351
 #: ../ui/src/emails/ThreadPreview.tsx:253
 #, fuzzy
 msgid "Generate draft reply"
@@ -3752,8 +3761,8 @@ msgid "King Aziru has consulted every clay tablet in his archive, but this page 
 msgstr "King Aziru przeszukał każdą glinianą tabliczkę w swoim archiwum, ale tej strony najwyraźniej nie ma."
 
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:95
-msgid "King Aziru is ready to sort your email threads. Connect your account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
-msgstr "King Aziru jest gotów sortować Twoje wątki e-mail. Połącz swoje konto, aby zacząć. Amarnai łączy się z <0>dostępem tylko do odczytu</0> i <1>nigdy nie wysyła, nie usuwa ani niczego nie zmienia</1>. Twoja skrzynka należy do Ciebie."
+#~ msgid "King Aziru is ready to sort your email threads. Connect your account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
+#~ msgstr "King Aziru jest gotów sortować Twoje wątki e-mail. Połącz swoje konto, aby zacząć. Amarnai łączy się z <0>dostępem tylko do odczytu</0> i <1>nigdy nie wysyła, nie usuwa ani niczego nie zmienia</1>. Twoja skrzynka należy do Ciebie."
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:41
 #, fuzzy
@@ -3958,7 +3967,7 @@ msgid "Manuscripts & Peer Review"
 msgstr "Manuskrypty i recenzje"
 
 #: ../ui/src/emails/PreviewDoneBar.tsx:23
-#: ../ui/src/emails/ThreadRow.tsx:157
+#: ../ui/src/emails/ThreadRow.tsx:147
 #, fuzzy
 msgid "Mark as done"
 msgstr "Oznacz jako ukończone"
@@ -3966,15 +3975,15 @@ msgstr "Oznacz jako ukończone"
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:225
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:244
 #: ../../apps/mobile/src/components/ThreadRow.tsx:58
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:244
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:250
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:262
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:268
 #: ../ui/src/emails/ThreadPreview.tsx:126
 #: ../ui/src/emails/ThreadPreview.tsx:130
-#: ../ui/src/emails/ThreadRow.tsx:160
+#: ../ui/src/emails/ThreadRow.tsx:150
 msgid "Mark as important"
 msgstr "Oznacz jako ważne"
 
-#: ../ui/src/emails/ThreadRow.tsx:156
+#: ../ui/src/emails/ThreadRow.tsx:146
 #, fuzzy
 msgid "Mark as not done"
 msgstr "Oznacz jako nieukończone"
@@ -4284,7 +4293,7 @@ msgid "No drafts remaining"
 msgstr "Brak wersji roboczych"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:329
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:353
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:356
 #: ../ui/src/emails/SuggestedDraftCard.tsx:97
 #, fuzzy
 msgid "No drafts remaining · resets {quotaResetDate}"
@@ -5228,11 +5237,11 @@ msgstr "Usuń {email} z czarnej listy"
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:225
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:243
 #: ../../apps/mobile/src/components/ThreadRow.tsx:57
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:244
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:250
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:262
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:268
 #: ../ui/src/emails/ThreadPreview.tsx:126
 #: ../ui/src/emails/ThreadPreview.tsx:130
-#: ../ui/src/emails/ThreadRow.tsx:159
+#: ../ui/src/emails/ThreadRow.tsx:149
 #, fuzzy
 msgid "Remove from important"
 msgstr "Usuń z ważnych"
@@ -5408,9 +5417,10 @@ msgstr "Zmień rozmiar listy wątków"
 msgid "Resources"
 msgstr "Zasoby"
 
+#: ../../apps/extension/src/App.tsx:114
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:347
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:345
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:376
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:379
 #, fuzzy
 msgid "Retry"
 msgstr "Ponów próbę"
@@ -5796,7 +5806,7 @@ msgstr "Zaloguj się przez Google lub Microsoft. Amarnai synchronizuje Twoje wą
 #~ msgid "Sign in with Google. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
 #~ msgstr "Zaloguj się przez Google. Amarnai synchronizuje Twoje wątki i etykiety. Nigdy nie wysyła ani nie usuwa wiadomości w Twoim imieniu."
 
-#: ../../apps/extension/src/App.tsx:96
+#: ../../apps/extension/src/App.tsx:98
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:159
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:132
 #: ../../apps/mobile/app/(app)/account.tsx:122
@@ -5924,7 +5934,7 @@ msgstr "Wolumen sortowania"
 #: ../../apps/mobile/src/components/RationaleCard.tsx:35
 #: ../../apps/site/src/components/landing/HeroFeedCard.tsx:95
 #: ../ui/src/emails/RationaleCard.tsx:52
-#: ../ui/src/emails/ThreadRow.tsx:229
+#: ../ui/src/emails/ThreadRow.tsx:227
 #, fuzzy
 msgid "Sorting…"
 msgstr "Sortowanie…"
@@ -6671,7 +6681,7 @@ msgid "Unavailable"
 msgstr "Niedostępne"
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:41
-#: ../ui/src/emails/ThreadRow.tsx:237
+#: ../ui/src/emails/ThreadRow.tsx:235
 #, fuzzy
 msgid "Unclassified"
 msgstr "Niesklasyfikowane"
@@ -6931,7 +6941,7 @@ msgstr "Wolontariusze"
 #: ../../apps/mobile/src/components/RationaleCard.tsx:44
 #: ../../apps/mobile/src/components/ThreadRow.tsx:44
 #: ../ui/src/emails/RationaleCard.tsx:74
-#: ../ui/src/emails/ThreadRow.tsx:233
+#: ../ui/src/emails/ThreadRow.tsx:231
 #, fuzzy
 msgid "Waiting"
 msgstr "Oczekiwanie"
@@ -6951,7 +6961,7 @@ msgstr "Oczekiwanie na weryfikację…"
 #~ msgid "Waitlist"
 #~ msgstr "Lista oczekujących"
 
-#: ../ui/src/emails/ThreadRow.tsx:150
+#: ../ui/src/emails/ThreadRow.tsx:140
 #, fuzzy
 msgid "Wants {folderName}"
 msgstr "Chce {folderName}"
@@ -7100,7 +7110,7 @@ msgstr "Przestrzenie robocze w zestawie"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:339
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:168
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:364
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:367
 #: ../ui/src/emails/ThreadPreview.tsx:260
 #, fuzzy
 msgid "Writing draft reply…"
