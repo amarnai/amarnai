@@ -73,14 +73,21 @@ export async function resolveSessionToken(token: JWT, isInitialMint: boolean): P
   // Never read through the cache — a stale epoch here would sign the fresh
   // session out on its very next request (e.g. re-login right after a password
   // reset). Never swallow a DB error either: a mint must fail rather than stamp a
-  // fallback. Write-through so the enforcement reads that immediately follow are
-  // served warm and do not stampede the DB.
+  // fallback.
   if (isInitialMint) {
     const dbUser = await loadAccount(email);
-    sessionAccountCache.set(email, dbUser);
+    // Do NOT write-through a null. A null here is almost always transient (a read
+    // replica lagging behind the just-authenticated write), not a real deletion.
+    // Caching it would serve a "fresh" null to every enforcement read for the full
+    // TTL, signing a valid, just-authenticated user out for ~30s with no way to
+    // bust it — the retry would hit the cached null instead of re-reading. Leaving
+    // it uncached signs out only THIS request; the next one re-reads (replica
+    // caught up) and self-heals.
     if (!dbUser) return signedOut(token);
-    // The mint is the ONLY place the epoch is stamped, from a fresh authoritative
-    // read.
+    // Write-through the real value so the enforcement reads that immediately follow
+    // are served warm and do not stampede the DB. The mint is the ONLY place the
+    // epoch is stamped, from a fresh authoritative read.
+    sessionAccountCache.set(email, dbUser);
     token.sessionEpoch = dbUser.sessionEpoch;
     return stampIdentity(token, dbUser);
   }

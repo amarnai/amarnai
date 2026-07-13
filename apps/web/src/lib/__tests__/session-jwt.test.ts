@@ -124,6 +124,24 @@ describe("resolveSessionToken", () => {
     await expect(resolveSessionToken(token(), true)).rejects.toThrow("db down");
   });
 
+  it("does NOT cache a transient null from the mint, so the next request self-heals", async () => {
+    // Replica lag: the mint's read returns null for an account that really exists
+    // (its row is not yet visible on a lagging replica). The mint signs THIS
+    // request out — but must not poison the shared cache, or every enforcement read
+    // for the next TTL would serve that null and lock the valid user out.
+    vi.mocked(db.user.findUnique).mockResolvedValueOnce(null as never);
+    const minted = await resolveSessionToken(token({ userId: "user-1" }), true);
+    expect(minted.userId).toBeUndefined(); // signed out for this request only
+
+    // Replica has caught up. The next request must re-read (not hit a cached null)
+    // and authenticate normally.
+    vi.mocked(db.user.findUnique).mockResolvedValue(account({ sessionEpoch: 0 }) as never);
+    const out = await resolveSessionToken(token({ userId: "user-1", sessionEpoch: 0 }), false);
+    expect(out.userId).toBe("user-1");
+    // The enforcement read had to actually query — proving no null was cached.
+    expect(db.user.findUnique).toHaveBeenCalledTimes(2);
+  });
+
   it("re-login right after an epoch bump stamps the NEW epoch, not a stale cached one", async () => {
     // A stale value sits in the cache (old epoch 3) from before the reset.
     vi.mocked(db.user.findUnique).mockResolvedValueOnce(account({ sessionEpoch: 3 }) as never);
