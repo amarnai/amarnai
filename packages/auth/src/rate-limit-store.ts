@@ -14,10 +14,10 @@ export const RATE_LIMIT_DISABLED =
   process.env["NODE_ENV"] === "test" || config.authRateLimit.disabled;
 
 // Minimal surface so the counter logic can be unit-tested with a stub. ioredis
-// satisfies this structurally.
+// satisfies this structurally. The fixed-window increment runs as a single EVAL so
+// the INCR and its first-hit EXPIRE cannot be split (see incrFixedWindow).
 export interface RateLimitStore {
-  incr(key: string): Promise<number>;
-  expire(key: string, seconds: number): Promise<unknown>;
+  eval(script: string, numKeys: number, ...args: (string | number)[]): Promise<unknown>;
 }
 
 let client: Redis | null = null;
@@ -45,16 +45,39 @@ export function getRateLimitClient(): Redis {
 
 export type RateLimitDecision = { allowed: boolean; remaining: number; retryAfter: number };
 
-// Fixed-window counter: INCR the key and set the TTL on the first hit of a
-// window. Exported for unit testing with a stub store.
+// Fixed-window increment as a SINGLE atomic step: INCR the key and, only on the
+// first hit of the window (count 1), set the TTL — inside one server-side Lua eval
+// so the two can never be split. Run as separate `incr` then `expire` commands, a
+// dropped connection or a failed EXPIRE in the gap between them leaves a counter
+// with NO expiry, and a key that never rolls over is a permanent counter — for the
+// login-failure counters (recordLoginFailure) that means a permanent password-login
+// lockout that clearKey/self-expiry cannot recover. This mirrors the atomic
+// SET-NX-EX in throttleOnce, for the same reason. Returns the new count.
+const INCR_FIXED_WINDOW = `
+local count = redis.call('INCR', KEYS[1])
+if count == 1 then
+  redis.call('EXPIRE', KEYS[1], ARGV[1])
+end
+return count
+`;
+
+async function incrFixedWindow(
+  store: RateLimitStore,
+  key: string,
+  windowSeconds: number,
+): Promise<number> {
+  const count = await store.eval(INCR_FIXED_WINDOW, 1, key, windowSeconds);
+  return typeof count === "number" ? count : Number(count);
+}
+
+// Fixed-window counter. Exported for unit testing with a stub store.
 export async function checkRateLimit(
   store: RateLimitStore,
   key: string,
   limit: number,
   windowSeconds: number,
 ): Promise<RateLimitDecision> {
-  const count = await store.incr(key);
-  if (count === 1) await store.expire(key, windowSeconds);
+  const count = await incrFixedWindow(store, key, windowSeconds);
   return { allowed: count <= limit, remaining: Math.max(0, limit - count), retryAfter: windowSeconds };
 }
 
@@ -96,15 +119,16 @@ export async function peekCount(key: string): Promise<number> {
 }
 
 // Record one hit against a fixed-window counter — the "record after a failure"
-// half of a failures-only throttle. Applies the TTL on the first hit. A failure
-// to record just means no throttle (fail open); never throws.
+// half of a failures-only throttle. Sets the TTL atomically with the increment on
+// the first hit (see incrFixedWindow), so a lost EXPIRE can never immortalize a
+// login-failure counter. A failure to record just means no throttle (fail open);
+// never throws.
 export async function incrementCount(key: string, windowSeconds: number): Promise<void> {
   if (RATE_LIMIT_DISABLED) return;
   const store = getRateLimitClient();
   if (store.status !== "ready") return;
   try {
-    const count = await store.incr(key);
-    if (count === 1) await store.expire(key, windowSeconds);
+    await incrFixedWindow(store, key, windowSeconds);
   } catch {
     // Fail open: not recording an attempt only relaxes the throttle.
   }

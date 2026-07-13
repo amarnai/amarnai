@@ -11,12 +11,24 @@ function ctx(headers: Record<string, string>): Context {
   } as unknown as Context;
 }
 
-// In-memory stub that mimics Redis INCR/EXPIRE for the counter logic.
-function makeStore(): RateLimitStore & { expire: ReturnType<typeof vi.fn> } {
+// In-memory stub of the atomic INCR-with-first-hit-EXPIRE Lua eval. It mirrors the
+// script's semantics (INCR; EXPIRE only when the count is 1) so we can assert the
+// fixed-window behavior AND that the TTL is applied inside the single eval — never
+// as a separable command that a crash could drop.
+function makeStore(): RateLimitStore & { ttlSets: () => number } {
   let count = 0;
+  let ttlSets = 0;
   return {
-    incr: vi.fn(async () => ++count),
-    expire: vi.fn(async () => 1),
+    eval: vi.fn(async (_script: string, _numKeys: number, _key: string | number, ttl: string | number) => {
+      count += 1;
+      // The real Lua sets EXPIRE only on the first hit, atomically with the INCR.
+      if (count === 1) {
+        expect(Number(ttl)).toBe(900);
+        ttlSets += 1;
+      }
+      return count;
+    }),
+    ttlSets: () => ttlSets,
   };
 }
 
@@ -38,13 +50,16 @@ describe("checkRateLimit", () => {
     expect(first).toEqual({ allowed: true, remaining: 2, retryAfter: 900 });
   });
 
-  it("sets the TTL only on the first hit of the window", async () => {
+  it("applies the TTL only on the first hit, atomically inside the single eval", async () => {
     const store = makeStore();
     await checkRateLimit(store, "k", 5, 900);
     await checkRateLimit(store, "k", 5, 900);
     await checkRateLimit(store, "k", 5, 900);
-    expect(store.expire).toHaveBeenCalledTimes(1);
-    expect(store.expire).toHaveBeenCalledWith("k", 900);
+    // One atomic op per call — the TTL travels with the increment, so there is no
+    // separate EXPIRE command that a dropped connection could lose.
+    expect(store.eval).toHaveBeenCalledTimes(3);
+    // TTL set exactly once (first hit only): fixed window, not re-armed per hit.
+    expect(store.ttlSets()).toBe(1);
   });
 });
 
