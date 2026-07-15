@@ -21,7 +21,7 @@ export function FinalCTASection() {
           <InstallExtensionButton variant="secondary" />
         </div>
         <p className="ld-final-soon">
-          <Trans>Works with Gmail and Outlook.</Trans>
+          <Trans>Works with Gmail™ and Outlook.</Trans>
         </p>
         <div className="ld-final-note">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>

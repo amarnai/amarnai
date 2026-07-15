@@ -47,6 +47,9 @@ export function Footer({ anchorBase = "" }: { anchorBase?: string }) {
         <div className="ld-footer-bottom">
           <span><Trans>© 2026 Amarnai. Open source under AGPL-3.0.</Trans></span>
           <span><Trans>Never auto-sends · Encrypted at rest · Minimal data</Trans></span>
+          <span className="ld-footer-trademarks">
+            <Trans>Gmail™, Chrome™ and the Gmail logo are trademarks of Google LLC. Outlook™ is a trademark of the Microsoft group of companies. Amarnai is an independent open-source project, not affiliated with or endorsed by Google or Microsoft.</Trans>
+          </span>
         </div>
       </div>
     </footer>

@@ -519,3 +519,7 @@ Copyright (C) 2026 Azgard LLC
 Amarnai is free software licensed under the GNU Affero General Public License v3.0 (AGPL-3.0-only). See [LICENSE](LICENSE) for the full text.
 
 Contributions are accepted under a Contributor License Agreement — see [CLA.md](CLA.md) and [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Trademarks
+
+Gmail™ is a trademark of Google LLC. Outlook™ is a trademark of the Microsoft group of companies. Amarnai is an independent project, not affiliated with or endorsed by Google or Microsoft.

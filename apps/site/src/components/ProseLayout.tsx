@@ -25,6 +25,11 @@ export function ProseLayout({ children }: { children: React.ReactNode }) {
           <Link href="/privacy">Privacy</Link>
           <Link href="/terms">Terms</Link>
         </div>
+        <p className="prose-footer-trademarks">
+          Gmail™, Chrome™ and the Gmail logo are trademarks of Google LLC. Outlook™ is a trademark
+          of the Microsoft group of companies. Amarnai is an independent open-source project, not
+          affiliated with or endorsed by Google or Microsoft.
+        </p>
       </footer>
     </div>
   );
