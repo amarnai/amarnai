@@ -1,4 +1,8 @@
+"use client";
+
 import { Trans } from "@lingui/react/macro";
+import { useLingui } from "@lingui/react";
+import { msg } from "@lingui/core/macro";
 import { InstallExtensionButton } from "../landing/InstallExtensionButton";
 import styles from "./ExtensionBanner.module.css";
 // `InstallExtensionButton` renders with the shared `.ld-btn` / `.ld-ext-btn`
@@ -15,8 +19,9 @@ import "@/app/landing.css";
  * viewports since extensions can't install on mobile.
  */
 export function ExtensionBanner() {
+  const { _ } = useLingui();
   return (
-    <section className={styles.extStrip} aria-label="Browser extension">
+    <section className={styles.extStrip} aria-label={_(msg`Browser extension`)}>
       <img
         src="/logo.png"
         alt=""

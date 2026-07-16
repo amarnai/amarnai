@@ -24,8 +24,10 @@ interface Props {
   showSelfHost?: boolean;
   /**
    * Optional content rendered between the plan cards and the comparison
-   * matrix. Used by the marketing site to slot in the browser-extension band;
-   * callers that pass nothing (e.g. the in-app billing view) are unaffected.
+   * matrix. Only shown when the matrix is rendered (`showMatrix`), so it always
+   * sits directly above the matrix rather than dangling with nothing after it.
+   * Used by the marketing site to slot in the browser-extension band; callers
+   * that pass nothing (e.g. the in-app billing view) are unaffected.
    */
   beforeMatrix?: React.ReactNode;
 }
@@ -536,16 +538,18 @@ export function PricingPlans({
           />
         ))}
       </div>
-      {beforeMatrix}
       {showMatrix && (
-        <ComparisonMatrix
-          cycle={cycle}
-          trialUsed={trialUsed}
-          currentIdx={currentIdx}
-          {...(currentPlan !== undefined ? { currentPlan } : {})}
-          {...(onSelectPlan !== undefined ? { onSelectPlan } : {})}
-          {...(isHighestPlan ? { featuredPlanId: null } : emphasizedPlanId !== undefined ? { featuredPlanId: emphasizedPlanId } : {})}
-        />
+        <>
+          {beforeMatrix}
+          <ComparisonMatrix
+            cycle={cycle}
+            trialUsed={trialUsed}
+            currentIdx={currentIdx}
+            {...(currentPlan !== undefined ? { currentPlan } : {})}
+            {...(onSelectPlan !== undefined ? { onSelectPlan } : {})}
+            {...(isHighestPlan ? { featuredPlanId: null } : emphasizedPlanId !== undefined ? { featuredPlanId: emphasizedPlanId } : {})}
+          />
+        </>
       )}
       {showSelfHost && <SelfHostNote />}
     </div>
