@@ -6,6 +6,7 @@ import { GMAIL_READONLY_SCOPE } from "@amarnai/gmail";
 import { db } from "@amarnai/db";
 import { triggerPostConnectHooks } from "@/lib/post-connect-hooks";
 import { resolveSessionToken } from "@/lib/session-jwt";
+import { getRequestLocale } from "@/lib/i18n-server";
 
 export const { handlers, auth, signIn, signOut, unstable_update } = NextAuth({
   providers: [
@@ -63,6 +64,13 @@ export const { handlers, auth, signIn, signOut, unstable_update } = NextAuth({
         imageUrl: user.image ?? null,
         gmailAccessToken: isGoogle ? account?.access_token ?? null : null,
         gmailRefreshToken: isGoogle ? account?.refresh_token ?? null : null,
+        // Seed the default workspace language from the browser locale (resolved by
+        // proxy.ts, cookie-first then Accept-Language). Without this the workspace
+        // hard-defaults to "en" while the UI auto-detects the browser, so a French
+        // user gets a French UI but English AI-generated taxonomy. Mirrors the API
+        // sign-up path and createWorkspaceAction. Applied only on create, so a
+        // returning user's chosen language is never overridden.
+        locale: await getRequestLocale(),
       });
 
       // First-time Google sign-up: kick off an immediate inbox sync and register
