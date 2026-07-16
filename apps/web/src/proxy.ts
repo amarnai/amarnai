@@ -28,6 +28,12 @@ export default auth((req) => {
     pathname.startsWith("/sign-up") ||
     pathname.startsWith("/forgot-password") ||
     pathname.startsWith("/reset-password") ||
+    // Legal redirect routes (to amarnai.com). Linked from the sign-up/sign-in
+    // notice, so they must be reachable logged-out. Exact-match: these have no
+    // sub-routes, and a prefix would silently expose any future route sharing
+    // the prefix (e.g. /privacy-settings).
+    pathname === "/privacy" ||
+    pathname === "/terms" ||
     pathname.startsWith("/api/auth") ||
     pathname.startsWith("/api/internal") ||
     // The billing routes authenticate themselves and must not be redirected to

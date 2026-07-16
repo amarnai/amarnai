@@ -99,6 +99,20 @@ export function SignUpForm({
 
       <p className="auth-switch">
         <Trans>
+          By continuing, you agree to the{" "}
+          <Link href="/terms" className="auth-link">
+            Terms of Service
+          </Link>{" "}
+          and acknowledge the{" "}
+          <Link href="/privacy" className="auth-link">
+            Privacy Policy
+          </Link>
+          .
+        </Trans>
+      </p>
+
+      <p className="auth-switch">
+        <Trans>
           Already have an account?{" "}
           <Link href="/sign-in" className="auth-link">
             Sign in

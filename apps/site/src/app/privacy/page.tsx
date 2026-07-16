@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description: "How Amarnai collects, uses, and protects your data.",
 };
 
-const LAST_UPDATED = "July 8, 2026";
+const LAST_UPDATED = "July 16, 2026";
 
 export default function PrivacyPage() {
   return (
@@ -86,18 +86,29 @@ export default function PrivacyPage() {
 
       <h2>AI Processing</h2>
       <p>
-        Thread classification is performed by a third-party AI provider (currently
-        Anthropic). Thread content sent for classification is processed under
-        Anthropic&rsquo;s{" "}
+        Thread classification, category suggestions, and reply drafts are produced by a
+        third-party AI provider, Google, through the Gemini API. Embeddings used to
+        organize and match your threads are also computed through the Gemini API. The
+        content we send for processing is limited to what each task needs: typically
+        the sender, the subject line, and excerpts of message bodies. This content is
+        processed under the{" "}
         <a
-          href="https://www.anthropic.com/legal/privacy"
+          href="https://ai.google.dev/gemini-api/terms"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Gemini API Additional Terms of Service
+        </a>{" "}
+        and Google&rsquo;s{" "}
+        <a
+          href="https://policies.google.com/privacy"
           target="_blank"
           rel="noopener noreferrer"
         >
           Privacy Policy
-        </a>{" "}
-        and is not used to train Anthropic&rsquo;s general models under their API usage
-        policy. We send only the minimum content needed for classification.
+        </a>
+        . We use the paid tier of the Gemini API, under which Google does not use
+        submitted content to train or improve its models.
       </p>
 
       <h2>Third-Party Services</h2>
@@ -112,12 +123,20 @@ export default function PrivacyPage() {
           you and access your Outlook data with your permission.
         </li>
         <li>
-          <strong>Anthropic:</strong> to classify email threads using AI. Governed by
-          Anthropic&rsquo;s API data usage policy.
+          <strong>Google (Gemini API):</strong> to classify email threads, suggest
+          categories, compute embeddings, and generate drafts using AI. Governed by the
+          Gemini API terms; content submitted through the paid API tier is not used to
+          train Google&rsquo;s models.
         </li>
         <li>
           <strong>Stripe:</strong> to process subscription payments. Stripe handles
           payment card data; Amarnai does not store card numbers.
+        </li>
+        <li>
+          <strong>Resend:</strong> to deliver transactional email from Amarnai to you,
+          such as verification, password reset, invitation, and account lifecycle
+          messages. Resend processes the recipient address and the content of each
+          message it delivers on our behalf.
         </li>
       </ul>
       <p>
@@ -140,10 +159,38 @@ export default function PrivacyPage() {
       <h2>Data Retention</h2>
       <p>
         Thread metadata and content is retained while your account is active. When you
-        delete your account, all of your data, including thread metadata and content, is
-        permanently deleted as part of the deletion request, with no recovery period.
-        OAuth tokens are deleted immediately upon Gmail or Outlook disconnection or
-        account deletion. Deletion is permanent and cannot be undone.
+        delete your account, your account data, including thread metadata and content,
+        is permanently deleted as part of the deletion request, with no recovery
+        period. OAuth tokens are deleted immediately upon Gmail or Outlook
+        disconnection or account deletion. Deletion is permanent and cannot be undone.
+      </p>
+      <p>
+        A narrow set of anti-abuse and billing-integrity records survives account
+        deletion. First, a trial claim record: a one-way (SHA-256) hash of your
+        normalized email address and, where a card was used, an opaque card fingerprint
+        token provided by Stripe, together with the Stripe subscription identifier.
+        This record exists so that the single free trial cannot be claimed again by
+        deleting and recreating an account. The hash cannot be reversed to recover your
+        email address, and the record cannot be used to contact you. Second, aggregate
+        usage meters keyed on the normalized address of a connected inbox, containing
+        only counters of AI processing consumed. These prevent repeated account resets
+        from generating unlimited processing costs. We retain both kinds of record on
+        the basis of our legitimate interest in preventing abuse of the Service and
+        accounting for processing costs (Article 6(1)(f) GDPR). They contain no email
+        content, no names, and no other profile data.
+      </p>
+
+      <h2>International Data Transfers</h2>
+      <p>
+        Amarnai is operated from the United States, and the third-party providers
+        listed above (Google, Stripe, and Resend) are United States companies. Where
+        personal data of users in the European Economic Area, the United Kingdom, or
+        Switzerland is transferred to the United States, we rely on providers that are
+        certified under the EU-US Data Privacy Framework (including its UK and Swiss
+        extensions) or that are bound by Standard Contractual Clauses, together with
+        the data processing agreements we hold with each provider. You can request a
+        summary of the safeguards that apply to a specific provider by emailing{" "}
+        <a href="mailto:privacy@amarnai.com">privacy@amarnai.com</a>.
       </p>
 
       <h2>Your Rights and Data Deletion</h2>
@@ -156,8 +203,9 @@ export default function PrivacyPage() {
         </li>
         <li>
           <strong>Delete your account:</strong> go to Settings and click &ldquo;Delete
-          account&rdquo;. All your data is permanently and immediately deleted. This
-          cannot be undone.
+          account&rdquo;. Your account data is permanently and immediately deleted,
+          except for the narrow anti-abuse records described under Data Retention.
+          This cannot be undone.
         </li>
         <li>
           <strong>Revoke Google access directly:</strong> visit{" "}
@@ -192,8 +240,16 @@ export default function PrivacyPage() {
         </li>
       </ul>
       <p>
-        To request a copy of your data or ask questions about deletion, email us at{" "}
-        <a href="mailto:privacy@amarnai.com">privacy@amarnai.com</a>.
+        If you are in the European Economic Area, the United Kingdom, or Switzerland,
+        you also have the right to access the personal data we hold about you, to have
+        it corrected or erased, to receive a copy of it in a portable format, to
+        restrict or object to certain processing (including processing based on our
+        legitimate interests), and to withdraw consent where processing is based on
+        consent. You also have the right to lodge a complaint with your local data
+        protection supervisory authority. To exercise any of these rights, or to ask
+        questions about deletion, email{" "}
+        <a href="mailto:privacy@amarnai.com">privacy@amarnai.com</a>. We respond to
+        requests within one month.
       </p>
 
       <h2>Security</h2>
