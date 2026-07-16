@@ -21,7 +21,7 @@ function detectTarget(): Target {
 
 interface InstallExtensionButtonProps {
   variant: "primary" | "secondary";
-  className?: string;
+  className?: string | undefined;
 }
 
 export function InstallExtensionButton({

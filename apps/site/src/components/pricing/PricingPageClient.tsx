@@ -1,6 +1,7 @@
 "use client";
 
 import { PricingPlans, type PlanId, type BillingCycle } from "@amarnai/ui";
+import { ExtensionBanner } from "./ExtensionBanner";
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://app.amarnai.com";
 
@@ -12,5 +13,10 @@ export function PricingPageClient() {
     window.open(url, "_blank", "noopener,noreferrer");
   }
 
-  return <PricingPlans onSelectPlan={handleSelectPlan} />;
+  return (
+    <PricingPlans
+      onSelectPlan={handleSelectPlan}
+      beforeMatrix={<ExtensionBanner />}
+    />
+  );
 }

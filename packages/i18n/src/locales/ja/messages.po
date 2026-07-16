@@ -259,7 +259,7 @@ msgstr "{waitingCount, plural, one {# 件のスレッドがルーティング待
 msgid "{waitingCount, plural, one {# thread is waiting.} other {# threads are waiting.}} Connect at least {TAXONOMY_MIN_NON_ROOT_NODES} folders to begin sorting."
 msgstr "{waitingCount, plural, one {# スレッドが待機中。} other {# スレッドが待機中。}} 仕分けを開始するには、最低{TAXONOMY_MIN_NON_ROOT_NODES}個のフォルダーを紐付けてください。"
 
-#: ../ui/src/PricingPlans.tsx:164
+#: ../ui/src/PricingPlans.tsx:170
 #, fuzzy
 msgid "/ workspace / month"
 msgstr "／ワークスペース／月"
@@ -684,7 +684,7 @@ msgstr "すべて"
 msgid "All folders"
 msgstr "すべてのフォルダ"
 
-#: ../ui/src/PricingPlans.tsx:309
+#: ../ui/src/PricingPlans.tsx:315
 #, fuzzy
 msgid "All limits are per workspace."
 msgstr "すべての制限はワークスペースごとです。"
@@ -791,6 +791,10 @@ msgstr "Amarnaiがこの受信トレイの同期を停止しました。メー�
 #, fuzzy
 msgid "Amarnai is open source under AGPL-3.0. Clone it, bring your own keys, and run every tier free on your own infrastructure."
 msgstr "AmarnaiはAGPL-3.0ライセンスの下でオープンソースです。クローンし、独自のキーを持ち込み、ご自身のインフラで全ティアを無料で実行できます。"
+
+#: ../../apps/site/src/components/pricing/ExtensionBanner.tsx:28
+msgid "Amarnai lives in your inbox."
+msgstr "Amarnaiは受信トレイで完結。"
 
 #. placeholder {0}: d.gmailAddress
 #: ../../apps/web/src/lib/notifications.ts:74
@@ -916,7 +920,7 @@ msgstr "受信トレイを分析し、プランを作成しています…しば
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:41
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:36
-#: ../ui/src/PricingPlans.tsx:119
+#: ../ui/src/PricingPlans.tsx:125
 #, fuzzy
 msgid "Annual"
 msgstr "年間"
@@ -1142,12 +1146,12 @@ msgstr "ベーシック"
 msgid "Before Amarnai, my scribes and I sorted letters from sunrise to sunset. Now I finally have the bandwidth to help my vassals, promote the cult of Aten, and plan the city of Amarna."
 msgstr "Amarnaiを使う前は、私と書記官たちは日の出から日没まで手紙の整理に追われていました。今ではついに、家臣を助け、アテン信仰を広め、アマルナ市の計画を立てる余裕ができました。"
 
-#: ../ui/src/PricingPlans.tsx:168
+#: ../ui/src/PricingPlans.tsx:174
 #, fuzzy
 msgid "Billed annually · <0>save {pct}%</0>"
 msgstr "年間払い · <0>{pct}%お得</0>"
 
-#: ../ui/src/PricingPlans.tsx:172
+#: ../ui/src/PricingPlans.tsx:178
 msgid "Billed monthly · 14-day free trial"
 msgstr "月払い · 14日間無料トライアル"
 
@@ -1157,7 +1161,7 @@ msgid "Billing"
 msgstr "請求"
 
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:177
-#: ../ui/src/PricingPlans.tsx:104
+#: ../ui/src/PricingPlans.tsx:110
 #, fuzzy
 msgid "Billing cycle"
 msgstr "請求サイクル"
@@ -1518,7 +1522,7 @@ msgstr "コミュニティ"
 msgid "Community & docs"
 msgstr "コミュニティ＆ドキュメント"
 
-#: ../ui/src/PricingPlans.tsx:308
+#: ../ui/src/PricingPlans.tsx:314
 msgid "Compare every subscription"
 msgstr "すべてのプランを比較"
 
@@ -2003,7 +2007,7 @@ msgstr "現在"
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:276
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:166
-#: ../ui/src/PricingPlans.tsx:188
+#: ../ui/src/PricingPlans.tsx:194
 #, fuzzy
 msgid "Current subscription"
 msgstr "現在のサブスクリプション"
@@ -2339,7 +2343,7 @@ msgstr "完了 · 元に戻す"
 msgid "Donors"
 msgstr "寄付者"
 
-#: ../ui/src/PricingPlans.tsx:189
+#: ../ui/src/PricingPlans.tsx:195
 msgid "Downgrade to {planName}"
 msgstr "{planName}にダウングレード"
 
@@ -2942,13 +2946,13 @@ msgstr "転送"
 #: ../../apps/mobile/app/(app)/subscription.tsx:40
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:39
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:47
-#: ../ui/src/PricingPlans.tsx:149
-#: ../ui/src/PricingPlans.tsx:381
+#: ../ui/src/PricingPlans.tsx:155
+#: ../ui/src/PricingPlans.tsx:387
 #, fuzzy
 msgid "Free"
 msgstr "無料"
 
-#: ../ui/src/PricingPlans.tsx:151
+#: ../ui/src/PricingPlans.tsx:157
 msgid "Free forever · self-serve"
 msgstr "永久無料・セルフサービス"
 
@@ -3452,7 +3456,7 @@ msgstr "プロモーションを含める"
 msgid "Include spam"
 msgstr "スパムを含める"
 
-#: ../ui/src/PricingPlans.tsx:51
+#: ../ui/src/PricingPlans.tsx:57
 #, fuzzy
 msgid "Included"
 msgstr "含まれる"
@@ -3479,6 +3483,11 @@ msgstr "検査・鑑定"
 #, fuzzy
 msgid "Install the Amarnai browser extension"
 msgstr "Amarnaiブラウザ拡張機能をインストール"
+
+#: ../../apps/site/src/components/pricing/ExtensionBanner.tsx:31
+#, fuzzy
+msgid "Install the free browser extension and start triaging right inside Gmail or Outlook."
+msgstr "無料のブラウザ拡張機能をインストール。GmailやOutlookからそのまま、整理を開始しましょう。"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:20
 #~ msgid "Instead of scanning a crowded inbox, you open Amarnai and find your threads already grouped into the folders you care about, so you can work through customer questions, investor updates, or hiring replies in focused batches. Each thread comes with a suggested folder and the reasoning behind it, and you can draft a reply or jump straight to the thread in Gmail with one click. Sorting that used to take an hour takes minutes."
@@ -4016,7 +4025,7 @@ msgstr "収益化"
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:223
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:35
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:185
-#: ../ui/src/PricingPlans.tsx:111
+#: ../ui/src/PricingPlans.tsx:117
 #, fuzzy
 msgid "Monthly"
 msgstr "月額"
@@ -4340,7 +4349,7 @@ msgstr "NPOリーダー"
 msgid "Not connected"
 msgstr "未接続"
 
-#: ../ui/src/PricingPlans.tsx:86
+#: ../ui/src/PricingPlans.tsx:92
 msgid "Not included"
 msgstr "含まれない"
 
@@ -5412,7 +5421,7 @@ msgstr "Gmailから離れることなく、受信トレイをトリアージ。�
 msgid "Save time by triaging your inbox without leaving your email."
 msgstr "メールから離れずに受信トレイをトリアージし、時間を節約。"
 
-#: ../ui/src/PricingPlans.tsx:138
+#: ../ui/src/PricingPlans.tsx:144
 msgid "Save up to 20% annually"
 msgstr "年間最大20%節約"
 
@@ -5504,7 +5513,7 @@ msgstr "すべて選択"
 msgid "Select notification"
 msgstr "通知を選択"
 
-#: ../ui/src/PricingPlans.tsx:314
+#: ../ui/src/PricingPlans.tsx:320
 #, fuzzy
 msgid "Select plan to compare"
 msgstr "比較するプランを選択"
@@ -6043,7 +6052,7 @@ msgid "Taxes"
 msgstr "税金"
 
 #: ../../apps/mobile/src/components/billing/PricingSheet.tsx:69
-#: ../ui/src/PricingPlans.tsx:175
+#: ../ui/src/PricingPlans.tsx:181
 msgid "Taxes calculated at checkout"
 msgstr "税金はチェックアウト時に計算されます"
 
@@ -6627,7 +6636,7 @@ msgstr "アップグレード"
 msgid "Upgrade this workspace"
 msgstr "このワークスペースをアップグレード"
 
-#: ../ui/src/PricingPlans.tsx:190
+#: ../ui/src/PricingPlans.tsx:196
 msgid "Upgrade to {planName}"
 msgstr "{planName}にアップグレード"
 

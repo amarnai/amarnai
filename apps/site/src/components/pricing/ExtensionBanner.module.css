@@ -1,0 +1,55 @@
+/* Extension band, slotted between the plan cards and the comparison table.
+   Mirrors the featured plan card's accent treatment (accent-line border + ring
+   + shadow) so it reads as an on-brand, high-visibility sibling of the cards
+   rather than a plain separator. The top margin matches `.plans-compare` so the
+   band sits an equal distance below the cards and above the table. */
+.extStrip {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  margin-top: 56px;
+  padding: 24px 28px;
+  background: var(--surface);
+  border: 1px solid var(--accent-line);
+  border-radius: var(--r-lg);
+  box-shadow: 0 0 0 1px var(--accent-line), var(--shadow-2);
+}
+
+.extIcon {
+  flex-shrink: 0;
+  width: 46px;
+  height: 46px;
+  border-radius: 11px;
+}
+
+.extText {
+  flex: 1;
+  min-width: 0;
+}
+
+.extHeading {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  color: var(--accent-ink);
+  margin-bottom: 4px;
+}
+
+.extCopy {
+  font-size: 14px;
+  color: var(--ink-3);
+  line-height: 1.55;
+  max-width: 52ch;
+}
+
+.extCta {
+  flex-shrink: 0;
+}
+
+/* Extensions can't be installed on mobile, so drop the entire band, not just
+   the button, below the same breakpoint the landing hero uses. */
+@media (max-width: 780px) {
+  .extStrip {
+    display: none;
+  }
+}

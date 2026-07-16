@@ -269,7 +269,7 @@ msgstr "{waitingCount, plural, one {# wątek oczekuje na routing. Skonfiguruj fo
 msgid "{waitingCount, plural, one {# thread is waiting.} other {# threads are waiting.}} Connect at least {TAXONOMY_MIN_NON_ROOT_NODES} folders to begin sorting."
 msgstr "{waitingCount, plural, one {# wątek czeka.} other {# wątków czeka.}} Połącz co najmniej {TAXONOMY_MIN_NON_ROOT_NODES} folderów, aby rozpocząć sortowanie."
 
-#: ../ui/src/PricingPlans.tsx:164
+#: ../ui/src/PricingPlans.tsx:170
 #, fuzzy
 msgid "/ workspace / month"
 msgstr "/ przestrzeń roboczą / miesiąc"
@@ -697,7 +697,7 @@ msgstr "Wszystkie"
 msgid "All folders"
 msgstr "Wszystkie foldery"
 
-#: ../ui/src/PricingPlans.tsx:309
+#: ../ui/src/PricingPlans.tsx:315
 #, fuzzy
 msgid "All limits are per workspace."
 msgstr "Wszystkie limity są na przestrzeń roboczą."
@@ -807,6 +807,10 @@ msgstr "Amarnai przestał synchronizować tę skrzynkę. Połącz ponownie konto
 #, fuzzy
 msgid "Amarnai is open source under AGPL-3.0. Clone it, bring your own keys, and run every tier free on your own infrastructure."
 msgstr "Amarnai jest oprogramowaniem open source na licencji AGPL-3.0. Sklonuj je, użyj własnych kluczy i uruchom każdą wersję za darmo na własnej infrastrukturze."
+
+#: ../../apps/site/src/components/pricing/ExtensionBanner.tsx:28
+msgid "Amarnai lives in your inbox."
+msgstr "Amarnai w Twojej skrzynce."
 
 #. placeholder {0}: d.gmailAddress
 #: ../../apps/web/src/lib/notifications.ts:74
@@ -931,7 +935,7 @@ msgstr "Analizuję Twoją skrzynkę odbiorczą i tworzę plan… to może chwil�
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:41
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:36
-#: ../ui/src/PricingPlans.tsx:119
+#: ../ui/src/PricingPlans.tsx:125
 #, fuzzy
 msgid "Annual"
 msgstr "Rocznie"
@@ -1163,12 +1167,12 @@ msgstr "Podstawowy"
 msgid "Before Amarnai, my scribes and I sorted letters from sunrise to sunset. Now I finally have the bandwidth to help my vassals, promote the cult of Aten, and plan the city of Amarna."
 msgstr "Zanim pojawiło się Amarnai, ja i moi skrybowie sortowaliśmy listy od świtu do zmierzchu. Teraz w końcu mam czas, by pomagać moim wasalom, promować kult Atona i planować miasto Amarna."
 
-#: ../ui/src/PricingPlans.tsx:168
+#: ../ui/src/PricingPlans.tsx:174
 #, fuzzy
 msgid "Billed annually · <0>save {pct}%</0>"
 msgstr "Płatne rocznie · <0>oszczędzasz {pct}%</0>"
 
-#: ../ui/src/PricingPlans.tsx:172
+#: ../ui/src/PricingPlans.tsx:178
 #, fuzzy
 msgid "Billed monthly · 14-day free trial"
 msgstr "Płatne miesięcznie · 14-dniowy bezpłatny okres próbny"
@@ -1180,7 +1184,7 @@ msgid "Billing"
 msgstr "Rozliczenia"
 
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:177
-#: ../ui/src/PricingPlans.tsx:104
+#: ../ui/src/PricingPlans.tsx:110
 #, fuzzy
 msgid "Billing cycle"
 msgstr "Cykl rozliczeniowy"
@@ -1547,7 +1551,7 @@ msgstr "Społeczności"
 msgid "Community & docs"
 msgstr "Społeczność i dokumentacja"
 
-#: ../ui/src/PricingPlans.tsx:308
+#: ../ui/src/PricingPlans.tsx:314
 #, fuzzy
 msgid "Compare every subscription"
 msgstr "Porównaj wszystkie subskrypcje"
@@ -2045,7 +2049,7 @@ msgstr "Bieżący"
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:276
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:166
-#: ../ui/src/PricingPlans.tsx:188
+#: ../ui/src/PricingPlans.tsx:194
 #, fuzzy
 msgid "Current subscription"
 msgstr "Bieżąca subskrypcja"
@@ -2383,7 +2387,7 @@ msgstr "Gotowe · cofnij"
 msgid "Donors"
 msgstr "Darczyńcy"
 
-#: ../ui/src/PricingPlans.tsx:189
+#: ../ui/src/PricingPlans.tsx:195
 #, fuzzy
 msgid "Downgrade to {planName}"
 msgstr "Przejdź na plan {planName}"
@@ -3006,13 +3010,13 @@ msgstr "Prześlij dalej"
 #: ../../apps/mobile/app/(app)/subscription.tsx:40
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:39
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:47
-#: ../ui/src/PricingPlans.tsx:149
-#: ../ui/src/PricingPlans.tsx:381
+#: ../ui/src/PricingPlans.tsx:155
+#: ../ui/src/PricingPlans.tsx:387
 #, fuzzy
 msgid "Free"
 msgstr "Bezpłatnie"
 
-#: ../ui/src/PricingPlans.tsx:151
+#: ../ui/src/PricingPlans.tsx:157
 #, fuzzy
 msgid "Free forever · self-serve"
 msgstr "Zawsze bezpłatnie · samoobsługa"
@@ -3536,7 +3540,7 @@ msgstr "Uwzględnij promocje"
 msgid "Include spam"
 msgstr "Uwzględnij spam"
 
-#: ../ui/src/PricingPlans.tsx:51
+#: ../ui/src/PricingPlans.tsx:57
 #, fuzzy
 msgid "Included"
 msgstr "Uwzględnione"
@@ -3564,6 +3568,10 @@ msgstr "Inspekcje i wyceny"
 #: ../../apps/web/src/lib/notifications.ts:65
 msgid "Install the Amarnai browser extension"
 msgstr "Zainstaluj rozszerzenie Amarnai do przeglądarki"
+
+#: ../../apps/site/src/components/pricing/ExtensionBanner.tsx:31
+msgid "Install the free browser extension and start triaging right inside Gmail or Outlook."
+msgstr "Zainstaluj bezpłatne rozszerzenie przeglądarki i zacznij porządkować prosto w Gmailu lub Outlooku."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:20
 #~ msgid "Instead of scanning a crowded inbox, you open Amarnai and find your threads already grouped into the folders you care about, so you can work through customer questions, investor updates, or hiring replies in focused batches. Each thread comes with a suggested folder and the reasoning behind it, and you can draft a reply or jump straight to the thread in Gmail with one click. Sorting that used to take an hour takes minutes."
@@ -4109,7 +4117,7 @@ msgstr "Monetyzacja"
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:223
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:35
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:185
-#: ../ui/src/PricingPlans.tsx:111
+#: ../ui/src/PricingPlans.tsx:117
 #, fuzzy
 msgid "Monthly"
 msgstr "Miesięcznie"
@@ -4441,7 +4449,7 @@ msgstr "Lider organizacji non-profit"
 msgid "Not connected"
 msgstr "Niepołączone"
 
-#: ../ui/src/PricingPlans.tsx:86
+#: ../ui/src/PricingPlans.tsx:92
 #, fuzzy
 msgid "Not included"
 msgstr "Niedostępne"
@@ -5524,7 +5532,7 @@ msgstr "Oszczędź czas, sortując skrzynkę odbiorczą bez opuszczania Gmaila. 
 msgid "Save time by triaging your inbox without leaving your email."
 msgstr "Oszczędź czas, segregując skrzynkę odbiorczą bez opuszczania poczty."
 
-#: ../ui/src/PricingPlans.tsx:138
+#: ../ui/src/PricingPlans.tsx:144
 #, fuzzy
 msgid "Save up to 20% annually"
 msgstr "Zaoszczędź do 20% rocznie"
@@ -5618,7 +5626,7 @@ msgstr "Zaznacz wszystkie"
 msgid "Select notification"
 msgstr "Zaznacz powiadomienie"
 
-#: ../ui/src/PricingPlans.tsx:314
+#: ../ui/src/PricingPlans.tsx:320
 #, fuzzy
 msgid "Select plan to compare"
 msgstr "Wybierz plan do porównania"
@@ -6177,7 +6185,7 @@ msgid "Taxes"
 msgstr "Podatki"
 
 #: ../../apps/mobile/src/components/billing/PricingSheet.tsx:69
-#: ../ui/src/PricingPlans.tsx:175
+#: ../ui/src/PricingPlans.tsx:181
 #, fuzzy
 msgid "Taxes calculated at checkout"
 msgstr "Podatki naliczane przy kasie"
@@ -6769,7 +6777,7 @@ msgstr "Uaktualnij"
 msgid "Upgrade this workspace"
 msgstr "Uaktualnij ten obszar roboczy"
 
-#: ../ui/src/PricingPlans.tsx:190
+#: ../ui/src/PricingPlans.tsx:196
 #, fuzzy
 msgid "Upgrade to {planName}"
 msgstr "Uaktualnij do {planName}"

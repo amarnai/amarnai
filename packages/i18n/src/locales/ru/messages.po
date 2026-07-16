@@ -269,7 +269,7 @@ msgstr "{waitingCount, plural, one {# поток ожидает маршрути
 msgid "{waitingCount, plural, one {# thread is waiting.} other {# threads are waiting.}} Connect at least {TAXONOMY_MIN_NON_ROOT_NODES} folders to begin sorting."
 msgstr "{waitingCount, plural, one {# поток ожидает.} other {# потоков ожидают.}} Подключите минимум {TAXONOMY_MIN_NON_ROOT_NODES} папок для начала сортировки."
 
-#: ../ui/src/PricingPlans.tsx:164
+#: ../ui/src/PricingPlans.tsx:170
 #, fuzzy
 msgid "/ workspace / month"
 msgstr "/ рабочее пространство / месяц"
@@ -697,7 +697,7 @@ msgstr "Все"
 msgid "All folders"
 msgstr "Все папки"
 
-#: ../ui/src/PricingPlans.tsx:309
+#: ../ui/src/PricingPlans.tsx:315
 #, fuzzy
 msgid "All limits are per workspace."
 msgstr "Все лимиты — на рабочую область."
@@ -807,6 +807,10 @@ msgstr "Amarnai больше не синхронизирует этот почт
 #, fuzzy
 msgid "Amarnai is open source under AGPL-3.0. Clone it, bring your own keys, and run every tier free on your own infrastructure."
 msgstr "Amarnai — проект с открытым исходным кодом по лицензии AGPL-3.0. Клонируйте его, используйте свои ключи и запускайте любой уровень бесплатно на собственной инфраструктуре."
+
+#: ../../apps/site/src/components/pricing/ExtensionBanner.tsx:28
+msgid "Amarnai lives in your inbox."
+msgstr "Amarnai живет в вашем инбоксе."
 
 #. placeholder {0}: d.gmailAddress
 #: ../../apps/web/src/lib/notifications.ts:74
@@ -931,7 +935,7 @@ msgstr "Анализируем ваш почтовый ящик и состав�
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:41
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:36
-#: ../ui/src/PricingPlans.tsx:119
+#: ../ui/src/PricingPlans.tsx:125
 #, fuzzy
 msgid "Annual"
 msgstr "Годовой"
@@ -1163,12 +1167,12 @@ msgstr "Базовый"
 msgid "Before Amarnai, my scribes and I sorted letters from sunrise to sunset. Now I finally have the bandwidth to help my vassals, promote the cult of Aten, and plan the city of Amarna."
 msgstr "До Amarnai мы с моими писцами сортировали письма от рассвета до заката. Теперь у меня наконец-то хватает времени, чтобы помогать вассалам, продвигать культ Атона и планировать город Амарна."
 
-#: ../ui/src/PricingPlans.tsx:168
+#: ../ui/src/PricingPlans.tsx:174
 #, fuzzy
 msgid "Billed annually · <0>save {pct}%</0>"
 msgstr "Ежегодно · <0>экономия {pct}%</0>"
 
-#: ../ui/src/PricingPlans.tsx:172
+#: ../ui/src/PricingPlans.tsx:178
 #, fuzzy
 msgid "Billed monthly · 14-day free trial"
 msgstr "Ежемесячно · 14 дней бесплатно"
@@ -1180,7 +1184,7 @@ msgid "Billing"
 msgstr "Оплата"
 
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:177
-#: ../ui/src/PricingPlans.tsx:104
+#: ../ui/src/PricingPlans.tsx:110
 #, fuzzy
 msgid "Billing cycle"
 msgstr "Расчётный период"
@@ -1547,7 +1551,7 @@ msgstr "Сообщества"
 msgid "Community & docs"
 msgstr "Сообщество и документация"
 
-#: ../ui/src/PricingPlans.tsx:308
+#: ../ui/src/PricingPlans.tsx:314
 #, fuzzy
 msgid "Compare every subscription"
 msgstr "Сравнить все тарифы"
@@ -2045,7 +2049,7 @@ msgstr "Текущий"
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:276
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:166
-#: ../ui/src/PricingPlans.tsx:188
+#: ../ui/src/PricingPlans.tsx:194
 #, fuzzy
 msgid "Current subscription"
 msgstr "Текущая подписка"
@@ -2383,7 +2387,7 @@ msgstr "Готово · отменить"
 msgid "Donors"
 msgstr "Доноры"
 
-#: ../ui/src/PricingPlans.tsx:189
+#: ../ui/src/PricingPlans.tsx:195
 #, fuzzy
 msgid "Downgrade to {planName}"
 msgstr "Перейти на тариф {planName}"
@@ -3006,13 +3010,13 @@ msgstr "Переслать"
 #: ../../apps/mobile/app/(app)/subscription.tsx:40
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:39
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:47
-#: ../ui/src/PricingPlans.tsx:149
-#: ../ui/src/PricingPlans.tsx:381
+#: ../ui/src/PricingPlans.tsx:155
+#: ../ui/src/PricingPlans.tsx:387
 #, fuzzy
 msgid "Free"
 msgstr "Бесплатно"
 
-#: ../ui/src/PricingPlans.tsx:151
+#: ../ui/src/PricingPlans.tsx:157
 #, fuzzy
 msgid "Free forever · self-serve"
 msgstr "Бесплатно навсегда · самообслуживание"
@@ -3536,7 +3540,7 @@ msgstr "Включать промоакции"
 msgid "Include spam"
 msgstr "Включать спам"
 
-#: ../ui/src/PricingPlans.tsx:51
+#: ../ui/src/PricingPlans.tsx:57
 #, fuzzy
 msgid "Included"
 msgstr "Включено"
@@ -3564,6 +3568,10 @@ msgstr "Инспекции и оценки"
 #: ../../apps/web/src/lib/notifications.ts:65
 msgid "Install the Amarnai browser extension"
 msgstr "Установите расширение Amarnai для браузера"
+
+#: ../../apps/site/src/components/pricing/ExtensionBanner.tsx:31
+msgid "Install the free browser extension and start triaging right inside Gmail or Outlook."
+msgstr "Установите бесплатное расширение для браузера и начните разбор писем прямо в Gmail или Outlook."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:20
 #~ msgid "Instead of scanning a crowded inbox, you open Amarnai and find your threads already grouped into the folders you care about, so you can work through customer questions, investor updates, or hiring replies in focused batches. Each thread comes with a suggested folder and the reasoning behind it, and you can draft a reply or jump straight to the thread in Gmail with one click. Sorting that used to take an hour takes minutes."
@@ -4109,7 +4117,7 @@ msgstr "Монетизация"
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:223
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:35
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:185
-#: ../ui/src/PricingPlans.tsx:111
+#: ../ui/src/PricingPlans.tsx:117
 #, fuzzy
 msgid "Monthly"
 msgstr "Ежемесячно"
@@ -4441,7 +4449,7 @@ msgstr "Руководитель НКО"
 msgid "Not connected"
 msgstr "Не подключено"
 
-#: ../ui/src/PricingPlans.tsx:86
+#: ../ui/src/PricingPlans.tsx:92
 #, fuzzy
 msgid "Not included"
 msgstr "Не включено"
@@ -5524,7 +5532,7 @@ msgstr "Экономьте время, разбирая входящие, не �
 msgid "Save time by triaging your inbox without leaving your email."
 msgstr "Экономьте время, разбирая входящие, не выходя из почты."
 
-#: ../ui/src/PricingPlans.tsx:138
+#: ../ui/src/PricingPlans.tsx:144
 #, fuzzy
 msgid "Save up to 20% annually"
 msgstr "Экономьте до 20% в год"
@@ -5618,7 +5626,7 @@ msgstr "Выбрать все"
 msgid "Select notification"
 msgstr "Выбрать уведомление"
 
-#: ../ui/src/PricingPlans.tsx:314
+#: ../ui/src/PricingPlans.tsx:320
 #, fuzzy
 msgid "Select plan to compare"
 msgstr "Выберите тарифный план для сравнения"
@@ -6177,7 +6185,7 @@ msgid "Taxes"
 msgstr "Налоги"
 
 #: ../../apps/mobile/src/components/billing/PricingSheet.tsx:69
-#: ../ui/src/PricingPlans.tsx:175
+#: ../ui/src/PricingPlans.tsx:181
 #, fuzzy
 msgid "Taxes calculated at checkout"
 msgstr "Налоги рассчитываются при оформлении заказа"
@@ -6769,7 +6777,7 @@ msgstr "Повысить"
 msgid "Upgrade this workspace"
 msgstr "Повысить статус рабочей области"
 
-#: ../ui/src/PricingPlans.tsx:190
+#: ../ui/src/PricingPlans.tsx:196
 #, fuzzy
 msgid "Upgrade to {planName}"
 msgstr "Перейти на тариф {planName}"

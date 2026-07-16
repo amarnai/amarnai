@@ -22,6 +22,12 @@ interface Props {
   className?: string;
   showMatrix?: boolean;
   showSelfHost?: boolean;
+  /**
+   * Optional content rendered between the plan cards and the comparison
+   * matrix. Used by the marketing site to slot in the browser-extension band;
+   * callers that pass nothing (e.g. the in-app billing view) are unaffected.
+   */
+  beforeMatrix?: React.ReactNode;
 }
 
 function TickIcon() {
@@ -487,6 +493,7 @@ export function PricingPlans({
   className,
   showMatrix = true,
   showSelfHost = true,
+  beforeMatrix,
 }: Props) {
   const [cycle, setCycle] = useState<BillingCycle>("annual");
 
@@ -529,6 +536,7 @@ export function PricingPlans({
           />
         ))}
       </div>
+      {beforeMatrix}
       {showMatrix && (
         <ComparisonMatrix
           cycle={cycle}

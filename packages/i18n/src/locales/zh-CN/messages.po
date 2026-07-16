@@ -259,7 +259,7 @@ msgstr "{waitingCount, plural, one {# 条会话正在等待路由。设置您的
 msgid "{waitingCount, plural, one {# thread is waiting.} other {# threads are waiting.}} Connect at least {TAXONOMY_MIN_NON_ROOT_NODES} folders to begin sorting."
 msgstr "{waitingCount, plural, one {# 个会话正在等待。} other {# 个会话正在等待。}} 连接至少 {TAXONOMY_MIN_NON_ROOT_NODES} 个文件夹，即可开始分类。"
 
-#: ../ui/src/PricingPlans.tsx:164
+#: ../ui/src/PricingPlans.tsx:170
 #, fuzzy
 msgid "/ workspace / month"
 msgstr "/ 工作区 / 月"
@@ -684,7 +684,7 @@ msgstr "全部"
 msgid "All folders"
 msgstr "所有文件夹"
 
-#: ../ui/src/PricingPlans.tsx:309
+#: ../ui/src/PricingPlans.tsx:315
 #, fuzzy
 msgid "All limits are per workspace."
 msgstr "所有限制均适用于单个工作区。"
@@ -791,6 +791,10 @@ msgstr "Amarnai 已停止同步此收件箱。请重新连接您的 Outlook 账�
 #, fuzzy
 msgid "Amarnai is open source under AGPL-3.0. Clone it, bring your own keys, and run every tier free on your own infrastructure."
 msgstr "Amarnai 遵循 AGPL-3.0 协议开源。克隆代码、自带密钥，即可在您自己的基础设施上免费运行所有版本。"
+
+#: ../../apps/site/src/components/pricing/ExtensionBanner.tsx:28
+msgid "Amarnai lives in your inbox."
+msgstr "Amarnai 入驻您的收件箱。"
 
 #. placeholder {0}: d.gmailAddress
 #: ../../apps/web/src/lib/notifications.ts:74
@@ -916,7 +920,7 @@ msgstr "正在分析您的收件箱并制定计划……这可能需要一点时
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:41
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:36
-#: ../ui/src/PricingPlans.tsx:119
+#: ../ui/src/PricingPlans.tsx:125
 #, fuzzy
 msgid "Annual"
 msgstr "每年"
@@ -1142,12 +1146,12 @@ msgstr "基础版"
 msgid "Before Amarnai, my scribes and I sorted letters from sunrise to sunset. Now I finally have the bandwidth to help my vassals, promote the cult of Aten, and plan the city of Amarna."
 msgstr "未用 Amarnai 之前，我和书记官们从日出到日落都在整理信件。如今，我终于有精力帮助附庸、推广阿吞崇拜，并规划阿玛纳城了。"
 
-#: ../ui/src/PricingPlans.tsx:168
+#: ../ui/src/PricingPlans.tsx:174
 #, fuzzy
 msgid "Billed annually · <0>save {pct}%</0>"
 msgstr "按年计费 · <0>节省 {pct}%</0>"
 
-#: ../ui/src/PricingPlans.tsx:172
+#: ../ui/src/PricingPlans.tsx:178
 msgid "Billed monthly · 14-day free trial"
 msgstr "按月计费 · 14 天免费试用"
 
@@ -1157,7 +1161,7 @@ msgid "Billing"
 msgstr "账单"
 
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:177
-#: ../ui/src/PricingPlans.tsx:104
+#: ../ui/src/PricingPlans.tsx:110
 #, fuzzy
 msgid "Billing cycle"
 msgstr "结算周期"
@@ -1518,7 +1522,7 @@ msgstr "社区"
 msgid "Community & docs"
 msgstr "社区与文档"
 
-#: ../ui/src/PricingPlans.tsx:308
+#: ../ui/src/PricingPlans.tsx:314
 msgid "Compare every subscription"
 msgstr "比较所有订阅方案"
 
@@ -2003,7 +2007,7 @@ msgstr "当前"
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:276
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:166
-#: ../ui/src/PricingPlans.tsx:188
+#: ../ui/src/PricingPlans.tsx:194
 #, fuzzy
 msgid "Current subscription"
 msgstr "当前订阅"
@@ -2339,7 +2343,7 @@ msgstr "完成 · 撤消"
 msgid "Donors"
 msgstr "捐赠者"
 
-#: ../ui/src/PricingPlans.tsx:189
+#: ../ui/src/PricingPlans.tsx:195
 msgid "Downgrade to {planName}"
 msgstr "降级至 {planName}"
 
@@ -2942,13 +2946,13 @@ msgstr "转发"
 #: ../../apps/mobile/app/(app)/subscription.tsx:40
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:39
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:47
-#: ../ui/src/PricingPlans.tsx:149
-#: ../ui/src/PricingPlans.tsx:381
+#: ../ui/src/PricingPlans.tsx:155
+#: ../ui/src/PricingPlans.tsx:387
 #, fuzzy
 msgid "Free"
 msgstr "免费"
 
-#: ../ui/src/PricingPlans.tsx:151
+#: ../ui/src/PricingPlans.tsx:157
 msgid "Free forever · self-serve"
 msgstr "永久免费 · 自助服务"
 
@@ -3452,7 +3456,7 @@ msgstr "包含促销"
 msgid "Include spam"
 msgstr "包含垃圾邮件"
 
-#: ../ui/src/PricingPlans.tsx:51
+#: ../ui/src/PricingPlans.tsx:57
 #, fuzzy
 msgid "Included"
 msgstr "包含"
@@ -3479,6 +3483,11 @@ msgstr "检查与评估"
 #, fuzzy
 msgid "Install the Amarnai browser extension"
 msgstr "安装 Amarnai 浏览器扩展程序"
+
+#: ../../apps/site/src/components/pricing/ExtensionBanner.tsx:31
+#, fuzzy
+msgid "Install the free browser extension and start triaging right inside Gmail or Outlook."
+msgstr "安装免费浏览器扩展，即可在 Gmail 或 Outlook 中直接开始分类处理。"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:20
 #~ msgid "Instead of scanning a crowded inbox, you open Amarnai and find your threads already grouped into the folders you care about, so you can work through customer questions, investor updates, or hiring replies in focused batches. Each thread comes with a suggested folder and the reasoning behind it, and you can draft a reply or jump straight to the thread in Gmail with one click. Sorting that used to take an hour takes minutes."
@@ -4016,7 +4025,7 @@ msgstr "变现"
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:223
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:35
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:185
-#: ../ui/src/PricingPlans.tsx:111
+#: ../ui/src/PricingPlans.tsx:117
 #, fuzzy
 msgid "Monthly"
 msgstr "每月"
@@ -4340,7 +4349,7 @@ msgstr "非营利组织负责人"
 msgid "Not connected"
 msgstr "未连接"
 
-#: ../ui/src/PricingPlans.tsx:86
+#: ../ui/src/PricingPlans.tsx:92
 msgid "Not included"
 msgstr "不包含"
 
@@ -5410,7 +5419,7 @@ msgstr "无需离开 Gmail，即可高效处理收件箱，节省时间。该扩
 msgid "Save time by triaging your inbox without leaving your email."
 msgstr "无需离开邮件即可整理收件箱，节省时间。"
 
-#: ../ui/src/PricingPlans.tsx:138
+#: ../ui/src/PricingPlans.tsx:144
 msgid "Save up to 20% annually"
 msgstr "年付最高可省 20%"
 
@@ -5502,7 +5511,7 @@ msgstr "全选"
 msgid "Select notification"
 msgstr "选择通知"
 
-#: ../ui/src/PricingPlans.tsx:314
+#: ../ui/src/PricingPlans.tsx:320
 #, fuzzy
 msgid "Select plan to compare"
 msgstr "选择方案进行比较"
@@ -6041,7 +6050,7 @@ msgid "Taxes"
 msgstr "税务"
 
 #: ../../apps/mobile/src/components/billing/PricingSheet.tsx:69
-#: ../ui/src/PricingPlans.tsx:175
+#: ../ui/src/PricingPlans.tsx:181
 msgid "Taxes calculated at checkout"
 msgstr "税费将在结账时计算"
 
@@ -6625,7 +6634,7 @@ msgstr "升级"
 msgid "Upgrade this workspace"
 msgstr "升级此工作区"
 
-#: ../ui/src/PricingPlans.tsx:190
+#: ../ui/src/PricingPlans.tsx:196
 msgid "Upgrade to {planName}"
 msgstr "升级至{planName}"
 
