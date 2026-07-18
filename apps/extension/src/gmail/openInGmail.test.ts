@@ -101,7 +101,8 @@ describe("openInGmail", () => {
 
 describe("openInOutlook", () => {
   const WEBLINK = "https://outlook.office365.com/owa/?ItemID=abc";
-  const OUTLOOK_URL = "https://outlook.office365.com/owa/?ItemID=abc&ispopout=0";
+  const OUTLOOK_URL =
+    "https://outlook.office365.com/owa/?ItemID=abc&ispopout=0&login_hint=user%40example.com";
 
   beforeEach(() => {
     vi.mocked(ext.tabs.query).mockReset();
@@ -112,7 +113,7 @@ describe("openInOutlook", () => {
   it("opens a new tab when no Outlook tab exists", async () => {
     vi.mocked(ext.tabs.query).mockResolvedValue([]);
 
-    await openInOutlook(WEBLINK);
+    await openInOutlook(EMAIL, WEBLINK);
 
     expect(ext.tabs.create).toHaveBeenCalledWith({ url: OUTLOOK_URL });
     expect(ext.tabs.update).not.toHaveBeenCalled();
@@ -121,7 +122,7 @@ describe("openInOutlook", () => {
   it("matches all three OWA hosts so an office365/live tab is found", async () => {
     vi.mocked(ext.tabs.query).mockResolvedValue([]);
 
-    await openInOutlook(WEBLINK);
+    await openInOutlook(EMAIL, WEBLINK);
 
     expect(ext.tabs.query).toHaveBeenCalledWith({
       url: [
@@ -138,7 +139,7 @@ describe("openInOutlook", () => {
       tab({ id: 3, active: true, url: "https://outlook.office365.com/mail/" }),
     ]);
 
-    await openInOutlook(WEBLINK);
+    await openInOutlook(EMAIL, WEBLINK);
 
     expect(ext.tabs.update).toHaveBeenCalledWith(3, { url: OUTLOOK_URL, active: true });
     expect(ext.tabs.create).not.toHaveBeenCalled();
@@ -150,7 +151,7 @@ describe("openInOutlook", () => {
       tab({ id: 4, active: true, url: "https://outlook.live.com/mail/" }),
     ]);
 
-    await openInOutlook(WEBLINK);
+    await openInOutlook(EMAIL, WEBLINK);
 
     expect(ext.tabs.update).toHaveBeenCalledWith(4, { url: OUTLOOK_URL, active: true });
     expect(ext.tabs.create).not.toHaveBeenCalled();

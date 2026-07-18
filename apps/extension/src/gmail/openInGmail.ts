@@ -1,5 +1,12 @@
-import { buildGmailThreadUrl, buildGmailThreadHashUrl } from "./gmailUrl";
+import { buildGmailThreadHashUrl } from "./gmailUrl";
 import { buildThreadUrl, type ThreadUrlInput } from "@amarnai/core/emails";
+
+// Full account-routed Gmail URL (`?authuser=<email>`), shared with the web app
+// via core's buildThreadUrl. The extension has no webLink at this point; Gmail
+// links are built purely from the providerThreadId.
+function gmailThreadUrl(gmailAddress: string, providerThreadId: string): string {
+  return buildThreadUrl({ provider: "GMAIL", providerThreadId, webLink: null }, gmailAddress);
+}
 import { ext } from "../platform/ext";
 import { OUTLOOK_MAIL_HOSTS } from "../platform/mailHosts";
 
@@ -33,7 +40,7 @@ export async function openInGmail(gmailAddress: string, providerThreadId: string
   if (existing?.id == null) {
     // No Gmail tab in this window: open a fresh one on the correct account and
     // pin it (a new tab loads fully regardless, so there is no extra reload).
-    const created = await ext.tabs.create({ url: buildGmailThreadUrl(gmailAddress, providerThreadId) });
+    const created = await ext.tabs.create({ url: gmailThreadUrl(gmailAddress, providerThreadId) });
     pinnedTabId = created.id ?? null;
     return;
   }
@@ -52,7 +59,7 @@ export async function openInGmail(gmailAddress: string, providerThreadId: string
   // to guarantee the correct account. This reloads once, then pins the tab so
   // later opens are instant hash-only swaps.
   await ext.tabs.update(existing.id, {
-    url: buildGmailThreadUrl(gmailAddress, providerThreadId),
+    url: gmailThreadUrl(gmailAddress, providerThreadId),
     active: true,
   });
   pinnedTabId = existing.id;
@@ -61,13 +68,14 @@ export async function openInGmail(gmailAddress: string, providerThreadId: string
 // Opens a thread in Outlook on the web (OWA). Reuses an existing OWA tab in the
 // current window so the panel stays docked; else opens a new tab. Unlike Gmail
 // there is no zero-reload hash swap — OWA routes the message via its `webLink`,
-// so every switch is one reload (accepted). The webLink already carries the
-// account context, so no `authuser`-style pinning is needed and the Gmail
-// pinnedTabId singleton is intentionally not used here.
+// so every switch is one reload (accepted). `account` becomes a `login_hint` so
+// a fresh sign-in targets the connected mailbox; OWA cannot switch an existing
+// wrong-account session via URL, so the Gmail pinnedTabId singleton is
+// intentionally not used here.
 //
 // Requires host_permissions for the OWA hosts (see OUTLOOK_MAIL_HOSTS).
-export async function openInOutlook(webLink: string | null): Promise<void> {
-  const url = buildThreadUrl({ provider: "OUTLOOK", providerThreadId: "", webLink });
+export async function openInOutlook(account: string, webLink: string | null): Promise<void> {
+  const url = buildThreadUrl({ provider: "OUTLOOK", providerThreadId: "", webLink }, account);
   const tabs = await ext.tabs.query({
     url: OUTLOOK_MAIL_HOSTS,
     currentWindow: true,
@@ -83,13 +91,13 @@ export async function openInOutlook(webLink: string | null): Promise<void> {
 
 // Provider-aware dispatcher used by the panel call sites. Routes to the Gmail or
 // Outlook tab-reuse path based on the thread's provider. `account` is the
-// connected mailbox address (used only for Gmail account pinning).
+// connected mailbox address (Gmail account pinning; Outlook login_hint).
 export async function openThreadInMail(
   account: string,
   thread: ThreadUrlInput,
 ): Promise<void> {
   if (thread.provider === "OUTLOOK") {
-    await openInOutlook(thread.webLink);
+    await openInOutlook(account, thread.webLink);
     return;
   }
   await openInGmail(account, thread.providerThreadId);

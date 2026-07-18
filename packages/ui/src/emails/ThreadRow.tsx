@@ -293,7 +293,7 @@ export function ThreadRow({
               </button>
             ) : (
               <a
-                href={buildThreadUrl(thread)}
+                href={buildThreadUrl(thread, workspaceEmail)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="em-thread-gmail-link"

@@ -173,7 +173,7 @@ export function ThreadPreview({
             </button>
           ) : (
             <a
-              href={buildThreadUrl(thread)}
+              href={buildThreadUrl(thread, workspaceEmail)}
               target="_blank"
               rel="noopener noreferrer"
               className="em-open-provider"
@@ -203,7 +203,7 @@ export function ThreadPreview({
                 </button>
               ) : (
                 <a
-                  href={buildThreadUrl(thread)}
+                  href={buildThreadUrl(thread, workspaceEmail)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="em-preview-gmail-link"
