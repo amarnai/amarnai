@@ -162,9 +162,12 @@ vi.mock("../ai-dedup.js", () => ({
 
 import { db } from "@amarnai/db";
 import { config } from "@amarnai/config";
+import { getThreadSortLimit } from "@amarnai/shared";
 import { Worker } from "bullmq";
 import { createEmbeddingProvider } from "@amarnai/ai";
 import { createClassifyThreadWorker } from "../jobs/classify-thread.js";
+
+const FREE_LIMIT = getThreadSortLimit("FREE");
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -224,7 +227,7 @@ const BASE_SORT_RESULT = {
 beforeEach(() => {
   vi.clearAllMocks();
 
-  // Quota enforcement on, FREE plan (limit 500), well under the cap by default.
+  // Quota enforcement on, FREE plan, well under the cap by default.
   config.billing.enforceThreadSortQuota = true;
   vi.mocked(db.workspace.findUnique).mockResolvedValue({ plan: "FREE" } as never);
   mockGetInboxPlanCeiling.mockResolvedValue({ plan: "FREE", billingCycle: null });
@@ -526,8 +529,8 @@ describe("createClassifyThreadWorker — disconnect-awareness", () => {
 
 describe("createClassifyThreadWorker — monthly thread-sort quota", () => {
   it("defers the thread as QUOTA_BLOCKED and skips work when at the limit", async () => {
-    // FREE limit is 500; pretend the inbox meter is already at 500 this month.
-    mockGetMeterUsed.mockResolvedValue(500);
+    // Pretend the inbox meter is already at the FREE limit this month.
+    mockGetMeterUsed.mockResolvedValue(FREE_LIMIT);
 
     createClassifyThreadWorker();
     const processor = getProcessor();
@@ -584,7 +587,7 @@ describe("createClassifyThreadWorker — monthly thread-sort quota", () => {
   it("never blocks (or re-counts) a re-sort of a thread already counted this window", async () => {
     // Inbox is AT the limit, but this thread was already metered this window
     // (a prior recurring classification exists), so the re-sort must still run.
-    mockGetMeterUsed.mockResolvedValue(500);
+    mockGetMeterUsed.mockResolvedValue(FREE_LIMIT);
     vi.mocked(db.emailClassification.count).mockResolvedValue(1 as never);
 
     createClassifyThreadWorker();

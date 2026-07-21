@@ -74,7 +74,10 @@ vi.mock("@amarnai/ai", () => ({
 
 import app from "../app.js";
 import { db, resolveInboxQuota, recordMeterUsage } from "@amarnai/db";
+import { getThreadSortLimit } from "@amarnai/shared";
 import { GmailClient, GmailThreadNotFoundError } from "@amarnai/gmail";
+
+const FREE_LIMIT = getThreadSortLimit("FREE");
 
 const WS_ID = "ws-1";
 
@@ -82,7 +85,7 @@ const BASE_WORKSPACE = { id: WS_ID, ownerUserId: "user-1" };
 
 /**
  * Build a resolveInboxQuota result reporting `used` recurring sorts on the FREE
- * plan (limit 500) — the reset-immune inbox meter the sort gate reads.
+ * plan — the reset-immune inbox meter the sort gate reads.
  */
 function quotaUsed(used: number) {
   return { inboxKey: "user@gmail.com", windowStart: new Date(), plan: "FREE" as const, used };
@@ -195,7 +198,7 @@ beforeEach(() => {
   // sort records a fresh meter tick.
   vi.mocked(db.emailClassification.count).mockResolvedValue(0 as never);
   vi.mocked(db.emailThread.update).mockResolvedValue({} as never);
-  // Well under the FREE limit (500) by default so the quota check passes.
+  // Well under the FREE limit by default so the quota check passes.
   vi.mocked(resolveInboxQuota).mockResolvedValue(quotaUsed(0));
   mockSortThreadByEmbedding.mockResolvedValue(VALID_CLASSIFY_RESULT);
 });
@@ -241,20 +244,20 @@ describe("POST /dev/workspaces/:workspaceId/gmail-sort-thread", () => {
   });
 
   it("returns 429 when the reset-immune inbox meter is at the quota", async () => {
-    // FREE limit is 500; the reset-immune, inbox-pooled meter reports it full.
+    // The reset-immune, inbox-pooled meter reports the FREE limit as full.
     // This is the reset-immunity guarantee: after a disconnect+reconnect
     // (resetWorkspaceData) wipes this workspace's EmailClassification rows, the
     // inbox meter still reads at-cap, so the sort stays blocked — quota cannot be
     // refunded by resetting. The check runs before the Gmail fetch + AI sort, so
     // neither should be attempted.
-    vi.mocked(resolveInboxQuota).mockResolvedValue(quotaUsed(500));
+    vi.mocked(resolveInboxQuota).mockResolvedValue(quotaUsed(FREE_LIMIT));
 
     const res = await postSort();
     expect(res.status).toBe(429);
     const body = (await res.json()) as Record<string, unknown>;
     expect(body.error).toMatch(/quota exceeded/i);
-    expect(body.used).toBe(500);
-    expect(body.limit).toBe(500);
+    expect(body.used).toBe(FREE_LIMIT);
+    expect(body.limit).toBe(FREE_LIMIT);
     expect(typeof body.resetsAt).toBe("string");
 
     // The gate keys the meter off the connection's inbox address, so the
@@ -267,7 +270,7 @@ describe("POST /dev/workspaces/:workspaceId/gmail-sort-thread", () => {
   });
 
   it("proceeds with the sort when usage is below the limit", async () => {
-    vi.mocked(resolveInboxQuota).mockResolvedValue(quotaUsed(499));
+    vi.mocked(resolveInboxQuota).mockResolvedValue(quotaUsed(FREE_LIMIT - 1));
     vi.mocked(GmailClient).mockImplementationOnce(() => ({
       getThreadSnapshot: vi.fn().mockResolvedValue(makeSnapshot()),
       listRecentThreads: vi.fn(),

@@ -1,7 +1,7 @@
 // Thread-sort limits per plan (distinct threads classified per calendar month, per workspace).
 // Keep in sync with the plan highlights in packages/ui/src/plans.ts.
 export const THREAD_SORT_LIMITS: Record<string, number> = {
-  FREE: 500,
+  FREE: 50,
   PRO: 5000,
   BUSINESS: 10000,
 };

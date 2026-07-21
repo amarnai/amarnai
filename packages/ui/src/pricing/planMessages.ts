@@ -31,7 +31,7 @@ const PLAN_MESSAGES: Record<string, MessageDescriptor> = {
 
   // ── Card highlights ──
   "1 free workspace": msg`1 free workspace`,
-  "500 threads sorted / month": msg`500 threads sorted / month`,
+  "50 threads sorted / month": msg`50 threads sorted / month`,
   "Up to 12 plan nodes": msg`Up to 12 plan nodes`,
   "3 reply drafts / month": msg`3 reply drafts / month`,
   "Up to 2 people": msg`Up to 2 people`,

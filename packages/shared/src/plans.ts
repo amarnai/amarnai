@@ -99,7 +99,7 @@ export const PLANS: Plan[] = [
     free: true,
     highlights: [
       "1 free workspace",
-      "500 threads sorted / month",
+      "50 threads sorted / month",
       "3 reply drafts / month",
       "Up to 12 plan nodes",
     ],
@@ -164,7 +164,7 @@ export const FEATURE_GROUPS: FeatureGroup[] = [
     rows: [
       {
         label: "Threads sorted / month",
-        values: ["500", "5,000", "10,000"],
+        values: ["50", "5,000", "10,000"],
       },
       {
         label: "Initial backfill",
@@ -244,7 +244,7 @@ export const PLAN_FEATURES: PlanFeature[] = [
     id: "monthly_threads",
     label: "Threads / month",
     showInCard: true,
-    values: { free: "500", pro: "5,000", business: "10,000" },
+    values: { free: "50", pro: "5,000", business: "10,000" },
   },
   {
     id: "backfill_monthly",
