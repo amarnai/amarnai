@@ -70,18 +70,18 @@ vi.mock("@amarnai/gmail", () => {
     }
   }
   const normalize = (raw: unknown) => {
-    const r = raw as { id: string; subject?: string };
+    const r = raw as { id: string; subject?: string; senderEmail?: string; labelIds?: string[] };
     return {
       provider: "gmail" as const,
       providerThreadId: r.id,
       subject: r.subject ?? null,
-      participants: ["sender@example.com"],
+      participants: [r.senderEmail ?? "sender@example.com"],
       latestMessageAt: new Date(),
       messageCount: 1,
       messages: [
         {
           providerMessageId: `msg-${r.id}`,
-          senderEmail: "sender@example.com",
+          senderEmail: r.senderEmail ?? "sender@example.com",
           senderName: "Sender",
           toEmails: [],
           ccEmails: [],
@@ -89,6 +89,8 @@ vi.mock("@amarnai/gmail", () => {
           bodyExcerpt: "snippet",
           receivedAt: new Date(),
           attachments: [],
+          // Passed through so snapshot-level sent-only detection can be exercised.
+          labelIds: r.labelIds,
         },
       ],
     };
@@ -173,17 +175,20 @@ function makeEdges(linkedCount: number) {
   }));
 }
 
-/** Build a fake GmailThreadMeta. */
+/** Build a fake GmailThreadMeta. Defaults to a single inbound (INBOX) message so
+ *  sent-only detection is off unless a test opts in via messageLabelIds. */
 function makeGmailThread(opts: {
   id: string;
   unread?: boolean;
   daysAgo?: number;
-}): { id: string; unread: boolean; latestMessageAt: Date } {
+  messageLabelIds?: string[][];
+}): { id: string; unread: boolean; latestMessageAt: Date; messageLabelIds: string[][] } {
   const msAgo = (opts.daysAgo ?? 1) * 24 * 60 * 60 * 1_000;
   return {
     id: opts.id,
     unread: opts.unread ?? false,
     latestMessageAt: new Date(Date.now() - msAgo),
+    messageLabelIds: opts.messageLabelIds ?? [["INBOX"]],
   };
 }
 
@@ -334,6 +339,78 @@ describe("createBackfillInboxWorker", () => {
       (c) => (c[0] as { create: { providerThreadId: string } }).create.providerThreadId
     );
     expect(importOrder).toEqual(["read-new", "unread-mid", "read-old"]);
+  });
+
+  // ── Sent-only threads (sent mail awaiting a reply) ──────────────────────────
+
+  it("(sent-only) skips a new sent-only thread from metadata, without fetching or a row", async () => {
+    vi.mocked(db.providerSyncState.findUnique).mockResolvedValue({
+      backfillStatus: "PENDING",
+      backfillStartedAt: null,
+    } as never);
+
+    const inbound = makeGmailThread({ id: "inbound", messageLabelIds: [["INBOX"]] });
+    const sentOnly = makeGmailThread({ id: "sent-only", messageLabelIds: [["SENT"]] });
+    mockListThreadsPage.mockResolvedValue({ threads: [inbound, sentOnly], nextPageToken: undefined });
+    vi.mocked(db.emailThread.findUnique).mockResolvedValue(null);
+    mockGetThread.mockImplementation(async (id: string) => ({ id }));
+    vi.mocked(db.emailThread.upsert).mockImplementation(
+      (({ create }: { create: { providerThreadId: string } }) =>
+        Promise.resolve({ id: `db-${create.providerThreadId}` })) as never
+    );
+
+    createBackfillInboxWorker();
+    await getProcessor()(makeJob({ workspaceId: WS_ID }));
+
+    // The sent-only thread was never fetched in full and never upserted; only the
+    // inbound thread was imported.
+    expect(mockGetThread).toHaveBeenCalledTimes(1);
+    expect(mockGetThread).toHaveBeenCalledWith("inbound");
+    const upsertedIds = vi.mocked(db.emailThread.upsert).mock.calls.map(
+      (c) => (c[0] as { create: { providerThreadId: string } }).create.providerThreadId
+    );
+    expect(upsertedIds).toEqual(["inbound"]);
+  });
+
+  it("(sent-only) still imports a note-to-self (SENT + INBOX)", async () => {
+    vi.mocked(db.providerSyncState.findUnique).mockResolvedValue({
+      backfillStatus: "PENDING",
+      backfillStartedAt: null,
+    } as never);
+
+    const noteToSelf = makeGmailThread({ id: "note", messageLabelIds: [["SENT", "INBOX"]] });
+    mockListThreadsPage.mockResolvedValue({ threads: [noteToSelf], nextPageToken: undefined });
+    vi.mocked(db.emailThread.findUnique).mockResolvedValue(null);
+    mockGetThread.mockImplementation(async (id: string) => ({ id }));
+    vi.mocked(db.emailThread.upsert).mockResolvedValue({ id: "db-note" } as never);
+
+    createBackfillInboxWorker();
+    await getProcessor()(makeJob({ workspaceId: WS_ID }));
+
+    expect(mockGetThread).toHaveBeenCalledWith("note");
+    expect(db.emailThread.upsert).toHaveBeenCalledOnce();
+  });
+
+  it("(sent-only) snapshot backstop: fetches once then no row when metadata labels are unavailable", async () => {
+    vi.mocked(db.providerSyncState.findUnique).mockResolvedValue({
+      backfillStatus: "PENDING",
+      backfillStartedAt: null,
+    } as never);
+
+    // Empty per-message metadata (fetch-failed placeholder) defeats the meta
+    // check, so the thread is fetched — and the snapshot turns out sent-only.
+    const noMeta = makeGmailThread({ id: "no-meta", messageLabelIds: [] });
+    mockListThreadsPage.mockResolvedValue({ threads: [noMeta], nextPageToken: undefined });
+    vi.mocked(db.emailThread.findUnique).mockResolvedValue(null);
+    mockGetThread.mockResolvedValue({ id: "no-meta", senderEmail: "test@gmail.com", labelIds: ["SENT"] });
+    vi.mocked(db.emailThread.upsert).mockResolvedValue({ id: "db-x" } as never);
+
+    createBackfillInboxWorker();
+    await getProcessor()(makeJob({ workspaceId: WS_ID }));
+
+    expect(mockGetThread).toHaveBeenCalledOnce();
+    // Backstop skips before any upsert — not even a flags-only "excluded" row.
+    expect(db.emailThread.upsert).not.toHaveBeenCalled();
   });
 
   // ── Plan-derived caps ───────────────────────────────────────────────────────

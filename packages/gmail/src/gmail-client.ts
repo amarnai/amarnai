@@ -4,7 +4,7 @@ import { normalizeGmailThread } from "./gmail-thread-adapter.js";
 
 // ─── Internal Gmail History API shapes ────────────────────────────────────────
 
-type GmailHistoryMessage = { threadId?: string };
+type GmailHistoryMessage = { threadId?: string; labelIds?: string[] };
 
 type GmailHistoryEntry = { message?: GmailHistoryMessage };
 
@@ -130,6 +130,18 @@ export type GmailHistoryResult = {
    * shape the Outlook/Graph adapter uses for `@removed` delta entries.
    */
   removedMessageIds: string[];
+  /**
+   * Subset of {@link changedThreadIds} whose ONLY activity since the cursor is
+   * messagesAdded entries that are outbound (SENT without INBOX) — i.e. the user
+   * sent mail and nothing else touched the thread. The sync worker skips fetching
+   * these when they are not already persisted, so a sent email awaiting a reply
+   * is never imported.
+   *
+   * A thread is disqualified (removed from this list, so it is fetched normally)
+   * by any labelsAdded/labelsRemoved entry, any non-outbound message, or any
+   * entry with missing labelIds — unknown label data always fails open.
+   */
+  sentOnlyCandidateThreadIds: string[];
   /** New cursor to persist in ProviderSyncState.historyId after processing. */
   newCursor: string;
 };
@@ -295,23 +307,45 @@ export class GmailClient {
       pageToken = data.nextPageToken;
     } while (pageToken);
 
-    // Collect thread IDs from every change record, deduplicating.
+    // Collect thread IDs from every change record, deduplicating, while tracking
+    // which threads are disqualified from being "sent-only candidates". A thread
+    // is a candidate only if its ENTIRE delta is outbound messagesAdded (SENT
+    // without INBOX). Any label mutation, any non-outbound message, or any entry
+    // with missing labelIds disqualifies it — unknown label data fails open so
+    // the thread is fetched normally. All pages are already accumulated into
+    // allHistory, so a thread whose entries span pages is classified correctly.
+    //
+    // The outbound rule below is a private copy of isOutboundLabelSet in
+    // apps/worker/src/jobs/filter-thread-messages.ts (this package cannot import
+    // worker code). Keep the two in sync.
     const seen = new Set<string>();
+    const notCandidate = new Set<string>();
     for (const record of allHistory) {
-      const entries = [
-        ...(record.messagesAdded ?? []),
-        ...(record.labelsAdded ?? []),
-        ...(record.labelsRemoved ?? []),
-      ];
-      for (const entry of entries) {
+      for (const entry of record.messagesAdded ?? []) {
         const tid = entry.message?.threadId;
-        if (tid) seen.add(tid);
+        if (!tid) continue;
+        seen.add(tid);
+        const labels = entry.message?.labelIds;
+        const outbound = !!labels && labels.includes("SENT") && !labels.includes("INBOX");
+        if (!outbound) notCandidate.add(tid);
+      }
+      for (const entry of [...(record.labelsAdded ?? []), ...(record.labelsRemoved ?? [])]) {
+        const tid = entry.message?.threadId;
+        if (!tid) continue;
+        seen.add(tid);
+        notCandidate.add(tid);
       }
     }
 
+    const changedThreadIds = Array.from(seen);
     // Gmail folds inbox removals into changedThreadIds via labelRemoved records,
     // so there is never a separate message ID to resolve.
-    return { changedThreadIds: Array.from(seen), removedMessageIds: [], newCursor: latestHistoryId };
+    return {
+      changedThreadIds,
+      removedMessageIds: [],
+      sentOnlyCandidateThreadIds: changedThreadIds.filter((id) => !notCandidate.has(id)),
+      newCursor: latestHistoryId,
+    };
   }
 
   /**

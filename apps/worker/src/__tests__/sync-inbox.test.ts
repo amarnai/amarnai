@@ -16,6 +16,7 @@ vi.mock("@amarnai/db", () => ({
       upsert: vi.fn(),
       updateMany: vi.fn().mockResolvedValue({ count: 0 }),
       findMany: vi.fn().mockResolvedValue([]),
+      findUnique: vi.fn().mockResolvedValue(null),
     },
     emailMessage: { upsert: vi.fn(), deleteMany: vi.fn(), findMany: vi.fn() },
     backfillInboxQueue: { add: vi.fn() },
@@ -45,18 +46,19 @@ vi.mock("@amarnai/gmail", () => {
   // getThreadSnapshot folds the raw fetch (mockGetThread — so error tests still
   // drive rejections) and normalization into one call, matching the real client.
   const normalize = (raw: unknown) => {
-    const r = raw as { id: string };
+    const r = raw as { id: string; senderEmail?: string; labelIds?: string[] };
+    const senderEmail = r.senderEmail ?? "sender@example.com";
     return {
       provider: "gmail" as const,
       providerThreadId: r.id,
       subject: "Test subject",
-      participants: ["sender@example.com"],
+      participants: [senderEmail],
       latestMessageAt: new Date(),
       messageCount: 1,
       messages: [
         {
           providerMessageId: `msg-${r.id}`,
-          senderEmail: "sender@example.com",
+          senderEmail,
           senderName: "Sender",
           toEmails: [],
           ccEmails: [],
@@ -64,7 +66,7 @@ vi.mock("@amarnai/gmail", () => {
           bodyExcerpt: "snippet",
           receivedAt: new Date(),
           attachments: [],
-          labelIds: ["INBOX"],
+          labelIds: r.labelIds ?? ["INBOX"],
         },
       ],
     };
@@ -1021,5 +1023,130 @@ describe("createSyncInboxWorker — thread-fetch errors and cursor safety", () =
     // the cursor stayed put so the failed thread is re-attempted.
     expect(vi.mocked(db.emailThread.upsert)).toHaveBeenCalledOnce();
     expect(cursorAdvance()).toBeUndefined();
+  });
+});
+
+describe("createSyncInboxWorker — sent-only threads", () => {
+  // clearAllMocks (top-level beforeEach) resets call history but not implementations,
+  // so a rejection set by an earlier test can leak in. Restore the clean default.
+  beforeEach(() => {
+    vi.mocked(db.emailThread.findMany).mockResolvedValue([] as never);
+  });
+
+  /** The step-6 cursor write: the only providerSyncState.update carrying historyId. */
+  function cursorAdvance() {
+    return vi.mocked(db.providerSyncState.update).mock.calls.find(
+      (c) => (c[0] as { data: { historyId?: string } }).data?.historyId !== undefined
+    );
+  }
+
+  it("skips a sent-only candidate that was never imported — no fetch, no row, cursor advances", async () => {
+    mockListHistory.mockResolvedValue({
+      changedThreadIds: ["gmail-sent"],
+      removedMessageIds: [],
+      sentOnlyCandidateThreadIds: ["gmail-sent"],
+      newCursor: "hist-2",
+    });
+    // Default emailThread.findMany → [] : the candidate is not in the DB.
+
+    createSyncInboxWorker();
+    await getProcessor()(makeJob({ workspaceId: WS_ID }));
+
+    expect(mockGetThread).not.toHaveBeenCalled();
+    expect(db.emailThread.upsert).not.toHaveBeenCalled();
+    expect(classifyThreadQueue.addBulk).not.toHaveBeenCalled();
+    const advance = cursorAdvance();
+    expect(advance).toBeDefined();
+    expect((advance![0] as { data: { historyId: string } }).data.historyId).toBe("hist-2");
+  });
+
+  it("processes a sent-only candidate that IS already imported (user replied from Gmail)", async () => {
+    mockListHistory.mockResolvedValue({
+      changedThreadIds: ["gmail-reply"],
+      removedMessageIds: [],
+      sentOnlyCandidateThreadIds: ["gmail-reply"],
+      newCursor: "hist-2",
+    });
+    // The candidate-existence lookup finds the thread; recovery lookups (no
+    // providerThreadId filter) still return nothing.
+    vi.mocked(db.emailThread.findMany).mockImplementation((async (args: {
+      where?: { providerThreadId?: unknown };
+    }) => (args?.where?.providerThreadId ? [{ providerThreadId: "gmail-reply" }] : [])) as never);
+    mockGetThread.mockResolvedValue({ id: "gmail-reply" });
+
+    createSyncInboxWorker();
+    await getProcessor()(makeJob({ workspaceId: WS_ID }));
+
+    // Fetched, upserted, and re-sorted — the reply must not be dropped.
+    expect(mockGetThread).toHaveBeenCalledWith("gmail-reply");
+    expect(db.emailThread.upsert).toHaveBeenCalledOnce();
+    expect(classifyThreadQueue.addBulk).toHaveBeenCalledOnce();
+  });
+
+  it("imports the full thread once the counterpart replies (skip then import)", async () => {
+    // Cycle 1: the user's send is a candidate and the thread is not imported yet.
+    mockListHistory.mockResolvedValueOnce({
+      changedThreadIds: ["gmail-x"],
+      removedMessageIds: [],
+      sentOnlyCandidateThreadIds: ["gmail-x"],
+      newCursor: "hist-2",
+    });
+    createSyncInboxWorker();
+    await getProcessor()(makeJob({ workspaceId: WS_ID }));
+    expect(mockGetThread).not.toHaveBeenCalled();
+
+    // Cycle 2: an inbound reply arrives — the thread is no longer a candidate.
+    mockGetThread.mockClear();
+    mockListHistory.mockResolvedValueOnce({
+      changedThreadIds: ["gmail-x"],
+      removedMessageIds: [],
+      sentOnlyCandidateThreadIds: [],
+      newCursor: "hist-3",
+    });
+    mockGetThread.mockResolvedValue({ id: "gmail-x" });
+    createSyncInboxWorker();
+    await getProcessor()(makeJob({ workspaceId: WS_ID }));
+
+    expect(mockGetThread).toHaveBeenCalledWith("gmail-x");
+    expect(db.emailThread.upsert).toHaveBeenCalledOnce();
+  });
+
+  it("fetches every changed thread when the provider omits the sent-only hint (Outlook shape)", async () => {
+    mockListHistory.mockResolvedValue({
+      changedThreadIds: ["gmail-t1"],
+      removedMessageIds: [],
+      newCursor: "hist-2",
+    });
+
+    createSyncInboxWorker();
+    await getProcessor()(makeJob({ workspaceId: WS_ID }));
+
+    expect(mockGetThread).toHaveBeenCalledWith("gmail-t1");
+  });
+
+  it("snapshot backstop on the cursor-expired fallback: skips sent-only, imports the rest", async () => {
+    mockListHistory.mockRejectedValue(new GmailHistoryCursorExpiredError("cursor expired"));
+    mockGetProfile.mockResolvedValue({ syncCursor: "hist-9" });
+    mockListRecentThreadIds.mockResolvedValue(["sent-x", "inbound-y"]);
+    mockGetThread.mockImplementation((id: string) =>
+      id === "sent-x"
+        ? Promise.resolve({ id, senderEmail: "test@gmail.com", labelIds: ["SENT"] })
+        : Promise.resolve({ id, senderEmail: "sender@example.com", labelIds: ["INBOX"] })
+    );
+    // Neither thread is in the DB (findUnique → null default), so the sent-only
+    // one is dropped without a row.
+
+    createSyncInboxWorker();
+    await getProcessor()(makeJob({ workspaceId: WS_ID }));
+
+    // Both fetched (no label hint on the fallback path), but only the inbound one
+    // is imported.
+    expect(mockGetThread).toHaveBeenCalledWith("sent-x");
+    expect(mockGetThread).toHaveBeenCalledWith("inbound-y");
+    expect(db.emailThread.upsert).toHaveBeenCalledOnce();
+    const upsertArg = vi.mocked(db.emailThread.upsert).mock.calls[0]![0] as {
+      create: { providerThreadId: string };
+    };
+    expect(upsertArg.create.providerThreadId).toBe("inbound-y");
   });
 });

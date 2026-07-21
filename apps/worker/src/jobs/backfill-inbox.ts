@@ -32,6 +32,8 @@ import {
   computeThreadLabelFlags,
   computeThreadLabelFlagsFromMeta,
   isThreadExcluded,
+  isSentOnlyThreadMeta,
+  isSentOnlyThreadSnapshot,
 } from "./filter-thread-messages.js";
 import { upsertEmailThread, upsertEmailMessages } from "./persist-thread.js";
 import { enqueueArmedBacklog } from "./route-armed-backlog.js";
@@ -326,6 +328,13 @@ export function createBackfillInboxWorker(): Worker {
             return !excluded && existing.triageStatus === "PENDING" ? existing.id : null;
           }
 
+          // Sent-only thread (the user's own outbound mail awaiting a reply):
+          // never imported. Detected from the already-fetched METADATA labels, so
+          // this skips BOTH the full getThreadSnapshot fetch AND any DB row. A
+          // future inbound reply re-surfaces the thread via delta sync and it is
+          // imported in full then (original sent message included).
+          if (isSentOnlyThreadMeta(gmailThread.messageLabelIds)) return null;
+
           // New thread: fetch full data, compute flags, apply filter. A failure
           // that is permanent for this one thread is rethrown as a
           // SkippableThreadError so the caller skips it; everything else (auth,
@@ -342,6 +351,13 @@ export function createBackfillInboxWorker(): Worker {
             }
             throw err;
           }
+
+          // Backstop for the metadata path: when listThreadsPage's per-thread
+          // metadata fetch failed it returns an empty label array (so the meta
+          // check above could not fire), yet the full snapshot may still be
+          // sent-only. Skip here BEFORE computing flags so the excluded-branch
+          // below can never upsert a flags-only row for a sent-only thread.
+          if (isSentOnlyThreadSnapshot(rawSnapshot.messages)) return null;
 
           let labelFlags: ReturnType<typeof computeThreadLabelFlags>;
           let snapshot: ReturnType<typeof applyThreadFilter>;

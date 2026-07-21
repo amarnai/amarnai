@@ -247,3 +247,90 @@ describe("GmailClient.getThread — not-found mapping", () => {
     expect(err).not.toBeInstanceOf(GmailThreadNotFoundError);
   });
 });
+
+// ─── GmailClient.listChangesSince — sent-only candidates ──────────────────────
+// A changed thread is a "sent-only candidate" only when its entire delta is
+// outbound messagesAdded (SENT without INBOX). Any label mutation, any inbound
+// message, or missing label data disqualifies it so it is fetched normally.
+
+describe("GmailClient.listChangesSince — sent-only candidates", () => {
+  function historyResponse(records: unknown[], historyId = "1002") {
+    return { ok: true, status: 200, json: async () => ({ history: records, historyId }) };
+  }
+
+  it("flags a lone outbound messagesAdded as a candidate", async () => {
+    mockFetch
+      .mockResolvedValueOnce(makeTokenResponse())
+      .mockResolvedValueOnce(
+        historyResponse([{ messagesAdded: [{ message: { threadId: "t-sent", labelIds: ["SENT"] } }] }])
+      );
+
+    const client = new GmailClient("encrypted:refresh:token");
+    const result = await client.listChangesSince("1000");
+    expect(result.changedThreadIds).toContain("t-sent");
+    expect(result.sentOnlyCandidateThreadIds).toEqual(["t-sent"]);
+  });
+
+  it("does NOT flag a note-to-self (SENT + INBOX)", async () => {
+    mockFetch
+      .mockResolvedValueOnce(makeTokenResponse())
+      .mockResolvedValueOnce(
+        historyResponse([{ messagesAdded: [{ message: { threadId: "t-self", labelIds: ["SENT", "INBOX"] } }] }])
+      );
+
+    const client = new GmailClient("encrypted:refresh:token");
+    const result = await client.listChangesSince("1000");
+    expect(result.changedThreadIds).toContain("t-self");
+    expect(result.sentOnlyCandidateThreadIds).toEqual([]);
+  });
+
+  it("fails open when labelIds are missing on the added message", async () => {
+    mockFetch
+      .mockResolvedValueOnce(makeTokenResponse())
+      .mockResolvedValueOnce(
+        historyResponse([{ messagesAdded: [{ message: { threadId: "t-unknown" } }] }])
+      );
+
+    const client = new GmailClient("encrypted:refresh:token");
+    const result = await client.listChangesSince("1000");
+    expect(result.sentOnlyCandidateThreadIds).toEqual([]);
+  });
+
+  it("disqualifies a thread that also has a label change", async () => {
+    mockFetch
+      .mockResolvedValueOnce(makeTokenResponse())
+      .mockResolvedValueOnce(
+        historyResponse([
+          { messagesAdded: [{ message: { threadId: "t-mixed", labelIds: ["SENT"] } }] },
+          { labelsRemoved: [{ message: { threadId: "t-mixed" } }] },
+        ])
+      );
+
+    const client = new GmailClient("encrypted:refresh:token");
+    const result = await client.listChangesSince("1000");
+    expect(result.changedThreadIds).toContain("t-mixed");
+    expect(result.sentOnlyCandidateThreadIds).toEqual([]);
+  });
+
+  it("disqualifies across pages: outbound on page 1, inbound on page 2", async () => {
+    mockFetch
+      .mockResolvedValueOnce(makeTokenResponse())
+      .mockResolvedValueOnce({
+        ok: true,
+        status: 200,
+        json: async () => ({
+          history: [{ messagesAdded: [{ message: { threadId: "t-cross", labelIds: ["SENT"] } }] }],
+          historyId: "1001",
+          nextPageToken: "page2",
+        }),
+      })
+      .mockResolvedValueOnce(
+        historyResponse([{ messagesAdded: [{ message: { threadId: "t-cross", labelIds: ["INBOX"] } }] }])
+      );
+
+    const client = new GmailClient("encrypted:refresh:token");
+    const result = await client.listChangesSince("1000");
+    expect(result.changedThreadIds).toEqual(["t-cross"]);
+    expect(result.sentOnlyCandidateThreadIds).toEqual([]);
+  });
+});

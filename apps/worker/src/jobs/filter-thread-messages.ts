@@ -78,6 +78,48 @@ export function computeThreadLabelFlagsFromMeta(messageLabelIds: string[][]): Me
   };
 }
 
+// ─── Sent-only thread detection ─────────────────────────────────────────────
+
+/**
+ * True when a single message's Gmail labels mark it as OUTBOUND: it carries the
+ * SENT label and does NOT carry INBOX. The INBOX exception keeps self-addressed
+ * "note to self" mail (SENT + INBOX) importable, matching Outlook, where such
+ * mail lands in the inbox.
+ *
+ * Undefined or empty labels are never outbound: unknown label data must fail
+ * open (fetch/import normally), never fail closed. This also keeps Outlook
+ * immune — its normalizer emits `labelIds: []`, so nothing ever qualifies.
+ *
+ * NOTE: `packages/gmail` cannot import this worker module (and @amarnai/mail →
+ * @amarnai/gmail would be circular), so gmail-client.ts keeps a private copy of
+ * this exact rule in its history classification. Keep the two in sync.
+ */
+export function isOutboundLabelSet(labels: readonly string[] | undefined): boolean {
+  return !!labels && labels.includes("SENT") && !labels.includes("INBOX");
+}
+
+/**
+ * True when a thread consists ONLY of the user's own outbound mail (a sent email
+ * awaiting a reply), computed from the per-message label arrays returned by
+ * listThreadsPage (METADATA format). Such threads are never imported.
+ *
+ * False for zero messages: a fetch-failed metadata placeholder is
+ * `messageLabelIds: []`, and the empty case must not be mistaken for sent-only.
+ */
+export function isSentOnlyThreadMeta(messageLabelIds: readonly (readonly string[])[]): boolean {
+  return messageLabelIds.length > 0 && messageLabelIds.every(isOutboundLabelSet);
+}
+
+/**
+ * Snapshot-level variant of {@link isSentOnlyThreadMeta}, used as a backstop
+ * after a full thread fetch (covers paths where metadata labels are unavailable,
+ * e.g. the cursor-expired `listRecentThreadIds` fallback). False for zero
+ * messages and for messages without label data (Outlook shape).
+ */
+export function isSentOnlyThreadSnapshot(messages: readonly SnapshotMessage[]): boolean {
+  return messages.length > 0 && messages.every((m) => isOutboundLabelSet(m.labelIds));
+}
+
 /**
  * Returns true if the thread should be hidden given the current settings,
  * based on its stored label flags and sender blacklist.

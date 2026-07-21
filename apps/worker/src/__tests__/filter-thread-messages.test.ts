@@ -3,6 +3,9 @@ import type { SnapshotMessage } from "@amarnai/ai";
 import {
   computeThreadLabelFlags,
   computeThreadLabelFlagsFromMeta,
+  isOutboundLabelSet,
+  isSentOnlyThreadMeta,
+  isSentOnlyThreadSnapshot,
 } from "../jobs/filter-thread-messages.js";
 
 function msg(overrides: Partial<SnapshotMessage> = {}): SnapshotMessage {
@@ -59,5 +62,58 @@ describe("computeThreadLabelFlags", () => {
         msg({ senderEmail: "no-reply@service.com", labelIds: ["INBOX", "CATEGORY_PERSONAL", "IMPORTANT"] }),
       ]).isAutomated
     ).toBe(true);
+  });
+});
+
+describe("isOutboundLabelSet", () => {
+  it("is true only for SENT without INBOX", () => {
+    expect(isOutboundLabelSet(["SENT"])).toBe(true);
+    expect(isOutboundLabelSet(["SENT", "UNREAD"])).toBe(true);
+  });
+
+  it("is false for note-to-self (SENT + INBOX), inbox mail, and drafts", () => {
+    expect(isOutboundLabelSet(["SENT", "INBOX"])).toBe(false);
+    expect(isOutboundLabelSet(["INBOX"])).toBe(false);
+    expect(isOutboundLabelSet(["DRAFT"])).toBe(false);
+  });
+
+  it("fails open on unknown label data (undefined / empty)", () => {
+    expect(isOutboundLabelSet(undefined)).toBe(false);
+    expect(isOutboundLabelSet([])).toBe(false);
+  });
+});
+
+describe("isSentOnlyThreadMeta", () => {
+  it("is true when every message is outbound", () => {
+    expect(isSentOnlyThreadMeta([["SENT"]])).toBe(true);
+    expect(isSentOnlyThreadMeta([["SENT"], ["SENT", "UNREAD"]])).toBe(true);
+  });
+
+  it("is false for note-to-self, mixed threads, and drafts", () => {
+    expect(isSentOnlyThreadMeta([["SENT", "INBOX"]])).toBe(false);
+    expect(isSentOnlyThreadMeta([["SENT"], ["INBOX"]])).toBe(false);
+    expect(isSentOnlyThreadMeta([["SENT"], ["DRAFT"]])).toBe(false);
+  });
+
+  it("is false for the fetch-failed placeholder (no messages) and empty label sets", () => {
+    expect(isSentOnlyThreadMeta([])).toBe(false);
+    expect(isSentOnlyThreadMeta([[]])).toBe(false);
+  });
+});
+
+describe("isSentOnlyThreadSnapshot", () => {
+  it("is true when every snapshot message is outbound", () => {
+    expect(isSentOnlyThreadSnapshot([msg({ labelIds: ["SENT"] })])).toBe(true);
+  });
+
+  it("is false for note-to-self, mixed, empty, and label-less (Outlook) messages", () => {
+    expect(isSentOnlyThreadSnapshot([msg({ labelIds: ["SENT", "INBOX"] })])).toBe(false);
+    expect(
+      isSentOnlyThreadSnapshot([msg({ labelIds: ["SENT"] }), msg({ labelIds: ["INBOX"] })])
+    ).toBe(false);
+    expect(isSentOnlyThreadSnapshot([])).toBe(false);
+    // A message with no label data at all (the Outlook snapshot shape).
+    const { labelIds: _omit, ...labelLess } = msg();
+    expect(isSentOnlyThreadSnapshot([labelLess as SnapshotMessage])).toBe(false);
   });
 });

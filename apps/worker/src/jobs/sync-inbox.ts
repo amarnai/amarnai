@@ -30,7 +30,7 @@ import {
 import { DEDUP_CLASSIFY_LIVE } from "@amarnai/queue";
 import { redisConnection } from "../redis.js";
 import { publishWorkspaceSynced } from "../redis-publisher.js";
-import { applyThreadFilter, computeThreadLabelFlags } from "./filter-thread-messages.js";
+import { applyThreadFilter, computeThreadLabelFlags, isSentOnlyThreadSnapshot } from "./filter-thread-messages.js";
 import { upsertEmailThread, upsertEmailMessages } from "./persist-thread.js";
 import { enqueueArmedBacklog } from "./route-armed-backlog.js";
 
@@ -129,7 +129,7 @@ async function getChangedThreadIds(
   client: MailProvider,
   storedHistoryId: string | null,
   emailAccountId: string
-): Promise<{ changedThreadIds: string[]; newCursor: string }> {
+): Promise<{ changedThreadIds: string[]; sentOnlyCandidateThreadIds: string[]; newCursor: string }> {
   if (!storedHistoryId) {
     // First sync for this inbox: establish the history cursor at "now" and
     // import nothing here. The historical backfill (enqueued in parallel) is the
@@ -137,14 +137,15 @@ async function getChangedThreadIds(
     // up to the plan cap. Seeding recent threads here too would be a redundant,
     // date-blind second importer. Deltas after this cursor arrive via listHistory.
     const profile = await client.getProfile();
-    return { changedThreadIds: [], newCursor: profile.syncCursor };
+    return { changedThreadIds: [], sentOnlyCandidateThreadIds: [], newCursor: profile.syncCursor };
   }
 
   try {
-    // removedMessageIds is a required field of MailChangeResult; default to []
-    // defensively so a provider result missing it degrades to "no removals"
-    // rather than throwing here (before the cursor advances).
-    const { changedThreadIds, removedMessageIds = [], newCursor } =
+    // removedMessageIds and sentOnlyCandidateThreadIds are optional/defaulted so a
+    // provider result missing them degrades gracefully (no removals / no sent-only
+    // hint → every changed thread fetched) rather than throwing before the cursor
+    // advances. Outlook omits both.
+    const { changedThreadIds, removedMessageIds = [], sentOnlyCandidateThreadIds = [], newCursor } =
       await client.listChangesSince(storedHistoryId);
     // Resolve inbox-removal message IDs to their threads and merge (deduped) so a
     // thread that only lost/archived a message still re-sorts. Runs before the
@@ -153,6 +154,9 @@ async function getChangedThreadIds(
     const removedThreadIds = await resolveRemovedThreadIds(emailAccountId, removedMessageIds);
     return {
       changedThreadIds: Array.from(new Set([...changedThreadIds, ...removedThreadIds])),
+      // Threads merged in via removals can never be sent-only candidates (Gmail
+      // produces no removals; Outlook produces no candidates), so no interaction.
+      sentOnlyCandidateThreadIds,
       newCursor,
     };
   } catch (err) {
@@ -162,11 +166,13 @@ async function getChangedThreadIds(
       // expired (>7-day gap) on an already-established inbox whose backfill is
       // long DONE and will not re-run, so these 50 recent threads are genuine
       // catch-up for changes missed during the gap, not a redundant import.
+      // listRecentThreadIds returns bare IDs with no labels, so there is no
+      // sent-only hint here; the snapshot backstop in the loop catches them.
       const [profile, ids] = await Promise.all([
         client.getProfile(),
         client.listRecentThreadIds(50),
       ]);
-      return { changedThreadIds: ids, newCursor: profile.syncCursor };
+      return { changedThreadIds: ids, sentOnlyCandidateThreadIds: [], newCursor: profile.syncCursor };
     }
     throw err;
   }
@@ -456,7 +462,7 @@ export function createSyncInboxWorker(): Worker {
 
       const client = createMailProvider(connection);
 
-      const { changedThreadIds, newCursor } = await getChangedThreadIds(
+      const { changedThreadIds, sentOnlyCandidateThreadIds, newCursor } = await getChangedThreadIds(
         client,
         syncState.historyId,
         emailAccountId
@@ -505,6 +511,38 @@ export function createSyncInboxWorker(): Worker {
 
       await job.updateProgress(10);
 
+      // ── 3b. Drop sent-only candidates that were never imported ───────────────
+      //
+      // A candidate is a changed thread whose only delta since the cursor is the
+      // user's own outbound mail (SENT without INBOX). If we have never persisted
+      // it, it is a sent email awaiting a reply: skip it entirely — no fetch, no
+      // row. When the counterpart replies, that inbound message produces fresh
+      // history events past the advanced cursor and the thread imports in full
+      // then (original sent message included), so nothing is lost.
+      //
+      // A candidate that IS already persisted (the user replied from Gmail to an
+      // imported thread — a lone outbound messagesAdded, hence a candidate) must
+      // still be processed so the reply is stored and the thread re-sorts. One
+      // findMany over just the candidate IDs tells the two apart.
+      let threadIdsToProcess = changedThreadIds;
+      if (sentOnlyCandidateThreadIds.length > 0) {
+        const candidateSet = new Set(sentOnlyCandidateThreadIds);
+        const existingRows = await db.emailThread.findMany({
+          where: { emailAccountId, providerThreadId: { in: sentOnlyCandidateThreadIds } },
+          select: { providerThreadId: true },
+        });
+        const existing = new Set(existingRows.map((r) => r.providerThreadId));
+        threadIdsToProcess = changedThreadIds.filter(
+          (id) => !(candidateSet.has(id) && !existing.has(id))
+        );
+        const skipped = changedThreadIds.length - threadIdsToProcess.length;
+        if (skipped > 0) {
+          console.log(
+            `[sync-inbox] workspace=${workspaceId} skipped ${skipped} sent-only thread(s) without fetching`
+          );
+        }
+      }
+
       // ── 4. Fetch, normalize, and upsert each changed thread ─────────────────
 
       const upsertedEmailThreadIds: string[] = [];
@@ -518,7 +556,7 @@ export function createSyncInboxWorker(): Worker {
       // enqueue dedup key can be content-aware (see messageSetSignature).
       const threadsToClassify: Array<{ id: string; sig: string }> = [];
 
-      for (const gmailThreadId of changedThreadIds) {
+      for (const gmailThreadId of threadIdsToProcess) {
         let rawSnapshot: Awaited<ReturnType<typeof client.getThreadSnapshot>>;
         try {
           rawSnapshot = await client.getThreadSnapshot(gmailThreadId);
@@ -535,6 +573,27 @@ export function createSyncInboxWorker(): Worker {
           // never silently lost. Never classify by message text: a transient
           // error can contain "not found".
           throw err;
+        }
+
+        // Snapshot-level sent-only backstop: catches the cursor-expired fallback
+        // path (listRecentThreadIds has no label hint) and any candidate the
+        // history classifier missed. If the fetched thread is entirely the user's
+        // own outbound mail and we have never imported it, skip WITHOUT upserting
+        // anything (unlike the excluded path below, which persists flags). An
+        // already-imported thread that merely looks sent-only (e.g. an imported
+        // note-to-self that was later archived, dropping INBOX) falls through and
+        // is processed normally so its flags/messages keep updating.
+        if (isSentOnlyThreadSnapshot(rawSnapshot.messages)) {
+          const alreadyImported = await db.emailThread.findUnique({
+            where: {
+              emailAccountId_providerThreadId: {
+                emailAccountId,
+                providerThreadId: rawSnapshot.providerThreadId,
+              },
+            },
+            select: { id: true },
+          });
+          if (!alreadyImported) continue;
         }
 
         // Compute label flags from all messages (before filtering).

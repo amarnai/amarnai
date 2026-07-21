@@ -77,6 +77,14 @@ export type MailChangeResult = {
    * the Outlook/Graph adapter populates it from `@removed` delta entries.
    */
   removedMessageIds: string[];
+  /**
+   * Optional provider hint: changed threads whose only delta activity is the
+   * user's own outbound mail (sent, not in the inbox). The sync worker skips
+   * fetching these when they are not already persisted, so a sent email awaiting
+   * a reply is never imported. Providers without per-message label data (Outlook
+   * via Graph, whose sync is already inbox-scoped) simply omit it.
+   */
+  sentOnlyCandidateThreadIds?: string[];
   /** New cursor to persist after processing. */
   newCursor: string;
 };
