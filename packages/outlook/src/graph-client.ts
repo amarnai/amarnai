@@ -245,7 +245,14 @@ export class GraphClient {
     pageToken?: string | undefined;
     pageSize?: number | undefined;
   }): Promise<{
-    threads: Array<{ id: string; unread: boolean; latestMessageAt: Date; messageLabelIds: string[][] }>;
+    threads: Array<{
+      id: string;
+      unread: boolean;
+      latestMessageAt: Date;
+      messageLabelIds: string[][];
+      messageSenders: string[];
+      messageRecipients: string[][];
+    }>;
     nextPageToken: string | undefined;
     resultSizeEstimate: number;
   }> {
@@ -291,7 +298,11 @@ export class GraphClient {
       id,
       unread: v.unread,
       latestMessageAt: v.latestMessageAt,
+      // Outlook sync is inbox-scoped, so a sent-only thread never reaches here;
+      // these stay empty (identity/label sent-only detection simply never fires).
       messageLabelIds: [] as string[][],
+      messageSenders: [] as string[],
+      messageRecipients: [] as string[][],
     }));
 
     return {

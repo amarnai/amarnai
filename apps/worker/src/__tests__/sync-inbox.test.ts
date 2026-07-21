@@ -1124,6 +1124,31 @@ describe("createSyncInboxWorker — sent-only threads", () => {
     expect(mockGetThread).toHaveBeenCalledWith("gmail-t1");
   });
 
+  it("skips an owner-sent thread the Gmail labels failed to flag (the prod regression)", async () => {
+    // Reproduces prod: the send is NOT a label-based candidate (its message
+    // carried INBOX, so the SENT-without-INBOX hint never fired), so it is
+    // fetched. The identity-based backstop must still drop it: the owner is the
+    // sole sender and not a recipient.
+    mockListHistory.mockResolvedValue({
+      changedThreadIds: ["gmail-sent-inbox"],
+      removedMessageIds: [],
+      sentOnlyCandidateThreadIds: [],
+      newCursor: "hist-2",
+    });
+    mockGetThread.mockResolvedValue({
+      id: "gmail-sent-inbox",
+      senderEmail: "test@gmail.com",
+      labelIds: ["SENT", "INBOX"],
+    });
+
+    createSyncInboxWorker();
+    await getProcessor()(makeJob({ workspaceId: WS_ID }));
+
+    expect(mockGetThread).toHaveBeenCalledWith("gmail-sent-inbox"); // fetched (no label hint)
+    expect(db.emailThread.upsert).not.toHaveBeenCalled(); // but never imported
+    expect(classifyThreadQueue.addBulk).not.toHaveBeenCalled(); // and never classified
+  });
+
   it("snapshot backstop on the cursor-expired fallback: skips sent-only, imports the rest", async () => {
     mockListHistory.mockRejectedValue(new GmailHistoryCursorExpiredError("cursor expired"));
     mockGetProfile.mockResolvedValue({ syncCursor: "hist-9" });

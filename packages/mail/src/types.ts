@@ -102,6 +102,19 @@ export type MailThreadMeta = {
    * second fetch. Empty for providers that do not expose labels.
    */
   messageLabelIds: string[][];
+  /**
+   * Per-message sender address (lowercased), in message order. Lets the backfill
+   * worker detect sent-only threads by identity (the owner is the sole sender)
+   * without a full fetch. Empty for providers whose metadata does not carry it
+   * (Outlook, which is inbox-scoped and never sees a sent-only thread).
+   */
+  messageSenders: string[];
+  /**
+   * Per-message recipient addresses (lowercased To + Cc), in message order. Used
+   * with {@link messageSenders} to keep notes-to-self importable at the metadata
+   * stage. Empty for providers that do not carry it.
+   */
+  messageRecipients: string[][];
 };
 
 /** A page of thread metadata plus the resume token and total estimate. */

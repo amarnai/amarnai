@@ -217,6 +217,41 @@ describe("GmailClient.listThreadsPage", () => {
 
     expect(listUrl().searchParams.get("q")).toBe("after:1700000000");
   });
+
+  it("requests From/To/Cc headers and parses per-message senders + recipients", async () => {
+    mockFetch
+      .mockResolvedValueOnce(makeTokenResponse())
+      .mockResolvedValueOnce({ ok: true, json: async () => ({ threads: [{ id: "t1" }], resultSizeEstimate: 1 }) })
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          messages: [
+            {
+              labelIds: ["SENT"],
+              internalDate: "1700000000000",
+              payload: {
+                headers: [
+                  { name: "From", value: "Me <me@gmail.com>" },
+                  { name: "To", value: "Them <them@corp.com>, other@corp.com" },
+                  { name: "Cc", value: "cc@corp.com" },
+                ],
+              },
+            },
+          ],
+        }),
+      });
+
+    const client = new GmailClient("encrypted:refresh:token");
+    const { threads } = await client.listThreadsPage({ afterMs: 1_700_000_000_000, pageSize: 100 });
+
+    // The metadata request asked for the identity headers.
+    const metaUrl = new URL((mockFetch.mock.calls[2] as [string])[0]);
+    expect(metaUrl.searchParams.getAll("metadataHeaders")).toEqual(["Date", "From", "To", "Cc"]);
+
+    expect(threads[0]!.messageSenders).toEqual(["me@gmail.com"]);
+    expect(threads[0]!.messageRecipients).toEqual([["them@corp.com", "other@corp.com", "cc@corp.com"]]);
+    expect(threads[0]!.messageLabelIds).toEqual([["SENT"]]);
+  });
 });
 
 // ─── GmailClient.getThread — deleted-thread detection ─────────────────────────

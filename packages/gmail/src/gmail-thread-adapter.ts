@@ -36,12 +36,12 @@ function decodeBase64Url(encoded: string): string {
   return Buffer.from(padded, "base64").toString("utf8");
 }
 
-function getHeader(headers: RawHeader[], name: string): string | null {
+export function getHeader(headers: RawHeader[], name: string): string | null {
   const lower = name.toLowerCase();
   return headers.find((h) => h.name.toLowerCase() === lower)?.value ?? null;
 }
 
-function parseFrom(value: string): { email: string; name: string | null } {
+export function parseFrom(value: string): { email: string; name: string | null } {
   const angleMatch = value.match(/^(.+?)\s*<([^>]+)>\s*$/);
   if (angleMatch) {
     const rawName = angleMatch[1]!.trim().replace(/^"|"$/g, "").trim();
@@ -50,7 +50,7 @@ function parseFrom(value: string): { email: string; name: string | null } {
   return { name: null, email: value.trim().toLowerCase() };
 }
 
-function extractEmails(header: string): string[] {
+export function extractEmails(header: string): string[] {
   const matches = header.match(/[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}/g);
   return matches ?? [];
 }

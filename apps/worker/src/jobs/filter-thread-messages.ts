@@ -111,13 +111,62 @@ export function isSentOnlyThreadMeta(messageLabelIds: readonly (readonly string[
 }
 
 /**
- * Snapshot-level variant of {@link isSentOnlyThreadMeta}, used as a backstop
- * after a full thread fetch (covers paths where metadata labels are unavailable,
- * e.g. the cursor-expired `listRecentThreadIds` fallback). False for zero
- * messages and for messages without label data (Outlook shape).
+ * Identity-based sent-only detection from the metadata path (backfill's
+ * listThreadsPage), using per-message sender + recipient addresses instead of
+ * Gmail labels: sent-only when the owner is the sole sender AND is not a
+ * recipient of any message (the latter keeps notes-to-self importable). This is
+ * the label-independent counterpart to {@link isSentOnlyThreadMeta}; the backfill
+ * caller ORs the two so a thread is skipped pre-fetch whether its labels are
+ * clean (label rule) or an alias/INBOX case the labels misreport (identity rule).
+ *
+ * `messageRecipients` is aligned by index with `messageSenders`. False for zero
+ * messages (a fetch-failed metadata placeholder carries empty arrays).
  */
-export function isSentOnlyThreadSnapshot(messages: readonly SnapshotMessage[]): boolean {
-  return messages.length > 0 && messages.every((m) => isOutboundLabelSet(m.labelIds));
+export function isSentOnlyThreadMetaByIdentity(
+  messageSenders: readonly string[],
+  messageRecipients: readonly (readonly string[])[],
+  ownerEmail: string
+): boolean {
+  if (messageSenders.length === 0) return false;
+  const owner = ownerEmail.toLowerCase();
+  if (!messageSenders.every((s) => s.toLowerCase() === owner)) return false;
+  const ownerIsRecipient = messageRecipients.some((rs) =>
+    rs.some((r) => r.toLowerCase() === owner)
+  );
+  return !ownerIsRecipient;
+}
+
+/**
+ * Correctness backstop, run after a full thread fetch. Combines two safe signals:
+ *
+ *  - IDENTITY (primary): the mailbox owner is the sole sender AND is not a
+ *    recipient of any message — exactly "an email I wrote that has no reply".
+ *    This does NOT depend on Gmail's SENT/INBOX labels, which are unreliable
+ *    here (a plain external send can still carry INBOX, defeating a label check).
+ *  - LABEL (secondary): every message is a Gmail SENT-without-INBOX message.
+ *    Catches "send mail as" aliases, whose From is not the connected address so
+ *    identity alone would miss them.
+ *
+ * A thread is sent-only if EITHER holds. Both are one-directional (they only ever
+ * add skips for genuine owner-outbound mail); an inbound message carries INBOX
+ * and a non-owner sender, so it fails both. Notes-to-self (owner is a recipient,
+ * SENT+INBOX) fail both and stay visible. False for zero messages.
+ */
+export function isSentOnlyThreadSnapshot(
+  messages: readonly SnapshotMessage[],
+  ownerEmail: string
+): boolean {
+  if (messages.length === 0) return false;
+  const owner = ownerEmail.toLowerCase();
+  const everyMessageFromOwner = messages.every(
+    (m) => m.senderEmail.toLowerCase() === owner
+  );
+  const ownerIsRecipient = messages.some((m) =>
+    [...m.toEmails, ...m.ccEmails].some((e) => e.toLowerCase() === owner)
+  );
+  if (everyMessageFromOwner && !ownerIsRecipient) return true;
+  // Alias/label fallback: every message is a Gmail outbound (SENT, not INBOX).
+  return messages.every((m) => isOutboundLabelSet(m.labelIds));
 }
 
 /**

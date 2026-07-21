@@ -5,6 +5,7 @@ import {
   computeThreadLabelFlagsFromMeta,
   isOutboundLabelSet,
   isSentOnlyThreadMeta,
+  isSentOnlyThreadMetaByIdentity,
   isSentOnlyThreadSnapshot,
 } from "../jobs/filter-thread-messages.js";
 
@@ -101,19 +102,86 @@ describe("isSentOnlyThreadMeta", () => {
   });
 });
 
-describe("isSentOnlyThreadSnapshot", () => {
-  it("is true when every snapshot message is outbound", () => {
-    expect(isSentOnlyThreadSnapshot([msg({ labelIds: ["SENT"] })])).toBe(true);
+describe("isSentOnlyThreadMetaByIdentity", () => {
+  const OWNER = "owner@gmail.com";
+
+  it("is true when the owner is the sole sender and not a recipient", () => {
+    expect(isSentOnlyThreadMetaByIdentity([OWNER], [["ext@corp.com"]], OWNER)).toBe(true);
+    expect(
+      isSentOnlyThreadMetaByIdentity(["OWNER@Gmail.com", OWNER], [["a@b.com"], ["a@b.com"]], OWNER)
+    ).toBe(true);
   });
 
-  it("is false for note-to-self, mixed, empty, and label-less (Outlook) messages", () => {
-    expect(isSentOnlyThreadSnapshot([msg({ labelIds: ["SENT", "INBOX"] })])).toBe(false);
+  it("does not depend on labels: works for an INBOX-carrying send (the prod case)", () => {
+    // Same owner/external shape the prod send had; identity flags it with no labels involved.
+    expect(isSentOnlyThreadMetaByIdentity([OWNER], [["ext@corp.com"]], OWNER)).toBe(true);
+  });
+
+  it("is false for a note-to-self, a reply from someone else, and empty metadata", () => {
+    expect(isSentOnlyThreadMetaByIdentity([OWNER], [[OWNER]], OWNER)).toBe(false);
+    expect(isSentOnlyThreadMetaByIdentity([OWNER, "x@y.com"], [["x@y.com"], []], OWNER)).toBe(false);
+    expect(isSentOnlyThreadMetaByIdentity([], [], OWNER)).toBe(false);
+  });
+});
+
+describe("isSentOnlyThreadSnapshot", () => {
+  const OWNER = "owner@gmail.com";
+
+  it("is true when the owner is the sole sender and not a recipient", () => {
     expect(
-      isSentOnlyThreadSnapshot([msg({ labelIds: ["SENT"] }), msg({ labelIds: ["INBOX"] })])
+      isSentOnlyThreadSnapshot(
+        [msg({ senderEmail: OWNER, toEmails: ["someone@else.com"] })],
+        OWNER
+      )
+    ).toBe(true);
+    // Multiple owner-sent messages, no reply, still sent-only. Case-insensitive.
+    expect(
+      isSentOnlyThreadSnapshot(
+        [
+          msg({ senderEmail: "OWNER@Gmail.com", toEmails: ["a@b.com"] }),
+          msg({ senderEmail: OWNER, toEmails: ["a@b.com"] }),
+        ],
+        OWNER
+      )
+    ).toBe(true);
+  });
+
+  it("does not depend on Gmail labels: an owner send carrying INBOX is still sent-only", () => {
+    // The exact prod failure: a plain external send that still carries INBOX.
+    expect(
+      isSentOnlyThreadSnapshot(
+        [msg({ senderEmail: OWNER, toEmails: ["ext@corp.com"], labelIds: ["SENT", "INBOX"] })],
+        OWNER
+      )
+    ).toBe(true);
+  });
+
+  it("falls back to the SENT label for a 'send mail as' alias (From is not the owner)", () => {
+    // Sent from an alias, so identity (From == owner) misses it, but the SENT
+    // label — present without INBOX — catches it.
+    expect(
+      isSentOnlyThreadSnapshot(
+        [msg({ senderEmail: "alias@other.com", toEmails: ["ext@corp.com"], labelIds: ["SENT"] })],
+        OWNER
+      )
+    ).toBe(true);
+  });
+
+  it("is false for a reply from someone else, a note-to-self, and an empty thread", () => {
+    // A message from another sender → not sent-only.
+    expect(
+      isSentOnlyThreadSnapshot(
+        [msg({ senderEmail: OWNER, toEmails: ["x@y.com"] }), msg({ senderEmail: "x@y.com" })],
+        OWNER
+      )
     ).toBe(false);
-    expect(isSentOnlyThreadSnapshot([])).toBe(false);
-    // A message with no label data at all (the Outlook snapshot shape).
-    const { labelIds: _omit, ...labelLess } = msg();
-    expect(isSentOnlyThreadSnapshot([labelLess as SnapshotMessage])).toBe(false);
+    // Note-to-self: owner is also a recipient → kept.
+    expect(
+      isSentOnlyThreadSnapshot([msg({ senderEmail: OWNER, toEmails: [OWNER] })], OWNER)
+    ).toBe(false);
+    expect(
+      isSentOnlyThreadSnapshot([msg({ senderEmail: OWNER, ccEmails: [OWNER], toEmails: ["x@y.com"] })], OWNER)
+    ).toBe(false);
+    expect(isSentOnlyThreadSnapshot([], OWNER)).toBe(false);
   });
 });

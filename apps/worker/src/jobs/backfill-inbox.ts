@@ -31,8 +31,8 @@ import {
   applyThreadFilter,
   computeThreadLabelFlags,
   computeThreadLabelFlagsFromMeta,
-  isThreadExcluded,
   isSentOnlyThreadMeta,
+  isSentOnlyThreadMetaByIdentity,
   isSentOnlyThreadSnapshot,
 } from "./filter-thread-messages.js";
 import { upsertEmailThread, upsertEmailMessages } from "./persist-thread.js";
@@ -311,7 +311,13 @@ export function createBackfillInboxWorker(): Worker {
         // Threads already present (picked up by a live sync) only have their label
         // flags refreshed; we still classify them if they are PENDING and not
         // excluded. New threads are fetched in full, filtered, and persisted.
-        async function processThread(gmailThread: MailThreadMeta): Promise<string | null> {
+        // Returns { sentOnly } so the caller can keep sent-only threads (the
+        // owner's own outbound mail awaiting a reply) out of the plan-cap and cost
+        // meter counts — they are never imported and cost nothing beyond the page
+        // metadata already fetched.
+        async function processThread(
+          gmailThread: MailThreadMeta
+        ): Promise<{ sentOnly: boolean }> {
           const existing = await db.emailThread.findUnique({
             where: {
               emailAccountId_providerThreadId: { emailAccountId, providerThreadId: gmailThread.id },
@@ -323,17 +329,27 @@ export function createBackfillInboxWorker(): Worker {
             const flagsFromMeta = computeThreadLabelFlagsFromMeta(gmailThread.messageLabelIds);
             // Always update stored flags so query-time filtering reflects current Gmail state.
             await db.emailThread.update({ where: { id: existing.id }, data: flagsFromMeta });
-
-            const excluded = isThreadExcluded(flagsFromMeta, settings);
-            return !excluded && existing.triageStatus === "PENDING" ? existing.id : null;
+            return { sentOnly: false };
           }
 
           // Sent-only thread (the user's own outbound mail awaiting a reply):
-          // never imported. Detected from the already-fetched METADATA labels, so
-          // this skips BOTH the full getThreadSnapshot fetch AND any DB row. A
-          // future inbound reply re-surfaces the thread via delta sync and it is
+          // never imported. Detected from the already-fetched page metadata, so
+          // this skips BOTH the full getThreadSnapshot fetch AND any DB row. Two
+          // complementary signals — identity (owner is the sole sender and not a
+          // recipient) and label (every message SENT-without-INBOX) — so an
+          // INBOX-carrying send is caught by identity and an alias send by label.
+          // A future inbound reply re-surfaces the thread via delta sync and it is
           // imported in full then (original sent message included).
-          if (isSentOnlyThreadMeta(gmailThread.messageLabelIds)) return null;
+          if (
+            isSentOnlyThreadMeta(gmailThread.messageLabelIds) ||
+            isSentOnlyThreadMetaByIdentity(
+              gmailThread.messageSenders,
+              gmailThread.messageRecipients,
+              selfEmail
+            )
+          ) {
+            return { sentOnly: true };
+          }
 
           // New thread: fetch full data, compute flags, apply filter. A failure
           // that is permanent for this one thread is rethrown as a
@@ -357,7 +373,7 @@ export function createBackfillInboxWorker(): Worker {
           // check above could not fire), yet the full snapshot may still be
           // sent-only. Skip here BEFORE computing flags so the excluded-branch
           // below can never upsert a flags-only row for a sent-only thread.
-          if (isSentOnlyThreadSnapshot(rawSnapshot.messages)) return null;
+          if (isSentOnlyThreadSnapshot(rawSnapshot.messages, selfEmail)) return { sentOnly: true };
 
           let labelFlags: ReturnType<typeof computeThreadLabelFlags>;
           let snapshot: ReturnType<typeof applyThreadFilter>;
@@ -384,7 +400,7 @@ export function createBackfillInboxWorker(): Worker {
               labelFlags,
               updateContent: false,
             });
-            return null;
+            return { sentOnly: false };
           }
 
           const emailThreadId = await upsertEmailThread({
@@ -407,14 +423,20 @@ export function createBackfillInboxWorker(): Worker {
             messages: snapshot.messages,
           });
 
-          return emailThreadId;
+          void emailThreadId; // import-only: routing happens via the armed sweep
+          return { sentOnly: false };
         }
 
         // ── 6. Process pages until the chunk budget or the plan cap is reached ──
 
         const baseSkipped = claimed?.backfillSkipped ?? 0;
         let runSkipped = 0;
-        let processedThisRun = 0;
+        // Threads examined this run (drives the chunk/wall-clock bound). Distinct
+        // from `processed`, which counts only IMPORTED threads toward the plan cap
+        // — sent-only threads are examined (cheap: page metadata only) but do not
+        // consume cap budget or cost.
+        let examinedThisRun = 0;
+        let sentOnlyThisRun = 0;
         let exhausted = false;
         let disconnected = false;
         // Gmail's estimate of total threads matching the windowed query, captured
@@ -427,7 +449,7 @@ export function createBackfillInboxWorker(): Worker {
         const totalEstimateFor = (count: number) =>
           Math.max(count, Math.min(resultSizeEstimate, runCeiling));
 
-        while (processedThisRun < BACKFILL_CHUNK_THREADS && processed < runCeiling) {
+        while (examinedThisRun < BACKFILL_CHUNK_THREADS && processed < runCeiling) {
           const page = await client.listThreadsPage({
             afterMs,
             pageToken,
@@ -445,9 +467,11 @@ export function createBackfillInboxWorker(): Worker {
           const remaining = runCeiling - processed;
           const pageThreads = sortByPriority(page.threads).slice(0, remaining);
 
+          let sentOnlyThisPage = 0;
           for (let i = 0; i < pageThreads.length; i++) {
             try {
-              await processThread(pageThreads[i]!);
+              const { sentOnly } = await processThread(pageThreads[i]!);
+              if (sentOnly) sentOnlyThisPage++;
             } catch (err) {
               // Permanent per-thread failure: skip it and keep going so one bad
               // thread can never stall the backfill. Anything else propagates.
@@ -469,8 +493,12 @@ export function createBackfillInboxWorker(): Worker {
             }
           }
 
-          processed += pageThreads.length;
-          processedThisRun += pageThreads.length;
+          // Only imported threads count toward the plan cap; sent-only threads are
+          // examined but excluded so a sent-heavy inbox doesn't burn its budget on
+          // mail the user never sees.
+          processed += pageThreads.length - sentOnlyThisPage;
+          examinedThisRun += pageThreads.length;
+          sentOnlyThisRun += sentOnlyThisPage;
           pageToken = page.nextPageToken;
 
           if (disconnected) break;
@@ -558,6 +586,11 @@ export function createBackfillInboxWorker(): Worker {
 
         const totalEstimate = totalEstimateFor(processed);
 
+        // Threads actually imported this run — what the cost meter bills. Sent-only
+        // threads are excluded (not in `processed`), so a run that only skipped
+        // sent mail meters nothing but still advances the cursor.
+        const importedThisRun = processed - startProcessed;
+
         if (!done) {
           // Advance the resume cursor and record this chunk's imports against the
           // reset-immune inbox meter in ONE transaction. These were previously two
@@ -579,12 +612,12 @@ export function createBackfillInboxWorker(): Worker {
                 backfillSkipped: baseSkipped + runSkipped,
               },
             });
-            if (r.count > 0 && processedThisRun > 0) {
+            if (r.count > 0 && importedThisRun > 0) {
               await recordMeterUsage({
                 inboxKey,
                 kind: "BACKFILL",
                 windowStart,
-                delta: processedThisRun,
+                delta: importedThisRun,
                 sizedForPlan: ceiling.plan,
                 dedupToken: backfillChunkDedupToken({
                   inboxKey,
@@ -611,7 +644,7 @@ export function createBackfillInboxWorker(): Worker {
           console.log(
             res.count === 0
               ? `[backfill-inbox] Workspace ${workspaceId}: superseded by a reset mid-run — handing off`
-              : `[backfill-inbox] Workspace ${workspaceId}: processed ${processedThisRun} this run (${processed} total) — continuing`
+              : `[backfill-inbox] Workspace ${workspaceId}: examined ${examinedThisRun} this run, imported ${importedThisRun} (${processed} total, ${sentOnlyThisRun} sent-only skipped) — continuing`
           );
           return;
         }
@@ -689,12 +722,12 @@ export function createBackfillInboxWorker(): Worker {
               autoRouteBacklogArmed: false,
             },
           });
-          if (r.count > 0 && processedThisRun > 0) {
+          if (r.count > 0 && importedThisRun > 0) {
             await recordMeterUsage({
               inboxKey,
               kind: "BACKFILL",
               windowStart,
-              delta: processedThisRun,
+              delta: importedThisRun,
               sizedForPlan: ceiling.plan,
               dedupToken: backfillChunkDedupToken({
                 inboxKey,

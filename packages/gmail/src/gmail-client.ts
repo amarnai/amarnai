@@ -1,6 +1,6 @@
 import type { ThreadSnapshot } from "@amarnai/ai";
 import { decrypt } from "./encryption.js";
-import { normalizeGmailThread } from "./gmail-thread-adapter.js";
+import { normalizeGmailThread, getHeader, parseFrom, extractEmails } from "./gmail-thread-adapter.js";
 
 // ─── Internal Gmail History API shapes ────────────────────────────────────────
 
@@ -159,6 +159,18 @@ export type GmailThreadMeta = {
    * without a second full-thread fetch.
    */
   messageLabelIds: string[][];
+  /**
+   * Per-message sender address (lowercased, From header), in message order.
+   * Lets the backfill worker detect sent-only threads by IDENTITY (the owner is
+   * the sole sender) without a full fetch — robust where labels are unreliable.
+   */
+  messageSenders: string[];
+  /**
+   * Per-message recipient addresses (lowercased To + Cc), in message order.
+   * Used together with {@link messageSenders} to keep notes-to-self importable
+   * (the owner appears as a recipient) at the metadata stage.
+   */
+  messageRecipients: string[][];
 };
 
 export type GmailWatchResult = {
@@ -357,17 +369,36 @@ export class GmailClient {
     ids: string[],
     accessToken: string
   ): Promise<GmailThreadMeta[]> {
+    type MetaHeader = { name: string; value: string };
     type ThreadMetaResp = {
-      messages?: Array<{ labelIds?: string[]; internalDate?: string }>;
+      messages?: Array<{
+        labelIds?: string[];
+        internalDate?: string;
+        payload?: { headers?: MetaHeader[] };
+      }>;
     };
 
+    const emptyMeta = (id: string): GmailThreadMeta => ({
+      id,
+      unread: false,
+      latestMessageAt: new Date(0),
+      messageLabelIds: [],
+      messageSenders: [],
+      messageRecipients: [],
+    });
+
     const fetchMeta = async (id: string): Promise<GmailThreadMeta> => {
-      const params = new URLSearchParams({ format: "METADATA", metadataHeaders: "Date" });
+      // Date drives latestMessageAt; From/To/Cc let the backfill worker detect
+      // sent-only threads by identity (owner is the sole sender) without a full
+      // fetch. Parsed with the SAME helpers the full adapter uses, so the
+      // metadata verdict can never disagree with the post-fetch snapshot.
+      const params = new URLSearchParams({ format: "METADATA" });
+      for (const h of ["Date", "From", "To", "Cc"]) params.append("metadataHeaders", h);
       const res = await fetch(
         `${GMAIL_THREAD_URL}/${encodeURIComponent(id)}?${params}`,
         { headers: { Authorization: `Bearer ${accessToken}` } }
       );
-      if (!res.ok) return { id, unread: false, latestMessageAt: new Date(0), messageLabelIds: [] };
+      if (!res.ok) return emptyMeta(id);
 
       const data = (await res.json()) as ThreadMetaResp;
       const messages = data.messages ?? [];
@@ -377,8 +408,19 @@ export class GmailClient {
         ? new Date(Number(lastMsg.internalDate))
         : new Date(0);
       const messageLabelIds = messages.map((m) => m.labelIds ?? []);
+      const messageSenders = messages.map((m) => {
+        const headers = m.payload?.headers ?? [];
+        return parseFrom(getHeader(headers, "From") ?? "").email;
+      });
+      const messageRecipients = messages.map((m) => {
+        const headers = m.payload?.headers ?? [];
+        return [
+          ...extractEmails(getHeader(headers, "To") ?? ""),
+          ...extractEmails(getHeader(headers, "Cc") ?? ""),
+        ].map((e) => e.toLowerCase());
+      });
 
-      return { id, unread, latestMessageAt, messageLabelIds };
+      return { id, unread, latestMessageAt, messageLabelIds, messageSenders, messageRecipients };
     };
 
     const threads: GmailThreadMeta[] = [];

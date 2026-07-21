@@ -583,7 +583,7 @@ export function createSyncInboxWorker(): Worker {
         // already-imported thread that merely looks sent-only (e.g. an imported
         // note-to-self that was later archived, dropping INBOX) falls through and
         // is processed normally so its flags/messages keep updating.
-        if (isSentOnlyThreadSnapshot(rawSnapshot.messages)) {
+        if (isSentOnlyThreadSnapshot(rawSnapshot.messages, connection.emailAddress)) {
           const alreadyImported = await db.emailThread.findUnique({
             where: {
               emailAccountId_providerThreadId: {
