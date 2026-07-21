@@ -75,6 +75,23 @@ export function buildHomeMetadata(
   };
 }
 
+// Shared metadata for the English-only legal pages (privacy, terms,
+// delete-account). The same English content is served at the bare path and
+// under every `/{locale}` prefix, so every variant canonicalizes to the
+// bare-domain URL; crawlers then consolidate the duplicates instead of
+// flagging them as duplicates without a chosen canonical.
+export function buildLegalMetadata(
+  path: string,
+  title: string,
+  description: string
+): Metadata {
+  return {
+    title,
+    description,
+    alternates: { canonical: localeUrl(SOURCE_LOCALE, path) },
+  };
+}
+
 // Shared pricing-page SEO metadata, reused by the localized pricing page
 // (`/{locale}/pricing`) and the bare `/pricing` redirect entry point.
 export function buildPricingMetadata(

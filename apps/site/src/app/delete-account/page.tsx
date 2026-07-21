@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import { ProseLayout } from "@/components/ProseLayout";
+import { buildLegalMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Delete Your Account | Amarnai",
-  description: "How to delete your Amarnai account and the data it removes.",
-};
+export const metadata: Metadata = buildLegalMetadata(
+  "delete-account",
+  "Delete Your Account | Amarnai",
+  "How to delete your Amarnai account and the data it removes."
+);
 
 const LAST_UPDATED = "July 8, 2026";
 

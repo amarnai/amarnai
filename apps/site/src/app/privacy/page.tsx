@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import { ProseLayout } from "@/components/ProseLayout";
+import { buildLegalMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Privacy Policy | Amarnai",
-  description: "How Amarnai collects, uses, and protects your data.",
-};
+export const metadata: Metadata = buildLegalMetadata(
+  "privacy",
+  "Privacy Policy | Amarnai",
+  "How Amarnai collects, uses, and protects your data."
+);
 
 const LAST_UPDATED = "July 16, 2026";
 
