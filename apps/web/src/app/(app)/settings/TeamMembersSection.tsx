@@ -127,7 +127,7 @@ export function TeamMembersSection({
   }
 
   return (
-    <section className="settings-section">
+    <section className="settings-section" id="team-members">
       <h2><Trans>Collaborators</Trans></h2>
       <p className="settings-hint">
         {isAdmin

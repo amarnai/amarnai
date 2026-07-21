@@ -15,24 +15,34 @@ export interface AssigneePickerProps {
   /** userId to assign, or null to unassign. */
   onCommit: (userId: string | null) => void;
   onClose: () => void;
+  /** When set, an "Add members" row is appended so solo users can jump to the
+   * invite flow instead of hitting a dead end. */
+  onAddMembers?: () => void;
+  /** Badges the Add-members row with "Upgrade" when the plan has no
+   * collaborator seats, so the row honestly signals it leads to a paywall. */
+  addMembersRequiresUpgrade?: boolean;
 }
 
 // Anchored member picker adapted from ReroutePopover. No search input:
 // workspaces are capped at ~26 members by plan limits, so the list is always
 // short. An "Unassign" row is shown at the top only when the thread is currently
-// assigned. Keyboard-navigable (Up/Down/Enter/Escape).
-export function AssigneePicker({ members, assignedUserId, anchor, onCommit, onClose }: AssigneePickerProps) {
+// assigned, and an "Add members" row at the bottom when `onAddMembers` is
+// provided. Keyboard-navigable (Up/Down/Enter/Escape).
+export function AssigneePicker({ members, assignedUserId, anchor, onCommit, onClose, onAddMembers, addMembersRequiresUpgrade }: AssigneePickerProps) {
   const { i18n } = useLingui();
   const panelRef = useRef<HTMLDivElement>(null);
 
-  // The selectable rows, in render order: an optional Unassign row (value null)
-  // followed by each member (value userId).
-  const rows: Array<{ key: string; value: string | null; label: string }> = [];
+  // The selectable rows, in render order: an optional Unassign row (value null),
+  // each member (value userId), then an optional Add-members row.
+  const rows: Array<{ key: string; value: string | null; label: string; isAddMembers?: boolean }> = [];
   if (assignedUserId) {
     rows.push({ key: "__unassign__", value: null, label: i18n._(msg`Unassign`) });
   }
   for (const m of members) {
     rows.push({ key: m.userId, value: m.userId, label: m.name ?? m.email });
+  }
+  if (onAddMembers) {
+    rows.push({ key: "__add_members__", value: null, label: i18n._(msg`Add members`), isAddMembers: true });
   }
 
   const [activeIdx, setActiveIdx] = useState(0);
@@ -72,7 +82,9 @@ export function AssigneePicker({ members, assignedUserId, anchor, onCommit, onCl
     else if (e.key === "Enter") {
       e.preventDefault();
       const chosen = rows[activeIdx];
-      if (chosen) onCommit(chosen.value);
+      if (!chosen) return;
+      if (chosen.isAddMembers) onAddMembers?.();
+      else onCommit(chosen.value);
     }
   }
 
@@ -95,18 +107,30 @@ export function AssigneePicker({ members, assignedUserId, anchor, onCommit, onCl
           <li className="em-assignee-empty"><Trans>No members</Trans></li>
         )}
         {rows.map((row, i) => {
-          const isUnassign = row.value === null;
+          const isUnassign = row.value === null && !row.isAddMembers;
           const isCurrent = row.value !== null && row.value === assignedUserId;
           return (
             <li
               key={row.key}
               role="option"
               aria-selected={i === activeIdx}
-              className={`em-assignee-item${i === activeIdx ? " active" : ""}${isUnassign ? " is-unassign" : ""}`}
+              className={`em-assignee-item${i === activeIdx ? " active" : ""}${isUnassign ? " is-unassign" : ""}${row.isAddMembers ? " is-add-members" : ""}`}
               onMouseEnter={() => setActiveIdx(i)}
-              onMouseDown={(e) => { e.preventDefault(); onCommit(row.value); }}
+              onMouseDown={(e) => {
+                e.preventDefault();
+                if (row.isAddMembers) onAddMembers?.();
+                else onCommit(row.value);
+              }}
             >
+              {row.isAddMembers && (
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden>
+                  <path d="M5 1v8M1 5h8" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+                </svg>
+              )}
               <span className="em-assignee-item-label">{row.label}</span>
+              {row.isAddMembers && addMembersRequiresUpgrade && (
+                <span className="em-assignee-upgrade-badge"><Trans>Upgrade</Trans></span>
+              )}
               {isCurrent && (
                 <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden>
                   <path d="M1.5 5l2.2 2.5L8.5 2" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />

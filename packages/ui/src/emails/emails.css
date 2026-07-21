@@ -1831,6 +1831,23 @@ button.em-pill--assignee:hover { background: var(--accent-line); }
 
 .em-assignee-item.is-unassign { color: var(--ink-3); border-bottom: 1px solid var(--line); }
 
+.em-assignee-item.is-add-members {
+  justify-content: flex-start;
+  color: var(--accent-ink);
+  border-top: 1px solid var(--line);
+}
+
+.em-assignee-upgrade-badge {
+  margin-left: auto;
+  flex-shrink: 0;
+  font-size: 10px;
+  line-height: 1.5;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+}
+
 .em-assignee-item-label {
   overflow: hidden;
   text-overflow: ellipsis;

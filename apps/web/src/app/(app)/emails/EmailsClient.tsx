@@ -7,6 +7,7 @@ import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
 import { api } from "@/lib/api";
 import type { SyncStatus } from "@/lib/api";
+import { getCollaboratorLimit } from "@amarnai/shared";
 import type { ActiveSelection, FolderItem, ThreadItem, MemberItem } from "@amarnai/ui/emails";
 import type { FilterCounts } from "@amarnai/api-client";
 import { ColumnResizeHandle, EmailRail, ThreadList, ReroutePopover, AssigneePicker } from "@amarnai/ui/emails";
@@ -107,9 +108,15 @@ export function EmailsClient({
   const [assignThreadId, setAssignThreadId] = useState<string | null>(null);
   const searchRef = useRef<HTMLInputElement>(null);
 
-  // Assign is offered only when there is at least one other member to hand a
-  // thread to — i.e. the workspace has ≥2 members total.
-  const canAssign = members.length >= 2;
+  // Assign is always offered, even in a single-member workspace, so solo users
+  // discover the feature; the picker then surfaces an "Add members" CTA when
+  // there is no one else to hand a thread to. When the plan has no collaborator
+  // seats the CTA is badged and leads to the upgrade page instead of settings.
+  // Gate on the seat limit, not the plan name, so self-hosted deployments that
+  // allow collaborators never see an upgrade prompt.
+  const canAssign = true;
+  const inviteNeedsUpgrade =
+    syncStatus != null && getCollaboratorLimit(syncStatus.workspacePlan) === 0;
 
   const { active, selectedId, selectedThread, folders, toast } = triage;
 
@@ -356,6 +363,17 @@ export function EmailsClient({
         anchor={assignAnchor}
         onCommit={commitAssign}
         onClose={closeAssign}
+        {...(members.length < 2
+          ? {
+              onAddMembers: () => {
+                closeAssign();
+                router.push(
+                  inviteNeedsUpgrade ? "/upgrade?ctx=collaborators" : "/settings#team-members"
+                );
+              },
+              addMembersRequiresUpgrade: inviteNeedsUpgrade,
+            }
+          : {})}
       />
 
       {toast && (
