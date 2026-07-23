@@ -178,6 +178,11 @@ export function EmailsPanel({
   }
 
   function openRerouteFor(threadId: string, anchor: HTMLElement) {
+    // Clicking the same thread's folder chip again toggles the picker closed.
+    if (triage.rerouteTarget?.threadId === threadId) {
+      closeReroute();
+      return;
+    }
     triage.openRerouteFor(threadId);
     setRerouteAnchor(anchor);
   }
@@ -276,6 +281,7 @@ export function EmailsPanel({
           onToggleImportant={triage.handleToggleImportant}
           canAssign={canAssign}
           onOpenAssign={openAssignFor}
+          onReroute={openRerouteFor}
           {...(gmailAddress
             ? {
                 onOpenInGmail: (threadId: string) => {
@@ -295,13 +301,10 @@ export function EmailsPanel({
           <ThreadPreviewPane
             api={api}
             thread={selectedThread}
-            folders={folders}
             workspaceId={workspaceId}
             workspaceEmail={workspaceEmail}
             gmailAddress={gmailAddress}
             routableNodeCount={routableNodeCount}
-            onApprove={triage.handleApprove}
-            onReroute={openRerouteFor}
             onClose={closePreview}
             onDraftStarted={triage.handleDraftStarted}
             onDraftFailed={triage.handleDraftFailed}

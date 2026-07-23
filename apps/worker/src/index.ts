@@ -1,4 +1,4 @@
-import { db, pruneIdempotencyMarkers, deleteStaleUnverifiedUsers } from "@amarnai/db";
+import { db, pruneIdempotencyMarkers, deleteStaleUnverifiedUsers, decayStaleReviews } from "@amarnai/db";
 import { config } from "@amarnai/config";
 import { createMailProvider, MailAuthError } from "@amarnai/mail";
 import { deleteExpiredRefreshTokens } from "@amarnai/auth";
@@ -448,6 +448,26 @@ async function main(): Promise<void> {
     );
   }, 24 * 60 * 60 * 1000);
 
+  // ── Review-queue decay ─────────────────────────────────────────────────────
+  // Low-confidence sorts sit in the review queue as NEEDS_REVIEW. There is no
+  // explicit "approve": a thread left untouched past the decay window is
+  // accepted automatically (tacit approval) and promoted to SORTED, so the queue
+  // trends to empty on its own. Sweep on startup, then daily. Idempotent and
+  // retry-safe (see decayStaleReviews); the daily cadence is restart-safe
+  // because the cutoff is absolute, not a per-thread timer.
+  async function reapStaleReviews(): Promise<void> {
+    const count = await decayStaleReviews();
+    if (count > 0) console.log(`[review-decay] Promoted ${count} stale review thread(s) to sorted`);
+  }
+
+  await reapStaleReviews().catch((err) =>
+    console.error("[review-decay] Failed:", err)
+  );
+
+  const reviewDecayHandle = setInterval(() => {
+    reapStaleReviews().catch((err) => console.error("[review-decay] Failed:", err));
+  }, 24 * 60 * 60 * 1000);
+
   // ── Graceful shutdown ──────────────────────────────────────────────────────
   //
   // On SIGTERM / SIGINT:
@@ -466,6 +486,7 @@ async function main(): Promise<void> {
     clearInterval(staleUserReaperHandle);
     clearInterval(pendingCancellationHandle);
     clearInterval(lifecycleEmailHandle);
+    clearInterval(reviewDecayHandle);
 
     await Promise.all([
       syncWorker.close(),

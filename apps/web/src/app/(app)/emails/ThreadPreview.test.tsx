@@ -85,9 +85,7 @@ function threadV2(): ThreadItem {
   };
 }
 
-// Minimal detail response for the emailThread refetch. `explanation` is the
-// rationale text the preview shows; vary it per version to prove the rationale
-// re-fetches too, not just the message list.
+// Minimal detail response for the emailThread refetch.
 function detail(messageIds: string[], explanation: string): EmailThreadDetail {
   return {
     id: "t-1",
@@ -147,12 +145,8 @@ function renderPreview(thread: ThreadItem) {
   return render(
     <ThreadPreview
       thread={thread}
-      folders={[{ id: "folder-1", name: "Work", description: null, parentId: null, ignored: false }]}
       workspaceId={WS}
       workspaceEmail={null}
-      routableNodeCount={3}
-      onApprove={noop}
-      onReroute={noop}
       onClose={noop}
       onDraftStarted={noop}
       onDraftFailed={noop}
@@ -180,29 +174,24 @@ afterEach(() => {
 });
 
 describe("ThreadPreview live update when an open thread gains a message", () => {
-  it("reloads the message list and rationale when the same thread's content changes", async () => {
+  it("reloads the message list when the same thread's content changes", async () => {
     vi.mocked(api.emailThread)
       .mockResolvedValueOnce(detail(["m-1"], "Filed under Work: kickoff planning."))
       .mockResolvedValueOnce(detail(["m-1", "m-2"], "Re-sorted: Bob's reply added context."));
 
     const { rerender } = renderPreview(threadV1());
 
-    // Initial state: one message, its rationale from the first detail fetch.
+    // Initial state: one message from the first detail fetch.
     expect(await screen.findByText("Alice Smith")).toBeInTheDocument();
-    expect(await screen.findByText("Filed under Work: kickoff planning.")).toBeInTheDocument();
     expect(screen.queryByText("Bob Jones")).not.toBeInTheDocument();
-    expect(api.emailThread).toHaveBeenCalledTimes(1);
+    await waitFor(() => expect(api.emailThread).toHaveBeenCalledTimes(1));
 
     // The parent hands over a fresh thread object: same id, new message.
     rerender(
       <ThreadPreview
         thread={threadV2()}
-        folders={[{ id: "folder-1", name: "Work", description: null, parentId: null, ignored: false }]}
         workspaceId={WS}
         workspaceEmail={null}
-        routableNodeCount={3}
-        onApprove={noop}
-        onReroute={noop}
         onClose={noop}
         onDraftStarted={noop}
         onDraftFailed={noop}
@@ -217,9 +206,8 @@ describe("ThreadPreview live update when an open thread gains a message", () => 
       />,
     );
 
-    // The new message and the refreshed rationale appear without a remount.
+    // The new message appears without a remount.
     expect(await screen.findByText("Bob Jones")).toBeInTheDocument();
-    expect(await screen.findByText("Re-sorted: Bob's reply added context.")).toBeInTheDocument();
     await waitFor(() => expect(api.emailThread).toHaveBeenCalledTimes(2));
   });
 
@@ -238,12 +226,8 @@ describe("ThreadPreview live update when an open thread gains a message", () => 
     rerender(
       <ThreadPreview
         thread={{ ...threadV1(), isImportant: true }}
-        folders={[{ id: "folder-1", name: "Work", description: null, parentId: null, ignored: false }]}
         workspaceId={WS}
         workspaceEmail={null}
-        routableNodeCount={3}
-        onApprove={noop}
-        onReroute={noop}
         onClose={noop}
         onDraftStarted={noop}
         onDraftFailed={noop}

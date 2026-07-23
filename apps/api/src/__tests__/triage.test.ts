@@ -202,43 +202,12 @@ describe("PATCH triage — move: sorting references", () => {
     expect(body.triageStatus).toBe("SORTED");
   });
 
-  it("approve never touches references", async () => {
-    const res = await patch({ action: "approve" });
+  it("rejects a legacy approve action (approve was removed; acceptance is now tacit)", async () => {
+    const res = await patch({ action: "approve" } as never);
 
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(400);
     expect(txReferenceUpsert).not.toHaveBeenCalled();
     expect(txReferenceDeleteMany).not.toHaveBeenCalled();
     expect(captureReferenceQueue.add).not.toHaveBeenCalled();
-  });
-});
-
-describe("PATCH /workspaces/:workspaceId/email-threads/:threadId/triage — approve", () => {
-  it("records a thread.approved positive label with chosenNodeId equal to the AI node", async () => {
-    vi.mocked(db.emailClassification.findFirst).mockResolvedValue({
-      id: CLS_ID,
-      finalNodeId: NODE_ID,
-      decisionSource: "embedding_auto",
-      source: "LIVE",
-      rawOutput: { maxSubtreeScore: 0.42 },
-    } as never);
-
-    const res = await patch({ action: "approve" });
-
-    expect(res.status).toBe(200);
-    expect(db.auditLog.create).toHaveBeenCalledWith(
-      expect.objectContaining({
-        data: expect.objectContaining({
-          eventType: "thread.approved",
-          entityId: THREAD_ID,
-          metadata: expect.objectContaining({
-            classificationId: CLS_ID,
-            scoreAtDecision: 0.42,
-            decisionSource: "embedding_auto",
-            aiNodeId: NODE_ID,
-            chosenNodeId: NODE_ID,
-          }),
-        }),
-      })
-    );
   });
 });

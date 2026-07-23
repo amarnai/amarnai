@@ -6,8 +6,8 @@ import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
 import { api } from "@/lib/api";
 import type { Draft } from "@/lib/api";
-import type { FolderItem, ThreadItem, MemberItem } from "@amarnai/ui/emails";
-import { RationaleCard, MessageCard, SuggestedDraftCard, TriageBar, buildThreadUrl, openInProviderLabel } from "@amarnai/ui/emails";
+import type { ThreadItem, MemberItem } from "@amarnai/ui/emails";
+import { MessageCard, SuggestedDraftCard, TriageBar, buildThreadUrl, openInProviderLabel } from "@amarnai/ui/emails";
 import { Tooltip, GmailIcon, OutlookIcon } from "@amarnai/ui";
 import { formatQuotaResetDate } from "@amarnai/shared";
 
@@ -15,12 +15,8 @@ type DraftState = "idle" | "loading" | "ready" | "error";
 
 type Props = {
   thread: ThreadItem;
-  folders: FolderItem[];
   workspaceId: string;
   workspaceEmail: string | null;
-  routableNodeCount: number;
-  onApprove: (threadId: string) => void;
-  onReroute: (threadId: string, anchor: HTMLElement) => void;
   onClose: () => void;
   onDraftStarted: (threadId: string) => void;
   onDraftFailed: (threadId: string) => void;
@@ -36,12 +32,8 @@ type Props = {
 
 export function ThreadPreview({
   thread,
-  folders,
   workspaceId,
   workspaceEmail,
-  routableNodeCount,
-  onApprove,
-  onReroute,
   onClose,
   onDraftStarted,
   onDraftFailed,
@@ -55,8 +47,6 @@ export function ThreadPreview({
   onOpenAssign,
 }: Props) {
   const { _, i18n } = useLingui();
-  const [reasoning, setReasoning] = useState<string | null>(thread.reasoning);
-  const [decisionSource, setDecisionSource] = useState<string | null>(null);
   const [bodyLoaded, setBodyLoaded] = useState(false);
   const [messages, setMessages] = useState(thread.messages);
 
@@ -108,8 +98,8 @@ export function ThreadPreview({
   // thread comes through the live refresh as a fresh thread object with the same
   // id but a higher messageCount / newer latestAt, and a re-sort lands it in a
   // different folder. Keying the loader on this primitive signal (rather than
-  // thread.id, which never changes here) reloads the message list and rationale
-  // when they actually change, while still not refetching on every parent render
+  // thread.id, which never changes here) reloads the message list when it
+  // actually changes, while still not refetching on every parent render
   // the way keying on the thread object itself would.
   const threadSignal = `${thread.id}:${thread.messageCount}:${thread.latestAt.getTime()}:${thread.folderId ?? ""}`;
 
@@ -117,8 +107,6 @@ export function ThreadPreview({
     setBodyLoaded(false);
     bodiesRef.current = null;
     setMessages(thread.messages);
-    setReasoning(null);
-    setDecisionSource(null);
     setDraftState(thread.isDrafting ? "loading" : thread.hasDraft ? "ready" : "idle");
     setDraft(null);
     clearPoll();
@@ -142,8 +130,6 @@ export function ThreadPreview({
     // in body text. bodiesRef guards against the race where threadBodies wins.
 
     api.emailThread(workspaceId, thread.id).then((detail) => {
-      setReasoning(detail.latestClassification?.explanation ?? null);
-      setDecisionSource(detail.latestClassification?.decisionSource ?? null);
       const loaded = bodiesRef.current;
       setMessages(
         detail.messages.map((m) => {
@@ -245,7 +231,6 @@ export function ThreadPreview({
   }
 
   const isDone = !!thread.doneMark;
-  const enrichedThread = { ...thread, reasoning };
   const lastMsg = messages[messages.length - 1];
   const lastMsgIsOwn =
     !!workspaceEmail &&
@@ -364,15 +349,6 @@ export function ThreadPreview({
           {...(members.length > 0
             ? { onOpenAssign: (anchor: HTMLElement) => onOpenAssign(thread.id, anchor) }
             : {})}
-        />
-
-        <RationaleCard
-          thread={enrichedThread}
-          folders={folders}
-          decisionSource={decisionSource}
-          routableNodeCount={routableNodeCount}
-          onApprove={() => onApprove(thread.id)}
-          onReroute={(anchor) => onReroute(thread.id, anchor)}
         />
 
         <div className="em-msg-list">

@@ -4,14 +4,11 @@ import { useState } from "react";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
-import { TAXONOMY_MIN_NON_ROOT_NODES } from "@amarnai/shared";
-import type { FolderItem } from "../folder-tree/types.js";
 import type { ThreadItem, ThreadMessage, DraftItem } from "./types.js";
 import { buildThreadUrl } from "@amarnai/core/emails";
 import { openInProviderLabel } from "./providerLabels.js";
 import { GmailIcon } from "../icons/GmailIcon.js";
 import { OutlookIcon } from "../icons/OutlookIcon.js";
-import { RationaleCard } from "./RationaleCard.js";
 import { PreviewDoneBar } from "./PreviewDoneBar.js";
 import { MessageCard } from "./MessageCard.js";
 import { SuggestedDraftCard } from "./SuggestedDraftCard.js";
@@ -19,14 +16,8 @@ import { Tooltip } from "../Tooltip.js";
 
 export interface ThreadPreviewProps {
   thread: ThreadItem;
-  folders: FolderItem[];
-  /** Non-root taxonomy nodes reachable from the root. Drives the waiting copy. */
-  routableNodeCount?: number;
   /** Full message list — provided statically (no fetching). */
   messages: ThreadMessage[];
-  /** AI reasoning text — provided statically. */
-  reasoning: string | null;
-  decisionSource?: string | null;
   /** Current draft — controlled by the parent. */
   draft?: DraftItem | null | undefined;
   workspaceEmail?: string | null | undefined;
@@ -34,8 +25,6 @@ export interface ThreadPreviewProps {
   onGenerateDraft?: (() => Promise<void>) | undefined;
   /** Called when the user toggles the sent status of the draft. */
   onToggleDraftSent?: (() => void) | undefined;
-  onApprove?: ((threadId: string) => void) | undefined;
-  onReroute?: ((threadId: string, anchor: HTMLElement) => void) | undefined;
   onClose?: (() => void) | undefined;
   onMarkDone?: ((threadId: string) => void) | undefined;
   onUnmarkDone?: ((threadId: string) => void) | undefined;
@@ -57,17 +46,11 @@ export interface ThreadPreviewProps {
 
 export function ThreadPreview({
   thread,
-  folders,
-  routableNodeCount = TAXONOMY_MIN_NON_ROOT_NODES,
   messages,
-  reasoning,
-  decisionSource = null,
   draft = null,
   workspaceEmail,
   onGenerateDraft,
   onToggleDraftSent,
-  onApprove,
-  onReroute,
   onClose,
   onMarkDone,
   onUnmarkDone,
@@ -87,7 +70,6 @@ export function ThreadPreview({
       <GmailIcon variant="color" size={16} />
     );
   const isDone = !!thread.doneMark;
-  const enrichedThread = { ...thread, reasoning };
   const lastMsg = messages[messages.length - 1];
   const lastMsgIsOwn =
     !!workspaceEmail &&
@@ -227,15 +209,6 @@ export function ThreadPreview({
             showDoneBy={false}
           />
         )}
-
-        <RationaleCard
-          thread={enrichedThread}
-          folders={folders}
-          decisionSource={decisionSource}
-          routableNodeCount={routableNodeCount}
-          onApprove={onApprove ? () => onApprove(thread.id) : undefined}
-          onReroute={onReroute ? (anchor) => onReroute(thread.id, anchor) : undefined}
-        />
 
         <div className="em-msg-list">
           {messages.map((msg, i) => (

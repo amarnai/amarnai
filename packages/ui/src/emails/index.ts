@@ -24,7 +24,6 @@ export { ThreadListHeader, getFolderAncestry } from "./ThreadListHeader.js";
 export { QUEUE_LABELS } from "./queueLabels.js";
 export { ThreadRow } from "./ThreadRow.js";
 export { ThreadList } from "./ThreadList.js";
-export { RationaleCard } from "./RationaleCard.js";
 export { PreviewDoneBar } from "./PreviewDoneBar.js";
 export { TriageBar } from "./TriageBar.js";
 export { AssigneePicker } from "./AssigneePicker.js";

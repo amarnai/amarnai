@@ -8,7 +8,6 @@ type Options = {
   popoverOpen: boolean;
   onNavigate: (id: string) => void;
   onToggleCheck: (id: string) => void;
-  onApprove: (id: string) => void;
   onReroute: () => void;
   onFocusSearch: () => void;
 };
@@ -19,7 +18,6 @@ export function useThreadKeyboard({
   popoverOpen,
   onNavigate,
   onToggleCheck,
-  onApprove,
   onReroute,
   onFocusSearch,
 }: Options) {
@@ -71,12 +69,6 @@ export function useThreadKeyboard({
         return;
       }
 
-      if ((e.key === "e" || e.key === "E") && selectedId) {
-        e.preventDefault();
-        onApprove(selectedId);
-        return;
-      }
-
       if ((e.key === "v" || e.key === "V") && selectedId) {
         e.preventDefault();
         onReroute();
@@ -111,5 +103,5 @@ export function useThreadKeyboard({
 
     window.addEventListener("keydown", handle);
     return () => window.removeEventListener("keydown", handle);
-  }, [threadIds, selectedId, popoverOpen, onNavigate, onToggleCheck, onApprove, onReroute, onFocusSearch]);
+  }, [threadIds, selectedId, popoverOpen, onNavigate, onToggleCheck, onReroute, onFocusSearch]);
 }

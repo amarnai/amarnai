@@ -64,6 +64,8 @@ export interface ThreadListProps {
   canAssign?: boolean;
   /** Open the member picker for a thread, anchored to the passed element. */
   onOpenAssign?: (threadId: string, anchor: HTMLElement) => void;
+  /** Open the move-to-folder picker for a thread, anchored to the passed element. */
+  onReroute?: (threadId: string, anchor: HTMLElement) => void;
   /**
    * When set, a thread row's Gmail icon routes through this callback instead of
    * opening a new tab. The browser extension uses it to reuse/activate an
@@ -107,6 +109,7 @@ export function ThreadList({
   onToggleImportant,
   canAssign,
   onOpenAssign,
+  onReroute,
   onOpenInGmail,
   railOpen,
   onToggleRail,
@@ -219,7 +222,6 @@ export function ThreadList({
                     key={thread.id}
                     thread={thread}
                     folder={folder}
-                    active={active}
                     selected={thread.id === selectedId}
                     workspaceEmail={workspaceEmail}
                     onSelect={() => onSelectThread(thread.id)}
@@ -229,6 +231,9 @@ export function ThreadList({
                     {...(canAssign !== undefined ? { canAssign } : {})}
                     {...(onOpenAssign
                       ? { onOpenAssign: (anchor: HTMLElement) => onOpenAssign(thread.id, anchor) }
+                      : {})}
+                    {...(onReroute
+                      ? { onReroute: (anchor: HTMLElement) => onReroute(thread.id, anchor) }
                       : {})}
                     {...(onOpenInGmail
                       ? { onOpenInGmail: () => onOpenInGmail(thread.id) }

@@ -27,7 +27,6 @@ type TriageActions = Pick<
   | 'refresh'
   | 'loadThread'
   | 'loadMore'
-  | 'handleApprove'
   | 'handleMarkDone'
   | 'handleUnmarkDone'
   | 'handleToggleImportant'
@@ -154,7 +153,6 @@ function TriageInner({
       refresh: triage.refresh,
       loadThread: triage.loadThread,
       loadMore: triage.loadMore,
-      handleApprove: triage.handleApprove,
       handleMarkDone: triage.handleMarkDone,
       handleUnmarkDone: triage.handleUnmarkDone,
       handleToggleImportant: triage.handleToggleImportant,
@@ -181,7 +179,6 @@ function TriageInner({
       triage.refresh,
       triage.loadThread,
       triage.loadMore,
-      triage.handleApprove,
       triage.handleMarkDone,
       triage.handleUnmarkDone,
       triage.handleToggleImportant,

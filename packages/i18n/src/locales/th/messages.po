@@ -111,7 +111,7 @@ msgstr "{0} มอบหมายเธรดให้คุณ"
 #. placeholder {1}: (total ?? 0).toLocaleString()
 #. placeholder {1}: viewCount.toLocaleString()
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:87
-#: ../ui/src/emails/ThreadList.tsx:249
+#: ../ui/src/emails/ThreadList.tsx:254
 #, fuzzy
 msgid "{0} of {1} loaded"
 msgstr "โหลดแล้ว {0} จาก {1}"
@@ -151,6 +151,10 @@ msgstr "{blacklistCount, plural, one {# บล็อก} other {# บล็อ�
 #~ msgid "{by} assigned you: {subject}"
 #~ msgstr "{by} มอบหมายถึงคุณ: {subject}"
 
+#: ../ui/src/emails/ThreadRow.tsx:263
+msgid "{chipLabel}. Change folder"
+msgstr "{chipLabel}. เปลี่ยนโฟลเดอร์"
+
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:557
 #, fuzzy
 msgid "{classificationCount, plural, one {Deleting this folder will leave # thread unsorted.} other {Deleting this folder will leave # threads unsorted.}}"
@@ -161,8 +165,7 @@ msgstr "{classificationCount, plural, one {การลบโฟลเดอร�
 msgid "{collaboratorCount} / {collaboratorLimit} added"
 msgstr "เพิ่มแล้ว {collaboratorCount} / {collaboratorLimit}"
 
-#: ../../apps/mobile/src/components/RationaleCard.tsx:61
-#: ../ui/src/emails/RationaleCard.tsx:94
+#: ../../apps/mobile/src/components/RationaleCard.tsx:60
 #, fuzzy
 msgid "{confPct}% confidence"
 msgstr "ความมั่นใจ {confPct}%"
@@ -224,8 +227,8 @@ msgid "{providerName} Inbox"
 msgstr "{providerName} กล่องจดหมาย"
 
 #. placeholder {0}: draftQuota.limit
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:387
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:404
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:365
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:380
 #, fuzzy
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
 msgstr "เหลือ {quotaRemaining} จาก {0} · รีเซ็ตใน {quotaResetDate}"
@@ -532,9 +535,7 @@ msgstr "ได้รับใบสมัครใหม่จากโฮเร
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "ได้รับใบสมัครใหม่จากโฮเรมเฮบแห่งธีบส์ สำหรับตำแหน่งหัวหน้าฝ่ายการติดต่อสื่อสาร\n"
-"\n"
-"ดูใบสมัครได้ที่ทำเนียบบันทึก"
+msgstr "ได้รับใบสมัครใหม่จากโฮเรมเฮบแห่งธีบส์ สำหรับตำแหน่งหัวหน้าฝ่ายการติดต่อสื่อสาร\n\nดูใบสมัครได้ที่ทำเนียบบันทึก"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:387
 #, fuzzy
@@ -548,11 +549,7 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "อับดิ-เฮบา,\n"
-"\n"
-"สัปดาห์นั้นฉันจะอยู่แถวเดลตาพอดี เราไปพบกันที่สถานีพักระหว่างทางในวันที่สอง ฉันพอจะมีเวลาว่างช่วงเช้า\n"
-"\n"
-"แล้วพบกัน,"
+msgstr "อับดิ-เฮบา,\n\nสัปดาห์นั้นฉันจะอยู่แถวเดลตาพอดี เราไปพบกันที่สถานีพักระหว่างทางในวันที่สอง ฉันพอจะมีเวลาว่างช่วงเช้า\n\nแล้วพบกัน,"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
@@ -703,12 +700,9 @@ msgstr "ผู้ช่วยคัดกรองอีเมลด้วย AI
 #~ msgid "AI metadata"
 #~ msgstr "เมทาดาต้า AI"
 
-#: ../../apps/mobile/src/components/RationaleCard.tsx:34
-#: ../../apps/mobile/src/components/RationaleCard.tsx:43
-#: ../../apps/mobile/src/components/RationaleCard.tsx:60
-#: ../ui/src/emails/RationaleCard.tsx:48
-#: ../ui/src/emails/RationaleCard.tsx:67
-#: ../ui/src/emails/RationaleCard.tsx:93
+#: ../../apps/mobile/src/components/RationaleCard.tsx:33
+#: ../../apps/mobile/src/components/RationaleCard.tsx:42
+#: ../../apps/mobile/src/components/RationaleCard.tsx:59
 #, fuzzy
 msgid "AI Routing"
 msgstr "การกำหนดเส้นทางด้วย AI"
@@ -1043,8 +1037,8 @@ msgstr "Apprentice"
 #: ../../apps/mobile/src/components/RationaleCard.tsx:71
 #: ../ui/src/emails/RationaleCard.tsx:133
 #, fuzzy
-msgid "Approve routing"
-msgstr "อนุมัติการจัดเส้นทาง"
+#~ msgid "Approve routing"
+#~ msgstr "อนุมัติการจัดเส้นทาง"
 
 #: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:132
 msgid "Archive"
@@ -1066,8 +1060,8 @@ msgstr "มอบหมายเธรด"
 msgid "Assign to"
 msgstr "มอบหมายให้"
 
-#: ../ui/src/emails/ThreadRow.tsx:312
-#: ../ui/src/emails/ThreadRow.tsx:321
+#: ../ui/src/emails/ThreadRow.tsx:336
+#: ../ui/src/emails/ThreadRow.tsx:345
 #: ../ui/src/emails/TriageBar.tsx:63
 #, fuzzy
 msgid "Assign to a member"
@@ -1086,8 +1080,8 @@ msgstr "มอบหมายแล้ว"
 msgid "Assigned to {assigneeName}"
 msgstr "มอบหมายให้ {assigneeName}"
 
-#: ../ui/src/emails/ThreadRow.tsx:208
-#: ../ui/src/emails/ThreadRow.tsx:320
+#: ../ui/src/emails/ThreadRow.tsx:228
+#: ../ui/src/emails/ThreadRow.tsx:344
 #: ../ui/src/emails/TriageBar.tsx:62
 #, fuzzy
 msgid "Assigned to {assigneeName}. Change assignee"
@@ -1154,18 +1148,14 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "Aziru,\n"
-"\n"
-"ถ้อยคำแห่งมิตรภาพของท่านมาถึงเราแล้ว เรายินดีรับฟังข้อเสนอเพิ่มเติมจากตระกูล Amurru โปรดส่งเงื่อนไขของท่านมาพร้อมกับผู้ส่งสารคนถัดไป\n"
-"\n"
-"ด้วยความเคารพ,"
+msgstr "Aziru,\n\nถ้อยคำแห่งมิตรภาพของท่านมาถึงเราแล้ว เรายินดีรับฟังข้อเสนอเพิ่มเติมจากตระกูล Amurru โปรดส่งเงื่อนไขของท่านมาพร้อมกับผู้ส่งสารคนถัดไป\n\nด้วยความเคารพ,"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:274
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:261
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
 #: ../../apps/site/src/components/landing/MailThreadMock.tsx:66
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:25
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:297
-#: ../ui/src/emails/ThreadPreview.tsx:121
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:282
+#: ../ui/src/emails/ThreadPreview.tsx:103
 #, fuzzy
 msgid "Back"
 msgstr "ย้อนกลับ"
@@ -1174,9 +1164,9 @@ msgstr "ย้อนกลับ"
 #~ msgid "Back to inbox"
 #~ msgstr "กลับสู่กล่องจดหมาย"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:270
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:292
-#: ../ui/src/emails/ThreadPreview.tsx:116
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:257
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:277
+#: ../ui/src/emails/ThreadPreview.tsx:98
 #, fuzzy
 msgid "Back to list"
 msgstr "กลับไปที่รายการ"
@@ -1436,9 +1426,13 @@ msgstr "รวมทั้งหมด"
 msgid "Change"
 msgstr "เปลี่ยน"
 
-#: ../ui/src/emails/ThreadRow.tsx:311
+#: ../ui/src/emails/ThreadRow.tsx:335
 msgid "Change assignee"
 msgstr "เปลี่ยนผู้รับมอบหมาย"
+
+#: ../ui/src/emails/ThreadRow.tsx:164
+msgid "Change folder"
+msgstr "เปลี่ยนโฟลเดอร์"
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:297
 #, fuzzy
@@ -1541,10 +1535,10 @@ msgstr "ปิด"
 msgid "Close panel"
 msgstr "ปิดแผง"
 
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:340
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:344
-#: ../ui/src/emails/ThreadPreview.tsx:147
-#: ../ui/src/emails/ThreadPreview.tsx:151
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:325
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:329
+#: ../ui/src/emails/ThreadPreview.tsx:129
+#: ../ui/src/emails/ThreadPreview.tsx:133
 #, fuzzy
 msgid "Close preview"
 msgstr "ปิดการแสดงตัวอย่าง"
@@ -2362,17 +2356,17 @@ msgstr "ยกเลิกการเชื่อมต่อเวิร์ก
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "ยกเลิกการเชื่อมต่อเวิร์กสเปซนี้ Amarnai ยังคงเข้าถึงได้ เนื่องจากกล่องจดหมายนี้ยังคงเชื่อมต่ออยู่ใน {sharedNames}"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:369
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:372
 #: ../../apps/extension/src/panel/StatusSlot.tsx:97
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:65
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:393
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:394
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:57
 #: ../../apps/web/src/components/JoinedWorkspaceToast.tsx:46
 #: ../../apps/web/src/components/NotificationBell.tsx:179
 #: ../../apps/web/src/components/NotificationBell.tsx:180
 #: ../ui/src/AppDownloadBanner.tsx:80
-#: ../ui/src/emails/MockEmailsPage.tsx:296
+#: ../ui/src/emails/MockEmailsPage.tsx:293
 #, fuzzy
 msgid "Dismiss"
 msgstr "ไม่สนใจ"
@@ -2427,7 +2421,7 @@ msgstr "การรณรงค์รับบริจาค, แคมเป�
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:278
 #: ../../apps/mobile/src/components/ThreadRow.tsx:35
-#: ../ui/src/emails/ThreadRow.tsx:200
+#: ../ui/src/emails/ThreadRow.tsx:220
 #, fuzzy
 msgid "Done"
 msgstr "เสร็จสิ้น"
@@ -2446,7 +2440,7 @@ msgstr "ผู้บริจาค"
 msgid "Downgrade to {planName}"
 msgstr "ดาวน์เกรดเป็น {planName}"
 
-#: ../ui/src/emails/ThreadRow.tsx:262
+#: ../ui/src/emails/ThreadRow.tsx:286
 #, fuzzy
 msgid "draft"
 msgstr "ฉบับร่าง"
@@ -2461,8 +2455,8 @@ msgstr "ฉบับร่าง"
 msgid "Draft failed · tap to retry"
 msgstr "สร้างฉบับร่างไม่สำเร็จ · แตะเพื่อลองอีกครั้ง"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:402
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:420
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:380
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:396
 #, fuzzy
 msgid "Draft generation failed. Try again."
 msgstr "สร้างฉบับร่างไม่สำเร็จ โปรดลองอีกครั้ง"
@@ -2486,7 +2480,7 @@ msgid "Draft style guidance"
 msgstr "แนวทางรูปแบบฉบับร่าง"
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:106
-#: ../ui/src/emails/ThreadRow.tsx:256
+#: ../ui/src/emails/ThreadRow.tsx:280
 #, fuzzy
 msgid "Drafting…"
 msgstr "กำลังร่าง..."
@@ -2949,7 +2943,7 @@ msgid "Folder: {activeFolderName}"
 msgstr "โฟลเดอร์: {activeFolderName}"
 
 #: ../ui/src/emails/EmailRail.tsx:99
-#: ../ui/src/emails/ThreadList.tsx:152
+#: ../ui/src/emails/ThreadList.tsx:155
 #, fuzzy
 msgid "Folders"
 msgstr "โฟลเดอร์"
@@ -3158,10 +3152,10 @@ msgstr "สร้างฉบับร่างใหม่ หักโคว�
 msgid "Generate a plan from your inbox"
 msgstr "สร้างแผนจากกล่องจดหมายของคุณ"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:381
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:359
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:146
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:281
-#: ../ui/src/emails/ThreadPreview.tsx:253
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:266
+#: ../ui/src/emails/ThreadPreview.tsx:226
 #, fuzzy
 msgid "Generate draft reply"
 msgstr "สร้างฉบับร่างตอบกลับ"
@@ -3367,11 +3361,7 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "ฝ่าบาท,\n"
-"\n"
-"รายงานที่ฝ่าบาททรงขอจะถูกจัดเตรียมให้เสร็จสิ้นก่อนการประชุมสภา ข้าพระบาทจะให้เหล่านักจารึกรวบรวมบัญชีของดินแดนทางตะวันออกและส่งล่วงหน้าไปกับผู้ส่งสารที่รวดเร็ว\n"
-"\n"
-"ด้วยไมตรี,"
+msgstr "ฝ่าบาท,\n\nรายงานที่ฝ่าบาททรงขอจะถูกจัดเตรียมให้เสร็จสิ้นก่อนการประชุมสภา ข้าพระบาทจะให้เหล่านักจารึกรวบรวมบัญชีของดินแดนทางตะวันออกและส่งล่วงหน้าไปกับผู้ส่งสารที่รวดเร็ว\n\nด้วยไมตรี,"
 
 #: ../../apps/site/src/components/support/SupportContent.tsx:77
 msgid "Guides and answers to common questions"
@@ -3962,7 +3952,7 @@ msgstr "สด"
 #: ../../apps/mobile/app/(app)/notifications.tsx:318
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:101
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:284
-#: ../ui/src/emails/ThreadList.tsx:260
+#: ../ui/src/emails/ThreadList.tsx:265
 #, fuzzy
 msgid "Load more"
 msgstr "โหลดเพิ่ม"
@@ -3971,7 +3961,7 @@ msgstr "โหลดเพิ่ม"
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:122
 #: ../ui/src/emails/BackfillCard.tsx:35
-#: ../ui/src/emails/ThreadList.tsx:197
+#: ../ui/src/emails/ThreadList.tsx:200
 #, fuzzy
 msgid "Loading past threads…"
 msgstr "กำลังโหลดเธรดเก่า..."
@@ -3988,7 +3978,7 @@ msgstr "กำลังโหลดเธรดเก่า..."
 #: ../../apps/web/src/app/loading.tsx:6
 #: ../../apps/web/src/components/NotificationBell.tsx:161
 #: ../ui/src/emails/MessageCard.tsx:68
-#: ../ui/src/emails/ThreadList.tsx:260
+#: ../ui/src/emails/ThreadList.tsx:265
 #, fuzzy
 msgid "Loading…"
 msgstr "กำลังโหลด..."
@@ -4046,23 +4036,23 @@ msgid "Manuscripts & Peer Review"
 msgstr "ต้นฉบับและทบทวนโดยผู้ทรงคุณวุฒิ"
 
 #: ../ui/src/emails/PreviewDoneBar.tsx:23
-#: ../ui/src/emails/ThreadRow.tsx:147
+#: ../ui/src/emails/ThreadRow.tsx:145
 #, fuzzy
 msgid "Mark as done"
 msgstr "ทำเครื่องหมายว่าเสร็จสิ้น"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:280
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:267
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:244
 #: ../../apps/mobile/src/components/ThreadRow.tsx:58
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:319
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:325
-#: ../ui/src/emails/ThreadPreview.tsx:126
-#: ../ui/src/emails/ThreadPreview.tsx:130
-#: ../ui/src/emails/ThreadRow.tsx:150
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:304
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:310
+#: ../ui/src/emails/ThreadPreview.tsx:108
+#: ../ui/src/emails/ThreadPreview.tsx:112
+#: ../ui/src/emails/ThreadRow.tsx:148
 msgid "Mark as important"
 msgstr "ทำเครื่องหมายว่าสำคัญ"
 
-#: ../ui/src/emails/ThreadRow.tsx:146
+#: ../ui/src/emails/ThreadRow.tsx:144
 #, fuzzy
 msgid "Mark as not done"
 msgstr "ทำเครื่องหมายว่ายังไม่เสร็จสิ้น"
@@ -4243,9 +4233,8 @@ msgstr "ย้ายไปโฟลเดอร์"
 msgid "Move to folder…"
 msgstr "ย้ายไปโฟลเดอร์..."
 
-#: ../../apps/mobile/src/components/RationaleCard.tsx:50
-#: ../../apps/mobile/src/components/RationaleCard.tsx:75
-#: ../ui/src/emails/RationaleCard.tsx:142
+#: ../../apps/mobile/src/components/RationaleCard.tsx:49
+#: ../../apps/mobile/src/components/RationaleCard.tsx:69
 #, fuzzy
 msgid "Move to…"
 msgstr "ย้ายไปที่..."
@@ -4372,8 +4361,8 @@ msgstr "ชื่อพื้นที่ทำงานใหม่"
 msgid "No drafts remaining"
 msgstr "ไม่มีฉบับร่างเหลืออยู่"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:386
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:403
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:364
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:379
 #: ../ui/src/emails/SuggestedDraftCard.tsx:97
 #, fuzzy
 msgid "No drafts remaining · resets {quotaResetDate}"
@@ -4384,7 +4373,7 @@ msgstr "ไม่มีฉบับร่างเหลืออยู่ · �
 msgid "No drafts remaining · resets {resetDate}"
 msgstr "ไม่มีฉบับร่างเหลืออยู่ · รีเซ็ตในวันที่ {resetDate}"
 
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:392
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:368
 #: ../ui/src/emails/SuggestedDraftCard.tsx:76
 #, fuzzy
 msgid "No drafts remaining this month"
@@ -4476,7 +4465,7 @@ msgstr "ไม่มีเธรดที่จัดเรียงไว้เ
 msgid "No threads"
 msgstr "ไม่มีเธรด"
 
-#: ../ui/src/emails/ThreadList.tsx:200
+#: ../ui/src/emails/ThreadList.tsx:203
 #, fuzzy
 msgid "No threads here."
 msgstr "ไม่มีเธรดที่นี่"
@@ -4491,7 +4480,7 @@ msgstr "ไม่มีเธรดใน {folderName}"
 msgid "No threads match your search"
 msgstr "ไม่มีเธรดตรงกับการค้นหาของคุณ"
 
-#: ../ui/src/emails/ThreadList.tsx:193
+#: ../ui/src/emails/ThreadList.tsx:196
 #, fuzzy
 msgid "No threads match your search."
 msgstr "ไม่มีเธรดตรงกับการค้นหาของคุณ"
@@ -4601,14 +4590,14 @@ msgstr "เปิด"
 msgid "Open an issue on GitHub"
 msgstr "สร้างประเด็นบน GitHub"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:311
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:298
 #: ../../apps/mobile/src/components/DraftSheet.tsx:97
 #: ../ui/src/emails/providerLabels.ts:11
 #, fuzzy
 msgid "Open in Gmail"
 msgstr "เปิดใน Gmail"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:309
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:296
 #: ../ui/src/emails/providerLabels.ts:11
 msgid "Open in Outlook"
 msgstr "เปิดใน Outlook"
@@ -4921,7 +4910,7 @@ msgstr "แผนเป็นแบบอ่านอย่างเดียว
 msgid "Plan nodes"
 msgstr "โหนดแผน"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:343
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:330
 msgid "Plan sorting"
 msgstr "วางแผนการจัดเรียง"
 
@@ -5131,7 +5120,7 @@ msgstr "กำลังจัดคิวสแกนใหม่…"
 msgid "Rated 5 out of 5"
 msgstr "ให้คะแนน 5 เต็ม 5"
 
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:403
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:404
 #, fuzzy
 msgid "Re-route {unclassifiedCount} unclassified"
 msgstr "เปลี่ยนเส้นทาง {unclassifiedCount} รายการที่ยังไม่ได้จัดประเภท"
@@ -5319,14 +5308,14 @@ msgstr "นำ {0} ออก"
 msgid "Remove {email} from blacklist"
 msgstr "นำ {email} ออกจากบัญชีดำ"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:280
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:267
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:243
 #: ../../apps/mobile/src/components/ThreadRow.tsx:57
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:319
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:325
-#: ../ui/src/emails/ThreadPreview.tsx:126
-#: ../ui/src/emails/ThreadPreview.tsx:130
-#: ../ui/src/emails/ThreadRow.tsx:149
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:304
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:310
+#: ../ui/src/emails/ThreadPreview.tsx:108
+#: ../ui/src/emails/ThreadPreview.tsx:112
+#: ../ui/src/emails/ThreadRow.tsx:147
 #, fuzzy
 msgid "Remove from important"
 msgstr "นำออกจากสำคัญ"
@@ -5503,9 +5492,9 @@ msgid "Resources"
 msgstr "แหล่งข้อมูล"
 
 #: ../../apps/extension/src/App.tsx:114
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:404
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:382
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:345
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:426
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:402
 #, fuzzy
 msgid "Retry"
 msgstr "ลองอีกครั้ง"
@@ -5544,11 +5533,7 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "ริบ-ฮัดดา,\n"
-"\n"
-"เราเข้าใจดี มีการสั่งธัญพืชเพิ่มเติมจากคลังทางใต้ และจะมาถึงก่อนเทศกาลเก็บเกี่ยว โปรดอดทนรอจนกว่าจะถึงเวลานั้น\n"
-"\n"
-"ขอให้สบายดี,"
+msgstr "ริบ-ฮัดดา,\n\nเราเข้าใจดี มีการสั่งธัญพืชเพิ่มเติมจากคลังทางใต้ และจะมาถึงก่อนเทศกาลเก็บเกี่ยว โปรดอดทนรอจนกว่าจะถึงเวลานั้น\n\nขอให้สบายดี,"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -5557,8 +5542,8 @@ msgstr "ริบ-ฮัดดา,\n"
 #~ msgstr "จัดเส้นทางเลย"
 
 #: ../ui/src/emails/MockEmailsPage.tsx:126
-msgid "Routing approved"
-msgstr "อนุมัติการจัดเส้นทางแล้ว"
+#~ msgid "Routing approved"
+#~ msgstr "อนุมัติการจัดเส้นทางแล้ว"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -5570,8 +5555,8 @@ msgstr "อนุมัติการจัดเส้นทางแล้ว
 #. placeholder {1}: Math.round(thread.alternativeFolder.weight * 100)
 #: ../ui/src/emails/RationaleCard.tsx:121
 #, fuzzy
-msgid "Runner-up: <0>{0}</0> ({1}%)"
-msgstr "อันดับสอง: <0>{0}</0> ({1}%)"
+#~ msgid "Runner-up: <0>{0}</0> ({1}%)"
+#~ msgstr "อันดับสอง: <0>{0}</0> ({1}%)"
 
 #: ../ui/src/pricing/planMessages.ts:96
 #, fuzzy
@@ -5698,9 +5683,9 @@ msgstr "ดูการทำงาน"
 msgid "Select"
 msgstr "เลือก"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:318
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:349
-#: ../ui/src/emails/MockEmailsPage.tsx:274
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:321
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:350
+#: ../ui/src/emails/MockEmailsPage.tsx:271
 #, fuzzy
 msgid "Select a thread to preview"
 msgstr "เลือกเธรดเพื่อดูตัวอย่าง"
@@ -6002,8 +5987,8 @@ msgstr "จัดระเบียบแล้ว"
 
 #: ../ui/src/emails/RationaleCard.tsx:113
 #, fuzzy
-msgid "Sorted automatically by content similarity."
-msgstr "จัดเรียงโดยอัตโนมัติ ตามความคล้ายคลึงของเนื้อหา"
+#~ msgid "Sorted automatically by content similarity."
+#~ msgstr "จัดเรียงโดยอัตโนมัติ ตามความคล้ายคลึงของเนื้อหา"
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:36
 #, fuzzy
@@ -6032,10 +6017,9 @@ msgstr "จัดเรียงแบบเรียลไทม์"
 msgid "Sorting volume"
 msgstr "ปริมาณการจัดเรียง"
 
-#: ../../apps/mobile/src/components/RationaleCard.tsx:35
+#: ../../apps/mobile/src/components/RationaleCard.tsx:34
 #: ../../apps/site/src/components/landing/HeroFeedCard.tsx:95
-#: ../ui/src/emails/RationaleCard.tsx:52
-#: ../ui/src/emails/ThreadRow.tsx:227
+#: ../ui/src/emails/ThreadRow.tsx:247
 #, fuzzy
 msgid "Sorting…"
 msgstr "กำลังจัดเรียง..."
@@ -6497,26 +6481,26 @@ msgstr "สิ่งนี้จะลบการเชื่อมต่อ Gm
 
 #: ../ui/src/emails/RationaleCard.tsx:78
 #, fuzzy
-msgid "This thread cannot be sorted yet. Add at least {TAXONOMY_MIN_NON_ROOT_NODES} categories to your plan to begin routing."
-msgstr "เธรดนี้ยังไม่สามารถจัดเรียงได้ เพิ่มหมวดหมู่อย่างน้อย {TAXONOMY_MIN_NON_ROOT_NODES} รายการในแผนของคุณเพื่อเริ่มการจัดเส้นทาง"
+#~ msgid "This thread cannot be sorted yet. Add at least {TAXONOMY_MIN_NON_ROOT_NODES} categories to your plan to begin routing."
+#~ msgstr "เธรดนี้ยังไม่สามารถจัดเรียงได้ เพิ่มหมวดหมู่อย่างน้อย {TAXONOMY_MIN_NON_ROOT_NODES} รายการในแผนของคุณเพื่อเริ่มการจัดเส้นทาง"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:348
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:335
 msgid "This thread hasn't been sorted yet."
 msgstr "เธรดนี้ยังไม่ได้ถูกจัดเรียง"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:336
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:323
 msgid "This thread hasn't been sorted yet. Create a sorting plan so Amarnai knows where to file it."
 msgstr "เธรดนี้ยังไม่ได้รับการจัดเรียง สร้างแผนการจัดเรียงเพื่อให้ Amarnai ทราบว่าจะจัดเก็บไว้ที่ใด"
 
-#: ../../apps/mobile/src/components/RationaleCard.tsx:46
+#: ../../apps/mobile/src/components/RationaleCard.tsx:45
 #, fuzzy
 msgid "This thread is waiting to be routed."
 msgstr "เธรดนี้กำลังรอการจัดเส้นทาง"
 
 #: ../ui/src/emails/RationaleCard.tsx:83
 #, fuzzy
-msgid "This thread is waiting to be routed. Use “Route now” to start sorting."
-msgstr "เธรดนี้กำลังรอการจัดเส้นทาง ใช้ “จัดเส้นทางทันที” เพื่อเริ่มการจัดเรียง"
+#~ msgid "This thread is waiting to be routed. Use “Route now” to start sorting."
+#~ msgstr "เธรดนี้กำลังรอการจัดเส้นทาง ใช้ “จัดเส้นทางทันที” เพื่อเริ่มการจัดเรียง"
 
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:86
 #, fuzzy
@@ -6600,13 +6584,7 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "ถึง ท่านมหาราช ผู้เป็นดุจพี่น้องของข้า,\n"
-"\n"
-"สภาใหญ่จะมีการประชุมในช่วงต้นของฤดูเชมู ข้าขอให้ท่านเตรียมการบันทึกบัญชีฉบับสมบูรณ์ของดินแดนทางตะวันออก และส่งล่วงหน้ามากับผู้ส่งสารที่รวดเร็ว หากเป็นไปได้ ให้ส่งมาก่อนวันเดือนดับ\n"
-"\n"
-"พันธมิตรของเราแข็งแกร่ง ขอเราจงแสดงให้สภาเห็นว่ามันยังคงเป็นเช่นนั้น\n"
-"\n"
-"ทุชรัตตะ, มหาราชแห่งมิตันนี"
+msgstr "ถึง ท่านมหาราช ผู้เป็นดุจพี่น้องของข้า,\n\nสภาใหญ่จะมีการประชุมในช่วงต้นของฤดูเชมู ข้าขอให้ท่านเตรียมการบันทึกบัญชีฉบับสมบูรณ์ของดินแดนทางตะวันออก และส่งล่วงหน้ามากับผู้ส่งสารที่รวดเร็ว หากเป็นไปได้ ให้ส่งมาก่อนวันเดือนดับ\n\nพันธมิตรของเราแข็งแกร่ง ขอเราจงแสดงให้สภาเห็นว่ามันยังคงเป็นเช่นนั้น\n\nทุชรัตตะ, มหาราชแห่งมิตันนี"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:163
 #, fuzzy
@@ -6615,11 +6593,7 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "ถึง กรมการแต่งตั้งราชการ,\n"
-"\n"
-"เราได้รับใบสมัครจากโฮเรมเฮบแห่งธีบส์แล้ว และจะตรวจสอบประวัติของเขาก่อนวันเดือนดับครั้งต่อไป โปรดแจ้งให้เขาทราบว่าเราจะส่งข่าวไปในเวลาอันควร\n"
-"\n"
-"ตามพระบรมราชโองการ,"
+msgstr "ถึง กรมการแต่งตั้งราชการ,\n\nเราได้รับใบสมัครจากโฮเรมเฮบแห่งธีบส์แล้ว และจะตรวจสอบประวัติของเขาก่อนวันเดือนดับครั้งต่อไป โปรดแจ้งให้เขาทราบว่าเราจะส่งข่าวไปในเวลาอันควร\n\nตามพระบรมราชโองการ,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:278
 #, fuzzy
@@ -6630,13 +6604,7 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "ถึง ท่านมหาราช,\n"
-"\n"
-"หลายปีมาแล้วที่ราชวงศ์ของเราเป็นดุจพี่น้อง บัดนี้ข้าพเจ้าขอเสนอให้เราทำให้มิตรภาพนี้เป็นทางการ เพื่อประโยชน์ของทั้งสองประชาชาติของเรา: สนธิสัญญาคุ้มครองร่วมกันและเส้นทางการค้าที่ใช้ร่วมกัน\n"
-"\n"
-"ข้าพเจ้าเพียงขอให้ท่านรับฟังข้อเสนอของข้าพเจ้า โปรดส่งข่าวโดยผู้ส่งสารคนถัดไป และข้าพเจ้าจะส่งทูตของข้าพเจ้าไปทันที\n"
-"\n"
-"อาซีรู, ข้ารับใช้ของมหาราช, เจ้าแห่งอามูร์รู"
+msgstr "ถึง ท่านมหาราช,\n\nหลายปีมาแล้วที่ราชวงศ์ของเราเป็นดุจพี่น้อง บัดนี้ข้าพเจ้าขอเสนอให้เราทำให้มิตรภาพนี้เป็นทางการ เพื่อประโยชน์ของทั้งสองประชาชาติของเรา: สนธิสัญญาคุ้มครองร่วมกันและเส้นทางการค้าที่ใช้ร่วมกัน\n\nข้าพเจ้าเพียงขอให้ท่านรับฟังข้อเสนอของข้าพเจ้า โปรดส่งข่าวโดยผู้ส่งสารคนถัดไป และข้าพเจ้าจะส่งทูตของข้าพเจ้าไปทันที\n\nอาซีรู, ข้ารับใช้ของมหาราช, เจ้าแห่งอามูร์รู"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:391
 #, fuzzy
@@ -6645,11 +6613,7 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "ถึง ท่านมหาราช,\n"
-"\n"
-"การเดินทางของข้าพเจ้าจะพาข้าพเจ้าเข้าใกล้ดินดอนสามเหลี่ยมปากแม่น้ำในอีกไม่กี่วันข้างหน้า หากท่านมหาราชมีเวลาสักหนึ่งชั่วโมง ข้าพเจ้าจะยินดีเป็นอย่างยิ่งที่จะได้มีโอกาสพูดคุยกันต่อหน้า; มีหลายเรื่องที่พูดง่ายกว่าเขียน\n"
-"\n"
-"ข้ารับใช้ของท่าน, อับดี-เฮบา, ผู้ว่าการแห่งอูรูชาลิม"
+msgstr "ถึง ท่านมหาราช,\n\nการเดินทางของข้าพเจ้าจะพาข้าพเจ้าเข้าใกล้ดินดอนสามเหลี่ยมปากแม่น้ำในอีกไม่กี่วันข้างหน้า หากท่านมหาราชมีเวลาสักหนึ่งชั่วโมง ข้าพเจ้าจะยินดีเป็นอย่างยิ่งที่จะได้มีโอกาสพูดคุยกันต่อหน้า; มีหลายเรื่องที่พูดง่ายกว่าเขียน\n\nข้ารับใช้ของท่าน, อับดี-เฮบา, ผู้ว่าการแห่งอูรูชาลิม"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:153
 #, fuzzy
@@ -6658,11 +6622,7 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "ถึง ท่านมหาราช ผู้เป็นดุจพี่น้องของข้า,\n"
-"\n"
-"ข้าพเจ้าได้รับทราบพระดำรัสของท่านแล้ว ทองคำจะถูกส่งไปก่อนที่ผู้ส่งสารคนถัดไปจะออกเดินทาง เราให้ความสำคัญกับความผูกพันระหว่างราชวงศ์ของเรา และไม่ปรารถนาให้มันจืดจางลง\n"
-"\n"
-"ด้วยไมตรีจิต,"
+msgstr "ถึง ท่านมหาราช ผู้เป็นดุจพี่น้องของข้า,\n\nข้าพเจ้าได้รับทราบพระดำรัสของท่านแล้ว ทองคำจะถูกส่งไปก่อนที่ผู้ส่งสารคนถัดไปจะออกเดินทาง เราให้ความสำคัญกับความผูกพันระหว่างราชวงศ์ของเรา และไม่ปรารถนาให้มันจืดจางลง\n\nด้วยไมตรีจิต,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:239
 #, fuzzy
@@ -6673,13 +6633,7 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "ถึง ท่านมหาราช ผู้เป็นดุจพี่น้องของข้า,\n"
-"\n"
-"ข้าพเจ้าเขียนด้วยไมตรีจิต ดุจที่บิดาของเราได้เขียนไว้ก่อนหน้าเรา ทองคำงวดที่สามที่ตกลงกันตามสนธิสัญญาของเรายังไม่มาถึง ผู้ส่งสารสองคนได้ผ่านไปแล้ว แต่เราก็ยังคงรอคอย\n"
-"\n"
-"เราขอให้ท่านส่งมอบโดยไม่ล่าช้าอีกต่อไป ตามที่เหมาะสมกับความผูกพันระหว่างราชวงศ์ของเรา\n"
-"\n"
-"เบอร์นา-บูริอาชที่ 2, กษัตริย์แห่งบาบิโลน"
+msgstr "ถึง ท่านมหาราช ผู้เป็นดุจพี่น้องของข้า,\n\nข้าพเจ้าเขียนด้วยไมตรีจิต ดุจที่บิดาของเราได้เขียนไว้ก่อนหน้าเรา ทองคำงวดที่สามที่ตกลงกันตามสนธิสัญญาของเรายังไม่มาถึง ผู้ส่งสารสองคนได้ผ่านไปแล้ว แต่เราก็ยังคงรอคอย\n\nเราขอให้ท่านส่งมอบโดยไม่ล่าช้าอีกต่อไป ตามที่เหมาะสมกับความผูกพันระหว่างราชวงศ์ของเรา\n\nเบอร์นา-บูริอาชที่ 2, กษัตริย์แห่งบาบิโลน"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:352
 #, fuzzy
@@ -6690,13 +6644,7 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "ถึง ท่านมหาราช, นายของข้า, ดวงตะวันของข้า,\n"
-"\n"
-"ข้าวที่พระองค์ส่งมาเมื่อเดือนที่แล้วได้รับด้วยความกตัญญู และข้าพเจ้าได้สรรเสริญพระนามของพระองค์ต่อหน้าประชาชน แต่ข้าพเจ้าต้องเขียนอีกครั้ง: การจัดส่งครั้งที่สามยังไม่มาถึง และเมืองก็เริ่มกระสับกระส่าย\n"
-"\n"
-"ข้าพเจ้าได้เขียนไปเจ็ดครั้งแล้ว ข้าพเจ้าไม่ปรารถนาที่จะรบกวนพระองค์ แต่ข้าพเจ้าจะทำอะไรได้อีกเล่า?\n"
-"\n"
-"ข้ารับใช้ของพระองค์, ริบ-ฮัดดา, ผู้ว่าการแห่งบิบลอส"
+msgstr "ถึง ท่านมหาราช, นายของข้า, ดวงตะวันของข้า,\n\nข้าวที่พระองค์ส่งมาเมื่อเดือนที่แล้วได้รับด้วยความกตัญญู และข้าพเจ้าได้สรรเสริญพระนามของพระองค์ต่อหน้าประชาชน แต่ข้าพเจ้าต้องเขียนอีกครั้ง: การจัดส่งครั้งที่สามยังไม่มาถึง และเมืองก็เริ่มกระสับกระส่าย\n\nข้าพเจ้าได้เขียนไปเจ็ดครั้งแล้ว ข้าพเจ้าไม่ปรารถนาที่จะรบกวนพระองค์ แต่ข้าพเจ้าจะทำอะไรได้อีกเล่า?\n\nข้ารับใช้ของพระองค์, ริบ-ฮัดดา, ผู้ว่าการแห่งบิบลอส"
 
 #: ../../apps/site/src/components/landing/MailThreadMock.tsx:135
 msgid "To: You"
@@ -6712,7 +6660,7 @@ msgstr "วันนี้"
 #~ msgid "Today Amarnai connects to Gmail. Outlook support is on the way, and it will work the same read-only way: Amarnai reads your threads to sort them and never sends, deletes, or changes anything in your account."
 #~ msgstr "ปัจจุบัน Amarnai เชื่อมต่อกับ Gmail แล้ว กำลังพัฒนาให้รองรับ Outlook ซึ่งจะทำงานในโหมดอ่านอย่างเดียวเช่นกัน: Amarnai จะอ่านและจัดเรียงอีเมลของคุณ โดยไม่ส่ง ลบ หรือแก้ไขข้อมูลใดๆ ในบัญชีของคุณ"
 
-#: ../ui/src/emails/ThreadList.tsx:136
+#: ../ui/src/emails/ThreadList.tsx:139
 #, fuzzy
 msgid "Toggle folders"
 msgstr "สลับโฟลเดอร์"
@@ -6786,15 +6734,19 @@ msgid "Unavailable"
 msgstr "ไม่พร้อมใช้งาน"
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:41
-#: ../ui/src/emails/ThreadRow.tsx:235
+#: ../ui/src/emails/ThreadRow.tsx:257
 #, fuzzy
 msgid "Unclassified"
 msgstr "ยังไม่จัดประเภท"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:362
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:390
+#: ../ui/src/emails/ThreadRow.tsx:256
+msgid "Unclassified. Change folder"
+msgstr "ยังไม่จัดหมวดหมู่. เปลี่ยนโฟลเดอร์"
+
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:365
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:391
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1442
-#: ../ui/src/emails/MockEmailsPage.tsx:293
+#: ../ui/src/emails/MockEmailsPage.tsx:290
 #, fuzzy
 msgid "Undo"
 msgstr "เลิกทำ"
@@ -6828,8 +6780,7 @@ msgstr "โหนดแผนไม่จำกัด"
 #~ msgid "Unlimited taxonomy nodes"
 #~ msgstr "โหนดอนุกรมวิธานไม่จำกัด"
 
-#: ../../apps/mobile/src/components/RationaleCard.tsx:64
-#: ../ui/src/emails/RationaleCard.tsx:108
+#: ../../apps/mobile/src/components/RationaleCard.tsx:63
 #, fuzzy
 msgid "Unrouted"
 msgstr "ยังไม่ระบุเส้นทาง"
@@ -7050,10 +7001,9 @@ msgstr "การลงทะเบียนอาสาสมัคร, กา�
 msgid "Volunteers"
 msgstr "อาสาสมัคร"
 
-#: ../../apps/mobile/src/components/RationaleCard.tsx:44
+#: ../../apps/mobile/src/components/RationaleCard.tsx:43
 #: ../../apps/mobile/src/components/ThreadRow.tsx:44
-#: ../ui/src/emails/RationaleCard.tsx:74
-#: ../ui/src/emails/ThreadRow.tsx:231
+#: ../ui/src/emails/ThreadRow.tsx:251
 #, fuzzy
 msgid "Waiting"
 msgstr "กำลังรอ"
@@ -7073,7 +7023,7 @@ msgstr "กำลังรอการยืนยัน..."
 #~ msgid "Waitlist"
 #~ msgstr "รายการรอ"
 
-#: ../ui/src/emails/ThreadRow.tsx:140
+#: ../ui/src/emails/ThreadRow.tsx:138
 #, fuzzy
 msgid "Wants {folderName}"
 msgstr "ต้องการ {folderName}"
@@ -7224,10 +7174,10 @@ msgstr "ประเภทพื้นที่ทำงาน"
 msgid "Workspaces included"
 msgstr "รวมพื้นที่ทำงาน"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:396
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:374
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:168
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:414
-#: ../ui/src/emails/ThreadPreview.tsx:260
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:390
+#: ../ui/src/emails/ThreadPreview.tsx:233
 #, fuzzy
 msgid "Writing draft reply…"
 msgstr "กำลังร่างข้อความตอบกลับ…"

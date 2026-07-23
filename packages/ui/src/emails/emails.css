@@ -835,7 +835,9 @@
   color: var(--accent);
 }
 
-/* Routing chip */
+/* Routing chip. The folder tag carries the brand accent so it reads as the
+   routing control it now is (clicking it opens the move-to-folder picker);
+   status variants below (unrouted, sorting) stay neutral. */
 .em-route-chip {
   display: inline-flex;
   align-items: center;
@@ -844,12 +846,20 @@
   padding: 0 8px 0 6px;
   border-radius: 999px;
   font-size: 11px;
-  color: var(--ink-2);
-  background: var(--bg-soft);
-  border: 1px solid var(--line-2);
+  font-family: inherit;
+  color: var(--accent-ink);
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-line);
   font-weight: 500;
   white-space: nowrap;
 }
+
+button.em-route-chip {
+  cursor: pointer;
+  transition: border-color 0.1s, background 0.1s;
+}
+
+button.em-route-chip:hover { border-color: currentColor; }
 
 .em-chip-ico {
   width: 10px;
@@ -857,8 +867,14 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: var(--ink-3);
+  color: currentColor;
   flex-shrink: 0;
+}
+
+.em-route-chip.unrouted {
+  color: var(--ink-2);
+  background: var(--bg-soft);
+  border-color: var(--line-2);
 }
 
 .em-route-chip.needs-review {
@@ -1074,97 +1090,6 @@
   font-size: 13px;
 }
 
-/* ─── Rationale card ──────────────────────────────────────────────────────── */
-
-.em-rationale-card {
-  margin: 16px 0;
-  padding: 14px 16px;
-  background: var(--accent-soft);
-  border: 1px solid var(--accent-line);
-  border-radius: var(--r-md);
-}
-
-.em-rationale-card.unrouted {
-  background: var(--warn-soft);
-  border-color: var(--warn-line);
-}
-
-.em-rationale-card.sorting {
-  background: var(--bg-sunk);
-  border-color: var(--line-2);
-}
-
-.em-rationale-card.sorting .em-rationale-label {
-  color: var(--ink-3);
-}
-
-.em-rationale-card.sorting .em-rationale-dest {
-  color: var(--ink-3);
-  font-family: var(--f-mono);
-  letter-spacing: 0.02em;
-}
-
-.em-rationale-card.unrouted .em-rationale-label,
-.em-rationale-card.unrouted .em-rationale-conf,
-.em-rationale-card.unrouted .em-rationale-dest,
-.em-rationale-card.unrouted .em-rationale-reason,
-.em-rationale-card.unrouted .em-rationale-alt { color: var(--warn-ink); }
-
-.em-rationale-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 10px;
-}
-
-.em-rationale-label {
-  font-family: var(--f-mono);
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--accent-ink);
-  flex: 1;
-}
-
-.em-rationale-conf {
-  font-family: var(--f-mono);
-  font-size: 10.5px;
-  color: var(--accent-ink);
-  white-space: nowrap;
-}
-
-.em-rationale-dest {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 13.5px;
-  font-weight: 600;
-  color: var(--ink);
-  margin-bottom: 8px;
-}
-
-.em-rationale-reason {
-  font-size: 12.5px;
-  color: var(--accent-ink);
-  line-height: 1.55;
-  margin-bottom: 8px;
-}
-
-.em-rationale-reason--muted { color: var(--ink-3); font-style: italic; }
-
-.em-rationale-alt {
-  font-size: 11.5px;
-  color: var(--ink-3);
-  margin-bottom: 10px;
-}
-
-.em-rationale-actions {
-  display: flex;
-  flex-direction: row;
-  gap: 8px;
-  align-items: center;
-}
-
 /* ─── Action buttons ──────────────────────────────────────────────────────── */
 
 .em-btn {
@@ -1187,42 +1112,6 @@
 .em-btn.ghost { background: transparent; border-color: transparent; color: var(--ink-2); }
 .em-btn.ghost:hover:not(:disabled) { background: var(--bg-soft); color: var(--ink); }
 .em-btn.ghost:disabled { opacity: 0.45; cursor: default; }
-
-.em-btn-primary {
-  display: inline-flex;
-  align-items: center;
-  padding: 6px 12px;
-  background: var(--accent);
-  color: white;
-  border: none;
-  border-radius: var(--r-sm);
-  font-size: 12.5px;
-  font-weight: 500;
-  font-family: inherit;
-  cursor: pointer;
-  transition: opacity 0.1s;
-}
-
-.em-btn-primary:hover { opacity: 0.88; }
-.em-btn-primary:disabled { opacity: 0.5; cursor: default; }
-
-.em-btn-secondary {
-  display: inline-flex;
-  align-items: center;
-  padding: 5px 11px;
-  background: var(--surface);
-  color: var(--ink-2);
-  border: 1px solid var(--line-2);
-  border-radius: var(--r-sm);
-  font-size: 12.5px;
-  font-weight: 500;
-  font-family: inherit;
-  cursor: pointer;
-  transition: background 0.1s;
-}
-
-.em-btn-secondary:hover { background: var(--bg-soft); }
-
 
 /* ─── Message card ────────────────────────────────────────────────────────── */
 

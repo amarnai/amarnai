@@ -121,11 +121,6 @@ export function MockEmailsPage({
     if (toastTimer.current) clearTimeout(toastTimer.current);
   }
 
-  function handleApprove(threadId: string) {
-    setThreads((ts) => ts.map((t) => t.id === threadId ? { ...t, status: "sorted" as const } : t));
-    showToast({ message: _(msg`Routing approved`) });
-  }
-
   function handleMarkDone(threadId: string) {
     setThreads((ts) =>
       ts.map((t) =>
@@ -145,6 +140,11 @@ export function MockEmailsPage({
   }
 
   function openRerouteFor(threadId: string, anchor: HTMLElement) {
+    // Clicking the same thread's folder chip again toggles the picker closed.
+    if (rerouteThreadId === threadId) {
+      closeReroute();
+      return;
+    }
     setRerouteThreadId(threadId);
     setRerouteAnchor(anchor);
   }
@@ -237,6 +237,7 @@ export function MockEmailsPage({
         onMarkDone={handleMarkDone}
         onUnmarkDone={handleUnmarkDone}
         onToggleImportant={handleToggleImportant}
+        onReroute={openRerouteFor}
         {...(onOpenInProvider
           ? {
               onOpenInGmail: (threadId: string) => {
@@ -253,17 +254,13 @@ export function MockEmailsPage({
       {selectedThread ? (
         <ThreadPreview
           thread={selectedThread}
-          folders={folders}
           messages={selectedThread.messages}
-          reasoning={selectedThread.reasoning}
           draft={draftMap.get(selectedThread.id) ?? null}
           workspaceEmail={workspaceEmail}
           surface={surface}
           onOpenInProvider={onOpenInProvider}
           onGenerateDraft={draftBodies ? () => handleGenerateDraft(selectedThread.id) : undefined}
           onToggleDraftSent={() => handleToggleDraftSent(selectedThread.id)}
-          onApprove={handleApprove}
-          onReroute={openRerouteFor}
           onClose={closePreview}
           onMarkDone={handleMarkDone}
           onUnmarkDone={handleUnmarkDone}

@@ -266,21 +266,6 @@ export function useEmailTriage(options: UseEmailTriageOptions) {
     }
   }, [hasMore, loadingMore, threads.length, loadMore]);
 
-  // ─── Approve ───────────────────────────────────────────────────────────────
-
-  const handleApprove = useCallback((threadId: string) => {
-    const prev = threadsRef.current.find((t) => t.id === threadId);
-    setThreads((ts) =>
-      ts.map((t) => (t.id === threadId ? { ...t, status: "sorted" as const } : t))
-    );
-    api
-      .triageThread(workspaceId, threadId, { action: "approve" })
-      .catch(() => {
-        if (prev) setThreads((ts) => ts.map((t) => (t.id === threadId ? prev : t)));
-      });
-    showToast({ message: "Routing approved" });
-  }, [api, workspaceId, showToast]);
-
   // ─── Mark done ─────────────────────────────────────────────────────────────
 
   const handleMarkDone = useCallback((threadId: string) => {
@@ -547,7 +532,6 @@ export function useEmailTriage(options: UseEmailTriageOptions) {
     serverWaitingCount,
     filteredTotal,
     // mutations
-    handleApprove,
     handleMarkDone,
     handleUnmarkDone,
     handleAssign,

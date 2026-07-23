@@ -1,10 +1,11 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
 import type { FolderItem } from "../folder-tree/types.js";
-import type { ActiveSelection, ThreadItem } from "./types.js";
+import type { ThreadItem } from "./types.js";
 import { buildThreadUrl } from "@amarnai/core/emails";
 import { openInProviderLabel } from "./providerLabels.js";
 import { Tooltip } from "../Tooltip.js";
@@ -92,7 +93,6 @@ function fmtTime(d: Date, today: string): string {
 export interface ThreadRowProps {
   thread: ThreadItem;
   folder: FolderItem | undefined;
-  active: ActiveSelection;
   selected: boolean;
   workspaceEmail?: string | null | undefined;
   onSelect: () => void;
@@ -104,6 +104,9 @@ export interface ThreadRowProps {
   canAssign?: boolean;
   /** Open the member picker anchored to the passed element. */
   onOpenAssign?: (anchor: HTMLElement) => void;
+  /** Open the move-to-folder picker anchored to the passed element. Makes the
+   * folder chip clickable; without it the chip is a static tag. */
+  onReroute?: (anchor: HTMLElement) => void;
   /**
    * When set, the Gmail icon routes through this callback instead of opening a
    * new tab via a plain link. The browser extension uses it to reuse/activate an
@@ -116,7 +119,6 @@ export interface ThreadRowProps {
 export function ThreadRow({
   thread,
   folder,
-  active,
   selected,
   workspaceEmail,
   onSelect,
@@ -125,15 +127,11 @@ export function ThreadRow({
   onToggleImportant,
   canAssign,
   onOpenAssign,
+  onReroute,
   onOpenInGmail,
 }: ThreadRowProps) {
   const { i18n } = useLingui();
   const today = new Date().toISOString().slice(0, 10);
-
-  const inExactFolder =
-    active.kind === "folder" &&
-    active.id === thread.folderId &&
-    thread.status !== "review";
 
   const folderName = folder?.name ?? "—";
   const chipLabel =
@@ -156,6 +154,28 @@ export function ThreadRow({
       <OutlookIcon variant="color" size={14} />
     ) : (
       <GmailIcon variant="color" size={14} />
+    );
+
+  // The folder chip doubles as the move-to-folder control: clicking it opens
+  // the folder picker anchored to the chip. Falls back to a static tag when
+  // the parent wired no reroute handler.
+  const moveChip = (className: string, ariaLabel: string, children: ReactNode) =>
+    onReroute ? (
+      <Tooltip content={i18n._(msg`Change folder`)}>
+        <button
+          type="button"
+          className={className}
+          aria-label={ariaLabel}
+          onClick={(e) => {
+            e.stopPropagation();
+            onReroute(e.currentTarget);
+          }}
+        >
+          {children}
+        </button>
+      </Tooltip>
+    ) : (
+      <span className={className}>{children}</span>
     );
 
   const assignment = thread.assignment;
@@ -231,16 +251,20 @@ export function ThreadRow({
               <Trans>Waiting</Trans>
             </span>
           ) : thread.status === "unclassified" ? (
-            <span className="em-route-chip needs-review">
-              <Trans>Unclassified</Trans>
-            </span>
+            moveChip(
+              "em-route-chip needs-review",
+              i18n._(msg`Unclassified. Change folder`),
+              <Trans>Unclassified</Trans>,
+            )
           ) : (
-            !inExactFolder &&
-            folder && (
-              <span className={chipClass}>
+            folder &&
+            moveChip(
+              chipClass,
+              i18n._(msg`${chipLabel}. Change folder`),
+              <>
                 <span className="em-chip-ico">{FOLDER_ICO}</span>
                 {chipLabel}
-              </span>
+              </>,
             )
           )}
           {!isDone &&

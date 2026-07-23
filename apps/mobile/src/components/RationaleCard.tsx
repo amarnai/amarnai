@@ -9,18 +9,17 @@ interface RationaleCardProps {
   thread: ThreadItem;
   folders: FolderItem[];
   explanation: string | null;
-  onApprove: () => void;
   onReroute: () => void;
 }
 
 // RN equivalent of the web RationaleCard: shows the AI routing destination,
-// confidence, and reasoning, with Approve / Move actions. Mirrors the web
-// states (sorting, waiting, sorted) without the embedding-source nuance.
+// confidence, and reasoning, with a Move action. Mirrors the web states
+// (sorting, waiting, sorted) without the embedding-source nuance. There is no
+// explicit approve — a low-confidence sort left untouched decays to SORTED.
 export function RationaleCard({
   thread,
   folders,
   explanation,
-  onApprove,
   onReroute,
 }: RationaleCardProps) {
   const { i18n } = useLingui();
@@ -66,11 +65,6 @@ export function RationaleCard({
       {explanation ? <Text style={styles.reason}>{explanation}</Text> : null}
 
       <View style={styles.actions}>
-        {thread.status !== 'sorted' && !unrouted ? (
-          <TouchableOpacity style={styles.primaryBtn} onPress={onApprove}>
-            <Text style={styles.primaryBtnText}><Trans>Approve routing</Trans></Text>
-          </TouchableOpacity>
-        ) : null}
         <TouchableOpacity style={styles.secondaryBtn} onPress={onReroute}>
           <Text style={styles.secondaryBtnText}><Trans>Move to…</Trans></Text>
         </TouchableOpacity>
@@ -124,17 +118,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: space.md,
     marginTop: space.xs,
-  },
-  primaryBtn: {
-    backgroundColor: colors.accent,
-    borderRadius: radii.md,
-    paddingHorizontal: space.lg,
-    paddingVertical: space.md,
-  },
-  primaryBtnText: {
-    fontSize: fontSize.md,
-    fontWeight: fontWeight.semibold,
-    color: colors.accentInk,
   },
   secondaryBtn: {
     backgroundColor: colors.surface2,

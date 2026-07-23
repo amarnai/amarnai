@@ -10,16 +10,14 @@ const params = z.object({
   threadId: z.string().min(1),
 });
 
-const approveBody = z.object({ action: z.literal("approve") });
 // retractReference — set by the Undo toast when reverting a move: undo means
 // "my move was a mistake", not "I confirm the old folder", so the thread's
 // reference row is deleted instead of repointed at the restored folder.
-const moveBody = z.object({
+const bodySchema = z.object({
   action: z.literal("move"),
   nodeId: z.string().min(1),
   retractReference: z.boolean().optional(),
 });
-const bodySchema = z.union([approveBody, moveBody]);
 
 /**
  * Pull the embedding quality-gate score from a classification's routing
@@ -40,16 +38,15 @@ const triage = new Hono<AppEnv>();
 
 // ─── PATCH /workspaces/:workspaceId/email-threads/:threadId/triage ────────────
 //
-// Two actions:
-//  • approve — mark thread SORTED without changing destination
-//  • move    — create a manual classification to a chosen node, mark SORTED
+// One action:
+//  • move — create a manual classification to a chosen node, mark SORTED
 //
-// Both actions emit a best-effort audit event ("thread.approved" /
-// "thread.moved") that doubles as a calibration label: it pairs the AI
-// decision being judged (its id, quality-gate score, decisionSource, and
-// destination) with the user's verdict (the folder they confirmed or chose).
-// Approve is a positive label (AI destination accepted); move is a correction.
-// Capturing both avoids an error-only dataset that would bias thetaMin downward.
+// A move emits a best-effort audit event ("thread.moved") that doubles as a
+// calibration label: it pairs the AI decision being overridden (its id,
+// quality-gate score, decisionSource, and destination) with the folder the user
+// chose instead. There is no explicit "approve" — accepting the AI destination
+// is tacit: a low-confidence sort left untouched decays to SORTED on its own
+// (see decayStaleReviews in the worker). Only corrections are captured here.
 
 triage.patch(
   "/workspaces/:workspaceId/email-threads/:threadId/triage",
@@ -75,7 +72,7 @@ triage.patch(
 
     const parsedBody = bodySchema.safeParse(body);
     if (!parsedBody.success) {
-      return c.json({ error: "Invalid action. Expected 'approve' or 'move' with nodeId." }, 400);
+      return c.json({ error: "Invalid action. Expected 'move' with nodeId." }, 400);
     }
 
     const thread = await db.emailThread.findFirst({
@@ -98,36 +95,6 @@ triage.patch(
     const scoreAtDecision = extractScoreAtDecision(priorClassification?.rawOutput);
 
     const action = parsedBody.data;
-
-    if (action.action === "approve") {
-      // ── Approve: accept the current AI destination, mark SORTED ──────────────
-      await db.emailThread.update({
-        where: { id: threadId },
-        data: { triageStatus: "SORTED" },
-      });
-
-      // Positive calibration label: the AI destination was confirmed correct, so
-      // chosenNodeId equals the AI's own finalNodeId.
-      await recordAudit({
-        workspaceId,
-        actorType: "USER",
-        actorUserId: userId,
-        eventType: "thread.approved",
-        entityType: "EmailThread",
-        entityId: threadId,
-        metadata: {
-          classificationId: priorClassification?.id ?? null,
-          scoreAtDecision,
-          decisionSource: priorClassification?.decisionSource ?? null,
-          aiSource: priorClassification?.source ?? null,
-          aiNodeId: priorClassification?.finalNodeId ?? null,
-          chosenNodeId: priorClassification?.finalNodeId ?? null,
-          priorTriageStatus: thread.triageStatus,
-        },
-      });
-
-      return c.json({ ok: true, triageStatus: "SORTED" });
-    }
 
     // ── Move: create a manual classification to the chosen node ──────────────
     const { nodeId } = action;

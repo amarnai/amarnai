@@ -257,7 +257,6 @@ export default function ThreadDetailScreen() {
           thread={thread}
           folders={triage.folders}
           explanation={explanation}
-          onApprove={() => triage.handleApprove(thread.id)}
           onReroute={handleMoveOpen}
         />
 

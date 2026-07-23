@@ -3,8 +3,8 @@ import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
 import type { ApiClient, Draft } from "@amarnai/api-client";
-import type { FolderItem, ThreadItem } from "@amarnai/ui/emails";
-import { RationaleCard, MessageCard, SuggestedDraftCard, TriageBar } from "@amarnai/ui/emails";
+import type { ThreadItem } from "@amarnai/ui/emails";
+import { MessageCard, SuggestedDraftCard, TriageBar } from "@amarnai/ui/emails";
 import { GmailIcon, OutlookIcon } from "@amarnai/ui";
 import { formatQuotaResetDate, TAXONOMY_MIN_NON_ROOT_NODES } from "@amarnai/shared";
 import { openThreadInMail } from "../gmail/openInGmail";
@@ -15,13 +15,10 @@ type DraftState = "idle" | "loading" | "ready" | "error";
 type Props = {
   api: ApiClient;
   thread: ThreadItem;
-  folders: FolderItem[];
   workspaceId: string;
   workspaceEmail: string | null;
   gmailAddress: string | null;
   routableNodeCount: number;
-  onApprove: (threadId: string) => void;
-  onReroute: (threadId: string, anchor: HTMLElement) => void;
   onClose: () => void;
   onDraftStarted: (threadId: string) => void;
   onDraftFailed: (threadId: string) => void;
@@ -41,13 +38,10 @@ type Props = {
 export function ThreadPreviewPane({
   api,
   thread,
-  folders,
   workspaceId,
   workspaceEmail,
   gmailAddress,
   routableNodeCount,
-  onApprove,
-  onReroute,
   onClose,
   onDraftStarted,
   onDraftFailed,
@@ -60,8 +54,6 @@ export function ThreadPreviewPane({
   onOpenAssign,
 }: Props) {
   const { _ } = useLingui();
-  const [reasoning, setReasoning] = useState<string | null>(thread.reasoning);
-  const [decisionSource, setDecisionSource] = useState<string | null>(null);
   const [bodyLoaded, setBodyLoaded] = useState(false);
   const [messages, setMessages] = useState(thread.messages);
 
@@ -120,8 +112,6 @@ export function ThreadPreviewPane({
     setBodyLoaded(false);
     bodiesRef.current = null;
     setMessages(thread.messages);
-    setReasoning(null);
-    setDecisionSource(null);
     setDraftState(thread.isDrafting ? "loading" : thread.hasDraft ? "ready" : "idle");
     setDraft(null);
     clearPoll();
@@ -159,8 +149,6 @@ export function ThreadPreviewPane({
     // metadata; threadBodies resolves later (Gmail fetch) and fills body text.
     // bodiesRef guards the race where threadBodies wins.
     api.emailThread(workspaceId, thread.id).then((detail) => {
-      setReasoning(detail.latestClassification?.explanation ?? null);
-      setDecisionSource(detail.latestClassification?.decisionSource ?? null);
       const bodies = bodiesRef.current;
       setMessages(
         detail.messages.map((m) => {
@@ -252,7 +240,6 @@ export function ThreadPreviewPane({
   }
 
   const isDone = !!thread.doneMark;
-  const enrichedThread = { ...thread, reasoning };
   const lastMsg = messages[messages.length - 1];
   const lastMsgIsOwn =
     !!workspaceEmail &&
@@ -327,7 +314,7 @@ export function ThreadPreviewPane({
           onOpenAssign={(anchor) => onOpenAssign(thread.id, anchor)}
         />
 
-        {isUnsorted ? (
+        {isUnsorted && (
           routableNodeCount < TAXONOMY_MIN_NON_ROOT_NODES ? (
             // Taxonomy too weak to route into (same threshold the web app uses to
             // gate "Route now"), so triage would no-op. Send the user to the web
@@ -348,15 +335,6 @@ export function ThreadPreviewPane({
               <p><Trans>This thread hasn't been sorted yet.</Trans></p>
             </div>
           )
-        ) : (
-          <RationaleCard
-            thread={enrichedThread}
-            folders={folders}
-            decisionSource={decisionSource}
-            routableNodeCount={routableNodeCount}
-            onApprove={() => onApprove(thread.id)}
-            onReroute={(anchor) => onReroute(thread.id, anchor)}
-          />
         )}
 
         <div className="em-msg-list">

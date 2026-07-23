@@ -180,6 +180,11 @@ export function EmailsClient({
   // ─── Reroute (DOM anchor lives here; target + commit logic lives in the hook) ─
 
   function openRerouteFor(threadId: string, anchor: HTMLElement) {
+    // Clicking the same thread's folder chip again toggles the picker closed.
+    if (triage.rerouteTarget?.threadId === threadId) {
+      closeReroute();
+      return;
+    }
     triage.openRerouteFor(threadId);
     setRerouteAnchor(anchor);
   }
@@ -232,7 +237,7 @@ export function EmailsClient({
 
   const handleRerouteKey = useCallback(() => {
     if (!selectedId) return;
-    const anchor = document.querySelector<HTMLElement>(".em-rationale-actions .em-btn-secondary");
+    const anchor = document.querySelector<HTMLElement>(".em-thread-row.selected button.em-route-chip");
     if (anchor) openRerouteFor(selectedId, anchor);
   }, [selectedId]);
 
@@ -242,7 +247,6 @@ export function EmailsClient({
     popoverOpen: rerouteAnchor !== null,
     onNavigate: selectThread,
     onToggleCheck: () => {},
-    onApprove: triage.handleApprove,
     onReroute: handleRerouteKey,
     onFocusSearch: () => searchRef.current?.focus(),
   });
@@ -313,6 +317,7 @@ export function EmailsClient({
         onToggleImportant={triage.handleToggleImportant}
         canAssign={canAssign}
         onOpenAssign={openAssignFor}
+        onReroute={openRerouteFor}
         railOpen={railOpen}
         onToggleRail={() => setRailOpen((v) => !v)}
         hasMore={triage.hasMore}
@@ -326,11 +331,7 @@ export function EmailsClient({
       {selectedThread ? (
         <ThreadPreview
           thread={selectedThread}
-          folders={folders}
           workspaceId={workspaceId}
-          routableNodeCount={routableNodeCount}
-          onApprove={triage.handleApprove}
-          onReroute={openRerouteFor}
           onClose={closePreview}
           workspaceEmail={workspaceEmail}
           onDraftStarted={triage.handleDraftStarted}
