@@ -100,7 +100,7 @@ msgstr "{0}님이 회원님께 스레드를 할당했습니다."
 #. placeholder {1}: (total ?? 0).toLocaleString()
 #. placeholder {1}: viewCount.toLocaleString()
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:87
-#: ../ui/src/emails/ThreadList.tsx:241
+#: ../ui/src/emails/ThreadList.tsx:249
 #, fuzzy
 msgid "{0} of {1} loaded"
 msgstr "{1}개 중 {0}개 로드됨"
@@ -715,6 +715,10 @@ msgstr "모든 폴더"
 #, fuzzy
 msgid "All limits are per workspace."
 msgstr "모든 제한은 작업 공간별로 적용됩니다."
+
+#: ../../apps/extension/src/panel/ScopeField.tsx:52
+msgid "All mail"
+msgstr "모든 메일"
 
 #: ../../apps/mobile/src/components/emails/FolderFilterSheet.tsx:44
 #, fuzzy
@@ -1519,6 +1523,10 @@ msgstr "패널 닫기"
 #, fuzzy
 msgid "Close preview"
 msgstr "미리보기 닫기"
+
+#: ../../apps/extension/src/panel/ScopeField.tsx:99
+msgid "Close search"
+msgstr "검색 닫기"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:117
 #, fuzzy
@@ -2329,7 +2337,7 @@ msgstr "이 작업 공간의 연결을 해제합니다. 이 메일함이 Amarnai
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "이 작업 공간의 연결을 해제합니다. 이 메일함은 {sharedNames}에 여전히 연결되어 있어 Amarnai는 계속 접근 권한을 가집니다."
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:239
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:224
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:65
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:393
@@ -2915,7 +2923,7 @@ msgid "Folder: {activeFolderName}"
 msgstr "폴더: {activeFolderName}"
 
 #: ../ui/src/emails/EmailRail.tsx:99
-#: ../ui/src/emails/ThreadList.tsx:146
+#: ../ui/src/emails/ThreadList.tsx:152
 #, fuzzy
 msgid "Folders"
 msgstr "폴더"
@@ -3765,6 +3773,11 @@ msgstr "학술지 논문 모집, 특별호 초대 및 인용 지표"
 msgid "Journals"
 msgstr "학술지"
 
+#: ../../apps/extension/src/panel/ScopeField.tsx:180
+#, fuzzy
+msgid "Jump to folder…"
+msgstr "폴더로 이동…"
+
 #: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:128
 msgid "Junk Email"
 msgstr "스팸 메일"
@@ -3919,7 +3932,7 @@ msgstr "실시간"
 #: ../../apps/mobile/app/(app)/notifications.tsx:318
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:101
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:284
-#: ../ui/src/emails/ThreadList.tsx:252
+#: ../ui/src/emails/ThreadList.tsx:260
 #, fuzzy
 msgid "Load more"
 msgstr "더 보기"
@@ -3927,7 +3940,7 @@ msgstr "더 보기"
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:122
 #: ../ui/src/emails/BackfillCard.tsx:35
-#: ../ui/src/emails/ThreadList.tsx:189
+#: ../ui/src/emails/ThreadList.tsx:197
 #, fuzzy
 msgid "Loading past threads…"
 msgstr "이전 스레드를 불러오는 중…"
@@ -3944,7 +3957,7 @@ msgstr "이전 스레드를 불러오는 중…"
 #: ../../apps/web/src/app/loading.tsx:6
 #: ../../apps/web/src/components/NotificationBell.tsx:161
 #: ../ui/src/emails/MessageCard.tsx:68
-#: ../ui/src/emails/ThreadList.tsx:252
+#: ../ui/src/emails/ThreadList.tsx:260
 #, fuzzy
 msgid "Loading…"
 msgstr "불러오는 중…"
@@ -4194,7 +4207,7 @@ msgstr "스레드 이동"
 msgid "Move to folder"
 msgstr "폴더로 이동"
 
-#: ../ui/src/emails/ReroutePopover.tsx:88
+#: ../ui/src/emails/ReroutePopover.tsx:130
 #, fuzzy
 msgid "Move to folder…"
 msgstr "폴더로 이동…"
@@ -4360,7 +4373,7 @@ msgstr "사용 가능한 폴더 없음"
 msgid "No folders defined"
 msgstr "정의된 폴더 없음"
 
-#: ../ui/src/emails/ReroutePopover.tsx:98
+#: ../ui/src/emails/ReroutePopover.tsx:140
 #, fuzzy
 msgid "No folders match"
 msgstr "일치하는 폴더 없음"
@@ -4431,7 +4444,7 @@ msgstr "이전할 분류된 스레드가 없습니다. 새 플랜이 바로 적�
 msgid "No threads"
 msgstr "스레드 없음"
 
-#: ../ui/src/emails/ThreadList.tsx:192
+#: ../ui/src/emails/ThreadList.tsx:200
 #, fuzzy
 msgid "No threads here."
 msgstr "여기에 스레드가 없습니다."
@@ -4446,7 +4459,7 @@ msgstr "{folderName}에 스레드 없음"
 msgid "No threads match your search"
 msgstr "검색과 일치하는 스레드 없음"
 
-#: ../ui/src/emails/ThreadList.tsx:185
+#: ../ui/src/emails/ThreadList.tsx:193
 #, fuzzy
 msgid "No threads match your search."
 msgstr "검색과 일치하는 스레드가 없습니다."
@@ -5087,7 +5100,7 @@ msgstr "5점 만점에 5점"
 msgid "Re-route {unclassifiedCount} unclassified"
 msgstr "미분류 항목 {unclassifiedCount}개 재경로 지정"
 
-#: ../ui/src/emails/ReroutePopover.tsx:79
+#: ../ui/src/emails/ReroutePopover.tsx:121
 #, fuzzy
 msgid "Re-route thread"
 msgstr "스레드 재경로 지정"
@@ -5605,7 +5618,7 @@ msgid "Search {threadCount} threads"
 msgstr "{threadCount}개 스레드 검색"
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:322
-#: ../ui/src/emails/ReroutePopover.tsx:92
+#: ../ui/src/emails/ReroutePopover.tsx:134
 #, fuzzy
 msgid "Search folders"
 msgstr "폴더 검색"
@@ -5614,6 +5627,9 @@ msgstr "폴더 검색"
 msgid "Search mail"
 msgstr "메일 검색"
 
+#: ../../apps/extension/src/panel/ScopeField.tsx:89
+#: ../../apps/extension/src/panel/ScopeField.tsx:90
+#: ../../apps/extension/src/panel/ScopeField.tsx:162
 #: ../ui/src/emails/ThreadListHeader.tsx:107
 #, fuzzy
 msgid "Search threads"
@@ -5642,7 +5658,7 @@ msgstr "작동 방식 보기"
 msgid "Select"
 msgstr "선택"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:210
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:195
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:349
 #: ../ui/src/emails/MockEmailsPage.tsx:274
 #, fuzzy
@@ -6156,6 +6172,11 @@ msgstr "지원, 온보딩, 고객 유지, 이탈 및 고객 성공 대화."
 msgid "Switch"
 msgstr "전환"
 
+#: ../../apps/extension/src/panel/ScopeField.tsx:146
+#: ../../apps/extension/src/panel/ScopeField.tsx:181
+msgid "Switch folder view"
+msgstr "폴더 보기 전환"
+
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:220
 #, fuzzy
 msgid "Switch the previewed address"
@@ -6602,7 +6623,7 @@ msgstr "오늘"
 #~ msgid "Today Amarnai connects to Gmail. Outlook support is on the way, and it will work the same read-only way: Amarnai reads your threads to sort them and never sends, deletes, or changes anything in your account."
 #~ msgstr "현재 Amarnai는 Gmail과 연동됩니다. Outlook 지원도 곧 제공될 예정이며, 동일하게 읽기 전용 방식으로 작동합니다. Amarnai는 스레드 분류를 위해 읽기만 할 뿐, 회원님의 계정에서 어떠한 것도 전송, 삭제, 변경하지 않습니다."
 
-#: ../ui/src/emails/ThreadList.tsx:130
+#: ../ui/src/emails/ThreadList.tsx:136
 #, fuzzy
 msgid "Toggle folders"
 msgstr "폴더 전환"
@@ -6681,7 +6702,7 @@ msgstr "이용 불가"
 msgid "Unclassified"
 msgstr "미분류"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:232
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:217
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:390
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1442
 #: ../ui/src/emails/MockEmailsPage.tsx:293

@@ -89,7 +89,7 @@ msgstr "{0} assigned you a thread"
 #. placeholder {1}: (total ?? 0).toLocaleString()
 #. placeholder {1}: viewCount.toLocaleString()
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:87
-#: ../ui/src/emails/ThreadList.tsx:241
+#: ../ui/src/emails/ThreadList.tsx:249
 msgid "{0} of {1} loaded"
 msgstr "{0} of {1} loaded"
 
@@ -626,6 +626,10 @@ msgstr "All folders"
 #: ../ui/src/PricingPlans.tsx:317
 msgid "All limits are per workspace."
 msgstr "All limits are per workspace."
+
+#: ../../apps/extension/src/panel/ScopeField.tsx:52
+msgid "All mail"
+msgstr "All mail"
 
 #: ../../apps/mobile/src/components/emails/FolderFilterSheet.tsx:44
 msgid "All threads"
@@ -1331,6 +1335,10 @@ msgstr "Close panel"
 msgid "Close preview"
 msgstr "Close preview"
 
+#: ../../apps/extension/src/panel/ScopeField.tsx:99
+msgid "Close search"
+msgstr "Close search"
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:117
 msgid "Cloud hosting, servers, and platform monitoring for running services."
 msgstr "Cloud hosting, servers, and platform monitoring for running services."
@@ -2026,7 +2034,7 @@ msgstr "Disconnects this workspace. Amarnai keeps access because this mailbox is
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:239
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:224
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:65
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:393
@@ -2528,7 +2536,7 @@ msgid "Folder: {activeFolderName}"
 msgstr "Folder: {activeFolderName}"
 
 #: ../ui/src/emails/EmailRail.tsx:99
-#: ../ui/src/emails/ThreadList.tsx:146
+#: ../ui/src/emails/ThreadList.tsx:152
 msgid "Folders"
 msgstr "Folders"
 
@@ -3255,6 +3263,10 @@ msgstr "Journal calls for papers, special issue invitations, and citation metric
 msgid "Journals"
 msgstr "Journals"
 
+#: ../../apps/extension/src/panel/ScopeField.tsx:180
+msgid "Jump to folder…"
+msgstr "Jump to folder…"
+
 #: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:128
 msgid "Junk Email"
 msgstr "Junk Email"
@@ -3393,14 +3405,14 @@ msgstr "Live"
 #: ../../apps/mobile/app/(app)/notifications.tsx:318
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:101
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:284
-#: ../ui/src/emails/ThreadList.tsx:252
+#: ../ui/src/emails/ThreadList.tsx:260
 msgid "Load more"
 msgstr "Load more"
 
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:122
 #: ../ui/src/emails/BackfillCard.tsx:35
-#: ../ui/src/emails/ThreadList.tsx:189
+#: ../ui/src/emails/ThreadList.tsx:197
 msgid "Loading past threads…"
 msgstr "Loading past threads…"
 
@@ -3416,7 +3428,7 @@ msgstr "Loading past threads…"
 #: ../../apps/web/src/app/loading.tsx:6
 #: ../../apps/web/src/components/NotificationBell.tsx:161
 #: ../ui/src/emails/MessageCard.tsx:68
-#: ../ui/src/emails/ThreadList.tsx:252
+#: ../ui/src/emails/ThreadList.tsx:260
 msgid "Loading…"
 msgstr "Loading…"
 
@@ -3638,7 +3650,7 @@ msgstr "Move threads to"
 msgid "Move to folder"
 msgstr "Move to folder"
 
-#: ../ui/src/emails/ReroutePopover.tsx:88
+#: ../ui/src/emails/ReroutePopover.tsx:130
 msgid "Move to folder…"
 msgstr "Move to folder…"
 
@@ -3779,7 +3791,7 @@ msgstr "No folders available"
 msgid "No folders defined"
 msgstr "No folders defined"
 
-#: ../ui/src/emails/ReroutePopover.tsx:98
+#: ../ui/src/emails/ReroutePopover.tsx:140
 msgid "No folders match"
 msgstr "No folders match"
 
@@ -3840,7 +3852,7 @@ msgstr "No sorted threads to migrate. Your new plan will apply directly."
 msgid "No threads"
 msgstr "No threads"
 
-#: ../ui/src/emails/ThreadList.tsx:192
+#: ../ui/src/emails/ThreadList.tsx:200
 msgid "No threads here."
 msgstr "No threads here."
 
@@ -3856,7 +3868,7 @@ msgstr "No threads in {folderName}"
 msgid "No threads match your search"
 msgstr "No threads match your search"
 
-#: ../ui/src/emails/ThreadList.tsx:185
+#: ../ui/src/emails/ThreadList.tsx:193
 msgid "No threads match your search."
 msgstr "No threads match your search."
 
@@ -4412,7 +4424,7 @@ msgstr "Rated 5 out of 5"
 msgid "Re-route {unclassifiedCount} unclassified"
 msgstr "Re-route {unclassifiedCount} unclassified"
 
-#: ../ui/src/emails/ReroutePopover.tsx:79
+#: ../ui/src/emails/ReroutePopover.tsx:121
 msgid "Re-route thread"
 msgstr "Re-route thread"
 
@@ -4864,7 +4876,7 @@ msgid "Search {threadCount} threads"
 msgstr "Search {threadCount} threads"
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:322
-#: ../ui/src/emails/ReroutePopover.tsx:92
+#: ../ui/src/emails/ReroutePopover.tsx:134
 msgid "Search folders"
 msgstr "Search folders"
 
@@ -4872,6 +4884,9 @@ msgstr "Search folders"
 msgid "Search mail"
 msgstr "Search mail"
 
+#: ../../apps/extension/src/panel/ScopeField.tsx:89
+#: ../../apps/extension/src/panel/ScopeField.tsx:90
+#: ../../apps/extension/src/panel/ScopeField.tsx:162
 #: ../ui/src/emails/ThreadListHeader.tsx:107
 msgid "Search threads"
 msgstr "Search threads"
@@ -4897,7 +4912,7 @@ msgstr "See it work"
 msgid "Select"
 msgstr "Select"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:210
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:195
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:349
 #: ../ui/src/emails/MockEmailsPage.tsx:274
 msgid "Select a thread to preview"
@@ -5335,6 +5350,11 @@ msgstr "Support, onboarding, retention, churn, and customer success conversation
 msgid "Switch"
 msgstr "Switch"
 
+#: ../../apps/extension/src/panel/ScopeField.tsx:146
+#: ../../apps/extension/src/panel/ScopeField.tsx:181
+msgid "Switch folder view"
+msgstr "Switch folder view"
+
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:220
 msgid "Switch the previewed address"
 msgstr "Switch the previewed address"
@@ -5762,7 +5782,7 @@ msgstr "Today"
 #~ msgid "Today Amarnai connects to Gmail. Outlook support is on the way, and it will work the same read-only way: Amarnai reads your threads to sort them and never sends, deletes, or changes anything in your account."
 #~ msgstr "Today Amarnai connects to Gmail. Outlook support is on the way, and it will work the same read-only way: Amarnai reads your threads to sort them and never sends, deletes, or changes anything in your account."
 
-#: ../ui/src/emails/ThreadList.tsx:130
+#: ../ui/src/emails/ThreadList.tsx:136
 msgid "Toggle folders"
 msgstr "Toggle folders"
 
@@ -5830,7 +5850,7 @@ msgstr "Unavailable"
 msgid "Unclassified"
 msgstr "Unclassified"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:232
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:217
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:390
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1442
 #: ../ui/src/emails/MockEmailsPage.tsx:293

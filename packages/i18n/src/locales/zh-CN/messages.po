@@ -98,7 +98,7 @@ msgstr "{0} 给你指派了一个会话"
 #. placeholder {1}: (total ?? 0).toLocaleString()
 #. placeholder {1}: viewCount.toLocaleString()
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:87
-#: ../ui/src/emails/ThreadList.tsx:241
+#: ../ui/src/emails/ThreadList.tsx:249
 msgid "{0} of {1} loaded"
 msgstr "{0} / {1} 已加载"
 
@@ -702,6 +702,11 @@ msgstr "所有文件夹"
 #, fuzzy
 msgid "All limits are per workspace."
 msgstr "所有限制均适用于单个工作区。"
+
+#: ../../apps/extension/src/panel/ScopeField.tsx:52
+#, fuzzy
+msgid "All mail"
+msgstr "所有邮件"
 
 #: ../../apps/mobile/src/components/emails/FolderFilterSheet.tsx:44
 msgid "All threads"
@@ -1491,6 +1496,10 @@ msgstr "关闭面板"
 #, fuzzy
 msgid "Close preview"
 msgstr "关闭预览"
+
+#: ../../apps/extension/src/panel/ScopeField.tsx:99
+msgid "Close search"
+msgstr "关闭搜索"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:117
 #, fuzzy
@@ -2282,7 +2291,7 @@ msgstr "断开此工作区连接。Amarnai仍保留访问权限，因为此邮�
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "断开此工作区连接。Amarnai仍保留访问权限，因为此邮箱仍连接在{sharedNames}中。"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:239
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:224
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:65
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:393
@@ -2854,7 +2863,7 @@ msgid "Folder: {activeFolderName}"
 msgstr "文件夹：{activeFolderName}"
 
 #: ../ui/src/emails/EmailRail.tsx:99
-#: ../ui/src/emails/ThreadList.tsx:146
+#: ../ui/src/emails/ThreadList.tsx:152
 msgid "Folders"
 msgstr "文件夹"
 
@@ -3678,6 +3687,10 @@ msgstr "期刊征稿、特刊邀请及引用指标。"
 msgid "Journals"
 msgstr "期刊"
 
+#: ../../apps/extension/src/panel/ScopeField.tsx:180
+msgid "Jump to folder…"
+msgstr "跳转到文件夹…"
+
 #: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:128
 #, fuzzy
 msgid "Junk Email"
@@ -3835,7 +3848,7 @@ msgstr "实时"
 #: ../../apps/mobile/app/(app)/notifications.tsx:318
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:101
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:284
-#: ../ui/src/emails/ThreadList.tsx:252
+#: ../ui/src/emails/ThreadList.tsx:260
 #, fuzzy
 msgid "Load more"
 msgstr "加载更多"
@@ -3843,7 +3856,7 @@ msgstr "加载更多"
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:122
 #: ../ui/src/emails/BackfillCard.tsx:35
-#: ../ui/src/emails/ThreadList.tsx:189
+#: ../ui/src/emails/ThreadList.tsx:197
 msgid "Loading past threads…"
 msgstr "正在加载过去的会话…"
 
@@ -3859,7 +3872,7 @@ msgstr "正在加载过去的会话…"
 #: ../../apps/web/src/app/loading.tsx:6
 #: ../../apps/web/src/components/NotificationBell.tsx:161
 #: ../ui/src/emails/MessageCard.tsx:68
-#: ../ui/src/emails/ThreadList.tsx:252
+#: ../ui/src/emails/ThreadList.tsx:260
 #, fuzzy
 msgid "Loading…"
 msgstr "加载中…"
@@ -4104,7 +4117,7 @@ msgstr "将会话移动到"
 msgid "Move to folder"
 msgstr "移至文件夹"
 
-#: ../ui/src/emails/ReroutePopover.tsx:88
+#: ../ui/src/emails/ReroutePopover.tsx:130
 #, fuzzy
 msgid "Move to folder…"
 msgstr "移至文件夹…"
@@ -4262,7 +4275,7 @@ msgstr "无可用文件夹"
 msgid "No folders defined"
 msgstr "未定义文件夹"
 
-#: ../ui/src/emails/ReroutePopover.tsx:98
+#: ../ui/src/emails/ReroutePopover.tsx:140
 #, fuzzy
 msgid "No folders match"
 msgstr "没有匹配的文件夹"
@@ -4332,7 +4345,7 @@ msgstr "没有已分类的会话可供迁移。您的新方案将直接生效。
 msgid "No threads"
 msgstr "无会话"
 
-#: ../ui/src/emails/ThreadList.tsx:192
+#: ../ui/src/emails/ThreadList.tsx:200
 msgid "No threads here."
 msgstr "此处没有会话。"
 
@@ -4350,7 +4363,7 @@ msgstr "在{folderName}中没有会话"
 msgid "No threads match your search"
 msgstr "无会话符合您的搜索条件"
 
-#: ../ui/src/emails/ThreadList.tsx:185
+#: ../ui/src/emails/ThreadList.tsx:193
 #, fuzzy
 msgid "No threads match your search."
 msgstr "没有会话与您的搜索匹配。"
@@ -4981,7 +4994,7 @@ msgstr "5星好评"
 msgid "Re-route {unclassifiedCount} unclassified"
 msgstr "重新路由 {unclassifiedCount} 个未分类项"
 
-#: ../ui/src/emails/ReroutePopover.tsx:79
+#: ../ui/src/emails/ReroutePopover.tsx:121
 msgid "Re-route thread"
 msgstr "重新路由会话"
 
@@ -5493,7 +5506,7 @@ msgid "Search {threadCount} threads"
 msgstr "搜索 {threadCount} 个会话"
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:322
-#: ../ui/src/emails/ReroutePopover.tsx:92
+#: ../ui/src/emails/ReroutePopover.tsx:134
 #, fuzzy
 msgid "Search folders"
 msgstr "搜索文件夹"
@@ -5502,6 +5515,9 @@ msgstr "搜索文件夹"
 msgid "Search mail"
 msgstr "搜索邮件"
 
+#: ../../apps/extension/src/panel/ScopeField.tsx:89
+#: ../../apps/extension/src/panel/ScopeField.tsx:90
+#: ../../apps/extension/src/panel/ScopeField.tsx:162
 #: ../ui/src/emails/ThreadListHeader.tsx:107
 #, fuzzy
 msgid "Search threads"
@@ -5529,7 +5545,7 @@ msgstr "查看效果"
 msgid "Select"
 msgstr "选择"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:210
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:195
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:349
 #: ../ui/src/emails/MockEmailsPage.tsx:274
 #, fuzzy
@@ -6025,6 +6041,11 @@ msgstr "支持、新用户引导、客户留存、流失及客户服务会话。
 msgid "Switch"
 msgstr "切换"
 
+#: ../../apps/extension/src/panel/ScopeField.tsx:146
+#: ../../apps/extension/src/panel/ScopeField.tsx:181
+msgid "Switch folder view"
+msgstr "切换文件夹视图"
+
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:220
 #, fuzzy
 msgid "Switch the previewed address"
@@ -6466,7 +6487,7 @@ msgstr "今天"
 #~ msgid "Today Amarnai connects to Gmail. Outlook support is on the way, and it will work the same read-only way: Amarnai reads your threads to sort them and never sends, deletes, or changes anything in your account."
 #~ msgstr "目前 Amarnai 已支持 Gmail。即将支持 Outlook，工作原理与 Gmail 相同，均采用只读模式：Amarnai 会读取您的会话进行分类，绝不会在您的账户中发送、删除或更改任何内容。"
 
-#: ../ui/src/emails/ThreadList.tsx:130
+#: ../ui/src/emails/ThreadList.tsx:136
 #, fuzzy
 msgid "Toggle folders"
 msgstr "切换文件夹"
@@ -6546,7 +6567,7 @@ msgstr "不可用"
 msgid "Unclassified"
 msgstr "未分类"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:232
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:217
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:390
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1442
 #: ../ui/src/emails/MockEmailsPage.tsx:293

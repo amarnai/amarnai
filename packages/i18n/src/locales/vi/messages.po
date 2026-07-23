@@ -100,7 +100,7 @@ msgstr "{0} đã gán cho bạn một luồng"
 #. placeholder {1}: (total ?? 0).toLocaleString()
 #. placeholder {1}: viewCount.toLocaleString()
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:87
-#: ../ui/src/emails/ThreadList.tsx:241
+#: ../ui/src/emails/ThreadList.tsx:249
 #, fuzzy
 msgid "{0} of {1} loaded"
 msgstr "Đã tải {0} trên {1}"
@@ -715,6 +715,10 @@ msgstr "Tất cả thư mục"
 #, fuzzy
 msgid "All limits are per workspace."
 msgstr "Mọi giới hạn áp dụng cho mỗi không gian làm việc."
+
+#: ../../apps/extension/src/panel/ScopeField.tsx:52
+msgid "All mail"
+msgstr "Tất cả thư"
 
 #: ../../apps/mobile/src/components/emails/FolderFilterSheet.tsx:44
 #, fuzzy
@@ -1519,6 +1523,10 @@ msgstr "Đóng bảng điều khiển"
 #, fuzzy
 msgid "Close preview"
 msgstr "Đóng bản xem trước"
+
+#: ../../apps/extension/src/panel/ScopeField.tsx:99
+msgid "Close search"
+msgstr "Đóng tìm kiếm"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:117
 #, fuzzy
@@ -2329,7 +2337,7 @@ msgstr "Ngắt kết nối không gian làm việc này. Amarnai vẫn giữ quy
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "Ngắt kết nối không gian làm việc này. Amarnai vẫn giữ quyền truy cập vì hộp thư này vẫn được kết nối trong {sharedNames}."
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:239
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:224
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:65
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:393
@@ -2915,7 +2923,7 @@ msgid "Folder: {activeFolderName}"
 msgstr "Thư mục: {activeFolderName}"
 
 #: ../ui/src/emails/EmailRail.tsx:99
-#: ../ui/src/emails/ThreadList.tsx:146
+#: ../ui/src/emails/ThreadList.tsx:152
 #, fuzzy
 msgid "Folders"
 msgstr "Thư mục"
@@ -3765,6 +3773,11 @@ msgstr "Lời mời gửi bài báo, lời mời tham gia số đặc biệt và
 msgid "Journals"
 msgstr "Tạp chí"
 
+#: ../../apps/extension/src/panel/ScopeField.tsx:180
+#, fuzzy
+msgid "Jump to folder…"
+msgstr "Chuyển đến thư mục…"
+
 #: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:128
 msgid "Junk Email"
 msgstr "Thư rác"
@@ -3919,7 +3932,7 @@ msgstr "Hoạt động"
 #: ../../apps/mobile/app/(app)/notifications.tsx:318
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:101
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:284
-#: ../ui/src/emails/ThreadList.tsx:252
+#: ../ui/src/emails/ThreadList.tsx:260
 #, fuzzy
 msgid "Load more"
 msgstr "Tải thêm"
@@ -3927,7 +3940,7 @@ msgstr "Tải thêm"
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:122
 #: ../ui/src/emails/BackfillCard.tsx:35
-#: ../ui/src/emails/ThreadList.tsx:189
+#: ../ui/src/emails/ThreadList.tsx:197
 #, fuzzy
 msgid "Loading past threads…"
 msgstr "Đang tải các luồng thư cũ…"
@@ -3944,7 +3957,7 @@ msgstr "Đang tải các luồng thư cũ…"
 #: ../../apps/web/src/app/loading.tsx:6
 #: ../../apps/web/src/components/NotificationBell.tsx:161
 #: ../ui/src/emails/MessageCard.tsx:68
-#: ../ui/src/emails/ThreadList.tsx:252
+#: ../ui/src/emails/ThreadList.tsx:260
 #, fuzzy
 msgid "Loading…"
 msgstr "Đang tải…"
@@ -4194,7 +4207,7 @@ msgstr "Chuyển các cuộc hội thoại đến"
 msgid "Move to folder"
 msgstr "Chuyển vào thư mục"
 
-#: ../ui/src/emails/ReroutePopover.tsx:88
+#: ../ui/src/emails/ReroutePopover.tsx:130
 #, fuzzy
 msgid "Move to folder…"
 msgstr "Chuyển vào thư mục…"
@@ -4360,7 +4373,7 @@ msgstr "Không có thư mục nào"
 msgid "No folders defined"
 msgstr "Chưa có thư mục nào"
 
-#: ../ui/src/emails/ReroutePopover.tsx:98
+#: ../ui/src/emails/ReroutePopover.tsx:140
 #, fuzzy
 msgid "No folders match"
 msgstr "Không có thư mục nào khớp"
@@ -4431,7 +4444,7 @@ msgstr "Không có chuỗi hội thoại đã sắp xếp nào để di chuyển
 msgid "No threads"
 msgstr "Không có luồng nào"
 
-#: ../ui/src/emails/ThreadList.tsx:192
+#: ../ui/src/emails/ThreadList.tsx:200
 #, fuzzy
 msgid "No threads here."
 msgstr "Không có luồng nào ở đây."
@@ -4446,7 +4459,7 @@ msgstr "Không có luồng nào trong {folderName}"
 msgid "No threads match your search"
 msgstr "Không có luồng nào khớp với tìm kiếm của bạn"
 
-#: ../ui/src/emails/ThreadList.tsx:185
+#: ../ui/src/emails/ThreadList.tsx:193
 #, fuzzy
 msgid "No threads match your search."
 msgstr "Không có luồng nào khớp với tìm kiếm của bạn."
@@ -5087,7 +5100,7 @@ msgstr "Xếp hạng 5/5"
 msgid "Re-route {unclassifiedCount} unclassified"
 msgstr "Chuyển hướng {unclassifiedCount} mục chưa phân loại"
 
-#: ../ui/src/emails/ReroutePopover.tsx:79
+#: ../ui/src/emails/ReroutePopover.tsx:121
 #, fuzzy
 msgid "Re-route thread"
 msgstr "Chuyển hướng chuỗi thư"
@@ -5605,7 +5618,7 @@ msgid "Search {threadCount} threads"
 msgstr "Tìm kiếm {threadCount} luồng"
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:322
-#: ../ui/src/emails/ReroutePopover.tsx:92
+#: ../ui/src/emails/ReroutePopover.tsx:134
 #, fuzzy
 msgid "Search folders"
 msgstr "Tìm kiếm thư mục"
@@ -5614,6 +5627,9 @@ msgstr "Tìm kiếm thư mục"
 msgid "Search mail"
 msgstr "Tìm kiếm thư"
 
+#: ../../apps/extension/src/panel/ScopeField.tsx:89
+#: ../../apps/extension/src/panel/ScopeField.tsx:90
+#: ../../apps/extension/src/panel/ScopeField.tsx:162
 #: ../ui/src/emails/ThreadListHeader.tsx:107
 #, fuzzy
 msgid "Search threads"
@@ -5642,7 +5658,7 @@ msgstr "Xem cách hoạt động"
 msgid "Select"
 msgstr "Chọn"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:210
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:195
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:349
 #: ../ui/src/emails/MockEmailsPage.tsx:274
 #, fuzzy
@@ -6156,6 +6172,11 @@ msgstr "Các cuộc trò chuyện về hỗ trợ, hướng dẫn, giữ chân, 
 msgid "Switch"
 msgstr "Chuyển đổi"
 
+#: ../../apps/extension/src/panel/ScopeField.tsx:146
+#: ../../apps/extension/src/panel/ScopeField.tsx:181
+msgid "Switch folder view"
+msgstr "Đổi chế độ xem thư mục"
+
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:220
 #, fuzzy
 msgid "Switch the previewed address"
@@ -6602,7 +6623,7 @@ msgstr "Hôm nay"
 #~ msgid "Today Amarnai connects to Gmail. Outlook support is on the way, and it will work the same read-only way: Amarnai reads your threads to sort them and never sends, deletes, or changes anything in your account."
 #~ msgstr "Hiện tại, Amarnai kết nối với Gmail. Sắp có hỗ trợ Outlook và cơ chế hoạt động cũng sẽ là chỉ đọc: Amarnai đọc luồng thư để phân loại, không gửi, xóa hay thay đổi bất cứ điều gì trong tài khoản của bạn."
 
-#: ../ui/src/emails/ThreadList.tsx:130
+#: ../ui/src/emails/ThreadList.tsx:136
 #, fuzzy
 msgid "Toggle folders"
 msgstr "Hiện/ẩn thư mục"
@@ -6682,7 +6703,7 @@ msgstr "Không khả dụng"
 msgid "Unclassified"
 msgstr "Chưa được phân loại"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:232
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:217
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:390
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1442
 #: ../ui/src/emails/MockEmailsPage.tsx:293

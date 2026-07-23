@@ -100,7 +100,7 @@ msgstr "{0} มอบหมายเธรดให้คุณ"
 #. placeholder {1}: (total ?? 0).toLocaleString()
 #. placeholder {1}: viewCount.toLocaleString()
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:87
-#: ../ui/src/emails/ThreadList.tsx:241
+#: ../ui/src/emails/ThreadList.tsx:249
 #, fuzzy
 msgid "{0} of {1} loaded"
 msgstr "โหลดแล้ว {0} จาก {1}"
@@ -715,6 +715,10 @@ msgstr "โฟลเดอร์ทั้งหมด"
 #, fuzzy
 msgid "All limits are per workspace."
 msgstr "ขีดจำกัดทั้งหมดมีผลกับแต่ละเวิร์กสเปซ"
+
+#: ../../apps/extension/src/panel/ScopeField.tsx:52
+msgid "All mail"
+msgstr "อีเมลทั้งหมด"
 
 #: ../../apps/mobile/src/components/emails/FolderFilterSheet.tsx:44
 #, fuzzy
@@ -1519,6 +1523,10 @@ msgstr "ปิดแผง"
 #, fuzzy
 msgid "Close preview"
 msgstr "ปิดการแสดงตัวอย่าง"
+
+#: ../../apps/extension/src/panel/ScopeField.tsx:99
+msgid "Close search"
+msgstr "ปิดการค้นหา"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:117
 #, fuzzy
@@ -2329,7 +2337,7 @@ msgstr "ยกเลิกการเชื่อมต่อเวิร์ก
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "ยกเลิกการเชื่อมต่อเวิร์กสเปซนี้ Amarnai ยังคงเข้าถึงได้ เนื่องจากกล่องจดหมายนี้ยังคงเชื่อมต่ออยู่ใน {sharedNames}"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:239
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:224
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:65
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:393
@@ -2915,7 +2923,7 @@ msgid "Folder: {activeFolderName}"
 msgstr "โฟลเดอร์: {activeFolderName}"
 
 #: ../ui/src/emails/EmailRail.tsx:99
-#: ../ui/src/emails/ThreadList.tsx:146
+#: ../ui/src/emails/ThreadList.tsx:152
 #, fuzzy
 msgid "Folders"
 msgstr "โฟลเดอร์"
@@ -3765,6 +3773,11 @@ msgstr "การเรียกรับบทความจากวารส
 msgid "Journals"
 msgstr "วารสาร"
 
+#: ../../apps/extension/src/panel/ScopeField.tsx:180
+#, fuzzy
+msgid "Jump to folder…"
+msgstr "ไปยังโฟลเดอร์..."
+
 #: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:128
 msgid "Junk Email"
 msgstr "อีเมลขยะ"
@@ -3919,7 +3932,7 @@ msgstr "สด"
 #: ../../apps/mobile/app/(app)/notifications.tsx:318
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:101
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:284
-#: ../ui/src/emails/ThreadList.tsx:252
+#: ../ui/src/emails/ThreadList.tsx:260
 #, fuzzy
 msgid "Load more"
 msgstr "โหลดเพิ่ม"
@@ -3927,7 +3940,7 @@ msgstr "โหลดเพิ่ม"
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:122
 #: ../ui/src/emails/BackfillCard.tsx:35
-#: ../ui/src/emails/ThreadList.tsx:189
+#: ../ui/src/emails/ThreadList.tsx:197
 #, fuzzy
 msgid "Loading past threads…"
 msgstr "กำลังโหลดเธรดเก่า..."
@@ -3944,7 +3957,7 @@ msgstr "กำลังโหลดเธรดเก่า..."
 #: ../../apps/web/src/app/loading.tsx:6
 #: ../../apps/web/src/components/NotificationBell.tsx:161
 #: ../ui/src/emails/MessageCard.tsx:68
-#: ../ui/src/emails/ThreadList.tsx:252
+#: ../ui/src/emails/ThreadList.tsx:260
 #, fuzzy
 msgid "Loading…"
 msgstr "กำลังโหลด..."
@@ -4194,7 +4207,7 @@ msgstr "ย้ายเธรดไปที่"
 msgid "Move to folder"
 msgstr "ย้ายไปโฟลเดอร์"
 
-#: ../ui/src/emails/ReroutePopover.tsx:88
+#: ../ui/src/emails/ReroutePopover.tsx:130
 #, fuzzy
 msgid "Move to folder…"
 msgstr "ย้ายไปโฟลเดอร์..."
@@ -4360,7 +4373,7 @@ msgstr "ไม่มีโฟลเดอร์"
 msgid "No folders defined"
 msgstr "ยังไม่ได้กำหนดโฟลเดอร์"
 
-#: ../ui/src/emails/ReroutePopover.tsx:98
+#: ../ui/src/emails/ReroutePopover.tsx:140
 #, fuzzy
 msgid "No folders match"
 msgstr "ไม่มีโฟลเดอร์ที่ตรงกัน"
@@ -4431,7 +4444,7 @@ msgstr "ไม่มีเธรดที่จัดเรียงไว้เ
 msgid "No threads"
 msgstr "ไม่มีเธรด"
 
-#: ../ui/src/emails/ThreadList.tsx:192
+#: ../ui/src/emails/ThreadList.tsx:200
 #, fuzzy
 msgid "No threads here."
 msgstr "ไม่มีเธรดที่นี่"
@@ -4446,7 +4459,7 @@ msgstr "ไม่มีเธรดใน {folderName}"
 msgid "No threads match your search"
 msgstr "ไม่มีเธรดตรงกับการค้นหาของคุณ"
 
-#: ../ui/src/emails/ThreadList.tsx:185
+#: ../ui/src/emails/ThreadList.tsx:193
 #, fuzzy
 msgid "No threads match your search."
 msgstr "ไม่มีเธรดตรงกับการค้นหาของคุณ"
@@ -5087,7 +5100,7 @@ msgstr "ให้คะแนน 5 เต็ม 5"
 msgid "Re-route {unclassifiedCount} unclassified"
 msgstr "เปลี่ยนเส้นทาง {unclassifiedCount} รายการที่ยังไม่ได้จัดประเภท"
 
-#: ../ui/src/emails/ReroutePopover.tsx:79
+#: ../ui/src/emails/ReroutePopover.tsx:121
 #, fuzzy
 msgid "Re-route thread"
 msgstr "เปลี่ยนเส้นทางเธรด"
@@ -5605,7 +5618,7 @@ msgid "Search {threadCount} threads"
 msgstr "ค้นหา {threadCount} เธรด"
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:322
-#: ../ui/src/emails/ReroutePopover.tsx:92
+#: ../ui/src/emails/ReroutePopover.tsx:134
 #, fuzzy
 msgid "Search folders"
 msgstr "ค้นหาโฟลเดอร์"
@@ -5614,6 +5627,9 @@ msgstr "ค้นหาโฟลเดอร์"
 msgid "Search mail"
 msgstr "ค้นหาอีเมล"
 
+#: ../../apps/extension/src/panel/ScopeField.tsx:89
+#: ../../apps/extension/src/panel/ScopeField.tsx:90
+#: ../../apps/extension/src/panel/ScopeField.tsx:162
 #: ../ui/src/emails/ThreadListHeader.tsx:107
 #, fuzzy
 msgid "Search threads"
@@ -5642,7 +5658,7 @@ msgstr "ดูการทำงาน"
 msgid "Select"
 msgstr "เลือก"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:210
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:195
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:349
 #: ../ui/src/emails/MockEmailsPage.tsx:274
 #, fuzzy
@@ -6156,6 +6172,11 @@ msgstr "การสนทนาเกี่ยวกับการสนับ
 msgid "Switch"
 msgstr "สลับ"
 
+#: ../../apps/extension/src/panel/ScopeField.tsx:146
+#: ../../apps/extension/src/panel/ScopeField.tsx:181
+msgid "Switch folder view"
+msgstr "เปลี่ยนมุมมองโฟลเดอร์"
+
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:220
 #, fuzzy
 msgid "Switch the previewed address"
@@ -6602,7 +6623,7 @@ msgstr "วันนี้"
 #~ msgid "Today Amarnai connects to Gmail. Outlook support is on the way, and it will work the same read-only way: Amarnai reads your threads to sort them and never sends, deletes, or changes anything in your account."
 #~ msgstr "ปัจจุบัน Amarnai เชื่อมต่อกับ Gmail แล้ว กำลังพัฒนาให้รองรับ Outlook ซึ่งจะทำงานในโหมดอ่านอย่างเดียวเช่นกัน: Amarnai จะอ่านและจัดเรียงอีเมลของคุณ โดยไม่ส่ง ลบ หรือแก้ไขข้อมูลใดๆ ในบัญชีของคุณ"
 
-#: ../ui/src/emails/ThreadList.tsx:130
+#: ../ui/src/emails/ThreadList.tsx:136
 #, fuzzy
 msgid "Toggle folders"
 msgstr "สลับโฟลเดอร์"
@@ -6681,7 +6702,7 @@ msgstr "ไม่พร้อมใช้งาน"
 msgid "Unclassified"
 msgstr "ยังไม่จัดประเภท"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:232
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:217
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:390
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1442
 #: ../ui/src/emails/MockEmailsPage.tsx:293

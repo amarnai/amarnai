@@ -223,6 +223,216 @@ body {
   }
 }
 
+/* ─── Scope field (thread-list scope indicator + folder switcher) ────────── */
+
+.ax-scope-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-md) var(--space-lg);
+  border-bottom: 1px solid var(--line);
+  flex-shrink: 0;
+}
+
+/* Search: a trailing icon button that expands into a full-width input in place
+   of the scope field (point 4). Reuses the field's select-shaped chrome. */
+.ax-scope-searchbtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  border: none;
+  background: none;
+  border-radius: var(--r-sm);
+  color: var(--ink-3);
+  cursor: pointer;
+  transition: background 0.14s, color 0.14s;
+}
+
+.ax-scope-searchbtn:hover {
+  background: var(--bg-sunk);
+  color: var(--ink);
+}
+
+.ax-scope-search {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 0 var(--space-sm) 0 var(--space-md);
+  background: var(--surface-2);
+  border: 1px solid var(--accent-line);
+  border-radius: var(--r-sm);
+  box-shadow: var(--shadow-1);
+}
+
+.ax-scope-search-icon {
+  display: flex;
+  flex-shrink: 0;
+  color: var(--ink-3);
+}
+
+.ax-scope-search input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  font-size: var(--fs-base);
+  color: var(--ink);
+  padding: var(--space-sm) 0;
+  outline: none;
+}
+
+.ax-scope-search input::placeholder {
+  color: var(--ink-4);
+}
+
+.ax-scope-search-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  border: none;
+  background: none;
+  border-radius: var(--r-sm);
+  color: var(--ink-3);
+  cursor: pointer;
+}
+
+.ax-scope-search-close:hover {
+  color: var(--ink);
+}
+
+.ax-scope-searchbtn:focus-visible,
+.ax-scope-search-close:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 1px var(--accent-line), 0 0 0 3px var(--accent-soft);
+}
+
+/* Select-shaped on purpose: the bordered, filled container with a right-edge
+   chevron is what makes the scope read as an operable control (a title with a
+   caret does not). Inner buttons are unstyled so the field reads as one unit. */
+.ax-scope-field {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding-left: var(--space-md);
+  background: var(--surface-2);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-sm);
+  box-shadow: var(--shadow-1);
+  transition: border-color 0.14s, background 0.14s;
+}
+
+.ax-scope-field:hover {
+  border-color: var(--line-3);
+}
+
+.ax-scope-field[data-open="true"] {
+  border-color: var(--accent-line);
+  background: var(--accent-soft);
+}
+
+.ax-scope-icon {
+  display: flex;
+  flex-shrink: 0;
+  color: var(--ink-3);
+}
+
+.ax-scope-crumb {
+  border: none;
+  background: none;
+  font: inherit;
+  cursor: pointer;
+  padding: var(--space-sm) 0;
+  font-size: var(--fs-base);
+  color: var(--ink-3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 1;
+  min-width: 24px;
+}
+
+.ax-scope-crumb:hover {
+  color: var(--ink);
+}
+
+.ax-scope-sep {
+  color: var(--ink-4);
+  font-size: var(--fs-xs);
+  flex-shrink: 0;
+}
+
+.ax-scope-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  border: none;
+  background: none;
+  font: inherit;
+  cursor: pointer;
+  padding: var(--space-sm) var(--space-md) var(--space-sm) 0;
+  color: var(--ink);
+}
+
+.ax-scope-label {
+  font-weight: 600;
+  font-size: var(--fs-base);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ax-scope-count {
+  margin-left: auto;
+  flex-shrink: 0;
+  font-size: var(--fs-sm);
+  color: var(--ink-4);
+  font-variant-numeric: tabular-nums;
+}
+
+.ax-scope-caret {
+  display: flex;
+  flex-shrink: 0;
+  color: var(--ink-3);
+  transition: transform 0.14s;
+}
+
+.ax-scope-field[data-open="true"] .ax-scope-icon,
+.ax-scope-field[data-open="true"] .ax-scope-label,
+.ax-scope-field[data-open="true"] .ax-scope-caret {
+  color: var(--accent-ink);
+}
+
+.ax-scope-field[data-open="true"] .ax-scope-caret {
+  transform: rotate(180deg);
+}
+
+.ax-scope-main:focus-visible,
+.ax-scope-crumb:focus-visible {
+  outline: none;
+  border-radius: var(--r-sm);
+  box-shadow: 0 0 0 1px var(--accent-line), 0 0 0 3px var(--accent-soft);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ax-scope-field,
+  .ax-scope-caret {
+    transition: none;
+  }
+}
+
 /* ─── Notification bell + pop-up ─────────────────────────────────────────── */
 
 .ax-notif {

@@ -98,7 +98,7 @@ msgstr "{0} がスレッドを割り当てました"
 #. placeholder {1}: (total ?? 0).toLocaleString()
 #. placeholder {1}: viewCount.toLocaleString()
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:87
-#: ../ui/src/emails/ThreadList.tsx:241
+#: ../ui/src/emails/ThreadList.tsx:249
 msgid "{0} of {1} loaded"
 msgstr "読み込み済み: {0}/{1}"
 
@@ -702,6 +702,11 @@ msgstr "すべてのフォルダ"
 #, fuzzy
 msgid "All limits are per workspace."
 msgstr "すべての制限はワークスペースごとです。"
+
+#: ../../apps/extension/src/panel/ScopeField.tsx:52
+#, fuzzy
+msgid "All mail"
+msgstr "すべてのメール"
 
 #: ../../apps/mobile/src/components/emails/FolderFilterSheet.tsx:44
 msgid "All threads"
@@ -1491,6 +1496,10 @@ msgstr "パネルを閉じる"
 #, fuzzy
 msgid "Close preview"
 msgstr "プレビューを閉じる"
+
+#: ../../apps/extension/src/panel/ScopeField.tsx:99
+msgid "Close search"
+msgstr "検索を閉じる"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:117
 #, fuzzy
@@ -2282,7 +2291,7 @@ msgstr "このワークスペースを切断します。このメールボック
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "このワークスペースを切断します。このメールボックスは{sharedNames}にも接続されているため、Amarnaiは引き続きアクセスします。"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:239
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:224
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:65
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:393
@@ -2854,7 +2863,7 @@ msgid "Folder: {activeFolderName}"
 msgstr "フォルダ: {activeFolderName}"
 
 #: ../ui/src/emails/EmailRail.tsx:99
-#: ../ui/src/emails/ThreadList.tsx:146
+#: ../ui/src/emails/ThreadList.tsx:152
 msgid "Folders"
 msgstr "フォルダ"
 
@@ -3678,6 +3687,10 @@ msgstr "論文募集、特集号への招待、引用指標。"
 msgid "Journals"
 msgstr "論文誌"
 
+#: ../../apps/extension/src/panel/ScopeField.tsx:180
+msgid "Jump to folder…"
+msgstr "フォルダーへ移動…"
+
 #: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:128
 #, fuzzy
 msgid "Junk Email"
@@ -3835,7 +3848,7 @@ msgstr "ライブ"
 #: ../../apps/mobile/app/(app)/notifications.tsx:318
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:101
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:284
-#: ../ui/src/emails/ThreadList.tsx:252
+#: ../ui/src/emails/ThreadList.tsx:260
 #, fuzzy
 msgid "Load more"
 msgstr "さらに読み込む"
@@ -3843,7 +3856,7 @@ msgstr "さらに読み込む"
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:122
 #: ../ui/src/emails/BackfillCard.tsx:35
-#: ../ui/src/emails/ThreadList.tsx:189
+#: ../ui/src/emails/ThreadList.tsx:197
 msgid "Loading past threads…"
 msgstr "過去のスレッドを読み込み中…"
 
@@ -3859,7 +3872,7 @@ msgstr "過去のスレッドを読み込み中…"
 #: ../../apps/web/src/app/loading.tsx:6
 #: ../../apps/web/src/components/NotificationBell.tsx:161
 #: ../ui/src/emails/MessageCard.tsx:68
-#: ../ui/src/emails/ThreadList.tsx:252
+#: ../ui/src/emails/ThreadList.tsx:260
 #, fuzzy
 msgid "Loading…"
 msgstr "読み込み中…"
@@ -4104,7 +4117,7 @@ msgstr "スレッドを移動"
 msgid "Move to folder"
 msgstr "フォルダーに移動"
 
-#: ../ui/src/emails/ReroutePopover.tsx:88
+#: ../ui/src/emails/ReroutePopover.tsx:130
 #, fuzzy
 msgid "Move to folder…"
 msgstr "フォルダに移動…"
@@ -4262,7 +4275,7 @@ msgstr "利用可能なフォルダーがありません"
 msgid "No folders defined"
 msgstr "フォルダーが定義されていません"
 
-#: ../ui/src/emails/ReroutePopover.tsx:98
+#: ../ui/src/emails/ReroutePopover.tsx:140
 #, fuzzy
 msgid "No folders match"
 msgstr "該当するフォルダーはありません"
@@ -4332,7 +4345,7 @@ msgstr "移行対象のスレッドはありません。新しいプランが直
 msgid "No threads"
 msgstr "スレッドがありません"
 
-#: ../ui/src/emails/ThreadList.tsx:192
+#: ../ui/src/emails/ThreadList.tsx:200
 msgid "No threads here."
 msgstr "ここにスレッドはありません。"
 
@@ -4350,7 +4363,7 @@ msgstr "{folderName}にスレッドはありません"
 msgid "No threads match your search"
 msgstr "検索結果にスレッドがありません"
 
-#: ../ui/src/emails/ThreadList.tsx:185
+#: ../ui/src/emails/ThreadList.tsx:193
 #, fuzzy
 msgid "No threads match your search."
 msgstr "検索条件に一致するスレッドはありません。"
@@ -4982,7 +4995,7 @@ msgstr "5段階中5"
 msgid "Re-route {unclassifiedCount} unclassified"
 msgstr "{unclassifiedCount}件の未分類を再ルーティング"
 
-#: ../ui/src/emails/ReroutePopover.tsx:79
+#: ../ui/src/emails/ReroutePopover.tsx:121
 msgid "Re-route thread"
 msgstr "スレッドを再ルーティング"
 
@@ -5495,7 +5508,7 @@ msgid "Search {threadCount} threads"
 msgstr "{threadCount}件のスレッドを検索"
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:322
-#: ../ui/src/emails/ReroutePopover.tsx:92
+#: ../ui/src/emails/ReroutePopover.tsx:134
 #, fuzzy
 msgid "Search folders"
 msgstr "フォルダーを検索"
@@ -5504,6 +5517,9 @@ msgstr "フォルダーを検索"
 msgid "Search mail"
 msgstr "メールを検索"
 
+#: ../../apps/extension/src/panel/ScopeField.tsx:89
+#: ../../apps/extension/src/panel/ScopeField.tsx:90
+#: ../../apps/extension/src/panel/ScopeField.tsx:162
 #: ../ui/src/emails/ThreadListHeader.tsx:107
 #, fuzzy
 msgid "Search threads"
@@ -5531,7 +5547,7 @@ msgstr "動作を見る"
 msgid "Select"
 msgstr "選択"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:210
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:195
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:349
 #: ../ui/src/emails/MockEmailsPage.tsx:274
 #, fuzzy
@@ -6027,6 +6043,11 @@ msgstr "サポート、オンボーディング、定着、解約、カスタマ
 msgid "Switch"
 msgstr "切り替え"
 
+#: ../../apps/extension/src/panel/ScopeField.tsx:146
+#: ../../apps/extension/src/panel/ScopeField.tsx:181
+msgid "Switch folder view"
+msgstr "フォルダー表示を切り替え"
+
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:220
 #, fuzzy
 msgid "Switch the previewed address"
@@ -6468,7 +6489,7 @@ msgstr "今日"
 #~ msgid "Today Amarnai connects to Gmail. Outlook support is on the way, and it will work the same read-only way: Amarnai reads your threads to sort them and never sends, deletes, or changes anything in your account."
 #~ msgstr "現在、AmarnaiはGmailに連携しています。Outlookへの対応も進めており、Gmailと同様に読み取り専用で機能します。Amarnaiはお客様のスレッドを分類するために読み取るのみで、アカウント内で送信、削除、変更を行うことは一切ありません。"
 
-#: ../ui/src/emails/ThreadList.tsx:130
+#: ../ui/src/emails/ThreadList.tsx:136
 #, fuzzy
 msgid "Toggle folders"
 msgstr "フォルダーを切り替える"
@@ -6548,7 +6569,7 @@ msgstr "利用不可"
 msgid "Unclassified"
 msgstr "未分類"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:232
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:217
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:390
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1442
 #: ../ui/src/emails/MockEmailsPage.tsx:293

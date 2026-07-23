@@ -100,7 +100,7 @@ msgstr "{0} menugaskan Anda sebuah thread"
 #. placeholder {1}: (total ?? 0).toLocaleString()
 #. placeholder {1}: viewCount.toLocaleString()
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:87
-#: ../ui/src/emails/ThreadList.tsx:241
+#: ../ui/src/emails/ThreadList.tsx:249
 #, fuzzy
 msgid "{0} of {1} loaded"
 msgstr "{0} dari {1} dimuat"
@@ -715,6 +715,10 @@ msgstr "Semua folder"
 #, fuzzy
 msgid "All limits are per workspace."
 msgstr "Semua batasan berlaku per ruang kerja."
+
+#: ../../apps/extension/src/panel/ScopeField.tsx:52
+msgid "All mail"
+msgstr "Semua email"
 
 #: ../../apps/mobile/src/components/emails/FolderFilterSheet.tsx:44
 #, fuzzy
@@ -1519,6 +1523,10 @@ msgstr "Tutup Panel"
 #, fuzzy
 msgid "Close preview"
 msgstr "Tutup Pratinjau"
+
+#: ../../apps/extension/src/panel/ScopeField.tsx:99
+msgid "Close search"
+msgstr "Tutup pencarian"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:117
 #, fuzzy
@@ -2329,7 +2337,7 @@ msgstr "Memutus sambungan ruang kerja ini. Amarnai tetap memiliki akses karena k
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "Memutus sambungan ruang kerja ini. Amarnai tetap memiliki akses karena kotak email ini masih terhubung di {sharedNames}."
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:239
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:224
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:65
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:393
@@ -2915,7 +2923,7 @@ msgid "Folder: {activeFolderName}"
 msgstr "Folder: {activeFolderName}"
 
 #: ../ui/src/emails/EmailRail.tsx:99
-#: ../ui/src/emails/ThreadList.tsx:146
+#: ../ui/src/emails/ThreadList.tsx:152
 #, fuzzy
 msgid "Folders"
 msgstr "Folder"
@@ -3765,6 +3773,11 @@ msgstr "Panggilan makalah jurnal, undangan edisi khusus, dan metrik sitasi."
 msgid "Journals"
 msgstr "Jurnal"
 
+#: ../../apps/extension/src/panel/ScopeField.tsx:180
+#, fuzzy
+msgid "Jump to folder…"
+msgstr "Pindah ke folder…"
+
 #: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:128
 msgid "Junk Email"
 msgstr "Email Sampah"
@@ -3919,7 +3932,7 @@ msgstr "Aktif"
 #: ../../apps/mobile/app/(app)/notifications.tsx:318
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:101
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:284
-#: ../ui/src/emails/ThreadList.tsx:252
+#: ../ui/src/emails/ThreadList.tsx:260
 #, fuzzy
 msgid "Load more"
 msgstr "Muat lebih banyak"
@@ -3927,7 +3940,7 @@ msgstr "Muat lebih banyak"
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:122
 #: ../ui/src/emails/BackfillCard.tsx:35
-#: ../ui/src/emails/ThreadList.tsx:189
+#: ../ui/src/emails/ThreadList.tsx:197
 #, fuzzy
 msgid "Loading past threads…"
 msgstr "Memuat utas sebelumnya..."
@@ -3944,7 +3957,7 @@ msgstr "Memuat utas sebelumnya..."
 #: ../../apps/web/src/app/loading.tsx:6
 #: ../../apps/web/src/components/NotificationBell.tsx:161
 #: ../ui/src/emails/MessageCard.tsx:68
-#: ../ui/src/emails/ThreadList.tsx:252
+#: ../ui/src/emails/ThreadList.tsx:260
 #, fuzzy
 msgid "Loading…"
 msgstr "Memuat..."
@@ -4194,7 +4207,7 @@ msgstr "Pindahkan utas ke"
 msgid "Move to folder"
 msgstr "Pindahkan ke folder"
 
-#: ../ui/src/emails/ReroutePopover.tsx:88
+#: ../ui/src/emails/ReroutePopover.tsx:130
 #, fuzzy
 msgid "Move to folder…"
 msgstr "Pindahkan ke folder…"
@@ -4360,7 +4373,7 @@ msgstr "Tidak ada folder tersedia"
 msgid "No folders defined"
 msgstr "Tidak ada folder yang ditentukan"
 
-#: ../ui/src/emails/ReroutePopover.tsx:98
+#: ../ui/src/emails/ReroutePopover.tsx:140
 #, fuzzy
 msgid "No folders match"
 msgstr "Tidak ada folder yang cocok"
@@ -4431,7 +4444,7 @@ msgstr "Tidak ada utas terurut untuk dimigrasikan. Paket baru Anda akan langsung
 msgid "No threads"
 msgstr "Tidak ada thread"
 
-#: ../ui/src/emails/ThreadList.tsx:192
+#: ../ui/src/emails/ThreadList.tsx:200
 #, fuzzy
 msgid "No threads here."
 msgstr "Tidak ada thread di sini."
@@ -4446,7 +4459,7 @@ msgstr "Tidak ada thread di {folderName}"
 msgid "No threads match your search"
 msgstr "Tidak ada thread yang cocok dengan pencarian Anda"
 
-#: ../ui/src/emails/ThreadList.tsx:185
+#: ../ui/src/emails/ThreadList.tsx:193
 #, fuzzy
 msgid "No threads match your search."
 msgstr "Tidak ada thread yang cocok dengan pencarian Anda."
@@ -5087,7 +5100,7 @@ msgstr "Dinilai 5 dari 5"
 msgid "Re-route {unclassifiedCount} unclassified"
 msgstr "Alihkan {unclassifiedCount} yang belum terklasifikasi"
 
-#: ../ui/src/emails/ReroutePopover.tsx:79
+#: ../ui/src/emails/ReroutePopover.tsx:121
 #, fuzzy
 msgid "Re-route thread"
 msgstr "Alihkan percakapan"
@@ -5605,7 +5618,7 @@ msgid "Search {threadCount} threads"
 msgstr "Cari {threadCount} utas"
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:322
-#: ../ui/src/emails/ReroutePopover.tsx:92
+#: ../ui/src/emails/ReroutePopover.tsx:134
 #, fuzzy
 msgid "Search folders"
 msgstr "Cari folder"
@@ -5614,6 +5627,9 @@ msgstr "Cari folder"
 msgid "Search mail"
 msgstr "Cari email"
 
+#: ../../apps/extension/src/panel/ScopeField.tsx:89
+#: ../../apps/extension/src/panel/ScopeField.tsx:90
+#: ../../apps/extension/src/panel/ScopeField.tsx:162
 #: ../ui/src/emails/ThreadListHeader.tsx:107
 #, fuzzy
 msgid "Search threads"
@@ -5642,7 +5658,7 @@ msgstr "Lihat Cara Kerjanya"
 msgid "Select"
 msgstr "Pilih"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:210
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:195
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:349
 #: ../ui/src/emails/MockEmailsPage.tsx:274
 #, fuzzy
@@ -6156,6 +6172,11 @@ msgstr "Komunikasi dukungan, orientasi, retensi, churn, dan keberhasilan pelangg
 msgid "Switch"
 msgstr "Ganti"
 
+#: ../../apps/extension/src/panel/ScopeField.tsx:146
+#: ../../apps/extension/src/panel/ScopeField.tsx:181
+msgid "Switch folder view"
+msgstr "Ganti tampilan folder"
+
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:220
 #, fuzzy
 msgid "Switch the previewed address"
@@ -6602,7 +6623,7 @@ msgstr "Hari ini"
 #~ msgid "Today Amarnai connects to Gmail. Outlook support is on the way, and it will work the same read-only way: Amarnai reads your threads to sort them and never sends, deletes, or changes anything in your account."
 #~ msgstr "Saat ini Amarnai terhubung ke Gmail. Dukungan Outlook segera hadir, dengan prinsip baca-saja yang sama: Amarnai membaca percakapan Anda untuk mengurutkannya, tanpa pernah mengirim, menghapus, atau mengubah apa pun di akun Anda."
 
-#: ../ui/src/emails/ThreadList.tsx:130
+#: ../ui/src/emails/ThreadList.tsx:136
 #, fuzzy
 msgid "Toggle folders"
 msgstr "Alihkan folder"
@@ -6682,7 +6703,7 @@ msgstr "Tidak tersedia"
 msgid "Unclassified"
 msgstr "Tidak Terklasifikasi"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:232
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:217
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:390
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1442
 #: ../ui/src/emails/MockEmailsPage.tsx:293

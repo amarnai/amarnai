@@ -98,7 +98,7 @@ msgstr "{0} te asignó una conversación"
 #. placeholder {1}: (total ?? 0).toLocaleString()
 #. placeholder {1}: viewCount.toLocaleString()
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:87
-#: ../ui/src/emails/ThreadList.tsx:241
+#: ../ui/src/emails/ThreadList.tsx:249
 msgid "{0} of {1} loaded"
 msgstr "{0} de {1} cargados"
 
@@ -702,6 +702,11 @@ msgstr "Todas las carpetas"
 #, fuzzy
 msgid "All limits are per workspace."
 msgstr "Todos los límites aplican por espacio de trabajo."
+
+#: ../../apps/extension/src/panel/ScopeField.tsx:52
+#, fuzzy
+msgid "All mail"
+msgstr "Todo el correo"
 
 #: ../../apps/mobile/src/components/emails/FolderFilterSheet.tsx:44
 msgid "All threads"
@@ -1491,6 +1496,10 @@ msgstr "Cerrar panel"
 #, fuzzy
 msgid "Close preview"
 msgstr "Cerrar vista previa"
+
+#: ../../apps/extension/src/panel/ScopeField.tsx:99
+msgid "Close search"
+msgstr "Cerrar búsqueda"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:117
 #, fuzzy
@@ -2282,7 +2291,7 @@ msgstr "Desconecta este espacio de trabajo. Amarnai mantiene el acceso porque es
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "Desconecta este espacio de trabajo. Amarnai mantiene el acceso porque este buzón aún está conectado en {sharedNames}."
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:239
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:224
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:65
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:393
@@ -2854,7 +2863,7 @@ msgid "Folder: {activeFolderName}"
 msgstr "Carpeta: {activeFolderName}"
 
 #: ../ui/src/emails/EmailRail.tsx:99
-#: ../ui/src/emails/ThreadList.tsx:146
+#: ../ui/src/emails/ThreadList.tsx:152
 msgid "Folders"
 msgstr "Carpetas"
 
@@ -3678,6 +3687,10 @@ msgstr "Convocatorias de artículos para revistas, invitaciones a números espec
 msgid "Journals"
 msgstr "Revistas"
 
+#: ../../apps/extension/src/panel/ScopeField.tsx:180
+msgid "Jump to folder…"
+msgstr "Ir a carpeta…"
+
 #: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:128
 #, fuzzy
 msgid "Junk Email"
@@ -3835,7 +3848,7 @@ msgstr "En vivo"
 #: ../../apps/mobile/app/(app)/notifications.tsx:318
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:101
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:284
-#: ../ui/src/emails/ThreadList.tsx:252
+#: ../ui/src/emails/ThreadList.tsx:260
 #, fuzzy
 msgid "Load more"
 msgstr "Cargar más"
@@ -3843,7 +3856,7 @@ msgstr "Cargar más"
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:122
 #: ../ui/src/emails/BackfillCard.tsx:35
-#: ../ui/src/emails/ThreadList.tsx:189
+#: ../ui/src/emails/ThreadList.tsx:197
 msgid "Loading past threads…"
 msgstr "Cargando conversaciones anteriores…"
 
@@ -3859,7 +3872,7 @@ msgstr "Cargando conversaciones anteriores…"
 #: ../../apps/web/src/app/loading.tsx:6
 #: ../../apps/web/src/components/NotificationBell.tsx:161
 #: ../ui/src/emails/MessageCard.tsx:68
-#: ../ui/src/emails/ThreadList.tsx:252
+#: ../ui/src/emails/ThreadList.tsx:260
 #, fuzzy
 msgid "Loading…"
 msgstr "Cargando…"
@@ -4104,7 +4117,7 @@ msgstr "Mover conversaciones a"
 msgid "Move to folder"
 msgstr "Mover a carpeta"
 
-#: ../ui/src/emails/ReroutePopover.tsx:88
+#: ../ui/src/emails/ReroutePopover.tsx:130
 #, fuzzy
 msgid "Move to folder…"
 msgstr "Mover a carpeta…"
@@ -4262,7 +4275,7 @@ msgstr "No hay carpetas disponibles"
 msgid "No folders defined"
 msgstr "No hay carpetas definidas"
 
-#: ../ui/src/emails/ReroutePopover.tsx:98
+#: ../ui/src/emails/ReroutePopover.tsx:140
 #, fuzzy
 msgid "No folders match"
 msgstr "No se encontraron carpetas"
@@ -4332,7 +4345,7 @@ msgstr "No hay conversaciones ordenadas para migrar. Tu nuevo plan se aplicará 
 msgid "No threads"
 msgstr "No hay conversaciones"
 
-#: ../ui/src/emails/ThreadList.tsx:192
+#: ../ui/src/emails/ThreadList.tsx:200
 msgid "No threads here."
 msgstr "No hay conversaciones aquí."
 
@@ -4350,7 +4363,7 @@ msgstr "No hay conversaciones en {folderName}"
 msgid "No threads match your search"
 msgstr "Ninguna conversación coincide con tu búsqueda"
 
-#: ../ui/src/emails/ThreadList.tsx:185
+#: ../ui/src/emails/ThreadList.tsx:193
 #, fuzzy
 msgid "No threads match your search."
 msgstr "Ninguna conversación coincide con tu búsqueda."
@@ -4982,7 +4995,7 @@ msgstr "5 de 5"
 msgid "Re-route {unclassifiedCount} unclassified"
 msgstr "Redirigir {unclassifiedCount} no clasificados"
 
-#: ../ui/src/emails/ReroutePopover.tsx:79
+#: ../ui/src/emails/ReroutePopover.tsx:121
 msgid "Re-route thread"
 msgstr "Re-encaminar conversación"
 
@@ -5495,7 +5508,7 @@ msgid "Search {threadCount} threads"
 msgstr "Buscar {threadCount} conversaciones"
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:322
-#: ../ui/src/emails/ReroutePopover.tsx:92
+#: ../ui/src/emails/ReroutePopover.tsx:134
 #, fuzzy
 msgid "Search folders"
 msgstr "Buscar carpetas"
@@ -5504,6 +5517,9 @@ msgstr "Buscar carpetas"
 msgid "Search mail"
 msgstr "Buscar correo"
 
+#: ../../apps/extension/src/panel/ScopeField.tsx:89
+#: ../../apps/extension/src/panel/ScopeField.tsx:90
+#: ../../apps/extension/src/panel/ScopeField.tsx:162
 #: ../ui/src/emails/ThreadListHeader.tsx:107
 #, fuzzy
 msgid "Search threads"
@@ -5531,7 +5547,7 @@ msgstr "Verlo en acción"
 msgid "Select"
 msgstr "Seleccionar"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:210
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:195
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:349
 #: ../ui/src/emails/MockEmailsPage.tsx:274
 #, fuzzy
@@ -6027,6 +6043,11 @@ msgstr "Soporte, incorporación, retención, rotación y conversaciones de éxit
 msgid "Switch"
 msgstr "Cambiar"
 
+#: ../../apps/extension/src/panel/ScopeField.tsx:146
+#: ../../apps/extension/src/panel/ScopeField.tsx:181
+msgid "Switch folder view"
+msgstr "Cambiar vista de carpeta"
+
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:220
 #, fuzzy
 msgid "Switch the previewed address"
@@ -6468,7 +6489,7 @@ msgstr "Hoy"
 #~ msgid "Today Amarnai connects to Gmail. Outlook support is on the way, and it will work the same read-only way: Amarnai reads your threads to sort them and never sends, deletes, or changes anything in your account."
 #~ msgstr "Actualmente, Amarnai se conecta a Gmail. La compatibilidad con Outlook está en desarrollo y funcionará de la misma forma de solo lectura: Amarnai lee tus conversaciones para organizarlas y nunca envía, elimina ni modifica nada en tu cuenta."
 
-#: ../ui/src/emails/ThreadList.tsx:130
+#: ../ui/src/emails/ThreadList.tsx:136
 #, fuzzy
 msgid "Toggle folders"
 msgstr "Alternar carpetas"
@@ -6548,7 +6569,7 @@ msgstr "No disponible"
 msgid "Unclassified"
 msgstr "Sin clasificar"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:232
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:217
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:390
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1442
 #: ../ui/src/emails/MockEmailsPage.tsx:293

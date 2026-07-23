@@ -8,7 +8,7 @@ import type { ActiveSelection } from "./types.js";
 import { QUEUES } from "./selection.js";
 import { QUEUE_LABELS } from "./queueLabels.js";
 
-function getFolderAncestry(folderId: string, folders: FolderItem[]): FolderItem[] {
+export function getFolderAncestry(folderId: string, folders: FolderItem[]): FolderItem[] {
   const chain: FolderItem[] = [];
   let current = folders.find((f) => f.id === folderId);
   while (current) {

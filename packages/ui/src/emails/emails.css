@@ -1524,6 +1524,25 @@
 
 .em-reroute-item.active { background: var(--accent-soft); color: var(--accent-ink); }
 
+.em-reroute-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Per-folder thread total: dim inventory number, right-aligned. Reads as
+   orientation, not an alert. */
+.em-reroute-count {
+  flex-shrink: 0;
+  font-size: 11.5px;
+  color: var(--ink-4);
+  font-variant-numeric: tabular-nums;
+}
+
+.em-reroute-item.active .em-reroute-count { color: var(--accent-ink); }
+
 .em-reroute-empty {
   padding: 12px 14px;
   font-size: 12px;

@@ -100,7 +100,7 @@ msgstr "{0} назначил вам тему"
 #. placeholder {1}: (total ?? 0).toLocaleString()
 #. placeholder {1}: viewCount.toLocaleString()
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:87
-#: ../ui/src/emails/ThreadList.tsx:241
+#: ../ui/src/emails/ThreadList.tsx:249
 #, fuzzy
 msgid "{0} of {1} loaded"
 msgstr "{0} из {1} загружено"
@@ -715,6 +715,10 @@ msgstr "Все папки"
 #, fuzzy
 msgid "All limits are per workspace."
 msgstr "Все лимиты — на рабочую область."
+
+#: ../../apps/extension/src/panel/ScopeField.tsx:52
+msgid "All mail"
+msgstr "Вся почта"
 
 #: ../../apps/mobile/src/components/emails/FolderFilterSheet.tsx:44
 #, fuzzy
@@ -1519,6 +1523,10 @@ msgstr "Закрыть панель"
 #, fuzzy
 msgid "Close preview"
 msgstr "Закрыть предпросмотр"
+
+#: ../../apps/extension/src/panel/ScopeField.tsx:99
+msgid "Close search"
+msgstr "Закрыть поиск"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:117
 #, fuzzy
@@ -2329,7 +2337,7 @@ msgstr "Отключает это рабочее пространство. Amarn
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "Отключает это рабочее пространство. Amarnai сохраняет доступ, так как этот ящик всё ещё подключен в {sharedNames}."
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:239
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:224
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:65
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:393
@@ -2915,7 +2923,7 @@ msgid "Folder: {activeFolderName}"
 msgstr "Папка: {activeFolderName}"
 
 #: ../ui/src/emails/EmailRail.tsx:99
-#: ../ui/src/emails/ThreadList.tsx:146
+#: ../ui/src/emails/ThreadList.tsx:152
 #, fuzzy
 msgid "Folders"
 msgstr "Папки"
@@ -3765,6 +3773,11 @@ msgstr "Приглашения к публикации, анонсы спецв�
 msgid "Journals"
 msgstr "Журналы"
 
+#: ../../apps/extension/src/panel/ScopeField.tsx:180
+#, fuzzy
+msgid "Jump to folder…"
+msgstr "Перейти к папке…"
+
 #: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:128
 msgid "Junk Email"
 msgstr "Спам"
@@ -3919,7 +3932,7 @@ msgstr "Активно"
 #: ../../apps/mobile/app/(app)/notifications.tsx:318
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:101
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:284
-#: ../ui/src/emails/ThreadList.tsx:252
+#: ../ui/src/emails/ThreadList.tsx:260
 #, fuzzy
 msgid "Load more"
 msgstr "Загрузить ещё"
@@ -3927,7 +3940,7 @@ msgstr "Загрузить ещё"
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:122
 #: ../ui/src/emails/BackfillCard.tsx:35
-#: ../ui/src/emails/ThreadList.tsx:189
+#: ../ui/src/emails/ThreadList.tsx:197
 #, fuzzy
 msgid "Loading past threads…"
 msgstr "Загрузка прошлых цепочек…"
@@ -3944,7 +3957,7 @@ msgstr "Загрузка прошлых цепочек…"
 #: ../../apps/web/src/app/loading.tsx:6
 #: ../../apps/web/src/components/NotificationBell.tsx:161
 #: ../ui/src/emails/MessageCard.tsx:68
-#: ../ui/src/emails/ThreadList.tsx:252
+#: ../ui/src/emails/ThreadList.tsx:260
 #, fuzzy
 msgid "Loading…"
 msgstr "Загрузка…"
@@ -4194,7 +4207,7 @@ msgstr "Переместить потоки в"
 msgid "Move to folder"
 msgstr "Переместить в папку"
 
-#: ../ui/src/emails/ReroutePopover.tsx:88
+#: ../ui/src/emails/ReroutePopover.tsx:130
 #, fuzzy
 msgid "Move to folder…"
 msgstr "Переместить в папку…"
@@ -4360,7 +4373,7 @@ msgstr "Нет доступных папок"
 msgid "No folders defined"
 msgstr "Папки не определены"
 
-#: ../ui/src/emails/ReroutePopover.tsx:98
+#: ../ui/src/emails/ReroutePopover.tsx:140
 #, fuzzy
 msgid "No folders match"
 msgstr "Папки не найдены"
@@ -4431,7 +4444,7 @@ msgstr "Нет отсортированных цепочек для перено
 msgid "No threads"
 msgstr "Нет потоков"
 
-#: ../ui/src/emails/ThreadList.tsx:192
+#: ../ui/src/emails/ThreadList.tsx:200
 #, fuzzy
 msgid "No threads here."
 msgstr "Здесь нет потоков."
@@ -4446,7 +4459,7 @@ msgstr "Нет потоков в папке «{folderName}»"
 msgid "No threads match your search"
 msgstr "Нет потоков, соответствующих вашему запросу"
 
-#: ../ui/src/emails/ThreadList.tsx:185
+#: ../ui/src/emails/ThreadList.tsx:193
 #, fuzzy
 msgid "No threads match your search."
 msgstr "Нет потоков, соответствующих вашему запросу."
@@ -5087,7 +5100,7 @@ msgstr "Оценка 5 из 5"
 msgid "Re-route {unclassifiedCount} unclassified"
 msgstr "Перенаправить {unclassifiedCount} неклассифицированных"
 
-#: ../ui/src/emails/ReroutePopover.tsx:79
+#: ../ui/src/emails/ReroutePopover.tsx:121
 #, fuzzy
 msgid "Re-route thread"
 msgstr "Перенаправить цепочку"
@@ -5605,7 +5618,7 @@ msgid "Search {threadCount} threads"
 msgstr "Поиск {threadCount} цепочек"
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:322
-#: ../ui/src/emails/ReroutePopover.tsx:92
+#: ../ui/src/emails/ReroutePopover.tsx:134
 #, fuzzy
 msgid "Search folders"
 msgstr "Поиск папок"
@@ -5614,6 +5627,9 @@ msgstr "Поиск папок"
 msgid "Search mail"
 msgstr "Поиск писем"
 
+#: ../../apps/extension/src/panel/ScopeField.tsx:89
+#: ../../apps/extension/src/panel/ScopeField.tsx:90
+#: ../../apps/extension/src/panel/ScopeField.tsx:162
 #: ../ui/src/emails/ThreadListHeader.tsx:107
 #, fuzzy
 msgid "Search threads"
@@ -5642,7 +5658,7 @@ msgstr "Посмотреть в действии"
 msgid "Select"
 msgstr "Выбрать"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:210
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:195
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:349
 #: ../ui/src/emails/MockEmailsPage.tsx:274
 #, fuzzy
@@ -6156,6 +6172,11 @@ msgstr "Поддержка, онбординг, удержание, отток �
 msgid "Switch"
 msgstr "Переключить"
 
+#: ../../apps/extension/src/panel/ScopeField.tsx:146
+#: ../../apps/extension/src/panel/ScopeField.tsx:181
+msgid "Switch folder view"
+msgstr "Сменить вид папки"
+
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:220
 #, fuzzy
 msgid "Switch the previewed address"
@@ -6602,7 +6623,7 @@ msgstr "Сегодня"
 #~ msgid "Today Amarnai connects to Gmail. Outlook support is on the way, and it will work the same read-only way: Amarnai reads your threads to sort them and never sends, deletes, or changes anything in your account."
 #~ msgstr "Сегодня Amarnai подключается к Gmail. Поддержка Outlook в разработке и будет работать в том же режиме «только для чтения»: Amarnai читает ваши переписки для сортировки, но никогда не отправляет, не удаляет и не меняет ничего в вашем аккаунте."
 
-#: ../ui/src/emails/ThreadList.tsx:130
+#: ../ui/src/emails/ThreadList.tsx:136
 #, fuzzy
 msgid "Toggle folders"
 msgstr "Переключить папки"
@@ -6682,7 +6703,7 @@ msgstr "Недоступно"
 msgid "Unclassified"
 msgstr "Неклассифицированные"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:232
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:217
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:390
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1442
 #: ../ui/src/emails/MockEmailsPage.tsx:293

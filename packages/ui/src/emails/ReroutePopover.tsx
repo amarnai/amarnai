@@ -12,18 +12,57 @@ export interface ReroutePopoverProps {
   anchor: HTMLElement | null;
   onCommit: (folderId: string) => void;
   onClose: () => void;
+  // Pinned entry above the folder rows (the extension's scope switcher pins
+  // "All mail" here). It participates in filtering and keyboard navigation
+  // like a folder row, but commits through its own handler.
+  topItem?: { label: string; onSelect: () => void } | undefined;
+  // Localized overrides for the second use of this picker (scope switching);
+  // defaults keep the original reroute copy.
+  searchPlaceholder?: string | undefined;
+  dialogLabel?: string | undefined;
+  // Per-folder thread totals, keyed by folder id, shown right-aligned on each
+  // row (scope-switcher use). Omit for the reroute use, which shows no counts.
+  counts?: Map<string, number> | undefined;
+  // Total shown on the pinned top row (e.g. "All mail").
+  topCount?: number | undefined;
+  // When true, the panel widens to match the anchor element (a full-width bar),
+  // instead of the default fixed 280px reroute width.
+  matchAnchorWidth?: boolean | undefined;
 }
 
-export function ReroutePopover({ folders, anchor, onCommit, onClose }: ReroutePopoverProps) {
+type PickerEntry = { kind: "top"; label: string } | { kind: "folder"; folder: FolderItem };
+
+export function ReroutePopover({
+  folders,
+  anchor,
+  onCommit,
+  onClose,
+  topItem,
+  searchPlaceholder,
+  dialogLabel,
+  counts,
+  topCount,
+  matchAnchorWidth,
+}: ReroutePopoverProps) {
   const { i18n } = useLingui();
   const [query, setQuery] = useState("");
   const [activeIdx, setActiveIdx] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
 
-  const filtered = folders.filter(
-    (f) => !f.ignored && f.name.toLowerCase().includes(query.toLowerCase()),
-  );
+  const q = query.toLowerCase();
+  const filtered = folders.filter((f) => !f.ignored && f.name.toLowerCase().includes(q));
+  const entries: PickerEntry[] = [
+    ...(topItem && topItem.label.toLowerCase().includes(q)
+      ? [{ kind: "top" as const, label: topItem.label }]
+      : []),
+    ...filtered.map((folder) => ({ kind: "folder" as const, folder })),
+  ];
+
+  function commit(entry: PickerEntry) {
+    if (entry.kind === "top") topItem?.onSelect();
+    else onCommit(entry.folder.id);
+  }
 
   useEffect(() => { setActiveIdx(0); }, [query]);
 
@@ -41,7 +80,10 @@ export function ReroutePopover({ folders, anchor, onCommit, onClose }: ReroutePo
     const panel = panelRef.current;
     panel.style.top = `${rect.bottom + 6}px`;
     panel.style.left = `${rect.left}px`;
-  }, [anchor]);
+    // Full-width bar switcher: match the anchor so the dropdown lines up with
+    // the field it opened from, instead of the fixed reroute width.
+    if (matchAnchorWidth) panel.style.width = `${rect.width}px`;
+  }, [anchor, matchAnchorWidth]);
 
   useEffect(() => {
     if (!anchor) return;
@@ -61,12 +103,12 @@ export function ReroutePopover({ folders, anchor, onCommit, onClose }: ReroutePo
 
   function handleKeyDown(e: React.KeyboardEvent) {
     if (e.key === "Escape") { e.preventDefault(); onClose(); }
-    else if (e.key === "ArrowDown") { e.preventDefault(); setActiveIdx((i) => Math.min(i + 1, filtered.length - 1)); }
+    else if (e.key === "ArrowDown") { e.preventDefault(); setActiveIdx((i) => Math.min(i + 1, entries.length - 1)); }
     else if (e.key === "ArrowUp") { e.preventDefault(); setActiveIdx((i) => Math.max(i - 1, 0)); }
     else if (e.key === "Enter") {
       e.preventDefault();
-      const chosen = filtered[activeIdx];
-      if (chosen) onCommit(chosen.id);
+      const chosen = entries[activeIdx];
+      if (chosen) commit(chosen);
     }
   }
 
@@ -76,7 +118,7 @@ export function ReroutePopover({ folders, anchor, onCommit, onClose }: ReroutePo
   // coordinates, and .em-shell is a size container whose layout containment
   // would otherwise become the panel's containing block.
   return createPortal(
-    <div ref={panelRef} className="em-reroute-panel" role="dialog" aria-label={i18n._(msg`Re-route thread`)}>
+    <div ref={panelRef} className="em-reroute-panel" role="dialog" aria-label={dialogLabel ?? i18n._(msg`Re-route thread`)}>
       <div className="em-reroute-search">
         <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden>
           <circle cx="5.5" cy="5.5" r="3.7" stroke="currentColor" strokeWidth="1.4" />
@@ -85,7 +127,7 @@ export function ReroutePopover({ folders, anchor, onCommit, onClose }: ReroutePo
         <input
           ref={inputRef}
           type="text"
-          placeholder={i18n._(msg`Move to folder…`)}
+          placeholder={searchPlaceholder ?? i18n._(msg`Move to folder…`)}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={handleKeyDown}
@@ -95,20 +137,32 @@ export function ReroutePopover({ folders, anchor, onCommit, onClose }: ReroutePo
       </div>
 
       <ul className="em-reroute-list" role="listbox">
-        {filtered.length === 0 && <li className="em-reroute-empty"><Trans>No folders match</Trans></li>}
-        {filtered.map((folder, i) => (
+        {entries.length === 0 && <li className="em-reroute-empty"><Trans>No folders match</Trans></li>}
+        {entries.map((entry, i) => (
           <li
-            key={folder.id}
+            key={entry.kind === "top" ? "__top__" : entry.folder.id}
             role="option"
             aria-selected={i === activeIdx}
             className={`em-reroute-item${i === activeIdx ? " active" : ""}`}
             onMouseEnter={() => setActiveIdx(i)}
-            onMouseDown={(e) => { e.preventDefault(); onCommit(folder.id); }}
+            onMouseDown={(e) => { e.preventDefault(); commit(entry); }}
           >
-            <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden>
-              <path d="M1.2 3.2h2.4l.8-.9h4.4v5.6H1.2V3.2z" stroke="currentColor" strokeWidth="1.1" strokeLinejoin="round" />
-            </svg>
-            {folder.name}
+            {entry.kind === "top" ? (
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden>
+                <path d="M1.3 5.6v1.9c0 .6.4 1 1 1h5.4c.6 0 1-.4 1-1V5.6M1.3 5.6h2.1l.7 1h1.8l.7-1h2.1M1.3 5.6l1-3.2c.1-.4.5-.7.9-.7h3.6c.4 0 .8.3.9.7l1 3.2" stroke="currentColor" strokeWidth="1.1" strokeLinejoin="round" />
+              </svg>
+            ) : (
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden>
+                <path d="M1.2 3.2h2.4l.8-.9h4.4v5.6H1.2V3.2z" stroke="currentColor" strokeWidth="1.1" strokeLinejoin="round" />
+              </svg>
+            )}
+            <span className="em-reroute-name">
+              {entry.kind === "top" ? entry.label : entry.folder.name}
+            </span>
+            {(() => {
+              const n = entry.kind === "top" ? topCount : counts?.get(entry.folder.id);
+              return n != null ? <span className="em-reroute-count">{i18n.number(n)}</span> : null;
+            })()}
           </li>
         ))}
       </ul>

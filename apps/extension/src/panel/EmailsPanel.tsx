@@ -1,14 +1,15 @@
-import { useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
 import type { ApiClient, FilterCounts, SyncStatus } from "@amarnai/api-client";
 import type { ActiveSelection, FolderItem, ThreadItem } from "@amarnai/ui/emails";
-import { ColumnResizeHandle, EmailRail, ThreadList, ReroutePopover } from "@amarnai/ui/emails";
+import { ThreadList, ReroutePopover } from "@amarnai/ui/emails";
 import { useEmailTriage } from "@amarnai/core/emails";
 import { useWorkspaceEvents } from "../realtime/useWorkspaceEvents";
 import { ThreadPreviewPane } from "./ThreadPreviewPane";
 import { PanelHeader } from "./WorkspacePicker";
+import { ScopeField } from "./ScopeField";
 import { openThreadInMail } from "../gmail/openInGmail";
 
 type Props = {
@@ -46,6 +47,17 @@ export function EmailsPanel({
   const { _ } = useLingui();
   const now = useRef(new Date()).current;
   const [syncStatus, setSyncStatus] = useState<SyncStatus | null>(initialSyncStatus);
+  // Per-folder thread totals for the ScopeField picker rows, server-computed so
+  // they reflect the whole workspace rather than the loaded page. Keyed by
+  // taxonomy node id.
+  const [folderCounts, setFolderCounts] = useState<Map<string, number>>(new Map());
+
+  const loadFolderCounts = useCallback(() => {
+    api
+      .folderCounts(workspaceId)
+      .then((r) => setFolderCounts(new Map(r.counts.map((c) => [c.nodeId, c.count]))))
+      .catch(() => {});
+  }, [api, workspaceId]);
 
   const triage = useEmailTriage({
     api,
@@ -60,18 +72,17 @@ export function EmailsPanel({
     initialSelectedId: null,
   });
 
-  // Refresh the list + sync status when the worker finishes a sync.
+  useEffect(() => { loadFolderCounts(); }, [loadFolderCounts]);
+
+  // Refresh the list + sync status + folder counts when the worker finishes a sync.
   useWorkspaceEvents(api, workspaceId, () => {
     void triage.refresh();
     api.syncStatus(workspaceId).then(setSyncStatus).catch(() => {});
+    loadFolderCounts();
   });
 
   const [mobileView, setMobileView] = useState<"list" | "preview">("list");
-  const [railOpen, setRailOpen] = useState(false);
-  const [railQuery, setRailQuery] = useState("");
-  const [openFolderIds, setOpenFolderIds] = useState<Set<string>>(new Set());
   const [rerouteAnchor, setRerouteAnchor] = useState<HTMLElement | null>(null);
-  const searchRef = useRef<HTMLInputElement>(null);
 
   const { active, selectedId, selectedThread, folders, toast } = triage;
   const routableNodeCount = folders.length;
@@ -80,7 +91,6 @@ export function EmailsPanel({
     triage.setActive(a);
     triage.setSelectedId(null);
     setMobileView("list");
-    setRailOpen(false);
     triage.setQuery("");
   }
 
@@ -92,15 +102,6 @@ export function EmailsPanel({
   function closePreview() {
     triage.setSelectedId(null);
     setMobileView("list");
-  }
-
-  function toggleFolder(id: string) {
-    setOpenFolderIds((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
   }
 
   function openRerouteFor(threadId: string, anchor: HTMLElement) {
@@ -118,40 +119,27 @@ export function EmailsPanel({
     triage.commitReroute(folderId);
   }
 
-  const syncInfo = syncStatus
-    ? {
-        lastSyncedAt: syncStatus.lastSyncedAt,
-        backfillStatus: syncStatus.backfillStatus === "RUNNING" ? ("RUNNING" as const) : ("IDLE" as const),
-        backfillLoadedThreads: syncStatus.backfillLoadedThreads,
-        backfillTotalThreads: syncStatus.backfillTotalThreads,
-        backfillAwaitingTaxonomy: syncStatus.backfillAwaitingTaxonomy,
-        workspacePlan: syncStatus.workspacePlan,
-        pushEnabled: syncStatus.pushEnabled,
-      }
-    : null;
-
   return (
     <div className="ax-panel">
       <PanelHeader />
+      {/* Hidden while the preview pane covers the list (≤640px layout): the
+          scope describes the thread list, and the preview has its own header. */}
+      {mobileView === "list" && (
+        <ScopeField
+          folders={folders}
+          active={active}
+          total={triage.filteredTotal}
+          allCount={triage.total}
+          folderCounts={folderCounts}
+          query={triage.query}
+          onQueryChange={triage.setQuery}
+          onSelect={pushActive}
+        />
+      )}
       <div
         className="em-grid"
         data-mobile-view={mobileView}
-        data-rail-open={String(railOpen)}
       >
-        <EmailRail
-          threads={triage.threads}
-          folders={folders}
-          active={active}
-          railQuery={railQuery}
-          openFolderIds={openFolderIds}
-          queueCounts={triage.queueCounts}
-          syncInfo={syncInfo}
-          onSelectActive={pushActive}
-          onRailQueryChange={setRailQuery}
-          onToggleFolder={toggleFolder}
-        />
-        <ColumnResizeHandle column="rail" />
-
         <ThreadList
           threads={triage.threads}
           folders={folders}
@@ -163,7 +151,7 @@ export function EmailsPanel({
           onSelectThread={selectThread}
           onSelectFolder={(id) => pushActive({ kind: "folder", id })}
           onQueryChange={triage.setQuery}
-          searchRef={searchRef}
+          showHeader={false}
           onMarkDone={triage.handleMarkDone}
           onUnmarkDone={triage.handleUnmarkDone}
           onToggleImportant={triage.handleToggleImportant}
@@ -175,15 +163,12 @@ export function EmailsPanel({
                 },
               }
             : {})}
-          railOpen={railOpen}
-          onToggleRail={() => setRailOpen((v) => !v)}
           hasMore={triage.hasMore}
           loadingMore={triage.loadingMore}
           onLoadMore={triage.loadMore}
           total={triage.filteredTotal}
           backfilling={syncStatus?.backfillStatus === "RUNNING"}
         />
-        <ColumnResizeHandle column="list" />
 
         {selectedThread ? (
           <ThreadPreviewPane

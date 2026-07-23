@@ -83,6 +83,11 @@ export interface ThreadListProps {
   // Gmail. When the list is empty because of this, show a loading state
   // instead of the "no threads" empty message.
   backfilling?: boolean;
+  // When false, the built-in header (scope crumbs, title, search, count) is
+  // suppressed. The extension side panel sets this because its ScopeField bar
+  // above the list already owns the scope indicator, folder switcher, search,
+  // and thread count. Defaults to true so the web app is unchanged.
+  showHeader?: boolean;
 }
 
 export function ThreadList({
@@ -110,6 +115,7 @@ export function ThreadList({
   onLoadMore,
   total,
   backfilling,
+  showHeader = true,
 }: ThreadListProps) {
   // The list is already filtered server-side (active view + search), so render
   // the loaded threads directly. `total` is the server count for "X threads".
@@ -167,16 +173,18 @@ export function ThreadList({
           </button>
         </div>
       )}
-      <ThreadListHeader
-        active={active}
-        folders={folders}
-        threadCount={viewCount}
-        unreadCount={unreadCount}
-        query={query}
-        onQueryChange={onQueryChange}
-        onSelectFolder={onSelectFolder}
-        searchRef={searchRef}
-      />
+      {showHeader && (
+        <ThreadListHeader
+          active={active}
+          folders={folders}
+          threadCount={viewCount}
+          unreadCount={unreadCount}
+          query={query}
+          onQueryChange={onQueryChange}
+          onSelectFolder={onSelectFolder}
+          searchRef={searchRef}
+        />
+      )}
 
       <div className="em-list-scroll">
         {threads.length === 0 && (
