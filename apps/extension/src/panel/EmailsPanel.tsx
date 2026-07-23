@@ -5,9 +5,10 @@ import { msg } from "@lingui/core/macro";
 import type { ApiClient, FilterCounts, SyncStatus } from "@amarnai/api-client";
 import type { ActiveSelection, FolderItem, ThreadItem } from "@amarnai/ui/emails";
 import { ThreadList, ReroutePopover } from "@amarnai/ui/emails";
-import { useEmailTriage } from "@amarnai/core/emails";
+import { useEmailTriage, resolveInboxStatus, mapFolders } from "@amarnai/core/emails";
 import { useWorkspaceEvents } from "../realtime/useWorkspaceEvents";
 import { ThreadPreviewPane } from "./ThreadPreviewPane";
+import { StatusSlot, NoPlanEmptyState } from "./StatusSlot";
 import { PanelHeader } from "./WorkspacePicker";
 import { ScopeField } from "./ScopeField";
 import { openThreadInMail } from "../gmail/openInGmail";
@@ -28,9 +29,11 @@ type Props = {
 
 // Recomposition of apps/web EmailsClient for the side panel: the shared
 // useEmailTriage view-model drives the same @amarnai/ui components, but without
-// Next routing, keyboard nav, or the plan-cap/unrouted banners. The panel owns
-// the SSE stream (via useWorkspaceEvents) and reuses the ≤640px "mobile" layout
-// baked into emails.css (list <-> preview switching via data-mobile-view).
+// Next routing or keyboard nav. The web app stacks its sorting-status banners;
+// at 360px the panel collapses them into one pinned StatusSlot whose state is
+// picked by the shared resolveInboxStatus. The panel owns the SSE stream (via
+// useWorkspaceEvents) and reuses the ≤640px "mobile" layout baked into
+// emails.css (list <-> preview switching via data-mobile-view).
 export function EmailsPanel({
   api,
   workspaceId,
@@ -72,20 +75,75 @@ export function EmailsPanel({
     initialSelectedId: null,
   });
 
+  // Re-fetch the taxonomy and refresh the folder list. The panel's seed is
+  // loaded once (TriageGate) and, unlike the web app, is never re-seeded by a
+  // server navigation — so a plan built in the web app (reached via the "Set up
+  // folders" link) would otherwise never reach the panel, and the no-plan banner
+  // would never flip to "Sort". Triggered on focus/visibility and on each sync.
+  const reloadTaxonomy = useCallback(() => {
+    Promise.all([api.taxonomyNodes(workspaceId), api.taxonomyEdges(workspaceId)])
+      .then(([nodes, edges]) => triage.syncFolders(mapFolders(nodes, edges)))
+      .catch(() => {});
+  }, [api, workspaceId, triage.syncFolders]);
+
   useEffect(() => { loadFolderCounts(); }, [loadFolderCounts]);
 
-  // Refresh the list + sync status + folder counts when the worker finishes a sync.
+  // The plan is edited in a separate web tab; re-pull the taxonomy (and folder
+  // counts) when the panel regains focus so the banner reflects the new folders.
+  useEffect(() => {
+    function onFocus() {
+      if (document.visibilityState === "visible") {
+        reloadTaxonomy();
+        loadFolderCounts();
+      }
+    }
+    window.addEventListener("focus", onFocus);
+    document.addEventListener("visibilitychange", onFocus);
+    return () => {
+      window.removeEventListener("focus", onFocus);
+      document.removeEventListener("visibilitychange", onFocus);
+    };
+  }, [reloadTaxonomy, loadFolderCounts]);
+
+  // Refresh the list + sync status + taxonomy + folder counts when the worker
+  // finishes a sync.
   useWorkspaceEvents(api, workspaceId, () => {
     void triage.refresh();
     api.syncStatus(workspaceId).then(setSyncStatus).catch(() => {});
+    reloadTaxonomy();
     loadFolderCounts();
   });
 
   const [mobileView, setMobileView] = useState<"list" | "preview">("list");
   const [rerouteAnchor, setRerouteAnchor] = useState<HTMLElement | null>(null);
+  // Plan-cap notice is dismissible for the session; kept here (not in StatusSlot)
+  // so it survives the list <-> preview view switch and feeds the resolver.
+  const [planCapDismissed, setPlanCapDismissed] = useState(false);
 
   const { active, selectedId, selectedThread, folders, toast } = triage;
   const routableNodeCount = folders.length;
+
+  // The single sorting-status state to surface (or null). Shared with web via
+  // @amarnai/core; the panel renders the empty case full-pane and the rest as
+  // one pinned row.
+  const inboxStatus = resolveInboxStatus({
+    waitingCount: triage.serverWaitingCount,
+    routableNodeCount,
+    threadCount: triage.total,
+    backfillStatus: syncStatus?.backfillStatus ?? "DONE",
+    backfillRoutingStarted: syncStatus?.backfillRoutingStarted ?? false,
+    backfillLimitState: syncStatus?.backfillLimitState ?? "NONE",
+    backfillAwaitingTaxonomy: syncStatus?.backfillAwaitingTaxonomy ?? false,
+    workspacePlan: syncStatus?.workspacePlan ?? "FREE",
+    planCapDismissed,
+  });
+
+  // Route the whole waiting backlog. Optimistically zero the waiting counts so
+  // the CTA hides at once; the sweep result lands via the SSE refresh.
+  function handleSort() {
+    triage.markWaitingClassifying();
+    api.routeUnrouted(workspaceId).catch(() => {});
+  }
 
   function pushActive(a: ActiveSelection) {
     triage.setActive(a);
@@ -122,19 +180,33 @@ export function EmailsPanel({
   return (
     <div className="ax-panel">
       <PanelHeader />
-      {/* Hidden while the preview pane covers the list (≤640px layout): the
-          scope describes the thread list, and the preview has its own header. */}
+      {inboxStatus?.kind === "no-plan-empty" ? (
+        // Nothing to list and no plan yet: the whole pane becomes one CTA into
+        // the web plan editor rather than a banner over an empty list.
+        <NoPlanEmptyState />
+      ) : (
+      <>
+      {/* Slot + scope are hidden while the preview pane covers the list (≤640px
+          layout): the scope describes the thread list, and the preview has its
+          own header. The status slot belongs to the list view. */}
       {mobileView === "list" && (
-        <ScopeField
-          folders={folders}
-          active={active}
-          total={triage.filteredTotal}
-          allCount={triage.total}
-          folderCounts={folderCounts}
-          query={triage.query}
-          onQueryChange={triage.setQuery}
-          onSelect={pushActive}
-        />
+        <>
+          <StatusSlot
+            status={inboxStatus}
+            onSort={handleSort}
+            onDismissPlanCap={() => setPlanCapDismissed(true)}
+          />
+          <ScopeField
+            folders={folders}
+            active={active}
+            total={triage.filteredTotal}
+            allCount={triage.total}
+            folderCounts={folderCounts}
+            query={triage.query}
+            onQueryChange={triage.setQuery}
+            onSelect={pushActive}
+          />
+        </>
       )}
       <div
         className="em-grid"
@@ -228,6 +300,8 @@ export function EmailsPanel({
           </div>
         )}
       </div>
+      </>
+      )}
     </div>
   );
 }

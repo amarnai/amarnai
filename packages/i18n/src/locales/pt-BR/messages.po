@@ -54,6 +54,18 @@ msgstr "{0, plural, one {# conversa importada.} other {# conversas importadas.}}
 msgid "{0, plural, one {# thread imported.} other {# threads imported.}} Your plan's import limit was reached."
 msgstr "{0, plural, one {# conversa importada.} other {# conversas importadas.}} O limite de importação do seu plano foi atingido."
 
+#. placeholder {0}: status.waitingCount
+#: ../../apps/extension/src/panel/StatusSlot.tsx:30
+#, fuzzy
+msgid "{0, plural, one {# thread is waiting. Set up folders to start sorting.} other {# threads are waiting. Set up folders to start sorting.}}"
+msgstr "{0, plural, one {# conversa aguardando. Configure pastas para começar a organizar.} other {# conversas aguardando. Configure pastas para começar a organizar.}}"
+
+#. placeholder {0}: status.waitingCount
+#: ../../apps/extension/src/panel/StatusSlot.tsx:54
+#, fuzzy
+msgid "{0, plural, one {# thread ready to sort} other {# threads ready to sort}}"
+msgstr "{0, plural, one {# conversa pronta para organizar} other {# conversas prontas para organizar}}"
+
 #. placeholder {0}: s.threadCount
 #: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:155
 msgid "{0, plural, one {# thread} other {# threads}}"
@@ -206,7 +218,7 @@ msgid "{providerName} Inbox"
 msgstr "Caixa de Entrada do {providerName}"
 
 #. placeholder {0}: draftQuota.limit
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:382
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:389
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:404
 #, fuzzy
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
@@ -508,7 +520,9 @@ msgstr "Uma nova candidatura foi recebida de Horemheb de Tebas para o cargo de C
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "Uma nova candidatura foi recebida de Horemheb de Tebas para o cargo de Chefe de Correspondência.\n\nConsulte a candidatura na Casa dos Registros."
+msgstr "Uma nova candidatura foi recebida de Horemheb de Tebas para o cargo de Chefe de Correspondência.\n"
+"\n"
+"Consulte a candidatura na Casa dos Registros."
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:387
 #, fuzzy
@@ -521,7 +535,11 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "Abdi-Heba,\n\nEstarei perto do Delta naquela mesma semana. Encontremo-nos na estalagem no segundo dia; posso dedicar a manhã.\n\nAté lá,"
+msgstr "Abdi-Heba,\n"
+"\n"
+"Estarei perto do Delta naquela mesma semana. Encontremo-nos na estalagem no segundo dia; posso dedicar a manhã.\n"
+"\n"
+"Até lá,"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
@@ -703,7 +721,7 @@ msgstr "Todas as pastas"
 msgid "All limits are per workspace."
 msgstr "Todos os limites são por workspace."
 
-#: ../../apps/extension/src/panel/ScopeField.tsx:52
+#: ../../apps/extension/src/panel/ScopeField.tsx:56
 #, fuzzy
 msgid "All mail"
 msgstr "Todo o e-mail"
@@ -1023,7 +1041,7 @@ msgstr "Arquivo"
 msgid "Assign"
 msgstr "Atribuir"
 
-#: ../ui/src/emails/AssigneePicker.tsx:101
+#: ../ui/src/emails/AssigneePicker.tsx:105
 #, fuzzy
 msgid "Assign thread"
 msgstr "Atribuir conversa"
@@ -1118,9 +1136,13 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "Aziru,\n\nSuas palavras de amizade nos são gratas. Estamos dispostos a ouvir mais sobre o que a casa de Amurru propõe. Envie seus termos com o próximo mensageiro.\n\nSaudações,"
+msgstr "Aziru,\n"
+"\n"
+"Suas palavras de amizade nos são gratas. Estamos dispostos a ouvir mais sobre o que a casa de Amurru propõe. Envie seus termos com o próximo mensageiro.\n"
+"\n"
+"Saudações,"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:271
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:275
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
 #: ../../apps/site/src/components/landing/MailThreadMock.tsx:66
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:25
@@ -1134,7 +1156,7 @@ msgstr "Voltar"
 #~ msgid "Back to inbox"
 #~ msgstr "Voltar para a caixa de entrada"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:267
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:271
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:292
 #: ../ui/src/emails/ThreadPreview.tsx:116
 #, fuzzy
@@ -1251,6 +1273,10 @@ msgstr "Relatórios de bugs, rastreamentos de pilha e tickets de regressão regi
 #, fuzzy
 msgid "Build plan"
 msgstr "Criar plano"
+
+#: ../../apps/extension/src/panel/StatusSlot.tsx:161
+msgid "Build your sorting plan"
+msgstr "Monte seu plano de organização"
 
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
 #: ../ui/src/emails/BackfillCard.tsx:21
@@ -1497,7 +1523,7 @@ msgstr "Fechar painel"
 msgid "Close preview"
 msgstr "Fechar prévia"
 
-#: ../../apps/extension/src/panel/ScopeField.tsx:99
+#: ../../apps/extension/src/panel/ScopeField.tsx:103
 msgid "Close search"
 msgstr "Fechar pesquisa"
 
@@ -2291,7 +2317,8 @@ msgstr "Desconecta este espaço de trabalho. Amarnai mantém o acesso porque est
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "Desconecta este espaço de trabalho. Amarnai mantém o acesso porque esta caixa de e-mail ainda está conectada em {sharedNames}."
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:224
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:369
+#: ../../apps/extension/src/panel/StatusSlot.tsx:97
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:65
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:393
@@ -2390,7 +2417,7 @@ msgstr "Rascunho"
 msgid "Draft failed · tap to retry"
 msgstr "Rascunho falhou · toque para tentar novamente"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:397
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:404
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:420
 #, fuzzy
 msgid "Draft generation failed. Try again."
@@ -3066,7 +3093,7 @@ msgstr "Gerar novo rascunho. Usa uma da sua cota mensal"
 msgid "Generate a plan from your inbox"
 msgstr "Gerar um plano a partir da sua caixa de entrada"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:376
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:383
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:146
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:281
 #: ../ui/src/emails/ThreadPreview.tsx:253
@@ -3267,7 +3294,11 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "Grande Rei,\n\nOs relatórios que solicitou serão preparados antes que o conselho se reúna. Farei com que meus escribas compilem os registros dos territórios orientais e os enviem antecipadamente por um mensageiro rápido.\n\nEm irmandade,"
+msgstr "Grande Rei,\n"
+"\n"
+"Os relatórios que solicitou serão preparados antes que o conselho se reúna. Farei com que meus escribas compilem os registros dos territórios orientais e os enviem antecipadamente por um mensageiro rápido.\n"
+"\n"
+"Em irmandade,"
 
 #: ../../apps/site/src/components/support/SupportContent.tsx:77
 msgid "Guides and answers to common questions"
@@ -3687,7 +3718,7 @@ msgstr "Chamadas para artigos, convites para edições especiais e métricas de 
 msgid "Journals"
 msgstr "Periódicos"
 
-#: ../../apps/extension/src/panel/ScopeField.tsx:180
+#: ../../apps/extension/src/panel/ScopeField.tsx:191
 msgid "Jump to folder…"
 msgstr "Ir para pasta…"
 
@@ -3853,6 +3884,7 @@ msgstr "Ao vivo"
 msgid "Load more"
 msgstr "Carregar mais"
 
+#: ../../apps/extension/src/panel/StatusSlot.tsx:131
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:122
 #: ../ui/src/emails/BackfillCard.tsx:35
@@ -3934,7 +3966,7 @@ msgstr "Manuscritos e Revisão por Pares"
 msgid "Mark as done"
 msgstr "Marcar como concluído"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:277
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:281
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:244
 #: ../../apps/mobile/src/components/ThreadRow.tsx:58
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:319
@@ -4117,7 +4149,7 @@ msgstr "Mover conversas para"
 msgid "Move to folder"
 msgstr "Mover para pasta"
 
-#: ../ui/src/emails/ReroutePopover.tsx:130
+#: ../ui/src/emails/ReroutePopover.tsx:129
 #, fuzzy
 msgid "Move to folder…"
 msgstr "Mover para pasta…"
@@ -4222,6 +4254,7 @@ msgstr "Nova notificação"
 msgid "New password"
 msgstr "Nova senha"
 
+#: ../../apps/extension/src/panel/StatusSlot.tsx:137
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:42
 #: ../ui/src/emails/BackfillCard.tsx:40
 msgid "New threads will appear as they are sorted."
@@ -4245,7 +4278,7 @@ msgstr "Novo nome do espaço de trabalho"
 msgid "No drafts remaining"
 msgstr "Nenhum rascunho restante"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:381
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:388
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:403
 #: ../ui/src/emails/SuggestedDraftCard.tsx:97
 #, fuzzy
@@ -4275,7 +4308,7 @@ msgstr "Nenhuma pasta disponível"
 msgid "No folders defined"
 msgstr "Nenhuma pasta definida"
 
-#: ../ui/src/emails/ReroutePopover.tsx:140
+#: ../ui/src/emails/ReroutePopover.tsx:139
 #, fuzzy
 msgid "No folders match"
 msgstr "Nenhuma pasta corresponde"
@@ -4304,7 +4337,7 @@ msgstr "Nenhuma caixa de entrada conectada a este espaço de trabalho."
 msgid "No matching folders"
 msgstr "Nenhuma pasta correspondente"
 
-#: ../ui/src/emails/AssigneePicker.tsx:107
+#: ../ui/src/emails/AssigneePicker.tsx:111
 #, fuzzy
 msgid "No members"
 msgstr "Nenhum membro"
@@ -4467,14 +4500,14 @@ msgstr "Abrir"
 msgid "Open an issue on GitHub"
 msgstr "Abrir uma issue no GitHub"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:308
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:312
 #: ../../apps/mobile/src/components/DraftSheet.tsx:97
 #: ../ui/src/emails/providerLabels.ts:11
 #, fuzzy
 msgid "Open in Gmail"
 msgstr "Abrir no Gmail"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:306
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:310
 #: ../ui/src/emails/providerLabels.ts:11
 msgid "Open in Outlook"
 msgstr "Abrir no Outlook"
@@ -4488,6 +4521,10 @@ msgstr "Abrir navegação"
 #, fuzzy
 msgid "open source email ai"
 msgstr "IA de e-mail de código aberto"
+
+#: ../../apps/extension/src/panel/StatusSlot.tsx:172
+msgid "Open the plan editor"
+msgstr "Abrir editor do plano"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:228
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:281
@@ -4784,7 +4821,7 @@ msgstr "O plano é somente leitura. Somente administradores do espaço de trabal
 msgid "Plan nodes"
 msgstr "Nós do plano"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:337
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:344
 #, fuzzy
 msgid "Plan sorting"
 msgstr "Plano de Classificação"
@@ -4995,7 +5032,7 @@ msgstr "Avaliado com 5 de 5"
 msgid "Re-route {unclassifiedCount} unclassified"
 msgstr "Reencaminhar {unclassifiedCount} não classificados"
 
-#: ../ui/src/emails/ReroutePopover.tsx:121
+#: ../ui/src/emails/ReroutePopover.tsx:120
 msgid "Re-route thread"
 msgstr "Reencaminhar conversa"
 
@@ -5176,7 +5213,7 @@ msgstr "Remover {0}"
 msgid "Remove {email} from blacklist"
 msgstr "Remover {email} da lista negra"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:277
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:281
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:243
 #: ../../apps/mobile/src/components/ThreadRow.tsx:57
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:319
@@ -5358,7 +5395,7 @@ msgid "Resources"
 msgstr "Recursos"
 
 #: ../../apps/extension/src/App.tsx:114
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:399
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:406
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:345
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:426
 #, fuzzy
@@ -5398,7 +5435,11 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "Rib-Hadda,\n\nNós o ouvimos. Grãos adicionais foram solicitados dos armazéns do sul e chegarão antes da festa da colheita. Pedimos sua paciência até lá.\n\nMantenha-se bem,"
+msgstr "Rib-Hadda,\n"
+"\n"
+"Nós o ouvimos. Grãos adicionais foram solicitados dos armazéns do sul e chegarão antes da festa da colheita. Pedimos sua paciência até lá.\n"
+"\n"
+"Mantenha-se bem,"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -5508,7 +5549,7 @@ msgid "Search {threadCount} threads"
 msgstr "Pesquisar {threadCount} conversas"
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:322
-#: ../ui/src/emails/ReroutePopover.tsx:134
+#: ../ui/src/emails/ReroutePopover.tsx:133
 #, fuzzy
 msgid "Search folders"
 msgstr "Pesquisar pastas"
@@ -5517,9 +5558,9 @@ msgstr "Pesquisar pastas"
 msgid "Search mail"
 msgstr "Pesquisar e-mails"
 
-#: ../../apps/extension/src/panel/ScopeField.tsx:89
-#: ../../apps/extension/src/panel/ScopeField.tsx:90
-#: ../../apps/extension/src/panel/ScopeField.tsx:162
+#: ../../apps/extension/src/panel/ScopeField.tsx:93
+#: ../../apps/extension/src/panel/ScopeField.tsx:94
+#: ../../apps/extension/src/panel/ScopeField.tsx:166
 #: ../ui/src/emails/ThreadListHeader.tsx:107
 #, fuzzy
 msgid "Search threads"
@@ -5547,7 +5588,7 @@ msgstr "Veja em ação"
 msgid "Select"
 msgstr "Selecionar"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:195
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:318
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:349
 #: ../ui/src/emails/MockEmailsPage.tsx:274
 #, fuzzy
@@ -5645,6 +5686,16 @@ msgstr "Definir nova senha"
 #, fuzzy
 #~ msgid "Set up at least 3 folders so we can start sorting."
 #~ msgstr "Configure pelo menos 3 pastas para que possamos começar a organizar."
+
+#: ../../apps/extension/src/panel/StatusSlot.tsx:42
+#, fuzzy
+msgid "Set up folders"
+msgstr "Configurar pastas"
+
+#: ../../apps/extension/src/panel/StatusSlot.tsx:164
+#, fuzzy
+msgid "Set up folders so Amarnai knows where to file your mail. It only takes a minute."
+msgstr "Configure pastas para que Amarnai saiba onde arquivar seus e-mails. Leva só um minuto."
 
 #: ../../apps/web/src/app/(app)/settings/WorkspaceLanguageSection.tsx:56
 msgid "Sets the language for this workspace, including the interface and AI-generated folders."
@@ -5804,6 +5855,10 @@ msgstr "Algo deu errado. Por favor, tente novamente."
 msgid "Soon"
 msgstr "Em breve"
 
+#: ../../apps/extension/src/panel/StatusSlot.tsx:57
+msgid "Sort"
+msgstr "Organizar"
+
 #: ../../apps/site/src/components/landing/Footer.tsx:18
 #, fuzzy
 msgid "Sort emails your way."
@@ -5836,6 +5891,7 @@ msgstr "Classificado automaticamente por similaridade de conteúdo."
 msgid "Sorting"
 msgstr "Classificação"
 
+#: ../../apps/extension/src/panel/StatusSlot.tsx:128
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:32
 #: ../ui/src/emails/BackfillCard.tsx:33
 msgid "Sorting historical inbox"
@@ -6043,8 +6099,8 @@ msgstr "Conversas sobre suporte, integração, retenção, cancelamento e sucess
 msgid "Switch"
 msgstr "Mudar"
 
-#: ../../apps/extension/src/panel/ScopeField.tsx:146
-#: ../../apps/extension/src/panel/ScopeField.tsx:181
+#: ../../apps/extension/src/panel/ScopeField.tsx:150
+#: ../../apps/extension/src/panel/ScopeField.tsx:192
 msgid "Switch folder view"
 msgstr "Alternar visualização de pasta"
 
@@ -6316,12 +6372,12 @@ msgstr "Isso remove a conexão com o Gmail, exclui todos os e-mails sincronizado
 msgid "This thread cannot be sorted yet. Add at least {TAXONOMY_MIN_NON_ROOT_NODES} categories to your plan to begin routing."
 msgstr "Esta conversa ainda não pode ser classificada. Adicione pelo menos {TAXONOMY_MIN_NON_ROOT_NODES} categorias ao seu plano para começar o encaminhamento."
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:342
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:349
 #, fuzzy
 msgid "This thread hasn't been sorted yet."
 msgstr "Esta conversa ainda não foi organizada."
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:330
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:337
 #, fuzzy
 msgid "This thread hasn't been sorted yet. Create a sorting plan so Amarnai knows where to file it."
 msgstr "Esta conversa ainda não foi classificada. Crie um plano de classificação para que Amarnai saiba onde arquivá-la."
@@ -6414,7 +6470,13 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "Ao meu irmão, o Grande Rei,\n\nO grande conselho se reúne no início de Shemu. Peço que prepare um levantamento completo dos territórios orientais e o envie por mensageiro rápido, antes da lua nova, se possível.\n\nNossa aliança é forte. Mostremos ao conselho que assim permanece.\n\nTushratta, Grande Rei de Mitanni"
+msgstr "Ao meu irmão, o Grande Rei,\n"
+"\n"
+"O grande conselho se reúne no início de Shemu. Peço que prepare um levantamento completo dos territórios orientais e o envie por mensageiro rápido, antes da lua nova, se possível.\n"
+"\n"
+"Nossa aliança é forte. Mostremos ao conselho que assim permanece.\n"
+"\n"
+"Tushratta, Grande Rei de Mitanni"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:163
 #, fuzzy
@@ -6423,7 +6485,11 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "Ao Departamento de Nomeações Reais,\n\nRecebemos a candidatura de Horemheb de Tebas e analisaremos seu histórico antes da próxima lua nova. Por favor, informe-o de que enviaremos notícias em tempo hábil.\n\nPor decreto real,"
+msgstr "Ao Departamento de Nomeações Reais,\n"
+"\n"
+"Recebemos a candidatura de Horemheb de Tebas e analisaremos seu histórico antes da próxima lua nova. Por favor, informe-o de que enviaremos notícias em tempo hábil.\n"
+"\n"
+"Por decreto real,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:278
 #, fuzzy
@@ -6434,7 +6500,13 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "Ao Grande Rei,\n\nPor muitos anos, nossas casas foram como irmãos. Escrevo agora para propor que formalizemos esta amizade em benefício de ambos os nossos povos: um pacto de proteção mútua e rotas compartilhadas.\n\nPeço apenas que ouça meus termos. Envie notícias com o próximo mensageiro e despacharei meu enviado imediatamente.\n\nAziru, servo do Grande Rei, senhor de Amurru"
+msgstr "Ao Grande Rei,\n"
+"\n"
+"Por muitos anos, nossas casas foram como irmãos. Escrevo agora para propor que formalizemos esta amizade em benefício de ambos os nossos povos: um pacto de proteção mútua e rotas compartilhadas.\n"
+"\n"
+"Peço apenas que ouça meus termos. Envie notícias com o próximo mensageiro e despacharei meu enviado imediatamente.\n"
+"\n"
+"Aziru, servo do Grande Rei, senhor de Amurru"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:391
 #, fuzzy
@@ -6443,7 +6515,11 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "Ao Grande Rei,\n\nMinhas viagens me levam perto do Delta nos próximos dias. Se o Grande Rei tiver uma hora a dispensar, acolheria a chance de falar cara a cara; há assuntos mais fáceis de dizer do que de escrever.\n\nSeu servo, Abdi-Heba, governador de Urushalim"
+msgstr "Ao Grande Rei,\n"
+"\n"
+"Minhas viagens me levam perto do Delta nos próximos dias. Se o Grande Rei tiver uma hora a dispensar, acolheria a chance de falar cara a cara; há assuntos mais fáceis de dizer do que de escrever.\n"
+"\n"
+"Seu servo, Abdi-Heba, governador de Urushalim"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:153
 #, fuzzy
@@ -6452,7 +6528,11 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "Ao Grande Rei, meu irmão,\n\nOuvi suas palavras. O ouro será despachado antes que o próximo mensageiro parta. Valorizamos o laço entre nossas casas e não desejamos que ele esfrie.\n\nEm amizade,"
+msgstr "Ao Grande Rei, meu irmão,\n"
+"\n"
+"Ouvi suas palavras. O ouro será despachado antes que o próximo mensageiro parta. Valorizamos o laço entre nossas casas e não desejamos que ele esfrie.\n"
+"\n"
+"Em amizade,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:239
 #, fuzzy
@@ -6463,7 +6543,13 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "Ao Grande Rei, meu irmão,\n\nEscrevo em amizade, como nossos pais escreveram antes de nós. O terceiro carregamento de ouro acordado em nosso tratado não chegou. Dois mensageiros já passaram e ainda esperamos.\n\nPedimos que o despache sem mais demora, como convém ao laço entre nossas casas.\n\nBurna-Buriash II, Rei da Babilônia"
+msgstr "Ao Grande Rei, meu irmão,\n"
+"\n"
+"Escrevo em amizade, como nossos pais escreveram antes de nós. O terceiro carregamento de ouro acordado em nosso tratado não chegou. Dois mensageiros já passaram e ainda esperamos.\n"
+"\n"
+"Pedimos que o despache sem mais demora, como convém ao laço entre nossas casas.\n"
+"\n"
+"Burna-Buriash II, Rei da Babilônia"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:352
 msgid "To the Great King, my lord, my sun,\n"
@@ -6473,7 +6559,13 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "Ao Grande Rei, meu senhor, meu sol,\n\nO grão que enviou no mês passado foi recebido com gratidão e louvei seu nome diante do povo. Mas devo escrever novamente: o terceiro carregamento não chegou e a cidade se agita.\n\nEscrevi sete vezes. Não desejo incomodá-lo, mas o que mais posso fazer?\n\nSeu servo, Rib-Hadda, governador de Biblos"
+msgstr "Ao Grande Rei, meu senhor, meu sol,\n"
+"\n"
+"O grão que enviou no mês passado foi recebido com gratidão e louvei seu nome diante do povo. Mas devo escrever novamente: o terceiro carregamento não chegou e a cidade se agita.\n"
+"\n"
+"Escrevi sete vezes. Não desejo incomodá-lo, mas o que mais posso fazer?\n"
+"\n"
+"Seu servo, Rib-Hadda, governador de Biblos"
 
 #: ../../apps/site/src/components/landing/MailThreadMock.tsx:135
 msgid "To: You"
@@ -6569,7 +6661,7 @@ msgstr "Indisponível"
 msgid "Unclassified"
 msgstr "Não classificado"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:217
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:362
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:390
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1442
 #: ../ui/src/emails/MockEmailsPage.tsx:293
@@ -6684,7 +6776,7 @@ msgid "Updating…"
 msgstr "Atualizando…"
 
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:175
-#: ../ui/src/emails/AssigneePicker.tsx:132
+#: ../ui/src/emails/AssigneePicker.tsx:136
 #, fuzzy
 msgid "Upgrade"
 msgstr "Atualizar"
@@ -6707,12 +6799,14 @@ msgstr "Faça upgrade para um plano pago para convidar colaboradores e atribuir 
 #~ msgid "Upgrade to a Pro or Business subscription to invite collaborators."
 #~ msgstr "Faça upgrade para uma assinatura Pro ou Business para convidar colaboradores."
 
+#: ../../apps/extension/src/panel/StatusSlot.tsx:87
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:60
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:50
 #, fuzzy
 msgid "Upgrade to import now"
 msgstr "Faça upgrade para importar agora"
 
+#: ../../apps/extension/src/panel/StatusSlot.tsx:89
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:60
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:50
 msgid "Upgrade to load the rest"
@@ -6985,7 +7079,7 @@ msgstr "Tipo de workspace"
 msgid "Workspaces included"
 msgstr "Workspaces incluídos"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:391
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:398
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:168
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:414
 #: ../ui/src/emails/ThreadPreview.tsx:260
@@ -7126,6 +7220,12 @@ msgstr "Você está no plano {planLabel}"
 #~ msgid "You're on the list!"
 #~ msgstr "Você está na lista!"
 
+#. placeholder {0}: status.plan
+#: ../../apps/extension/src/panel/StatusSlot.tsx:69
+#, fuzzy
+msgid "You've used all of your {0} plan's email imports this month, including one retry. Imports refresh {refreshDate}."
+msgstr "Você usou todas as importações de e-mail do seu plano {0} este mês, incluindo uma nova tentativa. As importações renovam em {refreshDate}."
+
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:36
 msgid "You've used all of your {plan} plan's email imports this month, including one retry. Imports refresh {refreshDate}."
@@ -7139,6 +7239,12 @@ msgstr "Você esgotou suas gerações por enquanto."
 #: ../ui/src/i18n/generation-reason-messages.ts:19
 msgid "You've used your generations for now. Available again {when}."
 msgstr "Você esgotou suas gerações por enquanto. Disponível novamente {when}."
+
+#. placeholder {0}: status.plan
+#: ../../apps/extension/src/panel/StatusSlot.tsx:72
+#, fuzzy
+msgid "Your {0} plan finished importing your most recent emails. Older ones beyond its limit weren't loaded."
+msgstr "Seu plano {0} concluiu a importação dos seus e-mails mais recentes. Os mais antigos, fora do limite, não foram carregados."
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:41
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:39
@@ -7186,6 +7292,7 @@ msgstr "Sua caixa de entrada ainda está importando. Você pode gerar agora com 
 msgid "Your name"
 msgstr "Seu nome"
 
+#: ../../apps/extension/src/panel/StatusSlot.tsx:135
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:40
 #: ../ui/src/emails/BackfillCard.tsx:38
 msgid "Your past threads are being loaded and will appear shortly."
@@ -7199,6 +7306,12 @@ msgstr "Seu plano é uma árvore de pastas simples: suas pastas se ramificando a
 #: ../../apps/site/src/components/landing/FAQSection.tsx:24
 msgid "Your plan is a tree of folders (for example a Customers folder with Support and Billing beneath it), each described in plain language, and Amarnai walks that tree to route every thread to the folder that fits best. The fastest way to build it is to let Amarnai generate one for you: it reads your inbox and proposes a complete tree, named and described, that you can keep as-is or adjust. You can also start from one of our ready-made templates or build your own from scratch. No technical know-how required."
 msgstr "Seu plano é uma árvore de pastas (por exemplo, uma pasta Clientes com Suporte e Cobrança abaixo dela), cada uma descrita em linguagem simples, e Amarnai percorre essa árvore para direcionar cada conversa para a pasta que melhor se encaixa. A maneira mais rápida de construí-lo é deixar o Amarnai gerar um para você: ele lê sua caixa de entrada e propõe uma árvore completa, nomeada e descrita, que você pode manter como está ou ajustar. Você também pode começar com um de nossos modelos prontos ou construir o seu do zero. Nenhum conhecimento técnico é necessário."
+
+#. placeholder {0}: status.plan
+#: ../../apps/extension/src/panel/StatusSlot.tsx:71
+#, fuzzy
+msgid "Your retry import finished and is still capped by your {0} plan. Your next retry is available {refreshDate}."
+msgstr "Sua nova tentativa de importação foi concluída e continua limitada pelo seu plano {0}. Sua próxima nova tentativa estará disponível em {refreshDate}."
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:40
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:38

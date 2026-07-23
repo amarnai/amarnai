@@ -95,7 +95,7 @@ export function useEmailTriage(options: UseEmailTriageOptions) {
   // Count of threads matching the active view + search (server-computed), shown
   // as "X threads". Distinct from `counts` (the whole-inbox pill totals).
   const [filteredTotal, setFilteredTotal] = useState<number>(initialFilteredTotal ?? initialThreads.length);
-  const [folders] = useState<FolderItem[]>(initialFolders);
+  const [folders, setFolders] = useState<FolderItem[]>(initialFolders);
   const [active, setActive] = useState<ActiveSelection>(initialActive);
   const [selectedId, setSelectedId] = useState<string | null>(initialSelectedId);
   const [query, setQuery] = useState("");
@@ -159,6 +159,15 @@ export function useEmailTriage(options: UseEmailTriageOptions) {
   // draft state and the pinned (selected) thread.
   const syncThreads = useCallback((fresh: ThreadItem[]) => {
     setThreads((prev) => mergeThreads(fresh, prev, selectedIdRef.current, hasPaginatedRef.current));
+  }, []);
+
+  // Replace the taxonomy-derived folder list after the plan is edited elsewhere
+  // (e.g. the browser-extension panel, whose seed is fetched once and never
+  // re-rendered by a server navigation the way the web app is). No-ops when the
+  // set is unchanged so dependent memos don't churn on every refresh trigger.
+  const syncFolders = useCallback((fresh: FolderItem[]) => {
+    const sig = (fs: FolderItem[]) => fs.map((f) => `${f.id}:${f.name}`).join("|");
+    setFolders((prev) => (sig(prev) === sig(fresh) ? prev : fresh));
   }, []);
 
   // Re-fetch the active view's first page and merge it in (preserving already-
@@ -526,6 +535,7 @@ export function useEmailTriage(options: UseEmailTriageOptions) {
     setQuery,
     // thread sync
     syncThreads,
+    syncFolders,
     refresh,
     loadThread,
     // pagination + counts

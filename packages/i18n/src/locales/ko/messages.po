@@ -56,6 +56,17 @@ msgstr "{0, plural, one {#개 스레드 가져옴.} other {#개 스레드 가져
 msgid "{0, plural, one {# thread imported.} other {# threads imported.}} Your plan's import limit was reached."
 msgstr "{0, plural, one {#개 스레드 가져옴.} other {#개 스레드 가져옴.}} 현재 플랜의 가져오기 한도에 도달했습니다."
 
+#. placeholder {0}: status.waitingCount
+#: ../../apps/extension/src/panel/StatusSlot.tsx:30
+#, fuzzy
+msgid "{0, plural, one {# thread is waiting. Set up folders to start sorting.} other {# threads are waiting. Set up folders to start sorting.}}"
+msgstr "{0, plural, one {#개의 스레드가 대기 중입니다. 정렬을 시작하려면 폴더를 설정하세요.} other {#개의 스레드가 대기 중입니다. 정렬을 시작하려면 폴더를 설정하세요.}}"
+
+#. placeholder {0}: status.waitingCount
+#: ../../apps/extension/src/panel/StatusSlot.tsx:54
+msgid "{0, plural, one {# thread ready to sort} other {# threads ready to sort}}"
+msgstr "{0, plural, one {#개의 스레드 정렬 준비 완료} other {#개의 스레드 정렬 준비 완료}}"
+
 #. placeholder {0}: s.threadCount
 #: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:155
 #, fuzzy
@@ -213,7 +224,7 @@ msgid "{providerName} Inbox"
 msgstr "{providerName} 받은 편지함"
 
 #. placeholder {0}: draftQuota.limit
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:382
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:389
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:404
 #, fuzzy
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
@@ -521,7 +532,9 @@ msgstr "테베의 호렘헤브님으로부터 서신 관리 책임자 직책에 
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "테베의 호렘헤브님으로부터 서신 관리 책임자 직책에 대한 새로운 지원서가 접수되었습니다.\n\n지원서는 기록 보관소에서 확인할 수 있습니다."
+msgstr "테베의 호렘헤브님으로부터 서신 관리 책임자 직책에 대한 새로운 지원서가 접수되었습니다.\n"
+"\n"
+"지원서는 기록 보관소에서 확인할 수 있습니다."
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:387
 #, fuzzy
@@ -535,7 +548,11 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "압디-헤바님께,\n\n저도 그 주에 델타 근처에 있을 예정입니다. 둘째 날에 역참에서 만나뵙죠. 오전 시간은 괜찮습니다.\n\n그럼,"
+msgstr "압디-헤바님께,\n"
+"\n"
+"저도 그 주에 델타 근처에 있을 예정입니다. 둘째 날에 역참에서 만나뵙죠. 오전 시간은 괜찮습니다.\n"
+"\n"
+"그럼,"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
@@ -716,7 +733,7 @@ msgstr "모든 폴더"
 msgid "All limits are per workspace."
 msgstr "모든 제한은 작업 공간별로 적용됩니다."
 
-#: ../../apps/extension/src/panel/ScopeField.tsx:52
+#: ../../apps/extension/src/panel/ScopeField.tsx:56
 msgid "All mail"
 msgstr "모든 메일"
 
@@ -1039,7 +1056,7 @@ msgstr "보관함"
 msgid "Assign"
 msgstr "할당"
 
-#: ../ui/src/emails/AssigneePicker.tsx:101
+#: ../ui/src/emails/AssigneePicker.tsx:105
 #, fuzzy
 msgid "Assign thread"
 msgstr "스레드 할당"
@@ -1137,9 +1154,13 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "아지루,\n\n친구로서의 말씀 잘 받았습니다. 아무르 가문이 제안하는 바를 더 들을 준비가 되어 있습니다. 다음 사신 편에 조건을 보내주십시오.\n\n안녕히,"
+msgstr "아지루,\n"
+"\n"
+"친구로서의 말씀 잘 받았습니다. 아무르 가문이 제안하는 바를 더 들을 준비가 되어 있습니다. 다음 사신 편에 조건을 보내주십시오.\n"
+"\n"
+"안녕히,"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:271
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:275
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
 #: ../../apps/site/src/components/landing/MailThreadMock.tsx:66
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:25
@@ -1153,7 +1174,7 @@ msgstr "뒤로"
 #~ msgid "Back to inbox"
 #~ msgstr "받은 편지함으로"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:267
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:271
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:292
 #: ../ui/src/emails/ThreadPreview.tsx:116
 #, fuzzy
@@ -1274,6 +1295,10 @@ msgstr "버그 보고서, 스택 트레이스, 코드베이스 관련 회귀 티
 #, fuzzy
 msgid "Build plan"
 msgstr "플랜 만들기"
+
+#: ../../apps/extension/src/panel/StatusSlot.tsx:161
+msgid "Build your sorting plan"
+msgstr "나만의 정렬 계획 만들기"
 
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
 #: ../ui/src/emails/BackfillCard.tsx:21
@@ -1524,7 +1549,7 @@ msgstr "패널 닫기"
 msgid "Close preview"
 msgstr "미리보기 닫기"
 
-#: ../../apps/extension/src/panel/ScopeField.tsx:99
+#: ../../apps/extension/src/panel/ScopeField.tsx:103
 msgid "Close search"
 msgstr "검색 닫기"
 
@@ -2337,7 +2362,8 @@ msgstr "이 작업 공간의 연결을 해제합니다. 이 메일함이 Amarnai
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "이 작업 공간의 연결을 해제합니다. 이 메일함은 {sharedNames}에 여전히 연결되어 있어 Amarnai는 계속 접근 권한을 가집니다."
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:224
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:369
+#: ../../apps/extension/src/panel/StatusSlot.tsx:97
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:65
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:393
@@ -2435,7 +2461,7 @@ msgstr "초안"
 msgid "Draft failed · tap to retry"
 msgstr "초안 실패 · 탭하여 다시 시도"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:397
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:404
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:420
 #, fuzzy
 msgid "Draft generation failed. Try again."
@@ -3132,7 +3158,7 @@ msgstr "새 초안 생성. 월간 할당량 1회가 소진됩니다."
 msgid "Generate a plan from your inbox"
 msgstr "받은 편지함에서 계획 생성"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:376
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:383
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:146
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:281
 #: ../ui/src/emails/ThreadPreview.tsx:253
@@ -3341,7 +3367,11 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "위대하신 왕이시여,\n\n요청하신 보고서는 회의가 열리기 전에 준비될 것입니다. 저의 서기관들에게 동부 영토의 회계 장부를 취합하도록 하여 빠른 전령을 통해 미리 보내드리겠습니다.\n\n충심을 다하여,"
+msgstr "위대하신 왕이시여,\n"
+"\n"
+"요청하신 보고서는 회의가 열리기 전에 준비될 것입니다. 저의 서기관들에게 동부 영토의 회계 장부를 취합하도록 하여 빠른 전령을 통해 미리 보내드리겠습니다.\n"
+"\n"
+"충심을 다하여,"
 
 #: ../../apps/site/src/components/support/SupportContent.tsx:77
 msgid "Guides and answers to common questions"
@@ -3773,7 +3803,7 @@ msgstr "학술지 논문 모집, 특별호 초대 및 인용 지표"
 msgid "Journals"
 msgstr "학술지"
 
-#: ../../apps/extension/src/panel/ScopeField.tsx:180
+#: ../../apps/extension/src/panel/ScopeField.tsx:191
 #, fuzzy
 msgid "Jump to folder…"
 msgstr "폴더로 이동…"
@@ -3937,6 +3967,7 @@ msgstr "실시간"
 msgid "Load more"
 msgstr "더 보기"
 
+#: ../../apps/extension/src/panel/StatusSlot.tsx:131
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:122
 #: ../ui/src/emails/BackfillCard.tsx:35
@@ -4020,7 +4051,7 @@ msgstr "원고 및 피어 리뷰"
 msgid "Mark as done"
 msgstr "완료로 표시"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:277
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:281
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:244
 #: ../../apps/mobile/src/components/ThreadRow.tsx:58
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:319
@@ -4207,7 +4238,7 @@ msgstr "스레드 이동"
 msgid "Move to folder"
 msgstr "폴더로 이동"
 
-#: ../ui/src/emails/ReroutePopover.tsx:130
+#: ../ui/src/emails/ReroutePopover.tsx:129
 #, fuzzy
 msgid "Move to folder…"
 msgstr "폴더로 이동…"
@@ -4315,6 +4346,7 @@ msgstr "새 알림"
 msgid "New password"
 msgstr "새 비밀번호"
 
+#: ../../apps/extension/src/panel/StatusSlot.tsx:137
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:42
 #: ../ui/src/emails/BackfillCard.tsx:40
 #, fuzzy
@@ -4340,7 +4372,7 @@ msgstr "새 워크스페이스 이름"
 msgid "No drafts remaining"
 msgstr "남은 초안 없음"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:381
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:388
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:403
 #: ../ui/src/emails/SuggestedDraftCard.tsx:97
 #, fuzzy
@@ -4373,7 +4405,7 @@ msgstr "사용 가능한 폴더 없음"
 msgid "No folders defined"
 msgstr "정의된 폴더 없음"
 
-#: ../ui/src/emails/ReroutePopover.tsx:140
+#: ../ui/src/emails/ReroutePopover.tsx:139
 #, fuzzy
 msgid "No folders match"
 msgstr "일치하는 폴더 없음"
@@ -4403,7 +4435,7 @@ msgstr "이 작업 공간에 연결된 받은 편지함이 없습니다."
 msgid "No matching folders"
 msgstr "일치하는 폴더 없음"
 
-#: ../ui/src/emails/AssigneePicker.tsx:107
+#: ../ui/src/emails/AssigneePicker.tsx:111
 #, fuzzy
 msgid "No members"
 msgstr "멤버 없음"
@@ -4569,14 +4601,14 @@ msgstr "열기"
 msgid "Open an issue on GitHub"
 msgstr "GitHub에서 이슈 열기"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:308
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:312
 #: ../../apps/mobile/src/components/DraftSheet.tsx:97
 #: ../ui/src/emails/providerLabels.ts:11
 #, fuzzy
 msgid "Open in Gmail"
 msgstr "Gmail에서 열기"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:306
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:310
 #: ../ui/src/emails/providerLabels.ts:11
 msgid "Open in Outlook"
 msgstr "Outlook에서 열기"
@@ -4590,6 +4622,10 @@ msgstr "내비게이션 열기"
 #, fuzzy
 msgid "open source email ai"
 msgstr "오픈 소스 이메일 AI"
+
+#: ../../apps/extension/src/panel/StatusSlot.tsx:172
+msgid "Open the plan editor"
+msgstr "계획 편집기 열기"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:228
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:281
@@ -4885,7 +4921,7 @@ msgstr "플랜은 보기 전용입니다. 워크스페이스 관리자만 편집
 msgid "Plan nodes"
 msgstr "플랜 노드"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:337
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:344
 msgid "Plan sorting"
 msgstr "분류 계획"
 
@@ -5100,7 +5136,7 @@ msgstr "5점 만점에 5점"
 msgid "Re-route {unclassifiedCount} unclassified"
 msgstr "미분류 항목 {unclassifiedCount}개 재경로 지정"
 
-#: ../ui/src/emails/ReroutePopover.tsx:121
+#: ../ui/src/emails/ReroutePopover.tsx:120
 #, fuzzy
 msgid "Re-route thread"
 msgstr "스레드 재경로 지정"
@@ -5283,7 +5319,7 @@ msgstr "{0} 제거"
 msgid "Remove {email} from blacklist"
 msgstr "{email}을(를) 블랙리스트에서 제거"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:277
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:281
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:243
 #: ../../apps/mobile/src/components/ThreadRow.tsx:57
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:319
@@ -5467,7 +5503,7 @@ msgid "Resources"
 msgstr "자료"
 
 #: ../../apps/extension/src/App.tsx:114
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:399
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:406
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:345
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:426
 #, fuzzy
@@ -5508,7 +5544,11 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "립-하따님께,\n\n저희는 귀하의 말씀을 경청했습니다. 남쪽 창고에서 추가 곡물을 주문했으며, 추수 감사절 전에 도착할 예정입니다. 그때까지 기다려 주시기를 부탁드립니다.\n\n안녕히 계십시오,"
+msgstr "립-하따님께,\n"
+"\n"
+"저희는 귀하의 말씀을 경청했습니다. 남쪽 창고에서 추가 곡물을 주문했으며, 추수 감사절 전에 도착할 예정입니다. 그때까지 기다려 주시기를 부탁드립니다.\n"
+"\n"
+"안녕히 계십시오,"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -5618,7 +5658,7 @@ msgid "Search {threadCount} threads"
 msgstr "{threadCount}개 스레드 검색"
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:322
-#: ../ui/src/emails/ReroutePopover.tsx:134
+#: ../ui/src/emails/ReroutePopover.tsx:133
 #, fuzzy
 msgid "Search folders"
 msgstr "폴더 검색"
@@ -5627,9 +5667,9 @@ msgstr "폴더 검색"
 msgid "Search mail"
 msgstr "메일 검색"
 
-#: ../../apps/extension/src/panel/ScopeField.tsx:89
-#: ../../apps/extension/src/panel/ScopeField.tsx:90
-#: ../../apps/extension/src/panel/ScopeField.tsx:162
+#: ../../apps/extension/src/panel/ScopeField.tsx:93
+#: ../../apps/extension/src/panel/ScopeField.tsx:94
+#: ../../apps/extension/src/panel/ScopeField.tsx:166
 #: ../ui/src/emails/ThreadListHeader.tsx:107
 #, fuzzy
 msgid "Search threads"
@@ -5658,7 +5698,7 @@ msgstr "작동 방식 보기"
 msgid "Select"
 msgstr "선택"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:195
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:318
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:349
 #: ../ui/src/emails/MockEmailsPage.tsx:274
 #, fuzzy
@@ -5759,6 +5799,15 @@ msgstr "새 비밀번호 설정"
 #, fuzzy
 #~ msgid "Set up at least 3 folders so we can start sorting."
 #~ msgstr "분류를 시작할 수 있도록 최소 3개 이상의 폴더를 설정하세요."
+
+#: ../../apps/extension/src/panel/StatusSlot.tsx:42
+#, fuzzy
+msgid "Set up folders"
+msgstr "폴더 설정"
+
+#: ../../apps/extension/src/panel/StatusSlot.tsx:164
+msgid "Set up folders so Amarnai knows where to file your mail. It only takes a minute."
+msgstr "Amarnai가 메일을 제대로 분류할 수 있도록 폴더를 설정해 주세요. 1분이면 충분합니다."
 
 #: ../../apps/web/src/app/(app)/settings/WorkspaceLanguageSection.tsx:56
 #, fuzzy
@@ -5925,6 +5974,10 @@ msgstr "문제가 발생했습니다. 다시 시도해주세요."
 msgid "Soon"
 msgstr "출시 예정"
 
+#: ../../apps/extension/src/panel/StatusSlot.tsx:57
+msgid "Sort"
+msgstr "정렬"
+
 #: ../../apps/site/src/components/landing/Footer.tsx:18
 #, fuzzy
 msgid "Sort emails your way."
@@ -5957,6 +6010,7 @@ msgstr "콘텐츠 유사성에 따라 자동으로 분류됩니다."
 msgid "Sorting"
 msgstr "분류 중"
 
+#: ../../apps/extension/src/panel/StatusSlot.tsx:128
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:32
 #: ../ui/src/emails/BackfillCard.tsx:33
 #, fuzzy
@@ -6172,8 +6226,8 @@ msgstr "지원, 온보딩, 고객 유지, 이탈 및 고객 성공 대화."
 msgid "Switch"
 msgstr "전환"
 
-#: ../../apps/extension/src/panel/ScopeField.tsx:146
-#: ../../apps/extension/src/panel/ScopeField.tsx:181
+#: ../../apps/extension/src/panel/ScopeField.tsx:150
+#: ../../apps/extension/src/panel/ScopeField.tsx:192
 msgid "Switch folder view"
 msgstr "폴더 보기 전환"
 
@@ -6447,11 +6501,11 @@ msgstr "Gmail 연결이 제거되고, 동기화된 모든 이메일이 삭제되
 msgid "This thread cannot be sorted yet. Add at least {TAXONOMY_MIN_NON_ROOT_NODES} categories to your plan to begin routing."
 msgstr "이 스레드는 아직 분류할 수 없습니다. 분류를 시작하려면 플랜에 최소 {TAXONOMY_MIN_NON_ROOT_NODES}개의 카테고리를 추가하세요."
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:342
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:349
 msgid "This thread hasn't been sorted yet."
 msgstr "이 스레드는 아직 정리되지 않았습니다."
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:330
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:337
 msgid "This thread hasn't been sorted yet. Create a sorting plan so Amarnai knows where to file it."
 msgstr "이 스레드는 아직 분류되지 않았습니다. Amarnai가 어디에 분류해야 할지 알 수 있도록 분류 계획을 만드세요."
 
@@ -6547,7 +6601,13 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "내 형제이신 대왕께,\n\n셰무월 초에 대회의가 열립니다. 동부 영토에 대한 상세한 보고서를 준비하여, 가능하다면 초승달이 뜨기 전에 급한 전령 편으로 보내주시기를 청합니다.\n\n우리의 동맹은 굳건합니다. 회의에서 이 사실을 다시 한번 확인시켜 줍시다.\n\n미탄니의 대왕 투슈라타"
+msgstr "내 형제이신 대왕께,\n"
+"\n"
+"셰무월 초에 대회의가 열립니다. 동부 영토에 대한 상세한 보고서를 준비하여, 가능하다면 초승달이 뜨기 전에 급한 전령 편으로 보내주시기를 청합니다.\n"
+"\n"
+"우리의 동맹은 굳건합니다. 회의에서 이 사실을 다시 한번 확인시켜 줍시다.\n"
+"\n"
+"미탄니의 대왕 투슈라타"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:163
 #, fuzzy
@@ -6556,7 +6616,11 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "왕실 임명국 귀하,\n\n테베의 호렘헤브가 제출한 신청서를 접수했으며, 다음 초승달이 뜨기 전에 그의 기록을 검토할 것입니다. 그에게 적절한 시기에 소식을 전하겠다고 알려주십시오.\n\n왕실 칙령에 따라,"
+msgstr "왕실 임명국 귀하,\n"
+"\n"
+"테베의 호렘헤브가 제출한 신청서를 접수했으며, 다음 초승달이 뜨기 전에 그의 기록을 검토할 것입니다. 그에게 적절한 시기에 소식을 전하겠다고 알려주십시오.\n"
+"\n"
+"왕실 칙령에 따라,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:278
 #, fuzzy
@@ -6567,7 +6631,13 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "대왕께,\n\n수년간 우리 가문들은 형제처럼 지내왔습니다. 이제 양국 백성의 번영을 위해 이 우정을 공식화할 것을 제안하고자 합니다. 상호 보호와 공동 항로에 관한 협정입니다.\n\n부디 저의 제안을 경청해 주십시오. 다음 전령 편에 답을 보내주시면 즉시 저의 사절을 파견하겠습니다.\n\n대왕의 종, 아무르의 영주 아지루"
+msgstr "대왕께,\n"
+"\n"
+"수년간 우리 가문들은 형제처럼 지내왔습니다. 이제 양국 백성의 번영을 위해 이 우정을 공식화할 것을 제안하고자 합니다. 상호 보호와 공동 항로에 관한 협정입니다.\n"
+"\n"
+"부디 저의 제안을 경청해 주십시오. 다음 전령 편에 답을 보내주시면 즉시 저의 사절을 파견하겠습니다.\n"
+"\n"
+"대왕의 종, 아무르의 영주 아지루"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:391
 #, fuzzy
@@ -6576,7 +6646,11 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "대왕께,\n\n저의 여정이 며칠 내로 델타 근처에 이르게 됩니다. 대왕께서 한 시간만 할애해 주신다면, 직접 만나 뵙고 말씀드릴 기회를 갖게 되어 영광일 것입니다. 글로 쓰는 것보다 직접 말씀드리는 편이 더 나은 일들이 있기 때문입니다.\n\n대왕의 종, 우루샬림의 총독 압디-헤바"
+msgstr "대왕께,\n"
+"\n"
+"저의 여정이 며칠 내로 델타 근처에 이르게 됩니다. 대왕께서 한 시간만 할애해 주신다면, 직접 만나 뵙고 말씀드릴 기회를 갖게 되어 영광일 것입니다. 글로 쓰는 것보다 직접 말씀드리는 편이 더 나은 일들이 있기 때문입니다.\n"
+"\n"
+"대왕의 종, 우루샬림의 총독 압디-헤바"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:153
 #, fuzzy
@@ -6585,7 +6659,11 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "내 형제이신 대왕께,\n\n말씀을 들었습니다. 다음 전령이 떠나기 전에 황금을 발송하겠습니다. 우리 가문들 사이의 유대를 소중히 여기며, 그 관계가 식기를 원치 않습니다.\n\n우정을 담아,"
+msgstr "내 형제이신 대왕께,\n"
+"\n"
+"말씀을 들었습니다. 다음 전령이 떠나기 전에 황금을 발송하겠습니다. 우리 가문들 사이의 유대를 소중히 여기며, 그 관계가 식기를 원치 않습니다.\n"
+"\n"
+"우정을 담아,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:239
 #, fuzzy
@@ -6596,7 +6674,13 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "내 형제이신 대왕께,\n\n저희 아버지들이 그러했듯이 우정을 담아 글을 씁니다. 우리 조약에 따라 합의된 세 번째 황금 운송분이 도착하지 않았습니다. 두 명의 전령이 오갔으나 저희는 여전히 기다리고 있습니다.\n\n우리 가문들 사이의 유대에 합당하게, 더 이상 지체 없이 황금을 발송해 주시기를 요청합니다.\n\n바빌론의 왕 부르나-부리아쉬 2세"
+msgstr "내 형제이신 대왕께,\n"
+"\n"
+"저희 아버지들이 그러했듯이 우정을 담아 글을 씁니다. 우리 조약에 따라 합의된 세 번째 황금 운송분이 도착하지 않았습니다. 두 명의 전령이 오갔으나 저희는 여전히 기다리고 있습니다.\n"
+"\n"
+"우리 가문들 사이의 유대에 합당하게, 더 이상 지체 없이 황금을 발송해 주시기를 요청합니다.\n"
+"\n"
+"바빌론의 왕 부르나-부리아쉬 2세"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:352
 #, fuzzy
@@ -6607,7 +6691,13 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "대왕, 저의 주인이시여, 저의 태양이시여,\n\n지난달 보내주신 곡물은 감사히 받았습니다. 백성들 앞에서 대왕의 이름을 찬양했습니다. 하지만 다시 글을 올려야만 합니다. 세 번째 선적분이 도착하지 않아 도시가 불안해하고 있습니다.\n\n일곱 번이나 글을 썼습니다. 대왕을 번거롭게 하고 싶지 않지만, 제가 달리 무엇을 할 수 있겠습니까?\n\n대왕의 종, 비블로스의 총독 리브-하다"
+msgstr "대왕, 저의 주인이시여, 저의 태양이시여,\n"
+"\n"
+"지난달 보내주신 곡물은 감사히 받았습니다. 백성들 앞에서 대왕의 이름을 찬양했습니다. 하지만 다시 글을 올려야만 합니다. 세 번째 선적분이 도착하지 않아 도시가 불안해하고 있습니다.\n"
+"\n"
+"일곱 번이나 글을 썼습니다. 대왕을 번거롭게 하고 싶지 않지만, 제가 달리 무엇을 할 수 있겠습니까?\n"
+"\n"
+"대왕의 종, 비블로스의 총독 리브-하다"
 
 #: ../../apps/site/src/components/landing/MailThreadMock.tsx:135
 msgid "To: You"
@@ -6702,7 +6792,7 @@ msgstr "이용 불가"
 msgid "Unclassified"
 msgstr "미분류"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:217
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:362
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:390
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1442
 #: ../ui/src/emails/MockEmailsPage.tsx:293
@@ -6822,7 +6912,7 @@ msgid "Updating…"
 msgstr "업데이트 중…"
 
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:175
-#: ../ui/src/emails/AssigneePicker.tsx:132
+#: ../ui/src/emails/AssigneePicker.tsx:136
 #, fuzzy
 msgid "Upgrade"
 msgstr "업그레이드"
@@ -6846,12 +6936,14 @@ msgstr "공동 작업자를 초대하고 스레드를 할당하려면 유료 플
 #~ msgid "Upgrade to a Pro or Business subscription to invite collaborators."
 #~ msgstr "공동 작업자 초대를 위해 Pro 또는 Business 구독으로 업그레이드하세요."
 
+#: ../../apps/extension/src/panel/StatusSlot.tsx:87
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:60
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:50
 #, fuzzy
 msgid "Upgrade to import now"
 msgstr "지금 가져오려면 업그레이드하세요."
 
+#: ../../apps/extension/src/panel/StatusSlot.tsx:89
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:60
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:50
 msgid "Upgrade to load the rest"
@@ -7133,7 +7225,7 @@ msgstr "워크스페이스 유형"
 msgid "Workspaces included"
 msgstr "워크스페이스 포함"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:391
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:398
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:168
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:414
 #: ../ui/src/emails/ThreadPreview.tsx:260
@@ -7276,6 +7368,12 @@ msgstr "{planLabel} 플랜입니다."
 #~ msgid "You're on the list!"
 #~ msgstr "대기 목록에 등록되었습니다!"
 
+#. placeholder {0}: status.plan
+#: ../../apps/extension/src/panel/StatusSlot.tsx:69
+#, fuzzy
+msgid "You've used all of your {0} plan's email imports this month, including one retry. Imports refresh {refreshDate}."
+msgstr "이번 달 {0} 플랜의 이메일 가져오기 한도를 모두 소진했습니다(재시도 1회 포함). 가져오기 한도는 {refreshDate}에 초기화됩니다."
+
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:36
 msgid "You've used all of your {plan} plan's email imports this month, including one retry. Imports refresh {refreshDate}."
@@ -7289,6 +7387,12 @@ msgstr "지금은 생성 횟수를 모두 사용하셨습니다."
 #: ../ui/src/i18n/generation-reason-messages.ts:19
 msgid "You've used your generations for now. Available again {when}."
 msgstr "지금은 생성 횟수를 모두 사용하셨습니다. {when}에 다시 이용 가능합니다."
+
+#. placeholder {0}: status.plan
+#: ../../apps/extension/src/panel/StatusSlot.tsx:72
+#, fuzzy
+msgid "Your {0} plan finished importing your most recent emails. Older ones beyond its limit weren't loaded."
+msgstr "{0} 플랜이 최신 이메일 가져오기를 완료했습니다. 한도를 초과하는 이전 이메일은 로드되지 않았습니다."
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:41
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:39
@@ -7337,6 +7441,7 @@ msgstr "받은 편지함이 아직 가져오는 중입니다. 현재까지 로�
 msgid "Your name"
 msgstr "이름"
 
+#: ../../apps/extension/src/panel/StatusSlot.tsx:135
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:40
 #: ../ui/src/emails/BackfillCard.tsx:38
 msgid "Your past threads are being loaded and will appear shortly."
@@ -7351,6 +7456,12 @@ msgstr "당신의 플랜은 받은 편지함에서 가지처럼 뻗어 나가는
 #, fuzzy
 msgid "Your plan is a tree of folders (for example a Customers folder with Support and Billing beneath it), each described in plain language, and Amarnai walks that tree to route every thread to the folder that fits best. The fastest way to build it is to let Amarnai generate one for you: it reads your inbox and proposes a complete tree, named and described, that you can keep as-is or adjust. You can also start from one of our ready-made templates or build your own from scratch. No technical know-how required."
 msgstr "당신의 플랜은 폴더 트리(예: 고객 폴더 아래에 지원 및 청구 폴더)로, 각 폴더는 쉬운 언어로 설명되며, Amarnai는 이 트리를 따라 모든 스레드를 가장 적합한 폴더로 라우팅합니다. 가장 빠르게 트리를 구축하는 방법은 Amarnai가 자동으로 생성하도록 하는 것입니다. Amarnai는 받은 편지함을 읽고 완전한 트리를 제안하며, 이 트리는 이름과 설명이 지정되어 있어 그대로 사용하거나 조정할 수 있습니다. 또한, 준비된 템플릿 중 하나에서 시작하거나 처음부터 직접 구축할 수도 있습니다. 기술적 지식은 필요하지 않습니다."
+
+#. placeholder {0}: status.plan
+#: ../../apps/extension/src/panel/StatusSlot.tsx:71
+#, fuzzy
+msgid "Your retry import finished and is still capped by your {0} plan. Your next retry is available {refreshDate}."
+msgstr "재시도 가져오기가 완료되었지만, {0} 플랜의 제한 사항이 적용됩니다. 다음 재시도는 {refreshDate}에 가능합니다."
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:40
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:38

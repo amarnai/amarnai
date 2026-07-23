@@ -56,6 +56,17 @@ msgstr "{0, plural, one {# utas diimpor.} other {# utas diimpor.}}"
 msgid "{0, plural, one {# thread imported.} other {# threads imported.}} Your plan's import limit was reached."
 msgstr "{0, plural, one {# utas diimpor.} other {# utas diimpor.}} Batas impor paket Anda tercapai."
 
+#. placeholder {0}: status.waitingCount
+#: ../../apps/extension/src/panel/StatusSlot.tsx:30
+#, fuzzy
+msgid "{0, plural, one {# thread is waiting. Set up folders to start sorting.} other {# threads are waiting. Set up folders to start sorting.}}"
+msgstr "{0, plural, one {# email menunggu. Siapkan folder untuk mulai menyortir.} other {# email menunggu. Siapkan folder untuk mulai menyortir.}}"
+
+#. placeholder {0}: status.waitingCount
+#: ../../apps/extension/src/panel/StatusSlot.tsx:54
+msgid "{0, plural, one {# thread ready to sort} other {# threads ready to sort}}"
+msgstr "{0, plural, one {# email siap disortir} other {# email siap disortir}}"
+
 #. placeholder {0}: s.threadCount
 #: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:155
 #, fuzzy
@@ -213,7 +224,7 @@ msgid "{providerName} Inbox"
 msgstr "Kotak Masuk {providerName}"
 
 #. placeholder {0}: draftQuota.limit
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:382
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:389
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:404
 #, fuzzy
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
@@ -521,7 +532,9 @@ msgstr "Lamaran baru telah diterima dari Horemheb dari Thebes untuk posisi Kepal
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "Lamaran baru telah diterima dari Horemheb dari Thebes untuk posisi Kepala Korespondensi.\n\nLihat lamaran di Gedung Arsip."
+msgstr "Lamaran baru telah diterima dari Horemheb dari Thebes untuk posisi Kepala Korespondensi.\n"
+"\n"
+"Lihat lamaran di Gedung Arsip."
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:387
 #, fuzzy
@@ -535,7 +548,11 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "Abdi-Heba,\n\nSaya akan berada di dekat Delta pada minggu yang sama. Mari kita bertemu di stasiun persinggahan pada hari kedua; saya bisa menyisihkan waktu pagi.\n\nSampai jumpa,"
+msgstr "Abdi-Heba,\n"
+"\n"
+"Saya akan berada di dekat Delta pada minggu yang sama. Mari kita bertemu di stasiun persinggahan pada hari kedua; saya bisa menyisihkan waktu pagi.\n"
+"\n"
+"Sampai jumpa,"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
@@ -716,7 +733,7 @@ msgstr "Semua folder"
 msgid "All limits are per workspace."
 msgstr "Semua batasan berlaku per ruang kerja."
 
-#: ../../apps/extension/src/panel/ScopeField.tsx:52
+#: ../../apps/extension/src/panel/ScopeField.tsx:56
 msgid "All mail"
 msgstr "Semua email"
 
@@ -1039,7 +1056,7 @@ msgstr "Arsip"
 msgid "Assign"
 msgstr "Tugaskan"
 
-#: ../ui/src/emails/AssigneePicker.tsx:101
+#: ../ui/src/emails/AssigneePicker.tsx:105
 #, fuzzy
 msgid "Assign thread"
 msgstr "Tugaskan utas"
@@ -1137,9 +1154,13 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "Aziru,\n\nKata-kata persahabatan Anda telah kami terima dengan baik. Kami terbuka untuk mendengar lebih banyak tentang apa yang diusulkan oleh Wangsa Amurru. Kirimkan ketentuan Anda melalui kurir berikutnya.\n\nDengan hormat,"
+msgstr "Aziru,\n"
+"\n"
+"Kata-kata persahabatan Anda telah kami terima dengan baik. Kami terbuka untuk mendengar lebih banyak tentang apa yang diusulkan oleh Wangsa Amurru. Kirimkan ketentuan Anda melalui kurir berikutnya.\n"
+"\n"
+"Dengan hormat,"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:271
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:275
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
 #: ../../apps/site/src/components/landing/MailThreadMock.tsx:66
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:25
@@ -1153,7 +1174,7 @@ msgstr "Kembali"
 #~ msgid "Back to inbox"
 #~ msgstr "Kembali ke kotak masuk"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:267
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:271
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:292
 #: ../ui/src/emails/ThreadPreview.tsx:116
 #, fuzzy
@@ -1274,6 +1295,10 @@ msgstr "Laporan bug, stack trace, dan tiket regresi yang diajukan untuk basis ko
 #, fuzzy
 msgid "Build plan"
 msgstr "Buat Paket"
+
+#: ../../apps/extension/src/panel/StatusSlot.tsx:161
+msgid "Build your sorting plan"
+msgstr "Susun Rencana Penyortiran Anda"
 
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
 #: ../ui/src/emails/BackfillCard.tsx:21
@@ -1524,7 +1549,7 @@ msgstr "Tutup Panel"
 msgid "Close preview"
 msgstr "Tutup Pratinjau"
 
-#: ../../apps/extension/src/panel/ScopeField.tsx:99
+#: ../../apps/extension/src/panel/ScopeField.tsx:103
 msgid "Close search"
 msgstr "Tutup pencarian"
 
@@ -2337,7 +2362,8 @@ msgstr "Memutus sambungan ruang kerja ini. Amarnai tetap memiliki akses karena k
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "Memutus sambungan ruang kerja ini. Amarnai tetap memiliki akses karena kotak email ini masih terhubung di {sharedNames}."
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:224
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:369
+#: ../../apps/extension/src/panel/StatusSlot.tsx:97
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:65
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:393
@@ -2435,7 +2461,7 @@ msgstr "Draf"
 msgid "Draft failed · tap to retry"
 msgstr "Draf gagal · ketuk untuk coba lagi"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:397
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:404
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:420
 #, fuzzy
 msgid "Draft generation failed. Try again."
@@ -3132,7 +3158,7 @@ msgstr "Buat draf baru. Memakai satu jatah bulanan Anda."
 msgid "Generate a plan from your inbox"
 msgstr "Hasilkan rencana dari kotak masuk Anda"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:376
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:383
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:146
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:281
 #: ../ui/src/emails/ThreadPreview.tsx:253
@@ -3341,7 +3367,11 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "Baginda Raja,\n\nLaporan yang Paduka minta akan disiapkan sebelum dewan bersidang. Hamba akan meminta juru tulis hamba menyusun catatan wilayah timur dan mengirimkannya terlebih dahulu dengan kurir cepat.\n\nDalam persaudaraan,"
+msgstr "Baginda Raja,\n"
+"\n"
+"Laporan yang Paduka minta akan disiapkan sebelum dewan bersidang. Hamba akan meminta juru tulis hamba menyusun catatan wilayah timur dan mengirimkannya terlebih dahulu dengan kurir cepat.\n"
+"\n"
+"Dalam persaudaraan,"
 
 #: ../../apps/site/src/components/support/SupportContent.tsx:77
 msgid "Guides and answers to common questions"
@@ -3773,7 +3803,7 @@ msgstr "Panggilan makalah jurnal, undangan edisi khusus, dan metrik sitasi."
 msgid "Journals"
 msgstr "Jurnal"
 
-#: ../../apps/extension/src/panel/ScopeField.tsx:180
+#: ../../apps/extension/src/panel/ScopeField.tsx:191
 #, fuzzy
 msgid "Jump to folder…"
 msgstr "Pindah ke folder…"
@@ -3937,6 +3967,7 @@ msgstr "Aktif"
 msgid "Load more"
 msgstr "Muat lebih banyak"
 
+#: ../../apps/extension/src/panel/StatusSlot.tsx:131
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:122
 #: ../ui/src/emails/BackfillCard.tsx:35
@@ -4020,7 +4051,7 @@ msgstr "Naskah & Tinjauan Sejawat"
 msgid "Mark as done"
 msgstr "Tandai sebagai selesai"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:277
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:281
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:244
 #: ../../apps/mobile/src/components/ThreadRow.tsx:58
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:319
@@ -4207,7 +4238,7 @@ msgstr "Pindahkan utas ke"
 msgid "Move to folder"
 msgstr "Pindahkan ke folder"
 
-#: ../ui/src/emails/ReroutePopover.tsx:130
+#: ../ui/src/emails/ReroutePopover.tsx:129
 #, fuzzy
 msgid "Move to folder…"
 msgstr "Pindahkan ke folder…"
@@ -4315,6 +4346,7 @@ msgstr "Notifikasi baru"
 msgid "New password"
 msgstr "Kata sandi baru"
 
+#: ../../apps/extension/src/panel/StatusSlot.tsx:137
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:42
 #: ../ui/src/emails/BackfillCard.tsx:40
 #, fuzzy
@@ -4340,7 +4372,7 @@ msgstr "Nama ruang kerja baru"
 msgid "No drafts remaining"
 msgstr "Tidak ada draf tersisa"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:381
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:388
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:403
 #: ../ui/src/emails/SuggestedDraftCard.tsx:97
 #, fuzzy
@@ -4373,7 +4405,7 @@ msgstr "Tidak ada folder tersedia"
 msgid "No folders defined"
 msgstr "Tidak ada folder yang ditentukan"
 
-#: ../ui/src/emails/ReroutePopover.tsx:140
+#: ../ui/src/emails/ReroutePopover.tsx:139
 #, fuzzy
 msgid "No folders match"
 msgstr "Tidak ada folder yang cocok"
@@ -4403,7 +4435,7 @@ msgstr "Tidak ada kotak masuk yang terhubung ke ruang kerja ini."
 msgid "No matching folders"
 msgstr "Tidak ada folder yang cocok"
 
-#: ../ui/src/emails/AssigneePicker.tsx:107
+#: ../ui/src/emails/AssigneePicker.tsx:111
 #, fuzzy
 msgid "No members"
 msgstr "Tidak ada anggota"
@@ -4569,14 +4601,14 @@ msgstr "Buka"
 msgid "Open an issue on GitHub"
 msgstr "Buka masalah di GitHub"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:308
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:312
 #: ../../apps/mobile/src/components/DraftSheet.tsx:97
 #: ../ui/src/emails/providerLabels.ts:11
 #, fuzzy
 msgid "Open in Gmail"
 msgstr "Buka di Gmail"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:306
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:310
 #: ../ui/src/emails/providerLabels.ts:11
 msgid "Open in Outlook"
 msgstr "Buka di Outlook"
@@ -4590,6 +4622,10 @@ msgstr "Buka navigasi"
 #, fuzzy
 msgid "open source email ai"
 msgstr "AI email sumber terbuka"
+
+#: ../../apps/extension/src/panel/StatusSlot.tsx:172
+msgid "Open the plan editor"
+msgstr "Buka editor rencana"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:228
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:281
@@ -4885,7 +4921,7 @@ msgstr "Paket hanya dapat dilihat. Hanya admin ruang kerja yang dapat mengeditny
 msgid "Plan nodes"
 msgstr "Node paket"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:337
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:344
 msgid "Plan sorting"
 msgstr "Buat Rencana Sortir"
 
@@ -5100,7 +5136,7 @@ msgstr "Dinilai 5 dari 5"
 msgid "Re-route {unclassifiedCount} unclassified"
 msgstr "Alihkan {unclassifiedCount} yang belum terklasifikasi"
 
-#: ../ui/src/emails/ReroutePopover.tsx:121
+#: ../ui/src/emails/ReroutePopover.tsx:120
 #, fuzzy
 msgid "Re-route thread"
 msgstr "Alihkan percakapan"
@@ -5283,7 +5319,7 @@ msgstr "Hapus {0}"
 msgid "Remove {email} from blacklist"
 msgstr "Hapus {email} dari daftar hitam"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:277
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:281
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:243
 #: ../../apps/mobile/src/components/ThreadRow.tsx:57
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:319
@@ -5467,7 +5503,7 @@ msgid "Resources"
 msgstr "Sumber Daya"
 
 #: ../../apps/extension/src/App.tsx:114
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:399
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:406
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:345
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:426
 #, fuzzy
@@ -5508,7 +5544,11 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "Rib-Hadda,\n\nKami mengerti. Gandum tambahan telah dipesan dari gudang selatan dan akan tiba sebelum festival panen. Kami mohon kesabaran Anda hingga saat itu.\n\nSemoga sehat selalu,"
+msgstr "Rib-Hadda,\n"
+"\n"
+"Kami mengerti. Gandum tambahan telah dipesan dari gudang selatan dan akan tiba sebelum festival panen. Kami mohon kesabaran Anda hingga saat itu.\n"
+"\n"
+"Semoga sehat selalu,"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -5618,7 +5658,7 @@ msgid "Search {threadCount} threads"
 msgstr "Cari {threadCount} utas"
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:322
-#: ../ui/src/emails/ReroutePopover.tsx:134
+#: ../ui/src/emails/ReroutePopover.tsx:133
 #, fuzzy
 msgid "Search folders"
 msgstr "Cari folder"
@@ -5627,9 +5667,9 @@ msgstr "Cari folder"
 msgid "Search mail"
 msgstr "Cari email"
 
-#: ../../apps/extension/src/panel/ScopeField.tsx:89
-#: ../../apps/extension/src/panel/ScopeField.tsx:90
-#: ../../apps/extension/src/panel/ScopeField.tsx:162
+#: ../../apps/extension/src/panel/ScopeField.tsx:93
+#: ../../apps/extension/src/panel/ScopeField.tsx:94
+#: ../../apps/extension/src/panel/ScopeField.tsx:166
 #: ../ui/src/emails/ThreadListHeader.tsx:107
 #, fuzzy
 msgid "Search threads"
@@ -5658,7 +5698,7 @@ msgstr "Lihat Cara Kerjanya"
 msgid "Select"
 msgstr "Pilih"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:195
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:318
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:349
 #: ../ui/src/emails/MockEmailsPage.tsx:274
 #, fuzzy
@@ -5759,6 +5799,15 @@ msgstr "Atur kata sandi baru"
 #, fuzzy
 #~ msgid "Set up at least 3 folders so we can start sorting."
 #~ msgstr "Siapkan setidaknya 3 folder agar kami bisa mulai mengelompokkan."
+
+#: ../../apps/extension/src/panel/StatusSlot.tsx:42
+#, fuzzy
+msgid "Set up folders"
+msgstr "Siapkan folder"
+
+#: ../../apps/extension/src/panel/StatusSlot.tsx:164
+msgid "Set up folders so Amarnai knows where to file your mail. It only takes a minute."
+msgstr "Siapkan folder agar Amarnai tahu ke mana harus menyimpan email Anda. Hanya butuh semenit."
 
 #: ../../apps/web/src/app/(app)/settings/WorkspaceLanguageSection.tsx:56
 #, fuzzy
@@ -5925,6 +5974,10 @@ msgstr "Terjadi kesalahan. Silakan coba lagi."
 msgid "Soon"
 msgstr "Segera"
 
+#: ../../apps/extension/src/panel/StatusSlot.tsx:57
+msgid "Sort"
+msgstr "Sortir"
+
 #: ../../apps/site/src/components/landing/Footer.tsx:18
 #, fuzzy
 msgid "Sort emails your way."
@@ -5957,6 +6010,7 @@ msgstr "Diurutkan secara otomatis berdasarkan kemiripan konten."
 msgid "Sorting"
 msgstr "Mengurutkan"
 
+#: ../../apps/extension/src/panel/StatusSlot.tsx:128
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:32
 #: ../ui/src/emails/BackfillCard.tsx:33
 #, fuzzy
@@ -6172,8 +6226,8 @@ msgstr "Komunikasi dukungan, orientasi, retensi, churn, dan keberhasilan pelangg
 msgid "Switch"
 msgstr "Ganti"
 
-#: ../../apps/extension/src/panel/ScopeField.tsx:146
-#: ../../apps/extension/src/panel/ScopeField.tsx:181
+#: ../../apps/extension/src/panel/ScopeField.tsx:150
+#: ../../apps/extension/src/panel/ScopeField.tsx:192
 msgid "Switch folder view"
 msgstr "Ganti tampilan folder"
 
@@ -6447,11 +6501,11 @@ msgstr "Tindakan ini akan menghapus koneksi Gmail, menghapus semua email yang di
 msgid "This thread cannot be sorted yet. Add at least {TAXONOMY_MIN_NON_ROOT_NODES} categories to your plan to begin routing."
 msgstr "Thread ini belum dapat diurutkan. Tambahkan setidaknya {TAXONOMY_MIN_NON_ROOT_NODES} kategori ke paket Anda untuk memulai perutean."
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:342
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:349
 msgid "This thread hasn't been sorted yet."
 msgstr "Utas ini belum tersortir."
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:330
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:337
 msgid "This thread hasn't been sorted yet. Create a sorting plan so Amarnai knows where to file it."
 msgstr "Utas ini belum disortir. Buat rencana sortir agar Amarnai tahu ke mana harus menyimpannya."
 
@@ -6547,7 +6601,13 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "Untuk saudaraku, Raja Agung,\n\nDewan agung bersidang pada awal Shemu. Aku meminta Anda menyiapkan laporan lengkap wilayah timur dan mengirimkannya dengan kurir cepat, sebelum bulan baru jika memungkinkan.\n\nAliansi kita kuat. Marilah kita tunjukkan kepada dewan bahwa itu tetap demikian.\n\nTushratta, Raja Agung Mitanni"
+msgstr "Untuk saudaraku, Raja Agung,\n"
+"\n"
+"Dewan agung bersidang pada awal Shemu. Aku meminta Anda menyiapkan laporan lengkap wilayah timur dan mengirimkannya dengan kurir cepat, sebelum bulan baru jika memungkinkan.\n"
+"\n"
+"Aliansi kita kuat. Marilah kita tunjukkan kepada dewan bahwa itu tetap demikian.\n"
+"\n"
+"Tushratta, Raja Agung Mitanni"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:163
 #, fuzzy
@@ -6556,7 +6616,11 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "Kepada Biro Penunjukan Kerajaan,\n\nKami telah menerima permohonan dari Horemheb dari Thebes dan akan meninjau catatan rekam jejaknya sebelum bulan baru berikutnya. Harap beri tahu dia bahwa kami akan mengirimkan kabar pada waktunya.\n\nBerdasarkan keputusan kerajaan,"
+msgstr "Kepada Biro Penunjukan Kerajaan,\n"
+"\n"
+"Kami telah menerima permohonan dari Horemheb dari Thebes dan akan meninjau catatan rekam jejaknya sebelum bulan baru berikutnya. Harap beri tahu dia bahwa kami akan mengirimkan kabar pada waktunya.\n"
+"\n"
+"Berdasarkan keputusan kerajaan,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:278
 #, fuzzy
@@ -6567,7 +6631,13 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "Kepada Raja Agung,\n\nSelama bertahun-tahun rumah kita telah seperti saudara. Saya menulis sekarang untuk mengusulkan agar kita meresmikan persahabatan ini demi kepentingan kedua bangsa kita: sebuah pakta perlindungan timbal balik dan rute bersama.\n\nSaya hanya meminta Anda mendengar syarat-syarat saya. Kirimkan pesan melalui kurir berikutnya dan saya akan segera mengirimkan utusan saya.\n\nAziru, hamba Raja Agung, penguasa Amurru"
+msgstr "Kepada Raja Agung,\n"
+"\n"
+"Selama bertahun-tahun rumah kita telah seperti saudara. Saya menulis sekarang untuk mengusulkan agar kita meresmikan persahabatan ini demi kepentingan kedua bangsa kita: sebuah pakta perlindungan timbal balik dan rute bersama.\n"
+"\n"
+"Saya hanya meminta Anda mendengar syarat-syarat saya. Kirimkan pesan melalui kurir berikutnya dan saya akan segera mengirimkan utusan saya.\n"
+"\n"
+"Aziru, hamba Raja Agung, penguasa Amurru"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:391
 #, fuzzy
@@ -6576,7 +6646,11 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "Kepada Raja Agung,\n\nPerjalanan saya membawa saya dekat Delta dalam beberapa hari mendatang. Jika Raja Agung memiliki waktu luang, saya akan menyambut kesempatan untuk berbicara tatap muka; ada hal-hal yang lebih mudah diucapkan daripada ditulis.\n\nHambamu, Abdi-Heba, gubernur Urushalim"
+msgstr "Kepada Raja Agung,\n"
+"\n"
+"Perjalanan saya membawa saya dekat Delta dalam beberapa hari mendatang. Jika Raja Agung memiliki waktu luang, saya akan menyambut kesempatan untuk berbicara tatap muka; ada hal-hal yang lebih mudah diucapkan daripada ditulis.\n"
+"\n"
+"Hambamu, Abdi-Heba, gubernur Urushalim"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:153
 #, fuzzy
@@ -6585,7 +6659,11 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "Kepada Raja Agung, saudaraku,\n\nSaya telah mendengar perkataan Anda. Emas akan dikirimkan sebelum utusan berikutnya berangkat. Kami menghargai ikatan antara rumah kita dan tidak ingin itu mendingin.\n\nDalam persahabatan,"
+msgstr "Kepada Raja Agung, saudaraku,\n"
+"\n"
+"Saya telah mendengar perkataan Anda. Emas akan dikirimkan sebelum utusan berikutnya berangkat. Kami menghargai ikatan antara rumah kita dan tidak ingin itu mendingin.\n"
+"\n"
+"Dalam persahabatan,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:239
 #, fuzzy
@@ -6596,7 +6674,13 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "Kepada Raja Agung, saudaraku,\n\nSaya menulis dalam persahabatan, sebagaimana para ayah kita menulis sebelumnya. Pengiriman emas ketiga yang disepakati dalam perjanjian kita belum tiba. Dua utusan telah berlalu dan kami masih menunggu.\n\nKami meminta Anda mengirimkannya tanpa penundaan lebih lanjut, sebagaimana layaknya ikatan antara rumah kita.\n\nBurna-Buriash II, Raja Babilonia"
+msgstr "Kepada Raja Agung, saudaraku,\n"
+"\n"
+"Saya menulis dalam persahabatan, sebagaimana para ayah kita menulis sebelumnya. Pengiriman emas ketiga yang disepakati dalam perjanjian kita belum tiba. Dua utusan telah berlalu dan kami masih menunggu.\n"
+"\n"
+"Kami meminta Anda mengirimkannya tanpa penundaan lebih lanjut, sebagaimana layaknya ikatan antara rumah kita.\n"
+"\n"
+"Burna-Buriash II, Raja Babilonia"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:352
 #, fuzzy
@@ -6607,7 +6691,13 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "Kepada Raja Agung, Tuanku, Matahariku,\n\nGandum yang Anda kirim bulan lalu telah diterima dengan syukur dan saya memuji nama Anda di hadapan rakyat. Namun saya harus menulis lagi: pengiriman ketiga belum tiba dan kota menjadi gelisah.\n\nSaya telah menulis tujuh kali. Saya tidak ingin menyusahkan Anda, namun apa lagi yang bisa saya lakukan?\n\nHambamu, Rib-Hadda, gubernur Byblos"
+msgstr "Kepada Raja Agung, Tuanku, Matahariku,\n"
+"\n"
+"Gandum yang Anda kirim bulan lalu telah diterima dengan syukur dan saya memuji nama Anda di hadapan rakyat. Namun saya harus menulis lagi: pengiriman ketiga belum tiba dan kota menjadi gelisah.\n"
+"\n"
+"Saya telah menulis tujuh kali. Saya tidak ingin menyusahkan Anda, namun apa lagi yang bisa saya lakukan?\n"
+"\n"
+"Hambamu, Rib-Hadda, gubernur Byblos"
 
 #: ../../apps/site/src/components/landing/MailThreadMock.tsx:135
 msgid "To: You"
@@ -6703,7 +6793,7 @@ msgstr "Tidak tersedia"
 msgid "Unclassified"
 msgstr "Tidak Terklasifikasi"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:217
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:362
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:390
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1442
 #: ../ui/src/emails/MockEmailsPage.tsx:293
@@ -6823,7 +6913,7 @@ msgid "Updating…"
 msgstr "Memperbarui…"
 
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:175
-#: ../ui/src/emails/AssigneePicker.tsx:132
+#: ../ui/src/emails/AssigneePicker.tsx:136
 #, fuzzy
 msgid "Upgrade"
 msgstr "Upgrade"
@@ -6847,12 +6937,14 @@ msgstr "Upgrade ke paket berbayar untuk mengundang kolaborator dan menugaskan th
 #~ msgid "Upgrade to a Pro or Business subscription to invite collaborators."
 #~ msgstr "Upgrade ke langganan Pro atau Bisnis untuk mengundang kolaborator."
 
+#: ../../apps/extension/src/panel/StatusSlot.tsx:87
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:60
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:50
 #, fuzzy
 msgid "Upgrade to import now"
 msgstr "Upgrade untuk mengimpor sekarang"
 
+#: ../../apps/extension/src/panel/StatusSlot.tsx:89
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:60
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:50
 msgid "Upgrade to load the rest"
@@ -7134,7 +7226,7 @@ msgstr "Jenis ruang kerja"
 msgid "Workspaces included"
 msgstr "Workspace disertakan"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:391
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:398
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:168
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:414
 #: ../ui/src/emails/ThreadPreview.tsx:260
@@ -7277,6 +7369,12 @@ msgstr "Anda menggunakan {planLabel}"
 #~ msgid "You're on the list!"
 #~ msgstr "Anda sudah terdaftar!"
 
+#. placeholder {0}: status.plan
+#: ../../apps/extension/src/panel/StatusSlot.tsx:69
+#, fuzzy
+msgid "You've used all of your {0} plan's email imports this month, including one retry. Imports refresh {refreshDate}."
+msgstr "Anda sudah memakai semua kuota impor email rencana {0} bulan ini, termasuk satu kali percobaan ulang. Impor akan diperbarui {refreshDate}."
+
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:36
 msgid "You've used all of your {plan} plan's email imports this month, including one retry. Imports refresh {refreshDate}."
@@ -7290,6 +7388,12 @@ msgstr "Jatah generasi Anda sudah habis untuk saat ini."
 #: ../ui/src/i18n/generation-reason-messages.ts:19
 msgid "You've used your generations for now. Available again {when}."
 msgstr "Jatah generasi Anda sudah habis untuk saat ini. Tersedia lagi {when}."
+
+#. placeholder {0}: status.plan
+#: ../../apps/extension/src/panel/StatusSlot.tsx:72
+#, fuzzy
+msgid "Your {0} plan finished importing your most recent emails. Older ones beyond its limit weren't loaded."
+msgstr "Rencana {0} Anda telah selesai mengimpor email terbaru Anda. Email lama di luar batas tidak dimuat."
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:41
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:39
@@ -7338,6 +7442,7 @@ msgstr "Kotak masuk Anda masih dalam proses impor. Anda dapat mulai menghasilkan
 msgid "Your name"
 msgstr "Nama Anda"
 
+#: ../../apps/extension/src/panel/StatusSlot.tsx:135
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:40
 #: ../ui/src/emails/BackfillCard.tsx:38
 msgid "Your past threads are being loaded and will appear shortly."
@@ -7352,6 +7457,12 @@ msgstr "Rencana Anda adalah pohon folder sederhana: folder Anda bercabang dari k
 #, fuzzy
 msgid "Your plan is a tree of folders (for example a Customers folder with Support and Billing beneath it), each described in plain language, and Amarnai walks that tree to route every thread to the folder that fits best. The fastest way to build it is to let Amarnai generate one for you: it reads your inbox and proposes a complete tree, named and described, that you can keep as-is or adjust. You can also start from one of our ready-made templates or build your own from scratch. No technical know-how required."
 msgstr "Rencana Anda adalah pohon folder (misalnya, folder Pelanggan dengan Support dan Penagihan di bawahnya), masing-masing dijelaskan dengan bahasa sederhana, dan Amarnai akan menelusuri pohon tersebut untuk mengarahkan setiap thread ke folder yang paling sesuai. Cara tercepat untuk membangunnya adalah dengan membiarkan Amarnai menghasilkannya untuk Anda: Amarnai akan membaca kotak masuk Anda dan mengusulkan pohon lengkap, lengkap dengan nama dan deskripsi, yang dapat Anda gunakan apa adanya atau sesuaikan. Anda juga dapat memulai dari salah satu template siap pakai kami atau membuatnya sendiri dari awal. Tidak diperlukan keahlian teknis."
+
+#. placeholder {0}: status.plan
+#: ../../apps/extension/src/panel/StatusSlot.tsx:71
+#, fuzzy
+msgid "Your retry import finished and is still capped by your {0} plan. Your next retry is available {refreshDate}."
+msgstr "Impor percobaan ulang Anda telah selesai dan masih dibatasi oleh rencana {0} Anda. Percobaan ulang berikutnya tersedia {refreshDate}."
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:40
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:38

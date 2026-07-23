@@ -697,6 +697,106 @@ body {
   font-size: var(--fs-md);
 }
 
+/* ─── Sorting-status slot ─────────────────────────────────────────────────────
+   One pinned row under the header (state chosen by resolveInboxStatus). Two
+   templates: an action row with an inline CTA, and a dismissible notice row.
+   ────────────────────────────────────────────────────────────────────────── */
+
+.ax-status {
+  /* Horizontal padding matches .ax-scope-row below so the banner spans the same
+     width as the rest of the panel content. */
+  padding: var(--space-lg) var(--space-lg) 0;
+}
+
+/* Action row — one line + inline CTA. Neutral by default; ok-tinted for the
+   "ready to sort" backlog so the actionable state reads at a glance. */
+.ax-status-action {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md) var(--space-lg);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-md);
+  background: var(--bg-soft);
+}
+
+.ax-status-action--ok {
+  border-color: var(--ok-line);
+  background: var(--ok-soft);
+}
+
+/* Notice row — informational (plan cap). Warn-tinted; message may wrap to two
+   lines, so align the controls to the top. */
+.ax-status-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+  padding: var(--space-md) var(--space-lg);
+  border: 1px solid var(--warn-line);
+  border-radius: var(--r-md);
+  background: var(--warn-soft);
+}
+
+.ax-status-text {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--fs-sm);
+  line-height: 1.4;
+  color: var(--ink);
+}
+
+.ax-status-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  flex-shrink: 0;
+}
+
+/* Compact CTA sizing shared by every slot button. */
+.ax-status-btn {
+  flex-shrink: 0;
+  font-size: var(--fs-sm);
+  padding: var(--space-sm) var(--space-lg);
+  white-space: nowrap;
+}
+
+.ax-status-x {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: var(--r-sm);
+  background: transparent;
+  color: var(--ink-3);
+  cursor: pointer;
+  transition: background 0.14s, color 0.14s;
+}
+
+.ax-status-x:hover {
+  background: var(--bg-sunk);
+  color: var(--ink);
+}
+
+/* Backfill reuses the shared em-backfill card; drop its rail-oriented margin so
+   it aligns with the action/notice rows above. */
+.ax-status .em-backfill {
+  margin: 0;
+}
+
+/* Full-pane "no plan yet, empty inbox" takeover (renders inside .ax-center). */
+.ax-emptyplan-glyph {
+  color: var(--accent);
+}
+
+.ax-emptyplan-title {
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  color: var(--ink);
+}
+
 /* ─── Auth screen ────────────────────────────────────────────────────────── */
 
 .ax-auth {

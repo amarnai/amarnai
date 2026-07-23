@@ -25,6 +25,7 @@ export type {
   DisconnectResult,
   SyncStatus,
   BackfillStatus,
+  BackfillLimitState,
   GmailSyncSettings,
   FolderCountsResult,
   FilterCounts,

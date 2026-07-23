@@ -37,3 +37,10 @@ export {
   groupThreadsByDate,
   type DateSection,
 } from "./groupThreadsByDate.js";
+
+export {
+  resolveInboxStatus,
+  type InboxStatus,
+  type InboxStatusInput,
+  type WorkspacePlan,
+} from "./inboxStatus.js";
