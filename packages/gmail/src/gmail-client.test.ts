@@ -369,3 +369,64 @@ describe("GmailClient.listChangesSince — sent-only candidates", () => {
     expect(result.sentOnlyCandidateThreadIds).toEqual([]);
   });
 });
+
+// ─── GmailClient.getAttachmentContent ─────────────────────────────────────────
+
+describe("GmailClient.getAttachmentContent", () => {
+  // base64url of the bytes [0x89,0x50,0x4e,0x47] (PNG signature) exercises the
+  // url-safe alphabet (produces a "-" once re-encoded) and missing padding.
+  const pngBytes = Uint8Array.from([0x89, 0x50, 0x4e, 0x47]);
+  const b64url = Buffer.from(pngBytes)
+    .toString("base64")
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/, "");
+
+  it("fetches from the message attachment endpoint with a bearer token", async () => {
+    mockFetch
+      .mockResolvedValueOnce(makeTokenResponse())
+      .mockResolvedValueOnce({ ok: true, status: 200, json: async () => ({ size: 4, data: b64url }) });
+
+    const client = new GmailClient("encrypted:refresh:token");
+    const result = await client.getAttachmentContent("msg-1", "att-xyz");
+
+    const [url, init] = mockFetch.mock.calls[1] as [string, RequestInit];
+    expect(url).toBe(
+      "https://gmail.googleapis.com/gmail/v1/users/me/messages/msg-1/attachments/att-xyz"
+    );
+    expect((init.headers as Record<string, string>).Authorization).toBe("Bearer access-abc");
+    expect(Array.from(result.data)).toEqual([0x89, 0x50, 0x4e, 0x47]);
+    expect(result.mimeType).toBeNull();
+    expect(result.size).toBe(4);
+  });
+
+  it("url-encodes the message and attachment ids", async () => {
+    mockFetch
+      .mockResolvedValueOnce(makeTokenResponse())
+      .mockResolvedValueOnce({ ok: true, status: 200, json: async () => ({ size: 4, data: b64url }) });
+
+    const client = new GmailClient("encrypted:refresh:token");
+    await client.getAttachmentContent("msg/1", "att id");
+
+    const [url] = mockFetch.mock.calls[1] as [string];
+    expect(url).toContain("/messages/msg%2F1/attachments/att%20id");
+  });
+
+  it("throws when the attachment endpoint returns an error status", async () => {
+    mockFetch
+      .mockResolvedValueOnce(makeTokenResponse())
+      .mockResolvedValueOnce({ ok: false, status: 404 });
+
+    const client = new GmailClient("encrypted:refresh:token");
+    await expect(client.getAttachmentContent("msg-1", "att-gone")).rejects.toThrow();
+  });
+
+  it("throws when the response carries no data", async () => {
+    mockFetch
+      .mockResolvedValueOnce(makeTokenResponse())
+      .mockResolvedValueOnce({ ok: true, status: 200, json: async () => ({ size: 0 }) });
+
+    const client = new GmailClient("encrypted:refresh:token");
+    await expect(client.getAttachmentContent("msg-1", "att-empty")).rejects.toThrow();
+  });
+});

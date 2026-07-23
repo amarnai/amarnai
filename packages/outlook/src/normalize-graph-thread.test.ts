@@ -115,6 +115,41 @@ describe("normalizeGraphThread — attachments + headers", () => {
     ]);
   });
 
+  it("captures inline images (with an id) as inlineImages, not attachments", () => {
+    const snap = normalizeGraphThread(
+      [
+        msg({
+          attachments: [
+            { id: "att-doc", name: "doc.pdf", contentType: "application/pdf", size: 1200, isInline: false },
+            { id: "att-logo", name: "logo.png", contentType: "image/png", size: 50, isInline: true },
+          ],
+        }),
+      ],
+      "conv-1",
+    );
+    expect(snap.messages[0]!.inlineImages).toEqual([
+      { attachmentId: "att-logo", mimeType: "image/png", filename: "logo.png", size: 50 },
+    ]);
+    expect(snap.messages[0]!.attachments).toEqual([
+      { filename: "doc.pdf", mimeType: "application/pdf", size: 1200 },
+    ]);
+  });
+
+  it("ignores inline non-image parts and inline images without an id", () => {
+    const snap = normalizeGraphThread(
+      [
+        msg({
+          attachments: [
+            { id: "att-cal", name: "invite.ics", contentType: "text/calendar", size: 10, isInline: true },
+            { name: "logo.png", contentType: "image/png", size: 50, isInline: true },
+          ],
+        }),
+      ],
+      "conv-1",
+    );
+    expect(snap.messages[0]!.inlineImages).toEqual([]);
+  });
+
   it("extracts bulk/automation header markers from internetMessageHeaders", () => {
     const snap = normalizeGraphThread(
       [

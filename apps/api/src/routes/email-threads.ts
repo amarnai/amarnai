@@ -3,6 +3,7 @@ import { z } from "zod";
 import { db } from "@amarnai/db";
 import { DEFAULT_GMAIL_SYNC_SETTINGS } from "@amarnai/shared";
 import { createMailProvider } from "@amarnai/mail";
+import { sniffImageContentType } from "../services/image-sniff.js";
 import type { AppEnv } from "../env.js";
 
 const workspaceParam = z.object({ workspaceId: z.string().min(1) });
@@ -27,6 +28,23 @@ const CLASSIFY_STALE_MS = 15 * 60 * 1_000;
 const DRAFT_GENERATING_STALE_MS = 5 * 60 * 1_000;
 const DEFAULT_PAGE_LIMIT = 50;
 const MAX_PAGE_LIMIT = 100;
+
+// ─── Inline image (CID) preview constants ──────────────────────────────────────
+// Only these raster types are surfaced/served; SVG is excluded (script vector).
+const INLINE_IMAGE_MIME_ALLOWLIST = new Set([
+  "image/png",
+  "image/jpeg",
+  "image/gif",
+  "image/webp",
+]);
+// Bound per-image bytes (cost + latency) and per-message count (UI + fetch fan-out).
+const INLINE_IMAGE_MAX_BYTES = 5 * 1024 * 1024;
+const INLINE_IMAGE_MAX_PER_MESSAGE = 8;
+// Reject absurd attachment ids early (they are opaque provider tokens).
+const MAX_ATTACHMENT_ID_LEN = 2048;
+
+/** Descriptor the client turns into an <img> proxy URL. */
+type InlineImageDescriptor = { attachmentId: string; mimeType: string; filename: string | null };
 
 function deriveIsClassifying(classifyingAt: Date | null): boolean {
   if (!classifyingAt) return false;
@@ -520,22 +538,113 @@ emailThreads.get(
       return c.json({ error: "Thread not found" }, 404);
     }
     if (!gmailConnection) {
-      return c.json({ bodies: {} });
+      return c.json({ bodies: {}, inlineImages: {} });
     }
 
     try {
       const client = createMailProvider(gmailConnection);
       const snapshot = await client.getThreadSnapshot(thread.providerThreadId);
-      const bodyByProviderMsgId = new Map(
-        snapshot.messages.map((m) => [m.providerMessageId, m.bodyExcerpt])
+      const snapshotByProviderMsgId = new Map(
+        snapshot.messages.map((m) => [m.providerMessageId, m])
       );
       const bodies: Record<string, string | null> = {};
+      const inlineImages: Record<string, InlineImageDescriptor[]> = {};
       for (const msg of thread.messages) {
-        bodies[msg.id] = bodyByProviderMsgId.get(msg.providerMessageId) ?? null;
+        const snap = snapshotByProviderMsgId.get(msg.providerMessageId);
+        bodies[msg.id] = snap?.bodyExcerpt ?? null;
+        const descriptors = (snap?.inlineImages ?? [])
+          .filter(
+            (img) =>
+              INLINE_IMAGE_MIME_ALLOWLIST.has(img.mimeType) &&
+              !(img.size !== null && img.size > INLINE_IMAGE_MAX_BYTES)
+          )
+          .slice(0, INLINE_IMAGE_MAX_PER_MESSAGE)
+          .map((img) => ({
+            attachmentId: img.attachmentId,
+            mimeType: img.mimeType,
+            filename: img.filename,
+          }));
+        if (descriptors.length > 0) inlineImages[msg.id] = descriptors;
       }
-      return c.json({ bodies });
+      return c.json({ bodies, inlineImages });
     } catch {
-      return c.json({ bodies: {} });
+      return c.json({ bodies: {}, inlineImages: {} });
+    }
+  }
+);
+
+// ─── GET .../email-threads/:threadId/messages/:messageId/inline-image ──────────
+//
+// Streams the bytes of one CID inline image so the preview can render <img>.
+// Auth: inherited workspace-member middleware. Containment: one query proves the
+// message belongs to this thread+workspace; the attachmentId is an opaque
+// provider token (Gmail ids are ephemeral — a stale one just 404s and the UI
+// hides the image), and the provider enforces attachment-belongs-to-message, so
+// this is not an open proxy. The response type is decided by sniffing the bytes,
+// never by client input, and only png/jpeg/gif/webp are served. Any failure
+// degrades to 404 (hidden image); bytes and ids are never logged.
+
+const inlineImageParam = z.object({
+  workspaceId: z.string().min(1),
+  threadId: z.string().min(1),
+  messageId: z.string().min(1),
+});
+
+emailThreads.get(
+  "/workspaces/:workspaceId/email-threads/:threadId/messages/:messageId/inline-image",
+  async (c) => {
+    const parsed = inlineImageParam.safeParse({
+      workspaceId: c.req.param("workspaceId"),
+      threadId: c.req.param("threadId"),
+      messageId: c.req.param("messageId"),
+    });
+    if (!parsed.success) {
+      return c.json({ error: "Invalid params" }, 400);
+    }
+    const { workspaceId, threadId, messageId } = parsed.data;
+    const attachmentId = c.req.query("attachmentId") ?? "";
+    if (attachmentId.length === 0 || attachmentId.length > MAX_ATTACHMENT_ID_LEN) {
+      return c.json({ error: "Invalid attachment" }, 400);
+    }
+
+    try {
+      const [message, connection] = await Promise.all([
+        db.emailMessage.findFirst({
+          where: { id: messageId, thread: { id: threadId, workspaceId } },
+          select: { providerMessageId: true },
+        }),
+        db.emailConnection.findUnique({
+          where: { workspaceId },
+          select: { provider: true, encryptedRefreshToken: true },
+        }),
+      ]);
+      if (!message || !connection) {
+        return c.json({ error: "Not found" }, 404);
+      }
+
+      const client = createMailProvider(connection);
+      const { data } = await client.getAttachmentContent(message.providerMessageId, attachmentId);
+      if (data.byteLength > INLINE_IMAGE_MAX_BYTES) {
+        return c.json({ error: "Not found" }, 404);
+      }
+      const contentType = sniffImageContentType(data);
+      if (!contentType) {
+        return c.json({ error: "Not found" }, 404);
+      }
+
+      // Copy to a fresh, exactly-sized ArrayBuffer (Node Buffers may be pooled
+      // views over a larger backing buffer; Hono's body wants a plain buffer).
+      const body = new ArrayBuffer(data.byteLength);
+      new Uint8Array(body).set(data);
+      return c.body(body, 200, {
+        "Content-Type": contentType,
+        "Content-Length": String(data.byteLength),
+        "Cache-Control": "private, max-age=3600",
+        "X-Content-Type-Options": "nosniff",
+        "Content-Disposition": "inline",
+      });
+    } catch {
+      return c.json({ error: "Not found" }, 404);
     }
   }
 );

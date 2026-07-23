@@ -9,7 +9,7 @@ export type { NodeSelectionContext } from "./selection/prompt.js";
 export { validateNodeSelection, MIN_LLM_NODE_CONFIDENCE } from "./selection/validator.js";
 export type { NodeSelectionResult } from "./selection/validator.js";
 export { selectNodeFromCandidates } from "./selection/select-path.js";
-export type { ThreadSnapshot, SnapshotMessage, AttachmentMeta } from "./thread-snapshot.js";
+export type { ThreadSnapshot, SnapshotMessage, AttachmentMeta, InlineImageMeta } from "./thread-snapshot.js";
 export { snapshotToThreadMessages } from "./thread-snapshot.js";
 // ─── Embedding ────────────────────────────────────────────────────────────────
 export type { EmbeddingProvider, EmbeddingProviderConfig, EmbeddableNode, UpdatedNodeEmbedding } from "./embedding/types.js";

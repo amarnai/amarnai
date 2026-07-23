@@ -26,7 +26,7 @@ function tokenUrl(): string {
 const MESSAGE_SELECT =
   "id,conversationId,from,sender,toRecipients,ccRecipients,subject," +
   "receivedDateTime,bodyPreview,uniqueBody,body,hasAttachments,isRead,webLink,internetMessageHeaders";
-const ATTACHMENT_EXPAND = "attachments($select=name,contentType,size,isInline)";
+const ATTACHMENT_EXPAND = "attachments($select=id,name,contentType,size,isInline)";
 
 // The inbox folder is the sync scope: spam (Junk Email) and trash (Deleted Items)
 // live in other well-known folders and are therefore never imported, so no
@@ -383,6 +383,42 @@ export class GraphClient {
     }
 
     return normalizeGraphThread(messages, conversationId);
+  }
+
+  /**
+   * Fetch the raw bytes of one attachment, used to serve CID inline images.
+   * Graph returns a single `fileAttachment` with base64 `contentBytes` plus its
+   * `contentType`. An item/reference attachment (no `contentBytes`) throws, as
+   * does any non-OK status — the image-proxy route degrades either to a hidden
+   * image. Never logs the payload.
+   */
+  async getAttachmentContent(
+    providerMessageId: string,
+    attachmentId: string,
+  ): Promise<{ data: Uint8Array; mimeType: string | null; size: number }> {
+    const accessToken = await this.refreshAccessToken();
+    const url =
+      `${GRAPH_BASE_URL}/me/messages/${encodeURIComponent(providerMessageId)}` +
+      `/attachments/${encodeURIComponent(attachmentId)}`;
+    const res = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        Prefer: 'IdType="ImmutableId"',
+      },
+    });
+    if (res.status === 401) {
+      const detail = await describeGraphError(res);
+      throw new MailAuthError(`Graph request failed: 401${detail ? ` — ${detail}` : ""}`);
+    }
+    if (!res.ok) throw new Error(`Graph attachment fetch failed: ${res.status}`);
+    const json = (await res.json()) as {
+      contentBytes?: string;
+      contentType?: string | null;
+      size?: number;
+    };
+    if (!json.contentBytes) throw new Error("Graph attachment had no contentBytes");
+    const data = new Uint8Array(Buffer.from(json.contentBytes, "base64"));
+    return { data, mimeType: json.contentType ?? null, size: json.size ?? data.byteLength };
   }
 
   /**

@@ -202,6 +202,8 @@ describe("GraphClient.getThreadSnapshot", () => {
       expect(url).toContain("conversationId");
       expect(url).toContain("conv-1");
       expect(url).toContain("internetMessageHeaders");
+      // Attachment ids must be selected so inline images are fetchable later.
+      expect(decodeURIComponent(url)).toContain("attachments($select=id,name,contentType,size,isInline)");
       return jsonResponse({
         value: [
           {
@@ -242,6 +244,51 @@ describe("GraphClient.getThreadSnapshot", () => {
     const err = await client().getThreadSnapshot("conv-1").catch((e: unknown) => e);
     expect(err).toBeInstanceOf(Error);
     expect(err).not.toBeInstanceOf(GmailThreadNotFoundError);
+  });
+});
+
+// ─── getAttachmentContent ─────────────────────────────────────────────────────
+
+describe("GraphClient.getAttachmentContent", () => {
+  const bytes = Uint8Array.from([0xff, 0xd8, 0xff, 0xe0]); // JPEG signature
+  const contentBytes = Buffer.from(bytes).toString("base64");
+
+  it("fetches a fileAttachment and decodes its contentBytes", async () => {
+    routeGraph((url) => {
+      expect(url).toContain("/me/messages/m1/attachments/att-1");
+      return jsonResponse({ contentBytes, contentType: "image/jpeg", size: 4 });
+    });
+    const result = await client().getAttachmentContent("m1", "att-1");
+    expect(Array.from(result.data)).toEqual([0xff, 0xd8, 0xff, 0xe0]);
+    expect(result.mimeType).toBe("image/jpeg");
+    expect(result.size).toBe(4);
+  });
+
+  it("url-encodes the message and attachment ids", async () => {
+    let seen = "";
+    routeGraph((url) => {
+      seen = url;
+      return jsonResponse({ contentBytes, contentType: "image/jpeg", size: 4 });
+    });
+    await client().getAttachmentContent("m/1", "att 1");
+    expect(seen).toContain("/me/messages/m%2F1/attachments/att%201");
+  });
+
+  it("throws when the attachment has no contentBytes (item/reference attachment)", async () => {
+    routeGraph(() => jsonResponse({ contentType: "image/jpeg", size: 4 }));
+    await expect(client().getAttachmentContent("m1", "att-1")).rejects.toThrow();
+  });
+
+  it("maps a 401 to the typed auth error", async () => {
+    routeGraph(() => jsonResponse({ error: { code: "InvalidAuthenticationToken" } }, { status: 401 }));
+    await expect(client().getAttachmentContent("m1", "att-1")).rejects.toBeInstanceOf(GmailAuthError);
+  });
+
+  it("throws a generic error on other non-OK statuses", async () => {
+    routeGraph(() => jsonResponse({ error: { code: "ErrorItemNotFound" } }, { status: 404 }));
+    const err = await client().getAttachmentContent("m1", "gone").catch((e: unknown) => e);
+    expect(err).toBeInstanceOf(Error);
+    expect(err).not.toBeInstanceOf(GmailAuthError);
   });
 });
 

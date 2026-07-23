@@ -12,6 +12,8 @@ vi.mock("@/lib/api", () => ({
     draftQuota: vi.fn(),
     generateDraft: vi.fn(),
     toggleDraftSent: vi.fn(),
+    inlineImageUrl: (ws: string, threadId: string, messageId: string, attachmentId: string) =>
+      `/api/internal/workspaces/${ws}/email-threads/${threadId}/messages/${messageId}/inline-image?attachmentId=${attachmentId}`,
   },
 }));
 
@@ -167,7 +169,7 @@ function renderPreview(thread: ThreadItem) {
 }
 
 beforeEach(() => {
-  vi.mocked(api.threadBodies).mockResolvedValue({ bodies: {} });
+  vi.mocked(api.threadBodies).mockResolvedValue({ bodies: {}, inlineImages: {} });
   vi.mocked(api.threadDrafts).mockResolvedValue({ drafts: [] });
   vi.mocked(api.draftQuota).mockResolvedValue({ used: 0, limit: 5, resetsAt: "2026-08-01T00:00:00Z" });
 });
@@ -259,5 +261,44 @@ describe("ThreadPreview live update when an open thread gains a message", () => 
     // Give any errant effect a chance to fire, then assert it did not.
     await Promise.resolve();
     expect(api.emailThread).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("ThreadPreview inline images", () => {
+  it("renders CID inline images returned by threadBodies as <img> in the open message", async () => {
+    vi.mocked(api.emailThread).mockResolvedValue(detail(["m-1"], "Filed under Work."));
+    vi.mocked(api.threadBodies).mockResolvedValue({
+      bodies: { "m-1": "First body" },
+      inlineImages: {
+        "m-1": [{ attachmentId: "att-1", mimeType: "image/png", filename: "logo.png" }],
+      },
+    });
+
+    renderPreview(threadV1());
+
+    const img = (await screen.findByAltText("logo.png")) as HTMLImageElement;
+    expect(img.getAttribute("src")).toContain(
+      "/messages/m-1/inline-image?attachmentId=att-1",
+    );
+    expect(img.getAttribute("loading")).toBe("lazy");
+  });
+
+  it("hides an inline image whose fetch errors, leaving the message intact", async () => {
+    vi.mocked(api.emailThread).mockResolvedValue(detail(["m-1"], "Filed under Work."));
+    vi.mocked(api.threadBodies).mockResolvedValue({
+      bodies: { "m-1": "First body" },
+      inlineImages: {
+        "m-1": [{ attachmentId: "att-1", mimeType: "image/png", filename: "logo.png" }],
+      },
+    });
+
+    renderPreview(threadV1());
+
+    const img = (await screen.findByAltText("logo.png")) as HTMLImageElement;
+    img.dispatchEvent(new Event("error"));
+
+    await waitFor(() => expect(screen.queryByAltText("logo.png")).not.toBeInTheDocument());
+    // Body text still shows — a broken image never breaks the preview.
+    expect(screen.getByText("First body")).toBeInTheDocument();
   });
 });

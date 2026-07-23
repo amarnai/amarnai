@@ -148,6 +148,78 @@ describe("normalizeGmailThread attachment detection", () => {
   });
 });
 
+describe("normalizeGmailThread inline image detection", () => {
+  it("captures a cid-referenced image as an inline image, not an attachment", () => {
+    const raw = thread({
+      mimeType: "multipart/related",
+      parts: [
+        htmlPart('<p>Hi</p><img src="cid:logo@efrei.net">'),
+        filePart({
+          mimeType: "image/png",
+          filename: "logo.png",
+          headers: [{ name: "Content-ID", value: "<logo@efrei.net>" }],
+        }),
+      ],
+    });
+    const snapshot = normalizeGmailThread(raw);
+    expect(snapshot.messages[0]!.attachments).toEqual([]);
+    expect(snapshot.messages[0]!.inlineImages).toEqual([
+      {
+        attachmentId: "att-1",
+        mimeType: "image/png",
+        filename: "logo.png",
+        size: 1234,
+        contentId: "logo@efrei.net",
+      },
+    ]);
+  });
+
+  it("does not treat an image with an unreferenced Content-ID as inline", () => {
+    const raw = thread({
+      mimeType: "multipart/mixed",
+      parts: [
+        plainPart("See the diagram."),
+        filePart({
+          mimeType: "image/png",
+          filename: "diagram.png",
+          headers: [{ name: "Content-ID", value: "<diagram@mail>" }],
+        }),
+      ],
+    });
+    const snapshot = normalizeGmailThread(raw);
+    // Unreferenced → stays a normal attachment, never an inline image.
+    expect(snapshot.messages[0]!.inlineImages).toEqual([]);
+    expect(snapshot.messages[0]!.attachments).toEqual([
+      { filename: "diagram.png", mimeType: "image/png", size: 1234 },
+    ]);
+  });
+
+  it("does not treat a cid-referenced non-image part as an inline image", () => {
+    const raw = thread({
+      mimeType: "multipart/related",
+      parts: [
+        htmlPart('<p>See <a href="cid:doc@mail">doc</a></p>'),
+        filePart({
+          mimeType: "application/pdf",
+          filename: "doc.pdf",
+          headers: [{ name: "Content-ID", value: "<doc@mail>" }],
+        }),
+      ],
+    });
+    const snapshot = normalizeGmailThread(raw);
+    expect(snapshot.messages[0]!.inlineImages).toEqual([]);
+  });
+
+  it("returns an empty inlineImages list when there are no images", () => {
+    const raw = thread({
+      mimeType: "multipart/mixed",
+      parts: [plainPart("Just text, no images.")],
+    });
+    const snapshot = normalizeGmailThread(raw);
+    expect(snapshot.messages[0]!.inlineImages).toEqual([]);
+  });
+});
+
 describe("normalizeGmailThread receivedAt / ordering", () => {
   // Build a raw thread from (internalDate, Date-header) pairs. Both are provided
   // independently so tests can force them to disagree.

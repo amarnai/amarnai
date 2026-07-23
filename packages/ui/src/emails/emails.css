@@ -1309,6 +1309,24 @@
 .em-msg-text.em-msg-empty { color: var(--ink-4); font-style: italic; }
 .em-msg-text.em-msg-loading { color: var(--ink-4); font-style: italic; }
 
+.em-inline-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.em-inline-images img {
+  max-width: 100%;
+  max-height: 240px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border: 1px solid var(--line-2);
+  border-radius: 6px;
+  background: var(--bg-sunk);
+}
+
 .em-attachment-list {
   display: flex;
   flex-wrap: wrap;

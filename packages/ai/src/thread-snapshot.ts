@@ -14,6 +14,21 @@ export type AttachmentMeta = {
   size: number | null;
 };
 
+/**
+ * A CID-referenced inline image part (embedded signature/logo/photo). Metadata
+ * only — the image bytes are never captured here, never persisted, and never
+ * sent to LLMs. Fetched on demand per-view via the image-proxy route using
+ * {@link providerMessageId} (on the owning {@link SnapshotMessage}) + `attachmentId`.
+ */
+export type InlineImageMeta = {
+  attachmentId: string;
+  mimeType: string;
+  filename: string | null;
+  size: number | null;
+  /** The normalized Content-ID (Gmail only, informational); absent for Outlook. */
+  contentId?: string | null;
+};
+
 export type SnapshotMessage = {
   providerMessageId: string;
   senderEmail: string;
@@ -24,6 +39,13 @@ export type SnapshotMessage = {
   /** Bounded plain-text excerpt for classification. Max 2000 chars. No HTML. Quoted replies stripped. */
   bodyExcerpt: string | null;
   attachments: AttachmentMeta[];
+  /**
+   * CID-referenced inline images on this message (metadata only). Optional —
+   * populated only on full-fetch paths that parse body content; absent on
+   * metadata-only paths. Never persisted, never passed to classifiers
+   * ({@link snapshotToThreadMessages} ignores it).
+   */
+  inlineImages?: InlineImageMeta[];
   receivedAt: Date;
   /** Gmail label IDs on this message (e.g. ["INBOX","SPAM","UNREAD"]). Optional — only populated when label data is available from the provider. */
   labelIds?: string[];

@@ -73,20 +73,6 @@ export function ThreadPreview({
   };
   const bodiesRef = useRef<BodiesResult | null>(null);
 
-  // Map the API's inline-image descriptors for one message to renderable
-  // <img> entries (same-origin proxy URLs). Undefined when there are none.
-  function inlineImagesFor(
-    messageId: string,
-    inlineImages: Record<string, InlineImageDescriptor[]>
-  ): Array<{ url: string; filename: string | null }> | undefined {
-    const descriptors = inlineImages[messageId];
-    if (!descriptors || descriptors.length === 0) return undefined;
-    return descriptors.map((d) => ({
-      url: api.inlineImageUrl(workspaceId, thread.id, messageId, d.attachmentId),
-      filename: d.filename,
-    }));
-  }
-
   function clearPoll() {
     if (pollRef.current) {
       clearInterval(pollRef.current);
@@ -137,6 +123,20 @@ export function ThreadPreview({
     setDraft(null);
     clearPoll();
 
+    // Map the API's inline-image descriptors for one message to renderable <img>
+    // entries (same-origin proxy URLs). Undefined when there are none.
+    const inlineImagesFor = (
+      messageId: string,
+      inlineImages: Record<string, InlineImageDescriptor[]>
+    ): Array<{ url: string; filename: string | null }> | undefined => {
+      const descriptors = inlineImages[messageId];
+      if (!descriptors || descriptors.length === 0) return undefined;
+      return descriptors.map((d) => ({
+        url: api.inlineImageUrl(workspaceId, thread.id, messageId, d.attachmentId),
+        filename: d.filename,
+      }));
+    };
+
     // Fire both calls simultaneously. emailThread resolves first (DB-only, fast)
     // and renders metadata. threadBodies resolves later (Gmail fetch) and fills
     // in body text. bodiesRef guards against the race where threadBodies wins.
@@ -146,17 +146,20 @@ export function ThreadPreview({
       setDecisionSource(detail.latestClassification?.decisionSource ?? null);
       const loaded = bodiesRef.current;
       setMessages(
-        detail.messages.map((m) => ({
-          id: m.id,
-          fromName: m.senderName ?? m.senderEmail,
-          fromEmail: m.senderEmail,
-          time: new Date(m.receivedAt),
-          snippet: m.snippet,
-          bodyText:
-            (loaded !== null && m.id in loaded.bodies ? loaded.bodies[m.id] : null) ?? m.bodyText,
-          attachments: m.attachments,
-          inlineImages: loaded !== null ? inlineImagesFor(m.id, loaded.inlineImages) : undefined,
-        }))
+        detail.messages.map((m) => {
+          const imgs = loaded !== null ? inlineImagesFor(m.id, loaded.inlineImages) : undefined;
+          return {
+            id: m.id,
+            fromName: m.senderName ?? m.senderEmail,
+            fromEmail: m.senderEmail,
+            time: new Date(m.receivedAt),
+            snippet: m.snippet,
+            bodyText:
+              (loaded !== null && m.id in loaded.bodies ? loaded.bodies[m.id] : null) ?? m.bodyText,
+            attachments: m.attachments,
+            ...(imgs ? { inlineImages: imgs } : {}),
+          };
+        })
       );
     }).catch(() => {});
 
@@ -164,15 +167,11 @@ export function ThreadPreview({
       const loaded: BodiesResult = { bodies, inlineImages: inlineImages ?? {} };
       bodiesRef.current = loaded;
       setMessages((prev) =>
-        prev.map((m) =>
-          m.id in bodies
-            ? {
-                ...m,
-                bodyText: bodies[m.id] ?? null,
-                inlineImages: inlineImagesFor(m.id, loaded.inlineImages),
-              }
-            : m
-        )
+        prev.map((m) => {
+          if (!(m.id in bodies)) return m;
+          const imgs = inlineImagesFor(m.id, loaded.inlineImages);
+          return { ...m, bodyText: bodies[m.id] ?? null, ...(imgs ? { inlineImages: imgs } : {}) };
+        })
       );
       setBodyLoaded(true);
     }).catch(() => {

@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { Trans } from "@lingui/react/macro";
+import { useLingui } from "@lingui/react";
+import { msg } from "@lingui/core/macro";
 import type { ThreadMessage } from "./types.js";
 
 function fmtDateTime(d: Date): string {
@@ -22,7 +24,13 @@ export interface MessageCardProps {
 }
 
 export function MessageCard({ message, defaultExpanded = false, loading = false }: MessageCardProps) {
+  const { _ } = useLingui();
   const [expanded, setExpanded] = useState(defaultExpanded);
+  // Track inline images whose fetch failed so a broken source is silently hidden
+  // (stale Gmail attachment id, expired token, etc.) rather than showing a
+  // broken-image icon. Keyed by url.
+  const [failedImages, setFailedImages] = useState<Set<string>>(new Set());
+  const visibleInlineImages = (message.inlineImages ?? []).filter((img) => !failedImages.has(img.url));
 
   return (
     <div className={`em-msg-card${expanded ? " open" : ""}`}>
@@ -62,6 +70,26 @@ export function MessageCard({ message, defaultExpanded = false, loading = false 
             <p className="em-msg-text">{message.snippet}</p>
           ) : (
             <p className="em-msg-text em-msg-empty"><Trans>(No body)</Trans></p>
+          )}
+          {visibleInlineImages.length > 0 && (
+            <div className="em-inline-images">
+              {visibleInlineImages.map((img) => (
+                <img
+                  key={img.url}
+                  src={img.url}
+                  alt={img.filename ?? _(msg`Inline image`)}
+                  loading="lazy"
+                  decoding="async"
+                  onError={() =>
+                    setFailedImages((prev) => {
+                      const next = new Set(prev);
+                      next.add(img.url);
+                      return next;
+                    })
+                  }
+                />
+              ))}
+            </div>
           )}
           {message.attachments && message.attachments.length > 0 && (
             <div className="em-attachment-list">

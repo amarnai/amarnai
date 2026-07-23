@@ -24,6 +24,9 @@ export type ThreadMessage = {
   snippet: string | null;
   bodyText: string | null;
   attachments?: Array<{ filename: string | null; mimeType: string }>;
+  // CID inline images to render below the body. `url` is a ready-to-use image
+  // source: a same-origin proxy URL on web, a blob: URL in the extension.
+  inlineImages?: Array<{ url: string; filename: string | null }>;
 };
 
 export type DoneMark = {

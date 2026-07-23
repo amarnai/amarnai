@@ -302,9 +302,48 @@ export function makeApiClient(transport: ApiTransport) {
       ),
 
     threadBodies: (workspaceId: string, threadId: string) =>
-      apiFetch<{ bodies: Record<string, string | null> }>(
-        `/workspaces/${workspaceId}/email-threads/${threadId}/bodies`
-      ),
+      apiFetch<{
+        bodies: Record<string, string | null>;
+        // Optional so an older server (no field) is tolerated. Keyed by DB message id.
+        inlineImages?: Record<
+          string,
+          Array<{ attachmentId: string; mimeType: string; filename: string | null }>
+        >;
+      }>(`/workspaces/${workspaceId}/email-threads/${threadId}/bodies`),
+
+    // Same-origin URL for a CID inline image, for use directly as an <img src>.
+    // On the browser transport `base` is the cookie-authed Next proxy, so no
+    // token handling is needed; native transports use fetchInlineImage instead.
+    inlineImageUrl: (
+      workspaceId: string,
+      threadId: string,
+      messageId: string,
+      attachmentId: string
+    ): string =>
+      `${base}/workspaces/${workspaceId}/email-threads/${threadId}/messages/` +
+      `${messageId}/inline-image?attachmentId=${encodeURIComponent(attachmentId)}`,
+
+    // Fetch a CID inline image as a Blob for clients that cannot authenticate a
+    // plain <img src> (the extension's Bearer transport). Resolves null on any
+    // failure so the caller silently hides the image.
+    fetchInlineImage: async (
+      workspaceId: string,
+      threadId: string,
+      messageId: string,
+      attachmentId: string
+    ): Promise<Blob | null> => {
+      try {
+        const res = await apiRequest(
+          `/workspaces/${workspaceId}/email-threads/${threadId}/messages/` +
+            `${messageId}/inline-image?attachmentId=${encodeURIComponent(attachmentId)}`,
+          { cache: "no-store" }
+        );
+        if (!res.ok) return null;
+        return await res.blob();
+      } catch {
+        return null;
+      }
+    },
 
     triageThread: (
       workspaceId: string,

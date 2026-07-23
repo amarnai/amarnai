@@ -69,6 +69,19 @@ export function ThreadPreviewPane({
   const [draftQuota, setDraftQuota] = useState<{ used: number; limit: number; resetsAt: string } | null>(null);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const bodiesRef = useRef<Record<string, string | null> | null>(null);
+  // Resolved blob: URLs for CID inline images, keyed by DB message id. The
+  // extension's Bearer transport cannot authenticate a plain <img src>, so the
+  // bytes are fetched and turned into object URLs. Held in a ref (like bodiesRef)
+  // so a late emailThread rebuild re-attaches them instead of dropping them.
+  const inlineImagesRef = useRef<Record<string, Array<{ url: string; filename: string | null }>>>({});
+  // Every object URL created for this thread, revoked on thread change/unmount.
+  const objectUrlsRef = useRef<string[]>([]);
+
+  function revokeObjectUrls() {
+    for (const url of objectUrlsRef.current) URL.revokeObjectURL(url);
+    objectUrlsRef.current = [];
+    inlineImagesRef.current = {};
+  }
 
   function clearPoll() {
     if (pollRef.current) {
@@ -100,6 +113,7 @@ export function ThreadPreviewPane({
   }
 
   useEffect(() => {
+    let cancelled = false;
     setBodyLoaded(false);
     bodiesRef.current = null;
     setMessages(thread.messages);
@@ -109,6 +123,35 @@ export function ThreadPreviewPane({
     setDraft(null);
     clearPoll();
 
+    // Fetch each CID inline image as a blob and turn it into an object URL (the
+    // Bearer transport can't authenticate a plain <img src>). Merges the urls in
+    // as they resolve; inlineImagesRef lets a late emailThread rebuild keep them.
+    async function loadInlineImages(
+      descriptorsByMsg: Record<
+        string,
+        Array<{ attachmentId: string; mimeType: string; filename: string | null }>
+      >,
+    ) {
+      for (const [messageId, descriptors] of Object.entries(descriptorsByMsg)) {
+        const resolved: Array<{ url: string; filename: string | null }> = [];
+        for (const d of descriptors) {
+          const blob = await api.fetchInlineImage(workspaceId, thread.id, messageId, d.attachmentId);
+          if (cancelled) return;
+          if (!blob) continue;
+          const url = URL.createObjectURL(blob);
+          objectUrlsRef.current.push(url);
+          resolved.push({ url, filename: d.filename });
+        }
+        if (cancelled) return;
+        if (resolved.length > 0) {
+          inlineImagesRef.current[messageId] = resolved;
+          setMessages((prev) =>
+            prev.map((m) => (m.id === messageId ? { ...m, inlineImages: resolved } : m)),
+          );
+        }
+      }
+    }
+
     // Fire both calls at once. emailThread resolves first (DB-only) and renders
     // metadata; threadBodies resolves later (Gmail fetch) and fills body text.
     // bodiesRef guards the race where threadBodies wins.
@@ -117,22 +160,27 @@ export function ThreadPreviewPane({
       setDecisionSource(detail.latestClassification?.decisionSource ?? null);
       const bodies = bodiesRef.current;
       setMessages(
-        detail.messages.map((m) => ({
-          id: m.id,
-          fromName: m.senderName ?? m.senderEmail,
-          fromEmail: m.senderEmail,
-          time: new Date(m.receivedAt),
-          snippet: m.snippet,
-          bodyText: (bodies !== null && m.id in bodies ? bodies[m.id] : null) ?? m.bodyText,
-          attachments: m.attachments,
-        })),
+        detail.messages.map((m) => {
+          const imgs = inlineImagesRef.current[m.id];
+          return {
+            id: m.id,
+            fromName: m.senderName ?? m.senderEmail,
+            fromEmail: m.senderEmail,
+            time: new Date(m.receivedAt),
+            snippet: m.snippet,
+            bodyText: (bodies !== null && m.id in bodies ? bodies[m.id] : null) ?? m.bodyText,
+            attachments: m.attachments,
+            ...(imgs ? { inlineImages: imgs } : {}),
+          };
+        }),
       );
     }).catch(() => {});
 
-    api.threadBodies(workspaceId, thread.id).then(({ bodies }) => {
+    api.threadBodies(workspaceId, thread.id).then(({ bodies, inlineImages }) => {
       bodiesRef.current = bodies;
       setMessages((prev) => prev.map((m) => (m.id in bodies ? { ...m, bodyText: bodies[m.id] ?? null } : m)));
       setBodyLoaded(true);
+      void loadInlineImages(inlineImages ?? {});
     }).catch(() => {
       setBodyLoaded(true);
     });
@@ -152,7 +200,11 @@ export function ThreadPreviewPane({
       }).catch(() => {});
     }
 
-    return clearPoll;
+    return () => {
+      cancelled = true;
+      clearPoll();
+      revokeObjectUrls();
+    };
   }, [thread.id, workspaceId]);
 
   function handleGenerateDraft(opts: { force?: boolean } = {}) {

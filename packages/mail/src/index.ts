@@ -5,6 +5,7 @@ export type {
   MailThreadMeta,
   MailThreadPage,
   MailWatchResult,
+  MailAttachmentContent,
 } from "./types.js";
 export {
   MailAuthError,

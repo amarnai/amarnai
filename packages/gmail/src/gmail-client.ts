@@ -76,6 +76,7 @@ const GOOGLE_REVOKE_URL = "https://oauth2.googleapis.com/revoke";
 const GMAIL_PROFILE_URL = "https://gmail.googleapis.com/gmail/v1/users/me/profile";
 const GMAIL_THREADS_URL = "https://gmail.googleapis.com/gmail/v1/users/me/threads";
 const GMAIL_THREAD_URL = "https://gmail.googleapis.com/gmail/v1/users/me/threads";
+const GMAIL_MESSAGES_URL = "https://gmail.googleapis.com/gmail/v1/users/me/messages";
 const GMAIL_HISTORY_URL = "https://gmail.googleapis.com/gmail/v1/users/me/history";
 const GMAIL_WATCH_URL = "https://gmail.googleapis.com/gmail/v1/users/me/watch";
 const GMAIL_STOP_URL = "https://gmail.googleapis.com/gmail/v1/users/me/stop";
@@ -586,5 +587,29 @@ export class GmailClient {
     } catch (err) {
       throw new GmailThreadParseError(err);
     }
+  }
+
+  /**
+   * Fetch the raw bytes of one message attachment, used to serve CID inline
+   * images. Gmail's endpoint returns base64url data and no content type, so
+   * `mimeType` is always null here — the image-proxy route sniffs the bytes.
+   * Attachment IDs are ephemeral (they rotate between fetches); callers pass a
+   * fresh ID obtained from a recent `getThreadSnapshot`. Never logs the payload.
+   */
+  async getAttachmentContent(
+    providerMessageId: string,
+    attachmentId: string
+  ): Promise<{ data: Uint8Array; mimeType: string | null; size: number }> {
+    const accessToken = await this.refreshAccessToken();
+    const url = `${GMAIL_MESSAGES_URL}/${encodeURIComponent(providerMessageId)}/attachments/${encodeURIComponent(attachmentId)}`;
+    const res = await fetch(url, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+    if (!res.ok) throw new Error(`Gmail attachment fetch failed: ${res.status}`);
+    const json = (await res.json()) as { size?: number; data?: string };
+    if (!json.data) throw new Error("Gmail attachment response had no data");
+    const base64 = json.data.replace(/-/g, "+").replace(/_/g, "/");
+    const data = new Uint8Array(Buffer.from(base64, "base64"));
+    return { data, mimeType: null, size: json.size ?? data.byteLength };
   }
 }

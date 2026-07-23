@@ -49,12 +49,32 @@ export interface MailProvider {
    */
   getThreadSnapshot(threadId: string): Promise<ThreadSnapshot>;
 
+  /**
+   * Fetch the raw bytes of a single attachment (used to serve CID inline images
+   * in the preview). `mimeType` is the provider-reported type where available
+   * (Graph) or `null` (Gmail, whose attachment endpoint reports none) — callers
+   * must not trust it for a response Content-Type; sniff the bytes instead.
+   * Throws when the provider reports the attachment as gone; the image-proxy
+   * route degrades any failure to a hidden image.
+   */
+  getAttachmentContent(
+    providerMessageId: string,
+    attachmentId: string
+  ): Promise<MailAttachmentContent>;
+
   /** Register a push watch/subscription for this mailbox. */
   registerWatch(target: string): Promise<MailWatchResult>;
 
   /** Tear down the push watch/subscription (best-effort, before token revoke). */
   stopWatch(): Promise<void>;
 }
+
+/** Raw bytes of one attachment, plus the provider's type hint (may be null). */
+export type MailAttachmentContent = {
+  data: Uint8Array;
+  mimeType: string | null;
+  size: number;
+};
 
 /** Connected mailbox identity plus the cursor to seed delta sync from. */
 export type MailProfile = {

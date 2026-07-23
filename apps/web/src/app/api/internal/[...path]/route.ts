@@ -42,11 +42,20 @@ async function proxyRequest(req: NextRequest, ctx: Ctx): Promise<NextResponse> {
     return NextResponse.json({ error: "API unavailable" }, { status: 502 });
   }
 
+  // Pass the body through as raw bytes so binary responses (inline images) are
+  // not corrupted the way `.text()` would corrupt them. JSON is a subset of this
+  // — bytes-in, bytes-out — so existing routes behave identically.
   const contentType = upstream.headers.get("Content-Type") ?? "application/json";
-  const text = await upstream.text();
-  return new NextResponse(text, {
+  const buffer = await upstream.arrayBuffer();
+  const headers = new Headers({ "Content-Type": contentType });
+  // Forward caching / disposition / sniffing headers when present (image proxy).
+  for (const h of ["Cache-Control", "Content-Disposition", "X-Content-Type-Options", "Content-Length"]) {
+    const v = upstream.headers.get(h);
+    if (v !== null) headers.set(h, v);
+  }
+  return new NextResponse(buffer, {
     status: upstream.status,
-    headers: { "Content-Type": contentType },
+    headers,
   });
 }
 

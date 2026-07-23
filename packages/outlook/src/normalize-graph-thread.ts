@@ -1,10 +1,11 @@
-import type { ThreadSnapshot, SnapshotMessage, AttachmentMeta } from "@amarnai/ai";
+import type { ThreadSnapshot, SnapshotMessage, AttachmentMeta, InlineImageMeta } from "@amarnai/ai";
 
 // ─── Microsoft Graph message shapes (the fields we $select) ────────────────────
 
 type GraphRecipient = { emailAddress?: { name?: string | null; address?: string | null } };
 
 type GraphAttachment = {
+  id?: string | null;
   name?: string | null;
   contentType?: string | null;
   size?: number | null;
@@ -108,6 +109,20 @@ function attachments(msg: GraphMessage): AttachmentMeta[] {
     }));
 }
 
+function inlineImages(msg: GraphMessage): InlineImageMeta[] {
+  // Graph flags inline parts directly; keep the inline images (with a fetchable
+  // id) so the preview can request their bytes. Metadata only — no contentId
+  // (it lives on the derived fileAttachment type, not the $select'd base type).
+  return (msg.attachments ?? [])
+    .filter((a) => a.isInline === true && !!a.id && (a.contentType ?? "").startsWith("image/"))
+    .map((a) => ({
+      attachmentId: a.id!,
+      mimeType: a.contentType!,
+      filename: a.name ?? null,
+      size: typeof a.size === "number" && a.size > 0 ? a.size : null,
+    }));
+}
+
 function normalizeMessage(msg: GraphMessage): SnapshotMessage {
   const { email: senderEmail, name: senderName } = recipientEmail(msg.from ?? msg.sender);
 
@@ -120,6 +135,7 @@ function normalizeMessage(msg: GraphMessage): SnapshotMessage {
     subject: msg.subject ?? null,
     bodyExcerpt: bodyExcerpt(msg),
     attachments: attachments(msg),
+    inlineImages: inlineImages(msg),
     receivedAt: parseReceivedAt(msg.receivedDateTime),
     // Outlook sync is inbox-folder-scoped, so spam/trash never reach here and
     // there is no Gmail-category vocabulary. Left empty: the automated-mail

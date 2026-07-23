@@ -1,4 +1,4 @@
-import type { ThreadSnapshot, SnapshotMessage, AttachmentMeta } from "@amarnai/ai";
+import type { ThreadSnapshot, SnapshotMessage, AttachmentMeta, InlineImageMeta } from "@amarnai/ai";
 
 // ─── Gmail API response types ──────────────────────────────────────────────────
 
@@ -222,6 +222,44 @@ function extractAttachments(part: RawPart, referencedCids: Set<string>): Attachm
 }
 
 /**
+ * Recursively collect CID inline images from a MIME part tree — the mirror of
+ * {@link extractAttachments}: it keeps exactly the parts that function drops.
+ * A part qualifies when it is an image with a fetchable `attachmentId` whose
+ * Content-ID is actually referenced from the body (the same inline signal). Only
+ * metadata is captured; content is fetched later via the image-proxy route.
+ */
+function extractInlineImages(part: RawPart, referencedCids: Set<string>): InlineImageMeta[] {
+  const result: InlineImageMeta[] = [];
+
+  const cidHeader = part.headers ? getHeader(part.headers, "Content-ID") : null;
+  const normalizedCid = cidHeader !== null ? normalizeCid(cidHeader) : null;
+  const isReferencedInline = normalizedCid !== null && referencedCids.has(normalizedCid);
+
+  if (
+    isReferencedInline &&
+    part.mimeType.startsWith("image/") &&
+    part.body.attachmentId !== undefined &&
+    part.body.attachmentId !== ""
+  ) {
+    result.push({
+      attachmentId: part.body.attachmentId,
+      mimeType: part.mimeType,
+      filename: part.filename || null,
+      size: part.body.size > 0 ? part.body.size : null,
+      contentId: normalizedCid,
+    });
+  }
+
+  if (part.parts) {
+    for (const p of part.parts) {
+      result.push(...extractInlineImages(p, referencedCids));
+    }
+  }
+
+  return result;
+}
+
+/**
  * Per-message receive time from Gmail's server-authoritative `internalDate`
  * (epoch ms), NOT the sender-controlled `Date:` header. The header is spoofable
  * and often missing on bulk mail; `internalDate` is unspoofable and matches both
@@ -256,6 +294,7 @@ function normalizeMessage(msg: RawMessage): SnapshotMessage {
   const referencedCids = new Set<string>();
   collectReferencedCids(msg.payload, referencedCids);
   const attachments = extractAttachments(msg.payload, referencedCids);
+  const inlineImages = extractInlineImages(msg.payload, referencedCids);
 
   // Bulk/automation markers — presence flags + raw values for the detector.
   const automatedHeaders = {
@@ -274,6 +313,7 @@ function normalizeMessage(msg: RawMessage): SnapshotMessage {
     subject,
     bodyExcerpt,
     attachments,
+    inlineImages,
     receivedAt,
     labelIds: msg.labelIds ?? [],
     automatedHeaders,
