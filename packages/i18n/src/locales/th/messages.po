@@ -13,7 +13,7 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:516
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:541
 #, fuzzy
 msgid " (Inbox)"
 msgstr " (กล่องขาเข้า)"
@@ -140,7 +140,7 @@ msgstr "{blacklistCount, plural, one {# บล็อก} other {# บล็อ�
 #~ msgid "{by} assigned you: {subject}"
 #~ msgstr "{by} มอบหมายถึงคุณ: {subject}"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:531
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:556
 #, fuzzy
 msgid "{classificationCount, plural, one {Deleting this folder will leave # thread unsorted.} other {Deleting this folder will leave # threads unsorted.}}"
 msgstr "{classificationCount, plural, one {การลบโฟลเดอร์นี้จะทำให้มี # เธรดไม่ได้จัดเรียง} other {การลบโฟลเดอร์นี้จะทำให้มี # เธรดไม่ได้จัดเรียง}}"
@@ -214,7 +214,7 @@ msgstr "{providerName} กล่องจดหมาย"
 
 #. placeholder {0}: draftQuota.limit
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:330
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:357
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:373
 #, fuzzy
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
 msgstr "เหลือ {quotaRemaining} จาก {0} · รีเซ็ตใน {quotaResetDate}"
@@ -224,7 +224,7 @@ msgstr "เหลือ {quotaRemaining} จาก {0} · รีเซ็ตใ�
 msgid "{remaining} of {limit} remaining · resets {resetDate}"
 msgstr "เหลือ {remaining} จาก {limit} · รีเซ็ตใน {resetDate}"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1549
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1576
 #, fuzzy
 msgid "{routableCount} of {TAXONOMY_MIN_NON_ROOT_NODES} folders connected to your inbox. Routing requires at least {TAXONOMY_MIN_NON_ROOT_NODES}."
 msgstr "เชื่อมต่อโฟลเดอร์ {routableCount} จาก {TAXONOMY_MIN_NON_ROOT_NODES} รายการเข้ากับกล่องขาเข้าของคุณ การจัดเส้นทางต้องใช้โฟลเดอร์อย่างน้อย {TAXONOMY_MIN_NON_ROOT_NODES} รายการ"
@@ -288,7 +288,7 @@ msgstr "© 2026 Amarnai โอเพนซอร์สภายใต้ AGPL-3.
 msgid "+ Add folder"
 msgstr "+ เพิ่มโฟลเดอร์"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1390
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1417
 #, fuzzy
 msgid "+ Add Folder"
 msgstr "+ เพิ่มโฟลเดอร์"
@@ -520,9 +520,7 @@ msgstr "ได้รับใบสมัครใหม่จากโฮเร
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "ได้รับใบสมัครใหม่จากโฮเรมเฮบแห่งธีบส์ สำหรับตำแหน่งหัวหน้าฝ่ายการติดต่อสื่อสาร\n"
-"\n"
-"ดูใบสมัครได้ที่ทำเนียบบันทึก"
+msgstr "ได้รับใบสมัครใหม่จากโฮเรมเฮบแห่งธีบส์ สำหรับตำแหน่งหัวหน้าฝ่ายการติดต่อสื่อสาร\n\nดูใบสมัครได้ที่ทำเนียบบันทึก"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:387
 #, fuzzy
@@ -536,11 +534,7 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "อับดิ-เฮบา,\n"
-"\n"
-"สัปดาห์นั้นฉันจะอยู่แถวเดลตาพอดี เราไปพบกันที่สถานีพักระหว่างทางในวันที่สอง ฉันพอจะมีเวลาว่างช่วงเช้า\n"
-"\n"
-"แล้วพบกัน,"
+msgstr "อับดิ-เฮบา,\n\nสัปดาห์นั้นฉันจะอยู่แถวเดลตาพอดี เราไปพบกันที่สถานีพักระหว่างทางในวันที่สอง ฉันพอจะมีเวลาว่างช่วงเช้า\n\nแล้วพบกัน,"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
@@ -607,7 +601,12 @@ msgstr "ใบแจ้งรายได้จากโฆษณา, ทิป�
 msgid "Add"
 msgstr "เพิ่ม"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1414
+#. placeholder {0}: minNodeDescriptionLength(description)
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:447
+msgid "Add a description (at least {0} characters) so the AI can sort accurately."
+msgstr "เพิ่มคำอธิบาย (อย่างน้อย {0} ตัวอักษร) เพื่อให้ AI จัดเรียงได้อย่างแม่นยำ"
+
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1441
 #, fuzzy
 msgid "Add at least 3 connected folders to export"
 msgstr "เพิ่มโฟลเดอร์ที่เชื่อมต่ออย่างน้อย 3 โฟลเดอร์เพื่อส่งออก"
@@ -1133,17 +1132,13 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "Aziru,\n"
-"\n"
-"ถ้อยคำแห่งมิตรภาพของท่านมาถึงเราแล้ว เรายินดีรับฟังข้อเสนอเพิ่มเติมจากตระกูล Amurru โปรดส่งเงื่อนไขของท่านมาพร้อมกับผู้ส่งสารคนถัดไป\n"
-"\n"
-"ด้วยความเคารพ,"
+msgstr "Aziru,\n\nถ้อยคำแห่งมิตรภาพของท่านมาถึงเราแล้ว เรายินดีรับฟังข้อเสนอเพิ่มเติมจากตระกูล Amurru โปรดส่งเงื่อนไขของท่านมาพร้อมกับผู้ส่งสารคนถัดไป\n\nด้วยความเคารพ,"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:219
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
 #: ../../apps/site/src/components/landing/MailThreadMock.tsx:66
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:25
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:240
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:266
 #: ../ui/src/emails/ThreadPreview.tsx:121
 #, fuzzy
 msgid "Back"
@@ -1154,7 +1149,7 @@ msgstr "ย้อนกลับ"
 #~ msgstr "กลับสู่กล่องจดหมาย"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:215
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:235
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:261
 #: ../ui/src/emails/ThreadPreview.tsx:116
 #, fuzzy
 msgid "Back to list"
@@ -1250,7 +1245,7 @@ msgid "Browse emails easily through your folders. Generate draft replies and cop
 msgstr "เรียกดูอีเมลได้ง่ายผ่านโฟลเดอร์ สร้างอีเมลตอบกลับฉบับร่าง และคัดลอกลงในกล่องจดหมายของคุณ"
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:283
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1474
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1501
 #, fuzzy
 msgid "Browse templates"
 msgstr "เรียกดูเทมเพลต"
@@ -1350,11 +1345,11 @@ msgstr "ฉันสามารถโฮสต์ Amarnai ด้วยตนเ
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:150
 #: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:107
 #: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:255
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:569
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:583
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:697
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1702
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1795
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:594
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:610
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:724
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1729
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1822
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:64
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:275
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:370
@@ -1439,7 +1434,7 @@ msgstr "ตรวจสอบกล่องขาเข้าของคุณ
 msgid "Checkout failed: {0}"
 msgstr "ชำระเงินไม่สำเร็จ: {0}"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:679
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:706
 #, fuzzy
 msgid "Child folder"
 msgstr "โฟลเดอร์ย่อย"
@@ -1511,13 +1506,13 @@ msgstr "ลูกค้า"
 msgid "Close"
 msgstr "ปิด"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1613
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1640
 #, fuzzy
 msgid "Close panel"
 msgstr "ปิดแผง"
 
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:283
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:287
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:309
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:313
 #: ../ui/src/emails/ThreadPreview.tsx:147
 #: ../ui/src/emails/ThreadPreview.tsx:151
 #, fuzzy
@@ -1598,7 +1593,7 @@ msgstr "ยืนยันการยกเลิก"
 msgid "Confirm delete"
 msgstr "ยืนยันการลบ"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:561
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:586
 #, fuzzy
 msgid "Confirm Delete"
 msgstr "ยืนยันการลบ"
@@ -1903,7 +1898,7 @@ msgstr "ไม่สามารถโหลดแผนได้"
 msgid "Could not open billing management."
 msgstr "ไม่สามารถเปิดหน้าจัดการการเรียกเก็บเงินได้"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1298
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1325
 msgid "Could not prepare migration"
 msgstr "ไม่สามารถเตรียมการย้ายข้อมูลได้"
 
@@ -1918,7 +1913,7 @@ msgstr "ไม่สามารถจัดคิวการสแกนซ้
 msgid "Could not reach the server. Please check your connection and try again."
 msgstr "ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้ โปรดตรวจสอบการเชื่อมต่อของคุณแล้วลองอีกครั้ง"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1248
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1275
 #, fuzzy
 msgid "Could not read file: invalid JSON."
 msgstr "ไม่สามารถอ่านไฟล์ได้: JSON ไม่ถูกต้อง"
@@ -2006,7 +2001,7 @@ msgid "Courses"
 msgstr "คอร์สเรียน"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:448
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:580
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:461
 #, fuzzy
 msgid "Create"
 msgstr "สร้าง"
@@ -2031,7 +2026,7 @@ msgstr "สร้างบัญชี"
 msgid "Create an account to triage your inbox"
 msgstr "สร้างบัญชีเพื่อจัดการกล่องขาเข้าของคุณ"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:442
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:467
 #, fuzzy
 msgid "Create Folder"
 msgstr "สร้างโฟลเดอร์"
@@ -2066,7 +2061,7 @@ msgstr "กำลังสร้าง…"
 #: ../../apps/mobile/src/components/RerouteSheet.tsx:45
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:107
 #: ../../apps/site/src/components/demo/demo-seed.ts:33
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1756
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1783
 #, fuzzy
 msgid "Current"
 msgstr "ปัจจุบัน"
@@ -2138,9 +2133,9 @@ msgstr "เวิร์กสเปซฟรีเริ่มต้น"
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:198
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:271
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:272
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:599
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:610
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:706
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:626
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:637
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:733
 #, fuzzy
 msgid "Delete"
 msgstr "ลบ"
@@ -2208,7 +2203,7 @@ msgstr "กำลังลบ..."
 
 #: ../../apps/mobile/app/(app)/account.tsx:166
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:143
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:561
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:586
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:56
 #, fuzzy
 msgid "Deleting…"
@@ -2230,7 +2225,7 @@ msgid "Describe your folders"
 msgstr "อธิบายโฟลเดอร์ของคุณ"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:289
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:464
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:489
 #, fuzzy
 msgid "Description"
 msgstr "คำอธิบาย"
@@ -2432,7 +2427,7 @@ msgid "Draft failed · tap to retry"
 msgstr "สร้างฉบับร่างไม่สำเร็จ · แตะเพื่อลองอีกครั้ง"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:345
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:373
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:389
 #, fuzzy
 msgid "Draft generation failed. Try again."
 msgstr "สร้างฉบับร่างไม่สำเร็จ โปรดลองอีกครั้ง"
@@ -2450,7 +2445,7 @@ msgid "Draft shared"
 msgstr "แชร์ฉบับร่างแล้ว"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:342
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:487
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:512
 #, fuzzy
 msgid "Draft style guidance"
 msgstr "แนวทางรูปแบบฉบับร่าง"
@@ -2484,13 +2479,13 @@ msgstr "ผู้ค้าอีคอมเมิร์ซ"
 msgid "e.g. Invoices"
 msgstr "เช่น ใบแจ้งหนี้"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:472
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:497
 #, fuzzy
 msgid "e.g. Invoices, receipts, payment confirmations, and billing questions from clients and vendors."
 msgstr "เช่น ใบแจ้งหนี้, ใบเสร็จรับเงิน, การยืนยันการชำระเงิน และคำถามเกี่ยวกับการเรียกเก็บเงินจากลูกค้าและผู้ขาย"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:350
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:493
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:518
 #, fuzzy
 msgid "e.g. Reply formally. Keep responses under 3 sentences."
 msgstr "เช่น ตอบกลับอย่างเป็นทางการ เขียนตอบกลับไม่เกิน 3 ประโยค"
@@ -2505,7 +2500,7 @@ msgstr "ก่อนหน้านี้"
 msgid "Edit folder"
 msgstr "แก้ไขโฟลเดอร์"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:442
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:467
 #, fuzzy
 msgid "Edit Folder"
 msgstr "แก้ไขโฟลเดอร์"
@@ -2514,7 +2509,7 @@ msgstr "แก้ไขโฟลเดอร์"
 msgid "Edit inbox"
 msgstr "แก้ไขกล่องขาเข้า"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:654
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:681
 #, fuzzy
 msgid "Edit Path"
 msgstr "แก้ไขเส้นทาง"
@@ -2623,6 +2618,11 @@ msgstr "การลงทะเบียน, ค่าเล่าเรีย�
 #~ msgid "Enrollment, tuition fees, housing applications, and official campus administration."
 #~ msgstr "การลงทะเบียน, ค่าเล่าเรียน, การสมัครที่พัก และการบริหารจัดการวิทยาเขตอย่างเป็นทางการ"
 
+#. placeholder {0}: minNodeNameLength(name)
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:444
+msgid "Enter a folder name (at least {0} characters)."
+msgstr "ป้อนชื่อโฟลเดอร์ (อย่างน้อย {0} ตัวอักษร)"
+
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:71
 #, fuzzy
 msgid "Enter a valid email address"
@@ -2711,13 +2711,13 @@ msgstr "สิ่งที่ไม่ได้จัดอยู่ในโฟ
 msgid "Expenses"
 msgstr "ค่าใช้จ่าย"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1438
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1465
 #, fuzzy
 msgid "Export"
 msgstr "ส่งออก"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1413
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1421
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1440
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1448
 #, fuzzy
 msgid "Export plan"
 msgstr "แผนการส่งออก"
@@ -2736,22 +2736,22 @@ msgstr "หน่วยงานภายนอก, บริษัทนอก 
 msgid "Failed to apply"
 msgstr "นำไปใช้ไม่ได้"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1080
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1107
 #, fuzzy
 msgid "Failed to create folder"
 msgstr "สร้างโฟลเดอร์ไม่สำเร็จ"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1013
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1040
 #, fuzzy
 msgid "Failed to create path"
 msgstr "สร้างเส้นทางไม่สำเร็จ"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1151
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1178
 #, fuzzy
 msgid "Failed to delete folder"
 msgstr "ลบโฟลเดอร์ไม่สำเร็จ"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1168
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1195
 #, fuzzy
 msgid "Failed to delete path"
 msgstr "ลบเส้นทางไม่สำเร็จ"
@@ -2761,12 +2761,12 @@ msgstr "ลบเส้นทางไม่สำเร็จ"
 msgid "Failed to load status"
 msgstr "โหลดสถานะไม่สำเร็จ"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1209
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1236
 #, fuzzy
 msgid "Failed to redo"
 msgstr "ทำซ้ำไม่สำเร็จ"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:980
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1007
 #, fuzzy
 msgid "Failed to save position"
 msgstr "บันทึกตำแหน่งไม่สำเร็จ"
@@ -2776,17 +2776,17 @@ msgstr "บันทึกตำแหน่งไม่สำเร็จ"
 msgid "Failed to start generation"
 msgstr "เริ่มต้นการสร้างไม่สำเร็จ"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1190
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1217
 #, fuzzy
 msgid "Failed to undo"
 msgstr "เลิกทำไม่สำเร็จ"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1112
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1139
 #, fuzzy
 msgid "Failed to update folder"
 msgstr "อัปเดตโฟลเดอร์ไม่สำเร็จ"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1134
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1161
 #, fuzzy
 msgid "Failed to update path"
 msgstr "อัปเดตเส้นทางไม่สำเร็จ"
@@ -3121,7 +3121,7 @@ msgstr "สร้างแผนจากกล่องจดหมายขอ
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:324
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:146
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:351
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:250
 #: ../ui/src/emails/ThreadPreview.tsx:253
 #, fuzzy
 msgid "Generate draft reply"
@@ -3133,7 +3133,7 @@ msgstr "สร้างฉบับร่างตอบกลับ"
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:60
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:207
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:251
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1575
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1602
 #, fuzzy
 msgid "Generate from inbox"
 msgstr "สร้างจากกล่องจดหมาย"
@@ -3328,11 +3328,7 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "ฝ่าบาท,\n"
-"\n"
-"รายงานที่ฝ่าบาททรงขอจะถูกจัดเตรียมให้เสร็จสิ้นก่อนการประชุมสภา ข้าพระบาทจะให้เหล่านักจารึกรวบรวมบัญชีของดินแดนทางตะวันออกและส่งล่วงหน้าไปกับผู้ส่งสารที่รวดเร็ว\n"
-"\n"
-"ด้วยไมตรี,"
+msgstr "ฝ่าบาท,\n\nรายงานที่ฝ่าบาททรงขอจะถูกจัดเตรียมให้เสร็จสิ้นก่อนการประชุมสภา ข้าพระบาทจะให้เหล่านักจารึกรวบรวมบัญชีของดินแดนทางตะวันออกและส่งล่วงหน้าไปกับผู้ส่งสารที่รวดเร็ว\n\nด้วยไมตรี,"
 
 #: ../../apps/site/src/components/support/SupportContent.tsx:77
 msgid "Guides and answers to common questions"
@@ -3478,22 +3474,22 @@ msgstr "หากมีปัญหาในการใช้งาน หร�
 msgid "Ignored"
 msgstr "ไม่สนใจ"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1463
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1490
 #, fuzzy
 msgid "Import"
 msgstr "นำเข้า"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1313
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1340
 #, fuzzy
 msgid "Import failed"
 msgstr "นำเข้าล้มเหลว"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1446
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1473
 #, fuzzy
 msgid "Import plan"
 msgstr "นำเข้าแผน"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1441
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1468
 #, fuzzy
 msgid "Import plan (replaces current)"
 msgstr "นำเข้าแผน (แทนที่แผนปัจจุบัน)"
@@ -3523,7 +3519,7 @@ msgstr "สำคัญ"
 #: ../../apps/site/src/components/demo/demo-seed.ts:28
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:151
 #: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:127
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:515
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:540
 #: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:57
 #, fuzzy
 msgid "Inbox"
@@ -3647,12 +3643,12 @@ msgid "Invalid or missing reset link."
 msgstr "ลิงก์รีเซ็ตไม่ถูกต้องหรือไม่มีอยู่"
 
 #. placeholder {0}: validation.error
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1262
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1289
 #, fuzzy
 msgid "Invalid taxonomy file: {0}"
 msgstr "ไฟล์ Taxonomy ไม่ถูกต้อง: {0}"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1256
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1283
 #, fuzzy
 msgid "Invalid taxonomy file: {detail}"
 msgstr "ไฟล์ Taxonomy ไม่ถูกต้อง: {detail}"
@@ -3850,7 +3846,7 @@ msgstr "ผู้สนใจ"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:200
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:209
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:545
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:570
 #, fuzzy
 msgid "Leave unsorted"
 msgstr "ปล่อยไว้โดยไม่จัดเรียง"
@@ -3893,7 +3889,7 @@ msgstr "จดหมายจากฟาโรห์ทางใต้และ
 msgid "Light"
 msgstr "สว่าง"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:477
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:502
 #, fuzzy
 msgid "List the kinds of emails that belong here: senders, topics, keywords. Aim for a full sentence."
 msgstr "ระบุประเภทอีเมลที่ควรอยู่ในหมวดหมู่นี้: ผู้ส่ง, หัวข้อ, คีย์เวิร์ด ควรระบุให้เป็นประโยคที่สมบูรณ์"
@@ -4005,8 +4001,8 @@ msgstr "ทำเครื่องหมายว่าเสร็จสิ้
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:225
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:244
 #: ../../apps/mobile/src/components/ThreadRow.tsx:58
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:262
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:268
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:288
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:294
 #: ../ui/src/emails/ThreadPreview.tsx:126
 #: ../ui/src/emails/ThreadPreview.tsx:130
 #: ../ui/src/emails/ThreadRow.tsx:150
@@ -4175,7 +4171,7 @@ msgid "Most popular"
 msgstr "ยอดนิยม"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:387
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:539
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:564
 #, fuzzy
 msgid "Move them to"
 msgstr "ย้ายไปที่"
@@ -4213,7 +4209,7 @@ msgstr "ในอีกไม่กี่วันข้างหน้า ก�
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:235
 #: ../../apps/mobile/app/(app)/account.tsx:131
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:272
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:451
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:476
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:15
 #, fuzzy
 msgid "Name"
@@ -4323,7 +4319,7 @@ msgid "No drafts remaining"
 msgstr "ไม่มีฉบับร่างเหลืออยู่"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:329
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:356
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:372
 #: ../ui/src/emails/SuggestedDraftCard.tsx:97
 #, fuzzy
 msgid "No drafts remaining · resets {quotaResetDate}"
@@ -4334,6 +4330,7 @@ msgstr "ไม่มีฉบับร่างเหลืออยู่ · �
 msgid "No drafts remaining · resets {resetDate}"
 msgstr "ไม่มีฉบับร่างเหลืออยู่ · รีเซ็ตในวันที่ {resetDate}"
 
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:361
 #: ../ui/src/emails/SuggestedDraftCard.tsx:76
 #, fuzzy
 msgid "No drafts remaining this month"
@@ -4463,7 +4460,7 @@ msgstr "ไม่มี"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:190
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:205
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:512
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:537
 #, fuzzy
 msgid "None (not connected)"
 msgstr "ไม่มี (ไม่ได้เชื่อมต่อ)"
@@ -4606,7 +4603,7 @@ msgstr "การดำเนินงาน"
 msgid "Optional. Applied when generating draft replies for this folder."
 msgstr "ไม่บังคับ ใช้เมื่อสร้างฉบับร่างตอบกลับสำหรับโฟลเดอร์นี้"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:498
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:523
 #, fuzzy
 msgid "Optional. Applied when generating draft replies for threads in this folder."
 msgstr "ไม่บังคับ ใช้เมื่อสร้างร่างอีเมลตอบกลับสำหรับการสนทนาในโฟลเดอร์นี้"
@@ -4653,8 +4650,8 @@ msgid "Paid or upgraded workspace"
 msgstr "เวิร์กสเปซแบบชำระเงินหรืออัปเกรดแล้ว"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:322
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:506
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:663
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:531
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:690
 #, fuzzy
 msgid "Parent"
 msgstr "หลัก"
@@ -4857,7 +4854,7 @@ msgid "Plan"
 msgstr "แผน"
 
 #. “Plan” here is the email-sorting taxonomy, not a billing or subscription plan.
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1380
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1407
 #, fuzzy
 msgid "Plan is view-only. Only workspace admins can edit it."
 msgstr "แผนเป็นแบบอ่านอย่างเดียว เฉพาะผู้ดูแลระบบของเวิร์กสเปซเท่านั้นที่แก้ไขได้"
@@ -5143,7 +5140,7 @@ msgstr "ได้ลองใช้ไปเมื่อเร็ว ๆ นี�
 msgid "Recently attempted. Try again later."
 msgstr "ได้ลองใช้ไปเมื่อเร็ว ๆ นี้ โปรดลองอีกครั้งในภายหลัง"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1760
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1787
 msgid "Recommended for your inbox"
 msgstr "แนะนำสำหรับกล่องจดหมายของคุณ"
 
@@ -5213,7 +5210,7 @@ msgstr "การสรรหา"
 msgid "Redirecting…"
 msgstr "กำลังเปลี่ยนเส้นทาง…"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1401
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1428
 #, fuzzy
 msgid "Redo"
 msgstr "ทำซ้ำ"
@@ -5267,8 +5264,8 @@ msgstr "นำ {email} ออกจากบัญชีดำ"
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:225
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:243
 #: ../../apps/mobile/src/components/ThreadRow.tsx:57
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:262
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:268
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:288
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:294
 #: ../ui/src/emails/ThreadPreview.tsx:126
 #: ../ui/src/emails/ThreadPreview.tsx:130
 #: ../ui/src/emails/ThreadRow.tsx:149
@@ -5333,7 +5330,7 @@ msgstr "เปลี่ยนแผน"
 #~ msgid "Replace taxonomy"
 #~ msgstr "แทนที่การจัดประเภท"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1697
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1724
 #, fuzzy
 msgid "Replace with a template"
 msgstr "แทนที่ด้วยเทมเพลต"
@@ -5450,7 +5447,7 @@ msgstr "แหล่งข้อมูล"
 #: ../../apps/extension/src/App.tsx:114
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:347
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:345
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:379
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:395
 #, fuzzy
 msgid "Retry"
 msgstr "ลองอีกครั้ง"
@@ -5489,11 +5486,7 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "ริบ-ฮัดดา,\n"
-"\n"
-"เราเข้าใจดี มีการสั่งธัญพืชเพิ่มเติมจากคลังทางใต้ และจะมาถึงก่อนเทศกาลเก็บเกี่ยว โปรดอดทนรอจนกว่าจะถึงเวลานั้น\n"
-"\n"
-"ขอให้สบายดี,"
+msgstr "ริบ-ฮัดดา,\n\nเราเข้าใจดี มีการสั่งธัญพืชเพิ่มเติมจากคลังทางใต้ และจะมาถึงก่อนเทศกาลเก็บเกี่ยว โปรดอดทนรอจนกว่าจะถึงเวลานั้น\n\nขอให้สบายดี,"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -5526,8 +5519,8 @@ msgstr "เท่ากับรายเดือน"
 #: ../../apps/mobile/src/components/EditNameSheet.tsx:66
 #: ../../apps/mobile/src/components/RenameWorkspaceSheet.tsx:74
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:450
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:580
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:694
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:461
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:721
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:29
 #, fuzzy
 msgid "Save"
@@ -5574,8 +5567,8 @@ msgid "Saving..."
 msgstr "กำลังบันทึก..."
 
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:76
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:580
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:694
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:461
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:721
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:29
 #, fuzzy
 msgid "Saving…"
@@ -6013,12 +6006,12 @@ msgid "Start free"
 msgstr "เริ่มต้นฟรี"
 
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:52
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1698
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1725
 #, fuzzy
 msgid "Start from a template"
 msgstr "เริ่มต้นจากเทมเพลต"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1466
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1493
 #, fuzzy
 msgid "Start from a template (replaces current)"
 msgstr "เริ่มต้นจากเทมเพลต (แทนที่ปัจจุบัน)"
@@ -6250,7 +6243,7 @@ msgstr "ทีม"
 msgid "Template applied"
 msgstr "ใช้เทมเพลตแล้ว"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1490
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1517
 #, fuzzy
 msgid "Templates"
 msgstr "เทมเพลต"
@@ -6368,7 +6361,7 @@ msgstr "ผู้ร่วมงานเหล่านี้จะเสีย
 msgid "These settings control which inbox threads are imported. Trash is always excluded."
 msgstr "การตั้งค่าเหล่านี้ควบคุมว่าเธรดอีเมลใดจะถูกนำเข้า ถังขยะจะถูกยกเว้นเสมอ"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1372
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1399
 #, fuzzy
 msgid "This folder has child folders. Remove their Paths first, then delete it."
 msgstr "โฟลเดอร์นี้มีโฟลเดอร์ย่อย โปรดลบ Path ของโฟลเดอร์ย่อยเหล่านั้นก่อนจึงจะลบโฟลเดอร์นี้ได้"
@@ -6524,13 +6517,7 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "ถึง ท่านมหาราช ผู้เป็นดุจพี่น้องของข้า,\n"
-"\n"
-"สภาใหญ่จะมีการประชุมในช่วงต้นของฤดูเชมู ข้าขอให้ท่านเตรียมการบันทึกบัญชีฉบับสมบูรณ์ของดินแดนทางตะวันออก และส่งล่วงหน้ามากับผู้ส่งสารที่รวดเร็ว หากเป็นไปได้ ให้ส่งมาก่อนวันเดือนดับ\n"
-"\n"
-"พันธมิตรของเราแข็งแกร่ง ขอเราจงแสดงให้สภาเห็นว่ามันยังคงเป็นเช่นนั้น\n"
-"\n"
-"ทุชรัตตะ, มหาราชแห่งมิตันนี"
+msgstr "ถึง ท่านมหาราช ผู้เป็นดุจพี่น้องของข้า,\n\nสภาใหญ่จะมีการประชุมในช่วงต้นของฤดูเชมู ข้าขอให้ท่านเตรียมการบันทึกบัญชีฉบับสมบูรณ์ของดินแดนทางตะวันออก และส่งล่วงหน้ามากับผู้ส่งสารที่รวดเร็ว หากเป็นไปได้ ให้ส่งมาก่อนวันเดือนดับ\n\nพันธมิตรของเราแข็งแกร่ง ขอเราจงแสดงให้สภาเห็นว่ามันยังคงเป็นเช่นนั้น\n\nทุชรัตตะ, มหาราชแห่งมิตันนี"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:163
 #, fuzzy
@@ -6539,11 +6526,7 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "ถึง กรมการแต่งตั้งราชการ,\n"
-"\n"
-"เราได้รับใบสมัครจากโฮเรมเฮบแห่งธีบส์แล้ว และจะตรวจสอบประวัติของเขาก่อนวันเดือนดับครั้งต่อไป โปรดแจ้งให้เขาทราบว่าเราจะส่งข่าวไปในเวลาอันควร\n"
-"\n"
-"ตามพระบรมราชโองการ,"
+msgstr "ถึง กรมการแต่งตั้งราชการ,\n\nเราได้รับใบสมัครจากโฮเรมเฮบแห่งธีบส์แล้ว และจะตรวจสอบประวัติของเขาก่อนวันเดือนดับครั้งต่อไป โปรดแจ้งให้เขาทราบว่าเราจะส่งข่าวไปในเวลาอันควร\n\nตามพระบรมราชโองการ,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:278
 #, fuzzy
@@ -6554,13 +6537,7 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "ถึง ท่านมหาราช,\n"
-"\n"
-"หลายปีมาแล้วที่ราชวงศ์ของเราเป็นดุจพี่น้อง บัดนี้ข้าพเจ้าขอเสนอให้เราทำให้มิตรภาพนี้เป็นทางการ เพื่อประโยชน์ของทั้งสองประชาชาติของเรา: สนธิสัญญาคุ้มครองร่วมกันและเส้นทางการค้าที่ใช้ร่วมกัน\n"
-"\n"
-"ข้าพเจ้าเพียงขอให้ท่านรับฟังข้อเสนอของข้าพเจ้า โปรดส่งข่าวโดยผู้ส่งสารคนถัดไป และข้าพเจ้าจะส่งทูตของข้าพเจ้าไปทันที\n"
-"\n"
-"อาซีรู, ข้ารับใช้ของมหาราช, เจ้าแห่งอามูร์รู"
+msgstr "ถึง ท่านมหาราช,\n\nหลายปีมาแล้วที่ราชวงศ์ของเราเป็นดุจพี่น้อง บัดนี้ข้าพเจ้าขอเสนอให้เราทำให้มิตรภาพนี้เป็นทางการ เพื่อประโยชน์ของทั้งสองประชาชาติของเรา: สนธิสัญญาคุ้มครองร่วมกันและเส้นทางการค้าที่ใช้ร่วมกัน\n\nข้าพเจ้าเพียงขอให้ท่านรับฟังข้อเสนอของข้าพเจ้า โปรดส่งข่าวโดยผู้ส่งสารคนถัดไป และข้าพเจ้าจะส่งทูตของข้าพเจ้าไปทันที\n\nอาซีรู, ข้ารับใช้ของมหาราช, เจ้าแห่งอามูร์รู"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:391
 #, fuzzy
@@ -6569,11 +6546,7 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "ถึง ท่านมหาราช,\n"
-"\n"
-"การเดินทางของข้าพเจ้าจะพาข้าพเจ้าเข้าใกล้ดินดอนสามเหลี่ยมปากแม่น้ำในอีกไม่กี่วันข้างหน้า หากท่านมหาราชมีเวลาสักหนึ่งชั่วโมง ข้าพเจ้าจะยินดีเป็นอย่างยิ่งที่จะได้มีโอกาสพูดคุยกันต่อหน้า; มีหลายเรื่องที่พูดง่ายกว่าเขียน\n"
-"\n"
-"ข้ารับใช้ของท่าน, อับดี-เฮบา, ผู้ว่าการแห่งอูรูชาลิม"
+msgstr "ถึง ท่านมหาราช,\n\nการเดินทางของข้าพเจ้าจะพาข้าพเจ้าเข้าใกล้ดินดอนสามเหลี่ยมปากแม่น้ำในอีกไม่กี่วันข้างหน้า หากท่านมหาราชมีเวลาสักหนึ่งชั่วโมง ข้าพเจ้าจะยินดีเป็นอย่างยิ่งที่จะได้มีโอกาสพูดคุยกันต่อหน้า; มีหลายเรื่องที่พูดง่ายกว่าเขียน\n\nข้ารับใช้ของท่าน, อับดี-เฮบา, ผู้ว่าการแห่งอูรูชาลิม"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:153
 #, fuzzy
@@ -6582,11 +6555,7 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "ถึง ท่านมหาราช ผู้เป็นดุจพี่น้องของข้า,\n"
-"\n"
-"ข้าพเจ้าได้รับทราบพระดำรัสของท่านแล้ว ทองคำจะถูกส่งไปก่อนที่ผู้ส่งสารคนถัดไปจะออกเดินทาง เราให้ความสำคัญกับความผูกพันระหว่างราชวงศ์ของเรา และไม่ปรารถนาให้มันจืดจางลง\n"
-"\n"
-"ด้วยไมตรีจิต,"
+msgstr "ถึง ท่านมหาราช ผู้เป็นดุจพี่น้องของข้า,\n\nข้าพเจ้าได้รับทราบพระดำรัสของท่านแล้ว ทองคำจะถูกส่งไปก่อนที่ผู้ส่งสารคนถัดไปจะออกเดินทาง เราให้ความสำคัญกับความผูกพันระหว่างราชวงศ์ของเรา และไม่ปรารถนาให้มันจืดจางลง\n\nด้วยไมตรีจิต,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:239
 #, fuzzy
@@ -6597,13 +6566,7 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "ถึง ท่านมหาราช ผู้เป็นดุจพี่น้องของข้า,\n"
-"\n"
-"ข้าพเจ้าเขียนด้วยไมตรีจิต ดุจที่บิดาของเราได้เขียนไว้ก่อนหน้าเรา ทองคำงวดที่สามที่ตกลงกันตามสนธิสัญญาของเรายังไม่มาถึง ผู้ส่งสารสองคนได้ผ่านไปแล้ว แต่เราก็ยังคงรอคอย\n"
-"\n"
-"เราขอให้ท่านส่งมอบโดยไม่ล่าช้าอีกต่อไป ตามที่เหมาะสมกับความผูกพันระหว่างราชวงศ์ของเรา\n"
-"\n"
-"เบอร์นา-บูริอาชที่ 2, กษัตริย์แห่งบาบิโลน"
+msgstr "ถึง ท่านมหาราช ผู้เป็นดุจพี่น้องของข้า,\n\nข้าพเจ้าเขียนด้วยไมตรีจิต ดุจที่บิดาของเราได้เขียนไว้ก่อนหน้าเรา ทองคำงวดที่สามที่ตกลงกันตามสนธิสัญญาของเรายังไม่มาถึง ผู้ส่งสารสองคนได้ผ่านไปแล้ว แต่เราก็ยังคงรอคอย\n\nเราขอให้ท่านส่งมอบโดยไม่ล่าช้าอีกต่อไป ตามที่เหมาะสมกับความผูกพันระหว่างราชวงศ์ของเรา\n\nเบอร์นา-บูริอาชที่ 2, กษัตริย์แห่งบาบิโลน"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:352
 #, fuzzy
@@ -6614,13 +6577,7 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "ถึง ท่านมหาราช, นายของข้า, ดวงตะวันของข้า,\n"
-"\n"
-"ข้าวที่พระองค์ส่งมาเมื่อเดือนที่แล้วได้รับด้วยความกตัญญู และข้าพเจ้าได้สรรเสริญพระนามของพระองค์ต่อหน้าประชาชน แต่ข้าพเจ้าต้องเขียนอีกครั้ง: การจัดส่งครั้งที่สามยังไม่มาถึง และเมืองก็เริ่มกระสับกระส่าย\n"
-"\n"
-"ข้าพเจ้าได้เขียนไปเจ็ดครั้งแล้ว ข้าพเจ้าไม่ปรารถนาที่จะรบกวนพระองค์ แต่ข้าพเจ้าจะทำอะไรได้อีกเล่า?\n"
-"\n"
-"ข้ารับใช้ของพระองค์, ริบ-ฮัดดา, ผู้ว่าการแห่งบิบลอส"
+msgstr "ถึง ท่านมหาราช, นายของข้า, ดวงตะวันของข้า,\n\nข้าวที่พระองค์ส่งมาเมื่อเดือนที่แล้วได้รับด้วยความกตัญญู และข้าพเจ้าได้สรรเสริญพระนามของพระองค์ต่อหน้าประชาชน แต่ข้าพเจ้าต้องเขียนอีกครั้ง: การจัดส่งครั้งที่สามยังไม่มาถึง และเมืองก็เริ่มกระสับกระส่าย\n\nข้าพเจ้าได้เขียนไปเจ็ดครั้งแล้ว ข้าพเจ้าไม่ปรารถนาที่จะรบกวนพระองค์ แต่ข้าพเจ้าจะทำอะไรได้อีกเล่า?\n\nข้ารับใช้ของพระองค์, ริบ-ฮัดดา, ผู้ว่าการแห่งบิบลอส"
 
 #: ../../apps/site/src/components/landing/MailThreadMock.tsx:135
 msgid "To: You"
@@ -6717,7 +6674,7 @@ msgstr "ยังไม่จัดประเภท"
 
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:232
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:390
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1392
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1419
 #: ../ui/src/emails/MockEmailsPage.tsx:293
 #, fuzzy
 msgid "Undo"
@@ -6733,7 +6690,7 @@ msgstr "มหาวิทยาลัย"
 msgid "Unknown"
 msgstr "ไม่ทราบ"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1255
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1282
 #, fuzzy
 msgid "unknown error"
 msgstr "ข้อผิดพลาดที่ไม่รู้จัก"
@@ -6907,7 +6864,7 @@ msgstr "ใช้ \"สแกนกล่องจดหมายใหม่\" 
 msgid "Use a template"
 msgstr "ใช้เทมเพลต"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1806
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1833
 #, fuzzy
 msgid "Use template"
 msgstr "ใช้เทมเพลต"
@@ -7054,7 +7011,7 @@ msgstr "จะเกิดอะไรขึ้นกับอีเมลที
 msgid "What model does Amarnai use?"
 msgstr "Amarnai ใช้โมเดลอะไร?"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:521
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:546
 #, fuzzy
 msgid "Where this folder sits. Folders with no parent stay disconnected and are ignored until connected."
 msgstr "ตำแหน่งของโฟลเดอร์นี้ โฟลเดอร์ที่ไม่มีโฟลเดอร์แม่จะยังคงตัดการเชื่อมต่อและจะถูกละเว้นจนกว่าจะเชื่อมต่อ"
@@ -7148,7 +7105,7 @@ msgstr "รวมพื้นที่ทำงาน"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:339
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:168
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:367
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:383
 #: ../ui/src/emails/ThreadPreview.tsx:260
 #, fuzzy
 msgid "Writing draft reply…"

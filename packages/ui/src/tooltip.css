@@ -43,32 +43,33 @@
   animation: tooltip-in-right 0.12s ease-out;
 }
 
-/* Arrow caret */
+/* Arrow caret — overlaps the bubble by 1px so subpixel rounding of the
+   translate() positioning can't open a hairline gap between them. */
 .tooltip-bubble::after {
   content: "";
   position: absolute;
   border: 5px solid transparent;
 }
 .tooltip-bubble--top::after {
-  top: 100%;
+  top: calc(100% - 1px);
   left: 50%;
   transform: translateX(-50%);
   border-top-color: var(--accent-ink);
 }
 .tooltip-bubble--bottom::after {
-  bottom: 100%;
+  bottom: calc(100% - 1px);
   left: 50%;
   transform: translateX(-50%);
   border-bottom-color: var(--accent-ink);
 }
 .tooltip-bubble--left::after {
-  left: 100%;
+  left: calc(100% - 1px);
   top: 50%;
   transform: translateY(-50%);
   border-left-color: var(--accent-ink);
 }
 .tooltip-bubble--right::after {
-  right: 100%;
+  right: calc(100% - 1px);
   top: 50%;
   transform: translateY(-50%);
   border-right-color: var(--accent-ink);

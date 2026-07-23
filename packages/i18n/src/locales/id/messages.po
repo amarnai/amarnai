@@ -13,7 +13,7 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:516
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:541
 #, fuzzy
 msgid " (Inbox)"
 msgstr " (Kotak Masuk)"
@@ -140,7 +140,7 @@ msgstr "{blacklistCount, plural, one {# diblokir} other {# diblokir}}"
 #~ msgid "{by} assigned you: {subject}"
 #~ msgstr "{by} menugaskan Anda: {subject}"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:531
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:556
 #, fuzzy
 msgid "{classificationCount, plural, one {Deleting this folder will leave # thread unsorted.} other {Deleting this folder will leave # threads unsorted.}}"
 msgstr "{classificationCount, plural, one {Menghapus folder ini akan meninggalkan # thread tidak terurut.} other {Menghapus folder ini akan meninggalkan # thread tidak terurut.}}"
@@ -214,7 +214,7 @@ msgstr "Kotak Masuk {providerName}"
 
 #. placeholder {0}: draftQuota.limit
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:330
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:357
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:373
 #, fuzzy
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
 msgstr "{quotaRemaining} dari {0} tersisa · reset {quotaResetDate}"
@@ -224,7 +224,7 @@ msgstr "{quotaRemaining} dari {0} tersisa · reset {quotaResetDate}"
 msgid "{remaining} of {limit} remaining · resets {resetDate}"
 msgstr "{remaining} dari {limit} tersisa · reset {resetDate}"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1549
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1576
 #, fuzzy
 msgid "{routableCount} of {TAXONOMY_MIN_NON_ROOT_NODES} folders connected to your inbox. Routing requires at least {TAXONOMY_MIN_NON_ROOT_NODES}."
 msgstr "{routableCount} dari {TAXONOMY_MIN_NON_ROOT_NODES} folder terhubung ke kotak masuk Anda. Routing memerlukan setidaknya {TAXONOMY_MIN_NON_ROOT_NODES}."
@@ -288,7 +288,7 @@ msgstr "© 2026 Amarnai. Sumber terbuka di bawah AGPL-3.0."
 msgid "+ Add folder"
 msgstr "+ Tambah folder"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1390
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1417
 #, fuzzy
 msgid "+ Add Folder"
 msgstr "+ Tambah Folder"
@@ -520,9 +520,7 @@ msgstr "Lamaran baru telah diterima dari Horemheb dari Thebes untuk posisi Kepal
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "Lamaran baru telah diterima dari Horemheb dari Thebes untuk posisi Kepala Korespondensi.\n"
-"\n"
-"Lihat lamaran di Gedung Arsip."
+msgstr "Lamaran baru telah diterima dari Horemheb dari Thebes untuk posisi Kepala Korespondensi.\n\nLihat lamaran di Gedung Arsip."
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:387
 #, fuzzy
@@ -536,11 +534,7 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "Abdi-Heba,\n"
-"\n"
-"Saya akan berada di dekat Delta pada minggu yang sama. Mari kita bertemu di stasiun persinggahan pada hari kedua; saya bisa menyisihkan waktu pagi.\n"
-"\n"
-"Sampai jumpa,"
+msgstr "Abdi-Heba,\n\nSaya akan berada di dekat Delta pada minggu yang sama. Mari kita bertemu di stasiun persinggahan pada hari kedua; saya bisa menyisihkan waktu pagi.\n\nSampai jumpa,"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
@@ -607,7 +601,12 @@ msgstr "Pendapatan iklan, tip penggemar, dan laporan penghasilan kreator."
 msgid "Add"
 msgstr "Tambah"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1414
+#. placeholder {0}: minNodeDescriptionLength(description)
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:447
+msgid "Add a description (at least {0} characters) so the AI can sort accurately."
+msgstr "Tambahkan deskripsi (minimal {0} karakter) agar AI dapat mengurutkan dengan akurat."
+
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1441
 #, fuzzy
 msgid "Add at least 3 connected folders to export"
 msgstr "Tambahkan setidaknya 3 folder terhubung untuk ekspor"
@@ -1133,17 +1132,13 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "Aziru,\n"
-"\n"
-"Kata-kata persahabatan Anda telah kami terima dengan baik. Kami terbuka untuk mendengar lebih banyak tentang apa yang diusulkan oleh Wangsa Amurru. Kirimkan ketentuan Anda melalui kurir berikutnya.\n"
-"\n"
-"Dengan hormat,"
+msgstr "Aziru,\n\nKata-kata persahabatan Anda telah kami terima dengan baik. Kami terbuka untuk mendengar lebih banyak tentang apa yang diusulkan oleh Wangsa Amurru. Kirimkan ketentuan Anda melalui kurir berikutnya.\n\nDengan hormat,"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:219
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
 #: ../../apps/site/src/components/landing/MailThreadMock.tsx:66
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:25
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:240
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:266
 #: ../ui/src/emails/ThreadPreview.tsx:121
 #, fuzzy
 msgid "Back"
@@ -1154,7 +1149,7 @@ msgstr "Kembali"
 #~ msgstr "Kembali ke kotak masuk"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:215
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:235
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:261
 #: ../ui/src/emails/ThreadPreview.tsx:116
 #, fuzzy
 msgid "Back to list"
@@ -1250,7 +1245,7 @@ msgid "Browse emails easily through your folders. Generate draft replies and cop
 msgstr "Jelajahi email dengan mudah melalui folder Anda. Buat draf balasan dan salin ke kotak masuk Anda."
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:283
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1474
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1501
 #, fuzzy
 msgid "Browse templates"
 msgstr "Telusuri Template"
@@ -1350,11 +1345,11 @@ msgstr "Bisakah saya meng-hosting Amarnai sendiri?"
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:150
 #: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:107
 #: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:255
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:569
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:583
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:697
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1702
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1795
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:594
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:610
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:724
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1729
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1822
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:64
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:275
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:370
@@ -1439,7 +1434,7 @@ msgstr "Cek kotak masuk Anda"
 msgid "Checkout failed: {0}"
 msgstr "Pembayaran gagal: {0}"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:679
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:706
 #, fuzzy
 msgid "Child folder"
 msgstr "Subfolder"
@@ -1511,13 +1506,13 @@ msgstr "Klien"
 msgid "Close"
 msgstr "Tutup"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1613
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1640
 #, fuzzy
 msgid "Close panel"
 msgstr "Tutup Panel"
 
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:283
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:287
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:309
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:313
 #: ../ui/src/emails/ThreadPreview.tsx:147
 #: ../ui/src/emails/ThreadPreview.tsx:151
 #, fuzzy
@@ -1598,7 +1593,7 @@ msgstr "Konfirmasi Pembatalan"
 msgid "Confirm delete"
 msgstr "Konfirmasi penghapusan"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:561
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:586
 #, fuzzy
 msgid "Confirm Delete"
 msgstr "Konfirmasi Hapus"
@@ -1903,7 +1898,7 @@ msgstr "Tidak dapat memuat rencana."
 msgid "Could not open billing management."
 msgstr "Tidak dapat membuka manajemen penagihan."
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1298
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1325
 msgid "Could not prepare migration"
 msgstr "Tidak dapat menyiapkan migrasi"
 
@@ -1918,7 +1913,7 @@ msgstr "Tidak dapat mengantrekan pemindaian ulang. Silakan coba lagi."
 msgid "Could not reach the server. Please check your connection and try again."
 msgstr "Tidak dapat menjangkau server. Harap periksa koneksi Anda dan coba lagi."
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1248
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1275
 #, fuzzy
 msgid "Could not read file: invalid JSON."
 msgstr "Gagal membaca berkas: JSON tidak valid."
@@ -2006,7 +2001,7 @@ msgid "Courses"
 msgstr "Kursus"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:448
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:580
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:461
 #, fuzzy
 msgid "Create"
 msgstr "Buat"
@@ -2031,7 +2026,7 @@ msgstr "Buat akun"
 msgid "Create an account to triage your inbox"
 msgstr "Buat akun untuk memilah kotak masuk Anda"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:442
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:467
 #, fuzzy
 msgid "Create Folder"
 msgstr "Buat Folder"
@@ -2066,7 +2061,7 @@ msgstr "Membuat…"
 #: ../../apps/mobile/src/components/RerouteSheet.tsx:45
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:107
 #: ../../apps/site/src/components/demo/demo-seed.ts:33
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1756
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1783
 #, fuzzy
 msgid "Current"
 msgstr "Saat Ini"
@@ -2138,9 +2133,9 @@ msgstr "Ruang kerja gratis bawaan"
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:198
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:271
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:272
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:599
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:610
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:706
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:626
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:637
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:733
 #, fuzzy
 msgid "Delete"
 msgstr "Hapus"
@@ -2208,7 +2203,7 @@ msgstr "Menghapus..."
 
 #: ../../apps/mobile/app/(app)/account.tsx:166
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:143
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:561
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:586
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:56
 #, fuzzy
 msgid "Deleting…"
@@ -2230,7 +2225,7 @@ msgid "Describe your folders"
 msgstr "Deskripsikan folder Anda"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:289
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:464
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:489
 #, fuzzy
 msgid "Description"
 msgstr "Deskripsi"
@@ -2432,7 +2427,7 @@ msgid "Draft failed · tap to retry"
 msgstr "Draf gagal · ketuk untuk coba lagi"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:345
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:373
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:389
 #, fuzzy
 msgid "Draft generation failed. Try again."
 msgstr "Pembuatan draf gagal. Coba lagi."
@@ -2450,7 +2445,7 @@ msgid "Draft shared"
 msgstr "Draf dibagikan"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:342
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:487
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:512
 #, fuzzy
 msgid "Draft style guidance"
 msgstr "Panduan Gaya Draf"
@@ -2484,13 +2479,13 @@ msgstr "Penjual E-commerce"
 msgid "e.g. Invoices"
 msgstr "Contoh: Faktur"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:472
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:497
 #, fuzzy
 msgid "e.g. Invoices, receipts, payment confirmations, and billing questions from clients and vendors."
 msgstr "Contoh: Faktur, tanda terima, konfirmasi pembayaran, dan pertanyaan tagihan dari klien dan vendor."
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:350
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:493
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:518
 #, fuzzy
 msgid "e.g. Reply formally. Keep responses under 3 sentences."
 msgstr "Contoh: Balas secara formal. Jaga balasan di bawah 3 kalimat."
@@ -2505,7 +2500,7 @@ msgstr "Sebelumnya"
 msgid "Edit folder"
 msgstr "Edit folder"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:442
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:467
 #, fuzzy
 msgid "Edit Folder"
 msgstr "Edit Folder"
@@ -2514,7 +2509,7 @@ msgstr "Edit Folder"
 msgid "Edit inbox"
 msgstr "Edit kotak masuk"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:654
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:681
 #, fuzzy
 msgid "Edit Path"
 msgstr "Ubah Jalur"
@@ -2623,6 +2618,11 @@ msgstr "Pendaftaran, biaya kuliah, penempatan asrama, dan administrasi kampus re
 #~ msgid "Enrollment, tuition fees, housing applications, and official campus administration."
 #~ msgstr "Pendaftaran, biaya kuliah, permohonan akomodasi, dan administrasi kampus resmi."
 
+#. placeholder {0}: minNodeNameLength(name)
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:444
+msgid "Enter a folder name (at least {0} characters)."
+msgstr "Masukkan nama folder (minimal {0} karakter)."
+
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:71
 #, fuzzy
 msgid "Enter a valid email address"
@@ -2711,13 +2711,13 @@ msgstr "Semua yang tidak masuk ke folder bernama."
 msgid "Expenses"
 msgstr "Pengeluaran"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1438
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1465
 #, fuzzy
 msgid "Export"
 msgstr "Ekspor"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1413
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1421
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1440
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1448
 #, fuzzy
 msgid "Export plan"
 msgstr "Rencana ekspor"
@@ -2736,22 +2736,22 @@ msgstr "Agen eksternal, firma luar, dan mitra bisnis yang terlibat secara profes
 msgid "Failed to apply"
 msgstr "Gagal menerapkan"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1080
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1107
 #, fuzzy
 msgid "Failed to create folder"
 msgstr "Gagal membuat folder"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1013
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1040
 #, fuzzy
 msgid "Failed to create path"
 msgstr "Gagal membuat jalur"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1151
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1178
 #, fuzzy
 msgid "Failed to delete folder"
 msgstr "Gagal menghapus folder"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1168
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1195
 #, fuzzy
 msgid "Failed to delete path"
 msgstr "Gagal menghapus jalur"
@@ -2761,12 +2761,12 @@ msgstr "Gagal menghapus jalur"
 msgid "Failed to load status"
 msgstr "Gagal memuat status"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1209
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1236
 #, fuzzy
 msgid "Failed to redo"
 msgstr "Gagal mengulang"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:980
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1007
 #, fuzzy
 msgid "Failed to save position"
 msgstr "Gagal menyimpan posisi"
@@ -2776,17 +2776,17 @@ msgstr "Gagal menyimpan posisi"
 msgid "Failed to start generation"
 msgstr "Gagal memulai pembuatan"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1190
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1217
 #, fuzzy
 msgid "Failed to undo"
 msgstr "Gagal membatalkan"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1112
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1139
 #, fuzzy
 msgid "Failed to update folder"
 msgstr "Gagal memperbarui folder"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1134
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1161
 #, fuzzy
 msgid "Failed to update path"
 msgstr "Gagal memperbarui jalur"
@@ -3121,7 +3121,7 @@ msgstr "Hasilkan rencana dari kotak masuk Anda"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:324
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:146
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:351
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:250
 #: ../ui/src/emails/ThreadPreview.tsx:253
 #, fuzzy
 msgid "Generate draft reply"
@@ -3133,7 +3133,7 @@ msgstr "Hasilkan draf balasan"
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:60
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:207
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:251
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1575
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1602
 #, fuzzy
 msgid "Generate from inbox"
 msgstr "Hasilkan dari kotak masuk"
@@ -3328,11 +3328,7 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "Baginda Raja,\n"
-"\n"
-"Laporan yang Paduka minta akan disiapkan sebelum dewan bersidang. Hamba akan meminta juru tulis hamba menyusun catatan wilayah timur dan mengirimkannya terlebih dahulu dengan kurir cepat.\n"
-"\n"
-"Dalam persaudaraan,"
+msgstr "Baginda Raja,\n\nLaporan yang Paduka minta akan disiapkan sebelum dewan bersidang. Hamba akan meminta juru tulis hamba menyusun catatan wilayah timur dan mengirimkannya terlebih dahulu dengan kurir cepat.\n\nDalam persaudaraan,"
 
 #: ../../apps/site/src/components/support/SupportContent.tsx:77
 msgid "Guides and answers to common questions"
@@ -3478,22 +3474,22 @@ msgstr "Jika ada masalah atau pertanyaan, berikut cara menghubungi kami."
 msgid "Ignored"
 msgstr "Diabaikan"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1463
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1490
 #, fuzzy
 msgid "Import"
 msgstr "Impor"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1313
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1340
 #, fuzzy
 msgid "Import failed"
 msgstr "Impor gagal"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1446
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1473
 #, fuzzy
 msgid "Import plan"
 msgstr "Impor rencana"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1441
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1468
 #, fuzzy
 msgid "Import plan (replaces current)"
 msgstr "Impor rencana (menggantikan yang ada)"
@@ -3523,7 +3519,7 @@ msgstr "Penting"
 #: ../../apps/site/src/components/demo/demo-seed.ts:28
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:151
 #: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:127
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:515
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:540
 #: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:57
 #, fuzzy
 msgid "Inbox"
@@ -3647,12 +3643,12 @@ msgid "Invalid or missing reset link."
 msgstr "Tautan reset tidak valid atau tidak ada."
 
 #. placeholder {0}: validation.error
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1262
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1289
 #, fuzzy
 msgid "Invalid taxonomy file: {0}"
 msgstr "File taksonomi tidak valid: {0}"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1256
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1283
 #, fuzzy
 msgid "Invalid taxonomy file: {detail}"
 msgstr "File taksonomi tidak valid: {detail}"
@@ -3850,7 +3846,7 @@ msgstr "Prospek"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:200
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:209
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:545
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:570
 #, fuzzy
 msgid "Leave unsorted"
 msgstr "Jangan disortir"
@@ -3893,7 +3889,7 @@ msgstr "Surat sampai kepada saya dari Firaun di selatan dan Het di utara, dan sa
 msgid "Light"
 msgstr "Terang"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:477
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:502
 #, fuzzy
 msgid "List the kinds of emails that belong here: senders, topics, keywords. Aim for a full sentence."
 msgstr "Daftarkan jenis-jenis email yang termasuk di sini: pengirim, topik, kata kunci. Buat dalam satu kalimat lengkap."
@@ -4005,8 +4001,8 @@ msgstr "Tandai sebagai selesai"
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:225
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:244
 #: ../../apps/mobile/src/components/ThreadRow.tsx:58
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:262
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:268
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:288
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:294
 #: ../ui/src/emails/ThreadPreview.tsx:126
 #: ../ui/src/emails/ThreadPreview.tsx:130
 #: ../ui/src/emails/ThreadRow.tsx:150
@@ -4175,7 +4171,7 @@ msgid "Most popular"
 msgstr "Terpopuler"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:387
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:539
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:564
 #, fuzzy
 msgid "Move them to"
 msgstr "Pindahkan ke"
@@ -4213,7 +4209,7 @@ msgstr "Perjalanan saya akan membawa saya dekat dengan Delta dalam beberapa hari
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:235
 #: ../../apps/mobile/app/(app)/account.tsx:131
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:272
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:451
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:476
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:15
 #, fuzzy
 msgid "Name"
@@ -4323,7 +4319,7 @@ msgid "No drafts remaining"
 msgstr "Tidak ada draf tersisa"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:329
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:356
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:372
 #: ../ui/src/emails/SuggestedDraftCard.tsx:97
 #, fuzzy
 msgid "No drafts remaining · resets {quotaResetDate}"
@@ -4334,6 +4330,7 @@ msgstr "Tidak ada draf tersisa · reset {quotaResetDate}"
 msgid "No drafts remaining · resets {resetDate}"
 msgstr "Tidak ada draf tersisa · reset {resetDate}"
 
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:361
 #: ../ui/src/emails/SuggestedDraftCard.tsx:76
 #, fuzzy
 msgid "No drafts remaining this month"
@@ -4463,7 +4460,7 @@ msgstr "Tidak Ada"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:190
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:205
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:512
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:537
 #, fuzzy
 msgid "None (not connected)"
 msgstr "Tidak Ada (tidak terhubung)"
@@ -4606,7 +4603,7 @@ msgstr "Operasional"
 msgid "Optional. Applied when generating draft replies for this folder."
 msgstr "Opsional. Diterapkan saat membuat draf balasan untuk folder ini."
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:498
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:523
 #, fuzzy
 msgid "Optional. Applied when generating draft replies for threads in this folder."
 msgstr "Opsional. Diterapkan saat membuat draf balasan untuk utas di folder ini."
@@ -4653,8 +4650,8 @@ msgid "Paid or upgraded workspace"
 msgstr "Ruang kerja Berbayar atau Di-upgrade"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:322
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:506
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:663
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:531
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:690
 #, fuzzy
 msgid "Parent"
 msgstr "Induk"
@@ -4857,7 +4854,7 @@ msgid "Plan"
 msgstr "Paket"
 
 #. “Plan” here is the email-sorting taxonomy, not a billing or subscription plan.
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1380
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1407
 #, fuzzy
 msgid "Plan is view-only. Only workspace admins can edit it."
 msgstr "Paket hanya dapat dilihat. Hanya admin ruang kerja yang dapat mengeditnya."
@@ -5143,7 +5140,7 @@ msgstr "Baru saja dicoba. Tersedia lagi {when}."
 msgid "Recently attempted. Try again later."
 msgstr "Baru saja dicoba. Coba lagi nanti."
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1760
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1787
 msgid "Recommended for your inbox"
 msgstr "Rekomendasi untuk kotak masuk Anda"
 
@@ -5213,7 +5210,7 @@ msgstr "Perekrutan"
 msgid "Redirecting…"
 msgstr "Mengalihkan…"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1401
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1428
 #, fuzzy
 msgid "Redo"
 msgstr "Ulangi"
@@ -5267,8 +5264,8 @@ msgstr "Hapus {email} dari daftar hitam"
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:225
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:243
 #: ../../apps/mobile/src/components/ThreadRow.tsx:57
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:262
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:268
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:288
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:294
 #: ../ui/src/emails/ThreadPreview.tsx:126
 #: ../ui/src/emails/ThreadPreview.tsx:130
 #: ../ui/src/emails/ThreadRow.tsx:149
@@ -5333,7 +5330,7 @@ msgstr "Ganti paket"
 #~ msgid "Replace taxonomy"
 #~ msgstr "Ganti taksonomi"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1697
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1724
 #, fuzzy
 msgid "Replace with a template"
 msgstr "Ganti dengan templat"
@@ -5450,7 +5447,7 @@ msgstr "Sumber Daya"
 #: ../../apps/extension/src/App.tsx:114
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:347
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:345
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:379
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:395
 #, fuzzy
 msgid "Retry"
 msgstr "Coba lagi"
@@ -5489,11 +5486,7 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "Rib-Hadda,\n"
-"\n"
-"Kami mengerti. Gandum tambahan telah dipesan dari gudang selatan dan akan tiba sebelum festival panen. Kami mohon kesabaran Anda hingga saat itu.\n"
-"\n"
-"Semoga sehat selalu,"
+msgstr "Rib-Hadda,\n\nKami mengerti. Gandum tambahan telah dipesan dari gudang selatan dan akan tiba sebelum festival panen. Kami mohon kesabaran Anda hingga saat itu.\n\nSemoga sehat selalu,"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -5526,8 +5519,8 @@ msgstr "Sama seperti bulanan"
 #: ../../apps/mobile/src/components/EditNameSheet.tsx:66
 #: ../../apps/mobile/src/components/RenameWorkspaceSheet.tsx:74
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:450
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:580
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:694
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:461
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:721
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:29
 #, fuzzy
 msgid "Save"
@@ -5574,8 +5567,8 @@ msgid "Saving..."
 msgstr "Menyimpan..."
 
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:76
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:580
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:694
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:461
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:721
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:29
 #, fuzzy
 msgid "Saving…"
@@ -6013,12 +6006,12 @@ msgid "Start free"
 msgstr "Mulai gratis"
 
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:52
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1698
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1725
 #, fuzzy
 msgid "Start from a template"
 msgstr "Mulai dari templat"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1466
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1493
 #, fuzzy
 msgid "Start from a template (replaces current)"
 msgstr "Mulai dari templat (mengganti yang sekarang)"
@@ -6250,7 +6243,7 @@ msgstr "Tim"
 msgid "Template applied"
 msgstr "Templat diterapkan"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1490
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1517
 #, fuzzy
 msgid "Templates"
 msgstr "Template"
@@ -6368,7 +6361,7 @@ msgstr "Kolaborator ini akan kehilangan akses pada {0}:"
 msgid "These settings control which inbox threads are imported. Trash is always excluded."
 msgstr "Pengaturan ini mengontrol utas kotak masuk mana yang diimpor. Sampah selalu dikecualikan."
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1372
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1399
 #, fuzzy
 msgid "This folder has child folders. Remove their Paths first, then delete it."
 msgstr "Folder ini memiliki folder anak. Hapus jalur-jalurnya terlebih dahulu, lalu hapus folder ini."
@@ -6524,13 +6517,7 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "Untuk saudaraku, Raja Agung,\n"
-"\n"
-"Dewan agung bersidang pada awal Shemu. Aku meminta Anda menyiapkan laporan lengkap wilayah timur dan mengirimkannya dengan kurir cepat, sebelum bulan baru jika memungkinkan.\n"
-"\n"
-"Aliansi kita kuat. Marilah kita tunjukkan kepada dewan bahwa itu tetap demikian.\n"
-"\n"
-"Tushratta, Raja Agung Mitanni"
+msgstr "Untuk saudaraku, Raja Agung,\n\nDewan agung bersidang pada awal Shemu. Aku meminta Anda menyiapkan laporan lengkap wilayah timur dan mengirimkannya dengan kurir cepat, sebelum bulan baru jika memungkinkan.\n\nAliansi kita kuat. Marilah kita tunjukkan kepada dewan bahwa itu tetap demikian.\n\nTushratta, Raja Agung Mitanni"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:163
 #, fuzzy
@@ -6539,11 +6526,7 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "Kepada Biro Penunjukan Kerajaan,\n"
-"\n"
-"Kami telah menerima permohonan dari Horemheb dari Thebes dan akan meninjau catatan rekam jejaknya sebelum bulan baru berikutnya. Harap beri tahu dia bahwa kami akan mengirimkan kabar pada waktunya.\n"
-"\n"
-"Berdasarkan keputusan kerajaan,"
+msgstr "Kepada Biro Penunjukan Kerajaan,\n\nKami telah menerima permohonan dari Horemheb dari Thebes dan akan meninjau catatan rekam jejaknya sebelum bulan baru berikutnya. Harap beri tahu dia bahwa kami akan mengirimkan kabar pada waktunya.\n\nBerdasarkan keputusan kerajaan,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:278
 #, fuzzy
@@ -6554,13 +6537,7 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "Kepada Raja Agung,\n"
-"\n"
-"Selama bertahun-tahun rumah kita telah seperti saudara. Saya menulis sekarang untuk mengusulkan agar kita meresmikan persahabatan ini demi kepentingan kedua bangsa kita: sebuah pakta perlindungan timbal balik dan rute bersama.\n"
-"\n"
-"Saya hanya meminta Anda mendengar syarat-syarat saya. Kirimkan pesan melalui kurir berikutnya dan saya akan segera mengirimkan utusan saya.\n"
-"\n"
-"Aziru, hamba Raja Agung, penguasa Amurru"
+msgstr "Kepada Raja Agung,\n\nSelama bertahun-tahun rumah kita telah seperti saudara. Saya menulis sekarang untuk mengusulkan agar kita meresmikan persahabatan ini demi kepentingan kedua bangsa kita: sebuah pakta perlindungan timbal balik dan rute bersama.\n\nSaya hanya meminta Anda mendengar syarat-syarat saya. Kirimkan pesan melalui kurir berikutnya dan saya akan segera mengirimkan utusan saya.\n\nAziru, hamba Raja Agung, penguasa Amurru"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:391
 #, fuzzy
@@ -6569,11 +6546,7 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "Kepada Raja Agung,\n"
-"\n"
-"Perjalanan saya membawa saya dekat Delta dalam beberapa hari mendatang. Jika Raja Agung memiliki waktu luang, saya akan menyambut kesempatan untuk berbicara tatap muka; ada hal-hal yang lebih mudah diucapkan daripada ditulis.\n"
-"\n"
-"Hambamu, Abdi-Heba, gubernur Urushalim"
+msgstr "Kepada Raja Agung,\n\nPerjalanan saya membawa saya dekat Delta dalam beberapa hari mendatang. Jika Raja Agung memiliki waktu luang, saya akan menyambut kesempatan untuk berbicara tatap muka; ada hal-hal yang lebih mudah diucapkan daripada ditulis.\n\nHambamu, Abdi-Heba, gubernur Urushalim"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:153
 #, fuzzy
@@ -6582,11 +6555,7 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "Kepada Raja Agung, saudaraku,\n"
-"\n"
-"Saya telah mendengar perkataan Anda. Emas akan dikirimkan sebelum utusan berikutnya berangkat. Kami menghargai ikatan antara rumah kita dan tidak ingin itu mendingin.\n"
-"\n"
-"Dalam persahabatan,"
+msgstr "Kepada Raja Agung, saudaraku,\n\nSaya telah mendengar perkataan Anda. Emas akan dikirimkan sebelum utusan berikutnya berangkat. Kami menghargai ikatan antara rumah kita dan tidak ingin itu mendingin.\n\nDalam persahabatan,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:239
 #, fuzzy
@@ -6597,13 +6566,7 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "Kepada Raja Agung, saudaraku,\n"
-"\n"
-"Saya menulis dalam persahabatan, sebagaimana para ayah kita menulis sebelumnya. Pengiriman emas ketiga yang disepakati dalam perjanjian kita belum tiba. Dua utusan telah berlalu dan kami masih menunggu.\n"
-"\n"
-"Kami meminta Anda mengirimkannya tanpa penundaan lebih lanjut, sebagaimana layaknya ikatan antara rumah kita.\n"
-"\n"
-"Burna-Buriash II, Raja Babilonia"
+msgstr "Kepada Raja Agung, saudaraku,\n\nSaya menulis dalam persahabatan, sebagaimana para ayah kita menulis sebelumnya. Pengiriman emas ketiga yang disepakati dalam perjanjian kita belum tiba. Dua utusan telah berlalu dan kami masih menunggu.\n\nKami meminta Anda mengirimkannya tanpa penundaan lebih lanjut, sebagaimana layaknya ikatan antara rumah kita.\n\nBurna-Buriash II, Raja Babilonia"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:352
 #, fuzzy
@@ -6614,13 +6577,7 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "Kepada Raja Agung, Tuanku, Matahariku,\n"
-"\n"
-"Gandum yang Anda kirim bulan lalu telah diterima dengan syukur dan saya memuji nama Anda di hadapan rakyat. Namun saya harus menulis lagi: pengiriman ketiga belum tiba dan kota menjadi gelisah.\n"
-"\n"
-"Saya telah menulis tujuh kali. Saya tidak ingin menyusahkan Anda, namun apa lagi yang bisa saya lakukan?\n"
-"\n"
-"Hambamu, Rib-Hadda, gubernur Byblos"
+msgstr "Kepada Raja Agung, Tuanku, Matahariku,\n\nGandum yang Anda kirim bulan lalu telah diterima dengan syukur dan saya memuji nama Anda di hadapan rakyat. Namun saya harus menulis lagi: pengiriman ketiga belum tiba dan kota menjadi gelisah.\n\nSaya telah menulis tujuh kali. Saya tidak ingin menyusahkan Anda, namun apa lagi yang bisa saya lakukan?\n\nHambamu, Rib-Hadda, gubernur Byblos"
 
 #: ../../apps/site/src/components/landing/MailThreadMock.tsx:135
 msgid "To: You"
@@ -6718,7 +6675,7 @@ msgstr "Tidak Terklasifikasi"
 
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:232
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:390
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1392
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1419
 #: ../ui/src/emails/MockEmailsPage.tsx:293
 #, fuzzy
 msgid "Undo"
@@ -6734,7 +6691,7 @@ msgstr "Universitas"
 msgid "Unknown"
 msgstr "Tidak diketahui"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1255
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1282
 #, fuzzy
 msgid "unknown error"
 msgstr "kesalahan tidak dikenal"
@@ -6908,7 +6865,7 @@ msgstr "Gunakan \"Pindai ulang kotak masuk\" setelah mengubah filter untuk mener
 msgid "Use a template"
 msgstr "Gunakan template"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1806
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1833
 #, fuzzy
 msgid "Use template"
 msgstr "Gunakan template"
@@ -7055,7 +7012,7 @@ msgstr "Apa yang terjadi pada percakapan yang Amarnai ragukan?"
 msgid "What model does Amarnai use?"
 msgstr "Model apa yang Amarnai gunakan?"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:521
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:546
 #, fuzzy
 msgid "Where this folder sits. Folders with no parent stay disconnected and are ignored until connected."
 msgstr "Lokasi folder ini. Folder tanpa induk tetap terputus dan diabaikan hingga terhubung."
@@ -7149,7 +7106,7 @@ msgstr "Workspace disertakan"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:339
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:168
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:367
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:383
 #: ../ui/src/emails/ThreadPreview.tsx:260
 #, fuzzy
 msgid "Writing draft reply…"
