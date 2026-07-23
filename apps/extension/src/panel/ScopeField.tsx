@@ -45,7 +45,16 @@ export function ScopeField({
 }: Props) {
   const { _, i18n } = useLingui();
   const [anchor, setAnchor] = useState<HTMLElement | null>(null);
-  const [searchOpen, setSearchOpen] = useState(false);
+  // Seed the search box open when a query is already active. The panel unmounts
+  // this whole field while the preview pane covers the list (≤640px layout), so
+  // opening a thread from search results and closing it back remounts the field
+  // fresh. The query itself lives in the triage view-model and survives that
+  // round-trip, so without this the list would come back still filtered while
+  // the search bar reads as closed — a filtered "X threads" count with no
+  // visible search to explain it. Restoring the open state keeps the search
+  // bar and its results together, matching how backing out of a message in
+  // Gmail returns you to your search.
+  const [searchOpen, setSearchOpen] = useState(() => query.trim().length > 0);
   const fieldRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const open = anchor != null;

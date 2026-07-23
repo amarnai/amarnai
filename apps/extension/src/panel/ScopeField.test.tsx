@@ -75,14 +75,28 @@ describe("ScopeField", () => {
     expect(screen.getByRole("option", { name: /Finance/ }).textContent).toContain("212");
   });
 
-  it("expands the search input and relays typing, then clears on close", () => {
+  it("expands the search input from the search button and relays typing", () => {
     const onQueryChange = vi.fn();
-    renderField({ kind: "queue", id: "all" }, vi.fn(), { onQueryChange, query: "stripe" });
+    renderField({ kind: "queue", id: "all" }, vi.fn(), { onQueryChange });
     fireEvent.click(screen.getByRole("button", { name: "Search threads" }));
     const input = screen.getByPlaceholderText("Search threads");
     fireEvent.change(input, { target: { value: "invoice" } });
     expect(onQueryChange).toHaveBeenCalledWith("invoice");
-    // Closing a non-empty search resets the query.
+  });
+
+  it("opens the search box directly when a query is already active", () => {
+    // The panel unmounts this field while a thread preview covers the list, but
+    // the query survives in the view-model. On remount (closing the preview) the
+    // search bar must reappear rather than read as closed over a still-filtered
+    // list — otherwise the "X threads" count looks wrong with no visible search.
+    renderField({ kind: "queue", id: "all" }, vi.fn(), { query: "stripe" });
+    expect((screen.getByPlaceholderText("Search threads") as HTMLInputElement).value).toBe("stripe");
+    expect(screen.queryByRole("button", { name: "Switch folder view" })).toBeNull();
+  });
+
+  it("clears the query when a seeded search is closed", () => {
+    const onQueryChange = vi.fn();
+    renderField({ kind: "queue", id: "all" }, vi.fn(), { onQueryChange, query: "stripe" });
     fireEvent.click(screen.getByRole("button", { name: "Close search" }));
     expect(onQueryChange).toHaveBeenCalledWith("");
   });

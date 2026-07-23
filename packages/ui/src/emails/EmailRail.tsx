@@ -20,6 +20,10 @@ export interface EmailRailProps {
   // Server-computed per-queue totals; when omitted, QueueList falls back to
   // counting the loaded threads.
   queueCounts?: Partial<Record<QueueId, number>> | undefined;
+  // Server-computed per-folder thread totals (whole workspace), keyed by
+  // taxonomy node id. When omitted, the tree falls back to counting the loaded
+  // threads — which are unread-only and page-limited, so effectively empty.
+  folderCounts?: Map<string, number> | undefined;
   syncInfo: SyncInfo;
   onSelectActive: (a: ActiveSelection) => void;
   onRailQueryChange: (q: string) => void;
@@ -34,6 +38,7 @@ export function EmailRail({
   railQuery,
   openFolderIds,
   queueCounts,
+  folderCounts,
   syncInfo,
   onSelectActive,
   onRailQueryChange,
@@ -42,7 +47,9 @@ export function EmailRail({
 }: EmailRailProps) {
   const { i18n } = useLingui();
 
-  const folderCounts = buildFolderCounts(threads, folders);
+  // Prefer the server-computed whole-workspace totals; fall back to the loaded
+  // threads only when they are not supplied.
+  const treeCounts = folderCounts ?? buildFolderCounts(threads, folders);
   const activeId = active.kind === "folder" ? active.id : null;
 
   return (
@@ -115,7 +122,7 @@ export function EmailRail({
 
           <FolderTree
             folders={folders}
-            counts={folderCounts}
+            counts={treeCounts}
             activeId={activeId}
             openIds={openFolderIds}
             query={railQuery}

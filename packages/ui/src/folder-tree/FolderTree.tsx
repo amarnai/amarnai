@@ -70,7 +70,6 @@ export function FolderTree({
                 "em-tree-item",
                 isActive ? "active" : "",
                 root.ignored ? "ignored" : "",
-                count > 0 ? "has-unread" : "",
                 isOpen && children.length ? "open" : "",
               ]
                 .filter(Boolean)
@@ -117,7 +116,6 @@ export function FolderTree({
                         "em-tree-item",
                         cIsActive ? "active" : "",
                         child.ignored ? "ignored" : "",
-                        cCount > 0 ? "has-unread" : "",
                       ]
                         .filter(Boolean)
                         .join(" ")}

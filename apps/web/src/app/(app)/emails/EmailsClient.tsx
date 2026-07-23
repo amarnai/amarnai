@@ -81,6 +81,19 @@ export function EmailsClient({
   // there is no longer an initialThreads→state sync here — that would merge the
   // server-rendered default view back over the active one.
 
+  // Per-folder thread totals for the rail's folder tree, server-computed so they
+  // reflect the whole workspace rather than the loaded page. Keyed by taxonomy
+  // node id. (The loaded-threads count is unread-only and thus always empty.)
+  const [folderCounts, setFolderCounts] = useState<Map<string, number>>(new Map());
+  const loadFolderCounts = useCallback(() => {
+    api
+      .folderCounts(workspaceId)
+      .then((r) => setFolderCounts(new Map(r.counts.map((c) => [c.nodeId, c.count]))))
+      .catch(() => {});
+  }, [workspaceId]);
+
+  useEffect(() => { loadFolderCounts(); }, [loadFolderCounts]);
+
   // Connect to the workspace SSE stream; refresh the thread list immediately
   // when the sync-inbox worker finishes, without a full page reload.
   useEffect(() => {
@@ -90,12 +103,14 @@ export function EmailsClient({
     es.addEventListener("synced", () => {
       triage.refresh();
       // Backfill emits this per batch and on completion, so re-pull the sync
-      // status to keep the backfill card's counts/progress current.
+      // status to keep the backfill card's counts/progress current, and the
+      // folder totals so newly-sorted threads bump their folder's count.
       api.syncStatus(workspaceId).then(setSyncStatus).catch(() => {});
+      loadFolderCounts();
     });
     es.onerror = () => {};
     return () => es.close();
-  }, [workspaceId]);
+  }, [workspaceId, loadFolderCounts]);
 
   const [mobileView, setMobileView] = useState<"list" | "preview">(
     initialSelectedId ? "preview" : "list"
@@ -292,6 +307,7 @@ export function EmailsClient({
         railQuery={railQuery}
         openFolderIds={openFolderIds}
         queueCounts={triage.queueCounts}
+        folderCounts={folderCounts}
         syncInfo={syncInfo}
         onSelectActive={pushActive}
         onRailQueryChange={setRailQuery}
