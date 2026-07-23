@@ -2,6 +2,20 @@
  * root before routing is attempted. */
 export const TAXONOMY_MIN_NON_ROOT_NODES = 3;
 
+/**
+ * Maximum number of non-root taxonomy nodes (folders) a single workspace may
+ * contain. A flat, plan-independent cap: folder count is structural, so it must
+ * not shift when a user upgrades or downgrades (that would force a downgrade to
+ * discard folders, or an upgrade to restructure the taxonomy). It bounds
+ * routing-quality degradation as folders overlap, keeps the /plan graph
+ * human-manageable, and gives the hosted offering a per-workspace worst case for
+ * embedding storage. This counts every non-root node (including the catch-all
+ * and any disconnected folders), not just routable ones, since all of them
+ * consume resources. Distinct from MAX_TAXONOMY_TRANSFER_NODES (300), which is
+ * only a file-size parse bound on imports, not a product limit.
+ */
+export const MAX_TAXONOMY_NON_ROOT_NODES = 100;
+
 /** Minimal node shape needed to evaluate taxonomy routability. `isCatchAll` is
  * required (not optional) so every caller is forced to select it — the catch-all
  * is excluded from the routable count, and omitting it would silently overcount. */

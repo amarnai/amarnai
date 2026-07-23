@@ -1,4 +1,5 @@
 import { vi, describe, it, expect, beforeEach } from "vitest";
+import { MAX_TAXONOMY_NON_ROOT_NODES } from "@amarnai/shared";
 import { authed } from "./helpers.js";
 
 vi.mock("@amarnai/db", () => ({
@@ -13,6 +14,7 @@ vi.mock("@amarnai/db", () => ({
     },
     taxonomyNode: {
       findUnique: vi.fn(),
+      count: vi.fn(),
       create: vi.fn(),
       update: vi.fn(),
       updateMany: vi.fn(),
@@ -97,6 +99,8 @@ beforeEach(() => {
   vi.mocked(db.taxonomyEdge.findMany).mockResolvedValue([] as never);
   vi.mocked(db.taxonomyNode.updateMany).mockResolvedValue({ count: 0 } as never);
   vi.mocked(db.$queryRaw).mockResolvedValue([] as never);
+  // Default: well under the folder cap, so create tests proceed. Cap tests override.
+  vi.mocked(db.taxonomyNode.count).mockResolvedValue(0 as never);
 });
 
 // ─── GET ─────────────────────────────────────────────────────────────────────
@@ -290,6 +294,42 @@ describe("POST /workspaces/:workspaceId/taxonomy-nodes", () => {
       description: VALID_DESCRIPTION,
     });
     expect(res.status).toBe(404);
+  });
+
+  it("returns 422 and creates nothing when the folder cap is reached", async () => {
+    vi.mocked(db.workspace.findUnique).mockResolvedValue({ id: WS_ID } as never);
+    vi.mocked(db.taxonomyNode.count).mockResolvedValue(
+      MAX_TAXONOMY_NON_ROOT_NODES as never
+    );
+
+    const res = await post(`/workspaces/${WS_ID}/taxonomy-nodes`, {
+      name: "Clients",
+      description: VALID_DESCRIPTION,
+    });
+    expect(res.status).toBe(422);
+    const body = await res.json() as { error: string };
+    expect(body.error).toMatch(/folder limit reached/i);
+    expect(vi.mocked(db.taxonomyNode.create)).not.toHaveBeenCalled();
+    // Only non-root nodes count toward the cap.
+    expect(vi.mocked(db.taxonomyNode.count)).toHaveBeenCalledWith(
+      expect.objectContaining({ where: { workspaceId: WS_ID, isRoot: false } })
+    );
+  });
+
+  it("creates a node when exactly one under the cap", async () => {
+    const created = { ...baseNode, name: "Clients", description: VALID_DESCRIPTION };
+    vi.mocked(db.workspace.findUnique).mockResolvedValue({ id: WS_ID } as never);
+    vi.mocked(db.taxonomyNode.count).mockResolvedValue(
+      (MAX_TAXONOMY_NON_ROOT_NODES - 1) as never
+    );
+    vi.mocked(db.taxonomyNode.create).mockResolvedValue(created as never);
+
+    const res = await post(`/workspaces/${WS_ID}/taxonomy-nodes`, {
+      name: "Clients",
+      description: VALID_DESCRIPTION,
+    });
+    expect(res.status).toBe(201);
+    expect(vi.mocked(db.taxonomyNode.create)).toHaveBeenCalledTimes(1);
   });
 
 });

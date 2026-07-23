@@ -66,7 +66,26 @@ export function ThreadPreview({
   const [draft, setDraft] = useState<Draft | null>(null);
   const [draftQuota, setDraftQuota] = useState<{ used: number; limit: number; resetsAt: string } | null>(null);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const bodiesRef = useRef<Record<string, string | null> | null>(null);
+  type InlineImageDescriptor = { attachmentId: string; mimeType: string; filename: string | null };
+  type BodiesResult = {
+    bodies: Record<string, string | null>;
+    inlineImages: Record<string, InlineImageDescriptor[]>;
+  };
+  const bodiesRef = useRef<BodiesResult | null>(null);
+
+  // Map the API's inline-image descriptors for one message to renderable
+  // <img> entries (same-origin proxy URLs). Undefined when there are none.
+  function inlineImagesFor(
+    messageId: string,
+    inlineImages: Record<string, InlineImageDescriptor[]>
+  ): Array<{ url: string; filename: string | null }> | undefined {
+    const descriptors = inlineImages[messageId];
+    if (!descriptors || descriptors.length === 0) return undefined;
+    return descriptors.map((d) => ({
+      url: api.inlineImageUrl(workspaceId, thread.id, messageId, d.attachmentId),
+      filename: d.filename,
+    }));
+  }
 
   function clearPoll() {
     if (pollRef.current) {
@@ -125,7 +144,7 @@ export function ThreadPreview({
     api.emailThread(workspaceId, thread.id).then((detail) => {
       setReasoning(detail.latestClassification?.explanation ?? null);
       setDecisionSource(detail.latestClassification?.decisionSource ?? null);
-      const bodies = bodiesRef.current;
+      const loaded = bodiesRef.current;
       setMessages(
         detail.messages.map((m) => ({
           id: m.id,
@@ -133,15 +152,28 @@ export function ThreadPreview({
           fromEmail: m.senderEmail,
           time: new Date(m.receivedAt),
           snippet: m.snippet,
-          bodyText: (bodies !== null && m.id in bodies ? bodies[m.id] : null) ?? m.bodyText,
+          bodyText:
+            (loaded !== null && m.id in loaded.bodies ? loaded.bodies[m.id] : null) ?? m.bodyText,
           attachments: m.attachments,
+          inlineImages: loaded !== null ? inlineImagesFor(m.id, loaded.inlineImages) : undefined,
         }))
       );
     }).catch(() => {});
 
-    api.threadBodies(workspaceId, thread.id).then(({ bodies }) => {
-      bodiesRef.current = bodies;
-      setMessages((prev) => prev.map((m) => (m.id in bodies ? { ...m, bodyText: bodies[m.id] ?? null } : m)));
+    api.threadBodies(workspaceId, thread.id).then(({ bodies, inlineImages }) => {
+      const loaded: BodiesResult = { bodies, inlineImages: inlineImages ?? {} };
+      bodiesRef.current = loaded;
+      setMessages((prev) =>
+        prev.map((m) =>
+          m.id in bodies
+            ? {
+                ...m,
+                bodyText: bodies[m.id] ?? null,
+                inlineImages: inlineImagesFor(m.id, loaded.inlineImages),
+              }
+            : m
+        )
+      );
       setBodyLoaded(true);
     }).catch(() => {
       setBodyLoaded(true);
@@ -224,6 +256,32 @@ export function ThreadPreview({
   const quotaExhausted = draftQuota !== null && draftQuota.used >= draftQuota.limit;
   const quotaResetDate = draftQuota ? formatQuotaResetDate(draftQuota.resetsAt) : null;
   const quotaRemaining = draftQuota ? draftQuota.limit - draftQuota.used : 0;
+
+  // Shared between the enabled and quota-exhausted (tooltip-wrapped) branches so
+  // the button markup lives in one place. When exhausted, pointerEvents:none lets
+  // hover reach the wrapping span so the Tooltip can explain why it is disabled.
+  const draftCtaButton = (
+    <button
+      type="button"
+      className="em-draft-cta"
+      onClick={() => handleGenerateDraft()}
+      disabled={quotaExhausted}
+      style={quotaExhausted ? { pointerEvents: "none" } : undefined}
+    >
+      <span className="em-draft-cta-glyph" aria-hidden>
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <path
+            d="M2 9.5h8M2 7l5-5 1.5 1.5-5 5H2V7zM7 3l1.5-1.5 1.5 1.5-1.5 1.5L7 3z"
+            stroke="currentColor"
+            strokeWidth="1.1"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </span>
+      <Trans>Generate draft reply</Trans>
+    </button>
+  );
 
   return (
     <div className="em-preview-col">
@@ -331,25 +389,15 @@ export function ThreadPreview({
 
         {canDraft && draftState === "idle" && (
           <div className="em-draft-cta-wrap">
-            <button
-              type="button"
-              className="em-draft-cta"
-              onClick={() => handleGenerateDraft()}
-              disabled={quotaExhausted}
-            >
-              <span className="em-draft-cta-glyph" aria-hidden>
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                  <path
-                    d="M2 9.5h8M2 7l5-5 1.5 1.5-5 5H2V7zM7 3l1.5-1.5 1.5 1.5-1.5 1.5L7 3z"
-                    stroke="currentColor"
-                    strokeWidth="1.1"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </span>
-              <Trans>Generate draft reply</Trans>
-            </button>
+            {quotaExhausted ? (
+              <Tooltip content={_(msg`No drafts remaining this month`)}>
+                <span style={{ display: "inline-block", cursor: "not-allowed" }}>
+                  {draftCtaButton}
+                </span>
+              </Tooltip>
+            ) : (
+              draftCtaButton
+            )}
             {draftQuota !== null && (
               <p className={`em-draft-quota${quotaExhausted ? " em-draft-quota--exhausted" : ""}`}>
                 {quotaExhausted

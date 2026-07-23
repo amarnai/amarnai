@@ -6,6 +6,7 @@ import {
   MAX_TAXONOMY_TRANSFER_NODES,
   MAX_TAXONOMY_TRANSFER_EDGES,
 } from "./taxonomy-transfer.js";
+import { MAX_TAXONOMY_NON_ROOT_NODES } from "../taxonomy-routable.js";
 import type { TaxonomyTransferFile } from "./taxonomy-transfer.js";
 import type { TaxonomyNode, TaxonomyEdge } from "./taxonomy.js";
 
@@ -146,6 +147,42 @@ describe("validateTaxonomyTransfer", () => {
   it("accepts a valid file", () => {
     const result = validateTaxonomyTransfer(makeFile());
     expect(result.ok).toBe(true);
+  });
+
+  // Builds a structurally valid file with `regularCount` routable folders plus
+  // the mandatory catch-all, so the only variable under test is the folder count.
+  // Total non-root nodes = regularCount + 1 (the catch-all).
+  const capFile = (regularCount: number) =>
+    makeFile({
+      nodes: [
+        { ref: "root", name: "Inbox", description: null, instructions: null,
+          draftPrompt: null, examples: [], isRoot: true, positionX: 0, positionY: 0 },
+        ...Array.from({ length: regularCount }, (_, i) => ({
+          ref: `n${i}`, name: `Folder ${i}`, description: VALID_DESCRIPTION,
+          instructions: null, draftPrompt: null, examples: [], isRoot: false,
+          positionX: 100, positionY: i * 10,
+        })),
+        { ref: "catch", name: "Updates / Other",
+          description: "Automated notifications and bulk mail that doesn't fit another folder.",
+          instructions: null, draftPrompt: null, examples: [], isRoot: false,
+          isCatchAll: true, positionX: 100, positionY: 10_000 },
+      ],
+      edges: [
+        ...Array.from({ length: regularCount }, (_, i) => ({ sourceRef: "root", targetRef: `n${i}` })),
+        { sourceRef: "root", targetRef: "catch" },
+      ],
+    });
+
+  it("rejects more non-root folders than the product cap", () => {
+    // regularCount + catch-all = MAX + 1 non-root nodes.
+    const result = validateTaxonomyTransfer(capFile(MAX_TAXONOMY_NON_ROOT_NODES));
+    expect(result.ok).toBe(false);
+    expect(result.ok === false && result.error).toMatch(/too many folders/i);
+  });
+
+  it("accepts exactly the product cap of non-root folders", () => {
+    // regularCount + catch-all = MAX non-root nodes.
+    expect(validateTaxonomyTransfer(capFile(MAX_TAXONOMY_NON_ROOT_NODES - 1)).ok).toBe(true);
   });
 
   it("rejects duplicate refs", () => {

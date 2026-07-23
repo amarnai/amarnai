@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { z } from "zod";
 import { db } from "@amarnai/db";
 import { findDescendants } from "@amarnai/ai";
+import { MAX_TAXONOMY_NON_ROOT_NODES } from "@amarnai/shared";
 import { bumpTaxonomyChangedAt } from "../services/taxonomy-changed.js";
 
 const workspaceParam = z.object({ workspaceId: z.string().min(1) });
@@ -164,6 +165,21 @@ taxonomyNodes.post("/workspaces/:workspaceId/taxonomy-nodes", async (c) => {
   });
   if (!workspace) {
     return c.json({ error: "Workspace not found" }, 404);
+  }
+
+  // Flat, plan-independent folder cap. Counts every non-root node (catch-all and
+  // disconnected folders included), matching import enforcement. Existing
+  // over-cap workspaces are not touched; they simply cannot add more.
+  const nonRootCount = await db.taxonomyNode.count({
+    where: { workspaceId, isRoot: false },
+  });
+  if (nonRootCount >= MAX_TAXONOMY_NON_ROOT_NODES) {
+    return c.json(
+      {
+        error: `Folder limit reached (${MAX_TAXONOMY_NON_ROOT_NODES}). Delete a folder to add another.`,
+      },
+      422
+    );
   }
 
   const node = await db.taxonomyNode.create({

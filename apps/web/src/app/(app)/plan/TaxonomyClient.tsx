@@ -62,6 +62,7 @@ import { TaxonomyNodeCardBase, readEdgeColors } from "@amarnai/ui/taxonomy";
 import { Tooltip } from "@amarnai/ui";
 import {
   TAXONOMY_MIN_NON_ROOT_NODES,
+  MAX_TAXONOMY_NON_ROOT_NODES,
   countRoutableNonRootNodes,
   isTaxonomyRoutable,
   serializeTaxonomy,
@@ -437,6 +438,31 @@ function NodeForm({
     }
   }
 
+  // Why the Create/Save button is disabled, for a hover/focus tooltip. Only the
+  // validation cases get a reason; `submitting` is transient and already shown as
+  // the button label ("Saving…"), so it needs no explanation.
+  const submitDisabledReason = !nameValid
+    ? _(msg`Enter a folder name (at least ${minNodeNameLength(name)} characters).`)
+    : !descriptionValid
+      ? _(
+          msg`Add a description (at least ${minNodeDescriptionLength(description)} characters) so the AI can sort accurately.`
+        )
+      : null;
+
+  // Shared between the plain and tooltip-wrapped branches so the markup lives in
+  // one place. When a validation reason applies, pointerEvents:none lets hover
+  // reach the wrapping span so the Tooltip can show.
+  const submitButton = (
+    <button
+      className="btn-primary"
+      type="submit"
+      disabled={submitting || !nameValid || !descriptionValid}
+      style={submitDisabledReason != null ? { pointerEvents: "none" } : undefined}
+    >
+      {submitting ? <Trans>Saving…</Trans> : node ? <Trans>Save</Trans> : <Trans>Create</Trans>}
+    </button>
+  );
+
   return (
     <div className="panel-inner">
       <h2>{node ? <Trans>Edit Folder</Trans> : <Trans>Create Folder</Trans>}</h2>
@@ -572,13 +598,15 @@ function NodeForm({
           </div>
         ) : (
           <div className="form-actions">
-            <button
-              className="btn-primary"
-              type="submit"
-              disabled={submitting || !nameValid || !descriptionValid}
-            >
-              {submitting ? <Trans>Saving…</Trans> : node ? <Trans>Save</Trans> : <Trans>Create</Trans>}
-            </button>
+            {submitDisabledReason != null ? (
+              <Tooltip content={submitDisabledReason}>
+                <span style={{ display: "inline-block", cursor: "not-allowed" }}>
+                  {submitButton}
+                </span>
+              </Tooltip>
+            ) : (
+              submitButton
+            )}
             <button className="btn-ghost" type="button" onClick={onCancel}>
               <Trans>Cancel</Trans>
             </button>
@@ -1341,6 +1369,10 @@ function TaxonomyCanvasInner({
     rfEdges.map((e) => ({ sourceNodeId: e.source, targetNodeId: e.target })),
   );
 
+  // Flat folder cap (mirrors server enforcement). Counts every non-root node.
+  const atFolderCap =
+    dbNodes.filter((n) => !n.isRoot).length >= MAX_TAXONOMY_NON_ROOT_NODES;
+
   const currentTemplateIdx = localizedTemplates.findIndex((t) =>
     matchesTemplate(dbNodes, dbEdges, t),
   );
@@ -1383,12 +1415,30 @@ function TaxonomyCanvasInner({
         </div>
       ) : (
         <div className="taxonomy-toolbar">
-          <button
-            className="btn-primary"
-            onClick={() => openPanel({ type: "create-node" })}
-          >
-            <Trans>+ Add Folder</Trans>
-          </button>
+          {atFolderCap ? (
+            <Tooltip
+              content={_(
+                msg`Folder limit reached (${MAX_TAXONOMY_NON_ROOT_NODES}). Delete a folder to add another.`
+              )}
+            >
+              <span style={{ display: "inline-block", cursor: "not-allowed" }}>
+                <button
+                  className="btn-primary"
+                  disabled
+                  style={{ pointerEvents: "none" }}
+                >
+                  <Trans>+ Add Folder</Trans>
+                </button>
+              </span>
+            </Tooltip>
+          ) : (
+            <button
+              className="btn-primary"
+              onClick={() => openPanel({ type: "create-node" })}
+            >
+              <Trans>+ Add Folder</Trans>
+            </button>
+          )}
           <Tooltip content={_(msg`Undo`)}>
             <button
               className="btn-ghost"

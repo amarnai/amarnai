@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { nodeNameSchema, nodeDescriptionSchema } from "./taxonomy.js";
 import type { TaxonomyNode, TaxonomyEdge } from "./taxonomy.js";
+import { MAX_TAXONOMY_NON_ROOT_NODES } from "../taxonomy-routable.js";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -145,6 +146,16 @@ export function validateTaxonomyTransfer(
     return { ok: false, error: "Taxonomy must have exactly one root folder. Found multiple." };
   }
   const rootRef = rootNodes[0]!.ref;
+
+  // Enforce the product folder cap (distinct from the schema's 300-node parse
+  // bound). Counts every non-root node, matching interactive create enforcement.
+  const nonRootCount = nodes.length - rootNodes.length;
+  if (nonRootCount > MAX_TAXONOMY_NON_ROOT_NODES) {
+    return {
+      ok: false,
+      error: `Taxonomy has too many folders (${nonRootCount}). The maximum is ${MAX_TAXONOMY_NON_ROOT_NODES}.`,
+    };
+  }
 
   // Validate non-root node fields with strict input rules
   for (const node of nodes) {
