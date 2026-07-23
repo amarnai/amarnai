@@ -1,17 +1,20 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
 import type { ApiClient, FilterCounts, SyncStatus } from "@amarnai/api-client";
 import type { ActiveSelection, FolderItem, ThreadItem } from "@amarnai/ui/emails";
-import { ThreadList, ReroutePopover } from "@amarnai/ui/emails";
-import { useEmailTriage, resolveInboxStatus, mapFolders } from "@amarnai/core/emails";
+import { ThreadList, ReroutePopover, AssigneePicker } from "@amarnai/ui/emails";
+import { useEmailTriage, resolveInboxStatus, mapFolders, mapMembers } from "@amarnai/core/emails";
+import { getCollaboratorLimit } from "@amarnai/shared";
+import { useSession } from "../auth/session";
 import { useWorkspaceEvents } from "../realtime/useWorkspaceEvents";
 import { ThreadPreviewPane } from "./ThreadPreviewPane";
 import { StatusSlot, NoPlanEmptyState } from "./StatusSlot";
 import { PanelHeader } from "./WorkspacePicker";
 import { ScopeField } from "./ScopeField";
 import { openThreadInMail } from "../gmail/openInGmail";
+import { WEB_APP_URL } from "../config";
 
 type Props = {
   api: ApiClient;
@@ -50,6 +53,15 @@ export function EmailsPanel({
   const { _ } = useLingui();
   const now = useRef(new Date()).current;
   const [syncStatus, setSyncStatus] = useState<SyncStatus | null>(initialSyncStatus);
+  // Assignee candidates come from the session's workspace list (the workspaces
+  // payload carries every member incl. the owner), so no members endpoint is
+  // needed. refreshWorkspaces re-pulls them when the panel regains focus, the
+  // same way the taxonomy is re-pulled after edits in a web tab.
+  const { workspaces, refreshWorkspaces } = useSession();
+  const members = useMemo(
+    () => mapMembers(workspaces.find((w) => w.id === workspaceId)?.members ?? []),
+    [workspaces, workspaceId],
+  );
   // Per-folder thread totals for the ScopeField picker rows, server-computed so
   // they reflect the whole workspace rather than the loaded page. Keyed by
   // taxonomy node id.
@@ -95,6 +107,7 @@ export function EmailsPanel({
       if (document.visibilityState === "visible") {
         reloadTaxonomy();
         loadFolderCounts();
+        void refreshWorkspaces();
       }
     }
     window.addEventListener("focus", onFocus);
@@ -103,7 +116,7 @@ export function EmailsPanel({
       window.removeEventListener("focus", onFocus);
       document.removeEventListener("visibilitychange", onFocus);
     };
-  }, [reloadTaxonomy, loadFolderCounts]);
+  }, [reloadTaxonomy, loadFolderCounts, refreshWorkspaces]);
 
   // Refresh the list + sync status + taxonomy + folder counts when the worker
   // finishes a sync.
@@ -116,6 +129,8 @@ export function EmailsPanel({
 
   const [mobileView, setMobileView] = useState<"list" | "preview">("list");
   const [rerouteAnchor, setRerouteAnchor] = useState<HTMLElement | null>(null);
+  const [assignAnchor, setAssignAnchor] = useState<HTMLElement | null>(null);
+  const [assignThreadId, setAssignThreadId] = useState<string | null>(null);
   // Plan-cap notice is dismissible for the session; kept here (not in StatusSlot)
   // so it survives the list <-> preview view switch and feeds the resolver.
   const [planCapDismissed, setPlanCapDismissed] = useState(false);
@@ -177,6 +192,37 @@ export function EmailsPanel({
     triage.commitReroute(folderId);
   }
 
+  // Assign is always offered, even in a single-member workspace, so solo users
+  // discover the feature; the picker then surfaces an "Add members" CTA when
+  // there is no one else to hand a thread to. Gate the upgrade badge on the
+  // seat limit, not the plan name, so self-hosted deployments that allow
+  // collaborators never see an upgrade prompt. (Mirrors apps/web EmailsClient.)
+  const canAssign = true;
+  const inviteNeedsUpgrade =
+    syncStatus != null && getCollaboratorLimit(syncStatus.workspacePlan) === 0;
+
+  function openAssignFor(threadId: string, anchor: HTMLElement) {
+    setAssignThreadId(threadId);
+    setAssignAnchor(anchor);
+  }
+
+  function closeAssign() {
+    setAssignAnchor(null);
+    setAssignThreadId(null);
+  }
+
+  function commitAssign(userId: string | null) {
+    if (assignThreadId) {
+      const member = userId ? members.find((m) => m.userId === userId) ?? null : null;
+      triage.handleAssign(assignThreadId, member);
+    }
+    closeAssign();
+  }
+
+  const assignThread = assignThreadId
+    ? triage.threads.find((t) => t.id === assignThreadId) ?? null
+    : null;
+
   return (
     <div className="ax-panel">
       <PanelHeader />
@@ -201,6 +247,7 @@ export function EmailsPanel({
             active={active}
             total={triage.filteredTotal}
             allCount={triage.total}
+            assignedCount={triage.queueCounts.assigned ?? 0}
             folderCounts={folderCounts}
             query={triage.query}
             onQueryChange={triage.setQuery}
@@ -227,6 +274,8 @@ export function EmailsPanel({
           onMarkDone={triage.handleMarkDone}
           onUnmarkDone={triage.handleUnmarkDone}
           onToggleImportant={triage.handleToggleImportant}
+          canAssign={canAssign}
+          onOpenAssign={openAssignFor}
           {...(gmailAddress
             ? {
                 onOpenInGmail: (threadId: string) => {
@@ -261,6 +310,8 @@ export function EmailsPanel({
             onMarkDone={triage.handleMarkDone}
             onUnmarkDone={triage.handleUnmarkDone}
             onToggleImportant={triage.handleToggleImportant}
+            canAssign={canAssign}
+            onOpenAssign={openAssignFor}
           />
         ) : (
           <div className="em-preview-empty">
@@ -273,6 +324,28 @@ export function EmailsPanel({
           anchor={rerouteAnchor}
           onCommit={commitReroute}
           onClose={closeReroute}
+        />
+
+        <AssigneePicker
+          members={members}
+          assignedUserId={assignThread?.assignment?.userId ?? null}
+          anchor={assignAnchor}
+          onCommit={commitAssign}
+          onClose={closeAssign}
+          {...(members.length < 2
+            ? {
+                // Members are managed in the web app; deep-link there (same
+                // pattern as the "Plan sorting" link in the preview pane).
+                onAddMembers: () => {
+                  closeAssign();
+                  const path = inviteNeedsUpgrade
+                    ? "/upgrade?ctx=collaborators"
+                    : "/settings#team-members";
+                  window.open(`${WEB_APP_URL}${path}`, "_blank", "noopener");
+                },
+                addMembersRequiresUpgrade: inviteNeedsUpgrade,
+              }
+            : {})}
         />
 
         {toast && (

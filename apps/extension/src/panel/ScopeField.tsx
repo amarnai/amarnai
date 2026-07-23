@@ -12,6 +12,9 @@ type Props = {
   total: number;
   // Whole-workspace thread total, shown on the picker's "All mail" row.
   allCount: number;
+  // Threads assigned to the current user, shown on the picker's "Assigned to
+  // me" row.
+  assignedCount: number;
   // Per-folder thread totals (server-computed), keyed by folder id, shown on
   // each picker row.
   folderCounts: Map<string, number>;
@@ -34,6 +37,7 @@ export function ScopeField({
   active,
   total,
   allCount,
+  assignedCount,
   folderCounts,
   query,
   onQueryChange,
@@ -173,8 +177,15 @@ export function ScopeField({
         anchor={anchor}
         onCommit={(folderId) => go({ kind: "folder", id: folderId })}
         onClose={() => setAnchor(null)}
-        topItem={{ label: allMail, onSelect: () => go({ kind: "queue", id: "all" }) }}
-        topCount={allCount}
+        topItems={[
+          { id: "all", label: allMail, count: allCount, onSelect: () => go({ kind: "queue", id: "all" }) },
+          {
+            id: "assigned",
+            label: i18n._(QUEUE_LABELS.assigned!.name),
+            count: assignedCount,
+            onSelect: () => go({ kind: "queue", id: "assigned" }),
+          },
+        ]}
         counts={folderCounts}
         matchAnchorWidth
         searchPlaceholder={_(msg`Jump to folder…`)}

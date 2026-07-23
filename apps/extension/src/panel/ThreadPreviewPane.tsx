@@ -4,11 +4,10 @@ import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
 import type { ApiClient, Draft } from "@amarnai/api-client";
 import type { FolderItem, ThreadItem } from "@amarnai/ui/emails";
-import { RationaleCard, MessageCard, SuggestedDraftCard, PreviewDoneBar } from "@amarnai/ui/emails";
+import { RationaleCard, MessageCard, SuggestedDraftCard, TriageBar } from "@amarnai/ui/emails";
 import { GmailIcon, OutlookIcon } from "@amarnai/ui";
 import { formatQuotaResetDate, TAXONOMY_MIN_NON_ROOT_NODES } from "@amarnai/shared";
 import { openThreadInMail } from "../gmail/openInGmail";
-import { SortNowButton } from "./SortNowButton";
 import { WEB_APP_URL } from "../config";
 
 type DraftState = "idle" | "loading" | "ready" | "error";
@@ -31,6 +30,8 @@ type Props = {
   onMarkDone: (threadId: string) => void;
   onUnmarkDone: (threadId: string) => void;
   onToggleImportant: (threadId: string) => void;
+  canAssign: boolean;
+  onOpenAssign: (threadId: string, anchor: HTMLElement) => void;
 };
 
 // Port of apps/web ThreadPreview, with the internal-secret api client swapped
@@ -55,6 +56,8 @@ export function ThreadPreviewPane({
   onMarkDone,
   onUnmarkDone,
   onToggleImportant,
+  canAssign,
+  onOpenAssign,
 }: Props) {
   const { _ } = useLingui();
   const [reasoning, setReasoning] = useState<string | null>(thread.reasoning);
@@ -314,11 +317,14 @@ export function ThreadPreviewPane({
       <div className="em-preview-scroll">
         <h2 className="em-preview-subject">{thread.subject}</h2>
 
-        <PreviewDoneBar
+        <TriageBar
           isDone={isDone}
           doneMark={thread.doneMark}
           onMark={() => onMarkDone(thread.id)}
           onUnmark={() => onUnmarkDone(thread.id)}
+          assignment={thread.assignment}
+          canAssign={canAssign}
+          onOpenAssign={(anchor) => onOpenAssign(thread.id, anchor)}
         />
 
         {isUnsorted ? (
@@ -340,7 +346,6 @@ export function ThreadPreviewPane({
           ) : (
             <div className="ax-sort-now-wrap">
               <p><Trans>This thread hasn't been sorted yet.</Trans></p>
-              <SortNowButton api={api} workspaceId={workspaceId} threadId={thread.id} />
             </div>
           )
         ) : (

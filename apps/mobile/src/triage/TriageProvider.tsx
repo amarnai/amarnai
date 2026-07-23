@@ -23,6 +23,7 @@ type TriageActions = Pick<
   | 'setSelectedId'
   | 'setQuery'
   | 'syncThreads'
+  | 'syncFolders'
   | 'refresh'
   | 'loadThread'
   | 'loadMore'
@@ -149,6 +150,7 @@ function TriageInner({
       setSelectedId: triage.setSelectedId,
       setQuery: triage.setQuery,
       syncThreads: triage.syncThreads,
+      syncFolders: triage.syncFolders,
       refresh: triage.refresh,
       loadThread: triage.loadThread,
       loadMore: triage.loadMore,
@@ -175,6 +177,7 @@ function TriageInner({
       triage.setSelectedId,
       triage.setQuery,
       triage.syncThreads,
+      triage.syncFolders,
       triage.refresh,
       triage.loadThread,
       triage.loadMore,

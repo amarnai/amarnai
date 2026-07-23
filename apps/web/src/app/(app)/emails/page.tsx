@@ -9,6 +9,7 @@ import { EmailsClient } from "./EmailsClient";
 import { mapFolders, mapThreads } from "./queries";
 import type { ActiveSelection } from "@amarnai/ui/emails";
 import { QUEUES } from "@amarnai/ui/emails";
+import { mapMembers } from "@amarnai/core/emails";
 import { countRoutableNonRootNodes } from "@amarnai/shared";
 
 type PageProps = {
@@ -151,11 +152,7 @@ export default async function EmailsPage({ searchParams }: PageProps) {
     select: { user: { select: { id: true, email: true, name: true } } },
     orderBy: { createdAt: "asc" },
   });
-  const members = memberRows.map((m) => ({
-    userId: m.user.id,
-    name: m.user.name,
-    email: m.user.email,
-  }));
+  const members = mapMembers(memberRows);
 
   return (
     <>

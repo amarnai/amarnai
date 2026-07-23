@@ -36,6 +36,7 @@ function renderField(
         active={active}
         total={total}
         allCount={1284}
+        assignedCount={7}
         folderCounts={COUNTS}
         query={query}
         onQueryChange={onQueryChange}
@@ -91,6 +92,20 @@ describe("ScopeField", () => {
     openPicker();
     fireEvent.mouseDown(screen.getByRole("option", { name: /All mail/ }));
     expect(onSelect).toHaveBeenCalledWith({ kind: "queue", id: "all" });
+  });
+
+  it("pins an 'Assigned' row with its count that commits the assigned queue", () => {
+    const onSelect = renderField({ kind: "queue", id: "all" });
+    openPicker();
+    const row = screen.getByRole("option", { name: /Assigned/ });
+    expect(row.textContent).toContain("7");
+    fireEvent.mouseDown(row);
+    expect(onSelect).toHaveBeenCalledWith({ kind: "queue", id: "assigned" });
+  });
+
+  it("labels the field with the queue name when the assigned queue is active", () => {
+    renderField({ kind: "queue", id: "assigned" });
+    expect(screen.getByText("Assigned")).toBeTruthy();
   });
 
   it("renders folder ancestry as crumbs that navigate up on tap", () => {

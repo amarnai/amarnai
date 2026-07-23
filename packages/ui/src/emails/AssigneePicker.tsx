@@ -56,7 +56,11 @@ export function AssigneePicker({ members, assignedUserId, anchor, onCommit, onCl
     const rect = anchor.getBoundingClientRect();
     const panel = panelRef.current;
     panel.style.top = `${rect.bottom + 6}px`;
-    panel.style.left = `${rect.left}px`;
+    // Clamp to the viewport: anchors can sit at the right edge of a row (and
+    // the extension panel is only ~360px wide), where an unclamped rect.left
+    // would push the panel off-screen.
+    const left = Math.max(8, Math.min(rect.left, window.innerWidth - panel.offsetWidth - 8));
+    panel.style.left = `${left}px`;
   }, [anchor]);
 
   useEffect(() => {

@@ -12,10 +12,10 @@ export interface ReroutePopoverProps {
   anchor: HTMLElement | null;
   onCommit: (folderId: string) => void;
   onClose: () => void;
-  // Pinned entry above the folder rows (the extension's scope switcher pins
-  // "All mail" here). It participates in filtering and keyboard navigation
-  // like a folder row, but commits through its own handler.
-  topItem?: { label: string; onSelect: () => void } | undefined;
+  // Pinned entries above the folder rows (the extension's scope switcher pins
+  // "All mail" and "Assigned to me" here). Each participates in filtering and
+  // keyboard navigation like a folder row, but commits through its own handler.
+  topItems?: Array<{ id: string; label: string; onSelect: () => void; count?: number }> | undefined;
   // Localized overrides for the second use of this picker (scope switching);
   // defaults keep the original reroute copy.
   searchPlaceholder?: string | undefined;
@@ -23,25 +23,24 @@ export interface ReroutePopoverProps {
   // Per-folder thread totals, keyed by folder id, shown right-aligned on each
   // row (scope-switcher use). Omit for the reroute use, which shows no counts.
   counts?: Map<string, number> | undefined;
-  // Total shown on the pinned top row (e.g. "All mail").
-  topCount?: number | undefined;
   // When true, the panel widens to match the anchor element (a full-width bar),
   // instead of the default fixed 280px reroute width.
   matchAnchorWidth?: boolean | undefined;
 }
 
-type PickerEntry = { kind: "top"; label: string } | { kind: "folder"; folder: FolderItem };
+type PickerEntry =
+  | { kind: "top"; id: string; label: string; onSelect: () => void; count?: number }
+  | { kind: "folder"; folder: FolderItem };
 
 export function ReroutePopover({
   folders,
   anchor,
   onCommit,
   onClose,
-  topItem,
+  topItems,
   searchPlaceholder,
   dialogLabel,
   counts,
-  topCount,
   matchAnchorWidth,
 }: ReroutePopoverProps) {
   const { i18n } = useLingui();
@@ -53,14 +52,14 @@ export function ReroutePopover({
   const q = query.toLowerCase();
   const filtered = folders.filter((f) => !f.ignored && f.name.toLowerCase().includes(q));
   const entries: PickerEntry[] = [
-    ...(topItem && topItem.label.toLowerCase().includes(q)
-      ? [{ kind: "top" as const, label: topItem.label }]
-      : []),
+    ...(topItems ?? [])
+      .filter((item) => item.label.toLowerCase().includes(q))
+      .map((item) => ({ kind: "top" as const, ...item })),
     ...filtered.map((folder) => ({ kind: "folder" as const, folder })),
   ];
 
   function commit(entry: PickerEntry) {
-    if (entry.kind === "top") topItem?.onSelect();
+    if (entry.kind === "top") entry.onSelect();
     else onCommit(entry.folder.id);
   }
 
@@ -140,7 +139,7 @@ export function ReroutePopover({
         {entries.length === 0 && <li className="em-reroute-empty"><Trans>No folders match</Trans></li>}
         {entries.map((entry, i) => (
           <li
-            key={entry.kind === "top" ? "__top__" : entry.folder.id}
+            key={entry.kind === "top" ? `__top_${entry.id}__` : entry.folder.id}
             role="option"
             aria-selected={i === activeIdx}
             className={`em-reroute-item${i === activeIdx ? " active" : ""}`}
@@ -160,7 +159,7 @@ export function ReroutePopover({
               {entry.kind === "top" ? entry.label : entry.folder.name}
             </span>
             {(() => {
-              const n = entry.kind === "top" ? topCount : counts?.get(entry.folder.id);
+              const n = entry.kind === "top" ? entry.count : counts?.get(entry.folder.id);
               return n != null ? <span className="em-reroute-count">{i18n.number(n)}</span> : null;
             })()}
           </li>
