@@ -45,3 +45,14 @@ export {
   type InboxStatusInput,
   type WorkspacePlan,
 } from "./inboxStatus.js";
+
+export {
+  FOLDER_COLOR_KEYS,
+  defaultFolderColorKey,
+  resolveFolderColorKey,
+  folderColorVars,
+  folderInkVar,
+  type FolderColorKey,
+  type FolderColorInput,
+  type FolderColorVars,
+} from "./folderColor.js";

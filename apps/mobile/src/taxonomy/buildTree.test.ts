@@ -14,6 +14,7 @@ function node(id: string, isRoot = false): TaxonomyNode {
     examples: [],
     isRoot,
     isCatchAll: false,
+    colorKey: null,
     positionX: 0,
     positionY: 0,
     createdAt: `2026-01-01T00:00:${String(seq++).padStart(2, '0')}.000Z`,

@@ -112,6 +112,9 @@ export type TaxonomyNode = {
   /** The non-routable catch-all destination ("Updates / Other"). Exactly one per
    * workspace; cannot be deleted or have its flag changed. */
   isCatchAll: boolean;
+  /** Optional per-folder color override (a palette key). null = use the
+   * deterministic default; unknown keys fall back to the default at render time. */
+  colorKey: string | null;
   positionX: number;
   positionY: number;
   createdAt: string;
@@ -126,6 +129,7 @@ export type CreateTaxonomyNodeInput = {
   instructions?: string | null;
   draftPrompt?: string | null;
   examples?: string[];
+  colorKey?: string | null;
   positionX?: number;
   positionY?: number;
 };

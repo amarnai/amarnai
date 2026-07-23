@@ -13,7 +13,7 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:542
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:610
 #, fuzzy
 msgid " (Inbox)"
 msgstr " (Hộp thư đến)"
@@ -151,11 +151,11 @@ msgstr "{blacklistCount, plural, one {# bị chặn} other {# bị chặn}}"
 #~ msgid "{by} assigned you: {subject}"
 #~ msgstr "{by} đã giao cho bạn: {subject}"
 
-#: ../ui/src/emails/ThreadRow.tsx:263
+#: ../ui/src/emails/ThreadRow.tsx:270
 msgid "{chipLabel}. Change folder"
 msgstr "{chipLabel}. Thay đổi thư mục"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:557
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:625
 #, fuzzy
 msgid "{classificationCount, plural, one {Deleting this folder will leave # thread unsorted.} other {Deleting this folder will leave # threads unsorted.}}"
 msgstr "{classificationCount, plural, one {Xóa thư mục này sẽ khiến # cuộc trò chuyện chưa được phân loại.} other {Xóa thư mục này sẽ khiến # cuộc trò chuyện chưa được phân loại.}}"
@@ -238,7 +238,7 @@ msgstr "Còn {quotaRemaining} trên {0} · đặt lại {quotaResetDate}"
 msgid "{remaining} of {limit} remaining · resets {resetDate}"
 msgstr "Còn {remaining} trên {limit} · đặt lại {resetDate}"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1599
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1667
 #, fuzzy
 msgid "{routableCount} of {TAXONOMY_MIN_NON_ROOT_NODES} folders connected to your inbox. Routing requires at least {TAXONOMY_MIN_NON_ROOT_NODES}."
 msgstr "{routableCount} trên {TAXONOMY_MIN_NON_ROOT_NODES} thư mục đã kết nối với hộp thư đến của bạn. Cần ít nhất {TAXONOMY_MIN_NON_ROOT_NODES} thư mục để định tuyến."
@@ -248,12 +248,12 @@ msgstr "{routableCount} trên {TAXONOMY_MIN_NON_ROOT_NODES} thư mục đã kế
 msgid "{selectedCount} selected"
 msgstr "{selectedCount} đã chọn"
 
-#: ../ui/src/emails/ThreadListHeader.tsx:113
+#: ../ui/src/emails/ThreadListHeader.tsx:131
 #, fuzzy
 msgid "{threadCount, plural, one {# thread} other {# threads}}"
 msgstr "{threadCount, plural, one {# cuộc trò chuyện} other {# cuộc trò chuyện}}"
 
-#: ../ui/src/emails/ThreadListHeader.tsx:117
+#: ../ui/src/emails/ThreadListHeader.tsx:135
 #, fuzzy
 msgid "{unreadCount} unread"
 msgstr "{unreadCount} chưa đọc"
@@ -302,8 +302,8 @@ msgstr "© 2026 Amarnai. Mã nguồn mở theo AGPL-3.0."
 msgid "+ Add folder"
 msgstr "+ Thêm thư mục"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1430
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1439
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1498
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1507
 #, fuzzy
 msgid "+ Add Folder"
 msgstr "+ Thêm thư mục"
@@ -535,9 +535,7 @@ msgstr "Đã nhận được hồ sơ ứng tuyển mới từ Horemheb của Th
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "Đã nhận được hồ sơ ứng tuyển mới từ Horemheb của Thebes cho vị trí Trưởng phòng Thư tín.\n"
-"\n"
-"Xem hồ sơ trong Nhà Lưu trữ."
+msgstr "Đã nhận được hồ sơ ứng tuyển mới từ Horemheb của Thebes cho vị trí Trưởng phòng Thư tín.\n\nXem hồ sơ trong Nhà Lưu trữ."
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:387
 #, fuzzy
@@ -551,11 +549,7 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "Abdi-Heba,\n"
-"\n"
-"Tôi sẽ ở gần vùng Đồng bằng vào tuần đó. Chúng ta hãy gặp nhau tại trạm dừng chân vào ngày thứ hai; tôi có thể dành ra buổi sáng.\n"
-"\n"
-"Hẹn gặp lại,"
+msgstr "Abdi-Heba,\n\nTôi sẽ ở gần vùng Đồng bằng vào tuần đó. Chúng ta hãy gặp nhau tại trạm dừng chân vào ngày thứ hai; tôi có thể dành ra buổi sáng.\n\nHẹn gặp lại,"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
@@ -623,11 +617,11 @@ msgid "Add"
 msgstr "Thêm"
 
 #. placeholder {0}: minNodeDescriptionLength(description)
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:448
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:466
 msgid "Add a description (at least {0} characters) so the AI can sort accurately."
 msgstr "Thêm mô tả (ít nhất {0} ký tự) để AI có thể phân loại chính xác."
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1464
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1532
 #, fuzzy
 msgid "Add at least 3 connected folders to export"
 msgstr "Thêm ít nhất 3 thư mục đã kết nối để xuất"
@@ -733,7 +727,7 @@ msgstr "Tất cả thư mục"
 msgid "All limits are per workspace."
 msgstr "Mọi giới hạn áp dụng cho mỗi không gian làm việc."
 
-#: ../../apps/extension/src/panel/ScopeField.tsx:65
+#: ../../apps/extension/src/panel/ScopeField.tsx:67
 msgid "All mail"
 msgstr "Tất cả thư"
 
@@ -1066,8 +1060,8 @@ msgstr "Giao chủ đề"
 msgid "Assign to"
 msgstr "Giao cho"
 
-#: ../ui/src/emails/ThreadRow.tsx:336
-#: ../ui/src/emails/ThreadRow.tsx:345
+#: ../ui/src/emails/ThreadRow.tsx:347
+#: ../ui/src/emails/ThreadRow.tsx:356
 #: ../ui/src/emails/TriageBar.tsx:63
 #, fuzzy
 msgid "Assign to a member"
@@ -1086,8 +1080,8 @@ msgstr "Được giao"
 msgid "Assigned to {assigneeName}"
 msgstr "Giao cho {assigneeName}"
 
-#: ../ui/src/emails/ThreadRow.tsx:228
-#: ../ui/src/emails/ThreadRow.tsx:344
+#: ../ui/src/emails/ThreadRow.tsx:235
+#: ../ui/src/emails/ThreadRow.tsx:355
 #: ../ui/src/emails/TriageBar.tsx:62
 #, fuzzy
 msgid "Assigned to {assigneeName}. Change assignee"
@@ -1119,7 +1113,7 @@ msgstr "Tự động phân loại thông báo vào Cập nhật / Khác"
 msgid "Automated and bulk mail ({0}) always moves to the new catch-all folder."
 msgstr "Thư tự động và thư hàng loạt ({0}) luôn được chuyển đến thư mục tổng hợp mới."
 
-#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:39
+#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:47
 msgid "Automated and bulk mail that doesn't fit another folder lands here automatically. This is different from Needs review, which holds threads too ambiguous for the assistant to sort."
 msgstr "Thư tự động và thư hàng loạt không thuộc thư mục nào khác sẽ tự động chuyển đến đây. Thư mục này khác với <em>Cần xem lại</em>, nơi chứa các cuộc hội thoại quá mơ hồ để trợ lý có thể sắp xếp."
 
@@ -1129,7 +1123,7 @@ msgid "Automated notice from the Bureau of Royal Appointments. Subject and sende
 msgstr "Thông báo tự động từ Cục Bổ nhiệm Hoàng gia. Chủ đề và người gửi cho thấy đây là đơn ứng tuyển mới cho một vị trí đang tuyển."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:246
-#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:68
+#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:84
 #, fuzzy
 msgid "Automated notifications, newsletters, and service updates that don't fit another folder."
 msgstr "Thông báo tự động, bản tin và cập nhật dịch vụ không thuộc thư mục nào khác."
@@ -1154,11 +1148,7 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "Aziru,\n"
-"\n"
-"Lời hữu nghị của ngài đã đến tai chúng tôi. Chúng tôi sẵn lòng lắng nghe thêm về đề xuất của Gia tộc Amurru. Xin hãy gửi các điều khoản của ngài qua sứ giả kế tiếp.\n"
-"\n"
-"Trân trọng,"
+msgstr "Aziru,\n\nLời hữu nghị của ngài đã đến tai chúng tôi. Chúng tôi sẵn lòng lắng nghe thêm về đề xuất của Gia tộc Amurru. Xin hãy gửi các điều khoản của ngài qua sứ giả kế tiếp.\n\nTrân trọng,"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:261
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
@@ -1271,7 +1261,7 @@ msgid "Browse emails easily through your folders. Generate draft replies and cop
 msgstr "Dễ dàng duyệt email qua các thư mục. Tạo bản nháp phản hồi và sao chép vào hộp thư đến của bạn."
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:283
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1524
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1592
 #, fuzzy
 msgid "Browse templates"
 msgstr "Duyệt mẫu"
@@ -1375,11 +1365,11 @@ msgstr "Tôi có thể tự lưu trữ Amarnai không?"
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:150
 #: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:107
 #: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:255
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:595
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:611
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:725
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1752
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1845
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:663
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:679
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:793
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1820
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1913
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:64
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:275
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:370
@@ -1426,7 +1416,7 @@ msgid "Carrier tracking numbers, delivery exceptions, and courier dispatch notic
 msgstr "Mã vận đơn, ngoại lệ giao hàng và thông báo điều phối."
 
 #: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:58
-#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:81
+#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:97
 #, fuzzy
 msgid "Catch-all"
 msgstr "Tổng hợp"
@@ -1436,11 +1426,11 @@ msgstr "Tổng hợp"
 msgid "Change"
 msgstr "Thay đổi"
 
-#: ../ui/src/emails/ThreadRow.tsx:335
+#: ../ui/src/emails/ThreadRow.tsx:346
 msgid "Change assignee"
 msgstr "Thay đổi người được giao"
 
-#: ../ui/src/emails/ThreadRow.tsx:164
+#: ../ui/src/emails/ThreadRow.tsx:170
 msgid "Change folder"
 msgstr "Thay đổi thư mục"
 
@@ -1468,7 +1458,7 @@ msgstr "Kiểm tra hộp thư đến của bạn"
 msgid "Checkout failed: {0}"
 msgstr "Thanh toán thất bại: {0}"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:707
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:775
 #, fuzzy
 msgid "Child folder"
 msgstr "Thư mục con"
@@ -1540,7 +1530,7 @@ msgstr "Khách hàng"
 msgid "Close"
 msgstr "Đóng"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1663
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1731
 #, fuzzy
 msgid "Close panel"
 msgstr "Đóng bảng điều khiển"
@@ -1553,7 +1543,7 @@ msgstr "Đóng bảng điều khiển"
 msgid "Close preview"
 msgstr "Đóng bản xem trước"
 
-#: ../../apps/extension/src/panel/ScopeField.tsx:112
+#: ../../apps/extension/src/panel/ScopeField.tsx:114
 msgid "Close search"
 msgstr "Đóng tìm kiếm"
 
@@ -1599,6 +1589,11 @@ msgstr "Cộng tác viên có sẵn trên các gói Scribe và Pharaoh. <0>Nâng
 #~ msgid "Collapse"
 #~ msgstr "Thu gọn"
 
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:532
+#, fuzzy
+msgid "Color"
+msgstr "Màu sắc"
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:124
 msgid "Communities"
 msgstr "Cộng đồng"
@@ -1631,7 +1626,7 @@ msgstr "Xác nhận hủy"
 msgid "Confirm delete"
 msgstr "Xác nhận xóa"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:587
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:655
 #, fuzzy
 msgid "Confirm Delete"
 msgstr "Xác nhận xóa"
@@ -1936,7 +1931,7 @@ msgstr "Không thể tải gói dịch vụ."
 msgid "Could not open billing management."
 msgstr "Không thể mở quản lý thanh toán."
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1326
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1394
 msgid "Could not prepare migration"
 msgstr "Không thể chuẩn bị di chuyển"
 
@@ -1951,7 +1946,7 @@ msgstr "Không thể xếp hàng chờ quét lại. Vui lòng thử lại."
 msgid "Could not reach the server. Please check your connection and try again."
 msgstr "Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối và thử lại."
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1276
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1344
 #, fuzzy
 msgid "Could not read file: invalid JSON."
 msgstr "Không thể đọc tệp: JSON không hợp lệ."
@@ -2039,7 +2034,7 @@ msgid "Courses"
 msgstr "Khóa học"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:448
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:462
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:480
 #, fuzzy
 msgid "Create"
 msgstr "Tạo"
@@ -2064,7 +2059,7 @@ msgstr "Tạo tài khoản"
 msgid "Create an account to triage your inbox"
 msgstr "Tạo tài khoản để sắp xếp hộp thư đến của bạn"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:468
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:486
 #, fuzzy
 msgid "Create Folder"
 msgstr "Tạo Thư mục"
@@ -2099,7 +2094,7 @@ msgstr "Đang tạo…"
 #: ../../apps/mobile/src/components/RerouteSheet.tsx:45
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:107
 #: ../../apps/site/src/components/demo/demo-seed.ts:33
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1806
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1874
 #, fuzzy
 msgid "Current"
 msgstr "Hiện tại"
@@ -2154,9 +2149,14 @@ msgid "Deal progress, transaction stages, and closing coordination across active
 msgstr "Tiến độ, giai đoạn giao dịch và điều phối chốt cho mọi thương vụ đang hoạt động."
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:118
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:546
 #, fuzzy
 msgid "Default"
 msgstr "Mặc định"
+
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:544
+msgid "Default color"
+msgstr "Màu mặc định"
 
 #: ../ui/src/pricing/planMessages.ts:73
 #, fuzzy
@@ -2171,9 +2171,9 @@ msgstr "Không gian làm việc miễn phí mặc định"
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:198
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:271
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:272
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:627
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:638
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:734
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:695
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:706
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:802
 #, fuzzy
 msgid "Delete"
 msgstr "Xóa"
@@ -2241,7 +2241,7 @@ msgstr "Đang xóa..."
 
 #: ../../apps/mobile/app/(app)/account.tsx:166
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:143
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:587
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:655
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:56
 #, fuzzy
 msgid "Deleting…"
@@ -2252,7 +2252,7 @@ msgid "Deployments"
 msgstr "Triển khai"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:80
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:294
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:297
 #, fuzzy
 msgid "Describe what kinds of emails belong here: who they come from and what they are about. Be specific and use the actual names, topics, and words that show up in those emails. Describe what the emails are, not what you plan to do about them. The clearer your description, the more accurately your email is sorted here."
 msgstr "Mô tả loại email phù hợp ở đây: chúng từ ai và về điều gì. Hãy cụ thể và dùng đúng tên, chủ đề, từ ngữ thực tế có trong email. Mô tả nội dung email, không phải kế hoạch của bạn với chúng. Mô tả càng rõ ràng, email của bạn càng được phân loại chính xác."
@@ -2263,7 +2263,7 @@ msgid "Describe your folders"
 msgstr "Mô tả thư mục của bạn"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:289
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:490
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:508
 #, fuzzy
 msgid "Description"
 msgstr "Mô tả"
@@ -2431,7 +2431,7 @@ msgstr "Các chiến dịch quyên góp, vận động tài trợ và phản h�
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:278
 #: ../../apps/mobile/src/components/ThreadRow.tsx:35
-#: ../ui/src/emails/ThreadRow.tsx:220
+#: ../ui/src/emails/ThreadRow.tsx:227
 #, fuzzy
 msgid "Done"
 msgstr "Hoàn tất"
@@ -2450,7 +2450,7 @@ msgstr "Người quyên góp"
 msgid "Downgrade to {planName}"
 msgstr "Hạ cấp xuống {planName}"
 
-#: ../ui/src/emails/ThreadRow.tsx:286
+#: ../ui/src/emails/ThreadRow.tsx:297
 #, fuzzy
 msgid "draft"
 msgstr "bản nháp"
@@ -2484,13 +2484,13 @@ msgid "Draft shared"
 msgstr "Bản nháp đã được chia sẻ"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:342
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:513
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:581
 #, fuzzy
 msgid "Draft style guidance"
 msgstr "Hướng dẫn phong cách bản nháp"
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:106
-#: ../ui/src/emails/ThreadRow.tsx:280
+#: ../ui/src/emails/ThreadRow.tsx:291
 #, fuzzy
 msgid "Drafting…"
 msgstr "Đang soạn nháp…"
@@ -2518,13 +2518,13 @@ msgstr "Người bán hàng TMĐT"
 msgid "e.g. Invoices"
 msgstr "Ví dụ: Hóa đơn"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:498
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:516
 #, fuzzy
 msgid "e.g. Invoices, receipts, payment confirmations, and billing questions from clients and vendors."
 msgstr "Ví dụ: Hóa đơn, biên lai, xác nhận thanh toán và các câu hỏi về thanh toán từ khách hàng và nhà cung cấp."
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:350
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:519
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:587
 #, fuzzy
 msgid "e.g. Reply formally. Keep responses under 3 sentences."
 msgstr "Ví dụ: Trả lời trang trọng. Giữ phản hồi dưới 3 câu."
@@ -2539,7 +2539,7 @@ msgstr "Trước đó"
 msgid "Edit folder"
 msgstr "Chỉnh sửa thư mục"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:468
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:486
 #, fuzzy
 msgid "Edit Folder"
 msgstr "Chỉnh sửa Thư mục"
@@ -2548,7 +2548,7 @@ msgstr "Chỉnh sửa Thư mục"
 msgid "Edit inbox"
 msgstr "Chỉnh sửa hộp thư đến"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:682
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:750
 #, fuzzy
 msgid "Edit Path"
 msgstr "Sửa đường dẫn"
@@ -2624,7 +2624,7 @@ msgid "Emails"
 msgstr "Email"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:100
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:322
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:325
 #, fuzzy
 msgid "Emails about my bills that I need to deal with."
 msgstr "Email về hóa đơn cần xử lý."
@@ -2658,7 +2658,7 @@ msgstr "Đăng ký nhập học, học phí, phân công ký túc xá và quản
 #~ msgstr "Tuyển sinh, học phí, đơn đăng ký nhà ở và các thủ tục hành chính chính thức của trường."
 
 #. placeholder {0}: minNodeNameLength(name)
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:445
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:463
 msgid "Enter a folder name (at least {0} characters)."
 msgstr "Nhập tên thư mục (ít nhất {0} ký tự)."
 
@@ -2683,7 +2683,7 @@ msgstr "Nhập email của bạn và chúng tôi sẽ gửi cho bạn một liê
 msgid "Enter your email and we'll send you a reset link."
 msgstr "Nhập email của bạn và chúng tôi sẽ gửi cho bạn liên kết đặt lại."
 
-#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:78
+#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:94
 #, fuzzy
 msgid "Entry"
 msgstr "Mục"
@@ -2750,13 +2750,13 @@ msgstr "Mọi thứ không thuộc thư mục đã đặt tên."
 msgid "Expenses"
 msgstr "Chi phí"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1488
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1556
 #, fuzzy
 msgid "Export"
 msgstr "Xuất"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1463
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1471
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1531
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1539
 #, fuzzy
 msgid "Export plan"
 msgstr "Kế hoạch xuất"
@@ -2775,22 +2775,22 @@ msgstr "Đại lý, công ty bên ngoài và đối tác kinh doanh chuyên nghi
 msgid "Failed to apply"
 msgstr "Áp dụng không thành công"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1108
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1176
 #, fuzzy
 msgid "Failed to create folder"
 msgstr "Không tạo được thư mục"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1041
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1109
 #, fuzzy
 msgid "Failed to create path"
 msgstr "Không tạo được đường dẫn"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1179
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1247
 #, fuzzy
 msgid "Failed to delete folder"
 msgstr "Không xóa được thư mục"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1196
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1264
 #, fuzzy
 msgid "Failed to delete path"
 msgstr "Không xóa được đường dẫn"
@@ -2800,12 +2800,12 @@ msgstr "Không xóa được đường dẫn"
 msgid "Failed to load status"
 msgstr "Không tải được trạng thái"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1237
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1305
 #, fuzzy
 msgid "Failed to redo"
 msgstr "Không làm lại được"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1008
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1076
 #, fuzzy
 msgid "Failed to save position"
 msgstr "Không lưu được vị trí"
@@ -2815,17 +2815,17 @@ msgstr "Không lưu được vị trí"
 msgid "Failed to start generation"
 msgstr "Không bắt đầu tạo được"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1218
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1286
 #, fuzzy
 msgid "Failed to undo"
 msgstr "Không hoàn tác được"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1140
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1208
 #, fuzzy
 msgid "Failed to update folder"
 msgstr "Không thể cập nhật thư mục"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1162
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1230
 #, fuzzy
 msgid "Failed to update path"
 msgstr "Không thể cập nhật đường dẫn"
@@ -2924,6 +2924,10 @@ msgstr "thư mục"
 msgid "Folder"
 msgstr "Thư mục"
 
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:535
+msgid "Folder color"
+msgstr "Màu thư mục"
+
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:196
 #, fuzzy
 msgid "Folder created"
@@ -2934,7 +2938,7 @@ msgstr "Đã tạo thư mục"
 msgid "Folder deleted"
 msgstr "Đã xóa thư mục"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1421
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1489
 msgid "Folder limit reached ({MAX_TAXONOMY_NON_ROOT_NODES}). Delete a folder to add another."
 msgstr "Đã đạt giới hạn thư mục ({MAX_TAXONOMY_NON_ROOT_NODES}). Xóa một thư mục để thêm thư mục khác."
 
@@ -3176,7 +3180,7 @@ msgstr "Tạo bản nháp trả lời"
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:60
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:207
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:251
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1625
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1693
 #, fuzzy
 msgid "Generate from inbox"
 msgstr "Tạo từ hộp thư đến"
@@ -3371,11 +3375,7 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "Kính gửi Đại vương,\n"
-"\n"
-"Các báo cáo ngài yêu cầu sẽ được chuẩn bị trước khi hội đồng nhóm họp. Thần sẽ lệnh cho các thư lại tổng hợp sổ sách các lãnh thổ phía đông và gửi trước bằng sứ giả tốc hành.\n"
-"\n"
-"Trong tình huynh đệ,"
+msgstr "Kính gửi Đại vương,\n\nCác báo cáo ngài yêu cầu sẽ được chuẩn bị trước khi hội đồng nhóm họp. Thần sẽ lệnh cho các thư lại tổng hợp sổ sách các lãnh thổ phía đông và gửi trước bằng sứ giả tốc hành.\n\nTrong tình huynh đệ,"
 
 #: ../../apps/site/src/components/support/SupportContent.tsx:77
 msgid "Guides and answers to common questions"
@@ -3397,7 +3397,7 @@ msgid "Help requests, supply issues, and escalations from customers."
 msgstr "Yêu cầu hỗ trợ, vấn đề về nguồn cung và các trường hợp leo thang từ khách hàng."
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:71
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:278
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:281
 #, fuzzy
 msgid "Hide tips"
 msgstr "Ẩn mẹo"
@@ -3487,7 +3487,7 @@ msgid "How it works"
 msgstr "Cách thức hoạt động"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:73
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:278
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:281
 #, fuzzy
 msgid "How to write a good description"
 msgstr "Cách viết mô tả hay"
@@ -3516,27 +3516,27 @@ msgstr "Nếu có sự cố hoặc bạn có câu hỏi, đây là cách liên h
 #~ msgstr "Nếu bạn có thể tạo tài khoản bằng email đó, chúng tôi đã gửi một liên kết để hoàn tất thiết lập. Hãy nhấp vào để chọn mật khẩu và đăng nhập."
 
 #: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:64
-#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:84
+#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:100
 #, fuzzy
 msgid "Ignored"
 msgstr "Đã bỏ qua"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1513
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1581
 #, fuzzy
 msgid "Import"
 msgstr "Nhập"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1341
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1409
 #, fuzzy
 msgid "Import failed"
 msgstr "Nhập không thành công"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1496
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1564
 #, fuzzy
 msgid "Import plan"
 msgstr "Nhập kế hoạch"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1491
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1559
 #, fuzzy
 msgid "Import plan (replaces current)"
 msgstr "Nhập kế hoạch (thay thế hiện tại)"
@@ -3566,8 +3566,8 @@ msgstr "Quan trọng"
 #: ../../apps/site/src/components/demo/demo-seed.ts:28
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:151
 #: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:127
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:541
-#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:57
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:609
+#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:73
 #, fuzzy
 msgid "Inbox"
 msgstr "Hộp thư đến"
@@ -3694,12 +3694,12 @@ msgid "Invalid or missing reset link."
 msgstr "Liên kết đặt lại không hợp lệ hoặc bị thiếu."
 
 #. placeholder {0}: validation.error
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1290
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1358
 #, fuzzy
 msgid "Invalid taxonomy file: {0}"
 msgstr "Tệp phân loại không hợp lệ: {0}"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1284
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1352
 #, fuzzy
 msgid "Invalid taxonomy file: {detail}"
 msgstr "Tệp phân loại không hợp lệ: {detail}"
@@ -3807,7 +3807,7 @@ msgstr "Lời mời gửi bài báo, lời mời tham gia số đặc biệt và
 msgid "Journals"
 msgstr "Tạp chí"
 
-#: ../../apps/extension/src/panel/ScopeField.tsx:200
+#: ../../apps/extension/src/panel/ScopeField.tsx:206
 #, fuzzy
 msgid "Jump to folder…"
 msgstr "Chuyển đến thư mục…"
@@ -3902,7 +3902,7 @@ msgstr "Khách hàng tiềm năng"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:200
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:209
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:571
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:639
 #, fuzzy
 msgid "Leave unsorted"
 msgstr "Để nguyên không sắp xếp"
@@ -3945,7 +3945,7 @@ msgstr "Thư từ đến với ta từ Pharaoh ở phía nam và người Hittit
 msgid "Light"
 msgstr "Sáng"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:503
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:521
 #, fuzzy
 msgid "List the kinds of emails that belong here: senders, topics, keywords. Aim for a full sentence."
 msgstr "Liệt kê các loại email thuộc về đây: người gửi, chủ đề, từ khóa. Mục tiêu là một câu hoàn chỉnh."
@@ -4050,7 +4050,7 @@ msgid "Manuscripts & Peer Review"
 msgstr "Bài viết & Phản biện đồng cấp"
 
 #: ../ui/src/emails/PreviewDoneBar.tsx:23
-#: ../ui/src/emails/ThreadRow.tsx:145
+#: ../ui/src/emails/ThreadRow.tsx:146
 #, fuzzy
 msgid "Mark as done"
 msgstr "Đánh dấu đã hoàn thành"
@@ -4062,11 +4062,11 @@ msgstr "Đánh dấu đã hoàn thành"
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:310
 #: ../ui/src/emails/ThreadPreview.tsx:108
 #: ../ui/src/emails/ThreadPreview.tsx:112
-#: ../ui/src/emails/ThreadRow.tsx:148
+#: ../ui/src/emails/ThreadRow.tsx:149
 msgid "Mark as important"
 msgstr "Đánh dấu quan trọng"
 
-#: ../ui/src/emails/ThreadRow.tsx:144
+#: ../ui/src/emails/ThreadRow.tsx:145
 #, fuzzy
 msgid "Mark as not done"
 msgstr "Đánh dấu chưa hoàn thành"
@@ -4228,7 +4228,7 @@ msgid "Most popular"
 msgstr "Phổ biến nhất"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:387
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:565
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:633
 #, fuzzy
 msgid "Move them to"
 msgstr "Chuyển chúng đến"
@@ -4242,7 +4242,7 @@ msgstr "Chuyển các cuộc hội thoại đến"
 msgid "Move to folder"
 msgstr "Chuyển vào thư mục"
 
-#: ../ui/src/emails/ReroutePopover.tsx:129
+#: ../ui/src/emails/ReroutePopover.tsx:130
 #, fuzzy
 msgid "Move to folder…"
 msgstr "Chuyển vào thư mục…"
@@ -4265,7 +4265,7 @@ msgstr "Hạ thần sẽ đến gần khu vực Đồng bằng trong vài ngày 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:235
 #: ../../apps/mobile/app/(app)/account.tsx:131
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:272
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:477
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:495
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:15
 #, fuzzy
 msgid "Name"
@@ -4403,12 +4403,12 @@ msgstr "Không lưu trữ nội dung email."
 msgid "No folders available"
 msgstr "Không có thư mục nào"
 
-#: ../ui/src/folder-tree/FolderTree.tsx:47
+#: ../ui/src/folder-tree/FolderTree.tsx:48
 #, fuzzy
 msgid "No folders defined"
 msgstr "Chưa có thư mục nào"
 
-#: ../ui/src/emails/ReroutePopover.tsx:139
+#: ../ui/src/emails/ReroutePopover.tsx:140
 #, fuzzy
 msgid "No folders match"
 msgstr "Không có thư mục nào khớp"
@@ -4517,7 +4517,7 @@ msgstr "Không"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:190
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:205
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:538
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:606
 #, fuzzy
 msgid "None (not connected)"
 msgstr "Không (chưa kết nối)"
@@ -4664,10 +4664,14 @@ msgstr "Vận hành"
 msgid "Optional. Applied when generating draft replies for this folder."
 msgstr "Tùy chọn. Được áp dụng khi tạo thư nháp phản hồi cho thư mục này."
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:524
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:592
 #, fuzzy
 msgid "Optional. Applied when generating draft replies for threads in this folder."
 msgstr "Tùy chọn. Được áp dụng khi tạo bản nháp trả lời cho các cuộc trò chuyện trong thư mục này."
+
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:573
+msgid "Optional. Sets this folder's chip and icon color across your inbox. Default assigns a stable color automatically."
+msgstr "Tùy chọn. Đặt màu cho thẻ và biểu tượng của thư mục này trên toàn bộ hộp thư đến của bạn. Mặc định sẽ tự động gán một màu ổn định."
 
 #: ../../apps/extension/src/auth/SignInScreen.tsx:102
 #: ../../apps/mobile/src/auth/GoogleSignInButton.tsx:17
@@ -4711,8 +4715,8 @@ msgid "Paid or upgraded workspace"
 msgstr "Không gian làm việc trả phí hoặc nâng cấp"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:322
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:532
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:691
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:600
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:759
 #, fuzzy
 msgid "Parent"
 msgstr "Mẹ"
@@ -4915,7 +4919,7 @@ msgid "Plan"
 msgstr "Kế hoạch"
 
 #. “Plan” here is the email-sorting taxonomy, not a billing or subscription plan.
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1412
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1480
 #, fuzzy
 msgid "Plan is view-only. Only workspace admins can edit it."
 msgstr "Kế hoạch này chỉ ở chế độ xem. Chỉ quản trị viên không gian làm việc mới có thể chỉnh sửa."
@@ -5139,7 +5143,7 @@ msgstr "Xếp hạng 5/5"
 msgid "Re-route {unclassifiedCount} unclassified"
 msgstr "Chuyển hướng {unclassifiedCount} mục chưa phân loại"
 
-#: ../ui/src/emails/ReroutePopover.tsx:120
+#: ../ui/src/emails/ReroutePopover.tsx:121
 #, fuzzy
 msgid "Re-route thread"
 msgstr "Chuyển hướng chuỗi thư"
@@ -5187,7 +5191,7 @@ msgid "Real Estate Agent"
 msgstr "Đại lý Bất động sản"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:91
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:311
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:314
 #, fuzzy
 msgid "Receipts, payment confirmations, and billing questions from vendors."
 msgstr "Biên lai, xác nhận thanh toán và các câu hỏi về hóa đơn từ nhà cung cấp."
@@ -5201,7 +5205,7 @@ msgstr "Vừa thực hiện. Khả dụng lại vào {when}."
 msgid "Recently attempted. Try again later."
 msgstr "Vừa thực hiện. Vui lòng thử lại sau."
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1810
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1878
 msgid "Recommended for your inbox"
 msgstr "Đề xuất cho hộp thư của bạn"
 
@@ -5271,7 +5275,7 @@ msgstr "Tuyển dụng"
 msgid "Redirecting…"
 msgstr "Đang chuyển hướng…"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1451
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1519
 #, fuzzy
 msgid "Redo"
 msgstr "Làm lại"
@@ -5329,7 +5333,7 @@ msgstr "Gỡ {email} khỏi danh sách đen"
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:310
 #: ../ui/src/emails/ThreadPreview.tsx:108
 #: ../ui/src/emails/ThreadPreview.tsx:112
-#: ../ui/src/emails/ThreadRow.tsx:147
+#: ../ui/src/emails/ThreadRow.tsx:148
 #, fuzzy
 msgid "Remove from important"
 msgstr "Bỏ đánh dấu quan trọng"
@@ -5391,7 +5395,7 @@ msgstr "Thay đổi gói"
 #~ msgid "Replace taxonomy"
 #~ msgstr "Thay thế phân loại"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1747
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1815
 #, fuzzy
 msgid "Replace with a template"
 msgstr "Thay bằng mẫu"
@@ -5547,11 +5551,7 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "Rib-Hadda,\n"
-"\n"
-"Chúng tôi đã nhận được thông tin. Ngũ cốc bổ sung đã được đặt hàng từ các kho phía nam và sẽ đến trước lễ hội thu hoạch. Kính mong ngài kiên nhẫn chờ đợi cho đến lúc đó.\n"
-"\n"
-"Chúc ngài mọi sự tốt lành,"
+msgstr "Rib-Hadda,\n\nChúng tôi đã nhận được thông tin. Ngũ cốc bổ sung đã được đặt hàng từ các kho phía nam và sẽ đến trước lễ hội thu hoạch. Kính mong ngài kiên nhẫn chờ đợi cho đến lúc đó.\n\nChúc ngài mọi sự tốt lành,"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -5584,8 +5584,8 @@ msgstr "Giống gói hàng tháng"
 #: ../../apps/mobile/src/components/EditNameSheet.tsx:66
 #: ../../apps/mobile/src/components/RenameWorkspaceSheet.tsx:74
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:450
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:462
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:722
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:480
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:790
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:29
 #, fuzzy
 msgid "Save"
@@ -5632,8 +5632,8 @@ msgid "Saving..."
 msgstr "Đang lưu..."
 
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:76
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:462
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:722
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:480
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:790
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:29
 #, fuzzy
 msgid "Saving…"
@@ -5655,13 +5655,13 @@ msgstr "Scribe"
 msgid "Search"
 msgstr "Tìm kiếm"
 
-#: ../ui/src/emails/ThreadListHeader.tsx:104
+#: ../ui/src/emails/ThreadListHeader.tsx:122
 #, fuzzy
 msgid "Search {threadCount} threads"
 msgstr "Tìm kiếm {threadCount} luồng"
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:322
-#: ../ui/src/emails/ReroutePopover.tsx:133
+#: ../ui/src/emails/ReroutePopover.tsx:134
 #, fuzzy
 msgid "Search folders"
 msgstr "Tìm kiếm thư mục"
@@ -5670,10 +5670,10 @@ msgstr "Tìm kiếm thư mục"
 msgid "Search mail"
 msgstr "Tìm kiếm thư"
 
-#: ../../apps/extension/src/panel/ScopeField.tsx:102
-#: ../../apps/extension/src/panel/ScopeField.tsx:103
-#: ../../apps/extension/src/panel/ScopeField.tsx:175
-#: ../ui/src/emails/ThreadListHeader.tsx:107
+#: ../../apps/extension/src/panel/ScopeField.tsx:104
+#: ../../apps/extension/src/panel/ScopeField.tsx:105
+#: ../../apps/extension/src/panel/ScopeField.tsx:181
+#: ../ui/src/emails/ThreadListHeader.tsx:125
 #, fuzzy
 msgid "Search threads"
 msgstr "Tìm kiếm luồng"
@@ -6037,7 +6037,7 @@ msgstr "Khối lượng sắp xếp"
 
 #: ../../apps/mobile/src/components/RationaleCard.tsx:34
 #: ../../apps/site/src/components/landing/HeroFeedCard.tsx:95
-#: ../ui/src/emails/ThreadRow.tsx:247
+#: ../ui/src/emails/ThreadRow.tsx:254
 #, fuzzy
 msgid "Sorting…"
 msgstr "Đang sắp xếp…"
@@ -6086,12 +6086,12 @@ msgid "Start free"
 msgstr "Bắt đầu miễn phí"
 
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:52
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1748
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1816
 #, fuzzy
 msgid "Start from a template"
 msgstr "Bắt đầu từ mẫu"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1516
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1584
 #, fuzzy
 msgid "Start from a template (replaces current)"
 msgstr "Bắt đầu từ mẫu (thay thế hiện tại)"
@@ -6227,8 +6227,8 @@ msgstr "Các cuộc trò chuyện về hỗ trợ, hướng dẫn, giữ chân, 
 msgid "Switch"
 msgstr "Chuyển đổi"
 
-#: ../../apps/extension/src/panel/ScopeField.tsx:159
-#: ../../apps/extension/src/panel/ScopeField.tsx:201
+#: ../../apps/extension/src/panel/ScopeField.tsx:165
+#: ../../apps/extension/src/panel/ScopeField.tsx:207
 msgid "Switch folder view"
 msgstr "Đổi chế độ xem thư mục"
 
@@ -6328,7 +6328,7 @@ msgstr "Nhóm"
 msgid "Template applied"
 msgstr "Đã áp dụng mẫu"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1540
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1608
 #, fuzzy
 msgid "Templates"
 msgstr "Mẫu"
@@ -6446,12 +6446,12 @@ msgstr "Những cộng tác viên này sẽ mất quyền truy cập vào ngày 
 msgid "These settings control which inbox threads are imported. Trash is always excluded."
 msgstr "Các cài đặt này kiểm soát các luồng hộp thư đến nào được nhập. Thùng rác luôn bị loại trừ."
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1404
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1472
 #, fuzzy
 msgid "This folder has child folders. Remove their Paths first, then delete it."
 msgstr "Thư mục này có các thư mục con. Vui lòng xóa Đường dẫn của chúng trước, sau đó mới xóa thư mục này."
 
-#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:36
+#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:44
 #, fuzzy
 msgid "This folder is not reachable from the inbox and will not be used for routing."
 msgstr "Thư mục này không thể truy cập được từ hộp thư đến và sẽ không được sử dụng để định tuyến."
@@ -6570,7 +6570,7 @@ msgstr "Các luồng đã sắp xếp"
 msgid "Threads sorted / month"
 msgstr "Email đã sắp xếp/tháng"
 
-#: ../ui/src/emails/ThreadListHeader.tsx:53
+#: ../ui/src/emails/ThreadListHeader.tsx:54
 #, fuzzy
 msgid "Threads sorted into this folder by Amarnai."
 msgstr "Email đã được Amarnai sắp xếp vào thư mục này."
@@ -6602,13 +6602,7 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "Gửi Hoàng đế vĩ đại, huynh đệ của ta,\n"
-"\n"
-"Đại hội đồng sẽ họp vào đầu Shemu. Ta yêu cầu huynh chuẩn bị một bản kê khai đầy đủ về các lãnh thổ phía đông và gửi trước bằng chuyển phát nhanh, nếu có thể thì trước kỳ trăng non.\n"
-"\n"
-"Liên minh của chúng ta rất mạnh. Hãy để chúng ta cho hội đồng thấy rằng nó vẫn vững chắc.\n"
-"\n"
-"Tushratta, Đại Vương Mitanni"
+msgstr "Gửi Hoàng đế vĩ đại, huynh đệ của ta,\n\nĐại hội đồng sẽ họp vào đầu Shemu. Ta yêu cầu huynh chuẩn bị một bản kê khai đầy đủ về các lãnh thổ phía đông và gửi trước bằng chuyển phát nhanh, nếu có thể thì trước kỳ trăng non.\n\nLiên minh của chúng ta rất mạnh. Hãy để chúng ta cho hội đồng thấy rằng nó vẫn vững chắc.\n\nTushratta, Đại Vương Mitanni"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:163
 #, fuzzy
@@ -6617,11 +6611,7 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "Gửi Cục Bổ nhiệm Hoàng gia,\n"
-"\n"
-"Chúng tôi đã nhận được đơn xin của Horemheb xứ Thebes và sẽ xem xét hồ sơ của ông ấy trước kỳ trăng non tới. Vui lòng thông báo cho ông ấy rằng chúng tôi sẽ gửi tin tức vào thời điểm thích hợp.\n"
-"\n"
-"Theo sắc lệnh hoàng gia,"
+msgstr "Gửi Cục Bổ nhiệm Hoàng gia,\n\nChúng tôi đã nhận được đơn xin của Horemheb xứ Thebes và sẽ xem xét hồ sơ của ông ấy trước kỳ trăng non tới. Vui lòng thông báo cho ông ấy rằng chúng tôi sẽ gửi tin tức vào thời điểm thích hợp.\n\nTheo sắc lệnh hoàng gia,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:278
 #, fuzzy
@@ -6632,13 +6622,7 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "Gửi Đại Vương,\n"
-"\n"
-"Trong nhiều năm, các gia tộc của chúng ta đã như huynh đệ. Nay thần viết thư này để đề xuất chúng ta chính thức hóa tình hữu nghị này vì lợi ích của cả hai dân tộc: một hiệp ước bảo vệ lẫn nhau và chia sẻ các tuyến đường.\n"
-"\n"
-"Thần chỉ yêu cầu ngài lắng nghe các điều khoản của thần. Xin gửi tin tức bằng người đưa thư tiếp theo và thần sẽ cử sứ giả của mình đi ngay lập tức.\n"
-"\n"
-"Aziru, bầy tôi của Đại Vương, chúa tể Amurru"
+msgstr "Gửi Đại Vương,\n\nTrong nhiều năm, các gia tộc của chúng ta đã như huynh đệ. Nay thần viết thư này để đề xuất chúng ta chính thức hóa tình hữu nghị này vì lợi ích của cả hai dân tộc: một hiệp ước bảo vệ lẫn nhau và chia sẻ các tuyến đường.\n\nThần chỉ yêu cầu ngài lắng nghe các điều khoản của thần. Xin gửi tin tức bằng người đưa thư tiếp theo và thần sẽ cử sứ giả của mình đi ngay lập tức.\n\nAziru, bầy tôi của Đại Vương, chúa tể Amurru"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:391
 #, fuzzy
@@ -6647,11 +6631,7 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "Gửi Đại Vương,\n"
-"\n"
-"Chuyến du hành của thần sẽ đưa thần đến gần Đồng bằng sông trong những ngày tới. Nếu Đại Vương có một giờ rảnh rỗi, thần rất hoan nghênh cơ hội được nói chuyện trực tiếp; có những vấn đề nói ra dễ hơn viết.\n"
-"\n"
-"Bầy tôi của ngài, Abdi-Heba, thống đốc Urushalim"
+msgstr "Gửi Đại Vương,\n\nChuyến du hành của thần sẽ đưa thần đến gần Đồng bằng sông trong những ngày tới. Nếu Đại Vương có một giờ rảnh rỗi, thần rất hoan nghênh cơ hội được nói chuyện trực tiếp; có những vấn đề nói ra dễ hơn viết.\n\nBầy tôi của ngài, Abdi-Heba, thống đốc Urushalim"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:153
 #, fuzzy
@@ -6660,11 +6640,7 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "Gửi Đại Vương, huynh đệ của ta,\n"
-"\n"
-"Ta đã nghe lời huynh nói. Vàng sẽ được gửi đi trước khi sứ giả tiếp theo khởi hành. Chúng ta trân trọng mối giao hảo giữa các gia tộc và không muốn nó nguội lạnh.\n"
-"\n"
-"Trong tình hữu nghị,"
+msgstr "Gửi Đại Vương, huynh đệ của ta,\n\nTa đã nghe lời huynh nói. Vàng sẽ được gửi đi trước khi sứ giả tiếp theo khởi hành. Chúng ta trân trọng mối giao hảo giữa các gia tộc và không muốn nó nguội lạnh.\n\nTrong tình hữu nghị,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:239
 #, fuzzy
@@ -6675,13 +6651,7 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "Gửi Đại Vương, huynh đệ của ta,\n"
-"\n"
-"Ta viết thư này trong tình hữu nghị, như cha ông chúng ta đã viết trước đây. Lô vàng thứ ba đã thỏa thuận theo hiệp ước của chúng ta vẫn chưa đến. Hai sứ giả đã đi qua mà chúng ta vẫn chờ đợi.\n"
-"\n"
-"Chúng ta yêu cầu huynh gửi nó đi mà không trì hoãn thêm, như lẽ phải của mối giao hảo giữa các gia tộc chúng ta.\n"
-"\n"
-"Burna-Buriash II, Vua Babylon"
+msgstr "Gửi Đại Vương, huynh đệ của ta,\n\nTa viết thư này trong tình hữu nghị, như cha ông chúng ta đã viết trước đây. Lô vàng thứ ba đã thỏa thuận theo hiệp ước của chúng ta vẫn chưa đến. Hai sứ giả đã đi qua mà chúng ta vẫn chờ đợi.\n\nChúng ta yêu cầu huynh gửi nó đi mà không trì hoãn thêm, như lẽ phải của mối giao hảo giữa các gia tộc chúng ta.\n\nBurna-Buriash II, Vua Babylon"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:352
 #, fuzzy
@@ -6692,13 +6662,7 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "Gửi Đại Vương, chúa tể của thần, mặt trời của thần,\n"
-"\n"
-"Lượng ngũ cốc ngài gửi tháng trước đã được đón nhận với lòng biết ơn và thần đã ca ngợi tên ngài trước dân chúng. Nhưng thần phải viết lại: chuyến hàng thứ ba vẫn chưa đến và thành phố đang trở nên bất ổn.\n"
-"\n"
-"Thần đã viết bảy lần rồi. Thần không muốn làm phiền ngài, nhưng thần còn có thể làm gì khác?\n"
-"\n"
-"Bầy tôi của ngài, Rib-Hadda, thống đốc Byblos"
+msgstr "Gửi Đại Vương, chúa tể của thần, mặt trời của thần,\n\nLượng ngũ cốc ngài gửi tháng trước đã được đón nhận với lòng biết ơn và thần đã ca ngợi tên ngài trước dân chúng. Nhưng thần phải viết lại: chuyến hàng thứ ba vẫn chưa đến và thành phố đang trở nên bất ổn.\n\nThần đã viết bảy lần rồi. Thần không muốn làm phiền ngài, nhưng thần còn có thể làm gì khác?\n\nBầy tôi của ngài, Rib-Hadda, thống đốc Byblos"
 
 #: ../../apps/site/src/components/landing/MailThreadMock.tsx:135
 msgid "To: You"
@@ -6738,7 +6702,7 @@ msgid "Travel"
 msgstr "Du lịch"
 
 #: ../ui/src/emails/EmailRail.tsx:91
-#: ../ui/src/emails/ThreadListHeader.tsx:84
+#: ../ui/src/emails/ThreadListHeader.tsx:86
 #, fuzzy
 msgid "Triage"
 msgstr "Phân loại"
@@ -6789,18 +6753,18 @@ msgid "Unavailable"
 msgstr "Không khả dụng"
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:41
-#: ../ui/src/emails/ThreadRow.tsx:257
+#: ../ui/src/emails/ThreadRow.tsx:264
 #, fuzzy
 msgid "Unclassified"
 msgstr "Chưa được phân loại"
 
-#: ../ui/src/emails/ThreadRow.tsx:256
+#: ../ui/src/emails/ThreadRow.tsx:263
 msgid "Unclassified. Change folder"
 msgstr "Chưa phân loại. Thay đổi thư mục"
 
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:365
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:407
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1442
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1510
 #: ../ui/src/emails/MockEmailsPage.tsx:290
 #, fuzzy
 msgid "Undo"
@@ -6816,7 +6780,7 @@ msgstr "Đại học"
 msgid "Unknown"
 msgstr "Không xác định"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1283
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1351
 #, fuzzy
 msgid "unknown error"
 msgstr "lỗi không xác định"
@@ -6896,7 +6860,7 @@ msgstr "Cập nhật phương thức thanh toán"
 
 #: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:47
 #: ../ui/src/i18n/taxonomy-template-messages.ts:245
-#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:59
+#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:75
 #, fuzzy
 msgid "Updates / Other"
 msgstr "Cập nhật / Khác"
@@ -6991,7 +6955,7 @@ msgstr "Sau khi thay đổi bộ lọc, hãy dùng \"Quét lại hộp thư đ�
 msgid "Use a template"
 msgstr "Dùng mẫu"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1856
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1924
 #, fuzzy
 msgid "Use template"
 msgstr "Dùng mẫu"
@@ -7058,7 +7022,7 @@ msgstr "Tình nguyện viên"
 
 #: ../../apps/mobile/src/components/RationaleCard.tsx:43
 #: ../../apps/mobile/src/components/ThreadRow.tsx:44
-#: ../ui/src/emails/ThreadRow.tsx:251
+#: ../ui/src/emails/ThreadRow.tsx:258
 #, fuzzy
 msgid "Waiting"
 msgstr "Đang chờ"
@@ -7078,7 +7042,7 @@ msgstr "Đang chờ xác minh…"
 #~ msgid "Waitlist"
 #~ msgstr "Danh sách chờ"
 
-#: ../ui/src/emails/ThreadRow.tsx:138
+#: ../ui/src/emails/ThreadRow.tsx:139
 #, fuzzy
 msgid "Wants {folderName}"
 msgstr "Muốn {folderName}"
@@ -7137,7 +7101,7 @@ msgstr "Điều gì sẽ xảy ra với các cuộc trò chuyện mà Amarnai kh
 msgid "What model does Amarnai use?"
 msgstr "Amarnai sử dụng mô hình nào?"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:547
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:615
 #, fuzzy
 msgid "Where this folder sits. Folders with no parent stay disconnected and are ignored until connected."
 msgstr "Vị trí của thư mục này. Các thư mục không có thư mục cha sẽ bị ngắt kết nối và bỏ qua cho đến khi được kết nối."
@@ -7180,7 +7144,7 @@ msgstr "Tương thích với Gmail™ và Outlook."
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:61
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:220
 #: ../../apps/site/src/components/demo/DemoTaxonomyCanvas.tsx:218
-#: ../ui/src/emails/ThreadListHeader.tsx:63
+#: ../ui/src/emails/ThreadListHeader.tsx:65
 #: ../ui/src/pricing/planMessages.ts:50
 #, fuzzy
 msgid "Workspace"

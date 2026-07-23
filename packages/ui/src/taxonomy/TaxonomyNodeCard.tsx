@@ -6,6 +6,7 @@ import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
 import type { TaxonomyNode } from "@amarnai/shared";
 import type { IgnoredReason } from "@amarnai/core/taxonomy";
+import { folderInkVar } from "@amarnai/core/emails";
 import { Tooltip } from "../Tooltip.js";
 import { Glyph, NavGlyph, FOLDER_GLYPH } from "../icons/glyphs.js";
 import "./taxonomy-node-card.css";
@@ -20,6 +21,11 @@ export interface TaxonomyNodeCardBaseProps {
   isCatchAll?: boolean;
   ignoredReason?: IgnoredReason;
   selected?: boolean;
+  // Folder-color inputs — the node id and its optional override key. The folder
+  // icon is tinted with the resolved swatch. Omitted for the root Inbox and the
+  // catch-all, which are not user-colorable.
+  colorId?: string;
+  colorKey?: string | null;
 }
 
 export function TaxonomyNodeCardBase({
@@ -29,6 +35,8 @@ export function TaxonomyNodeCardBase({
   isCatchAll = false,
   ignoredReason = null,
   selected = false,
+  colorId,
+  colorKey,
 }: TaxonomyNodeCardBaseProps) {
   const { _ } = useLingui();
   const ignored = ignoredReason !== null;
@@ -49,7 +57,15 @@ export function TaxonomyNodeCardBase({
       <div className="node-name">
         {/* The inbox root is the mailbox itself; every other node is a folder
             (catch-all included), matching the folder icon on the emails page. */}
-        <span className="node-icon" aria-hidden>
+        <span
+          className="node-icon"
+          aria-hidden
+          style={
+            !isRoot && !isCatchAll && colorId
+              ? { color: folderInkVar({ id: colorId, colorKey: colorKey ?? null }) }
+              : undefined
+          }
+        >
           {isRoot ? <NavGlyph name="emails" size={13} /> : <Glyph svg={FOLDER_GLYPH} />}
         </span>
         <span className="node-label">

@@ -1,6 +1,7 @@
 "use client";
 
 import { Trans } from "@lingui/react/macro";
+import { folderInkVar } from "@amarnai/core/emails";
 import { Glyph, FOLDER_GLYPH, MUTE_GLYPH } from "../icons/glyphs.js";
 import type { FolderItem } from "./types.js";
 import "./folder-tree.css";
@@ -90,7 +91,10 @@ export function FolderTree({
                   dangerouslySetInnerHTML={{ __html: TWIRL_SVG }}
                 />
               </span>
-              <span className="em-folder-icon">
+              <span
+                className="em-folder-icon"
+                style={root.ignored ? undefined : { color: folderInkVar(root) }}
+              >
                 <Glyph svg={root.ignored ? MUTE_GLYPH : FOLDER_GLYPH} />
               </span>
               <span className="em-tree-name">{root.name}</span>
@@ -122,7 +126,10 @@ export function FolderTree({
                       onClick={() => onSelect?.(child.id)}
                     >
                       <span className="em-twirl empty" />
-                      <span className="em-folder-icon">
+                      <span
+                        className="em-folder-icon"
+                        style={child.ignored ? undefined : { color: folderInkVar(child) }}
+                      >
                         <Glyph svg={child.ignored ? MUTE_GLYPH : FOLDER_GLYPH} />
                       </span>
                       <span className="em-tree-name">{child.name}</span>

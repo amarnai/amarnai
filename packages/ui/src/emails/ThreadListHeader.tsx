@@ -3,6 +3,7 @@
 import { Trans, Plural } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
+import { folderInkVar } from "@amarnai/core/emails";
 import type { FolderItem } from "../folder-tree/types.js";
 import type { ActiveSelection } from "./types.js";
 import { QUEUES } from "./selection.js";
@@ -54,6 +55,7 @@ export function ThreadListHeader({
     : (queueLabel ? i18n._(queueLabel.desc) : "");
 
   const ancestry = isFolder ? getFolderAncestry(active.id, folders) : [];
+  const activeFolder = isFolder ? folders.find((f) => f.id === active.id) : undefined;
 
   return (
     <div className="em-list-head">
@@ -87,7 +89,23 @@ export function ThreadListHeader({
               </>
             )}
           </div>
-          <div className="em-list-title">{title}</div>
+          <div className="em-list-title">
+            {activeFolder && (
+              <span
+                aria-hidden
+                style={{
+                  display: "inline-block",
+                  width: 8,
+                  height: 8,
+                  borderRadius: 999,
+                  marginRight: 8,
+                  verticalAlign: "middle",
+                  background: folderInkVar(activeFolder),
+                }}
+              />
+            )}
+            {title}
+          </div>
           <div className="em-head-desc">{desc}</div>
         </div>
       </div>

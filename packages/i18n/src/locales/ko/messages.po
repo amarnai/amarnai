@@ -13,7 +13,7 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:542
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:610
 #, fuzzy
 msgid " (Inbox)"
 msgstr "(받은편지함)"
@@ -151,11 +151,11 @@ msgstr "{blacklistCount, plural, one {#개 차단됨} other {#개 차단됨}}"
 #~ msgid "{by} assigned you: {subject}"
 #~ msgstr "{by} 님이 할당함: {subject}"
 
-#: ../ui/src/emails/ThreadRow.tsx:263
+#: ../ui/src/emails/ThreadRow.tsx:270
 msgid "{chipLabel}. Change folder"
 msgstr "{chipLabel}. 폴더 변경"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:557
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:625
 #, fuzzy
 msgid "{classificationCount, plural, one {Deleting this folder will leave # thread unsorted.} other {Deleting this folder will leave # threads unsorted.}}"
 msgstr "이 폴더를 삭제하면 {classificationCount, plural, one {#개 스레드} other {#개 스레드}}가 분류되지 않은 상태로 남게 됩니다."
@@ -238,7 +238,7 @@ msgstr "{0}개 중 {quotaRemaining}개 남음 · {quotaResetDate} 초기화"
 msgid "{remaining} of {limit} remaining · resets {resetDate}"
 msgstr "{limit}개 중 {remaining}개 남음 · {resetDate} 초기화"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1599
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1667
 #, fuzzy
 msgid "{routableCount} of {TAXONOMY_MIN_NON_ROOT_NODES} folders connected to your inbox. Routing requires at least {TAXONOMY_MIN_NON_ROOT_NODES}."
 msgstr "받은편지함에 {TAXONOMY_MIN_NON_ROOT_NODES}개 폴더 중 {routableCount}개가 연결되었습니다. 라우팅하려면 최소 {TAXONOMY_MIN_NON_ROOT_NODES}개가 필요합니다."
@@ -248,12 +248,12 @@ msgstr "받은편지함에 {TAXONOMY_MIN_NON_ROOT_NODES}개 폴더 중 {routable
 msgid "{selectedCount} selected"
 msgstr "{selectedCount}개 선택됨"
 
-#: ../ui/src/emails/ThreadListHeader.tsx:113
+#: ../ui/src/emails/ThreadListHeader.tsx:131
 #, fuzzy
 msgid "{threadCount, plural, one {# thread} other {# threads}}"
 msgstr "{threadCount, plural, one {#개 스레드} other {#개 스레드}}"
 
-#: ../ui/src/emails/ThreadListHeader.tsx:117
+#: ../ui/src/emails/ThreadListHeader.tsx:135
 #, fuzzy
 msgid "{unreadCount} unread"
 msgstr "{unreadCount}개 읽지 않음"
@@ -302,8 +302,8 @@ msgstr "© 2026 Amarnai. AGPL-3.0에 따라 오픈 소스."
 msgid "+ Add folder"
 msgstr "+ 폴더 추가"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1430
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1439
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1498
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1507
 #, fuzzy
 msgid "+ Add Folder"
 msgstr "+ 폴더 추가"
@@ -535,9 +535,7 @@ msgstr "테베의 호렘헤브님으로부터 서신 관리 책임자 직책에 
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "테베의 호렘헤브님으로부터 서신 관리 책임자 직책에 대한 새로운 지원서가 접수되었습니다.\n"
-"\n"
-"지원서는 기록 보관소에서 확인할 수 있습니다."
+msgstr "테베의 호렘헤브님으로부터 서신 관리 책임자 직책에 대한 새로운 지원서가 접수되었습니다.\n\n지원서는 기록 보관소에서 확인할 수 있습니다."
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:387
 #, fuzzy
@@ -551,11 +549,7 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "압디-헤바님께,\n"
-"\n"
-"저도 그 주에 델타 근처에 있을 예정입니다. 둘째 날에 역참에서 만나뵙죠. 오전 시간은 괜찮습니다.\n"
-"\n"
-"그럼,"
+msgstr "압디-헤바님께,\n\n저도 그 주에 델타 근처에 있을 예정입니다. 둘째 날에 역참에서 만나뵙죠. 오전 시간은 괜찮습니다.\n\n그럼,"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
@@ -623,11 +617,11 @@ msgid "Add"
 msgstr "추가"
 
 #. placeholder {0}: minNodeDescriptionLength(description)
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:448
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:466
 msgid "Add a description (at least {0} characters) so the AI can sort accurately."
 msgstr "AI의 정확한 분류를 위해 최소 {0}자 이상의 설명을 추가해 주세요."
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1464
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1532
 #, fuzzy
 msgid "Add at least 3 connected folders to export"
 msgstr "내보내려면 연결된 폴더를 최소 3개 이상 추가하세요."
@@ -733,7 +727,7 @@ msgstr "모든 폴더"
 msgid "All limits are per workspace."
 msgstr "모든 제한은 작업 공간별로 적용됩니다."
 
-#: ../../apps/extension/src/panel/ScopeField.tsx:65
+#: ../../apps/extension/src/panel/ScopeField.tsx:67
 msgid "All mail"
 msgstr "모든 메일"
 
@@ -1066,8 +1060,8 @@ msgstr "스레드 할당"
 msgid "Assign to"
 msgstr "할당 대상"
 
-#: ../ui/src/emails/ThreadRow.tsx:336
-#: ../ui/src/emails/ThreadRow.tsx:345
+#: ../ui/src/emails/ThreadRow.tsx:347
+#: ../ui/src/emails/ThreadRow.tsx:356
 #: ../ui/src/emails/TriageBar.tsx:63
 #, fuzzy
 msgid "Assign to a member"
@@ -1086,8 +1080,8 @@ msgstr "담당"
 msgid "Assigned to {assigneeName}"
 msgstr "{assigneeName}님에게 할당됨"
 
-#: ../ui/src/emails/ThreadRow.tsx:228
-#: ../ui/src/emails/ThreadRow.tsx:344
+#: ../ui/src/emails/ThreadRow.tsx:235
+#: ../ui/src/emails/ThreadRow.tsx:355
 #: ../ui/src/emails/TriageBar.tsx:62
 #, fuzzy
 msgid "Assigned to {assigneeName}. Change assignee"
@@ -1119,7 +1113,7 @@ msgstr "알림을 업데이트/기타 폴더로 자동 분류"
 msgid "Automated and bulk mail ({0}) always moves to the new catch-all folder."
 msgstr "자동 발송 및 대량 메일({0})은 항상 새 통합 폴더로 이동합니다."
 
-#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:39
+#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:47
 msgid "Automated and bulk mail that doesn't fit another folder lands here automatically. This is different from Needs review, which holds threads too ambiguous for the assistant to sort."
 msgstr "다른 폴더에 분류되지 않는 자동 발송 및 대량 메일은 자동으로 이곳에 보관됩니다. 이 폴더는 비서가 분류하기에 모호한 스레드를 보관하는 '검토 필요' 폴더와는 다릅니다."
 
@@ -1129,7 +1123,7 @@ msgid "Automated notice from the Bureau of Royal Appointments. Subject and sende
 msgstr "왕실 임명국에서 보낸 자동 알림. 제목과 발신자는 공개 채용 포지션에 대한 새로운 지원서를 명확히 나타냅니다."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:246
-#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:68
+#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:84
 #, fuzzy
 msgid "Automated notifications, newsletters, and service updates that don't fit another folder."
 msgstr "다른 폴더에 속하지 않는 자동 알림, 뉴스레터 및 서비스 업데이트."
@@ -1154,11 +1148,7 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "아지루,\n"
-"\n"
-"친구로서의 말씀 잘 받았습니다. 아무르 가문이 제안하는 바를 더 들을 준비가 되어 있습니다. 다음 사신 편에 조건을 보내주십시오.\n"
-"\n"
-"안녕히,"
+msgstr "아지루,\n\n친구로서의 말씀 잘 받았습니다. 아무르 가문이 제안하는 바를 더 들을 준비가 되어 있습니다. 다음 사신 편에 조건을 보내주십시오.\n\n안녕히,"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:261
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
@@ -1271,7 +1261,7 @@ msgid "Browse emails easily through your folders. Generate draft replies and cop
 msgstr "폴더를 통해 이메일을 편리하게 살펴보세요. 답장 초안을 생성하고 받은편지함으로 복사할 수 있습니다."
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:283
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1524
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1592
 #, fuzzy
 msgid "Browse templates"
 msgstr "템플릿 둘러보기"
@@ -1375,11 +1365,11 @@ msgstr "Amarnai를 자체 호스팅할 수 있나요?"
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:150
 #: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:107
 #: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:255
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:595
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:611
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:725
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1752
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1845
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:663
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:679
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:793
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1820
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1913
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:64
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:275
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:370
@@ -1426,7 +1416,7 @@ msgid "Carrier tracking numbers, delivery exceptions, and courier dispatch notic
 msgstr "운송장 번호, 배송 예외 사항, 택배 발송 알림."
 
 #: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:58
-#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:81
+#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:97
 #, fuzzy
 msgid "Catch-all"
 msgstr "캐치올"
@@ -1436,11 +1426,11 @@ msgstr "캐치올"
 msgid "Change"
 msgstr "변경"
 
-#: ../ui/src/emails/ThreadRow.tsx:335
+#: ../ui/src/emails/ThreadRow.tsx:346
 msgid "Change assignee"
 msgstr "담당자 변경"
 
-#: ../ui/src/emails/ThreadRow.tsx:164
+#: ../ui/src/emails/ThreadRow.tsx:170
 msgid "Change folder"
 msgstr "폴더 변경"
 
@@ -1468,7 +1458,7 @@ msgstr "받은편지함을 확인하세요."
 msgid "Checkout failed: {0}"
 msgstr "결제 실패: {0}"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:707
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:775
 #, fuzzy
 msgid "Child folder"
 msgstr "하위 폴더"
@@ -1540,7 +1530,7 @@ msgstr "클라이언트"
 msgid "Close"
 msgstr "닫기"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1663
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1731
 #, fuzzy
 msgid "Close panel"
 msgstr "패널 닫기"
@@ -1553,7 +1543,7 @@ msgstr "패널 닫기"
 msgid "Close preview"
 msgstr "미리보기 닫기"
 
-#: ../../apps/extension/src/panel/ScopeField.tsx:112
+#: ../../apps/extension/src/panel/ScopeField.tsx:114
 msgid "Close search"
 msgstr "검색 닫기"
 
@@ -1599,6 +1589,11 @@ msgstr "공동 작업자는 Scribe 및 Pharaoh 플랜에서 이용 가능합니�
 #~ msgid "Collapse"
 #~ msgstr "접기"
 
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:532
+#, fuzzy
+msgid "Color"
+msgstr "색상"
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:124
 msgid "Communities"
 msgstr "커뮤니티"
@@ -1631,7 +1626,7 @@ msgstr "취소 확인"
 msgid "Confirm delete"
 msgstr "삭제 확인"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:587
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:655
 #, fuzzy
 msgid "Confirm Delete"
 msgstr "삭제 확인"
@@ -1936,7 +1931,7 @@ msgstr "플랜을 로드할 수 없습니다."
 msgid "Could not open billing management."
 msgstr "결제 관리를 열 수 없습니다."
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1326
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1394
 msgid "Could not prepare migration"
 msgstr "마이그레이션 준비에 실패했습니다."
 
@@ -1951,7 +1946,7 @@ msgstr "재스캔을 대기열에 추가할 수 없습니다. 다시 시도해�
 msgid "Could not reach the server. Please check your connection and try again."
 msgstr "서버에 연결할 수 없습니다. 연결 상태를 확인하고 다시 시도해 주세요."
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1276
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1344
 #, fuzzy
 msgid "Could not read file: invalid JSON."
 msgstr "파일을 읽을 수 없습니다. JSON 형식이 유효하지 않습니다."
@@ -2039,7 +2034,7 @@ msgid "Courses"
 msgstr "강좌"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:448
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:462
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:480
 #, fuzzy
 msgid "Create"
 msgstr "만들기"
@@ -2064,7 +2059,7 @@ msgstr "계정 만들기"
 msgid "Create an account to triage your inbox"
 msgstr "수신함 정리를 위해 계정을 만드세요."
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:468
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:486
 #, fuzzy
 msgid "Create Folder"
 msgstr "폴더 만들기"
@@ -2099,7 +2094,7 @@ msgstr "생성 중..."
 #: ../../apps/mobile/src/components/RerouteSheet.tsx:45
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:107
 #: ../../apps/site/src/components/demo/demo-seed.ts:33
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1806
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1874
 #, fuzzy
 msgid "Current"
 msgstr "현재"
@@ -2154,9 +2149,14 @@ msgid "Deal progress, transaction stages, and closing coordination across active
 msgstr "활성 판매 전반의 거래 진행, 계약 단계, 마감 조율."
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:118
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:546
 #, fuzzy
 msgid "Default"
 msgstr "기본"
+
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:544
+msgid "Default color"
+msgstr "기본 색상"
 
 #: ../ui/src/pricing/planMessages.ts:73
 #, fuzzy
@@ -2171,9 +2171,9 @@ msgstr "기본 무료 워크스페이스"
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:198
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:271
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:272
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:627
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:638
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:734
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:695
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:706
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:802
 #, fuzzy
 msgid "Delete"
 msgstr "삭제"
@@ -2241,7 +2241,7 @@ msgstr "삭제 중..."
 
 #: ../../apps/mobile/app/(app)/account.tsx:166
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:143
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:587
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:655
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:56
 #, fuzzy
 msgid "Deleting…"
@@ -2252,7 +2252,7 @@ msgid "Deployments"
 msgstr "배포"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:80
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:294
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:297
 #, fuzzy
 msgid "Describe what kinds of emails belong here: who they come from and what they are about. Be specific and use the actual names, topics, and words that show up in those emails. Describe what the emails are, not what you plan to do about them. The clearer your description, the more accurately your email is sorted here."
 msgstr "이곳에 분류될 이메일의 종류를 설명하세요. 발신자와 내용, 그리고 이메일에 실제 나타나는 이름, 주제, 단어를 구체적으로 알려주세요. 이메일로 무엇을 할지가 아니라, 이메일의 특징을 묘사해야 합니다. 설명이 명확할수록 이메일 분류 정확도가 높아집니다."
@@ -2263,7 +2263,7 @@ msgid "Describe your folders"
 msgstr "폴더 설명"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:289
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:490
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:508
 #, fuzzy
 msgid "Description"
 msgstr "설명"
@@ -2431,7 +2431,7 @@ msgstr "모금 캠페인, 기부 활동, 모금 요청 응답."
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:278
 #: ../../apps/mobile/src/components/ThreadRow.tsx:35
-#: ../ui/src/emails/ThreadRow.tsx:220
+#: ../ui/src/emails/ThreadRow.tsx:227
 #, fuzzy
 msgid "Done"
 msgstr "완료"
@@ -2450,7 +2450,7 @@ msgstr "기부자"
 msgid "Downgrade to {planName}"
 msgstr "{planName}(으)로 다운그레이드"
 
-#: ../ui/src/emails/ThreadRow.tsx:286
+#: ../ui/src/emails/ThreadRow.tsx:297
 #, fuzzy
 msgid "draft"
 msgstr "초안"
@@ -2484,13 +2484,13 @@ msgid "Draft shared"
 msgstr "초안 공유됨"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:342
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:513
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:581
 #, fuzzy
 msgid "Draft style guidance"
 msgstr "초안 작성 지침"
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:106
-#: ../ui/src/emails/ThreadRow.tsx:280
+#: ../ui/src/emails/ThreadRow.tsx:291
 #, fuzzy
 msgid "Drafting…"
 msgstr "초안 작성 중..."
@@ -2518,13 +2518,13 @@ msgstr "이커머스 판매자"
 msgid "e.g. Invoices"
 msgstr "예: 인보이스"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:498
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:516
 #, fuzzy
 msgid "e.g. Invoices, receipts, payment confirmations, and billing questions from clients and vendors."
 msgstr "예: 고객 및 공급업체로부터의 송장, 영수증, 결제 확인, 청구 관련 문의."
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:350
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:519
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:587
 #, fuzzy
 msgid "e.g. Reply formally. Keep responses under 3 sentences."
 msgstr "예: 공식적인 답변. 답변은 3문장 이내로 작성하세요."
@@ -2539,7 +2539,7 @@ msgstr "이전"
 msgid "Edit folder"
 msgstr "폴더 편집"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:468
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:486
 #, fuzzy
 msgid "Edit Folder"
 msgstr "폴더 편집"
@@ -2548,7 +2548,7 @@ msgstr "폴더 편집"
 msgid "Edit inbox"
 msgstr "받은 편지함 편집"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:682
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:750
 #, fuzzy
 msgid "Edit Path"
 msgstr "경로 편집"
@@ -2624,7 +2624,7 @@ msgid "Emails"
 msgstr "이메일"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:100
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:322
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:325
 #, fuzzy
 msgid "Emails about my bills that I need to deal with."
 msgstr "처리할 청구서 관련 이메일."
@@ -2658,7 +2658,7 @@ msgstr "등록, 등록금, 기숙사 배정, 학교 행정 업무."
 #~ msgstr "입학, 등록금, 주택 신청, 공식 캠퍼스 행정 업무."
 
 #. placeholder {0}: minNodeNameLength(name)
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:445
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:463
 msgid "Enter a folder name (at least {0} characters)."
 msgstr "최소 {0}자 이상의 폴더 이름을 입력해 주세요."
 
@@ -2683,7 +2683,7 @@ msgstr "이메일을 입력하시면 비밀번호 재설정 링크를 보내드�
 msgid "Enter your email and we'll send you a reset link."
 msgstr "이메일을 입력하시면 재설정 링크를 보내드립니다."
 
-#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:78
+#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:94
 #, fuzzy
 msgid "Entry"
 msgstr "항목"
@@ -2750,13 +2750,13 @@ msgstr "이름 지정된 폴더에 속하지 않는 모든 항목."
 msgid "Expenses"
 msgstr "경비"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1488
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1556
 #, fuzzy
 msgid "Export"
 msgstr "내보내기"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1463
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1471
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1531
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1539
 #, fuzzy
 msgid "Export plan"
 msgstr "내보내기 계획"
@@ -2775,22 +2775,22 @@ msgstr "외부 기관, 외부 업체, 전문 비즈니스 파트너."
 msgid "Failed to apply"
 msgstr "적용 실패"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1108
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1176
 #, fuzzy
 msgid "Failed to create folder"
 msgstr "폴더 생성 실패"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1041
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1109
 #, fuzzy
 msgid "Failed to create path"
 msgstr "경로 생성 실패"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1179
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1247
 #, fuzzy
 msgid "Failed to delete folder"
 msgstr "폴더 삭제 실패"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1196
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1264
 #, fuzzy
 msgid "Failed to delete path"
 msgstr "경로 삭제 실패"
@@ -2800,12 +2800,12 @@ msgstr "경로 삭제 실패"
 msgid "Failed to load status"
 msgstr "상태 로드 실패"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1237
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1305
 #, fuzzy
 msgid "Failed to redo"
 msgstr "재실행 실패"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1008
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1076
 #, fuzzy
 msgid "Failed to save position"
 msgstr "위치 저장 실패"
@@ -2815,17 +2815,17 @@ msgstr "위치 저장 실패"
 msgid "Failed to start generation"
 msgstr "생성 시작 실패"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1218
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1286
 #, fuzzy
 msgid "Failed to undo"
 msgstr "실행 취소 실패"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1140
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1208
 #, fuzzy
 msgid "Failed to update folder"
 msgstr "폴더 업데이트 실패"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1162
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1230
 #, fuzzy
 msgid "Failed to update path"
 msgstr "경로 업데이트 실패"
@@ -2924,6 +2924,10 @@ msgstr "폴더"
 msgid "Folder"
 msgstr "폴더"
 
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:535
+msgid "Folder color"
+msgstr "폴더 색상"
+
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:196
 #, fuzzy
 msgid "Folder created"
@@ -2934,7 +2938,7 @@ msgstr "폴더 생성 완료"
 msgid "Folder deleted"
 msgstr "폴더 삭제 완료"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1421
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1489
 msgid "Folder limit reached ({MAX_TAXONOMY_NON_ROOT_NODES}). Delete a folder to add another."
 msgstr "폴더 개수 제한({MAX_TAXONOMY_NON_ROOT_NODES}개)에 도달했습니다. 새 폴더를 추가하려면 기존 폴더를 삭제하세요."
 
@@ -3176,7 +3180,7 @@ msgstr "초안 답장 생성"
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:60
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:207
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:251
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1625
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1693
 #, fuzzy
 msgid "Generate from inbox"
 msgstr "받은 편지함에서 생성"
@@ -3371,11 +3375,7 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "위대하신 왕이시여,\n"
-"\n"
-"요청하신 보고서는 회의가 열리기 전에 준비될 것입니다. 저의 서기관들에게 동부 영토의 회계 장부를 취합하도록 하여 빠른 전령을 통해 미리 보내드리겠습니다.\n"
-"\n"
-"충심을 다하여,"
+msgstr "위대하신 왕이시여,\n\n요청하신 보고서는 회의가 열리기 전에 준비될 것입니다. 저의 서기관들에게 동부 영토의 회계 장부를 취합하도록 하여 빠른 전령을 통해 미리 보내드리겠습니다.\n\n충심을 다하여,"
 
 #: ../../apps/site/src/components/support/SupportContent.tsx:77
 msgid "Guides and answers to common questions"
@@ -3397,7 +3397,7 @@ msgid "Help requests, supply issues, and escalations from customers."
 msgstr "고객 지원 요청, 공급 문제, 그리고 에스컬레이션."
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:71
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:278
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:281
 #, fuzzy
 msgid "Hide tips"
 msgstr "팁 숨기기"
@@ -3487,7 +3487,7 @@ msgid "How it works"
 msgstr "작동 방식"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:73
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:278
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:281
 #, fuzzy
 msgid "How to write a good description"
 msgstr "설명 잘 쓰는 법"
@@ -3516,27 +3516,27 @@ msgstr "문제가 발생하거나 궁금한 점이 있다면 문의 방법은 �
 #~ msgstr "해당 이메일로 계정 생성이 가능하다면, 설정 완료 링크를 보내드렸습니다. 링크를 통해 비밀번호를 설정하고 로그인하세요."
 
 #: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:64
-#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:84
+#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:100
 #, fuzzy
 msgid "Ignored"
 msgstr "무시됨"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1513
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1581
 #, fuzzy
 msgid "Import"
 msgstr "가져오기"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1341
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1409
 #, fuzzy
 msgid "Import failed"
 msgstr "가져오기 실패"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1496
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1564
 #, fuzzy
 msgid "Import plan"
 msgstr "플랜 가져오기"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1491
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1559
 #, fuzzy
 msgid "Import plan (replaces current)"
 msgstr "플랜 가져오기 (현재 플랜 대체)"
@@ -3566,8 +3566,8 @@ msgstr "중요"
 #: ../../apps/site/src/components/demo/demo-seed.ts:28
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:151
 #: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:127
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:541
-#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:57
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:609
+#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:73
 #, fuzzy
 msgid "Inbox"
 msgstr "받은편지함"
@@ -3694,12 +3694,12 @@ msgid "Invalid or missing reset link."
 msgstr "잘못되거나 없는 재설정 링크입니다."
 
 #. placeholder {0}: validation.error
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1290
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1358
 #, fuzzy
 msgid "Invalid taxonomy file: {0}"
 msgstr "잘못된 분류 파일: {0}"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1284
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1352
 #, fuzzy
 msgid "Invalid taxonomy file: {detail}"
 msgstr "잘못된 분류 파일: {detail}"
@@ -3807,7 +3807,7 @@ msgstr "학술지 논문 모집, 특별호 초대 및 인용 지표"
 msgid "Journals"
 msgstr "학술지"
 
-#: ../../apps/extension/src/panel/ScopeField.tsx:200
+#: ../../apps/extension/src/panel/ScopeField.tsx:206
 #, fuzzy
 msgid "Jump to folder…"
 msgstr "폴더로 이동…"
@@ -3902,7 +3902,7 @@ msgstr "리드"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:200
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:209
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:571
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:639
 #, fuzzy
 msgid "Leave unsorted"
 msgstr "분류하지 않음"
@@ -3945,7 +3945,7 @@ msgstr "남쪽의 파라오와 북쪽의 히타이트족으로부터 편지가 �
 msgid "Light"
 msgstr "라이트"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:503
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:521
 #, fuzzy
 msgid "List the kinds of emails that belong here: senders, topics, keywords. Aim for a full sentence."
 msgstr "여기에 속하는 이메일의 종류(발신자, 주제, 키워드)를 나열하세요. 완전한 문장으로 작성해 주세요."
@@ -4050,7 +4050,7 @@ msgid "Manuscripts & Peer Review"
 msgstr "원고 및 피어 리뷰"
 
 #: ../ui/src/emails/PreviewDoneBar.tsx:23
-#: ../ui/src/emails/ThreadRow.tsx:145
+#: ../ui/src/emails/ThreadRow.tsx:146
 #, fuzzy
 msgid "Mark as done"
 msgstr "완료로 표시"
@@ -4062,11 +4062,11 @@ msgstr "완료로 표시"
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:310
 #: ../ui/src/emails/ThreadPreview.tsx:108
 #: ../ui/src/emails/ThreadPreview.tsx:112
-#: ../ui/src/emails/ThreadRow.tsx:148
+#: ../ui/src/emails/ThreadRow.tsx:149
 msgid "Mark as important"
 msgstr "중요 표시"
 
-#: ../ui/src/emails/ThreadRow.tsx:144
+#: ../ui/src/emails/ThreadRow.tsx:145
 #, fuzzy
 msgid "Mark as not done"
 msgstr "미완료로 표시"
@@ -4228,7 +4228,7 @@ msgid "Most popular"
 msgstr "인기 최고"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:387
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:565
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:633
 #, fuzzy
 msgid "Move them to"
 msgstr "다음으로 이동"
@@ -4242,7 +4242,7 @@ msgstr "스레드 이동"
 msgid "Move to folder"
 msgstr "폴더로 이동"
 
-#: ../ui/src/emails/ReroutePopover.tsx:129
+#: ../ui/src/emails/ReroutePopover.tsx:130
 #, fuzzy
 msgid "Move to folder…"
 msgstr "폴더로 이동…"
@@ -4265,7 +4265,7 @@ msgstr "며칠 내로 제 여정이 델타 지역 근처를 지나게 됩니다.
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:235
 #: ../../apps/mobile/app/(app)/account.tsx:131
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:272
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:477
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:495
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:15
 #, fuzzy
 msgid "Name"
@@ -4403,12 +4403,12 @@ msgstr "이메일 본문은 저장되지 않습니다."
 msgid "No folders available"
 msgstr "사용 가능한 폴더 없음"
 
-#: ../ui/src/folder-tree/FolderTree.tsx:47
+#: ../ui/src/folder-tree/FolderTree.tsx:48
 #, fuzzy
 msgid "No folders defined"
 msgstr "정의된 폴더 없음"
 
-#: ../ui/src/emails/ReroutePopover.tsx:139
+#: ../ui/src/emails/ReroutePopover.tsx:140
 #, fuzzy
 msgid "No folders match"
 msgstr "일치하는 폴더 없음"
@@ -4517,7 +4517,7 @@ msgstr "없음"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:190
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:205
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:538
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:606
 #, fuzzy
 msgid "None (not connected)"
 msgstr "없음 (연결되지 않음)"
@@ -4664,10 +4664,14 @@ msgstr "운영"
 msgid "Optional. Applied when generating draft replies for this folder."
 msgstr "선택 사항. 이 폴더에 대한 답장 초안 생성 시 적용됩니다."
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:524
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:592
 #, fuzzy
 msgid "Optional. Applied when generating draft replies for threads in this folder."
 msgstr "선택 사항. 이 폴더의 스레드에 대한 답장 초안을 생성할 때 적용됩니다."
+
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:573
+msgid "Optional. Sets this folder's chip and icon color across your inbox. Default assigns a stable color automatically."
+msgstr "선택 사항입니다. 이 폴더의 칩과 아이콘 색상을 받은 편지함 전체에 설정합니다. 기본값은 안정적인 색상을 자동으로 지정합니다."
 
 #: ../../apps/extension/src/auth/SignInScreen.tsx:102
 #: ../../apps/mobile/src/auth/GoogleSignInButton.tsx:17
@@ -4711,8 +4715,8 @@ msgid "Paid or upgraded workspace"
 msgstr "유료 또는 업그레이드된 워크스페이스"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:322
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:532
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:691
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:600
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:759
 #, fuzzy
 msgid "Parent"
 msgstr "상위"
@@ -4915,7 +4919,7 @@ msgid "Plan"
 msgstr "플랜"
 
 #. “Plan” here is the email-sorting taxonomy, not a billing or subscription plan.
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1412
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1480
 #, fuzzy
 msgid "Plan is view-only. Only workspace admins can edit it."
 msgstr "플랜은 보기 전용입니다. 워크스페이스 관리자만 편집할 수 있습니다."
@@ -5139,7 +5143,7 @@ msgstr "5점 만점에 5점"
 msgid "Re-route {unclassifiedCount} unclassified"
 msgstr "미분류 항목 {unclassifiedCount}개 재경로 지정"
 
-#: ../ui/src/emails/ReroutePopover.tsx:120
+#: ../ui/src/emails/ReroutePopover.tsx:121
 #, fuzzy
 msgid "Re-route thread"
 msgstr "스레드 재경로 지정"
@@ -5187,7 +5191,7 @@ msgid "Real Estate Agent"
 msgstr "부동산 중개인"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:91
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:311
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:314
 #, fuzzy
 msgid "Receipts, payment confirmations, and billing questions from vendors."
 msgstr "공급업체의 영수증, 결제 확인, 청구 관련 문의."
@@ -5201,7 +5205,7 @@ msgstr "최근에 시도했습니다. {when}에 다시 이용 가능합니다."
 msgid "Recently attempted. Try again later."
 msgstr "최근에 시도했습니다. 나중에 다시 시도해 주세요."
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1810
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1878
 msgid "Recommended for your inbox"
 msgstr "받은 편지함 추천"
 
@@ -5271,7 +5275,7 @@ msgstr "채용"
 msgid "Redirecting…"
 msgstr "리디렉션 중..."
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1451
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1519
 #, fuzzy
 msgid "Redo"
 msgstr "다시 실행"
@@ -5329,7 +5333,7 @@ msgstr "{email}을(를) 블랙리스트에서 제거"
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:310
 #: ../ui/src/emails/ThreadPreview.tsx:108
 #: ../ui/src/emails/ThreadPreview.tsx:112
-#: ../ui/src/emails/ThreadRow.tsx:147
+#: ../ui/src/emails/ThreadRow.tsx:148
 #, fuzzy
 msgid "Remove from important"
 msgstr "중요 표시 해제"
@@ -5391,7 +5395,7 @@ msgstr "플랜 교체"
 #~ msgid "Replace taxonomy"
 #~ msgstr "분류 체계 교체"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1747
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1815
 #, fuzzy
 msgid "Replace with a template"
 msgstr "템플릿으로 교체"
@@ -5547,11 +5551,7 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "립-하따님께,\n"
-"\n"
-"저희는 귀하의 말씀을 경청했습니다. 남쪽 창고에서 추가 곡물을 주문했으며, 추수 감사절 전에 도착할 예정입니다. 그때까지 기다려 주시기를 부탁드립니다.\n"
-"\n"
-"안녕히 계십시오,"
+msgstr "립-하따님께,\n\n저희는 귀하의 말씀을 경청했습니다. 남쪽 창고에서 추가 곡물을 주문했으며, 추수 감사절 전에 도착할 예정입니다. 그때까지 기다려 주시기를 부탁드립니다.\n\n안녕히 계십시오,"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -5584,8 +5584,8 @@ msgstr "월간과 같음"
 #: ../../apps/mobile/src/components/EditNameSheet.tsx:66
 #: ../../apps/mobile/src/components/RenameWorkspaceSheet.tsx:74
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:450
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:462
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:722
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:480
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:790
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:29
 #, fuzzy
 msgid "Save"
@@ -5632,8 +5632,8 @@ msgid "Saving..."
 msgstr "저장 중..."
 
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:76
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:462
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:722
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:480
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:790
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:29
 #, fuzzy
 msgid "Saving…"
@@ -5655,13 +5655,13 @@ msgstr "Scribe"
 msgid "Search"
 msgstr "검색"
 
-#: ../ui/src/emails/ThreadListHeader.tsx:104
+#: ../ui/src/emails/ThreadListHeader.tsx:122
 #, fuzzy
 msgid "Search {threadCount} threads"
 msgstr "{threadCount}개 스레드 검색"
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:322
-#: ../ui/src/emails/ReroutePopover.tsx:133
+#: ../ui/src/emails/ReroutePopover.tsx:134
 #, fuzzy
 msgid "Search folders"
 msgstr "폴더 검색"
@@ -5670,10 +5670,10 @@ msgstr "폴더 검색"
 msgid "Search mail"
 msgstr "메일 검색"
 
-#: ../../apps/extension/src/panel/ScopeField.tsx:102
-#: ../../apps/extension/src/panel/ScopeField.tsx:103
-#: ../../apps/extension/src/panel/ScopeField.tsx:175
-#: ../ui/src/emails/ThreadListHeader.tsx:107
+#: ../../apps/extension/src/panel/ScopeField.tsx:104
+#: ../../apps/extension/src/panel/ScopeField.tsx:105
+#: ../../apps/extension/src/panel/ScopeField.tsx:181
+#: ../ui/src/emails/ThreadListHeader.tsx:125
 #, fuzzy
 msgid "Search threads"
 msgstr "스레드 검색"
@@ -6037,7 +6037,7 @@ msgstr "분류량"
 
 #: ../../apps/mobile/src/components/RationaleCard.tsx:34
 #: ../../apps/site/src/components/landing/HeroFeedCard.tsx:95
-#: ../ui/src/emails/ThreadRow.tsx:247
+#: ../ui/src/emails/ThreadRow.tsx:254
 #, fuzzy
 msgid "Sorting…"
 msgstr "분류 중…"
@@ -6086,12 +6086,12 @@ msgid "Start free"
 msgstr "무료로 시작"
 
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:52
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1748
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1816
 #, fuzzy
 msgid "Start from a template"
 msgstr "템플릿으로 시작"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1516
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1584
 #, fuzzy
 msgid "Start from a template (replaces current)"
 msgstr "템플릿으로 시작 (현재 내용 대체)"
@@ -6227,8 +6227,8 @@ msgstr "지원, 온보딩, 고객 유지, 이탈 및 고객 성공 대화."
 msgid "Switch"
 msgstr "전환"
 
-#: ../../apps/extension/src/panel/ScopeField.tsx:159
-#: ../../apps/extension/src/panel/ScopeField.tsx:201
+#: ../../apps/extension/src/panel/ScopeField.tsx:165
+#: ../../apps/extension/src/panel/ScopeField.tsx:207
 msgid "Switch folder view"
 msgstr "폴더 보기 전환"
 
@@ -6328,7 +6328,7 @@ msgstr "팀"
 msgid "Template applied"
 msgstr "템플릿 적용 완료"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1540
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1608
 #, fuzzy
 msgid "Templates"
 msgstr "템플릿"
@@ -6446,12 +6446,12 @@ msgstr "다음 협업자들은 {0}에 접근 권한을 잃게 됩니다:"
 msgid "These settings control which inbox threads are imported. Trash is always excluded."
 msgstr "이 설정은 어떤 받은 편지함 스레드를 가져올지 제어합니다. 휴지통은 항상 제외됩니다."
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1404
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1472
 #, fuzzy
 msgid "This folder has child folders. Remove their Paths first, then delete it."
 msgstr "하위 폴더의 경로를 먼저 삭제한 후 이 폴더를 삭제하세요."
 
-#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:36
+#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:44
 #, fuzzy
 msgid "This folder is not reachable from the inbox and will not be used for routing."
 msgstr "이 폴더는 수신함에서 접근할 수 없으며 분류에 사용되지 않습니다."
@@ -6570,7 +6570,7 @@ msgstr "정리된 스레드"
 msgid "Threads sorted / month"
 msgstr "월별 정리된 스레드"
 
-#: ../ui/src/emails/ThreadListHeader.tsx:53
+#: ../ui/src/emails/ThreadListHeader.tsx:54
 #, fuzzy
 msgid "Threads sorted into this folder by Amarnai."
 msgstr "Amarnai가 이 폴더로 분류한 스레드."
@@ -6602,13 +6602,7 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "내 형제이신 대왕께,\n"
-"\n"
-"셰무월 초에 대회의가 열립니다. 동부 영토에 대한 상세한 보고서를 준비하여, 가능하다면 초승달이 뜨기 전에 급한 전령 편으로 보내주시기를 청합니다.\n"
-"\n"
-"우리의 동맹은 굳건합니다. 회의에서 이 사실을 다시 한번 확인시켜 줍시다.\n"
-"\n"
-"미탄니의 대왕 투슈라타"
+msgstr "내 형제이신 대왕께,\n\n셰무월 초에 대회의가 열립니다. 동부 영토에 대한 상세한 보고서를 준비하여, 가능하다면 초승달이 뜨기 전에 급한 전령 편으로 보내주시기를 청합니다.\n\n우리의 동맹은 굳건합니다. 회의에서 이 사실을 다시 한번 확인시켜 줍시다.\n\n미탄니의 대왕 투슈라타"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:163
 #, fuzzy
@@ -6617,11 +6611,7 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "왕실 임명국 귀하,\n"
-"\n"
-"테베의 호렘헤브가 제출한 신청서를 접수했으며, 다음 초승달이 뜨기 전에 그의 기록을 검토할 것입니다. 그에게 적절한 시기에 소식을 전하겠다고 알려주십시오.\n"
-"\n"
-"왕실 칙령에 따라,"
+msgstr "왕실 임명국 귀하,\n\n테베의 호렘헤브가 제출한 신청서를 접수했으며, 다음 초승달이 뜨기 전에 그의 기록을 검토할 것입니다. 그에게 적절한 시기에 소식을 전하겠다고 알려주십시오.\n\n왕실 칙령에 따라,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:278
 #, fuzzy
@@ -6632,13 +6622,7 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "대왕께,\n"
-"\n"
-"수년간 우리 가문들은 형제처럼 지내왔습니다. 이제 양국 백성의 번영을 위해 이 우정을 공식화할 것을 제안하고자 합니다. 상호 보호와 공동 항로에 관한 협정입니다.\n"
-"\n"
-"부디 저의 제안을 경청해 주십시오. 다음 전령 편에 답을 보내주시면 즉시 저의 사절을 파견하겠습니다.\n"
-"\n"
-"대왕의 종, 아무르의 영주 아지루"
+msgstr "대왕께,\n\n수년간 우리 가문들은 형제처럼 지내왔습니다. 이제 양국 백성의 번영을 위해 이 우정을 공식화할 것을 제안하고자 합니다. 상호 보호와 공동 항로에 관한 협정입니다.\n\n부디 저의 제안을 경청해 주십시오. 다음 전령 편에 답을 보내주시면 즉시 저의 사절을 파견하겠습니다.\n\n대왕의 종, 아무르의 영주 아지루"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:391
 #, fuzzy
@@ -6647,11 +6631,7 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "대왕께,\n"
-"\n"
-"저의 여정이 며칠 내로 델타 근처에 이르게 됩니다. 대왕께서 한 시간만 할애해 주신다면, 직접 만나 뵙고 말씀드릴 기회를 갖게 되어 영광일 것입니다. 글로 쓰는 것보다 직접 말씀드리는 편이 더 나은 일들이 있기 때문입니다.\n"
-"\n"
-"대왕의 종, 우루샬림의 총독 압디-헤바"
+msgstr "대왕께,\n\n저의 여정이 며칠 내로 델타 근처에 이르게 됩니다. 대왕께서 한 시간만 할애해 주신다면, 직접 만나 뵙고 말씀드릴 기회를 갖게 되어 영광일 것입니다. 글로 쓰는 것보다 직접 말씀드리는 편이 더 나은 일들이 있기 때문입니다.\n\n대왕의 종, 우루샬림의 총독 압디-헤바"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:153
 #, fuzzy
@@ -6660,11 +6640,7 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "내 형제이신 대왕께,\n"
-"\n"
-"말씀을 들었습니다. 다음 전령이 떠나기 전에 황금을 발송하겠습니다. 우리 가문들 사이의 유대를 소중히 여기며, 그 관계가 식기를 원치 않습니다.\n"
-"\n"
-"우정을 담아,"
+msgstr "내 형제이신 대왕께,\n\n말씀을 들었습니다. 다음 전령이 떠나기 전에 황금을 발송하겠습니다. 우리 가문들 사이의 유대를 소중히 여기며, 그 관계가 식기를 원치 않습니다.\n\n우정을 담아,"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:239
 #, fuzzy
@@ -6675,13 +6651,7 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "내 형제이신 대왕께,\n"
-"\n"
-"저희 아버지들이 그러했듯이 우정을 담아 글을 씁니다. 우리 조약에 따라 합의된 세 번째 황금 운송분이 도착하지 않았습니다. 두 명의 전령이 오갔으나 저희는 여전히 기다리고 있습니다.\n"
-"\n"
-"우리 가문들 사이의 유대에 합당하게, 더 이상 지체 없이 황금을 발송해 주시기를 요청합니다.\n"
-"\n"
-"바빌론의 왕 부르나-부리아쉬 2세"
+msgstr "내 형제이신 대왕께,\n\n저희 아버지들이 그러했듯이 우정을 담아 글을 씁니다. 우리 조약에 따라 합의된 세 번째 황금 운송분이 도착하지 않았습니다. 두 명의 전령이 오갔으나 저희는 여전히 기다리고 있습니다.\n\n우리 가문들 사이의 유대에 합당하게, 더 이상 지체 없이 황금을 발송해 주시기를 요청합니다.\n\n바빌론의 왕 부르나-부리아쉬 2세"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:352
 #, fuzzy
@@ -6692,13 +6662,7 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "대왕, 저의 주인이시여, 저의 태양이시여,\n"
-"\n"
-"지난달 보내주신 곡물은 감사히 받았습니다. 백성들 앞에서 대왕의 이름을 찬양했습니다. 하지만 다시 글을 올려야만 합니다. 세 번째 선적분이 도착하지 않아 도시가 불안해하고 있습니다.\n"
-"\n"
-"일곱 번이나 글을 썼습니다. 대왕을 번거롭게 하고 싶지 않지만, 제가 달리 무엇을 할 수 있겠습니까?\n"
-"\n"
-"대왕의 종, 비블로스의 총독 리브-하다"
+msgstr "대왕, 저의 주인이시여, 저의 태양이시여,\n\n지난달 보내주신 곡물은 감사히 받았습니다. 백성들 앞에서 대왕의 이름을 찬양했습니다. 하지만 다시 글을 올려야만 합니다. 세 번째 선적분이 도착하지 않아 도시가 불안해하고 있습니다.\n\n일곱 번이나 글을 썼습니다. 대왕을 번거롭게 하고 싶지 않지만, 제가 달리 무엇을 할 수 있겠습니까?\n\n대왕의 종, 비블로스의 총독 리브-하다"
 
 #: ../../apps/site/src/components/landing/MailThreadMock.tsx:135
 msgid "To: You"
@@ -6738,7 +6702,7 @@ msgid "Travel"
 msgstr "여행"
 
 #: ../ui/src/emails/EmailRail.tsx:91
-#: ../ui/src/emails/ThreadListHeader.tsx:84
+#: ../ui/src/emails/ThreadListHeader.tsx:86
 #, fuzzy
 msgid "Triage"
 msgstr "선별"
@@ -6788,18 +6752,18 @@ msgid "Unavailable"
 msgstr "이용 불가"
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:41
-#: ../ui/src/emails/ThreadRow.tsx:257
+#: ../ui/src/emails/ThreadRow.tsx:264
 #, fuzzy
 msgid "Unclassified"
 msgstr "미분류"
 
-#: ../ui/src/emails/ThreadRow.tsx:256
+#: ../ui/src/emails/ThreadRow.tsx:263
 msgid "Unclassified. Change folder"
 msgstr "미분류. 폴더 변경"
 
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:365
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:407
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1442
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1510
 #: ../ui/src/emails/MockEmailsPage.tsx:290
 #, fuzzy
 msgid "Undo"
@@ -6815,7 +6779,7 @@ msgstr "대학교"
 msgid "Unknown"
 msgstr "알 수 없음"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1283
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1351
 #, fuzzy
 msgid "unknown error"
 msgstr "알 수 없는 오류"
@@ -6895,7 +6859,7 @@ msgstr "결제 수단 업데이트"
 
 #: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:47
 #: ../ui/src/i18n/taxonomy-template-messages.ts:245
-#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:59
+#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:75
 #, fuzzy
 msgid "Updates / Other"
 msgstr "업데이트 / 기타"
@@ -6990,7 +6954,7 @@ msgstr "필터를 변경한 후 \"받은편지함 재검색\"을 사용하여 �
 msgid "Use a template"
 msgstr "템플릿 사용"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1856
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1924
 #, fuzzy
 msgid "Use template"
 msgstr "템플릿 사용"
@@ -7057,7 +7021,7 @@ msgstr "자원봉사자"
 
 #: ../../apps/mobile/src/components/RationaleCard.tsx:43
 #: ../../apps/mobile/src/components/ThreadRow.tsx:44
-#: ../ui/src/emails/ThreadRow.tsx:251
+#: ../ui/src/emails/ThreadRow.tsx:258
 #, fuzzy
 msgid "Waiting"
 msgstr "대기 중"
@@ -7077,7 +7041,7 @@ msgstr "인증 대기 중…"
 #~ msgid "Waitlist"
 #~ msgstr "대기 목록"
 
-#: ../ui/src/emails/ThreadRow.tsx:138
+#: ../ui/src/emails/ThreadRow.tsx:139
 #, fuzzy
 msgid "Wants {folderName}"
 msgstr "{folderName}을(를) 원함"
@@ -7136,7 +7100,7 @@ msgstr "Amarnai가 확실하지 않은 스레드는 어떻게 되나요?"
 msgid "What model does Amarnai use?"
 msgstr "Amarnai는 어떤 모델을 사용하나요?"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:547
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:615
 #, fuzzy
 msgid "Where this folder sits. Folders with no parent stay disconnected and are ignored until connected."
 msgstr "이 폴더의 위치입니다. 상위 폴더가 없는 폴더는 연결될 때까지 연결이 끊어진 상태로 무시됩니다."
@@ -7179,7 +7143,7 @@ msgstr "Gmail™ 및 Outlook을 지원합니다."
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:61
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:220
 #: ../../apps/site/src/components/demo/DemoTaxonomyCanvas.tsx:218
-#: ../ui/src/emails/ThreadListHeader.tsx:63
+#: ../ui/src/emails/ThreadListHeader.tsx:65
 #: ../ui/src/pricing/planMessages.ts:50
 #, fuzzy
 msgid "Workspace"

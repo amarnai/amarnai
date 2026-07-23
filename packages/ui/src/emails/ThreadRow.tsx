@@ -6,7 +6,8 @@ import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
 import type { FolderItem } from "../folder-tree/types.js";
 import type { ThreadItem } from "./types.js";
-import { buildThreadUrl } from "@amarnai/core/emails";
+import { buildThreadUrl, folderColorVars } from "@amarnai/core/emails";
+import type { CSSProperties } from "react";
 import { openInProviderLabel } from "./providerLabels.js";
 import { Tooltip } from "../Tooltip.js";
 import { GmailIcon } from "../icons/GmailIcon.js";
@@ -159,12 +160,18 @@ export function ThreadRow({
   // The folder chip doubles as the move-to-folder control: clicking it opens
   // the folder picker anchored to the chip. Falls back to a static tag when
   // the parent wired no reroute handler.
-  const moveChip = (className: string, ariaLabel: string, children: ReactNode) =>
+  const moveChip = (
+    className: string,
+    ariaLabel: string,
+    children: ReactNode,
+    style?: CSSProperties,
+  ) =>
     onReroute ? (
       <Tooltip content={i18n._(msg`Change folder`)}>
         <button
           type="button"
           className={className}
+          style={style}
           aria-label={ariaLabel}
           onClick={(e) => {
             e.stopPropagation();
@@ -175,7 +182,7 @@ export function ThreadRow({
         </button>
       </Tooltip>
     ) : (
-      <span className={className}>{children}</span>
+      <span className={className} style={style}>{children}</span>
     );
 
   const assignment = thread.assignment;
@@ -265,6 +272,10 @@ export function ThreadRow({
                 <span className="em-chip-ico">{FOLDER_ICO}</span>
                 {chipLabel}
               </>,
+              // Per-folder color. The needs-review variant (thread.status ===
+              // "review") overrides these back to warn tokens in CSS, so setting
+              // them here is harmless for that state.
+              folderColorVars(folder) as CSSProperties,
             )
           )}
           {!isDone &&

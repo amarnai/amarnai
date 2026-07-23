@@ -18,6 +18,7 @@ function makeNode(id: string, overrides: Partial<TaxonomyNode> = {}): TaxonomyNo
     examples: [],
     isRoot: false,
     isCatchAll: false,
+    colorKey: null,
     positionX: 0,
     positionY: 0,
     createdAt: "2026-01-01T00:00:00.000Z",

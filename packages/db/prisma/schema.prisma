@@ -434,6 +434,10 @@ model TaxonomyNode {
   // A non-routable catch-all destination ("Updates / Other"). Excluded from
   // embedding/LLM competition; assigned only by the automated-mail policy.
   isCatchAll         Boolean   @default(false)
+  // Optional per-folder color override (a palette key, never a raw hex).
+  // null = use the deterministic hash default. Unknown/legacy keys fall back
+  // to the default at render time; see packages/core folderColor.
+  colorKey           String?
   positionX          Float     @default(0)
   positionY          Float     @default(0)
   // Embedding cache — recomputed only when embeddingTextHash changes

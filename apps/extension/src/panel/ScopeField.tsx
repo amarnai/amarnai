@@ -3,6 +3,7 @@ import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
 import type { ActiveSelection, FolderItem } from "@amarnai/ui/emails";
 import { QUEUE_LABELS, ReroutePopover, getFolderAncestry } from "@amarnai/ui/emails";
+import { folderInkVar } from "@amarnai/core/emails";
 
 type Props = {
   folders: FolderItem[];
@@ -62,6 +63,7 @@ export function ScopeField({
   const isFolder = active.kind === "folder";
   const ancestry = isFolder ? getFolderAncestry(active.id, folders) : [];
   const parents = ancestry.slice(0, -1);
+  const leafFolder = ancestry[ancestry.length - 1];
   const allMail = _(msg`All mail`);
   const leaf = isFolder
     ? (ancestry[ancestry.length - 1]?.name ?? "—")
@@ -124,7 +126,11 @@ export function ScopeField({
   return (
     <div className="ax-scope-row">
       <div ref={fieldRef} className="ax-scope-field" data-open={open ? "true" : "false"}>
-        <span className="ax-scope-icon" aria-hidden>
+        <span
+          className="ax-scope-icon"
+          aria-hidden
+          style={leafFolder ? { color: folderInkVar(leafFolder) } : undefined}
+        >
           <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
             <path
               d="M1.8 3.5c0-.7.6-1.3 1.3-1.3h2.6l1.4 1.6h4.8c.7 0 1.3.6 1.3 1.3v5.4c0 .7-.6 1.3-1.3 1.3H3.1c-.7 0-1.3-.6-1.3-1.3V3.5Z"

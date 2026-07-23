@@ -4,6 +4,9 @@ export type FolderItem = {
   description: string | null;
   parentId: string | null;
   ignored: boolean;
+  // Optional per-folder color override (a palette key). null/absent = use the
+  // deterministic default. Resolved to a swatch via @amarnai/core folderColor.
+  colorKey?: string | null;
 };
 
 export type QueueId = "all" | "sorted" | "review" | "pending" | "important" | "assigned" | "unrouted" | "unclassified";

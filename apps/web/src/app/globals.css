@@ -38,6 +38,49 @@
   --accent-line: oklch(87% 0.05 40);
   --avatar-grad: linear-gradient(135deg, oklch(82% 0.08 50), oklch(72% 0.10 30)); /* user avatar fill */
 
+  /* ── Folder colors — per-folder swatches (palette keys resolved in
+       @amarnai/core folderColor). Keys come from the Gmail-label ∩
+       Outlook-category intersection so a choice can round-trip to a provider
+       color later. Each swatch is defined ONCE: a per-key hue plus the
+       ink/soft/line lightness+chroma role constants below. Themes override only
+       the role constants (see the dark block), so the hues and derivations never
+       repeat; legibility mirrors --accent-ink/-soft/-line. ── */
+  --folder-l-ink:  36%; --folder-c-ink:  0.10;
+  --folder-l-soft: 96%; --folder-c-soft: 0.025;
+  --folder-l-line: 87%; --folder-c-line: 0.05;
+  --folder-red-h: 25;
+  --folder-orange-h: 55;
+  --folder-yellow-h: 95;
+  --folder-green-h: 150;
+  --folder-teal-h: 195;
+  --folder-blue-h: 250;
+  --folder-purple-h: 300;
+  --folder-pink-h: 350;
+  --folder-red-ink:     oklch(var(--folder-l-ink)  var(--folder-c-ink)  var(--folder-red-h));
+  --folder-red-soft:    oklch(var(--folder-l-soft) var(--folder-c-soft) var(--folder-red-h));
+  --folder-red-line:    oklch(var(--folder-l-line) var(--folder-c-line) var(--folder-red-h));
+  --folder-orange-ink:  oklch(var(--folder-l-ink)  var(--folder-c-ink)  var(--folder-orange-h));
+  --folder-orange-soft: oklch(var(--folder-l-soft) var(--folder-c-soft) var(--folder-orange-h));
+  --folder-orange-line: oklch(var(--folder-l-line) var(--folder-c-line) var(--folder-orange-h));
+  --folder-yellow-ink:  oklch(var(--folder-l-ink)  var(--folder-c-ink)  var(--folder-yellow-h));
+  --folder-yellow-soft: oklch(var(--folder-l-soft) var(--folder-c-soft) var(--folder-yellow-h));
+  --folder-yellow-line: oklch(var(--folder-l-line) var(--folder-c-line) var(--folder-yellow-h));
+  --folder-green-ink:   oklch(var(--folder-l-ink)  var(--folder-c-ink)  var(--folder-green-h));
+  --folder-green-soft:  oklch(var(--folder-l-soft) var(--folder-c-soft) var(--folder-green-h));
+  --folder-green-line:  oklch(var(--folder-l-line) var(--folder-c-line) var(--folder-green-h));
+  --folder-teal-ink:    oklch(var(--folder-l-ink)  var(--folder-c-ink)  var(--folder-teal-h));
+  --folder-teal-soft:   oklch(var(--folder-l-soft) var(--folder-c-soft) var(--folder-teal-h));
+  --folder-teal-line:   oklch(var(--folder-l-line) var(--folder-c-line) var(--folder-teal-h));
+  --folder-blue-ink:    oklch(var(--folder-l-ink)  var(--folder-c-ink)  var(--folder-blue-h));
+  --folder-blue-soft:   oklch(var(--folder-l-soft) var(--folder-c-soft) var(--folder-blue-h));
+  --folder-blue-line:   oklch(var(--folder-l-line) var(--folder-c-line) var(--folder-blue-h));
+  --folder-purple-ink:  oklch(var(--folder-l-ink)  var(--folder-c-ink)  var(--folder-purple-h));
+  --folder-purple-soft: oklch(var(--folder-l-soft) var(--folder-c-soft) var(--folder-purple-h));
+  --folder-purple-line: oklch(var(--folder-l-line) var(--folder-c-line) var(--folder-purple-h));
+  --folder-pink-ink:    oklch(var(--folder-l-ink)  var(--folder-c-ink)  var(--folder-pink-h));
+  --folder-pink-soft:   oklch(var(--folder-l-soft) var(--folder-c-soft) var(--folder-pink-h));
+  --folder-pink-line:   oklch(var(--folder-l-line) var(--folder-c-line) var(--folder-pink-h));
+
   /* ── Outlook — provider brand blue (Microsoft) ── */
   --outlook:       oklch(55% 0.15 250);
   --outlook-hover: oklch(49% 0.16 250);
@@ -198,6 +241,12 @@ html[data-theme="dark"] {
   --accent-soft: oklch(28% 0.045 40);
   --accent-line: oklch(40% 0.06 40);
   --avatar-grad: linear-gradient(135deg, oklch(52% 0.10 50), oklch(44% 0.11 30)); /* user avatar fill */
+
+  /* ── Folder colors — dark: override only the role constants; per-key hues and
+       derivations are inherited from :root (same <html> element). ── */
+  --folder-l-ink:  80%; --folder-c-ink:  0.07;
+  --folder-l-soft: 28%; --folder-c-soft: 0.045;
+  --folder-l-line: 40%; --folder-c-line: 0.06;
 
   /* ── Outlook — provider brand blue (Microsoft) ── */
   --outlook:       oklch(58% 0.15 250);

@@ -74,6 +74,8 @@ export const TaxonomyNodeSchema = z.object({
   isRoot: z.boolean(),
   /** Non-routable catch-all destination ("Updates / Other"). Optional for back-compat. */
   isCatchAll: z.boolean().optional(),
+  /** Optional per-folder color override (a palette key). null/absent = default. */
+  colorKey: z.string().nullable().optional(),
   positionX: z.number(),
   positionY: z.number(),
   createdAt: z.string().datetime(),
@@ -91,6 +93,7 @@ export const CreateTaxonomyNodeInputSchema = z
     instructions: z.string().max(2000).optional(),
     draftPrompt: z.string().trim().max(500).nullable().optional(),
     examples: z.array(z.string()).optional(),
+    colorKey: z.string().trim().max(32).nullable().optional(),
     positionX: z.number().optional(),
     positionY: z.number().optional(),
   })
@@ -118,6 +121,7 @@ export const UpdateTaxonomyNodeInputSchema = z
     instructions: z.string().max(2000).optional(),
     draftPrompt: z.string().trim().max(500).nullable().optional(),
     examples: z.array(z.string()).optional(),
+    colorKey: z.string().trim().max(32).nullable().optional(),
     positionX: z.number().optional(),
     positionY: z.number().optional(),
   })

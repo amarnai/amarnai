@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
+import { folderInkVar } from "@amarnai/core/emails";
 import type { FolderItem } from "../folder-tree/types.js";
 
 export interface ReroutePopoverProps {
@@ -151,7 +152,14 @@ export function ReroutePopover({
                 <path d="M1.3 5.6v1.9c0 .6.4 1 1 1h5.4c.6 0 1-.4 1-1V5.6M1.3 5.6h2.1l.7 1h1.8l.7-1h2.1M1.3 5.6l1-3.2c.1-.4.5-.7.9-.7h3.6c.4 0 .8.3.9.7l1 3.2" stroke="currentColor" strokeWidth="1.1" strokeLinejoin="round" />
               </svg>
             ) : (
-              <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden>
+              <svg
+                width="10"
+                height="10"
+                viewBox="0 0 10 10"
+                fill="none"
+                aria-hidden
+                style={{ color: folderInkVar(entry.folder) }}
+              >
                 <path d="M1.2 3.2h2.4l.8-.9h4.4v5.6H1.2V3.2z" stroke="currentColor" strokeWidth="1.1" strokeLinejoin="round" />
               </svg>
             )}

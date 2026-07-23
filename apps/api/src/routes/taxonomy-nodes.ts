@@ -21,11 +21,18 @@ const nodeSelect = {
   examples: true,
   isRoot: true,
   isCatchAll: true,
+  colorKey: true,
   positionX: true,
   positionY: true,
   createdAt: true,
   updatedAt: true,
 } as const;
+
+// A per-folder color override is a palette key. It is validated leniently — the
+// renderer falls back to the deterministic default for any unknown key — but we
+// cap the length so the column can't be abused as free text. `null` clears the
+// override; omitting the field leaves it unchanged.
+const colorKeySchema = z.string().trim().max(32).nullable();
 
 // ─── Field-level validators (mirror packages/shared nodeNameSchema / nodeDescriptionSchema) ──
 
@@ -62,6 +69,7 @@ const createBodySchema = z
     instructions: z.string().max(2000).nullable().optional(),
     draftPrompt: z.string().trim().max(500).nullable().optional(),
     examples: z.array(z.string()).optional(),
+    colorKey: colorKeySchema.optional(),
     positionX: z.number().optional(),
     positionY: z.number().optional(),
   })
@@ -83,6 +91,7 @@ const updateBodySchema = z
     instructions: z.string().max(2000).nullable().optional(),
     draftPrompt: z.string().trim().max(500).nullable().optional(),
     examples: z.array(z.string()).optional(),
+    colorKey: colorKeySchema.optional(),
     positionX: z.number().optional(),
     positionY: z.number().optional(),
   })
@@ -191,6 +200,7 @@ taxonomyNodes.post("/workspaces/:workspaceId/taxonomy-nodes", async (c) => {
       ...(d.instructions != null ? { instructions: d.instructions } : {}),
       ...(d.draftPrompt !== undefined ? { draftPrompt: d.draftPrompt } : {}),
       ...(d.examples !== undefined ? { examples: d.examples } : {}),
+      ...(d.colorKey !== undefined ? { colorKey: d.colorKey } : {}),
       ...(d.positionX !== undefined ? { positionX: d.positionX } : {}),
       ...(d.positionY !== undefined ? { positionY: d.positionY } : {}),
     },
@@ -261,6 +271,10 @@ taxonomyNodes.patch(
         ...(d.instructions !== undefined ? { instructions: d.instructions } : {}),
         ...(d.draftPrompt !== undefined ? { draftPrompt: d.draftPrompt } : {}),
         ...(d.examples !== undefined ? { examples: d.examples } : {}),
+        // colorKey is display-only: it feeds no embedding text and changes no
+        // routing outcome, so it needs neither embedding invalidation nor a
+        // taxonomy-changed bump.
+        ...(d.colorKey !== undefined ? { colorKey: d.colorKey } : {}),
         ...(d.positionX !== undefined ? { positionX: d.positionX } : {}),
         ...(d.positionY !== undefined ? { positionY: d.positionY } : {}),
         ...embeddingInvalidation,

@@ -835,9 +835,13 @@
   color: var(--accent);
 }
 
-/* Routing chip. The folder tag carries the brand accent so it reads as the
-   routing control it now is (clicking it opens the move-to-folder picker);
-   status variants below (unrouted, sorting) stay neutral. */
+/* Routing chip. The folder tag carries its per-folder color so a triage list is
+   scannable; clicking it opens the move-to-folder picker. The color comes from
+   the inline --folder-ink/-soft/-line custom properties each render site sets
+   (see @amarnai/core folderColor). They fall back to the brand accent when
+   unset, so a chip with no folder resolved still reads as the routing control.
+   Status variants below (unrouted, sorting, needs-review) override these back
+   to neutral/warn tokens. */
 .em-route-chip {
   display: inline-flex;
   align-items: center;
@@ -847,9 +851,9 @@
   border-radius: 999px;
   font-size: 11px;
   font-family: inherit;
-  color: var(--accent-ink);
-  background: var(--accent-soft);
-  border: 1px solid var(--accent-line);
+  color: var(--folder-ink, var(--accent-ink));
+  background: var(--folder-soft, var(--accent-soft));
+  border: 1px solid var(--folder-line, var(--accent-line));
   font-weight: 500;
   white-space: nowrap;
 }

@@ -13,7 +13,7 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:542
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:610
 #, fuzzy
 msgid " (Inbox)"
 msgstr " (受信トレイ)"
@@ -148,11 +148,11 @@ msgstr "{blacklistCount, plural, one {#件ブロック済み} other {#件ブロ�
 #~ msgid "{by} assigned you: {subject}"
 #~ msgstr "{by}が{subject}を割り当てました"
 
-#: ../ui/src/emails/ThreadRow.tsx:263
+#: ../ui/src/emails/ThreadRow.tsx:270
 msgid "{chipLabel}. Change folder"
 msgstr "{chipLabel}。フォルダーを変更"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:557
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:625
 #, fuzzy
 msgid "{classificationCount, plural, one {Deleting this folder will leave # thread unsorted.} other {Deleting this folder will leave # threads unsorted.}}"
 msgstr "このフォルダを削除すると、{classificationCount, plural, one {# 件のスレッド} other {# 件のスレッド}}が未分類になります。"
@@ -231,7 +231,7 @@ msgstr "{0} 中 {quotaRemaining} 残り · {quotaResetDate} にリセット"
 msgid "{remaining} of {limit} remaining · resets {resetDate}"
 msgstr "{limit} 件中 {remaining} 件利用可能 · {resetDate} にリセット"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1599
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1667
 #, fuzzy
 msgid "{routableCount} of {TAXONOMY_MIN_NON_ROOT_NODES} folders connected to your inbox. Routing requires at least {TAXONOMY_MIN_NON_ROOT_NODES}."
 msgstr "受信トレイに接続されているフォルダは {TAXONOMY_MIN_NON_ROOT_NODES} 件中 {routableCount} 件です。ルーティングには少なくとも {TAXONOMY_MIN_NON_ROOT_NODES} 件が必要です。"
@@ -241,12 +241,12 @@ msgstr "受信トレイに接続されているフォルダは {TAXONOMY_MIN_NON
 msgid "{selectedCount} selected"
 msgstr "{selectedCount} 件選択済み"
 
-#: ../ui/src/emails/ThreadListHeader.tsx:113
+#: ../ui/src/emails/ThreadListHeader.tsx:131
 #, fuzzy
 msgid "{threadCount, plural, one {# thread} other {# threads}}"
 msgstr "{threadCount, plural, one {# スレッド} other {# スレッド}}"
 
-#: ../ui/src/emails/ThreadListHeader.tsx:117
+#: ../ui/src/emails/ThreadListHeader.tsx:135
 msgid "{unreadCount} unread"
 msgstr "未読 {unreadCount} 件"
 
@@ -293,8 +293,8 @@ msgstr "© 2026 Amarnai. AGPL-3.0ライセンスでオープンソース。"
 msgid "+ Add folder"
 msgstr "フォルダーを追加"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1430
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1439
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1498
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1507
 msgid "+ Add Folder"
 msgstr "+ フォルダを追加"
 
@@ -523,9 +523,7 @@ msgstr "「通信長」の職に、テベスのホルエムヘブ氏から新規
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "テーベのホレムヘブより、通信長官職への応募がありました。\n"
-"\n"
-"応募書類は記録の館でご確認ください。"
+msgstr "テーベのホレムヘブより、通信長官職への応募がありました。\n\n応募書類は記録の館でご確認ください。"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:387
 #, fuzzy
@@ -538,11 +536,7 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "アブディ＝ヘバ殿、\n"
-"\n"
-"同週にデルタ地方近郊に参ります。二日目の午前中でしたら、宿駅でお会いできます。\n"
-"\n"
-"ではまた、"
+msgstr "アブディ＝ヘバ殿、\n\n同週にデルタ地方近郊に参ります。二日目の午前中でしたら、宿駅でお会いできます。\n\nではまた、"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
@@ -609,11 +603,11 @@ msgid "Add"
 msgstr "追加"
 
 #. placeholder {0}: minNodeDescriptionLength(description)
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:448
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:466
 msgid "Add a description (at least {0} characters) so the AI can sort accurately."
 msgstr "AIが正確に仕分けできるよう、{0}文字以上の説明を追加してください。"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1464
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1532
 #, fuzzy
 msgid "Add at least 3 connected folders to export"
 msgstr "エクスポートするには、少なくとも3つの接続済みフォルダを追加してください"
@@ -721,7 +715,7 @@ msgstr "すべてのフォルダ"
 msgid "All limits are per workspace."
 msgstr "すべての制限はワークスペースごとです。"
 
-#: ../../apps/extension/src/panel/ScopeField.tsx:65
+#: ../../apps/extension/src/panel/ScopeField.tsx:67
 #, fuzzy
 msgid "All mail"
 msgstr "すべてのメール"
@@ -1051,8 +1045,8 @@ msgstr "スレッドを割り当てる"
 msgid "Assign to"
 msgstr "割り当て先"
 
-#: ../ui/src/emails/ThreadRow.tsx:336
-#: ../ui/src/emails/ThreadRow.tsx:345
+#: ../ui/src/emails/ThreadRow.tsx:347
+#: ../ui/src/emails/ThreadRow.tsx:356
 #: ../ui/src/emails/TriageBar.tsx:63
 #, fuzzy
 msgid "Assign to a member"
@@ -1071,8 +1065,8 @@ msgstr "アサイン済み"
 msgid "Assigned to {assigneeName}"
 msgstr "{assigneeName}が担当"
 
-#: ../ui/src/emails/ThreadRow.tsx:228
-#: ../ui/src/emails/ThreadRow.tsx:344
+#: ../ui/src/emails/ThreadRow.tsx:235
+#: ../ui/src/emails/ThreadRow.tsx:355
 #: ../ui/src/emails/TriageBar.tsx:62
 #, fuzzy
 msgid "Assigned to {assigneeName}. Change assignee"
@@ -1103,7 +1097,7 @@ msgstr "通知を「アップデート/その他」に自動分類する"
 msgid "Automated and bulk mail ({0}) always moves to the new catch-all folder."
 msgstr "自動送信メールや一括メール（{0}）は、常に新しいキャッチオールフォルダに移動されます。"
 
-#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:39
+#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:47
 msgid "Automated and bulk mail that doesn't fit another folder lands here automatically. This is different from Needs review, which holds threads too ambiguous for the assistant to sort."
 msgstr "他のフォルダに振り分けられない自動メールや一括送信メールは、ここに自動的に振り分けられます。これは、アシスタントが振り分けるには曖昧すぎるスレッドが格納される「要確認」とは異なります。"
 
@@ -1113,7 +1107,7 @@ msgid "Automated notice from the Bureau of Royal Appointments. Subject and sende
 msgstr "王室任命局からの自動通知です。件名と送信者から、空席の職への新規応募であることが明確に示されています。"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:246
-#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:68
+#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:84
 msgid "Automated notifications, newsletters, and service updates that don't fit another folder."
 msgstr "他のフォルダに属さない自動通知、ニュースレター、サービス更新。"
 
@@ -1136,11 +1130,7 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "アジル殿、\n"
-"\n"
-"貴殿の友情の言葉、謹んで拝聴いたしました。アムル家のご提案、ぜひ詳しくお聞かせください。次回の使者にて、条件をご送付ください。\n"
-"\n"
-"敬具、"
+msgstr "アジル殿、\n\n貴殿の友情の言葉、謹んで拝聴いたしました。アムル家のご提案、ぜひ詳しくお聞かせください。次回の使者にて、条件をご送付ください。\n\n敬具、"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:261
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
@@ -1249,7 +1239,7 @@ msgid "Browse emails easily through your folders. Generate draft replies and cop
 msgstr "フォルダーでメールを簡単に閲覧。返信ドラフトを生成し、受信トレイにコピーできます。"
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:283
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1524
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1592
 #, fuzzy
 msgid "Browse templates"
 msgstr "テンプレートを閲覧"
@@ -1351,11 +1341,11 @@ msgstr "Amarnaiをセルフホストできますか？"
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:150
 #: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:107
 #: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:255
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:595
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:611
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:725
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1752
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1845
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:663
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:679
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:793
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1820
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1913
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:64
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:275
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:370
@@ -1402,7 +1392,7 @@ msgid "Carrier tracking numbers, delivery exceptions, and courier dispatch notic
 msgstr "運送業者の追跡番号、配達例外通知、配送業者からの発送通知。"
 
 #: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:58
-#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:81
+#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:97
 msgid "Catch-all"
 msgstr "キャッチオール"
 
@@ -1412,12 +1402,12 @@ msgstr "キャッチオール"
 msgid "Change"
 msgstr "変更"
 
-#: ../ui/src/emails/ThreadRow.tsx:335
+#: ../ui/src/emails/ThreadRow.tsx:346
 #, fuzzy
 msgid "Change assignee"
 msgstr "担当者を変更"
 
-#: ../ui/src/emails/ThreadRow.tsx:164
+#: ../ui/src/emails/ThreadRow.tsx:170
 #, fuzzy
 msgid "Change folder"
 msgstr "フォルダーを変更"
@@ -1444,7 +1434,7 @@ msgstr "受信トレイを確認してください"
 msgid "Checkout failed: {0}"
 msgstr "チェックアウトに失敗しました: {0}"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:707
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:775
 #, fuzzy
 msgid "Child folder"
 msgstr "子フォルダー"
@@ -1515,7 +1505,7 @@ msgstr "クライアント"
 msgid "Close"
 msgstr "閉じる"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1663
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1731
 #, fuzzy
 msgid "Close panel"
 msgstr "パネルを閉じる"
@@ -1528,7 +1518,7 @@ msgstr "パネルを閉じる"
 msgid "Close preview"
 msgstr "プレビューを閉じる"
 
-#: ../../apps/extension/src/panel/ScopeField.tsx:112
+#: ../../apps/extension/src/panel/ScopeField.tsx:114
 msgid "Close search"
 msgstr "検索を閉じる"
 
@@ -1574,6 +1564,11 @@ msgstr "コラボレーター機能はScribeおよびPharaohプランでご利�
 #~ msgid "Collapse"
 #~ msgstr "折りたたむ"
 
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:532
+#, fuzzy
+msgid "Color"
+msgstr "色"
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:124
 msgid "Communities"
 msgstr "コミュニティ"
@@ -1605,7 +1600,7 @@ msgstr "キャンセルを確認"
 msgid "Confirm delete"
 msgstr "削除の確認"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:587
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:655
 #, fuzzy
 msgid "Confirm Delete"
 msgstr "削除を確定"
@@ -1903,7 +1898,7 @@ msgstr "プランを読み込めませんでした。"
 msgid "Could not open billing management."
 msgstr "請求管理を開けませんでした。"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1326
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1394
 msgid "Could not prepare migration"
 msgstr "移行の準備ができませんでした"
 
@@ -1917,7 +1912,7 @@ msgstr "再スキャンをキューに追加できませんでした。もう一
 msgid "Could not reach the server. Please check your connection and try again."
 msgstr "サーバーに接続できません。インターネット接続を確認し、再度お試しください。"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1276
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1344
 #, fuzzy
 msgid "Could not read file: invalid JSON."
 msgstr "ファイルを読み取れませんでした：無効なJSONです。"
@@ -2002,7 +1997,7 @@ msgid "Courses"
 msgstr "コース"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:448
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:462
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:480
 #, fuzzy
 msgid "Create"
 msgstr "作成"
@@ -2026,7 +2021,7 @@ msgstr "アカウントを作成"
 msgid "Create an account to triage your inbox"
 msgstr "受信トレイを管理するアカウントを作成"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:468
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:486
 #, fuzzy
 msgid "Create Folder"
 msgstr "フォルダーを作成"
@@ -2061,7 +2056,7 @@ msgstr "作成中…"
 #: ../../apps/mobile/src/components/RerouteSheet.tsx:45
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:107
 #: ../../apps/site/src/components/demo/demo-seed.ts:33
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1806
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1874
 #, fuzzy
 msgid "Current"
 msgstr "現在"
@@ -2115,9 +2110,15 @@ msgid "Deal progress, transaction stages, and closing coordination across active
 msgstr "進行中の営業案件の進捗、取引フェーズ、成約調整"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:118
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:546
 #, fuzzy
 msgid "Default"
 msgstr "デフォルト"
+
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:544
+#, fuzzy
+msgid "Default color"
+msgstr "デフォルトの色"
 
 #: ../ui/src/pricing/planMessages.ts:73
 msgid "Default free workspace"
@@ -2131,9 +2132,9 @@ msgstr "デフォルトの無料ワークスペース"
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:198
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:271
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:272
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:627
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:638
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:734
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:695
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:706
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:802
 #, fuzzy
 msgid "Delete"
 msgstr "削除"
@@ -2199,7 +2200,7 @@ msgstr "削除中..."
 
 #: ../../apps/mobile/app/(app)/account.tsx:166
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:143
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:587
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:655
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:56
 #, fuzzy
 msgid "Deleting…"
@@ -2210,7 +2211,7 @@ msgid "Deployments"
 msgstr "デプロイ"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:80
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:294
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:297
 #, fuzzy
 msgid "Describe what kinds of emails belong here: who they come from and what they are about. Be specific and use the actual names, topics, and words that show up in those emails. Describe what the emails are, not what you plan to do about them. The clearer your description, the more accurately your email is sorted here."
 msgstr "ここに分類されるメールの種類について説明してください。差出人、内容、件名、キーワードなど、メールに実際に表示される具体的な情報を記述してください。メールが「何であるか」を説明し、「どうするつもりか」は説明しないでください。説明が明確であるほど、メールはより正確にここに分類されます。"
@@ -2220,7 +2221,7 @@ msgid "Describe your folders"
 msgstr "フォルダを記述"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:289
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:490
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:508
 #, fuzzy
 msgid "Description"
 msgstr "説明"
@@ -2391,7 +2392,7 @@ msgstr "募金活動、寄付キャンペーン、寄付依頼への対応"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:278
 #: ../../apps/mobile/src/components/ThreadRow.tsx:35
-#: ../ui/src/emails/ThreadRow.tsx:220
+#: ../ui/src/emails/ThreadRow.tsx:227
 #, fuzzy
 msgid "Done"
 msgstr "完了"
@@ -2409,7 +2410,7 @@ msgstr "寄付者"
 msgid "Downgrade to {planName}"
 msgstr "{planName}にダウングレード"
 
-#: ../ui/src/emails/ThreadRow.tsx:286
+#: ../ui/src/emails/ThreadRow.tsx:297
 #, fuzzy
 msgid "draft"
 msgstr "下書き"
@@ -2439,13 +2440,13 @@ msgid "Draft shared"
 msgstr "下書きを共有しました"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:342
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:513
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:581
 #, fuzzy
 msgid "Draft style guidance"
 msgstr "下書きのスタイルガイド"
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:106
-#: ../ui/src/emails/ThreadRow.tsx:280
+#: ../ui/src/emails/ThreadRow.tsx:291
 msgid "Drafting…"
 msgstr "下書き作成中…"
 
@@ -2472,13 +2473,13 @@ msgstr "EC販売者"
 msgid "e.g. Invoices"
 msgstr "例：請求書"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:498
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:516
 #, fuzzy
 msgid "e.g. Invoices, receipts, payment confirmations, and billing questions from clients and vendors."
 msgstr "例：クライアントやベンダーからの請求書、領収書、支払い確認、請求に関する問い合わせ。"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:350
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:519
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:587
 #, fuzzy
 msgid "e.g. Reply formally. Keep responses under 3 sentences."
 msgstr "例：フォーマルに返信してください。返信は3文以内にしてください。"
@@ -2492,7 +2493,7 @@ msgstr "以前"
 msgid "Edit folder"
 msgstr "フォルダーを編集"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:468
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:486
 #, fuzzy
 msgid "Edit Folder"
 msgstr "フォルダを編集"
@@ -2502,7 +2503,7 @@ msgstr "フォルダを編集"
 msgid "Edit inbox"
 msgstr "受信トレイを編集"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:682
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:750
 msgid "Edit Path"
 msgstr "パスを編集"
 
@@ -2576,7 +2577,7 @@ msgid "Emails"
 msgstr "メール"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:100
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:322
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:325
 #, fuzzy
 msgid "Emails about my bills that I need to deal with."
 msgstr "対応が必要な請求書に関するメール。"
@@ -2609,7 +2610,7 @@ msgstr "登録、授業料、寮の割り当て、大学事務手続き"
 #~ msgstr "入学、授業料、住宅申請、公式キャンパス管理。"
 
 #. placeholder {0}: minNodeNameLength(name)
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:445
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:463
 msgid "Enter a folder name (at least {0} characters)."
 msgstr "フォルダー名を入力してください（{0}文字以上）。"
 
@@ -2633,7 +2634,7 @@ msgstr "メールアドレスを入力してください。パスワード再設
 msgid "Enter your email and we'll send you a reset link."
 msgstr "メールアドレスを入力してください。リセットリンクをお送りします。"
 
-#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:78
+#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:94
 #, fuzzy
 msgid "Entry"
 msgstr "エントリ"
@@ -2697,13 +2698,13 @@ msgstr "どのフォルダにも分類されないメッセージ。"
 msgid "Expenses"
 msgstr "経費"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1488
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1556
 #, fuzzy
 msgid "Export"
 msgstr "エクスポート"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1463
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1471
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1531
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1539
 #, fuzzy
 msgid "Export plan"
 msgstr "エクスポートプラン"
@@ -2721,22 +2722,22 @@ msgstr "外部機関、外部企業、専門業務パートナーとの連携"
 msgid "Failed to apply"
 msgstr "適用できませんでした"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1108
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1176
 #, fuzzy
 msgid "Failed to create folder"
 msgstr "フォルダの作成に失敗しました"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1041
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1109
 #, fuzzy
 msgid "Failed to create path"
 msgstr "パスの作成に失敗しました"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1179
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1247
 #, fuzzy
 msgid "Failed to delete folder"
 msgstr "フォルダの削除に失敗しました"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1196
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1264
 #, fuzzy
 msgid "Failed to delete path"
 msgstr "パスの削除に失敗しました"
@@ -2746,12 +2747,12 @@ msgstr "パスの削除に失敗しました"
 msgid "Failed to load status"
 msgstr "ステータスの読み込みに失敗しました"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1237
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1305
 #, fuzzy
 msgid "Failed to redo"
 msgstr "やり直しに失敗しました"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1008
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1076
 #, fuzzy
 msgid "Failed to save position"
 msgstr "位置の保存に失敗しました"
@@ -2761,17 +2762,17 @@ msgstr "位置の保存に失敗しました"
 msgid "Failed to start generation"
 msgstr "生成の開始に失敗しました"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1218
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1286
 #, fuzzy
 msgid "Failed to undo"
 msgstr "元に戻すのに失敗しました"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1140
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1208
 #, fuzzy
 msgid "Failed to update folder"
 msgstr "フォルダの更新に失敗しました"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1162
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1230
 msgid "Failed to update path"
 msgstr "パスの更新に失敗しました"
 
@@ -2866,6 +2867,10 @@ msgstr "フォルダー"
 msgid "Folder"
 msgstr "フォルダ"
 
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:535
+msgid "Folder color"
+msgstr "フォルダーの色"
+
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:196
 #, fuzzy
 msgid "Folder created"
@@ -2876,7 +2881,7 @@ msgstr "フォルダーを作成しました"
 msgid "Folder deleted"
 msgstr "フォルダーを削除しました"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1421
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1489
 msgid "Folder limit reached ({MAX_TAXONOMY_NON_ROOT_NODES}). Delete a folder to add another."
 msgstr "フォルダー数の上限に達しました（{MAX_TAXONOMY_NON_ROOT_NODES}）。新しいフォルダーを追加するには、いずれかのフォルダーを削除してください。"
 
@@ -3112,7 +3117,7 @@ msgstr "返信の下書きを生成"
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:60
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:207
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:251
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1625
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1693
 #, fuzzy
 msgid "Generate from inbox"
 msgstr "受信トレイから生成"
@@ -3299,11 +3304,7 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "大王陛下、\n"
-"\n"
-"ご依頼の報告書は、評議会開催前に準備いたします。東方領土の記録は書記官にまとめさせ、速使にて先行してお送りいたします。\n"
-"\n"
-"敬具、"
+msgstr "大王陛下、\n\nご依頼の報告書は、評議会開催前に準備いたします。東方領土の記録は書記官にまとめさせ、速使にて先行してお送りいたします。\n\n敬具、"
 
 #: ../../apps/site/src/components/support/SupportContent.tsx:77
 msgid "Guides and answers to common questions"
@@ -3323,7 +3324,7 @@ msgid "Help requests, supply issues, and escalations from customers."
 msgstr "お客様からのヘルプ依頼、供給問題、エスカレーション。"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:71
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:278
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:281
 #, fuzzy
 msgid "Hide tips"
 msgstr "ヒントを非表示"
@@ -3410,7 +3411,7 @@ msgid "How it works"
 msgstr "仕組み"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:73
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:278
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:281
 #, fuzzy
 msgid "How to write a good description"
 msgstr "良い説明の書き方"
@@ -3440,26 +3441,26 @@ msgstr "何か問題が発生した場合やご質問がある場合は、こち
 #~ msgstr "そのメールアドレスでアカウントを作成できる場合、セットアップを完了するためのリンクを送信しました。リンクをクリックしてパスワードを設定し、サインインしてください。"
 
 #: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:64
-#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:84
+#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:100
 msgid "Ignored"
 msgstr "無視済み"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1513
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1581
 #, fuzzy
 msgid "Import"
 msgstr "インポート"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1341
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1409
 #, fuzzy
 msgid "Import failed"
 msgstr "インポートに失敗しました"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1496
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1564
 #, fuzzy
 msgid "Import plan"
 msgstr "プランをインポート"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1491
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1559
 #, fuzzy
 msgid "Import plan (replaces current)"
 msgstr "プランをインポート（現在のものを置き換える）"
@@ -3488,8 +3489,8 @@ msgstr "重要"
 #: ../../apps/site/src/components/demo/demo-seed.ts:28
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:151
 #: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:127
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:541
-#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:57
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:609
+#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:73
 #, fuzzy
 msgid "Inbox"
 msgstr "受信トレイ"
@@ -3614,12 +3615,12 @@ msgid "Invalid or missing reset link."
 msgstr "無効な、または存在しないリセットリンクです。"
 
 #. placeholder {0}: validation.error
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1290
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1358
 #, fuzzy
 msgid "Invalid taxonomy file: {0}"
 msgstr "無効なタクソノミーファイル: {0}"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1284
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1352
 #, fuzzy
 msgid "Invalid taxonomy file: {detail}"
 msgstr "無効なタクソノミーファイル: {detail}"
@@ -3723,7 +3724,7 @@ msgstr "論文募集、特集号への招待、引用指標。"
 msgid "Journals"
 msgstr "論文誌"
 
-#: ../../apps/extension/src/panel/ScopeField.tsx:200
+#: ../../apps/extension/src/panel/ScopeField.tsx:206
 msgid "Jump to folder…"
 msgstr "フォルダーへ移動…"
 
@@ -3816,7 +3817,7 @@ msgstr "リード"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:200
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:209
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:571
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:639
 #, fuzzy
 msgid "Leave unsorted"
 msgstr "未分類のままにする"
@@ -3858,7 +3859,7 @@ msgstr "南からはファラオ、北からはヒッタイトからの手紙が
 msgid "Light"
 msgstr "ライト"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:503
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:521
 msgid "List the kinds of emails that belong here: senders, topics, keywords. Aim for a full sentence."
 msgstr "ここに分類されるメールの種類（送信者、トピック、キーワード）を記述してください。完全な文章でお願いします。"
 
@@ -3966,7 +3967,7 @@ msgid "Manuscripts & Peer Review"
 msgstr "原稿と査読"
 
 #: ../ui/src/emails/PreviewDoneBar.tsx:23
-#: ../ui/src/emails/ThreadRow.tsx:145
+#: ../ui/src/emails/ThreadRow.tsx:146
 #, fuzzy
 msgid "Mark as done"
 msgstr "完了としてマーク"
@@ -3978,11 +3979,11 @@ msgstr "完了としてマーク"
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:310
 #: ../ui/src/emails/ThreadPreview.tsx:108
 #: ../ui/src/emails/ThreadPreview.tsx:112
-#: ../ui/src/emails/ThreadRow.tsx:148
+#: ../ui/src/emails/ThreadRow.tsx:149
 msgid "Mark as important"
 msgstr "重要にする"
 
-#: ../ui/src/emails/ThreadRow.tsx:144
+#: ../ui/src/emails/ThreadRow.tsx:145
 #, fuzzy
 msgid "Mark as not done"
 msgstr "未完了としてマーク"
@@ -4140,7 +4141,7 @@ msgid "Most popular"
 msgstr "最も人気"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:387
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:565
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:633
 #, fuzzy
 msgid "Move them to"
 msgstr "移動先"
@@ -4154,7 +4155,7 @@ msgstr "スレッドを移動"
 msgid "Move to folder"
 msgstr "フォルダーに移動"
 
-#: ../ui/src/emails/ReroutePopover.tsx:129
+#: ../ui/src/emails/ReroutePopover.tsx:130
 #, fuzzy
 msgid "Move to folder…"
 msgstr "フォルダに移動…"
@@ -4176,7 +4177,7 @@ msgstr "数日中に旅路がデルタの近くを通ります。もし偉大な
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:235
 #: ../../apps/mobile/app/(app)/account.tsx:131
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:272
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:477
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:495
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:15
 #, fuzzy
 msgid "Name"
@@ -4308,11 +4309,11 @@ msgstr "メール本文は保存されません"
 msgid "No folders available"
 msgstr "利用可能なフォルダーがありません"
 
-#: ../ui/src/folder-tree/FolderTree.tsx:47
+#: ../ui/src/folder-tree/FolderTree.tsx:48
 msgid "No folders defined"
 msgstr "フォルダーが定義されていません"
 
-#: ../ui/src/emails/ReroutePopover.tsx:139
+#: ../ui/src/emails/ReroutePopover.tsx:140
 #, fuzzy
 msgid "No folders match"
 msgstr "該当するフォルダーはありません"
@@ -4421,7 +4422,7 @@ msgstr "なし"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:190
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:205
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:538
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:606
 #, fuzzy
 msgid "None (not connected)"
 msgstr "なし（未接続）"
@@ -4564,9 +4565,13 @@ msgstr "業務"
 msgid "Optional. Applied when generating draft replies for this folder."
 msgstr "任意。このフォルダーの下書き返信を生成する際に適用されます。"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:524
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:592
 msgid "Optional. Applied when generating draft replies for threads in this folder."
 msgstr "オプション。このフォルダのスレッドの下書き返信を作成する際に適用されます。"
+
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:573
+msgid "Optional. Sets this folder's chip and icon color across your inbox. Default assigns a stable color automatically."
+msgstr "任意。受信トレイ全体で、このフォルダーのチップとアイコンの色を設定します。デフォルトでは、安定した色が自動的に割り当てられます。"
 
 #: ../../apps/extension/src/auth/SignInScreen.tsx:102
 #: ../../apps/mobile/src/auth/GoogleSignInButton.tsx:17
@@ -4611,8 +4616,8 @@ msgid "Paid or upgraded workspace"
 msgstr "有料またはアップグレード済みワークスペース"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:322
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:532
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:691
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:600
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:759
 msgid "Parent"
 msgstr "親"
 
@@ -4816,7 +4821,7 @@ msgid "Plan"
 msgstr "プラン"
 
 #. “Plan” here is the email-sorting taxonomy, not a billing or subscription plan.
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1412
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1480
 msgid "Plan is view-only. Only workspace admins can edit it."
 msgstr "プランは閲覧専用です。ワークスペースの管理者のみが編集できます。"
 
@@ -5036,7 +5041,7 @@ msgstr "5段階中5"
 msgid "Re-route {unclassifiedCount} unclassified"
 msgstr "{unclassifiedCount}件の未分類を再ルーティング"
 
-#: ../ui/src/emails/ReroutePopover.tsx:120
+#: ../ui/src/emails/ReroutePopover.tsx:121
 msgid "Re-route thread"
 msgstr "スレッドを再ルーティング"
 
@@ -5081,7 +5086,7 @@ msgid "Real Estate Agent"
 msgstr "不動産エージェント"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:91
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:311
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:314
 #, fuzzy
 msgid "Receipts, payment confirmations, and billing questions from vendors."
 msgstr "ベンダーからの領収書、支払い確認、および請求に関する質問。"
@@ -5096,7 +5101,7 @@ msgstr "直近で試行済みです。{when}に再度ご利用いただけます
 msgid "Recently attempted. Try again later."
 msgstr "直近で試行済みです。後でもう一度お試しください。"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1810
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1878
 #, fuzzy
 msgid "Recommended for your inbox"
 msgstr "受信トレイにおすすめ"
@@ -5166,7 +5171,7 @@ msgstr "採用活動"
 msgid "Redirecting…"
 msgstr "リダイレクト中…"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1451
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1519
 #, fuzzy
 msgid "Redo"
 msgstr "やり直し"
@@ -5224,7 +5229,7 @@ msgstr "ブラックリストから{email}を削除"
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:310
 #: ../ui/src/emails/ThreadPreview.tsx:108
 #: ../ui/src/emails/ThreadPreview.tsx:112
-#: ../ui/src/emails/ThreadRow.tsx:147
+#: ../ui/src/emails/ThreadRow.tsx:148
 #, fuzzy
 msgid "Remove from important"
 msgstr "重要を解除"
@@ -5285,7 +5290,7 @@ msgstr "プランの変更"
 #~ msgid "Replace taxonomy"
 #~ msgstr "分類法を置き換える"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1747
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1815
 #, fuzzy
 msgid "Replace with a template"
 msgstr "テンプレートに置き換える"
@@ -5439,11 +5444,7 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "リブ＝ハッダ殿、\n"
-"\n"
-"お申し出、拝承いたしました。南の倉庫から追加の穀物を発注済みです。収穫祭までには到着する予定ですので、それまでご辛抱いただけますようお願い申し上げます。\n"
-"\n"
-"ご健勝を祈ります、"
+msgstr "リブ＝ハッダ殿、\n\nお申し出、拝承いたしました。南の倉庫から追加の穀物を発注済みです。収穫祭までには到着する予定ですので、それまでご辛抱いただけますようお願い申し上げます。\n\nご健勝を祈ります、"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -5476,8 +5477,8 @@ msgstr "月払いと同額"
 #: ../../apps/mobile/src/components/EditNameSheet.tsx:66
 #: ../../apps/mobile/src/components/RenameWorkspaceSheet.tsx:74
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:450
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:462
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:722
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:480
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:790
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:29
 msgid "Save"
 msgstr "保存"
@@ -5524,8 +5525,8 @@ msgid "Saving..."
 msgstr "保存中..."
 
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:76
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:462
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:722
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:480
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:790
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:29
 #, fuzzy
 msgid "Saving…"
@@ -5547,13 +5548,13 @@ msgstr "スクライブ"
 msgid "Search"
 msgstr "検索"
 
-#: ../ui/src/emails/ThreadListHeader.tsx:104
+#: ../ui/src/emails/ThreadListHeader.tsx:122
 #, fuzzy
 msgid "Search {threadCount} threads"
 msgstr "{threadCount}件のスレッドを検索"
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:322
-#: ../ui/src/emails/ReroutePopover.tsx:133
+#: ../ui/src/emails/ReroutePopover.tsx:134
 #, fuzzy
 msgid "Search folders"
 msgstr "フォルダーを検索"
@@ -5562,10 +5563,10 @@ msgstr "フォルダーを検索"
 msgid "Search mail"
 msgstr "メールを検索"
 
-#: ../../apps/extension/src/panel/ScopeField.tsx:102
-#: ../../apps/extension/src/panel/ScopeField.tsx:103
-#: ../../apps/extension/src/panel/ScopeField.tsx:175
-#: ../ui/src/emails/ThreadListHeader.tsx:107
+#: ../../apps/extension/src/panel/ScopeField.tsx:104
+#: ../../apps/extension/src/panel/ScopeField.tsx:105
+#: ../../apps/extension/src/panel/ScopeField.tsx:181
+#: ../ui/src/emails/ThreadListHeader.tsx:125
 #, fuzzy
 msgid "Search threads"
 msgstr "スレッドを検索"
@@ -5918,7 +5919,7 @@ msgstr "ソート量"
 
 #: ../../apps/mobile/src/components/RationaleCard.tsx:34
 #: ../../apps/site/src/components/landing/HeroFeedCard.tsx:95
-#: ../ui/src/emails/ThreadRow.tsx:247
+#: ../ui/src/emails/ThreadRow.tsx:254
 msgid "Sorting…"
 msgstr "ソート中…"
 
@@ -5964,12 +5965,12 @@ msgid "Start free"
 msgstr "無料で開始"
 
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:52
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1748
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1816
 #, fuzzy
 msgid "Start from a template"
 msgstr "テンプレートから開始"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1516
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1584
 #, fuzzy
 msgid "Start from a template (replaces current)"
 msgstr "テンプレートから開始（現在のものを置き換えます）"
@@ -6101,8 +6102,8 @@ msgstr "サポート、オンボーディング、定着、解約、カスタマ
 msgid "Switch"
 msgstr "切り替え"
 
-#: ../../apps/extension/src/panel/ScopeField.tsx:159
-#: ../../apps/extension/src/panel/ScopeField.tsx:201
+#: ../../apps/extension/src/panel/ScopeField.tsx:165
+#: ../../apps/extension/src/panel/ScopeField.tsx:207
 msgid "Switch folder view"
 msgstr "フォルダー表示を切り替え"
 
@@ -6205,7 +6206,7 @@ msgstr "チーム"
 msgid "Template applied"
 msgstr "テンプレートを適用しました"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1540
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1608
 msgid "Templates"
 msgstr "テンプレート"
 
@@ -6320,12 +6321,12 @@ msgstr "これらのコラボレーターは{0}にアクセスを失います:"
 msgid "These settings control which inbox threads are imported. Trash is always excluded."
 msgstr "これらの設定は、どの受信トレイのスレッドをインポートするかを制御します。ゴミ箱は常に除外されます。"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1404
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1472
 #, fuzzy
 msgid "This folder has child folders. Remove their Paths first, then delete it."
 msgstr "このフォルダーには子フォルダーがあります。まずパスを削除してから、このフォルダーを削除してください。"
 
-#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:36
+#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:44
 msgid "This folder is not reachable from the inbox and will not be used for routing."
 msgstr "このフォルダは受信トレイから到達できず、ルーティングには使用されません。"
 
@@ -6440,7 +6441,7 @@ msgstr "スレッド分類済み"
 msgid "Threads sorted / month"
 msgstr "月間ソートスレッド数"
 
-#: ../ui/src/emails/ThreadListHeader.tsx:53
+#: ../ui/src/emails/ThreadListHeader.tsx:54
 #, fuzzy
 msgid "Threads sorted into this folder by Amarnai."
 msgstr "Amarnaiによってこのフォルダーにソートされたスレッド。"
@@ -6472,13 +6473,7 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "我が兄弟、大王陛下へ、\n"
-"\n"
-"大評議会はシェムの月の初めに招集されます。東方領土の全会計を準備し、可能であれば新月前に速使にて先行して送っていただくようお願いいたします。\n"
-"\n"
-"我らの同盟は強固です。評議会にその事実を示しましょう。\n"
-"\n"
-"トゥシュラッタ、ミタンニの大王"
+msgstr "我が兄弟、大王陛下へ、\n\n大評議会はシェムの月の初めに招集されます。東方領土の全会計を準備し、可能であれば新月前に速使にて先行して送っていただくようお願いいたします。\n\n我らの同盟は強固です。評議会にその事実を示しましょう。\n\nトゥシュラッタ、ミタンニの大王"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:163
 #, fuzzy
@@ -6487,11 +6482,7 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "王室任命局殿、\n"
-"\n"
-"テーベのホレムヘブ氏からの応募を受理いたしました。次回の新月までに彼の記録を審査いたします。追って通知する旨、彼にお伝えください。\n"
-"\n"
-"王命により、"
+msgstr "王室任命局殿、\n\nテーベのホレムヘブ氏からの応募を受理いたしました。次回の新月までに彼の記録を審査いたします。追って通知する旨、彼にお伝えください。\n\n王命により、"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:278
 #, fuzzy
@@ -6502,13 +6493,7 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "大王陛下へ、\n"
-"\n"
-"長年にわたり、我らの家門は兄弟の如き関係にありました。今、我ら両国民の利益のため、この友好関係を正式なものとすることを提案いたします。相互防衛と通商路共有の協定です。\n"
-"\n"
-"どうか私の条件をお聞き入れください。次回の使者にてご返答いただければ、直ちに私の使節を派遣いたします。\n"
-"\n"
-"アジル、大王陛下の僕、アムルの領主"
+msgstr "大王陛下へ、\n\n長年にわたり、我らの家門は兄弟の如き関係にありました。今、我ら両国民の利益のため、この友好関係を正式なものとすることを提案いたします。相互防衛と通商路共有の協定です。\n\nどうか私の条件をお聞き入れください。次回の使者にてご返答いただければ、直ちに私の使節を派遣いたします。\n\nアジル、大王陛下の僕、アムルの領主"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:391
 #, fuzzy
@@ -6517,11 +6502,7 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "大王陛下へ、\n"
-"\n"
-"近々、私の旅路がデルタ地方の近くを通ります。もし大王陛下に一時間ほどお時間がありましたら、直接お話しする機会を賜りたく存じます。書面では伝えにくい事柄もございますゆえ。\n"
-"\n"
-"陛下の僕、ウルシャリム総督アブディ＝ヘバ"
+msgstr "大王陛下へ、\n\n近々、私の旅路がデルタ地方の近くを通ります。もし大王陛下に一時間ほどお時間がありましたら、直接お話しする機会を賜りたく存じます。書面では伝えにくい事柄もございますゆえ。\n\n陛下の僕、ウルシャリム総督アブディ＝ヘバ"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:153
 #, fuzzy
@@ -6530,11 +6511,7 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "我が兄弟、大王陛下へ、\n"
-"\n"
-"貴殿の言葉、確かに承知いたしました。黄金は、次の使者が旅立つ前に発送いたします。我らの家門間の絆を大切にしており、それが冷え込むことは望みません。\n"
-"\n"
-"友情を込めて、"
+msgstr "我が兄弟、大王陛下へ、\n\n貴殿の言葉、確かに承知いたしました。黄金は、次の使者が旅立つ前に発送いたします。我らの家門間の絆を大切にしており、それが冷え込むことは望みません。\n\n友情を込めて、"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:239
 #, fuzzy
@@ -6545,13 +6522,7 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "我が兄弟、大王陛下へ、\n"
-"\n"
-"我らの父祖がそうであったように、友情を込めて筆を執ります。我が条約で合意された第三の黄金の積荷が未だ到着しておりません。使者が二人も行き来したにもかかわらず、未だ我々は待ち続けております。\n"
-"\n"
-"我らの家門間の絆にふさわしく、これ以上の遅延なく発送していただくようお願いいたします。\n"
-"\n"
-"ブルナ＝ブリアシュ2世、バビロンの王"
+msgstr "我が兄弟、大王陛下へ、\n\n我らの父祖がそうであったように、友情を込めて筆を執ります。我が条約で合意された第三の黄金の積荷が未だ到着しておりません。使者が二人も行き来したにもかかわらず、未だ我々は待ち続けております。\n\n我らの家門間の絆にふさわしく、これ以上の遅延なく発送していただくようお願いいたします。\n\nブルナ＝ブリアシュ2世、バビロンの王"
 
 #: ../../apps/site/src/components/demo/demo-seed.ts:352
 msgid "To the Great King, my lord, my sun,\n"
@@ -6561,13 +6532,7 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "大王陛下、我が主、我が太陽よ、\n"
-"\n"
-"先月お送りいただいた穀物は感謝をもって受け取られ、私は民衆の前で陛下の御名を称えました。しかし、再び筆を執らざるを得ません。第三便が到着せず、都は不穏な空気に包まれております。\n"
-"\n"
-"すでに七度も書簡を送りました。陛下にご迷惑をおかけしたくはありませんが、他に何をすればよろしいのでしょうか？\n"
-"\n"
-"陛下の僕、ビブロス総督リブ＝ハッダ"
+msgstr "大王陛下、我が主、我が太陽よ、\n\n先月お送りいただいた穀物は感謝をもって受け取られ、私は民衆の前で陛下の御名を称えました。しかし、再び筆を執らざるを得ません。第三便が到着せず、都は不穏な空気に包まれております。\n\nすでに七度も書簡を送りました。陛下にご迷惑をおかけしたくはありませんが、他に何をすればよろしいのでしょうか？\n\n陛下の僕、ビブロス総督リブ＝ハッダ"
 
 #: ../../apps/site/src/components/landing/MailThreadMock.tsx:135
 msgid "To: You"
@@ -6608,7 +6573,7 @@ msgid "Travel"
 msgstr "旅行"
 
 #: ../ui/src/emails/EmailRail.tsx:91
-#: ../ui/src/emails/ThreadListHeader.tsx:84
+#: ../ui/src/emails/ThreadListHeader.tsx:86
 #, fuzzy
 msgid "Triage"
 msgstr "トリアージ"
@@ -6659,17 +6624,17 @@ msgid "Unavailable"
 msgstr "利用不可"
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:41
-#: ../ui/src/emails/ThreadRow.tsx:257
+#: ../ui/src/emails/ThreadRow.tsx:264
 msgid "Unclassified"
 msgstr "未分類"
 
-#: ../ui/src/emails/ThreadRow.tsx:256
+#: ../ui/src/emails/ThreadRow.tsx:263
 msgid "Unclassified. Change folder"
 msgstr "未分類。フォルダーを変更"
 
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:365
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:407
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1442
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1510
 #: ../ui/src/emails/MockEmailsPage.tsx:290
 #, fuzzy
 msgid "Undo"
@@ -6684,7 +6649,7 @@ msgstr "大学"
 msgid "Unknown"
 msgstr "不明"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1283
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1351
 #, fuzzy
 msgid "unknown error"
 msgstr "不明なエラー"
@@ -6761,7 +6726,7 @@ msgstr "支払い方法を更新"
 
 #: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:47
 #: ../ui/src/i18n/taxonomy-template-messages.ts:245
-#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:59
+#: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:75
 #, fuzzy
 msgid "Updates / Other"
 msgstr "更新 / その他"
@@ -6852,7 +6817,7 @@ msgstr "フィルター変更後、受信トレイ内の既存スレッドに適
 msgid "Use a template"
 msgstr "テンプレートを使用"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1856
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1924
 #, fuzzy
 msgid "Use template"
 msgstr "テンプレートを使用"
@@ -6919,7 +6884,7 @@ msgstr "ボランティア"
 
 #: ../../apps/mobile/src/components/RationaleCard.tsx:43
 #: ../../apps/mobile/src/components/ThreadRow.tsx:44
-#: ../ui/src/emails/ThreadRow.tsx:251
+#: ../ui/src/emails/ThreadRow.tsx:258
 msgid "Waiting"
 msgstr "待機中"
 
@@ -6937,7 +6902,7 @@ msgstr "認証待ち…"
 #~ msgid "Waitlist"
 #~ msgstr "順番待ちリスト"
 
-#: ../ui/src/emails/ThreadRow.tsx:138
+#: ../ui/src/emails/ThreadRow.tsx:139
 msgid "Wants {folderName}"
 msgstr "{folderName}を希望"
 
@@ -6992,7 +6957,7 @@ msgstr "Amarnaiが判断に迷ったスレッドは？"
 msgid "What model does Amarnai use?"
 msgstr "Amarnaiはどのモデルを使用していますか？"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:547
+#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:615
 #, fuzzy
 msgid "Where this folder sits. Folders with no parent stay disconnected and are ignored until connected."
 msgstr "このフォルダーの場所です。親フォルダーのないフォルダーは、接続されるまで切断されたまま無視されます。"
@@ -7036,7 +7001,7 @@ msgstr "Gmail™ と Outlook™ に対応しています。"
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:61
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:220
 #: ../../apps/site/src/components/demo/DemoTaxonomyCanvas.tsx:218
-#: ../ui/src/emails/ThreadListHeader.tsx:63
+#: ../ui/src/emails/ThreadListHeader.tsx:65
 #: ../ui/src/pricing/planMessages.ts:50
 msgid "Workspace"
 msgstr "ワークスペース"

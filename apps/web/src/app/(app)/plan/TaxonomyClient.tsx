@@ -52,6 +52,7 @@ import {
   localizeTemplate,
   descendantIds,
 } from "@amarnai/core/taxonomy";
+import { FOLDER_COLOR_KEYS } from "@amarnai/core/emails";
 import {
   useTaxonomyHistory,
   snapshotsEqual,
@@ -174,6 +175,8 @@ function TaxonomyNodeCard({ data, selected }: NodeProps<RFNode>) {
       isCatchAll={node.isCatchAll}
       ignoredReason={ignoredReason}
       selected={selected}
+      colorId={node.id}
+      colorKey={node.colorKey}
     />
   );
 }
@@ -337,6 +340,18 @@ type ParentChange = {
   newParentId: string | null;
 };
 
+// Shared geometry for every color swatch in the folder-color picker; only the
+// fill/border and the selected-state outline differ per swatch.
+const SWATCH_BASE = {
+  width: 22,
+  height: 22,
+  borderRadius: 999,
+  cursor: "pointer",
+  outlineOffset: 2,
+} as const;
+const swatchOutline = (selected: boolean) =>
+  selected ? "1px solid var(--accent)" : "none";
+
 type NodeFormSubmit = {
   data: CreateTaxonomyNodeInput;
   // create mode: chosen parent (null = orphan / no edge)
@@ -397,6 +412,8 @@ function NodeForm({
     isRoot ||
     description.replace(/\s/g, "").length >= minNodeDescriptionLength(description);
   const [draftPrompt, setDraftPrompt] = useState(node?.draftPrompt ?? "");
+  // null = no override (deterministic hash default). A palette key otherwise.
+  const [colorKey, setColorKey] = useState<string | null>(node?.colorKey ?? null);
   // "" represents "None (not connected)".
   const [parentId, setParentId] = useState(currentParentId ?? "");
   const [confirmingDelete, setConfirmingDelete] = useState(false);
@@ -414,6 +431,7 @@ function NodeForm({
       instructions: node?.instructions ?? null,
       draftPrompt: trimmedDraftPrompt || null,
       examples: node?.examples ?? [],
+      colorKey,
     };
     const chosenParentId = parentId === "" ? null : parentId;
     if (node && !isRoot && chosenParentId !== currentParentId) {
@@ -509,6 +527,56 @@ function NodeForm({
             </>
           )}
         </div>
+        {!isRoot && (
+          <div className="form-group">
+            <label className="form-label"><Trans>Color</Trans></label>
+            <div
+              role="radiogroup"
+              aria-label={_(msg`Folder color`)}
+              style={{ display: "flex", flexWrap: "wrap", gap: 8, alignItems: "center" }}
+            >
+              {/* Default = no override; the folder falls back to its stable
+                  hash-assigned swatch. */}
+              <button
+                type="button"
+                role="radio"
+                aria-checked={colorKey === null}
+                aria-label={_(msg`Default color`)}
+                onClick={() => setColorKey(null)}
+                title={_(msg`Default`)}
+                style={{
+                  ...SWATCH_BASE,
+                  background: "transparent",
+                  border: "1px dashed var(--color-border, var(--line-2))",
+                  outline: swatchOutline(colorKey === null),
+                }}
+              />
+              {FOLDER_COLOR_KEYS.map((key) => (
+                <button
+                  key={key}
+                  type="button"
+                  role="radio"
+                  aria-checked={colorKey === key}
+                  aria-label={key}
+                  title={key}
+                  onClick={() => setColorKey(key)}
+                  style={{
+                    ...SWATCH_BASE,
+                    background: `var(--folder-${key}-ink)`,
+                    border: `1px solid var(--folder-${key}-line)`,
+                    outline: swatchOutline(colorKey === key),
+                  }}
+                />
+              ))}
+            </div>
+            <p style={{ fontSize: 11, color: "var(--color-muted)", marginTop: 6 }}>
+              <Trans>
+                Optional. Sets this folder's chip and icon color across your inbox.
+                Default assigns a stable color automatically.
+              </Trans>
+            </p>
+          </div>
+        )}
         <div className="form-group">
           <label className="form-label"><Trans>Draft style guidance</Trans></label>
           <textarea

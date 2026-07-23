@@ -26,6 +26,7 @@ export function mapFolders(
         description: n.description,
         parentId: parentNodeId === root.id ? null : (parentNodeId ?? null),
         ignored: false,
+        colorKey: n.colorKey ?? null,
       };
     });
 }
