@@ -1,5 +1,12 @@
 import { vi, describe, it, expect, beforeEach, afterEach } from "vitest";
-import { exchangeServerAuthCode, GmailApiError } from "./google-oauth.js";
+import {
+  exchangeServerAuthCode,
+  GmailApiError,
+  GMAIL_READONLY_SCOPE,
+  GMAIL_MODIFY_SCOPE,
+  parseGrantedScopes,
+  hasWritebackScope,
+} from "./google-oauth.js";
 
 const TOKEN_URL = "https://oauth2.googleapis.com/token";
 const mockFetch = vi.fn();
@@ -68,5 +75,39 @@ describe("exchangeServerAuthCode", () => {
     });
 
     await expect(exchangeServerAuthCode("no-offline")).rejects.toThrow(/refresh_token/);
+  });
+});
+
+describe("parseGrantedScopes", () => {
+  it("detects readonly-only grants", () => {
+    const r = parseGrantedScopes(`openid ${GMAIL_READONLY_SCOPE}`);
+    expect(r.hasReadonly).toBe(true);
+    expect(r.hasWriteback).toBe(false);
+    expect(r.scopes).toContain(GMAIL_READONLY_SCOPE);
+  });
+
+  it("detects a writeback grant and treats modify as satisfying read access", () => {
+    const r = parseGrantedScopes(`${GMAIL_READONLY_SCOPE} ${GMAIL_MODIFY_SCOPE}`);
+    expect(r.hasReadonly).toBe(true);
+    expect(r.hasWriteback).toBe(true);
+  });
+
+  it("treats a modify-only grant as read-capable", () => {
+    const r = parseGrantedScopes(GMAIL_MODIFY_SCOPE);
+    expect(r.hasReadonly).toBe(true);
+    expect(r.hasWriteback).toBe(true);
+  });
+
+  it("reports no read access when neither scope is present", () => {
+    const r = parseGrantedScopes("openid email");
+    expect(r.hasReadonly).toBe(false);
+    expect(r.hasWriteback).toBe(false);
+  });
+});
+
+describe("hasWritebackScope", () => {
+  it("is true only when the modify scope is stored", () => {
+    expect(hasWritebackScope([GMAIL_READONLY_SCOPE])).toBe(false);
+    expect(hasWritebackScope([GMAIL_READONLY_SCOPE, GMAIL_MODIFY_SCOPE])).toBe(true);
   });
 });

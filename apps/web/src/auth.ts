@@ -2,11 +2,21 @@ import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 import Credentials from "next-auth/providers/credentials";
 import { verifyCredentials, provisionGoogleUser } from "@amarnai/auth";
-import { GMAIL_READONLY_SCOPE } from "@amarnai/gmail";
+import { GMAIL_READONLY_SCOPE, GMAIL_MODIFY_SCOPE, parseGrantedScopes } from "@amarnai/gmail";
 import { db } from "@amarnai/db";
 import { triggerPostConnectHooks } from "@/lib/post-connect-hooks";
 import { resolveSessionToken } from "@/lib/session-jwt";
 import { getRequestLocale } from "@/lib/i18n-server";
+import { isLabelWritebackEnabled } from "@/lib/writeback-flag";
+
+// When the writeback feature is enabled, mail authorization (including
+// gmail.modify) is gathered upfront at sign-in — writeback defaults on, and
+// upcoming in-Gmail features (summaries, draft replies) share the same grant.
+// Users can still uncheck the modify permission on Google's granular-consent
+// screen; the connection then proceeds read-only and writeback stays inert.
+const GMAIL_SIGNIN_SCOPES = isLabelWritebackEnabled()
+  ? `${GMAIL_READONLY_SCOPE} ${GMAIL_MODIFY_SCOPE}`
+  : GMAIL_READONLY_SCOPE;
 
 export const { handlers, auth, signIn, signOut, unstable_update } = NextAuth({
   providers: [
@@ -15,7 +25,7 @@ export const { handlers, auth, signIn, signOut, unstable_update } = NextAuth({
       clientSecret: process.env["AUTH_GOOGLE_SECRET"] ?? "",
       authorization: {
         params: {
-          scope: `openid email profile ${GMAIL_READONLY_SCOPE}`,
+          scope: `openid email profile ${GMAIL_SIGNIN_SCOPES}`,
           access_type: "offline",
           prompt: "select_account",
         },
@@ -58,12 +68,19 @@ export const { handlers, auth, signIn, signOut, unstable_update } = NextAuth({
       // provisioning upserts the user and, when tokens are present (first grant
       // or re-grant), creates the default workspace + Gmail connection.
       const isGoogle = account?.provider === "google";
+      // Persist what Google ACTUALLY granted (the user can uncheck individual
+      // permissions on the granular-consent screen). Writeback and other
+      // scope-gated features key off this stored list; without it a sign-in
+      // grant of gmail.modify would be recorded as readonly-only.
+      const grantedScopes =
+        isGoogle && account?.scope ? parseGrantedScopes(account.scope).scopes : undefined;
       const { userId, workspaceId, isNew, gmailConnected } = await provisionGoogleUser({
         email: user.email,
         name: user.name ?? null,
         imageUrl: user.image ?? null,
         gmailAccessToken: isGoogle ? account?.access_token ?? null : null,
         gmailRefreshToken: isGoogle ? account?.refresh_token ?? null : null,
+        ...(grantedScopes ? { grantedScopes } : {}),
         // Seed the default workspace language from the browser locale (resolved by
         // proxy.ts, cookie-first then Accept-Language). Without this the workspace
         // hard-defaults to "en" while the UI auto-detects the browser, so a French

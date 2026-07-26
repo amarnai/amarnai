@@ -2,8 +2,9 @@ import { Hono } from "hono";
 import { z } from "zod";
 import { db } from "@amarnai/db";
 import { findDescendants } from "@amarnai/ai";
-import { MAX_TAXONOMY_NON_ROOT_NODES } from "@amarnai/shared";
+import { MAX_TAXONOMY_NON_ROOT_NODES, DEFAULT_GMAIL_SYNC_SETTINGS } from "@amarnai/shared";
 import { bumpTaxonomyChangedAt } from "../services/taxonomy-changed.js";
+import { provisionLabelsQueue } from "../queues.js";
 
 const workspaceParam = z.object({ workspaceId: z.string().min(1) });
 const nodeParam = z.object({
@@ -210,6 +211,25 @@ taxonomyNodes.post("/workspaces/:workspaceId/taxonomy-nodes", async (c) => {
   // A new folder changes routing outcomes — mark review threads re-sortable.
   await bumpTaxonomyChangedAt(workspaceId);
 
+  // Provision the new folder as a label/category if writeback is on (the
+  // default; a missing settings row means the shared default). Deduped per
+  // workspace so a burst of folder creates collapses to one provisioning run;
+  // the job itself no-ops when the flag or write scope is missing.
+  // TODO(writeback): rename/delete cascades are deferred; only creation provisions.
+  const settingsRow = await db.gmailSyncSettings.findUnique({
+    where: { workspaceId },
+    select: { labelWritebackEnabled: true },
+  });
+  const writebackOn =
+    settingsRow?.labelWritebackEnabled ?? DEFAULT_GMAIL_SYNC_SETTINGS.labelWritebackEnabled;
+  if (writebackOn) {
+    await provisionLabelsQueue
+      .add("provision-folder-labels", { workspaceId }, { deduplication: { id: `provision_${workspaceId}` } })
+      .catch((err) =>
+        console.error(`[taxonomy-nodes] provision enqueue failed (workspace=${workspaceId}):`, err),
+      );
+  }
+
   return c.json({ ...node, threadCount: 0 }, 201);
 });
 
@@ -281,6 +301,11 @@ taxonomyNodes.patch(
       },
       select: nodeSelect,
     });
+
+    // TODO(writeback): a name change shifts this node's (and its descendants')
+    // provider label/category path, but the rename cascade is deferred — the
+    // provider-side label keeps its old name until a future cascade job renames
+    // it. The TaxonomyNodeProviderLink.providerPath is the drift-detection seam.
 
     // Name change: also invalidate descendants — their breadcrumb includes this node's name.
     if (d.name !== undefined) {
@@ -378,6 +403,10 @@ taxonomyNodes.delete(
     // "this content belongs in THAT folder", and the folder is gone.
     await db.taxonomyNodeReference.deleteMany({ where: { nodeId } });
 
+    // The TaxonomyNodeProviderLink row cascades with the node (onDelete: Cascade).
+    // TODO(writeback): the provider-side label/category itself is NOT removed here
+    // (delete cascade deferred) — it lingers in the mailbox until a future cascade
+    // job reconciles it.
     await db.taxonomyNode.delete({ where: { id: nodeId } });
 
     // Removing a folder changes routing outcomes — mark review threads re-sortable.

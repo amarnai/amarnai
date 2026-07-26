@@ -8,6 +8,7 @@ import type { MessageDescriptor } from "@lingui/core";
 import { disconnectGmailAction, type DisconnectOutcome } from "@/actions/gmail";
 import type { GmailConnection, MailProvider, SyncStatus, GmailSyncSettings } from "@/lib/api";
 import { GmailSyncSettingsSection } from "./GmailSyncSettingsSection";
+import { LabelWritebackSection } from "./LabelWritebackSection";
 import { GoogleGIcon, OutlookIcon } from "@amarnai/ui";
 
 const DEFAULT_SYNC_SETTINGS: GmailSyncSettings = {
@@ -15,6 +16,7 @@ const DEFAULT_SYNC_SETTINGS: GmailSyncSettings = {
   includePromotions: false,
   sortingPaused: false,
   routeBulkToOther: true,
+  labelWritebackEnabled: true,
   blacklistedSenderEmails: [],
 };
 
@@ -31,6 +33,12 @@ type Props = {
   // Whether the workspace holds retained synced email that connecting a
   // different inbox would erase. Drives the inbox-switch warning.
   hasSyncedData: boolean;
+  // Whether the label-writeback feature flag is on (gates the opt-in section).
+  labelWritebackFlagOn: boolean;
+  // Whether the connected mailbox already holds the write scope.
+  hasWriteScope: boolean;
+  // True right after a successful incremental-consent upgrade (?writeback=enabled).
+  writebackJustEnabled: boolean;
 };
 
 const GOOGLE_PERMISSIONS_URL = "https://myaccount.google.com/permissions";
@@ -71,6 +79,12 @@ const GMAIL_ERROR_MESSAGES: Record<string, MessageDescriptor> = {
     msg`Could not verify your Google account. Please try again.`,
   db_upsert:
     msg`The connection could not be saved due to a server error. Please try again.`,
+  wrong_account:
+    msg`That is a different Google account. Sign in with the mailbox already connected to this workspace.`,
+  writeback_scope_denied:
+    msg`Label writeback needs permission to manage your Gmail labels. Try again and approve it, or leave the feature off.`,
+  writeback_enable_failed:
+    msg`Permission was granted but the feature could not be turned on. Toggle it from settings to retry.`,
 };
 
 // Outlook connect-error copy (Microsoft-specific wording).
@@ -91,6 +105,12 @@ const OUTLOOK_ERROR_MESSAGES: Record<string, MessageDescriptor> = {
     msg`Could not access your Outlook inbox. Please try again.`,
   db_upsert:
     msg`The connection could not be saved due to a server error. Please try again.`,
+  wrong_account:
+    msg`That is a different Microsoft account. Sign in with the mailbox already connected to this workspace.`,
+  writeback_scope_denied:
+    msg`Category writeback needs permission to manage your Outlook mail. Try again and approve it, or leave the feature off.`,
+  writeback_enable_failed:
+    msg`Permission was granted but the feature could not be turned on. Toggle it from settings to retry.`,
 };
 
 function formatDate(iso: string | null, never: string): string {
@@ -116,6 +136,9 @@ export function GmailConnectionSection({
   connectProvider,
   outlookEnabled,
   hasSyncedData,
+  labelWritebackFlagOn,
+  hasWriteScope,
+  writebackJustEnabled,
 }: Props) {
   const { _ } = useLingui();
   const [isPending, startTransition] = useTransition();
@@ -284,6 +307,16 @@ export function GmailConnectionSection({
             provider={provider}
             initialSettings={syncSettings ?? DEFAULT_SYNC_SETTINGS}
           />
+
+          {labelWritebackFlagOn && (
+            <LabelWritebackSection
+              workspaceId={workspaceId}
+              provider={provider}
+              initialEnabled={(syncSettings ?? DEFAULT_SYNC_SETTINGS).labelWritebackEnabled}
+              hasWriteScope={hasWriteScope}
+              justEnabled={writebackJustEnabled}
+            />
+          )}
         </>
       ) : connection?.status === "DISCONNECTED" ? (
         <div className="gmail-connection-status">

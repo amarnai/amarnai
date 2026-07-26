@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { Trans } from "@lingui/react/macro";
+import { Switch } from "@amarnai/ui";
 import { api, type GmailSyncSettings, type MailProvider } from "@/lib/api";
 import { sweepInboxAction } from "@/actions/gmail";
 
@@ -57,8 +58,7 @@ export function GmailSyncSettingsSection({ workspaceId, provider, initialSetting
       </p>
 
       <label className="settings-toggle">
-        <input
-          type="checkbox"
+        <Switch
           checked={settings.includeSpam}
           onChange={() => handleToggle("includeSpam")}
           disabled={isPending}
@@ -68,8 +68,7 @@ export function GmailSyncSettingsSection({ workspaceId, provider, initialSetting
 
       {showPromotions && (
         <label className="settings-toggle">
-          <input
-            type="checkbox"
+          <Switch
             checked={settings.includePromotions}
             onChange={() => handleToggle("includePromotions")}
             disabled={isPending}
@@ -79,8 +78,7 @@ export function GmailSyncSettingsSection({ workspaceId, provider, initialSetting
       )}
 
       <label className="settings-toggle">
-        <input
-          type="checkbox"
+        <Switch
           checked={settings.routeBulkToOther}
           onChange={() => handleToggle("routeBulkToOther")}
           disabled={isPending}

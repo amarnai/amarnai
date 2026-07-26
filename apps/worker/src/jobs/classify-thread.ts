@@ -33,7 +33,9 @@ import {
   QUEUE_CLASSIFY_THREAD,
   type ClassifyThreadJobData,
   pushNotificationQueue,
+  writebackThreadLabelQueue,
 } from "../queues.js";
+import { DEDUP_WRITEBACK } from "@amarnai/queue";
 import { redisConnection } from "../redis.js";
 import {
   buildDedupKey,
@@ -676,6 +678,22 @@ export function createClassifyThreadWorker(): Worker {
             // successfully, so it is no longer eligible for failure recovery.
             data: { triageStatus, classifyFailedAt: null, classifyAttempts: 0 },
           });
+
+          // ── Folder-label writeback (opt-in) ───────────────────────────────
+          // Reconcile the thread's Amarnai label/category to its new folder.
+          // Best-effort + deduped per (workspace, thread); the job itself no-ops
+          // when writeback is off, so this is cheap when the feature is unused.
+          await writebackThreadLabelQueue
+            .add(
+              "writeback-thread-label",
+              { workspaceId, emailThreadId },
+              { deduplication: { id: `${DEDUP_WRITEBACK}_${workspaceId}_${emailThreadId}` } },
+            )
+            .catch((err) =>
+              console.error(
+                `[classify-thread] writeback enqueue failed for thread ${emailThreadId}: ${err instanceof Error ? err.message : String(err)}`,
+              ),
+            );
 
           // ── 7b. Push notification — thread needs attention ────────────────
           //

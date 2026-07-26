@@ -393,6 +393,9 @@ export function createSyncInboxWorker(): Worker {
         includePromotions:       syncSettingsRow?.includePromotions       ?? false,
         sortingPaused:           syncSettingsRow?.sortingPaused           ?? false,
         routeBulkToOther:        syncSettingsRow?.routeBulkToOther        ?? true,
+        // Not consumed by sync filtering — writeback runs off its own job. Kept
+        // false here to satisfy the shared type without an extra column select.
+        labelWritebackEnabled:   false,
         blacklistedSenderEmails: syncSettingsRow?.blacklistedSenderEmails ?? [],
       };
       const sortingPaused = settings.sortingPaused;

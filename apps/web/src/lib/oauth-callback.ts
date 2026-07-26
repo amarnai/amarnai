@@ -9,7 +9,7 @@ import {
   deleteGmailDisconnectedNotifications,
   eraseStaleEmailAccounts,
 } from "@amarnai/db";
-import type { MailProvider } from "@/lib/api";
+import { apiFor, type MailProvider } from "@/lib/api";
 
 type CallbackTokens = { accessToken: string; refreshToken: string; scope: string };
 type CallbackProfile = {
@@ -36,10 +36,18 @@ export type OAuthCallbackConfig = {
   /** Error code emitted when the profile fetch fails (provider-specific key the
    *  settings error map keys off — "gmail_profile_fetch" vs "profile_fetch"). */
   profileFetchError: string;
-  exchangeCodeForTokens: (code: string) => Promise<CallbackTokens>;
+  // `opts.writeback` is true on the incremental-consent upgrade. Microsoft must
+  // re-request the write scope set here (its refresh tokens are scope-bound);
+  // Google derives scopes from the code and ignores it.
+  exchangeCodeForTokens: (code: string, opts: { writeback: boolean }) => Promise<CallbackTokens>;
   fetchProfile: (accessToken: string) => Promise<CallbackProfile>;
-  /** Parse the granted scope string and decide whether read-only access was granted. */
-  parseScopes: (scope: string) => { scopes: string[]; hasReadonly: boolean };
+  /** Parse the granted scope string. `hasReadonly` gates the connect flow;
+   *  `hasWriteback` decides whether the incremental-consent upgrade succeeded. */
+  parseScopes: (scope: string) => {
+    scopes: string[];
+    hasReadonly: boolean;
+    hasWriteback: boolean;
+  };
   audit: {
     eventType: string;
     entityType: string;
@@ -79,12 +87,14 @@ export async function handleOAuthCallback(
 
   // ── Verify OAuth state (provider-neutral signing) ───────────────────────────
   let workspaceId: string;
+  let isWritebackUpgrade = false;
   try {
     const rawState = JSON.parse(
       Buffer.from(state, "base64url").toString("utf8"),
     ) as { workspaceId: string };
     workspaceId = rawState.workspaceId;
-    verifyState(state, user.id, workspaceId);
+    const verified = verifyState(state, user.id, workspaceId);
+    isWritebackUpgrade = verified.intent === "writeback";
   } catch {
     return fail("invalid_state");
   }
@@ -101,14 +111,14 @@ export async function handleOAuthCallback(
   // ── Step 1: exchange authorization code for OAuth tokens ─────────────────────
   let tokens: CallbackTokens;
   try {
-    tokens = await cfg.exchangeCodeForTokens(code);
+    tokens = await cfg.exchangeCodeForTokens(code, { writeback: isWritebackUpgrade });
   } catch (err) {
     console.error(`[${cfg.source}] token_exchange:`, err instanceof Error ? err.message : err);
     return fail("token_exchange");
   }
 
   // Enforce read-only scope before making any provider API calls.
-  const { scopes: grantedScopes, hasReadonly } = cfg.parseScopes(tokens.scope);
+  const { scopes: grantedScopes, hasReadonly, hasWriteback } = cfg.parseScopes(tokens.scope);
   if (!hasReadonly) {
     console.error(`[${cfg.source}] insufficient_scope granted:`, tokens.scope);
     return fail("insufficient_scope");
@@ -123,6 +133,25 @@ export async function handleOAuthCallback(
   } catch (err) {
     console.error(`[${cfg.source}] profile_fetch:`, err instanceof Error ? err.message : err);
     return fail(cfg.profileFetchError);
+  }
+
+  // ── Incremental-consent upgrade ──────────────────────────────────────────────
+  // The writeback flow re-consents an ALREADY-connected mailbox to add the write
+  // scope. It must not run the fresh-connect machinery (inbox-rotation cleanup,
+  // post-connect sync/watch, field-resetting upsert) against a healthy mailbox —
+  // it only widens the stored grant and flips the feature on.
+  if (isWritebackUpgrade) {
+    return handleWritebackUpgrade({
+      cfg,
+      workspaceId,
+      userId: user.id,
+      profile,
+      grantedScopes,
+      hasWriteback,
+      encryptedRefreshToken: encrypt(tokens.refreshToken),
+      baseUrl,
+      fail,
+    });
   }
 
   // Prior inbox on this workspace (if any) so the audit below can flag a ROTATION
@@ -201,5 +230,113 @@ export async function handleOAuthCallback(
   // provides a fallback for sync, and the worker's daily renewal covers push.
   triggerPostConnectHooks(cfg.source, workspaceId, user.id, cfg.pushProvider);
 
+  // Writeback is on by default and the write scope is requested upfront: when it
+  // was granted, kick off folder→label provisioning now (the PATCH enqueues the
+  // worker job). Best-effort — a failure just delays labels until the first
+  // classification lazily provisions them.
+  if (hasWriteback) {
+    await apiFor(user.id)
+      .updateGmailSyncSettings(workspaceId, { labelWritebackEnabled: true })
+      .catch((err) =>
+        console.error(
+          `[${cfg.source}] writeback_provision:`,
+          err instanceof Error ? err.message : err,
+        ),
+      );
+  }
+
   return NextResponse.redirect(new URL("/emails", baseUrl));
+}
+
+/**
+ * Complete an incremental-consent upgrade: verify the same mailbox re-consented,
+ * widen the stored grant with the new refresh token + scopes, and — if the write
+ * scope was actually granted — enable label writeback (which enqueues folder
+ * provisioning via the API). If the user declined the write scope, the read-only
+ * connection is still refreshed but the feature stays off. Never resets
+ * provider-scoped connection state, rotates inboxes, or re-triggers sync/watch.
+ */
+async function handleWritebackUpgrade(opts: {
+  cfg: OAuthCallbackConfig;
+  workspaceId: string;
+  userId: string;
+  profile: CallbackProfile;
+  grantedScopes: string[];
+  hasWriteback: boolean;
+  encryptedRefreshToken: string;
+  baseUrl: string;
+  fail: (reason: string) => NextResponse;
+}): Promise<NextResponse> {
+  const { cfg, workspaceId, userId, profile, grantedScopes, hasWriteback, fail } = opts;
+  const settingsRedirect = (params: Record<string, string>): NextResponse => {
+    const url = new URL("/settings", opts.baseUrl);
+    for (const [k, v] of Object.entries(params)) url.searchParams.set(k, v);
+    return NextResponse.redirect(url);
+  };
+
+  const existing = await db.emailConnection.findUnique({
+    where: { workspaceId },
+    select: { emailAddress: true, subjectId: true },
+  });
+  if (!existing) {
+    // Nothing to upgrade — the mailbox must be connected first.
+    return fail("writeback_no_connection");
+  }
+
+  // Same-mailbox guard: a subjectId match (Outlook) is authoritative; otherwise
+  // compare the address (Gmail, which has no stable subject id). Prevents
+  // upgrading connection A's grant with a token minted for mailbox B.
+  const sameMailbox =
+    existing.subjectId && profile.subjectId
+      ? existing.subjectId === profile.subjectId
+      : existing.emailAddress.toLowerCase() === profile.emailAddress.toLowerCase();
+  if (!sameMailbox) return fail("wrong_account");
+
+  // Widen the stored grant (fresh refresh token + scopes). Deliberately a narrow
+  // update — NOT persistEmailConnection/upsert, which resets watch/status fields.
+  try {
+    await db.emailConnection.update({
+      where: { workspaceId },
+      data: {
+        encryptedRefreshToken: opts.encryptedRefreshToken,
+        grantedScopes,
+        lastVerifiedAt: new Date(),
+      },
+    });
+  } catch (err) {
+    console.error(`[${cfg.source}] writeback_update:`, err instanceof Error ? err.message : err);
+    return fail("db_upsert");
+  }
+
+  // User re-consented but declined the write scope: keep the refreshed read-only
+  // connection, leave the feature off.
+  if (!hasWriteback) {
+    return settingsRedirect({ [cfg.errorParam]: "writeback_scope_denied" });
+  }
+
+  // Enable writeback through the API (the single place that enqueues folder
+  // provisioning). Audit here so the scope upgrade is observable even if the
+  // enable call fails.
+  await db.auditLog
+    .create({
+      data: {
+        workspaceId,
+        actorType: "USER",
+        actorUserId: userId,
+        eventType: "connection.writeback_enabled",
+        entityType: cfg.audit.entityType,
+        metadata: { [cfg.audit.addressKey]: profile.emailAddress },
+      },
+    })
+    .catch((err) => console.error(`[${cfg.source}] writeback_audit:`, err instanceof Error ? err.message : err));
+
+  try {
+    await apiFor(userId).updateGmailSyncSettings(workspaceId, { labelWritebackEnabled: true });
+  } catch (err) {
+    console.error(`[${cfg.source}] writeback_enable:`, err instanceof Error ? err.message : err);
+    // Scope is granted and stored; the user can flip the toggle from settings.
+    return settingsRedirect({ [cfg.errorParam]: "writeback_enable_failed" });
+  }
+
+  return settingsRedirect({ writeback: "enabled" });
 }

@@ -9,10 +9,23 @@
 export const OUTLOOK_MAIL_READ_SCOPE = "Mail.Read";
 
 /**
+ * Write scope for opt-in category writeback: manage the master category list and
+ * PATCH message categories. Requested only through the incremental-consent
+ * upgrade, never at sign-up. Mail.ReadWrite is a superset of Mail.Read.
+ * VERIFY at implementation: if POST /me/outlook/masterCategories returns 403
+ * ErrorAccessDenied, add MailboxSettings.ReadWrite to OUTLOOK_WRITEBACK_SCOPES.
+ */
+export const OUTLOOK_MAIL_READWRITE_SCOPE = "Mail.ReadWrite";
+
+/**
  * Full delegated scope set requested at consent. `offline_access` is required for
  * a refresh token; `User.Read` gives `/me` for the account identity.
  */
 export const OUTLOOK_SCOPES = "Mail.Read offline_access User.Read";
+
+/** Scope set for the writeback upgrade — adds Mail.ReadWrite. Must match the
+ *  authorize request, since Microsoft refresh tokens are scope-bound. */
+export const OUTLOOK_WRITEBACK_SCOPES = "Mail.ReadWrite offline_access User.Read";
 
 const GRAPH_BASE_URL = "https://graph.microsoft.com/v1.0";
 
@@ -34,14 +47,25 @@ function clientCredentials(): { client_id: string; client_secret: string } {
 // ─── Scope parsing ──────────────────────────────────────────────────────────
 
 // Microsoft echoes granted scopes without the resource prefix (e.g. "Mail.Read"),
-// and matches case-insensitively. Confirms mail read access was granted, and
-// returns the parsed scopes for storing on the connection row.
-export function parseGrantedScopes(scope: string): { scopes: string[]; hasReadonly: boolean } {
+// and matches case-insensitively. `hasReadonly` gates the connect flow (either
+// scope satisfies it, since ReadWrite supersedes Read); `hasWriteback` decides
+// whether the writeback upgrade succeeded. Returns the parsed scopes for storage.
+export function parseGrantedScopes(scope: string): {
+  scopes: string[];
+  hasReadonly: boolean;
+  hasWriteback: boolean;
+} {
   const scopes = scope.split(" ").filter(Boolean);
-  const hasReadonly = scopes.some(
-    (s) => s.toLowerCase() === OUTLOOK_MAIL_READ_SCOPE.toLowerCase(),
-  );
-  return { scopes, hasReadonly };
+  const lower = scopes.map((s) => s.toLowerCase());
+  const hasWriteback = lower.includes(OUTLOOK_MAIL_READWRITE_SCOPE.toLowerCase());
+  const hasReadonly = hasWriteback || lower.includes(OUTLOOK_MAIL_READ_SCOPE.toLowerCase());
+  return { scopes, hasReadonly, hasWriteback };
+}
+
+// Whether a persisted grantedScopes array carries the write scope. Case-insensitive
+// (Microsoft echoes scopes without stable casing). Mirrors gmail's helper.
+export function hasWritebackScope(grantedScopes: readonly string[]): boolean {
+  return grantedScopes.some((s) => s.toLowerCase() === OUTLOOK_MAIL_READWRITE_SCOPE.toLowerCase());
 }
 
 // ─── Error class ────────────────────────────────────────────────────────────
@@ -85,14 +109,16 @@ export async function exchangeAuthCode(
   code: string,
   redirectUri: string,
   codeVerifier?: string,
+  scope: string = OUTLOOK_SCOPES,
 ): Promise<OutlookTokens> {
   const params: Record<string, string> = {
     code,
     ...clientCredentials(),
     redirect_uri: redirectUri,
     grant_type: "authorization_code",
-    // Re-request the delegated scopes so the refresh token carries them.
-    scope: OUTLOOK_SCOPES,
+    // Re-request the delegated scopes so the refresh token carries them. The
+    // writeback upgrade passes OUTLOOK_WRITEBACK_SCOPES here.
+    scope,
   };
   if (codeVerifier) params["code_verifier"] = codeVerifier;
 

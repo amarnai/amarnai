@@ -7,12 +7,14 @@ import {
   QUEUE_GENERATE_TAXONOMY,
   QUEUE_PUSH_NOTIFICATION,
   QUEUE_CAPTURE_REFERENCE,
+  QUEUE_PROVISION_LABELS,
+  QUEUE_WRITEBACK_THREAD_LABEL,
 } from "@amarnai/queue";
 import { redisConnection } from "./redis.js";
 
 // Re-export so job files can import names and types from one place.
-export { QUEUE_SYNC_INBOX, QUEUE_CLASSIFY_THREAD, QUEUE_BACKFILL_INBOX, QUEUE_LIFECYCLE_EMAIL, QUEUE_GENERATE_TAXONOMY, QUEUE_PUSH_NOTIFICATION, QUEUE_CAPTURE_REFERENCE } from "@amarnai/queue";
-export type { SyncInboxJobData, ClassifyThreadJobData, ClassifyThreadSource, BackfillInboxJobData, LifecycleEmailJobData, GenerateTaxonomyJobData, PushNotificationJobData, CaptureReferenceJobData } from "@amarnai/queue";
+export { QUEUE_SYNC_INBOX, QUEUE_CLASSIFY_THREAD, QUEUE_BACKFILL_INBOX, QUEUE_LIFECYCLE_EMAIL, QUEUE_GENERATE_TAXONOMY, QUEUE_PUSH_NOTIFICATION, QUEUE_CAPTURE_REFERENCE, QUEUE_PROVISION_LABELS, QUEUE_WRITEBACK_THREAD_LABEL } from "@amarnai/queue";
+export type { SyncInboxJobData, ClassifyThreadJobData, ClassifyThreadSource, BackfillInboxJobData, LifecycleEmailJobData, GenerateTaxonomyJobData, PushNotificationJobData, CaptureReferenceJobData, ProvisionLabelsJobData, WritebackThreadLabelJobData } from "@amarnai/queue";
 
 // ─── Queue instances ──────────────────────────────────────────────────────────
 
@@ -119,6 +121,36 @@ export const captureReferenceQueue = new Queue(QUEUE_CAPTURE_REFERENCE, {
     attempts: 3,
     backoff: { type: "exponential", delay: 10_000 },
     removeOnComplete: { count: 100 },
+    removeOnFail: { count: 500 },
+  },
+});
+
+/**
+ * Enqueue a folder-label provisioning run for a workspace (mirror every taxonomy
+ * folder into the mailbox as a label/category). Idempotent — existing
+ * labels/categories are reused — so retries are cheap.
+ */
+export const provisionLabelsQueue = new Queue(QUEUE_PROVISION_LABELS, {
+  connection: redisConnection,
+  defaultJobOptions: {
+    attempts: 3,
+    backoff: { type: "exponential", delay: 10_000 },
+    removeOnComplete: { count: 50 },
+    removeOnFail: { count: 100 },
+  },
+});
+
+/**
+ * Enqueue a per-thread label/category reconcile after a classification write.
+ * Declarative and idempotent (no-ops when the thread already matches), so a
+ * duplicate or retried job is harmless.
+ */
+export const writebackThreadLabelQueue = new Queue(QUEUE_WRITEBACK_THREAD_LABEL, {
+  connection: redisConnection,
+  defaultJobOptions: {
+    attempts: 3,
+    backoff: { type: "exponential", delay: 10_000 },
+    removeOnComplete: { count: 200 },
     removeOnFail: { count: 500 },
   },
 });

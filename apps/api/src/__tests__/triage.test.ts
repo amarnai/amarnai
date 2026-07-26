@@ -14,6 +14,7 @@ vi.mock("@amarnai/db", () => ({
 
 vi.mock("../queues.js", () => ({
   captureReferenceQueue: { add: vi.fn().mockResolvedValue({}) },
+  writebackThreadLabelQueue: { add: vi.fn().mockResolvedValue({}) },
 }));
 
 import app from "../app.js";

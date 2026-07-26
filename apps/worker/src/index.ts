@@ -18,7 +18,9 @@ import { createLifecycleEmailWorker } from "./jobs/lifecycle-email.js";
 import { createGenerateTaxonomyWorker } from "./jobs/generate-taxonomy.js";
 import { createPushNotificationWorker } from "./jobs/push-notification.js";
 import { createCaptureReferenceWorker } from "./jobs/capture-reference.js";
-import { syncInboxQueue, backfillInboxQueue, lifecycleEmailQueue, generateTaxonomyQueue, pushNotificationQueue, captureReferenceQueue } from "./queues.js";
+import { createProvisionFolderLabelsWorker } from "./jobs/provision-folder-labels.js";
+import { createWritebackThreadLabelWorker } from "./jobs/writeback-thread-label.js";
+import { syncInboxQueue, backfillInboxQueue, lifecycleEmailQueue, generateTaxonomyQueue, pushNotificationQueue, captureReferenceQueue, provisionLabelsQueue, writebackThreadLabelQueue } from "./queues.js";
 import { closePublisher } from "./redis-publisher.js";
 import { closeAiDedup } from "./ai-dedup.js";
 import { closePushBudget } from "./notifications/notify-threads.js";
@@ -319,8 +321,10 @@ async function main(): Promise<void> {
   const generateTaxonomyWorker = createGenerateTaxonomyWorker();
   const pushNotificationWorker = createPushNotificationWorker();
   const captureReferenceWorker = createCaptureReferenceWorker();
+  const provisionFolderLabelsWorker = createProvisionFolderLabelsWorker();
+  const writebackThreadLabelWorker = createWritebackThreadLabelWorker();
 
-  console.log("[worker] sync-inbox, classify-thread, backfill-inbox, lifecycle-email, generate-taxonomy, push-notification, and capture-reference workers registered");
+  console.log("[worker] sync-inbox, classify-thread, backfill-inbox, lifecycle-email, generate-taxonomy, push-notification, capture-reference, provision-folder-labels, and writeback-thread-label workers registered");
 
   // Run immediately on startup so the first sync doesn't wait a full interval.
   await scheduleSyncJobs();
@@ -496,6 +500,8 @@ async function main(): Promise<void> {
       generateTaxonomyWorker.close(),
       pushNotificationWorker.close(),
       captureReferenceWorker.close(),
+      provisionFolderLabelsWorker.close(),
+      writebackThreadLabelWorker.close(),
     ]);
 
     await Promise.all([
@@ -505,6 +511,8 @@ async function main(): Promise<void> {
       generateTaxonomyQueue.close(),
       pushNotificationQueue.close(),
       captureReferenceQueue.close(),
+      provisionLabelsQueue.close(),
+      writebackThreadLabelQueue.close(),
       closePublisher(),
       closeAiDedup(),
       closePushBudget(),

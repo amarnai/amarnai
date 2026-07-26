@@ -72,6 +72,12 @@ vi.mock("@amarnai/ai", () => ({
   snapshotToThreadMessages: vi.fn().mockReturnValue([]),
 }));
 
+// The sort route enqueues a writeback reconcile; mock the queue so the real
+// BullMQ/Redis instance is never constructed under test.
+vi.mock("../queues.js", () => ({
+  writebackThreadLabelQueue: { add: vi.fn().mockResolvedValue(undefined) },
+}));
+
 import app from "../app.js";
 import { db, resolveInboxQuota, recordMeterUsage } from "@amarnai/db";
 import { getThreadSortLimit } from "@amarnai/shared";

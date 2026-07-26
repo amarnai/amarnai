@@ -2,9 +2,12 @@ import { requireUser, getUserWorkspaceRole } from "@/lib/session";
 import { getSelectedWorkspace } from "@/lib/workspace";
 import { apiFor } from "@/lib/api";
 import { db } from "@amarnai/db";
+import { hasWritebackScope as gmailHasWriteback } from "@amarnai/gmail";
+import { hasWritebackScope as outlookHasWriteback } from "@amarnai/outlook";
 import { assembleBillingState } from "@/lib/billing-state";
 import { GmailConnectionSection } from "./GmailConnectionSection";
 import { isOutlookConfigured } from "@/lib/outlook-oauth";
+import { isLabelWritebackEnabled } from "@/lib/writeback-flag";
 import { WorkspaceNameSection } from "./WorkspaceNameSection";
 import { WorkspaceLanguageSection } from "./WorkspaceLanguageSection";
 import { DeleteWorkspaceSection } from "./DeleteWorkspaceSection";
@@ -36,6 +39,8 @@ export default async function SettingsPage({ searchParams }: { searchParams: Sea
   const connectProvider = outlookError ? ("OUTLOOK" as const) : ("GMAIL" as const);
   const outlookEnabled = isOutlookConfigured();
   const billingCancelled = params["cancelled"] === "true";
+  const labelWritebackFlagOn = isLabelWritebackEnabled();
+  const writebackJustEnabled = params["writeback"] === "enabled";
 
   let connection = null;
   let syncStatus = null;
@@ -54,6 +59,22 @@ export default async function SettingsPage({ searchParams }: { searchParams: Sea
   // Whether this workspace holds retained synced email that connecting a
   // DIFFERENT inbox would erase (rotation cleanup). Drives the switch warning.
   const hasSyncedData = (await db.emailThread.count({ where: { workspaceId: workspace.id } })) > 0;
+
+  // Whether the connected mailbox already holds the write scope, so the writeback
+  // toggle can flip directly instead of routing through incremental consent.
+  let hasWriteScope = false;
+  if (labelWritebackFlagOn) {
+    const conn = await db.emailConnection.findUnique({
+      where: { workspaceId: workspace.id },
+      select: { provider: true, grantedScopes: true, status: true },
+    });
+    if (conn?.status === "ACTIVE") {
+      hasWriteScope =
+        conn.provider === "OUTLOOK"
+          ? outlookHasWriteback(conn.grantedScopes)
+          : gmailHasWriteback(conn.grantedScopes);
+    }
+  }
 
   // Billing state, reconciled with Stripe on portal return. Computed before the
   // team list below so any trial-cancellation member removal is reflected there.
@@ -130,6 +151,9 @@ export default async function SettingsPage({ searchParams }: { searchParams: Sea
             connectProvider={connectProvider}
             outlookEnabled={outlookEnabled}
             hasSyncedData={hasSyncedData}
+            labelWritebackFlagOn={labelWritebackFlagOn}
+            hasWriteScope={hasWriteScope}
+            writebackJustEnabled={writebackJustEnabled}
           />
           <EmailBlacklistSection
             workspaceId={workspace.id}

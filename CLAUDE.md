@@ -6,7 +6,7 @@ When working on Amarnai, prioritize readability, safety, and a focused feature s
 
 Amarnai is an open-source, self-hostable AI email triage assistant. It is Gmail-first, but not a full email client.
 
-**Provider support (product decision):** Amarnai will implement read-only Outlook support to mirror read-only Gmail. Outlook must offer the same feature set as Gmail, with parity across triage, sorting, drafts (approval-only), and all downstream functionality. Both providers are read-only; Amarnai never sends or mutates mail state beyond what the read-only model allows. New provider work should reuse the existing provider abstraction rather than forking Gmail-specific logic.
+**Provider support (product decision):** Amarnai implements Outlook support to mirror Gmail. Outlook must offer the same feature set as Gmail, with parity across triage, sorting, drafts (approval-only), and all downstream functionality. Mail-mutation policy: when the label-writeback feature flag is enabled, the write scope (gmail.modify / Mail.ReadWrite) is requested **upfront in bulk** at Google sign-in and inbox connect — writeback is **on by default** per workspace (users can switch it off), and upcoming in-provider features (thread summaries and draft replies surfaced inside the Gmail/Outlook UI) share that same grant, so authorization is gathered once rather than via per-feature incremental prompts. Amarnai mirrors sorted folders into the mailbox as Gmail labels / Outlook categories under the `Amarnai` namespace and keeps them in sync as threads are sorted. If the user declines the write permission (or the flag is off), the connection proceeds read-only and writeback is inert. Amarnai still **never sends or deletes mail**, and applies no mailbox writes beyond that label/category writeback. New provider work should reuse the existing provider abstraction rather than forking Gmail-specific logic.
 
 Amarnai will also be offered as a hosted SaaS product. The codebase must support both deployment models equally. Design, architecture, storage layout, and API cost structure must never assume a single-tenant or fully self-managed environment. Specifically:
 
@@ -57,6 +57,7 @@ A key use case is bulk triage of an existing inbox: users may want to sort and c
 
 - Minimize the number of clicks required to complete any action. Prefer inline controls, smart defaults, and progressive disclosure over multi-step flows.
 - Both the marketing site and the web app must be fully responsive. All layouts, components, and interactions must work correctly on mobile, tablet, and desktop screen sizes.
+- Every control with a single yes/no choice (settings, feature on/off) renders as a switch toggle — use the shared `Switch` from `@amarnai/ui` (styles via `@amarnai/ui/switch/styles`), never a bare checkbox. Checkboxes are reserved for multi-select lists and explicit consent confirmations.
 
 ## Cross-Platform Parity
 

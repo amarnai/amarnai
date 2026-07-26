@@ -1996,8 +1996,11 @@ a {
   margin-bottom: 10px;
 }
 
-.settings-toggle input[type="checkbox"],
-.checkbox-label input[type="checkbox"] {
+/* Real checkboxes only (multi-select lists, consent confirmations).
+   Must not touch .ui-switch, whose track/thumb sizing lives in
+   @amarnai/ui switch.css. */
+.settings-toggle input[type="checkbox"]:not(.ui-switch),
+.checkbox-label input[type="checkbox"]:not(.ui-switch) {
   width: 15px;
   height: 15px;
   accent-color: var(--accent);

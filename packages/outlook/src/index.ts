@@ -4,8 +4,11 @@ export type { GraphMessage } from "./normalize-graph-thread.js";
 export {
   OUTLOOK_SCOPES,
   OUTLOOK_MAIL_READ_SCOPE,
+  OUTLOOK_MAIL_READWRITE_SCOPE,
+  OUTLOOK_WRITEBACK_SCOPES,
   MicrosoftApiError,
   parseGrantedScopes,
+  hasWritebackScope,
   exchangeAuthCode,
   fetchOutlookProfile,
   fetchSubjectId,

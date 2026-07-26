@@ -137,6 +137,13 @@ const envSchema = z.object({
         .map((s) => s.trim().toLowerCase())
         .filter(Boolean),
     ),
+  // Folder→label writeback (Gmail labels / Outlook categories). A single switch
+  // for both providers: provider availability is already gated by MAIL_PROVIDERS
+  // + credentials. When enabled, the write scope is requested UPFRONT at
+  // sign-in/connect and writeback defaults ON per workspace (switch-off
+  // available; without the scope it is inert). Off by default at the deployment
+  // level — keep off in prod until Google's gmail.modify verification clears.
+  LABEL_WRITEBACK_ENABLED: boolStr,
 });
 
 function validateEnv(raw: NodeJS.ProcessEnv) {
@@ -323,5 +330,7 @@ export const config = {
   mail: {
     // Providers offered in the UI/connect flows (runtime adapter is per-connection).
     enabledProviders: env.MAIL_PROVIDERS,
+    // Master switch for opt-in folder→label writeback (both providers).
+    labelWritebackEnabled: env.LABEL_WRITEBACK_ENABLED,
   },
 };

@@ -196,7 +196,7 @@ msgstr "{hiddenCount, plural, one {# folder with no threads is not shown.} other
 #~ msgid "{pendingCount} pending"
 #~ msgstr "{pendingCount} pending"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:199
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:222
 msgid "{providerName} Inbox"
 msgstr "{providerName} Inbox"
 
@@ -495,11 +495,11 @@ msgstr "Academic Researcher"
 #~ msgid "Access is granted to that exact Google account, so if it isn't the one whose Gmail you want Amarnai to organize, just submit the right address."
 #~ msgstr "Access is granted to that exact Google account, so if it isn't the one whose Gmail you want Amarnai to organize, just submit the right address."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:57
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:65
 msgid "Access was denied. Grant read-only Gmail access to connect."
 msgstr "Access was denied. Grant read-only Gmail access to connect."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:79
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:93
 msgid "Access was denied. Grant read-only Outlook (Mail.Read) access to connect."
 msgstr "Access was denied. Grant read-only Outlook (Mail.Read) access to connect."
 
@@ -672,7 +672,7 @@ msgstr "Already in the list."
 #~ msgid "Already invited? <0>Sign in</0>"
 #~ msgstr "Already invited? <0>Sign in</0>"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:258
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:281
 msgid "Also erase synced email data"
 msgstr "Also erase synced email data"
 
@@ -966,7 +966,7 @@ msgid "Audience"
 msgstr "Audience"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:127
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:88
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:86
 msgid "Auto-file notifications to Updates / Other"
 msgstr "Auto-file notifications to Updates / Other"
 
@@ -1203,8 +1203,8 @@ msgstr "Can I self-host Amarnai?"
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1820
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1913
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:64
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:275
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:370
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:298
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:403
 #: ../../apps/web/src/app/(app)/settings/ResetWorkspaceSection.tsx:73
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:182
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:170
@@ -1245,6 +1245,14 @@ msgstr "Carrier tracking numbers, delivery exceptions, and courier dispatch noti
 #: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:97
 msgid "Catch-all"
 msgstr "Catch-all"
+
+#: ../../apps/web/src/app/(app)/settings/LabelWritebackSection.tsx:72
+msgid "Categories in Outlook"
+msgstr "Categories in Outlook"
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:111
+msgid "Category writeback needs permission to manage your Outlook mail. Try again and approve it, or leave the feature off."
+msgstr "Category writeback needs permission to manage your Outlook mail. Try again and approve it, or leave the feature off."
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:334
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:395
@@ -1433,12 +1441,12 @@ msgstr "Confirm Delete"
 msgid "Confirm password"
 msgstr "Confirm password"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:382
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:391
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:415
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:424
 msgid "Connect {name}"
 msgstr "Connect {name}"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:354
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:387
 msgid "Connect {name} to this workspace?"
 msgstr "Connect {name} to this workspace?"
 
@@ -1464,7 +1472,7 @@ msgstr "Connect a Gmail inbox to configure sync filters."
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:371
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:406
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:439
 msgid "Connect Gmail"
 msgstr "Connect Gmail"
 
@@ -1514,7 +1522,7 @@ msgstr "Connect once, generate your plan once, and let Amarnai handle new mail a
 
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:151
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:369
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:414
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:447
 msgid "Connect Outlook"
 msgstr "Connect Outlook"
 
@@ -1550,7 +1558,7 @@ msgstr "Connect your inbox"
 msgid "Connect your inbox and Amarnai starts sorting within minutes. Pricing is per workspace. Sorts new mail as it arrives, and works through years of backlog."
 msgstr "Connect your inbox and Amarnai starts sorting within minutes. Pricing is per workspace. Sorts new mail as it arrives, and works through years of backlog."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:348
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:381
 msgid "Connecting {name} will permanently remove the sorted email saved from {retainedAddress}. Your folders and settings are kept."
 msgstr "Connecting {name} will permanently remove the sorted email saved from {retainedAddress}. Your folders and settings are kept."
 
@@ -1564,7 +1572,7 @@ msgid "Connecting…"
 msgstr "Connecting…"
 
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:58
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:162
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:185
 msgid "Connection failed. Please try again."
 msgstr "Connection failed. Please try again."
 
@@ -1572,7 +1580,7 @@ msgstr "Connection failed. Please try again."
 msgid "Content Creator"
 msgstr "Content Creator"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:363
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:396
 msgid "Continue to {name}"
 msgstr "Continue to {name}"
 
@@ -1622,11 +1630,11 @@ msgstr "Copied"
 msgid "Copy"
 msgstr "Copy"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:69
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:77
 msgid "Could not access your Gmail inbox. Make sure the Gmail API is enabled and the gmail.readonly scope is added to the OAuth consent screen in Google Cloud Console."
 msgstr "Could not access your Gmail inbox. Make sure the Gmail API is enabled and the gmail.readonly scope is added to the OAuth consent screen in Google Cloud Console."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:91
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:105
 msgid "Could not access your Outlook inbox. Please try again."
 msgstr "Could not access your Outlook inbox. Please try again."
 
@@ -1694,7 +1702,7 @@ msgid "Could not prepare migration"
 msgstr "Could not prepare migration"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:89
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:114
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:112
 msgid "Could not queue rescan. Please try again."
 msgstr "Could not queue rescan. Please try again."
 
@@ -1743,6 +1751,10 @@ msgstr "Could not start generation. Please try again."
 msgid "Could not update name. Please try again."
 msgstr "Could not update name. Please try again."
 
+#: ../../apps/web/src/app/(app)/settings/LabelWritebackSection.tsx:117
+msgid "Could not update the setting. Please try again."
+msgstr "Could not update the setting. Please try again."
+
 #: ../../apps/mobile/app/(app)/account.tsx:63
 msgid "Could not update your reminder setting."
 msgstr "Could not update your reminder setting."
@@ -1751,7 +1763,7 @@ msgstr "Could not update your reminder setting."
 msgid "Could not upgrade"
 msgstr "Could not upgrade"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:71
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:79
 msgid "Could not verify your Google account. Please try again."
 msgstr "Could not verify your Google account. Please try again."
 
@@ -1979,7 +1991,7 @@ msgid "Description"
 msgstr "Description"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:137
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:91
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:89
 msgid "Detected notifications, newsletters, and service updates are filed to your catch-all folder without using AI. Requires the <0>Updates / Other</0> folder from a taxonomy template."
 msgstr "Detected notifications, newsletters, and service updates are filed to your catch-all folder without using AI. Requires the <0>Updates / Other</0> folder from a taxonomy template."
 
@@ -1996,7 +2008,7 @@ msgstr "Discard"
 msgid "Disconnect"
 msgstr "Disconnect"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:246
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:269
 msgid "Disconnect {providerName}"
 msgstr "Disconnect {providerName}"
 
@@ -2025,7 +2037,7 @@ msgstr "Disconnect your inbox or delete your account"
 msgid "Disconnected"
 msgstr "Disconnected"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:295
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:328
 msgid "Disconnected from this workspace. {erasedNote} Amarnai still has access because this mailbox is connected in another workspace. To fully revoke access, remove Amarnai from your <0/>."
 msgstr "Disconnected from this workspace. {erasedNote} Amarnai still has access because this mailbox is connected in another workspace. To fully revoke access, remove Amarnai from your <0/>."
 
@@ -2033,11 +2045,11 @@ msgstr "Disconnected from this workspace. {erasedNote} Amarnai still has access 
 #~ msgid "Disconnected. {erasedNote} Revocation at Google could not be confirmed. You can remove Amarnai from your <0/>."
 #~ msgstr "Disconnected. {erasedNote} Revocation at Google could not be confirmed. You can remove Amarnai from your <0/>."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:311
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:344
 msgid "Disconnected. {erasedNote} To fully revoke Amarnai's access, remove it from your <0/>."
 msgstr "Disconnected. {erasedNote} To fully revoke Amarnai's access, remove it from your <0/>."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:319
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:352
 msgid "Disconnected. Amarnai is no longer syncing this inbox."
 msgstr "Disconnected. Amarnai is no longer syncing this inbox."
 
@@ -2045,19 +2057,19 @@ msgstr "Disconnected. Amarnai is no longer syncing this inbox."
 #~ msgid "Disconnected. Amarnai's access to this mailbox was revoked at Google. {erasedNote}"
 #~ msgstr "Disconnected. Amarnai's access to this mailbox was revoked at Google. {erasedNote}"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:304
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:337
 msgid "Disconnected. Amarnai's access to this mailbox was revoked.{erasedNote}"
 msgstr "Disconnected. Amarnai's access to this mailbox was revoked.{erasedNote}"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:267
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:290
 msgid "Disconnecting…"
 msgstr "Disconnecting…"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:188
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:211
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is also connected elsewhere in Amarnai. To fully revoke access, remove Amarnai from your <0/>."
 msgstr "Disconnects this workspace. Amarnai keeps access because this mailbox is also connected elsewhere in Amarnai. To fully revoke access, remove Amarnai from your <0/>."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:183
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:206
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 
@@ -2080,7 +2092,7 @@ msgstr "Dismiss"
 #~ msgstr "Display language"
 
 #: ../../apps/mobile/src/components/EditNameSheet.tsx:51
-#: ../../apps/web/src/app/(app)/account/AccountForm.tsx:56
+#: ../../apps/web/src/app/(app)/account/AccountForm.tsx:57
 msgid "Display name"
 msgstr "Display name"
 
@@ -2231,7 +2243,7 @@ msgstr "Edit Path"
 #: ../../apps/mobile/app/forgot-password.tsx:85
 #: ../../apps/mobile/app/sign-in.tsx:89
 #: ../../apps/mobile/app/sign-up.tsx:98
-#: ../../apps/web/src/app/(app)/account/AccountForm.tsx:71
+#: ../../apps/web/src/app/(app)/account/AccountForm.tsx:72
 #: ../../apps/web/src/app/forgot-password/page.tsx:30
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:75
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:73
@@ -2250,7 +2262,7 @@ msgstr "Email address to invite"
 msgid "email organizer"
 msgstr "email organizer"
 
-#: ../../apps/web/src/app/(app)/account/AccountForm.tsx:82
+#: ../../apps/web/src/app/(app)/account/AccountForm.tsx:83
 msgid "Email reminders"
 msgstr "Email reminders"
 
@@ -2850,7 +2862,7 @@ msgstr "Gmail live sync active"
 #~ msgid "Gmail marked as important"
 #~ msgstr "Gmail marked as important"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:67
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:75
 msgid "Gmail read-only access was not granted. Please try again and approve the requested permission."
 msgstr "Gmail read-only access was not granted. Please try again and approve the requested permission."
 
@@ -2887,11 +2899,11 @@ msgstr "Gold balance: third consignment overdue"
 #~ msgid "Google account email"
 #~ msgstr "Google account email"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:49
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:57
 msgid "Google Account permissions"
 msgstr "Google Account permissions"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:65
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:73
 msgid "Google could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the Gmail callback URL is registered in Google Cloud Console."
 msgstr "Google could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the Gmail callback URL is registered in Google Cloud Console."
 
@@ -3104,8 +3116,8 @@ msgid "Inbox import complete"
 msgstr "Inbox import complete"
 
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:145
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:221
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:234
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:244
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:257
 msgid "Inbox sync"
 msgstr "Inbox sync"
 
@@ -3118,7 +3130,7 @@ msgid "Incidents"
 msgstr "Incidents"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:116
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:77
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:76
 msgid "Include Promotions"
 msgstr "Include Promotions"
 
@@ -3344,6 +3356,14 @@ msgstr "Lab & Collaborators"
 msgid "Lab group updates, collaborator threads, and experiment coordination."
 msgstr "Lab group updates, collaborator threads, and experiment coordination."
 
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:85
+msgid "Label writeback needs permission to manage your Gmail labels. Try again and approve it, or leave the feature off."
+msgstr "Label writeback needs permission to manage your Gmail labels. Try again and approve it, or leave the feature off."
+
+#: ../../apps/web/src/app/(app)/settings/LabelWritebackSection.tsx:72
+msgid "Labels in Gmail"
+msgstr "Labels in Gmail"
+
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:244
 #: ../../apps/web/src/app/(app)/settings/WorkspaceLanguageSection.tsx:37
 msgid "Language"
@@ -3352,14 +3372,14 @@ msgstr "Language"
 #. placeholder {0}: formatDate(syncStatus.lastSyncedAt, _(msg`Never`))
 #. placeholder {0}: formatDate(syncStatus.lastSyncedAt, i18n)
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:154
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:225
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:248
 msgid "Last synced {0}"
 msgstr "Last synced {0}"
 
 #. placeholder {0}: formatDate(connection.lastVerifiedAt, _(msg`Never`))
 #. placeholder {0}: formatDate(connection.lastVerifiedAt, i18n)
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:140
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:210
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:233
 msgid "Last verified: {0}"
 msgstr "Last verified: {0}"
 
@@ -3616,11 +3636,11 @@ msgstr "Messages from paying customers and account holders."
 msgid "Metadata"
 msgstr "Metadata"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:43
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:51
 msgid "Microsoft account permissions"
 msgstr "Microsoft account permissions"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:87
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:101
 msgid "Microsoft could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the redirect URI is registered on the app registration."
 msgstr "Microsoft could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the redirect URI is registered on the app registration."
 
@@ -3708,7 +3728,7 @@ msgstr "My travels bring me near the Delta in the coming days. If the Great King
 msgid "Name"
 msgstr "Name"
 
-#: ../../apps/web/src/app/(app)/account/AccountForm.tsx:52
+#: ../../apps/web/src/app/(app)/account/AccountForm.tsx:53
 msgid "Name updated."
 msgstr "Name updated."
 
@@ -3719,8 +3739,8 @@ msgid "Needs review"
 msgstr "Needs review"
 
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:32
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:210
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:225
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:233
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:248
 msgid "Never"
 msgstr "Never"
 
@@ -3841,7 +3861,7 @@ msgstr "No folders yet"
 msgid "No Gmail inbox connected. Connect your account to start syncing."
 msgstr "No Gmail inbox connected. Connect your account to start syncing."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:400
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:433
 msgid "No inbox connected to this workspace."
 msgstr "No inbox connected to this workspace."
 
@@ -3948,7 +3968,7 @@ msgstr "Not necessarily. Amarnai can generate a complete plan for you from your 
 msgid "Not set"
 msgstr "Not set"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:226
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:249
 msgid "Not yet synced"
 msgstr "Not yet synced"
 
@@ -4064,7 +4084,7 @@ msgstr "Optional. Sets this folder's chip and icon color across your inbox. Defa
 msgid "or"
 msgstr "or"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:342
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:375
 msgid "Or connect a different inbox:"
 msgstr "Or connect a different inbox:"
 
@@ -4081,7 +4101,7 @@ msgstr "Other"
 msgid "outlook ai assistant"
 msgstr "outlook ai assistant"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:89
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:103
 msgid "Outlook read-only access (Mail.Read) was not granted. Please try again and approve the requested permission."
 msgstr "Outlook read-only access (Mail.Read) was not granted. Please try again and approve the requested permission."
 
@@ -4192,6 +4212,11 @@ msgstr "Permanently delete this workspace and all of its data: emails, plan, set
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:108
 msgid "Permanently delete your account and all associated data. This cannot be undone."
 msgstr "Permanently delete your account and all associated data. This cannot be undone."
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:87
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:113
+msgid "Permission was granted but the feature could not be turned on. Toggle it from settings to retry."
+msgstr "Permission was granted but the feature could not be turned on. Toggle it from settings to retry."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:34
 msgid "Personal"
@@ -4404,7 +4429,7 @@ msgid "Professors, assignments, study groups, course announcements, and academic
 msgstr "Professors, assignments, study groups, course announcements, and academic deadlines."
 
 #: ../../apps/mobile/app/(app)/account.tsx:127
-#: ../../apps/web/src/app/(app)/account/AccountForm.tsx:48
+#: ../../apps/web/src/app/(app)/account/AccountForm.tsx:49
 msgid "Profile"
 msgstr "Profile"
 
@@ -4453,7 +4478,7 @@ msgstr "Pupil questions, homework hand-ins, and daily instruction in the classro
 msgid "Purchase confirmations, order status changes, and fulfillment updates from your store."
 msgstr "Purchase confirmations, order status changes, and fulfillment updates from your store."
 
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:105
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:103
 msgid "Queuing rescan…"
 msgstr "Queuing rescan…"
 
@@ -4526,7 +4551,7 @@ msgstr "Recommended for your inbox"
 msgid "Reconnect"
 msgstr "Reconnect"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:337
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:370
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:121
 msgid "Reconnect {providerName}"
 msgstr "Reconnect {providerName}"
@@ -4708,7 +4733,7 @@ msgid "Rescan failed"
 msgstr "Rescan failed"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:153
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:105
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:103
 msgid "Rescan inbox"
 msgstr "Rescan inbox"
 
@@ -4716,7 +4741,7 @@ msgstr "Rescan inbox"
 #~ msgid "Rescan queued — threads will update shortly."
 #~ msgstr "Rescan queued — threads will update shortly."
 
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:109
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:107
 msgid "Rescan queued: threads will update shortly."
 msgstr "Rescan queued: threads will update shortly."
 
@@ -4855,7 +4880,7 @@ msgstr "Same as monthly"
 msgid "Save"
 msgstr "Save"
 
-#: ../../apps/web/src/app/(app)/account/AccountForm.tsx:76
+#: ../../apps/web/src/app/(app)/account/AccountForm.tsx:77
 msgid "Save changes"
 msgstr "Save changes"
 
@@ -4891,7 +4916,7 @@ msgstr "Save up to 20% annually"
 msgid "Saving..."
 msgstr "Saving..."
 
-#: ../../apps/web/src/app/(app)/account/AccountForm.tsx:76
+#: ../../apps/web/src/app/(app)/account/AccountForm.tsx:77
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:480
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:790
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:29
@@ -5317,7 +5342,7 @@ msgstr "Stop sorting email.<0/><1>Sort it once.</1>"
 msgid "Stops syncing and revokes Amarnai's access to this mailbox."
 msgstr "Stops syncing and revokes Amarnai's access to this mailbox."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:178
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:201
 msgid "Stops syncing and revokes Amarnai's access to this mailbox. Synced email data is kept so you can reconnect later."
 msgstr "Stops syncing and revokes Amarnai's access to this mailbox. Synced email data is kept so you can reconnect later."
 
@@ -5417,13 +5442,13 @@ msgid "Switch theme"
 msgstr "Switch theme"
 
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:39
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:107
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:127
 msgid "Sync error"
 msgstr "Sync error"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:281
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:96
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:54
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:55
 msgid "Sync filters"
 msgstr "Sync filters"
 
@@ -5431,12 +5456,12 @@ msgstr "Sync filters"
 #~ msgid "Synced 2m ago"
 #~ msgstr "Synced 2m ago"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:195
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:218
 msgid "Synced email data was erased."
 msgstr "Synced email data was erased."
 
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:38
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:106
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:126
 msgid "Syncing…"
 msgstr "Syncing…"
 
@@ -5514,6 +5539,14 @@ msgstr "Thanks for the update. Friday works."
 msgid "That invitation link is invalid or has expired."
 msgstr "That invitation link is invalid or has expired."
 
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:83
+msgid "That is a different Google account. Sign in with the mailbox already connected to this workspace."
+msgstr "That is a different Google account. Sign in with the mailbox already connected to this workspace."
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:109
+msgid "That is a different Microsoft account. Sign in with the mailbox already connected to this workspace."
+msgstr "That is a different Microsoft account. Sign in with the mailbox already connected to this workspace."
+
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:66
 msgid "That link is invalid or has expired."
 msgstr "That link is invalid or has expired."
@@ -5522,13 +5555,13 @@ msgstr "That link is invalid or has expired."
 #~ msgid "The Amarna letters were the world's first overloaded inbox. These two lived it."
 #~ msgstr "The Amarna letters were the world's first overloaded inbox. These two lived it."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:59
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:81
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:67
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:95
 msgid "The authorization callback was incomplete. Please try again."
 msgstr "The authorization callback was incomplete. Please try again."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:61
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:83
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:69
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:97
 msgid "The authorization request expired or was tampered with. Please try again."
 msgstr "The authorization request expired or was tampered with. Please try again."
 
@@ -5537,8 +5570,8 @@ msgstr "The authorization request expired or was tampered with. Please try again
 #~ msgid "The catch-all folder can't be deleted. Automated and bulk mail is filed here."
 #~ msgstr "The catch-all folder can't be deleted. Automated and bulk mail is filed here."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:73
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:93
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:81
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:107
 msgid "The connection could not be saved due to a server error. Please try again."
 msgstr "The connection could not be saved due to a server error. Please try again."
 
@@ -5591,7 +5624,7 @@ msgstr "These collaborators will lose access on {0}:"
 #~ msgid "These settings control which Gmail threads are imported. Trash is always excluded."
 #~ msgstr "These settings control which Gmail threads are imported. Trash is always excluded."
 
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:56
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:57
 msgid "These settings control which inbox threads are imported. Trash is always excluded."
 msgstr "These settings control which inbox threads are imported. Trash is always excluded."
 
@@ -5607,7 +5640,7 @@ msgstr "This folder is not reachable from the inbox and will not be used for rou
 #~ msgid "This Gmail is also connected in {sharedNames}. Each workspace syncs and classifies it separately, which uses separate AI quota."
 #~ msgstr "This Gmail is also connected in {sharedNames}. Each workspace syncs and classifies it separately, which uses separate AI quota."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:215
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:238
 msgid "This inbox is also connected in {sharedNames}. Each workspace syncs and classifies it separately, which uses separate AI quota."
 msgstr "This inbox is also connected in {sharedNames}. Each workspace syncs and classifies it separately, which uses separate AI quota."
 
@@ -5883,6 +5916,10 @@ msgstr "Triage your inbox on the go."
 msgid "Try Amarnai"
 msgstr "Try Amarnai"
 
+#: ../../apps/web/src/app/(app)/settings/LabelWritebackSection.tsx:105
+msgid "Turning this on will ask for permission to manage your labels."
+msgstr "Turning this on will ask for permission to manage your labels."
+
 #: ../../apps/site/src/components/demo/demo-seed.ts:424
 msgid "Tushratta of Mitanni"
 msgstr "Tushratta of Mitanni"
@@ -5975,7 +6012,7 @@ msgid "Up to 3 people"
 msgstr "Up to 3 people"
 
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:37
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:105
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:125
 msgid "Up to date"
 msgstr "Up to date"
 
@@ -6056,7 +6093,7 @@ msgstr "Upgrade to the Scribe or Pharaoh plan to invite collaborators."
 #~ msgid "Upgrade your subscription on the web app to enable backfill."
 #~ msgstr "Upgrade your subscription on the web app to enable backfill."
 
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:120
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:118
 msgid "Use \"Rescan inbox\" after changing filter settings to apply them to threads already in your inbox."
 msgstr "Use \"Rescan inbox\" after changing filter settings to apply them to threads already in your inbox."
 
@@ -6132,7 +6169,7 @@ msgstr "Volunteers"
 msgid "Waiting"
 msgstr "Waiting"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:235
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:258
 msgid "Waiting for first sync…"
 msgstr "Waiting for first sync…"
 
@@ -6263,7 +6300,7 @@ msgstr "Workspace name updated."
 msgid "Workspace settings"
 msgstr "Workspace settings"
 
-#: ../../apps/web/src/app/(app)/settings/page.tsx:118
+#: ../../apps/web/src/app/(app)/settings/page.tsx:139
 msgid "Workspace Settings"
 msgstr "Workspace Settings"
 
@@ -6274,6 +6311,18 @@ msgstr "Workspace type"
 #: ../ui/src/pricing/planMessages.ts:58
 msgid "Workspaces included"
 msgstr "Workspaces included"
+
+#: ../../apps/web/src/app/(app)/settings/LabelWritebackSection.tsx:99
+msgid "Write sorted folders as Gmail labels"
+msgstr "Write sorted folders as Gmail labels"
+
+#: ../../apps/web/src/app/(app)/settings/LabelWritebackSection.tsx:97
+msgid "Write sorted folders as Outlook categories"
+msgstr "Write sorted folders as Outlook categories"
+
+#: ../../apps/web/src/app/(app)/settings/LabelWritebackSection.tsx:111
+msgid "Writeback is on. Your folders are being mirrored into your mailbox."
+msgstr "Writeback is on. Your folders are being mirrored into your mailbox."
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:374
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:168
@@ -6294,7 +6343,7 @@ msgstr "Yes, delete my account"
 msgid "Yes, delete workspace"
 msgstr "Yes, delete workspace"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:267
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:290
 msgid "Yes, disconnect"
 msgstr "Yes, disconnect"
 
@@ -6372,11 +6421,11 @@ msgstr "You can try again after {0}, or start from a template."
 msgid "You can try again shortly, or start from a template."
 msgstr "You can try again shortly, or start from a template."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:63
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:71
 msgid "You do not have permission to connect a Gmail inbox to this workspace."
 msgstr "You do not have permission to connect a Gmail inbox to this workspace."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:85
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:99
 msgid "You do not have permission to connect an Outlook inbox to this workspace."
 msgstr "You do not have permission to connect an Outlook inbox to this workspace."
 
@@ -6436,6 +6485,14 @@ msgstr "Your 14-day free trial runs until <0>{0}</0>. You won't be charged befor
 msgid "Your folders"
 msgstr "Your folders"
 
+#: ../../apps/web/src/app/(app)/settings/LabelWritebackSection.tsx:82
+msgid "Your folders are mirrored as Gmail labels and kept in sync as threads are sorted. Amarnai only manages labels under the <0>Amarnai/</0> namespace and never sends, deletes, or moves your mail."
+msgstr "Your folders are mirrored as Gmail labels and kept in sync as threads are sorted. Amarnai only manages labels under the <0>Amarnai/</0> namespace and never sends, deletes, or moves your mail."
+
+#: ../../apps/web/src/app/(app)/settings/LabelWritebackSection.tsx:76
+msgid "Your folders are mirrored as Outlook categories and kept in sync as threads are sorted. Amarnai only manages categories under the <0>Amarnai</0> namespace and never sends, deletes, or moves your mail."
+msgstr "Your folders are mirrored as Outlook categories and kept in sync as threads are sorted. Amarnai only manages categories under the <0>Amarnai</0> namespace and never sends, deletes, or moves your mail."
+
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:259
 msgid "Your free trial will end immediately and your workspace will be downgraded to the free tier."
 msgstr "Your free trial will end immediately and your workspace will be downgraded to the free tier."
@@ -6459,7 +6516,7 @@ msgid "Your inbox is still importing. You can generate now from what's loaded so
 msgstr "Your inbox is still importing. You can generate now from what's loaded so far, but regenerating once the import finishes will give a more accurate fit."
 
 #: ../../apps/mobile/src/components/EditNameSheet.tsx:56
-#: ../../apps/web/src/app/(app)/account/AccountForm.tsx:64
+#: ../../apps/web/src/app/(app)/account/AccountForm.tsx:65
 msgid "Your name"
 msgstr "Your name"
 
@@ -6487,7 +6544,7 @@ msgstr "Your retry import finished and is still capped by your {0} plan. Your ne
 msgid "Your retry import finished and is still capped by your {plan} plan. Your next retry is available {refreshDate}."
 msgstr "Your retry import finished and is still capped by your {plan} plan. Your next retry is available {refreshDate}."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:324
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:357
 msgid "Your sorted email from {retainedAddress} is saved. Reconnecting the same inbox restores it; connecting a different inbox permanently removes it. Folders and settings are kept either way."
 msgstr "Your sorted email from {retainedAddress} is saved. Reconnecting the same inbox restores it; connecting a different inbox permanently removes it. Folders and settings are kept either way."
 

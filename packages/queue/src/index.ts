@@ -24,6 +24,11 @@ export const DEDUP_CLASSIFY_MIGRATION    = "classify_migration";
 // as the recovery dedup prefixes above.
 export const DEDUP_CLASSIFY_LIVE         = "classify_live";
 
+// Folder→label writeback of a single thread. Deterministic per (workspace,
+// thread) so bursts of classification writes for the same thread (a re-move
+// while a sort is in flight, a retry) collapse to one reconcile pass.
+export const DEDUP_WRITEBACK             = "writeback";
+
 // ─── Queue names ──────────────────────────────────────────────────────────────
 // Single source of truth. Import these constants everywhere instead of
 // hardcoding strings so a rename stays a one-line change.
@@ -35,6 +40,8 @@ export const QUEUE_LIFECYCLE_EMAIL = "lifecycle-email";
 export const QUEUE_GENERATE_TAXONOMY = "generate-taxonomy";
 export const QUEUE_PUSH_NOTIFICATION = "push-notification";
 export const QUEUE_CAPTURE_REFERENCE = "capture-reference";
+export const QUEUE_PROVISION_LABELS = "provision-folder-labels";
+export const QUEUE_WRITEBACK_THREAD_LABEL = "writeback-thread-label";
 
 // ─── Job data types ───────────────────────────────────────────────────────────
 
@@ -82,6 +89,31 @@ export type ClassifyThreadJobData = {
  * already-current embeddingTextHash is a no-op.
  */
 export type CaptureReferenceJobData = {
+  workspaceId: string;
+  /** Internal EmailThread.id — not the provider thread ID. */
+  emailThreadId: string;
+};
+
+/**
+ * Payload for a `provision-folder-labels` job. Enqueued (best-effort) when a
+ * workspace enables writeback or its taxonomy gains a folder. The worker
+ * mirrors every taxonomy folder into the connected mailbox as a Gmail label /
+ * Outlook category and records the provider-side identifier per node.
+ * Idempotent: existing labels/categories are reused, matching links are skipped.
+ */
+export type ProvisionLabelsJobData = {
+  workspaceId: string;
+};
+
+/**
+ * Payload for a `writeback-thread-label` job. Enqueued (best-effort) after a
+ * classification write. The worker re-reads the thread's latest classification
+ * and reconciles the Amarnai-managed labels/categories on the thread to match
+ * (declarative — no add/remove delta is carried), so retries and coalesced
+ * duplicates converge on the newest decision. No-op when writeback is off, the
+ * scope is missing, or the thread already matches.
+ */
+export type WritebackThreadLabelJobData = {
   workspaceId: string;
   /** Internal EmailThread.id — not the provider thread ID. */
   emailThreadId: string;

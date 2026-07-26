@@ -3,7 +3,8 @@ import { z } from "zod";
 import { db } from "@amarnai/db";
 import type { AppEnv } from "../env.js";
 import { recordAudit } from "../services/audit.js";
-import { captureReferenceQueue } from "../queues.js";
+import { captureReferenceQueue, writebackThreadLabelQueue } from "../queues.js";
+import { DEDUP_WRITEBACK } from "@amarnai/queue";
 
 const params = z.object({
   workspaceId: z.string().min(1),
@@ -168,6 +169,21 @@ triage.patch(
           err instanceof Error ? err.message : err,
         );
       }
+    }
+
+    // Reconcile the thread's Amarnai label/category to the new folder (opt-in
+    // writeback). Best-effort + deduped; the worker no-ops when writeback is off.
+    try {
+      await writebackThreadLabelQueue.add(
+        "writeback-thread-label",
+        { workspaceId, emailThreadId: threadId },
+        { deduplication: { id: `${DEDUP_WRITEBACK}_${workspaceId}_${threadId}` } },
+      );
+    } catch (err) {
+      console.error(
+        `[triage] writeback enqueue failed for thread ${threadId}:`,
+        err instanceof Error ? err.message : err,
+      );
     }
 
     // Correction label: the AI decision (aiNodeId, possibly null for a

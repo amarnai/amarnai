@@ -140,6 +140,8 @@ export function createBackfillInboxWorker(): Worker {
         includePromotions:       syncSettingsRow?.includePromotions       ?? false,
         sortingPaused:           syncSettingsRow?.sortingPaused           ?? false,
         routeBulkToOther:        syncSettingsRow?.routeBulkToOther        ?? true,
+        // Not consumed by backfill filtering — writeback runs off its own job.
+        labelWritebackEnabled:   false,
         blacklistedSenderEmails: syncSettingsRow?.blacklistedSenderEmails ?? [],
       };
       const sortingPaused = settings.sortingPaused;

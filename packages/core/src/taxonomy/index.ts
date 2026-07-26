@@ -19,3 +19,9 @@ export {
   type GenerationPreviewRow,
 } from "./generationDisplay.js";
 export { transferToDisplayGraph } from "./transferToDisplayGraph.js";
+export {
+  PROVIDER_LABEL_NAMESPACE,
+  sanitizeProviderSegment,
+  deriveCanonicalPathSegments,
+  buildProviderPaths,
+} from "./providerPath.js";

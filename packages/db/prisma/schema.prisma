@@ -292,6 +292,7 @@ model Workspace {
   taxonomyNodes           TaxonomyNode[]
   taxonomyEdges           TaxonomyEdge[]
   taxonomyNodeReferences  TaxonomyNodeReference[]
+  taxonomyProviderLinks   TaxonomyNodeProviderLink[]
   emailThreads            EmailThread[]
   emailMessages           EmailMessage[]
   tags                    Tag[]
@@ -448,11 +449,43 @@ model TaxonomyNode {
   createdAt          DateTime  @default(now())
   updatedAt          DateTime  @updatedAt
 
-  workspace       Workspace               @relation(fields: [workspaceId], references: [id])
-  outgoingEdges   TaxonomyEdge[]          @relation("SourceNode")
-  incomingEdges   TaxonomyEdge[]          @relation("TargetNode")
+  workspace       Workspace                  @relation(fields: [workspaceId], references: [id])
+  outgoingEdges   TaxonomyEdge[]             @relation("SourceNode")
+  incomingEdges   TaxonomyEdge[]             @relation("TargetNode")
   classifications EmailClassification[]
   references      TaxonomyNodeReference[]
+  providerLinks   TaxonomyNodeProviderLink[]
+}
+
+// Maps a taxonomy node to its provider-side identifier for opt-in folder→label
+// writeback (Gmail label id / Outlook category displayName). Off by default;
+// rows exist only for workspaces that enabled writeback and granted the modify
+// scope. A separate table (not columns on TaxonomyNode) so provisioning writes
+// never churn the node's embedding-cache row, and so the future multi-provider
+// relaxation of EmailConnection.workspaceId needs no redesign here.
+model TaxonomyNodeProviderLink {
+  id          String   @id @default(cuid())
+  workspaceId String
+  nodeId      String
+  provider    Provider
+  // Mailbox identity (subjectId ?? emailAddress) — same derivation the sync
+  // worker uses. A provision run deletes rows whose key no longer matches the
+  // connected mailbox, so inbox rotation self-heals without a cleanup hook.
+  mailboxKey  String
+  // Gmail: label id ("Label_123"). Outlook: category displayName (its identifier).
+  providerLabelId String
+  // The "Amarnai/Parent/Child" path used at provisioning time. Drift between this
+  // and the node's current path is the seam for the deferred rename cascade.
+  providerPath    String
+  provisionedAt   DateTime @default(now())
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  workspace Workspace    @relation(fields: [workspaceId], references: [id])
+  node      TaxonomyNode @relation(fields: [nodeId], references: [id], onDelete: Cascade)
+
+  @@unique([nodeId, provider])
+  @@index([workspaceId, provider])
 }
 
 model TaxonomyEdge {
@@ -856,6 +889,12 @@ model GmailSyncSettings {
   // taxonomy's catch-all folder without invoking the LLM.
   routeBulkToOther        Boolean  @default(true)
   blacklistedSenderEmails String[] @default([])
+  // Mirror taxonomy folders into the mailbox as Gmail labels / Outlook
+  // categories and keep them in sync as threads are sorted. ON by default
+  // (product decision: the write scope is granted upfront at connect when the
+  // feature flag is enabled); users can switch it off per workspace. Inert
+  // without the write scope (gmail.modify / Mail.ReadWrite) on the connection.
+  labelWritebackEnabled   Boolean  @default(true)
   createdAt               DateTime @default(now())
   updatedAt               DateTime @updatedAt
 

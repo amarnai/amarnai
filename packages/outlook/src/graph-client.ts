@@ -10,6 +10,11 @@ import {
   GmailThreadNotFoundError as MailThreadNotFoundError,
 } from "@amarnai/gmail";
 import { normalizeGraphThread, type GraphMessage } from "./normalize-graph-thread.js";
+import {
+  OUTLOOK_SCOPES,
+  OUTLOOK_WRITEBACK_SCOPES,
+  hasWritebackScope,
+} from "./microsoft-oauth.js";
 
 const GRAPH_BASE_URL = "https://graph.microsoft.com/v1.0";
 
@@ -89,7 +94,20 @@ type GraphListResponse<T> = {
  * `Prefer: IdType="ImmutableId"` so message ids survive folder moves.
  */
 export class GraphClient {
-  constructor(private readonly encryptedRefreshToken: string) {}
+  // When the connection holds the write scope, refresh must request the writeback
+  // set — Microsoft refresh tokens are scope-bound, so a read-only refresh would
+  // mint a token that cannot write categories. Defaults to the read-only set.
+  private readonly refreshScope: string;
+
+  constructor(
+    private readonly encryptedRefreshToken: string,
+    grantedScopes?: string[],
+  ) {
+    this.refreshScope =
+      grantedScopes && hasWritebackScope(grantedScopes)
+        ? OUTLOOK_WRITEBACK_SCOPES
+        : OUTLOOK_SCOPES;
+  }
 
   async refreshAccessToken(): Promise<string> {
     const refreshToken = decrypt(this.encryptedRefreshToken);
@@ -101,7 +119,7 @@ export class GraphClient {
         client_id: process.env["MS_GRAPH_CLIENT_ID"] ?? "",
         client_secret: process.env["MS_GRAPH_CLIENT_SECRET"] ?? "",
         grant_type: "refresh_token",
-        scope: "Mail.Read offline_access User.Read",
+        scope: this.refreshScope,
       }),
     });
     if (!res.ok) {
@@ -477,4 +495,164 @@ export class GraphClient {
       }).catch(() => {});
     }
   }
+
+  // ── Opt-in folder→category writeback (Mail.ReadWrite) ───────────────────────
+
+  /**
+   * Idempotently ensure a master category exists for each folder def and return
+   * nodeId → category display name (the identifier used on messages). Outlook
+   * categories are FLAT, so the full path is encoded as a single literal display
+   * name ("Amarnai/Clients/Acme") — only the leaf category is created, no
+   * ancestors. Matching is case-insensitive (Outlook treats category names so).
+   * The palette key maps to an Outlook preset color. Never deletes or renames.
+   */
+  async ensureFolderLabels(
+    defs: Array<{ nodeId: string; pathSegments: string[]; colorKey: string }>,
+  ): Promise<Map<string, string>> {
+    const accessToken = await this.refreshAccessToken();
+
+    // Existing categories, lowercased display name → canonical display name.
+    const existing = new Map<string, string>();
+    let url: string | undefined = `${GRAPH_BASE_URL}/me/outlook/masterCategories`;
+    while (url) {
+      const page: GraphListResponse<{ displayName: string }> = await this.graphGet<{
+        displayName: string;
+      }>(url, accessToken);
+      for (const cat of page.value ?? []) existing.set(cat.displayName.toLowerCase(), cat.displayName);
+      url = page["@odata.nextLink"];
+    }
+
+    const result = new Map<string, string>();
+    for (const def of defs) {
+      if (def.pathSegments.length === 0) continue;
+      const displayName = def.pathSegments.join("/");
+      const key = displayName.toLowerCase();
+
+      if (existing.has(key)) {
+        result.set(def.nodeId, existing.get(key)!);
+        continue;
+      }
+
+      const color = OUTLOOK_PRESET_COLORS[def.colorKey] ?? "preset0";
+      const res = await this.graphSend(
+        "POST",
+        `${GRAPH_BASE_URL}/me/outlook/masterCategories`,
+        accessToken,
+        { displayName, color },
+      );
+      // 409 (or any "already exists"): another run created it — treat as present.
+      if (res.status === 409) {
+        existing.set(key, displayName);
+      } else if (!res.ok) {
+        throw new Error(`Graph masterCategory create failed: ${res.status} ${await res.text().catch(() => "")}`);
+      } else {
+        existing.set(key, displayName);
+      }
+      result.set(def.nodeId, displayName);
+    }
+
+    return result;
+  }
+
+  /**
+   * Reconcile the Amarnai-managed categories on a thread's messages to exactly
+   * `desiredLabelIds` (of the `managedLabelIds` set), preserving any categories
+   * the user set themselves. Outlook applies categories PER MESSAGE, and PATCH
+   * replaces the whole array, so this reads-modifies-writes each message and
+   * skips those already correct (no write = no delta-sync churn). A 404 on one
+   * message (moved/deleted) is skipped; the rest proceed.
+   */
+  async applyThreadFolderLabels(opts: {
+    threadId: string;
+    messageIds: string[];
+    desiredLabelIds: string[];
+    managedLabelIds: string[];
+  }): Promise<void> {
+    const accessToken = await this.refreshAccessToken();
+    const managedLower = new Set(opts.managedLabelIds.map((c) => c.toLowerCase()));
+    const desired = opts.desiredLabelIds;
+
+    for (const messageId of opts.messageIds) {
+      const getRes = await this.graphSend(
+        "GET",
+        `${GRAPH_BASE_URL}/me/messages/${encodeURIComponent(messageId)}?$select=categories`,
+        accessToken,
+      );
+      if (getRes.status === 404) continue; // message gone — skip, continue others
+      if (!getRes.ok) throw new Error(`Graph message categories fetch failed: ${getRes.status}`);
+      const current = ((await getRes.json()) as { categories?: string[] }).categories ?? [];
+
+      // Keep the user's own (unmanaged) categories, then add the desired ones.
+      const kept = current.filter((c) => !managedLower.has(c.toLowerCase()));
+      const nextSet = new Map<string, string>();
+      for (const c of kept) nextSet.set(c.toLowerCase(), c);
+      for (const c of desired) nextSet.set(c.toLowerCase(), c);
+      const next = [...nextSet.values()];
+
+      // No change → skip the PATCH (idempotent, avoids self-triggered churn).
+      const sameLength = next.length === current.length;
+      const sameMembers = current.every((c) => nextSet.has(c.toLowerCase()));
+      if (sameLength && sameMembers) continue;
+
+      const patchRes = await this.graphSend(
+        "PATCH",
+        `${GRAPH_BASE_URL}/me/messages/${encodeURIComponent(messageId)}`,
+        accessToken,
+        { categories: next },
+      );
+      if (patchRes.status === 404) continue;
+      if (!patchRes.ok) throw new Error(`Graph message categories patch failed: ${patchRes.status}`);
+    }
+  }
+
+  /**
+   * Authenticated POST/PATCH/GET against an absolute Graph URL, mirroring
+   * graphGet's 429 Retry-After and 401→MailAuthError handling, but returning the
+   * raw Response so callers can branch on 404/409. Sets Prefer: ImmutableId so a
+   * message id used here matches the one captured at sync time.
+   */
+  private async graphSend(
+    method: "GET" | "POST" | "PATCH",
+    url: string,
+    accessToken: string,
+    body?: unknown,
+  ): Promise<Response> {
+    for (let attempt = 0; attempt < 2; attempt++) {
+      const res = await fetch(url, {
+        method,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          Prefer: 'IdType="ImmutableId"',
+          ...(body !== undefined ? { "Content-Type": "application/json" } : {}),
+        },
+        ...(body !== undefined ? { body: JSON.stringify(body) } : {}),
+      });
+      if (res.status === 429 && attempt === 0) {
+        const retryAfter = Number(res.headers.get("Retry-After")) || 1;
+        await new Promise((r) => setTimeout(r, Math.min(retryAfter, 30) * 1000));
+        continue;
+      }
+      if (res.status === 401) {
+        const detail = await describeGraphError(res);
+        throw new MailAuthError(`Graph request failed: 401${detail ? ` — ${detail}` : ""}`);
+      }
+      return res;
+    }
+    throw new Error("Graph request failed after retry");
+  }
 }
+
+// Palette key → Outlook preset category color. Outlook exposes a fixed preset
+// palette (preset0..preset24); these are the nearest presets to the shared
+// 8-key folder palette (chosen from the Gmail∩Outlook intersection).
+// VERIFY the pink→preset9 (Cranberry) and teal→preset5 choices visually.
+const OUTLOOK_PRESET_COLORS: Record<string, string> = {
+  red: "preset0", // Red
+  orange: "preset1", // Orange
+  yellow: "preset3", // Yellow
+  green: "preset4", // Green
+  teal: "preset5", // Teal
+  blue: "preset7", // Blue
+  purple: "preset8", // Purple
+  pink: "preset9", // Cranberry (closest to pink)
+};

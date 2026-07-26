@@ -2,6 +2,9 @@ import { Hono } from "hono";
 import { z } from "zod";
 import { db } from "@amarnai/db";
 import { UpdateGmailSyncSettingsSchema, AddBlacklistEmailSchema, DEFAULT_GMAIL_SYNC_SETTINGS } from "@amarnai/shared";
+import { config } from "@amarnai/config";
+import { providerHasWritebackScope } from "@amarnai/mail";
+import { provisionLabelsQueue } from "../queues.js";
 
 const workspaceParam = z.object({ workspaceId: z.string().min(1) });
 
@@ -12,8 +15,23 @@ const SETTINGS_SELECT = {
   includePromotions: true,
   sortingPaused: true,
   routeBulkToOther: true,
+  labelWritebackEnabled: true,
   blacklistedSenderEmails: true,
 } as const;
+
+/**
+ * Whether the workspace's connected mailbox holds the write scope needed for
+ * label writeback. Provider-dispatched so the check stays single-sourced in each
+ * provider package. Returns false when no ACTIVE connection exists.
+ */
+async function connectionHasWritebackScope(workspaceId: string): Promise<boolean> {
+  const connection = await db.emailConnection.findUnique({
+    where: { workspaceId },
+    select: { provider: true, status: true, grantedScopes: true },
+  });
+  if (!connection || connection.status !== "ACTIVE") return false;
+  return providerHasWritebackScope(connection.provider, connection.grantedScopes);
+}
 
 /**
  * GET /workspaces/:workspaceId/gmail-sync-settings
@@ -51,35 +69,69 @@ gmailSyncSettings.patch("/workspaces/:workspaceId/gmail-sync-settings", async (c
     return c.json({ error: "Invalid request body", details: bodyParsed.error.issues }, 400);
   }
 
+  const { workspaceId } = paramParsed.data;
   const workspace = await db.workspace.findUnique({
-    where: { id: paramParsed.data.workspaceId },
+    where: { id: workspaceId },
     select: { id: true },
   });
   if (!workspace) return c.json({ error: "Workspace not found" }, 404);
+
+  // Enabling writeback is gated: the feature flag must be on AND the connected
+  // mailbox must already hold the write scope (granted via incremental consent).
+  // The settings UI routes users through consent first, so this only rejects a
+  // direct/stale enable. Disabling is always allowed.
+  const enablingWriteback = bodyParsed.data.labelWritebackEnabled === true;
+  if (enablingWriteback) {
+    if (!config.mail.labelWritebackEnabled) {
+      return c.json({ error: "writeback_disabled" }, 409);
+    }
+    if (!(await connectionHasWritebackScope(workspaceId))) {
+      return c.json({ error: "writeback_scope_missing" }, 409);
+    }
+  }
 
   const updateData: {
     includeSpam?: boolean;
     includePromotions?: boolean;
     sortingPaused?: boolean;
     routeBulkToOther?: boolean;
+    labelWritebackEnabled?: boolean;
   } = {};
   if (bodyParsed.data.includeSpam !== undefined) updateData.includeSpam = bodyParsed.data.includeSpam;
   if (bodyParsed.data.includePromotions !== undefined) updateData.includePromotions = bodyParsed.data.includePromotions;
   if (bodyParsed.data.sortingPaused !== undefined) updateData.sortingPaused = bodyParsed.data.sortingPaused;
   if (bodyParsed.data.routeBulkToOther !== undefined) updateData.routeBulkToOther = bodyParsed.data.routeBulkToOther;
+  if (bodyParsed.data.labelWritebackEnabled !== undefined) updateData.labelWritebackEnabled = bodyParsed.data.labelWritebackEnabled;
 
   const updated = await db.gmailSyncSettings.upsert({
-    where: { workspaceId: paramParsed.data.workspaceId },
+    where: { workspaceId },
     create: {
-      workspaceId: paramParsed.data.workspaceId,
-      includeSpam:       updateData.includeSpam       ?? DEFAULT_GMAIL_SYNC_SETTINGS.includeSpam,
-      includePromotions: updateData.includePromotions ?? DEFAULT_GMAIL_SYNC_SETTINGS.includePromotions,
-      sortingPaused:     updateData.sortingPaused     ?? DEFAULT_GMAIL_SYNC_SETTINGS.sortingPaused,
-      routeBulkToOther:  updateData.routeBulkToOther  ?? DEFAULT_GMAIL_SYNC_SETTINGS.routeBulkToOther,
+      workspaceId,
+      includeSpam:           updateData.includeSpam           ?? DEFAULT_GMAIL_SYNC_SETTINGS.includeSpam,
+      includePromotions:     updateData.includePromotions     ?? DEFAULT_GMAIL_SYNC_SETTINGS.includePromotions,
+      sortingPaused:         updateData.sortingPaused         ?? DEFAULT_GMAIL_SYNC_SETTINGS.sortingPaused,
+      routeBulkToOther:      updateData.routeBulkToOther      ?? DEFAULT_GMAIL_SYNC_SETTINGS.routeBulkToOther,
+      labelWritebackEnabled: updateData.labelWritebackEnabled ?? DEFAULT_GMAIL_SYNC_SETTINGS.labelWritebackEnabled,
     },
     update: updateData,
     select: SETTINGS_SELECT,
   });
+
+  // On any set-true (fresh connect enabling it, a re-enable, or a repeat), mirror
+  // the current taxonomy into the mailbox. Not gated on a false→true flip: with
+  // writeback on by default there is no flip at connect time, and the workspace
+  // dedup id collapses repeats to one provisioning run anyway.
+  if (enablingWriteback) {
+    await provisionLabelsQueue
+      .add(
+        "provision-folder-labels",
+        { workspaceId },
+        { deduplication: { id: `provision_${workspaceId}` } },
+      )
+      .catch((err) =>
+        console.error(`[gmail-sync-settings] provision enqueue failed (workspace=${workspaceId}):`, err),
+      );
+  }
 
   return c.json(updated);
 });

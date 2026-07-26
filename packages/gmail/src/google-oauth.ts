@@ -4,16 +4,41 @@
 import type { GmailProfile } from "./gmail-client.js";
 
 // The minimum Gmail scope for the triage MVP. Single source of truth, shared by
-// the web OAuth flow, the API, and provisioning. Will expand to modify/send when
-// compose/send ship.
+// the web OAuth flow, the API, and provisioning. Sign-up and the default connect
+// flow request only this scope; the mailbox stays read-only unless a user opts
+// into label writeback.
 export const GMAIL_READONLY_SCOPE = "https://www.googleapis.com/auth/gmail.readonly";
 
-// Parses a space-delimited OAuth scope string and confirms gmail.readonly was
-// granted. Shared by every sign-in/connect path so the read-access requirement
-// is enforced identically. Returns the parsed scopes for storing on the record.
-export function parseGrantedScopes(scope: string): { scopes: string[]; hasReadonly: boolean } {
+// The write scope for opt-in folder→label writeback (create labels + apply/remove
+// them on threads via users.threads.modify). Restricted (CASA Tier 2), requested
+// only through the incremental-consent upgrade flow — never at sign-up. Note:
+// gmail.modify is a superset of gmail.readonly at the API level, but Google echoes
+// each granted scope literally, so both strings appear when both are requested.
+export const GMAIL_MODIFY_SCOPE = "https://www.googleapis.com/auth/gmail.modify";
+
+// Parses a space-delimited OAuth scope string. `hasReadonly` gates read access
+// (satisfied by either scope, since modify supersedes readonly); `hasWriteback`
+// gates the label-writeback feature. Shared by every sign-in/connect path so the
+// requirements are enforced identically. Returns the parsed scopes for storage.
+export function parseGrantedScopes(scope: string): {
+  scopes: string[];
+  hasReadonly: boolean;
+  hasWriteback: boolean;
+} {
   const scopes = scope.split(" ");
-  return { scopes, hasReadonly: scopes.includes(GMAIL_READONLY_SCOPE) };
+  const hasWriteback = scopes.includes(GMAIL_MODIFY_SCOPE);
+  return {
+    scopes,
+    hasReadonly: hasWriteback || scopes.includes(GMAIL_READONLY_SCOPE),
+    hasWriteback,
+  };
+}
+
+// Whether a persisted grantedScopes array carries the writeback scope. Used by
+// the API and worker to gate label writeback against the stored connection
+// without re-parsing a raw scope string.
+export function hasWritebackScope(grantedScopes: readonly string[]): boolean {
+  return grantedScopes.includes(GMAIL_MODIFY_SCOPE);
 }
 
 const GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token";

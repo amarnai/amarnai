@@ -6,6 +6,8 @@ import type { EmbeddableNode } from "@amarnai/ai";
 import { getThreadSortLimit, getDraftQuotaResetsAt } from "@amarnai/shared";
 import { config } from "@amarnai/config";
 import { createMailProvider, MailThreadNotFoundError } from "@amarnai/mail";
+import { DEDUP_WRITEBACK } from "@amarnai/queue";
+import { writebackThreadLabelQueue } from "../queues.js";
 // GmailClient is retained only for the Gmail-specific dev endpoint below
 // (listRecentThreads is a debug convenience, not part of the neutral seam).
 import { GmailClient } from "../services/gmail-client.js";
@@ -333,6 +335,21 @@ gmailSort.post("/dev/workspaces/:workspaceId/gmail-sort-thread", async (c) => {
     where: { id: emailThread.id },
     data: { triageStatus: result.needsHumanReview ? "NEEDS_REVIEW" : "SORTED" },
   });
+
+  // Reconcile the thread's Amarnai label/category to its sorted folder (opt-in
+  // writeback). Best-effort + deduped; the worker no-ops when writeback is off.
+  try {
+    await writebackThreadLabelQueue.add(
+      "writeback-thread-label",
+      { workspaceId, emailThreadId: emailThread.id },
+      { deduplication: { id: `${DEDUP_WRITEBACK}_${workspaceId}_${emailThread.id}` } },
+    );
+  } catch (err) {
+    console.error(
+      `[gmail-sort] writeback enqueue failed for thread ${emailThread.id}:`,
+      err instanceof Error ? err.message : err,
+    );
+  }
 
   // ── 9. Resolve final node name ────────────────────────────────────────────
 

@@ -9,6 +9,7 @@ import "@fontsource-variable/geist-mono/wght.css";
 import "./styles/globals.css";
 import "@amarnai/ui/theme/styles";
 import "@amarnai/ui/tooltip/styles";
+import "@amarnai/ui/switch/styles";
 import "@amarnai/ui/emails/styles";
 import { applyStoredThemeSync } from "@amarnai/ui";
 import { App } from "./App";

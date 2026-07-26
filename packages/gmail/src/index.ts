@@ -12,10 +12,12 @@ export { normalizeGmailThread } from "./gmail-thread-adapter.js";
 export type { RawGmailThread } from "./gmail-thread-adapter.js";
 export {
   GMAIL_READONLY_SCOPE,
+  GMAIL_MODIFY_SCOPE,
   GmailApiError,
   exchangeAuthCode,
   exchangeServerAuthCode,
   parseGrantedScopes,
+  hasWritebackScope,
   fetchGmailProfile,
   fetchGoogleSubjectId,
   fetchGoogleUserInfo,

@@ -374,3 +374,119 @@ describe("GraphClient throttling", () => {
     vi.useRealTimers();
   });
 });
+
+// ─── ensureFolderLabels (master categories) ───────────────────────────────────
+
+describe("GraphClient.ensureFolderLabels", () => {
+  it("creates a flat category per folder using the joined path as the display name", async () => {
+    const created: unknown[] = [];
+    routeGraph((url, init) => {
+      if (url.includes("/masterCategories") && init?.method === "POST") {
+        created.push(JSON.parse(init.body as string));
+        return jsonResponse({});
+      }
+      if (url.includes("/masterCategories")) return jsonResponse({ value: [] }); // list: none exist
+      return jsonResponse({}, { status: 404 });
+    });
+
+    const map = await client().ensureFolderLabels([
+      { nodeId: "n1", pathSegments: ["Amarnai", "Clients", "Acme"], colorKey: "blue" },
+    ]);
+
+    // Identifier is the literal joined display name (categories are flat).
+    expect(map.get("n1")).toBe("Amarnai/Clients/Acme");
+    expect(created).toEqual([{ displayName: "Amarnai/Clients/Acme", color: "preset7" }]);
+  });
+
+  it("reuses an existing category (case-insensitive) without recreating it", async () => {
+    let posts = 0;
+    routeGraph((url, init) => {
+      if (url.includes("/masterCategories") && init?.method === "POST") {
+        posts++;
+        return jsonResponse({});
+      }
+      if (url.includes("/masterCategories")) {
+        return jsonResponse({ value: [{ displayName: "amarnai/clients" }] });
+      }
+      return jsonResponse({}, { status: 404 });
+    });
+
+    const map = await client().ensureFolderLabels([
+      { nodeId: "n1", pathSegments: ["Amarnai", "Clients"], colorKey: "red" },
+    ]);
+
+    expect(map.get("n1")).toBe("amarnai/clients"); // canonical existing name
+    expect(posts).toBe(0);
+  });
+});
+
+// ─── applyThreadFolderLabels (per-message categories) ─────────────────────────
+
+describe("GraphClient.applyThreadFolderLabels", () => {
+  it("adds the desired category while preserving the user's own, via read-modify-write", async () => {
+    const patched: Record<string, string[]> = {};
+    routeGraph((url, init) => {
+      const m = url.match(/\/messages\/([^?]+)/);
+      const id = m ? decodeURIComponent(m[1]!) : "";
+      if (init?.method === "PATCH") {
+        patched[id] = (JSON.parse(init.body as string) as { categories: string[] }).categories;
+        return jsonResponse({});
+      }
+      // GET categories
+      return jsonResponse({ categories: ["Work", "Amarnai/Old"] });
+    });
+
+    await client().applyThreadFolderLabels({
+      threadId: "conv-1",
+      messageIds: ["m-1"],
+      desiredLabelIds: ["Amarnai/New"],
+      managedLabelIds: ["Amarnai/Old", "Amarnai/New"],
+    });
+
+    // "Work" (foreign) kept, "Amarnai/Old" (managed, undesired) dropped, "Amarnai/New" added.
+    expect(patched["m-1"]).toEqual(["Work", "Amarnai/New"]);
+  });
+
+  it("makes no PATCH when the message already matches", async () => {
+    let patches = 0;
+    routeGraph((url, init) => {
+      if (init?.method === "PATCH") {
+        patches++;
+        return jsonResponse({});
+      }
+      return jsonResponse({ categories: ["Amarnai/New"] });
+    });
+
+    await client().applyThreadFolderLabels({
+      threadId: "conv-1",
+      messageIds: ["m-1"],
+      desiredLabelIds: ["Amarnai/New"],
+      managedLabelIds: ["Amarnai/New"],
+    });
+
+    expect(patches).toBe(0);
+  });
+
+  it("skips a message that is gone (404) and continues with the rest", async () => {
+    const patched: string[] = [];
+    routeGraph((url, init) => {
+      const gone = url.includes("m-gone");
+      if (init?.method === "PATCH") {
+        patched.push("patched");
+        return jsonResponse({});
+      }
+      if (gone) return jsonResponse({}, { status: 404 });
+      return jsonResponse({ categories: [] });
+    });
+
+    await client().applyThreadFolderLabels({
+      threadId: "conv-1",
+      messageIds: ["m-gone", "m-ok"],
+      desiredLabelIds: ["Amarnai/New"],
+      managedLabelIds: ["Amarnai/New"],
+    });
+
+    // Only the reachable message was patched.
+    expect(patched).toEqual(["patched"]);
+  });
+});

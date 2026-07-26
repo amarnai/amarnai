@@ -1,11 +1,13 @@
 import {
   OUTLOOK_SCOPES,
+  OUTLOOK_WRITEBACK_SCOPES,
   MicrosoftApiError,
   exchangeAuthCode,
   fetchOutlookProfile,
   fetchSubjectId,
 } from "@amarnai/outlook";
 import type { OutlookProfile, OutlookTokens } from "@amarnai/outlook";
+import { isLabelWritebackEnabled } from "./writeback-flag";
 
 // HTTP helpers (token exchange, profile, subject id) live in @amarnai/outlook so
 // the API can share them, mirroring how @/lib/gmail-oauth re-exports @amarnai/gmail.
@@ -43,19 +45,34 @@ function getCallbackUrl(): string {
 // Requests Mail.Read + offline_access + User.Read — the read-only minimum that
 // mirrors gmail.readonly. offline_access is required for a refresh token.
 
-export function buildOutlookAuthUrl(state: string): string {
+// Whether this OAuth round should carry the write scope: always when the
+// writeback feature is enabled (upfront grant, on-by-default product decision),
+// or when the explicit upgrade flow forces it for a pre-feature connection.
+// MUST be applied identically to the authorize URL and the token exchange —
+// Microsoft refresh tokens are scope-bound, so an exchange narrower than the
+// consent would silently mint read-only tokens.
+function wantsWriteScope(opts: { writeback?: boolean }): boolean {
+  return Boolean(opts.writeback) || isLabelWritebackEnabled();
+}
+
+export function buildOutlookAuthUrl(
+  state: string,
+  opts: { writeback?: boolean } = {},
+): string {
   const clientId = env("MS_GRAPH_CLIENT_ID");
   if (!clientId) {
     // Guard rather than send client_id="", which Microsoft rejects with an
     // opaque error. isOutlookConfigured() should gate the connect UI upstream.
     throw new Error("MS_GRAPH_CLIENT_ID is not configured");
   }
+  // Microsoft consent is per-permission (no include_granted_scopes needed): the
+  // union scope string re-prompts only for the new permission.
   const params = new URLSearchParams({
     client_id: clientId,
     redirect_uri: getCallbackUrl(),
     response_type: "code",
     response_mode: "query",
-    scope: OUTLOOK_SCOPES,
+    scope: wantsWriteScope(opts) ? OUTLOOK_WRITEBACK_SCOPES : OUTLOOK_SCOPES,
     state,
   });
   return `${MS_AUTH_URL}?${params.toString()}`;
@@ -65,6 +82,14 @@ export function buildOutlookAuthUrl(state: string): string {
 // Thin wrapper that pins the redirect URI to the web callback so call sites keep
 // a single-argument signature, matching exchangeCodeForTokens in gmail-oauth.
 
-export function exchangeCodeForTokens(code: string): Promise<OutlookTokens> {
-  return exchangeAuthCode(code, getCallbackUrl());
+export function exchangeCodeForTokens(
+  code: string,
+  opts: { writeback?: boolean } = {},
+): Promise<OutlookTokens> {
+  return exchangeAuthCode(
+    code,
+    getCallbackUrl(),
+    undefined,
+    wantsWriteScope(opts) ? OUTLOOK_WRITEBACK_SCOPES : OUTLOOK_SCOPES,
+  );
 }

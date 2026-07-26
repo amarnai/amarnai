@@ -41,6 +41,7 @@ vi.mock("@amarnai/db", () => ({
 
 vi.mock("../queues.js", () => ({
   classifyThreadQueue: { addBulk: vi.fn().mockResolvedValue([]) },
+  provisionLabelsQueue: { add: vi.fn().mockResolvedValue(undefined) },
 }));
 
 vi.mock("../services/taxonomy-migration.js", () => ({

@@ -80,6 +80,31 @@ const GMAIL_MESSAGES_URL = "https://gmail.googleapis.com/gmail/v1/users/me/messa
 const GMAIL_HISTORY_URL = "https://gmail.googleapis.com/gmail/v1/users/me/history";
 const GMAIL_WATCH_URL = "https://gmail.googleapis.com/gmail/v1/users/me/watch";
 const GMAIL_STOP_URL = "https://gmail.googleapis.com/gmail/v1/users/me/stop";
+const GMAIL_LABELS_URL = "https://gmail.googleapis.com/gmail/v1/users/me/labels";
+
+// One folder to mirror as a Gmail label. `pathSegments` are pre-sanitized and
+// namespace-prefixed; Gmail nests on "/", so the joined name creates the tree.
+type GmailFolderLabelDef = {
+  nodeId: string;
+  pathSegments: string[];
+  colorKey: string;
+};
+
+// colorKey → Gmail label color. Gmail only accepts colors from a fixed allowed
+// palette (a 400 otherwise), so these are the nearest allowed values per palette
+// key. Applied best-effort (see ensureFolderLabels): a rejected color leaves the
+// label uncolored rather than failing provisioning.
+// VERIFY against the live allowed set — teal/pink especially — during the demo build.
+const GMAIL_LABEL_COLORS: Record<string, { backgroundColor: string; textColor: string }> = {
+  red: { backgroundColor: "#fb4c2f", textColor: "#ffffff" },
+  orange: { backgroundColor: "#ffad47", textColor: "#ffffff" },
+  yellow: { backgroundColor: "#fad165", textColor: "#000000" },
+  green: { backgroundColor: "#16a766", textColor: "#ffffff" },
+  teal: { backgroundColor: "#2da2bb", textColor: "#ffffff" },
+  blue: { backgroundColor: "#4a86e8", textColor: "#ffffff" },
+  purple: { backgroundColor: "#a479e2", textColor: "#ffffff" },
+  pink: { backgroundColor: "#f691b3", textColor: "#000000" },
+};
 
 /**
  * Revokes the Google OAuth grant for the given encrypted refresh token.
@@ -196,7 +221,14 @@ function refreshClientCredentials(): Record<string, string> {
 }
 
 export class GmailClient {
-  constructor(private readonly encryptedRefreshToken: string) {}
+  // `grantedScopes` is accepted for signature parity with the Graph adapter (see
+  // createMailProvider) but unused: Google refresh tokens are not
+  // scope-parameterized, so the refreshed access token already carries whatever
+  // was granted at consent.
+  constructor(
+    private readonly encryptedRefreshToken: string,
+    _grantedScopes?: string[],
+  ) {}
 
   async refreshAccessToken(): Promise<string> {
     const refreshToken = decrypt(this.encryptedRefreshToken);
@@ -611,5 +643,148 @@ export class GmailClient {
     const base64 = json.data.replace(/-/g, "+").replace(/_/g, "/");
     const data = new Uint8Array(Buffer.from(base64, "base64"));
     return { data, mimeType: null, size: json.size ?? data.byteLength };
+  }
+
+  // ── Opt-in folder→label writeback (gmail.modify) ────────────────────────────
+
+  /**
+   * Idempotently ensure a Gmail label exists for each folder def and return
+   * nodeId → leaf label id. Gmail nests labels by slash-delimited name, so every
+   * ancestor prefix ("Amarnai", "Amarnai/Clients", …) is created before the leaf.
+   * Existing labels (including a concurrent create that 409s) are reused. The
+   * leaf's color is set best-effort from its palette key; a rejected color leaves
+   * the label uncolored rather than failing the run. Never deletes or renames.
+   */
+  async ensureFolderLabels(defs: GmailFolderLabelDef[]): Promise<Map<string, string>> {
+    const accessToken = await this.refreshAccessToken();
+    const nameToId = await this.listLabelIdsByName(accessToken);
+    const result = new Map<string, string>();
+
+    for (const def of defs) {
+      if (def.pathSegments.length === 0) continue;
+      // Create ancestors first so nesting resolves, then the leaf.
+      let leafId: string | undefined;
+      for (let i = 0; i < def.pathSegments.length; i++) {
+        const name = def.pathSegments.slice(0, i + 1).join("/");
+        leafId = await this.ensureLabel(accessToken, nameToId, name);
+      }
+      if (!leafId) continue;
+      result.set(def.nodeId, leafId);
+
+      // Color the leaf only (ancestors are structural). Best-effort.
+      const color = GMAIL_LABEL_COLORS[def.colorKey];
+      if (color) await this.patchLabelColor(accessToken, leafId, color).catch(() => {});
+    }
+
+    return result;
+  }
+
+  /**
+   * Reconcile the Amarnai-managed labels on a thread to exactly `desiredLabelIds`
+   * (of the `managedLabelIds` set), leaving the user's own labels untouched.
+   * Idempotent: computes the add/remove delta against the thread's current labels
+   * and makes NO modify call when already converged (this no-op is what stops our
+   * own writes from looping through history sync).
+   */
+  async applyThreadFolderLabels(opts: {
+    threadId: string;
+    messageIds: string[];
+    desiredLabelIds: string[];
+    managedLabelIds: string[];
+  }): Promise<void> {
+    const accessToken = await this.refreshAccessToken();
+    const current = await this.getThreadLabelIds(accessToken, opts.threadId);
+
+    const desired = new Set(opts.desiredLabelIds);
+    const managed = new Set(opts.managedLabelIds);
+    const toAdd = opts.desiredLabelIds.filter((id) => !current.has(id));
+    const toRemove = [...current].filter((id) => managed.has(id) && !desired.has(id));
+
+    if (toAdd.length === 0 && toRemove.length === 0) return;
+
+    const url = `${GMAIL_THREAD_URL}/${encodeURIComponent(opts.threadId)}/modify`;
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${accessToken}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ addLabelIds: toAdd, removeLabelIds: toRemove }),
+    });
+    if (res.status === 404) throw new GmailThreadNotFoundError(`Gmail thread not found: ${opts.threadId}`);
+    // TODO(writeback): handle 429/Retry-After for write bursts (deferred — reads
+    // never hit it, and single-thread reconciles are low-rate).
+    if (!res.ok) throw new Error(`Gmail thread modify failed: ${res.status}`);
+  }
+
+  /** Union of labelIds across a thread's messages (format=minimal). */
+  private async getThreadLabelIds(accessToken: string, threadId: string): Promise<Set<string>> {
+    const url = `${GMAIL_THREAD_URL}/${encodeURIComponent(threadId)}?format=minimal`;
+    const res = await fetch(url, { headers: { Authorization: `Bearer ${accessToken}` } });
+    if (res.status === 404) throw new GmailThreadNotFoundError(`Gmail thread not found: ${threadId}`);
+    if (!res.ok) throw new Error(`Gmail thread fetch failed: ${res.status}`);
+    const data = (await res.json()) as { messages?: Array<{ labelIds?: string[] }> };
+    const out = new Set<string>();
+    for (const m of data.messages ?? []) for (const id of m.labelIds ?? []) out.add(id);
+    return out;
+  }
+
+  /** Fetch all labels as a name→id map (exact name match, includes nested names). */
+  private async listLabelIdsByName(accessToken: string): Promise<Map<string, string>> {
+    const res = await fetch(GMAIL_LABELS_URL, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+    if (!res.ok) throw new Error(`Gmail labels list failed: ${res.status}`);
+    const data = (await res.json()) as { labels?: Array<{ id: string; name: string }> };
+    const map = new Map<string, string>();
+    for (const l of data.labels ?? []) map.set(l.name, l.id);
+    return map;
+  }
+
+  /** Ensure a single label by exact name exists, updating `nameToId` in place. */
+  private async ensureLabel(
+    accessToken: string,
+    nameToId: Map<string, string>,
+    name: string,
+  ): Promise<string> {
+    const existing = nameToId.get(name);
+    if (existing) return existing;
+
+    const res = await fetch(GMAIL_LABELS_URL, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${accessToken}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name,
+        labelListVisibility: "labelShow",
+        messageListVisibility: "show",
+      }),
+    });
+
+    if (res.status === 409) {
+      // Raced (or a pre-existing label our list missed): re-list and resolve.
+      const refreshed = await this.listLabelIdsByName(accessToken);
+      const id = refreshed.get(name);
+      if (!id) throw new Error(`Gmail label create conflicted but name not found: ${name}`);
+      nameToId.set(name, id);
+      return id;
+    }
+    if (!res.ok) throw new Error(`Gmail label create failed: ${res.status}`);
+
+    const created = (await res.json()) as { id: string };
+    nameToId.set(name, created.id);
+    return created.id;
+  }
+
+  /** Set a label's color. Best-effort at the call site (Gmail rejects colors
+   *  outside its allowed palette with a 400). */
+  private async patchLabelColor(
+    accessToken: string,
+    labelId: string,
+    color: { backgroundColor: string; textColor: string },
+  ): Promise<void> {
+    const url = `${GMAIL_LABELS_URL}/${encodeURIComponent(labelId)}`;
+    const res = await fetch(url, {
+      method: "PATCH",
+      headers: { Authorization: `Bearer ${accessToken}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ color }),
+    });
+    if (!res.ok) throw new Error(`Gmail label color patch failed: ${res.status}`);
   }
 }

@@ -10,6 +10,7 @@ import {
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
+import { Switch } from "@amarnai/ui";
 import { AppearanceSection } from "./AppearanceSection";
 
 export function AccountForm({
@@ -81,11 +82,10 @@ export function AccountForm({
       <section className="settings-section">
         <h2><Trans>Email reminders</Trans></h2>
         <label className="settings-toggle">
-          <input
-            type="checkbox"
+          <Switch
             checked={remindersEnabled}
             disabled={remindersPending}
-            onChange={(e) => toggleReminders(e.target.checked)}
+            onChange={toggleReminders}
           />
           <Trans>Send me a weekly reminder when my Amarnai inbox needs attention.</Trans>
         </label>

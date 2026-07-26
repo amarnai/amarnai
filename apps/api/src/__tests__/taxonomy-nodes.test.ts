@@ -30,7 +30,17 @@ vi.mock("@amarnai/db", () => ({
     emailClassification: {
       updateMany: vi.fn(),
     },
+    gmailSyncSettings: {
+      findUnique: vi.fn(),
+    },
   },
+}));
+
+// The create route enqueues label provisioning when writeback is on; mock the
+// queue so the real BullMQ/Redis instance is never constructed under test.
+vi.mock("../queues.js", () => ({
+  provisionLabelsQueue: { add: vi.fn().mockResolvedValue(undefined) },
+  writebackThreadLabelQueue: { add: vi.fn().mockResolvedValue(undefined) },
 }));
 
 import app from "../app.js";

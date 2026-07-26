@@ -67,7 +67,56 @@ export interface MailProvider {
 
   /** Tear down the push watch/subscription (best-effort, before token revoke). */
   stopWatch(): Promise<void>;
+
+  // ── Opt-in folder→label writeback ──────────────────────────────────────────
+  // Only exercised when a workspace has enabled writeback AND granted the write
+  // scope (gmail.modify / Mail.ReadWrite). Read-only providers/connections never
+  // reach these; callers gate on grantedScopes first.
+
+  /**
+   * Idempotently ensure a provider-side label/category exists for each folder
+   * def, applying the mapped color. Returns a map of node id → provider
+   * identifier (Gmail label id; Outlook category display name). Never deletes or
+   * renames anything — provisioning is additive in this slice.
+   */
+  ensureFolderLabels(defs: MailFolderLabelDef[]): Promise<Map<string, string>>;
+
+  /**
+   * Declaratively reconcile the Amarnai-managed labels/categories on one thread:
+   * after the call, of `managedLabelIds` exactly `desiredLabelIds` are present
+   * (foreign labels/categories the user set are left untouched). Idempotent and
+   * MUST make zero write calls when the thread already matches — that no-op is
+   * what keeps our own writes from churning through history/delta sync.
+   *
+   * `messageIds` are the thread's provider message ids, for providers that label
+   * per-message (Outlook categories); Gmail labels the thread and ignores them.
+   */
+  applyThreadFolderLabels(opts: MailApplyThreadLabelsOptions): Promise<void>;
 }
+
+/** One folder to mirror provider-side. Segments are pre-sanitized, root-first,
+ *  and namespace-prefixed (the first segment is the "Amarnai" namespace). */
+export type MailFolderLabelDef = {
+  /** Taxonomy node id — for the returned map and logging only. */
+  nodeId: string;
+  /** e.g. ["Amarnai", "Clients", "Acme"]. Gmail joins on "/" (nesting); Outlook
+   *  uses the joined string as a flat display name. */
+  pathSegments: string[];
+  /** A FOLDER_COLOR_KEYS member; the adapter maps it to a provider-native color. */
+  colorKey: string;
+};
+
+/** Arguments for {@link MailProvider.applyThreadFolderLabels}. */
+export type MailApplyThreadLabelsOptions = {
+  /** Provider thread id (Gmail thread id / Outlook conversationId). */
+  threadId: string;
+  /** Provider message ids in the thread (used by per-message providers). */
+  messageIds: string[];
+  /** Managed label/category ids that SHOULD be on the thread after the call. */
+  desiredLabelIds: string[];
+  /** Every Amarnai-managed label/category id, so foreign ones are preserved. */
+  managedLabelIds: string[];
+};
 
 /** Raw bytes of one attachment, plus the provider's type hint (may be null). */
 export type MailAttachmentContent = {

@@ -1,12 +1,14 @@
 import crypto from "crypto";
 import {
   GMAIL_READONLY_SCOPE,
+  GMAIL_MODIFY_SCOPE,
   GmailApiError,
   exchangeAuthCode,
   fetchGmailProfile,
   fetchGoogleSubjectId,
 } from "@amarnai/gmail";
 import type { GmailProfile, GmailTokens } from "@amarnai/gmail";
+import { isLabelWritebackEnabled } from "./writeback-flag";
 
 // HTTP helpers (token exchange, profile, subject id) now live in @amarnai/gmail
 // so the API can share them. Re-export them here so existing web imports from
@@ -23,11 +25,18 @@ function getCallbackUrl(): string {
 
 // ─── State signing ────────────────────────────────────────────────────────────
 
+// Why the mailbox OAuth flow ran. "connect" is a fresh connection (default);
+// "writeback" is the incremental-consent upgrade that adds the write scope to an
+// already-connected mailbox. Signed into the state so the callback cannot be
+// tricked into taking the upgrade path (which skips inbox-rotation cleanup).
+export type OAuthIntent = "connect" | "writeback";
+
 type OAuthState = {
   workspaceId: string;
   userId: string;
   nonce: string;
   ts: number;
+  intent?: OAuthIntent;
 };
 
 function signState(payload: OAuthState): string {
@@ -37,12 +46,17 @@ function signState(payload: OAuthState): string {
   return Buffer.from(JSON.stringify({ ...payload, sig })).toString("base64url");
 }
 
-export function generateState(workspaceId: string, userId: string): string {
+export function generateState(
+  workspaceId: string,
+  userId: string,
+  intent: OAuthIntent = "connect",
+): string {
   return signState({
     workspaceId,
     userId,
     nonce: crypto.randomBytes(16).toString("hex"),
     ts: Date.now(),
+    intent,
   });
 }
 
@@ -87,19 +101,31 @@ export function verifyState(
 }
 
 // ─── OAuth URL ────────────────────────────────────────────────────────────────
-// Requests gmail.readonly — minimum scope for the MVP triage feature set.
-// Will be upgraded to mail.google.com when compose/send/delete ship.
+// When the writeback feature is enabled, gmail.modify is requested UPFRONT on
+// every connect (product decision: writeback is on by default, and upcoming
+// in-Gmail features need the same grant — see writeback-flag.ts). With the
+// feature off, connects stay readonly-only. `opts.writeback` forces the write
+// scope for the explicit upgrade flow (a pre-feature connection re-consenting);
+// include_granted_scopes=true makes Google widen the grant instead of replacing it.
 
-export function buildGmailAuthUrl(state: string): string {
+export function buildGmailAuthUrl(
+  state: string,
+  opts: { writeback?: boolean } = {},
+): string {
+  const wantsWriteScope = opts.writeback || isLabelWritebackEnabled();
+  const scope = wantsWriteScope
+    ? `${GMAIL_READONLY_SCOPE} ${GMAIL_MODIFY_SCOPE}`
+    : GMAIL_READONLY_SCOPE;
   const params = new URLSearchParams({
     client_id: process.env["AUTH_GOOGLE_ID"] ?? "",
     redirect_uri: getCallbackUrl(),
     response_type: "code",
-    scope: GMAIL_READONLY_SCOPE,
+    scope,
     access_type: "offline",
     prompt: "consent",
     state,
   });
+  if (wantsWriteScope) params.set("include_granted_scopes", "true");
   return `${GOOGLE_AUTH_URL}?${params.toString()}`;
 }
 
@@ -107,7 +133,13 @@ export function buildGmailAuthUrl(state: string): string {
 // Thin wrapper that pins the redirect URI to the web callback so existing call
 // sites keep their single-argument signature.
 
-export function exchangeCodeForTokens(code: string): Promise<GmailTokens> {
+export function exchangeCodeForTokens(
+  code: string,
+  // Accepted for signature parity with the shared callback config. Google derives
+  // granted scopes from the authorization code, so no scope is re-specified here
+  // (unlike Microsoft, whose refresh tokens are scope-bound).
+  _opts: { writeback?: boolean } = {},
+): Promise<GmailTokens> {
   return exchangeAuthCode(code, getCallbackUrl());
 }
 

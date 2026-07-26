@@ -140,6 +140,7 @@ vi.mock("../redis.js", () => ({ redisConnection: {} }));
 vi.mock("../queues.js", () => ({
   QUEUE_CLASSIFY_THREAD: "classify-thread",
   pushNotificationQueue: { add: vi.fn().mockResolvedValue(undefined) },
+  writebackThreadLabelQueue: { add: vi.fn().mockResolvedValue(undefined) },
 }));
 
 vi.mock("../notifications/notify-threads.js", () => ({

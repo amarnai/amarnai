@@ -379,6 +379,9 @@ export default function SettingsScreen() {
                       includePromotions: false,
                       sortingPaused: false,
                       routeBulkToOther: true,
+                      // Type-satisfying default; label writeback is not surfaced
+                      // in the shelved mobile app.
+                      labelWritebackEnabled: false,
                       blacklistedSenderEmails: emails,
                     },
               )

@@ -222,7 +222,7 @@ msgstr "{hiddenCount, plural, one {# folder tanpa utas tidak ditampilkan.} other
 #~ msgid "{pendingCount} pending"
 #~ msgstr "{pendingCount} pending"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:199
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:222
 msgid "{providerName} Inbox"
 msgstr "Kotak Masuk {providerName}"
 
@@ -566,12 +566,12 @@ msgstr "Peneliti Akademis"
 #~ msgid "Access is granted to that exact Google account, so if it isn't the one whose Gmail you want Amarnai to organize, just submit the right address."
 #~ msgstr "Akses diberikan ke akun Google yang tepat itu, jadi jika bukan akun yang Gmail-nya ingin Anda atur dengan Amarnai, cukup masukkan alamat yang benar."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:57
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:65
 #, fuzzy
 msgid "Access was denied. Grant read-only Gmail access to connect."
 msgstr "Akses ditolak. Berikan akses Gmail hanya-baca untuk terhubung."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:79
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:93
 msgid "Access was denied. Grant read-only Outlook (Mail.Read) access to connect."
 msgstr "Akses ditolak. Berikan akses baca-saja Outlook (Mail.Read) untuk terhubung."
 
@@ -769,7 +769,7 @@ msgstr "Sudah ada dalam daftar."
 #~ msgid "Already invited? <0>Sign in</0>"
 #~ msgstr "Sudah diundang? <0>Masuk</0>"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:258
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:281
 #, fuzzy
 msgid "Also erase synced email data"
 msgstr "Juga hapus data email yang disinkronkan"
@@ -1102,7 +1102,7 @@ msgid "Audience"
 msgstr "Audiens"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:127
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:88
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:86
 #, fuzzy
 msgid "Auto-file notifications to Updates / Other"
 msgstr "Arsipkan notifikasi secara otomatis ke Pembaruan / Lainnya"
@@ -1371,8 +1371,8 @@ msgstr "Bisakah saya meng-hosting Amarnai sendiri?"
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1820
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1913
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:64
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:275
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:370
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:298
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:403
 #: ../../apps/web/src/app/(app)/settings/ResetWorkspaceSection.tsx:73
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:182
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:170
@@ -1420,6 +1420,16 @@ msgstr "Nomor pelacakan pengiriman, pengecualian pengiriman, dan pemberitahuan p
 #, fuzzy
 msgid "Catch-all"
 msgstr "Lain-lain"
+
+#: ../../apps/web/src/app/(app)/settings/LabelWritebackSection.tsx:72
+#, fuzzy
+msgid "Categories in Outlook"
+msgstr "Kategori di Outlook"
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:111
+#, fuzzy
+msgid "Category writeback needs permission to manage your Outlook mail. Try again and approve it, or leave the feature off."
+msgstr "Penulisan kembali kategori membutuhkan izin untuk mengelola email Outlook Anda. Coba lagi dan setujui, atau biarkan fitur ini nonaktif."
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:334
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:395
@@ -1636,13 +1646,13 @@ msgstr "Konfirmasi Hapus"
 msgid "Confirm password"
 msgstr "Konfirmasi Kata Sandi"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:382
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:391
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:415
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:424
 #, fuzzy
 msgid "Connect {name}"
 msgstr "Hubungkan {name}"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:354
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:387
 #, fuzzy
 msgid "Connect {name} to this workspace?"
 msgstr "Hubungkan {name} ke ruang kerja ini?"
@@ -1670,7 +1680,7 @@ msgstr "Hubungkan kotak masuk Gmail untuk mengonfigurasi filter sinkronisasi."
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:371
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:406
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:439
 #, fuzzy
 msgid "Connect Gmail"
 msgstr "Hubungkan Gmail"
@@ -1728,7 +1738,7 @@ msgstr "Cukup hubungkan sekali, buat rencana sekali, dan biarkan Amarnai menanga
 
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:151
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:369
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:414
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:447
 #, fuzzy
 msgid "Connect Outlook"
 msgstr "Hubungkan Outlook"
@@ -1769,7 +1779,7 @@ msgstr "Hubungkan Kotak Masuk Anda"
 msgid "Connect your inbox and Amarnai starts sorting within minutes. Pricing is per workspace. Sorts new mail as it arrives, and works through years of backlog."
 msgstr "Hubungkan kotak masuk Anda dan Amarnai mulai mengurutkan dalam hitungan menit. Harga per ruang kerja. Mengurutkan email baru saat tiba, dan memproses tumpukan email bertahun-tahun."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:348
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:381
 #, fuzzy
 msgid "Connecting {name} will permanently remove the sorted email saved from {retainedAddress}. Your folders and settings are kept."
 msgstr "Menghubungkan {name} akan menghapus secara permanen email yang sudah diurutkan yang tersimpan dari {retainedAddress}. Folder dan pengaturan Anda tetap tersimpan."
@@ -1784,7 +1794,7 @@ msgid "Connecting…"
 msgstr "Menghubungkan…"
 
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:58
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:162
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:185
 #, fuzzy
 msgid "Connection failed. Please try again."
 msgstr "Koneksi gagal. Silakan coba lagi."
@@ -1793,7 +1803,7 @@ msgstr "Koneksi gagal. Silakan coba lagi."
 msgid "Content Creator"
 msgstr "Kreator Konten"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:363
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:396
 #, fuzzy
 msgid "Continue to {name}"
 msgstr "Lanjutkan ke {name}"
@@ -1852,12 +1862,12 @@ msgstr "Disalin"
 msgid "Copy"
 msgstr "Salin"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:69
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:77
 #, fuzzy
 msgid "Could not access your Gmail inbox. Make sure the Gmail API is enabled and the gmail.readonly scope is added to the OAuth consent screen in Google Cloud Console."
 msgstr "Tidak dapat mengakses kotak masuk Gmail Anda. Pastikan Gmail API diaktifkan dan cakupan gmail.readonly ditambahkan ke layar izin OAuth di Google Cloud Console."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:91
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:105
 msgid "Could not access your Outlook inbox. Please try again."
 msgstr "Tidak dapat mengakses kotak masuk Outlook Anda. Silakan coba lagi."
 
@@ -1936,7 +1946,7 @@ msgid "Could not prepare migration"
 msgstr "Tidak dapat menyiapkan migrasi"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:89
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:114
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:112
 #, fuzzy
 msgid "Could not queue rescan. Please try again."
 msgstr "Tidak dapat mengantrekan pemindaian ulang. Silakan coba lagi."
@@ -1995,6 +2005,10 @@ msgstr "Tidak dapat memulai generasi. Silakan coba lagi."
 msgid "Could not update name. Please try again."
 msgstr "Gagal memperbarui nama. Silakan coba lagi."
 
+#: ../../apps/web/src/app/(app)/settings/LabelWritebackSection.tsx:117
+msgid "Could not update the setting. Please try again."
+msgstr "Tidak dapat memperbarui pengaturan. Mohon coba lagi."
+
 #: ../../apps/mobile/app/(app)/account.tsx:63
 #, fuzzy
 msgid "Could not update your reminder setting."
@@ -2005,7 +2019,7 @@ msgstr "Gagal memperbarui pengaturan pengingat Anda."
 msgid "Could not upgrade"
 msgstr "Gagal meningkatkan"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:71
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:79
 #, fuzzy
 msgid "Could not verify your Google account. Please try again."
 msgstr "Gagal memverifikasi akun Google Anda. Silakan coba lagi."
@@ -2269,7 +2283,7 @@ msgid "Description"
 msgstr "Deskripsi"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:137
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:91
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:89
 #, fuzzy
 msgid "Detected notifications, newsletters, and service updates are filed to your catch-all folder without using AI. Requires the <0>Updates / Other</0> folder from a taxonomy template."
 msgstr "Notifikasi, buletin, dan pembaruan layanan yang terdeteksi akan disimpan ke folder 'catch-all' Anda tanpa menggunakan AI. Memerlukan folder <0>Pembaruan / Lainnya</0> dari templat taksonomi."
@@ -2289,7 +2303,7 @@ msgstr "Buang"
 msgid "Disconnect"
 msgstr "Putuskan Sambungan"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:246
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:269
 msgid "Disconnect {providerName}"
 msgstr "Putuskan Sambungan {providerName}"
 
@@ -2323,7 +2337,7 @@ msgstr "Putuskan sambungan kotak masuk Anda atau hapus akun Anda"
 msgid "Disconnected"
 msgstr "Sambungan Terputus"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:295
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:328
 #, fuzzy
 msgid "Disconnected from this workspace. {erasedNote} Amarnai still has access because this mailbox is connected in another workspace. To fully revoke access, remove Amarnai from your <0/>."
 msgstr "Sambungan dari ruang kerja ini terputus. {erasedNote} Amarnai masih memiliki akses karena kotak email ini terhubung di ruang kerja lain. Untuk mencabut akses sepenuhnya, hapus Amarnai dari <0/> Anda."
@@ -2333,11 +2347,11 @@ msgstr "Sambungan dari ruang kerja ini terputus. {erasedNote} Amarnai masih memi
 #~ msgid "Disconnected. {erasedNote} Revocation at Google could not be confirmed. You can remove Amarnai from your <0/>."
 #~ msgstr "Sambungan terputus. {erasedNote} Pencabutan akses di Google tidak dapat dikonfirmasi. Anda dapat menghapus Amarnai dari <0/> Anda."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:311
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:344
 msgid "Disconnected. {erasedNote} To fully revoke Amarnai's access, remove it from your <0/>."
 msgstr "Terputus. {erasedNote} Untuk mencabut sepenuhnya akses Amarnai, hapus dari <0/> Anda."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:319
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:352
 #, fuzzy
 msgid "Disconnected. Amarnai is no longer syncing this inbox."
 msgstr "Sambungan terputus. Amarnai tidak lagi menyinkronkan kotak masuk ini."
@@ -2347,21 +2361,21 @@ msgstr "Sambungan terputus. Amarnai tidak lagi menyinkronkan kotak masuk ini."
 #~ msgid "Disconnected. Amarnai's access to this mailbox was revoked at Google. {erasedNote}"
 #~ msgstr "Sambungan terputus. Akses Amarnai ke kotak email ini telah dicabut di Google. {erasedNote}"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:304
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:337
 msgid "Disconnected. Amarnai's access to this mailbox was revoked.{erasedNote}"
 msgstr "Terputus. Akses Amarnai ke kotak surat ini telah dicabut.{erasedNote}"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:267
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:290
 #, fuzzy
 msgid "Disconnecting…"
 msgstr "Memutus Sambungan…"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:188
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:211
 #, fuzzy
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is also connected elsewhere in Amarnai. To fully revoke access, remove Amarnai from your <0/>."
 msgstr "Memutus sambungan ruang kerja ini. Amarnai tetap memiliki akses karena kotak email ini juga terhubung di tempat lain di Amarnai. Untuk mencabut akses sepenuhnya, hapus Amarnai dari <0/> Anda."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:183
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:206
 #, fuzzy
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "Memutus sambungan ruang kerja ini. Amarnai tetap memiliki akses karena kotak email ini masih terhubung di {sharedNames}."
@@ -2382,7 +2396,7 @@ msgid "Dismiss"
 msgstr "Tutup"
 
 #: ../../apps/mobile/src/components/EditNameSheet.tsx:51
-#: ../../apps/web/src/app/(app)/account/AccountForm.tsx:56
+#: ../../apps/web/src/app/(app)/account/AccountForm.tsx:57
 #, fuzzy
 msgid "Display name"
 msgstr "Nama Tampilan"
@@ -2558,7 +2572,7 @@ msgstr "Ubah Jalur"
 #: ../../apps/mobile/app/forgot-password.tsx:85
 #: ../../apps/mobile/app/sign-in.tsx:89
 #: ../../apps/mobile/app/sign-up.tsx:98
-#: ../../apps/web/src/app/(app)/account/AccountForm.tsx:71
+#: ../../apps/web/src/app/(app)/account/AccountForm.tsx:72
 #: ../../apps/web/src/app/forgot-password/page.tsx:30
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:75
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:73
@@ -2581,7 +2595,7 @@ msgstr "Alamat email untuk diundang"
 msgid "email organizer"
 msgstr "Pengatur email"
 
-#: ../../apps/web/src/app/(app)/account/AccountForm.tsx:82
+#: ../../apps/web/src/app/(app)/account/AccountForm.tsx:83
 #, fuzzy
 msgid "Email reminders"
 msgstr "Pengingat email"
@@ -3289,7 +3303,7 @@ msgstr "Sinkronisasi langsung Gmail aktif"
 #~ msgid "Gmail marked as important"
 #~ msgstr "Gmail ditandai sebagai penting"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:67
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:75
 #, fuzzy
 msgid "Gmail read-only access was not granted. Please try again and approve the requested permission."
 msgstr "Akses baca-saja Gmail tidak diberikan. Silakan coba lagi dan setujui izin yang diminta."
@@ -3333,12 +3347,12 @@ msgstr "Saldo emas: pengiriman ketiga lewat jatuh tempo"
 #~ msgid "Google account email"
 #~ msgstr "Email akun Google"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:49
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:57
 #, fuzzy
 msgid "Google Account permissions"
 msgstr "Izin Akun Google"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:65
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:73
 #, fuzzy
 msgid "Google could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the Gmail callback URL is registered in Google Cloud Console."
 msgstr "Google tidak dapat menyelesaikan otorisasi. Tautan mungkin telah kedaluwarsa: silakan coba lagi. Jika masalah berlanjut, periksa apakah URL callback Gmail terdaftar di Google Cloud Console."
@@ -3584,8 +3598,8 @@ msgid "Inbox import complete"
 msgstr "Impor kotak masuk selesai"
 
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:145
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:221
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:234
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:244
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:257
 #, fuzzy
 msgid "Inbox sync"
 msgstr "Sinkronisasi Kotak Masuk"
@@ -3600,7 +3614,7 @@ msgid "Incidents"
 msgstr "Insiden"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:116
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:77
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:76
 #, fuzzy
 msgid "Include Promotions"
 msgstr "Sertakan Promosi"
@@ -3864,6 +3878,15 @@ msgstr "Lab & Kolaborator"
 msgid "Lab group updates, collaborator threads, and experiment coordination."
 msgstr "Pembaruan grup lab, diskusi kolaborator, dan koordinasi eksperimen."
 
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:85
+#, fuzzy
+msgid "Label writeback needs permission to manage your Gmail labels. Try again and approve it, or leave the feature off."
+msgstr "Penulisan kembali label membutuhkan izin untuk mengelola label Gmail Anda. Coba lagi dan setujui, atau biarkan fitur ini nonaktif."
+
+#: ../../apps/web/src/app/(app)/settings/LabelWritebackSection.tsx:72
+msgid "Labels in Gmail"
+msgstr "Label di Gmail"
+
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:244
 #: ../../apps/web/src/app/(app)/settings/WorkspaceLanguageSection.tsx:37
 #, fuzzy
@@ -3873,7 +3896,7 @@ msgstr "Bahasa"
 #. placeholder {0}: formatDate(syncStatus.lastSyncedAt, _(msg`Never`))
 #. placeholder {0}: formatDate(syncStatus.lastSyncedAt, i18n)
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:154
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:225
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:248
 #, fuzzy
 msgid "Last synced {0}"
 msgstr "Terakhir disinkronkan {0}"
@@ -3881,7 +3904,7 @@ msgstr "Terakhir disinkronkan {0}"
 #. placeholder {0}: formatDate(connection.lastVerifiedAt, _(msg`Never`))
 #. placeholder {0}: formatDate(connection.lastVerifiedAt, i18n)
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:140
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:210
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:233
 #, fuzzy
 msgid "Last verified: {0}"
 msgstr "Terakhir diverifikasi: {0}"
@@ -4167,12 +4190,12 @@ msgstr "Pesan dari pelanggan berbayar dan pemegang akun."
 msgid "Metadata"
 msgstr "Metadata"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:43
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:51
 #, fuzzy
 msgid "Microsoft account permissions"
 msgstr "Izin akun Microsoft"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:87
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:101
 msgid "Microsoft could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the redirect URI is registered on the app registration."
 msgstr "Microsoft tidak dapat menyelesaikan otorisasi. Tautan mungkin telah kedaluwarsa: silakan coba lagi. Jika masalah berlanjut, periksa apakah URI pengalihan terdaftar pada pendaftaran aplikasi."
 
@@ -4271,7 +4294,7 @@ msgstr "Perjalanan saya akan membawa saya dekat dengan Delta dalam beberapa hari
 msgid "Name"
 msgstr "Nama"
 
-#: ../../apps/web/src/app/(app)/account/AccountForm.tsx:52
+#: ../../apps/web/src/app/(app)/account/AccountForm.tsx:53
 #, fuzzy
 msgid "Name updated."
 msgstr "Nama diperbarui."
@@ -4284,8 +4307,8 @@ msgid "Needs review"
 msgstr "Perlu ditinjau"
 
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:32
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:210
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:225
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:233
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:248
 #, fuzzy
 msgid "Never"
 msgstr "Tidak Pernah"
@@ -4429,7 +4452,7 @@ msgstr "Belum ada folder"
 msgid "No Gmail inbox connected. Connect your account to start syncing."
 msgstr "Tidak ada kotak masuk Gmail terhubung. Hubungkan akun Anda untuk mulai sinkronisasi."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:400
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:433
 #, fuzzy
 msgid "No inbox connected to this workspace."
 msgstr "Tidak ada kotak masuk yang terhubung ke ruang kerja ini."
@@ -4551,7 +4574,7 @@ msgstr "Belum tentu. Amarnai dapat membuat rencana lengkap dari kotak masuk Anda
 msgid "Not set"
 msgstr "Belum diatur"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:226
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:249
 #, fuzzy
 msgid "Not yet synced"
 msgstr "Belum disinkronkan"
@@ -4681,7 +4704,7 @@ msgstr "Opsional. Menetapkan warna chip dan ikon folder ini di seluruh kotak mas
 msgid "or"
 msgstr "atau"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:342
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:375
 msgid "Or connect a different inbox:"
 msgstr "Atau hubungkan kotak masuk lain:"
 
@@ -4700,7 +4723,7 @@ msgstr "Lainnya"
 msgid "outlook ai assistant"
 msgstr "asisten AI Outlook"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:89
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:103
 msgid "Outlook read-only access (Mail.Read) was not granted. Please try again and approve the requested permission."
 msgstr "Akses baca-saja Outlook (Mail.Read) tidak diberikan. Silakan coba lagi dan setujui izin yang diminta."
 
@@ -4825,6 +4848,11 @@ msgstr "Hapus permanen ruang kerja ini dan semua datanya: email, rencana, pengat
 #, fuzzy
 msgid "Permanently delete your account and all associated data. This cannot be undone."
 msgstr "Hapus permanen akun Anda dan semua data terkait. Tindakan ini tidak dapat dibatalkan."
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:87
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:113
+msgid "Permission was granted but the feature could not be turned on. Toggle it from settings to retry."
+msgstr "Izin telah diberikan, tetapi fitur tidak dapat diaktifkan. Alihkan dari pengaturan untuk mencoba lagi."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:34
 #, fuzzy
@@ -5071,7 +5099,7 @@ msgid "Professors, assignments, study groups, course announcements, and academic
 msgstr "Dosen, tugas, kelompok belajar, pengumuman mata kuliah, dan tenggat waktu akademik."
 
 #: ../../apps/mobile/app/(app)/account.tsx:127
-#: ../../apps/web/src/app/(app)/account/AccountForm.tsx:48
+#: ../../apps/web/src/app/(app)/account/AccountForm.tsx:49
 #, fuzzy
 msgid "Profile"
 msgstr "Profil"
@@ -5129,7 +5157,7 @@ msgstr "Pertanyaan siswa, pengumpulan tugas, dan pengajaran harian di kelas."
 msgid "Purchase confirmations, order status changes, and fulfillment updates from your store."
 msgstr "Konfirmasi pembelian, perubahan status pesanan, dan pembaruan pemenuhan dari toko Anda."
 
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:105
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:103
 #, fuzzy
 msgid "Queuing rescan…"
 msgstr "Mengantrekan pemindaian ulang…"
@@ -5214,7 +5242,7 @@ msgstr "Rekomendasi untuk kotak masuk Anda"
 msgid "Reconnect"
 msgstr "Sambungkan ulang"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:337
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:370
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:121
 #, fuzzy
 msgid "Reconnect {providerName}"
@@ -5423,7 +5451,7 @@ msgid "Rescan failed"
 msgstr "Pemindaian ulang gagal"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:153
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:105
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:103
 #, fuzzy
 msgid "Rescan inbox"
 msgstr "Pindai ulang kotak masuk"
@@ -5433,7 +5461,7 @@ msgstr "Pindai ulang kotak masuk"
 #~ msgid "Rescan queued — threads will update shortly."
 #~ msgstr "Pemindaian ulang diantrekan — utas akan segera diperbarui."
 
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:109
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:107
 #, fuzzy
 msgid "Rescan queued: threads will update shortly."
 msgstr "Pemindaian ulang diantrekan: utas akan segera diperbarui."
@@ -5591,7 +5619,7 @@ msgstr "Sama seperti bulanan"
 msgid "Save"
 msgstr "Simpan"
 
-#: ../../apps/web/src/app/(app)/account/AccountForm.tsx:76
+#: ../../apps/web/src/app/(app)/account/AccountForm.tsx:77
 #, fuzzy
 msgid "Save changes"
 msgstr "Simpan perubahan"
@@ -5631,7 +5659,7 @@ msgstr "Hemat hingga 20% setiap tahun"
 msgid "Saving..."
 msgstr "Menyimpan..."
 
-#: ../../apps/web/src/app/(app)/account/AccountForm.tsx:76
+#: ../../apps/web/src/app/(app)/account/AccountForm.tsx:77
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:480
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:790
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:29
@@ -6127,7 +6155,7 @@ msgstr "Berhenti sortir email.<0/><1>Sortir sekali saja.</1>"
 msgid "Stops syncing and revokes Amarnai's access to this mailbox."
 msgstr "Menghentikan sinkronisasi dan mencabut akses Amarnai ke kotak surat ini."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:178
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:201
 #, fuzzy
 msgid "Stops syncing and revokes Amarnai's access to this mailbox. Synced email data is kept so you can reconnect later."
 msgstr "Menghentikan sinkronisasi dan mencabut akses Amarnai ke kotak surat ini. Data email yang disinkronkan tetap disimpan sehingga Anda dapat menghubungkan kembali nanti."
@@ -6243,14 +6271,14 @@ msgid "Switch theme"
 msgstr "Ganti tema"
 
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:39
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:107
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:127
 #, fuzzy
 msgid "Sync error"
 msgstr "Kesalahan sinkronisasi"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:281
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:96
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:54
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:55
 #, fuzzy
 msgid "Sync filters"
 msgstr "Filter Sinkronisasi"
@@ -6260,13 +6288,13 @@ msgstr "Filter Sinkronisasi"
 #~ msgid "Synced 2m ago"
 #~ msgstr "Disinkronkan 2 menit lalu"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:195
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:218
 #, fuzzy
 msgid "Synced email data was erased."
 msgstr "Data email yang disinkronkan telah dihapus."
 
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:38
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:106
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:126
 #, fuzzy
 msgid "Syncing…"
 msgstr "Menyinkronkan…"
@@ -6351,6 +6379,15 @@ msgstr "Terima kasih atas informasinya. Jumat bisa."
 msgid "That invitation link is invalid or has expired."
 msgstr "Tautan undangan tersebut tidak valid atau sudah kedaluwarsa."
 
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:83
+#, fuzzy
+msgid "That is a different Google account. Sign in with the mailbox already connected to this workspace."
+msgstr "Itu adalah akun Google yang berbeda. Masuk dengan kotak surat yang sudah terhubung ke ruang kerja ini."
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:109
+msgid "That is a different Microsoft account. Sign in with the mailbox already connected to this workspace."
+msgstr "Itu adalah akun Microsoft yang berbeda. Masuk dengan kotak surat yang sudah terhubung ke ruang kerja ini."
+
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:66
 #, fuzzy
 msgid "That link is invalid or has expired."
@@ -6360,14 +6397,14 @@ msgstr "Tautan tersebut tidak valid atau telah kedaluwarsa."
 #~ msgid "The Amarna letters were the world's first overloaded inbox. These two lived it."
 #~ msgstr ""
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:59
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:81
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:67
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:95
 #, fuzzy
 msgid "The authorization callback was incomplete. Please try again."
 msgstr "Callback otorisasi tidak lengkap. Silakan coba lagi."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:61
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:83
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:69
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:97
 #, fuzzy
 msgid "The authorization request expired or was tampered with. Please try again."
 msgstr "Permintaan otorisasi kedaluwarsa atau telah dirusak. Silakan coba lagi."
@@ -6377,8 +6414,8 @@ msgstr "Permintaan otorisasi kedaluwarsa atau telah dirusak. Silakan coba lagi."
 #~ msgid "The catch-all folder can't be deleted. Automated and bulk mail is filed here."
 #~ msgstr "Folder Lain-lain tidak dapat dihapus. Email otomatis dan massal akan masuk ke sini."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:73
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:93
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:81
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:107
 #, fuzzy
 msgid "The connection could not be saved due to a server error. Please try again."
 msgstr "Koneksi tidak dapat disimpan karena kesalahan server. Silakan coba lagi."
@@ -6442,7 +6479,7 @@ msgstr "Kolaborator ini akan kehilangan akses pada {0}:"
 #~ msgid "These settings control which Gmail threads are imported. Trash is always excluded."
 #~ msgstr "Pengaturan ini mengontrol thread Gmail mana yang diimpor. Sampah selalu dikecualikan."
 
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:56
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:57
 msgid "These settings control which inbox threads are imported. Trash is always excluded."
 msgstr "Pengaturan ini mengontrol utas kotak masuk mana yang diimpor. Sampah selalu dikecualikan."
 
@@ -6461,7 +6498,7 @@ msgstr "Folder ini tidak dapat dijangkau dari kotak masuk dan tidak akan digunak
 #~ msgid "This Gmail is also connected in {sharedNames}. Each workspace syncs and classifies it separately, which uses separate AI quota."
 #~ msgstr "Gmail ini juga terhubung di {sharedNames}. Setiap ruang kerja menyinkronkan dan mengklasifikasikannya secara terpisah, yang menggunakan kuota AI terpisah."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:215
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:238
 msgid "This inbox is also connected in {sharedNames}. Each workspace syncs and classifies it separately, which uses separate AI quota."
 msgstr "Kotak masuk ini juga terhubung di {sharedNames}. Setiap ruang kerja menyinkronkan dan mengklasifikasikannya secara terpisah, yang menggunakan kuota AI terpisah."
 
@@ -6736,6 +6773,10 @@ msgstr "Pilah kotak masuk saat bepergian."
 msgid "Try Amarnai"
 msgstr "Coba Amarnai"
 
+#: ../../apps/web/src/app/(app)/settings/LabelWritebackSection.tsx:105
+msgid "Turning this on will ask for permission to manage your labels."
+msgstr "Mengaktifkan ini akan meminta izin untuk mengelola label Anda."
+
 #: ../../apps/site/src/components/demo/demo-seed.ts:424
 #, fuzzy
 msgid "Tushratta of Mitanni"
@@ -6842,7 +6883,7 @@ msgid "Up to 3 people"
 msgstr "Hingga 3 orang"
 
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:37
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:105
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:125
 #, fuzzy
 msgid "Up to date"
 msgstr "Terbaru"
@@ -6938,7 +6979,7 @@ msgstr "Upgrade ke paket Scribe atau Pharaoh untuk mengundang kolaborator."
 #~ msgid "Upgrade your subscription on the web app to enable backfill."
 #~ msgstr "Upgrade langganan Anda di aplikasi web untuk mengaktifkan backfill."
 
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:120
+#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:118
 #, fuzzy
 msgid "Use \"Rescan inbox\" after changing filter settings to apply them to threads already in your inbox."
 msgstr "Gunakan \"Pindai ulang kotak masuk\" setelah mengubah pengaturan filter untuk menerapkannya pada percakapan yang sudah ada di kotak masuk Anda."
@@ -7027,7 +7068,7 @@ msgstr "Sukarelawan"
 msgid "Waiting"
 msgstr "Menunggu"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:235
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:258
 #, fuzzy
 msgid "Waiting for first sync…"
 msgstr "Menunggu sinkronisasi pertama…"
@@ -7178,7 +7219,7 @@ msgstr "Nama ruang kerja berhasil diperbarui."
 msgid "Workspace settings"
 msgstr "Pengaturan Ruang Kerja"
 
-#: ../../apps/web/src/app/(app)/settings/page.tsx:118
+#: ../../apps/web/src/app/(app)/settings/page.tsx:139
 #, fuzzy
 msgid "Workspace Settings"
 msgstr "Pengaturan Ruang Kerja"
@@ -7192,6 +7233,20 @@ msgstr "Jenis ruang kerja"
 #, fuzzy
 msgid "Workspaces included"
 msgstr "Workspace disertakan"
+
+#: ../../apps/web/src/app/(app)/settings/LabelWritebackSection.tsx:99
+#, fuzzy
+msgid "Write sorted folders as Gmail labels"
+msgstr "Tulis folder yang telah diurutkan sebagai label Gmail"
+
+#: ../../apps/web/src/app/(app)/settings/LabelWritebackSection.tsx:97
+#, fuzzy
+msgid "Write sorted folders as Outlook categories"
+msgstr "Tulis folder yang telah diurutkan sebagai kategori Outlook"
+
+#: ../../apps/web/src/app/(app)/settings/LabelWritebackSection.tsx:111
+msgid "Writeback is on. Your folders are being mirrored into your mailbox."
+msgstr "Penulisan kembali aktif. Folder Anda sedang dicerminkan ke kotak surat Anda."
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:374
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:168
@@ -7216,7 +7271,7 @@ msgstr "Ya, hapus akun saya"
 msgid "Yes, delete workspace"
 msgstr "Ya, hapus ruang kerja"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:267
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:290
 #, fuzzy
 msgid "Yes, disconnect"
 msgstr "Ya, putuskan koneksi"
@@ -7306,12 +7361,12 @@ msgstr "Anda dapat mencoba lagi setelah {0}, atau mulai dari template."
 msgid "You can try again shortly, or start from a template."
 msgstr "Anda dapat mencoba lagi sebentar lagi, atau mulai dari template."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:63
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:71
 #, fuzzy
 msgid "You do not have permission to connect a Gmail inbox to this workspace."
 msgstr "Anda tidak memiliki izin untuk menghubungkan kotak masuk Gmail ke ruang kerja ini."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:85
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:99
 msgid "You do not have permission to connect an Outlook inbox to this workspace."
 msgstr "Anda tidak memiliki izin untuk menghubungkan kotak masuk Outlook ke ruang kerja ini."
 
@@ -7378,6 +7433,15 @@ msgstr "Uji coba gratis 14 hari Anda berlaku hingga <0>{0}</0>. Anda tidak akan 
 msgid "Your folders"
 msgstr "Folder Anda"
 
+#: ../../apps/web/src/app/(app)/settings/LabelWritebackSection.tsx:82
+#, fuzzy
+msgid "Your folders are mirrored as Gmail labels and kept in sync as threads are sorted. Amarnai only manages labels under the <0>Amarnai/</0> namespace and never sends, deletes, or moves your mail."
+msgstr "Folder Anda dicerminkan sebagai label Gmail dan disinkronkan saat utas diurutkan. Amarnai hanya mengelola label di bawah namespace <0>Amarnai/</0> dan tidak pernah mengirim, menghapus, atau memindahkan email Anda."
+
+#: ../../apps/web/src/app/(app)/settings/LabelWritebackSection.tsx:76
+msgid "Your folders are mirrored as Outlook categories and kept in sync as threads are sorted. Amarnai only manages categories under the <0>Amarnai</0> namespace and never sends, deletes, or moves your mail."
+msgstr "Folder Anda dicerminkan sebagai kategori Outlook dan disinkronkan saat utas diurutkan. Amarnai hanya mengelola kategori di bawah namespace <0>Amarnai</0> dan tidak pernah mengirim, menghapus, atau memindahkan email Anda."
+
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:259
 #, fuzzy
 msgid "Your free trial will end immediately and your workspace will be downgraded to the free tier."
@@ -7404,7 +7468,7 @@ msgid "Your inbox is still importing. You can generate now from what's loaded so
 msgstr "Kotak masuk Anda masih dalam proses impor. Anda dapat mulai menghasilkan sekarang dari data yang sudah dimuat, tetapi menghasilkan ulang setelah impor selesai akan memberikan hasil yang lebih akurat."
 
 #: ../../apps/mobile/src/components/EditNameSheet.tsx:56
-#: ../../apps/web/src/app/(app)/account/AccountForm.tsx:64
+#: ../../apps/web/src/app/(app)/account/AccountForm.tsx:65
 #, fuzzy
 msgid "Your name"
 msgstr "Nama Anda"
@@ -7436,7 +7500,7 @@ msgstr "Impor percobaan ulang Anda telah selesai dan masih dibatasi oleh rencana
 msgid "Your retry import finished and is still capped by your {plan} plan. Your next retry is available {refreshDate}."
 msgstr "Impor percobaan ulang Anda telah selesai dan masih dibatasi oleh paket {plan}. Percobaan ulang berikutnya tersedia {refreshDate}."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:324
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:357
 msgid "Your sorted email from {retainedAddress} is saved. Reconnecting the same inbox restores it; connecting a different inbox permanently removes it. Folders and settings are kept either way."
 msgstr "Email Anda yang sudah diurutkan dari {retainedAddress} tersimpan. Menghubungkan kembali kotak masuk yang sama akan memulihkannya; menghubungkan kotak masuk lain akan menghapusnya secara permanen. Folder dan pengaturan tetap tersimpan bagaimanapun."
 

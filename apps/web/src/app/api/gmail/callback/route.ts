@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import { exchangeCodeForTokens, fetchGmailProfile } from "@/lib/gmail-oauth";
 import { handleOAuthCallback } from "@/lib/oauth-callback";
-import { GMAIL_READONLY_SCOPE } from "@amarnai/gmail";
+import { parseGrantedScopes } from "@amarnai/gmail";
 
 export async function GET(req: NextRequest) {
   return handleOAuthCallback(req, {
@@ -17,10 +17,7 @@ export async function GET(req: NextRequest) {
       emailAddress: (await fetchGmailProfile(accessToken)).emailAddress,
       subjectId: null,
     }),
-    parseScopes: (scope) => {
-      const scopes = scope.split(" ");
-      return { scopes, hasReadonly: scopes.includes(GMAIL_READONLY_SCOPE) };
-    },
+    parseScopes: parseGrantedScopes,
     audit: {
       eventType: "gmail.connected",
       entityType: "GmailConnection",

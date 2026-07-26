@@ -430,3 +430,177 @@ describe("GmailClient.getAttachmentContent", () => {
     await expect(client.getAttachmentContent("msg-1", "att-empty")).rejects.toThrow();
   });
 });
+
+// ─── GmailClient.ensureFolderLabels ───────────────────────────────────────────
+
+describe("GmailClient.ensureFolderLabels", () => {
+  const labelsList = (labels: Array<{ id: string; name: string }>) => ({
+    ok: true,
+    status: 200,
+    json: async () => ({ labels }),
+  });
+  const created = (id: string) => ({ ok: true, status: 200, json: async () => ({ id }) });
+
+  it("creates ancestor labels before the leaf and returns the leaf id per node", async () => {
+    mockFetch
+      .mockResolvedValueOnce(makeTokenResponse()) // token
+      .mockResolvedValueOnce(labelsList([])) // labels.list (empty)
+      .mockResolvedValueOnce(created("L_amarnai")) // create "Amarnai"
+      .mockResolvedValueOnce(created("L_clients")) // create "Amarnai/Clients"
+      .mockResolvedValueOnce(created("L_acme")) // create "Amarnai/Clients/Acme"
+      .mockResolvedValueOnce({ ok: true, status: 200, json: async () => ({}) }); // color patch
+
+    const client = new GmailClient("encrypted:refresh:token");
+    const map = await client.ensureFolderLabels([
+      { nodeId: "n1", pathSegments: ["Amarnai", "Clients", "Acme"], colorKey: "blue" },
+    ]);
+
+    expect(map.get("n1")).toBe("L_acme");
+    // Verify the three create calls carry the nested names in order.
+    const createBodies = mockFetch.mock.calls
+      .filter(
+        (c) =>
+          String(c[0]).endsWith("/labels") && (c[1] as RequestInit)?.method === "POST",
+      )
+      .map((c) => JSON.parse((c[1] as RequestInit).body as string).name);
+    expect(createBodies).toEqual(["Amarnai", "Amarnai/Clients", "Amarnai/Clients/Acme"]);
+  });
+
+  it("reuses existing labels and does not recreate them", async () => {
+    mockFetch
+      .mockResolvedValueOnce(makeTokenResponse())
+      .mockResolvedValueOnce(
+        labelsList([
+          { id: "L_amarnai", name: "Amarnai" },
+          { id: "L_acme", name: "Amarnai/Acme" },
+        ]),
+      )
+      .mockResolvedValueOnce({ ok: true, status: 200, json: async () => ({}) }); // color patch only
+
+    const client = new GmailClient("encrypted:refresh:token");
+    const map = await client.ensureFolderLabels([
+      { nodeId: "n1", pathSegments: ["Amarnai", "Acme"], colorKey: "red" },
+    ]);
+
+    expect(map.get("n1")).toBe("L_acme");
+    const labelCreates = mockFetch.mock.calls.filter(
+      (c) => String(c[0]).endsWith("/labels") && (c[1] as RequestInit)?.method === "POST",
+    );
+    expect(labelCreates).toHaveLength(0); // no label creates
+  });
+
+  it("resolves the id via re-list when a create races to 409", async () => {
+    mockFetch
+      .mockResolvedValueOnce(makeTokenResponse())
+      .mockResolvedValueOnce(labelsList([])) // initial list: empty
+      .mockResolvedValueOnce({ ok: false, status: 409 }) // create "Amarnai" conflicts
+      .mockResolvedValueOnce(labelsList([{ id: "L_amarnai", name: "Amarnai" }])) // re-list
+      .mockResolvedValueOnce({ ok: true, status: 200, json: async () => ({}) }); // color patch
+
+    const client = new GmailClient("encrypted:refresh:token");
+    const map = await client.ensureFolderLabels([
+      { nodeId: "n1", pathSegments: ["Amarnai"], colorKey: "green" },
+    ]);
+    expect(map.get("n1")).toBe("L_amarnai");
+  });
+
+  it("still returns the label when the best-effort color patch fails", async () => {
+    mockFetch
+      .mockResolvedValueOnce(makeTokenResponse())
+      .mockResolvedValueOnce(labelsList([]))
+      .mockResolvedValueOnce(created("L_amarnai"))
+      .mockResolvedValueOnce({ ok: false, status: 400 }); // color rejected
+
+    const client = new GmailClient("encrypted:refresh:token");
+    const map = await client.ensureFolderLabels([
+      { nodeId: "n1", pathSegments: ["Amarnai"], colorKey: "teal" },
+    ]);
+    expect(map.get("n1")).toBe("L_amarnai");
+  });
+});
+
+// ─── GmailClient.applyThreadFolderLabels ──────────────────────────────────────
+
+describe("GmailClient.applyThreadFolderLabels", () => {
+  const threadMinimal = (labelIdsPerMessage: string[][]) => ({
+    ok: true,
+    status: 200,
+    json: async () => ({ messages: labelIdsPerMessage.map((labelIds) => ({ labelIds })) }),
+  });
+
+  it("adds the desired label and removes a stale managed one in a single modify", async () => {
+    mockFetch
+      .mockResolvedValueOnce(makeTokenResponse())
+      .mockResolvedValueOnce(threadMinimal([["INBOX", "L_old"]])) // current
+      .mockResolvedValueOnce({ ok: true, status: 200, json: async () => ({}) }); // modify
+
+    const client = new GmailClient("encrypted:refresh:token");
+    await client.applyThreadFolderLabels({
+      threadId: "t1",
+      messageIds: [],
+      desiredLabelIds: ["L_new"],
+      managedLabelIds: ["L_old", "L_new"],
+    });
+
+    const modifyCall = mockFetch.mock.calls.find((c) =>
+      String(c[0]).endsWith("/threads/t1/modify"),
+    );
+    expect(modifyCall).toBeDefined();
+    const body = JSON.parse((modifyCall![1] as RequestInit).body as string);
+    expect(body.addLabelIds).toEqual(["L_new"]);
+    expect(body.removeLabelIds).toEqual(["L_old"]);
+  });
+
+  it("makes NO modify call when the thread already matches", async () => {
+    mockFetch
+      .mockResolvedValueOnce(makeTokenResponse())
+      .mockResolvedValueOnce(threadMinimal([["INBOX", "L_new"]]));
+
+    const client = new GmailClient("encrypted:refresh:token");
+    await client.applyThreadFolderLabels({
+      threadId: "t1",
+      messageIds: [],
+      desiredLabelIds: ["L_new"],
+      managedLabelIds: ["L_old", "L_new"],
+    });
+
+    const modifyCall = mockFetch.mock.calls.find((c) => String(c[0]).includes("/modify"));
+    expect(modifyCall).toBeUndefined();
+  });
+
+  it("leaves foreign (unmanaged) labels untouched — never removes them", async () => {
+    mockFetch
+      .mockResolvedValueOnce(makeTokenResponse())
+      .mockResolvedValueOnce(threadMinimal([["INBOX", "L_user", "L_old"]]))
+      .mockResolvedValueOnce({ ok: true, status: 200, json: async () => ({}) });
+
+    const client = new GmailClient("encrypted:refresh:token");
+    await client.applyThreadFolderLabels({
+      threadId: "t1",
+      messageIds: [],
+      desiredLabelIds: [],
+      managedLabelIds: ["L_old"],
+    });
+
+    const modifyCall = mockFetch.mock.calls.find((c) => String(c[0]).includes("/modify"));
+    const body = JSON.parse((modifyCall![1] as RequestInit).body as string);
+    expect(body.removeLabelIds).toEqual(["L_old"]);
+    expect(body.addLabelIds).toEqual([]);
+  });
+
+  it("maps a 404 on the thread to GmailThreadNotFoundError", async () => {
+    mockFetch
+      .mockResolvedValueOnce(makeTokenResponse())
+      .mockResolvedValueOnce({ ok: false, status: 404 });
+
+    const client = new GmailClient("encrypted:refresh:token");
+    await expect(
+      client.applyThreadFolderLabels({
+        threadId: "gone",
+        messageIds: [],
+        desiredLabelIds: ["L_new"],
+        managedLabelIds: ["L_new"],
+      }),
+    ).rejects.toBeInstanceOf(GmailThreadNotFoundError);
+  });
+});

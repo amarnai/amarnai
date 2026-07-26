@@ -1,5 +1,6 @@
 export { Tooltip } from "./Tooltip.js";
 export type { TooltipProps } from "./Tooltip.js";
+export { Switch } from "./Switch.js";
 export { PricingPlans } from "./PricingPlans.js";
 export {
   PLANS,
