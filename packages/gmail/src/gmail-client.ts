@@ -71,6 +71,20 @@ export class GmailThreadNotFoundError extends Error {
   }
 }
 
+/**
+ * Thrown by {@link GmailClient.applyThreadFolderLabels} when Gmail rejects a
+ * label id (HTTP 400 on threads.modify) — the user deleted an Amarnai-managed
+ * label in Gmail, so the stored link is stale. Callers re-provision (which
+ * recreates the label and refreshes the stored id) and retry; retrying with the
+ * same id can never succeed.
+ */
+export class GmailInvalidLabelError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "GmailInvalidLabelError";
+  }
+}
+
 const GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token";
 const GOOGLE_REVOKE_URL = "https://oauth2.googleapis.com/revoke";
 const GMAIL_PROFILE_URL = "https://gmail.googleapis.com/gmail/v1/users/me/profile";
@@ -651,9 +665,12 @@ export class GmailClient {
    * Idempotently ensure a Gmail label exists for each folder def and return
    * nodeId → leaf label id. Gmail nests labels by slash-delimited name, so every
    * ancestor prefix ("Amarnai", "Amarnai/Clients", …) is created before the leaf.
-   * Existing labels (including a concurrent create that 409s) are reused. The
-   * leaf's color is set best-effort from its palette key; a rejected color leaves
-   * the label uncolored rather than failing the run. Never deletes or renames.
+   * Existing labels (including a concurrent create that 409s) are reused, and a
+   * label the user deleted in Gmail is simply recreated (the fresh labels.list
+   * won't contain it) — this is the self-heal path after external deletions.
+   * The leaf's color is set best-effort from its palette key, and only on
+   * CREATE: recoloring a reused label would clobber a color the user picked in
+   * Gmail. Never deletes or renames.
    */
   async ensureFolderLabels(defs: GmailFolderLabelDef[]): Promise<Map<string, string>> {
     const accessToken = await this.refreshAccessToken();
@@ -663,17 +680,19 @@ export class GmailClient {
     for (const def of defs) {
       if (def.pathSegments.length === 0) continue;
       // Create ancestors first so nesting resolves, then the leaf.
-      let leafId: string | undefined;
+      let leaf: { id: string; created: boolean } | undefined;
       for (let i = 0; i < def.pathSegments.length; i++) {
         const name = def.pathSegments.slice(0, i + 1).join("/");
-        leafId = await this.ensureLabel(accessToken, nameToId, name);
+        leaf = await this.ensureLabel(accessToken, nameToId, name);
       }
-      if (!leafId) continue;
-      result.set(def.nodeId, leafId);
+      if (!leaf) continue;
+      result.set(def.nodeId, leaf.id);
 
-      // Color the leaf only (ancestors are structural). Best-effort.
-      const color = GMAIL_LABEL_COLORS[def.colorKey];
-      if (color) await this.patchLabelColor(accessToken, leafId, color).catch(() => {});
+      // Color newly created leaves only (ancestors are structural). Best-effort.
+      if (leaf.created) {
+        const color = GMAIL_LABEL_COLORS[def.colorKey];
+        if (color) await this.patchLabelColor(accessToken, leaf.id, color).catch(() => {});
+      }
     }
 
     return result;
@@ -709,6 +728,15 @@ export class GmailClient {
       body: JSON.stringify({ addLabelIds: toAdd, removeLabelIds: toRemove }),
     });
     if (res.status === 404) throw new GmailThreadNotFoundError(`Gmail thread not found: ${opts.threadId}`);
+    // 400 here means a label id in the request no longer exists (the only
+    // variable inputs are label ids from our stored links, so a bad request is
+    // a stale link after the user deleted the label in Gmail). Typed so the
+    // caller re-provisions instead of retrying a request that cannot succeed.
+    if (res.status === 400) {
+      throw new GmailInvalidLabelError(
+        `Gmail thread modify rejected a label id (deleted in Gmail?): thread ${opts.threadId}`,
+      );
+    }
     // TODO(writeback): handle 429/Retry-After for write bursts (deferred — reads
     // never hit it, and single-thread reconciles are low-rate).
     if (!res.ok) throw new Error(`Gmail thread modify failed: ${res.status}`);
@@ -738,14 +766,15 @@ export class GmailClient {
     return map;
   }
 
-  /** Ensure a single label by exact name exists, updating `nameToId` in place. */
+  /** Ensure a single label by exact name exists, updating `nameToId` in place.
+   *  Reports whether this call created it, so callers can color only new labels. */
   private async ensureLabel(
     accessToken: string,
     nameToId: Map<string, string>,
     name: string,
-  ): Promise<string> {
+  ): Promise<{ id: string; created: boolean }> {
     const existing = nameToId.get(name);
-    if (existing) return existing;
+    if (existing) return { id: existing, created: false };
 
     const res = await fetch(GMAIL_LABELS_URL, {
       method: "POST",
@@ -763,13 +792,13 @@ export class GmailClient {
       const id = refreshed.get(name);
       if (!id) throw new Error(`Gmail label create conflicted but name not found: ${name}`);
       nameToId.set(name, id);
-      return id;
+      return { id, created: false };
     }
     if (!res.ok) throw new Error(`Gmail label create failed: ${res.status}`);
 
     const created = (await res.json()) as { id: string };
     nameToId.set(name, created.id);
-    return created.id;
+    return { id: created.id, created: true };
   }
 
   /** Set a label's color. Best-effort at the call site (Gmail rejects colors

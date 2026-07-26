@@ -99,10 +99,18 @@ export type CaptureReferenceJobData = {
  * workspace enables writeback or its taxonomy gains a folder. The worker
  * mirrors every taxonomy folder into the connected mailbox as a Gmail label /
  * Outlook category and records the provider-side identifier per node.
- * Idempotent: existing labels/categories are reused, matching links are skipped.
+ * Idempotent: the provider is re-listed and only missing labels are created.
+ *
+ * `relabelThreads` — additionally fan out a writeback-thread-label job for
+ * every thread that has ever been classified, so the whole inbox catches up
+ * (threads sorted before writeback was enabled, or threads that lost their
+ * label to an external deletion). Set on the enable-toggle path only: folder
+ * creates/imports don't need a full re-labeling sweep, and each fanned-out job
+ * costs one provider read even when already converged.
  */
 export type ProvisionLabelsJobData = {
   workspaceId: string;
+  relabelThreads?: boolean;
 };
 
 /**

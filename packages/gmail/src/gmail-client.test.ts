@@ -10,6 +10,7 @@ import {
   GmailClient,
   GmailAuthError,
   GmailThreadNotFoundError,
+  GmailInvalidLabelError,
 } from "./gmail-client.js";
 import { decrypt } from "./encryption.js";
 
@@ -466,7 +467,7 @@ describe("GmailClient.ensureFolderLabels", () => {
     expect(createBodies).toEqual(["Amarnai", "Amarnai/Clients", "Amarnai/Clients/Acme"]);
   });
 
-  it("reuses existing labels and does not recreate them", async () => {
+  it("reuses existing labels: no creates and no color patch (user recolors are kept)", async () => {
     mockFetch
       .mockResolvedValueOnce(makeTokenResponse())
       .mockResolvedValueOnce(
@@ -474,8 +475,7 @@ describe("GmailClient.ensureFolderLabels", () => {
           { id: "L_amarnai", name: "Amarnai" },
           { id: "L_acme", name: "Amarnai/Acme" },
         ]),
-      )
-      .mockResolvedValueOnce({ ok: true, status: 200, json: async () => ({}) }); // color patch only
+      );
 
     const client = new GmailClient("encrypted:refresh:token");
     const map = await client.ensureFolderLabels([
@@ -483,10 +483,27 @@ describe("GmailClient.ensureFolderLabels", () => {
     ]);
 
     expect(map.get("n1")).toBe("L_acme");
-    const labelCreates = mockFetch.mock.calls.filter(
-      (c) => String(c[0]).endsWith("/labels") && (c[1] as RequestInit)?.method === "POST",
-    );
-    expect(labelCreates).toHaveLength(0); // no label creates
+    const labelWrites = mockFetch.mock.calls.filter((c) => {
+      const method = (c[1] as RequestInit)?.method;
+      return String(c[0]).includes("/labels") && (method === "POST" || method === "PATCH");
+    });
+    expect(labelWrites).toHaveLength(0); // no creates, no recolor
+  });
+
+  it("recreates a label the user deleted in Gmail (absent from the fresh list)", async () => {
+    // Link bookkeeping is irrelevant here: the adapter trusts labels.list, so a
+    // deleted "Amarnai/Acme" is simply missing and gets recreated.
+    mockFetch
+      .mockResolvedValueOnce(makeTokenResponse())
+      .mockResolvedValueOnce(labelsList([{ id: "L_amarnai", name: "Amarnai" }])) // leaf deleted
+      .mockResolvedValueOnce(created("L_acme_v2")) // recreate leaf
+      .mockResolvedValueOnce({ ok: true, status: 200, json: async () => ({}) }); // color new leaf
+
+    const client = new GmailClient("encrypted:refresh:token");
+    const map = await client.ensureFolderLabels([
+      { nodeId: "n1", pathSegments: ["Amarnai", "Acme"], colorKey: "red" },
+    ]);
+    expect(map.get("n1")).toBe("L_acme_v2");
   });
 
   it("resolves the id via re-list when a create races to 409", async () => {
@@ -494,8 +511,7 @@ describe("GmailClient.ensureFolderLabels", () => {
       .mockResolvedValueOnce(makeTokenResponse())
       .mockResolvedValueOnce(labelsList([])) // initial list: empty
       .mockResolvedValueOnce({ ok: false, status: 409 }) // create "Amarnai" conflicts
-      .mockResolvedValueOnce(labelsList([{ id: "L_amarnai", name: "Amarnai" }])) // re-list
-      .mockResolvedValueOnce({ ok: true, status: 200, json: async () => ({}) }); // color patch
+      .mockResolvedValueOnce(labelsList([{ id: "L_amarnai", name: "Amarnai" }])); // re-list
 
     const client = new GmailClient("encrypted:refresh:token");
     const map = await client.ensureFolderLabels([
@@ -602,5 +618,22 @@ describe("GmailClient.applyThreadFolderLabels", () => {
         managedLabelIds: ["L_new"],
       }),
     ).rejects.toBeInstanceOf(GmailThreadNotFoundError);
+  });
+
+  it("maps a 400 on modify to GmailInvalidLabelError (label deleted in Gmail)", async () => {
+    mockFetch
+      .mockResolvedValueOnce(makeTokenResponse())
+      .mockResolvedValueOnce(threadMinimal([["INBOX"]])) // current labels
+      .mockResolvedValueOnce({ ok: false, status: 400 }); // modify rejects stale id
+
+    const client = new GmailClient("encrypted:refresh:token");
+    await expect(
+      client.applyThreadFolderLabels({
+        threadId: "t1",
+        messageIds: [],
+        desiredLabelIds: ["L_deleted"],
+        managedLabelIds: ["L_deleted"],
+      }),
+    ).rejects.toBeInstanceOf(GmailInvalidLabelError);
   });
 });

@@ -14,6 +14,7 @@ vi.mock("@amarnai/db", () => ({
     taxonomyNode: { findMany: vi.fn() },
     taxonomyEdge: { findMany: vi.fn() },
     taxonomyNodeProviderLink: { findMany: vi.fn(), deleteMany: vi.fn(), upsert: vi.fn() },
+    emailClassification: { findMany: vi.fn() },
   },
   markGmailConnectionAuthFailed: vi.fn(),
 }));
@@ -31,10 +32,17 @@ vi.mock("../redis.js", () => ({ redisConnection: {} }));
 vi.mock("../queues.js", () => ({
   QUEUE_PROVISION_LABELS: "provision-folder-labels",
   pushNotificationQueue: { add: vi.fn().mockResolvedValue(undefined) },
+  writebackThreadLabelQueue: { addBulk: vi.fn().mockResolvedValue([]) },
 }));
 
 import { db } from "@amarnai/db";
-import { loadWritebackConnection, provisionFolderLabels } from "../jobs/provision-folder-labels.js";
+import { Worker } from "bullmq";
+import { writebackThreadLabelQueue } from "../queues.js";
+import {
+  loadWritebackConnection,
+  provisionFolderLabels,
+  createProvisionFolderLabelsWorker,
+} from "../jobs/provision-folder-labels.js";
 
 const WS = "ws-1";
 const CONNECTION = {
@@ -49,7 +57,29 @@ beforeEach(() => {
   vi.mocked(db.taxonomyNodeProviderLink.deleteMany).mockResolvedValue({ count: 0 } as never);
   vi.mocked(db.taxonomyNodeProviderLink.upsert).mockResolvedValue({} as never);
   vi.mocked(db.taxonomyNodeProviderLink.findMany).mockResolvedValue([] as never);
+  vi.mocked(db.emailClassification.findMany).mockResolvedValue([] as never);
 });
+
+function getProcessor(): (job: unknown) => Promise<void> {
+  const WorkerMock = vi.mocked(Worker);
+  const lastCall = WorkerMock.mock.calls[WorkerMock.mock.calls.length - 1];
+  return lastCall?.[1] as (job: unknown) => Promise<void>;
+}
+
+/** Minimal happy-path db state: an active scoped connection, no folders. */
+function primeActiveConnection() {
+  vi.mocked(db.gmailSyncSettings.findUnique).mockResolvedValue({ labelWritebackEnabled: true } as never);
+  vi.mocked(db.emailConnection.findUnique).mockResolvedValue({
+    provider: "GMAIL",
+    status: "ACTIVE",
+    grantedScopes: CONNECTION.grantedScopes,
+    encryptedRefreshToken: "enc",
+    emailAddress: "user@example.com",
+    subjectId: null,
+  } as never);
+  vi.mocked(db.taxonomyNode.findMany).mockResolvedValue([] as never);
+  vi.mocked(db.taxonomyEdge.findMany).mockResolvedValue([] as never);
+}
 
 describe("loadWritebackConnection", () => {
   const ACTIVE_ROW = {
@@ -120,7 +150,11 @@ describe("provisionFolderLabels", () => {
     });
   });
 
-  it("skips nodes already provisioned at their current path", async () => {
+  it("re-verifies against the provider even when links exist (self-heal after external deletion)", async () => {
+    // A link row saying "already provisioned" must NOT short-circuit the run:
+    // the user may have deleted the label in Gmail, and only the adapter's
+    // fresh list knows. The adapter reuses what exists and recreates the rest;
+    // the link is refreshed with whatever id came back.
     vi.mocked(db.taxonomyNode.findMany).mockResolvedValue([
       { id: "root", name: "Root", isRoot: true, isCatchAll: false, colorKey: null },
       { id: "clients", name: "Clients", isRoot: false, isCatchAll: false, colorKey: null },
@@ -128,14 +162,53 @@ describe("provisionFolderLabels", () => {
     vi.mocked(db.taxonomyEdge.findMany).mockResolvedValue([
       { id: "e1", sourceNodeId: "root", targetNodeId: "clients", createdAt: new Date(1) },
     ] as never);
-    // Existing link already at "Amarnai/Clients" → nothing to (re)create.
     vi.mocked(db.taxonomyNodeProviderLink.findMany).mockResolvedValue([
       { nodeId: "clients", providerPath: "Amarnai/Clients" },
     ] as never);
+    // Label was deleted in Gmail; the adapter recreates it under a fresh id.
+    mockEnsure.mockResolvedValue(new Map([["clients", "L_clients_v2"]]));
 
     const count = await provisionFolderLabels(WS, CONNECTION);
 
-    expect(count).toBe(0);
-    expect(mockEnsure).not.toHaveBeenCalled();
+    expect(count).toBe(1);
+    expect(mockEnsure).toHaveBeenCalledTimes(1);
+    expect(db.taxonomyNodeProviderLink.upsert).toHaveBeenCalledWith(
+      expect.objectContaining({
+        update: expect.objectContaining({ providerLabelId: "L_clients_v2" }),
+      }),
+    );
+  });
+});
+
+describe("provision worker — relabelThreads fan-out", () => {
+  it("enqueues a deduped writeback job per classified thread when relabelThreads is set", async () => {
+    primeActiveConnection();
+    vi.mocked(db.emailClassification.findMany).mockResolvedValue([
+      { emailThreadId: "t1" },
+      { emailThreadId: "t2" },
+    ] as never);
+
+    createProvisionFolderLabelsWorker();
+    await getProcessor()({ data: { workspaceId: WS, relabelThreads: true } });
+
+    const [jobs] = vi.mocked(writebackThreadLabelQueue.addBulk).mock.calls[0]! as [
+      Array<{ data: { emailThreadId: string }; opts: { deduplication: { id: string } } }>,
+    ];
+    expect(jobs.map((j) => j.data.emailThreadId)).toEqual(["t1", "t2"]);
+    expect(jobs[0]!.opts.deduplication.id).toBe(`writeback_${WS}_t1`);
+    // Distinct thread ids come from the classification query, latest-wins is the
+    // per-thread job's concern.
+    expect(db.emailClassification.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({ distinct: ["emailThreadId"] }),
+    );
+  });
+
+  it("does NOT sweep threads on a structural-only provision run", async () => {
+    primeActiveConnection();
+    createProvisionFolderLabelsWorker();
+    await getProcessor()({ data: { workspaceId: WS } });
+
+    expect(writebackThreadLabelQueue.addBulk).not.toHaveBeenCalled();
+    expect(db.emailClassification.findMany).not.toHaveBeenCalled();
   });
 });

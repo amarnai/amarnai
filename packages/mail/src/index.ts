@@ -12,6 +12,7 @@ export {
   MailCursorExpiredError,
   MailThreadParseError,
   MailThreadNotFoundError,
+  MailInvalidLabelError,
 } from "./errors.js";
 export { createMailProvider } from "./create-mail-provider.js";
 export type {

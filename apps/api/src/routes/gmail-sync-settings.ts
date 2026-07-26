@@ -118,19 +118,27 @@ gmailSyncSettings.patch("/workspaces/:workspaceId/gmail-sync-settings", async (c
   });
 
   // On any set-true (fresh connect enabling it, a re-enable, or a repeat), mirror
-  // the current taxonomy into the mailbox. Not gated on a false→true flip: with
-  // writeback on by default there is no flip at connect time, and the workspace
-  // dedup id collapses repeats to one provisioning run anyway.
+  // the current taxonomy into the mailbox AND sweep every classified thread so
+  // the existing inbox catches up (threads sorted before enablement, or threads
+  // that lost labels to an external deletion). Not gated on a false→true flip:
+  // with writeback on by default there is no flip at connect time. Distinct
+  // dedup id from the folder-create enqueues so an in-flight structural-only
+  // provision cannot coalesce away the relabel sweep.
   if (enablingWriteback) {
-    await provisionLabelsQueue
-      .add(
+    try {
+      await provisionLabelsQueue.add(
         "provision-folder-labels",
-        { workspaceId },
-        { deduplication: { id: `provision_${workspaceId}` } },
-      )
-      .catch((err) =>
-        console.error(`[gmail-sync-settings] provision enqueue failed (workspace=${workspaceId}):`, err),
+        { workspaceId, relabelThreads: true },
+        { deduplication: { id: `provision_relabel_${workspaceId}` } },
       );
+      // Log the enqueue so a stale process (old payload without relabelThreads)
+      // is diagnosable from the API console alone.
+      console.log(
+        `[gmail-sync-settings] enqueued folder provisioning + thread relabel sweep (workspace=${workspaceId})`,
+      );
+    } catch (err) {
+      console.error(`[gmail-sync-settings] provision enqueue failed (workspace=${workspaceId}):`, err);
+    }
   }
 
   return c.json(updated);

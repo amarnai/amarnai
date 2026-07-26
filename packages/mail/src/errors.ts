@@ -13,4 +13,8 @@ export {
   GmailHistoryCursorExpiredError as MailCursorExpiredError,
   GmailThreadParseError as MailThreadParseError,
   GmailThreadNotFoundError as MailThreadNotFoundError,
+  // A stored label/category id the provider no longer recognises (user deleted
+  // it provider-side). Gmail-only in practice: Outlook categories are free-form
+  // strings on the message, so Graph never rejects one as unknown.
+  GmailInvalidLabelError as MailInvalidLabelError,
 } from "@amarnai/gmail";

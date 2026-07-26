@@ -5,6 +5,7 @@ export {
   GmailHistoryCursorExpiredError,
   GmailThreadParseError,
   GmailThreadNotFoundError,
+  GmailInvalidLabelError,
   revokeGoogleToken,
 } from "./gmail-client.js";
 export type { GmailProfile, GmailHistoryResult, GmailThreadMeta, GmailWatchResult } from "./gmail-client.js";

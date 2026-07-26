@@ -1,6 +1,11 @@
 import { Worker, UnrecoverableError } from "bullmq";
 import { db, markGmailConnectionAuthFailed } from "@amarnai/db";
-import { createMailProvider, MailAuthError, MailThreadNotFoundError } from "@amarnai/mail";
+import {
+  createMailProvider,
+  MailAuthError,
+  MailThreadNotFoundError,
+  MailInvalidLabelError,
+} from "@amarnai/mail";
 import {
   QUEUE_WRITEBACK_THREAD_LABEL,
   type WritebackThreadLabelJobData,
@@ -97,6 +102,25 @@ export function createWritebackThreadLabelWorker(): Worker<WritebackThreadLabelJ
         if (err instanceof MailThreadNotFoundError) {
           console.log(`[writeback-thread-label] thread ${emailThreadId} gone provider-side — skipping`);
           return;
+        }
+        if (err instanceof MailInvalidLabelError) {
+          // A managed label was deleted provider-side, so our stored id is
+          // stale and this request can never succeed as-is. Re-provision (the
+          // provider is re-listed, the label recreated, the link refreshed),
+          // then rethrow so the BullMQ retry re-reads the fresh link and applies.
+          console.warn(
+            `[writeback-thread-label] stale label id for thread ${emailThreadId} — re-provisioning: ${err.message}`,
+          );
+          try {
+            await provisionFolderLabels(workspaceId, connection);
+          } catch (provErr) {
+            if (provErr instanceof MailAuthError) {
+              await handleAuthFailure(workspaceId, provErr);
+              return;
+            }
+            throw provErr;
+          }
+          throw err;
         }
         if (err instanceof MailAuthError) {
           await handleAuthFailure(workspaceId, err);

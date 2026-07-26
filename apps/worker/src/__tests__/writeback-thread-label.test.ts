@@ -2,15 +2,23 @@ import { vi, describe, it, expect, beforeEach } from "vitest";
 
 // Error classes + mocks must be hoisted so the (hoisted) vi.mock factories below
 // can reference them without a temporal-dead-zone error.
-const { MailAuthError, MailThreadNotFoundError, UnrecoverableError, mockApply, mockLoadConnection, mockProvision } =
-  vi.hoisted(() => ({
-    MailAuthError: class MailAuthError extends Error {},
-    MailThreadNotFoundError: class MailThreadNotFoundError extends Error {},
-    UnrecoverableError: class UnrecoverableError extends Error {},
-    mockApply: vi.fn(),
-    mockLoadConnection: vi.fn(),
-    mockProvision: vi.fn(),
-  }));
+const {
+  MailAuthError,
+  MailThreadNotFoundError,
+  MailInvalidLabelError,
+  UnrecoverableError,
+  mockApply,
+  mockLoadConnection,
+  mockProvision,
+} = vi.hoisted(() => ({
+  MailAuthError: class MailAuthError extends Error {},
+  MailThreadNotFoundError: class MailThreadNotFoundError extends Error {},
+  MailInvalidLabelError: class MailInvalidLabelError extends Error {},
+  UnrecoverableError: class UnrecoverableError extends Error {},
+  mockApply: vi.fn(),
+  mockLoadConnection: vi.fn(),
+  mockProvision: vi.fn(),
+}));
 
 // ─── Mocks ────────────────────────────────────────────────────────────────────
 
@@ -28,6 +36,7 @@ vi.mock("@amarnai/mail", () => ({
   createMailProvider: vi.fn(() => ({ applyThreadFolderLabels: mockApply })),
   MailAuthError,
   MailThreadNotFoundError,
+  MailInvalidLabelError,
 }));
 
 vi.mock("../jobs/provision-folder-labels.js", () => ({
@@ -159,5 +168,21 @@ describe("writeback-thread-label worker", () => {
   it("propagates a transient error so BullMQ retries", async () => {
     mockApply.mockRejectedValue(new Error("503 upstream"));
     await expect(run()).rejects.toThrow("503 upstream");
+  });
+
+  it("re-provisions on a stale label id (deleted in Gmail), then rethrows for the retry", async () => {
+    mockApply.mockRejectedValue(new MailInvalidLabelError("label gone"));
+    await expect(run()).rejects.toBeInstanceOf(MailInvalidLabelError);
+    // Healing ran: provisioning re-lists the provider, recreates the label, and
+    // refreshes the link; the BullMQ retry then applies with the fresh id.
+    expect(mockProvision).toHaveBeenCalledWith(WS, CONNECTION);
+  });
+
+  it("degrades a stale-label heal to disconnect handling when re-provisioning hits auth failure", async () => {
+    mockApply.mockRejectedValue(new MailInvalidLabelError("label gone"));
+    mockProvision.mockRejectedValue(new MailAuthError("token dead"));
+    vi.mocked(markGmailConnectionAuthFailed).mockResolvedValue(true as never);
+    await expect(run()).resolves.toBeUndefined();
+    expect(markGmailConnectionAuthFailed).toHaveBeenCalledWith(WS);
   });
 });

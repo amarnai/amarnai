@@ -4,12 +4,13 @@ import { config } from "@amarnai/config";
 import { DEFAULT_GMAIL_SYNC_SETTINGS } from "@amarnai/shared";
 import { createMailProvider, MailAuthError, providerHasWritebackScope, type MailFolderLabelDef } from "@amarnai/mail";
 import { buildProviderPaths, resolveFolderColorKey } from "@amarnai/core";
+import { DEDUP_WRITEBACK } from "@amarnai/queue";
 import {
   QUEUE_PROVISION_LABELS,
   type ProvisionLabelsJobData,
 } from "../queues.js";
 import { redisConnection } from "../redis.js";
-import { pushNotificationQueue } from "../queues.js";
+import { pushNotificationQueue, writebackThreadLabelQueue } from "../queues.js";
 
 /**
  * The connection fields the writeback jobs need. Loaded once and passed around so
@@ -68,12 +69,15 @@ export async function loadWritebackConnection(
 
 /**
  * Mirror every taxonomy folder into the connected mailbox as a label/category,
- * recording the provider-side identifier per node. Idempotent: existing
- * labels/categories are reused, nodes already provisioned at their current path
- * are skipped, and links for a rotated-out mailbox are cleared first. Shared by
- * the provision job and lazily by the per-thread writeback job when a link is
- * missing. Returns the number of nodes (re)provisioned. Throws MailAuthError on
- * a dead token so the caller can flip the connection to DISCONNECTED.
+ * recording the provider-side identifier per node. ALWAYS verifies against the
+ * provider rather than trusting stored links: the adapter lists what actually
+ * exists and recreates anything missing, so a label/category the user deleted
+ * provider-side is restored and its link refreshed (deleting labels in Gmail is
+ * not how you turn the feature off — the settings switch is). Idempotent;
+ * links for a rotated-out mailbox are cleared first. Shared by the provision
+ * job and lazily by the per-thread writeback job (missing or stale link).
+ * Returns the number of folders mirrored. Throws MailAuthError on a dead token
+ * so the caller can flip the connection to DISCONNECTED.
  */
 export async function provisionFolderLabels(
   workspaceId: string,
@@ -85,7 +89,7 @@ export async function provisionFolderLabels(
     where: { workspaceId, provider: connection.provider, NOT: { mailboxKey: connection.mailboxKey } },
   });
 
-  const [nodes, edges, links] = await Promise.all([
+  const [nodes, edges] = await Promise.all([
     db.taxonomyNode.findMany({
       where: { workspaceId },
       select: { id: true, name: true, isRoot: true, isCatchAll: true, colorKey: true },
@@ -94,22 +98,18 @@ export async function provisionFolderLabels(
       where: { workspaceId },
       select: { id: true, sourceNodeId: true, targetNodeId: true, createdAt: true },
     }),
-    db.taxonomyNodeProviderLink.findMany({
-      where: { workspaceId, provider: connection.provider, mailboxKey: connection.mailboxKey },
-      select: { nodeId: true, providerPath: true },
-    }),
   ]);
 
   const paths = buildProviderPaths(nodes, edges);
-  const existingPathByNode = new Map(links.map((l) => [l.nodeId, l.providerPath]));
 
+  // Every non-root node goes to the adapter — no "already provisioned" skip.
+  // The adapter reuses existing labels/categories by name (one list call), so
+  // the only writes are for genuinely missing ones; skipping on link rows here
+  // is what previously made externally deleted labels unrecoverable.
   const defs: MailFolderLabelDef[] = [];
   for (const node of nodes) {
     const segments = paths.get(node.id);
     if (!segments) continue; // root nodes carry no label
-    const providerPath = segments.join("/");
-    // Already provisioned at exactly this path — nothing to (re)create.
-    if (existingPathByNode.get(node.id) === providerPath) continue;
     defs.push({
       nodeId: node.id,
       pathSegments: segments,
@@ -149,8 +149,38 @@ export async function provisionFolderLabels(
 }
 
 /**
+ * Fan out a writeback-thread-label job for every thread that has ever been
+ * classified, so the whole inbox converges on the freshly provisioned labels.
+ * The per-thread job is declarative and deduped, so this is safe to run over
+ * threads that are already correct (each costs one provider read, no write).
+ * TODO(writeback): compress with users.messages.batchModify / Graph $batch —
+ * per-thread jobs are O(threads) provider calls (deferred; quota is ample at
+ * current inbox sizes and the fan-out only runs on the enable toggle).
+ */
+async function relabelAllClassifiedThreads(workspaceId: string): Promise<number> {
+  const classified = await db.emailClassification.findMany({
+    where: { workspaceId },
+    distinct: ["emailThreadId"],
+    select: { emailThreadId: true },
+  });
+
+  const CHUNK = 500;
+  for (let i = 0; i < classified.length; i += CHUNK) {
+    await writebackThreadLabelQueue.addBulk(
+      classified.slice(i, i + CHUNK).map(({ emailThreadId }) => ({
+        name: "writeback-thread-label",
+        data: { workspaceId, emailThreadId },
+        opts: { deduplication: { id: `${DEDUP_WRITEBACK}_${workspaceId}_${emailThreadId}` } },
+      })),
+    );
+  }
+  return classified.length;
+}
+
+/**
  * provision-folder-labels worker: (re)mirror a workspace's taxonomy into its
- * mailbox. Enqueued when writeback is enabled or the taxonomy gains a folder.
+ * mailbox. Enqueued when writeback is enabled or the taxonomy gains a folder;
+ * the enable path additionally requests a full thread re-labeling sweep.
  * TODO(writeback): rename/delete cascade — compare link.providerPath to the
  * current path and patch/remove the provider-side label (deferred).
  */
@@ -158,7 +188,7 @@ export function createProvisionFolderLabelsWorker(): Worker<ProvisionLabelsJobDa
   return new Worker<ProvisionLabelsJobData>(
     QUEUE_PROVISION_LABELS,
     async (job) => {
-      const { workspaceId } = job.data;
+      const { workspaceId, relabelThreads } = job.data;
       const connection = await loadWritebackConnection(workspaceId);
       if (!connection) {
         console.log(`[provision-folder-labels] Writeback not active for workspace ${workspaceId} — skipping`);
@@ -167,6 +197,12 @@ export function createProvisionFolderLabelsWorker(): Worker<ProvisionLabelsJobDa
       try {
         const count = await provisionFolderLabels(workspaceId, connection);
         console.log(`[provision-folder-labels] workspace ${workspaceId}: provisioned ${count} folder(s)`);
+        if (relabelThreads) {
+          const threads = await relabelAllClassifiedThreads(workspaceId);
+          console.log(
+            `[provision-folder-labels] workspace ${workspaceId}: enqueued relabel for ${threads} thread(s)`,
+          );
+        }
       } catch (err) {
         if (err instanceof MailAuthError) {
           console.error(
