@@ -14,6 +14,7 @@ export * from "./schemas/push-device.js";
 export * from "./schemas/extension.js";
 export * from "./inbox-key.js";
 export * from "./draft-quota.js";
+export * from "./summary-quota.js";
 export * from "./collaborator-quota.js";
 export * from "./thread-sort-quota.js";
 export * from "./node-references.js";

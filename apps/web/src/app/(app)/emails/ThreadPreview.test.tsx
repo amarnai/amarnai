@@ -10,6 +10,7 @@ vi.mock("@/lib/api", () => ({
     threadBodies: vi.fn(),
     threadDrafts: vi.fn(),
     draftQuota: vi.fn(),
+    threadSummary: vi.fn(),
     generateDraft: vi.fn(),
     toggleDraftSent: vi.fn(),
     inlineImageUrl: (ws: string, threadId: string, messageId: string, attachmentId: string) =>
@@ -166,6 +167,17 @@ beforeEach(() => {
   vi.mocked(api.threadBodies).mockResolvedValue({ bodies: {}, inlineImages: {} });
   vi.mocked(api.threadDrafts).mockResolvedValue({ drafts: [] });
   vi.mocked(api.draftQuota).mockResolvedValue({ used: 0, limit: 5, resetsAt: "2026-08-01T00:00:00Z" });
+  vi.mocked(api.threadSummary).mockResolvedValue({
+    kind: "summary",
+    summary: {
+      format: "PROSE",
+      text: "Alice and Bob are agreeing a kickoff date.",
+      bullets: [],
+      locale: "en",
+      generatedAt: null,
+    },
+    isNew: true,
+  });
 });
 
 afterEach(() => {
@@ -284,5 +296,219 @@ describe("ThreadPreview inline images", () => {
     await waitFor(() => expect(screen.queryByAltText("logo.png")).not.toBeInTheDocument());
     // Body text still shows — a broken image never breaks the preview.
     expect(screen.getByText("First body")).toBeInTheDocument();
+  });
+});
+
+describe("ThreadPreview thread summary", () => {
+  it("shows the generated summary in the slot above the message list", async () => {
+    vi.mocked(api.emailThread).mockResolvedValue(detail(["m-1", "m-2"], "Filed under Work."));
+
+    renderPreview(threadV2());
+
+    expect(
+      await screen.findByText("Alice and Bob are agreeing a kickoff date."),
+    ).toBeInTheDocument();
+    expect(screen.getByText("Summary")).toBeInTheDocument();
+    expect(api.threadSummary).toHaveBeenCalledWith(WS, "t-1", {});
+  });
+
+  it("shows the list snippet for a single-message thread without any summary request", async () => {
+    vi.mocked(api.emailThread).mockResolvedValue(detail(["m-1"], "Filed under Work."));
+
+    renderPreview(threadV1());
+
+    expect(await screen.findByText("Preview")).toBeInTheDocument();
+    expect(screen.getByText("Let's get started")).toBeInTheDocument();
+    expect(api.threadSummary).not.toHaveBeenCalled();
+  });
+
+  it("renders the quota line instead of a summary when the monthly cap is reached", async () => {
+    vi.mocked(api.emailThread).mockResolvedValue(detail(["m-1", "m-2"], "Filed under Work."));
+    vi.mocked(api.threadSummary).mockResolvedValue({
+      quotaExceeded: true,
+      used: 50,
+      limit: 50,
+      resetsAt: "2026-08-01T00:00:00.000Z",
+    });
+
+    renderPreview(threadV2());
+
+    expect(await screen.findByText(/no summaries remaining/i)).toBeInTheDocument();
+  });
+
+  it("offers a retry when the summary request fails", async () => {
+    vi.mocked(api.emailThread).mockResolvedValue(detail(["m-1", "m-2"], "Filed under Work."));
+    vi.mocked(api.threadSummary).mockRejectedValue(new Error("boom"));
+
+    renderPreview(threadV2());
+
+    expect(await screen.findByRole("button", { name: /retry/i })).toBeInTheDocument();
+  });
+
+  it("re-requests the summary when a new message arrives in the open thread", async () => {
+    vi.mocked(api.emailThread).mockResolvedValue(detail(["m-1", "m-2"], "Filed under Work."));
+
+    const { rerender } = renderPreview(threadV1());
+    // threadV1 is single-message: no request at all.
+    await waitFor(() => expect(api.emailThread).toHaveBeenCalledTimes(1));
+    expect(api.threadSummary).not.toHaveBeenCalled();
+
+    rerender(
+      <ThreadPreview
+        thread={threadV2()}
+        workspaceId={WS}
+        workspaceEmail={null}
+        onClose={noop}
+        onDraftStarted={noop}
+        onDraftFailed={noop}
+        onDraftGenerated={noop}
+        onDraftSentToggled={noop}
+        onMarkDone={noop}
+        onUnmarkDone={noop}
+        onToggleImportant={noop}
+        members={[]}
+        canAssign={false}
+        onOpenAssign={noop}
+      />,
+    );
+
+    // The server compares message-set signatures and regenerates; the client only
+    // has to ask again.
+    await waitFor(() => expect(api.threadSummary).toHaveBeenCalledTimes(1));
+  });
+});
+
+describe("ThreadPreview summary request races", () => {
+  // The pane is not keyed by thread id, so a thread switch re-runs the effect
+  // WITHOUT remounting. An unguarded response therefore lands in the state of
+  // whatever thread is on screen when it arrives — and a summary is derived
+  // email content, so showing the wrong one attributes one thread's contents to
+  // another. Generation is seconds and a cache hit is milliseconds, so the slow
+  // response routinely arrives second.
+  it("drops a slow response for a thread the user has already left", async () => {
+    vi.mocked(api.emailThread).mockResolvedValue(detail(["m-1", "m-2"], "Filed under Work."));
+
+    let resolveFirst: (value: Awaited<ReturnType<typeof api.threadSummary>>) => void = noop;
+    const slowFirst = new Promise<Awaited<ReturnType<typeof api.threadSummary>>>((r) => {
+      resolveFirst = r;
+    });
+    const summaryFor = (text: string) =>
+      ({
+        kind: "summary" as const,
+        summary: { format: "PROSE" as const, text, bullets: [], locale: "en", generatedAt: null },
+        isNew: true,
+      });
+
+    vi.mocked(api.threadSummary)
+      .mockReturnValueOnce(slowFirst)
+      .mockResolvedValueOnce(summaryFor("Second thread: invoice is overdue."));
+
+    const second = { ...threadV2(), id: "t-2" };
+    const { rerender } = renderPreview(threadV2());
+
+    rerender(
+      <ThreadPreview
+        thread={second}
+        workspaceId={WS}
+        workspaceEmail={null}
+        onClose={noop}
+        onDraftStarted={noop}
+        onDraftFailed={noop}
+        onDraftGenerated={noop}
+        onDraftSentToggled={noop}
+        onMarkDone={noop}
+        onUnmarkDone={noop}
+        onToggleImportant={noop}
+        members={[]}
+        canAssign={false}
+        onOpenAssign={noop}
+      />,
+    );
+
+    expect(await screen.findByText("Second thread: invoice is overdue.")).toBeInTheDocument();
+
+    // The abandoned request finally lands.
+    resolveFirst(summaryFor("First thread: kickoff date."));
+    await waitFor(() => expect(api.threadSummary).toHaveBeenCalledTimes(2));
+
+    expect(screen.queryByText("First thread: kickoff date.")).not.toBeInTheDocument();
+    expect(screen.getByText("Second thread: invoice is overdue.")).toBeInTheDocument();
+  });
+
+  it("does not start a poll for a thread the user has already left", async () => {
+    vi.mocked(api.emailThread).mockResolvedValue(detail(["m-1", "m-2"], "Filed under Work."));
+
+    let resolveFirst: (value: Awaited<ReturnType<typeof api.threadSummary>>) => void = noop;
+    const slowFirst = new Promise<Awaited<ReturnType<typeof api.threadSummary>>>((r) => {
+      resolveFirst = r;
+    });
+    vi.mocked(api.threadSummary).mockReturnValueOnce(slowFirst);
+
+    const { unmount } = renderPreview(threadV2());
+    await waitFor(() => expect(api.threadSummary).toHaveBeenCalledTimes(1));
+    unmount();
+
+    // A "someone else is generating this" answer arriving after the pane closed
+    // would otherwise install an interval that nothing is left to clear: it polls
+    // the API forever and has no component to render into.
+    const setIntervalSpy = vi.spyOn(globalThis, "setInterval");
+    resolveFirst({ generating: true });
+    await Promise.resolve();
+    await Promise.resolve();
+
+    expect(setIntervalSpy).not.toHaveBeenCalled();
+    setIntervalSpy.mockRestore();
+  });
+});
+
+describe("ThreadPreview message expansion", () => {
+  // The list endpoint delivers ThreadItem.messages NEWEST-FIRST (mapThreads
+  // contract: messages[0] drives the snippet). MessageCard latches its expansion
+  // at mount, so if the pane seeds state in that raw order it permanently expands
+  // the OLDEST message — the later oldest-first detail fetch cannot repair it.
+  it("expands the newest message even though the list hands messages newest-first", async () => {
+    // Detail fetch never resolves: assert on the seed state alone.
+    vi.mocked(api.emailThread).mockReturnValue(new Promise(() => {}));
+    vi.mocked(api.threadBodies).mockReturnValue(new Promise(() => {}));
+
+    const t = threadV2();
+    // Simulate the real list contract: newest first.
+    t.messages = [...t.messages].reverse();
+    expect(t.messages[0]!.fromName).toBe("Bob Jones");
+
+    renderPreview(t);
+
+    const headers = screen.getAllByRole("button", { name: /alice smith|bob jones/i });
+    const expandedStates = headers.map((h) => [
+      h.textContent,
+      h.getAttribute("aria-expanded"),
+    ]);
+    // Chronological render order: Alice (oldest, collapsed) then Bob (newest, expanded).
+    expect(expandedStates[0]![0]).toContain("Alice Smith");
+    expect(expandedStates[0]![1]).toBe("false");
+    expect(expandedStates[1]![0]).toContain("Bob Jones");
+    expect(expandedStates[1]![1]).toBe("true");
+  });
+});
+
+describe("ThreadPreview bulleted summaries", () => {
+  it("renders a bulleted summary as a list", async () => {
+    vi.mocked(api.emailThread).mockResolvedValue(detail(["m-1", "m-2"], "Filed under Work."));
+    vi.mocked(api.threadSummary).mockResolvedValue({
+      kind: "summary",
+      summary: {
+        format: "BULLETS",
+        text: "",
+        bullets: ["Kickoff on Monday", "Bob owns the deck", "Budget signed off"],
+        locale: "en",
+        generatedAt: null,
+      },
+      isNew: true,
+    });
+
+    renderPreview(threadV2());
+
+    expect(await screen.findByText("Kickoff on Monday")).toBeInTheDocument();
+    expect(screen.getAllByRole("listitem")).toHaveLength(3);
   });
 });

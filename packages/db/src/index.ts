@@ -6,6 +6,7 @@ export {
   type ThreadSortUsage,
 } from "./thread-sort-usage.js";
 export { eligibleThreadWhere } from "./eligible-threads.js";
+export { messageSetSignature } from "./message-set-signature.js";
 export { deleteStaleUnverifiedUsers } from "./stale-users.js";
 export { decayStaleReviews, REVIEW_DECAY_TTL_MS } from "./review-decay.js";
 export { buildInboxProfile, buildSenderSignal } from "./inbox-profile.js";

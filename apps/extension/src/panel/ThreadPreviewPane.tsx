@@ -3,8 +3,9 @@ import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
 import type { ApiClient, Draft } from "@amarnai/api-client";
-import type { ThreadItem } from "@amarnai/ui/emails";
-import { MessageCard, SuggestedDraftCard, TriageBar } from "@amarnai/ui/emails";
+import type { ThreadItem, ThreadSummaryCardState } from "@amarnai/ui/emails";
+import { MessageCard, SuggestedDraftCard, ThreadSummaryCard, TriageBar } from "@amarnai/ui/emails";
+import { chronologicalMessages } from "@amarnai/core/emails";
 import { GmailIcon, OutlookIcon } from "@amarnai/ui";
 import { formatQuotaResetDate, TAXONOMY_MIN_NON_ROOT_NODES } from "@amarnai/shared";
 import { openThreadInMail } from "../gmail/openInGmail";
@@ -55,14 +56,27 @@ export function ThreadPreviewPane({
 }: Props) {
   const { _ } = useLingui();
   const [bodyLoaded, setBodyLoaded] = useState(false);
-  const [messages, setMessages] = useState(thread.messages);
+  // ThreadItem.messages is newest-first (list contract); this pane renders
+  // oldest-first with the newest card expanded, so normalize at every seed point.
+  const [messages, setMessages] = useState(() => chronologicalMessages(thread.messages));
 
   const [draftState, setDraftState] = useState<DraftState>(
     thread.isDrafting ? "loading" : thread.hasDraft ? "ready" : "idle",
   );
   const [draft, setDraft] = useState<Draft | null>(null);
   const [draftQuota, setDraftQuota] = useState<{ used: number; limit: number; resetsAt: string } | null>(null);
+  // null = render no summary slot at all.
+  const [summaryState, setSummaryState] = useState<ThreadSummaryCardState | null>(null);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const summaryPollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  // Invalidates in-flight summary work. This pane is NOT keyed by thread id, so
+  // switching threads re-runs the effect without remounting: without this, a slow
+  // generation for the previous thread resolves later and renders ITS summary
+  // under the current thread's header. Bumped on every thread change and on
+  // unmount, so a late response can neither set state nor install a poll.
+  // (A ref rather than the effect's `cancelled` flag because loadSummary is also
+  // re-entered from the error card's retry, outside any effect run.)
+  const summaryTokenRef = useRef(0);
   const bodiesRef = useRef<Record<string, string | null> | null>(null);
   // Resolved blob: URLs for CID inline images, keyed by DB message id. The
   // extension's Bearer transport cannot authenticate a plain <img src>, so the
@@ -83,6 +97,62 @@ export function ThreadPreviewPane({
       clearInterval(pollRef.current);
       pollRef.current = null;
     }
+  }
+
+  function clearSummaryPoll() {
+    if (summaryPollRef.current) {
+      clearInterval(summaryPollRef.current);
+      summaryPollRef.current = null;
+    }
+  }
+
+  /**
+   * Get-or-generate the thread's TL;DR. Same four outcomes as the web preview;
+   * the panel just runs them through its bearer-transport client.
+   */
+  function loadSummary(threadId: string, opts: { force?: boolean } = {}) {
+    clearSummaryPoll();
+    const token = ++summaryTokenRef.current;
+    setSummaryState({ kind: "loading" });
+    api.threadSummary(workspaceId, threadId, opts).then((result) => {
+      if (token !== summaryTokenRef.current) return;
+      if ("generating" in result) {
+        summaryPollRef.current = setInterval(() => {
+          api.threadSummary(workspaceId, threadId).then((polled) => {
+            if (token !== summaryTokenRef.current) return;
+            if ("generating" in polled) return;
+            clearSummaryPoll();
+            setSummaryState(summaryStateFor(polled));
+          }).catch(() => {
+            if (token !== summaryTokenRef.current) return;
+            clearSummaryPoll();
+            setSummaryState({ kind: "error", onRetry: () => loadSummary(threadId) });
+          });
+        }, 2_000);
+        return;
+      }
+      setSummaryState(summaryStateFor(result));
+    }).catch(() => {
+      if (token !== summaryTokenRef.current) return;
+      // Retrying is free: a FAILED row never records a meter unit.
+      setSummaryState({ kind: "error", onRetry: () => loadSummary(threadId) });
+    });
+  }
+
+  function summaryStateFor(
+    result: Exclude<Awaited<ReturnType<typeof api.threadSummary>>, { generating: true }>,
+  ): ThreadSummaryCardState {
+    if ("quotaExceeded" in result) {
+      return {
+        kind: "quota",
+        quota: { used: result.used, limit: result.limit, resetsAt: result.resetsAt },
+      };
+    }
+    if (result.kind === "snippet") return { kind: "snippet", text: result.snippet };
+    if (result.summary.format === "BULLETS") {
+      return { kind: "bullets", bullets: result.summary.bullets };
+    }
+    return { kind: "summary", text: result.summary.text };
   }
 
   function startPoll(threadId: string) {
@@ -111,10 +181,22 @@ export function ThreadPreviewPane({
     let cancelled = false;
     setBodyLoaded(false);
     bodiesRef.current = null;
-    setMessages(thread.messages);
+    setMessages(chronologicalMessages(thread.messages));
     setDraftState(thread.isDrafting ? "loading" : thread.hasDraft ? "ready" : "idle");
     setDraft(null);
     clearPoll();
+    clearSummaryPoll();
+    // Retire any summary still in flight for the thread we just left, including
+    // on the snippet path below (which sets state without issuing a request).
+    summaryTokenRef.current++;
+
+    // The summary runs in parallel with the message load and never blocks it. A
+    // single-message thread short-circuits locally: thread.snippet is already here.
+    if (thread.messageCount <= 1) {
+      setSummaryState({ kind: "snippet", text: thread.snippet ?? "" });
+    } else {
+      loadSummary(thread.id);
+    }
 
     // Fetch each CID inline image as a blob and turn it into an object URL (the
     // Bearer transport can't authenticate a plain <img src>). Merges the urls in
@@ -194,6 +276,10 @@ export function ThreadPreviewPane({
     return () => {
       cancelled = true;
       clearPoll();
+      clearSummaryPoll();
+      // Also covers unmount (closing the preview), where no later loadSummary
+      // runs to invalidate a response that is still on its way.
+      summaryTokenRef.current++;
       revokeObjectUrls();
     };
   }, [thread.id, workspaceId]);
@@ -313,6 +399,8 @@ export function ThreadPreviewPane({
           canAssign={canAssign}
           onOpenAssign={(anchor) => onOpenAssign(thread.id, anchor)}
         />
+
+        {summaryState && <ThreadSummaryCard state={summaryState} />}
 
         {isUnsorted && (
           routableNodeCount < TAXONOMY_MIN_NON_ROOT_NODES ? (

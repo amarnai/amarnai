@@ -52,6 +52,7 @@ export async function eraseEmailAccountData(emailAccountId: string): Promise<voi
       },
     }),
     db.draft.deleteMany({ where: { emailThread: { emailAccountId } } }),
+    db.threadSummary.deleteMany({ where: { emailThread: { emailAccountId } } }),
     db.emailClassification.deleteMany({ where: { emailThread: { emailAccountId } } }),
     db.taxonomyNodeReference.deleteMany({ where: { emailThread: { emailAccountId } } }),
     db.emailMessage.deleteMany({ where: { emailAccountId } }),
@@ -99,6 +100,7 @@ export async function eraseStaleEmailAccounts(
 export async function resetWorkspaceData(workspaceId: string): Promise<void> {
   await db.$transaction([
     db.draft.deleteMany({ where: { workspaceId } }),
+    db.threadSummary.deleteMany({ where: { workspaceId } }),
     db.emailTag.deleteMany({
       where: {
         OR: [{ emailThread: { workspaceId } }, { emailMessage: { workspaceId } }],
@@ -153,6 +155,7 @@ export async function deleteUserCascade(userId: string): Promise<void> {
         ]
       : []),
     db.draft.deleteMany({ where: { workspaceId: { in: workspaceIds } } }),
+    db.threadSummary.deleteMany({ where: { workspaceId: { in: workspaceIds } } }),
     db.emailTag.deleteMany({
       where: {
         OR: [
@@ -189,6 +192,7 @@ export async function deleteUserCascade(userId: string): Promise<void> {
 export async function deleteWorkspaceCascade(workspaceId: string): Promise<void> {
   await db.$transaction([
     db.draft.deleteMany({ where: { workspaceId } }),
+    db.threadSummary.deleteMany({ where: { workspaceId } }),
     db.emailTag.deleteMany({
       where: {
         OR: [{ emailThread: { workspaceId } }, { emailMessage: { workspaceId } }],

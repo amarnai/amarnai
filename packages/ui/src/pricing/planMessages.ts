@@ -41,6 +41,9 @@ const PLAN_MESSAGES: Record<string, MessageDescriptor> = {
   "200 reply drafts / month, pooled": msg`200 reply drafts / month, pooled`,
   "Up to 3 people": msg`Up to 3 people`,
   "500 reply drafts / month, pooled": msg`500 reply drafts / month, pooled`,
+  "50 thread summaries / month": msg`50 thread summaries / month`,
+  "5,000 thread summaries / month, pooled": msg`5,000 thread summaries / month, pooled`,
+  "10,000 thread summaries / month, pooled": msg`10,000 thread summaries / month, pooled`,
 
   // ── CTA labels ──
   "Start free": msg`Start free`,
@@ -60,6 +63,7 @@ const PLAN_MESSAGES: Record<string, MessageDescriptor> = {
   "Threads sorted / month": msg`Threads sorted / month`,
   "Initial backfill": msg`Initial backfill`,
   "Reply drafts": msg`Reply drafts`,
+  "Thread summaries": msg`Thread summaries`,
   "Plan nodes": msg`Plan nodes`,
   "Shared plan": msg`Shared plan`,
   Metadata: msg`Metadata`,
@@ -68,6 +72,7 @@ const PLAN_MESSAGES: Record<string, MessageDescriptor> = {
 
   // ── Comparison row hints ──
   "Historical threads sorted when you first connect": msg`Historical threads sorted when you first connect`,
+  "AI TL;DR of a thread, generated the first time you open it": msg`AI TL;DR of a thread, generated the first time you open it`,
 
   // ── Comparison cell values ──
   "Default free workspace": msg`Default free workspace`,
@@ -81,6 +86,9 @@ const PLAN_MESSAGES: Record<string, MessageDescriptor> = {
   "3 / month": msg`3 / month`,
   "200 / month, pooled": msg`200 / month, pooled`,
   "500 / month, pooled": msg`500 / month, pooled`,
+  "50 / month": msg`50 / month`,
+  "5,000 / month, pooled": msg`5,000 / month, pooled`,
+  "10,000 / month, pooled": msg`10,000 / month, pooled`,
   Unlimited: msg`Unlimited`,
   Basic: msg`Basic`,
   Full: msg`Full`,

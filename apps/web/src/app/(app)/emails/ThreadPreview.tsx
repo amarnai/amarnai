@@ -6,8 +6,9 @@ import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
 import { api } from "@/lib/api";
 import type { Draft } from "@/lib/api";
-import type { ThreadItem, MemberItem } from "@amarnai/ui/emails";
-import { MessageCard, SuggestedDraftCard, TriageBar, buildThreadUrl, openInProviderLabel } from "@amarnai/ui/emails";
+import type { ThreadItem, MemberItem, ThreadSummaryCardState } from "@amarnai/ui/emails";
+import { MessageCard, SuggestedDraftCard, ThreadSummaryCard, TriageBar, buildThreadUrl, openInProviderLabel } from "@amarnai/ui/emails";
+import { chronologicalMessages } from "@amarnai/core/emails";
 import { Tooltip, GmailIcon, OutlookIcon } from "@amarnai/ui";
 import { formatQuotaResetDate } from "@amarnai/shared";
 
@@ -48,14 +49,28 @@ export function ThreadPreview({
 }: Props) {
   const { _, i18n } = useLingui();
   const [bodyLoaded, setBodyLoaded] = useState(false);
-  const [messages, setMessages] = useState(thread.messages);
+  // ThreadItem.messages arrives newest-first (list contract); this pane renders
+  // oldest-first with the newest card expanded, so normalize at every seed point.
+  // MessageCard latches its expansion at mount, so seeding in the wrong order
+  // cannot be repaired by the later detail fetch.
+  const [messages, setMessages] = useState(() => chronologicalMessages(thread.messages));
 
   const [draftState, setDraftState] = useState<DraftState>(
     thread.isDrafting ? "loading" : thread.hasDraft ? "ready" : "idle"
   );
   const [draft, setDraft] = useState<Draft | null>(null);
   const [draftQuota, setDraftQuota] = useState<{ used: number; limit: number; resetsAt: string } | null>(null);
+  // null = render no summary slot at all (before the first attempt resolves the
+  // thread's shape, and whenever the thread has nothing worth showing).
+  const [summaryState, setSummaryState] = useState<ThreadSummaryCardState | null>(null);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const summaryPollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  // Invalidates in-flight summary work. This pane is NOT keyed by thread id, so
+  // switching threads re-runs the effect without remounting: without this, a slow
+  // generation for the previous thread resolves later and renders ITS summary
+  // under the current thread's header. Bumped on every thread change and on
+  // unmount, so a late response can neither set state nor install a poll.
+  const summaryTokenRef = useRef(0);
   type InlineImageDescriptor = { attachmentId: string; mimeType: string; filename: string | null };
   type BodiesResult = {
     bodies: Record<string, string | null>;
@@ -68,6 +83,65 @@ export function ThreadPreview({
       clearInterval(pollRef.current);
       pollRef.current = null;
     }
+  }
+
+  function clearSummaryPoll() {
+    if (summaryPollRef.current) {
+      clearInterval(summaryPollRef.current);
+      summaryPollRef.current = null;
+    }
+  }
+
+  /**
+   * Get-or-generate the thread's TL;DR and map the four server outcomes onto the
+   * card. Idempotent and cheap: a cached summary is a plain read, and the server
+   * short-circuits single-message/automated threads to a snippet with no LLM call.
+   */
+  function loadSummary(threadId: string, opts: { force?: boolean } = {}) {
+    clearSummaryPoll();
+    const token = ++summaryTokenRef.current;
+    setSummaryState({ kind: "loading" });
+    api.threadSummary(workspaceId, threadId, opts).then((result) => {
+      if (token !== summaryTokenRef.current) return;
+      if ("generating" in result) {
+        // Another request (another tab, or a reload mid-generation) is already
+        // producing it; poll rather than paying for a second one.
+        summaryPollRef.current = setInterval(() => {
+          api.threadSummary(workspaceId, threadId).then((polled) => {
+            if (token !== summaryTokenRef.current) return;
+            if ("generating" in polled) return;
+            clearSummaryPoll();
+            setSummaryState(summaryStateFor(polled));
+          }).catch(() => {
+            if (token !== summaryTokenRef.current) return;
+            clearSummaryPoll();
+            setSummaryState({ kind: "error", onRetry: () => loadSummary(threadId) });
+          });
+        }, 2_000);
+        return;
+      }
+      setSummaryState(summaryStateFor(result));
+    }).catch(() => {
+      if (token !== summaryTokenRef.current) return;
+      // Retrying is free: a FAILED row never records a meter unit.
+      setSummaryState({ kind: "error", onRetry: () => loadSummary(threadId) });
+    });
+  }
+
+  function summaryStateFor(
+    result: Exclude<Awaited<ReturnType<typeof api.threadSummary>>, { generating: true }>
+  ): ThreadSummaryCardState {
+    if ("quotaExceeded" in result) {
+      return {
+        kind: "quota",
+        quota: { used: result.used, limit: result.limit, resetsAt: result.resetsAt },
+      };
+    }
+    if (result.kind === "snippet") return { kind: "snippet", text: result.snippet };
+    if (result.summary.format === "BULLETS") {
+      return { kind: "bullets", bullets: result.summary.bullets };
+    }
+    return { kind: "summary", text: result.summary.text };
   }
 
   function startPoll(threadId: string) {
@@ -106,10 +180,23 @@ export function ThreadPreview({
   useEffect(() => {
     setBodyLoaded(false);
     bodiesRef.current = null;
-    setMessages(thread.messages);
+    setMessages(chronologicalMessages(thread.messages));
     setDraftState(thread.isDrafting ? "loading" : thread.hasDraft ? "ready" : "idle");
     setDraft(null);
     clearPoll();
+    clearSummaryPoll();
+    // Retire any summary still in flight for the thread we just left, including
+    // on the snippet path below (which sets state without issuing a request).
+    summaryTokenRef.current++;
+
+    // The summary runs in parallel with the message load and never blocks it.
+    // A single-message thread is short-circuited here rather than server-side so
+    // it costs no roundtrip at all: thread.snippet is already in the list data.
+    if (thread.messageCount <= 1) {
+      setSummaryState({ kind: "snippet", text: thread.snippet ?? "" });
+    } else {
+      loadSummary(thread.id);
+    }
 
     // Map the API's inline-image descriptors for one message to renderable <img>
     // entries (same-origin proxy URLs). Undefined when there are none.
@@ -180,7 +267,13 @@ export function ThreadPreview({
       }).catch(() => {});
     }
 
-    return clearPoll;
+    return () => {
+      clearPoll();
+      clearSummaryPoll();
+      // Also covers unmount (closing the preview), where no later loadSummary
+      // runs to invalidate a response that is still on its way.
+      summaryTokenRef.current++;
+    };
   }, [threadSignal, workspaceId]);
 
   function handleGenerateDraft(opts: { force?: boolean } = {}) {
@@ -350,6 +443,8 @@ export function ThreadPreview({
             ? { onOpenAssign: (anchor: HTMLElement) => onOpenAssign(thread.id, anchor) }
             : {})}
         />
+
+        {summaryState && <ThreadSummaryCard state={summaryState} />}
 
         <div className="em-msg-list">
           {messages.map((msg, idx) => (

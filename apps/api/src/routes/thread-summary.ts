@@ -1,0 +1,523 @@
+import { Hono } from "hono";
+import { z } from "zod";
+import {
+  db,
+  resolveInboxQuota,
+  recordMeterUsage,
+  messageSetSignature,
+  type InboxQuota,
+} from "@amarnai/db";
+import {
+  createAIProvider,
+  generateThreadSummary,
+  getSummaryAIProviderConfig,
+  SUMMARY_PROMPT_VERSION,
+  type SummaryFormat,
+  type ThreadMessage,
+} from "@amarnai/ai";
+import { getThreadSummaryLimit, getSummaryQuotaResetsAt } from "@amarnai/shared";
+import { matchLocale, LOCALE_ENGLISH_LANGUAGE_NAMES } from "@amarnai/i18n";
+import { config } from "@amarnai/config";
+import { createMailProvider } from "@amarnai/mail";
+
+// ─── Lazy thread summaries ─────────────────────────────────────────────────────
+//
+// A short AI TL;DR of a thread, generated the first time someone opens it and
+// cached in ThreadSummary. Three surfaces call these routes: the web thread
+// preview, the extension side panel, and the native Gmail/Outlook injection
+// (which resolves by provider thread id instead of our own).
+//
+// Cost shape:
+//   - Single-message and automated threads never call the LLM: the stored snippet
+//     already says everything a two-sentence TL;DR would, so they return
+//     {kind:"snippet"} with no row and no meter.
+//   - A cache hit (signature + locale unchanged) is a plain read.
+//   - Only a committed generation records a THREAD_SUMMARY meter unit. FAILED rows
+//     never burn quota, so retrying a server-side failure is free.
+//
+// Privacy: this module logs ids, statuses, and lengths only. Summary text, message
+// bodies, prompts, and raw model output are never logged.
+
+const threadParams = z.object({
+  workspaceId: z.string().min(1),
+  threadId: z.string().min(1),
+});
+
+const providerThreadParams = z.object({
+  workspaceId: z.string().min(1),
+  providerThreadId: z.string().min(1),
+});
+
+/**
+ * OWA's DOM (`data-convid`) carries the EWS flavor of the conversation id:
+ * same bytes as the Graph `conversationId` we store, but the EWS base64
+ * alphabet (`+`, `/`). Graph's URL-safe translation is NOT standard base64url:
+ * it swaps `+`→`_` and `/`→`-` (verified against a live mailbox, and matching
+ * Microsoft's documented EWS↔REST id conversion). Map onto the stored alphabet
+ * so the native content scripts resolve. Idempotent for ids already in Graph
+ * form (they never contain `+` or `/`), and a no-op for Gmail's hex thread ids.
+ */
+function normalizeProviderThreadId(id: string): string {
+  return id.replace(/\+/g, "_").replace(/\//g, "-");
+}
+
+/**
+ * How long a GENERATING row is treated as in-flight. Shorter than the draft
+ * equivalent (5 min): a summary is a single small call, so a row older than this
+ * is a crashed request, not a slow one, and the next open should retry rather
+ * than poll forever.
+ */
+const SUMMARY_GENERATING_STALE_MS = 2 * 60 * 1_000;
+
+type SummaryBody = {
+  kind: "summary";
+  format: SummaryFormat;
+  summary: string;
+  bullets: string[];
+  locale: string;
+  generatedAt: string | null;
+};
+
+type SummaryOutcome =
+  | { status: 200; body: { kind: "snippet"; snippet: string } }
+  | { status: 200; body: SummaryBody }
+  | { status: 201; body: SummaryBody }
+  | { status: 202; body: { generating: true } }
+  | { status: 429; body: { error: string; used: number; limit: number; resetsAt: string } }
+  | { status: 404; body: { error: string } }
+  | { status: 500; body: { error: string } }
+  | { status: 503; body: { error: string } };
+
+function readyBody(row: {
+  summary: string | null;
+  bullets: string[];
+  format: SummaryFormat;
+  locale: string;
+  generatedAt: Date | null;
+}): SummaryBody {
+  return {
+    kind: "summary",
+    format: row.format,
+    summary: row.summary ?? "",
+    bullets: row.bullets,
+    locale: row.locale,
+    generatedAt: row.generatedAt?.toISOString() ?? null,
+  };
+}
+
+/** A cached row is servable only if it is READY and carries actual content. */
+function hasContent(row: { summary: string | null; bullets: string[]; format: SummaryFormat }): boolean {
+  return row.format === "BULLETS" ? row.bullets.length > 0 : !!row.summary;
+}
+
+/**
+ * Get-or-generate, shared by the id-based and provider-id-based routes.
+ *
+ * `threadId` is our own EmailThread id; both routes resolve to one before calling
+ * here, so authorization stays a single workspace-scoped lookup.
+ */
+async function getOrGenerateSummary(
+  workspaceId: string,
+  threadId: string,
+  force: boolean,
+): Promise<SummaryOutcome> {
+  const thread = await db.emailThread.findFirst({
+    where: { id: threadId, workspaceId },
+    select: {
+      id: true,
+      subject: true,
+      isAutomated: true,
+      providerThreadId: true,
+      messages: {
+        orderBy: { receivedAt: "asc" },
+        select: {
+          // Split off before the AI layer — internal/provider ids never reach a prompt.
+          providerMessageId: true,
+          subject: true,
+          senderEmail: true,
+          senderName: true,
+          bodyText: true,
+          snippet: true,
+          receivedAt: true,
+        },
+      },
+    },
+  });
+  if (!thread) return { status: 404, body: { error: "Thread not found" } };
+
+  // ── Snippet-only gate ───────────────────────────────────────────────────────
+  // Checked before anything else: a one-message thread or an automated/bulk
+  // thread already reads as its own summary, so there is nothing worth paying a
+  // model to compress. No row, no LLM call, no meter.
+  if (thread.messages.length <= 1 || thread.isAutomated) {
+    const snippet = thread.messages[thread.messages.length - 1]?.snippet ?? "";
+    return { status: 200, body: { kind: "snippet", snippet } };
+  }
+
+  const signature = messageSetSignature(thread.messages.map((m) => m.providerMessageId));
+
+  const workspace = await db.workspace.findUnique({
+    where: { id: workspaceId },
+    select: { locale: true },
+  });
+  if (!workspace) return { status: 404, body: { error: "Workspace not found" } };
+  const locale = workspace.locale;
+
+  const staleThreshold = new Date(Date.now() - SUMMARY_GENERATING_STALE_MS);
+
+  // ── Quick check outside the lock ────────────────────────────────────────────
+  // The overwhelmingly common case is re-opening a thread whose summary is already
+  // cached; that path must not take a row lock.
+  const existing = await db.threadSummary.findUnique({
+    where: { emailThreadId: threadId },
+    select: {
+      status: true,
+      summary: true,
+      bullets: true,
+      format: true,
+      promptVersion: true,
+      locale: true,
+      messageSetSignature: true,
+      generatedAt: true,
+      updatedAt: true,
+    },
+  });
+  if (
+    !force &&
+    existing?.status === "READY" &&
+    existing.messageSetSignature === signature &&
+    existing.locale === locale &&
+    existing.promptVersion === SUMMARY_PROMPT_VERSION &&
+    hasContent(existing)
+  ) {
+    return { status: 200, body: readyBody(existing) };
+  }
+  if (existing?.status === "GENERATING" && existing.updatedAt > staleThreshold) {
+    return { status: 202, body: { generating: true } };
+  }
+
+  // Inbox-keyed summary meter (reset-immune, pooled by inbox, sized by the top plan
+  // among workspaces sharing the inbox). Null for the mock/dev path with no
+  // connection, where summaries are not metered. `used` here is informational —
+  // the gate re-reads it transactionally under the workspace lock below.
+  // provider/encryptedRefreshToken are for the live body fetch below;
+  // emailAddress keys the meter.
+  const connection = await db.emailConnection.findUnique({
+    where: { workspaceId },
+    select: { provider: true, emailAddress: true, encryptedRefreshToken: true },
+  });
+  const quota: InboxQuota | null = connection
+    ? await resolveInboxQuota(connection.emailAddress, "THREAD_SUMMARY")
+    : null;
+
+  let provider;
+  try {
+    provider = createAIProvider(getSummaryAIProviderConfig());
+  } catch (e) {
+    return { status: 503, body: { error: `AI provider not configured: ${String(e)}` } };
+  }
+
+  // ── Atomic quota check + placeholder ────────────────────────────────────────
+  // SELECT FOR UPDATE on the Workspace row serializes concurrent opens of any
+  // thread in this workspace, so two requests cannot both pass the quota check
+  // before either has claimed the GENERATING row.
+  type TxResult =
+    | { kind: "claimed" }
+    | {
+        kind: "cache_hit";
+        row: {
+          summary: string | null;
+          bullets: string[];
+          format: SummaryFormat;
+          locale: string;
+          generatedAt: Date | null;
+        };
+      }
+    | { kind: "generating" }
+    | { kind: "quota_exceeded"; used: number; limit: number };
+
+  const txResult = await db.$transaction(async (tx): Promise<TxResult> => {
+    await tx.$queryRaw`SELECT id FROM "Workspace" WHERE id = ${workspaceId} FOR UPDATE`;
+
+    const underLock = await tx.threadSummary.findUnique({
+      where: { emailThreadId: threadId },
+      select: {
+        status: true,
+        summary: true,
+        bullets: true,
+        format: true,
+        promptVersion: true,
+        locale: true,
+        messageSetSignature: true,
+        generatedAt: true,
+        updatedAt: true,
+      },
+    });
+    if (
+      !force &&
+      underLock?.status === "READY" &&
+      underLock.messageSetSignature === signature &&
+      underLock.locale === locale &&
+      underLock.promptVersion === SUMMARY_PROMPT_VERSION &&
+      hasContent(underLock)
+    ) {
+      return { kind: "cache_hit", row: underLock };
+    }
+    if (underLock?.status === "GENERATING" && underLock.updatedAt > staleThreshold) {
+      return { kind: "generating" };
+    }
+
+    if (config.billing.enforceSummaryQuota && quota) {
+      const limit = getThreadSummaryLimit(quota.plan);
+      const meterRow = await tx.inboxUsageMeter.findUnique({
+        where: {
+          inboxKey_kind_windowStart: {
+            inboxKey: quota.inboxKey,
+            kind: "THREAD_SUMMARY",
+            windowStart: quota.windowStart,
+          },
+        },
+        select: { used: true },
+      });
+      const used = meterRow?.used ?? 0;
+      if (used >= limit) return { kind: "quota_exceeded", used, limit };
+    }
+
+    // Claim the row. A stale summary's text is deliberately retained on the row
+    // (the UI shows nothing until the new one lands, but a failed regeneration
+    // leaves the previous text recoverable rather than destroyed).
+    await tx.threadSummary.upsert({
+      where: { emailThreadId: threadId },
+      create: {
+        workspaceId,
+        emailThreadId: threadId,
+        status: "GENERATING",
+        locale,
+        promptVersion: SUMMARY_PROMPT_VERSION,
+        messageSetSignature: signature,
+      },
+      update: {
+        status: "GENERATING",
+        locale,
+        promptVersion: SUMMARY_PROMPT_VERSION,
+        messageSetSignature: signature,
+        errorMessage: null,
+      },
+    });
+    return { kind: "claimed" };
+  });
+
+  if (txResult.kind === "cache_hit") return { status: 200, body: readyBody(txResult.row) };
+  if (txResult.kind === "generating") return { status: 202, body: { generating: true } };
+  if (txResult.kind === "quota_exceeded") {
+    return {
+      status: 429,
+      body: {
+        error: "Monthly thread summary quota exceeded",
+        used: txResult.used,
+        limit: txResult.limit,
+        resetsAt: getSummaryQuotaResetsAt(new Date()).toISOString(),
+      },
+    };
+  }
+
+  // Fetch full body texts live from the provider (one call for the whole
+  // thread), exactly as drafts do. The DB deliberately stores bodyText: null
+  // ("store minimal email data"), so the stored rows alone cannot feed a
+  // summary. Fallback chain per message: live body → stored bodyText (mock/dev
+  // inbox) → stored snippet — the snippet is a real 200-char preview, so even
+  // with the provider unreachable the model sees content, not "(no body)".
+  // Values may be null (a message the provider returned no excerpt for); the ??
+  // chain below lets those fall through to the stored body / snippet.
+  let bodyByMessageId = new Map<string, string | null>();
+  if (connection?.encryptedRefreshToken) {
+    try {
+      const client = createMailProvider(connection);
+      const snapshot = await client.getThreadSnapshot(thread.providerThreadId);
+      bodyByMessageId = new Map(
+        snapshot.messages.map((m) => [m.providerMessageId, m.bodyExcerpt]),
+      );
+    } catch {
+      // Non-fatal: fall back to stored values.
+    }
+  }
+  const aiMessages: ThreadMessage[] = thread.messages.map(
+    ({ providerMessageId, snippet, ...m }) => ({
+      ...m,
+      bodyText: bodyByMessageId.get(providerMessageId) ?? m.bodyText ?? snippet,
+    }),
+  );
+  const targetLanguage = LOCALE_ENGLISH_LANGUAGE_NAMES[matchLocale([locale])];
+
+  let result;
+  try {
+    result = await generateThreadSummary(provider, aiMessages, {
+      targetLanguage,
+      subject: thread.subject,
+    });
+  } catch (e) {
+    await markFailed(threadId, String(e));
+    return { status: 500, body: { error: "Summary generation failed" } };
+  }
+  if (!result) {
+    await markFailed(threadId, "LLM returned invalid output");
+    return { status: 500, body: { error: "Summary generation failed" } };
+  }
+
+  const generatedAt = new Date();
+  await db.threadSummary.update({
+    where: { emailThreadId: threadId },
+    data: {
+      status: "READY",
+      format: result.format,
+      summary: result.text,
+      bullets: result.bullets,
+      model: provider.modelName,
+      generatedAt,
+      errorMessage: null,
+    },
+  });
+
+  // Record the committed generation against the reset-immune inbox meter. FAILED
+  // rows above never reach here, so a server-side failure never burns allowance.
+  // Runs regardless of the enforce flag (self-host observability).
+  if (quota) {
+    await recordMeterUsage({
+      inboxKey: quota.inboxKey,
+      kind: "THREAD_SUMMARY",
+      windowStart: quota.windowStart,
+      delta: 1,
+    });
+  }
+
+  console.log(
+    `[thread-summary] Generated summary for thread ${threadId} ` +
+      `(format=${result.format}, ${result.text?.length ?? result.bullets.length} ` +
+      `${result.format === "BULLETS" ? "bullets" : "chars"})`,
+  );
+  return {
+    status: 201,
+    body: {
+      kind: "summary",
+      format: result.format,
+      summary: result.text ?? "",
+      bullets: result.bullets,
+      locale,
+      generatedAt: generatedAt.toISOString(),
+    },
+  };
+}
+
+/** Flip the claimed row to FAILED. `message` is an error string only, never content. */
+async function markFailed(threadId: string, message: string): Promise<void> {
+  await db.threadSummary
+    .update({
+      where: { emailThreadId: threadId },
+      data: { status: "FAILED", errorMessage: message },
+    })
+    .catch(() => {});
+}
+
+const summary = new Hono();
+
+// ─── POST /workspaces/:workspaceId/email-threads/:threadId/summary ─────────────
+//
+// Get-or-generate for the web preview and the extension side panel. Send
+// X-Force-Regenerate: 1 to bypass the cache (counts against quota like any other
+// generation).
+
+summary.post("/workspaces/:workspaceId/email-threads/:threadId/summary", async (c) => {
+  const parsed = threadParams.safeParse({
+    workspaceId: c.req.param("workspaceId"),
+    threadId: c.req.param("threadId"),
+  });
+  if (!parsed.success) return c.json({ error: "Invalid params" }, 400);
+
+  const force = c.req.header("X-Force-Regenerate") === "1";
+  const outcome = await getOrGenerateSummary(parsed.data.workspaceId, parsed.data.threadId, force);
+  return c.json(outcome.body, outcome.status);
+});
+
+// ─── POST /workspaces/:workspaceId/provider-threads/:providerThreadId/summary ──
+//
+// Same thing, addressed by the provider's own thread id. Used by the native
+// Gmail/Outlook content scripts, which know the mailbox's thread id but not ours.
+// Resolves across every email account in the workspace via the
+// (emailAccountId, providerThreadId) unique key. A thread we have not synced is a
+// 404 and the content script renders nothing.
+
+summary.post("/workspaces/:workspaceId/provider-threads/:providerThreadId/summary", async (c) => {
+  const parsed = providerThreadParams.safeParse({
+    workspaceId: c.req.param("workspaceId"),
+    providerThreadId: c.req.param("providerThreadId"),
+  });
+  if (!parsed.success) return c.json({ error: "Invalid params" }, 400);
+  const { workspaceId, providerThreadId } = parsed.data;
+
+  // Workspace kill-switch for native injection. Enforced here rather than in the
+  // content script because the extension is the half we do not control: an old
+  // build, or one a user never updates, must still stop injecting the moment the
+  // workspace turns the setting off. Only THIS route is gated — the web preview
+  // and the side panel are Amarnai's own surfaces and address threads by our id.
+  // A missing settings row means defaults, and the default is on.
+  const settings = await db.gmailSyncSettings.findUnique({
+    where: { workspaceId },
+    select: { threadSummaryInjectionEnabled: true },
+  });
+  if (settings && !settings.threadSummaryInjectionEnabled) {
+    return c.json(
+      {
+        error: "Thread summary injection is disabled for this workspace",
+        injectionDisabled: true,
+      },
+      403,
+    );
+  }
+
+  const accounts = await db.emailAccount.findMany({
+    where: { workspaceId },
+    select: { id: true },
+  });
+  if (accounts.length === 0) return c.json({ error: "Thread not found" }, 404);
+
+  const thread = await db.emailThread.findFirst({
+    where: {
+      emailAccountId: { in: accounts.map((a) => a.id) },
+      providerThreadId: normalizeProviderThreadId(providerThreadId),
+    },
+    select: { id: true },
+  });
+  if (!thread) return c.json({ error: "Thread not found" }, 404);
+
+  const force = c.req.header("X-Force-Regenerate") === "1";
+  const outcome = await getOrGenerateSummary(workspaceId, thread.id, force);
+  return c.json(outcome.body, outcome.status);
+});
+
+// ─── GET /workspaces/:workspaceId/summary-quota ────────────────────────────────
+//
+// Point-in-time read of the workspace's summary usage for the active
+// calendar-month window: { used, limit, resetsAt }.
+
+summary.get("/workspaces/:workspaceId/summary-quota", async (c) => {
+  const workspaceId = c.req.param("workspaceId");
+  if (!workspaceId) return c.json({ error: "Invalid params" }, 400);
+
+  const connection = await db.emailConnection.findUnique({
+    where: { workspaceId },
+    select: { emailAddress: true },
+  });
+
+  const now = new Date();
+  const quota = connection
+    ? await resolveInboxQuota(connection.emailAddress, "THREAD_SUMMARY", now)
+    : null;
+
+  return c.json({
+    used: quota?.used ?? 0,
+    limit: getThreadSummaryLimit(quota?.plan ?? "FREE"),
+    resetsAt: getSummaryQuotaResetsAt(now).toISOString(),
+  });
+});
+
+export { summary as threadSummaryRoute };

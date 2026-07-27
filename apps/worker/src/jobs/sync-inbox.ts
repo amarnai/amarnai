@@ -1,10 +1,10 @@
-import { createHash } from "node:crypto";
 import { Worker } from "bullmq";
 import {
   db,
   resolveInboxQuota,
   markGmailConnectionAuthFailed,
   deleteQuotaBlockedNotifications,
+  messageSetSignature,
 } from "@amarnai/db";
 import { config } from "@amarnai/config";
 import {
@@ -184,19 +184,8 @@ const QUOTA_RECOVERY_BATCH = 200;
 /** Max attempts before a failed thread stops being auto-recovered. */
 const MAX_CLASSIFY_ATTEMPTS = 5;
 
-/**
- * Compact, stable signature of a thread's current message-id set. Folded into the
- * LIVE classify dedup key so the key is CONTENT-aware: a spurious re-discovery of an
- * unchanged thread (overlapping historyId, a sync retry) yields the same signature
- * and collapses to one job, while a genuinely-new (or removed) message yields a
- * different signature and is NOT collapsed — so it re-sorts instead of being silently
- * dropped while a prior classify for the old content is still in flight. Order-
- * independent (ids are sorted) and truncated because a dedup id only needs to be
- * collision-resistant, not reversible.
- */
-function messageSetSignature(providerMessageIds: string[]): string {
-  return createHash("sha1").update([...providerMessageIds].sort().join(",")).digest("hex").slice(0, 16);
-}
+// messageSetSignature (folded into the LIVE classify dedup key below) now lives in
+// @amarnai/db so the thread-summary cache can invalidate on the same signature.
 
 /**
  * Quota-bound a candidate list, stamp classifyingAt, and enqueue LIVE classify
@@ -396,6 +385,9 @@ export function createSyncInboxWorker(): Worker {
         // Not consumed by sync filtering — writeback runs off its own job. Kept
         // false here to satisfy the shared type without an extra column select.
         labelWritebackEnabled:   false,
+        // Not consumed by sync filtering — read only by the extension's summary
+        // request path. Kept true here to satisfy the shared type.
+        threadSummaryInjectionEnabled: true,
         blacklistedSenderEmails: syncSettingsRow?.blacklistedSenderEmails ?? [],
       };
       const sortingPaused = settings.sortingPaused;

@@ -10,6 +10,10 @@ export const GmailSyncSettingsSchema = z.object({
   // write scope is granted upfront at connect when the feature is enabled);
   // inert without the scope, and users can switch it off per workspace.
   labelWritebackEnabled:   z.boolean().default(true),
+  // Browser extension injects its thread-summary card into the native
+  // Gmail/Outlook UI for this workspace. On by default; the extension has no
+  // toggle of its own, so this is the only place it can be turned off.
+  threadSummaryInjectionEnabled: z.boolean().default(true),
   blacklistedSenderEmails: z.array(z.string().email()).default([]),
 });
 export type GmailSyncSettings = z.infer<typeof GmailSyncSettingsSchema>;
@@ -20,6 +24,7 @@ export const DEFAULT_GMAIL_SYNC_SETTINGS: GmailSyncSettings = {
   sortingPaused:           false,
   routeBulkToOther:        true,
   labelWritebackEnabled:   true,
+  threadSummaryInjectionEnabled: true,
   blacklistedSenderEmails: [],
 };
 
@@ -29,6 +34,7 @@ export const UpdateGmailSyncSettingsSchema = z.object({
   sortingPaused:         z.boolean().optional(),
   routeBulkToOther:      z.boolean().optional(),
   labelWritebackEnabled: z.boolean().optional(),
+  threadSummaryInjectionEnabled: z.boolean().optional(),
 });
 export type UpdateGmailSyncSettingsInput = z.infer<typeof UpdateGmailSyncSettingsSchema>;
 

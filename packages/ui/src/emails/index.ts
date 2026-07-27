@@ -30,6 +30,8 @@ export { AssigneePicker } from "./AssigneePicker.js";
 export type { AssigneePickerProps } from "./AssigneePicker.js";
 export { MessageCard } from "./MessageCard.js";
 export { SuggestedDraftCard } from "./SuggestedDraftCard.js";
+export { ThreadSummaryCard } from "./ThreadSummaryCard.js";
+export type { ThreadSummaryCardState, ThreadSummaryCardProps } from "./ThreadSummaryCard.js";
 export { ReroutePopover } from "./ReroutePopover.js";
 export { ThreadPreview } from "./ThreadPreview.js";
 export { MockEmailsPage } from "./MockEmailsPage.js";

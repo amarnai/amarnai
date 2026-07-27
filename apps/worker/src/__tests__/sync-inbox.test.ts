@@ -4,6 +4,10 @@ import { createHash } from "node:crypto";
 // ─── Mocks ────────────────────────────────────────────────────────────────────
 
 vi.mock("@amarnai/db", () => ({
+  // Real implementation, not a stub: the dedup key it produces is asserted below,
+  // so a fake would make those assertions meaningless.
+  messageSetSignature: (ids: string[]) =>
+    createHash("sha1").update([...ids].sort().join(",")).digest("hex").slice(0, 16),
   db: {
     workspace: { findUnique: vi.fn() },
     emailConnection: { findUnique: vi.fn() },

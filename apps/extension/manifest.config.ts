@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { MAIL_HOSTS } from "./src/platform/mailHosts";
+import { GMAIL_MAIL_HOST, OUTLOOK_MAIL_HOSTS, MAIL_HOSTS } from "./src/platform/mailHosts";
 
 const dir = path.dirname(fileURLToPath(import.meta.url));
 
@@ -32,14 +32,32 @@ const FIREFOX_MIN_VERSION = "128.0";
  *   shared. The Chrome branch is byte-identical to the original single-target
  *   manifest.
  */
+/**
+ * Native thread-summary injection: one content script per provider, sharing the
+ * host grants MAIL_HOSTS already asks for (no new permission surface). Declared
+ * once and spread into both browser branches so the two can never diverge.
+ * Omitted entirely when injection is disabled at build time.
+ */
+const CONTENT_SCRIPTS = [
+  { matches: [GMAIL_MAIL_HOST], js: ["content-gmail.js"], run_at: "document_idle" },
+  { matches: OUTLOOK_MAIL_HOSTS, js: ["content-outlook.js"], run_at: "document_idle" },
+];
+
 export function buildManifest({
   apiUrl,
   key,
   browser = "chrome",
+  nativeInjection = true,
 }: {
   apiUrl: string;
   key?: string | undefined;
   browser?: BrowserTarget;
+  /**
+   * Build-time kill-switch (VITE_DISABLE_NATIVE_INJECTION=1). When false the
+   * manifest declares no content scripts at all, so the build cannot touch mail
+   * pages. The runtime toggle in the panel is the per-user equivalent.
+   */
+  nativeInjection?: boolean;
 }) {
   const apiOrigin = new URL(apiUrl).origin;
   const { version } = JSON.parse(
@@ -75,6 +93,7 @@ export function buildManifest({
       background: { scripts: ["service-worker.js"], type: "module" },
       permissions: ["storage", "identity", "clipboardWrite"],
       host_permissions: hostPermissions,
+      ...(nativeInjection ? { content_scripts: CONTENT_SCRIPTS } : {}),
       browser_specific_settings: {
         gecko: {
           id: FIREFOX_GECKO_ID,
@@ -103,6 +122,7 @@ export function buildManifest({
     background: { service_worker: "service-worker.js", type: "module" },
     permissions: ["sidePanel", "storage", "identity", "clipboardWrite"],
     host_permissions: hostPermissions,
+    ...(nativeInjection ? { content_scripts: CONTENT_SCRIPTS } : {}),
     icons,
   };
 }

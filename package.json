@@ -28,7 +28,7 @@
     "i18n:extract": "pnpm --filter @amarnai/i18n extract",
     "i18n:translate": "node scripts/i18n-translate.mjs",
     "i18n:compile": "pnpm --filter @amarnai/i18n compile",
-    "tunnel": "node scripts/gmail-tunnel.mjs",
+    "tunnel": "node scripts/dev-tunnel.mjs",
     "configure:pubsub": "node scripts/configure-pubsub.mjs",
     "prepare": "git config core.hooksPath .githooks || true"
   },

@@ -47,6 +47,9 @@ const envSchema = z.object({
   // Set to 'false' to disable per-workspace monthly draft quotas.
   // Self-hosted deployments that manage their own AI costs should set this to false.
   ENFORCE_DRAFT_QUOTA: z.string().transform((v) => v !== 'false').default('true'),
+  // Set to 'false' to disable per-workspace monthly thread-summary quotas.
+  // Self-hosted deployments that manage their own AI costs should set this to false.
+  ENFORCE_SUMMARY_QUOTA: z.string().transform((v) => v !== 'false').default('true'),
   // Set to 'false' to disable per-workspace monthly thread-sort quotas.
   // Self-hosted deployments that manage their own AI costs should set this to false.
   ENFORCE_THREAD_SORT_QUOTA: z.string().transform((v) => v !== 'false').default('true'),
@@ -294,6 +297,7 @@ export const config = {
   },
   billing: {
     enforceDraftQuota: env.ENFORCE_DRAFT_QUOTA,
+    enforceSummaryQuota: env.ENFORCE_SUMMARY_QUOTA,
     enforceThreadSortQuota: env.ENFORCE_THREAD_SORT_QUOTA,
     enforceBackfillQuota: env.ENFORCE_BACKFILL_QUOTA,
     enforceBackfillPaymentGate: env.ENFORCE_BACKFILL_PAYMENT_GATE,

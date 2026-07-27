@@ -16,7 +16,7 @@ import type { ThreadItem } from "@amarnai/ui/emails";
 import { MockEmailsPage } from "@amarnai/ui/emails";
 import { MailInboxMock, type MockProvider } from "./MailInboxMock";
 import { MailThreadMock } from "./MailThreadMock";
-import { getDemoThreads, getDemoFolders, getDemoDraftBodies } from "@/components/demo/demo-seed";
+import { getDemoThreads, getDemoFolders, getDemoDraftBodies, getDemoSummaries, getDemoSummaryBullets } from "@/components/demo/demo-seed";
 
 /** Which surface the frame previews: the docked extension or the full web app. */
 type Surface = "web" | "ext";
@@ -78,6 +78,8 @@ export function EmailsDemoSection() {
   );
   const folders = useMemo(() => getDemoFolders(i18n), [i18n]);
   const draftBodies = useMemo(() => getDemoDraftBodies(i18n), [i18n]);
+  const summaries = useMemo(() => getDemoSummaries(i18n), [i18n]);
+  const summaryBullets = useMemo(() => getDemoSummaryBullets(i18n), [i18n]);
 
   const frameRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
@@ -325,6 +327,8 @@ export function EmailsDemoSection() {
                 initialThreads={threads}
                 initialFolders={folders}
                 draftBodies={draftBodies}
+                summaries={summaries}
+                summaryBullets={summaryBullets}
                 initialRailOpen={false}
                 surface={mode === "web" ? "web" : "extension"}
                 onOpenInProvider={setOpenedThread}

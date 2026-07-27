@@ -16,6 +16,7 @@ const SETTINGS_SELECT = {
   sortingPaused: true,
   routeBulkToOther: true,
   labelWritebackEnabled: true,
+  threadSummaryInjectionEnabled: true,
   blacklistedSenderEmails: true,
 } as const;
 
@@ -96,12 +97,14 @@ gmailSyncSettings.patch("/workspaces/:workspaceId/gmail-sync-settings", async (c
     sortingPaused?: boolean;
     routeBulkToOther?: boolean;
     labelWritebackEnabled?: boolean;
+    threadSummaryInjectionEnabled?: boolean;
   } = {};
   if (bodyParsed.data.includeSpam !== undefined) updateData.includeSpam = bodyParsed.data.includeSpam;
   if (bodyParsed.data.includePromotions !== undefined) updateData.includePromotions = bodyParsed.data.includePromotions;
   if (bodyParsed.data.sortingPaused !== undefined) updateData.sortingPaused = bodyParsed.data.sortingPaused;
   if (bodyParsed.data.routeBulkToOther !== undefined) updateData.routeBulkToOther = bodyParsed.data.routeBulkToOther;
   if (bodyParsed.data.labelWritebackEnabled !== undefined) updateData.labelWritebackEnabled = bodyParsed.data.labelWritebackEnabled;
+  if (bodyParsed.data.threadSummaryInjectionEnabled !== undefined) updateData.threadSummaryInjectionEnabled = bodyParsed.data.threadSummaryInjectionEnabled;
 
   const updated = await db.gmailSyncSettings.upsert({
     where: { workspaceId },
@@ -112,6 +115,8 @@ gmailSyncSettings.patch("/workspaces/:workspaceId/gmail-sync-settings", async (c
       sortingPaused:         updateData.sortingPaused         ?? DEFAULT_GMAIL_SYNC_SETTINGS.sortingPaused,
       routeBulkToOther:      updateData.routeBulkToOther      ?? DEFAULT_GMAIL_SYNC_SETTINGS.routeBulkToOther,
       labelWritebackEnabled: updateData.labelWritebackEnabled ?? DEFAULT_GMAIL_SYNC_SETTINGS.labelWritebackEnabled,
+      threadSummaryInjectionEnabled:
+        updateData.threadSummaryInjectionEnabled ?? DEFAULT_GMAIL_SYNC_SETTINGS.threadSummaryInjectionEnabled,
     },
     update: updateData,
     select: SETTINGS_SELECT,

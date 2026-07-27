@@ -144,12 +144,19 @@ export class GraphClient {
    * than Gmail and sends the header). 410 Gone on a delta URL is surfaced as a
    * cursor-expiry so the caller falls back to a full resync.
    */
-  private async graphGet<T>(url: string, accessToken: string): Promise<GraphListResponse<T>> {
+  private async graphGet<T>(
+    url: string,
+    accessToken: string,
+    opts?: { maxPageSize?: number },
+  ): Promise<GraphListResponse<T>> {
+    const prefer =
+      'IdType="ImmutableId"' +
+      (opts?.maxPageSize ? `, odata.maxpagesize=${opts.maxPageSize}` : "");
     for (let attempt = 0; attempt < 2; attempt++) {
       const res = await fetch(url, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
-          Prefer: 'IdType="ImmutableId"',
+          Prefer: prefer,
         },
       });
       if (res.status === 429 && attempt === 0) {
@@ -202,14 +209,30 @@ export class GraphClient {
     const me = (await meRes.json()) as { mail?: string | null; userPrincipalName?: string };
     const emailAddress = (me.mail ?? me.userPrincipalName ?? "").toLowerCase();
 
-    // Establish the initial delta cursor at "now" without importing anything:
-    // `$deltatoken=latest` returns a deltaLink representing the current state.
-    const initial = await this.graphGet<GraphMessage>(
-      `${GRAPH_BASE_URL}${INBOX_MESSAGES}/delta?$deltatoken=latest`,
-      accessToken,
-    );
-    const syncCursor = initial["@odata.deltaLink"] ?? "";
-    return { emailAddress, syncCursor };
+    // Establish the initial delta cursor at "now" without importing anything.
+    // Work/school mailboxes honor `$deltatoken=latest` (empty response with an
+    // immediate deltaLink), but consumer outlook.com mailboxes ignore it and
+    // enumerate the full inbox in pages instead — so follow nextLink pages,
+    // discarding the entries, until the terminal deltaLink appears. The large
+    // page size keeps that walk to ~1 request per 200 inbox messages, and it
+    // only runs when a cursor is first established. There is deliberately no
+    // empty-string fallback: persisting "" as a cursor is indistinguishable
+    // from "no cursor", which re-enters this branch on every sync and silently
+    // disables incremental sync forever — a chain that ends without a
+    // deltaLink must fail loudly instead.
+    let url = `${GRAPH_BASE_URL}${INBOX_MESSAGES}/delta?$deltatoken=latest`;
+    for (;;) {
+      const page = await this.graphGet<GraphMessage>(url, accessToken, { maxPageSize: 200 });
+      if (page["@odata.deltaLink"]) {
+        return { emailAddress, syncCursor: page["@odata.deltaLink"] };
+      }
+      if (!page["@odata.nextLink"]) {
+        throw new Error(
+          "Graph inbox delta ended without a deltaLink — cannot establish a sync cursor",
+        );
+      }
+      url = page["@odata.nextLink"];
+    }
   }
 
   async listChangesSince(

@@ -157,6 +157,34 @@ async function renewAllOutlookSubscriptions(): Promise<void> {
   );
 }
 
+/**
+ * Startup retry for Outlook subscription registration. Graph validates the
+ * notification URL with a synchronous callback at subscription creation, so the
+ * startup renewal fails when the API (or the dev tunnel in front of it) is
+ * still booting alongside the worker — and the next daily tick is a full day
+ * away. Re-runs the renewal on a short backoff while any active Outlook
+ * connection remains unregistered. Gmail needs no equivalent: its watch
+ * registration is a plain outbound call with no callback to our API.
+ *
+ * Timers are unref'd so a pending retry never holds up process exit.
+ */
+async function retryUnregisteredOutlookSubscriptions(): Promise<void> {
+  if (!config.outlook.notificationUrl?.startsWith("https://")) return;
+
+  for (const delayMs of [60_000, 5 * 60_000, 15 * 60_000]) {
+    const unregistered = await db.emailConnection.count({
+      where: { provider: "OUTLOOK", status: "ACTIVE", watchExpiresAt: null },
+    });
+    if (unregistered === 0) return;
+
+    console.log(
+      `[subscription-renewal] ${unregistered} Outlook connection(s) still unregistered — retrying in ${delayMs / 1000}s`
+    );
+    await new Promise<void>((resolve) => setTimeout(resolve, delayMs).unref());
+    await renewAllOutlookSubscriptions();
+  }
+}
+
 // ─── Scheduler ────────────────────────────────────────────────────────────────
 
 /**
@@ -345,6 +373,12 @@ async function main(): Promise<void> {
   // then daily. Both use a renewal window wide enough for a daily cadence.
   await renewAllGmailWatches();
   await renewAllOutlookSubscriptions();
+
+  // Cold starts race the API boot (see retryUnregisteredOutlookSubscriptions);
+  // fire-and-forget so the retry backoff never delays worker startup.
+  void retryUnregisteredOutlookSubscriptions().catch((err) => {
+    console.error("[subscription-renewal] Startup retry failed:", err);
+  });
 
   const watchRenewalHandle = setInterval(() => {
     renewAllGmailWatches().catch((err) => {

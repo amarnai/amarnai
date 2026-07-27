@@ -444,6 +444,33 @@ export type GenerateDraftResult =
   | { generating: true }
   | ({ quotaExceeded: true } & QuotaInfo);
 
+// ── Thread summaries ──────────────────────────────────────────────────────────
+
+/**
+ * Prose is the default; BULLETS is reserved for threads that genuinely enumerate
+ * facts. Exactly one of `text` / `bullets` is populated, per `format`.
+ */
+export type ThreadSummaryFormat = "PROSE" | "BULLETS";
+
+export type ThreadSummary = {
+  format: ThreadSummaryFormat;
+  text: string;
+  bullets: string[];
+  locale: string;
+  generatedAt: string | null;
+};
+
+/**
+ * "snippet" is not a degraded summary — it is the deliberate zero-cost answer for
+ * single-message and automated threads, where the stored snippet already says
+ * everything a TL;DR would.
+ */
+export type ThreadSummaryResult =
+  | { kind: "summary"; summary: ThreadSummary; isNew: boolean }
+  | { kind: "snippet"; snippet: string }
+  | { generating: true }
+  | ({ quotaExceeded: true } & QuotaInfo);
+
 // ── Dev / debug endpoints ─────────────────────────────────────────────────────
 
 export type MockInboxEventInput =
