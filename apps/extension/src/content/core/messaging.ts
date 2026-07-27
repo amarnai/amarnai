@@ -24,11 +24,16 @@ export type ThreadSummaryRequest = {
 /**
  * Why the background could not answer. The content script renders nothing for
  * every one of these — a mail page must never sprout an Amarnai error.
+ *
+ * "injectionDisabled" is the only one that is a settled answer rather than a
+ * transient miss: the workspace has turned the card off, so the content script
+ * stops asking for the life of the page instead of retrying every thread open.
  */
 export type ThreadSummaryFailureReason =
   | "signedOut"
   | "noWorkspace"
   | "noThread"
+  | "injectionDisabled"
   | "error";
 
 export type ThreadSummaryPayload =

@@ -28,6 +28,7 @@ vi.mock("@amarnai/db", () => ({
     workspaceMember: { findUnique: vi.fn() },
     emailConnection: { findUnique: vi.fn() },
     threadSummary: { findUnique: vi.fn(), upsert: vi.fn(), update: vi.fn() },
+    gmailSyncSettings: { findUnique: vi.fn() },
     inboxUsageMeter: { findUnique: vi.fn() },
     $queryRaw: vi.fn(),
     $transaction: vi.fn(),
@@ -126,6 +127,9 @@ beforeEach(() => {
   vi.mocked(db.threadSummary.update).mockResolvedValue({} as never);
   vi.mocked(db.inboxUsageMeter.findUnique).mockResolvedValue(null as never);
   vi.mocked(db.emailAccount.findMany).mockResolvedValue([{ id: "acc-1" }] as never);
+  vi.mocked(db.gmailSyncSettings.findUnique).mockResolvedValue({
+    threadSummaryInjectionEnabled: true,
+  } as never);
   vi.mocked(db.$queryRaw).mockResolvedValue([] as never);
   wireTransaction();
 
@@ -480,6 +484,39 @@ describe("POST /workspaces/:workspaceId/provider-threads/:providerThreadId/summa
         where: { emailAccountId: { in: ["acc-1"] }, providerThreadId: graphFlavor },
       }),
     );
+  });
+
+  // ── Workspace kill-switch ───────────────────────────────────────────────────
+  // Enforced on THIS route only: it is the one the mail-page content scripts
+  // call, and the extension is the half we do not control.
+
+  it("403s without generating when the workspace has injection switched off", async () => {
+    vi.mocked(db.gmailSyncSettings.findUnique).mockResolvedValue({
+      threadSummaryInjectionEnabled: false,
+    } as never);
+    const res = await post(`/workspaces/${WS_ID}/provider-threads/${PROVIDER_THREAD_ID}/summary`);
+    expect(res.status).toBe(403);
+    expect(await res.json()).toMatchObject({ injectionDisabled: true });
+    // Refused before any thread lookup, so it costs neither a query nor a model call.
+    expect(db.emailThread.findFirst).not.toHaveBeenCalled();
+    expect(mockGenerateThreadSummary).not.toHaveBeenCalled();
+  });
+
+  it("treats a missing settings row as enabled (the column default)", async () => {
+    vi.mocked(db.gmailSyncSettings.findUnique).mockResolvedValue(null as never);
+    vi.mocked(db.emailThread.findFirst)
+      .mockResolvedValueOnce({ id: THREAD_ID } as never)
+      .mockResolvedValueOnce(multiMessageThread() as never);
+    const res = await post(`/workspaces/${WS_ID}/provider-threads/${PROVIDER_THREAD_ID}/summary`);
+    expect(res.status).toBe(201);
+  });
+
+  it("leaves the id-addressed route (web preview, side panel) ungated", async () => {
+    vi.mocked(db.gmailSyncSettings.findUnique).mockResolvedValue({
+      threadSummaryInjectionEnabled: false,
+    } as never);
+    const res = await post(`/workspaces/${WS_ID}/email-threads/${THREAD_ID}/summary`);
+    expect(res.status).toBe(201);
   });
 
   it("passes a Graph-form id (and Gmail hex ids) through unchanged", async () => {

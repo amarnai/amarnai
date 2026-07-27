@@ -10,10 +10,16 @@ const { mockClient } = vi.hoisted(() => ({
   },
 }));
 
-vi.mock("@amarnai/api-client", () => ({
-  makeApiClient: () => mockClient,
-  makeBearerTransport: () => ({ baseUrl: "https://api.test", fetch: vi.fn() }),
-}));
+// InjectionDisabledError must be the REAL class, not a stub: the handler tells
+// the workspace kill-switch apart from a generic failure with `instanceof`.
+vi.mock("@amarnai/api-client", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@amarnai/api-client")>();
+  return {
+    InjectionDisabledError: actual.InjectionDisabledError,
+    makeApiClient: () => mockClient,
+    makeBearerTransport: () => ({ baseUrl: "https://api.test", fetch: vi.fn() }),
+  };
+});
 
 const { mockTokenStore } = vi.hoisted(() => ({
   mockTokenStore: { get: vi.fn(), set: vi.fn(), clear: vi.fn() },
@@ -21,6 +27,7 @@ const { mockTokenStore } = vi.hoisted(() => ({
 
 vi.mock("../auth/tokenStore", () => ({ extensionTokenStore: mockTokenStore }));
 
+import { InjectionDisabledError } from "@amarnai/api-client";
 import {
   handleThreadSummaryRequest,
   resolveWorkspaceForAccount,
@@ -93,6 +100,18 @@ describe("handleThreadSummaryRequest", () => {
     await expect(handleThreadSummaryRequest(REQUEST)).resolves.toEqual({
       ok: false,
       reason: "noThread",
+    });
+  });
+
+  // Told apart from noThread because the content script latches on it and stops
+  // watching the page, rather than retrying a refusal on every thread open.
+  it("answers injectionDisabled when the workspace has the card switched off", async () => {
+    mockClient.providerThreadSummary.mockRejectedValue(
+      new InjectionDisabledError("Thread summary injection is disabled for this workspace"),
+    );
+    await expect(handleThreadSummaryRequest(REQUEST)).resolves.toEqual({
+      ok: false,
+      reason: "injectionDisabled",
     });
   });
 

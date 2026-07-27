@@ -86,6 +86,9 @@ export function runContentScript(adapter: ProviderAdapter): void {
         if (!response?.ok) {
           debugLog(`background declined: ${response?.reason ?? "no response"}`);
           teardownWidget();
+          // A settled "no" for the whole workspace, not a miss on this thread:
+          // stop watching rather than spending a roundtrip per thread open.
+          if (response?.reason === "injectionDisabled") stop();
           return;
         }
         const result = response.result;
@@ -120,6 +123,14 @@ export function runContentScript(adapter: ProviderAdapter): void {
     return true;
   }
 
+  /** Tear down the watcher and anything on screen. Re-entered only by a reload. */
+  function stop(): void {
+    scheduler?.stop();
+    scheduler = null;
+    teardownWidget();
+    removeExistingWidgets();
+  }
+
   function start(): void {
     if (scheduler) return;
     scheduler = startScheduler({
@@ -135,8 +146,11 @@ export function runContentScript(adapter: ProviderAdapter): void {
   removeExistingWidgets();
 
   // Whether the card renders at all is a workspace setting (web app, on by
-  // default), enforced server-side on each summary request — see the
-  // "injectionDisabled" reason in messaging.ts. The scheduler always starts;
-  // a disabled workspace just gets told no on every open thread.
+  // default), enforced server-side on the provider-thread summary route — the
+  // extension is the half we do not control, so an old build must still stop
+  // injecting. The scheduler always starts; the first thread open in a disabled
+  // workspace comes back "injectionDisabled" and stops it. Re-enabling therefore
+  // takes effect on the next page load, which is the right trade for not paying
+  // a roundtrip per thread open forever.
   start();
 }

@@ -1,4 +1,9 @@
-import { makeApiClient, makeBearerTransport, type ApiClient } from "@amarnai/api-client";
+import {
+  makeApiClient,
+  makeBearerTransport,
+  InjectionDisabledError,
+  type ApiClient,
+} from "@amarnai/api-client";
 import { ext } from "../platform/ext.js";
 import { extensionTokenStore } from "../auth/tokenStore.js";
 import { API_BASE_URL } from "../config.js";
@@ -130,7 +135,11 @@ export async function handleThreadSummaryRequest(
       return { ok: true, result: { kind: "bullets", bullets: result.summary.bullets } };
     }
     return { ok: true, result: { kind: "summary", text: result.summary.text } };
-  } catch {
+  } catch (e) {
+    // The workspace has switched the card off. Told apart from the rest because
+    // it is permanent for this session: the content script latches on it and
+    // stops requesting, rather than paying a roundtrip per thread open.
+    if (e instanceof InjectionDisabledError) return { ok: false, reason: "injectionDisabled" };
     // A 404 (thread never synced into Amarnai) lands here alongside real errors.
     // Both render nothing, so they need not be told apart.
     return { ok: false, reason: "noThread" };

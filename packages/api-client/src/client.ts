@@ -50,6 +50,21 @@ import type {
   TaxonomyMigrationMapping,
 } from "./types.js";
 
+/**
+ * The workspace has turned off native thread-summary injection into Gmail/OWA.
+ *
+ * Its own error type rather than a generic failure because the two call for
+ * opposite responses: a failure is worth retrying on the next thread open, a
+ * refusal is not — the content script latches on this and stops asking.
+ * Only providerThreadSummary can raise it; Amarnai's own surfaces are not gated.
+ */
+export class InjectionDisabledError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "InjectionDisabledError";
+  }
+}
+
 export function makeApiClient(transport: ApiTransport) {
   const base = transport.baseUrl;
 
@@ -88,7 +103,8 @@ export function makeApiClient(transport: ApiTransport) {
   }
 
   // Shared by the two thread-summary entrypoints (our thread id vs the provider's).
-  // Both map the same four server outcomes onto ThreadSummaryResult.
+  // Both map the same four server outcomes onto ThreadSummaryResult; the
+  // provider-id route can additionally refuse with InjectionDisabledError.
   async function requestThreadSummary(
     path: string,
     opts: { force?: boolean }
@@ -108,7 +124,15 @@ export function makeApiClient(transport: ApiTransport) {
       };
     }
     if (!res.ok) {
-      const err = (await res.json().catch(() => ({}))) as { error?: string };
+      const err = (await res.json().catch(() => ({}))) as {
+        error?: string;
+        injectionDisabled?: boolean;
+      };
+      // Distinguished from a generic failure so the caller can stop asking
+      // instead of retrying a refusal on every thread open.
+      if (res.status === 403 && err.injectionDisabled) {
+        throw new InjectionDisabledError(err.error ?? "Thread summary injection is disabled");
+      }
       throw new Error(err.error ?? `API returned ${res.status}`);
     }
     const data = (await res.json()) as

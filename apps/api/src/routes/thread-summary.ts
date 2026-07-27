@@ -454,6 +454,26 @@ summary.post("/workspaces/:workspaceId/provider-threads/:providerThreadId/summar
   if (!parsed.success) return c.json({ error: "Invalid params" }, 400);
   const { workspaceId, providerThreadId } = parsed.data;
 
+  // Workspace kill-switch for native injection. Enforced here rather than in the
+  // content script because the extension is the half we do not control: an old
+  // build, or one a user never updates, must still stop injecting the moment the
+  // workspace turns the setting off. Only THIS route is gated — the web preview
+  // and the side panel are Amarnai's own surfaces and address threads by our id.
+  // A missing settings row means defaults, and the default is on.
+  const settings = await db.gmailSyncSettings.findUnique({
+    where: { workspaceId },
+    select: { threadSummaryInjectionEnabled: true },
+  });
+  if (settings && !settings.threadSummaryInjectionEnabled) {
+    return c.json(
+      {
+        error: "Thread summary injection is disabled for this workspace",
+        injectionDisabled: true,
+      },
+      403,
+    );
+  }
+
   const accounts = await db.emailAccount.findMany({
     where: { workspaceId },
     select: { id: true },

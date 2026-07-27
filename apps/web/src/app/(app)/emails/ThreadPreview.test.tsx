@@ -378,6 +378,89 @@ describe("ThreadPreview thread summary", () => {
   });
 });
 
+describe("ThreadPreview summary request races", () => {
+  // The pane is not keyed by thread id, so a thread switch re-runs the effect
+  // WITHOUT remounting. An unguarded response therefore lands in the state of
+  // whatever thread is on screen when it arrives — and a summary is derived
+  // email content, so showing the wrong one attributes one thread's contents to
+  // another. Generation is seconds and a cache hit is milliseconds, so the slow
+  // response routinely arrives second.
+  it("drops a slow response for a thread the user has already left", async () => {
+    vi.mocked(api.emailThread).mockResolvedValue(detail(["m-1", "m-2"], "Filed under Work."));
+
+    let resolveFirst: (value: Awaited<ReturnType<typeof api.threadSummary>>) => void = noop;
+    const slowFirst = new Promise<Awaited<ReturnType<typeof api.threadSummary>>>((r) => {
+      resolveFirst = r;
+    });
+    const summaryFor = (text: string) =>
+      ({
+        kind: "summary" as const,
+        summary: { format: "PROSE" as const, text, bullets: [], locale: "en", generatedAt: null },
+        isNew: true,
+      });
+
+    vi.mocked(api.threadSummary)
+      .mockReturnValueOnce(slowFirst)
+      .mockResolvedValueOnce(summaryFor("Second thread: invoice is overdue."));
+
+    const second = { ...threadV2(), id: "t-2" };
+    const { rerender } = renderPreview(threadV2());
+
+    rerender(
+      <ThreadPreview
+        thread={second}
+        workspaceId={WS}
+        workspaceEmail={null}
+        onClose={noop}
+        onDraftStarted={noop}
+        onDraftFailed={noop}
+        onDraftGenerated={noop}
+        onDraftSentToggled={noop}
+        onMarkDone={noop}
+        onUnmarkDone={noop}
+        onToggleImportant={noop}
+        members={[]}
+        canAssign={false}
+        onOpenAssign={noop}
+      />,
+    );
+
+    expect(await screen.findByText("Second thread: invoice is overdue.")).toBeInTheDocument();
+
+    // The abandoned request finally lands.
+    resolveFirst(summaryFor("First thread: kickoff date."));
+    await waitFor(() => expect(api.threadSummary).toHaveBeenCalledTimes(2));
+
+    expect(screen.queryByText("First thread: kickoff date.")).not.toBeInTheDocument();
+    expect(screen.getByText("Second thread: invoice is overdue.")).toBeInTheDocument();
+  });
+
+  it("does not start a poll for a thread the user has already left", async () => {
+    vi.mocked(api.emailThread).mockResolvedValue(detail(["m-1", "m-2"], "Filed under Work."));
+
+    let resolveFirst: (value: Awaited<ReturnType<typeof api.threadSummary>>) => void = noop;
+    const slowFirst = new Promise<Awaited<ReturnType<typeof api.threadSummary>>>((r) => {
+      resolveFirst = r;
+    });
+    vi.mocked(api.threadSummary).mockReturnValueOnce(slowFirst);
+
+    const { unmount } = renderPreview(threadV2());
+    await waitFor(() => expect(api.threadSummary).toHaveBeenCalledTimes(1));
+    unmount();
+
+    // A "someone else is generating this" answer arriving after the pane closed
+    // would otherwise install an interval that nothing is left to clear: it polls
+    // the API forever and has no component to render into.
+    const setIntervalSpy = vi.spyOn(globalThis, "setInterval");
+    resolveFirst({ generating: true });
+    await Promise.resolve();
+    await Promise.resolve();
+
+    expect(setIntervalSpy).not.toHaveBeenCalled();
+    setIntervalSpy.mockRestore();
+  });
+});
+
 describe("ThreadPreview message expansion", () => {
   // The list endpoint delivers ThreadItem.messages NEWEST-FIRST (mapThreads
   // contract: messages[0] drives the snippet). MessageCard latches its expansion

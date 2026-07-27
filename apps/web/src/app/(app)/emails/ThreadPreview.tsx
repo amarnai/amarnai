@@ -65,6 +65,12 @@ export function ThreadPreview({
   const [summaryState, setSummaryState] = useState<ThreadSummaryCardState | null>(null);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const summaryPollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  // Invalidates in-flight summary work. This pane is NOT keyed by thread id, so
+  // switching threads re-runs the effect without remounting: without this, a slow
+  // generation for the previous thread resolves later and renders ITS summary
+  // under the current thread's header. Bumped on every thread change and on
+  // unmount, so a late response can neither set state nor install a poll.
+  const summaryTokenRef = useRef(0);
   type InlineImageDescriptor = { attachmentId: string; mimeType: string; filename: string | null };
   type BodiesResult = {
     bodies: Record<string, string | null>;
@@ -93,17 +99,21 @@ export function ThreadPreview({
    */
   function loadSummary(threadId: string, opts: { force?: boolean } = {}) {
     clearSummaryPoll();
+    const token = ++summaryTokenRef.current;
     setSummaryState({ kind: "loading" });
     api.threadSummary(workspaceId, threadId, opts).then((result) => {
+      if (token !== summaryTokenRef.current) return;
       if ("generating" in result) {
         // Another request (another tab, or a reload mid-generation) is already
         // producing it; poll rather than paying for a second one.
         summaryPollRef.current = setInterval(() => {
           api.threadSummary(workspaceId, threadId).then((polled) => {
+            if (token !== summaryTokenRef.current) return;
             if ("generating" in polled) return;
             clearSummaryPoll();
             setSummaryState(summaryStateFor(polled));
           }).catch(() => {
+            if (token !== summaryTokenRef.current) return;
             clearSummaryPoll();
             setSummaryState({ kind: "error", onRetry: () => loadSummary(threadId) });
           });
@@ -112,6 +122,7 @@ export function ThreadPreview({
       }
       setSummaryState(summaryStateFor(result));
     }).catch(() => {
+      if (token !== summaryTokenRef.current) return;
       // Retrying is free: a FAILED row never records a meter unit.
       setSummaryState({ kind: "error", onRetry: () => loadSummary(threadId) });
     });
@@ -174,6 +185,9 @@ export function ThreadPreview({
     setDraft(null);
     clearPoll();
     clearSummaryPoll();
+    // Retire any summary still in flight for the thread we just left, including
+    // on the snippet path below (which sets state without issuing a request).
+    summaryTokenRef.current++;
 
     // The summary runs in parallel with the message load and never blocks it.
     // A single-message thread is short-circuited here rather than server-side so
@@ -256,6 +270,9 @@ export function ThreadPreview({
     return () => {
       clearPoll();
       clearSummaryPoll();
+      // Also covers unmount (closing the preview), where no later loadSummary
+      // runs to invalidate a response that is still on its way.
+      summaryTokenRef.current++;
     };
   }, [threadSignal, workspaceId]);
 
