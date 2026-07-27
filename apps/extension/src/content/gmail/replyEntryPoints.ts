@@ -69,7 +69,7 @@ function ensureEntryStyles(doc: Document): void {
 
 /** Bumped on every behavior change; printed in the logs so a stale build is
  * recognizable at a glance instead of masquerading as "nothing changed". */
-const REV = "r8";
+const REV = "r9";
 
 const OBSERVE_THROTTLE_MS = 300;
 
@@ -381,6 +381,9 @@ function injectHeaderButton(root: Element, doc: Document): void {
   button.style.cursor = "pointer";
   button.appendChild(makeIcon(doc, 20));
   makeAccessible(button, () => activate(nativeReply, doc));
+  // Gmail renders the header action icons' tooltips ABOVE the icon; its
+  // delegation honors data-tooltip-align ("t,c" = above, centered).
+  button.setAttribute("data-tooltip-align", "t,c");
 
   anchor.insertAdjacentElement("beforebegin", button);
   debugLog(

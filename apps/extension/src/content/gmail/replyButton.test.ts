@@ -15,6 +15,10 @@ import type { GenerateDraftResponse } from "../core/messaging";
 function makeComposeView(overrides: Partial<ComposeViewLike> = {}) {
   const rendered: (ButtonDescriptor | null)[] = [];
   const inserted: string[] = [];
+  // A live body ATTACHED to the document, so isConnected reflects reality like
+  // Gmail's compose does — detached, the replace-on-reclick guard never fires.
+  const body = document.createElement("div");
+  document.body.appendChild(body);
 
   const view: ComposeViewLike = {
     isInlineReplyForm: () => true,
@@ -23,7 +27,11 @@ function makeComposeView(overrides: Partial<ComposeViewLike> = {}) {
     getThreadID: () => "18f0abc",
     insertHTMLIntoBodyAtCursor: (html: string) => {
       inserted.push(html);
-      return null;
+      const wrapper = document.createElement("div");
+      wrapper.innerHTML = html;
+      const node = wrapper.firstElementChild as HTMLElement | null;
+      if (node) body.appendChild(node);
+      return node;
     },
     addButton: (descriptor: Kefir.Observable<ButtonDescriptor | null, never>) => {
       descriptor.observe({ value: (d) => rendered.push(d) });
@@ -36,6 +44,7 @@ function makeComposeView(overrides: Partial<ComposeViewLike> = {}) {
     view,
     rendered,
     inserted,
+    body,
     latest: () => rendered[rendered.length - 1],
     click: () => rendered[rendered.length - 1]?.onClick(),
   };
@@ -115,8 +124,35 @@ describe("attachReplyButton", () => {
     compose.click();
     await settle();
 
-    expect(compose.inserted).toEqual(["<p>Thursday works.</p>"]);
-    expect(compose.latest()).toMatchObject({ title: REPLY_BUTTON_STRINGS.idle });
+    expect(compose.inserted).toEqual(["<div><p>Thursday works.</p></div>"]);
+    expect(compose.latest()).toMatchObject({ title: REPLY_BUTTON_STRINGS.inserted });
+  });
+
+  it("a second click replaces the insertion instead of stacking a duplicate", async () => {
+    // Live UX bug: repeated clicks printed the draft again and again.
+    const compose = makeComposeView();
+    attachReplyButton(compose.view, makeDeps().deps);
+
+    compose.click();
+    await settle();
+    compose.click();
+    await settle();
+
+    expect(compose.body.children).toHaveLength(1);
+    expect(compose.body.textContent).toBe("Thursday works.");
+  });
+
+  it("re-inserts cleanly after the user deleted the previous insertion", async () => {
+    const compose = makeComposeView();
+    attachReplyButton(compose.view, makeDeps().deps);
+
+    compose.click();
+    await settle();
+    compose.body.firstElementChild!.remove();
+    compose.click();
+    await settle();
+
+    expect(compose.body.children).toHaveLength(1);
   });
 
   it("sends the visible mailbox and the compose's thread id", async () => {
@@ -147,7 +183,7 @@ describe("attachReplyButton", () => {
 
     release(DRAFT_OK);
     await settle();
-    expect(compose.latest()).toMatchObject({ title: REPLY_BUTTON_STRINGS.idle });
+    expect(compose.latest()).toMatchObject({ title: REPLY_BUTTON_STRINGS.inserted });
   });
 
   it("ignores a second click while generating, so one draft is never charged twice", async () => {
@@ -280,7 +316,7 @@ describe("attachReplyButton", () => {
     await settle();
 
     expect(deps.requestDraft).toHaveBeenCalledOnce();
-    expect(compose.inserted).toEqual(["<p>Thursday works.</p>"]);
+    expect(compose.inserted).toEqual(["<div><p>Thursday works.</p></div>"]);
   });
 
   it("autoStart still respects a non-draftable compose", async () => {

@@ -27,6 +27,7 @@ export const REPLY_BUTTON_STRINGS = {
   /** Hover tooltip on the injected entry points (bottom-bar pill, header icon). */
   entryTooltip: "Reply with Amarnai",
   generating: "Drafting…",
+  inserted: "Inserted",
   notSorted: "Still sorting…",
   error: "Couldn't draft",
   signedOut: "Sign in to Amarnai",
@@ -34,6 +35,7 @@ export const REPLY_BUTTON_STRINGS = {
   tooltips: {
     idle: "Draft a reply to this thread with Amarnai",
     generating: "Amarnai is writing a reply…",
+    inserted: "Draft inserted. Click again to re-insert it (replaces the inserted text).",
     notSorted: "Amarnai has not sorted this thread yet — try again in a moment",
     error: "Something went wrong. Click to try again.",
     signedOut: "Open the Amarnai panel to sign in",

@@ -16,7 +16,7 @@ export type ComposeViewLike = {
   isReply(): boolean;
   isForward(): boolean;
   getThreadID(): string;
-  insertHTMLIntoBodyAtCursor(html: string): unknown;
+  insertHTMLIntoBodyAtCursor(html: string): HTMLElement | null | undefined | unknown;
   /** InboxSDK removes the button when the descriptor stream emits null. */
   addButton(descriptor: Kefir.Observable<ButtonDescriptor | null, never>): unknown;
 };
@@ -55,6 +55,7 @@ export type ReplyButtonOptions = {
 type State =
   | { kind: "idle" }
   | { kind: "generating" }
+  | { kind: "inserted" }
   | { kind: "notSorted" }
   | { kind: "error" }
   | { kind: "signedOut" }
@@ -72,6 +73,8 @@ function describe(state: State): { title: string; tooltip: string; enabled: bool
   switch (state.kind) {
     case "generating":
       return { title: S.generating, tooltip: S.tooltips.generating, enabled: false };
+    case "inserted":
+      return { title: S.inserted, tooltip: S.tooltips.inserted, enabled: true };
     case "notSorted":
       return { title: S.notSorted, tooltip: S.tooltips.notSorted, enabled: true };
     case "error":
@@ -133,6 +136,10 @@ export function attachReplyButton(
   let push: ((next: State | null) => void) | null = null;
   let inFlight = false;
   let transientTimer: ReturnType<typeof setTimeout> | undefined;
+  // The container of the last insertion into THIS compose. A second click
+  // replaces it rather than appending a duplicate (live UX bug 2026-07-27:
+  // repeated clicks stacked copies of the draft in the body).
+  let lastInserted: HTMLElement | null = null;
 
   const states = Kefir.stream<State | null, never>((emitter) => {
     push = (next) => emitter.value(next);
@@ -227,9 +234,15 @@ export function attachReplyButton(
       emitTransient({ kind: "error" });
       return;
     }
-    // At the cursor, so Gmail's quoted trail below it survives untouched.
-    view.insertHTMLIntoBodyAtCursor(html);
-    emit({ kind: "idle" });
+    // Replace, never append: clicking again must not stack a second copy. If
+    // the user deleted the insertion, the node is disconnected and this is a
+    // plain fresh insert.
+    if (lastInserted?.isConnected) lastInserted.remove();
+    // One wrapper so a multi-paragraph draft is removable as a unit; inserted
+    // at the cursor, so Gmail's quoted trail below survives untouched.
+    const node = view.insertHTMLIntoBodyAtCursor(`<div>${html}</div>`);
+    lastInserted = node instanceof HTMLElement ? node : null;
+    emitTransient({ kind: "inserted" });
   }
 
   view.addButton(

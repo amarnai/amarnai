@@ -133,6 +133,10 @@ describe("ensureReplyEntryPoints", () => {
       // No title: it would double up with Gmail's tooltip.
       expect(el.hasAttribute("title")).toBe(false);
     }
+    // The header icon's tooltip renders above it, like Gmail's own header
+    // action icons; the bar pill keeps Gmail's default placement.
+    expect(headerButton()!.getAttribute("data-tooltip-align")).toBe("t,c");
+    expect(barButton()!.hasAttribute("data-tooltip-align")).toBe(false);
   });
 
   it("sits after Reply when there is no Reply all", () => {
