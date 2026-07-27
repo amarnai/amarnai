@@ -49,6 +49,19 @@ const providerThreadParams = z.object({
 });
 
 /**
+ * OWA's DOM (`data-convid`) carries the EWS flavor of the conversation id:
+ * same bytes as the Graph `conversationId` we store, but the EWS base64
+ * alphabet (`+`, `/`). Graph's URL-safe translation is NOT standard base64url:
+ * it swaps `+`→`_` and `/`→`-` (verified against a live mailbox, and matching
+ * Microsoft's documented EWS↔REST id conversion). Map onto the stored alphabet
+ * so the native content scripts resolve. Idempotent for ids already in Graph
+ * form (they never contain `+` or `/`), and a no-op for Gmail's hex thread ids.
+ */
+function normalizeProviderThreadId(id: string): string {
+  return id.replace(/\+/g, "_").replace(/\//g, "-");
+}
+
+/**
  * How long a GENERATING row is treated as in-flight. Shorter than the draft
  * equivalent (5 min): a summary is a single small call, so a row older than this
  * is a crashed request, not a slow one, and the next open should retry rather
@@ -448,7 +461,10 @@ summary.post("/workspaces/:workspaceId/provider-threads/:providerThreadId/summar
   if (accounts.length === 0) return c.json({ error: "Thread not found" }, 404);
 
   const thread = await db.emailThread.findFirst({
-    where: { emailAccountId: { in: accounts.map((a) => a.id) }, providerThreadId },
+    where: {
+      emailAccountId: { in: accounts.map((a) => a.id) },
+      providerThreadId: normalizeProviderThreadId(providerThreadId),
+    },
     select: { id: true },
   });
   if (!thread) return c.json({ error: "Thread not found" }, 404);

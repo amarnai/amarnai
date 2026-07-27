@@ -461,19 +461,40 @@ describe("POST /workspaces/:workspaceId/provider-threads/:providerThreadId/summa
     expect(db.emailThread.findFirst).not.toHaveBeenCalled();
   });
 
-  it("decodes a URL-encoded provider thread id (Outlook conversationIds)", async () => {
-    const raw = "AAQkAD/g+abc=";
+  it("decodes a URL-encoded id and normalizes the EWS base64 alphabet to Graph's", async () => {
+    // OWA's data-convid is the EWS flavor: `+` and `/`. Graph's URL-safe form is
+    // NOT standard base64url — it swaps `+`→`_` and `/`→`-`. The route must look
+    // up the Graph form, which is what sync stores.
+    const owaFlavor = "AAQkAD/g+abc=";
+    const graphFlavor = "AAQkAD-g_abc=";
     vi.mocked(db.emailThread.findFirst)
       .mockResolvedValueOnce({ id: THREAD_ID } as never)
       .mockResolvedValueOnce(multiMessageThread() as never);
     const res = await post(
-      `/workspaces/${WS_ID}/provider-threads/${encodeURIComponent(raw)}/summary`,
+      `/workspaces/${WS_ID}/provider-threads/${encodeURIComponent(owaFlavor)}/summary`,
     );
     expect(res.status).toBe(201);
     expect(db.emailThread.findFirst).toHaveBeenNthCalledWith(
       1,
       expect.objectContaining({
-        where: { emailAccountId: { in: ["acc-1"] }, providerThreadId: raw },
+        where: { emailAccountId: { in: ["acc-1"] }, providerThreadId: graphFlavor },
+      }),
+    );
+  });
+
+  it("passes a Graph-form id (and Gmail hex ids) through unchanged", async () => {
+    const graphId = "AAQkAD-g_abc=";
+    vi.mocked(db.emailThread.findFirst)
+      .mockResolvedValueOnce({ id: THREAD_ID } as never)
+      .mockResolvedValueOnce(multiMessageThread() as never);
+    const res = await post(
+      `/workspaces/${WS_ID}/provider-threads/${encodeURIComponent(graphId)}/summary`,
+    );
+    expect(res.status).toBe(201);
+    expect(db.emailThread.findFirst).toHaveBeenNthCalledWith(
+      1,
+      expect.objectContaining({
+        where: { emailAccountId: { in: ["acc-1"] }, providerThreadId: graphId },
       }),
     );
   });

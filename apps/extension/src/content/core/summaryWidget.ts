@@ -76,7 +76,7 @@ const STYLES = `
   font-family: "Google Sans", Roboto, system-ui, -apple-system, "Segoe UI", sans-serif;
   font-size: 13px;
   line-height: 1.55;
-  margin: 6px 0 10px 12px;
+  margin: 6px 0px 10px 0px;
   padding: 9px 13px 10px 12px;
   border: 1px solid var(--am-accent);
   border-left-width: 3px;

@@ -21,11 +21,18 @@ export interface ThreadContext {
 /**
  * How many times a single thread may be re-attempted before we stop trying.
  * Attempts are only made on DOM-mutation ticks (throttled to OBSERVE_THROTTLE_MS),
- * so this is roughly a few seconds of Gmail activity — long enough for the SPA to
- * finish painting the conversation, short enough that a page we will never
+ * so this is roughly twenty seconds of mail-app activity — long enough for the SPA
+ * to finish painting the conversation, short enough that a page we will never
  * understand does not get re-probed for the lifetime of the tab.
+ *
+ * Sized for the SLOWEST ready-signal we wait on, which is a cold OWA load
+ * (refresh / deep link): the thread id is detectable from the message list long
+ * before the reading pane exists, so attempts start burning early and the budget
+ * has to span the whole conversation render. The providers deliberately refuse to
+ * anchor on a half-rendered pane (see findOutlookInjectionAnchor), so running out
+ * here means no card at all — the cap must not be the binding constraint.
  */
-export const MAX_ATTEMPTS_PER_THREAD = 20;
+export const MAX_ATTEMPTS_PER_THREAD = 60;
 
 export interface SchedulerOptions {
   /** Read the currently-open thread out of the DOM, or null on a list view. */

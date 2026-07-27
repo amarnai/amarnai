@@ -80,6 +80,37 @@ describe("findAccountEmail", () => {
     expect(findAccountEmail()).toBe("ada@example.com");
   });
 
+  it("falls back to the folder pane's account root node (consumer OWA)", () => {
+    setBody(`
+      <div role="tree">
+        <div role="treeitem" title="ada@example.com">ada@examp…</div>
+        <div role="treeitem">Inbox</div>
+        <div role="treeitem">Drafts</div>
+      </div>
+    `);
+    expect(findAccountEmail()).toBe("ada@example.com");
+  });
+
+  it("reads a CSS-truncated account node through its full text content", () => {
+    setBody(`
+      <div role="tree">
+        <div role="treeitem"><span>ada@example.com</span></div>
+        <div role="treeitem">Archive</div>
+      </div>
+    `);
+    expect(findAccountEmail()).toBe("ada@example.com");
+  });
+
+  it("returns null when the folder pane names several accounts", () => {
+    setBody(`
+      <div role="tree">
+        <div role="treeitem" title="ada@example.com">ada@example.com</div>
+        <div role="treeitem" title="grace@example.com">grace@example.com</div>
+      </div>
+    `);
+    expect(findAccountEmail()).toBeNull();
+  });
+
   it("returns null when the visible account cannot be determined", () => {
     setBody(`<div role="main"></div>`);
     expect(findAccountEmail()).toBeNull();
@@ -120,8 +151,120 @@ describe("findOutlookInjectionAnchor", () => {
     expect(findOutlookInjectionAnchor()?.id).toBe("lb");
   });
 
+  it("anchors above the first message inside the conversation scroll region (consumer OWA)", () => {
+    setBody(`
+      <div role="main">
+        <div id="ConversationReadingPaneContainer">
+          <div id="subject-header"><span>Hiring rule</span></div>
+          <div id="messages-block">
+            <div class="customScrollBar"><div id="first-msg"></div></div>
+          </div>
+        </div>
+      </div>
+    `);
+    expect(findOutlookInjectionAnchor()?.id).toBe("first-msg");
+  });
+
+  it("waits (returns null) while the conversation renders without its scroll region", () => {
+    // Cold load: the container is up but the scroll region is not. Anchoring on
+    // a sibling here would latch the card behind the floating subject header for
+    // the life of the page, so the scheduler must be told to retry instead.
+    setBody(`
+      <div role="main">
+        <div id="ConversationReadingPaneContainer">
+          <div id="subject-header"><span>Hiring rule</span></div>
+          <div id="messages-block"></div>
+        </div>
+      </div>
+    `);
+    expect(findOutlookInjectionAnchor()).toBeNull();
+  });
+
+  it("anchors once the scroll region appears on a later tick", () => {
+    setBody(`
+      <div role="main">
+        <div id="ConversationReadingPaneContainer">
+          <div id="subject-header"><span>Hiring rule</span></div>
+          <div id="messages-block"></div>
+        </div>
+      </div>
+    `);
+    expect(findOutlookInjectionAnchor()).toBeNull();
+    const block = document.getElementById("messages-block")!;
+    block.innerHTML = `<div class="customScrollBar"><div id="first-msg"></div></div>`;
+    expect(findOutlookInjectionAnchor()?.id).toBe("first-msg");
+  });
+
+  it("does not anchor above the subject while the messages block is missing", () => {
+    // ReadingPaneContainerId is present, but no top-of-pane fallback may fire
+    // while the conversation container is mid-render.
+    setBody(`
+      <div role="main">
+        <div id="ReadingPaneContainerId">
+          <div id="pane-top"></div>
+          <div id="ConversationReadingPaneContainer">
+            <div id="subject-header"></div>
+          </div>
+        </div>
+      </div>
+    `);
+    expect(findOutlookInjectionAnchor()).toBeNull();
+  });
+
+  it("ignores the outer reading pane's own scroll region", () => {
+    // #ReadingPaneContainerId itself carries `customScrollBar` on a live
+    // mailbox, so a document-wide lookup mounts at the top of the whole pane,
+    // behind the floating header. Only the conversation's own region counts.
+    setBody(`
+      <div role="main">
+        <div id="ReadingPaneContainerId" class="customScrollBar">
+          <div id="pane-content"></div>
+        </div>
+      </div>
+    `);
+    expect(findOutlookInjectionAnchor()).toBeNull();
+  });
+
+  it("waits through a cold load until the conversation container appears", () => {
+    // Refresh / deep link: the thread id is detectable from the message list
+    // long before the reading pane renders. Anchoring during that window pins
+    // the card in the wrong place for the life of the page.
+    setBody(`
+      <div role="main">
+        <div id="ReadingPaneContainerId" class="customScrollBar"></div>
+      </div>
+    `);
+    expect(findOutlookInjectionAnchor()).toBeNull();
+
+    const pane = document.getElementById("ReadingPaneContainerId")!;
+    pane.innerHTML = `
+      <div id="ConversationReadingPaneContainer">
+        <div id="subject-header"></div>
+        <div class="customScrollBar"><div id="first-msg"></div></div>
+      </div>
+    `;
+    expect(findOutlookInjectionAnchor()?.id).toBe("first-msg");
+  });
+
+  it("prefers a list over the consumer-OWA anchor", () => {
+    setBody(`
+      <div role="main">
+        <div role="list" id="msgs"></div>
+        <div id="ConversationReadingPaneContainer">
+          <div class="customScrollBar"><div id="first-msg"></div></div>
+        </div>
+      </div>
+    `);
+    expect(findOutlookInjectionAnchor()?.id).toBe("msgs");
+  });
+
   it("returns null when the reading pane is absent", () => {
     setBody(`<div></div>`);
+    expect(findOutlookInjectionAnchor()).toBeNull();
+  });
+
+  it("returns null when the conversation container is empty", () => {
+    setBody(`<div role="main"><div id="ConversationReadingPaneContainer"></div></div>`);
     expect(findOutlookInjectionAnchor()).toBeNull();
   });
 });
