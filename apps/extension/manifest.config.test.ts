@@ -77,3 +77,50 @@ describe("buildManifest — host permissions", () => {
     }
   });
 });
+
+describe("buildManifest — native summary injection", () => {
+  it("declares both content scripts on both targets", () => {
+    for (const browser of ["chrome", "firefox"] as const) {
+      const m = buildManifest({ apiUrl: API, browser }) as Record<string, unknown>;
+      expect(m["content_scripts"]).toEqual([
+        {
+          matches: ["https://mail.google.com/*"],
+          js: ["content-gmail.js"],
+          run_at: "document_idle",
+        },
+        {
+          matches: [
+            "https://outlook.office.com/*",
+            "https://outlook.office365.com/*",
+            "https://outlook.live.com/*",
+          ],
+          js: ["content-outlook.js"],
+          run_at: "document_idle",
+        },
+      ]);
+    }
+  });
+
+  it("omits content_scripts entirely under the build-time kill-switch", () => {
+    for (const browser of ["chrome", "firefox"] as const) {
+      const m = buildManifest({ apiUrl: API, browser, nativeInjection: false }) as Record<
+        string,
+        unknown
+      >;
+      expect(m["content_scripts"]).toBeUndefined();
+      expect("content_scripts" in m).toBe(false);
+    }
+  });
+
+  // Content scripts run on hosts the extension already asks for; shipping them
+  // must not widen the permission surface.
+  it("adds no new host permissions", () => {
+    const withInjection = buildManifest({ apiUrl: API }) as Record<string, unknown>;
+    const without = buildManifest({ apiUrl: API, nativeInjection: false }) as Record<
+      string,
+      unknown
+    >;
+    expect(withInjection["host_permissions"]).toEqual(without["host_permissions"]);
+    expect(withInjection["permissions"]).toEqual(without["permissions"]);
+  });
+});

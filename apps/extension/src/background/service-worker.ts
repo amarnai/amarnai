@@ -3,10 +3,16 @@
 // It holds NO long-lived state or connections: both browsers suspend it when
 // idle (Chrome kills the service worker after ~30s; Firefox suspends the event
 // page), and streaming fetches do not keep it alive. So the side-panel/sidebar
-// page owns the SSE stream and all data fetching. The script's only job is to
-// open the panel when the toolbar icon is clicked. Listeners are registered
-// synchronously at top level, as event pages require.
+// page owns the SSE stream and all data fetching. The script's only jobs are to
+// open the panel when the toolbar icon is clicked, and to answer the mail-page
+// content scripts' thread-summary requests (they cannot call the API themselves;
+// see content/core/messaging.ts). Listeners are registered synchronously at top
+// level, as event pages require — an event page is woken BY the event, so a
+// listener added later would miss it.
 import { ext } from "../platform/ext";
+import { registerThreadSummaryHandler } from "./summaryHandler";
+
+registerThreadSummaryHandler();
 
 if (ext.sidePanel) {
   // Chrome: bind the toolbar icon to the side panel. Idempotent, re-runs on every

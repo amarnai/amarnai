@@ -138,3 +138,14 @@ export function mapThreads(threads: EmailThreadSummary[]): ThreadItem[] {
     };
   });
 }
+
+/**
+ * ThreadItem.messages is newest-first (the list snippet reads messages[0]); the
+ * thread previews render oldest-first and expand the last card as "the latest
+ * message". This is the one sanctioned bridge between those two orders — sorting
+ * by time rather than reversing, so it is correct regardless of which order the
+ * caller's array arrived in.
+ */
+export function chronologicalMessages<T extends { time: Date }>(messages: T[]): T[] {
+  return [...messages].sort((a, b) => a.time.getTime() - b.time.getTime());
+}

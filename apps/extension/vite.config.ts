@@ -41,6 +41,7 @@ function emitManifest(env: Record<string, string>, mode: string): Plugin {
                 ? undefined
                 : env["EXTENSION_KEY"] || undefined,
             browser: EXT_BROWSER,
+            nativeInjection: env["VITE_DISABLE_NATIVE_INJECTION"] !== "1",
           }),
           null,
           2,
@@ -50,10 +51,15 @@ function emitManifest(env: Record<string, string>, mode: string): Plugin {
   };
 }
 
-// Panel build: the side-panel HTML app. The MV3 service worker is a separate
-// entry built by vite.sw.config.ts (it must land at a fixed path with no shared
-// hashed chunks). public/icons is copied verbatim into dist/; the manifest is
-// emitted by emitManifest (not a static file), so it stays env-aware.
+// Whether this pass is a watcher (`vite build --watch`) rather than a one-shot
+// build. Vite does not surface the flag in the config callback, so read argv.
+const IS_WATCH = process.argv.includes("--watch") || process.argv.includes("-w");
+
+// Panel build: the side-panel HTML app. The MV3 service worker and the two mail
+// content scripts are separate entries built by vite.sw.config.ts and
+// vite.content.config.ts (each must land at a fixed path with no shared hashed
+// chunks). public/icons is copied verbatim into dist/; the manifest is emitted by
+// emitManifest (not a static file), so it stays env-aware.
 export default defineConfig(({ mode }) => {
   // Empty prefix loads all vars (incl. non-VITE_ EXTENSION_KEY) from .env files.
   const env = loadEnv(mode, __dirname, "");
@@ -71,7 +77,15 @@ export default defineConfig(({ mode }) => {
     },
     build: {
       outDir: OUT_DIR,
-      emptyOutDir: true,
+      // This is the only pass that clears the output directory; the sibling
+      // passes set emptyOutDir:false so they cannot wipe each other. In a
+      // sequential build the panel runs first, so clearing here is correct.
+      //
+      // Under `--watch` it must NOT clear: the four watchers start concurrently,
+      // so clearing here races them and silently deletes service-worker.js and
+      // the content scripts (they are one-shot outputs that no later rebuild
+      // restores). The `dev` script does a single `rm -rf` up front instead.
+      emptyOutDir: !IS_WATCH,
       rollupOptions: {
         input: {
           panel: path.resolve(__dirname, "index.html"),

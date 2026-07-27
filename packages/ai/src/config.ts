@@ -81,6 +81,26 @@ export function getDraftAIProviderConfig(): AIProviderConfig {
   return cfg;
 }
 
+/**
+ * Provider config for thread summaries. Defaults to the base model and can be
+ * pinned independently with SUMMARY_LLM_MODEL / SUMMARY_OLLAMA_MODEL — summaries
+ * are the highest-volume user-facing generation, so a deployment may want the
+ * cheapest tier here even when drafts run on something richer. Thinking is
+ * disabled by default (a two-sentence TL;DR does not benefit from it, and long
+ * thinking drops the Gemini OpenAI-compat connection mid-response).
+ */
+export function getSummaryAIProviderConfig(): AIProviderConfig {
+  const cfg = getAIProviderConfig();
+  const summaryModel = process.env["SUMMARY_LLM_MODEL"];
+  const summaryOllamaModel = process.env["SUMMARY_OLLAMA_MODEL"];
+  if (summaryModel && cfg.frontier) cfg.frontier = { ...cfg.frontier, model: summaryModel };
+  if (summaryOllamaModel && cfg.ollama) cfg.ollama = { ...cfg.ollama, model: summaryOllamaModel };
+  if (cfg.frontier) {
+    cfg.frontier = { ...cfg.frontier, reasoningEffort: parseReasoningEffort(process.env["SUMMARY_REASONING_EFFORT"]) };
+  }
+  return cfg;
+}
+
 export function getEmbeddingProviderConfig(): EmbeddingProviderConfig {
   const provider = (process.env["EMBEDDING_PROVIDER"] ?? "mock") as "mock" | "ollama" | "frontier";
   const cfg: EmbeddingProviderConfig = { provider };

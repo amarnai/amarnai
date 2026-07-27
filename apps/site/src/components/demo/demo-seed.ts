@@ -188,6 +188,26 @@ export function getDemoDraftBodies(i18n: I18n): Record<string, string> {
   );
 }
 
+// ─── Thread summaries ─────────────────────────────────────────────────────────
+//
+// Canned TL;DRs standing in for the lazily-generated ones. Only the
+// multi-message threads have one: in the real app a single-message thread shows
+// its stored snippet instead and never calls a model, so seeding a summary for
+// t3/t5 would misrepresent the product.
+
+const THREAD_SUMMARIES: Record<string, MessageDescriptor> = {
+  t1: msg`Babylon's third gold consignment is overdue after two messengers. Burna-Buriash asks you to dispatch it without further delay.`,
+  t2: msg`Aziru proposes a formal pact of mutual protection and shared routes, and wants word sent back by the next courier.`,
+  t4: msg`Byblos is still waiting on the third grain shipment and the city is restless. Rib-Hadda has now written seven times.`,
+  t6: msg`The council convenes at the start of Shemu. Tushratta asks for a full accounting of the eastern territories, sent ahead by fast courier.`,
+};
+
+export function getDemoSummaries(i18n: I18n): Record<string, string> {
+  return Object.fromEntries(
+    Object.entries(THREAD_SUMMARIES).map(([id, text]) => [id, i18n._(text)]),
+  );
+}
+
 // ─── Thread data ──────────────────────────────────────────────────────────────
 
 const d = (iso: string) => new Date(iso);

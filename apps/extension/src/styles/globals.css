@@ -43,13 +43,29 @@ body {
 }
 
 /* The reused emails grid must fill the space under the header. The panel gets
-   narrower default column widths than the web app so the thread preview keeps
-   room at side-panel widths; users can still drag the resize handles. */
+   a narrower default list width than the web app so the thread preview keeps
+   room at side-panel widths. The panel renders no folder rail (ScopeField
+   above the grid replaces it) and no resize handles, so the shared three-track
+   template would leave the rail track empty at wide panel widths: collapse to
+   two tracks and re-seat the columns the panel actually renders. (Only applies
+   above the 640px container breakpoint — below it emails.css switches the grid
+   to a flex column, where grid-template/grid-area are inert.) */
 .ax-panel .em-grid {
-  --em-rail-w: 200px;
   --em-list-w: 300px;
   flex: 1;
   min-height: 0;
+  grid-template-columns:
+    clamp(260px, var(--em-list-w), 44%)
+    minmax(0, 1fr);
+}
+
+.ax-panel .em-list-col {
+  grid-area: 1 / 1;
+}
+
+.ax-panel .em-preview-col,
+.ax-panel .em-preview-empty {
+  grid-area: 1 / 2;
 }
 
 /* Below 640px the rail collapses into a full-width drawer (see emails.css), so
@@ -590,6 +606,15 @@ body {
 
 .ax-menu-item:hover {
   background: var(--bg-sunk);
+}
+
+/* Menu row holding a Switch rather than an action: the label and the control
+   sit on one line, and the row itself is not clickable-as-navigation. */
+.ax-menu-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
 }
 
 /* ─── Buttons ────────────────────────────────────────────────────────────── */

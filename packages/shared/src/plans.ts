@@ -101,6 +101,7 @@ export const PLANS: Plan[] = [
       "1 free workspace",
       "50 threads sorted / month",
       "3 reply drafts / month",
+      "50 thread summaries / month",
       "Up to 12 plan nodes",
     ],
     cta: { label: "Start free", kind: "secondary" },
@@ -117,6 +118,7 @@ export const PLANS: Plan[] = [
       "Up to 2 people",
       "5,000 threads sorted / month",
       "200 reply drafts / month, pooled",
+      "5,000 thread summaries / month, pooled",
       "Unlimited plan nodes",
       "Shared plan",
     ],
@@ -132,6 +134,7 @@ export const PLANS: Plan[] = [
       "Up to 3 people",
       "10,000 threads sorted / month",
       "500 reply drafts / month, pooled",
+      "10,000 thread summaries / month, pooled",
       "Unlimited plan nodes",
       "Shared plan",
     ],
@@ -185,6 +188,11 @@ export const FEATURE_GROUPS: FeatureGroup[] = [
       {
         label: "Reply drafts",
         values: ["3 / month", "200 / month, pooled", "500 / month, pooled"],
+      },
+      {
+        label: "Thread summaries",
+        hint: "AI TL;DR of a thread, generated the first time you open it",
+        values: ["50 / month", "5,000 / month, pooled", "10,000 / month, pooled"],
       },
       {
         label: "Plan nodes",
@@ -271,6 +279,12 @@ export const PLAN_FEATURES: PlanFeature[] = [
     label: "Reply drafts / month",
     showInCard: true,
     values: { free: "3", pro: "200 pooled", business: "500 pooled" },
+  },
+  {
+    id: "thread_summaries",
+    label: "Thread summaries / month",
+    showInCard: true,
+    values: { free: "50", pro: "5,000 pooled", business: "10,000 pooled" },
   },
   {
     id: "model_quality",

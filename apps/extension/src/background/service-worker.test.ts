@@ -37,6 +37,9 @@ describe("background script — firefox", () => {
           }),
         },
       },
+      // The background also serves the content scripts' summary requests, on
+      // both browsers.
+      runtime: { onMessage: { addListener: vi.fn() } },
     };
     vi.stubGlobal("browser", fakeBrowser);
     vi.resetModules();
@@ -48,5 +51,16 @@ describe("background script — firefox", () => {
     // Invoking the registered handler toggles the sidebar.
     clickHandler?.();
     expect(toggle).toHaveBeenCalledOnce();
+  });
+});
+
+describe("background script — content-script message handler", () => {
+  it("registers the thread-summary listener synchronously at top level", async () => {
+    vi.mocked(chrome.runtime.onMessage.addListener).mockClear();
+    vi.resetModules();
+    await import("./service-worker");
+    // Registered during module evaluation, not inside a promise: an event page is
+    // woken BY the message, so a later listener would miss it.
+    expect(chrome.runtime.onMessage.addListener).toHaveBeenCalledOnce();
   });
 });

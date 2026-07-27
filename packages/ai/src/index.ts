@@ -1,5 +1,5 @@
 export type { AIProvider, AIProviderConfig, TaxonomyNodeInput, TaxonomyEdgeInput, ThreadMessage, LlmCallMemoizer } from "./types.js";
-export { getAIProviderConfig, getRoutingAIProviderConfig, getTaxonomyAIProviderConfig, getDraftAIProviderConfig, getEmbeddingProviderConfig } from "./config.js";
+export { getAIProviderConfig, getRoutingAIProviderConfig, getTaxonomyAIProviderConfig, getDraftAIProviderConfig, getSummaryAIProviderConfig, getEmbeddingProviderConfig } from "./config.js";
 export { createAIProvider } from "./providers/create-llm.js";
 export { LLMAuthenticationError, LLMRequestError } from "./providers/frontier.js";
 export { selectCandidateNodes, tokenize, MAX_CANDIDATE_PATHS } from "./selection/candidate-selector.js";
@@ -68,6 +68,11 @@ export type { EmbeddingTriageResult } from "./triage/embed-triage.js";
 // ─── Draft generation ─────────────────────────────────────────────────────────
 export { generateDraft } from "./draft/generate.js";
 export type { DraftContext, DraftResult } from "./draft/generate.js";
+// ─── Thread summaries ─────────────────────────────────────────────────────────
+export { generateThreadSummary } from "./summary/generate.js";
+export type { SummaryContext, SummaryResult } from "./summary/generate.js";
+export { buildSummaryPrompt, MAX_BODY_CHARS_LATEST, MAX_BODY_CHARS_EARLIER, MAX_TOTAL_CHARS } from "./summary/prompt.js";
+export { validateSummaryResult, MAX_SUMMARY_CHARS } from "./summary/validator.js";
 // ─── Taxonomy generation (from inbox) ───────────────────────────────────────────
 export { buildTaxonomyGenerationMessages, buildRepairMessage } from "./taxonomy-gen/prompt.js";
 export { generateTaxonomyFromProfile } from "./taxonomy-gen/generate.js";

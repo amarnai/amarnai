@@ -159,6 +159,12 @@ enum DraftStatus {
   FAILED
 }
 
+enum ThreadSummaryStatus {
+  GENERATING
+  READY
+  FAILED
+}
+
 enum AuditActorType {
   USER
   AI
@@ -298,6 +304,7 @@ model Workspace {
   tags                    Tag[]
   classifications         EmailClassification[]
   drafts                  Draft[]
+  threadSummaries         ThreadSummary[]
   auditLogs               AuditLog[]
   notifications           Notification[]
 }
@@ -588,6 +595,7 @@ model EmailThread {
   classifications EmailClassification[]
   drafts          Draft[]
   nodeReference   TaxonomyNodeReference?
+  summary         ThreadSummary?
 
   @@unique([emailAccountId, providerThreadId])
   // Supports the recoverFailedThreads sweep: PENDING threads that have failed.
@@ -716,6 +724,37 @@ model Draft {
   emailThread    EmailThread          @relation(fields: [emailThreadId], references: [id])
   emailMessage   EmailMessage?        @relation(fields: [emailMessageId], references: [id])
   classification EmailClassification? @relation(fields: [classificationId], references: [id])
+}
+
+// Cached AI TL;DR of a thread, generated lazily the first time a user opens the
+// thread. One row per thread (a cache, not a history): a regeneration overwrites
+// in place. Lives in Postgres rather than the worker's ai-dedup cache because a
+// summary is a paid artifact — losing it burns quota again — and that cache
+// fails open and evicts.
+//
+// Invalidation is by messageSetSignature (sha1-16 of the sorted providerMessageIds,
+// the same helper the classify dedup key uses) plus `locale`: a new message in the
+// thread or a workspace locale change makes the stored text stale and the next
+// open regenerates. `summary` is derived email content — never logged.
+model ThreadSummary {
+  id                  String              @id @default(cuid())
+  workspaceId         String
+  emailThreadId       String              @unique
+  status              ThreadSummaryStatus @default(GENERATING)
+  summary             String?
+  // Workspace locale at generation time; a change invalidates the cached text.
+  locale              String
+  model               String?
+  messageSetSignature String
+  errorMessage        String?
+  generatedAt         DateTime?
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+
+  workspace   Workspace   @relation(fields: [workspaceId], references: [id])
+  emailThread EmailThread @relation(fields: [emailThreadId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId])
 }
 
 model AuditLog {
@@ -946,6 +985,7 @@ enum MeterKind {
   DRAFT
   TAXONOMY_GEN
   BACKFILL
+  THREAD_SUMMARY
 }
 
 // Reset-immune, inbox-keyed usage meter. Anti-abuse cost accounting lives here,

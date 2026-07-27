@@ -24,6 +24,7 @@ import type {
   UnreadCountResult,
   Draft,
   GenerateDraftResult,
+  ThreadSummaryResult,
   MockInboxEventInput,
   MockInboxResult,
   CandidateNodeInput,
@@ -83,6 +84,47 @@ export function makeApiClient(transport: ApiTransport) {
   // Returns raw Response for endpoints that need custom status-code handling.
   async function apiRequest(path: string, init: TransportInit): Promise<Response> {
     return transport.fetch(`${base}${path}`, init);
+  }
+
+  // Shared by the two thread-summary entrypoints (our thread id vs the provider's).
+  // Both map the same four server outcomes onto ThreadSummaryResult.
+  async function requestThreadSummary(
+    path: string,
+    opts: { force?: boolean }
+  ): Promise<ThreadSummaryResult> {
+    const res = await apiRequest(path, {
+      method: "POST",
+      cache: "no-store",
+      headers: opts.force ? { "X-Force-Regenerate": "1" } : {},
+    });
+    if (res.status === 429) {
+      const body = (await res.json().catch(() => ({}))) as Record<string, unknown>;
+      return {
+        quotaExceeded: true as const,
+        used: typeof body["used"] === "number" ? body["used"] : 0,
+        limit: typeof body["limit"] === "number" ? body["limit"] : 0,
+        resetsAt: typeof body["resetsAt"] === "string" ? body["resetsAt"] : "",
+      };
+    }
+    if (!res.ok) {
+      const err = (await res.json().catch(() => ({}))) as { error?: string };
+      throw new Error(err.error ?? `API returned ${res.status}`);
+    }
+    const data = (await res.json()) as
+      | { kind: "summary"; summary: string; locale: string; generatedAt: string | null }
+      | { kind: "snippet"; snippet: string }
+      | { generating: true };
+    if ("kind" in data && data.kind === "summary") {
+      return {
+        kind: "summary",
+        summary: { text: data.summary, locale: data.locale, generatedAt: data.generatedAt },
+        isNew: res.status === 201,
+      };
+    }
+    if ("kind" in data && data.kind === "snippet") {
+      return { kind: "snippet", snippet: data.snippet };
+    }
+    return { generating: true };
   }
 
   return {
@@ -540,6 +582,32 @@ export function makeApiClient(transport: ApiTransport) {
 
     draftQuota: (workspaceId: string) =>
       apiFetch<QuotaInfo>(`/workspaces/${workspaceId}/draft-quota`),
+
+    // Get-or-generate the thread's AI TL;DR. Cheap and idempotent: the server
+    // serves a cached summary when the message set and locale are unchanged, and
+    // returns {kind:"snippet"} for single-message/automated threads without ever
+    // calling a model. force=true bypasses the cache and counts against quota.
+    threadSummary: (workspaceId: string, threadId: string, opts: { force?: boolean } = {}) =>
+      requestThreadSummary(
+        `/workspaces/${workspaceId}/email-threads/${threadId}/summary`,
+        opts
+      ),
+
+    // Same, addressed by the provider's own thread id. Used by the native
+    // Gmail/Outlook injection, which knows the mailbox's id but not ours. Throws
+    // on 404 (the thread has not been synced into Amarnai).
+    providerThreadSummary: (
+      workspaceId: string,
+      providerThreadId: string,
+      opts: { force?: boolean } = {}
+    ) =>
+      requestThreadSummary(
+        `/workspaces/${workspaceId}/provider-threads/${encodeURIComponent(providerThreadId)}/summary`,
+        opts
+      ),
+
+    summaryQuota: (workspaceId: string) =>
+      apiFetch<QuotaInfo>(`/workspaces/${workspaceId}/summary-quota`),
 
     threadSortQuota: (workspaceId: string) =>
       apiFetch<QuotaInfo>(`/workspaces/${workspaceId}/thread-sort-quota`),

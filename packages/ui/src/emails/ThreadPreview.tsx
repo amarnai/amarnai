@@ -12,6 +12,7 @@ import { OutlookIcon } from "../icons/OutlookIcon.js";
 import { PreviewDoneBar } from "./PreviewDoneBar.js";
 import { MessageCard } from "./MessageCard.js";
 import { SuggestedDraftCard } from "./SuggestedDraftCard.js";
+import { ThreadSummaryCard } from "./ThreadSummaryCard.js";
 import { Tooltip } from "../Tooltip.js";
 
 export interface ThreadPreviewProps {
@@ -42,6 +43,12 @@ export interface ThreadPreviewProps {
    * open a mock provider view).
    */
   onOpenInProvider?: ((thread: ThreadItem) => void) | undefined;
+  /**
+   * Canned TL;DR for the demo. The real app generates this lazily against the
+   * API; here it is passed in statically so marketing screenshots show the slot
+   * filled. Omit to hide the card.
+   */
+  summary?: string | undefined;
 }
 
 export function ThreadPreview({
@@ -57,6 +64,7 @@ export function ThreadPreview({
   onToggleImportant,
   surface = "web",
   onOpenInProvider,
+  summary,
 }: ThreadPreviewProps) {
   const { i18n } = useLingui();
   const [generating, setGenerating] = useState(false);
@@ -209,6 +217,8 @@ export function ThreadPreview({
             showDoneBy={false}
           />
         )}
+
+        {summary && <ThreadSummaryCard state={{ kind: "summary", text: summary }} />}
 
         <div className="em-msg-list">
           {messages.map((msg, i) => (

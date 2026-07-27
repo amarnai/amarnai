@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { PLANS, PLAN_FEATURES } from "./plans.js";
+import { THREAD_SUMMARY_LIMITS } from "./summary-quota.js";
 
 // These constants moved out of @amarnai/ui so non-DOM clients (mobile) can use
 // them. This guards against re-introducing a DOM/React dependency: the module
@@ -15,6 +16,27 @@ describe("@amarnai/shared plans", () => {
   it("exposes feature definitions for every plan id", () => {
     for (const feature of PLAN_FEATURES) {
       expect(Object.keys(feature.values).sort()).toEqual(["business", "free", "pro"]);
+    }
+  });
+});
+
+// The pricing copy and the enforced caps are two hand-maintained lists. A drift
+// between them shows a user one number and bills them against another.
+describe("plan copy matches the enforced quotas", () => {
+  const summaries = PLAN_FEATURES.find((f) => f.id === "thread_summaries");
+
+  it("advertises the same thread-summary caps the meter enforces", () => {
+    expect(summaries).toBeDefined();
+    expect(summaries!.values.free).toContain(THREAD_SUMMARY_LIMITS["FREE"]!.toLocaleString("en"));
+    expect(summaries!.values.pro).toContain(THREAD_SUMMARY_LIMITS["PRO"]!.toLocaleString("en"));
+    expect(summaries!.values.business).toContain(
+      THREAD_SUMMARY_LIMITS["BUSINESS"]!.toLocaleString("en"),
+    );
+  });
+
+  it("lists a summaries highlight on every plan card", () => {
+    for (const plan of PLANS) {
+      expect(plan.highlights.some((h) => h.includes("thread summaries"))).toBe(true);
     }
   });
 });

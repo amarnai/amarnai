@@ -12,6 +12,7 @@ vi.mock("./client", () => {
       workspace: { findMany: vi.fn(), deleteMany: vi.fn().mockReturnValue({}) },
       trialClaim: { upsert: vi.fn().mockReturnValue({}) },
       draft: del(),
+      threadSummary: del(),
       emailTag: del(),
       emailClassification: del(),
       auditLog: del(),

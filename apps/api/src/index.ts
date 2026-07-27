@@ -16,7 +16,33 @@ async function recoverStuckDrafts() {
   }
 }
 
+// Same for thread summaries: a GENERATING row from a killed process would
+// otherwise make every open of that thread poll a generation that will never land.
+//
+// Deliberately non-fatal, unlike the draft sweep above. Migrations run as a
+// SEPARATE deploy unit with no ordering guarantee against this one, so on the
+// release that first ships ThreadSummary the API can boot against a schema that
+// does not have the table yet. A top-level throw there would crash-loop the whole
+// API over a best-effort cleanup. Summaries 500 (and the UI shows its retry card)
+// until the migration lands, then self-heal; everything else keeps serving.
+async function recoverStuckSummaries() {
+  try {
+    const { count } = await db.threadSummary.updateMany({
+      where: { status: "GENERATING" },
+      data: { status: "FAILED", errorMessage: "Server restarted during generation" },
+    });
+    if (count > 0) {
+      console.log(`[startup] Reset ${count} stuck GENERATING thread summary(ies) to FAILED`);
+    }
+  } catch (e) {
+    console.error(
+      `[startup] Could not sweep stuck thread summaries (is the ThreadSummary migration applied?): ${String(e)}`,
+    );
+  }
+}
+
 await recoverStuckDrafts();
+await recoverStuckSummaries();
 
 serve({ fetch: app.fetch, port: PORT }, () => {
   console.log(`API running on http://localhost:${PORT}`);
