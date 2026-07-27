@@ -15,11 +15,11 @@ export default function ForgotPasswordPage() {
   return (
     <AuthShell
       title={_( msg`Reset password`)}
-      subtitle={_( msg`Enter your email and we'll send you a reset link.`)}
+      {...(!state?.success && { subtitle: _( msg`Enter your email and we'll send you a reset link.`) })}
     >
       {state?.success ? (
         <p className="auth-success">
-          <Trans>We've sent a link to that email address. Follow it to reset your password.</Trans>
+          <Trans>We've sent a link to {state.email}. Follow it to reset your password.</Trans>
         </p>
       ) : (
         <form action={action} className="auth-form">

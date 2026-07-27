@@ -252,22 +252,22 @@ export async function deleteAccountAction(
 // ─── Forgot password ──────────────────────────────────────────────────────────
 
 export async function forgotPasswordAction(
-  _prev: { error?: string; success?: boolean } | null,
+  _prev: { error?: string; success?: boolean; email?: string } | null,
   formData: FormData
-): Promise<{ error?: string; success?: boolean }> {
+): Promise<{ error?: string; success?: boolean; email?: string }> {
   const email = z.string().email().safeParse(formData.get("email"));
   if (!email.success) return { error: "Invalid email address" };
 
   // Throttle per email/IP; on trip return the same neutral success as always.
   if (await authActionRateLimited("forgot", email.data, 5)) {
-    return { success: true };
+    return { success: true, email: email.data };
   }
 
   // Silent success — createPasswordResetToken returns null (no email sent) when
   // the account is missing, Google-only, or throttled, never revealing which.
   const token = await createPasswordResetToken(email.data);
   if (token) await sendPasswordResetEmail(email.data, token);
-  return { success: true };
+  return { success: true, email: email.data };
 }
 
 // ─── Reset password ───────────────────────────────────────────────────────────
