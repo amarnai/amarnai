@@ -950,6 +950,11 @@ model GmailSyncSettings {
   // feature flag is enabled); users can switch it off per workspace. Inert
   // without the write scope (gmail.modify / Mail.ReadWrite) on the connection.
   labelWritebackEnabled   Boolean  @default(true)
+  // Whether the browser extension injects its thread-summary card into the
+  // native Gmail/Outlook UI for this workspace. On by default (the point of
+  // shipping the content scripts); the extension itself has no toggle, so this
+  // workspace setting is the only way to turn it off.
+  threadSummaryInjectionEnabled Boolean @default(true)
   createdAt               DateTime @default(now())
   updatedAt               DateTime @updatedAt
 

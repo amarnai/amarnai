@@ -382,6 +382,7 @@ export default function SettingsScreen() {
                       // Type-satisfying default; label writeback is not surfaced
                       // in the shelved mobile app.
                       labelWritebackEnabled: false,
+                      threadSummaryInjectionEnabled: true,
                       blacklistedSenderEmails: emails,
                     },
               )

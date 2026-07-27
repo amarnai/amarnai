@@ -6,7 +6,6 @@ import {
   type ThreadSummaryRequest,
   type ThreadSummaryResponse,
 } from "./messaging.js";
-import { isInjectionEnabled, onInjectionEnabledChanged } from "./settings.js";
 import { debugLog } from "./debug.js";
 
 /**
@@ -131,25 +130,13 @@ export function runContentScript(adapter: ProviderAdapter): void {
     });
   }
 
-  function stop(): void {
-    scheduler?.stop();
-    scheduler = null;
-    teardownWidget();
-    removeExistingWidgets();
-  }
-
   // A reload can leave a widget from the previous document behind in a bfcached
   // page; start from a clean slate.
   removeExistingWidgets();
 
-  void isInjectionEnabled().then((enabled) => {
-    debugLog(`content script active — native injection ${enabled ? "enabled" : "disabled"}`);
-    if (enabled) start();
-  });
-
-  // Flipping the panel toggle takes effect immediately, in every open mail tab.
-  onInjectionEnabledChanged((enabled) => {
-    if (enabled) start();
-    else stop();
-  });
+  // Whether the card renders at all is a workspace setting (web app, on by
+  // default), enforced server-side on each summary request — see the
+  // "injectionDisabled" reason in messaging.ts. The scheduler always starts;
+  // a disabled workspace just gets told no on every open thread.
+  start();
 }

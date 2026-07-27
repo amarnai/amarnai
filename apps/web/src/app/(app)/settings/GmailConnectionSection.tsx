@@ -9,6 +9,7 @@ import { disconnectGmailAction, type DisconnectOutcome } from "@/actions/gmail";
 import type { GmailConnection, MailProvider, SyncStatus, GmailSyncSettings } from "@/lib/api";
 import { GmailSyncSettingsSection } from "./GmailSyncSettingsSection";
 import { LabelWritebackSection } from "./LabelWritebackSection";
+import { ThreadSummaryInjectionSection } from "./ThreadSummaryInjectionSection";
 import { GoogleGIcon, OutlookIcon } from "@amarnai/ui";
 
 const DEFAULT_SYNC_SETTINGS: GmailSyncSettings = {
@@ -17,6 +18,7 @@ const DEFAULT_SYNC_SETTINGS: GmailSyncSettings = {
   sortingPaused: false,
   routeBulkToOther: true,
   labelWritebackEnabled: true,
+  threadSummaryInjectionEnabled: true,
   blacklistedSenderEmails: [],
 };
 
@@ -317,6 +319,11 @@ export function GmailConnectionSection({
               justEnabled={writebackJustEnabled}
             />
           )}
+
+          <ThreadSummaryInjectionSection
+            workspaceId={workspaceId}
+            initialEnabled={(syncSettings ?? DEFAULT_SYNC_SETTINGS).threadSummaryInjectionEnabled}
+          />
         </>
       ) : connection?.status === "DISCONNECTED" ? (
         <div className="gmail-connection-status">

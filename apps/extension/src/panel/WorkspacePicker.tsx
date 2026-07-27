@@ -2,12 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
-import { NavGlyph, Switch, ThemeToggle } from "@amarnai/ui";
+import { NavGlyph, ThemeToggle } from "@amarnai/ui";
 import { userInitials } from "@amarnai/core";
 import { useSession } from "../auth/session";
 import { WEB_APP_URL } from "../config";
 import { NotificationBell } from "./NotificationBell";
-import { isInjectionEnabled, setInjectionEnabled } from "../content/core/settings";
 
 // Slim panel header: workspace switcher, links out to the web app (plan and
 // workspace settings), and the user menu (account settings, sign out). At
@@ -21,14 +20,6 @@ export function PanelHeader() {
   const active = workspaces.find((w) => w.id === workspaceId);
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
-  // Whether the content scripts inject summaries into Gmail/Outlook themselves.
-  // Read lazily when the menu opens: it lives in extension storage, not the session.
-  const [injectSummaries, setInjectSummaries] = useState(true);
-
-  useEffect(() => {
-    if (!menuOpen) return;
-    void isInjectionEnabled().then(setInjectSummaries);
-  }, [menuOpen]);
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -119,19 +110,6 @@ export function PanelHeader() {
         </button>
         {menuOpen && (
           <div className="ax-menu" role="menu">
-            {/* Turns the in-Gmail/in-Outlook summary card off without
-                uninstalling. Takes effect immediately in every open mail tab
-                (the content scripts watch this key). */}
-            <label className="ax-menu-item ax-menu-toggle">
-              <span><Trans>Summaries in Gmail and Outlook</Trans></span>
-              <Switch
-                checked={injectSummaries}
-                onChange={(checked) => {
-                  setInjectSummaries(checked);
-                  void setInjectionEnabled(checked);
-                }}
-              />
-            </label>
             <a
               role="menuitem"
               className="ax-menu-item"
