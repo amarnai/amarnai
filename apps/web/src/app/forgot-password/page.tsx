@@ -1,6 +1,7 @@
 "use client";
 
-import { useActionState } from "react";
+import { Suspense, useActionState } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
@@ -8,9 +9,12 @@ import { msg } from "@lingui/core/macro";
 import { forgotPasswordAction } from "@/actions/auth";
 import { AuthShell } from "@/components/AuthShell";
 
-export default function ForgotPasswordPage() {
+function ForgotPasswordContent() {
   const { _ } = useLingui();
+  const searchParams = useSearchParams();
   const [state, action, pending] = useActionState(forgotPasswordAction, null);
+
+  const prefilledEmail = searchParams.get("email") ?? undefined;
 
   return (
     <AuthShell
@@ -36,6 +40,7 @@ export default function ForgotPasswordPage() {
               autoComplete="email"
               required
               className="form-input"
+              defaultValue={prefilledEmail}
             />
           </div>
 
@@ -51,5 +56,13 @@ export default function ForgotPasswordPage() {
         </Link>
       </p>
     </AuthShell>
+  );
+}
+
+export default function ForgotPasswordPage() {
+  return (
+    <Suspense>
+      <ForgotPasswordContent />
+    </Suspense>
   );
 }

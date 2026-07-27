@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Suspense } from "react";
@@ -15,6 +15,7 @@ function SignInContent() {
   const { _ } = useLingui();
   const searchParams = useSearchParams();
   const [state, action, pending] = useActionState(credentialsSignInAction, null);
+  const [email, setEmail] = useState("");
 
   const verified = searchParams.get("verified") === "1";
   const passwordReset = searchParams.get("password_reset") === "1";
@@ -81,6 +82,8 @@ function SignInContent() {
             autoComplete="email"
             required
             className="form-input"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
 
@@ -89,7 +92,10 @@ function SignInContent() {
             <label className="form-label" htmlFor="password">
               <Trans>Password</Trans>
             </label>
-            <Link href="/forgot-password" className="auth-link auth-forgot">
+            <Link
+              href={email ? `/forgot-password?email=${encodeURIComponent(email)}` : "/forgot-password"}
+              className="auth-link auth-forgot"
+            >
               <Trans>Forgot password?</Trans>
             </Link>
           </div>
