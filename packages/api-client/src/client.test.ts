@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { makeApiClient } from "./client.js";
+import { makeApiClient, InjectionDisabledError } from "./client.js";
 import type { ApiTransport } from "./transport.js";
 
 function mockOk(body: unknown, status = 200): Response {
@@ -202,10 +202,65 @@ describe("makeApiClient", () => {
       expect((init.headers as Record<string, string>)?.["X-Force-Regenerate"]).toBe("1");
     });
 
+    it("returns notClassified on a 422 carrying code NOT_CLASSIFIED", async () => {
+      const fetchFn = vi.fn().mockResolvedValue(
+        mockOk({ code: "NOT_CLASSIFIED", error: "Thread has not been classified yet" }, 422)
+      );
+      const client = makeApiClient(makeMockTransport(fetchFn));
+      const result = await client.generateDraft("ws1", "t1");
+      expect(result).toEqual({ notClassified: true });
+    });
+
+    it("still throws on a 422 without the code (an unrelated validation failure)", async () => {
+      const fetchFn = vi.fn().mockResolvedValue(mockOk({ error: "Invalid params" }, 422));
+      const client = makeApiClient(makeMockTransport(fetchFn));
+      await expect(client.generateDraft("ws1", "t1")).rejects.toThrow("Invalid params");
+    });
+
     it("throws on unexpected non-ok status", async () => {
       const fetchFn = vi.fn().mockResolvedValue(mockOk({ error: "Server error" }, 500));
       const client = makeApiClient(makeMockTransport(fetchFn));
       await expect(client.generateDraft("ws1", "t1")).rejects.toThrow("Server error");
+    });
+  });
+
+  describe("generateDraftByProviderThread", () => {
+    it("encodes the provider thread id in the URL", async () => {
+      const fetchFn = vi.fn().mockResolvedValue(mockOk({ draft: { id: "d1" } }, 201));
+      const client = makeApiClient(makeMockTransport(fetchFn));
+      await client.generateDraftByProviderThread("ws1", "AAQkAD+bc/de");
+      const [url] = fetchFn.mock.calls[0] as [string];
+      expect(url).toBe(
+        "https://api.test/workspaces/ws1/provider-threads/AAQkAD%2Bbc%2Fde/generate-draft"
+      );
+    });
+
+    it("throws InjectionDisabledError on a 403 flagged injectionDisabled", async () => {
+      const fetchFn = vi.fn().mockResolvedValue(
+        mockOk({ error: "Reply button injection is disabled", injectionDisabled: true }, 403)
+      );
+      const client = makeApiClient(makeMockTransport(fetchFn));
+      await expect(client.generateDraftByProviderThread("ws1", "t1")).rejects.toBeInstanceOf(
+        InjectionDisabledError
+      );
+    });
+
+    it("throws a plain error on a 403 without the flag", async () => {
+      const fetchFn = vi.fn().mockResolvedValue(mockOk({ error: "Forbidden" }, 403));
+      const client = makeApiClient(makeMockTransport(fetchFn));
+      const err = await client.generateDraftByProviderThread("ws1", "t1").catch((e) => e);
+      expect(err).not.toBeInstanceOf(InjectionDisabledError);
+      expect(err.message).toBe("Forbidden");
+    });
+
+    it("shares the outcome mapping with generateDraft", async () => {
+      const fetchFn = vi.fn().mockResolvedValue(
+        mockOk({ code: "NOT_CLASSIFIED", error: "Thread has not been classified yet" }, 422)
+      );
+      const client = makeApiClient(makeMockTransport(fetchFn));
+      await expect(client.generateDraftByProviderThread("ws1", "t1")).resolves.toEqual({
+        notClassified: true,
+      });
     });
   });
 

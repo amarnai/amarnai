@@ -16,6 +16,9 @@ vi.mock("@amarnai/api-client", async (importOriginal) => {
   const actual = await importOriginal<typeof import("@amarnai/api-client")>();
   return {
     InjectionDisabledError: actual.InjectionDisabledError,
+    // The real resolution loop, driven by the mocked client below: this is
+    // the behaviour under test, not something to stub out.
+    resolveWorkspaceIdForMailbox: actual.resolveWorkspaceIdForMailbox,
     makeApiClient: () => mockClient,
     makeBearerTransport: () => ({ baseUrl: "https://api.test", fetch: vi.fn() }),
   };

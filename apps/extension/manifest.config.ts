@@ -43,6 +43,30 @@ const CONTENT_SCRIPTS = [
   { matches: OUTLOOK_MAIL_HOSTS, js: ["content-outlook.js"], run_at: "document_idle" },
 ];
 
+/**
+ * Resources Gmail's own page is allowed to load from the extension, for the
+ * "Amarnai Reply" button:
+ *   - pageWorld.js: InboxSDK's page-world half, which it injects into Gmail.
+ *   - the button icon, rendered by Gmail inside its compose tray.
+ *
+ * Scoped to Gmail alone rather than <all_urls>: every other site is still unable
+ * to see that the extension is installed. Emitted only alongside the content
+ * scripts, so a build with injection disabled exposes nothing.
+ */
+const WEB_ACCESSIBLE_RESOURCES = [
+  { resources: ["pageWorld.js", "reply-button-icon.svg"], matches: [GMAIL_MAIL_HOST] },
+];
+
+/**
+ * InboxSDK cannot cross into Gmail's own JS world from a content script: it asks
+ * the background to inject pageWorld.js via chrome.scripting (MAIN world), which
+ * requires this permission. Granted only when the content scripts ship — the
+ * kill-switch build must not carry a permission it has no call site for. It
+ * scopes to the host grants the manifest already holds and adds no install-time
+ * warning of its own.
+ */
+const INJECTION_PERMISSIONS = ["scripting"];
+
 export function buildManifest({
   apiUrl,
   key,
@@ -91,9 +115,19 @@ export function buildManifest({
         default_icon: icons,
       },
       background: { scripts: ["service-worker.js"], type: "module" },
-      permissions: ["storage", "identity", "clipboardWrite"],
+      permissions: [
+        "storage",
+        "identity",
+        "clipboardWrite",
+        ...(nativeInjection ? INJECTION_PERMISSIONS : []),
+      ],
       host_permissions: hostPermissions,
-      ...(nativeInjection ? { content_scripts: CONTENT_SCRIPTS } : {}),
+      ...(nativeInjection
+        ? {
+            content_scripts: CONTENT_SCRIPTS,
+            web_accessible_resources: WEB_ACCESSIBLE_RESOURCES,
+          }
+        : {}),
       browser_specific_settings: {
         gecko: {
           id: FIREFOX_GECKO_ID,
@@ -120,9 +154,20 @@ export function buildManifest({
     action: { default_title: "Amarnai" },
     side_panel: { default_path: "index.html" },
     background: { service_worker: "service-worker.js", type: "module" },
-    permissions: ["sidePanel", "storage", "identity", "clipboardWrite"],
+    permissions: [
+      "sidePanel",
+      "storage",
+      "identity",
+      "clipboardWrite",
+      ...(nativeInjection ? INJECTION_PERMISSIONS : []),
+    ],
     host_permissions: hostPermissions,
-    ...(nativeInjection ? { content_scripts: CONTENT_SCRIPTS } : {}),
+    ...(nativeInjection
+      ? {
+          content_scripts: CONTENT_SCRIPTS,
+          web_accessible_resources: WEB_ACCESSIBLE_RESOURCES,
+        }
+      : {}),
     icons,
   };
 }

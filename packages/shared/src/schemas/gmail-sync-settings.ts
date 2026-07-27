@@ -14,6 +14,11 @@ export const GmailSyncSettingsSchema = z.object({
   // Gmail/Outlook UI for this workspace. On by default; the extension has no
   // toggle of its own, so this is the only place it can be turned off.
   threadSummaryInjectionEnabled: z.boolean().default(true),
+  // Browser extension injects its "Amarnai Reply" draft button into the native
+  // Gmail/Outlook compose for this workspace. Separate from the summary toggle:
+  // the two surfaces are independently useful, and drafting costs quota while
+  // reading a summary of an already-open thread does not.
+  replyButtonInjectionEnabled: z.boolean().default(true),
   blacklistedSenderEmails: z.array(z.string().email()).default([]),
 });
 export type GmailSyncSettings = z.infer<typeof GmailSyncSettingsSchema>;
@@ -25,6 +30,7 @@ export const DEFAULT_GMAIL_SYNC_SETTINGS: GmailSyncSettings = {
   routeBulkToOther:        true,
   labelWritebackEnabled:   true,
   threadSummaryInjectionEnabled: true,
+  replyButtonInjectionEnabled: true,
   blacklistedSenderEmails: [],
 };
 
@@ -35,6 +41,7 @@ export const UpdateGmailSyncSettingsSchema = z.object({
   routeBulkToOther:      z.boolean().optional(),
   labelWritebackEnabled: z.boolean().optional(),
   threadSummaryInjectionEnabled: z.boolean().optional(),
+  replyButtonInjectionEnabled: z.boolean().optional(),
 });
 export type UpdateGmailSyncSettingsInput = z.infer<typeof UpdateGmailSyncSettingsSchema>;
 

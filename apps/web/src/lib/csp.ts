@@ -1,3 +1,10 @@
+import {
+  isOutlookAddinEnabled,
+  OFFICE_JS_ORIGIN,
+  OUTLOOK_FRAME_ANCESTORS,
+  OUTLOOK_PANEL_PATH,
+} from "./outlook-addin";
+
 // Content-Security-Policy construction.
 //
 // The policy is nonce-based and is the primary XSS mitigation: every request gets a
@@ -26,8 +33,23 @@ export function cspHeaderName(): "Content-Security-Policy-Report-Only" | "Conten
     : "Content-Security-Policy";
 }
 
-export function buildContentSecurityPolicy(nonce: string): string {
+/**
+ * The Outlook task pane is the one route that must be framable and must load a
+ * third-party script (office.js). The exception is scoped to that path alone
+ * rather than relaxed globally, so every other page keeps `frame-ancestors
+ * 'none'` and a script-src with no third-party origins.
+ */
+function isOutlookPanelPath(pathname: string | undefined): boolean {
+  if (!pathname) return false;
+  return (
+    isOutlookAddinEnabled() &&
+    (pathname === OUTLOOK_PANEL_PATH || pathname.startsWith(`${OUTLOOK_PANEL_PATH}/`))
+  );
+}
+
+export function buildContentSecurityPolicy(nonce: string, pathname?: string): string {
   const isDev = process.env.NODE_ENV !== "production";
+  const isOutlookPanel = isOutlookPanelPath(pathname);
 
   // Analytics (Umami) is optional and self-configured. When set, its script is
   // rendered through next/script so it inherits the nonce and is covered by
@@ -43,6 +65,9 @@ export function buildContentSecurityPolicy(nonce: string): string {
     umamiOrigin,
     // Next.js dev + React Fast Refresh compile and eval on the client.
     isDev ? "'unsafe-eval'" : null,
+    // office.js is loaded from Microsoft's CDN by URL, so it carries no nonce and
+    // 'strict-dynamic' does not cover it.
+    isOutlookPanel ? OFFICE_JS_ORIGIN : null,
   ];
 
   const connectSrc = [
@@ -51,6 +76,10 @@ export function buildContentSecurityPolicy(nonce: string): string {
     // Webpack HMR websocket in dev.
     isDev ? "ws:" : null,
     isDev ? "wss:" : null,
+    // The pane talks to the API directly with a bearer token: it cannot use the
+    // /api/internal cookie proxy, whose session cookie is third-party inside an
+    // Outlook frame and would be partitioned away.
+    isOutlookPanel ? originOf(process.env.NEXT_PUBLIC_API_URL) : null,
   ];
 
   const directives = [
@@ -66,7 +95,9 @@ export function buildContentSecurityPolicy(nonce: string): string {
     "font-src 'self' data:",
     `connect-src ${connectSrc.filter(Boolean).join(" ")}`,
     "frame-src 'none'",
-    "frame-ancestors 'none'",
+    isOutlookPanel
+      ? `frame-ancestors ${OUTLOOK_FRAME_ANCESTORS.join(" ")}`
+      : "frame-ancestors 'none'",
     "form-action 'self'",
   ];
 

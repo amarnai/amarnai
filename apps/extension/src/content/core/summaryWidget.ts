@@ -76,7 +76,9 @@ const STYLES = `
   font-family: "Google Sans", Roboto, system-ui, -apple-system, "Segoe UI", sans-serif;
   font-size: 13px;
   line-height: 1.55;
-  margin: 6px 0px 10px 0px;
+  /* Left inset is provider-supplied (see gutterLeft): Gmail's message list has
+     an avatar column the card has to line up with, OWA's does not. */
+  margin: 6px 0px 10px var(--am-gutter, 0px);
   padding: 9px 13px 10px 12px;
   border: 1px solid var(--am-accent);
   border-left-width: 3px;
@@ -191,16 +193,31 @@ export interface SummaryWidget {
   remove(): void;
 }
 
+export interface MountOptions {
+  /**
+   * Left margin for the card, e.g. "12px", so it aligns with the provider's own
+   * content column rather than the raw edge of the pane. Defaults to none.
+   */
+  gutterLeft?: string;
+}
+
 /**
  * Create the widget and insert it before `anchor`. Returns null if the anchor is
  * detached (the SPA re-rendered between detection and injection), because
  * injecting into an orphan node silently does nothing.
  */
-export function mountSummaryWidget(anchor: Element, state: WidgetState): SummaryWidget | null {
+export function mountSummaryWidget(
+  anchor: Element,
+  state: WidgetState,
+  options: MountOptions = {},
+): SummaryWidget | null {
   if (!anchor.parentNode) return null;
 
   const host = document.createElement("div");
   host.setAttribute(HOST_ATTRIBUTE, "");
+  // Custom properties are not touched by the `all: initial` on :host, so this
+  // inherits into the shadow tree and the card picks it up.
+  if (options.gutterLeft) host.style.setProperty("--am-gutter", options.gutterLeft);
   const root = host.attachShadow({ mode: "open" });
 
   const style = document.createElement("style");

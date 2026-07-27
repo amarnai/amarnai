@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <!-- Amarnai Reply — canonical icon.
+       Geometry derived from the Amarnai logo wedge (aspect ~1.58:1,
+       barb notch depth ~24% of length), mirrored to point left.
+       Colors are baked in rather than currentColor: this file is loaded via
+       <img> (entry points) and iconUrl (InboxSDK compose button), and
+       currentColor does not inherit into an <img> — it renders black there.
+       Clay brand: #BB5B33 on light surfaces, #CD6A3F on dark; the media query
+       is honored inside <img> SVGs and tracks the OS scheme (checked against
+       Gmail's own theme in QA). -->
+  <style>
+    polygon { fill: #BB5B33; }
+    @media (prefers-color-scheme: dark) {
+      polygon { fill: #CD6A3F; }
+    }
+  </style>
+  <polygon points="2,12 22,5.7 17.1,12 22,18.3"/>
+</svg>

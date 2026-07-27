@@ -206,6 +206,23 @@ describe("card structure and accessibility", () => {
     expect(css).not.toContain("--am-line");
   });
 
+  // Gmail indents its message list past an avatar gutter, OWA does not, so the
+  // left inset is the provider's call and the card must default to flush-left.
+  it("applies the provider's left gutter, and none by default", () => {
+    const withGutter = mountSummaryWidget(
+      anchorInPage(),
+      { kind: "summary", text: "hi" },
+      { gutterLeft: "12px" },
+    )!;
+    expect(withGutter.host.style.getPropertyValue("--am-gutter")).toBe("12px");
+
+    const flush = mountSummaryWidget(anchorInPage(), { kind: "summary", text: "hi" })!;
+    expect(flush.host.style.getPropertyValue("--am-gutter")).toBe("");
+    expect(
+      flush.host.shadowRoot!.querySelector("style")!.textContent!,
+    ).toContain("var(--am-gutter, 0px)");
+  });
+
   it("is exposed as a named, polite live note rather than mail content", () => {
     const card = mountSummaryWidget(anchorInPage(), { kind: "summary", text: "hi" })!
       .host.shadowRoot!.querySelector(".card")!;

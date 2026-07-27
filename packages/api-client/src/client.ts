@@ -56,7 +56,8 @@ import type {
  * Its own error type rather than a generic failure because the two call for
  * opposite responses: a failure is worth retrying on the next thread open, a
  * refusal is not — the content script latches on this and stops asking.
- * Only providerThreadSummary can raise it; Amarnai's own surfaces are not gated.
+ * Only the provider-id routes (providerThreadSummary, generateDraftByProviderThread)
+ * can raise it; Amarnai's own surfaces are not gated.
  */
 export class InjectionDisabledError extends Error {
   constructor(message: string) {
@@ -100,6 +101,52 @@ export function makeApiClient(transport: ApiTransport) {
   // Returns raw Response for endpoints that need custom status-code handling.
   async function apiRequest(path: string, init: TransportInit): Promise<Response> {
     return transport.fetch(`${base}${path}`, init);
+  }
+
+  // Shared by the two generate-draft entrypoints (our thread id vs the
+  // provider's). Both map the same server outcomes onto GenerateDraftResult; the
+  // provider-id route can additionally refuse with InjectionDisabledError.
+  async function requestGenerateDraft(
+    path: string,
+    opts: { force?: boolean }
+  ): Promise<GenerateDraftResult> {
+    const res = await apiRequest(path, {
+      method: "POST",
+      cache: "no-store",
+      headers: opts.force ? { "X-Force-Regenerate": "1" } : {},
+    });
+    if (res.status === 429) {
+      const body = (await res.json().catch(() => ({}))) as Record<string, unknown>;
+      return {
+        quotaExceeded: true as const,
+        used: typeof body["used"] === "number" ? body["used"] : 0,
+        limit: typeof body["limit"] === "number" ? body["limit"] : 0,
+        resetsAt: typeof body["resetsAt"] === "string" ? body["resetsAt"] : "",
+      };
+    }
+    if (!res.ok) {
+      const err = (await res.json().catch(() => ({}))) as {
+        code?: string;
+        error?: string;
+        injectionDisabled?: boolean;
+      };
+      // An unsorted thread is an expected outcome, not a failure: the caller
+      // shows "still sorting" and lets the user retry. Every other non-ok
+      // status still throws, so this does not widen the swallowed set.
+      if (res.status === 422 && err.code === "NOT_CLASSIFIED") {
+        return { notClassified: true as const };
+      }
+      // A refusal, not a failure: the button latches off instead of retrying.
+      if (res.status === 403 && err.injectionDisabled) {
+        throw new InjectionDisabledError(err.error ?? "Reply button injection is disabled");
+      }
+      throw new Error(err.error ?? `API returned ${res.status}`);
+    }
+    const data = (await res.json()) as { draft: Draft } | { generating: true };
+    if ("draft" in data) {
+      return { draft: data.draft, isNew: res.status === 201 };
+    }
+    return data;
   }
 
   // Shared by the two thread-summary entrypoints (our thread id vs the provider's).
@@ -589,36 +636,29 @@ export function makeApiClient(transport: ApiTransport) {
         "POST"
       ),
 
-    generateDraft: async (
+    generateDraft: (
       workspaceId: string,
       threadId: string,
       opts: { force?: boolean } = {}
-    ): Promise<GenerateDraftResult> => {
-      const path = `/workspaces/${workspaceId}/email-threads/${threadId}/generate-draft`;
-      const res = await apiRequest(path, {
-        method: "POST",
-        cache: "no-store",
-        headers: opts.force ? { "X-Force-Regenerate": "1" } : {},
-      });
-      if (res.status === 429) {
-        const body = await res.json().catch(() => ({})) as Record<string, unknown>;
-        return {
-          quotaExceeded: true as const,
-          used: typeof body["used"] === "number" ? body["used"] : 0,
-          limit: typeof body["limit"] === "number" ? body["limit"] : 0,
-          resetsAt: typeof body["resetsAt"] === "string" ? body["resetsAt"] : "",
-        };
-      }
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({})) as { error?: string };
-        throw new Error(err.error ?? `API returned ${res.status}`);
-      }
-      const data = await res.json() as { draft: Draft } | { generating: true };
-      if ("draft" in data) {
-        return { draft: data.draft, isNew: res.status === 201 };
-      }
-      return data;
-    },
+    ): Promise<GenerateDraftResult> =>
+      requestGenerateDraft(
+        `/workspaces/${workspaceId}/email-threads/${threadId}/generate-draft`,
+        opts
+      ),
+
+    // Same generation, addressed by the provider's own thread id. Used by the
+    // native Gmail/Outlook reply button, which knows the mailbox's thread id but
+    // not ours. Throws InjectionDisabledError when the workspace has turned the
+    // button off, and a plain error on 404 (thread never synced into Amarnai).
+    generateDraftByProviderThread: (
+      workspaceId: string,
+      providerThreadId: string,
+      opts: { force?: boolean } = {}
+    ): Promise<GenerateDraftResult> =>
+      requestGenerateDraft(
+        `/workspaces/${workspaceId}/provider-threads/${encodeURIComponent(providerThreadId)}/generate-draft`,
+        opts
+      ),
 
     draftQuota: (workspaceId: string) =>
       apiFetch<QuotaInfo>(`/workspaces/${workspaceId}/draft-quota`),

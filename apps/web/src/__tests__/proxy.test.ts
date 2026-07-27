@@ -50,3 +50,32 @@ describe("middleware auth gating — invite accept route", () => {
     expect(isPassThrough(res)).toBe(true);
   });
 });
+
+describe("middleware auth gating — Outlook add-in routes", () => {
+  // A task pane cannot follow a redirect to /sign-in: it is a frame inside
+  // Outlook with no cookie session, so the pane authenticates itself with a
+  // bearer token and must be reached logged-out.
+  it("lets a logged-out request reach the task pane", () => {
+    expect(isPassThrough(mw(makeReq("/outlook-panel")))).toBe(true);
+  });
+
+  it("lets Outlook fetch the add-in manifest without a session", () => {
+    expect(isPassThrough(mw(makeReq("/outlook-manifest.xml")))).toBe(true);
+  });
+
+  it("does not make lookalike paths public", () => {
+    for (const path of ["/outlook-panels", "/outlook-panel/secret"]) {
+      const res = mw(makeReq(path));
+      expect(res.status).toBe(307);
+      expect(location(res)).toContain("/sign-in");
+    }
+  });
+
+  it("sets the pane's framing policy on the pane response", () => {
+    vi.stubEnv("OUTLOOK_ADDIN_ENABLED", "true");
+    const res = mw(makeReq("/outlook-panel"));
+    const csp = res.headers.get("Content-Security-Policy") ?? "";
+    expect(csp).toContain("frame-ancestors https://outlook.office.com");
+    vi.unstubAllEnvs();
+  });
+});

@@ -17,6 +17,7 @@ const SETTINGS_SELECT = {
   routeBulkToOther: true,
   labelWritebackEnabled: true,
   threadSummaryInjectionEnabled: true,
+  replyButtonInjectionEnabled: true,
   blacklistedSenderEmails: true,
 } as const;
 
@@ -98,6 +99,7 @@ gmailSyncSettings.patch("/workspaces/:workspaceId/gmail-sync-settings", async (c
     routeBulkToOther?: boolean;
     labelWritebackEnabled?: boolean;
     threadSummaryInjectionEnabled?: boolean;
+    replyButtonInjectionEnabled?: boolean;
   } = {};
   if (bodyParsed.data.includeSpam !== undefined) updateData.includeSpam = bodyParsed.data.includeSpam;
   if (bodyParsed.data.includePromotions !== undefined) updateData.includePromotions = bodyParsed.data.includePromotions;
@@ -105,6 +107,7 @@ gmailSyncSettings.patch("/workspaces/:workspaceId/gmail-sync-settings", async (c
   if (bodyParsed.data.routeBulkToOther !== undefined) updateData.routeBulkToOther = bodyParsed.data.routeBulkToOther;
   if (bodyParsed.data.labelWritebackEnabled !== undefined) updateData.labelWritebackEnabled = bodyParsed.data.labelWritebackEnabled;
   if (bodyParsed.data.threadSummaryInjectionEnabled !== undefined) updateData.threadSummaryInjectionEnabled = bodyParsed.data.threadSummaryInjectionEnabled;
+  if (bodyParsed.data.replyButtonInjectionEnabled !== undefined) updateData.replyButtonInjectionEnabled = bodyParsed.data.replyButtonInjectionEnabled;
 
   const updated = await db.gmailSyncSettings.upsert({
     where: { workspaceId },
@@ -117,6 +120,8 @@ gmailSyncSettings.patch("/workspaces/:workspaceId/gmail-sync-settings", async (c
       labelWritebackEnabled: updateData.labelWritebackEnabled ?? DEFAULT_GMAIL_SYNC_SETTINGS.labelWritebackEnabled,
       threadSummaryInjectionEnabled:
         updateData.threadSummaryInjectionEnabled ?? DEFAULT_GMAIL_SYNC_SETTINGS.threadSummaryInjectionEnabled,
+      replyButtonInjectionEnabled:
+        updateData.replyButtonInjectionEnabled ?? DEFAULT_GMAIL_SYNC_SETTINGS.replyButtonInjectionEnabled,
     },
     update: updateData,
     select: SETTINGS_SELECT,

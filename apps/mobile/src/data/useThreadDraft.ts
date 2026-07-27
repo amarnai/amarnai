@@ -143,6 +143,12 @@ export function useThreadDraft(thread: ThreadItem | null): UseThreadDraftResult 
         handleDraftFailed(threadId);
         return;
       }
+      if ('notClassified' in result) {
+        // Thread not sorted yet: nothing to draft against.
+        setDraftState('error');
+        handleDraftFailed(threadId);
+        return;
+      }
       setDraft(result.draft);
       setDraftState('ready');
       if (result.isNew) {

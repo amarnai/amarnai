@@ -54,13 +54,16 @@ describe("background script — firefox", () => {
   });
 });
 
-describe("background script — content-script message handler", () => {
-  it("registers the thread-summary listener synchronously at top level", async () => {
+describe("background script — content-script message handlers", () => {
+  it("registers both content-script listeners synchronously at top level", async () => {
     vi.mocked(chrome.runtime.onMessage.addListener).mockClear();
     vi.resetModules();
     await import("./service-worker");
     // Registered during module evaluation, not inside a promise: an event page is
-    // woken BY the message, so a later listener would miss it.
-    expect(chrome.runtime.onMessage.addListener).toHaveBeenCalledOnce();
+    // woken BY the message, so a later listener would miss it. One per feature
+    // the mail pages can ask for — thread summary, reply draft, open panel, and
+    // InboxSDK's pageWorld injection — each bailing on messages that are not its
+    // own, so they share the bus.
+    expect(chrome.runtime.onMessage.addListener).toHaveBeenCalledTimes(4);
   });
 });

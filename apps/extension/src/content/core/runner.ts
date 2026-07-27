@@ -20,6 +20,12 @@ export interface ProviderAdapter {
    * message list). Null when the pane has not rendered yet.
    */
   findInjectionAnchor: () => Element | null;
+  /**
+   * Left margin for the card so it lines up with the provider's own content
+   * column (Gmail indents its message list past the avatar gutter; OWA does
+   * not). Omit for flush-left.
+   */
+  gutterLeft?: string;
 }
 
 /**
@@ -63,7 +69,9 @@ export function runContentScript(adapter: ProviderAdapter): void {
     }
 
     widget?.remove();
-    widget = mountSummaryWidget(anchor, { kind: "loading" });
+    widget = mountSummaryWidget(anchor, { kind: "loading" }, {
+      ...(adapter.gutterLeft ? { gutterLeft: adapter.gutterLeft } : {}),
+    });
     if (!widget) {
       debugLog("anchor detached before mount");
       return false;

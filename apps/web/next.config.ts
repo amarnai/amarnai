@@ -27,24 +27,33 @@ const config: NextConfig = {
   // stays here as the static clickjacking fallback for asset routes the proxy matcher
   // skips and for browsers that don't honour `frame-ancestors`.
   async headers() {
-    const securityHeaders = [
-      { key: "X-Frame-Options", value: "DENY" },
-    ];
-
     // Strict-Transport-Security forces HTTPS on subsequent visits and blocks
     // protocol-downgrade attacks. Browsers only honor it on HTTPS responses, so
     // it is gated to production to avoid caching a policy against local HTTP dev.
     // Host-scoped on purpose: no `includeSubDomains` (a self-hoster may run
     // non-TLS sibling services on the same parent domain) and no `preload` (a
     // hard-to-reverse commitment). Hosted deployments can widen this at the edge.
-    if (process.env.NODE_ENV === "production") {
-      securityHeaders.push({
-        key: "Strict-Transport-Security",
-        value: "max-age=63072000",
-      });
-    }
+    const transportHeaders =
+      process.env.NODE_ENV === "production"
+        ? [{ key: "Strict-Transport-Security", value: "max-age=63072000" }]
+        : [];
 
-    return [{ source: "/:path*", headers: securityHeaders }];
+    return [
+      // X-Frame-Options everywhere EXCEPT the Outlook task pane, which Outlook
+      // must be able to frame. The header has no allowlist form, so the pane is
+      // excluded here and protected instead by the per-request `frame-ancestors`
+      // in csp.ts, which names the Outlook hosts explicitly. Excluded
+      // unconditionally rather than behind OUTLOOK_ADDIN_ENABLED: with the flag
+      // off the route 404s, so there is nothing to frame either way, and this
+      // config is evaluated at build time where a runtime flag is not reliable.
+      {
+        source: "/((?!outlook-panel).*)",
+        headers: [{ key: "X-Frame-Options", value: "DENY" }],
+      },
+      ...(transportHeaders.length
+        ? [{ source: "/:path*", headers: transportHeaders }]
+        : []),
+    ];
   },
 };
 

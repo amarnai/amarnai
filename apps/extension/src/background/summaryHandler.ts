@@ -1,6 +1,7 @@
 import {
   makeApiClient,
   makeBearerTransport,
+  resolveWorkspaceIdForMailbox,
   InjectionDisabledError,
   type ApiClient,
 } from "@amarnai/api-client";
@@ -24,7 +25,13 @@ const WORKSPACE_CACHE_KEY = "amarnai.injectWorkspaceByAccount";
 /** Built lazily: the background wakes for many events that need no API client. */
 let client: ApiClient | null = null;
 
-function getClient(): ApiClient {
+/**
+ * The one API client every native-injection handler shares. Deliberately a
+ * single instance: a second client would carry a second refresh single-flight,
+ * and two of those racing burn refresh tokens (the reason the content script
+ * does not call the API itself in the first place).
+ */
+export function getInjectionClient(): ApiClient {
   client ??= makeApiClient(
     makeBearerTransport({
       baseUrl: API_BASE_URL,
@@ -66,9 +73,13 @@ async function writeWorkspaceCache(cache: WorkspaceCache): Promise<void> {
 }
 
 /**
- * Map the mailbox visible in the mail UI to the workspace that has it connected.
- * Returns null when the signed-in user has no workspace for that address — which
- * is the normal case under multi-login, and means "render nothing".
+ * Map the mailbox visible in the mail UI to the workspace that has it connected,
+ * memoized for the browser session. The resolution itself is shared with the
+ * Outlook task pane (resolveWorkspaceIdForMailbox); only the cache is ours,
+ * because it is the extension that pays the round trips on every thread open.
+ *
+ * Returns null when the signed-in user has no workspace for that address — the
+ * normal case under multi-login, and it means "render nothing".
  */
 export async function resolveWorkspaceForAccount(
   api: ApiClient,
@@ -79,15 +90,9 @@ export async function resolveWorkspaceForAccount(
   const cached = cache[key];
   if (cached) return cached;
 
-  const workspaces = await api.workspaces();
-  for (const workspace of workspaces) {
-    const connection = await api.gmailConnection(workspace.id);
-    if (connection?.gmailAddress?.toLowerCase() === key) {
-      await writeWorkspaceCache({ ...cache, [key]: workspace.id });
-      return workspace.id;
-    }
-  }
-  return null;
+  const workspaceId = await resolveWorkspaceIdForMailbox(api, accountEmail);
+  if (workspaceId) await writeWorkspaceCache({ ...cache, [key]: workspaceId });
+  return workspaceId;
 }
 
 /** Answer one content-script request. Never throws. */
@@ -97,7 +102,7 @@ export async function handleThreadSummaryRequest(
   const tokens = await extensionTokenStore.get();
   if (!tokens) return { ok: false, reason: "signedOut" };
 
-  const api = getClient();
+  const api = getInjectionClient();
 
   let workspaceId: string | null;
   try {

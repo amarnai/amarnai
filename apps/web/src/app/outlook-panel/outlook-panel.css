@@ -1,0 +1,88 @@
+/* Task-pane styling.
+ *
+ * Outlook panes are narrow (roughly 320-450px) and sit inside Outlook's own
+ * chrome, so this stays deliberately plain: one column, generous tap targets,
+ * and the shared Amarnai tokens so it still reads as Amarnai. Tokens come from
+ * the global stylesheet loaded by the root layout, which also carries the
+ * light/dark variable swap — the pane inherits both. */
+
+.outlook-pane {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3, 0.75rem);
+  padding: var(--space-4, 1rem);
+  max-width: 100%;
+  font-family: var(--font-sans, system-ui, sans-serif);
+  color: var(--color-ink, #1a1a1a);
+}
+
+.outlook-pane-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.outlook-pane-status {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  color: var(--color-ink-muted, #555);
+}
+
+.outlook-pane-warn {
+  color: var(--color-accent-ink, #7b3a1d);
+}
+
+.outlook-pane-button {
+  appearance: none;
+  border: none;
+  border-radius: var(--radius-md, 8px);
+  background: var(--color-accent, #c2683f);
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  /* Comfortably clickable in a pane that may be driven by touch on Surface. */
+  padding: 0.625rem 1rem;
+  cursor: pointer;
+}
+
+.outlook-pane-button:hover:not(:disabled) {
+  background: var(--color-accent-hover, #ad5b32);
+}
+
+.outlook-pane-button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.outlook-pane-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3, 0.75rem);
+}
+
+.outlook-pane-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+.outlook-pane-label input {
+  font: inherit;
+  font-weight: 400;
+  padding: 0.5rem;
+  border: 1px solid var(--color-line, #d8d2cc);
+  border-radius: var(--radius-sm, 6px);
+  background: var(--color-surface, #fff);
+  color: inherit;
+}
+
+.outlook-pane-footnote {
+  margin: 0;
+  margin-top: auto;
+  padding-top: var(--space-3, 0.75rem);
+  font-size: 0.75rem;
+  color: var(--color-ink-subtle, #777);
+}

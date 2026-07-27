@@ -77,6 +77,77 @@ describe("generateCspNonce", () => {
   });
 });
 
+// The Outlook task pane is the only page Amarnai lets anyone frame, and the only
+// one that loads a third-party script. Every assertion here is about keeping that
+// exception to exactly one path: a leak would make the whole app clickjackable.
+describe("buildContentSecurityPolicy — Outlook task pane exception", () => {
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
+  function enableAddin() {
+    vi.stubEnv("OUTLOOK_ADDIN_ENABLED", "true");
+  }
+
+  it("lets Outlook frame the pane, and names the hosts rather than allowing any", () => {
+    enableAddin();
+    const frameAncestors = directive(
+      buildContentSecurityPolicy("n", "/outlook-panel"),
+      "frame-ancestors",
+    )!;
+    expect(frameAncestors).toContain("https://outlook.office.com");
+    expect(frameAncestors).toContain("https://outlook.office365.com");
+    expect(frameAncestors).toContain("https://outlook.live.com");
+    expect(frameAncestors).toContain("https://*.officeapps.live.com");
+    expect(frameAncestors).not.toContain("*;");
+    expect(frameAncestors).not.toContain("'self'");
+  });
+
+  it("allows office.js and the API only on the pane", () => {
+    enableAddin();
+    vi.stubEnv("NEXT_PUBLIC_API_URL", "https://api.amarnai.com");
+    const pane = buildContentSecurityPolicy("n", "/outlook-panel");
+    expect(directive(pane, "script-src")).toContain("https://appsforoffice.microsoft.com");
+    expect(directive(pane, "connect-src")).toContain("https://api.amarnai.com");
+
+    const other = buildContentSecurityPolicy("n", "/emails");
+    expect(directive(other, "script-src")).not.toContain("appsforoffice");
+    expect(directive(other, "connect-src")).not.toContain("api.amarnai.com");
+  });
+
+  it("keeps every other route unframable", () => {
+    enableAddin();
+    for (const path of ["/", "/emails", "/settings", "/sign-in", undefined]) {
+      expect(directive(buildContentSecurityPolicy("n", path), "frame-ancestors")).toBe(
+        "frame-ancestors 'none'",
+      );
+    }
+  });
+
+  it("does not let a lookalike path inherit the exception", () => {
+    enableAddin();
+    for (const path of ["/outlook-panels", "/outlook-panel-x", "/x/outlook-panel"]) {
+      expect(directive(buildContentSecurityPolicy("n", path), "frame-ancestors")).toBe(
+        "frame-ancestors 'none'",
+      );
+    }
+  });
+
+  it("still applies to the pane's own sub-paths", () => {
+    enableAddin();
+    expect(
+      directive(buildContentSecurityPolicy("n", "/outlook-panel/auth"), "frame-ancestors"),
+    ).toContain("https://outlook.office.com");
+  });
+
+  it("refuses to widen anything when the add-in is not enabled", () => {
+    vi.stubEnv("OUTLOOK_ADDIN_ENABLED", "");
+    const csp = buildContentSecurityPolicy("n", "/outlook-panel");
+    expect(directive(csp, "frame-ancestors")).toBe("frame-ancestors 'none'");
+    expect(directive(csp, "script-src")).not.toContain("appsforoffice");
+  });
+});
+
 describe("cspHeaderName", () => {
   afterEach(() => {
     vi.unstubAllEnvs();

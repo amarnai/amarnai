@@ -56,7 +56,7 @@ describe("buildManifest — firefox", () => {
     expect(m["minimum_chrome_version"]).toBeUndefined();
     expect(m["side_panel"]).toBeUndefined();
     expect(m["permissions"]).not.toContain("sidePanel");
-    expect(m["permissions"]).toEqual(["storage", "identity", "clipboardWrite"]);
+    expect(m["permissions"]).toEqual(["storage", "identity", "clipboardWrite", "scripting"]);
   });
 });
 
@@ -112,15 +112,58 @@ describe("buildManifest — native summary injection", () => {
     }
   });
 
-  // Content scripts run on hosts the extension already asks for; shipping them
-  // must not widen the permission surface.
-  it("adds no new host permissions", () => {
-    const withInjection = buildManifest({ apiUrl: API }) as Record<string, unknown>;
-    const without = buildManifest({ apiUrl: API, nativeInjection: false }) as Record<
-      string,
-      unknown
-    >;
-    expect(withInjection["host_permissions"]).toEqual(without["host_permissions"]);
-    expect(withInjection["permissions"]).toEqual(without["permissions"]);
+  // InboxSDK's page-world half and the button icon are loaded by Gmail's own
+  // page, so they must be web-accessible — but only to Gmail. Any wider match
+  // would let unrelated sites probe for the extension.
+  it("exposes the reply-button resources to Gmail alone", () => {
+    for (const browser of ["chrome", "firefox"] as const) {
+      const m = buildManifest({ apiUrl: API, browser }) as Record<string, unknown>;
+      expect(m["web_accessible_resources"]).toEqual([
+        {
+          resources: ["pageWorld.js", "reply-button-icon.svg"],
+          matches: ["https://mail.google.com/*"],
+        },
+      ]);
+    }
+  });
+
+  it("exposes nothing under the build-time kill-switch", () => {
+    for (const browser of ["chrome", "firefox"] as const) {
+      const m = buildManifest({ apiUrl: API, browser, nativeInjection: false }) as Record<
+        string,
+        unknown
+      >;
+      expect("web_accessible_resources" in m).toBe(false);
+    }
+  });
+
+  // Content scripts run on hosts the extension already asks for. The one
+  // permission injection adds is `scripting` — InboxSDK's pageWorld.js must be
+  // injected into Gmail's MAIN world by the background, and chrome.scripting is
+  // the only MV3 way to do that. It rides the existing host grants and carries
+  // no install-time warning; anything beyond it appearing here is a regression.
+  it("adds exactly the scripting permission, and no host permissions", () => {
+    for (const browser of ["chrome", "firefox"] as const) {
+      const withInjection = buildManifest({ apiUrl: API, browser }) as Record<string, unknown>;
+      const without = buildManifest({ apiUrl: API, browser, nativeInjection: false }) as Record<
+        string,
+        unknown
+      >;
+      expect(withInjection["host_permissions"]).toEqual(without["host_permissions"]);
+      expect(withInjection["permissions"]).toEqual([
+        ...(without["permissions"] as string[]),
+        "scripting",
+      ]);
+    }
+  });
+
+  it("carries no scripting permission under the kill-switch (no call site exists)", () => {
+    for (const browser of ["chrome", "firefox"] as const) {
+      const m = buildManifest({ apiUrl: API, browser, nativeInjection: false }) as Record<
+        string,
+        unknown
+      >;
+      expect(m["permissions"]).not.toContain("scripting");
+    }
   });
 });

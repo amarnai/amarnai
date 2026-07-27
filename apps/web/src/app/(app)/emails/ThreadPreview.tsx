@@ -293,6 +293,13 @@ export function ThreadPreview({
         onDraftFailed(threadId);
         return;
       }
+      if ("notClassified" in result) {
+        // The thread has not been sorted yet. Same surface as any other failure
+        // here; the native-injection button is the caller that distinguishes it.
+        setDraftState("error");
+        onDraftFailed(threadId);
+        return;
+      }
       setDraft(result.draft);
       setDraftState("ready");
       if (result.isNew) {

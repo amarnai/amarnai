@@ -5,14 +5,22 @@
 // page), and streaming fetches do not keep it alive. So the side-panel/sidebar
 // page owns the SSE stream and all data fetching. The script's only jobs are to
 // open the panel when the toolbar icon is clicked, and to answer the mail-page
-// content scripts' thread-summary requests (they cannot call the API themselves;
-// see content/core/messaging.ts). Listeners are registered synchronously at top
-// level, as event pages require — an event page is woken BY the event, so a
-// listener added later would miss it.
+// content scripts' requests — thread summaries and reply drafts (they cannot
+// call the API themselves; see content/core/messaging.ts). Listeners are
+// registered synchronously at top level, as event pages require — an event page
+// is woken BY the event, so a listener added later would miss it.
 import { ext } from "../platform/ext";
 import { registerThreadSummaryHandler } from "./summaryHandler";
+import { registerGenerateDraftHandler } from "./draftHandler";
+import { registerOpenPanelHandler } from "./openPanelHandler";
+import { registerPageWorldHandler } from "./pageWorldHandler";
 
+// Each handler discriminates on its own message type and bails on anything else,
+// so registration order carries no meaning.
 registerThreadSummaryHandler();
+registerGenerateDraftHandler();
+registerOpenPanelHandler();
+registerPageWorldHandler();
 
 if (ext.sidePanel) {
   // Chrome: bind the toolbar icon to the side panel. Idempotent, re-runs on every

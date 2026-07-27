@@ -7,6 +7,7 @@ import {
   messageSetSignature,
   type InboxQuota,
 } from "@amarnai/db";
+import { isInjectionEnabled, resolveProviderThreadId } from "../services/provider-thread.js";
 import {
   createAIProvider,
   generateThreadSummary,
@@ -47,19 +48,6 @@ const providerThreadParams = z.object({
   workspaceId: z.string().min(1),
   providerThreadId: z.string().min(1),
 });
-
-/**
- * OWA's DOM (`data-convid`) carries the EWS flavor of the conversation id:
- * same bytes as the Graph `conversationId` we store, but the EWS base64
- * alphabet (`+`, `/`). Graph's URL-safe translation is NOT standard base64url:
- * it swaps `+`→`_` and `/`→`-` (verified against a live mailbox, and matching
- * Microsoft's documented EWS↔REST id conversion). Map onto the stored alphabet
- * so the native content scripts resolve. Idempotent for ids already in Graph
- * form (they never contain `+` or `/`), and a no-op for Gmail's hex thread ids.
- */
-function normalizeProviderThreadId(id: string): string {
-  return id.replace(/\+/g, "_").replace(/\//g, "-");
-}
 
 /**
  * How long a GENERATING row is treated as in-flight. Shorter than the draft
@@ -454,17 +442,9 @@ summary.post("/workspaces/:workspaceId/provider-threads/:providerThreadId/summar
   if (!parsed.success) return c.json({ error: "Invalid params" }, 400);
   const { workspaceId, providerThreadId } = parsed.data;
 
-  // Workspace kill-switch for native injection. Enforced here rather than in the
-  // content script because the extension is the half we do not control: an old
-  // build, or one a user never updates, must still stop injecting the moment the
-  // workspace turns the setting off. Only THIS route is gated — the web preview
-  // and the side panel are Amarnai's own surfaces and address threads by our id.
-  // A missing settings row means defaults, and the default is on.
-  const settings = await db.gmailSyncSettings.findUnique({
-    where: { workspaceId },
-    select: { threadSummaryInjectionEnabled: true },
-  });
-  if (settings && !settings.threadSummaryInjectionEnabled) {
+  // Workspace kill-switch for native injection; see isInjectionEnabled for why
+  // it is enforced server-side rather than in the content script.
+  if (!(await isInjectionEnabled(workspaceId, "threadSummary"))) {
     return c.json(
       {
         error: "Thread summary injection is disabled for this workspace",
@@ -474,23 +454,11 @@ summary.post("/workspaces/:workspaceId/provider-threads/:providerThreadId/summar
     );
   }
 
-  const accounts = await db.emailAccount.findMany({
-    where: { workspaceId },
-    select: { id: true },
-  });
-  if (accounts.length === 0) return c.json({ error: "Thread not found" }, 404);
-
-  const thread = await db.emailThread.findFirst({
-    where: {
-      emailAccountId: { in: accounts.map((a) => a.id) },
-      providerThreadId: normalizeProviderThreadId(providerThreadId),
-    },
-    select: { id: true },
-  });
-  if (!thread) return c.json({ error: "Thread not found" }, 404);
+  const threadId = await resolveProviderThreadId(workspaceId, providerThreadId);
+  if (!threadId) return c.json({ error: "Thread not found" }, 404);
 
   const force = c.req.header("X-Force-Regenerate") === "1";
-  const outcome = await getOrGenerateSummary(workspaceId, thread.id, force);
+  const outcome = await getOrGenerateSummary(workspaceId, threadId, force);
   return c.json(outcome.body, outcome.status);
 });
 

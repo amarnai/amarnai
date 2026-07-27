@@ -439,9 +439,15 @@ export type Draft = {
   createdAt: string;
 };
 
+/**
+ * `notClassified` is an outcome, not an error: the thread has not been sorted
+ * yet, so there is nothing to draft against. Callers surface it as a transient
+ * "still sorting" state and let the user retry once classification lands.
+ */
 export type GenerateDraftResult =
   | { draft: Draft; isNew: boolean }
   | { generating: true }
+  | { notClassified: true }
   | ({ quotaExceeded: true } & QuotaInfo);
 
 // ── Thread summaries ──────────────────────────────────────────────────────────

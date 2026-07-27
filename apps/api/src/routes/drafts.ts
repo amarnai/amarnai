@@ -1,4 +1,4 @@
-import { Hono } from "hono";
+import { Hono, type Context } from "hono";
 import { z } from "zod";
 import {
   db,
@@ -11,10 +11,16 @@ import { createAIProvider, generateDraft, getDraftAIProviderConfig, type ThreadM
 import { getDraftLimit, getDraftQuotaResetsAt, getThreadSortLimit } from "@amarnai/shared";
 import { config } from "@amarnai/config";
 import { createMailProvider } from "@amarnai/mail";
+import { isInjectionEnabled, resolveProviderThreadId } from "../services/provider-thread.js";
 
 const params = z.object({
   workspaceId: z.string().min(1),
   threadId: z.string().min(1),
+});
+
+const providerThreadParams = z.object({
+  workspaceId: z.string().min(1),
+  providerThreadId: z.string().min(1),
 });
 
 const draftParams = z.object({
@@ -48,18 +54,18 @@ const DRAFT_GENERATING_STALE_MS = 5 * 60 * 1_000;
 
 // Statuses that represent a completed or in-progress generation and count toward quota.
 
-drafts.post(
-  "/workspaces/:workspaceId/email-threads/:threadId/generate-draft",
-  async (c) => {
-    const parsed = params.safeParse({
-      workspaceId: c.req.param("workspaceId"),
-      threadId: c.req.param("threadId"),
-    });
-    if (!parsed.success) {
-      return c.json({ error: "Invalid params" }, 400);
-    }
-    const { workspaceId, threadId } = parsed.data;
-
+/**
+ * The generation itself, addressed by our internal thread id. Split out from the
+ * route so the provider-id route below can reuse it verbatim: quota, the
+ * placeholder transaction, metering and superseding must behave identically no
+ * matter which id the caller happened to know.
+ */
+async function generateDraftForThread(
+  c: Context,
+  workspaceId: string,
+  threadId: string,
+) {
+  {
     const thread = await db.emailThread.findFirst({
       where: { id: threadId, workspaceId },
       select: {
@@ -107,8 +113,15 @@ drafts.post(
       },
     });
     if (!classification) {
+      // `code` is the machine-readable discriminator; `error` stays the human
+      // string. Callers that render their own copy (the native Gmail/Outlook
+      // button, which cannot show a server sentence) branch on the code, so it
+      // must stay stable even if the prose is reworded.
       return c.json(
-        { error: "Thread has not been classified yet — sort the thread before generating a draft" },
+        {
+          code: "NOT_CLASSIFIED",
+          error: "Thread has not been classified yet — sort the thread before generating a draft",
+        },
         422
       );
     }
@@ -350,6 +363,57 @@ drafts.post(
 
     console.log(`[drafts] Generated draft ${draft.id} for thread ${threadId}`);
     return c.json({ draft }, 201);
+  }
+}
+
+drafts.post(
+  "/workspaces/:workspaceId/email-threads/:threadId/generate-draft",
+  async (c) => {
+    const parsed = params.safeParse({
+      workspaceId: c.req.param("workspaceId"),
+      threadId: c.req.param("threadId"),
+    });
+    if (!parsed.success) {
+      return c.json({ error: "Invalid params" }, 400);
+    }
+    return generateDraftForThread(c, parsed.data.workspaceId, parsed.data.threadId);
+  }
+);
+
+// ─── POST /workspaces/:wid/provider-threads/:providerThreadId/generate-draft ───
+//
+// Same generation, addressed by the provider's own thread id. Used by the native
+// Gmail/Outlook reply button, which knows the mailbox's thread id but not ours.
+// Mirrors the provider-id summary route: one round trip from the mail page, and
+// the same workspace kill-switch, because the extension is the half we do not
+// control. A thread we have not synced is a 404 and the button stays quiet.
+
+drafts.post(
+  "/workspaces/:workspaceId/provider-threads/:providerThreadId/generate-draft",
+  async (c) => {
+    const parsed = providerThreadParams.safeParse({
+      workspaceId: c.req.param("workspaceId"),
+      providerThreadId: c.req.param("providerThreadId"),
+    });
+    if (!parsed.success) {
+      return c.json({ error: "Invalid params" }, 400);
+    }
+    const { workspaceId, providerThreadId } = parsed.data;
+
+    if (!(await isInjectionEnabled(workspaceId, "replyButton"))) {
+      return c.json(
+        {
+          error: "Reply button injection is disabled for this workspace",
+          injectionDisabled: true,
+        },
+        403
+      );
+    }
+
+    const threadId = await resolveProviderThreadId(workspaceId, providerThreadId);
+    if (!threadId) return c.json({ error: "Thread not found" }, 404);
+
+    return generateDraftForThread(c, workspaceId, threadId);
   }
 );
 

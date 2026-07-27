@@ -382,7 +382,10 @@ export default function SettingsScreen() {
                       // Type-satisfying default; label writeback is not surfaced
                       // in the shelved mobile app.
                       labelWritebackEnabled: false,
+                      // Type-satisfying defaults; the native-injection toggles
+                      // govern the browser extension, which mobile has no part in.
                       threadSummaryInjectionEnabled: true,
+                      replyButtonInjectionEnabled: true,
                       blacklistedSenderEmails: emails,
                     },
               )

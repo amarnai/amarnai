@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 import { matchLocale, isSupportedLocale } from "@amarnai/i18n";
 import { buildContentSecurityPolicy, cspHeaderName, generateCspNonce } from "@/lib/csp";
+import { OUTLOOK_PANEL_PATH } from "@/lib/outlook-addin";
 
 const LOCALE_COOKIE = "amarnai_locale";
 
@@ -34,6 +35,11 @@ export default auth((req) => {
     // the prefix (e.g. /privacy-settings).
     pathname === "/privacy" ||
     pathname === "/terms" ||
+    // The Outlook task pane authenticates itself with a bearer token: its
+    // session cookie would be third-party inside Outlook's frame and partitioned
+    // away, and a redirect to /sign-in inside a task pane is a dead end.
+    pathname === OUTLOOK_PANEL_PATH ||
+    pathname === "/outlook-manifest.xml" ||
     pathname.startsWith("/api/auth") ||
     pathname.startsWith("/api/internal") ||
     // The billing routes authenticate themselves and must not be redirected to
@@ -82,7 +88,7 @@ export default auth((req) => {
   // parses to nonce its own bundled scripts.
   if (!pathname.startsWith("/api")) {
     const nonce = generateCspNonce();
-    const csp = buildContentSecurityPolicy(nonce);
+    const csp = buildContentSecurityPolicy(nonce, pathname);
     requestHeaders.set("x-nonce", nonce);
     requestHeaders.set("Content-Security-Policy", csp);
     const res = NextResponse.next({ request: { headers: requestHeaders } });

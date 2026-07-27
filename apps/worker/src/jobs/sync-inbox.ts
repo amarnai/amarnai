@@ -385,9 +385,10 @@ export function createSyncInboxWorker(): Worker {
         // Not consumed by sync filtering — writeback runs off its own job. Kept
         // false here to satisfy the shared type without an extra column select.
         labelWritebackEnabled:   false,
-        // Not consumed by sync filtering — read only by the extension's summary
-        // request path. Kept true here to satisfy the shared type.
+        // Not consumed by sync filtering — read only by the extension's native
+        // injection paths. Kept true here to satisfy the shared type.
         threadSummaryInjectionEnabled: true,
+        replyButtonInjectionEnabled: true,
         blacklistedSenderEmails: syncSettingsRow?.blacklistedSenderEmails ?? [],
       };
       const sortingPaused = settings.sortingPaused;

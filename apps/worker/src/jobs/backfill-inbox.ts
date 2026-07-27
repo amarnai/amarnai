@@ -143,8 +143,9 @@ export function createBackfillInboxWorker(): Worker {
         // Not consumed by backfill filtering — writeback runs off its own job.
         labelWritebackEnabled:   false,
         // Not consumed by backfill filtering — read only by the extension's
-        // summary request path. Kept true here to satisfy the shared type.
+        // native injection paths. Kept true here to satisfy the shared type.
         threadSummaryInjectionEnabled: true,
+        replyButtonInjectionEnabled: true,
         blacklistedSenderEmails: syncSettingsRow?.blacklistedSenderEmails ?? [],
       };
       const sortingPaused = settings.sortingPaused;
