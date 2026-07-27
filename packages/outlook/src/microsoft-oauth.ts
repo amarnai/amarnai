@@ -9,13 +9,16 @@
 export const OUTLOOK_MAIL_READ_SCOPE = "Mail.Read";
 
 /**
- * Write scope for opt-in category writeback: manage the master category list and
- * PATCH message categories. Requested only through the incremental-consent
- * upgrade, never at sign-up. Mail.ReadWrite is a superset of Mail.Read.
- * VERIFY at implementation: if POST /me/outlook/masterCategories returns 403
- * ErrorAccessDenied, add MailboxSettings.ReadWrite to OUTLOOK_WRITEBACK_SCOPES.
+ * Category writeback needs TWO delegated scopes, and both are required:
+ *  - Mail.ReadWrite         → PATCH the `categories` array onto messages.
+ *  - MailboxSettings.ReadWrite → list/create the mailbox's master category list
+ *    (/me/outlook/masterCategories). Categories are mailbox settings, NOT mail
+ *    items, so Mail.ReadWrite alone 403s "ErrorAccessDenied" on that endpoint —
+ *    which is exactly the first call ensureFolderLabels makes.
+ * Requested only through the writeback flow, never for a read-only connect.
  */
 export const OUTLOOK_MAIL_READWRITE_SCOPE = "Mail.ReadWrite";
+export const OUTLOOK_MAILBOX_SETTINGS_RW_SCOPE = "MailboxSettings.ReadWrite";
 
 /**
  * Full delegated scope set requested at consent. `offline_access` is required for
@@ -23,9 +26,11 @@ export const OUTLOOK_MAIL_READWRITE_SCOPE = "Mail.ReadWrite";
  */
 export const OUTLOOK_SCOPES = "Mail.Read offline_access User.Read";
 
-/** Scope set for the writeback upgrade — adds Mail.ReadWrite. Must match the
+/** Scope set for the writeback flow — adds Mail.ReadWrite (message categories)
+ *  and MailboxSettings.ReadWrite (master category list). Must match the
  *  authorize request, since Microsoft refresh tokens are scope-bound. */
-export const OUTLOOK_WRITEBACK_SCOPES = "Mail.ReadWrite offline_access User.Read";
+export const OUTLOOK_WRITEBACK_SCOPES =
+  "Mail.ReadWrite MailboxSettings.ReadWrite offline_access User.Read";
 
 const GRAPH_BASE_URL = "https://graph.microsoft.com/v1.0";
 
@@ -56,16 +61,27 @@ export function parseGrantedScopes(scope: string): {
   hasWriteback: boolean;
 } {
   const scopes = scope.split(" ").filter(Boolean);
+  const hasWriteback = hasWritebackScope(scopes);
   const lower = scopes.map((s) => s.toLowerCase());
-  const hasWriteback = lower.includes(OUTLOOK_MAIL_READWRITE_SCOPE.toLowerCase());
-  const hasReadonly = hasWriteback || lower.includes(OUTLOOK_MAIL_READ_SCOPE.toLowerCase());
+  // Mail.ReadWrite (part of the writeback set) supersedes Mail.Read for reads.
+  const hasReadonly =
+    lower.includes(OUTLOOK_MAIL_READWRITE_SCOPE.toLowerCase()) ||
+    lower.includes(OUTLOOK_MAIL_READ_SCOPE.toLowerCase());
   return { scopes, hasReadonly, hasWriteback };
 }
 
-// Whether a persisted grantedScopes array carries the write scope. Case-insensitive
-// (Microsoft echoes scopes without stable casing). Mirrors gmail's helper.
+// Whether a persisted grantedScopes array carries BOTH write scopes category
+// writeback needs (message categories + master category list). Requiring both is
+// deliberate: a connection with only Mail.ReadWrite 403s on masterCategories, so
+// treating it as "has writeback" would provision-fail forever instead of
+// re-prompting for the missing MailboxSettings.ReadWrite. Case-insensitive
+// (Microsoft echoes scopes without stable casing).
 export function hasWritebackScope(grantedScopes: readonly string[]): boolean {
-  return grantedScopes.some((s) => s.toLowerCase() === OUTLOOK_MAIL_READWRITE_SCOPE.toLowerCase());
+  const lower = grantedScopes.map((s) => s.toLowerCase());
+  return (
+    lower.includes(OUTLOOK_MAIL_READWRITE_SCOPE.toLowerCase()) &&
+    lower.includes(OUTLOOK_MAILBOX_SETTINGS_RW_SCOPE.toLowerCase())
+  );
 }
 
 // ─── Error class ────────────────────────────────────────────────────────────
