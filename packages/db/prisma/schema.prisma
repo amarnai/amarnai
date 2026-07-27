@@ -165,6 +165,14 @@ enum ThreadSummaryStatus {
   FAILED
 }
 
+// Shape the model chose for a summary. Prose is the default; BULLETS is reserved
+// for threads that genuinely enumerate facts (times, places, documents, action
+// items), where flattening them into a sentence loses the structure.
+enum ThreadSummaryFormat {
+  PROSE
+  BULLETS
+}
+
 enum AuditActorType {
   USER
   AI
@@ -741,10 +749,18 @@ model ThreadSummary {
   workspaceId         String
   emailThreadId       String              @unique
   status              ThreadSummaryStatus @default(GENERATING)
+  // Exactly one of these carries the summary, per `format`: `summary` for PROSE,
+  // `bullets` for BULLETS. Both are derived email content and are never logged.
   summary             String?
+  bullets             String[]            @default([])
+  format              ThreadSummaryFormat @default(PROSE)
   // Workspace locale at generation time; a change invalidates the cached text.
   locale              String
   model               String?
+  // Prompt/output-contract generation (SUMMARY_PROMPT_VERSION). Compared like the
+  // locale and the signature, so changing how summaries are written regenerates
+  // them instead of serving output produced under the old rules forever.
+  promptVersion       String              @default("1")
   messageSetSignature String
   errorMessage        String?
   generatedAt         DateTime?

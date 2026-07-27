@@ -3,6 +3,8 @@ import type { AIProvider, ThreadMessage } from "../types.js";
 import { generateThreadSummary } from "./generate.js";
 import {
   buildSummaryPrompt,
+  MIN_FACTS_FOR_BULLETS,
+  MAX_BULLETS,
   MAX_BODY_CHARS_LATEST,
   MAX_BODY_CHARS_EARLIER,
   MAX_TOTAL_CHARS,
@@ -49,13 +51,19 @@ describe("generateThreadSummary", () => {
   it("returns the summary on valid output", async () => {
     const provider = new MockProvider(['{"summary":"Ana asks you to confirm the start date."}']);
     const result = await generateThreadSummary(provider, [msg()], CONTEXT);
-    expect(result).toEqual({ summary: "Ana asks you to confirm the start date." });
+    expect(result).toEqual({
+      format: "PROSE",
+      text: "Ana asks you to confirm the start date.",
+      bullets: [],
+    });
   });
 
   it("returns the summary from a fenced response", async () => {
     const provider = new MockProvider(['```json\n{"summary":"Kickoff date pending."}\n```']);
     expect(await generateThreadSummary(provider, [msg()], CONTEXT)).toEqual({
-      summary: "Kickoff date pending.",
+      format: "PROSE",
+      text: "Kickoff date pending.",
+      bullets: [],
     });
   });
 
@@ -137,5 +145,20 @@ describe("buildSummaryPrompt", () => {
   it("includes the subject when provided", () => {
     const [, user] = buildSummaryPrompt([msg()], { targetLanguage: "English", subject: "Q3 budget" });
     expect(user!.content).toContain("Q3 budget");
+  });
+});
+
+describe("buildSummaryPrompt — format policy", () => {
+  it("states the prose default and the bullets threshold", () => {
+    const [system] = buildSummaryPrompt([msg()], CONTEXT);
+    expect(system!.content).toContain("prose is the default");
+    expect(system!.content).toContain(`at least ${MIN_FACTS_FOR_BULLETS} distinct`);
+    expect(system!.content).toContain(`Never more than ${MAX_BULLETS} bullets`);
+  });
+
+  it("offers both output shapes in the JSON directive", () => {
+    const [system] = buildSummaryPrompt([msg()], CONTEXT);
+    expect(system!.content).toContain('"summary"');
+    expect(system!.content).toContain('"bullets"');
   });
 });

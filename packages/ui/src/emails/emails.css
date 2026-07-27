@@ -1817,6 +1817,21 @@ button.em-pill--assignee:hover { background: var(--accent-line); }
   word-break: break-word;
 }
 
+.em-summary-bullets {
+  margin: 5px 0 0;
+  padding-left: 16px;
+  font-size: 13px;
+  color: var(--ink-2);
+  line-height: 1.5;
+}
+
+.em-summary-bullets li {
+  margin-top: 2px;
+  word-break: break-word;
+}
+
+.em-summary-bullets li::marker { color: var(--ink-4); }
+
 .em-summary-loading {
   margin-top: 14px;
   background: var(--surface-2);

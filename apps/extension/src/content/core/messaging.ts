@@ -33,6 +33,7 @@ export type ThreadSummaryFailureReason =
 
 export type ThreadSummaryPayload =
   | { kind: "summary"; text: string }
+  | { kind: "bullets"; bullets: string[] }
   | { kind: "snippet" }
   | { kind: "quota"; used: number; limit: number; resetsAt: string };
 

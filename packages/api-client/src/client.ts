@@ -25,6 +25,7 @@ import type {
   Draft,
   GenerateDraftResult,
   ThreadSummaryResult,
+  ThreadSummaryFormat,
   MockInboxEventInput,
   MockInboxResult,
   CandidateNodeInput,
@@ -111,13 +112,28 @@ export function makeApiClient(transport: ApiTransport) {
       throw new Error(err.error ?? `API returned ${res.status}`);
     }
     const data = (await res.json()) as
-      | { kind: "summary"; summary: string; locale: string; generatedAt: string | null }
+      | {
+          kind: "summary";
+          format?: ThreadSummaryFormat;
+          summary: string;
+          bullets?: string[];
+          locale: string;
+          generatedAt: string | null;
+        }
       | { kind: "snippet"; snippet: string }
       | { generating: true };
     if ("kind" in data && data.kind === "summary") {
       return {
         kind: "summary",
-        summary: { text: data.summary, locale: data.locale, generatedAt: data.generatedAt },
+        summary: {
+          // Default to PROSE so a response from an older API (pre-bullets) still
+          // renders rather than falling through to an empty card.
+          format: data.format ?? "PROSE",
+          text: data.summary,
+          bullets: data.bullets ?? [],
+          locale: data.locale,
+          generatedAt: data.generatedAt,
+        },
         isNew: res.status === 201,
       };
     }

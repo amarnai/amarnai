@@ -38,10 +38,13 @@ vi.mock("@amarnai/db", () => ({
     createHash("sha1").update([...ids].sort().join(",")).digest("hex").slice(0, 16),
 }));
 
+const SUMMARY_PROMPT_VERSION = "2";
+
 vi.mock("@amarnai/ai", () => ({
   createAIProvider: mockCreateAIProvider,
   generateThreadSummary: mockGenerateThreadSummary,
   getSummaryAIProviderConfig: () => ({ provider: "mock" }),
+  SUMMARY_PROMPT_VERSION: "2",
 }));
 
 const { mockGetThreadSnapshot } = vi.hoisted(() => ({ mockGetThreadSnapshot: vi.fn() }));
@@ -133,7 +136,11 @@ beforeEach(() => {
     used: 0,
   });
   mockCreateAIProvider.mockReturnValue({ providerName: "mock", modelName: "mock-1" });
-  mockGenerateThreadSummary.mockResolvedValue({ summary: "Ana wants the kickoff date." });
+  mockGenerateThreadSummary.mockResolvedValue({
+    format: "PROSE",
+    text: "Ana wants the kickoff date.",
+    bullets: [],
+  });
 });
 
 describe("POST /workspaces/:workspaceId/email-threads/:threadId/summary", () => {
@@ -149,7 +156,9 @@ describe("POST /workspaces/:workspaceId/email-threads/:threadId/summary", () => 
     expect(res.status).toBe(201);
     expect(await res.json()).toMatchObject({
       kind: "summary",
+      format: "PROSE",
       summary: "Ana wants the kickoff date.",
+      bullets: [],
       locale: "en",
     });
     expect(db.threadSummary.update).toHaveBeenCalledWith(
@@ -241,6 +250,9 @@ describe("POST /workspaces/:workspaceId/email-threads/:threadId/summary", () => 
     vi.mocked(db.threadSummary.findUnique).mockResolvedValue({
       status: "READY",
       summary: "Cached text.",
+      bullets: [],
+      format: "PROSE",
+      promptVersion: SUMMARY_PROMPT_VERSION,
       locale: "en",
       messageSetSignature: SIGNATURE,
       generatedAt: new Date(Date.UTC(2026, 6, 2)),
@@ -258,6 +270,9 @@ describe("POST /workspaces/:workspaceId/email-threads/:threadId/summary", () => 
     vi.mocked(db.threadSummary.findUnique).mockResolvedValue({
       status: "READY",
       summary: "Stale text.",
+      bullets: [],
+      format: "PROSE",
+      promptVersion: SUMMARY_PROMPT_VERSION,
       locale: "en",
       messageSetSignature: "0000000000000000",
       generatedAt: new Date(Date.UTC(2026, 6, 2)),
@@ -273,6 +288,9 @@ describe("POST /workspaces/:workspaceId/email-threads/:threadId/summary", () => 
     vi.mocked(db.threadSummary.findUnique).mockResolvedValue({
       status: "READY",
       summary: "English text.",
+      bullets: [],
+      format: "PROSE",
+      promptVersion: SUMMARY_PROMPT_VERSION,
       locale: "en",
       messageSetSignature: SIGNATURE,
       generatedAt: new Date(Date.UTC(2026, 6, 2)),
@@ -291,6 +309,9 @@ describe("POST /workspaces/:workspaceId/email-threads/:threadId/summary", () => 
     vi.mocked(db.threadSummary.findUnique).mockResolvedValue({
       status: "READY",
       summary: "Cached text.",
+      bullets: [],
+      format: "PROSE",
+      promptVersion: SUMMARY_PROMPT_VERSION,
       locale: "en",
       messageSetSignature: SIGNATURE,
       generatedAt: new Date(Date.UTC(2026, 6, 2)),
@@ -307,6 +328,9 @@ describe("POST /workspaces/:workspaceId/email-threads/:threadId/summary", () => 
     vi.mocked(db.threadSummary.findUnique).mockResolvedValue({
       status: "GENERATING",
       summary: null,
+      bullets: [],
+      format: "PROSE",
+      promptVersion: SUMMARY_PROMPT_VERSION,
       locale: "en",
       messageSetSignature: SIGNATURE,
       generatedAt: null,
@@ -322,6 +346,9 @@ describe("POST /workspaces/:workspaceId/email-threads/:threadId/summary", () => 
     vi.mocked(db.threadSummary.findUnique).mockResolvedValue({
       status: "GENERATING",
       summary: null,
+      bullets: [],
+      format: "PROSE",
+      promptVersion: SUMMARY_PROMPT_VERSION,
       locale: "en",
       messageSetSignature: SIGNATURE,
       generatedAt: null,
@@ -476,5 +503,96 @@ describe("GET /workspaces/:workspaceId/summary-quota", () => {
     const body = (await res.json()) as Record<string, unknown>;
     expect(body.used).toBe(0);
     expect(body.limit).toBe(FREE_LIMIT);
+  });
+});
+
+describe("summary format", () => {
+  it("persists and returns a bulleted summary", async () => {
+    mockGenerateThreadSummary.mockResolvedValue({
+      format: "BULLETS",
+      text: null,
+      bullets: ["Kabbalat Shabbat at 19:30", "Bring documents", "Sacramento 1227"],
+    });
+    const res = await post(`/workspaces/${WS_ID}/email-threads/${THREAD_ID}/summary`);
+    expect(res.status).toBe(201);
+    expect(await res.json()).toMatchObject({
+      kind: "summary",
+      format: "BULLETS",
+      bullets: ["Kabbalat Shabbat at 19:30", "Bring documents", "Sacramento 1227"],
+    });
+    expect(db.threadSummary.update).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({
+          format: "BULLETS",
+          summary: null,
+          bullets: ["Kabbalat Shabbat at 19:30", "Bring documents", "Sacramento 1227"],
+        }),
+      }),
+    );
+  });
+
+  it("serves a cached bulleted summary without regenerating", async () => {
+    vi.mocked(db.threadSummary.findUnique).mockResolvedValue({
+      status: "READY",
+      summary: null,
+      bullets: ["one", "two"],
+      format: "BULLETS",
+      promptVersion: SUMMARY_PROMPT_VERSION,
+      locale: "en",
+      messageSetSignature: SIGNATURE,
+      generatedAt: new Date(Date.UTC(2026, 6, 2)),
+      updatedAt: new Date(Date.UTC(2026, 6, 2)),
+    } as never);
+    const res = await post(`/workspaces/${WS_ID}/email-threads/${THREAD_ID}/summary`);
+    expect(res.status).toBe(200);
+    expect(await res.json()).toMatchObject({ format: "BULLETS", bullets: ["one", "two"] });
+    expect(mockGenerateThreadSummary).not.toHaveBeenCalled();
+  });
+
+  // A BULLETS row with an empty list carries no content — treating it as a hit
+  // would render an empty card forever.
+  it("regenerates a BULLETS row whose list is empty", async () => {
+    vi.mocked(db.threadSummary.findUnique).mockResolvedValue({
+      status: "READY",
+      summary: null,
+      bullets: [],
+      format: "BULLETS",
+      promptVersion: SUMMARY_PROMPT_VERSION,
+      locale: "en",
+      messageSetSignature: SIGNATURE,
+      generatedAt: new Date(Date.UTC(2026, 6, 2)),
+      updatedAt: new Date(Date.UTC(2026, 6, 2)),
+    } as never);
+    const res = await post(`/workspaces/${WS_ID}/email-threads/${THREAD_ID}/summary`);
+    expect(res.status).toBe(201);
+    expect(mockGenerateThreadSummary).toHaveBeenCalledOnce();
+  });
+
+  // Changing how summaries are written must not leave every cached row serving
+  // output produced under the old rules.
+  it("regenerates when the prompt version changed", async () => {
+    vi.mocked(db.threadSummary.findUnique).mockResolvedValue({
+      status: "READY",
+      summary: "Written under the old prompt.",
+      bullets: [],
+      format: "PROSE",
+      promptVersion: "1",
+      locale: "en",
+      messageSetSignature: SIGNATURE,
+      generatedAt: new Date(Date.UTC(2026, 6, 2)),
+      updatedAt: new Date(Date.UTC(2026, 6, 2)),
+    } as never);
+    const res = await post(`/workspaces/${WS_ID}/email-threads/${THREAD_ID}/summary`);
+    expect(res.status).toBe(201);
+    expect(mockGenerateThreadSummary).toHaveBeenCalledOnce();
+  });
+
+  it("stamps the current prompt version on the placeholder", async () => {
+    await post(`/workspaces/${WS_ID}/email-threads/${THREAD_ID}/summary`);
+    expect(db.threadSummary.upsert).toHaveBeenCalledWith(
+      expect.objectContaining({
+        create: expect.objectContaining({ promptVersion: SUMMARY_PROMPT_VERSION }),
+      }),
+    );
   });
 });

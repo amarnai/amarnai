@@ -126,6 +126,9 @@ export async function handleThreadSummaryRequest(
       return { ok: false, reason: "error" };
     }
     if (result.kind === "snippet") return { ok: true, result: { kind: "snippet" } };
+    if (result.summary.format === "BULLETS") {
+      return { ok: true, result: { kind: "bullets", bullets: result.summary.bullets } };
+    }
     return { ok: true, result: { kind: "summary", text: result.summary.text } };
   } catch {
     // A 404 (thread never synced into Amarnai) lands here alongside real errors.

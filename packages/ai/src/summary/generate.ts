@@ -28,5 +28,9 @@ export async function generateThreadSummary(
     return null;
   }
   console.log(`[summary] LLM responded (${rawText.length} chars)`);
-  return validateSummaryResult(rawText);
+  const result = validateSummaryResult(rawText);
+  if (result) {
+    console.log(`[summary] format=${result.format} bullets=${result.bullets.length}`);
+  }
+  return result;
 }

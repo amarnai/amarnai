@@ -15,6 +15,9 @@ import { formatQuotaResetDate } from "@amarnai/shared";
 export type ThreadSummaryCardState =
   | { kind: "loading" }
   | { kind: "summary"; text: string }
+  // Reserved for threads that genuinely enumerate facts (times, places,
+  // documents, action items), where prose would flatten the structure away.
+  | { kind: "bullets"; bullets: string[] }
   | { kind: "snippet"; text: string }
   | { kind: "error"; onRetry: () => void }
   | { kind: "quota"; quota: { used: number; limit: number; resetsAt: string } };
@@ -51,6 +54,21 @@ export function ThreadSummaryCard({ state }: ThreadSummaryCardProps) {
           No summaries remaining this month · resets {formatQuotaResetDate(state.quota.resetsAt)}
         </Trans>
       </p>
+    );
+  }
+
+  if (state.kind === "bullets") {
+    // An empty list is the same nothing-to-show case as an empty snippet.
+    if (state.bullets.length === 0) return null;
+    return (
+      <div className="em-summary-card">
+        <div className="em-summary-eyebrow"><Trans>Summary</Trans></div>
+        <ul className="em-summary-bullets">
+          {state.bullets.map((bullet, i) => (
+            <li key={i}>{bullet}</li>
+          ))}
+        </ul>
+      </div>
     );
   }
 

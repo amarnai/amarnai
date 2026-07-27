@@ -53,3 +53,22 @@ describe("ThreadSummaryCard", () => {
     expect(screen.getByText(/Aug 1/)).toBeTruthy();
   });
 });
+
+describe("ThreadSummaryCard bullets", () => {
+  it("renders one list item per bullet under the Summary eyebrow", () => {
+    render(
+      <ThreadSummaryCard
+        state={{ kind: "bullets", bullets: ["Shabbat at 19:30", "Bring documents"] }}
+      />,
+    );
+    expect(screen.getByText("Summary")).toBeTruthy();
+    const items = screen.getAllByRole("listitem");
+    expect(items).toHaveLength(2);
+    expect(items[0]!.textContent).toBe("Shabbat at 19:30");
+  });
+
+  it("renders nothing for an empty bullet list", () => {
+    const { container } = render(<ThreadSummaryCard state={{ kind: "bullets", bullets: [] }} />);
+    expect(container.innerHTML).toBe("");
+  });
+});

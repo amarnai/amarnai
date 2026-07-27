@@ -49,6 +49,8 @@ export interface ThreadPreviewProps {
    * filled. Omit to hide the card.
    */
   summary?: string | undefined;
+  /** Canned bulleted TL;DR for the demo; takes precedence over `summary`. */
+  summaryBullets?: string[] | undefined;
 }
 
 export function ThreadPreview({
@@ -65,6 +67,7 @@ export function ThreadPreview({
   surface = "web",
   onOpenInProvider,
   summary,
+  summaryBullets,
 }: ThreadPreviewProps) {
   const { i18n } = useLingui();
   const [generating, setGenerating] = useState(false);
@@ -218,7 +221,11 @@ export function ThreadPreview({
           />
         )}
 
-        {summary && <ThreadSummaryCard state={{ kind: "summary", text: summary }} />}
+        {summaryBullets && summaryBullets.length > 0 ? (
+          <ThreadSummaryCard state={{ kind: "bullets", bullets: summaryBullets }} />
+        ) : summary ? (
+          <ThreadSummaryCard state={{ kind: "summary", text: summary }} />
+        ) : null}
 
         <div className="em-msg-list">
           {messages.map((msg, i) => (

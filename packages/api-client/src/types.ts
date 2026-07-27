@@ -446,8 +446,16 @@ export type GenerateDraftResult =
 
 // ── Thread summaries ──────────────────────────────────────────────────────────
 
+/**
+ * Prose is the default; BULLETS is reserved for threads that genuinely enumerate
+ * facts. Exactly one of `text` / `bullets` is populated, per `format`.
+ */
+export type ThreadSummaryFormat = "PROSE" | "BULLETS";
+
 export type ThreadSummary = {
+  format: ThreadSummaryFormat;
   text: string;
+  bullets: string[];
   locale: string;
   generatedAt: string | null;
 };

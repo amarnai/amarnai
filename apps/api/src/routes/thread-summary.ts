@@ -11,6 +11,8 @@ import {
   createAIProvider,
   generateThreadSummary,
   getSummaryAIProviderConfig,
+  SUMMARY_PROMPT_VERSION,
+  type SummaryFormat,
   type ThreadMessage,
 } from "@amarnai/ai";
 import { getThreadSummaryLimit, getSummaryQuotaResetsAt } from "@amarnai/shared";
@@ -54,10 +56,19 @@ const providerThreadParams = z.object({
  */
 const SUMMARY_GENERATING_STALE_MS = 2 * 60 * 1_000;
 
+type SummaryBody = {
+  kind: "summary";
+  format: SummaryFormat;
+  summary: string;
+  bullets: string[];
+  locale: string;
+  generatedAt: string | null;
+};
+
 type SummaryOutcome =
   | { status: 200; body: { kind: "snippet"; snippet: string } }
-  | { status: 200; body: { kind: "summary"; summary: string; locale: string; generatedAt: string | null } }
-  | { status: 201; body: { kind: "summary"; summary: string; locale: string; generatedAt: string | null } }
+  | { status: 200; body: SummaryBody }
+  | { status: 201; body: SummaryBody }
   | { status: 202; body: { generating: true } }
   | { status: 429; body: { error: string; used: number; limit: number; resetsAt: string } }
   | { status: 404; body: { error: string } }
@@ -66,15 +77,24 @@ type SummaryOutcome =
 
 function readyBody(row: {
   summary: string | null;
+  bullets: string[];
+  format: SummaryFormat;
   locale: string;
   generatedAt: Date | null;
-}): { kind: "summary"; summary: string; locale: string; generatedAt: string | null } {
+}): SummaryBody {
   return {
     kind: "summary",
+    format: row.format,
     summary: row.summary ?? "",
+    bullets: row.bullets,
     locale: row.locale,
     generatedAt: row.generatedAt?.toISOString() ?? null,
   };
+}
+
+/** A cached row is servable only if it is READY and carries actual content. */
+function hasContent(row: { summary: string | null; bullets: string[]; format: SummaryFormat }): boolean {
+  return row.format === "BULLETS" ? row.bullets.length > 0 : !!row.summary;
 }
 
 /**
@@ -140,6 +160,9 @@ async function getOrGenerateSummary(
     select: {
       status: true,
       summary: true,
+      bullets: true,
+      format: true,
+      promptVersion: true,
       locale: true,
       messageSetSignature: true,
       generatedAt: true,
@@ -151,7 +174,8 @@ async function getOrGenerateSummary(
     existing?.status === "READY" &&
     existing.messageSetSignature === signature &&
     existing.locale === locale &&
-    existing.summary
+    existing.promptVersion === SUMMARY_PROMPT_VERSION &&
+    hasContent(existing)
   ) {
     return { status: 200, body: readyBody(existing) };
   }
@@ -186,7 +210,16 @@ async function getOrGenerateSummary(
   // before either has claimed the GENERATING row.
   type TxResult =
     | { kind: "claimed" }
-    | { kind: "cache_hit"; row: { summary: string | null; locale: string; generatedAt: Date | null } }
+    | {
+        kind: "cache_hit";
+        row: {
+          summary: string | null;
+          bullets: string[];
+          format: SummaryFormat;
+          locale: string;
+          generatedAt: Date | null;
+        };
+      }
     | { kind: "generating" }
     | { kind: "quota_exceeded"; used: number; limit: number };
 
@@ -198,6 +231,9 @@ async function getOrGenerateSummary(
       select: {
         status: true,
         summary: true,
+        bullets: true,
+        format: true,
+        promptVersion: true,
         locale: true,
         messageSetSignature: true,
         generatedAt: true,
@@ -209,7 +245,8 @@ async function getOrGenerateSummary(
       underLock?.status === "READY" &&
       underLock.messageSetSignature === signature &&
       underLock.locale === locale &&
-      underLock.summary
+      underLock.promptVersion === SUMMARY_PROMPT_VERSION &&
+      hasContent(underLock)
     ) {
       return { kind: "cache_hit", row: underLock };
     }
@@ -243,11 +280,13 @@ async function getOrGenerateSummary(
         emailThreadId: threadId,
         status: "GENERATING",
         locale,
+        promptVersion: SUMMARY_PROMPT_VERSION,
         messageSetSignature: signature,
       },
       update: {
         status: "GENERATING",
         locale,
+        promptVersion: SUMMARY_PROMPT_VERSION,
         messageSetSignature: signature,
         errorMessage: null,
       },
@@ -317,7 +356,9 @@ async function getOrGenerateSummary(
     where: { emailThreadId: threadId },
     data: {
       status: "READY",
-      summary: result.summary,
+      format: result.format,
+      summary: result.text,
+      bullets: result.bullets,
       model: provider.modelName,
       generatedAt,
       errorMessage: null,
@@ -336,10 +377,21 @@ async function getOrGenerateSummary(
     });
   }
 
-  console.log(`[thread-summary] Generated summary for thread ${threadId} (${result.summary.length} chars)`);
+  console.log(
+    `[thread-summary] Generated summary for thread ${threadId} ` +
+      `(format=${result.format}, ${result.text?.length ?? result.bullets.length} ` +
+      `${result.format === "BULLETS" ? "bullets" : "chars"})`,
+  );
   return {
     status: 201,
-    body: { kind: "summary", summary: result.summary, locale, generatedAt: generatedAt.toISOString() },
+    body: {
+      kind: "summary",
+      format: result.format,
+      summary: result.text ?? "",
+      bullets: result.bullets,
+      locale,
+      generatedAt: generatedAt.toISOString(),
+    },
   };
 }
 

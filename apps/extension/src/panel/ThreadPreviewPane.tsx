@@ -136,6 +136,9 @@ export function ThreadPreviewPane({
       };
     }
     if (result.kind === "snippet") return { kind: "snippet", text: result.snippet };
+    if (result.summary.format === "BULLETS") {
+      return { kind: "bullets", bullets: result.summary.bullets };
+    }
     return { kind: "summary", text: result.summary.text };
   }
 

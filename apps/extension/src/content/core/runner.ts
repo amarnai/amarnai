@@ -100,6 +100,10 @@ export function runContentScript(adapter: ProviderAdapter): void {
           widget?.update({ kind: "quota", resetsAt: result.resetsAt });
           return;
         }
+        if (result.kind === "bullets") {
+          widget?.update({ kind: "bullets", bullets: result.bullets });
+          return;
+        }
         widget?.update({ kind: "summary", text: result.text });
       })
       .catch((e) => {

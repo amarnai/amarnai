@@ -169,7 +169,13 @@ beforeEach(() => {
   vi.mocked(api.draftQuota).mockResolvedValue({ used: 0, limit: 5, resetsAt: "2026-08-01T00:00:00Z" });
   vi.mocked(api.threadSummary).mockResolvedValue({
     kind: "summary",
-    summary: { text: "Alice and Bob are agreeing a kickoff date.", locale: "en", generatedAt: null },
+    summary: {
+      format: "PROSE",
+      text: "Alice and Bob are agreeing a kickoff date.",
+      bullets: [],
+      locale: "en",
+      generatedAt: null,
+    },
     isNew: true,
   });
 });
@@ -399,5 +405,27 @@ describe("ThreadPreview message expansion", () => {
     expect(expandedStates[0]![1]).toBe("false");
     expect(expandedStates[1]![0]).toContain("Bob Jones");
     expect(expandedStates[1]![1]).toBe("true");
+  });
+});
+
+describe("ThreadPreview bulleted summaries", () => {
+  it("renders a bulleted summary as a list", async () => {
+    vi.mocked(api.emailThread).mockResolvedValue(detail(["m-1", "m-2"], "Filed under Work."));
+    vi.mocked(api.threadSummary).mockResolvedValue({
+      kind: "summary",
+      summary: {
+        format: "BULLETS",
+        text: "",
+        bullets: ["Kickoff on Monday", "Bob owns the deck", "Budget signed off"],
+        locale: "en",
+        generatedAt: null,
+      },
+      isNew: true,
+    });
+
+    renderPreview(threadV2());
+
+    expect(await screen.findByText("Kickoff on Monday")).toBeInTheDocument();
+    expect(screen.getAllByRole("listitem")).toHaveLength(3);
   });
 });

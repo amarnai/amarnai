@@ -139,8 +139,87 @@ describe("brand chrome", () => {
   it("renders the Amarnai eyebrow and a terracotta accent rail", () => {
     const widget = mountSummaryWidget(anchorInPage(), { kind: "summary", text: "hi" })!;
     const shadow = widget.host.shadowRoot!;
-    expect(shadow.querySelector(".eyebrow")!.textContent).toBe("Amarnai");
+    expect(shadow.querySelector(".eyebrow")!.textContent).toBe(STRINGS.eyebrow);
     // The rail is the brand's terracotta accent, declared in the stylesheet.
     expect(shadow.querySelector("style")!.textContent).toContain("#c2683f");
+  });
+});
+
+describe("bullets rendering", () => {
+  it("renders a list item per bullet, as text", () => {
+    const widget = mountSummaryWidget(anchorInPage(), {
+      kind: "bullets",
+      bullets: ["Shabbat at 19:30", "Bring documents", "Sacramento 1227"],
+    })!;
+    const items = widget.host.shadowRoot!.querySelectorAll("li");
+    expect(items).toHaveLength(3);
+    expect(items[0]!.textContent).toBe("Shabbat at 19:30");
+    expect(widget.host.shadowRoot!.querySelector(".eyebrow")!.textContent).toBe(STRINGS.eyebrow);
+  });
+
+  it("escapes markup inside a bullet", () => {
+    const widget = mountSummaryWidget(anchorInPage(), {
+      kind: "bullets",
+      bullets: ["<img src=x onerror=alert(1)>", "safe"],
+    })!;
+    expect(widget.host.shadowRoot!.querySelector("img")).toBeNull();
+    expect(widget.host.shadowRoot!.querySelector("li")!.textContent).toContain("<img");
+  });
+
+  it("switches cleanly from bullets back to prose", () => {
+    const widget = mountSummaryWidget(anchorInPage(), { kind: "bullets", bullets: ["a", "b"] })!;
+    widget.update({ kind: "summary", text: "Now prose." });
+    expect(widget.host.shadowRoot!.querySelectorAll("li")).toHaveLength(0);
+    expect(widget.host.shadowRoot!.textContent).toContain("Now prose.");
+  });
+});
+
+describe("card structure and accessibility", () => {
+  it("stacks the eyebrow above the content, not beside it", () => {
+    const widget = mountSummaryWidget(anchorInPage(), { kind: "summary", text: "hi" })!;
+    const card = widget.host.shadowRoot!.querySelector(".card")!;
+    // No `row` modifier: the summary state is a block stack, matching the
+    // in-app ThreadSummaryCard so all three surfaces read identically.
+    expect(card.classList.contains("row")).toBe(false);
+    expect(card.firstElementChild!.classList.contains("eyebrow")).toBe(true);
+  });
+
+  it("keeps the transient states on one row", () => {
+    for (const state of [
+      { kind: "loading" } as const,
+      { kind: "quota", resetsAt: "2026-08-01T00:00:00.000Z" } as const,
+      { kind: "error", onRetry: () => {} } as const,
+    ]) {
+      const widget = mountSummaryWidget(anchorInPage(), state)!;
+      expect(widget.host.shadowRoot!.querySelector(".card")!.classList.contains("row")).toBe(true);
+    }
+  });
+
+  // A fill cannot separate the card from Gmail (1.14:1 at best), so the border
+  // is load-bearing: it is the only thing clearing WCAG 1.4.11's 3.0 for a UI
+  // boundary. A neutral hairline here would be an accessibility regression.
+  it("draws a full accent border, not a neutral hairline", () => {
+    const css = mountSummaryWidget(anchorInPage(), { kind: "summary", text: "hi" })!
+      .host.shadowRoot!.querySelector("style")!.textContent!;
+    expect(css).toContain("border: 1px solid var(--am-accent)");
+    expect(css).toContain("border-left-width: 3px");
+    expect(css).not.toContain("--am-line");
+  });
+
+  it("is exposed as a named, polite live note rather than mail content", () => {
+    const card = mountSummaryWidget(anchorInPage(), { kind: "summary", text: "hi" })!
+      .host.shadowRoot!.querySelector(".card")!;
+    expect(card.getAttribute("role")).toBe("note");
+    expect(card.getAttribute("aria-live")).toBe("polite");
+    // Attribution for screen readers even though the visible eyebrow is generic.
+    expect(card.getAttribute("aria-label")).toMatch(/amarnai/i);
+  });
+
+  it("keeps the note semantics across every state", () => {
+    const widget = mountSummaryWidget(anchorInPage(), { kind: "loading" })!;
+    widget.update({ kind: "bullets", bullets: ["a", "b"] });
+    const card = widget.host.shadowRoot!.querySelector(".card")!;
+    expect(card.getAttribute("role")).toBe("note");
+    expect(card.getAttribute("aria-live")).toBe("polite");
   });
 });

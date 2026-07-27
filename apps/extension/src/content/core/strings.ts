@@ -10,7 +10,7 @@
 // FOLLOW-UP: if the widget grows beyond these labels, move it to Lingui and load
 // only the active locale's catalog at runtime.
 export const STRINGS = {
-  eyebrow: "Amarnai",
+  eyebrow: "Summary",
   loading: "Summarizing…",
   error: "Could not summarize this thread.",
   retry: "Retry",

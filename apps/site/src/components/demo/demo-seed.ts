@@ -202,9 +202,30 @@ const THREAD_SUMMARIES: Record<string, MessageDescriptor> = {
   t6: msg`The council convenes at the start of Shemu. Tushratta asks for a full accounting of the eastern territories, sent ahead by fast courier.`,
 };
 
+// Bulleted TL;DRs for threads that enumerate concrete facts — the case the
+// bullets format exists for. Prose stays the default everywhere else.
+const THREAD_SUMMARY_BULLETS: Record<string, MessageDescriptor[]> = {
+  t6: [
+    msg`Council convenes at the start of Shemu`,
+    msg`Full accounting of the eastern territories requested`,
+    msg`Send ahead by fast courier, before the new moon`,
+  ],
+};
+
 export function getDemoSummaries(i18n: I18n): Record<string, string> {
   return Object.fromEntries(
-    Object.entries(THREAD_SUMMARIES).map(([id, text]) => [id, i18n._(text)]),
+    Object.entries(THREAD_SUMMARIES)
+      .filter(([id]) => !(id in THREAD_SUMMARY_BULLETS))
+      .map(([id, text]) => [id, i18n._(text)]),
+  );
+}
+
+export function getDemoSummaryBullets(i18n: I18n): Record<string, string[]> {
+  return Object.fromEntries(
+    Object.entries(THREAD_SUMMARY_BULLETS).map(([id, items]) => [
+      id,
+      items.map((m) => i18n._(m)),
+    ]),
   );
 }
 

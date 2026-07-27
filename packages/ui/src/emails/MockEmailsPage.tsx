@@ -26,6 +26,8 @@ export interface MockEmailsPageProps {
   draftBodies?: Record<string, string>;
   /** Maps thread id → canned TL;DR, standing in for the lazily-generated one. */
   summaries?: Record<string, string>;
+  /** Maps thread id → canned bulleted TL;DR (the enumerable-thread format). */
+  summaryBullets?: Record<string, string[]>;
   /**
    * Whether the folder rail starts open. Only affects the compact (≤640px)
    * layout, where the rail is a drawer over the list; in the wide layout the
@@ -58,6 +60,7 @@ export function MockEmailsPage({
   workspaceEmail,
   draftBodies,
   summaries,
+  summaryBullets,
   initialRailOpen = true,
   surface = "web",
   onOpenInProvider,
@@ -262,6 +265,7 @@ export function MockEmailsPage({
           workspaceEmail={workspaceEmail}
           surface={surface}
           summary={summaries?.[selectedThread.id]}
+          summaryBullets={summaryBullets?.[selectedThread.id]}
           onOpenInProvider={onOpenInProvider}
           onGenerateDraft={draftBodies ? () => handleGenerateDraft(selectedThread.id) : undefined}
           onToggleDraftSent={() => handleToggleDraftSent(selectedThread.id)}

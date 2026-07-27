@@ -71,8 +71,17 @@ export type { DraftContext, DraftResult } from "./draft/generate.js";
 // ─── Thread summaries ─────────────────────────────────────────────────────────
 export { generateThreadSummary } from "./summary/generate.js";
 export type { SummaryContext, SummaryResult } from "./summary/generate.js";
-export { buildSummaryPrompt, MAX_BODY_CHARS_LATEST, MAX_BODY_CHARS_EARLIER, MAX_TOTAL_CHARS } from "./summary/prompt.js";
+export {
+  buildSummaryPrompt,
+  SUMMARY_PROMPT_VERSION,
+  MAX_BODY_CHARS_LATEST,
+  MAX_BODY_CHARS_EARLIER,
+  MAX_TOTAL_CHARS,
+  MAX_BULLETS,
+  MAX_BULLET_CHARS,
+} from "./summary/prompt.js";
 export { validateSummaryResult, MAX_SUMMARY_CHARS } from "./summary/validator.js";
+export type { SummaryFormat } from "./summary/validator.js";
 // ─── Taxonomy generation (from inbox) ───────────────────────────────────────────
 export { buildTaxonomyGenerationMessages, buildRepairMessage } from "./taxonomy-gen/prompt.js";
 export { generateTaxonomyFromProfile } from "./taxonomy-gen/generate.js";
