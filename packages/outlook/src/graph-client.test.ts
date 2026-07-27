@@ -95,6 +95,32 @@ describe("GraphClient.getProfile", () => {
     expect(profile.emailAddress).toBe("user@outlook.com");
     expect(profile.syncCursor).toBe("https://graph/delta?$deltatoken=abc");
   });
+
+  // Consumer outlook.com mailboxes ignore `$deltatoken=latest` and enumerate the
+  // inbox in pages; the cursor only appears on the terminal page.
+  it("follows nextLink pages until the deltaLink when $deltatoken=latest is not honored", async () => {
+    routeGraph((url) => {
+      if (url.includes("/me?")) return jsonResponse({ mail: "user@outlook.com" });
+      if (url.includes("deltatoken=latest"))
+        return jsonResponse({ value: [{ id: "m1" }], "@odata.nextLink": "https://graph/delta?page=2" });
+      if (url.includes("page=2"))
+        return jsonResponse({ value: [{ id: "m2" }], "@odata.deltaLink": "https://graph/delta?$deltatoken=real" });
+      throw new Error(`unexpected url ${url}`);
+    });
+    const profile = await client().getProfile();
+    expect(profile.syncCursor).toBe("https://graph/delta?$deltatoken=real");
+  });
+
+  // Persisting "" as a cursor is indistinguishable from "no cursor" and would
+  // silently disable incremental sync forever — a dead-end chain must throw.
+  it("throws when the delta chain ends without a deltaLink", async () => {
+    routeGraph((url) => {
+      if (url.includes("/me?")) return jsonResponse({ mail: "user@outlook.com" });
+      if (url.includes("/messages/delta")) return jsonResponse({ value: [] });
+      throw new Error(`unexpected url ${url}`);
+    });
+    await expect(client().getProfile()).rejects.toThrow(/without a deltaLink/);
+  });
 });
 
 // ─── listChangesSince ─────────────────────────────────────────────────────────

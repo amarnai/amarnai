@@ -4,7 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "dotenv -e ../../.env.local -e ../../.env -- node --import tsx --watch src/index.ts",
+    "dev": "concurrently --kill-others-on-fail -n api,tunnel -c cyan,yellow \"pnpm dev:server\" \"pnpm dev:tunnel\"",
+    "dev:server": "dotenv -e ../../.env.local -e ../../.env -- node --import tsx --watch src/index.ts",
+    "dev:tunnel": "node ../../scripts/dev-tunnel.mjs --if-configured",
     "build": "tsc",
     "start": "tsx src/index.ts",
     "lint": "eslint src",
@@ -34,6 +36,7 @@
   },
   "devDependencies": {
     "@types/node": "^24.0.0",
+    "concurrently": "^10.0.4",
     "vitest": "^3.0.0"
   }
 }

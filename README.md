@@ -177,15 +177,7 @@ When these are set, Amarnai automatically registers each connected inbox with Gm
 - The Pub/Sub push endpoint (`/webhooks/gmail`) must be reachable from the public internet — this is a Google → your server call.
 - Self-hosters who prefer not to set up GCP can leave both vars unset and rely on polling.
 
-**Local development:**
-
-Run `pnpm tunnel` in a separate terminal alongside `pnpm dev`. It starts a [Cloudflare quick tunnel](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/) exposing your local API and automatically updates the Pub/Sub push endpoint:
-
-```bash
-pnpm tunnel
-```
-
-Requires [`cloudflared`](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/downloads/) and `gcloud` on your PATH. Quick tunnel URLs are ephemeral — re-run `pnpm tunnel` each dev session (the script updates the push endpoint automatically each time).
+**Local development:** `pnpm dev` starts a Cloudflare tunnel and points the dev Pub/Sub subscription at it. See [Real-time push in local dev](#real-time-push-in-local-dev).
 
 **Google sign-in users:** inbox access is granted during sign-up as part of the same OAuth consent — no extra step needed.
 
@@ -237,7 +229,9 @@ MS_GRAPH_NOTIFICATION_URL=https://api.yourdomain.com/webhooks/outlook
 MS_GRAPH_SUBSCRIPTION_SECRET=<openssl rand -hex 32>
 ```
 
-The runtime adapter is always chosen per connection, so a single deployment can serve Gmail and Outlook inboxes at once. When `MS_GRAPH_NOTIFICATION_URL` is unset, Outlook runs polling-only on `INBOX_SYNC_INTERVAL_MS`.
+The runtime adapter is always chosen per connection, so a single deployment can serve Gmail and Outlook inboxes at once. When `MS_GRAPH_NOTIFICATION_URL` is unset or not HTTPS, Outlook runs polling-only on `INBOX_SYNC_INTERVAL_MS`.
+
+For real-time Outlook sync on a dev machine, see [Real-time push in local dev](#real-time-push-in-local-dev). It needs a stable HTTPS hostname, so `localhost` will not work.
 
 ## Dev seed account
 
@@ -342,6 +336,45 @@ pnpm db:seed
 # 8. Start all apps
 pnpm dev
 ```
+
+### Real-time push in local dev
+
+Both providers push to a webhook on the API (port 3001), which has to be reachable from the public internet. `pnpm dev` starts a [Cloudflare tunnel](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/) alongside the API for exactly that, so real-time sync works locally without a second terminal. It needs [`cloudflared`](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/downloads/) on your PATH, plus `gcloud` for Gmail. When something is not configured the tunnel is skipped with a one-line notice and the rest of `pnpm dev` starts normally, falling back to polling.
+
+**Recommended: a named tunnel (Gmail + Outlook).** Set `DEV_TUNNEL_HOSTNAME` to a hostname on a Cloudflare-hosted domain you own, one per developer. One-time setup:
+
+```bash
+cloudflared tunnel login
+cloudflared tunnel create dev-yourname
+cloudflared tunnel route dns dev-yourname dev-yourname.yourdomain.com
+```
+
+Then in `.env.local`:
+
+```env
+DEV_TUNNEL_HOSTNAME=dev-yourname.yourdomain.com
+MS_GRAPH_NOTIFICATION_URL=https://dev-yourname.yourdomain.com/webhooks/outlook
+```
+
+The tunnel name defaults to the first label of the hostname; override with `DEV_TUNNEL_NAME`. On startup the script checks that `MS_GRAPH_NOTIFICATION_URL` matches the tunnel and prints the correct value if it does not.
+
+**Why Outlook needs the stable hostname:** Graph bakes the notification URL into each subscription when it is created and its update operation only accepts a new expiry, so the URL cannot be repointed. A hostname that survives across dev sessions lets subscriptions keep working on their own ~70h renewal cycle. The worker registers a subscription for every active Outlook connection on startup, so restart it after setting the URL.
+
+**Fallback: a quick tunnel (Gmail only).** Leave `DEV_TUNNEL_HOSTNAME` unset and the script uses an ephemeral `*.trycloudflare.com` URL, rewriting the Pub/Sub push endpoint on every run. No Cloudflare account or domain needed. Outlook push stays inert, since Graph cannot follow a URL that changes each session.
+
+Run the tunnel on its own (or to see the full error when setup is incomplete):
+
+```bash
+pnpm tunnel
+```
+
+Start `pnpm dev` without it:
+
+```bash
+DEV_TUNNEL=0 pnpm dev
+```
+
+**Notes for teams:** the tunnel only ever touches the `amarnai-gmail-sub-dev` subscription (override with `GMAIL_PUBSUB_SUBSCRIPTION`), never the production one, and it rewrites the endpoint only when it differs. Since each developer has a distinct hostname and a shared GCP project has one dev subscription, whoever started `pnpm dev` last receives the Gmail notifications. Graph subscriptions are per-mailbox, so Outlook has no such contention. `cloudflared` logs each incoming request URL, which includes `GMAIL_PUBSUB_WEBHOOK_SECRET` as a query token, so treat dev console output as sensitive or use a dev-only secret.
 
 ### Database scripts
 

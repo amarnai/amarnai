@@ -92,7 +92,16 @@ outlookWebhook.post("/webhooks/outlook", async (c) => {
     select: { workspaceId: true },
   });
 
-  if (connections.length === 0) return c.body(null, 202);
+  if (connections.length === 0) {
+    // Subject ids are opaque directory object ids, safe to log. Surfacing them
+    // matters: a silent drop here looks identical to "no notification arrived"
+    // and hides subject-id format mismatches between GET /me (connect time) and
+    // the notification resource path.
+    console.log(
+      `[outlook-webhook] Notification matched no active connection — subject id(s): ${[...subjectIds].join(", ")}`
+    );
+    return c.body(null, 202);
+  }
 
   // ── Enqueue sync-inbox for each matching workspace ──────────────────────────
   await syncInboxQueue.addBulk(
