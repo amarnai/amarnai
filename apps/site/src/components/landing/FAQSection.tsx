@@ -28,6 +28,10 @@ const FAQ_ITEMS: { q: MessageDescriptor; a: MessageDescriptor }[] = [
     a: msg`Not necessarily. Amarnai can generate a complete plan for you from your inbox, with one click. You can also start from a ready-made template. Most people generate a plan, rename two or three folders, and they're done.`,
   },
   {
+    q: msg`Do I need the browser extension?`,
+    a: msg`It is the best way to use Amarnai, and it is where most people spend their time: the extension puts Amarnai in a side panel next to Gmail and Outlook, so you can sort, read, and draft without leaving your inbox. Everything is also available in the web app at app.amarnai.com, and both work on the same account, so you can install the extension whenever you like.`,
+  },
+  {
     q: msg`How is Amarnai different from Gmail and Outlook filters?`,
     a: msg`Gmail and Outlook filters just slap a label or category on each message and leave it in the same crowded inbox. Amarnai reads every thread the way a person would and lays them out in a clean workspace where related threads sit together, each with the reasoning behind its placement, so you get a calmer view instead of one more buried label. Spam and promotions are kept out automatically unless you turn them on in settings, and anything Amarnai is unsure about is flagged for your review.`,
   },

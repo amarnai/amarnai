@@ -124,6 +124,9 @@ export function TriageGate({
       initialSyncStatus={seed.syncStatus}
       workspaceEmail={seed.workspaceEmail}
       gmailAddress={seed.gmailAddress}
+      // A plan built in-panel changes what every part of the seed means, so
+      // re-run the loader rather than patching pieces of it (same as reconnect).
+      onPlanApplied={() => setReloadKey((k) => k + 1)}
     />
   );
 }

@@ -1,0 +1,12 @@
+/*
+ * Geist font-family names, provided by the @fontsource-variable/geist woff2
+ * bundled in each entry's main.tsx. In web/site these come from next/font; the
+ * synced tokens.css references them via --f-sans / --f-mono, so they are
+ * defined here rather than by editing that copy. Fallback stacks stay in
+ * tokens.css. Shared by the panel (globals.css) and the welcome tab
+ * (welcome.css), which have no other styling in common.
+ */
+:root {
+  --font-geist-sans: "Geist Variable";
+  --font-geist-mono: "Geist Mono Variable";
+}

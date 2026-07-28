@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Trans } from "@lingui/react/macro";
+import { CHROME_EXTENSION_URL } from "../../lib/extension";
 
 // `anchorBase` mirrors `Nav`: default `""` keeps the section links as in-page
 // anchors on the landing route; other routes pass `"/"` so they resolve to
@@ -25,6 +26,9 @@ export function Footer({ anchorBase = "" }: { anchorBase?: string }) {
               <Link href={`${anchorBase}#how`}><Trans>How it works</Trans></Link>
               <Link href={`${anchorBase}#taxonomy`}><Trans>Your folders</Trans></Link>
               <Link href={`${anchorBase}#triage`}><Trans>See it work</Trans></Link>
+              <a href={CHROME_EXTENSION_URL} target="_blank" rel="noopener noreferrer">
+                <Trans>Browser extension</Trans>
+              </a>
               <Link href="/pricing"><Trans>Pricing</Trans></Link>
             </div>
             <div className="ld-footer-col">

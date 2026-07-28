@@ -1,7 +1,7 @@
-import Link from "next/link";
 import { Trans } from "@lingui/react/macro";
-import { HeroFeedCard } from "./HeroFeedCard";
-import { InstallExtensionButton } from "./InstallExtensionButton";
+import { ShieldCheckIcon } from "@amarnai/ui";
+import { HeroFeedCard } from "@amarnai/ui/demo";
+import { CtaButtons } from "./CtaButtons";
 
 export function HeroSection() {
   return (
@@ -23,12 +23,7 @@ export function HeroSection() {
               </Trans>
             </p>
 
-            <div className="ld-cta-row">
-              <Link className="ld-btn accent lg" href="https://app.amarnai.com/sign-up">
-                <Trans>Start sorting</Trans>
-              </Link>
-              <InstallExtensionButton variant="secondary" />
-            </div>
+            <CtaButtons rowClassName="ld-cta-row" signUpLabel={<Trans>Start sorting</Trans>} />
 
             <p className="ld-hero-cta-note">
               <Trans>Free to start. Ready in minutes.</Trans>
@@ -52,10 +47,7 @@ export function HeroSection() {
               <Trans>Read-only by design</Trans>
             </span>
             <span className="ld-trust-item">
-              <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden>
-                <path d="M7.5 1.3 2 3.4v3.7c0 3.2 2.3 5.3 5.5 6.6 3.2-1.3 5.5-3.4 5.5-6.6V3.4L7.5 1.3Z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" />
-                <path d="M5.4 7.6 6.9 9.1 9.8 5.9" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
+              <ShieldCheckIcon />
               <Trans>Passed Google&apos;s security review</Trans>
             </span>
             <span className="ld-trust-item">

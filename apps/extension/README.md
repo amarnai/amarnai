@@ -1,27 +1,47 @@
 # @amarnai/extension
 
-An MV3 **side panel** (Chrome) / **sidebar** (Firefox) that shows Amarnai's triage
-next to Gmail.com: a live sorted-thread view with triage actions (mark done,
-approve/reroute, sort-now), draft generation with copy-to-clipboard, and
-click-to-open a thread in Gmail. No Gmail UI injection and no content scripts —
-the panel is a client of the Amarnai API, exactly like the web and mobile apps.
+The Amarnai extension for Chrome and Firefox (MV3). **Its primary surface is
+Amarnai inside Gmail and Outlook on the web**: content scripts inject a thread
+summary card into the open conversation and an *Amarnai Reply* button beside the
+provider's own reply controls, so the product runs where people already read
+their mail. A side panel (Chrome) / sidebar (Firefox) carries the triage surface
+alongside it: a live sorted-thread view with triage actions (mark done, reroute,
+sort-now), draft generation, and click-to-open in the provider.
 
-The same panel code runs on both browsers. Divergence is isolated to four small
+The same code runs on both browsers. Divergence is isolated to four small
 points: the manifest (`manifest.config.ts`), a tiny extension-API shim
 (`src/platform/ext.ts` — `browser ?? chrome`), one branch in the background
 script, and a runtime host-permission gate (`src/platform/permissions.ts`).
 
 ## Architecture
 
-- **Panel page** (`index.html` + `src/`): the whole UI. It owns the SSE
-  connection to the API (fetch + `Authorization` header + `ReadableStream` —
+- **Content scripts** (`src/content/`, one bundle per provider): the in-provider
+  UI. `core/` holds everything both providers share (the runner and scheduler
+  that watch for an open thread, the summary widget, the reply button's state
+  machine and icon); `gmail/` and `outlook/` hold only the DOM-specific parts
+  (thread detection, injection anchors, button hosts). Gmail's compose button
+  goes through InboxSDK, which needs its page-world half injected via
+  `chrome.scripting` (hence the `scripting` permission and the two
+  `web_accessible_resources` entries, both scoped to mail.google.com). The
+  scripts talk to the background script, never to the API directly. The whole
+  injection layer is behind a build-time kill switch
+  (`VITE_DISABLE_NATIVE_INJECTION=1` drops the content scripts, their web
+  accessible resources, and the `scripting` permission from the manifest).
+- **Panel page** (`index.html` + `src/panel/`): the triage surface. It owns the
+  SSE connection to the API (fetch + `Authorization` header + `ReadableStream` —
   `EventSource` cannot send auth headers). Extension pages bypass CORS via
   `host_permissions`, so no API CORS change is needed.
-- **Background script** (`src/background/service-worker.ts`): intentionally tiny
-  (MV3 service worker on Chrome, event page on Firefox). Both browsers suspend it
-  when idle and streaming fetches don't keep it alive, so it holds no state — it
-  only wires the toolbar icon to open the panel (Chrome: `sidePanel` behavior;
-  Firefox: `action.onClicked` → `sidebarAction.toggle()`).
+- **Welcome page** (`welcome.html` + `src/welcome/`): the first-run tab, opened
+  by the background script on install.
+- **Background script** (`src/background/service-worker.ts`): MV3 service worker
+  on Chrome, event page on Firefox. Both browsers suspend it when idle and
+  streaming fetches don't keep it alive, so it holds no state; it is a router of
+  short-lived handlers. It wires the toolbar icon to the panel (Chrome:
+  `sidePanel` behavior; Firefox: `action.onClicked` → `sidebarAction.toggle()`),
+  opens the welcome tab on install, and answers the content scripts: thread
+  summaries, draft generation, open-the-panel, and the page-world injection
+  InboxSDK needs. The content scripts have no API credentials of their own, so
+  every call they make goes through here.
 - **Host-permission gate** (`src/platform/permissions.ts`): Firefox treats MV3
   `host_permissions` as user-grantable and does not auto-grant them on temporary
   loads, so the sign-in handlers call `ensureHostPermissions()` (which prompts)

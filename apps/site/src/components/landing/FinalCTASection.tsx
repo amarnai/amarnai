@@ -1,6 +1,5 @@
-import Link from "next/link";
 import { Trans } from "@lingui/react/macro";
-import { InstallExtensionButton } from "./InstallExtensionButton";
+import { CtaButtons } from "./CtaButtons";
 
 export function FinalCTASection() {
   return (
@@ -14,12 +13,7 @@ export function FinalCTASection() {
             of backlog.
           </Trans>
         </p>
-        <div className="ld-final-cta-row">
-          <Link className="ld-btn accent lg" href="https://app.amarnai.com/sign-up">
-            <Trans>Try Amarnai</Trans>
-          </Link>
-          <InstallExtensionButton variant="secondary" />
-        </div>
+        <CtaButtons rowClassName="ld-final-cta-row" signUpLabel={<Trans>Try Amarnai</Trans>} />
         <p className="ld-final-soon">
           <Trans>Works with Gmail™ and Outlook.</Trans>
         </p>

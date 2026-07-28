@@ -11,6 +11,7 @@ import "@amarnai/ui/theme/styles";
 import "@amarnai/ui/tooltip/styles";
 import "@amarnai/ui/switch/styles";
 import "@amarnai/ui/emails/styles";
+import "@amarnai/ui/plan-setup/styles";
 import { applyStoredThemeSync } from "@amarnai/ui";
 import { App } from "./App";
 

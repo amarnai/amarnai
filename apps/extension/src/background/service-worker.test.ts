@@ -37,9 +37,14 @@ describe("background script — firefox", () => {
           }),
         },
       },
-      // The background also serves the content scripts' summary requests, on
-      // both browsers.
-      runtime: { onMessage: { addListener: vi.fn() } },
+      // The background also serves the content scripts' summary requests and
+      // opens the welcome tab on install, on both browsers.
+      runtime: {
+        onMessage: { addListener: vi.fn() },
+        onInstalled: { addListener: vi.fn() },
+        getURL: vi.fn((path: string) => `moz-extension://test/${path}`),
+      },
+      tabs: { create: vi.fn(async () => ({})) },
     };
     vi.stubGlobal("browser", fakeBrowser);
     vi.resetModules();

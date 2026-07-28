@@ -43,25 +43,25 @@ msgstr "{0, plural, one {# 人} other {# 人}}"
 
 #. placeholder {0}: d.processed
 #: ../../apps/mobile/src/data/notificationView.ts:73
-#: ../../apps/web/src/lib/notifications.ts:92
+#: ../../apps/web/src/lib/notifications.ts:95
 #, fuzzy
 msgid "{0, plural, one {# thread imported.} other {# threads imported.}}"
 msgstr "{0, plural, one {# 会话已导入。} other {# 个会话已导入。}}"
 
 #. placeholder {0}: d.processed
 #: ../../apps/mobile/src/data/notificationView.ts:67
-#: ../../apps/web/src/lib/notifications.ts:86
+#: ../../apps/web/src/lib/notifications.ts:89
 msgid "{0, plural, one {# thread imported.} other {# threads imported.}} Your plan's import limit was reached."
 msgstr "{0, plural, one {# 会话已导入。} other {# 个会话已导入。}} 您的套餐已达到导入上限。"
 
 #. placeholder {0}: status.waitingCount
-#: ../../apps/extension/src/panel/StatusSlot.tsx:30
+#: ../../apps/extension/src/panel/StatusSlot.tsx:33
 #, fuzzy
 msgid "{0, plural, one {# thread is waiting. Set up folders to start sorting.} other {# threads are waiting. Set up folders to start sorting.}}"
 msgstr "{0, plural, one {# 个会话待处理。设置文件夹即可开始分类。} other {# 个会话待处理。设置文件夹即可开始分类。}}"
 
 #. placeholder {0}: status.waitingCount
-#: ../../apps/extension/src/panel/StatusSlot.tsx:54
+#: ../../apps/extension/src/panel/StatusSlot.tsx:56
 #, fuzzy
 msgid "{0, plural, one {# thread ready to sort} other {# threads ready to sort}}"
 msgstr "{0, plural, one {# 个会话待分类} other {# 个会话待分类}}"
@@ -101,7 +101,7 @@ msgstr "剩余 {0} / {1} · 重置于 {2}"
 #. placeholder {0}: d.assignedBy
 #: ../../apps/extension/src/panel/notificationText.ts:15
 #: ../../apps/mobile/src/data/notificationView.ts:34
-#: ../../apps/web/src/lib/notifications.ts:54
+#: ../../apps/web/src/lib/notifications.ts:57
 #, fuzzy
 msgid "{0} assigned you a thread"
 msgstr "{0} 给你指派了一个会话"
@@ -188,7 +188,7 @@ msgstr "{eligible, plural, one {重新分类 # 会话} other {重新分类 # 会
 #~ msgid "{filed} filed, {reviewCount} needs review"
 #~ msgstr "{filed} 已归档，{reviewCount} 待审阅"
 
-#: ../../apps/site/src/components/landing/HeroFeedCard.tsx:270
+#: ../ui/src/demo/HeroFeedCard.tsx:270
 msgid "{filed} sorted · {reviewCount} to review"
 msgstr "{filed} 已归档 · {reviewCount} 待审"
 
@@ -221,7 +221,7 @@ msgid "{providerName} Inbox"
 msgstr "{providerName} 收件箱"
 
 #. placeholder {0}: draftQuota.limit
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:460
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:461
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:482
 #, fuzzy
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
@@ -279,7 +279,7 @@ msgstr "{waitingCount, plural, one {# 个会话正在等待。} other {# 个会�
 msgid "/ workspace / month"
 msgstr "/ 工作区 / 月"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:48
+#: ../../apps/site/src/components/landing/Footer.tsx:52
 msgid "© 2026 Amarnai. Open source under AGPL-3.0."
 msgstr "© 2026 Amarnai。AGPL-3.0 协议开源。"
 
@@ -472,7 +472,7 @@ msgstr "3 人"
 msgid "3 reply drafts / month"
 msgstr "每月 3 个回复草稿"
 
-#: ../../apps/site/src/components/landing/HeroFeedCard.tsx:267
+#: ../ui/src/demo/HeroFeedCard.tsx:267
 msgid "412 threads"
 msgstr "412 会话"
 
@@ -542,30 +542,45 @@ msgstr "500 个会话"
 msgid "75,000 threads"
 msgstr "75,000 个会话"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:344
+#: ../ui/src/demo/demo-seed.ts:345
 #, fuzzy
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence."
 msgstr "收到赫伦希布（底比斯）的首席文书官职位申请。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:358
+#: ../ui/src/demo/demo-seed.ts:359
 #, fuzzy
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "已收到底比斯的霍伦海布呈报的文书长职位申请。\n\n请在记录馆查看该申请。"
+msgstr "已收到底比斯的霍伦海布呈报的文书长职位申请。\n"
+"\n"
+"请在记录馆查看该申请。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:428
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:340
+#, fuzzy
+msgid "A template gets you sorting right away, and you can edit it later."
+msgstr "模板助您即刻开始整理，稍后还可编辑。"
+
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:366
+msgid "A workspace owner manages this workspace's sorting plan."
+msgstr "工作区所有者管理此工作区的整理方案。"
+
+#: ../ui/src/demo/demo-seed.ts:429
 #, fuzzy
 msgid "Abdi-Heba of Urushalim"
 msgstr "乌鲁沙林的阿布迪赫巴"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:173
+#: ../ui/src/demo/demo-seed.ts:174
 msgid "Abdi-Heba,\n"
 "\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "阿卜迪-赫巴，\n\n同周我将行至三角洲附近。我们可在第二日于驿站会面；我可抽出上午时间。\n\n届时再叙，"
+msgstr "阿卜迪-赫巴，\n"
+"\n"
+"同周我将行至三角洲附近。我们可在第二日于驿站会面；我可抽出上午时间。\n"
+"\n"
+"届时再叙，"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
@@ -648,6 +663,10 @@ msgstr "添加至少 3 个已连接的文件夹以导出"
 #: ../ui/src/emails/AssigneePicker.tsx:45
 msgid "Add members"
 msgstr "添加成员"
+
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:392
+msgid "Add the browser extension, then sign in with Google or Microsoft. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
+msgstr "添加浏览器扩展程序，然后使用 Google 或 Microsoft 登录。Amarnai 同步您的会话和标签。它绝不会代您发送或删除邮件。"
 
 #: ../../apps/site/src/components/landing/InstallExtensionButton.tsx:65
 #, fuzzy
@@ -767,7 +786,7 @@ msgstr "所有工作区数据将被永久删除。"
 msgid "All your workspaces, emails, and settings will be deleted permanently."
 msgstr "您的所有工作区、电子邮件和设置将被永久删除。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:300
+#: ../ui/src/demo/demo-seed.ts:301
 msgid "Alliance proposal: house of Amurru"
 msgstr "结盟提议：阿摩利家族"
 
@@ -797,6 +816,19 @@ msgstr "同时抹除已同步的邮件数据"
 #: ../../apps/site/src/lib/seo.ts:114
 msgid "amarnai business plan"
 msgstr "Amarnai 商业版"
+
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:92
+msgid "Amarnai files every Gmail and Outlook thread into folders you design, from the side panel next to the mail you are already reading."
+msgstr "Amarnai 会将您的每封 Gmail 和 Outlook 会话归类到您设计的文件夹中，操作就在您阅读邮件旁的侧边面板。"
+
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:109
+#, fuzzy
+msgid "Amarnai files every thread into folders you choose. Generate a set from your own inbox, or start from a template."
+msgstr "Amarnai 将所有会话归档到您选择的文件夹中。您可以从自己的收件箱生成一套，或从模板开始。"
+
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:313
+msgid "Amarnai files your mail into folders you choose. Build them from your own inbox, or start from a ready-made set."
+msgstr "Amarnai 将您的邮件归档到您选择的文件夹中。您可以从自己的收件箱构建，或从现成的组合开始。"
 
 #: ../ui/src/AppDownloadBanner.tsx:68
 #, fuzzy
@@ -834,7 +866,7 @@ msgstr "Amarnai 的命名灵感源自<0>阿马尔那泥版文书</0>：这些青
 #~ msgid "Amarnai is named after the Amarna letters, a cache of clay tablets from around 1350 BC: the diplomatic correspondence between the pharaoh of Egypt and the kings and vassals of the ancient Near East. It is one of the earliest surviving inboxes, and almost all of it is incoming. Hundreds of letters reached the pharaoh, but barely any of his replies survive. Rib-Hadda of Byblos wrote again and again and went unanswered, most likely lost in an inbox no one could keep up with. Amarnai keeps yours from that fate."
 #~ msgstr ""
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:60
+#: ../../apps/site/src/components/landing/FAQSection.tsx:64
 #, fuzzy
 msgid "Amarnai is named after the Amarna letters, a cache of clay tablets from around 1350 BC: the diplomatic correspondence between the pharaoh of Egypt and the kings and vassals of the ancient Near East. It is one of the earliest surviving inboxes, and almost all of it is incoming. Hundreds of letters reached the pharaoh, but barely any of his replies survive. Senders like Rib-Hadda of Byblos wrote again and again with little response, most likely because the pharaoh was too overloaded to keep up. Amarnai spares you from that fate."
 msgstr "Amarnai 得名于阿玛纳信札，这是一批约公元前 1350 年的泥板文书，记录了古埃及法老与古代近东各国君主和附庸之间的外交往来。这是现存最早的收件箱之一，且几乎全是收件。数百封信件抵达法老手中，但他的回复却鲜有留存。像比布鲁斯国王利布-哈达这样的发件人反复写信却鲜有回音，很可能是因为法老事务繁重，无暇顾及。Amarnai 助您摆脱此困境。"
@@ -861,12 +893,21 @@ msgstr "Amarnai 已停止同步此收件箱。请重新连接您的 Outlook 账�
 msgid "Amarnai is open source under AGPL-3.0. Clone it, bring your own keys, and run every tier free on your own infrastructure."
 msgstr "Amarnai 遵循 AGPL-3.0 协议开源。克隆代码、自带密钥，即可在您自己的基础设施上免费运行所有版本。"
 
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:201
+msgid "Amarnai is pinned. Its icon opens the panel from any tab."
+msgstr "Amarnai 已固定到工具栏，其图标可在任意标签页打开面板。"
+
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:125
+#, fuzzy
+msgid "Amarnai lives in a side panel beside Gmail and Outlook, so you never have to leave the thread you are reading."
+msgstr "Amarnai 位于 Gmail 和 Outlook 旁边的侧边面板中，让您无需离开正在阅读的会话。"
+
 #: ../../apps/site/src/components/pricing/ExtensionBanner.tsx:33
 msgid "Amarnai lives in your inbox."
 msgstr "Amarnai 就在您的收件箱中。"
 
 #. placeholder {0}: d.gmailAddress
-#: ../../apps/web/src/lib/notifications.ts:74
+#: ../../apps/web/src/lib/notifications.ts:77
 #, fuzzy
 msgid "Amarnai lost access to {0}. Click to reconnect your Google account."
 msgstr "Amarnai 无法访问 {0}。点击重新连接您的 Google 账户。"
@@ -877,7 +918,7 @@ msgstr "Amarnai 无法访问 {0}。点击重新连接您的 Google 账户。"
 msgid "Amarnai lost access to {0}. Tap to reconnect your Google account."
 msgstr "Amarnai 无法访问 {0}。点按重新连接您的 Google 账户。"
 
-#: ../../apps/web/src/lib/notifications.ts:75
+#: ../../apps/web/src/lib/notifications.ts:78
 #, fuzzy
 msgid "Amarnai lost access to your inbox. Click to reconnect your Google account."
 msgstr "Amarnai 无法访问您的收件箱。点击重新连接您的 Google 账户。"
@@ -932,6 +973,10 @@ msgstr "Amarnai 会读取您的收件箱，将所有会话分类到您定义的�
 msgid "Amarnai Reply"
 msgstr "Amarnai 回复"
 
+#: ../../apps/web/src/components/GetExtensionBanner.tsx:63
+msgid "Amarnai sits in a side panel next to Gmail and Outlook."
+msgstr "Amarnai 位于 Gmail 和 Outlook 旁边的侧边面板中。"
+
 #: ../../apps/site/src/lib/seo.ts:46
 #, fuzzy
 #~ msgid "Amarnai sorts your Gmail into the folders you define, drafts replies for your approval, and explains every call so you reach inbox zero faster."
@@ -940,6 +985,10 @@ msgstr "Amarnai 回复"
 #: ../../apps/site/src/app/[locale]/page.tsx:50
 #~ msgid "Amarnai sorts your Gmail threads into folders you define, drafts replies for your approval, and explains every decision. Open-source and self-hostable."
 #~ msgstr "Amarnai 将您的 Gmail 会话分拣到您定义的文件夹，为您起草回复供您批准，并解释每项决策。开源且支持自托管。"
+
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:93
+msgid "Amarnai sorts your inbox for you, filing old and new mail where it belongs. Threads it is unsure about wait for you in review."
+msgstr "Amarnai 自动整理收件箱，新旧邮件各归其位。未识别的会话将等待您审核。"
 
 #: ../../apps/site/src/lib/seo.ts:46
 #, fuzzy
@@ -1013,7 +1062,7 @@ msgstr "每年"
 msgid "Annual · Save 20%"
 msgstr "每年 · 节省 20%"
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:44
+#: ../../apps/site/src/components/landing/FAQSection.tsx:48
 msgid "Any thread the model is unsure about is flagged for review instead of being filed automatically. Open it to see the suggested folder, the confidence score, and the reasoning, then approve the routing or send it to a different folder."
 msgstr "模型不确定的会话会被标记为待审阅，而非自动归档。打开即可查看建议文件夹、置信度评分和理由，然后批准路由或发送到不同文件夹。"
 
@@ -1027,12 +1076,12 @@ msgstr "API 错误 {0}"
 msgid "Appearance"
 msgstr "外观"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:339
+#: ../ui/src/demo/demo-seed.ts:340
 #, fuzzy
 msgid "Application: Chief of Correspondence"
 msgstr "申请：首席文书官"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:34
+#: ../ui/src/demo/demo-seed.ts:35
 msgid "Applications, recruiter outreach, and interview scheduling."
 msgstr "申请、招聘外联和面试安排。"
 
@@ -1060,6 +1109,7 @@ msgstr "应用后会替换您当前的计划。您之后可以完全编辑它。
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:134
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:79
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:336
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:414
 #, fuzzy
 msgid "Applying…"
 msgstr "正在应用…"
@@ -1152,7 +1202,7 @@ msgstr "自动化邮件和批量邮件 ({0}) 始终移至新的包罗万象文�
 msgid "Automated and bulk mail that doesn't fit another folder lands here automatically. This is different from Needs review, which holds threads too ambiguous for the assistant to sort."
 msgstr "不适合其他文件夹的自动邮件和批量邮件会自动归档到这里。这与“待审核”不同，“待审核”文件夹则收录助手无法明确分类的会话。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:349
+#: ../ui/src/demo/demo-seed.ts:350
 #, fuzzy
 msgid "Automated notice from the Bureau of Royal Appointments. Subject and sender clearly indicate a new application for an open position."
 msgstr "来自皇家任命局的自动通知。主题和发件人清楚表明有新的空缺职位申请。"
@@ -1170,34 +1220,40 @@ msgstr "可用地址"
 msgid "Aziru"
 msgstr "阿齐鲁"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:315
+#: ../ui/src/demo/demo-seed.ts:316
 #, fuzzy
 msgid "Aziru of Amurru"
 msgstr "阿摩利的阿齐鲁"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:200
+#: ../ui/src/demo/demo-seed.ts:201
 #, fuzzy
 msgid "Aziru proposes a formal pact of mutual protection and shared routes, and wants word sent back by the next courier."
 msgstr "阿齐鲁提议签订一项正式的共同保护和共享路线协议，并要求下一位信使带回消息。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:158
+#: ../ui/src/demo/demo-seed.ts:159
 msgid "Aziru,\n"
 "\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "阿齐鲁，\n\n你的友谊之言我们已悉。阿穆鲁家族有何提议，我们愿闻其详。请速派下一信使呈上你的条件。\n\n此致，"
+msgstr "阿齐鲁，\n"
+"\n"
+"你的友谊之言我们已悉。阿穆鲁家族有何提议，我们愿闻其详。请速派下一信使呈上你的条件。\n"
+"\n"
+"此致，"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:199
+#: ../ui/src/demo/demo-seed.ts:200
 msgid "Babylon's third gold consignment is overdue after two messengers. Burna-Buriash asks you to dispatch it without further delay."
 msgstr "巴比伦的第三批黄金货物已延期，此前已派出两名信使催促。布尔纳布里亚什要求您立即发货。"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:354
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:356
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
 #: ../../apps/site/src/components/landing/MailThreadMock.tsx:66
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:25
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:382
 #: ../ui/src/emails/ThreadPreview.tsx:114
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:402
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:422
 #, fuzzy
 msgid "Back"
 msgstr "返回"
@@ -1206,7 +1262,7 @@ msgstr "返回"
 #~ msgid "Back to inbox"
 #~ msgstr "返回收件箱"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:350
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:352
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:377
 #: ../ui/src/emails/ThreadPreview.tsx:109
 #, fuzzy
@@ -1246,8 +1302,8 @@ msgstr "按年计费 · <0>节省 {pct}%</0>"
 msgid "Billed monthly · 14-day free trial"
 msgstr "按月计费 · 14 天免费试用"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:30
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:258
+#: ../ui/src/demo/demo-seed.ts:31
 msgid "Billing"
 msgstr "账单"
 
@@ -1280,7 +1336,7 @@ msgstr "董事会与治理"
 msgid "Board meetings, governance policies, bylaws, and trustee correspondence."
 msgstr "董事会会议、治理政策、公司章程和受托人函件。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:33
+#: ../ui/src/demo/demo-seed.ts:34
 #, fuzzy
 msgid "Board members, existing fund partners, and portfolio updates."
 msgstr "董事会成员、现有基金合伙人和投资组合更新。"
@@ -1294,7 +1350,7 @@ msgstr "品牌合作"
 #~ msgid "Browse emails easily through your folders. Generate draft replies and copy them to Gmail."
 #~ msgstr "轻松浏览文件夹中的邮件。生成回复草稿并将其复制到 Gmail。"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:416
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:417
 msgid "Browse emails easily through your folders. Generate draft replies and copy them to your inbox."
 msgstr "通过文件夹轻松浏览邮件。生成回复草稿，并将其复制到您的收件箱。"
 
@@ -1304,8 +1360,14 @@ msgstr "通过文件夹轻松浏览邮件。生成回复草稿，并将其复制
 msgid "Browse templates"
 msgstr "浏览模板"
 
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:49
+#, fuzzy
+msgid "Browse the folders. It's fully interactive."
+msgstr "浏览文件夹，全程互动。"
+
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:259
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:282
+#: ../../apps/site/src/components/landing/Footer.tsx:30
 #: ../../apps/site/src/components/pricing/ExtensionBanner.tsx:24
 msgid "Browser extension"
 msgstr "浏览器扩展程序"
@@ -1324,7 +1386,7 @@ msgstr "针对代码库提交的错误报告、堆栈跟踪和回归工单。"
 msgid "Build plan"
 msgstr "构建计划"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:161
+#: ../../apps/extension/src/panel/StatusSlot.tsx:170
 msgid "Build your sorting plan"
 msgstr "构建您的分类方案"
 
@@ -1333,12 +1395,12 @@ msgstr "构建您的分类方案"
 #~ msgid "Bulk triage your inbox"
 #~ msgstr "批量分类您的收件箱"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:354
+#: ../ui/src/demo/demo-seed.ts:355
 #, fuzzy
 msgid "Bureau of Royal Appointments"
 msgstr "皇家任命局"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:276
+#: ../ui/src/demo/demo-seed.ts:277
 msgid "Burna-Buriash II"
 msgstr "伯尔那布里亚什二世"
 
@@ -1374,7 +1436,7 @@ msgstr "买家与看房"
 msgid "By continuing, you agree to the <0>Terms of Service</0> and acknowledge the <1>Privacy Policy</1>."
 msgstr "继续即表示您同意<0>服务条款</0>并确认<1>隐私政策</1>。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:201
+#: ../ui/src/demo/demo-seed.ts:202
 #, fuzzy
 msgid "Byblos is still waiting on the third grain shipment and the city is restless. Rib-Hadda has now written seven times."
 msgstr "比布鲁斯仍在等待第三批粮食货物，城中民心不安。利布哈达已写信七次。"
@@ -1383,17 +1445,17 @@ msgstr "比布鲁斯仍在等待第三批粮食货物，城中民心不安。利
 msgid "Campus Admin"
 msgstr "校园管理"
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:47
+#: ../../apps/site/src/components/landing/FAQSection.tsx:51
 #, fuzzy
 msgid "Can Amarnai draft replies?"
 msgstr "Amarnai 能否起草回复？"
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:39
+#: ../../apps/site/src/components/landing/FAQSection.tsx:43
 #, fuzzy
 msgid "Can Amarnai sort my existing inbox, not just new mail?"
 msgstr "Amarnai 能否分拣我现有的收件箱，而不只是新邮件？"
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:55
+#: ../../apps/site/src/components/landing/FAQSection.tsx:59
 msgid "Can I self-host Amarnai?"
 msgstr "我能自托管 Amarnai 吗？"
 
@@ -1455,6 +1517,11 @@ msgstr "候选人渠道、申请人筛选和人员编制计划。"
 #, fuzzy
 msgid "Carrier tracking numbers, delivery exceptions, and courier dispatch notices."
 msgstr "承运商追踪号、配送异常和快递派送通知。"
+
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:170
+#, fuzzy
+msgid "CASA Tier 2 certified"
+msgstr "CASA Tier 2 认证"
 
 #: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:58
 #: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:97
@@ -1523,6 +1590,10 @@ msgstr "为您的账户选择新密码。"
 msgid "Choose a subscription"
 msgstr "选择订阅"
 
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:288
+msgid "Choose a template"
+msgstr "选择模板"
+
 #: ../../apps/web/src/app/(app)/account/AppearanceSection.tsx:16
 #~ msgid "Choose a theme, or follow your system setting. Saved on this device."
 #~ msgstr "选择主题，或遵循系统设置。保存到此设备。"
@@ -1546,6 +1617,11 @@ msgstr "选择父级"
 msgid "Choose where each folder’s threads should go under your new plan. Matched folders keep their threads instantly; anything set to re-sort is re-classified by AI."
 msgstr "请选择新套餐下每个文件夹的会话归属。已匹配的文件夹会话即时保留；任何设置为重新分类的会话都将由AI重新分类。"
 
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:162
+#, fuzzy
+msgid "Choose which part of Amarnai to preview"
+msgstr "选择要预览的 Amarnai 部分"
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:169
 msgid "Classroom"
 msgstr "课堂"
@@ -1553,6 +1629,14 @@ msgstr "课堂"
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:120
 #~ msgid "Click folders & threads, then generate a draft."
 #~ msgstr "点击文件夹和会话，然后生成草稿。"
+
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:177
+msgid "Click the Amarnai icon in your toolbar to open the panel."
+msgstr "点击工具栏中的 Amarnai 图标即可打开面板。"
+
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:190
+msgid "Click the puzzle-piece icon at the top right of your browser, then click the pin next to Amarnai. This box updates on its own once you do."
+msgstr "点击浏览器右上角的拼图图标，然后点击 Amarnai 旁的图钉。操作完成后，此框将自动更新。"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:21
 #, fuzzy
@@ -1575,6 +1659,10 @@ msgstr "客户"
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:128
 #: ../../apps/web/src/components/AziruIntroDialog.tsx:39
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:119
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:298
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:385
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:395
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:437
 #, fuzzy
 msgid "Close"
 msgstr "关闭"
@@ -1767,7 +1855,7 @@ msgstr "连接收件箱"
 #~ msgid "Connect inbox button"
 #~ msgstr "连接收件箱按钮"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:433
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:434
 #, fuzzy
 msgid "Connect once, generate your plan once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
 msgstr "只需连接一次，制定一次方案，Amarnai 即可处理新邮件，并整理您收件箱中已有的数千个会话。"
@@ -1811,7 +1899,7 @@ msgstr "连接您的 Gmail 帐户以将您的收件箱同步到 Amarnai。Amarna
 msgid "Connect your inbox"
 msgstr "连接收件箱"
 
-#: ../../apps/site/src/components/landing/FinalCTASection.tsx:11
+#: ../../apps/site/src/components/landing/FinalCTASection.tsx:10
 msgid "Connect your inbox and Amarnai starts sorting within minutes. Pricing is per workspace. Sorts new mail as it arrives, and works through years of backlog."
 msgstr "连接您的收件箱后，Amarnai 几分钟内即可开始分类。按工作区定价。新邮件即时分类，也能处理积压多年的旧邮件。"
 
@@ -1868,14 +1956,14 @@ msgstr "继续付款"
 msgid "Continue with email"
 msgstr "使用电子邮件继续"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:140
+#: ../../apps/extension/src/auth/SignInScreen.tsx:113
 #: ../../apps/mobile/src/auth/GoogleSignInButton.tsx:28
 #: ../../apps/web/src/components/GoogleButton.tsx:10
 #, fuzzy
 msgid "Continue with Google"
 msgstr "使用 Google 继续"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:151
+#: ../../apps/extension/src/auth/SignInScreen.tsx:124
 #: ../../apps/web/src/components/MicrosoftButton.tsx:10
 #, fuzzy
 msgid "Continue with Microsoft"
@@ -2084,6 +2172,16 @@ msgstr "无法升级"
 msgid "Could not verify your Google account. Please try again."
 msgstr "无法验证您的 Google 账户。请重试。"
 
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:275
+#, fuzzy
+msgid "Couldn't apply the plan."
+msgstr "无法应用方案。"
+
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:182
+#, fuzzy
+msgid "Couldn't check generation status."
+msgstr "无法检查生成状态。"
+
 #: ../../apps/extension/src/panel/TriageGate.tsx:85
 msgid "Couldn't load your inbox. Check your connection and reopen the panel."
 msgstr "无法加载收件箱。请检查您的网络连接并重新打开面板。"
@@ -2092,16 +2190,21 @@ msgstr "无法加载收件箱。请检查您的网络连接并重新打开面板
 msgid "Couldn't reach Amarnai. Check your connection and try again."
 msgstr "无法连接 Amarnai。请检查您的网络连接并重试。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:209
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:237
+#, fuzzy
+msgid "Couldn't start generation."
+msgstr "无法开始生成。"
+
+#: ../ui/src/demo/demo-seed.ts:210
 msgid "Council convenes at the start of Shemu"
 msgstr "谢穆伊始，议会召开"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:450
+#: ../ui/src/demo/demo-seed.ts:451
 #, fuzzy
 msgid "Council convening: season of Shemu"
 msgstr "议会召开：收获季"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:460
+#: ../ui/src/demo/demo-seed.ts:461
 #, fuzzy
 msgid "Council preparation request from a known royal ally. Sender domain and context clearly match the Current investors folder."
 msgstr "来自已知王室盟友的议会准备请求。发件人域名和上下文与“现有投资者”文件夹明确匹配。"
@@ -2169,8 +2272,8 @@ msgstr "正在创建…"
 #: ../../apps/mobile/src/components/AssigneeSheet.tsx:63
 #: ../../apps/mobile/src/components/RerouteSheet.tsx:45
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:107
-#: ../../apps/site/src/components/demo/demo-seed.ts:33
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1874
+#: ../ui/src/demo/demo-seed.ts:34
 #, fuzzy
 msgid "Current"
 msgstr "当前"
@@ -2201,8 +2304,8 @@ msgstr "客户问题"
 #~ msgid "Customer support, onboarding, product feedback, churn, and success conversations."
 #~ msgstr "客户支持、入职、产品反馈、流失和成功对话。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:29
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:157
+#: ../ui/src/demo/demo-seed.ts:30
 #: ../ui/src/i18n/taxonomy-template-messages.ts:59
 msgid "Customers"
 msgstr "客户"
@@ -2330,7 +2433,7 @@ msgstr "部署"
 msgid "Describe what kinds of emails belong here: who they come from and what they are about. Be specific and use the actual names, topics, and words that show up in those emails. Describe what the emails are, not what you plan to do about them. The clearer your description, the more accurately your email is sorted here."
 msgstr "描述哪些类型的邮件属于此处：它们来自谁，以及它们是关于什么的。请具体说明，并使用这些邮件中出现的实际名称、主题和词语。描述邮件是什么，而不是你打算如何处理它们。你的描述越清晰，邮件在此处分类就越准确。"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:401
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:402
 msgid "Describe your folders"
 msgstr "描述您的文件夹"
 
@@ -2339,6 +2442,10 @@ msgstr "描述您的文件夹"
 #, fuzzy
 msgid "Description"
 msgstr "描述"
+
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:106
+msgid "Design your folders"
+msgstr "设计您的文件夹"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:137
 #: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:89
@@ -2437,12 +2544,13 @@ msgstr "断开此工作区连接。Amarnai仍保留访问权限，因为此邮�
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "断开此工作区连接。Amarnai仍保留访问权限，因为此邮箱仍连接在{sharedNames}中。"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:372
-#: ../../apps/extension/src/panel/StatusSlot.tsx:97
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:389
+#: ../../apps/extension/src/panel/StatusSlot.tsx:99
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:65
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:410
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:57
+#: ../../apps/web/src/components/GetExtensionBanner.tsx:73
 #: ../../apps/web/src/components/JoinedWorkspaceToast.tsx:46
 #: ../../apps/web/src/components/NotificationBell.tsx:179
 #: ../../apps/web/src/components/NotificationBell.tsx:180
@@ -2467,6 +2575,10 @@ msgstr "显示名称"
 msgid "Do I have to build the folder structure myself?"
 msgstr "我需要自己构建文件夹结构吗？"
 
+#: ../../apps/site/src/components/landing/FAQSection.tsx:31
+msgid "Do I need the browser extension?"
+msgstr "我需要浏览器扩展程序吗？"
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:201
 #, fuzzy
 msgid "Doctoral advising, thesis feedback, and mentoring for doctoral researchers."
@@ -2481,12 +2593,12 @@ msgstr "博士指导、论文反馈及研究员辅导。"
 msgid "Doctors, pharmacies, medical appointments, prescriptions, and test results."
 msgstr "医生、药房、医疗预约、处方及化验结果。"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:33
+#: ../../apps/site/src/components/landing/Footer.tsx:37
 #: ../../apps/site/src/components/support/SupportContent.tsx:74
 msgid "Documentation"
 msgstr "文档"
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:35
+#: ../../apps/site/src/components/landing/FAQSection.tsx:39
 #, fuzzy
 msgid "Does Amarnai work with Outlook?"
 msgstr "Amarnai 支持 Outlook 吗？"
@@ -2547,7 +2659,7 @@ msgstr "再次起草"
 msgid "Draft failed · tap to retry"
 msgstr "草稿失败 · 轻触重试"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:475
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:476
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:498
 #, fuzzy
 msgid "Draft generation failed. Try again."
@@ -2585,7 +2697,7 @@ msgstr "正在起草…"
 msgid "Drafts"
 msgstr "草稿"
 
-#: ../../apps/site/src/components/demo/DemoTaxonomyCanvas.tsx:223
+#: ../ui/src/demo/DemoTaxonomyCanvas.tsx:227
 msgid "Drag and connect. It's fully interactive."
 msgstr "拖动连接，全面互动。"
 
@@ -2637,7 +2749,7 @@ msgstr "编辑收件箱"
 msgid "Edit Path"
 msgstr "编辑路径"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:109
+#: ../../apps/extension/src/auth/SignInScreen.tsx:134
 #: ../../apps/mobile/app/(app)/account.tsx:139
 #: ../../apps/mobile/app/forgot-password.tsx:85
 #: ../../apps/mobile/app/sign-in.tsx:89
@@ -2701,6 +2813,7 @@ msgstr "电子邮件已验证！请登录以继续。"
 #~ msgid "Email, sorted automatically. Never sends without you."
 #~ msgstr "邮件自动分类。未经您许可绝不发送。"
 
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:45
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:28
 #: ../../apps/web/src/components/Sidebar.tsx:32
 #, fuzzy
@@ -2799,6 +2912,11 @@ msgstr "活动与实地考察"
 msgid "Every account starts with a free workspace, no card required. Create more or upgrade whenever your needs grow."
 msgstr "每个账户均从一个免费工作区开始，无需绑定银行卡。根据需求增长，随时创建更多工作区或升级。"
 
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:104
+#, fuzzy
+msgid "Every email goes where it belongs"
+msgstr "每封邮件各归其位"
+
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:192
 msgid "Every email goes where it belongs."
 msgstr "每封邮件，各归其位。"
@@ -2812,11 +2930,12 @@ msgstr "每封邮件，各归其位。"
 msgid "Every thread in your inbox."
 msgstr "收件箱中的所有会话。"
 
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:105
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:195
 msgid "Every thread lands in one of your folders, exactly where you would expect to find it. When a reply is needed, a draft is one click away, ready for your edits and never sent without them."
 msgstr "每个会话都将精准归入您的文件夹，恰如您所预料。需要回复时，一键即可生成草稿，随时供您修改，未经确认绝不发送。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:35
+#: ../ui/src/demo/demo-seed.ts:36
 msgid "Everything that doesn't fit a named folder."
 msgstr "不符合任何指定文件夹的内容。"
 
@@ -2916,8 +3035,8 @@ msgstr "家庭"
 msgid "Fan messages, viewer comments, and follower engagement notifications."
 msgstr "粉丝留言、观众评论及关注者互动通知。"
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:80
-#: ../../apps/site/src/components/landing/Footer.tsx:32
+#: ../../apps/site/src/components/landing/FAQSection.tsx:84
+#: ../../apps/site/src/components/landing/Footer.tsx:36
 #: ../../apps/site/src/components/landing/Nav.tsx:51
 #, fuzzy
 msgid "FAQ"
@@ -2956,9 +3075,14 @@ msgstr "筛选栏"
 msgid "Finance"
 msgstr "财务"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:413
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:414
 msgid "Find and draft"
 msgstr "查找并起草"
+
+#: ../../apps/extension/src/panel/StatusSlot.tsx:197
+#, fuzzy
+msgid "Fine-tune later in the plan editor"
+msgstr "稍后在方案编辑器中微调。"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:222
 msgid "First-contact buyer and seller enquiries and new agent introductions."
@@ -2969,7 +3093,7 @@ msgstr "买卖双方首次咨询及新代理介绍。"
 msgid "Five things keep your inbox safe. First, Amarnai is read-only by design: the permissions you grant through Google make it impossible for Amarnai to send, delete, or change any email. Second, Amarnai has passed Google's security review, completing the CASA security assessment required for any app that accesses Gmail. Third, you stay in control: replies stay drafts until you say so, nothing is ever sent on your behalf, and you can disconnect Amarnai at any time. Fourth, no email bodies are stored: Amarnai keeps labels and metadata, never the contents of your messages. Fifth, the code is public, so anyone can inspect exactly what touches your email."
 msgstr "五大保障，让您的收件箱安全无虞。第一，Amarnai 采用只读设计：您通过 Google 授予的权限，让 Amarnai 无法发送、删除或更改任何邮件。第二，Amarnai 已通过 Google 的安全审查，包括所有访问 Gmail 的应用都必须完成的 CASA 安全评估。第三，一切尽在您的掌控：回复邮件在您确认发送前始终是草稿，绝不会代表您发送任何内容，并且您可以随时断开 Amarnai 的连接。第四，邮件正文绝不存储：Amarnai 仅保留标签和元数据，从不存储您的邮件内容。第五，代码公开透明：任何人都可以检查您的邮件是如何被处理的。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:310
+#: ../ui/src/demo/demo-seed.ts:311
 msgid "Flagged as alliance/investor intro based on language (\"mutual benefit\", \"long-standing friendship\"). Confidence is moderate; Aziru has been known to send similar overtures to multiple courts."
 msgstr "基于措辞（“互惠互利”、“长期友谊”）被标记为联盟/投资者介绍。置信度中等；阿齐鲁曾向多个宫廷发出过类似提议。"
 
@@ -3093,7 +3217,7 @@ msgstr "适用于管理课堂、家长及学校行政事务的K-12教育工作�
 msgid "For larger organizations."
 msgstr "适用于大型组织。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:305
+#: ../ui/src/demo/demo-seed.ts:306
 msgid "For many years our houses have been as brothers. I write now to propose that we formalise this friendship for the benefit of both our peoples."
 msgstr "多年来，我们两家亲如兄弟。我现在写信提议，为了我们两国人民的福祉，将这份友谊正式化。"
 
@@ -3163,7 +3287,7 @@ msgstr "免费"
 msgid "Free forever · self-serve"
 msgstr "永久免费 · 自助服务"
 
-#: ../../apps/site/src/components/landing/HeroSection.tsx:34
+#: ../../apps/site/src/components/landing/HeroSection.tsx:29
 #, fuzzy
 msgid "Free to start. Ready in minutes."
 msgstr "免费开始。几分钟即可使用。"
@@ -3201,7 +3325,7 @@ msgstr "完整版"
 #~ msgid "Full + admin controls"
 #~ msgstr "完整版 + 管理员控制"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:210
+#: ../ui/src/demo/demo-seed.ts:211
 msgid "Full accounting of the eastern territories requested"
 msgstr "要求提交东部领土的全面清点报告"
 
@@ -3238,7 +3362,7 @@ msgstr "生成新草稿。占用一次月用量。"
 msgid "Generate a plan from your inbox"
 msgstr "根据收件箱生成方案"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:454
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:455
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:146
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:366
 #: ../ui/src/emails/ThreadPreview.tsx:243
@@ -3246,30 +3370,41 @@ msgstr "根据收件箱生成方案"
 msgid "Generate draft reply"
 msgstr "生成草稿回复"
 
+#: ../../apps/extension/src/panel/StatusSlot.tsx:181
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:53
 #: ../../apps/mobile/src/components/taxonomy/RoutingIndicator.tsx:32
-#: ../../apps/site/src/components/demo/DemoTaxonomyCanvas.tsx:233
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:60
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:207
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:251
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1693
+#: ../ui/src/demo/DemoTaxonomyCanvas.tsx:237
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:375
 #, fuzzy
 msgid "Generate from inbox"
 msgstr "从收件箱生成"
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:275
-#: ../../apps/site/src/components/demo/DemoTaxonomyCanvas.tsx:230
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:197
+#: ../ui/src/demo/DemoTaxonomyCanvas.tsx:234
 #, fuzzy
 msgid "Generate plan from inbox"
 msgstr "从收件箱生成方案"
+
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:98
+#, fuzzy
+msgid "Generate your plan"
+msgstr "生成您的方案"
 
 #: ../../apps/site/src/components/landing/TaxonomyDemoSection.tsx:10
 msgid "Generate your plan."
 msgstr "制定您的方案。"
 
-#: ../../apps/site/src/components/demo/DemoTaxonomyCanvas.tsx:233
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:319
+msgid "Generating reads your senders, labels, and subject keywords, never message bodies. You review the result before anything is applied."
+msgstr "生成过程会读取您的发件人、标签和主题关键词，但绝不会读取邮件正文。在应用任何内容之前，您会先审阅结果。"
+
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:354
+#: ../ui/src/demo/DemoTaxonomyCanvas.tsx:237
 #, fuzzy
 msgid "Generating…"
 msgstr "正在生成…"
@@ -3289,6 +3424,11 @@ msgstr "生成失败。请在 {0} 后重试，或从模板开始。"
 msgid "Generation didn't complete. Try again shortly, or start from a template."
 msgstr "生成失败。请稍后重试，或从模板开始。"
 
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:150
+#, fuzzy
+msgid "Generation didn't complete. You can start from a template instead."
+msgstr "生成未完成。您可以改用模板。"
+
 #: ../ui/src/i18n/generation-reason-messages.ts:21
 msgid "Generation isn't available right now."
 msgstr "当前无法生成。"
@@ -3307,22 +3447,31 @@ msgstr "获取 Amarnai 帮助：联系支持、浏览文档、报告错误或管
 msgid "Get the Amarnai app"
 msgstr "获取 Amarnai 应用"
 
+#: ../../apps/web/src/components/GetExtensionBanner.tsx:57
+#, fuzzy
+msgid "Get the Amarnai extension"
+msgstr "获取 Amarnai 扩展程序"
+
 #: ../ui/src/AppDownloadBanner.tsx:75
 msgid "Get the app"
 msgstr "获取应用"
+
+#: ../../apps/web/src/components/GetExtensionBanner.tsx:67
+msgid "Get the extension"
+msgstr "获取扩展程序"
 
 #: ../../apps/site/src/lib/seo.ts:50
 #, fuzzy
 msgid "gmail ai assistant"
 msgstr "Gmail AI 助手"
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:32
+#: ../../apps/site/src/components/landing/FAQSection.tsx:36
 msgid "Gmail and Outlook filters just slap a label or category on each message and leave it in the same crowded inbox. Amarnai reads every thread the way a person would and lays them out in a clean workspace where related threads sit together, each with the reasoning behind its placement, so you get a calmer view instead of one more buried label. Spam and promotions are kept out automatically unless you turn them on in settings, and anything Amarnai is unsure about is flagged for your review."
 msgstr "Gmail 和 Outlook 过滤器只会给每封邮件添加标签或分类，然后将其留在杂乱的收件箱中。Amarnai 像人一样阅读每个会话，将其呈现在整洁的工作区中，相关会话集中显示，并附带分类理由，为您带来更平静的视图，而非又一个被埋藏的标签。垃圾邮件和推广信息会自动过滤（除非您在设置中开启），对于 Amarnai 不确定的内容，会标记出来供您查看。"
 
 #: ../../apps/extension/src/panel/notificationText.ts:18
 #: ../../apps/mobile/src/data/notificationView.ts:53
-#: ../../apps/web/src/lib/notifications.ts:72
+#: ../../apps/web/src/lib/notifications.ts:75
 #, fuzzy
 msgid "Gmail disconnected"
 msgstr "Gmail 已断开连接"
@@ -3368,7 +3517,7 @@ msgstr "Gmail 分类测试器"
 #~ msgid "Gmail, sorted your way."
 #~ msgstr "Gmail，随心整理。"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:51
+#: ../../apps/site/src/components/landing/Footer.tsx:55
 msgid "Gmail™, Chrome™ and the Gmail logo are trademarks of Google LLC. Outlook™ is a trademark of the Microsoft group of companies. Amarnai is an independent open-source project, not affiliated with or endorsed by Google or Microsoft."
 msgstr "Gmail™、Chrome™ 和 Gmail 徽标是 Google LLC 的商标。Outlook™ 是微软公司集团的商标。Amarnai 是一个独立的开源项目，与 Google 或 Microsoft 均无关联，也未获得其认可。"
 
@@ -3388,7 +3537,7 @@ msgstr "前往 {0}"
 msgid "Go to sign in"
 msgstr "前往登录"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:261
+#: ../ui/src/demo/demo-seed.ts:262
 msgid "Gold balance: third consignment overdue"
 msgstr "黄金余额：第三批货物逾期"
 
@@ -3433,19 +3582,23 @@ msgstr "拨款申请、基金会截止日期及资助方报告要求。"
 msgid "Grants & Foundations"
 msgstr "拨款与基金会"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:178
+#: ../ui/src/demo/demo-seed.ts:179
 msgid "Great King,\n"
 "\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "大王，\n\n你所要求之呈报，将在议会召开前备妥。我将命抄写员汇编东方领地的账目，并派快马先行送呈。\n\n兄弟情谊，"
+msgstr "大王，\n"
+"\n"
+"你所要求之呈报，将在议会召开前备妥。我将命抄写员汇编东方领地的账目，并派快马先行送呈。\n"
+"\n"
+"兄弟情谊，"
 
 #: ../../apps/site/src/components/support/SupportContent.tsx:77
 msgid "Guides and answers to common questions"
 msgstr "指南与常见问题"
 
-#: ../../apps/site/src/components/landing/FinalCTASection.tsx:9
+#: ../../apps/site/src/components/landing/FinalCTASection.tsx:8
 #, fuzzy
 msgid "Hand the sorting to Amarnai."
 msgstr "把整理交给 Amarnai。"
@@ -3454,7 +3607,7 @@ msgstr "把整理交给 Amarnai。"
 msgid "Health"
 msgstr "健康"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:31
+#: ../ui/src/demo/demo-seed.ts:32
 msgid "Help requests, supply issues, and escalations from customers."
 msgstr "客户的帮助请求、供应问题和升级请求。"
 
@@ -3464,7 +3617,7 @@ msgstr "客户的帮助请求、供应问题和升级请求。"
 msgid "Hide tips"
 msgstr "隐藏提示"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:34
+#: ../ui/src/demo/demo-seed.ts:35
 #: ../ui/src/i18n/taxonomy-template-messages.ts:62
 #, fuzzy
 msgid "Hiring"
@@ -3492,7 +3645,7 @@ msgstr "作业与评分"
 #~ msgid "Hosted subscriptions run on a frontier large language model. Self-hosted deployments can point at any OpenAI-compatible provider, such as OpenAI or Google Gemini, or a local Ollama model for fully offline operation."
 #~ msgstr "托管订阅运行在前沿大型语言模型上。自托管部署可指向任何兼容 OpenAI 的提供商，例如 OpenAI 或 Google Gemini，或本地 Ollama 模型以实现完全离线操作。"
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:64
+#: ../../apps/site/src/components/landing/FAQSection.tsx:68
 #, fuzzy
 msgid "Hosted subscriptions run on a leading AI model. Self-hosted deployments can point at any OpenAI-compatible provider, such as OpenAI or Google Gemini, or a local Ollama model for fully offline operation."
 msgstr "托管订阅服务基于领先的 AI 模型运行。自部署版本可连接任何兼容 OpenAI 的提供商（如 OpenAI 或 Google Gemini），也可连接本地 Ollama 模型以实现完全离线操作。"
@@ -3526,7 +3679,7 @@ msgstr "Amarnai 如何帮我节省时间？"
 msgid "How does Amarnai's plan work?"
 msgstr "Amarnai 的方案如何运作？"
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:31
+#: ../../apps/site/src/components/landing/FAQSection.tsx:35
 msgid "How is Amarnai different from Gmail and Outlook filters?"
 msgstr "Amarnai 与 Gmail 和 Outlook 过滤器有何不同？"
 
@@ -3535,12 +3688,12 @@ msgstr "Amarnai 与 Gmail 和 Outlook 过滤器有何不同？"
 #~ msgid "How is Amarnai different from Gmail's filters and labels?"
 #~ msgstr "Amarnai 与 Gmail 的筛选器和标签有何不同？"
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:51
+#: ../../apps/site/src/components/landing/FAQSection.tsx:55
 #, fuzzy
 msgid "How is Amarnai's pricing structured?"
 msgstr "Amarnai 如何定价？"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:25
+#: ../../apps/site/src/components/landing/Footer.tsx:26
 #: ../../apps/site/src/components/landing/Nav.tsx:48
 msgid "How it works"
 msgstr "工作原理"
@@ -3551,7 +3704,7 @@ msgstr "工作原理"
 msgid "How to write a good description"
 msgstr "如何写出好的描述"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:318
+#: ../ui/src/demo/demo-seed.ts:319
 msgid "I write to propose that we formalise our friendship."
 msgstr "我写信提议，我们将友谊正式化。"
 
@@ -3625,10 +3778,10 @@ msgstr "适用于 Gmail 和 Outlook"
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:107
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:183
 #: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:45
-#: ../../apps/site/src/components/demo/demo-seed.ts:28
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:151
 #: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:127
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:609
+#: ../ui/src/demo/demo-seed.ts:29
 #: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:73
 #, fuzzy
 msgid "Inbox"
@@ -3640,7 +3793,7 @@ msgstr "收件箱（入口点）"
 
 #: ../../apps/extension/src/panel/notificationText.ts:20
 #: ../../apps/mobile/src/data/notificationView.ts:61
-#: ../../apps/web/src/lib/notifications.ts:80
+#: ../../apps/web/src/lib/notifications.ts:83
 msgid "Inbox import complete"
 msgstr "收件箱导入完成"
 
@@ -3681,7 +3834,7 @@ msgstr "包含"
 msgid "Incorrect email or password."
 msgstr "邮箱或密码不正确。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:423
+#: ../ui/src/demo/demo-seed.ts:424
 msgid "Informal message with no clear category: personal visit or political audience? Tone is personal but sender is a known vassal governor. Routed to Other with low confidence."
 msgstr "无明确类别的非正式信息：私人拜访还是政治会面？语气私人化，但发件人是已知的藩属总督。以低置信度路由到“其他”。"
 
@@ -3704,7 +3857,7 @@ msgid "Inspections & Appraisals"
 msgstr "检查与评估"
 
 #: ../../apps/mobile/src/data/notificationView.ts:47
-#: ../../apps/web/src/lib/notifications.ts:65
+#: ../../apps/web/src/lib/notifications.ts:68
 #, fuzzy
 msgid "Install the Amarnai browser extension"
 msgstr "安装 Amarnai 浏览器扩展程序"
@@ -3769,8 +3922,8 @@ msgstr "分类法文件无效：{0}"
 msgid "Invalid taxonomy file: {detail}"
 msgstr "分类法文件无效：{detail}"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:32
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:163
+#: ../ui/src/demo/demo-seed.ts:33
 #: ../ui/src/i18n/taxonomy-template-messages.ts:57
 msgid "Investors"
 msgstr "投资者"
@@ -3794,7 +3947,7 @@ msgstr "在网页应用中邀请和移除协作者。"
 #~ msgid "Invited"
 #~ msgstr "已邀请"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:30
+#: ../ui/src/demo/demo-seed.ts:31
 msgid "Invoice questions, overdue balances, and payment disputes."
 msgstr "发票问题、逾期款项和付款争议。"
 
@@ -3820,6 +3973,10 @@ msgstr "来自客户和供应商的发票、收据和账单问题。"
 #: ../../apps/site/src/components/landing/FAQSection.tsx:11
 msgid "Is connecting my inbox to Amarnai safe?"
 msgstr "将我的收件箱连接到 Amarnai 安全吗？"
+
+#: ../../apps/site/src/components/landing/FAQSection.tsx:32
+msgid "It is the best way to use Amarnai, and it is where most people spend their time: the extension puts Amarnai in a side panel next to Gmail and Outlook, so you can sort, read, and draft without leaving your inbox. Everything is also available in the web app at app.amarnai.com, and both work on the same account, so you can install the extension whenever you like."
+msgstr "这是使用 Amarnai 的最佳方式，也是大多数用户花费时间的地方：扩展程序将 Amarnai 置于 Gmail 和 Outlook 旁边的侧边面板中，因此您可以在不离开收件箱的情况下进行整理、阅读和撰写。所有功能也可在 app.amarnai.com 的网页应用中使用，并且两者使用同一账户，因此您可以随时安装扩展程序。"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:47
 #, fuzzy
@@ -3959,7 +4116,7 @@ msgstr "上次验证时间：{0}"
 #~ msgid "Lay out folders like <0>Customers</0>, <1>Investors</1>, <2>Hiring</2>. A simple sentence each is the whole config."
 #~ msgstr "设置文件夹，如 <0>客户</0>、<1>投资者</1>、<2>招聘</2>。只需一句话即可完成所有配置。"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:404
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:405
 #, fuzzy
 msgid "Lay out folders like <0>Customers</0>, <1>Investors</1>, <2>Hiring</2>. A simple sentence each: that's the whole setup."
 msgstr "创建类似 <0>客户</0>、<1>投资者</1>、<2>招聘</2> 的文件夹。每个文件夹只需一个简单描述句：这就是全部设置。"
@@ -3975,7 +4132,7 @@ msgstr "潜在客户"
 msgid "Leave unsorted"
 msgstr "保持未分类"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:40
+#: ../../apps/site/src/components/landing/Footer.tsx:44
 #: ../ui/src/i18n/taxonomy-template-messages.ts:66
 #, fuzzy
 msgid "Legal"
@@ -4043,7 +4200,12 @@ msgstr "实时"
 msgid "Load more"
 msgstr "加载更多"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:131
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:406
+#, fuzzy
+msgid "Loading"
+msgstr "加载中"
+
+#: ../../apps/extension/src/panel/StatusSlot.tsx:133
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:122
 #: ../ui/src/emails/BackfillCard.tsx:35
@@ -4126,7 +4288,7 @@ msgstr "稿件与同行评审"
 msgid "Mark as done"
 msgstr "标记为完成"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:360
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:362
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:244
 #: ../../apps/mobile/src/components/ThreadRow.tsx:58
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:404
@@ -4227,7 +4389,7 @@ msgstr "成员"
 msgid "Messages from parents and guardians about attendance, behavior, and progress."
 msgstr "家长关于出勤、行为及学业进度的消息。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:29
+#: ../ui/src/demo/demo-seed.ts:30
 msgid "Messages from paying customers and account holders."
 msgstr "来自付费客户和账户持有人的消息。"
 
@@ -4278,8 +4440,8 @@ msgstr "每月"
 #: ../../apps/extension/src/panel/notificationText.ts:22
 #: ../../apps/mobile/src/data/notificationView.ts:85
 #: ../../apps/mobile/src/data/notificationView.ts:90
-#: ../../apps/web/src/lib/notifications.ts:104
-#: ../../apps/web/src/lib/notifications.ts:109
+#: ../../apps/web/src/lib/notifications.ts:107
+#: ../../apps/web/src/lib/notifications.ts:112
 msgid "Monthly sorting limit reached"
 msgstr "每月整理上限已达到"
 
@@ -4329,7 +4491,7 @@ msgstr "移至…"
 msgid "Moved to {folderName}"
 msgstr "已移动到 {folderName}"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:418
+#: ../ui/src/demo/demo-seed.ts:419
 msgid "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face."
 msgstr "未来几天我的行程将经过三角洲附近。如果伟大君王能抽出一点时间，我将非常乐意面谈。"
 
@@ -4360,12 +4522,12 @@ msgstr "需要审核"
 msgid "Never"
 msgstr "从不"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:49
+#: ../../apps/site/src/components/landing/Footer.tsx:53
 #, fuzzy
 msgid "Never auto-sends · Encrypted at rest · Minimal data"
 msgstr "绝不自动发送 ・ 静态加密 ・ 最少数据"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:357
+#: ../ui/src/demo/demo-seed.ts:358
 #, fuzzy
 msgid "New application from Horemheb of Thebes."
 msgstr "赫伦希布（底比斯）的新申请。"
@@ -4379,13 +4541,13 @@ msgstr "新业务咨询、项目提案及潜在客户的定价讨论。"
 #~ msgstr "新业务咨询、提案、定价讨论和潜在客户联系。"
 
 #: ../../apps/mobile/src/data/notificationView.ts:91
-#: ../../apps/web/src/lib/notifications.ts:110
+#: ../../apps/web/src/lib/notifications.ts:113
 #, fuzzy
 msgid "New emails will wait until next month. Upgrade your plan for a higher limit."
 msgstr "新邮件将等到下月。升级您的套餐以提高上限。"
 
 #: ../../apps/mobile/src/data/notificationView.ts:86
-#: ../../apps/web/src/lib/notifications.ts:105
+#: ../../apps/web/src/lib/notifications.ts:108
 #, fuzzy
 msgid "New emails will wait until your limit resets next month."
 msgstr "新邮件将等到您的上限在下个月重置。"
@@ -4408,7 +4570,7 @@ msgstr "新邮件"
 
 #: ../../apps/extension/src/panel/notificationText.ts:24
 #: ../../apps/mobile/src/data/notificationView.ts:95
-#: ../../apps/web/src/lib/notifications.ts:114
+#: ../../apps/web/src/lib/notifications.ts:117
 msgid "New notification"
 msgstr "新通知"
 
@@ -4418,13 +4580,13 @@ msgstr "新通知"
 msgid "New password"
 msgstr "新密码"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:137
+#: ../../apps/extension/src/panel/StatusSlot.tsx:139
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:42
 #: ../ui/src/emails/BackfillCard.tsx:40
 msgid "New threads will appear as they are sorted."
 msgstr "新会话将在分类后显示。"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:156
+#: ../../apps/extension/src/auth/SignInScreen.tsx:160
 #, fuzzy
 msgid "New to Amarnai? <0>Create an account</0>"
 msgstr "Amarnai 新用户？<0>创建账号</0>"
@@ -4442,7 +4604,7 @@ msgstr "新工作区名称"
 msgid "No drafts remaining"
 msgstr "没有剩余草稿"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:459
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:460
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:481
 #: ../ui/src/emails/SuggestedDraftCard.tsx:97
 #, fuzzy
@@ -4459,7 +4621,7 @@ msgstr "没有剩余草稿 · {resetDate} 重置"
 msgid "No drafts remaining this month"
 msgstr "本月无剩余草稿"
 
-#: ../../apps/site/src/components/landing/HeroSection.tsx:73
+#: ../../apps/site/src/components/landing/HeroSection.tsx:65
 msgid "No email bodies stored"
 msgstr "不存储邮件正文"
 
@@ -4651,7 +4813,16 @@ msgstr "大学官方邮件：注册办公室、学生服务和住宿。"
 msgid "On-call alerts, outage reports, and production incident escalations."
 msgstr "待命警报、中断报告及生产事件升级。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:384
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:141
+msgid "One sign-in creates your account, connects your Gmail or Outlook inbox, and lets you build your sorting plan. Amarnai never sends or deletes mail."
+msgstr "只需一次登录，即可创建账户、连接 Gmail 或 Outlook 收件箱，并制定您的排序方案。Amarnai 绝不发送或删除邮件。"
+
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:100
+#, fuzzy
+#~ msgid "One sign-in creates your account, connects your inbox, and lets you build your sorting plan. Amarnai never sends or deletes mail."
+#~ msgstr "一次登录即可创建账户、连接收件箱并构建您的整理方案。Amarnai 绝不会发送或删除邮件。"
+
+#: ../ui/src/demo/demo-seed.ts:385
 msgid "Ongoing thread with a known city governor raising a recurring supply issue. Escalatory tone and repeated follow-ups match the Support folder."
 msgstr "与一位已知城市总督关于反复出现的供应问题的进行中的会话。升级的语气和反复的跟进与“支持”文件夹匹配。"
 
@@ -4670,18 +4841,23 @@ msgstr "打开"
 msgid "Open a message first, then choose Amarnai Reply."
 msgstr "请先打开邮件，然后选择 Amarnai 回复。"
 
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:153
+#, fuzzy
+msgid "Open Amarnai"
+msgstr "打开 Amarnai"
+
 #: ../../apps/site/src/components/support/SupportContent.tsx:94
 msgid "Open an issue on GitHub"
 msgstr "在 GitHub 上提交 issue"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:391
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:393
 #: ../../apps/mobile/src/components/DraftSheet.tsx:97
 #: ../ui/src/emails/providerLabels.ts:11
 #, fuzzy
 msgid "Open in Gmail"
 msgstr "在 Gmail 中打开"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:389
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:391
 #: ../ui/src/emails/providerLabels.ts:11
 msgid "Open in Outlook"
 msgstr "在 Outlook 中打开"
@@ -4696,7 +4872,7 @@ msgstr "打开导航"
 msgid "open source email ai"
 msgstr "开源邮件AI"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:172
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:434
 msgid "Open the plan editor"
 msgstr "打开方案编辑器"
 
@@ -4746,7 +4922,7 @@ msgstr "可选。在此文件夹中为会话生成草稿回复时应用。"
 msgid "Optional. Sets this folder's chip and icon color across your inbox. Default assigns a stable color automatically."
 msgstr "可选。设置此文件夹在收件箱中的标签和图标颜色。默认选项将自动分配一个稳定的颜色。"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:136
+#: ../../apps/extension/src/auth/SignInScreen.tsx:130
 #: ../../apps/mobile/src/auth/GoogleSignInButton.tsx:17
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:88
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:80
@@ -4764,8 +4940,8 @@ msgstr "或连接其他收件箱："
 msgid "Orders"
 msgstr "订单"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:35
 #: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:179
+#: ../ui/src/demo/demo-seed.ts:36
 msgid "Other"
 msgstr "其他"
 
@@ -4803,17 +4979,17 @@ msgstr "家长与监护人"
 msgid "Partners"
 msgstr "合作伙伴"
 
-#: ../../apps/site/src/components/landing/HeroSection.tsx:59
+#: ../../apps/site/src/components/landing/HeroSection.tsx:51
 #, fuzzy
 msgid "Passed Google's security review"
 msgstr "通过 Google 安全审查"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:413
-#: ../../apps/site/src/components/demo/demo-seed.ts:431
+#: ../ui/src/demo/demo-seed.ts:414
+#: ../ui/src/demo/demo-seed.ts:432
 msgid "Passing through the Delta: free to meet?"
 msgstr "途经三角洲：方便会面吗？"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:119
+#: ../../apps/extension/src/auth/SignInScreen.tsx:144
 #: ../../apps/mobile/app/sign-in.tsx:106
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:277
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:126
@@ -4986,15 +5162,20 @@ msgstr "Pharaoh"
 msgid "Pharaoh of Egypt"
 msgstr "埃及法老"
 
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:187
+#, fuzzy
+msgid "Pin Amarnai to your toolbar"
+msgstr "将 Amarnai 固定到工具栏"
+
 #. Screen heading for the email-sorting taxonomy. Not a billing or subscription plan.
 #. Sidebar nav label for the email-sorting taxonomy. Not a billing or subscription plan.
 #. Sidebar nav label for the email-sorting taxonomy. Not a billing or subscription plan.
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:43
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:35
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:265
-#: ../../apps/site/src/components/demo/DemoTaxonomyCanvas.tsx:220
 #: ../../apps/web/src/app/(app)/plan/page.tsx:43
 #: ../../apps/web/src/components/Sidebar.tsx:35
+#: ../ui/src/demo/DemoTaxonomyCanvas.tsx:224
 msgid "Plan"
 msgstr "方案"
 
@@ -5008,7 +5189,7 @@ msgstr "方案为只读。只有工作区管理员才能编辑。"
 msgid "Plan nodes"
 msgstr "套餐节点"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:425
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:426
 #, fuzzy
 msgid "Plan sorting"
 msgstr "规划分类"
@@ -5044,11 +5225,11 @@ msgstr "潜在购物者关于商品的售前咨询和消息。"
 msgid "Prefer to self-host?"
 msgstr "想自托管？"
 
-#: ../../apps/site/src/components/landing/FinalCTASection.tsx:32
+#: ../../apps/site/src/components/landing/FinalCTASection.tsx:26
 msgid "Prefer to self-host? It's open source:<0/> <1>clone it and run it free</1>."
 msgstr "想自托管？它是开源的：<0/> <1>克隆并免费运行</1>。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:468
+#: ../ui/src/demo/demo-seed.ts:469
 msgid "Prepare your accounts before the council convenes."
 msgstr "在议会召开之前准备好您的账目。"
 
@@ -5076,7 +5257,7 @@ msgstr "按工作区计费。方案透明，限制清晰。"
 #~ msgid "Priced per workspace. Sort as much as you like."
 #~ msgstr "按工作区计费。可随意分类。"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:28
+#: ../../apps/site/src/components/landing/Footer.tsx:32
 #: ../../apps/site/src/components/landing/Nav.tsx:54
 #, fuzzy
 msgid "Pricing"
@@ -5092,7 +5273,7 @@ msgstr "定价 | Amarnai"
 #~ msgid "Pricing is per workspace, billed monthly or annually. Every account starts with a free Personal workspace, no card required. The paid Pro and Business subscriptions add higher limits and include a 14-day trial. See the pricing page for current details."
 #~ msgstr "定价按工作区计算，按月或按年计费。所有账户均从免费个人工作区开始，无需绑定银行卡。付费的专业版和商业版订阅提供更高限额，并包含 14 天试用期。请查看定价页面了解最新详情。"
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:52
+#: ../../apps/site/src/components/landing/FAQSection.tsx:56
 #, fuzzy
 msgid "Pricing is per workspace, billed monthly or annually. Every account starts with a free workspace, no card required. The paid Scribe and Pharaoh plans add higher limits and include a 14-day trial. See the pricing page for current details."
 msgstr "定价按工作区计算，可按月或按年计费。每个账户均从一个免费工作区开始，无需绑定银行卡。付费的 Scribe 和 Pharaoh 方案提供更高限额，并包含 14 天试用期。请参阅定价页面了解当前详情。"
@@ -5110,7 +5291,7 @@ msgstr "校长通知、教职工会议和学区管理公告。"
 msgid "Priority support"
 msgstr "优先支持"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:41
+#: ../../apps/site/src/components/landing/Footer.tsx:45
 #, fuzzy
 msgid "Privacy"
 msgstr "隐私"
@@ -5119,7 +5300,7 @@ msgstr "隐私"
 msgid "Privacy and data handling"
 msgstr "隐私与数据处理"
 
-#: ../../apps/site/src/components/landing/HeroSection.tsx:44
+#: ../../apps/site/src/components/landing/HeroSection.tsx:39
 #, fuzzy
 msgid "Privacy by design"
 msgstr "设计即隐私"
@@ -5129,7 +5310,7 @@ msgstr "设计即隐私"
 msgid "Pro"
 msgstr "专业版"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:24
+#: ../../apps/site/src/components/landing/Footer.tsx:25
 msgid "Product"
 msgstr "产品"
 
@@ -5242,7 +5423,7 @@ msgstr "本月已分类的会话重新分类免费。如果您达到月度限额
 msgid "Re-sorting…"
 msgstr "正在重新分类…"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:374
+#: ../ui/src/demo/demo-seed.ts:375
 #, fuzzy
 msgid "Re: Grain shipment: third delay this season"
 msgstr "关于：谷物运输：本季第三次延误"
@@ -5260,9 +5441,14 @@ msgstr "重新激活"
 msgid "Read-only · OAuth · revoke anytime"
 msgstr "只读 ・ OAuth ・ 随时撤销"
 
-#: ../../apps/site/src/components/landing/HeroSection.tsx:52
+#: ../../apps/site/src/components/landing/HeroSection.tsx:47
 msgid "Read-only by design"
 msgstr "只读设计"
+
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:331
+#, fuzzy
+msgid "Reading your inbox and building a plan. This can take a moment."
+msgstr "正在读取您的收件箱并构建方案。这可能需要一些时间。"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:205
 msgid "Real Estate Agent"
@@ -5283,6 +5469,10 @@ msgstr "最近已尝试。{when}后即可再次使用。"
 #, fuzzy
 msgid "Recently attempted. Try again later."
 msgstr "最近已尝试。请稍后重试。"
+
+#: ../ui/src/plan-setup/TemplatePicker.tsx:64
+msgid "Recommended"
+msgstr "推荐"
 
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1878
 #, fuzzy
@@ -5405,7 +5595,7 @@ msgstr "移除 {0}"
 msgid "Remove {email} from blacklist"
 msgstr "从黑名单中移除 {email}"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:360
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:362
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:243
 #: ../../apps/mobile/src/components/ThreadRow.tsx:57
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:404
@@ -5581,12 +5771,12 @@ msgstr "调整收件箱和 Amarnai 之间分栏的大小"
 msgid "Resize the thread list"
 msgstr "调整会话列表大小"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:31
+#: ../../apps/site/src/components/landing/Footer.tsx:35
 msgid "Resources"
 msgstr "资源"
 
 #: ../../apps/extension/src/App.tsx:144
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:477
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:478
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:345
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:504
 #: ../ui/src/emails/ThreadSummaryCard.tsx:44
@@ -5608,6 +5798,11 @@ msgstr "退货"
 #~ msgid "Review queue"
 #~ msgstr "审阅队列"
 
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:290
+#, fuzzy
+msgid "Review your plan"
+msgstr "审阅您的方案"
+
 #: ../../apps/site/src/components/landing/ReviewsSection.tsx:70
 msgid "Reviews from early users"
 msgstr "早期用户评价"
@@ -5616,18 +5811,22 @@ msgstr "早期用户评价"
 #~ msgid "Reviews from our earliest correspondents"
 #~ msgstr ""
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:389
+#: ../ui/src/demo/demo-seed.ts:390
 #, fuzzy
 msgid "Rib-Hadda of Byblos"
 msgstr "比布鲁斯的瑞布哈达"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:168
+#: ../ui/src/demo/demo-seed.ts:169
 msgid "Rib-Hadda,\n"
 "\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "里布-哈达，\n\n你的呼吁，我们已收到。已从南方粮仓加订谷物，并将在丰收节前抵达。在此期间，请你耐心等候。\n\n保重，"
+msgstr "里布-哈达，\n"
+"\n"
+"你的呼吁，我们已收到。已从南方粮仓加订谷物，并将在丰收节前抵达。在此期间，请你耐心等候。\n"
+"\n"
+"保重，"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -5694,7 +5893,7 @@ msgstr "每周节省数小时的邮件整理时间。让 Amarnai 助您整理收
 msgid "Save time by triaging your inbox without leaving Gmail. The extension runs in your desktop browser."
 msgstr "无需离开 Gmail，即可高效处理收件箱，节省时间。该扩展在您的桌面浏览器中运行。"
 
-#: ../../apps/web/src/lib/notifications.ts:66
+#: ../../apps/web/src/lib/notifications.ts:69
 #, fuzzy
 msgid "Save time by triaging your inbox without leaving your email."
 msgstr "无需离开邮件即可整理收件箱，节省时间。"
@@ -5766,7 +5965,7 @@ msgstr "搜索会话…"
 msgid "See how your inbox is sorted, right next to your email."
 msgstr "在您的邮件旁边，查看收件箱如何分类。"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:27
+#: ../../apps/site/src/components/landing/Footer.tsx:28
 #: ../../apps/site/src/components/landing/Nav.tsx:50
 #, fuzzy
 msgid "See it work"
@@ -5776,7 +5975,7 @@ msgstr "查看效果"
 msgid "Select"
 msgstr "选择"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:321
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:338
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:366
 #: ../ui/src/emails/MockEmailsPage.tsx:279
 #, fuzzy
@@ -5817,7 +6016,7 @@ msgstr "卖家咨询、挂牌文书、降价通知和市场估价。"
 msgid "Sellers"
 msgstr "卖家"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:211
+#: ../ui/src/demo/demo-seed.ts:212
 msgid "Send ahead by fast courier, before the new moon"
 msgstr "新月之前，速遣信使送抵"
 
@@ -5847,7 +6046,7 @@ msgstr "发件人黑名单"
 msgid "Sender Blacklist"
 msgstr "发件人黑名单"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:271
+#: ../ui/src/demo/demo-seed.ts:272
 #, fuzzy
 msgid "Sender is a known treaty partner of significant standing. Subject explicitly references an outstanding balance on an agreed consignment, which matches the Billing folder."
 msgstr "发件人是地位显赫的已知条约伙伴。主题明确提及已同意货物上的未结清余额，这与“账单”文件夹匹配。"
@@ -5879,12 +6078,13 @@ msgstr "设置新密码"
 #~ msgid "Set up at least 3 folders so we can start sorting."
 #~ msgstr "设置至少 3 个文件夹，以便我们开始分类。"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:42
+#: ../../apps/extension/src/panel/StatusSlot.tsx:44
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:291
 #, fuzzy
 msgid "Set up folders"
 msgstr "设置文件夹"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:164
+#: ../../apps/extension/src/panel/StatusSlot.tsx:173
 #, fuzzy
 msgid "Set up folders so Amarnai knows where to file your mail. It only takes a minute."
 msgstr "设置文件夹，Amarnai 才能知道如何归档您的邮件。仅需一分钟。"
@@ -5958,7 +6158,7 @@ msgstr "显示 Amarnai 回复按钮以起草回复"
 msgid "Showing requests, buyer tours, open-house sign-ups, and written offers."
 msgstr "看房请求、买家看房、开放日注册和书面报价。"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:132
+#: ../../apps/extension/src/auth/SignInScreen.tsx:155
 #: ../../apps/mobile/app/sign-in.tsx:133
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:288
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:42
@@ -5989,9 +6189,17 @@ msgstr "改用邮箱登录"
 #~ msgid "Sign in with Google"
 #~ msgstr "使用 Google 登录"
 
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:138
+msgid "Sign in with Google or Microsoft"
+msgstr "使用 Google 或 Microsoft 登录"
+
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:392
-msgid "Sign in with Google or Microsoft. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
-msgstr "使用 Google 或 Microsoft 登录。Amarnai 会同步您的会话和标签。它绝不会代表您发送或删除任何内容。"
+#~ msgid "Sign in with Google or Microsoft. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
+#~ msgstr "使用 Google 或 Microsoft 登录。Amarnai 会同步您的会话和标签。它绝不会代表您发送或删除任何内容。"
+
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:97
+#~ msgid "Sign in with Google to start"
+#~ msgstr "使用 Google 登录开始"
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:363
 #~ msgid "Sign in with Google. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
@@ -6076,11 +6284,11 @@ msgstr "出错了。请重试。"
 msgid "Soon"
 msgstr "即将推出"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:57
+#: ../../apps/extension/src/panel/StatusSlot.tsx:59
 msgid "Sort"
 msgstr "分类"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:18
+#: ../../apps/site/src/components/landing/Footer.tsx:19
 #, fuzzy
 msgid "Sort emails your way."
 msgstr "按您的方式管理邮件。"
@@ -6112,7 +6320,7 @@ msgstr "已排序"
 msgid "Sorting"
 msgstr "正在排序"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:128
+#: ../../apps/extension/src/panel/StatusSlot.tsx:130
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:32
 #: ../ui/src/emails/BackfillCard.tsx:33
 msgid "Sorting historical inbox"
@@ -6123,7 +6331,7 @@ msgstr "正在分类历史收件箱"
 msgid "Sorting is taking longer than expected."
 msgstr "排序时间超出预期。"
 
-#: ../../apps/site/src/components/landing/HeroFeedCard.tsx:223
+#: ../ui/src/demo/HeroFeedCard.tsx:223
 #, fuzzy
 msgid "Sorting live"
 msgstr "实时分类"
@@ -6134,7 +6342,7 @@ msgid "Sorting volume"
 msgstr "分类量"
 
 #: ../../apps/mobile/src/components/RationaleCard.tsx:34
-#: ../../apps/site/src/components/landing/HeroFeedCard.tsx:95
+#: ../ui/src/demo/HeroFeedCard.tsx:95
 #: ../ui/src/emails/ThreadRow.tsx:254
 msgid "Sorting…"
 msgstr "正在排序…"
@@ -6192,7 +6400,7 @@ msgid "Start from a template (replaces current)"
 msgstr "从模板开始（替换当前）"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:83
-#: ../../apps/site/src/components/landing/HeroSection.tsx:28
+#: ../../apps/site/src/components/landing/HeroSection.tsx:26
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:90
 #, fuzzy
 msgid "Start sorting"
@@ -6212,6 +6420,11 @@ msgstr "初创公司创始人"
 #, fuzzy
 msgid "Still importing your inbox. Check back once the import finishes."
 msgstr "正在导入您的收件箱。请待导入完成后再查看。"
+
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:92
+#, fuzzy
+msgid "Stop sorting email"
+msgstr "停止整理邮件"
 
 #: ../../apps/site/src/components/landing/HeroSection.tsx:13
 msgid "Stop sorting email.<0/><1>Sort it once.</1>"
@@ -6314,8 +6527,8 @@ msgstr "监督"
 msgid "Suppliers"
 msgstr "供应商"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:31
-#: ../../apps/site/src/components/landing/Footer.tsx:37
+#: ../../apps/site/src/components/landing/Footer.tsx:41
+#: ../ui/src/demo/demo-seed.ts:32
 #: ../ui/src/pricing/planMessages.ts:56
 msgid "Support"
 msgstr "支持"
@@ -6441,7 +6654,7 @@ msgstr "模板已应用"
 msgid "Templates"
 msgstr "模板"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:42
+#: ../../apps/site/src/components/landing/Footer.tsx:46
 msgid "Terms"
 msgstr "术语"
 
@@ -6503,7 +6716,7 @@ msgstr "授权请求已过期或被篡改。请重试。"
 msgid "The connection could not be saved due to a server error. Please try again."
 msgstr "由于服务器错误，无法保存连接。请重试。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:202
+#: ../ui/src/demo/demo-seed.ts:203
 msgid "The council convenes at the start of Shemu. Tushratta asks for a full accounting of the eastern territories, sent ahead by fast courier."
 msgstr "议会将于谢穆月之初召开。图什拉塔要求提供东方领土的完整账目，需提前由快马信使送达。"
 
@@ -6516,27 +6729,27 @@ msgstr "议会将于谢穆月之初召开。图什拉塔要求提供东方领土
 msgid "The Gmail connection, all synced emails, and the taxonomy will be permanently deleted. Re-importing this inbox uses your monthly import allowance; if it runs out, you can import again after {allowanceResetsAt} or by upgrading."
 msgstr "Gmail 连接、所有已同步的电子邮件和分类体系将被永久删除。重新导入此收件箱将占用您的每月导入额度；如果额度用完，您可以在 {allowanceResetsAt} 之后或升级后再次导入。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:379
+#: ../ui/src/demo/demo-seed.ts:380
 #, fuzzy
 msgid "The grain you sent last month was received with gratitude. But I must write again: the third shipment has not arrived and the city grows restless."
 msgstr "上月您送来的谷物已收到，不胜感激。但我必须再次写信：第三批货物尚未抵达，城市居民日渐不安。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:455
+#: ../ui/src/demo/demo-seed.ts:456
 #, fuzzy
 msgid "The great council convenes at the start of Shemu. I ask that you prepare a full accounting of the eastern territories and send it ahead by fast courier."
 msgstr "示姆季初大议会召开。请备妥东部领地详细账目，速派信使提前送达。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:266
+#: ../ui/src/demo/demo-seed.ts:267
 #, fuzzy
 msgid "The third gold consignment agreed under our treaty has not arrived. Two messengers have passed and still we wait."
 msgstr "依条约议定的第三批黄金至今未到。两名信使往返，吾等仍在等候。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:279
+#: ../ui/src/demo/demo-seed.ts:280
 #, fuzzy
 msgid "The third gold consignment is overdue."
 msgstr "第三批黄金已逾期。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:392
+#: ../ui/src/demo/demo-seed.ts:393
 msgid "The third grain shipment has not arrived."
 msgstr "第三批谷物未到。"
 
@@ -6559,6 +6772,10 @@ msgstr "这些协作者将在账单周期结束时失去访问权限："
 #, fuzzy
 msgid "These collaborators will lose access on {0}:"
 msgstr "这些协作者将在 {0} 失去访问权限："
+
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:356
+msgid "These folders will be created. You can edit them at any time."
+msgstr "这些文件夹将被创建。您可以随时编辑它们。"
 
 #: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:52
 #, fuzzy
@@ -6632,12 +6849,12 @@ msgstr "这将移除 Gmail 连接、删除所有已同步的电子邮件，并�
 #~ msgid "This thread cannot be sorted yet. Add at least {TAXONOMY_MIN_NON_ROOT_NODES} categories to your plan to begin routing."
 #~ msgstr "此会话尚未排序。请至少添加 {TAXONOMY_MIN_NON_ROOT_NODES} 个类别到您的计划以开始路由。"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:430
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:431
 #, fuzzy
 msgid "This thread hasn't been sorted yet."
 msgstr "此会话尚未分类。"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:418
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:420
 #, fuzzy
 msgid "This thread hasn't been sorted yet. Create a sorting plan so Amarnai knows where to file it."
 msgstr "此会话尚未分类。制定分类计划，以便 Amarnai 知道如何归档。"
@@ -6717,7 +6934,7 @@ msgstr "尚未排序的会话。"
 msgid "Threads you've marked as important."
 msgstr "您标记为重要的会话。"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:430
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:431
 msgid "Three steps to a sorted inbox."
 msgstr "三步打造有序收件箱。"
 
@@ -6725,7 +6942,11 @@ msgstr "三步打造有序收件箱。"
 #~ msgid "Three steps. Then it sorts every email for you."
 #~ msgstr "简单三步，即可帮你分类所有邮件。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:469
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:205
+msgid "Tip: pin the Amarnai icon in your toolbar to keep it one click away."
+msgstr "提示：将 Amarnai 图标固定在工具栏中，即可一键访问。"
+
+#: ../ui/src/demo/demo-seed.ts:470
 #, fuzzy
 msgid "To my brother, the Great King,\n"
 "\n"
@@ -6734,18 +6955,28 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "致吾兄，大王，\n\n大议会将于谢穆月初召开。我请求你备妥东方领地的详尽账目，并请快马先行送呈，如可能，请在新月之前。\n\n吾等盟约坚固。愿我们向议会昭示其一如既往。\n\n图什拉塔，米坦尼大王"
+msgstr "致吾兄，大王，\n"
+"\n"
+"大议会将于谢穆月初召开。我请求你备妥东方领地的详尽账目，并请快马先行送呈，如可能，请在新月之前。\n"
+"\n"
+"吾等盟约坚固。愿我们向议会昭示其一如既往。\n"
+"\n"
+"图什拉塔，米坦尼大王"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:163
+#: ../ui/src/demo/demo-seed.ts:164
 #, fuzzy
 msgid "To the Bureau of Royal Appointments,\n"
 "\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "致王室任命局，\n\n我们已收到底比斯的霍伦海布之申请，并将在下一新月前审查其记录。请告知他，我们将在适当时候回复。\n\n奉谕，"
+msgstr "致王室任命局，\n"
+"\n"
+"我们已收到底比斯的霍伦海布之申请，并将在下一新月前审查其记录。请告知他，我们将在适当时候回复。\n"
+"\n"
+"奉谕，"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:319
+#: ../ui/src/demo/demo-seed.ts:320
 #, fuzzy
 msgid "To the Great King,\n"
 "\n"
@@ -6754,27 +6985,41 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "致大王，\n\n多年以来，吾等两家情同手足。今特致函，愿将此友谊正式化，以惠及吾等两族：订立互助盟约，共享商道。\n\n我只恳请大王倾听我的条件。请速派下一信使回复，我将立即派遣使者前往。\n\n阿齐鲁，大王之仆，阿穆鲁之主"
+msgstr "致大王，\n"
+"\n"
+"多年以来，吾等两家情同手足。今特致函，愿将此友谊正式化，以惠及吾等两族：订立互助盟约，共享商道。\n"
+"\n"
+"我只恳请大王倾听我的条件。请速派下一信使回复，我将立即派遣使者前往。\n"
+"\n"
+"阿齐鲁，大王之仆，阿穆鲁之主"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:432
+#: ../ui/src/demo/demo-seed.ts:433
 #, fuzzy
 msgid "To the Great King,\n"
 "\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "致大王，\n\n吾近期旅程将近三角洲一带。如大王能拨冗一小时，我愿与你面谈；有些事，口头陈述胜于笔墨。\n\n你的仆人，阿卜迪-赫巴，乌鲁沙利姆总督"
+msgstr "致大王，\n"
+"\n"
+"吾近期旅程将近三角洲一带。如大王能拨冗一小时，我愿与你面谈；有些事，口头陈述胜于笔墨。\n"
+"\n"
+"你的仆人，阿卜迪-赫巴，乌鲁沙利姆总督"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:153
+#: ../ui/src/demo/demo-seed.ts:154
 #, fuzzy
 msgid "To the Great King, my brother,\n"
 "\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "致吾兄，大王，\n\n你之言语，我已听闻。黄金将在下一信使启程前发出。吾等珍视两家情谊，不愿其冷却。\n\n友谊长存，"
+msgstr "致吾兄，大王，\n"
+"\n"
+"你之言语，我已听闻。黄金将在下一信使启程前发出。吾等珍视两家情谊，不愿其冷却。\n"
+"\n"
+"友谊长存，"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:280
+#: ../ui/src/demo/demo-seed.ts:281
 #, fuzzy
 msgid "To the Great King, my brother,\n"
 "\n"
@@ -6783,9 +7028,15 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "致吾兄，大王，\n\n我以友谊之名致函，正如我等父辈昔日所为。依照盟约，第三批黄金仍未抵达。两批信使已过，吾等仍在等候。\n\n吾等恳请你勿再延误，速将其发出，以维系吾等两家之盟谊。\n\n布尔那-布里亚什二世，巴比伦国王"
+msgstr "致吾兄，大王，\n"
+"\n"
+"我以友谊之名致函，正如我等父辈昔日所为。依照盟约，第三批黄金仍未抵达。两批信使已过，吾等仍在等候。\n"
+"\n"
+"吾等恳请你勿再延误，速将其发出，以维系吾等两家之盟谊。\n"
+"\n"
+"布尔那-布里亚什二世，巴比伦国王"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:393
+#: ../ui/src/demo/demo-seed.ts:394
 msgid "To the Great King, my lord, my sun,\n"
 "\n"
 "The grain you sent last month was received with gratitude and I praised your name before the people. But I must write again: the third shipment has not arrived and the city grows restless.\n"
@@ -6793,7 +7044,13 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "致大王，吾主，吾日，\n\n上月你所赐谷物，吾等不胜感激，吾亦在民众面前颂扬大王之名。然我不得不再次致函：第三批谷物尚未抵达，城中民心骚动不安。\n\n我已七度致函。我实不愿劳烦大王，然此外我能奈何？\n\n你的仆人，里布-哈达，比布鲁斯总督"
+msgstr "致大王，吾主，吾日，\n"
+"\n"
+"上月你所赐谷物，吾等不胜感激，吾亦在民众面前颂扬大王之名。然我不得不再次致函：第三批谷物尚未抵达，城中民心骚动不安。\n"
+"\n"
+"我已七度致函。我实不愿劳烦大王，然此外我能奈何？\n"
+"\n"
+"你的仆人，里布-哈达，比布鲁斯总督"
 
 #: ../../apps/site/src/components/landing/MailThreadMock.tsx:135
 msgid "To: You"
@@ -6844,6 +7101,10 @@ msgstr "分类"
 msgid "Triage & review"
 msgstr "分类与审阅"
 
+#: ../../apps/web/src/components/GetExtensionBanner.tsx:60
+msgid "Triage without leaving your inbox"
+msgstr "无需离开收件箱即可分类"
+
 #: ../../apps/mobile/src/data/notificationView.ts:33
 #, fuzzy
 #~ msgid "Triage your inbox from a side panel next to Gmail on your computer."
@@ -6867,7 +7128,7 @@ msgstr "随时随地，高效管理收件箱。"
 msgid "Try again"
 msgstr "重试"
 
-#: ../../apps/site/src/components/landing/FinalCTASection.tsx:19
+#: ../../apps/site/src/components/landing/FinalCTASection.tsx:16
 #, fuzzy
 msgid "Try Amarnai"
 msgstr "试用 Amarnai"
@@ -6876,7 +7137,7 @@ msgstr "试用 Amarnai"
 msgid "Turning this on will ask for permission to manage your labels."
 msgstr "开启此功能将请求管理您标签的权限。"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:465
+#: ../ui/src/demo/demo-seed.ts:466
 #, fuzzy
 msgid "Tushratta of Mitanni"
 msgstr "米坦尼的图什拉塔"
@@ -6901,7 +7162,7 @@ msgstr "未分类"
 msgid "Unclassified. Change folder"
 msgstr "未分类，更改文件夹"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:365
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:382
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:407
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1510
 #: ../ui/src/emails/MockEmailsPage.tsx:298
@@ -7000,7 +7261,7 @@ msgstr "更新付款方式"
 msgid "Updates / Other"
 msgstr "更新/其他"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:32
+#: ../ui/src/demo/demo-seed.ts:33
 #, fuzzy
 msgid "Updates, intros, and check-ins from current or prospective investors."
 msgstr "来自现有或潜在投资者的最新动态、引荐及跟进。"
@@ -7038,14 +7299,14 @@ msgstr "升级到付费套餐，即可邀请协作者并将会话分配给他们
 #~ msgid "Upgrade to a Pro or Business subscription to invite collaborators."
 #~ msgstr "升级到专业版或商业版订阅即可邀请协作者。"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:87
+#: ../../apps/extension/src/panel/StatusSlot.tsx:89
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:60
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:50
 #, fuzzy
 msgid "Upgrade to import now"
 msgstr "升级导入"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:89
+#: ../../apps/extension/src/panel/StatusSlot.tsx:91
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:60
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:50
 msgid "Upgrade to load the rest"
@@ -7079,9 +7340,12 @@ msgstr "更改筛选器设置后，使用“重新扫描收件箱”将其应用
 msgid "Use \"Rescan inbox\" after changing filters to apply them to threads already in your inbox."
 msgstr "更改筛选器后，请使用“重新扫描收件箱”将其应用于收件箱中已有的会话。"
 
+#: ../../apps/extension/src/panel/StatusSlot.tsx:188
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:149
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:170
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:330
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:378
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:392
 #, fuzzy
 msgid "Use a template"
 msgstr "使用模板"
@@ -7090,6 +7354,10 @@ msgstr "使用模板"
 #, fuzzy
 msgid "Use template"
 msgstr "使用模板"
+
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:414
+msgid "Use these folders"
+msgstr "使用这些文件夹"
 
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:30
 #, fuzzy
@@ -7122,6 +7390,16 @@ msgstr "验证邮件已发送！"
 #, fuzzy
 msgid "Verification email sent. Check your inbox."
 msgstr "验证邮件已发送。请检查您的收件箱。"
+
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:162
+#, fuzzy
+msgid "Verified by Google"
+msgstr "经 Google 验证"
+
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:166
+#, fuzzy
+msgid "Verified by Microsoft"
+msgstr "经 Microsoft 验证"
 
 #: ../../apps/mobile/app/verify-email.tsx:85
 msgid "Verify your email"
@@ -7223,11 +7501,11 @@ msgstr "每周收件箱提醒"
 #~ msgid "What AI model does Amarnai use?"
 #~ msgstr "Amarnai 使用什么AI模型？"
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:43
+#: ../../apps/site/src/components/landing/FAQSection.tsx:47
 msgid "What happens to threads Amarnai is unsure about?"
 msgstr "Amarnai 不确定如何分类的会话会怎样处理？"
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:63
+#: ../../apps/site/src/components/landing/FAQSection.tsx:67
 msgid "What model does Amarnai use?"
 msgstr "Amarnai 使用什么模型？"
 
@@ -7245,7 +7523,7 @@ msgstr "阿齐鲁国王是谁？"
 msgid "Wholesale suppliers, restock orders, and inventory availability from manufacturers."
 msgstr "批发供应商、补货订单及制造商库存情况。"
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:59
+#: ../../apps/site/src/components/landing/FAQSection.tsx:63
 msgid "Why is it called Amarnai?"
 msgstr "为何命名为 Amarnai？"
 
@@ -7253,6 +7531,11 @@ msgstr "为何命名为 Amarnai？"
 #, fuzzy
 msgid "Work"
 msgstr "工作"
+
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:122
+#, fuzzy
+msgid "Work next to your email"
+msgstr "邮件旁高效工作"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:38
 msgid "Working Professional"
@@ -7267,14 +7550,15 @@ msgstr "职场人士"
 #~ msgid "Works with Gmail today. Outlook support is on the way."
 #~ msgstr "目前支持 Gmail。即将支持 Outlook。"
 
-#: ../../apps/site/src/components/landing/FinalCTASection.tsx:24
+#: ../../apps/site/src/components/landing/FinalCTASection.tsx:18
 #, fuzzy
 msgid "Works with Gmail™ and Outlook."
 msgstr "支持 Gmail™ 和 Outlook。"
 
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:61
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:41
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:220
-#: ../../apps/site/src/components/demo/DemoTaxonomyCanvas.tsx:218
+#: ../ui/src/demo/DemoTaxonomyCanvas.tsx:222
 #: ../ui/src/emails/ThreadListHeader.tsx:65
 #: ../ui/src/pricing/planMessages.ts:53
 msgid "Workspace"
@@ -7336,7 +7620,7 @@ msgstr "将排序文件夹回写为 Outlook 类别"
 msgid "Writeback is on. Your folders are being mirrored into your mailbox."
 msgstr "回写已开启。您的文件夹正同步到邮箱。"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:469
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:470
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:168
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:492
 #: ../ui/src/emails/ThreadPreview.tsx:250
@@ -7368,7 +7652,7 @@ msgstr "是的，断开连接"
 msgid "Yes, reset workspace"
 msgstr "是的，重置工作区"
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:40
+#: ../../apps/site/src/components/landing/FAQSection.tsx:44
 msgid "Yes. Amarnai can work through the backlog already sitting in your inbox, not only messages that arrive from now on. Clearing your backlog and sorting new mail use the same plan, up to your plan's limits, so old and new mail end up organized the same way."
 msgstr "是的。Amarnai 不仅能处理新邮件，还能整理收件箱中已有的积压邮件。清理积压邮件和整理新邮件都遵循您的方案限额，因此新旧邮件都能以同样的方式整理有序。"
 
@@ -7390,12 +7674,12 @@ msgstr "是的。Amarnai 以只读权限连接，因此它可以读取您的会�
 #~ msgid "Yes. Amarnai connects with Gmail's read-only scope, so it can read your threads but cannot send, delete, label, or change anything in your account. It keeps only what it needs to sort and display threads: subjects, participants, snippets, and the labels and reasoning it generates. Full message bodies are fetched when needed and processed in memory, not stored, and OAuth tokens are encrypted at rest."
 #~ msgstr "是的。Amarnai 通过 Gmail 的只读权限连接，因此只能读取你的会话，无法发送、删除、标记或更改你的账户中的任何内容。它仅保留分类和显示会话所需的信息：主题、参与者、摘要以及它生成的标签和分类依据。邮件正文仅在需要时获取并在内存中处理，不会存储。OAuth 令牌在静态存储时进行加密。"
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:56
+#: ../../apps/site/src/components/landing/FAQSection.tsx:60
 #, fuzzy
 msgid "Yes. Amarnai is open source under the AGPL-3.0 license. You can clone the repository and run it yourself with Docker. Self-hosting is free and unsupported, with community support available on GitHub."
 msgstr "是的。Amarnai 基于 AGPL-3.0 许可证开源。你可以克隆仓库并使用 Docker 自行运行。自我托管是免费的且不提供官方支持，但可在 GitHub 上获得社区支持。"
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:36
+#: ../../apps/site/src/components/landing/FAQSection.tsx:40
 msgid "Yes. Amarnai works with both Gmail and Outlook, each connected the same read-only way: Amarnai reads your threads to sort them and never sends, deletes, or changes anything in your account."
 msgstr "是的。Amarnai 支持 Gmail 和 Outlook，两者均以相同的只读方式连接：Amarnai 读取您的会话以进行分类，绝不会发送、删除或更改您账户中的任何内容。"
 
@@ -7404,7 +7688,7 @@ msgstr "是的。Amarnai 支持 Gmail 和 Outlook，两者均以相同的只读�
 #~ msgid "Yes. Open a thread, press Generate draft reply, and a suggested draft appears in Amarnai for you to read and edit. Nothing is ever sent for you: when you are happy with it, you can jump to the thread in Gmail with one click and paste your reply there to send. Each subscription includes a monthly draft allowance."
 #~ msgstr "是的。打开一个会话，点击“生成草稿回复”，Amarnai 就会显示一个建议的回复草稿供你阅读和编辑。Amarnai 绝不会代你发送任何内容：当你满意草稿后，只需一键跳转到 Gmail 中的会话，将回复粘贴发送即可。每份订阅都包含每月草稿额度。"
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:48
+#: ../../apps/site/src/components/landing/FAQSection.tsx:52
 #, fuzzy
 msgid "Yes. Open a thread, press Generate draft reply, and a suggested draft appears in Amarnai for you to read and edit. Nothing is ever sent for you: when you are happy with it, you can jump to the thread in your inbox with one click and paste your reply there to send. Each subscription includes a monthly draft allowance."
 msgstr "是的。打开一个会话，点击“生成回复草稿”，Amarnai 就会显示一个建议的草稿供您阅读和编辑。系统绝不会代表您发送任何内容：当您满意时，只需一键即可跳转到收件箱中的该会话，并将您的回复粘贴到那里发送。每个订阅都包含每月草稿额度。"
@@ -7462,14 +7746,14 @@ msgstr "您没有权限将 Outlook 收件箱连接到此工作区。"
 msgid "You have used all {0} drafts in your plan this month. They reset on {1}."
 msgstr "您已用完本月方案中的全部 {0} 份草稿。它们将于 {1} 重置。"
 
-#: ../../apps/site/src/components/landing/HeroSection.tsx:66
+#: ../../apps/site/src/components/landing/HeroSection.tsx:58
 #, fuzzy
 msgid "You stay in control"
 msgstr "一切尽在您的掌控"
 
 #: ../../apps/extension/src/panel/notificationText.ts:16
 #: ../../apps/mobile/src/data/notificationView.ts:35
-#: ../../apps/web/src/lib/notifications.ts:55
+#: ../../apps/web/src/lib/notifications.ts:58
 msgid "You were assigned a thread"
 msgstr "您被分配了一个会话"
 
@@ -7484,7 +7768,7 @@ msgstr "您当前使用的是 {planLabel}"
 #~ msgstr "您已在名单上！"
 
 #. placeholder {0}: status.plan
-#: ../../apps/extension/src/panel/StatusSlot.tsx:69
+#: ../../apps/extension/src/panel/StatusSlot.tsx:71
 #, fuzzy
 msgid "You've used all of your {0} plan's email imports this month, including one retry. Imports refresh {refreshDate}."
 msgstr "您本月已用完 {0} 方案的所有邮件导入额度，包括一次重试。导入额度将于 {refreshDate} 刷新。"
@@ -7504,7 +7788,7 @@ msgid "You've used your generations for now. Available again {when}."
 msgstr "您本期的生成次数已用完。{when}后即可再次使用。"
 
 #. placeholder {0}: status.plan
-#: ../../apps/extension/src/panel/StatusSlot.tsx:72
+#: ../../apps/extension/src/panel/StatusSlot.tsx:74
 #, fuzzy
 msgid "Your {0} plan finished importing your most recent emails. Older ones beyond its limit weren't loaded."
 msgstr "您的 {0} 方案已完成最新邮件的导入。超出限额的旧邮件未载入。"
@@ -7520,7 +7804,7 @@ msgstr "您的{plan}套餐已完成最近邮件的导入。超出额度的旧邮
 msgid "Your 14-day free trial runs until <0>{0}</0>. You won't be charged before then."
 msgstr "您的14天免费试用期截至<0>{0}</0>。在此之前，我们不会向您收费。"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:26
+#: ../../apps/site/src/components/landing/Footer.tsx:27
 #: ../../apps/site/src/components/landing/Nav.tsx:49
 msgid "Your folders"
 msgstr "您的文件夹"
@@ -7548,7 +7832,7 @@ msgid "Your inbox doesn't have enough variety yet to personalize a taxonomy. Cho
 msgstr "您的收件箱内容多样性不足，尚无法个性化分类体系。请改用模板。"
 
 #: ../../apps/mobile/src/data/notificationView.ts:64
-#: ../../apps/web/src/lib/notifications.ts:83
+#: ../../apps/web/src/lib/notifications.ts:86
 msgid "Your inbox import finished."
 msgstr "您的收件箱导入已完成。"
 
@@ -7558,17 +7842,29 @@ msgstr "您的收件箱导入已完成。"
 msgid "Your inbox is still importing. You can generate now from what's loaded so far, but regenerating once the import finishes will give a more accurate fit."
 msgstr "您的收件箱仍在导入中。您可以根据目前已加载的内容进行生成，但在导入完成后重新生成将获得更准确的结果。"
 
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:55
+#~ msgid "Your inbox, sorted the way you think."
+#~ msgstr "您的收件箱，依您心意整理。"
+
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:89
+msgid "Your inbox, sorted your way"
+msgstr "您的收件箱，由您整理"
+
 #: ../../apps/mobile/src/components/EditNameSheet.tsx:56
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:65
 #, fuzzy
 msgid "Your name"
 msgstr "您的姓名"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:135
+#: ../../apps/extension/src/panel/StatusSlot.tsx:137
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:40
 #: ../ui/src/emails/BackfillCard.tsx:38
 msgid "Your past threads are being loaded and will appear shortly."
 msgstr "您的历史会话正在加载中，稍后会显示。"
+
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:99
+msgid "Your plan is a simple folder tree branching out from your inbox. Let Amarnai generate it from your inbox, start from a template, or draw it yourself."
+msgstr "您的方案是一棵从收件箱延伸出的简单文件夹树。您可以让 Amarnai 从收件箱生成，从模板开始，或自行绘制。"
 
 #: ../../apps/site/src/components/landing/TaxonomyDemoSection.tsx:12
 #, fuzzy
@@ -7580,7 +7876,7 @@ msgid "Your plan is a tree of folders (for example a Customers folder with Suppo
 msgstr "你的方案是一个文件夹树（例如，一个客户文件夹下设有支持和账单子文件夹），每个文件夹都以通俗易懂的语言描述，Amarnai 会根据这个树结构将每个会话精准归类到最合适的文件夹。构建该树最快的方式是让 Amarnai 为你生成一个：它会读取你的收件箱并建议一个完整、已命名且带有描述的文件夹树，你可以直接使用或进行调整。你也可以从我们现成的模板开始，或者从头开始构建自己的文件夹树。无需任何技术知识。"
 
 #. placeholder {0}: status.plan
-#: ../../apps/extension/src/panel/StatusSlot.tsx:71
+#: ../../apps/extension/src/panel/StatusSlot.tsx:73
 #, fuzzy
 msgid "Your retry import finished and is still capped by your {0} plan. Your next retry is available {refreshDate}."
 msgstr "您的重试导入已完成，但仍受限于您的 {0} 方案。下次重试将于 {refreshDate} 可用。"

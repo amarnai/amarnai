@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { makeApiClient, InjectionDisabledError } from "./client.js";
+import { makeApiClient, InjectionDisabledError, ApiHttpError } from "./client.js";
 import type { ApiTransport } from "./transport.js";
 
 function mockOk(body: unknown, status = 200): Response {
@@ -43,6 +43,28 @@ describe("makeApiClient", () => {
       const client = makeApiClient(makeMockTransport(fetchFn));
       await expect(client.workspaces()).rejects.toThrow("API /workspaces returned 404");
     });
+
+    it("throws ApiHttpError carrying the status and parsed body", async () => {
+      const fetchFn = vi.fn().mockResolvedValue(mockOk({ error: "Not found" }, 404));
+      const client = makeApiClient(makeMockTransport(fetchFn));
+      const err = await client.workspaces().catch((e: unknown) => e);
+      expect(err).toBeInstanceOf(ApiHttpError);
+      expect((err as ApiHttpError).status).toBe(404);
+      expect((err as ApiHttpError).body).toEqual({ error: "Not found" });
+    });
+
+    it("leaves body null when the error response is not JSON", async () => {
+      const fetchFn = vi.fn().mockResolvedValue({
+        ok: false,
+        status: 502,
+        json: () => Promise.reject(new Error("not json")),
+      } as unknown as Response);
+      const client = makeApiClient(makeMockTransport(fetchFn));
+      const err = await client.workspaces().catch((e: unknown) => e);
+      expect(err).toBeInstanceOf(ApiHttpError);
+      expect((err as ApiHttpError).status).toBe(502);
+      expect((err as ApiHttpError).body).toBeNull();
+    });
   });
 
   describe("apiMutate helpers", () => {
@@ -70,6 +92,18 @@ describe("makeApiClient", () => {
       const fetchFn = vi.fn().mockResolvedValue(mockOk({ error: "Workspace not found" }, 400));
       const client = makeApiClient(makeMockTransport(fetchFn));
       await expect(client.sweepInbox("ws1")).rejects.toThrow("Workspace not found");
+    });
+
+    it("apiMutate throws ApiHttpError carrying the status and parsed body", async () => {
+      const fetchFn = vi.fn().mockResolvedValue(
+        mockOk({ error: "Not eligible", reason: "TOO_SOON", nextEligibleAt: "2026-08-01T00:00:00.000Z" }, 429)
+      );
+      const client = makeApiClient(makeMockTransport(fetchFn));
+      const err = await client.generateTaxonomy("ws1").catch((e: unknown) => e);
+      expect(err).toBeInstanceOf(ApiHttpError);
+      expect((err as ApiHttpError).status).toBe(429);
+      expect((err as ApiHttpError).message).toBe("Not eligible");
+      expect((err as ApiHttpError).body?.["reason"]).toBe("TOO_SOON");
     });
 
     it("deleteTaxonomyNode sends moveToNodeId body when provided", async () => {

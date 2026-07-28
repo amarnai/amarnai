@@ -21,11 +21,15 @@ import {
   type Connection,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import { TaxonomyNodeCardBase, readEdgeColors } from "@amarnai/ui/taxonomy";
-import { useTheme } from "@amarnai/ui";
-import { SparkleIcon } from "@/components/landing/icons";
-import type { DemoNode, DemoNodeData } from "./demo-seed";
-import { getDemoNodes, DEMO_EDGES, DEMO_NODE_DEPTH, DEMO_NODE_SIZE, DEMO_ARROW } from "./demo-seed";
+// The demo canvas is draggable but keeps the read-only canvas's wrapper layout
+// (fixed-height, bordered stage), so it reuses that stylesheet rather than
+// restating it in each app that renders the demo.
+import "../taxonomy/taxonomy-canvas.css";
+import { TaxonomyNodeCardBase, readEdgeColors } from "../taxonomy/index.js";
+import { useTheme } from "../theme/useTheme.js";
+import { SparkleIcon } from "./icons.js";
+import type { DemoNode, DemoNodeData } from "./demo-seed.js";
+import { getDemoNodes, DEMO_EDGES, DEMO_NODE_DEPTH, DEMO_NODE_SIZE, DEMO_ARROW } from "./demo-seed.js";
 
 // Same bezier edge as the web taxonomy canvas, but the endpoints are derived
 // from the live node position plus the node's fixed size rather than React
@@ -233,8 +237,10 @@ function DemoCanvasInner() {
           {generating ? <Trans>Generating…</Trans> : <Trans>Generate from inbox</Trans>}
         </button>
       </div>
+      {/* The stage takes its height from the surface rendering the demo (a
+          landing section, a carousel slide), so nothing is fixed here. */}
       <div className="ld-demo-stage">
-        <div className="taxonomy-canvas-wrap" style={{ minHeight: 520 }}>
+        <div className="taxonomy-canvas-wrap">
           <div className="taxonomy-canvas">
             <ReactFlow
               nodes={visibleNodes}

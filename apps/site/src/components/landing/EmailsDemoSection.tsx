@@ -16,7 +16,7 @@ import type { ThreadItem } from "@amarnai/ui/emails";
 import { MockEmailsPage } from "@amarnai/ui/emails";
 import { MailInboxMock, type MockProvider } from "./MailInboxMock";
 import { MailThreadMock } from "./MailThreadMock";
-import { getDemoThreads, getDemoFolders, getDemoDraftBodies, getDemoSummaries, getDemoSummaryBullets } from "@/components/demo/demo-seed";
+import { getDemoThreads, getDemoFolders, getDemoDraftBodies, getDemoSummaries, getDemoSummaryBullets } from "@amarnai/ui/demo";
 
 /** Which surface the frame previews: the docked extension or the full web app. */
 type Surface = "web" | "ext";

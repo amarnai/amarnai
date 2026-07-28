@@ -3,7 +3,8 @@
 /* the component (see taxonomy-node-card.css); this file only owns the fixed-    */
 /* height wrapper. The parent element controls height; set an explicit height    */
 /* on the wrapper. Interactive canvases (e.g. the web plan page) provide their   */
-/* own .taxonomy-canvas-wrap layout and must not import this file.               */
+/* own .taxonomy-canvas-wrap layout and must not import this file. The shared     */
+/* demo canvas is the one exception: it is draggable but keeps this layout.       */
 
 .taxonomy-canvas-wrap {
   display: flex;

@@ -11,6 +11,10 @@
     "./theme/styles": "./src/theme/theme.css",
     "./tooltip/styles": "./src/tooltip.css",
     "./switch/styles": "./src/switch.css",
+    "./plan-setup": "./src/plan-setup/index.ts",
+    "./plan-setup/styles": "./src/plan-setup/plan-setup.css",
+    "./demo": "./src/demo/index.ts",
+    "./demo/styles": "./src/demo/demo.css",
     "./emails": "./src/emails/index.ts",
     "./emails/styles": "./src/emails/emails.css",
     "./emails/EmailRail": "./src/emails/EmailRail.tsx",
@@ -32,7 +36,9 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@amarnai/api-client": "workspace:*",
     "@amarnai/core": "workspace:*",
+    "@amarnai/i18n": "workspace:*",
     "@amarnai/shared": "workspace:*",
     "@amarnai/tokens": "workspace:*",
     "@lingui/core": "^6.4.0",
@@ -44,9 +50,13 @@
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
+    "@lingui/babel-plugin-lingui-macro": "^6.4.0",
+    "@testing-library/react": "^16.3.2",
     "@types/node": "^24.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.7.0",
+    "jsdom": "^29.1.1",
     "typescript": "^5.8.0",
     "vitest": "^3.0.0"
   }

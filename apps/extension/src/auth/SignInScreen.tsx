@@ -104,6 +104,31 @@ export function SignInScreen() {
         <Trans>See how your inbox is sorted, right next to your email.</Trans>
       </p>
 
+      {/* Providers first: they are the only paths that create an account, connect
+          an inbox and provision a workspace in one grant, so they are what a user
+          arriving straight from the store needs. Email sign-in is for people who
+          already registered on the web. */}
+      <button type="button" className="ax-btn ax-btn-google" onClick={onGoogle} disabled={busy}>
+        <GoogleGIcon />
+        <Trans>Continue with Google</Trans>
+      </button>
+
+      {microsoftEnabled && (
+        <button
+          type="button"
+          className="ax-btn ax-btn-microsoft"
+          onClick={onMicrosoft}
+          disabled={busy}
+        >
+          <MicrosoftIcon />
+          <Trans>Continue with Microsoft</Trans>
+        </button>
+      )}
+
+      {error && <p className="ax-auth-error" role="alert">{error}</p>}
+
+      <div className="ax-auth-divider"><span><Trans>or</Trans></span></div>
+
       <form className="ax-auth-form" onSubmit={onSubmit}>
         <label className="ax-field">
           <span><Trans>Email</Trans></span>
@@ -126,31 +151,10 @@ export function SignInScreen() {
           />
         </label>
 
-        {error && <p className="ax-auth-error" role="alert">{error}</p>}
-
         <button type="submit" className="ax-btn ax-btn-primary" disabled={busy}>
           <Trans>Sign in</Trans>
         </button>
       </form>
-
-      <div className="ax-auth-divider"><span><Trans>or</Trans></span></div>
-
-      <button type="button" className="ax-btn ax-btn-google" onClick={onGoogle} disabled={busy}>
-        <GoogleGIcon />
-        <Trans>Continue with Google</Trans>
-      </button>
-
-      {microsoftEnabled && (
-        <button
-          type="button"
-          className="ax-btn ax-btn-microsoft"
-          onClick={onMicrosoft}
-          disabled={busy}
-        >
-          <MicrosoftIcon />
-          <Trans>Continue with Microsoft</Trans>
-        </button>
-      )}
 
       <p className="ax-auth-footer">
         <Trans>

@@ -6476,3 +6476,90 @@ form:has(> .btn-google) + form:has(> .btn-microsoft) {
   }
 }
 
+
+/* ─── Get-the-extension banner ───────────────────────────────────────────── */
+
+/* Floats over the app shell (which is a full-height flex row whose panes own
+   their own scrolling), so it needs no layout change to host it. Sits opposite
+   the sidebar; the emails toast is centered inside its own grid, so the two
+   never overlap. */
+.ext-banner {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: min(420px, calc(100vw - 40px));
+  padding: 12px 12px 12px 16px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-2);
+}
+
+.ext-banner-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.ext-banner-title {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.25;
+}
+
+.ext-banner-sub {
+  font-size: 12.5px;
+  color: var(--ink-3);
+  line-height: 1.35;
+}
+
+.ext-banner-cta {
+  flex-shrink: 0;
+  padding: 7px 13px;
+  border-radius: var(--r-sm);
+  background: var(--accent);
+  color: white;
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.ext-banner-cta:hover {
+  background: var(--accent-ink);
+}
+
+.ext-banner-close {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: var(--ink-3);
+  font-size: 19px;
+  line-height: 1;
+  cursor: pointer;
+  border-radius: var(--r-sm);
+}
+
+.ext-banner-close:hover {
+  color: var(--ink);
+  background: var(--bg-sunk);
+}
+
+@media (max-width: 560px) {
+  .ext-banner {
+    right: 12px;
+    left: 12px;
+    bottom: 12px;
+    max-width: none;
+  }
+}

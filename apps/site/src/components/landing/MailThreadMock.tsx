@@ -9,7 +9,7 @@ import type { ThreadItem } from "@amarnai/ui/emails";
 import { GmailLogoIcon } from "./icons";
 import type { MockProvider } from "./MailInboxMock";
 import { initial, outlookAvatarClass } from "./outlook-helpers";
-import { DEMO_AVATARS } from "@/components/demo/demo-avatars";
+import { DEMO_AVATARS } from "@amarnai/ui/demo";
 
 /**
  * A stylized Gmail/Outlook conversation view for the landing demo. It stands in

@@ -973,24 +973,10 @@ body {
   color: var(--node-rule-text);
 }
 
-/* ─── Taxonomy canvas (ReadOnlyTaxonomyCanvas + DemoTaxonomyCanvas) ───────── */
+/* ─── Taxonomy canvas ─────────────────────────────────────────────────────── */
 
-.taxonomy-canvas-wrap {
-  display: flex;
-  height: 100%;
-  min-height: 480px;
-  border: 1px solid var(--color-border);
-  border-radius: 10px;
-  overflow: hidden;
-  background: var(--color-bg-subtle);
-}
-
-.taxonomy-canvas {
-  flex: 1;
-  min-width: 0;
-}
-
-/* Node card visuals (base, unreachable, node-name/icon/label, badges,
-   badge-unreachable) ship with TaxonomyNodeCard via the shared
-   taxonomy-node-card.css, so the demo matches the app's plan canvas. */
+/* The wrapper layout (.taxonomy-canvas-wrap/.taxonomy-canvas) and the node card
+   visuals both ship with the components: DemoTaxonomyCanvas imports the shared
+   taxonomy-canvas.css and TaxonomyNodeCard imports taxonomy-node-card.css, so
+   the demo matches the app's plan canvas with nothing restated here. */
 

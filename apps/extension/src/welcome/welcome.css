@@ -1,0 +1,407 @@
+@import "../styles/tokens.css";
+@import "../styles/fonts.css";
+
+/*
+ * First-run tab. Full-width page layout, deliberately not sharing globals.css:
+ * that file is built around the 360px panel (fixed height, hidden overflow, its
+ * own ax-* component styles) and none of it applies to a browser tab.
+ *
+ * The demos on the left ship their own styles with the components
+ * (@amarnai/ui/demo/styles and @amarnai/ui/emails/styles, both imported in
+ * main.tsx); this file only sizes them into the carousel.
+ */
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--f-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+.wc-page {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 48px var(--space-lg) 72px;
+  box-sizing: border-box;
+  /* Centered in the tab when it fits, top-anchored ("safe") when it does not,
+     so a short window scrolls from the title rather than clipping it. */
+  min-height: 100vh;
+  display: grid;
+  align-content: safe center;
+}
+
+.wc-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(340px, 420px);
+  gap: 56px;
+  align-items: start;
+}
+
+/* ─── Left column: the product demos ──────────────────────────────────────── */
+
+.wc-carousel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  min-width: 0;
+}
+
+/* Fixed height so the page does not jump as slides swap. */
+.wc-stage {
+  height: clamp(420px, 58vh, 540px);
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.wc-stage > * {
+  width: 100%;
+  animation: wc-slide-in 0.35s ease both;
+}
+
+@keyframes wc-slide-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Framed slides (plan canvas, sorted emails) fill the stage; the sorting feed
+   is its own card and keeps its natural height. */
+.wc-slide-frame {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.wc-slide-frame--panel {
+  max-width: 600px;
+  margin-inline: auto;
+}
+
+.wc-slide-frame .ld-demo-stage,
+.wc-slide-stage {
+  flex: 1;
+  min-height: 0;
+  height: auto;
+}
+
+.wc-slide-frame .taxonomy-canvas-wrap {
+  min-height: 0;
+  border: none;
+  border-radius: 0;
+}
+
+.wc-slide-copy {
+  min-height: 84px;
+}
+
+.wc-slide-title {
+  margin: 0 0 6px;
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.wc-slide-text {
+  margin: 0;
+  font-size: var(--fs-md);
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+
+.wc-dots {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.wc-dot {
+  width: 28px;
+  height: 4px;
+  padding: 0;
+  border: none;
+  border-radius: 999px;
+  background: var(--line-3);
+  cursor: pointer;
+  transition: background 0.14s, width 0.14s;
+}
+
+.wc-dot:hover {
+  background: var(--ink-4);
+}
+
+.wc-dot.active {
+  width: 40px;
+  background: var(--accent);
+}
+
+/* ─── Right column: what it is and how to start ───────────────────────────── */
+
+.wc-intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.wc-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.wc-brand-name {
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.wc-headline {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.wc-title {
+  margin: 0;
+  font-size: 30px;
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.wc-lede {
+  margin: 0;
+  font-size: var(--fs-md);
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+.wc-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.wc-step {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+}
+
+.wc-step-num {
+  flex: none;
+  width: 26px;
+  height: 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+
+.wc-step-title {
+  margin: 0 0 2px;
+  font-size: var(--fs-md);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.wc-step-text {
+  margin: 0;
+  font-size: var(--fs-sm);
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+
+.wc-cta-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-md);
+}
+
+.wc-cta {
+  align-self: flex-start;
+  padding: var(--space-md) 22px;
+  border: 1px solid transparent;
+  border-radius: var(--r-sm);
+  background: var(--accent);
+  color: var(--on-accent, #fff);
+  font-family: inherit;
+  font-size: var(--fs-md);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.14s;
+}
+
+.wc-cta:hover {
+  background: var(--accent-ink);
+}
+
+/* Sits directly under the CTA: the reviews Amarnai passed before it could ask
+   for a mailbox. */
+.wc-assurances {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm) var(--space-lg);
+}
+
+.wc-assurance {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--ink-3);
+  white-space: nowrap;
+}
+
+.wc-assurance svg {
+  flex-shrink: 0;
+}
+
+.wc-hint {
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--ink-3);
+}
+
+/* Pin-to-toolbar step. Shown only while the browser reports the icon unpinned;
+   see usePinnedState for why "unknown" is not the same as unpinned. */
+
+.wc-pin {
+  padding: var(--space-md) var(--space-lg);
+  border: 1px solid var(--accent-line);
+  border-radius: var(--r-md);
+  background: var(--accent-soft);
+}
+
+.wc-pin-title {
+  margin: 0 0 2px;
+  font-size: var(--fs-md);
+  font-weight: 600;
+  color: var(--accent-ink);
+}
+
+.wc-pin-text {
+  margin: 0;
+  font-size: var(--fs-md);
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+
+.wc-pin-done {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin: 0;
+  font-size: var(--fs-md);
+  color: var(--ink-2);
+}
+
+.wc-pin-check {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--ok-soft);
+  color: var(--ok-ink);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+}
+
+/* Anchored to the viewport, not the page: it points at the browser's extensions
+   menu, which sits above the top-right corner of the tab regardless of scroll. */
+.wc-pin-pointer {
+  position: fixed;
+  top: 10px;
+  right: 26px;
+  color: var(--accent);
+  pointer-events: none;
+  animation: wc-pin-nudge 1.6s ease-in-out infinite;
+}
+
+@keyframes wc-pin-nudge {
+  0%,
+  100% {
+    transform: translateY(4px);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wc-pin-pointer,
+  .wc-stage > * {
+    animation: none;
+  }
+}
+
+/* One column below the width where the demos and the copy can sit side by side.
+   The copy leads, because the CTA is the point of the page. */
+@media (max-width: 1080px) {
+  .wc-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 48px;
+    max-width: 640px;
+    margin-inline: auto;
+  }
+
+  .wc-intro {
+    order: -1;
+  }
+}
+
+/* Below this the frame bar cannot hold breadcrumb, hint and button on one row.
+   The hint goes: the demos stay just as interactive without being told so. */
+@media (max-width: 700px) {
+  .wc-slide-frame .ld-play-note {
+    display: none;
+  }
+
+  /* Two columns once the centered hint is gone, so the button stays at the
+     right edge instead of sitting in the empty middle track. */
+  .wc-slide-frame .ld-frame-bar {
+    grid-template-columns: 1fr auto;
+  }
+}
+
+@media (max-width: 560px) {
+  /* The extensions menu is not where the arrow would point on a narrow window,
+     and the callout says it in words anyway. */
+  .wc-pin-pointer {
+    display: none;
+  }
+
+  .wc-page {
+    padding: 32px var(--space-lg) 56px;
+  }
+
+  .wc-title {
+    font-size: 24px;
+  }
+
+  .wc-cta {
+    align-self: stretch;
+    text-align: center;
+  }
+
+  .wc-stage {
+    height: 420px;
+  }
+}

@@ -39,23 +39,23 @@ msgstr "{0, plural, one {# person} other {# people}}"
 
 #. placeholder {0}: d.processed
 #: ../../apps/mobile/src/data/notificationView.ts:73
-#: ../../apps/web/src/lib/notifications.ts:92
+#: ../../apps/web/src/lib/notifications.ts:95
 msgid "{0, plural, one {# thread imported.} other {# threads imported.}}"
 msgstr "{0, plural, one {# thread imported.} other {# threads imported.}}"
 
 #. placeholder {0}: d.processed
 #: ../../apps/mobile/src/data/notificationView.ts:67
-#: ../../apps/web/src/lib/notifications.ts:86
+#: ../../apps/web/src/lib/notifications.ts:89
 msgid "{0, plural, one {# thread imported.} other {# threads imported.}} Your plan's import limit was reached."
 msgstr "{0, plural, one {# thread imported.} other {# threads imported.}} Your plan's import limit was reached."
 
 #. placeholder {0}: status.waitingCount
-#: ../../apps/extension/src/panel/StatusSlot.tsx:30
+#: ../../apps/extension/src/panel/StatusSlot.tsx:33
 msgid "{0, plural, one {# thread is waiting. Set up folders to start sorting.} other {# threads are waiting. Set up folders to start sorting.}}"
 msgstr "{0, plural, one {# thread is waiting. Set up folders to start sorting.} other {# threads are waiting. Set up folders to start sorting.}}"
 
 #. placeholder {0}: status.waitingCount
-#: ../../apps/extension/src/panel/StatusSlot.tsx:54
+#: ../../apps/extension/src/panel/StatusSlot.tsx:56
 msgid "{0, plural, one {# thread ready to sort} other {# threads ready to sort}}"
 msgstr "{0, plural, one {# thread ready to sort} other {# threads ready to sort}}"
 
@@ -91,7 +91,7 @@ msgstr "{0} / {1} left · resets {2}"
 #. placeholder {0}: d.assignedBy
 #: ../../apps/extension/src/panel/notificationText.ts:15
 #: ../../apps/mobile/src/data/notificationView.ts:34
-#: ../../apps/web/src/lib/notifications.ts:54
+#: ../../apps/web/src/lib/notifications.ts:57
 msgid "{0} assigned you a thread"
 msgstr "{0} assigned you a thread"
 
@@ -171,7 +171,7 @@ msgstr "{eligible, plural, one {Re-sort # thread} other {Re-sort # threads}}"
 #~ msgid "{filed} filed, {reviewCount} needs review"
 #~ msgstr "{filed} filed, {reviewCount} needs review"
 
-#: ../../apps/site/src/components/landing/HeroFeedCard.tsx:270
+#: ../ui/src/demo/HeroFeedCard.tsx:270
 msgid "{filed} sorted · {reviewCount} to review"
 msgstr "{filed} sorted · {reviewCount} to review"
 
@@ -201,7 +201,7 @@ msgid "{providerName} Inbox"
 msgstr "{providerName} Inbox"
 
 #. placeholder {0}: draftQuota.limit
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:460
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:461
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:482
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
 msgstr "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
@@ -253,7 +253,7 @@ msgstr "{waitingCount, plural, one {# thread is waiting.} other {# threads are w
 msgid "/ workspace / month"
 msgstr "/ workspace / month"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:48
+#: ../../apps/site/src/components/landing/Footer.tsx:52
 msgid "© 2026 Amarnai. Open source under AGPL-3.0."
 msgstr "© 2026 Amarnai. Open source under AGPL-3.0."
 
@@ -418,7 +418,7 @@ msgstr "3 people"
 msgid "3 reply drafts / month"
 msgstr "3 reply drafts / month"
 
-#: ../../apps/site/src/components/landing/HeroFeedCard.tsx:267
+#: ../ui/src/demo/HeroFeedCard.tsx:267
 msgid "412 threads"
 msgstr "412 threads"
 
@@ -478,11 +478,11 @@ msgstr "500 threads"
 msgid "75,000 threads"
 msgstr "75,000 threads"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:344
+#: ../ui/src/demo/demo-seed.ts:345
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence."
 msgstr "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:358
+#: ../ui/src/demo/demo-seed.ts:359
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
@@ -490,11 +490,19 @@ msgstr "A new application has been received from Horemheb of Thebes for the posi
 "\n"
 "View the application in the House of Records."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:428
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:340
+msgid "A template gets you sorting right away, and you can edit it later."
+msgstr "A template gets you sorting right away, and you can edit it later."
+
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:366
+msgid "A workspace owner manages this workspace's sorting plan."
+msgstr "A workspace owner manages this workspace's sorting plan."
+
+#: ../ui/src/demo/demo-seed.ts:429
 msgid "Abdi-Heba of Urushalim"
 msgstr "Abdi-Heba of Urushalim"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:173
+#: ../ui/src/demo/demo-seed.ts:174
 msgid "Abdi-Heba,\n"
 "\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
@@ -578,6 +586,10 @@ msgstr "Add at least 3 connected folders to export"
 #: ../ui/src/emails/AssigneePicker.tsx:45
 msgid "Add members"
 msgstr "Add members"
+
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:392
+msgid "Add the browser extension, then sign in with Google or Microsoft. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
+msgstr "Add the browser extension, then sign in with Google or Microsoft. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
 
 #: ../../apps/site/src/components/landing/InstallExtensionButton.tsx:65
 msgid "Add to Chrome"
@@ -681,7 +693,7 @@ msgstr "All workspace data will be permanently deleted."
 msgid "All your workspaces, emails, and settings will be deleted permanently."
 msgstr "All your workspaces, emails, and settings will be deleted permanently."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:300
+#: ../ui/src/demo/demo-seed.ts:301
 msgid "Alliance proposal: house of Amurru"
 msgstr "Alliance proposal: house of Amurru"
 
@@ -707,6 +719,18 @@ msgstr "Also erase synced email data"
 #: ../../apps/site/src/lib/seo.ts:114
 msgid "amarnai business plan"
 msgstr "amarnai business plan"
+
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:92
+msgid "Amarnai files every Gmail and Outlook thread into folders you design, from the side panel next to the mail you are already reading."
+msgstr "Amarnai files every Gmail and Outlook thread into folders you design, from the side panel next to the mail you are already reading."
+
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:109
+msgid "Amarnai files every thread into folders you choose. Generate a set from your own inbox, or start from a template."
+msgstr "Amarnai files every thread into folders you choose. Generate a set from your own inbox, or start from a template."
+
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:313
+msgid "Amarnai files your mail into folders you choose. Build them from your own inbox, or start from a ready-made set."
+msgstr "Amarnai files your mail into folders you choose. Build them from your own inbox, or start from a ready-made set."
 
 #: ../ui/src/AppDownloadBanner.tsx:68
 msgid "Amarnai for Android"
@@ -741,7 +765,7 @@ msgstr "Amarnai is named after the <0>Amarna Letters</0>: clay cuneiform tablets
 #~ msgid "Amarnai is named after the Amarna letters, a cache of clay tablets from around 1350 BC: the diplomatic correspondence between the pharaoh of Egypt and the kings and vassals of the ancient Near East. It is one of the earliest surviving inboxes, and almost all of it is incoming. Hundreds of letters reached the pharaoh, but barely any of his replies survive. Rib-Hadda of Byblos wrote again and again and went unanswered, most likely lost in an inbox no one could keep up with. Amarnai keeps yours from that fate."
 #~ msgstr "Amarnai is named after the Amarna letters, a cache of clay tablets from around 1350 BC: the diplomatic correspondence between the pharaoh of Egypt and the kings and vassals of the ancient Near East. It is one of the earliest surviving inboxes, and almost all of it is incoming. Hundreds of letters reached the pharaoh, but barely any of his replies survive. Rib-Hadda of Byblos wrote again and again and went unanswered, most likely lost in an inbox no one could keep up with. Amarnai keeps yours from that fate."
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:60
+#: ../../apps/site/src/components/landing/FAQSection.tsx:64
 msgid "Amarnai is named after the Amarna letters, a cache of clay tablets from around 1350 BC: the diplomatic correspondence between the pharaoh of Egypt and the kings and vassals of the ancient Near East. It is one of the earliest surviving inboxes, and almost all of it is incoming. Hundreds of letters reached the pharaoh, but barely any of his replies survive. Senders like Rib-Hadda of Byblos wrote again and again with little response, most likely because the pharaoh was too overloaded to keep up. Amarnai spares you from that fate."
 msgstr "Amarnai is named after the Amarna letters, a cache of clay tablets from around 1350 BC: the diplomatic correspondence between the pharaoh of Egypt and the kings and vassals of the ancient Near East. It is one of the earliest surviving inboxes, and almost all of it is incoming. Hundreds of letters reached the pharaoh, but barely any of his replies survive. Senders like Rib-Hadda of Byblos wrote again and again with little response, most likely because the pharaoh was too overloaded to keep up. Amarnai spares you from that fate."
 
@@ -765,12 +789,20 @@ msgstr "Amarnai is no longer syncing this inbox. Reconnect your Outlook account 
 msgid "Amarnai is open source under AGPL-3.0. Clone it, bring your own keys, and run every tier free on your own infrastructure."
 msgstr "Amarnai is open source under AGPL-3.0. Clone it, bring your own keys, and run every tier free on your own infrastructure."
 
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:201
+msgid "Amarnai is pinned. Its icon opens the panel from any tab."
+msgstr "Amarnai is pinned. Its icon opens the panel from any tab."
+
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:125
+msgid "Amarnai lives in a side panel beside Gmail and Outlook, so you never have to leave the thread you are reading."
+msgstr "Amarnai lives in a side panel beside Gmail and Outlook, so you never have to leave the thread you are reading."
+
 #: ../../apps/site/src/components/pricing/ExtensionBanner.tsx:33
 msgid "Amarnai lives in your inbox."
 msgstr "Amarnai lives in your inbox."
 
 #. placeholder {0}: d.gmailAddress
-#: ../../apps/web/src/lib/notifications.ts:74
+#: ../../apps/web/src/lib/notifications.ts:77
 msgid "Amarnai lost access to {0}. Click to reconnect your Google account."
 msgstr "Amarnai lost access to {0}. Click to reconnect your Google account."
 
@@ -779,7 +811,7 @@ msgstr "Amarnai lost access to {0}. Click to reconnect your Google account."
 msgid "Amarnai lost access to {0}. Tap to reconnect your Google account."
 msgstr "Amarnai lost access to {0}. Tap to reconnect your Google account."
 
-#: ../../apps/web/src/lib/notifications.ts:75
+#: ../../apps/web/src/lib/notifications.ts:78
 msgid "Amarnai lost access to your inbox. Click to reconnect your Google account."
 msgstr "Amarnai lost access to your inbox. Click to reconnect your Google account."
 
@@ -829,6 +861,10 @@ msgstr "Amarnai reads your inbox, sorts every thread into the folders you define
 msgid "Amarnai Reply"
 msgstr "Amarnai Reply"
 
+#: ../../apps/web/src/components/GetExtensionBanner.tsx:63
+msgid "Amarnai sits in a side panel next to Gmail and Outlook."
+msgstr "Amarnai sits in a side panel next to Gmail and Outlook."
+
 #: ../../apps/site/src/lib/seo.ts:46
 #~ msgid "Amarnai sorts your Gmail into the folders you define, drafts replies for your approval, and explains every call so you reach inbox zero faster."
 #~ msgstr "Amarnai sorts your Gmail into the folders you define, drafts replies for your approval, and explains every call so you reach inbox zero faster."
@@ -836,6 +872,10 @@ msgstr "Amarnai Reply"
 #: ../../apps/site/src/app/[locale]/page.tsx:50
 #~ msgid "Amarnai sorts your Gmail threads into folders you define, drafts replies for your approval, and explains every decision. Open-source and self-hostable."
 #~ msgstr "Amarnai sorts your Gmail threads into folders you define, drafts replies for your approval, and explains every decision. Open-source and self-hostable."
+
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:93
+msgid "Amarnai sorts your inbox for you, filing old and new mail where it belongs. Threads it is unsure about wait for you in review."
+msgstr "Amarnai sorts your inbox for you, filing old and new mail where it belongs. Threads it is unsure about wait for you in review."
 
 #: ../../apps/site/src/lib/seo.ts:46
 msgid "Amarnai sorts your inbox into the folders you define, drafts replies for your approval, and explains every call so you reach inbox zero faster."
@@ -900,7 +940,7 @@ msgstr "Annual"
 msgid "Annual · Save 20%"
 msgstr "Annual · Save 20%"
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:44
+#: ../../apps/site/src/components/landing/FAQSection.tsx:48
 msgid "Any thread the model is unsure about is flagged for review instead of being filed automatically. Open it to see the suggested folder, the confidence score, and the reasoning, then approve the routing or send it to a different folder."
 msgstr "Any thread the model is unsure about is flagged for review instead of being filed automatically. Open it to see the suggested folder, the confidence score, and the reasoning, then approve the routing or send it to a different folder."
 
@@ -913,11 +953,11 @@ msgstr "API error {0}"
 msgid "Appearance"
 msgstr "Appearance"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:339
+#: ../ui/src/demo/demo-seed.ts:340
 msgid "Application: Chief of Correspondence"
 msgstr "Application: Chief of Correspondence"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:34
+#: ../ui/src/demo/demo-seed.ts:35
 msgid "Applications, recruiter outreach, and interview scheduling."
 msgstr "Applications, recruiter outreach, and interview scheduling."
 
@@ -941,6 +981,7 @@ msgstr "Applying replaces your current plan. You can fully edit it afterward."
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:134
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:79
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:336
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:414
 msgid "Applying…"
 msgstr "Applying…"
 
@@ -1023,7 +1064,7 @@ msgstr "Automated and bulk mail ({0}) always moves to the new catch-all folder."
 msgid "Automated and bulk mail that doesn't fit another folder lands here automatically. This is different from Needs review, which holds threads too ambiguous for the assistant to sort."
 msgstr "Automated and bulk mail that doesn't fit another folder lands here automatically. This is different from Needs review, which holds threads too ambiguous for the assistant to sort."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:349
+#: ../ui/src/demo/demo-seed.ts:350
 msgid "Automated notice from the Bureau of Royal Appointments. Subject and sender clearly indicate a new application for an open position."
 msgstr "Automated notice from the Bureau of Royal Appointments. Subject and sender clearly indicate a new application for an open position."
 
@@ -1040,15 +1081,15 @@ msgstr "Available addresses"
 msgid "Aziru"
 msgstr "Aziru"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:315
+#: ../ui/src/demo/demo-seed.ts:316
 msgid "Aziru of Amurru"
 msgstr "Aziru of Amurru"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:200
+#: ../ui/src/demo/demo-seed.ts:201
 msgid "Aziru proposes a formal pact of mutual protection and shared routes, and wants word sent back by the next courier."
 msgstr "Aziru proposes a formal pact of mutual protection and shared routes, and wants word sent back by the next courier."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:158
+#: ../ui/src/demo/demo-seed.ts:159
 msgid "Aziru,\n"
 "\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
@@ -1060,16 +1101,18 @@ msgstr "Aziru,\n"
 "\n"
 "With regards,"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:199
+#: ../ui/src/demo/demo-seed.ts:200
 msgid "Babylon's third gold consignment is overdue after two messengers. Burna-Buriash asks you to dispatch it without further delay."
 msgstr "Babylon's third gold consignment is overdue after two messengers. Burna-Buriash asks you to dispatch it without further delay."
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:354
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:356
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
 #: ../../apps/site/src/components/landing/MailThreadMock.tsx:66
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:25
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:382
 #: ../ui/src/emails/ThreadPreview.tsx:114
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:402
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:422
 msgid "Back"
 msgstr "Back"
 
@@ -1077,7 +1120,7 @@ msgstr "Back"
 #~ msgid "Back to inbox"
 #~ msgstr "Back to inbox"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:350
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:352
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:377
 #: ../ui/src/emails/ThreadPreview.tsx:109
 msgid "Back to list"
@@ -1112,8 +1155,8 @@ msgstr "Billed annually · <0>save {pct}%</0>"
 msgid "Billed monthly · 14-day free trial"
 msgstr "Billed monthly · 14-day free trial"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:30
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:258
+#: ../ui/src/demo/demo-seed.ts:31
 msgid "Billing"
 msgstr "Billing"
 
@@ -1142,7 +1185,7 @@ msgstr "Board & Governance"
 msgid "Board meetings, governance policies, bylaws, and trustee correspondence."
 msgstr "Board meetings, governance policies, bylaws, and trustee correspondence."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:33
+#: ../ui/src/demo/demo-seed.ts:34
 msgid "Board members, existing fund partners, and portfolio updates."
 msgstr "Board members, existing fund partners, and portfolio updates."
 
@@ -1154,7 +1197,7 @@ msgstr "Brand Deals"
 #~ msgid "Browse emails easily through your folders. Generate draft replies and copy them to Gmail."
 #~ msgstr "Browse emails easily through your folders. Generate draft replies and copy them to Gmail."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:416
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:417
 msgid "Browse emails easily through your folders. Generate draft replies and copy them to your inbox."
 msgstr "Browse emails easily through your folders. Generate draft replies and copy them to your inbox."
 
@@ -1163,8 +1206,13 @@ msgstr "Browse emails easily through your folders. Generate draft replies and co
 msgid "Browse templates"
 msgstr "Browse templates"
 
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:49
+msgid "Browse the folders. It's fully interactive."
+msgstr "Browse the folders. It's fully interactive."
+
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:259
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:282
+#: ../../apps/site/src/components/landing/Footer.tsx:30
 #: ../../apps/site/src/components/pricing/ExtensionBanner.tsx:24
 msgid "Browser extension"
 msgstr "Browser extension"
@@ -1181,7 +1229,7 @@ msgstr "Bug reports, stack traces, and regression tickets filed against the code
 msgid "Build plan"
 msgstr "Build plan"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:161
+#: ../../apps/extension/src/panel/StatusSlot.tsx:170
 msgid "Build your sorting plan"
 msgstr "Build your sorting plan"
 
@@ -1190,11 +1238,11 @@ msgstr "Build your sorting plan"
 #~ msgid "Bulk triage your inbox"
 #~ msgstr "Bulk triage your inbox"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:354
+#: ../ui/src/demo/demo-seed.ts:355
 msgid "Bureau of Royal Appointments"
 msgstr "Bureau of Royal Appointments"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:276
+#: ../ui/src/demo/demo-seed.ts:277
 msgid "Burna-Buriash II"
 msgstr "Burna-Buriash II"
 
@@ -1224,7 +1272,7 @@ msgstr "Buyers & Showings"
 msgid "By continuing, you agree to the <0>Terms of Service</0> and acknowledge the <1>Privacy Policy</1>."
 msgstr "By continuing, you agree to the <0>Terms of Service</0> and acknowledge the <1>Privacy Policy</1>."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:201
+#: ../ui/src/demo/demo-seed.ts:202
 msgid "Byblos is still waiting on the third grain shipment and the city is restless. Rib-Hadda has now written seven times."
 msgstr "Byblos is still waiting on the third grain shipment and the city is restless. Rib-Hadda has now written seven times."
 
@@ -1232,15 +1280,15 @@ msgstr "Byblos is still waiting on the third grain shipment and the city is rest
 msgid "Campus Admin"
 msgstr "Campus Admin"
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:47
+#: ../../apps/site/src/components/landing/FAQSection.tsx:51
 msgid "Can Amarnai draft replies?"
 msgstr "Can Amarnai draft replies?"
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:39
+#: ../../apps/site/src/components/landing/FAQSection.tsx:43
 msgid "Can Amarnai sort my existing inbox, not just new mail?"
 msgstr "Can Amarnai sort my existing inbox, not just new mail?"
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:55
+#: ../../apps/site/src/components/landing/FAQSection.tsx:59
 msgid "Can I self-host Amarnai?"
 msgstr "Can I self-host Amarnai?"
 
@@ -1296,6 +1344,10 @@ msgstr "Candidate pipelines, applicant screening, and headcount planning."
 #: ../ui/src/i18n/taxonomy-template-messages.ts:134
 msgid "Carrier tracking numbers, delivery exceptions, and courier dispatch notices."
 msgstr "Carrier tracking numbers, delivery exceptions, and courier dispatch notices."
+
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:170
+msgid "CASA Tier 2 certified"
+msgstr "CASA Tier 2 certified"
 
 #: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:58
 #: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:97
@@ -1356,6 +1408,10 @@ msgstr "Choose a new password for your account."
 msgid "Choose a subscription"
 msgstr "Choose a subscription"
 
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:288
+msgid "Choose a template"
+msgstr "Choose a template"
+
 #: ../../apps/web/src/app/(app)/account/AppearanceSection.tsx:16
 #~ msgid "Choose a theme, or follow your system setting. Saved on this device."
 #~ msgstr "Choose a theme, or follow your system setting. Saved on this device."
@@ -1376,6 +1432,10 @@ msgstr "Choose parent"
 msgid "Choose where each folder’s threads should go under your new plan. Matched folders keep their threads instantly; anything set to re-sort is re-classified by AI."
 msgstr "Choose where each folder’s threads should go under your new plan. Matched folders keep their threads instantly; anything set to re-sort is re-classified by AI."
 
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:162
+msgid "Choose which part of Amarnai to preview"
+msgstr "Choose which part of Amarnai to preview"
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:169
 msgid "Classroom"
 msgstr "Classroom"
@@ -1383,6 +1443,14 @@ msgstr "Classroom"
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:120
 #~ msgid "Click folders & threads, then generate a draft."
 #~ msgstr "Click folders & threads, then generate a draft."
+
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:177
+msgid "Click the Amarnai icon in your toolbar to open the panel."
+msgstr "Click the Amarnai icon in your toolbar to open the panel."
+
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:190
+msgid "Click the puzzle-piece icon at the top right of your browser, then click the pin next to Amarnai. This box updates on its own once you do."
+msgstr "Click the puzzle-piece icon at the top right of your browser, then click the pin next to Amarnai. This box updates on its own once you do."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:21
 #~ msgid "Client agreements, statements of work, NDAs, and contract amendments."
@@ -1403,6 +1471,10 @@ msgstr "Clients"
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:128
 #: ../../apps/web/src/components/AziruIntroDialog.tsx:39
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:119
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:298
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:385
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:395
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:437
 msgid "Close"
 msgstr "Close"
 
@@ -1572,7 +1644,7 @@ msgstr "Connect inbox"
 #~ msgid "Connect inbox button"
 #~ msgstr "Connect inbox button"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:433
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:434
 msgid "Connect once, generate your plan once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
 msgstr "Connect once, generate your plan once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
 
@@ -1611,7 +1683,7 @@ msgstr "Connect your Gmail account to sync your inbox into Amarnai. Amarnai conn
 msgid "Connect your inbox"
 msgstr "Connect your inbox"
 
-#: ../../apps/site/src/components/landing/FinalCTASection.tsx:11
+#: ../../apps/site/src/components/landing/FinalCTASection.tsx:10
 msgid "Connect your inbox and Amarnai starts sorting within minutes. Pricing is per workspace. Sorts new mail as it arrives, and works through years of backlog."
 msgstr "Connect your inbox and Amarnai starts sorting within minutes. Pricing is per workspace. Sorts new mail as it arrives, and works through years of backlog."
 
@@ -1664,13 +1736,13 @@ msgstr "Continue to payment"
 msgid "Continue with email"
 msgstr "Continue with email"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:140
+#: ../../apps/extension/src/auth/SignInScreen.tsx:113
 #: ../../apps/mobile/src/auth/GoogleSignInButton.tsx:28
 #: ../../apps/web/src/components/GoogleButton.tsx:10
 msgid "Continue with Google"
 msgstr "Continue with Google"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:151
+#: ../../apps/extension/src/auth/SignInScreen.tsx:124
 #: ../../apps/web/src/components/MicrosoftButton.tsx:10
 msgid "Continue with Microsoft"
 msgstr "Continue with Microsoft"
@@ -1853,6 +1925,14 @@ msgstr "Could not upgrade"
 msgid "Could not verify your Google account. Please try again."
 msgstr "Could not verify your Google account. Please try again."
 
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:275
+msgid "Couldn't apply the plan."
+msgstr "Couldn't apply the plan."
+
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:182
+msgid "Couldn't check generation status."
+msgstr "Couldn't check generation status."
+
 #: ../../apps/extension/src/panel/TriageGate.tsx:85
 msgid "Couldn't load your inbox. Check your connection and reopen the panel."
 msgstr "Couldn't load your inbox. Check your connection and reopen the panel."
@@ -1861,15 +1941,19 @@ msgstr "Couldn't load your inbox. Check your connection and reopen the panel."
 msgid "Couldn't reach Amarnai. Check your connection and try again."
 msgstr "Couldn't reach Amarnai. Check your connection and try again."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:209
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:237
+msgid "Couldn't start generation."
+msgstr "Couldn't start generation."
+
+#: ../ui/src/demo/demo-seed.ts:210
 msgid "Council convenes at the start of Shemu"
 msgstr "Council convenes at the start of Shemu"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:450
+#: ../ui/src/demo/demo-seed.ts:451
 msgid "Council convening: season of Shemu"
 msgstr "Council convening: season of Shemu"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:460
+#: ../ui/src/demo/demo-seed.ts:461
 msgid "Council preparation request from a known royal ally. Sender domain and context clearly match the Current investors folder."
 msgstr "Council preparation request from a known royal ally. Sender domain and context clearly match the Current investors folder."
 
@@ -1927,8 +2011,8 @@ msgstr "Creating…"
 #: ../../apps/mobile/src/components/AssigneeSheet.tsx:63
 #: ../../apps/mobile/src/components/RerouteSheet.tsx:45
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:107
-#: ../../apps/site/src/components/demo/demo-seed.ts:33
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1874
+#: ../ui/src/demo/demo-seed.ts:34
 msgid "Current"
 msgstr "Current"
 
@@ -1954,8 +2038,8 @@ msgstr "Customer Questions"
 #~ msgid "Customer support, onboarding, product feedback, churn, and success conversations."
 #~ msgstr "Customer support, onboarding, product feedback, churn, and success conversations."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:29
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:157
+#: ../ui/src/demo/demo-seed.ts:30
 #: ../ui/src/i18n/taxonomy-template-messages.ts:59
 msgid "Customers"
 msgstr "Customers"
@@ -2071,7 +2155,7 @@ msgstr "Deployments"
 msgid "Describe what kinds of emails belong here: who they come from and what they are about. Be specific and use the actual names, topics, and words that show up in those emails. Describe what the emails are, not what you plan to do about them. The clearer your description, the more accurately your email is sorted here."
 msgstr "Describe what kinds of emails belong here: who they come from and what they are about. Be specific and use the actual names, topics, and words that show up in those emails. Describe what the emails are, not what you plan to do about them. The clearer your description, the more accurately your email is sorted here."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:401
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:402
 msgid "Describe your folders"
 msgstr "Describe your folders"
 
@@ -2079,6 +2163,10 @@ msgstr "Describe your folders"
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:508
 msgid "Description"
 msgstr "Description"
+
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:106
+msgid "Design your folders"
+msgstr "Design your folders"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:137
 #: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:89
@@ -2163,12 +2251,13 @@ msgstr "Disconnects this workspace. Amarnai keeps access because this mailbox is
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:372
-#: ../../apps/extension/src/panel/StatusSlot.tsx:97
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:389
+#: ../../apps/extension/src/panel/StatusSlot.tsx:99
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:65
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:410
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:57
+#: ../../apps/web/src/components/GetExtensionBanner.tsx:73
 #: ../../apps/web/src/components/JoinedWorkspaceToast.tsx:46
 #: ../../apps/web/src/components/NotificationBell.tsx:179
 #: ../../apps/web/src/components/NotificationBell.tsx:180
@@ -2190,6 +2279,10 @@ msgstr "Display name"
 msgid "Do I have to build the folder structure myself?"
 msgstr "Do I have to build the folder structure myself?"
 
+#: ../../apps/site/src/components/landing/FAQSection.tsx:31
+msgid "Do I need the browser extension?"
+msgstr "Do I need the browser extension?"
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:201
 msgid "Doctoral advising, thesis feedback, and mentoring for doctoral researchers."
 msgstr "Doctoral advising, thesis feedback, and mentoring for doctoral researchers."
@@ -2202,12 +2295,12 @@ msgstr "Doctoral advising, thesis feedback, and mentoring for doctoral researche
 msgid "Doctors, pharmacies, medical appointments, prescriptions, and test results."
 msgstr "Doctors, pharmacies, medical appointments, prescriptions, and test results."
 
-#: ../../apps/site/src/components/landing/Footer.tsx:33
+#: ../../apps/site/src/components/landing/Footer.tsx:37
 #: ../../apps/site/src/components/support/SupportContent.tsx:74
 msgid "Documentation"
 msgstr "Documentation"
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:35
+#: ../../apps/site/src/components/landing/FAQSection.tsx:39
 msgid "Does Amarnai work with Outlook?"
 msgstr "Does Amarnai work with Outlook?"
 
@@ -2261,7 +2354,7 @@ msgstr "Draft another"
 msgid "Draft failed · tap to retry"
 msgstr "Draft failed · tap to retry"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:475
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:476
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:498
 msgid "Draft generation failed. Try again."
 msgstr "Draft generation failed. Try again."
@@ -2295,7 +2388,7 @@ msgstr "Drafting…"
 msgid "Drafts"
 msgstr "Drafts"
 
-#: ../../apps/site/src/components/demo/DemoTaxonomyCanvas.tsx:223
+#: ../ui/src/demo/DemoTaxonomyCanvas.tsx:227
 msgid "Drag and connect. It's fully interactive."
 msgstr "Drag and connect. It's fully interactive."
 
@@ -2341,7 +2434,7 @@ msgstr "Edit inbox"
 msgid "Edit Path"
 msgstr "Edit Path"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:109
+#: ../../apps/extension/src/auth/SignInScreen.tsx:134
 #: ../../apps/mobile/app/(app)/account.tsx:139
 #: ../../apps/mobile/app/forgot-password.tsx:85
 #: ../../apps/mobile/app/sign-in.tsx:89
@@ -2398,6 +2491,7 @@ msgstr "Email verified! Sign in to continue."
 #~ msgid "Email, sorted automatically. Never sends without you."
 #~ msgstr "Email, sorted automatically. Never sends without you."
 
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:45
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:28
 #: ../../apps/web/src/components/Sidebar.tsx:32
 msgid "Emails"
@@ -2482,6 +2576,10 @@ msgstr "Events & Field Trips"
 msgid "Every account starts with a free workspace, no card required. Create more or upgrade whenever your needs grow."
 msgstr "Every account starts with a free workspace, no card required. Create more or upgrade whenever your needs grow."
 
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:104
+msgid "Every email goes where it belongs"
+msgstr "Every email goes where it belongs"
+
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:192
 msgid "Every email goes where it belongs."
 msgstr "Every email goes where it belongs."
@@ -2494,11 +2592,12 @@ msgstr "Every email goes where it belongs."
 msgid "Every thread in your inbox."
 msgstr "Every thread in your inbox."
 
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:105
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:195
 msgid "Every thread lands in one of your folders, exactly where you would expect to find it. When a reply is needed, a draft is one click away, ready for your edits and never sent without them."
 msgstr "Every thread lands in one of your folders, exactly where you would expect to find it. When a reply is needed, a draft is one click away, ready for your edits and never sent without them."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:35
+#: ../ui/src/demo/demo-seed.ts:36
 msgid "Everything that doesn't fit a named folder."
 msgstr "Everything that doesn't fit a named folder."
 
@@ -2583,8 +2682,8 @@ msgstr "Family"
 msgid "Fan messages, viewer comments, and follower engagement notifications."
 msgstr "Fan messages, viewer comments, and follower engagement notifications."
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:80
-#: ../../apps/site/src/components/landing/Footer.tsx:32
+#: ../../apps/site/src/components/landing/FAQSection.tsx:84
+#: ../../apps/site/src/components/landing/Footer.tsx:36
 #: ../../apps/site/src/components/landing/Nav.tsx:51
 msgid "FAQ"
 msgstr "FAQ"
@@ -2617,9 +2716,13 @@ msgstr "Filter rail"
 msgid "Finance"
 msgstr "Finance"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:413
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:414
 msgid "Find and draft"
 msgstr "Find and draft"
+
+#: ../../apps/extension/src/panel/StatusSlot.tsx:197
+msgid "Fine-tune later in the plan editor"
+msgstr "Fine-tune later in the plan editor"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:222
 msgid "First-contact buyer and seller enquiries and new agent introductions."
@@ -2629,7 +2732,7 @@ msgstr "First-contact buyer and seller enquiries and new agent introductions."
 msgid "Five things keep your inbox safe. First, Amarnai is read-only by design: the permissions you grant through Google make it impossible for Amarnai to send, delete, or change any email. Second, Amarnai has passed Google's security review, completing the CASA security assessment required for any app that accesses Gmail. Third, you stay in control: replies stay drafts until you say so, nothing is ever sent on your behalf, and you can disconnect Amarnai at any time. Fourth, no email bodies are stored: Amarnai keeps labels and metadata, never the contents of your messages. Fifth, the code is public, so anyone can inspect exactly what touches your email."
 msgstr "Five things keep your inbox safe. First, Amarnai is read-only by design: the permissions you grant through Google make it impossible for Amarnai to send, delete, or change any email. Second, Amarnai has passed Google's security review, completing the CASA security assessment required for any app that accesses Gmail. Third, you stay in control: replies stay drafts until you say so, nothing is ever sent on your behalf, and you can disconnect Amarnai at any time. Fourth, no email bodies are stored: Amarnai keeps labels and metadata, never the contents of your messages. Fifth, the code is public, so anyone can inspect exactly what touches your email."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:310
+#: ../ui/src/demo/demo-seed.ts:311
 msgid "Flagged as alliance/investor intro based on language (\"mutual benefit\", \"long-standing friendship\"). Confidence is moderate; Aziru has been known to send similar overtures to multiple courts."
 msgstr "Flagged as alliance/investor intro based on language (\"mutual benefit\", \"long-standing friendship\"). Confidence is moderate; Aziru has been known to send similar overtures to multiple courts."
 
@@ -2737,7 +2840,7 @@ msgstr "For K-12 educators managing classroom, parents, and school administratio
 msgid "For larger organizations."
 msgstr "For larger organizations."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:305
+#: ../ui/src/demo/demo-seed.ts:306
 msgid "For many years our houses have been as brothers. I write now to propose that we formalise this friendship for the benefit of both our peoples."
 msgstr "For many years our houses have been as brothers. I write now to propose that we formalise this friendship for the benefit of both our peoples."
 
@@ -2799,7 +2902,7 @@ msgstr "Free"
 msgid "Free forever · self-serve"
 msgstr "Free forever · self-serve"
 
-#: ../../apps/site/src/components/landing/HeroSection.tsx:34
+#: ../../apps/site/src/components/landing/HeroSection.tsx:29
 msgid "Free to start. Ready in minutes."
 msgstr "Free to start. Ready in minutes."
 
@@ -2833,7 +2936,7 @@ msgstr "Full"
 #~ msgid "Full + admin controls"
 #~ msgstr "Full + admin controls"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:210
+#: ../ui/src/demo/demo-seed.ts:211
 msgid "Full accounting of the eastern territories requested"
 msgstr "Full accounting of the eastern territories requested"
 
@@ -2866,35 +2969,45 @@ msgstr "Generate a new draft. Uses one from your monthly allowance"
 msgid "Generate a plan from your inbox"
 msgstr "Generate a plan from your inbox"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:454
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:455
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:146
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:366
 #: ../ui/src/emails/ThreadPreview.tsx:243
 msgid "Generate draft reply"
 msgstr "Generate draft reply"
 
+#: ../../apps/extension/src/panel/StatusSlot.tsx:181
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:53
 #: ../../apps/mobile/src/components/taxonomy/RoutingIndicator.tsx:32
-#: ../../apps/site/src/components/demo/DemoTaxonomyCanvas.tsx:233
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:60
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:207
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:251
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1693
+#: ../ui/src/demo/DemoTaxonomyCanvas.tsx:237
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:375
 msgid "Generate from inbox"
 msgstr "Generate from inbox"
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:275
-#: ../../apps/site/src/components/demo/DemoTaxonomyCanvas.tsx:230
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:197
+#: ../ui/src/demo/DemoTaxonomyCanvas.tsx:234
 msgid "Generate plan from inbox"
 msgstr "Generate plan from inbox"
+
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:98
+msgid "Generate your plan"
+msgstr "Generate your plan"
 
 #: ../../apps/site/src/components/landing/TaxonomyDemoSection.tsx:10
 msgid "Generate your plan."
 msgstr "Generate your plan."
 
-#: ../../apps/site/src/components/demo/DemoTaxonomyCanvas.tsx:233
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:319
+msgid "Generating reads your senders, labels, and subject keywords, never message bodies. You review the result before anything is applied."
+msgstr "Generating reads your senders, labels, and subject keywords, never message bodies. You review the result before anything is applied."
+
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:354
+#: ../ui/src/demo/DemoTaxonomyCanvas.tsx:237
 msgid "Generating…"
 msgstr "Generating…"
 
@@ -2910,6 +3023,10 @@ msgstr "Generation didn't complete. Try again after {0}, or start from a templat
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:80
 msgid "Generation didn't complete. Try again shortly, or start from a template."
 msgstr "Generation didn't complete. Try again shortly, or start from a template."
+
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:150
+msgid "Generation didn't complete. You can start from a template instead."
+msgstr "Generation didn't complete. You can start from a template instead."
 
 #: ../ui/src/i18n/generation-reason-messages.ts:21
 msgid "Generation isn't available right now."
@@ -2927,21 +3044,29 @@ msgstr "Get help with Amarnai: contact support, browse the documentation, report
 msgid "Get the Amarnai app"
 msgstr "Get the Amarnai app"
 
+#: ../../apps/web/src/components/GetExtensionBanner.tsx:57
+msgid "Get the Amarnai extension"
+msgstr "Get the Amarnai extension"
+
 #: ../ui/src/AppDownloadBanner.tsx:75
 msgid "Get the app"
 msgstr "Get the app"
+
+#: ../../apps/web/src/components/GetExtensionBanner.tsx:67
+msgid "Get the extension"
+msgstr "Get the extension"
 
 #: ../../apps/site/src/lib/seo.ts:50
 msgid "gmail ai assistant"
 msgstr "gmail ai assistant"
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:32
+#: ../../apps/site/src/components/landing/FAQSection.tsx:36
 msgid "Gmail and Outlook filters just slap a label or category on each message and leave it in the same crowded inbox. Amarnai reads every thread the way a person would and lays them out in a clean workspace where related threads sit together, each with the reasoning behind its placement, so you get a calmer view instead of one more buried label. Spam and promotions are kept out automatically unless you turn them on in settings, and anything Amarnai is unsure about is flagged for your review."
 msgstr "Gmail and Outlook filters just slap a label or category on each message and leave it in the same crowded inbox. Amarnai reads every thread the way a person would and lays them out in a clean workspace where related threads sit together, each with the reasoning behind its placement, so you get a calmer view instead of one more buried label. Spam and promotions are kept out automatically unless you turn them on in settings, and anything Amarnai is unsure about is flagged for your review."
 
 #: ../../apps/extension/src/panel/notificationText.ts:18
 #: ../../apps/mobile/src/data/notificationView.ts:53
-#: ../../apps/web/src/lib/notifications.ts:72
+#: ../../apps/web/src/lib/notifications.ts:75
 msgid "Gmail disconnected"
 msgstr "Gmail disconnected"
 
@@ -2982,7 +3107,7 @@ msgstr "Gmail Sort Tester"
 #~ msgid "Gmail, sorted your way."
 #~ msgstr "Gmail, sorted your way."
 
-#: ../../apps/site/src/components/landing/Footer.tsx:51
+#: ../../apps/site/src/components/landing/Footer.tsx:55
 msgid "Gmail™, Chrome™ and the Gmail logo are trademarks of Google LLC. Outlook™ is a trademark of the Microsoft group of companies. Amarnai is an independent open-source project, not affiliated with or endorsed by Google or Microsoft."
 msgstr "Gmail™, Chrome™ and the Gmail logo are trademarks of Google LLC. Outlook™ is a trademark of the Microsoft group of companies. Amarnai is an independent open-source project, not affiliated with or endorsed by Google or Microsoft."
 
@@ -2999,7 +3124,7 @@ msgstr "Go to {0}"
 msgid "Go to sign in"
 msgstr "Go to sign in"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:261
+#: ../ui/src/demo/demo-seed.ts:262
 msgid "Gold balance: third consignment overdue"
 msgstr "Gold balance: third consignment overdue"
 
@@ -3037,7 +3162,7 @@ msgstr "Grant requests, foundation deadlines, and funder reporting requirements.
 msgid "Grants & Foundations"
 msgstr "Grants & Foundations"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:178
+#: ../ui/src/demo/demo-seed.ts:179
 msgid "Great King,\n"
 "\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
@@ -3053,7 +3178,7 @@ msgstr "Great King,\n"
 msgid "Guides and answers to common questions"
 msgstr "Guides and answers to common questions"
 
-#: ../../apps/site/src/components/landing/FinalCTASection.tsx:9
+#: ../../apps/site/src/components/landing/FinalCTASection.tsx:8
 msgid "Hand the sorting to Amarnai."
 msgstr "Hand the sorting to Amarnai."
 
@@ -3061,7 +3186,7 @@ msgstr "Hand the sorting to Amarnai."
 msgid "Health"
 msgstr "Health"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:31
+#: ../ui/src/demo/demo-seed.ts:32
 msgid "Help requests, supply issues, and escalations from customers."
 msgstr "Help requests, supply issues, and escalations from customers."
 
@@ -3070,7 +3195,7 @@ msgstr "Help requests, supply issues, and escalations from customers."
 msgid "Hide tips"
 msgstr "Hide tips"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:34
+#: ../ui/src/demo/demo-seed.ts:35
 #: ../ui/src/i18n/taxonomy-template-messages.ts:62
 msgid "Hiring"
 msgstr "Hiring"
@@ -3095,7 +3220,7 @@ msgstr "Homework & Grading"
 #~ msgid "Hosted subscriptions run on a frontier large language model. Self-hosted deployments can point at any OpenAI-compatible provider, such as OpenAI or Google Gemini, or a local Ollama model for fully offline operation."
 #~ msgstr "Hosted subscriptions run on a frontier large language model. Self-hosted deployments can point at any OpenAI-compatible provider, such as OpenAI or Google Gemini, or a local Ollama model for fully offline operation."
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:64
+#: ../../apps/site/src/components/landing/FAQSection.tsx:68
 msgid "Hosted subscriptions run on a leading AI model. Self-hosted deployments can point at any OpenAI-compatible provider, such as OpenAI or Google Gemini, or a local Ollama model for fully offline operation."
 msgstr "Hosted subscriptions run on a leading AI model. Self-hosted deployments can point at any OpenAI-compatible provider, such as OpenAI or Google Gemini, or a local Ollama model for fully offline operation."
 
@@ -3123,7 +3248,7 @@ msgstr "How does Amarnai save me time?"
 msgid "How does Amarnai's plan work?"
 msgstr "How does Amarnai's plan work?"
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:31
+#: ../../apps/site/src/components/landing/FAQSection.tsx:35
 msgid "How is Amarnai different from Gmail and Outlook filters?"
 msgstr "How is Amarnai different from Gmail and Outlook filters?"
 
@@ -3131,11 +3256,11 @@ msgstr "How is Amarnai different from Gmail and Outlook filters?"
 #~ msgid "How is Amarnai different from Gmail's filters and labels?"
 #~ msgstr "How is Amarnai different from Gmail's filters and labels?"
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:51
+#: ../../apps/site/src/components/landing/FAQSection.tsx:55
 msgid "How is Amarnai's pricing structured?"
 msgstr "How is Amarnai's pricing structured?"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:25
+#: ../../apps/site/src/components/landing/Footer.tsx:26
 #: ../../apps/site/src/components/landing/Nav.tsx:48
 msgid "How it works"
 msgstr "How it works"
@@ -3145,7 +3270,7 @@ msgstr "How it works"
 msgid "How to write a good description"
 msgstr "How to write a good description"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:318
+#: ../ui/src/demo/demo-seed.ts:319
 msgid "I write to propose that we formalise our friendship."
 msgstr "I write to propose that we formalise our friendship."
 
@@ -3209,10 +3334,10 @@ msgstr "In Gmail and Outlook"
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:107
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:183
 #: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:45
-#: ../../apps/site/src/components/demo/demo-seed.ts:28
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:151
 #: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:127
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:609
+#: ../ui/src/demo/demo-seed.ts:29
 #: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:73
 msgid "Inbox"
 msgstr "Inbox"
@@ -3223,7 +3348,7 @@ msgstr "Inbox (entry point)"
 
 #: ../../apps/extension/src/panel/notificationText.ts:20
 #: ../../apps/mobile/src/data/notificationView.ts:61
-#: ../../apps/web/src/lib/notifications.ts:80
+#: ../../apps/web/src/lib/notifications.ts:83
 msgid "Inbox import complete"
 msgstr "Inbox import complete"
 
@@ -3259,7 +3384,7 @@ msgstr "Included"
 msgid "Incorrect email or password."
 msgstr "Incorrect email or password."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:423
+#: ../ui/src/demo/demo-seed.ts:424
 msgid "Informal message with no clear category: personal visit or political audience? Tone is personal but sender is a known vassal governor. Routed to Other with low confidence."
 msgstr "Informal message with no clear category: personal visit or political audience? Tone is personal but sender is a known vassal governor. Routed to Other with low confidence."
 
@@ -3280,7 +3405,7 @@ msgid "Inspections & Appraisals"
 msgstr "Inspections & Appraisals"
 
 #: ../../apps/mobile/src/data/notificationView.ts:47
-#: ../../apps/web/src/lib/notifications.ts:65
+#: ../../apps/web/src/lib/notifications.ts:68
 msgid "Install the Amarnai browser extension"
 msgstr "Install the Amarnai browser extension"
 
@@ -3337,8 +3462,8 @@ msgstr "Invalid taxonomy file: {0}"
 msgid "Invalid taxonomy file: {detail}"
 msgstr "Invalid taxonomy file: {detail}"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:32
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:163
+#: ../ui/src/demo/demo-seed.ts:33
 #: ../ui/src/i18n/taxonomy-template-messages.ts:57
 msgid "Investors"
 msgstr "Investors"
@@ -3359,7 +3484,7 @@ msgstr "Invite and remove collaborators on the web app."
 #~ msgid "Invited"
 #~ msgstr "Invited"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:30
+#: ../ui/src/demo/demo-seed.ts:31
 msgid "Invoice questions, overdue balances, and payment disputes."
 msgstr "Invoice questions, overdue balances, and payment disputes."
 
@@ -3382,6 +3507,10 @@ msgstr "Invoices, receipts, and billing questions from clients and vendors."
 #: ../../apps/site/src/components/landing/FAQSection.tsx:11
 msgid "Is connecting my inbox to Amarnai safe?"
 msgstr "Is connecting my inbox to Amarnai safe?"
+
+#: ../../apps/site/src/components/landing/FAQSection.tsx:32
+msgid "It is the best way to use Amarnai, and it is where most people spend their time: the extension puts Amarnai in a side panel next to Gmail and Outlook, so you can sort, read, and draft without leaving your inbox. Everything is also available in the web app at app.amarnai.com, and both work on the same account, so you can install the extension whenever you like."
+msgstr "It is the best way to use Amarnai, and it is where most people spend their time: the extension puts Amarnai in a side panel next to Gmail and Outlook, so you can sort, read, and draft without leaving your inbox. Everything is also available in the web app at app.amarnai.com, and both work on the same account, so you can install the extension whenever you like."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:47
 #~ msgid "IT support, HR notices, legal documents, and internal administrative emails."
@@ -3503,7 +3632,7 @@ msgstr "Last verified: {0}"
 #~ msgid "Lay out folders like <0>Customers</0>, <1>Investors</1>, <2>Hiring</2>. A simple sentence each is the whole config."
 #~ msgstr "Lay out folders like <0>Customers</0>, <1>Investors</1>, <2>Hiring</2>. A simple sentence each is the whole config."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:404
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:405
 msgid "Lay out folders like <0>Customers</0>, <1>Investors</1>, <2>Hiring</2>. A simple sentence each: that's the whole setup."
 msgstr "Lay out folders like <0>Customers</0>, <1>Investors</1>, <2>Hiring</2>. A simple sentence each: that's the whole setup."
 
@@ -3517,7 +3646,7 @@ msgstr "Leads"
 msgid "Leave unsorted"
 msgstr "Leave unsorted"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:40
+#: ../../apps/site/src/components/landing/Footer.tsx:44
 #: ../ui/src/i18n/taxonomy-template-messages.ts:66
 msgid "Legal"
 msgstr "Legal"
@@ -3577,7 +3706,11 @@ msgstr "Live"
 msgid "Load more"
 msgstr "Load more"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:131
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:406
+msgid "Loading"
+msgstr "Loading"
+
+#: ../../apps/extension/src/panel/StatusSlot.tsx:133
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:122
 #: ../ui/src/emails/BackfillCard.tsx:35
@@ -3653,7 +3786,7 @@ msgstr "Manuscripts & Peer Review"
 msgid "Mark as done"
 msgstr "Mark as done"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:360
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:362
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:244
 #: ../../apps/mobile/src/components/ThreadRow.tsx:58
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:404
@@ -3745,7 +3878,7 @@ msgstr "Member"
 msgid "Messages from parents and guardians about attendance, behavior, and progress."
 msgstr "Messages from parents and guardians about attendance, behavior, and progress."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:29
+#: ../ui/src/demo/demo-seed.ts:30
 msgid "Messages from paying customers and account holders."
 msgstr "Messages from paying customers and account holders."
 
@@ -3792,8 +3925,8 @@ msgstr "Monthly"
 #: ../../apps/extension/src/panel/notificationText.ts:22
 #: ../../apps/mobile/src/data/notificationView.ts:85
 #: ../../apps/mobile/src/data/notificationView.ts:90
-#: ../../apps/web/src/lib/notifications.ts:104
-#: ../../apps/web/src/lib/notifications.ts:109
+#: ../../apps/web/src/lib/notifications.ts:107
+#: ../../apps/web/src/lib/notifications.ts:112
 msgid "Monthly sorting limit reached"
 msgstr "Monthly sorting limit reached"
 
@@ -3837,7 +3970,7 @@ msgstr "Move to…"
 msgid "Moved to {folderName}"
 msgstr "Moved to {folderName}"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:418
+#: ../ui/src/demo/demo-seed.ts:419
 msgid "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face."
 msgstr "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face."
 
@@ -3865,11 +3998,11 @@ msgstr "Needs review"
 msgid "Never"
 msgstr "Never"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:49
+#: ../../apps/site/src/components/landing/Footer.tsx:53
 msgid "Never auto-sends · Encrypted at rest · Minimal data"
 msgstr "Never auto-sends · Encrypted at rest · Minimal data"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:357
+#: ../ui/src/demo/demo-seed.ts:358
 msgid "New application from Horemheb of Thebes."
 msgstr "New application from Horemheb of Thebes."
 
@@ -3882,12 +4015,12 @@ msgstr "New business inquiries, project proposals, and pricing discussions from 
 #~ msgstr "New business inquiries, proposals, pricing discussions, and prospective client outreach."
 
 #: ../../apps/mobile/src/data/notificationView.ts:91
-#: ../../apps/web/src/lib/notifications.ts:110
+#: ../../apps/web/src/lib/notifications.ts:113
 msgid "New emails will wait until next month. Upgrade your plan for a higher limit."
 msgstr "New emails will wait until next month. Upgrade your plan for a higher limit."
 
 #: ../../apps/mobile/src/data/notificationView.ts:86
-#: ../../apps/web/src/lib/notifications.ts:105
+#: ../../apps/web/src/lib/notifications.ts:108
 msgid "New emails will wait until your limit resets next month."
 msgstr "New emails will wait until your limit resets next month."
 
@@ -3907,7 +4040,7 @@ msgstr "New mail"
 
 #: ../../apps/extension/src/panel/notificationText.ts:24
 #: ../../apps/mobile/src/data/notificationView.ts:95
-#: ../../apps/web/src/lib/notifications.ts:114
+#: ../../apps/web/src/lib/notifications.ts:117
 msgid "New notification"
 msgstr "New notification"
 
@@ -3916,13 +4049,13 @@ msgstr "New notification"
 msgid "New password"
 msgstr "New password"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:137
+#: ../../apps/extension/src/panel/StatusSlot.tsx:139
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:42
 #: ../ui/src/emails/BackfillCard.tsx:40
 msgid "New threads will appear as they are sorted."
 msgstr "New threads will appear as they are sorted."
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:156
+#: ../../apps/extension/src/auth/SignInScreen.tsx:160
 msgid "New to Amarnai? <0>Create an account</0>"
 msgstr "New to Amarnai? <0>Create an account</0>"
 
@@ -3938,7 +4071,7 @@ msgstr "New workspace name"
 msgid "No drafts remaining"
 msgstr "No drafts remaining"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:459
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:460
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:481
 #: ../ui/src/emails/SuggestedDraftCard.tsx:97
 msgid "No drafts remaining · resets {quotaResetDate}"
@@ -3953,7 +4086,7 @@ msgstr "No drafts remaining · resets {resetDate}"
 msgid "No drafts remaining this month"
 msgstr "No drafts remaining this month"
 
-#: ../../apps/site/src/components/landing/HeroSection.tsx:73
+#: ../../apps/site/src/components/landing/HeroSection.tsx:65
 msgid "No email bodies stored"
 msgstr "No email bodies stored"
 
@@ -4124,7 +4257,15 @@ msgstr "Official university emails: registrar, student services, and housing."
 msgid "On-call alerts, outage reports, and production incident escalations."
 msgstr "On-call alerts, outage reports, and production incident escalations."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:384
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:141
+msgid "One sign-in creates your account, connects your Gmail or Outlook inbox, and lets you build your sorting plan. Amarnai never sends or deletes mail."
+msgstr "One sign-in creates your account, connects your Gmail or Outlook inbox, and lets you build your sorting plan. Amarnai never sends or deletes mail."
+
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:100
+#~ msgid "One sign-in creates your account, connects your inbox, and lets you build your sorting plan. Amarnai never sends or deletes mail."
+#~ msgstr "One sign-in creates your account, connects your inbox, and lets you build your sorting plan. Amarnai never sends or deletes mail."
+
+#: ../ui/src/demo/demo-seed.ts:385
 msgid "Ongoing thread with a known city governor raising a recurring supply issue. Escalatory tone and repeated follow-ups match the Support folder."
 msgstr "Ongoing thread with a known city governor raising a recurring supply issue. Escalatory tone and repeated follow-ups match the Support folder."
 
@@ -4142,17 +4283,21 @@ msgstr "Open"
 msgid "Open a message first, then choose Amarnai Reply."
 msgstr "Open a message first, then choose Amarnai Reply."
 
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:153
+msgid "Open Amarnai"
+msgstr "Open Amarnai"
+
 #: ../../apps/site/src/components/support/SupportContent.tsx:94
 msgid "Open an issue on GitHub"
 msgstr "Open an issue on GitHub"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:391
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:393
 #: ../../apps/mobile/src/components/DraftSheet.tsx:97
 #: ../ui/src/emails/providerLabels.ts:11
 msgid "Open in Gmail"
 msgstr "Open in Gmail"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:389
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:391
 #: ../ui/src/emails/providerLabels.ts:11
 msgid "Open in Outlook"
 msgstr "Open in Outlook"
@@ -4165,7 +4310,7 @@ msgstr "Open navigation"
 msgid "open source email ai"
 msgstr "open source email ai"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:172
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:434
 msgid "Open the plan editor"
 msgstr "Open the plan editor"
 
@@ -4211,7 +4356,7 @@ msgstr "Optional. Applied when generating draft replies for threads in this fold
 msgid "Optional. Sets this folder's chip and icon color across your inbox. Default assigns a stable color automatically."
 msgstr "Optional. Sets this folder's chip and icon color across your inbox. Default assigns a stable color automatically."
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:136
+#: ../../apps/extension/src/auth/SignInScreen.tsx:130
 #: ../../apps/mobile/src/auth/GoogleSignInButton.tsx:17
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:88
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:80
@@ -4226,8 +4371,8 @@ msgstr "Or connect a different inbox:"
 msgid "Orders"
 msgstr "Orders"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:35
 #: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:179
+#: ../ui/src/demo/demo-seed.ts:36
 msgid "Other"
 msgstr "Other"
 
@@ -4261,16 +4406,16 @@ msgstr "Parents & Guardians"
 msgid "Partners"
 msgstr "Partners"
 
-#: ../../apps/site/src/components/landing/HeroSection.tsx:59
+#: ../../apps/site/src/components/landing/HeroSection.tsx:51
 msgid "Passed Google's security review"
 msgstr "Passed Google's security review"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:413
-#: ../../apps/site/src/components/demo/demo-seed.ts:431
+#: ../ui/src/demo/demo-seed.ts:414
+#: ../ui/src/demo/demo-seed.ts:432
 msgid "Passing through the Delta: free to meet?"
 msgstr "Passing through the Delta: free to meet?"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:119
+#: ../../apps/extension/src/auth/SignInScreen.tsx:144
 #: ../../apps/mobile/app/sign-in.tsx:106
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:277
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:126
@@ -4419,15 +4564,19 @@ msgstr "Pharaoh"
 msgid "Pharaoh of Egypt"
 msgstr "Pharaoh of Egypt"
 
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:187
+msgid "Pin Amarnai to your toolbar"
+msgstr "Pin Amarnai to your toolbar"
+
 #. Screen heading for the email-sorting taxonomy. Not a billing or subscription plan.
 #. Sidebar nav label for the email-sorting taxonomy. Not a billing or subscription plan.
 #. Sidebar nav label for the email-sorting taxonomy. Not a billing or subscription plan.
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:43
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:35
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:265
-#: ../../apps/site/src/components/demo/DemoTaxonomyCanvas.tsx:220
 #: ../../apps/web/src/app/(app)/plan/page.tsx:43
 #: ../../apps/web/src/components/Sidebar.tsx:35
+#: ../ui/src/demo/DemoTaxonomyCanvas.tsx:224
 msgid "Plan"
 msgstr "Plan"
 
@@ -4440,7 +4589,7 @@ msgstr "Plan is view-only. Only workspace admins can edit it."
 msgid "Plan nodes"
 msgstr "Plan nodes"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:425
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:426
 msgid "Plan sorting"
 msgstr "Plan sorting"
 
@@ -4472,11 +4621,11 @@ msgstr "Pre-sale questions and messages from prospective shoppers about products
 msgid "Prefer to self-host?"
 msgstr "Prefer to self-host?"
 
-#: ../../apps/site/src/components/landing/FinalCTASection.tsx:32
+#: ../../apps/site/src/components/landing/FinalCTASection.tsx:26
 msgid "Prefer to self-host? It's open source:<0/> <1>clone it and run it free</1>."
 msgstr "Prefer to self-host? It's open source:<0/> <1>clone it and run it free</1>."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:468
+#: ../ui/src/demo/demo-seed.ts:469
 msgid "Prepare your accounts before the council convenes."
 msgstr "Prepare your accounts before the council convenes."
 
@@ -4501,7 +4650,7 @@ msgstr "Priced per workspace. Clear plans, clear limits."
 #~ msgid "Priced per workspace. Sort as much as you like."
 #~ msgstr "Priced per workspace. Sort as much as you like."
 
-#: ../../apps/site/src/components/landing/Footer.tsx:28
+#: ../../apps/site/src/components/landing/Footer.tsx:32
 #: ../../apps/site/src/components/landing/Nav.tsx:54
 msgid "Pricing"
 msgstr "Pricing"
@@ -4514,7 +4663,7 @@ msgstr "Pricing | Amarnai"
 #~ msgid "Pricing is per workspace, billed monthly or annually. Every account starts with a free Personal workspace, no card required. The paid Pro and Business subscriptions add higher limits and include a 14-day trial. See the pricing page for current details."
 #~ msgstr "Pricing is per workspace, billed monthly or annually. Every account starts with a free Personal workspace, no card required. The paid Pro and Business subscriptions add higher limits and include a 14-day trial. See the pricing page for current details."
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:52
+#: ../../apps/site/src/components/landing/FAQSection.tsx:56
 msgid "Pricing is per workspace, billed monthly or annually. Every account starts with a free workspace, no card required. The paid Scribe and Pharaoh plans add higher limits and include a 14-day trial. See the pricing page for current details."
 msgstr "Pricing is per workspace, billed monthly or annually. Every account starts with a free workspace, no card required. The paid Scribe and Pharaoh plans add higher limits and include a 14-day trial. See the pricing page for current details."
 
@@ -4530,7 +4679,7 @@ msgstr "Principal notices, staff meetings, and district administration bulletins
 msgid "Priority support"
 msgstr "Priority support"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:41
+#: ../../apps/site/src/components/landing/Footer.tsx:45
 msgid "Privacy"
 msgstr "Privacy"
 
@@ -4538,7 +4687,7 @@ msgstr "Privacy"
 msgid "Privacy and data handling"
 msgstr "Privacy and data handling"
 
-#: ../../apps/site/src/components/landing/HeroSection.tsx:44
+#: ../../apps/site/src/components/landing/HeroSection.tsx:39
 msgid "Privacy by design"
 msgstr "Privacy by design"
 
@@ -4547,7 +4696,7 @@ msgstr "Privacy by design"
 msgid "Pro"
 msgstr "Pro"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:24
+#: ../../apps/site/src/components/landing/Footer.tsx:25
 msgid "Product"
 msgstr "Product"
 
@@ -4645,7 +4794,7 @@ msgstr "Re-sorting threads already sorted this month is free. If you reach your 
 msgid "Re-sorting…"
 msgstr "Re-sorting…"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:374
+#: ../ui/src/demo/demo-seed.ts:375
 msgid "Re: Grain shipment: third delay this season"
 msgstr "Re: Grain shipment: third delay this season"
 
@@ -4661,9 +4810,13 @@ msgstr "Reactivate"
 msgid "Read-only · OAuth · revoke anytime"
 msgstr "Read-only · OAuth · revoke anytime"
 
-#: ../../apps/site/src/components/landing/HeroSection.tsx:52
+#: ../../apps/site/src/components/landing/HeroSection.tsx:47
 msgid "Read-only by design"
 msgstr "Read-only by design"
+
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:331
+msgid "Reading your inbox and building a plan. This can take a moment."
+msgstr "Reading your inbox and building a plan. This can take a moment."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:205
 msgid "Real Estate Agent"
@@ -4681,6 +4834,10 @@ msgstr "Recently attempted. Available again {when}."
 #: ../ui/src/i18n/generation-reason-messages.ts:18
 msgid "Recently attempted. Try again later."
 msgstr "Recently attempted. Try again later."
+
+#: ../ui/src/plan-setup/TemplatePicker.tsx:64
+msgid "Recommended"
+msgstr "Recommended"
 
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1878
 msgid "Recommended for your inbox"
@@ -4787,7 +4944,7 @@ msgstr "Remove {0}"
 msgid "Remove {email} from blacklist"
 msgstr "Remove {email} from blacklist"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:360
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:362
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:243
 #: ../../apps/mobile/src/components/ThreadRow.tsx:57
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:404
@@ -4939,12 +5096,12 @@ msgstr "Resize the split between the inbox and Amarnai"
 msgid "Resize the thread list"
 msgstr "Resize the thread list"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:31
+#: ../../apps/site/src/components/landing/Footer.tsx:35
 msgid "Resources"
 msgstr "Resources"
 
 #: ../../apps/extension/src/App.tsx:144
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:477
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:478
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:345
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:504
 #: ../ui/src/emails/ThreadSummaryCard.tsx:44
@@ -4963,6 +5120,10 @@ msgstr "Returns"
 #~ msgid "Review queue"
 #~ msgstr "Review queue"
 
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:290
+msgid "Review your plan"
+msgstr "Review your plan"
+
 #: ../../apps/site/src/components/landing/ReviewsSection.tsx:70
 msgid "Reviews from early users"
 msgstr "Reviews from early users"
@@ -4971,11 +5132,11 @@ msgstr "Reviews from early users"
 #~ msgid "Reviews from our earliest correspondents"
 #~ msgstr "Reviews from our earliest correspondents"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:389
+#: ../ui/src/demo/demo-seed.ts:390
 msgid "Rib-Hadda of Byblos"
 msgstr "Rib-Hadda of Byblos"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:168
+#: ../ui/src/demo/demo-seed.ts:169
 msgid "Rib-Hadda,\n"
 "\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
@@ -5044,7 +5205,7 @@ msgstr "Save hours of email sorting every week. Let Amarnai sort your inbox, fil
 msgid "Save time by triaging your inbox without leaving Gmail. The extension runs in your desktop browser."
 msgstr "Save time by triaging your inbox without leaving Gmail. The extension runs in your desktop browser."
 
-#: ../../apps/web/src/lib/notifications.ts:66
+#: ../../apps/web/src/lib/notifications.ts:69
 msgid "Save time by triaging your inbox without leaving your email."
 msgstr "Save time by triaging your inbox without leaving your email."
 
@@ -5109,7 +5270,7 @@ msgstr "Search threads…"
 msgid "See how your inbox is sorted, right next to your email."
 msgstr "See how your inbox is sorted, right next to your email."
 
-#: ../../apps/site/src/components/landing/Footer.tsx:27
+#: ../../apps/site/src/components/landing/Footer.tsx:28
 #: ../../apps/site/src/components/landing/Nav.tsx:50
 msgid "See it work"
 msgstr "See it work"
@@ -5118,7 +5279,7 @@ msgstr "See it work"
 msgid "Select"
 msgstr "Select"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:321
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:338
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:366
 #: ../ui/src/emails/MockEmailsPage.tsx:279
 msgid "Select a thread to preview"
@@ -5154,7 +5315,7 @@ msgstr "Seller consultations, listing paperwork, price reductions, and market ap
 msgid "Sellers"
 msgstr "Sellers"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:211
+#: ../ui/src/demo/demo-seed.ts:212
 msgid "Send ahead by fast courier, before the new moon"
 msgstr "Send ahead by fast courier, before the new moon"
 
@@ -5180,7 +5341,7 @@ msgstr "Sender blacklist"
 msgid "Sender Blacklist"
 msgstr "Sender Blacklist"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:271
+#: ../ui/src/demo/demo-seed.ts:272
 msgid "Sender is a known treaty partner of significant standing. Subject explicitly references an outstanding balance on an agreed consignment, which matches the Billing folder."
 msgstr "Sender is a known treaty partner of significant standing. Subject explicitly references an outstanding balance on an agreed consignment, which matches the Billing folder."
 
@@ -5208,11 +5369,12 @@ msgstr "Set new password"
 #~ msgid "Set up at least 3 folders so we can start sorting."
 #~ msgstr "Set up at least 3 folders so we can start sorting."
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:42
+#: ../../apps/extension/src/panel/StatusSlot.tsx:44
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:291
 msgid "Set up folders"
 msgstr "Set up folders"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:164
+#: ../../apps/extension/src/panel/StatusSlot.tsx:173
 msgid "Set up folders so Amarnai knows where to file your mail. It only takes a minute."
 msgstr "Set up folders so Amarnai knows where to file your mail. It only takes a minute."
 
@@ -5279,7 +5441,7 @@ msgstr "Show the Amarnai Reply button for drafting replies"
 msgid "Showing requests, buyer tours, open-house sign-ups, and written offers."
 msgstr "Showing requests, buyer tours, open-house sign-ups, and written offers."
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:132
+#: ../../apps/extension/src/auth/SignInScreen.tsx:155
 #: ../../apps/mobile/app/sign-in.tsx:133
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:288
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:42
@@ -5307,9 +5469,17 @@ msgstr "Sign in with email instead"
 #~ msgid "Sign in with Google"
 #~ msgstr "Sign in with Google"
 
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:138
+msgid "Sign in with Google or Microsoft"
+msgstr "Sign in with Google or Microsoft"
+
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:392
-msgid "Sign in with Google or Microsoft. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
-msgstr "Sign in with Google or Microsoft. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
+#~ msgid "Sign in with Google or Microsoft. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
+#~ msgstr "Sign in with Google or Microsoft. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
+
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:97
+#~ msgid "Sign in with Google to start"
+#~ msgstr "Sign in with Google to start"
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:363
 #~ msgid "Sign in with Google. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
@@ -5386,11 +5556,11 @@ msgstr "Something went wrong. Please try again."
 msgid "Soon"
 msgstr "Soon"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:57
+#: ../../apps/extension/src/panel/StatusSlot.tsx:59
 msgid "Sort"
 msgstr "Sort"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:18
+#: ../../apps/site/src/components/landing/Footer.tsx:19
 msgid "Sort emails your way."
 msgstr "Sort emails your way."
 
@@ -5417,7 +5587,7 @@ msgstr "Sorted"
 msgid "Sorting"
 msgstr "Sorting"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:128
+#: ../../apps/extension/src/panel/StatusSlot.tsx:130
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:32
 #: ../ui/src/emails/BackfillCard.tsx:33
 msgid "Sorting historical inbox"
@@ -5427,7 +5597,7 @@ msgstr "Sorting historical inbox"
 msgid "Sorting is taking longer than expected."
 msgstr "Sorting is taking longer than expected."
 
-#: ../../apps/site/src/components/landing/HeroFeedCard.tsx:223
+#: ../ui/src/demo/HeroFeedCard.tsx:223
 msgid "Sorting live"
 msgstr "Sorting live"
 
@@ -5436,7 +5606,7 @@ msgid "Sorting volume"
 msgstr "Sorting volume"
 
 #: ../../apps/mobile/src/components/RationaleCard.tsx:34
-#: ../../apps/site/src/components/landing/HeroFeedCard.tsx:95
+#: ../ui/src/demo/HeroFeedCard.tsx:95
 #: ../ui/src/emails/ThreadRow.tsx:254
 msgid "Sorting…"
 msgstr "Sorting…"
@@ -5487,7 +5657,7 @@ msgid "Start from a template (replaces current)"
 msgstr "Start from a template (replaces current)"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:83
-#: ../../apps/site/src/components/landing/HeroSection.tsx:28
+#: ../../apps/site/src/components/landing/HeroSection.tsx:26
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:90
 msgid "Start sorting"
 msgstr "Start sorting"
@@ -5504,6 +5674,10 @@ msgstr "Startup Founder"
 #: ../ui/src/i18n/generation-reason-messages.ts:15
 msgid "Still importing your inbox. Check back once the import finishes."
 msgstr "Still importing your inbox. Check back once the import finishes."
+
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:92
+msgid "Stop sorting email"
+msgstr "Stop sorting email"
 
 #: ../../apps/site/src/components/landing/HeroSection.tsx:13
 msgid "Stop sorting email.<0/><1>Sort it once.</1>"
@@ -5593,8 +5767,8 @@ msgstr "Supervision"
 msgid "Suppliers"
 msgstr "Suppliers"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:31
-#: ../../apps/site/src/components/landing/Footer.tsx:37
+#: ../../apps/site/src/components/landing/Footer.tsx:41
+#: ../ui/src/demo/demo-seed.ts:32
 #: ../ui/src/pricing/planMessages.ts:56
 msgid "Support"
 msgstr "Support"
@@ -5707,7 +5881,7 @@ msgstr "Template applied"
 msgid "Templates"
 msgstr "Templates"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:42
+#: ../../apps/site/src/components/landing/Footer.tsx:46
 msgid "Terms"
 msgstr "Terms"
 
@@ -5763,7 +5937,7 @@ msgstr "The authorization request expired or was tampered with. Please try again
 msgid "The connection could not be saved due to a server error. Please try again."
 msgstr "The connection could not be saved due to a server error. Please try again."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:202
+#: ../ui/src/demo/demo-seed.ts:203
 msgid "The council convenes at the start of Shemu. Tushratta asks for a full accounting of the eastern territories, sent ahead by fast courier."
 msgstr "The council convenes at the start of Shemu. Tushratta asks for a full accounting of the eastern territories, sent ahead by fast courier."
 
@@ -5775,23 +5949,23 @@ msgstr "The council convenes at the start of Shemu. Tushratta asks for a full ac
 msgid "The Gmail connection, all synced emails, and the taxonomy will be permanently deleted. Re-importing this inbox uses your monthly import allowance; if it runs out, you can import again after {allowanceResetsAt} or by upgrading."
 msgstr "The Gmail connection, all synced emails, and the taxonomy will be permanently deleted. Re-importing this inbox uses your monthly import allowance; if it runs out, you can import again after {allowanceResetsAt} or by upgrading."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:379
+#: ../ui/src/demo/demo-seed.ts:380
 msgid "The grain you sent last month was received with gratitude. But I must write again: the third shipment has not arrived and the city grows restless."
 msgstr "The grain you sent last month was received with gratitude. But I must write again: the third shipment has not arrived and the city grows restless."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:455
+#: ../ui/src/demo/demo-seed.ts:456
 msgid "The great council convenes at the start of Shemu. I ask that you prepare a full accounting of the eastern territories and send it ahead by fast courier."
 msgstr "The great council convenes at the start of Shemu. I ask that you prepare a full accounting of the eastern territories and send it ahead by fast courier."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:266
+#: ../ui/src/demo/demo-seed.ts:267
 msgid "The third gold consignment agreed under our treaty has not arrived. Two messengers have passed and still we wait."
 msgstr "The third gold consignment agreed under our treaty has not arrived. Two messengers have passed and still we wait."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:279
+#: ../ui/src/demo/demo-seed.ts:280
 msgid "The third gold consignment is overdue."
 msgstr "The third gold consignment is overdue."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:392
+#: ../ui/src/demo/demo-seed.ts:393
 msgid "The third grain shipment has not arrived."
 msgstr "The third grain shipment has not arrived."
 
@@ -5811,6 +5985,10 @@ msgstr "These collaborators will lose access at the end of the billing period:"
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:272
 msgid "These collaborators will lose access on {0}:"
 msgstr "These collaborators will lose access on {0}:"
+
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:356
+msgid "These folders will be created. You can edit them at any time."
+msgstr "These folders will be created. You can edit them at any time."
 
 #: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:52
 #~ msgid "These settings control which Gmail threads are imported. Trash is always excluded."
@@ -5876,11 +6054,11 @@ msgstr "This removes the Gmail connection, deletes all synced emails, and resets
 #~ msgid "This thread cannot be sorted yet. Add at least {TAXONOMY_MIN_NON_ROOT_NODES} categories to your plan to begin routing."
 #~ msgstr "This thread cannot be sorted yet. Add at least {TAXONOMY_MIN_NON_ROOT_NODES} categories to your plan to begin routing."
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:430
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:431
 msgid "This thread hasn't been sorted yet."
 msgstr "This thread hasn't been sorted yet."
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:418
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:420
 msgid "This thread hasn't been sorted yet. Create a sorting plan so Amarnai knows where to file it."
 msgstr "This thread hasn't been sorted yet. Create a sorting plan so Amarnai knows where to file it."
 
@@ -5950,7 +6128,7 @@ msgstr "Threads that haven't been sorted yet."
 msgid "Threads you've marked as important."
 msgstr "Threads you've marked as important."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:430
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:431
 msgid "Three steps to a sorted inbox."
 msgstr "Three steps to a sorted inbox."
 
@@ -5958,7 +6136,11 @@ msgstr "Three steps to a sorted inbox."
 #~ msgid "Three steps. Then it sorts every email for you."
 #~ msgstr "Three steps. Then it sorts every email for you."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:469
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:205
+msgid "Tip: pin the Amarnai icon in your toolbar to keep it one click away."
+msgstr "Tip: pin the Amarnai icon in your toolbar to keep it one click away."
+
+#: ../ui/src/demo/demo-seed.ts:470
 msgid "To my brother, the Great King,\n"
 "\n"
 "The great council convenes at the start of Shemu. I ask that you prepare a full accounting of the eastern territories and send it ahead by fast courier, before the new moon if possible.\n"
@@ -5974,7 +6156,7 @@ msgstr "To my brother, the Great King,\n"
 "\n"
 "Tushratta, Great King of Mitanni"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:163
+#: ../ui/src/demo/demo-seed.ts:164
 msgid "To the Bureau of Royal Appointments,\n"
 "\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
@@ -5986,7 +6168,7 @@ msgstr "To the Bureau of Royal Appointments,\n"
 "\n"
 "By royal decree,"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:319
+#: ../ui/src/demo/demo-seed.ts:320
 msgid "To the Great King,\n"
 "\n"
 "For many years our houses have been as brothers. I write now to propose that we formalise this friendship for the benefit of both our peoples: a pact of mutual protection and shared routes.\n"
@@ -6002,7 +6184,7 @@ msgstr "To the Great King,\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:432
+#: ../ui/src/demo/demo-seed.ts:433
 msgid "To the Great King,\n"
 "\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
@@ -6014,7 +6196,7 @@ msgstr "To the Great King,\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:153
+#: ../ui/src/demo/demo-seed.ts:154
 msgid "To the Great King, my brother,\n"
 "\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
@@ -6026,7 +6208,7 @@ msgstr "To the Great King, my brother,\n"
 "\n"
 "In friendship,"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:280
+#: ../ui/src/demo/demo-seed.ts:281
 msgid "To the Great King, my brother,\n"
 "\n"
 "I write in friendship, as our fathers wrote before us. The third gold consignment agreed under our treaty has not arrived. Two messengers have passed and still we wait.\n"
@@ -6042,7 +6224,7 @@ msgstr "To the Great King, my brother,\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:393
+#: ../ui/src/demo/demo-seed.ts:394
 msgid "To the Great King, my lord, my sun,\n"
 "\n"
 "The grain you sent last month was received with gratitude and I praised your name before the people. But I must write again: the third shipment has not arrived and the city grows restless.\n"
@@ -6100,6 +6282,10 @@ msgstr "Triage"
 msgid "Triage & review"
 msgstr "Triage & review"
 
+#: ../../apps/web/src/components/GetExtensionBanner.tsx:60
+msgid "Triage without leaving your inbox"
+msgstr "Triage without leaving your inbox"
+
 #: ../../apps/mobile/src/data/notificationView.ts:33
 #~ msgid "Triage your inbox from a side panel next to Gmail on your computer."
 #~ msgstr "Triage your inbox from a side panel next to Gmail on your computer."
@@ -6120,7 +6306,7 @@ msgstr "Triage your inbox on the go."
 msgid "Try again"
 msgstr "Try again"
 
-#: ../../apps/site/src/components/landing/FinalCTASection.tsx:19
+#: ../../apps/site/src/components/landing/FinalCTASection.tsx:16
 msgid "Try Amarnai"
 msgstr "Try Amarnai"
 
@@ -6128,7 +6314,7 @@ msgstr "Try Amarnai"
 msgid "Turning this on will ask for permission to manage your labels."
 msgstr "Turning this on will ask for permission to manage your labels."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:465
+#: ../ui/src/demo/demo-seed.ts:466
 msgid "Tushratta of Mitanni"
 msgstr "Tushratta of Mitanni"
 
@@ -6151,7 +6337,7 @@ msgstr "Unclassified"
 msgid "Unclassified. Change folder"
 msgstr "Unclassified. Change folder"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:365
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:382
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:407
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1510
 #: ../ui/src/emails/MockEmailsPage.tsx:298
@@ -6239,7 +6425,7 @@ msgstr "Update payment method"
 msgid "Updates / Other"
 msgstr "Updates / Other"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:32
+#: ../ui/src/demo/demo-seed.ts:33
 msgid "Updates, intros, and check-ins from current or prospective investors."
 msgstr "Updates, intros, and check-ins from current or prospective investors."
 
@@ -6272,13 +6458,13 @@ msgstr "Upgrade to a paid plan to invite collaborators and assign threads to the
 #~ msgid "Upgrade to a Pro or Business subscription to invite collaborators."
 #~ msgstr "Upgrade to a Pro or Business subscription to invite collaborators."
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:87
+#: ../../apps/extension/src/panel/StatusSlot.tsx:89
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:60
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:50
 msgid "Upgrade to import now"
 msgstr "Upgrade to import now"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:89
+#: ../../apps/extension/src/panel/StatusSlot.tsx:91
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:60
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:50
 msgid "Upgrade to load the rest"
@@ -6309,15 +6495,22 @@ msgstr "Use \"Rescan inbox\" after changing filter settings to apply them to thr
 msgid "Use \"Rescan inbox\" after changing filters to apply them to threads already in your inbox."
 msgstr "Use \"Rescan inbox\" after changing filters to apply them to threads already in your inbox."
 
+#: ../../apps/extension/src/panel/StatusSlot.tsx:188
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:149
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:170
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:330
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:378
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:392
 msgid "Use a template"
 msgstr "Use a template"
 
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1924
 msgid "Use template"
 msgstr "Use template"
+
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:414
+msgid "Use these folders"
+msgstr "Use these folders"
 
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:30
 msgid "Use this plan for a business, team, or separate Gmail account."
@@ -6346,6 +6539,14 @@ msgstr "Verification email sent!"
 #: ../../apps/mobile/app/verify-email.tsx:62
 msgid "Verification email sent. Check your inbox."
 msgstr "Verification email sent. Check your inbox."
+
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:162
+msgid "Verified by Google"
+msgstr "Verified by Google"
+
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:166
+msgid "Verified by Microsoft"
+msgstr "Verified by Microsoft"
 
 #: ../../apps/mobile/app/verify-email.tsx:85
 msgid "Verify your email"
@@ -6436,11 +6637,11 @@ msgstr "Weekly inbox reminder"
 #~ msgid "What AI model does Amarnai use?"
 #~ msgstr "What AI model does Amarnai use?"
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:43
+#: ../../apps/site/src/components/landing/FAQSection.tsx:47
 msgid "What happens to threads Amarnai is unsure about?"
 msgstr "What happens to threads Amarnai is unsure about?"
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:63
+#: ../../apps/site/src/components/landing/FAQSection.tsx:67
 msgid "What model does Amarnai use?"
 msgstr "What model does Amarnai use?"
 
@@ -6457,13 +6658,17 @@ msgstr "Who is king Aziru?"
 msgid "Wholesale suppliers, restock orders, and inventory availability from manufacturers."
 msgstr "Wholesale suppliers, restock orders, and inventory availability from manufacturers."
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:59
+#: ../../apps/site/src/components/landing/FAQSection.tsx:63
 msgid "Why is it called Amarnai?"
 msgstr "Why is it called Amarnai?"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:40
 msgid "Work"
 msgstr "Work"
+
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:122
+msgid "Work next to your email"
+msgstr "Work next to your email"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:38
 msgid "Working Professional"
@@ -6477,13 +6682,14 @@ msgstr "Working Professional"
 #~ msgid "Works with Gmail today. Outlook support is on the way."
 #~ msgstr "Works with Gmail today. Outlook support is on the way."
 
-#: ../../apps/site/src/components/landing/FinalCTASection.tsx:24
+#: ../../apps/site/src/components/landing/FinalCTASection.tsx:18
 msgid "Works with Gmail™ and Outlook."
 msgstr "Works with Gmail™ and Outlook."
 
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:61
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:41
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:220
-#: ../../apps/site/src/components/demo/DemoTaxonomyCanvas.tsx:218
+#: ../ui/src/demo/DemoTaxonomyCanvas.tsx:222
 #: ../ui/src/emails/ThreadListHeader.tsx:65
 #: ../ui/src/pricing/planMessages.ts:53
 msgid "Workspace"
@@ -6537,7 +6743,7 @@ msgstr "Write sorted folders as Outlook categories"
 msgid "Writeback is on. Your folders are being mirrored into your mailbox."
 msgstr "Writeback is on. Your folders are being mirrored into your mailbox."
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:469
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:470
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:168
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:492
 #: ../ui/src/emails/ThreadPreview.tsx:250
@@ -6564,7 +6770,7 @@ msgstr "Yes, disconnect"
 msgid "Yes, reset workspace"
 msgstr "Yes, reset workspace"
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:40
+#: ../../apps/site/src/components/landing/FAQSection.tsx:44
 msgid "Yes. Amarnai can work through the backlog already sitting in your inbox, not only messages that arrive from now on. Clearing your backlog and sorting new mail use the same plan, up to your plan's limits, so old and new mail end up organized the same way."
 msgstr "Yes. Amarnai can work through the backlog already sitting in your inbox, not only messages that arrive from now on. Clearing your backlog and sorting new mail use the same plan, up to your plan's limits, so old and new mail end up organized the same way."
 
@@ -6584,11 +6790,11 @@ msgstr "Yes. Amarnai connects with a read-only scope, so it can read your thread
 #~ msgid "Yes. Amarnai connects with Gmail's read-only scope, so it can read your threads but cannot send, delete, label, or change anything in your account. It keeps only what it needs to sort and display threads: subjects, participants, snippets, and the labels and reasoning it generates. Full message bodies are fetched when needed and processed in memory, not stored, and OAuth tokens are encrypted at rest."
 #~ msgstr "Yes. Amarnai connects with Gmail's read-only scope, so it can read your threads but cannot send, delete, label, or change anything in your account. It keeps only what it needs to sort and display threads: subjects, participants, snippets, and the labels and reasoning it generates. Full message bodies are fetched when needed and processed in memory, not stored, and OAuth tokens are encrypted at rest."
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:56
+#: ../../apps/site/src/components/landing/FAQSection.tsx:60
 msgid "Yes. Amarnai is open source under the AGPL-3.0 license. You can clone the repository and run it yourself with Docker. Self-hosting is free and unsupported, with community support available on GitHub."
 msgstr "Yes. Amarnai is open source under the AGPL-3.0 license. You can clone the repository and run it yourself with Docker. Self-hosting is free and unsupported, with community support available on GitHub."
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:36
+#: ../../apps/site/src/components/landing/FAQSection.tsx:40
 msgid "Yes. Amarnai works with both Gmail and Outlook, each connected the same read-only way: Amarnai reads your threads to sort them and never sends, deletes, or changes anything in your account."
 msgstr "Yes. Amarnai works with both Gmail and Outlook, each connected the same read-only way: Amarnai reads your threads to sort them and never sends, deletes, or changes anything in your account."
 
@@ -6596,7 +6802,7 @@ msgstr "Yes. Amarnai works with both Gmail and Outlook, each connected the same 
 #~ msgid "Yes. Open a thread, press Generate draft reply, and a suggested draft appears in Amarnai for you to read and edit. Nothing is ever sent for you: when you are happy with it, you can jump to the thread in Gmail with one click and paste your reply there to send. Each subscription includes a monthly draft allowance."
 #~ msgstr "Yes. Open a thread, press Generate draft reply, and a suggested draft appears in Amarnai for you to read and edit. Nothing is ever sent for you: when you are happy with it, you can jump to the thread in Gmail with one click and paste your reply there to send. Each subscription includes a monthly draft allowance."
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:48
+#: ../../apps/site/src/components/landing/FAQSection.tsx:52
 msgid "Yes. Open a thread, press Generate draft reply, and a suggested draft appears in Amarnai for you to read and edit. Nothing is ever sent for you: when you are happy with it, you can jump to the thread in your inbox with one click and paste your reply there to send. Each subscription includes a monthly draft allowance."
 msgstr "Yes. Open a thread, press Generate draft reply, and a suggested draft appears in Amarnai for you to read and edit. Nothing is ever sent for you: when you are happy with it, you can jump to the thread in your inbox with one click and paste your reply there to send. Each subscription includes a monthly draft allowance."
 
@@ -6648,13 +6854,13 @@ msgstr "You do not have permission to connect an Outlook inbox to this workspace
 msgid "You have used all {0} drafts in your plan this month. They reset on {1}."
 msgstr "You have used all {0} drafts in your plan this month. They reset on {1}."
 
-#: ../../apps/site/src/components/landing/HeroSection.tsx:66
+#: ../../apps/site/src/components/landing/HeroSection.tsx:58
 msgid "You stay in control"
 msgstr "You stay in control"
 
 #: ../../apps/extension/src/panel/notificationText.ts:16
 #: ../../apps/mobile/src/data/notificationView.ts:35
-#: ../../apps/web/src/lib/notifications.ts:55
+#: ../../apps/web/src/lib/notifications.ts:58
 msgid "You were assigned a thread"
 msgstr "You were assigned a thread"
 
@@ -6667,7 +6873,7 @@ msgstr "You're on {planLabel}"
 #~ msgstr "You're on the list!"
 
 #. placeholder {0}: status.plan
-#: ../../apps/extension/src/panel/StatusSlot.tsx:69
+#: ../../apps/extension/src/panel/StatusSlot.tsx:71
 msgid "You've used all of your {0} plan's email imports this month, including one retry. Imports refresh {refreshDate}."
 msgstr "You've used all of your {0} plan's email imports this month, including one retry. Imports refresh {refreshDate}."
 
@@ -6685,7 +6891,7 @@ msgid "You've used your generations for now. Available again {when}."
 msgstr "You've used your generations for now. Available again {when}."
 
 #. placeholder {0}: status.plan
-#: ../../apps/extension/src/panel/StatusSlot.tsx:72
+#: ../../apps/extension/src/panel/StatusSlot.tsx:74
 msgid "Your {0} plan finished importing your most recent emails. Older ones beyond its limit weren't loaded."
 msgstr "Your {0} plan finished importing your most recent emails. Older ones beyond its limit weren't loaded."
 
@@ -6699,7 +6905,7 @@ msgstr "Your {plan} plan finished importing your most recent emails. Older ones 
 msgid "Your 14-day free trial runs until <0>{0}</0>. You won't be charged before then."
 msgstr "Your 14-day free trial runs until <0>{0}</0>. You won't be charged before then."
 
-#: ../../apps/site/src/components/landing/Footer.tsx:26
+#: ../../apps/site/src/components/landing/Footer.tsx:27
 #: ../../apps/site/src/components/landing/Nav.tsx:49
 msgid "Your folders"
 msgstr "Your folders"
@@ -6725,7 +6931,7 @@ msgid "Your inbox doesn't have enough variety yet to personalize a taxonomy. Cho
 msgstr "Your inbox doesn't have enough variety yet to personalize a taxonomy. Choose a template instead."
 
 #: ../../apps/mobile/src/data/notificationView.ts:64
-#: ../../apps/web/src/lib/notifications.ts:83
+#: ../../apps/web/src/lib/notifications.ts:86
 msgid "Your inbox import finished."
 msgstr "Your inbox import finished."
 
@@ -6734,16 +6940,28 @@ msgstr "Your inbox import finished."
 msgid "Your inbox is still importing. You can generate now from what's loaded so far, but regenerating once the import finishes will give a more accurate fit."
 msgstr "Your inbox is still importing. You can generate now from what's loaded so far, but regenerating once the import finishes will give a more accurate fit."
 
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:55
+#~ msgid "Your inbox, sorted the way you think."
+#~ msgstr "Your inbox, sorted the way you think."
+
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:89
+msgid "Your inbox, sorted your way"
+msgstr "Your inbox, sorted your way"
+
 #: ../../apps/mobile/src/components/EditNameSheet.tsx:56
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:65
 msgid "Your name"
 msgstr "Your name"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:135
+#: ../../apps/extension/src/panel/StatusSlot.tsx:137
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:40
 #: ../ui/src/emails/BackfillCard.tsx:38
 msgid "Your past threads are being loaded and will appear shortly."
 msgstr "Your past threads are being loaded and will appear shortly."
+
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:99
+msgid "Your plan is a simple folder tree branching out from your inbox. Let Amarnai generate it from your inbox, start from a template, or draw it yourself."
+msgstr "Your plan is a simple folder tree branching out from your inbox. Let Amarnai generate it from your inbox, start from a template, or draw it yourself."
 
 #: ../../apps/site/src/components/landing/TaxonomyDemoSection.tsx:12
 msgid "Your plan is a simple folder tree: your folders branching out from the inbox. Let Amarnai generate it from your inbox, start from a template, or draw it yourself. Then it walks the tree for every email that arrives."
@@ -6754,7 +6972,7 @@ msgid "Your plan is a tree of folders (for example a Customers folder with Suppo
 msgstr "Your plan is a tree of folders (for example a Customers folder with Support and Billing beneath it), each described in plain language, and Amarnai walks that tree to route every thread to the folder that fits best. The fastest way to build it is to let Amarnai generate one for you: it reads your inbox and proposes a complete tree, named and described, that you can keep as-is or adjust. You can also start from one of our ready-made templates or build your own from scratch. No technical know-how required."
 
 #. placeholder {0}: status.plan
-#: ../../apps/extension/src/panel/StatusSlot.tsx:71
+#: ../../apps/extension/src/panel/StatusSlot.tsx:73
 msgid "Your retry import finished and is still capped by your {0} plan. Your next retry is available {refreshDate}."
 msgstr "Your retry import finished and is still capped by your {0} plan. Your next retry is available {refreshDate}."
 

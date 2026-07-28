@@ -2,6 +2,7 @@ import { Trans, Plural } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
 import type { InboxStatus } from "@amarnai/core/emails";
+import type { PlanSetupMode } from "@amarnai/ui/plan-setup";
 import { TOP_PLAN, getDraftQuotaResetsAt, formatQuotaResetDate } from "@amarnai/shared";
 import { WEB_APP_URL } from "../config";
 
@@ -10,6 +11,8 @@ type Props = {
   /** Route the whole waiting backlog (routeUnrouted + optimistic count reset). */
   onSort: () => void;
   onDismissPlanCap: () => void;
+  /** Open the in-panel plan setup dialog (owned by EmailsPanel). */
+  onOpenPlanSetup: (mode: PlanSetupMode) => void;
 };
 
 // The single pinned sorting-status row under the panel header. Which state to
@@ -17,7 +20,7 @@ type Props = {
 // @amarnai/core; this component owns only the 360px presentation. Two visual
 // templates: an action row (inline CTA) and a notice row (dismissible, may wrap).
 // Actions that need the plan editor or billing open the web app in a new tab.
-export function StatusSlot({ status, onSort, onDismissPlanCap }: Props) {
+export function StatusSlot({ status, onSort, onDismissPlanCap, onOpenPlanSetup }: Props) {
   const { _ } = useLingui();
   // The empty takeover is rendered full-pane by EmailsPanel, not in the slot.
   if (!status || status.kind === "no-plan-empty") return null;
@@ -33,14 +36,13 @@ export function StatusSlot({ status, onSort, onDismissPlanCap }: Props) {
               other="# threads are waiting. Set up folders to start sorting."
             />
           </span>
-          <a
+          <button
+            type="button"
             className="ax-btn ax-btn-primary ax-status-btn"
-            href={`${WEB_APP_URL}/plan?openGenerate=1`}
-            target="_blank"
-            rel="noopener noreferrer"
+            onClick={() => onOpenPlanSetup("choice")}
           >
             <Trans>Set up folders</Trans>
-          </a>
+          </button>
         </div>
       </div>
     );
@@ -146,8 +148,15 @@ export function StatusSlot({ status, onSort, onDismissPlanCap }: Props) {
 }
 
 // Full-pane takeover for the "empty inbox, no plan" exception: there is no list
-// to pin a row over, so the whole pane is a single CTA into the web plan editor.
-export function NoPlanEmptyState() {
+// to pin a row over, so the whole pane becomes the plan-setup entry point. Both
+// routes into the dialog are offered here (rather than one button into a choice
+// screen) because this screen is the user's first stop after connecting, and
+// the extra click is the whole cost of the decision.
+export function NoPlanEmptyState({
+  onOpenPlanSetup,
+}: {
+  onOpenPlanSetup: (mode: PlanSetupMode) => void;
+}) {
   return (
     <div className="ax-center">
       <div className="ax-emptyplan-glyph" aria-hidden>
@@ -163,13 +172,29 @@ export function NoPlanEmptyState() {
       <p className="ax-muted">
         <Trans>Set up folders so Amarnai knows where to file your mail. It only takes a minute.</Trans>
       </p>
+      <div className="ax-emptyplan-actions">
+        <button
+          type="button"
+          className="ax-btn ax-btn-primary"
+          onClick={() => onOpenPlanSetup("generate")}
+        >
+          <Trans>Generate from inbox</Trans>
+        </button>
+        <button
+          type="button"
+          className="ax-btn ax-btn-secondary"
+          onClick={() => onOpenPlanSetup("template")}
+        >
+          <Trans>Use a template</Trans>
+        </button>
+      </div>
       <a
-        className="ax-btn ax-btn-primary"
+        className="ax-linkbtn"
         href={`${WEB_APP_URL}/plan`}
         target="_blank"
         rel="noopener noreferrer"
       >
-        <Trans>Open the plan editor</Trans>
+        <Trans>Fine-tune later in the plan editor</Trans>
       </a>
     </div>
   );

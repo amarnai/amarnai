@@ -1,6 +1,7 @@
 import { msg, plural } from "@lingui/core/macro";
 import type { I18n } from "@lingui/core";
 import { interpretNotification, type NotificationItem } from "@amarnai/api-client";
+import { CHROME_EXTENSION_STORE_URL } from "@amarnai/ui";
 
 // What clicking a notification does. A discriminated union rather than a bag of
 // nullable fields so each type declares exactly one action, and the surface
@@ -29,11 +30,13 @@ export type NotificationView = {
   action: NotificationAction | null;
 };
 
-// Store listings for the browser extension. Config-gated (mirrors the mobile
-// AppDownloadBanner's NEXT_PUBLIC_PLAY_STORE_URL): when neither is set —
-// self-host without a published listing — the nudge stays informational with
-// no click target. `|| null` so a blank-but-set var also counts as unset.
-const CHROME_STORE_URL = process.env.NEXT_PUBLIC_EXTENSION_STORE_URL || null;
+// Store listings for the browser extension. The Chrome Web Store listing is
+// published, so it is the fallback rather than a config requirement — without
+// it the nudge shipped a dead link wherever the env var was unset. The env var
+// remains an override for self-hosters shipping their own build. `|| null` on
+// the Firefox one so a blank-but-set var counts as unset (AMO is unpublished).
+const CHROME_STORE_URL =
+  process.env.NEXT_PUBLIC_EXTENSION_STORE_URL || CHROME_EXTENSION_STORE_URL;
 const FIREFOX_STORE_URL = process.env.NEXT_PUBLIC_EXTENSION_STORE_URL_FIREFOX || null;
 
 // Firefox is reliably UA-detectable; every other browser gets the Chrome Web

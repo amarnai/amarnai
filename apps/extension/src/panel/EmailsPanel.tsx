@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
 import type { ApiClient, FilterCounts, SyncStatus } from "@amarnai/api-client";
 import type { ActiveSelection, FolderItem, ThreadItem } from "@amarnai/ui/emails";
 import { ThreadList, ReroutePopover, AssigneePicker } from "@amarnai/ui/emails";
+import type { PlanSetupMode } from "@amarnai/ui/plan-setup";
 import { useEmailTriage, resolveInboxStatus, mapFolders, mapMembers } from "@amarnai/core/emails";
 import { getCollaboratorLimit } from "@amarnai/shared";
 import { useSession } from "../auth/session";
@@ -15,6 +16,13 @@ import { PanelHeader } from "./WorkspacePicker";
 import { ScopeField } from "./ScopeField";
 import { openThreadInMail } from "../gmail/openInGmail";
 import { WEB_APP_URL } from "../config";
+
+// The dialog pulls in the taxonomy canvas (ReactFlow), which is far larger than
+// the rest of the panel. Loaded on demand so users who already have a plan
+// never pay for it.
+const PlanSetupDialog = lazy(() =>
+  import("@amarnai/ui/plan-setup").then((m) => ({ default: m.PlanSetupDialog })),
+);
 
 type Props = {
   api: ApiClient;
@@ -28,6 +36,8 @@ type Props = {
   initialSyncStatus: SyncStatus | null;
   workspaceEmail: string | null;
   gmailAddress: string | null;
+  /** A sorting plan was created in-panel; re-seed from the new taxonomy. */
+  onPlanApplied: () => void;
 };
 
 // Recomposition of apps/web EmailsClient for the side panel: the shared
@@ -49,6 +59,7 @@ export function EmailsPanel({
   initialSyncStatus,
   workspaceEmail,
   gmailAddress,
+  onPlanApplied,
 }: Props) {
   const { _ } = useLingui();
   const now = useRef(new Date()).current;
@@ -134,6 +145,10 @@ export function EmailsPanel({
   // Plan-cap notice is dismissible for the session; kept here (not in StatusSlot)
   // so it survives the list <-> preview view switch and feeds the resolver.
   const [planCapDismissed, setPlanCapDismissed] = useState(false);
+  // Which branch the plan-setup dialog opened into, or null when it is closed.
+  // Owned here because three different rows open it, and it must survive the
+  // list <-> preview switch.
+  const [planSetup, setPlanSetup] = useState<PlanSetupMode | null>(null);
 
   const { active, selectedId, selectedThread, folders, toast } = triage;
   const routableNodeCount = folders.length;
@@ -232,9 +247,9 @@ export function EmailsPanel({
     <div className="ax-panel">
       <PanelHeader />
       {inboxStatus?.kind === "no-plan-empty" ? (
-        // Nothing to list and no plan yet: the whole pane becomes one CTA into
-        // the web plan editor rather than a banner over an empty list.
-        <NoPlanEmptyState />
+        // Nothing to list and no plan yet: the whole pane becomes the plan-setup
+        // entry point rather than a banner over an empty list.
+        <NoPlanEmptyState onOpenPlanSetup={setPlanSetup} />
       ) : (
       <>
       {/* Slot + scope are hidden while the preview pane covers the list (≤640px
@@ -246,6 +261,7 @@ export function EmailsPanel({
             status={inboxStatus}
             onSort={handleSort}
             onDismissPlanCap={() => setPlanCapDismissed(true)}
+            onOpenPlanSetup={setPlanSetup}
           />
           <ScopeField
             folders={folders}
@@ -315,6 +331,7 @@ export function EmailsPanel({
             onToggleImportant={triage.handleToggleImportant}
             canAssign={canAssign}
             onOpenAssign={openAssignFor}
+            onOpenPlanSetup={() => setPlanSetup("choice")}
           />
         ) : (
           <div className="em-preview-empty">
@@ -377,6 +394,29 @@ export function EmailsPanel({
         )}
       </div>
       </>
+      )}
+
+      {/* Overlays the whole panel, so it sits outside the empty-state branch:
+          every entry point (status row, empty state, preview pane) lands here. */}
+      {planSetup && (
+        <Suspense
+          fallback={
+            <div className="ps-overlay">
+              <div className="ax-center">
+                <span className="ax-spinner" aria-label={_(msg`Loading`)} />
+              </div>
+            </div>
+          }
+        >
+          <PlanSetupDialog
+            api={api}
+            workspaceId={workspaceId}
+            initialMode={planSetup}
+            onOpenWeb={(path) => window.open(`${WEB_APP_URL}${path}`, "_blank", "noopener")}
+            onApplied={onPlanApplied}
+            onClose={() => setPlanSetup(null)}
+          />
+        </Suspense>
       )}
     </div>
   );

@@ -5,7 +5,7 @@ import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
 import { GoogleGIcon, OutlookIcon } from "@amarnai/ui";
-import { FolderIcon } from "@/components/landing/icons";
+import { FolderIcon } from "@amarnai/ui/demo";
 
 function StepArt2() {
   const { _ } = useLingui();
@@ -390,8 +390,9 @@ export function HowItWorksSection() {
       ),
       body: (
         <Trans>
-          Sign in with Google or Microsoft. Amarnai syncs your threads and
-          labels. It never sends or deletes on your behalf.
+          Add the browser extension, then sign in with Google or Microsoft.
+          Amarnai syncs your threads and labels. It never sends or deletes on
+          your behalf.
         </Trans>
       ),
       art: <StepArt1 provider={provider} />,

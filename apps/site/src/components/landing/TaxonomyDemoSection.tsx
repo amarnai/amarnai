@@ -1,5 +1,5 @@
 import { Trans } from "@lingui/react/macro";
-import { DemoTaxonomyCanvas } from "@/components/demo/DemoTaxonomyCanvas";
+import { DemoTaxonomyCanvas } from "@amarnai/ui/demo";
 
 export function TaxonomyDemoSection() {
   return (

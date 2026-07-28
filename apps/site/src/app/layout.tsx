@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import { THEME_INIT_SCRIPT } from "@amarnai/ui";
 import "@amarnai/ui/emails/styles";
+import "@amarnai/ui/demo/styles";
 import "./globals.css";
 import "@amarnai/ui/theme/styles";
 import "@amarnai/ui/tooltip/styles";

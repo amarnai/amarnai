@@ -26,8 +26,10 @@ const chromeStub = {
   },
   runtime: {
     onMessage: { addListener: vi.fn(), removeListener: vi.fn() },
+    onInstalled: { addListener: vi.fn() },
     sendMessage: vi.fn(async () => undefined),
     getManifest: vi.fn(() => ({ version: "0.0.0-test" })),
+    getURL: vi.fn((path: string) => `chrome-extension://test/${path}`),
   },
   identity: {
     getRedirectURL: vi.fn(() => "https://abcdefghijklmnop.chromiumapp.org/"),

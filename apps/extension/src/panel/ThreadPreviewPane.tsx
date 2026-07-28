@@ -9,7 +9,6 @@ import { chronologicalMessages } from "@amarnai/core/emails";
 import { GmailIcon, OutlookIcon } from "@amarnai/ui";
 import { formatQuotaResetDate, TAXONOMY_MIN_NON_ROOT_NODES } from "@amarnai/shared";
 import { openThreadInMail } from "../gmail/openInGmail";
-import { WEB_APP_URL } from "../config";
 
 type DraftState = "idle" | "loading" | "ready" | "error";
 
@@ -30,6 +29,8 @@ type Props = {
   onToggleImportant: (threadId: string) => void;
   canAssign: boolean;
   onOpenAssign: (threadId: string, anchor: HTMLElement) => void;
+  /** Open the in-panel plan setup dialog (owned by EmailsPanel). */
+  onOpenPlanSetup: () => void;
 };
 
 // Port of apps/web ThreadPreview, with the internal-secret api client swapped
@@ -53,6 +54,7 @@ export function ThreadPreviewPane({
   onToggleImportant,
   canAssign,
   onOpenAssign,
+  onOpenPlanSetup,
 }: Props) {
   const { _ } = useLingui();
   const [bodyLoaded, setBodyLoaded] = useState(false);
@@ -412,18 +414,17 @@ export function ThreadPreviewPane({
         {isUnsorted && (
           routableNodeCount < TAXONOMY_MIN_NON_ROOT_NODES ? (
             // Taxonomy too weak to route into (same threshold the web app uses to
-            // gate "Route now"), so triage would no-op. Send the user to the web
-            // app to build out their sorting plan first.
+            // gate "Route now"), so triage would no-op. Build the sorting plan
+            // here in the panel rather than sending the user to the web app.
             <div className="ax-sort-now-wrap">
               <p><Trans>This thread hasn't been sorted yet. Create a sorting plan so Amarnai knows where to file it.</Trans></p>
-              <a
+              <button
+                type="button"
                 className="ax-btn ax-btn-secondary ax-sort-now"
-                href={`${WEB_APP_URL}/plan`}
-                target="_blank"
-                rel="noopener noreferrer"
+                onClick={onOpenPlanSetup}
               >
                 <Trans>Plan sorting</Trans>
-              </a>
+              </button>
             </div>
           ) : (
             <div className="ax-sort-now-wrap">

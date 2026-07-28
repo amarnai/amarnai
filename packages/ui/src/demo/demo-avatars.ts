@@ -7,7 +7,8 @@
  * lookup would miss in non-English catalogs. Institutions (e.g. t3, the Bureau
  * of Royal Appointments) have no photo and fall back to their initials avatar.
  *
- * Paths are served from apps/site/public.
+ * Paths are root-relative, so every app that renders the demo must ship these
+ * files at its own web root: apps/site/public and apps/extension/public.
  */
 export const DEMO_AVATARS: Record<string, string> = {
   t1: "/burna-buriash-pfp.png",

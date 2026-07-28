@@ -44,26 +44,26 @@ msgstr "{0, plural, one {# kişi} other {# kişi}}"
 
 #. placeholder {0}: d.processed
 #: ../../apps/mobile/src/data/notificationView.ts:73
-#: ../../apps/web/src/lib/notifications.ts:92
+#: ../../apps/web/src/lib/notifications.ts:95
 #, fuzzy
 msgid "{0, plural, one {# thread imported.} other {# threads imported.}}"
 msgstr "{0, plural, one {# konu içe aktarıldı.} other {# konu içe aktarıldı.}}"
 
 #. placeholder {0}: d.processed
 #: ../../apps/mobile/src/data/notificationView.ts:67
-#: ../../apps/web/src/lib/notifications.ts:86
+#: ../../apps/web/src/lib/notifications.ts:89
 #, fuzzy
 msgid "{0, plural, one {# thread imported.} other {# threads imported.}} Your plan's import limit was reached."
 msgstr "{0, plural, one {# konu içe aktarıldı.} other {# konu içe aktarıldı.}} Planınızın içe aktarma sınırına ulaşıldı."
 
 #. placeholder {0}: status.waitingCount
-#: ../../apps/extension/src/panel/StatusSlot.tsx:30
+#: ../../apps/extension/src/panel/StatusSlot.tsx:33
 #, fuzzy
 msgid "{0, plural, one {# thread is waiting. Set up folders to start sorting.} other {# threads are waiting. Set up folders to start sorting.}}"
 msgstr "{0, plural, one {# ileti bekliyor. Sıralamaya başlamak için klasörleri ayarlayın.} other {# ileti bekliyor. Sıralamaya başlamak için klasörleri ayarlayın.}}"
 
 #. placeholder {0}: status.waitingCount
-#: ../../apps/extension/src/panel/StatusSlot.tsx:54
+#: ../../apps/extension/src/panel/StatusSlot.tsx:56
 msgid "{0, plural, one {# thread ready to sort} other {# threads ready to sort}}"
 msgstr "{0, plural, one {# ileti sıralamaya hazır} other {# ileti sıralamaya hazır}}"
 
@@ -103,7 +103,7 @@ msgstr "{0} / {1} kaldı · sıfırlanır {2}"
 #. placeholder {0}: d.assignedBy
 #: ../../apps/extension/src/panel/notificationText.ts:15
 #: ../../apps/mobile/src/data/notificationView.ts:34
-#: ../../apps/web/src/lib/notifications.ts:54
+#: ../../apps/web/src/lib/notifications.ts:57
 msgid "{0} assigned you a thread"
 msgstr "{0} sana bir ileti dizisi atadı"
 
@@ -194,7 +194,7 @@ msgstr "{eligible, plural, one {# konuyu yeniden sırala} other {# konuyu yenide
 #~ msgid "{filed} filed, {reviewCount} needs review"
 #~ msgstr "{filed} arşivlendi, {reviewCount} incelenmeyi bekliyor"
 
-#: ../../apps/site/src/components/landing/HeroFeedCard.tsx:270
+#: ../ui/src/demo/HeroFeedCard.tsx:270
 msgid "{filed} sorted · {reviewCount} to review"
 msgstr "{filed} sıralandı · {reviewCount} incelenecek"
 
@@ -227,7 +227,7 @@ msgid "{providerName} Inbox"
 msgstr "{providerName} Gelen Kutusu"
 
 #. placeholder {0}: draftQuota.limit
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:460
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:461
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:482
 #, fuzzy
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
@@ -288,7 +288,7 @@ msgstr "{waitingCount, plural, one {# iş parçacığı bekliyor.} other {# iş 
 msgid "/ workspace / month"
 msgstr "/ çalışma alanı / ay"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:48
+#: ../../apps/site/src/components/landing/Footer.tsx:52
 #, fuzzy
 msgid "© 2026 Amarnai. Open source under AGPL-3.0."
 msgstr "© 2026 Amarnai. AGPL-3.0 lisansıyla açık kaynak."
@@ -483,7 +483,7 @@ msgstr "3 kişi"
 msgid "3 reply drafts / month"
 msgstr "Aylık 3 taslak yanıt"
 
-#: ../../apps/site/src/components/landing/HeroFeedCard.tsx:267
+#: ../ui/src/demo/HeroFeedCard.tsx:267
 msgid "412 threads"
 msgstr "412 konu"
 
@@ -554,31 +554,46 @@ msgstr "500 iş parçacığı"
 msgid "75,000 threads"
 msgstr "75.000 ileti"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:344
+#: ../ui/src/demo/demo-seed.ts:345
 #, fuzzy
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence."
 msgstr "Thebes'li Horemheb'den Yazışma Şefi pozisyonu için yeni bir başvuru alındı."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:358
+#: ../ui/src/demo/demo-seed.ts:359
 #, fuzzy
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "Thebes'li Horemheb'den Yazışma Şefi pozisyonu için yeni bir başvuru alındı.\n\nBaşvuruyu Kayıtlar Evi'nde görüntüleyin."
+msgstr "Thebes'li Horemheb'den Yazışma Şefi pozisyonu için yeni bir başvuru alındı.\n"
+"\n"
+"Başvuruyu Kayıtlar Evi'nde görüntüleyin."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:428
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:340
+#, fuzzy
+msgid "A template gets you sorting right away, and you can edit it later."
+msgstr "Bir şablonla hemen sıralamaya başlayabilir, sonra düzenleyebilirsiniz."
+
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:366
+msgid "A workspace owner manages this workspace's sorting plan."
+msgstr "Çalışma alanı sahibi, bu çalışma alanının sıralama planını yönetir."
+
+#: ../ui/src/demo/demo-seed.ts:429
 #, fuzzy
 msgid "Abdi-Heba of Urushalim"
 msgstr "Urushalim'li Abdi-Heba"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:173
+#: ../ui/src/demo/demo-seed.ts:174
 #, fuzzy
 msgid "Abdi-Heba,\n"
 "\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "Abdi-Heba,\n\nAynı hafta Delta yakınında olacağım. İkinci gün menzil istasyonunda buluşalım; sabahı ayırabilirim.\n\nO zamana dek,"
+msgstr "Abdi-Heba,\n"
+"\n"
+"Aynı hafta Delta yakınında olacağım. İkinci gün menzil istasyonunda buluşalım; sabahı ayırabilirim.\n"
+"\n"
+"O zamana dek,"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
@@ -658,6 +673,10 @@ msgstr "Dışa aktarmak için en az 3 bağlı klasör ekleyin."
 #: ../ui/src/emails/AssigneePicker.tsx:45
 msgid "Add members"
 msgstr "Üye Ekle"
+
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:392
+msgid "Add the browser extension, then sign in with Google or Microsoft. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
+msgstr "Tarayıcı eklentisini ekleyin, ardından Google veya Microsoft ile oturum açın. Amarnai yazışmalarınızı ve etiketlerinizi senkronize eder. Adınıza asla e-posta göndermez veya silmez."
 
 #: ../../apps/site/src/components/landing/InstallExtensionButton.tsx:65
 #, fuzzy
@@ -780,7 +799,7 @@ msgstr "Tüm çalışma alanı verileri kalıcı olarak silinecektir."
 msgid "All your workspaces, emails, and settings will be deleted permanently."
 msgstr "Tüm çalışma alanlarınız, e-postalarınız ve ayarlarınız kalıcı olarak silinecektir."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:300
+#: ../ui/src/demo/demo-seed.ts:301
 #, fuzzy
 msgid "Alliance proposal: house of Amurru"
 msgstr "İttifak teklifi: Amurru hanedanı"
@@ -811,6 +830,19 @@ msgstr "Senkronize e-posta verilerini de sil"
 #: ../../apps/site/src/lib/seo.ts:114
 msgid "amarnai business plan"
 msgstr "Amarnai İş Planı"
+
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:92
+msgid "Amarnai files every Gmail and Outlook thread into folders you design, from the side panel next to the mail you are already reading."
+msgstr "Amarnai, okuduğunuz e-postanın yanındaki panelden, tüm Gmail ve Outlook yazışmalarınızı tasarladığınız klasörlere dosyalar."
+
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:109
+#, fuzzy
+msgid "Amarnai files every thread into folders you choose. Generate a set from your own inbox, or start from a template."
+msgstr "Amarnai her yazışmayı seçtiğiniz klasörlere dosyalıyor. Kendi gelen kutunuzdan bir set oluşturabilir veya bir şablonla başlayabilirsiniz."
+
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:313
+msgid "Amarnai files your mail into folders you choose. Build them from your own inbox, or start from a ready-made set."
+msgstr "Amarnai maillerinizi seçtiğiniz klasörlere dosyalıyor. Kendi gelen kutunuzdan oluşturabilir veya hazır bir setle başlayabilirsiniz."
 
 #: ../ui/src/AppDownloadBanner.tsx:68
 #, fuzzy
@@ -848,7 +880,7 @@ msgstr "Amarnai adını <0>Amarna Mektupları'ndan</0> alır: Bronz Çağı'nda 
 #~ msgid "Amarnai is named after the Amarna letters, a cache of clay tablets from around 1350 BC: the diplomatic correspondence between the pharaoh of Egypt and the kings and vassals of the ancient Near East. It is one of the earliest surviving inboxes, and almost all of it is incoming. Hundreds of letters reached the pharaoh, but barely any of his replies survive. Rib-Hadda of Byblos wrote again and again and went unanswered, most likely lost in an inbox no one could keep up with. Amarnai keeps yours from that fate."
 #~ msgstr ""
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:60
+#: ../../apps/site/src/components/landing/FAQSection.tsx:64
 #, fuzzy
 msgid "Amarnai is named after the Amarna letters, a cache of clay tablets from around 1350 BC: the diplomatic correspondence between the pharaoh of Egypt and the kings and vassals of the ancient Near East. It is one of the earliest surviving inboxes, and almost all of it is incoming. Hundreds of letters reached the pharaoh, but barely any of his replies survive. Senders like Rib-Hadda of Byblos wrote again and again with little response, most likely because the pharaoh was too overloaded to keep up. Amarnai spares you from that fate."
 msgstr "Amarnai adını, MÖ 1350 civarına ait kil tabletlerden oluşan ve Mısır firavunu ile Antik Yakın Doğu'daki krallar ve vasallar arasındaki diplomatik yazışmaları içeren Amarna mektuplarından almıştır. Günümüze ulaşan en eski gelen kutularından biri olup, neredeyse tamamı gelen mektuplardan oluşur. Firavuna yüzlerce mektup ulaşmasına rağmen, yanıtlarının çok azı günümüze kadar gelebildi. Byblos'lu Rib-Hadda gibi göndericiler tekrar tekrar yazdı, ancak çok az yanıt alabildi; büyük olasılıkla firavun iş yükünden bunalmış ve yetişememişti. Amarnai sizi bu kaderden kurtarır."
@@ -875,12 +907,21 @@ msgstr "Amarnai bu gelen kutusunu artık senkronize etmiyor. E-posta ileti dizil
 msgid "Amarnai is open source under AGPL-3.0. Clone it, bring your own keys, and run every tier free on your own infrastructure."
 msgstr "Amarnai, AGPL-3.0 lisansı altında açık kaynaklıdır. Klonlayın, kendi anahtarlarınızı kullanın ve tüm katmanları kendi altyapınızda ücretsiz çalıştırın."
 
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:201
+msgid "Amarnai is pinned. Its icon opens the panel from any tab."
+msgstr "Amarnai sabitlendi. Simgesi, paneli herhangi bir sekmeden açar."
+
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:125
+#, fuzzy
+msgid "Amarnai lives in a side panel beside Gmail and Outlook, so you never have to leave the thread you are reading."
+msgstr "Amarnai, Gmail ve Outlook'un yan panelinde yer alır. Böylece okuduğunuz yazışmadan asla ayrılmak zorunda kalmazsınız."
+
 #: ../../apps/site/src/components/pricing/ExtensionBanner.tsx:33
 msgid "Amarnai lives in your inbox."
 msgstr "Amarnai gelen kutunuzda."
 
 #. placeholder {0}: d.gmailAddress
-#: ../../apps/web/src/lib/notifications.ts:74
+#: ../../apps/web/src/lib/notifications.ts:77
 #, fuzzy
 msgid "Amarnai lost access to {0}. Click to reconnect your Google account."
 msgstr "Amarnai {0}'e erişimini kaybetti. Google hesabınızı yeniden bağlamak için tıklayın."
@@ -891,7 +932,7 @@ msgstr "Amarnai {0}'e erişimini kaybetti. Google hesabınızı yeniden bağlama
 msgid "Amarnai lost access to {0}. Tap to reconnect your Google account."
 msgstr "Amarnai {0}'e erişimini kaybetti. Google hesabınızı yeniden bağlamak için dokunun."
 
-#: ../../apps/web/src/lib/notifications.ts:75
+#: ../../apps/web/src/lib/notifications.ts:78
 #, fuzzy
 msgid "Amarnai lost access to your inbox. Click to reconnect your Google account."
 msgstr "Amarnai gelen kutunuza erişimini kaybetti. Google hesabınızı yeniden bağlamak için tıklayın."
@@ -946,6 +987,10 @@ msgstr "Amarnai gelen kutunuzu okur, her yazışmayı belirlediğiniz klasörler
 msgid "Amarnai Reply"
 msgstr "Amarnai Yanıtla"
 
+#: ../../apps/web/src/components/GetExtensionBanner.tsx:63
+msgid "Amarnai sits in a side panel next to Gmail and Outlook."
+msgstr "Amarnai, Gmail ve Outlook'un yan panelinde yer alır."
+
 #: ../../apps/site/src/lib/seo.ts:46
 #~ msgid "Amarnai sorts your Gmail into the folders you define, drafts replies for your approval, and explains every call so you reach inbox zero faster."
 #~ msgstr "Amarnai Gmail'inizi belirlediğiniz klasörlere ayırır, onayınız için yanıt taslakları hazırlar ve aldığı her kararı açıklar. Böylece gelen kutunuzu daha hızlı sıfırlarsınız."
@@ -954,6 +999,11 @@ msgstr "Amarnai Yanıtla"
 #, fuzzy
 #~ msgid "Amarnai sorts your Gmail threads into folders you define, drafts replies for your approval, and explains every decision. Open-source and self-hostable."
 #~ msgstr "Amarnai, Gmail ileti dizilerinizi belirlediğiniz klasörlere ayırır, onayınız için yanıt taslakları hazırlar ve her kararını açıklar. Açık kaynaklı ve kendi kendine barındırılabilir."
+
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:93
+#, fuzzy
+msgid "Amarnai sorts your inbox for you, filing old and new mail where it belongs. Threads it is unsure about wait for you in review."
+msgstr "Amarnai, gelen kutunuzu sizin için düzenler; eski ve yeni e-postaları ait oldukları yere yerleştirir. Şüphe duyduğu yazışmalar, incelenmek üzere sizi bekler."
 
 #: ../../apps/site/src/lib/seo.ts:46
 msgid "Amarnai sorts your inbox into the folders you define, drafts replies for your approval, and explains every call so you reach inbox zero faster."
@@ -1026,7 +1076,7 @@ msgstr "Yıllık"
 msgid "Annual · Save 20%"
 msgstr "Yıllık · %20 tasarruf"
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:44
+#: ../../apps/site/src/components/landing/FAQSection.tsx:48
 #, fuzzy
 msgid "Any thread the model is unsure about is flagged for review instead of being filed automatically. Open it to see the suggested folder, the confidence score, and the reasoning, then approve the routing or send it to a different folder."
 msgstr "Modelin emin olmadığı ileti dizileri, otomatik dosyalanmak yerine incelenmek üzere işaretlenir. Önerilen klasörü, güven puanını ve gerekçeyi görmek için açın, ardından yönlendirmeyi onaylayın veya farklı bir klasöre gönderin."
@@ -1041,12 +1091,12 @@ msgstr "API hatası {0}"
 msgid "Appearance"
 msgstr "Görünüm"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:339
+#: ../ui/src/demo/demo-seed.ts:340
 #, fuzzy
 msgid "Application: Chief of Correspondence"
 msgstr "Başvuru: Yazışma Şefi"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:34
+#: ../ui/src/demo/demo-seed.ts:35
 #, fuzzy
 msgid "Applications, recruiter outreach, and interview scheduling."
 msgstr "Başvurular, işe alımcı iletişimi ve mülakat planlaması."
@@ -1075,6 +1125,7 @@ msgstr "Bu uygulama mevcut planınızın yerine geçer. Sonrasında tamamını d
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:134
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:79
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:336
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:414
 #, fuzzy
 msgid "Applying…"
 msgstr "Uygulanıyor…"
@@ -1168,7 +1219,7 @@ msgstr "Otomatik ve toplu postalar ({0}) her zaman yeni genel klasöre taşını
 msgid "Automated and bulk mail that doesn't fit another folder lands here automatically. This is different from Needs review, which holds threads too ambiguous for the assistant to sort."
 msgstr "Başka bir klasöre uymayan otomatik ve toplu e-postalar doğrudan buraya gelir. Burası, asistanın sıralayamadığı belirsiz konuşmaları barındıran 'İncelemeye Alınması Gerekenler' klasöründen farklıdır."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:349
+#: ../ui/src/demo/demo-seed.ts:350
 #, fuzzy
 msgid "Automated notice from the Bureau of Royal Appointments. Subject and sender clearly indicate a new application for an open position."
 msgstr "Kraliyet Atamaları Bürosu'ndan otomatik bildirim. Konu ve gönderici, açık bir pozisyona yeni bir başvuru olduğunu açıkça belirtiyor."
@@ -1187,34 +1238,40 @@ msgstr "Mevcut adresler"
 msgid "Aziru"
 msgstr "Aziru"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:315
+#: ../ui/src/demo/demo-seed.ts:316
 #, fuzzy
 msgid "Aziru of Amurru"
 msgstr "Amurru'lu Aziru"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:200
+#: ../ui/src/demo/demo-seed.ts:201
 msgid "Aziru proposes a formal pact of mutual protection and shared routes, and wants word sent back by the next courier."
 msgstr "Aziru, karşılıklı koruma ve ortak rotalar için resmi bir anlaşma öneriyor ve bir sonraki kurye ile haber gönderilmesini istiyor."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:158
+#: ../ui/src/demo/demo-seed.ts:159
 #, fuzzy
 msgid "Aziru,\n"
 "\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "Aziru,\n\nDostluk sözleriniz bize ulaştı. Amurru hanedanının ne önerdiğini daha fazla duymaya açığız. Koşullarınızı bir sonraki kurye ile gönderin.\n\nSaygılarımızla,"
+msgstr "Aziru,\n"
+"\n"
+"Dostluk sözleriniz bize ulaştı. Amurru hanedanının ne önerdiğini daha fazla duymaya açığız. Koşullarınızı bir sonraki kurye ile gönderin.\n"
+"\n"
+"Saygılarımızla,"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:199
+#: ../ui/src/demo/demo-seed.ts:200
 msgid "Babylon's third gold consignment is overdue after two messengers. Burna-Buriash asks you to dispatch it without further delay."
 msgstr "Babil'in üçüncü altın sevkiyatı, iki elçiden sonra gecikti. Burna-Buriash, bunu daha fazla gecikmeden göndermenizi rica ediyor."
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:354
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:356
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
 #: ../../apps/site/src/components/landing/MailThreadMock.tsx:66
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:25
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:382
 #: ../ui/src/emails/ThreadPreview.tsx:114
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:402
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:422
 #, fuzzy
 msgid "Back"
 msgstr "Geri"
@@ -1223,7 +1280,7 @@ msgstr "Geri"
 #~ msgid "Back to inbox"
 #~ msgstr "Gelen kutusuna geri dön"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:350
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:352
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:377
 #: ../ui/src/emails/ThreadPreview.tsx:109
 #, fuzzy
@@ -1265,8 +1322,8 @@ msgstr "Yıllık faturalandırılır · <0>%{pct} tasarruf edin</0>"
 msgid "Billed monthly · 14-day free trial"
 msgstr "Aylık faturalandırılır · 14 günlük ücretsiz deneme"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:30
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:258
+#: ../ui/src/demo/demo-seed.ts:31
 #, fuzzy
 msgid "Billing"
 msgstr "Faturalandırma"
@@ -1301,7 +1358,7 @@ msgstr "Yönetim Kurulu ve Yönetişim"
 msgid "Board meetings, governance policies, bylaws, and trustee correspondence."
 msgstr "Yönetim kurulu toplantıları, yönetişim politikaları, tüzükler ve mütevelli yazışmaları."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:33
+#: ../ui/src/demo/demo-seed.ts:34
 #, fuzzy
 msgid "Board members, existing fund partners, and portfolio updates."
 msgstr "Yönetim kurulu üyeleri, mevcut fon ortakları ve portföy güncellemeleri."
@@ -1315,7 +1372,7 @@ msgstr "Marka Anlaşmaları"
 #~ msgid "Browse emails easily through your folders. Generate draft replies and copy them to Gmail."
 #~ msgstr "E-postalarınızı klasörlerinizde kolayca görüntüleyin. Taslak yanıtlar oluşturun ve bunları Gmail'e kopyalayın."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:416
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:417
 msgid "Browse emails easily through your folders. Generate draft replies and copy them to your inbox."
 msgstr "Klasörlerinizdeki e-postaları kolayca gözden geçirin. Yanıt taslakları oluşturun ve gelen kutunuza kopyalayın."
 
@@ -1325,8 +1382,14 @@ msgstr "Klasörlerinizdeki e-postaları kolayca gözden geçirin. Yanıt taslakl
 msgid "Browse templates"
 msgstr "Şablonlara göz at"
 
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:49
+#, fuzzy
+msgid "Browse the folders. It's fully interactive."
+msgstr "Klasörlere göz atın. Tamamen etkileşimli."
+
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:259
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:282
+#: ../../apps/site/src/components/landing/Footer.tsx:30
 #: ../../apps/site/src/components/pricing/ExtensionBanner.tsx:24
 msgid "Browser extension"
 msgstr "Tarayıcı uzantısı"
@@ -1345,7 +1408,7 @@ msgstr "Kod tabanına karşı açılan hata raporları, yığın izleri ve regre
 msgid "Build plan"
 msgstr "Plan oluştur"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:161
+#: ../../apps/extension/src/panel/StatusSlot.tsx:170
 msgid "Build your sorting plan"
 msgstr "Sıralama planınızı oluşturun"
 
@@ -1355,12 +1418,12 @@ msgstr "Sıralama planınızı oluşturun"
 #~ msgid "Bulk triage your inbox"
 #~ msgstr "Gelen kutunuzu topluca ayıklayın"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:354
+#: ../ui/src/demo/demo-seed.ts:355
 #, fuzzy
 msgid "Bureau of Royal Appointments"
 msgstr "Kraliyet Atamaları Bürosu"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:276
+#: ../ui/src/demo/demo-seed.ts:277
 #, fuzzy
 msgid "Burna-Buriash II"
 msgstr "Burna-Buriash II"
@@ -1395,7 +1458,7 @@ msgstr "Alıcılar ve Gösterimler"
 msgid "By continuing, you agree to the <0>Terms of Service</0> and acknowledge the <1>Privacy Policy</1>."
 msgstr "Devam ederek, <0>Hizmet Şartları</0>'nı kabul etmiş ve <1>Gizlilik Politikası</1>'nı onaylamış olursunuz."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:201
+#: ../ui/src/demo/demo-seed.ts:202
 msgid "Byblos is still waiting on the third grain shipment and the city is restless. Rib-Hadda has now written seven times."
 msgstr "Byblos, üçüncü tahıl sevkiyatını hâlâ bekliyor ve şehir huzursuz. Rib-Hadda şimdiye kadar yedi kez yazdı."
 
@@ -1404,17 +1467,17 @@ msgstr "Byblos, üçüncü tahıl sevkiyatını hâlâ bekliyor ve şehir huzurs
 msgid "Campus Admin"
 msgstr "Kampüs Yöneticisi"
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:47
+#: ../../apps/site/src/components/landing/FAQSection.tsx:51
 #, fuzzy
 msgid "Can Amarnai draft replies?"
 msgstr "Amarnai taslak yanıtlar oluşturabilir mi?"
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:39
+#: ../../apps/site/src/components/landing/FAQSection.tsx:43
 #, fuzzy
 msgid "Can Amarnai sort my existing inbox, not just new mail?"
 msgstr "Amarnai yalnızca yeni postaları değil, mevcut gelen kutumu da sıralayabilir mi?"
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:55
+#: ../../apps/site/src/components/landing/FAQSection.tsx:59
 #, fuzzy
 msgid "Can I self-host Amarnai?"
 msgstr "Amarnai'yi kendi sunucumda barındırabilir miyim?"
@@ -1477,6 +1540,10 @@ msgstr "Aday havuzları, başvuru sahibi taraması ve personel planlaması."
 #: ../ui/src/i18n/taxonomy-template-messages.ts:134
 msgid "Carrier tracking numbers, delivery exceptions, and courier dispatch notices."
 msgstr "Kargo takip numaraları, teslimat istisnaları ve kurye gönderim bildirimleri."
+
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:170
+msgid "CASA Tier 2 certified"
+msgstr "CASA Tier 2 sertifikalı"
 
 #: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:58
 #: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:97
@@ -1546,6 +1613,10 @@ msgstr "Hesabınız için yeni bir parola seçin."
 msgid "Choose a subscription"
 msgstr "Bir abonelik seçin"
 
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:288
+msgid "Choose a template"
+msgstr "Şablon Seçin"
+
 #: ../../apps/web/src/app/(app)/account/AppearanceSection.tsx:16
 #, fuzzy
 #~ msgid "Choose a theme, or follow your system setting. Saved on this device."
@@ -1569,6 +1640,11 @@ msgstr "Üst klasör seç"
 msgid "Choose where each folder’s threads should go under your new plan. Matched folders keep their threads instantly; anything set to re-sort is re-classified by AI."
 msgstr "Yeni planınız kapsamında her bir klasörün ileti dizilerinin nereye gideceğini seçin. Eşleşen klasörler ileti dizilerini anında korur; yeniden sıralanacak şekilde ayarlananlar yapay zeka tarafından yeniden sınıflandırılır."
 
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:162
+#, fuzzy
+msgid "Choose which part of Amarnai to preview"
+msgstr "Amarnai'nin hangi bölümünü önizleyeceğinizi seçin"
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:169
 msgid "Classroom"
 msgstr "Sınıf"
@@ -1577,6 +1653,14 @@ msgstr "Sınıf"
 #, fuzzy
 #~ msgid "Click folders & threads, then generate a draft."
 #~ msgstr "Klasörlere ve konuşmalara tıklayın, ardından bir taslak oluşturun."
+
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:177
+msgid "Click the Amarnai icon in your toolbar to open the panel."
+msgstr "Paneli açmak için araç çubuğunuzdaki Amarnai simgesine tıklayın."
+
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:190
+msgid "Click the puzzle-piece icon at the top right of your browser, then click the pin next to Amarnai. This box updates on its own once you do."
+msgstr "Tarayıcınızın sağ üst köşesindeki yapboz parçası simgesine, ardından Amarnai'nin yanındaki raptiye simgesine tıklayın. Bu kutu, işlemi tamamladığınızda otomatik olarak güncellenir."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:21
 #, fuzzy
@@ -1599,6 +1683,10 @@ msgstr "Müşteriler"
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:128
 #: ../../apps/web/src/components/AziruIntroDialog.tsx:39
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:119
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:298
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:385
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:395
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:437
 #, fuzzy
 msgid "Close"
 msgstr "Kapat"
@@ -1794,7 +1882,7 @@ msgstr "Gelen Kutusunu Bağlayın"
 #~ msgid "Connect inbox button"
 #~ msgstr "Gelen kutusunu bağla düğmesi"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:433
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:434
 #, fuzzy
 msgid "Connect once, generate your plan once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
 msgstr "Bir kez bağlanın, planınızı bir kez oluşturun ve Amarnai'nin yeni e-postaları ve gelen kutunuzda zaten bulunan binlerce ileti dizisini halletmesine izin verin."
@@ -1839,7 +1927,7 @@ msgstr "Gelen kutunuzu Amarnai'ye senkronize etmek için Gmail hesabınızı ba�
 msgid "Connect your inbox"
 msgstr "Gelen kutunuzu bağlayın"
 
-#: ../../apps/site/src/components/landing/FinalCTASection.tsx:11
+#: ../../apps/site/src/components/landing/FinalCTASection.tsx:10
 msgid "Connect your inbox and Amarnai starts sorting within minutes. Pricing is per workspace. Sorts new mail as it arrives, and works through years of backlog."
 msgstr "Gelen kutunuzu bağlayın ve Amarnai dakikalar içinde sıralamaya başlasın. Fiyatlandırma çalışma alanına göredir. Yeni postaları geldikçe sıralar ve yıllar öncesine ait birikmiş postaları da düzenler."
 
@@ -1897,14 +1985,14 @@ msgstr "Ödemeye devam et"
 msgid "Continue with email"
 msgstr "E-posta ile devam et"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:140
+#: ../../apps/extension/src/auth/SignInScreen.tsx:113
 #: ../../apps/mobile/src/auth/GoogleSignInButton.tsx:28
 #: ../../apps/web/src/components/GoogleButton.tsx:10
 #, fuzzy
 msgid "Continue with Google"
 msgstr "Google ile devam et"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:151
+#: ../../apps/extension/src/auth/SignInScreen.tsx:124
 #: ../../apps/web/src/components/MicrosoftButton.tsx:10
 #, fuzzy
 msgid "Continue with Microsoft"
@@ -2118,6 +2206,16 @@ msgstr "Yükseltilemedi"
 msgid "Could not verify your Google account. Please try again."
 msgstr "Google hesabınız doğrulanamadı. Lütfen tekrar deneyin."
 
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:275
+#, fuzzy
+msgid "Couldn't apply the plan."
+msgstr "Plan uygulanamadı."
+
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:182
+#, fuzzy
+msgid "Couldn't check generation status."
+msgstr "Oluşturma durumu kontrol edilemedi."
+
 #: ../../apps/extension/src/panel/TriageGate.tsx:85
 msgid "Couldn't load your inbox. Check your connection and reopen the panel."
 msgstr "Gelen kutun yüklenemedi. Bağlantını kontrol et ve paneli yeniden aç."
@@ -2126,16 +2224,21 @@ msgstr "Gelen kutun yüklenemedi. Bağlantını kontrol et ve paneli yeniden aç
 msgid "Couldn't reach Amarnai. Check your connection and try again."
 msgstr "Amarnai'ye ulaşılamadı. Bağlantını kontrol et ve tekrar dene."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:209
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:237
+#, fuzzy
+msgid "Couldn't start generation."
+msgstr "Oluşturma başlatılamadı."
+
+#: ../ui/src/demo/demo-seed.ts:210
 msgid "Council convenes at the start of Shemu"
 msgstr "Meclis Shemu başlangıcında toplanır."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:450
+#: ../ui/src/demo/demo-seed.ts:451
 #, fuzzy
 msgid "Council convening: season of Shemu"
 msgstr "Konsey toplanıyor: Shemu mevsimi"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:460
+#: ../ui/src/demo/demo-seed.ts:461
 #, fuzzy
 msgid "Council preparation request from a known royal ally. Sender domain and context clearly match the Current investors folder."
 msgstr "Bilinen bir kraliyet müttefikinden konsey hazırlık talebi. Gönderen alan adı ve bağlam, Mevcut yatırımcılar klasörüyle açıkça eşleşiyor."
@@ -2205,8 +2308,8 @@ msgstr "Oluşturuluyor…"
 #: ../../apps/mobile/src/components/AssigneeSheet.tsx:63
 #: ../../apps/mobile/src/components/RerouteSheet.tsx:45
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:107
-#: ../../apps/site/src/components/demo/demo-seed.ts:33
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1874
+#: ../ui/src/demo/demo-seed.ts:34
 #, fuzzy
 msgid "Current"
 msgstr "Mevcut"
@@ -2237,8 +2340,8 @@ msgstr "Müşteri Soruları"
 #~ msgid "Customer support, onboarding, product feedback, churn, and success conversations."
 #~ msgstr "Müşteri desteği, müşteri kazanımı, ürün geri bildirimi, müşteri kaybı ve başarı görüşmeleri."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:29
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:157
+#: ../ui/src/demo/demo-seed.ts:30
 #: ../ui/src/i18n/taxonomy-template-messages.ts:59
 #, fuzzy
 msgid "Customers"
@@ -2369,7 +2472,7 @@ msgstr "Dağıtımlar"
 msgid "Describe what kinds of emails belong here: who they come from and what they are about. Be specific and use the actual names, topics, and words that show up in those emails. Describe what the emails are, not what you plan to do about them. The clearer your description, the more accurately your email is sorted here."
 msgstr "Buraya hangi tür e-postaların dahil olduğunu açıklayın: kimden geldiklerini ve içeriklerini belirtin. Belirli olun; bu e-postalarda yer alan gerçek adları, konuları ve kelimeleri kullanın. E-postaların ne olduğunu açıklayın, onlarla ne yapmayı planladığınızı değil. Açıklamanız ne kadar net olursa, e-postalarınız burada o kadar doğru bir şekilde sıralanır."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:401
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:402
 #, fuzzy
 msgid "Describe your folders"
 msgstr "Klasörlerinizi tanımlayın"
@@ -2379,6 +2482,10 @@ msgstr "Klasörlerinizi tanımlayın"
 #, fuzzy
 msgid "Description"
 msgstr "Açıklama"
+
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:106
+msgid "Design your folders"
+msgstr "Klasörlerinizi Tasarlayın"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:137
 #: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:89
@@ -2478,12 +2585,13 @@ msgstr "Bu çalışma alanının bağlantısı kesilir. Bu posta kutusu Amarnai'
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "Bu çalışma alanının bağlantısı kesilir. Bu posta kutusu hala {sharedNames} içinde bağlı olduğu için Amarnai'nin erişimi devam eder."
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:372
-#: ../../apps/extension/src/panel/StatusSlot.tsx:97
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:389
+#: ../../apps/extension/src/panel/StatusSlot.tsx:99
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:65
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:410
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:57
+#: ../../apps/web/src/components/GetExtensionBanner.tsx:73
 #: ../../apps/web/src/components/JoinedWorkspaceToast.tsx:46
 #: ../../apps/web/src/components/NotificationBell.tsx:179
 #: ../../apps/web/src/components/NotificationBell.tsx:180
@@ -2504,6 +2612,11 @@ msgstr "Görünen ad"
 msgid "Do I have to build the folder structure myself?"
 msgstr "Klasör yapısını kendim mi oluşturmam gerekiyor?"
 
+#: ../../apps/site/src/components/landing/FAQSection.tsx:31
+#, fuzzy
+msgid "Do I need the browser extension?"
+msgstr "Tarayıcı eklentisine ihtiyacım var mı?"
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:201
 msgid "Doctoral advising, thesis feedback, and mentoring for doctoral researchers."
 msgstr "Doktora danışmanlığı, tez geri bildirimi ve doktora araştırmacıları için mentorluk."
@@ -2517,13 +2630,13 @@ msgstr "Doktora danışmanlığı, tez geri bildirimi ve doktora araştırmacıl
 msgid "Doctors, pharmacies, medical appointments, prescriptions, and test results."
 msgstr "Doktorlar, eczaneler, tıbbi randevular, reçeteler ve test sonuçları."
 
-#: ../../apps/site/src/components/landing/Footer.tsx:33
+#: ../../apps/site/src/components/landing/Footer.tsx:37
 #: ../../apps/site/src/components/support/SupportContent.tsx:74
 #, fuzzy
 msgid "Documentation"
 msgstr "Belgeler"
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:35
+#: ../../apps/site/src/components/landing/FAQSection.tsx:39
 msgid "Does Amarnai work with Outlook?"
 msgstr "Amarnai Outlook ile çalışıyor mu?"
 
@@ -2586,7 +2699,7 @@ msgstr "Başka bir taslak oluştur"
 msgid "Draft failed · tap to retry"
 msgstr "Taslak oluşturulamadı · yeniden denemek için dokunun"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:475
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:476
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:498
 #, fuzzy
 msgid "Draft generation failed. Try again."
@@ -2625,7 +2738,7 @@ msgstr "Taslak Oluşturuluyor…"
 msgid "Drafts"
 msgstr "Taslaklar"
 
-#: ../../apps/site/src/components/demo/DemoTaxonomyCanvas.tsx:223
+#: ../ui/src/demo/DemoTaxonomyCanvas.tsx:227
 #, fuzzy
 msgid "Drag and connect. It's fully interactive."
 msgstr "Sürükle ve bağla. Tamamen etkileşimli."
@@ -2679,7 +2792,7 @@ msgstr "Gelen kutusunu düzenle"
 msgid "Edit Path"
 msgstr "Yolu Düzenle"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:109
+#: ../../apps/extension/src/auth/SignInScreen.tsx:134
 #: ../../apps/mobile/app/(app)/account.tsx:139
 #: ../../apps/mobile/app/forgot-password.tsx:85
 #: ../../apps/mobile/app/sign-in.tsx:89
@@ -2744,6 +2857,7 @@ msgstr "E-posta doğrulandı! Devam etmek için giriş yapın."
 #~ msgid "Email, sorted automatically. Never sends without you."
 #~ msgstr "E-postalar otomatik düzenlenir. Sizsiz asla gönderim yapmaz."
 
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:45
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:28
 #: ../../apps/web/src/components/Sidebar.tsx:32
 #, fuzzy
@@ -2843,6 +2957,10 @@ msgstr "Etkinlikler & Saha Gezileri"
 msgid "Every account starts with a free workspace, no card required. Create more or upgrade whenever your needs grow."
 msgstr "Her hesap ücretsiz bir çalışma alanı ile başlar, kart gerekmez. İhtiyaçlarınız arttığında daha fazla oluşturun veya yükseltin."
 
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:104
+msgid "Every email goes where it belongs"
+msgstr "Her e-posta ait olduğu yere gider."
+
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:192
 #, fuzzy
 msgid "Every email goes where it belongs."
@@ -2857,12 +2975,13 @@ msgstr "Her e-posta ait olduğu yere gider."
 msgid "Every thread in your inbox."
 msgstr "Gelen kutunuzdaki her konuşma."
 
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:105
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:195
 #, fuzzy
 msgid "Every thread lands in one of your folders, exactly where you would expect to find it. When a reply is needed, a draft is one click away, ready for your edits and never sent without them."
 msgstr "Her konuşma, tam da beklediğiniz gibi, klasörlerinizden birine düşer. Bir yanıt gerektiğinde, taslak tek tıkla hazır olur, düzenlemelerinizi bekler ve onlarsız asla gönderilmez."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:35
+#: ../ui/src/demo/demo-seed.ts:36
 #, fuzzy
 msgid "Everything that doesn't fit a named folder."
 msgstr "Adlandırılmış bir klasöre uymayan her şey."
@@ -2966,8 +3085,8 @@ msgstr "Aile"
 msgid "Fan messages, viewer comments, and follower engagement notifications."
 msgstr "Hayran mesajları, izleyici yorumları ve takipçi etkileşimi bildirimleri."
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:80
-#: ../../apps/site/src/components/landing/Footer.tsx:32
+#: ../../apps/site/src/components/landing/FAQSection.tsx:84
+#: ../../apps/site/src/components/landing/Footer.tsx:36
 #: ../../apps/site/src/components/landing/Nav.tsx:51
 #, fuzzy
 msgid "FAQ"
@@ -3007,10 +3126,14 @@ msgstr "Filtreleme Alanı"
 msgid "Finance"
 msgstr "Finans"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:413
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:414
 #, fuzzy
 msgid "Find and draft"
 msgstr "Bul ve Taslak Oluştur"
+
+#: ../../apps/extension/src/panel/StatusSlot.tsx:197
+msgid "Fine-tune later in the plan editor"
+msgstr "Daha sonra plan düzenleyicide ince ayar yapın."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:222
 #, fuzzy
@@ -3021,7 +3144,7 @@ msgstr "İlk temas alıcı ve satıcı sorguları ve yeni acente tanıtımları.
 msgid "Five things keep your inbox safe. First, Amarnai is read-only by design: the permissions you grant through Google make it impossible for Amarnai to send, delete, or change any email. Second, Amarnai has passed Google's security review, completing the CASA security assessment required for any app that accesses Gmail. Third, you stay in control: replies stay drafts until you say so, nothing is ever sent on your behalf, and you can disconnect Amarnai at any time. Fourth, no email bodies are stored: Amarnai keeps labels and metadata, never the contents of your messages. Fifth, the code is public, so anyone can inspect exactly what touches your email."
 msgstr "Gelen kutunuzu beş şey güvende tutar. Birincisi, Amarnai varsayılan olarak salt okunurdur: Google üzerinden verdiğiniz izinler, Amarnai'nin hiçbir e-postayı göndermesini, silmesini veya değiştirmesini imkansız hale getirir. İkincisi, Amarnai, Gmail'e erişen tüm uygulamalar için gerekli olan CASA güvenlik değerlendirmesini tamamlayarak Google'ın güvenlik incelemesinden geçmiştir. Üçüncüsü, kontrol sizde kalır: yanıtlar siz onaylayana kadar taslak olarak kalır, sizin adınıza asla hiçbir şey gönderilmez ve Amarnai'nin bağlantısını istediğiniz zaman kesebilirsiniz. Dördüncüsü, e-posta içerikleri saklanmaz: Amarnai etiketleri ve meta verileri tutar, mesajlarınızın içeriğini asla. Beşincisi, kod halka açıktır, böylece herkes e-postanıza neyin dokunduğunu tam olarak inceleyebilir."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:310
+#: ../ui/src/demo/demo-seed.ts:311
 #, fuzzy
 msgid "Flagged as alliance/investor intro based on language (\"mutual benefit\", \"long-standing friendship\"). Confidence is moderate; Aziru has been known to send similar overtures to multiple courts."
 msgstr "Dildeki ifadeler (\"karşılıklı yarar\", \"köklü dostluk\") nedeniyle ittifak/yatırımcı tanıtımı olarak işaretlendi. Güvenilirlik orta düzeyde; Aziru'nun birden fazla saraya benzer teklifler gönderdiği bilinmektedir."
@@ -3147,7 +3270,7 @@ msgstr "Sınıfı, velileri ve okul yönetimini yöneten K-12 eğitimcileri içi
 msgid "For larger organizations."
 msgstr "Daha büyük kuruluşlar için."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:305
+#: ../ui/src/demo/demo-seed.ts:306
 #, fuzzy
 msgid "For many years our houses have been as brothers. I write now to propose that we formalise this friendship for the benefit of both our peoples."
 msgstr "Hanelerimiz uzun yıllardır kardeş gibidir. Şimdi, bu dostluğu iki halkımızın da yararına resmileştirmeyi teklif etmek için yazıyorum."
@@ -3219,7 +3342,7 @@ msgstr "Ücretsiz"
 msgid "Free forever · self-serve"
 msgstr "Sonsuza dek ücretsiz · Self-servis"
 
-#: ../../apps/site/src/components/landing/HeroSection.tsx:34
+#: ../../apps/site/src/components/landing/HeroSection.tsx:29
 msgid "Free to start. Ready in minutes."
 msgstr "Başlamak ücretsiz. Dakikalar içinde hazır."
 
@@ -3259,7 +3382,7 @@ msgstr "Tam"
 #~ msgid "Full + admin controls"
 #~ msgstr "Tam + yönetici kontrolleri"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:210
+#: ../ui/src/demo/demo-seed.ts:211
 msgid "Full accounting of the eastern territories requested"
 msgstr "Doğu topraklarının eksiksiz hesap dökümü talep edildi."
 
@@ -3297,7 +3420,7 @@ msgstr "Yeni taslak oluştur. Aylık kullanım hakkınızdan birini kullanır."
 msgid "Generate a plan from your inbox"
 msgstr "Gelen kutunuzdan plan oluştur"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:454
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:455
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:146
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:366
 #: ../ui/src/emails/ThreadPreview.tsx:243
@@ -3305,31 +3428,41 @@ msgstr "Gelen kutunuzdan plan oluştur"
 msgid "Generate draft reply"
 msgstr "Taslak yanıt oluştur"
 
+#: ../../apps/extension/src/panel/StatusSlot.tsx:181
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:53
 #: ../../apps/mobile/src/components/taxonomy/RoutingIndicator.tsx:32
-#: ../../apps/site/src/components/demo/DemoTaxonomyCanvas.tsx:233
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:60
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:207
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:251
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1693
+#: ../ui/src/demo/DemoTaxonomyCanvas.tsx:237
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:375
 #, fuzzy
 msgid "Generate from inbox"
 msgstr "Gelen kutusundan oluştur"
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:275
-#: ../../apps/site/src/components/demo/DemoTaxonomyCanvas.tsx:230
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:197
+#: ../ui/src/demo/DemoTaxonomyCanvas.tsx:234
 #, fuzzy
 msgid "Generate plan from inbox"
 msgstr "Gelen kutusundan plan oluştur"
+
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:98
+msgid "Generate your plan"
+msgstr "Planınızı oluşturun"
 
 #: ../../apps/site/src/components/landing/TaxonomyDemoSection.tsx:10
 #, fuzzy
 msgid "Generate your plan."
 msgstr "Planını oluştur."
 
-#: ../../apps/site/src/components/demo/DemoTaxonomyCanvas.tsx:233
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:319
+msgid "Generating reads your senders, labels, and subject keywords, never message bodies. You review the result before anything is applied."
+msgstr "Oluşturma işlemi gönderenlerinizi, etiketlerinizi ve konu anahtar kelimelerinizi okur; mesaj içeriklerini asla okumaz. Herhangi bir şey uygulanmadan önce sonucu incelersiniz."
+
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:354
+#: ../ui/src/demo/DemoTaxonomyCanvas.tsx:237
 #, fuzzy
 msgid "Generating…"
 msgstr "Oluşturuluyor…"
@@ -3350,6 +3483,11 @@ msgstr "Oluşturma tamamlanamadı. {0} sonra tekrar deneyin veya bir şablondan 
 msgid "Generation didn't complete. Try again shortly, or start from a template."
 msgstr "Oluşturma tamamlanamadı. Kısa süre sonra tekrar deneyin veya bir şablondan başlayın."
 
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:150
+#, fuzzy
+msgid "Generation didn't complete. You can start from a template instead."
+msgstr "Oluşturma tamamlanmadı. Bunun yerine bir şablondan başlayabilirsiniz."
+
 #: ../ui/src/i18n/generation-reason-messages.ts:21
 msgid "Generation isn't available right now."
 msgstr "Üretim şu an yapılamıyor."
@@ -3368,24 +3506,32 @@ msgstr "Amarnai'den yardım alın: destekle iletişime geçin, belgelere göz at
 msgid "Get the Amarnai app"
 msgstr "Amarnai uygulamasını indirin"
 
+#: ../../apps/web/src/components/GetExtensionBanner.tsx:57
+msgid "Get the Amarnai extension"
+msgstr "Amarnai Eklentisini Edinin"
+
 #: ../ui/src/AppDownloadBanner.tsx:75
 #, fuzzy
 msgid "Get the app"
 msgstr "Uygulamayı indirin"
+
+#: ../../apps/web/src/components/GetExtensionBanner.tsx:67
+msgid "Get the extension"
+msgstr "Eklentiyi Edinin"
 
 #: ../../apps/site/src/lib/seo.ts:50
 #, fuzzy
 msgid "gmail ai assistant"
 msgstr "gmail yapay zeka asistanı"
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:32
+#: ../../apps/site/src/components/landing/FAQSection.tsx:36
 #, fuzzy
 msgid "Gmail and Outlook filters just slap a label or category on each message and leave it in the same crowded inbox. Amarnai reads every thread the way a person would and lays them out in a clean workspace where related threads sit together, each with the reasoning behind its placement, so you get a calmer view instead of one more buried label. Spam and promotions are kept out automatically unless you turn them on in settings, and anything Amarnai is unsure about is flagged for your review."
 msgstr "Gmail ve Outlook filtreleri her mesaja yalnızca bir etiket veya kategori ekler ve aynı kalabalık gelen kutusunda bırakır. Amarnai her yazışmayı bir insan gibi okur ve ilgili yazışmaların bir arada bulunduğu düzenli bir çalışma alanında sunar. Her birinin neden o yere konulduğunun açıklamasıyla birlikte, gömülü bir etiket yerine daha sakin bir görünüm elde edersiniz. Spam ve promosyonlar, ayarlarda etkinleştirmediğiniz sürece otomatik olarak dışarıda tutulur ve Amarnai'nin emin olmadığı her şey, incelemeniz için işaretlenir."
 
 #: ../../apps/extension/src/panel/notificationText.ts:18
 #: ../../apps/mobile/src/data/notificationView.ts:53
-#: ../../apps/web/src/lib/notifications.ts:72
+#: ../../apps/web/src/lib/notifications.ts:75
 msgid "Gmail disconnected"
 msgstr "Gmail bağlantısı kesildi"
 
@@ -3434,7 +3580,7 @@ msgstr "Gmail Sıralama Test Aracı"
 #~ msgid "Gmail, sorted your way."
 #~ msgstr "Gmail, istediğin gibi sıralandı."
 
-#: ../../apps/site/src/components/landing/Footer.tsx:51
+#: ../../apps/site/src/components/landing/Footer.tsx:55
 msgid "Gmail™, Chrome™ and the Gmail logo are trademarks of Google LLC. Outlook™ is a trademark of the Microsoft group of companies. Amarnai is an independent open-source project, not affiliated with or endorsed by Google or Microsoft."
 msgstr "Gmail™, Chrome™ ve Gmail logosu, Google LLC'nin ticari markalarıdır. Outlook™, Microsoft şirketler grubunun ticari markasıdır. Amarnai, Google veya Microsoft ile ilişkili olmayan veya onlar tarafından desteklenmeyen bağımsız bir açık kaynak projesidir."
 
@@ -3454,7 +3600,7 @@ msgstr "{0} adresine git"
 msgid "Go to sign in"
 msgstr "Giriş yap"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:261
+#: ../ui/src/demo/demo-seed.ts:262
 #, fuzzy
 msgid "Gold balance: third consignment overdue"
 msgstr "Altın bakiyesi: üçüncü sevkiyat gecikti"
@@ -3499,20 +3645,24 @@ msgstr "Hibe talepleri, vakıf son tarihleri ve fon sağlayıcı raporlama gerek
 msgid "Grants & Foundations"
 msgstr "Hibeler & Vakıflar"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:178
+#: ../ui/src/demo/demo-seed.ts:179
 #, fuzzy
 msgid "Great King,\n"
 "\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "Ulu Kralım,\n\nİstediğiniz raporlar konsey toplanmadan önce hazırlanacaktır. Katiplerime doğu topraklarının hesaplarını derletecek ve hızlı kurye ile önceden göndereceğim.\n\nKardeşlik içerisinde,"
+msgstr "Ulu Kralım,\n"
+"\n"
+"İstediğiniz raporlar konsey toplanmadan önce hazırlanacaktır. Katiplerime doğu topraklarının hesaplarını derletecek ve hızlı kurye ile önceden göndereceğim.\n"
+"\n"
+"Kardeşlik içerisinde,"
 
 #: ../../apps/site/src/components/support/SupportContent.tsx:77
 msgid "Guides and answers to common questions"
 msgstr "Rehberler ve sıkça sorulan soruların cevapları"
 
-#: ../../apps/site/src/components/landing/FinalCTASection.tsx:9
+#: ../../apps/site/src/components/landing/FinalCTASection.tsx:8
 #, fuzzy
 msgid "Hand the sorting to Amarnai."
 msgstr "Sıralama işini Amarnai'ye bırakın."
@@ -3522,7 +3672,7 @@ msgstr "Sıralama işini Amarnai'ye bırakın."
 msgid "Health"
 msgstr "Sağlık"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:31
+#: ../ui/src/demo/demo-seed.ts:32
 #, fuzzy
 msgid "Help requests, supply issues, and escalations from customers."
 msgstr "Müşterilerden gelen yardım talepleri, tedarik sorunları ve üst düzey sorunlar."
@@ -3533,7 +3683,7 @@ msgstr "Müşterilerden gelen yardım talepleri, tedarik sorunları ve üst düz
 msgid "Hide tips"
 msgstr "İpuçlarını gizle"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:34
+#: ../ui/src/demo/demo-seed.ts:35
 #: ../ui/src/i18n/taxonomy-template-messages.ts:62
 #, fuzzy
 msgid "Hiring"
@@ -3563,7 +3713,7 @@ msgstr "Ödev & Notlandırma"
 #~ msgid "Hosted subscriptions run on a frontier large language model. Self-hosted deployments can point at any OpenAI-compatible provider, such as OpenAI or Google Gemini, or a local Ollama model for fully offline operation."
 #~ msgstr "Barındırılan abonelikler, son teknoloji büyük dil modelleri üzerinde çalışır. Kendi kendine barındırılan dağıtımlar, OpenAI veya Google Gemini gibi OpenAI uyumlu herhangi bir sağlayıcıya ya da tamamen çevrimdışı çalışma için yerel bir Ollama modeline yönlendirilebilir."
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:64
+#: ../../apps/site/src/components/landing/FAQSection.tsx:68
 #, fuzzy
 msgid "Hosted subscriptions run on a leading AI model. Self-hosted deployments can point at any OpenAI-compatible provider, such as OpenAI or Google Gemini, or a local Ollama model for fully offline operation."
 msgstr "Barındırılan abonelikler lider bir yapay zeka modeli üzerinde çalışır. Kendi kendine barındırılan dağıtımlar, OpenAI veya Google Gemini gibi OpenAI uyumlu herhangi bir sağlayıcıya ya da tamamen çevrimdışı çalışma için yerel bir Ollama modeline yönlendirilebilir."
@@ -3597,7 +3747,7 @@ msgstr "Amarnai bana nasıl zaman kazandırır?"
 msgid "How does Amarnai's plan work?"
 msgstr "Amarnai'nin planı nasıl çalışır?"
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:31
+#: ../../apps/site/src/components/landing/FAQSection.tsx:35
 msgid "How is Amarnai different from Gmail and Outlook filters?"
 msgstr "Amarnai, Gmail ve Outlook filtrelerinden nasıl farklıdır?"
 
@@ -3606,12 +3756,12 @@ msgstr "Amarnai, Gmail ve Outlook filtrelerinden nasıl farklıdır?"
 #~ msgid "How is Amarnai different from Gmail's filters and labels?"
 #~ msgstr "Amarnai, Gmail'in filtre ve etiketlerinden nasıl farklıdır?"
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:51
+#: ../../apps/site/src/components/landing/FAQSection.tsx:55
 #, fuzzy
 msgid "How is Amarnai's pricing structured?"
 msgstr "Amarnai'nin fiyatlandırması nasıl yapılandırılmıştır?"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:25
+#: ../../apps/site/src/components/landing/Footer.tsx:26
 #: ../../apps/site/src/components/landing/Nav.tsx:48
 #, fuzzy
 msgid "How it works"
@@ -3623,7 +3773,7 @@ msgstr "Nasıl çalışır"
 msgid "How to write a good description"
 msgstr "İyi bir açıklama nasıl yazılır"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:318
+#: ../ui/src/demo/demo-seed.ts:319
 #, fuzzy
 msgid "I write to propose that we formalise our friendship."
 msgstr "Dostluğumuzu resmileştirmeyi teklif ediyorum."
@@ -3698,10 +3848,10 @@ msgstr "Gmail ve Outlook'ta"
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:107
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:183
 #: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:45
-#: ../../apps/site/src/components/demo/demo-seed.ts:28
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:151
 #: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:127
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:609
+#: ../ui/src/demo/demo-seed.ts:29
 #: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:73
 #, fuzzy
 msgid "Inbox"
@@ -3714,7 +3864,7 @@ msgstr "Gelen Kutusu (giriş noktası)"
 
 #: ../../apps/extension/src/panel/notificationText.ts:20
 #: ../../apps/mobile/src/data/notificationView.ts:61
-#: ../../apps/web/src/lib/notifications.ts:80
+#: ../../apps/web/src/lib/notifications.ts:83
 msgid "Inbox import complete"
 msgstr "Gelen kutusu içe aktarımı tamamlandı"
 
@@ -3755,7 +3905,7 @@ msgstr "Dahil Edildi"
 msgid "Incorrect email or password."
 msgstr "Yanlış e-posta veya parola."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:423
+#: ../ui/src/demo/demo-seed.ts:424
 #, fuzzy
 msgid "Informal message with no clear category: personal visit or political audience? Tone is personal but sender is a known vassal governor. Routed to Other with low confidence."
 msgstr "Net bir kategorisi olmayan gayri resmi mesaj: kişisel ziyaret mi yoksa siyasi bir görüşme mi? Tonu kişisel olsa da gönderen bilinen bir vasal vali. Düşük güvenle Diğer kategorisine yönlendirildi."
@@ -3779,7 +3929,7 @@ msgid "Inspections & Appraisals"
 msgstr "Denetimler ve Değerlemeler"
 
 #: ../../apps/mobile/src/data/notificationView.ts:47
-#: ../../apps/web/src/lib/notifications.ts:65
+#: ../../apps/web/src/lib/notifications.ts:68
 msgid "Install the Amarnai browser extension"
 msgstr "Amarnai tarayıcı uzantısını yükleyin"
 
@@ -3843,8 +3993,8 @@ msgstr "Geçersiz taksonomi dosyası: {0}"
 msgid "Invalid taxonomy file: {detail}"
 msgstr "Geçersiz taksonomi dosyası: {detail}"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:32
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:163
+#: ../ui/src/demo/demo-seed.ts:33
 #: ../ui/src/i18n/taxonomy-template-messages.ts:57
 #, fuzzy
 msgid "Investors"
@@ -3870,7 +4020,7 @@ msgstr "Ortak çalışanları web uygulamasından davet edin ve kaldırın."
 #~ msgid "Invited"
 #~ msgstr "Davet Edildi"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:30
+#: ../ui/src/demo/demo-seed.ts:31
 #, fuzzy
 msgid "Invoice questions, overdue balances, and payment disputes."
 msgstr "Fatura soruları, vadesi geçmiş bakiyeler ve ödeme anlaşmazlıkları."
@@ -3897,6 +4047,10 @@ msgstr "Müşterilerden ve tedarikçilerden gelen faturalar, makbuzlar ve fatura
 #: ../../apps/site/src/components/landing/FAQSection.tsx:11
 msgid "Is connecting my inbox to Amarnai safe?"
 msgstr "Gelen kutumu Amarnai'ye bağlamak güvenli mi?"
+
+#: ../../apps/site/src/components/landing/FAQSection.tsx:32
+msgid "It is the best way to use Amarnai, and it is where most people spend their time: the extension puts Amarnai in a side panel next to Gmail and Outlook, so you can sort, read, and draft without leaving your inbox. Everything is also available in the web app at app.amarnai.com, and both work on the same account, so you can install the extension whenever you like."
+msgstr "Amarnai'yi kullanmanın en iyi yolu ve çoğu kişinin zaman geçirdiği yer burasıdır: Eklenti, Amarnai'yi Gmail ve Outlook'un yan paneline yerleştirir, böylece gelen kutunuzdan ayrılmadan sıralayabilir, okuyabilir ve taslak oluşturabilirsiniz. Her şey app.amarnai.com adresindeki web uygulamasında da mevcuttur ve her ikisi de aynı hesapta çalıştığından, eklentiyi dilediğiniz zaman yükleyebilirsiniz."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:47
 #, fuzzy
@@ -4039,7 +4193,7 @@ msgstr "Son doğrulama: {0}"
 #~ msgid "Lay out folders like <0>Customers</0>, <1>Investors</1>, <2>Hiring</2>. A simple sentence each is the whole config."
 #~ msgstr "Şu şekilde klasörler oluşturun: <0>Müşteriler</0>, <1>Yatırımcılar</1>, <2>İşe Alım</2>. Her birini basit bir cümleyle tanımlamanız yeterli."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:404
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:405
 msgid "Lay out folders like <0>Customers</0>, <1>Investors</1>, <2>Hiring</2>. A simple sentence each: that's the whole setup."
 msgstr "Klasörleri <0>Müşteriler</0>, <1>Yatırımcılar</1>, <2>İşe Alım</2> gibi düzenleyin. Her biri için tek bir basit cümle: tüm kurulum bu kadar."
 
@@ -4055,7 +4209,7 @@ msgstr "Müşteri Adayları"
 msgid "Leave unsorted"
 msgstr "Sıralanmamış bırak"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:40
+#: ../../apps/site/src/components/landing/Footer.tsx:44
 #: ../ui/src/i18n/taxonomy-template-messages.ts:66
 #, fuzzy
 msgid "Legal"
@@ -4119,7 +4273,11 @@ msgstr "Canlı"
 msgid "Load more"
 msgstr "Daha fazla yükle"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:131
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:406
+msgid "Loading"
+msgstr "Yükleniyor"
+
+#: ../../apps/extension/src/panel/StatusSlot.tsx:133
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:122
 #: ../ui/src/emails/BackfillCard.tsx:35
@@ -4204,7 +4362,7 @@ msgstr "Taslaklar ve Hakem Değerlendirmesi"
 msgid "Mark as done"
 msgstr "Tamamlandı olarak işaretle"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:360
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:362
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:244
 #: ../../apps/mobile/src/components/ThreadRow.tsx:58
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:404
@@ -4307,7 +4465,7 @@ msgstr "Üye"
 msgid "Messages from parents and guardians about attendance, behavior, and progress."
 msgstr "Veli ve vasilerden devam, davranış ve gelişim hakkında mesajlar."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:29
+#: ../ui/src/demo/demo-seed.ts:30
 #, fuzzy
 msgid "Messages from paying customers and account holders."
 msgstr "Ücretli müşterilerden ve hesap sahiplerinden gelen mesajlar."
@@ -4360,8 +4518,8 @@ msgstr "Aylık"
 #: ../../apps/extension/src/panel/notificationText.ts:22
 #: ../../apps/mobile/src/data/notificationView.ts:85
 #: ../../apps/mobile/src/data/notificationView.ts:90
-#: ../../apps/web/src/lib/notifications.ts:104
-#: ../../apps/web/src/lib/notifications.ts:109
+#: ../../apps/web/src/lib/notifications.ts:107
+#: ../../apps/web/src/lib/notifications.ts:112
 msgid "Monthly sorting limit reached"
 msgstr "Aylık sıralama sınırına ulaşıldı"
 
@@ -4411,7 +4569,7 @@ msgstr "Şuraya taşı…"
 msgid "Moved to {folderName}"
 msgstr "{folderName} klasörüne taşındı"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:418
+#: ../ui/src/demo/demo-seed.ts:419
 #, fuzzy
 msgid "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face."
 msgstr "Seyahatlerim önümüzdeki günlerde beni Delta bölgesine yaklaştıracak. Ulu Kral'ın ayıracak bir saati olursa, yüz yüze konuşma fırsatını memnuniyetle karşılarım."
@@ -4444,12 +4602,12 @@ msgstr "İncelenmesi gerekiyor"
 msgid "Never"
 msgstr "Asla"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:49
+#: ../../apps/site/src/components/landing/Footer.tsx:53
 #, fuzzy
 msgid "Never auto-sends · Encrypted at rest · Minimal data"
 msgstr "Asla otomatik göndermez · Depolanırken şifrelidir · Minimum veri"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:357
+#: ../ui/src/demo/demo-seed.ts:358
 #, fuzzy
 msgid "New application from Horemheb of Thebes."
 msgstr "Thebesli Horemheb'den yeni başvuru."
@@ -4464,13 +4622,13 @@ msgstr "Yeni iş talepleri, proje teklifleri ve potansiyel müşterilerden fiyat
 #~ msgstr "Yeni iş sorguları, teklifler, fiyatlandırma görüşmeleri ve potansiyel müşteri iletişimi."
 
 #: ../../apps/mobile/src/data/notificationView.ts:91
-#: ../../apps/web/src/lib/notifications.ts:110
+#: ../../apps/web/src/lib/notifications.ts:113
 #, fuzzy
 msgid "New emails will wait until next month. Upgrade your plan for a higher limit."
 msgstr "Yeni e-postalar gelecek aya kadar bekleyecek. Daha yüksek bir sınır için planınızı yükseltin."
 
 #: ../../apps/mobile/src/data/notificationView.ts:86
-#: ../../apps/web/src/lib/notifications.ts:105
+#: ../../apps/web/src/lib/notifications.ts:108
 msgid "New emails will wait until your limit resets next month."
 msgstr "Yeni e-postalar, sınırınız gelecek ay sıfırlanana kadar bekleyecek."
 
@@ -4493,7 +4651,7 @@ msgstr "Yeni posta"
 
 #: ../../apps/extension/src/panel/notificationText.ts:24
 #: ../../apps/mobile/src/data/notificationView.ts:95
-#: ../../apps/web/src/lib/notifications.ts:114
+#: ../../apps/web/src/lib/notifications.ts:117
 msgid "New notification"
 msgstr "Yeni bildirim"
 
@@ -4503,14 +4661,14 @@ msgstr "Yeni bildirim"
 msgid "New password"
 msgstr "Yeni parola"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:137
+#: ../../apps/extension/src/panel/StatusSlot.tsx:139
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:42
 #: ../ui/src/emails/BackfillCard.tsx:40
 #, fuzzy
 msgid "New threads will appear as they are sorted."
 msgstr "Yeni ileti dizileri sıralandıkça görünecektir."
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:156
+#: ../../apps/extension/src/auth/SignInScreen.tsx:160
 msgid "New to Amarnai? <0>Create an account</0>"
 msgstr "Amarnai'ye yeni misin? <0>Hesap oluştur</0>"
 
@@ -4529,7 +4687,7 @@ msgstr "Yeni çalışma alanı adı"
 msgid "No drafts remaining"
 msgstr "Kalan taslak yok"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:459
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:460
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:481
 #: ../ui/src/emails/SuggestedDraftCard.tsx:97
 #, fuzzy
@@ -4547,7 +4705,7 @@ msgstr "Kalan taslak yok · {resetDate} tarihinde sıfırlanır"
 msgid "No drafts remaining this month"
 msgstr "Bu ay kalan taslak yok"
 
-#: ../../apps/site/src/components/landing/HeroSection.tsx:73
+#: ../../apps/site/src/components/landing/HeroSection.tsx:65
 #, fuzzy
 msgid "No email bodies stored"
 msgstr "E-posta gövdeleri depolanmaz"
@@ -4743,7 +4901,15 @@ msgstr "Resmi üniversite e-postaları: öğrenci işleri, öğrenci hizmetleri 
 msgid "On-call alerts, outage reports, and production incident escalations."
 msgstr "Nöbetçi uyarıları, kesinti raporları ve üretim olayı yükseltmeleri."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:384
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:141
+msgid "One sign-in creates your account, connects your Gmail or Outlook inbox, and lets you build your sorting plan. Amarnai never sends or deletes mail."
+msgstr "Tek bir oturum açma; hesabınızı oluşturur, Gmail veya Outlook gelen kutunuzu bağlar ve sıralama planınızı kurmanızı sağlar. Amarnai asla e-posta göndermez veya silmez."
+
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:100
+#~ msgid "One sign-in creates your account, connects your inbox, and lets you build your sorting plan. Amarnai never sends or deletes mail."
+#~ msgstr "Tek bir oturum açma, hesabınızı oluşturur, gelen kutunuzu bağlar ve sıralama planınızı oluşturmanıza olanak tanır. Amarnai asla e-posta göndermez veya silmez."
+
+#: ../ui/src/demo/demo-seed.ts:385
 #, fuzzy
 msgid "Ongoing thread with a known city governor raising a recurring supply issue. Escalatory tone and repeated follow-ups match the Support folder."
 msgstr "Tanınmış bir şehir valisiyle devam eden yazışma, tekrarlayan bir tedarik sorununu dile getiriyor. Yükselen ton ve tekrarlanan takipler Destek klasörüne uygun."
@@ -4764,18 +4930,23 @@ msgstr "Aç"
 msgid "Open a message first, then choose Amarnai Reply."
 msgstr "Önce bir mesaj açın, ardından Amarnai Yanıtı'nı seçin."
 
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:153
+#, fuzzy
+msgid "Open Amarnai"
+msgstr "Amarnai'yi Aç"
+
 #: ../../apps/site/src/components/support/SupportContent.tsx:94
 msgid "Open an issue on GitHub"
 msgstr "GitHub'da bir sorun açın"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:391
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:393
 #: ../../apps/mobile/src/components/DraftSheet.tsx:97
 #: ../ui/src/emails/providerLabels.ts:11
 #, fuzzy
 msgid "Open in Gmail"
 msgstr "Gmail'de Aç"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:389
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:391
 #: ../ui/src/emails/providerLabels.ts:11
 msgid "Open in Outlook"
 msgstr "Outlook'ta Aç"
@@ -4790,7 +4961,7 @@ msgstr "Navigasyonu aç"
 msgid "open source email ai"
 msgstr "açık kaynak e-posta yapay zekası"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:172
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:434
 msgid "Open the plan editor"
 msgstr "Plan düzenleyiciyi açın"
 
@@ -4841,7 +5012,7 @@ msgstr "İsteğe bağlı. Bu klasördeki yazışmalar için yanıt taslakları o
 msgid "Optional. Sets this folder's chip and icon color across your inbox. Default assigns a stable color automatically."
 msgstr "İsteğe bağlıdır. Bu klasörün etiket ve simge rengini gelen kutunuz genelinde ayarlar. Varsayılan, sabit bir rengi otomatik olarak atar."
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:136
+#: ../../apps/extension/src/auth/SignInScreen.tsx:130
 #: ../../apps/mobile/src/auth/GoogleSignInButton.tsx:17
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:88
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:80
@@ -4857,8 +5028,8 @@ msgstr "Ya da farklı bir gelen kutusu bağla:"
 msgid "Orders"
 msgstr "Siparişler"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:35
 #: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:179
+#: ../ui/src/demo/demo-seed.ts:36
 #, fuzzy
 msgid "Other"
 msgstr "Diğer"
@@ -4898,17 +5069,17 @@ msgstr "Veli ve Vasiler"
 msgid "Partners"
 msgstr "Ortaklar"
 
-#: ../../apps/site/src/components/landing/HeroSection.tsx:59
+#: ../../apps/site/src/components/landing/HeroSection.tsx:51
 msgid "Passed Google's security review"
 msgstr "Google'ın güvenlik incelemesinden geçti"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:413
-#: ../../apps/site/src/components/demo/demo-seed.ts:431
+#: ../ui/src/demo/demo-seed.ts:414
+#: ../ui/src/demo/demo-seed.ts:432
 #, fuzzy
 msgid "Passing through the Delta: free to meet?"
 msgstr "Delta'dan geçerken: buluşmaya müsait misin?"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:119
+#: ../../apps/extension/src/auth/SignInScreen.tsx:144
 #: ../../apps/mobile/app/sign-in.tsx:106
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:277
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:126
@@ -5079,15 +5250,19 @@ msgstr "Firavun"
 msgid "Pharaoh of Egypt"
 msgstr "Mısır Firavunu"
 
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:187
+msgid "Pin Amarnai to your toolbar"
+msgstr "Amarnai'yi araç çubuğunuza sabitleyin"
+
 #. Screen heading for the email-sorting taxonomy. Not a billing or subscription plan.
 #. Sidebar nav label for the email-sorting taxonomy. Not a billing or subscription plan.
 #. Sidebar nav label for the email-sorting taxonomy. Not a billing or subscription plan.
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:43
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:35
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:265
-#: ../../apps/site/src/components/demo/DemoTaxonomyCanvas.tsx:220
 #: ../../apps/web/src/app/(app)/plan/page.tsx:43
 #: ../../apps/web/src/components/Sidebar.tsx:35
+#: ../ui/src/demo/DemoTaxonomyCanvas.tsx:224
 #, fuzzy
 msgid "Plan"
 msgstr "Plan"
@@ -5102,7 +5277,7 @@ msgstr "Plan sadece görüntülenebilir. Sadece çalışma alanı yöneticileri 
 msgid "Plan nodes"
 msgstr "Plan düğümleri"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:425
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:426
 msgid "Plan sorting"
 msgstr "Sıralama Planı"
 
@@ -5137,12 +5312,12 @@ msgstr "Potansiyel müşterilerden ürünlerle ilgili satış öncesi sorular ve
 msgid "Prefer to self-host?"
 msgstr "Kendi sunucunuzda mı barındırmak istersiniz?"
 
-#: ../../apps/site/src/components/landing/FinalCTASection.tsx:32
+#: ../../apps/site/src/components/landing/FinalCTASection.tsx:26
 #, fuzzy
 msgid "Prefer to self-host? It's open source:<0/> <1>clone it and run it free</1>."
 msgstr "Kendi sunucunuzda mı barındırmak istersiniz? Açık kaynak:<0/> <1>klonlayın ve ücretsiz çalıştırın</1>."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:468
+#: ../ui/src/demo/demo-seed.ts:469
 #, fuzzy
 msgid "Prepare your accounts before the council convenes."
 msgstr "Konsey toplanmadan önce hesaplarınızı hazırlayın."
@@ -5171,7 +5346,7 @@ msgstr "Çalışma alanı başına ücretlendirilir. Net planlar, net sınırlar
 #~ msgid "Priced per workspace. Sort as much as you like."
 #~ msgstr "Çalışma alanı başına fiyatlandırılır. İstediğiniz kadar sıralayın."
 
-#: ../../apps/site/src/components/landing/Footer.tsx:28
+#: ../../apps/site/src/components/landing/Footer.tsx:32
 #: ../../apps/site/src/components/landing/Nav.tsx:54
 #, fuzzy
 msgid "Pricing"
@@ -5187,7 +5362,7 @@ msgstr "Fiyatlandırma | Amarnai"
 #~ msgid "Pricing is per workspace, billed monthly or annually. Every account starts with a free Personal workspace, no card required. The paid Pro and Business subscriptions add higher limits and include a 14-day trial. See the pricing page for current details."
 #~ msgstr "Fiyatlandırma çalışma alanı başına aylık veya yıllık olarak faturalandırılır. Her hesap ücretsiz bir Kişisel çalışma alanı ile başlar, kart gerekmez. Ücretli Pro ve Business abonelikleri daha yüksek limitler sunar ve 14 günlük deneme süresi içerir. Güncel ayrıntılar için fiyatlandırma sayfasını ziyaret edin."
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:52
+#: ../../apps/site/src/components/landing/FAQSection.tsx:56
 #, fuzzy
 msgid "Pricing is per workspace, billed monthly or annually. Every account starts with a free workspace, no card required. The paid Scribe and Pharaoh plans add higher limits and include a 14-day trial. See the pricing page for current details."
 msgstr "Fiyatlandırma çalışma alanı başına aylık veya yıllık olarak faturalandırılır. Her hesap ücretsiz bir çalışma alanı ile başlar, kart gerekmez. Ücretli Katip ve Firavun planları daha yüksek limitler sunar ve 14 günlük deneme süresi içerir. Mevcut ayrıntılar için fiyatlandırma sayfasını inceleyin."
@@ -5205,7 +5380,7 @@ msgstr "Müdür duyuruları, personel toplantıları ve bölge yönetimi bülten
 msgid "Priority support"
 msgstr "Öncelikli destek"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:41
+#: ../../apps/site/src/components/landing/Footer.tsx:45
 #, fuzzy
 msgid "Privacy"
 msgstr "Gizlilik"
@@ -5214,7 +5389,7 @@ msgstr "Gizlilik"
 msgid "Privacy and data handling"
 msgstr "Gizlilik ve veri işleme"
 
-#: ../../apps/site/src/components/landing/HeroSection.tsx:44
+#: ../../apps/site/src/components/landing/HeroSection.tsx:39
 #, fuzzy
 msgid "Privacy by design"
 msgstr "Tasarım gereği gizlilik"
@@ -5225,7 +5400,7 @@ msgstr "Tasarım gereği gizlilik"
 msgid "Pro"
 msgstr "Pro"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:24
+#: ../../apps/site/src/components/landing/Footer.tsx:25
 #, fuzzy
 msgid "Product"
 msgstr "Ürün"
@@ -5341,7 +5516,7 @@ msgstr "Bu ay zaten sıralanmış konuşmaları yeniden sıralamak ücretsizdir.
 msgid "Re-sorting…"
 msgstr "Yeniden sıralanıyor…"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:374
+#: ../ui/src/demo/demo-seed.ts:375
 #, fuzzy
 msgid "Re: Grain shipment: third delay this season"
 msgstr "Hk: Tahıl sevkiyatı: Bu sezon üçüncü gecikme"
@@ -5361,9 +5536,14 @@ msgstr "Yeniden etkinleştir"
 msgid "Read-only · OAuth · revoke anytime"
 msgstr "Sadece okuma · OAuth · İstenildiği zaman iptal edilebilir"
 
-#: ../../apps/site/src/components/landing/HeroSection.tsx:52
+#: ../../apps/site/src/components/landing/HeroSection.tsx:47
 msgid "Read-only by design"
 msgstr "Varsayılan olarak salt okunur"
+
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:331
+#, fuzzy
+msgid "Reading your inbox and building a plan. This can take a moment."
+msgstr "Gelen kutunuz okunuyor ve plan oluşturuluyor. Bu biraz zaman alabilir."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:205
 msgid "Real Estate Agent"
@@ -5383,6 +5563,11 @@ msgstr "Yakın zamanda denendi. {when} tekrar kullanılabilir."
 #: ../ui/src/i18n/generation-reason-messages.ts:18
 msgid "Recently attempted. Try again later."
 msgstr "Yakın zamanda denendi. Daha sonra tekrar deneyin."
+
+#: ../ui/src/plan-setup/TemplatePicker.tsx:64
+#, fuzzy
+msgid "Recommended"
+msgstr "Önerilen"
 
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1878
 msgid "Recommended for your inbox"
@@ -5505,7 +5690,7 @@ msgstr "{0} Kaldır"
 msgid "Remove {email} from blacklist"
 msgstr "Kara listeden {email} adresini kaldır"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:360
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:362
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:243
 #: ../../apps/mobile/src/components/ThreadRow.tsx:57
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:404
@@ -5683,13 +5868,13 @@ msgstr "Gelen kutusu ile Amarnai arasındaki bölmeyi yeniden boyutlandırın"
 msgid "Resize the thread list"
 msgstr "Konu listesini boyutlandır"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:31
+#: ../../apps/site/src/components/landing/Footer.tsx:35
 #, fuzzy
 msgid "Resources"
 msgstr "Kaynaklar"
 
 #: ../../apps/extension/src/App.tsx:144
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:477
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:478
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:345
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:504
 #: ../ui/src/emails/ThreadSummaryCard.tsx:44
@@ -5711,6 +5896,11 @@ msgstr "İadeler"
 #~ msgid "Review queue"
 #~ msgstr "İnceleme kuyruğu"
 
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:290
+#, fuzzy
+msgid "Review your plan"
+msgstr "Planınızı İnceleyin"
+
 #: ../../apps/site/src/components/landing/ReviewsSection.tsx:70
 msgid "Reviews from early users"
 msgstr "İlk kullanıcıların yorumları"
@@ -5719,19 +5909,23 @@ msgstr "İlk kullanıcıların yorumları"
 #~ msgid "Reviews from our earliest correspondents"
 #~ msgstr ""
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:389
+#: ../ui/src/demo/demo-seed.ts:390
 #, fuzzy
 msgid "Rib-Hadda of Byblos"
 msgstr "Bybloslu Rib-Hadda"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:168
+#: ../ui/src/demo/demo-seed.ts:169
 #, fuzzy
 msgid "Rib-Hadda,\n"
 "\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "Rib-Hadda,\n\nSeni duyuyoruz. Güneydeki depolardan ek tahıl sipariş edildi ve hasat festivalinden önce ulaşacak. O zamana kadar sabrınızı rica ediyoruz.\n\nEsen kal,"
+msgstr "Rib-Hadda,\n"
+"\n"
+"Seni duyuyoruz. Güneydeki depolardan ek tahıl sipariş edildi ve hasat festivalinden önce ulaşacak. O zamana kadar sabrınızı rica ediyoruz.\n"
+"\n"
+"Esen kal,"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -5798,7 +5992,7 @@ msgstr "Her hafta e-posta sıralama zahmetinden saatler kazanın. Amarnai gelen 
 msgid "Save time by triaging your inbox without leaving Gmail. The extension runs in your desktop browser."
 msgstr "Gelen kutunuzu Gmail’den ayrılmadan önceliklendirerek zamandan tasarruf edin. Uzantı, masaüstü tarayıcınızda çalışır."
 
-#: ../../apps/web/src/lib/notifications.ts:66
+#: ../../apps/web/src/lib/notifications.ts:69
 msgid "Save time by triaging your inbox without leaving your email."
 msgstr "E-postanızdan ayrılmadan gelen kutunuzu düzenleyerek zamandan tasarruf edin."
 
@@ -5871,7 +6065,7 @@ msgstr "İletiler aranıyor…"
 msgid "See how your inbox is sorted, right next to your email."
 msgstr "Gelen kutunuzun nasıl sıralandığını, e-postanızın hemen yanında görün."
 
-#: ../../apps/site/src/components/landing/Footer.tsx:27
+#: ../../apps/site/src/components/landing/Footer.tsx:28
 #: ../../apps/site/src/components/landing/Nav.tsx:50
 #, fuzzy
 msgid "See it work"
@@ -5881,7 +6075,7 @@ msgstr "Nasıl çalıştığını görün"
 msgid "Select"
 msgstr "Seç"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:321
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:338
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:366
 #: ../ui/src/emails/MockEmailsPage.tsx:279
 #, fuzzy
@@ -5923,7 +6117,7 @@ msgstr "Satıcı danışmanlıkları, listeleme evrakları, fiyat indirimleri ve
 msgid "Sellers"
 msgstr "Satıcılar"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:211
+#: ../ui/src/demo/demo-seed.ts:212
 msgid "Send ahead by fast courier, before the new moon"
 msgstr "Yeni ay doğmadan hızlı kuryeyle önden gönderin."
 
@@ -5954,7 +6148,7 @@ msgstr "Gönderen kara listesi"
 msgid "Sender Blacklist"
 msgstr "Gönderen Kara Listesi"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:271
+#: ../ui/src/demo/demo-seed.ts:272
 #, fuzzy
 msgid "Sender is a known treaty partner of significant standing. Subject explicitly references an outstanding balance on an agreed consignment, which matches the Billing folder."
 msgstr "Gönderen, önemli bir konuma sahip, bilinen bir anlaşma ortağıdır. Konu, anlaşmalı bir konsinyedeki ödenmemiş bakiyeye açıkça atıfta bulunuyor ve bu durum Fatura klasörüyle eşleşiyor."
@@ -5987,12 +6181,13 @@ msgstr "Yeni şifre belirle"
 #~ msgid "Set up at least 3 folders so we can start sorting."
 #~ msgstr "Sıralamaya başlayabilmemiz için en az 3 klasör kurun."
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:42
+#: ../../apps/extension/src/panel/StatusSlot.tsx:44
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:291
 #, fuzzy
 msgid "Set up folders"
 msgstr "Klasörleri ayarlayın"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:164
+#: ../../apps/extension/src/panel/StatusSlot.tsx:173
 msgid "Set up folders so Amarnai knows where to file your mail. It only takes a minute."
 msgstr "Amarnai'nin e-postalarınızı nereye kaydetmesi gerektiğini bilmesi için klasörleri ayarlayın. Yalnızca bir dakikanızı alır."
 
@@ -6069,7 +6264,7 @@ msgstr "Yanıt taslakları oluşturmak için Amarnai Yanıtla düğmesini göste
 msgid "Showing requests, buyer tours, open-house sign-ups, and written offers."
 msgstr "Gösterim talepleri, alıcı turları, açık ev kayıtları ve yazılı teklifler."
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:132
+#: ../../apps/extension/src/auth/SignInScreen.tsx:155
 #: ../../apps/mobile/app/sign-in.tsx:133
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:288
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:42
@@ -6101,9 +6296,17 @@ msgstr "Bunun yerine e-posta ile oturum açın"
 #~ msgid "Sign in with Google"
 #~ msgstr "Google ile oturum aç"
 
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:138
+msgid "Sign in with Google or Microsoft"
+msgstr "Google veya Microsoft ile oturum açın"
+
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:392
-msgid "Sign in with Google or Microsoft. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
-msgstr "Google veya Microsoft ile oturum açın. Amarnai yazışmalarınızı ve etiketlerinizi senkronize eder. Adınıza asla e-posta göndermez veya silmez."
+#~ msgid "Sign in with Google or Microsoft. Amarnai syncs your threads and labels. It never sends or deletes on your behalf."
+#~ msgstr "Google veya Microsoft ile oturum açın. Amarnai yazışmalarınızı ve etiketlerinizi senkronize eder. Adınıza asla e-posta göndermez veya silmez."
+
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:97
+#~ msgid "Sign in with Google to start"
+#~ msgstr "Başlamak için Google ile oturum açın"
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:363
 #, fuzzy
@@ -6191,11 +6394,11 @@ msgstr "Bir sorun oluştu. Lütfen tekrar deneyin."
 msgid "Soon"
 msgstr "Yakında"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:57
+#: ../../apps/extension/src/panel/StatusSlot.tsx:59
 msgid "Sort"
 msgstr "Sıralayın"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:18
+#: ../../apps/site/src/components/landing/Footer.tsx:19
 #, fuzzy
 msgid "Sort emails your way."
 msgstr "E-postaları istediğiniz gibi sıralayın."
@@ -6227,7 +6430,7 @@ msgstr "Sıralandı"
 msgid "Sorting"
 msgstr "Sıralanıyor"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:128
+#: ../../apps/extension/src/panel/StatusSlot.tsx:130
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:32
 #: ../ui/src/emails/BackfillCard.tsx:33
 #, fuzzy
@@ -6239,7 +6442,7 @@ msgstr "Geçmiş gelen kutusu sıralanıyor"
 msgid "Sorting is taking longer than expected."
 msgstr "Sıralama beklenenden uzun sürüyor."
 
-#: ../../apps/site/src/components/landing/HeroFeedCard.tsx:223
+#: ../ui/src/demo/HeroFeedCard.tsx:223
 #, fuzzy
 msgid "Sorting live"
 msgstr "Canlı sıralama"
@@ -6250,7 +6453,7 @@ msgid "Sorting volume"
 msgstr "Sıralama hacmi"
 
 #: ../../apps/mobile/src/components/RationaleCard.tsx:34
-#: ../../apps/site/src/components/landing/HeroFeedCard.tsx:95
+#: ../ui/src/demo/HeroFeedCard.tsx:95
 #: ../ui/src/emails/ThreadRow.tsx:254
 #, fuzzy
 msgid "Sorting…"
@@ -6311,7 +6514,7 @@ msgid "Start from a template (replaces current)"
 msgstr "Şablondan başlat (mevcutu değiştirir)"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:83
-#: ../../apps/site/src/components/landing/HeroSection.tsx:28
+#: ../../apps/site/src/components/landing/HeroSection.tsx:26
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:90
 #, fuzzy
 msgid "Start sorting"
@@ -6330,6 +6533,10 @@ msgstr "Startup Kurucusu"
 #: ../ui/src/i18n/generation-reason-messages.ts:15
 msgid "Still importing your inbox. Check back once the import finishes."
 msgstr "Gelen kutunuz hala içe aktarılıyor. İçe aktarma tamamlandığında tekrar kontrol edin."
+
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:92
+msgid "Stop sorting email"
+msgstr "E-postaları sıralamayı bırakın"
 
 #: ../../apps/site/src/components/landing/HeroSection.tsx:13
 #, fuzzy
@@ -6435,8 +6642,8 @@ msgstr "Denetim"
 msgid "Suppliers"
 msgstr "Tedarikçiler"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:31
-#: ../../apps/site/src/components/landing/Footer.tsx:37
+#: ../../apps/site/src/components/landing/Footer.tsx:41
+#: ../ui/src/demo/demo-seed.ts:32
 #: ../ui/src/pricing/planMessages.ts:56
 #, fuzzy
 msgid "Support"
@@ -6562,7 +6769,7 @@ msgstr "Şablon uygulandı"
 msgid "Templates"
 msgstr "Şablonlar"
 
-#: ../../apps/site/src/components/landing/Footer.tsx:42
+#: ../../apps/site/src/components/landing/Footer.tsx:46
 #, fuzzy
 msgid "Terms"
 msgstr "Şartlar"
@@ -6625,7 +6832,7 @@ msgstr "Yetkilendirme isteğinin süresi doldu veya isteğe müdahale edildi. L�
 msgid "The connection could not be saved due to a server error. Please try again."
 msgstr "Sunucu hatası nedeniyle bağlantı kaydedilemedi. Lütfen tekrar deneyin."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:202
+#: ../ui/src/demo/demo-seed.ts:203
 msgid "The council convenes at the start of Shemu. Tushratta asks for a full accounting of the eastern territories, sent ahead by fast courier."
 msgstr "Meclis, Shemu'nun başında toplanıyor. Tushratta, doğu topraklarının tam bir muhasebesinin hızlı kurye ile önceden gönderilmesini istiyor."
 
@@ -6638,27 +6845,27 @@ msgstr "Meclis, Shemu'nun başında toplanıyor. Tushratta, doğu topraklarını
 msgid "The Gmail connection, all synced emails, and the taxonomy will be permanently deleted. Re-importing this inbox uses your monthly import allowance; if it runs out, you can import again after {allowanceResetsAt} or by upgrading."
 msgstr "Gmail bağlantısı, senkronize edilmiş tüm e-postalar ve taksonomi kalıcı olarak silinecektir. Bu gelen kutusunu yeniden içe aktarmak, aylık içe aktarma kotanızı kullanır; eğer biterse, {allowanceResetsAt} tarihinden sonra veya yükselterek tekrar içe aktarabilirsiniz."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:379
+#: ../ui/src/demo/demo-seed.ts:380
 #, fuzzy
 msgid "The grain you sent last month was received with gratitude. But I must write again: the third shipment has not arrived and the city grows restless."
 msgstr "Geçen ay gönderdiğiniz zahire minnetle kabul edildi. Ancak bir kez daha yazmalıyım: üçüncü sevkiyat ulaşmadı ve şehirde huzursuzluk artıyor."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:455
+#: ../ui/src/demo/demo-seed.ts:456
 #, fuzzy
 msgid "The great council convenes at the start of Shemu. I ask that you prepare a full accounting of the eastern territories and send it ahead by fast courier."
 msgstr "Büyük konsey Şemu'nun başında toplanacak. Doğu topraklarının tam bir dökümünü hazırlayıp hızlı bir kuryeyle önceden göndermenizi rica ederim."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:266
+#: ../ui/src/demo/demo-seed.ts:267
 #, fuzzy
 msgid "The third gold consignment agreed under our treaty has not arrived. Two messengers have passed and still we wait."
 msgstr "Antlaşmamızda kararlaştırılan üçüncü altın sevkiyatı henüz gelmedi. İki haberci geçti ve biz hâlâ bekliyoruz."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:279
+#: ../ui/src/demo/demo-seed.ts:280
 #, fuzzy
 msgid "The third gold consignment is overdue."
 msgstr "Üçüncü altın sevkiyatı gecikti."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:392
+#: ../ui/src/demo/demo-seed.ts:393
 #, fuzzy
 msgid "The third grain shipment has not arrived."
 msgstr "Üçüncü zahire sevkiyatı ulaşmadı."
@@ -6682,6 +6889,10 @@ msgstr "Bu işbirlikçiler faturalandırma dönemi sonunda erişimi kaybedecek:"
 #, fuzzy
 msgid "These collaborators will lose access on {0}:"
 msgstr "Bu işbirlikçiler {0} tarihinde erişimi kaybedecek:"
+
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:356
+msgid "These folders will be created. You can edit them at any time."
+msgstr "Bu klasörler oluşturulacak. Bunları dilediğiniz zaman düzenleyebilirsiniz."
 
 #: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:52
 #, fuzzy
@@ -6756,11 +6967,11 @@ msgstr "Bu işlem, Gmail bağlantısını kaldırır, senkronize edilen tüm e-p
 #~ msgid "This thread cannot be sorted yet. Add at least {TAXONOMY_MIN_NON_ROOT_NODES} categories to your plan to begin routing."
 #~ msgstr "Bu e-posta dizisi henüz sıralanamaz. Yönlendirmeye başlamak için planınıza en az {TAXONOMY_MIN_NON_ROOT_NODES} kategori ekleyin."
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:430
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:431
 msgid "This thread hasn't been sorted yet."
 msgstr "Bu ileti dizisi henüz sıralanmadı."
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:418
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:420
 msgid "This thread hasn't been sorted yet. Create a sorting plan so Amarnai knows where to file it."
 msgstr "Bu sohbet dizisi henüz sıralanmadı. Amarnai'nin nereye dosyalayacağını belirlemek için bir sıralama planı oluşturun."
 
@@ -6842,7 +7053,7 @@ msgstr "Henüz sıralanmamış ileti dizileri."
 msgid "Threads you've marked as important."
 msgstr "Önemli olarak işaretlediğin sohbetler."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:430
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:431
 msgid "Three steps to a sorted inbox."
 msgstr "Gelen kutunuzu düzene sokmak için 3 adım."
 
@@ -6851,7 +7062,11 @@ msgstr "Gelen kutunuzu düzene sokmak için 3 adım."
 #~ msgid "Three steps. Then it sorts every email for you."
 #~ msgstr "Üç adım. Tüm e-postalarınız otomatik sıralanır."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:469
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:205
+msgid "Tip: pin the Amarnai icon in your toolbar to keep it one click away."
+msgstr "İpucu: Tek tıkla erişmek için Amarnai simgesini araç çubuğunuza sabitleyin."
+
+#: ../ui/src/demo/demo-seed.ts:470
 #, fuzzy
 msgid "To my brother, the Great King,\n"
 "\n"
@@ -6860,18 +7075,28 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "Büyük Kral kardeşim,\n\nBüyük konsey Şemu'nun başında toplanacak. Doğu topraklarının tam bir muhasebesini hazırlamanızı ve mümkünse yeni aydan önce hızlı bir kurye ile göndermenizi rica ediyorum.\n\nİttifakımız güçlüdür. Konseye bunun böyle kaldığını gösterelim.\n\nMitanni Büyük Kralı Tuşratta"
+msgstr "Büyük Kral kardeşim,\n"
+"\n"
+"Büyük konsey Şemu'nun başında toplanacak. Doğu topraklarının tam bir muhasebesini hazırlamanızı ve mümkünse yeni aydan önce hızlı bir kurye ile göndermenizi rica ediyorum.\n"
+"\n"
+"İttifakımız güçlüdür. Konseye bunun böyle kaldığını gösterelim.\n"
+"\n"
+"Mitanni Büyük Kralı Tuşratta"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:163
+#: ../ui/src/demo/demo-seed.ts:164
 #, fuzzy
 msgid "To the Bureau of Royal Appointments,\n"
 "\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "Kraliyet Atama Bürosu'na,\n\nThebesli Horemheb'in başvurusunu aldık ve sonraki yeni aydan önce sicilini gözden geçireceğiz. Lütfen kendisine zamanı geldiğinde haber vereceğimizi bildirin.\n\nKraliyet fermanıyla,"
+msgstr "Kraliyet Atama Bürosu'na,\n"
+"\n"
+"Thebesli Horemheb'in başvurusunu aldık ve sonraki yeni aydan önce sicilini gözden geçireceğiz. Lütfen kendisine zamanı geldiğinde haber vereceğimizi bildirin.\n"
+"\n"
+"Kraliyet fermanıyla,"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:319
+#: ../ui/src/demo/demo-seed.ts:320
 #, fuzzy
 msgid "To the Great King,\n"
 "\n"
@@ -6880,27 +7105,41 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "Büyük Kral'a,\n\nYıllardır hanelerimiz kardeş gibidir. Şimdi, bu dostluğumuzu her iki halkımızın da yararına resmileştirmeyi teklif etmek için yazıyorum: karşılıklı koruma ve ortak ticaret yolları anlaşması.\n\nSadece şartlarımı dinlemenizi rica ediyorum. Sonraki kurye ile haber gönderin, elçimi derhal yola çıkaracağım.\n\nAmurru lordu, Büyük Kral'ın hizmetkarı Aziru"
+msgstr "Büyük Kral'a,\n"
+"\n"
+"Yıllardır hanelerimiz kardeş gibidir. Şimdi, bu dostluğumuzu her iki halkımızın da yararına resmileştirmeyi teklif etmek için yazıyorum: karşılıklı koruma ve ortak ticaret yolları anlaşması.\n"
+"\n"
+"Sadece şartlarımı dinlemenizi rica ediyorum. Sonraki kurye ile haber gönderin, elçimi derhal yola çıkaracağım.\n"
+"\n"
+"Amurru lordu, Büyük Kral'ın hizmetkarı Aziru"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:432
+#: ../ui/src/demo/demo-seed.ts:433
 #, fuzzy
 msgid "To the Great King,\n"
 "\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "Büyük Kral'a,\n\nYolculuklarım beni önümüzdeki günlerde Delta'ya yakın bir yere getirecek. Büyük Kral'ın ayıracak bir saati varsa, yüz yüze konuşma fırsatını memnuniyetle karşılarım; yazmaktan daha kolay anlatılacak meseleler var.\n\nKulunuz, Urushalim Valisi Abdi-Heba"
+msgstr "Büyük Kral'a,\n"
+"\n"
+"Yolculuklarım beni önümüzdeki günlerde Delta'ya yakın bir yere getirecek. Büyük Kral'ın ayıracak bir saati varsa, yüz yüze konuşma fırsatını memnuniyetle karşılarım; yazmaktan daha kolay anlatılacak meseleler var.\n"
+"\n"
+"Kulunuz, Urushalim Valisi Abdi-Heba"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:153
+#: ../ui/src/demo/demo-seed.ts:154
 #, fuzzy
 msgid "To the Great King, my brother,\n"
 "\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "Büyük Kral kardeşim,\n\nSözlerinizi duydum. Altın, bir sonraki elçi ayrılmadan önce gönderilecektir. Hanelerimiz arasındaki bağı değerli buluyoruz ve soğumasını istemiyoruz.\n\nDostlukla,"
+msgstr "Büyük Kral kardeşim,\n"
+"\n"
+"Sözlerinizi duydum. Altın, bir sonraki elçi ayrılmadan önce gönderilecektir. Hanelerimiz arasındaki bağı değerli buluyoruz ve soğumasını istemiyoruz.\n"
+"\n"
+"Dostlukla,"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:280
+#: ../ui/src/demo/demo-seed.ts:281
 #, fuzzy
 msgid "To the Great King, my brother,\n"
 "\n"
@@ -6909,9 +7148,15 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "Büyük Kral kardeşim,\n\nAtalarımızın yazdığı gibi, dostlukla yazıyorum. Antlaşmamız kapsamında üzerinde anlaşılan üçüncü altın sevkiyatı gelmedi. İki elçi geçti ve hâlâ bekliyoruz.\n\nHanelerimiz arasındaki bağa yakışır şekilde, gecikmeksizin göndermenizi rica ediyoruz.\n\nBabil Kralı II. Burna-Buriash"
+msgstr "Büyük Kral kardeşim,\n"
+"\n"
+"Atalarımızın yazdığı gibi, dostlukla yazıyorum. Antlaşmamız kapsamında üzerinde anlaşılan üçüncü altın sevkiyatı gelmedi. İki elçi geçti ve hâlâ bekliyoruz.\n"
+"\n"
+"Hanelerimiz arasındaki bağa yakışır şekilde, gecikmeksizin göndermenizi rica ediyoruz.\n"
+"\n"
+"Babil Kralı II. Burna-Buriash"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:393
+#: ../ui/src/demo/demo-seed.ts:394
 #, fuzzy
 msgid "To the Great King, my lord, my sun,\n"
 "\n"
@@ -6920,7 +7165,13 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "Büyük Kral'ım, efendim, güneşim,\n\nGeçen ay gönderdiğiniz tahıl şükranla alındı ve adınızı halkın önünde övdüm. Ancak tekrar yazmak zorundayım: üçüncü sevkiyat gelmedi ve şehir huzursuzlanıyor.\n\nYedi kez yazdım. Sizi rahatsız etmek istemem ama başka ne yapabilirim?\n\nKulunuz, Byblos Valisi Rib-Hadda"
+msgstr "Büyük Kral'ım, efendim, güneşim,\n"
+"\n"
+"Geçen ay gönderdiğiniz tahıl şükranla alındı ve adınızı halkın önünde övdüm. Ancak tekrar yazmak zorundayım: üçüncü sevkiyat gelmedi ve şehir huzursuzlanıyor.\n"
+"\n"
+"Yedi kez yazdım. Sizi rahatsız etmek istemem ama başka ne yapabilirim?\n"
+"\n"
+"Kulunuz, Byblos Valisi Rib-Hadda"
 
 #: ../../apps/site/src/components/landing/MailThreadMock.tsx:135
 msgid "To: You"
@@ -6970,6 +7221,10 @@ msgstr "Ayıkla"
 msgid "Triage & review"
 msgstr "Ayıkla ve İncele"
 
+#: ../../apps/web/src/components/GetExtensionBanner.tsx:60
+msgid "Triage without leaving your inbox"
+msgstr "Gelen kutunuzdan ayrılmadan önceliklendirin"
+
 #: ../../apps/mobile/src/data/notificationView.ts:33
 #, fuzzy
 #~ msgid "Triage your inbox from a side panel next to Gmail on your computer."
@@ -6993,7 +7248,7 @@ msgstr "Anında gelen kutusu ayıklama."
 msgid "Try again"
 msgstr "Tekrar dene"
 
-#: ../../apps/site/src/components/landing/FinalCTASection.tsx:19
+#: ../../apps/site/src/components/landing/FinalCTASection.tsx:16
 #, fuzzy
 msgid "Try Amarnai"
 msgstr "Amarnai'yi Dene"
@@ -7002,7 +7257,7 @@ msgstr "Amarnai'yi Dene"
 msgid "Turning this on will ask for permission to manage your labels."
 msgstr "Açıldığında etiketlerinizi yönetme izni istenecektir."
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:465
+#: ../ui/src/demo/demo-seed.ts:466
 #, fuzzy
 msgid "Tushratta of Mitanni"
 msgstr "Mitannili Tuşratta"
@@ -7028,7 +7283,7 @@ msgstr "Sınıflandırılmamış"
 msgid "Unclassified. Change folder"
 msgstr "Sınıflandırılmamış. Klasörü değiştir"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:365
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:382
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:407
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1510
 #: ../ui/src/emails/MockEmailsPage.tsx:298
@@ -7131,7 +7386,7 @@ msgstr "Ödeme yöntemini güncelle"
 msgid "Updates / Other"
 msgstr "Güncellemeler / Diğer"
 
-#: ../../apps/site/src/components/demo/demo-seed.ts:32
+#: ../ui/src/demo/demo-seed.ts:33
 #, fuzzy
 msgid "Updates, intros, and check-ins from current or prospective investors."
 msgstr "Mevcut veya potansiyel yatırımcılardan gelen güncellemeler, tanıtımlar ve bilgilendirmeler."
@@ -7171,14 +7426,14 @@ msgstr "İşbirlikçileri davet etmek ve onlara konu atamak için ücretli bir p
 #~ msgid "Upgrade to a Pro or Business subscription to invite collaborators."
 #~ msgstr "İş birliği yapanları davet etmek için Pro veya Business aboneliğine yükseltin."
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:87
+#: ../../apps/extension/src/panel/StatusSlot.tsx:89
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:60
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:50
 #, fuzzy
 msgid "Upgrade to import now"
 msgstr "Hemen içe aktarmak için yükseltin"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:89
+#: ../../apps/extension/src/panel/StatusSlot.tsx:91
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:60
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:50
 msgid "Upgrade to load the rest"
@@ -7214,9 +7469,12 @@ msgstr "Filtre ayarlarını değiştirdikten sonra gelen kutunuzdaki mevcut konu
 msgid "Use \"Rescan inbox\" after changing filters to apply them to threads already in your inbox."
 msgstr "Filtreleri değiştirdikten sonra gelen kutunuzdaki mevcut konulara uygulamak için \"Gelen kutusunu yeniden tara\" özelliğini kullanın."
 
+#: ../../apps/extension/src/panel/StatusSlot.tsx:188
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:149
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:170
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:330
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:378
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:392
 #, fuzzy
 msgid "Use a template"
 msgstr "Bir şablon kullan"
@@ -7225,6 +7483,10 @@ msgstr "Bir şablon kullan"
 #, fuzzy
 msgid "Use template"
 msgstr "Şablonu kullan"
+
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:414
+msgid "Use these folders"
+msgstr "Bu Klasörleri Kullanın"
 
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:30
 #, fuzzy
@@ -7258,6 +7520,15 @@ msgstr "Doğrulama e-postası gönderildi!"
 #, fuzzy
 msgid "Verification email sent. Check your inbox."
 msgstr "Doğrulama e-postası gönderildi. Gelen kutunuzu kontrol edin."
+
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:162
+#, fuzzy
+msgid "Verified by Google"
+msgstr "Google tarafından doğrulandı"
+
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:166
+msgid "Verified by Microsoft"
+msgstr "Microsoft tarafından doğrulandı"
 
 #: ../../apps/mobile/app/verify-email.tsx:85
 #, fuzzy
@@ -7363,12 +7634,12 @@ msgstr "Haftalık gelen kutusu hatırlatıcısı"
 #~ msgid "What AI model does Amarnai use?"
 #~ msgstr "Amarnai hangi yapay zeka modelini kullanıyor?"
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:43
+#: ../../apps/site/src/components/landing/FAQSection.tsx:47
 #, fuzzy
 msgid "What happens to threads Amarnai is unsure about?"
 msgstr "Amarnai'nin emin olmadığı konulara ne olur?"
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:63
+#: ../../apps/site/src/components/landing/FAQSection.tsx:67
 msgid "What model does Amarnai use?"
 msgstr "Amarnai hangi modeli kullanıyor?"
 
@@ -7386,7 +7657,7 @@ msgstr "King Aziru kimdir?"
 msgid "Wholesale suppliers, restock orders, and inventory availability from manufacturers."
 msgstr "Toptan tedarikçiler, stok yenileme siparişleri ve üreticilerden stok durumu."
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:59
+#: ../../apps/site/src/components/landing/FAQSection.tsx:63
 msgid "Why is it called Amarnai?"
 msgstr "Amarnai adını nereden alıyor?"
 
@@ -7394,6 +7665,10 @@ msgstr "Amarnai adını nereden alıyor?"
 #, fuzzy
 msgid "Work"
 msgstr "İş"
+
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:122
+msgid "Work next to your email"
+msgstr "E-postanızın Yanında Çalışın"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:38
 #, fuzzy
@@ -7408,13 +7683,14 @@ msgstr "Çalışan Profesyonel"
 #~ msgid "Works with Gmail today. Outlook support is on the way."
 #~ msgstr "Şu anda Gmail ile çalışır. Outlook desteği çok yakında."
 
-#: ../../apps/site/src/components/landing/FinalCTASection.tsx:24
+#: ../../apps/site/src/components/landing/FinalCTASection.tsx:18
 msgid "Works with Gmail™ and Outlook."
 msgstr "Gmail™ ve Outlook ile çalışır."
 
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:61
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:41
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:220
-#: ../../apps/site/src/components/demo/DemoTaxonomyCanvas.tsx:218
+#: ../ui/src/demo/DemoTaxonomyCanvas.tsx:222
 #: ../ui/src/emails/ThreadListHeader.tsx:65
 #: ../ui/src/pricing/planMessages.ts:53
 #, fuzzy
@@ -7478,7 +7754,7 @@ msgstr "Sıralanan klasörleri Outlook kategorileri olarak yaz"
 msgid "Writeback is on. Your folders are being mirrored into your mailbox."
 msgstr "Geri yazma etkin. Klasörleriniz posta kutunuza yansıtılıyor."
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:469
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:470
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:168
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:492
 #: ../ui/src/emails/ThreadPreview.tsx:250
@@ -7511,7 +7787,7 @@ msgstr "Evet, bağlantıyı kes"
 msgid "Yes, reset workspace"
 msgstr "Evet, çalışma alanını sıfırla"
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:40
+#: ../../apps/site/src/components/landing/FAQSection.tsx:44
 msgid "Yes. Amarnai can work through the backlog already sitting in your inbox, not only messages that arrive from now on. Clearing your backlog and sorting new mail use the same plan, up to your plan's limits, so old and new mail end up organized the same way."
 msgstr "Evet. Amarnai, yalnızca yeni gelen mesajları değil, gelen kutunuzdaki mevcut birikimi de düzenleyebilir. Birikiminizi temizlemek ve yeni postaları sıralamak, planınızın limitleri dahilinde aynı planı kullanır, böylece eski ve yeni postalar aynı şekilde düzenlenir."
 
@@ -7533,12 +7809,12 @@ msgstr "Evet. Amarnai salt okunur yetkiyle bağlanır, böylece yazışmaların�
 #~ msgid "Yes. Amarnai connects with Gmail's read-only scope, so it can read your threads but cannot send, delete, label, or change anything in your account. It keeps only what it needs to sort and display threads: subjects, participants, snippets, and the labels and reasoning it generates. Full message bodies are fetched when needed and processed in memory, not stored, and OAuth tokens are encrypted at rest."
 #~ msgstr "Evet. Amarnai, Gmail'in salt okunur izniyle bağlanır; böylece iletilerinizi okuyabilir, ancak hesabınızda hiçbir şeyi gönderemez, silemez, etiketleyemez veya değiştiremez. Yalnızca iletileri sıralamak ve görüntülemek için gereken bilgileri saklar: konular, katılımcılar, kısa metinler ve oluşturduğu etiketler ile gerekçeler. Tam ileti gövdeleri gerektiğinde alınır, bellekte işlenir ve depolanmaz; OAuth jetonları ise beklerken şifrelenir."
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:56
+#: ../../apps/site/src/components/landing/FAQSection.tsx:60
 #, fuzzy
 msgid "Yes. Amarnai is open source under the AGPL-3.0 license. You can clone the repository and run it yourself with Docker. Self-hosting is free and unsupported, with community support available on GitHub."
 msgstr "Evet. Amarnai, AGPL-3.0 lisansı altında açık kaynaklıdır. Depoyu klonlayarak Docker ile kendi sunucunuzda çalıştırabilirsiniz. Kendi sunucunuzda barındırma ücretsiz ve desteksizdir, topluluk desteği GitHub'da bulunur."
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:36
+#: ../../apps/site/src/components/landing/FAQSection.tsx:40
 msgid "Yes. Amarnai works with both Gmail and Outlook, each connected the same read-only way: Amarnai reads your threads to sort them and never sends, deletes, or changes anything in your account."
 msgstr "Evet. Amarnai hem Gmail hem de Outlook ile çalışır ve her biri aynı salt okunur şekilde bağlanır: Amarnai yazışmalarınızı sıralamak için okur ve hesabınızda asla bir şey göndermez, silmez veya değiştirmez."
 
@@ -7547,7 +7823,7 @@ msgstr "Evet. Amarnai hem Gmail hem de Outlook ile çalışır ve her biri aynı
 #~ msgid "Yes. Open a thread, press Generate draft reply, and a suggested draft appears in Amarnai for you to read and edit. Nothing is ever sent for you: when you are happy with it, you can jump to the thread in Gmail with one click and paste your reply there to send. Each subscription includes a monthly draft allowance."
 #~ msgstr "Evet. Bir iletiyi açın, Taslak yanıt oluştur'a tıklayın; Amarnai'de okuyup düzenlemeniz için önerilen bir taslak belirir. Sizin adınıza hiçbir şey gönderilmez: taslağı beğendiğinizde, tek tıklamayla Gmail'deki iletiye atlayabilir ve yanıtınızı oraya yapıştırarak gönderebilirsiniz. Her abonelik aylık bir taslak kullanım hakkı içerir."
 
-#: ../../apps/site/src/components/landing/FAQSection.tsx:48
+#: ../../apps/site/src/components/landing/FAQSection.tsx:52
 msgid "Yes. Open a thread, press Generate draft reply, and a suggested draft appears in Amarnai for you to read and edit. Nothing is ever sent for you: when you are happy with it, you can jump to the thread in your inbox with one click and paste your reply there to send. Each subscription includes a monthly draft allowance."
 msgstr "Evet. Bir yazışmayı açın, \"Yanıt taslağı oluştur\"a basın ve Amarnai'de okuyup düzenlemeniz için önerilen bir taslak belirir. Sizin için asla hiçbir şey gönderilmez: memnun kaldığınızda, tek bir tıklamayla gelen kutunuzdaki yazışmaya gidebilir ve yanıtınızı oraya yapıştırarak gönderebilirsiniz. Her abonelik aylık bir taslak kullanım hakkı içerir."
 
@@ -7606,14 +7882,14 @@ msgstr "Bu çalışma alanına bir Outlook gelen kutusu bağlama izniniz yok."
 msgid "You have used all {0} drafts in your plan this month. They reset on {1}."
 msgstr "Bu ay planınızdaki tüm {0} taslağı kullandınız. Sıfırlanma tarihi: {1}."
 
-#: ../../apps/site/src/components/landing/HeroSection.tsx:66
+#: ../../apps/site/src/components/landing/HeroSection.tsx:58
 #, fuzzy
 msgid "You stay in control"
 msgstr "Kontrol sizde kalır"
 
 #: ../../apps/extension/src/panel/notificationText.ts:16
 #: ../../apps/mobile/src/data/notificationView.ts:35
-#: ../../apps/web/src/lib/notifications.ts:55
+#: ../../apps/web/src/lib/notifications.ts:58
 msgid "You were assigned a thread"
 msgstr "Size bir konu atandı"
 
@@ -7628,7 +7904,7 @@ msgstr "{planLabel} planındasınız."
 #~ msgstr "Listedesiniz!"
 
 #. placeholder {0}: status.plan
-#: ../../apps/extension/src/panel/StatusSlot.tsx:69
+#: ../../apps/extension/src/panel/StatusSlot.tsx:71
 #, fuzzy
 msgid "You've used all of your {0} plan's email imports this month, including one retry. Imports refresh {refreshDate}."
 msgstr "{0} planınızın bu ayki tüm e-posta içe aktarma haklarını, bir yeniden deneme dahil, kullandınız. İçe aktarımlar {refreshDate} tarihinde yenilenir."
@@ -7648,7 +7924,7 @@ msgid "You've used your generations for now. Available again {when}."
 msgstr "Üretim haklarınızı şimdilik kullandınız. {when} tekrar kullanılabilir."
 
 #. placeholder {0}: status.plan
-#: ../../apps/extension/src/panel/StatusSlot.tsx:72
+#: ../../apps/extension/src/panel/StatusSlot.tsx:74
 #, fuzzy
 msgid "Your {0} plan finished importing your most recent emails. Older ones beyond its limit weren't loaded."
 msgstr "{0} planınız en son e-postalarınızı içe aktarmayı tamamladı. Sınırı aşan eski e-postalar yüklenmedi."
@@ -7664,7 +7940,7 @@ msgstr "{plan} planınız en yeni e-postalarınızı içe aktarmayı tamamladı.
 msgid "Your 14-day free trial runs until <0>{0}</0>. You won't be charged before then."
 msgstr "14 günlük ücretsiz deneme süreniz <0>{0}</0> tarihine kadar devam ediyor. Bu tarihten önce ücretlendirilmeyeceksiniz."
 
-#: ../../apps/site/src/components/landing/Footer.tsx:26
+#: ../../apps/site/src/components/landing/Footer.tsx:27
 #: ../../apps/site/src/components/landing/Nav.tsx:49
 msgid "Your folders"
 msgstr "Klasörleriniz"
@@ -7693,7 +7969,7 @@ msgid "Your inbox doesn't have enough variety yet to personalize a taxonomy. Cho
 msgstr "Gelen kutunuzda taksonomiyi kişiselleştirmek için henüz yeterli çeşitlilik yok. Bunun yerine bir şablon seçin."
 
 #: ../../apps/mobile/src/data/notificationView.ts:64
-#: ../../apps/web/src/lib/notifications.ts:83
+#: ../../apps/web/src/lib/notifications.ts:86
 msgid "Your inbox import finished."
 msgstr "Gelen kutusu içe aktarımınız tamamlandı."
 
@@ -7703,17 +7979,29 @@ msgstr "Gelen kutusu içe aktarımınız tamamlandı."
 msgid "Your inbox is still importing. You can generate now from what's loaded so far, but regenerating once the import finishes will give a more accurate fit."
 msgstr "Gelen kutunuz hala içe aktarılıyor. Yüklenen verilerle şimdi oluşturabilirsiniz, ancak içe aktarma bitince tekrar oluşturmak daha doğru sonuç verir."
 
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:55
+#~ msgid "Your inbox, sorted the way you think."
+#~ msgstr "Gelen kutunuz, tam da düşündüğünüz gibi düzenlenmiş."
+
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:89
+msgid "Your inbox, sorted your way"
+msgstr "Gelen kutunuz, sizin istediğiniz gibi düzenlendi."
+
 #: ../../apps/mobile/src/components/EditNameSheet.tsx:56
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:65
 #, fuzzy
 msgid "Your name"
 msgstr "Adınız"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:135
+#: ../../apps/extension/src/panel/StatusSlot.tsx:137
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:40
 #: ../ui/src/emails/BackfillCard.tsx:38
 msgid "Your past threads are being loaded and will appear shortly."
 msgstr "Geçmiş sohbetleriniz yükleniyor ve kısa süre içinde görünecektir."
+
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:99
+msgid "Your plan is a simple folder tree branching out from your inbox. Let Amarnai generate it from your inbox, start from a template, or draw it yourself."
+msgstr "Planınız, gelen kutunuzdan dallanan basit bir klasör ağacıdır. Amarnai'nin onu gelen kutunuzdan oluşturmasına izin verin, bir şablondan başlayın veya kendiniz tasarlayın."
 
 #: ../../apps/site/src/components/landing/TaxonomyDemoSection.tsx:12
 #, fuzzy
@@ -7726,7 +8014,7 @@ msgid "Your plan is a tree of folders (for example a Customers folder with Suppo
 msgstr "Planınız, her biri yalın bir dille açıklanmış klasörlerden oluşan bir ağaçtır (örneğin, altında Destek ve Faturalandırma olan bir Müşteriler klasörü). Amarnai, her iletiyi en uygun klasöre yönlendirmek için bu ağacı kullanır. Bunu oluşturmanın en hızlı yolu, Amarnai'nin sizin için bir tane oluşturmasına izin vermektir: gelen kutunuzu okur ve adlandırılmış, açıklanmış, olduğu gibi kullanabileceğiniz veya ayarlayabileceğiniz eksiksiz bir ağaç önerir. Hazır şablonlarımızdan birini kullanabilir veya sıfırdan kendinizinkini oluşturabilirsiniz. Teknik bilgi gerekmez."
 
 #. placeholder {0}: status.plan
-#: ../../apps/extension/src/panel/StatusSlot.tsx:71
+#: ../../apps/extension/src/panel/StatusSlot.tsx:73
 #, fuzzy
 msgid "Your retry import finished and is still capped by your {0} plan. Your next retry is available {refreshDate}."
 msgstr "Yeniden deneme içe aktarımınız tamamlandı ve hala {0} planınızın limitiyle sınırlı. Bir sonraki yeniden deneme hakkınız {refreshDate} tarihinde kullanılabilir olacak."

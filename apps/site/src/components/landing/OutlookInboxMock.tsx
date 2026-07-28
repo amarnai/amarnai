@@ -6,7 +6,7 @@ import { useLingui } from "@lingui/react";
 import { OutlookIcon } from "@amarnai/ui";
 import type { ThreadItem } from "@amarnai/ui/emails";
 import { initial, outlookAvatarClass } from "./outlook-helpers";
-import { DEMO_AVATARS } from "@/components/demo/demo-avatars";
+import { DEMO_AVATARS } from "@amarnai/ui/demo";
 
 // 3x3 app-launcher waffle, the top-left glyph on every Outlook web page.
 function WaffleIcon() {

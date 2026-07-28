@@ -66,6 +66,36 @@ export class InjectionDisabledError extends Error {
   }
 }
 
+/**
+ * A non-ok API response, carrying the status and parsed body.
+ *
+ * Callers that only log the failure keep working: this is still an Error and
+ * the message is unchanged. Callers that must branch on the outcome (403 means
+ * "not allowed to edit the taxonomy", 409 means "a generation is already
+ * running", 429 carries `reason`/`nextEligibleAt`) read `status` and `body`
+ * instead of matching on the message text.
+ */
+export class ApiHttpError extends Error {
+  readonly status: number;
+  readonly body: Record<string, unknown> | null;
+
+  constructor(message: string, status: number, body: Record<string, unknown> | null) {
+    super(message);
+    this.name = "ApiHttpError";
+    this.status = status;
+    this.body = body;
+  }
+}
+
+// A failed response may carry no body, or a body that is not JSON. Neither is
+// worth failing over on top of the failure we are already reporting.
+async function readErrorBody(res: Response): Promise<Record<string, unknown> | null> {
+  const parsed = await res.json().catch(() => null);
+  return parsed !== null && typeof parsed === "object"
+    ? (parsed as Record<string, unknown>)
+    : null;
+}
+
 export function makeApiClient(transport: ApiTransport) {
   const base = transport.baseUrl;
 
@@ -75,7 +105,13 @@ export function makeApiClient(transport: ApiTransport) {
         ? { next: { revalidate: opts.revalidate } }
         : { cache: "no-store" };
     const res = await transport.fetch(`${base}${path}`, init);
-    if (!res.ok) throw new Error(`API ${path} returned ${res.status}`);
+    if (!res.ok) {
+      throw new ApiHttpError(
+        `API ${path} returned ${res.status}`,
+        res.status,
+        await readErrorBody(res)
+      );
+    }
     return res.json() as Promise<T>;
   }
 
@@ -92,8 +128,12 @@ export function makeApiClient(transport: ApiTransport) {
       cache: "no-store",
     });
     if (!res.ok) {
-      const err = await res.json().catch(() => ({})) as { error?: string };
-      throw new Error(err.error ?? `API ${path} returned ${res.status}`);
+      const body = await readErrorBody(res);
+      const message =
+        typeof body?.["error"] === "string"
+          ? (body["error"] as string)
+          : `API ${path} returned ${res.status}`;
+      throw new ApiHttpError(message, res.status, body);
     }
     return res.json() as Promise<T>;
   }

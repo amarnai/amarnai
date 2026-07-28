@@ -4,9 +4,9 @@ import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } fr
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import type { I18n } from "@lingui/core";
-import { getDemoThreads, getDemoFolders } from "@/components/demo/demo-seed";
-import { DEMO_AVATARS } from "@/components/demo/demo-avatars";
-import { FolderIcon } from "@/components/landing/icons";
+import { getDemoThreads, getDemoFolders } from "./demo-seed.js";
+import { DEMO_AVATARS } from "./demo-avatars.js";
+import { FolderIcon } from "./icons.js";
 
 type Tone = "ok" | "review" | "accent" | "neutral";
 

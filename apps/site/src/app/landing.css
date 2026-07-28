@@ -171,193 +171,9 @@
   color: var(--ink-3);
 }
 
-/* ─── Hero taxonomy card ──────────────────────────────────────────────────── */
-
 /* ─── Hero feed card ──────────────────────────────────────────────────────── */
-
-@keyframes ld-chip-spin  { to { transform: rotate(360deg); } }
-@keyframes ld-feed-enter {
-  from { opacity: 0; transform: translateY(-10px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes ld-feed-leave {
-  to { opacity: 0; transform: translateY(6px); }
-}
-@keyframes ld-chip-pop {
-  from { opacity: 0; transform: scale(0.85); }
-  to   { opacity: 1; transform: scale(1); }
-}
-
-.ld-feed-card {
-  background: var(--surface);
-  border: 1px solid var(--line-2);
-  border-radius: var(--r-xl);
-  box-shadow: var(--shadow-3);
-  overflow: hidden;
-  user-select: none;
-  contain: layout;
-}
-
-/* Cap */
-.ld-feed-cap {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--line);
-  background: var(--bg-soft);
-}
-.ld-feed-url { font-family: var(--f-mono); font-size: 11px; color: var(--ink-3); letter-spacing: 0.01em; text-decoration: none; transition: color 0.15s ease; }
-.ld-feed-url:hover { color: var(--ink); }
-.ld-feed-live {
-  margin-left: auto;
-  font-family: var(--f-mono);
-  font-size: 11px;
-  letter-spacing: 0.01em;
-  color: var(--ink-3);
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-/* Matches the web app's live-sync dot (.em-sync-dot): static green + soft halo. */
-.ld-feed-live-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--ok);
-  box-shadow: 0 0 0 2.5px oklch(72% 0.13 145 / 0.18);
-  flex-shrink: 0;
-}
-
-/* Body */
-.ld-feed-body { padding: 7px 8px; position: relative; overflow: hidden; }
-
-/* Row */
-.ld-feed-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 11px 12px;
-  border-radius: var(--r-md);
-  overflow: hidden;
-}
-.ld-feed-row + .ld-feed-row { box-shadow: inset 0 1px 0 var(--line); }
-.ld-feed-row:hover { background: var(--bg-soft); }
-.ld-feed-row--enter { animation: ld-feed-enter 0.5s cubic-bezier(0.22, 1, 0.36, 1) both; }
-.ld-feed-row--leave { animation: ld-feed-leave 0.45s ease forwards; }
-
-/* After height is measured, rows become absolutely positioned so the leaving row */
-/* stays visible at the bottom slot and fades out instead of being clipped. */
-.ld-feed-body--measured .ld-feed-row {
-  position: absolute;
-  left: 8px;
-  right: 8px;
-  transition: top 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.ld-feed-body--measured .ld-feed-row + .ld-feed-row { box-shadow: none; }
-.ld-feed-body--measured .ld-feed-row[data-sep] { box-shadow: inset 0 1px 0 var(--line); }
-
-/* Avatar */
-.ld-feed-ava {
-  flex: none;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  color: #fff;
-  overflow: hidden;
-}
-
-.ld-feed-ava-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-/* Meta */
-.ld-feed-meta { min-width: 0; flex: 1 1 auto; display: flex; flex-direction: column; gap: 1px; }
-.ld-feed-from { font-size: 13px; font-weight: 600; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.ld-feed-subj { font-size: 12px; color: var(--ink-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-/* Route chips */
-.ld-route-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 3px 9px 3px 8px;
-  border-radius: 999px;
-  font-size: 11.5px;
-  font-weight: 500;
-  color: var(--accent-ink);
-  background: var(--accent-soft);
-  border: 1px solid var(--accent-line);
-  white-space: nowrap;
-  flex: none;
-}
-.ld-chip-fi { width: 11px; height: 11px; display: inline-flex; align-items: center; color: var(--accent-ink); }
-.ld-route-chip--ok { color: var(--ok-ink); background: var(--ok-soft); border-color: var(--ok-line); }
-.ld-route-chip--ok .ld-chip-fi { color: var(--ok-ink); }
-.ld-route-chip--review { color: var(--warn-ink); background: var(--warn-soft); border-color: var(--warn-line); }
-.ld-route-chip--review .ld-chip-fi { color: var(--warn-ink); }
-.ld-route-chip--neutral { color: var(--ink-3); background: var(--bg-sunk); border-color: var(--line-2); }
-.ld-route-chip--neutral .ld-chip-fi { color: var(--ink-3); }
-.ld-route-chip--sorting {
-  color: var(--ink-3);
-  background: var(--bg-sunk);
-  border-color: var(--line-2);
-  font-family: var(--f-mono);
-  letter-spacing: 0.02em;
-}
-.ld-chip-spin {
-  width: 10px;
-  height: 10px;
-  flex: none;
-  border-radius: 50%;
-  border: 1.5px solid var(--line-3);
-  border-top-color: var(--accent);
-  animation: ld-chip-spin 0.7s linear infinite;
-}
-.ld-route-chip--resolved { animation: ld-chip-pop 0.34s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
-
-/* Footer */
-.ld-feed-foot {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 11px 16px;
-  border-top: 1px solid var(--line);
-  background: var(--bg-soft);
-  font-family: var(--f-mono);
-  font-size: 10.5px;
-  letter-spacing: 0.02em;
-  color: var(--ink-3);
-  white-space: nowrap;
-  flex-wrap: wrap;
-}
-.ld-feed-foot-l,
-.ld-feed-foot-r { display: inline-flex; align-items: center; gap: 8px; }
-/* Same static-dot-with-halo language as .ld-feed-live-dot, in the accent tone. */
-.ld-feed-scan-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 0 2.5px var(--accent-soft);
-  flex-shrink: 0;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .ld-feed-row--enter,
-  .ld-feed-row--leave,
-  .ld-route-chip--resolved,
-  .ld-chip-spin { animation: none !important; }
-}
+/* The card is shared with the extension's first-run tab, so its styles ship    */
+/* with the component in @amarnai/ui/demo/styles (imported in app/layout.tsx).  */
 
 /* ─── Trust strip ─────────────────────────────────────────────────────────── */
 
@@ -798,60 +614,9 @@
 .ld-demo-head .ld-copy { flex: 1; min-width: 300px; }
 .ld-demo-head .ld-section-h { margin-bottom: 10px; }
 
-.ld-play-note {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  font-weight: 450;
-  color: var(--ink-3);
-  flex-shrink: 0;
-}
-
-/* ─── App frame ───────────────────────────────────────────────────────────── */
-
-.ld-app-frame {
-  background: var(--surface);
-  border: 1px solid var(--line-2);
-  border-radius: var(--r-xl);
-  box-shadow: var(--shadow-3);
-  overflow: hidden;
-}
-
-.ld-frame-bar {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  padding: 10px 18px;
-  background: var(--bg-soft);
-  border-bottom: 1px solid var(--line);
-  gap: 12px;
-}
-
-/* The hint sits dead-center of the bar; the side columns are equal (1fr) so it
-   stays centered no matter how wide the breadcrumb or button get. */
-.ld-frame-bar > .ld-play-note { justify-self: center; }
-.ld-frame-bar > :last-child { justify-self: end; }
-
-.ld-crumbs {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-family: var(--f-mono);
-  font-size: 11px;
-  color: var(--ink-3);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-.ld-crumbs .ld-sep { opacity: 0.5; }
-.ld-crumbs .ld-here { color: var(--ink-2); font-weight: 600; }
-
-.ld-demo-stage {
-  height: 560px;
-  overflow: hidden;
-  position: relative;
-}
+/* The frame chrome the demos render into (.ld-app-frame, .ld-frame-bar,
+   .ld-crumbs, .ld-play-note, .ld-demo-stage) ships with the shared components
+   in @amarnai/ui/demo/styles; the rules below only extend it for this page. */
 
 /* Emails demo needs full height */
 .ld-demo-stage.emails { height: 620px; }
@@ -1147,6 +912,17 @@
 
   /* Browser extensions can't be installed on mobile; hide the CTA there. */
   .ld-ext-btn { display: none; }
+
+  /* With the extension button gone, the sign-up link is the only call to
+     action left, so it takes the primary treatment. Same declarations as
+     .ld-btn.accent above (CSS has no way to borrow them) — keep in sync. */
+  .ld-signup-btn {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+    font-weight: 600;
+    box-shadow: 0 2px 12px oklch(58% 0.14 40 / 0.30);
+  }
 }
 
 /* ─── Gmail inbox mock ────────────────────────────────────────────────────── */
@@ -1868,67 +1644,9 @@ button.ld-ol-row:hover { background: var(--bg-soft); }
   color: var(--ld-ol-blue-strong);
 }
 
-/* "Generate from inbox" lives in the frame bar, right-aligned opposite the
-   breadcrumb (the bar uses justify-content: space-between). */
-.demo-generate-btn {
-  padding: 7px 14px;
-  font-size: 13px;
-  border-radius: 9px;
-  box-shadow: 0 2px 10px oklch(58% 0.14 40 / 0.28);
-  flex-shrink: 0;
-}
-
-.demo-generate-btn:disabled {
-  opacity: 0.7;
-  cursor: default;
-}
-
-/* React Flow's default connection handles render as solid dark dots that sit on
-   top of the edge arrowheads and read as "dots, not arrows". Make them small and
-   subtle so the arrowhead is the visible endpoint; they brighten on node hover so
-   the canvas stays discoverably "drag and connect". */
-.taxonomy-canvas .react-flow__handle {
-  width: 6px;
-  height: 6px;
-  min-width: 0;
-  min-height: 0;
-  background: var(--line-3);
-  border: none;
-  opacity: 0;
-  transition: opacity 0.15s;
-}
-
-.taxonomy-canvas .react-flow__node:hover .react-flow__handle {
-  opacity: 1;
-}
-
-/* Reveal animation: cards fade + lift in as each tree level unfolds.
-   Applied to a wrapper inside the node so it never fights React Flow's
-   own transform on .react-flow__node. */
-@keyframes demoNodeEnter {
-  from { opacity: 0; transform: translateY(7px) scale(0.92); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-.demo-node-enter {
-  animation: demoNodeEnter 0.34s cubic-bezier(0.22, 0.61, 0.36, 1) both;
-}
-
-@keyframes demoEdgeEnter {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-
-.taxonomy-canvas .react-flow__edge.demo-edge-enter {
-  animation: demoEdgeEnter 0.3s ease 0.08s both;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .demo-node-enter,
-  .taxonomy-canvas .react-flow__edge.demo-edge-enter {
-    animation: none;
-  }
-}
+/* The plan canvas demo (its frame-bar button, connection handles and reveal
+   animation) is shared with the extension's first-run tab; those styles ship
+   with the component in @amarnai/ui/demo/styles. */
 
 /* ─── FAQ ─────────────────────────────────────────────────────────────────── */
 

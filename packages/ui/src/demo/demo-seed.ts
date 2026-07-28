@@ -1,16 +1,17 @@
 import { msg } from "@lingui/core/macro";
 import type { I18n, MessageDescriptor } from "@lingui/core";
-import type { FolderItem } from "@amarnai/ui/folder-tree";
-import type { ThreadItem } from "@amarnai/ui/emails";
-import { taxonomyTokens } from "@amarnai/ui/taxonomy";
+import type { FolderItem } from "../folder-tree/types.js";
+import type { ThreadItem } from "../emails/types.js";
+import { taxonomyTokens } from "../taxonomy/index.js";
 import type { Node, Edge } from "@xyflow/react";
 import { MarkerType } from "@xyflow/react";
 
 // All user-visible demo copy is declared as Lingui messages and resolved at the
 // render edge via the `getDemo*` builder functions below. The structural data
 // (ids, positions, dates, counts, email addresses) stays static and
-// locale-independent. Keep this file inside apps/site/src so the extractor picks
-// up the messages.
+// locale-independent. The seed lives here rather than in one app because the
+// landing page and the extension's first-run tab render the same demo; the
+// Lingui extractor scans packages/ui/src, so the messages are still picked up.
 
 // ─── Taxonomy definition ─────────────────────────────────────────────────────
 
