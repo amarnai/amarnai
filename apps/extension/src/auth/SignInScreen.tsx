@@ -2,7 +2,7 @@ import { useState, type FormEvent } from "react";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
-import { GoogleGIcon, OutlookIcon } from "@amarnai/ui";
+import { GoogleGIcon, MicrosoftIcon } from "@amarnai/ui";
 import { useSession } from "./session";
 import { GoogleAuthCancelledError } from "./googleAuth";
 import { MicrosoftAuthCancelledError } from "./microsoftAuth";
@@ -143,11 +143,11 @@ export function SignInScreen() {
       {microsoftEnabled && (
         <button
           type="button"
-          className="ax-btn ax-btn-outlook"
+          className="ax-btn ax-btn-microsoft"
           onClick={onMicrosoft}
           disabled={busy}
         >
-          <OutlookIcon variant="mono" size={16} />
+          <MicrosoftIcon />
           <Trans>Continue with Microsoft</Trans>
         </button>
       )}

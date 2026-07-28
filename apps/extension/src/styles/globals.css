@@ -668,14 +668,20 @@ body {
   background: var(--bg-sunk);
 }
 
-.ax-btn-google {
+/* Federated sign-in buttons (Google, Microsoft): one neutral treatment so neither
+   provider reads as the "real" option, matching .btn-google/.btn-microsoft in the
+   web app. Distinct from .ax-btn-outlook, which is the branded CONNECT-an-inbox
+   action — identity and mailbox connection are different jobs. */
+.ax-btn-google,
+.ax-btn-microsoft {
   background: var(--surface);
   color: var(--ink);
   border-color: var(--line-3);
   width: 100%;
 }
 
-.ax-btn-google:hover:not(:disabled) {
+.ax-btn-google:hover:not(:disabled),
+.ax-btn-microsoft:hover:not(:disabled) {
   background: var(--bg-sunk);
 }
 
