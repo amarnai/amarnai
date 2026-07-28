@@ -3,6 +3,7 @@ import { REPLY_BUTTON_STRINGS } from "../core/strings.js";
 import { detectGmailThread, findConversationRoot } from "./detectThread.js";
 import { armReply } from "./armedReply.js";
 import { createReplyIcon, REPLY_ICON_CSS } from "../core/replyIcon.js";
+import { startDomTicker } from "../core/scheduler.js";
 
 // Chiefy-style entry points in Gmail's own reply surfaces (product decision
 // 2026-07-27, superseding the earlier no-hand-rolled-reply-bar rule):
@@ -68,8 +69,6 @@ function ensureEntryStyles(doc: Document): void {
   style.textContent = ENTRY_CSS;
   doc.head.appendChild(style);
 }
-
-const OBSERVE_THROTTLE_MS = 300;
 
 let disabled = false;
 
@@ -316,27 +315,5 @@ export function disableReplyEntryPoints(doc: Document = document): void {
  * mutates constantly, and a trailing-edge timer batches bursts into one check.
  */
 export function startReplyEntryPoints(doc: Document = document): () => void {
-  let timer: ReturnType<typeof setTimeout> | undefined;
-  const schedule = () => {
-    if (timer !== undefined) return;
-    timer = setTimeout(() => {
-      timer = undefined;
-      ensureReplyEntryPoints(doc);
-    }, OBSERVE_THROTTLE_MS);
-  };
-
-  const observer = new MutationObserver(schedule);
-  observer.observe(doc.body, { childList: true, subtree: true });
-  const onNav = () => schedule();
-  doc.defaultView?.addEventListener("hashchange", onNav);
-  doc.defaultView?.addEventListener("popstate", onNav);
-
-  ensureReplyEntryPoints(doc);
-
-  return () => {
-    observer.disconnect();
-    doc.defaultView?.removeEventListener("hashchange", onNav);
-    doc.defaultView?.removeEventListener("popstate", onNav);
-    clearTimeout(timer);
-  };
+  return startDomTicker(doc, () => ensureReplyEntryPoints(doc));
 }

@@ -143,6 +143,40 @@ export function startScheduler(options: SchedulerOptions): Scheduler {
 }
 
 /**
+ * The same observer loop without the thread bookkeeping: run `tick` on every
+ * settled burst of DOM change and on every SPA navigation, plus once up front.
+ * Returns a teardown.
+ *
+ * Used by the injectors that are idempotent by marker attribute (the reply
+ * entry points, the OWA reply button) and so need no "have I handled this
+ * thread yet" state — they just want to be re-run whenever the page moves.
+ */
+export function startDomTicker(doc: Document, tick: () => void): () => void {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const schedule = () => {
+    if (timer !== undefined) return;
+    timer = setTimeout(() => {
+      timer = undefined;
+      tick();
+    }, OBSERVE_THROTTLE_MS);
+  };
+
+  const observer = new MutationObserver(schedule);
+  observer.observe(doc.body, { childList: true, subtree: true });
+  doc.defaultView?.addEventListener("hashchange", schedule);
+  doc.defaultView?.addEventListener("popstate", schedule);
+
+  tick();
+
+  return () => {
+    observer.disconnect();
+    doc.defaultView?.removeEventListener("hashchange", schedule);
+    doc.defaultView?.removeEventListener("popstate", schedule);
+    clearTimeout(timer);
+  };
+}
+
+/**
  * Run a callback, swallowing anything it throws, and return its value (undefined
  * if it threw). Never break the host page.
  */

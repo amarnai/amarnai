@@ -1,9 +1,15 @@
-import { draftBodyToHtml } from "@amarnai/core/drafts";
 import { debugLog } from "../core/debug.js";
-import { REPLY_BUTTON_STRINGS, formatResetDate } from "../core/strings.js";
+import { REPLY_BUTTON_STRINGS } from "../core/strings.js";
 import { requestDraftFromBackground } from "../core/draftRequest.js";
 import { createReplyIcon, REPLY_ICON_CSS } from "../core/replyIcon.js";
 import { OPEN_PANEL_MESSAGE } from "../core/messaging.js";
+import { startDomTicker } from "../core/scheduler.js";
+import {
+  describeReplyState,
+  resolveDraftOutcome,
+  TRANSIENT_MS,
+  type ReplyButtonState,
+} from "../core/replyState.js";
 import { detectOutlookThread } from "./detectThread.js";
 
 // The "Amarnai Reply" button in OWA's own reading pane (product decision
@@ -27,23 +33,11 @@ import { detectOutlookThread } from "./detectThread.js";
 
 export const OWA_BUTTON_ATTRIBUTE = "data-amarnai-owa-reply";
 
-const OBSERVE_THROTTLE_MS = 300;
 /** How long a generated draft waits for a compose editor before it lapses. */
 const PENDING_TTL_MS = 90_000;
-const TRANSIENT_MS = 6_000;
-
-type State =
-  | { kind: "idle" }
-  | { kind: "generating" }
-  | { kind: "ready" }
-  | { kind: "inserted" }
-  | { kind: "notSorted" }
-  | { kind: "error" }
-  | { kind: "signedOut" }
-  | { kind: "quota"; resetsAt: string };
 
 let disabled = false;
-let state: State = { kind: "idle" };
+let state: ReplyButtonState = { kind: "idle" };
 let currentThreadId: string | null = null;
 let pending: { threadId: string; html: string; at: number } | null = null;
 let lastInserted: HTMLElement | null = null;
@@ -62,38 +56,10 @@ export function resetOutlookReplyButton(clock?: () => number): void {
   if (clock) now = clock;
 }
 
-function describe(s: State): { label: string; tooltip: string; enabled: boolean } {
-  const S = REPLY_BUTTON_STRINGS;
-  switch (s.kind) {
-    case "generating":
-      return { label: S.generating, tooltip: S.tooltips.generating, enabled: false };
-    case "ready":
-      return { label: S.readyToInsert, tooltip: S.tooltips.readyToInsert, enabled: true };
-    case "inserted":
-      // Label stays "Amarnai Reply" — the button is an identity, not a status
-      // readout. The outcome lives in the tooltip.
-      return { label: S.idle, tooltip: S.tooltips.inserted, enabled: true };
-    case "notSorted":
-      return { label: S.notSorted, tooltip: S.tooltips.notSorted, enabled: true };
-    case "error":
-      return { label: S.error, tooltip: S.tooltips.error, enabled: true };
-    case "signedOut":
-      return { label: S.signedOut, tooltip: S.tooltips.signedOut, enabled: true };
-    case "quota":
-      return {
-        label: S.quota,
-        tooltip: S.tooltips.quota(formatResetDate(s.resetsAt)),
-        enabled: false,
-      };
-    case "idle":
-      return { label: S.idle, tooltip: S.tooltips.idle, enabled: true };
-  }
-}
-
 function render(doc: Document): void {
   const button = doc.querySelector<HTMLElement>(`[${OWA_BUTTON_ATTRIBUTE}]`);
   if (!button) return;
-  const { label, tooltip, enabled } = describe(state);
+  const { label, tooltip, enabled } = describeReplyState(state);
   const text = button.querySelector<HTMLElement>("span");
   if (text) text.textContent = label;
   // OWA has no attribute-driven tooltip system like Gmail's; title is the
@@ -105,13 +71,13 @@ function render(doc: Document): void {
   button.style.cursor = enabled ? "pointer" : "default";
 }
 
-function setState(doc: Document, next: State): void {
+function setState(doc: Document, next: ReplyButtonState): void {
   state = next;
   clearTimeout(transientTimer);
   render(doc);
 }
 
-function setTransient(doc: Document, next: State): void {
+function setTransient(doc: Document, next: ReplyButtonState): void {
   setState(doc, next);
   transientTimer = setTimeout(() => {
     state = { kind: "idle" };
@@ -214,37 +180,18 @@ async function onClick(doc: Document): Promise<void> {
     context.providerThreadId,
   );
 
-  if (!response.ok) {
-    switch (response.reason) {
-      case "signedOut":
-      case "noWorkspace":
-        setState(doc, { kind: "signedOut" });
-        return;
-      case "injectionDisabled":
-        disableOutlookReplyButton(doc);
-        return;
-      default:
-        setTransient(doc, { kind: "error" });
-        return;
-    }
-  }
-
-  const result = response.result;
-  if (result.kind === "quota") {
-    setState(doc, { kind: "quota", resetsAt: result.resetsAt });
+  const outcome = resolveDraftOutcome(response);
+  if (outcome.kind === "state") {
+    if (outcome.transient) setTransient(doc, outcome.state);
+    else setState(doc, outcome.state);
     return;
   }
-  if (result.kind === "notSorted") {
-    setTransient(doc, { kind: "notSorted" });
+  if (outcome.kind === "disabled") {
+    disableOutlookReplyButton(doc);
     return;
   }
 
-  const html = draftBodyToHtml(result.body);
-  if (html === "") {
-    setTransient(doc, { kind: "error" });
-    return;
-  }
-  pending = { threadId: context.providerThreadId, html, at: now() };
+  pending = { threadId: context.providerThreadId, html: outcome.html, at: now() };
 
   // Open the reply for the user: the cluster's first button is Reply. If the
   // editor is already open (or the click did not take), the watcher and the
@@ -359,27 +306,5 @@ export function disableOutlookReplyButton(doc: Document = document): void {
 
 /** Observe OWA's SPA renders, throttled like the summary scheduler. */
 export function startOutlookReplyButton(doc: Document = document): () => void {
-  let timer: ReturnType<typeof setTimeout> | undefined;
-  const schedule = () => {
-    if (timer !== undefined) return;
-    timer = setTimeout(() => {
-      timer = undefined;
-      ensureOutlookReplyButton(doc);
-    }, OBSERVE_THROTTLE_MS);
-  };
-
-  const observer = new MutationObserver(schedule);
-  observer.observe(doc.body, { childList: true, subtree: true });
-  const onNav = () => schedule();
-  doc.defaultView?.addEventListener("hashchange", onNav);
-  doc.defaultView?.addEventListener("popstate", onNav);
-
-  ensureOutlookReplyButton(doc);
-
-  return () => {
-    observer.disconnect();
-    doc.defaultView?.removeEventListener("hashchange", onNav);
-    doc.defaultView?.removeEventListener("popstate", onNav);
-    clearTimeout(timer);
-  };
+  return startDomTicker(doc, () => ensureOutlookReplyButton(doc));
 }

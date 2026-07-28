@@ -3,10 +3,10 @@ import type * as Kefir from "kefir";
 import {
   attachReplyButton,
   isDraftableCompose,
-  TRANSIENT_MS,
   type ButtonDescriptor,
   type ComposeViewLike,
 } from "./replyButton";
+import { TRANSIENT_MS } from "../core/replyState";
 import { REPLY_BUTTON_STRINGS } from "../core/strings";
 import type { GenerateDraftResponse } from "../core/messaging";
 

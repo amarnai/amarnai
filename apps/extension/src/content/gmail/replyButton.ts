@@ -1,6 +1,10 @@
 import * as Kefir from "kefir";
-import { REPLY_BUTTON_STRINGS, formatResetDate } from "../core/strings.js";
-import { draftBodyToHtml } from "@amarnai/core/drafts";
+import {
+  describeReplyState,
+  resolveDraftOutcome,
+  TRANSIENT_MS,
+  type ReplyButtonState,
+} from "../core/replyState.js";
 import type { GenerateDraftResponse } from "../core/messaging.js";
 
 // The "Amarnai Reply" button inside Gmail's own reply compose.
@@ -9,6 +13,10 @@ import type { GenerateDraftResponse } from "../core/messaging.js";
 // needs, so the whole state machine is testable with a plain fake. Nothing here
 // touches the DOM or the SDK directly: attachReplyButton is handed a compose
 // view and a way to ask the background for a draft, and does the rest.
+//
+// The states themselves, their labels, and the response-to-state mapping are in
+// core/replyState.ts, shared with the OWA button. What is Gmail's own: the
+// Kefir-stream plumbing InboxSDK's addButton wants, and insertion at the cursor.
 
 /** The part of InboxSDK's ComposeView this feature uses. */
 export type ComposeViewLike = {
@@ -52,50 +60,6 @@ export type ReplyButtonOptions = {
   autoStart?: boolean;
 };
 
-type State =
-  | { kind: "idle" }
-  | { kind: "generating" }
-  | { kind: "inserted" }
-  | { kind: "notSorted" }
-  | { kind: "error" }
-  | { kind: "signedOut" }
-  | { kind: "quota"; resetsAt: string };
-
-/**
- * How long a transient outcome (error, not-sorted) stays on the button before it
- * returns to idle. Long enough to read, short enough that the button is ready
- * again by the time the user has fixed the cause.
- */
-export const TRANSIENT_MS = 6_000;
-
-function describe(state: State): { title: string; tooltip: string; enabled: boolean } {
-  const S = REPLY_BUTTON_STRINGS;
-  switch (state.kind) {
-    case "generating":
-      return { title: S.generating, tooltip: S.tooltips.generating, enabled: false };
-    case "inserted":
-      // The label stays "Amarnai Reply": a toolbar button is an identity, not a
-      // status readout, and renaming it after a click reads as a different
-      // control. The outcome lives in the tooltip.
-      return { title: S.idle, tooltip: S.tooltips.inserted, enabled: true };
-    case "notSorted":
-      return { title: S.notSorted, tooltip: S.tooltips.notSorted, enabled: true };
-    case "error":
-      return { title: S.error, tooltip: S.tooltips.error, enabled: true };
-    case "signedOut":
-      return { title: S.signedOut, tooltip: S.tooltips.signedOut, enabled: true };
-    case "quota":
-      return {
-        title: S.quota,
-        tooltip: S.tooltips.quota(formatResetDate(state.resetsAt)),
-        // Nothing a click can do until the window resets.
-        enabled: false,
-      };
-    case "idle":
-      return { title: S.idle, tooltip: S.tooltips.idle, enabled: true };
-  }
-}
-
 /**
  * The compose's thread id, or null. InboxSDK's getThreadID() THROWS for composes
  * without a thread rather than returning empty, so every caller goes through
@@ -135,8 +99,8 @@ export function attachReplyButton(
   // `current` is the source of truth; the stream is only how InboxSDK hears
   // about changes. It is lazy — nothing is delivered until addButton subscribes
   // — so the property seeds from `current` and no early emission is lost.
-  let current: State | null = { kind: "idle" };
-  let push: ((next: State | null) => void) | null = null;
+  let current: ReplyButtonState | null = { kind: "idle" };
+  let push: ((next: ReplyButtonState | null) => void) | null = null;
   let inFlight = false;
   let transientTimer: ReturnType<typeof setTimeout> | undefined;
   // The container of the last insertion into THIS compose. A second click
@@ -144,20 +108,20 @@ export function attachReplyButton(
   // repeated clicks stacked copies of the draft in the body).
   let lastInserted: HTMLElement | null = null;
 
-  const states = Kefir.stream<State | null, never>((emitter) => {
+  const states = Kefir.stream<ReplyButtonState | null, never>((emitter) => {
     push = (next) => emitter.value(next);
     return () => {
       push = null;
     };
   });
 
-  function emit(next: State | null) {
+  function emit(next: ReplyButtonState | null) {
     if (current === null) return; // already torn down
     current = next;
     push?.(next);
   }
 
-  function emitTransient(next: State) {
+  function emitTransient(next: ReplyButtonState) {
     emit(next);
     clearTimeout(transientTimer);
     transientTimer = setTimeout(() => emit({ kind: "idle" }), TRANSIENT_MS);
@@ -201,49 +165,27 @@ export function attachReplyButton(
     }
     inFlight = false;
 
-    if (!response.ok) {
-      switch (response.reason) {
-        case "signedOut":
-        case "noWorkspace":
-          // Both mean "this mailbox is not usable from here"; the panel is where
-          // signing in or connecting happens.
-          emit({ kind: "signedOut" });
-          return;
-        case "injectionDisabled":
-          // A settled answer, not a transient miss: remove the button rather
-          // than inviting a retry that cannot succeed, and tell the host so it
-          // can take down the entry points that would reopen this dead end.
-          teardown();
-          deps.onDisabled?.();
-          return;
-        default:
-          emitTransient({ kind: "error" });
-          return;
-      }
-    }
-
-    const result = response.result;
-    if (result.kind === "quota") {
-      emit({ kind: "quota", resetsAt: result.resetsAt });
+    const outcome = resolveDraftOutcome(response);
+    if (outcome.kind === "state") {
+      if (outcome.transient) emitTransient(outcome.state);
+      else emit(outcome.state);
       return;
     }
-    if (result.kind === "notSorted") {
-      emitTransient({ kind: "notSorted" });
+    if (outcome.kind === "disabled") {
+      // Remove the button, and tell the host so it can take down the entry
+      // points that would reopen this dead end.
+      teardown();
+      deps.onDisabled?.();
       return;
     }
 
-    const html = draftBodyToHtml(result.body);
-    if (html === "") {
-      emitTransient({ kind: "error" });
-      return;
-    }
     // Replace, never append: clicking again must not stack a second copy. If
     // the user deleted the insertion, the node is disconnected and this is a
     // plain fresh insert.
     if (lastInserted?.isConnected) lastInserted.remove();
     // One wrapper so a multi-paragraph draft is removable as a unit; inserted
     // at the cursor, so Gmail's quoted trail below survives untouched.
-    const node = view.insertHTMLIntoBodyAtCursor(`<div>${html}</div>`);
+    const node = view.insertHTMLIntoBodyAtCursor(`<div>${outcome.html}</div>`);
     lastInserted = node instanceof HTMLElement ? node : null;
     emitTransient({ kind: "inserted" });
   }
@@ -251,7 +193,7 @@ export function attachReplyButton(
   view.addButton(
     states.toProperty(() => current).map((s): ButtonDescriptor | null => {
       if (s === null) return null;
-      const { title, tooltip, enabled } = describe(s);
+      const { label: title, tooltip, enabled } = describeReplyState(s);
       return {
         title,
         tooltip,
